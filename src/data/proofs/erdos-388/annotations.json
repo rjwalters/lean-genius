@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-388-ann-consecutiveProduct",
+    "proofId": "erdos-388",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "definition",
+    "title": "consecutiveProduct",
+    "content": "The product (m+1)(m+2)···(m+k), defined as ∏ i ∈ [1,k], (m + i). Equals the factorial ratio (m+k)!/m!.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-388-ann-solution",
+    "proofId": "erdos-388",
+    "range": { "startLine": 44, "endLine": 53 },
+    "type": "definition",
+    "title": "EqualProductSolution",
+    "content": "Encodes a solution: two blocks of consecutive integers with k₁, k₂ > 3, disjoint (m₁ + k₁ ≤ m₂), and equal products.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-388-ann-main",
+    "proofId": "erdos-388",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "theorem",
+    "title": "Finiteness Conjecture",
+    "content": "Only finitely many solutions exist to the equal-products equation with k₁, k₂ > 3 and disjoint blocks. Stated as: there exists N bounding all m₂ values.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-388-ann-proportional",
+    "proofId": "erdos-388",
+    "range": { "startLine": 70, "endLine": 80 },
+    "type": "definition",
+    "title": "ProportionalProductSolution",
+    "content": "Generalizes to a·∏(m₁+i) = b·∏(m₂+j) with fixed nonzero constants a, b and k₁ > 2.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-388-ann-generalized",
+    "proofId": "erdos-388",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "theorem",
+    "title": "Generalized Finiteness",
+    "content": "For any fixed nonzero a, b, the proportional-products equation should have only finitely many solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-388-ann-erdos-selfridge",
+    "proofId": "erdos-388",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "theorem",
+    "title": "Erdős–Selfridge Theorem",
+    "content": "A product of two or more consecutive positive integers is never a perfect power. This landmark 1975 result is closely related to the current problem.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-388-ann-factorial",
+    "proofId": "erdos-388",
+    "range": { "startLine": 100, "endLine": 101 },
+    "type": "concept",
+    "title": "Factorial Connection",
+    "content": "consecutiveProduct m k · m! = (m+k)!, connecting the product of consecutive integers to factorial ratios.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-388-ann-trivial",
+    "proofId": "erdos-388",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "insight",
+    "title": "Trivial Solution Family",
+    "content": "When m₁ = m₂ and k₁ = k₂ the products are trivially equal. The disjointness constraint m₁ + k₁ ≤ m₂ excludes this degenerate case.",
+    "significance": "supporting"
+  }
+]

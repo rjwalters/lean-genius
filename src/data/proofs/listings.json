@@ -2460,6 +2460,27 @@
     "annotationCount": 12
   },
   {
+    "id": "erdos-1105",
+    "title": "Erdős Problem #1105: Anti-Ramsey Numbers for Cycles and Paths",
+    "slug": "erdos-1105",
+    "description": "Determine exact formulas for the anti-Ramsey numbers AR(n, C_k) and AR(n, P_k), where AR(n,G) is the maximum number of colors in a rainbow-G-free edge-coloring of K_n.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "anti-ramsey",
+      "combinatorics",
+      "coloring",
+      "open"
+    ],
+    "erdosNumber": 1105,
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 12
+  },
+  {
     "id": "erdos-1106",
     "title": "Erdős #1106: Prime Factors of Partition Products",
     "slug": "erdos-1106",
@@ -7648,6 +7669,23 @@
     "annotationCount": 8
   },
   {
+    "id": "erdos-388",
+    "title": "Products of Consecutive Integers",
+    "slug": "erdos-388",
+    "description": "Can one classify all solutions of ∏(m₁+i) = ∏(m₂+j) where k₁, k₂ > 3 and the blocks are disjoint? Erdős conjectured only finitely many solutions exist. Generalizes to proportional products a·∏(m₁+i) = b·∏(m₂+j).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "diophantine equations",
+      "consecutive integers",
+      "factorials"
+    ],
+    "erdosNumber": 388,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
     "id": "erdos-39",
     "title": "Erdős Problem #39: Infinite Sidon Set Growth",
     "slug": "erdos-39",
@@ -8001,6 +8039,26 @@
     "annotationCount": 11
   },
   {
+    "id": "erdos-410",
+    "title": "Erdős Problem #410: Iterated Sum of Divisors Growth",
+    "slug": "erdos-410",
+    "description": "Does lim_{k → ∞} σₖ(n)^{1/k} = ∞ for all n ≥ 2, where σₖ is the k-th iterate of the sum of divisors function?",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "iterated-functions",
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "open"
+    ],
+    "erdosNumber": 410,
+    "mathlibCount": 3,
+    "sorries": 10,
+    "annotationCount": 11
+  },
+  {
     "id": "erdos-412",
     "title": "Erdos Problem #412: Iterated Sum of Divisors Convergence",
     "slug": "erdos-412",
@@ -8151,6 +8209,27 @@
     "mathlibCount": 4,
     "sorries": 0,
     "annotationCount": 15
+  },
+  {
+    "id": "erdos-421",
+    "title": "Erdős Problem #421: Distinct Products in Dense Sequences",
+    "slug": "erdos-421",
+    "description": "Is there a strictly increasing sequence d₁ < d₂ < ... with density 1 such that all interval products ∏_{u ≤ i ≤ v} d_i are distinct?",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sequences",
+      "products",
+      "density",
+      "distinct-products",
+      "open"
+    ],
+    "erdosNumber": 421,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-425",
@@ -12139,6 +12218,26 @@
     "annotationCount": 15
   },
   {
+    "id": "erdos-684",
+    "title": "Erdős Problem #684: Smooth Parts of Binomial Coefficients",
+    "slug": "erdos-684",
+    "description": "Find bounds on f(n) = smallest k such that the k-smooth part of C(n,k) exceeds n².",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "binomial-coefficients",
+      "smooth-numbers",
+      "open"
+    ],
+    "erdosNumber": 684,
+    "mathlibCount": 3,
+    "sorries": 5,
+    "annotationCount": 13
+  },
+  {
     "id": "erdos-69",
     "title": "Erdős Problem #69: Irrationality of Sum of Omega over Powers of 2",
     "slug": "erdos-69",
@@ -13851,6 +13950,27 @@
     "mathlibCount": 2,
     "sorries": 4,
     "annotationCount": 18
+  },
+  {
+    "id": "erdos-782",
+    "title": "Erdős Problem #782: Quasi-Progressions and Cubes in the Squares",
+    "slug": "erdos-782",
+    "description": "Two questions about structure in perfect squares: (1) Do squares contain arbitrarily long quasi-progressions with uniform bound C? (2) Do squares contain arbitrarily large combinatorial cubes?",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "squares",
+      "progressions",
+      "combinatorial-cubes",
+      "open"
+    ],
+    "erdosNumber": 782,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 12
   },
   {
     "id": "erdos-784",
