@@ -1,0 +1,79 @@
+[
+  {
+    "id": "erdos-342-header",
+    "proofId": "erdos-342",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 21 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #342: In the Ulam sequence U(1,2) = 1, 2, 3, 4, 6, 8, 11, 13, ..., where each term is the smallest integer with a unique sum representation, do infinitely many twin pairs (a, a+2) occur? OPEN. OEIS A002858.",
+    "mathContext": "The Ulam sequence is defined by unique-sum representability. A number m enters the sequence if it has exactly one way to be written as aᵢ + aⱼ with i < j among existing terms. 5 is excluded because 5 = 1+4 = 2+3.",
+    "significance": "essential",
+    "relatedConcepts": ["Ulam sequence", "unique representation", "additive combinatorics"]
+  },
+  {
+    "id": "erdos-342-definition",
+    "proofId": "erdos-342",
+    "type": "definition",
+    "range": { "startLine": 33, "endLine": 62 },
+    "title": "Ulam Sequence and Representation",
+    "content": "ulamSeq: ℕ → ℕ (noncomputable). Initial values axiomatized: a(0)=1, a(1)=2. ulamSeq_strictMono (axiom): strictly increasing. representationCount(m,n): counts representations of m as aᵢ+aⱼ with i<j≤n. ulamSeq_unique_representation (axiom): count = 1. ulamSeq_minimal (axiom): no smaller valid candidate.",
+    "mathContext": "The sequence is well-defined by a greedy algorithm. Each term is the smallest integer exceeding the previous term with exactly one sum representation.",
+    "significance": "essential",
+    "relatedConcepts": ["greedy algorithm", "unique representation", "StrictMono"]
+  },
+  {
+    "id": "erdos-342-values",
+    "proofId": "erdos-342",
+    "type": "result",
+    "range": { "startLine": 64, "endLine": 78 },
+    "title": "Initial Values and Exclusions",
+    "content": "ulamSeq_values (axiom): first 12 terms are 1, 2, 3, 4, 6, 8, 11, 13, 16, 18, 26, 28. five_not_ulam (axiom): 5 is excluded (5 = 1+4 = 2+3, two representations). six_is_ulam (axiom): 6 = 2+4 is the unique representation.",
+    "mathContext": "The sequence skips 5 because of double representation, illustrating the unique-sum constraint.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A002858", "computation"]
+  },
+  {
+    "id": "erdos-342-twins",
+    "proofId": "erdos-342",
+    "type": "definition",
+    "range": { "startLine": 80, "endLine": 95 },
+    "title": "Twin Pairs",
+    "content": "IsUlamTwin(n): a(n+1) = a(n) + 2. twinIndices: the set of indices where twins occur. twin_examples (axiom): known twin pairs including (26, 28).",
+    "mathContext": "Twin pairs in the Ulam sequence are analogous to twin primes. Their infinitude is the central question.",
+    "significance": "essential",
+    "relatedConcepts": ["twin primes analogy", "consecutive differences"]
+  },
+  {
+    "id": "erdos-342-conjecture",
+    "proofId": "erdos-342",
+    "type": "conjecture",
+    "range": { "startLine": 97, "endLine": 107 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "ErdosConjecture342: Set.Infinite twinIndices. Do infinitely many twin pairs (a, a+2) occur in the Ulam sequence? erdos_342 (axiom): the conjecture statement.",
+    "mathContext": "The question asks whether the set {n : a(n+1) = a(n) + 2} is infinite. Computations find twins up to large indices but cannot settle the infinitude.",
+    "significance": "essential",
+    "relatedConcepts": ["Set.Infinite", "open problem"]
+  },
+  {
+    "id": "erdos-342-density",
+    "proofId": "erdos-342",
+    "type": "definition",
+    "range": { "startLine": 109, "endLine": 134 },
+    "title": "Density and Growth Rate",
+    "content": "ulamCount(x): number of Ulam numbers ≤ x. DensityZero: density → 0 via Filter.Tendsto. ulam_density_open (axiom): undecided. ulamSeq_growth (axiom): a(n)/n → C. ulamSeq_growth_constant (axiom): C ≈ 13.5.",
+    "mathContext": "The linear growth a(n) ≈ 13.5n implies density ≈ 1/13.5 ≈ 0.074, suggesting nonzero density. The exact value is not rigorously established.",
+    "significance": "supporting",
+    "relatedConcepts": ["natural density", "growth rate", "Filter.Tendsto"]
+  },
+  {
+    "id": "erdos-342-summary",
+    "proofId": "erdos-342",
+    "type": "result",
+    "range": { "startLine": 154, "endLine": 175 },
+    "title": "Summary: OPEN",
+    "content": "erdos_342_statement (proved): ErdosConjecture342 ↔ Set.Infinite of twin indices. erdos_342_status (proved): True. Problem remains OPEN.",
+    "mathContext": "The equivalence is proved by simp, unfolding the definitions.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary", "Ulam sequence"]
+  }
+]
