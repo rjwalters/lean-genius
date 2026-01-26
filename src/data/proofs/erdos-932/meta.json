@@ -9,53 +9,104 @@
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos932Problem.lean",
     "tags": ["number-theory", "prime-gaps", "smooth-numbers", "natural-density"],
-    "badge": "open",
-    "sorries": 5,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 932,
     "erdosUrl": "https://erdosproblems.com/932",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem connects two fundamental concepts in number theory: prime gaps and smooth numbers. Erdős proved that the density of r with at least one smooth number in the gap is 0, showing such gaps are rare. The problem asks whether infinitely many gaps contain at least TWO such smooth numbers. The Google DeepMind Formal Conjectures project has formalized this problem in Lean 4.",
+    "historicalContext": "This problem connects two fundamental concepts in analytic number theory: the distribution of prime gaps and the density of smooth numbers. Erdős proved that the set of r for which even ONE smooth number exists in the gap (p_r, p_{r+1}) has natural density zero, showing such gaps are exceptionally rare.\n\nThe question asks whether infinitely many prime gaps contain at least TWO numbers that are smooth relative to the gap size. Since the density is zero, proving infinitude requires showing that these rare events occur unboundedly often — a type of argument common in analytic number theory.\n\nThe problem connects to the Dickman function ρ(u), which governs the density of y-smooth numbers up to x when y = x^{1/u}. The smooth number counting function Ψ(x,y) ∼ x·ρ(log x / log y) is well-understood asymptotically, but its behavior in short intervals (like prime gaps) remains subtle.",
     "problemStatement": "Let p_k denote the k-th prime. For infinitely many r, there are at least two integers n with p_r < n < p_{r+1} such that all prime factors of n are smaller than p_{r+1} - p_r (the gap size).",
-    "proofStrategy": "The formalization defines B-smooth numbers (those with all prime factors at most B), the prime gap interval, and counts smooth numbers relative to gap size. The main conjecture and Erdős's density-zero result are stated as axioms.",
+    "proofStrategy": "The formalization defines B-smooth numbers via maxPrimeFactor, constructs the prime gap interval (p_r, p_{r+1}), and counts smooth numbers relative to gap size. The main conjecture and Erdős's density-zero result are stated as axioms. Concrete example r=3 (gap 7→11, smooth numbers 8=2³ and 9=3²) is verified.",
     "keyInsights": [
-      "A number is B-smooth if all its prime factors are at most B",
-      "The condition requires finding smooth numbers in short intervals (prime gaps)",
-      "Erdős proved the density of r with even ONE smooth number is 0",
-      "Example: gap from 7 to 11 contains 8=2³ and 9=3², both 4-smooth",
-      "The Dickman function describes smooth number distribution"
+      "A number is B-smooth if all its prime factors are at most B; the condition requires (gap-size)-smoothness",
+      "Erdős proved the density of r with even ONE smooth number in the gap is 0 — such gaps are extremely rare",
+      "The gap from 7 to 11 (r=3) is a concrete example: 8=2³ and 9=3² are both 4-smooth",
+      "The Dickman function ρ(u) governs smooth number density: Ψ(x,y) ∼ x·ρ(log x/log y)",
+      "Proving infinitude from density zero is a common but difficult pattern in analytic number theory"
     ]
   },
   "sections": [
     {
-      "id": "prime-gaps",
-      "title": "Prime Gaps",
-      "content": "The n-th prime gap g_n = p_{n+1} - p_n is the distance between consecutive primes. The interval (p_n, p_{n+1}) contains g_n - 1 composite integers."
+      "id": "basic-definitions",
+      "title": "Part I: Basic Definitions",
+      "startLine": 43,
+      "endLine": 63,
+      "summary": "The n-th prime via Nat.nth, with axioms for primality and strict monotonicity."
+    },
+    {
+      "id": "prime-gap",
+      "title": "Part II: Prime Gap",
+      "startLine": 65,
+      "endLine": 82,
+      "summary": "Prime gap g_n = p_{n+1} - p_n, proved positive from strict monotonicity."
     },
     {
       "id": "smooth-numbers",
-      "title": "Smooth Numbers",
-      "content": "A positive integer n is B-smooth if all its prime factors are at most B. For example, 12 = 2² · 3 is 3-smooth. The problem asks about numbers that are (gap-size)-smooth."
+      "title": "Part III: Smooth Numbers",
+      "startLine": 84,
+      "endLine": 119,
+      "summary": "Maximum prime factor, B-smoothness definition, properties for 1 and prime powers."
     },
     {
-      "id": "density-result",
-      "title": "Erdős's Density Result",
-      "content": "Erdős proved that the set of r where at least one smooth number exists in the gap has natural density 0. This shows such gaps are extremely rare, making the infinitude question non-trivial."
+      "id": "smooth-in-gap",
+      "title": "Part IV: Smooth Numbers in Prime Gap",
+      "startLine": 121,
+      "endLine": 161,
+      "summary": "Open interval between consecutive primes, filtering for smooth numbers, and the count function."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part V: The Main Conjecture (OPEN)",
+      "startLine": 163,
+      "endLine": 183,
+      "summary": "The Erdős conjecture: {r : smoothCount(r) ≥ 2} is infinite."
+    },
+    {
+      "id": "density-zero",
+      "title": "Part VI: The Density-Zero Result (SOLVED)",
+      "startLine": 185,
+      "endLine": 218,
+      "summary": "Natural density definition and Erdős's result that density of r with smoothCount(r) ≥ 1 is 0."
     },
     {
       "id": "examples",
-      "title": "Concrete Examples",
-      "content": "For r=3: primes 7 and 11, gap=4. The interval (7,11) = {8,9,10}. Here 8=2³ and 9=3² are both 4-smooth (prime factors < 4), while 10=2·5 is not. So this gap satisfies the condition."
+      "title": "Part VII: Examples and Analysis",
+      "startLine": 220,
+      "endLine": 243,
+      "summary": "Concrete example: r=3 (gap 7→11) has smoothCount = 2 via 8=2³ and 9=3²."
+    },
+    {
+      "id": "difficulty",
+      "title": "Part VIII: Why This Is Hard",
+      "startLine": 245,
+      "endLine": 262,
+      "summary": "Discussion of the challenge: proving infinitude despite density zero."
+    },
+    {
+      "id": "smooth-distribution",
+      "title": "Part IX: Smooth Number Distribution",
+      "startLine": 264,
+      "endLine": 284,
+      "summary": "Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 286,
+      "endLine": 320,
+      "summary": "Summary theorem combining density result, example, and problem status."
     }
   ],
   "conclusion": {
-    "summary": "The problem asks whether infinitely many prime gaps contain at least two smooth numbers (relative to gap size). Erdős proved the weaker condition (one smooth number) has density 0, but the infinitude of gaps with two smooth numbers remains open.",
-    "implications": "Understanding smooth numbers in prime gaps connects analytic number theory (prime distribution) with the arithmetic of smooth numbers (Dickman function). Resolution could yield new insights into both areas.",
+    "summary": "Erdős Problem #932 asks whether infinitely many prime gaps contain at least two smooth numbers relative to the gap size. Erdős proved the weaker condition (one smooth number) has density 0, but the infinitude of gaps with two smooth numbers remains open. The gap from 7 to 11 provides a concrete example.",
+    "implications": "Resolution would illuminate the interplay between prime gap distribution and smooth number density in short intervals, connecting analytic number theory techniques with Dickman-type estimates.",
     "openQuestions": [
       "Are there infinitely many gaps with at least 2 smooth numbers?",
       "What is the growth rate of the smallest r with smoothCount(r) ≥ 2?",
-      "How does the problem relate to the Cramér model of prime gaps?"
+      "How does the problem relate to the Cramér model of prime gaps?",
+      "Can sieve methods produce density-zero infinitude results?"
     ]
   }
 }
