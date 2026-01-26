@@ -1,0 +1,68 @@
+[
+  {
+    "id": "erdos-288-header",
+    "proofId": "erdos-288",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 16 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #288: Are there only finitely many pairs of intervals (I₁, I₂) whose harmonic sums add to a positive integer? Example: 1/3+1/4+1/5+1/6+1/20 = 1. OPEN.",
+    "mathContext": "Harmonic sums over intervals [a,b] are Σ_{n=a}^{b} 1/n ∈ ℚ. The question is finiteness of interval pairs achieving integer totals.",
+    "significance": "essential",
+    "relatedConcepts": ["harmonic sums", "unit fractions", "Egyptian fractions"]
+  },
+  {
+    "id": "erdos-288-definitions",
+    "proofId": "erdos-288",
+    "type": "definition",
+    "range": { "startLine": 29, "endLine": 47 },
+    "title": "Harmonic Sums and Interval Pairs",
+    "content": "harmonicInterval(a,b): sum of 1/n for n in [a,b] over ℚ. IntervalPair: (a₁, b₁, a₂, b₂). pairSum: combined harmonic sum. IsIntegerSum: pairSum equals a positive integer.",
+    "mathContext": "All sums are computed exactly in ℚ to avoid rounding issues.",
+    "significance": "essential",
+    "relatedConcepts": ["ℚ arithmetic", "Finset.sum", "PNat"]
+  },
+  {
+    "id": "erdos-288-conjecture",
+    "proofId": "erdos-288",
+    "type": "conjecture",
+    "range": { "startLine": 49, "endLine": 62 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "ErdosConjecture288: Set.Finite integerSumPairs. The set of interval pairs with integer harmonic sum is finite. erdos_288 (axiom).",
+    "mathContext": "Finiteness of a set defined by a Diophantine-type condition on harmonic sums.",
+    "significance": "essential",
+    "relatedConcepts": ["Set.Finite", "Diophantine equations"]
+  },
+  {
+    "id": "erdos-288-example",
+    "proofId": "erdos-288",
+    "type": "result",
+    "range": { "startLine": 64, "endLine": 69 },
+    "title": "Known Example",
+    "content": "example_sum_one (axiom): H(3,6) + H(20,20) = 1. That is, 1/3+1/4+1/5+1/6+1/20 = 1.",
+    "mathContext": "The decomposition 1 = 1/3+1/4+1/5+1/6+1/20 uses intervals [3,6] and [20,20].",
+    "significance": "supporting",
+    "relatedConcepts": ["unit fraction decomposition", "examples"]
+  },
+  {
+    "id": "erdos-288-variants",
+    "proofId": "erdos-288",
+    "type": "conjecture",
+    "range": { "startLine": 71, "endLine": 102 },
+    "title": "Variants: Singleton and k-Interval",
+    "content": "singletonPairs: restricted to |I₂|=1. erdos_288_singleton (axiom): still open. kIntervalSum, kIntervalPairs: generalization to k intervals. erdos_288_k_intervals (axiom): conjectured for all k.",
+    "mathContext": "The problem is open even in the restricted singleton case. The k-interval generalization is a natural strengthening.",
+    "significance": "essential",
+    "relatedConcepts": ["generalizations", "singleton intervals"]
+  },
+  {
+    "id": "erdos-288-summary",
+    "proofId": "erdos-288",
+    "type": "result",
+    "range": { "startLine": 122, "endLine": 148 },
+    "title": "Summary: OPEN",
+    "content": "erdos_288_statement (proved): equivalence by simp. erdos_288_status (proved): True. Problem remains OPEN with variants also open.",
+    "mathContext": "The statement unfolds to Set.Finite of interval pairs with integer harmonic sum.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
+  }
+]
