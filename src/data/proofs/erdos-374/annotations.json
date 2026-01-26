@@ -1,0 +1,38 @@
+[
+  {
+    "id": "erdos-374-ann-1",
+    "proofId": "erdos-374",
+    "range": { "startLine": 27, "endLine": 52 },
+    "type": "definition",
+    "title": "Factorial Product Definitions",
+    "content": "IsPerfectSquare checks if n = k². factorialProduct computes the product a₁!···aₖ! via fold. HasSquareFactorialProduct checks existence of a valid sequence. bigF(m) is axiomatized as the minimal k ≥ 2, and inDk classifies m into Dₖ.",
+    "significance": "The definition chain captures the key notion: when can m be the largest element of an increasing sequence whose factorial product is a square?"
+  },
+  {
+    "id": "erdos-374-ann-2",
+    "proofId": "erdos-374",
+    "range": { "startLine": 56, "endLine": 62 },
+    "type": "result",
+    "title": "D₂ and Prime Exclusion",
+    "content": "D₂ equals the perfect squares > 1 (since m! is a square iff m is a square). No prime p belongs to any Dₖ, as factorial products involving p! cannot be squares due to the odd multiplicity of p in p!.",
+    "significance": "D₂ is completely characterized, and prime exclusion shows the sets Dₖ have density 0 among primes."
+  },
+  {
+    "id": "erdos-374-ann-3",
+    "proofId": "erdos-374",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "result",
+    "title": "Finiteness of Classification and D₆",
+    "content": "Dₖ = ∅ for k > 6, so every integer with a defined F(m) has F(m) ∈ {2,3,4,5,6}. The smallest element of D₆ is 527, determined computationally.",
+    "significance": "The finiteness of the classification (only 5 nonempty classes) is remarkable. The sparseness of D₆ (starting at 527) suggests higher classes have very few elements."
+  },
+  {
+    "id": "erdos-374-ann-4",
+    "proofId": "erdos-374",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "conjecture",
+    "title": "Growth Rate Question",
+    "content": "The open question asks for the asymptotic growth of |Dₖ ∩ {1,...,n}| for 3 ≤ k ≤ 6. Formalized as asking whether each Dₖ has polynomial growth n^α for some exponent α.",
+    "significance": "Understanding these growth rates would complete the picture of how factorials combine to form perfect squares."
+  }
+]
