@@ -1,0 +1,56 @@
+[
+  {
+    "id": "next-generation",
+    "proofId": "erdos-424",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "definition",
+    "title": "Next Generation Operation",
+    "content": "From a set A, produce all x · y − 1 for distinct x, y ∈ A. This is the core multiplication-minus-one operation that builds the sequence.",
+    "significance": "high"
+  },
+  {
+    "id": "generated-set",
+    "proofId": "erdos-424",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "Full Generated Set",
+    "content": "The union ⋃_n A_n of all iterates starting from {2, 3}. This is the set whose density we wish to determine.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-424",
+    "range": { "startLine": 46, "endLine": 49 },
+    "type": "conjecture",
+    "title": "Erdős Problem #424",
+    "content": "Does the generated set have positive lower density? That is, is lim inf |S ∩ [1,N]|/N > 0?",
+    "significance": "high"
+  },
+  {
+    "id": "mod-3",
+    "proofId": "erdos-424",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "theorem",
+    "title": "Mod 3 Obstruction",
+    "content": "No element of the generated set is ≡ 1 (mod 3). Since 2 ≡ 2 and 3 ≡ 0 (mod 3), products minus 1 always land in {0, 2} (mod 3).",
+    "significance": "high"
+  },
+  {
+    "id": "density-bound",
+    "proofId": "erdos-424",
+    "range": { "startLine": 58, "endLine": 61 },
+    "type": "theorem",
+    "title": "Density Upper Bound 2/3",
+    "content": "Since one residue class (mod 3) is excluded, the density is at most 2/3. This corrects an early version of the problem that asked about density 1.",
+    "significance": "medium"
+  },
+  {
+    "id": "closure",
+    "proofId": "erdos-424",
+    "range": { "startLine": 77, "endLine": 80 },
+    "type": "note",
+    "title": "Closure Property",
+    "content": "The generated set is closed under (x, y) ↦ xy − 1 for distinct elements. Once an element enters, all its products-minus-1 with existing elements also enter.",
+    "significance": "medium"
+  }
+]
