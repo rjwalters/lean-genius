@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-47-reciprocal",
+    "proofId": "erdos-47",
+    "type": "definition",
+    "range": { "startLine": 38, "endLine": 56 },
+    "title": "Unit Fraction Definitions",
+    "content": "reciprocalSum computes ∑ 1/a over ℚ. HasUnitFractionSum requires ∑ = 1 with all elements ≥ 1. ContainsUnitFraction asks for a nonempty subset with unit fraction sum.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-47-dense",
+    "proofId": "erdos-47",
+    "type": "definition",
+    "range": { "startLine": 60, "endLine": 72 },
+    "title": "Dense Subset Definition",
+    "content": "Icc1(N) = {1,…,N}. IsDenseSubset captures A ⊆ {1,…,N} with reciprocal sum exceeding δ · log N, the density condition in Erdős's conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-47-conjecture",
+    "proofId": "erdos-47",
+    "type": "conjecture",
+    "range": { "startLine": 76, "endLine": 88 },
+    "title": "Erdős's Conjecture (Solved)",
+    "content": "ErdosConjecture47: for every δ > 0, sufficiently large N, and A ⊆ {1,…,N} with ∑ 1/a > δ log N, there exists S ⊆ A with ∑ 1/n = 1. Now a theorem (Bloom).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-47-bloom",
+    "proofId": "erdos-47",
+    "type": "result",
+    "range": { "startLine": 92, "endLine": 114 },
+    "title": "Bloom's Theorem",
+    "content": "Bloom [Bl21] proved the conjecture with an explicit quantitative bound: ∑ 1/a ≥ C · (log log log N / log log N) · log N suffices to guarantee a unit fraction subset.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-47-liu-sawhney",
+    "proofId": "erdos-47",
+    "type": "result",
+    "range": { "startLine": 118, "endLine": 128 },
+    "title": "Liu–Sawhney Improvement",
+    "content": "Liu and Sawhney [LiSa24] improved Bloom's threshold to (log N)^{4/5+o(1)}, a substantial polynomial improvement over the triple-logarithmic bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-47-pomerance",
+    "proofId": "erdos-47",
+    "type": "context",
+    "range": { "startLine": 132, "endLine": 142 },
+    "title": "Pomerance's Lower Bound",
+    "content": "Pomerance constructed sets with ∑ 1/a ≈ (log log N)² containing no unit fraction subset. This shows Erdős's conjectured threshold is essentially optimal.",
+    "significance": "supporting"
+  }
+]
