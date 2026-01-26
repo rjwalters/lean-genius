@@ -1,0 +1,74 @@
+[
+  {
+    "id": "collinear-def",
+    "proofId": "erdos-846",
+    "type": "definition",
+    "title": "Collinearity",
+    "content": "Three points p, q, r in ℝ² are collinear if the cross product (q-p)×(r-p) = 0, i.e. (q₀-p₀)(r₁-p₁) = (r₀-p₀)(q₁-p₁).",
+    "significance": "supporting",
+    "range": {
+      "startLine": 23,
+      "endLine": 25
+    }
+  },
+  {
+    "id": "non-trilinear",
+    "proofId": "erdos-846",
+    "type": "definition",
+    "title": "Non-Trilinear Set",
+    "content": "A set is non-trilinear if no three distinct points are collinear. This is the 'general position' condition for points in the plane.",
+    "significance": "critical",
+    "range": {
+      "startLine": 28,
+      "endLine": 30
+    }
+  },
+  {
+    "id": "eps-non-trilinear",
+    "proofId": "erdos-846",
+    "type": "definition",
+    "title": "ε-Non-Trilinear Property",
+    "content": "A set A is ε-non-trilinear if every finite subset B ⊆ A of size n contains a non-collinear subset of size at least εn. This is a density condition.",
+    "significance": "critical",
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    }
+  },
+  {
+    "id": "weakly-non-trilinear",
+    "proofId": "erdos-846",
+    "type": "definition",
+    "title": "Weakly Non-Trilinear",
+    "content": "A set is weakly non-trilinear if it is a finite union of non-trilinear sets. This is a structural decomposition condition.",
+    "significance": "critical",
+    "range": {
+      "startLine": 43,
+      "endLine": 46
+    }
+  },
+  {
+    "id": "easy-direction",
+    "proofId": "erdos-846",
+    "type": "theorem",
+    "title": "Easy Direction",
+    "content": "A finite union of k non-trilinear sets is ε-non-trilinear with ε = 1/k, by the pigeonhole principle: in any n-element subset, one of the k parts contains ≥ n/k points.",
+    "significance": "key",
+    "range": {
+      "startLine": 56,
+      "endLine": 68
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-846",
+    "type": "concept",
+    "title": "Erdős–Nešetřil–Rödl Conjecture",
+    "content": "Every infinite ε-non-trilinear set in ℝ² is weakly non-trilinear: density of points in general position implies a finite structural decomposition. Open since [Er92b].",
+    "significance": "critical",
+    "range": {
+      "startLine": 72,
+      "endLine": 78
+    }
+  }
+]

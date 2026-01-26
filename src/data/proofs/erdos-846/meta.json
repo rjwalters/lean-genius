@@ -1,0 +1,68 @@
+{
+  "id": "erdos-846",
+  "title": "Erdős Problem #846: Non-Trilinear Subsets of the Plane",
+  "slug": "erdos-846",
+  "description": "If every n-element subset of an infinite planar set A contains ≥ εn points in general position, must A be a finite union of sets with no three collinear? A problem of Erdős, Nešetřil, and Rödl.",
+  "meta": {
+    "author": "Erdős, Nešetřil, Rödl",
+    "sourceUrl": "https://erdosproblems.com/846",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos846Problem.lean",
+    "tags": ["combinatorial geometry", "collinearity", "Ramsey theory"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 846,
+    "erdosUrl": "https://erdosproblems.com/846",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős, Nešetřil, and Rödl in [Er92b]. It asks whether the density characterization of non-collinearity (every large subset contains proportionally many points in general position) implies a structural characterization (finite union of non-collinear sets). This is analogous to Ramsey-theoretic partition problems.",
+    "problemStatement": "Let A ⊂ ℝ² be infinite with some ε > 0 such that every finite B ⊆ A has a non-collinear subset of size ≥ ε|B|. Is A a finite union of sets with no three points collinear?",
+    "proofStrategy": "Full rewrite from formal-conjectures. Defines collinearity via the cross product criterion, non-trilinear sets, the ε-non-trilinear property, and weakly non-trilinear sets. States both directions of the basic implication and the main conjecture with its contrapositive.",
+    "keyInsights": [
+      "ε-non-trilinear is a density condition: large subsets contain proportionally many points in general position",
+      "Weakly non-trilinear is a structural condition: the set decomposes into finitely many non-collinear parts",
+      "The easy direction (structure → density) follows from the pigeonhole principle with ε = 1/k",
+      "The hard direction (density → structure) is the open problem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "collinearity",
+      "title": "Collinearity and Non-Trilinear Sets",
+      "startLine": 18,
+      "endLine": 30,
+      "summary": "Defines collinearity via the cross product and non-trilinear sets."
+    },
+    {
+      "id": "eps-property",
+      "title": "The ε-Non-Trilinear Property",
+      "startLine": 34,
+      "endLine": 48,
+      "summary": "Defines the density and structural characterizations of non-collinearity."
+    },
+    {
+      "id": "observations",
+      "title": "Basic Observations",
+      "startLine": 52,
+      "endLine": 68,
+      "summary": "States the easy implication: weakly non-trilinear implies ε-non-trilinear."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Erdős–Nešetřil–Rödl Problem",
+      "startLine": 72,
+      "endLine": 86,
+      "summary": "States the main conjecture and its contrapositive formulation."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 846 asks whether a density condition for non-collinearity (every large subset has proportionally many points in general position) implies a structural decomposition (finite union of non-collinear sets). Open since 1992.",
+    "implications": "Resolution would connect density and structural descriptions of geometric configurations, with implications for discrete geometry and Ramsey theory.",
+    "openQuestions": [
+      "Does the conjecture hold even for sets on algebraic curves?",
+      "What is the minimum number of non-collinear sets needed in the decomposition as a function of ε?",
+      "Does an analogous result hold in higher dimensions (no four coplanar)?"
+    ]
+  }
+}
