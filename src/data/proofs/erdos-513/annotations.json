@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-513-ann-1",
+    "proofId": "erdos-513",
+    "range": { "startLine": 28, "endLine": 52 },
+    "type": "definition",
+    "title": "Maximum Term and Modulus Definitions",
+    "content": "maxTerm(a, r) = sup_n |aₙ| rⁿ is the maximum term of the power series with coefficients a. maxModulus(a, r) = sup_{|z|=r} |f(z)| is the maximum modulus. termModulusRatio computes μ(r)/M(r) with a guard for M(r) = 0. IsTranscendentalEntire requires infinitely many nonzero coefficients.",
+    "significance": "These definitions capture the two fundamental measures of growth for entire functions. The ratio μ/M governs how well the maximum term approximates the maximum modulus."
+  },
+  {
+    "id": "erdos-513-ann-2",
+    "proofId": "erdos-513",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "result",
+    "title": "Trivial Upper Bound: μ(r) ≤ M(r)",
+    "content": "The maximum term never exceeds the maximum modulus, since each term |aₙ rⁿ| is bounded by max_{|z|=r} |Σ aₙ zⁿ| by the maximum modulus principle.",
+    "significance": "This establishes that the ratio lies in [0, 1], giving the trivial bounds for the problem."
+  },
+  {
+    "id": "erdos-513-ann-3",
+    "proofId": "erdos-513",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "result",
+    "title": "Kövári's Lower Bound: Supremum > 1/2",
+    "content": "Kövári (unpublished) showed that there exists a transcendental entire function for which liminf_{r→∞} μ(r)/M(r) > 1/2. This means the supremum over all such functions exceeds 1/2.",
+    "significance": "This is the best known lower bound for the supremum. Improving it would narrow the gap with the Clunie–Hayman upper bound."
+  },
+  {
+    "id": "erdos-513-ann-4",
+    "proofId": "erdos-513",
+    "range": { "startLine": 70, "endLine": 73 },
+    "type": "result",
+    "title": "Clunie–Hayman Upper Bound (1964)",
+    "content": "Clunie and Hayman proved that for every transcendental entire function, liminf_{r→∞} μ(r)/M(r) ≤ 2/π - c for an absolute constant c > 0. In particular, the supremum is strictly less than 2/π ≈ 0.6366.",
+    "significance": "This is the strongest known upper bound. The strict gap below 2/π shows the answer is not the 'natural' value 2/π."
+  },
+  {
+    "id": "erdos-513-ann-5",
+    "proofId": "erdos-513",
+    "range": { "startLine": 80, "endLine": 87 },
+    "type": "conjecture",
+    "title": "The Exact Supremum",
+    "content": "Erdős asked for the exact value L = sup liminf_{r→∞} μ(r)/M(r) over all transcendental entire functions. The formalization asserts L exists in (1/2, 2/π) and is approached by a sequence of entire functions.",
+    "significance": "Determining L would resolve a fundamental question in the Wiman–Valiron theory of entire functions, connecting the maximum term to the maximum modulus."
+  }
+]

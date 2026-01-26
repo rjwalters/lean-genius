@@ -1,0 +1,70 @@
+{
+  "id": "erdos-513",
+  "title": "Erdős Problem #513: Maximum Term of a Power Series",
+  "slug": "erdos-513",
+  "description": "For transcendental entire f(z) = Σ aₙzⁿ, determine sup liminf_{r→∞} μ(r)/M(r) where μ(r) = max_n |aₙrⁿ| and M(r) = max_{|z|=r} |f(z)|. Known: value ∈ (1/2, 2/π - c]. Open.",
+  "meta": {
+    "erdosNumber": 513,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "power-series",
+      "open"
+    ],
+    "references": [
+      "Erdős (1961): original problem, p.249",
+      "Kövári (unpublished): lower bound > 1/2",
+      "Clunie–Hayman (1964): upper bound 2/π - c",
+      "Gray–Shah (1963): additional bounds",
+      "https://erdosproblems.com/513"
+    ],
+    "leanFile": "Proofs/Erdos513Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 26,
+      "endLine": 52,
+      "summary": "maxTerm, maxModulus (axiomatized), termModulusRatio, IsTranscendentalEntire."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 54,
+      "endLine": 73,
+      "summary": "μ(r) ≤ M(r), Kövári lower bound > 1/2, Clunie–Hayman upper bound ≤ 2/π - c."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 75,
+      "endLine": 87,
+      "summary": "Determine the exact value of sup liminf μ(r)/M(r) over all transcendental entire functions."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős (1961) asked for the greatest possible value of liminf_{r→∞} μ(r)/M(r) over all transcendental entire functions, where μ(r) is the maximum term and M(r) the maximum modulus. Kövári showed the value exceeds 1/2, and Clunie and Hayman (1964) proved it is at most 2/π minus an absolute constant. The exact value remains unknown.",
+    "problemStatement": "Determine the greatest possible value of liminf_{r→∞} μ(r)/M(r) over all transcendental entire functions f(z) = Σ aₙzⁿ.",
+    "proofStrategy": "We axiomatize maxTerm and maxModulus, define the ratio constructively, and record Kövári's lower bound and the Clunie–Hayman upper bound as axioms. The open question is formalized as the existence of an exact supremum in (1/2, 2/π).",
+    "keyInsights": [
+      "μ(r) ≤ M(r) always, so the ratio lies in [0, 1]",
+      "Kövári proved the supremum exceeds 1/2 (unpublished)",
+      "Clunie–Hayman (1964) showed the supremum is strictly less than 2/π",
+      "The gap between 1/2 and 2/π ≈ 0.637 remains unresolved",
+      "Related to Problem #227 on similar power series questions"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #513 asks for the exact supremum of liminf_{r→∞} μ(r)/M(r) over transcendental entire functions. The value is known to lie in (1/2, 2/π - c] but the precise constant is open.",
+    "implications": "Resolution would clarify the fundamental relationship between the maximum term and maximum modulus of entire functions, with connections to the Wiman–Valiron theory and the central index.",
+    "openQuestions": [
+      "What is the exact value of sup liminf μ(r)/M(r)?",
+      "Can the Clunie–Hayman upper bound 2/π - c be sharpened?",
+      "What is the extremal function (if any) achieving the supremum?"
+    ]
+  }
+}

@@ -3567,10 +3567,9 @@
     "title": "Erdős Problem #144: Propinquity of Divisors",
     "slug": "erdos-144",
     "description": "The density of integers with two divisors d₁ < d₂ < 2d₁ exists and equals 1. SOLVED by Maier-Tenenbaum (1984), who proved the stronger version for any c > 1. The threshold β* = log 3 - 1 separates density 1 from density 0.",
-    "status": "complete",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "number-theory",
       "divisors",
       "density",
@@ -3578,7 +3577,7 @@
     ],
     "erdosNumber": 144,
     "sorries": 0,
-    "annotationCount": 18
+    "annotationCount": 10
   },
   {
     "id": "erdos-145",
@@ -13013,19 +13012,17 @@
     "title": "Erdős Problem #670: Diameter of Sets with Distinct Distances",
     "slug": "erdos-670",
     "description": "Let A ⊆ ℝ^d be n points with all pairwise distances differing by at least 1. Is diameter(A) ≥ (1+o(1))n²? Proved for d=1 by Erdős (1997). Higher dimensions remain OPEN.",
-    "status": "complete",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
-      "discrete-geometry",
+      "discrete geometry",
       "combinatorics",
-      "distinct-distances",
-      "metric-geometry"
+      "distinct distances",
+      "metric geometry"
     ],
     "erdosNumber": 670,
-    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 27
+    "annotationCount": 11
   },
   {
     "id": "erdos-671",
@@ -13255,6 +13252,23 @@
     "mathlibCount": 3,
     "sorries": 5,
     "annotationCount": 13
+  },
+  {
+    "id": "erdos-688",
+    "title": "Covering by Large Prime Congruences",
+    "slug": "erdos-688",
+    "description": "Define εₙ as the max ε such that choosing one residue class per prime in (n^ε, n] covers [1,n]. Estimate εₙ; is εₙ = o(1)? Erdős showed εₙ ≫ (log log log n)/(log log n).",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "covering systems",
+      "prime numbers",
+      "congruences"
+    ],
+    "erdosNumber": 688,
+    "sorries": 0,
+    "annotationCount": 8
   },
   {
     "id": "erdos-69",
@@ -14101,6 +14115,23 @@
       "central binomials"
     ],
     "erdosNumber": 730,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
+    "id": "erdos-731",
+    "title": "Least Non-Divisor of Central Binomial Coefficients",
+    "slug": "erdos-731",
+    "description": "Find f(n) such that for almost all n, the least m with m ∤ C(2n,n) satisfies m ~ f(n). EGRS (1975): m = exp((log n)^{1/2+o(1)}) for almost all n.",
+    "status": "formalized",
+    "badge": "formalized",
+    "tags": [
+      "number theory",
+      "binomial coefficients",
+      "divisibility",
+      "asymptotic analysis"
+    ],
+    "erdosNumber": 731,
     "sorries": 0,
     "annotationCount": 8
   },
@@ -15884,6 +15915,24 @@
     "annotationCount": 16
   },
   {
+    "id": "erdos-82",
+    "title": "Erdős Problem #82: Regular Induced Subgraphs",
+    "slug": "erdos-82",
+    "description": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) → ∞?",
+    "status": "formalized",
+    "badge": "axiom",
+    "tags": [
+      "graph-theory",
+      "ramsey-theory",
+      "regular-graphs",
+      "extremal-graph-theory",
+      "induced-subgraphs"
+    ],
+    "erdosNumber": 82,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
     "id": "erdos-820",
     "title": "Erdős Problem #820: GCD of Exponential Sequences",
     "slug": "erdos-820",
@@ -17029,24 +17078,21 @@
   },
   {
     "id": "erdos-883",
-    "title": "Erdos Problem #883: Cycles in the Coprime Graph",
+    "title": "Erdős Problem #883: Cycles in the Coprime Graph",
     "slug": "erdos-883",
-    "description": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by Sarkozy (1999).",
-    "status": "complete",
+    "description": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by Sárkőzy (1999). Question 1 remains open.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "graph-theory",
       "number-theory",
       "coprime-graph",
       "cycles",
       "partially-solved"
     ],
-    "dateAdded": "2026-01-23",
     "erdosNumber": 883,
-    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 15
+    "annotationCount": 9
   },
   {
     "id": "erdos-885",
