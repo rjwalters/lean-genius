@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-281-congruence-choice",
+    "proofId": "erdos-281",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 30 },
+    "title": "Congruence Class Assignment",
+    "content": "CongruenceChoice moduli assigns to each index i a residue class aᵢ ∈ {0, ..., nᵢ − 1}. The problem studies how well these classes cover the integers.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-281-full-covering",
+    "proofId": "erdos-281",
+    "type": "definition",
+    "range": { "startLine": 56, "endLine": 60 },
+    "title": "Full Covering Property",
+    "content": "HasFullCovering means that for every congruence class choice, the uncovered integers have upper density 0. This is the hypothesis of the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-281-divergence",
+    "proofId": "erdos-281",
+    "type": "result",
+    "range": { "startLine": 70, "endLine": 73 },
+    "title": "Divergent Reciprocals",
+    "content": "Full covering implies Σ 1/nᵢ = ∞. This necessary condition connects to classical results on covering systems.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-281-coprime",
+    "proofId": "erdos-281",
+    "type": "result",
+    "range": { "startLine": 79, "endLine": 86 },
+    "title": "Coprime Case",
+    "content": "When moduli are pairwise coprime, divergent reciprocals are sufficient for full covering. This special case is simpler due to CRT independence.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-281-main",
+    "proofId": "erdos-281",
+    "type": "conjecture",
+    "range": { "startLine": 91, "endLine": 98 },
+    "title": "Erdős Problem 281 (Proved)",
+    "content": "Full covering implies uniform finite approximation: for every ε > 0, finitely many classes achieve density < ε regardless of the choice. Proved via Davenport–Erdős and Rogers.",
+    "significance": "essential"
+  }
+]
