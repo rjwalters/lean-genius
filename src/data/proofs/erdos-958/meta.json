@@ -6,11 +6,9 @@
   "meta": {
     "author": "Clemen-Dumitrescu-Liu (2025 proof), Erdős (problem)",
     "sourceUrl": "https://erdosproblems.com/958",
-    "date": "2025",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos958Problem.lean",
     "tags": [
-      "erdos",
       "geometry",
       "distances",
       "point-configurations",
@@ -21,114 +19,89 @@
     "sorries": 0,
     "erdosNumber": 958,
     "erdosUrl": "https://erdosproblems.com/958",
-    "erdosProblemStatus": "solved",
-    "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "EuclideanSpace",
-        "description": "Euclidean n-space",
-        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
-      },
-      {
-        "theorem": "Finset",
-        "description": "Finite sets",
-        "module": "Mathlib.Data.Finset.Basic"
-      },
-      {
-        "theorem": "Multiset",
-        "description": "Multisets for counting multiplicities",
-        "module": "Mathlib.Data.Multiset.Basic"
-      }
-    ],
-    "originalContributions": [
-      "Point type as EuclideanSpace ℝ (Fin 2)",
-      "distanceSet: set of distinct distances",
-      "multiplicity: count of pairs at given distance",
-      "multiplicityMultiset: multiset of all multiplicities",
-      "isEquidistantLine, isEquidistantCircle: standard configurations",
-      "isStandardConfig: line or circle",
-      "hasSpecialPattern: k=n-1 and multiplicities={n-1,...,1}",
-      "OriginalConjecture: the FALSE characterization",
-      "isArcPlusCenter: the counterexample configuration",
-      "clemen_dumitrescu_liu axiom: 2025 disproof",
-      "conjecture_disproved: main negative result"
-    ]
+    "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #958**\n\nThis problem about distance multiplicities in point sets was recently solved.\n\n**Key History:**\n- Erdős posed the question: Does special distance pattern characterize lines/circles?\n- Erdős himself conjectured NO - other configurations should exist\n- Clemen, Dumitrescu, and Liu (2025): Proved Erdős was right - found counterexamples\n\n**Mathematical Setting:**\nFor n points in the plane, we can count how many pairs are at each distance. If there are exactly n-1 distinct distances with multiplicities n-1, n-2, ..., 1, does this force the points to be equidistant on a line or circle?",
-    "problemStatement": "**Problem Statement (DISPROVED)**\n\nLet $A \\subset \\mathbb{R}^2$ be a finite set of size $n$, and let $\\{d_1,\\ldots,d_k\\}$ be the set of distances determined by $A$. Let $f(d)$ be the multiplicity of $d$.\n\n**Question:** Is it true that $k = n-1$ and $\\{f(d_i)\\} = \\{n-1,\\ldots,1\\}$ if and only if $A$ is equidistant on a line or circle?\n\n**Answer:** NO\n\n**Counterexample:** Take n-1 equidistant points on a short arc of a unit circle, plus the center. This satisfies the pattern but isn't a standard configuration.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Distance Framework:** Define Point, distanceSet, multiplicity, multiplicityMultiset\n\n2. **Standard Configurations:** Define isEquidistantLine, isEquidistantCircle, isStandardConfig\n\n3. **The Pattern:** Define hasSpecialPattern (k=n-1 and consecutive multiplicities)\n\n4. **The Conjecture:** Define OriginalConjecture as the FALSE characterization\n\n5. **Counterexample:** Define isArcPlusCenter configuration\n\n6. **Main Result:** Axiomatize Clemen-Dumitrescu-Liu's disproof",
+    "historicalContext": "Erdős Problem #958 asks whether a special distance multiplicity pattern characterizes equidistant points on lines or circles. Erdős himself conjectured NO — other configurations should exist. Clemen, Dumitrescu, and Liu (2025) proved Erdős was right by finding arc-plus-center counterexamples.",
+    "problemStatement": "Let A ⊂ ℝ² be a finite set of size n with k distinct distances and multiplicity function f. Is it true that k = n-1 and {f(dᵢ)} = {n-1,...,1} if and only if A is equidistant on a line or circle? Answer: NO.",
+    "proofStrategy": "The formalization defines Point, distanceSet, multiplicity, multiplicityMultiset. Standard configurations (isEquidistantLine, isEquidistantCircle, isStandardConfig) and the special pattern (hasSpecialPattern) are defined. The FALSE conjecture (OriginalConjecture) is stated. The counterexample (isArcPlusCenter) and Clemen-Dumitrescu-Liu theorem are axiomatized. The summary theorem combines both results.",
     "keyInsights": [
-      "**Special Pattern:** k = n-1 distances with multiplicities {n-1, ..., 1}",
-      "**Standard Configs:** Equidistant on a line or circle satisfy this pattern",
-      "**Counterexample:** Arc + center configuration also satisfies it!",
-      "**Erdős's Intuition:** He correctly predicted other configurations exist",
-      "**Recent Result:** Clemen-Dumitrescu-Liu (2025) proved the disproof",
-      "**Geometric Insight:** The center has distance 1 to all arc points"
+      "Special pattern: k = n-1 distances with multiplicities {n-1, ..., 1}",
+      "Standard configurations (equidistant on line/circle) satisfy this pattern",
+      "Arc + center configuration also satisfies it — the conjecture is FALSE",
+      "Erdős correctly predicted other configurations exist",
+      "Clemen-Dumitrescu-Liu (2025) proved the disproof with arc+center counterexamples",
+      "The center has distance 1 to all arc points, giving the right multiplicity structure"
     ]
   },
   "sections": [
     {
       "id": "points-distances",
-      "title": "Points and Distances",
-      "summary": "Point type, dist function",
+      "title": "Part 1: Points and Distances",
       "startLine": 34,
-      "endLine": 47
+      "endLine": 47,
+      "summary": "Point type as EuclideanSpace ℝ (Fin 2), dist function."
     },
     {
       "id": "distance-sets",
-      "title": "Distance Sets and Multiplicities",
-      "summary": "distanceSet, multiplicity, multiplicityMultiset",
+      "title": "Part 2: Distance Sets and Multiplicities",
       "startLine": 49,
-      "endLine": 72
+      "endLine": 72,
+      "summary": "distanceSet, multiplicity, multiplicityMultiset definitions."
     },
     {
       "id": "configurations",
-      "title": "Special Configurations",
-      "summary": "isEquidistantLine, isEquidistantCircle, isStandardConfig",
+      "title": "Part 3: Special Configurations",
       "startLine": 74,
-      "endLine": 103
+      "endLine": 103,
+      "summary": "isEquidistantLine, isEquidistantCircle, isStandardConfig definitions."
     },
     {
       "id": "conjecture",
-      "title": "The Conjectured Characterization",
-      "summary": "hasSpecialPattern, OriginalConjecture",
+      "title": "Part 4: The Conjectured Characterization",
       "startLine": 105,
-      "endLine": 127
+      "endLine": 127,
+      "summary": "hasSpecialPattern definition and OriginalConjecture (FALSE)."
     },
     {
       "id": "counterexample",
-      "title": "The Counterexample",
-      "summary": "isArcPlusCenter, clemen_dumitrescu_liu axiom",
+      "title": "Part 5: The Counterexample",
       "startLine": 129,
-      "endLine": 170
+      "endLine": 170,
+      "summary": "isArcPlusCenter definition, clemen_dumitrescu_liu axiom, conjecture_disproved axiom."
     },
     {
       "id": "intuition",
-      "title": "Erdős's Intuition",
-      "summary": "erdos_predicted_no, arc_configuration_analysis",
+      "title": "Part 6: Erdős's Intuition",
       "startLine": 172,
-      "endLine": 191
+      "endLine": 191,
+      "summary": "erdos_predicted_no and arc_configuration_analysis placeholder axioms."
     },
     {
       "id": "analysis",
-      "title": "Standard Configurations Analysis",
-      "summary": "line_multiplicity_analysis, circle_multiplicity_analysis",
+      "title": "Part 7: Standard Configurations Analysis",
       "startLine": 193,
-      "endLine": 212
+      "endLine": 212,
+      "summary": "line_multiplicity_analysis and circle_multiplicity_analysis placeholder axioms."
+    },
+    {
+      "id": "examples",
+      "title": "Part 8: Examples",
+      "startLine": 214,
+      "endLine": 233,
+      "summary": "Trivial examples for n = 4 and n = 5."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_958_summary, erdos_958_status",
+      "title": "Part 9: Summary",
       "startLine": 235,
-      "endLine": 269
+      "endLine": 269,
+      "summary": "erdos_958_summary (proved from axioms) and erdos_958_status."
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #958 is SOLVED. The conjectured characterization (special distance pattern ⟺ equidistant on line or circle) is FALSE. Clemen, Dumitrescu, and Liu (2025) found counterexamples: equidistant points on a short arc of a unit circle plus the center satisfy the pattern but are not standard configurations.",
-    "implications": "**Geometric Connections**\n\n1. **Distance Geometry:** Understanding which distance patterns characterize point configurations\n\n2. **Characterization Limits:** The special pattern alone doesn't uniquely determine configuration type\n\n3. **New Configurations:** Arc + center is a previously unrecognized family of solutions\n\n4. **Erdős's Insight:** His intuition about the existence of other configurations was correct",
+    "implications": "Understanding which distance patterns characterize point configurations. The special pattern alone does not uniquely determine configuration type. Arc + center is a new family of solutions that Erdős predicted would exist.",
     "openQuestions": [
       "Are there other families of configurations with the special pattern?",
       "What is the complete characterization of sets with this pattern?",
