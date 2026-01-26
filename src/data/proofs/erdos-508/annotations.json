@@ -1,0 +1,56 @@
+[
+  {
+    "id": "unit-dist-graph",
+    "proofId": "erdos-508",
+    "range": { "startLine": 27, "endLine": 32 },
+    "type": "definition",
+    "title": "Unit-Distance Graph on ℝ²",
+    "content": "Vertices are all points of ℝ². Two points are adjacent if and only if their Euclidean distance is exactly 1. The chromatic number of this graph is the subject of the problem.",
+    "significance": "high"
+  },
+  {
+    "id": "main-problem",
+    "proofId": "erdos-508",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "conjecture",
+    "title": "Hadwiger–Nelson Problem",
+    "content": "Determine χ(ℝ²), the chromatic number of the plane. It is known that 5 ≤ χ(ℝ²) ≤ 7, so the answer is one of {5, 6, 7}.",
+    "significance": "high"
+  },
+  {
+    "id": "de-grey",
+    "proofId": "erdos-508",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "theorem",
+    "title": "de Grey (2018): χ ≥ 5",
+    "content": "Aubrey de Grey constructed a unit-distance graph on ~1581 vertices requiring 5 colors. This was the first improvement to the lower bound in over 60 years.",
+    "significance": "high"
+  },
+  {
+    "id": "isbell",
+    "proofId": "erdos-508",
+    "range": { "startLine": 63, "endLine": 66 },
+    "type": "theorem",
+    "title": "Isbell Upper Bound: χ ≤ 7",
+    "content": "Tile ℝ² with regular hexagons of diameter slightly less than 1. A 7-color repeating pattern ensures no two same-colored points are at distance 1.",
+    "significance": "high"
+  },
+  {
+    "id": "fractional",
+    "proofId": "erdos-508",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "theorem",
+    "title": "Fractional Chromatic Bounds",
+    "content": "The fractional chromatic number satisfies 4 ≤ χ_f(ℝ²) ≤ 4.36. This suggests the true chromatic number may be at least 5.",
+    "significance": "medium"
+  },
+  {
+    "id": "erdos-de-bruijn",
+    "proofId": "erdos-508",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "theorem",
+    "title": "Erdős–de Bruijn Compactness (1951)",
+    "content": "The chromatic number of the plane equals the supremum of chromatic numbers of its finite unit-distance subgraphs. This reduces the infinite problem to finite graphs.",
+    "significance": "medium"
+  }
+]

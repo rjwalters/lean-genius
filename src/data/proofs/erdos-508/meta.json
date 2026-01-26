@@ -1,0 +1,87 @@
+{
+  "id": "erdos-508",
+  "title": "Erdős Problem #508: The Hadwiger–Nelson Problem",
+  "slug": "erdos-508",
+  "description": "What is the chromatic number of the plane? Known: 5 ≤ χ(ℝ²) ≤ 7. Lower bound 5 by de Grey (2018). Upper bound 7 by hexagonal tiling (Isbell). Open.",
+  "meta": {
+    "erdosNumber": 508,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "graph-coloring",
+      "chromatic-number",
+      "unit-distance",
+      "open"
+    ],
+    "references": [
+      "Hadwiger (1945), Nelson (1950): original problem",
+      "Moser–Spindle: 4-chromatic unit-distance graph",
+      "de Grey (2018): χ(ℝ²) ≥ 5",
+      "Isbell: hexagonal 7-coloring",
+      "Erdős–de Bruijn (1951): compactness theorem",
+      "https://erdosproblems.com/508"
+    ],
+    "leanFile": "Proofs/Erdos508Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 37,
+      "summary": "unitDistGraph on ℝ², planeChromatic."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem",
+      "startLine": 39,
+      "endLine": 43,
+      "summary": "Determine χ(ℝ²); answer is 5, 6, or 7."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "startLine": 45,
+      "endLine": 59,
+      "summary": "χ ≥ 3 (triangle), ≥ 4 (Moser spindle), ≥ 5 (de Grey 2018)."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Known Upper Bound",
+      "startLine": 61,
+      "endLine": 66,
+      "summary": "χ ≤ 7 via hexagonal tiling (Isbell)."
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "startLine": 68,
+      "endLine": 88,
+      "summary": "Fractional χ bounds, higher dimensions, Erdős–de Bruijn compactness."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Hadwiger–Nelson problem was posed independently by Hadwiger (1945) and Nelson (1950). For over 50 years the bounds 4 ≤ χ ≤ 7 stood. In 2018, Aubrey de Grey made the first improvement by showing χ ≥ 5.",
+    "problemStatement": "What is the chromatic number of the plane? That is, what is the minimum number of colors needed to color ℝ² so that no two points at unit distance share a color?",
+    "proofStrategy": "We formalize the unit-distance graph, define the chromatic number of the plane, and state the known bounds: 5 ≤ χ(ℝ²) ≤ 7. The Erdős–de Bruijn theorem reduces the problem to finite graphs.",
+    "keyInsights": [
+      "χ(ℝ²) ∈ {5, 6, 7} — only three possibilities remain",
+      "de Grey (2018) improved the lower bound from 4 to 5 after 60+ years",
+      "Isbell's hexagonal tiling gives the 7-color upper bound",
+      "Erdős–de Bruijn: the infinite problem reduces to finite subgraphs",
+      "Fractional chromatic number is between 4 and 4.36"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #508 (the Hadwiger–Nelson problem) asks for the chromatic number of the plane. After de Grey's 2018 breakthrough, it is known that 5 ≤ χ(ℝ²) ≤ 7.",
+    "implications": "Determining χ(ℝ²) would resolve one of the most famous problems in combinatorial geometry, with connections to Ramsey theory and distance geometry.",
+    "openQuestions": [
+      "Is χ(ℝ²) = 5, 6, or 7?",
+      "Can the hexagonal upper bound of 7 be improved to 6?",
+      "Can a human-checkable proof of χ ≥ 5 be found?",
+      "What is χ(ℝ³)?"
+    ]
+  }
+}
