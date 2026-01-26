@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-400-divisibility",
+    "proofId": "erdos-400",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 28 },
+    "title": "Factorial Divisibility",
+    "content": "FactorialDivides a n requires ∏ aᵢ! | n!. This multinomial-type condition determines which tuples contribute to the excess function.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-400-excess",
+    "proofId": "erdos-400",
+    "type": "definition",
+    "range": { "startLine": 36, "endLine": 42 },
+    "title": "The Excess Function",
+    "content": "gExcess k n = max{(Σ aᵢ) - n : a₁!⋯aₖ! | n!}. This measures how much the sum of the tuple can exceed n while maintaining factorial divisibility.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-400-conjecture",
+    "proofId": "erdos-400",
+    "type": "conjecture",
+    "range": { "startLine": 48, "endLine": 69 },
+    "title": "Erdős Problem 400",
+    "content": "Two-part conjecture: (a) Σ_{n≤x} g_k(n) ~ cₖ·x·log x for some constant cₖ, and (b) g_k(n) is concentrated around cₖ·log x for almost all n ≤ x.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-400-upper",
+    "proofId": "erdos-400",
+    "type": "result",
+    "range": { "startLine": 75, "endLine": 78 },
+    "title": "Erdős–Graham Upper Bound",
+    "content": "g_k(n) ≤ C·log n for a constant C depending on k. This gives the correct order of magnitude but not the precise constant.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-400-nonneg",
+    "proofId": "erdos-400",
+    "type": "result",
+    "range": { "startLine": 84, "endLine": 94 },
+    "title": "Non-negativity and Binomial Connection",
+    "content": "g_k(n) ≥ 0 (the trivial tuple achieves excess 0). For k = 2, the condition a!·b! | n! connects to binomial coefficients C(a+b, a).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-400-k2",
+    "proofId": "erdos-400",
+    "type": "context",
+    "range": { "startLine": 100, "endLine": 114 },
+    "title": "The k = 2 Case",
+    "content": "For k = 2, the excess is achieved by specific pairs (a, b) with a!·b! | n!. The average growth constant c₂ is conjectured to exist.",
+    "significance": "supporting"
+  }
+]
