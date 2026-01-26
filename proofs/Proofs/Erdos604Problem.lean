@@ -1,4 +1,50 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: ca04f1a1-cfab-4183-85f5-03e9b592c79f
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+The following was proved by Aristotle:
+
+- theorem katzTardos_bound (A : Finset (ℝ × ℝ)) (hA : A.card ≥ 2) :
+    ∃ x ∈ A, ∃ c > 0, (pinnedDistanceCount x A : ℝ) ≥ c * (A.card : ℝ) ^ katzTardosExponent
+
+- theorem pinnedDistance_pos (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (hx : x ∈ A)
+    (hA : A.card ≥ 2) : pinnedDistanceCount x A ≥ 1
+
+The following was negated by Aristotle:
+
+- noncomputable def maxPinnedDistances (A : Finset (ℝ × ℝ)) : ℕ
+
+Here is the code for the `negate_state` tactic, used within these negations:
+
+```lean
+import Mathlib
+open Lean Meta Elab Tactic in
+elab "revert_all" : tactic => do
+  let goals ← getGoals
+  let mut newGoals : List MVarId := []
+  for mvarId in goals do
+    newGoals := newGoals.append [(← mvarId.revertAll)]
+  setGoals newGoals
+
+open Lean.Elab.Tactic in
+macro "negate_state" : tactic => `(tactic|
+  (
+    guard_goal_nums 1
+    revert_all
+    refine @(((by admit) : ∀ {p : Prop}, ¬p → p) ?_)
+    try (push_neg; guard_goal_nums 1)
+  )
+)
+```
+-/
+
+/-
   Erdős Problem #604: The Pinned Distance Problem
 
   Source: https://erdosproblems.com/604
@@ -32,6 +78,7 @@
 
 import Mathlib
 
+
 open Finset Real Set
 
 /-! ## Basic Definitions for Planar Point Sets -/
@@ -48,6 +95,22 @@ noncomputable def pinnedDistances (x : ℝ × ℝ) (A : Finset (ℝ × ℝ)) : F
 noncomputable def pinnedDistanceCount (x : ℝ × ℝ) (A : Finset (ℝ × ℝ)) : ℕ :=
   (pinnedDistances x A).card
 
+/- Aristotle found this block to be false. Here is a proof of the negation:
+
+
+
+/-
+The maximum number of distinct pinned distances over all points in A
+-/
+noncomputable def maxPinnedDistances (A : Finset (ℝ × ℝ)) : ℕ :=
+  A.sup' (by
+  -- Wait, there's a mistake. We can actually prove the opposite.
+  negate_state;
+  -- Proof starts here:
+  -- The empty set is a finite set.
+  use ∅; simp) (fun x => pinnedDistanceCount x A)
+
+-/
 /-- The maximum number of distinct pinned distances over all points in A -/
 noncomputable def maxPinnedDistances (A : Finset (ℝ × ℝ)) : ℕ :=
   A.sup' (by sorry) (fun x => pinnedDistanceCount x A)
@@ -76,21 +139,42 @@ noncomputable def katzTardosExponent : ℝ :=
     is at least n^c where c ≈ 0.864. This is the best known lower bound. -/
 theorem katzTardos_bound (A : Finset (ℝ × ℝ)) (hA : A.card ≥ 2) :
     ∃ x ∈ A, ∃ c > 0, (pinnedDistanceCount x A : ℝ) ≥ c * (A.card : ℝ) ^ katzTardosExponent := by
-  sorry
+  -- By the pigeonhole principle, there exists a point $x \in A$ such that $pinnedDistanceCount x A \geq \frac{1}{n} \sum_{y \in A} pinnedDistanceCount y A$.
+  obtain ⟨x, hx⟩ : ∃ x ∈ A, pinnedDistanceCount x A ≥ (∑ y ∈ A, pinnedDistanceCount y A) / (A.card : ℝ) := by
+    have h_pigeonhole : ∃ x ∈ A, ∀ y ∈ A, pinnedDistanceCount y A ≤ pinnedDistanceCount x A := by
+      exact Finset.exists_max_image _ _ ( Finset.card_pos.mp ( pos_of_gt hA ) );
+    exact ⟨ h_pigeonhole.choose, h_pigeonhole.choose_spec.1, div_le_iff₀' ( by positivity ) |>.2 <| mod_cast le_trans ( Finset.sum_le_sum fun y hy => h_pigeonhole.choose_spec.2 y hy ) <| by norm_num ⟩;
+  refine' ⟨ x, hx.1, ( ∑ y ∈ A, ( pinnedDistanceCount y A : ℝ ) ) / ( A.card : ℝ ) / ( A.card : ℝ ) ^ katzTardosExponent, _, _ ⟩;
+  · refine' div_pos ( div_pos ( mod_cast _ ) ( Nat.cast_pos.mpr ( by linarith ) ) ) ( Real.rpow_pos_of_pos ( Nat.cast_pos.mpr ( by linarith ) ) _ );
+    -- Since $pinnedDistanceCount x A$ is the number of distinct distances from $x$ to other points in $A$, and $A$ has at least 2 points, $pinnedDistanceCount x A$ must be at least 1.
+    have h_pinned_pos : ∀ x ∈ A, 1 ≤ pinnedDistanceCount x A := by
+      intro x hx
+      have h_pinned_pos : ∃ y ∈ A, y ≠ x := by
+        exact Finset.exists_mem_ne hA x;
+      obtain ⟨ y, hy, hyx ⟩ := h_pinned_pos; exact Finset.card_pos.mpr ⟨ _, Finset.mem_image.mpr ⟨ y, Finset.mem_filter.mpr ⟨ hy, hyx ⟩, rfl ⟩ ⟩ ;
+    exact Finset.sum_pos ( fun x hx => h_pinned_pos x hx ) ⟨ x, hx.1 ⟩;
+  · rw [ div_mul_cancel₀ _ ( by positivity ) ] ; aesop
 
 /-! ## Related Bounds and Variants -/
 
 /-- Basic lower bound: Every point sees at least 1 distinct distance (trivial) -/
 theorem pinnedDistance_pos (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (hx : x ∈ A)
     (hA : A.card ≥ 2) : pinnedDistanceCount x A ≥ 1 := by
-  sorry
+  -- Since $x \in A$ and $A$ has at least two elements, there must be at least one other point in $A$ besides $x$. Therefore, the set $\{ \|x - y\| \mid y \in A, y \neq x \}$ is non-empty.
+  have h_nonempty : ∃ y ∈ A, y ≠ x := by
+    exact Finset.exists_mem_ne hA x;
+  exact Finset.card_pos.mpr ⟨ _, Finset.mem_image.mpr ⟨ h_nonempty.choose, Finset.mem_filter.mpr ⟨ h_nonempty.choose_spec.1, h_nonempty.choose_spec.2 ⟩, rfl ⟩ ⟩
 
 /-- Upper bound: No point can see more than n-1 distinct distances -/
 theorem pinnedDistance_le (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) :
     pinnedDistanceCount x A ≤ A.card - 1 := by
   unfold pinnedDistanceCount pinnedDistances
   calc (A.filter (· ≠ x)).image (euclideanDist x) |>.card
-      ≤ (A.filter (· ≠ x)).card := Finset.card_image_le
+
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+unexpected token '≤'; expected command-/
+≤ (A.filter (· ≠ x)).card := Finset.card_image_le
     _ ≤ A.card := Finset.card_filter_le A _
     _ ≤ A.card - 0 := by omega
     _ ≤ A.card - 1 := by sorry
@@ -138,5 +222,7 @@ theorem erdos_604_open : pinnedDistanceConjecture ↔ pinnedDistanceConjecture :
   rfl
 
 #check pinnedDistanceConjecture
+
 #check katzTardos_bound
+
 #check erdos_604_open
