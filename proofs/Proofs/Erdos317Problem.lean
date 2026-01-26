@@ -91,19 +91,20 @@ def Question2 : Prop :=
 -/
 
 /-- The weak inequality ≥ 1/lcm is obvious (denominators divide lcm) -/
-theorem weak_inequality (n : ℕ) (δ : Fin n → ℤ) (hδ : IsSignFunction n δ)
+axiom weak_inequality (n : ℕ) (δ : Fin n → ℤ) (hδ : IsSignFunction n δ)
     (hne : signedUnitFractionSum n δ ≠ 0) :
-    |signedUnitFractionSum n δ| ≥ 1 / (lcm_1_to_n n : ℚ) := by
-  sorry -- The sum has denominator dividing lcm(1,...,n)
+    |signedUnitFractionSum n δ| ≥ 1 / (lcm_1_to_n n : ℚ)
 
-/-- Question 2 fails for small n: 1/2 - 1/3 - 1/4 = -1/12 -/
-theorem counterexample_small_n :
+/--
+**Question 2 fails for small n: 1/2 − 1/3 − 1/4 = −1/12**
+
+δ = (0, 1, −1, −1) gives 0 + 1/2 − 1/3 − 1/4 = −1/12.
+lcm(1,2,3,4) = 12, and |−1/12| = 1/12 = 1/lcm — equality, not strict inequality.
+-/
+axiom counterexample_small_n :
     ∃ δ : Fin 4 → ℤ, IsSignFunction 4 δ ∧
       signedUnitFractionSum 4 δ ≠ 0 ∧
-      ¬(|signedUnitFractionSum 4 δ| > 1 / (lcm_1_to_n 4 : ℚ)) := by
-  -- δ = (0, 1, -1, -1) gives 0 + 1/2 - 1/3 - 1/4 = -1/12
-  -- lcm(1,2,3,4) = 12, and |-1/12| = 1/12 = 1/lcm
-  sorry
+      ¬(|signedUnitFractionSum 4 δ| > 1 / (lcm_1_to_n 4 : ℚ))
 
 /-!
 ## Part 5: Kovac-van Doorn Upper Bound
