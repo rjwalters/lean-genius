@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-848-ann-1",
+    "proofId": "erdos-848",
+    "range": { "startLine": 23, "endLine": 37 },
+    "type": "definition",
+    "title": "Squarefree and Product Definitions",
+    "content": "IsSquarefree(n) holds when no prime squared divides n. HasNonSqfreeProductProp(A) requires ab + 1 to be non-squarefree for all a, b ∈ A. maxNonSqfreeSet(N) is the maximum cardinality of such a set in {1,...,N}.",
+    "significance": "These definitions capture the extremal problem: maximizing a set subject to a multiplicative non-squarefreeness constraint."
+  },
+  {
+    "id": "erdos-848-ann-2",
+    "proofId": "erdos-848",
+    "range": { "startLine": 43, "endLine": 49 },
+    "type": "result",
+    "title": "Mod 25 Construction",
+    "content": "The set {n ≡ 7 (mod 25)} satisfies the property: for a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 49 + 1 = 50 ≡ 0 (mod 25), so 5² | ab + 1. Similarly for {n ≡ 18 (mod 25)}. This gives |A| ≈ N/25.",
+    "significance": "This construction provides the lower bound and is conjectured (now proved for large N) to be optimal."
+  },
+  {
+    "id": "erdos-848-ann-3",
+    "proofId": "erdos-848",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "result",
+    "title": "Van Doorn's Upper Bound",
+    "content": "Van Doorn showed |A|/N ≤ 2 Σ_{p ≡ 1 (4)} 1/p² ≈ 0.108 using the fact that a² + 1 ≡ 0 (mod p²) has 2 solutions for p ≡ 1 (mod 4) and 0 solutions for p ≡ 3 (mod 4). Weisenberg refined this to ≈ 0.105.",
+    "significance": "This was the first nontrivial upper bound, showing the density cannot exceed ≈ 10.8%, far above the optimal 1/25 = 4%."
+  },
+  {
+    "id": "erdos-848-ann-4",
+    "proofId": "erdos-848",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "result",
+    "title": "Sawhney's Solution",
+    "content": "Sawhney proved that for all sufficiently large N, maxNonSqfreeSet(N) = ⌊N/25⌋. Any extremal set must be contained in {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}.",
+    "significance": "This completely resolves the problem for large N, confirming the Erdős–Sárközy conjecture. The structural result shows the extremal sets are essentially unique."
+  },
+  {
+    "id": "erdos-848-ann-5",
+    "proofId": "erdos-848",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "result",
+    "title": "Structural Characterization",
+    "content": "Any extremal set of size N/25 in {1,...,N} for large N must consist entirely of elements ≡ 7 (mod 25) or entirely of elements ≡ 18 (mod 25). No mixing of residue classes is possible.",
+    "significance": "The uniqueness of extremal sets (up to the 7 ↔ 18 symmetry) is a strong structural result beyond just determining the maximum size."
+  }
+]

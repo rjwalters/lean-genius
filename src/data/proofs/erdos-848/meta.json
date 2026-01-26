@@ -1,0 +1,69 @@
+{
+  "id": "erdos-848",
+  "title": "Erdős Problem #848: Squarefree Products and Extremal Sets",
+  "slug": "erdos-848",
+  "description": "Max |A| with A ⊆ {1,...,N} and ab+1 never squarefree for a,b ∈ A. Extremal sets: {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}, giving N/25. Solved by Sawhney for large N.",
+  "meta": {
+    "erdosNumber": 848,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "extremal-combinatorics",
+      "solved"
+    ],
+    "references": [
+      "Erdős–Sárközy (1992): original problem",
+      "van Doorn: upper bound via quadratic residues",
+      "Weisenberg: refined upper bound",
+      "Sawhney: solution for large N",
+      "https://erdosproblems.com/848"
+    ],
+    "leanFile": "Proofs/Erdos848Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 21,
+      "endLine": 37,
+      "summary": "IsSquarefree, HasNonSqfreeProductProp, maxNonSqfreeSet."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 39,
+      "endLine": 55,
+      "summary": "mod 25 construction achieves property, lower bound N/25, van Doorn upper bound ≈ 0.108N."
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "Sawhney: max = N/25 for large N, extremal sets are {n ≡ 7 or 18 (mod 25)}."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Sárközy (1992) asked for the maximum size of A ⊆ {1,...,N} such that ab + 1 is never squarefree for a, b ∈ A. The sets {n ≡ 7 (mod 25)} and {n ≡ 18 (mod 25)} satisfy the property because 7·7 + 1 = 50 = 2·5², so 5² always divides ab + 1 for these residue classes. Van Doorn gave an upper bound of ≈ 0.108N. Sawhney proved the answer is exactly N/25 for large N.",
+    "problemStatement": "Determine the maximum size of A ⊆ {1,...,N} such that ab + 1 is never squarefree for all a, b ∈ A.",
+    "proofStrategy": "We define IsSquarefree constructively, axiomatize maxNonSqfreeSet, and record the mod 25 lower bound, van Doorn's upper bound, and Sawhney's exact solution with structural characterization.",
+    "keyInsights": [
+      "For a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 50 (mod 25), so 5² | ab + 1",
+      "The same holds for a ≡ b ≡ 18 (mod 25) since 18·18 + 1 = 325 = 13·25",
+      "Van Doorn's bound uses quadratic residues: a² + 1 ≡ 0 (mod p²) for p ≡ 1 (mod 4)",
+      "Sawhney proved the extremal sets are exactly the mod 25 residue classes",
+      "The solution holds for sufficiently large N; the finite cases remain unresolved"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #848 is solved for large N by Sawhney: the maximum is N/25, achieved by {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. The key insight is that these residue classes force 5² to divide ab + 1.",
+    "implications": "The result connects extremal set theory with quadratic residue structure and squarefree numbers, illustrating how modular arithmetic governs extremal configurations.",
+    "openQuestions": [
+      "What is the exact value of maxNonSqfreeSet(N) for small N?",
+      "Can the 'sufficiently large N' threshold be made explicit?"
+    ]
+  }
+}
