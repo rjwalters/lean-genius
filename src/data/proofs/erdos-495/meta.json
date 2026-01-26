@@ -1,0 +1,95 @@
+{
+  "id": "erdos-495",
+  "title": "Erdős Problem #495: The Littlewood Conjecture",
+  "slug": "erdos-495",
+  "description": "Let α, β ∈ ℝ. Is lim inf n·‖nα‖·‖nβ‖ = 0? The famous Littlewood conjecture. EKL (2006): counterexamples have Hausdorff dimension zero. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/495",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos495Problem.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "littlewood-conjecture",
+      "simultaneous-approximation"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 495,
+    "erdosUrl": "https://erdosproblems.com/495",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #495 is the Littlewood conjecture (c. 1930), one of the most famous open problems in Diophantine approximation. It asks whether every pair of reals can be simultaneously well-approximated by rationals in a multiplicative sense. Einsiedler–Katok–Lindenstrauss (2006) proved the set of counterexamples has Hausdorff dimension zero, earning Lindenstrauss the 2010 Fields Medal.",
+    "problemStatement": "Let α, β ∈ ℝ. Is it true that lim inf (n → ∞) n · ‖nα‖ · ‖nβ‖ = 0, where ‖x‖ is the distance to the nearest integer?",
+    "proofStrategy": "We define the distance-to-nearest-integer function distInt, the Littlewood product, and state the conjecture as an infinitely-often condition. Special cases (rational, cubic irrationals via Cassels–Swinnerton-Dyer) and the EKL dimension-zero theorem are axiomatized.",
+    "keyInsights": [
+      "The Littlewood conjecture asks for multiplicative simultaneous approximation",
+      "Trivially true when α or β is rational (the product vanishes at multiples of the denominator)",
+      "Cassels–Swinnerton-Dyer (1955): holds for cubic irrationals",
+      "Einsiedler–Katok–Lindenstrauss (2006): counterexamples have Hausdorff dimension zero",
+      "The p-adic variant (de Mathan–Teulié) is also open"
+    ]
+  },
+  "sections": [
+    {
+      "id": "dist-int",
+      "title": "Part I: Distance to Nearest Integer",
+      "startLine": 35,
+      "endLine": 53,
+      "summary": "Defines distInt (distance to nearest integer) and its basic properties."
+    },
+    {
+      "id": "littlewood-product",
+      "title": "Part II: The Littlewood Product",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "Defines the Littlewood product L(n, α, β) = n · ‖nα‖ · ‖nβ‖."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part III: The Littlewood Conjecture",
+      "startLine": 74,
+      "endLine": 87,
+      "summary": "States the Littlewood conjecture: lim inf of the product is zero for all α, β."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part IV: Special Cases",
+      "startLine": 89,
+      "endLine": 113,
+      "summary": "Rational case and Cassels–Swinnerton-Dyer (1955) for cubic irrationals."
+    },
+    {
+      "id": "ekl-theorem",
+      "title": "Part V: The EKL Theorem",
+      "startLine": 115,
+      "endLine": 130,
+      "summary": "Einsiedler–Katok–Lindenstrauss (2006): counterexamples have Hausdorff dimension zero."
+    },
+    {
+      "id": "padic",
+      "title": "Part VI: The p-adic Littlewood Conjecture",
+      "startLine": 132,
+      "endLine": 151,
+      "summary": "The p-adic variant of de Mathan–Teulié (2004) and Badziahin–Velani (2014)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 153,
+      "endLine": 164,
+      "summary": "Status: open in full generality. Known for rationals, cubics, and almost all pairs."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #495 is the Littlewood conjecture: for all α, β ∈ ℝ, lim inf n·‖nα‖·‖nβ‖ = 0. Known for rationals, cubic irrationals (Cassels–Swinnerton-Dyer 1955), and almost all pairs (EKL 2006, Hausdorff dimension zero). Still open in full generality.",
+    "implications": "Resolution would have profound consequences for simultaneous Diophantine approximation, ergodic theory on homogeneous spaces, and our understanding of the interplay between additive and multiplicative number theory.",
+    "openQuestions": [
+      "Does there exist any explicit pair (α, β) of algebraically independent reals for which the conjecture can be verified?",
+      "Can the EKL measure-zero result be strengthened to prove the full conjecture?",
+      "Is the p-adic Littlewood conjecture true for all primes p and all reals α?"
+    ]
+  }
+}
