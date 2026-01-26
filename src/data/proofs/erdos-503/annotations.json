@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-503-isosceles",
+    "proofId": "erdos-503",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 48 },
+    "title": "Isosceles Set Definition",
+    "content": "IsIsoscelesSet requires every triple of distinct points to have at least two equal pairwise distances. maxIsoscelesSize is the extremal function f(n) for dimension n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-503-exact",
+    "proofId": "erdos-503",
+    "type": "result",
+    "range": { "startLine": 52, "endLine": 63 },
+    "title": "Exact Values for n=2,3",
+    "content": "Kelly proved f(2) = 6 [ErKe47]; Croft proved f(3) = 8 [Cr62]. These are the only known exact values. Kovács gave an alternative proof for n=2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-503-upper",
+    "proofId": "erdos-503",
+    "type": "result",
+    "range": { "startLine": 67, "endLine": 72 },
+    "title": "Blokhuis Upper Bound",
+    "content": "Blokhuis [Bl84] proved f(n) ≤ C(n+2, 2) = (n+2)(n+1)/2. This is the best known general upper bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-503-lower",
+    "proofId": "erdos-503",
+    "type": "result",
+    "range": { "startLine": 74, "endLine": 88 },
+    "title": "Lower Bounds (Alweiss and Weisenberg)",
+    "content": "Alweiss constructed isosceles sets of size C(n+1,2) using e_i + e_j coordinate vectors. Weisenberg added one more point, giving C(n+1,2) + 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-503-bounds",
+    "proofId": "erdos-503",
+    "type": "conjecture",
+    "range": { "startLine": 92, "endLine": 113 },
+    "title": "The Remaining Gap",
+    "content": "Theorem erdos_503_bounds: C(n+1,2)+1 ≤ f(n) ≤ C(n+2,2). The gap is n+1, growing linearly. Consistency checks verify both bounds for n=2 and n=3.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-503-summary",
+    "proofId": "erdos-503",
+    "type": "context",
+    "range": { "startLine": 117, "endLine": 127 },
+    "title": "Summary",
+    "content": "Theorem erdos_503_summary: the exact values f(2)=6 and f(3)=8 from Kelly and Croft. The general problem remains open for n ≥ 4.",
+    "significance": "supporting"
+  }
+]

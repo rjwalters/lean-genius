@@ -1,0 +1,81 @@
+{
+  "id": "erdos-503",
+  "title": "Erdős Problem #503: Maximum Isosceles Sets in Rⁿ",
+  "slug": "erdos-503",
+  "description": "What is the maximum size of A ⊆ ℝⁿ with every triple isosceles? f(2)=6 (Kelly), f(3)=8 (Croft). General: C(n+1,2)+1 ≤ f(n) ≤ C(n+2,2) (Blokhuis/Alweiss). OPEN for n ≥ 4.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/503",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos503Problem.lean",
+    "tags": [
+      "combinatorial-geometry",
+      "distances",
+      "isosceles",
+      "extremal"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 503,
+    "erdosUrl": "https://erdosproblems.com/503",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #503 asks for the maximum isosceles set size in ℝⁿ. Kelly [ErKe47] solved n=2 (answer 6); Croft [Cr62] solved n=3 (answer 8). Blokhuis [Bl84] proved the upper bound C(n+2,2). Alweiss and Weisenberg gave lower bounds.",
+    "problemStatement": "What is the largest A ⊆ ℝⁿ such that every three points form an isosceles triangle? Known for n=2,3; open for n ≥ 4. General bounds: C(n+1,2)+1 ≤ f(n) ≤ C(n+2,2).",
+    "proofStrategy": "We define IsIsoscelesSet via the abstract metric, introduce maxIsoscelesSize as the extremal function, and axiomatize the exact values (n=2,3) and general bounds (Blokhuis upper, Alweiss/Weisenberg lower). Consistency examples use norm_num.",
+    "keyInsights": [
+      "f(2) = 6 (Kelly) and f(3) = 8 (Croft) are the only known exact values",
+      "Blokhuis upper bound: f(n) ≤ C(n+2, 2) = (n+2)(n+1)/2",
+      "Alweiss lower bound via e_i + e_j vectors: f(n) ≥ C(n+1, 2)",
+      "Weisenberg improved to f(n) ≥ C(n+1, 2) + 1",
+      "The gap between C(n+1,2)+1 and C(n+2,2) grows linearly in n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "isosceles-sets",
+      "title": "Part I: Isosceles Sets",
+      "startLine": 33,
+      "endLine": 48,
+      "summary": "Defines IsIsoscelesSet (every triple has two equal distances) and maxIsoscelesSize."
+    },
+    {
+      "id": "small-dimensions",
+      "title": "Part II: Exact Results for Small Dimensions",
+      "startLine": 50,
+      "endLine": 63,
+      "summary": "Axioms: kelly_R2 (f(2)=6) and croft_R3 (f(3)=8)."
+    },
+    {
+      "id": "general-bounds",
+      "title": "Part III: General Bounds",
+      "startLine": 65,
+      "endLine": 88,
+      "summary": "Axioms: Blokhuis upper bound C(n+2,2), Alweiss lower C(n+1,2), Weisenberg improvement +1."
+    },
+    {
+      "id": "gap",
+      "title": "Part IV: The Gap",
+      "startLine": 90,
+      "endLine": 113,
+      "summary": "Theorem erdos_503_bounds combines bounds. Consistency checks for n=2,3 via norm_num."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary",
+      "startLine": 115,
+      "endLine": 127,
+      "summary": "Theorem erdos_503_summary: exact values f(2)=6, f(3)=8."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #503 asks for the maximum isosceles set in ℝⁿ. Exact values are known for n=2 (6) and n=3 (8). The general answer lies between C(n+1,2)+1 and C(n+2,2), but the exact value for n ≥ 4 is open.",
+    "implications": "The gap between the bounds grows linearly in n, suggesting the exact answer may require new geometric ideas beyond coordinate-vector constructions.",
+    "openQuestions": [
+      "What is f(4)? The bounds give 11 ≤ f(4) ≤ 15.",
+      "Is the Blokhuis upper bound tight for any n ≥ 4?",
+      "Can the Alweiss/Weisenberg lower bound be improved significantly?"
+    ]
+  }
+}
