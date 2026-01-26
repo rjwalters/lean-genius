@@ -1,242 +1,123 @@
 [
   {
-    "id": "ann-238-1",
+    "id": "erdos-238-header",
     "proofId": "erdos-238",
-    "range": {
-      "startLine": 1,
-      "endLine": 16
-    },
-    "type": "concept",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 20 },
     "title": "Problem Overview",
-    "content": "Erdős Problem #238: For c₁, c₂ > 0, is it true that for large x, there exist > c₁·log(x) consecutive primes ≤ x with all gaps > c₂? Erdős showed this for small c₁; general case is OPEN.",
-    "significance": "critical"
+    "content": "Erdős Problem #238: For c₁, c₂ > 0, can we find > c₁·log(x) consecutive primes ≤ x with all gaps > c₂? Proved for small c₁ (Erdős); general case OPEN.",
+    "mathContext": "mainConjecture: ∀ c₁ > 0, ∀ c₂ > 0, ∀ᶠ x in atTop, ∃ k > c₁·log(x), ∃ m, allPrimesLeX(m,k,x) ∧ allGapsLarge(m,k,c₂).",
+    "significance": "essential",
+    "relatedConcepts": ["prime gaps", "consecutive primes", "Prime Number Theorem"]
   },
   {
-    "id": "ann-238-2",
+    "id": "erdos-238-primes",
     "proofId": "erdos-238",
-    "range": {
-      "startLine": 46,
-      "endLine": 48
-    },
     "type": "definition",
-    "title": "n-th Prime",
-    "content": "nthPrime(n) gives the n-th prime number (1-indexed: nthPrime(1) = 2, nthPrime(2) = 3, etc.).",
-    "significance": "key"
+    "range": { "startLine": 34, "endLine": 52 },
+    "title": "Prime Enumeration",
+    "content": "nthPrime(n) = n.nth Nat.Prime gives the n-th prime (1-indexed). primeGap(n) = nthPrime(n+1) - nthPrime(n) is the gap between consecutive primes.",
+    "mathContext": "nthPrime n = Nat.nth Prime n. primeGap n = nthPrime(n+1) - nthPrime(n). These are the building blocks for gap analysis.",
+    "significance": "essential",
+    "relatedConcepts": ["Nat.nth", "prime enumeration", "prime gaps"]
   },
   {
-    "id": "ann-238-3",
+    "id": "erdos-238-sequences",
     "proofId": "erdos-238",
-    "range": {
-      "startLine": 50,
-      "endLine": 51
-    },
     "type": "definition",
-    "title": "Prime Gap",
-    "content": "primeGap(n) = p_{n+1} - p_n is the gap between the n-th and (n+1)-th primes. This is the fundamental quantity of interest.",
-    "significance": "critical"
+    "range": { "startLine": 54, "endLine": 82 },
+    "title": "Consecutive Prime Sequences",
+    "content": "consecutivePrimes(m,k) gives k primes starting from p_m. allPrimesLeX: all primes ≤ x. allGapsLarge: all k-1 consecutive gaps exceed c₂.",
+    "mathContext": "consecutivePrimes m k i = nthPrime(m + i). allPrimesLeX m k x ≡ ∀ i, consecutivePrimes(m,k,i) ≤ x. allGapsLarge m k c₂ ≡ ∀ i < k-1, c₂ < primeGap(m+i).",
+    "significance": "essential",
+    "relatedConcepts": ["Fin k", "consecutive primes", "gap predicates"]
   },
   {
-    "id": "ann-238-4",
+    "id": "erdos-238-conjecture",
     "proofId": "erdos-238",
-    "range": {
-      "startLine": 53,
-      "endLine": 55
-    },
+    "type": "conjecture",
+    "range": { "startLine": 84, "endLine": 100 },
+    "title": "The Main Conjecture (OPEN)",
+    "content": "For ALL c₁, c₂ > 0, eventually ∃ run of k > c₁·log(x) consecutive primes ≤ x with all gaps > c₂. Uses Filter.Eventually (∀ᶠ in atTop) for 'sufficiently large x'.",
+    "mathContext": "mainConjecture ≡ ∀ c₁ > 0, ∀ c₂ > 0, ∀ᶠ x in atTop, ∃ k m, c₁·log(x) < k ∧ allPrimesLeX(m,k,x) ∧ allGapsLarge(m,k,c₂).",
+    "significance": "essential",
+    "relatedConcepts": ["Filter.Eventually", "atTop", "open problem"]
+  },
+  {
+    "id": "erdos-238-partial",
+    "proofId": "erdos-238",
+    "type": "result",
+    "range": { "startLine": 119, "endLine": 136 },
+    "title": "Erdős's Partial Result",
+    "content": "For any c₂ > 0, there exists sufficiently small c₁ > 0 (depending on c₂) making the conjecture hold. The quantifier swap (∃ c₁ vs ∀ c₁) is the gap between known and open.",
+    "mathContext": "erdos_partial_result: ∀ c₂ > 0, ∃ c₁ > 0, ∀ᶠ x in atTop, ∃ k m, c₁·log(x) < k ∧ allPrimesLeX(m,k,x) ∧ allGapsLarge(m,k,c₂).",
+    "significance": "essential",
+    "relatedConcepts": ["quantifier order", "partial result", "Erdős"]
+  },
+  {
+    "id": "erdos-238-pnt",
+    "proofId": "erdos-238",
+    "type": "context",
+    "range": { "startLine": 138, "endLine": 164 },
+    "title": "Prime Number Theorem Context",
+    "content": "PNT: π(x) ~ x/log(x), so average gap near x is ~log(x). For fixed c₂, most gaps exceed c₂ for large x. The challenge is finding LONG runs of such gaps, not individual large gaps.",
+    "mathContext": "prime_number_theorem_asymptotic: ∀ ε > 0, ∀ᶠ x, |π(x)/(x/log x) - 1| < ε. average_gap_grows: ∀ c₂ > 0, ∀ᶠ x, ∃ gap > c₂.",
+    "significance": "essential",
+    "relatedConcepts": ["Prime Number Theorem", "average gap", "π(x)"]
+  },
+  {
+    "id": "erdos-238-runlength",
+    "proofId": "erdos-238",
     "type": "definition",
-    "title": "Consecutive Primes",
-    "content": "consecutivePrimes(m, k) is a sequence of k consecutive primes starting from the m-th prime: p_m, p_{m+1}, ..., p_{m+k-1}.",
-    "significance": "key"
+    "range": { "startLine": 166, "endLine": 191 },
+    "title": "Run Length Analysis",
+    "content": "maxRunLength(x, c) = sup{k : ∃ run of k consecutive primes ≤ x with all gaps > c}. The conjecture implies this grows as log(x).",
+    "mathContext": "maxRunLength x c = sSup{k | ∃ m, allPrimesLeX(m,k,x) ∧ allGapsLarge(m,k,c)}. conjecture_implies_run_growth: mainConjecture → maxRunLength grows as c₁·log(x).",
+    "significance": "supporting",
+    "relatedConcepts": ["sSup", "run length", "equivalent formulation"]
   },
   {
-    "id": "ann-238-5",
+    "id": "erdos-238-cramer",
     "proofId": "erdos-238",
-    "range": {
-      "startLine": 57,
-      "endLine": 62
-    },
+    "type": "conjecture",
+    "range": { "startLine": 212, "endLine": 229 },
+    "title": "Cramér's Conjecture (Context)",
+    "content": "Cramér conjectured maximal gap ≤ C·(log x)². This is much stronger than needed but provides context: if gaps are bounded by (log x)², they're typically small, making large-gap runs plausible.",
+    "mathContext": "cramersConjecture: ∃ C > 0, ∀ᶠ x, ∀ n, p_{n+1} ≤ x → primeGap(n) ≤ C·(log x)².",
+    "significance": "supporting",
+    "relatedConcepts": ["Cramér's conjecture", "maximal gap", "open problem"]
+  },
+  {
+    "id": "erdos-238-negation",
+    "proofId": "erdos-238",
     "type": "definition",
-    "title": "Constraint Predicates",
-    "content": "allPrimesLeX ensures all primes in the sequence are ≤ x. allGapsLarge ensures all consecutive gaps exceed c₂.",
-    "significance": "key"
+    "range": { "startLine": 102, "endLine": 117 },
+    "title": "Negation of Conjecture",
+    "content": "If the conjecture fails: ∃ c₁, c₂ > 0 such that for infinitely many x, no run of c₁·log(x) consecutive primes ≤ x has all gaps > c₂. This would reveal a structural limitation in gap distribution.",
+    "mathContext": "conjectureNegation: ∃ c₁ > 0, ∃ c₂ > 0, ∀ N, ∃ x > N, no valid (k,m) pair exists.",
+    "significance": "supporting",
+    "relatedConcepts": ["negation", "counterexample structure", "gap distribution"]
   },
   {
-    "id": "ann-238-6",
+    "id": "erdos-238-summary",
     "proofId": "erdos-238",
-    "range": {
-      "startLine": 70,
-      "endLine": 75
-    },
-    "type": "definition",
-    "title": "Main Conjecture",
-    "content": "mainConjecture states: For all c₁, c₂ > 0, eventually (for large x) there exist k > c₁·log(x) consecutive primes ≤ x with all gaps > c₂.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 231, "endLine": 253 },
+    "title": "Summary and Known Results",
+    "content": "erdos_238_summary combines: Erdős's partial result (small c₁ works) and True (full conjecture stated). Status: OPEN for general c₁, c₂; SOLVED for small c₁.",
+    "mathContext": "erdos_238_summary: (∀ c₂ > 0, ∃ c₁ > 0, ...) ∧ True. Proof: ⟨erdos_partial_result, trivial⟩.",
+    "significance": "essential",
+    "relatedConcepts": ["known results", "partial solution", "open problem"]
   },
   {
-    "id": "ann-238-7",
+    "id": "erdos-238-heuristic",
     "proofId": "erdos-238",
-    "range": {
-      "startLine": 77,
-      "endLine": 79
-    },
-    "type": "theorem",
-    "title": "Main Problem Statement",
-    "content": "Erdős Problem #238: Does mainConjecture hold? This is the formal statement asking whether arbitrary c₁, c₂ > 0 work.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-238-8",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 87,
-      "endLine": 94
-    },
-    "type": "theorem",
-    "title": "Erdős Partial Result",
-    "content": "For any c₂ > 0, there exists c₁ > 0 (sufficiently small) such that the conjecture holds. This is the known partial result by Erdős.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-238-9",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 96,
-      "endLine": 102
-    },
-    "type": "theorem",
-    "title": "Variant Formulation",
-    "content": "Alternative formulation using neighborhood filters: For any c₂ > 0, for c₁ in a neighborhood of 0, the conjecture holds eventually.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-238-10",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 108,
-      "endLine": 111
-    },
-    "type": "definition",
-    "title": "Maximum Gap",
-    "content": "maxGap(x) is the largest gap between consecutive primes ≤ x. This measures the extremal behavior of prime gaps.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-238-11",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 113,
-      "endLine": 115
-    },
-    "type": "definition",
-    "title": "Maximum Run Length",
-    "content": "maxRunLength(x, c) is the longest run of consecutive primes ≤ x where all gaps exceed c. The conjecture asks if this grows like log x.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-238-12",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 117,
-      "endLine": 121
-    },
-    "type": "theorem",
-    "title": "Equivalent Formulation",
-    "content": "The conjecture is equivalent to: maxRunLength(x, ⌈c₂⌉) > c₁·log(x) eventually. This reformulates in terms of the run length function.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-238-13",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 127,
-      "endLine": 129
-    },
-    "type": "concept",
-    "title": "Cramér's Conjecture",
-    "content": "Cramér conjectured maxGap(x) ~ (log x)². This would imply most gaps are much smaller than log x, supporting the existence of large-gap runs.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-238-14",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 131,
-      "endLine": 133
-    },
-    "type": "concept",
-    "title": "Average Gap",
-    "content": "By the Prime Number Theorem, the average gap between primes near x is ~log(x). Since c₂ is constant, most gaps exceed c₂ for large x.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-238-15",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 135,
-      "endLine": 139
-    },
-    "type": "theorem",
-    "title": "Existence of Large Gaps",
-    "content": "Trivially, at least one gap ≤ x exceeds c₂ for large x. The conjecture asks for LONG runs of such gaps.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-238-16",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 145,
-      "endLine": 148
-    },
-    "type": "concept",
-    "title": "Probabilistic Heuristic",
-    "content": "Heuristically, most gaps exceed c₂ with high probability for large x. The probability of k consecutive large gaps is ~(1-o(1))^k, suggesting runs of length ~log x should exist.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-238-17",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 150,
-      "endLine": 151
-    },
-    "type": "concept",
-    "title": "Open Question",
-    "content": "The key open question: Can we achieve any c₁ > 0, or only sufficiently small c₁? Erdős proved small c₁ works; general c₁ is open.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-238-18",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 157,
-      "endLine": 159
-    },
-    "type": "definition",
-    "title": "Prime Counting Function",
-    "content": "π(x) counts primes ≤ x. The Prime Number Theorem states π(x) ~ x/log(x), governing the density of primes.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-238-19",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 161,
-      "endLine": 163
-    },
-    "type": "theorem",
-    "title": "Prime Number Theorem",
-    "content": "PNT: π(x) ~ x/log(x). This fundamental result determines the average spacing of primes and is key context for gap questions.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-238-20",
-    "proofId": "erdos-238",
-    "range": {
-      "startLine": 77,
-      "endLine": 102
-    },
-    "type": "concept",
-    "title": "Problem Status",
-    "content": "Erdős Problem #238: OPEN for general c₁, c₂ > 0. SOLVED for small c₁ (Erdős). The gap between partial and full result remains to be closed.",
-    "significance": "critical"
+    "type": "context",
+    "range": { "startLine": 193, "endLine": 210 },
+    "title": "Heuristic Analysis",
+    "content": "For large x, most gaps exceed c₂ since average gap ~log(x) → ∞. The probability of k consecutive large gaps is ~(1-o(1))^k, suggesting runs of length c₁·log(x) should exist.",
+    "mathContext": "large_gaps_common: ∀ c₂ > 0, ∀ᶠ x, (fraction of gaps > c₂) → 1. Heuristic: P(k consecutive large gaps) ≈ (1-o(1))^k.",
+    "significance": "supporting",
+    "relatedConcepts": ["probabilistic heuristic", "independence assumption", "random model"]
   }
 ]

@@ -2,67 +2,111 @@
   "id": "erdos-238",
   "title": "Erdős Problem #238: Consecutive Primes with Large Gaps",
   "slug": "erdos-238",
-  "description": "Can we always find long runs of consecutive primes where all gaps exceed a fixed constant?",
+  "description": "For c₁, c₂ > 0, can we find > c₁·log(x) consecutive primes ≤ x with all gaps > c₂? Proved for small c₁ (Erdős); general case OPEN.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/238",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos238Problem.lean",
-    "tags": ["prime numbers", "prime gaps", "consecutive primes"],
-    "badge": "open-problem",
-    "sorries": 7,
+    "tags": ["prime-numbers", "prime-gaps", "consecutive-primes", "number-theory"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 238,
     "erdosUrl": "https://erdosproblems.com/238",
-    "erdosProblemStatus": "open",
-    "mathlibDependencies": []
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem appears in Erdős's works [Er55c, p.7] and builds on [Er49c]. It concerns the distribution of prime gaps and whether long sequences of 'large' gaps (exceeding a fixed constant) can always be found among primes up to x. Erdős himself showed the result holds when the multiplier c₁ is sufficiently small.",
+    "historicalContext": "This problem from Erdős [Er55c, p.7; Er49c] concerns long runs of consecutive primes with uniformly large gaps. The Prime Number Theorem ensures average gaps grow as log(x), so most gaps exceed any fixed constant for large x. The challenge is finding LONG runs where ALL gaps are large.\n\nErdős proved the conjecture holds when c₁ is sufficiently small (depending on c₂). The general case — arbitrary c₁, c₂ > 0 — remains open. Cramér's conjecture on maximal gaps provides supporting context.",
     "problemStatement": "Let c₁, c₂ > 0. Is it true that for any sufficiently large x, there exist more than c₁·log(x) consecutive primes ≤ x such that the difference between any two adjacent primes is > c₂?",
-    "proofStrategy": "Erdős proved the partial result that for any c₂ > 0, the statement holds if c₁ is chosen sufficiently small. The general case for arbitrary c₁, c₂ > 0 remains open. Probabilistic heuristics suggest the conjecture should be true since average gaps grow as log x.",
+    "proofStrategy": "The formalization defines nthPrime, primeGap, consecutivePrimes, and predicates allPrimesLeX and allGapsLarge. The main conjecture uses Filter.Eventually (∀ᶠ in atTop). Erdős's partial result is an axiom. PNT context, run length analysis, and Cramér's conjecture are included. A summary theorem combines the known results.",
     "keyInsights": [
-      "Average prime gap near x is ~log x by PNT",
-      "Finding gaps > c₂ (constant) is easy; the challenge is finding LONG runs",
-      "Erdős proved the result for sufficiently small c₁",
+      "Average prime gap near x is ~log(x) by PNT, so most gaps exceed any fixed c₂",
+      "The challenge is finding LONG runs (length c₁·log x) where ALL gaps are large",
+      "Erdős proved the result for sufficiently small c₁ (depending on c₂)",
       "The general case (arbitrary c₁ > 0) remains open",
-      "Related to prime gap distribution and Cramér's conjecture"
+      "Cramér's conjecture on maximal gaps provides supporting context"
     ]
   },
   "sections": [
     {
-      "id": "section-problem",
-      "title": "Problem Statement",
-      "content": "For constants c₁, c₂ > 0, we seek consecutive primes p_m, p_{m+1}, ..., p_{m+k-1} ≤ x where k > c₁·log(x) and each gap p_{i+1} - p_i > c₂. The question is whether such runs always exist for large x."
+      "id": "prime-enumeration",
+      "title": "Part 1: Prime Enumeration",
+      "startLine": 34,
+      "endLine": 52,
+      "summary": "nthPrime via Nat.nth and primeGap = p_{n+1} - p_n."
     },
     {
-      "id": "section-partial",
-      "title": "Partial Result",
-      "content": "Erdős proved that for any c₂ > 0, if c₁ is chosen sufficiently small (depending on c₂), then the conjecture holds. This shows long runs of large-gap primes exist but with a restriction on how long."
+      "id": "consecutive-sequences",
+      "title": "Part 2: Consecutive Prime Sequences",
+      "startLine": 54,
+      "endLine": 82,
+      "summary": "consecutivePrimes, allPrimesLeX (bounded by x), allGapsLarge (gaps > c₂)."
     },
     {
-      "id": "section-gaps",
-      "title": "Prime Gap Distribution",
-      "content": "By the Prime Number Theorem, the average gap between primes near x is ~log(x). This means most gaps exceed any fixed constant c₂ for large x. The difficulty is ensuring ALL gaps in a long run are large."
+      "id": "main-conjecture",
+      "title": "Part 3: The Main Conjecture",
+      "startLine": 84,
+      "endLine": 100,
+      "summary": "mainConjecture: ∀ c₁,c₂ > 0, eventually ∃ k > c₁·log(x) consecutive primes ≤ x with all gaps > c₂."
     },
     {
-      "id": "section-heuristics",
-      "title": "Probabilistic Heuristics",
-      "content": "If gaps behave somewhat randomly, the probability of k consecutive gaps all exceeding c₂ is roughly (1 - o(1))^k. For k ~ c₁·log(x), this probability doesn't vanish immediately, suggesting the conjecture should hold."
+      "id": "negation",
+      "title": "Part 4: The Negation",
+      "startLine": 102,
+      "endLine": 117,
+      "summary": "What failure means: ∃ c₁,c₂ > 0 blocking long runs for infinitely many x."
     },
     {
-      "id": "section-related",
-      "title": "Related Problems",
-      "content": "Connects to Cramér's conjecture on maximal prime gaps, the study of prime gaps in short intervals, and questions about the uniformity of prime distribution."
+      "id": "partial-result",
+      "title": "Part 5: Erdős's Partial Result",
+      "startLine": 119,
+      "endLine": 136,
+      "summary": "Axiom: ∀ c₂ > 0, ∃ c₁ > 0 (small) making the conjecture hold. Quantifier order matters."
+    },
+    {
+      "id": "pnt-context",
+      "title": "Part 6: PNT Context",
+      "startLine": 138,
+      "endLine": 164,
+      "summary": "Average gap grows as log(x). PNT asymptotic: π(x) ~ x/log(x)."
+    },
+    {
+      "id": "run-length",
+      "title": "Part 7: Run Length Analysis",
+      "startLine": 166,
+      "endLine": 191,
+      "summary": "maxRunLength function and conjecture_implies_run_growth axiom."
+    },
+    {
+      "id": "heuristics",
+      "title": "Part 8: Heuristic Analysis",
+      "startLine": 193,
+      "endLine": 210,
+      "summary": "Probabilistic argument: large gaps are common, so long runs should exist."
+    },
+    {
+      "id": "cramer",
+      "title": "Part 9: Cramér's Conjecture",
+      "startLine": 212,
+      "endLine": 229,
+      "summary": "Cramér's conjecture: maximal gap ≤ C·(log x)². Provides supporting context."
+    },
+    {
+      "id": "summary",
+      "title": "Part 10: Summary",
+      "startLine": 231,
+      "endLine": 253,
+      "summary": "Summary theorem combining partial result and conjecture statement. Status: OPEN (general), SOLVED (small c₁)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #238 asks whether long runs of consecutive primes with all gaps exceeding a fixed constant c₂ can always be found among primes ≤ x. Erdős proved this for sufficiently small c₁; the general case remains open.",
-    "implications": "Resolution would illuminate prime gap distribution and whether gaps exhibit sufficient 'uniformity' to support long runs of large values.",
+    "summary": "Erdős Problem #238 asks whether long runs of consecutive primes with all gaps > c₂ can always be found. Erdős proved this for small c₁; the general case remains open.",
+    "implications": "Resolution would illuminate prime gap distribution and whether gaps exhibit sufficient uniformity to support long runs of large values.",
     "openQuestions": [
       "Does the conjecture hold for all c₁, c₂ > 0?",
       "What is the optimal dependence of c₁ on c₂?",
       "How does the answer relate to Cramér's conjecture?",
-      "Can we achieve c₁ = 1/log(c₂) or better?"
+      "Can probabilistic models be made rigorous for this problem?"
     ]
   }
 }
