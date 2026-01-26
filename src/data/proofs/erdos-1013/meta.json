@@ -1,0 +1,74 @@
+{
+  "id": "erdos-1013",
+  "title": "Triangle-Free Chromatic Threshold",
+  "slug": "erdos-1013",
+  "description": "Let h₃(k) be the smallest n with a triangle-free graph on n vertices of chromatic number k. Find the asymptotic formula. Known: (1/2 − o(1))k² log k ≤ h₃(k) ≤ (1 + o(1))k² log k. Is h₃(k+1)/h₃(k) → 1?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1013",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1013Problem.lean",
+    "tags": [
+      "graph theory",
+      "chromatic number",
+      "triangle-free graphs",
+      "Mycielski construction"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 1013,
+    "erdosUrl": "https://erdosproblems.com/1013",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Mycielski (1955) showed triangle-free graphs of arbitrarily high chromatic number exist. Graver and Yackel (1968) gave the first quantitative lower bound. The asymptotic behavior h₃(k) ~ Θ(k² log k) is known, but the constant factor remains open.",
+    "problemStatement": "Find an asymptotic formula for h₃(k). Is h₃(k+1)/h₃(k) → 1?",
+    "proofStrategy": "We formalize triangle-free graphs, proper colorings, chromatic number, h₃(k), the main conjecture, known bounds, and small cases via Mycielski graphs.",
+    "keyInsights": [
+      "Lower bound (1/2 − o(1))k² log k from probabilistic arguments",
+      "Upper bound (1 + o(1))k² log k from explicit constructions",
+      "The constant factor in the asymptotic is between 1/2 and 1",
+      "Mycielski's construction gives finite h₃(k) for all k",
+      "h₃(3) = 5 (C₅), h₃(4) = 11 (Grötzsch graph)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 48,
+      "summary": "Defines triangle-free graphs, proper colorings, chromatic number, and h₃(k)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 50,
+      "endLine": 64,
+      "summary": "Asymptotic formula h₃(k) ~ c·k²·log k and ratio convergence h₃(k+1)/h₃(k) → 1."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 66,
+      "endLine": 87,
+      "summary": "Lower bound (1/2 − o(1))k² log k, upper bound (1 + o(1))k² log k, and Graver–Yackel (1968)."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 89,
+      "endLine": 119,
+      "summary": "Monotonicity, small cases h₃(1)=1, h₃(2)=2, h₃(3)=5, h₃(4)=11, and Mycielski's construction."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #1013 on the triangle-free chromatic threshold h₃(k). The constant in h₃(k) ~ c·k²·log k is known to lie in [1/2, 1] but its exact value remains open.",
+    "implications": "Determining the constant would resolve a fundamental question about the interplay between local structure (triangle-freeness) and global structure (chromatic number).",
+    "openQuestions": [
+      "What is the exact asymptotic constant c in h₃(k) ~ c·k² log k?",
+      "Is h₃(k+1)/h₃(k) → 1?",
+      "What about the K_r-free generalization h_r(k)? (Problem #920)"
+    ]
+  }
+}

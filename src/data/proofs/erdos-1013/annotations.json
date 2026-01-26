@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-1013-ann-trianglefree",
+    "proofId": "erdos-1013",
+    "range": { "startLine": 31, "endLine": 33 },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "A graph containing no clique of size 3. The local constraint that makes high chromatic number require many vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1013-ann-threshold",
+    "proofId": "erdos-1013",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "h₃(k) — Chromatic Threshold",
+    "content": "The smallest n with a triangle-free graph on n vertices of chromatic number ≥ k. The central quantity of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1013-ann-asymptotic",
+    "proofId": "erdos-1013",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "theorem",
+    "title": "Asymptotic Conjecture",
+    "content": "h₃(k) ~ c·k²·log k for some constant c. The bounds give c ∈ [1/2, 1].",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-1013-ann-ratio",
+    "proofId": "erdos-1013",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "theorem",
+    "title": "Ratio Convergence",
+    "content": "h₃(k+1)/h₃(k) → 1: the threshold grows smoothly without large jumps between consecutive chromatic numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1013-ann-lower",
+    "proofId": "erdos-1013",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "theorem",
+    "title": "Lower Bound: (1/2 − o(1))k² log k",
+    "content": "No triangle-free graph on fewer than ~k²·log k/2 vertices can have chromatic number k.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1013-ann-upper",
+    "proofId": "erdos-1013",
+    "range": { "startLine": 75, "endLine": 78 },
+    "type": "theorem",
+    "title": "Upper Bound: (1 + o(1))k² log k",
+    "content": "Explicit triangle-free graph constructions achieve chromatic number k on ~k²·log k vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1013-ann-mycielski",
+    "proofId": "erdos-1013",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "theorem",
+    "title": "Mycielski's Construction",
+    "content": "For every k ≥ 2, triangle-free graphs of chromatic number k exist. The Mycielski graphs M_k give h₃(3)=5, h₃(4)=11.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-1013-ann-small",
+    "proofId": "erdos-1013",
+    "range": { "startLine": 101, "endLine": 108 },
+    "type": "concept",
+    "title": "Small Cases",
+    "content": "h₃(1)=1, h₃(2)=2, h₃(3)=5 (C₅), h₃(4)=11 (Grötzsch graph). OEIS A292528.",
+    "significance": "supporting"
+  }
+]
