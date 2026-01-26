@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-234-gap-defs",
+    "proofId": "erdos-234",
+    "type": "definition",
+    "range": { "startLine": 32, "endLine": 56 },
+    "title": "Prime Gap and Density Definitions",
+    "content": "nthPrime uses Nat.nth to enumerate primes. primeGap computes p_{n+1}-p_n. normalizedGap divides by log n. countSmallNormGaps and gapProportion measure the proportion below a threshold c.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-234-conjecture",
+    "proofId": "erdos-234",
+    "type": "conjecture",
+    "range": { "startLine": 62, "endLine": 76 },
+    "title": "Erdős Problem 234",
+    "content": "For every c ≥ 0, the density f(c) = lim #{n ≤ N : g_n/log n < c}/N exists and defines a continuous function. This combines existence of the limit with continuity of the resulting function.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-234-basic-props",
+    "proofId": "erdos-234",
+    "type": "result",
+    "range": { "startLine": 82, "endLine": 121 },
+    "title": "Basic Properties of the Density",
+    "content": "normalizedGap_nonneg proves gaps are non-negative. countSmallNormGaps_zero and gapProportion_zero prove no gaps lie below 0. density_at_zero shows f(0)=0. Monotonicity and convergence to 1 are axiomatized.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-234-cramer",
+    "proofId": "erdos-234",
+    "type": "definition",
+    "range": { "startLine": 128, "endLine": 141 },
+    "title": "Cramér's Exponential Model",
+    "content": "cramerPrediction defines f(c) = 1 - e^{-c} for c ≥ 0, following Cramér's 1936 probabilistic model for prime gaps. Continuity of the exponential part is proved; full continuity of the piecewise function is axiomatized.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-234-gallagher",
+    "proofId": "erdos-234",
+    "type": "result",
+    "range": { "startLine": 149, "endLine": 165 },
+    "title": "Gallagher's Conditional Result",
+    "content": "Gallagher (1976) showed that under the Riemann Hypothesis, normalized prime gaps follow the exponential distribution. gallagher_implies_conjecture proves this implies the full ErdosProblem234.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-234-partial",
+    "proofId": "erdos-234",
+    "type": "result",
+    "range": { "startLine": 172, "endLine": 183 },
+    "title": "Partial Results on Gap Distribution",
+    "content": "Three axiomatized results: small_gaps_exist (infinitely many gaps below (1+ε)log p), large_gaps_exist (unbounded normalized gaps, by Rankin–Maynard), and average_normalized_gap tending to 1 by PNT.",
+    "significance": "supporting"
+  }
+]

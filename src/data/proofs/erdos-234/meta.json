@@ -1,0 +1,89 @@
+{
+  "id": "erdos-234",
+  "title": "Erdős Problem #234: Density of Normalized Prime Gaps",
+  "slug": "erdos-234",
+  "description": "For every c ≥ 0, the density f(c) of integers n for which (p_{n+1} - p_n)/log n < c exists and is a continuous function of c. Gallagher showed this holds under RH with exponential distribution. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/234",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos234Problem.lean",
+    "tags": ["number-theory", "prime-gaps", "density-functions", "distribution"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 234,
+    "erdosUrl": "https://erdosproblems.com/234",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether the density of integers n with normalized prime gap (p_{n+1}-p_n)/log n < c exists and is continuous. Cramér's 1936 probabilistic model predicts an exponential distribution f(c) = 1 - e^{-c}. Gallagher (1976) proved this holds conditional on the Riemann Hypothesis. The unconditional question remains open. Related to Problem 233 (sum of squared gaps) and Problem 5 (large prime gaps).",
+    "problemStatement": "For every c ≥ 0, does the density f(c) = lim_{N→∞} #{n ≤ N : (p_{n+1}-p_n)/log n < c}/N exist, and is f continuous?",
+    "proofStrategy": "We define nthPrime, primeGap, normalizedGap, and gapProportion. The conjecture ErdosProblem234 asserts both existence and continuity. We prove basic properties (f(0)=0, non-negativity) and define Cramér's exponential prediction. Gallagher's conditional result is axiomatized, and we prove it implies the full conjecture. Partial results on small gaps, large gaps, and average gap are stated.",
+    "keyInsights": [
+      "Cramér's model predicts exponential distribution f(c) = 1 - e^{-c} for normalized prime gaps",
+      "Gallagher (1976) proved the conjecture conditional on the Riemann Hypothesis",
+      "Basic properties f(0)=0, monotonicity, and f→1 as c→∞ are formalized",
+      "The unconditional existence of the density remains the key open question"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 32,
+      "endLine": 44,
+      "summary": "Defines nthPrime via Nat.nth, primeGap as the difference of consecutive primes, and normalizedGap as g_n/log n."
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions",
+      "startLine": 46,
+      "endLine": 56,
+      "summary": "Defines countSmallNormGaps and gapProportion to compute the proportion of integers with normalized gap below a threshold."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 58,
+      "endLine": 76,
+      "summary": "States ErdosProblem234: for all c ≥ 0 the density limit exists, and the resulting function is continuous."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 78,
+      "endLine": 121,
+      "summary": "Proves f(0)=0 via non-negativity of normalized gaps. Axiomatizes monotonicity and convergence to 1 at infinity."
+    },
+    {
+      "id": "cramer-model",
+      "title": "Cramér's Model",
+      "startLine": 123,
+      "endLine": 141,
+      "summary": "Defines Cramér's exponential prediction f(c) = 1 - e^{-c}, proves continuity of the exponential part, and axiomatizes full continuity and CDF validity."
+    },
+    {
+      "id": "gallagher-result",
+      "title": "Gallagher's Conditional Result",
+      "startLine": 143,
+      "endLine": 165,
+      "summary": "Axiomatizes Gallagher's 1976 theorem and proves that RH implies the full ErdosProblem234 conjecture."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results on Gap Distribution",
+      "startLine": 167,
+      "endLine": 183,
+      "summary": "Axiomatizes existence of small gaps (ε-close to log p), large gaps (unbounded normalized gaps), and the average normalized gap tending to 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 234 asks whether the density of normalized prime gaps exists and is continuous. Cramér's model predicts exponential distribution, and Gallagher proved this conditional on RH. The unconditional problem remains open.",
+    "implications": "Resolution would connect prime gap distribution theory to classical analytic number theory and clarify whether the Cramér model correctly describes prime gap statistics.",
+    "openQuestions": [
+      "Does the density f(c) exist unconditionally for all c ≥ 0?",
+      "Is f(c) = 1 - e^{-c} the true density (matching Cramér's prediction)?",
+      "Can the Gallagher conditional result be made unconditional?"
+    ]
+  }
+}
