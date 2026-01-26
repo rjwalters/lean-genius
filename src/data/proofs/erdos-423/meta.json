@@ -1,0 +1,97 @@
+{
+  "id": "erdos-423",
+  "title": "Erdős Problem #423: Sums of Consecutive Terms Sequence",
+  "slug": "erdos-423",
+  "description": "Let a₁=1, a₂=2. For k≥3, aₖ is the least integer > a_{k-1} that is a sum of at least two consecutive terms. What is the asymptotic behaviour? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/423",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos423Problem.lean",
+    "tags": [
+      "number-theory",
+      "sequences",
+      "additive-combinatorics",
+      "asymptotics",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 423,
+    "erdosUrl": "https://erdosproblems.com/423",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #423 from [Er77c, p.71] defines a greedy sequence where each new term must be a sum of at least two consecutive earlier terms. Credited to Hofstadter's inspiration from a similar Ulam-type question. Recent progress by Bolan and Tang (2024-2025) shows the excess a(n)-n is nondecreasing and unbounded, and infinitely many integers are missing from the sequence. OEIS A005243.",
+    "problemStatement": "Let a₁=1, a₂=2. For k≥3, aₖ is the least integer > a_{k-1} which is the sum of at least two consecutive terms a_i + a_{i+1} + ... + a_j for some i ≤ j < k. What is the asymptotic behaviour of this sequence? OPEN.",
+    "proofStrategy": "The formalization defines the sequence (noncomputable), the consecutive sum property, initial values, growth properties (excess nondecreasing and unbounded), missing numbers (infinitely many), and asymptotic questions (convergence of a(n)/n, density). The known results theorem erdos_423_known is proved from axioms.",
+    "keyInsights": [
+      "Each term is the smallest integer exceeding the previous that equals a sum of consecutive earlier terms",
+      "The sequence grows strictly faster than linearly: a(n) - n is unbounded (Bolan, Tang)",
+      "Infinitely many integers are missing, with 4 being the first",
+      "The asymptotic growth rate and density of the sequence are unknown",
+      "Related to Ulam-type sequence constructions (Problem #342)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Part I: The Sequence Definition",
+      "startLine": 33,
+      "endLine": 43,
+      "summary": "Defines consSeq: ℕ → ℕ with initial values 1, 2. Axiom: strict monotonicity."
+    },
+    {
+      "id": "consecutive-sum",
+      "title": "Part II: Consecutive Sum Property",
+      "startLine": 45,
+      "endLine": 64,
+      "summary": "Defines consecutiveSum and IsConsecutiveSum. Axioms: consSeq_is_consecutive_sum and consSeq_minimal."
+    },
+    {
+      "id": "initial-values",
+      "title": "Part III: Known Initial Values",
+      "startLine": 66,
+      "endLine": 78,
+      "summary": "Axiom consSeq_values: first 8 terms (1,2,3,5,6,8,10,11). Axioms: verify_three, verify_five."
+    },
+    {
+      "id": "growth",
+      "title": "Part IV: Growth Properties",
+      "startLine": 80,
+      "endLine": 93,
+      "summary": "Axioms: consSeq_lower_bound (a(n) ≥ n+1), excess_nondecreasing, excess_unbounded (Bolan, Tang)."
+    },
+    {
+      "id": "missing",
+      "title": "Part V: Missing Numbers",
+      "startLine": 95,
+      "endLine": 108,
+      "summary": "Defines seqRange and missingNumbers. Axioms: infinitely_many_missing, four_is_missing."
+    },
+    {
+      "id": "main-question",
+      "title": "Part VI: The Main Question",
+      "startLine": 110,
+      "endLine": 126,
+      "summary": "Defines ErdosQuestion423_convergence (a(n)/n → C) and ErdosQuestion423_density (density of sequence range)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 128,
+      "endLine": 154,
+      "summary": "Proved: erdos_423_known (combines nondecreasing excess and infinite missing), erdos_423_status (trivial). OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #423 asks about the asymptotic behaviour of a greedy sequence built from sums of consecutive terms. Recent progress shows the excess a(n)-n grows unboundedly and infinitely many integers are missing, but the precise growth rate remains open.",
+    "implications": "Resolution would clarify the structure of greedy sequences defined by consecutive-sum constraints, connecting to additive combinatorics and the theory of Ulam-type sequences.",
+    "openQuestions": [
+      "What is the asymptotic growth rate of a(n)?",
+      "Does a(n)/n converge? If so, to what constant?",
+      "What is the density of the set of integers appearing in the sequence?",
+      "How does this relate to the Ulam sequence (Problem #342)?"
+    ]
+  }
+}
