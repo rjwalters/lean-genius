@@ -1,0 +1,86 @@
+[
+  {
+    "id": "weight-function",
+    "proofId": "erdos-261",
+    "type": "definition",
+    "title": "Weight Function",
+    "content": "The weight function recipPow2Weight(k) = k/2^k maps each positive integer to its contribution in a binary reciprocal sum.",
+    "significance": "critical",
+    "range": {
+      "startLine": 26,
+      "endLine": 28
+    }
+  },
+  {
+    "id": "valid-representation",
+    "proofId": "erdos-261",
+    "type": "definition",
+    "title": "Valid Representation",
+    "content": "A valid representation of n requires a finite set S of at least 2 distinct positive integers whose weight sum equals n/2^n.",
+    "significance": "critical",
+    "range": {
+      "startLine": 34,
+      "endLine": 38
+    }
+  },
+  {
+    "id": "cusick-theorem",
+    "proofId": "erdos-261",
+    "type": "theorem",
+    "title": "Cusick's Infinitude Theorem",
+    "content": "Cusick proved that infinitely many positive integers n admit a representation n/2^n = Σ k/2^k over distinct positive integers.",
+    "significance": "critical",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    }
+  },
+  {
+    "id": "borwein-loring",
+    "proofId": "erdos-261",
+    "type": "theorem",
+    "title": "Borwein–Loring Family",
+    "content": "For every m ≥ 1, the integer n = 2^{m+1} − m − 2 is representable using the consecutive block {n+1,...,n+m}.",
+    "significance": "key",
+    "range": {
+      "startLine": 48,
+      "endLine": 52
+    }
+  },
+  {
+    "id": "computational-verification",
+    "proofId": "erdos-261",
+    "type": "insight",
+    "title": "Computational Verification",
+    "content": "Tengely, Ulas, and Zygadło computationally verified that all n ≤ 10000 are representable, providing strong evidence for the universality conjecture.",
+    "significance": "supporting",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    }
+  },
+  {
+    "id": "universality-conjecture",
+    "proofId": "erdos-261",
+    "type": "concept",
+    "title": "Universality Conjecture",
+    "content": "The stronger form of Erdős Problem 261 conjectures that every positive integer n admits a valid reciprocal power-of-two representation.",
+    "significance": "critical",
+    "range": {
+      "startLine": 66,
+      "endLine": 68
+    }
+  },
+  {
+    "id": "continuum-conjecture",
+    "proofId": "erdos-261",
+    "type": "concept",
+    "title": "Continuum Representations",
+    "content": "Erdős asked whether some rational number admits at least continuum-many (2^ℵ₀) distinct infinite representations as Σ aₖ/2^{aₖ}.",
+    "significance": "key",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    }
+  }
+]
