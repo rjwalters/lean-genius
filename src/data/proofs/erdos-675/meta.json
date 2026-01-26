@@ -1,0 +1,68 @@
+{
+  "id": "erdos-675",
+  "title": "Erdős Problem #675: Translation Property for Number-Theoretic Sets",
+  "slug": "erdos-675",
+  "description": "Does the set of sums of two squares have the translation property? For squarefree numbers, how fast does the minimal translation grow? Brun's sieve establishes the property for squarefree numbers.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/675",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos675Problem.lean",
+    "tags": ["number theory", "sieve theory", "combinatorics"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 675,
+    "erdosUrl": "https://erdosproblems.com/675",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős introduced the translation property in 1979. A set A ⊆ ℕ has this property if for every n, the pattern of A on {1,...,n} repeats at some translate. Elementary sieve theory (Brun's sieve) shows that squarefree numbers have this property, but the question for sums of two squares remains open.",
+    "problemStatement": "Three questions: (1) Does the set of sums of two squares have the translation property? (2) For balanced partitions of primes, can integers with prime factors from one part have this property? (3) For squarefree numbers, does the minimal translation t_n grow exponentially, i.e., t_n > exp(n^c)?",
+    "proofStrategy": "We formalize the translation property, key number-theoretic sets (sums of two squares, squarefree, B-free), and axiomatize Brun's sieve result for B-free sets. The three open conjectures are stated as axioms.",
+    "keyInsights": [
+      "The translation property requires the pattern of A on {1,...,n} to reappear periodically",
+      "Brun's sieve handles sets defined by forbidden divisors with sparse reciprocal sums",
+      "Sums of two squares have density ~C/√(log x) which makes the translation property non-obvious",
+      "The growth rate of minimal translations captures how non-periodic the set is locally"
+    ]
+  },
+  "sections": [
+    {
+      "id": "translation-property",
+      "title": "The Translation Property",
+      "startLine": 20,
+      "endLine": 34,
+      "summary": "Defines the translation property for subsets of ℕ and the minimal translation function."
+    },
+    {
+      "id": "number-theoretic-sets",
+      "title": "Number-Theoretic Sets",
+      "startLine": 36,
+      "endLine": 57,
+      "summary": "Defines sums of two squares, squarefree numbers, B-free sets, pairwise coprimality, and the small reciprocal sum condition."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 59,
+      "endLine": 70,
+      "summary": "Axiomatizes Brun's sieve result and the squarefree translation property."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Erdős Conjectures",
+      "startLine": 72,
+      "endLine": 103,
+      "summary": "States the three open questions: sums of two squares, balanced prime partitions, and squarefree growth rate."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 675 investigates the translation property across different number-theoretic sets. While Brun's sieve settles the case for squarefree numbers, the questions for sums of two squares and balanced prime partitions remain open.",
+    "implications": "A positive answer for sums of two squares would reveal hidden periodic structure in a set whose density decays logarithmically, with implications for additive number theory.",
+    "openQuestions": [
+      "Do sums of two squares have the translation property?",
+      "What is the growth rate of the minimal translation for squarefree numbers?",
+      "Which balanced prime partitions yield smooth sets with the translation property?"
+    ]
+  }
+}
