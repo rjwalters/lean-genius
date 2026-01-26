@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-411-iteration",
+    "proofId": "erdos-411",
+    "type": "definition",
+    "range": { "startLine": 23, "endLine": 29 },
+    "title": "Iteration Function",
+    "content": "totientStep g(n) = n + φ(n) and iteratedTotientStep g_k(n) defined by recursion on k. These capture the iterated application of the totient-shift map.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-411-doubling",
+    "proofId": "erdos-411",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 38 },
+    "title": "Doubling Relation",
+    "content": "DoublingRelation n r asserts g_{k+r}(n) = 2·g_k(n) for all sufficiently large k. This is the core property Erdős asked about.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-411-conjecture",
+    "proofId": "erdos-411",
+    "type": "conjecture",
+    "range": { "startLine": 48, "endLine": 50 },
+    "title": "Erdős Problem 411",
+    "content": "Characterize all pairs (n, r) with the doubling property. The problem is open and cannot be resolved by finite computation.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-411-solutions",
+    "proofId": "erdos-411",
+    "type": "result",
+    "range": { "startLine": 56, "endLine": 73 },
+    "title": "Known Solutions",
+    "content": "For r = 2: n = 10, 94 are solutions. Cambie found ratio-3 (n = 738) and ratio-4 (n = 148646, 4325798) solutions with period r = 4.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-411-steinerberger",
+    "proofId": "erdos-411",
+    "type": "result",
+    "range": { "startLine": 79, "endLine": 83 },
+    "title": "Steinerberger's Reduction",
+    "content": "The r = 2 doubling property is equivalent to the single equation φ(n) + φ(n + φ(n)) = n, reducing an asymptotic condition to a finite check per n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-411-structure",
+    "proofId": "erdos-411",
+    "type": "context",
+    "range": { "startLine": 89, "endLine": 109 },
+    "title": "Structural Properties",
+    "content": "Even inputs stay even under g (proved). Cambie conjectures all r = 2 solutions are n = 2^l · p for p ∈ {2,3,5,7,35,47}. The function g is monotone increasing.",
+    "significance": "supporting"
+  }
+]
