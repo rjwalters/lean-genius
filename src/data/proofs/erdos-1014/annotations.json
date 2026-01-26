@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ramsey-number",
+    "proofId": "erdos-1014",
+    "range": { "startLine": 27, "endLine": 28 },
+    "type": "definition",
+    "title": "Ramsey Number R(k,l)",
+    "content": "The Ramsey number R(k,l) is the minimum n such that every 2-coloring of K_n's edges contains a red K_k or blue K_l. Axiomatized here since a constructive definition would require significant graph-theoretic machinery.",
+    "significance": "high"
+  },
+  {
+    "id": "ramsey-symmetry",
+    "proofId": "erdos-1014",
+    "range": { "startLine": 34, "endLine": 34 },
+    "type": "theorem",
+    "title": "Ramsey Symmetry",
+    "content": "R(k,l) = R(l,k) follows from swapping red and blue in any 2-coloring. This symmetry means the ratio convergence question is symmetric in which parameter grows.",
+    "significance": "medium"
+  },
+  {
+    "id": "erdos-szekeres",
+    "proofId": "erdos-1014",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "theorem",
+    "title": "Erdős–Szekeres Upper Bound",
+    "content": "R(k,l) ≤ C(k+l-2, k-1), the foundational 1935 result. For fixed k, this gives R(k,l) ≤ c_k · l^(k-1), establishing polynomial growth in l.",
+    "significance": "medium"
+  },
+  {
+    "id": "ramsey-monotone",
+    "proofId": "erdos-1014",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "theorem",
+    "title": "Monotonicity",
+    "content": "R(k,l) ≤ R(k,l+1): requiring a larger independent set can only increase the Ramsey number. This ensures the ratio R(k,l+1)/R(k,l) ≥ 1.",
+    "significance": "medium"
+  },
+  {
+    "id": "r3-tight-bounds",
+    "proofId": "erdos-1014",
+    "range": { "startLine": 54, "endLine": 60 },
+    "type": "theorem",
+    "title": "Tight Bounds for R(3,l)",
+    "content": "R(3,l) is Θ(l²/log l). The lower bound is due to Kim (1995) via the triangle-free process; the upper bound to Ajtai–Komlós–Szemerédi (1980). Even with this tight characterization, the ratio convergence for k=3 remains open.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-1014",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "conjecture",
+    "title": "Ratio Convergence Conjecture",
+    "content": "For fixed k ≥ 3, R(k,l+1)/R(k,l) → 1 as l → ∞. This asserts smooth, regular growth of Ramsey numbers. The conjecture is open even for the best-understood case k=3.",
+    "significance": "high"
+  },
+  {
+    "id": "from-asymptotics",
+    "proofId": "erdos-1014",
+    "range": { "startLine": 71, "endLine": 76 },
+    "type": "theorem",
+    "title": "Ratio from Asymptotics",
+    "content": "If R(k,l) ~ c_k · l^(k-1)/(log l)^(k-2), then R(k,l+1)/R(k,l) = ((l+1)/l)^(k-1) · (log l/log(l+1))^(k-2) → 1. The conjecture thus follows from any power-law asymptotic with the same exponent.",
+    "significance": "high"
+  },
+  {
+    "id": "ramsey-k2",
+    "proofId": "erdos-1014",
+    "range": { "startLine": 90, "endLine": 90 },
+    "type": "theorem",
+    "title": "Trivial Case k=2",
+    "content": "R(2,l) = l since K_l always contains an edge (red K_2) or has l independent vertices (blue K_l). The ratio (l+1)/l → 1 trivially, so the question is interesting only for k ≥ 3.",
+    "significance": "medium"
+  }
+]
