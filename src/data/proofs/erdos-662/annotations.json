@@ -1,0 +1,56 @@
+[
+  {
+    "id": "separated",
+    "proofId": "erdos-662",
+    "range": { "startLine": 31, "endLine": 34 },
+    "type": "definition",
+    "title": "1-Separated Set",
+    "content": "A point set is 1-separated if all pairwise distances are at least 1. This is equivalent to requiring that unit disks centered at the points are non-overlapping.",
+    "significance": "high"
+  },
+  {
+    "id": "pairs-within",
+    "proofId": "erdos-662",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "Pairs Within Distance",
+    "content": "The count of unordered pairs (i,j) with d(xᵢ,xⱼ) ≤ t in a 1-separated point set. This is the quantity conjectured to be maximized by the triangular lattice.",
+    "significance": "high"
+  },
+  {
+    "id": "lattice-optimal",
+    "proofId": "erdos-662",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "conjecture",
+    "title": "Triangular Lattice Optimality",
+    "content": "Among all 1-separated n-point sets in ℝ², the triangular lattice maximizes the number of pairs at distance ≤ t for each t ≥ 1.",
+    "significance": "high"
+  },
+  {
+    "id": "lattice-values",
+    "proofId": "erdos-662",
+    "range": { "startLine": 54, "endLine": 59 },
+    "type": "note",
+    "title": "Known Lattice Values",
+    "content": "The triangular lattice has f(1) = 6 nearest neighbors, f(√3) = 12 within distance √3, and f(3) = 18 within distance 3. These are the coordination shells.",
+    "significance": "high"
+  },
+  {
+    "id": "hexagonal",
+    "proofId": "erdos-662",
+    "range": { "startLine": 63, "endLine": 66 },
+    "type": "note",
+    "title": "Hexagonal Packing Connection",
+    "content": "The triangular lattice gives the densest packing of unit disks in ℝ² (Thue 1910, Tóth 1940). This problem extends the optimality to pair distance counting.",
+    "significance": "medium"
+  },
+  {
+    "id": "caveat",
+    "proofId": "erdos-662",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "note",
+    "title": "Problem Statement Caveat",
+    "content": "The original problem as written on erdosproblems.com contains at least one typo. The formalization follows the most natural mathematical interpretation.",
+    "significance": "medium"
+  }
+]
