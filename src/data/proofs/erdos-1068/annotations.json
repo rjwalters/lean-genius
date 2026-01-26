@@ -1,0 +1,56 @@
+[
+  {
+    "id": "inf-connected",
+    "proofId": "erdos-1068",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "definition",
+    "title": "Infinitely Vertex-Connected",
+    "content": "A graph is infinitely vertex-connected if any two vertices are joined by infinitely many pairwise internally-disjoint paths. This is a very strong connectivity requirement.",
+    "significance": "high"
+  },
+  {
+    "id": "main-question",
+    "proofId": "erdos-1068",
+    "range": { "startLine": 58, "endLine": 63 },
+    "type": "conjecture",
+    "title": "Countable Subgraph Question",
+    "content": "Does every graph with chromatic number ℵ₁ contain a countable subgraph that is infinitely vertex-connected? The answer is unknown.",
+    "significance": "high"
+  },
+  {
+    "id": "soukup",
+    "proofId": "erdos-1068",
+    "range": { "startLine": 67, "endLine": 75 },
+    "type": "note",
+    "title": "Soukup's Counterexample (2015)",
+    "content": "Soukup constructed a graph with uncountable chromatic number where every uncountable vertex set is only finitely vertex-connected. This shows the question is subtle — it's specifically about countable subgraphs.",
+    "significance": "high"
+  },
+  {
+    "id": "bowler-pikhurko",
+    "proofId": "erdos-1068",
+    "range": { "startLine": 77, "endLine": 79 },
+    "type": "note",
+    "title": "Bowler–Pikhurko (2024)",
+    "content": "Bowler and Pikhurko simplified Soukup's construction and described Problem #1068 as a version of the Erdős–Hajnal problem about chromatic number forcing structure.",
+    "significance": "medium"
+  },
+  {
+    "id": "erdos-hajnal",
+    "proofId": "erdos-1068",
+    "range": { "startLine": 83, "endLine": 87 },
+    "type": "note",
+    "title": "Erdős–Hajnal Connection",
+    "content": "Problem #1068 is a variant of the Erdős–Hajnal problem (#1067) about what substructures are forced by uncountable chromatic number. The original asks about general structural consequences.",
+    "significance": "high"
+  },
+  {
+    "id": "set-theory",
+    "proofId": "erdos-1068",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "note",
+    "title": "Set-Theoretic Aspects",
+    "content": "The answer may depend on set-theoretic axioms beyond ZFC. Problems involving uncountable chromatic numbers often have set-theoretic independence results.",
+    "significance": "medium"
+  }
+]
