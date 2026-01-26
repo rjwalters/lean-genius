@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-700-ann-1",
+    "proofId": "erdos-700",
+    "range": { "startLine": 28, "endLine": 40 },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "We define largestPrimeFactor P(n) and smallestPrimeFactor p(n) using Finset operations and Nat.minFac, then axiomatize fBinom(n) = min_{1 < k ≤ n/2} gcd(n, C(n,k)). The axiomatization avoids sorry in the nonemptiness proof of the minimization range.",
+    "significance": "These are the building blocks for stating all bounds and open questions about f(n)."
+  },
+  {
+    "id": "erdos-700-ann-2",
+    "proofId": "erdos-700",
+    "range": { "startLine": 42, "endLine": 50 },
+    "type": "bounds",
+    "title": "Basic Sandwich Bounds",
+    "content": "The function f(n) satisfies p(n) ≤ f(n) ≤ n/P(n) for composite n ≥ 2, where p(n) is the smallest prime factor and P(n) the largest. This follows from properties of binomial coefficients and Kummer's theorem on p-adic valuations.",
+    "significance": "The sandwich p(n) ≤ f(n) ≤ n/P(n) frames all three open questions: when is the upper bound tight, can f be close to √n, and how fast does f grow?"
+  },
+  {
+    "id": "erdos-700-ann-3",
+    "proofId": "erdos-700",
+    "range": { "startLine": 52, "endLine": 59 },
+    "type": "result",
+    "title": "Semiprime and n=30 Equalities",
+    "content": "For semiprimes n = pq (p ≤ q both prime), f(pq) = p = n/P(n), achieving the upper bound. The example f(30) = 6 = 30/5 shows this also holds for some non-semiprimes (30 = 2·3·5).",
+    "significance": "Semiprimes provide the simplest exact computation. The n=30 case shows the characterization problem (Question 1) is nontrivial beyond semiprimes."
+  },
+  {
+    "id": "erdos-700-ann-4",
+    "proofId": "erdos-700",
+    "range": { "startLine": 61, "endLine": 67 },
+    "type": "conjecture",
+    "title": "Question 1: Characterization of f(n) = n/P(n)",
+    "content": "Which composite n satisfy f(n) = n/P(n)? Known examples are semiprimes pq and n = 30. The placeholder axiom marks this as an open characterization problem.",
+    "significance": "A full characterization would reveal when binomial coefficients are maximally divisible by n, connecting to the structure of prime factorizations."
+  },
+  {
+    "id": "erdos-700-ann-5",
+    "proofId": "erdos-700",
+    "range": { "startLine": 69, "endLine": 78 },
+    "type": "conjecture",
+    "title": "Question 2: Infinitely Many n with f(n) > √n",
+    "content": "f(p²) ≥ p = √(p²) shows Question 2 holds for prime squares. The open question is whether there are infinitely many composite n (not just prime squares) with f(n) > √n.",
+    "significance": "A positive answer would show f(n) can be surprisingly large relative to n, far exceeding the smallest prime factor for infinitely many n."
+  },
+  {
+    "id": "erdos-700-ann-6",
+    "proofId": "erdos-700",
+    "range": { "startLine": 80, "endLine": 85 },
+    "type": "conjecture",
+    "title": "Question 3: Upper Bound Conjecture",
+    "content": "Is f(n) ≪_A n/(log n)^A for every fixed A > 0? This would mean f(n) is much smaller than n/P(n) for most composite n, since P(n) is typically around log n.",
+    "significance": "This conjecture connects to the distribution of prime factors and would quantify how far f(n) is from its upper bound for typical composite numbers."
+  }
+]

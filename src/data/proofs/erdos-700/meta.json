@@ -1,0 +1,77 @@
+{
+  "id": "erdos-700",
+  "title": "Erdős Problem #700: GCD of n with Binomial Coefficients",
+  "slug": "erdos-700",
+  "description": "Study f(n) = min_{1<k≤n/2} gcd(n, C(n,k)). When does f(n) = n/P(n)? Are there ∞ many n with f(n) > √n? Is f(n) ≪ n/(log n)^A? Known: f(pq) = p, f(p²) ≥ p. Open.",
+  "meta": {
+    "erdosNumber": 700,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "gcd",
+      "open"
+    ],
+    "references": [
+      "Erdős–Szekeres: original problem",
+      "f(pq) = p for semiprimes",
+      "f(30) = 6",
+      "https://erdosproblems.com/700"
+    ],
+    "leanFile": "Proofs/Erdos700Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 38,
+      "summary": "Largest/smallest prime factor, f(n) = min gcd(n, C(n,k))."
+    },
+    {
+      "id": "bounds",
+      "title": "Basic Bounds",
+      "startLine": 40,
+      "endLine": 48,
+      "summary": "f(n) ≤ n/P(n) and f(n) ≥ p(n)."
+    },
+    {
+      "id": "equalities",
+      "title": "Known Equalities",
+      "startLine": 50,
+      "endLine": 58,
+      "summary": "f(pq) = p for semiprimes, f(30) = 6."
+    },
+    {
+      "id": "questions",
+      "title": "Three Open Questions",
+      "startLine": 60,
+      "endLine": 84,
+      "summary": "Characterization, large values (f(n) > √n), upper bound conjecture."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Szekeres studied the function f(n) = min_{1<k≤n/2} gcd(n, C(n,k)), which measures how divisible n is by binomial coefficients. The function is well-understood for semiprimes (f(pq) = p) but its behavior for general composite numbers is mysterious.",
+    "problemStatement": "Three questions about f(n): (1) Which composite n satisfy f(n) = n/P(n)? (2) Do infinitely many composite n have f(n) > √n? (3) Is f(n) ≪_A n/(log n)^A for all A?",
+    "proofStrategy": "We axiomatize f(n), state the basic sandwich f(n) ∈ [p(n), n/P(n)], record exact values for semiprimes and n=30, and formalize all three open questions.",
+    "keyInsights": [
+      "f(pq) = p = n/P(n) for semiprimes, providing the simplest exact computation",
+      "f(p²) ≥ p = √n shows Question 2 holds for prime squares",
+      "The upper bound conjecture f(n) ≪ n/(log n)^A would mean f is much smaller than n/P(n) for most n",
+      "The function connects binomial coefficient divisibility to prime factorization structure",
+      "n = 30 is a notable non-semiprime example with f(30) = 6 = 30/5"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #700 poses three questions about the minimum gcd of n with its binomial coefficients. The function is exactly computed for semiprimes but poorly understood in general, with all three questions remaining open.",
+    "implications": "Resolution would advance the arithmetic theory of binomial coefficients, connecting to Kummer's theorem on p-adic valuations, Pascal's triangle modular patterns, and the distribution of prime factors.",
+    "openQuestions": [
+      "Which composite n beyond semiprimes and 30 satisfy f(n) = n/P(n)?",
+      "Are there composite n (not prime squares) with f(n) > √n?",
+      "Is f(n) ≪ n/(log n)^A for every fixed A > 0?",
+      "What is the typical order of magnitude of f(n) for random composite n?"
+    ]
+  }
+}
