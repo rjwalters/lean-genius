@@ -1,0 +1,74 @@
+[
+  {
+    "id": "residue-choice",
+    "proofId": "erdos-279",
+    "type": "definition",
+    "title": "Residue Choice",
+    "content": "A function assigning to each prime p a residue class aₚ ∈ {0,...,p−1}.",
+    "significance": "critical",
+    "range": {
+      "startLine": 23,
+      "endLine": 24
+    }
+  },
+  {
+    "id": "covering-property",
+    "proofId": "erdos-279",
+    "type": "definition",
+    "title": "Covering Property",
+    "content": "An integer n is covered if n = aₚ + t·p for some prime p and integer t ≥ k. The choice covers eventually if this holds for all sufficiently large n.",
+    "significance": "critical",
+    "range": {
+      "startLine": 27,
+      "endLine": 35
+    }
+  },
+  {
+    "id": "small-k-result",
+    "proofId": "erdos-279",
+    "type": "theorem",
+    "title": "Small k Result",
+    "content": "For k = 1 or k = 2, any set with divergent reciprocal sum (including primes) can cover all sufficiently large integers.",
+    "significance": "key",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    }
+  },
+  {
+    "id": "prime-like-density",
+    "proofId": "erdos-279",
+    "type": "definition",
+    "title": "Prime-Like Density",
+    "content": "A set A has prime-like density if |A ∩ [1,N]| ≫ N/log N, matching the prime counting function up to a constant.",
+    "significance": "key",
+    "range": {
+      "startLine": 47,
+      "endLine": 51
+    }
+  },
+  {
+    "id": "k3-conjecture",
+    "proofId": "erdos-279",
+    "type": "concept",
+    "title": "The k = 3 Case",
+    "content": "Even the case k = 3 of the covering conjecture is noted by Erdős as difficult and remains open.",
+    "significance": "critical",
+    "range": {
+      "startLine": 64,
+      "endLine": 66
+    }
+  },
+  {
+    "id": "generalization",
+    "proofId": "erdos-279",
+    "type": "concept",
+    "title": "Generalized Covering Conjecture",
+    "content": "The covering property should hold for any set A with prime-like counting density and log-log reciprocal sum divergence, not just primes.",
+    "significance": "key",
+    "range": {
+      "startLine": 78,
+      "endLine": 83
+    }
+  }
+]

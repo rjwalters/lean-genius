@@ -1,0 +1,68 @@
+{
+  "id": "erdos-279",
+  "title": "Erdős Problem #279: Covering with Shifted Prime Progressions",
+  "slug": "erdos-279",
+  "description": "For k ≥ 3, can residue classes aₚ (mod p) be chosen for all primes p so that every large integer is aₚ + tp for some prime p and t ≥ k? Even k = 3 is open.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/279",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos279Problem.lean",
+    "tags": ["number theory", "covering systems", "primes"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 279,
+    "erdosUrl": "https://erdosproblems.com/279",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in 1980 about covering integers with shifted arithmetic progressions modulo primes. For k = 1 or 2, divergence of Σ 1/p suffices. For k ≥ 3, the problem becomes significantly harder. A generalization to arbitrary dense sets satisfying prime-like counting and log-log growth conditions was also proposed.",
+    "problemStatement": "For k ≥ 3, can one choose residue classes aₚ (mod p) for every prime p such that all sufficiently large integers n can be written as n = aₚ + tp for some prime p and t ≥ k?",
+    "proofStrategy": "We define residue choices, the covering property, and eventual coverage. Known results for small k are recorded. The density conditions for the generalization are formalized. The main conjecture and its generalization are stated as axioms.",
+    "keyInsights": [
+      "For k ≤ 2, divergence of Σ 1/p (which holds for primes) suffices for covering",
+      "For k ≥ 3, the constraint t ≥ k severely restricts which progressions can cover each integer",
+      "Even k = 3 remains open, making this a fundamental barrier",
+      "The generalization suggests the prime structure is not essential — only density conditions matter"
+    ]
+  },
+  "sections": [
+    {
+      "id": "covering-setup",
+      "title": "Covering by Shifted Progressions",
+      "startLine": 19,
+      "endLine": 36,
+      "summary": "Defines residue choices, the covering predicate, and eventual coverage."
+    },
+    {
+      "id": "small-k",
+      "title": "Known Results for Small k",
+      "startLine": 38,
+      "endLine": 43,
+      "summary": "Records that k ≤ 2 is handled by divergent reciprocal sum."
+    },
+    {
+      "id": "density-conditions",
+      "title": "Density Conditions for Generalization",
+      "startLine": 45,
+      "endLine": 56,
+      "summary": "Defines prime-like counting density and the log-log divergence condition."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Erdős Problem and Generalization",
+      "startLine": 58,
+      "endLine": 83,
+      "summary": "States the prime covering conjecture, k=3 special case, and the generalized version for dense sets."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 279 asks whether shifted prime progressions with the constraint t ≥ k can cover all large integers. The case k ≤ 2 is resolved, but k ≥ 3 remains open, with a natural generalization to dense sets.",
+    "implications": "Resolution would advance our understanding of covering systems and the flexibility of prime arithmetic progressions, connecting to sieve methods and additive combinatorics.",
+    "openQuestions": [
+      "Can shifted prime progressions with t ≥ 3 cover all large integers?",
+      "Does the generalization hold for all sets with prime-like density?",
+      "What is the minimal density needed for covering with parameter k?"
+    ]
+  }
+}
