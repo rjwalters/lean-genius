@@ -1,0 +1,74 @@
+{
+  "id": "erdos-467",
+  "title": "Dual Covering by Prime Residue Classes",
+  "slug": "erdos-467",
+  "description": "For large x, can we choose residue classes for primes ≤ x and partition them into A ⊔ B so every n < x is covered by both A and B? Related to covering congruences.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/467",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos467Problem.lean",
+    "tags": [
+      "number theory",
+      "covering congruences",
+      "prime residues",
+      "partitions"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 467,
+    "erdosUrl": "https://erdosproblems.com/467",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this in [ErGr80, p. 93], asking for a dual covering system where two complementary sets of primes each cover all residues. The original quantifiers are ambiguous, making precise interpretation subtle. The problem connects to covering congruences and the Chinese Remainder Theorem.",
+    "problemStatement": "For all sufficiently large x, do there exist residue classes a_p (p ≤ x) and a partition {p ≤ x} = A ⊔ B such that every n < x is covered by some p ∈ A and some q ∈ B?",
+    "proofStrategy": "We formalize residue assignments, prime partitions, single and dual coverage. We include Mertens-based coverage estimates, CRT independence, uncovered probability analysis, and balanced partition constraints.",
+    "keyInsights": [
+      "Single coverage is easy: every n < x has a prime factor ≤ x",
+      "Dual coverage requires splitting primes so both halves cover everything",
+      "Small primes cover the largest fractions (1/p) and must be shared",
+      "CRT gives independence: coverage by coprime moduli is multiplicative",
+      "Mertens: ∏(1−1/p) ≈ c/log x, so each half needs enough primes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 48,
+      "summary": "Defines residue assignments, prime partitions, coverage by A and B, and dual covering."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 50,
+      "endLine": 56,
+      "summary": "States the main conjecture: dual covering exists for sufficiently large x."
+    },
+    {
+      "id": "observations",
+      "title": "Basic Observations",
+      "startLine": 58,
+      "endLine": 84,
+      "summary": "Coverage estimates, single-set covering, partition difficulty, small prime efficiency."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Arguments",
+      "startLine": 86,
+      "endLine": 108,
+      "summary": "CRT independence, uncovered probability via Mertens, and balanced partition constraints."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #467: dual covering by prime residue classes. The challenge is partitioning primes ≤ x into two sets each capable of covering all residues. Small prime allocation and CRT independence are key structural elements.",
+    "implications": "A resolution would advance the theory of covering systems, connecting combinatorial number theory to probabilistic prime distribution.",
+    "openQuestions": [
+      "Does a dual covering exist for all sufficiently large x?",
+      "What is the optimal partition of small primes for dual coverage?",
+      "How does the minimum x₀ depend on the partition structure?"
+    ]
+  }
+}
