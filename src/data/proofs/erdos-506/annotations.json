@@ -1,0 +1,56 @@
+[
+  {
+    "id": "circumcircle",
+    "proofId": "erdos-506",
+    "range": { "startLine": 36, "endLine": 47 },
+    "type": "definition",
+    "title": "Circumcircle Construction",
+    "content": "Three non-collinear points uniquely determine a circle (their circumcircle). The center is computed from the perpendicular bisectors of two sides of the triangle formed by the points.",
+    "significance": "high"
+  },
+  {
+    "id": "concyclic",
+    "proofId": "erdos-506",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "definition",
+    "title": "Concyclic Points",
+    "content": "All points lie on a single circle. The problem requires the points to NOT all be concyclic (and not all collinear), as otherwise only one circle is determined.",
+    "significance": "high"
+  },
+  {
+    "id": "num-circles",
+    "proofId": "erdos-506",
+    "range": { "startLine": 64, "endLine": 68 },
+    "type": "definition",
+    "title": "Circle Count",
+    "content": "The number of distinct circles determined by a point configuration, counting each circle once regardless of how many triples define it. A set of n points determines at most C(n,3) triples but usually far fewer circles.",
+    "significance": "high"
+  },
+  {
+    "id": "elliott",
+    "proofId": "erdos-506",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "theorem",
+    "title": "Elliott's Theorem (1967)",
+    "content": "For n > 393 points not all concyclic and not all collinear, the number of distinct circles is at least C(n-1,2) = (n-1)(n-2)/2. This is tight for points on two concentric circles.",
+    "significance": "high"
+  },
+  {
+    "id": "segre",
+    "proofId": "erdos-506",
+    "range": { "startLine": 80, "endLine": 84 },
+    "type": "example",
+    "title": "Segre's Cube Counterexample",
+    "content": "Segre showed that projecting the 8 vertices of a cube onto a suitable plane produces 8 non-concyclic, non-collinear points determining fewer than C(7,2) = 21 circles. This shows Elliott's bound cannot extend to all n.",
+    "significance": "high"
+  },
+  {
+    "id": "sylvester-analogy",
+    "proofId": "erdos-506",
+    "range": { "startLine": 94, "endLine": 100 },
+    "type": "note",
+    "title": "Sylvester–Gallai Analogy",
+    "content": "The Sylvester–Gallai theorem states n non-collinear points determine at least n ordinary lines. The circle analogue — minimum circles from non-concyclic points — is much harder and remains partly open.",
+    "significance": "medium"
+  }
+]
