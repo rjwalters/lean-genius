@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-892-primitive-def",
+    "proofId": "erdos-892",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 31 },
+    "title": "Primitive Sequence",
+    "content": "IsPrimitive a requires that no element divides another: for i ≠ j, aᵢ ∤ aⱼ. Primitive sets are the combinatorial analog of antichains in the divisibility poset.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-892-problem",
+    "proofId": "erdos-892",
+    "type": "conjecture",
+    "range": { "startLine": 54, "endLine": 57 },
+    "title": "Erdős Problem 892",
+    "content": "Characterize sequences b₁ < b₂ < ⋯ for which there exists a primitive, strictly increasing sequence a with aₙ ≪ bₙ. Necessary and sufficient conditions are sought.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-892-erdos-1935",
+    "proofId": "erdos-892",
+    "type": "result",
+    "range": { "startLine": 63, "endLine": 72 },
+    "title": "Erdős (1935) Necessary Condition",
+    "content": "If a primitive a exists with a ≪ b, then Σ 1/(bₙ log bₙ) < ∞. This follows from the convergence of Σ 1/(aₙ log aₙ) for any primitive sequence.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-892-ess-1967",
+    "proofId": "erdos-892",
+    "type": "result",
+    "range": { "startLine": 74, "endLine": 83 },
+    "title": "Erdős–Sárközy–Szemerédi (1967)",
+    "content": "A stronger necessary condition: Σ_{bₙ<x} 1/bₙ = o(log x / √(log log x)). The partial reciprocal sums cannot grow too fast.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-892-gcd-free",
+    "proofId": "erdos-892",
+    "type": "conjecture",
+    "range": { "startLine": 95, "endLine": 100 },
+    "title": "GCD-Free Variant",
+    "content": "Erdős asked whether the GCD-free condition (no gcd(bᵢ, bⱼ) = bₖ) is sufficient for the existence of a primitive dominator.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-892-convergence",
+    "proofId": "erdos-892",
+    "type": "context",
+    "range": { "startLine": 114, "endLine": 121 },
+    "title": "Primitive Reciprocal-Log Convergence",
+    "content": "Erdős (1935) proved Σ 1/(aₙ log aₙ) converges for any primitive sequence with aₙ ≥ 2. This is the foundational result underlying the necessary conditions.",
+    "significance": "supporting"
+  }
+]
