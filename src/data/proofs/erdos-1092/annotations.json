@@ -1,0 +1,56 @@
+[
+  {
+    "id": "chromatic-reduce",
+    "proofId": "erdos-1092",
+    "range": { "startLine": 44, "endLine": 52 },
+    "type": "definition",
+    "title": "Chromatic Reduction by Edge Removal",
+    "content": "A graph G can have its chromatic number reduced to ≤ r by removing at most k edges. This captures the idea that G is 'close to being r-colorable' — only k edges prevent an r-coloring.",
+    "significance": "high"
+  },
+  {
+    "id": "f-threshold",
+    "proofId": "erdos-1092",
+    "range": { "startLine": 56, "endLine": 62 },
+    "type": "definition",
+    "title": "Threshold Function f_r(n)",
+    "content": "f_r(n) is the maximum k such that the condition 'every subgraph reduces to chromatic number ≤ r after removing ≤ k edges' forces χ(G) ≤ r+1. It measures the gap between local reducibility and global coloring.",
+    "significance": "high"
+  },
+  {
+    "id": "question1",
+    "proofId": "erdos-1092",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "conjecture",
+    "title": "Question 1: f₂(n) ≫ n?",
+    "content": "Erdős, Hajnal, and Szemerédi asked whether f₂(n)/n → ∞. Tang noted that Rödl's 1982 construction provides evidence against this, showing f₂(n) = O(n·polylog(n)).",
+    "significance": "high"
+  },
+  {
+    "id": "question2",
+    "proofId": "erdos-1092",
+    "range": { "startLine": 71, "endLine": 74 },
+    "type": "conjecture",
+    "title": "Question 2: f_r(n) ≫ rn?",
+    "content": "The general question: does f_r(n)/(rn) → ∞ for every fixed r ≥ 2? This would mean local chromatic reducibility with a budget proportional to rn always forces global (r+1)-colorability.",
+    "significance": "high"
+  },
+  {
+    "id": "rodl",
+    "proofId": "erdos-1092",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "theorem",
+    "title": "Rödl's Upper Bound (1982)",
+    "content": "Rödl constructed graphs showing f₂(n) = O(n·(log n)²). This means f₂(n) grows at most slightly super-linearly, casting serious doubt on whether f₂(n) ≫ n is true.",
+    "significance": "high"
+  },
+  {
+    "id": "monotonicity",
+    "proofId": "erdos-1092",
+    "range": { "startLine": 90, "endLine": 96 },
+    "type": "note",
+    "title": "Monotonicity and Problem #744",
+    "content": "f_r(n) is monotone increasing in r: reducing to chromatic number r+1 is easier than to r. This problem is related to Problem #744, which concerns similar chromatic decomposition thresholds.",
+    "significance": "medium"
+  }
+]
