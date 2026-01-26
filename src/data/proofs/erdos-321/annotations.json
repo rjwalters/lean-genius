@@ -1,0 +1,56 @@
+[
+  {
+    "id": "distinct-sums",
+    "proofId": "erdos-321",
+    "range": { "startLine": 30, "endLine": 33 },
+    "type": "definition",
+    "title": "Distinct Reciprocal Subset Sums",
+    "content": "A set A has distinct reciprocal subset sums if for any two distinct subsets S, T ⊆ A, the sums Σ_{n∈S} 1/n and Σ_{n∈T} 1/n differ. This ensures all 2^|A| subset sums are unique.",
+    "significance": "high"
+  },
+  {
+    "id": "r-function",
+    "proofId": "erdos-321",
+    "range": { "startLine": 35, "endLine": 41 },
+    "type": "definition",
+    "title": "R(N) — Maximum Set Size",
+    "content": "R(N) is the largest |A| achievable for A ⊆ {1,...,N} with distinct reciprocal subset sums. The problem asks for its asymptotic growth rate.",
+    "significance": "high"
+  },
+  {
+    "id": "lower-bound",
+    "proofId": "erdos-321",
+    "range": { "startLine": 51, "endLine": 55 },
+    "type": "note",
+    "title": "Bleicher–Erdős Lower Bound",
+    "content": "R(N) ≥ (N/log N) · Π_{i=3}^{k} log_i N for iterated logarithms up to level k. This construction uses divisibility properties to ensure subset sum separation.",
+    "significance": "high"
+  },
+  {
+    "id": "upper-bound",
+    "proofId": "erdos-321",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "note",
+    "title": "Bleicher–Erdős Upper Bound",
+    "content": "R(N) ≤ (1/log 2) · log_r N · (N/log N) · Π_{i=3}^{r} log_i N. The upper bound exceeds the lower by essentially one extra iterated logarithm factor.",
+    "significance": "high"
+  },
+  {
+    "id": "main-term",
+    "proofId": "erdos-321",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "note",
+    "title": "Main Term N/log N",
+    "content": "Both bounds have the same main term N/log N. The open question is entirely about the precise iterated logarithm correction factors.",
+    "significance": "medium"
+  },
+  {
+    "id": "egyptian-fractions",
+    "proofId": "erdos-321",
+    "range": { "startLine": 76, "endLine": 80 },
+    "type": "note",
+    "title": "Egyptian Fraction Connection",
+    "content": "The problem connects to Egyptian fractions: representations of rationals as sums of distinct unit fractions 1/n. R(N) measures how many denominators can be used while keeping all partial sums distinguishable.",
+    "significance": "medium"
+  }
+]
