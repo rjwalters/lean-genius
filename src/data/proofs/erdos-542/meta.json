@@ -1,0 +1,45 @@
+{
+  "id": "erdos-542",
+  "title": "Reciprocal Sums Under LCM Constraints",
+  "slug": "erdos-542",
+  "description": "If A ⊆ {1,...,n} with lcm(a,b) > n for distinct a,b ∈ A, must ∑ 1/a ≤ 31/30? Solved by Schinzel-Szekeres (1959).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/542",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos542Problem.lean",
+    "tags": ["number-theory", "lcm", "reciprocal-sums", "extremal-combinatorics"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 542,
+    "erdosUrl": "https://erdosproblems.com/542",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem about sets with pairwise large LCMs. Schinzel and Szekeres (1959) proved the bound 31/30, achieved by {2,3,5}. Chen (1996) improved the bound for large n. The remaining conjecture about maximal sets achieving sum > 1 is still open.",
+    "problemStatement": "If A ⊆ {1,...,n} satisfies lcm(a,b) > n for all distinct a,b ∈ A, must ∑_{a ∈ A} 1/a ≤ 31/30?",
+    "proofStrategy": "We formalize the pairwise LCM condition and reciprocal sum, state the Schinzel-Szekeres theorem, Chen's stronger bound for large n, and the maximal sets conjecture. We prove structural properties including singleton validity and reciprocal sum formulas.",
+    "keyInsights": [
+      "The bound 31/30 is tight: {2,3,5} achieves equality with 1/2 + 1/3 + 1/5 = 31/30",
+      "The LCM condition prevents any element from dividing another within {1,...,n}",
+      "Chen's 1996 bound 1/3+1/4+1/5+1/7+1/11 applies for n > 172509",
+      "Only {2,3,5} and {3,4,5,7,11} are conjectured to achieve sum > 1"
+    ]
+  },
+  "sections": [
+    { "id": "definitions", "title": "LCM Condition and Reciprocal Sum", "startLine": 23, "endLine": 33, "summary": "Defines PairwiseLCMExceeds and reciprocalSum for sets A ⊆ {1,...,n}." },
+    { "id": "main-results", "title": "Main Results", "startLine": 35, "endLine": 49, "summary": "States the Schinzel-Szekeres bound ∑ 1/a ≤ 31/30 and the optimal example {2,3,5}." },
+    { "id": "chen-bound", "title": "Chen's Stronger Bound", "startLine": 51, "endLine": 62, "summary": "States Chen's 1996 improvement for n > 172509 and computes the bound value." },
+    { "id": "maximal-sets", "title": "Maximal Sets Conjecture", "startLine": 64, "endLine": 79, "summary": "States the conjecture that only {2,3,5} and {3,4,5,7,11} achieve sum > 1." },
+    { "id": "structural", "title": "Structural Properties", "startLine": 81, "endLine": 111, "summary": "Proves singleton validity, reciprocal sum formula, and the no-divisibility property." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures the Schinzel-Szekeres solution to Erdős Problem 542, Chen's stronger bound, and the open maximal sets conjecture. 0 sorries.",
+    "implications": "The problem connects LCM conditions to extremal set theory and multiplicative number theory.",
+    "openQuestions": [
+      "Is the maximal sets conjecture ({2,3,5} and {3,4,5,7,11} only) true?",
+      "Can Chen's threshold 172509 be lowered?",
+      "What is the structure of near-optimal sets for large n?"
+    ]
+  }
+}
