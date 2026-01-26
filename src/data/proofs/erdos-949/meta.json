@@ -1,0 +1,89 @@
+{
+  "id": "erdos-949",
+  "title": "Erdős Problem #949: Sum-Free Sets and Continuum-Sized Sumset Avoidance",
+  "slug": "erdos-949",
+  "description": "If S ⊆ ℝ is sum-free (no a + b = c with a,b,c ∈ S), must there exist A ⊆ ℝ\\S with |A| = 𝔠 and A+A ⊆ ℝ\\S? SOLVED for Sidon sets (Dillies–AlphaProof). General case OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/949",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos949Problem.lean",
+    "tags": ["set-theory", "additive-combinatorics", "sum-free-sets", "cardinal-arithmetic"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 949,
+    "erdosUrl": "https://erdosproblems.com/949",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether sum-free subsets of ℝ always leave enough room in their complement for a continuum-sized set whose sumset also avoids S. The Sidon variant was proved by Yael Dillies using a technique discovered by AlphaProof, splitting into cases based on whether |S| < 𝔠 or |S| = 𝔠. The general sum-free case remains open.",
+    "problemStatement": "Let S ⊆ ℝ be sum-free (∀ a,b ∈ S, a+b ∉ S). Must there exist A ⊆ ℝ\\S with |A| = 𝔠 and A+A ⊆ ℝ\\S?",
+    "proofStrategy": "We define IsSumFreeSet, IsSidonReal, and realSumset. ErdosProblem949 states the conjecture using Cardinal.continuum. The solved Sidon variant is axiomatized with its two-case proof strategy (small S uses Zorn's lemma; continuum-sized S uses the shift construction). The general case is left open.",
+    "keyInsights": [
+      "Sum-free means (S+S) ∩ S = ∅; the question is about the complement's additive structure",
+      "For Sidon sets, the sum function's injectivity is key to the proof",
+      "Small case (|S| < 𝔠): Zorn's lemma yields a maximal A; maximality forces |A| = 𝔠",
+      "Continuum case (|S| = 𝔠): shift construction A = ((S\\{a}) - a/2) \\ S works"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sum-free-sets",
+      "title": "Sum-Free Sets",
+      "startLine": 22,
+      "endLine": 29,
+      "summary": "Defines IsSumFreeSet: no a, b ∈ S have a + b ∈ S."
+    },
+    {
+      "id": "sidon-sets",
+      "title": "Sidon Sets",
+      "startLine": 31,
+      "endLine": 39,
+      "summary": "Defines IsSidonReal: all pairwise sums are distinct."
+    },
+    {
+      "id": "sumset",
+      "title": "The Sumset",
+      "startLine": 41,
+      "endLine": 47,
+      "summary": "Defines realSumset A + A as the set of all pairwise sums from A."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Main Problem",
+      "startLine": 49,
+      "endLine": 62,
+      "summary": "States ErdosProblem949: sum-free S implies continuum-sized sumset-avoiding A exists in Sᶜ."
+    },
+    {
+      "id": "sidon-variant",
+      "title": "The Sidon Variant (Solved)",
+      "startLine": 64,
+      "endLine": 81,
+      "summary": "Axiomatizes sidon_variant_solved (Dillies–AlphaProof) and the connection sidon_is_sum_free."
+    },
+    {
+      "id": "proof-strategy",
+      "title": "Proof Strategy for Sidon Case",
+      "startLine": 83,
+      "endLine": 102,
+      "summary": "Two cases: small S uses Zorn's lemma; continuum-sized S uses the shift A = ((S\\{a}) - a/2) \\ S."
+    },
+    {
+      "id": "general-case",
+      "title": "General Sum-Free Case",
+      "startLine": 104,
+      "endLine": 113,
+      "summary": "The general problem remains open; the Sidon technique does not extend."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 949 asks whether sum-free sets in ℝ always leave a continuum-sized sumset-avoiding subset in their complement. The Sidon variant is solved (Dillies–AlphaProof). The general case is open.",
+    "implications": "Resolution would connect the additive structure of sum-free sets to set-theoretic cardinal arithmetic, bridging combinatorics and descriptive set theory.",
+    "openQuestions": [
+      "Does the result hold for all sum-free S, not just Sidon sets?",
+      "Can the Zorn's lemma approach be extended beyond the Sidon case?",
+      "What structural property of S (weaker than Sidon) suffices?"
+    ]
+  }
+}
