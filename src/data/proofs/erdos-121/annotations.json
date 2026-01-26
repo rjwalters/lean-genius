@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-121-k-square-free",
+    "proofId": "erdos-121",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 30 },
+    "title": "k-Square-Free Set",
+    "content": "IsKSquareFree A k means no product of k distinct elements of A is a perfect square. This is the central structural condition studied.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-121-fk",
+    "proofId": "erdos-121",
+    "type": "definition",
+    "range": { "startLine": 34, "endLine": 37 },
+    "title": "Extremal Function F_k(N)",
+    "content": "squareFreeMax k N is the maximum cardinality of a k-square-free subset of {1,…,N}. This is the extremal quantity the problem studies.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-121-f3",
+    "proofId": "erdos-121",
+    "type": "result",
+    "range": { "startLine": 48, "endLine": 51 },
+    "title": "F_3 Has Full Density",
+    "content": "F_3(N) = (1 - o(1))N: for 3-element products, almost all integers in {1,…,N} can be included while avoiding square products.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-121-conjecture",
+    "proofId": "erdos-121",
+    "type": "conjecture",
+    "range": { "startLine": 65, "endLine": 70 },
+    "title": "Erdős Problem 121 (Disproved)",
+    "content": "Erdős conjectured F_{2k+1}(N) = (1-o(1))N for all k ≥ 1, meaning odd-index square-free products allow almost all integers. Disproved by Tao (2024).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-121-tao",
+    "proofId": "erdos-121",
+    "type": "result",
+    "range": { "startLine": 76, "endLine": 80 },
+    "title": "Tao's Disproof (2024)",
+    "content": "Tao proved F_k(N) ≤ (1-c_k)N for all k ≥ 4 and some c_k > 0. This shows the density is bounded away from 1, disproving Erdős's conjecture for k = 5 and all larger odd k.",
+    "significance": "essential"
+  }
+]
