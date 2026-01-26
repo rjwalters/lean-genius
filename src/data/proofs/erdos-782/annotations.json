@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-782-header",
+    "proofId": "erdos-782",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #782: Q1 - Do squares have arbitrarily long quasi-progressions with uniform C? Q2 - Do squares have arbitrarily large cubes? Status: OPEN.",
+    "mathContext": "From Brown-Erdos-Freedman [BEF90]. Classical: no 4-AP in squares. Q1 => Q2. Solymosi conjectures Q2 negative.",
+    "significance": "critical",
+    "relatedConcepts": ["squares", "quasi-progression", "combinatorial-cube"]
+  },
+  {
+    "id": "ann-782-squares",
+    "proofId": "erdos-782",
+    "range": { "startLine": 39, "endLine": 52 },
+    "type": "definition",
+    "title": "Perfect Squares",
+    "content": "Squares := {n | exists k, n = k^2}. IsSquare(n) := n in Squares. Examples: 0, 1, 4, 9, ...",
+    "mathContext": "The set of perfect squares is sparse: ~sqrt(n) squares up to n. This sparsity constrains structures.",
+    "significance": "critical",
+    "relatedConcepts": ["perfect-square", "sparse-set"]
+  },
+  {
+    "id": "ann-782-ap",
+    "proofId": "erdos-782",
+    "range": { "startLine": 60, "endLine": 77 },
+    "type": "definition",
+    "title": "Arithmetic Progressions",
+    "content": "ArithProg(a, d, k) := i -> a + i*d. ContainsAP(S, k) := S contains length-k AP with d > 0.",
+    "mathContext": "Classical: squares contain 3-APs (e.g., 1, 25, 49) but no 4-APs (Fermat-type argument).",
+    "significance": "critical",
+    "relatedConcepts": ["arithmetic-progression", "fermat"]
+  },
+  {
+    "id": "ann-782-quasi",
+    "proofId": "erdos-782",
+    "range": { "startLine": 85, "endLine": 103 },
+    "type": "definition",
+    "title": "Quasi-Progressions",
+    "content": "IsQuasiProg(C, x, k, d) := d > 0 and d <= x_{i+1} - x_i <= d + C for all i. Question1: exists uniform C for all k.",
+    "mathContext": "Relaxation of APs. With bounded error C, can we find arbitrarily long near-APs in squares?",
+    "significance": "critical",
+    "relatedConcepts": ["quasi-progression", "bounded-gaps"]
+  },
+  {
+    "id": "ann-782-cubes",
+    "proofId": "erdos-782",
+    "range": { "startLine": 111, "endLine": 127 },
+    "type": "definition",
+    "title": "Combinatorial Cubes",
+    "content": "CubeVertices(k, a, b) := {a + sum_{i in I} b_i : I subset {1..k}}. ContainsCube(S, k) := S contains non-trivial k-cube.",
+    "mathContext": "k-cube has 2^k vertices. Generalizes APs: a 1-cube is 2 points, like an AP of length 2.",
+    "significance": "critical",
+    "relatedConcepts": ["combinatorial-cube", "boolean-lattice"]
+  },
+  {
+    "id": "ann-782-question2",
+    "proofId": "erdos-782",
+    "range": { "startLine": 125, "endLine": 130 },
+    "type": "definition",
+    "title": "Question 2",
+    "content": "Question2 := for all k, squares contain a k-cube. 2-cube: {a, a+b1, a+b2, a+b1+b2} all squares.",
+    "mathContext": "Harder than Q1 since Q1 implies Q2. Finding 4 squares forming a 2-cube is already constrained.",
+    "significance": "critical",
+    "relatedConcepts": ["cube-in-squares", "four-squares"]
+  },
+  {
+    "id": "ann-782-implication",
+    "proofId": "erdos-782",
+    "range": { "startLine": 138, "endLine": 145 },
+    "type": "theorem",
+    "title": "Q1 implies Q2",
+    "content": "question1_implies_question2: Question1 -> Question2. Contrapositive: not Q2 -> not Q1.",
+    "mathContext": "Quasi-progressions with uniform bound yield cubes via Ramsey-type extraction argument.",
+    "significance": "key",
+    "relatedConcepts": ["implication", "ramsey"]
+  },
+  {
+    "id": "ann-782-solymosi",
+    "proofId": "erdos-782",
+    "range": { "startLine": 153, "endLine": 168 },
+    "type": "definition",
+    "title": "Solymosi's Conjecture",
+    "content": "SolymosiConjecture := not Question2. Equivalently: exists k such that squares contain no k-cube.",
+    "mathContext": "Solymosi (2007) conjectured Q2 is negative. Would imply Q1 also negative.",
+    "significance": "key",
+    "relatedConcepts": ["solymosi", "conjecture"]
+  },
+  {
+    "id": "ann-782-bombieri",
+    "proofId": "erdos-782",
+    "range": { "startLine": 176, "endLine": 188 },
+    "type": "axiom",
+    "title": "Bombieri-Lang Connection",
+    "content": "cilleruelo_granville: BombieriLang -> exists k, not ContainsCube(Squares, k). Conditional negative answer.",
+    "mathContext": "Cilleruelo-Granville (2007): Bombieri-Lang conjecture for varieties of general type implies Q2 negative.",
+    "significance": "key",
+    "relatedConcepts": ["bombieri-lang", "algebraic-geometry", "conditional"]
+  },
+  {
+    "id": "ann-782-small",
+    "proofId": "erdos-782",
+    "range": { "startLine": 203, "endLine": 207 },
+    "type": "definition",
+    "title": "Small Cases",
+    "content": "Has2Cube := squares contain a 2-cube (4 elements). Has3Cube := squares contain a 3-cube (8 elements).",
+    "mathContext": "Computationally checkable for small k. The difficulty increases exponentially with k.",
+    "significance": "supporting",
+    "relatedConcepts": ["small-cases", "computation"]
+  },
+  {
+    "id": "ann-782-density",
+    "proofId": "erdos-782",
+    "range": { "startLine": 215, "endLine": 224 },
+    "type": "definition",
+    "title": "Density Analysis",
+    "content": "numSquaresUpTo(n) ~ sqrt(n). Squares are sparse, constraining structures.",
+    "mathContext": "Sparsity of squares is why finding long structures is hard. Interval [n, n+L] has ~L/(2sqrt(n)) squares.",
+    "significance": "supporting",
+    "relatedConcepts": ["density", "counting", "asymptotic"]
+  },
+  {
+    "id": "ann-782-status",
+    "proofId": "erdos-782",
+    "range": { "startLine": 232, "endLine": 265 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Q1 and Q2 both unresolved. Best conditional result: Q2 negative under Bombieri-Lang.",
+    "mathContext": "Bridges additive combinatorics (progressions) and algebraic geometry (Bombieri-Lang). Both questions remain open.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "number-theory", "combinatorics"]
+  }
+]
