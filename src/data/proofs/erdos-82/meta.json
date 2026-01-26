@@ -1,0 +1,113 @@
+{
+  "id": "erdos-82",
+  "title": "Erdős Problem #82: Regular Induced Subgraphs",
+  "slug": "erdos-82",
+  "description": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) → ∞?",
+  "meta": {
+    "author": "Erdős, Fajtlowicz, Staton",
+    "year": 1988,
+    "sourceUrl": "https://erdosproblems.com/82",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos82Problem.lean",
+    "tags": ["graph theory", "Ramsey theory", "regular graphs", "extremal graph theory", "induced subgraphs"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 82,
+    "erdosUrl": "https://erdosproblems.com/82",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős, Fajtlowicz, and Staton in 1988. It asks whether the function F(n) — the largest guaranteed regular induced subgraph in any n-vertex graph — grows superlogarithmically. The question sits at the intersection of Ramsey theory and structural graph theory.\n\nRamsey theory immediately gives F(n) ≥ c·log(n), since every graph on n vertices contains a clique or independent set of size ≈ (1/2)log₂(n), and both are regular. The 2023 breakthrough by Campos, Griffiths, Morris, and Sahasrabudhe on diagonal Ramsey numbers slightly improves the constant but not the growth rate.\n\nAlon, Krivelevich, and Sudakov (2007) proved the best known upper bound F(n) ≤ C·√n·(log n)^{O(1)} using probabilistic constructions. The enormous gap between log(n) and √n remains one of the major open questions in extremal graph theory.",
+    "problemStatement": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) → ∞ as n → ∞?",
+    "proofStrategy": "The formalization defines regular graphs, induced subgraphs, and the function F(n) using Lean 4 with Mathlib. Key bounds from Ramsey theory (lower) and Alon-Krivelevich-Sudakov (upper) are stated as axioms. The conjecture is formalized using Filter.Tendsto for the limit F(n)/log(n) → ∞, with an equivalent explicit ε-N formulation.",
+    "keyInsights": [
+      "Ramsey theory gives the baseline F(n) ≥ c·log(n) via guaranteed cliques or independent sets",
+      "The Alon-Krivelevich-Sudakov upper bound F(n) ≤ C·√n·(log n)^{O(1)} shows F(n) cannot grow polynomially",
+      "Regular subgraphs are harder to find than merely bounded-degree subgraphs — all vertices must have the SAME degree",
+      "Exact values F(1..15) = 1,2,2,3,3,3,4,4,4,4,4,5,5,5,5 from OEIS A120414 show slow initial growth",
+      "The 2023 Ramsey diagonal improvement marginally improves the lower bound constant but not the growth rate"
+    ]
+  },
+  "sections": [
+    {
+      "id": "regular-graphs",
+      "title": "Part 1: Regular Graphs",
+      "startLine": 39,
+      "endLine": 63,
+      "description": "Defines k-regular graphs and the notion of a graph being regular of some degree."
+    },
+    {
+      "id": "induced-subgraphs",
+      "title": "Part 2: Induced Subgraphs",
+      "startLine": 65,
+      "endLine": 83,
+      "description": "Constructs the induced subgraph G[S] for a finset S, as a SimpleGraph on S with inherited adjacency."
+    },
+    {
+      "id": "regular-induced-size",
+      "title": "Part 3: Regular Induced Subgraph Size",
+      "startLine": 85,
+      "endLine": 113,
+      "description": "Defines the key predicate HasRegularInduced and the central function F(n) via sSup."
+    },
+    {
+      "id": "trivial-lower",
+      "title": "Part 4: Trivial Lower Bound",
+      "startLine": 115,
+      "endLine": 141,
+      "description": "F(n) ≥ 1 for n ≥ 1, and cliques/independent sets are regular."
+    },
+    {
+      "id": "ramsey-lower",
+      "title": "Part 5: Ramsey-Theoretic Lower Bound",
+      "startLine": 143,
+      "endLine": 183,
+      "description": "Ramsey numbers, the classical R(k,k) ≤ 4^k bound, and the key consequence F(n) ≥ (1/2)log₂(n)."
+    },
+    {
+      "id": "aks-upper",
+      "title": "Part 6: Alon-Krivelevich-Sudakov Upper Bound",
+      "startLine": 185,
+      "endLine": 205,
+      "description": "The 2007 upper bound F(n) ≤ C·√n·(log n)^{O(1)} from probabilistic constructions."
+    },
+    {
+      "id": "small-values",
+      "title": "Part 7: Small Values and Computations",
+      "startLine": 207,
+      "endLine": 242,
+      "description": "The inverse function G(k), exact values of F(n) for small n, and OEIS references."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part 8: The Erdős Conjecture",
+      "startLine": 244,
+      "endLine": 274,
+      "description": "The formal conjecture F(n)/log(n) → ∞ in both Filter.Tendsto and explicit ε-N forms."
+    },
+    {
+      "id": "connections",
+      "title": "Part 9: Related Results and Connections",
+      "startLine": 276,
+      "endLine": 318,
+      "description": "Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory."
+    },
+    {
+      "id": "summary",
+      "title": "Part 10: Problem Status and Summary",
+      "startLine": 320,
+      "endLine": 355,
+      "description": "Status declaration, bounds summary theorem combining lower and upper bounds."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #82 asks whether F(n)/log(n) → ∞, where F(n) is the largest regular induced subgraph guaranteed in any n-vertex graph. The Ramsey lower bound gives F(n) ≥ c·log(n) and the Alon-Krivelevich-Sudakov upper bound gives F(n) ≤ C·√n·(log n)^{O(1)}. The problem remains open with a large gap between the known bounds.",
+    "implications": "Resolution would clarify whether Euclidean regularity constraints fundamentally limit subgraph structure beyond what Ramsey theory provides, with connections to the chromatic number of random graphs and degree-constrained subgraph problems.",
+    "openQuestions": [
+      "Does F(n)/log(n) → ∞?",
+      "What is the precise growth rate of F(n)?",
+      "Can the Alon-Krivelevich-Sudakov upper bound be improved?",
+      "What is F(n) for random graphs G(n, 1/2)?"
+    ]
+  }
+}
