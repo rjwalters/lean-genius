@@ -1,0 +1,68 @@
+{
+  "id": "erdos-681",
+  "title": "Erdős Problem #681: Large Least Prime Factor in Shifted Composites",
+  "slug": "erdos-681",
+  "description": "For all large n, does there exist k > 0 such that n+k is composite and p(n+k) > k², where p(m) is the least prime factor? Generalises to p(n+k) > k^d.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/681",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos681Problem.lean",
+    "tags": ["number theory", "primes", "least prime factor", "composites"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 681,
+    "erdosUrl": "https://erdosproblems.com/681",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Eggleton, and Selfridge posed this problem about the distribution of least prime factors in shifted integers. The question asks whether near any large integer, one can always find a composite number whose smallest prime factor is surprisingly large relative to the shift.",
+    "problemStatement": "For all sufficiently large n, does there exist k > 0 such that n+k is composite and p(n+k) > k², where p(m) denotes the least prime factor of m?",
+    "proofStrategy": "The formalization defines the least prime factor via Nat.minFac, IsLeastPrimeFactor as a predicate, and states the conjecture existentially. The generalisation to k^d for arbitrary d is also captured.",
+    "keyInsights": [
+      "The conjecture requires n+k to be composite (primes trivially have large LPF)",
+      "The least prime factor of a composite m satisfies p(m) ≤ √m",
+      "The generalisation asks for p(n+k) > k^d for any fixed d",
+      "The original conjecture is the d=2 case"
+    ]
+  },
+  "sections": [
+    {
+      "id": "least-prime-factor",
+      "title": "Least Prime Factor",
+      "startLine": 19,
+      "endLine": 32,
+      "summary": "Definitions of leastPrimeFactor via Nat.minFac and IsLeastPrimeFactor predicate."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 34,
+      "endLine": 42,
+      "summary": "Erdős Problem 681: for large n, there exists k with n+k composite and p(n+k) > k²."
+    },
+    {
+      "id": "generalisation",
+      "title": "Generalisation",
+      "startLine": 44,
+      "endLine": 56,
+      "summary": "Generalised conjecture for arbitrary exponent d, with d=2 recovering the original."
+    },
+    {
+      "id": "basic-observations",
+      "title": "Basic Observations",
+      "startLine": 58,
+      "endLine": 75,
+      "summary": "Primes have LPF equal to themselves, composites have LPF ≤ √m, Nat.minFac gives LPF."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 681 on finding composites near n with large least prime factor, including the generalisation to arbitrary exponent d.",
+    "implications": "An affirmative answer would reveal structure in the distribution of smooth numbers near arbitrary integers, connecting prime factor size to additive shifts.",
+    "openQuestions": [
+      "Does p(n+k) > k² hold for all large n and some composite n+k?",
+      "For which values of d does the generalisation p(n+k) > k^d hold?",
+      "What is the connection to problems about smooth numbers in short intervals?"
+    ]
+  }
+}
