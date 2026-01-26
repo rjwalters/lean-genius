@@ -1,0 +1,56 @@
+[
+  {
+    "id": "bipartite-dist",
+    "proofId": "erdos-661",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "Bipartite Distance Set",
+    "content": "The set of distinct distances between two point sets X and Y in ℝ². The bipartite structure restricts which pairs are considered.",
+    "significance": "high"
+  },
+  {
+    "id": "f-2n",
+    "proofId": "erdos-661",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "definition",
+    "title": "F(2n) and f(2n)",
+    "content": "F(2n) is the minimum bipartite distinct distances between two n-point sets. f(2n) is the minimum for 2n general points. The question is whether F(2n) = o(f(2n)).",
+    "significance": "high"
+  },
+  {
+    "id": "bipartite-conjecture",
+    "proofId": "erdos-661",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "conjecture",
+    "title": "Bipartite Advantage Conjecture",
+    "content": "Does the bipartite structure allow asymptotically fewer distinct distances? Specifically, can we achieve o(n/√(log n)) bipartite distances?",
+    "significance": "high"
+  },
+  {
+    "id": "guth-katz",
+    "proofId": "erdos-661",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "note",
+    "title": "Guth–Katz Lower Bound",
+    "content": "Guth–Katz (2015) proved f(2n) ≳ n/log n, essentially resolving the general distinct distances problem. This is the benchmark for the bipartite variant.",
+    "significance": "high"
+  },
+  {
+    "id": "lenz",
+    "proofId": "erdos-661",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "note",
+    "title": "Lenz Construction in ℝ⁴",
+    "content": "In ℝ⁴, place points on two orthogonal circles of radius 1. Then all bipartite distances equal √2, achieving F = 1. This dramatic saving is impossible in ℝ².",
+    "significance": "high"
+  },
+  {
+    "id": "reward",
+    "proofId": "erdos-661",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "note",
+    "title": "$50 Reward",
+    "content": "Erdős offered $50 for resolving whether F(2n) = o(f(2n)) in the plane.",
+    "significance": "medium"
+  }
+]
