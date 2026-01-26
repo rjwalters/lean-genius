@@ -1,0 +1,56 @@
+[
+  {
+    "id": "consecutive-sum",
+    "proofId": "erdos-839",
+    "range": { "startLine": 28, "endLine": 30 },
+    "type": "definition",
+    "title": "Consecutive Sum Avoidance",
+    "content": "A sequence avoids consecutive-term sums if no term aₘ equals aᵢ + aᵢ₊₁ + ... + aⱼ for any i ≤ j < m. This is weaker than avoiding all subset sums — only contiguous blocks are forbidden.",
+    "significance": "high"
+  },
+  {
+    "id": "question1",
+    "proofId": "erdos-839",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "conjecture",
+    "title": "Question 1: Growth Rate",
+    "content": "Is lim sup(aₙ/n) = ∞ for every valid sequence? This asks whether the sequence must have arbitrarily large gaps relative to its index, ruling out sequences that are 'eventually linear'.",
+    "significance": "high"
+  },
+  {
+    "id": "question2",
+    "proofId": "erdos-839",
+    "range": { "startLine": 48, "endLine": 54 },
+    "type": "conjecture",
+    "title": "Question 2: Logarithmic Density",
+    "content": "Does (1/log x)·Σ_{aₙ<x} 1/aₙ → 0? This asks whether the sequence has vanishing logarithmic density. Since Σ 1/n ~ log x for all integers, this would mean the sequence is negligible in the harmonic sense.",
+    "significance": "high"
+  },
+  {
+    "id": "liminf",
+    "proofId": "erdos-839",
+    "range": { "startLine": 58, "endLine": 62 },
+    "type": "note",
+    "title": "Finite lim inf",
+    "content": "Erdős observed that lim inf(aₙ/n) can be finite — there exist valid sequences where aₙ/n stays bounded infinitely often. This shows the sequence need not grow super-linearly everywhere.",
+    "significance": "medium"
+  },
+  {
+    "id": "freud",
+    "proofId": "erdos-839",
+    "range": { "startLine": 78, "endLine": 84 },
+    "type": "theorem",
+    "title": "Freud's Counterexample",
+    "content": "Freud constructed a valid sequence with upper density 19/36 ≈ 0.528, disproving Erdős's conjecture that the upper density is at most 1/2. The construction uses a carefully designed periodic pattern.",
+    "significance": "high"
+  },
+  {
+    "id": "main-open",
+    "proofId": "erdos-839",
+    "range": { "startLine": 88, "endLine": 92 },
+    "type": "conjecture",
+    "title": "Open Status",
+    "content": "Both questions — lim sup growth and logarithmic density — remain completely open. The problem is connected to Problems #359 (sum-free sets) and #867.",
+    "significance": "high"
+  }
+]
