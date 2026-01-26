@@ -1,0 +1,74 @@
+[
+  {
+    "id": "multiples-set",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Set of Multiples",
+    "content": "M_A = {n ≥ 1 : a | n for some a ∈ A} — the set of all positive integers divisible by at least one element of A.",
+    "significance": "critical",
+    "range": {
+      "startLine": 23,
+      "endLine": 25
+    }
+  },
+  {
+    "id": "behrend-sequence",
+    "proofId": "erdos-691",
+    "type": "definition",
+    "title": "Behrend Sequence",
+    "content": "A is a Behrend sequence if its set of multiples M_A has asymptotic density 1, meaning almost all positive integers are divisible by some element of A.",
+    "significance": "critical",
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    }
+  },
+  {
+    "id": "coprime-criterion",
+    "proofId": "erdos-691",
+    "type": "theorem",
+    "title": "Coprime Behrend Criterion",
+    "content": "For pairwise coprime sets A (excluding 1): A is Behrend if and only if Σ 1/a diverges.",
+    "significance": "critical",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    }
+  },
+  {
+    "id": "primes-behrend",
+    "proofId": "erdos-691",
+    "type": "theorem",
+    "title": "Primes Are Behrend",
+    "content": "The set of all primes is a Behrend sequence, since Σ 1/p diverges and primes are pairwise coprime.",
+    "significance": "key",
+    "range": {
+      "startLine": 59,
+      "endLine": 61
+    }
+  },
+  {
+    "id": "tenenbaum-threshold",
+    "proofId": "erdos-691",
+    "type": "insight",
+    "title": "Tenenbaum's Threshold",
+    "content": "For lacunary block sequences with geometric ratio and ηₖ = k^{−β}: the sequence is Behrend iff β < log 2 ≈ 0.693.",
+    "significance": "key",
+    "range": {
+      "startLine": 80,
+      "endLine": 84
+    }
+  },
+  {
+    "id": "general-characterization",
+    "proofId": "erdos-691",
+    "type": "concept",
+    "title": "General Characterization",
+    "content": "The main open problem: find a necessary and sufficient condition P(A) such that A is Behrend iff P(A) holds, generalizing the coprime criterion.",
+    "significance": "critical",
+    "range": {
+      "startLine": 88,
+      "endLine": 95
+    }
+  }
+]
