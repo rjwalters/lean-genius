@@ -6,11 +6,9 @@
   "meta": {
     "author": "Bollobás, Erdős; solved by Edwards, Hadziivanov-Nikiforov",
     "sourceUrl": "https://erdosproblems.com/905",
-    "date": "1979",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos905Problem.lean",
     "tags": [
-      "erdos",
       "graph-theory",
       "extremal-graph-theory",
       "triangles",
@@ -20,53 +18,17 @@
     "sorries": 0,
     "erdosNumber": 905,
     "erdosUrl": "https://erdosproblems.com/905",
-    "erdosProblemStatus": "solved",
-    "mathlibDependencies": [
-      {
-        "theorem": "Nat.Basic",
-        "description": "Basic natural number operations",
-        "module": "Mathlib.Data.Nat.Basic"
-      },
-      {
-        "theorem": "Finset.Basic",
-        "description": "Finite sets for vertices and edges",
-        "module": "Mathlib.Data.Finset.Basic"
-      },
-      {
-        "theorem": "Real.Basic",
-        "description": "Real numbers for bounds",
-        "module": "Mathlib.Data.Real.Basic"
-      },
-      {
-        "theorem": "SimpleGraph.Basic",
-        "description": "Simple graph definitions",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
-      }
-    ],
-    "originalContributions": [
-      "Definition of Graph structure with symmetric, irreflexive edges",
-      "Formalization of IsTriangle predicate",
-      "Definition of triangleCountEdge function",
-      "Definition of maxTriangleMultiplicity",
-      "Formalization of Turán number ex(n, K₃) = n²/4",
-      "Definition of AboveTuran predicate",
-      "Axiomatization of Turán's theorem",
-      "Formalization of BollobasErdosConjecture",
-      "Axiomatization of the main theorem",
-      "Formalization of IsTuranGraph",
-      "Key lemma on triangle count lower bound"
-    ],
-    "dateAdded": "2026-01-19"
+    "erdosProblemStatus": "solved"
   },
   "overview": {
     "historicalContext": "Bollobás and Erdős conjectured this result about edge-triangle multiplicity. It was independently proved by Edwards (unpublished) and Hadziivanov-Nikiforov in 1979. The problem connects to Turán's classical theorem on triangle-free graphs.",
     "problemStatement": "Every graph with n vertices and more than n²/4 edges contains an edge which is in at least n/6 triangles.",
-    "proofStrategy": "The formalization defines graphs, triangles, and edge-triangle multiplicity. It introduces the Turán threshold n²/4 and formalizes the main theorem. Proof sketches using counting arguments and connections to Turán graphs are included.",
+    "proofStrategy": "The formalization defines a custom Graph structure with symmetric, irreflexive edge sets. It introduces IsTriangle, triangleCountEdge, and maxTriangleMultiplicity. The Turán threshold n²/4 is defined, and the main Bollobás-Erdős conjecture is axiomatized as proved. Tightness of the constant n/6 and connections to Turán theory are included.",
     "keyInsights": [
       "n²/4 is the Turán threshold for triangle-free graphs",
       "Exceeding this threshold forces high triangle multiplicity on some edge",
-      "The constant n/6 is tight - cannot be improved",
-      "The Turán graph T(n,2) achieves the threshold",
+      "The constant n/6 is tight — cannot be improved",
+      "The Turán graph T(n,2) achieves the threshold with no triangles",
       "Connects to Problem #80 (general case) and #1034 (stronger version)"
     ]
   },
@@ -76,74 +38,74 @@
       "title": "Part I: Graph Definitions",
       "startLine": 41,
       "endLine": 66,
-      "summary": "Defines Graph structure, edgeCount, and Adj predicate."
+      "summary": "Defines Graph structure with symmetric irreflexive edge set, edgeCount, and Adj predicate."
     },
     {
       "id": "triangles",
       "title": "Part II: Triangles",
       "startLine": 68,
       "endLine": 93,
-      "summary": "Defines IsTriangle, triangleCountEdge, and maxTriangleMultiplicity."
+      "summary": "Defines IsTriangle, triangleCountEdge for a given edge, and maxTriangleMultiplicity over all edges."
     },
     {
       "id": "turan-threshold",
       "title": "Part III: Turán's Threshold",
       "startLine": 95,
       "endLine": 117,
-      "summary": "Defines turanNumber and AboveTuran, axiomatizes Turán's theorem."
+      "summary": "Defines turanNumber n = n²/4 and AboveTuran predicate. Axiomatizes Turán's theorem."
     },
     {
       "id": "main-theorem",
       "title": "Part IV: The Main Theorem",
       "startLine": 119,
-      "endLine": 143,
-      "summary": "Formalizes and axiomatizes the Bollobás-Erdős conjecture (SOLVED)."
+      "endLine": 144,
+      "summary": "Defines BollobasErdosConjecture and axiomatizes it as proved (bollobas_erdos_theorem). Alternate formulation via maxTriangleMultiplicity."
     },
     {
       "id": "constant",
       "title": "Part V: The Constant n/6",
-      "startLine": 145,
-      "endLine": 163,
-      "summary": "Shows the constant n/6 is tight and cannot be improved."
+      "startLine": 146,
+      "endLine": 164,
+      "summary": "Axiomatizes tightness: the constant n/6 cannot be improved in general."
     },
     {
       "id": "turan-theory",
       "title": "Part VI: Connection to Turán Theory",
-      "startLine": 165,
-      "endLine": 192,
-      "summary": "Defines IsTuranGraph and proves triangle-free property."
+      "startLine": 166,
+      "endLine": 199,
+      "summary": "Defines IsTuranGraph (complete bipartite with balanced parts). Axiomatizes triangle-free property and that adding any edge creates triangles."
     },
     {
       "id": "proof-sketch",
       "title": "Part VII: Proof Sketch",
-      "startLine": 194,
-      "endLine": 221,
-      "summary": "Edwards' and Hadziivanov-Nikiforov's proof approaches."
+      "startLine": 200,
+      "endLine": 228,
+      "summary": "Placeholder axioms for Edwards' counting approach and Hadziivanov-Nikiforov's Kruskal-Katona approach. Triangle count lower bound lemma."
     },
     {
       "id": "related-problems",
       "title": "Part VIII: Relation to Problem #80",
-      "startLine": 223,
-      "endLine": 238,
-      "summary": "Connections to Problems #80 and #1034."
+      "startLine": 229,
+      "endLine": 244,
+      "summary": "Placeholder connections to Problem #80 (general case) and Problem #1034 (stronger version)."
     },
     {
       "id": "extremal",
       "title": "Part IX: Extremal Graphs",
-      "startLine": 240,
-      "endLine": 254,
-      "summary": "Characterization of extremal and near-Turán graphs."
+      "startLine": 246,
+      "endLine": 261,
+      "summary": "Placeholder axioms for extremal graph characterization and near-Turán structure."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
-      "startLine": 256,
-      "endLine": 293,
-      "summary": "Problem statement and status summary."
+      "startLine": 262,
+      "endLine": 300,
+      "summary": "Summary theorem (proved: trivial), erdos_905 := bollobas_erdos_theorem (proved), and historical note."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #905 is SOLVED. Every graph exceeding the Turán threshold n²/4 edges has some edge in at least n/6 triangles. This was proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
+    "summary": "Erdős Problem #905 is SOLVED. Every graph exceeding the Turán threshold n²/4 edges has some edge in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
     "implications": "The result shows that exceeding Turán's triangle-free threshold forces not just the existence of triangles, but high edge-triangle multiplicity. This is fundamental to extremal graph theory.",
     "openQuestions": [
       "What are the exact extremal graphs for this problem?",
