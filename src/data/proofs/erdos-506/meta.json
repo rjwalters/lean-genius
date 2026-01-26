@@ -1,0 +1,77 @@
+{
+  "id": "erdos-506",
+  "title": "Erdős Problem #506: Minimum Number of Circles from n Points",
+  "slug": "erdos-506",
+  "description": "What is the minimum number of distinct circles determined by n points in ℝ², not all concyclic? Elliott (1967): ≥ C(n-1,2) for n > 393. Segre: fails for n = 8. Open for small n.",
+  "meta": {
+    "erdosNumber": 506,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "geometry",
+      "combinatorial-geometry",
+      "circles",
+      "open"
+    ],
+    "references": [
+      "Elliott (1967): ≥ C(n-1,2) circles for n > 393",
+      "Segre: cube projection counterexample for n = 8",
+      "Related to Problems #104 and #831",
+      "https://erdosproblems.com/506"
+    ],
+    "leanFile": "Proofs/Erdos506Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 68,
+      "summary": "Points, collinearity, circumcircle, concyclicity, and circle counting."
+    },
+    {
+      "id": "elliott",
+      "title": "Elliott's Theorem",
+      "startLine": 70,
+      "endLine": 76,
+      "summary": "For n > 393 non-degenerate points, at least C(n-1,2) circles."
+    },
+    {
+      "id": "segre",
+      "title": "Segre's Counterexample",
+      "startLine": 78,
+      "endLine": 84,
+      "summary": "Cube projection gives 8 points with fewer than 21 circles."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Open Question",
+      "startLine": 86,
+      "endLine": 100,
+      "summary": "Determine minimum circles for small n ≤ 393 and Sylvester–Gallai analogy."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This problem asks about the combinatorial geometry of circles determined by point sets, analogous to the classical question about lines (Sylvester–Gallai). Elliott (1967) resolved the large-n case, showing at least C(n-1,2) circles for n > 393 non-degenerate points. Segre demonstrated the bound fails for small n using a cube projection.",
+    "problemStatement": "What is the minimum number of distinct circles determined by n points in ℝ², not all on a single circle (and not all collinear)?",
+    "proofStrategy": "We define circumcircles of point triples, circle counting for configurations, and state Elliott's theorem for n > 393. We record Segre's counterexample showing the bound fails at n = 8 and pose the open question for small n.",
+    "keyInsights": [
+      "Three non-collinear points determine a unique circle via the circumcircle construction",
+      "Elliott (1967) proved ≥ C(n-1,2) circles for n > 393, matching the number of pairs",
+      "Segre's cube projection shows 8 points can determine fewer than C(7,2) = 21 circles",
+      "The problem is analogous to Sylvester–Gallai for lines, but much harder for circles",
+      "Connected to Erdős Problems #104 (distinct distances) and #831"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #506 is largely resolved for large n by Elliott's theorem (1967), but the minimum number of circles remains open for small n ≤ 393, where Segre's counterexample shows the asymptotic bound fails.",
+    "implications": "Complete resolution would advance combinatorial geometry, connecting to incidence geometry, algebraic curves, and the broader program of Erdős-type extremal problems for geometric configurations.",
+    "openQuestions": [
+      "What is the exact minimum number of circles for each n ≤ 393?",
+      "Can Elliott's threshold 393 be reduced?",
+      "Is the minimum achieved by algebraically structured configurations (e.g., lattices)?",
+      "What is the analogous problem in higher dimensions for spheres?"
+    ]
+  }
+}
