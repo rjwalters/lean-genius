@@ -1,0 +1,90 @@
+{
+  "id": "erdos-126",
+  "title": "Erdős Problem #126: Distinct Prime Factors of Pairwise Sums",
+  "slug": "erdos-126",
+  "description": "Let f(n) be maximal such that for any n-element A ⊆ N, the product of all pairwise sums has at least f(n) distinct prime factors. Is f(n)/log(n) → ∞? Erdős-Turán proved log(n) ≪ f(n) ≪ n/log(n). OPEN ($250).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/126",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos126Problem.lean",
+    "tags": [
+      "number-theory",
+      "prime-factors",
+      "extremal-problems",
+      "asymptotics",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 126,
+    "erdosUrl": "https://erdosproblems.com/126",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #126 originates from the first joint paper of Erdős and Turán (1934), prompted by Lázár and Grünwald. They established that log(n) ≪ f(n) ≪ n/log(n). The conjecture f(n)/log(n) → ∞ carries a $250 prize. Erdős also noted that f(n) = o(n/log(n)) has never been proved. References: [ErTu34], [Er95c], [Er97].",
+    "problemStatement": "Let f(n) be the maximum value such that for any A ⊆ N with |A| = n, the product of all (a+b) for distinct a,b in A has at least f(n) distinct prime factors. Is f(n)/log(n) → ∞? OPEN.",
+    "proofStrategy": "The formalization defines IsMaximalAddFactorsCard using Finset.offDiag and primeFactors. The main conjecture uses Tendsto with atTop. The Erdős-Turán bounds are formalized as Big-O and the little-o question is stated separately.",
+    "keyInsights": [
+      "f(n) counts the minimum number of distinct prime factors in products of pairwise sums",
+      "Erdős-Turán (1934): log(n) ≪ f(n) ≪ n/log(n)",
+      "The trivial upper bound comes from A = {1,...,n} and the prime number theorem",
+      "Whether f(n) = o(n/log(n)) is itself an open question",
+      "The conjecture asks if f(n) grows strictly faster than log(n)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "extremal-function",
+      "title": "Part I: The Extremal Function",
+      "startLine": 27,
+      "endLine": 39,
+      "summary": "Defines IsMaximalAddFactorsCard(f): f(n) is the maximum over all n-element sets of the minimum prime factor count."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part II: The Main Conjecture",
+      "startLine": 41,
+      "endLine": 51,
+      "summary": "Defines ErdosConjecture126: f(n)/log(n) → ∞. Axiom erdos_126."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Part III: Known Bounds (Erdős-Turán 1934)",
+      "startLine": 53,
+      "endLine": 69,
+      "summary": "Axioms: erdos_turan_lower (log(n) = O(f(n))), erdos_turan_upper (f(n) = O(n/log(n))). Theorem erdos_turan_bounds combines both."
+    },
+    {
+      "id": "littleo-question",
+      "title": "Part IV: The Little-o Question",
+      "startLine": 71,
+      "endLine": 78,
+      "summary": "Axiom erdos_126_littleo: f(n) = o(n/log(n)), an open sub-question."
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Part V: Trivial Upper Bound",
+      "startLine": 80,
+      "endLine": 88,
+      "summary": "Axiom trivial_upper_bound: existence of sets with bounded prime factor count."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 90,
+      "endLine": 108,
+      "summary": "Proved: erdos_turan_bounds (from axioms), erdos_126_statement (simp), erdos_126_status (trivial). OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #126 asks whether f(n)/log(n) → ∞, where f(n) counts minimum distinct prime factors of pairwise sums. The Erdős-Turán bounds log(n) ≪ f(n) ≪ n/log(n) are known, but the conjecture remains open.",
+    "implications": "Resolution would reveal the arithmetic complexity of pairwise sums and connect to the distribution of prime factors in structured products.",
+    "openQuestions": [
+      "Is f(n)/log(n) → ∞?",
+      "Is f(n) = o(n/log(n))?",
+      "What is the true order of growth of f(n)?",
+      "Can the Erdős-Turán lower bound be improved?"
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "id": "erdos-126-header",
+    "proofId": "erdos-126",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 16 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #126: Let f(n) be maximal so that any n-element subset's pairwise sum product has >= f(n) distinct prime factors. Is f(n)/log(n) → ∞? OPEN ($250 prize).",
+    "mathContext": "The extremal function f(n) captures the arithmetic complexity of pairwise sums. The conjecture asserts growth strictly faster than log(n).",
+    "significance": "essential",
+    "relatedConcepts": ["prime factors", "pairwise sums", "extremal functions"]
+  },
+  {
+    "id": "erdos-126-extremal",
+    "proofId": "erdos-126",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 39 },
+    "title": "The Extremal Function",
+    "content": "IsMaximalAddFactorsCard(f): for all n, f(n) = max m such that every n-element A has >= m distinct prime factors in the product of all (a+b) for a != b in A.",
+    "mathContext": "Uses Finset.offDiag for ordered pairs and Nat.primeFactors for the distinct prime factor count.",
+    "significance": "essential",
+    "relatedConcepts": ["Finset.offDiag", "primeFactors", "IsGreatest"]
+  },
+  {
+    "id": "erdos-126-conjecture",
+    "proofId": "erdos-126",
+    "type": "conjecture",
+    "range": { "startLine": 41, "endLine": 51 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "ErdosConjecture126: f(n)/log(n) → ∞ as n → ∞. erdos_126 (axiom): the conjecture holds for the extremal function.",
+    "mathContext": "Formalized as Tendsto (f(n)/Real.log(n)) atTop atTop. This is stronger than just f(n) → ∞.",
+    "significance": "essential",
+    "relatedConcepts": ["Tendsto", "atTop", "asymptotic growth"]
+  },
+  {
+    "id": "erdos-126-bounds",
+    "proofId": "erdos-126",
+    "type": "result",
+    "range": { "startLine": 53, "endLine": 69 },
+    "title": "Erdős-Turán Bounds (1934)",
+    "content": "erdos_turan_bounds (proved): log(n) = O(f(n)) and f(n) = O(n/log(n)), from axioms erdos_turan_lower and erdos_turan_upper.",
+    "mathContext": "The lower bound shows f(n) grows at least logarithmically. The upper bound is achieved by A = {1,...,n}.",
+    "significance": "essential",
+    "relatedConcepts": ["Big-O notation", "Erdős-Turán", "asymptotic bounds"]
+  },
+  {
+    "id": "erdos-126-littleo",
+    "proofId": "erdos-126",
+    "type": "conjecture",
+    "range": { "startLine": 71, "endLine": 78 },
+    "title": "Little-o Sub-Question (OPEN)",
+    "content": "erdos_126_littleo (axiom): f(n) = o(n/log(n)). Erdős noted this has never been proved, meaning the upper bound may not be tight.",
+    "mathContext": "If true, f(n) grows strictly slower than n/log(n), narrowing the gap between the bounds.",
+    "significance": "essential",
+    "relatedConcepts": ["little-o notation", "tightness of bounds"]
+  },
+  {
+    "id": "erdos-126-summary",
+    "proofId": "erdos-126",
+    "type": "result",
+    "range": { "startLine": 90, "endLine": 108 },
+    "title": "Summary: OPEN",
+    "content": "erdos_turan_bounds (proved): combined bounds from axioms. erdos_126_statement (proved): by simp. erdos_126_status (proved): True. Both the main conjecture and the little-o question remain OPEN.",
+    "mathContext": "The 1934 bounds are the state of the art. The gap between log(n) and n/log(n) remains wide.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
+  }
+]
