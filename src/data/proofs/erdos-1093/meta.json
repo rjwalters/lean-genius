@@ -1,0 +1,82 @@
+{
+  "id": "erdos-1093",
+  "title": "Erdős Problem #1093: Deficiency of Binomial Coefficients",
+  "slug": "erdos-1093",
+  "description": "For n ≥ 2k with C(n,k) having no prime factor ≤ k, the deficiency counts k-smooth terms among n, n-1, ..., n-k+1. Are there infinitely many with deficiency 1? Only finitely many with deficiency > 1? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1093",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1093Problem.lean",
+    "tags": ["number-theory", "binomial-coefficients", "smooth-numbers"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1093,
+    "erdosUrl": "https://erdosproblems.com/1093",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Lacampagne, and Selfridge (1988, 1993) studied the deficiency of binomial coefficients, measuring how many falling factorial terms are smooth. The problem was also presented at the 1986 West Coast Number Theory conference.",
+    "problemStatement": "For n ≥ 2k, if C(n,k) has no prime factor ≤ k, the deficiency counts k-smooth values among n, n-1, ..., n-k+1. (i) Are there infinitely many with deficiency 1? (ii) Are there only finitely many with deficiency > 1?",
+    "proofStrategy": "We define IsKSmooth, NoSmallPrimeFactors, and deficiency as a Finset cardinality. ErdosProblem1093i (infinitely many deficiency-1) and ErdosProblem1093ii (finitely many deficiency > 1) are stated. Known examples (C(7,3), C(13,4), C(284,28)) and the ELS upper bound n ≪ 2^k·√k are axiomatized. Proved: large_factor_no_contribution.",
+    "keyInsights": [
+      "Deficiency measures how many terms in the falling factorial n(n-1)···(n-k+1) are k-smooth",
+      "C(7,3) = 35 and C(13,4) = 715 are examples with deficiency 1",
+      "C(284,28) has the highest known deficiency of 9",
+      "The ELS upper bound n ≪ 2^k·√k constrains where deficiency can be positive"
+    ]
+  },
+  "sections": [
+    {
+      "id": "smooth-numbers",
+      "title": "Smooth Numbers",
+      "startLine": 22,
+      "endLine": 28,
+      "summary": "Defines IsKSmooth: m is k-smooth if all prime factors of m are ≤ k."
+    },
+    {
+      "id": "deficiency",
+      "title": "Deficiency",
+      "startLine": 30,
+      "endLine": 41,
+      "summary": "Defines NoSmallPrimeFactors and deficiency as count of k-smooth terms in the falling factorial."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Conjectures",
+      "startLine": 43,
+      "endLine": 63,
+      "summary": "States ErdosProblem1093i (infinitely many deficiency-1) and ErdosProblem1093ii (finitely many deficiency > 1)."
+    },
+    {
+      "id": "examples",
+      "title": "Known Examples",
+      "startLine": 65,
+      "endLine": 77,
+      "summary": "Specific deficiency values: C(7,3) and C(13,4) have deficiency 1; C(284,28) has deficiency 9."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 79,
+      "endLine": 93,
+      "summary": "ELS (1993) upper bound: if deficiency ≥ 1 then n ≪ 2^k·√k. At least 58 examples known."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 95,
+      "endLine": 107,
+      "summary": "Proved: if n-i has a prime factor > k, it is not k-smooth and does not contribute to deficiency."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 1093 asks about the distribution of deficiency values for binomial coefficients. Part (i) conjectures infinitely many deficiency-1 cases; part (ii) conjectures finitely many with deficiency > 1. Both remain open.",
+    "implications": "Resolution would deepen understanding of prime factorization patterns in binomial coefficients and the distribution of smooth numbers in short intervals.",
+    "openQuestions": [
+      "Are there infinitely many binomial coefficients with deficiency 1?",
+      "Is C(284,28) with deficiency 9 the maximum?",
+      "Can the ELS upper bound n ≪ 2^k·√k be improved?"
+    ]
+  }
+}

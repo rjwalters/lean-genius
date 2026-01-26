@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-1093-smooth",
+    "proofId": "erdos-1093",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 28 },
+    "title": "k-Smooth Numbers",
+    "content": "IsKSmooth k m holds when all prime factors of m are ≤ k. These are the 'small' numbers in the falling factorial.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1093-deficiency",
+    "proofId": "erdos-1093",
+    "type": "definition",
+    "range": { "startLine": 38, "endLine": 41 },
+    "title": "Deficiency",
+    "content": "deficiency n k counts how many of n, n-1, ..., n-k+1 are k-smooth. Defined when C(n,k) has no prime factor ≤ k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1093-part-i",
+    "proofId": "erdos-1093",
+    "type": "conjecture",
+    "range": { "startLine": 47, "endLine": 52 },
+    "title": "Part (i): Infinitely Many Deficiency 1",
+    "content": "Are there infinitely many (n,k) with n ≥ 2k, no small prime factors in C(n,k), and deficiency exactly 1?",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1093-part-ii",
+    "proofId": "erdos-1093",
+    "type": "conjecture",
+    "range": { "startLine": 54, "endLine": 59 },
+    "title": "Part (ii): Finitely Many Deficiency > 1",
+    "content": "Are there only finitely many (n,k) with deficiency > 1? The highest known deficiency is 9 for C(284,28).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1093-els",
+    "proofId": "erdos-1093",
+    "type": "result",
+    "range": { "startLine": 83, "endLine": 87 },
+    "title": "ELS Upper Bound",
+    "content": "Erdős-Lacampagne-Selfridge (1993): if deficiency ≥ 1 then n ≪ 2^k · √k, bounding the region where positive deficiency can occur.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-1093-proved",
+    "proofId": "erdos-1093",
+    "type": "result",
+    "range": { "startLine": 100, "endLine": 106 },
+    "title": "Large Factor Exclusion",
+    "content": "Proved: if n-i has a prime factor > k, it is not k-smooth and does not contribute to the deficiency count.",
+    "significance": "supporting"
+  }
+]
