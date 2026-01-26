@@ -1,0 +1,68 @@
+[
+  {
+    "id": "erdos-960-header",
+    "proofId": "erdos-960",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 18 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #960: Determine the threshold f_{r,k}(n) of ordinary lines that forces an all-ordinary r-subset among n points with no k collinear. Is f = o(n²)? OPEN.",
+    "mathContext": "Ordinary lines contain exactly 2 points. The threshold captures a Ramsey-type phenomenon in discrete geometry.",
+    "significance": "essential",
+    "relatedConcepts": ["ordinary lines", "Ramsey theory", "discrete geometry"]
+  },
+  {
+    "id": "erdos-960-definitions",
+    "proofId": "erdos-960",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 70 },
+    "title": "Point Configurations and Ordinary Lines",
+    "content": "PointConfig: finite point set with cardinality. NoKCollinear: no k points on a line. IsOrdinaryLine: exactly 2 points on the line. AllOrdinary: every pair in subset determines an ordinary line.",
+    "mathContext": "The definitions capture the geometric setup using N x N coordinates and collinearity via linear equations.",
+    "significance": "essential",
+    "relatedConcepts": ["collinearity", "point configuration", "ordinary line"]
+  },
+  {
+    "id": "erdos-960-threshold",
+    "proofId": "erdos-960",
+    "type": "definition",
+    "range": { "startLine": 72, "endLine": 82 },
+    "title": "The Threshold Function",
+    "content": "threshold(r, k, n): sSup of ordinary line counts over n-point configurations with no k collinear and no all-ordinary r-subset.",
+    "mathContext": "The threshold is the maximum number of ordinary lines a configuration can have without containing an all-ordinary r-subset.",
+    "significance": "essential",
+    "relatedConcepts": ["sSup", "extremal function", "Ramsey threshold"]
+  },
+  {
+    "id": "erdos-960-conjecture",
+    "proofId": "erdos-960",
+    "type": "conjecture",
+    "range": { "startLine": 84, "endLine": 99 },
+    "title": "Main Conjecture (OPEN)",
+    "content": "ErdosConjecture960_littleo: f_{r,k}(n) = o(n²). ErdosConjecture960_linear: f_{r,k}(n) << n (stronger). erdos_960 (axiom): the little-o conjecture.",
+    "mathContext": "The conjecture asserts subquadratic growth. The stronger linear form would be sharp.",
+    "significance": "essential",
+    "relatedConcepts": ["little-o notation", "subquadratic growth", "linear threshold"]
+  },
+  {
+    "id": "erdos-960-turan",
+    "proofId": "erdos-960",
+    "type": "result",
+    "range": { "startLine": 101, "endLine": 111 },
+    "title": "Turán Upper Bound",
+    "content": "turan_upper_bound (axiom): f_{r,k}(n) <= (1-1/(r-1))n²/2 + 1. trivial_bound (axiom): at most C(n,2) ordinary lines.",
+    "mathContext": "Turán's theorem from extremal graph theory applies because the all-ordinary condition relates to a clique-like structure.",
+    "significance": "essential",
+    "relatedConcepts": ["Turán's theorem", "extremal graph theory"]
+  },
+  {
+    "id": "erdos-960-summary",
+    "proofId": "erdos-960",
+    "type": "result",
+    "range": { "startLine": 113, "endLine": 132 },
+    "title": "Summary: OPEN",
+    "content": "erdos_960_statement (proved): by simp. erdos_960_status (proved): True. Both the subquadratic and linear conjectures remain OPEN.",
+    "mathContext": "The Turán bound is the best known upper bound. The problem connects geometry and Ramsey theory.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
+  }
+]
