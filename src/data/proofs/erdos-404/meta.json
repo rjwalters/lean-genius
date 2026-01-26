@@ -2,162 +2,102 @@
   "id": "erdos-404",
   "title": "Erdős Problem #404: Prime Power Divisibility of Factorial Sums",
   "slug": "erdos-404",
-  "description": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a?",
+  "description": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a? Let f(a, p) be the supremum. Lin proved f(2, 2) ≤ 254. OPEN.",
   "meta": {
-    "author": "Erdős-Graham (1980 problem), Lin (1976 bound)",
+    "author": "Erdős-Graham (1980), Lin (1976)",
     "sourceUrl": "https://erdosproblems.com/404",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos404Problem.lean",
     "tags": [
-      "erdos",
       "number-theory",
       "factorials",
       "p-adic-valuation",
       "divisibility",
       "open-problem"
     ],
-    "badge": "open-problem",
-    "sorries": 8,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 404,
     "erdosUrl": "https://erdosproblems.com/404",
-    "erdosProblemStatus": "open",
-    "dateAdded": "2026-01-25",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "Nat.factorial",
-        "description": "Factorial function",
-        "module": "Mathlib.Data.Nat.Factorial.Basic"
-      },
-      {
-        "theorem": "padicValNat",
-        "description": "p-adic valuation of natural numbers",
-        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
-      },
-      {
-        "theorem": "Filter.Tendsto",
-        "description": "Limit and convergence",
-        "module": "Mathlib.Order.Filter.AtTopBot"
-      },
-      {
-        "theorem": "Finset.sum",
-        "description": "Sum over finite sets",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
-      }
-    ],
-    "originalContributions": [
-      "StrictIncSeq: strictly increasing sequence structure",
-      "factorialSum: sum of factorials over sequence",
-      "dividesByPrimePower: divisibility predicate",
-      "divisiblePowers: set of achievable powers",
-      "f: main function f(a,p)",
-      "erdos_404_q1: main question formalization",
-      "secondaryQuestion: unbounded valuation question",
-      "erdos_404_secondary: secondary problem statement",
-      "lin_bound: f(2,2) ≤ 254",
-      "lin_bound_meaning: interpretation of Lin's result",
-      "legendreSum: Legendre's formula implementation",
-      "legendre_formula: p-adic valuation theorem",
-      "padic_val_factorial_asymp: asymptotic formula",
-      "factorial_sum_mod: modular structure",
-      "factorial_sum_factored: factorization lemma",
-      "Concrete examples: 2!+3!=8, 1!+2!=3"
-    ]
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #404: Factorial Sum Divisibility**\n\nThis problem was posed by Erdős and Graham in 1980 [ErGr80] and concerns the p-adic structure of factorial sums.\n\n**Key History:**\n- Erdős-Graham (1980): Posed the problem about divisibility bounds\n- Lin (1976): Proved that f(2,2) ≤ 254 - the main quantitative result\n\n**Mathematical Context:**\n- Connects p-adic analysis with factorial combinatorics\n- Related to Legendre's formula for p-adic valuations of factorials\n- Related to Problem #403 on the Erdős Problems website\n\n**Status:** OPEN - Neither the main question nor the secondary question has been resolved.",
-    "problemStatement": "**Problem Statement (OPEN)**\n\nFor integers $a \\geq 1$ and primes $p$, let $f(a,p)$ be the supremum of $k$ such that there exist $a = a_1 < a_2 < \\cdots < a_n$ with $p^k \\mid (a_1! + a_2! + \\cdots + a_n!)$.\n\n**Question 1:** For which $(a, p)$ is $f(a,p)$ finite?\n\n**Question 2:** How does $f(a,p)$ behave as a function?\n\n**Secondary Question:** Is there a prime $p$ and infinite sequence $\\{a_i\\}$ such that $v_p(\\sum_{i \\leq k} a_i!) \\to \\infty$ as $k \\to \\infty$?\n\n**Known:** Lin (1976) proved $f(2,2) \\leq 254$.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** StrictIncSeq, factorialSum, dividesByPrimePower, f(a,p)\n\n2. **Main Questions:** erdos_404_q1 (finiteness), secondaryQuestion (unbounded growth)\n\n3. **Known Results:** lin_bound for f(2,2) ≤ 254\n\n4. **p-adic Tools:** Legendre's formula v_p(n!) = Σ⌊n/p^i⌋, asymptotic formula\n\n5. **Structural Lemmas:** factorial_sum_mod, factorial_sum_factored\n\n6. **Examples:** Concrete computations like 2!+3!=8=2³",
+    "historicalContext": "Erdős Problem #404, from Erdős-Graham [ErGr80], concerns prime power divisibility of factorial sums. Lin (1976) proved the main quantitative result: f(2, 2) ≤ 254. The problem connects p-adic analysis with factorial combinatorics and relates to Problem #403.",
+    "problemStatement": "For integers a ≥ 1 and primes p, let f(a, p) = sup{k : p^k | a₁! + ··· + aₙ! for some a = a₁ < ··· < aₙ}. For which (a, p) is f(a, p) finite? Secondary: does there exist p and {aᵢ} with v_p(Σ aᵢ!) → ∞? OPEN.",
+    "proofStrategy": "The formalization defines StrictIncSeq, factorialSum, dividesByPrimePower, and f(a, p). The main conjecture (finiteness) and secondary question (unbounded growth) are stated. Lin's bound is axiomatized. p-adic tools (Legendre's formula, asymptotics) and structural lemmas are included. Two concrete examples are proved by native_decide.",
     "keyInsights": [
-      "**The Function f(a,p):** Measures maximum prime power dividing any factorial sum",
-      "**Lin's Result:** f(2,2) ≤ 254, so 2^255 never divides any such sum",
-      "**Legendre's Formula:** v_p(n!) = Σ⌊n/p^i⌋ ≈ n/(p-1) for large n",
-      "**Secondary Question:** Asks if v_p(partial sums) can grow unboundedly",
-      "**Factorial Dominance:** For a₁ < a₂, we have a₂! >> a₁!, so a₁! + a₂! ≈ a₂! modularly",
-      "**Computational Hardness:** Cannot be resolved by finite computation"
+      "f(a, p) measures maximum prime power dividing any factorial sum starting at a",
+      "Lin proved f(2, 2) ≤ 254 — the only concrete upper bound known",
+      "Legendre's formula: v_p(n!) = Σ⌊n/p^i⌋ ≈ n/(p-1) for large n",
+      "Factorial dominance: for a₁ < a₂, the sum is controlled by the ratio a₂!/a₁!",
+      "The problem cannot be resolved by finite computation"
     ]
   },
   "sections": [
     {
-      "id": "header-docs",
-      "title": "Problem Overview",
-      "summary": "Header with problem statement and historical context",
-      "startLine": 1,
-      "endLine": 32
-    },
-    {
-      "id": "imports-setup",
-      "title": "Imports and Setup",
-      "summary": "Mathlib imports and namespace",
-      "startLine": 34,
-      "endLine": 45
-    },
-    {
-      "id": "definitions",
-      "title": "Core Definitions",
-      "summary": "StrictIncSeq, factorialSum, dividesByPrimePower, f(a,p)",
-      "startLine": 47,
-      "endLine": 68
+      "id": "core-definitions",
+      "title": "Part 1: Core Definitions",
+      "startLine": 36,
+      "endLine": 60,
+      "summary": "StrictIncSeq structure, factorialSum, dividesByPrimePower, divisiblePowers set, and f(a, p) = sSup of divisible powers."
     },
     {
       "id": "main-questions",
-      "title": "Main Questions",
-      "summary": "erdos_404_q1 and secondaryQuestion",
-      "startLine": 70,
-      "endLine": 92
+      "title": "Part 2: Main Questions",
+      "startLine": 61,
+      "endLine": 74,
+      "summary": "secondaryQuestion definition (unbounded v_p of partial sums) and erdos404Conjecture (finiteness of f for all a, p)."
     },
     {
       "id": "known-results",
-      "title": "Known Results",
-      "summary": "lin_bound and lin_bound_meaning",
-      "startLine": 94,
-      "endLine": 106
+      "title": "Part 3: Known Results",
+      "startLine": 75,
+      "endLine": 83,
+      "summary": "lin_bound axiom: f(2, 2) ≤ 254. lin_bound_meaning axiom: 2^255 never divides any such factorial sum."
     },
     {
       "id": "padic-analysis",
-      "title": "p-adic Analysis",
-      "summary": "Legendre's formula and asymptotic estimates",
-      "startLine": 108,
-      "endLine": 123
+      "title": "Part 4: p-adic Analysis of Factorials",
+      "startLine": 84,
+      "endLine": 97,
+      "summary": "legendreSum definition, legendre_formula axiom (v_p(n!) = Σ⌊n/p^i⌋), padic_val_factorial_asymp axiom (v_p(n!)/n → 1/(p-1))."
     },
     {
-      "id": "structure",
-      "title": "Structure of Factorial Sums",
-      "summary": "factorial_sum_mod and factorial_sum_factored",
-      "startLine": 125,
-      "endLine": 141
+      "id": "factorial-structure",
+      "title": "Part 5: Structure of Factorial Sums",
+      "startLine": 98,
+      "endLine": 107,
+      "summary": "factorial_sum_mod axiom (a₁! + a₂! ≡ a₁! mod a₂!) and factorial_sum_factored axiom (a₁! + a₂! = a₁!(1 + a₂!/a₁!))."
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "summary": "Concrete examples: 2!+3!=8, 1!+2!=3",
-      "startLine": 143,
-      "endLine": 156
+      "title": "Part 6: Examples",
+      "startLine": 108,
+      "endLine": 117,
+      "summary": "Two proved examples by native_decide: 2^3 | 2! + 3! (so f(2,2) ≥ 3) and 3 | 1! + 2!."
     },
     {
-      "id": "heuristics",
-      "title": "Heuristics",
-      "summary": "Informal reasoning about f(a,p) behavior",
-      "startLine": 158,
-      "endLine": 169
+      "id": "connections",
+      "title": "Part 7: Connections",
+      "startLine": 118,
+      "endLine": 125,
+      "summary": "Placeholder connections to Problem #403 and p-adic number theory."
     },
     {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "Cases a=1 and p=2",
-      "startLine": 171,
-      "endLine": 183
+      "id": "summary",
+      "title": "Part 8: Summary",
+      "startLine": 126,
+      "endLine": 152,
+      "summary": "Proved erdos_404_summary: conjecture equivalence and open status. Problem remains OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #404 asks about the divisibility of factorial sums by prime powers. The function f(a,p) measures the maximum k such that p^k divides some sum a₁!+⋯+aₙ!. Lin showed f(2,2) ≤ 254. Both the main question (finiteness of f) and the secondary question (unbounded growth of partial sums' valuations) remain open.",
-    "implications": "**Significance:**\n\n1. **p-adic Structure:** Understanding how factorials combine under p-adic valuation\n\n2. **Cancellation Patterns:** When do factorial sums achieve high prime power divisibility?\n\n3. **Computational Limits:** The problem cannot be resolved by finite computation\n\n4. **Connection to #403:** Related problems about factorial arithmetic",
+    "summary": "Erdős Problem #404 remains OPEN. It asks about the finiteness of f(a, p), the supremum of k such that p^k divides some factorial sum starting at a. Lin's bound f(2, 2) ≤ 254 is the main quantitative result.",
+    "implications": "Resolution would illuminate the p-adic structure of factorial sums and how prime power divisibility interacts with factorial growth. Connects to Legendre's formula and p-adic number theory.",
     "openQuestions": [
-      "Is f(a,p) finite for all a and primes p?",
-      "What is the exact value of f(2,2)?",
-      "How does f(a,p) grow with a for fixed p?",
-      "Can v_p(Σaᵢ!) → ∞ for some sequence?",
-      "Are there other (a,p) pairs where f(a,p) is bounded?"
+      "Is f(a, p) finite for all a and primes p?",
+      "What is the exact value of f(2, 2)?",
+      "Can v_p(Σ aᵢ!) → ∞ for some prime p and sequence?"
     ]
   }
 }
