@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-663-product",
+    "proofId": "erdos-663",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 28 },
+    "title": "Consecutive Product",
+    "content": "consecutiveProduct n k computes (n+1)(n+2)···(n+k) as a Finset product.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-663-qnk",
+    "proofId": "erdos-663",
+    "type": "definition",
+    "range": { "startLine": 30, "endLine": 44 },
+    "title": "Smallest Missing Prime q(n,k)",
+    "content": "q(n,k) is axiomatized as the least prime not dividing the consecutive product, with primality, non-divisibility, and minimality properties.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-663-conjecture",
+    "proofId": "erdos-663",
+    "type": "conjecture",
+    "range": { "startLine": 48, "endLine": 54 },
+    "title": "Erdős Problem 663",
+    "content": "For fixed k, q(n,k) < (1+o(1)) log n as n → ∞. Stated as: for all ε > 0, q(n,k) < (1+ε) log n for sufficiently large n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-663-weak",
+    "proofId": "erdos-663",
+    "type": "conjecture",
+    "range": { "startLine": 58, "endLine": 65 },
+    "title": "Weak Bound",
+    "content": "The known weak bound q(n,k) < (1+o(1))k·log n, which follows from the prime number theorem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-663-k1",
+    "proofId": "erdos-663",
+    "type": "result",
+    "range": { "startLine": 67, "endLine": 77 },
+    "title": "Weak Bound Implies Conjecture for k=1",
+    "content": "When k=1, the factor k disappears and the weak bound coincides with the main conjecture. Proved by simplification.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-663-implies",
+    "proofId": "erdos-663",
+    "type": "result",
+    "range": { "startLine": 118, "endLine": 128 },
+    "title": "Main Conjecture Implies Weak Bound",
+    "content": "The main conjecture (without k factor) trivially implies the weak bound (with k factor) since k ≥ 1.",
+    "significance": "supporting"
+  }
+]
