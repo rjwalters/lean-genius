@@ -1,0 +1,74 @@
+[
+  {
+    "id": "is-factorial",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 27, "endLine": 28 },
+    "type": "definition",
+    "title": "IsFactorial Predicate",
+    "content": "A natural number d is factorial if d = k! for some k ∈ ℕ. The factorials form a sparse sequence: 1, 1, 2, 6, 24, 120, 720, ... growing super-exponentially.",
+    "significance": "medium"
+  },
+  {
+    "id": "all-factorial-subtractions",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "All Factorial Subtractions Composite",
+    "content": "The key property: n - d is composite for every factorial d < n. This means subtracting any factorial from n never yields a prime. For n prime, this says n is 'far' from all factorials in a primality sense.",
+    "significance": "high"
+  },
+  {
+    "id": "example-101",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "theorem",
+    "title": "Example: p = 101",
+    "content": "The prime 101 satisfies the property: 101 - 1 = 100 = 4·25, 101 - 2 = 99 = 9·11, 101 - 6 = 95 = 5·19, 101 - 24 = 77 = 7·11. All four subtractions are composite.",
+    "significance": "medium"
+  },
+  {
+    "id": "counterexample-89",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 55, "endLine": 55 },
+    "type": "theorem",
+    "title": "Counterexample: p = 89",
+    "content": "The prime 89 fails the property: 89 - 3! = 89 - 6 = 83, which is prime. This shows not all primes satisfy the factorial-subtraction condition.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "conjecture",
+    "title": "Infinitely Many Factorial-Avoiding Primes",
+    "content": "The main open problem: the set of primes p with all factorial subtractions composite is infinite. The heuristic argument suggests this set has positive density among primes.",
+    "significance": "high"
+  },
+  {
+    "id": "few-factorials",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 64, "endLine": 70 },
+    "type": "insight",
+    "title": "Few Factorials Below n",
+    "content": "Since k! grows super-exponentially, only O(log n / log log n) factorials lie below n. For n ~ 10^6, this is about 9 factorials. The condition thus involves checking very few subtractions.",
+    "significance": "medium"
+  },
+  {
+    "id": "alternative-approach",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 84, "endLine": 88 },
+    "type": "conjecture",
+    "title": "Erdős's Alternative via Smooth Numbers",
+    "content": "Erdős suggested proving the weaker statement: infinitely many n in (l!, (l+1)!] have all prime factors > l and all factorial subtractions composite. This removes the primality requirement on n itself.",
+    "significance": "high"
+  },
+  {
+    "id": "probabilistic-heuristic",
+    "proofId": "erdos-1059",
+    "range": { "startLine": 97, "endLine": 100 },
+    "type": "insight",
+    "title": "Probabilistic Heuristic",
+    "content": "Each n - k! is prime with probability ~1/ln(N). With ~log N/log log N factorials to check, the probability all subtractions are composite is (1 - 1/ln N)^(log N/log log N) → 1. Most large primes should satisfy the property.",
+    "significance": "medium"
+  }
+]

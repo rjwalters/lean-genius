@@ -1,0 +1,90 @@
+{
+  "id": "erdos-1059",
+  "title": "Erdős Problem #1059: Primes Minus Factorials All Composite",
+  "slug": "erdos-1059",
+  "description": "Are there infinitely many primes p such that p - k! is composite for every k with 1 ≤ k! < p? Examples include p = 101 and p = 211. The heuristic suggests most large primes satisfy this property. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 1059,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "factorials",
+      "composite-numbers",
+      "open"
+    ],
+    "references": [
+      "Guy [Gu04], Problem A2",
+      "OEIS A064152",
+      "https://erdosproblems.com/1059"
+    ],
+    "leanFile": "Proofs/Erdos1059Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 23,
+      "endLine": 39,
+      "summary": "Define IsFactorial, factorialsLessThan, and AllFactorialSubtractionsComposite — the property that n minus every factorial below n is composite."
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Examples",
+      "startLine": 41,
+      "endLine": 56,
+      "summary": "p = 101 and p = 211 satisfy the property; p = 89 does not since 89 - 6 = 83 is prime."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 58,
+      "endLine": 62,
+      "summary": "The open conjecture: infinitely many primes p have all factorial subtractions composite."
+    },
+    {
+      "id": "structural-observations",
+      "title": "Structural Observations",
+      "startLine": 64,
+      "endLine": 79,
+      "summary": "The factorials below n form a finite, small set of size O(log n / log log n), making the condition involve few checks."
+    },
+    {
+      "id": "alternative-approach",
+      "title": "Erdős's Alternative Approach",
+      "startLine": 81,
+      "endLine": 89,
+      "summary": "Erdős suggested a potentially easier variant: find infinitely many n in (l!, (l+1)!] with all prime factors exceeding l and all factorial subtractions composite."
+    },
+    {
+      "id": "probabilistic-heuristic",
+      "title": "Probabilistic Heuristic",
+      "startLine": 91,
+      "endLine": 103,
+      "summary": "Heuristic analysis: each subtraction is prime with probability ~1/ln(N), and there are few factorials to check, so the property should hold for most large primes."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This problem appears as Problem A2 in Guy's collection, attributed to Erdős. It asks about the interaction between primes and factorials through subtraction, connecting prime distribution with the sparse sequence of factorials.",
+    "problemStatement": "Are there infinitely many primes p such that p - k! is composite for every k with 1 ≤ k! < p?",
+    "proofStrategy": "We formalize the factorial-subtraction property, verify concrete examples (101, 211), state the infinitude conjecture, and analyze the structural and probabilistic aspects. Erdős's alternative approach via smooth numbers is also formalized.",
+    "keyInsights": [
+      "Only O(log n / log log n) factorials are below n, so the condition involves few checks",
+      "Each n - k! is composite with high probability (~1 - 1/ln n), making the condition mild",
+      "p = 101 and p = 211 are verified examples; p = 89 fails because 89 - 6 = 83 is prime",
+      "Erdős suggested an alternative: find n in (l!, (l+1)!] with large prime factors and composite subtractions",
+      "The heuristic strongly suggests infinitely many such primes exist"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1059 remains open. The conjecture that infinitely many primes p have all factorial subtractions composite is strongly supported by heuristic arguments and verified examples, but no proof exists.",
+    "implications": "A resolution would illuminate the relationship between prime distribution and factorial arithmetic. Erdős's alternative approach may be more tractable and would provide structural insight into smooth-number gaps.",
+    "openQuestions": [
+      "What is the density of primes satisfying the factorial-subtraction property?",
+      "Can Erdős's alternative approach (via smooth numbers) be established?",
+      "Is there a prime p > 211 failing the property with a small factorial subtraction being prime?"
+    ]
+  }
+}
