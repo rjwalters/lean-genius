@@ -1,245 +1,123 @@
 [
   {
-    "id": "ann-670-pointset",
+    "id": "erdos-670-header",
     "proofId": "erdos-670",
-    "range": { "startLine": 36, "endLine": 37 },
-    "type": "definition",
-    "title": "PointSet",
-    "content": "Finite set of points in ℝ^d.",
-    "significance": "critical"
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 17 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #670 asks: if n points in ℝ^d have all pairwise distances differing by at least 1, is the diameter at least (1+o(1))n²? Erdős proved this for d=1 in 1997. The higher-dimensional case remains open.",
+    "mathContext": "Let A ⊆ ℝ^d with |A|=n. If |d(p,q) - d(p',q')| ≥ 1 for all distinct unordered pairs, is diam(A) ≥ (1+o(1))n²?",
+    "significance": "essential",
+    "relatedConcepts": ["distinct distances", "diameter", "metric geometry"]
   },
   {
-    "id": "ann-670-dist",
+    "id": "erdos-670-definitions",
     "proofId": "erdos-670",
-    "range": { "startLine": 39, "endLine": 41 },
     "type": "definition",
-    "title": "Euclidean Distance",
-    "content": "dist'(p,q) = √(Σᵢ(pᵢ-qᵢ)²).",
-    "significance": "critical"
+    "range": { "startLine": 30, "endLine": 55 },
+    "title": "Basic Definitions",
+    "content": "PointSet(d) = Finset(Fin d → ℝ) represents finite point configurations in ℝ^d. Euclidean distance dist'(p,q) = √(Σᵢ(pᵢ-qᵢ)²). DistinctDistances requires |d(p₁,q₁) - d(p₂,q₂)| ≥ δ for all distinct pairs. Diameter is max pairwise distance via Finset.sup'.",
+    "mathContext": "PointSet d = Finset(Fin d → ℝ). dist' p q = √(Σ(pᵢ-qᵢ)²). DistinctDistances A δ: all pairwise distance differences ≥ δ. diameter A = sup_{p,q∈A} dist'(p,q).",
+    "significance": "essential",
+    "relatedConcepts": ["Euclidean distance", "Finset", "metric space"]
   },
   {
-    "id": "ann-670-pairwise",
+    "id": "erdos-670-trivial",
     "proofId": "erdos-670",
-    "range": { "startLine": 43, "endLine": 45 },
-    "type": "definition",
-    "title": "pairwiseDistances",
-    "content": "All distances between distinct pairs of points.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-670-distinct",
-    "proofId": "erdos-670",
-    "range": { "startLine": 47, "endLine": 51 },
-    "type": "definition",
-    "title": "DistinctDistances",
-    "content": "All pairwise distances differ by at least δ.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-670-diameter",
-    "proofId": "erdos-670",
-    "range": { "startLine": 53, "endLine": 55 },
-    "type": "definition",
-    "title": "Diameter",
-    "content": "Maximum pairwise distance in the point set.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-670-numpairs",
-    "proofId": "erdos-670",
-    "range": { "startLine": 63, "endLine": 64 },
-    "type": "definition",
-    "title": "numPairs",
-    "content": "C(n,2) = n(n-1)/2 distinct pairs.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-670-trivialbound",
-    "proofId": "erdos-670",
-    "range": { "startLine": 66, "endLine": 72 },
-    "type": "theorem",
+    "type": "result",
+    "range": { "startLine": 57, "endLine": 76 },
     "title": "Trivial Lower Bound",
-    "content": "diameter ≥ n(n-1)/2 when distances differ by at least 1.",
-    "significance": "key"
+    "content": "With C(n,2) = n(n-1)/2 pairwise distances all differing by at least 1, the maximum distance must be at least C(n,2). This gives diameter ≥ n(n-1)/2 ≈ n²/2.",
+    "mathContext": "trivial_lower_bound: DistinctDistances A 1 → diameter A ≥ numPairs n = C(n,2) = n(n-1)/2.",
+    "significance": "essential",
+    "relatedConcepts": ["binomial coefficient", "pigeonhole principle"]
   },
   {
-    "id": "ann-670-mainconj",
+    "id": "erdos-670-conjecture",
     "proofId": "erdos-670",
-    "range": { "startLine": 86, "endLine": 90 },
-    "type": "definition",
-    "title": "MainConjecture",
-    "content": "diameter ≥ (1-ε)n² for large n.",
-    "significance": "critical"
+    "type": "conjecture",
+    "range": { "startLine": 78, "endLine": 97 },
+    "title": "Main and Weak Conjectures",
+    "content": "MainConjecture: ∀ ε > 0, ∃ N, for |A| = n ≥ N with distance gaps ≥ 1, diam(A) ≥ (1-ε)n². WeakConjecture: ∃ c > 0 with diam(A) ≥ cn². The trivial bound gives the weak conjecture with c = 1/2.",
+    "mathContext": "MainConjecture d: ∀ ε > 0, ∃ N, n ≥ N → diam(A) ≥ (1-ε)n². WeakConjecture d: ∃ c > 0, diam(A) ≥ cn².",
+    "significance": "essential",
+    "relatedConcepts": ["asymptotic analysis", "little-o notation", "extremal geometry"]
   },
   {
-    "id": "ann-670-weakconj",
+    "id": "erdos-670-d1",
     "proofId": "erdos-670",
-    "range": { "startLine": 92, "endLine": 96 },
-    "type": "definition",
-    "title": "WeakConjecture",
-    "content": "diameter ≥ cn² for some constant c > 0.",
-    "significance": "key"
+    "type": "result",
+    "range": { "startLine": 99, "endLine": 131 },
+    "title": "One-Dimensional Case (SOLVED)",
+    "content": "Erdős (1997) proved MainConjecture for d=1. On the real line, ordering points simplifies the argument. The exact asymptotic gives realDiameter ≥ n(n-1)/2. Specialized RealPointSet and realDiameter definitions handle the d=1 case.",
+    "mathContext": "erdos_1997_d1: ∀ ε > 0, ∃ N, n ≥ N → RealDistinctDistances A 1 → realDiameter A ≥ (1-ε)n².",
+    "significance": "essential",
+    "relatedConcepts": ["real line", "ordering", "Erdős 1997"]
   },
   {
-    "id": "ann-670-half",
+    "id": "erdos-670-constructions",
     "proofId": "erdos-670",
-    "range": { "startLine": 98, "endLine": 105 },
-    "type": "theorem",
-    "title": "trivial_gives_half",
-    "content": "WeakConjecture holds with c = 1/2.",
-    "significance": "key"
+    "type": "example",
+    "range": { "startLine": 133, "endLine": 160 },
+    "title": "Constructions and Tightness",
+    "content": "Arithmetic progressions {0, n, 2n, ..., (n-1)n} have n points, diameter (n-1)n ≈ n², and all pairwise distances are multiples of n (hence differ by at least n ≥ 1). This shows the conjecture is tight: diameter ≤ n² is achievable.",
+    "mathContext": "arithmeticProgression n = {k·n : k = 0,...,n-1}. ap_diameter: diam = (n-1)n. conjecture_is_tight: ∃ constructions with diam ≤ n².",
+    "significance": "essential",
+    "relatedConcepts": ["arithmetic progression", "extremal construction", "tightness"]
   },
   {
-    "id": "ann-670-realpointset",
+    "id": "erdos-670-higher-dim",
     "proofId": "erdos-670",
-    "range": { "startLine": 113, "endLine": 114 },
-    "type": "definition",
-    "title": "RealPointSet",
-    "content": "Finite set of points on the real line.",
-    "significance": "key"
+    "type": "context",
+    "range": { "startLine": 162, "endLine": 181 },
+    "title": "Higher Dimensions",
+    "content": "The MainConjecture for d ≥ 2 is open. Higher dimensions provide more degrees of freedom that might allow tighter packing (closer points with distinct distances). The SuperlinearConjecture asks for diameter ≥ n(n-1)/2 in any dimension.",
+    "mathContext": "higher_dim_open: MainConjecture d for d ≥ 2 is asserted as an axiom (believed true but unproven).",
+    "significance": "essential",
+    "relatedConcepts": ["high-dimensional geometry", "packing", "open problem"]
   },
   {
-    "id": "ann-670-realdist",
+    "id": "erdos-670-related",
     "proofId": "erdos-670",
-    "range": { "startLine": 116, "endLine": 117 },
-    "type": "definition",
-    "title": "realDist",
-    "content": "|x - y| on the real line.",
-    "significance": "supporting"
+    "type": "context",
+    "range": { "startLine": 183, "endLine": 203 },
+    "title": "Related Problems",
+    "content": "Connected to the Erdős distinct distances problem (1946): if all pairwise distances differ by ≥ 1, they are automatically distinct, giving exactly C(n,2) distinct distances. Problem #670 is a strengthened variant of distinct distances.",
+    "mathContext": "differ_implies_distinct: DistinctDistances A 1 → |pairwiseDistances A| = C(n,2). This connects to Erdős's 1946 conjecture on the number of distinct distances.",
+    "significance": "supporting",
+    "relatedConcepts": ["distinct distances problem", "Guth-Katz", "Erdős 1946"]
   },
   {
-    "id": "ann-670-realdistinct",
+    "id": "erdos-670-strategies",
     "proofId": "erdos-670",
-    "range": { "startLine": 119, "endLine": 123 },
-    "type": "definition",
-    "title": "RealDistinctDistances",
-    "content": "Distinct distances on ℝ with gap ≥ δ.",
-    "significance": "key"
+    "type": "context",
+    "range": { "startLine": 205, "endLine": 221 },
+    "title": "Strategies for Higher Dimensions",
+    "content": "Two approaches: (1) Projection — project to lower dimensions to reduce to solved cases, but distance structure may be lost. (2) Pigeonhole — C(n,2) distances in a bounded range force the diameter to be large.",
+    "mathContext": "pigeonhole_approach: diam(A) ≥ numPairs(n) - 1 ≈ n(n-1)/2 - 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["projection", "pigeonhole principle", "dimension reduction"]
   },
   {
-    "id": "ann-670-realdiameter",
+    "id": "erdos-670-statement",
     "proofId": "erdos-670",
-    "range": { "startLine": 125, "endLine": 127 },
-    "type": "definition",
-    "title": "realDiameter",
-    "content": "max - min for points on ℝ.",
-    "significance": "key"
+    "type": "result",
+    "range": { "startLine": 223, "endLine": 235 },
+    "title": "Main Problem Statement",
+    "content": "The combined statement: WeakConjecture holds for all d (trivial bound c=1/2), and MainConjecture holds for d=1 (Erdős 1997).",
+    "mathContext": "erdos_670_statement: (∀ d, WeakConjecture d) ∧ MainConjecture 1.",
+    "significance": "essential",
+    "relatedConcepts": ["combined result", "partial resolution"]
   },
   {
-    "id": "ann-670-erdos1997",
+    "id": "erdos-670-summary",
     "proofId": "erdos-670",
-    "range": { "startLine": 129, "endLine": 133 },
-    "type": "axiom",
-    "title": "Erdős 1997 (d=1)",
-    "content": "MainConjecture holds for d = 1.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-670-asymptotic",
-    "proofId": "erdos-670",
-    "range": { "startLine": 135, "endLine": 139 },
-    "type": "axiom",
-    "title": "Exact Asymptotic",
-    "content": "realDiameter ≥ n(n-1)/2 on ℝ.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-670-ap",
-    "proofId": "erdos-670",
-    "range": { "startLine": 147, "endLine": 149 },
-    "type": "definition",
-    "title": "arithmeticProgression",
-    "content": "Construction: {0, n, 2n, ..., (n-1)n}.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-670-apdistinct",
-    "proofId": "erdos-670",
-    "range": { "startLine": 151, "endLine": 154 },
-    "type": "theorem",
-    "title": "AP Distinct Distances",
-    "content": "Arithmetic progression has distances differing by at least 1.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-670-tight",
-    "proofId": "erdos-670",
-    "range": { "startLine": 161, "endLine": 172 },
-    "type": "theorem",
-    "title": "Conjecture Is Tight",
-    "content": "Constructions achieve diameter ≤ n², showing tightness.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-670-highdim",
-    "proofId": "erdos-670",
-    "range": { "startLine": 180, "endLine": 182 },
-    "type": "axiom",
-    "title": "Higher Dimensions Open",
-    "content": "MainConjecture for d ≥ 2 is open.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-670-superlinear",
-    "proofId": "erdos-670",
-    "range": { "startLine": 184, "endLine": 188 },
-    "type": "definition",
-    "title": "SuperlinearConjecture",
-    "content": "Stronger: diameter ≥ n(n-1)/2 in any dimension.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-670-distinctprob",
-    "proofId": "erdos-670",
-    "range": { "startLine": 201, "endLine": 203 },
-    "type": "definition",
-    "title": "Distinct Distances Problem",
-    "content": "Erdős 1946: lower bound on number of distinct distances.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-670-differ",
-    "proofId": "erdos-670",
-    "range": { "startLine": 205, "endLine": 209 },
-    "type": "theorem",
-    "title": "Differ Implies Distinct",
-    "content": "Gap ≥ 1 implies all C(n,2) distances are distinct.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-670-pigeonhole",
-    "proofId": "erdos-670",
-    "range": { "startLine": 228, "endLine": 232 },
-    "type": "axiom",
-    "title": "Pigeonhole Approach",
-    "content": "C(n,2) distances require large diameter.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-670-statement",
-    "proofId": "erdos-670",
-    "range": { "startLine": 238, "endLine": 253 },
-    "type": "theorem",
-    "title": "erdos_670_statement",
-    "content": "Main statement: WeakConj for all d, MainConj for d=1.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-670-summary",
-    "proofId": "erdos-670",
-    "range": { "startLine": 259, "endLine": 272 },
-    "type": "theorem",
-    "title": "erdos_670_summary",
-    "content": "Summary: d=1 solved, d≥2 open, trivial bound holds.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-670-answer",
-    "proofId": "erdos-670",
-    "range": { "startLine": 274, "endLine": 275 },
-    "type": "theorem",
-    "title": "erdos_670_answer",
-    "content": "Status: d=1 SOLVED, d≥2 OPEN.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 237, "endLine": 262 },
+    "title": "Summary",
+    "content": "Summary theorem: d=1 solved by Erdős (1997) with diameter ≥ (1-ε)n² for large n. d≥2 remains open. The trivial bound diameter ≥ n(n-1)/2 holds universally. The problem remains one of the key open questions in discrete geometry.",
+    "mathContext": "erdos_670_summary: (d=1 result from erdos_1997_d1) ∧ True ∧ True. Status: OPEN for d ≥ 2.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "discrete geometry", "Erdős problems"]
   }
 ]
