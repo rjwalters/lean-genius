@@ -1,0 +1,56 @@
+[
+  {
+    "id": "two-distance-set",
+    "proofId": "erdos-502",
+    "range": { "startLine": 28, "endLine": 32 },
+    "type": "definition",
+    "title": "Two-Distance Set",
+    "content": "A finite set A ⊆ ℝⁿ where exactly two distinct distances occur among all pairs. Equivalently, the distance multiset {|x-y| : x ≠ y} has exactly two distinct values.",
+    "significance": "high"
+  },
+  {
+    "id": "max-two-dist-size",
+    "proofId": "erdos-502",
+    "range": { "startLine": 35, "endLine": 36 },
+    "type": "definition",
+    "title": "Maximum Two-Distance Set Size",
+    "content": "f(n) = maxTwoDistSize(n) is the supremum over all two-distance sets in ℝⁿ. The goal is to determine this function exactly or asymptotically.",
+    "significance": "high"
+  },
+  {
+    "id": "binary-construction",
+    "proofId": "erdos-502",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "definition",
+    "title": "Binary Vector Construction",
+    "content": "Vectors in {0,1}ⁿ with exactly two 1-coordinates. Any two such vectors have distance √2 (one common 1-coord) or 2 (no common 1-coord), giving a two-distance set of size C(n,2).",
+    "significance": "medium"
+  },
+  {
+    "id": "lower-bound",
+    "proofId": "erdos-502",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "theorem",
+    "title": "Lower Bound C(n+1, 2)",
+    "content": "By projecting the binary construction into a suitable subspace, one obtains f(n) ≥ C(n+1, 2) = n(n+1)/2. This is the best known lower bound.",
+    "significance": "high"
+  },
+  {
+    "id": "upper-bound-bbs",
+    "proofId": "erdos-502",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "theorem",
+    "title": "Bannai–Bannai–Stanton Upper Bound",
+    "content": "f(n) ≤ C(n+2, 2) = (n+1)(n+2)/2. Proved using the polynomial method: associate to each distance a polynomial annihilating the Gram matrix, bounding the dimension of the resulting space.",
+    "significance": "high"
+  },
+  {
+    "id": "main-bounds",
+    "proofId": "erdos-502",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "theorem",
+    "title": "Combined Sandwich Bound",
+    "content": "C(n+1,2) ≤ f(n) ≤ C(n+2,2), giving f(n) = Θ(n²). The gap is at most n+1, so the answer is determined up to a linear additive error.",
+    "significance": "high"
+  }
+]
