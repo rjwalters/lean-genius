@@ -5,8 +5,10 @@
     "type": "context",
     "range": { "startLine": 1, "endLine": 30 },
     "title": "Problem Overview",
-    "content": "H(k) is the canonical Ramsey number for k-APs: the smallest N where every coloring yields a monochromatic or rainbow k-AP. Two questions: estimate H(k), and determine if H(k)^{1/k}/k → ∞.",
-    "significance": "key"
+    "content": "H(k) is the canonical Ramsey number for k-APs: the smallest N where every coloring of {1,...,N} yields a monochromatic or rainbow k-AP. Two questions: estimate H(k), and determine if H(k)^{1/k}/k → ∞.",
+    "mathContext": "H(k) = min{N : ∀ χ coloring of [N], ∃ monochromatic k-AP or rainbow k-AP}. Known: H(k)^{1/k} → ∞. Open: H(k)^{1/k}/k → ∞?",
+    "significance": "essential",
+    "relatedConcepts": ["canonical Ramsey theory", "arithmetic progressions", "van der Waerden numbers"]
   },
   {
     "id": "erdos-190-ap-def",
@@ -14,17 +16,21 @@
     "type": "definition",
     "range": { "startLine": 40, "endLine": 52 },
     "title": "Arithmetic Progressions",
-    "content": "A k-term AP is a sequence a, a+d, a+2d, ..., a+(k-1)d with common difference d > 0. These are the structures we seek in colorings of {1,...,N}.",
-    "significance": "supporting"
+    "content": "A k-term AP is a sequence a, a+d, a+2d, ..., a+(k-1)d with common difference d > 0. Two formalizations: as a Finset via range.image, and as a function Fin k → ℕ.",
+    "mathContext": "isArithmeticProgression s k ≡ ∃ a d, d > 0 ∧ s = {a + i·d : i < k}. isAPSequence f ≡ ∃ a d, d > 0 ∧ ∀ i, f(i) = a + i·d.",
+    "significance": "essential",
+    "relatedConcepts": ["Finset.range", "Finset.image", "common difference"]
   },
   {
     "id": "erdos-190-coloring",
     "proofId": "erdos-190",
     "type": "definition",
     "range": { "startLine": 54, "endLine": 81 },
-    "title": "Colorings and Patterns",
-    "content": "A coloring assigns colors to elements. Monochromatic means all same color. Rainbow means all distinct colors. These are the two 'win conditions' for H(k).",
-    "significance": "supporting"
+    "title": "Colorings, Monochromatic, and Rainbow",
+    "content": "A coloring χ : Fin N → C assigns colors. Monochromatic: all elements share one color. Rainbow: all elements have distinct colors (card s = card (image χ s)). Alternative rainbow: injective on s.",
+    "mathContext": "isMonochromatic χ s ≡ ∃ c, ∀ x ∈ s, χ(x) = c. isRainbow χ s ≡ s.card = (s.image χ).card. isRainbowAlt: ∀ x ≠ y ∈ s, χ(x) ≠ χ(y).",
+    "significance": "essential",
+    "relatedConcepts": ["Finset.card", "Finset.image", "injective coloring"]
   },
   {
     "id": "erdos-190-canonical",
@@ -32,8 +38,10 @@
     "type": "definition",
     "range": { "startLine": 83, "endLine": 95 },
     "title": "Canonical Property",
-    "content": "A coloring has the canonical property if it contains a monochromatic OR rainbow k-AP. This OR is what makes H(k) a 'canonical' Ramsey number, unlike van der Waerden.",
-    "significance": "key"
+    "content": "A coloring has the canonical property for k-APs if some k-AP is either monochromatic or rainbow. The OR is what makes this 'canonical' Ramsey — any coloring must produce at least one structured pattern.",
+    "mathContext": "hasCanonicalAP χ k ≡ ∃ f : Fin k → Fin N, isAPSequence(f.val) ∧ (isMonochromatic χ (image f univ) ∨ isRainbow χ (image f univ)).",
+    "significance": "essential",
+    "relatedConcepts": ["disjunctive win condition", "Ramsey property", "pattern forcing"]
   },
   {
     "id": "erdos-190-h-function",
@@ -41,34 +49,75 @@
     "type": "definition",
     "range": { "startLine": 97, "endLine": 118 },
     "title": "The H(k) Function",
-    "content": "H(k) is defined as the minimum N for which all colorings of {1,...,N} have the canonical property. Existence follows from Szemerédi's theorem.",
-    "significance": "key"
+    "content": "H(k) is defined as the minimum N via Nat.find, given existence from Szemerédi's theorem. Three axioms: exists_canonical_threshold (existence), H_spec (sufficiency for N ≥ H(k)), H_minimal (witness for N < H(k)).",
+    "mathContext": "H(k) = Nat.find(exists_canonical_threshold k). H_spec: N ≥ H(k) → ∀ χ, hasCanonicalAP χ k. H_minimal: N < H(k) → ∃ χ, ¬hasCanonicalAP χ k.",
+    "significance": "essential",
+    "relatedConcepts": ["Nat.find", "Szemerédi's theorem", "Ramsey number"]
   },
   {
     "id": "erdos-190-van-der-waerden",
     "proofId": "erdos-190",
-    "type": "context",
-    "range": { "startLine": 120, "endLine": 134 },
-    "title": "Comparison with van der Waerden",
-    "content": "H(k) ≤ W(k) because rainbow APs provide an easier win condition. Van der Waerden requires monochromatic only, so W(k) is at least as large.",
-    "significance": "supporting"
+    "type": "definition",
+    "range": { "startLine": 120, "endLine": 139 },
+    "title": "Van der Waerden Comparison",
+    "content": "Van der Waerden number W(k) requires only monochromatic APs in 2-colorings. Since canonical also accepts rainbow APs, H(k) ≤ W(k). The lower bound H(k) ≥ k is trivial (need at least k elements for a k-AP).",
+    "mathContext": "W(k) = Nat.find(vanDerWaerden_exists k). H_le_W: k ≥ 3 → H(k) ≤ W(k). H_lower_bound: k ≥ 3 → H(k) ≥ k.",
+    "significance": "essential",
+    "relatedConcepts": ["van der Waerden's theorem", "2-colorings", "Ramsey comparison"]
   },
   {
-    "id": "erdos-190-asymptotic",
+    "id": "erdos-190-asymptotics",
     "proofId": "erdos-190",
-    "type": "theorem",
-    "range": { "startLine": 136, "endLine": 155 },
-    "title": "Asymptotic Results",
-    "content": "Known: H(k)^{1/k} → ∞. Open: Does H(k)^{1/k}/k → ∞? The latter asks if H(k) grows faster than k^k, a much stronger statement.",
-    "significance": "key"
+    "type": "conjecture",
+    "range": { "startLine": 141, "endLine": 160 },
+    "title": "Asymptotic Growth and the Conjecture",
+    "content": "Known: H(k)^{1/k} → ∞ (the k-th root grows without bound). The open conjecture: H(k)^{1/k}/k → ∞, meaning H(k) grows faster than k^k — a much stronger super-exponential statement.",
+    "mathContext": "H_root_to_infinity: ∀ M, ∃ K, ∀ k ≥ K, H(k)^{1/k} > M. erdos190Conjecture: ∀ M, ∃ K, ∀ k ≥ K, H(k)^{1/k}/k > M.",
+    "significance": "essential",
+    "relatedConcepts": ["super-exponential growth", "k-th root", "asymptotic analysis"]
+  },
+  {
+    "id": "erdos-190-small-cases",
+    "proofId": "erdos-190",
+    "type": "result",
+    "range": { "startLine": 162, "endLine": 168 },
+    "title": "Small Cases",
+    "content": "Concrete bounds: H(3) ≤ 10 and H(4) ≤ 100. These provide baseline data for the asymptotic questions.",
+    "mathContext": "H_3_bound: H(3) ≤ 10. H_4_bound: H(4) ≤ 100.",
+    "significance": "supporting",
+    "relatedConcepts": ["explicit bounds", "small Ramsey numbers", "computational verification"]
+  },
+  {
+    "id": "erdos-190-connections",
+    "proofId": "erdos-190",
+    "type": "context",
+    "range": { "startLine": 170, "endLine": 207 },
+    "title": "Connections and Difficulty",
+    "content": "H(k) exists by Szemerédi's theorem: dense subsets of ℕ contain long APs, so for large N, colorings with few colors force monochromatic APs, while many colors enable rainbow APs. The difficulty is the precise interplay between these two competing forces.",
+    "mathContext": "Szemerédi: dense A ⊆ [N] contains k-APs for large N. Pigeonhole: few colors → monochromatic; many colors → rainbow. The competition determines H(k).",
+    "significance": "supporting",
+    "relatedConcepts": ["Szemerédi's theorem", "pigeonhole principle", "density arguments"]
   },
   {
     "id": "erdos-190-summary",
     "proofId": "erdos-190",
-    "type": "conclusion",
-    "range": { "startLine": 204, "endLine": 238 },
-    "title": "Summary",
-    "content": "H(k) exists and grows at least as H(k)^{1/k} → ∞. The main open question is the stronger asymptotic: does H(k)^{1/k}/k → ∞? This determines if H(k) is super-exponential in k.",
-    "significance": "key"
+    "type": "result",
+    "range": { "startLine": 209, "endLine": 249 },
+    "title": "Summary and Known Results",
+    "content": "The summary theorem combines H(k) > 0, H(k)^{1/k} → ∞, and trivially True (conjecture is stated). Uses H_pos axiom and H_root_to_infinity axiom. Problem status: OPEN.",
+    "mathContext": "erdos_190_summary: (∀ k, H(k) > 0) ∧ (∀ M, ∃ K, ∀ k ≥ K, H(k)^{1/k} > M) ∧ True. Proof: ⟨H_pos, H_root_to_infinity, trivial⟩.",
+    "significance": "essential",
+    "relatedConcepts": ["known results", "open problem", "summary theorem"]
+  },
+  {
+    "id": "erdos-190-positivity",
+    "proofId": "erdos-190",
+    "type": "result",
+    "range": { "startLine": 211, "endLine": 217 },
+    "title": "Positivity of H(k)",
+    "content": "H(k) > 0 for all k: every canonical Ramsey number is positive because any k-AP requires at least k elements and the canonical property requires N large enough to force patterns.",
+    "mathContext": "H_pos: ∀ k, H(k) > 0. Used in erdos_190_summary to establish the base property.",
+    "significance": "supporting",
+    "relatedConcepts": ["well-definedness", "positive Ramsey number", "base case"]
   }
 ]
