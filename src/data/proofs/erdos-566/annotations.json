@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sparse-graph",
+    "proofId": "erdos-566",
+    "range": { "startLine": 37, "endLine": 42 },
+    "type": "definition",
+    "title": "(2k−3)-Sparse Graph",
+    "content": "A graph is (2k−3)-sparse if every subgraph on k ≥ 2 vertices has at most 2k−3 edges. This is the conjectured threshold for Ramsey size linearity.",
+    "significance": "high"
+  },
+  {
+    "id": "size-ramsey",
+    "proofId": "erdos-566",
+    "range": { "startLine": 48, "endLine": 51 },
+    "type": "definition",
+    "title": "Size Ramsey Number",
+    "content": "r̂(G,H) is the minimum number of edges in a graph F such that every 2-coloring of E(F) contains a monochromatic copy of G or H. Size Ramsey numbers measure Ramsey properties in terms of edge count rather than vertex count.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-566",
+    "range": { "startLine": 55, "endLine": 60 },
+    "type": "conjecture",
+    "title": "Ramsey Size Linearity Conjecture",
+    "content": "If G is (2k−3)-sparse, then r̂(G,H) = O(|E(H)|) for every H with no isolated vertices. This would give a clean characterization of which graphs are Ramsey size linear.",
+    "significance": "high"
+  },
+  {
+    "id": "efrs-result",
+    "proofId": "erdos-566",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "note",
+    "title": "EFRS Result (1993)",
+    "content": "Erdős, Faudree, Rousseau, and Schelp proved that any graph with n vertices and at most n+1 edges is Ramsey size linear. This is the strongest known positive result toward the conjecture.",
+    "significance": "high"
+  },
+  {
+    "id": "counterexample",
+    "proofId": "erdos-566",
+    "range": { "startLine": 72, "endLine": 77 },
+    "type": "note",
+    "title": "Counterexample at 2n−2",
+    "content": "There exist graphs with 2n−2 edges that are NOT Ramsey size linear. This shows the (2k−3) sparsity threshold is tight and cannot be relaxed to 2k−2.",
+    "significance": "high"
+  },
+  {
+    "id": "trees",
+    "proofId": "erdos-566",
+    "range": { "startLine": 83, "endLine": 93 },
+    "type": "note",
+    "title": "Trees Are Ramsey Size Linear",
+    "content": "Trees (graphs with n−1 edges) are known to be Ramsey size linear. This is a special case well below the (2k−3) threshold, providing evidence for the conjecture.",
+    "significance": "medium"
+  }
+]
