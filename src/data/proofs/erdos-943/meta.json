@@ -1,0 +1,75 @@
+{
+  "id": "erdos-943",
+  "title": "Erdős Problem #943: Representation by Sums of Two Powerful Numbers",
+  "slug": "erdos-943",
+  "description": "Let A be the set of powerful numbers. Is the representation function r(n) = |{(a,b) ∈ A²: a+b=n}| subpolynomial, i.e., r(n) = n^{o(1)}? Known: r(n) ≤ c√n trivially. Open.",
+  "meta": {
+    "erdosNumber": 943,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "additive-representation",
+      "open"
+    ],
+    "references": [
+      "Erdős (1976): original problem [Er76d]",
+      "https://erdosproblems.com/943"
+    ],
+    "leanFile": "Proofs/Erdos943Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 39,
+      "summary": "Powerful numbers, the powerful set, and the representation function r(n)."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 41,
+      "endLine": 46,
+      "summary": "Is r(n) = n^{o(1)} for every n?"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 48,
+      "endLine": 68,
+      "summary": "Powerful number density ~c√x, trivial bound r(n) ≤ c√n, a²b³ structure."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 70,
+      "endLine": 88,
+      "summary": "Average order, connection to squares, Diophantine constraints."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1976 about the additive representation of integers by powerful numbers. Powerful numbers (also called squarefull numbers) are those where every prime factor appears with exponent ≥ 2. Their density is ~c√x, making them sparse but not too sparse for additive questions.",
+    "problemStatement": "Let A be the set of powerful numbers and r(n) = |{(a,b) ∈ A²: a+b=n}|. Is r(n) = n^{o(1)} for every n? That is, does every integer have at most subpolynomially many representations as a sum of two powerful numbers?",
+    "proofStrategy": "We define powerful numbers, the representation function r(n), and state the subpolynomial growth conjecture. We record the trivial √n upper bound from density, the a²b³ structure, and connections to sums of squares.",
+    "keyInsights": [
+      "Powerful numbers have density ~c√x where c = ζ(3/2)/ζ(3)",
+      "Trivial bound r(n) ≤ c√n from the density of powerful numbers",
+      "Every powerful number has the form a²b³",
+      "Average order of r(n) is constant, but pointwise bounds are harder",
+      "Stronger than the analogous question for squares (which is settled by Jacobi)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #943 asks whether the number of representations of n as a sum of two powerful numbers grows subpolynomially. The trivial bound is √n from density, but the special a²b³ structure of powerful numbers should impose stronger Diophantine constraints.",
+    "implications": "Resolution would advance understanding of additive properties of structured number sets, connecting powerful number theory with representation functions and sieve methods.",
+    "openQuestions": [
+      "Is r(n) = n^{o(1)} for all n?",
+      "Can the √n bound be improved to any power n^{α} with α < 1/2?",
+      "What is the true maximum order of r(n)?",
+      "Does the a²b³ structure give useful Diophantine constraints?"
+    ]
+  }
+}
