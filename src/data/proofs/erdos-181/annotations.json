@@ -1,0 +1,56 @@
+[
+  {
+    "id": "hypercube",
+    "proofId": "erdos-181",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "definition",
+    "title": "Hypercube Graph Q_n",
+    "content": "The n-dimensional hypercube has 2^n vertices (binary strings of length n) with edges between strings differing in exactly one coordinate. Degree n, n·2^{n−1} edges.",
+    "significance": "high"
+  },
+  {
+    "id": "ramsey-number",
+    "proofId": "erdos-181",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "definition",
+    "title": "Ramsey Number R(Q_n)",
+    "content": "The minimum N such that any 2-coloring of K_N contains a monochromatic copy of Q_n. The central quantity to estimate.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-181",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "conjecture",
+    "title": "Burr–Erdős Conjecture for Q_n",
+    "content": "R(Q_n) ≪ 2^n: the Ramsey number is at most a constant times the number of vertices. This would be optimal up to the constant.",
+    "significance": "high"
+  },
+  {
+    "id": "tikhomirov",
+    "proofId": "erdos-181",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "theorem",
+    "title": "Tikhomirov (2022)",
+    "content": "R(Q_n) ≪ 2^{(2−c)n} for c ≈ 0.0366. The current best upper bound, subquadratic in 2^n but still exponential in n.",
+    "significance": "high"
+  },
+  {
+    "id": "lower-bound",
+    "proofId": "erdos-181",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "theorem",
+    "title": "Trivial Lower Bound",
+    "content": "R(Q_n) ≥ 2^n since Q_n has 2^n vertices. Any Ramsey number is at least the number of vertices of the target graph.",
+    "significance": "medium"
+  },
+  {
+    "id": "burr-erdos",
+    "proofId": "erdos-181",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "note",
+    "title": "Burr–Erdős Bounded-Degree Context",
+    "content": "Lee (2017) proved R(G) = O(|V(G)|) for bounded-degree graphs. But Q_n has degree n → ∞, so this doesn't apply directly. The hypercube sits at the boundary.",
+    "significance": "medium"
+  }
+]
