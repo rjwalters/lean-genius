@@ -1,0 +1,68 @@
+{
+  "id": "erdos-151",
+  "title": "Erdős Problem #151: Clique Transversal and Triangle-Free Independence",
+  "slug": "erdos-151",
+  "description": "Is τ(G) ≤ n − H(n) for every n-vertex graph G, where τ is the clique transversal number and H(n) is the triangle-free independence number?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/151",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos151Problem.lean",
+    "tags": ["graph theory", "clique transversal", "independence number", "Ramsey theory"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 151,
+    "erdosUrl": "https://erdosproblems.com/151",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Gallai conjectured that the clique transversal number τ(G) is at most n − H(n), where H(n) is the largest independent set guaranteed in triangle-free n-vertex graphs. The easy bound τ ≤ n − √n follows from Ramsey theory. Even the K₄-free case is open. Erdős described the conjecture as 'perhaps completely wrongheaded.'",
+    "problemStatement": "Is τ(G) ≤ n − H(n) for every graph G on n vertices?",
+    "proofStrategy": "The formalization axiomatises cliques, maximal cliques, independence, and triangle-freeness. Defines clique transversals and axiomatises τ(G) and H(n) with their specifications. The easy bound and the main conjecture are stated.",
+    "keyInsights": [
+      "τ(G) is the minimum vertex set hitting every maximal clique of size ≥ 2",
+      "H(n) ~ √n by Ramsey theory (R(3,k) gives triangle-free independent sets)",
+      "The easy bound τ ≤ n − √n falls short of the conjecture",
+      "Even the K₄-free case remains open"
+    ]
+  },
+  "sections": [
+    {
+      "id": "graph-properties",
+      "title": "Graph Properties",
+      "startLine": 26,
+      "endLine": 40,
+      "summary": "Axiomatised cliques, maximal cliques, independence, and triangle-freeness."
+    },
+    {
+      "id": "clique-transversal",
+      "title": "Clique Transversal Number",
+      "startLine": 42,
+      "endLine": 53,
+      "summary": "Definition of clique transversal and axiomatisation of τ(G)."
+    },
+    {
+      "id": "triangle-free-indep",
+      "title": "Triangle-Free Independence Number H(n)",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "H(n) with its specification and the √n lower bound."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 78,
+      "endLine": 88,
+      "summary": "Erdős–Gallai: τ(G) ≤ n − H(n) for all n-vertex graphs."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures the Erdős–Gallai conjecture (Problem 151) relating clique transversal numbers to triangle-free independence numbers.",
+    "implications": "A proof would connect two fundamental graph invariants: the clique transversal number and the Ramsey-theoretic function H(n), giving a universal upper bound on τ.",
+    "openQuestions": [
+      "Is τ(G) ≤ n − H(n) for all graphs?",
+      "Does the conjecture hold for K₄-free graphs?",
+      "Is the conjecture 'completely wrongheaded' as Erdős suggested?"
+    ]
+  }
+}
