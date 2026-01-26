@@ -1,0 +1,75 @@
+{
+  "id": "erdos-638",
+  "title": "Erdős Problem #638: Ramsey Families and Infinite Cardinals",
+  "slug": "erdos-638",
+  "description": "Let S be a family of finite graphs such that for every n, some member forces a monochromatic triangle under n-colourings. For infinite cardinals, does a graph exist with all finite subgraphs in S and the same Ramsey property?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/638",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos638Problem.lean",
+    "tags": ["graph theory", "ramsey theory", "infinite combinatorics", "cardinals"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 638,
+    "erdosUrl": "https://erdosproblems.com/638",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem connecting finite Ramsey theory with infinite cardinal arithmetic. The question lifts the classical finite Ramsey theorem to infinite settings, asking whether Ramsey families (collections of finite graphs with increasing colour-forcing properties) can be extended to infinite graphs with infinite-colour Ramsey properties.",
+    "problemStatement": "Let S be a family of finite graphs such that for every n, some G_n in S forces a monochromatic triangle under n-colourings. For every infinite cardinal κ, does there exist G with all finite subgraphs in S such that every κ-colouring of G yields a monochromatic triangle?",
+    "proofStrategy": "The formalization defines monochromatic triangles via vertex-pair colourings, HasTriangleRamsey for finite colours, HasCardinalTriangleRamsey for arbitrary colour types, and IsRamseyFamily for the family condition. The conjecture uses Lean's Infinite typeclass for infinite colour types.",
+    "keyInsights": [
+      "The problem lifts finite Ramsey theory to infinite cardinals via compactness-like arguments",
+      "Erdős notes an affirmative answer would enable many extensions and generalisations",
+      "The classical Ramsey theorem ensures complete graphs form a Ramsey family",
+      "Monotonicity: the n-colour Ramsey property implies the m-colour property for m ≤ n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ramsey-property",
+      "title": "Ramsey Property for Triangles",
+      "startLine": 24,
+      "endLine": 38,
+      "summary": "HasMonoTriangle and HasTriangleRamsey: definitions of monochromatic triangles and the n-colour Ramsey property."
+    },
+    {
+      "id": "ramsey-families",
+      "title": "Ramsey Families",
+      "startLine": 40,
+      "endLine": 54,
+      "summary": "IsRamseyFamily: for every n, some member forces monochromatic triangles. HasCardinalTriangleRamsey for arbitrary colour types."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Erdős Problem 638: for every Ramsey family and infinite colour type, a graph with the cardinal Ramsey property exists."
+    },
+    {
+      "id": "classical-ramsey",
+      "title": "Classical Ramsey Theorem",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "The classical finite Ramsey theorem for triangles and the fact that complete graphs form a Ramsey family."
+    },
+    {
+      "id": "basic-observations",
+      "title": "Basic Observations",
+      "startLine": 79,
+      "endLine": 84,
+      "summary": "Monotonicity: the n-colour property implies the m-colour property for m ≤ n."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 638 on lifting Ramsey families to infinite cardinal colourings, with the classical Ramsey theorem and monotonicity as supporting results.",
+    "implications": "An affirmative answer would significantly extend Ramsey theory to infinite settings and connect combinatorial arguments with set-theoretic cardinal arithmetic.",
+    "openQuestions": [
+      "Does every Ramsey family extend to infinite cardinals?",
+      "Is the answer dependent on the axioms of set theory (e.g., GCH)?",
+      "Can compactness arguments resolve the problem?"
+    ]
+  }
+}
