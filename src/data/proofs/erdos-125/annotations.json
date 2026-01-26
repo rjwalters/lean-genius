@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-125-digits",
+    "proofId": "erdos-125",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 38 },
+    "title": "Digit-Restricted Sets",
+    "content": "digitSet b is the set of natural numbers with only digits 0,1 in base b. setA = digitSet 3 and setB = digitSet 4 are the specific sets in the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-125-sumset",
+    "proofId": "erdos-125",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 49 },
+    "title": "The Sumset C = A + B",
+    "content": "setC = A + B is the sumset. countingC x = |C ∩ [0, x]| counts elements up to x.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-125-conjecture",
+    "proofId": "erdos-125",
+    "type": "conjecture",
+    "range": { "startLine": 55, "endLine": 60 },
+    "title": "Erdős Problem 125",
+    "content": "Does C = A + B have positive lower density? That is, is lim inf |C ∩ [1,x]|/x > 0?",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-125-lower",
+    "proofId": "erdos-125",
+    "type": "result",
+    "range": { "startLine": 66, "endLine": 74 },
+    "title": "Counting Lower Bounds",
+    "content": "Melfi (2001): |C ∩ [1,x]| ≫ x^{0.965}. Hasler–Melfi (2024): improved to x^{0.9777}. Nearly linear growth but not yet linear.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-125-upper",
+    "proofId": "erdos-125",
+    "type": "result",
+    "range": { "startLine": 80, "endLine": 84 },
+    "title": "Upper Density Bound",
+    "content": "Hasler–Melfi (2024): the upper density of C is at most ≈ 0.696, so C misses a positive fraction of ℕ.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-125-general",
+    "proofId": "erdos-125",
+    "type": "context",
+    "range": { "startLine": 90, "endLine": 107 },
+    "title": "Generalization",
+    "content": "For bases n₁ < ⋯ < nₖ with Σ log_{nᵢ}(2) > 1, does the sumset of digit sets have positive density? For bases 3,4 the sum ≈ 1.131 > 1.",
+    "significance": "supporting"
+  }
+]
