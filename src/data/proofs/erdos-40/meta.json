@@ -1,0 +1,90 @@
+{
+  "id": "erdos-40",
+  "title": "Erdős Problem #40: Representation Function and Dense Sets",
+  "slug": "erdos-40",
+  "description": "For which g(N) → ∞ does |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞? Solving for any g → ∞ implies the Erdős–Turán conjecture (Problem #28). $500 bounty. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 40,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "additive-basis",
+      "representation-function",
+      "open"
+    ],
+    "references": [
+      "Erdős [Er95], [Er97c]",
+      "Erdős–Turán conjecture (Problem #28)",
+      "https://erdosproblems.com/40"
+    ],
+    "leanFile": "Proofs/Erdos40Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 42,
+      "summary": "Define representation count r_A(n), counting function, additive basis of order 2, and RepUnbounded (limsup r_A = ∞)."
+    },
+    {
+      "id": "erdos-turan",
+      "title": "Erdős–Turán Conjecture",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "Problem #28: every additive basis of order 2 has unbounded representation function."
+    },
+    {
+      "id": "problem-40",
+      "title": "Problem #40: Strengthened Form",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "For which g → ∞ does density N^{1/2}/g(N) imply unbounded representations? The strongest form: all g → ∞."
+    },
+    {
+      "id": "connection-28",
+      "title": "Connection to Problem #28",
+      "startLine": 64,
+      "endLine": 72,
+      "summary": "Problem #40 for any g → ∞ implies Problem #28, since additive bases have density ≥ N^{1/2}."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "Sidon set density bound |A| ≤ (1+o(1))N^{1/2}. B₂[g] set density bounds."
+    },
+    {
+      "id": "heuristic",
+      "title": "Probabilistic Heuristic",
+      "startLine": 90,
+      "endLine": 100,
+      "summary": "Random model analysis: expected r_A(n) ~ 1/g(N)² suggests the answer depends on g's growth rate."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this as a quantitative strengthening of the Erdős–Turán conjecture (1941). The $500 bounty reflects its difficulty and central importance in additive combinatorics. It asks for the sharpest density condition ensuring unbounded representations.",
+    "problemStatement": "For which g(N) → ∞ does |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞?",
+    "proofStrategy": "We formalize the representation count, counting function, and additive basis notion. We state Problem #40 in its strongest form (all g → ∞) and prove it implies Problem #28. Sidon set density bounds show the N^{1/2} threshold is natural.",
+    "keyInsights": [
+      "Solving for ANY g → ∞ implies the Erdős–Turán conjecture ($500 bounty on Problem #28)",
+      "Sidon sets have density exactly N^{1/2}, making this the critical threshold",
+      "The N^{1/2}/g(N) density is strictly below additive-basis density",
+      "Random models suggest the answer depends on g's growth rate relative to log N",
+      "B₂[g] sets (bounded representation) still have density O(N^{1/2})"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #40 remains open with a $500 bounty. It asks for the weakest density condition ensuring unbounded sum representations, generalizing the Erdős–Turán conjecture. The exact threshold function g is unknown.",
+    "implications": "A resolution would either prove the Erdős–Turán conjecture (if all g → ∞ work) or identify a sharp phase transition between bounded and unbounded representation behavior in additive number theory.",
+    "openQuestions": [
+      "Does the conjecture hold for g(N) = (log N)^ε for any ε > 0?",
+      "Is there a counterexample with g(N) growing polynomially?",
+      "What is the exact threshold function separating bounded from unbounded representations?"
+    ]
+  }
+}
