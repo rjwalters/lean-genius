@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-730-ann-primediv",
+    "proofId": "erdos-730",
+    "range": { "startLine": 31, "endLine": 33 },
+    "type": "definition",
+    "title": "Prime Divisor Set",
+    "content": "The set of prime factors of a natural number. Two central binomials 'match' when these sets coincide.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-730-ann-pairs",
+    "proofId": "erdos-730",
+    "range": { "startLine": 38, "endLine": 40 },
+    "type": "definition",
+    "title": "Central Binomial Pairs",
+    "content": "The set of pairs (n,m) with n < m and C(2n,n), C(2m,m) sharing all prime divisors. The main object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-730-ann-conjecture",
+    "proofId": "erdos-730",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "The set CentralBinomPairs is infinite. EGRS (1975) expressed no doubt about the affirmative answer.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-730-ann-examples",
+    "proofId": "erdos-730",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "theorem",
+    "title": "Known Pairs (87,88) and (607,608)",
+    "content": "The first known examples: C(174,87) and C(176,88) share prime divisors, as do C(1214,607) and C(1216,608).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-730-ann-triple",
+    "proofId": "erdos-730",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "theorem",
+    "title": "Triple 10003–10005",
+    "content": "Three consecutive values where all pairwise central binomials share prime divisors. Shows non-consecutive pairs exist.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-730-ann-kummer",
+    "proofId": "erdos-730",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "theorem",
+    "title": "Kummer Divisibility Criterion",
+    "content": "p | C(2n,n) iff some base-p digit of n is ≥ ⌈p/2⌉. The structural basis for understanding prime divisors.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-730-ann-spacing",
+    "proofId": "erdos-730",
+    "range": { "startLine": 90, "endLine": 93 },
+    "type": "theorem",
+    "title": "Spacing Conjecture",
+    "content": "For every k ≥ 1, infinitely many n satisfy that C(2n,n) and C(2(n+k),n+k) share prime divisors.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-730-ann-implies",
+    "proofId": "erdos-730",
+    "range": { "startLine": 96, "endLine": 103 },
+    "type": "theorem",
+    "title": "Spacing-1 Implies Main",
+    "content": "If the spacing-1 case holds (infinitely many consecutive matches), the main conjecture follows immediately.",
+    "significance": "supporting"
+  }
+]

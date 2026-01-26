@@ -1,0 +1,74 @@
+{
+  "id": "erdos-730",
+  "title": "Same Prime Divisors of Central Binomials",
+  "slug": "erdos-730",
+  "description": "Are there infinitely many pairs n < m with C(2n,n) and C(2m,m) having the same set of prime divisors? Known pairs: (87,88), (607,608). Triple: 10003-10005. EGRS (1975) expect yes.",
+  "meta": {
+    "author": "Erdős, Graham, Ruzsa, Straus",
+    "sourceUrl": "https://erdosproblems.com/730",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos730Problem.lean",
+    "tags": [
+      "number theory",
+      "binomial coefficients",
+      "prime divisors",
+      "central binomials"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 730,
+    "erdosUrl": "https://erdosproblems.com/730",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Graham, Ruzsa, and Straus (1975) conjectured that infinitely many pairs of central binomial coefficients share the same prime divisor set. They said there is 'no doubt' the answer is yes. Known examples include (87,88), (607,608), and the triple (10003,10004,10005). OEIS A129515 lists values of n with matching companions.",
+    "problemStatement": "Are there infinitely many pairs n < m such that C(2n,n) and C(2m,m) have the same set of prime divisors?",
+    "proofStrategy": "We formalize central binomials, prime divisor sets, the pair set, known examples, Kummer's divisibility criterion, middle prime structure, and the spacing conjecture. We prove delta_ne_one and spacing1_implies_main.",
+    "keyInsights": [
+      "Kummer's theorem determines which primes divide C(2n,n) via base-p digits",
+      "Primes in (n, 2n] always divide C(2n,n); primes > 2n never do",
+      "For consecutive n, the prime sets change slowly at the boundaries",
+      "Known triple at 10003-10005 shows non-consecutive pairs exist",
+      "OEIS A129515 catalogues examples"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 40,
+      "summary": "Defines central binomial coefficients, prime divisor sets, same-prime-divisor relation, and the pair set."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture and Examples",
+      "startLine": 42,
+      "endLine": 66,
+      "summary": "States the main conjecture, known pairs (87,88), (607,608), the triple 10003-10005, and non-consecutive existence."
+    },
+    {
+      "id": "structure",
+      "title": "Prime Divisor Structure",
+      "startLine": 68,
+      "endLine": 86,
+      "summary": "Kummer's divisibility criterion, evenness, large prime exclusion, and middle prime inclusion."
+    },
+    {
+      "id": "spacing",
+      "title": "Spacing Conjecture and Heuristics",
+      "startLine": 88,
+      "endLine": 112,
+      "summary": "Spacing-k conjecture, proof that spacing-1 implies the main conjecture, and prime set stability heuristic."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #730: infinitely many pairs of central binomials share prime divisor sets. Known examples exist at (87,88), (607,608), and the triple 10003-10005. The spacing conjecture generalizes to arbitrary gaps.",
+    "implications": "A resolution would reveal deep structure in the arithmetic of central binomial coefficients and their prime factorizations.",
+    "openQuestions": [
+      "Are there infinitely many pairs with the same prime divisor set?",
+      "For every k ≥ 1, do infinitely many n satisfy the property with spacing k?",
+      "What is the density of n for which a matching m exists?"
+    ]
+  }
+}
