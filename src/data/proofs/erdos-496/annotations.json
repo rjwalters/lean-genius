@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-496-ann-form",
+    "proofId": "erdos-496",
+    "range": { "startLine": 30, "endLine": 32 },
+    "type": "definition",
+    "title": "Ternary Quadratic Form",
+    "content": "Q(x,y,z) = x² + y² − αz² for real α. The standard indefinite ternary form in the Oppenheim conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-496-ann-approx",
+    "proofId": "erdos-496",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "definition",
+    "title": "ε-Approximation of Zero",
+    "content": "Existence of positive integers x, y, z with |Q(x,y,z)| < ε. The core property to establish.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-496-ann-margulis",
+    "proofId": "erdos-496",
+    "range": { "startLine": 45, "endLine": 49 },
+    "type": "theorem",
+    "title": "Margulis's Theorem (1987)",
+    "content": "For irrational α > 0, the form x² + y² − αz² takes values within ε of zero for any ε > 0. Resolved the Oppenheim conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-496-ann-dense",
+    "proofId": "erdos-496",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "theorem",
+    "title": "Dense Values",
+    "content": "The values of an irrational indefinite ternary form at integer points are dense in ℝ. Stronger than just approximating zero.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-496-ann-rational",
+    "proofId": "erdos-496",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "theorem",
+    "title": "Rational Forms Bounded Away",
+    "content": "When α is rational, the form has a minimum nonzero value at integer points. Irrationality is essential for the conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-496-ann-dh",
+    "proofId": "erdos-496",
+    "range": { "startLine": 86, "endLine": 93 },
+    "type": "theorem",
+    "title": "Davenport–Heilbronn (1946)",
+    "content": "The Oppenheim conjecture for forms in ≥ 5 variables, proved via the Hardy–Littlewood circle method.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-496-ann-orbit",
+    "proofId": "erdos-496",
+    "range": { "startLine": 98, "endLine": 106 },
+    "type": "theorem",
+    "title": "Orbit Dichotomy",
+    "content": "The SO(2,1) orbit of a lattice in SL(3,ℝ)/SL(3,ℤ) is either closed (rational form) or dense (irrational form). The heart of Margulis's proof.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-496-ann-emm",
+    "proofId": "erdos-496",
+    "range": { "startLine": 115, "endLine": 123 },
+    "type": "theorem",
+    "title": "Eskin–Margulis–Mozes Counting",
+    "content": "Quantitative Oppenheim: the number of integer points with |Q| < δ and size ≤ T grows as c·δ·T for T → ∞.",
+    "significance": "supporting"
+  }
+]

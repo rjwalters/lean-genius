@@ -1,0 +1,74 @@
+{
+  "id": "erdos-496",
+  "title": "Oppenheim Conjecture",
+  "slug": "erdos-496",
+  "description": "For irrational α > 0 and any ε > 0, there exist positive integers x, y, z with |x² + y² − αz²| < ε. Proved by Margulis (1987) using unipotent dynamics on homogeneous spaces.",
+  "meta": {
+    "author": "Erdős, Oppenheim",
+    "sourceUrl": "https://erdosproblems.com/496",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos496Problem.lean",
+    "tags": [
+      "number theory",
+      "Diophantine approximation",
+      "quadratic forms",
+      "homogeneous dynamics"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 496,
+    "erdosUrl": "https://erdosproblems.com/496",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Oppenheim (1929) conjectured that indefinite irrational quadratic forms in n ≥ 3 variables take values arbitrarily close to zero at integer points. Davenport–Heilbronn (1946) proved the case n ≥ 5 using the circle method. Margulis (1987) proved the full conjecture for n ≥ 3 using the theory of unipotent flows on homogeneous spaces, a landmark application of ergodic theory to number theory.",
+    "problemStatement": "For irrational α > 0 and any ε > 0, do there exist positive integers x, y, z with |x² + y² − αz²| < ε?",
+    "proofStrategy": "We formalize the ternary quadratic form, the approximation problem, Margulis's theorem, the orbit dichotomy (rational vs. dense), Davenport–Heilbronn for 5 variables, and the Eskin–Margulis–Mozes quantitative refinement.",
+    "keyInsights": [
+      "Irrational indefinite forms in ≥ 3 variables have dense values at integer points",
+      "Rational forms are bounded away from zero — irrationality is essential",
+      "Margulis's proof: SO(2,1) orbits on SL(3,ℝ)/SL(3,ℤ) are closed or dense",
+      "Davenport–Heilbronn: circle method works for ≥ 5 variables",
+      "Eskin–Margulis–Mozes: quantitative counting of small-value integer points"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 42,
+      "summary": "Defines the ternary quadratic form x² + y² − αz², indefiniteness, and ε-approximation of zero."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem (Margulis)",
+      "startLine": 44,
+      "endLine": 50,
+      "summary": "States the Oppenheim conjecture as proved by Margulis: irrational forms approximate zero arbitrarily well."
+    },
+    {
+      "id": "density",
+      "title": "Density of Values",
+      "startLine": 52,
+      "endLine": 73,
+      "summary": "The stronger result: values of the form are dense in ℝ. Dense values imply zero-approximation."
+    },
+    {
+      "id": "dynamics",
+      "title": "Dynamics and Quantitative Results",
+      "startLine": 75,
+      "endLine": 124,
+      "summary": "Rational forms bounded away from zero, Davenport–Heilbronn for 5 variables, Margulis orbit dichotomy, Eskin–Margulis–Mozes counting."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #496 (Oppenheim conjecture), solved by Margulis (1987). Irrational indefinite quadratic forms in ≥ 3 variables take values arbitrarily close to zero at integer points, with values dense in ℝ.",
+    "implications": "Margulis's proof was a landmark in applying ergodic theory and homogeneous dynamics to number theory, inspiring the Eskin–Margulis–Mozes quantitative theory.",
+    "openQuestions": [
+      "Optimal quantitative bounds for the counting function in the Eskin–Margulis–Mozes theorem?",
+      "Effective versions: explicit bounds on the size of the smallest ε-approximating triple?",
+      "Higher-degree forms: analogues of the Oppenheim conjecture for cubic and higher-degree forms?"
+    ]
+  }
+}
