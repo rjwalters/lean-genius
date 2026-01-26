@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-347-subset-sums",
+    "proofId": "erdos-347",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 27 },
+    "title": "Subset Sums P(A)",
+    "content": "subsetSums A is the set of all natural numbers expressible as a sum of a finite subset of A. This is the central object: the problem asks when P(A') has density 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-347-density",
+    "proofId": "erdos-347",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 39 },
+    "title": "Asymptotic Density",
+    "content": "HasDensity S δ means |S ∩ {1,…,N}|/N → δ as N → ∞. Density 1 means S contains almost all natural numbers.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-347-ratio-limit",
+    "proofId": "erdos-347",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 52 },
+    "title": "Ratio Limit",
+    "content": "HasRatioLimit a r means a(n+1)/a(n) → r. The critical value r = 2 relates to powers of 2, the boundary for completeness of binary-like sequences.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-347-cofinite",
+    "proofId": "erdos-347",
+    "type": "definition",
+    "range": { "startLine": 57, "endLine": 58 },
+    "title": "Cofinite Subsequence",
+    "content": "IsCofiniteSubseq a ι means ι is a strictly monotone reindexing that omits only finitely many indices. This captures the robustness requirement: removing finitely many terms.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-347-conjecture",
+    "proofId": "erdos-347",
+    "type": "conjecture",
+    "range": { "startLine": 69, "endLine": 75 },
+    "title": "Erdős Problem 347 (Solved)",
+    "content": "There exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has subset sums of density 1. Solved affirmatively by ebarschkis (Tao–van Doorn ideas).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-347-answer",
+    "proofId": "erdos-347",
+    "type": "result",
+    "range": { "startLine": 78, "endLine": 79 },
+    "title": "Affirmative Answer",
+    "content": "The answer to Erdős Problem 347 is yes. A formal Lean proof confirms the existence of such a sequence.",
+    "significance": "essential"
+  }
+]

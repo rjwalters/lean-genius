@@ -1,0 +1,82 @@
+{
+  "id": "erdos-347",
+  "title": "Erdős Problem #347: Complete Sequences with Ratio Tending to 2",
+  "slug": "erdos-347",
+  "description": "Is there a monotone integer sequence with ratio limit 2 such that every cofinite subsequence has subset sums of density 1? Solved affirmatively by ebarschkis (based on Tao–van Doorn ideas).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/347",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos347Problem.lean",
+    "tags": ["number theory", "complete sequences", "subset sums", "density"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 347,
+    "erdosUrl": "https://erdosproblems.com/347",
+    "erdosProblemStatus": "proved"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980) asked whether a sequence with ratio tending to 2 can have the completeness property that all cofinite subsequences generate subset sums of density 1. The problem was solved affirmatively by ebarschkis, with key ideas from Terence Tao and Wouter van Doorn.",
+    "problemStatement": "Is there a sequence A = {a₁ ≤ a₂ ≤ ⋯} with lim a_{n+1}/a_n = 2 such that P(A') has density 1 for every cofinite subsequence A' of A?",
+    "proofStrategy": "The formalization defines subset sums, asymptotic density, monotone sequences with ratio limits, and cofinite subsequences. The conjecture is stated existentially and the affirmative answer is axiomatised.",
+    "keyInsights": [
+      "The ratio limit 2 is critical: powers of 2 grow exactly at this rate",
+      "Completeness requires robustness: removing finitely many terms preserves density 1",
+      "The problem connects growth rates of sequences to additive completeness",
+      "Solved affirmatively with a formal Lean proof"
+    ]
+  },
+  "sections": [
+    {
+      "id": "subset-sums",
+      "title": "Subset Sums",
+      "startLine": 23,
+      "endLine": 27,
+      "summary": "Definition of P(A): the set of all finite subset sums from A."
+    },
+    {
+      "id": "density",
+      "title": "Asymptotic Density",
+      "startLine": 29,
+      "endLine": 39,
+      "summary": "Counting function and asymptotic density δ of a set S ⊆ ℕ."
+    },
+    {
+      "id": "ratio-limit",
+      "title": "Monotone Sequences with Ratio Limit",
+      "startLine": 41,
+      "endLine": 52,
+      "summary": "IsMonotone and HasRatioLimit: monotone nondecreasing sequences with a_{n+1}/a_n → r."
+    },
+    {
+      "id": "cofinite",
+      "title": "Cofinite Subsequences",
+      "startLine": 54,
+      "endLine": 63,
+      "summary": "IsCofiniteSubseq: subsequences that omit only finitely many indices."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (Solved)",
+      "startLine": 65,
+      "endLine": 80,
+      "summary": "Erdős Problem 347: existence of a ratio-2 sequence where all cofinite subsequences have density-1 subset sums. Solved affirmatively."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 82,
+      "endLine": 96,
+      "summary": "Zero membership, additive closure, and monotonicity of subset sums."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 347, solved affirmatively: there exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has density-1 subset sums.",
+    "implications": "The affirmative answer shows that sequences growing at rate 2 can be made additively complete in a robust sense, deepening understanding of the interplay between multiplicative growth and additive structure.",
+    "openQuestions": [
+      "What is the optimal error term for the density convergence?",
+      "Can the ratio limit 2 be replaced by other values?",
+      "What explicit constructions achieve this property?"
+    ]
+  }
+}
