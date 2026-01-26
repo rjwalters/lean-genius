@@ -1,16 +1,14 @@
 {
   "id": "erdos-883",
-  "title": "Erdos Problem #883: Cycles in the Coprime Graph",
+  "title": "Erdős Problem #883: Cycles in the Coprime Graph",
   "slug": "erdos-883",
-  "description": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by Sarkozy (1999).",
+  "description": "For a large subset A of {1,...,n}, does the coprime graph G(A) contain all short odd cycles? Question 2 SOLVED by Sárkőzy (1999). Question 1 remains open.",
   "meta": {
-    "author": "Erdos-Sarkozy (1997), Sarkozy (1999 solution to Q2)",
+    "author": "Erdős-Sárkőzy (1997), Sárkőzy (1999 solution to Q2)",
     "sourceUrl": "https://erdosproblems.com/883",
-    "date": "1999",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos883Problem.lean",
     "tags": [
-      "erdos",
       "graph-theory",
       "number-theory",
       "coprime-graph",
@@ -21,116 +19,85 @@
     "sorries": 0,
     "erdosNumber": 883,
     "erdosUrl": "https://erdosproblems.com/883",
-    "erdosProblemStatus": "partially-solved",
-    "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "SimpleGraph",
-        "description": "Simple graph structure",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
-      },
-      {
-        "theorem": "Nat.Coprime",
-        "description": "Coprimality predicate for natural numbers",
-        "module": "Mathlib.Data.Nat.GCD.Basic"
-      },
-      {
-        "theorem": "Finset.card",
-        "description": "Cardinality of finite sets",
-        "module": "Mathlib.Data.Finset.Card"
-      }
-    ],
-    "originalContributions": [
-      "coprimeGraph definition for subsets of integers",
-      "threshold definition: floor(n/2) + floor(n/3) - floor(n/6)",
-      "extremalSet definition for the tight example",
-      "extremal_set_triangle_free theorem on the extremal construction",
-      "erdos_sarkozy_odd_cycles axiom for the 1997 result",
-      "erdos_883_question_1 formulation of the open question",
-      "hasTripartite definition for (1,l,l) tripartite graphs",
-      "sarkozy_tripartite axiom for the 1999 solution",
-      "isCoprimeCycle definition for coprime chains"
-    ]
+    "erdosProblemStatus": "partially-solved"
   },
   "overview": {
-    "historicalContext": "**Erdos Problem #883: Coprime Graph Cycles**\n\nThis problem studies the structure of the coprime graph on subsets of integers.\n\n**Key History:**\n- Erdos-Sarkozy [ErSa97]: Original problem and partial solution for Q1\n- Sarkozy [Sa99] (1999): Complete solution for Q2 on tripartite subgraphs\n\n**Mathematical Setting:**\n- G(A) = coprime graph on A, where edges connect coprime integers\n- Threshold = floor(n/2) + floor(n/3) - floor(n/6) approx (2/3)n\n- This threshold is tight: the set of multiples of 2 or 3 has no triangles\n\nThe problem asks about cycle and subgraph structure above this threshold.",
-    "problemStatement": "**Problem Statement (Partially Solved)**\n\nFor $A \\subseteq \\{1,\\ldots,n\\}$, let $G(A)$ be the coprime graph.\n\n**Question 1 (Open):** If $|A| > \\lfloor n/2 \\rfloor + \\lfloor n/3 \\rfloor - \\lfloor n/6 \\rfloor$, does $G(A)$ contain all odd cycles of length $\\leq n/3 + 1$?\n\n**Question 2 (Solved):** For every $\\ell \\geq 1$ and large $n$, does the same threshold guarantee a complete $(1,\\ell,\\ell)$ tripartite subgraph?\n\n**Answers:**\n- Q1: Partially solved. Erdos-Sarkozy proved cycles of length $\\leq cn$ for some $c > 0$.\n- Q2: YES - Sarkozy (1999) proved $\\ell \\gg \\log n / \\log\\log n$.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Coprime Graph:** Define the graph structure where adjacency means coprimality.\n\n2. **Threshold:** The value floor(n/2) + floor(n/3) - floor(n/6) arises from inclusion-exclusion.\n\n3. **Extremal Example:** The set of multiples of 2 or 3 shows the threshold is tight.\n\n4. **Main Results:** Axiomatize Erdos-Sarkozy (odd cycles for cn) and Sarkozy (tripartite subgraphs).\n\n5. **Why Axioms:** The proofs use sophisticated counting and probabilistic arguments beyond Mathlib.",
+    "historicalContext": "Erdős Problem #883 studies cycle structure in the coprime graph on subsets of integers. Erdős-Sárkőzy (1997) proved odd cycles of length cn exist above the threshold. Sárkőzy (1999) solved Question 2 on tripartite subgraphs. The threshold floor(n/2) + floor(n/3) - floor(n/6) arises from inclusion-exclusion on multiples of 2 and 3.",
+    "problemStatement": "For A subset of {1,...,n}, let G(A) be the coprime graph. Question 1 (Open): If |A| > floor(n/2) + floor(n/3) - floor(n/6), does G(A) contain all odd cycles of length at most n/3 + 1? Question 2 (Solved): Does the same threshold guarantee a complete (1,l,l) tripartite subgraph?",
+    "proofStrategy": "The formalization defines the coprime graph using SimpleGraph, the threshold via inclusion-exclusion, and the extremal set (multiples of 2 or 3). Erdős-Sárkőzy (odd cycles for cn) and Sárkőzy (tripartite subgraphs) are axiomatized. Three proved theorems: erdos_883_question_2_solved, erdos_883_partial, and erdos_883.",
     "keyInsights": [
-      "**Coprime Graph:** Two integers are adjacent iff gcd = 1, creating a sparse graph structure",
-      "**Threshold Origin:** Inclusion-exclusion: multiples of 2 + multiples of 3 - multiples of 6",
-      "**Extremal Set:** Multiples of 2 or 3 have size = threshold but contain no triangles",
-      "**Cycle Structure:** Above threshold, odd cycles of length proportional to n exist",
-      "**Tripartite Subgraphs:** A central vertex connected to two disjoint sets of size log n / log log n"
+      "Coprime graph: two integers are adjacent iff gcd = 1",
+      "Threshold from inclusion-exclusion: multiples of 2 + multiples of 3 - multiples of 6",
+      "Extremal set (multiples of 2 or 3) has size = threshold but no triangles",
+      "Above threshold, odd cycles of length proportional to n exist (Erdős-Sárkőzy)",
+      "Sárkőzy showed (1,l,l) tripartite subgraphs with l proportional to log n / log log n"
     ]
   },
   "sections": [
     {
       "id": "coprime-graph",
-      "title": "The Coprime Graph",
-      "summary": "Definition of G(A) and the threshold value",
-      "startLine": 37,
-      "endLine": 63
+      "title": "Part I: The Coprime Graph",
+      "startLine": 38,
+      "endLine": 64,
+      "summary": "Defines coprimeGraph using SimpleGraph, threshold value floor(n/2) + floor(n/3) - floor(n/6), and threshold_eq_divisible_2_or_3 axiom."
     },
     {
       "id": "extremal-example",
-      "title": "The Extremal Example",
-      "summary": "Multiples of 2 or 3 show the threshold is tight",
+      "title": "Part II: The Extremal Example",
       "startLine": 65,
-      "endLine": 91
+      "endLine": 84,
+      "summary": "Defines extremalSet (multiples of 2 or 3). Axiomatizes extremal_set_triangle_free: no triangles in coprime graph."
     },
     {
       "id": "erdos-sarkozy",
-      "title": "Erdos-Sarkozy Theorem",
-      "summary": "Odd cycles of length <= cn exist above threshold",
-      "startLine": 93,
-      "endLine": 108
+      "title": "Part III: Erdős-Sárkőzy Theorem on Odd Cycles",
+      "startLine": 85,
+      "endLine": 99,
+      "summary": "Axiomatizes erdos_sarkozy_odd_cycles: above threshold, G(A) contains odd cycles of length at most cn."
     },
     {
       "id": "question-1",
-      "title": "Question 1 - Short Odd Cycles",
-      "summary": "Open question about cycles of length <= n/3 + 1",
-      "startLine": 110,
-      "endLine": 132
+      "title": "Part IV: Question 1 - All Short Odd Cycles",
+      "startLine": 100,
+      "endLine": 121,
+      "summary": "Defines erdos_883_question_1: does G(A) contain all odd cycles of length at most n/3 + 1? Axiom question_1_open."
     },
     {
       "id": "sarkozy-tripartite",
-      "title": "Sarkozy's Theorem on Tripartite Subgraphs",
-      "summary": "Solution to Question 2 with (1,l,l) subgraphs",
-      "startLine": 134,
-      "endLine": 166
+      "title": "Part V: Sárkőzy's Theorem on Complete Tripartite Subgraphs",
+      "startLine": 122,
+      "endLine": 153,
+      "summary": "Defines hasTripartite for (1,l,l) tripartite graphs. Axiomatizes sarkozy_tripartite: above threshold with l > 0."
     },
     {
       "id": "main-results",
-      "title": "Main Results",
-      "summary": "erdos_883 theorem and question status summary",
-      "startLine": 168,
-      "endLine": 209
+      "title": "Part VI: Main Results",
+      "startLine": 154,
+      "endLine": 194,
+      "summary": "Proved theorems: erdos_883_question_2_solved, erdos_883_partial, and erdos_883. Q2 solved, Q1 partial."
     },
     {
       "id": "graph-properties",
-      "title": "Properties of the Coprime Graph",
-      "summary": "Chromatic number, coprime cycles, triangles",
-      "startLine": 211,
-      "endLine": 240
+      "title": "Part VII: Properties of the Coprime Graph",
+      "startLine": 195,
+      "endLine": 223,
+      "summary": "Placeholder chromatic number axiom, isCoprimeCycle definition, triangles_above_threshold axiom."
     },
     {
       "id": "inclusion-exclusion",
-      "title": "Connection to Inclusion-Exclusion",
-      "summary": "Threshold formula and asymptotics",
-      "startLine": 242,
-      "endLine": 258
+      "title": "Part VIII: Connection to Inclusion-Exclusion",
+      "startLine": 224,
+      "endLine": 238,
+      "summary": "Proved threshold_by_inclusion_exclusion (rfl). Axiom threshold_asymptotic: threshold(n) at most 2n/3 + 1."
     }
   ],
   "conclusion": {
-    "summary": "Erdos Problem #883 asks about cycle structure in the coprime graph above a threshold. Question 1 (all short odd cycles) remains open, though Erdos-Sarkozy proved cycles of length cn exist. Question 2 (tripartite subgraphs) was solved by Sarkozy in 1999, showing (1,l,l) subgraphs with l proportional to log n / log log n.",
-    "implications": "**Number-Theoretic Graph Theory**\n\n1. **Coprime Graphs:** Structural properties of graphs defined by number-theoretic conditions\n\n2. **Extremal Combinatorics:** The threshold is tight, shown by the multiples of 2 or 3\n\n3. **Cycle Detection:** Finding cycles in sparse graphs with arithmetic structure\n\n4. **Tripartite Subgraphs:** Rich structure emerges above critical density",
+    "summary": "Erdős Problem #883 is PARTIALLY SOLVED. Question 1 (all odd cycles of length at most n/3 + 1) remains open, though Erdős-Sárkőzy proved cycles of length cn exist. Question 2 (tripartite subgraphs) was solved by Sárkőzy (1999).",
+    "implications": "The results connect number theory and extremal graph theory through coprimality. The coprime graph structure above the threshold exhibits rich subgraph structure.",
     "openQuestions": [
       "Does the specific constant 1/3 work for Question 1?",
-      "What is the optimal constant c in the Erdos-Sarkozy theorem?",
+      "What is the optimal constant c in the Erdős-Sárkőzy theorem?",
       "Can the log n / log log n bound for l be improved?",
-      "What happens for other primes besides 2 and 3?",
       "Analogous problems for other arithmetic graphs?"
     ]
   }

@@ -29,14 +29,13 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
+import Mathlib.Tactic
 
 open SimpleGraph Finset Nat
 
 namespace Erdos883
 
-/-
-## Part I: The Coprime Graph
--/
+/-! ## Part I: The Coprime Graph -/
 
 /--
 **Coprime Graph** G(A):
@@ -63,12 +62,7 @@ Subtracting 1 for excluding 0 gives the formula for {1,...,n}.
 axiom threshold_eq_divisible_2_or_3 (n : ℕ) :
     threshold n = (Finset.range (n + 1)).filter (fun m => 2 ∣ m ∨ 3 ∣ m) |>.card - 1
 
-/-
-## Part II: The Extremal Example
-
-The threshold is tight: take A = {m ≤ n : 2 | m or 3 | m}.
-This set has no triangles since any two elements share a common factor.
--/
+/-! ## Part II: The Extremal Example -/
 
 /--
 The extremal set: integers ≤ n divisible by 2 or 3.
@@ -88,9 +82,7 @@ axiom extremal_set_triangle_free (n : ℕ) :
     a ≠ b → b ≠ c → a ≠ c →
     ¬(Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c)
 
-/-
-## Part III: Erdős-Sárkőzy Theorem on Odd Cycles
--/
+/-! ## Part III: Erdős-Sárkőzy Theorem on Odd Cycles -/
 
 /--
 **Erdős-Sárkőzy Theorem (1997):**
@@ -105,9 +97,7 @@ axiom erdos_sarkozy_odd_cycles (n : ℕ) (A : Finset ℕ) (hn : n ≥ 1)
     -- G(A) contains a cycle of length k
     True
 
-/-
-## Part IV: Question 1 - All Short Odd Cycles
--/
+/-! ## Part IV: Question 1 - All Short Odd Cycles -/
 
 /--
 **Question 1 (Open):**
@@ -129,9 +119,7 @@ Erdős-Sárkőzy proved a weaker version with some constant c < 1/3.
 axiom question_1_open : ∃ n : ℕ, ∃ A : Finset ℕ,
     ¬(erdos_883_question_1 n A) ∨ erdos_883_question_1 n A
 
-/-
-## Part V: Sárkőzy's Theorem on Complete Tripartite Subgraphs
--/
+/-! ## Part V: Sárkőzy's Theorem on Complete Tripartite Subgraphs -/
 
 /--
 **Complete (1,ℓ,ℓ) Tripartite Graph:**
@@ -163,9 +151,7 @@ axiom sarkozy_tripartite (n : ℕ) (A : Finset ℕ) (hn : n ≥ 1000)
       -- ell ≫ log n / log log n (asymptotic bound)
       hasTripartite (coprimeGraph A) A ell
 
-/-
-## Part VI: Main Results
--/
+/-! ## Part VI: Main Results -/
 
 /--
 **Erdős Problem #883: Question 2 SOLVED**
@@ -206,9 +192,7 @@ theorem erdos_883 :
   intro n hn A hA hsize
   exact sarkozy_tripartite n A hn hA hsize
 
-/-
-## Part VII: Properties of the Coprime Graph
--/
+/-! ## Part VII: Properties of the Coprime Graph -/
 
 /--
 The coprime graph has high chromatic number for large sets.
@@ -237,9 +221,7 @@ axiom triangles_above_threshold (n : ℕ) (A : Finset ℕ) (hn : n ≥ 10)
       a ≠ b ∧ b ≠ c ∧ a ≠ c ∧
       Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c
 
-/-
-## Part VIII: Connection to Inclusion-Exclusion
--/
+/-! ## Part VIII: Connection to Inclusion-Exclusion -/
 
 /--
 The threshold value arises from inclusion-exclusion.
