@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-685-omega",
+    "proofId": "erdos-685",
+    "type": "definition",
+    "range": { "startLine": 24, "endLine": 25 },
+    "title": "Prime Divisor Count ω",
+    "content": "omega n = n.primeFactors.card, the number of distinct prime divisors of n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-685-primesum",
+    "proofId": "erdos-685",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 29 },
+    "title": "Prime Reciprocal Sum",
+    "content": "primeSumInRange k n = Σ_{k<p<n, p prime} 1/p, the sum of prime reciprocals in (k,n).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-685-conjecture",
+    "proofId": "erdos-685",
+    "type": "conjecture",
+    "range": { "startLine": 35, "endLine": 41 },
+    "title": "Main Conjecture",
+    "content": "ErdosProblem685: ω(C(n,k)) = (1+o(1))·k·Σ 1/p for n^ε < k ≤ n^{1-ε}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-685-lower",
+    "proofId": "erdos-685",
+    "type": "result",
+    "range": { "startLine": 46, "endLine": 47 },
+    "title": "Trivial Lower Bound",
+    "content": "ω(C(n,k)) ≥ log C(n,k) / log n, tight when k > n^{1-o(1)}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-685-basic",
+    "proofId": "erdos-685",
+    "type": "result",
+    "range": { "startLine": 60, "endLine": 69 },
+    "title": "Basic Properties",
+    "content": "ω(1) = 0, ω(C(n,0)) = 0, ω(C(n,1)) = ω(n).",
+    "significance": "supporting"
+  }
+]
