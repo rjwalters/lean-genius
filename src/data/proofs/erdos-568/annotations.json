@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-568-ann-1",
+    "proofId": "erdos-568",
+    "range": { "startLine": 26, "endLine": 50 },
+    "type": "definition",
+    "title": "Graph Infrastructure and Ramsey Numbers",
+    "content": "SGraph defines a simple graph on Fin n with symmetric irreflexive adjacency. The Ramsey number ramseyNumber and size Ramsey number sizeRamseyNumber are axiomatized. numEdges counts edges, NoIsolated requires every vertex has a neighbor.",
+    "significance": "Both classical and size Ramsey numbers are needed to state the conjecture. The axiomatization avoids the complex existential definitions."
+  },
+  {
+    "id": "erdos-568-ann-2",
+    "proofId": "erdos-568",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "definition",
+    "title": "Tree and Complete Graph Predicates",
+    "content": "IsTree characterizes trees by having n-1 edges. IsComplete requires all distinct pairs to be adjacent. These predicates are used in the hypothesis of the conjecture.",
+    "significance": "Trees and complete graphs are the two extremes of graph structure. The conjecture's hypotheses test G against both."
+  },
+  {
+    "id": "erdos-568-ann-3",
+    "proofId": "erdos-568",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "Linear Tree Ramsey Condition",
+    "content": "LinearTreeRamsey G means R(G, Tₙ) ≤ Cn for all trees Tₙ. This is a natural condition: the Chvátal–Harary theorem gives R(Tₘ, Tₙ) = m + n - 2, so trees have linear Ramsey numbers against each other.",
+    "significance": "This is the first of two hypotheses in the EFRS conjecture. Many sparse graphs satisfy this condition."
+  },
+  {
+    "id": "erdos-568-ann-4",
+    "proofId": "erdos-568",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "definition",
+    "title": "Quadratic Clique Ramsey Condition",
+    "content": "QuadraticCliqueRamsey G means R(G, Kₙ) ≤ Cn². Since R(Kₘ, Kₙ) grows exponentially, quadratic growth against cliques is a strong structural constraint on G.",
+    "significance": "This is the second hypothesis. The quadratic bound rules out graphs that behave too much like cliques in Ramsey contexts."
+  },
+  {
+    "id": "erdos-568-ann-5",
+    "proofId": "erdos-568",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "definition",
+    "title": "Ramsey Size Linearity",
+    "content": "IsRamseySizeLinear G means R̂(G, H) ≤ C·m for all graphs H with m edges and no isolated vertices. This is a uniform bound on the size Ramsey number in terms of the number of edges of the opponent graph.",
+    "significance": "Size linearity is the conclusion of the conjecture. It is a quantitatively precise notion connecting graph structure to Ramsey-type embedding problems."
+  },
+  {
+    "id": "erdos-568-ann-6",
+    "proofId": "erdos-568",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "conjecture",
+    "title": "EFRS Conjecture",
+    "content": "Erdős, Faudree, Rousseau, and Schelp (1993) conjectured that the two conditions — linear tree Ramsey and quadratic clique Ramsey — together imply Ramsey size linearity. This would provide a clean sufficient condition for size linearity.",
+    "significance": "The conjecture bridges classical Ramsey theory and size Ramsey theory, asking whether growth rates of R(G,·) determine the behavior of R̂(G,·)."
+  }
+]
