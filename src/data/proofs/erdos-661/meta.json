@@ -1,0 +1,84 @@
+{
+  "id": "erdos-661",
+  "title": "Erdős Problem #661: Bipartite Distinct Distances",
+  "slug": "erdos-661",
+  "description": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² with o(n/√log n) distinct bipartite distances? Is F(2n) = o(f(2n))? In ℝ⁴ all distances can be equal (Lenz). $50 reward. Open.",
+  "meta": {
+    "erdosNumber": 661,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "distances",
+      "discrete-geometry",
+      "open"
+    ],
+    "references": [
+      "Erdős–Pach (1990): bipartite distinct distances problem",
+      "Guth–Katz (2015): f(2n) ≳ n/log n for general point sets",
+      "Lenz: ℝ⁴ construction with one bipartite distance",
+      "https://erdosproblems.com/661"
+    ],
+    "leanFile": "Proofs/Erdos661Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 43,
+      "summary": "Point2, distance, bipartite distance set, F(2n), f(2n) definitions."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 45,
+      "endLine": 53,
+      "summary": "Is F(2n) = o(f(2n))? Can bipartite arrangement save distinct distances?"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 55,
+      "endLine": 70,
+      "summary": "Guth–Katz lower bound n/log n and lattice upper bound n/√(log n)."
+    },
+    {
+      "id": "higher-dimensions",
+      "title": "Higher Dimensions",
+      "startLine": 72,
+      "endLine": 77,
+      "summary": "Lenz construction in ℝ⁴ achieving one bipartite distance."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 79,
+      "endLine": 87,
+      "summary": "Connection to Erdős #89, $50 reward."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Pach posed this bipartite variant of the distinct distances problem. While the general distinct distances problem was essentially resolved by Guth–Katz (2015) showing Ω(n/log n) distances, the bipartite version asks whether splitting points into two sets allows asymptotically fewer cross-distances.",
+    "problemStatement": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² such that the number of distinct distances d(xᵢ,yⱼ) is o(n/√(log n))?",
+    "proofStrategy": "We define bipartite distance sets, axiomatize F(2n) and f(2n), state the o(f(2n)) conjecture, and record the Guth–Katz bound and Lenz's ℝ⁴ construction.",
+    "keyInsights": [
+      "In ℝ⁴, Lenz showed all bipartite distances can be equal using orthogonal circles",
+      "In ℝ², the bipartite distinct distances question is completely open",
+      "Guth–Katz (2015) proved f(2n) ≳ n/log n for general point sets",
+      "The lattice gives f(2n) ≲ n/√(log n)",
+      "Erdős offered $50 for resolution"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #661 asks whether the bipartite structure can reduce the number of distinct distances below the general Guth–Katz threshold. In ℝ⁴, Lenz achieved one distance; in ℝ², the answer is unknown.",
+    "implications": "Resolving this would clarify whether bipartite point configurations have fundamentally different distance properties than general configurations, with implications for incidence geometry and additive combinatorics.",
+    "openQuestions": [
+      "Is F(2n) = o(f(2n))?",
+      "What is the correct order of magnitude for F(2n)?",
+      "Can lattice-type constructions be adapted to the bipartite setting?",
+      "Does the Lenz phenomenon partially extend to ℝ³?"
+    ]
+  }
+}
