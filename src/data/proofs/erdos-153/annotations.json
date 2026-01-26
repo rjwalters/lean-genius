@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-153-sidon-def",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 29 },
+    "title": "Sidon Set Definition",
+    "content": "IsSidon A requires that all pairwise sums are distinct: a + b = c + d with a ≤ b, c ≤ d implies (a,b) = (c,d). These are also called B₂ sets.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-153-gap-squared",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 48 },
+    "title": "Sum of Squared Gaps",
+    "content": "gapSquaredSum computes Σ (s_{i+1} - s_i)² over consecutive elements of the sorted sumset A+A. This measures the irregularity of spacing.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-153-mean-gap",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": { "startLine": 56, "endLine": 58 },
+    "title": "Mean Squared Gap",
+    "content": "meanGapSquared A = (1/t) · Σ (s_{i+1} - s_i)² where t = |A+A|. This is the gap variance measure that Erdős conjectured diverges.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-153-conjecture",
+    "proofId": "erdos-153",
+    "type": "conjecture",
+    "range": { "startLine": 73, "endLine": 76 },
+    "title": "Erdős Problem 153",
+    "content": "For every M > 0, there exists N₀ such that every Sidon set A with |A| ≥ N₀ satisfies meanGapSquared A > M. The mean squared gap diverges as the Sidon set grows.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-153-sumset-card",
+    "proofId": "erdos-153",
+    "type": "result",
+    "range": { "startLine": 84, "endLine": 85 },
+    "title": "Sidon Sumset Cardinality",
+    "content": "A Sidon set of size n has |A+A| ≥ n(n+1)/2 distinct pairwise sums. This quadratic growth is the key structural property of Sidon sumsets.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-153-ess-1994",
+    "proofId": "erdos-153",
+    "type": "context",
+    "range": { "startLine": 108, "endLine": 111 },
+    "title": "Erdős–Sárközy–Sós (1994)",
+    "content": "Erdős, Sárközy, and Sós showed that the mean squared gap is bounded below by a positive constant for sufficiently large Sidon sets. The conjecture asks whether it actually diverges.",
+    "significance": "supporting"
+  }
+]

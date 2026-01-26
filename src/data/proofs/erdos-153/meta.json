@@ -1,0 +1,89 @@
+{
+  "id": "erdos-153",
+  "title": "Erdős Problem #153: Gap Variance in Sidon Sumsets",
+  "slug": "erdos-153",
+  "description": "Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that (1/t) · Σ (s_{i+1} - s_i)² → ∞ as |A| → ∞? The mean squared gap in sumsets of Sidon sets should diverge. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/153",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos153Problem.lean",
+    "tags": ["combinatorics", "sidon-sets", "additive-combinatorics", "sumsets"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 153,
+    "erdosUrl": "https://erdosproblems.com/153",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Sárközy, and Sós studied the gap distribution in sumsets of Sidon sets in their 1994 paper 'On Sum Sets of Sidon Sets, I'. A Sidon (B₂) set has all pairwise sums distinct, so |A+A| = n(n+1)/2. When A ⊆ {1,...,N} with |A| ~ √N, the sumset lies in {2,...,2N} with ~n²/2 elements, giving average gap ~4. The conjecture asks whether the variance of these gaps grows without bound.",
+    "problemStatement": "Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that (1/t) · Σᵢ (s_{i+1} - sᵢ)² → ∞ as |A| → ∞?",
+    "proofStrategy": "We define Sidon sets, the sumset A+A, sort it, compute the sum of squared consecutive gaps, and define the mean squared gap. The conjecture ErdosProblem153 states this diverges. Known bounds on sumset size and range are axiomatized, along with the Erdős–Sárközy–Sós lower bound. The infinite Sidon set variant is also stated.",
+    "keyInsights": [
+      "A Sidon set of size n has |A+A| ≥ n(n+1)/2 distinct pairwise sums",
+      "The average gap in A+A is bounded (Θ(1)), but the variance may grow",
+      "Erdős–Sárközy–Sós (1994) established a positive lower bound on mean squared gap",
+      "The question extends naturally to infinite Sidon sets restricted to intervals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sidon-sets",
+      "title": "Sidon Sets",
+      "startLine": 21,
+      "endLine": 29,
+      "summary": "Defines IsSidon: all pairwise sums a+b = c+d with a ≤ b, c ≤ d implies (a,b) = (c,d)."
+    },
+    {
+      "id": "sumset-gaps",
+      "title": "Sumset and Gap Structure",
+      "startLine": 31,
+      "endLine": 48,
+      "summary": "Defines sumset A+A, sortedSumset as sorted list, and gapSquaredSum computing Σ (s_{i+1} - s_i)²."
+    },
+    {
+      "id": "gap-variance",
+      "title": "The Gap Variance",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "Defines meanGapSquared as (1/t) · Σ (s_{i+1} - s_i)² and minMeanGapSquared over all Sidon sets of size n."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 64,
+      "endLine": 76,
+      "summary": "States ErdosProblem153: for every M > 0, there exists N₀ such that all Sidon sets of size ≥ N₀ have mean squared gap > M."
+    },
+    {
+      "id": "sumset-properties",
+      "title": "Sidon Set Sumset Properties",
+      "startLine": 78,
+      "endLine": 91,
+      "summary": "Axiomatizes that Sidon sets of size n have sumset of size ≥ n(n+1)/2, and sumset lies in bounded range."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 93,
+      "endLine": 111,
+      "summary": "Axiomatizes the bounded average gap and the Erdős–Sárközy–Sós (1994) positive lower bound on mean squared gap."
+    },
+    {
+      "id": "infinite-sidon",
+      "title": "Infinite Sidon Sets",
+      "startLine": 113,
+      "endLine": 131,
+      "summary": "Defines IsInfiniteSidon and states the analogous question for infinite Sidon sets restricted to {1,...,N}."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 153 asks whether the mean squared gap in sumsets of Sidon sets diverges as the set grows. The average gap is bounded, but the variance is conjectured to be unbounded. The problem remains open.",
+    "implications": "Resolution would illuminate the fine structure of sumsets of Sidon sets, connecting additive combinatorics to variance phenomena in structured sequences.",
+    "openQuestions": [
+      "Does (1/t) · Σ (s_{i+1} - s_i)² → ∞ for Sidon sets?",
+      "What is the growth rate of the minimum mean squared gap over Sidon sets of size n?",
+      "Does the analogous statement hold for infinite Sidon sets?"
+    ]
+  }
+}
