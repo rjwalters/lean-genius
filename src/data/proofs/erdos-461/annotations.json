@@ -1,0 +1,65 @@
+[
+  {
+    "id": "erdos-461-header",
+    "proofId": "erdos-461",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 14 },
+    "title": "Problem Background",
+    "content": "Erdős Problem 461 asks whether f(n,t), the count of distinct t-smooth components in {n+1,…,n+t}, grows linearly in t. From Erdős–Graham (1980), who proved f(n,t) ≫ t/log t.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-461-smooth-component",
+    "proofId": "erdos-461",
+    "type": "definition",
+    "range": { "startLine": 24, "endLine": 27 },
+    "title": "Smooth Component",
+    "content": "The t-smooth component smoothComponent(t, n) is defined by filtering n's prime factors to those less than t and folding with multiplication. It captures the largest divisor of n with all prime factors < t.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-461-smooth-axioms",
+    "proofId": "erdos-461",
+    "type": "result",
+    "range": { "startLine": 29, "endLine": 38 },
+    "title": "Smooth Component Properties",
+    "content": "Three axiomatized properties: smoothComponent divides n, all its prime factors are < t, and it is the largest such divisor.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-461-count",
+    "proofId": "erdos-461",
+    "type": "definition",
+    "range": { "startLine": 42, "endLine": 44 },
+    "title": "Distinct Count Function",
+    "content": "smoothDistinctCount(n, t) counts distinct values of smoothComponent(t, m) for m in the interval {n+1, …, n+t} using Finset.image and card.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-461-conjecture",
+    "proofId": "erdos-461",
+    "type": "conjecture",
+    "range": { "startLine": 48, "endLine": 53 },
+    "title": "Main Conjecture",
+    "content": "There exists C > 0 such that f(n,t) ≥ C·t for all n and sufficiently large t. This is the open linear growth conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-461-eg-bound",
+    "proofId": "erdos-461",
+    "type": "result",
+    "range": { "startLine": 57, "endLine": 61 },
+    "title": "Erdős–Graham Lower Bound",
+    "content": "The known bound f(n,t) ≫ t/log t, falling a logarithmic factor short of the conjectured linear bound.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-461-basic",
+    "proofId": "erdos-461",
+    "type": "result",
+    "range": { "startLine": 63, "endLine": 75 },
+    "title": "Basic Properties",
+    "content": "Boundary cases: smooth component of 1 is 1, smooth component with t=1 is 1, f(n,t) ≤ t, and f(n,0) = 0.",
+    "significance": "supporting"
+  }
+]

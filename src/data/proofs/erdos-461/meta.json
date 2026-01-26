@@ -1,0 +1,75 @@
+{
+  "id": "erdos-461",
+  "title": "Erdős Problem #461: Distinct Smooth Components in Short Intervals",
+  "slug": "erdos-461",
+  "description": "Let sₜ(n) be the t-smooth component of n and f(n,t) count distinct values of sₜ(m) for m ∈ {n+1,…,n+t}. Is f(n,t) ≫ t? Erdős–Graham proved f(n,t) ≫ t/log t.",
+  "meta": {
+    "author": "Erdős–Graham",
+    "sourceUrl": "https://erdosproblems.com/461",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos461Problem.lean",
+    "tags": ["number theory", "primes", "smooth numbers", "short intervals"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 461,
+    "erdosUrl": "https://erdosproblems.com/461",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem originates from Erdős and Graham's 1980 monograph. They introduced the t-smooth component of an integer and asked whether the number of distinct smooth components in a short interval of length t is linear in t. They proved the weaker bound t/log t.",
+    "problemStatement": "Define sₜ(n) as the largest divisor of n all of whose prime factors are less than t. Let f(n,t) = |{sₜ(m) : n < m ≤ n+t}|. Is f(n,t) ≫ t uniformly in n?",
+    "proofStrategy": "The formalization defines the smooth component via filtering prime factors, states the main conjecture as a linear lower bound, and records the Erdős–Graham bound f(n,t) ≫ t/log t as an axiom.",
+    "keyInsights": [
+      "The t-smooth component captures the 'smooth part' of an integer — the product of all small prime power divisors",
+      "Erdős–Graham proved f(n,t) ≫ t/log t, falling short of the conjectured linear bound by a logarithmic factor",
+      "The conjecture asks whether distinct smooth components are as numerous as possible in short intervals",
+      "The upper bound f(n,t) ≤ t is immediate since only t integers are sampled"
+    ]
+  },
+  "sections": [
+    {
+      "id": "smooth-components",
+      "title": "Smooth Components",
+      "startLine": 22,
+      "endLine": 38,
+      "summary": "Definition of the t-smooth component and its key properties: divisibility, smoothness, and maximality."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Distinct Smooth Components",
+      "startLine": 40,
+      "endLine": 44,
+      "summary": "The function f(n,t) counting distinct smooth components in the interval {n+1, …, n+t}."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 46,
+      "endLine": 53,
+      "summary": "Erdős Problem 461: f(n,t) ≥ C·t for some absolute constant C > 0 and all large t."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 55,
+      "endLine": 61,
+      "summary": "The Erdős–Graham lower bound f(n,t) ≫ t/log t."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 63,
+      "endLine": 75,
+      "summary": "Basic properties: smooth component of 1, trivial smooth component when t=1, upper bound f(n,t) ≤ t, and f(n,0) = 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures the open Erdős Problem 461 on linear growth of distinct smooth components in short intervals, along with the known Erdős–Graham logarithmic bound.",
+    "implications": "Resolution would reveal fine structure in the distribution of smooth parts of integers across short intervals, with connections to sieve theory and multiplicative number theory.",
+    "openQuestions": [
+      "Is f(n,t) ≫ t or is the logarithmic loss in the Erdős–Graham bound essential?",
+      "What is the true order of growth of min_n f(n,t)?",
+      "Can improved sieve methods close the log t gap?"
+    ]
+  }
+}
