@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-563-ann-coloring",
+    "proofId": "erdos-563",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "definition",
+    "title": "Edge 2-Coloring",
+    "content": "A function assigning red or blue to each edge of K_n. The underlying combinatorial object.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-563-ann-balanced",
+    "proofId": "erdos-563",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "definition",
+    "title": "Balanced Coloring",
+    "content": "A coloring is (m,α)-balanced if every subset of size ≥ m has > α fraction of edges in each color.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-563-ann-threshold",
+    "proofId": "erdos-563",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Balanced Threshold F(n,α)",
+    "content": "The smallest m for which an (m,α)-balanced coloring of K_n exists. The central quantity to determine.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-563-ann-conjecture",
+    "proofId": "erdos-563",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "theorem",
+    "title": "Main Conjecture: F ~ c_α log n",
+    "content": "For 0 ≤ α < 1/2, F(n,α) ~ c_α log n. The constant c_α depends only on α.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-563-ann-upper",
+    "proofId": "erdos-563",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "theorem",
+    "title": "Upper Bound: O(log n)",
+    "content": "Probabilistic method: a random 2-coloring is (m,α)-balanced for m = O(log n) with high probability.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-563-ann-lower",
+    "proofId": "erdos-563",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "theorem",
+    "title": "Lower Bound: Ω(log n)",
+    "content": "For α > 0, any balanced coloring needs subsets of size Ω(log n). Combined with upper bound: Θ(log n).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-563-ann-ramsey",
+    "proofId": "erdos-563",
+    "range": { "startLine": 83, "endLine": 91 },
+    "type": "theorem",
+    "title": "α = 0: Ramsey Connection",
+    "content": "When α = 0, the problem asks for the smallest m avoiding monochromatic m-cliques, connecting to diagonal Ramsey numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-563-ann-partition",
+    "proofId": "erdos-563",
+    "range": { "startLine": 101, "endLine": 103 },
+    "type": "theorem",
+    "title": "Color Partition Identity",
+    "content": "Red edges + blue edges = total edges for any coloring. The fundamental constraint linking the two color classes.",
+    "significance": "supporting"
+  }
+]
