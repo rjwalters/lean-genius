@@ -1,0 +1,111 @@
+{
+  "id": "erdos-884",
+  "title": "Erdős Problem #884: Divisor Gap Sums",
+  "slug": "erdos-884",
+  "description": "Is Σ_{i<j} 1/(d_j - d_i) bounded by C(1 + Σ_i 1/(d_{i+1} - d_i)) for the divisors d_1 < ... < d_t of n? All-pairs sum vs consecutive-pairs sum. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/884",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos884Problem.lean",
+    "tags": [
+      "number-theory",
+      "divisors",
+      "divisor-gaps",
+      "harmonic-sums",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 884,
+    "erdosUrl": "https://erdosproblems.com/884",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #884 from [Er98] asks about the relationship between two sums over divisor gaps. Given the divisors d_1 < d_2 < ... < d_t of n, the all-pairs sum (over all i < j) is compared with the consecutive-pairs sum. Related to Problem #144 on divisor arithmetic.",
+    "problemStatement": "Let d_1 < d_2 < ... < d_t be the divisors of n. Is there an absolute constant C such that Σ_{i<j} 1/(d_j - d_i) ≤ C(1 + Σ_i 1/(d_{i+1} - d_i))? OPEN.",
+    "proofStrategy": "The formalization defines divisorList (sorted divisors), consecutiveGap, generalGap, allPairsSum, and consecutivePairsSum. The conjecture ErdosConjecture884 is axiomatized. Structural lemmas (gap bounds, multiplicativity of τ) and examples (prime case equality, n=6) are axiomatized. Proved: consecutivePairsSum_num_terms (simp), erdos_884_statement (rfl).",
+    "keyInsights": [
+      "All-pairs sum has O(τ²) terms; consecutive-pairs sum has O(τ) terms",
+      "For primes, both sums equal 1/(p-1) — conjecture holds trivially",
+      "d_j - d_i is a sum of consecutive gaps (telescoping), so general gaps are larger",
+      "Multiplicative structure: τ(mn) = τ(m)τ(n) for coprime m,n affects gap patterns",
+      "Related to Problem #144 on divisor arithmetic and Egyptian fractions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisor-lists",
+      "title": "Part I: Divisor Lists",
+      "startLine": 31,
+      "endLine": 49,
+      "summary": "Defines divisorList (sorted), numDivisors (τ), divisor accessor. Axioms: divisorList_sorted, mem_divisorList_iff."
+    },
+    {
+      "id": "divisor-gaps",
+      "title": "Part II: Divisor Gaps",
+      "startLine": 51,
+      "endLine": 67,
+      "summary": "Defines consecutiveGap and generalGap. Axioms: consecutiveGap_pos, generalGap_pos."
+    },
+    {
+      "id": "two-sums",
+      "title": "Part III: The Two Sums",
+      "startLine": 69,
+      "endLine": 80,
+      "summary": "Defines allPairsSum (sum over all pairs) and consecutivePairsSum (sum over consecutive pairs)."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part IV: The Main Conjecture",
+      "startLine": 82,
+      "endLine": 94,
+      "summary": "Defines ErdosConjecture884: exists C > 0 with allPairsSum ≤ C(1 + consecutivePairsSum). Axiom erdos_884."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Part V: Basic Properties",
+      "startLine": 96,
+      "endLine": 107,
+      "summary": "Axioms: allPairsSum_nonneg, consecutivePairsSum_nonneg. Proved: consecutivePairsSum_num_terms (simp)."
+    },
+    {
+      "id": "examples",
+      "title": "Part VI: Examples",
+      "startLine": 109,
+      "endLine": 120,
+      "summary": "Axioms: divisors_6, divisors_prime, prime_case_equality (primes have equal sums)."
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Part VII: Structural Lemmas",
+      "startLine": 122,
+      "endLine": 130,
+      "summary": "Axioms: gap_lower_bound (general gap ≥ consecutive gap), numDivisors_mul_coprime."
+    },
+    {
+      "id": "connections",
+      "title": "Part VIII: Connections",
+      "startLine": 132,
+      "endLine": 139,
+      "summary": "Defines divisorHarmonicSum (σ_{-1}(n)). Placeholder connection to Problem #144."
+    },
+    {
+      "id": "summary",
+      "title": "Part IX: Summary",
+      "startLine": 141,
+      "endLine": 163,
+      "summary": "Proved: erdos_884_statement (rfl), erdos_884_status (trivial). Problem remains OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #884 remains OPEN. The question is whether the all-pairs divisor gap sum is bounded by an absolute constant times (1 + the consecutive-pairs sum). For primes the sums are equal; for composites the relationship is subtle.",
+    "implications": "Resolution would clarify the arithmetic structure of divisor sequences and the relationship between local (consecutive) and global (all pairs) gap information.",
+    "openQuestions": [
+      "Does the inequality hold with some absolute constant C?",
+      "What is the optimal constant C if it exists?",
+      "How does the ratio behave for highly composite numbers?",
+      "What is the connection to Egyptian fractions (Problem #144)?"
+    ]
+  }
+}
