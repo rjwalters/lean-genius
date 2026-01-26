@@ -1,0 +1,78 @@
+{
+  "id": "erdos-498",
+  "title": "Erdős Problem #498: Complex Littlewood–Offord Problem",
+  "slug": "erdos-498",
+  "description": "For complex z₁,...,zₙ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums Σεᵢzᵢ fall in any unit disc. Solved by Kleitman (1965), generalized to Hilbert spaces (1970).",
+  "meta": {
+    "erdosNumber": 498,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "analysis",
+      "littlewood-offord",
+      "signed-sums",
+      "solved"
+    ],
+    "references": [
+      "Erdős (1945): real case [Er45]",
+      "Erdős (1961): complex weak bound [Er61]",
+      "Kleitman (1965): sharp complex bound [Kl65]",
+      "Kleitman (1970): Hilbert space generalization [Kl70]",
+      "https://erdosproblems.com/498"
+    ],
+    "leanFile": "Proofs/Erdos498Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 42,
+      "summary": "Sign vectors, signed sums, disc containment, signed sum count."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 44,
+      "endLine": 51,
+      "summary": "Kleitman's theorem: at most C(n,⌊n/2⌋) signed sums in any unit disc."
+    },
+    {
+      "id": "historical",
+      "title": "Historical Results",
+      "startLine": 53,
+      "endLine": 74,
+      "summary": "Erdős real case (1945), Erdős complex weak bound O(2ⁿ/√n) (1961)."
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 76,
+      "endLine": 90,
+      "summary": "Hilbert space extension, Sperner connection, related Problem #395."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Littlewood–Offord problem originated in the 1940s when Littlewood and Offord asked how many signed sums of complex numbers can fall near a given point. Erdős (1945) gave the sharp answer C(n,⌊n/2⌋) for real numbers using Sperner's theorem. The complex case required Kleitman's breakthrough in 1965.",
+    "problemStatement": "Given complex z₁,...,zₙ with |zᵢ| ≥ 1 and any disc D of radius 1 in ℂ, prove that at most C(n,⌊n/2⌋) of the 2ⁿ signed sums Σ εᵢzᵢ (εᵢ ∈ {±1}) lie in D.",
+    "proofStrategy": "We define signed sums and disc containment, state Kleitman's sharp bound, and record the historical progression: Erdős's real case (1945), weak complex bound (1961), and Kleitman's resolution (1965) with Hilbert space generalization (1970).",
+    "keyInsights": [
+      "Erdős (1945) proved the real case using Sperner's theorem",
+      "Erdős (1961) obtained O(2ⁿ/√n) for complex numbers",
+      "Kleitman (1965) proved the sharp C(n,⌊n/2⌋) bound for complex numbers",
+      "Kleitman (1970) generalized to arbitrary Hilbert spaces",
+      "The bound C(n,⌊n/2⌋) equals the maximum antichain size in 2^[n]"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #498 asked whether the Littlewood–Offord bound C(n,⌊n/2⌋) extends from real to complex numbers. Kleitman proved this in 1965 using antichain methods, and later generalized to Hilbert spaces. The bound is tight and connects to Sperner's theorem.",
+    "implications": "Kleitman's result is fundamental in probabilistic combinatorics and random matrix theory, with applications to the singularity probability of random matrices and inverse Littlewood–Offord theory.",
+    "openQuestions": [
+      "What are the extremal configurations achieving the bound?",
+      "How does the count behave for structured coefficient sequences?",
+      "What are the best inverse Littlewood–Offord results?"
+    ]
+  }
+}
