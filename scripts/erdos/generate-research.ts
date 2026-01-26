@@ -38,7 +38,7 @@ function generateProblemMd(problem: TransformedProblem): string {
     plainStatement = plainStatement.slice(0, 497) + '...'
   }
 
-  const formalStatement = problem.statement.latex || '(LaTeX not available)'
+  const formalStatement = problem.statement.latex || ''
 
   return `# Problem: Erdős #${problem.number}
 

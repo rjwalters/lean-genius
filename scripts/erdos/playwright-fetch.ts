@@ -14,6 +14,20 @@ let page: Page | null = null
 const BASE_URL = 'https://erdosproblems.com'
 
 /**
+ * Validate that a LaTeX response contains actual mathematical content,
+ * not navigation junk from the website.
+ *
+ * Returns true if the content looks like valid LaTeX.
+ */
+function isValidLatexResponse(content: string): boolean {
+  if (!content || content.trim().length < 10) return false
+  if (content.startsWith('<!DOCTYPE') || content.startsWith('<html')) return false
+  if (content.includes('Forum') && content.includes('Favourites')) return false
+  if (content.includes('Random Solved') || content.includes('Random Open')) return false
+  return true
+}
+
+/**
  * Random delay between min and max milliseconds
  */
 function randomDelay(min: number, max: number): Promise<void> {
@@ -150,8 +164,9 @@ export async function fetchLatexWithPlaywright(
     // Get the page text content (LaTeX pages are plain text)
     const content = await browserPage.evaluate(() => document.body.innerText || document.body.textContent || '')
 
-    // Validate it's actually LaTeX, not HTML
-    if (content.startsWith('<!DOCTYPE') || content.startsWith('<html')) {
+    // Validate it's actual LaTeX content, not navigation junk or HTML
+    if (!isValidLatexResponse(content)) {
+      console.warn(`  Problem #${problemNumber}: Invalid LaTeX response (navigation junk or HTML detected)`)
       return null
     }
 
