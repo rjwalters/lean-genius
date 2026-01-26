@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-273-covering-def",
+    "proofId": "erdos-273",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 49 },
+    "title": "Covering System and Prime-Minus-One Moduli",
+    "content": "CoveringSystem is a structure with moduli ≥ 2, residues, and the property that every integer is covered. IsPrimeMinusOne k m holds when m = p-1 for some prime p ≥ k. AllModuliPrimeMinusOne k cs requires all moduli satisfy this condition.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-273-conjecture",
+    "proofId": "erdos-273",
+    "type": "conjecture",
+    "range": { "startLine": 55, "endLine": 61 },
+    "title": "Erdős Problem 273",
+    "content": "Does there exist a covering system with all moduli of the form p-1 for primes p ≥ 5? The allowed moduli are {4, 6, 10, 12, 16, 18, 22, 28, 30, ...}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-273-selfridge",
+    "proofId": "erdos-273",
+    "type": "result",
+    "range": { "startLine": 67, "endLine": 72 },
+    "title": "Selfridge's Example (p ≥ 3)",
+    "content": "Selfridge found a covering system when p ≥ 3 is allowed. This uses the divisors of 360 as moduli, with 2 = 3-1 as a key modulus. The existence proof for p ≥ 3 shows the problem is nontrivial.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-273-reciprocal",
+    "proofId": "erdos-273",
+    "type": "result",
+    "range": { "startLine": 82, "endLine": 86 },
+    "title": "Reciprocal Sum Condition",
+    "content": "In any covering system, the sum of 1/m_i over all moduli must be ≥ 1. This is a necessary condition that constrains which sets of moduli can form covering systems.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-273-distinct",
+    "proofId": "erdos-273",
+    "type": "definition",
+    "range": { "startLine": 88, "endLine": 92 },
+    "title": "Distinct Covering Systems",
+    "content": "IsDistinct requires all moduli to be different. Erdős conjectured (Hough proved 2015) that distinct covering systems must include an even modulus.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-273-obstacles",
+    "proofId": "erdos-273",
+    "type": "context",
+    "range": { "startLine": 104, "endLine": 115 },
+    "title": "Key Obstacles for p ≥ 5",
+    "content": "Without modulus 2 (excluded since 3 < 5), all moduli are ≥ 4. This makes covering even integers especially difficult. The allowed primes whose p-1 divides 360 form a finite set {5, 7, 13, 19, 37, 61, 181}.",
+    "significance": "supporting"
+  }
+]
