@@ -1,0 +1,77 @@
+{
+  "id": "erdos-726",
+  "title": "Erdős Problem #726: Residues in the Upper Half Interval",
+  "slug": "erdos-726",
+  "description": "For n → ∞, is Σ_{p≤n, n mod p ∈ (p/2,p)} 1/p ~ (log log n)/2? The upper half residues should contribute exactly half of Mertens' sum. Erdős–Graham–Ruzsa–Straus (1975). Status: OPEN.",
+  "meta": {
+    "erdosNumber": 726,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "residue-distribution",
+      "mertens-theorem",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham–Ruzsa–Straus (1975): original conjecture",
+      "Mertens (1874): Σ 1/p ~ log log n",
+      "https://erdosproblems.com/726"
+    ],
+    "leanFile": "Proofs/Erdos726Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 34,
+      "summary": "Define isUpperHalfResidue and the weighted sum upperHalfSum."
+    },
+    {
+      "id": "mertens",
+      "title": "Mertens' Theorem",
+      "startLine": 36,
+      "endLine": 42,
+      "summary": "Mertens' theorem: Σ_{p≤n} 1/p ~ log log n provides the baseline."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 44,
+      "endLine": 52,
+      "summary": "EGRS conjecture: upper half contributes (log log n)/2, exactly half of Mertens."
+    },
+    {
+      "id": "heuristic-complement",
+      "title": "Heuristic and Complementary Sum",
+      "startLine": 54,
+      "endLine": 86,
+      "summary": "Uniform residue heuristic, lower half sum, partition of Mertens' sum."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This conjecture was formulated by Erdős, Graham, Ruzsa, and Straus in 1975. It asks about the equidistribution of residues modulo primes in a quantitative sense: not just that residues are roughly uniform, but that the reciprocal sum contribution from each half-interval is exactly half of Mertens' classical sum.",
+    "problemStatement": "As n → ∞, prove that Σ_{p ≤ n, n mod p ∈ (p/2, p)} 1/p ~ (log log n)/2.",
+    "proofStrategy": "We formalize the upper-half residue condition, the weighted sum, Mertens' theorem for context, and the main EGRS conjecture. The heuristic argument from uniform residue distribution is stated but making it rigorous is the challenge.",
+    "keyInsights": [
+      "Mertens' theorem gives Σ 1/p ~ log log n as the baseline",
+      "For random n, residues mod p are roughly uniform, so each half gets ~1/2 of the sum",
+      "Making the heuristic rigorous requires controlling prime-to-prime correlations",
+      "The upper and lower half sums partition Mertens' sum exactly",
+      "The conjecture says the partition is asymptotically equal"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #726 conjectures that residues in the upper half interval (p/2, p) contribute exactly half of Mertens' prime reciprocal sum. The heuristic from uniform residue distribution is natural, but rigorous proof requires controlling correlations across primes.",
+    "implications": "A proof would provide a quantitative equidistribution result for residues modulo primes, strengthening classical results on the distribution of integers in residue classes.",
+    "openQuestions": [
+      "Is the contribution of each half-interval exactly (log log n)/2?",
+      "What is the error term in the asymptotic?",
+      "Does the result extend to other interval partitions (e.g., (p/3, 2p/3))?",
+      "Can sieve methods or the large sieve address the correlations?"
+    ]
+  }
+}
