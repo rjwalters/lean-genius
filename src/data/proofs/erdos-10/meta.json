@@ -1,0 +1,96 @@
+{
+  "id": "erdos-10",
+  "title": "Sums of a Prime and Powers of 2",
+  "slug": "erdos-10",
+  "description": "Is there some k such that every sufficiently large integer is the sum of a prime and at most k powers of 2? Erdős and Graham conjectured no such k exists. Gallagher showed the representable set has density arbitrarily close to 1.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/10",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos10Problem.lean",
+    "tags": [
+      "number theory",
+      "additive combinatorics",
+      "primes",
+      "powers of 2",
+      "density"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 10,
+    "erdosUrl": "https://erdosproblems.com/10",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether there exists k such that every sufficiently large integer can be written as the sum of a prime and at most k powers of 2. He described the problem as 'probably unattackable' and, with Graham, conjectured that no such k exists. The problem connects to Goldbach-type questions and the study of additive bases formed by primes and lacunary sequences.",
+    "problemStatement": "Does there exist a constant k such that every integer n > 1 can be written as n = p + 2^{a₁} + ... + 2^{aⱼ} where p is prime and j ≤ k?",
+    "proofStrategy": "We formalize the main conjecture, Gallagher's density theorem, the Granville–Soundararajan conjecture for odd/even integers, Grechuk's counterexample for k = 3, the infinitude of exceptions for k = 2 and k = 3, and Romanoff's theorem on positive density for k = 1.",
+    "keyInsights": [
+      "Gallagher proved that for any ε > 0 there exists k(ε) giving lower density ≥ 1 − ε",
+      "Granville and Soundararajan conjectured k = 3 suffices for all odd integers > 1",
+      "Grechuk found that 1117175146 is not expressible as a prime plus ≤ 3 powers of 2",
+      "Covering congruence arguments show infinitely many even exceptions for k = 2",
+      "Romanoff showed the k = 1 case already has positive lower density"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 31,
+      "endLine": 47,
+      "summary": "Defines the set sumPrimeAndTwoPows k of integers expressible as a prime plus at most k powers of 2, and the asymptotic lower density of a set of naturals."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 49,
+      "endLine": 57,
+      "summary": "States the Erdős–Graham conjecture that no finite k suffices to represent all integers > 1."
+    },
+    {
+      "id": "gallagher",
+      "title": "Gallagher's Density Theorem",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "For any ε > 0, some k(ε) gives lower density ≥ 1 − ε for the representable set."
+    },
+    {
+      "id": "granville-soundararajan",
+      "title": "Granville–Soundararajan Conjecture",
+      "startLine": 67,
+      "endLine": 79,
+      "summary": "Conjectures that k = 3 suffices for odd integers and k = 4 for even integers."
+    },
+    {
+      "id": "counterexample",
+      "title": "Grechuk's Counterexample",
+      "startLine": 81,
+      "endLine": 87,
+      "summary": "The specific even number 1117175146 cannot be expressed as a prime plus at most 3 powers of 2."
+    },
+    {
+      "id": "exceptions",
+      "title": "Infinitely Many Exceptions",
+      "startLine": 89,
+      "endLine": 101,
+      "summary": "There are infinitely many even exceptions for k = 2 (proved via covering congruences) and conjecturally for k = 3."
+    },
+    {
+      "id": "romanoff",
+      "title": "Romanoff's Theorem",
+      "startLine": 103,
+      "endLine": 108,
+      "summary": "Even the k = 1 case (prime plus one power of 2) has positive lower density."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #10 on representing integers as sums of a prime and bounded powers of 2, including the main conjecture, Gallagher's near-density-1 result, the Granville–Soundararajan conjecture, Grechuk's counterexample, and Romanoff's theorem.",
+    "implications": "The problem sits at the intersection of sieve methods, covering systems, and additive number theory. A resolution would have deep consequences for understanding the additive structure of primes.",
+    "openQuestions": [
+      "Does there exist any finite k that works for all sufficiently large integers?",
+      "Is the Granville–Soundararajan conjecture (k = 3 for odd integers) true?",
+      "Are there infinitely many even integers not expressible as a prime plus ≤ 3 powers of 2?"
+    ]
+  }
+}
