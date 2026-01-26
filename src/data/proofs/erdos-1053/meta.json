@@ -1,0 +1,87 @@
+{
+  "id": "erdos-1053",
+  "title": "Erdős Problem #1053: Growth Rate of k-Perfect Numbers",
+  "slug": "erdos-1053",
+  "description": "If σ(n) = k·n (n is k-perfect), must k = o(log log n)? Known: k ≤ 11 exists. Gronwall: σ(n)/n = O(log log n). Robin's inequality gives k = O(log log n) conditionally on RH. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 1053,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "perfect-numbers",
+      "divisor-function",
+      "multiplicative-functions",
+      "open"
+    ],
+    "references": [
+      "Erdős: original question",
+      "Guy: Unsolved Problems in Number Theory, B2",
+      "Gronwall (1913): lim sup σ(n)/(n log log n) = e^γ",
+      "Robin (1984): σ(n) < e^γ · n · log log n (conditional on RH)",
+      "OEIS A007539: k-perfect numbers",
+      "https://erdosproblems.com/1053"
+    ],
+    "leanFile": "Proofs/Erdos1053Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 26,
+      "endLine": 38,
+      "summary": "Define sigma, IsKPerfect, and perfectMultiplicity."
+    },
+    {
+      "id": "classical-perfect",
+      "title": "Classical Perfect Numbers",
+      "startLine": 40,
+      "endLine": 54,
+      "summary": "k=1 uniqueness, k=2 examples, Euler's even perfect number characterization."
+    },
+    {
+      "id": "multiperfect",
+      "title": "Multiperfect Numbers (k ≥ 3)",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Triperfect examples, largest known k=11."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 67,
+      "endLine": 75,
+      "summary": "k = o(log log n) for k-perfect numbers."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds and Related Results",
+      "startLine": 77,
+      "endLine": 100,
+      "summary": "Gronwall's theorem, Robin's inequality, Guy's finiteness conjecture, Robin criterion connection."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The study of perfect numbers (σ(n) = 2n) dates to Euclid. Multiperfect numbers (σ(n) = kn for k ≥ 3) have been studied since the Renaissance. Erdős asked about the growth rate of k relative to n: Gronwall's 1913 theorem shows σ(n)/n can reach ~e^γ · log log n, so k = O(log log n) is the natural scale. The question is whether k-perfect numbers are constrained to k = o(log log n).",
+    "problemStatement": "If n is k-perfect (σ(n) = k·n), must k = o(log log n)? That is, does the multiplicative perfection ratio grow strictly slower than log log n?",
+    "proofStrategy": "We formalize the sum-of-divisors function, define k-perfect numbers, state known examples for k ≤ 11, present Gronwall's upper bound and Robin's conditional inequality, and state the main o(log log n) conjecture alongside Guy's finiteness conjecture.",
+    "keyInsights": [
+      "k=2: perfect numbers (Euclid–Euler characterization for even case)",
+      "Largest known k is 11; only finitely many k-perfect numbers known for each k ≥ 3",
+      "Gronwall (1913): σ(n)/n can be as large as e^γ · log log n",
+      "Robin (1984): σ(n) < e^γ · n · log log n for n ≥ 5041, conditional on RH",
+      "Guy conjectures finitely many k-perfect numbers for each k ≥ 3 — stronger than Erdős's question"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1053 asks whether k-perfect numbers must satisfy k = o(log log n). Robin's inequality gives k = O(log log n) conditionally on RH. Guy conjectures the stronger statement that each k ≥ 3 has only finitely many k-perfect numbers. The problem connects to the Riemann Hypothesis via Robin's criterion.",
+    "implications": "A resolution would shed light on the extremal behavior of the sum-of-divisors function and the structure of highly composite numbers. The connection to Robin's inequality means progress could relate to the Riemann Hypothesis.",
+    "openQuestions": [
+      "Must k = o(log log n) for k-perfect numbers?",
+      "Are there only finitely many k-perfect numbers for each k ≥ 3? (Guy's conjecture)",
+      "Does a k=12 perfect number exist?",
+      "Do odd perfect numbers (k=2, n odd) exist?"
+    ]
+  }
+}
