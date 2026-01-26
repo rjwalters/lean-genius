@@ -1,0 +1,76 @@
+{
+  "id": "erdos-566",
+  "title": "Erdős Problem #566: Ramsey Size Linearity for Sparse Graphs",
+  "slug": "erdos-566",
+  "description": "If every k-vertex subgraph of G has at most 2k−3 edges, is G Ramsey size linear? True for ≤ n+1 edges (EFRS 1993), false for 2n−2 edges. Implies Problem #567. Open.",
+  "meta": {
+    "erdosNumber": 566,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey",
+      "sparse-graphs",
+      "open"
+    ],
+    "references": [
+      "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs [EFRS93]",
+      "https://erdosproblems.com/566"
+    ],
+    "leanFile": "Proofs/Erdos566Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 51,
+      "summary": "Graph structure, edge count, sparsity condition, no isolated vertices, size Ramsey number."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 53,
+      "endLine": 60,
+      "summary": "Is every (2k−3)-sparse graph Ramsey size linear?"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 62,
+      "endLine": 79,
+      "summary": "EFRS result for n+1 edges, counterexample at 2n−2 edges."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 81,
+      "endLine": 100,
+      "summary": "Trees are Ramsey size linear, sparsity threshold, implies Problem #567."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős, Faudree, Rousseau, and Schelp introduced the notion of Ramsey size linearity in 1993, asking which graphs G have the property that r̂(G,H) = O(|E(H)|). They showed graphs with at most n+1 edges satisfy this, and posed the (2k−3)-sparsity conjecture.",
+    "problemStatement": "Let G be a graph such that every subgraph on k vertices has at most 2k−3 edges. Is G Ramsey size linear, meaning r̂(G,H) ≤ c·m for every graph H with m edges and no isolated vertices?",
+    "proofStrategy": "We define sparsity, size Ramsey numbers, and Ramsey size linearity. We state the main conjecture, the EFRS positive result for ≤ n+1 edges, and the counterexample showing the (2k−3) threshold is tight.",
+    "keyInsights": [
+      "Every graph with ≤ n+1 edges is Ramsey size linear (EFRS 1993)",
+      "Graphs with 2n−2 edges can fail to be Ramsey size linear",
+      "The (2k−3) sparsity condition is the conjectured threshold",
+      "Trees (n−1 edges) are known to be Ramsey size linear",
+      "A positive answer implies Problem #567"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #566 conjectures that (2k−3)-sparse graphs are Ramsey size linear. The EFRS result confirms this for graphs with ≤ n+1 edges, and counterexamples at 2n−2 edges show the threshold is tight. The gap between n+1 and 2k−3 remains open.",
+    "implications": "Resolution would characterize which sparse graphs have linear size Ramsey numbers, advancing the structural theory of Ramsey properties and graph coloring.",
+    "openQuestions": [
+      "Is every (2k−3)-sparse graph Ramsey size linear?",
+      "What happens for graphs with exactly 2k−3 edges in every k-vertex subgraph?",
+      "Can the EFRS bound n+1 be extended to cn for some c > 1?",
+      "What is the relationship between sparsity and the size Ramsey number growth rate?"
+    ]
+  }
+}
