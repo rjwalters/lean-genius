@@ -1,0 +1,65 @@
+[
+  {
+    "id": "erdos-406-header",
+    "proofId": "erdos-406",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 16 },
+    "title": "Problem Background",
+    "content": "Erdős Problem 406 asks whether only finitely many powers of 2 have base-3 representations using only digits 0 and 1. Known examples: 1, 4, 256. Saye verified no new examples up to 2^(5.9×10²¹).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-406-digit-predicates",
+    "proofId": "erdos-406",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 39 },
+    "title": "Ternary Digit Predicates",
+    "content": "HasOnlyDigits01Base3 checks all base-3 digits are 0 or 1. HasOnlyDigits12Base3 checks digits are 1 or 2. ternarySparse and ternaryDense collect the relevant powers of 2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-406-conjecture",
+    "proofId": "erdos-406",
+    "type": "conjecture",
+    "range": { "startLine": 43, "endLine": 45 },
+    "title": "Main Conjecture",
+    "content": "The set ternarySparse = {2^k : base-3 digits ⊆ {0,1}} is finite.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-406-variant",
+    "proofId": "erdos-406",
+    "type": "conjecture",
+    "range": { "startLine": 49, "endLine": 51 },
+    "title": "Variant: Digits 1 and 2",
+    "content": "2^15 = 32768 is the greatest power of 2 with only ternary digits 1 and 2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-406-known-examples",
+    "proofId": "erdos-406",
+    "type": "result",
+    "range": { "startLine": 55, "endLine": 62 },
+    "title": "Known Examples",
+    "content": "The three known members of ternarySparse: 1 = 2^0, 4 = 2^2, and 256 = 2^8.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-406-saye",
+    "proofId": "erdos-406",
+    "type": "result",
+    "range": { "startLine": 66, "endLine": 71 },
+    "title": "Saye's Computation",
+    "content": "For 16 ≤ n ≤ 5.9×10²¹, the number 2^n uses all three ternary digits, ruling out membership in ternarySparse or ternaryDense.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-406-basic",
+    "proofId": "erdos-406",
+    "type": "result",
+    "range": { "startLine": 75, "endLine": 83 },
+    "title": "Basic Properties",
+    "content": "Numbers with ternary digits {0,1} are sums of distinct powers of 3. Zero trivially has this property.",
+    "significance": "supporting"
+  }
+]
