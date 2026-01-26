@@ -1,0 +1,56 @@
+[
+  {
+    "id": "max-modulus",
+    "proofId": "erdos-1117",
+    "range": { "startLine": 34, "endLine": 35 },
+    "type": "definition",
+    "title": "Maximum Modulus M(r)",
+    "content": "M(r) = max_{|z|=r} |f(z)|, the maximum of |f| on the circle of radius r. By the maximum modulus principle, this is increasing for nonconstant entire functions.",
+    "significance": "high"
+  },
+  {
+    "id": "nu-function",
+    "proofId": "erdos-1117",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Counting Function ν(r)",
+    "content": "ν(r) counts the number of points on |z|=r where |f(z)| = M(r). For non-monomials, this is always finite. The problem asks how it grows.",
+    "significance": "high"
+  },
+  {
+    "id": "nu-finite",
+    "proofId": "erdos-1117",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "theorem",
+    "title": "Finiteness of ν(r)",
+    "content": "For non-monomial entire functions, the maximum modulus is achieved at finitely many points on each circle. This is because |f(z)| - M(r) has finitely many zeros on |z|=r.",
+    "significance": "medium"
+  },
+  {
+    "id": "herzog-piranian",
+    "proofId": "erdos-1117",
+    "range": { "startLine": 60, "endLine": 63 },
+    "type": "theorem",
+    "title": "Herzog–Piranian: lim sup = ∞ (1968)",
+    "content": "There exists a non-monomial entire function with lim sup ν(r) = ∞. For every N, there are arbitrarily large r with ν(r) ≥ N. This answers Question 1 affirmatively.",
+    "significance": "high"
+  },
+  {
+    "id": "lim-inf-open",
+    "proofId": "erdos-1117",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "conjecture",
+    "title": "Open: lim inf ν(r) = ∞?",
+    "content": "Can lim inf ν(r) = ∞ for a non-monomial entire function? This is the key open question of Problem #1117. It asks whether ν(r) can eventually always be large, not just occasionally.",
+    "significance": "high"
+  },
+  {
+    "id": "glucksam-pardo-simon",
+    "proofId": "erdos-1117",
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "theorem",
+    "title": "Glücksam–Pardo-Simón Approximate Result (2024)",
+    "content": "An approximate affirmative answer: there exist entire functions with many points achieving (1-ε) · M(r) for all large r. The gap between (1-ε)·M(r) and M(r) is the remaining difficulty.",
+    "significance": "high"
+  }
+]

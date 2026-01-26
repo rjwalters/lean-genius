@@ -1,0 +1,85 @@
+{
+  "id": "erdos-1117",
+  "title": "Erdős Problem #1117: Maximum Modulus Points on Circles",
+  "slug": "erdos-1117",
+  "description": "For a non-monomial entire f, let ν(r) count maximum modulus points on |z|=r. Can lim sup ν(r) = ∞? YES (Herzog–Piranian 1968). Can lim inf ν(r) = ∞? OPEN. Approximate answer by Glücksam–Pardo-Simón (2024).",
+  "meta": {
+    "erdosNumber": 1117,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "maximum-modulus",
+      "value-distribution",
+      "open"
+    ],
+    "references": [
+      "Hayman (1974): Problem 2.16",
+      "Herzog–Piranian (1968): lim sup = ∞ solved",
+      "Glücksam–Pardo-Simón (2024): approximate lim inf result",
+      "https://erdosproblems.com/1117"
+    ],
+    "leanFile": "Proofs/Erdos1117Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 46,
+      "summary": "Define IsEntire, IsMonomial, maxModulus M(r), and ν(r)."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 48,
+      "endLine": 55,
+      "summary": "ν(r) is finite for non-monomials and ≥ 1 for all entire functions."
+    },
+    {
+      "id": "question-1",
+      "title": "Question 1: lim sup (Solved)",
+      "startLine": 57,
+      "endLine": 63,
+      "summary": "Herzog–Piranian (1968): lim sup ν(r) = ∞ is possible."
+    },
+    {
+      "id": "question-2",
+      "title": "Question 2: lim inf (Open)",
+      "startLine": 65,
+      "endLine": 73,
+      "summary": "Can lim inf ν(r) = ∞? This is the open question."
+    },
+    {
+      "id": "approximate-context",
+      "title": "Approximate Result and Context",
+      "startLine": 75,
+      "endLine": 92,
+      "summary": "Glücksam–Pardo-Simón (2024) approximate result. Hadamard context."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This problem appears as Problem 2.16 in Hayman's 1974 collection, attributed to Erdős. It studies the distribution of maximum modulus points of entire functions on circles. For monomials, every point is a maximum point. For other entire functions, the maximum is achieved at finitely many points, and the question is how this count grows with the radius.",
+    "problemStatement": "For a non-monomial entire function f, let ν(r) count the points on |z|=r where |f(z)| = M(r). Can lim inf ν(r) = ∞?",
+    "proofStrategy": "We formalize entire functions, maximum modulus, the counting function ν(r), and state the two questions. The first (lim sup) was solved by Herzog–Piranian (1968). The second (lim inf) remains open, with an approximate answer by Glücksam–Pardo-Simón (2024).",
+    "keyInsights": [
+      "For monomials cz^n, every point on |z|=r achieves the maximum — ν(r) is infinite",
+      "For non-monomials, ν(r) is finite but can be arbitrarily large on some circles",
+      "Herzog–Piranian (1968): lim sup ν(r) = ∞ is achievable",
+      "The lim inf question asks whether ν(r) can eventually always be large",
+      "Glücksam–Pardo-Simón (2024): approximate affirmative (near-maximum at many points)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1117 has two parts: (1) can lim sup ν(r) = ∞? — YES, by Herzog–Piranian (1968); (2) can lim inf ν(r) = ∞? — OPEN, with an approximate affirmative by Glücksam–Pardo-Simón (2024). The gap between exact and approximate maximum remains the key difficulty.",
+    "implications": "A resolution would advance our understanding of the geometry of maximum modulus sets for entire functions, connecting to classical value distribution theory and the structure of level sets in complex analysis.",
+    "openQuestions": [
+      "Can lim inf ν(r) = ∞ for a non-monomial entire function?",
+      "Can the Glücksam–Pardo-Simón approximate result be made exact?",
+      "What is the typical behavior of ν(r) for 'generic' entire functions?",
+      "How does ν(r) relate to the order and type of the entire function?"
+    ]
+  }
+}
