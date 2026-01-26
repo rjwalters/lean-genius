@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-1073-divisibility",
+    "proofId": "erdos-1073",
+    "type": "definition",
+    "range": { "startLine": 24, "endLine": 25 },
+    "title": "Factorial Plus One Divisibility",
+    "content": "DividesFactorialPlusOne u holds when u | n!+1 for some natural n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1073-counting",
+    "proofId": "erdos-1073",
+    "type": "definition",
+    "range": { "startLine": 32, "endLine": 33 },
+    "title": "Composite Counting Function A(x)",
+    "content": "factorialCompositeCount x counts composites u < x with u | n!+1 for some n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1073-conjecture",
+    "proofId": "erdos-1073",
+    "type": "conjecture",
+    "range": { "startLine": 39, "endLine": 42 },
+    "title": "Main Conjecture",
+    "content": "ErdosProblem1073: A(x) ≤ x^ε for every ε > 0 and sufficiently large x.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1073-wilson",
+    "proofId": "erdos-1073",
+    "type": "result",
+    "range": { "startLine": 47, "endLine": 52 },
+    "title": "Wilson's Theorem",
+    "content": "Every prime p divides (p-1)!+1, so primes satisfy DividesFactorialPlusOne.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1073-composite25",
+    "proofId": "erdos-1073",
+    "type": "result",
+    "range": { "startLine": 57, "endLine": 58 },
+    "title": "Composite Example: 25",
+    "content": "25 divides 4!+1 = 25, the smallest composite in the sequence.",
+    "significance": "supporting"
+  }
+]
