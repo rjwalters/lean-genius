@@ -2,171 +2,116 @@
   "id": "erdos-226",
   "title": "Erdős Problem #226: Entire Functions Preserving Rationality",
   "slug": "erdos-226",
-  "description": "Is there an entire non-linear function f such that x ∈ ℚ ↔ f(x) ∈ ℚ for all real x? SOLVED: YES by Barth-Schneider (1970) - transcendental entire functions with this property exist.",
+  "description": "Is there an entire non-linear function f such that x ∈ ℚ ↔ f(x) ∈ ℚ for all real x? SOLVED: YES by Barth-Schneider (1970). For any two countable dense sets A, B ⊂ ℝ, a transcendental entire function mapping A to B exists.",
   "meta": {
     "author": "Barth-Schneider (1970 solution), Erdős (problem), Hayman (collection)",
     "sourceUrl": "https://erdosproblems.com/226",
-    "date": "1970",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos226Problem.lean",
     "tags": [
-      "erdos",
       "complex-analysis",
       "entire-functions",
       "transcendental-functions",
       "rationality",
-      "countable-dense-sets",
-      "solved"
+      "countable-dense-sets"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 226,
     "erdosUrl": "https://erdosproblems.com/226",
-    "erdosProblemStatus": "solved",
-    "dateAdded": "2026-01-18",
-    "mathlib_version": "4.26.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "Differentiable",
-        "description": "Differentiability predicate for complex functions",
-        "module": "Mathlib.Analysis.Complex.Basic"
-      },
-      {
-        "theorem": "Set.Countable",
-        "description": "Countable sets",
-        "module": "Mathlib.Data.Set.Countable"
-      },
-      {
-        "theorem": "Dense",
-        "description": "Dense sets in topological spaces",
-        "module": "Mathlib.Topology.Basic"
-      },
-      {
-        "theorem": "Rat.denseRange_ratCast",
-        "description": "Rationals are dense in reals",
-        "module": "Mathlib.Topology.Instances.Rat"
-      },
-      {
-        "theorem": "Polynomial",
-        "description": "Polynomial type and evaluation",
-        "module": "Mathlib.Algebra.Polynomial.Basic"
-      },
-      {
-        "theorem": "StrictMono",
-        "description": "Strictly monotone functions",
-        "module": "Mathlib.Order.Monotone.Basic"
-      }
-    ],
-    "originalContributions": [
-      "IsEntire definition: entire (holomorphic on ℂ) functions",
-      "IsTranscendental definition: entire but not polynomial",
-      "IsNonLinear definition: not affine linear",
-      "IsCountableDense definition: countable and dense sets",
-      "rationals_countable_dense theorem: ℚ is countable dense in ℝ",
-      "PreservesRationality definition: f(x) ∈ ℚ ↔ x ∈ ℚ",
-      "ErdosQuestion definition: the original problem statement",
-      "GeneralQuestion definition: generalization to any countable dense sets",
-      "barth_schneider_1970 axiom: the main theorem",
-      "barth_schneider_monotone axiom: monotonicity version",
-      "barth_schneider_complex axiom: extension to ℂ",
-      "erdos_question_affirmative theorem: answer is YES",
-      "general_question_affirmative theorem: generalization is YES",
-      "erdos_226 theorem: main result"
-    ]
+    "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #226**\n\nThis problem concerns the interplay between complex analysis and number theory.\n\n**Key History:**\n- Erdős posed the original question about rationality-preserving entire functions\n- Hayman included it as Problem 2.31 in his 1974 collection 'Research problems in function theory'\n- Barth and Schneider solved it affirmatively in 1970\n- They proved a much stronger result: for ANY two countable dense sets A, B ⊂ ℝ, such functions exist\n- In 1971, they extended the result to countable dense subsets of ℂ\n\n**Mathematical Context:**\n- The function must be transcendental (no polynomial works)\n- The construction uses Weierstrass products and careful interpolation\n- The function can be made monotone on ℝ",
-    "problemStatement": "**Problem Statement (Solved)**\n\nIs there an entire non-linear function f : ℂ → ℂ such that for all x ∈ ℝ:\n\nx is rational ↔ f(x) is rational?\n\n**Generalization:** For any two countable dense sets A, B ⊆ ℝ, is there an entire function with f(A) = B?\n\n**Answer: YES** (Barth-Schneider, 1970)\n\nFor any countable dense sets A, B ⊂ ℝ, there exists a transcendental entire function f such that f(z) ∈ B if and only if z ∈ A (when restricted to ℝ). Taking A = B = ℚ answers the original question.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire (differentiable on ℂ), IsTranscendental (not polynomial)\n\n2. **Countable Dense Sets:** Define IsCountableDense, prove ℚ is countable dense\n\n3. **The Questions:** Formalize ErdosQuestion and GeneralQuestion\n\n4. **Barth-Schneider:** Axiomatize their 1970 theorem and monotone version\n\n5. **Main Results:** Derive erdos_question_affirmative from barth_schneider_1970\n\n6. **Extensions:** Axiomatize the 1971 complex extension",
+    "historicalContext": "Erdős Problem #226 concerns the interplay between complex analysis and number theory. Erdős asked whether an entire non-linear function can preserve rationality. Hayman included it as Problem 2.31 in his 1974 collection. Barth and Schneider solved it affirmatively in 1970, proving a stronger result for any pair of countable dense sets. In 1971, they extended it to countable dense subsets of ℂ.",
+    "problemStatement": "Is there an entire non-linear function f : ℂ → ℂ such that for all x ∈ ℝ, x ∈ ℚ ↔ f(x) ∈ ℚ? More generally, for any countable dense A, B ⊆ ℝ, does an entire function with f(A) = B exist? SOLVED: YES (Barth-Schneider, 1970).",
+    "proofStrategy": "The formalization defines IsEntire, IsTranscendental, IsCountableDense, and proves ℚ is countable dense. ErdosQuestion and GeneralQuestion are formalized. Barth-Schneider theorem is axiomatized. The main results erdos_question_affirmative and general_question_affirmative are derived from the axiom. Extensions to ℂ and the no-polynomial result are included.",
     "keyInsights": [
-      "**Transcendence Required:** The function must be transcendental - no polynomial can preserve rationality while being non-constant",
-      "**Monotonicity Possible:** The function can be made strictly monotone on ℝ",
-      "**Full Generality:** Result holds for ANY pair of countable dense sets, not just ℚ",
-      "**Complex Extension:** The theorem extends to countable dense subsets of ℂ",
-      "**Construction:** Uses Weierstrass products to build entire functions with prescribed behavior"
+      "The function must be transcendental — no polynomial can preserve rationality while being non-linear",
+      "The function can be made strictly monotone on ℝ",
+      "Result holds for ANY pair of countable dense sets, not just ℚ",
+      "The theorem extends to countable dense subsets of ℂ (1971)",
+      "Construction uses Weierstrass products and interpolation"
     ]
   },
   "sections": [
     {
       "id": "entire-functions",
-      "title": "Entire Functions",
-      "summary": "IsEntire, IsTranscendental, IsNonLinear definitions",
-      "startLine": 44,
-      "endLine": 68
+      "title": "Part 1: Entire Functions",
+      "startLine": 45,
+      "endLine": 68,
+      "summary": "IsEntire (Differentiable ℂ f), IsTranscendental (entire and not polynomial), IsNonLinear (not affine) definitions."
     },
     {
       "id": "countable-dense",
-      "title": "Countable Dense Sets",
-      "summary": "IsCountableDense definition, rationals_countable_dense theorem",
-      "startLine": 70,
-      "endLine": 88
+      "title": "Part 2: Countable Dense Sets",
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "IsCountableDense definition. rationals_countable_dense: proved ℚ is countable dense in ℝ using Set.countable_range and Rat.denseRange_ratCast."
     },
     {
       "id": "rationality-preservation",
-      "title": "Rationality Preservation",
-      "summary": "PreservesRationality, MapsSetToSet definitions",
-      "startLine": 90,
-      "endLine": 106
+      "title": "Part 3: Rationality Preservation",
+      "startLine": 87,
+      "endLine": 102,
+      "summary": "PreservesRationality (f(x) ∈ ℚ ↔ x ∈ ℚ) and MapsSetToSet (x ∈ A ↔ f(x) ∈ B) definitions."
     },
     {
       "id": "original-question",
-      "title": "The Original Question",
-      "summary": "ErdosQuestion definition - the original problem",
-      "startLine": 108,
-      "endLine": 121
+      "title": "Part 4: The Original Question",
+      "startLine": 103,
+      "endLine": 115,
+      "summary": "ErdosQuestion: ∃ entire non-linear f with x ∈ ℚ ↔ f(x) ∈ ℚ."
     },
     {
       "id": "general-question",
-      "title": "The General Question",
-      "summary": "GeneralQuestion definition - generalization to any dense sets",
-      "startLine": 123,
-      "endLine": 137
+      "title": "Part 5: The General Question",
+      "startLine": 116,
+      "endLine": 129,
+      "summary": "GeneralQuestion: for all countable dense A, B, ∃ entire f mapping A to B."
     },
     {
       "id": "barth-schneider",
-      "title": "Barth-Schneider Theorem",
-      "summary": "barth_schneider_1970, barth_schneider_monotone axioms",
-      "startLine": 139,
-      "endLine": 171
+      "title": "Part 6: Barth-Schneider Theorem",
+      "startLine": 130,
+      "endLine": 161,
+      "summary": "barth_schneider_1970 axiom (transcendental entire f with f(A) = B) and barth_schneider_monotone axiom (monotone version)."
     },
     {
       "id": "main-answer",
-      "title": "The Answer",
-      "summary": "erdos_question_affirmative, general_question_affirmative theorems",
-      "startLine": 173,
-      "endLine": 219
+      "title": "Part 7: The Answer",
+      "startLine": 162,
+      "endLine": 207,
+      "summary": "erdos_question_affirmative (proved from barth_schneider_1970 with A=B=ℚ) and general_question_affirmative (proved directly)."
     },
     {
       "id": "extensions",
-      "title": "Extensions",
-      "summary": "barth_schneider_complex axiom - extension to ℂ",
-      "startLine": 221,
-      "endLine": 244
+      "title": "Part 8: Extensions",
+      "startLine": 208,
+      "endLine": 230,
+      "summary": "barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ) and construction_flexibility placeholder."
     },
     {
       "id": "insights",
-      "title": "Why This Works",
-      "summary": "Weierstrass products, interpolation, no_polynomial_works",
-      "startLine": 246,
-      "endLine": 272
+      "title": "Part 9: Why This Works",
+      "startLine": 231,
+      "endLine": 262,
+      "summary": "Weierstrass products, interpolation technique (placeholders), and no_polynomial_works axiom."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_226_summary, erdos_226, erdos_226_answer theorems",
-      "startLine": 280,
-      "endLine": 331
+      "title": "Part 10: Summary",
+      "startLine": 263,
+      "endLine": 312,
+      "summary": "erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #226 asked whether there exists an entire non-linear function preserving rationality (x ∈ ℚ ↔ f(x) ∈ ℚ). Barth and Schneider (1970) proved YES by establishing a much stronger result: for any two countable dense sets A, B ⊂ ℝ, a transcendental entire function exists mapping A to B. The function can be made monotone on ℝ, and the result extends to ℂ.",
-    "implications": "**Complex Analysis Connections**\n\n1. **Transcendental Functions:** The solution requires going beyond polynomials\n\n2. **Weierstrass Theory:** The construction uses Weierstrass products and interpolation\n\n3. **Dense Sets:** Countable dense sets have remarkable flexibility for function mapping\n\n4. **Number-Theoretic Implications:** Shows surprising freedom in relating algebraic and analytic properties\n\n5. **Extensions:** The technique extends to higher-dimensional settings",
+    "summary": "Erdős Problem #226 was SOLVED by Barth and Schneider (1970). An entire non-linear function preserving rationality exists. More generally, for any countable dense sets A, B ⊂ ℝ, a transcendental entire function maps A to B. The result extends to ℂ.",
+    "implications": "The solution reveals surprising flexibility: transcendental entire functions can precisely control which points map to which. Connects complex analysis (Weierstrass products) to arithmetic properties of dense sets.",
     "openQuestions": [
       "Can the growth rate of the constructed function be controlled?",
       "What is the smallest order of growth needed?",
-      "Can similar results be obtained for other algebraic sets?",
-      "What about preserving algebraic numbers instead of rationals?",
-      "Effective/constructive versions of the result?"
+      "Can similar results be obtained for algebraic numbers?"
     ]
   }
 }
