@@ -1,0 +1,82 @@
+{
+  "id": "erdos-332",
+  "title": "Erdős Problem #332: Difference Sets and Bounded Gaps",
+  "slug": "erdos-332",
+  "description": "Let A ⊆ ℕ and D(A) be the set of integers occurring infinitely often as a₁ - a₂. What conditions on A ensure D(A) has bounded gaps? Positive upper density suffices (Prikry).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/332",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos332Problem.lean",
+    "tags": ["number theory", "additive combinatorics", "difference sets", "density"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 332,
+    "erdosUrl": "https://erdosproblems.com/332",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980) asked what conditions on A ⊆ ℕ guarantee that D(A) — the set of differences occurring infinitely often — has bounded gaps. The problem connects density conditions to structural properties of difference sets. Work by Prikry, Tijdeman, and Stewart established that positive density suffices.",
+    "problemStatement": "Let A ⊆ ℕ and D(A) = {d ∈ ℤ : d = a₁ - a₂ for infinitely many pairs (a₁,a₂) ∈ A²}. What conditions on A are sufficient to ensure D(A) has bounded gaps (is syndetic)?",
+    "proofStrategy": "The formalization defines D(A) as a set of integers with infinite fibre, bounded gaps (syndeticity) via interval covering, positive upper and lower density via counting functions, and axiomatises the known result that positive upper density implies bounded gaps.",
+    "keyInsights": [
+      "D(A) collects differences that occur infinitely often, not just once",
+      "Bounded gaps (syndeticity): every interval of length M contains an element",
+      "Positive upper density is a known sufficient condition (Prikry)",
+      "The problem asks for the weakest possible condition"
+    ]
+  },
+  "sections": [
+    {
+      "id": "difference-set",
+      "title": "Difference Set D(A)",
+      "startLine": 23,
+      "endLine": 29,
+      "summary": "Definition of D(A): integers d such that the set of pairs (a₁, a₂) ∈ A² with a₁ - a₂ = d is infinite."
+    },
+    {
+      "id": "bounded-gaps",
+      "title": "Bounded Gaps",
+      "startLine": 31,
+      "endLine": 38,
+      "summary": "HasBoundedGaps (syndeticity): there exists M > 0 such that every length-M interval contains an element of S."
+    },
+    {
+      "id": "density-conditions",
+      "title": "Density Conditions",
+      "startLine": 40,
+      "endLine": 57,
+      "summary": "Positive upper density and positive lower density via the counting function |A ∩ {1,…,N}|."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 59,
+      "endLine": 79,
+      "summary": "Positive density implies bounded gaps (Prikry), D(A) density, symmetry, and zero membership."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem",
+      "startLine": 81,
+      "endLine": 91,
+      "summary": "Erdős Problem 332: characterise the weakest condition on A implying D(A) has bounded gaps."
+    },
+    {
+      "id": "related-questions",
+      "title": "Related Questions",
+      "startLine": 93,
+      "endLine": 100,
+      "summary": "Does positive density imply that the harmonic sum over D(A) diverges?"
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 332 on difference sets and bounded gaps, with positive upper density as the known sufficient condition and the open question of finding the weakest such condition.",
+    "implications": "Understanding the weakest conditions for syndeticity of difference sets would deepen the connection between density and additive structure in number theory.",
+    "openQuestions": [
+      "What is the weakest condition on A ensuring D(A) has bounded gaps?",
+      "Is positive upper density necessary, or do weaker conditions suffice?",
+      "Does the divergence of ∑ 1/a for a ∈ A suffice?"
+    ]
+  }
+}
