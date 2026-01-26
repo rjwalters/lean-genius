@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-432-sumset",
+    "proofId": "erdos-432",
+    "type": "definition",
+    "range": { "startLine": 31, "endLine": 42 },
+    "title": "Sumset Definition",
+    "content": "sumset A B = {a + b : a ∈ A, b ∈ B}. The central object: the pairwise coprime constraint is imposed on this sumset.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-432-coprime",
+    "proofId": "erdos-432",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 57 },
+    "title": "Pairwise Coprimality",
+    "content": "IsPairwiseCoprime S: gcd(x,y) = 1 for all distinct x, y ∈ S. SumsetPairwiseCoprime applies this to sumset A B.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-432-problem",
+    "proofId": "erdos-432",
+    "type": "conjecture",
+    "range": { "startLine": 78, "endLine": 94 },
+    "title": "The Density Problem",
+    "content": "ErdosProblem432: does there exist a non-trivial upper bound f(n) on |A+B ∩ [1,n]| when A + B is pairwise coprime and A, B are infinite?",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-432-prime-unique",
+    "proofId": "erdos-432",
+    "type": "result",
+    "range": { "startLine": 100, "endLine": 107 },
+    "title": "Prime Uniqueness",
+    "content": "Each prime p divides at most one element of a pairwise coprime sumset. This is the basic structural constraint.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-432-bound",
+    "proofId": "erdos-432",
+    "type": "result",
+    "range": { "startLine": 113, "endLine": 117 },
+    "title": "Coprime Set Bound",
+    "content": "A pairwise coprime subset of {1,…,n} has at most π(n) + 1 elements (each element > 1 has a distinct smallest prime factor).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-432-summary",
+    "proofId": "erdos-432",
+    "type": "context",
+    "range": { "startLine": 128, "endLine": 134 },
+    "title": "Summary",
+    "content": "The problem is open. Pairwise coprimality severely limits sumset density via prime factor uniqueness. Connected to Ostmann's problem (#431).",
+    "significance": "supporting"
+  }
+]
