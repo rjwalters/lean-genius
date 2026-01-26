@@ -1,0 +1,85 @@
+{
+  "id": "erdos-562",
+  "title": "Erdős Problem #562: Hypergraph Ramsey Number Tower Growth",
+  "slug": "erdos-562",
+  "description": "For r ≥ 3, prove that log_{r-1} R_r(n) ≍ n, where R_r(n) is the r-uniform hypergraph Ramsey number. Upper bound: twr_{r-1}(O(n²)) from Erdős–Rado. Lower: twr_{r-1}(Ω(n)). Status: OPEN.",
+  "meta": {
+    "erdosNumber": 562,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "hypergraphs",
+      "tower-functions",
+      "open"
+    ],
+    "references": [
+      "Erdős–Hajnal–Rado (1965): original conjecture",
+      "Erdős–Szekeres (1935): graph Ramsey bounds",
+      "Erdős–Rado (1952): stepping-up lemma",
+      "https://erdosproblems.com/562"
+    ],
+    "leanFile": "Proofs/Erdos562Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "tower-function",
+      "title": "Tower Function",
+      "startLine": 26,
+      "endLine": 38,
+      "summary": "Define the iterated exponential tower function twr(k, n) = 2↑↑k starting from n."
+    },
+    {
+      "id": "hypergraph-ramsey",
+      "title": "Hypergraph Ramsey Numbers",
+      "startLine": 40,
+      "endLine": 48,
+      "summary": "Define R_r(n): minimal m for monochromatic r-uniform cliques in 2-colorings."
+    },
+    {
+      "id": "classical-bounds",
+      "title": "Classical Graph Ramsey (r = 2)",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "Erdős–Szekeres: 2^{n/2} ≤ R(n,n) ≤ 4^n, establishing exponential growth."
+    },
+    {
+      "id": "upper-lower",
+      "title": "Upper and Lower Bounds for r ≥ 3",
+      "startLine": 64,
+      "endLine": 88,
+      "summary": "Erdős–Rado upper bound twr_{r-1}(O(n²)) and lower bound twr_{r-1}(Ω(n))."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 90,
+      "endLine": 102,
+      "summary": "R_r(n) = twr_{r-1}(Θ(n)): iterated logarithm of R_r(n) is linear in n."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős, Hajnal, and Rado formulated this in 1965 as a fundamental question in Ramsey theory. For graphs (r=2), the Erdős–Szekeres bounds show R(n,n) is exponential. For hypergraphs, the Erdős–Rado stepping-up lemma gives tower-type upper bounds, but matching lower bounds are much harder to establish.",
+    "problemStatement": "For r ≥ 3, prove that the (r-1)-fold iterated logarithm of R_r(n) is Θ(n). Equivalently, R_r(n) = twr_{r-1}(Θ(n)).",
+    "proofStrategy": "We formalize the tower function, hypergraph Ramsey numbers, the Erdős–Szekeres bounds for r=2, the Erdős–Rado stepping-up upper bound, and known lower bounds. The conjecture states that the upper and lower bounds match up to constants in the tower argument.",
+    "keyInsights": [
+      "The Erdős–Rado stepping-up lemma converts R_{r-1} bounds to R_r bounds, adding one level to the tower",
+      "For r=2, both bounds are exponential: 2^{n/2} ≤ R(n,n) ≤ 4^n",
+      "The gap for r ≥ 3 is in the argument of the tower: O(n²) vs Ω(n)",
+      "The conjecture asks for twr_{r-1}(Θ(n)), closing this polynomial gap",
+      "This is a central open problem in combinatorics with connections to model theory"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #562 conjectures that hypergraph Ramsey numbers R_r(n) grow like towers of height r-1 with linear argument. The Erdős–Rado upper bound gives twr_{r-1}(O(n²)) and known lower bounds give twr_{r-1}(Ω(n)). The problem remains open for all r ≥ 3.",
+    "implications": "A proof would completely determine the tower height of hypergraph Ramsey numbers, one of the most fundamental quantities in combinatorics. Progress on this problem has driven major developments in probabilistic and algebraic methods.",
+    "openQuestions": [
+      "Can the Erdős–Rado upper bound argument be improved from O(n²) to O(n)?",
+      "Can the lower bound for r = 3 be improved from twr_2(cn²) to twr_2(cn²)?",
+      "What is the correct constant in the tower argument?",
+      "Is the stepping-up approach inherently lossy?"
+    ]
+  }
+}
