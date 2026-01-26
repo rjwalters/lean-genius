@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-680-main",
+    "proofId": "erdos-680",
+    "type": "conjecture",
+    "range": { "startLine": 29, "endLine": 33 },
+    "title": "Erdős Problem 680",
+    "content": "For sufficiently large n, there exists k ≥ 1 with minFac(n+k) > k² + 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-680-variant",
+    "proofId": "erdos-680",
+    "type": "conjecture",
+    "range": { "startLine": 41, "endLine": 49 },
+    "title": "Exponential Variant",
+    "content": "The bound cannot be improved to e^{(1+ε)√k} + C_ε: for each ε > 0, there exists C such that the exponential version eventually fails.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-680-cramer",
+    "proofId": "erdos-680",
+    "type": "definition",
+    "range": { "startLine": 58, "endLine": 61 },
+    "title": "Cramér's Conjecture",
+    "content": "Prime gaps after p are O((log p)²). This would imply existence of offsets k with large least prime factors.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-680-k1",
+    "proofId": "erdos-680",
+    "type": "result",
+    "range": { "startLine": 81, "endLine": 87 },
+    "title": "k=1 Case: Odd Integers",
+    "content": "For k=1, minFac(n+1) > 2 means n+1 is odd. Proved using Nat.minFac_le_of_dvd.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-680-prime",
+    "proofId": "erdos-680",
+    "type": "result",
+    "range": { "startLine": 89, "endLine": 95 },
+    "title": "Prime Offsets Give Large LPF",
+    "content": "When n+k is prime, minFac(n+k) = n+k, which exceeds k² + 1 for large n. Proved via Prime.minFac_eq.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-680-granville",
+    "proofId": "erdos-680",
+    "type": "definition",
+    "range": { "startLine": 99, "endLine": 111 },
+    "title": "Granville's Refinement",
+    "content": "Granville's constant 2e^{-γ} ≈ 1.1229 refines Cramér's conjecture. The maximal prime gap is asymptotically at most 2e^{-γ}(log p)².",
+    "significance": "supporting"
+  }
+]
