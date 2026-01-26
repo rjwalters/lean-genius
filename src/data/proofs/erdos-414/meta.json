@@ -1,0 +1,83 @@
+{
+  "id": "erdos-414",
+  "title": "Erdős Problem #414: Merging Orbits of h(n) = n + τ(n)",
+  "slug": "erdos-414",
+  "description": "Define h(n) = n + τ(n) and iterate. Do all orbits eventually merge? For any m, n ≥ 1, do there exist i, j with h^i(m) = h^j(n)? Erdős and Graham believed yes. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 414,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "iterated-functions",
+      "dynamical-systems",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham [ErGr80], p. 82",
+      "OEIS A064491",
+      "https://erdosproblems.com/414"
+    ],
+    "leanFile": "Proofs/Erdos414Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 32,
+      "summary": "Define h(n) = n + τ(n) and the orbit sequence hOrbit(n, k) = h^k(n)."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 34,
+      "endLine": 56,
+      "summary": "h is strictly increasing (τ(n) ≥ 1), h(n) ≤ 2n, h(p) = p+2 for primes, and concrete values h(1)=2, h(2)=4, h(3)=5."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 58,
+      "endLine": 69,
+      "summary": "Erdős Problem #414: all orbits eventually merge — there is a single eventual trajectory."
+    },
+    {
+      "id": "orbit-examples",
+      "title": "Orbit Examples",
+      "startLine": 71,
+      "endLine": 80,
+      "summary": "Orbit of 1: 1→2→4→7→9→... Orbit of 3: 3→5→7→9→... They merge at value 7."
+    },
+    {
+      "id": "growth-rate",
+      "title": "Growth Rate Analysis",
+      "startLine": 82,
+      "endLine": 98,
+      "summary": "Average divisor count is ~log n (Dirichlet), giving orbit growth h^k(n) ≈ n + k·log n. Orbits get arbitrarily close."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this in 1980, studying the dynamics of the map n ↦ n + τ(n). It is part of a family of iterated arithmetic function problems (#412, #413, #414) exploring whether simple number-theoretic iterations have universal behavior.",
+    "problemStatement": "Let h(n) = n + τ(n). For any m, n ≥ 1, do there exist i, j such that h^i(m) = h^j(n)?",
+    "proofStrategy": "We formalize h(n) = n + τ(n), the orbit sequence, and basic properties (strict monotonicity, bounds). We state the merging conjecture and provide concrete orbit computations showing early merges.",
+    "keyInsights": [
+      "h(n) > n always, so orbits are strictly increasing — no cycles or fixed points",
+      "For primes p, h(p) = p + 2, so primes advance by exactly 2",
+      "Orbits of 1 and 3 merge at value 7 after 3 and 2 steps respectively",
+      "Average growth τ(n) ~ log n means orbits grow slowly, making merges plausible",
+      "The conjecture says there is essentially one eventual trajectory for all starting points"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #414 remains open. The conjecture that all orbits of h(n) = n + τ(n) eventually merge is supported by extensive computation and the slow, irregular growth of the divisor function, but no proof exists.",
+    "implications": "A resolution would reveal the long-term dynamics of a natural arithmetic iteration, connecting divisor function regularity to orbit convergence in discrete dynamical systems.",
+    "openQuestions": [
+      "How quickly do orbits merge? What is the expected meeting time for orbits starting at m and n?",
+      "Does the same hold for h(n) = n + σ(n) (sum of divisors) instead of n + τ(n)?",
+      "Are there infinitely many values that lie on every eventual orbit?"
+    ]
+  }
+}

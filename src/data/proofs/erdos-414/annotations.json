@@ -1,0 +1,74 @@
+[
+  {
+    "id": "h-function",
+    "proofId": "erdos-414",
+    "range": { "startLine": 27, "endLine": 27 },
+    "type": "definition",
+    "title": "The Function h(n) = n + τ(n)",
+    "content": "h adds the divisor count to n. Since τ(n) ≥ 1 for all n ≥ 1, this is strictly increasing: h(n) > n. For n=12: τ(12)=6, so h(12)=18.",
+    "significance": "high"
+  },
+  {
+    "id": "orbit-def",
+    "proofId": "erdos-414",
+    "range": { "startLine": 30, "endLine": 32 },
+    "type": "definition",
+    "title": "Orbit Sequence",
+    "content": "hOrbit(n, k) = h^k(n): the k-th iterate of h starting from n. The orbit {n, h(n), h²(n), ...} is a strictly increasing sequence of positive integers.",
+    "significance": "high"
+  },
+  {
+    "id": "h-strictly-inc",
+    "proofId": "erdos-414",
+    "range": { "startLine": 37, "endLine": 38 },
+    "type": "theorem",
+    "title": "Strict Monotonicity",
+    "content": "h(n) > n for all n ≥ 1 because τ(n) ≥ 1. This means orbits never cycle back — they march strictly upward through the positive integers.",
+    "significance": "medium"
+  },
+  {
+    "id": "h-prime",
+    "proofId": "erdos-414",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "theorem",
+    "title": "h at Primes",
+    "content": "For a prime p, τ(p) = 2 (divisors: 1 and p), so h(p) = p + 2. Primes advance by exactly 2, while highly composite numbers advance much further.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-414",
+    "range": { "startLine": 61, "endLine": 62 },
+    "type": "conjecture",
+    "title": "All Orbits Merge",
+    "content": "For any m, n ≥ 1, there exist i, j with h^i(m) = h^j(n). This means the forward orbits of all positive integers eventually join a single infinite sequence.",
+    "significance": "high"
+  },
+  {
+    "id": "orbit-example",
+    "proofId": "erdos-414",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "theorem",
+    "title": "Orbit of 1",
+    "content": "1 → 2 → 4 → 7 → 9 → 12 → 18 → 24 → 32 → ... The orbit accelerates as it hits numbers with more divisors. Orbit of 3 (3→5→7→...) merges at 7.",
+    "significance": "medium"
+  },
+  {
+    "id": "merge-example",
+    "proofId": "erdos-414",
+    "range": { "startLine": 79, "endLine": 79 },
+    "type": "theorem",
+    "title": "Orbits of 1 and 3 Merge",
+    "content": "h³(1) = h²(3) = 7. After reaching 7, both orbits follow the same trajectory: 7→9→12→18→24→... This is the simplest non-trivial merge example.",
+    "significance": "medium"
+  },
+  {
+    "id": "growth-analysis",
+    "proofId": "erdos-414",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "insight",
+    "title": "Linear Lower Bound on Growth",
+    "content": "h^k(n) ≥ n + k since each step adds at least 1 (τ(n) ≥ 1). On average, τ(n) ~ log n, so typical growth is h^k(n) ≈ n + k·log(n+k). The slow, steady growth makes eventual merging plausible.",
+    "significance": "medium"
+  }
+]
