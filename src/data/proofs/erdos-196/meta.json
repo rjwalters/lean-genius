@@ -1,0 +1,74 @@
+{
+  "id": "erdos-196",
+  "title": "Monotone 4-Term APs in Permutations",
+  "slug": "erdos-196",
+  "description": "Must every permutation of ℕ contain a monotone 4-term arithmetic progression? k=3: YES (DEGS 1977). k=4: OPEN. k=5: NO (DEGS 1977). LeSaulnier–Vijay (2011) showed odd-CD 4-APs are avoidable.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/196",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos196Problem.lean",
+    "tags": [
+      "combinatorics",
+      "permutations",
+      "arithmetic progressions",
+      "monotone subsequences"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 196,
+    "erdosUrl": "https://erdosproblems.com/196",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Davis, Entringer, Graham, and Simmons (1977) proved every permutation has a monotone 3-AP but showed 5-APs can be avoided. The k=4 case remains open, positioned at the critical threshold. LeSaulnier and Vijay (2011) showed odd-CD 4-APs are avoidable, reducing the problem to even-CD 4-APs.",
+    "problemStatement": "Must every permutation of ℕ contain a monotone 4-term arithmetic progression?",
+    "proofStrategy": "We formalize APs in permutations, the main conjecture, DEGS results for k=3 and k=5, common difference parity analysis, non-extendability constraints, and the Erdős–Szekeres connection.",
+    "keyInsights": [
+      "k=3: always exists (DEGS 1977); k=5: can be avoided (DEGS 1977)",
+      "k=4 is the critical threshold between existence and avoidability",
+      "LeSaulnier–Vijay: odd-CD 4-APs are avoidable, so the conjecture reduces to even-CD",
+      "Non-extendability: if no 4-AP, every 3-AP forbids a value at later indices",
+      "Erdős–Szekeres gives long monotone subsequences but not APs"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 56,
+      "summary": "Defines arithmetic progressions (3, 4, 5-term), monotone APs in permutations."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture and Known Results",
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "States the main conjecture, DEGS 3-AP theorem, DEGS 5-AP counterexample, and implication proof."
+    },
+    {
+      "id": "parity",
+      "title": "Common Difference Parity",
+      "startLine": 84,
+      "endLine": 114,
+      "summary": "LeSaulnier–Vijay: odd-CD 4-APs avoidable. Parity dichotomy. Structural reduction to even-CD."
+    },
+    {
+      "id": "structural",
+      "title": "Non-Extendability and Erdős–Szekeres",
+      "startLine": 116,
+      "endLine": 132,
+      "summary": "Non-extendable 3-APs constraint and Erdős–Szekeres theorem on monotone subsequences."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #196 on monotone 4-APs in permutations. The critical threshold k=4 lies between the proved k=3 case and the disproved k=5 case. The parity reduction shows only even-CD 4-APs need to be forced.",
+    "implications": "A resolution would complete the picture of monotone arithmetic structure in permutations, with connections to Ramsey theory and permutation patterns.",
+    "openQuestions": [
+      "Must every permutation contain a monotone 4-AP?",
+      "Can even-CD 4-APs be avoided in permutations?",
+      "What is the finite threshold for 4-APs in permutations of {1,...,n}?"
+    ]
+  }
+}
