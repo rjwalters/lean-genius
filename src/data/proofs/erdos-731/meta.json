@@ -1,0 +1,74 @@
+{
+  "id": "erdos-731",
+  "title": "Least Non-Divisor of Central Binomial Coefficients",
+  "slug": "erdos-731",
+  "description": "Find f(n) such that for almost all n, the least m with m ∤ C(2n,n) satisfies m ~ f(n). EGRS (1975): m = exp((log n)^{1/2+o(1)}) for almost all n.",
+  "meta": {
+    "author": "Erdős, Graham, Ruzsa, Straus",
+    "sourceUrl": "https://erdosproblems.com/731",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos731Problem.lean",
+    "tags": [
+      "number theory",
+      "binomial coefficients",
+      "divisibility",
+      "asymptotic analysis"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 731,
+    "erdosUrl": "https://erdosproblems.com/731",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Graham, Ruzsa, and Straus (1975) noted that the least integer not dividing C(2n,n) is typically exp((log n)^{1/2+o(1)}). The problem asks for a precise function f(n) describing this behavior. Kummer's theorem connects divisibility to base-p digit structure.",
+    "problemStatement": "Find a reasonable function f(n) such that for almost all n, the least m with m ∤ C(2n,n) satisfies m ~ f(n).",
+    "proofStrategy": "We formalize central binomial coefficients, the least non-divisor function, Kummer's theorem on carries, the EGRS asymptotic, and bounds from Bertrand's postulate and the prime number theorem.",
+    "keyInsights": [
+      "p | C(2n,n) iff base-p addition of n with itself has a carry (Kummer)",
+      "Small primes almost always divide C(2n,n); the threshold is exp((log n)^{1/2})",
+      "Heuristic: probability of no carry in base p is ~(1/2)^{log n/log p}",
+      "Bertrand's postulate gives a prime n < p ≤ 2n dividing C(2n,n)",
+      "OEIS A006197 lists the least non-divisor sequence"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 38,
+      "summary": "Defines central binomial coefficients, the least non-divisor function, and the specialization to C(2n,n)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 40,
+      "endLine": 45,
+      "summary": "States the EGRS conjecture: the least non-divisor of C(2n,n) is exp((log n)^{1/2+o(1)}) for almost all n."
+    },
+    {
+      "id": "divisibility",
+      "title": "Divisibility Properties",
+      "startLine": 47,
+      "endLine": 72,
+      "summary": "Kummer's theorem on carries, prime divisibility criterion, small primes, evenness, primorial asymptotics."
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Analysis and Bounds",
+      "startLine": 74,
+      "endLine": 111,
+      "summary": "EGRS typical behavior, lower/upper bounds, Bertrand's postulate application, central binomial lower bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #731 on the least non-divisor of central binomial coefficients. The EGRS heuristic gives exp((log n)^{1/2+o(1)}) as the typical value, driven by Kummer's theorem and base-p digit structure.",
+    "implications": "A precise asymptotic would connect the arithmetic structure of central binomials to probabilistic number theory and the distribution of smooth numbers.",
+    "openQuestions": [
+      "What is the precise function f(n) with m ~ f(n) for almost all n?",
+      "What is the distribution of leastNonDivCentral(n) / exp((log n)^{1/2})?",
+      "How does the least non-divisor behave along special subsequences (primes, squares, etc.)?"
+    ]
+  }
+}
