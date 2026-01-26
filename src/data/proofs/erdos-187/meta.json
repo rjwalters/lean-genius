@@ -1,0 +1,71 @@
+{
+  "id": "erdos-187",
+  "title": "Erdős Problem #187: Arithmetic Progressions in 2-Colorings",
+  "slug": "erdos-187",
+  "description": "Find optimal f(d) such that any 2-coloring of ℤ has a monochromatic AP of length f(d) with difference d for infinitely many d. Known: f(d) → ∞ (van der Waerden), f(d) ≤ (1+o(1))log₂ d (Beck). Open.",
+  "meta": {
+    "erdosNumber": 187,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "ramsey-theory",
+      "arithmetic-progressions",
+      "van-der-waerden",
+      "open"
+    ],
+    "references": [
+      "Erdős (1973): original problem",
+      "Erdős–Graham (1980), p.17",
+      "Beck (1980): upper bound f(d) ≤ (1+o(1))log₂ d",
+      "Cohen: original formulation",
+      "https://erdosproblems.com/187"
+    ],
+    "leanFile": "Proofs/Erdos187Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 43,
+      "summary": "TwoColoring, IsMonoAP, maxMonoAPLength, optAPBound."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 45,
+      "endLine": 66,
+      "summary": "Van der Waerden growth, Beck's log₂ d upper bound, Erdős's √2-coloring lower bound."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 68,
+      "endLine": 79,
+      "summary": "Is f(d) = Θ(log d)? Determine the exact asymptotic behavior."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Cohen originally posed the question of finding the optimal f(d) for monochromatic arithmetic progressions in 2-colorings. Erdős studied the problem extensively, observing that coloring based on {√2·n} < 1/2 gives f(d) ≪ d. Beck (1980) improved this to f(d) ≤ (1+o(1))log₂ d using a probabilistic construction. Van der Waerden's theorem ensures f(d) → ∞.",
+    "problemStatement": "Find the optimal function f(d) such that in any 2-coloring of ℤ, at least one color class contains a monochromatic arithmetic progression of length f(d) with common difference d, for infinitely many d.",
+    "proofStrategy": "We define 2-colorings, monochromatic APs, and the optimal bound function axiomatically. Known bounds from van der Waerden, Beck, and Erdős's construction are recorded as axioms. The open question is formalized as a Θ(log d) characterization.",
+    "keyInsights": [
+      "Van der Waerden's theorem guarantees f(d) → ∞",
+      "Beck's construction gives f(d) ≤ (1+o(1))log₂ d, the best known upper bound",
+      "Erdős's √2-coloring shows some colorings have f(d) ≪ d",
+      "The gap between log d (upper) and the lack of a matching lower bound is the core difficulty",
+      "The problem connects Ramsey theory to Diophantine approximation via the √2-coloring"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #187 asks for the exact asymptotic behavior of f(d), the optimal monochromatic AP length in 2-colorings with common difference d. Beck's bound gives f(d) = O(log d), but a matching lower bound is missing.",
+    "implications": "Resolution would bridge Ramsey theory and Diophantine approximation, clarifying how well-structured colorings can avoid long monochromatic APs.",
+    "openQuestions": [
+      "Is f(d) = Θ(log d)?",
+      "Can Beck's upper bound (1+o(1))log₂ d be improved?",
+      "Does the √2-coloring achieve the optimal behavior?"
+    ]
+  }
+}
