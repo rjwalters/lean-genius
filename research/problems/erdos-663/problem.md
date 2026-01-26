@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $k\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\prod_{1\leq i\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\[q(n,k)<(1+o(1))\log n?\]
 
 
@@ -23,18 +13,9 @@ The bound $q(n,k)<(1+o(1))k\log n$ is easy. It may be true this improved bound h
 
 A heuristic argument in favour of this is provided by Tao in the commen...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $k\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\prod_{1\leq i\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\[q(n,k)<(1+o(1))\log n?\]
 
 
@@ -46,9 +27,6 @@ The bound $q(n,k)<(1+o(1))k\log n$ is easy. It may be true this improved bound h
 A heuristic argument in favour of this is provided by Tao in the comments.
 
 See also [457].
-
-
-Back to the problem
 $$
 
 ## Classification

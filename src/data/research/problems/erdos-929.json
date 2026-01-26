@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ be large and let $S(k)$ be the minimal $x$ such that there is a positive density set of $n$ where\\[n+1,n+2,\\ldots,n+k\\]are all divisible by primes $\\leq x$.\n\nEstimate $S(k)$ - in particular, is it true that $S(k)\\geq k^{1-o(1)}$?\n\n\n\nIt follows from Rosser's sieve that $S(k)> k^{1/2-o(1)}$.\n\nIt is trivial that $S(k)\\leq k+1$ since, for example, one can take $n\\equiv 1\\pmod{(k+1)!}$. The best bound on large gaps between primes due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18} (see [4]) implies\\[S(k) \\ll k \\frac{\\log\\log\\log k}{\\log\\log k\\log\\log\\log\\log k}.\\]\n\n\n\n\nReferences\n\n\n[FGKMT18] Ford, Kevin and Green, Ben and Konyagin, Sergei and Maynard, James and Tao, Terence, Long gaps between primes. J. Amer. Math. Soc. (2018), 65-105.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $k\\geq 2$ be large and let $S(k)$ be the minimal $x$ such that there is a positive density set of $n$ where\\[n+1,n+2,\\ldots,n+k\\]are all divisible by primes $\\leq x$.\n\nEstimate $S(k)$ - in particular, is it true that $S(k)\\geq k^{1-o(1)}$?\n\n\n\nIt follows from Rosser's sieve that $S(k)> k^{1/2-o(1)}$.\n\nIt is trivial that $S(k)\\leq k+1$ since, for example, one can take $n\\equiv 1\\pmod{(k+1)!}$. The best bound on large gaps between primes due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18} (see [4]) implies\\[S(k) \\ll k \\frac{\\log\\log\\log k}{\\log\\log k\\log\\log\\log\\log k}.\\]",
+    "plain": "Let $k\\geq 2$ be large and let $S(k)$ be the minimal $x$ such that there is a positive density set of $n$ where\\[n+1,n+2,\\ldots,n+k\\]are all divisible by primes $\\leq x$.",
     "whyMatters": []
   },
   "knownResults": {

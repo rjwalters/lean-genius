@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 A prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\leq r-1$, with equality for at least one prime factor.
 
 Are there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?
@@ -21,18 +11,9 @@ Are there infinitely many primes in each class? If $p_r$ is the least prime in c
 
 A classification due to Erd\H{o}s and Selfridge. It is easy to prove tha...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 A prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\leq r-1$, with equality for at least one prime factor.
 
 Are there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?
@@ -46,17 +27,6 @@ The sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\H{o}s tho
 A similar question can be asked replacing $p+1$ with $p-1$.
 
 This is problem A18 in Guy's collection \cite{Gu04}.
-
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

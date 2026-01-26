@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\ell(N)$ be maximal such that in any finite set $A\subset \mathbb{R}$ of size $N$ there exists a Sidon subset $S$ of size $\ell(N)$ (i.e. the only solutions to $a+b=c+d$ in $S$ are the trivial ones). Determine the order of $\ell(N)$.
 
 
@@ -22,18 +12,9 @@ In particular, is it true that $\ell(N)\sim N^{1/2}$?
 
 Originally asked by Riddell \cite{Ri69}. Erd\H{o}s noted the bounds\[N^{1/3} \ll \ell(N) \leq (1+o(1))N^{1/2}\](the upper bound...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\ell(N)$ be maximal such that in any finite set $A\subset \mathbb{R}$ of size $N$ there exists a Sidon subset $S$ of size $\ell(N)$ (i.e. the only solutions to $a+b=c+d$ in $S$ are the trivial ones). Determine the order of $\ell(N)$.
 
 
@@ -48,23 +29,6 @@ In \cite{AlEr85} Alon and Erd\H{o}s make the stronger conjecture that perhaps $A
 This is discussed in problem C9 of Guy's collection \cite{Gu04}.
 
 See also [1088] for a higher-dimensional generalisation.
-
-
-
-
-References
-
-
-[AlEr85] Alon, Noga and Erd\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-[KSS75] Koml\'{o}s, J. and Sulyok, M. and Szemeredi, E., Linear problems in combinatorial number theory. Acta Math. Acad. Sci. Hungar. (1975), 113-121.
-
-[Ri69] Riddell, J., On sets of numbers containing no $l$ terms in arithmetic progression. Nieuw Arch. Wisk. (3) (1969), 204-209.
-
-
-Back to the problem
 $$
 
 ## Classification

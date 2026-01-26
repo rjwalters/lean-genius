@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 With $a_1=1$ and $a_2=2$ let $a_{n+1}$ for $n\geq 2$ be the least integer $>a_n$ which can be expressed uniquely as $a_i+a_j$ for $i<j\leq n$.
 
 What can be said about this sequence? Do infinitely many pairs $a,a+2$ occur? Does this sequence eventually have periodic differences? Is the density $0$?
@@ -23,18 +13,9 @@ A problem of Ulam. The sequence is\[1,2,3,4,6,8,11,13,16,18,26,28,\ldots\]at OEI
 
 See also Problem 7 of Green's o...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 With $a_1=1$ and $a_2=2$ let $a_{n+1}$ for $n\geq 2$ be the least integer $>a_n$ which can be expressed uniquely as $a_i+a_j$ for $i<j\leq n$.
 
 What can be said about this sequence? Do infinitely many pairs $a,a+2$ occur? Does this sequence eventually have periodic differences? Is the density $0$?
@@ -46,17 +27,6 @@ A problem of Ulam. The sequence is\[1,2,3,4,6,8,11,13,16,18,26,28,\ldots\]at OEI
 See also Problem 7 of Green's open problems list.
 
 This is problem C4 in Guy's collection \cite{Gu04}.
-
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

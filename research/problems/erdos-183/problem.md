@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $R(3;k)$ be the minimal $n$ such that if the edges of $K_n$ are coloured with $k$ colours then there must exist a monochromatic triangle. Determine\[\lim_{k\to \infty}R(3;k)^{1/k}.\]
 
 
 
 Erd\H{o}s offers \$100 for showing that this limit is finite. An easy pigeonhole argument shows that\[R(3;k)\leq 2+k(R(3;k-1)-1),\]from which $R(3;k)\leq \lceil e k!\rceil$ immediately follows. The best-known upper bounds are all of th...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $R(3;k)$ be the minimal $n$ such that if the edges of $K_n$ are coloured with $k$ colours then there must exist a monochromatic triangle. Determine\[\lim_{k\to \infty}R(3;k)^{1/k}.\]
 
 
@@ -40,22 +21,6 @@ Erd\H{o}s offers \$100 for showing that this limit is finite. An easy pigeonhole
 See also [483].
 
 This problem is #21 in Ramsey Theory in the graphs problem collection.
-
-
-
-
-References
-
-
-[ACPPRT21] R. Ageron, P. Casteras, T. Pellerin, Y. Portella, A. Rimmel, and J. Tomasik, New lower bounds for Schur and weak Schur numbers. arXiv:2112.03175 (2021).
-
-[Ex94] Exoo, G., A lower bound for Schur numbers and multicolor Ramsey numbers. Electronic J. of Combinatorics (1994).
-
-[FrSw00] Fredricksen, Harold and Sweet, Melvin M., Symmetric sum-free partitions and lower bounds for {S}chur
-numbers. Electron. J. Combin. (2000), Research Paper 32, 9.
-
-
-Back to the problem
 $$
 
 ## Classification

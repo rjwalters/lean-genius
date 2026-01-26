@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.\n\nWhat choice of such an $A$ minimises the number of integers $m\\leq n$ not divisible by any $a\\in A$? Is this minimised by letting $n\\geq q_1>q_2>\\cdots$ be the consecutive primes in decreasing order and choosing $A=\\{q_1,\\ldots,q_k\\}$ where $k$ is maximal such that\\[\\sum_{i=1}^k\\frac{1}{q_i}\\leq C?\\]\n\n\n\n\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Fix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.\n\nWhat choice of such an $A$ minimises the number of integers $m\\leq n$ not divisible by any $a\\in A$? Is this minimised by letting $n\\geq q_1>q_2>\\cdots$ be the consecutive primes in decreasing order and choosing $A=\\{q_1,\\ldots,q_k\\}$ where $k$ is maximal such that\\[\\sum_{i=1}^k\\frac{1}{q_i}\\leq C?\\]",
+    "plain": "Fix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.",
     "whyMatters": []
   },
   "knownResults": {

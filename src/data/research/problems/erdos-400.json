@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $k\\geq 2$ let $g_k(n)$ denote the maximum value of\\[(a_1+\\cdots+a_k)-n\\]where $a_1,\\ldots,a_k$ are integers such that $a_1!\\cdots a_k! \\mid n!$. Can one show that\\[\\sum_{n\\leq x}g_k(n) \\sim c_k x\\log x\\]for some constant $c_k$? Is it true that there is a constant $c_k$ such that for almost all $n<x$ we have\\[g_k(n)=c_k\\log x+o(\\log x)?\\]\n\n\n\nErd\\H{o}s and Graham write that it is easy to show that $g_k(n) \\ll_k \\log n$ always, but the best possible constant is unknown.\n\nSee also [401].\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "For any $k\\geq 2$ let $g_k(n)$ denote the maximum value of\\[(a_1+\\cdots+a_k)-n\\]where $a_1,\\ldots,a_k$ are integers such that $a_1!\\cdots a_k! \\mid n!$. Can one show that\\[\\sum_{n\\leq x}g_k(n) \\sim c_k x\\log x\\]for some constant $c_k$? Is it true that there is a constant $c_k$ such that for almost all $n<x$ we have\\[g_k(n)=c_k\\log x+o(\\log x)?\\]\n\n\n\nErd\\H{o}s and Graham write that it is easy to show that $g_k(n) \\ll_k \\log n$ always, but the best possible constant is unknown.\n\nSee also [401].",
+    "plain": "For any $k\\geq 2$ let $g_k(n)$ denote the maximum value of\\[(a_1+\\cdots+a_k)-n\\]where $a_1,\\ldots,a_k$ are integers such that $a_1!\\cdots a_k! \\mid n!$. Can one show that\\[\\sum_{n\\leq x}g_k(n) \\sim c_k x\\log x\\]for some constant $c_k$? Is it true that there is a constant $c_k$ such that for almost all $n<x$ we have\\[g_k(n)=c_k\\log x+o(\\log x)?\\]",
     "whyMatters": []
   },
   "knownResults": {

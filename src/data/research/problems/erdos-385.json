@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[F(n) = \\max_{\\substack{m<n\\\\ m\\textrm{ composite}}} m+p(m),\\]where $p(m)$ is the least prime divisor of $m$. Is it true that $F(n)>n$ for all sufficiently large $n$? Does $F(n)-n\\to \\infty$ as $n\\to\\infty$?\n\n\n\nA question of Erd\\H{o}s, Eggleton, and Selfridge, who write that 'plausible conjectures on primes' imply that $F(n)\\leq n$ for only finitely many $n$, and in fact it is possible that this quantity is always at least $n+(1-o(1))\\sqrt{n}$ (note that it is trivially $\\leq n+\\sqrt{n}$).\n\nTao has discussed this problem in a blog post.\n\nSarosh Adenwalla has observed that the first question is equivalent to [430]. Indeed, if $n$ is large and $a_i$ is the sequence defined in the latter problem, then [430] implies that there is a composite $a_j$ such that $a_j-p(a_j)>n$ and hence $F(n)>n$.\n\nSee also [463].\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let\\[F(n) = \\max_{\\substack{m<n\\\\ m\\textrm{ composite}}} m+p(m),\\]where $p(m)$ is the least prime divisor of $m$. Is it true that $F(n)>n$ for all sufficiently large $n$? Does $F(n)-n\\to \\infty$ as $n\\to\\infty$?\n\n\n\nA question of Erd\\H{o}s, Eggleton, and Selfridge, who write that 'plausible conjectures on primes' imply that $F(n)\\leq n$ for only finitely many $n$, and in fact it is possible that this quantity is always at least $n+(1-o(1))\\sqrt{n}$ (note that it is trivially $\\leq n+\\sqrt{n}$).\n\nTao has discussed this problem in a blog post.\n\nSarosh Adenwalla has observed that the first question is equivalent to [430]. Indeed, if $n$ is large and $a_i$ is the sequence defined in the latter problem, then [430] implies that there is a composite $a_j$ such that $a_j-p(a_j)>n$ and hence $F(n)>n$.\n\nSee also [463].",
+    "plain": "Let\\[F(n) = \\max_{\\substack{mn$ for all sufficiently large $n$? Does $F(n)-n\\to \\infty$ as $n\\to\\infty$?",
     "whyMatters": []
   },
   "knownResults": {

@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]\n\n\n\nA problem of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who say it is 'not hard to show that', for almost all $n$, the minimal such $m$ satisfies\\[m=\\exp((\\log n)^{1/2+o(1)}).\\]\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Find some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]\n\n\n\nA problem of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who say it is 'not hard to show that', for almost all $n$, the minimal such $m$ satisfies\\[m=\\exp((\\log n)^{1/2+o(1)}).\\]",
+    "plain": "Find some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]",
     "whyMatters": []
   },
   "knownResults": {

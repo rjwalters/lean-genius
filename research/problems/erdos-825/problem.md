@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there an absolute constant $C>0$ such that every integer $n$ with $\sigma(n)>Cn$ is the distinct sum of proper divisors of $n$?
 
 
@@ -21,18 +11,9 @@ A problem of Benkoski and Erd\H{o}s. In other words, this problem asks for an up
 
 Erd\H{o}s s...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there an absolute constant $C>0$ such that every integer $n$ with $\sigma(n)>Cn$ is the distinct sum of proper divisors of $n$?
 
 
@@ -48,17 +29,6 @@ A similar argument shows that either there are infinitely many primitive weird n
 See also [18] and [470].
 
 This is part of problem B2 in Guy's collection \cite{Gu04} (the \$25 is reported by Guy as offered by Erd\H{o}s for a solution to this question).
-
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

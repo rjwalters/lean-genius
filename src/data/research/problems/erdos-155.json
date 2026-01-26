@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?\n\n\n\nThis may even hold with $k\\approx \\epsilon N^{1/2}$.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?\n\n\n\nThis may even hold with $k\\approx \\epsilon N^{1/2}$.",
+    "plain": "Let $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?",
     "whyMatters": []
   },
   "knownResults": {

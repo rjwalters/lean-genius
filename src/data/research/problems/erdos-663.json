@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\\prod_{1\\leq i\\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\\[q(n,k)<(1+o(1))\\log n?\\]\n\n\n\nA problem of Erd\\H{o}s and Pomerance.\n\nThe bound $q(n,k)<(1+o(1))k\\log n$ is easy. It may be true this improved bound holds even up to $k=o(\\log n)$.\n\nA heuristic argument in favour of this is provided by Tao in the comments.\n\nSee also [457].\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $k\\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\\prod_{1\\leq i\\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\\[q(n,k)<(1+o(1))\\log n?\\]\n\n\n\nA problem of Erd\\H{o}s and Pomerance.\n\nThe bound $q(n,k)<(1+o(1))k\\log n$ is easy. It may be true this improved bound holds even up to $k=o(\\log n)$.\n\nA heuristic argument in favour of this is provided by Tao in the comments.\n\nSee also [457].",
+    "plain": "Let $k\\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\\prod_{1\\leq i\\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\\[q(n,k)<(1+o(1))\\log n?\\]",
     "whyMatters": []
   },
   "knownResults": {

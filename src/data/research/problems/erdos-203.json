@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an integer $m$ with $(m,6)=1$ such that none of $2^k3^\\ell m+1$ are prime, for any $k,\\ell\\geq 0$?\n\n\n\nPositive odd integers $m$ such that none of $2^km+1$ are prime are called Sierpinski numbers - see [1113] for more details.\n\nErd\\H{o}s and Graham also ask more generally about $p_1^{k_1}\\cdots p_r^{k_r}m+1$ for distinct primes $p_i$, or $q_1\\cdots q_rm+1$ where the $q_i$ are primes congruent to $1\\pmod{4}$. (Dogmachine has noted in the comments this latter question has the trivial answer $m=1$ - perhaps some condition such as $m$ even is meant.)\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Is there an integer $m$ with $(m,6)=1$ such that none of $2^k3^\\ell m+1$ are prime, for any $k,\\ell\\geq 0$?\n\n\n\nPositive odd integers $m$ such that none of $2^km+1$ are prime are called Sierpinski numbers - see [1113] for more details.\n\nErd\\H{o}s and Graham also ask more generally about $p_1^{k_1}\\cdots p_r^{k_r}m+1$ for distinct primes $p_i$, or $q_1\\cdots q_rm+1$ where the $q_i$ are primes congruent to $1\\pmod{4}$. (Dogmachine has noted in the comments this latter question has the trivial answer $m=1$ - perhaps some condition such as $m$ even is meant.)",
+    "plain": "Is there an integer $m$ with $(m,6)=1$ such that none of $2^k3^\\ell m+1$ are prime, for any $k,\\ell\\geq 0$?",
     "whyMatters": []
   },
   "knownResults": {

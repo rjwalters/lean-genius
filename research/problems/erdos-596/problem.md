@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For which graphs $G_1,G_2$ is it true that
 {UL}
 {LI} for every $n\geq 1$ there is a graph $H$ without a $G_1$ but if the edges of $H$ are $n$-coloured then there is a monochromatic copy of $G_2$, and yet{/LI}
@@ -23,18 +13,9 @@ For which graphs $G_1,G_2$ is it true that
 
 Erd\H{o}s and Hajnal originally conjectured that there are no such $G_1,G_2$, but ...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For which graphs $G_1,G_2$ is it true that
 {UL}
 {LI} for every $n\geq 1$ there is a graph $H$ without a $G_1$ but if the edges of $H$ are $n$-coloured then there is a monochromatic copy of $G_2$, and yet{/LI}
@@ -46,9 +27,6 @@ For which graphs $G_1,G_2$ is it true that
 Erd\H{o}s and Hajnal originally conjectured that there are no such $G_1,G_2$, but in fact $G_1=C_4$ and $G_2=C_6$ is an example. Indeed, for this pair Ne\v{s}et\v{r}il and R\"{o}dl established the first property and Erd\H{o}s and Hajnal the second (in fact every $C_4$-free graph is a countable union of trees).
 
 Whether this is true for $G_1=K_4$ and $G_2=K_3$ is the content of [595].
-
-
-Back to the problem
 $$
 
 ## Classification

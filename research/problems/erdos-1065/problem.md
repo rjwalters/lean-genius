@@ -3,61 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many primes $p$ such that $p=2^kq+1$ for some prime $q$ and $k\geq 0$? Or $p=2^k3^lq+1$?
 
 
 
 This is mentioned in problem B46 of Guy's collection \cite{Gu04}.
 
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many primes $p$ such that $p=2^kq+1$ for some prime $q$ and $k\geq 0$? Or $p=2^k3^lq+1$?
 
 
 
 This is mentioned in problem B46 of Guy's collection \cite{Gu04}.
-
-
-
-
-References
-
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

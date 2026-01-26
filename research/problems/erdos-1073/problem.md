@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A(x)$ count the number of composite $u<x$ such that $n!+1\equiv 0\pmod{u}$ for some $n$. Is it true that $A(x)\leq x^{o(1)}$?
 
 
@@ -23,18 +13,9 @@ Wilson's theorem states that $u$ is prime if and only if $(u-1)!+1\equiv 0\pmod{
 
 This is mentioned in problem A2 of ...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A(x)$ count the number of composite $u<x$ such that $n!+1\equiv 0\pmod{u}$ for some $n$. Is it true that $A(x)\leq x^{o(1)}$?
 
 
@@ -44,17 +25,6 @@ A question of Erd\H{o}s raised in discussions with Hardy and Subbarao \cite{HaSu
 Wilson's theorem states that $u$ is prime if and only if $(u-1)!+1\equiv 0\pmod{u}$.
 
 This is mentioned in problem A2 of Guy's collection.
-
-
-
-
-References
-
-
-[HaSu02] Hardy, G. E. and Subbarao, M. V., A modified problem of Pillai and some related questions. Amer. Math. Monthly (2002), 554--559.
-
-
-Back to the problem
 $$
 
 ## Classification

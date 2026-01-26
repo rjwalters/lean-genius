@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $f(1)=f(2)=1$ and for $n>2$\[f(n) = f(n-f(n-1))+f(n-f(n-2)).\]Does $f(n)$ miss infinitely many integers? What is its behaviour?
 
 
 
 Asked by Hofstadter. The sequence begins $1,1,2,3,3,4,\ldots$ and is A005185 in the OEIS. It is not even known whether $f(n)$ is well-defined for all $n$.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $f(1)=f(2)=1$ and for $n>2$\[f(n) = f(n-f(n-1))+f(n-f(n-2)).\]Does $f(n)$ miss infinitely many integers? What is its behaviour?
 
 
 
 Asked by Hofstadter. The sequence begins $1,1,2,3,3,4,\ldots$ and is A005185 in the OEIS. It is not even known whether $f(n)$ is well-defined for all $n$.
-
-
-Back to the problem
 $$
 
 ## Classification

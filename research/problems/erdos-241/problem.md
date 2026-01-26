@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $f(N)$ be the maximum size of $A\subseteq \{1,\ldots,N\}$ such that the sums $a+b+c$ with $a,b,c\in A$ are all distinct (aside from the trivial coincidences). Is it true that\[ f(N)\sim N^{1/3}?\]
 
 
 
 Originally asked to Erd\H{o}s by Bose. Bose and Chowla \cite{BoCh62} provided a construction proving one half of this, namely\[(1+o(1))N^{1/3}\leq f(N).\]The best upper bound known to date is due to Green \cite{Gr01},\[f(...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $f(N)$ be the maximum size of $A\subseteq \{1,\ldots,N\}$ such that the sums $a+b+c$ with $a,b,c\in A$ are all distinct (aside from the trivial coincidences). Is it true that\[ f(N)\sim N^{1/3}?\]
 
 
@@ -40,21 +21,6 @@ Originally asked to Erd\H{o}s by Bose. Bose and Chowla \cite{BoCh62} provided a 
 More generally, Bose and Chowla conjectured that the maximum size of $A\subseteq \{1,\ldots,N\}$ with all $r$-fold sums distinct (aside from the trivial coincidences) then\[\lvert A\rvert \sim N^{1/r}.\]This is known only for $r=2$ (see [30]).
 
 This is discussed in problem C11 of Guy's collection \cite{Gu04}.
-
-
-
-
-References
-
-
-[BoCh62] Bose, R. C. and Chowla, S., Theorems in the additive theory of numbers. Comment. Math. Helv. (1962/63), 141-147.
-
-[Gr01] Green, Ben, The number of squares and {$B_h[g]$} sets. Acta Arith. (2001), 365-390.
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $L(r)$ be such that if $G$ is a graph formed by taking a finite set of points $P$ in $\mathbb{R}^2$ and some set $A\subset (0,\infty)$ of size $r$, where the vertex set is $P$ and there is an edge between two points if and only if their distance is a member of $A$, then $\chi(G)\leq L(r)$.
 
 Estimate $L(r)$. In particular, is it true that $L(r)\leq r^{O(1)}$?
@@ -21,18 +11,9 @@ Estimate $L(r)$. In particular, is it true that $L(r)\leq r^{O(1)}$?
 
 The case $r=1$ is the Hadwiger-Nelson problem, for which ...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $L(r)$ be such that if $G$ is a graph formed by taking a finite set of points $P$ in $\mathbb{R}^2$ and some set $A\subset (0,\infty)$ of size $r$, where the vertex set is $P$ and there is an edge between two points if and only if their distance is a member of $A$, then $\chi(G)\leq L(r)$.
 
 Estimate $L(r)$. In particular, is it true that $L(r)\leq r^{O(1)}$?
@@ -43,9 +24,6 @@ The case $r=1$ is the Hadwiger-Nelson problem, for which it is known that $5\leq
 
 
 See also [508], [704], and [705].
-
-
-Back to the problem
 $$
 
 ## Classification

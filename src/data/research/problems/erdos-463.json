@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a function $f$ with $f(n)\\to \\infty$ as $n\\to \\infty$ such that, for all large $n$, there is a composite number $m$ such that\\[n+f(n)<m<n+p(m)?\\](Here $p(m)$ is the least prime factor of $m$.)\n\n\n\nIn \\cite{Er92e} Erd\\H{o}s asks about\\[F(n)=\\min_{m>n}(m-p(m)),\\]and whether $n-F(n)\\sim cn^{1/2}$ for some $c>0$.\n\nSee also [385].\n\n\n\n\nReferences\n\n\n[Er92e] Erd\\H{o}s, P\\'{a}l, Some Unsolved problems in Geometry, Number Theory and Combinatorics. Eureka (1992), 44-48.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Is there a function $f$ with $f(n)\\to \\infty$ as $n\\to \\infty$ such that, for all large $n$, there is a composite number $m$ such that\\[n+f(n)<m<n+p(m)?\\](Here $p(m)$ is the least prime factor of $m$.)\n\n\n\nIn \\cite{Er92e} Erd\\H{o}s asks about\\[F(n)=\\min_{m>n}(m-p(m)),\\]and whether $n-F(n)\\sim cn^{1/2}$ for some $c>0$.\n\nSee also [385].",
+    "plain": "Is there a function $f$ with $f(n)\\to \\infty$ as $n\\to \\infty$ such that, for all large $n$, there is a composite number $m$ such that\\[n+f(n)n}(m-p(m)),\\]and whether $n-F(n)\\sim cn^{1/2}$ for some $c>0$.",
     "whyMatters": []
   },
   "knownResults": {

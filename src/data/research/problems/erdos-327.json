@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that if $a,b\\in A$ and $a\\neq b$ then $a+b\\nmid ab$. Can $A$ be 'substantially more' than the odd numbers?\n\nWhat if $a,b\\in A$ with $a\\neq b$ implies $a+b\\nmid 2ab$? Must $\\lvert A\\rvert=o(N)$?\n\n\n\nThe connection to unit fractions comes from the observation that $\\frac{1}{a}+\\frac{1}{b}$ is a unit fraction if and only if $a+b\\mid ab$.\n\nWouter van Doorn has given an elementary argument that proves that if $A\\subseteq \\{1,\\ldots,N\\}$ has $\\lvert A\\rvert \\geq (25/28+o(1))N$ then $A$ must contain $a\\neq b$ with $a+b\\mid ab$ (see the discussion in [301]).\n\nSee also [302].\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Suppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that if $a,b\\in A$ and $a\\neq b$ then $a+b\\nmid ab$. Can $A$ be 'substantially more' than the odd numbers?\n\nWhat if $a,b\\in A$ with $a\\neq b$ implies $a+b\\nmid 2ab$? Must $\\lvert A\\rvert=o(N)$?\n\n\n\nThe connection to unit fractions comes from the observation that $\\frac{1}{a}+\\frac{1}{b}$ is a unit fraction if and only if $a+b\\mid ab$.\n\nWouter van Doorn has given an elementary argument that proves that if $A\\subseteq \\{1,\\ldots,N\\}$ has $\\lvert A\\rvert \\geq (25/28+o(1))N$ then $A$ must contain $a\\neq b$ with $a+b\\mid ab$ (see the discussion in [301]).\n\nSee also [302].",
+    "plain": "Suppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that if $a,b\\in A$ and $a\\neq b$ then $a+b\\nmid ab$. Can $A$ be 'substantially more' than the odd numbers?",
     "whyMatters": []
   },
   "knownResults": {

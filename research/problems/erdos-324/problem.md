@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does there exist a polynomial $f(x)\in\mathbb{Z}[x]$ such that all the sums $f(a)+f(b)$ with $a<b$ nonnegative integers are distinct?
 
 
 
 Erd\H{o}s and Graham describe this problem as 'very annoying'. Probably $f(x)=x^5$ should work. The Lander, Parkin, and Selfridge conjecture would imply that $f(x)=x^n$ has this property for all $n\geq 5$.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does there exist a polynomial $f(x)\in\mathbb{Z}[x]$ such that all the sums $f(a)+f(b)$ with $a<b$ nonnegative integers are distinct?
 
 
 
 Erd\H{o}s and Graham describe this problem as 'very annoying'. Probably $f(x)=x^5$ should work. The Lander, Parkin, and Selfridge conjecture would imply that $f(x)=x^n$ has this property for all $n\geq 5$.
-
-
-Back to the problem
 $$
 
 ## Classification

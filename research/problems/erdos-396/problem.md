@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that for every $k$ there exists $n$ such that\[\prod_{0\leq i\leq k}(n-i) \mid \binom{2n}{n}?\]
 
 
@@ -21,18 +11,9 @@ Erd\H{o}s and Graham write that $n+1$ always divides $\binom{2n}{n}$ (indeed $\f
 
 Pomerance \cite{Po14} has shown that for any $k\geq 0$ there are infinitely many $n$ such that $n-k\mid\binom{2n}{n}$, alth...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that for every $k$ there exists $n$ such that\[\prod_{0\leq i\leq k}(n-i) \mid \binom{2n}{n}?\]
 
 
@@ -42,17 +23,6 @@ Erd\H{o}s and Graham write that $n+1$ always divides $\binom{2n}{n}$ (indeed $\f
 Pomerance \cite{Po14} has shown that for any $k\geq 0$ there are infinitely many $n$ such that $n-k\mid\binom{2n}{n}$, although the set of such $n$ has upper density $<1/3$. Pomerance also shows that the set of $n$ such that\[\prod_{1\leq i\leq k}(n+i)\mid \binom{2n}{n}\]has density $1$.
 
 The smallest $n$ for each $k$ are listed as A375077 on the OEIS.
-
-
-
-
-References
-
-
-[Po14] Pomerance, C., Divisors of the middle binomial coefficient. American Mathematical Monthly (2014).
-
-
-Back to the problem
 $$
 
 ## Classification

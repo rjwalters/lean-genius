@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?\n\n\n\nErd\\H{o}s and Graham report they can show\\[f(n,t) \\gg \\frac{t}{\\log t}.\\]\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?\n\n\n\nErd\\H{o}s and Graham report they can show\\[f(n,t) \\gg \\frac{t}{\\log t}.\\]",
+    "plain": "Let $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?",
     "whyMatters": []
   },
   "knownResults": {

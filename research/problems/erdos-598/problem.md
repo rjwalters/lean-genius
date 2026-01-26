@@ -3,45 +3,12 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $m$ be an infinite cardinal and $\kappa$ be the successor cardinal of $2^{\aleph_0}$. Can one colour the countable subsets of $m$ using $\kappa$ many colours so that every $X\subseteq m$ with $\lvert X\rvert=\kappa$ contains subsets of all possible colours?
 
-
-
-
-
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $m$ be an infinite cardinal and $\kappa$ be the successor cardinal of $2^{\aleph_0}$. Can one colour the countable subsets of $m$ using $\kappa$ many colours so that every $X\subseteq m$ with $\lvert X\rvert=\kappa$ contains subsets of all possible colours?
-
-
-
-
-
-
-Back to the problem
 $$
 
 ## Classification

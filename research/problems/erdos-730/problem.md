@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many pairs of integers $n\neq m$ such that $\binom{2n}{n}$ and $\binom{2m}{m}$ have the same set of prime divisors?
 
 
@@ -23,18 +13,9 @@ For example $(87,88)$ and $(607,608)$. Those $n$ such that there exists some sui
 
 A triple of such $n$ for which $\b...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many pairs of integers $n\neq m$ such that $\binom{2n}{n}$ and $\binom{2m}{m}$ have the same set of prime divisors?
 
 
@@ -44,17 +25,6 @@ A problem of Erd\H{o}s, Graham, Ruzsa, and Straus \cite{EGRS75}, who believed th
 For example $(87,88)$ and $(607,608)$. Those $n$ such that there exists some suitable $m>n$ are listed as A129515 in the OEIS.
 
 A triple of such $n$ for which $\binom{2n}{n}$ all share the same set of prime divisors is $(10003,10004,10005)$. It is not known whether there are such pairs of the shape $(n,n+k)$ for every $k\geq 1$.
-
-
-
-
-References
-
-
-[EGRS75] Erd\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\sp{2n}\sb{n})$. Math. Comp. (1975), 83-92.
-
-
-Back to the problem
 $$
 
 ## Classification

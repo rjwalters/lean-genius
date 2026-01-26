@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let\[F(n) = \max_{\substack{mn$ for all sufficiently large $n$? Does $F(n)-n\to \infty$ as $n\to\infty$?
 
 
@@ -21,18 +11,9 @@ A question of Erd\H{o}s, Eggleton, and Selfridge, who write that 'plausible conj
 
 Tao has discussed this problem i...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let\[F(n) = \max_{\substack{m<n\\ m\textrm{ composite}}} m+p(m),\]where $p(m)$ is the least prime divisor of $m$. Is it true that $F(n)>n$ for all sufficiently large $n$? Does $F(n)-n\to \infty$ as $n\to\infty$?
 
 
@@ -44,9 +25,6 @@ Tao has discussed this problem in a blog post.
 Sarosh Adenwalla has observed that the first question is equivalent to [430]. Indeed, if $n$ is large and $a_i$ is the sequence defined in the latter problem, then [430] implies that there is a composite $a_j$ such that $a_j-p(a_j)>n$ and hence $F(n)>n$.
 
 See also [463].
-
-
-Back to the problem
 $$
 
 ## Classification

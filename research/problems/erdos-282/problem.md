@@ -3,32 +3,13 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subseteq \mathbb{N}$ be an infinite set and consider the following greedy algorithm for a rational $x\in (0,1)$: choose the minimal $n\in A$ such that $n\geq 1/x$ and repeat with $x$ replaced by $x-\frac{1}{n}$. If this terminates after finitely many steps then this produces a representation of $x$ as the sum of distinct unit fractions with denominators from $A$.
 
 Does this process always terminate if $x$ has odd d...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subseteq \mathbb{N}$ be an infinite set and consider the following greedy algorithm for a rational $x\in (0,1)$: choose the minimal $n\in A$ such that $n\geq 1/x$ and repeat with $x$ replaced by $x-\frac{1}{n}$. If this terminates after finitely many steps then this produces a representation of $x$ as the sum of distinct unit fractions with denominators from $A$.
 
 Does this process always terminate if $x$ has odd denominator and $A$ is the set of odd numbers? More generally, for which pairs $x$ and $A$ does this process terminate?
@@ -42,19 +23,6 @@ Graham \cite{Gr64b} has shown that $\frac{m}{n}$ is the sum of distinct unit fra
 Graham \cite{Gr64c} has also shown that $x$ is the sum of distinct unit fractions with square denominators if and only if $x\in [0,\pi^2/6-1)\cup [1,\pi^2/6)$. Does the greedy algorithm for this always terminate? Erd\H{o}s and Graham believe not - indeed, perhaps it fails to terminate almost always.
 
 See also [206].
-
-
-
-
-References
-
-
-[Gr64b] Graham, R. L., On finite sums of unit fractions. Proc. London Math. Soc. (3) (1964), 193-207.
-
-[Gr64c] Graham, R. L., On finite sums of reciprocals of distinct nth powers. Pacific J. Math. (1964), 85-92.
-
-
-Back to the problem
 $$
 
 ## Classification

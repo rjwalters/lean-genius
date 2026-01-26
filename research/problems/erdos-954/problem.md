@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $1=a_1<a_2<\cdots$ be the sequence of integers defined by $a_1=1$ and $a_{k+1}$ is the smallest integer $n$ for which the number of solutions to $a_i+a_j \leq n$ (with $i\leq j\leq k$) is less than $n-k$.
 
 Is the number of solutions to $a_i+a_j \leq x$ equal to $x+O(x^{1/4+o(1)})$?
@@ -22,18 +12,9 @@ Is the number of solutions to $a_i+a_j \leq x$ equal to $x+O(x^{1/4+o(1)})$?
 
 This sequence was constructed by Rosen. Note that the number of solutions to $a_i+a_j\leq x$ is always at least $x$ by construction. E...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $1=a_1<a_2<\cdots$ be the sequence of integers defined by $a_1=1$ and $a_{k+1}$ is the smallest integer $n$ for which the number of solutions to $a_i+a_j \leq n$ (with $i\leq j\leq k$) is less than $n-k$.
 
 Is the number of solutions to $a_i+a_j \leq x$ equal to $x+O(x^{1/4+o(1)})$?
@@ -44,9 +25,6 @@ Is the number of solutions to $a_i+a_j \leq x$ equal to $x+O(x^{1/4+o(1)})$?
 This sequence was constructed by Rosen. Note that the number of solutions to $a_i+a_j\leq x$ is always at least $x$ by construction. Erd\H{o}s and Rosen could not even prove whether the number of solutions to $a_i+a_j\leq x$ satisfies is at most $(1+o(1))x$.
 
 The sequence begins\[1,3,5,9,13,17,24,31,38,45,\ldots.\]
-
-
-Back to the problem
 $$
 
 ## Classification

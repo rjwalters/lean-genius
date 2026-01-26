@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For any $m\in \mathbb{N}$, let $F(m)$ be the minimal $k\geq 2$ (if it exists) such that there are $a_11\}$,{/LI}
 {LI} $\lvert D_3\cap \{1,\ldots,n\}\rvert = o(\lvert D_4\cap \{1,\ldots,n\}\rvert)$,{/LI}
 {LI} the least element of $D_6$ is $527$, and{/LI}
@@ -20,25 +10,8 @@ For any $m\in \mathbb{N}$, let $F(m)$ be the minimal $k\geq 2$ (if it exists) su
 {/UL}
 
 
-
-
-References
-
-
-[ErGr76] Erd\H{o}s, P. and Graham, R. L., On products of factorials. Bull. Inst. Math. Acad. Sinica (1976), 337...
-
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For any $m\in \mathbb{N}$, let $F(m)$ be the minimal $k\geq 2$ (if it exists) such that there are $a_1<\cdots <a_k=m$ with $a_1!\cdots a_k!$ a square. Let $D_k=\{ m : F(m)=k\}$. What is the order of growth of $\lvert D_k\cap\{1,\ldots,n\}\rvert$ for $3\leq k\leq 6$? For example, is it true that $\lvert D_6\cap \{1,\ldots,n\}\rvert \gg n$?
 
 
@@ -51,19 +24,6 @@ Studied by Erd\H{o}s and Graham \cite{ErGr76} (see also \cite{LSS14}). It is kno
 {LI} the least element of $D_6$ is $527$, and{/LI}
 {LI} $D_k=\emptyset$ for $k>6$.{/LI}
 {/UL}
-
-
-
-
-References
-
-
-[ErGr76] Erd\H{o}s, P. and Graham, R. L., On products of factorials. Bull. Inst. Math. Acad. Sinica (1976), 337-355.
-
-[LSS14] Luca, F. and Saradha, N. and Shorey, T. N., Squares and factorials in products of factorials. Monatsh. Math. (2014), 385-400.
-
-
-Back to the problem
 $$
 
 ## Classification

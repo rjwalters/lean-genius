@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[V'(x)=\\#\\{\\phi(m) : 1\\leq m\\leq x\\}\\]and\\[V(x)=\\#\\{\\phi(m) \\leq x : 1\\leq m\\}.\\]Does $\\lim V(x)/V'(x)$ exist? Is it $>1$?\n\n\n\nIt is trivial that $V'(x) \\leq V(x)$. In \\cite{Er98} Erd\\H{o}s suggests the limit may be infinite. See also [416].\n\n\n\n\nReferences\n\n\n[Er98] Erd\\H{o}s, Paul, Some of my new and almost new problems and results in combinatorial number theory. Number theory (Eger, 1996) (1998), 169-180.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let\\[V'(x)=\\#\\{\\phi(m) : 1\\leq m\\leq x\\}\\]and\\[V(x)=\\#\\{\\phi(m) \\leq x : 1\\leq m\\}.\\]Does $\\lim V(x)/V'(x)$ exist? Is it $>1$?\n\n\n\nIt is trivial that $V'(x) \\leq V(x)$. In \\cite{Er98} Erd\\H{o}s suggests the limit may be infinite. See also [416].",
+    "plain": "Let\\[V'(x)=\\#\\{\\phi(m) : 1\\leq m\\leq x\\}\\]and\\[V(x)=\\#\\{\\phi(m) \\leq x : 1\\leq m\\}.\\]Does $\\lim V(x)/V'(x)$ exist? Is it $>1$?",
     "whyMatters": []
   },
   "knownResults": {

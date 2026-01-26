@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ and $D(A)$ be the set of those numbers which occur infinitely often as $a_1-a_2$ with $a_1,a_2\\in A$. What conditions on $A$ are sufficient to ensure $D(A)$ has bounded gaps?\n\n\n\nPrikry, Tijdeman, Stewart, and others (see the survey articles \\cite{St78} and \\cite{Ti79}) have shown that a sufficient condition is that $A$ has positive density.\n\nOne can also ask what conditions are sufficient for $D(A)$ to have positive density, or for $\\sum_{d\\in D(A)}\\frac{1}{d}=\\infty$, or even just $D(A)\\neq\\emptyset$.\n\n\n\n\nReferences\n\n\n[St78] Stewart, Cam L., On difference sets of sets of integers. S\\'{e}minaire Delange-Pisot-Poitou, 19e ann\\'{e}e:\n1977/78, Th\\'{e}orie des nombres, Fasc. 1 (1978), Exp. No. 5, 8.\n\n[Ti79] Tijdeman, R., Distance sets of sequences of integers. Proceedings, Bicentennial Congress Wiskundig\nGenootschap (Vrije Univ., Amsterdam, 1978), Part\nII (1979), 405-415.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $A\\subseteq \\mathbb{N}$ and $D(A)$ be the set of those numbers which occur infinitely often as $a_1-a_2$ with $a_1,a_2\\in A$. What conditions on $A$ are sufficient to ensure $D(A)$ has bounded gaps?\n\n\n\nPrikry, Tijdeman, Stewart, and others (see the survey articles \\cite{St78} and \\cite{Ti79}) have shown that a sufficient condition is that $A$ has positive density.\n\nOne can also ask what conditions are sufficient for $D(A)$ to have positive density, or for $\\sum_{d\\in D(A)}\\frac{1}{d}=\\infty$, or even just $D(A)\\neq\\emptyset$.",
+    "plain": "Let $A\\subseteq \\mathbb{N}$ and $D(A)$ be the set of those numbers which occur infinitely often as $a_1-a_2$ with $a_1,a_2\\in A$. What conditions on $A$ are sufficient to ensure $D(A)$ has bounded gaps?",
     "whyMatters": []
   },
   "knownResults": {

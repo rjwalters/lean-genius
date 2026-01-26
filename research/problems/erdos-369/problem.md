@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\epsilon>0$ and $k\geq 2$. Is it true that, for all sufficiently large $n$, there is a sequence of $k$ consecutive integers in $\{1,\ldots,n\}$ all of which are $n^\epsilon$-smooth?
 
 
@@ -21,18 +11,9 @@ Erd\H{o}s and Graham state that this is open even for $k=2$ and 'the answer shou
 
 Unfortunately the problem is trivially true as written (simply taking $\{1,\ldots,k\}$ and $n>k^{1/\ep...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\epsilon>0$ and $k\geq 2$. Is it true that, for all sufficiently large $n$, there is a sequence of $k$ consecutive integers in $\{1,\ldots,n\}$ all of which are $n^\epsilon$-smooth?
 
 
@@ -46,17 +27,6 @@ Unfortunately the problem is trivially true as written (simply taking $\{1,\ldot
 {/UL}
 
 See also [370] and [928].
-
-
-
-
-References
-
-
-[BaWo98] Balog, Antal and Wooley, Trevor D., On strings of consecutive integers with no large prime factors. J. Austral. Math. Soc. Ser. A (1998), 266-276.
-
-
-Back to the problem
 $$
 
 ## Classification

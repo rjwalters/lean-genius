@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For every $c\geq 0$ the density $f(c)$ of integers for which\[\frac{p_{n+1}-p_n}{\log n}< c\]exists and is a continuous function of $c$.
 
 
 
 See also [5].
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 For every $c\geq 0$ the density $f(c)$ of integers for which\[\frac{p_{n+1}-p_n}{\log n}< c\]exists and is a continuous function of $c$.
 
 
 
 See also [5].
-
-
-Back to the problem
 $$
 
 ## Classification

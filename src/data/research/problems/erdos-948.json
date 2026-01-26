@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a function $f(n)$ and a $k$ such that in any $k$-colouring of the integers there exists a sequence $a_1<\\cdots$ such that $a_n<f(n)$ for infinitely many $n$ and the set\\[\\left\\{ \\sum_{i\\in S}a_i : \\textrm{finite }S\\right\\}\\]does not contain all colours?\n\n\n\nErd\\H{o}s initially asked whether this is possible with the set being monochromatic, but Galvin showed that this is not always possible, considering the two colouring where, writing $n=2^km$ with $m$ odd, we colour $n$ red if $m\\geq F(k)$ and blue if $m<F(k)$ (for some sufficiently quickly growing $F$).\n\nThis is open even in the case of $\\aleph_0$-many colours.\n\nThis is asking about a variant of Hindman's theorem (see [532]).\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Is there a function $f(n)$ and a $k$ such that in any $k$-colouring of the integers there exists a sequence $a_1<\\cdots$ such that $a_n<f(n)$ for infinitely many $n$ and the set\\[\\left\\{ \\sum_{i\\in S}a_i : \\textrm{finite }S\\right\\}\\]does not contain all colours?\n\n\n\nErd\\H{o}s initially asked whether this is possible with the set being monochromatic, but Galvin showed that this is not always possible, considering the two colouring where, writing $n=2^km$ with $m$ odd, we colour $n$ red if $m\\geq F(k)$ and blue if $m<F(k)$ (for some sufficiently quickly growing $F$).\n\nThis is open even in the case of $\\aleph_0$-many colours.\n\nThis is asking about a variant of Hindman's theorem (see [532]).",
+    "plain": "Is there a function $f(n)$ and a $k$ such that in any $k$-colouring of the integers there exists a sequence $a_1<\\cdots$ such that $a_n<f(n)$ for infinitely many $n$ and the set\\[\\left\\{ \\sum_{i\\in S}a_i : \\textrm{finite }S\\right\\}\\]does not contain all colours?",
     "whyMatters": []
   },
   "knownResults": {

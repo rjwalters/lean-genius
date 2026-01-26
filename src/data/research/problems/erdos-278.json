@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.\n\n\n\n\nReferences\n\n\n[Si86] Simpson, R. J., Exact coverings of the integers by arithmetic progressions. Discrete Math. (1986), 181--190.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.",
+    "plain": "Let $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?",
     "whyMatters": []
   },
   "knownResults": {

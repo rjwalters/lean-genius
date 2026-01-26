@@ -359,7 +359,7 @@
   {
     "slug": "erdos-68",
     "title": "Erdős #68",
-    "description": "Forum",
+    "description": "Is\\[\\sum_{n\\geq 2}\\frac{1}{n!-1}\\]irrational?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -376,7 +376,7 @@
   {
     "slug": "erdos-75",
     "title": "Erdős #75",
-    "description": "Forum",
+    "description": "Is there a graph of chromatic number $\\aleph_1$ such that for all $\\epsilon>0$ if $n$ is sufficiently large and $H$ is a subgraph on $n$ vertices then $H$ contains an independent set of size $>n^{1-\\epsilon}$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -416,7 +416,7 @@
   {
     "slug": "erdos-151",
     "title": "Erdős #151",
-    "description": "Forum",
+    "description": "For a graph $G$ let $\\tau(G)$ denote the minimal number of vertices that include at least one from each maximal clique of $G$ on at least two vertices (sometimes called the clique transversal number).",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -433,7 +433,7 @@
   {
     "slug": "erdos-152",
     "title": "Erdős #152",
-    "description": "Forum",
+    "description": "For any $M\\geq 1$, if $A\\subset \\mathbb{N}$ is a sufficiently large finite Sidon set then there are at least $M$ many $a\\in A+A$ such that $a+1,a-1\\not\\in A+A$.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -450,7 +450,7 @@
   {
     "slug": "erdos-153",
     "title": "Erdős #153",
-    "description": "Forum",
+    "description": "Let $A$ be a finite Sidon set and $A+A=\\{s_1<\\cdots<s_t\\}$. Is it true that\\[\\frac{1}{t}\\sum_{1\\leq i<t}(s_{i+1}-s_i)^2 \\to \\infty\\]as $\\lvert A\\rvert\\to \\infty$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -467,7 +467,7 @@
   {
     "slug": "erdos-155",
     "title": "Erdős #155",
-    "description": "Forum",
+    "description": "Let $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -484,7 +484,7 @@
   {
     "slug": "erdos-156",
     "title": "Erdős #156",
-    "description": "Forum",
+    "description": "Does there exist a maximal Sidon set $A\\subset \\{1,\\ldots,N\\}$ of size $O(N^{1/3})$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -501,7 +501,7 @@
   {
     "slug": "erdos-159",
     "title": "Erdős #159",
-    "description": "Forum",
+    "description": "There exists some constant $c>0$ such that",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -518,7 +518,7 @@
   {
     "slug": "erdos-160",
     "title": "Erdős #160",
-    "description": "Forum",
+    "description": "Let $h(N)$ be the smallest $k$ such that $\\{1,\\ldots,N\\}$ can be coloured with $k$ colours so that every four-term arithmetic progression must contain at least three distinct colours. Estimate $h(N)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -535,7 +535,7 @@
   {
     "slug": "erdos-162",
     "title": "Erdős #162",
-    "description": "Forum",
+    "description": "Let $\\alpha>0$ and $n\\geq 1$. Let $F(n,\\alpha)$ be the largest $k$ such that there exists some 2-colouring of the edges of $K_n$ in which any induced subgraph $H$ on at least $k$ vertices contains more than $\\alpha\\binom{\\lvert H\\rvert}{2}$ many edges of each colour.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -552,7 +552,7 @@
   {
     "slug": "erdos-180",
     "title": "Erdős #180",
-    "description": "Forum",
+    "description": "If $\\mathcal{F}$ is a finite set of finite graphs then $\\mathrm{ex}(n;\\mathcal{F})$ is the maximum number of edges a graph on $n$ vertices can have without containing any subgraphs from $\\mathcal{F}$. Note that it is trivial that $\\mathrm{ex}(n;\\mathcal{F})\\leq \\mathrm{ex}(n;G)$ for every $G\\in\\mathcal{F}$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -569,7 +569,7 @@
   {
     "slug": "erdos-181",
     "title": "Erdős #181",
-    "description": "Forum",
+    "description": "Let $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Prove that\\[R(Q_n) \\ll 2^n.\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -586,7 +586,7 @@
   {
     "slug": "erdos-183",
     "title": "Erdős #183",
-    "description": "Forum",
+    "description": "Let $R(3;k)$ be the minimal $n$ such that if the edges of $K_n$ are coloured with $k$ colours then there must exist a monochromatic triangle. Determine\\[\\lim_{k\\to \\infty}R(3;k)^{1/k}.\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -603,7 +603,7 @@
   {
     "slug": "erdos-200",
     "title": "Erdős #200",
-    "description": "Forum",
+    "description": "Does the longest arithmetic progression of primes in $\\{1,\\ldots,N\\}$ have length $o(\\log N)$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -620,7 +620,7 @@
   {
     "slug": "erdos-201",
     "title": "Erdős #201",
-    "description": "Forum",
+    "description": "Let $G_k(N)$ be such that any set of $N$ integers contains a subset of size at least $G_k(N)$ which does not contain a $k$-term arithmetic progression. Determine the size of $G_k(N)$. How does it relate to $R_k(N)$, the size of the largest subset of $\\{1,\\ldots,N\\}$ without a $k$-term arithmetic progression? Is it true that\\[\\lim_{N\\to \\infty}\\frac{R_3(N)}{G_3(N)}=1?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -637,7 +637,7 @@
   {
     "slug": "erdos-190",
     "title": "Erdős #190",
-    "description": "Forum",
+    "description": "Let $H(k)$ be the smallest $N$ such that in any finite colouring of $\\{1,\\ldots,N\\}$ (into any number of colours) there is always either a monochromatic $k$-term arithmetic progression or a rainbow arithmetic progression (i.e. all elements are different colours). Estimate $H(k)$. Is it true that\\[H(k)^{1/k}/k \\to \\infty\\]as $k\\to\\infty$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -654,7 +654,7 @@
   {
     "slug": "erdos-193",
     "title": "Erdős #193",
-    "description": "Forum",
+    "description": "Let $S\\subseteq \\mathbb{Z}^3$ be a finite set and let $A=\\{a_1,a_2,\\ldots,\\}\\subset \\mathbb{Z}^3$ be an infinite $S$-walk, so that $a_{i+1}-a_i\\in S$ for all $i$. Must $A$ contain three collinear points?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -691,7 +691,7 @@
   {
     "slug": "erdos-197",
     "title": "Erdős #197",
-    "description": "Forum",
+    "description": "Can $\\mathbb{N}$ be partitioned into two sets, each of which can be permuted to avoid monotone 3-term arithmetic progressions?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -708,7 +708,7 @@
   {
     "slug": "erdos-203",
     "title": "Erdős #203",
-    "description": "Forum",
+    "description": "Is there an integer $m$ with $(m,6)=1$ such that none of $2^k3^\\ell m+1$ are prime, for any $k,\\ell\\geq 0$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -725,7 +725,7 @@
   {
     "slug": "erdos-218",
     "title": "Erdős #218",
-    "description": "Forum",
+    "description": "Let $d_n=p_{n+1}-p_n$. The set of $n$ such that $d_{n+1}\\geq d_n$ has density $1/2$, and similarly for $d_{n+1}\\leq d_n$. Furthermore, there are infinitely many $n$ such that $d_{n+1}=d_n$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -742,7 +742,7 @@
   {
     "slug": "erdos-234",
     "title": "Erdős #234",
-    "description": "Forum",
+    "description": "For every $c\\geq 0$ the density $f(c)$ of integers for which\\[\\frac{p_{n+1}-p_n}{\\log n}< c\\]exists and is a continuous function of $c$.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -759,7 +759,7 @@
   {
     "slug": "erdos-238",
     "title": "Erdős #238",
-    "description": "Forum",
+    "description": "Let $c_1,c_2>0$. Is it true that, for any sufficiently large $x$, there exist more than $c_1\\log x$ many consecutive primes $\\leq x$ such that the difference between any two is $>c_2$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -776,7 +776,7 @@
   {
     "slug": "erdos-241",
     "title": "Erdős #241",
-    "description": "Forum",
+    "description": "Let $f(N)$ be the maximum size of $A\\subseteq \\{1,\\ldots,N\\}$ such that the sums $a+b+c$ with $a,b,c\\in A$ are all distinct (aside from the trivial coincidences). Is it true that\\[ f(N)\\sim N^{1/3}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -793,7 +793,7 @@
   {
     "slug": "erdos-249",
     "title": "Erdős #249",
-    "description": "Forum",
+    "description": "Is\\[\\sum_n \\frac{\\phi(n)}{2^n}\\]irrational? Here $\\phi$ is the Euler totient function.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -810,7 +810,7 @@
   {
     "slug": "erdos-261",
     "title": "Erdős #261",
-    "description": "Forum",
+    "description": "Are there infinitely many $n$ such that there exists some $t\\geq 2$ and distinct integers $a_1,\\ldots,a_t\\geq 1$ such that\\[\\frac{n}{2^n}=\\sum_{1\\leq k\\leq t}\\frac{a_k}{2^{a_k}}?\\]Is this true for all $n$? Is there a rational $x$ such that\\[x = \\sum_{k=1}^\\infty \\frac{a_k}{2^{a_k}}\\]has at least $2^{\\aleph_0}$ solutions?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -827,7 +827,7 @@
   {
     "slug": "erdos-265",
     "title": "Erdős #265",
-    "description": "Forum",
+    "description": "How fast can $a_n\\to \\infty$ grow if\\[\\sum\\frac{1}{a_n}\\quad\\textrm{and}\\quad\\sum\\frac{1}{a_n-1}\\]are both rational?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -844,7 +844,7 @@
   {
     "slug": "erdos-269",
     "title": "Erdős #269",
-    "description": "Forum",
+    "description": "Let $P$ be a finite set of primes with $\\lvert P\\rvert \\geq 2$ and let $\\{a_1<a_2<\\cdots\\}=\\{ n\\in \\mathbb{N} : \\textrm{if }p\\mid n\\textrm{ then }p\\in P\\}$. Is the sum\\[\\sum_{n=1}^\\infty \\frac{1}{[a_1,\\ldots,a_n]},\\]where $[a_1,\\ldots,a_n]$ is the lowest common multiple of $a_1,\\ldots,a_n$, irrational?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -861,7 +861,7 @@
   {
     "slug": "erdos-273",
     "title": "Erdős #273",
-    "description": "Forum",
+    "description": "Is there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -878,7 +878,7 @@
   {
     "slug": "erdos-276",
     "title": "Erdős #276",
-    "description": "Forum",
+    "description": "Is there an infinite Lucas sequence $a_0,a_1,\\ldots$ where $a_{n+2}=a_{n+1}+a_n$ for $n\\geq 0$ such that all $a_k$ are composite, and yet no integer has a common factor with every term of the sequence?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -895,7 +895,7 @@
   {
     "slug": "erdos-278",
     "title": "Erdős #278",
-    "description": "Forum",
+    "description": "Let $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -912,7 +912,7 @@
   {
     "slug": "erdos-279",
     "title": "Erdős #279",
-    "description": "Forum",
+    "description": "Let $k\\geq 3$. Is there a choice of congruence classes $a_p\\pmod{p}$ for every prime $p$ such that all except finitely many integers can be written as $a_p+tp$ for some prime $p$ and integer $t\\geq k$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -929,7 +929,7 @@
   {
     "slug": "erdos-281",
     "title": "Erdős #281",
-    "description": "Forum",
+    "description": "Let $n_10$ there exists some $k$ such that, for every choice of congruence classes $a_i$, the density of integers not satisfying any of the congruences $a_i\\pmod{n_i}$ for $1\\leq i\\leq k$ is less than $\\epsilon$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -946,7 +946,7 @@
   {
     "slug": "erdos-282",
     "title": "Erdős #282",
-    "description": "Forum",
+    "description": "Let $A\\subseteq \\mathbb{N}$ be an infinite set and consider the following greedy algorithm for a rational $x\\in (0,1)$: choose the minimal $n\\in A$ such that $n\\geq 1/x$ and repeat with $x$ replaced by $x-\\frac{1}{n}$. If this terminates after finitely many steps then this produces a representation of $x$ as the sum of distinct unit fractions with denominators from $A$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -963,7 +963,7 @@
   {
     "slug": "erdos-288",
     "title": "Erdős #288",
-    "description": "Forum",
+    "description": "Is it true that there are only finitely many pairs of intervals $I_1,I_2$ such that\\[\\sum_{n_1\\in I_1}\\frac{1}{n_1}+\\sum_{n_2\\in I_2}\\frac{1}{n_2}\\in \\mathbb{N}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -980,7 +980,7 @@
   {
     "slug": "erdos-289",
     "title": "Erdős #289",
-    "description": "Forum",
+    "description": "Is it true that, for all sufficiently large $k$, there exist finite intervals $I_1,\\ldots,I_k\\subset \\mathbb{N}$, distinct, not overlapping or adjacent, with $\\lvert I_i\\rvert \\geq 2$ for $1\\leq i\\leq k$ such that\\[1=\\sum_{i=1}^k \\sum_{n\\in I_i}\\frac{1}{n}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1014,7 +1014,7 @@
   {
     "slug": "erdos-311",
     "title": "Erdős #311",
-    "description": "Forum",
+    "description": "What is the minimal value of $\\lvert 1-\\sum_{n\\in A}\\frac{1}{n}\\rvert$ as $A$ ranges over all subsets of $\\{1,\\ldots,N\\}$ which contain no $S$ such that $\\sum_{n\\in S}\\frac{1}{n}=1$? Is it\\[e^{-(c+o(1))N}\\]for some constant $c\\in (0,1)$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1031,7 +1031,7 @@
   {
     "slug": "erdos-313",
     "title": "Erdős #313",
-    "description": "Forum",
+    "description": "Are there infinitely many solutions to\\[\\frac{1}{p_1}+\\cdots+\\frac{1}{p_k}=1-\\frac{1}{m},\\]where $m\\geq 2$ is an integer and $p_1<\\cdots<p_k$ are distinct primes?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1048,7 +1048,7 @@
   {
     "slug": "erdos-317",
     "title": "Erdős #317",
-    "description": "Forum",
+    "description": "Is there some constant $c>0$ such that for every $n\\geq 1$ there exists some $\\delta_k\\in \\{-1,0,1\\}$ for $1\\leq k\\leq n$ with\\[0 \\frac{1}{[1,\\ldots,n]}\\]whenever the left-hand side is not zero?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1065,7 +1065,7 @@
   {
     "slug": "erdos-319",
     "title": "Erdős #319",
-    "description": "Forum",
+    "description": "What is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that there is a function $\\delta:A\\to \\{-1,1\\}$ such that\\[\\sum_{n\\in A}\\frac{\\delta_n}{n}=0\\]and\\[\\sum_{n\\in A'}\\frac{\\delta_n}{n}\\neq 0\\]for all non-empty $A'\\subsetneq A$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1082,7 +1082,7 @@
   {
     "slug": "erdos-312",
     "title": "Erdős #312",
-    "description": "Forum",
+    "description": "Does there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1099,7 +1099,7 @@
   {
     "slug": "erdos-321",
     "title": "Erdős #321",
-    "description": "Forum",
+    "description": "What is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that all sums $\\sum_{n\\in S}\\frac{1}{n}$ are distinct for $S\\subseteq A$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1116,7 +1116,7 @@
   {
     "slug": "erdos-323",
     "title": "Erdős #323",
-    "description": "Forum",
+    "description": "Let $1\\leq m\\leq k$ and $f_{k,m}(x)$ denote the number of integers $\\leq x$ which are the sum of $m$ many nonnegative $k$th powers. Is it true that\\[f_{k,k}(x) \\gg_\\epsilon x^{1-\\epsilon}\\]for all $\\epsilon>0$? Is it true that if $m0$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1133,7 +1133,7 @@
   {
     "slug": "erdos-324",
     "title": "Erdős #324",
-    "description": "Forum",
+    "description": "Does there exist a polynomial $f(x)\\in\\mathbb{Z}[x]$ such that all the sums $f(a)+f(b)$ with $a<b$ nonnegative integers are distinct?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1150,7 +1150,7 @@
   {
     "slug": "erdos-327",
     "title": "Erdős #327",
-    "description": "Forum",
+    "description": "Suppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that if $a,b\\in A$ and $a\\neq b$ then $a+b\\nmid ab$. Can $A$ be 'substantially more' than the odd numbers?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1167,7 +1167,7 @@
   {
     "slug": "erdos-330",
     "title": "Erdős #330",
-    "description": "Forum",
+    "description": "Does there exist a minimal basis with positive density, say $A\\subset\\mathbb{N}$, such that for any $n\\in A$ the (upper) density of integers which cannot be represented without using $n$ is positive?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1184,7 +1184,7 @@
   {
     "slug": "erdos-332",
     "title": "Erdős #332",
-    "description": "Forum",
+    "description": "Let $A\\subseteq \\mathbb{N}$ and $D(A)$ be the set of those numbers which occur infinitely often as $a_1-a_2$ with $a_1,a_2\\in A$. What conditions on $A$ are sufficient to ensure $D(A)$ has bounded gaps?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1201,7 +1201,7 @@
   {
     "slug": "erdos-335",
     "title": "Erdős #335",
-    "description": "Forum",
+    "description": "Let $d(A)$ denote the density of $A\\subseteq \\mathbb{N}$. Characterise those $A,B\\subseteq \\mathbb{N}$ with positive density such that\\[d(A+B)=d(A)+d(B).\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1218,7 +1218,7 @@
   {
     "slug": "erdos-341",
     "title": "Erdős #341",
-    "description": "Forum",
+    "description": "Let $A=\\{a_1<\\cdots<a_k\\}$ be a finite set of integers and extend it to an infinite sequence $\\overline{A}=\\{a_1<a_2<\\cdots \\}$ by defining $a_{n+1}$ for $n\\geq k$ to be the least integer exceeding $a_n$ which is not of the form $a_i+a_j$ with $i,j\\leq n$. Is it true that the sequence of differences $a_{m+1}-a_m$ is eventually periodic?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1235,7 +1235,7 @@
   {
     "slug": "erdos-342",
     "title": "Erdős #342",
-    "description": "Forum",
+    "description": "With $a_1=1$ and $a_2=2$ let $a_{n+1}$ for $n\\geq 2$ be the least integer $>a_n$ which can be expressed uniquely as $a_i+a_j$ for $i<j\\leq n$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1252,7 +1252,7 @@
   {
     "slug": "erdos-345",
     "title": "Erdős #345",
-    "description": "Forum",
+    "description": "Let $A\\subseteq \\mathbb{N}$ be a complete sequence, and define the threshold of completeness $T(A)$ to be the least integer $m$ such that all $n\\geq m$ are in\\[P(A) = \\left\\{\\sum_{n\\in B}n : B\\subseteq A\\textrm{ finite }\\right\\}\\](the existence of $T(A)$ is guaranteed by completeness).",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1269,7 +1269,7 @@
   {
     "slug": "erdos-346",
     "title": "Erdős #346",
-    "description": "Forum",
+    "description": "Let $A=\\{1\\leq a_10$ and all $n$ then\\[\\lim_n \\frac{a_{n+1}}{a_n}=\\frac{1+\\sqrt{5}}{2}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1286,7 +1286,7 @@
   {
     "slug": "erdos-347",
     "title": "Erdős #347",
-    "description": "Forum",
+    "description": "Is there a sequence $A=\\{a_1\\leq a_2\\leq \\cdots\\}$ of integers with\\[\\lim \\frac{a_{n+1}}{a_n}=2\\]such that\\[P(A')= \\left\\{\\sum_{n\\in B}n : B\\subseteq A'\\textrm{ finite }\\right\\}\\]has density $1$ for every cofinite subsequence $A'$ of $A$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1303,7 +1303,7 @@
   {
     "slug": "erdos-349",
     "title": "Erdős #349",
-    "description": "Forum",
+    "description": "For what values of $t,\\alpha \\in (0,\\infty)$ is the sequence $\\lfloor t\\alpha^n\\rfloor$ complete (that is, all sufficiently large integers are the sum of distinct integers of the form $\\lfloor t\\alpha^n\\rfloor$)?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1320,7 +1320,7 @@
   {
     "slug": "erdos-358",
     "title": "Erdős #358",
-    "description": "Forum",
+    "description": "Let $A=\\{a_1<\\cdots\\}$ be an infinite sequence of integers. Let $f(n)$ count the number of solutions to\\[n=\\sum_{u\\leq i\\leq v}a_i.\\]Is there such an $A$ for which $f(n)\\to \\infty$ as $n\\to \\infty$? Or even where $f(n)\\geq 2$ for all large $n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1337,7 +1337,7 @@
   {
     "slug": "erdos-348",
     "title": "Erdős #348",
-    "description": "Forum",
+    "description": "For what values of $0\\leq m<n$ is there a complete sequence $A=\\{a_1\\leq a_2\\leq \\cdots\\}$ of integers such that",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1354,7 +1354,7 @@
   {
     "slug": "erdos-361",
     "title": "Erdős #361",
-    "description": "Forum",
+    "description": "Let $c>0$ and $n$ be some large integer. What is the size of the largest $A\\subseteq \\{1,\\ldots,\\lfloor cn\\rfloor\\}$ such that $n$ is not a sum of a subset of $A$? Does this depend on $n$ in an irregular way?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1371,7 +1371,7 @@
   {
     "slug": "erdos-369",
     "title": "Erdős #369",
-    "description": "Forum",
+    "description": "Let $\\epsilon>0$ and $k\\geq 2$. Is it true that, for all sufficiently large $n$, there is a sequence of $k$ consecutive integers in $\\{1,\\ldots,n\\}$ all of which are $n^\\epsilon$-smooth?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1388,7 +1388,7 @@
   {
     "slug": "erdos-367",
     "title": "Erdős #367",
-    "description": "Forum",
+    "description": "Let $B_2(n)$ be the 2-full part of $n$ (that is, $B_2(n)=n/n'$ where $n'$ is the product of all primes that divide $n$ exactly once). Is it true that, for every fixed $k\\geq 1$,\\[\\prod_{n\\leq m0$,\\[\\limsup \\frac{\\prod_{n\\leq m<n+k}B_r(m) }{n^{1+\\epsilon}}\\to\\infty?\\]van Doorn notes in the comments that for $k\\leq 2$ we trivially have\\[\\prod_{n\\leq m<n+k}B_2(m) \\ll n^{2},\\]but that this fails for all $k\\geq 3$, and in fact...",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1405,7 +1405,7 @@
   {
     "slug": "erdos-374",
     "title": "Erdős #374",
-    "description": "Forum",
+    "description": "For any $m\\in \\mathbb{N}$, let $F(m)$ be the minimal $k\\geq 2$ (if it exists) such that there are $a_11\\}$,{/LI}",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1422,7 +1422,7 @@
   {
     "slug": "erdos-380",
     "title": "Erdős #380",
-    "description": "Forum",
+    "description": "We call an interval $[u,v]$ 'bad' if the greatest prime factor of $\\prod_{u\\leq m\\leq v}m$ occurs with an exponent greater than $1$. Let $B(x)$ count the number of $n\\leq x$ which are contained in at least one bad interval. Is it true that\\[B(x)\\sim \\#\\{ n\\leq x: P(n)^2\\mid n\\},\\]where $P(n)$ is the largest prime factor of $n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1439,7 +1439,7 @@
   {
     "slug": "erdos-382",
     "title": "Erdős #382",
-    "description": "Forum",
+    "description": "Let $u\\leq v$ be such that the largest prime dividing $\\prod_{u\\leq m\\leq v}m$ appears with exponent at least $2$. Is it true that $v-u=v^{o(1)}$? Can $v-u$ be arbitrarily large?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1456,7 +1456,7 @@
   {
     "slug": "erdos-383",
     "title": "Erdős #383",
-    "description": "Forum",
+    "description": "Is it true that for every $k$ there are infinitely many primes $p$ such that the largest prime divisor of\\[\\prod_{0\\leq i\\leq k}(p^2+i)\\]is $p$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1473,7 +1473,7 @@
   {
     "slug": "erdos-385",
     "title": "Erdős #385",
-    "description": "Forum",
+    "description": "Let\\[F(n) = \\max_{\\substack{mn$ for all sufficiently large $n$? Does $F(n)-n\\to \\infty$ as $n\\to\\infty$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1490,7 +1490,7 @@
   {
     "slug": "erdos-386",
     "title": "Erdős #386",
-    "description": "Forum",
+    "description": "Let $2\\leq k\\leq n-2$. Can $\\binom{n}{k}$ be the product of consecutive primes infinitely often? For example\\[\\binom{21}{2}=2\\cdot 3\\cdot 5\\cdot 7.\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1507,7 +1507,7 @@
   {
     "slug": "erdos-389",
     "title": "Erdős #389",
-    "description": "Forum",
+    "description": "Is it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1524,7 +1524,7 @@
   {
     "slug": "erdos-390",
     "title": "Erdős #390",
-    "description": "Forum",
+    "description": "Let $f(n)$ be the minimal $m$ such that\\[n! = a_1\\cdots a_k\\]with $n< a_1<\\cdots <a_k=m$. Is there (and what is it) a constant $c$ such that\\[f(n)-2n \\sim c\\frac{n}{\\log n}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1558,7 +1558,7 @@
   {
     "slug": "erdos-396",
     "title": "Erdős #396",
-    "description": "Forum",
+    "description": "Is it true that for every $k$ there exists $n$ such that\\[\\prod_{0\\leq i\\leq k}(n-i) \\mid \\binom{2n}{n}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1575,7 +1575,7 @@
   {
     "slug": "erdos-400",
     "title": "Erdős #400",
-    "description": "Forum",
+    "description": "For any $k\\geq 2$ let $g_k(n)$ denote the maximum value of\\[(a_1+\\cdots+a_k)-n\\]where $a_1,\\ldots,a_k$ are integers such that $a_1!\\cdots a_k! \\mid n!$. Can one show that\\[\\sum_{n\\leq x}g_k(n) \\sim c_k x\\log x\\]for some constant $c_k$? Is it true that there is a constant $c_k$ such that for almost all $n<x$ we have\\[g_k(n)=c_k\\log x+o(\\log x)?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1592,7 +1592,7 @@
   {
     "slug": "erdos-404",
     "title": "Erdős #404",
-    "description": "Forum",
+    "description": "For which integers $a\\geq 1$ and primes $p$ is there a finite upper bound on those $k$ such that there are $a=a_1<\\cdots<a_n$ with\\[p^k \\mid (a_1!+\\cdots+a_n!)?\\]If $f(a,p)$ is the greatest such $k$, how does this function behave?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1609,7 +1609,7 @@
   {
     "slug": "erdos-406",
     "title": "Erdős #406",
-    "description": "Forum",
+    "description": "Is it true that there are only finitely many powers of $2$ which have only the digits $0$ and $1$ when written in base $3$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1626,7 +1626,7 @@
   {
     "slug": "erdos-409",
     "title": "Erdős #409",
-    "description": "Forum",
+    "description": "How many iterations of $n\\mapsto \\phi(n)+1$ are needed before a prime is reached? Can infinitely many $n$ reach the same prime? What is the density of $n$ which reach any fixed prime?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1643,7 +1643,7 @@
   {
     "slug": "erdos-410",
     "title": "Erdős #410",
-    "description": "Forum",
+    "description": "Let $\\sigma_1(n)=\\sigma(n)$, the sum of divisors function, and $\\sigma_k(n)=\\sigma(\\sigma_{k-1}(n))$. Is it true that\\[\\lim_{k\\to \\infty} \\sigma_k(n)^{1/k}=\\infty?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1660,7 +1660,7 @@
   {
     "slug": "erdos-411",
     "title": "Erdős #411",
-    "description": "Forum",
+    "description": "Let $g_1=g(n)=n+\\phi(n)$ and $g_k(n)=g(g_{k-1}(n))$. For which $n$ and $r$ is it true that $g_{k+r}(n)=2g_k(n)$ for all large $k$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1677,7 +1677,7 @@
   {
     "slug": "erdos-414",
     "title": "Erdős #414",
-    "description": "Forum",
+    "description": "Let $h_1(n)=h(n)=n+\\tau(n)$ (where $\\tau(n)$ counts the number of divisors of $n$) and $h_k(n)=h(h_{k-1}(n))$. Is it true, for any $m,n$, there exist $i$ and $j$ such that $h_i(m)=h_j(n)$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1694,7 +1694,7 @@
   {
     "slug": "erdos-417",
     "title": "Erdős #417",
-    "description": "Forum",
+    "description": "Let\\[V'(x)=\\#\\{\\phi(m) : 1\\leq m\\leq x\\}\\]and\\[V(x)=\\#\\{\\phi(m) \\leq x : 1\\leq m\\}.\\]Does $\\lim V(x)/V'(x)$ exist? Is it $>1$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1711,7 +1711,7 @@
   {
     "slug": "erdos-421",
     "title": "Erdős #421",
-    "description": "Forum",
+    "description": "Is there a sequence $1\\leq d_11/e-\\epsilon$ for any $\\epsilon>0$.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1728,7 +1728,7 @@
   {
     "slug": "erdos-413",
     "title": "Erdős #413",
-    "description": "Forum",
+    "description": "Let $\\omega(n)$ count the number of distinct primes dividing $n$. Are there infinitely many $n$ such that, for all $m0$ such that there are infinitely many $n$ where $m+\\epsilon \\omega(m)\\leq n$ for all $m<n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1745,7 +1745,7 @@
   {
     "slug": "erdos-422",
     "title": "Erdős #422",
-    "description": "Forum",
+    "description": "Let $f(1)=f(2)=1$ and for $n>2$\\[f(n) = f(n-f(n-1))+f(n-f(n-2)).\\]Does $f(n)$ miss infinitely many integers? What is its behaviour?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1762,7 +1762,7 @@
   {
     "slug": "erdos-423",
     "title": "Erdős #423",
-    "description": "Forum",
+    "description": "Let $a_1=1$ and $a_2=2$ and for $k\\geq 3$ we choose $a_k$ to be the least integer $>a_{k-1}$ which is the sum of at least two consecutive terms of the sequence. What is the asymptotic behaviour of this sequence?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1779,7 +1779,7 @@
   {
     "slug": "erdos-424",
     "title": "Erdős #424",
-    "description": "Forum",
+    "description": "Let $a_1=2$ and $a_2=3$ and continue the sequence by appending to $a_1,\\ldots,a_n$ all possible values of $a_ia_j-1$ with $i\\neq j$. Is it true that the set of integers which eventually appear has positive density?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1796,7 +1796,7 @@
   {
     "slug": "erdos-428",
     "title": "Erdős #428",
-    "description": "Forum",
+    "description": "Is there a set $A\\subseteq \\mathbb{N}$ such that, for infinitely many $n$, all of $n-a$ are prime for all $a\\in A$ with $00?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1813,7 +1813,7 @@
   {
     "slug": "erdos-430",
     "title": "Erdős #430",
-    "description": "Forum",
+    "description": "Fix some integer $n$ and define a decreasing sequence in $[1,n)$ by $a_1=n-1$ and, for $k\\geq 2$, letting $a_k$ be the greatest integer in $[1,a_{k-1})$ such that all of the prime factors of $a_k$ are $>n-a_k$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1830,7 +1830,7 @@
   {
     "slug": "erdos-432",
     "title": "Erdős #432",
-    "description": "Forum",
+    "description": "Let $A,B\\subseteq \\mathbb{N}$ be two infinite sets. How dense can $A+B$ be if all elements of $A+B$ are pairwise relatively prime?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1847,7 +1847,7 @@
   {
     "slug": "erdos-477",
     "title": "Erdős #477",
-    "description": "Forum",
+    "description": "Is there a polynomial $f:\\mathbb{Z}\\to \\mathbb{Z}$ of degree at least $2$ and a set $A\\subset \\mathbb{Z}$ such that for any $n\\in \\mathbb{Z}$ there is exactly one $a\\in A$ and $b\\in \\{ f(n) : n\\in\\mathbb{Z}\\}$ such that $n=a+b$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -1864,7 +1864,7 @@
   {
     "slug": "erdos-478",
     "title": "Erdős #478",
-    "description": "Forum",
+    "description": "Let $p$ be a prime and\\[A_p = \\{ k! \\pmod{p} : 1\\leq k<p\\}.\\]Is it true that\\[\\lvert A_p\\rvert \\sim (1-\\tfrac{1}{e})p?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1881,7 +1881,7 @@
   {
     "slug": "erdos-483",
     "title": "Erdős #483",
-    "description": "Forum",
+    "description": "Let $f(k)$ be the minimal $N$ such that if $\\{1,\\ldots,N\\}$ is $k$-coloured then there is a monochromatic solution to $a+b=c$. Estimate $f(k)$. In particular, is it true that $f(k) 0$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1898,7 +1898,7 @@
   {
     "slug": "erdos-488",
     "title": "Erdős #488",
-    "description": "Forum",
+    "description": "Let $A$ be a finite set and\\[B=\\{ n \\geq 1 : a\\mid n\\textrm{ for some }a\\in A\\}.\\]Is it true that, for every $m>n\\geq \\max(A)$,\\[\\frac{\\lvert B\\cap [1,m]\\rvert }{m}< 2\\frac{\\lvert B\\cap [1,n]\\rvert}{n}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1915,7 +1915,7 @@
   {
     "slug": "erdos-450",
     "title": "Erdős #450",
-    "description": "Forum",
+    "description": "How large must $y=y(\\epsilon,n)$ be such that the number of integers in $(x,x+y)$ with a divisor in $(n,2n)$ is at most $\\epsilon y$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1932,7 +1932,7 @@
   {
     "slug": "erdos-451",
     "title": "Erdős #451",
-    "description": "Forum",
+    "description": "Estimate $n_k$, the smallest integer $>2k$ such that $\\prod_{1\\leq i\\leq k}(n_k-i)$ has no prime factor in $(k,2k)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1949,7 +1949,7 @@
   {
     "slug": "erdos-456",
     "title": "Erdős #456",
-    "description": "Forum",
+    "description": "Let $p_n$ be the smallest prime $\\equiv 1\\pmod{n}$ and let $m_n$ be the smallest integer such that $n\\mid \\phi(m_n)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1966,7 +1966,7 @@
   {
     "slug": "erdos-457",
     "title": "Erdős #457",
-    "description": "Forum",
+    "description": "Is there some $\\epsilon>0$ such that there are infinitely many $n$ where all primes $p\\leq (2+\\epsilon)\\log n$ divide\\[\\prod_{1\\leq i\\leq \\log n}(n+i)?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -1983,7 +1983,7 @@
   {
     "slug": "erdos-460",
     "title": "Erdős #460",
-    "description": "Forum",
+    "description": "Let $a_0=n$ and $a_1=1$, and in general $a_k$ is the least integer $>a_{k-1}$ for which $(n-a_k,n-a_i)=1$ for all $1\\leq i<k$. Does\\[\\sum_{i}\\frac{1}{a_i}\\to \\infty\\]as $n\\to \\infty$? What about if we restrict the sum to those $i$ such that $n-a_j$ is divisible by some prime $\\leq a_j$, or the complement of such $i$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2000,7 +2000,7 @@
   {
     "slug": "erdos-461",
     "title": "Erdős #461",
-    "description": "Forum",
+    "description": "Let $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2017,7 +2017,7 @@
   {
     "slug": "erdos-462",
     "title": "Erdős #462",
-    "description": "Forum",
+    "description": "Let $p(n)$ denote the least prime factor of $n$. There is a constant $c>0$ such that\\[\\sum_{\\substack{n0$ such that\\[\\sum_{x\\leq n\\leq x+Cx^{1/2}(\\log x)^2}\\frac{p(n)}{n} \\gg 1\\]for all large $x$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2034,7 +2034,7 @@
   {
     "slug": "erdos-463",
     "title": "Erdős #463",
-    "description": "Forum",
+    "description": "Is there a function $f$ with $f(n)\\to \\infty$ as $n\\to \\infty$ such that, for all large $n$, there is a composite number $m$ such that\\[n+f(n)n}(m-p(m)),\\]and whether $n-F(n)\\sim cn^{1/2}$ for some $c>0$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2051,7 +2051,7 @@
   {
     "slug": "erdos-467",
     "title": "Erdős #467",
-    "description": "Forum",
+    "description": "Prove the following for all large $x$: there is a choice of congruence classes $a_p$ for all primes $p\\leq x$ and a decomposition $\\{p\\leq x\\}=A\\sqcup B$ into two non-empty sets such that, for all $n<x$, there exist some $p\\in A$ and $q\\in B$ such that $n\\equiv a_p\\pmod{p}$ and $n\\equiv a_q\\pmod{q}$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2068,7 +2068,7 @@
   {
     "slug": "erdos-468",
     "title": "Erdős #468",
-    "description": "Forum",
+    "description": "For any $n$ let $D_n$ be the set of sums of the shape $d_1,d_1+d_2,d_1+d_2+d_3,\\ldots$ where $1<d_1<d_2<\\cdots$ are the divisors of $n$.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2085,7 +2085,7 @@
   {
     "slug": "erdos-469",
     "title": "Erdős #469",
-    "description": "Forum",
+    "description": "Let $A$ be the set of all $n$ such that $n=d_1+\\cdots+d_k$ with $d_i$ distinct proper divisors of $n$, but this is not true for any $m\\mid n$ with $m<n$. Does\\[\\sum_{n\\in A}\\frac{1}{n}\\]converge?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2102,7 +2102,7 @@
   {
     "slug": "erdos-472",
     "title": "Erdős #472",
-    "description": "Forum",
+    "description": "Given some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2119,7 +2119,7 @@
   {
     "slug": "erdos-513",
     "title": "Erdős #513",
-    "description": "Forum",
+    "description": "Let $f=\\sum_{n=0}^\\infty a_nz^n$ be a transcendental entire function. What is the greatest possible value of\\[\\liminf_{r\\to \\infty} \\frac{\\max_n\\lvert a_nr^n\\rvert}{\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2136,7 +2136,7 @@
   {
     "slug": "erdos-524",
     "title": "Erdős #524",
-    "description": "Forum",
+    "description": "For any $t\\in (0,1)$ let $t=\\sum_{k=1}^\\infty \\epsilon_k(t)2^{-k}$ (where $\\epsilon_k(t)\\in \\{0,1\\}$). What is the correct order of magnitude (for almost all $t\\in(0,1)$) for\\[M_n(t)=\\max_{x\\in [-1,1]}\\left\\lvert \\sum_{k\\leq n}(-1)^{\\epsilon_k(t)}x^k\\right\\rvert?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2153,7 +2153,7 @@
   {
     "slug": "erdos-530",
     "title": "Erdős #530",
-    "description": "Forum",
+    "description": "Let $\\ell(N)$ be maximal such that in any finite set $A\\subset \\mathbb{R}$ of size $N$ there exists a Sidon subset $S$ of size $\\ell(N)$ (i.e. the only solutions to $a+b=c+d$ in $S$ are the trivial ones). Determine the order of $\\ell(N)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2170,7 +2170,7 @@
   {
     "slug": "erdos-533",
     "title": "Erdős #533",
-    "description": "Forum",
+    "description": "Let $\\delta>0$. If $n$ is sufficiently large and $G$ is a graph on $n$ vertices with no $K_5$ and at least $\\delta n^2$ edges then $G$ contains a set of $\\gg_\\delta n$ vertices containing no triangle.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2187,7 +2187,7 @@
   {
     "slug": "erdos-536",
     "title": "Erdős #536",
-    "description": "Forum",
+    "description": "Let $\\epsilon>0$ and $N$ be sufficiently large. Is it true that if $A\\subseteq \\{1,\\ldots,N\\}$ has size at least $\\epsilon N$ then there must be distinct $a,b,c\\in A$ such that\\[[a,b]=[b,c]=[a,c],\\]where $[a,b]$ denotes the least common multiple?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2204,7 +2204,7 @@
   {
     "slug": "erdos-538",
     "title": "Erdős #538",
-    "description": "Forum",
+    "description": "Let $r\\geq 2$ and suppose that $A\\subseteq\\{1,\\ldots,N\\}$ is such that, for any $m$, there are at most $r$ solutions to $m=pa$ where $p$ is prime and $a\\in A$. Give the best possible upper bound for\\[\\sum_{n\\in A}\\frac{1}{n}.\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2340,7 +2340,7 @@
   {
     "slug": "erdos-654",
     "title": "Erdős #654",
-    "description": "Forum",
+    "description": "Let $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ with no four points on a circle. Must there exist some $x_i$ with at least $(1-o(1))n$ distinct distances to other $x_i$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2357,7 +2357,7 @@
   {
     "slug": "erdos-655",
     "title": "Erdős #655",
-    "description": "Forum",
+    "description": "Let $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ be such that no circle whose centre is one of the $x_i$ contains three other points. Are there at least\\[(1+c)\\frac{n}{2}\\]distinct distances determined between the $x_i$, for some constant $c>0$ and all $n$ sufficiently large?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2374,7 +2374,7 @@
   {
     "slug": "erdos-661",
     "title": "Erdős #661",
-    "description": "Forum",
+    "description": "Are there, for all large $n$, some points $x_1,\\ldots,x_n,y_1,\\ldots,y_n\\in \\mathbb{R}^2$ such that the number of distinct distances $d(x_i,y_j)$ is\\[o\\left(\\frac{n}{\\sqrt{\\log n}}\\right)?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2391,7 +2391,7 @@
   {
     "slug": "erdos-662",
     "title": "Erdős #662",
-    "description": "Forum",
+    "description": "Consider the triangular lattice with minimal distance between two points $1$. Denote by $f(t)$ the number of distances from any points $\\leq t$. For example $f(1)=6$, $f(\\sqrt{3})=12$, and $f(3)=18$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2408,7 +2408,7 @@
   {
     "slug": "erdos-663",
     "title": "Erdős #663",
-    "description": "Forum",
+    "description": "Let $k\\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\\prod_{1\\leq i\\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\\[q(n,k)<(1+o(1))\\log n?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2425,7 +2425,7 @@
   {
     "slug": "erdos-667",
     "title": "Erdős #667",
-    "description": "Forum",
+    "description": "Let $p,q\\geq 1$ be fixed integers. We define $H(n)=H(N;p,q)$ to be the largest $m$ such that any graph on $n$ vertices where every set of $p$ vertices spans at least $q$ edges must contain a complete graph on $m$ vertices.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2442,7 +2442,7 @@
   {
     "slug": "erdos-668",
     "title": "Erdős #668",
-    "description": "Forum",
+    "description": "Is it true that the number of incongruent sets of $n$ points in $\\mathbb{R}^2$ which maximise the number of unit distances tends to infinity as $n\\to\\infty$? Is it always $>1$ for $n>3$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2527,7 +2527,7 @@
   {
     "slug": "erdos-681",
     "title": "Erdős #681",
-    "description": "Forum",
+    "description": "Is it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2544,7 +2544,7 @@
   {
     "slug": "erdos-684",
     "title": "Erdős #684",
-    "description": "Forum",
+    "description": "For $0\\leq k\\leq n$ write\\[\\binom{n}{k} = uv\\]where the only primes dividing $u$ are in $[2,k]$ and the only primes dividing $v$ are in $(k,n]$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2561,7 +2561,7 @@
   {
     "slug": "erdos-685",
     "title": "Erdős #685",
-    "description": "Forum",
+    "description": "Let $\\epsilon>0$ and $n$ be large depending on $\\epsilon$. Is it true that for all $n^\\epsilon\\frac{\\log \\binom{n}{k}}{\\log n},\\]and this inequality becomes (asymptotic) equality if $k>n^{1-o(1)}$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2578,7 +2578,7 @@
   {
     "slug": "erdos-686",
     "title": "Erdős #686",
-    "description": "Forum",
+    "description": "Can every integer $N\\geq 2$ be written as\\[N=\\frac{\\prod_{1\\leq i\\leq k}(m+i)}{\\prod_{1\\leq i\\leq k}(n+i)}\\]for some $k\\geq 2$ and $m\\geq n+k$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2595,7 +2595,7 @@
   {
     "slug": "erdos-687",
     "title": "Erdős #687",
-    "description": "Forum",
+    "description": "Let $Y(x)$ be the maximal $y$ such that there exists a choice of congruence classes $a_p$ for all primes $p\\leq x$ such that every integer in $[1,y]$ is congruent to at least one of the $a_p\\pmod{p}$.",
     "phase": "NEW",
     "status": "active",
     "tier": "C",
@@ -2612,7 +2612,7 @@
   {
     "slug": "erdos-688",
     "title": "Erdős #688",
-    "description": "Forum",
+    "description": "Define $\\epsilon_n$ to be maximal such that there exists some choice of congruence class $a_p$ for all primes $n^{\\epsilon_n}<p\\leq n$ such that every integer in $[1,n]$ satisfies at least one of the congruences $\\equiv a_p\\pmod{p}$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2629,7 +2629,7 @@
   {
     "slug": "erdos-689",
     "title": "Erdős #689",
-    "description": "Forum",
+    "description": "Let $n$ be sufficiently large. Is there some choice of congruence class $a_p$ for all primes $2\\leq p\\leq n$ such that every integer in $[1,n]$ satisfies at least two of the congruences $\\equiv a_p\\pmod{p}$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2646,7 +2646,7 @@
   {
     "slug": "erdos-690",
     "title": "Erdős #690",
-    "description": "Forum",
+    "description": "Let $d_k(p)$ be the density of those integers whose $k$th smallest prime factor is $p$ (i.e. if $p_1<p_2<\\cdots$ are the primes dividing $n$ then $p_k=p$).",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2663,7 +2663,7 @@
   {
     "slug": "erdos-691",
     "title": "Erdős #691",
-    "description": "Forum",
+    "description": "Given $A\\subseteq \\mathbb{N}$ let $M_A=\\{ n \\geq 1 : a\\mid n\\textrm{ for some }a\\in A\\}$ be the set of multiples of $A$. Find a necessary and sufficient condition on $A$ for $M_A$ to have density $1$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2680,7 +2680,7 @@
   {
     "slug": "erdos-693",
     "title": "Erdős #693",
-    "description": "Forum",
+    "description": "Let $k\\geq 2$ and $n$ be sufficiently large depending on $k$. Let $A=\\{a_1<a_2<\\cdots \\}$ be the set of those integers in $[n,n^k]$ which have a divisor in $(n,2n)$. Estimate\\[\\max_{i} a_{i+1}-a_i.\\]Is this $\\leq (\\log n)^{O(1)}$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2697,7 +2697,7 @@
   {
     "slug": "erdos-695",
     "title": "Erdős #695",
-    "description": "Forum",
+    "description": "Let $p_1<p_2<\\cdots$ be a sequence of primes such that $p_{i+1}\\equiv 1\\pmod{p_i}$. Is it true that\\[\\lim_k p_k^{1/k}=\\infty?\\]Does there exist such a sequence with\\[p_k \\leq \\exp(k(\\log k)^{1+o(1)})?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2714,7 +2714,7 @@
   {
     "slug": "erdos-700",
     "title": "Erdős #700",
-    "description": "Forum",
+    "description": "Let\\[f(n)=\\min_{1n^{1/2}$?{/LI}",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2731,7 +2731,7 @@
   {
     "slug": "erdos-705",
     "title": "Erdős #705",
-    "description": "Forum",
+    "description": "Let $G$ be a finite unit distance graph in $\\mathbb{R}^2$ (i.e. the vertices are a finite collection of points in $\\mathbb{R}^2$ and there is an edge between two points if and only if the distance between them is $1$).",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2748,7 +2748,7 @@
   {
     "slug": "erdos-706",
     "title": "Erdős #706",
-    "description": "Forum",
+    "description": "Let $L(r)$ be such that if $G$ is a graph formed by taking a finite set of points $P$ in $\\mathbb{R}^2$ and some set $A\\subset (0,\\infty)$ of size $r$, where the vertex set is $P$ and there is an edge between two points if and only if their distance is a member of $A$, then $\\chi(G)\\leq L(r)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2765,7 +2765,7 @@
   {
     "slug": "erdos-719",
     "title": "Erdős #719",
-    "description": "Forum",
+    "description": "Let $\\mathrm{ex}_r(n;K_{r+1}^r)$ be the maximum number of $r$-edges that can be placed on $n$ vertices without forming a $K_{r+1}^r$ (the $r$-uniform complete graph on $r+1$ vertices).",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2782,7 +2782,7 @@
   {
     "slug": "erdos-726",
     "title": "Erdős #726",
-    "description": "Forum",
+    "description": "As $n\\to \\infty$ ranges over integers\\[\\sum_{p\\leq n}1_{n\\in (p/2,p)\\pmod{p}}\\frac{1}{p}\\sim \\frac{\\log\\log n}{2}.\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2799,7 +2799,7 @@
   {
     "slug": "erdos-730",
     "title": "Erdős #730",
-    "description": "Forum",
+    "description": "Are there infinitely many pairs of integers $n\\neq m$ such that $\\binom{2n}{n}$ and $\\binom{2m}{m}$ have the same set of prime divisors?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2816,7 +2816,7 @@
   {
     "slug": "erdos-731",
     "title": "Erdős #731",
-    "description": "Forum",
+    "description": "Find some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2833,7 +2833,7 @@
   {
     "slug": "erdos-738",
     "title": "Erdős #738",
-    "description": "Forum",
+    "description": "If $G$ has infinite chromatic number and is triangle-free (contains no $K_3$) then must $G$ contain every tree as an induced subgraph?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2850,7 +2850,7 @@
   {
     "slug": "erdos-741",
     "title": "Erdős #741",
-    "description": "Forum",
+    "description": "Let $A\\subseteq \\mathbb{N}$ be such that $A+A$ has positive density. Can one always decompose $A=A_1\\sqcup A_2$ such that $A_1+A_1$ and $A_2+A_2$ both have positive density?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2888,7 +2888,7 @@
   {
     "slug": "erdos-749",
     "title": "Erdős #749",
-    "description": "Forum",
+    "description": "Let $\\epsilon>0$. Does there exist $A\\subseteq \\mathbb{N}$ such that the lower density of $A+A$ is at least $1-\\epsilon$ and yet $1_A\\ast 1_A(n) \\ll_\\epsilon 1$ for all $n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -2905,7 +2905,7 @@
   {
     "slug": "erdos-750",
     "title": "Erdős #750",
-    "description": "Forum",
+    "description": "Let $f(m)$ be some function such that $f(m)\\to \\infty$ as $m\\to \\infty$. Does there exist a graph $G$ of infinite chromatic number such that every subgraph on $m$ vertices contains an independent set of size at least $\\frac{m}{2}-f(m)$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2922,7 +2922,7 @@
   {
     "slug": "erdos-761",
     "title": "Erdős #761",
-    "description": "Forum",
+    "description": "The cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph. The dichromatic number of $G$, denoted by $\\delta(G)$, is the minimum number $k$ of colours required such that, in any orientation of the edges of $G$, there is a $k$-colouring of the vertices of $G$ such that there are no mo...",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2939,7 +2939,7 @@
   {
     "slug": "erdos-768",
     "title": "Erdős #768",
-    "description": "Forum",
+    "description": "Let $A\\subset\\mathbb{N}$ be the set of $n$ such that for every prime $p\\mid n$ there exists some $d\\mid n$ with $d>1$ such that $d\\equiv 1\\pmod{p}$. Is it true that there exists some constant $c>0$ such that for all large $N$\\[\\frac{\\lvert A\\cap [1,N]\\rvert}{N}=\\exp(-(c+o(1))\\sqrt{\\log N}\\log\\log N).\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2956,7 +2956,7 @@
   {
     "slug": "erdos-770",
     "title": "Erdős #770",
-    "description": "Forum",
+    "description": "Let $h(n)$ be minimal such that $2^n-1,3^n-1,\\ldots,h(n)^n-1$ are mutually coprime.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2973,7 +2973,7 @@
   {
     "slug": "erdos-776",
     "title": "Erdős #776",
-    "description": "Forum",
+    "description": "Let $r\\geq 2$ and $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ be such that $A_i\\not\\subseteq A_j$ for all $i\\neq j$ and for any $t$ if there exists some $i$ with $\\lvert A_i\\rvert=t$ then there must exist at least $r$ sets of that size.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -2990,7 +2990,7 @@
   {
     "slug": "erdos-782",
     "title": "Erdős #782",
-    "description": "Forum",
+    "description": "Do the squares contain arbitrarily long quasi-progressions? That is, does there exist some constant $C>0$ such that, for any $k$, the squares contain a sequence $x_1,\\ldots,x_k$ where, for some $d$ and all $1\\leq i<k$,\\[x_i+d\\leq x_{i+1}\\leq x_i+d+C.\\]Do the squares contain arbitrarily large cubes\\[a+\\left\\{ \\sum_i \\epsilon_ib_i : \\epsilon_i\\in \\{0,1\\}\\right\\}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3007,7 +3007,7 @@
   {
     "slug": "erdos-783",
     "title": "Erdős #783",
-    "description": "Forum",
+    "description": "Fix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3024,7 +3024,7 @@
   {
     "slug": "erdos-792",
     "title": "Erdős #792",
-    "description": "Forum",
+    "description": "Let $f(n)$ be maximal such that in any $A\\subset \\mathbb{Z}$ with $\\lvert A\\rvert=n$ there exists some sum-free subset $B\\subseteq A$ with $\\lvert B\\rvert \\geq f(n)$, so that there are no solutions to\\[a+b=c\\]with $a,b,c\\in B$. Estimate $f(n)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3041,7 +3041,7 @@
   {
     "slug": "erdos-810",
     "title": "Erdős #810",
-    "description": "Forum",
+    "description": "Does there exist some $\\epsilon>0$ such that, for all sufficiently large $n$, there exists a graph $G$ on $n$ vertices with at least $\\epsilon n^2$ many edges such that the edges can be coloured with $n$ colours so that every $C_4$ receives $4$ distinct colours?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3058,7 +3058,7 @@
   {
     "slug": "erdos-825",
     "title": "Erdős #825",
-    "description": "Forum",
+    "description": "Is there an absolute constant $C>0$ such that every integer $n$ with $\\sigma(n)>Cn$ is the distinct sum of proper divisors of $n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3075,7 +3075,7 @@
   {
     "slug": "erdos-826",
     "title": "Erdős #826",
-    "description": "Forum",
+    "description": "Are there infinitely many $n$ such that, for all $k\\geq 1$,\\[\\tau(n+k)\\ll k?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3092,7 +3092,7 @@
   {
     "slug": "erdos-827",
     "title": "Erdős #827",
-    "description": "Forum",
+    "description": "Let $n_k$ be minimal such that if $n_k$ points in $\\mathbb{R}^2$ are in general position then there exists a subset of $k$ points such that all $\\binom{k}{3}$ triples determine circles of different radii.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3109,7 +3109,7 @@
   {
     "slug": "erdos-828",
     "title": "Erdős #828",
-    "description": "Forum",
+    "description": "Is it true that, for any $a\\in\\mathbb{Z}$, there are infinitely many $n$ such that\\[\\phi(n) \\mid n+a?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3126,7 +3126,7 @@
   {
     "slug": "erdos-831",
     "title": "Erdős #831",
-    "description": "Forum",
+    "description": "Let $h(n)$ be maximal such that in any $n$ points in $\\mathbb{R}^2$ (with no three on a line and no four on a circle) there are at least $h(n)$ many circles of different radii passing through three points. Estimate $h(n)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3143,7 +3143,7 @@
   {
     "slug": "erdos-837",
     "title": "Erdős #837",
-    "description": "Forum",
+    "description": "Let $k\\geq 2$ and $A_k\\subseteq [0,1]$ be the set of $\\alpha$ such that there exists some $\\beta(\\alpha)>\\alpha$ with the property that, if $G_1,G_2,\\ldots$ is a sequence of $k$-uniform hypergraphs with\\[\\liminf \\frac{e(G_n)}{\\binom{\\lvert G_n\\rvert}{k}} >\\alpha\\]then there exist subgraphs $H_n\\subseteq G_n$ such that $\\lvert H_n\\rvert \\to \\infty$ and\\[\\liminf \\frac{e(H_n)}{\\binom{\\lvert H_n\\rvert}{k}} >\\beta,\\]and furthe...",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3160,7 +3160,7 @@
   {
     "slug": "erdos-839",
     "title": "Erdős #839",
-    "description": "Forum",
+    "description": "Let $1\\leq a_11/2$. In fact this is false - Freud \\cite{Fr93} constructed a sequence with upper density $19/36$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3177,7 +3177,7 @@
   {
     "slug": "erdos-846",
     "title": "Erdős #846",
-    "description": "Forum",
+    "description": "Let $A\\subset \\mathbb{R}^2$ be an infinite set for which there exists some $\\epsilon>0$ such that in any subset of $A$ of size $n$ there are always at least $\\epsilon n$ with no three on a line.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3194,7 +3194,7 @@
   {
     "slug": "erdos-847",
     "title": "Erdős #847",
-    "description": "Forum",
+    "description": "Let $A\\subset \\mathbb{N}$ be an infinite set for which there exists some $\\epsilon>0$ such that in any subset of $A$ of size $n$ there is a subset of size at least $\\epsilon n$ which contains no three-term arithmetic progression.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3211,7 +3211,7 @@
   {
     "slug": "erdos-848",
     "title": "Erdős #848",
-    "description": "Forum",
+    "description": "Is the maximum size of a set $A\\subseteq \\{1,\\ldots,N\\}$ such that $ab+1$ is never squarefree (for all $a,b\\in A$) achieved by taking those $n\\equiv 7\\pmod{25}$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3228,7 +3228,7 @@
   {
     "slug": "erdos-850",
     "title": "Erdős #850",
-    "description": "Forum",
+    "description": "Can there exist two distinct integers $x$ and $y$ such that $x,y$ have the same prime factors, $x+1,y+1$ have the same prime factors, and $x+2,y+2$ also have the same prime factors?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3245,7 +3245,7 @@
   {
     "slug": "erdos-852",
     "title": "Erdős #852",
-    "description": "Forum",
+    "description": "Let $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $h(x)$ be maximal such that for some $n(\\log x)^c\\]for some constant $c>0$, and\\[h(x)=o(\\log x)?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3262,7 +3262,7 @@
   {
     "slug": "erdos-853",
     "title": "Erdős #853",
-    "description": "Forum",
+    "description": "Let $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $r(x)$ be the smallest even integer $t$ such that $d_n=t$ has no solutions for $n\\leq x$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3279,7 +3279,7 @@
   {
     "slug": "erdos-854",
     "title": "Erdős #854",
-    "description": "Forum",
+    "description": "Let $n_k$ denote the $k$th primorial, i.e. the product of the first $k$ primes.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3296,7 +3296,7 @@
   {
     "slug": "erdos-863",
     "title": "Erdős #863",
-    "description": "Forum",
+    "description": "Let $r\\geq 2$ and let $A\\subseteq \\{1,\\ldots,N\\}$ be a set of maximal size such that there are at most $r$ solutions to $n=a+b$ with $a\\leq b$ for any $n$. (That is, $A$ is a $B_2[r]$ set.)",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3313,7 +3313,7 @@
   {
     "slug": "erdos-864",
     "title": "Erdős #864",
-    "description": "Forum",
+    "description": "Let $A\\subseteq \\{1,\\ldots N\\}$ be a set such that there exists at most one $n$ with more than one solution to $n=a+b$ (with $a\\leq b\\in A$). Estimate the maximal possible size of $\\lvert A\\rvert$ - in particular, is it true that\\[\\lvert A\\rvert \\leq (1+o(1))\\frac{2}{\\sqrt{3}}N^{1/2}?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3330,7 +3330,7 @@
   {
     "slug": "erdos-875",
     "title": "Erdős #875",
-    "description": "Forum",
+    "description": "Let $A=\\{a_1<a_2<\\cdots\\}\\subset \\mathbb{N}$ be an infinite set such that the sets\\[S_r = \\{ a_1+\\cdots +a_r : a_1<\\cdots<a_r\\in A\\}\\]are disjoint for distinct $r\\geq 1$. How fast can such a sequence grow? How small can $a_{n+1}-a_n$ be? In particular, for which $c$ is it possible that $a_{n+1}-a_n\\leq n^{c}$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3347,7 +3347,7 @@
   {
     "slug": "erdos-881",
     "title": "Erdős #881",
-    "description": "Forum",
+    "description": "Let $A\\subset\\mathbb{N}$ be an additive basis of order $k$ which is minimal, in the sense that if $B\\subset A$ is any infinite set then $A\\backslash B$ is not a basis of order $k$.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3364,7 +3364,7 @@
   {
     "slug": "erdos-884",
     "title": "Erdős #884",
-    "description": "Forum",
+    "description": "Is it true that, for any $n$, if $d_1<\\cdots <d_t$ are the divisors of $n$, then\\[\\sum_{1\\leq i<j\\leq t}\\frac{1}{d_j-d_i} \\ll 1+\\sum_{1\\leq i<t}\\frac{1}{d_{i+1}-d_i},\\]where the implied constant is absolute?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3381,7 +3381,7 @@
   {
     "slug": "erdos-889",
     "title": "Erdős #889",
-    "description": "Forum",
+    "description": "For $k\\geq 0$ and $n\\geq 1$ let $v(n,k)$ count the prime factors of $n+k$ which do not divide $n+i$ for $0\\leq ik$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3398,7 +3398,7 @@
   {
     "slug": "erdos-890",
     "title": "Erdős #890",
-    "description": "Forum",
+    "description": "If $\\omega(n)$ counts the number of distinct prime factors of $n$, then is it true that, for every $k\\geq 1$,\\[\\liminf_{n\\to \\infty}\\sum_{0\\leq ik$ by P\\'{o}lya's theorem.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3415,7 +3415,7 @@
   {
     "slug": "erdos-891",
     "title": "Erdős #891",
-    "description": "Forum",
+    "description": "Let $2=p_1k$ many prime factors?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3432,7 +3432,7 @@
   {
     "slug": "erdos-892",
     "title": "Erdős #892",
-    "description": "Forum",
+    "description": "Is there a necessary and sufficient condition for a sequence of integers $b_1<b_2<\\cdots$ that ensures there exists a primitive sequence $a_1<a_2<\\cdots$ (i.e. no element divides another) with $a_n \\ll b_n$ for all $n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3449,7 +3449,7 @@
   {
     "slug": "erdos-893",
     "title": "Erdős #893",
-    "description": "Forum",
+    "description": "If $\\tau(n)$ counts the divisors of $n$ then let\\[f(n)=\\sum_{1\\leq k\\leq n}\\tau(2^k-1).\\]Does $f(2n)/f(n)$ tend to a limit?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3483,7 +3483,7 @@
   {
     "slug": "erdos-911",
     "title": "Erdős #911",
-    "description": "Forum",
+    "description": "Let $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges that is Ramsey for $G$.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3500,7 +3500,7 @@
   {
     "slug": "erdos-913",
     "title": "Erdős #913",
-    "description": "Forum",
+    "description": "Are there infinitely many $n$ such that if\\[n(n+1) = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then all exponents $k_i$ are distinct?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3517,7 +3517,7 @@
   {
     "slug": "erdos-919",
     "title": "Erdős #919",
-    "description": "Forum",
+    "description": "Is there a graph $G$ with vertex set $\\omega_2^2$ and chromatic number $\\aleph_2$ such that every subgraph whose vertices have a lesser type has chromatic number $\\leq \\aleph_0$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3534,7 +3534,7 @@
   {
     "slug": "erdos-929",
     "title": "Erdős #929",
-    "description": "Forum",
+    "description": "Let $k\\geq 2$ be large and let $S(k)$ be the minimal $x$ such that there is a positive density set of $n$ where\\[n+1,n+2,\\ldots,n+k\\]are all divisible by primes $\\leq x$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3551,7 +3551,7 @@
   {
     "slug": "erdos-931",
     "title": "Erdős #931",
-    "description": "Forum",
+    "description": "Let $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3568,7 +3568,7 @@
   {
     "slug": "erdos-932",
     "title": "Erdős #932",
-    "description": "Forum",
+    "description": "Let $p_k$ denote the $k$th prime. For infinitely many $r$ there are at least two integers $p_r<n<p_{r+1}$ all of whose prime factors are $<p_{r+1}-p_r$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3585,7 +3585,7 @@
   {
     "slug": "erdos-935",
     "title": "Erdős #935",
-    "description": "Forum",
+    "description": "For any integer $n=\\prod p^{k_p}$ let $Q_2(n)$ be the powerful part of $n$, so that\\[Q_2(n) = \\prod_{\\substack{p\\\\ k_p\\geq 2}}p^{k_p}.\\]Is it true that, for every $\\epsilon>0$ and $\\ell\\geq 1$, if $n$ is sufficiently large then\\[Q_2(n(n+1)\\cdots(n+\\ell))2$, only keeping those prime powers with exponent $\\geq r$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3602,7 +3602,7 @@
   {
     "slug": "erdos-936",
     "title": "Erdős #936",
-    "description": "Forum",
+    "description": "Are\\[2^n\\pm 1\\]and\\[n!\\pm 1\\]powerful (i.e. if $p\\mid m$ then $p^2\\mid m$) for only finitely many $n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3619,7 +3619,7 @@
   {
     "slug": "erdos-938",
     "title": "Erdős #938",
-    "description": "Forum",
+    "description": "Let $A=\\{n_1<n_2<\\cdots\\}$ be the sequence of powerful numbers (if $p\\mid n$ then $p^2\\mid n$).",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3636,7 +3636,7 @@
   {
     "slug": "erdos-949",
     "title": "Erdős #949",
-    "description": "Forum",
+    "description": "Let $S\\subset \\mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3653,7 +3653,7 @@
   {
     "slug": "erdos-950",
     "title": "Erdős #950",
-    "description": "Forum",
+    "description": "Let\\[f(n) = \\sum_{p0$ such that there are $\\gg n^c/\\log n$ many primes in $[n,n+n^c]$ implies that $\\liminf f(n)>0$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3670,7 +3670,7 @@
   {
     "slug": "erdos-951",
     "title": "Erdős #951",
-    "description": "Forum",
+    "description": "Let $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3687,7 +3687,7 @@
   {
     "slug": "erdos-952",
     "title": "Erdős #952",
-    "description": "Forum",
+    "description": "Is there an infinite sequence of distinct Gaussian primes $x_1,x_2,\\ldots$ such that\\[\\lvert x_{n+1}-x_n\\rvert \\ll 1?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3704,7 +3704,7 @@
   {
     "slug": "erdos-953",
     "title": "Erdős #953",
-    "description": "Forum",
+    "description": "Let $A\\subset \\{ x\\in \\mathbb{R}^2 : \\lvert x\\rvert <r\\}$ be a measurable set with no integer distances, that is, such that $\\lvert a-b\\rvert \\not\\in \\mathbb{Z}$ for any distinct $a,b\\in A$. How large can the measure of $A$ be?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3721,7 +3721,7 @@
   {
     "slug": "erdos-943",
     "title": "Erdős #943",
-    "description": "Forum",
+    "description": "Let $A$ be the set of powerful numbers (if $p\\mid n$ then $p^2\\mid n$). Is it true that\\[1_A\\ast 1_A(n)=n^{o(1)}\\]for every $n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3738,7 +3738,7 @@
   {
     "slug": "erdos-948",
     "title": "Erdős #948",
-    "description": "Forum",
+    "description": "Is there a function $f(n)$ and a $k$ such that in any $k$-colouring of the integers there exists a sequence $a_1<\\cdots$ such that $a_n<f(n)$ for infinitely many $n$ and the set\\[\\left\\{ \\sum_{i\\in S}a_i : \\textrm{finite }S\\right\\}\\]does not contain all colours?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3755,7 +3755,7 @@
   {
     "slug": "erdos-954",
     "title": "Erdős #954",
-    "description": "Forum",
+    "description": "Let $1=a_1<a_2<\\cdots$ be the sequence of integers defined by $a_1=1$ and $a_{k+1}$ is the smallest integer $n$ for which the number of solutions to $a_i+a_j \\leq n$ (with $i\\leq j\\leq k$) is less than $n-k$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3772,7 +3772,7 @@
   {
     "slug": "erdos-959",
     "title": "Erdős #959",
-    "description": "Forum",
+    "description": "Let $A\\subset \\mathbb{R}^2$ be a set of size $n$ and let $\\{d_1,\\ldots,d_k\\}$ be the set of distinct distances determined by $A$. Let $f(d)$ be the number of times the distance $d$ is determined, and suppose the $d_i$ are ordered such that\\[f(d_1)\\geq f(d_2)\\geq \\cdots \\geq f(d_k).\\]Estimate\\[\\max (f(d_1)-f(d_2)),\\]where the maximum is taken over all $A$ of size $n$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3789,7 +3789,7 @@
   {
     "slug": "erdos-960",
     "title": "Erdős #960",
-    "description": "Forum",
+    "description": "Let $r,k\\geq 2$ be fixed. Let $A\\subset \\mathbb{R}^2$ be a set of $n$ points with no $k$ points on a line. Determine the threshold $f_{r,k}(n)$ such that if there are at least $f_{r,k}(n)$ many ordinary lines (lines containing exactly two points) then there is a set $A'\\subseteq A$ of $r$ points such that all $\\binom{r}{2}$ many lines determined by $A'$ are ordinary.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3806,7 +3806,7 @@
   {
     "slug": "erdos-963",
     "title": "Erdős #963",
-    "description": "Forum",
+    "description": "Let $f(n)$ be the maximal $k$ such that in any set $A\\subset \\mathbb{R}$ of size $n$ there is a subset $B\\subseteq A$ of size $\\lvert B\\rvert\\geq k$ which is dissociated that is, the sums $\\sum_{b\\in S}b$ are distinct for all $S\\subseteq B$. Estimate $f(n)$ - in particular, is it true that\\[f(n)\\geq \\lfloor \\log_2 n\\rfloor?\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3823,7 +3823,7 @@
   {
     "slug": "erdos-1013",
     "title": "Erdős #1013",
-    "description": "Forum",
+    "description": "Let $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Find an asymptotic for $h_3(k)$, and also prove\\[\\lim_{k\\to \\infty}\\frac{h_3(k+1)}{h_3(k)}=1.\\]",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3840,7 +3840,7 @@
   {
     "slug": "erdos-1014",
     "title": "Erdős #1014",
-    "description": "Forum",
+    "description": "Let $R(k,l)$ be the Ramsey number, so the minimal $n$ such that every graph on at least $n$ vertices contains either a $K_k$ or an independent set on $l$ vertices.",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -3857,7 +3857,7 @@
   {
     "slug": "erdos-1016",
     "title": "Erdős #1016",
-    "description": "Forum",
+    "description": "Let $h(n)$ be minimal such that there is a graph on $n$ vertices with $n+h(n)$ edges which contains a cycle on $k$ vertices, for all $3\\leq k\\leq n$. Estimate $h(n)$. In particular, is it true that\\[h(n) \\geq \\log_2n+\\log_*n-O(1),\\]where $\\log_*n$ is the iterated logarithmic function?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3874,7 +3874,7 @@
   {
     "slug": "erdos-1032",
     "title": "Erdős #1032",
-    "description": "Forum",
+    "description": "We say that a graph is $4$-chromatic critical if it has chromatic number $4$, and removing any edge decreases the chromatic number to $3$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3891,7 +3891,7 @@
   {
     "slug": "erdos-1035",
     "title": "Erdős #1035",
-    "description": "Forum",
+    "description": "Is there a constant $c>0$ such that every graph on $2^n$ vertices with minimum degree $>(1-c)2^n$ contains the $n$-dimensional hypercube $Q_n$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3925,7 +3925,7 @@
   {
     "slug": "erdos-1052",
     "title": "Erdős #1052",
-    "description": "Forum",
+    "description": "A unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3942,7 +3942,7 @@
   {
     "slug": "erdos-1053",
     "title": "Erdős #1053",
-    "description": "Forum",
+    "description": "Call a number $k$-perfect if $\\sigma(n)=kn$, where $\\sigma(n)$ is the sum of the divisors of $n$. Must $k=o(\\log\\log n)$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3959,7 +3959,7 @@
   {
     "slug": "erdos-1055",
     "title": "Erdős #1055",
-    "description": "Forum",
+    "description": "A prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3976,7 +3976,7 @@
   {
     "slug": "erdos-1056",
     "title": "Erdős #1056",
-    "description": "Forum",
+    "description": "Let $k\\geq 2$. Does there exist a prime $p$ and consecutive intervals $I_1,\\ldots,I_k$ such that\\[\\prod_{n\\in I_i}n \\equiv 1\\pmod{p}\\]for all $1\\leq i\\leq k$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -3993,7 +3993,7 @@
   {
     "slug": "erdos-1059",
     "title": "Erdős #1059",
-    "description": "Forum",
+    "description": "Are there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\\leq k!l$, and all the numbers $n-k!$ are composite for $1\\leq k\\leq l$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4010,7 +4010,7 @@
   {
     "slug": "erdos-1060",
     "title": "Erdős #1060",
-    "description": "Forum",
+    "description": "Let $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -4027,7 +4027,7 @@
   {
     "slug": "erdos-1061",
     "title": "Erdős #1061",
-    "description": "Forum",
+    "description": "How many solutions are there to\\[\\sigma(a)+\\sigma(b)=\\sigma(a+b)\\]with $a+b\\leq x$, where $\\sigma$ is the sum of divisors function? Is it $\\sim cx$ for some constant $c>0$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -4044,7 +4044,7 @@
   {
     "slug": "erdos-1062",
     "title": "Erdős #1062",
-    "description": "Forum",
+    "description": "Let $f(n)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,n\\}$ such that there are no three distinct elements $a,b,c\\in A$ such that $a\\mid b$ and $a\\mid c$. How large can $f(n)$ be? Is $\\lim f(n)/n$ irrational?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4061,7 +4061,7 @@
   {
     "slug": "erdos-1063",
     "title": "Erdős #1063",
-    "description": "Forum",
+    "description": "Let $k\\geq 2$ and define $n_k\\geq 2k$ to be the least value of $n$ such that $n-i$ divides $\\binom{n}{k}$ for all but one $0\\leq i<k$. Estimate $n_k$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4078,7 +4078,7 @@
   {
     "slug": "erdos-1065",
     "title": "Erdős #1065",
-    "description": "Forum",
+    "description": "Are there infinitely many primes $p$ such that $p=2^kq+1$ for some prime $q$ and $k\\geq 0$? Or $p=2^k3^lq+1$?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -4095,7 +4095,7 @@
   {
     "slug": "erdos-1068",
     "title": "Erdős #1068",
-    "description": "Forum",
+    "description": "Does every graph with chromatic number $\\aleph_1$ contain a countable subgraph which is infinitely connected?",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
@@ -4112,7 +4112,7 @@
   {
     "slug": "erdos-1071",
     "title": "Erdős #1071",
-    "description": "Forum",
+    "description": "Are there a finite set of unit line segments in the unit square, no two of which intersect, which are maximal with respect to this property?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4129,7 +4129,7 @@
   {
     "slug": "erdos-1072",
     "title": "Erdős #1072",
-    "description": "Forum",
+    "description": "For any prime $p$, let $f(p)$ be the least integer such that $f(p)!+1\\equiv 0\\pmod{p}$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4146,7 +4146,7 @@
   {
     "slug": "erdos-1073",
     "title": "Erdős #1073",
-    "description": "Forum",
+    "description": "Let $A(x)$ count the number of composite $u<x$ such that $n!+1\\equiv 0\\pmod{u}$ for some $n$. Is it true that $A(x)\\leq x^{o(1)}$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4163,7 +4163,7 @@
   {
     "slug": "erdos-1084",
     "title": "Erdős #1084",
-    "description": "Forum",
+    "description": "Let $f_d(n)$ be minimal such that in any collection of $n$ points in $\\mathbb{R}^d$, all of distance at least $1$ apart, there are at most $f_d(n)$ many pairs of points which are distance $1$ apart. Estimate $f_d(n)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4180,7 +4180,7 @@
   {
     "slug": "erdos-1092",
     "title": "Erdős #1092",
-    "description": "Forum",
+    "description": "Let $f_r(n)$ be maximal such that, if a graph $G$ has the property that every subgraph $H$ on $m$ vertices is the union of a graph with chromatic number $r$ and a graph with $\\leq f_r(m)$ edges, then $G$ has chromatic number $\\leq r+1$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4197,7 +4197,7 @@
   {
     "slug": "erdos-1093",
     "title": "Erdős #1093",
-    "description": "Forum",
+    "description": "For $n\\geq 2k$ we define the deficiency of $\\binom{n}{k}$ as follows. If $\\binom{n}{k}$ is divisible by a prime $p\\leq k$ then the deficiency is undefined. Otherwise, the deficiency is the number of $0\\leq i1$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4214,7 +4214,7 @@
   {
     "slug": "erdos-1103",
     "title": "Erdős #1103",
-    "description": "Forum",
+    "description": "Let $A$ be an infinite sequence of integers such that every $n\\in A+A$ is squarefree. How fast must $A$ grow?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4231,7 +4231,7 @@
   {
     "slug": "erdos-1104",
     "title": "Erdős #1104",
-    "description": "Forum",
+    "description": "Let $f(n)$ be the maximum possible chromatic number of a triangle-free graph on $n$ vertices. Estimate $f(n)$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4248,7 +4248,7 @@
   {
     "slug": "erdos-1094",
     "title": "Erdős #1094",
-    "description": "Forum",
+    "description": "For all $n\\geq 2k$ the least prime factor of $\\binom{n}{k}$ is $\\leq \\max(n/k,k)$, with only finitely many exceptions.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4265,7 +4265,7 @@
   {
     "slug": "erdos-1097",
     "title": "Erdős #1097",
-    "description": "Forum",
+    "description": "Let $A$ be a set of $n$ integers. How many distinct $d$ can occur as the common difference of a three-term arithmetic progression in $A$? Are there always $O(n^{3/2})$ many such $d$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4282,7 +4282,7 @@
   {
     "slug": "erdos-1105",
     "title": "Erdős #1105",
-    "description": "Forum",
+    "description": "The anti-Ramsey number $\\mathrm{AR}(n,G)$ is the maximum possible number of colours in which the edges of $K_n$ can be coloured without creating a rainbow copy of $G$ (i.e. one in which all edges have different colours).",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4299,7 +4299,7 @@
   {
     "slug": "erdos-1117",
     "title": "Erdős #1117",
-    "description": "Forum",
+    "description": "Let $f(z)$ be an entire function which is not a monomial. Let $\\nu(r)$ count the number of $z$ with $\\lvert z\\rvert=r$ such that $\\lvert f(z)\\rvert=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$. (This is a finite quantity if $f$ is not a monomial.)",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4316,7 +4316,7 @@
   {
     "slug": "erdos-1120",
     "title": "Erdős #1120",
-    "description": "Forum",
+    "description": "Let $f\\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$, all of whose roots satisfy $\\lvert z\\rvert\\leq 1$. Let\\[E= \\{ z : \\lvert f(z)\\rvert \\leq 1\\}.\\]What is the shortest length of a path in $E$ joining $z=0$ to $\\lvert z\\rvert =1$?",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4333,7 +4333,7 @@
   {
     "slug": "erdos-1130",
     "title": "Erdős #1130",
-    "description": "Forum",
+    "description": "For $x_1,\\ldots,x_n\\in [-1,1]$ let\\[l_k(x)=\\frac{\\prod_{i\\neq k}(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that $l_k(x_k)=1$ and $l_k(x_i)=0$ for $i\\neq k$.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
@@ -4350,7 +4350,7 @@
   {
     "slug": "erdos-1135",
     "title": "Erdős #1135",
-    "description": "Forum",
+    "description": "Define $f:\\mathbb{N}\\to \\mathbb{N}$ by $f(n)=n/2$ if $n$ is even and $f(n)=\\frac{3n+1}{2}$ if $n$ is odd.",
     "phase": "NEW",
     "status": "active",
     "tier": "B",

@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Do the squares contain arbitrarily long quasi-progressions? That is, does there exist some constant $C>0$ such that, for any $k$, the squares contain a sequence $x_1,\ldots,x_k$ where, for some $d$ and all $1\leq i<k$,\[x_i+d\leq x_{i+1}\leq x_i+d+C.\]Do the squares contain arbitrarily large cubes\[a+\left\{ \sum_i \epsilon_ib_i : \epsilon_i\in \{0,1\}\right\}?\]
 
 
 
 A question of Brown, Erd\H{o}s, and Freedman \cite{BEF90...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Do the squares contain arbitrarily long quasi-progressions? That is, does there exist some constant $C>0$ such that, for any $k$, the squares contain a sequence $x_1,\ldots,x_k$ where, for some $d$ and all $1\leq i<k$,\[x_i+d\leq x_{i+1}\leq x_i+d+C.\]Do the squares contain arbitrarily large cubes\[a+\left\{ \sum_i \epsilon_ib_i : \epsilon_i\in \{0,1\}\right\}?\]
 
 
@@ -40,22 +21,6 @@ A question of Brown, Erd\H{o}s, and Freedman \cite{BEF90}. It is a classical fac
 An affirmative answer to the first question implies an affirmative answer to the second.
 
 Solymosi \cite{So07} conjectured the answer to the second question is no. Cilleruelo and Granville \cite{CiGr07} have observed that the answer to the second question is no conditional on the Bombieri-Lang conjecture.
-
-
-
-
-References
-
-
-[BEF90] Brown, T. C. and Erd\H{o}s, P. and Freedman, A. R., Quasi-progressions and descending waves. J. Combin. Theory Ser. A (1990), 81-95.
-
-[CiGr07] Cilleruelo, Javier and Granville, Andrew, Lattice points on circles, squares in arithmetic progressions
-and sumsets of squares. (2007), 241-262.
-
-[So07] Solymosi, J\'{o}zsef, Elementary additive combinatorics. (2007), 29-38.
-
-
-Back to the problem
 $$
 
 ## Classification

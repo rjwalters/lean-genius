@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p_k$ denote the $k$th prime. For infinitely many $r$ there are at least two integers $p_r<n<p_{r+1}$ all of whose prime factors are $<p_{r+1}-p_r$.\n\n\n\nErd\\H{o}s thought this was true but that there are very few such $r$. He could show that the density of $r$ such that at least one such $n$ exist is $0$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $p_k$ denote the $k$th prime. For infinitely many $r$ there are at least two integers $p_r<n<p_{r+1}$ all of whose prime factors are $<p_{r+1}-p_r$.\n\n\n\nErd\\H{o}s thought this was true but that there are very few such $r$. He could show that the density of $r$ such that at least one such $n$ exist is $0$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.",
+    "plain": "Let $p_k$ denote the $k$th prime. For infinitely many $r$ there are at least two integers $p_r<n<p_{r+1}$ all of whose prime factors are $<p_{r+1}-p_r$.",
     "whyMatters": []
   },
   "knownResults": {

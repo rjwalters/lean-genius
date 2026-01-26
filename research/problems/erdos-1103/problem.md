@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A$ be an infinite sequence of integers such that every $n\in A+A$ is squarefree. How fast must $A$ grow?
 
 
@@ -21,18 +11,9 @@ Erd\H{o}s notes there exists such a sequence which grows exponentially, but does
 
 In \cite{Er81h} he asked whether there is an infinite sequence of integers $A$ such that, for every $a\in A$ and prime $p$, if\[a\equiv t\pmod{p^2}\]then $1\leq t 0.24j^{4/3}$ for a...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A$ be an infinite sequence of integers such that every $n\in A+A$ is squarefree. How fast must $A$ grow?
 
 
@@ -48,22 +29,6 @@ If $A=\{a_1<a_2<\cdots\}$ is such a sequence then van Doorn and Tao \cite{vDTa25
 They also obtain further results for the generalisation from squarefree to $k$-free integers, and also replacing $A+A$ with $A\cup (A+A)\cup(A+A+A)$.
 
 See also [1109] for the finite analogue of this problem.
-
-
-
-
-References
-
-
-[Er81h] Erd\H{o}s, P., Some problems and results on additive and multiplicative
-number theory. Analytic number theory (Philadelphia, Pa., 1980) (1981), 171-182.
-
-[Ko04] Konyagin, S. V., Problems of the set of square-free numbers. Izv. Ross. Akad. Nauk Ser. Mat. (2004), 63--90.
-
-[vDTa25] W. van Doorn and T. Tao, Growth rates of sequences governed by the squarefree properties of its translates. arXiv:2512.01087 (2025).
-
-
-Back to the problem
 $$
 
 ## Classification

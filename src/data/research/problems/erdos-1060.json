@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?\n\n\n\nThis is discussed in problem B11 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?\n\n\n\nThis is discussed in problem B11 of Guy's collection \\cite{Gu04}.",
+    "plain": "Let $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?",
     "whyMatters": []
   },
   "knownResults": {

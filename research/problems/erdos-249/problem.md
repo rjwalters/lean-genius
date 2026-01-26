@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is\[\sum_n \frac{\phi(n)}{2^n}\]irrational? Here $\phi$ is the Euler totient function.
 
 
 
 The decimal expansion of this sum is A256936 on the OEIS.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is\[\sum_n \frac{\phi(n)}{2^n}\]irrational? Here $\phi$ is the Euler totient function.
 
 
 
 The decimal expansion of this sum is A256936 on the OEIS.
-
-
-Back to the problem
 $$
 
 ## Classification

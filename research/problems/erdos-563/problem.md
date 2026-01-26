@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $F(n,\alpha)$ denote the largest $m$ such that there exists a $2$-colouring of the edges of $K_n$ so that every $X\subseteq [n]$ with $\lvert X\rvert\geq m$ contains more than $\alpha \binom{\lvert X\rvert}{2}$ many edges of each colour.
 
 Prove that, for every $0\leq \alpha\leq 1/2$,\[F(n,\alpha)\sim c_\alpha\log n\]for some constant $c_\alpha$ depending only on $\alpha$.
@@ -21,18 +11,9 @@ Prove that, for every $0\leq \alpha\leq 1/2$,\[F(n,\alpha)\sim c_\alpha\log n\]f
 
 It is easy to show that, for every $0\leq \...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $F(n,\alpha)$ denote the largest $m$ such that there exists a $2$-colouring of the edges of $K_n$ so that every $X\subseteq [n]$ with $\lvert X\rvert\geq m$ contains more than $\alpha \binom{\lvert X\rvert}{2}$ many edges of each colour.
 
 Prove that, for every $0\leq \alpha\leq 1/2$,\[F(n,\alpha)\sim c_\alpha\log n\]for some constant $c_\alpha$ depending only on $\alpha$.
@@ -44,9 +25,6 @@ It is easy to show that, for every $0\leq \alpha\leq 1/2$,\[F(n,\alpha)\asymp_\a
 See also [161].
 
 See also the entry in the graphs problem collection.
-
-
-Back to the problem
 $$
 
 ## Classification

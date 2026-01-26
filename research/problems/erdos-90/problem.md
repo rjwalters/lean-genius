@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does every set of $n$ distinct points in $\mathbb{R}^2$ contain at most $n^{1+O(1/\log\log n)}$ many pairs which are distance 1 apart?
 
 
@@ -21,18 +11,9 @@ The unit distance problem. In \cite{Er94b} Erd\H{o}s dates this conjecture to 19
 
 This would be the best possible, as is shown by a set of lattice points. It is easy to show that there are $O(n^{3/2})$ many such pairs....
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does every set of $n$ distinct points in $\mathbb{R}^2$ contain at most $n^{1+O(1/\log\log n)}$ many pairs which are distance 1 apart?
 
 
@@ -46,27 +27,6 @@ Part of the difficulty of this problem is explained by a result of Valtr (see \c
 See a survey by Szemer\'{e}di \cite{Sz16} for further background and related results.
 
 See also [92], [96], [605], and [956]. The higher dimensional generalisation is [1085].
-
-
-
-
-References
-
-
-[Er82e] Erd\H{o}s, Paul, Some of my favourite problems which recently have been solved. (1982), 59--79.
-
-[Er83c] Erd\H{o}s, Paul, Combinatorial problems in geometry. Math. Chronicle (1983), 35-54.
-
-[Er85] Erd\H{o}s, P., Problems and results in combinatorial geometry. Discrete geometry and convexity (New York, 1982) (1985), 1-11.
-
-[Er94b] Erd\H{o}s, Paul, Some problems in number theory, combinatorics and combinatorial geometry. Math. Pannon. (1994), 261-269.
-
-[SST84] Spencer, J. and Szemer\'{e}di, E. and Trotter, Jr., W., Unit distances in the Euclidean plane. Graph theory and combinatorics (Cambridge, 1983) (1984), 293-303.
-
-[Sz16] Szemer\'{e}di, Endre, Erd\H{o}s's unit distance problem. Open problems in mathematics (2016), 459-477.
-
-
-Back to the problem
 $$
 
 ## Classification

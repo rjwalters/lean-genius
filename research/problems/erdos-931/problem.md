@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $k_1\geq k_2\geq 3$. Are there only finitely many $n_2\geq n_1+k_1$ such that\[\prod_{1\leq i\leq k_1}(n_1+i)\textrm{ and }\prod_{1\leq j\leq k_2}(n_2+j)\]have the same prime factors?
 
 
 
 Tijdeman gave the example\[19,20,21,22\textrm{ and }54,55,56,57.\]Erd\H{o}s \cite{Er76d} was unsure of this conjecture, and thought perhaps if the two products have the same prime factors then $n_2>2(n_1+k_1)$. It is not clear but it ...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $k_1\geq k_2\geq 3$. Are there only finitely many $n_2\geq n_1+k_1$ such that\[\prod_{1\leq i\leq k_1}(n_1+i)\textrm{ and }\prod_{1\leq j\leq k_2}(n_2+j)\]have the same prime factors?
 
 
@@ -40,19 +21,6 @@ Tijdeman gave the example\[19,20,21,22\textrm{ and }54,55,56,57.\]Erd\H{o}s \cit
 See also [388].
 
 This is discussed in problem B35 of Guy's collection \cite{Gu04}.
-
-
-
-
-References
-
-
-[Er76d] Erd\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.
-
-[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.
-
-
-Back to the problem
 $$
 
 ## Classification

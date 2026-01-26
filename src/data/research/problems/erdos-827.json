@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_k$ be minimal such that if $n_k$ points in $\\mathbb{R}^2$ are in general position then there exists a subset of $k$ points such that all $\\binom{k}{3}$ triples determine circles of different radii.\n\nDetermine $n_k$.\n\n\n\nIn \\cite{Er75h} Erd\\H{o}s asks whether $n_k$ exists. In \\cite{Er78c} he gave a simple argument which proves that it does, and in fact\\[n_k \\leq k+2\\binom{k-1}{2}\\binom{k-1}{3},\\]but this argument is incorrect, as explained by Martinez and Rold\\'{a}n-Pensado \\cite{MaRo15}.\n\nMartinez and Rold\\'{a}n-Pensado give a corrected argument that proves $n_k\\ll k^9$.\n\n\n\n\nReferences\n\n\n[Er75h] Erd\\H{o}s, P., Some problems on elementary geometry. Austral. Math. Soc. Gaz. (1975), 2-3.\n\n[Er78c] Erd\\H{o}s, P., Some more problems on elementary geometry. Austral. Math. Soc. Gaz. (1978), 52-54.\n\n[MaRo15] Mart\\'{I}nez, L. and Rold\\'an-Pensado, E., Points defining triangles with distinct circumradii. Acta Math. Hungar. (2015), 136--141.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $n_k$ be minimal such that if $n_k$ points in $\\mathbb{R}^2$ are in general position then there exists a subset of $k$ points such that all $\\binom{k}{3}$ triples determine circles of different radii.\n\nDetermine $n_k$.\n\n\n\nIn \\cite{Er75h} Erd\\H{o}s asks whether $n_k$ exists. In \\cite{Er78c} he gave a simple argument which proves that it does, and in fact\\[n_k \\leq k+2\\binom{k-1}{2}\\binom{k-1}{3},\\]but this argument is incorrect, as explained by Martinez and Rold\\'{a}n-Pensado \\cite{MaRo15}.\n\nMartinez and Rold\\'{a}n-Pensado give a corrected argument that proves $n_k\\ll k^9$.",
+    "plain": "Let $n_k$ be minimal such that if $n_k$ points in $\\mathbb{R}^2$ are in general position then there exists a subset of $k$ points such that all $\\binom{k}{3}$ triples determine circles of different radii.",
     "whyMatters": []
   },
   "knownResults": {

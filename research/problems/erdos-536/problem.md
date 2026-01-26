@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\epsilon>0$ and $N$ be sufficiently large. Is it true that if $A\subseteq \{1,\ldots,N\}$ has size at least $\epsilon N$ then there must be distinct $a,b,c\in A$ such that\[[a,b]=[b,c]=[a,c],\]where $[a,b]$ denotes the least common multiple?
 
 
@@ -21,18 +11,9 @@ This is false if we ask for four elements with the same pairwise least common mu
 
 This was also a...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\epsilon>0$ and $N$ be sufficiently large. Is it true that if $A\subseteq \{1,\ldots,N\}$ has size at least $\epsilon N$ then there must be distinct $a,b,c\in A$ such that\[[a,b]=[b,c]=[a,c],\]where $[a,b]$ denotes the least common multiple?
 
 
@@ -44,19 +25,6 @@ This was also asked by Erd\H{o}s at the 1991 problem session of West Coast Numbe
 In the comments Weisenberg sketches a construction of a set $A\subseteq [1,N]$ without this property such that\[\lvert A\rvert \gg (\log\log N)^{f(N)}\frac{N}{\log N}\]for some $f(N)\to \infty$. Weisenberg also sketches a proof of the main problem when $\epsilon>\frac{221}{225}$.
 
 See also [535], [537], and [856]. A related combinatorial problem is asked at [857].
-
-
-
-
-References
-
-
-[Er62] Erd\H{o}s, P\'{a}l, Remarks on number theory. IV. Extremal problems in number theory. I. Mat. Lapok (1962), 228-255.
-
-[Er70] Erd\H{o}s, Paul, Some extremal problems in combinatorial number theory. Mathematical Essays Dedicated to A. J. Macintyre (1970), 123-133.
-
-
-Back to the problem
 $$
 
 ## Classification

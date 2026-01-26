@@ -3,42 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many solutions to\[\frac{1}{p_1}+\cdots+\frac{1}{p_k}=1-\frac{1}{m},\]where $m\geq 2$ is an integer and $p_1<\cdots<p_k$ are distinct primes?
 
 
 
 For example,\[\frac{1}{2}+\frac{1}{3}=1-\frac{1}{6}\]and\[\frac{1}{2}+\frac{1}{3}+\frac{1}{7}=1-\frac{1}{42}.\]It is clear that we must have $m=p_1\cdots p_k$, and hence in particular there is at most one solution for each $m$. The integers $m$ for which ther...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Are there infinitely many solutions to\[\frac{1}{p_1}+\cdots+\frac{1}{p_k}=1-\frac{1}{m},\]where $m\geq 2$ is an integer and $p_1<\cdots<p_k$ are distinct primes?
 
 
 
 For example,\[\frac{1}{2}+\frac{1}{3}=1-\frac{1}{6}\]and\[\frac{1}{2}+\frac{1}{3}+\frac{1}{7}=1-\frac{1}{42}.\]It is clear that we must have $m=p_1\cdots p_k$, and hence in particular there is at most one solution for each $m$. The integers $m$ for which there is such a solution are known as primary pseudoperfect numbers, and there are $8$ known, listed in A054377 at the OEIS.
-
-
-Back to the problem
 $$
 
 ## Classification

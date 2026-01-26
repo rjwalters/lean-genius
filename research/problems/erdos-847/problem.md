@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subset \mathbb{N}$ be an infinite set for which there exists some $\epsilon>0$ such that in any subset of $A$ of size $n$ there is a subset of size at least $\epsilon n$ which contains no three-term arithmetic progression.
 
 Is it true that $A$ is the union of a finite number of sets which contain no three-term arithmetic progression?
@@ -23,18 +13,9 @@ A problem of Erd\H{o}s, Ne\v{s}et\v{r}il, and R\"{o}dl.
 
 See also [774] and [84...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subset \mathbb{N}$ be an infinite set for which there exists some $\epsilon>0$ such that in any subset of $A$ of size $n$ there is a subset of size at least $\epsilon n$ which contains no three-term arithmetic progression.
 
 Is it true that $A$ is the union of a finite number of sets which contain no three-term arithmetic progression?
@@ -44,9 +25,6 @@ Is it true that $A$ is the union of a finite number of sets which contain no thr
 A problem of Erd\H{o}s, Ne\v{s}et\v{r}il, and R\"{o}dl.
 
 See also [774] and [846].
-
-
-Back to the problem
 $$
 
 ## Classification

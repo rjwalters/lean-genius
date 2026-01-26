@@ -3,45 +3,12 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A$ be the set of powerful numbers (if $p\mid n$ then $p^2\mid n$). Is it true that\[1_A\ast 1_A(n)=n^{o(1)}\]for every $n$?
 
-
-
-
-
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A$ be the set of powerful numbers (if $p\mid n$ then $p^2\mid n$). Is it true that\[1_A\ast 1_A(n)=n^{o(1)}\]for every $n$?
-
-
-
-
-
-
-Back to the problem
 $$
 
 ## Classification

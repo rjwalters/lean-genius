@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 What is the minimal value of $\lvert 1-\sum_{n\in A}\frac{1}{n}\rvert$ as $A$ ranges over all subsets of $\{1,\ldots,N\}$ which contain no $S$ such that $\sum_{n\in S}\frac{1}{n}=1$? Is it\[e^{-(c+o(1))N}\]for some constant $c\in (0,1)$?
 
 
 
 It is trivially at least $1/[1,\ldots,N]$.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 What is the minimal value of $\lvert 1-\sum_{n\in A}\frac{1}{n}\rvert$ as $A$ ranges over all subsets of $\{1,\ldots,N\}$ which contain no $S$ such that $\sum_{n\in S}\frac{1}{n}=1$? Is it\[e^{-(c+o(1))N}\]for some constant $c\in (0,1)$?
 
 
 
 It is trivially at least $1/[1,\ldots,N]$.
-
-
-Back to the problem
 $$
 
 ## Classification

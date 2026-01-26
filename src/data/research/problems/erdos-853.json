@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $r(x)$ be the smallest even integer $t$ such that $d_n=t$ has no solutions for $n\\leq x$.\n\nIs it true that $r(x)\\to \\infty$? Or even $r(x)/\\log x \\to \\infty$?\n\n\n\nIn \\cite{Er85c} Erd\\H{o}s omits the condition that $t$ be even, but this is clearly necessary.\n\n\n\n\nReferences\n\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $r(x)$ be the smallest even integer $t$ such that $d_n=t$ has no solutions for $n\\leq x$.\n\nIs it true that $r(x)\\to \\infty$? Or even $r(x)/\\log x \\to \\infty$?\n\n\n\nIn \\cite{Er85c} Erd\\H{o}s omits the condition that $t$ be even, but this is clearly necessary.",
+    "plain": "Let $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $r(x)$ be the smallest even integer $t$ such that $d_n=t$ has no solutions for $n\\leq x$.",
     "whyMatters": []
   },
   "knownResults": {

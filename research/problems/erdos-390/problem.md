@@ -3,58 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $f(n)$ be the minimal $m$ such that\[n! = a_1\cdots a_k\]with $n< a_1<\cdots <a_k=m$. Is there (and what is it) a constant $c$ such that\[f(n)-2n \sim c\frac{n}{\log n}?\]
 
 
 
 Erd\H{o}s, Guy, and Selfridge \cite{EGS82} have shown that\[f(n)-2n \asymp \frac{n}{\log n}.\]
 
-
-
-
-References
-
-
-[EGS82] Erd\H{o}s, P. and Guy, R. K. and Selfridge, J. L., Another property of {$239$} and some related questions. Congr. Numer. (1982...
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $f(n)$ be the minimal $m$ such that\[n! = a_1\cdots a_k\]with $n< a_1<\cdots <a_k=m$. Is there (and what is it) a constant $c$ such that\[f(n)-2n \sim c\frac{n}{\log n}?\]
 
 
 
 Erd\H{o}s, Guy, and Selfridge \cite{EGS82} have shown that\[f(n)-2n \asymp \frac{n}{\log n}.\]
-
-
-
-
-References
-
-
-[EGS82] Erd\H{o}s, P. and Guy, R. K. and Selfridge, J. L., Another property of {$239$} and some related questions. Congr. Numer. (1982), 243-257.
-
-
-Back to the problem
 $$
 
 ## Classification

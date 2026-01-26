@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that, for any $n$, if $d_1<\cdots <d_t$ are the divisors of $n$, then\[\sum_{1\leq i<j\leq t}\frac{1}{d_j-d_i} \ll 1+\sum_{1\leq i<t}\frac{1}{d_{i+1}-d_i},\]where the implied constant is absolute?
 
 
 
 See also [144].
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that, for any $n$, if $d_1<\cdots <d_t$ are the divisors of $n$, then\[\sum_{1\leq i<j\leq t}\frac{1}{d_j-d_i} \ll 1+\sum_{1\leq i<t}\frac{1}{d_{i+1}-d_i},\]where the implied constant is absolute?
 
 
 
 See also [144].
-
-
-Back to the problem
 $$
 
 ## Classification

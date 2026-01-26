@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A(x)$ count the number of composite $u<x$ such that $n!+1\\equiv 0\\pmod{u}$ for some $n$. Is it true that $A(x)\\leq x^{o(1)}$?\n\n\n\nA question of Erd\\H{o}s raised in discussions with Hardy and Subbarao \\cite{HaSu02}. The sequence of such $u$ begins\\[25,121,169,437,\\ldots\\]and is A256519 in the OEIS.\n\nWilson's theorem states that $u$ is prime if and only if $(u-1)!+1\\equiv 0\\pmod{u}$.\n\nThis is mentioned in problem A2 of Guy's collection.\n\n\n\n\nReferences\n\n\n[HaSu02] Hardy, G. E. and Subbarao, M. V., A modified problem of Pillai and some related questions. Amer. Math. Monthly (2002), 554--559.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $A(x)$ count the number of composite $u<x$ such that $n!+1\\equiv 0\\pmod{u}$ for some $n$. Is it true that $A(x)\\leq x^{o(1)}$?\n\n\n\nA question of Erd\\H{o}s raised in discussions with Hardy and Subbarao \\cite{HaSu02}. The sequence of such $u$ begins\\[25,121,169,437,\\ldots\\]and is A256519 in the OEIS.\n\nWilson's theorem states that $u$ is prime if and only if $(u-1)!+1\\equiv 0\\pmod{u}$.\n\nThis is mentioned in problem A2 of Guy's collection.",
+    "plain": "Let $A(x)$ count the number of composite $u<x$ such that $n!+1\\equiv 0\\pmod{u}$ for some $n$. Is it true that $A(x)\\leq x^{o(1)}$?",
     "whyMatters": []
   },
   "knownResults": {

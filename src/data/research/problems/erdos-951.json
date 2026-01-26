@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]\n\n\n\nErd\\H{o}s says this question was asked 'during [his] lecture at Queens College [by] one member of the audience (perhaps S. Shapiro)'. Such a sequence of $a_i$ is sometimes called a set of Beurling prime numbers.\n\nBeurling conjectured that if the number of reals in $[1,x]$ of the form $\\prod a_i^{k_i}$ is $x+o(\\log x)$ then the $a_i$ must be the sequence of primes.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]\n\n\n\nErd\\H{o}s says this question was asked 'during [his] lecture at Queens College [by] one member of the audience (perhaps S. Shapiro)'. Such a sequence of $a_i$ is sometimes called a set of Beurling prime numbers.\n\nBeurling conjectured that if the number of reals in $[1,x]$ of the form $\\prod a_i^{k_i}$ is $x+o(\\log x)$ then the $a_i$ must be the sequence of primes.",
+    "plain": "Let $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]",
     "whyMatters": []
   },
   "knownResults": {

@@ -3,34 +3,15 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $k\geq 3$. Is there a choice of congruence classes $a_p\pmod{p}$ for every prime $p$ such that all except finitely many integers can be written as $a_p+tp$ for some prime $p$ and integer $t\geq k$?
 
 
 
 Even the case $k=3$ seems difficult. This may be true with the primes replaced by any set $A\subseteq \mathbb{N}$ such that\[\lvert A\cap [1,N]\rvert \gg N/\log N\]and\[\sum_{\substack{n\in A\\ n\leq N}}\frac{1}{n} -\log...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $k\geq 3$. Is there a choice of congruence classes $a_p\pmod{p}$ for every prime $p$ such that all except finitely many integers can be written as $a_p+tp$ for some prime $p$ and integer $t\geq k$?
 
 
@@ -38,9 +19,6 @@ Let $k\geq 3$. Is there a choice of congruence classes $a_p\pmod{p}$ for every p
 Even the case $k=3$ seems difficult. This may be true with the primes replaced by any set $A\subseteq \mathbb{N}$ such that\[\lvert A\cap [1,N]\rvert \gg N/\log N\]and\[\sum_{\substack{n\in A\\ n\leq N}}\frac{1}{n} -\log\log N\to \infty\]as $N\to \infty$.
 
 For $k=1$ or $k=2$ any set $A$ such that $\sum_{n\in A}\frac{1}{n}=\infty$ has this property.
-
-
-Back to the problem
 $$
 
 ## Classification

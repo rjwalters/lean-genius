@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Give a constructive proof that $R(k)>C^k$ for some constant $C>1$.
 
 
@@ -23,18 +13,9 @@ Equivalently, this question asks for an explicit construction of a graph on $n$ 
 
 In \cite{Er69b} Erd\H{o}s asks for even a construction whose largest clique or independent se...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Give a constructive proof that $R(k)>C^k$ for some constant $C>1$.
 
 
@@ -48,23 +29,6 @@ In \cite{Er69b} Erd\H{o}s asks for even a construction whose largest clique or i
 Cohen \cite{Co15} (see the introduction for further history) constructed a graph on $n$ vertices which does not contain any clique or independent set of size\[\geq 2^{(\log\log n)^{C}}\]for some constant $C>0$. Li \cite{Li23b} has recently improved this to\[\geq (\log n)^{C}\]for some constant $C>0$.
 
 This problem is #4 in Ramsey Theory in the graphs problem collection.
-
-
-
-
-References
-
-
-[Co15] Gil Cohen, Two-Source Dispersers for Polylogarithmic Entropy and Improved Ramsey Graphs. Electronic Colloquium on Computational Complexity (2015).
-
-[Er69b] Erd\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann
-Arbor Graph Theory Conf., Ann Arbor, Mich.,
-1968) (1969), 27-35.
-
-[Li23b] Li, X., Two Source Extractors for Asymptotically Optimal Entropy, and (Many) More. arXiv:2303.06802 (2023).
-
-
-Back to the problem
 $$
 
 ## Classification

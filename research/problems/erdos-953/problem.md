@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subset \{ x\in \mathbb{R}^2 : \lvert x\rvert <r\}$ be a measurable set with no integer distances, that is, such that $\lvert a-b\rvert \not\in \mathbb{Z}$ for any distinct $a,b\in A$. How large can the measure of $A$ be?
 
 
@@ -21,18 +11,9 @@ A problem of Erd\H{o}s and S\'{a}rk\"{o}zi. Erd\H{o}s \cite{Er77c} writes that '
 
 The trivial upper bound is $O(r)$....
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subset \{ x\in \mathbb{R}^2 : \lvert x\rvert <r\}$ be a measurable set with no integer distances, that is, such that $\lvert a-b\rvert \not\in \mathbb{Z}$ for any distinct $a,b\in A$. How large can the measure of $A$ be?
 
 
@@ -42,18 +23,6 @@ A problem of Erd\H{o}s and S\'{a}rk\"{o}zi. Erd\H{o}s \cite{Er77c} writes that '
 The trivial upper bound is $O(r)$. Kovac has observed that S\'{a}rk\"{o}zy's lower bound in [466] can be adapted to give a lower bound of $\gg r^{0.26}$ for this problem.
 
 See also [465] for a similar problem (concerning upper bounds) and [466] for a similar problem (concerning lower bounds).
-
-
-
-
-References
-
-
-[Er77c] Erd\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,
-New York, 1976) (1977), 43-72.
-
-
-Back to the problem
 $$
 
 ## Classification

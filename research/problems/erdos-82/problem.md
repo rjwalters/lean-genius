@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $F(n)$ be maximal such that every graph on $n$ vertices contains a regular induced subgraph on at least $F(n)$ vertices. Prove that $F(n)/\log n\to \infty$.
 
 
@@ -21,18 +11,9 @@ Conjectured by Erd\H{o}s, Fajtlowicz, and Stanton. It is known that $F(5)=3$ and
 
 Ramsey's theorem implies that $F(n)\gg \log n$. Bollob\'{a}s observed that $F(n)\ll n^{1/2+o(1)}$. Alon, Krivelevich, and Sudakov \cite{AKS07} have improved this to $n^{...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $F(n)$ be maximal such that every graph on $n$ vertices contains a regular induced subgraph on at least $F(n)$ vertices. Prove that $F(n)/\log n\to \infty$.
 
 
@@ -46,23 +27,6 @@ In \cite{Er93} Erd\H{o}s asks whether, if $t(n)$ is the largest trivial (either 
 Fajtlowicz, McColgan, Reid, and Staton \cite{FMRS95} showed that $G(1)=1$, $G(2)=2$, $G(3)=5$, $G(4)=7$, and $G(5)\geq 12$. Boris Alexeev and Brendan McKay (see the comments and this site) have computed $G(5)=17$, $G(6)\geq 21$, and $G(7)\geq 29$.
 
 See also [1031] for another question regarding induced regular subgraphs.
-
-
-
-
-References
-
-
-[AKS07] Alon, N. and Krivelevich, M. and Sudakov, B., Large nearly regular induced subgraphs. arXiv:0710.2106 (2007).
-
-[Er93] Erd\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph
-theory. Quaestiones Math. (1993), 333-350.
-
-[FMRS95] No reference found.
-
-
-
-Back to the problem
 $$
 
 ## Classification

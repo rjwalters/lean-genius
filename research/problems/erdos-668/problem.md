@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that the number of incongruent sets of $n$ points in $\mathbb{R}^2$ which maximise the number of unit distances tends to infinity as $n\to\infty$? Is it always $>1$ for $n>3$?
 
 
@@ -21,18 +11,9 @@ In fact this is $=1$ also for $n=4$, the unique example given by two equilateral
 
 Computational evidence of Engel, Hammond-Lee, Su, Varga, and Zs\'{a}mboki \cite{EHSVZ25} and Alexeev, Mixon, and Parshall \c...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is it true that the number of incongruent sets of $n$ points in $\mathbb{R}^2$ which maximise the number of unit distances tends to infinity as $n\to\infty$? Is it always $>1$ for $n>3$?
 
 
@@ -42,19 +23,6 @@ In fact this is $=1$ also for $n=4$, the unique example given by two equilateral
 Computational evidence of Engel, Hammond-Lee, Su, Varga, and Zs\'{a}mboki \cite{EHSVZ25} and Alexeev, Mixon, and Parshall \cite{AMP25} suggests that this count is $=1$ for various other $5\leq n\leq 21$ (although these calculations were checking only up to graph isomorphism, rather than congruency).
 
 The actual maximal number of unit distances is the subject of [90].
-
-
-
-
-References
-
-
-[AMP25] B. Alexeev, D. Mixon, and H. Parshall, The Erd\H{o}s unit distance problem for small point sets. arXiv:2412.11914 (2025).
-
-[EHSVZ25] P. Engel, O. Hammond-Lee, Y. Su, D. Varga, and P. Zs\'{a}mboki, Diverse beam search to find densest-known planar unit distance graphs. arXiv:2406.15317 (2025).
-
-
-Back to the problem
 $$
 
 ## Classification

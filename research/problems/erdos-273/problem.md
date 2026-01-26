@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there a covering system all of whose moduli are of the form $p-1$ for some primes $p\geq 5$?
 
 
 
 Selfridge has found an example using divisors of $360$ if $p=3$ is allowed.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Is there a covering system all of whose moduli are of the form $p-1$ for some primes $p\geq 5$?
 
 
 
 Selfridge has found an example using divisors of $360$ if $p=3$ is allowed.
-
-
-Back to the problem
 $$
 
 ## Classification

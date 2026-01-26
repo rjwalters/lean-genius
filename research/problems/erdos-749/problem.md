@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\epsilon>0$. Does there exist $A\subseteq \mathbb{N}$ such that the lower density of $A+A$ is at least $1-\epsilon$ and yet $1_A\ast 1_A(n) \ll_\epsilon 1$ for all $n$?
 
 
@@ -21,21 +11,9 @@ A similar question can be asked for upper density.
 
 See also [28].
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $\epsilon>0$. Does there exist $A\subseteq \mathbb{N}$ such that the lower density of $A+A$ is at least $1-\epsilon$ and yet $1_A\ast 1_A(n) \ll_\epsilon 1$ for all $n$?
 
 
@@ -43,9 +21,6 @@ Let $\epsilon>0$. Does there exist $A\subseteq \mathbb{N}$ such that the lower d
 A similar question can be asked for upper density.
 
 See also [28].
-
-
-Back to the problem
 $$
 
 ## Classification

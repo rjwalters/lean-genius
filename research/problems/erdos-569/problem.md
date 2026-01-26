@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $k\geq 1$. What is the best possible $c_k$ such that\[R(C_{2k+1},H)\leq c_k m\]for any graph $H$ on $m$ edges without isolated vertices?
 
 
 
 See also the entry in the graphs problem collection.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $k\geq 1$. What is the best possible $c_k$ such that\[R(C_{2k+1},H)\leq c_k m\]for any graph $H$ on $m$ edges without isolated vertices?
 
 
 
 See also the entry in the graphs problem collection.
-
-
-Back to the problem
 $$
 
 ## Classification

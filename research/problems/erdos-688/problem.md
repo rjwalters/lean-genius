@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Define $\epsilon_n$ to be maximal such that there exists some choice of congruence class $a_p$ for all primes $n^{\epsilon_n}<p\leq n$ such that every integer in $[1,n]$ satisfies at least one of the congruences $\equiv a_p\pmod{p}$.
 
 Estimate $\epsilon_n$ - in particular is it true that $\epsilon_n=o(1)$?
@@ -24,18 +14,9 @@ Erd\H{o}s could prove\[\epsilon_n \gg \frac{\log\log\log n}{\log\log n}.\]See al
 
 Back to the ...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Define $\epsilon_n$ to be maximal such that there exists some choice of congruence class $a_p$ for all primes $n^{\epsilon_n}<p\leq n$ such that every integer in $[1,n]$ satisfies at least one of the congruences $\equiv a_p\pmod{p}$.
 
 Estimate $\epsilon_n$ - in particular is it true that $\epsilon_n=o(1)$?
@@ -43,9 +24,6 @@ Estimate $\epsilon_n$ - in particular is it true that $\epsilon_n=o(1)$?
 
 
 Erd\H{o}s could prove\[\epsilon_n \gg \frac{\log\log\log n}{\log\log n}.\]See also [687] and [689].
-
-
-Back to the problem
 $$
 
 ## Classification

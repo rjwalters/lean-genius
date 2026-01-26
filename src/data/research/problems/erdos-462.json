@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p(n)$ denote the least prime factor of $n$. There is a constant $c>0$ such that\\[\\sum_{\\substack{n<x\\\\ n\\textrm{ not prime}}}\\frac{p(n)}{n}\\sim c\\frac{x^{1/2}}{(\\log x)^2}.\\]Is it true that there exists a constant $C>0$ such that\\[\\sum_{x\\leq n\\leq x+Cx^{1/2}(\\log x)^2}\\frac{p(n)}{n} \\gg 1\\]for all large $x$?\n\n\n\n\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Let $p(n)$ denote the least prime factor of $n$. There is a constant $c>0$ such that\\[\\sum_{\\substack{n<x\\\\ n\\textrm{ not prime}}}\\frac{p(n)}{n}\\sim c\\frac{x^{1/2}}{(\\log x)^2}.\\]Is it true that there exists a constant $C>0$ such that\\[\\sum_{x\\leq n\\leq x+Cx^{1/2}(\\log x)^2}\\frac{p(n)}{n} \\gg 1\\]for all large $x$?",
+    "plain": "Let $p(n)$ denote the least prime factor of $n$. There is a constant $c>0$ such that\\[\\sum_{\\substack{n0$ such that\\[\\sum_{x\\leq n\\leq x+Cx^{1/2}(\\log x)^2}\\frac{p(n)}{n} \\gg 1\\]for all large $x$?",
     "whyMatters": []
   },
   "knownResults": {

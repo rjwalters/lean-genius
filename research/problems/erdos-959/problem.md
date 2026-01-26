@@ -3,50 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subset \mathbb{R}^2$ be a set of size $n$ and let $\{d_1,\ldots,d_k\}$ be the set of distinct distances determined by $A$. Let $f(d)$ be the number of times the distance $d$ is determined, and suppose the $d_i$ are ordered such that\[f(d_1)\geq f(d_2)\geq \cdots \geq f(d_k).\]Estimate\[\max (f(d_1)-f(d_2)),\]where the maximum is taken over all $A$ of size $n$.
 
 
 
 More generally, one can ask about\[\max (f(d_r)-f(d_...
 
+
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A\subset \mathbb{R}^2$ be a set of size $n$ and let $\{d_1,\ldots,d_k\}$ be the set of distinct distances determined by $A$. Let $f(d)$ be the number of times the distance $d$ is determined, and suppose the $d_i$ are ordered such that\[f(d_1)\geq f(d_2)\geq \cdots \geq f(d_k).\]Estimate\[\max (f(d_1)-f(d_2)),\]where the maximum is taken over all $A$ of size $n$.
 
 
 
 More generally, one can ask about\[\max (f(d_r)-f(d_{r+1})).\]Clemen, Dumitrescu, and Liu \cite{CDL25}, have shown that\[\max (f(d_1)-f(d_2))\gg n\log n.\]More generally, for any $1\leq k\leq \log n$, there exists a set $A$ of $n$ points such that\[f(d_r)-f(d_{r+1})\gg \frac{n\log n}{r}.\]They conjecture that $n\log n$ can be improved to $n^{1+c/\log\log n}$ for some constant $c>0$.
-
-
-
-
-References
-
-
-[CDL25] F. Clemen, A. Dumitrescu, and D. Liu, On multiplicities of interpoint distances. arXiv:2505.04283 (2025).
-
-
-Back to the problem
 $$
 
 ## Classification

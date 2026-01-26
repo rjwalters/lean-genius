@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a number $k$-perfect if $\\sigma(n)=kn$, where $\\sigma(n)$ is the sum of the divisors of $n$. Must $k=o(\\log\\log n)$?\n\n\n\nA question of Erd\\H{o}s, as reported in problem B2 of Guy's collection \\cite{Gu04}. Guy further writes 'It has even been suggested that there may be only finitely many $k$-perfect numbers with $k\\geq 3$.' The largest $k$ for which a $k$-perfect number has been found is $k=11$ - see this page for more information.\n\nThese are known as multiply perfect numbers. When $k=2$ this is the definition of a perfect number.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Call a number $k$-perfect if $\\sigma(n)=kn$, where $\\sigma(n)$ is the sum of the divisors of $n$. Must $k=o(\\log\\log n)$?\n\n\n\nA question of Erd\\H{o}s, as reported in problem B2 of Guy's collection \\cite{Gu04}. Guy further writes 'It has even been suggested that there may be only finitely many $k$-perfect numbers with $k\\geq 3$.' The largest $k$ for which a $k$-perfect number has been found is $k=11$ - see this page for more information.\n\nThese are known as multiply perfect numbers. When $k=2$ this is the definition of a perfect number.",
+    "plain": "Call a number $k$-perfect if $\\sigma(n)=kn$, where $\\sigma(n)$ is the sum of the divisors of $n$. Must $k=o(\\log\\log n)$?",
     "whyMatters": []
   },
   "knownResults": {

@@ -3,45 +3,20 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does the longest arithmetic progression of primes in $\{1,\ldots,N\}$ have length $o(\log N)$?
 
 
 
 It follows from the prime number theorem that such a progression has length $\leq(1+o(1))\log N$.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Does the longest arithmetic progression of primes in $\{1,\ldots,N\}$ have length $o(\log N)$?
 
 
 
 It follows from the prime number theorem that such a progression has length $\leq(1+o(1))\log N$.
-
-
-Back to the problem
 $$
 
 ## Classification

@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve the following for all large $x$: there is a choice of congruence classes $a_p$ for all primes $p\\leq x$ and a decomposition $\\{p\\leq x\\}=A\\sqcup B$ into two non-empty sets such that, for all $n<x$, there exist some $p\\in A$ and $q\\in B$ such that $n\\equiv a_p\\pmod{p}$ and $n\\equiv a_q\\pmod{q}$.\n\n\n\nThis is what I assume the intended problem is, although the presentation in \\cite{ErGr80} is missing some crucial quantifiers, so I may have misinterpreted it.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "Prove the following for all large $x$: there is a choice of congruence classes $a_p$ for all primes $p\\leq x$ and a decomposition $\\{p\\leq x\\}=A\\sqcup B$ into two non-empty sets such that, for all $n<x$, there exist some $p\\in A$ and $q\\in B$ such that $n\\equiv a_p\\pmod{p}$ and $n\\equiv a_q\\pmod{q}$.\n\n\n\nThis is what I assume the intended problem is, although the presentation in \\cite{ErGr80} is missing some crucial quantifiers, so I may have misinterpreted it.",
+    "plain": "Prove the following for all large $x$: there is a choice of congruence classes $a_p$ for all primes $p\\leq x$ and a decomposition $\\{p\\leq x\\}=A\\sqcup B$ into two non-empty sets such that, for all $n<x$, there exist some $p\\in A$ and $q\\in B$ such that $n\\equiv a_p\\pmod{p}$ and $n\\equiv a_q\\pmod{q}$.",
     "whyMatters": []
   },
   "knownResults": {

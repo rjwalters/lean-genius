@@ -3,16 +3,6 @@
 ## Statement
 
 ### Plain Language
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A=\{n_1<n_2<\cdots\}$ be the sequence of powerful numbers (if $p\mid n$ then $p^2\mid n$).
 
 Are there only finitely many three-term progressions of consecutive terms $n_k,n_{k+1},n_{k+2}$?
@@ -21,21 +11,9 @@ Are there only finitely many three-term progressions of consecutive terms $n_k,n
 
 Erd\H{o}s also conjectured (see [364]) that there are no triples of powerful numbers of the shape $n,n+1,n+2$.
 
-
-Back to the problem
 
 ### Formal Statement
 $$
-Forum
-Favourites
-Tags
-More
- Go
- Go
-Dual View
-Random Solved
-Random Open
-
 Let $A=\{n_1<n_2<\cdots\}$ be the sequence of powerful numbers (if $p\mid n$ then $p^2\mid n$).
 
 Are there only finitely many three-term progressions of consecutive terms $n_k,n_{k+1},n_{k+2}$?
@@ -43,9 +21,6 @@ Are there only finitely many three-term progressions of consecutive terms $n_k,n
 
 
 Erd\H{o}s also conjectured (see [364]) that there are no triples of powerful numbers of the shape $n,n+1,n+2$.
-
-
-Back to the problem
 $$
 
 ## Classification
