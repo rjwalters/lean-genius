@@ -1,0 +1,82 @@
+{
+  "id": "erdos-530",
+  "title": "Erdős Problem #530: Maximum Sidon Subsets of Finite Sets",
+  "slug": "erdos-530",
+  "description": "For a finite set A of size N, what is the maximum size ℓ(N) of a Sidon subset? Komlós–Sulyok–Szemerédi: N^{1/2} ≪ ℓ(N) ≤ (1+o(1))N^{1/2}. Conjectured: ℓ(N) ~ N^{1/2}. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/530",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos530Problem.lean",
+    "tags": ["number-theory", "sidon-sets", "additive-combinatorics", "extremal-combinatorics"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 530,
+    "erdosUrl": "https://erdosproblems.com/530",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Originally posed by Riddell (1969) and studied extensively by Erdős. A Sidon set (B₂-set) has all pairwise sums distinct. Erdős proved N^{1/3} ≪ ℓ(N), improved to N^{1/2} ≪ ℓ(N) by Komlós, Sulyok, and Szemerédi. The upper bound (1+o(1))N^{1/2} comes from {1,...,N}.",
+    "problemStatement": "For a finite set A ⊂ ℝ of size N, let ℓ(N) denote the maximum size of a Sidon subset. Determine the order of growth of ℓ(N). It is conjectured that ℓ(N) ~ N^{1/2}.",
+    "proofStrategy": "We define Sidon sets as Finsets with distinct pairwise sums, define the maximum Sidon subset size, state the known lower bounds (Erdős; Komlós–Sulyok–Szemerédi) and upper bound, formalize the main conjecture, and state the Alon–Erdős partition conjecture.",
+    "keyInsights": [
+      "A Sidon set of size k produces k(k+1)/2 distinct pairwise sums, bounding k ≤ O(N^{1/2})",
+      "Komlós–Sulyok–Szemerédi's probabilistic argument gives the matching lower bound N^{1/2} ≪ ℓ(N)",
+      "The Alon–Erdős partition conjecture (at most ~N^{1/2} Sidon parts) is a dual formulation",
+      "The gap between lower and upper bounds is only in the leading constant"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sidon-definition",
+      "title": "Sidon Set Definition",
+      "startLine": 23,
+      "endLine": 50,
+      "summary": "Defines IsSidon for Finset ℤ (distinct pairwise sums) and proves the empty set and singletons are Sidon."
+    },
+    {
+      "id": "max-sidon-size",
+      "title": "Maximum Sidon Subset Size",
+      "startLine": 52,
+      "endLine": 61,
+      "summary": "Defines maxSidonSize A as the supremum of card over Sidon subsets of A."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 63,
+      "endLine": 91,
+      "summary": "States Erdős's N^{1/3} lower bound, the Komlós–Sulyok–Szemerédi N^{1/2} lower bound, and the trivial N^{1/2} upper bound."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "Formalizes Erdős Problem 530: ℓ(N) is Θ(N^{1/2}), with matching upper and lower bounds."
+    },
+    {
+      "id": "partition-conjecture",
+      "title": "Sidon Set Partition Conjecture",
+      "startLine": 108,
+      "endLine": 127,
+      "summary": "Defines Sidon partitions and states the Alon–Erdős conjecture: any N-element set can be partitioned into O(N^{1/2}) Sidon sets."
+    },
+    {
+      "id": "b2-connection",
+      "title": "Connection to B₂-sets",
+      "startLine": 129,
+      "endLine": 143,
+      "summary": "States that Sidon sets of size k have exactly k(k+1)/2 distinct pairwise sums, connecting to the additive combinatorics literature."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 530 asks for the order of growth of the maximum Sidon subset size ℓ(N). The known bounds N^{1/2} ≪ ℓ(N) ≤ (1+o(1))N^{1/2} leave only the leading constant undetermined. The problem remains open.",
+    "implications": "Resolving the exact asymptotics of ℓ(N) would advance our understanding of additive structure in arbitrary finite sets and connect to the partition problem of Alon and Erdős.",
+    "openQuestions": [
+      "Is ℓ(N) = (1+o(1))N^{1/2} for all finite sets of size N?",
+      "Can every set of N integers be partitioned into (1+o(1))N^{1/2} Sidon sets?",
+      "What is the behavior of ℓ(N) for structured sets (e.g., arithmetic progressions)?"
+    ]
+  }
+}
