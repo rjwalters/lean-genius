@@ -1,0 +1,44 @@
+{
+  "id": "erdos-685",
+  "title": "Prime Divisors of Binomial Coefficients",
+  "slug": "erdos-685",
+  "description": "For n^ε < k ≤ n^{1-ε}, is ω(C(n,k)) = (1+o(1))·k·Σ_{k<p<n} 1/p? Trivial lower bound: log C(n,k)/log n, tight when k > n^{1-o(1)}.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/685",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos685Problem.lean",
+    "tags": ["number-theory", "primes", "binomial-coefficients", "prime-factors"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 685,
+    "erdosUrl": "https://erdosproblems.com/685",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked about the precise count of distinct prime divisors of binomial coefficients C(n,k) in the range n^ε < k ≤ n^{1-ε}. A trivial lower bound is log C(n,k)/log n, which is tight near k = n. The conjecture gives an asymptotic formula involving the prime reciprocal sum.",
+    "problemStatement": "For n^ε < k ≤ n^{1-ε}, is ω(C(n,k)) = (1+o(1))·k·Σ_{k<p<n} 1/p?",
+    "proofStrategy": "We define omega as the prime factors count, primeSumInRange for the prime reciprocal sum, and state the main conjecture as an asymptotic equality. The trivial lower bound and its tightness for k near n are axioms. Basic properties of omega are proved.",
+    "keyInsights": [
+      "ω(C(n,k)) counts distinct prime factors of C(n,k)",
+      "The prime reciprocal sum Σ 1/p over (k,n) governs the asymptotic formula",
+      "The trivial bound log C(n,k)/log n is tight only when k is near n",
+      "The conjecture may extend to k ≥ (log n)^c"
+    ]
+  },
+  "sections": [
+    { "id": "omega", "title": "Prime Divisor Count", "startLine": 21, "endLine": 29, "summary": "Defines omega (distinct prime factors) and primeSumInRange (prime reciprocal sum)." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 31, "endLine": 41, "summary": "States ErdosProblem685: ω(C(n,k)) ~ k · Σ 1/p for n^ε < k ≤ n^{1-ε}." },
+    { "id": "lower", "title": "Trivial Lower Bound", "startLine": 43, "endLine": 55, "summary": "Trivial bound ω(C(n,k)) ≥ log C(n,k)/log n and tightness for k near n." },
+    { "id": "basic", "title": "Basic Properties", "startLine": 57, "endLine": 72, "summary": "Proves omega_one, omega_choose_zero, omega_choose_one. States omega_eq_zero_iff." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 685 on distinct prime divisors of binomial coefficients, the trivial lower bound, and its tightness. 0 sorries.",
+    "implications": "Resolution would quantify the prime factor structure of binomial coefficients across the full range of k.",
+    "openQuestions": [
+      "Is ω(C(n,k)) = (1+o(1))·k·Σ 1/p for n^ε < k ≤ n^{1-ε}?",
+      "Does the asymptotic hold for k ≥ (log n)^c?",
+      "What is the error term in the asymptotic formula?"
+    ]
+  }
+}
