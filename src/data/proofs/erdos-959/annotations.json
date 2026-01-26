@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-959-frequency",
+    "proofId": "erdos-959",
+    "type": "definition",
+    "range": { "startLine": 29, "endLine": 30 },
+    "title": "Distance Frequency",
+    "content": "distFrequency A d counts unordered pairs in A at distance d, via filtered product divided by 2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-959-gap",
+    "proofId": "erdos-959",
+    "type": "definition",
+    "range": { "startLine": 45, "endLine": 46 },
+    "title": "Frequency Gap",
+    "content": "frequencyGap A = maxFrequency A - secondFrequency A, the drop from most to second-most frequent distance.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-959-conjecture",
+    "proofId": "erdos-959",
+    "type": "conjecture",
+    "range": { "startLine": 50, "endLine": 55 },
+    "title": "Main Conjecture",
+    "content": "ErdosProblem959: ∃ C > 0 such that for all n ≥ 2, some n-point set has frequency gap ≥ C·n·log n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-959-cdl",
+    "proofId": "erdos-959",
+    "type": "result",
+    "range": { "startLine": 65, "endLine": 68 },
+    "title": "Clemen–Dumitrescu–Liu Lower Bound",
+    "content": "For every n ≥ 2, there exists an n-point set with frequency gap Ω(n log n).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-959-strong",
+    "proofId": "erdos-959",
+    "type": "conjecture",
+    "range": { "startLine": 72, "endLine": 76 },
+    "title": "Stronger Conjecture",
+    "content": "Conjectured: frequency gap ≥ n^{1+c/log log n} for some c > 0.",
+    "significance": "essential"
+  }
+]
