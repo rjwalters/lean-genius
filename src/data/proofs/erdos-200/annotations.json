@@ -1,0 +1,74 @@
+[
+  {
+    "id": "prime-ap-def",
+    "proofId": "erdos-200",
+    "range": { "startLine": 34, "endLine": 37 },
+    "type": "definition",
+    "title": "Prime Arithmetic Progression",
+    "content": "An AP of primes of length k in {1,...,N}: there exist a, d > 0 such that a, a+d, ..., a+(k-1)d are all prime and at most N. The common difference d must be divisible by all primes ≤ k.",
+    "significance": "high"
+  },
+  {
+    "id": "longest-prime-ap",
+    "proofId": "erdos-200",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "Longest Prime AP Function",
+    "content": "longestPrimeAP(N) = sup{k : there exists a prime AP of length k in {1,...,N}}. The central object of study: how fast does this function grow?",
+    "significance": "high"
+  },
+  {
+    "id": "pnt-upper",
+    "proofId": "erdos-200",
+    "range": { "startLine": 52, "endLine": 53 },
+    "type": "theorem",
+    "title": "PNT Upper Bound",
+    "content": "The Prime Number Theorem implies longestPrimeAP(N) ≤ (1+ε)·log N for large N. A prime AP of length k with difference d needs all k terms prime, and by PNT this constrains k ≤ ~log N.",
+    "significance": "high"
+  },
+  {
+    "id": "green-tao",
+    "proofId": "erdos-200",
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "theorem",
+    "title": "Green–Tao Theorem",
+    "content": "For every k, there exists a prime AP of length k. This landmark 2008 result shows longestPrimeAP(N) → ∞, establishing that the function is unbounded. It uses deep tools from additive combinatorics and analytic number theory.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-200",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "conjecture",
+    "title": "o(log N) Conjecture",
+    "content": "Erdős Problem #200: longestPrimeAP(N)/log(N) → 0. This asks whether the PNT upper bound is far from the truth, i.e., whether prime APs cannot approach logarithmic length.",
+    "significance": "high"
+  },
+  {
+    "id": "concrete-examples",
+    "proofId": "erdos-200",
+    "range": { "startLine": 77, "endLine": 80 },
+    "type": "theorem",
+    "title": "Concrete Prime APs",
+    "content": "{3,5,7} is a prime AP of length 3; {5,11,17,23,29} has length 5. The longest known prime AP (as of 2019) has 27 terms, found by computational search.",
+    "significance": "medium"
+  },
+  {
+    "id": "hl-prediction",
+    "proofId": "erdos-200",
+    "range": { "startLine": 93, "endLine": 94 },
+    "type": "insight",
+    "title": "Hardy–Littlewood Heuristic",
+    "content": "The Hardy–Littlewood k-tuple conjecture predicts the number of prime k-APs with difference ≤ x is ~c_k · x/(log x)^k. This suggests longestPrimeAP(N) ~ c·log N for some c ∈ (0,1), meaning the answer to Erdős's question might be NO.",
+    "significance": "high"
+  },
+  {
+    "id": "primorial-constraint",
+    "proofId": "erdos-200",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "theorem",
+    "title": "Primorial Constraint on AP Difference",
+    "content": "If a, a+d, ..., a+(k-1)d are all prime and k ≥ 3, then every prime p ≤ k divides d. Otherwise some term would be divisible by p. This forces d ≥ k# (primorial), growing as e^((1+o(1))k).",
+    "significance": "medium"
+  }
+]

@@ -1,0 +1,98 @@
+{
+  "id": "erdos-200",
+  "title": "Erdős Problem #200: Longest Arithmetic Progression of Primes",
+  "slug": "erdos-200",
+  "description": "Does the longest arithmetic progression of primes in {1,...,N} have length o(log N)? PNT gives an upper bound of (1+o(1))·log N. Green–Tao proved primes contain arbitrarily long APs. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 200,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "arithmetic-progressions",
+      "analytic-number-theory",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham [ErGr79], [ErGr80]",
+      "Green–Tao (2008): arbitrarily long prime APs",
+      "OEIS A005115",
+      "https://erdosproblems.com/200"
+    ],
+    "leanFile": "Proofs/Erdos200Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 41,
+      "summary": "Define arithmetic progressions, prime APs in {1,...,N}, and the longest prime AP function."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound from PNT",
+      "startLine": 43,
+      "endLine": 53,
+      "summary": "The Prime Number Theorem implies the longest prime AP in {1,...,N} has length at most (1+o(1))·log N."
+    },
+    {
+      "id": "green-tao",
+      "title": "Green–Tao Theorem",
+      "startLine": 55,
+      "endLine": 63,
+      "summary": "Green and Tao proved primes contain arbitrarily long APs, so longestPrimeAP(N) → ∞."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 65,
+      "endLine": 73,
+      "summary": "Erdős Problem #200: longestPrimeAP(N)/log(N) → 0, i.e., the longest prime AP is o(log N)."
+    },
+    {
+      "id": "known-examples",
+      "title": "Known Bounds and Examples",
+      "startLine": 75,
+      "endLine": 89,
+      "summary": "Concrete prime APs ({3,5,7}, {5,11,17,23,29}) and Green–Tao–Maynard quantitative bounds."
+    },
+    {
+      "id": "other-conjectures",
+      "title": "Relationship to Other Conjectures",
+      "startLine": 91,
+      "endLine": 101,
+      "summary": "Hardy–Littlewood heuristics suggest longestPrimeAP(N) ~ c·log N, possibly contradicting the o(log N) conjecture."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 103,
+      "endLine": 114,
+      "summary": "The common difference of a prime AP of length k must be divisible by all primes ≤ k (primorial constraint)."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham asked this in the late 1970s, long before Green and Tao proved primes contain arbitrarily long arithmetic progressions (2008). The question focuses on the growth rate: is the longest prime AP in {1,...,N} sublogarithmic?",
+    "problemStatement": "Does the longest arithmetic progression of primes in {1,...,N} have length o(log N)?",
+    "proofStrategy": "We formalize prime APs, state the PNT upper bound, the Green–Tao existence theorem, and the o(log N) conjecture. We also discuss the Hardy–Littlewood heuristic which suggests the answer may be negative.",
+    "keyInsights": [
+      "PNT gives the upper bound: longestPrimeAP(N) ≤ (1+o(1))·log N",
+      "Green–Tao (2008): longestPrimeAP(N) → ∞ as N → ∞",
+      "The conjecture asks if growth is strictly sublogarithmic: longestPrimeAP(N) = o(log N)",
+      "Hardy–Littlewood heuristics predict longestPrimeAP(N) ~ c·log N with c < 1, suggesting the answer may be NO",
+      "The primorial constraint forces AP difference d ≥ k# for length-k prime APs"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #200 remains open. The longest prime AP in {1,...,N} grows between ω(1) (Green–Tao) and (1+o(1))·log N (PNT). Whether the growth is o(log N) or Θ(log N) is unknown, and heuristic arguments point in different directions.",
+    "implications": "Resolving this would determine the precise growth rate of the longest prime AP, with implications for understanding the distribution of primes in arithmetic progressions and the limits of sieve-theoretic methods.",
+    "openQuestions": [
+      "Is longestPrimeAP(N) = Θ(log N) or o(log N)?",
+      "What is the correct constant if longestPrimeAP(N) ~ c·log N?",
+      "Can the Green–Tao method give quantitative lower bounds on longestPrimeAP(N)?"
+    ]
+  }
+}
