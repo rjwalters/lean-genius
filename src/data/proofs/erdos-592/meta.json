@@ -1,0 +1,93 @@
+{
+  "id": "erdos-592",
+  "title": "Erdős Problem #592: Partition Ordinals and Ordinal Ramsey Theory",
+  "slug": "erdos-592",
+  "description": "For which countable ordinals β does ω^β → (ω^β, 3)² hold? Specker (1957): β=2 yes, 3≤β<ω no. Chang (1972): β=ω yes. Schipperus (2010): β=ω^γ with CNF-length(γ)≤2 yes, ≥4 no. The case CNF-length(γ)=3 is OPEN. $1,000 bounty.",
+  "meta": {
+    "erdosNumber": 592,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "set-theory",
+      "ordinal-ramsey-theory",
+      "partition-relations",
+      "combinatorics",
+      "open"
+    ],
+    "references": [
+      "Erdős (1982, 1987): original problem",
+      "Specker (1957): β=2 positive, 3≤β<ω negative",
+      "Chang (1972): β=ω positive",
+      "Galvin–Larson (1974): necessary condition (additive indecomposability)",
+      "Schipperus (2010): CNF-length ≤2 positive, ≥4 negative",
+      "https://erdosproblems.com/592"
+    ],
+    "leanFile": "Proofs/Erdos592Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 45,
+      "summary": "Define IsCountableOrdinal, ordinalPartition, IsPartitionOrdinal, and HasPartitionProperty for ω^β."
+    },
+    {
+      "id": "specker-results",
+      "title": "Specker's Results (1957)",
+      "startLine": 47,
+      "endLine": 54,
+      "summary": "β=2 has the partition property; finite β≥3 do not."
+    },
+    {
+      "id": "chang-theorem",
+      "title": "Chang's Theorem (1972)",
+      "startLine": 56,
+      "endLine": 59,
+      "summary": "ω^ω → (ω^ω, 3)²: the case β=ω holds."
+    },
+    {
+      "id": "galvin-larson",
+      "title": "Galvin–Larson Necessary Condition (1974)",
+      "startLine": 61,
+      "endLine": 71,
+      "summary": "If β≥3 has the partition property, then β must be additively indecomposable."
+    },
+    {
+      "id": "schipperus",
+      "title": "Schipperus Classification (2010)",
+      "startLine": 73,
+      "endLine": 89,
+      "summary": "CNF-length(γ) ≤ 2 implies partition property; CNF-length(γ) ≥ 4 implies failure. Length 3 is open."
+    },
+    {
+      "id": "open-case",
+      "title": "The Open Case",
+      "startLine": 91,
+      "endLine": 96,
+      "summary": "The critical open case: CNF-length(γ) = 3. This is the $1,000 bounty problem."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this in 1982, asking for a complete characterization of countable ordinals with the partition property α → (α,3)². The problem connects infinite combinatorics with ordinal arithmetic. Specker (1957) and Chang (1972) resolved the first cases. Galvin–Larson (1974) established a necessary condition, and Schipperus (2010) nearly completed the classification, leaving one critical gap.",
+    "problemStatement": "Determine which countable ordinals β have the property that ω^β → (ω^β, 3)², i.e., every red/blue coloring of K_{ω^β} contains a red K_{ω^β} or a blue triangle.",
+    "proofStrategy": "We formalize the partition property for ordinals, axiomatize the known positive and negative results, state the Galvin–Larson necessary condition, and present the Schipperus classification that reduces the problem to the single open case of CNF-length 3.",
+    "keyInsights": [
+      "Specker (1957): β=2 works but all finite β≥3 fail — the partition property is not monotone",
+      "Chang (1972): β=ω recovers the property, showing the pattern is subtle",
+      "Galvin–Larson (1974): additive indecomposability is necessary, restricting candidates to β=ω^γ",
+      "Schipperus (2010) reduced the entire problem to one case: CNF-length(γ)=3",
+      "The $1,000 bounty targets this single remaining case in the classification"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #592 seeks a complete characterization of partition ordinals of the form ω^β. Schipperus (2010) reduced the problem to the single open case where β=ω^γ and γ has Cantor normal form length exactly 3. A $1,000 bounty remains for resolving this case.",
+    "implications": "A complete classification would finish the ordinal Ramsey theory for the partition relation α→(α,3)², one of the fundamental problems in infinite combinatorics. The techniques required likely involve new methods in ordinal partition calculus.",
+    "openQuestions": [
+      "Does ω^(ω^γ) → (ω^(ω^γ), 3)² hold when CNF-length(γ) = 3?",
+      "Can Schipperus's methods be extended to handle the length-3 case?",
+      "What is the simplest specific ordinal in the open case (e.g., γ = ω^α₁ + ω^α₂ + ω^α₃)?"
+    ]
+  }
+}

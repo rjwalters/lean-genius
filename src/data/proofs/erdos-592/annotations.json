@@ -1,0 +1,74 @@
+[
+  {
+    "id": "partition-ordinal",
+    "proofId": "erdos-592",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Partition Ordinal",
+    "content": "An ordinal α is a partition ordinal (for triangles) if α → (α, 3)²: any 2-coloring of edges of K_α yields either a monochromatic-red K_α or a monochromatic-blue K_3.",
+    "significance": "high"
+  },
+  {
+    "id": "has-partition-prop",
+    "proofId": "erdos-592",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "Partition Property for ω^β",
+    "content": "β has the partition property if ω^β → (ω^β, 3)². The problem asks to classify all countable β with this property.",
+    "significance": "high"
+  },
+  {
+    "id": "specker-positive",
+    "proofId": "erdos-592",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "theorem",
+    "title": "Specker β=2 (1957)",
+    "content": "ω² → (ω², 3)². The partition property holds for β=2. Specker's proof uses a clever induction on ordinal types.",
+    "significance": "medium"
+  },
+  {
+    "id": "specker-negative",
+    "proofId": "erdos-592",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "theorem",
+    "title": "Specker Finite Failure (1957)",
+    "content": "For finite n ≥ 3, ω^n does NOT have the partition property. This shows the property is not monotone in β — it can fail for larger ordinals and recover later.",
+    "significance": "medium"
+  },
+  {
+    "id": "chang-omega",
+    "proofId": "erdos-592",
+    "range": { "startLine": 59, "endLine": 59 },
+    "type": "theorem",
+    "title": "Chang's Theorem (1972)",
+    "content": "ω^ω → (ω^ω, 3)². Despite the failure for ω³, ω⁴, ..., the property recovers at ω^ω. This was a surprising result that motivated the general classification problem.",
+    "significance": "high"
+  },
+  {
+    "id": "galvin-larson",
+    "proofId": "erdos-592",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "theorem",
+    "title": "Galvin–Larson Necessary Condition (1974)",
+    "content": "If β ≥ 3 has the partition property, then β must be additively indecomposable: β = ω^γ for some γ. This eliminates most ordinals from consideration and focuses the problem on towers of ω.",
+    "significance": "high"
+  },
+  {
+    "id": "schipperus-positive",
+    "proofId": "erdos-592",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "theorem",
+    "title": "Schipperus CNF-Length ≤ 2 (2010)",
+    "content": "If β = ω^γ where γ is a sum of at most 2 indecomposable ordinals, then ω^β has the partition property. Combined with the negative result, this nearly completes the classification.",
+    "significance": "high"
+  },
+  {
+    "id": "open-case",
+    "proofId": "erdos-592",
+    "range": { "startLine": 93, "endLine": 96 },
+    "type": "conjecture",
+    "title": "Open Case: CNF-Length 3 ($1,000)",
+    "content": "The only unresolved case: does ω^(ω^γ) have the partition property when γ has CNF-length exactly 3? This single case carries Erdős's $1,000 bounty.",
+    "significance": "high"
+  }
+]
