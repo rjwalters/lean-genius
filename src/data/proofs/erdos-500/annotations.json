@@ -1,0 +1,74 @@
+[
+  {
+    "id": "hypergraph-3",
+    "proofId": "erdos-500",
+    "range": { "startLine": 27, "endLine": 28 },
+    "type": "definition",
+    "title": "3-Uniform Hypergraph",
+    "content": "A collection of 3-element subsets (edges) of a vertex set Fin n. This is the natural higher-dimensional generalization of a graph (2-uniform hypergraph).",
+    "significance": "medium"
+  },
+  {
+    "id": "k4-3-containment",
+    "proofId": "erdos-500",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "K₄³ Containment",
+    "content": "K₄³ is the complete 3-uniform hypergraph on 4 vertices, containing all C(4,3) = 4 triples. A hypergraph contains K₄³ if some 4 vertices span all 4 triples.",
+    "significance": "high"
+  },
+  {
+    "id": "turan-number",
+    "proofId": "erdos-500",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "Turán Number ex₃(n, K₄³)",
+    "content": "The maximum number of edges in a K₄³-free 3-uniform hypergraph on n vertices. The central quantity of the problem.",
+    "significance": "high"
+  },
+  {
+    "id": "turan-density",
+    "proofId": "erdos-500",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "Turán Density π(K₄³)",
+    "content": "The limit π(K₄³) = lim ex₃(n, K₄³)/C(n,3). This limit always exists for hypergraph Turán problems (Katona–Nemetz–Simonovits 1964).",
+    "significance": "high"
+  },
+  {
+    "id": "turan-lower",
+    "proofId": "erdos-500",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "theorem",
+    "title": "Turán's Lower Bound (1941)",
+    "content": "Partition n vertices into 3 equal parts. Take all triples meeting each part in ≤ 2 vertices. This gives (5/9 + o(1))C(n,3) edges and avoids K₄³.",
+    "significance": "high"
+  },
+  {
+    "id": "razborov-upper",
+    "proofId": "erdos-500",
+    "range": { "startLine": 78, "endLine": 79 },
+    "type": "theorem",
+    "title": "Razborov's Upper Bound (2010)",
+    "content": "Using flag algebras, Razborov proved π(K₄³) ≤ 0.5611666..., the best known upper bound. This dramatically improved earlier bounds (de Caen's 1/√2 ≈ 0.707).",
+    "significance": "high"
+  },
+  {
+    "id": "turan-conjecture",
+    "proofId": "erdos-500",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "conjecture",
+    "title": "Turán's Conjecture: π(K₄³) = 5/9",
+    "content": "Turán conjectured in 1941 that his 3-partition construction is optimal. After 80+ years, this remains one of the most famous open problems in combinatorics.",
+    "significance": "high"
+  },
+  {
+    "id": "exact-values",
+    "proofId": "erdos-500",
+    "range": { "startLine": 91, "endLine": 97 },
+    "type": "theorem",
+    "title": "Exact Values for Small n",
+    "content": "ex₃(4, K₄³) = 3, ex₃(5, K₄³) = 7, ex₃(6, K₄³) = 13. These are consistent with Turán's conjecture; the construction is optimal for all known cases.",
+    "significance": "medium"
+  }
+]

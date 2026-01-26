@@ -1,0 +1,93 @@
+{
+  "id": "erdos-500",
+  "title": "Erdős Problem #500: Turán Density of K₄³",
+  "slug": "erdos-500",
+  "description": "Determine ex₃(n, K₄³): the maximum number of 3-edges on n vertices avoiding K₄³. Turán (1941) conjectured π(K₄³) = 5/9. Best bounds: 5/9 ≤ π ≤ 0.5612 (Razborov 2010). Status: OPEN.",
+  "meta": {
+    "erdosNumber": 500,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "extremal-combinatorics",
+      "hypergraphs",
+      "turan-problem",
+      "flag-algebras",
+      "open"
+    ],
+    "references": [
+      "Turán (1941): construction and conjecture",
+      "de Caen (1994): early upper bounds",
+      "Razborov (2010): flag algebra upper bound 0.5612",
+      "Erdős (1961, 1971, 1974, 1981): problem statements",
+      "https://erdosproblems.com/500"
+    ],
+    "leanFile": "Proofs/Erdos500Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 52,
+      "summary": "Define 3-uniform hypergraphs, K₄³ containment, K₄³-freeness, and ex₃(n, K₄³)."
+    },
+    {
+      "id": "turan-density",
+      "title": "Turán Density",
+      "startLine": 54,
+      "endLine": 62,
+      "summary": "Define π(K₄³) as the limit of ex₃(n, K₄³)/C(n,3) and state its existence."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Turán's Lower Bound (1941)",
+      "startLine": 64,
+      "endLine": 73,
+      "summary": "Turán's 3-partition construction gives π(K₄³) ≥ 5/9."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Razborov's Upper Bound (2010)",
+      "startLine": 75,
+      "endLine": 79,
+      "summary": "Flag algebra methods give π(K₄³) ≤ 0.5612."
+    },
+    {
+      "id": "conjecture",
+      "title": "Turán's Conjecture",
+      "startLine": 81,
+      "endLine": 86,
+      "summary": "The conjectured answer: π(K₄³) = 5/9."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases and Context",
+      "startLine": 88,
+      "endLine": 101,
+      "summary": "Exact values for n = 4, 5, 6 and the gap between known bounds."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Turán posed this problem in 1941, making it one of the oldest open problems in extremal combinatorics. It asks for the maximum number of 3-element subsets of an n-element set that can be chosen without containing all four 3-subsets of any 4-element set. Despite decades of effort and the development of powerful tools like flag algebras, the exact answer remains unknown.",
+    "problemStatement": "Determine ex₃(n, K₄³), the maximum number of 3-edges on n vertices with no complete 3-uniform 4-vertex subhypergraph. Equivalently, determine the Turán density π(K₄³).",
+    "proofStrategy": "We formalize the 3-uniform hypergraph Turán number, define the Turán density, state Turán's lower bound from his 3-partition construction, Razborov's flag algebra upper bound, and the conjecture that π(K₄³) = 5/9.",
+    "keyInsights": [
+      "Turán's 1941 construction partitions vertices into 3 equal parts, yielding density 5/9",
+      "Razborov (2010) used flag algebras to prove π(K₄³) ≤ 0.5612, the best known bound",
+      "The gap between 5/9 ≈ 0.5556 and 0.5612 is remarkably small but unresolved",
+      "Exact values are known for small n: ex₃(4)=3, ex₃(5)=7, ex₃(6)=13",
+      "This is considered one of the most important open problems in combinatorics"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #500 (Turán's hypergraph problem) asks for the Turán density of K₄³. Turán conjectured π(K₄³) = 5/9 in 1941. The best known bounds are 5/9 ≤ π(K₄³) ≤ 0.5612 (Razborov 2010). The problem remains wide open despite 80+ years of effort.",
+    "implications": "A resolution would be a landmark in extremal combinatorics, potentially establishing new methods for hypergraph Turán problems. It would also resolve the simplest nontrivial case of the general hypergraph Turán problem.",
+    "openQuestions": [
+      "Is Turán's 3-partition construction optimal? (π(K₄³) = 5/9?)",
+      "Can flag algebra bounds be improved below 0.56?",
+      "Is the extremal hypergraph unique (for large n)?",
+      "What is the exact value of ex₃(n, K₄³) for n = 7, 8, 9?"
+    ]
+  }
+}
