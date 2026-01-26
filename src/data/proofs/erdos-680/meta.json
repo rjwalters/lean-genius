@@ -1,0 +1,45 @@
+{
+  "id": "erdos-680",
+  "title": "Least Prime Factor Exceeding k² + 1",
+  "slug": "erdos-680",
+  "description": "Is it true that for all sufficiently large n, there exists k ≥ 1 with p(n+k) > k² + 1, where p(m) is the least prime factor of m?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/680",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos680Problem.lean",
+    "tags": ["number-theory", "prime-numbers", "prime-gaps", "least-prime-factor"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 680,
+    "erdosUrl": "https://erdosproblems.com/680",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem (Er79d) about least prime factors of integers near n. The problem connects to prime gap conjectures: Cramér's conjecture would imply a stronger result. Granville refined the expected constant to 2e^{-γ}. Related to Problems #681 and #682.",
+    "problemStatement": "For all sufficiently large n, does there exist k ≥ 1 such that the least prime factor of n+k exceeds k² + 1? The variant asks whether replacing k² + 1 by e^{(1+ε)√k} + C_ε makes this false.",
+    "proofStrategy": "We formalize both the main conjecture and exponential variant using Nat.minFac. Connections to Cramér's conjecture and Granville's refinement are stated. We prove that prime offsets give large least prime factors and establish the k=1 case.",
+    "keyInsights": [
+      "When n+k is prime, minFac(n+k) = n+k, which easily exceeds k² + 1 for large n",
+      "The exponential bound e^{(1+ε)√k} grows faster than k², so the variant is strictly stronger",
+      "Cramér's conjecture on prime gaps would imply the existence of such offsets k",
+      "For k=1, the condition minFac(n+1) > 2 simply means n+1 is odd"
+    ]
+  },
+  "sections": [
+    { "id": "main-conjecture", "title": "Least Prime Factor and the Main Conjecture", "startLine": 27, "endLine": 37, "summary": "States ErdosProblem680: for large n, some k gives minFac(n+k) > k² + 1." },
+    { "id": "exponential-variant", "title": "Exponential Variant", "startLine": 39, "endLine": 54, "summary": "States the stronger variant with e^{(1+ε)√k} + C replacing k² + 1." },
+    { "id": "cramer", "title": "Connections to Prime Gap Conjectures", "startLine": 56, "endLine": 70, "summary": "Defines Cramér's conjecture and states that it implies the existence of large LPF offsets." },
+    { "id": "basic-properties", "title": "Basic Properties", "startLine": 72, "endLine": 95, "summary": "Proves lpf_k1_means_odd and prime_offset_gives_large_lpf, and states the quadratic-exponential comparison." },
+    { "id": "granville", "title": "Granville's Refinement", "startLine": 97, "endLine": 118, "summary": "Defines Granville's constant 2e^{-γ} and his refined prime gap conjecture, and states the connection to Problem 680." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures both versions of Erdős Problem 680 — the quadratic bound k² + 1 and the exponential variant — along with connections to Cramér's conjecture and Granville's refinement. 0 sorries.",
+    "implications": "Resolution would clarify the relationship between prime gaps and least prime factors, with implications for the distribution of smooth numbers.",
+    "openQuestions": [
+      "Is the quadratic bound k² + 1 tight, or can it be improved to k^α for some α > 2?",
+      "What is the correct exponent in the exponential variant: (1+ε)√k or something else?",
+      "Can unconditional progress be made without assuming Cramér's conjecture?"
+    ]
+  }
+}
