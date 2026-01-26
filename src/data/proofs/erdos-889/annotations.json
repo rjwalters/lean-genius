@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-889-vnk-def",
+    "proofId": "erdos-889",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 32 },
+    "title": "New Prime Factor Count v(n,k)",
+    "content": "newPrimeFactorCount n k counts prime factors of n+k that do not divide n+i for any 0 ≤ i < k. These are the 'new' prime factors introduced at position k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-889-v0-def",
+    "proofId": "erdos-889",
+    "type": "definition",
+    "range": { "startLine": 38, "endLine": 41 },
+    "title": "Maximum v₀(n)",
+    "content": "v₀(n) = sup_{k ≥ 0} v(n,k) is the maximum number of new prime factors achievable by any shift k. This is the quantity conjectured to diverge.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-889-conjecture",
+    "proofId": "erdos-889",
+    "type": "conjecture",
+    "range": { "startLine": 51, "endLine": 52 },
+    "title": "Erdős Problem 889",
+    "content": "For every M there exists N₀ such that v₀(n) > M for all n ≥ N₀. The maximum new prime factor count diverges.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-889-exceptions",
+    "proofId": "erdos-889",
+    "type": "result",
+    "range": { "startLine": 60, "endLine": 66 },
+    "title": "v₀(n) ≥ 2 and Exceptions",
+    "content": "Erdős–Selfridge (1967) proved v₀(n) ≥ 2 for n ≥ 17. The complete exception set where v₀(n) ≤ 1 is {0, 1, 2, 3, 4, 7, 8, 16}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-889-general",
+    "proofId": "erdos-889",
+    "type": "conjecture",
+    "range": { "startLine": 76, "endLine": 82 },
+    "title": "Generalized v_l Conjecture",
+    "content": "For every fixed l ≥ 0, v_l(n) = max_{k ≥ l} v(n,k) → ∞ as n → ∞. This strengthening restricts the shifts to k ≥ l.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-889-exact-power",
+    "proofId": "erdos-889",
+    "type": "context",
+    "range": { "startLine": 97, "endLine": 116 },
+    "title": "Exact Power Variant V(n,k)",
+    "content": "V(n,k) counts primes where the exact prime power p^α dividing n+k does not divide any earlier n+i. V(n,k) ≥ v(n,k) since exact power non-divisibility is stronger. This variant may be more tractable.",
+    "significance": "supporting"
+  }
+]

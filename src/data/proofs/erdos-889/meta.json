@@ -1,0 +1,89 @@
+{
+  "id": "erdos-889",
+  "title": "Erdős Problem #889: New Prime Factors in Consecutive Integers",
+  "slug": "erdos-889",
+  "description": "Let v(n,k) count prime factors of n+k not dividing n+i for i < k. Does v₀(n) = max_k v(n,k) → ∞ as n → ∞? Known: v₀(n) ≥ 2 for n ≥ 17. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/889",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos889Problem.lean",
+    "tags": ["number-theory", "prime-factors", "consecutive-integers", "arithmetic-functions"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 889,
+    "erdosUrl": "https://erdosproblems.com/889",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Selfridge (1967) studied the prime factors of consecutive integers n, n+1, ..., n+k. They defined v(n,k) as the count of prime factors of n+k that are 'new' (don't divide any earlier term). They proved v₀(n) ≥ 2 for n ≥ 17, with exceptions at n = 0,1,2,3,4,7,8,16, but could not establish divergence. The problem also appears as B27 in Guy's collection.",
+    "problemStatement": "Let v(n,k) count the prime factors of n+k that do not divide n+i for 0 ≤ i < k. Let v₀(n) = max_{k ≥ 0} v(n,k). Does v₀(n) → ∞ as n → ∞?",
+    "proofStrategy": "We define newPrimeFactorCount (v(n,k)) using Finset filtering on primeFactors, then v₀ as the supremum. ErdosProblem889 states divergence. Known results (v₀(n) ≥ 2 for n ≥ 17, exception list) are axiomatized. The generalized v_l and the exact power variant V(n,k) are also formalized.",
+    "keyInsights": [
+      "v(n,k) counts prime factors of n+k not dividing any of n, n+1, ..., n+k-1",
+      "Erdős–Selfridge proved v₀(n) ≥ 2 for n ≥ 17 (exceptions: 0,1,2,3,4,7,8,16)",
+      "The generalized v_l(n) restricts the supremum to shifts k ≥ l",
+      "The exact power variant V(n,k) uses p^α divisibility instead of p divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "new-prime-count",
+      "title": "New Prime Factor Count",
+      "startLine": 23,
+      "endLine": 32,
+      "summary": "Defines newPrimeFactorCount v(n,k): prime factors of n+k not dividing any n+i for i < k."
+    },
+    {
+      "id": "maximum-v0",
+      "title": "The Maximum v₀",
+      "startLine": 34,
+      "endLine": 41,
+      "summary": "Defines v₀(n) as the supremum of v(n,k) over all k."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 43,
+      "endLine": 52,
+      "summary": "States ErdosProblem889: v₀(n) → ∞ as n → ∞."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 54,
+      "endLine": 66,
+      "summary": "Axiomatizes v₀(n) ≥ 2 for n ≥ 17 and the complete exception list {0,1,2,3,4,7,8,16}."
+    },
+    {
+      "id": "generalized-vl",
+      "title": "Generalized Version v_l",
+      "startLine": 68,
+      "endLine": 82,
+      "summary": "Defines vShifted (v_l) and the generalized conjecture: v_l(n) → ∞ for every fixed l."
+    },
+    {
+      "id": "v1-finiteness",
+      "title": "Finiteness of v₁(n) = 1",
+      "startLine": 84,
+      "endLine": 91,
+      "summary": "The question of whether v₁(n) = 1 has only finitely many solutions."
+    },
+    {
+      "id": "exact-power-variant",
+      "title": "Exact Power Variant V(n,k)",
+      "startLine": 93,
+      "endLine": 116,
+      "summary": "Defines exactPowerNewCount V(n,k) using p^α divisibility, exactPowerShifted V_l, and the comparison V ≥ v."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 889 asks whether the maximum count of new prime factors in consecutive integers diverges. Erdős and Selfridge proved v₀(n) ≥ 2 for n ≥ 17 but could not show divergence. The problem remains open.",
+    "implications": "Resolution would reveal fundamental growth properties of prime factor distributions in consecutive integer sequences.",
+    "openQuestions": [
+      "Does v₀(n) → ∞ as n → ∞?",
+      "Does v_l(n) → ∞ for every fixed l?",
+      "Does v₁(n) = 1 have only finitely many solutions?"
+    ]
+  }
+}
