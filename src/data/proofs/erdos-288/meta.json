@@ -1,0 +1,97 @@
+{
+  "id": "erdos-288",
+  "title": "Erdős Problem #288: Integer Harmonic Sums Over Interval Pairs",
+  "slug": "erdos-288",
+  "description": "Are there only finitely many pairs of intervals (I₁, I₂) such that Σ_{I₁} 1/n + Σ_{I₂} 1/n is a positive integer? Example: 1/3+1/4+1/5+1/6+1/20 = 1. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/288",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos288Problem.lean",
+    "tags": [
+      "number-theory",
+      "harmonic-sums",
+      "unit-fractions",
+      "intervals",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 288,
+    "erdosUrl": "https://erdosproblems.com/288",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #288 from [ErGr80] asks about pairs of intervals whose harmonic sums give positive integers. The example 1/3+1/4+1/5+1/6+1/20 = 1 uses intervals [3,6] and [20,20]. The problem connects to Egyptian fractions and unit fraction representations.",
+    "problemStatement": "Is it true that there are only finitely many pairs of intervals I₁, I₂ such that Σ_{n₁ ∈ I₁} 1/n₁ + Σ_{n₂ ∈ I₂} 1/n₂ is a positive integer? OPEN.",
+    "proofStrategy": "The formalization defines harmonicInterval over ℚ, IntervalPair, the integer sum condition, and the main conjecture as Set.Finite. Variants for singleton I₂ and k-interval generalization are axiomatized. The equivalence theorem is proved by simp.",
+    "keyInsights": [
+      "Harmonic sums over intervals are rational numbers; the question is when they sum to integers",
+      "The known example 1/3+1/4+1/5+1/6+1/20 = 1 uses intervals [3,6] and [20,20]",
+      "The problem is open even when I₂ has a single element",
+      "A natural generalization asks about k intervals for any k",
+      "Connected to Egyptian fraction representations and unit fractions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "harmonic-sums",
+      "title": "Part I: Harmonic Sums Over Intervals",
+      "startLine": 29,
+      "endLine": 47,
+      "summary": "Defines harmonicInterval(a,b) over ℚ, IntervalPair type, pairSum, and IsIntegerSum."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part II: The Main Conjecture",
+      "startLine": 49,
+      "endLine": 62,
+      "summary": "Defines integerSumPairs and ErdosConjecture288: Set.Finite integerSumPairs. Axiom erdos_288."
+    },
+    {
+      "id": "example",
+      "title": "Part III: The Known Example",
+      "startLine": 64,
+      "endLine": 69,
+      "summary": "Axiom example_sum_one: H(3,6) + H(20,20) = 1."
+    },
+    {
+      "id": "singleton-variant",
+      "title": "Part IV: Variant — Single Element I₂",
+      "startLine": 71,
+      "endLine": 82,
+      "summary": "Defines singletonPairs. Axiom erdos_288_singleton: still open when |I₂| = 1."
+    },
+    {
+      "id": "k-intervals",
+      "title": "Part V: Variant — k Intervals",
+      "startLine": 84,
+      "endLine": 102,
+      "summary": "Defines kIntervalSum and kIntervalPairs. Axiom erdos_288_k_intervals: generalization to k intervals."
+    },
+    {
+      "id": "properties",
+      "title": "Part VI: Properties of Harmonic Sums",
+      "startLine": 104,
+      "endLine": 120,
+      "summary": "Axioms: singleton harmonic sum, positivity, harmonic numbers, logarithmic growth."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 122,
+      "endLine": 148,
+      "summary": "Proved: erdos_288_statement (simp), erdos_288_status (trivial). Problem remains OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #288 asks whether only finitely many interval pairs have integer harmonic sums. The problem is open even for singleton second intervals, and the k-interval generalization is also conjectured.",
+    "implications": "Resolution would clarify the arithmetic of harmonic sums and connect to Egyptian fraction theory and Diophantine equations.",
+    "openQuestions": [
+      "Are there only finitely many interval pairs with integer harmonic sum?",
+      "Is it true even when |I₂| = 1?",
+      "Does the finiteness hold for k intervals for any k?",
+      "What are all solutions beyond the known example?"
+    ]
+  }
+}
