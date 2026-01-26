@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cycle-containment",
+    "proofId": "erdos-555",
+    "type": "definition",
+    "title": "Cycle Containment",
+    "content": "A simple graph has a cycle of length n if there exist n distinct vertices forming a cycle where consecutive vertices are adjacent.",
+    "significance": "supporting",
+    "range": {
+      "startLine": 26,
+      "endLine": 31
+    }
+  },
+  {
+    "id": "edge-coloring",
+    "proofId": "erdos-555",
+    "type": "definition",
+    "title": "Edge Coloring and Monochromatic Subgraph",
+    "content": "A k-coloring assigns each edge a color from {0,...,k-1}. The monochromatic subgraph of color c contains exactly the edges of that color.",
+    "significance": "critical",
+    "range": {
+      "startLine": 34,
+      "endLine": 43
+    }
+  },
+  {
+    "id": "ramsey-even-cycle",
+    "proofId": "erdos-555",
+    "type": "definition",
+    "title": "Ramsey Number R(C₂ₙ; k)",
+    "content": "R(C₂ₙ; k) is the minimum m such that every k-coloring of K_m yields a monochromatic copy of the even cycle C₂ₙ.",
+    "significance": "critical",
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    }
+  },
+  {
+    "id": "erdos-bounds",
+    "proofId": "erdos-555",
+    "type": "theorem",
+    "title": "Erdős General Bounds",
+    "content": "k^{1+1/(2n)} ≪ R(C₂ₙ; k) ≪ k^{1+1/(n-1)}. The lower bound uses probabilistic arguments, the upper bound uses regularity.",
+    "significance": "critical",
+    "range": {
+      "startLine": 56,
+      "endLine": 65
+    }
+  },
+  {
+    "id": "chung-graham",
+    "proofId": "erdos-555",
+    "type": "theorem",
+    "title": "Chung–Graham Bounds for C₄",
+    "content": "For C₄: k²-k+1 < R(C₄;k) ≤ k²+k+1 when k-1 is a prime power. The bounds relate to the existence of finite projective planes of order k-1.",
+    "significance": "key",
+    "range": {
+      "startLine": 69,
+      "endLine": 79
+    }
+  },
+  {
+    "id": "main-problem",
+    "proofId": "erdos-555",
+    "type": "concept",
+    "title": "The Exact Exponent Problem",
+    "content": "Determining the exact exponent α_n where R(C₂ₙ;k) = Θ(k^{1+α_n}) is the central open problem. The gap 1/(2n) ≤ α_n ≤ 1/(n-1) is not closed for any n ≥ 3.",
+    "significance": "critical",
+    "range": {
+      "startLine": 83,
+      "endLine": 92
+    }
+  }
+]
