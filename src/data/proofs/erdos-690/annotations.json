@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-690-ann-kthprime",
+    "proofId": "erdos-690",
+    "range": { "startLine": 26, "endLine": 29 },
+    "type": "definition",
+    "title": "k-th Smallest Prime Factor",
+    "content": "The k-th smallest distinct prime dividing n (0-indexed). Returns 0 if n has fewer than k prime factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-690-ann-density",
+    "proofId": "erdos-690",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "k-th Prime Factor Density",
+    "content": "d_k(p): the asymptotic density of positive integers whose k-th smallest prime factor equals p.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-690-ann-unimodal",
+    "proofId": "erdos-690",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "definition",
+    "title": "Unimodality on Primes",
+    "content": "A function is unimodal on primes if it increases then decreases along the prime sequence. The central property under investigation.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-690-ann-yes",
+    "proofId": "erdos-690",
+    "range": { "startLine": 50, "endLine": 60 },
+    "type": "theorem",
+    "title": "Cambie: Unimodal for k ≤ 3",
+    "content": "d_k(p) is unimodal in p for k = 1, 2, 3. The small-k regime behaves regularly.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-690-ann-no",
+    "proofId": "erdos-690",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "theorem",
+    "title": "Cambie: Not Unimodal for 4 ≤ k ≤ 20",
+    "content": "d_k(p) fails unimodality for 4 ≤ k ≤ 20, confirming Erdős's expectation of failure.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-690-ann-answer",
+    "proofId": "erdos-690",
+    "range": { "startLine": 68, "endLine": 71 },
+    "type": "theorem",
+    "title": "Answer: NO",
+    "content": "The answer to Erdős's question is no: unimodality does not hold for all k ≥ 1. Proved from Cambie's k=4 result.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-690-ann-typical",
+    "proofId": "erdos-690",
+    "range": { "startLine": 75, "endLine": 78 },
+    "type": "theorem",
+    "title": "Typical k-th Prime Factor",
+    "content": "For almost all n, the k-th prime factor is exp(exp(k)). The density peak at exp((1+o(1))k) is much smaller.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-690-ann-d1",
+    "proofId": "erdos-690",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "theorem",
+    "title": "d₁ Formula",
+    "content": "d_1(p) = (1/p)·∏_{q<p}(1−1/q). Strictly decreasing: d_1(2)=1/2, d_1(3)=1/6, etc.",
+    "significance": "supporting"
+  }
+]
