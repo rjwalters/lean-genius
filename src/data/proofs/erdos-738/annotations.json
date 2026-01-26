@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-738-ann-trianglefree",
+    "proofId": "erdos-738",
+    "range": { "startLine": 30, "endLine": 32 },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "A graph is triangle-free if it contains no 3-clique (K₃). Formalized via CliqueFree 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-738-ann-infchrom",
+    "proofId": "erdos-738",
+    "range": { "startLine": 37, "endLine": 39 },
+    "type": "definition",
+    "title": "Infinite Chromatic Number",
+    "content": "No finite number of colors suffices for a proper coloring. Forces rich combinatorial structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-738-ann-induced",
+    "proofId": "erdos-738",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "definition",
+    "title": "Induced Subgraph Copy",
+    "content": "An injective map from Fin n to V preserving and reflecting adjacency. The strongest notion of containment.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-738-ann-conjecture",
+    "proofId": "erdos-738",
+    "range": { "startLine": 54, "endLine": 59 },
+    "type": "theorem",
+    "title": "Gyárfás Conjecture (Main)",
+    "content": "Every triangle-free graph with infinite chromatic number contains every finite tree as an induced subgraph. The central open problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-738-ann-paths",
+    "proofId": "erdos-738",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "theorem",
+    "title": "Paths Always Present",
+    "content": "Triangle-free graphs with infinite chromatic number contain arbitrarily long induced paths. Follows from Ramsey arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-738-ann-stars",
+    "proofId": "erdos-738",
+    "range": { "startLine": 81, "endLine": 85 },
+    "type": "theorem",
+    "title": "Stars Always Present",
+    "content": "Stars of every size appear as induced subgraphs, since infinite chromatic number forces unbounded degree.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-738-ann-kp",
+    "proofId": "erdos-738",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "theorem",
+    "title": "Kierstead–Penrice: Radius-2 Trees",
+    "content": "The conjecture holds for trees of radius ≤ 2 (all vertices within distance 2 of the center).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-738-ann-finite",
+    "proofId": "erdos-738",
+    "range": { "startLine": 106, "endLine": 110 },
+    "type": "theorem",
+    "title": "Finite Version (χ-Bounded)",
+    "content": "For each tree T, a finite chromatic threshold N(T) should exist such that χ(G) > N forces an induced copy of T in triangle-free G.",
+    "significance": "supporting"
+  }
+]
