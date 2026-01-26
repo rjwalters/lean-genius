@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-450-divisor",
+    "proofId": "erdos-450",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 45 },
+    "title": "Divisors in (n, 2n)",
+    "content": "HasDivisorIn m n: m has a divisor d with n < d < 2n. countWithDivisor: counts such integers in a short interval.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-450-density",
+    "proofId": "erdos-450",
+    "type": "definition",
+    "range": { "startLine": 51, "endLine": 54 },
+    "title": "Density Bound",
+    "content": "DensityBound: the count of integers with a divisor in (n,2n) within (x,x+y) is at most ε·y, using rational ε.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-450-forall",
+    "proofId": "erdos-450",
+    "type": "conjecture",
+    "range": { "startLine": 60, "endLine": 66 },
+    "title": "For All x Version",
+    "content": "ErdosProblem450_ForAll: find y so the density bound holds for ALL x. Cambie showed this fails in certain regimes.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-450-cambie",
+    "proofId": "erdos-450",
+    "type": "result",
+    "range": { "startLine": 84, "endLine": 90 },
+    "title": "Cambie's No-y Result",
+    "content": "For ε·(log n)^δ·(log log n)^{3/2} → ∞ with δ ≈ 0.086, no finite y works for the 'for all x' version. Uses Ford's work.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-450-small-eps",
+    "proofId": "erdos-450",
+    "type": "result",
+    "range": { "startLine": 96, "endLine": 103 },
+    "title": "Small ε Regime",
+    "content": "For ε ≪ 1/n, y(ε,n) ∼ 2n. Intervals of length > 2n always contain multiples of elements in (n, 2n).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-450-summary",
+    "proofId": "erdos-450",
+    "type": "context",
+    "range": { "startLine": 120, "endLine": 127 },
+    "title": "Summary",
+    "content": "The problem remains open. The quantifier on x matters crucially. Cambie and Ford's results give partial answers.",
+    "significance": "supporting"
+  }
+]
