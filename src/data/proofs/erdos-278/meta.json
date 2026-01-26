@@ -1,0 +1,77 @@
+{
+  "id": "erdos-278",
+  "title": "Erdős Problem #278: Maximum Covering Density of Congruence Systems",
+  "slug": "erdos-278",
+  "description": "Given moduli {n₁,...,nᵣ}, choose residues to maximize the density of covered integers. Simpson (1986) proved minimum is achieved with equal residues. Maximum density remains OPEN.",
+  "meta": {
+    "erdosNumber": 278,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "congruences",
+      "density",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham (1980): original problem, p.28",
+      "Simpson (1986): minimum density is achieved with equal residues",
+      "https://erdosproblems.com/278"
+    ],
+    "leanFile": "Proofs/Erdos278Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 50,
+      "summary": "Define CongruenceSystem, isCovered, coverageDensity, and max/min density."
+    },
+    {
+      "id": "inclusion-exclusion",
+      "title": "Inclusion-Exclusion Formula",
+      "startLine": 52,
+      "endLine": 59,
+      "summary": "The density formula for equal-residue systems via inclusion-exclusion."
+    },
+    {
+      "id": "simpson",
+      "title": "Simpson's Theorem",
+      "startLine": 61,
+      "endLine": 72,
+      "summary": "Simpson (1986): equal residues minimize coverage density."
+    },
+    {
+      "id": "open-question",
+      "title": "Maximum Density (Open)",
+      "startLine": 74,
+      "endLine": 95,
+      "summary": "Maximum density is determined for coprime moduli but open in general."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this in 1980 as a covering system optimization problem. Given fixed moduli, how should one choose residues to maximize or minimize the proportion of integers covered? Simpson (1986) resolved the minimum question: equal residues are optimal. The maximum question remains open.",
+    "problemStatement": "Given moduli A = {n₁,...,nᵣ}, what is the maximum density of integers m covered by at least one congruence m ≡ aᵢ (mod nᵢ)? Is the minimum density achieved when all aᵢ are equal?",
+    "proofStrategy": "We formalize congruence systems, coverage density, and state Simpson's theorem for the minimum. The maximum density question is axiomatized as open, with the coprime case resolved.",
+    "keyInsights": [
+      "Simpson proved minimum density is achieved with all residues equal (1986)",
+      "The minimum density is given by inclusion-exclusion: Σ 1/nᵢ - Σ 1/lcm(nᵢ,nⱼ) + ⋯",
+      "For coprime moduli, the maximum density equals Σ 1/nᵢ by CRT",
+      "For non-coprime moduli, the maximum density is harder: residue choices affect overlaps",
+      "The coverage density is periodic with period lcm(n₁,...,nᵣ)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #278 asks about optimizing coverage density of congruence systems. Simpson (1986) proved the minimum is achieved with equal residues, but the maximum density for arbitrary moduli remains open.",
+    "implications": "A complete solution would characterize the covering efficiency of congruence systems, relevant to covering designs, scheduling problems, and the Chinese Remainder Theorem in non-coprime settings.",
+    "openQuestions": [
+      "What is the maximum coverage density for arbitrary moduli?",
+      "Is there a closed-form or algorithm for the maximum?",
+      "How does non-coprimality of the moduli affect the maximum?",
+      "Can the maximum exceed 1 - Π(1 - 1/nᵢ)?"
+    ]
+  }
+}

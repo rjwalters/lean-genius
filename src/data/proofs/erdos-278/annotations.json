@@ -1,0 +1,56 @@
+[
+  {
+    "id": "congruence-system",
+    "proofId": "erdos-278",
+    "range": { "startLine": 28, "endLine": 32 },
+    "type": "definition",
+    "title": "Congruence System",
+    "content": "A finite set of moduli {n₁,...,nᵣ} with chosen residues a₁,...,aᵣ. Each modulus-residue pair defines an arithmetic progression aᵢ (mod nᵢ).",
+    "significance": "high"
+  },
+  {
+    "id": "coverage-density",
+    "proofId": "erdos-278",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "definition",
+    "title": "Coverage Density",
+    "content": "The fraction of integers covered by at least one congruence. Computed over one period lcm(n₁,...,nᵣ), as the system is periodic.",
+    "significance": "high"
+  },
+  {
+    "id": "max-min-density",
+    "proofId": "erdos-278",
+    "range": { "startLine": 44, "endLine": 50 },
+    "type": "definition",
+    "title": "Max and Min Coverage Density",
+    "content": "The supremum and infimum of coverage density over all residue choices. Erdős asks for both: maximum (open) and minimum (solved by Simpson).",
+    "significance": "high"
+  },
+  {
+    "id": "simpson-theorem",
+    "proofId": "erdos-278",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "theorem",
+    "title": "Simpson's Theorem (1986)",
+    "content": "The minimum coverage density is achieved when all residues are equal. The equal-residue density is given by the inclusion-exclusion formula over lcm's.",
+    "significance": "high"
+  },
+  {
+    "id": "coprime-max",
+    "proofId": "erdos-278",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "theorem",
+    "title": "Coprime Case Maximum",
+    "content": "When all moduli are pairwise coprime, the maximum coverage is Σ 1/nᵢ by the Chinese Remainder Theorem. Residue choices cannot reduce overlap since CRT gives independence.",
+    "significance": "medium"
+  },
+  {
+    "id": "open-max",
+    "proofId": "erdos-278",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "conjecture",
+    "title": "Maximum Density (Open)",
+    "content": "What is the maximum coverage density for general (non-coprime) moduli? This is the main open part of Problem #278. Non-coprimality allows clever residue alignment to increase or decrease overlap.",
+    "significance": "high"
+  }
+]
