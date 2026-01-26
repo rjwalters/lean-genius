@@ -1,0 +1,56 @@
+[
+  {
+    "id": "consecutive-free",
+    "proofId": "erdos-574",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "{C_{2k−1}, C_{2k}}-Free",
+    "content": "A graph is {C_{2k−1}, C_{2k}}-free if it contains neither a cycle of length 2k−1 nor a cycle of length 2k. The extremal number counts the maximum edges in such graphs on n vertices.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-574",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "conjecture",
+    "title": "Erdős–Simonovits Conjecture",
+    "content": "ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k}. This says the extremal number for the pair equals that of C_{2k} alone, up to lower-order terms.",
+    "significance": "high"
+  },
+  {
+    "id": "even-cycle-turan",
+    "proofId": "erdos-574",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "note",
+    "title": "Even Cycle Turán Number",
+    "content": "ex(n; C_{2k}) = Θ(n^{1+1/k}). The Bondy–Simonovits theorem gives the upper bound, and algebraic constructions (for k = 2, 3, 5) give matching lower bounds.",
+    "significance": "high"
+  },
+  {
+    "id": "bondy-simonovits",
+    "proofId": "erdos-574",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "note",
+    "title": "Bondy–Simonovits Upper Bound",
+    "content": "ex(n; C_{2k}) ≤ c·n^{1+1/k} for some constant c depending on k. This gives the upper bound for the consecutive cycle pair as well.",
+    "significance": "high"
+  },
+  {
+    "id": "case-k2",
+    "proofId": "erdos-574",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "note",
+    "title": "Case k = 2 (Problem #573)",
+    "content": "ex(n; {C₃, C₄}) is studied separately in Problem #573. The extremal graphs are related to incidence geometries of projective planes.",
+    "significance": "medium"
+  },
+  {
+    "id": "algebraic",
+    "proofId": "erdos-574",
+    "range": { "startLine": 86, "endLine": 91 },
+    "type": "note",
+    "title": "Algebraic Constructions",
+    "content": "For k = 2, 3, 5, algebraic constructions from finite geometry (incidence graphs of projective planes) provide C_{2k}-free graphs that also avoid C_{2k−1}, supporting the conjecture.",
+    "significance": "medium"
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "id": "erdos-574",
+  "title": "Erdős Problem #574: Turán Number for Consecutive Cycle Pairs",
+  "slug": "erdos-574",
+  "description": "Is ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k} for k ≥ 2? Conjectured that forbidding C_{2k−1} in addition to C_{2k} does not change the extremal number asymptotically. Open.",
+  "meta": {
+    "erdosNumber": 574,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan-number",
+      "cycles",
+      "open"
+    ],
+    "references": [
+      "Erdős & Simonovits (1982): original problem [ErSi82]",
+      "Bondy & Simonovits: upper bound for even cycles",
+      "https://erdosproblems.com/574"
+    ],
+    "leanFile": "Proofs/Erdos574Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 48,
+      "summary": "Simple graph, edge count, cycle containment, consecutive cycle-free, extremal number."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 50,
+      "endLine": 56,
+      "summary": "ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k}."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 58,
+      "endLine": 78,
+      "summary": "Even cycle Turán number, Bondy–Simonovits bound, case k=2."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 80,
+      "endLine": 92,
+      "summary": "Forbidding C_{2k−1} is 'free', algebraic constructions."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Simonovits posed this conjecture in 1982, building on the classical theory of extremal numbers for even cycles. The Bondy–Simonovits theorem gives ex(n; C_{2k}) = O(n^{1+1/k}), and algebraic constructions match this for certain k. The conjecture asserts that additionally forbidding the odd cycle C_{2k−1} does not change the asymptotics.",
+    "problemStatement": "For k ≥ 2, prove that ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k}. This says the extremal number for forbidding both C_{2k−1} and C_{2k} is asymptotically the same as for C_{2k} alone.",
+    "proofStrategy": "We define cycle containment and the extremal function for consecutive cycle pairs. We state the main conjecture, record the Bondy–Simonovits upper bound and even cycle Turán number, and note that algebraic constructions often avoid both cycles simultaneously.",
+    "keyInsights": [
+      "ex(n; C_{2k}) = Θ(n^{1+1/k}) by Bondy–Simonovits and algebraic constructions",
+      "The conjecture says forbidding C_{2k−1} additionally is asymptotically free",
+      "Algebraic constructions (projective planes) often avoid both C_{2k−1} and C_{2k}",
+      "Case k=2 (Problem #573): ex(n; {C₃, C₄}) is separately studied",
+      "Related to the Zarankiewicz problem and Moore bound"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #574 conjectures that the Turán number for the pair {C_{2k−1}, C_{2k}} matches that of C_{2k} alone. This would show that odd cycle avoidance comes for free in this extremal setting, consistent with algebraic constructions that naturally avoid both cycle lengths.",
+    "implications": "Resolution would clarify the relationship between odd and even cycle extremal theory and confirm that the known algebraic constructions are asymptotically optimal for the pair problem.",
+    "openQuestions": [
+      "Is ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1))·(n/2)^{1+1/k}?",
+      "For which k are exact constructions known?",
+      "Does the conjecture extend to other pairs of forbidden cycle lengths?",
+      "What is the precise constant in front of n^{1+1/k}?"
+    ]
+  }
+}
