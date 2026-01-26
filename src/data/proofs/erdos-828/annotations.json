@@ -1,94 +1,90 @@
 [
   {
-    "id": "ann-828-header",
+    "id": "erdos-828-header",
     "proofId": "erdos-828",
-    "type": "concept",
-    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 24 },
     "title": "Problem Overview",
-    "content": "**Erdős Problem #828** asks: for any integer a, are there infinitely many n with φ(n) | n + a? This unifies two classical results: the a=0 case (completely characterized as n = 2^a·3^b) and Lehmer's 1932 conjecture (a = -1, only primes work).",
-    "mathContext": "Posed by Erdős [Er83], conjecture attributed to Graham. See also Guy (2004) Problem B37.",
-    "significance": "critical",
-    "relatedConcepts": ["Euler totient", "Lehmer's conjecture", "divisibility"]
+    "content": "Erdős Problem #828: For any integer a, are there infinitely many n with φ(n) | n + a? Generalizes the characterized a = 0 case and Lehmer's conjecture (a = -1). Attributed to Graham. OPEN.",
+    "mathContext": "From Erdős [Er83]. See Guy (2004) Problem B37. Connects to Lehmer (1932) and Carmichael's totient conjecture.",
+    "significance": "essential",
+    "relatedConcepts": ["Euler totient", "Lehmer's conjecture", "divisibility", "Graham"]
   },
   {
-    "id": "erdos-828-totient-divisors",
+    "id": "erdos-828-definitions",
     "proofId": "erdos-828",
     "type": "definition",
-    "range": { "startLine": 48, "endLine": 50 },
+    "range": { "startLine": 36, "endLine": 41 },
     "title": "Totient Divisors Set",
-    "content": "For each integer a, we define the set {n ∈ ℕ : φ(n) | n + a}. The conjecture asks if this set is infinite for every a.",
-    "significance": "key"
+    "content": "totientDivisors(a) = {n ∈ ℕ : (totient n : ℤ) | (n : ℤ) + a}. The conjecture asks whether this set is infinite for every a ∈ ℤ.",
+    "mathContext": "Defined over ℤ to handle negative a. Uses Mathlib's Nat.totient.",
+    "significance": "essential",
+    "relatedConcepts": ["Nat.totient", "Set.Infinite", "Int.dvd"]
   },
   {
     "id": "erdos-828-case-zero",
     "proofId": "erdos-828",
-    "type": "theorem",
-    "range": { "startLine": 54, "endLine": 69 },
-    "title": "Case a = 0: Complete Characterization",
-    "content": "φ(n) | n if and only if n ≤ 1 or n = 2^a · 3^b for some a > 0. This is because φ(n)/n = ∏(1 - 1/p) requires denominators to only have factors 2 and 3.",
-    "significance": "key"
+    "type": "result",
+    "range": { "startLine": 42, "endLine": 50 },
+    "title": "Special Case a = 0",
+    "content": "totient_dvd_self_iff (axiom): φ(n) | n ↔ n ≤ 1 ∨ (∃ a > 0, ∃ b, n = 2^a · 3^b). totientDivisors_zero_infinite (axiom): the set {n : φ(n) | n} is infinite.",
+    "mathContext": "The a = 0 case is completely characterized. Key insight: φ(n)/n = ∏(1 - 1/p) must yield integer ratio, requiring only primes 2 and 3.",
+    "significance": "essential",
+    "relatedConcepts": ["totient formula", "3-smooth numbers", "complete characterization"]
   },
   {
     "id": "erdos-828-lehmer",
     "proofId": "erdos-828",
-    "type": "theorem",
-    "range": { "startLine": 73, "endLine": 94 },
+    "type": "result",
+    "range": { "startLine": 51, "endLine": 71 },
     "title": "Lehmer's Conjecture (a = -1)",
-    "content": "For n > 1: φ(n) | n - 1 if and only if n is prime. The 'if' direction is easy (φ(p) = p-1). The 'only if' direction is Lehmer's famous 1932 conjecture - no composite 'Lehmer number' is known.",
-    "significance": "key"
+    "content": "lehmerConjecture: ∀ n > 1, totient n | n-1 ↔ n.Prime. prime_totient_dvd_pred (proved): φ(p) | p-1 via totient_prime. totientDivisors_neg_one_infinite (axiom). lehmer_conjecture (axiom).",
+    "mathContext": "Lehmer (1932) conjectured no composite Lehmer number exists. The 'if' direction is trivial: φ(p) = p-1.",
+    "significance": "essential",
+    "relatedConcepts": ["Lehmer's conjecture", "Nat.Prime", "totient_prime"]
   },
   {
-    "id": "erdos-828-main-conjecture",
+    "id": "erdos-828-conjecture",
     "proofId": "erdos-828",
-    "type": "theorem",
-    "range": { "startLine": 98, "endLine": 108 },
+    "type": "conjecture",
+    "range": { "startLine": 72, "endLine": 80 },
     "title": "Main Conjecture (OPEN)",
-    "content": "For every integer a, there are infinitely many n such that φ(n) | n + a. This would unify the known cases (a = 0, a = -1) into a general statement about totient divisibility.",
-    "significance": "key"
+    "content": "erdos828Conjecture: ∀ a : ℤ, (totientDivisors a).Infinite. For every integer a, infinitely many n satisfy φ(n) | n + a. OPEN.",
+    "mathContext": "Generalizes both the a = 0 case (solved) and Lehmer's conjecture (a = -1). Attributed to Graham.",
+    "significance": "essential",
+    "relatedConcepts": ["Set.Infinite", "generalization", "open problem"]
   },
   {
-    "id": "erdos-828-examples",
+    "id": "erdos-828-structural",
     "proofId": "erdos-828",
-    "type": "example",
-    "range": { "startLine": 112, "endLine": 141 },
-    "title": "Concrete Examples",
-    "content": "For a = 1: n ∈ {1, 2, 3, 15, ...} work since φ(1)=1|2, φ(2)=1|3, φ(3)=2|4, φ(15)=8|16. For a = 2: n ∈ {2, 4, ...} work. Finding patterns is the challenge.",
-    "significance": "supporting"
+    "type": "result",
+    "range": { "startLine": 81, "endLine": 93 },
+    "title": "Structural Properties",
+    "content": "totient_even (axiom): 2 | φ(n) for n > 2. totient_prime' (proved): φ(p) = p-1 (Mathlib wrapper). totient_prime_pow_formula (axiom): φ(p^k) = p^(k-1)(p-1).",
+    "mathContext": "totient_prime' uses Mathlib's totient_prime directly. The evenness of φ constrains divisibility patterns.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.totient", "totient_prime", "even numbers"]
   },
   {
-    "id": "erdos-828-totient-even",
-    "proofId": "erdos-828",
-    "type": "theorem",
-    "range": { "startLine": 145, "endLine": 158 },
-    "title": "Structural Properties of φ",
-    "content": "φ(n) is always even for n > 2 (since -1 has order 2 in (ℤ/nℤ)*). For primes p, φ(p) = p-1. For prime powers, φ(p^k) = p^(k-1)(p-1). These formulas constrain divisibility.",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-828-fermat-euler",
+    "id": "erdos-828-connections",
     "proofId": "erdos-828",
     "type": "context",
-    "range": { "startLine": 162, "endLine": 174 },
-    "title": "Connection to Fermat-Euler",
-    "content": "The Fermat-Euler theorem says a^φ(n) ≡ 1 (mod n) for gcd(a,n) = 1. This connects φ(n) to multiplicative orders and the structure of (ℤ/nℤ)*, providing context for divisibility questions.",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-828-difficulty",
-    "proofId": "erdos-828",
-    "type": "context",
-    "range": { "startLine": 178, "endLine": 189 },
-    "title": "Why This Is Hard",
-    "content": "φ(n) depends on the prime factorization of n in a complex way. For each a, we need to construct infinitely many n where the totient happens to divide n + a - this requires delicate number-theoretic engineering.",
-    "significance": "supporting"
+    "range": { "startLine": 94, "endLine": 101 },
+    "title": "Connections",
+    "content": "Connects to Fermat-Euler theorem (a^φ(n) ≡ 1 mod n) and related conjectures (Lehmer, Carmichael).",
+    "mathContext": "Placeholder axioms. The Fermat-Euler connection provides structural context for totient divisibility.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fermat-Euler theorem", "Carmichael's conjecture"]
   },
   {
     "id": "erdos-828-summary",
     "proofId": "erdos-828",
-    "type": "conclusion",
-    "range": { "startLine": 193, "endLine": 217 },
-    "title": "Summary",
-    "content": "Erdős Problem #828 remains OPEN. Case a = 0 is solved (n = 2^a·3^b). Case a = -1 is Lehmer's conjecture. The general conjecture, attributed to Graham, asks if solutions are infinite for every a.",
-    "significance": "key"
+    "type": "result",
+    "range": { "startLine": 102, "endLine": 129 },
+    "title": "Summary: OPEN",
+    "content": "erdos_828_summary (proved): (erdos828Conjecture ↔ ∀ a, (totientDivisors a).Infinite) ∧ True. Proved from Iff.rfl and trivial. Problem remains OPEN.",
+    "mathContext": "erdos_828_summary := ⟨Iff.rfl, trivial⟩.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary", "totient divisibility"]
   }
 ]
