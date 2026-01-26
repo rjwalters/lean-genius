@@ -1,0 +1,90 @@
+{
+  "id": "erdos-349",
+  "title": "Erdős Problem #349: Completeness of Exponential Floor Sequences",
+  "slug": "erdos-349",
+  "description": "For what (t,α) is ⌊tα^n⌋ a complete sequence? Conjectured for all t > 0 and 1 < α < (1+√5)/2. Whether ⌊(3/2)^n⌋ is odd/even infinitely often is unknown. Open.",
+  "meta": {
+    "erdosNumber": 349,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sequences",
+      "completeness",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham (1980): original problem, p.57",
+      "Graham (1964): disjoint segments construction",
+      "https://erdosproblems.com/349"
+    ],
+    "leanFile": "Proofs/Erdos349Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 36,
+      "summary": "Additive completeness, exponential floor sequence, good pair predicate."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 38,
+      "endLine": 43,
+      "summary": "Characterize good pairs (t,α) for completeness of ⌊tα^n⌋."
+    },
+    {
+      "id": "golden-ratio",
+      "title": "Golden Ratio Conjecture",
+      "startLine": 45,
+      "endLine": 50,
+      "summary": "Conjectured complete for 1 < α < (1+√5)/2."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 52,
+      "endLine": 61,
+      "summary": "Graham's disjoint segments: completeness set has complex structure."
+    },
+    {
+      "id": "parity",
+      "title": "Parity of ⌊(3/2)^n⌋",
+      "startLine": 63,
+      "endLine": 74,
+      "summary": "Whether ⌊(3/2)^n⌋ is odd/even infinitely often — both open."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 76,
+      "endLine": 88,
+      "summary": "Waring connection and Fibonacci threshold significance."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph. Graham showed that the completeness region has a surprisingly complex structure: for some t, the set of good α consists of multiple disjoint intervals. The conjecture that α < golden ratio suffices remains one of the deepest open questions in combinatorial number theory.",
+    "problemStatement": "For what values of t, α ∈ (0,∞) is the sequence ⌊tα^n⌋ complete (all sufficiently large integers representable as sums of distinct terms)?",
+    "proofStrategy": "We define additive completeness, the exponential floor sequence, and good pairs. We state the golden ratio conjecture, Graham's disjoint segments result, and the fundamental parity questions for ⌊(3/2)^n⌋.",
+    "keyInsights": [
+      "Conjectured complete for 1 < α < (1+√5)/2 (golden ratio)",
+      "Graham showed the completeness set has ≥ k disjoint intervals for any k",
+      "Whether ⌊(3/2)^n⌋ is odd/even infinitely often is a fundamental obstacle",
+      "The golden ratio threshold connects to Fibonacci completeness",
+      "Even basic parity questions about exponential floors are intractable"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #349 asks for the complete characterization of pairs (t,α) making ⌊tα^n⌋ a complete sequence. The conjectured golden ratio threshold and the intractable parity questions for ⌊(3/2)^n⌋ highlight the profound difficulty of understanding exponential floor sequences.",
+    "implications": "Resolution would advance our understanding of completeness in additive number theory and the distribution of fractional parts of exponential sequences, with connections to Waring's problem and uniform distribution theory.",
+    "openQuestions": [
+      "Is ⌊tα^n⌋ complete for all t > 0 and 1 < α < (1+√5)/2?",
+      "Is ⌊(3/2)^n⌋ odd infinitely often?",
+      "Is ⌊(3/2)^n⌋ even infinitely often?",
+      "What is the exact boundary of the completeness region?"
+    ]
+  }
+}
