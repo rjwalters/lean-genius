@@ -1,0 +1,74 @@
+[
+  {
+    "id": "tree-def",
+    "proofId": "erdos-557",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "definition",
+    "title": "Tree Structure",
+    "content": "A tree on n vertices modeled as a SimpleGraph on Fin n. Trees are connected acyclic graphs with n-1 edges and degeneracy 1.",
+    "significance": "medium"
+  },
+  {
+    "id": "monochromatic-copy",
+    "proofId": "erdos-557",
+    "range": { "startLine": 37, "endLine": 41 },
+    "type": "definition",
+    "title": "Monochromatic Copy",
+    "content": "A k-coloring of K_m contains a monochromatic copy of T if there exists an injective vertex map preserving adjacency where all image edges have the same color. This is the Ramsey-theoretic containment condition.",
+    "significance": "high"
+  },
+  {
+    "id": "ramsey-tree-spec",
+    "proofId": "erdos-557",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "theorem",
+    "title": "Ramsey Number Specification",
+    "content": "R(T;k) is the minimum m such that every k-coloring of K_m contains a monochromatic T. Axiomatized with both the existence guarantee and minimality property.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-557",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "conjecture",
+    "title": "Linear Bound Conjecture",
+    "content": "R(T;k) ≤ k·n + C for an absolute constant C, any tree T on n vertices, any k ≥ 1. This says the multicolor tree Ramsey number grows linearly in both n and k.",
+    "significance": "high"
+  },
+  {
+    "id": "star-lower",
+    "proofId": "erdos-557",
+    "range": { "startLine": 85, "endLine": 86 },
+    "type": "theorem",
+    "title": "Star Lower Bound",
+    "content": "R(S_n;k) ≥ k(n-1)+1: in K_{k(n-1)}, distribute edges evenly among k colors so each vertex has at most n-2 edges per color, avoiding a monochromatic star. This shows the conjecture is tight.",
+    "significance": "high"
+  },
+  {
+    "id": "two-color-tree",
+    "proofId": "erdos-557",
+    "range": { "startLine": 93, "endLine": 94 },
+    "type": "theorem",
+    "title": "Two-Color Tree Ramsey",
+    "content": "R(T;2) ≤ 2n-2 for any tree T on n ≥ 2 vertices. This classical result settles the k=2 case of the conjecture with constant C = -2.",
+    "significance": "medium"
+  },
+  {
+    "id": "monotonicity",
+    "proofId": "erdos-557",
+    "range": { "startLine": 101, "endLine": 102 },
+    "type": "theorem",
+    "title": "Monotonicity in Colors",
+    "content": "R(T;k) ≤ R(T;k+1): more colors can only make it harder to find a monochromatic copy. This ensures the conjecture's linear dependence on k is the natural growth rate.",
+    "significance": "medium"
+  },
+  {
+    "id": "burr-erdos",
+    "proofId": "erdos-557",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "theorem",
+    "title": "Burr–Erdős for Trees",
+    "content": "Lee (2017) proved the Burr–Erdős conjecture: R(G;2) = O(n) for graphs G of bounded degeneracy. Trees have degeneracy 1, giving R(T;2) = O(n). The multicolor generalization would resolve Problem #557.",
+    "significance": "medium"
+  }
+]
