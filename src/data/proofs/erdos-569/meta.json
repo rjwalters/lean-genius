@@ -1,0 +1,142 @@
+{
+  "id": "erdos-569",
+  "title": "Erdős Problem #569: Odd Cycle Ramsey Numbers Linear in Edges",
+  "slug": "erdos-569",
+  "description": "For k ≥ 1, determine the best constant c_k such that R(C_{2k+1}, H) ≤ c_k · m for any graph H on m edges without isolated vertices.",
+  "meta": {
+    "author": "Erdős, Faudree, Rousseau, Schelp (1993)",
+    "sourceUrl": "https://erdosproblems.com/569",
+    "date": "1993",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos569Problem.lean",
+    "tags": ["erdos", "ramsey-theory", "graph-theory", "odd-cycles", "extremal-graph-theory"],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 569,
+    "erdosUrl": "https://erdosproblems.com/569",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and basic operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Well-ordering principle for natural numbers",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "OddCycleLength definition: parametric odd cycle length 2k+1",
+      "oddCycleLength_odd theorem: 2k+1 ≥ 3 for k ≥ 1 (proved)",
+      "oddCycleLength_is_odd theorem: 2k+1 is odd (proved)",
+      "NoIsolatedVertices definition: every vertex has a neighbor",
+      "vertex_bound_no_isolated axiom: n ≤ 2m for graphs with no isolated vertices",
+      "R_cycle_graph definition: Ramsey number R(C_{2k+1}, H)",
+      "LinearRamseyBound definition: R ≤ c·m for all H with m edges",
+      "triangle_ramsey_linear axiom: R(C_3, H) ≤ 2m+1",
+      "efrs_upper_bound axiom: R(C_{2k+1}, H) ≤ c·k·m",
+      "conjectured_linear_bound axiom: existence of c_k",
+      "star_lower_bound axiom: R ≥ 2m+1",
+      "constant_lower_bound axiom: c_k ≥ 2",
+      "Connections to Chvátal, Burr-Erdős, and odd vs even cycle Ramsey theory"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #569 was posed by Erdős, Faudree, Rousseau, and Schelp in 1993 (referenced as [EFRS93]). It asks a fundamental question about Ramsey numbers: how does the Ramsey number R(C_{2k+1}, H) scale with the number of edges m of a graph H that has no isolated vertices?\n\nThe problem connects two central themes in combinatorics. Ramsey theory studies the emergence of order in large structures, while extremal graph theory asks how graph properties relate to edge density. Problem #569 bridges these by asking whether the Ramsey number for odd cycles vs arbitrary graphs grows at most linearly in the edge count.\n\nPartial results are known: for k = 1 (triangles), the bound R(C_3, H) ≤ 2m + 1 is established. The general bound R(C_{2k+1}, H) ≤ c · k · m is known, but the question of whether the dependence on k can be removed (replaced by a constant depending only on k) remains open. The restriction to odd cycles is essential, as even cycles exhibit fundamentally different Ramsey behavior.",
+    "problemStatement": "For $k \\geq 1$, determine the best possible constant $c_k$ such that\n$$R(C_{2k+1}, H) \\leq c_k \\cdot m$$\nfor any graph $H$ on $m$ edges without isolated vertices.\n\nHere $R(C_{2k+1}, H)$ is the two-color Ramsey number: the smallest $N$ such that every 2-coloring of $K_N$ contains a red $C_{2k+1}$ or a blue copy of $H$.\n\n**Status:** OPEN\n\nThis problem cannot be resolved by a finite computation.",
+    "proofStrategy": "The Lean formalization defines:\n\n1. **Odd cycle length**: OddCycleLength k = 2k + 1 with proved properties\n2. **No isolated vertices**: Every vertex has at least one neighbor\n3. **R_cycle_graph**: The Ramsey number R(C_{2k+1}, H) for H with m edges\n4. **LinearRamseyBound**: The target property R ≤ c · m\n5. **Known results**: Triangle case (k=1), pentagon case (k=2)\n6. **General bounds**: EFRS93 upper bound, star graph lower bound\n7. **Connections**: Chvátal's theorem, Burr-Erdős conjecture, odd vs even parity\n\nMost results are axiomatized since they require deep Ramsey-theoretic arguments beyond Mathlib.",
+    "keyInsights": [
+      "**Odd vs Even Parity**: Odd cycles C_{2k+1} have much nicer Ramsey behavior than even cycles C_{2k}. The restriction to odd length is essential for the linear bound to hold.",
+      "**Edge Count vs Vertex Count**: Problem #569 measures complexity by edge count m, while classical Ramsey theory uses vertex count n. Since H has no isolated vertices, n ≤ 2m, so linear in edges implies linear in vertices.",
+      "**Triangle Case (k=1)**: R(C_3, H) ≤ 2m + 1 is known, giving c_1 ≤ 3. This is the simplest case and the bound is essentially tight.",
+      "**Burr-Erdős Connection**: The Burr-Erdős conjecture (proved by Lee 2017) shows d-degenerate graphs have linear Ramsey numbers in vertex count. Problem #569 asks a related question for edge count.",
+      "**Lower Bound from Stars**: The star K_{1,m} has m edges, and R(C_{2k+1}, K_{1,m}) ≥ 2m + 1, showing c_k ≥ 2.",
+      "**Non-Finite**: Unlike many combinatorial problems, this cannot be settled by checking finitely many cases."
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 33,
+      "endLine": 54,
+      "summary": "Odd cycle length definition and properties: OddCycleLength k = 2k+1 with proofs that it is ≥ 3 and always odd."
+    },
+    {
+      "id": "edge-count-isolated",
+      "title": "Edge Count and Isolated Vertices",
+      "startLine": 56,
+      "endLine": 73,
+      "summary": "Definition of NoIsolatedVertices and vertex bound: n ≤ 2m."
+    },
+    {
+      "id": "ramsey-number",
+      "title": "The Ramsey Number R(C_{2k+1}, H)",
+      "startLine": 75,
+      "endLine": 90,
+      "summary": "Axiomatized Ramsey number and the function R_cycle_graph(k, m)."
+    },
+    {
+      "id": "linear-bound",
+      "title": "The Linear Bound Conjecture",
+      "startLine": 92,
+      "endLine": 113,
+      "summary": "LinearRamseyBound definition and optimal constant."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 115,
+      "endLine": 141,
+      "summary": "Triangle case (k=1), pentagon case (k=2) with axiomatized bounds."
+    },
+    {
+      "id": "general-bounds",
+      "title": "General Upper Bounds",
+      "startLine": 143,
+      "endLine": 160,
+      "summary": "EFRS93 upper bound R ≤ c·k·m and conjectured k-independent bound."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "startLine": 162,
+      "endLine": 178,
+      "summary": "Star graph lower bound and c_k ≥ 2."
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Other Ramsey Problems",
+      "startLine": 180,
+      "endLine": 205,
+      "summary": "Chvátal's theorem, odd cycle vs cycle, Burr-Erdős theorem."
+    },
+    {
+      "id": "odd-vs-even",
+      "title": "Odd vs Even Cycles",
+      "startLine": 207,
+      "endLine": 226,
+      "summary": "Why odd cycles are special: even cycles have different Ramsey behavior."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Open Status",
+      "startLine": 228,
+      "endLine": 258,
+      "summary": "Problem status: OPEN. Summary of known and unknown aspects."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #569 asks for the best constant c_k such that R(C_{2k+1}, H) ≤ c_k · m for any graph H on m edges without isolated vertices. The problem remains OPEN with no exact value of c_k determined for any k ≥ 1.",
+    "implications": "This problem sits at the intersection of Ramsey theory and extremal graph theory. Resolving it would clarify how Ramsey numbers for odd cycles scale with graph density, and would complement the Burr-Erdős theorem (now proved) about degenerate graph Ramsey numbers.",
+    "openQuestions": [
+      "What is the exact value of c_k for any specific k ≥ 1?",
+      "Is c_k bounded as k → ∞, or does it grow with k?",
+      "What is the structure of extremal graphs achieving R(C_{2k+1}, H) = c_k · m?",
+      "Can the EFRS93 bound R ≤ c·k·m be improved to R ≤ c_k · m?"
+    ]
+  }
+}
