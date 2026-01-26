@@ -34,70 +34,70 @@
       "title": "Part 1: Regular Graphs",
       "startLine": 39,
       "endLine": 63,
-      "description": "Defines k-regular graphs and the notion of a graph being regular of some degree."
+      "summary": "Defines k-regular graphs and the notion of a graph being regular of some degree."
     },
     {
       "id": "induced-subgraphs",
       "title": "Part 2: Induced Subgraphs",
       "startLine": 65,
       "endLine": 83,
-      "description": "Constructs the induced subgraph G[S] for a finset S, as a SimpleGraph on S with inherited adjacency."
+      "summary": "Constructs the induced subgraph G[S] for a finset S, as a SimpleGraph on S with inherited adjacency."
     },
     {
       "id": "regular-induced-size",
       "title": "Part 3: Regular Induced Subgraph Size",
       "startLine": 85,
       "endLine": 113,
-      "description": "Defines the key predicate HasRegularInduced and the central function F(n) via sSup."
+      "summary": "Defines the key predicate HasRegularInduced and the central function F(n) via sSup."
     },
     {
       "id": "trivial-lower",
       "title": "Part 4: Trivial Lower Bound",
       "startLine": 115,
       "endLine": 141,
-      "description": "F(n) ≥ 1 for n ≥ 1, and cliques/independent sets are regular."
+      "summary": "F(n) ≥ 1 for n ≥ 1, and cliques/independent sets are regular."
     },
     {
       "id": "ramsey-lower",
       "title": "Part 5: Ramsey-Theoretic Lower Bound",
       "startLine": 143,
       "endLine": 183,
-      "description": "Ramsey numbers, the classical R(k,k) ≤ 4^k bound, and the key consequence F(n) ≥ (1/2)log₂(n)."
+      "summary": "Ramsey numbers, the classical R(k,k) ≤ 4^k bound, and the key consequence F(n) ≥ (1/2)log₂(n)."
     },
     {
       "id": "aks-upper",
       "title": "Part 6: Alon-Krivelevich-Sudakov Upper Bound",
       "startLine": 185,
       "endLine": 205,
-      "description": "The 2007 upper bound F(n) ≤ C·√n·(log n)^{O(1)} from probabilistic constructions."
+      "summary": "The 2007 upper bound F(n) ≤ C·√n·(log n)^{O(1)} from probabilistic constructions."
     },
     {
       "id": "small-values",
       "title": "Part 7: Small Values and Computations",
       "startLine": 207,
       "endLine": 242,
-      "description": "The inverse function G(k), exact values of F(n) for small n, and OEIS references."
+      "summary": "The inverse function G(k), exact values of F(n) for small n, and OEIS references."
     },
     {
       "id": "conjecture",
       "title": "Part 8: The Erdős Conjecture",
       "startLine": 244,
       "endLine": 274,
-      "description": "The formal conjecture F(n)/log(n) → ∞ in both Filter.Tendsto and explicit ε-N forms."
+      "summary": "The formal conjecture F(n)/log(n) → ∞ in both Filter.Tendsto and explicit ε-N forms."
     },
     {
       "id": "connections",
       "title": "Part 9: Related Results and Connections",
       "startLine": 276,
       "endLine": 318,
-      "description": "Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory."
+      "summary": "Connections to Ramsey diagonal improvements, Erdős-Sauer problem, and random graph theory."
     },
     {
       "id": "summary",
       "title": "Part 10: Problem Status and Summary",
       "startLine": 320,
       "endLine": 355,
-      "description": "Status declaration, bounds summary theorem combining lower and upper bounds."
+      "summary": "Status declaration, bounds summary theorem combining lower and upper bounds."
     }
   ],
   "conclusion": {
