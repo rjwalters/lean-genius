@@ -1,0 +1,44 @@
+{
+  "id": "erdos-361",
+  "title": "Largest Non-Representing Subsets",
+  "slug": "erdos-361",
+  "description": "For c > 0, what is the maximum size of A ⊆ {1,...,⌊cn⌋} such that n is not a subset sum from A? Does this depend on n irregularly? Possibly Θ(√n).",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/361",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos361Problem.lean",
+    "tags": ["number-theory", "subset-sums", "combinatorics", "asymptotics"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 361,
+    "erdosUrl": "https://erdosproblems.com/361",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in [ErGr80, p. 59] about the largest subsets of {1,...,⌊cn⌋} that avoid representing n as a subset sum. The question combines subset-sum theory with irregular dependence on n.",
+    "problemStatement": "Let c > 0, n large. What is max |A| for A ⊆ {1,...,⌊cn⌋} with n ∉ {∑_{a ∈ B} a : B ⊆ A}? Does this depend on n irregularly?",
+    "proofStrategy": "We define IsSubsetSum and NonRepresenting, then maxNonReprSize as the sup of cardinalities over the powerset filtered by non-representation. The conjecture about irregularity is stated as non-monotonicity. Asymptotic questions use Mathlib's IsBigO and IsTheta.",
+    "keyInsights": [
+      "The maximum non-representing subset size may grow as Θ(√n)",
+      "Irregular dependence on n suggests the function is not monotone",
+      "For small c < 1, eventually all subsets are non-representing (sums too small)",
+      "The problem connects subset-sum avoidance to additive combinatorics"
+    ]
+  },
+  "sections": [
+    { "id": "definitions", "title": "Definitions", "startLine": 23, "endLine": 38, "summary": "Defines IsSubsetSum, NonRepresenting, and maxNonReprSize as the sup over filtered powerset." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 40, "endLine": 51, "summary": "ErdosProblem361 (irregularity) and MaxNonReprUnbounded (unbounded growth)." },
+    { "id": "asymptotics", "title": "Asymptotic Questions", "startLine": 53, "endLine": 61, "summary": "States bigO bound existence and plausible Θ(√n) growth using Mathlib asymptotics." },
+    { "id": "basic", "title": "Basic Properties", "startLine": 63, "endLine": 83, "summary": "Empty non-representation, subset monotonicity, small-c behavior, and lower bound." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 361 on non-representing subsets with the irregularity conjecture, asymptotic growth questions, and basic structural properties. 0 sorries.",
+    "implications": "Understanding the growth rate and irregularity would advance subset-sum theory and connect to partition and representation problems.",
+    "openQuestions": [
+      "What is the precise growth rate of maxNonReprSize c n?",
+      "Is the dependence on n truly irregular (non-monotone)?",
+      "Does the growth rate depend on the constant c?"
+    ]
+  }
+}
