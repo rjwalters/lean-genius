@@ -1,0 +1,82 @@
+{
+  "id": "erdos-593",
+  "title": "Erdős Problem #593: Finite Subhypergraphs of Uncountably Chromatic 3-Uniform Hypergraphs",
+  "slug": "erdos-593",
+  "description": "Characterize finite 3-uniform hypergraphs appearing in every 3-uniform hypergraph of chromatic number > ℵ₀. For graphs, the answer is bipartite graphs. The 3-uniform case remains OPEN ($500 prize).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/593",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos593Problem.lean",
+    "tags": ["set-theory", "hypergraphs", "chromatic-number", "graph-theory"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 593,
+    "erdosUrl": "https://erdosproblems.com/593",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed the problem of characterizing which finite 3-uniform hypergraphs must appear in every 3-uniform hypergraph of uncountable chromatic number. For ordinary graphs, this is completely solved: the unavoidable graphs are precisely the bipartite ones. Erdős, Galvin, and Hajnal investigated the broader framework. The 3-uniform case remains wide open. From Erdős (1995), $500 prize.",
+    "problemStatement": "Characterize those finite 3-uniform hypergraphs which appear in every 3-uniform hypergraph of chromatic number > ℵ₀.",
+    "proofStrategy": "We define Hypergraph3, proper coloring, ChromaticNumberLE, and subhypergraph embedding. IsUnavoidable captures the central property. The solved graph case (bipartite characterization) is axiomatized. For the 3-uniform case, we state that 2-colorable hypergraphs are unavoidable and note the open characterization.",
+    "keyInsights": [
+      "For graphs: unavoidable ⟺ bipartite (completely solved)",
+      "2-colorable 3-uniform hypergraphs are unavoidable (analog of bipartiteness)",
+      "The full characterization for 3-uniform hypergraphs is unknown",
+      "Erdős–Galvin–Hajnal established the framework for studying this question"
+    ]
+  },
+  "sections": [
+    {
+      "id": "hypergraph-defs",
+      "title": "Hypergraph Definitions",
+      "startLine": 21,
+      "endLine": 41,
+      "summary": "Defines Hypergraph3 (3-uniform), proper coloring, and ChromaticNumberLE using cardinal arithmetic."
+    },
+    {
+      "id": "subhypergraph",
+      "title": "Subhypergraph Embedding",
+      "startLine": 43,
+      "endLine": 51,
+      "summary": "Defines IsSubhypergraph via injective vertex map preserving edge membership."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Main Problem",
+      "startLine": 53,
+      "endLine": 72,
+      "summary": "Defines IsUnavoidable and states ErdosProblem593: characterize all unavoidable finite 3-uniform hypergraphs."
+    },
+    {
+      "id": "graph-case",
+      "title": "The Graph Case (Solved)",
+      "startLine": 74,
+      "endLine": 97,
+      "summary": "Defines SimpleGraph' and IsBipartite. The solved case: a graph is unavoidable iff bipartite."
+    },
+    {
+      "id": "known-constraints",
+      "title": "Known Constraints for 3-Uniform Case",
+      "startLine": 99,
+      "endLine": 116,
+      "summary": "Defines Is2Colorable and axiomatizes that 2-colorable hypergraphs are unavoidable. Notes K₄³ structure."
+    },
+    {
+      "id": "egh-framework",
+      "title": "Erdős–Galvin–Hajnal",
+      "startLine": 118,
+      "endLine": 127,
+      "summary": "Axiomatizes the Erdős–Galvin–Hajnal framework: 2-colorable implies unavoidable."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 593 asks for a characterization of finite 3-uniform hypergraphs that must appear in every 3-uniform hypergraph of uncountable chromatic number. The graph case is solved (bipartite = unavoidable). The 3-uniform case is wide open.",
+    "implications": "Resolution would provide a fundamental structural result in infinite combinatorics, connecting hypergraph coloring to substructure containment.",
+    "openQuestions": [
+      "What is the complete characterization of unavoidable finite 3-uniform hypergraphs?",
+      "Is every 2-colorable finite 3-uniform hypergraph unavoidable?",
+      "Are there non-2-colorable unavoidable 3-uniform hypergraphs?"
+    ]
+  }
+}
