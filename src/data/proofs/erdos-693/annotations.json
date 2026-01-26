@@ -1,242 +1,112 @@
 [
   {
-    "id": "ann-693-1",
+    "id": "erdos-693-header",
     "proofId": "erdos-693",
-    "range": {
-      "startLine": 1,
-      "endLine": 15
-    },
-    "type": "concept",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 22 },
     "title": "Problem Overview",
-    "content": "Erdős Problem #693: Let k ≥ 2 and A be integers in [n, n^k] with a divisor in (n, 2n). Is the maximum gap between consecutive elements of A bounded by (log n)^O(1)? OPEN.",
-    "significance": "critical"
+    "content": "Erdős Problem #693: Let A = {m ∈ [n, n^k] : m has a divisor in (n, 2n)}. Is the maximum gap between consecutive elements of A bounded by (log n)^O(1)? Heuristically, average gap ~log(n). OPEN.",
+    "mathContext": "From Erdős [Er79e]. Related to Problem #446. Connects to Hooley divisor function and sieve methods.",
+    "significance": "essential",
+    "relatedConcepts": ["divisor distribution", "gaps", "polylogarithmic bounds", "sieve methods"]
   },
   {
-    "id": "ann-693-2",
+    "id": "erdos-693-definitions",
     "proofId": "erdos-693",
-    "range": {
-      "startLine": 44,
-      "endLine": 46
-    },
     "type": "definition",
-    "title": "Divisor in Interval",
-    "content": "hasDivisorInInterval(m, a, b) holds when m has a divisor d with a < d < b. This is the key structural property defining set A.",
-    "significance": "critical"
+    "range": { "startLine": 36, "endLine": 50 },
+    "title": "Set A and Finiteness",
+    "content": "hasDivisorInInterval(m, a, b): ∃ d, d | m ∧ a < d < b. setA(n, k) = {m : n ≤ m ≤ n^k ∧ hasDivisorInInterval m n (2n)}. setA_finite: proved (setA ⊆ Icc n (n^k), which is finite).",
+    "mathContext": "setA_finite: Set.Finite.subset applied to Icc containment.",
+    "significance": "essential",
+    "relatedConcepts": ["divisors", "finite sets", "Set.Finite"]
   },
   {
-    "id": "ann-693-3",
+    "id": "erdos-693-gaps",
     "proofId": "erdos-693",
-    "range": {
-      "startLine": 48,
-      "endLine": 50
-    },
     "type": "definition",
-    "title": "Set A Definition",
-    "content": "setA(n, k) is the set of integers m in [n, n^k] that have at least one divisor in (n, 2n). These are integers with 'medium-sized' divisors.",
-    "significance": "critical"
+    "range": { "startLine": 52, "endLine": 72 },
+    "title": "Gap Infrastructure",
+    "content": "setAFinset: convert to Finset. orderedA: sorted list. consecutiveGaps: differences of adjacent elements. maxGap: foldl max over gaps. maxGapA(n, k, hn): maximum gap for set A.",
+    "mathContext": "Gap computation chain: setA → setAFinset → sort → zipWith → foldl max.",
+    "significance": "essential",
+    "relatedConcepts": ["Finset.sort", "List.zipWith", "List.foldl"]
   },
   {
-    "id": "ann-693-4",
+    "id": "erdos-693-conjecture",
     "proofId": "erdos-693",
-    "range": {
-      "startLine": 52,
-      "endLine": 56
-    },
-    "type": "theorem",
-    "title": "Finiteness of A",
-    "content": "For n ≥ 1, setA(n, k) is finite since it's contained in the finite interval [n, n^k]. This allows conversion to a Finset for enumeration.",
-    "significance": "key"
+    "type": "conjecture",
+    "range": { "startLine": 74, "endLine": 88 },
+    "title": "The Main Conjecture (OPEN)",
+    "content": "polylogBoundedGap(k): ∃ C, α > 0 such that for large n, maxGapA(n,k) ≤ C·(log n)^α. erdos693Conjecture: polylogBoundedGap holds for all k ≥ 2. OPEN.",
+    "mathContext": "erdos693Conjecture ≡ ∀ k ≥ 2, polylogBoundedGap k. Uses Filter.Eventually (∀ᶠ in atTop).",
+    "significance": "essential",
+    "relatedConcepts": ["polylogarithmic growth", "Filter.Eventually", "open problem"]
   },
   {
-    "id": "ann-693-5",
+    "id": "erdos-693-properties",
     "proofId": "erdos-693",
-    "range": {
-      "startLine": 62,
-      "endLine": 64
-    },
+    "type": "result",
+    "range": { "startLine": 90, "endLine": 104 },
+    "title": "Basic Properties",
+    "content": "mem_setA_has_divisor: proved (direct extraction from set membership). divisor_factorization: proved (d | m gives ∃ q, m = d·q). range_card (axiom): |Icc n (n^k)| = n^k - n + 1.",
+    "mathContext": "Two proved results from definitions. range_card axiomatized (Finset.card_Icc with arithmetic).",
+    "significance": "supporting",
+    "relatedConcepts": ["set membership", "divisibility", "Finset.card_Icc"]
+  },
+  {
+    "id": "erdos-693-bounds",
+    "proofId": "erdos-693",
+    "type": "result",
+    "range": { "startLine": 106, "endLine": 115 },
+    "title": "Gap Bounds",
+    "content": "maxGap_trivial_upper (axiom): maxGapA ≤ n^k - n. maxGap_pigeonhole (axiom): ∃ gap ≤ maxGapA with gap · |A| ≥ n^k - n. Pigeonhole connects gap bounds to density estimates.",
+    "mathContext": "Trivial bound from range size. Pigeonhole: average gap ≥ range/|A|.",
+    "significance": "essential",
+    "relatedConcepts": ["trivial bounds", "pigeonhole principle", "density"]
+  },
+  {
+    "id": "erdos-693-density",
+    "proofId": "erdos-693",
+    "type": "result",
+    "range": { "startLine": 117, "endLine": 131 },
+    "title": "Counting and Density",
+    "content": "countA(n, k, hn) = |A|. divisor_density_heuristic (axiom): |A| ≥ (n^k - n)/(2·log n) for large n. This suggests average gap ~2·log n, making polylog bound plausible.",
+    "mathContext": "Heuristic: P(d | m) ~ 1/d, so ∑_{d∈(n,2n)} 1/d ~ log(2). Density ~ log(2) in [n, n^k].",
+    "significance": "essential",
+    "relatedConcepts": ["density estimates", "logarithmic density", "divisor probability"]
+  },
+  {
+    "id": "erdos-693-alternative",
+    "proofId": "erdos-693",
     "type": "definition",
-    "title": "Ordered List",
-    "content": "orderedA(n, k) is the sorted list of elements in A. Gaps are measured between consecutive elements of this list.",
-    "significance": "key"
+    "range": { "startLine": 133, "endLine": 143 },
+    "title": "Alternative Formulation",
+    "content": "uniformGapBound(n, k, hn, B): every consecutive gap ≤ B. uniform_equiv_maxgap (axiom): uniformGapBound ↔ maxGapA ≤ B. The two formulations are equivalent.",
+    "mathContext": "Uniform bound on all gaps equivalent to bounding the maximum gap.",
+    "significance": "supporting",
+    "relatedConcepts": ["equivalent formulations", "uniform bounds", "max gap"]
   },
   {
-    "id": "ann-693-6",
+    "id": "erdos-693-connections",
     "proofId": "erdos-693",
-    "range": {
-      "startLine": 66,
-      "endLine": 71
-    },
-    "type": "definition",
-    "title": "Gap Functions",
-    "content": "consecutiveGaps computes differences between adjacent elements. maxGap finds the largest such difference. maxGapA is the maximum gap for set A.",
-    "significance": "key"
+    "type": "context",
+    "range": { "startLine": 145, "endLine": 158 },
+    "title": "Connections",
+    "content": "Connects to classical divisor distribution (Hooley divisor function τ(n; y, z)), sieve methods, and related Erdős Problem #446.",
+    "mathContext": "divisor_distribution_connection: True (placeholder). related_problem_446: True (placeholder).",
+    "significance": "supporting",
+    "relatedConcepts": ["Hooley divisor function", "sieve methods", "Problem #446"]
   },
   {
-    "id": "ann-693-7",
+    "id": "erdos-693-summary",
     "proofId": "erdos-693",
-    "range": {
-      "startLine": 80,
-      "endLine": 84
-    },
-    "type": "definition",
-    "title": "Polylogarithmic Bound",
-    "content": "polylogBoundedGap(k) states that there exist C, α > 0 such that for large n, the maximum gap is at most C·(log n)^α. This is the property the problem asks about.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-693-8",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 86,
-      "endLine": 89
-    },
-    "type": "theorem",
-    "title": "Main Problem Statement",
-    "content": "Erdős Problem #693: Is polylogBoundedGap(k) true for k ≥ 2? This asks whether maximum gaps grow at most polylogarithmically in n.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-693-9",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 97,
-      "endLine": 99
-    },
-    "type": "theorem",
-    "title": "Divisor Property",
-    "content": "By definition, every element of A has at least one divisor in (n, 2n). This structural constraint is what potentially limits gaps.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-693-10",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 107,
-      "endLine": 111
-    },
-    "type": "theorem",
-    "title": "Range Cardinality",
-    "content": "The interval [n, n^k] has n^k - n + 1 integers. This is the 'universe' from which A is selected based on the divisor condition.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-693-11",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 119,
-      "endLine": 121
-    },
-    "type": "theorem",
-    "title": "Trivial Upper Bound",
-    "content": "The maximum gap is trivially bounded by n^k - n (the entire range). The question is whether a much smaller polylogarithmic bound holds.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-693-12",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 123,
-      "endLine": 129
-    },
-    "type": "theorem",
-    "title": "Pigeonhole Lower Bound",
-    "content": "By pigeonhole, if A has |A| elements in a range of size R, the maximum gap is at least R/|A|. This connects gap bounds to density estimates.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-693-13",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 137,
-      "endLine": 139
-    },
-    "type": "definition",
-    "title": "Counting Function",
-    "content": "countA(n, k) is the cardinality of A. Estimating this count is key to understanding gap behavior.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-693-14",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 141,
-      "endLine": 145
-    },
-    "type": "concept",
-    "title": "Density Heuristic",
-    "content": "Heuristically, the probability that a random d in (n, 2n) divides m is ~1/d. Summing gives density ~log(2), so A should have density ~1/log(n), making average gap ~log(n).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-693-15",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 151,
-      "endLine": 156
-    },
-    "type": "definition",
-    "title": "Uniform Gap Bound",
-    "content": "uniformGapBound(n, k, B) states that every consecutive gap is at most B. The problem asks if B can be taken polylogarithmic in n.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-693-16",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 158,
-      "endLine": 165
-    },
-    "type": "theorem",
-    "title": "Uniform Formulation",
-    "content": "Alternative formulation: every gap (not just the maximum) is bounded by C·(log n)^α. This is equivalent to the maximum gap formulation.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-693-17",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 171,
-      "endLine": 177
-    },
-    "type": "concept",
-    "title": "Special Cases",
-    "content": "For k = 2, the range is [n, n²] (quadratic case). For large k, the range [n, n^k] grows rapidly, potentially making gap control easier.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-693-18",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 183,
-      "endLine": 186
-    },
-    "type": "concept",
-    "title": "Divisor Distribution Connection",
-    "content": "The problem connects to classical questions about divisor distribution and the Hooley divisor function τ(n; y, z) counting divisors in intervals [y, z].",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-693-19",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 188,
-      "endLine": 193
-    },
-    "type": "theorem",
-    "title": "Density Axiom",
-    "content": "Axiom capturing the heuristic that countA(n, k) ≥ (n^k - n)/(2·log n). If true, this suggests average gap is ~log(n), making polylog bounds plausible.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-693-20",
-    "proofId": "erdos-693",
-    "range": {
-      "startLine": 199,
-      "endLine": 202
-    },
-    "type": "concept",
-    "title": "Problem Status",
-    "content": "Erdős Problem #693: OPEN. The question of whether maximum gaps between integers with medium-sized divisors are polylogarithmically bounded remains unresolved.",
-    "significance": "critical"
+    "type": "result",
+    "range": { "startLine": 160, "endLine": 183 },
+    "title": "Summary: OPEN",
+    "content": "erdos_693_summary: (erdos693Conjecture ↔ ∀ k ≥ 2, polylogBoundedGap k) ∧ True. Proved from Iff.rfl and trivial. erdos_693_status: True. Problem remains OPEN.",
+    "mathContext": "erdos_693_summary := ⟨Iff.rfl, trivial⟩.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary", "divisor gaps"]
   }
 ]
