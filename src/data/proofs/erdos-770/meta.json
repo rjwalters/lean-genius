@@ -1,0 +1,76 @@
+{
+  "id": "erdos-770",
+  "title": "Erdős Problem #770: Mutual Coprimality of k^n − 1",
+  "slug": "erdos-770",
+  "description": "Let h(n) be the minimal k such that 2^n−1, ..., k^n−1 are mutually coprime. Does lim inf h(n) = ∞? Does the density of h(n) = p exist? h(n) = n+1 iff n+1 prime. Open.",
+  "meta": {
+    "erdosNumber": 770,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "gcd",
+      "coprimality",
+      "open"
+    ],
+    "references": [
+      "Erdős (1974): original problem [Er74b]",
+      "OEIS A263647",
+      "https://erdosproblems.com/770"
+    ],
+    "leanFile": "Proofs/Erdos770Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 33,
+      "summary": "h(n) and mutual coprimality of k^n − 1."
+    },
+    {
+      "id": "main-questions",
+      "title": "Main Questions",
+      "startLine": 35,
+      "endLine": 53,
+      "summary": "Density existence, lim inf = ∞, largest prime characterization."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "h(n) = n+1 iff n+1 prime, unbounded for odd n, h(n) = 3 infinitely often."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 74,
+      "endLine": 82,
+      "summary": "Fermat connection and OEIS A263647."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1974 about the mutual coprimality properties of sequences k^n − 1. The problem connects Fermat's little theorem, which guarantees p | k^n − 1 when p − 1 | n, with the structure of shared prime factors among exponential expressions.",
+    "problemStatement": "Let h(n) be the minimal k ≥ 2 such that 2^n−1, 3^n−1, ..., k^n−1 are pairwise coprime. Study the behavior of h(n): density of h(n) = p, whether lim inf h(n) = ∞, and the role of large prime divisors of n+1.",
+    "proofStrategy": "We define h(n) and mutual coprimality, state the three main questions, and record known results including the prime characterization h(n) = n+1 ↔ n+1 prime.",
+    "keyInsights": [
+      "h(n) = n+1 if and only if n+1 is prime (Fermat's little theorem)",
+      "h(n) is unbounded for odd n",
+      "Conjectured that h(n) = 3 for infinitely many n",
+      "When p − 1 | n, the prime p divides all k^n − 1, creating shared factors",
+      "OEIS sequence A263647"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #770 studies the function h(n) capturing when the sequence 2^n−1, 3^n−1, ... first becomes mutually coprime. The interplay between prime factorization of n+1 and Fermat's theorem creates complex behavior that is not well understood.",
+    "implications": "Understanding h(n) would illuminate the distribution of shared prime factors among exponential expressions, with connections to Mersenne numbers, cyclotomic polynomials, and the distribution of primes.",
+    "openQuestions": [
+      "Does the density of n with h(n) = p exist for all primes p?",
+      "Does lim inf h(n) = ∞?",
+      "Is h(n) determined by the largest prime p with p − 1 | n?",
+      "What is the average value of h(n)?"
+    ]
+  }
+}
