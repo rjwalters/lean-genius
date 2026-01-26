@@ -1,0 +1,89 @@
+{
+  "id": "erdos-457",
+  "title": "Erdős Problem #457: Small Prime Divisors of Consecutive Products",
+  "slug": "erdos-457",
+  "description": "Is there ε > 0 such that infinitely many n have all primes p ≤ (2+ε)log(n) dividing the product of log(n) consecutive integers starting at n+1? Equivalently, q(n,log n) ≥ (2+ε)log(n) i.o. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/457",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos457Problem.lean",
+    "tags": [
+      "number-theory",
+      "prime-divisors",
+      "consecutive-products",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 457,
+    "erdosUrl": "https://erdosproblems.com/457",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #457, posed by Erdős and Pomerance [Er79d], [ErGr80], asks about small prime divisors of consecutive products. The function q(n,k) = smallest prime not dividing the product of k consecutive integers after n provides an equivalent formulation. A construction shows q(n, log n) >= (2+o(1))log(n). Related to Problem #663.",
+    "problemStatement": "Is there ε > 0 such that for infinitely many n, all primes p <= (2+ε)log(n) divide the product of the first floor(log n) integers after n? OPEN.",
+    "proofStrategy": "The formalization defines consecutiveProduct and smallestNonDividingPrime (q(n,k)). The main conjecture uses Set.Infinite. The equivalent q(n,k) formulation and upper bound sub-question are stated separately.",
+    "keyInsights": [
+      "The product of log(n) consecutive integers after n is divisible by many small primes",
+      "q(n,k) = smallest prime not dividing the consecutive product captures the problem",
+      "Known construction: q(n, log n) >= (2+o(1))log(n)",
+      "Open sub-question: q(n, log n) < (1-ε)(log n)² for all large n",
+      "Connected to the distribution of primes in short intervals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "consecutive-products",
+      "title": "Part I: Consecutive Products",
+      "startLine": 30,
+      "endLine": 38,
+      "summary": "Defines consecutiveProduct(n, k) = product of (n+i) for i in [1, k]."
+    },
+    {
+      "id": "smallest-prime",
+      "title": "Part II: The Smallest Non-Dividing Prime",
+      "startLine": 40,
+      "endLine": 46,
+      "summary": "Defines smallestNonDividingPrime(n, k) = q(n, k) via Nat.find. 1 sorry."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part III: The Main Conjecture",
+      "startLine": 48,
+      "endLine": 60,
+      "summary": "Defines ErdosConjecture457: exists ε > 0 with infinitely many n where all small primes divide. Axiom erdos_457."
+    },
+    {
+      "id": "q-formulation",
+      "title": "Part IV: Equivalent Formulation via q(n, k)",
+      "startLine": 62,
+      "endLine": 72,
+      "summary": "Defines ErdosConjecture457_q: q(n, log n) >= (2+ε)log(n) infinitely often. Axiom erdos_457_q."
+    },
+    {
+      "id": "construction-upper",
+      "title": "Part V: Known Construction and Upper Bound Question",
+      "startLine": 74,
+      "endLine": 91,
+      "summary": "Axiom construction_lower: q >= (2+o(1))log(n) achievable. Defines UpperBoundConjecture. Axiom erdos_457_upper."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 93,
+      "endLine": 110,
+      "summary": "Proved: erdos_457_statement (simp), erdos_457_status (trivial). All formulations OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #457 asks whether small primes frequently divide consecutive products of length log(n). The equivalent q(n,k) formulation and upper bound sub-question are also open.",
+    "implications": "Resolution would clarify the divisibility structure of short consecutive products and connect to smooth number theory.",
+    "openQuestions": [
+      "Is q(n, log n) >= (2+ε)log(n) infinitely often for some ε > 0?",
+      "Is q(n, log n) < (1-ε)(log n)² for all large n?",
+      "What is the true growth rate of q(n, log n)?",
+      "How does this connect to Problem #663?"
+    ]
+  }
+}
