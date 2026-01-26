@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-850-spf",
+    "proofId": "erdos-850",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 27 },
+    "title": "Same Prime Factors",
+    "content": "SamePrimeFactors x y holds when x and y have the same set of prime divisors (Nat.primeFactors equality).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-850-conjecture",
+    "proofId": "erdos-850",
+    "type": "conjecture",
+    "range": { "startLine": 31, "endLine": 38 },
+    "title": "Erdős Problem 850 (Erdős-Woods)",
+    "content": "No distinct x,y exist with same prime factors for x,y and x+1,y+1 and x+2,y+2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-850-twoshift",
+    "proofId": "erdos-850",
+    "type": "result",
+    "range": { "startLine": 42, "endLine": 60 },
+    "title": "Two-Shift Version is Solvable",
+    "content": "The two-shift version (same prime factors for x,y and x+1,y+1) has solutions: parametric family and Makowski's (75, 1215).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-850-abc",
+    "proofId": "erdos-850",
+    "type": "result",
+    "range": { "startLine": 68, "endLine": 76 },
+    "title": "ABC Conjecture Connection",
+    "content": "Shorey-Tijdeman: the strong ABC conjecture (Baker's form) implies no three-shift solutions exist.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-850-kshift",
+    "proofId": "erdos-850",
+    "type": "result",
+    "range": { "startLine": 80, "endLine": 103 },
+    "title": "General k-Shift Framework",
+    "content": "Problem 850 is the k=2 case. Proved problem850_is_2shift (iff) and kshift_monotone (k implies k-1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-850-equiv",
+    "proofId": "erdos-850",
+    "type": "result",
+    "range": { "startLine": 105, "endLine": 121 },
+    "title": "SamePrimeFactors is an Equivalence",
+    "content": "Proved reflexivity, symmetry, and transitivity of SamePrimeFactors.",
+    "significance": "supporting"
+  }
+]
