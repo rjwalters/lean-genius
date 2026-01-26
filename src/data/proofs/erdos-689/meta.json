@@ -1,0 +1,76 @@
+{
+  "id": "erdos-689",
+  "title": "Erdős Problem #689: Double Covering by Prime Congruence Classes",
+  "slug": "erdos-689",
+  "description": "For large n, can we choose a_p for each prime p ≤ n so that every m ∈ [1,n] satisfies m ≡ a_p (mod p) for at least 2 primes? Generalizes to r-fold covering. Open.",
+  "meta": {
+    "erdosNumber": 689,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "covering-congruences",
+      "primes",
+      "open"
+    ],
+    "references": [
+      "Erdős (1979): original problem [Er79d]",
+      "Ben Green: Problem 45 (10-fold variant)",
+      "https://erdosproblems.com/689"
+    ],
+    "leanFile": "Proofs/Erdos689Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 41,
+      "summary": "Congruence choice, covering count, r-fold cover definition."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 43,
+      "endLine": 48,
+      "summary": "Does a 2-fold covering by prime congruence classes exist for large n?"
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 50,
+      "endLine": 56,
+      "summary": "r-fold covering for any fixed r."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 58,
+      "endLine": 84,
+      "summary": "Prime density, probabilistic heuristic, covering systems, Ben Green variant."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem in 1979 about the covering power of prime congruence classes. It connects to the classical theory of covering congruences, where one seeks systems of congruences that cover all integers. Here the moduli are restricted to primes ≤ n, and the goal is double coverage.",
+    "problemStatement": "For sufficiently large n, can we choose congruence classes a_p for all primes 2 ≤ p ≤ n such that every integer m ∈ [1,n] satisfies m ≡ a_p (mod p) for at least 2 primes p?",
+    "proofStrategy": "We define r-fold covering by prime congruence classes, state the main question for r=2, and record the r-fold generalization. We discuss the prime density heuristic (Σ 1/p ~ log log n) and connections to covering systems.",
+    "keyInsights": [
+      "Average covering count per integer is Σ_{p≤n} 1/p ~ log log n ≫ 2",
+      "The challenge is ensuring every integer achieves count ≥ 2 simultaneously",
+      "Generalizes to r-fold covering for any fixed r",
+      "Connected to Erdős Problems #687 and #688 on covering congruences",
+      "Ben Green's Problem 45 asks the same with threshold 10 instead of 2"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #689 asks whether prime congruence classes can doubly cover [1,n] for large n. The average covering count log log n grows slowly but unboundedly, making the question plausible but hard to prove. The r-fold generalization and Ben Green variant remain open.",
+    "implications": "Resolution would advance the theory of covering congruences with prime moduli, connecting to sieve methods, the distribution of primes, and combinatorial number theory.",
+    "openQuestions": [
+      "Does a 2-fold covering exist for large n?",
+      "For what values of r does an r-fold covering exist?",
+      "What is the minimum n₀(r) such that r-fold covering is possible for n ≥ n₀?",
+      "Can probabilistic methods be derandomized to construct explicit coverings?"
+    ]
+  }
+}
