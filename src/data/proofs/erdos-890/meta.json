@@ -1,0 +1,88 @@
+{
+  "id": "erdos-890",
+  "title": "Erdős Problem #890: Sum of ω over Consecutive Integers",
+  "slug": "erdos-890",
+  "description": "Is lim inf S_k(n) ≤ k + π(k) where S_k(n) = ∑ ω(n+i)? Is lim sup S_k(n) · log log n / log n = 1? Known: lim inf ≥ k + π(k) − 1 (Erdős–Selfridge). OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/890",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos890Problem.lean",
+    "tags": [
+      "number-theory",
+      "prime-factors",
+      "consecutive-integers",
+      "asymptotics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 890,
+    "erdosUrl": "https://erdosproblems.com/890",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #890 (Erdős–Selfridge, [ErSe67]) studies S_k(n) = ∑ ω(n+i) for 0 ≤ i < k. They proved lim inf S_k(n) ≥ k + π(k) − 1 using Pólya's theorem on k-smooth number gaps. Two open conjectures sharpen the liminf and limsup.",
+    "problemStatement": "Two conjectures: (1) lim inf S_k(n) ≤ k + π(k); (2) lim sup S_k(n) · log log n / log n = 1. OPEN for general k.",
+    "proofStrategy": "We define ω(n), π(k), and S_k(n) using Finset operations. Liminf/limsup predicates capture asymptotic behavior. The Erdős–Selfridge lower bound and classical ω limsup are axiomatized.",
+    "keyInsights": [
+      "S_k(n) = ∑_{i<k} ω(n+i) sums distinct prime factors across k consecutive integers",
+      "Erdős–Selfridge proved lim inf S_k(n) ≥ k + π(k) − 1 via Pólya's smooth number theorem",
+      "The conjectured upper bound k + π(k) for lim inf is tight to within 1",
+      "The limsup conjecture generalizes the classical ω(n) result to consecutive blocks",
+      "Both conjectures remain open for k ≥ 2"
+    ]
+  },
+  "sections": [
+    {
+      "id": "primitives",
+      "title": "Part I: Arithmetic Primitives",
+      "startLine": 38,
+      "endLine": 56,
+      "summary": "Defines omega ω(n), primePi π(k), and cumulativeOmega S_k(n) = ∑ ω(n+i)."
+    },
+    {
+      "id": "asymptotics",
+      "title": "Part II: Liminf and Limsup Notions",
+      "startLine": 58,
+      "endLine": 84,
+      "summary": "Defines LiminfAtMost, LiminfAtLeast, and LimsupRatioIsOne predicates for asymptotic analysis."
+    },
+    {
+      "id": "conjecture-liminf",
+      "title": "Part III: Conjecture 1 (Liminf Bound)",
+      "startLine": 86,
+      "endLine": 97,
+      "summary": "ErdosConjecture890_liminf: lim inf S_k(n) ≤ k + π(k) for all k ≥ 1."
+    },
+    {
+      "id": "conjecture-limsup",
+      "title": "Part IV: Conjecture 2 (Limsup Ratio)",
+      "startLine": 99,
+      "endLine": 108,
+      "summary": "ErdosConjecture890_limsup: lim sup S_k(n) · log log n / log n = 1."
+    },
+    {
+      "id": "known-results",
+      "title": "Part V: Known Results",
+      "startLine": 110,
+      "endLine": 128,
+      "summary": "Axioms: Erdős–Selfridge lower bound (lim inf ≥ k + π(k) − 1) and classical ω limsup."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 130,
+      "endLine": 144,
+      "summary": "Theorem erdos_890_lower_bound: restates the Erdős–Selfridge bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #890 studies the sum of distinct prime factors across consecutive integers. The Erdős–Selfridge lower bound is tight to within 1. Both the liminf and limsup conjectures remain open.",
+    "implications": "Resolving these conjectures would reveal how prime factor counts distribute across consecutive integer blocks, extending classical results on ω(n) to a collective setting.",
+    "openQuestions": [
+      "Is lim inf S_k(n) exactly k + π(k)?",
+      "Does the limsup ratio equal 1 for all k ≥ 2?",
+      "Can the Erdős–Selfridge lower bound be improved?"
+    ]
+  }
+}

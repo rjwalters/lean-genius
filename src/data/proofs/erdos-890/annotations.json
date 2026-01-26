@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-890-primitives",
+    "proofId": "erdos-890",
+    "type": "definition",
+    "range": { "startLine": 40, "endLine": 56 },
+    "title": "Arithmetic Primitives",
+    "content": "omega ω(n) counts distinct prime divisors. primePi π(k) counts primes ≤ k. cumulativeOmega S_k(n) = ∑_{i<k} ω(n+i) sums ω across k consecutive integers starting at n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-890-asymptotics",
+    "proofId": "erdos-890",
+    "type": "definition",
+    "range": { "startLine": 60, "endLine": 84 },
+    "title": "Asymptotic Predicates",
+    "content": "LiminfAtMost and LiminfAtLeast capture liminf behavior. LimsupRatioIsOne captures lim sup f(n) · log log n / log n = 1 via ε-neighborhoods.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-890-liminf",
+    "proofId": "erdos-890",
+    "type": "conjecture",
+    "range": { "startLine": 88, "endLine": 97 },
+    "title": "Conjecture 1: Liminf Bound",
+    "content": "ErdosConjecture890_liminf: for every k ≥ 1, lim inf S_k(n) ≤ k + π(k). Combined with the Erdős–Selfridge lower bound, this would pin down lim inf to within 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-890-limsup",
+    "proofId": "erdos-890",
+    "type": "conjecture",
+    "range": { "startLine": 101, "endLine": 108 },
+    "title": "Conjecture 2: Limsup Ratio",
+    "content": "ErdosConjecture890_limsup: lim sup S_k(n) · log log n / log n = 1, generalizing the classical result for single ω(n) to consecutive blocks of k integers.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-890-known",
+    "proofId": "erdos-890",
+    "type": "result",
+    "range": { "startLine": 112, "endLine": 128 },
+    "title": "Erdős–Selfridge Lower Bound",
+    "content": "For every k ≥ 1, lim inf S_k(n) ≥ k + π(k) − 1. Proved using Pólya's theorem on gaps between k-smooth numbers. The classical ω limsup is also axiomatized.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-890-summary",
+    "proofId": "erdos-890",
+    "type": "context",
+    "range": { "startLine": 132, "endLine": 144 },
+    "title": "Summary",
+    "content": "Theorem erdos_890_lower_bound restates the Erdős–Selfridge bound. Both open conjectures would precisely characterize S_k(n) asymptotics.",
+    "significance": "supporting"
+  }
+]
