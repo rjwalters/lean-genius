@@ -1,0 +1,82 @@
+{
+  "id": "erdos-1062",
+  "title": "Erdős Problem #1062: Maximum \"No Divides Two Others\" Sets",
+  "slug": "erdos-1062",
+  "description": "Let f(n) = max |A| for A ⊆ {1,…,n} with no element dividing two distinct others. Lebensold: 0.6725n ≤ f(n) ≤ 0.6736n. Is lim f(n)/n irrational? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1062",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1062Problem.lean",
+    "tags": ["number-theory", "extremal-combinatorics", "divisibility"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1062,
+    "erdosUrl": "https://erdosproblems.com/1062",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem appears as B24 in Guy's 'Unsolved Problems in Number Theory' (2004). Lebensold (1976) established tight bounds 0.6725n ≤ f(n) ≤ 0.6736n for large n. The basic lower bound f(n) ≥ ⌈2n/3⌉ ≈ 0.667n comes from the interval [m+1, 3m+2].",
+    "problemStatement": "Let f(n) be the maximum size of A ⊆ {1,…,n} such that no element divides two distinct others. How large is f(n)? Is lim f(n)/n irrational?",
+    "proofStrategy": "We define NoDividesTwoOthers (the combinatorial condition) and maxNDTOSize (the extremal function). The lower bound from [m+1, 3m+2] and Lebensold's bounds are axiomatized. ErdosProblem1062 asks whether the limiting density is irrational. Comparison with primitive sets shows the condition is strictly weaker.",
+    "keyInsights": [
+      "The 'no divides two others' condition allows one divisibility but forbids two",
+      "The interval [m+1, 3m+2] gives f(n) ≥ 2n/3 since ratios stay below 3",
+      "Lebensold's bounds narrow the density to [0.6725, 0.6736]",
+      "Whether the limiting density is rational or irrational remains open"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisibility-condition",
+      "title": "The Divisibility Condition",
+      "startLine": 22,
+      "endLine": 31,
+      "summary": "Defines NoDividesTwoOthers: no element divides two distinct others."
+    },
+    {
+      "id": "extremal-function",
+      "title": "The Extremal Function",
+      "startLine": 33,
+      "endLine": 42,
+      "summary": "Defines maxNDTOSize f(n) as the maximum over valid subsets of {1,…,n}."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound Construction",
+      "startLine": 44,
+      "endLine": 52,
+      "summary": "The interval [m+1, 3m+2] gives f(n) ≥ ⌈2n/3⌉."
+    },
+    {
+      "id": "lebensold-bounds",
+      "title": "Lebensold's Bounds",
+      "startLine": 54,
+      "endLine": 66,
+      "summary": "Lebensold (1976): 0.6725n ≤ f(n) ≤ 0.6736n for large n."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Conjectures",
+      "startLine": 68,
+      "endLine": 82,
+      "summary": "Limiting density exists in [0.6725, 0.6736]. ErdosProblem1062: is it irrational?"
+    },
+    {
+      "id": "primitive-comparison",
+      "title": "Comparison with Primitive Sets",
+      "startLine": 84,
+      "endLine": 105,
+      "summary": "Primitive sets (no divisibility at all) are strictly stronger. Proved with {2, 6, 9} counterexample."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 1062 asks whether the maximum density of 'no divides two others' subsets of {1,…,n} converges to an irrational limit. Lebensold's bounds place it near 0.67.",
+    "implications": "Understanding this density connects divisibility-restricted extremal problems to questions about rationality of combinatorial limits.",
+    "openQuestions": [
+      "Is lim f(n)/n irrational?",
+      "What is the exact value of the limiting density?",
+      "Can Lebensold's bounds be sharpened?"
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-1062-condition",
+    "proofId": "erdos-1062",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 31 },
+    "title": "No Divides Two Others",
+    "content": "NoDividesTwoOthers A requires that no element a ∈ A divides two distinct other elements b, c ∈ A. This is weaker than being a primitive set.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1062-function",
+    "proofId": "erdos-1062",
+    "type": "definition",
+    "range": { "startLine": 37, "endLine": 42 },
+    "title": "Extremal Function f(n)",
+    "content": "maxNDTOSize n is the maximum cardinality of a subset of {1,…,n} satisfying the 'no divides two others' condition.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1062-lower",
+    "proofId": "erdos-1062",
+    "type": "result",
+    "range": { "startLine": 48, "endLine": 52 },
+    "title": "Lower Bound ⌈2n/3⌉",
+    "content": "The interval [m+1, 3m+2] contains 2m+2 elements with ratio < 3, so each element has at most one multiple in the range. Gives f(n) ≥ 2n/3.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1062-lebensold",
+    "proofId": "erdos-1062",
+    "type": "result",
+    "range": { "startLine": 58, "endLine": 66 },
+    "title": "Lebensold's Bounds",
+    "content": "Lebensold (1976) proved 0.6725n ≤ f(n) ≤ 0.6736n for large n, narrowing the density to a tiny interval.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1062-conjecture",
+    "proofId": "erdos-1062",
+    "type": "conjecture",
+    "range": { "startLine": 78, "endLine": 82 },
+    "title": "Erdős Problem 1062",
+    "content": "Is the limiting density lim f(n)/n irrational? The limit exists in [0.6725, 0.6736] but its rationality is unknown.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1062-primitive",
+    "proofId": "erdos-1062",
+    "type": "context",
+    "range": { "startLine": 88, "endLine": 105 },
+    "title": "Comparison with Primitive Sets",
+    "content": "Primitive sets (no divisibility at all) are strictly stronger. {2, 6, 9} is NDTO but not primitive since 2 | 6. The implication primitive → NDTO is proved.",
+    "significance": "supporting"
+  }
+]
