@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-963-ann-dissociated",
+    "proofId": "erdos-963",
+    "range": { "startLine": 30, "endLine": 33 },
+    "type": "definition",
+    "title": "Dissociated Subset",
+    "content": "A subset B ⊆ A is dissociated if all subset sums are distinct: ∑_{b ∈ S} b = ∑_{b ∈ T} b implies S = T for S, T ⊆ B.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-963-ann-fn",
+    "proofId": "erdos-963",
+    "range": { "startLine": 36, "endLine": 39 },
+    "type": "definition",
+    "title": "f(n) — Maximum Guaranteed Size",
+    "content": "f(n) = max k such that every n-element A ⊆ ℝ contains a dissociated subset of size ≥ k. The central quantity of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-963-ann-counting",
+    "proofId": "erdos-963",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "theorem",
+    "title": "2^k Distinct Subset Sums",
+    "content": "A dissociated set of size k has exactly 2^k distinct subset sums, since each subset gives a unique sum.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-963-ann-conjecture",
+    "proofId": "erdos-963",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "theorem",
+    "title": "Main Conjecture: f(n) ≥ ⌊log₂ n⌋",
+    "content": "Erdős conjectured that every n-element set of reals contains a dissociated subset of size at least ⌊log₂ n⌋.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-963-ann-greedy",
+    "proofId": "erdos-963",
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "theorem",
+    "title": "Greedy Lower Bound: ⌊log₃ n⌋",
+    "content": "Erdős showed f(n) ≥ ⌊log₃ n⌋ via the greedy algorithm: after choosing k elements, at most 3^k − 1 values are excluded (sums and differences of subset sums).",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-963-ann-upper",
+    "proofId": "erdos-963",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound: ⌊log₂ n⌋ + 1",
+    "content": "A dissociated set of size k needs 2^k distinct subset sums from at most n elements, so k ≤ log₂(n) + 1. The conjecture is nearly tight.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-963-ann-powers",
+    "proofId": "erdos-963",
+    "range": { "startLine": 108, "endLine": 111 },
+    "type": "concept",
+    "title": "Powers of 2 Example",
+    "content": "The set {1, 2, 4, ..., 2^{k-1}} is dissociated: binary representation ensures unique subset sums. This is the canonical example.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-963-ann-mono",
+    "proofId": "erdos-963",
+    "range": { "startLine": 114, "endLine": 115 },
+    "type": "concept",
+    "title": "Monotonicity of f",
+    "content": "f is non-decreasing: larger sets can only guarantee at least as large a dissociated subset.",
+    "significance": "supporting"
+  }
+]
