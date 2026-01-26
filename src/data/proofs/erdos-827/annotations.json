@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-827-gp",
+    "proofId": "erdos-827",
+    "type": "definition",
+    "range": { "startLine": 30, "endLine": 34 },
+    "title": "General Position",
+    "content": "GeneralPosition S requires no three points of S to be collinear, using the cross-product determinant criterion.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-827-circumradius",
+    "proofId": "erdos-827",
+    "type": "definition",
+    "range": { "startLine": 38, "endLine": 55 },
+    "title": "Circumradius and Distinct Circumradii",
+    "content": "circumRadiusSq computes R² from side lengths and area. AllDistinctCircumradii requires all C(k,3) triples to have different circumradii.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-827-nk",
+    "proofId": "erdos-827",
+    "type": "definition",
+    "range": { "startLine": 59, "endLine": 78 },
+    "title": "Minimal Number n_k",
+    "content": "n_k is the minimal number of general-position points guaranteeing a k-subset with all distinct circumradii. Axiomatized with validity and sharpness.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-827-conjecture",
+    "proofId": "erdos-827",
+    "type": "conjecture",
+    "range": { "startLine": 82, "endLine": 84 },
+    "title": "Erdős Problem 827",
+    "content": "Determine n_k. The existence is established; the problem asks for the growth rate.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-827-martinez",
+    "proofId": "erdos-827",
+    "type": "result",
+    "range": { "startLine": 88, "endLine": 98 },
+    "title": "Martinez-Roldán-Pensado Bound",
+    "content": "n_k ≪ k⁹. This corrects Erdős's original flawed bound of k + 2·C(k-1,2)·C(k-1,3).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-827-trivial",
+    "proofId": "erdos-827",
+    "type": "result",
+    "range": { "startLine": 100, "endLine": 112 },
+    "title": "Trivial Cases",
+    "content": "n_3 = 3 (one triangle, one circumradius). n_k is monotone and n_k ≥ k.",
+    "significance": "supporting"
+  }
+]
