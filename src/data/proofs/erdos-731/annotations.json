@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-731-ann-central",
+    "proofId": "erdos-731",
+    "range": { "startLine": 26, "endLine": 27 },
+    "type": "definition",
+    "title": "Central Binomial Coefficient",
+    "content": "C(2n, n) = (2n)! / (n!)². The central entry of the 2n-th row of Pascal's triangle.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-731-ann-leastnd",
+    "proofId": "erdos-731",
+    "range": { "startLine": 29, "endLine": 32 },
+    "type": "definition",
+    "title": "Least Non-Divisor",
+    "content": "The smallest positive integer m that does not divide a given number. Applied to C(2n,n), this is the central object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-731-ann-conjecture",
+    "proofId": "erdos-731",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "theorem",
+    "title": "Main Conjecture (EGRS)",
+    "content": "For almost all n, leastNonDivCentral(n) = exp((log n)^{1/2+o(1)}). The precise asymptotic is unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-731-ann-kummer",
+    "proofId": "erdos-731",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "theorem",
+    "title": "Kummer's Theorem",
+    "content": "The p-adic valuation of C(m+n,m) equals the number of carries in base-p addition of m and n.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-731-ann-prime-div",
+    "proofId": "erdos-731",
+    "range": { "startLine": 53, "endLine": 57 },
+    "type": "theorem",
+    "title": "Prime Divisibility Criterion",
+    "content": "p | C(2n,n) iff some digit of n in base p is ≥ ⌈p/2⌉. Connects divisibility to digit structure.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-731-ann-egrs",
+    "proofId": "erdos-731",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "theorem",
+    "title": "EGRS Typical Behavior",
+    "content": "The heuristic: p divides C(2n,n) unless all log_p(n) digits are small. Probability ~(1/2)^{log n/log p}, significant when log p ~ (log n)^{1/2}.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-731-ann-bertrand",
+    "proofId": "erdos-731",
+    "range": { "startLine": 101, "endLine": 103 },
+    "type": "theorem",
+    "title": "Bertrand Applied to C(2n,n)",
+    "content": "By Bertrand's postulate, there exists a prime n < p ≤ 2n that divides C(2n,n). Gives a structural divisor.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-731-ann-lower",
+    "proofId": "erdos-731",
+    "range": { "startLine": 106, "endLine": 107 },
+    "type": "theorem",
+    "title": "Central Binomial Lower Bound",
+    "content": "C(2n,n) ≥ 4^n/(2n+1), showing the central binomial grows exponentially. This bounds the number of possible divisors.",
+    "significance": "supporting"
+  }
+]
