@@ -1,0 +1,56 @@
+[
+  {
+    "id": "density-jump",
+    "proofId": "erdos-837",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Density Jump Value",
+    "content": "α is a density jump for k-uniform hypergraphs if dense sequences (lim inf density > α) force subhypergraphs with density > β > α. The set A_k collects all such α.",
+    "significance": "high"
+  },
+  {
+    "id": "jump-set",
+    "proofId": "erdos-837",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Density Jump Set A_k",
+    "content": "A_k ⊆ [0,1] is the set of all density jump values for k-uniform hypergraphs. For graphs, A_2 = {1−1/m : m ≥ 1}. The structure of A_3 is the central open question.",
+    "significance": "high"
+  },
+  {
+    "id": "graph-case",
+    "proofId": "erdos-837",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "note",
+    "title": "Graph Case A_2",
+    "content": "By the Erdős–Stone–Simonovits theorem, A_2 = {0, 1/2, 2/3, 3/4, ...} = {1−1/m : m ≥ 1}. Each value corresponds to the Turán density of K_{m+1}.",
+    "significance": "high"
+  },
+  {
+    "id": "main-question",
+    "proofId": "erdos-837",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "conjecture",
+    "title": "Characterize A_3",
+    "content": "What is the density jump set A_3 for 3-uniform hypergraphs? Unlike the clean answer for graphs, the hypergraph case may have a much more complex structure.",
+    "significance": "high"
+  },
+  {
+    "id": "turan-hypergraph",
+    "proofId": "erdos-837",
+    "range": { "startLine": 71, "endLine": 75 },
+    "type": "note",
+    "title": "Hypergraph Turán Problem",
+    "content": "For k ≥ 3, even the Turán density of K_{k+1}^{(k)} is unknown. The tetrahedron conjecture states π(K_4^{(3)}) = 5/9. This makes characterizing A_3 especially difficult.",
+    "significance": "high"
+  },
+  {
+    "id": "flag-algebras",
+    "proofId": "erdos-837",
+    "range": { "startLine": 82, "endLine": 85 },
+    "type": "note",
+    "title": "Flag Algebras",
+    "content": "Razborov's flag algebra method can computationally verify specific jump values, providing partial information about A_3. However, a complete structural characterization remains out of reach.",
+    "significance": "medium"
+  }
+]

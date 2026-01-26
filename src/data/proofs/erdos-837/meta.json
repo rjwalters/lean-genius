@@ -1,0 +1,77 @@
+{
+  "id": "erdos-837",
+  "title": "Erdős Problem #837: Hypergraph Density Jumps",
+  "slug": "erdos-837",
+  "description": "Define A_k as the density jump values for k-uniform hypergraphs. For graphs, A_2 = {1−1/m : m ≥ 1} by Erdős–Stone. What is A_3? Connected to hypergraph Turán problem. Open.",
+  "meta": {
+    "erdosNumber": 837,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "hypergraphs",
+      "extremal-combinatorics",
+      "turan",
+      "open"
+    ],
+    "references": [
+      "Erdős & Simonovits (1974): original problem [Er74d]",
+      "Erdős–Stone–Simonovits: A_2 = {1−1/m}",
+      "https://erdosproblems.com/837"
+    ],
+    "leanFile": "Proofs/Erdos837Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 44,
+      "summary": "k-uniform hypergraph, edge density, density jump, A_k definition."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 46,
+      "endLine": 56,
+      "summary": "A_2 = {1−1/m} by Erdős–Stone–Simonovits theorem."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 58,
+      "endLine": 67,
+      "summary": "Characterize A_3: density jumps for 3-uniform hypergraphs."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 69,
+      "endLine": 87,
+      "summary": "Hypergraph Turán problem, Frankl–Rödl, flag algebras."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Simonovits introduced the density jump concept in 1974, generalizing the Erdős–Stone–Simonovits theorem from graphs to hypergraphs. For ordinary graphs, the complete characterization A_2 = {1−1/m} is a cornerstone of extremal graph theory. The hypergraph case remains one of the central open problems.",
+    "problemStatement": "For k-uniform hypergraphs, let A_k be the set of α ∈ [0,1] such that there exists β > α where density > α in a sequence forces subgraphs of density > β. The graph case is solved: A_2 = {1−1/m}. What is A_3?",
+    "proofStrategy": "We define density jumps for k-uniform hypergraphs, record the classical graph result A_2 = {1−1/m}, and state the main question about A_3. We note connections to the hypergraph Turán problem and flag algebra methods.",
+    "keyInsights": [
+      "A_2 = {1−1/m : m ≥ 1} by Erdős–Stone–Simonovits theorem",
+      "Each jump in A_2 corresponds to a Turán density π(K_{m+1})",
+      "Even the simplest hypergraph Turán density π(K_4^{(3)}) is unknown",
+      "Flag algebra methods (Razborov) can compute some jump values",
+      "The structure of A_3 is likely much more complex than A_2"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #837 asks for the density jump set A_3 of 3-uniform hypergraphs. While A_2 has an elegant characterization via Turán densities, the hypergraph case is entangled with the unsolved hypergraph Turán problem, making A_3 one of the hardest open problems in extremal combinatorics.",
+    "implications": "Characterizing A_3 would represent a major breakthrough in hypergraph extremal theory, with connections to the Turán tetrahedron conjecture, flag algebras, and the structure of dense hypergraphs.",
+    "openQuestions": [
+      "What is A_3 for 3-uniform hypergraphs?",
+      "Is the set A_3 countable or uncountable?",
+      "Does A_3 have the same structure as A_2 (isolated points)?",
+      "What is π(K_4^{(3)})? (Conjectured: 5/9)"
+    ]
+  }
+}
