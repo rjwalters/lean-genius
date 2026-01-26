@@ -1,0 +1,74 @@
+{
+  "id": "erdos-14",
+  "title": "Unique Sums and Non-Unique Representation",
+  "slug": "erdos-14",
+  "description": "For A ⊆ ℕ, let B be integers with exactly one representation as a+b (a≤b, a,b∈A). (a) Is |{1,...,N}\\B| ≫ N^{1/2−ε}? (b) Can |{1,...,N}\\B| = o(√N)? ESS: ≪ N^{1/2+ε} achievable, ≫ N^{1/3−ε} infinitely often.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/14",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos14Problem.lean",
+    "tags": [
+      "additive combinatorics",
+      "unique representation",
+      "sumsets",
+      "Sidon sets"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 14,
+    "erdosUrl": "https://erdosproblems.com/14",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked about the minimum non-unique sum count for subsets of ℕ. Erdős–Sárközy–Szemerédi showed O(N^{1/2+ε}) is achievable but Ω(N^{1/3−ε}) occurs infinitely often. Erdős–Freud gave the finite analogue with constant 2^{3/2}. The exact exponent in the lower bound remains open.",
+    "problemStatement": "(a) Must |{1,...,N}\\B| ≫ N^{1/2−ε} for all A and ε > 0? (b) Can |{1,...,N}\\B| = o(√N)?",
+    "proofStrategy": "We formalize unique sums, non-unique count for both finite and infinite sets, the two open questions, the ESS upper/lower bounds, the Erdős–Freud finite result, and structural observations about Sidon sets.",
+    "keyInsights": [
+      "Unique representation sums form a sparse subset of all sums",
+      "ESS construction achieves O(N^{1/2+ε}) but not O(√N)",
+      "The gap between N^{1/3} and N^{1/2} lower bounds is the open territory",
+      "Sidon sets give perfect uniqueness but miss too many integers",
+      "Erdős–Freud: finite analogue with optimal constant 2^{3/2}"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 46,
+      "summary": "Defines unique sums, non-unique sum count for finite and infinite sets."
+    },
+    {
+      "id": "conjectures",
+      "title": "Main Conjectures",
+      "startLine": 48,
+      "endLine": 58,
+      "summary": "States the two open questions: lower bound ≫ N^{1/2−ε} and possibility of o(√N)."
+    },
+    {
+      "id": "known",
+      "title": "Known Results",
+      "startLine": 60,
+      "endLine": 85,
+      "summary": "ESS upper and lower bounds, Erdős–Freud finite analogue with constant 2^{3/2}."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 87,
+      "endLine": 106,
+      "summary": "Sidon set analysis, random heuristic, monotonicity of non-unique count."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #14 on unique-sum representation. The non-unique count lies between N^{1/3} and N^{1/2+ε}; the exact threshold remains open. Both questions (a) and (b) are unresolved.",
+    "implications": "A resolution would clarify the structure of sumsets with unique representations, connecting to additive combinatorics and probabilistic number theory.",
+    "openQuestions": [
+      "Is |{1,...,N}\\B| ≫ N^{1/2−ε} for all A?",
+      "Can |{1,...,N}\\B| = o(√N)?",
+      "What is the optimal exponent in the lower bound?"
+    ]
+  }
+}
