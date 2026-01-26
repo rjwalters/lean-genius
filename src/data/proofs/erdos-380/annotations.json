@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-380-gpf",
+    "proofId": "erdos-380",
+    "type": "definition",
+    "range": { "startLine": 24, "endLine": 25 },
+    "title": "Greatest Prime Factor",
+    "content": "greatestPrimeFactor n returns the largest prime dividing n. Axiomatised with primality, divisibility, and maximality properties.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-380-bad-interval",
+    "proofId": "erdos-380",
+    "type": "definition",
+    "range": { "startLine": 43, "endLine": 47 },
+    "title": "Bad Interval",
+    "content": "IsBadInterval u v holds when the greatest prime factor of the product u·(u+1)·⋯·v appears with exponent ≥ 2 in the product.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-380-bad-count",
+    "proofId": "erdos-380",
+    "type": "definition",
+    "range": { "startLine": 56, "endLine": 57 },
+    "title": "Bad Count B(x)",
+    "content": "badCount x counts integers n ≤ x that belong to at least one bad interval. This is the main counting function studied.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-380-conjecture",
+    "proofId": "erdos-380",
+    "type": "conjecture",
+    "range": { "startLine": 67, "endLine": 71 },
+    "title": "Erdős Problem 380",
+    "content": "B(x) is asymptotically equal to #{n ≤ x : P(n)² | n}. The ratio of these counting functions tends to 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-380-lower",
+    "proofId": "erdos-380",
+    "type": "result",
+    "range": { "startLine": 76, "endLine": 79 },
+    "title": "Erdős–Graham Lower Bound",
+    "content": "Erdős and Graham proved B(x) > x^{1-o(1)}, showing that a substantial fraction of integers belong to bad intervals.",
+    "significance": "essential"
+  }
+]

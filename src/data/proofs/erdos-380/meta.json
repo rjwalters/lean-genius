@@ -1,0 +1,82 @@
+{
+  "id": "erdos-380",
+  "title": "Erdős Problem #380: Bad Intervals and Greatest Prime Factors",
+  "slug": "erdos-380",
+  "description": "An interval [u,v] is bad if the greatest prime factor of ∏m occurs with exponent > 1. Is B(x) ~ #{n ≤ x : P(n)² | n}? Erdős–Graham proved B(x) > x^{1-o(1)}.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/380",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos380Problem.lean",
+    "tags": ["number theory", "prime factors", "intervals", "products"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 380,
+    "erdosUrl": "https://erdosproblems.com/380",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980, p.73) introduced the notion of bad intervals — intervals where the greatest prime factor of the product of all integers in the interval appears with exponent > 1. They proved B(x) > x^{1-o(1)} and conjectured B(x) is asymptotic to the count of n with P(n)² | n.",
+    "problemStatement": "Is B(x) ~ #{n ≤ x : P(n)² | n}, where B(x) counts integers in bad intervals and P(n) is the greatest prime factor?",
+    "proofStrategy": "The formalization axiomatises the greatest prime factor, defines bad intervals via the squared-divisibility condition on interval products, and states the asymptotic conjecture as ratio convergence.",
+    "keyInsights": [
+      "A bad interval [u,v] has P(∏m)² dividing the product",
+      "Bad intervals cannot contain primes when v < 2u (Tao)",
+      "Erdős–Graham proved B(x) > x^{1-o(1)}",
+      "#{n ≤ x : P(n)² | n} ~ x/exp(c√(log x · log log x))"
+    ]
+  },
+  "sections": [
+    {
+      "id": "greatest-prime-factor",
+      "title": "Greatest Prime Factor",
+      "startLine": 22,
+      "endLine": 38,
+      "summary": "Axiomatisation of greatestPrimeFactor with primality, divisibility, and maximality properties."
+    },
+    {
+      "id": "bad-intervals",
+      "title": "Bad Intervals",
+      "startLine": 40,
+      "endLine": 52,
+      "summary": "IsBadInterval: the greatest prime factor of the interval product appears with exponent ≥ 2. InBadInterval: membership in some bad interval."
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions",
+      "startLine": 54,
+      "endLine": 62,
+      "summary": "B(x) counting bad-interval members and #{n ≤ x : P(n)² | n}."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 64,
+      "endLine": 72,
+      "summary": "Erdős Problem 380: B(x) ~ #{n ≤ x : P(n)² | n}."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "Erdős–Graham lower bound B(x) > x^{1-o(1)} and the asymptotic for gpfSquareCount."
+    },
+    {
+      "id": "bad-primes",
+      "title": "Bad Intervals and Primes",
+      "startLine": 90,
+      "endLine": 96,
+      "summary": "Bad intervals with v < 2u cannot contain primes."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 380 on bad intervals and their asymptotic count, with the Erdős–Graham lower bound and the prime exclusion property.",
+    "implications": "An affirmative answer would connect the local structure of interval products to the global distribution of numbers with squared greatest prime factors.",
+    "openQuestions": [
+      "Is B(x) ~ #{n ≤ x : P(n)² | n}?",
+      "What is the precise asymptotic of B(x)?",
+      "How do very bad intervals (powerful products) relate to powerful numbers?"
+    ]
+  }
+}
