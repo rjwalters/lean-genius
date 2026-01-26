@@ -1,0 +1,68 @@
+{
+  "id": "erdos-691",
+  "title": "Erdős Problem #691: Behrend Sequences and Density of Multiples",
+  "slug": "erdos-691",
+  "description": "Find a necessary and sufficient condition for a set A ⊆ ℕ to be a Behrend sequence (its multiples have density 1). Known for coprime sets: Σ 1/a = ∞. General criterion remains open.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/691",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos691Problem.lean",
+    "tags": ["number theory", "density", "multiplicative number theory"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 691,
+    "erdosUrl": "https://erdosproblems.com/691",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked for a characterization of Behrend sequences — sets whose multiples have asymptotic density 1. For pairwise coprime sets, the criterion is divergence of Σ 1/a, but the general case remains open. Tenenbaum (1996) found a sharp threshold for lacunary block sequences.",
+    "problemStatement": "Find a necessary and sufficient condition on A ⊆ ℕ for the set of multiples M_A = {n : a|n for some a ∈ A} to have asymptotic density 1.",
+    "proofStrategy": "We define multiples, asymptotic density, and the Behrend property. The coprime characterization and prime case are axiomatized. Block sequences and Tenenbaum's threshold are recorded. The main open problem is stated as the existence of a general characterization.",
+    "keyInsights": [
+      "A Behrend sequence is one whose multiples 'cover' almost all positive integers",
+      "For coprime sets, Behrend is equivalent to Σ 1/a = ∞ (divergent reciprocal sum)",
+      "Block sequences reveal subtlety: Σ ηₖ < ∞ prevents Behrend, but the boundary is β = log 2",
+      "The general characterization must handle non-coprime and dependent sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "multiples-density",
+      "title": "Multiples and Density",
+      "startLine": 17,
+      "endLine": 38,
+      "summary": "Defines the set of multiples, asymptotic density, and the Behrend property."
+    },
+    {
+      "id": "coprime-characterization",
+      "title": "Pairwise Coprime Characterization",
+      "startLine": 40,
+      "endLine": 62,
+      "summary": "Defines pairwise coprimality and divergent reciprocal sums; axiomatizes the coprime Behrend criterion."
+    },
+    {
+      "id": "block-sequences",
+      "title": "Block Sequences",
+      "startLine": 64,
+      "endLine": 76,
+      "summary": "Defines lacunary block sequences and records the convergent-η obstruction."
+    },
+    {
+      "id": "tenenbaum-and-problem",
+      "title": "Tenenbaum's Theorem and the Erdős Problem",
+      "startLine": 78,
+      "endLine": 95,
+      "summary": "States Tenenbaum's log 2 threshold and the main open problem of finding a general characterization."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 691 seeks a complete characterization of Behrend sequences. While the coprime case is resolved via reciprocal sum divergence and Tenenbaum found sharp thresholds for block sequences, the general criterion remains elusive.",
+    "implications": "A general Behrend criterion would unify multiplicative number theory results on density of multiples and connect to sieve methods and probabilistic number theory.",
+    "openQuestions": [
+      "What is a necessary and sufficient condition for A to be Behrend?",
+      "Does the general criterion reduce to a single analytic condition?",
+      "How does the Behrend property interact with the multiplicative structure of A?"
+    ]
+  }
+}
