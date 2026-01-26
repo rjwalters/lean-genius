@@ -1,0 +1,56 @@
+[
+  {
+    "id": "cosine-sum",
+    "proofId": "erdos-510",
+    "range": { "startLine": 24, "endLine": 27 },
+    "type": "definition",
+    "title": "Cosine Sum",
+    "content": "The cosine sum of a finite set A at angle θ is ∑_{n ∈ A} cos(nθ). This is the real part of the exponential sum ∑ e^{inθ}, a fundamental object in harmonic analysis.",
+    "significance": "high"
+  },
+  {
+    "id": "chowla-conjecture",
+    "proofId": "erdos-510",
+    "range": { "startLine": 35, "endLine": 40 },
+    "type": "conjecture",
+    "title": "Chowla's Cosine Conjecture",
+    "content": "For every finite A ⊂ ℕ⁺ of size N, there exists θ with ∑ cos(nθ) < −c√N for absolute c > 0. The exponent 1/2 is optimal by the Sidon set construction.",
+    "significance": "high"
+  },
+  {
+    "id": "bedert-bound",
+    "proofId": "erdos-510",
+    "range": { "startLine": 44, "endLine": 49 },
+    "type": "note",
+    "title": "Bedert's N^{1/7} Bound (2025)",
+    "content": "Bedert proved the first polynomial bound: min_θ ∑ cos(nθ) < −cN^{1/7}. This was a breakthrough, improving the sub-polynomial bounds of Bourgain and Ruzsa.",
+    "significance": "high"
+  },
+  {
+    "id": "sidon-optimality",
+    "proofId": "erdos-510",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "note",
+    "title": "Sidon Set Optimality",
+    "content": "If B is a Sidon set of size ≈ √N, then A = B − B has size N and min_θ ∑ cos(nθ) ≈ −√N. This shows the conjectured exponent 1/2 cannot be improved.",
+    "significance": "high"
+  },
+  {
+    "id": "ruzsa-bourgain",
+    "proofId": "erdos-510",
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "note",
+    "title": "Prior Bounds (Bourgain, Ruzsa)",
+    "content": "Bourgain (1986) gave the first non-trivial bound. Ruzsa (2004) improved it to −exp(O(√(log N))), which stood until the polynomial breakthroughs of 2025.",
+    "significance": "medium"
+  },
+  {
+    "id": "polynomial-progress",
+    "proofId": "erdos-510",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "note",
+    "title": "Polynomial Progress (2025)",
+    "content": "Both Bedert and Jin–Milojević–Tomon–Zhang independently proved polynomial bounds in 2025, representing a major leap from the prior sub-polynomial state of the art.",
+    "significance": "medium"
+  }
+]
