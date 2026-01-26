@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-935-powerful-part",
+    "proofId": "erdos-935",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 30 },
+    "title": "Powerful Part Q₂(n)",
+    "content": "powerfulPart n is the product of all prime powers p^{kₚ} with kₚ ≥ 2 in the factorisation of n. This extracts the 'square-full' component.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-935-consecutive",
+    "proofId": "erdos-935",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 53 },
+    "title": "Consecutive Product and Its Powerful Part",
+    "content": "consecutiveProduct n ℓ is n(n+1)⋯(n+ℓ). Q2consec computes the powerful part of this product.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-935-mahler",
+    "proofId": "erdos-935",
+    "type": "result",
+    "range": { "startLine": 58, "endLine": 62 },
+    "title": "Mahler's Lower Bound",
+    "content": "Mahler proved lim sup Q₂(n(n+1)⋯(n+ℓ))/n² ≥ 1 for every ℓ ≥ 1. This provides the baseline for the conjectures.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-935-part1",
+    "proofId": "erdos-935",
+    "type": "conjecture",
+    "range": { "startLine": 67, "endLine": 71 },
+    "title": "Part 1: Upper Bound n^{2+ε}",
+    "content": "For every ε > 0 and ℓ ≥ 1, Q₂(n(n+1)⋯(n+ℓ)) < n^{2+ε} for sufficiently large n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-935-part2",
+    "proofId": "erdos-935",
+    "type": "conjecture",
+    "range": { "startLine": 73, "endLine": 77 },
+    "title": "Part 2: Divergent Lim Sup",
+    "content": "For ℓ ≥ 2, lim sup Q₂(n(n+1)⋯(n+ℓ))/n² = ∞. Multiple consecutive factors should push Q₂ well beyond n².",
+    "significance": "essential"
+  }
+]
