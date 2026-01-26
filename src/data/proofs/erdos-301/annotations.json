@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-301-decomp",
+    "proofId": "erdos-301",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 28 },
+    "title": "Egyptian Fraction Decomposition",
+    "content": "HasEgyptianDecomp A a holds when there exists B ⊆ A with a ∉ B and Σ 1/b = 1/a.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-301-free",
+    "proofId": "erdos-301",
+    "type": "definition",
+    "range": { "startLine": 32, "endLine": 33 },
+    "title": "Egyptian Fraction Free",
+    "content": "EgyptFractionFree A means no element of A has an Egyptian fraction decomposition in A.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-301-conjecture",
+    "proofId": "erdos-301",
+    "type": "conjecture",
+    "range": { "startLine": 42, "endLine": 45 },
+    "title": "Main Conjecture",
+    "content": "ErdosProblem301: f(N) = (1/2 + o(1))·N, where f(N) is the max EgyptFractionFree subset size.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-301-lower",
+    "proofId": "erdos-301",
+    "type": "result",
+    "range": { "startLine": 50, "endLine": 55 },
+    "title": "Lower Bound f(N) ≥ N/2",
+    "content": "The interval (N/2, N] is EgyptFractionFree, giving f(N) ≥ N/2.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-301-vandoorn",
+    "proofId": "erdos-301",
+    "type": "result",
+    "range": { "startLine": 60, "endLine": 61 },
+    "title": "Van Doorn Upper Bound",
+    "content": "f(N) ≤ (25/28 + o(1))·N via sets {2a, 3a, 4a, 6a, 12a}.",
+    "significance": "essential"
+  }
+]
