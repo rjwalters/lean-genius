@@ -1,0 +1,84 @@
+{
+  "id": "erdos-276",
+  "title": "Erdős Problem #276: Composite Lucas Sequence Without Common Factor",
+  "slug": "erdos-276",
+  "description": "Does there exist a Lucas sequence (a_{n+2} = a_{n+1} + a_n) with all terms composite yet no integer dividing every term? Graham (1964) gave a construction via covering congruences. The deeper question of necessity remains open.",
+  "meta": {
+    "erdosNumber": 276,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sequences",
+      "covering-systems",
+      "open"
+    ],
+    "references": [
+      "Graham (1964): A Fibonacci-like sequence of composite numbers",
+      "Vsemirnov (2004): smallest known primefree Fibonacci sequence",
+      "Ismailescu–Son (2014): explicit composite Lucas sequences",
+      "https://erdosproblems.com/276"
+    ],
+    "leanFile": "Proofs/Erdos276Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 24,
+      "endLine": 39,
+      "summary": "Lucas sequence, primefree, and no-universal-divisor predicates."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 41,
+      "endLine": 47,
+      "summary": "Existence of a primefree Lucas sequence with no universal divisor."
+    },
+    {
+      "id": "graham-construction",
+      "title": "Graham's Construction",
+      "startLine": 49,
+      "endLine": 63,
+      "summary": "Graham (1964) coprime composite construction and coprimality necessity."
+    },
+    {
+      "id": "covering-mechanism",
+      "title": "Covering Congruence Mechanism",
+      "startLine": 65,
+      "endLine": 75,
+      "summary": "Covering system explanation: finite set of primes covers all positions."
+    },
+    {
+      "id": "further-results",
+      "title": "Further Results",
+      "startLine": 77,
+      "endLine": 86,
+      "summary": "Vsemirnov smaller values and open question on necessity of covering systems."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Graham (1964) proved the existence of a Fibonacci-like sequence of composite numbers with coprime initial terms, answering a question of Erdős. The construction uses covering congruences. Smaller starting values were later found by Knuth, Nicol, and Vsemirnov. The deeper question of whether covering systems are the only mechanism remains open.",
+    "problemStatement": "Does there exist an infinite Lucas sequence a₀, a₁, ... with a_{n+2} = a_{n+1} + a_n such that all terms are composite yet no integer > 1 divides every term? More deeply: are covering congruences the only mechanism producing such sequences?",
+    "proofStrategy": "We formalize the Lucas sequence recurrence, the primefree and no-universal-divisor predicates, state the existence result (Graham 1964), and axiomatize the covering system mechanism and its open necessity.",
+    "keyInsights": [
+      "Graham (1964) constructed a primefree Lucas sequence using covering congruences",
+      "Coprimality of initial terms is necessary to avoid trivial common factors",
+      "Covering systems provide finite sets of primes that divide every term at some position",
+      "Vsemirnov (2004) found smallest known starting values: a₀ = 106276436867",
+      "Whether covering congruences are the only mechanism is still open"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #276 asks about the existence of primefree Lucas sequences with no universal divisor. While Graham (1964) resolved the existence question using covering congruences, the deeper question of whether covering systems are the only mechanism producing such sequences remains open.",
+    "implications": "Understanding whether covering congruences are necessary would illuminate the relationship between additive recurrences, divisibility, and covering systems — a central topic in combinatorial number theory with connections to the Erdős minimum modulus conjecture.",
+    "openQuestions": [
+      "Are covering congruences the only mechanism producing primefree Lucas sequences?",
+      "What is the smallest pair of coprime initial values producing a primefree sequence?",
+      "Can the density of primes dividing terms be characterized without covering systems?",
+      "What is the relationship to Erdős Problem #1113 on covering systems?"
+    ]
+  }
+}
