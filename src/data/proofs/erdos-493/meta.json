@@ -1,0 +1,88 @@
+{
+  "id": "erdos-493",
+  "title": "Erdős Problem #493: Product Minus Sum Representation",
+  "slug": "erdos-493",
+  "description": "Does there exist k such that every sufficiently large integer n = prod(ai) - sum(ai) for ai >= 2? Yes, k=2 works: n = 2(n+2) - (2+(n+2)). SOLVED.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/493",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos493Problem.lean",
+    "tags": [
+      "number-theory",
+      "representation",
+      "constructive-proof",
+      "solved"
+    ],
+    "badge": "theorem",
+    "sorries": 0,
+    "erdosNumber": 493,
+    "erdosUrl": "https://erdosproblems.com/493",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #493 from [Er61] (attributed to Schinzel) asks whether every sufficiently large integer can be written as the product minus the sum of k integers, each at least 2. Eli Seamans showed k=2 suffices via the identity n = 2(n+2) - (2 + (n+2)).",
+    "problemStatement": "Does there exist k such that every sufficiently large n can be expressed as product(a1,...,ak) - sum(a1,...,ak) with all ai >= 2? SOLVED: yes, k = 2.",
+    "proofStrategy": "The key identity 2(n+2) - (2 + (n+2)) = n is verified by ring. For n >= 0, b = n+2 >= 2, so both entries satisfy the constraint. The proof is fully constructive.",
+    "keyInsights": [
+      "The identity 2(n+2) - (2+(n+2)) = n solves the problem for k = 2",
+      "For n >= 0, both a = 2 and b = n+2 satisfy the constraint ai >= 2",
+      "The proof is constructive: given n, the witness is immediate",
+      "Originally attributed to Schinzel, possibly with additional constraints",
+      "One of the simpler Erdős problems with a clean closed-form solution"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Part I: Product Minus Sum Representation",
+      "startLine": 19,
+      "endLine": 33,
+      "summary": "Defines HasProdMinusSum2 (k=2 case) and HasProdMinusSumK (general k)."
+    },
+    {
+      "id": "solution",
+      "title": "Part II: The Solution (k = 2)",
+      "startLine": 35,
+      "endLine": 49,
+      "summary": "Proved: prod_minus_sum_identity (by ring), erdos_493_nonneg (for all n >= 0)."
+    },
+    {
+      "id": "negative",
+      "title": "Part III: Negative Integers",
+      "startLine": 51,
+      "endLine": 65,
+      "summary": "Proved: erdos_493_sufficiently_large with N0 = 0."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: The Main Theorem",
+      "startLine": 67,
+      "endLine": 81,
+      "summary": "Proved: erdos_493 using k=2, witness ![2, n+2]."
+    },
+    {
+      "id": "examples",
+      "title": "Part V: Explicit Examples",
+      "startLine": 83,
+      "endLine": 94,
+      "summary": "Examples: 0 = 2*2-(2+2), 1 = 2*3-(2+3), 10 = 2*12-(2+12)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 96,
+      "endLine": 113,
+      "summary": "All key theorems proved constructively. Problem SOLVED."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #493 is solved: k = 2 suffices. The identity 2(n+2) - (2+(n+2)) = n provides a constructive witness for every n >= 0. The proof is fully verified in Lean.",
+    "implications": "The product-minus-sum representation is surprisingly easy for k = 2. The original problem may have had additional constraints not recorded by Erdős.",
+    "openQuestions": [
+      "What were Schinzel's original additional constraints?",
+      "What is the minimal k for representations with additional restrictions?",
+      "Can all integers (not just sufficiently large) be represented?"
+    ]
+  }
+}
