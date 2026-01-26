@@ -1,0 +1,74 @@
+[
+  {
+    "id": "k-perfect",
+    "proofId": "erdos-1053",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "k-Perfect Number",
+    "content": "A positive integer n with σ(n) = k·n. For k=2, these are classical perfect numbers. The concept generalizes to multiperfect (k ≥ 3) and unitary perfect variants.",
+    "significance": "high"
+  },
+  {
+    "id": "perfect-examples",
+    "proofId": "erdos-1053",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "theorem",
+    "title": "Classical Perfect Numbers",
+    "content": "6, 28, 496, 8128 are 2-perfect. Even perfect numbers are 2^(p-1)·(2^p-1) where 2^p-1 is Mersenne prime (Euler). Whether odd perfect numbers exist is unknown.",
+    "significance": "medium"
+  },
+  {
+    "id": "triperfect",
+    "proofId": "erdos-1053",
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "theorem",
+    "title": "Triperfect Numbers",
+    "content": "Only six triperfect numbers are known: 120, 672, 523776, 459818240, 1476304896, 51001180160. No others have been found despite extensive search.",
+    "significance": "medium"
+  },
+  {
+    "id": "largest-k",
+    "proofId": "erdos-1053",
+    "range": { "startLine": 62, "endLine": 63 },
+    "type": "theorem",
+    "title": "Largest Known k = 11",
+    "content": "The largest k for which a k-perfect number is known is k=11. These numbers are astronomically large, with hundreds of digits.",
+    "significance": "medium"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-1053",
+    "range": { "startLine": 72, "endLine": 75 },
+    "type": "conjecture",
+    "title": "k = o(log log n) Conjecture",
+    "content": "If σ(n) = k·n, then k grows strictly slower than log log n. This is the main question of Problem #1053, weaker than Guy's finiteness conjecture.",
+    "significance": "high"
+  },
+  {
+    "id": "gronwall",
+    "proofId": "erdos-1053",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "theorem",
+    "title": "Gronwall's Theorem (1913)",
+    "content": "lim sup σ(n)/(n · log log n) = e^γ ≈ 1.781. So σ(n)/n can reach ~e^γ · log log n for highly composite numbers. This sets the scale for the problem.",
+    "significance": "high"
+  },
+  {
+    "id": "robin",
+    "proofId": "erdos-1053",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "theorem",
+    "title": "Robin's Inequality (1984)",
+    "content": "Assuming RH: σ(n) < e^γ · n · log log n for n ≥ 5041. This gives k < e^γ · log log n, i.e., k = O(log log n) conditional on RH. The o() version remains open.",
+    "significance": "high"
+  },
+  {
+    "id": "guy-finiteness",
+    "proofId": "erdos-1053",
+    "range": { "startLine": 93, "endLine": 94 },
+    "type": "conjecture",
+    "title": "Guy's Finiteness Conjecture",
+    "content": "For each k ≥ 3, there are only finitely many k-perfect numbers. This is strictly stronger than Erdős's o(log log n) question.",
+    "significance": "high"
+  }
+]
