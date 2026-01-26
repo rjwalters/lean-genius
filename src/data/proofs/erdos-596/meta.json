@@ -1,0 +1,96 @@
+{
+  "id": "erdos-596",
+  "title": "Erdős Problem #596: Graph Coloring Dichotomy for Forbidden Subgraphs",
+  "slug": "erdos-596",
+  "description": "For which pairs (G₁, G₂) is it true that for every n there exists a G₁-free graph whose n-colorings contain monochromatic G₂, yet every G₁-free graph admits a countable coloring avoiding monochromatic G₂? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/596",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos596Problem.lean",
+    "tags": [
+      "graph-theory",
+      "ramsey-theory",
+      "coloring",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 596,
+    "erdosUrl": "https://erdosproblems.com/596",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #596 from [Er87] asks for a characterization of graph pairs (G₁, G₂) satisfying a finite/countable Ramsey-type dichotomy. Erdős and Hajnal originally conjectured no such pairs exist, but Nešetřil-Rödl and Erdős-Hajnal showed that (C₄, C₆) is a valid pair. The related Problem #595 asks specifically about (K₄, K₃).",
+    "problemStatement": "For which pairs (G₁, G₂) is it true that (1) for every n, there exists a G₁-free graph H such that every n-coloring of H's edges contains a monochromatic G₂, and (2) every G₁-free graph H admits a countable edge coloring with no monochromatic G₂? OPEN.",
+    "proofStrategy": "The formalization defines GraphProperty, FiniteRamseyProperty, CountableColoringProperty, and HasDichotomy. The known pair (C₄, C₆) is proved to satisfy the dichotomy from axioms of Nešetřil-Rödl and Erdős-Hajnal. The main problem asks for a complete characterization.",
+    "keyInsights": [
+      "The dichotomy combines a finite Ramsey property with a countable coloring property",
+      "Erdős-Hajnal originally conjectured no pairs exist, but (C₄, C₆) is a counterexample",
+      "C₄-free graphs are countable unions of trees (Erdős-Hajnal)",
+      "The pair (K₄, K₃) is an important open case (Problem #595)",
+      "Connected to structural Ramsey theory and graph decomposition"
+    ]
+  },
+  "sections": [
+    {
+      "id": "dichotomy-definitions",
+      "title": "Part I: Graph Coloring Dichotomy",
+      "startLine": 25,
+      "endLine": 52,
+      "summary": "Defines GraphProperty, FiniteRamseyProperty, CountableColoringProperty, and HasDichotomy."
+    },
+    {
+      "id": "known-examples",
+      "title": "Part II: Known Examples",
+      "startLine": 54,
+      "endLine": 77,
+      "summary": "Defines IsC4Free, ContainsC6. Axioms: nesetril_rodl_c4_c6, erdos_hajnal_c4_trees."
+    },
+    {
+      "id": "dichotomy-pair",
+      "title": "Part III: The Known Dichotomy Pair",
+      "startLine": 79,
+      "endLine": 85,
+      "summary": "Theorem c4_c6_dichotomy: the pair (C₄, C₆) has the dichotomy property."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part IV: The Main Conjecture",
+      "startLine": 87,
+      "endLine": 99,
+      "summary": "Defines ErdosProblem596: existence of a characterization. Axiom erdos_596."
+    },
+    {
+      "id": "related-problem",
+      "title": "Part V: Related Problem (K₄, K₃)",
+      "startLine": 101,
+      "endLine": 118,
+      "summary": "Defines IsK4Free, ContainsK3. Axiom erdos_595_k4_k3 for the (K₄, K₃) case."
+    },
+    {
+      "id": "properties",
+      "title": "Part VI: Properties",
+      "startLine": 120,
+      "endLine": 127,
+      "summary": "Theorem dichotomy_pairs_exist: at least one dichotomy pair exists."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 129,
+      "endLine": 143,
+      "summary": "Proved: c4_c6_dichotomy, dichotomy_pairs_exist, erdos_596_statement, erdos_596_status. OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #596 asks for a characterization of graph pairs (G₁, G₂) satisfying a finite/countable Ramsey dichotomy. The pair (C₄, C₆) is a known example, but the general characterization remains open.",
+    "implications": "Resolution would clarify the structural Ramsey theory of forbidden subgraph classes and their decomposition into countably many simple pieces.",
+    "openQuestions": [
+      "Which pairs (G₁, G₂) satisfy the dichotomy?",
+      "Does (K₄, K₃) satisfy the dichotomy (Problem #595)?",
+      "Is there a finite characterization of all dichotomy pairs?",
+      "What structural properties of G₁-free graphs determine the dichotomy?"
+    ]
+  }
+}

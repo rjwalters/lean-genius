@@ -1,0 +1,68 @@
+[
+  {
+    "id": "erdos-596-header",
+    "proofId": "erdos-596",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 18 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #596: For which pairs (G₁, G₂) does a Ramsey-type dichotomy hold? Finite n-colorings force monochromatic G₂ in G₁-free graphs, yet countable colorings avoid it. OPEN.",
+    "mathContext": "The dichotomy combines a finite Ramsey property (unavoidable monochromatic subgraph) with a countable coloring property (avoidable monochromatic subgraph).",
+    "significance": "essential",
+    "relatedConcepts": ["Ramsey theory", "graph coloring", "forbidden subgraphs"]
+  },
+  {
+    "id": "erdos-596-definitions",
+    "proofId": "erdos-596",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 52 },
+    "title": "Dichotomy Definitions",
+    "content": "GraphProperty: SimpleGraph N -> Prop. FiniteRamseyProperty: for all n, exists G₁-free H where n-colorings have monochromatic G₂. CountableColoringProperty: every G₁-free H has countable coloring avoiding G₂. HasDichotomy: both properties hold.",
+    "mathContext": "The two properties are complementary: finite colors are insufficient, but countably many suffice.",
+    "significance": "essential",
+    "relatedConcepts": ["SimpleGraph", "edge coloring", "Ramsey property"]
+  },
+  {
+    "id": "erdos-596-c4c6",
+    "proofId": "erdos-596",
+    "type": "result",
+    "range": { "startLine": 54, "endLine": 85 },
+    "title": "The (C₄, C₆) Dichotomy Pair",
+    "content": "c4_c6_dichotomy (proved): HasDichotomy IsC4Free ContainsC6, from nesetril_rodl_c4_c6 (axiom) and erdos_hajnal_c4_trees (axiom). Disproves original Erdős-Hajnal conjecture that no pairs exist.",
+    "mathContext": "Nešetřil-Rödl showed C₄-free graphs have the finite Ramsey property for C₆. Erdős-Hajnal proved every C₄-free graph is a countable union of trees.",
+    "significance": "essential",
+    "relatedConcepts": ["cycle-free graphs", "Nešetřil-Rödl", "union of trees"]
+  },
+  {
+    "id": "erdos-596-conjecture",
+    "proofId": "erdos-596",
+    "type": "conjecture",
+    "range": { "startLine": 87, "endLine": 99 },
+    "title": "Main Problem (OPEN)",
+    "content": "ErdosProblem596: there exists a characterization of all (G₁, G₂) pairs with the dichotomy. erdos_596 (axiom): the characterization exists but is unknown.",
+    "mathContext": "The problem asks for a complete classification, not just examples.",
+    "significance": "essential",
+    "relatedConcepts": ["classification", "structural characterization"]
+  },
+  {
+    "id": "erdos-596-k4k3",
+    "proofId": "erdos-596",
+    "type": "conjecture",
+    "range": { "startLine": 101, "endLine": 118 },
+    "title": "Related Problem: (K₄, K₃)",
+    "content": "erdos_595_k4_k3 (axiom): the pair (K₄, K₃) conjectured to have the dichotomy. Problem #595.",
+    "mathContext": "Whether K₄-free graphs satisfy the dichotomy for triangles is a natural test case for the general characterization.",
+    "significance": "essential",
+    "relatedConcepts": ["complete graphs", "triangle-free", "Problem #595"]
+  },
+  {
+    "id": "erdos-596-summary",
+    "proofId": "erdos-596",
+    "type": "result",
+    "range": { "startLine": 129, "endLine": 143 },
+    "title": "Summary: OPEN",
+    "content": "c4_c6_dichotomy (proved): (C₄, C₆) has the dichotomy. dichotomy_pairs_exist (proved): at least one pair exists. erdos_596_status (proved): True. General characterization remains OPEN.",
+    "mathContext": "The existence of dichotomy pairs is established but a complete characterization is unknown.",
+    "significance": "essential",
+    "relatedConcepts": ["open problem", "summary"]
+  }
+]
