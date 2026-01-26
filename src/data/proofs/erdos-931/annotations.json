@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-931-product-factors",
+    "proofId": "erdos-931",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 42 },
+    "title": "Consecutive Product Prime Factors",
+    "content": "consecutiveProduct n k computes ∏_{i=1}^{k}(n+i), the product of k consecutive integers starting from n+1. consecutivePrimeFactors extracts the set of prime factors of this product using Nat.primeFactors.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-931-same-factors",
+    "proofId": "erdos-931",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 53 },
+    "title": "Same Prime Factors Property",
+    "content": "SamePrimeFactors n₁ k₁ n₂ k₂ holds when the prime factor sets of the two consecutive products are equal. This captures the core condition in Erdős Problem 931.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-931-conjecture",
+    "proofId": "erdos-931",
+    "type": "conjecture",
+    "range": { "startLine": 55, "endLine": 67 },
+    "title": "Erdős Problem 931",
+    "content": "For all k₁ ≥ k₂ ≥ 3, there are only finitely many pairs (n₁, n₂) with n₂ ≥ n₁+k₁ such that the products of k₁ and k₂ consecutive integers share the same prime factors. This remains open.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-931-stronger",
+    "proofId": "erdos-931",
+    "type": "conjecture",
+    "range": { "startLine": 69, "endLine": 81 },
+    "title": "Stronger Conjecture",
+    "content": "The stronger version restricts to n₂ ≤ 2(n₁+k₁). Erdős expressed doubt about this claim. AlphaProof found counterexamples disproving this stronger version.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-931-alphaproof",
+    "proofId": "erdos-931",
+    "type": "result",
+    "range": { "startLine": 83, "endLine": 94 },
+    "title": "AlphaProof Counterexample",
+    "content": "AlphaProof discovered that 10! = 1·2·…·10 and 14·15·16 share the prime factors {2,3,5,7}, with n₂=13 ≤ 2·(0+10)=20. This disproves the stronger conjecture but not the original finiteness question.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-931-prime-between",
+    "proofId": "erdos-931",
+    "type": "conjecture",
+    "range": { "startLine": 107, "endLine": 122 },
+    "title": "Prime Between n₁ and n₂",
+    "content": "Erdős could not prove that a prime must exist between n₁ and n₂ when their consecutive products share the same prime factors. This subsidiary question also remains open.",
+    "significance": "supporting"
+  }
+]
