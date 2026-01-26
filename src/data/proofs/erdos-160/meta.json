@@ -1,0 +1,78 @@
+{
+  "id": "erdos-160",
+  "title": "Erdős Problem #160: Rainbow-Free Colorings of Arithmetic Progressions",
+  "slug": "erdos-160",
+  "description": "Let h(N) be the minimum colors so that every 4-AP in {1,...,N} uses ≥ 3 colors. Known: exp(c(log N)^{1/12}) ≤ h(N) ≤ N^{log3/log22+o(1)}. Close the gap. Open.",
+  "meta": {
+    "erdosNumber": 160,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "coloring",
+      "van-der-waerden",
+      "open"
+    ],
+    "references": [
+      "Erdős & Freud: original problem",
+      "Kelley & Meka (2023): 3-AP-free set bounds [KeMe23]",
+      "Hunter: improved upper bound N^{log3/log22}",
+      "https://erdosproblems.com/160"
+    ],
+    "leanFile": "Proofs/Erdos160Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 44,
+      "summary": "Coloring, 4-AP, 3-diversity condition, h(n) definition."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "startLine": 46,
+      "endLine": 57,
+      "summary": "h(N) ≤ N^{2/3} (LeechLattice), improved to N^{log3/log22} (Hunter)."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "h(N) ≥ exp(c(log N)^{1/12}) via Kelley–Meka."
+    },
+    {
+      "id": "main-questions",
+      "title": "Main Questions",
+      "startLine": 67,
+      "endLine": 80,
+      "summary": "Improve upper and lower bounds to close the gap."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Freud studied colorings of {1,...,N} where every 4-term arithmetic progression uses at least 3 distinct colors. Recent progress has come from MathOverflow contributions and the Kelley–Meka breakthrough on 3-AP-free sets, which provides the current best lower bound.",
+    "problemStatement": "Let h(N) be the minimum k such that {1,...,N} can be k-colored so that every 4-AP uses ≥ 3 colors. Estimate h(N). Current bounds: exp(c(log N)^{1/12}) ≤ h(N) ≤ N^{log 3/log 22 + o(1)}.",
+    "proofStrategy": "We define the 3-diversity condition on 4-APs, state the known upper bounds (N^{2/3} and N^{0.356}) and lower bound (superpolynomial via Kelley–Meka), and pose the problem of closing the gap.",
+    "keyInsights": [
+      "h(N) ≤ N^{2/3} via direct construction (LeechLattice)",
+      "Hunter improved upper to N^{log 3/log 22 + o(1)} ≈ N^{0.356}",
+      "Lower bound exp(c(log N)^{1/12}) uses Kelley–Meka 3-AP results",
+      "Enormous gap between polynomial upper and superpolynomial lower bounds",
+      "Connected to van der Waerden-type problems and AP-free set theory"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #160 asks for sharp estimates on h(N), the minimum colors for 3-diverse colorings on 4-APs. The current gap between the superpolynomial lower bound and polynomial upper bound is enormous, making this a challenging open problem in additive combinatorics.",
+    "implications": "Closing the gap would advance quantitative Ramsey theory for arithmetic progressions, with connections to the Kelley–Meka bounds and van der Waerden numbers.",
+    "openQuestions": [
+      "Is h(N) polynomial or superpolynomial in N?",
+      "Can the upper bound be improved below N^{1/3}?",
+      "Can the Kelley–Meka exponent 1/12 be improved for this problem?",
+      "What is the correct order of growth for h(N)?"
+    ]
+  }
+}
