@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ramsey-def",
+    "proofId": "erdos-78",
+    "range": { "startLine": 38, "endLine": 44 },
+    "type": "definition",
+    "title": "Diagonal Ramsey Number R(k)",
+    "content": "R(k) is the minimum n such that every 2-coloring of K_n's edges contains a monochromatic K_k. Equivalently, every graph on n vertices has a k-clique or k-independent set.",
+    "significance": "high"
+  },
+  {
+    "id": "probabilistic",
+    "proofId": "erdos-78",
+    "range": { "startLine": 48, "endLine": 56 },
+    "type": "theorem",
+    "title": "Erdős Probabilistic Bound (1947)",
+    "content": "R(k) > k·2^{k/2}/e. This was the first application of the probabilistic method: a random graph on n < √2^k vertices has no k-clique or k-independent set with positive probability. Non-constructive.",
+    "significance": "high"
+  },
+  {
+    "id": "cohen",
+    "proofId": "erdos-78",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "theorem",
+    "title": "Cohen's Construction (2015)",
+    "content": "Cohen built explicit n-vertex graphs with no clique or independent set of size 2^{(log log n)^C}. This was the first improvement over trivial algebraic constructions but still far from c·log n.",
+    "significance": "medium"
+  },
+  {
+    "id": "li",
+    "proofId": "erdos-78",
+    "range": { "startLine": 74, "endLine": 80 },
+    "type": "theorem",
+    "title": "Li's Construction (2023)",
+    "content": "Li improved the explicit construction to avoid cliques and independent sets of size (log n)^C. This is currently the best constructive result but still falls far short of the target c·log n.",
+    "significance": "high"
+  },
+  {
+    "id": "main-problem",
+    "proofId": "erdos-78",
+    "range": { "startLine": 84, "endLine": 90 },
+    "type": "conjecture",
+    "title": "Constructive Ramsey Challenge ($100)",
+    "content": "Construct explicit n-vertex graphs with no clique or independent set of size c·log n. This would match the probabilistic bound constructively. The gap from (log n)^C to c·log n represents a fundamental barrier.",
+    "significance": "high"
+  },
+  {
+    "id": "cgms",
+    "proofId": "erdos-78",
+    "range": { "startLine": 96, "endLine": 100 },
+    "type": "theorem",
+    "title": "CGMS Upper Bound (2023)",
+    "content": "Campos, Griffiths, Morris, and Sahasrabudhe proved R(k) ≤ (4-ε)^k, breaking the longstanding 4^k barrier from the Erdős–Szekeres theorem (1935). This narrows the gap from above.",
+    "significance": "high"
+  }
+]
