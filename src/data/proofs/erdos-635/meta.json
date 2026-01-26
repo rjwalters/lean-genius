@@ -1,0 +1,97 @@
+{
+  "id": "erdos-635",
+  "title": "Erdős Problem #635: Non-Divisibility Condition on Differences",
+  "slug": "erdos-635",
+  "description": "For A ⊆ {1,...,N} with b-a ≥ t implying (b-a) ∤ b, is |A| ≤ (1/2 + o_t(1))N? For t=1, maximum is ⌊(N+1)/2⌋. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/635",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos635Problem.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "extremal-problems",
+      "divisibility",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 635,
+    "erdosUrl": "https://erdosproblems.com/635",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #635 originates from a letter to Ruzsa around 1980. It asks about the maximum size of subsets of {1,...,N} satisfying a non-divisibility condition on differences. For t=1, the answer is ⌊(N+1)/2⌋ (odd numbers). For t=2, Erdős showed one can exceed N/2 by c·log(N). References: [Gu83], [Ru99].",
+    "problemStatement": "For t ≥ 1 and A ⊆ {1,...,N}, suppose that whenever a, b ∈ A with b - a ≥ t, we have (b-a) ∤ b. How large can |A| be? Is |A| ≤ (1/2 + o_t(1))N? OPEN.",
+    "proofStrategy": "The formalization defines IsNonDivisible, IsAdmissible, and the extremal function f(N,t). The t=1 case (odd numbers) and t=2 construction are axiomatized. The main conjecture is formalized as density approaching 1/2.",
+    "keyInsights": [
+      "The condition b-a ≥ t and (b-a) ∤ b restricts which pairs can coexist in A",
+      "For t=1, odd numbers are optimal: any difference from an odd number has an even factor",
+      "For t=2, Erdős beats N/2 by c·log(N) using odd numbers plus certain powers of 2",
+      "The conjecture says the density is always close to 1/2 regardless of t",
+      "Connected to divisibility restrictions in combinatorial number theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "non-divisibility",
+      "title": "Part I: The Non-Divisibility Condition",
+      "startLine": 28,
+      "endLine": 38,
+      "summary": "Defines IsNonDivisible and IsAdmissible for A ⊆ {1,...,N} with parameter t."
+    },
+    {
+      "id": "extremal-function",
+      "title": "Part II: The Extremal Function",
+      "startLine": 40,
+      "endLine": 44,
+      "summary": "Defines f(N,t) = sSup of admissible set sizes."
+    },
+    {
+      "id": "case-t1",
+      "title": "Part III: The Case t = 1",
+      "startLine": 46,
+      "endLine": 62,
+      "summary": "Defines oddSet. Axioms: oddSet_admissible, oddSet_card, f_t1 = (N+1)/2."
+    },
+    {
+      "id": "case-t2",
+      "title": "Part IV: The Case t = 2",
+      "startLine": 64,
+      "endLine": 74,
+      "summary": "Axioms: f_t2_lower (N/2 + c·log N), erdos_construction_t2."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part V: The Main Conjecture",
+      "startLine": 76,
+      "endLine": 90,
+      "summary": "Defines ErdosConjecture635: density ≤ 1/2 + ε for all t, large N. Axiom erdos_635."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Part VI: Upper Bound",
+      "startLine": 92,
+      "endLine": 99,
+      "summary": "Axioms: f_upper_trivial (f ≤ N), f_t1_density (density → 1/2 for t=1)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 101,
+      "endLine": 122,
+      "summary": "Proved: erdos_635_t1_solved (from f_t1), erdos_635_status (trivial). OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #635 asks whether the extremal density for the non-divisibility condition is always close to 1/2. The t=1 case is solved (odd numbers), but the general conjecture remains open.",
+    "implications": "Resolution would clarify the structure of sets avoiding divisibility relations, connecting to extremal combinatorics and additive number theory.",
+    "openQuestions": [
+      "Is the density always at most 1/2 + o_t(1)?",
+      "What is the exact behavior for small t ≥ 2?",
+      "Can the Erdős construction for t=2 be improved?",
+      "How does the extremal function depend on t?"
+    ]
+  }
+}
