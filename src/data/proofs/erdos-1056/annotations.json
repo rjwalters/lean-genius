@@ -1,0 +1,65 @@
+[
+  {
+    "id": "interval-prod",
+    "proofId": "erdos-1056",
+    "range": { "startLine": 27, "endLine": 28 },
+    "type": "definition",
+    "title": "Interval Product",
+    "content": "The product of all integers in an interval [a, b). When this product is ≡ 1 (mod p), the interval is 'multiplicatively trivial' modulo p.",
+    "significance": "medium"
+  },
+  {
+    "id": "has-solution",
+    "proofId": "erdos-1056",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "definition",
+    "title": "Solution for k Intervals",
+    "content": "A solution for k: a prime p and k+1 strictly increasing boundary points defining k consecutive intervals, all with product ≡ 1 (mod p).",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-k2",
+    "proofId": "erdos-1056",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "theorem",
+    "title": "Erdős k=2 Example (1979)",
+    "content": "3·4 = 12 ≡ 1 (mod 11) and 5·6·7 = 210 ≡ 1 (mod 11). Two consecutive intervals with product 1 modulo 11. Verified computationally.",
+    "significance": "medium"
+  },
+  {
+    "id": "makowski-k3",
+    "proofId": "erdos-1056",
+    "range": { "startLine": 61, "endLine": 71 },
+    "type": "theorem",
+    "title": "Makowski k=3 Example (1983)",
+    "content": "With p=17: 2·3·4·5 ≡ 6·7·8·9·10·11 ≡ 12·13·14·15 ≡ 1 (mod 17). Three consecutive intervals. Verified computationally.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-1056",
+    "range": { "startLine": 77, "endLine": 80 },
+    "type": "conjecture",
+    "title": "Main Conjecture: All k ≥ 2",
+    "content": "For every k ≥ 2, there exists a prime p and k consecutive intervals with all products ≡ 1 (mod p). This is the core open question.",
+    "significance": "high"
+  },
+  {
+    "id": "wilson-connection",
+    "proofId": "erdos-1056",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "theorem",
+    "title": "Wilson's Theorem Constraint",
+    "content": "(p-1)! ≡ -1 (mod p). If intervals partition {1,...,p-1} and each has product 1, then 1^k = 1 ≠ -1, so the intervals cannot cover all of {1,...,p-1}.",
+    "significance": "medium"
+  },
+  {
+    "id": "noll-simmons",
+    "proofId": "erdos-1056",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "conjecture",
+    "title": "Noll–Simmons Factorial Generalization",
+    "content": "For arbitrarily large k, do there exist q₁ < ... < qₖ < p with q₁! ≡ ... ≡ qₖ! (mod p)? This is equivalent to the interval product question via factorial ratios.",
+    "significance": "high"
+  }
+]
