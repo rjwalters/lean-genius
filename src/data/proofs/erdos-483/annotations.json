@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-483-ann-1",
+    "proofId": "erdos-483",
+    "range": { "startLine": 27, "endLine": 42 },
+    "type": "definition",
+    "title": "Colorings and Schur Numbers",
+    "content": "A k-Coloring assigns colors from Fin k to elements of {1,...,N}. HasMonochromaticSum detects monochromatic a+b=c triples. schurNumber k is axiomatized as the threshold for forced monochromatic sums.",
+    "significance": "The Schur number is the central object. Axiomatization avoids the need for a constructive minimum, while HasMonochromaticSum captures the combinatorial condition."
+  },
+  {
+    "id": "erdos-483-ann-2",
+    "proofId": "erdos-483",
+    "range": { "startLine": 46, "endLine": 59 },
+    "type": "result",
+    "title": "Exact Schur Numbers for k ≤ 5",
+    "content": "f(1)=2, f(2)=5, f(3)=14, f(4)=45, f(5)=161 are all known. The value f(5)=161 was determined computationally by Fredricksen and Sweet (1986). No exact values beyond k=5 are known.",
+    "significance": "The growth rate f(1), f(2), ..., f(5) is roughly 2, 5, 14, 45, 161 — each roughly 3× the previous, suggesting exponential growth around 3^k."
+  },
+  {
+    "id": "erdos-483-ann-3",
+    "proofId": "erdos-483",
+    "range": { "startLine": 63, "endLine": 67 },
+    "type": "result",
+    "title": "Exponential Lower Bound",
+    "content": "f(k) ≥ 380^{k/5} - O(1) by Ageron et al., showing Schur numbers grow at least exponentially with base ≈ 380^{1/5} ≈ 3.27.",
+    "significance": "The exponential lower bound confirms that f(k) cannot grow polynomially. The question is whether the growth is exactly exponential or faster."
+  },
+  {
+    "id": "erdos-483-ann-4",
+    "proofId": "erdos-483",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "result",
+    "title": "Factorial Upper Bound (Whitehead 1973)",
+    "content": "f(k) ≤ ⌊(e - 1/24)k!⌋ - 1, so f(k) = O(k!). This follows from a probabilistic/counting argument. The gap between exponential and factorial is enormous.",
+    "significance": "Closing this gap — from O(k!) to O(c^k) — is the content of Problem #483."
+  },
+  {
+    "id": "erdos-483-ann-5",
+    "proofId": "erdos-483",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "conjecture",
+    "title": "Exponential Bound Conjecture",
+    "content": "Erdős asked whether f(k) < c^k for some constant c. This would mean Schur numbers grow at most exponentially, matching the exponential lower bound up to the base.",
+    "significance": "If true, Schur numbers would be Θ(c^k) for some c, giving a complete asymptotic picture. This connects to similar questions for Ramsey numbers."
+  }
+]
