@@ -1,0 +1,45 @@
+{
+  "id": "erdos-119",
+  "title": "Maximum Modulus of Polynomials on the Unit Circle",
+  "slug": "erdos-119",
+  "description": "For points z_i on the unit circle, define M_n = max_{|z|=1} |∏(z - z_i)|. Parts 1-2 (limsup M_n = ∞, M_n > n^c i.o.) are solved. Part 3 (∑M_k > n^{1+c}) remains open.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/119",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos119Problem.lean",
+    "tags": ["complex-analysis", "polynomials", "unit-circle", "extremal-problems"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 119,
+    "erdosUrl": "https://erdosproblems.com/119",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this three-part problem about the maximum modulus of monic polynomials with all roots on the unit circle. Wagner (1980) solved Part 1 showing limsup M_n = ∞ with logarithmic lower bounds. Beck (1991) solved Part 2 establishing polynomial growth M_n > N^c. Part 3, asking whether partial sums grow like n^{1+c}, remains open with a $100 prize.",
+    "problemStatement": "Given z_1,...,z_n on the unit circle, let M_n = max_{|z|=1} |∏(z-z_i)|. Is it true that ∑_{k≤n} M_k > n^{1+c} for some c > 0 and all large n?",
+    "proofStrategy": "We define unitCirclePoly as the finite product ∏_{i<n}(w - z_i) and maxModulus as the supremum of its norm over the unit circle. Parts 1 and 2 (solved) are stated as axioms. Part 3 (open) is stated as ErdosProblem119 using Filter.Eventually. Implication relationships part3 ⟹ part2 ⟹ part1 are stated as axioms.",
+    "keyInsights": [
+      "Part 3 ⟹ Part 2 ⟹ Part 1 forms a chain of increasingly strong conjectures",
+      "Wagner's logarithmic bound (1980) and Beck's polynomial bound (1991) resolved Parts 1-2",
+      "The open Part 3 asks about cumulative growth of M_k, a fundamentally harder question",
+      "The problem connects Diophantine approximation to extremal polynomial theory"
+    ]
+  },
+  "sections": [
+    { "id": "definitions", "title": "Polynomial Product and Maximum Modulus", "startLine": 31, "endLine": 41, "summary": "Defines unitCirclePoly as ∏_{i<n}(w - z_i) and maxModulus as the sup of its norm over the unit circle." },
+    { "id": "part1", "title": "Part 1: limsup M_n = ∞ (Wagner 1980)", "startLine": 43, "endLine": 54, "summary": "States that limsup M_n = ⊤ in EReal for any unit circle sequence. Solved by Wagner." },
+    { "id": "part2", "title": "Part 2: M_n > n^c Infinitely Often (Beck 1991)", "startLine": 56, "endLine": 68, "summary": "States existence of c > 0 with max_{n≤N} M_n > N^c. Solved by Beck." },
+    { "id": "part3", "title": "Part 3: Partial Sum Growth (Open)", "startLine": 70, "endLine": 80, "summary": "ErdosProblem119: ∃ c > 0 such that ∑_{k<n} M_k > n^{1+c} eventually. Open with $100 prize." },
+    { "id": "basic", "title": "Basic Properties and Implications", "startLine": 82, "endLine": 115, "summary": "Proves unitCirclePoly_one and unitCirclePoly_zero. States M_n ≥ 1, nonnegativity, and the implication chain part3 ⟹ part2 ⟹ part1." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures all three parts of Erdős Problem 119 on maximum modulus of unit-circle polynomials. Parts 1-2 (solved by Wagner and Beck) are stated as axioms. Part 3 remains open. 0 sorries.",
+    "implications": "Resolution of Part 3 would establish a strong quantitative bound on cumulative polynomial extrema, with connections to Diophantine approximation and potential function theory.",
+    "openQuestions": [
+      "Does ∑_{k≤n} M_k > n^{1+c} hold for some c > 0 and all large n?",
+      "What is the optimal exponent c in Part 2?",
+      "Can Beck's method be extended to address cumulative bounds?"
+    ]
+  }
+}
