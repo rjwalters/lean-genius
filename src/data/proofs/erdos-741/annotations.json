@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-741-density",
+    "proofId": "erdos-741",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 33 },
+    "title": "Upper Density",
+    "content": "upperDensity A = limsup |A ∩ [0,n]| / (n+1). HasPosDensity means positive upper density.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-741-sumset",
+    "proofId": "erdos-741",
+    "type": "definition",
+    "range": { "startLine": 35, "endLine": 37 },
+    "title": "Sumset",
+    "content": "sumset A B = { a + b : a ∈ A, b ∈ B }, the pairwise sum of two sets.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-741-basis",
+    "proofId": "erdos-741",
+    "type": "definition",
+    "range": { "startLine": 41, "endLine": 47 },
+    "title": "Basis and Syndeticity",
+    "content": "IsBasisOrder2: every large n ∈ A+A. IsSyndetic: bounded gaps (∃ g, every [n,n+g] meets S).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-741-part1",
+    "proofId": "erdos-741",
+    "type": "conjecture",
+    "range": { "startLine": 53, "endLine": 56 },
+    "title": "Part 1: Density Splitting",
+    "content": "If A+A has positive density, can A be split so both halves' sumsets have positive density?",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-741-part2",
+    "proofId": "erdos-741",
+    "type": "conjecture",
+    "range": { "startLine": 60, "endLine": 63 },
+    "title": "Part 2: Non-Splittable Basis",
+    "content": "Does a basis of order 2 exist where no partition makes both sumsets syndetic?",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-741-comm",
+    "proofId": "erdos-741",
+    "type": "result",
+    "range": { "startLine": 68, "endLine": 71 },
+    "title": "Sumset Commutativity",
+    "content": "sumset A B = sumset B A, proved by swapping witnesses with omega.",
+    "significance": "supporting"
+  }
+]
