@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-467-ann-assign",
+    "proofId": "erdos-467",
+    "range": { "startLine": 26, "endLine": 27 },
+    "type": "definition",
+    "title": "Residue Assignment",
+    "content": "For each prime p ≤ x, a chosen residue class a_p. The assignment determines which integers each prime 'covers'.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-467-ann-partition",
+    "proofId": "erdos-467",
+    "range": { "startLine": 30, "endLine": 33 },
+    "type": "definition",
+    "title": "Prime Partition",
+    "content": "A partition of primes ≤ x into two non-empty sets A and B. Both must independently cover all integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-467-ann-dual",
+    "proofId": "erdos-467",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Dual Covering",
+    "content": "Every n < x is covered by some prime in A and some prime in B. Both halves of the partition achieve full coverage.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-467-ann-conjecture",
+    "proofId": "erdos-467",
+    "range": { "startLine": 51, "endLine": 55 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "For sufficiently large x, a residue assignment and prime partition exist achieving dual coverage.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-467-ann-mertens",
+    "proofId": "erdos-467",
+    "range": { "startLine": 60, "endLine": 63 },
+    "type": "theorem",
+    "title": "Coverage Estimate (Mertens)",
+    "content": "Total coverage from primes ≤ x is ≈ x·log log x by Mertens' theorem. Far exceeds x, so redundancy exists.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-467-ann-single",
+    "proofId": "erdos-467",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "theorem",
+    "title": "Single Set Covers",
+    "content": "Using all primes ≤ x with appropriate residue classes covers [0,x). The challenge is doing it with a proper subset.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-467-ann-crt",
+    "proofId": "erdos-467",
+    "range": { "startLine": 88, "endLine": 91 },
+    "type": "theorem",
+    "title": "CRT Independence",
+    "content": "Coverage events from coprime moduli are independent. The uncovered probability is ∏(1−1/p) over primes in the set.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-467-ann-balance",
+    "proofId": "erdos-467",
+    "range": { "startLine": 102, "endLine": 106 },
+    "type": "theorem",
+    "title": "Balanced Partition Needed",
+    "content": "Both A and B need enough small primes. Assigning 2 to one side forces the other to cover even integers from odd primes.",
+    "significance": "supporting"
+  }
+]
