@@ -1,0 +1,88 @@
+{
+  "id": "erdos-1063",
+  "title": "Erdős Problem #1063: Binomial Coefficient Divisibility",
+  "slug": "erdos-1063",
+  "description": "Let k ≥ 2. Find the least n_k ≥ 2k where all but one of {n,...,n-k+1} divide C(n,k). Known: n_2=4, n_3=6, n_4=9, n_5=12. Monier: n_k ≤ k!. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1063",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1063Problem.lean",
+    "tags": [
+      "number-theory",
+      "binomial-coefficients",
+      "divisibility",
+      "extremal-thresholds"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1063,
+    "erdosUrl": "https://erdosproblems.com/1063",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1063, posed by Erdős and Selfridge (1983), asks for the growth rate of n_k, the least n ≥ 2k where all but one of the k values {n, n-1, ..., n-k+1} divide C(n,k). Erdős–Selfridge proved full divisibility never occurs. Monier (1985) showed n_k ≤ k!. Cambie improved this to n_k ≤ k · lcm(2,...,k-1).",
+    "problemStatement": "Let k ≥ 2. Define n_k as the least n ≥ 2k such that (n-i) | C(n,k) for all but one 0 ≤ i < k. Estimate n_k.",
+    "proofStrategy": "We define the divisibility condition, the threshold n_k, verify known small cases as axioms, and state the Erdős–Selfridge non-divisibility result, Monier's factorial bound, and Cambie's lcm bound.",
+    "keyInsights": [
+      "Erdős–Selfridge: for n ≥ 2k, at least one (n-i) does not divide C(n,k)",
+      "Known values: n_2 = 4, n_3 = 6, n_4 = 9, n_5 = 12",
+      "Monier (1985): n_k ≤ k! for k ≥ 3",
+      "Cambie: n_k ≤ k · lcm(2,...,k-1) ≤ e^{(1+o(1))k}",
+      "The true growth rate of n_k remains unknown"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisibility",
+      "title": "Part I: Divisibility Condition",
+      "startLine": 31,
+      "endLine": 52,
+      "summary": "Defines DividesChoose, divisibilityCount, and AllButOneDivide."
+    },
+    {
+      "id": "threshold",
+      "title": "Part II: The Threshold n_k",
+      "startLine": 54,
+      "endLine": 62,
+      "summary": "Defines IsThreshold: least n ≥ 2k with all but one divisibility."
+    },
+    {
+      "id": "erdos-selfridge",
+      "title": "Part III: Erdős–Selfridge Result",
+      "startLine": 64,
+      "endLine": 77,
+      "summary": "Axiom: full divisibility never occurs for n ≥ 2k."
+    },
+    {
+      "id": "small-values",
+      "title": "Part IV: Known Small Values",
+      "startLine": 79,
+      "endLine": 99,
+      "summary": "Axioms for n_2 = 4, n_3 = 6, n_4 = 9, n_5 = 12."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Part V: Upper Bounds",
+      "startLine": 101,
+      "endLine": 127,
+      "summary": "Monier's k! bound, Cambie's lcm bound, and the polynomial growth question."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 129,
+      "endLine": 139,
+      "summary": "Status: open. Growth rate of n_k unknown between polynomial and exponential."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1063 asks for the growth rate of n_k, the least n where all but one of {n,...,n-k+1} divide C(n,k). Known small values computed, with upper bounds n_k ≤ k! (Monier) and n_k ≤ k·lcm(2,...,k-1) (Cambie). The true growth rate remains open.",
+    "implications": "Understanding n_k would illuminate the arithmetic structure of binomial coefficients and their divisibility by nearby integers, with connections to factoring and primality testing.",
+    "openQuestions": [
+      "Is n_k polynomial or exponential in k?",
+      "Can n_k be computed exactly for more values of k?",
+      "Is there a lower bound better than the trivial n_k ≥ 2k?"
+    ]
+  }
+}
