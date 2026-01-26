@@ -29,14 +29,13 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Algebra.Order.Floor.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Tactic
 
 open Nat Real
 
 namespace Erdos894
 
-/-
-## Part I: Lacunary Sequences
--/
+/-! ## Part I: Lacunary Sequences -/
 
 /-- A sequence is lacunary with ratio (1+ε) if each term is at least (1+ε)
     times the previous term. -/
@@ -73,9 +72,7 @@ theorem geometric_is_lacunary (r : ℕ) (hr : r ≥ 2) :
           linarith
       _ = (1 + 1) * r ^ k := by ring
 
-/-
-## Part II: Colorings and Cayley Graphs
--/
+/-! ## Part II: Colorings and Cayley Graphs -/
 
 /-- A coloring of ℕ using k colors. -/
 def Coloring (k : ℕ) := ℕ → Fin k
@@ -95,9 +92,7 @@ noncomputable def chromaticNumber (A : Set ℕ) : ℕ :=
   Nat.find ⟨0, ⟨fun _ => 0, fun _ _ _ _ => False.elim⟩⟩
   -- Placeholder
 
-/-
-## Part III: The Diophantine Approximation Connection
--/
+/-! ## Part III: The Diophantine Approximation Connection -/
 
 /-- The fractional part function ||x|| = min{x - floor(x), ceil(x) - x}. -/
 noncomputable def fractionalDistance (x : ℝ) : ℝ :=
@@ -110,9 +105,7 @@ axiom problem_464_result (a : ℕ → ℕ) (ε : ℝ) (h : IsLacunary a ε) :
     ∃ θ : ℝ, Irrational θ ∧ ∃ δ : ℝ, δ > 0 ∧
       ∀ k : ℕ, fractionalDistance (θ * a k) > δ
 
-/-
-## Part IV: Katznelson's Coloring Construction
--/
+/-! ## Part IV: Katznelson's Coloring Construction -/
 
 /-- Given θ and δ from Problem #464, construct a coloring using O(1/δ) colors
     by dividing the circle into intervals of length δ. -/
@@ -130,9 +123,7 @@ axiom katznelson_theorem (a : ℕ → ℕ) (θ δ : ℝ) (hδ : δ > 0)
     let c := katznelsonColoring θ δ hδ
     AvoidsMonochromatic c {n | ∃ k, n = a k}
 
-/-
-## Part V: The Main Result
--/
+/-! ## Part V: The Main Result -/
 
 /-- **Theorem:** Every lacunary sequence is finitely colorable. -/
 theorem lacunary_finitely_colorable (a : ℕ → ℕ) (ε : ℝ) (h : IsLacunary a ε) :
@@ -148,9 +139,7 @@ def ErdosConjecture894 : Prop :=
 
 theorem erdos_894 : ErdosConjecture894 := lacunary_finitely_colorable
 
-/-
-## Part VI: Quantitative Bounds (Peres-Schlag 2010)
--/
+/-! ## Part VI: Quantitative Bounds (Peres-Schlag 2010) -/
 
 /-- **Peres-Schlag Theorem (2010):**
     For a lacunary sequence with ratio (1+ε), the chromatic number is
@@ -164,9 +153,7 @@ axiom peres_schlag_optimality :
     ∃ C : ℝ, C > 0 ∧ ∀ (a : ℕ → ℕ) (ε : ℝ), IsLacunary a ε →
       chromaticNumber {n | ∃ k, n = a k} ≤ C / ε * log (1 / ε)
 
-/-
-## Part VII: Cayley Graphs
--/
+/-! ## Part VII: Cayley Graphs -/
 
 /-- The Cayley graph on ℤ with connection set A. -/
 structure CayleyGraph (A : Set ℕ) where
@@ -203,9 +190,7 @@ theorem lacunary_cayley_finite_chromatic (a : ℕ → ℕ) (ε : ℝ) (h : IsLac
     cayleyChromatic {n | ∃ k, n = a k} < ⊤ := by
   trivial
 
-/-
-## Part VIII: Connection to Problem #464
--/
+/-! ## Part VIII: Connection to Problem #464 -/
 
 /-- Problem #464: Badly approximable numbers for lacunary sequences. -/
 def Problem464Statement : Prop :=
@@ -220,9 +205,7 @@ theorem problem_464_implies_894 : Problem464Statement → ErdosConjecture894 := 
   use ⌈1 / δ⌉₊, katznelsonColoring θ δ hδ
   exact katznelson_theorem a θ δ hδ h_uniform
 
-/-
-## Part IX: Special Cases
--/
+/-! ## Part IX: Special Cases -/
 
 /-- Powers of 2: {1, 2, 4, 8, ...} -/
 theorem powers_of_2_colorable :
@@ -242,22 +225,7 @@ theorem powers_of_3_colorable :
       _ ≥ 3 * 3 ^ k := le_refl _
       _ = (1 + 2) * 3 ^ k := by ring
 
-/-
-## Part X: Historical Context
--/
-
-/-- Asked by Erdős in 1987 according to Katznelson. -/
-axiom erdos_1987 : True
-
-/-- Katznelson (2001) made the connection to Problem #464. -/
-axiom katznelson_2001 : True
-
-/-- Peres-Schlag (2010) gave the quantitative bound. -/
-axiom peres_schlag_2010 : True
-
-/-
-## Part XI: Summary
--/
+/-! ## Part X: Summary -/
 
 /-- **Summary of Erdős Problem #894:**
 
@@ -279,8 +247,7 @@ KEY INSIGHT: Irrational rotation provides the coloring
 -/
 theorem erdos_894_solved : ErdosConjecture894 := erdos_894
 
-/-- The problem is resolved in the affirmative. -/
-def erdos_894_status : String :=
-  "SOLVED (YES) - O(ε⁻¹ log(1/ε)) colors (Peres-Schlag 2010)"
+/-- The problem is resolved. -/
+theorem erdos_894_status : True := trivial
 
 end Erdos894
