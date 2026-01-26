@@ -1,0 +1,79 @@
+{
+  "id": "erdos-654",
+  "title": "Erdős Problem #654: Distinct Distances with No Four Concyclic",
+  "slug": "erdos-654",
+  "description": "Given n points in the plane with no four on a circle, must some point determine (1-o(1))n distinct distances? Known: each point has ≥ (n-1)/3 distinct distances. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 654,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "geometry",
+      "distances",
+      "discrete-geometry",
+      "concyclic-points",
+      "open"
+    ],
+    "references": [
+      "Erdős (1987): original problem",
+      "Erdős–Pach (1990): weaker variant",
+      "Erdős (1997): related discussion",
+      "Guth–Katz (2015): Ω(n/log n) distinct distances",
+      "https://erdosproblems.com/654"
+    ],
+    "leanFile": "Proofs/Erdos654Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 42,
+      "summary": "Define PointConfig, NoFourConcyclic, distinctDistances per point."
+    },
+    {
+      "id": "known-bound",
+      "title": "Known Lower Bound",
+      "startLine": 44,
+      "endLine": 49,
+      "summary": "Every point has ≥ (n-1)/3 distinct distances under no-four-concyclic."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 51,
+      "endLine": 58,
+      "summary": "Some point determines (1-o(1))n distinct distances."
+    },
+    {
+      "id": "variants-context",
+      "title": "Variants and Context",
+      "startLine": 60,
+      "endLine": 96,
+      "summary": "Erdős–Pach weaker form, Guth–Katz context, circle distance bound."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this in 1987, asking whether geometric restrictions on point configurations force near-linear distinct distances from a single point. The no-four-concyclic condition prevents any circle through a point from containing many others, limiting distance repetitions. Erdős and Pach posed a weaker form in 1990.",
+    "problemStatement": "Given n points in ℝ² with no four on a circle, must some point xᵢ have at least (1-o(1))n distinct distances to the other points?",
+    "proofStrategy": "We formalize the no-four-concyclic condition, distinct distance counts per point, the known (n-1)/3 lower bound, the main conjecture, and the Erdős–Pach weaker variant. We connect to Guth–Katz for context.",
+    "keyInsights": [
+      "No four concyclic means at most 3 points at any fixed distance from a given point",
+      "This gives the trivial bound (n-1)/3 distinct distances per point",
+      "The conjecture asks for (1-o(1))n, far stronger than (n-1)/3",
+      "The Erdős–Pach weaker variant asks for (1/3+c)n under no three collinear",
+      "Related to but distinct from the Guth–Katz distinct distances theorem"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #654 conjectures that the no-four-concyclic condition forces some point to have nearly n distinct distances. The known lower bound of (n-1)/3 is far from the conjectured (1-o(1))n. The problem remains open.",
+    "implications": "A proof would show that geometric restrictions on point configurations (like no four concyclic) can force near-maximal distance diversity from individual points, complementing the Guth–Katz global distinct distances result.",
+    "openQuestions": [
+      "Must some point have (1-o(1))n distinct distances under no-four-concyclic?",
+      "Can the (n-1)/3 bound be improved without reaching (1-o(1))n?",
+      "Does the Erdős–Pach (1/3+c)n bound hold under no three collinear?",
+      "What happens in higher dimensions?"
+    ]
+  }
+}
