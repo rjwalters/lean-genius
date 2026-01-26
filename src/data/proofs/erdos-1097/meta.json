@@ -1,0 +1,88 @@
+{
+  "id": "erdos-1097",
+  "title": "Common Differences in Three-Term Arithmetic Progressions",
+  "slug": "erdos-1097",
+  "description": "How many distinct common differences can occur in three-term APs within an n-element set? Conjectured O(n^{3/2}). Best bounds: n^{1.778} (Lemm) to n^{11/6} (Katz–Tao). Equivalent to Bourgain's sums-differences problem.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1097",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1097Problem.lean",
+    "tags": [
+      "additive combinatorics",
+      "arithmetic progressions",
+      "Kakeya conjecture",
+      "Bourgain"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 1097,
+    "erdosUrl": "https://erdosproblems.com/1097",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this during the 1989 Great Western Number Theory problem session. Bourgain connected it to the Kakeya conjecture via his sums-differences formulation. Katz and Tao gave the best upper bound (n^{11/6}), while Lemm (2015) and AlphaEvolve (2025) pushed the lower bound past n^{1.778}.",
+    "problemStatement": "Let D(A) be the set of common differences of 3-term APs in an n-element set A ⊆ ℤ. Is |D(A)| = O(n^{3/2})?",
+    "proofStrategy": "We formalize IsThreeAP and commonDifferences, state the O(n^{3/2}) conjecture, record the Katz–Tao upper bound, Erdős–Spencer/Ruzsa/Lemm lower bounds, define Bourgain's sums-differences exponent, and state Chan's equivalence theorem.",
+    "keyInsights": [
+      "Erdős–Spencer: probabilistic construction gives Ω(n^{3/2}) common differences",
+      "Katz–Tao: best upper bound is O(n^{11/6}) ≈ O(n^{1.833})",
+      "Lemm: best lower bound is Ω(n^{1.778}), improved slightly by AlphaEvolve",
+      "Equivalent to Bourgain's restricted sums-differences problem",
+      "Connected to the Kakeya conjecture in geometric measure theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 36,
+      "endLine": 54,
+      "summary": "Defines IsThreeAP, commonDifferences, commonDiffFinset, and numCommonDiff for counting distinct common differences."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "States the O(n^{3/2}) conjecture: |D(A)| ≤ C · n^{3/2} for all n-element sets."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Katz–Tao Upper Bound",
+      "startLine": 65,
+      "endLine": 71,
+      "summary": "The best known upper bound: f(n) ≤ C · n^{11/6} (Katz–Tao, 1999)."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "startLine": 73,
+      "endLine": 99,
+      "summary": "Erdős–Spencer (n^{3/2}), Erdős–Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve improvements."
+    },
+    {
+      "id": "bourgain",
+      "title": "Bourgain's Sums-Differences Equivalence",
+      "startLine": 101,
+      "endLine": 127,
+      "summary": "Defines restricted sums/differences, BourgainExponent, and Chan's equivalence between the 3-AP problem and Bourgain's formulation."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 129,
+      "endLine": 137,
+      "summary": "Proves the current bounds summary from the axiomatized results."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #1097 on common differences in 3-term APs, including the O(n^{3/2}) conjecture, Katz–Tao upper bound, multiple lower bounds, and the equivalence to Bourgain's sums-differences problem.",
+    "implications": "Progress on this problem would impact the Kakeya conjecture through Bourgain's arithmetic approach. The gap between n^{1.778} and n^{1.833} remains one of the key open problems in additive combinatorics.",
+    "openQuestions": [
+      "Is the true exponent 3/2 or something larger?",
+      "Can Katz–Tao's 11/6 upper bound be improved?",
+      "Does the connection to Kakeya yield progress in either direction?"
+    ]
+  }
+}
