@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-686-header",
+    "proofId": "erdos-686",
+    "range": { "startLine": 1, "endLine": 21 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #686: Can every N >= 2 be written as prod(m+i)/prod(n+i) for k >= 2 and m >= n+k? Status: OPEN.",
+    "mathContext": "From [Er79d]. Asks about representation of integers as ratios of consecutive products. Related to Problem 677.",
+    "significance": "critical",
+    "relatedConcepts": ["consecutive-products", "factorials", "representation"]
+  },
+  {
+    "id": "ann-686-product",
+    "proofId": "erdos-686",
+    "range": { "startLine": 37, "endLine": 48 },
+    "type": "definition",
+    "title": "Consecutive Product",
+    "content": "consecutiveProduct(n, k) := prod_{i=1}^k (n+i). Equals (n+k)!/n! = k! * C(n+k, k).",
+    "mathContext": "Product of k consecutive integers starting at n+1. Fundamental building block.",
+    "significance": "critical",
+    "relatedConcepts": ["product", "factorial", "binomial"]
+  },
+  {
+    "id": "ann-686-ratio",
+    "proofId": "erdos-686",
+    "range": { "startLine": 57, "endLine": 66 },
+    "type": "definition",
+    "title": "Ratio Expression",
+    "content": "ratioExpression(n, m, k) := consecutiveProduct(m,k) / consecutiveProduct(n,k) as rational.",
+    "mathContext": "The ratio is taken over Q to handle exact division. Equals C(m+k,k)/C(n+k,k).",
+    "significance": "critical",
+    "relatedConcepts": ["ratio", "rational", "division"]
+  },
+  {
+    "id": "ann-686-represent",
+    "proofId": "erdos-686",
+    "range": { "startLine": 74, "endLine": 84 },
+    "type": "definition",
+    "title": "Representability",
+    "content": "IsRepresentable(N, n, m, k) := k >= 2 and m >= n+k and ratioExpression(n,m,k) = N. Representable(N) := exists such triple.",
+    "mathContext": "The central definition. Constraints ensure meaningful ratio > 1.",
+    "significance": "critical",
+    "relatedConcepts": ["representable", "constraints"]
+  },
+  {
+    "id": "ann-686-conjecture",
+    "proofId": "erdos-686",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "ErdosConjecture686 := for all N >= 2, Representable(N).",
+    "mathContext": "Claims every integer >= 2 can be expressed as a ratio of consecutive products.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "universally-representable"]
+  },
+  {
+    "id": "ann-686-constraints",
+    "proofId": "erdos-686",
+    "range": { "startLine": 92, "endLine": 106 },
+    "type": "theorem",
+    "title": "Constraint Analysis",
+    "content": "numerator_gt_denominator: m >= n+k implies larger product. ratio_gt_one: ratio exceeds 1.",
+    "mathContext": "k >= 2 excludes trivial single-factor ratios. m >= n+k ensures no overlap and ratio > 1.",
+    "significance": "key",
+    "relatedConcepts": ["constraints", "monotonicity"]
+  },
+  {
+    "id": "ann-686-small",
+    "proofId": "erdos-686",
+    "range": { "startLine": 114, "endLine": 131 },
+    "type": "concept",
+    "title": "Small Cases",
+    "content": "N = 6 works: (3)(4)/(1)(2) = 6. N = 2 is harder to find. Examples show non-triviality.",
+    "mathContext": "Finding the right triple (n, m, k) for each N requires search. Some cases are harder than others.",
+    "significance": "supporting",
+    "relatedConcepts": ["examples", "verification"]
+  },
+  {
+    "id": "ann-686-binomial",
+    "proofId": "erdos-686",
+    "range": { "startLine": 142, "endLine": 147 },
+    "type": "theorem",
+    "title": "Binomial Connection",
+    "content": "product_binomial_relation: consecutiveProduct(n,k) = k! * C(n+k, k).",
+    "mathContext": "Connects consecutive products to binomial coefficients. Ratio becomes C(m+k,k)/C(n+k,k).",
+    "significance": "key",
+    "relatedConcepts": ["binomial", "combinatorics"]
+  },
+  {
+    "id": "ann-686-followup",
+    "proofId": "erdos-686",
+    "range": { "startLine": 155, "endLine": 167 },
+    "type": "definition",
+    "title": "Follow-Up Question",
+    "content": "RepresentableSet(n, k) := {N | exists m >= n+k, ratio = N}. This set is infinite (ratio_mono, representable_set_infinite).",
+    "mathContext": "For fixed n, k, as m increases, ratios increase. What integers appear?",
+    "significance": "key",
+    "relatedConcepts": ["representable-set", "fixed-parameters"]
+  },
+  {
+    "id": "ann-686-structure",
+    "proofId": "erdos-686",
+    "range": { "startLine": 175, "endLine": 182 },
+    "type": "concept",
+    "title": "Divisibility Structure",
+    "content": "For ratio to be integer, subtle divisibility needed. Products have complex prime factorization.",
+    "mathContext": "The difficulty: ensuring denominator divides numerator exactly for each target N.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility", "prime-factors"]
+  },
+  {
+    "id": "ann-686-status",
+    "proofId": "erdos-686",
+    "range": { "startLine": 198, "endLine": 233 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Unknown whether all N >= 2 are representable. erdos_686_statement gives formal statement.",
+    "mathContext": "Combines number theory (factorials, binomials) with representation theory.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "number-theory"]
+  }
+]

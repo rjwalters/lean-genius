@@ -1,0 +1,152 @@
+{
+  "id": "erdos-686",
+  "title": "Erdős Problem #686: Ratios of Products of Consecutive Integers",
+  "slug": "erdos-686",
+  "description": "Can every integer N ≥ 2 be written as ∏(m+i) / ∏(n+i) for some k ≥ 2 and m ≥ n + k?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/686",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos686Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "products",
+      "consecutive-integers",
+      "factorials",
+      "binomials",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 5,
+    "erdosNumber": 686,
+    "erdosUrl": "https://erdosproblems.com/686",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "consecutiveProduct definition: ∏_{i=1}^k (n+i)",
+      "consecutiveProduct_eq_factorial theorem",
+      "ratioExpression definition as rational",
+      "IsIntegerRatio, integerRatio definitions",
+      "IsRepresentable, Representable definitions",
+      "ErdosConjecture686 definition",
+      "numerator_gt_denominator theorem",
+      "ratio_gt_one theorem",
+      "product_binomial_relation theorem",
+      "RepresentableSet definition",
+      "ratio_mono, representable_set_infinite theorems"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem appears in [Er79d]. It asks whether all integers ≥ 2 can be expressed as ratios of products of consecutive integers.\n\nThe problem relates to classical questions about factorials, binomial coefficients, and the arithmetic structure of products. Products of k consecutive integers equal k! * C(n+k, k).\n\nRelated to Problem 677. A follow-up question asks about the structure of integers representable with fixed n and k.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nCan every integer N ≥ 2 be written as\n$$N = \\frac{\\prod_{1 \\le i \\le k}(m+i)}{\\prod_{1 \\le i \\le k}(n+i)}$$\nfor some k ≥ 2 and m ≥ n + k?\n\n**Constraints:**\n- k ≥ 2: at least 2 consecutive integers\n- m ≥ n + k: numerator and denominator ranges don't overlap\n\n**Follow-up:** For fixed n, k, what is the set of representable integers?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Products:** Define consecutiveProduct(n, k) = ∏_{i=1}^k (n+i)\n\n2. **Ratios:** Define ratioExpression as rational quotient\n\n3. **Representability:** IsRepresentable combines k ≥ 2, m ≥ n+k, ratio = N\n\n4. **Conjecture:** ErdosConjecture686 quantifies over all N ≥ 2\n\n5. **Structure:** Connect to factorials, binomials, and monotonicity",
+    "keyInsights": [
+      "**Factorial Connection:** consecutiveProduct(n, k) = (n+k)!/n! = k! * C(n+k, k)",
+      "**Non-overlap:** m ≥ n + k ensures numerator factors all exceed denominator factors",
+      "**k ≥ 2:** Excludes trivial case k = 1 where ratio is just (m+1)/(n+1)",
+      "**Binomial Ratio:** ratioExpression = C(m+k, k) / C(n+k, k)",
+      "**Monotonicity:** For fixed n, k, ratio increases with m"
+    ]
+  },
+  "sections": [
+    {
+      "id": "products",
+      "title": "Consecutive Products",
+      "summary": "consecutiveProduct, consecutiveProduct_eq_factorial, examples",
+      "startLine": 29,
+      "endLine": 48
+    },
+    {
+      "id": "ratios",
+      "title": "Ratio Expression",
+      "summary": "ratioExpression, IsIntegerRatio, integerRatio",
+      "startLine": 50,
+      "endLine": 66
+    },
+    {
+      "id": "representability",
+      "title": "Representation Property",
+      "summary": "IsRepresentable, Representable, ErdosConjecture686",
+      "startLine": 68,
+      "endLine": 84
+    },
+    {
+      "id": "constraints",
+      "title": "Why the Constraints?",
+      "summary": "k ≥ 2, m ≥ n+k, numerator_gt_denominator, ratio_gt_one",
+      "startLine": 86,
+      "endLine": 106
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "N = 2, N = 6, N = 10 analysis",
+      "startLine": 108,
+      "endLine": 131
+    },
+    {
+      "id": "binomial",
+      "title": "Connection to Binomials",
+      "summary": "product_binomial_relation theorem",
+      "startLine": 133,
+      "endLine": 147
+    },
+    {
+      "id": "followup",
+      "title": "Follow-Up Question",
+      "summary": "RepresentableSet, ratio_mono, representable_set_infinite",
+      "startLine": 149,
+      "endLine": 167
+    },
+    {
+      "id": "structure",
+      "title": "Constraints and Structure",
+      "summary": "Divisibility requirements for integer ratios",
+      "startLine": 169,
+      "endLine": 182
+    },
+    {
+      "id": "related",
+      "title": "Related Problem 677",
+      "summary": "RelatedProblem677",
+      "startLine": 184,
+      "endLine": 190
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_686_status, erdos_686_statement, erdos_686_original",
+      "startLine": 192,
+      "endLine": 233
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #686 asks whether every integer N ≥ 2 can be expressed as a ratio of products of k consecutive integers, with the numerator starting at a larger value. The problem connects to factorials, binomial coefficients, and divisibility.",
+    "implications": "A positive answer would show a rich representation theorem for integers via consecutive products. Understanding representable sets for fixed n, k would reveal arithmetic structure.",
+    "openQuestions": [
+      "Can every N ≥ 2 be represented?",
+      "For fixed n, k, what integers are representable?",
+      "Is there a pattern to the minimal k needed for each N?",
+      "What is the structure of counterexamples if any exist?",
+      "How does this relate to Problem 677?"
+    ]
+  }
+}
