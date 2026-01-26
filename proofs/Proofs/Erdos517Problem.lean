@@ -1,4 +1,19 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 5e879a4b-c313-4d93-ada9-41f2dcf2407c
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+The following was proved by Aristotle:
+
+- theorem HasFejerGaps.hasFabryGaps {n : ℕ → ℕ} (h : HasFejerGaps n) : HasFabryGaps n
+-/
+
+/-
   Erdős Problem #517: Lacunary Entire Functions and Value Distribution
 
   **Problem**: Let f(z) = ∑_{k=1}^∞ aₖz^{nₖ} be an entire function with aₖ ≠ 0 for all k.
@@ -24,6 +39,7 @@
 -/
 
 import Mathlib
+
 
 open Set Filter Topology
 
@@ -55,7 +71,36 @@ theorem HasFejerGaps.hasFabryGaps {n : ℕ → ℕ} (h : HasFejerGaps n) : HasFa
   · -- Fejér gaps imply Fabry gaps via a telescoping argument
     -- If ∑1/nₖ < ∞, then 1/nₖ → 0, so nₖ → ∞, and the sum of 1/nₖ over intervals
     -- provides the growth rate needed for nₖ/k → ∞
-    sorry -- This requires careful analysis; see formal-conjectures for full proof
+    -- Since $\sum (n k : ℝ)⁻¹$ converges, it follows that $n k$ grows faster than $k$.
+    have h_growth : Filter.Tendsto (fun k => (n k : ℝ)⁻¹ * k) Filter.atTop (nhds 0) := by
+      -- Since $\sum (n k : ℝ)⁻¹$ converges, it follows that $n k$ grows faster than $k$. Hence, $(n k : ℝ)⁻¹ * k$ tends to $0$.
+      have h_lim : Filter.Tendsto (fun k => (∑ i ∈ Finset.range k, (n i : ℝ)⁻¹) - (∑ i ∈ Finset.range (k / 2), (n i : ℝ)⁻¹)) Filter.atTop (nhds 0) := by
+        simpa using Filter.Tendsto.sub ( h.2.hasSum.tendsto_sum_nat ) ( h.2.hasSum.tendsto_sum_nat.comp ( Filter.tendsto_atTop_atTop.mpr fun x => ⟨ 2 * x, fun k hk => by linarith [ Nat.div_add_mod k 2, Nat.mod_lt k two_pos ] ⟩ ) );
+      have h_bound : ∀ k ≥ 2, (∑ i ∈ Finset.Ico (k / 2) k, (n i : ℝ)⁻¹) ≥ (k / 2) * (n k : ℝ)⁻¹ := by
+        intros k hk
+        have h_bound : ∀ i ∈ Finset.Ico (k / 2) k, (n i : ℝ)⁻¹ ≥ (n k : ℝ)⁻¹ := by
+          field_simp;
+          exact fun i hi => one_div_le_one_div_of_le ( Nat.cast_pos.mpr <| Nat.pos_of_ne_zero <| by linarith [ h.1 <| show i > 0 from Nat.pos_of_ne_zero <| by rintro rfl; norm_num at hi; linarith [ Nat.div_add_mod k 2, Nat.mod_lt k two_pos ] ] ) <| Nat.cast_le.mpr <| h.1.monotone <| by linarith [ Finset.mem_Ico.mp hi ] ;
+        refine' le_trans _ ( Finset.sum_le_sum h_bound ) ; norm_num;
+        exact mul_le_mul_of_nonneg_right ( by rw [ div_le_iff₀ ] <;> norm_cast ; linarith [ Nat.div_mul_le_self k 2, Nat.sub_add_cancel ( show k / 2 ≤ k from Nat.div_le_self _ _ ) ] ) ( by positivity );
+      have h_lim_zero : Filter.Tendsto (fun k => (k / 2) * (n k : ℝ)⁻¹) Filter.atTop (nhds 0) := by
+        refine' squeeze_zero_norm' _ h_lim;
+        filter_upwards [ Filter.eventually_ge_atTop 2 ] with k hk using by rw [ Real.norm_of_nonneg ( by positivity ) ] ; simpa only [ Finset.sum_Ico_eq_sub _ ( Nat.div_le_self _ _ ) ] using h_bound k hk;
+      convert h_lim_zero.const_mul 2 using 2 <;> ring;
+    have h_reciprocal : Filter.Tendsto (fun k => (n k : ℝ)⁻¹ * k) Filter.atTop (nhds 0) → Filter.Tendsto (fun k => (n k : ℝ) / k) Filter.atTop Filter.atTop := by
+      intro h_reciprocal
+      have h_reciprocal : Filter.Tendsto (fun k => (n k : ℝ)⁻¹ * k) Filter.atTop (nhds 0) → Filter.Tendsto (fun k => ((n k : ℝ)⁻¹ * k)⁻¹) Filter.atTop Filter.atTop := by
+        intro h_reciprocal
+        have h_reciprocal : Filter.Tendsto (fun k => ((n k : ℝ)⁻¹ * k)⁻¹) Filter.atTop Filter.atTop := by
+          have h_pos : ∀ᶠ k in Filter.atTop, 0 < (n k : ℝ)⁻¹ * k := by
+            filter_upwards [ Filter.eventually_gt_atTop 0, Filter.eventually_gt_atTop ( n 0 ) ] with k hk₁ hk₂ using mul_pos ( inv_pos.mpr ( Nat.cast_pos.mpr ( by linarith [ h.1 hk₁ ] ) ) ) ( Nat.cast_pos.mpr hk₁ )
+          refine' Filter.Tendsto.inv_tendsto_nhdsGT_zero _;
+          rw [ tendsto_nhdsWithin_iff ] ; aesop;
+        convert h_reciprocal using 1;
+      grind;
+    exact h_reciprocal h_growth
+
+-- This requires careful analysis; see formal-conjectures for full proof
 
 /-
 ## Main Conjecture (OPEN)
@@ -77,6 +122,9 @@ def fabryGapConjecture : Prop :=
     (∀ z, HasSum (fun k => a k * z ^ n k) (f z)) →
     ∀ w : ℂ, {z : ℂ | f z = w}.Infinite
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos517.biernacki_theorem', 'harmonicSorry731341']-/
 /-
 ## Biernacki's Theorem (1928)
 
