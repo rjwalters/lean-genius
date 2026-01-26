@@ -1,0 +1,38 @@
+[
+  {
+    "id": "erdos-469-ann-1",
+    "proofId": "erdos-469",
+    "range": { "startLine": 24, "endLine": 37 },
+    "type": "definition",
+    "title": "Pseudoperfect and Primitive Definitions",
+    "content": "IsPseudoperfect(n) holds when n equals the sum of a subset of its proper divisors. IsPrimitivePseudoperfect(n) additionally requires that no proper divisor of n is pseudoperfect. primitivePseudoperfectSet collects all such numbers.",
+    "significance": "The definition of primitivity via divisor chains is the key structural condition that makes the convergence question nontrivial."
+  },
+  {
+    "id": "erdos-469-ann-2",
+    "proofId": "erdos-469",
+    "range": { "startLine": 42, "endLine": 51 },
+    "type": "result",
+    "title": "Perfect Numbers and 6",
+    "content": "6 is the smallest primitive pseudoperfect number: 6 = 1 + 2 + 3, and none of 1, 2, 3 are pseudoperfect. Every perfect number (where proper divisors sum to n) is pseudoperfect.",
+    "significance": "Perfect numbers provide a natural source of pseudoperfect numbers. The primitivity of 6 illustrates the concept."
+  },
+  {
+    "id": "erdos-469-ann-3",
+    "proofId": "erdos-469",
+    "range": { "startLine": 53, "endLine": 59 },
+    "type": "result",
+    "title": "Infinitude and Closure Properties",
+    "content": "There are infinitely many primitive pseudoperfect numbers. Every multiple of a pseudoperfect number is pseudoperfect, which means primitivity is determined by the 'minimal' elements in the divisibility order.",
+    "significance": "The multiplicative closure ensures that the primitive elements form an antichain in the divisibility order, analogous to primitive abundant numbers."
+  },
+  {
+    "id": "erdos-469-ann-4",
+    "proofId": "erdos-469",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "conjecture",
+    "title": "Convergence of Reciprocal Sum",
+    "content": "Erdős asked whether the sum of 1/n over all primitive pseudoperfect numbers n converges. The formalization asserts convergence via a uniform bound on finite partial sums.",
+    "significance": "Convergence would imply the set is very sparse (sparser than primes). This is a fundamental question about the distribution of these divisor-sum extremal numbers."
+  }
+]
