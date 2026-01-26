@@ -1,0 +1,82 @@
+{
+  "id": "erdos-127",
+  "title": "Erdős Problem #127: Large Bipartite Subgraphs Beyond Edwards' Bound",
+  "slug": "erdos-127",
+  "description": "Let f(m) be the excess beyond Edwards' bound for bipartite subgraphs of m-edge graphs. Is there a sequence mᵢ with f(mᵢ) → ∞? SOLVED: YES (Alon 1996).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/127",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos127Problem.lean",
+    "tags": ["graph-theory", "bipartite-graphs", "extremal-graph-theory"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 127,
+    "erdosUrl": "https://erdosproblems.com/127",
+    "erdosProblemStatus": "proved"
+  },
+  "overview": {
+    "historicalContext": "Edwards (1973) proved that every graph with m edges contains a bipartite subgraph with at least m/2 + (√(8m+1) - 1)/8 edges, and that this is tight for complete graphs. Erdős, Kohayakawa, and Gyárfás asked whether the excess f(m) beyond this bound tends to infinity along some subsequence. Alon (1996) solved this affirmatively.",
+    "problemStatement": "Let f(m) be the maximum value such that every graph with m edges contains a bipartite subgraph with at least m/2 + (√(8m+1) - 1)/8 + f(m) edges. Is there an infinite sequence mᵢ with f(mᵢ) → ∞?",
+    "proofStrategy": "We axiomatize maxBipartiteEdges and excessF, define edwardsBound as the Edwards formula. ErdosProblem127 asks for a subsequence with divergent excess. Alon's lower bound f(n²/2) ≫ √n and upper bound f(m) ≪ m^{1/4} are both axiomatized. Complete graph tightness f(C(n,2)) = 0 is included.",
+    "keyInsights": [
+      "Edwards' bound m/2 + (√(8m+1)-1)/8 is the baseline for bipartite subgraph guarantees",
+      "Complete graphs K_n show tightness: f(C(n,2)) = 0",
+      "Alon proved f(n²/2) ≫ n^{1/2}, answering the conjecture affirmatively",
+      "The upper bound f(m) ≪ m^{1/4} constrains how fast f can grow"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bipartite-size",
+      "title": "Bipartite Subgraph Size",
+      "startLine": 24,
+      "endLine": 34,
+      "summary": "Axiomatizes maxBipartiteEdges and defines the Edwards bound formula."
+    },
+    {
+      "id": "excess-function",
+      "title": "The Excess Function",
+      "startLine": 36,
+      "endLine": 45,
+      "summary": "Axiomatizes excessF and the Edwards bound validity (f(m) ≥ 0)."
+    },
+    {
+      "id": "complete-graph",
+      "title": "Complete Graph Tightness",
+      "startLine": 47,
+      "endLine": 54,
+      "summary": "For complete graphs K_n, the Edwards bound is tight: f(C(n,2)) = 0."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (Solved)",
+      "startLine": 56,
+      "endLine": 73,
+      "summary": "States ErdosProblem127 and Alon's affirmative solution with f(n²/2) ≫ √n."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 75,
+      "endLine": 88,
+      "summary": "Alon's upper bound f(m) ≪ m^{1/4} and the open question of the optimal constant."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 90,
+      "endLine": 102,
+      "summary": "Bounded variation of f and proximity of every m to a complete graph number."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 127 asked whether the excess f(m) beyond Edwards' bipartite subgraph bound diverges along a subsequence. Alon (1996) proved f(n²/2) ≫ √n, resolving the conjecture affirmatively. The upper bound f(m) ≪ m^{1/4} is also established.",
+    "implications": "The result shows Edwards' bound is not universally tight, with systematic improvements possible for non-complete-graph edge counts.",
+    "openQuestions": [
+      "What is the optimal constant C in f(m) ≤ C·m^{1/4}?",
+      "Can the lower bound f(n²/2) ≫ √n be improved?",
+      "What is the exact growth rate of max_m≤M f(m)?"
+    ]
+  }
+}
