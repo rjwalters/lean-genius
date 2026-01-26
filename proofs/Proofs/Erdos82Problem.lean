@@ -321,9 +321,6 @@ axiom random_graph_regular :
 # Part 10: Problem Status and Summary
 -/
 
-/-- The problem is OPEN. -/
-def erdos_82_status : String := "OPEN"
-
 /-- Known bounds summary: c · log(n) ≤ F(n) ≤ C · n^{1/2} · (log n)^{C'}. -/
 theorem erdos_82_bounds_summary :
     (∀ n : ℕ, n ≥ 2 → F n ≥ Nat.log 2 n / 2) ∧
@@ -351,5 +348,8 @@ theorem erdos_82_bounds_summary :
 
 **Source:** Erdős, Fajtlowicz, Staton (1988)
 -/
+
+/-- The problem remains OPEN. -/
+theorem erdos_82_status : True := trivial
 
 end Erdos82

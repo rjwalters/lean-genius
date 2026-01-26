@@ -5,11 +5,10 @@
   "description": "Let F(n) denote the largest integer such that every graph on n vertices contains a regular induced subgraph on at least F(n) vertices. Is it true that F(n)/log(n) → ∞?",
   "meta": {
     "author": "Erdős, Fajtlowicz, Staton",
-    "year": 1988,
     "sourceUrl": "https://erdosproblems.com/82",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos82Problem.lean",
-    "tags": ["graph theory", "Ramsey theory", "regular graphs", "extremal graph theory", "induced subgraphs"],
+    "tags": ["graph-theory", "ramsey-theory", "regular-graphs", "extremal-graph-theory", "induced-subgraphs"],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 82,
@@ -97,7 +96,7 @@
       "title": "Part 10: Problem Status and Summary",
       "startLine": 320,
       "endLine": 355,
-      "summary": "Status declaration, bounds summary theorem combining lower and upper bounds."
+      "summary": "Bounds summary theorem combining lower and upper bounds. erdos_82_status: True (trivial)."
     }
   ],
   "conclusion": {
