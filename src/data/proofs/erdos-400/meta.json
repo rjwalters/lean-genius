@@ -1,0 +1,82 @@
+{
+  "id": "erdos-400",
+  "title": "Erdős Problem #400: Factorial Divisibility and Sum Excess",
+  "slug": "erdos-400",
+  "description": "For k ≥ 2, let g_k(n) = max{(a₁+⋯+aₖ)-n : a₁!⋯aₖ! | n!}. Is Σ g_k(n) ~ cₖ·x·log x? Is g_k(n) concentrated around cₖ·log x? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/400",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos400Problem.lean",
+    "tags": ["number-theory", "factorials", "asymptotics", "combinatorics"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 400,
+    "erdosUrl": "https://erdosproblems.com/400",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980, p. 77) studied g_k(n), the maximum excess of a₁ + ⋯ + aₖ over n subject to a₁!⋯aₖ! | n!. They proved g_k(n) = O(log n) but the precise asymptotics remain unknown.",
+    "problemStatement": "For k ≥ 2, let g_k(n) = max{(a₁+⋯+aₖ) - n : a₁!⋯aₖ! ∣ n!}. (a) Is Σ_{n≤x} g_k(n) ~ cₖ · x · log x? (b) Is g_k(n) = cₖ · log x + o(log x) for almost all n ≤ x?",
+    "proofStrategy": "We define FactorialDivides (the divisibility condition), sumExcess, and gExcess (the maximization). ErdosProblem400a states the average growth conjecture and ErdosProblem400b the concentration conjecture. The upper bound g_k(n) ≪ log n is axiomatized. The k = 2 case is developed with its binomial coefficient connection.",
+    "keyInsights": [
+      "The condition a₁!⋯aₖ! | n! connects to multinomial coefficients",
+      "Erdős–Graham proved g_k(n) = O(log n), giving the right order of magnitude",
+      "The problem asks for precise constants cₖ and concentration phenomena",
+      "For k = 2, the problem reduces to a! · b! | n!, related to binomial coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "id": "factorial-divisibility",
+      "title": "Factorial Divisibility Condition",
+      "startLine": 21,
+      "endLine": 28,
+      "summary": "Defines FactorialDivides: ∏ aᵢ! divides n!."
+    },
+    {
+      "id": "excess-function",
+      "title": "The Excess Function g_k",
+      "startLine": 30,
+      "endLine": 42,
+      "summary": "Defines sumExcess and gExcess (g_k(n)) as the supremum of sum excesses."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Conjectures",
+      "startLine": 44,
+      "endLine": 69,
+      "summary": "States ErdosProblem400a (average growth), ErdosProblem400b (concentration), and the combined ErdosProblem400."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Known Upper Bound",
+      "startLine": 71,
+      "endLine": 78,
+      "summary": "Erdős–Graham upper bound: g_k(n) ≪ log n."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 80,
+      "endLine": 94,
+      "summary": "Non-negativity of g_k(n) and binomial coefficient connection for k = 2."
+    },
+    {
+      "id": "k-equals-2",
+      "title": "The k = 2 Case",
+      "startLine": 96,
+      "endLine": 114,
+      "summary": "Characterization of the excess for k = 2 and the conjectured average growth constant c₂."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 400 asks for precise asymptotics of g_k(n), the maximum sum excess under factorial divisibility. The upper bound O(log n) is known but the exact constants and concentration behavior remain open.",
+    "implications": "Understanding g_k(n) would reveal the combinatorial structure of factorial divisibility, connecting to multinomial coefficients and prime factorizations.",
+    "openQuestions": [
+      "Does the average Σ g_k(n) / (x log x) converge to a constant?",
+      "Is g_k(n) concentrated around its mean for almost all n?",
+      "What is the exact value of c₂ for the k = 2 case?"
+    ]
+  }
+}
