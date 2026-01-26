@@ -1,0 +1,89 @@
+{
+  "id": "erdos-49",
+  "title": "Erdős Problem #49: Sets with Increasing Euler Totient Values",
+  "slug": "erdos-49",
+  "description": "Let A ⊆ {1,…,N} with φ(a₁) < ⋯ < φ(aₜ). The primes form such a set. Tao (2023) proved |A| ≤ (1+o(1))π(N), confirming primes are asymptotically largest.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/49",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos49Problem.lean",
+    "tags": ["number theory", "primes", "euler totient", "analytic number theory"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 49,
+    "erdosUrl": "https://erdosproblems.com/49",
+    "erdosProblemStatus": "proved"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether the primes form the largest subset of {1,…,N} with strictly increasing Euler totient values. Since φ(p) = p-1 for primes, the primes naturally form such a set of size π(N). Tao resolved this in 2023, proving |A| ≤ (1 + O((log log x)⁵/log x))π(x).",
+    "problemStatement": "Let A = {a₁ < ⋯ < aₜ} ⊆ {1,…,N} with φ(a₁) < ⋯ < φ(aₜ). Is |A| ≤ (1 + o(1))π(N)?",
+    "proofStrategy": "The formalization defines increasing totient sets, the maximum size function, and the prime counting function. Tao's theorem is axiomatised: for every ε > 0, the maximum increasing totient set size is at most (1+ε)π(N) for large N.",
+    "keyInsights": [
+      "Primes have φ(p) = p-1, so they form a natural increasing totient set",
+      "The question asks if primes are asymptotically optimal for this property",
+      "Tao (2023) proved |A| ≤ (1 + O((log log x)⁵/log x))π(x)",
+      "The weaker form |A| = o(N) follows since π(N) = o(N) by PNT"
+    ]
+  },
+  "sections": [
+    {
+      "id": "increasing-totient-sets",
+      "title": "Increasing Totient Sets",
+      "startLine": 20,
+      "endLine": 31,
+      "summary": "Definition of sets with strictly increasing Euler totient values and the maximum size function."
+    },
+    {
+      "id": "prime-counting",
+      "title": "Prime Counting Function",
+      "startLine": 33,
+      "endLine": 37,
+      "summary": "The prime counting function π(N)."
+    },
+    {
+      "id": "primes-optimal",
+      "title": "Primes as Increasing Totient Set",
+      "startLine": 39,
+      "endLine": 48,
+      "summary": "Primes form an increasing totient set and maxIncTotientSize(N) ≥ π(N)."
+    },
+    {
+      "id": "tao-theorem",
+      "title": "Tao's Theorem (2023)",
+      "startLine": 50,
+      "endLine": 59,
+      "summary": "Tao proved maxIncTotientSize(N) ≤ (1+ε)π(N) for all ε > 0 and large N."
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Statement",
+      "startLine": 61,
+      "endLine": 68,
+      "summary": "Erdős Problem 49 (solved): the maximum increasing totient set has size asymptotically π(N)."
+    },
+    {
+      "id": "weaker-form",
+      "title": "Weaker Form",
+      "startLine": 70,
+      "endLine": 76,
+      "summary": "The weaker conjecture |A| = o(N), following from Tao's result and the PNT."
+    },
+    {
+      "id": "totient-properties",
+      "title": "Totient Properties",
+      "startLine": 78,
+      "endLine": 85,
+      "summary": "Basic properties: φ(p) = p-1 for primes and φ(n) ≤ n."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 49, solved by Tao (2023), confirming that primes are asymptotically the largest subset of {1,…,N} with strictly increasing Euler totient values.",
+    "implications": "Tao's result settles a classical question about the extremal role of primes among sets ordered by the totient function.",
+    "openQuestions": [
+      "Can the error term O((log log x)⁵/log x) in Tao's bound be improved?",
+      "What is the answer for the divisor sum function σ(n) instead of φ(n)?",
+      "What about weakly increasing totient sequences (φ(aᵢ) ≤ φ(aᵢ₊₁))?"
+    ]
+  }
+}
