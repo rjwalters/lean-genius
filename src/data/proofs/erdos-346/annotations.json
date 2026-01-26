@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-346-complete",
+    "proofId": "erdos-346",
+    "type": "definition",
+    "range": { "startLine": 31, "endLine": 33 },
+    "title": "Complete Set",
+    "content": "IsComplete A means all sufficiently large integers are subset sums of A. This is the fundamental property of the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-346-fragile",
+    "proofId": "erdos-346",
+    "type": "definition",
+    "range": { "startLine": 42, "endLine": 43 },
+    "title": "Fragile Set",
+    "content": "IsFragile A means removing any infinite subset destroys completeness. Together with strong completeness, this creates the delicate balance studied in the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-346-graham",
+    "proofId": "erdos-346",
+    "type": "result",
+    "range": { "startLine": 55, "endLine": 64 },
+    "title": "Graham's Example",
+    "content": "Graham (1964) showed F_n − (−1)^n is strongly complete and fragile. This Fibonacci-perturbed sequence has ratio → φ and motivates the conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-346-threshold",
+    "proofId": "erdos-346",
+    "type": "result",
+    "range": { "startLine": 68, "endLine": 71 },
+    "title": "Golden Ratio Threshold",
+    "content": "If a_{n+1}/a_n > φ for all n, then A is automatically fragile. The golden ratio is the critical growth rate for fragility.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-346-conjecture",
+    "proofId": "erdos-346",
+    "type": "conjecture",
+    "range": { "startLine": 76, "endLine": 84 },
+    "title": "Erdős Problem 346",
+    "content": "If A is lacunary (a_{n+1}/a_n ≥ 1+ε), strongly complete, and fragile, then lim a_{n+1}/a_n = φ = (1+√5)/2.",
+    "significance": "essential"
+  }
+]
