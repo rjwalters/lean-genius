@@ -1,0 +1,56 @@
+[
+  {
+    "id": "hofstadter-f",
+    "proofId": "erdos-422",
+    "range": { "startLine": 28, "endLine": 33 },
+    "type": "definition",
+    "title": "Hofstadter Recursive Sequence",
+    "content": "f(1)=f(2)=1, f(n) = f(n−f(n−1))+f(n−f(n−2)). The recursion is self-referential: the indices at which f is evaluated depend on earlier values of f.",
+    "significance": "high"
+  },
+  {
+    "id": "well-defined",
+    "proofId": "erdos-422",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "conjecture",
+    "title": "Well-Definedness",
+    "content": "Is f(n) well-defined for all n? The recursive indices must stay within range. This is the most fundamental open question.",
+    "significance": "high"
+  },
+  {
+    "id": "missing-integers",
+    "proofId": "erdos-422",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "conjecture",
+    "title": "Missing Integers",
+    "content": "Does f miss infinitely many positive integers? The range of f may have gaps that persist indefinitely.",
+    "significance": "high"
+  },
+  {
+    "id": "surjectivity",
+    "proofId": "erdos-422",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "conjecture",
+    "title": "Surjectivity Question",
+    "content": "Is f surjective onto the positive integers? Equivalently, does every positive integer appear as f(n) for some n?",
+    "significance": "high"
+  },
+  {
+    "id": "initial-values",
+    "proofId": "erdos-422",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "note",
+    "title": "Initial Values",
+    "content": "The sequence begins 1, 1, 2, 3, 3, 4, ... (OEIS A005185). These values are computable, but the long-term behavior is unknown.",
+    "significance": "medium"
+  },
+  {
+    "id": "self-referential",
+    "proofId": "erdos-422",
+    "range": { "startLine": 72, "endLine": 75 },
+    "type": "note",
+    "title": "Self-Referential Difficulty",
+    "content": "The recursion f(n) = f(n−f(n−1))+f(n−f(n−2)) is self-referential: the evaluation points depend on the sequence itself. This makes rigorous analysis extremely challenging.",
+    "significance": "medium"
+  }
+]

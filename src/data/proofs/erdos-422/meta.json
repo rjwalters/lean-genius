@@ -1,0 +1,77 @@
+{
+  "id": "erdos-422",
+  "title": "Erdős Problem #422: Hofstadter-Type Recursive Sequence",
+  "slug": "erdos-422",
+  "description": "f(1)=f(2)=1, f(n) = f(n−f(n−1))+f(n−f(n−2)). Not even known if well-defined for all n. Does f miss infinitely many integers? OEIS A005185. Open.",
+  "meta": {
+    "erdosNumber": 422,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sequences",
+      "recursion",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham (1980): original problem",
+      "Hofstadter: sequence originator",
+      "OEIS A005185",
+      "https://erdosproblems.com/422"
+    ],
+    "leanFile": "Proofs/Erdos422Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 37,
+      "summary": "hofstadterF recursion and well-definedness predicate."
+    },
+    {
+      "id": "main-questions",
+      "title": "Main Questions",
+      "startLine": 39,
+      "endLine": 56,
+      "summary": "Well-definedness, missing integers, surjectivity, growth rate."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "startLine": 58,
+      "endLine": 63,
+      "summary": "f(1)=1, f(2)=1, f(3)=2, f(4)=3, f(5)=3, f(6)=4."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 65,
+      "endLine": 78,
+      "summary": "Hofstadter origin, self-referential difficulty, eventually constant question."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Hofstadter proposed this sequence and communicated it to Erdős, who included it in the Erdős–Graham (1980) monograph. The self-referential recursion makes it one of the most mysterious sequences in combinatorial number theory.",
+    "problemStatement": "Define f(1)=f(2)=1, f(n) = f(n−f(n−1))+f(n−f(n−2)) for n > 2. Is f well-defined for all n? Does it miss infinitely many integers?",
+    "proofStrategy": "We formalize the recursion, the well-definedness condition, and state the main open questions as axioms. Known initial values are recorded.",
+    "keyInsights": [
+      "It is not even known if f(n) is well-defined for all n",
+      "The sequence begins 1, 1, 2, 3, 3, 4, ... (OEIS A005185)",
+      "The recursion is self-referential: indices depend on earlier values",
+      "Whether f misses infinitely many integers is unknown",
+      "Growth rate and eventual constancy are both open"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #422 concerns a Hofstadter-type sequence whose most basic properties — well-definedness, surjectivity, growth — are all unknown. The self-referential recursion resists standard analysis techniques.",
+    "implications": "Understanding this sequence would shed light on self-referential recursive dynamics, a notoriously difficult area at the boundary of number theory and dynamical systems.",
+    "openQuestions": [
+      "Is f(n) well-defined for all n?",
+      "Does f miss infinitely many positive integers?",
+      "Is f eventually surjective or eventually constant?",
+      "What is the growth rate of f?"
+    ]
+  }
+}
