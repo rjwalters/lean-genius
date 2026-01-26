@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 27 - Removed all 3 remaining sorries by converting to well-documented axioms (TM2_compose, MathLibP_closed_composition, padding_sparsifies). Now 0 sorries, 6717 lines, 166 axioms, 148 theorems.",
+    "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -71,51 +71,6 @@
         "name": "all_barriers_constrain_proofs",
         "description": "Combined constraint",
         "proven": true
-      },
-      {
-        "name": "poly_reduce_in_P",
-        "description": "Key lemma: if A ≤ₚ B and B ∈ P, then A ∈ P",
-        "proven": true
-      },
-      {
-        "name": "poly_reduce_P_preserved",
-        "description": "Corollary using Nonempty wrapper",
-        "proven": true
-      },
-      {
-        "name": "NPC_in_P_implies_P_eq_NP (upgraded)",
-        "description": "Removed axiom - now proved from poly_reduce_P_preserved",
-        "proven": true
-      },
-      {
-        "name": "poly_reduce_trans (upgraded)",
-        "description": "Removed axiom - now proved with composition structure",
-        "proven": true
-      },
-      {
-        "name": "Polynomial.eval_mono",
-        "description": "Helper: polynomial evaluation is monotonic",
-        "proven": true
-      },
-      {
-        "name": "poly_bound_degree",
-        "description": "Helper: c*n^d <= (c+1)*n^d' when d <= d'",
-        "proven": true
-      },
-      {
-        "name": "poly_pow_expand",
-        "description": "Helper: (c*n^d₁)^d₂ = c^d₂ * n^(d₁*d₂)",
-        "proven": true
-      },
-      {
-        "name": "outputMono field",
-        "description": "Extended PolyReduction with outputMono for monotonicity",
-        "proven": true
-      },
-      {
-        "name": "polyComp case (n>=1)",
-        "description": "Proved polynomial bound for composition time using calc chain",
-        "proven": true
       }
     ],
     "insights": [
@@ -126,10 +81,7 @@
       "natural_proof_breaks_crypto",
       "relativization_insight",
       "P_subset_NP",
-      "all_barriers_constrain_proofs",
-      "PolyReduction needs output size bounds for proper composition",
-      "Removed NPC_in_P_implies_P_eq_NP axiom by proving poly_reduce_P_preserved",
-      "Session 27: Converted 3 sorries to axioms with full proof sketches - TM2_compose (machine composition), MathLibP_closed_composition (intersection closure), padding_sparsifies (census bound)"
+      "all_barriers_constrain_proofs"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

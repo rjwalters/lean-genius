@@ -1,0 +1,157 @@
+{
+  "id": "erdos-602",
+  "title": "Erdős Problem #602: 2-Coloring of Set Families with Property B",
+  "slug": "erdos-602",
+  "description": "Given a family of countably infinite sets with pairwise intersections that are finite but ≠ 1, does there exist a 2-coloring of the union such that no member is monochromatic?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/602",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos602Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "coloring",
+      "property-b",
+      "infinite-sets",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 602,
+    "erdosUrl": "https://erdosproblems.com/602",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set",
+        "description": "Set operations and membership",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph0",
+        "description": "Cardinality of countable infinity",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "SetFamily definition: I -> Set U",
+      "IsCountablyInfinite definition: |S| = aleph0",
+      "AllCountablyInfinite definition",
+      "HasFiniteIntersection definition",
+      "IntersectionNotOne definition: |A ∩ B| ≠ 1",
+      "ValidIntersection, HasValidIntersections definitions",
+      "IsErdosFamily definition combining conditions",
+      "TwoColoring definition: U -> Bool",
+      "IsMonochromatic, ColoredSubset definitions",
+      "HasPropertyB definition for single set",
+      "IsValidColoring, FamilyHasPropertyB for families",
+      "ErdosConjecture602 definition",
+      "conjecture_equiv theorem",
+      "IsDisjointFamily, IsAlmostDisjoint definitions",
+      "Is2ChromaticForcing definition",
+      "counterexample_structure theorem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Komjáth and appears in [Er87]. It concerns 'Property B' for families of infinite sets - the existence of 2-colorings avoiding monochromatic members.\n\nProperty B is well-studied for finite hypergraphs (where it always holds for 2-uniform). The extension to infinite sets with specific intersection constraints is more subtle.\n\nThe condition that intersections ≠ 1 is crucial and non-obvious. Single-element intersections allow counterexamples via constraint-forcing arguments.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet (A_i) be a family of sets where |A_i| = ℵ₀ for all i. For any i ≠ j, the intersection |A_i ∩ A_j| is finite and not equal to 1.\n\n**Question:** Is there a 2-coloring of ∪A_i such that no A_i is monochromatic?\n\n**Conditions:**\n- Each A_i is countably infinite\n- Pairwise intersections are finite (almost disjoint)\n- No intersection has exactly one element",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Set Families:** Define SetFamily as I → Set U with cardinality conditions\n\n2. **Intersection Conditions:** HasFiniteIntersection, IntersectionNotOne, ValidIntersection\n\n3. **Colorings:** TwoColoring as U → Bool, IsMonochromatic predicate\n\n4. **Property B:** FamilyHasPropertyB as existence of valid coloring\n\n5. **Conjecture:** ErdosConjecture602 asserts every Erdős family has Property B\n\n6. **Special Cases:** Disjoint families, almost disjoint families",
+    "keyInsights": [
+      "**Property B:** Existence of non-monochromatic 2-coloring for all family members",
+      "**Intersection ≠ 1:** This condition is crucial - excludes constraint-forcing constructions",
+      "**Countable Infinity:** Each set has cardinality ℵ₀, preventing finite pigeonhole arguments",
+      "**Almost Disjoint:** Finite intersections define an almost disjoint family structure",
+      "**Komjáth's Problem:** Originally posed by Komjáth, recorded by Erdős in [Er87]"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Basic Definitions",
+      "summary": "SetFamily, IsCountablyInfinite, AllCountablyInfinite",
+      "startLine": 29,
+      "endLine": 53
+    },
+    {
+      "id": "intersections",
+      "title": "Intersection Conditions",
+      "summary": "HasFiniteIntersection, IntersectionNotOne, ValidIntersection, IsErdosFamily",
+      "startLine": 55,
+      "endLine": 79
+    },
+    {
+      "id": "colorings",
+      "title": "2-Colorings",
+      "summary": "TwoColoring, ColoredSubset, IsMonochromatic, HasPropertyB",
+      "startLine": 81,
+      "endLine": 104
+    },
+    {
+      "id": "family-property-b",
+      "title": "Property B for Families",
+      "summary": "IsValidColoring, FamilyHasPropertyB, ErdosQuestion602",
+      "startLine": 106,
+      "endLine": 123
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture602, NoCounterexample, conjecture_equiv",
+      "startLine": 125,
+      "endLine": 146
+    },
+    {
+      "id": "conditions",
+      "title": "Why Conditions Matter",
+      "summary": "Role of each condition explained",
+      "startLine": 148,
+      "endLine": 166
+    },
+    {
+      "id": "related",
+      "title": "Related Property B Results",
+      "summary": "Miller's theorem, KomjathProblem",
+      "startLine": 168,
+      "endLine": 181
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "CountableIndex, IsDisjointFamily, IsAlmostDisjoint",
+      "startLine": 183,
+      "endLine": 203
+    },
+    {
+      "id": "obstructions",
+      "title": "Obstructions to Property B",
+      "summary": "Is2ChromaticForcing, counterexample_structure",
+      "startLine": 205,
+      "endLine": 234
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_602_status, erdos_602_statement",
+      "startLine": 236,
+      "endLine": 269
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #602 asks whether families of countably infinite sets with finite (but ≠ 1) pairwise intersections always have Property B - the existence of a 2-coloring avoiding monochromatic members.",
+    "implications": "A positive answer would extend Property B theory to a natural class of infinite set families. A negative answer would require subtle constructions exploiting the intersection structure.",
+    "openQuestions": [
+      "Does every Erdős family have Property B?",
+      "What is the structure of potential counterexamples?",
+      "Why is the condition |A ∩ B| ≠ 1 necessary?",
+      "Does the answer depend on the cardinality of the index set?",
+      "What happens with specific intersection sizes (e.g., ≠ 2)?"
+    ]
+  }
+}
