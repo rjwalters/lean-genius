@@ -1,0 +1,100 @@
+{
+  "id": "erdos-478",
+  "title": "Erdős Problem #478: Factorial Residues Modulo Primes",
+  "slug": "erdos-478",
+  "description": "Let p be a prime and A_p = { k! mod p : 1 ≤ k < p }. Is it true that |A_p| ~ (1 - 1/e) · p? The factorial residue set is conjectured to cover a density (1 - 1/e) fraction of residues, motivated by the birthday-type heuristic for multiplicative random walks. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 478,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "modular-arithmetic",
+      "factorials",
+      "prime-numbers",
+      "asymptotic-density",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham [ErGr80], p. 96",
+      "Grebennikov–Sagdeev–Semchankau–Vasilevskii (2024)",
+      "Klurman–Munsch (2017)",
+      "Hardy–Subbarao (2002)",
+      "https://erdosproblems.com/478"
+    ],
+    "leanFile": "Proofs/Erdos478Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 29,
+      "endLine": 38,
+      "summary": "Define the factorial residue set A_p and its cardinality, plus the conjectured density 1 - 1/e."
+    },
+    {
+      "id": "wilson-consequences",
+      "title": "Wilson's Theorem Consequences",
+      "startLine": 40,
+      "endLine": 53,
+      "summary": "Wilson's theorem gives (p-1)! ≡ -1 (mod p), implying A_p excludes 0 and has |A_p| ≤ p - 2."
+    },
+    {
+      "id": "ratio-set-identity",
+      "title": "Ratio Set Identity",
+      "startLine": 55,
+      "endLine": 69,
+      "summary": "The ratio set A_p/A_p covers all nonzero residues, yielding the lower bound |A_p| ≥ √p."
+    },
+    {
+      "id": "improved-lower-bound",
+      "title": "Improved Lower Bound (GSSV 2024)",
+      "startLine": 71,
+      "endLine": 76,
+      "summary": "Grebennikov–Sagdeev–Semchankau–Vasilevskii prove |A_p| ≥ (√2 - o(1))√p via the product set."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 78,
+      "endLine": 84,
+      "summary": "Erdős Problem #478: |A_p|/p → (1 - 1/e) as p → ∞ through primes."
+    },
+    {
+      "id": "heuristic-motivation",
+      "title": "Heuristic Motivation",
+      "startLine": 86,
+      "endLine": 100,
+      "summary": "The random model heuristic: factorial residues as a multiplicative random walk on (Z/pZ)*, with birthday-type coverage probability converging to 1 - 1/e."
+    },
+    {
+      "id": "average-results",
+      "title": "Average Results",
+      "startLine": 102,
+      "endLine": 108,
+      "summary": "Klurman–Munsch (2017) show the conjecture holds on average over primes."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in 1980, asking about the distribution of factorial residues modulo primes. The question connects number theory with probabilistic combinatorics through the birthday-problem heuristic.",
+    "problemStatement": "Let p be a prime and A_p = { k! mod p : 1 ≤ k < p }. Is |A_p| ~ (1 - 1/e) · p?",
+    "proofStrategy": "We formalize the factorial residue set using ZMod p, state the asymptotic conjecture, and develop supporting results: Wilson's theorem consequences, the ratio-set lower bound |A_p| ≥ √p, the improved GSSV 2024 bound, and the random-model heuristic.",
+    "keyInsights": [
+      "Consecutive factorial ratios k!/(k-1)! = k cover all nonzero residues, so A_p/A_p = (Z/pZ)*",
+      "The ratio-set identity forces |A_p| ≥ √(p-1) by a counting argument",
+      "GSSV (2024) improved this to |A_p| ≥ (√2 - o(1))√p via product-set estimates",
+      "The birthday-problem heuristic predicts coverage density 1 - (1-1/p)^(p-1) → 1 - 1/e",
+      "Klurman–Munsch confirmed the conjecture holds on average over primes"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #478 remains open. The conjectured asymptotic |A_p| ~ (1 - 1/e)·p is motivated by modeling factorial residues as a multiplicative random walk. The best unconditional lower bound is |A_p| ≥ (√2 - o(1))√p (GSSV 2024), far from the conjectured linear growth.",
+    "implications": "Resolving this conjecture would establish that factorial residues behave like random elements of Z/pZ in terms of coverage, bridging deterministic number theory and probabilistic combinatorics. The enormous gap between √p and linear lower bounds highlights the difficulty.",
+    "openQuestions": [
+      "Can the lower bound be improved beyond √p to any power p^α with α > 1/2?",
+      "Does the random model accurately predict higher moments of the coverage distribution?",
+      "What is the variance of |A_p|/p across primes?"
+    ]
+  }
+}

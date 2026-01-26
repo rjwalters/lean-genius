@@ -1,0 +1,74 @@
+[
+  {
+    "id": "factorial-residue-set",
+    "proofId": "erdos-478",
+    "range": { "startLine": 32, "endLine": 33 },
+    "type": "definition",
+    "title": "Factorial Residue Set",
+    "content": "A_p = { k! mod p : 1 ≤ k < p } formalized as a Finset over ZMod p. We map k ↦ (k+1)! for k in Finset.range (p-1), giving all factorial residues from 1! through (p-1)!.",
+    "significance": "high"
+  },
+  {
+    "id": "wilson-residue",
+    "proofId": "erdos-478",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "theorem",
+    "title": "Wilson's Theorem for Factorial Residues",
+    "content": "Wilson's theorem states (p-1)! ≡ -1 (mod p) for prime p. This means the last element of our factorial sequence is -1, ensuring A_p always contains p-1 as a residue.",
+    "significance": "medium"
+  },
+  {
+    "id": "factorial-nonzero",
+    "proofId": "erdos-478",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "theorem",
+    "title": "Factorial Residues Exclude Zero",
+    "content": "For primes p > 2, no k! with 1 ≤ k < p is divisible by p (since all factors are less than p). Thus 0 ∉ A_p, giving the trivial upper bound |A_p| ≤ p - 1.",
+    "significance": "medium"
+  },
+  {
+    "id": "ratio-set-full",
+    "proofId": "erdos-478",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "theorem",
+    "title": "Ratio Set Covers All Nonzero Residues",
+    "content": "Since (k+1)!/k! = k+1, every nonzero residue r ∈ {1,...,p-1} appears as a ratio of consecutive factorials. Thus A_p/A_p = (Z/pZ)*, which forces |A_p| ≥ √(p-1) by a counting argument.",
+    "significance": "high"
+  },
+  {
+    "id": "sqrt-lower-bound",
+    "proofId": "erdos-478",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "theorem",
+    "title": "Square-Root Lower Bound",
+    "content": "If A/A covers all p-1 nonzero residues and |A| = m, then the number of distinct ratios is at most m², so m² ≥ p-1. This gives the basic lower bound |A_p| ≥ √(p-1).",
+    "significance": "medium"
+  },
+  {
+    "id": "gssv-improved-bound",
+    "proofId": "erdos-478",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "theorem",
+    "title": "GSSV Improved Lower Bound (2024)",
+    "content": "Grebennikov, Sagdeev, Semchankau, and Vasilevskii improved the lower bound to |A_p| ≥ (√2 - o(1))√p by showing |A_p · A_p| = (1 + o(1))p, exploiting the multiplicative structure of factorial residues.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-478",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "conjecture",
+    "title": "Main Conjecture: |A_p| ~ (1 - 1/e) · p",
+    "content": "The central open problem: |A_p|/p → 1 - 1/e ≈ 0.6321 as p → ∞. The gap between the best lower bound (√p scale) and the conjectured truth (linear in p) remains enormous.",
+    "significance": "high"
+  },
+  {
+    "id": "random-model",
+    "proofId": "erdos-478",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "insight",
+    "title": "Birthday-Type Random Model",
+    "content": "If each k! mod p independently hit a uniformly random residue, the expected coverage after p-1 steps would be p·(1 - (1-1/p)^(p-1)) → p·(1 - 1/e). This birthday-problem heuristic motivates the conjecture, though factorial residues are deterministic.",
+    "significance": "medium"
+  }
+]
