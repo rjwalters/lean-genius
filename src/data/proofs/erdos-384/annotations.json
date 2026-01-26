@@ -1,123 +1,112 @@
 [
   {
-    "id": "ann-e384-overview",
+    "id": "erdos-384-header",
     "proofId": "erdos-384",
-    "range": { "startLine": 1, "endLine": 17 },
-    "type": "concept",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 18 },
     "title": "Problem Overview",
-    "content": "**Erdős Problem #384: Prime Divisors of Binomial Coefficients**\n\nIs C(n,k) divisible by a prime p < n/2 for 1 < k < n-1?\n\n**Status:** SOLVED by Ecklund (1969)\n**Exception:** C(7,3) = 35 = 5 × 7 is the only case where all primes are ≥ n/2",
-    "mathContext": "The binomial coefficient C(n,k) = n!/(k!(n-k)!) counts k-subsets of an n-set.",
-    "significance": "critical",
-    "relatedConcepts": ["Binomial coefficients", "Prime divisibility", "Kummer's theorem", "Pascal's triangle"]
+    "content": "Erdős Problem #384: If 1 < k < n−1, is C(n,k) divisible by a prime p < n/2? SOLVED by Ecklund (1969). The only exception is C(7,3) = 35 = 5 × 7.",
+    "mathContext": "C(n,k) = n!/(k!(n−k)!). Question: ∃ p prime, p ∣ C(n,k) ∧ p < n/2. Exception: C(7,3) = 35 = 5 × 7.",
+    "significance": "essential",
+    "relatedConcepts": ["binomial coefficients", "prime divisibility", "Kummer's theorem", "Pascal's triangle"]
   },
   {
-    "id": "ann-e384-hassmallprime",
+    "id": "erdos-384-predicates",
     "proofId": "erdos-384",
-    "range": { "startLine": 55, "endLine": 57 },
     "type": "definition",
-    "title": "Small Prime Divisor Predicate",
-    "content": "**hasSmallPrimeDivisor n bound:** A number n has a prime divisor p with p < bound.\n\n∃ p, p.Prime ∧ p ∣ n ∧ p < bound\n\nThis formalizes the key property we're proving about binomial coefficients.",
-    "significance": "key",
-    "leanSymbol": "hasSmallPrimeDivisor"
+    "range": { "startLine": 36, "endLine": 57 },
+    "title": "Basic Predicates",
+    "content": "primeDiv(p, n): p is prime and divides n. minPrimeDivisor(n): smallest prime factor via Nat.minFac (proved prime and dividing). hasSmallPrimeDivisor(n, bound): ∃ p prime, p ∣ n ∧ p < bound.",
+    "mathContext": "minPrimeDivisor_prime: proved (minFac_prime). minPrimeDivisor_dvd: proved (minFac_dvd). hasSmallPrimeDivisor n bound ≡ ∃ p, p.Prime ∧ p ∣ n ∧ p < bound.",
+    "significance": "essential",
+    "relatedConcepts": ["Nat.minFac", "prime divisor", "existential quantifier"]
   },
   {
-    "id": "ann-e384-exception",
+    "id": "erdos-384-exception",
     "proofId": "erdos-384",
+    "type": "result",
     "range": { "startLine": 65, "endLine": 89 },
-    "type": "theorem",
-    "title": "The Unique Exception: C(7,3)",
-    "content": "**C(7,3) = 35 = 5 × 7** is the ONLY binomial coefficient with 1 < k < n-1 that has no prime divisor < n/2.\n\nWhy is this special?\n- 35 = 5 × 7\n- n/2 = 7/2 = 3.5\n- Both primes 5 and 7 are ≥ 4\n\nBy symmetry, C(7,4) = 35 is also an exception.",
-    "significance": "critical",
-    "leanSymbol": "choose_7_3_no_small_prime"
+    "title": "The Unique Exception: C(7,3) = 35",
+    "content": "C(7,3) = 35 (native_decide). 35 = 5 × 7 (norm_num). minPrimeDivisor(35) = 5 (native_decide). choose_7_3_no_small_prime: ¬hasSmallPrimeDivisor 35 4 (proved by interval_cases). isException predicate for (7,3) and (7,4).",
+    "mathContext": "choose_7_3: proved. thirty_five_factorization: proved. minPrimeDivisor_35: proved. choose_7_3_no_small_prime: proved (interval_cases + simp_all). isException n k ≡ (n=7 ∧ k=3) ∨ (n=7 ∧ k=4).",
+    "significance": "essential",
+    "relatedConcepts": ["native_decide", "interval_cases", "norm_num"]
   },
   {
-    "id": "ann-e384-ecklund",
+    "id": "erdos-384-ecklund",
     "proofId": "erdos-384",
-    "range": { "startLine": 98, "endLine": 100 },
-    "type": "axiom",
+    "type": "result",
+    "range": { "startLine": 98, "endLine": 109 },
     "title": "Ecklund's Theorem (1969)",
-    "content": "**ecklund_1969:** For 1 < k < n-1, either:\n- C(n,k) has a prime divisor < n/2+1, OR\n- (n,k) ∈ {(7,3), (7,4)}\n\nThis is the main result of the problem, proved by Ecklund in 1969.",
-    "significance": "critical",
-    "leanSymbol": "ecklund_1969"
+    "content": "ecklund_1969: For 1 < k < n−1, either C(n,k) has a prime divisor < n/2+1, or (n,k) is the exception. ecklund_no_exception: proved by case analysis from the axiom.",
+    "mathContext": "ecklund_1969: axiom. ecklund_no_exception: proved (cases h). erdos_384_main: proved (= ecklund_1969).",
+    "significance": "essential",
+    "relatedConcepts": ["Ecklund", "binomial coefficients", "small prime divisor"]
   },
   {
-    "id": "ann-e384-strong-conj",
+    "id": "erdos-384-stronger",
     "proofId": "erdos-384",
-    "range": { "startLine": 117, "endLine": 120 },
-    "type": "definition",
-    "title": "Ecklund's Stronger Conjecture",
-    "content": "**ecklundStrongConjecture:** If n > k² then C(n,k) has a prime divisor < n/k.\n\nThis is a significant strengthening of the n/2 bound. Status: PARTIALLY PROVED.",
-    "significance": "key",
-    "leanSymbol": "ecklundStrongConjecture"
+    "type": "conjecture",
+    "range": { "startLine": 117, "endLine": 133 },
+    "title": "Stronger Conjectures (Open)",
+    "content": "ecklundStrongConjecture: if n > k², then C(n,k) has prime < n/k. selfridgeConjecture: if n > 17.125k, then C(n,k) has prime ≤ n/k. partial_bound_known: ∃ c > 0, ∃ prime p ∣ C(n,k) with p ≤ n/k^c.",
+    "mathContext": "ecklundStrongConjecture: ∀ n k, 1<k → k<n−1 → n>k² → hasSmallPrimeDivisor(C(n,k), n/k+1). selfridgeConjecture: threshold 17.125k. partial_bound_known: axiom.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ecklund", "Selfridge", "n/k bound"]
   },
   {
-    "id": "ann-e384-selfridge",
+    "id": "erdos-384-kummer",
     "proofId": "erdos-384",
-    "range": { "startLine": 130, "endLine": 133 },
-    "type": "definition",
-    "title": "Selfridge's Conjecture",
-    "content": "**selfridgeConjecture:** If n > 17.125k then C(n,k) has a prime divisor ≤ n/k.\n\nThe constant 17.125 appears mysteriously. This conjecture is credited to Selfridge in Guy's collection.",
-    "significance": "key",
-    "leanSymbol": "selfridgeConjecture"
+    "type": "context",
+    "range": { "startLine": 141, "endLine": 151 },
+    "title": "Kummer's Theorem Connection",
+    "content": "Kummer's theorem: exponent of p in C(n,k) = carries when adding k and n−k in base p. Consequence: large_prime_not_divisor — if p > n then p ∤ C(n,k).",
+    "mathContext": "kummer_theorem: axiom (placeholder). large_prime_not_divisor: ∀ p > n, ¬(p ∣ C(n,k)) (axiom).",
+    "significance": "supporting",
+    "relatedConcepts": ["Kummer's theorem", "base-p digits", "carries"]
   },
   {
-    "id": "ann-e384-kummer",
+    "id": "erdos-384-edge",
     "proofId": "erdos-384",
-    "range": { "startLine": 141, "endLine": 144 },
-    "type": "axiom",
-    "title": "Kummer's Theorem",
-    "content": "**kummer_theorem:** The exponent of prime p in C(n,k) equals the number of carries when adding k and n-k in base p.\n\nThis is the key tool for understanding prime divisibility of binomials. It explains why large primes rarely divide C(n,k) with high multiplicity.",
-    "significance": "key",
-    "leanSymbol": "kummer_theorem"
-  },
-  {
-    "id": "ann-e384-edge",
-    "proofId": "erdos-384",
+    "type": "result",
     "range": { "startLine": 159, "endLine": 175 },
-    "type": "theorem",
-    "title": "Edge Cases",
-    "content": "**Edge cases k=1 and k=n-1:**\n\n- C(n,1) = n has prime divisor minFac(n)\n- C(n,n-1) = n by symmetry\n\nThese boundary cases are trivial since n itself is the value.",
+    "title": "Edge Cases (k=1, k=n−1)",
+    "content": "choose_n_1: C(n,1) = n (proved by simp). choose_n_1_prime_divisor: C(n,1) has a prime divisor (proved via minFac). choose_n_nminus1: C(n,n−1) = n (proved by choose_symm_diff + simp).",
+    "mathContext": "choose_n_1: proved (Nat.choose_one_right). choose_n_1_prime_divisor: proved (minFac_prime + minFac_dvd). choose_n_nminus1: proved (choose_symm_diff).",
     "significance": "supporting",
-    "leanSymbol": "choose_n_1_prime_divisor"
+    "relatedConcepts": ["boundary cases", "Nat.choose_one_right", "choose_symm_diff"]
   },
   {
-    "id": "ann-e384-small",
+    "id": "erdos-384-small",
     "proofId": "erdos-384",
+    "type": "result",
     "range": { "startLine": 188, "endLine": 213 },
-    "type": "theorem",
     "title": "Small Cases Verification",
-    "content": "**Concrete verification for small n:**\n\n- C(5,2) = 10 = 2 × 5, has prime 2 < 3\n- C(6,2) = 15 = 3 × 5, has prime 3 < 4\n- C(6,3) = 20 = 4 × 5, has prime 2 < 4\n\nAll small cases satisfy the theorem.",
+    "content": "Three concrete examples proved: C(5,2) = 10 has prime 2 < 3; C(6,2) = 15 has prime 3 < 4; C(6,3) = 20 has prime 2 < 4. All use native_decide + norm_num.",
+    "mathContext": "Three examples: hasSmallPrimeDivisor(C(5,2), 3), hasSmallPrimeDivisor(C(6,2), 4), hasSmallPrimeDivisor(C(6,3), 4). All proved.",
     "significance": "supporting",
-    "leanSymbol": "small_cases_verified"
+    "relatedConcepts": ["native_decide", "norm_num", "concrete verification"]
   },
   {
-    "id": "ann-e384-central",
+    "id": "erdos-384-primorial",
     "proofId": "erdos-384",
-    "range": { "startLine": 224, "endLine": 226 },
-    "type": "axiom",
-    "title": "Central Binomial Primes",
-    "content": "**central_binomial_primes:** C(2n,n) always has a prime in (n, 2n].\n\nThis follows from Bertrand's postulate and is related to but distinct from the main problem.",
-    "significance": "key",
-    "leanSymbol": "central_binomial_primes"
-  },
-  {
-    "id": "ann-e384-related",
-    "proofId": "erdos-384",
-    "range": { "startLine": 248, "endLine": 258 },
-    "type": "axiom",
-    "title": "Related Problems",
-    "content": "**Connections to other Erdős problems:**\n\n- Problem #1094: Stronger version with different bounds\n- Problem #1095: Another strengthening\n- Guy's Problems B31, B33: Related questions in 'Unsolved Problems in Number Theory'",
+    "type": "context",
+    "range": { "startLine": 221, "endLine": 226 },
+    "title": "Primorial and Central Binomials",
+    "content": "primorial'(n) = primorial n (product of primes ≤ n). central_binomial_primes: C(2n,n) has a prime in (n, 2n] — related to Bertrand's postulate.",
+    "mathContext": "primorial' n = primorial n. central_binomial_primes: ∃ p prime, p ∣ C(2n,n) ∧ n < p ∧ p ≤ 2n (axiom).",
     "significance": "supporting",
-    "leanSymbol": "problem_1094_relation"
+    "relatedConcepts": ["primorial", "central binomial", "Bertrand's postulate"]
   },
   {
-    "id": "ann-e384-main",
+    "id": "erdos-384-summary",
     "proofId": "erdos-384",
-    "range": { "startLine": 284, "endLine": 290 },
-    "type": "theorem",
-    "title": "Main Result Summary",
-    "content": "**erdos_384_main:** The complete statement of Ecklund's theorem.\n\nFor 1 < k < n-1, C(n,k) has a prime divisor < n/2+1, except for the unique exception C(7,3) = C(7,4) = 35.\n\nStatus: SOLVED",
-    "significance": "critical",
-    "leanSymbol": "erdos_384_main"
+    "type": "result",
+    "range": { "startLine": 284, "endLine": 292 },
+    "title": "Summary: SOLVED",
+    "content": "erdos_384_main: the complete theorem statement, proved by direct application of ecklund_1969 axiom. Status: SOLVED by Ecklund (1969).",
+    "mathContext": "erdos_384_main n k hk_lower hk_upper = ecklund_1969 n k hk_lower hk_upper. Proved.",
+    "significance": "essential",
+    "relatedConcepts": ["known results", "solved problem", "summary theorem"]
   }
 ]
