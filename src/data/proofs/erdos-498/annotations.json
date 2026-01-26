@@ -1,0 +1,56 @@
+[
+  {
+    "id": "signed-sum",
+    "proofId": "erdos-498",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "Signed Sum",
+    "content": "The signed sum Σ εᵢzᵢ for εᵢ ∈ {±1} and complex numbers zᵢ. There are 2ⁿ possible signed sums, and the problem bounds how many can concentrate in a small region.",
+    "significance": "high"
+  },
+  {
+    "id": "kleitman",
+    "proofId": "erdos-498",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "note",
+    "title": "Kleitman's Theorem (1965)",
+    "content": "For complex z₁,...,zₙ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums fall in any unit disc. This is the sharp bound, matching Erdős's real case result.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-real",
+    "proofId": "erdos-498",
+    "range": { "startLine": 55, "endLine": 64 },
+    "type": "note",
+    "title": "Erdős Real Case (1945)",
+    "content": "Erdős proved that for real zᵢ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums fall in any interval of length 2. The proof uses Sperner's theorem on antichains.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-complex-weak",
+    "proofId": "erdos-498",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "note",
+    "title": "Erdős Complex Weak Bound (1961)",
+    "content": "Before Kleitman's result, Erdős showed the count is O(2ⁿ/√n) for complex numbers, which is weaker than C(n,⌊n/2⌋) ~ 2ⁿ/√(πn/2) by a constant factor.",
+    "significance": "medium"
+  },
+  {
+    "id": "hilbert-space",
+    "proofId": "erdos-498",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "note",
+    "title": "Hilbert Space Generalization",
+    "content": "Kleitman (1970) extended the result to arbitrary Hilbert spaces: for vectors vᵢ with ‖vᵢ‖ ≥ 1, at most C(n,⌊n/2⌋) signed sums lie in any unit ball.",
+    "significance": "high"
+  },
+  {
+    "id": "sperner",
+    "proofId": "erdos-498",
+    "range": { "startLine": 84, "endLine": 87 },
+    "type": "note",
+    "title": "Sperner Connection",
+    "content": "The bound C(n,⌊n/2⌋) is the maximum antichain size in the power set of [n] by Sperner's theorem. Kleitman's proof exploits this connection through antichain arguments.",
+    "significance": "medium"
+  }
+]
