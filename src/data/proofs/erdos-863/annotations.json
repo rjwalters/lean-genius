@@ -1,0 +1,62 @@
+[
+  {
+    "id": "b2r-sum",
+    "proofId": "erdos-863",
+    "type": "definition",
+    "title": "B₂[r] Set (Sums)",
+    "content": "A set A where every integer n has at most r representations as a+b with a ≤ b, a,b ∈ A. For r=1, this is a Sidon set.",
+    "significance": "critical",
+    "range": {
+      "startLine": 28,
+      "endLine": 31
+    }
+  },
+  {
+    "id": "b2r-diff",
+    "proofId": "erdos-863",
+    "type": "definition",
+    "title": "Difference B₂[r] Set",
+    "content": "A set A where every nonzero integer n has at most r representations as a-b with a,b ∈ A. The asymmetry of subtraction may cause different behavior from sums.",
+    "significance": "critical",
+    "range": {
+      "startLine": 37,
+      "endLine": 40
+    }
+  },
+  {
+    "id": "sidon-equality",
+    "proofId": "erdos-863",
+    "type": "theorem",
+    "title": "Sidon Case: c₁ = c'₁ = 1",
+    "content": "For r = 1, the maximum B₂[1] set in {1,...,N} has size ~√N for both the sum and difference versions. The constants are equal.",
+    "significance": "key",
+    "range": {
+      "startLine": 64,
+      "endLine": 72
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-863",
+    "type": "concept",
+    "title": "The Erdős Conjecture: c'ᵣ < cᵣ",
+    "content": "For r ≥ 2, the difference version should have a strictly smaller constant: difference B₂[r] sets are smaller than sum B₂[r] sets. Open since 1992.",
+    "significance": "critical",
+    "range": {
+      "startLine": 76,
+      "endLine": 86
+    }
+  },
+  {
+    "id": "weak-version",
+    "proofId": "erdos-863",
+    "type": "concept",
+    "title": "Weak Version: cᵣ ≠ c'ᵣ",
+    "content": "Even proving the constants differ (without specifying which is larger) for some r ≥ 2 would be significant progress.",
+    "significance": "key",
+    "range": {
+      "startLine": 89,
+      "endLine": 96
+    }
+  }
+]
