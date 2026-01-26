@@ -1,0 +1,56 @@
+[
+  {
+    "id": "borsuk-number",
+    "proofId": "erdos-505",
+    "range": { "startLine": 42, "endLine": 48 },
+    "type": "definition",
+    "title": "Borsuk Number α(n)",
+    "content": "The minimum number of parts into which any diameter-1 set in ℝⁿ can be divided such that each part has diameter strictly less than 1. Borsuk conjectured α(n) = n + 1.",
+    "significance": "high"
+  },
+  {
+    "id": "dim3",
+    "proofId": "erdos-505",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "theorem",
+    "title": "Eggleston's Theorem (n = 3)",
+    "content": "Eggleston (1955) proved Borsuk's conjecture for n = 3: every diameter-1 set in ℝ³ can be divided into 4 parts of smaller diameter. The case n = 2 was known earlier.",
+    "significance": "high"
+  },
+  {
+    "id": "kahn-kalai",
+    "proofId": "erdos-505",
+    "range": { "startLine": 64, "endLine": 68 },
+    "type": "theorem",
+    "title": "Kahn–Kalai Counterexample (1993)",
+    "content": "Kahn and Kalai disproved Borsuk's conjecture for n ≥ 2014 using a subset of the Boolean cube {0,1}^n. Their construction exploits the Frankl–Wilson theorem on intersecting families to force large partition numbers.",
+    "significance": "high"
+  },
+  {
+    "id": "brouwer-jenrich",
+    "proofId": "erdos-505",
+    "range": { "startLine": 70, "endLine": 73 },
+    "type": "theorem",
+    "title": "Brouwer–Jenrich Improvement (2014)",
+    "content": "Improved the counterexample dimension from n ≥ 2014 to n ≥ 64, the current best threshold. Computer-assisted search found smaller counterexamples.",
+    "significance": "high"
+  },
+  {
+    "id": "lower-bound",
+    "proofId": "erdos-505",
+    "range": { "startLine": 77, "endLine": 80 },
+    "type": "theorem",
+    "title": "Kahn–Kalai Lower Bound",
+    "content": "α(n) ≥ (1.2)^√n for large n, showing the Borsuk number grows at least exponentially in √n. This is far larger than n + 1, demonstrating the conjecture fails spectacularly.",
+    "significance": "high"
+  },
+  {
+    "id": "schramm-upper",
+    "proofId": "erdos-505",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "theorem",
+    "title": "Schramm Upper Bound",
+    "content": "α(n) ≤ (√(3/2) + o(1))^n ≈ 1.225^n. Uses the illumination body technique. Combined with the lower bound, α(n) is known to be between exp(c√n) and exp(Cn).",
+    "significance": "medium"
+  }
+]
