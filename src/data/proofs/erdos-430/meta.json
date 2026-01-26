@@ -1,0 +1,84 @@
+{
+  "id": "erdos-430",
+  "title": "Erdős Problem #430: Composite Numbers in Greedy Large-Factor Sequences",
+  "slug": "erdos-430",
+  "description": "Define a greedy decreasing sequence in [1,n) where each term has all prime factors exceeding n minus the term. Must this sequence contain a composite for large n? Selfridge's computations suggest yes. Open.",
+  "meta": {
+    "erdosNumber": 430,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-factorization",
+      "greedy-algorithms",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham: original problem statement",
+      "Selfridge: computational evidence (unpublished)",
+      "Adenwalla: equivalence with Problem #385",
+      "https://erdosproblems.com/430"
+    ],
+    "leanFile": "Proofs/Erdos430Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 44,
+      "summary": "Admissibility, greedy next element, and the greedy sequence construction."
+    },
+    {
+      "id": "greedy-sequence",
+      "title": "The Greedy Sequence",
+      "startLine": 46,
+      "endLine": 56,
+      "summary": "Sequence definition, termination, and composite detection."
+    },
+    {
+      "id": "example",
+      "title": "Example: n = 8",
+      "startLine": 58,
+      "endLine": 63,
+      "summary": "For n=8: sequence is 7, 5, then terminates. No composite."
+    },
+    {
+      "id": "equivalence",
+      "title": "Connection to Problem #385",
+      "startLine": 65,
+      "endLine": 72,
+      "summary": "Equivalence with existence of composite m < n with large prime factors."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 74,
+      "endLine": 84,
+      "summary": "For large n the sequence must contain a composite. Supported by computation."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and Graham. Selfridge performed preliminary calculations suggesting the conjecture is true, but reported that 'no proof is in sight.' Sarosh Adenwalla later observed that this is equivalent to the first part of Erdős Problem #385.",
+    "problemStatement": "Define a₁ = n−1, and aₖ = max{m ∈ [1,aₖ₋₁) : all prime factors of m exceed n−m}. For sufficiently large n, must this sequence contain a composite number?",
+    "proofStrategy": "We formalize the greedy sequence construction, define admissibility (all prime factors exceed n−m), state the equivalence with Problem #385, and record the main conjecture with the small-n observation that sequences can be all-prime.",
+    "keyInsights": [
+      "Each term m of the sequence satisfies: all prime factors of m exceed n−m",
+      "For small n (e.g., n=8), the sequence can consist entirely of primes",
+      "The conjecture is equivalent to Problem #385: existence of composite m < n with all prime factors > n−m",
+      "Selfridge's computations support the conjecture but no proof exists",
+      "The difficulty is showing that primes alone cannot sustain the greedy process for large n"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #430 asks whether a natural greedy sequence defined by large prime factor constraints must eventually include composite numbers for sufficiently large n. Despite Selfridge's computational evidence, the problem remains open.",
+    "implications": "Resolution would connect greedy number-theoretic constructions to the distribution of primes and smooth numbers, advancing understanding of how prime factorization structure constrains combinatorial processes.",
+    "openQuestions": [
+      "What is the smallest n₀ such that the sequence contains a composite for all n ≥ n₀?",
+      "How long can the greedy sequence be for a given n?",
+      "What is the typical density of composites in the sequence for large n?",
+      "Can sieve methods bound the number of primes that are admissible?"
+    ]
+  }
+}
