@@ -1,0 +1,86 @@
+[
+  {
+    "id": "lemniscate-connected",
+    "proofId": "erdos-115",
+    "type": "definition",
+    "title": "Connected Lemniscate",
+    "content": "The lemniscate L(p) = {z ∈ ℂ : |p(z)| ≤ 1} is the sublevel set of the polynomial. Connectivity of this set is the key hypothesis.",
+    "significance": "critical",
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    }
+  },
+  {
+    "id": "max-deriv-functional",
+    "proofId": "erdos-115",
+    "type": "definition",
+    "title": "Maximum Derivative on Lemniscate",
+    "content": "The functional max_{z ∈ L(p)} |p'(z)| measures the extremal derivative behavior on the lemniscate.",
+    "significance": "critical",
+    "range": {
+      "startLine": 36,
+      "endLine": 37
+    }
+  },
+  {
+    "id": "lower-bound",
+    "proofId": "erdos-115",
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "For connected lemniscates of degree-n polynomials, max|p'| ≥ n. Equality holds for the monomial p(z) = z^n.",
+    "significance": "key",
+    "range": {
+      "startLine": 44,
+      "endLine": 47
+    }
+  },
+  {
+    "id": "pommerenke-bound",
+    "proofId": "erdos-115",
+    "type": "theorem",
+    "title": "Pommerenke's Upper Bound",
+    "content": "Pommerenke proved the intermediate bound max|p'| ≤ (e/2)n² ≈ 1.359n² for connected lemniscates.",
+    "significance": "key",
+    "range": {
+      "startLine": 56,
+      "endLine": 59
+    }
+  },
+  {
+    "id": "chebyshev-extremal",
+    "proofId": "erdos-115",
+    "type": "insight",
+    "title": "Chebyshev Extremal",
+    "content": "Chebyshev polynomials achieve max|p'| ~ n²/2, demonstrating that the (1/2 + o(1))n² bound is sharp.",
+    "significance": "critical",
+    "range": {
+      "startLine": 63,
+      "endLine": 68
+    }
+  },
+  {
+    "id": "eremenko-lempert",
+    "proofId": "erdos-115",
+    "type": "theorem",
+    "title": "Eremenko–Lempert Theorem",
+    "content": "The main result: for connected lemniscates of degree-n polynomials, max|p'| ≤ (1/2 + o(1))n². This resolves Erdős Problem 115.",
+    "significance": "critical",
+    "range": {
+      "startLine": 77,
+      "endLine": 81
+    }
+  },
+  {
+    "id": "sharpness",
+    "proofId": "erdos-115",
+    "type": "theorem",
+    "title": "Sharpness via Chebyshev",
+    "content": "The bound is sharp: for every ε > 0, Chebyshev polynomials of sufficiently large degree achieve max|p'| ≥ (1/2 − ε)n².",
+    "significance": "key",
+    "range": {
+      "startLine": 84,
+      "endLine": 89
+    }
+  }
+]
