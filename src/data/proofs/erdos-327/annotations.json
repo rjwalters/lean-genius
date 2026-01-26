@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-327-property",
+    "proofId": "erdos-327",
+    "type": "definition",
+    "range": { "startLine": 28, "endLine": 29 },
+    "title": "SumNotDvdProd",
+    "content": "SumNotDvdProd A holds when for all distinct a,b ∈ A, a+b does not divide a*b.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-327-conjecture",
+    "proofId": "erdos-327",
+    "type": "conjecture",
+    "range": { "startLine": 43, "endLine": 45 },
+    "title": "Main Conjecture",
+    "content": "ErdosProblem327: maxAvoidSize(N) ≤ (1/2 + ε)·N for all ε > 0.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-327-vandoorn",
+    "proofId": "erdos-327",
+    "type": "result",
+    "range": { "startLine": 51, "endLine": 53 },
+    "title": "Van Doorn's Bound",
+    "content": "If |A| ≥ (25/28)·N, then A contains distinct a,b with a+b | ab.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-327-variant",
+    "proofId": "erdos-327",
+    "type": "conjecture",
+    "range": { "startLine": 59, "endLine": 62 },
+    "title": "Factor-of-2 Variant",
+    "content": "If a+b ∤ 2ab for distinct a,b ∈ A ⊆ {1,...,N}, then |A| = o(N).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-327-unitfraction",
+    "proofId": "erdos-327",
+    "type": "result",
+    "range": { "startLine": 67, "endLine": 68 },
+    "title": "Unit Fraction Equivalence",
+    "content": "a+b | ab iff 1/a + 1/b is a unit fraction 1/c for some positive c.",
+    "significance": "essential"
+  }
+]
