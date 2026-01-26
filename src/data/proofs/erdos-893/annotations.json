@@ -1,0 +1,56 @@
+[
+  {
+    "id": "divisor-function",
+    "proofId": "erdos-893",
+    "range": { "startLine": 24, "endLine": 25 },
+    "type": "definition",
+    "title": "Divisor Function τ",
+    "content": "τ(n) counts the number of positive divisors of n. For Mersenne numbers 2^k − 1, τ = 2 when 2^k − 1 is prime.",
+    "significance": "high"
+  },
+  {
+    "id": "mersenne-sum",
+    "proofId": "erdos-893",
+    "range": { "startLine": 27, "endLine": 30 },
+    "type": "definition",
+    "title": "Mersenne Divisor Sum f(n)",
+    "content": "f(n) = ∑_{k=1}^n τ(2^k − 1) is the cumulative divisor count of the first n Mersenne numbers. This function grows erratically depending on the factorization of each 2^k − 1.",
+    "significance": "high"
+  },
+  {
+    "id": "divergence-conjecture",
+    "proofId": "erdos-893",
+    "range": { "startLine": 38, "endLine": 42 },
+    "type": "conjecture",
+    "title": "Divergence Conjecture",
+    "content": "The main question: does f(2n)/f(n) → ∞? This asks whether doubling the range of summation more than doubles the divisor count, asymptotically without bound.",
+    "significance": "high"
+  },
+  {
+    "id": "kovac-luca",
+    "proofId": "erdos-893",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "note",
+    "title": "Kovač–Luca (2025)",
+    "content": "Proved lim sup f(2n)/f(n) = ∞, ruling out any finite limit. The proof builds on a heuristic by Cambie. The gap to full divergence (lim = ∞) remains.",
+    "significance": "high"
+  },
+  {
+    "id": "no-asymptotic",
+    "proofId": "erdos-893",
+    "range": { "startLine": 61, "endLine": 64 },
+    "type": "note",
+    "title": "No Simple Asymptotic",
+    "content": "Erdős observed that f(n) probably has no simple asymptotic formula because it increases too fast and erratically, driven by the complex factorization structure of Mersenne numbers.",
+    "significance": "medium"
+  },
+  {
+    "id": "mersenne-primes",
+    "proofId": "erdos-893",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "note",
+    "title": "Mersenne Prime Connection",
+    "content": "When 2^k − 1 is prime, τ(2^k − 1) = 2. The distribution of Mersenne primes (still poorly understood) heavily influences the growth rate of f(n).",
+    "significance": "medium"
+  }
+]
