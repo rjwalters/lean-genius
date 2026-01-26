@@ -1,0 +1,43 @@
+{
+  "id": "erdos-741",
+  "title": "Splitting Sumsets with Positive Density",
+  "slug": "erdos-741",
+  "description": "Can A with A+A of positive density be split A = A₁ ⊔ A₂ with both A₁+A₁ and A₂+A₂ positive density? Is there a basis where no split makes both syndetic?",
+  "meta": {
+    "author": "Burr, Erdős",
+    "sourceUrl": "https://erdosproblems.com/741",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos741Problem.lean",
+    "tags": ["additive-combinatorics", "density", "sumsets", "basis"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 741,
+    "erdosUrl": "https://erdosproblems.com/741",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Burr and Erdős posed this two-part problem about splitting sumsets. Part 1 asks about density preservation under partition. Part 2 asks for a basis where no partition preserves syndetic gaps. Erdős believed he could construct such a basis but 'could never quite finish the proof.' Reference: [Er94b].",
+    "problemStatement": "Part 1: If A+A has positive density, can A = A₁ ⊔ A₂ with both A₁+A₁, A₂+A₂ positive density? Part 2: Is there a basis of order 2 where no split makes both sumsets syndetic?",
+    "proofStrategy": "We define upperDensity via limsup of ncard ratios, sumset as the explicit set of sums, IsBasisOrder2 and IsSyndetic. Both conjectures are stated as Prop definitions. Basic structural properties (commutativity, monotonicity) are proved.",
+    "keyInsights": [
+      "Part 1 asks whether positive density of A+A is 'splittable' — a partition property",
+      "Part 2 is the opposite: existence of a non-splittable basis",
+      "Syndetic (bounded gaps) is a stronger property than positive density",
+      "The problem connects additive bases to partition regularity"
+    ]
+  },
+  "sections": [
+    { "id": "definitions", "title": "Density and Sumset Definitions", "startLine": 25, "endLine": 47, "summary": "Defines upperDensity, HasPosDensity, sumset, IsBasisOrder2, and IsSyndetic." },
+    { "id": "conjectures", "title": "Main Conjectures", "startLine": 49, "endLine": 63, "summary": "ErdosProblem741_density (density splitting) and ErdosProblem741_basis (non-splittable basis)." },
+    { "id": "basic", "title": "Basic Properties", "startLine": 65, "endLine": 96, "summary": "Proves sumset commutativity, monotonicity, empty sumset, trivial partition. States density axioms." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures both parts of Erdős Problem 741 on splitting sumsets, with definitions of density, sumsets, bases, and syndeticity. 0 sorries.",
+    "implications": "Resolution would clarify the relationship between additive structure, density, and partition regularity in combinatorial number theory.",
+    "openQuestions": [
+      "Can positive density of A+A always be preserved under partition?",
+      "Does a non-splittable basis of order 2 exist?",
+      "What is the weakest structural condition that prevents density splitting?"
+    ]
+  }
+}
