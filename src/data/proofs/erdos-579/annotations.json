@@ -1,0 +1,62 @@
+[
+  {
+    "id": "k222-def",
+    "proofId": "erdos-579",
+    "type": "definition",
+    "title": "K₂,₂,₂ Containment",
+    "content": "A graph contains K₂,₂,₂ if there exist three disjoint pairs of vertices with all 12 cross-edges present. K₂,₂,₂ is the octahedron graph.",
+    "significance": "critical",
+    "range": {
+      "startLine": 26,
+      "endLine": 37
+    }
+  },
+  {
+    "id": "independence-number",
+    "proofId": "erdos-579",
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "The maximum size of a set of pairwise non-adjacent vertices. The conjecture asserts this is linear in n for K₂,₂,₂-free dense graphs.",
+    "significance": "critical",
+    "range": {
+      "startLine": 55,
+      "endLine": 59
+    }
+  },
+  {
+    "id": "ehss-result",
+    "proofId": "erdos-579",
+    "type": "theorem",
+    "title": "EHSS Result (δ > 1/8)",
+    "content": "For edge density δ > 1/8, Erdős–Hajnal–Sós–Szemerédi proved that K₂,₂,₂-free graphs have independent sets of size c·n. The threshold 1/8 is the Turán density of K₂,₂,₂.",
+    "significance": "critical",
+    "range": {
+      "startLine": 63,
+      "endLine": 71
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-579",
+    "type": "concept",
+    "title": "The General Conjecture",
+    "content": "For every δ > 0 (not just δ > 1/8), K₂,₂,₂-free graphs with ≥ δn² edges should have independent sets of size ≫_δ n. This extends the EHSS result below the Turán threshold.",
+    "significance": "critical",
+    "range": {
+      "startLine": 75,
+      "endLine": 83
+    }
+  },
+  {
+    "id": "turan-connection",
+    "proofId": "erdos-579",
+    "type": "insight",
+    "title": "Turán Density Connection",
+    "content": "The Turán number ex(n; K₂,₂,₂) = (1/8+o(1))n². For δ > 1/8, K₂,₂,₂-free graphs are 'super-Turán dense', making the EHSS proof possible. Below 1/8, new ideas are needed.",
+    "significance": "key",
+    "range": {
+      "startLine": 87,
+      "endLine": 95
+    }
+  }
+]
