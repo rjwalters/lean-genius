@@ -1,0 +1,45 @@
+{
+  "id": "erdos-1073",
+  "title": "Composites Dividing Factorial Plus One",
+  "slug": "erdos-1073",
+  "description": "Let A(x) count composites u < x with u | n!+1 for some n. Is A(x) ≤ x^{o(1)}? Wilson's theorem covers primes. Known composites: 25, 121, 169, 437, ...",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1073",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos1073Problem.lean",
+    "tags": ["number-theory", "factorial", "composites", "divisibility", "wilson-theorem"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 1073,
+    "erdosUrl": "https://erdosproblems.com/1073",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Hardy, and Subbarao asked how many composite numbers divide n!+1 for some n. By Wilson's theorem, every prime p divides (p-1)!+1. The known composite sequence starts 25, 121, 169, 437, ... (OEIS A256519). The conjecture is that A(x) grows subpolynomially.",
+    "problemStatement": "Is A(x) ≤ x^{o(1)}, where A(x) counts composites u < x with u | n!+1 for some n?",
+    "proofStrategy": "We define DividesFactorialPlusOne for the divisibility condition, compositeFactorialSet and factorialCompositeCount for the counting function. The main conjecture is stated as subpolynomial growth. Wilson's theorem and known composites are included.",
+    "keyInsights": [
+      "Wilson's theorem guarantees every prime divides some factorial plus one",
+      "The composite case is rare: 25 = 4!+1, 121 divides 10!+1, etc.",
+      "The question is whether the count of such composites is subpolynomial",
+      "Connected to OEIS A256519"
+    ]
+  },
+  "sections": [
+    { "id": "divisibility", "title": "Factorial Divisibility", "startLine": 21, "endLine": 33, "summary": "Defines DividesFactorialPlusOne, compositeFactorialSet, and factorialCompositeCount." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 35, "endLine": 42, "summary": "States ErdosProblem1073: A(x) ≤ x^ε for every ε > 0 and large x." },
+    { "id": "wilson", "title": "Wilson's Theorem Connection", "startLine": 44, "endLine": 52, "summary": "Wilson's theorem and its consequence for primes." },
+    { "id": "composites", "title": "Known Composites", "startLine": 54, "endLine": 64, "summary": "Proves 25 | 4!+1. States 121, 169 as axioms." },
+    { "id": "basic", "title": "Basic Properties", "startLine": 66, "endLine": 80, "summary": "Proves 1 divides all n!+1, divisibility transitivity, and states monotonicity." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 1073 on composites dividing factorial plus one, Wilson's theorem connection, known examples, and the subpolynomial growth conjecture. 0 sorries.",
+    "implications": "Resolution would quantify how rare the Wilson-like property is among composites.",
+    "openQuestions": [
+      "Is A(x) ≤ x^{o(1)}?",
+      "Are there infinitely many such composites?",
+      "What is the asymptotic density of such composites?"
+    ]
+  }
+}
