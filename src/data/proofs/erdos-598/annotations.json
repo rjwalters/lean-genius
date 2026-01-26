@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-598-kappa",
+    "proofId": "erdos-598",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 30 },
+    "title": "The Cardinal κ",
+    "content": "kappa = (2^ℵ₀)⁺ is the successor of the continuum. It serves as both the number of colors and the threshold subset size.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-598-completeness",
+    "proofId": "erdos-598",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 53 },
+    "title": "Chromatic Completeness",
+    "content": "ChromaticCompleteness requires that every subset X with |X| = κ contains countable subsets of every color. This is the key structural property.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-598-conjecture",
+    "proofId": "erdos-598",
+    "type": "conjecture",
+    "range": { "startLine": 59, "endLine": 66 },
+    "title": "Erdős Problem 598",
+    "content": "For every infinite α with |α| ≥ κ, does there exist a κ-coloring of countable subsets with chromatic completeness?",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-598-minimal",
+    "proofId": "erdos-598",
+    "type": "conjecture",
+    "range": { "startLine": 72, "endLine": 76 },
+    "title": "Minimal Case m = κ",
+    "content": "The smallest interesting case: can countable subsets of a κ-sized set be colored with chromatic completeness?",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-598-ch",
+    "proofId": "erdos-598",
+    "type": "result",
+    "range": { "startLine": 78, "endLine": 82 },
+    "title": "Under CH",
+    "content": "Under the continuum hypothesis, κ = ℵ₂. The problem takes a concrete form in terms of the second uncountable cardinal.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-598-monotone",
+    "proofId": "erdos-598",
+    "type": "context",
+    "range": { "startLine": 88, "endLine": 96 },
+    "title": "Monotonicity in m",
+    "content": "If the coloring works for a larger set, it works for smaller ones via restriction. The problem is monotone decreasing in the ground set size.",
+    "significance": "supporting"
+  }
+]
