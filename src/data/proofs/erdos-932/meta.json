@@ -33,70 +33,70 @@
       "title": "Part I: Basic Definitions",
       "startLine": 43,
       "endLine": 63,
-      "description": "The n-th prime via Nat.nth, with axioms for primality and strict monotonicity."
+      "summary": "The n-th prime via Nat.nth, with axioms for primality and strict monotonicity."
     },
     {
       "id": "prime-gap",
       "title": "Part II: Prime Gap",
       "startLine": 65,
       "endLine": 82,
-      "description": "Prime gap g_n = p_{n+1} - p_n, proved positive from strict monotonicity."
+      "summary": "Prime gap g_n = p_{n+1} - p_n, proved positive from strict monotonicity."
     },
     {
       "id": "smooth-numbers",
       "title": "Part III: Smooth Numbers",
       "startLine": 84,
       "endLine": 119,
-      "description": "Maximum prime factor, B-smoothness definition, properties for 1 and prime powers."
+      "summary": "Maximum prime factor, B-smoothness definition, properties for 1 and prime powers."
     },
     {
       "id": "smooth-in-gap",
       "title": "Part IV: Smooth Numbers in Prime Gap",
       "startLine": 121,
       "endLine": 161,
-      "description": "Open interval between consecutive primes, filtering for smooth numbers, and the count function."
+      "summary": "Open interval between consecutive primes, filtering for smooth numbers, and the count function."
     },
     {
       "id": "main-conjecture",
       "title": "Part V: The Main Conjecture (OPEN)",
       "startLine": 163,
       "endLine": 183,
-      "description": "The Erdős conjecture: {r : smoothCount(r) ≥ 2} is infinite."
+      "summary": "The Erdős conjecture: {r : smoothCount(r) ≥ 2} is infinite."
     },
     {
       "id": "density-zero",
       "title": "Part VI: The Density-Zero Result (SOLVED)",
       "startLine": 185,
       "endLine": 218,
-      "description": "Natural density definition and Erdős's result that density of r with smoothCount(r) ≥ 1 is 0."
+      "summary": "Natural density definition and Erdős's result that density of r with smoothCount(r) ≥ 1 is 0."
     },
     {
       "id": "examples",
       "title": "Part VII: Examples and Analysis",
       "startLine": 220,
       "endLine": 243,
-      "description": "Concrete example: r=3 (gap 7→11) has smoothCount = 2 via 8=2³ and 9=3²."
+      "summary": "Concrete example: r=3 (gap 7→11) has smoothCount = 2 via 8=2³ and 9=3²."
     },
     {
       "id": "difficulty",
       "title": "Part VIII: Why This Is Hard",
       "startLine": 245,
       "endLine": 262,
-      "description": "Discussion of the challenge: proving infinitude despite density zero."
+      "summary": "Discussion of the challenge: proving infinitude despite density zero."
     },
     {
       "id": "smooth-distribution",
       "title": "Part IX: Smooth Number Distribution",
       "startLine": 264,
       "endLine": 284,
-      "description": "Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound."
+      "summary": "Counting function Ψ(x,y), Dickman function, and monotonicity in the smoothness bound."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
       "startLine": 286,
       "endLine": 320,
-      "description": "Summary theorem combining density result, example, and problem status."
+      "summary": "Summary theorem combining density result, example, and problem status."
     }
   ],
   "conclusion": {
