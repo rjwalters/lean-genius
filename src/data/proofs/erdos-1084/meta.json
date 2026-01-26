@@ -1,0 +1,85 @@
+{
+  "id": "erdos-1084",
+  "title": "Erdős Problem #1084: Unit Distances Among Separated Points",
+  "slug": "erdos-1084",
+  "description": "Let f_d(n) be the maximum number of unit-distance pairs among n points in ℝ^d with all pairwise distances ≥ 1. For d=2, Harborth gave the exact formula. For d=3, Erdős conjectured f_3(n) = 6n - Θ(n^{2/3}). Status: OPEN (d ≥ 3).",
+  "meta": {
+    "erdosNumber": 1084,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "unit-distances",
+      "combinatorial-geometry",
+      "packing",
+      "open"
+    ],
+    "references": [
+      "Erdős (1946, 1975)",
+      "Harborth (1974): exact 2D formula",
+      "Bezdek–Reid (2013): 3D upper bound",
+      "Bezdek–Khan (2018)",
+      "https://erdosproblems.com/1084"
+    ],
+    "leanFile": "Proofs/Erdos1084Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 44,
+      "summary": "Define SeparatedConfig (n points with pairwise distances ≥ 1), unitDistPairs, and the maximum f_d(n)."
+    },
+    {
+      "id": "one-dimensional",
+      "title": "One-Dimensional Case",
+      "startLine": 46,
+      "endLine": 50,
+      "summary": "f_1(n) = n - 1: consecutive unit intervals on the line."
+    },
+    {
+      "id": "two-dimensional",
+      "title": "Two-Dimensional Case",
+      "startLine": 52,
+      "endLine": 76,
+      "summary": "Harborth's exact formula f_2(n) = ⌊3n - √(12n-3)⌋, Erdős's bound f_2(n) < 3n - c√n, and triangular lattice optimality."
+    },
+    {
+      "id": "three-dimensional",
+      "title": "Three-Dimensional Case",
+      "startLine": 78,
+      "endLine": 101,
+      "summary": "f_3(n) ~ 6n with n^{2/3} correction. Bezdek–Reid upper bound. Erdős's conjecture: f_3(n) = 6n - Θ(n^{2/3})."
+    },
+    {
+      "id": "general-dimension",
+      "title": "General Dimension",
+      "startLine": 103,
+      "endLine": 116,
+      "summary": "General bounds: (d-o(1))n ≤ f_d(n) ≤ 2^{O(d)}·n from lattice packings and kissing numbers."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős introduced this problem in 1946, asking how many unit-distance pairs can occur among separated points. Harborth solved the 2D case exactly in 1974. The 3D case remains open with the conjectured n^{2/3} correction term.",
+    "problemStatement": "Estimate f_d(n), the maximum number of unit-distance pairs among n points in ℝ^d with pairwise distances ≥ 1.",
+    "proofStrategy": "We formalize separated configurations and unit-distance pair counting, state exact results for d=1,2, and develop the conjectured asymptotics for d=3 and general d using kissing number bounds.",
+    "keyInsights": [
+      "The kissing number (max unit neighbors) controls the leading coefficient: 2 for d=1, 6 for d=2, 12 for d=3",
+      "Harborth's exact formula f_2(n) = ⌊3n - √(12n-3)⌋ uses triangular lattice geometry",
+      "The correction term n^{2/3} in d=3 reflects the surface-to-volume ratio of optimal packings",
+      "General dimension: f_d(n) grows linearly in n with coefficient between d and 2^{O(d)}",
+      "Bezdek–Reid (2013) proved f_3(n) < 6n - 0.926·n^{2/3}, the best 3D upper bound"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1084 is fully resolved in dimensions 1 and 2 but remains open for d ≥ 3. The conjectured asymptotics f_3(n) = 6n - Θ(n^{2/3}) captures the packing geometry of unit-distance graphs in 3-space.",
+    "implications": "Understanding f_d(n) precisely would reveal the fine structure of sphere packings and connect discrete geometry to analytic number theory through lattice point counting.",
+    "openQuestions": [
+      "What is the exact constant in the n^{2/3} correction for d=3?",
+      "Is there an exact formula for f_3(n) analogous to Harborth's 2D result?",
+      "What is the correct order of the kissing number in high dimensions?"
+    ]
+  }
+}
