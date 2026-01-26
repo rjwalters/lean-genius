@@ -1,0 +1,157 @@
+{
+  "id": "erdos-68",
+  "title": "Erdős Problem #68: Irrationality of Factorial Sum",
+  "slug": "erdos-68",
+  "description": "Is the sum Σ_{n≥2} 1/(n!-1) irrational? Erdős conjectured more broadly that Σ 1/(n!+t) is transcendental for every integer t.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/68",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos68Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "transcendence",
+      "factorial",
+      "infinite-series",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 4,
+    "erdosNumber": 68,
+    "erdosUrl": "https://erdosproblems.com/68",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrationality predicate",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Transcendental",
+        "description": "Transcendence predicate",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "factorialSum definition: Σ 1/(n!-1)",
+      "summand definition: individual terms",
+      "summand_pos theorem: positivity of terms",
+      "factorialSum_summable axiom: convergence",
+      "weisenberg_identity axiom: double sum reformulation",
+      "ErdosConjecture68 definition: main irrationality conjecture",
+      "generalizedFactorialSum definition: Σ 1/(n!+t)",
+      "erdosTranscendenceConjecture definition: broader conjecture",
+      "problem_68_is_special_case theorem: t=-1 case",
+      "first_term through fourth_term: explicit calculations",
+      "eRelatedSum definition: connection to e",
+      "transcendence_implies_68 theorem: hierarchy"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #68 asks whether Σ_{n≥2} 1/(n!-1) is irrational. The problem appears in Erdős's papers from 1968, 1988, 1990, and 1997.\n\nDesmond Weisenberg observed that the sum can be rewritten as a double sum: Σ 1/(n!-1) = Σ_n Σ_k 1/(n!)^k, using the geometric series 1/(x-1) = Σ x^{-k}.\n\nErdős actually conjectured something stronger: that Σ 1/(n!+t) is transcendental for every integer t. The t=-1 case is this problem.\n\nThe decimal expansion is OEIS sequence A331373: 1.2517525711...",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs the sum\n$$\\sum_{n=2}^{\\infty} \\frac{1}{n!-1}$$\nirrational?\n\n**Weisenberg's Observation:**\n$$\\sum_{n=2}^{\\infty} \\frac{1}{n!-1} = \\sum_{n=2}^{\\infty} \\sum_{k=1}^{\\infty} \\frac{1}{(n!)^k}$$\n\n**Erdős's Broader Conjecture:**\nΣ 1/(n!+t) is transcendental for every integer t.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Sum Definition:** factorialSum using tsum with index shift\n\n2. **Convergence:** summand_pos, factorialSum_summable\n\n3. **Weisenberg Identity:** Double sum reformulation\n\n4. **Main Conjecture:** ErdosConjecture68 as Irrational factorialSum\n\n5. **Generalization:** generalizedFactorialSum for Erdős's broader conjecture\n\n6. **Explicit Values:** Compute first few terms (1, 1/5, 1/23, 1/119)\n\n7. **Context:** Connection to e and transcendence theory",
+    "keyInsights": [
+      "**Weisenberg Identity:** 1/(n!-1) = Σ_k (1/n!)^k using geometric series",
+      "**OEIS A331373:** The sum is approximately 1.2517525711...",
+      "**Connection to e:** Σ 1/n! = e, so Σ 1/(n!-1) is a perturbation",
+      "**Transcendence Hierarchy:** Erdős actually conjectured transcendence, not just irrationality",
+      "**The -1 Perturbation:** This breaks the nice factorial structure that makes e tractable"
+    ]
+  },
+  "sections": [
+    {
+      "id": "target-sum",
+      "title": "The Target Sum",
+      "summary": "factorialSum, summand, summand_pos",
+      "startLine": 26,
+      "endLine": 50
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence",
+      "summary": "summand_tendsto_zero, factorialSum_summable, factorialSum_pos",
+      "startLine": 52,
+      "endLine": 67
+    },
+    {
+      "id": "weisenberg",
+      "title": "Weisenberg's Identity",
+      "summary": "inv_factorial_minus_one_eq_geom, weisenberg_identity",
+      "startLine": 69,
+      "endLine": 90
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture68, erdos_68",
+      "startLine": 92,
+      "endLine": 106
+    },
+    {
+      "id": "broader-conjecture",
+      "title": "Erdős's Broader Conjecture",
+      "summary": "generalizedFactorialSum, erdosTranscendenceConjecture, problem_68_is_special_case",
+      "startLine": 108,
+      "endLine": 147
+    },
+    {
+      "id": "small-values",
+      "title": "Small Value Computations",
+      "summary": "first_term, second_term, third_term, fourth_term",
+      "startLine": 149,
+      "endLine": 177
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This Is Hard",
+      "summary": "eRelatedSum, perturbation_difference",
+      "startLine": 179,
+      "endLine": 204
+    },
+    {
+      "id": "oeis",
+      "title": "OEIS Connection",
+      "summary": "oeis_a331373",
+      "startLine": 206,
+      "endLine": 213
+    },
+    {
+      "id": "transcendence",
+      "title": "Transcendence Theory",
+      "summary": "transcendence_implies_irrationality, transcendence_implies_68",
+      "startLine": 215,
+      "endLine": 241
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "erdos_68_status, erdos_68_statement, Summary",
+      "startLine": 243,
+      "endLine": 275
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #68 asks whether Σ_{n≥2} 1/(n!-1) is irrational. The sum converges to approximately 1.2517525711... (OEIS A331373). Weisenberg showed it equals Σ_n Σ_k 1/(n!)^k. The problem remains OPEN, part of Erdős's broader conjecture that Σ 1/(n!+t) is transcendental for all integers t.",
+    "implications": "Resolution would advance our understanding of irrationality proofs for perturbed factorial sums. The -1 perturbation breaks the nice structure that makes e = Σ 1/n! tractable.",
+    "openQuestions": [
+      "Is Σ 1/(n!-1) irrational?",
+      "Is Σ 1/(n!-1) transcendental?",
+      "Does Erdős's transcendence conjecture hold for all integer t?",
+      "What techniques could handle perturbed factorial sums?"
+    ]
+  }
+}
