@@ -1,0 +1,75 @@
+{
+  "id": "erdos-193",
+  "title": "Erdős Problem #193: Collinear Points in Lattice Walks",
+  "slug": "erdos-193",
+  "description": "Let S ⊆ ℤ³ be a finite step set and A an infinite S-walk in ℤ³. Must A contain three collinear points? Proved for ℤ² by Gerver–Ramsey; the ℤ³ case remains open.",
+  "meta": {
+    "author": "Gerver–Ramsey (attributed by Erdős)",
+    "sourceUrl": "https://erdosproblems.com/193",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos193Problem.lean",
+    "tags": ["geometry", "combinatorics", "lattice walks", "collinearity"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 193,
+    "erdosUrl": "https://erdosproblems.com/193",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was originally posed by Gerver and Ramsey and recorded by Erdős. It asks whether any infinite walk on a lattice using a fixed finite step set must produce three collinear visited points. Gerver and Ramsey proved the result in ℤ², but the three-dimensional case remains open.",
+    "problemStatement": "Given a finite set S ⊆ ℤ³ and an infinite injective S-walk A = {a₁, a₂, …} with aᵢ₊₁ − aᵢ ∈ S, must A contain three collinear points?",
+    "proofStrategy": "The formalization defines lattice points as Fin d → ℤ, S-walks via step membership, collinearity via integer parallelism of difference vectors, and states both the open 3D conjecture and the known 2D result as a Gerver–Ramsey axiom. Basic collinearity properties are proved.",
+    "keyInsights": [
+      "In ℤ², every infinite S-walk contains three collinear points (Gerver–Ramsey)",
+      "The ℤ³ case cannot be resolved by finite computation alone",
+      "Collinearity is formalized via integer cross-product: a(q−p) = b(r−p) coordinatewise",
+      "The walk must be injective (visit distinct points) for the problem to be non-trivial"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 18,
+      "endLine": 35,
+      "summary": "Definitions of lattice points, walks, step sets, S-walk property, and injectivity for walks in ℤ^d."
+    },
+    {
+      "id": "collinearity",
+      "title": "Collinearity",
+      "startLine": 37,
+      "endLine": 49,
+      "summary": "Collinearity of three lattice points via integer parallelism, and the predicate for a walk containing three collinear points."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 51,
+      "endLine": 57,
+      "summary": "The open conjecture: every infinite injective S-walk in ℤ³ contains three collinear points."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "The Gerver–Ramsey theorem establishing the result in ℤ²."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 67,
+      "endLine": 80,
+      "summary": "Proved collinearity reflexivity (via ring) and derived collinearity of constant triples."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures the open Erdős Problem 193 about collinear points in 3D lattice walks, records the known 2D result by Gerver–Ramsey, and proves basic collinearity properties.",
+    "implications": "Resolution would shed light on the geometric structure of self-avoiding walks on lattices and the unavoidability of linear patterns in discrete geometry.",
+    "openQuestions": [
+      "Does every infinite S-walk in ℤ³ contain three collinear points?",
+      "What is the maximum number of walk steps before three collinear points must appear?",
+      "Does the result extend to higher dimensions ℤ^d for d ≥ 4?"
+    ]
+  }
+}

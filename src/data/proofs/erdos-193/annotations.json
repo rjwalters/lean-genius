@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-193-header",
+    "proofId": "erdos-193",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 12 },
+    "title": "Problem Background",
+    "content": "Erdős Problem 193 asks whether every infinite S-walk in ℤ³ must contain three collinear visited points. Posed by Gerver and Ramsey, proved in ℤ² but open in ℤ³.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-193-latpoint",
+    "proofId": "erdos-193",
+    "type": "definition",
+    "range": { "startLine": 20, "endLine": 27 },
+    "title": "Lattice Points and Walks",
+    "content": "A point in ℤ^d is Fin d → ℤ. A walk is ℕ → LatPoint d. A step set S is a finite subset of ℤ^d.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-193-stepwalk",
+    "proofId": "erdos-193",
+    "type": "definition",
+    "range": { "startLine": 29, "endLine": 35 },
+    "title": "S-Walk and Injectivity",
+    "content": "An S-walk requires every step aᵢ₊₁ − aᵢ to belong to S. Injectivity ensures distinct points are visited.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-193-collinear",
+    "proofId": "erdos-193",
+    "type": "definition",
+    "range": { "startLine": 39, "endLine": 49 },
+    "title": "Collinearity Definition",
+    "content": "Three points p, q, r are collinear if there exist integers a, b (not both zero) with a(qⱼ − pⱼ) = b(rⱼ − pⱼ) for all coordinates j. HasThreeCollinear requires distinct indices with collinear images.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-193-conjecture",
+    "proofId": "erdos-193",
+    "type": "conjecture",
+    "range": { "startLine": 53, "endLine": 57 },
+    "title": "Main Conjecture (ℤ³)",
+    "content": "Every infinite injective S-walk in ℤ³ contains three collinear points.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-193-2d-result",
+    "proofId": "erdos-193",
+    "type": "result",
+    "range": { "startLine": 61, "endLine": 65 },
+    "title": "Gerver–Ramsey (ℤ² case)",
+    "content": "In ℤ², every infinite injective S-walk contains three collinear points. This is the known lower-dimensional result.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-193-collinear-refl",
+    "proofId": "erdos-193",
+    "type": "result",
+    "range": { "startLine": 69, "endLine": 72 },
+    "title": "Collinearity Reflexivity",
+    "content": "Any point is collinear with itself: AreCollinear p q p holds with witnesses a = 1, b = 0, verified by ring.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-193-collinear-const",
+    "proofId": "erdos-193",
+    "type": "result",
+    "range": { "startLine": 78, "endLine": 80 },
+    "title": "Constant Walk Collinearity",
+    "content": "A constant walk (all points equal) trivially has collinear triples, derived from collinear_refl.",
+    "significance": "supporting"
+  }
+]
