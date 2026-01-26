@@ -1,0 +1,82 @@
+{
+  "id": "erdos-50",
+  "title": "Singularity of the Totient Distribution Function",
+  "slug": "erdos-50",
+  "description": "Schoenberg proved the density f(c) = d({n : φ(n)/n < c}) exists for all c. Erdős showed f is purely singular. $250 prize: is it true that f'(x) > 0 for no x?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/50",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos50Problem.lean",
+    "tags": [
+      "number theory",
+      "Euler totient",
+      "distribution functions",
+      "singular functions",
+      "measure theory"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 50,
+    "erdosUrl": "https://erdosproblems.com/50",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Schoenberg proved that the distribution of φ(n)/n has a well-defined density function f(c). Erdős proved f is purely singular — continuous but with derivative zero almost everywhere. The $250 prize asks whether f'(x) > 0 for literally no x, not just almost no x.",
+    "problemStatement": "Is it true that there is no x such that f'(x) exists and is positive, where f(c) is the density of {n : φ(n)/n < c}?",
+    "proofStrategy": "We formalize the totient ratio set, Schoenberg's density function f, its properties (continuity, monotonicity, boundary values), Erdős's pure singularity result, and the main prize conjecture.",
+    "keyInsights": [
+      "φ(n)/n = ∏_{p | n} (1 − 1/p) depends only on the prime factorization",
+      "Schoenberg's theorem: the density f(c) exists for all c ∈ [0,1]",
+      "Erdős proved f is purely singular: f' = 0 a.e.",
+      "The $250 question asks: does f'(x) > 0 for literally no x?",
+      "The distinction is between 'almost everywhere zero' and 'everywhere zero where it exists'"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 46,
+      "summary": "Defines the set {n : φ(n)/n < c}, natural density, and Schoenberg's distribution function f(c)."
+    },
+    {
+      "id": "schoenberg",
+      "title": "Schoenberg's Theorem",
+      "startLine": 48,
+      "endLine": 63,
+      "summary": "The density exists for all c, f is monotone non-decreasing, f(0) = 0, f(1) = 1, and f is continuous."
+    },
+    {
+      "id": "singularity",
+      "title": "Erdős's Pure Singularity",
+      "startLine": 65,
+      "endLine": 72,
+      "summary": "Erdős proved f'(x) = 0 for Lebesgue-almost every x ∈ [0,1]."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture ($250)",
+      "startLine": 74,
+      "endLine": 80,
+      "summary": "The $250 prize question: f'(x) > 0 for no x at all, not just almost no x."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of φ(n)/n",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "The Euler product formula for φ(n)/n, infimum is 0 (along primorials), and φ(n)/n < 1 for n > 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #50 on the singularity of the totient distribution function, including Schoenberg's density theorem, Erdős's pure singularity result, and the $250 prize question.",
+    "implications": "A positive answer would strengthen the purely singular characterization to a pointwise statement, revealing deep structure in the distribution of Euler's totient function.",
+    "openQuestions": [
+      "Does f'(x) > 0 for any x? ($250 prize)",
+      "What is the Hausdorff dimension of the support of df?",
+      "Can the singular measure df be characterized more explicitly?"
+    ]
+  }
+}
