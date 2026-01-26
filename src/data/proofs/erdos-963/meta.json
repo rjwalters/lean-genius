@@ -1,0 +1,81 @@
+{
+  "id": "erdos-963",
+  "title": "Dissociated Subsets",
+  "slug": "erdos-963",
+  "description": "Let f(n) be the maximum k such that every n-element subset A ⊆ ℝ contains a dissociated subset B ⊆ A with |B| ≥ k. Estimate f(n); is f(n) ≥ ⌊log₂ n⌋? Erdős showed f(n) ≥ ⌊log₃ n⌋ via greedy.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/963",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos963Problem.lean",
+    "tags": [
+      "additive combinatorics",
+      "dissociated sets",
+      "subset sums",
+      "number theory"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 963,
+    "erdosUrl": "https://erdosproblems.com/963",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in the context of additive combinatorics. A dissociated set has all 2^k subset sums distinct. Powers of 2 trivially form such a set. The question is how large a dissociated subset is guaranteed in any n-element set of reals.",
+    "problemStatement": "Let f(n) be the maximum k such that every n-element A ⊆ ℝ contains a dissociated subset of size ≥ k. Is f(n) ≥ ⌊log₂ n⌋?",
+    "proofStrategy": "We formalize dissociated subsets, the function f(n), the greedy lower bound ⌊log₃ n⌋, the trivial upper bound, and structural properties including the powers-of-2 example.",
+    "keyInsights": [
+      "A dissociated set of size k has 2^k distinct subset sums",
+      "Powers of 2 form a dissociated set via binary uniqueness",
+      "Greedy algorithm: at step k, at most 3^k − 1 exclusions, giving f(n) ≥ ⌊log₃ n⌋",
+      "The conjecture f(n) ≥ ⌊log₂ n⌋ would be tight up to +1",
+      "Related to Sidon sets and B_h sequences in additive combinatorics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 42,
+      "summary": "Defines dissociated subsets (all subset sums distinct) and f(n), the guaranteed maximum dissociated subset size."
+    },
+    {
+      "id": "counting",
+      "title": "Subset Sum Counting",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "A dissociated set of size k has exactly 2^k distinct subset sums."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 50,
+      "endLine": 56,
+      "summary": "Erdős's conjecture: f(n) ≥ ⌊log₂ n⌋ for all n ≥ 1."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 58,
+      "endLine": 73,
+      "summary": "Greedy lower bound f(n) ≥ ⌊log₃ n⌋ and trivial upper bound f(n) ≤ ⌊log₂ n⌋ + 1."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 75,
+      "endLine": 119,
+      "summary": "Empty and singleton sets are dissociated; powers of 2 form a dissociated set; f is monotone; log base gap."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #963 on dissociated subsets: given any n reals, how large a dissociated subset is guaranteed? The conjecture f(n) ≥ ⌊log₂ n⌋ improves Erdős's greedy bound ⌊log₃ n⌋.",
+    "implications": "A positive answer would tightly characterize dissociated subset sizes, connecting to Sidon sets, B_h sequences, and the combinatorics of subset sums.",
+    "openQuestions": [
+      "Is f(n) ≥ ⌊log₂ n⌋?",
+      "What is the exact value of f(n) for small n?",
+      "Can the greedy bound be improved without reaching the full conjecture?"
+    ]
+  }
+}
