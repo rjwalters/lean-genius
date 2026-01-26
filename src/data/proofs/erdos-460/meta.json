@@ -1,0 +1,89 @@
+{
+  "id": "erdos-460",
+  "title": "Erdős Problem #460: Greedy Coprime Sieve Reciprocals",
+  "slug": "erdos-460",
+  "description": "Let a₀ = 0, a₁ = 1. Define aₖ as the least integer > aₖ₋₁ with gcd(n - aₖ, n - aᵢ) = 1 for all i < k. Does Σ (1/aᵢ) → ∞ as n → ∞? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/460",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos460Problem.lean",
+    "tags": ["number-theory", "sieve-methods", "reciprocal-sums", "coprimality"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 460,
+    "erdosUrl": "https://erdosproblems.com/460",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem about a greedy coprime sieve in 1977 (p.64) and it appears in Erdős–Graham (1980, p.91). Given n, one greedily selects a₀ = 0, a₁ = 1, and each aₖ as the smallest integer exceeding aₖ₋₁ with n - aₖ coprime to all previous n - aᵢ. Eggleton, Erdős, and Selfridge proved aₖ < k^{2+o(1)} and conjectured aₖ ≪ k log k.",
+    "problemStatement": "Let a₀ = 0, a₁ = 1, and aₖ the least integer > aₖ₋₁ with gcd(n - aₖ, n - aᵢ) = 1 for all i < k. Does Σ_{0 < aᵢ < n} 1/aᵢ → ∞ as n → ∞?",
+    "proofStrategy": "We define greedyCoprimeSieve axiomatically, then sieveReciprocalSum as the reciprocal sum. ErdosProblem460 states divergence. Known growth bounds (Eggleton–Erdős–Selfridge) and the least-prime-factor sufficient condition are axiomatized. Restricted sums splitting by small vs large prime divisors are also formalized.",
+    "keyInsights": [
+      "The greedy sieve selects elements whose shifted values n - aₖ are pairwise coprime",
+      "Eggleton–Erdős–Selfridge: aₖ < k^{2+o(1)}, conjectured aₖ ≪ k log k",
+      "A sufficient condition involves the least prime factor filtered sum f(n)",
+      "Erdős asked about divergence of both the small-prime and large-prime restricted sums"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sieve-sequence",
+      "title": "The Greedy Coprime Sieve Sequence",
+      "startLine": 23,
+      "endLine": 45,
+      "summary": "Defines greedyCoprimeSieve and axiomatizes its initial values and greedy selection property."
+    },
+    {
+      "id": "sieve-count",
+      "title": "The Sequence Terminates Before n",
+      "startLine": 47,
+      "endLine": 54,
+      "summary": "Defines sieveCount: the number of sequence terms less than n."
+    },
+    {
+      "id": "reciprocal-sum",
+      "title": "The Reciprocal Sum",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Defines sieveReciprocalSum: Σ 1/aᵢ for 0 < aᵢ < n."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 67,
+      "endLine": 79,
+      "summary": "States ErdosProblem460: the reciprocal sum diverges as n → ∞."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 81,
+      "endLine": 96,
+      "summary": "Axiomatizes aₖ < k^{2+o(1)} (Eggleton–Erdős–Selfridge) and the conjectured aₖ ≪ k log k."
+    },
+    {
+      "id": "least-prime-factor",
+      "title": "Least Prime Factor Connection",
+      "startLine": 98,
+      "endLine": 119,
+      "summary": "Defines leastPrimeFactor, the filtered sum f(n) = Σ 1/a for P⁻(n-a) > a, and the implication for Problem 460."
+    },
+    {
+      "id": "restricted-sums",
+      "title": "Restricted Sums",
+      "startLine": 121,
+      "endLine": 146,
+      "summary": "Defines smallPrimeDivisibleSum and largePrimeSum, and Erdős's question about their individual divergence."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 460 asks whether the sum of reciprocals of a greedy coprime sieve sequence diverges. The sieve selects elements whose shifted values are pairwise coprime. Growth bounds are known but the divergence question remains open.",
+    "implications": "Resolution would connect sieve theory and coprimality structure to reciprocal sum divergence, a fundamental question in multiplicative number theory.",
+    "openQuestions": [
+      "Does Σ (1/aᵢ) → ∞ as n → ∞?",
+      "Is aₖ ≪ k log k (stronger than the known k^{2+o(1)} bound)?",
+      "Do the restricted sums (small-prime and large-prime parts) individually diverge?"
+    ]
+  }
+}

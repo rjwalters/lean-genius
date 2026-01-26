@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-460-sieve-def",
+    "proofId": "erdos-460",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 45 },
+    "title": "Greedy Coprime Sieve",
+    "content": "greedyCoprimeSieve n k gives the k-th element of the greedy sequence starting a₀ = 0, a₁ = 1, where each aₖ is the least integer > aₖ₋₁ with n - aₖ coprime to all previous n - aᵢ.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-460-reciprocal-sum",
+    "proofId": "erdos-460",
+    "type": "definition",
+    "range": { "startLine": 60, "endLine": 65 },
+    "title": "Reciprocal Sum",
+    "content": "sieveReciprocalSum n = Σ 1/aᵢ summing over positive sieve terms less than n. This is the quantity whose divergence is in question.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-460-conjecture",
+    "proofId": "erdos-460",
+    "type": "conjecture",
+    "range": { "startLine": 76, "endLine": 79 },
+    "title": "Erdős Problem 460",
+    "content": "For every M > 0 there exists N₀ such that for all n ≥ N₀, the reciprocal sum exceeds M. The greedy coprime sieve reciprocals diverge.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-460-ees-bound",
+    "proofId": "erdos-460",
+    "type": "result",
+    "range": { "startLine": 87, "endLine": 90 },
+    "title": "Eggleton–Erdős–Selfridge Bound",
+    "content": "The sieve sequence satisfies aₖ < k^{2+o(1)} for large k. This quadratic-type growth is the best known upper bound on the sequence terms.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-460-filtered-sum",
+    "proofId": "erdos-460",
+    "type": "result",
+    "range": { "startLine": 110, "endLine": 119 },
+    "title": "Least Prime Factor Sufficient Condition",
+    "content": "The function f(n) = Σ 1/a over a < n with least prime factor of (n-a) exceeding a provides a sufficient condition: if f(n) → ∞ then Problem 460 holds.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-460-restricted",
+    "proofId": "erdos-460",
+    "type": "context",
+    "range": { "startLine": 125, "endLine": 146 },
+    "title": "Restricted Sum Questions",
+    "content": "Erdős also asked about the divergence of restricted sums: one over indices where n - aⱼ has a small prime divisor (≤ aⱼ), and the complementary sum where all prime factors exceed aⱼ.",
+    "significance": "supporting"
+  }
+]
