@@ -1,0 +1,78 @@
+{
+  "id": "erdos-101",
+  "title": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
+  "slug": "erdos-101",
+  "description": "Given n points in ℝ² with no five collinear, is the number of lines containing exactly four points o(n²)? Grünbaum: ≫ n^{3/2}. Solymosi–Stojaković: n^{2−O(1/√log n)}. Open.",
+  "meta": {
+    "erdosNumber": 101,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "incidence-geometry",
+      "collinearity",
+      "open"
+    ],
+    "references": [
+      "Erdős (1984): original conjecture",
+      "Grünbaum: n^{3/2} four-point lines construction",
+      "Solymosi–Stojaković: n^{2−O(1/√log n)} lower bound",
+      "Szemerédi–Trotter (1983): incidence bound",
+      "https://erdosproblems.com/101"
+    ],
+    "leanFile": "Proofs/Erdos101Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 51,
+      "summary": "PlanarPointSet, collinear, NoFiveCollinear, fourPointLineCount."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 53,
+      "endLine": 59,
+      "summary": "Four-point line count is o(n²) for no-five-collinear sets."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 61,
+      "endLine": 80,
+      "summary": "Grünbaum lower n^{3/2}, Solymosi–Stojaković n^{2−O(1/√log n)}, trivial O(n²)."
+    },
+    {
+      "id": "related",
+      "title": "Related Observations",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "Collinear triples without four-point lines; Szemerédi–Trotter incidence bound."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem across several papers from 1984 to 1997. He originally conjectured the answer is Θ(n^{3/2}), but Solymosi and Stojaković disproved this with nearly quadratic constructions. The o(n²) upper bound remains the central open question.",
+    "problemStatement": "Given n points in ℝ² with no five collinear, prove that the number of lines containing exactly four of the points is o(n²).",
+    "proofStrategy": "We formalize the point-set configuration, the no-five-collinear condition, and the four-point line count. The main conjecture, known lower bounds, and connections to incidence geometry are stated as axioms.",
+    "keyInsights": [
+      "No five collinear is the natural threshold: with five allowed, trivially Ω(n²) four-point lines",
+      "Grünbaum's construction gives ≫ n^{3/2} four-point lines",
+      "Solymosi–Stojaković achieve n^{2−O(1/√log n)}, nearly quadratic",
+      "The Szemerédi–Trotter incidence bound is a key tool in the area",
+      "Related to Problems #102, #588, #669 on collinearity in point sets"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #101 asks whether four-point lines from n points (no five collinear) are o(n²). The Θ(n^{3/2}) conjecture was disproved by Solymosi–Stojaković, but the o(n²) bound remains open.",
+    "implications": "A resolution would advance our understanding of collinearity patterns in discrete geometry and connect to Szemerédi–Trotter-type incidence bounds.",
+    "openQuestions": [
+      "Is the four-point line count o(n²)?",
+      "What is the true maximum order of growth?",
+      "Can the Solymosi–Stojaković construction be improved to Ω(n²/polylog)?",
+      "Does the answer change for higher-dimensional point sets?"
+    ]
+  }
+}
