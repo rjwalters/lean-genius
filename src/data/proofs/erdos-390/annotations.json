@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-390-function",
+    "proofId": "erdos-390",
+    "type": "definition",
+    "range": { "startLine": 25, "endLine": 31 },
+    "title": "The Function f(n)",
+    "content": "factorizationMax n is the minimal largest factor m in any factorization n! = a₁⋯aₖ with n < a₁ < ⋯ < aₖ = m. Axiomatized with positivity for n ≥ 3.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-390-lower",
+    "proofId": "erdos-390",
+    "type": "result",
+    "range": { "startLine": 37, "endLine": 41 },
+    "title": "Lower Bound f(n) ≥ 2n",
+    "content": "If all factors exceed n, the product of k such factors is at least (n+1)⋯(2n) = (2n)!/n!, forcing the largest factor to be at least 2n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-390-egs",
+    "proofId": "erdos-390",
+    "type": "result",
+    "range": { "startLine": 47, "endLine": 54 },
+    "title": "Erdős–Guy–Selfridge Bounds",
+    "content": "f(n) - 2n ≍ n/log n: there exist positive constants c < C such that c·n/log n ≤ f(n) - 2n ≤ C·n/log n for all large n. Proved in 1982.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-390-conjecture",
+    "proofId": "erdos-390",
+    "type": "conjecture",
+    "range": { "startLine": 65, "endLine": 69 },
+    "title": "Erdős Problem 390",
+    "content": "Does lim_{n→∞} (f(n) - 2n)·log(n)/n = c exist for some constant c > 0? The known bounds show the ratio is bounded between positive constants.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-390-existence",
+    "proofId": "erdos-390",
+    "type": "result",
+    "range": { "startLine": 75, "endLine": 87 },
+    "title": "Factorization Existence",
+    "content": "For n ≥ 3, n! can always be written as a product of distinct integers all > n. OEIS A193429 records the values; f(3) = 6.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-390-growth",
+    "proofId": "erdos-390",
+    "type": "context",
+    "range": { "startLine": 93, "endLine": 104 },
+    "title": "Monotonicity and Unboundedness",
+    "content": "f is eventually monotone increasing and f(n) - 2n → ∞, confirming that the excess grows without bound.",
+    "significance": "supporting"
+  }
+]

@@ -1,141 +1,103 @@
-/-
-  Erdős Problem #390: Factorial Factorization with Large Factors
+/-!
+# Erdős Problem #390: Factorial Factorization with Large Factors
 
-  Source: https://erdosproblems.com/390
-  Status: OPEN
+Let f(n) be the minimal m such that n! = a₁ · a₂ · ⋯ · aₖ with
+n < a₁ < a₂ < ⋯ < aₖ = m. Is there a constant c such that
+f(n) - 2n ~ c · n / log n?
 
-  Problem Statement:
-  Let f(n) be the minimal m such that n! = a₁ · a₂ · ... · aₖ
-  with n < a₁ < a₂ < ... < aₖ = m.
+## Status: OPEN
 
-  Known Result (Erdős-Guy-Selfridge 1982):
-    f(n) - 2n ≍ n / log(n)
-
-  Question: Is there a constant c such that
-    f(n) - 2n ~ c · n / log(n)?
-
-  Mathematical Background:
-  The problem asks about expressing n! as a product of distinct integers
-  all strictly greater than n, and finding the minimal maximum factor.
-
-  Key Insight:
-  - For small n (like n = 1, 2), this may be impossible
-  - For large n, n! is large enough to factor into such products
-  - The minimal largest factor is roughly 2n, with a secondary term of n/log(n)
-
-  References:
-  - [EGS82] Erdős, Guy, Selfridge: "Another property of 239 and some related questions"
-    Congr. Numer. (1982), 243-257
-
-  Tags: number-theory, factorials, erdos-problem
+## References
+- Erdős–Graham (1980), Old and New Problems and Results in Combinatorial Number Theory
+- Erdős–Guy–Selfridge (1982), "Another property of 239 and some related questions"
 -/
 
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-namespace Erdos390
-
-/-! ## Part I: The Function f(n)
-
-We axiomatize f(n) as the minimal m such that n! can be written as a product
-of distinct integers all > n, with largest factor = m.
+/-!
+## Section I: The Function f(n)
 -/
 
-/-- f(n) is the minimal largest factor in any valid factorization of n!.
-    A valid factorization writes n! = a₁ · a₂ · ... · aₖ with n < a₁ < ... < aₖ = m.
+/-- f(n) is the minimal largest factor m in any factorization n! = a₁⋯aₖ
+with n < a₁ < ⋯ < aₖ = m. Axiomatized since the constructive definition
+requires complex machinery. -/
+axiom factorizationMax : ℕ → ℕ
 
-    We axiomatize f since the constructive definition requires complex machinery. -/
-axiom f : ℕ → ℕ
+/-- f(n) is well-defined and positive for n ≥ 3. -/
+axiom factorizationMax_pos (n : ℕ) (hn : n ≥ 3) : factorizationMax n > 0
 
-/-- The function f is only meaningful for sufficiently large n. -/
-axiom f_pos (n : ℕ) (hn : n ≥ 3) : f n > 0
-
-/-! ## Part II: Known Bounds
-
-Erdős, Guy, and Selfridge (1982) established:
-  f(n) - 2n ≍ n / log(n)
-
-This means there exist positive constants c₁, c₂ such that:
-  c₁ · n / log(n) ≤ f(n) - 2n ≤ c₂ · n / log(n)  for large n
+/-!
+## Section II: Basic Lower Bound
 -/
 
-/-- Lower bound: f(n) ≥ 2n for n ≥ 1.
+/-- f(n) ≥ 2n for all n ≥ 1. If n! = a₁⋯aₖ with all aᵢ > n, then
+the product of k factors each > n is at least (n+1)⋯(2n), so the
+largest factor must be at least 2n. -/
+axiom factorizationMax_ge_2n (n : ℕ) (hn : n ≥ 1) :
+  factorizationMax n ≥ 2 * n
 
-    Proof idea: If n! = a₁ · ... · aₖ with all aᵢ > n, and aₖ = m is the largest,
-    then the product of factors ≤ m is at most m^k.
-    For the product to equal n!, we need m to be at least 2n. -/
-axiom f_ge_2n (n : ℕ) (hn : 1 ≤ n) : f n ≥ 2 * n
+/-!
+## Section III: Erdős–Guy–Selfridge Bounds
+-/
 
-/-- Upper bound: f(n) ≤ 2n + C · n/log(n) for some constant C.
+/-- Erdős–Guy–Selfridge (1982): f(n) - 2n ≍ n / log n. There exist
+constants C > c > 0 such that c·n/log n ≤ f(n) - 2n ≤ C·n/log n
+for all large n. -/
+axiom factorizationMax_asymptotic :
+  ∃ C c : ℝ, C > 0 ∧ c > 0 ∧
+    ∀ n : ℕ, n ≥ 2 →
+      c * n / Real.log n ≤ (factorizationMax n : ℝ) - 2 * n ∧
+      (factorizationMax n : ℝ) - 2 * n ≤ C * n / Real.log n
 
-    This is proved constructively by Erdős-Guy-Selfridge (1982). -/
-axiom f_le_upper_bound (n : ℕ) (hn : 1 ≤ n) :
-    ∃ C : ℝ, C > 0 ∧ (f n : ℝ) ≤ 2 * n + C * n / Real.log n
+/-!
+## Section IV: The Conjecture
+-/
 
-/-- Lower bound: f(n) ≥ 2n + c · n/log(n) for some constant c.
+/-- **Erdős Problem #390**: Does the limit
+lim_{n→∞} (f(n) - 2n) · log(n) / n exist and equal some constant c > 0?
 
-    This shows the secondary term is necessary. -/
-axiom f_ge_lower_bound (n : ℕ) (hn : 1 ≤ n) :
-    ∃ c : ℝ, c > 0 ∧ (f n : ℝ) ≥ 2 * n + c * n / Real.log n
-
-/-! ## Part III: The Main Conjecture -/
-
-/-- **Erdős Problem #390** (OPEN)
-
-    Is there a constant c such that:
-      lim_{n→∞} (f(n) - 2n) · log(n) / n = c
-
-    The known bounds show this ratio is bounded between positive constants,
-    but whether a specific limit exists is unknown.
-
-    Note: The formulation uses the ratio (f(n) - 2n) · log(n) / n,
-    which should converge to c if the conjecture holds. -/
-def erdos_390 : Prop :=
+The Erdős–Guy–Selfridge bounds show this ratio stays bounded between
+positive constants, but whether a specific limit exists is unknown. -/
+def ErdosProblem390 : Prop :=
   ∃ c : ℝ, c > 0 ∧
-    Filter.Tendsto (fun n : ℕ => ((f n : ℝ) - 2 * n) * Real.log n / n)
-                   Filter.atTop (nhds c)
+    Filter.Tendsto
+      (fun n : ℕ => ((factorizationMax n : ℝ) - 2 * n) * Real.log n / n)
+      Filter.atTop (nhds c)
 
-/-! ## Part IV: Related Observations -/
-
-/-- The asymptotic notation: f(n) - 2n ≍ n / log(n).
-
-    This is equivalent to saying:
-    - f(n) - 2n = O(n / log n)  (upper bound)
-    - f(n) - 2n = Ω(n / log n)  (lower bound)
-
-    The existence of uniform constants C, c follows from the Erdős-Guy-Selfridge
-    analysis. We axiomatize this since deriving uniform bounds from the per-n
-    axioms above requires additional machinery. -/
-axiom f_asymptotic_equiv :
-    ∃ C c : ℝ, C > 0 ∧ c > 0 ∧
-      ∀ n : ℕ, n ≥ 2 →
-        c * n / Real.log n ≤ (f n : ℝ) - 2 * n ∧
-        (f n : ℝ) - 2 * n ≤ C * n / Real.log n
-
-/-! ## Part V: Summary
-
-**Problem Status**: OPEN
-
-**What we know**:
-1. f(n) exists for large n (valid factorizations exist)
-2. f(n) ≥ 2n (trivial lower bound)
-3. f(n) - 2n ≍ n/log(n) (Erdős-Guy-Selfridge 1982)
-
-**What we don't know**:
-- Does the limit lim_{n→∞} (f(n) - 2n) · log(n) / n exist?
-- If so, what is its value?
-
-**Formalization provides**:
-- Axiomatization of f and its basic properties
-- Statement of known bounds
-- Formal statement of the conjecture
+/-!
+## Section V: Related Properties
 -/
 
-#check f_ge_2n
-#check f_le_upper_bound
-#check f_ge_lower_bound
-#check erdos_390
+/-- The factorization exists: for large n, there exists a factorization
+n! = a₁⋯aₖ with n < a₁ < ⋯ < aₖ. -/
+axiom factorization_exists (n : ℕ) (hn : n ≥ 3) :
+  ∃ (k : ℕ) (a : Fin k → ℕ),
+    (∀ i, a i > n) ∧
+    StrictMono a ∧
+    (∏ i, a i) = n.factorial ∧
+    a ⟨k - 1, by omega⟩ = factorizationMax n
 
-end Erdos390
+/-- OEIS A193429 gives the first values of f(n). For example,
+f(3) = 6 since 3! = 6 is the only factorization. -/
+axiom factorizationMax_small_values :
+  factorizationMax 3 = 6
+
+/-!
+## Section VI: Monotonicity and Growth
+-/
+
+/-- f is eventually monotone increasing: for large enough n,
+f(n+1) ≥ f(n). -/
+axiom factorizationMax_eventually_monotone :
+  ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
+    factorizationMax (n + 1) ≥ factorizationMax n
+
+/-- The secondary term n/log n grows to infinity, showing f(n) - 2n → ∞. -/
+axiom factorizationMax_excess_unbounded :
+  Filter.Tendsto
+    (fun n : ℕ => (factorizationMax n : ℝ) - 2 * n)
+    Filter.atTop Filter.atTop
