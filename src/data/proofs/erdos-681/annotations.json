@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-681-lpf",
+    "proofId": "erdos-681",
+    "type": "definition",
+    "range": { "startLine": 22, "endLine": 23 },
+    "title": "Least Prime Factor",
+    "content": "leastPrimeFactor m returns the smallest prime dividing m, via Nat.minFac. Returns 1 for m ≤ 1.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-681-is-lpf",
+    "proofId": "erdos-681",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 28 },
+    "title": "IsLeastPrimeFactor Predicate",
+    "content": "IsLeastPrimeFactor p m holds when p is prime, p divides m, and p is minimal among prime divisors of m.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-681-conjecture",
+    "proofId": "erdos-681",
+    "type": "conjecture",
+    "range": { "startLine": 37, "endLine": 41 },
+    "title": "Erdős Problem 681",
+    "content": "For all sufficiently large n, there exists k > 0 such that n+k is composite and its least prime factor exceeds k². The composite requirement is essential since primes trivially have large LPF.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-681-general",
+    "proofId": "erdos-681",
+    "type": "conjecture",
+    "range": { "startLine": 47, "endLine": 51 },
+    "title": "Generalised Conjecture",
+    "content": "For any fixed d, for all large n, there exists k > 0 with n+k composite and p(n+k) > k^d. The original conjecture is the d=2 case.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-681-sqrt",
+    "proofId": "erdos-681",
+    "type": "result",
+    "range": { "startLine": 67, "endLine": 69 },
+    "title": "LPF Square Root Bound",
+    "content": "The least prime factor of a composite m satisfies p(m) ≤ √m, since m has a prime factor at most its square root.",
+    "significance": "supporting"
+  }
+]
