@@ -1,0 +1,77 @@
+{
+  "id": "erdos-853",
+  "title": "Erdős Problem #853: Smallest Missing Prime Gap",
+  "slug": "erdos-853",
+  "description": "Let r(x) be the smallest even integer not appearing as a prime gap d_n = p_{n+1} - p_n for p_n ≤ x. Is r(x) → ∞? Or even r(x)/log x → ∞? Status: OPEN.",
+  "meta": {
+    "erdosNumber": 853,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "prime-gaps",
+      "analytic-number-theory",
+      "open"
+    ],
+    "references": [
+      "Erdős [Er85c]",
+      "Maynard–Tao (2014): bounded gaps",
+      "OEIS A001223, A390769",
+      "https://erdosproblems.com/853"
+    ],
+    "leanFile": "Proofs/Erdos853Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 55,
+      "summary": "Define nthPrime, primeGap, gapSet, and r(x) — the smallest positive even integer missing from the gap set up to x."
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Main Conjectures",
+      "startLine": 57,
+      "endLine": 67,
+      "summary": "Weak form: r(x) → ∞. Strong form: r(x)/log x → ∞."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 69,
+      "endLine": 84,
+      "summary": "All gaps > 1 are even. Maynard–Tao bounded gaps (d_n ≤ 246 infinitely often). Cramér's conjecture bounds r(x)."
+    },
+    {
+      "id": "monotonicity-growth",
+      "title": "Monotonicity and Growth",
+      "startLine": 86,
+      "endLine": 95,
+      "summary": "r is monotone increasing. Trivial bound r(x) ≤ x. The first gap d_1 = 1 is the only odd gap."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this in 1985, asking whether all even gap sizes eventually appear among prime gaps. The question connects to the distribution of prime gaps, Cramér's model, and the Maynard–Tao breakthrough on bounded gaps.",
+    "problemStatement": "Is r(x) → ∞, where r(x) is the smallest even integer not appearing as a prime gap for primes up to x?",
+    "proofStrategy": "We axiomatize the nth prime and prime gaps, define r(x) as the smallest missing even gap, and state both the weak (r → ∞) and strong (r/log x → ∞) conjectures. Maynard–Tao and Cramér's conjecture provide context.",
+    "keyInsights": [
+      "Only even gaps matter since all prime gaps > 1 are even",
+      "r(x) is monotone: as x grows, more gap sizes appear",
+      "Maynard–Tao guarantees some gap ≤ 246 appears infinitely often",
+      "Cramér's conjecture suggests r(x) ≤ O((log x)²), bounding growth",
+      "The strong form r(x)/log x → ∞ asks for faster-than-logarithmic growth"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #853 remains open in both weak and strong forms. Whether all even gap sizes eventually appear among prime gaps is a fundamental question about prime distribution, tied to the Cramér model and bounded-gap theorems.",
+    "implications": "Proving r(x) → ∞ would confirm that primes realize every possible even gap, strengthening our understanding of prime gap completeness. The strong form would refine quantitative estimates.",
+    "openQuestions": [
+      "Is there a specific even gap that never occurs (i.e., does r(x) stabilize)?",
+      "What is the growth rate of r(x)? Is it closer to log x or (log x)²?",
+      "Does the Hardy–Littlewood conjecture on prime pairs imply r(x) → ∞?"
+    ]
+  }
+}

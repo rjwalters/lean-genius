@@ -1,0 +1,74 @@
+[
+  {
+    "id": "prime-gap-def",
+    "proofId": "erdos-853",
+    "range": { "startLine": 35, "endLine": 35 },
+    "type": "definition",
+    "title": "Prime Gap d_n",
+    "content": "d_n = p_{n+1} - p_n, the difference between consecutive primes. For n ≥ 2, d_n is always even. The sequence starts: 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, ...",
+    "significance": "high"
+  },
+  {
+    "id": "gap-set-def",
+    "proofId": "erdos-853",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Gap Set",
+    "content": "The set of all prime gap values d_n for primes p_n ≤ x. As x grows, this set accumulates more even integers. The question is whether it eventually contains all even numbers.",
+    "significance": "medium"
+  },
+  {
+    "id": "r-function",
+    "proofId": "erdos-853",
+    "range": { "startLine": 44, "endLine": 44 },
+    "type": "definition",
+    "title": "Smallest Missing Gap r(x)",
+    "content": "r(x) is the smallest positive even integer not yet observed as a prime gap for primes ≤ x. If all even gaps eventually appear, r(x) → ∞.",
+    "significance": "high"
+  },
+  {
+    "id": "r-minimality",
+    "proofId": "erdos-853",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "theorem",
+    "title": "Minimality of r(x)",
+    "content": "Every even integer 2 ≤ t < r(x) appears as some prime gap d_n with p_n ≤ x. The function r(x) pinpoints exactly where the gap census becomes incomplete.",
+    "significance": "medium"
+  },
+  {
+    "id": "weak-conjecture",
+    "proofId": "erdos-853",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "conjecture",
+    "title": "Weak Conjecture: r(x) → ∞",
+    "content": "Every even gap size eventually appears among prime gaps. No even number is permanently missing from the gap census. This is the basic form of Problem #853.",
+    "significance": "high"
+  },
+  {
+    "id": "strong-conjecture",
+    "proofId": "erdos-853",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "conjecture",
+    "title": "Strong Conjecture: r(x)/log x → ∞",
+    "content": "The smallest missing gap grows faster than log x. This is much stronger than the weak form and would give quantitative information about how quickly the gap census becomes complete.",
+    "significance": "high"
+  },
+  {
+    "id": "maynard-tao",
+    "proofId": "erdos-853",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "theorem",
+    "title": "Maynard–Tao Bounded Gaps",
+    "content": "There are infinitely many n with d_n ≤ 246. Some small even gap (possibly 2, the twin prime gap) appears infinitely often. This guarantees the gap set grows but says little about completeness.",
+    "significance": "medium"
+  },
+  {
+    "id": "cramer-bound",
+    "proofId": "erdos-853",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "theorem",
+    "title": "Cramér Conjecture Bound",
+    "content": "Cramér's conjecture (largest gap below x is O((log x)²)) implies r(x) ≤ O((log x)²) if all smaller gaps also appear. This gives a conditional upper bound consistent with the strong form.",
+    "significance": "medium"
+  }
+]
