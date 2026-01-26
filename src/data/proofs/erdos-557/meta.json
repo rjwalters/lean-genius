@@ -1,0 +1,84 @@
+{
+  "id": "erdos-557",
+  "title": "Erdős Problem #557: Multicolor Ramsey Numbers of Trees",
+  "slug": "erdos-557",
+  "description": "Is R(T; k) ≤ k·n + O(1) for any tree T on n vertices and k colors? The star lower bound R(S_n; k) ≥ k(n-1)+1 shows this would be tight. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 557,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "trees",
+      "combinatorics",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham [ErGr75], p. 516",
+      "Gerencsér–Gyárfás (1967): path Ramsey numbers",
+      "Lee (2017): Burr–Erdős conjecture",
+      "https://erdosproblems.com/557"
+    ],
+    "leanFile": "Proofs/Erdos557Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 60,
+      "summary": "Define Tree, EdgeColoring, HasMonochromaticCopy, and the multicolor Ramsey number R(T;k) for trees."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 62,
+      "endLine": 66,
+      "summary": "Erdős Problem #557: R(T;k) ≤ k·n + C for an absolute constant C."
+    },
+    {
+      "id": "star-lower-bound",
+      "title": "Lower Bound: Stars",
+      "startLine": 68,
+      "endLine": 89,
+      "summary": "Stars K_{1,n-1} give R(S_n;k) ≥ k(n-1)+1 by pigeonhole on vertex degrees, showing the conjecture is tight."
+    },
+    {
+      "id": "known-cases",
+      "title": "Known Special Cases",
+      "startLine": 91,
+      "endLine": 107,
+      "summary": "Two-color tree Ramsey: R(T;2) ≤ 2n-2. Path two-color formula (Gerencsér–Gyárfás). Monotonicity in k."
+    },
+    {
+      "id": "burr-erdos-connection",
+      "title": "Connection to Burr–Erdős",
+      "startLine": 109,
+      "endLine": 121,
+      "summary": "The Burr–Erdős conjecture (Lee 2017) gives R(T;2) ≤ c·n. Problem #548 (multicolor version) implies #557."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this in 1975, asking for linear-in-n bounds on multicolor tree Ramsey numbers. The 2-color case is well understood via the tree Ramsey theorem. The multicolor case remains open and is connected to the broader Burr–Erdős program.",
+    "problemStatement": "Is R(T; k) ≤ k·n + O(1) for any tree T on n vertices and any k ≥ 1 colors?",
+    "proofStrategy": "We formalize the multicolor Ramsey number for trees, state the linear-bound conjecture, prove tightness via the star lower bound, and connect to the Burr–Erdős conjecture and its multicolor generalization.",
+    "keyInsights": [
+      "Stars give the matching lower bound R(S_n;k) ≥ k(n-1)+1 by pigeonhole",
+      "For k=2, the tree Ramsey theorem gives R(T;2) ≤ 2n-2",
+      "The conjecture is implied by the multicolor Burr–Erdős conjecture (Problem #548)",
+      "Lee's 2017 proof of Burr–Erdős (k=2) gives R(T;2) = O(n) for trees",
+      "The key difficulty is the k-color case where iterative arguments lose factors"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #557 remains open. The conjectured bound R(T;k) ≤ kn + O(1) is tight by the star example. The 2-color case is resolved but the general multicolor case requires new techniques beyond the iterative approach.",
+    "implications": "A resolution would establish that trees have the simplest possible multicolor Ramsey behavior among connected graphs, confirming the principle that sparse graphs have linear Ramsey numbers.",
+    "openQuestions": [
+      "Can the multicolor case be reduced to iterated 2-color results?",
+      "What is the correct constant C in R(T;k) ≤ kn + C?",
+      "Does the bound hold for forests as well as trees?"
+    ]
+  }
+}
