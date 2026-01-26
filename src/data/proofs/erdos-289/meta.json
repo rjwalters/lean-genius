@@ -1,0 +1,74 @@
+{
+  "id": "erdos-289",
+  "title": "Unit Fractions from Disjoint Intervals",
+  "slug": "erdos-289",
+  "description": "For all sufficiently large k, do there exist k disjoint non-adjacent intervals I₁,...,Iₖ ⊂ ℕ (each of size ≥ 2) with ∑ᵢ ∑_{n ∈ Iᵢ} 1/n = 1? Hickerson–Montgomery found 5 intervals summing to 2.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/289",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos289Problem.lean",
+    "tags": [
+      "number theory",
+      "unit fractions",
+      "intervals",
+      "harmonic series"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 289,
+    "erdosUrl": "https://erdosproblems.com/289",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham (1980) asked whether 1 can be expressed as a sum of reciprocals drawn from k disjoint, non-adjacent intervals of ℕ for all sufficiently large k. The disjointness and non-adjacency constraints make this non-trivial. Hickerson and Montgomery found 5 intervals summing to 2, demonstrating feasibility for related targets.",
+    "problemStatement": "For all sufficiently large k, do there exist k disjoint non-adjacent intervals I₁,...,Iₖ ⊂ ℕ (|Iᵢ| ≥ 2) with ∑ᵢ ∑_{n ∈ Iᵢ} 1/n = 1?",
+    "proofStrategy": "We formalize interval blocks with size, disjointness, and non-adjacency constraints, the reciprocal sum, valid decompositions, and the main conjecture. We prove basic properties and state structural observations about interval spreading.",
+    "keyInsights": [
+      "Non-adjacency prevents trivial merging of consecutive blocks",
+      "Harmonic tail divergence ensures enough reciprocal sum is available",
+      "Exact target 1 with rational sums requires careful arithmetic",
+      "Hickerson–Montgomery: 5 intervals can sum to 2",
+      "Without non-adjacency the problem becomes easier (Erdős–Graham remark)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 57,
+      "summary": "Defines interval blocks, disjointness, non-adjacency, reciprocal sums, and valid decompositions."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 59,
+      "endLine": 63,
+      "summary": "States Erdős Problem #289: for sufficiently large k, a valid decomposition of 1 exists."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 65,
+      "endLine": 80,
+      "summary": "Proves interval blocks have ≥ 2 elements and non-adjacency implies disjointness."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 82,
+      "endLine": 119,
+      "summary": "Hickerson–Montgomery example, harmonic tail divergence, reciprocal sum bounds, spreading constraints, and the easier problem without non-adjacency."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #289: decomposing 1 as a sum of reciprocals from disjoint non-adjacent intervals. The non-adjacency constraint is the key difficulty. Includes structural bounds and the Hickerson–Montgomery example.",
+    "implications": "A resolution would connect unit fraction decompositions to harmonic analysis and combinatorial number theory, extending the Egyptian fraction tradition.",
+    "openQuestions": [
+      "What is the smallest K such that valid decompositions exist for all k ≥ K?",
+      "Can the target 1 be replaced by arbitrary positive rationals?",
+      "What is the minimum max(hᵢ) needed for a k-block decomposition?"
+    ]
+  }
+}

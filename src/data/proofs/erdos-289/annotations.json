@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-289-ann-block",
+    "proofId": "erdos-289",
+    "range": { "startLine": 28, "endLine": 33 },
+    "type": "definition",
+    "title": "Interval Block",
+    "content": "A contiguous interval [lo, hi] ⊂ ℕ with lo > 0 and at least 2 elements. The building block of the decomposition.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-289-ann-nonadj",
+    "proofId": "erdos-289",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Non-Adjacency",
+    "content": "Two blocks are non-adjacent if there is a gap of at least one integer between them. This prevents trivial merging.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-289-ann-valid",
+    "proofId": "erdos-289",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "Valid Decomposition",
+    "content": "A collection of k pairwise non-adjacent interval blocks whose reciprocal sums total exactly 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-289-ann-conjecture",
+    "proofId": "erdos-289",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "For all sufficiently large k, a valid decomposition of 1 into k blocks exists. The central open problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-289-ann-size",
+    "proofId": "erdos-289",
+    "range": { "startLine": 64, "endLine": 68 },
+    "type": "theorem",
+    "title": "Block Size ≥ 2",
+    "content": "Every interval block contains at least 2 elements by construction. This prevents singleton intervals.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-289-ann-hm",
+    "proofId": "erdos-289",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "theorem",
+    "title": "Hickerson–Montgomery Example",
+    "content": "Five intervals [2,7], [9,10], [17,18], [34,35], [84,85] have reciprocal sum 2. Demonstrates feasibility.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-289-ann-harmonic",
+    "proofId": "erdos-289",
+    "range": { "startLine": 91, "endLine": 94 },
+    "type": "theorem",
+    "title": "Harmonic Tail Divergence",
+    "content": "The harmonic series diverges, so arbitrarily large reciprocal sums are available from tail intervals.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-289-ann-trivial",
+    "proofId": "erdos-289",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "theorem",
+    "title": "Easier Without Non-Adjacency",
+    "content": "Without the non-adjacency constraint, decompositions of 1 into disjoint intervals are easier to construct.",
+    "significance": "supporting"
+  }
+]
