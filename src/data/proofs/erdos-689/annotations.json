@@ -1,0 +1,56 @@
+[
+  {
+    "id": "r-fold-cover",
+    "proofId": "erdos-689",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "definition",
+    "title": "r-Fold Cover",
+    "content": "A congruence choice r-fold covers [1,n] if every integer m in [1,n] is covered by at least r primes p ≤ n via m ≡ a_p (mod p). The main question asks about r = 2.",
+    "significance": "high"
+  },
+  {
+    "id": "double-cover",
+    "proofId": "erdos-689",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "conjecture",
+    "title": "Double Covering Conjecture",
+    "content": "For sufficiently large n, there exists a choice of congruence classes for primes p ≤ n that 2-fold covers [1,n]. The answer is believed to be yes.",
+    "significance": "high"
+  },
+  {
+    "id": "r-fold-general",
+    "proofId": "erdos-689",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "conjecture",
+    "title": "r-Fold Generalization",
+    "content": "For any fixed r ≥ 1 and sufficiently large n (depending on r), an r-fold covering should exist. This is the natural generalization of the r = 2 case.",
+    "significance": "high"
+  },
+  {
+    "id": "prime-density",
+    "proofId": "erdos-689",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "note",
+    "title": "Prime Density Argument",
+    "content": "The sum Σ_{p≤n} 1/p ~ log log n gives the expected covering count. Since log log n → ∞, on average each integer is covered by many primes, supporting the conjecture.",
+    "significance": "high"
+  },
+  {
+    "id": "covering-systems",
+    "proofId": "erdos-689",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "note",
+    "title": "Covering Systems Connection",
+    "content": "Related to Erdős Problems #687 and #688 about covering congruences. Hough's theorem (2015) resolved the minimum modulus problem for covering systems with distinct moduli.",
+    "significance": "medium"
+  },
+  {
+    "id": "green-variant",
+    "proofId": "erdos-689",
+    "range": { "startLine": 81, "endLine": 84 },
+    "type": "note",
+    "title": "Ben Green Variant",
+    "content": "Problem 45 on Ben Green's open problems list asks the same question with 2 replaced by 10, indicating interest in the threshold for r-fold covering by prime residue classes.",
+    "significance": "medium"
+  }
+]
