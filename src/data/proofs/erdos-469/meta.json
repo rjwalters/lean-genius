@@ -1,0 +1,71 @@
+{
+  "id": "erdos-469",
+  "title": "Erdős Problem #469: Primitive Pseudoperfect Numbers",
+  "slug": "erdos-469",
+  "description": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does Σ_{n ∈ A} 1/n converge? OEIS A006036. Open.",
+  "meta": {
+    "erdosNumber": 469,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "pseudoperfect-numbers",
+      "convergence",
+      "open"
+    ],
+    "references": [
+      "Erdős (1970), p.131",
+      "Benkoski–Erdős (1974), p.620",
+      "Erdős–Graham (1980), p.93",
+      "OEIS A006036",
+      "https://erdosproblems.com/469"
+    ],
+    "leanFile": "Proofs/Erdos469Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 37,
+      "summary": "IsPseudoperfect, IsPrimitivePseudoperfect, primitivePseudoperfectSet."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 39,
+      "endLine": 59,
+      "summary": "6 is primitive pseudoperfect, perfect numbers are pseudoperfect, infinitely many exist, multiples inherit property."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 61,
+      "endLine": 70,
+      "summary": "Does the sum of reciprocals of primitive pseudoperfect numbers converge?"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős (1970) and Benkoski–Erdős (1974) studied pseudoperfect numbers (also called semiperfect numbers): n is pseudoperfect if it equals a sum of distinct proper divisors. A pseudoperfect number is primitive if no proper divisor shares this property. The sequence begins 6, 20, 28, 88, 104, 272, 304, 350, ... (OEIS A006036).",
+    "problemStatement": "Does the sum Σ_{n ∈ A} 1/n converge, where A is the set of primitive pseudoperfect numbers?",
+    "proofStrategy": "We define IsPseudoperfect using Finset subsets of properDivisors, define primitivity by requiring no proper divisor to be pseudoperfect, and record basic structural results. The convergence question is formalized as a bounded partial sums condition.",
+    "keyInsights": [
+      "Every perfect number (σ(n) = 2n) is pseudoperfect: the proper divisors sum to n",
+      "6 is the smallest primitive pseudoperfect number (and the smallest perfect number)",
+      "Multiples of pseudoperfect numbers are pseudoperfect, so primitivity is about divisor chains",
+      "There are infinitely many primitive pseudoperfect numbers",
+      "The convergence of Σ 1/n over A would imply A has density 0 and is sparse"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #469 asks whether the sum of reciprocals of primitive pseudoperfect numbers converges. These are numbers expressible as sums of distinct proper divisors, with no proper divisor having this property. The problem connects divisor-sum arithmetic to analytic number theory.",
+    "implications": "Convergence would show primitive pseudoperfect numbers are extremely sparse, while divergence would indicate they are as common as primes (in reciprocal-sum terms).",
+    "openQuestions": [
+      "Does Σ_{n ∈ A} 1/n converge?",
+      "What is the asymptotic density of primitive pseudoperfect numbers?",
+      "Are all even perfect numbers primitive pseudoperfect?"
+    ]
+  }
+}

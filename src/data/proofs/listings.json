@@ -5327,23 +5327,19 @@
     "id": "erdos-226",
     "title": "Erdős Problem #226: Entire Functions Preserving Rationality",
     "slug": "erdos-226",
-    "description": "Is there an entire non-linear function f such that x ∈ ℚ ↔ f(x) ∈ ℚ for all real x? SOLVED: YES by Barth-Schneider (1970) - transcendental entire functions with this property exist.",
-    "status": "complete",
+    "description": "Is there an entire non-linear function f such that x ∈ ℚ ↔ f(x) ∈ ℚ for all real x? SOLVED: YES by Barth-Schneider (1970). For any two countable dense sets A, B ⊂ ℝ, a transcendental entire function mapping A to B exists.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "complex-analysis",
       "entire-functions",
       "transcendental-functions",
       "rationality",
-      "countable-dense-sets",
-      "solved"
+      "countable-dense-sets"
     ],
-    "dateAdded": "2026-01-18",
     "erdosNumber": 226,
-    "mathlibCount": 6,
     "sorries": 0,
-    "annotationCount": 16
+    "annotationCount": 9
   },
   {
     "id": "erdos-227",
@@ -8734,22 +8730,19 @@
     "id": "erdos-404",
     "title": "Erdős Problem #404: Prime Power Divisibility of Factorial Sums",
     "slug": "erdos-404",
-    "description": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a?",
-    "status": "complete",
-    "badge": "open-problem",
+    "description": "For which (a, p) is there a bound on k such that p^k divides some sum of factorials starting at a? Let f(a, p) be the supremum. Lin proved f(2, 2) ≤ 254. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos",
       "number-theory",
       "factorials",
       "p-adic-valuation",
       "divisibility",
       "open-problem"
     ],
-    "dateAdded": "2026-01-25",
     "erdosNumber": 404,
-    "mathlibCount": 4,
-    "sorries": 8,
-    "annotationCount": 17
+    "sorries": 0,
+    "annotationCount": 9
   },
   {
     "id": "erdos-405",
@@ -16655,22 +16648,19 @@
     "id": "erdos-828",
     "title": "Erdős Problem #828: Totient Divisibility φ(n) | n + a",
     "slug": "erdos-828",
-    "description": "For any integer a, are there infinitely many n such that φ(n) divides n + a?",
-    "status": "complete",
-    "badge": "open-problem",
+    "description": "For any integer a, are there infinitely many n such that φ(n) divides n + a? Generalizes Lehmer's conjecture (a = -1) and the characterized case a = 0. OPEN.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos",
       "number-theory",
       "totient-function",
       "divisibility",
       "lehmer-conjecture",
       "open-problem"
     ],
-    "dateAdded": "2026-01-25",
     "erdosNumber": 828,
-    "mathlibCount": 4,
-    "sorries": 8,
-    "annotationCount": 10
+    "sorries": 0,
+    "annotationCount": 8
   },
   {
     "id": "erdos-829",
@@ -17938,21 +17928,18 @@
     "title": "Erdős Problem #894: Chromatic Numbers of Lacunary Cayley Graphs",
     "slug": "erdos-894",
     "description": "For a lacunary sequence A with n_{k+1} ≥ (1+ε)n_k, does there exist a finite coloring of ℕ with no monochromatic a-b ∈ A? SOLVED: YES, using O(ε⁻¹ log(1/ε)) colors (Peres-Schlag 2010).",
-    "status": "complete",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "combinatorics",
       "chromatic-number",
       "lacunary-sequences",
       "cayley-graphs",
       "diophantine-approximation"
     ],
-    "dateAdded": "2026-01-23",
     "erdosNumber": 894,
-    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 14
+    "annotationCount": 9
   },
   {
     "id": "erdos-895",
@@ -18184,20 +18171,17 @@
     "title": "Edge-Triangle Multiplicity Above Turán",
     "slug": "erdos-905",
     "description": "Every graph with n vertices and > n²/4 edges contains an edge which is in at least n/6 triangles. Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).",
-    "status": "complete",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos",
       "graph-theory",
       "extremal-graph-theory",
       "triangles",
       "turan"
     ],
-    "dateAdded": "2026-01-19",
     "erdosNumber": 905,
-    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 12
+    "annotationCount": 9
   },
   {
     "id": "erdos-906",
