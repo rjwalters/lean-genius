@@ -1,0 +1,74 @@
+{
+  "id": "erdos-563",
+  "title": "Balanced 2-Colorings and Subset Edge Density",
+  "slug": "erdos-563",
+  "description": "F(n,α) = smallest m with a 2-coloring of K_n where every m-subset has > α fraction in each color. Conjecture: F(n,α) ~ c_α log n for α < 1/2. Known: Θ(log n) by probabilistic method.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/563",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos563Problem.lean",
+    "tags": [
+      "graph theory",
+      "Ramsey theory",
+      "probabilistic method",
+      "edge coloring"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 563,
+    "erdosUrl": "https://erdosproblems.com/563",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in [Er90b, p. 21] asking for the precise constant c_α in F(n,α) ~ c_α log n. The probabilistic method gives Θ(log n) bounds, and α = 0 connects to diagonal Ramsey numbers. The problem generalizes to hypergraphs (Problem #161).",
+    "problemStatement": "For 0 ≤ α < 1/2, does F(n, α) ~ c_α · log n for some constant c_α?",
+    "proofStrategy": "We formalize edge 2-colorings of K_n, balanced subsets, the threshold F(n,α), the main conjecture, upper/lower bounds from probabilistic arguments, and special cases α = 0 (Ramsey) and α = 1/2 (impossible).",
+    "keyInsights": [
+      "Probabilistic method: random coloring gives F(n,α) = O(log n)",
+      "α = 0 reduces to Ramsey theory: avoid monochromatic cliques",
+      "α = 1/2 is impossible: some color has ≤ half the edges",
+      "Red + blue = total edges (color partition identity)",
+      "F(n,α) is monotone in both n and α"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 56,
+      "summary": "Defines edge colorings, red/blue edge counts, balanced colorings, and the threshold F(n,α)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 58,
+      "endLine": 64,
+      "summary": "States the conjecture: F(n,α) ~ c_α log n for α < 1/2."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 66,
+      "endLine": 80,
+      "summary": "Upper bound O(log n) from probabilistic method, lower bound Ω(log n) for α > 0."
+    },
+    {
+      "id": "special",
+      "title": "Special Cases and Monotonicity",
+      "startLine": 82,
+      "endLine": 112,
+      "summary": "α=0 (Ramsey), α=1/2 (impossible), color partition identity, monotonicity in α and n."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #563 on balanced 2-colorings of complete graphs. The threshold F(n,α) is Θ(log n) for α < 1/2; the precise constant c_α is conjectured to exist but remains undetermined.",
+    "implications": "Determining c_α would refine the probabilistic method for Ramsey-type problems and connect to the theory of discrepancy in graph colorings.",
+    "openQuestions": [
+      "Does F(n,α)/log n converge as n → ∞ for each α < 1/2?",
+      "What is the value of c_α as a function of α?",
+      "How does the threshold behave for r-colorings with r ≥ 3?"
+    ]
+  }
+}
