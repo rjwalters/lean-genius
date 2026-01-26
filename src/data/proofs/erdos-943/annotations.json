@@ -1,0 +1,56 @@
+[
+  {
+    "id": "powerful-def",
+    "proofId": "erdos-943",
+    "range": { "startLine": 27, "endLine": 30 },
+    "type": "definition",
+    "title": "Powerful Number",
+    "content": "A natural number n is powerful (squarefull) if every prime p dividing n satisfies p² | n. Equivalently, n = a²b³ for some positive integers a, b. Examples: 1, 4, 8, 9, 16, 25, 27, 32, ...",
+    "significance": "high"
+  },
+  {
+    "id": "rep-function",
+    "proofId": "erdos-943",
+    "range": { "startLine": 35, "endLine": 39 },
+    "type": "definition",
+    "title": "Representation Function r(n)",
+    "content": "r(n) counts the number of ways to write n = a + b where both a and b are powerful numbers. The question asks whether this function grows subpolynomially.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-943",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "conjecture",
+    "title": "Subpolynomial Growth Conjecture",
+    "content": "r(n) = n^{o(1)}: for every ε > 0, we have r(n) < n^ε for sufficiently large n. This says powerful numbers are 'too structured' to produce many additive representations.",
+    "significance": "high"
+  },
+  {
+    "id": "density",
+    "proofId": "erdos-943",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "note",
+    "title": "Powerful Number Density",
+    "content": "The count of powerful numbers up to x is asymptotically c√x where c = ζ(3/2)/ζ(3) ≈ 1.943. This gives the trivial upper bound r(n) ≤ c√n.",
+    "significance": "high"
+  },
+  {
+    "id": "structure",
+    "proofId": "erdos-943",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "note",
+    "title": "a²b³ Structure",
+    "content": "Every powerful number can be written as a²b³. This special multiplicative structure should impose Diophantine constraints on sums a²b³ + c²d³ = n, but making this rigorous is the core difficulty.",
+    "significance": "medium"
+  },
+  {
+    "id": "squares-connection",
+    "proofId": "erdos-943",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "note",
+    "title": "Connection to Squares",
+    "content": "Perfect squares are a subset of powerful numbers. The number of representations as a sum of two squares is well-understood via Jacobi's formula, but the powerful number case is harder due to their more irregular distribution.",
+    "significance": "medium"
+  }
+]
