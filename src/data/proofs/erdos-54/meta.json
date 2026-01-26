@@ -1,0 +1,82 @@
+{
+  "id": "erdos-54",
+  "title": "Erdős Problem #54: Ramsey 2-Complete Sets",
+  "slug": "erdos-54",
+  "description": "A set A is Ramsey 2-complete if every 2-colouring yields monochromatic sums covering all large integers. Conlon–Fox–Pham (2021) showed the minimum growth rate is Θ((log N)²).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/54",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos54Problem.lean",
+    "tags": ["number theory", "Ramsey theory", "complete sequences", "additive combinatorics"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 54,
+    "erdosUrl": "https://erdosproblems.com/54",
+    "erdosProblemStatus": "proved"
+  },
+  "overview": {
+    "historicalContext": "Erdős (1995) asked to improve the bounds on the minimum density of Ramsey 2-complete sets. Burr and Erdős (1985) established c(log N)² as a lower bound and (2 log₂ N)³ as an upper bound. Conlon, Fox, and Pham (2021) closed the gap by constructing a Ramsey 2-complete set with counting function O((log N)²).",
+    "problemStatement": "Improve the bounds on the minimum growth rate of a Ramsey 2-complete set: c(log N)² ≤ |A ∩ [1,N]| ≤ (2 log₂ N)³.",
+    "proofStrategy": "The formalization defines 2-colourings, monochromatic subset sums, and Ramsey 2-completeness. The Burr–Erdős lower bound and the Conlon–Fox–Pham optimal construction are axiomatised.",
+    "keyInsights": [
+      "Ramsey 2-completeness requires robustness: every colouring must yield a complete colour class",
+      "Burr–Erdős (1985) proved the lower bound c(log N)² and upper bound (2 log₂ N)³",
+      "Conlon–Fox–Pham (2021) achieved O((log N)²), matching the lower bound up to constants",
+      "The minimum growth rate is Θ((log N)²)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "monochromatic-sums",
+      "title": "Monochromatic Subset Sums",
+      "startLine": 24,
+      "endLine": 33,
+      "summary": "2-colourings and monochromatic subset sums from a single colour class."
+    },
+    {
+      "id": "ramsey-2-complete",
+      "title": "Ramsey 2-Completeness",
+      "startLine": 35,
+      "endLine": 42,
+      "summary": "IsRamsey2Complete: every 2-colouring yields a colour class whose subset sums cover all large integers."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Burr–Erdős Lower Bound",
+      "startLine": 50,
+      "endLine": 56,
+      "summary": "No Ramsey 2-complete set grows slower than c(log N)²."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Conlon–Fox–Pham Upper Bound",
+      "startLine": 58,
+      "endLine": 65,
+      "summary": "There exists a Ramsey 2-complete set with |A ∩ [1,N]| ≪ (log N)²."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem (Solved)",
+      "startLine": 67,
+      "endLine": 79,
+      "summary": "Erdős Problem 54: the minimum growth rate is Θ((log N)²), solved by Conlon–Fox–Pham."
+    },
+    {
+      "id": "earlier-upper",
+      "title": "Earlier Upper Bound",
+      "startLine": 81,
+      "endLine": 87,
+      "summary": "Burr–Erdős (1985) original upper bound (2 log₂ N)³."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 54, solved by Conlon–Fox–Pham (2021), establishing that the minimum growth rate of a Ramsey 2-complete set is Θ((log N)²).",
+    "implications": "The result pins down the exact order of magnitude for Ramsey 2-completeness, resolving a 36-year-old question and advancing the understanding of additive Ramsey theory.",
+    "openQuestions": [
+      "What is the exact constant in the lower bound?",
+      "What about Ramsey k-complete sets for k ≥ 3?",
+      "Can the construction be made explicit?"
+    ]
+  }
+}
