@@ -1,0 +1,87 @@
+{
+  "id": "erdos-142",
+  "title": "Erdős Problem #142: Asymptotic Formula for r_k(N)",
+  "slug": "erdos-142",
+  "description": "Prove an asymptotic formula for r_k(N), the maximum size of a subset of {1,...,N} with no non-trivial k-term AP. The gap between Behrend's lower bound and Kelley–Meka's upper bound remains enormous even for k=3. Open ($10,000).",
+  "meta": {
+    "erdosNumber": 142,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "szemeredi",
+      "open"
+    ],
+    "references": [
+      "Szemerédi (1975): r_k(N) = o(N) for all k ≥ 3",
+      "Roth (1953): r_3(N) = o(N) via Fourier analysis",
+      "Behrend (1946): r_3(N) ≥ N·exp(-C√(log N))",
+      "Kelley–Meka (2023): r_3(N) ≤ N·exp(-c(log N)^{1/12})",
+      "Green–Tao (2017): improved bounds for r_4(N)",
+      "Leng–Sah–Sawhney (2024): best bounds for k ≥ 5",
+      "https://erdosproblems.com/142"
+    ],
+    "leanFile": "Proofs/Erdos142Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 38,
+      "summary": "Arithmetic progressions, AP-k-free sets, and the function r_k(N)."
+    },
+    {
+      "id": "szemeredi",
+      "title": "Szemerédi's Theorem",
+      "startLine": 40,
+      "endLine": 47,
+      "summary": "Qualitative result: r_k(N) = o(N) for k ≥ 3."
+    },
+    {
+      "id": "roth",
+      "title": "Roth's Theorem",
+      "startLine": 49,
+      "endLine": 53,
+      "summary": "The k = 3 case with quantitative improvements."
+    },
+    {
+      "id": "bounds",
+      "title": "Quantitative Bounds",
+      "startLine": 55,
+      "endLine": 71,
+      "summary": "Behrend lower bound and Kelley–Meka upper bound for k = 3."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Open Problem",
+      "startLine": 73,
+      "endLine": 90,
+      "summary": "The $10,000 asymptotic formula question and Erdős's $5,000 sub-question."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this problem with a $10,000 reward, calling it 'probably unattackable at present.' It builds on Szemerédi's celebrated theorem (1975) that r_k(N) = o(N), Roth's Fourier-analytic proof for k=3 (1953), and Behrend's 1946 construction giving r_3(N) ≥ N·exp(-C√(log N)). The 2023 breakthrough by Kelley and Meka gives r_3(N) ≤ N·exp(-c(log N)^{1/12}), but the gap from Behrend remains vast.",
+    "problemStatement": "Prove an asymptotic formula for r_k(N), the largest size of a subset of {1,...,N} containing no non-trivial k-term arithmetic progression.",
+    "proofStrategy": "We define AP-k-free sets and r_k(N), state Szemerédi's theorem and Roth's theorem as axioms, record the best known upper bound (Kelley–Meka for k=3, Green–Tao for k=4) and lower bound (Behrend), and formalize the main open question as the existence of an asymptotic formula.",
+    "keyInsights": [
+      "Even for k = 3, the gap between Behrend (exp(-C√(log N))) and Kelley–Meka (exp(-c(log N)^{1/12})) is enormous",
+      "Erdős offered $5,000 for the weaker result r_k(N) = o(N/log N)",
+      "Szemerédi's theorem guarantees r_k(N)/N → 0 but gives no effective rate for large k",
+      "Fourier-analytic methods work for k = 3 (Roth), density-increment for k = 4 (Green–Tao), but k ≥ 5 requires different techniques",
+      "Leng–Sah–Sawhney (2024) provide the best bounds for k ≥ 5 using novel algebraic methods"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #142 remains one of the hardest open problems in combinatorics. Despite extraordinary progress — Szemerédi's theorem, Roth's Fourier method, the Kelley–Meka breakthrough — even the order of magnitude of r_3(N) is unknown, let alone an asymptotic formula for general k.",
+    "implications": "An asymptotic formula for r_k(N) would represent a complete understanding of the density threshold for arithmetic progressions, resolving a central question in additive combinatorics with connections to ergodic theory, harmonic analysis, and theoretical computer science.",
+    "openQuestions": [
+      "What is the true order of magnitude of r_3(N)?",
+      "Is r_k(N) = o(N/log N) for all k ≥ 3? ($5,000 Erdős prize)",
+      "Is the Behrend-type lower bound or the Kelley–Meka upper bound closer to the truth for k = 3?",
+      "Can the Kelley–Meka Fourier method be extended to k ≥ 4?"
+    ]
+  }
+}
