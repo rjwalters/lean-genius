@@ -1,0 +1,86 @@
+[
+  {
+    "id": "uncountable-chromatic",
+    "proofId": "erdos-75",
+    "type": "definition",
+    "title": "Uncountable Chromatic Number",
+    "content": "A graph has uncountable chromatic number if it requires more than any finite number of colours for a proper vertex colouring.",
+    "significance": "critical",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    }
+  },
+  {
+    "id": "finite-subgraph",
+    "proofId": "erdos-75",
+    "type": "definition",
+    "title": "Finite Subgraph",
+    "content": "A finite subgraph of G on n vertices, used to study local properties of the infinite graph.",
+    "significance": "key",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    }
+  },
+  {
+    "id": "large-indep-property",
+    "proofId": "erdos-75",
+    "type": "definition",
+    "title": "Large Independence Property",
+    "content": "A graph has the (1−ε)-independence property if every sufficiently large finite subgraph on n vertices has independence number > n^{1−ε}.",
+    "significance": "critical",
+    "range": {
+      "startLine": 51,
+      "endLine": 59
+    }
+  },
+  {
+    "id": "linear-indep",
+    "proofId": "erdos-75",
+    "type": "definition",
+    "title": "Linear Independence Sets",
+    "content": "The stronger version requires independence number ≫ n, i.e., at least c·n for some constant c > 0.",
+    "significance": "key",
+    "range": {
+      "startLine": 62,
+      "endLine": 66
+    }
+  },
+  {
+    "id": "chromatic-independence-bound",
+    "proofId": "erdos-75",
+    "type": "theorem",
+    "title": "Chromatic–Independence Bound",
+    "content": "For finite graphs, χ(G) · α(G) ≥ |V(G)|, relating chromatic number to independence number.",
+    "significance": "supporting",
+    "range": {
+      "startLine": 70,
+      "endLine": 72
+    }
+  },
+  {
+    "id": "basic-conjecture",
+    "proofId": "erdos-75",
+    "type": "concept",
+    "title": "Basic Conjecture",
+    "content": "There exists a graph with uncountable chromatic number where every large finite subgraph has independence number > n^{1−ε} for all ε > 0.",
+    "significance": "critical",
+    "range": {
+      "startLine": 80,
+      "endLine": 82
+    }
+  },
+  {
+    "id": "strong-conjecture",
+    "proofId": "erdos-75",
+    "type": "concept",
+    "title": "Strong Conjecture",
+    "content": "Erdős's strengthened form: the graph can be chosen so that independence number is linear (≫ n) in every large finite subgraph.",
+    "significance": "critical",
+    "range": {
+      "startLine": 85,
+      "endLine": 87
+    }
+  }
+]
