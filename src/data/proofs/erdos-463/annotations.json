@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-463-ann-gap",
+    "proofId": "erdos-463",
+    "range": { "startLine": 32, "endLine": 33 },
+    "type": "definition",
+    "title": "Least Prime Factor Gap",
+    "content": "leastPrimeGap(m) = m − p(m): the difference between a composite and its smallest prime factor.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-463-ann-Fn",
+    "proofId": "erdos-463",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "F(n) — Minimum Gap Above n",
+    "content": "F(n) = min_{m>n, m composite} (m − p(m)). How close to their least prime factor do composites above n get?",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-463-ann-conjecture",
+    "proofId": "erdos-463",
+    "range": { "startLine": 44, "endLine": 52 },
+    "type": "theorem",
+    "title": "Main Conjecture",
+    "content": "There exists f(n) → ∞ such that for all large n, some composite m satisfies n + f(n) < m < n + p(m). Composites far from n are still closer to n than to their own least prime factor.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-463-ann-asymp",
+    "proofId": "erdos-463",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "theorem",
+    "title": "F(n) ~ n − c√n Conjecture",
+    "content": "Erdős asks whether n − F(n) ~ c√n for some constant c > 0, relating to the distribution of composites with large least prime factor.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-463-ann-even",
+    "proofId": "erdos-463",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "concept",
+    "title": "Even Composite Gap",
+    "content": "For even composites, p(m) = 2 and leastPrimeGap(m) = m − 2. These dominate but are useless for the conjecture since m < n + 2 forces m ≤ n + 1.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-463-ann-semiprime",
+    "proofId": "erdos-463",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "theorem",
+    "title": "Semiprime Gap Formula",
+    "content": "For m = p·q with p ≤ q primes: leastPrimeGap(p·q) = p·q − p = p·(q−1). Large when p and q are both large.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-463-ann-density",
+    "proofId": "erdos-463",
+    "range": { "startLine": 82, "endLine": 85 },
+    "type": "concept",
+    "title": "Large minFac Density",
+    "content": "The fraction of integers with p(m) ≥ k is asymptotically 1 − 1/k. Most composites have p(m) = 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-463-ann-insufficient",
+    "proofId": "erdos-463",
+    "range": { "startLine": 105, "endLine": 106 },
+    "type": "insight",
+    "title": "Even Composites Are Insufficient",
+    "content": "Since even composites have p(m) = 2, the condition m < n + p(m) = n + 2 forces m ≤ n + 1, contradicting m > n + f(n) for f(n) ≥ 2.",
+    "significance": "key"
+  }
+]

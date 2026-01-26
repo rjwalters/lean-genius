@@ -1,0 +1,81 @@
+{
+  "id": "erdos-463",
+  "title": "Composites Near Their Least Prime Factor",
+  "slug": "erdos-463",
+  "description": "Is there f(n) → ∞ such that for all large n, some composite m satisfies n + f(n) < m < n + p(m), where p(m) is the least prime factor of m? Erdős also asks whether n − F(n) ~ c√n.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/463",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos463Problem.lean",
+    "tags": [
+      "number theory",
+      "prime factors",
+      "composites",
+      "least prime factor"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 463,
+    "erdosUrl": "https://erdosproblems.com/463",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this in 1980, further discussed in Erdős (1992). The question explores composites that are far from n but still closer to n than to their own least prime factor. Even composites (p(m) = 2) can't satisfy the condition for large f(n), so the conjecture requires odd composites with large least prime factors.",
+    "problemStatement": "Does there exist f : ℕ → ℕ with f(n) → ∞ such that for all large n, some composite m satisfies n + f(n) < m < n + p(m)?",
+    "proofStrategy": "We formalize the least prime factor gap, the function F(n), the main conjecture, and provide density and structural observations about composites with large least prime factors.",
+    "keyInsights": [
+      "Even composites have p(m) = 2, so m < n + 2 — useless for large f(n)",
+      "The conjecture requires composites with large least prime factor near n",
+      "F(n) = min_{m>n} (m − p(m)) relates to how far composites exceed their smallest factor",
+      "Erdős asks if n − F(n) ~ c√n for some constant c",
+      "Related to Problem #385 on composites and prime factors"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 40,
+      "summary": "Defines leastPrimeGap (m − p(m)) and minLeastPrimeGap F(n), the minimum gap among composites above n."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "States the main conjecture: existence of f(n) → ∞ with composites satisfying the sandwiching condition."
+    },
+    {
+      "id": "asymptotic",
+      "title": "F(n) Asymptotics",
+      "startLine": 54,
+      "endLine": 58,
+      "summary": "Erdős's related question: n − F(n) ~ c√n for some c > 0."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 60,
+      "endLine": 80,
+      "summary": "Properties of minFac for composites: p(m) ≥ 2, even composite gaps, odd composite bounds, semiprime gap formula."
+    },
+    {
+      "id": "density",
+      "title": "Density and Structural Observations",
+      "startLine": 82,
+      "endLine": 108,
+      "summary": "Density of composites with large minFac, large minFac gap bound, composite existence, and even composites are insufficient."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #463 on finding composites sandwiched between n + f(n) and n + p(m). The key difficulty is that even composites have p(m) = 2, so only composites with large least prime factors can satisfy the condition.",
+    "implications": "A positive answer would reveal regular occurrence of composites with large least prime factor in short intervals, connecting to smooth number distribution and sieve theory.",
+    "openQuestions": [
+      "Does such a function f with f(n) → ∞ exist?",
+      "Is n − F(n) ~ c√n for some c > 0?",
+      "What is the optimal growth rate of f(n)?"
+    ]
+  }
+}
