@@ -1,0 +1,152 @@
+{
+  "id": "erdos-826",
+  "title": "Erdős Problem #826: Divisor Function Growth Along Shifts",
+  "slug": "erdos-826",
+  "description": "Are there infinitely many n such that τ(n+k) ≪ k for all k ≥ 1? This open problem asks whether the divisor function can be controlled linearly along shifted sequences from infinitely many starting points.",
+  "meta": {
+    "author": "Erdős (1974)",
+    "sourceUrl": "https://erdosproblems.com/826",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos826Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "arithmetic-functions",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 826,
+    "erdosUrl": "https://erdosproblems.com/826",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.sigma",
+        "description": "Divisor sum function σ_k, with σ_0 = τ (divisor count)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Infinite"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm for growth rate statements",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "tau definition: divisor function via σ 0",
+      "average_order_tau axiom: average order is log(x)",
+      "max_order_tau axiom: maximum order bound",
+      "linearBoundCondition definition: τ(n+k) ≤ Ck",
+      "goodStartingPoints definition: set of n satisfying the bound",
+      "erdos_826_conjecture definition: the open problem",
+      "erdos_826_statement axiom: equivalence with formal-conjectures form",
+      "erdos_248_weaker definition: the weaker problem",
+      "erdos_826_implies_248 theorem: implication between problems",
+      "fewDivisorsAt1 definition: constraint at k=1",
+      "prime_satisfies_bound axiom: primes have τ = 2",
+      "heuristicCriticalRange definition: critical range for heuristic",
+      "hasControlledDivisors definition: smooth number connection",
+      "erdos_826_main theorem: well-definedness and implications"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #826 was posed by Paul Erdős in 1974 (referenced as [Er74b]). It asks a fundamental question about the growth of the divisor function τ(n) = σ₀(n) along arithmetic shifts: can we find infinitely many starting points n where τ(n+k) grows at most linearly in k? The problem is described as a stronger form of Erdős Problem #248.\n\nThe divisor function τ(n) counts the number of positive divisors of n. Its average order is log(n), established by Dirichlet's divisor problem, while its maximum order is much larger — roughly 2^{log(n)/log(log(n))} — achieved by highly composite numbers. The interplay between typical and extremal behavior is central to understanding this problem.\n\nTerence Tao has noted that Problem #826 appears difficult. The challenge lies in simultaneously controlling divisor counts across all shifts k ≥ 1 from a single starting point. While the constraint becomes easier for large k (since Ck grows), the constraint at k = 1 is extremely restrictive: it requires τ(n+1) ≤ C, meaning n+1 must have very few divisors. Standard sieve methods and analytic number theory techniques have not yet yielded a resolution.",
+    "problemStatement": "Are there infinitely many $n$ such that, for all $k \\geq 1$,\n$$\\tau(n + k) \\ll k?$$\n\nEquivalently: does there exist $C > 0$ such that the set\n$$S(C) = \\{n \\in \\mathbb{N} : \\tau(n+k) \\leq Ck \\text{ for all } k \\geq 1\\}$$\nis infinite?\n\n**Status:** OPEN",
+    "proofStrategy": "The formalization builds a comprehensive framework for Problem #826 in ten parts:\n\n1. **Divisor function:** Define τ via Mathlib's σ 0 with examples and growth bounds.\n\n2. **Growth theory:** Axiomatize the average order (~ log n) and maximum order of τ.\n\n3. **Core condition:** Define linearBoundCondition and goodStartingPoints — the central objects.\n\n4. **Formal conjecture:** State the problem as ∃ C > 0, S(C) is infinite.\n\n5. **Relations:** Show #826 implies the weaker Problem #248.\n\n6. **Observations:** Analyze the constraint at small k and the role of primes.\n\n7. **Heuristics and smooth numbers:** Explain why the conjecture is plausible but hard to prove.\n\n8. **Difficulty analysis:** Document Tao's assessment and the structural challenges.",
+    "keyInsights": [
+      "**Linear Control:** The condition τ(n+k) ≤ Ck is strong — it requires simultaneous control at all shifts, with the tightest constraint at k = 1.",
+      "**Primes Help:** If n+1 is prime, τ(n+1) = 2, easily satisfying the k=1 bound. But we need control at all k simultaneously.",
+      "**Average vs. Extremal:** While τ(m) averages to log(m), individual values can be much larger, making uniform bounds hard.",
+      "**Critical Range:** For large k (k ≫ log(n)/C), the bound is automatic. The difficulty is small k where divisor counts must be unusually low.",
+      "**Stronger than #248:** This is a strengthening of Erdős Problem #248, making it at least as difficult."
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisor-function",
+      "title": "The Divisor Function",
+      "summary": "tau definition, examples of τ(n) values",
+      "startLine": 35,
+      "endLine": 55
+    },
+    {
+      "id": "growth-bounds",
+      "title": "Growth of the Divisor Function",
+      "summary": "average_order_tau, max_order_tau — known bounds on τ",
+      "startLine": 57,
+      "endLine": 85
+    },
+    {
+      "id": "linear-bound",
+      "title": "The Linear Bound Condition",
+      "summary": "linearBoundCondition, goodStartingPoints — core definitions",
+      "startLine": 87,
+      "endLine": 114
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "erdos_826_conjecture, erdos_826_statement — formal problem",
+      "startLine": 116,
+      "endLine": 142
+    },
+    {
+      "id": "relation-248",
+      "title": "Relation to Problem #248",
+      "summary": "erdos_248_weaker, erdos_826_implies_248 — problem hierarchy",
+      "startLine": 144,
+      "endLine": 164
+    },
+    {
+      "id": "observations",
+      "title": "Small Examples and Observations",
+      "summary": "fewDivisorsAt1, prime_satisfies_bound — analysis of constraints",
+      "startLine": 166,
+      "endLine": 191
+    },
+    {
+      "id": "heuristic",
+      "title": "Probabilistic Heuristic",
+      "summary": "heuristicCriticalRange — why the conjecture is plausible",
+      "startLine": 193,
+      "endLine": 215
+    },
+    {
+      "id": "smooth-numbers",
+      "title": "Connection to Smooth Numbers",
+      "summary": "hasControlledDivisors — smooth number perspective",
+      "startLine": 217,
+      "endLine": 235
+    },
+    {
+      "id": "difficulty",
+      "title": "Why Tao Considers This Difficult",
+      "summary": "Analysis of structural challenges preventing resolution",
+      "startLine": 237,
+      "endLine": 264
+    },
+    {
+      "id": "status",
+      "title": "Problem Status and Main Statement",
+      "summary": "erdos_826_status, erdos_826_main — summary theorem",
+      "startLine": 266,
+      "endLine": 307
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #826 asks whether there are infinitely many n such that τ(n+k) ≪ k for all k ≥ 1. This remains an open problem in number theory, noted as difficult by Terence Tao. The formalization captures the problem statement, its relationship to Problem #248, growth bounds on the divisor function, and the structural reasons for the problem's difficulty.",
+    "implications": "A positive resolution would strengthen our understanding of the distribution of the divisor function along consecutive integers, with connections to smooth number theory and the structure of highly composite numbers. It would also resolve the weaker Problem #248.",
+    "openQuestions": [
+      "Does τ(n+k) ≪ k hold for infinitely many n? (The problem itself)",
+      "What is the density of good starting points, if any exist?",
+      "Can the problem be resolved for specific values of C?",
+      "What is the relationship to the distribution of smooth numbers in short intervals?"
+    ]
+  }
+}
