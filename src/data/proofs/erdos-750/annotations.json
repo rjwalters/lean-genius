@@ -1,0 +1,56 @@
+[
+  {
+    "id": "infinite-chromatic",
+    "proofId": "erdos-750",
+    "range": { "startLine": 27, "endLine": 29 },
+    "type": "definition",
+    "title": "Infinite Chromatic Number",
+    "content": "A graph has infinite chromatic number if no finite coloring is proper. This is the global condition — the challenge is combining it with local near-bipartiteness.",
+    "significance": "high"
+  },
+  {
+    "id": "almost-bipartite",
+    "proofId": "erdos-750",
+    "range": { "startLine": 36, "endLine": 39 },
+    "type": "definition",
+    "title": "Almost Bipartite Property",
+    "content": "Every m-vertex subgraph has an independent set of size ≥ m/2 - f(m). The deviation f(m) from bipartiteness measures how far subgraphs are from 2-colorable.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-750",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "conjecture",
+    "title": "Erdős Problem #750",
+    "content": "For ANY f(m) → ∞, there exists an infinite-chromatic f-almost-bipartite graph. The conjecture says local near-bipartiteness and global non-colorability can coexist.",
+    "significance": "high"
+  },
+  {
+    "id": "ehs82",
+    "proofId": "erdos-750",
+    "range": { "startLine": 62, "endLine": 67 },
+    "type": "theorem",
+    "title": "Erdős–Hajnal–Szemerédi (1982)",
+    "content": "For any ε > 0, there exists an infinite-chromatic graph with independent sets ≥ (1/2-ε)m in every m-vertex subgraph. Resolves the conjecture for f(m) = εm.",
+    "significance": "high"
+  },
+  {
+    "id": "sqrt-case",
+    "proofId": "erdos-750",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "conjecture",
+    "title": "Open: Square Root Case",
+    "content": "Is there an infinite-chromatic graph where every m-vertex subgraph has an independent set of size ≥ m/2 - √m? The simplest open sublinear case.",
+    "significance": "high"
+  },
+  {
+    "id": "bipartite-benchmark",
+    "proofId": "erdos-750",
+    "range": { "startLine": 98, "endLine": 102 },
+    "type": "note",
+    "title": "Bipartite Benchmark",
+    "content": "Bipartite graphs achieve ⌈m/2⌉ exactly. The deviation f(m) from this benchmark quantifies local non-bipartiteness. The question is how small f can be while allowing infinite χ.",
+    "significance": "medium"
+  }
+]
