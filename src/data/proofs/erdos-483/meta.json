@@ -1,0 +1,77 @@
+{
+  "id": "erdos-483",
+  "title": "Erdős Problem #483: Growth Rate of Schur Numbers",
+  "slug": "erdos-483",
+  "description": "Is f(k) < c^k for some c, where f(k) is the Schur number (min N forcing monochromatic a+b=c in k-coloring)? Known: f(1)=2, f(2)=5, ..., f(5)=161. Lower: 380^{k/5}. Upper: ≈ek!. Open.",
+  "meta": {
+    "erdosNumber": 483,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "additive-combinatorics",
+      "open"
+    ],
+    "references": [
+      "Schur (1916): finiteness of f(k)",
+      "Whitehead (1973): upper bound f(k) ≤ (e-1/24)k!",
+      "Ageron et al.: lower bound 380^{k/5}",
+      "https://erdosproblems.com/483"
+    ],
+    "leanFile": "Proofs/Erdos483Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 25,
+      "endLine": 42,
+      "summary": "Coloring, HasMonochromaticSum, schurNumber (axiom)."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "startLine": 44,
+      "endLine": 59,
+      "summary": "f(1)=2, f(2)=5, f(3)=14, f(4)=45, f(5)=161."
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds",
+      "startLine": 61,
+      "endLine": 73,
+      "summary": "Exponential lower bound, factorial upper bound."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 75,
+      "endLine": 81,
+      "summary": "Is f(k) < c^k for some constant c?"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Schur (1916) proved that for every k, any k-coloring of {1,...,N} must contain a monochromatic solution to a+b=c if N is large enough. The Schur number f(k) is this threshold. The question of whether f(k) grows at most exponentially connects to Ramsey theory and additive combinatorics.",
+    "problemStatement": "Is f(k) < c^k for some constant c > 0? That is, are the Schur numbers bounded by a simple exponential in the number of colors?",
+    "proofStrategy": "We axiomatize the Schur number, record exact values for k ≤ 5, state the exponential lower bound and factorial upper bound, and formalize the conjecture that f(k) is at most exponential.",
+    "keyInsights": [
+      "The known values f(1)=2, f(2)=5, f(3)=14, f(4)=45, f(5)=161 grow rapidly but sub-factorially",
+      "The lower bound 380^{k/5} shows f(k) is at least exponential",
+      "The upper bound ≈ e·k! leaves a huge gap: exponential vs factorial",
+      "The conjecture asks whether the factorial upper bound can be improved to exponential",
+      "Schur numbers are closely related to Ramsey numbers R(3,...,3) with k arguments"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #483 asks whether Schur numbers grow at most exponentially. The current bounds range from exponential (lower) to factorial (upper), leaving a large gap.",
+    "implications": "Resolution would clarify the complexity of sum-free colorings, with connections to Ramsey theory, the Rado–Folkman theorem, and additive number theory.",
+    "openQuestions": [
+      "Is f(k) < c^k for some constant c?",
+      "What is f(6)?",
+      "Can the factorial upper bound be improved?",
+      "Is there a polynomial relationship between Schur numbers and Ramsey numbers?"
+    ]
+  }
+}
