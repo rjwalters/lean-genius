@@ -1,0 +1,78 @@
+{
+  "id": "erdos-321",
+  "title": "Erdős Problem #321: Distinct Subset Sums of Unit Fractions",
+  "slug": "erdos-321",
+  "description": "Let R(N) be the max size of A ⊆ {1,...,N} with all reciprocal subset sums distinct. Bleicher–Erdős: R(N) = Θ(N/log N) up to iterated log factors. The precise correction is open.",
+  "meta": {
+    "erdosNumber": 321,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "subset-sums",
+      "egyptian-fractions",
+      "open"
+    ],
+    "references": [
+      "Erdős & Graham (1980): original problem [ErGr80, p.43]",
+      "Bleicher & Erdős (1975): lower bound [BlEr75]",
+      "Bleicher & Erdős (1976): upper bound [BlEr76b]",
+      "https://erdosproblems.com/321"
+    ],
+    "leanFile": "Proofs/Erdos321Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 41,
+      "summary": "Unit fractions, distinct reciprocal subset sums, R(N) definition."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 43,
+      "endLine": 47,
+      "summary": "Determine the asymptotic behavior of R(N)."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 49,
+      "endLine": 72,
+      "summary": "Bleicher–Erdős lower and upper bounds, main term N/log N."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 74,
+      "endLine": 89,
+      "summary": "Egyptian fraction connection, greedy construction, OEIS sequences."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in 1980 about the maximum size of subsets of {1,...,N} with distinct reciprocal subset sums. Bleicher and Erdős established matching bounds up to iterated logarithmic factors in 1975–1976, but the precise asymptotics remain open.",
+    "problemStatement": "Let R(N) be the maximum |A| for A ⊆ {1,...,N} such that all subset sums Σ_{n∈S} 1/n are distinct for S ⊆ A. Determine R(N) asymptotically. Current bounds: (N/log N)·Π log_i N ≤ R(N) ≤ (1/log 2)·log_r N·(N/log N)·Π log_i N.",
+    "proofStrategy": "We define distinct reciprocal subset sums and R(N), state the known Bleicher–Erdős bounds, and identify the iterated logarithm gap as the open question.",
+    "keyInsights": [
+      "R(N) = Θ(N/log N) up to iterated logarithm factors",
+      "Lower bound: (N/log N) · product of iterated logs (Bleicher–Erdős 1975)",
+      "Upper bound: extra iterated log factor above the lower bound (Bleicher–Erdős 1976)",
+      "The gap is essentially one iterated logarithm factor",
+      "Related to Egyptian fraction representations and OEIS A384927, A391592"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #321 asks for the precise asymptotics of R(N), the maximum subset of {1,...,N} with distinct reciprocal sums. The Bleicher–Erdős bounds from the 1970s pin down R(N) to within an iterated logarithm factor of N/log N, but closing this gap remains open.",
+    "implications": "Resolution would advance the theory of Egyptian fractions and unit fraction representations, with connections to additive combinatorics and the structure of harmonic sums.",
+    "openQuestions": [
+      "What is the precise iterated logarithm correction to N/log N?",
+      "Can the lower or upper bound be improved by a full iterated log factor?",
+      "Is R(N) ~ c · N/log N for some constant c?",
+      "What is the optimal greedy construction strategy?"
+    ]
+  }
+}
