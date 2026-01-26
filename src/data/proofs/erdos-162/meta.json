@@ -1,0 +1,68 @@
+{
+  "id": "erdos-162",
+  "title": "Erdős Problem #162: Discrepancy in 2-Coloured Complete Graphs",
+  "slug": "erdos-162",
+  "description": "For 0 < α ≤ 1/2, is F(n, α) ~ c_α log n, where F(n, α) is the largest k such that some 2-colouring of K_n has every k-vertex subgraph α-balanced?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/162",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos162Problem.lean",
+    "tags": ["combinatorics", "Ramsey theory", "discrepancy", "graph colouring"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 162,
+    "erdosUrl": "https://erdosproblems.com/162",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős (1990) asked for the precise asymptotic of F(n, α), the largest k such that some 2-colouring of K_n has every ≥k-vertex induced subgraph with > α fraction of edges of each colour. The probabilistic method gives c₁ log n < F < c₂ log n, but the exact constant c_α is unknown.",
+    "problemStatement": "Prove that F(n, α) ~ c_α log n for some constant c_α depending on α.",
+    "proofStrategy": "The formalization defines edge 2-colourings, α-balanced subgraphs, and axiomatises F(n, α). The logarithmic bounds from the probabilistic method are stated. The main conjecture asserts convergence of F(n,α)/log n to a constant.",
+    "keyInsights": [
+      "F(n, α) measures the largest 'discrepancy-free' vertex set in a 2-colouring",
+      "Probabilistic method: c₁ log n < F(n, α) < c₂ log n for constants c₁, c₂",
+      "The conjecture asks for the existence of the limit c_α = lim F(n,α)/log n",
+      "F is monotone decreasing in α: stricter balance requirements shrink F"
+    ]
+  },
+  "sections": [
+    {
+      "id": "colouring",
+      "title": "Edge Colouring and Balance",
+      "startLine": 24,
+      "endLine": 39,
+      "summary": "Edge 2-colourings of K_n, colour edge counts, and α-balanced subgraphs."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function F(n, α)",
+      "startLine": 41,
+      "endLine": 52,
+      "summary": "Axiomatisation of F(n, α) with monotonicity in α and F(n, 0) = n."
+    },
+    {
+      "id": "log-bounds",
+      "title": "Logarithmic Bounds",
+      "startLine": 54,
+      "endLine": 64,
+      "summary": "Probabilistic method: c₁ log n < F(n, α) < c₂ log n."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 66,
+      "endLine": 75,
+      "summary": "F(n, α) / log n → c_α for some constant c_α > 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures Erdős Problem 162, asking for the precise asymptotic F(n, α) ~ c_α log n in 2-coloured complete graph discrepancy.",
+    "implications": "Determining c_α would give a precise quantitative understanding of how balanced large 2-colourings can be across all induced subgraphs.",
+    "openQuestions": [
+      "Does the limit c_α = lim F(n,α)/log n exist?",
+      "What is c_α as a function of α?",
+      "Can the probabilistic method bounds be tightened?"
+    ]
+  }
+}
