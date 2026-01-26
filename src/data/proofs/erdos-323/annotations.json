@@ -1,0 +1,47 @@
+[
+  {
+    "id": "erdos-323-count",
+    "proofId": "erdos-323",
+    "type": "definition",
+    "range": { "startLine": 30, "endLine": 34 },
+    "title": "Power Sum Counting Function",
+    "content": "powerSumCount k m x counts integers in [0, x] representable as sums of m nonneg k-th powers. This is the central object f_{k,m}(x) of the problem.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-323-landau",
+    "proofId": "erdos-323",
+    "type": "result",
+    "range": { "startLine": 48, "endLine": 52 },
+    "title": "Landau's Theorem (k = 2)",
+    "content": "Landau proved f_{2,2}(x) ~ c·x/√(log x), completely resolving the sums-of-two-squares case. This is the only fully resolved case.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-323-part1",
+    "proofId": "erdos-323",
+    "type": "conjecture",
+    "range": { "startLine": 57, "endLine": 63 },
+    "title": "Part 1: f_{k,k}(x) ≫ x^{1-ε}",
+    "content": "For every k ≥ 2 and ε > 0, the count of integers ≤ x that are sums of k k-th powers is at least c·x^{1-ε}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-323-part2",
+    "proofId": "erdos-323",
+    "type": "conjecture",
+    "range": { "startLine": 65, "endLine": 72 },
+    "title": "Part 2: f_{k,m}(x) ≫ x^{m/k}",
+    "content": "For m < k, the count f_{k,m}(x) grows at least as x^{m/k}. This reflects the heuristic that m k-th powers produce values up to m·x^k, so the 'inverse' count should be x^{m/k}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-323-density",
+    "proofId": "erdos-323",
+    "type": "conjecture",
+    "range": { "startLine": 80, "endLine": 84 },
+    "title": "Density Question",
+    "content": "Is f_{k,k}(x) = o(x) for k > 2? It is unknown whether sums of k k-th powers have density 0 among the integers for any k > 2.",
+    "significance": "supporting"
+  }
+]
