@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-43-sidon",
+    "proofId": "erdos-43",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 35 },
+    "title": "Sidon Sets and Difference Sets",
+    "content": "IsSidonSet requires distinct pairwise sums. diffSet A computes {a - b | a,b ∈ A}.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-43-disjoint",
+    "proofId": "erdos-43",
+    "type": "definition",
+    "range": { "startLine": 41, "endLine": 43 },
+    "title": "Disjoint Differences",
+    "content": "DisjointDifferences A B holds when the nonzero elements of A-A and B-B are disjoint.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-43-conjecture",
+    "proofId": "erdos-43",
+    "type": "conjecture",
+    "range": { "startLine": 63, "endLine": 70 },
+    "title": "Erdős Problem 43",
+    "content": "Must C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + O(1) for Sidon sets with disjoint differences? $100 bounty.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-43-equal",
+    "proofId": "erdos-43",
+    "type": "result",
+    "range": { "startLine": 79, "endLine": 87 },
+    "title": "Equal Size Variant Disproved",
+    "content": "The strengthening with |A| = |B| and constant improvement factor (1-c) is false. Barreto provided counterexamples.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-43-asymptotic",
+    "proofId": "erdos-43",
+    "type": "result",
+    "range": { "startLine": 54, "endLine": 57 },
+    "title": "f(N) ~ √N",
+    "content": "The maximum Sidon set size in {1,...,N} is asymptotically √N.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-43-pairbound",
+    "proofId": "erdos-43",
+    "type": "result",
+    "range": { "startLine": 93, "endLine": 104 },
+    "title": "Pair Count Bounds",
+    "content": "Each Sidon set has C(|A|,2) ≤ N; disjoint differences give C(|A|,2) + C(|B|,2) ≤ N.",
+    "significance": "supporting"
+  }
+]
