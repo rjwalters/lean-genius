@@ -1,0 +1,56 @@
+[
+  {
+    "id": "irreducible-zero-sum",
+    "proofId": "erdos-319",
+    "range": { "startLine": 37, "endLine": 41 },
+    "type": "definition",
+    "title": "Irreducible Zero Sum",
+    "content": "A signing δ : A → {±1} is irreducible if Σ δ(n)/n = 0 but no proper nonempty subset achieves this. The vanishing is 'tight'.",
+    "significance": "high"
+  },
+  {
+    "id": "max-irreducible-size",
+    "proofId": "erdos-319",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "Maximum Irreducible Size c(N)",
+    "content": "c(N) is the maximum cardinality of A ⊆ {1,...,N} admitting an irreducible zero sum. This is the quantity Erdős asks to determine.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-319",
+    "range": { "startLine": 50, "endLine": 53 },
+    "type": "conjecture",
+    "title": "Erdős Problem #319",
+    "content": "Determine the asymptotic growth of c(N). Known: c(N) ≥ (1−1/e+o(1))N. Is c(N) = (1−o(1))N?",
+    "significance": "high"
+  },
+  {
+    "id": "adenwalla",
+    "proofId": "erdos-319",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "theorem",
+    "title": "Adenwalla Lower Bound",
+    "content": "c(N) ≥ (1−1/e+o(1))N ≈ 0.632N. Uses Croot's theorem to find B ⊆ [(1/e)N, N] with Σ 1/b = 1, then A = B ∪ {1}.",
+    "significance": "high"
+  },
+  {
+    "id": "croot",
+    "proofId": "erdos-319",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "theorem",
+    "title": "Croot Unit Fraction Theorem (2001)",
+    "content": "Every positive integer ≤ N is a sum of distinct unit fractions with denominators in {1,...,N}, for large N. Key ingredient in the Adenwalla construction.",
+    "significance": "medium"
+  },
+  {
+    "id": "egyptian-fractions",
+    "proofId": "erdos-319",
+    "range": { "startLine": 83, "endLine": 87 },
+    "type": "note",
+    "title": "Egyptian Fraction Connection",
+    "content": "The problem belongs to the family of Erdős–Graham unit fraction problems. Signed unit fractions generalize the classical Egyptian fraction setting.",
+    "significance": "medium"
+  }
+]
