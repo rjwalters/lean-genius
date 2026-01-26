@@ -22,6 +22,17 @@ import {
   Archive
 } from 'lucide-react'
 
+function isValidFormalStatement(formal: string | undefined): boolean {
+  if (!formal || !formal.trim()) return false
+  // Navigation junk from scraper
+  if (formal.includes('Forum') || formal.includes('Favourites') || formal.includes('Random Solved')) return false
+  // Placeholder text
+  if (formal === '(LaTeX not available)') return false
+  // Another placeholder variant
+  if (formal.includes('\\text{(formal')) return false
+  return true
+}
+
 export function ResearchProblemPage() {
   const { slug } = useParams<{ slug: string }>()
   const [problem, setProblem] = useState<ResearchProblem | null>(null)
@@ -211,7 +222,7 @@ export function ResearchProblemPage() {
                     <FileText className="h-5 w-5 text-annotation" />
                     Problem Statement
                   </h2>
-                  {problem.problemStatement.formal && (
+                  {isValidFormalStatement(problem.problemStatement.formal) && (
                     <div className="bg-card border border-border rounded-lg p-4 mb-4">
                       <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wide">Formal</p>
                       <div className="text-lg">
@@ -219,9 +230,9 @@ export function ResearchProblemPage() {
                       </div>
                     </div>
                   )}
-                  <p className="text-muted-foreground">
-                    {problem.problemStatement.plain}
-                  </p>
+                  <div className="text-muted-foreground">
+                    <MarkdownMath>{problem.problemStatement.plain}</MarkdownMath>
+                  </div>
                   {problem.problemStatement.whyMatters.length > 0 && (
                     <div className="mt-4">
                       <p className="text-sm font-medium mb-2">Why This Matters:</p>
