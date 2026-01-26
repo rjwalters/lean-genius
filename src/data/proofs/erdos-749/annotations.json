@@ -1,0 +1,56 @@
+[
+  {
+    "id": "rep-function",
+    "proofId": "erdos-749",
+    "range": { "startLine": 28, "endLine": 30 },
+    "type": "definition",
+    "title": "Representation Function r_A(n)",
+    "content": "r_A(n) counts the number of representations n = a + b with a, b ∈ A, a ≤ b. This is half the convolution 1_A * 1_A(n), adjusted for the diagonal.",
+    "significance": "high"
+  },
+  {
+    "id": "lower-density",
+    "proofId": "erdos-749",
+    "range": { "startLine": 37, "endLine": 38 },
+    "type": "definition",
+    "title": "Lower Density",
+    "content": "The lower asymptotic density: lim inf |S ∩ [1,N]| / N. The problem asks for this to be close to 1 for the sumset.",
+    "significance": "medium"
+  },
+  {
+    "id": "bounded-rep",
+    "proofId": "erdos-749",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "Bounded Representation",
+    "content": "A has bounded representation if r_A(n) ≤ C for some constant C and all n. Sidon sets satisfy this with C = 2.",
+    "significance": "high"
+  },
+  {
+    "id": "main-question",
+    "proofId": "erdos-749",
+    "range": { "startLine": 65, "endLine": 68 },
+    "type": "conjecture",
+    "title": "Main Question: Dense + Bounded",
+    "content": "For every ε > 0, does A exist with lower density of A+A ≥ 1-ε and r_A bounded? This asks whether near-bases can avoid the Erdős–Turán obstruction.",
+    "significance": "high"
+  },
+  {
+    "id": "sidon-context",
+    "proofId": "erdos-749",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "theorem",
+    "title": "Sidon Sets: Bounded but Sparse",
+    "content": "Sidon sets have r(n) ≤ 2 but their sumset has density 0 (since |A ∩ [1,N]| ~ √N). They show one extreme: bounded r(n) with sparse sumset.",
+    "significance": "medium"
+  },
+  {
+    "id": "erdos-turan-connection",
+    "proofId": "erdos-749",
+    "range": { "startLine": 90, "endLine": 93 },
+    "type": "conjecture",
+    "title": "Erdős–Turán Connection (#28)",
+    "content": "If A+A has density exactly 1, the Erdős–Turán conjecture says r(n) must be unbounded. Problem #749 asks: what about density 1-ε for small ε?",
+    "significance": "high"
+  }
+]

@@ -1,0 +1,84 @@
+{
+  "id": "erdos-749",
+  "title": "Erdős Problem #749: Dense Sumsets with Bounded Representation",
+  "slug": "erdos-749",
+  "description": "For ε > 0, does A ⊆ ℕ exist with lower density of A+A ≥ 1-ε and bounded representation function r(n)? Explores tension between sumset density and convolution growth. Related to Erdős–Turán conjecture (#28). Status: OPEN.",
+  "meta": {
+    "erdosNumber": 749,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "representation-function",
+      "density",
+      "open"
+    ],
+    "references": [
+      "Erdős (1994): original problem",
+      "Erdős–Turán conjecture: Problem #28",
+      "https://erdosproblems.com/749"
+    ],
+    "leanFile": "Proofs/Erdos749Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 26,
+      "endLine": 49,
+      "summary": "Define repFunction, sumSet, lowerDensity, upperDensity with basic properties."
+    },
+    {
+      "id": "bounded-dense",
+      "title": "Bounded Representation and Dense Sumset",
+      "startLine": 51,
+      "endLine": 59,
+      "summary": "Define HasBoundedRep and HasDenseSumset."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 61,
+      "endLine": 70,
+      "summary": "For every ε > 0, can we have dense sumset AND bounded r(n)?"
+    },
+    {
+      "id": "context",
+      "title": "Sidon Sets and Erdős–Turán Connection",
+      "startLine": 72,
+      "endLine": 95,
+      "summary": "Sidon sets have bounded r(n) but density-0 sumsets. Connection to Problem #28."
+    },
+    {
+      "id": "upper-variant",
+      "title": "Upper Density Variant",
+      "startLine": 97,
+      "endLine": 104,
+      "summary": "Similar question with upper density instead of lower density."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this in 1994, exploring the fundamental tension in additive combinatorics between sumset density and representation function growth. Sidon sets show bounded r(n) is compatible with sparse sumsets, while the Erdős–Turán conjecture (Problem #28) asserts that a full basis must have unbounded r(n). Problem #749 asks about the boundary: near-full density.",
+    "problemStatement": "For every ε > 0, does there exist A ⊆ ℕ such that A + A has lower density ≥ 1 - ε, yet the representation function r(n) = |{(a,b) ∈ A² : a+b=n, a≤b}| is bounded?",
+    "proofStrategy": "We formalize the representation function, sumset, density, and the bounded/dense properties. We state the main question as a disjunction (exists or not), connect to Sidon sets (bounded but sparse) and the Erdős–Turán conjecture (full density implies unbounded), and include the upper density variant.",
+    "keyInsights": [
+      "Sidon sets: r(n) ≤ 2 (bounded) but sumset density = 0",
+      "Additive bases: sumset density = 1 but r(n) conjectured unbounded (Erdős–Turán)",
+      "The question: can we interpolate? Near-density-1 sumset with bounded r(n)?",
+      "If true, this would show the Erdős–Turán threshold is sharp at density = 1",
+      "Upper density variant is also open and potentially different"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #749 asks whether near-basis sets (sumset density close to 1) can have bounded representation function. This sits between Sidon sets (bounded r(n), sparse sumset) and the Erdős–Turán conjecture (full basis implies unbounded r(n)). Both the lower and upper density variants remain open.",
+    "implications": "A positive answer would show the Erdős–Turán threshold is exactly density 1, with bounded representation possible for any density below 1. A negative answer would establish quantitative lower bounds on r(n) in terms of sumset density.",
+    "openQuestions": [
+      "Can A+A have lower density ≥ 1-ε with bounded r(n)?",
+      "Does the answer differ for upper density vs lower density?",
+      "What is the optimal bound C(ε) on r(n) if such sets exist?",
+      "Is the Erdős–Turán conjecture (Problem #28) true?"
+    ]
+  }
+}
