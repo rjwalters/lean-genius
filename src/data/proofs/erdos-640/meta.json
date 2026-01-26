@@ -1,0 +1,88 @@
+{
+  "id": "erdos-640",
+  "title": "Erdős Problem #640: Chromatic Number of Odd Cycle Spans",
+  "slug": "erdos-640",
+  "description": "Does there exist f(k) such that every graph with χ(G) ≥ f(k) contains an odd cycle whose vertices span a subgraph of chromatic number ≥ k? Trivial for k=3; open for k ≥ 4. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/640",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos640Problem.lean",
+    "tags": [
+      "graph-theory",
+      "chromatic-number",
+      "odd-cycles",
+      "erdos-hajnal"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 640,
+    "erdosUrl": "https://erdosproblems.com/640",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #640 (Erdős–Hajnal, [Er97d, p.84]) asks whether high chromatic number forces the existence of odd cycles with high-chromatic vertex spans. Raphael Steiner showed an equivalent path formulation.",
+    "problemStatement": "For k ≥ 3, does there exist f(k) such that χ(G) ≥ f(k) implies G contains an odd cycle whose vertices induce a subgraph of chromatic number ≥ k? OPEN.",
+    "proofStrategy": "We formalize the conjecture using Mathlib's SimpleGraph API, defining chromatic number via proper colorings, odd cycles via cyclic orderings, and the induced subgraph chromatic threshold. Steiner's path equivalence is stated as an axiom.",
+    "keyInsights": [
+      "The k=3 case is trivial: any non-bipartite graph has an odd cycle with χ = 3",
+      "Steiner showed the conjecture is equivalent for paths instead of odd cycles",
+      "The problem connects chromatic number to local cycle structure",
+      "No value of f(k) is known for k ≥ 4",
+      "The conjecture appears in Erdős–Hajnal [Er97d, p.84]"
+    ]
+  },
+  "sections": [
+    {
+      "id": "chromatic-number",
+      "title": "Part I: Chromatic Number",
+      "startLine": 42,
+      "endLine": 58,
+      "summary": "Defines IsKColorable and chromaticNumber via Nat.find."
+    },
+    {
+      "id": "odd-cycles",
+      "title": "Part II: Odd Cycles",
+      "startLine": 60,
+      "endLine": 75,
+      "summary": "Defines HasOddCycleWithVertices: odd-length cycles via cyclic orderings."
+    },
+    {
+      "id": "induced-chromatic",
+      "title": "Part III: Induced Subgraph Chromatic Number",
+      "startLine": 77,
+      "endLine": 93,
+      "summary": "Defines inducedSubgraph and InducedChromaticAtLeast predicate."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part IV: The Erdős–Hajnal Conjecture",
+      "startLine": 95,
+      "endLine": 133,
+      "summary": "States ErdosHajnalConjecture640 and SteinerPathVariant with equivalence axiom."
+    },
+    {
+      "id": "trivial-case",
+      "title": "Part V: The Trivial Case k = 3",
+      "startLine": 135,
+      "endLine": 148,
+      "summary": "Axiom: f(3) = 3 works since any non-bipartite graph has an odd cycle with χ = 3."
+    },
+    {
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 150,
+      "endLine": 162,
+      "summary": "Theorem erdos_640_summary: the conjecture is equivalent to Steiner's path variant."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #640 asks whether high chromatic number forces odd cycles with high-chromatic spans. The k=3 case is trivial; the general case remains open. Steiner's path equivalence is formalized.",
+    "implications": "A positive answer would reveal deep structure connecting global chromatic number to local cycle properties. The path equivalence simplifies the problem's formulation.",
+    "openQuestions": [
+      "Does f(k) exist for all k ≥ 4?",
+      "What is the growth rate of f(k) if it exists?",
+      "Can the conjecture be strengthened to even cycles?"
+    ]
+  }
+}

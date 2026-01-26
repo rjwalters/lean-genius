@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-640-chromatic",
+    "proofId": "erdos-640",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 58 },
+    "title": "Chromatic Number",
+    "content": "IsKColorable defines proper k-colorings (no adjacent vertices share a color). chromaticNumber uses Nat.find for the minimum k. These are standard graph coloring primitives.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-640-odd-cycle",
+    "proofId": "erdos-640",
+    "type": "definition",
+    "range": { "startLine": 62, "endLine": 75 },
+    "title": "Odd Cycle Representation",
+    "content": "HasOddCycleWithVertices captures an odd cycle by its vertex set S with |S| ≥ 3, |S| odd, and a cyclic ordering σ such that consecutive vertices are adjacent in G.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-640-induced",
+    "proofId": "erdos-640",
+    "type": "definition",
+    "range": { "startLine": 79, "endLine": 93 },
+    "title": "Induced Subgraph Chromatic Threshold",
+    "content": "inducedSubgraph restricts G to a vertex set S. InducedChromaticAtLeast asserts the induced subgraph is not (k-1)-colorable, i.e., its chromatic number is ≥ k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-640-conjecture",
+    "proofId": "erdos-640",
+    "type": "conjecture",
+    "range": { "startLine": 97, "endLine": 111 },
+    "title": "Erdős–Hajnal Conjecture 640",
+    "content": "For every k ≥ 3, there exists f(k) such that χ(G) ≥ f(k) implies G contains an odd cycle whose vertices span a subgraph with χ ≥ k. The main open conjecture of Problem #640.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-640-steiner",
+    "proofId": "erdos-640",
+    "type": "result",
+    "range": { "startLine": 113, "endLine": 133 },
+    "title": "Steiner's Path Equivalence",
+    "content": "Raphael Steiner showed that replacing 'odd cycle' with 'path' gives an equivalent conjecture. This simplifies the problem: finding paths with high-chromatic spans suffices.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-640-trivial",
+    "proofId": "erdos-640",
+    "type": "context",
+    "range": { "startLine": 137, "endLine": 148 },
+    "title": "Trivial Case k = 3",
+    "content": "For k = 3, f(3) = 3 works trivially. Any graph with χ ≥ 3 is non-bipartite, so it contains an odd cycle. Every odd cycle has chromatic number exactly 3, satisfying the condition.",
+    "significance": "supporting"
+  }
+]
