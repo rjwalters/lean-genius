@@ -1,0 +1,68 @@
+{
+  "id": "erdos-810",
+  "title": "Erdős Problem #810: Rainbow C₄ in Edge-Colored Dense Graphs",
+  "slug": "erdos-810",
+  "description": "Does there exist ε > 0 such that for large n, some n-vertex graph with ≥ εn² edges can be n-colored so every C₄ is rainbow (4 distinct colors)? A problem of Burr, Erdős, Graham, and Sós.",
+  "meta": {
+    "author": "Burr, Erdős, Graham, Sós",
+    "sourceUrl": "https://erdosproblems.com/810",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos810Problem.lean",
+    "tags": ["graph theory", "Ramsey theory", "edge coloring"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 810,
+    "erdosUrl": "https://erdosproblems.com/810",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Burr, Erdős, Graham, and Sós posed this problem about the interaction of density and rainbow structure. A rainbow C₄ has all 4 edges colored distinctly. The challenge is constructing dense graphs where an n-coloring makes every 4-cycle rainbow.",
+    "problemStatement": "Does there exist ε > 0 such that for sufficiently large n, there is a graph on n vertices with ≥ εn² edges whose edges can be colored with n colors so that every C₄ receives 4 distinct colors?",
+    "proofStrategy": "Defines edge colorings, 4-cycles, rainbow C₄, and the existence property. States the main conjecture and observes that C₄-free graphs (which trivially satisfy the rainbow condition) are too sparse, necessitating dense graphs with controlled C₄ structure.",
+    "keyInsights": [
+      "C₄-free graphs trivially have all C₄'s rainbow but have only O(n^{3/2}) edges",
+      "The problem requires Θ(n²) edges, so the graph must contain many C₄'s",
+      "Every C₄ must be rainbow: a strong structural condition on the coloring",
+      "The n-color palette matches the number of vertices, connecting to proper colorings"
+    ]
+  },
+  "sections": [
+    {
+      "id": "colorings",
+      "title": "Edge Colorings and Rainbow Subgraphs",
+      "startLine": 16,
+      "endLine": 48,
+      "summary": "Defines edge colorings, 4-cycles, rainbow C₄, and rainbow-C₄ colorings."
+    },
+    {
+      "id": "dense-rainbow",
+      "title": "Dense Graphs with Rainbow-C₄ Colorings",
+      "startLine": 52,
+      "endLine": 56,
+      "summary": "Defines the existence of dense graphs with rainbow-C₄ n-colorings."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 60,
+      "endLine": 65,
+      "summary": "States the Burr–Erdős–Graham–Sós conjecture."
+    },
+    {
+      "id": "observations",
+      "title": "Trivial Observations",
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "Notes that C₄-free graphs are too sparse and dense graphs must have many C₄'s."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 810 asks for the existence of dense graphs with rainbow-C₄ edge colorings. The tension between density (requiring many C₄'s) and the rainbow condition (requiring distinct colors on each C₄) makes this a challenging combinatorial problem.",
+    "implications": "Resolution would advance understanding of anti-Ramsey theory and the interaction of graph density with rainbow coloring constraints.",
+    "openQuestions": [
+      "Does such a graph exist for any ε > 0?",
+      "What is the maximum ε achievable if the answer is yes?",
+      "What happens with n/2 or n/3 colors instead of n?"
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "cycle-four",
+    "proofId": "erdos-810",
+    "type": "definition",
+    "title": "4-Cycle Structure",
+    "content": "A C₄ is four distinct vertices v₁,v₂,v₃,v₄ forming a cycle: edges v₁v₂, v₂v₃, v₃v₄, v₄v₁. Encoded as a structure with vertex and adjacency fields.",
+    "significance": "supporting",
+    "range": {
+      "startLine": 28,
+      "endLine": 37
+    }
+  },
+  {
+    "id": "rainbow-c4",
+    "proofId": "erdos-810",
+    "type": "definition",
+    "title": "Rainbow C₄",
+    "content": "A 4-cycle is rainbow if all 4 edges receive distinct colors. This requires the coloring to be injective on the edges of every C₄ subgraph.",
+    "significance": "critical",
+    "range": {
+      "startLine": 40,
+      "endLine": 48
+    }
+  },
+  {
+    "id": "dense-rainbow-def",
+    "proofId": "erdos-810",
+    "type": "definition",
+    "title": "Dense Rainbow-C₄ Graph",
+    "content": "A graph on n vertices with ≥ εn² edges that admits an n-coloring making every C₄ rainbow. This combines density with a strong structural coloring constraint.",
+    "significance": "critical",
+    "range": {
+      "startLine": 52,
+      "endLine": 56
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-810",
+    "type": "concept",
+    "title": "The Burr–Erdős–Graham–Sós Conjecture",
+    "content": "There exists ε > 0 such that for large n, dense graphs with rainbow-C₄ n-colorings exist. The interplay of quadratic edge density and rainbow structure is the core challenge.",
+    "significance": "critical",
+    "range": {
+      "startLine": 60,
+      "endLine": 65
+    }
+  },
+  {
+    "id": "kst-observation",
+    "proofId": "erdos-810",
+    "type": "insight",
+    "title": "C₄-Free Graphs Are Too Sparse",
+    "content": "By Kővári–Sós–Turán, C₄-free graphs have O(n^{3/2}) edges — not enough for εn² density. So the desired graph must contain C₄'s but color all of them rainbow.",
+    "significance": "key",
+    "range": {
+      "startLine": 69,
+      "endLine": 78
+    }
+  }
+]
