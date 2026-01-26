@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos-51-ann-preimage",
+    "proofId": "erdos-51",
+    "range": { "startLine": 34, "endLine": 36 },
+    "type": "definition",
+    "title": "Totient Preimage Set",
+    "content": "The set {n : φ(n) = a} of all preimages of a under Euler's totient function.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-51-ann-smallest",
+    "proofId": "erdos-51",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "definition",
+    "title": "Smallest Totient Preimage",
+    "content": "The smallest n with φ(n) = a. The key quantity: the conjecture asks whether this can grow much faster than a.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-51-ann-conjecture",
+    "proofId": "erdos-51",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "theorem",
+    "title": "Main Conjecture: Divergent Ratio",
+    "content": "There exists an infinite set A of totient values such that smallestTotientPreimage(a)/a → ∞ as a → ∞ through A.",
+    "significance": "critical"
+  },
+  {
+    "id": "erdos-51-ann-totient-prime",
+    "proofId": "erdos-51",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "theorem",
+    "title": "φ(p) = p − 1",
+    "content": "For prime p, φ(p) = p − 1. These give totient values with ratio p/(p−1) → 1, the 'easy' case.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-51-ann-even",
+    "proofId": "erdos-51",
+    "range": { "startLine": 79, "endLine": 80 },
+    "type": "theorem",
+    "title": "Even Numbers Are Totient Values",
+    "content": "Every even a ≥ 2 is a totient value. If a+1 is prime, then φ(a+1) = a.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-51-ann-carmichael",
+    "proofId": "erdos-51",
+    "range": { "startLine": 87, "endLine": 90 },
+    "type": "theorem",
+    "title": "Erdős–Carmichael Result",
+    "content": "Erdős proved: if any totient value has exactly one preimage, then infinitely many do. Relates to uniqueness of inverse totient.",
+    "significance": "key"
+  },
+  {
+    "id": "erdos-51-ann-prime-ratio",
+    "proofId": "erdos-51",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "concept",
+    "title": "Prime Preimage Ratio",
+    "content": "For prime p, smallestTotientPreimage(p−1) ≤ p, so the ratio is at most p/(p−1) → 1. The conjecture needs to avoid these easy values.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-51-ann-highly-totient",
+    "proofId": "erdos-51",
+    "range": { "startLine": 110, "endLine": 111 },
+    "type": "concept",
+    "title": "Highly Totient Numbers",
+    "content": "For any k, some totient value has ≥ k preimages. Values with many preimages may still have large smallest preimages.",
+    "significance": "supporting"
+  }
+]
