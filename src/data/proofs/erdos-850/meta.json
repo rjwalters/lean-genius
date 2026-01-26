@@ -1,0 +1,46 @@
+{
+  "id": "erdos-850",
+  "title": "Same Prime Factors for Three Consecutive Shifts",
+  "slug": "erdos-850",
+  "description": "Can distinct x, y have the same prime factors for x,y and x+1,y+1 and x+2,y+2? Conjectured no (Erdős-Woods conjecture).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/850",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos850Problem.lean",
+    "tags": ["number-theory", "prime-factors", "abc-conjecture", "erdos-woods"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 850,
+    "erdosUrl": "https://erdosproblems.com/850",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Known as the Erdős-Woods conjecture. Shorey and Tijdeman showed that a strong form of the ABC conjecture implies the answer is no. For the two-shift version, solutions exist via x = 2(2^r - 1), y = x(x+2), and the Makowski example (75, 1215).",
+    "problemStatement": "Do there exist distinct positive integers x and y such that x,y share the same prime factors, x+1,y+1 share the same prime factors, and x+2,y+2 also share the same prime factors?",
+    "proofStrategy": "We define SamePrimeFactors via Nat.primeFactors equality, state the conjecture for k=2, generalize to k-shift, and prove structural properties. The connection to the ABC conjecture via Shorey-Tijdeman is stated.",
+    "keyInsights": [
+      "The two-shift version (k=1) is solvable, but the three-shift version (k=2) is conjectured unsolvable",
+      "The strong ABC conjecture implies the three-shift version has no solutions",
+      "The parametric family x = 2(2^r-1) gives infinitely many two-shift solutions",
+      "The k-shift problem is monotone: unsolvability for k implies unsolvability for k-1"
+    ]
+  },
+  "sections": [
+    { "id": "definitions", "title": "Same Prime Factors", "startLine": 23, "endLine": 27, "summary": "Defines SamePrimeFactors using Nat.primeFactors equality." },
+    { "id": "conjecture", "title": "Main Conjecture", "startLine": 29, "endLine": 38, "summary": "States ErdosProblem850: no distinct x,y with same prime factors for three consecutive shifts." },
+    { "id": "two-shift", "title": "Weaker Variant: Two Consecutive Shifts", "startLine": 40, "endLine": 60, "summary": "The two-shift version is solvable via parametric family and Makowski's example (75, 1215)." },
+    { "id": "abc", "title": "Connection to ABC Conjecture", "startLine": 62, "endLine": 76, "summary": "States the strong ABC conjecture and Shorey-Tijdeman's conditional proof." },
+    { "id": "k-shift", "title": "General k-Shift Version", "startLine": 78, "endLine": 103, "summary": "Generalizes to k-shift, proves problem850_is_2shift and kshift_monotone." },
+    { "id": "structural", "title": "Structural Observations", "startLine": 105, "endLine": 121, "summary": "Proves SamePrimeFactors is an equivalence relation (reflexive, symmetric, transitive)." }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures the Erdős-Woods conjecture (Problem 850), the solvable two-shift variant, the connection to the ABC conjecture, and the general k-shift framework. 0 sorries.",
+    "implications": "Resolution would connect to deep questions about the multiplicative structure of consecutive integers and the ABC conjecture.",
+    "openQuestions": [
+      "Can the three-shift version be resolved unconditionally?",
+      "What is the smallest k for which the k-shift problem is unsolvable?",
+      "Are there finitely or infinitely many two-shift solutions beyond the parametric family?"
+    ]
+  }
+}
