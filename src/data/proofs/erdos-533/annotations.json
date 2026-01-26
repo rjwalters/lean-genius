@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-533-ann-1",
+    "proofId": "erdos-533",
+    "range": { "startLine": 24, "endLine": 36 },
+    "type": "definition",
+    "title": "Graph and Clique Definitions",
+    "content": "SGraph represents a simple graph on n vertices via a symmetric irreflexive adjacency relation. IsClique and HasClique formalize the notion of complete subgraphs, used to state the K₅-freeness condition.",
+    "significance": "These are the core combinatorial objects for the problem. The K_r-freeness condition ¬HasClique G r is the key structural constraint."
+  },
+  {
+    "id": "erdos-533-ann-2",
+    "proofId": "erdos-533",
+    "range": { "startLine": 43, "endLine": 51 },
+    "type": "definition",
+    "title": "Triangle-Freeness and Edge Count",
+    "content": "IsTriangleFree G S means no three vertices of S form a triangle in G. edgeCount counts edges as pairs (i,j) with i < j and adj i j. The problem asks for large triangle-free S in dense graphs.",
+    "significance": "The triangle-free condition on subsets (not the whole graph) is the key output requirement. The edge density δn² is the input condition."
+  },
+  {
+    "id": "erdos-533-ann-3",
+    "proofId": "erdos-533",
+    "range": { "startLine": 55, "endLine": 62 },
+    "type": "result",
+    "title": "EHSSS Partial Result for δ > 1/16",
+    "content": "Erdős, Hajnal, Simonovits, Sós, and Szemerédi proved: for δ > 1/16, any K₅-free graph with ≥ δn² edges has a triangle-free subset of size ≫ n. The threshold 1/16 arises from their regularity-based argument.",
+    "significance": "This is the strongest known partial result for K₅-free graphs. Extending to all δ > 0 is the content of Problem #533."
+  },
+  {
+    "id": "erdos-533-ann-4",
+    "proofId": "erdos-533",
+    "range": { "startLine": 64, "endLine": 70 },
+    "type": "result",
+    "title": "K₄-Free Case",
+    "content": "For K₄-free graphs, the triangle-free subset result holds for all δ > 0. This shows the conjecture is plausible: excluding a smaller clique makes it easier to find triangle-free subsets.",
+    "significance": "The K₄ case confirms the general philosophy. The jump from K₄ to K₅ is where the difficulty lies."
+  },
+  {
+    "id": "erdos-533-ann-5",
+    "proofId": "erdos-533",
+    "range": { "startLine": 72, "endLine": 79 },
+    "type": "result",
+    "title": "Erdős–Rogers Counterexample for K₇",
+    "content": "There exist K₇-free graphs with ≥ n²/4 edges where every triangle-free subset has o(n) vertices. This construction shows the result fails for sufficiently large excluded clique sizes, making K₅ and K₆ boundary cases.",
+    "significance": "The counterexample proves the statement is false starting at K₇, establishing that K₅ is close to the critical threshold."
+  },
+  {
+    "id": "erdos-533-ann-6",
+    "proofId": "erdos-533",
+    "range": { "startLine": 83, "endLine": 91 },
+    "type": "conjecture",
+    "title": "The Full Conjecture",
+    "content": "For every δ > 0, any K₅-free graph on n vertices with ≥ δn² edges contains a triangle-free subset of size ≥ c(δ)·n for some constant c(δ) > 0. This extends the EHSSS result from δ > 1/16 to all positive δ.",
+    "significance": "This is one of the key open problems in extremal graph theory, testing whether Ramsey-type phenomena persist for K₅-free graphs at all densities."
+  }
+]

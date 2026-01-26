@@ -1,0 +1,70 @@
+{
+  "id": "erdos-533",
+  "title": "Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs",
+  "slug": "erdos-533",
+  "description": "Must a K₅-free graph on n vertices with ≥ δn² edges contain a triangle-free subset of ≫ n vertices? True for δ > 1/16 (EHSSS). Fails for K₇ at δ = 1/4 (Erdős–Rogers). Open.",
+  "meta": {
+    "erdosNumber": 533,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "extremal-graph-theory",
+      "ramsey-theory",
+      "open"
+    ],
+    "references": [
+      "Erdős–Hajnal–Simonovits–Sós–Szemerédi: δ > 1/16 case",
+      "K₄-free case for all δ > 0",
+      "Erdős–Rogers: K₇-free counterexample at δ = 1/4",
+      "https://erdosproblems.com/533"
+    ],
+    "leanFile": "Proofs/Erdos533Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 51,
+      "summary": "SGraph, IsClique, HasClique, IsTriangleFree, edgeCount."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "startLine": 53,
+      "endLine": 79,
+      "summary": "EHSSS for δ > 1/16, K₄-free for all δ, Erdős–Rogers counterexample."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Question",
+      "startLine": 81,
+      "endLine": 91,
+      "summary": "Full conjecture for K₅-free and all δ > 0."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős asked whether dense K₅-free graphs must contain large triangle-free subsets. This question sits at the intersection of extremal graph theory and Ramsey theory, generalizing the classical Ramsey question of finding structure in dense graphs. The Erdős–Rogers construction shows the answer depends critically on the excluded clique size.",
+    "problemStatement": "For every δ > 0, does every K₅-free graph on n vertices with at least δn² edges contain a triangle-free induced subgraph on Ω_δ(n) vertices?",
+    "proofStrategy": "We define simple graphs, cliques, triangle-freeness, and edge counts. We record the EHSSS partial result for δ > 1/16, the K₄-free case, the Erdős–Rogers counterexample for K₇, and state the open conjecture for K₅.",
+    "keyInsights": [
+      "The result holds for δ > 1/16 by Erdős–Hajnal–Simonovits–Sós–Szemerédi",
+      "Replacing K₅ by K₄ makes the statement true for all δ > 0",
+      "Replacing K₅ by K₇ makes the statement false at δ = 1/4 via the Erdős–Rogers construction",
+      "The gap between K₄ (always true) and K₇ (fails) makes K₅ and K₆ the critical cases",
+      "The problem connects to the Ramsey multiplicity problem and Turán-type extremal questions"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #533 asks whether K₅-free dense graphs must contain large triangle-free subsets. The answer is yes for δ > 1/16 and for K₄-free graphs, but fails for K₇-free graphs, making K₅ a critical boundary case.",
+    "implications": "Resolution would clarify the relationship between clique-freeness and the existence of structured subgraphs, with connections to Ramsey theory, Szemerédi regularity, and extremal graph theory.",
+    "openQuestions": [
+      "Does the result extend to all δ > 0 for K₅-free graphs?",
+      "What about K₆-free graphs — does the result hold for all δ > 0?",
+      "Can the δ > 1/16 threshold be lowered for K₅-free graphs?",
+      "What is the optimal constant c(δ) in the triangle-free subset size cn?"
+    ]
+  }
+}
