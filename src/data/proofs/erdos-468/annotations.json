@@ -1,0 +1,56 @@
+[
+  {
+    "id": "partial-divisor-sums",
+    "proofId": "erdos-468",
+    "range": { "startLine": 30, "endLine": 34 },
+    "type": "definition",
+    "title": "Partial Divisor Sums D_n",
+    "content": "D_n = {d₁, d₁+d₂, d₁+d₂+d₃, ...} where d₁ < d₂ < ⋯ are divisors of n greater than 1. For n=6: divisors {2,3,6} give D_6 = {2, 5, 11}.",
+    "significance": "high"
+  },
+  {
+    "id": "new-elements",
+    "proofId": "erdos-468",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "New Elements",
+    "content": "Elements in D_n not appearing in any D_m for m < n. Question 1 asks about the size of this set.",
+    "significance": "high"
+  },
+  {
+    "id": "first-appearance",
+    "proofId": "erdos-468",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "First Appearance Function",
+    "content": "f(N) = min{n : N ∈ D_n}. The smallest integer whose divisor partial sums include N. The main conjecture is f(N) = o(N).",
+    "significance": "high"
+  },
+  {
+    "id": "conjecture-sublinear",
+    "proofId": "erdos-468",
+    "range": { "startLine": 63, "endLine": 66 },
+    "type": "conjecture",
+    "title": "Sublinear Growth Conjecture",
+    "content": "f(N) = o(N): every integer N first appears as a partial divisor sum of some n much smaller than N. The partial sums 'cover' ℕ efficiently.",
+    "significance": "high"
+  },
+  {
+    "id": "almost-all",
+    "proofId": "erdos-468",
+    "range": { "startLine": 69, "endLine": 72 },
+    "type": "conjecture",
+    "title": "Almost All Variant",
+    "content": "f(N) = o(N) for almost all N: the density of exceptions where f(N) is not sublinear tends to 0. A weaker but still open form.",
+    "significance": "high"
+  },
+  {
+    "id": "examples",
+    "proofId": "erdos-468",
+    "range": { "startLine": 76, "endLine": 80 },
+    "type": "note",
+    "title": "Small Examples",
+    "content": "D_6 = {2, 5, 11} from divisors {2,3,6}. D_12 = {2, 5, 9, 15, 27} from divisors {2,3,4,6,12}. The sets grow with the divisor count.",
+    "significance": "medium"
+  }
+]
