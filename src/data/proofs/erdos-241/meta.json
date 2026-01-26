@@ -1,0 +1,89 @@
+{
+  "id": "erdos-241",
+  "title": "Erdős Problem #241: Maximum Size of B₃ Sets",
+  "slug": "erdos-241",
+  "description": "Let f(N) be the maximum size of A ⊆ {1,...,N} with all three-element sums distinct. Is f(N) ~ N^{1/3}? Bose–Chowla achieved N^{1/3}; Green's upper bound is ~1.519·N^{1/3}. OPEN ($100 prize).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/241",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos241Problem.lean",
+    "tags": ["additive-combinatorics", "sidon-sets", "b3-sets"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 241,
+    "erdosUrl": "https://erdosproblems.com/241",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Bose to Erdős. A B₃ set has all ordered triple sums distinct. Bose and Chowla (1962) constructed B₃ sets of size (1+o(1))N^{1/3} using finite field methods. Green (2001) proved the upper bound f(N) ≤ (7/2)^{1/3}·N^{1/3} ≈ 1.519·N^{1/3}. The gap between 1 and 1.519 remains open. This generalizes the Sidon set problem (B₂ sets, Problem #30). Discussed as Problem C11 in Guy's collection.",
+    "problemStatement": "Is f(N) ~ N^{1/3}, where f(N) is the maximum size of a B₃ subset of {1,...,N}?",
+    "proofStrategy": "We define IsB3 (all ordered triple sums distinct) and maxB3Size. The conjecture ErdosProblem241 asserts f(N)/N^{1/3} → 1. We axiomatize the Bose–Chowla lower bound and Green's upper bound. The generalized Bₕ sets and Bose–Chowla conjecture for arbitrary h are formalized.",
+    "keyInsights": [
+      "Bose–Chowla (1962): explicit B₃ sets of size (1+o(1))N^{1/3} via finite fields",
+      "Green (2001): upper bound f(N) ≤ (7/2)^{1/3}·N^{1/3} ≈ 1.519·N^{1/3}",
+      "The conjecture f(N) ~ N^{1/3} asks whether the Bose–Chowla construction is optimal",
+      "Generalizes to Bₕ sets: Bose–Chowla conjecture predicts f_h(N) ~ N^{1/h}"
+    ]
+  },
+  "sections": [
+    {
+      "id": "b3-sets",
+      "title": "B₃ Sets",
+      "startLine": 22,
+      "endLine": 39,
+      "summary": "Defines threeSums and IsB3: all ordered triple sums a+b+c (a ≤ b ≤ c) from A are distinct."
+    },
+    {
+      "id": "max-b3-size",
+      "title": "Maximum B₃ Subset Size",
+      "startLine": 41,
+      "endLine": 47,
+      "summary": "Defines maxB3Size as the supremum of cardinalities of B₃ subsets of {1,...,N}."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 49,
+      "endLine": 61,
+      "summary": "States ErdosProblem241: f(N)/N^{1/3} → 1 as N → ∞."
+    },
+    {
+      "id": "bose-chowla",
+      "title": "The Bose–Chowla Lower Bound",
+      "startLine": 63,
+      "endLine": 72,
+      "summary": "Axiomatizes the 1962 lower bound: f(N) ≥ (1-ε)N^{1/3} for large N."
+    },
+    {
+      "id": "green-bound",
+      "title": "Green's Upper Bound",
+      "startLine": 74,
+      "endLine": 83,
+      "summary": "Axiomatizes Green's 2001 result: f(N) ≤ ((7/2)^{1/3}+ε)N^{1/3} ≈ 1.519·N^{1/3}."
+    },
+    {
+      "id": "generalized-bh",
+      "title": "Generalized Bₕ Sets",
+      "startLine": 85,
+      "endLine": 117,
+      "summary": "Defines IsBh for arbitrary h, maxBhSize, the general Bose–Chowla conjecture, and notes h=2 is resolved."
+    },
+    {
+      "id": "examples",
+      "title": "Known Small B₃ Sets",
+      "startLine": 119,
+      "endLine": 132,
+      "summary": "Axiomatizes that {1,2,4,8} is B₃ and states the trivial counting upper bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 241 asks whether the maximum B₃ subset of {1,...,N} has size asymptotically N^{1/3}. The Bose–Chowla construction achieves this lower bound, while Green's upper bound of ~1.519·N^{1/3} leaves a gap.",
+    "implications": "Resolution would settle the fundamental question in additive combinatorics about the exact threshold for three-sum-distinct sets and inform the general Bₕ conjecture.",
+    "openQuestions": [
+      "Is f(N) ~ N^{1/3} (can the upper bound constant be reduced to 1)?",
+      "What is the exact value of the limsup of f(N)/N^{1/3}?",
+      "Can Green's upper bound technique be improved for B₃ sets?"
+    ]
+  }
+}
