@@ -1,0 +1,85 @@
+{
+  "id": "erdos-954",
+  "title": "Erdős Problem #954: Rosen's Greedy Additive Sequence",
+  "slug": "erdos-954",
+  "description": "Define a greedy sequence 0 = a₀ < a₁ < ⋯ where a_{k+1} is minimal with representation count < a_{k+1}. Is R(x) = x + O(x^{1/4+o(1)})? Even R(x) ≤ (1+o(1))x is open. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 954,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "greedy-algorithms",
+      "representation-functions",
+      "open"
+    ],
+    "references": [
+      "Erdős (1977): original problem (Er77c, p.71)",
+      "Rosen: greedy sequence construction",
+      "OEIS A390642: the Rosen sequence",
+      "https://erdosproblems.com/954"
+    ],
+    "leanFile": "Proofs/Erdos954Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 44,
+      "summary": "Define repCount, the greedy condition IsGreedyNext, and IsRosenSequence."
+    },
+    {
+      "id": "initial-values",
+      "title": "Known Initial Values",
+      "startLine": 46,
+      "endLine": 51,
+      "summary": "The first 11 values of the Rosen sequence from OEIS A390642."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 53,
+      "endLine": 63,
+      "summary": "By construction: R(a_{k+1}) < a_{k+1} and R(m) ≥ m between consecutive elements."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 65,
+      "endLine": 82,
+      "summary": "Weak conjecture R(x) = (1+o(1))x and strong conjecture R(x) = x + O(x^{1/4+o(1)})."
+    },
+    {
+      "id": "sidon-connection",
+      "title": "Connection to Sidon Sets",
+      "startLine": 84,
+      "endLine": 100,
+      "summary": "Rosen's sequence as a relaxation of B₂ sequences; connection to Erdős–Turán conjecture."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Rosen constructed this greedy sequence and studied it with Erdős in the 1970s. The construction mirrors the philosophy behind Sidon sets (B₂ sequences) but relaxes the uniqueness condition to a cumulative count condition. The sequence appears as OEIS A390642.",
+    "problemStatement": "Let 0 = a₀ < a₁ < a₂ < ⋯ where a_{k+1} is the smallest n with repCount(n) < n. Is R(x) = x + O(x^{1/4+o(1)})?",
+    "proofStrategy": "We formalize the greedy construction, state both the weak conjecture R(x) = (1+o(1))x and the strong conjecture with x^{1/4} error, and connect to B₂ sequences and the Erdős–Turán conjecture.",
+    "keyInsights": [
+      "The greedy rule ensures R(a_{k+1}) < a_{k+1} while R(m) ≥ m between consecutive elements",
+      "The weak conjecture R(x) ≤ (1+o(1))x remains open",
+      "The x^{1/4} error term parallels B₂ sequence theory where R(x) ~ √x",
+      "The Rosen sequence is not B₂ — it allows repeated sums but controls their density",
+      "The problem cannot be resolved by finite computation"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #954 asks about the representation count of Rosen's greedy additive sequence. Even the weak estimate R(x) = (1+o(1))x is unproven, let alone the conjectured x^{1/4+o(1)} error bound. The problem remains open.",
+    "implications": "A resolution would illuminate the boundary between Sidon-type uniqueness and density-controlled additive constructions. The greedy approach suggests a natural tradeoff between sequence density and representation control.",
+    "openQuestions": [
+      "Is R(x) ≤ (1+o(1))x?",
+      "Is R(x) = x + O(x^{1/4+o(1)})?",
+      "What is the density of the Rosen sequence?",
+      "Can the greedy construction be optimized with a different threshold?"
+    ]
+  }
+}
