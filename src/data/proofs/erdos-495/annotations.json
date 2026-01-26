@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-495-distint",
+    "proofId": "erdos-495",
+    "type": "definition",
+    "range": { "startLine": 39, "endLine": 53 },
+    "title": "Distance to Nearest Integer",
+    "content": "distInt x = |x - round(x)|, the distance from x to ℤ. Non-negative and at most 1/2. This is ‖x‖ in Diophantine approximation notation.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-495-product",
+    "proofId": "erdos-495",
+    "type": "definition",
+    "range": { "startLine": 59, "endLine": 72 },
+    "title": "The Littlewood Product",
+    "content": "littlewoodProduct n α β = n · ‖nα‖ · ‖nβ‖. The key quantity whose liminf the Littlewood conjecture asserts is zero.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-495-conjecture",
+    "proofId": "erdos-495",
+    "type": "conjecture",
+    "range": { "startLine": 78, "endLine": 87 },
+    "title": "The Littlewood Conjecture",
+    "content": "LittlewoodConjecture: for all α, β ∈ ℝ and ε > 0, there are infinitely many n with n · ‖nα‖ · ‖nβ‖ < ε. Equivalent to lim inf = 0.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-495-cubic",
+    "proofId": "erdos-495",
+    "type": "result",
+    "range": { "startLine": 100, "endLine": 113 },
+    "title": "Cassels–Swinnerton-Dyer (1955)",
+    "content": "The conjecture holds when α and β lie in the same cubic number field. This was the first non-trivial case proved beyond rationals.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-495-ekl",
+    "proofId": "erdos-495",
+    "type": "result",
+    "range": { "startLine": 119, "endLine": 130 },
+    "title": "Einsiedler–Katok–Lindenstrauss (2006)",
+    "content": "The set of counterexamples to the Littlewood conjecture has Hausdorff dimension zero. Uses ergodic theory on SL(3,ℝ)/SL(3,ℤ). Fields Medal work for Lindenstrauss (2010).",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-495-summary",
+    "proofId": "erdos-495",
+    "type": "context",
+    "range": { "startLine": 157, "endLine": 164 },
+    "title": "Summary",
+    "content": "The Littlewood conjecture remains open in full generality. Known for rationals, cubic irrationals, and almost all pairs. The p-adic variant is also open.",
+    "significance": "supporting"
+  }
+]
