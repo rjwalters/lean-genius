@@ -1,0 +1,38 @@
+[
+  {
+    "id": "erdos-330-ann-1",
+    "proofId": "erdos-330",
+    "range": { "startLine": 25, "endLine": 55 },
+    "type": "definition",
+    "title": "Basis and Density Definitions",
+    "content": "IsRepresentable(A, h, m) checks if m is a sum of at most h elements of A. IsAsympBasis(A, h) means all sufficiently large m are representable. upperDensity is axiomatized. IsMinimalBasis requires the basis property and that removing any element destroys it. unrepresentableWithout(A, n, h) collects integers not representable from A \\ {n}.",
+    "significance": "These definitions formalize the precise notion of a minimal additive basis and the density condition on unrepresentable sets."
+  },
+  {
+    "id": "erdos-330-ann-2",
+    "proofId": "erdos-330",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "result",
+    "title": "Infinite Unrepresentables",
+    "content": "For a minimal basis A of order h, removing any n ∈ A leaves infinitely many integers unrepresentable. This is immediate from minimality: if only finitely many were unrepresentable, A \\ {n} would still be a basis.",
+    "significance": "This is the baseline consequence of minimality. The open question asks whether 'infinitely many' can be strengthened to 'positive density'."
+  },
+  {
+    "id": "erdos-330-ann-3",
+    "proofId": "erdos-330",
+    "range": { "startLine": 69, "endLine": 72 },
+    "type": "result",
+    "title": "Existence of Minimal Bases with Positive Density",
+    "content": "Härtter (1956) and Stöhr (1955) showed that for every order h ≥ 2, there exist minimal asymptotic bases with positive upper density. This establishes the weaker version of the problem.",
+    "significance": "The existence of such bases is the starting point for Problem #330, which asks for the additional property that each element's removal yields a positive-density unrep. set."
+  },
+  {
+    "id": "erdos-330-ann-4",
+    "proofId": "erdos-330",
+    "range": { "startLine": 80, "endLine": 85 },
+    "type": "conjecture",
+    "title": "Strong Minimal Basis Conjecture",
+    "content": "Erdős and Nathanson asked: does there exist a minimal basis A of order h with positive density such that for every n ∈ A, the set of integers not representable without n also has positive upper density? This strengthens minimality from a qualitative to a quantitative condition.",
+    "significance": "A positive answer would show that in certain bases, every element is not just essential but quantitatively critical, contributing to the representability of a positive proportion of integers."
+  }
+]

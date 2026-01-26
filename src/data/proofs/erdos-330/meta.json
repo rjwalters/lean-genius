@@ -1,0 +1,71 @@
+{
+  "id": "erdos-330",
+  "title": "Erdős Problem #330: Minimal Bases with Positive Density",
+  "slug": "erdos-330",
+  "description": "Does there exist a minimal asymptotic additive basis A with positive density such that for every n ∈ A, the integers unrepresentable without n also have positive upper density? Open (Erdős–Nathanson).",
+  "meta": {
+    "erdosNumber": 330,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "additive-bases",
+      "density",
+      "open"
+    ],
+    "references": [
+      "Erdős–Graham (1980), p.50",
+      "Erdős–Nathanson: original formulation",
+      "Härtter (1956): minimal bases with positive density exist",
+      "Stöhr (1955): minimal bases of order 2",
+      "https://erdosproblems.com/330"
+    ],
+    "leanFile": "Proofs/Erdos330Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 23,
+      "endLine": 55,
+      "summary": "IsRepresentable, IsAsympBasis, upperDensity, HasPosDensity, IsMinimalBasis, unrepresentableWithout."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 74,
+      "endLine": 85,
+      "summary": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Nathanson posed this question about minimal additive bases. A set A is a basis of order h if every large enough integer is a sum of at most h elements of A. A basis is minimal if removing any element destroys the property. Härtter (1956) and Stöhr (1955) showed minimal bases with positive density exist, but whether the stronger property (each removal yields positive-density unrepresentables) holds is unknown.",
+    "problemStatement": "Does there exist a minimal asymptotic additive basis A ⊂ ℕ of order h with positive upper density such that for every n ∈ A, the set of integers not representable without n also has positive upper density?",
+    "proofStrategy": "We define representability, asymptotic basis, upper density (axiomatized), minimality, and the unrepresentable set constructively. Known existence results are recorded as axioms. The open question is formalized as an existential statement.",
+    "keyInsights": [
+      "A minimal basis requires every element to be essential: removal leaves infinitely many unrep. integers",
+      "Minimal bases with positive density exist (Härtter 1956, Stöhr 1955)",
+      "The question strengthens 'infinitely many' to 'positive density' of unrepresentable integers",
+      "This connects the structure of individual elements to the global density of the basis",
+      "A positive answer would show each element of the basis is quantitatively critical"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #330 asks whether a minimal additive basis can simultaneously have positive density and the property that each element's removal leaves a positive-density set of unrepresentable integers. The basic existence of minimal bases with positive density is known, but the strengthened condition is open.",
+    "implications": "Resolution would clarify the fine structure of additive bases, connecting individual element criticality to density, with implications for the Erdős–Nathanson theory of minimal bases.",
+    "openQuestions": [
+      "Does such a minimal basis exist for any order h ≥ 2?",
+      "If it exists, what is the smallest possible order h?",
+      "Can the unrepresentable sets have density bounded below by a function of the basis density?"
+    ]
+  }
+}
