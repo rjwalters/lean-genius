@@ -1,0 +1,38 @@
+[
+  {
+    "id": "erdos-151-transversal",
+    "proofId": "erdos-151",
+    "type": "definition",
+    "range": { "startLine": 46, "endLine": 48 },
+    "title": "Clique Transversal",
+    "content": "IsCliqueTransversal G T means T intersects every maximal clique of size ≥ 2. The clique transversal number τ(G) minimises |T|.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-151-H",
+    "proofId": "erdos-151",
+    "type": "definition",
+    "range": { "startLine": 57, "endLine": 59 },
+    "title": "Triangle-Free Independence Number H(n)",
+    "content": "triangleFreeIndep n is the max k such that every triangle-free n-vertex graph has an independent set of size k. By Ramsey theory, H(n) ≥ √n.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-151-easy",
+    "proofId": "erdos-151",
+    "type": "result",
+    "range": { "startLine": 74, "endLine": 76 },
+    "title": "Easy Bound τ ≤ n − √n",
+    "content": "Every n-vertex graph has τ(G) ≤ n − √n. This follows from the Ramsey lower bound H(n) ≥ √n but is weaker than the conjecture.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-151-conjecture",
+    "proofId": "erdos-151",
+    "type": "conjecture",
+    "range": { "startLine": 80, "endLine": 83 },
+    "title": "Erdős Problem 151",
+    "content": "τ(G) ≤ n − H(n) for every n-vertex graph. This strengthens the easy bound by replacing √n with the exact Ramsey function H(n).",
+    "significance": "essential"
+  }
+]
