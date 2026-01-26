@@ -82,7 +82,130 @@ gh issue list --label "loom:urgent" --state open
 
 ## Priority Assessment
 
-For each `loom:issue` issue, consider:
+### Goal Discovery First
+
+**CRITICAL**: Before prioritizing issues, always check for project goals and roadmap. Priorities should align with current milestone objectives.
+
+```bash
+# ALWAYS run goal discovery before prioritizing
+discover_project_goals() {
+  echo "=== Project Goals Discovery ==="
+
+  # 1. Check README for milestones
+  if [ -f README.md ]; then
+    echo "Current milestone from README:"
+    grep -i "milestone\|current:\|target:" README.md | head -5
+  fi
+
+  # 2. Check roadmap
+  if [ -f docs/roadmap.md ] || [ -f ROADMAP.md ]; then
+    echo "Roadmap deliverables:"
+    grep -E "^- \[.\]|^## M[0-9]" docs/roadmap.md ROADMAP.md 2>/dev/null | head -10
+  fi
+
+  # 3. Summary
+  echo "Urgent issues should advance these goals when possible"
+}
+
+# Run goal discovery
+discover_project_goals
+```
+
+### Tier-Aware Prioritization
+
+Issues should have tier labels indicating their alignment with project goals. Use tiers as a **primary sorting criterion**:
+
+| Tier | Label | Priority Consideration |
+|------|-------|------------------------|
+| Tier 1 | `tier:goal-advancing` | **Highest** - Directly implements milestone deliverables |
+| Tier 2 | `tier:goal-supporting` | **Medium** - Enables or supports milestone work |
+| Tier 3 | `tier:maintenance` | **Lower** - General improvements not tied to goals |
+
+**Urgent Priority Order** (when applying `loom:urgent`):
+1. Tier 1 issues that are blocking other goal work
+2. Tier 1 issues that advance critical path deliverables
+3. Tier 2 issues that unblock multiple Tier 1 issues
+4. Security issues (any tier)
+5. Critical bugs affecting users (any tier)
+
+```bash
+# Find issues by tier
+gh issue list --label="loom:issue" --label="tier:goal-advancing" --state=open
+gh issue list --label="loom:issue" --label="tier:goal-supporting" --state=open
+gh issue list --label="loom:issue" --label="tier:maintenance" --state=open
+
+# Find unlabeled issues (need tier assignment)
+gh issue list --label="loom:issue" --state=open --json number,labels \
+  --jq '.[] | select([.labels[].name] | any(startswith("tier:")) | not) | "#\(.number)"'
+```
+
+### Backlog Balance Check
+
+Monitor the tier distribution to ensure a healthy backlog:
+
+```bash
+check_backlog_balance() {
+  echo "=== Backlog Tier Balance ==="
+
+  # Count issues by tier
+  tier1=$(gh issue list --label="tier:goal-advancing" --state=open --json number --jq 'length')
+  tier2=$(gh issue list --label="tier:goal-supporting" --state=open --json number --jq 'length')
+  tier3=$(gh issue list --label="tier:maintenance" --state=open --json number --jq 'length')
+  unlabeled=$(gh issue list --label="loom:issue" --state=open --json number,labels \
+    --jq '[.[] | select([.labels[].name] | any(startswith("tier:")) | not)] | length')
+
+  total=$((tier1 + tier2 + tier3 + unlabeled))
+
+  echo "Tier 1 (goal-advancing): $tier1"
+  echo "Tier 2 (goal-supporting): $tier2"
+  echo "Tier 3 (maintenance):     $tier3"
+  echo "Unlabeled:                $unlabeled"
+  echo "Total ready issues:       $total"
+
+  # Health assessment
+  if [ "$tier1" -eq 0 ] && [ "$total" -gt 3 ]; then
+    echo ""
+    echo "WARNING: No goal-advancing issues in backlog!"
+    echo "ACTION: Review proposals and promote goal-advancing work."
+  fi
+
+  if [ "$tier3" -gt "$tier1" ] && [ "$tier3" -gt 5 ]; then
+    echo ""
+    echo "WARNING: Maintenance work exceeds goal-advancing work."
+    echo "ACTION: Consider deferring new Tier 3 promotions."
+  fi
+
+  if [ "$unlabeled" -gt 3 ]; then
+    echo ""
+    echo "WARNING: $unlabeled issues need tier labels."
+    echo "ACTION: Review and assign tier labels to unlabeled issues."
+  fi
+}
+
+# Run the check
+check_backlog_balance
+```
+
+### Assigning Missing Tier Labels
+
+When you find issues without tier labels, assess and add them:
+
+```bash
+# For each unlabeled issue, determine its tier
+gh issue view <number>
+
+# Assess:
+# - Does it directly implement a milestone deliverable? → tier:goal-advancing
+# - Does it support milestone work (infra, testing, docs)? → tier:goal-supporting
+# - Is it general cleanup/improvement? → tier:maintenance
+
+# Add the tier label
+gh issue edit <number> --add-label "tier:goal-advancing"  # or other tier
+```
+
+### Traditional Priority Criteria
+
+For each `loom:issue` issue, also consider these traditional factors:
 
 1. **Strategic Impact**
    - Aligns with product vision?
@@ -121,19 +244,60 @@ Sometimes issues are completed but stay open because PRs didn't use the magic ke
 
 **1. Check for Orphaned `loom:building` Issues**
 
-Find issues with `loom:building` but no active PRs:
+**ALWAYS run stale detection with `--recover` to automatically fix orphaned issues:**
+
+```bash
+# Proactively recover stale issues (recommended - run every triage cycle)
+./.loom/scripts/stale-building-check.sh --recover
+
+# Check for stale building issues (dry run, for investigation)
+./.loom/scripts/stale-building-check.sh --verbose
+
+# JSON output for automation
+./.loom/scripts/stale-building-check.sh --json
+```
+
+The script detects orphaned work by cross-referencing three sources:
+1. **GitHub labels**: Issues with `loom:building` label
+2. **Worktree existence**: `.loom/worktrees/issue-N` directories
+3. **Open PRs**: PRs referencing the issue (via branch name or body)
+
+**Detection cases and actions:**
+
+| Case | Condition | Auto-Recovery Action |
+|------|-----------|---------------------|
+| `no_pr` | `loom:building` but no worktree and no PR (>2h) | Reset to `loom:issue` |
+| `blocked_pr` | Has PR with `loom:changes-requested` label | Transition to `loom:blocked` |
+| `stale_pr` | Has PR but no activity for >24h | Flag only (needs manual review) |
+
+**Why proactive recovery matters:**
+
+Without stale detection, orphaned `loom:building` labels cause:
+- False capacity signals (daemon thinks work is happening)
+- Pipeline stalls (no new work gets picked up)
+- Silent failures (no alerts or recovery)
+
+**Manual verification** (if script not available):
 
 ```bash
 # Get all loom:building issues
 gh issue list --label "loom:building" --state open --json number,title
 
-# For each issue, check if there's an active PR
+# For each issue, check:
+# 1. Worktree exists?
+ls -la .loom/worktrees/issue-NUMBER 2>/dev/null
+
+# 2. PR exists?
 gh pr list --search "issue-NUMBER in:body OR issue NUMBER in:body" --state open
+
+# 3. Shepherd assigned? (if daemon running)
+jq '.shepherds | to_entries[] | select(.value.issue == NUMBER)' .loom/daemon-state.json
 ```
 
-**If no PR found and issue is old (>7 days):**
-- Comment asking for status update
-- If no response in 2 days, remove `loom:building` and mark as `loom:blocked`
+**If no worktree, no PR, and no shepherd (>2 hours):**
+- Run `--recover` to auto-reset, or manually:
+- Remove `loom:building` and add `loom:issue`
+- Comment explaining the recovery
 
 **2. Verify Merged PRs Closed Their Issues**
 
@@ -341,6 +505,92 @@ pr_state=$(gh pr view "$pr_number" --json state,mergedAt --jq '.state')
 - If no parseable dependencies found → Skip (may need manual review)
 - If any dependency is still OPEN → Keep blocked
 - If issue was blocked for non-dependency reasons → Check comments for context
+
+## Epic Progress Tracking
+
+**Run every 15-30 minutes** to check epic progress and report status.
+
+### Check Active Epics
+
+```bash
+# Get all open epics
+gh issue list --label "loom:epic" --state open --json number,title,body
+```
+
+### Track Phase Progress
+
+For each epic, check how many issues in each phase are complete:
+
+```bash
+check_epic_progress() {
+  local epic_number=$1
+
+  # Get epic body to parse phases
+  local body=$(gh issue view "$epic_number" --json body --jq '.body')
+
+  # Find all phase issues for this epic
+  local phase_issues=$(gh issue list \
+    --label="loom:epic-phase" \
+    --state=all \
+    --search="Epic: #$epic_number in:body" \
+    --json number,state,title)
+
+  local total=$(echo "$phase_issues" | jq 'length')
+  local closed=$(echo "$phase_issues" | jq '[.[] | select(.state == "CLOSED")] | length')
+  local open=$(echo "$phase_issues" | jq '[.[] | select(.state == "OPEN")] | length')
+
+  echo "Epic #$epic_number: $closed/$total complete ($open in progress)"
+}
+```
+
+### Epic Status Report
+
+Include epic status in triage summaries:
+
+```markdown
+## Active Epics
+
+| Epic | Title | Progress | Current Phase |
+|------|-------|----------|---------------|
+| #123 | Agent Metrics System | 6/9 (67%) | Phase 2 |
+| #456 | Workflow Improvements | 2/4 (50%) | Phase 1 |
+
+**Epic Details:**
+- **#123**: Phase 1 ✅, Phase 2 in progress (2/3 issues complete)
+- **#456**: Phase 1 in progress (2/2 issues open)
+```
+
+### Alert on Stale Epics
+
+If an epic has had no progress in 7+ days:
+
+```bash
+# Check last activity on epic issues
+LAST_CLOSED=$(gh issue list \
+  --label="loom:epic-phase" \
+  --state=closed \
+  --search="Epic: #$epic_number in:body" \
+  --json closedAt \
+  --jq 'sort_by(.closedAt) | last | .closedAt')
+
+# Calculate days since last progress
+# If > 7 days, flag for attention
+```
+
+Add comment to stale epics:
+
+```markdown
+⚠️ **Epic Stale Alert**
+
+No progress on this epic for 7+ days. Current status:
+- Phase 1: 2/3 complete
+- Phase 2: Not started
+
+**Recommended actions:**
+- Check if remaining Phase 1 issues are blocked
+- Verify epic is still aligned with project goals
+- Consider closing epic if no longer relevant
+```
 
 ### Comment Format
 

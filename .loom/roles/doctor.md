@@ -260,6 +260,34 @@ pnpm lint              # If review mentioned code style
 pnpm exec tsc --noEmit # If review mentioned types
 ```
 
+### Test Output: Truncate for Token Efficiency
+
+When running tests during PR fixes, truncate verbose output to conserve tokens:
+
+```bash
+# Failures + summary only (recommended)
+pnpm test 2>&1 | grep -E "(FAIL|PASS|Error|✓|✗|Summary|Tests:)" | head -100
+
+# Just the summary
+pnpm test 2>&1 | tail -30
+
+# Show only failures with context
+pnpm test 2>&1 | grep -A 5 -B 2 "FAIL\|Error\|✗"
+```
+
+**Why truncate?**
+- Test output can exceed 10,000+ lines
+- Most of that is passing tests (not actionable)
+- Wastes tokens that could be used for actual fix work
+- Pollutes context for subsequent operations
+
+**Report failures concisely:**
+```
+❌ 2 tests failing after fix:
+1. `state.test.ts:45` - still returns undefined (need null check)
+2. `worktree.test.ts:89` - timeout (async issue remains)
+```
+
 ## Example Commands
 
 ```bash
@@ -297,7 +325,7 @@ git commit -m "Address review feedback
 - Update README with new API docs"
 git push
 
-# Signal completion and unclaim (remove loom:treating, add loom:review-requested)
+# Signal completion and unclaim (amber → green, remove in-progress)
 gh pr edit 42 --remove-label "loom:changes-requested" --remove-label "loom:treating" --add-label "loom:review-requested"
 gh pr comment 42 --body "✅ Review feedback addressed:
 - Fixed null handling in foo.ts:15
