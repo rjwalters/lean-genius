@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-25-logdensity",
+    "proofId": "erdos-25",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 43 },
+    "title": "Logarithmic Density",
+    "content": "logDensity S d holds when the ratio Σ_{m∈S,m≤x} 1/m over Σ_{m≤x} 1/m converges to d. LogDensityExists asks for the existence of such d.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-25-sieve",
+    "proofId": "erdos-25",
+    "type": "definition",
+    "range": { "startLine": 49, "endLine": 60 },
+    "title": "Congruence Sieve",
+    "content": "CongruenceSieve packages a strictly increasing sequence of positive moduli with associated residues. The sievedSet collects integers avoiding all specified residue classes.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-25-conjecture",
+    "proofId": "erdos-25",
+    "type": "conjecture",
+    "range": { "startLine": 66, "endLine": 69 },
+    "title": "Erdős Problem 25",
+    "content": "Must the logarithmic density of A(σ) exist for every congruence sieve σ? This is open and cannot be resolved by finite computation.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-25-finite",
+    "proofId": "erdos-25",
+    "type": "result",
+    "range": { "startLine": 83, "endLine": 85 },
+    "title": "Finite Sieve Case",
+    "content": "When only finitely many moduli are used, the sieved set is eventually periodic, so the logarithmic density trivially exists.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-25-coprime-positive",
+    "proofId": "erdos-25",
+    "type": "result",
+    "range": { "startLine": 100, "endLine": 105 },
+    "title": "Positive Density Under Coprimality",
+    "content": "When all moduli are pairwise coprime, the logarithmic density (if it exists) is strictly positive, since each congruence class removes only a 1/nᵢ fraction.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-25-monotone",
+    "proofId": "erdos-25",
+    "type": "result",
+    "range": { "startLine": 113, "endLine": 118 },
+    "title": "Sieve Monotonicity",
+    "content": "Proved: removing any single modulus from the sieve enlarges the sieved set. Fewer exclusion conditions means more integers pass.",
+    "significance": "supporting"
+  }
+]

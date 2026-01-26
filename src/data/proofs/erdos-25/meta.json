@@ -1,0 +1,82 @@
+{
+  "id": "erdos-25",
+  "title": "Erdős Problem #25: Logarithmic Density of Congruence-Sieved Sets",
+  "slug": "erdos-25",
+  "description": "Let n₁ < n₂ < ⋯ be a strictly increasing sequence of positive integers with associated residue classes aᵢ (mod nᵢ). Let A be the set of integers m such that for every i, either m < nᵢ or m ≢ aᵢ (mod nᵢ). Must the logarithmic density of A exist? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/25",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos25Problem.lean",
+    "tags": ["number-theory", "density", "sieve-theory", "modular-arithmetic"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 25,
+    "erdosUrl": "https://erdosproblems.com/25",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős (1995) posed this question about the existence of logarithmic density for sets defined by avoiding residue classes. The problem sits at the intersection of analytic number theory and sieve methods. It is a special case of the more general Problem 486.",
+    "problemStatement": "Let 1 ≤ n₁ < n₂ < ⋯ be an arbitrary strictly increasing sequence of positive integers, each with an associated residue class aᵢ (mod nᵢ). Let A be the set of integers m such that for every i, either m < nᵢ or m ≢ aᵢ (mod nᵢ). Must the logarithmic density of A exist?",
+    "proofStrategy": "We axiomatize logarithmic density (logDensity) with uniqueness and [0,1] bounds. A CongruenceSieve structure packages the moduli and residues. The sievedSet excludes integers matching any residue class. ErdosProblem25 asks if LogDensityExists holds universally. Special cases include prime moduli and finite sieves. Monotonicity (sieve_monotone) is proved.",
+    "keyInsights": [
+      "The logarithmic density uses reciprocal weighting: Σ 1/m for m ∈ S divided by the harmonic sum",
+      "The sieved set grows as you remove congruence conditions — monotonicity in the number of sieves",
+      "Finite sieves always have logarithmic density by periodicity",
+      "The problem is a special case of Erdős Problem 486"
+    ]
+  },
+  "sections": [
+    {
+      "id": "log-density",
+      "title": "Logarithmic Density",
+      "startLine": 23,
+      "endLine": 43,
+      "summary": "Axiomatizes logDensity, LogDensityExists, and basic properties (uniqueness, [0,1] bounds)."
+    },
+    {
+      "id": "congruence-sieve",
+      "title": "Congruence Sieve",
+      "startLine": 45,
+      "endLine": 60,
+      "summary": "Defines CongruenceSieve structure and the sievedSet of integers avoiding all residue classes."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 62,
+      "endLine": 69,
+      "summary": "States ErdosProblem25: logarithmic density exists for every congruence-sieved set."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 71,
+      "endLine": 89,
+      "summary": "Prime-residue sieves, finite sieves (density exists by periodicity), and relation to Problem 486."
+    },
+    {
+      "id": "density-bounds",
+      "title": "Density Bounds",
+      "startLine": 91,
+      "endLine": 105,
+      "summary": "Nonemptiness of sieved sets and positive density under coprimality."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity Properties",
+      "startLine": 107,
+      "endLine": 119,
+      "summary": "Proved: removing a modulus enlarges the sieved set (sieve_monotone)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 25 asks whether the logarithmic density of a congruence-sieved set always exists. The formalization axiomatizes logarithmic density, defines the congruence sieve structure, and proves monotonicity. The problem remains open.",
+    "implications": "Resolution would clarify the behavior of logarithmic density under infinite modular exclusions, with connections to analytic sieve theory.",
+    "openQuestions": [
+      "Does the logarithmic density always exist for congruence-sieved sets?",
+      "Does the answer depend on growth rate of the moduli sequence?",
+      "What is the relationship to natural density existence for the same sets?"
+    ]
+  }
+}
