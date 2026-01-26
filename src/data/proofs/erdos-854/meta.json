@@ -1,0 +1,68 @@
+{
+  "id": "erdos-854",
+  "title": "Erdős Problem #854: Gaps Between Coprime Residues of Primorials",
+  "slug": "erdos-854",
+  "description": "Study the gaps between consecutive integers coprime to primorials. Erdős asked to estimate the smallest missing gap and whether the number of distinct gaps is proportional to the maximal gap.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/854",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos854Problem.lean",
+    "tags": ["number theory", "prime gaps", "primorials", "sieve theory"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 854,
+    "erdosUrl": "https://erdosproblems.com/854",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem about the gap structure of coprime residues modulo primorials. He initially conjectured that all even integers up to the maximal gap would appear as consecutive differences, but computations by Lacampagne and Selfridge for the primorial 30030 cast doubt on this conjecture.",
+    "problemStatement": "Let nₖ be the k-th primorial and 1 = a₁ < a₂ < ⋯ < a_{φ(nₖ)} = nₖ−1 be the coprime residues. Estimate the smallest even integer not of the form aᵢ₊₁ − aᵢ, and determine if the number of distinct gap values is ≫ max(aᵢ₊₁ − aᵢ).",
+    "proofStrategy": "We axiomatize the primorial function, coprime residue sequences, and the gap structure. Known bounds on maximal gaps via the Jacobsthal function are recorded, along with the Lacampagne–Selfridge counterexample to the original strong conjecture.",
+    "keyInsights": [
+      "For k ≥ 2, all gaps between coprime residues of the k-th primorial are even (since all coprime residues are odd)",
+      "The maximal gap is bounded by 2pₖ via the Jacobsthal function",
+      "Lacampagne and Selfridge showed not all even integers up to the max gap appear for nₖ = 30030",
+      "The weaker conjecture asks only for proportionally many distinct gaps"
+    ]
+  },
+  "sections": [
+    {
+      "id": "primorial-setup",
+      "title": "Primorial and Coprime Residues",
+      "startLine": 18,
+      "endLine": 46,
+      "summary": "Defines primorials, coprime residue sets, and their sorted enumeration."
+    },
+    {
+      "id": "gap-structure",
+      "title": "Gap Structure",
+      "startLine": 48,
+      "endLine": 66,
+      "summary": "Defines the gap set, maximal gap, and count of distinct gap values for coprime residues."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 68,
+      "endLine": 86,
+      "summary": "Records the Jacobsthal function bound on maximal gaps and the Lacampagne–Selfridge counterexample."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Erdős Conjectures",
+      "startLine": 88,
+      "endLine": 99,
+      "summary": "States the two main open questions: growth of the first missing gap and proportionality of distinct gap counts."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 854 explores the rich combinatorial structure of gaps between coprime residues of primorials. The original strong conjecture was disproved computationally, but the weaker proportionality conjecture remains open.",
+    "implications": "Understanding these gap patterns connects to Jacobsthal's function, sieve methods, and the distribution of primes in short intervals.",
+    "openQuestions": [
+      "How fast does the smallest missing gap grow with k?",
+      "Is the number of distinct gap values truly proportional to the maximal gap?",
+      "What is the limiting distribution of gap sizes for large primorials?"
+    ]
+  }
+}

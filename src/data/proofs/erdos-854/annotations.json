@@ -1,0 +1,86 @@
+[
+  {
+    "id": "primorial-def",
+    "proofId": "erdos-854",
+    "type": "definition",
+    "title": "Primorial Function",
+    "content": "The k-th primorial is the product of the first k primes: nₖ = p₁ · p₂ · ⋯ · pₖ.",
+    "significance": "critical",
+    "range": {
+      "startLine": 33,
+      "endLine": 36
+    }
+  },
+  {
+    "id": "coprime-residues",
+    "proofId": "erdos-854",
+    "type": "definition",
+    "title": "Coprime Residues",
+    "content": "The coprime residues of n are the positive integers less than n that share no common factor with n.",
+    "significance": "critical",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    }
+  },
+  {
+    "id": "gaps-even",
+    "proofId": "erdos-854",
+    "type": "theorem",
+    "title": "Gaps Are Even",
+    "content": "For k ≥ 2, every gap between consecutive coprime residues of the k-th primorial is even, since all coprime residues are odd.",
+    "significance": "key",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    }
+  },
+  {
+    "id": "jacobsthal-bound",
+    "proofId": "erdos-854",
+    "type": "theorem",
+    "title": "Jacobsthal Function Bound",
+    "content": "The maximal gap between consecutive coprime residues of the k-th primorial is at most 2pₖ, where pₖ is the k-th prime.",
+    "significance": "key",
+    "range": {
+      "startLine": 70,
+      "endLine": 72
+    }
+  },
+  {
+    "id": "lacampagne-selfridge",
+    "proofId": "erdos-854",
+    "type": "insight",
+    "title": "Lacampagne–Selfridge Counterexample",
+    "content": "Computations for the primorial 30030 = 2·3·5·7·11·13 showed that not all even integers up to the maximal gap appear as consecutive differences.",
+    "significance": "critical",
+    "range": {
+      "startLine": 82,
+      "endLine": 84
+    }
+  },
+  {
+    "id": "missing-gap-growth",
+    "proofId": "erdos-854",
+    "type": "concept",
+    "title": "Missing Gap Growth",
+    "content": "Erdős asked to estimate how the smallest missing even gap grows with the primorial index k.",
+    "significance": "key",
+    "range": {
+      "startLine": 90,
+      "endLine": 92
+    }
+  },
+  {
+    "id": "proportional-gaps",
+    "proofId": "erdos-854",
+    "type": "concept",
+    "title": "Proportional Distinct Gaps",
+    "content": "The weaker conjecture asks whether the number of distinct gap values is at least a constant fraction of the maximal gap.",
+    "significance": "critical",
+    "range": {
+      "startLine": 95,
+      "endLine": 99
+    }
+  }
+]
