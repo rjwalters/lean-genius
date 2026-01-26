@@ -1,0 +1,68 @@
+{
+  "id": "erdos-396",
+  "title": "Erdős Problem #396: Descending Factorials Dividing Central Binomials",
+  "slug": "erdos-396",
+  "description": "For every k, does there exist n such that n(n−1)⋯(n−k) divides C(2n,n)? Pomerance proved individual factors divide for infinitely many n. The full product conjecture remains open.",
+  "meta": {
+    "author": "Erdős, Graham",
+    "sourceUrl": "https://erdosproblems.com/396",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos396Problem.lean",
+    "tags": ["number theory", "binomial coefficients", "divisibility"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 396,
+    "erdosUrl": "https://erdosproblems.com/396",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in 1980 about the divisibility of central binomial coefficients by descending factorial products. The connection to Catalan numbers (where n+1 always divides C(2n,n)) motivates the question of how deep divisibility by n and its predecessors can go. Pomerance (2014) made significant progress on related questions.",
+    "problemStatement": "For every positive integer k, does there exist n such that n(n−1)(n−2)⋯(n−k) divides C(2n,n)?",
+    "proofStrategy": "We use Mathlib's descFactorial and centralBinom. The Catalan divisibility is recorded, along with Pomerance's results on single factors and ascending factorials. The main conjecture and an infinitely-many strengthening are stated as axioms.",
+    "keyInsights": [
+      "n+1 always divides C(2n,n), yielding Catalan numbers, but n itself rarely divides C(2n,n)",
+      "Pomerance showed each individual factor (n−k) divides C(2n,n) for infinitely many n",
+      "The ascending product ∏(n+i) divides C(2n,n) with density 1, contrasting the descending case",
+      "The OEIS sequence A375077 catalogues smallest witnesses for each k"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 21,
+      "endLine": 30,
+      "summary": "Uses Mathlib's descFactorial and centralBinom for the key objects."
+    },
+    {
+      "id": "basic-divisibility",
+      "title": "Basic Divisibility Results",
+      "startLine": 32,
+      "endLine": 41,
+      "summary": "Records that n+1 always divides C(2n,n) and that n rarely does."
+    },
+    {
+      "id": "pomerance",
+      "title": "Pomerance's Results",
+      "startLine": 43,
+      "endLine": 58,
+      "summary": "Axiomatizes Pomerance's 2014 results on single factor divisibility and ascending factorial density."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős–Graham Conjecture",
+      "startLine": 60,
+      "endLine": 79,
+      "summary": "States the main conjecture and its infinitely-many strengthening."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 396 asks whether descending factorial products can always divide central binomial coefficients. Pomerance's results handle individual factors and ascending products, but the full descending product conjecture remains open.",
+    "implications": "Resolution would deepen understanding of the prime factorization structure of central binomial coefficients, with connections to p-adic valuations and Kummer's theorem.",
+    "openQuestions": [
+      "For every k, does n(n−1)⋯(n−k) divide C(2n,n) for some n?",
+      "How fast does the smallest witness n(k) grow with k?",
+      "What is the density of n for which the full product divides C(2n,n)?"
+    ]
+  }
+}

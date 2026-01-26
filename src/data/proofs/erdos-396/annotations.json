@@ -1,0 +1,74 @@
+[
+  {
+    "id": "catalan-divisibility",
+    "proofId": "erdos-396",
+    "type": "theorem",
+    "title": "Catalan Divisibility",
+    "content": "n+1 always divides C(2n,n), giving the n-th Catalan number C(2n,n)/(n+1). This is the base case for the descending factorial question.",
+    "significance": "key",
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    }
+  },
+  {
+    "id": "pomerance-single",
+    "proofId": "erdos-396",
+    "type": "theorem",
+    "title": "Pomerance Single Factor",
+    "content": "For any k ≥ 0, infinitely many n satisfy (n−k) | C(2n,n), though this set has upper density less than 1/3.",
+    "significance": "critical",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    }
+  },
+  {
+    "id": "pomerance-ascending",
+    "proofId": "erdos-396",
+    "type": "theorem",
+    "title": "Ascending Factorial Density",
+    "content": "The set of n where the ascending product (n+1)(n+2)⋯(n+k) divides C(2n,n) has asymptotic density 1.",
+    "significance": "key",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    }
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-396",
+    "type": "concept",
+    "title": "Main Conjecture",
+    "content": "For every k, there exists n such that the descending factorial n(n−1)⋯(n−k) divides the central binomial coefficient C(2n,n).",
+    "significance": "critical",
+    "range": {
+      "startLine": 62,
+      "endLine": 64
+    }
+  },
+  {
+    "id": "computational-evidence",
+    "proofId": "erdos-396",
+    "type": "insight",
+    "title": "Computational Evidence",
+    "content": "The OEIS sequence A375077 records the smallest witness n for each k. Finding these witnesses computationally is non-trivial.",
+    "significance": "supporting",
+    "range": {
+      "startLine": 68,
+      "endLine": 72
+    }
+  },
+  {
+    "id": "infinitely-many",
+    "proofId": "erdos-396",
+    "type": "concept",
+    "title": "Infinitely Many Witnesses",
+    "content": "A strengthening of the conjecture: for each k, there are infinitely many n with descFactorial(n, k+1) | centralBinom(n).",
+    "significance": "key",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    }
+  }
+]
