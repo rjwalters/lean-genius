@@ -1,0 +1,65 @@
+[
+  {
+    "id": "erdos-201-arith-prog",
+    "proofId": "erdos-201",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 30 },
+    "title": "Arithmetic Progression",
+    "content": "IsArithProg defines a k-term arithmetic progression as a list of integers with constant common difference d between consecutive elements.",
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-201-contains-ap",
+    "proofId": "erdos-201",
+    "type": "definition",
+    "range": { "startLine": 33, "endLine": 35 },
+    "title": "Contains AP of Length k",
+    "content": "ContainsAPOfLength A k holds when A contains elements a, a+d, a+2d, …, a+(k-1)d for some nonzero d. This is the standard definition of a k-term AP in a finite set.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-201-ap-free",
+    "proofId": "erdos-201",
+    "type": "definition",
+    "range": { "startLine": 39, "endLine": 41 },
+    "title": "AP-Free Set",
+    "content": "IsAPFree A k means A contains no k-term arithmetic progression. This is the negation of ContainsAPOfLength.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-201-rk",
+    "proofId": "erdos-201",
+    "type": "definition",
+    "range": { "startLine": 47, "endLine": 50 },
+    "title": "R_k(N) Function",
+    "content": "R_k(N) is the maximum cardinality of a k-AP-free subset of {1,…,N}. Defined via supremum over the powerset of Finset.Icc filtered by the AP-free predicate.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-201-gk",
+    "proofId": "erdos-201",
+    "type": "definition",
+    "range": { "startLine": 54, "endLine": 55 },
+    "title": "G_k(N) Function",
+    "content": "G_k(N) is the minimum size of a k-AP-free subset guaranteed to exist in any N-element integer set. Axiomatised since its definition requires quantification over all N-element sets.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-201-kss",
+    "proofId": "erdos-201",
+    "type": "result",
+    "range": { "startLine": 76, "endLine": 79 },
+    "title": "Komlós–Sulyok–Szemerédi Bound",
+    "content": "Komlós, Sulyok, and Szemerédi (1975) proved that R_k(N) ≤ C·G_k(N) for some constant C depending on k, showing the two functions have the same order of magnitude.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-201-conjecture",
+    "proofId": "erdos-201",
+    "type": "conjecture",
+    "range": { "startLine": 85, "endLine": 90 },
+    "title": "Erdős Problem 201",
+    "content": "The main conjecture: lim R_3(N)/G_3(N) = 1. Formalised as: for every ε > 0, there exists N₀ such that R_3(N) ≤ (1+ε)·G_3(N) for all N ≥ N₀.",
+    "significance": "essential"
+  }
+]
