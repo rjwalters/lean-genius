@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-1105-header",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdos Problem #1105: Find exact formulas for anti-Ramsey numbers AR(n, C_k) and AR(n, P_k). Status: OPEN.",
+    "mathContext": "From Erdos-Simonovits-Sos (1975). AR(n,G) = max colors in rainbow-G-free coloring of K_n. Foundational anti-Ramsey theory.",
+    "significance": "critical",
+    "relatedConcepts": ["anti-ramsey", "rainbow-coloring", "extremal-graph-theory"]
+  },
+  {
+    "id": "ann-1105-graph",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 40, "endLine": 52 },
+    "type": "definition",
+    "title": "Graph Definitions",
+    "content": "SimpleGraph(n) := Fin n -> Fin n -> Prop. CompleteGraph(n) := all distinct pairs adjacent. numEdgesKn(n) = C(n,2).",
+    "mathContext": "Basic graph-theoretic setup. K_n has n(n-1)/2 edges.",
+    "significance": "critical",
+    "relatedConcepts": ["complete-graph", "edge-count"]
+  },
+  {
+    "id": "ann-1105-paths",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "definition",
+    "title": "Paths and Cycles",
+    "content": "PathGraph(k): edges {i, i+1}. CycleGraph(k): path plus edge {0, k-1}. |E(P_k)| = k-1, |E(C_k)| = k.",
+    "mathContext": "Standard path and cycle structures. P_k has k vertices and k-1 edges. C_k has k vertices and k edges.",
+    "significance": "critical",
+    "relatedConcepts": ["path", "cycle", "edge-count"]
+  },
+  {
+    "id": "ann-1105-embedding",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 87, "endLine": 96 },
+    "type": "definition",
+    "title": "Graph Embedding",
+    "content": "GraphEmbedding(n, k, H): injective map vertices: Fin k -> Fin n preserving edges of H in K_n.",
+    "mathContext": "A copy of H in K_n is an injective vertex mapping where edges of H correspond to edges of K_n.",
+    "significance": "key",
+    "relatedConcepts": ["subgraph", "homomorphism", "injection"]
+  },
+  {
+    "id": "ann-1105-rainbow",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 98, "endLine": 109 },
+    "type": "definition",
+    "title": "Rainbow Subgraphs",
+    "content": "IsRainbow: all edges in embedded copy have distinct colors. AvoidsRainbow: no embedded copy is rainbow.",
+    "mathContext": "Rainbow = all-distinct-colors. Anti-Ramsey problem seeks max colors while avoiding rainbow copies.",
+    "significance": "critical",
+    "relatedConcepts": ["rainbow", "distinct-colors", "coloring"]
+  },
+  {
+    "id": "ann-1105-ar",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 117, "endLine": 126 },
+    "type": "definition",
+    "title": "Anti-Ramsey Number",
+    "content": "antiRamsey(n, k, H) := sup{c : exists c-coloring of K_n avoiding rainbow H}. arCycle, arPath specialize to C_k, P_k.",
+    "mathContext": "The central extremal quantity. Contrast with Ramsey numbers which minimize colors to force monochromatic.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal", "supremum", "coloring"]
+  },
+  {
+    "id": "ann-1105-cycle-conj",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 134, "endLine": 147 },
+    "type": "definition",
+    "title": "Cycle Conjecture",
+    "content": "CycleConjecture: AR(n, C_k) = ((k-2)/2 + 1/(k-1)) * n + O(1). ar_triangle: AR(n, C_3) = n - 1.",
+    "mathContext": "Linear growth in n with coefficient depending on k. For k=3, coefficient is 1, matching n-1.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic", "linear-growth", "triangle"]
+  },
+  {
+    "id": "ann-1105-path-conj",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 156, "endLine": 182 },
+    "type": "definition",
+    "title": "Path Conjecture",
+    "content": "PathConjecture: AR(n, P_k) = max(C(k-2,2)+1, C(l-1,2)+(l-1)(n-l+1)+eps) where l = floor((k-1)/2), eps = 1 or 2.",
+    "mathContext": "Exact formula with two cases. Simonovits-Sos proved for n >= ck^2. Yuan (2021) announced full proof.",
+    "significance": "critical",
+    "relatedConcepts": ["exact-formula", "binomial", "parity"]
+  },
+  {
+    "id": "ann-1105-bounds",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 190, "endLine": 201 },
+    "type": "theorem",
+    "title": "Bounds on AR",
+    "content": "ar_lower_bound: AR(n, H) >= 1. ar_upper_bound: AR(n, H) <= C(n,2). ar_mono_n: monotone in n.",
+    "mathContext": "Basic bounds. Upper bound is trivial (each edge gets own color). Monotonicity follows from restriction.",
+    "significance": "key",
+    "relatedConcepts": ["bounds", "monotonicity", "trivial-bound"]
+  },
+  {
+    "id": "ann-1105-turan",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 209, "endLine": 217 },
+    "type": "axiom",
+    "title": "Turan Connection",
+    "content": "turan(n, k, H) := max edges in H-free graph. ar_turan_lower: AR(n, H) >= ex(n, H) + 1.",
+    "mathContext": "Key connection to extremal graph theory. Give H-free subgraph rainbow coloring, one color for complement.",
+    "significance": "key",
+    "relatedConcepts": ["turan", "extremal", "h-free"]
+  },
+  {
+    "id": "ann-1105-special",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 227, "endLine": 234 },
+    "type": "axiom",
+    "title": "Special Cases",
+    "content": "ar_path_3: AR(n, P_3) = 1. ar_k3: AR(n, K_3) = n - 1. Small cases are known exactly.",
+    "mathContext": "P_3 is trivial (2 edges need different colors). K_3 = C_3 gives n-1 by Erdos-Simonovits-Sos.",
+    "significance": "supporting",
+    "relatedConcepts": ["small-cases", "exact-values"]
+  },
+  {
+    "id": "ann-1105-status",
+    "proofId": "erdos-1105",
+    "range": { "startLine": 242, "endLine": 273 },
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "The problem is OPEN. Cycle formula open for general k. Path formula: proven for n >= ck^2, announced for all n >= k >= 5.",
+    "mathContext": "Open problem in extremal graph theory. Connects Ramsey theory with Turan-type questions.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "partial-progress"]
+  }
+]
