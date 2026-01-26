@@ -1,0 +1,89 @@
+{
+  "id": "erdos-52",
+  "title": "Erdős Problem #52: The Sum-Product Conjecture",
+  "slug": "erdos-52",
+  "description": "For a finite set A of integers, is max(|A+A|, |A·A|) ≫ |A|^{2-ε} for every ε > 0? Erdős–Szemerédi proved a super-linear bound; Bloom (2025) achieved |A|^{1.335}. OPEN ($250 prize).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/52",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos52Problem.lean",
+    "tags": ["additive-combinatorics", "sum-product", "number-theory"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 52,
+    "erdosUrl": "https://erdosproblems.com/52",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "The Erdős–Szemerédi sum-product conjecture (1983) is one of the most influential problems in additive combinatorics. It asserts that a finite set cannot simultaneously have small sumset and small product set. Erdős and Szemerédi proved the first super-linear bound |A|^{1+c}. Successive improvements by Solymosi, Konyagin–Shkredov, Rudnev–Stevens, and Bloom have raised the exponent, with Bloom (2025) achieving |A|^{1270/951} ≈ |A|^{1.335}. The conjectured exponent 2-ε remains far out of reach. Related to Problems 53, 808, 818.",
+    "problemStatement": "For every ε > 0, does there exist C > 0 such that for every finite set A ⊂ ℤ with |A| ≥ 2, max(|A+A|, |A·A|) ≥ C·|A|^{2-ε}?",
+    "proofStrategy": "We define sumset, productset, and sumProductMax. The main conjecture ErdosProblem52 asserts the near-quadratic lower bound. We axiomatize the Erdős–Szemerédi theorem and Bloom's current best bound. Trivial bounds and higher-fold generalizations are formalized. The connection to Problem 53 is stated.",
+    "keyInsights": [
+      "A set cannot simultaneously have both small sumset and small product set",
+      "Erdős–Szemerédi (1983): max(|A+A|, |A·A|) ≥ |A|^{1+c} for some c > 0",
+      "Bloom (2025): current best exponent 1270/951 ≈ 1.335, still far from the conjectured 2-ε",
+      "The higher-fold generalization asks for max(|mA|, |A^m|) ≥ |A|^{m-ε}"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sumset-productset",
+      "title": "Sumset and Product Set",
+      "startLine": 22,
+      "endLine": 36,
+      "summary": "Defines sumset A+A, productset A·A, and sumProductMax as the maximum of their cardinalities."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Sum-Product Conjecture",
+      "startLine": 38,
+      "endLine": 52,
+      "summary": "States ErdosProblem52: for every ε > 0, max(|A+A|, |A·A|) ≥ C·|A|^{2-ε} for some constant C."
+    },
+    {
+      "id": "erdos-szemeredi",
+      "title": "The Erdős–Szemerédi Theorem",
+      "startLine": 54,
+      "endLine": 64,
+      "summary": "Axiomatizes the foundational 1983 result: max(|A+A|, |A·A|) ≥ |A|^{1+c} for some c > 0."
+    },
+    {
+      "id": "bloom-bound",
+      "title": "Current Best Bound",
+      "startLine": 66,
+      "endLine": 77,
+      "summary": "Axiomatizes Bloom's 2025 bound: exponent 1270/951 ≈ 1.335."
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "startLine": 79,
+      "endLine": 98,
+      "summary": "Axiomatizes that |A| ≤ |A+A|, |A| ≤ |A·A|, and both are at most |A|²."
+    },
+    {
+      "id": "generalizations",
+      "title": "Higher-Fold Generalizations",
+      "startLine": 100,
+      "endLine": 122,
+      "summary": "Defines m-fold sumset and product set, and states the generalized conjecture for arbitrary m ≥ 2."
+    },
+    {
+      "id": "connection-p53",
+      "title": "Connection to Problem 53",
+      "startLine": 124,
+      "endLine": 135,
+      "summary": "States the connection to Problem 53: large sumset or product set implies many representations."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 52 asks for a near-quadratic lower bound on max(|A+A|, |A·A|). The Erdős–Szemerédi theorem established super-linearity, and successive improvements have reached exponent ~1.335 (Bloom 2025), but the conjectured exponent 2-ε remains open.",
+    "implications": "Resolution would be a breakthrough in additive combinatorics, with implications for incidence geometry, exponential sums, and the structure theory of finite sets.",
+    "openQuestions": [
+      "Can the exponent be improved beyond 1270/951?",
+      "Does the conjecture hold for all rings, not just integers?",
+      "What is the correct higher-fold generalization for m-fold sums and products?"
+    ]
+  }
+}

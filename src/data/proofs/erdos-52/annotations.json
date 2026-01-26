@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos-52-defs",
+    "proofId": "erdos-52",
+    "type": "definition",
+    "range": { "startLine": 26, "endLine": 36 },
+    "title": "Sumset and Product Set",
+    "content": "sumset A computes {a+b : a,b ∈ A}, productset A computes {a·b : a,b ∈ A}. sumProductMax takes the maximum of their cardinalities — the central quantity in the conjecture.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-52-conjecture",
+    "proofId": "erdos-52",
+    "type": "conjecture",
+    "range": { "startLine": 42, "endLine": 52 },
+    "title": "Erdős Problem 52",
+    "content": "For every ε > 0, there exists C > 0 such that max(|A+A|, |A·A|) ≥ C·|A|^{2-ε} for all finite sets A with |A| ≥ 2. This is the Erdős–Szemerédi sum-product conjecture, with a $250 prize.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-52-es-theorem",
+    "proofId": "erdos-52",
+    "type": "result",
+    "range": { "startLine": 58, "endLine": 64 },
+    "title": "Erdős–Szemerédi Theorem",
+    "content": "Erdős and Szemerédi (1983) proved that max(|A+A|, |A·A|) ≥ |A|^{1+c} for some absolute constant c > 0. This was the first result establishing super-linear growth.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-52-bloom",
+    "proofId": "erdos-52",
+    "type": "result",
+    "range": { "startLine": 70, "endLine": 77 },
+    "title": "Bloom's 2025 Bound",
+    "content": "Bloom (2025) proved the current best exponent: max(|A+A|, |A·A|) ≥ |A|^{1270/951-o(1)} ≈ |A|^{1.335}. This improves on a long line of successive bounds since Erdős–Szemerédi.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-52-generalized",
+    "proofId": "erdos-52",
+    "type": "conjecture",
+    "range": { "startLine": 104, "endLine": 122 },
+    "title": "Generalized Sum-Product Conjecture",
+    "content": "For m ≥ 2 and every ε > 0, max(|mA|, |A^m|) ≥ C·|A|^{m-ε}. This extends the pairwise conjecture to arbitrary m-fold operations.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-52-connection",
+    "proofId": "erdos-52",
+    "type": "context",
+    "range": { "startLine": 128, "endLine": 135 },
+    "title": "Connection to Problem 53",
+    "content": "Problem 52 (pairwise sums/products) is closely related to Problem 53 (sums/products of distinct subsets, resolved by Chang 2003). A large sumset or product set implies many distinct representations.",
+    "significance": "supporting"
+  }
+]
