@@ -1,0 +1,56 @@
+[
+  {
+    "id": "least-factorial-wilson",
+    "proofId": "erdos-1072",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "Least Factorial Wilson Function",
+    "content": "f(p) = inf{n > 0 : p | n! + 1}. The least positive integer whose factorial is ≡ -1 (mod p). Well-defined by Wilson's theorem.",
+    "significance": "high"
+  },
+  {
+    "id": "wilson-maximal",
+    "proofId": "erdos-1072",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Wilson Maximal Prime",
+    "content": "A prime p is Wilson maximal if f(p) = p-1, meaning (p-1)! is the first factorial achieving -1 mod p. The first non-maximal prime is p = 7.",
+    "significance": "high"
+  },
+  {
+    "id": "wilson-bound",
+    "proofId": "erdos-1072",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "theorem",
+    "title": "Wilson's Theorem Upper Bound",
+    "content": "Wilson's theorem: (p-1)! ≡ -1 (mod p) for all primes p. This guarantees f(p) ≤ p-1 and the function is well-defined.",
+    "significance": "medium"
+  },
+  {
+    "id": "question-1",
+    "proofId": "erdos-1072",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "conjecture",
+    "title": "Infinitely Many Maximal Primes",
+    "content": "Are there infinitely many primes p with f(p) = p-1? Known for p = 2, 3, 5 but the general question is open.",
+    "significance": "high"
+  },
+  {
+    "id": "question-2",
+    "proofId": "erdos-1072",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "conjecture",
+    "title": "f(p)/p → 0 for Almost All Primes",
+    "content": "For a density-1 subset of primes, f(p)/p → 0. This says factorial residues typically achieve -1 well before the Wilson endpoint (p-1)!.",
+    "significance": "high"
+  },
+  {
+    "id": "hardy-subbarao",
+    "proofId": "erdos-1072",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "conjecture",
+    "title": "Hardy–Subbarao Density Belief",
+    "content": "The number of primes p ≤ x with f(p) = p-1 is o(x/log x). Maximal primes are believed to have density 0 among all primes.",
+    "significance": "high"
+  }
+]
