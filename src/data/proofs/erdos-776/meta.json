@@ -1,0 +1,74 @@
+{
+  "id": "erdos-776",
+  "title": "Antichains with Set-Size Multiplicity",
+  "slug": "erdos-776",
+  "description": "For r ≥ 2, how large must n be to guarantee an antichain in 2^{[n]} with n−3 distinct set sizes, each appearing ≥ r times? For r=1: max is n−2. For r>1: max is n−3 for large n.",
+  "meta": {
+    "author": "Erdős, Trotter",
+    "sourceUrl": "https://erdosproblems.com/776",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos776Problem.lean",
+    "tags": [
+      "combinatorics",
+      "extremal set theory",
+      "antichains",
+      "Sperner theory"
+    ],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 776,
+    "erdosUrl": "https://erdosproblems.com/776",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős and Trotter studied antichains in the power set of [n] with constraints on how many times each set size must appear. For r=1 (no constraint), at most n−2 distinct sizes are achievable for n>3. For r>1, the maximum drops to n−3, but determining the threshold N(r) remains open.",
+    "problemStatement": "Determine the threshold N(r) such that for all n ≥ N(r), the maximum number of distinct set sizes in a multiplicity-r antichain in 2^{[n]} is exactly n−3.",
+    "proofStrategy": "We formalize subset families, antichains, distinct size counting, multiplicity constraints, the r=1 and r>1 results, and the threshold conjecture. We prove the exact formula from the upper and lower bounds.",
+    "keyInsights": [
+      "r=1: max distinct sizes is n−2 for n>3 (no multiplicity constraint)",
+      "r>1: n−2 is unachievable; n−3 is achievable for large n",
+      "Sperner's theorem bounds the total antichain size by C(n, ⌊n/2⌋)",
+      "Multiplicity r forces at least r·d sets for d distinct sizes",
+      "Extreme sizes (0 and n) have C(n,0)=1, so are unusable for r≥2"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 50,
+      "summary": "Defines subset families, antichains, distinct sizes, multiplicity constraints, and the maximum distinct sizes function."
+    },
+    {
+      "id": "results",
+      "title": "Main Results",
+      "startLine": 52,
+      "endLine": 80,
+      "summary": "States the Erdős–Trotter results for r=1 and r>1, and proves the exact formula for large n."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 82,
+      "endLine": 90,
+      "summary": "The open problem: determine the optimal threshold N(r) as a function of r."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 92,
+      "endLine": 116,
+      "summary": "Sperner's theorem, middle layer antichain, size-variety tradeoff, and size availability constraints."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #776 on antichains with set-size multiplicity constraints. The maximum distinct sizes drops from n−2 (r=1) to n−3 (r≥2) for large n. The optimal threshold N(r) remains open.",
+    "implications": "A resolution would refine the extremal theory of antichains in Boolean lattices, extending Sperner-type results to multiplicity-constrained settings.",
+    "openQuestions": [
+      "What is the precise threshold N(r) as a function of r?",
+      "Does N(r) grow polynomially or exponentially in r?",
+      "What is the structure of the extremal families achieving n−3 sizes?"
+    ]
+  }
+}
