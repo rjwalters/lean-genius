@@ -1,0 +1,77 @@
+{
+  "id": "erdos-1065",
+  "title": "Erdős Problem #1065: Primes of the Form 2^k · q + 1",
+  "slug": "erdos-1065",
+  "description": "Are there infinitely many primes p = 2^k · q + 1 (q prime, k ≥ 0)? More generally, p = 2^k · 3^l · q + 1? Connected to safe primes and smooth-minus-one primes. OEIS A074781, A339465.",
+  "meta": {
+    "erdosNumber": 1065,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-numbers",
+      "smooth-numbers",
+      "open"
+    ],
+    "references": [
+      "Guy B46: Unsolved Problems in Number Theory",
+      "OEIS A074781: primes p with (p−1)/2 prime",
+      "OEIS A339465",
+      "https://erdosproblems.com/1065"
+    ],
+    "leanFile": "Proofs/Erdos1065Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 33,
+      "summary": "IsTwoTimePrimePlusOne and IsTwoThreeTimePrimePlusOne predicates."
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Main Conjectures",
+      "startLine": 35,
+      "endLine": 43,
+      "summary": "Infinitude of primes of the form 2^k · q + 1 and 2^k · 3^l · q + 1."
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "startLine": 45,
+      "endLine": 58,
+      "summary": "p = 3, 5, 7, 13 as examples of the 2^k · q + 1 form."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 60,
+      "endLine": 79,
+      "summary": "1065a implies 1065b, Sophie Germain connection, smooth structure."
+    }
+  ],
+  "overview": {
+    "historicalContext": "This problem appears as B46 in Guy's 'Unsolved Problems in Number Theory'. It asks about the distribution of primes whose predecessor has a very restricted prime factorization — a power of 2 times a single prime.",
+    "problemStatement": "Are there infinitely many primes p such that p = 2^k · q + 1 for some prime q and k ≥ 0? More generally, p = 2^k · 3^l · q + 1?",
+    "proofStrategy": "We formalize both variants of the problem, provide small examples, and note the connection to safe primes (k = 1 case) and smooth number theory.",
+    "keyInsights": [
+      "When k = 1, this asks for infinitely many safe primes p = 2q + 1",
+      "The 2^k · q + 1 form is strictly stronger than the 2^k · 3^l · q + 1 form",
+      "p − 1 being 2^k · q means p − 1 is '2-smooth times a prime'",
+      "Examples: 3, 5, 7, 13, 29, 41, 61, 97, ...",
+      "Connected to OEIS A074781 and A339465"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1065 asks whether primes p = 2^k · q + 1 (and the relaxed 2^k · 3^l · q + 1) occur infinitely often. The special case k = 1 reduces to the safe primes conjecture. Both questions remain open.",
+    "implications": "A resolution would illuminate the factorization structure of p − 1 for primes p, connecting to Artin's conjecture and the distribution of smooth numbers.",
+    "openQuestions": [
+      "Are there infinitely many primes p = 2^k · q + 1?",
+      "Are there infinitely many safe primes (k = 1)?",
+      "What is the density of such primes among all primes?",
+      "Does allowing 3^l significantly increase the set?"
+    ]
+  }
+}
