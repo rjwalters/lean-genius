@@ -1,0 +1,56 @@
+[
+  {
+    "id": "directed-graph",
+    "proofId": "erdos-112",
+    "range": { "startLine": 26, "endLine": 29 },
+    "type": "definition",
+    "title": "Directed Graph",
+    "content": "A directed graph on Fin k is an irreflexive binary relation E. For a tournament, every pair of distinct vertices has exactly one directed edge.",
+    "significance": "high"
+  },
+  {
+    "id": "transitive-tournament",
+    "proofId": "erdos-112",
+    "range": { "startLine": 38, "endLine": 44 },
+    "type": "definition",
+    "title": "Transitive Tournament",
+    "content": "A set of vertices forms a transitive tournament if there exists a total order consistent with edge directions. Equivalently, the induced subgraph has no directed cycle.",
+    "significance": "high"
+  },
+  {
+    "id": "directed-ramsey",
+    "proofId": "erdos-112",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "Directed Ramsey Number k(n,m)",
+    "content": "k(n,m) is the minimum number of vertices such that every directed graph contains either an independent set of size n or a transitive tournament of size m.",
+    "significance": "high"
+  },
+  {
+    "id": "larson-mitchell",
+    "proofId": "erdos-112",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "note",
+    "title": "Larson–Mitchell (1997)",
+    "content": "k(n,3) ≤ n² for all n. This quadratic bound for the case of transitive triples is the best known for m = 3.",
+    "significance": "high"
+  },
+  {
+    "id": "erdos-rado",
+    "proofId": "erdos-112",
+    "range": { "startLine": 83, "endLine": 88 },
+    "type": "note",
+    "title": "Erdős–Rado Upper Bound (1967)",
+    "content": "The original bound k(n,m) ≤ (2^{m-1}(n-1)^m + n - 2)/(2n - 3). This is exponential in m but polynomial in n for fixed m.",
+    "significance": "high"
+  },
+  {
+    "id": "path-variant",
+    "proofId": "erdos-112",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "note",
+    "title": "Directed Path Variant",
+    "content": "Hunter–Steiner proved that replacing 'transitive tournament' with 'directed path' gives k(n,m) = (n-1)(m-1), an exact result.",
+    "significance": "medium"
+  }
+]

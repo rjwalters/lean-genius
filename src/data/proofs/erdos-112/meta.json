@@ -1,0 +1,77 @@
+{
+  "id": "erdos-112",
+  "title": "Erdős Problem #112: Directed Ramsey — Independent Sets vs Transitive Tournaments",
+  "slug": "erdos-112",
+  "description": "Determine k(n,m): the minimum vertices guaranteeing an independent set of size n or a transitive tournament of size m in any directed graph. Known: R(n,m) ≤ k(n,m) ≤ R(n,m,m). Open.",
+  "meta": {
+    "erdosNumber": 112,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "tournaments",
+      "open"
+    ],
+    "references": [
+      "Erdős–Rado (1967): original problem and upper bound",
+      "Larson–Mitchell (1997): k(n,3) ≤ n²",
+      "Hunter–Steiner: directed path variant",
+      "https://erdosproblems.com/112"
+    ],
+    "leanFile": "Proofs/Erdos112Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Definition",
+      "startLine": 22,
+      "endLine": 51,
+      "summary": "Directed graph, independent set, transitive tournament, and k(n,m) definitions."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Question",
+      "startLine": 53,
+      "endLine": 62,
+      "summary": "Determine k(n,m) for general n, m."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 64,
+      "endLine": 88,
+      "summary": "Ramsey lower bound, Hunter's 3-color upper, Larson–Mitchell k(n,3) ≤ n², Erdős–Rado bound."
+    },
+    {
+      "id": "observations",
+      "title": "Observations",
+      "startLine": 90,
+      "endLine": 99,
+      "summary": "Path variant (Hunter–Steiner exact result) and Ramsey theory connection."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Rado posed this problem in 1967 as a directed generalization of Ramsey numbers. The problem asks for the minimum number of vertices in a directed graph that forces either a large independent set or a large transitive tournament.",
+    "problemStatement": "Determine k(n,m), the minimum k such that every directed graph on k vertices contains an independent set of size n or a transitive tournament of size m.",
+    "proofStrategy": "We define directed graphs, independent sets, and transitive tournaments in Lean. We axiomatize k(n,m) and state known bounds from Erdős–Rado, Larson–Mitchell, and Hunter.",
+    "keyInsights": [
+      "R(n,m) ≤ k(n,m) ≤ R(n,m,m) bounds k(n,m) between Ramsey numbers",
+      "Larson–Mitchell proved k(n,3) ≤ n² for transitive triples",
+      "Hunter–Steiner solved the directed path variant: k(n,m) = (n-1)(m-1)",
+      "The Erdős–Rado bound is exponential in m",
+      "Exact values unknown for general n, m"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #112 asks for the directed Ramsey number k(n,m) guaranteeing independent sets or transitive tournaments. Known bounds span from ordinary Ramsey numbers to 3-color Ramsey numbers, with the exact growth rate undetermined.",
+    "implications": "Resolving this would advance understanding of directed Ramsey theory, connecting tournament structure to classical Ramsey bounds and potentially revealing new phenomena in directed graphs.",
+    "openQuestions": [
+      "What is the exact growth rate of k(n,m)?",
+      "Can the Erdős–Rado upper bound be significantly improved?",
+      "Is k(n,m) polynomial in n for fixed m?",
+      "What are exact values of k(n,m) for small n, m?"
+    ]
+  }
+}
