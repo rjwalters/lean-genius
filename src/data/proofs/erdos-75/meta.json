@@ -1,0 +1,68 @@
+{
+  "id": "erdos-75",
+  "title": "Erdős Problem #75: Uncountable Chromatic Number and Large Independent Sets",
+  "slug": "erdos-75",
+  "description": "Is there a graph of chromatic number ℵ₁ such that every sufficiently large finite subgraph on n vertices has an independent set of size > n^{1−ε}? A $1000 Erdős prize problem.",
+  "meta": {
+    "author": "Erdős, Hajnal, Szemerédi",
+    "sourceUrl": "https://erdosproblems.com/75",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos75Problem.lean",
+    "tags": ["graph theory", "chromatic number", "independence number", "infinite combinatorics"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 75,
+    "erdosUrl": "https://erdosproblems.com/75",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Hajnal, and Szemerédi posed this question about the interaction between chromatic number and independence in infinite graphs. The problem explores whether uncountable chromatic number is compatible with very large independent sets in finite subgraphs. Erdős offered $1000 for a complete solution.",
+    "problemStatement": "Is there a graph G of chromatic number ℵ₁ such that for all ε > 0, every sufficiently large finite subgraph on n vertices contains an independent set of size > n^{1−ε}? Erdős further asked if the independent set can be linear in n.",
+    "proofStrategy": "We axiomatize abstract graphs, chromatic number, finite subgraphs, and independence number. The large independence set property and its linear strengthening are defined precisely, and both forms of the conjecture are stated as axioms.",
+    "keyInsights": [
+      "Uncountable chromatic number means the graph cannot be coloured with any finite number of colours",
+      "The n^{1−ε} bound is nearly linear — just barely sublinear for any fixed ε",
+      "For finite graphs, χ(G) · α(G) ≥ |V(G)| relates chromatic and independence numbers",
+      "The stronger conjecture asks for α(H) ≫ n, i.e., linear independence number"
+    ]
+  },
+  "sections": [
+    {
+      "id": "graph-abstractions",
+      "title": "Graph Abstractions",
+      "startLine": 17,
+      "endLine": 35,
+      "summary": "Defines abstract graph type, chromatic number, and uncountable chromatic number."
+    },
+    {
+      "id": "independence",
+      "title": "Finite Subgraphs and Independence",
+      "startLine": 37,
+      "endLine": 47,
+      "summary": "Defines finite subgraphs, independence number, and basic bounds."
+    },
+    {
+      "id": "properties",
+      "title": "The Independence Ratio Property",
+      "startLine": 49,
+      "endLine": 66,
+      "summary": "Defines the (1−ε)-independence property and its linear strengthening."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Erdős Problem",
+      "startLine": 78,
+      "endLine": 87,
+      "summary": "States the basic and strong forms of the conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 75 is a deep question about the interplay between chromatic number and local independence structure in infinite graphs. Both the basic (n^{1−ε}) and strong (linear) forms remain open.",
+    "implications": "A positive answer would demonstrate a surprising compatibility between global colouring complexity and local sparsity in infinite graphs, advancing our understanding of infinite graph colouring.",
+    "openQuestions": [
+      "Does such a graph with uncountable chromatic number exist?",
+      "Can the independent sets be linear in the number of vertices?",
+      "What is the relationship to the Erdős–Hajnal conjecture?"
+    ]
+  }
+}
