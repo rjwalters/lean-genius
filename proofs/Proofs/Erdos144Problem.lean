@@ -33,12 +33,11 @@ import Mathlib.Data.Nat.Divisors
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib.Tactic
 
 namespace Erdos144
 
-/-
-## Part I: Basic Definitions
--/
+/-! ## Part I: Basic Definitions -/
 
 /--
 **Natural density of a set:**
@@ -76,9 +75,7 @@ A_c = {n ∈ ℕ : n has divisors d₁ < d₂ < c·d₁}.
 -/
 def closeDivisorsSetC (c : ℝ) : Set ℕ := {n | hasCloseDivisorsC c n}
 
-/-
-## Part II: The Main Theorem
--/
+/-! ## Part II: The Main Theorem -/
 
 /--
 **Erdős Problem #144 (Basic Version):**
@@ -106,9 +103,7 @@ For any c > 1, the density of c-close divisors equals 1.
 -/
 axiom maier_tenenbaum_strong : ∀ c : ℝ, erdos_144_strong_conjecture c
 
-/-
-## Part III: The Threshold β = log 3 - 1
--/
+/-! ## Part III: The Threshold β = log 3 - 1 -/
 
 /--
 **The critical exponent:**
@@ -156,9 +151,7 @@ theorem phase_transition :
     (∀ β < criticalExponent, naturalDensity (refinedCloseDivisorsSet β) 1) := by
   exact ⟨erdos_hall_theorem, maier_tenenbaum_refined⟩
 
-/-
-## Part IV: Examples and Intuition
--/
+/-! ## Part IV: Examples and Intuition -/
 
 /--
 **Example: Prime powers have no close divisors:**
@@ -205,9 +198,7 @@ The more prime factors, the more divisors, the more likely close pairs exist.
 -/
 axiom intuition_many_primes : True
 
-/-
-## Part V: Erdős's Retracted Claim
--/
+/-! ## Part V: Erdős's Retracted Claim -/
 
 /--
 **Erdős's 1964 claim (later retracted):**
@@ -230,9 +221,7 @@ density 1 for β < log 3 - 1, vindicating the original conjecture.
 -/
 axiom maier_tenenbaum_1984_completion : True
 
-/-
-## Part VI: Proof Techniques
--/
+/-! ## Part VI: Proof Techniques -/
 
 /--
 **Divisor distribution:**
@@ -261,9 +250,7 @@ Higher moments of divisor counts are used to bound exceptional sets.
 -/
 axiom moment_calculations : True
 
-/-
-## Part VII: Related Problems
--/
+/-! ## Part VII: Related Problems -/
 
 /--
 **Problem 449: Divisor ratio function:**
@@ -284,9 +271,7 @@ This problem is discussed as Problem E3 in Richard Guy's
 -/
 axiom guy_problem_E3 : True
 
-/-
-## Part VIII: The Prize
--/
+/-! ## Part VIII: The Prize -/
 
 /--
 **The original prize:**
@@ -301,9 +286,7 @@ additional prizes for the stronger versions.
 -/
 axiom actual_payment : True
 
-/-
-## Part IX: Summary
--/
+/-! ## Part IX: Summary -/
 
 /--
 **Summary of Erdős Problem #144:**
