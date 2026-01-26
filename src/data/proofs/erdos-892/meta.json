@@ -1,0 +1,82 @@
+{
+  "id": "erdos-892",
+  "title": "Erdős Problem #892: Primitive Sequence Domination",
+  "slug": "erdos-892",
+  "description": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with aₙ ≪ bₙ. Known: Σ 1/(bₙ log bₙ) < ∞ is necessary. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/892",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos892Problem.lean",
+    "tags": ["number-theory", "primitive-sets", "divisibility", "sequences"],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 892,
+    "erdosUrl": "https://erdosproblems.com/892",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős, Sárközy, and Szemerédi (1968) posed the problem of characterizing sequences that can be dominated by primitive sequences. Erdős (1935) showed Σ 1/(aₙ log aₙ) converges for any primitive sequence, giving a necessary condition on b. Erdős–Sárközy–Szemerédi (1967) strengthened this to a reciprocal sum growth condition. The full characterization remains open.",
+    "problemStatement": "Given b₁ < b₂ < ⋯, find necessary and sufficient conditions for the existence of a primitive sequence a₁ < a₂ < ⋯ (no aᵢ | aⱼ) with aₙ ≪ bₙ.",
+    "proofStrategy": "We define IsPrimitive (no divisibility), IsStrictlyIncreasing, and IsDominatedBy (a ≪ b). ErdosProblem892 asks for existence of a primitive dominator. Necessary conditions from Erdős (1935) and Erdős–Sárközy–Szemerédi (1967) are axiomatized. The GCD-free variant and primitive set counting bounds are also formalized.",
+    "keyInsights": [
+      "A primitive sequence has no element dividing another",
+      "Σ 1/(bₙ log bₙ) < ∞ is necessary for domination (Erdős 1935)",
+      "Σ_{bₙ<x} 1/bₙ = o(log x / √(log log x)) is a stronger necessary condition",
+      "The GCD-free condition on b may be sufficient"
+    ]
+  },
+  "sections": [
+    {
+      "id": "primitive-sequences",
+      "title": "Primitive Sequences",
+      "startLine": 24,
+      "endLine": 35,
+      "summary": "Defines IsPrimitive (no divisibility) and IsStrictlyIncreasing."
+    },
+    {
+      "id": "domination",
+      "title": "Domination",
+      "startLine": 37,
+      "endLine": 44,
+      "summary": "Defines IsDominatedBy: a ≪ b means aₙ ≤ C·bₙ for some constant C."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Problem",
+      "startLine": 46,
+      "endLine": 57,
+      "summary": "States ErdosProblem892: characterize b admitting a primitive dominator."
+    },
+    {
+      "id": "necessary-conditions",
+      "title": "Necessary Conditions",
+      "startLine": 59,
+      "endLine": 83,
+      "summary": "Erdős (1935) reciprocal-log convergence and Erdős–Sárközy–Szemerédi (1967) growth bound as necessary conditions."
+    },
+    {
+      "id": "gcd-condition",
+      "title": "GCD Condition",
+      "startLine": 85,
+      "endLine": 100,
+      "summary": "Defines IsGCDFree and the question: does GCD-free imply existence of a primitive dominator?"
+    },
+    {
+      "id": "primitive-properties",
+      "title": "Primitive Set Properties",
+      "startLine": 102,
+      "endLine": 122,
+      "summary": "Counting bound for primitive sets and Erdős (1935) convergence of Σ 1/(aₙ log aₙ)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 892 asks for a characterization of sequences admitting primitive dominators. Several necessary conditions are known (reciprocal-log convergence, reciprocal sum growth), but sufficient conditions remain elusive. The problem is open.",
+    "implications": "A full characterization would provide a fundamental understanding of the structure of primitive sequences and their density constraints.",
+    "openQuestions": [
+      "What are necessary and sufficient conditions for primitive sequence domination?",
+      "Does the GCD-free condition suffice?",
+      "Can the Erdős–Sárközy–Szemerédi necessary condition be strengthened to be sufficient?"
+    ]
+  }
+}
