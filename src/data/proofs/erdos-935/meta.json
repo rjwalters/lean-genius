@@ -1,0 +1,69 @@
+{
+  "id": "erdos-935",
+  "title": "Erdős Problem #935: Powerful Part of Consecutive Products",
+  "slug": "erdos-935",
+  "description": "Three questions about Q₂(n(n+1)⋯(n+ℓ)), the powerful part of consecutive products: upper bound n^{2+ε}, divergent lim sup, and vanishing ratio.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/935",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos935Problem.lean",
+    "tags": ["number theory", "powerful numbers", "consecutive products"],
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 935,
+    "erdosUrl": "https://erdosproblems.com/935",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "Erdős asked about the growth of the powerful part Q₂(n(n+1)⋯(n+ℓ)), the product of prime powers p^{kₚ} with kₚ ≥ 2 in the factorisation. Mahler proved lim sup Q₂/n² ≥ 1. All three questions remain open. Erdős remarked the problem 'seems very difficult to prove.'",
+    "problemStatement": "For ℓ ≥ 1: (1) Is Q₂(n(n+1)⋯(n+ℓ)) < n^{2+ε} for large n? (2) For ℓ ≥ 2, is lim sup Q₂/n² = ∞? (3) Does Q₂/n^{ℓ+1} → 0?",
+    "proofStrategy": "The formalization axiomatises the powerful part Q₂ with its basic properties (divisibility, powerful, multiplicative). Consecutive products and their powerful parts are defined. Mahler's lower bound and all three conjectures are stated.",
+    "keyInsights": [
+      "Q₂(n) extracts the 'square-full' part of the prime factorisation",
+      "Mahler proved lim sup Q₂(n(n+1)⋯(n+ℓ))/n² ≥ 1",
+      "Part 1 asks for the upper bound n^{2+ε}, just above the Mahler threshold",
+      "Parts 2 and 3 ask whether ℓ ≥ 2 consecutive factors push Q₂ beyond n² but not as far as n^{ℓ+1}"
+    ]
+  },
+  "sections": [
+    {
+      "id": "powerful-part",
+      "title": "Powerful Part",
+      "startLine": 22,
+      "endLine": 44,
+      "summary": "Axiomatisation of Q₂(n) with divisibility, powerful property, and multiplicativity."
+    },
+    {
+      "id": "consecutive-products",
+      "title": "Consecutive Products",
+      "startLine": 46,
+      "endLine": 53,
+      "summary": "Product n(n+1)⋯(n+ℓ) and its powerful part Q₂."
+    },
+    {
+      "id": "mahler",
+      "title": "Mahler's Result",
+      "startLine": 55,
+      "endLine": 62,
+      "summary": "Mahler's lower bound: lim sup Q₂(⋯)/n² ≥ 1."
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Main Conjectures",
+      "startLine": 64,
+      "endLine": 89,
+      "summary": "Three open questions: n^{2+ε} upper bound, divergent lim sup for ℓ ≥ 2, and vanishing Q₂/n^{ℓ+1}."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures all three parts of Erdős Problem 935 about the powerful part of consecutive products, along with Mahler's known lower bound.",
+    "implications": "These questions probe the distribution of large prime powers in consecutive products and the interplay between multiplicative number theory and Diophantine approximation.",
+    "openQuestions": [
+      "Is Q₂(n(n+1)⋯(n+ℓ)) < n^{2+ε} for all large n?",
+      "Is lim sup Q₂/n² = ∞ when ℓ ≥ 2?",
+      "Does Q₂/n^{ℓ+1} → 0 when ℓ ≥ 2?",
+      "What about the generalisation to Q_r for r > 2?"
+    ]
+  }
+}
