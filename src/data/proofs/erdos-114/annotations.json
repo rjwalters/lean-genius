@@ -1,0 +1,74 @@
+[
+  {
+    "id": "monic-poly",
+    "proofId": "erdos-114",
+    "range": { "startLine": 30, "endLine": 32 },
+    "type": "definition",
+    "title": "Monic Polynomial",
+    "content": "A monic polynomial of degree n over ℂ: p(z) = z^n + a_{n-1}z^{n-1} + ... + a_0. The leading coefficient is fixed at 1, and the n lower coefficients are free complex parameters.",
+    "significance": "medium"
+  },
+  {
+    "id": "lemniscate-length",
+    "proofId": "erdos-114",
+    "range": { "startLine": 35, "endLine": 35 },
+    "type": "definition",
+    "title": "Lemniscate Length",
+    "content": "The arc length of the curve {z ∈ ℂ : |p(z)| = 1}, a real algebraic curve in the plane. This generalizes the classical Bernoulli lemniscate (|z²-1| = 1) to arbitrary monic polynomials.",
+    "significance": "high"
+  },
+  {
+    "id": "extremal-poly",
+    "proofId": "erdos-114",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Extremal Polynomial z^n - 1",
+    "content": "The conjectured maximizer p(z) = z^n - 1. Its lemniscate passes through all n-th roots of unity and has n-fold dihedral symmetry. The length is ~2n for large n.",
+    "significance": "high"
+  },
+  {
+    "id": "danchenko",
+    "proofId": "erdos-114",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "theorem",
+    "title": "Danchenko Upper Bound (2007)",
+    "content": "f(n) ≤ 2πn, improving Dolzhenko's 4πn. The constant 2π is natural since the unit circle has circumference 2π, and the lemniscate of z^n wraps around it n times.",
+    "significance": "medium"
+  },
+  {
+    "id": "fryntov-nazarov",
+    "proofId": "erdos-114",
+    "range": { "startLine": 53, "endLine": 54 },
+    "type": "theorem",
+    "title": "Fryntov–Nazarov Near-Optimal Bound (2009)",
+    "content": "f(n) ≤ 2n + O(n^{7/8}), nearly matching the conjectured maximum ~2n from z^n-1. They also proved z^n-1 is a local maximum: small perturbations decrease the length.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-114",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "conjecture",
+    "title": "Global Maximality Conjecture ($250)",
+    "content": "z^n-1 uniquely maximizes the lemniscate length among all monic degree-n polynomials, for all n ≥ 1. The $250 bounty remains for a complete proof covering all n.",
+    "significance": "high"
+  },
+  {
+    "id": "tao-large-n",
+    "proofId": "erdos-114",
+    "range": { "startLine": 79, "endLine": 82 },
+    "type": "theorem",
+    "title": "Tao's Large-n Theorem (2025)",
+    "content": "Terence Tao proved that z^n-1 is the unique global maximum for all sufficiently large n. This is a major breakthrough, reducing the problem to finitely many small cases.",
+    "significance": "high"
+  },
+  {
+    "id": "eremenko-hayman",
+    "proofId": "erdos-114",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "theorem",
+    "title": "Eremenko–Hayman n=2 (1999)",
+    "content": "For n=2, z²-1 uniquely maximizes the lemniscate length. The lemniscate is the classical Bernoulli lemniscate, a figure-eight curve with length 4·Γ(1/4)²/(√(2π)·Γ(1/2)).",
+    "significance": "medium"
+  }
+]

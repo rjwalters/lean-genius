@@ -1,0 +1,85 @@
+{
+  "id": "erdos-114",
+  "title": "Erdős Problem #114: Lemniscate Length Maximization",
+  "slug": "erdos-114",
+  "description": "For monic degree-n polynomials p(z), is the arc length of {|p(z)|=1} maximized by z^n-1? Tao (2025) proved this for large n. Solved for n=2 (Eremenko–Hayman 1999). $250 bounty. Status: OPEN (all n).",
+  "meta": {
+    "erdosNumber": 114,
+    "status": "formalized",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "extremal-problems",
+      "open"
+    ],
+    "references": [
+      "Erdős–Herzog–Piranian (1958)",
+      "Fryntov–Nazarov (2009): local optimality, f(n) ≤ 2n + O(n^{7/8})",
+      "Tao (2025): global optimality for large n",
+      "Eremenko–Hayman (1999): n=2 solved",
+      "https://erdosproblems.com/114"
+    ],
+    "leanFile": "Proofs/Erdos114Problem.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 40,
+      "summary": "Define MonicPoly, lemniscateLength, maxLemniscateLength, and the extremal polynomial z^n-1."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 42,
+      "endLine": 53,
+      "summary": "Dolzhenko (4πn), Danchenko (2πn), Fryntov–Nazarov (2n + O(n^{7/8})) upper bounds."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound from z^n - 1",
+      "startLine": 55,
+      "endLine": 64,
+      "summary": "The extremal polynomial z^n-1 gives a lemniscate of length ~2n, providing the lower bound."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture and Results",
+      "startLine": 66,
+      "endLine": 85,
+      "summary": "The conjecture (z^n-1 is global max), Fryntov–Nazarov local optimality, Tao's large-n theorem, and Eremenko–Hayman n=2 result."
+    },
+    {
+      "id": "geometry",
+      "title": "Lemniscate Geometry",
+      "startLine": 87,
+      "endLine": 99,
+      "summary": "Symmetry properties, connected components, and exact length formula for z^n-1 via Gamma function."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős, Herzog, and Piranian posed this in 1958, asking about extremal lemniscates in complex analysis. The problem connects polynomial theory with geometric measure theory. Tao's 2025 breakthrough resolved the conjecture for all sufficiently large n.",
+    "problemStatement": "Is the arc length of {z : |p(z)| = 1} maximized by p(z) = z^n - 1 among all monic degree-n polynomials?",
+    "proofStrategy": "We formalize monic polynomials, lemniscate length, and the extremal polynomial z^n-1. We trace the improving upper bounds from 4πn to 2n + O(n^{7/8}) and state Tao's large-n global optimality result.",
+    "keyInsights": [
+      "The lemniscate of z^n-1 has n-fold symmetry with length ~2n",
+      "Upper bounds improved over 50 years: 4πn → 2πn → 2n + O(n^{7/8})",
+      "Fryntov–Nazarov proved z^n-1 is a local maximum (2009)",
+      "Tao (2025) proved z^n-1 is the unique global maximum for large n",
+      "Only n=2 is fully resolved (Eremenko–Hayman 1999); small n remain open"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #114 is resolved for large n by Tao (2025) and for n=2 by Eremenko–Hayman (1999). The full conjecture for all n ≥ 1 remains open with a $250 bounty. The extremal polynomial z^n-1 is the conjectured maximizer.",
+    "implications": "A full resolution would establish a sharp isoperimetric-type inequality for polynomial lemniscates, with applications to potential theory and approximation theory in the complex plane.",
+    "openQuestions": [
+      "Does Tao's proof extend to all n, or are small n genuinely different?",
+      "What is the exact value of the maximum lemniscate length for small n?",
+      "Are there near-maximizers besides z^n-1 for large n?"
+    ]
+  }
+}
