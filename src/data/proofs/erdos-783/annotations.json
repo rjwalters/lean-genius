@@ -1,0 +1,56 @@
+[
+  {
+    "id": "valid-sieving",
+    "proofId": "erdos-783",
+    "range": { "startLine": 28, "endLine": 32 },
+    "type": "definition",
+    "title": "Valid Sieving Set",
+    "content": "A ⊆ {2,...,n} with pairwise coprime elements and reciprocal sum ≤ C. The coprimality ensures inclusion-exclusion gives exact counts.",
+    "significance": "high"
+  },
+  {
+    "id": "unsieved-count",
+    "proofId": "erdos-783",
+    "range": { "startLine": 35, "endLine": 36 },
+    "type": "definition",
+    "title": "Unsieved Count",
+    "content": "The number of m ≤ n not divisible by any a ∈ A. This is what we want to minimize — these are the integers that 'survive' the sieve.",
+    "significance": "high"
+  },
+  {
+    "id": "prime-sieving-set",
+    "proofId": "erdos-783",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "definition",
+    "title": "Prime Sieving Set",
+    "content": "The first k primes {2, 3, 5, ..., p_k}, where k is maximal with Σ 1/p_i ≤ C. The conjectured optimal sieving set.",
+    "significance": "high"
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-783",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "conjecture",
+    "title": "Primes Are Optimal",
+    "content": "For large n, the prime sieving set minimizes unsieved count among all valid sieving sets with the same budget C. This is the main conjecture of Problem #783.",
+    "significance": "high"
+  },
+  {
+    "id": "inclusion-exclusion",
+    "proofId": "erdos-783",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "theorem",
+    "title": "Coprime Sieve Estimate",
+    "content": "For coprime A, the unsieved fraction is approximately Π_{a∈A} (1 - 1/a) by Möbius inclusion-exclusion. This product is the key quantity to minimize.",
+    "significance": "medium"
+  },
+  {
+    "id": "primes-minimize",
+    "proofId": "erdos-783",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "theorem",
+    "title": "Primes Minimize Product",
+    "content": "For a fixed reciprocal sum budget, primes minimize Π(1 - 1/a_i). Replacing any composite with its prime factor improves the sieve while staying within budget.",
+    "significance": "high"
+  }
+]
