@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ap-free-def",
+    "proofId": "erdos-142",
+    "range": { "startLine": 28, "endLine": 33 },
+    "type": "definition",
+    "title": "AP-k-Free Sets",
+    "content": "A subset S ⊆ {1,...,N} is AP-k-free if it contains no k-term arithmetic progression with positive common difference. The function r_k(N) is the maximum cardinality of such a set.",
+    "significance": "high"
+  },
+  {
+    "id": "szemeredi",
+    "proofId": "erdos-142",
+    "range": { "startLine": 42, "endLine": 47 },
+    "type": "theorem",
+    "title": "Szemerédi's Theorem",
+    "content": "For every k ≥ 3, r_k(N) = o(N). Proved by Szemerédi in 1975 using a combinatorial regularity method. Alternative proofs by Furstenberg (ergodic theory, 1977), Gowers (Fourier analysis, 2001), and hypergraph regularity (Gowers 2007, Nagle–Rödl–Schacht 2006).",
+    "significance": "high"
+  },
+  {
+    "id": "roth",
+    "proofId": "erdos-142",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "theorem",
+    "title": "Roth's Theorem (k = 3)",
+    "content": "Roth (1953) proved r_3(N) = o(N) using the circle method / Fourier analysis. Successive quantitative improvements by Heath-Brown, Szemerédi, Bourgain, Sanders, Bloom, and Kelley–Meka.",
+    "significance": "high"
+  },
+  {
+    "id": "behrend",
+    "proofId": "erdos-142",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "theorem",
+    "title": "Behrend's Construction",
+    "content": "Behrend (1946) constructed AP-3-free subsets of {1,...,N} of size N·exp(-C√(log N)). This remains the best known lower bound up to the constant in the exponent. Elkin (2011) improved the leading constant.",
+    "significance": "high"
+  },
+  {
+    "id": "kelley-meka",
+    "proofId": "erdos-142",
+    "range": { "startLine": 63, "endLine": 67 },
+    "type": "theorem",
+    "title": "Kelley–Meka Upper Bound",
+    "content": "Kelley and Meka (2023) proved r_3(N) ≤ N·exp(-c(log N)^{1/12}), a major breakthrough improving on Bloom–Sisask (2020). This is the first bound to beat N/(log N)^{1+ε} for k = 3.",
+    "significance": "high"
+  },
+  {
+    "id": "main-question",
+    "proofId": "erdos-142",
+    "range": { "startLine": 80, "endLine": 86 },
+    "type": "conjecture",
+    "title": "Asymptotic Formula for r_k(N)",
+    "content": "The main open question: find an asymptotic formula f_k(N) such that r_k(N) ~ f_k(N). Even the correct order of magnitude of r_3(N) is unknown — the Behrend and Kelley–Meka bounds differ by an exponential factor. Erdős offered $10,000 for this problem.",
+    "significance": "high"
+  }
+]
