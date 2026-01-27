@@ -254,7 +254,7 @@ INSERT INTO problems (slug, title, tier, significance, tractability, status, tag
 VALUES ('$SELECTED_ID', '$SELECTED_TITLE', '$SELECTED_TIER', $SELECTED_SIG, $SELECTED_TRACT, 'available', '["seeker-selected"]', datetime('now'))
 ON CONFLICT(slug) DO UPDATE SET
   status = CASE
-    WHEN excluded.status IN ('in-progress', 'completed', 'graduated') THEN problems.status
+    WHEN problems.status IN ('in-progress', 'completed', 'graduated') THEN problems.status
     ELSE 'available'
   END,
   tier = excluded.tier,

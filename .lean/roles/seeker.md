@@ -123,7 +123,10 @@ sqlite3 research/db/knowledge.db <<SQL
 INSERT INTO problems (slug, title, tier, significance, tractability, status, tags, last_updated)
 VALUES ('$PROBLEM_ID', '$PROBLEM_TITLE', '$TIER', $SIGNIFICANCE, $TRACTABILITY, 'available', '["seeker-selected"]', datetime('now'))
 ON CONFLICT(slug) DO UPDATE SET
-  status = 'available',
+  status = CASE
+    WHEN problems.status IN ('in-progress', 'completed', 'graduated') THEN problems.status
+    ELSE 'available'
+  END,
   tier = excluded.tier,
   significance = excluded.significance,
   tractability = excluded.tractability,
