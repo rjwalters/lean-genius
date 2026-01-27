@@ -428,6 +428,20 @@ build_website() {
         print_error "Build failed"
         return 1
     fi
+
+    # Run quality audit and log results
+    print_info "Running quality audit..."
+    local audit_dir="$REPO_ROOT/research/quality-history"
+    mkdir -p "$audit_dir"
+    local audit_file="$audit_dir/$(date -u +%Y%m%d-%H%M%S).json"
+    if npx tsx "$REPO_ROOT/scripts/erdos/quality-audit.ts" --json > "$audit_file" 2>/dev/null; then
+        local total_issues
+        total_issues=$(jq '.summary.totalIssues' "$audit_file" 2>/dev/null || echo "?")
+        print_info "Quality audit: $total_issues issues logged to $audit_file"
+    else
+        print_warning "Quality audit failed (non-blocking)"
+        rm -f "$audit_file"
+    fi
 }
 
 # ============================================================================

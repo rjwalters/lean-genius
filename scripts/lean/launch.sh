@@ -39,8 +39,8 @@ STUCK_CPU_THRESHOLD="0.5"
 DEFAULT_DAEMON_INTERVAL=60
 RESPAWN_COOLDOWN_SECONDS=300  # 5 minutes between respawns of same agent
 
-# Default pool sizes (Erdos enhancement campaign completed 2026-01-27)
-DEFAULT_ERDOS=0
+# Default pool sizes (Erdos quality repair campaign resumed 2026-01-27)
+DEFAULT_ERDOS=2
 DEFAULT_ARISTOTLE=1
 DEFAULT_RESEARCHER=2
 DEFAULT_SEEKER=1
