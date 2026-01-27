@@ -2244,16 +2244,16 @@
       "file": "proofs/Proofs/Erdos1124Problem.lean",
       "problem_id": "erdos-1124",
       "submitted": "2026-01-27T21:27:56Z",
-      "status": "submitted",
-      "notes": "Discovered in API - QUEUED (from previous session)"
+      "status": "expired",
+      "notes": "Discovered in API - QUEUED (from previous session) Expired/NOT_FOUND on API 2026-01-27."
     },
     {
       "project_id": "1c920353-abca-41a6-bb2b-27d952279ee9",
       "file": "proofs/Proofs/Erdos1115Problem.lean",
       "problem_id": "erdos-1115",
       "submitted": "2026-01-27T21:27:56Z",
-      "status": "submitted",
-      "notes": "Discovered in API - QUEUED (from previous session)"
+      "status": "expired",
+      "notes": "Discovered in API - QUEUED (from previous session) Expired/NOT_FOUND on API 2026-01-27."
     },
     {
       "project_id": "0b48f992-c266-47a8-9dad-c781f10a8f98",
@@ -2340,40 +2340,40 @@
       "file": "unknown",
       "problem_id": "unknown-orphan",
       "submitted": "2026-01-27T21:27:56Z",
-      "status": "submitted",
-      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session)"
+      "status": "expired",
+      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session) Expired/NOT_FOUND on API 2026-01-27."
     },
     {
       "project_id": "cef05000-d321-4e5b-8d06-9d61aae80348",
       "file": "unknown",
       "problem_id": "unknown-orphan",
       "submitted": "2026-01-27T21:27:56Z",
-      "status": "submitted",
-      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session)"
+      "status": "expired",
+      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session) Expired/NOT_FOUND on API 2026-01-27."
     },
     {
       "project_id": "31f7446c-2759-4667-9a80-2442e14ab4bf",
       "file": "unknown",
       "problem_id": "unknown-orphan",
       "submitted": "2026-01-27T21:27:56Z",
-      "status": "submitted",
-      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session)"
+      "status": "expired",
+      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session) Expired/NOT_FOUND on API 2026-01-27."
     },
     {
       "project_id": "19f437d5-5f63-421b-a1c0-4c04face1dc9",
       "file": "unknown",
       "problem_id": "unknown-orphan",
       "submitted": "2026-01-27T21:27:56Z",
-      "status": "submitted",
-      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session)"
+      "status": "expired",
+      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session) Expired/NOT_FOUND on API 2026-01-27."
     },
     {
       "project_id": "2142816e-e47d-428d-9dec-2f781bcc30c5",
       "file": "unknown",
       "problem_id": "unknown-orphan",
       "submitted": "2026-01-27T21:27:56Z",
-      "status": "submitted",
-      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session)"
+      "status": "expired",
+      "notes": "Discovered in API - NOT_STARTED (orphaned from previous session) Expired/NOT_FOUND on API 2026-01-27."
     },
     {
       "project_id": "73cc57e4-a5c9-45af-8d8b-53636418b159",
@@ -2430,6 +2430,86 @@
       "submitted": "2026-01-27T21:34:25Z",
       "status": "submitted",
       "notes": "Provable variant (axioms converted to theorem sorries, /-! fixed). Created but solve rate-limited (429). Will be queued when API has capacity."
+    },
+    {
+      "project_id": "aa1f37ce-aa0b-419a-96cf-6f21f5abd65c",
+      "file": "proofs/Proofs/Erdos369ProblemProvable.lean",
+      "problem_id": "erdos-369-provable",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "submitted",
+      "notes": "Project created with file, solve rate-limited (auto-queue expected)"
+    },
+    {
+      "project_id": "1f0534f0-262d-409a-9ebd-38b9d9c26541",
+      "file": "proofs/Proofs/Erdos647ProblemProvable.lean",
+      "problem_id": "erdos-647-provable",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "submitted",
+      "notes": "Project created with file, solve rate-limited (auto-queue expected)"
+    },
+    {
+      "project_id": "86f89a1e-02be-4c07-bbf7-7bf222ab2130",
+      "file": "proofs/Proofs/Erdos740ProblemProvable.lean",
+      "problem_id": "erdos-740-provable",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "submitted",
+      "notes": "Project created with file, solve rate-limited (auto-queue expected)"
+    },
+    {
+      "project_id": "3241109d-c8f6-4307-aa6f-adfe1e88da7d",
+      "file": "proofs/Proofs/Erdos881ProblemProvable.lean",
+      "problem_id": "erdos-881-provable",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "submitted",
+      "notes": "Project created with file, solve rate-limited (auto-queue expected)"
+    },
+    {
+      "project_id": "73be2a6a-ccd7-485a-ad48-7cdc018361da",
+      "file": "proofs/Proofs/Erdos1010ProblemProvable.lean",
+      "problem_id": "erdos-1010-provable",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "submitted",
+      "notes": "Project created with file, solve rate-limited (auto-queue expected)"
+    },
+    {
+      "project_id": "a4015a11-7428-4f92-91ef-080f7787c691",
+      "file": "proofs/Proofs/Erdos397ProblemProvable.lean",
+      "problem_id": "erdos-397-provable",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "submitted",
+      "notes": "Project created with file, solve rate-limited (auto-queue expected)"
+    },
+    {
+      "project_id": "79a8cd17-61cf-4d59-8214-873380b9ccd4",
+      "file": "unknown",
+      "problem_id": "empty-project",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "failed",
+      "notes": "Empty project created by failed Python API call (no file uploaded)"
+    },
+    {
+      "project_id": "4b099518-2fd2-40ce-8b33-49fe2bac7b57",
+      "file": "unknown",
+      "problem_id": "empty-project",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "failed",
+      "notes": "Empty project created by failed Python API call (no file uploaded)"
+    },
+    {
+      "project_id": "866c0b21-4501-40e5-a26d-1a9154634fa6",
+      "file": "unknown",
+      "problem_id": "empty-project",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "failed",
+      "notes": "Empty project created by failed Python API call (no file uploaded)"
+    },
+    {
+      "project_id": "56e68e0c-45eb-4531-935e-5203f8bb43c9",
+      "file": "unknown",
+      "problem_id": "empty-project",
+      "submitted": "2026-01-27T22:07:30Z",
+      "status": "failed",
+      "notes": "Empty project created by failed Python API call (no file uploaded)"
     }
   ],
   "completed": [],
