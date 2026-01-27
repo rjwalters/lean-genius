@@ -145,7 +145,7 @@ theorem sum_squares (n : ℕ) : ∑ i ∈ range n, i ^ 2 = n * (n - 1) * (2 * n 
   cases n with
   | zero => simp
   | succ m =>
-    simp only [Nat.succ_eq_add_one, Nat.add_sub_cancel]
+    simp only [Nat.add_sub_cancel]
     rw [sum_squares_classical]
     -- m * (m + 1) * (2 * m + 1) / 6 = (m + 1) * m * (2 * (m + 1) - 1) / 6
     -- Note: 2 * (m + 1) - 1 = 2 * m + 2 - 1 = 2 * m + 1
@@ -212,7 +212,7 @@ theorem sum_cubes (n : ℕ) : ∑ i ∈ range n, i ^ 3 = (n * (n - 1) / 2) ^ 2 :
   cases n with
   | zero => simp
   | succ m =>
-    simp only [Nat.succ_eq_add_one, Nat.add_sub_cancel]
+    simp only [Nat.add_sub_cancel]
     rw [sum_cubes_classical]
     have h2 : m * (m + 1) = (m + 1) * m := by ring
     rw [h2]
@@ -238,6 +238,95 @@ theorem nicomachus_theorem (n : ℕ) :
     (∑ i ∈ range (n + 1), i ^ 3) = (∑ i ∈ range (n + 1), i) ^ 2 :=
   sum_cubes_eq_sum_squared n
 
+/-! ## Sum of Fourth Powers
+
+The formula ∑i⁴ = n(n+1)(2n+1)(3n²+3n-1)/30
+
+To avoid natural number subtraction issues, we work with the equivalent form:
+  30 * ∑i⁴ + n(n+1)(2n+1) = n(n+1)(2n+1) * (3n² + 3n)
+which rearranges to:
+  30 * ∑i⁴ = n(n+1)(2n+1)(3n² + 3n) - n(n+1)(2n+1)
+           = n(n+1)(2n+1)(3n² + 3n - 1)
+-/
+
+/-- **Sum of fourth powers times 30 (rearranged)**
+
+    30 * ∑_{i=0}^{n} i⁴ + n(n+1)(2n+1) = 3n²(n+1)²(2n+1)
+
+    Rearranged to avoid natural number subtraction. This is equivalent to
+    30 * ∑i⁴ = n(n+1)(2n+1)(3n²+3n-1). -/
+theorem sum_fourth_powers_mul_thirty (n : ℕ) :
+    30 * ∑ i ∈ range (n + 1), i ^ 4 + n * (n + 1) * (2 * n + 1) =
+    3 * n ^ 2 * (n + 1) ^ 2 * (2 * n + 1) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [sum_range_succ, Nat.mul_add]
+    nlinarith [ih]
+
+/-- Helper: 30 divides 3n²(n+1)²(2n+1) - n(n+1)(2n+1). -/
+private lemma thirty_dvd_fourth_sum (n : ℕ) :
+    30 ∣ (3 * n ^ 2 * (n + 1) ^ 2 * (2 * n + 1) - n * (n + 1) * (2 * n + 1)) := by
+  have h := sum_fourth_powers_mul_thirty n
+  use ∑ i ∈ range (n + 1), i ^ 4
+  omega
+
+/-- **Sum of fourth powers formula (classical version)**
+
+    ∑_{i=0}^{n} i⁴ = (3n²(n+1)²(2n+1) - n(n+1)(2n+1)) / 30
+
+    Equivalently: n(n+1)(2n+1)(3n²+3n-1)/30. -/
+theorem sum_fourth_powers_classical (n : ℕ) :
+    ∑ i ∈ range (n + 1), i ^ 4 =
+    (3 * n ^ 2 * (n + 1) ^ 2 * (2 * n + 1) - n * (n + 1) * (2 * n + 1)) / 30 := by
+  have h := sum_fourth_powers_mul_thirty n
+  have hdvd := thirty_dvd_fourth_sum n
+  omega
+
+/-! ## Sum of Fifth Powers
+
+The formula ∑i⁵ = n²(n+1)²(2n²+2n-1)/12
+
+To avoid natural number subtraction, we use:
+  12 * ∑i⁵ + n²(n+1)² = n²(n+1)² * (2n² + 2n)
+which rearranges to:
+  12 * ∑i⁵ = n²(n+1)²(2n² + 2n - 1)
+-/
+
+/-- **Sum of fifth powers times 12 (rearranged)**
+
+    12 * ∑_{i=0}^{n} i⁵ + n²(n+1)² = 2n³(n+1)³
+
+    Rearranged to avoid natural number subtraction. This is equivalent to
+    12 * ∑i⁵ = n²(n+1)²(2n²+2n-1). -/
+theorem sum_fifth_powers_mul_twelve (n : ℕ) :
+    12 * ∑ i ∈ range (n + 1), i ^ 5 + n ^ 2 * (n + 1) ^ 2 =
+    2 * n ^ 3 * (n + 1) ^ 3 := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [sum_range_succ, Nat.mul_add]
+    nlinarith [ih]
+
+/-- Helper: 12 divides 2n³(n+1)³ - n²(n+1)². -/
+private lemma twelve_dvd_fifth_sum (n : ℕ) :
+    12 ∣ (2 * n ^ 3 * (n + 1) ^ 3 - n ^ 2 * (n + 1) ^ 2) := by
+  have h := sum_fifth_powers_mul_twelve n
+  use ∑ i ∈ range (n + 1), i ^ 5
+  omega
+
+/-- **Sum of fifth powers formula (classical version)**
+
+    ∑_{i=0}^{n} i⁵ = (2n³(n+1)³ - n²(n+1)²) / 12
+
+    Equivalently: n²(n+1)²(2n²+2n-1)/12. -/
+theorem sum_fifth_powers_classical (n : ℕ) :
+    ∑ i ∈ range (n + 1), i ^ 5 =
+    (2 * n ^ 3 * (n + 1) ^ 3 - n ^ 2 * (n + 1) ^ 2) / 12 := by
+  have h := sum_fifth_powers_mul_twelve n
+  have hdvd := twelve_dvd_fifth_sum n
+  omega
+
 /-! ## Verification Examples -/
 
 /-- Sum of squares from 0 to 10: 0² + 1² + ... + 10² = 385 -/
@@ -255,16 +344,25 @@ theorem sum_squares_100 : ∑ i ∈ range 101, i ^ 2 = 338350 := by native_decid
 /-- Sum of first 100 cubes = 25502500 = 5050² -/
 theorem sum_cubes_100 : ∑ i ∈ range 101, i ^ 3 = 25502500 := by native_decide
 
-/-! ## Higher Powers (Without Closed Forms)
-
-For k ≥ 4, closed forms exist but involve Bernoulli numbers and become complex.
-We demonstrate the sums exist and can be computed. -/
-
-/-- Sum of fourth powers from 0 to n can be computed -/
+/-- Sum of fourth powers from 0 to 5: verified -/
 theorem sum_fourth_powers_5 : ∑ i ∈ range 6, i ^ 4 = 979 := by native_decide
 
-/-- Sum of fifth powers from 0 to n can be computed -/
+/-- Sum of fourth powers from 0 to 10 -/
+theorem sum_fourth_powers_10 : ∑ i ∈ range 11, i ^ 4 = 25333 := by native_decide
+
+/-- Sum of fifth powers from 0 to 5: verified -/
 theorem sum_fifth_powers_5 : ∑ i ∈ range 6, i ^ 5 = 4425 := by native_decide
+
+/-- Sum of fifth powers from 0 to 10 -/
+theorem sum_fifth_powers_10 : ∑ i ∈ range 11, i ^ 5 = 220825 := by native_decide
+
+/-- Verification: sum of 4th powers formula for n=10 -/
+theorem sum_fourth_formula_check_10 :
+    (3 * 100 * 121 * 21 - 10 * 11 * 21) / 30 = 25333 := by native_decide
+
+/-- Verification: sum of 5th powers formula for n=10 -/
+theorem sum_fifth_formula_check_10 :
+    (2 * 1000 * 1331 - 100 * 121) / 12 = 220825 := by native_decide
 
 /-! ## Key Theorems Summary -/
 
@@ -276,5 +374,9 @@ theorem sum_fifth_powers_5 : ∑ i ∈ range 6, i ^ 5 = 4425 := by native_decide
 #check sum_cubes_classical
 #check sum_cubes_eq_sum_squared
 #check nicomachus_theorem
+#check sum_fourth_powers_mul_thirty
+#check sum_fourth_powers_classical
+#check sum_fifth_powers_mul_twelve
+#check sum_fifth_powers_classical
 
 end SumOfKthPowers

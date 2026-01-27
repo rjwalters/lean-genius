@@ -32,11 +32,11 @@ References:
 Tags: number-theory, harmonic-numbers, divisibility
 -/
 
-import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
-import Mathlib.Data.Rat.Basic
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.Tactic
 
 open Nat Finset BigOperators
 
@@ -50,7 +50,7 @@ namespace Erdos291
 **LCM of 1 to n:**
 L_n = lcm(1, 2, ..., n)
 -/
-def L (n : ℕ) : ℕ := (Finset.range n).fold lcm 1 (·+ 1)
+def L (n : ℕ) : ℕ := (Finset.range n).fold Nat.lcm 1 (·+ 1)
 
 /--
 **Harmonic Number as Rational:**
@@ -69,7 +69,7 @@ noncomputable def a (n : ℕ) : ℕ := (H n * L n).num.natAbs
 **The GCD in question:**
 gcd(a_n, L_n)
 -/
-def harmonicGCD (n : ℕ) : ℕ := Nat.gcd (a n) (L n)
+noncomputable def harmonicGCD (n : ℕ) : ℕ := Nat.gcd (a n) (L n)
 
 /-!
 ## Part II: The Problem Statement
@@ -102,8 +102,17 @@ def erdos291Statement : Prop := question_part1 ∧ question_part2
 /--
 **Leading Digit in Base p:**
 The leading (most significant) digit of n in base p.
+For n = 0 or p ≤ 1, returns n.
+Otherwise, repeatedly divides n by p until result < p.
 -/
-def leadingDigit (n p : ℕ) : ℕ := sorry  -- Would need implementation
+def leadingDigit (n p : ℕ) : ℕ :=
+  if p ≤ 1 then n
+  else
+    let rec go (m : ℕ) (fuel : ℕ) : ℕ :=
+      if fuel = 0 then m
+      else if m < p then m
+      else go (m / p) (fuel - 1)
+    go n n
 
 /--
 **Steinerberger's Observation:**
