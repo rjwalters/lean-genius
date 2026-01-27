@@ -173,7 +173,21 @@ theorem carmichael_not_prime_power (n : ℕ) (h : IsCarmichael n) :
     ¬∃ p k : ℕ, p.Prime ∧ k ≥ 1 ∧ n = p^k := by
   intro ⟨p, k, hp, hk, hn⟩
   have h3 := carmichael_at_least_3_primes n h
-  sorry -- n = p^k has only 1 prime factor
+  rw [hn] at h3
+  -- p^k has only one prime factor (namely p), so card = 1 < 3
+  have hpk_pos : p ^ k ≠ 0 := Nat.pos_of_ne_zero (pow_ne_zero k hp.ne_zero) |>.ne'
+  have hsub : (p ^ k).primeFactors ⊆ {p} := by
+    intro q hq
+    rw [Nat.mem_primeFactors] at hq
+    simp only [Finset.mem_singleton]
+    have hqp := hq.1.dvd_of_dvd_pow hq.2.1
+    exact (Nat.Prime.eq_one_or_self_of_dvd hp q hqp).resolve_left
+      (Nat.Prime.one_lt hq.1).ne'
+  have hcard : (p ^ k).primeFactors.card ≤ 1 := by
+    calc (p ^ k).primeFactors.card
+        ≤ ({p} : Finset ℕ).card := Finset.card_le_card hsub
+      _ = 1 := Finset.card_singleton p
+  omega
 
 /-- Carmichael numbers are odd (except there are no even ones > 2) -/
 axiom carmichael_odd :

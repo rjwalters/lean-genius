@@ -52,13 +52,29 @@ def isSquarefree (n : ℕ) : Prop := Squarefree n
 /-- Alternative characterization: n is squarefree iff for all primes p, p² ∤ n. -/
 theorem squarefree_iff_no_prime_sq (n : ℕ) (hn : n ≥ 1) :
     isSquarefree n ↔ ∀ p : ℕ, p.Prime → ¬(p * p ∣ n) := by
-  simp [isSquarefree, Squarefree]
-  sorry  -- Requires unpacking Squarefree definition
+  simp only [isSquarefree]
+  constructor
+  · -- Forward: squarefree → no prime square divides n
+    intro hsf p hp hppn
+    have h1 : IsUnit p := hsf p hppn
+    rw [Nat.isUnit_iff] at h1
+    exact absurd h1 hp.one_lt.ne'
+  · -- Backward: no prime square divides → squarefree
+    intro h
+    intro x hx
+    by_contra hnu
+    rw [Nat.isUnit_iff] at hnu
+    -- x ≠ 1 and x * x ∣ n, so x has a prime factor p
+    have hx_pos : x > 0 := Nat.pos_of_ne_zero (fun h0 => by simp [h0] at hx; omega)
+    have hx_gt1 : x > 1 := by omega
+    obtain ⟨p, hp, hpx⟩ := Nat.exists_prime_and_dvd (by omega : x ≠ 1)
+    -- p | x implies p*p | x*x | n
+    have : p * p ∣ x * x := Nat.mul_dvd_mul hpx hpx
+    exact h p hp (dvd_trans this hx)
 
 /-- 1 is squarefree. -/
 theorem one_squarefree : isSquarefree 1 := by
   simp [isSquarefree]
-  exact Nat.squarefree_one
 
 /-- Primes are squarefree. -/
 theorem prime_squarefree (p : ℕ) (hp : p.Prime) : isSquarefree p := by
