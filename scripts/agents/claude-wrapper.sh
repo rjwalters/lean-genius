@@ -49,10 +49,18 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-log_info() { echo -e "${BLUE}[wrapper]${NC} $1"; }
-log_warn() { echo -e "${YELLOW}[wrapper]${NC} $1"; }
-log_error() { echo -e "${RED}[wrapper]${NC} $1" >&2; }
-log_success() { echo -e "${GREEN}[wrapper]${NC} $1"; }
+log_to_file() {
+    if [[ -n "$LOG_FILE" ]]; then
+        local timestamp
+        timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        echo "[$timestamp] [wrapper] $1" >> "$LOG_FILE"
+    fi
+}
+
+log_info() { echo -e "${BLUE}[wrapper]${NC} $1"; log_to_file "$1"; }
+log_warn() { echo -e "${YELLOW}[wrapper]${NC} $1"; log_to_file "WARN: $1"; }
+log_error() { echo -e "${RED}[wrapper]${NC} $1" >&2; log_to_file "ERROR: $1"; }
+log_success() { echo -e "${GREEN}[wrapper]${NC} $1"; log_to_file "$1"; }
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
