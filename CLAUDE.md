@@ -82,6 +82,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | `/lean stop` | Graceful shutdown of all agents (creates signal files) |
 | `/lean stop --force` | Force stop all agents (kills tmux sessions immediately) |
 | `/lean health` | Show agent process health and detect stuck agents |
+| `/lean daemon [options]` | Run continuous monitoring daemon (respawns completed/stuck agents) |
 
 ## Pool Limits
 
@@ -108,6 +109,11 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 ./scripts/lean/launch.sh spawn erdos
 ./scripts/lean/launch.sh spawn seeker
 ./scripts/lean/launch.sh scale erdos 3
+
+# Continuous daemon (monitors and respawns agents)
+./scripts/lean/launch.sh daemon                             # Default 60s interval
+./scripts/lean/launch.sh daemon --interval 30 --erdos 3     # Custom settings
+./scripts/lean/launch.sh daemon &                           # Run in background
 ```
 
 ---
