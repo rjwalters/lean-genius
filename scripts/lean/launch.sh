@@ -778,7 +778,7 @@ cmd_scale() {
             local current=0
             for i in 1 2 3 4 5; do
                 if tmux has-session -t "erdos-enhancer-$i" 2>/dev/null; then
-                    ((current++))
+                    current=$((current + 1))
                 fi
             done
 
@@ -804,7 +804,7 @@ cmd_scale() {
             local current=0
             for i in 1 2 3; do
                 if tmux has-session -t "researcher-$i" 2>/dev/null; then
-                    ((current++))
+                    current=$((current + 1))
                 fi
             done
 
