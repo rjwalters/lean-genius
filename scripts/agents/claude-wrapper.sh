@@ -14,8 +14,11 @@
 #   ./claude-wrapper.sh --daemon --prompt "Your prompt" [--log logfile.log]
 #
 # Environment:
-#   REPO_ROOT - Path to main repository (for signal files)
-#   ENHANCER_ID - Agent identifier (for agent-specific signals)
+#   REPO_ROOT      - Path to main repository (for signal files)
+#   ENHANCER_ID    - Agent identifier (for agent-specific signals)
+#   CLAUDE_TIMEOUT - Max seconds for a single Claude CLI invocation (default: 3600)
+#                    Set to 0 to disable timeout. Agents that run longer tasks
+#                    (e.g., researchers) may need higher values.
 #
 
 set -uo pipefail
@@ -24,6 +27,7 @@ set -uo pipefail
 MAX_RETRIES="${MAX_RETRIES:-5}"
 INITIAL_BACKOFF=60       # 1 minute
 MAX_BACKOFF=1800         # 30 minutes
+CLAUDE_TIMEOUT="${CLAUDE_TIMEOUT:-3600}"  # 1 hour default; configurable per agent
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOG_FILE=""
@@ -111,6 +115,16 @@ is_recoverable_error() {
     local output="$1"
     local exit_code="$2"
 
+    # Timeout from 'timeout' command (SIGTERM)
+    if [[ "$exit_code" -eq 124 ]]; then
+        return 0
+    fi
+
+    # Timeout with SIGKILL (process didn't respond to SIGTERM)
+    if [[ "$exit_code" -eq 137 ]]; then
+        return 0
+    fi
+
     # "No messages returned" - API error, likely rate limit or temporary issue
     if echo "$output" | grep -q "No messages returned"; then
         return 0
@@ -144,17 +158,28 @@ run_claude_once() {
     local last_output=""
     local exit_code=0
 
-    # Run Claude CLI
+    log_info "Claude CLI timeout set to ${CLAUDE_TIMEOUT}s"
+
+    # Run Claude CLI with timeout to prevent indefinite hangs.
+    # The 'timeout' command sends SIGTERM after CLAUDE_TIMEOUT seconds,
+    # and SIGKILL 30s later if the process hasn't exited.
     if [[ -n "$LOG_FILE" ]]; then
-        last_output=$(claude --dangerously-skip-permissions "$PROMPT" 2>&1 | tee "$LOG_FILE"; echo "EXIT_CODE:${PIPESTATUS[0]}")
+        last_output=$(timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude --dangerously-skip-permissions "$PROMPT" 2>&1 | tee "$LOG_FILE"; echo "EXIT_CODE:${PIPESTATUS[0]}")
     else
-        last_output=$(claude --dangerously-skip-permissions "$PROMPT" 2>&1; echo "EXIT_CODE:$?")
+        last_output=$(timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude --dangerously-skip-permissions "$PROMPT" 2>&1; echo "EXIT_CODE:$?")
     fi
 
     # Extract exit code from output
     exit_code=$(echo "$last_output" | grep -o 'EXIT_CODE:[0-9]*' | cut -d: -f2)
     exit_code="${exit_code:-1}"
     last_output=$(echo "$last_output" | sed '/EXIT_CODE:[0-9]*/d')
+
+    # Check for timeout (exit code 124 = SIGTERM, 137 = SIGKILL)
+    if [[ "$exit_code" -eq 124 ]]; then
+        log_warn "Claude CLI timed out after ${CLAUDE_TIMEOUT}s (SIGTERM)"
+    elif [[ "$exit_code" -eq 137 ]]; then
+        log_warn "Claude CLI timed out after ${CLAUDE_TIMEOUT}s (required SIGKILL)"
+    fi
 
     # Store output for caller
     LAST_OUTPUT="$last_output"

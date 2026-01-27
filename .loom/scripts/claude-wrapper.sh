@@ -23,6 +23,8 @@
 #   LOOM_BACKOFF_MULTIPLIER - Backoff multiplier (default: 2)
 #   LOOM_TERMINAL_ID       - Terminal ID for stop signal (optional)
 #   LOOM_WORKSPACE         - Workspace path for stop signal (optional)
+#   CLAUDE_TIMEOUT         - Max seconds for a single Claude CLI invocation (default: 3600)
+#                            Set to 0 to disable timeout.
 
 set -euo pipefail
 
@@ -31,6 +33,7 @@ MAX_RETRIES="${LOOM_MAX_RETRIES:-5}"
 INITIAL_WAIT="${LOOM_INITIAL_WAIT:-60}"
 MAX_WAIT="${LOOM_MAX_WAIT:-1800}"  # 30 minutes
 MULTIPLIER="${LOOM_BACKOFF_MULTIPLIER:-2}"
+CLAUDE_TIMEOUT="${CLAUDE_TIMEOUT:-3600}"  # 1 hour default; configurable per agent
 
 # Terminal identification for stop signals
 TERMINAL_ID="${LOOM_TERMINAL_ID:-}"
@@ -107,6 +110,18 @@ is_transient_error() {
     local output="$1"
     local exit_code="${2:-1}"
 
+    # Timeout from 'timeout' command (SIGTERM)
+    if [[ "${exit_code}" -eq 124 ]]; then
+        log_info "Detected timeout (exit code 124 - SIGTERM)"
+        return 0
+    fi
+
+    # Timeout with SIGKILL (process didn't respond to SIGTERM)
+    if [[ "${exit_code}" -eq 137 ]]; then
+        log_info "Detected timeout (exit code 137 - SIGKILL)"
+        return 0
+    fi
+
     # Known transient error patterns
     local patterns=(
         "No messages returned"
@@ -176,7 +191,7 @@ run_with_retry() {
     local output=""
 
     log_info "Starting Claude CLI with resilient wrapper"
-    log_info "Configuration: max_retries=${MAX_RETRIES}, initial_wait=${INITIAL_WAIT}s, max_wait=${MAX_WAIT}s, multiplier=${MULTIPLIER}x"
+    log_info "Configuration: max_retries=${MAX_RETRIES}, initial_wait=${INITIAL_WAIT}s, max_wait=${MAX_WAIT}s, multiplier=${MULTIPLIER}x, timeout=${CLAUDE_TIMEOUT}s"
 
     while [[ "${attempt}" -le "${MAX_RETRIES}" ]]; do
         # Check for stop signal before each attempt
@@ -193,15 +208,28 @@ run_with_retry() {
         local temp_output
         temp_output=$(mktemp)
 
-        # Run claude with all arguments passed to wrapper
-        # Use script or unbuffer to preserve interactivity if available
+        # Run claude with all arguments passed to wrapper, wrapped in timeout
+        # to prevent indefinite hangs. The 'timeout' command sends SIGTERM
+        # after CLAUDE_TIMEOUT seconds, and SIGKILL 30s later if needed.
         set +e  # Temporarily disable errexit to capture exit code
-        claude "$@" 2>&1 | tee "${temp_output}"
+        if [[ "${CLAUDE_TIMEOUT}" -gt 0 ]]; then
+            log_info "Claude CLI timeout: ${CLAUDE_TIMEOUT}s"
+            timeout --kill-after=30 "${CLAUDE_TIMEOUT}" claude "$@" 2>&1 | tee "${temp_output}"
+        else
+            claude "$@" 2>&1 | tee "${temp_output}"
+        fi
         exit_code="${PIPESTATUS[0]}"
         set -e
 
         output=$(cat "${temp_output}")
         rm -f "${temp_output}"
+
+        # Check for timeout (exit code 124 = SIGTERM, 137 = SIGKILL)
+        if [[ "${exit_code}" -eq 124 ]]; then
+            log_warn "Claude CLI timed out after ${CLAUDE_TIMEOUT}s (SIGTERM)"
+        elif [[ "${exit_code}" -eq 137 ]]; then
+            log_warn "Claude CLI timed out after ${CLAUDE_TIMEOUT}s (required SIGKILL)"
+        fi
 
         # Check exit code
         if [[ "${exit_code}" -eq 0 ]]; then
