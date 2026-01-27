@@ -381,7 +381,7 @@ You are working in an isolated git worktree with your own branch.
 3. Claim a stub: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random-any\`
 4. Enhance it (Lean proof, meta.json, annotations.json)
 5. Build: \`pnpm build\`
-6. Commit: \`git add -A && git commit -m "Enhance Erdős #N: Title"\`
+6. Commit: \`git add src/data/proofs/erdos-N/ proofs/Proofs/ErdosNProblem.lean && git commit -m "Enhance Erdős #N: Title"\`
 7. Push: \`git push -u origin feature/enhancer-$i\`
 8. Create PR: \`gh pr create --title "Enhance Erdős #N" --body "Stub enhancement" --label erdos-enhancement\`
 9. Mark complete: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh complete N\`

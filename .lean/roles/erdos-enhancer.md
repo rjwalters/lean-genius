@@ -303,7 +303,8 @@ Fix any errors before proceeding.
 ## Step 7: Commit and Push
 
 ```bash
-git add -A
+# Stage only per-entry files (not derived build artifacts like listings.json)
+git add src/data/proofs/erdos-{NUMBER}/ proofs/Proofs/Erdos{NUMBER}Problem.lean
 git commit -m "$(cat <<'EOF'
 Enhance Erdős #{NUMBER}: {Short Title}
 
