@@ -5,7 +5,7 @@ Assume the Lean Daemon role and run the **continuous** mathematical orchestratio
 ## Process
 
 1. **Parse arguments**: Extract command and options
-2. **Initialize state**: Load or create `research/lean-daemon-state.json`
+2. **Initialize state**: Load or create `.loom/lean-daemon-state.json`
 3. **Run continuous loop**: Spawn mathematical agents, monitor progress, scale pools
 4. **Run until cancelled**: Continue until Ctrl+C or stop signal
 
@@ -20,7 +20,7 @@ As the **Lean Daemon**, you **continuously** orchestrate the mathematical agent 
 - **Spawn Deployers** to merge PRs and deploy the website
 - **Monitor progress** by checking tmux sessions and work queues
 - **Scale pools** based on available work
-- **Track state** in `research/lean-daemon-state.json` for crash recovery
+- **Track state** in `.loom/lean-daemon-state.json` for crash recovery
 
 You don't do the mathematical work yourself - you spawn worker agents to do the work in parallel.
 
@@ -176,7 +176,7 @@ The daemon monitors these tmux sessions to track agent status.
 
 ## State Persistence
 
-State tracked in `research/lean-daemon-state.json`:
+State tracked in `.loom/lean-daemon-state.json`:
 
 ```json
 {

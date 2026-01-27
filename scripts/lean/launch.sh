@@ -23,7 +23,8 @@ BOLD='\033[1m'
 NC='\033[0m'
 
 # Config
-STATE_FILE="research/lean-daemon-state.json"
+STATE_FILE=".loom/lean-daemon-state.json"
+OLD_STATE_FILE="research/lean-daemon-state.json"
 SIGNALS_DIR=".loom/signals"
 
 # Health check thresholds
@@ -87,6 +88,15 @@ Examples:
 EOF
 }
 
+# Helper: Migrate state file from old location (research/) to new location (.loom/)
+migrate_state_file() {
+    if [[ -f "$OLD_STATE_FILE" && ! -f "$STATE_FILE" ]]; then
+        echo -e "${BLUE}Migrating state file to .loom/${NC}"
+        mkdir -p "$(dirname "$STATE_FILE")"
+        mv "$OLD_STATE_FILE" "$STATE_FILE"
+    fi
+}
+
 # Helper: Initialize state file
 # Preserves session_stats and stopped_at from previous state across daemon restarts
 init_state() {
@@ -148,13 +158,14 @@ init_state() {
     echo "$new_state" > "$STATE_FILE"
 }
 
-# Helper: Update state running flag
-set_running() {
-    local running="$1"
+# Helper: Mark state as stopped, preserving all existing state data
+set_stopped() {
     if [[ -f "$STATE_FILE" ]]; then
         local tmp
         tmp=$(mktemp)
-        jq ".running = $running" "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
+        jq --arg ts "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+           '.running = false | .stopped_at = $ts' \
+           "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
     fi
 }
 
@@ -237,6 +248,9 @@ cmd_start() {
     echo "  Seekers: $seeker"
     echo "  Deployers: $deployer"
     echo ""
+
+    # Migrate state file from old location if needed
+    migrate_state_file
 
     # Initialize state
     init_state "$erdos" "$aristotle" "$researcher" "$seeker" "$deployer"
@@ -691,8 +705,8 @@ cmd_stop() {
             stopped=$((stopped + 1))
         fi
 
-        # Update state
-        set_running false
+        # Update state (preserves agents, session_stats, etc.)
+        set_stopped
 
         # Create stop signal file
         touch research/lean-stop-daemon 2>/dev/null || true
@@ -731,8 +745,8 @@ cmd_stop() {
         # Deployer's --stop already creates signal + kills, so just create signal
         touch "$SIGNALS_DIR/stop-deployer" 2>/dev/null || true
 
-        # Update state
-        set_running false
+        # Update state (preserves agents, session_stats, etc.)
+        set_stopped
 
         # Create stop signal file
         touch research/lean-stop-daemon 2>/dev/null || true

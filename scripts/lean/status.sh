@@ -19,9 +19,15 @@ BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # Config
-STATE_FILE="research/lean-daemon-state.json"
+STATE_FILE=".loom/lean-daemon-state.json"
+OLD_STATE_FILE="research/lean-daemon-state.json"
 ARISTOTLE_JOBS="research/aristotle-jobs.json"
 CANDIDATE_POOL="research/candidate-pool.json"
+
+# Fall back to old location if new state file doesn't exist
+if [[ ! -f "$STATE_FILE" && -f "$OLD_STATE_FILE" ]]; then
+    STATE_FILE="$OLD_STATE_FILE"
+fi
 
 # Parse arguments
 JSON_OUTPUT=false
