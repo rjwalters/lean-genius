@@ -113,6 +113,12 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
    - Use the /seeker skill to select and initialize new problems
    - Run: \`/seeker --refresh\` to extract new problems from gallery
    - Or run: \`/seeker\` to select from existing pool
+   - **CRITICAL - Database-first workflow**: When adding new problems, you MUST:
+     a. Ensure database exists: \`if [ ! -f research/db/knowledge.db ]; then python3 research/db/migrate.py; fi\`
+     b. Insert into database: \`sqlite3 research/db/knowledge.db "INSERT INTO problems ..."\`
+     c. Regenerate pool JSON: \`python3 research/db/sync_pool.py\`
+     d. Then initialize workspace: \`./.lean/scripts/research.sh init <slug>\`
+   - Without steps (a-c), Researchers will NOT see the new problems in candidate-pool.json
 
 4. **If pool is adequate, report status and wait**
    - Run: \`/seeker --status\` to generate a status report
