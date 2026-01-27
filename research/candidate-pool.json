@@ -1,35 +1,20 @@
 {
   "version": "2.0",
-  "last_updated": "2026-01-27T02:36:53.862Z",
+  "last_updated": "2026-01-27T21:57:01.840Z",
   "source": "auto-generated from research/db/knowledge.db",
   "candidates": [
     {
-      "id": "p-vs-np",
-      "name": "P versus NP Problem",
-      "tier": "S",
-      "significance": 10,
-      "tractability": 2,
-      "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE: Does P = NP? PvsNP. | Stats: 11 items built, 4 open gaps",
-      "tags": [
-        "millennium-prize",
-        "complexity-theory",
-        "open-conjecture"
-      ]
-    },
-    {
-      "id": "riemann-hypothesis",
-      "name": "Riemann Hypothesis",
-      "tier": "S",
-      "significance": 10,
+      "id": "2d-navier-stokes",
+      "name": "2D Navier-Stokes Regularity",
+      "tier": "A",
+      "significance": 8,
       "tractability": 1,
       "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2. | Stats: 4 items built, 4 open gaps",
+      "notes": "SKIPPED: SKIPPED: SKIPPED: No PDE infrastructure in Mathlib. Requires defining NS equations, Sobolev spaces, weak solutions from scratch.",
       "tags": [
-        "millennium-prize",
-        "number-theory",
-        "analytic",
-        "open-conjecture"
+        "analysis",
+        "pde",
+        "formalization"
       ]
     },
     {
@@ -48,108 +33,6 @@
       ]
     },
     {
-      "id": "hodge-conjecture",
-      "name": "Hodge Conjecture",
-      "tier": "S",
-      "significance": 10,
-      "tractability": 1,
-      "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE: Every Hodge class on a projective complex manifold is algebraic. | Stats: 5 open gaps",
-      "tags": [
-        "millennium-prize",
-        "algebraic-geometry",
-        "topology",
-        "open-conjecture"
-      ]
-    },
-    {
-      "id": "navier-stokes-existence",
-      "name": "Navier-Stokes Existence and Smoothness",
-      "tier": "S",
-      "significance": 10,
-      "tractability": 1,
-      "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE: Prove existence and smoothness of solutions to 3D Navier-Stokes, or find a counterexample. | Stats: 2 open gaps",
-      "tags": [
-        "millennium-prize",
-        "analysis",
-        "pde",
-        "open-conjecture"
-      ]
-    },
-    {
-      "id": "poincare-conjecture",
-      "name": "Poincaré Conjecture",
-      "tier": "S",
-      "significance": 10,
-      "tractability": 1,
-      "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S³. | Stats: 3 open gaps",
-      "tags": [
-        "millennium-prize",
-        "topology",
-        "geometric-analysis",
-        "solved"
-      ]
-    },
-    {
-      "id": "yang-mills-mass-gap",
-      "name": "Yang-Mills Existence and Mass Gap",
-      "tier": "S",
-      "significance": 10,
-      "tractability": 1,
-      "status": "skipped",
-      "notes": "SKIPPED: MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R⁴ and has positive mass gap. | Stats: 5 open gaps",
-      "tags": [
-        "millennium-prize",
-        "mathematical-physics",
-        "gauge-theory",
-        "open-conjecture"
-      ]
-    },
-    {
-      "id": "weak-goldbach",
-      "name": "Weak Goldbach Conjecture (Helfgott)",
-      "tier": "A",
-      "significance": 8,
-      "tractability": 5,
-      "status": "completed",
-      "notes": "COMPLETED: Every odd integer greater than 5 can be expressed as the sum of three prime numbers. | Stats: 14 items built, 4 open gaps",
-      "tags": [
-        "number-theory",
-        "primes",
-        "formalization"
-      ]
-    },
-    {
-      "id": "szemeredi-theorem",
-      "name": "Szemerédi's Theorem",
-      "tier": "A",
-      "significance": 8,
-      "tractability": 2,
-      "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED k=3: Roth's theorem proved via Mathlib's corners chain (Regularity→Triangle Removal→Corners→Roth). Equivalence IsAPFree↔ThreeAPFree. k≥4 still needs hypergraph regularity (axiom).",
-      "tags": [
-        "combinatorics",
-        "additive",
-        "formalization"
-      ]
-    },
-    {
-      "id": "2d-navier-stokes",
-      "name": "2D Navier-Stokes Regularity",
-      "tier": "A",
-      "significance": 8,
-      "tractability": 1,
-      "status": "skipped",
-      "notes": "SKIPPED: SKIPPED: SKIPPED: No PDE infrastructure in Mathlib. Requires defining NS equations, Sobolev spaces, weak solutions from scratch.",
-      "tags": [
-        "analysis",
-        "pde",
-        "formalization"
-      ]
-    },
-    {
       "id": "bounded-prime-gaps",
       "name": "Bounded Prime Gaps (Zhang/Polymath)",
       "tier": "A",
@@ -161,62 +44,6 @@
         "number-theory",
         "primes",
         "formalization"
-      ]
-    },
-    {
-      "id": "three-squares-theorem",
-      "name": "Legendre's Three Squares Theorem",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 6,
-      "status": "completed",
-      "notes": "IN-PROGRESS: All primes proved (ℤ[√-2] for p≡3, Fermat for p≡1,5 mod 8). One axiom remains for composites. Lacks multiplicativity - needs Dirichlet Key Lemma with Minkowski.",
-      "tags": [
-        "number-theory",
-        "squares",
-        "classical"
-      ]
-    },
-    {
-      "id": "prime-counting-bounds",
-      "name": "Prime Counting Function Bounds",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED: Prove explicit bounds on π(x) and θ(x) using Chebyshev's 1852 method. | Stats: 13 items built",
-      "tags": [
-        "number-theory",
-        "analytic",
-        "bounds"
-      ]
-    },
-    {
-      "id": "erdos-ko-rado",
-      "name": "Erdős-Ko-Rado Theorem",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 6,
-      "status": "completed",
-      "notes": "COMPLETED: Maximum intersecting family of k-subsets of n-set has size C(n-1,k-1) for n ≥ 2k. | Stats: 7 items built, 3 open gaps",
-      "tags": [
-        "combinatorics",
-        "extremal",
-        "set-systems"
-      ]
-    },
-    {
-      "id": "infinitude-primes-4k3",
-      "name": "Infinitely Many Primes ≡ 3 (mod 4)",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 9,
-      "status": "completed",
-      "notes": "COMPLETED: There are infinitely many primes congruent to 3 modulo 4. | Stats: 7 items built",
-      "tags": [
-        "number-theory",
-        "primes",
-        "classical"
       ]
     },
     {
@@ -234,6 +61,77 @@
       ]
     },
     {
+      "id": "chinese-remainder-constructive",
+      "name": "Chinese Remainder Theorem (Constructive)",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: ChineseRemainderConstructive.lean with existence/uniqueness, Bézout coefficients, explicit solution formula, Sunzi problem (23 mod 105), 3-moduli extension, RNS application.",
+      "tags": [
+        "number-theory",
+        "algorithms",
+        "classical"
+      ]
+    },
+    {
+      "id": "collatz-structured",
+      "name": "Collatz for Structured Starting Values",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: Proved 2^k reaches 1, closure under 2x, verified 3,5,6,7,9,27.",
+      "tags": [
+        "number-theory",
+        "dynamics",
+        "partial-progress"
+      ]
+    },
+    {
+      "id": "erdos-ko-rado",
+      "name": "Erdős-Ko-Rado Theorem",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
+      "status": "completed",
+      "notes": "COMPLETED: Maximum intersecting family of k-subsets of n-set has size C(n-1,k-1) for n ≥ 2k. | Stats: 7 items built, 3 open gaps",
+      "tags": [
+        "combinatorics",
+        "extremal",
+        "set-systems"
+      ]
+    },
+    {
+      "id": "frobenius-two-coprime",
+      "name": "Frobenius Number (Two Coprime)",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "completed",
+      "notes": "COMPLETED: SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib. | Stats: 1 items built",
+      "tags": [
+        "number-theory",
+        "combinatorics",
+        "classical"
+      ]
+    },
+    {
+      "id": "hodge-conjecture",
+      "name": "Hodge Conjecture",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Every Hodge class on a projective complex manifold is algebraic. | Stats: 5 open gaps",
+      "tags": [
+        "millennium-prize",
+        "algebraic-geometry",
+        "topology",
+        "open-conjecture"
+      ]
+    },
+    {
       "id": "hurwitz-impossibility",
       "name": "Hurwitz Quaternion Theorem",
       "tier": "B",
@@ -246,6 +144,16 @@
         "impossibility",
         "formalization"
       ]
+    },
+    {
+      "id": "hurwitz-three-square-impossibility",
+      "name": "Hurwitz n=3 Impossibility Proof",
+      "tier": "C",
+      "significance": null,
+      "tractability": null,
+      "status": "completed",
+      "notes": "COMPLETED: Hamilton spent 15 years (1828-1843) trying to extend complex numbers to three dimensions. He wanted \"triplets\" that would do for 3D geometry what complex numbers do for 2D. He finally realized he need | Stats: 1 sessions",
+      "tags": []
     },
     {
       "id": "infinitude-primes-4k1",
@@ -262,45 +170,17 @@
       ]
     },
     {
-      "id": "pnp-barriers",
-      "name": "P≠NP Barrier Formalization",
-      "tier": "B",
-      "significance": 8,
-      "tractability": 5,
-      "status": "surveyed",
-      "notes": "SURVEYED: Formalize the three major barriers to proving P ≠ NP: relativization (Baker-Gill-Solovay), natural proofs (Razborov-Rudich), and algebrization (Aaronson-Wigderson). | Stats: 25 sessions, 30+ items built in Session 25 (Kolmogorov complexity)",
-      "tags": [
-        "complexity",
-        "impossibility",
-        "formalization"
-      ]
-    },
-    {
-      "id": "mobius-inversion",
-      "name": "Möbius Inversion Formula",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED: SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative). | Stats: 4 items built",
-      "tags": [
-        "number-theory",
-        "arithmetic-functions",
-        "classical"
-      ]
-    },
-    {
-      "id": "collatz-structured",
-      "name": "Collatz for Structured Starting Values",
+      "id": "infinitude-primes-4k3",
+      "name": "Infinitely Many Primes ≡ 3 (mod 4)",
       "tier": "B",
       "significance": 6,
-      "tractability": 7,
+      "tractability": 9,
       "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: Proved 2^k reaches 1, closure under 2x, verified 3,5,6,7,9,27.",
+      "notes": "COMPLETED: There are infinitely many primes congruent to 3 modulo 4. | Stats: 7 items built",
       "tags": [
         "number-theory",
-        "dynamics",
-        "partial-progress"
+        "primes",
+        "classical"
       ]
     },
     {
@@ -329,6 +209,92 @@
         "number-theory",
         "primes",
         "partial-progress"
+      ]
+    },
+    {
+      "id": "mobius-inversion",
+      "name": "Möbius Inversion Formula",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative). | Stats: 4 items built",
+      "tags": [
+        "number-theory",
+        "arithmetic-functions",
+        "classical"
+      ]
+    },
+    {
+      "id": "navier-stokes-existence",
+      "name": "Navier-Stokes Existence and Smoothness",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Prove existence and smoothness of solutions to 3D Navier-Stokes, or find a counterexample. | Stats: 2 open gaps",
+      "tags": [
+        "millennium-prize",
+        "analysis",
+        "pde",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "p-vs-np",
+      "name": "P versus NP Problem",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 2,
+      "status": "skipped",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Does P = NP? PvsNP. | Stats: 11 items built, 4 open gaps",
+      "tags": [
+        "millennium-prize",
+        "complexity-theory",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "pnp-barriers",
+      "name": "P≠NP Barrier Formalization",
+      "tier": "B",
+      "significance": 8,
+      "tractability": 5,
+      "status": "surveyed",
+      "notes": "SURVEYED: Formalize the three major barriers to proving P ≠ NP: relativization (Baker-Gill-Solovay), natural proofs (Razborov-Rudich), and algebrization (Aaronson-Wigderson). | Stats: 25 sessions, 30+ items built in Session 25 (Kolmogorov complexity)",
+      "tags": [
+        "complexity",
+        "impossibility",
+        "formalization"
+      ]
+    },
+    {
+      "id": "poincare-conjecture",
+      "name": "Poincaré Conjecture",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "SKIPPED: MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S³. | Stats: 3 open gaps",
+      "tags": [
+        "millennium-prize",
+        "topology",
+        "geometric-analysis",
+        "solved"
+      ]
+    },
+    {
+      "id": "prime-counting-bounds",
+      "name": "Prime Counting Function Bounds",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: Prove explicit bounds on π(x) and θ(x) using Chebyshev's 1852 method. | Stats: 13 items built",
+      "tags": [
+        "number-theory",
+        "analytic",
+        "bounds"
       ]
     },
     {
@@ -388,6 +354,21 @@
       ]
     },
     {
+      "id": "riemann-hypothesis",
+      "name": "Riemann Hypothesis",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2. | Stats: 4 items built, 4 open gaps",
+      "tags": [
+        "millennium-prize",
+        "number-theory",
+        "analytic",
+        "open-conjecture"
+      ]
+    },
+    {
       "id": "schur-theorem",
       "name": "Schur's Theorem (Sum-Free Colorings)",
       "tier": "B",
@@ -416,6 +397,48 @@
       ]
     },
     {
+      "id": "sum-of-divisors",
+      "name": "Sum of Divisors Properties",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "skipped",
+      "notes": "SKIPPED: SKIPPED: Already covered by PerfectNumbers. | Stats: 2 open gaps",
+      "tags": [
+        "number-theory",
+        "arithmetic-functions",
+        "classical"
+      ]
+    },
+    {
+      "id": "szemeredi-theorem",
+      "name": "Szemerédi's Theorem",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 2,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: COMPLETED k=3: Roth's theorem proved via Mathlib's corners chain (Regularity→Triangle Removal→Corners→Roth). Equivalence IsAPFree↔ThreeAPFree. k≥4 still needs hypergraph regularity (axiom).",
+      "tags": [
+        "combinatorics",
+        "additive",
+        "formalization"
+      ]
+    },
+    {
+      "id": "three-squares-theorem",
+      "name": "Legendre's Three Squares Theorem",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
+      "status": "completed",
+      "notes": "IN-PROGRESS: All primes proved (ℤ[√-2] for p≡3, Fermat for p≡1,5 mod 8). One axiom remains for composites. Lacks multiplicativity - needs Dirichlet Key Lemma with Minkowski.",
+      "tags": [
+        "number-theory",
+        "squares",
+        "classical"
+      ]
+    },
+    {
       "id": "twin-prime-special",
       "name": "Twin Primes in Special Forms",
       "tier": "B",
@@ -427,6 +450,34 @@
         "number-theory",
         "primes",
         "partial-progress"
+      ]
+    },
+    {
+      "id": "vietas-formulas",
+      "name": "Vieta's Formulas",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: VietasFormulas.lean with quadratic/cubic formulas, polynomial coeff theorem, examples.",
+      "tags": [
+        "algebra",
+        "polynomials",
+        "classical"
+      ]
+    },
+    {
+      "id": "weak-goldbach",
+      "name": "Weak Goldbach Conjecture (Helfgott)",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 5,
+      "status": "completed",
+      "notes": "COMPLETED: Every odd integer greater than 5 can be expressed as the sum of three prime numbers. | Stats: 14 items built, 4 open gaps",
+      "tags": [
+        "number-theory",
+        "primes",
+        "formalization"
       ]
     },
     {
@@ -444,69 +495,18 @@
       ]
     },
     {
-      "id": "frobenius-two-coprime",
-      "name": "Frobenius Number (Two Coprime)",
-      "tier": "C",
-      "significance": 5,
-      "tractability": 9,
-      "status": "completed",
-      "notes": "COMPLETED: SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib. | Stats: 1 items built",
-      "tags": [
-        "number-theory",
-        "combinatorics",
-        "classical"
-      ]
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "name": "Chinese Remainder Theorem (Constructive)",
-      "tier": "C",
-      "significance": 5,
-      "tractability": 9,
-      "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: ChineseRemainderConstructive.lean with existence/uniqueness, Bézout coefficients, explicit solution formula, Sunzi problem (23 mod 105), 3-moduli extension, RNS application.",
-      "tags": [
-        "number-theory",
-        "algorithms",
-        "classical"
-      ]
-    },
-    {
-      "id": "hurwitz-three-square-impossibility",
-      "name": "Hurwitz n=3 Impossibility Proof",
-      "tier": "C",
-      "significance": null,
-      "tractability": null,
-      "status": "completed",
-      "notes": "COMPLETED: Hamilton spent 15 years (1828-1843) trying to extend complex numbers to three dimensions. He wanted \"triplets\" that would do for 3D geometry what complex numbers do for 2D. He finally realized he need | Stats: 1 sessions",
-      "tags": []
-    },
-    {
-      "id": "vietas-formulas",
-      "name": "Vieta's Formulas",
-      "tier": "C",
-      "significance": 5,
-      "tractability": 9,
-      "status": "completed",
-      "notes": "COMPLETED: COMPLETED: COMPLETED: VietasFormulas.lean with quadratic/cubic formulas, polynomial coeff theorem, examples.",
-      "tags": [
-        "algebra",
-        "polynomials",
-        "classical"
-      ]
-    },
-    {
-      "id": "sum-of-divisors",
-      "name": "Sum of Divisors Properties",
-      "tier": "C",
-      "significance": 5,
-      "tractability": 9,
+      "id": "yang-mills-mass-gap",
+      "name": "Yang-Mills Existence and Mass Gap",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
       "status": "skipped",
-      "notes": "SKIPPED: SKIPPED: Already covered by PerfectNumbers. | Stats: 2 open gaps",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R⁴ and has positive mass gap. | Stats: 5 open gaps",
       "tags": [
-        "number-theory",
-        "arithmetic-functions",
-        "classical"
+        "millennium-prize",
+        "mathematical-physics",
+        "gauge-theory",
+        "open-conjecture"
       ]
     }
   ],
