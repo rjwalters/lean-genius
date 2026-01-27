@@ -188,11 +188,17 @@ def loom_iterate(force_mode=False, debug_mode=False):
     # 9. Stuck detection
     stuck_count = check_stuck_agents(state, debug_mode)
 
-    # 10. Stale building detection (every 10 iterations)
+    # 10. Orphan recovery (every 5 iterations) - catches crashed shepherds mid-session
     recovered_count = 0
+    if state.get("iteration", 0) % 5 == 0:
+        debug("Running orphan recovery check (every 5 iterations)")
+        recovered_count = check_orphaned_shepherds(state, debug_mode)
+
+    # 10b. Stale building detection (every 10 iterations) - catches issues without PRs
     if state.get("iteration", 0) % 10 == 0:
         debug("Running stale building check (every 10 iterations)")
-        recovered_count = check_stale_building(state, debug_mode)
+        stale_recovered = check_stale_building(state, debug_mode)
+        recovered_count += stale_recovered
 
     # 11. Save state to JSON
     state["iteration"] = state.get("iteration", 0) + 1
@@ -299,28 +305,44 @@ fi
 
 ## Auto-Spawn Shepherds
 
-> **WARNING: Shepherds MUST be invoked via Skill tool for full lifecycle**
+> **CRITICAL: Use slash commands directly in Task prompts**
 >
-> When the daemon spawns shepherds, you must use the Skill tool invocation pattern shown below.
+> When spawning roles via Task subagents, use the slash command directly as the prompt.
 >
-> **DO NOT** give shepherds explicit step-by-step instructions.
->
-> **DO** use the Skill tool pattern:
+> **CORRECT** - Slash command is the entire prompt:
 > ```python
 > Task(
->   prompt="""Skill(skill="shepherd", args="123 --force-pr")"""
+>     description="Shepherd issue #123",
+>     prompt="/shepherd 123 --force-pr",
+>     run_in_background=True
 > )
 > ```
 >
-> The Skill tool ensures the shepherd gets its full role prompt expanded so it can follow the complete workflow: Curator -> Builder -> Judge -> Doctor (if needed) -> Merge.
+> **WRONG** - Telling subagent to call Skill (expands role into subagent context):
+> ```python
+> Task(
+>     prompt="""Skill(skill="shepherd", args="123 --force-pr")"""  # DON'T DO THIS
+> )
+> ```
 >
-> **Note**: This Skill-in-Task pattern applies to **daemon→shepherd** invocations only.
-> Shepherds themselves use plain `Task` subagents with slash-command prompts for phase
-> delegation (e.g., `Task(prompt="/builder 123")`). See `shepherd.md` for details.
+> **Why**: Claude Code executes slash commands natively. Telling a subagent to "call Skill"
+> causes it to invoke Skill itself, expanding the role prompt into its own context window
+> instead of running the role. This wastes context and causes spawn failures.
+>
+> This pattern applies to ALL role spawning: shepherds, architect, hermit, guide, champion,
+> doctor, auditor, and judge. The Skill tool is only for the parent daemon invoking iteration
+> subagents (parent → iteration), not for iteration subagents invoking roles.
 
 ```python
+# Maximum spawn failures before marking an issue as blocked
+MAX_SPAWN_FAILURES = 3
+
 def auto_spawn_shepherds(state, snapshot_data, execution_mode, debug_mode=False):
-    """Automatically spawn shepherds using the appropriate execution backend."""
+    """Automatically spawn shepherds using the appropriate execution backend.
+
+    Tracks spawn failures per issue. After MAX_SPAWN_FAILURES consecutive failures,
+    the issue is marked as loom:blocked to prevent infinite retry loops.
+    """
 
     def debug(msg):
         if debug_mode:
@@ -332,6 +354,10 @@ def auto_spawn_shepherds(state, snapshot_data, execution_mode, debug_mode=False)
     ready_issues = snapshot_data["pipeline"]["ready_issues"]
     active_count = count_active_shepherds(state)
     max_shepherds = snapshot_data["config"]["max_shepherds"]
+
+    # Initialize retry queue in state if not present
+    if "spawn_retry_queue" not in state:
+        state["spawn_retry_queue"] = {}
 
     # Determine shepherd mode based on daemon's force_mode
     force_mode = state.get("force_mode", False)
@@ -359,8 +385,17 @@ def auto_spawn_shepherds(state, snapshot_data, execution_mode, debug_mode=False)
 
     while active_count < max_shepherds and len(ready_issues) > 0:
         issue = ready_issues.pop(0)["number"]
+        issue_key = str(issue)
 
-        debug(f"Issue selection: Claiming #{issue}")
+        # Check retry queue for this issue
+        retry_info = state["spawn_retry_queue"].get(issue_key, {"failures": 0, "last_attempt": None})
+
+        # Skip issues that have exceeded max failures (they should already be blocked)
+        if retry_info["failures"] >= MAX_SPAWN_FAILURES:
+            debug(f"Issue #{issue} exceeded max spawn failures ({MAX_SPAWN_FAILURES}), should be blocked")
+            continue
+
+        debug(f"Issue selection: Claiming #{issue} (prior failures={retry_info['failures']})")
 
         # Claim immediately (atomic operation)
         run(f"gh issue edit {issue} --remove-label 'loom:issue' --add-label 'loom:building'")
@@ -375,10 +410,35 @@ def auto_spawn_shepherds(state, snapshot_data, execution_mode, debug_mode=False)
 
         # Verify spawn succeeded
         if not result.get("success"):
-            debug(f"Spawn failed for #{issue}: {result.get('error', 'unknown')}, reverting labels")
-            run(f"gh issue edit {issue} --remove-label 'loom:building' --add-label 'loom:issue'")
+            error_msg = result.get('error', 'unknown')
+            debug(f"Spawn failed for #{issue}: {error_msg}")
+
+            # Track failure in retry queue
+            retry_info["failures"] += 1
+            retry_info["last_attempt"] = now()
+            retry_info["last_error"] = error_msg
+            state["spawn_retry_queue"][issue_key] = retry_info
+
+            if retry_info["failures"] >= MAX_SPAWN_FAILURES:
+                # Mark as blocked after max failures
+                debug(f"Issue #{issue} reached max spawn failures ({MAX_SPAWN_FAILURES}), marking as blocked")
+                run(f"gh issue edit {issue} --remove-label 'loom:building' --add-label 'loom:blocked'")
+                comment = f"**[daemon] Spawn Failed**\\n\\nThis issue has been marked as blocked after {MAX_SPAWN_FAILURES} consecutive spawn failures.\\n\\nLast error: `{error_msg}`\\n\\nA human or the Doctor role may need to investigate and unblock this issue."
+                run(f"gh issue comment {issue} --body '{comment}'")
+                print(f"  BLOCKED: #{issue} (spawn failed {MAX_SPAWN_FAILURES}x)")
+            else:
+                # Revert to loom:issue for retry
+                debug(f"Reverting #{issue} to loom:issue for retry (failures={retry_info['failures']})")
+                run(f"gh issue edit {issue} --remove-label 'loom:building' --add-label 'loom:issue'")
+
             spawn_failures += 1
+            save_daemon_state(state)
             continue
+
+        # Spawn succeeded - clear retry queue for this issue
+        if issue_key in state["spawn_retry_queue"]:
+            del state["spawn_retry_queue"][issue_key]
+            save_daemon_state(state)
 
         debug(f"Spawning decision: shepherd assigned to #{issue} (verified)")
 
@@ -447,21 +507,21 @@ def dispatch_shepherd_tmux(issue, shepherd_flag, idle_shepherds, state, debug_mo
 
 
 def dispatch_shepherd_direct(issue, shepherd_flag, debug_mode=False):
-    """Dispatch shepherd as a Task subagent (direct mode)."""
+    """Dispatch shepherd as a Task subagent (direct mode).
+
+    Uses slash command directly as prompt - Claude Code executes /shepherd natively.
+    This avoids the Skill-in-Task anti-pattern that expands role prompts into subagent context.
+    """
 
     def debug(msg):
         if debug_mode:
             print(f"[DEBUG] {msg}")
 
+    # Use slash command directly - Claude Code executes this natively
+    # DO NOT use Skill() in the prompt - it expands the role into the subagent's context
     result = Task(
         description=f"Shepherd issue #{issue}",
-        prompt=f"""You must invoke the Skill tool to execute the shepherd workflow.
-
-IMPORTANT: Do NOT use CLI commands like 'claude --skill=shepherd'. Use the Skill tool:
-
-Skill(skill="shepherd", args="{issue} {shepherd_flag}")
-
-Follow all shepherd workflow steps until the issue is complete or blocked.""",
+        prompt=f"/shepherd {issue} {shepherd_flag}",
         run_in_background=True
     )
 
@@ -645,7 +705,10 @@ This {proposal_type} proposal has been automatically promoted to `loom:issue` by
 
 ```python
 def trigger_architect_role(state, debug_mode=False):
-    """Trigger Architect role to generate new proposals. Returns True if triggered."""
+    """Trigger Architect role to generate new proposals. Returns True if triggered.
+
+    Uses slash command directly - Claude Code executes /architect natively.
+    """
 
     def debug(msg):
         if debug_mode:
@@ -653,15 +716,10 @@ def trigger_architect_role(state, debug_mode=False):
 
     debug("Triggering Architect for work generation")
 
+    # Use slash command directly - Claude Code executes this natively
     result = Task(
         description="Architect work generation",
-        prompt="""You must invoke the Skill tool to execute the architect role.
-
-IMPORTANT: Do NOT use CLI commands like 'claude --skill=architect'. Use the Skill tool:
-
-Skill(skill="architect", args="--autonomous")
-
-Complete one work generation iteration. Create a proposal issue with the loom:architect label.""",
+        prompt="/architect --autonomous",
         run_in_background=True
     )
 
@@ -687,7 +745,10 @@ Complete one work generation iteration. Create a proposal issue with the loom:ar
 
 
 def trigger_hermit_role(state, debug_mode=False):
-    """Trigger Hermit role to generate simplification proposals. Returns True if triggered."""
+    """Trigger Hermit role to generate simplification proposals. Returns True if triggered.
+
+    Uses slash command directly - Claude Code executes /hermit natively.
+    """
 
     def debug(msg):
         if debug_mode:
@@ -695,15 +756,10 @@ def trigger_hermit_role(state, debug_mode=False):
 
     debug("Triggering Hermit for simplification proposals")
 
+    # Use slash command directly - Claude Code executes this natively
     result = Task(
         description="Hermit simplification proposals",
-        prompt="""You must invoke the Skill tool to execute the hermit role.
-
-IMPORTANT: Do NOT use CLI commands like 'claude --skill=hermit'. Use the Skill tool:
-
-Skill(skill="hermit")
-
-Complete one simplification analysis iteration. Create a proposal issue with the loom:hermit label.""",
+        prompt="/hermit",
         run_in_background=True
     )
 
@@ -728,13 +784,52 @@ Complete one simplification analysis iteration. Create a proposal issue with the
     return True
 ```
 
+## Deterministic Support Role Spawning
+
+Support role spawning uses the deterministic `spawn-support-role.sh` script for all
+spawn decisions and state management. This eliminates LLM interpretation variability
+and ensures reliable support role operation in direct mode.
+
+### spawn-support-role.sh
+
+The script handles:
+- **Interval checking**: Whether enough time has elapsed since last completion
+- **Idempotency**: Never spawns if role already running with valid task_id
+- **Demand mode**: Immediate spawn when `--demand` flag passed (skips interval)
+- **State management**: `--mark-running` and `--mark-completed` for atomic state updates
+- **Fabricated ID detection**: Resets roles stuck with invalid task IDs
+
+```bash
+# Check if a role should be spawned (interval-based)
+./.loom/scripts/spawn-support-role.sh guide --json
+# {"should_spawn":true,"reason":"interval_elapsed","role":"guide",...}
+
+# Check if a role should be spawned (demand-based, skips interval)
+./.loom/scripts/spawn-support-role.sh champion --demand --json
+# {"should_spawn":true,"reason":"demand","role":"champion"}
+
+# Check all roles at once
+./.loom/scripts/spawn-support-role.sh --check-all --json
+# {"roles":[...],"any_should_spawn":true}
+
+# After successful Task spawn, mark role as running
+./.loom/scripts/spawn-support-role.sh --mark-running champion --task-id a7dc1e0
+
+# After task completion, mark role as idle
+./.loom/scripts/spawn-support-role.sh --mark-completed champion
+```
+
 ## Workflow Demand (Demand-Based Spawning)
 
-The daemon spawns Champion/Doctor immediately when work awaits them, providing faster response than interval-based spawning:
+The daemon spawns Champion/Doctor/Judge immediately when work awaits them, providing faster response than interval-based spawning. Uses `spawn-support-role.sh --demand` to skip interval checks:
 
 ```python
 def check_workflow_demand(state, snapshot_data, recommended_actions, debug_mode=False):
-    """Spawn roles immediately when work awaits them."""
+    """Spawn roles immediately when work awaits them.
+
+    Uses spawn-support-role.sh with --demand flag for deterministic spawn decisions.
+    The script checks idempotency (not already running) even in demand mode.
+    """
 
     def debug(msg):
         if debug_mode:
@@ -748,9 +843,15 @@ def check_workflow_demand(state, snapshot_data, recommended_actions, debug_mode=
         pr_count = len(prs_ready)
         debug(f"Champion demand detected: {pr_count} PRs ready to merge")
 
-        if trigger_support_role(state, "champion", f"Champion (on-demand, {pr_count} PRs)", debug_mode):
-            demand_spawned["champion"] = True
-            print(f"  AUTO-SPAWNED: Champion (on-demand, {pr_count} PRs ready to merge)")
+        # Use deterministic script to check if spawn is allowed
+        check = run("./.loom/scripts/spawn-support-role.sh champion --demand --json")
+        check_data = json.loads(check)
+        if check_data["should_spawn"]:
+            if trigger_support_role(state, "champion", f"Champion (on-demand, {pr_count} PRs)", debug_mode):
+                demand_spawned["champion"] = True
+                print(f"  AUTO-SPAWNED: Champion (on-demand, {pr_count} PRs ready to merge)")
+        else:
+            debug(f"Champion demand skipped: {check_data['reason']}")
 
     # Doctor on-demand: PRs need fixes
     if "spawn_doctor_demand" in recommended_actions:
@@ -758,9 +859,14 @@ def check_workflow_demand(state, snapshot_data, recommended_actions, debug_mode=
         pr_count = len(prs_needing_fixes)
         debug(f"Doctor demand detected: {pr_count} PRs need fixes")
 
-        if trigger_support_role(state, "doctor", f"Doctor (on-demand, {pr_count} PRs)", debug_mode):
-            demand_spawned["doctor"] = True
-            print(f"  AUTO-SPAWNED: Doctor (on-demand, {pr_count} PRs need fixes)")
+        check = run("./.loom/scripts/spawn-support-role.sh doctor --demand --json")
+        check_data = json.loads(check)
+        if check_data["should_spawn"]:
+            if trigger_support_role(state, "doctor", f"Doctor (on-demand, {pr_count} PRs)", debug_mode):
+                demand_spawned["doctor"] = True
+                print(f"  AUTO-SPAWNED: Doctor (on-demand, {pr_count} PRs need fixes)")
+        else:
+            debug(f"Doctor demand skipped: {check_data['reason']}")
 
     # Judge on-demand: PRs need review
     if "spawn_judge_demand" in recommended_actions:
@@ -768,18 +874,29 @@ def check_workflow_demand(state, snapshot_data, recommended_actions, debug_mode=
         pr_count = len(prs_needing_review)
         debug(f"Judge demand detected: {pr_count} PRs need review")
 
-        if trigger_support_role(state, "judge", f"Judge (on-demand, {pr_count} PRs)", debug_mode):
-            demand_spawned["judge"] = True
-            print(f"  AUTO-SPAWNED: Judge (on-demand, {pr_count} PRs need review)")
+        check = run("./.loom/scripts/spawn-support-role.sh judge --demand --json")
+        check_data = json.loads(check)
+        if check_data["should_spawn"]:
+            if trigger_support_role(state, "judge", f"Judge (on-demand, {pr_count} PRs)", debug_mode):
+                demand_spawned["judge"] = True
+                print(f"  AUTO-SPAWNED: Judge (on-demand, {pr_count} PRs need review)")
+        else:
+            debug(f"Judge demand skipped: {check_data['reason']}")
 
     return demand_spawned
 ```
 
 ## Auto-Ensure Support Roles (Interval-Based)
 
+Uses `spawn-support-role.sh` (without `--demand`) for interval-based spawn decisions:
+
 ```python
 def auto_ensure_support_roles(state, snapshot_data, recommended_actions, debug_mode=False, demand_spawned=None):
-    """Automatically keep Guide, Champion, Doctor, Auditor, and Judge running."""
+    """Automatically keep Guide, Champion, Doctor, Auditor, and Judge running.
+
+    Uses spawn-support-role.sh for deterministic interval checking. The script
+    handles all interval math, idempotency, and fabricated task_id detection.
+    """
 
     if demand_spawned is None:
         demand_spawned = {"champion": False, "doctor": False, "judge": False}
@@ -790,80 +907,68 @@ def auto_ensure_support_roles(state, snapshot_data, recommended_actions, debug_m
 
     ensured_roles = {"guide": False, "champion": False, "doctor": False, "auditor": False, "judge": False}
 
-    debug("Checking support roles via recommended_actions (interval-based)")
+    debug("Checking support roles via spawn-support-role.sh (interval-based)")
     debug(f"Recommended actions: {recommended_actions}")
     debug(f"Demand-spawned: {demand_spawned}")
 
-    # Guide - backlog triage
-    if "trigger_guide" in recommended_actions:
-        ensured_roles["guide"] = trigger_support_role(state, "guide", "Guide backlog triage", debug_mode)
+    # Define which roles to check and their trigger actions
+    role_checks = [
+        ("guide", "trigger_guide", "Guide backlog triage", False),
+        ("champion", "trigger_champion", "Champion PR merge", demand_spawned.get("champion", False)),
+        ("doctor", "trigger_doctor", "Doctor PR conflict resolution", demand_spawned.get("doctor", False)),
+        ("auditor", "trigger_auditor", "Auditor main branch validation", False),
+        ("judge", "trigger_judge", "Judge PR review", demand_spawned.get("judge", False)),
+    ]
 
-    # Champion - PR merging (skip if demand-spawned this iteration)
-    if not demand_spawned.get("champion") and "trigger_champion" in recommended_actions:
-        ensured_roles["champion"] = trigger_support_role(state, "champion", "Champion PR merge", debug_mode)
+    for role_name, trigger_action, description, already_spawned in role_checks:
+        # Skip if demand already spawned this role
+        if already_spawned:
+            debug(f"Skipping {role_name}: already demand-spawned this iteration")
+            continue
 
-    # Doctor - PR conflict resolution (skip if demand-spawned this iteration)
-    if not demand_spawned.get("doctor") and "trigger_doctor" in recommended_actions:
-        ensured_roles["doctor"] = trigger_support_role(state, "doctor", "Doctor PR conflict resolution", debug_mode)
+        # Skip if not in recommended actions
+        if trigger_action not in recommended_actions:
+            continue
 
-    # Auditor - main branch validation
-    if "trigger_auditor" in recommended_actions:
-        ensured_roles["auditor"] = trigger_support_role(state, "auditor", "Auditor main branch validation", debug_mode)
+        # Use deterministic script to check if spawn is needed
+        check = run(f"./.loom/scripts/spawn-support-role.sh {role_name} --json")
+        try:
+            check_data = json.loads(check)
+        except Exception:
+            debug(f"Failed to parse spawn-support-role.sh output for {role_name}")
+            continue
 
-    # Judge - PR review (skip if demand-spawned this iteration)
-    if not demand_spawned.get("judge") and "trigger_judge" in recommended_actions:
-        ensured_roles["judge"] = trigger_support_role(state, "judge", "Judge PR review", debug_mode)
+        if check_data["should_spawn"]:
+            debug(f"{role_name}: spawn needed ({check_data['reason']})")
+            ensured_roles[role_name] = trigger_support_role(state, role_name, description, debug_mode)
+        else:
+            debug(f"{role_name}: spawn not needed ({check_data['reason']})")
 
     return ensured_roles
 
 
 def trigger_support_role(state, role_name, description, debug_mode=False):
-    """Spawn a support role using Task tool with Skill invocation."""
+    """Spawn a support role using Task tool with direct slash command.
+
+    Uses slash command directly - Claude Code executes /role natively.
+    This avoids the Skill-in-Task anti-pattern that expands role prompts into subagent context.
+
+    After successful spawn, uses spawn-support-role.sh --mark-running to
+    record the task_id in daemon-state.json atomically.
+    """
 
     def debug(msg):
         if debug_mode:
             print(f"[DEBUG] {msg}")
 
+    # Use slash commands directly - Claude Code executes these natively
+    # DO NOT use Skill() in prompts - it expands the role into the subagent's context
     role_prompts = {
-        "guide": """You must invoke the Skill tool to execute the guide role.
-
-IMPORTANT: Do NOT use CLI commands like 'claude --skill=guide'. Use the Skill tool:
-
-Skill(skill="guide")
-
-Complete one triage iteration.""",
-
-        "champion": """You must invoke the Skill tool to execute the champion role.
-
-IMPORTANT: Do NOT use CLI commands like 'claude --skill=champion'. Use the Skill tool:
-
-Skill(skill="champion")
-
-Complete one PR evaluation and merge iteration.""",
-
-        "doctor": """You must invoke the Skill tool to execute the doctor role.
-
-IMPORTANT: Do NOT use CLI commands like 'claude --skill=doctor'. Use the Skill tool:
-
-Skill(skill="doctor")
-
-Complete one PR conflict resolution iteration.""",
-
-        "auditor": """You must invoke the Skill tool to execute the auditor role.
-
-IMPORTANT: Do NOT use CLI commands like 'claude --skill=auditor'. Use the Skill tool:
-
-Skill(skill="auditor")
-
-Complete one main branch validation iteration.""",
-
-        "judge": """You must invoke the Skill tool to execute the judge role.
-
-IMPORTANT: Do NOT use CLI commands like 'claude --skill=judge'. Use the Skill tool:
-
-Skill(skill="judge")
-
-Complete one PR review iteration."""
+        "guide": "/guide",
+        "champion": "/champion",
+        "doctor": "/doctor",
+        "auditor": "/auditor",
+        "judge": "/judge"
     }
 
     prompt = role_prompts.get(role_name)
@@ -889,11 +994,19 @@ Complete one PR review iteration."""
         print(f"    The Task tool was likely not actually invoked")
         return False
 
-    try:
-        record_support_role(state, role_name, result.task_id, result.output_file)
-    except ValueError as e:
-        print(f"  SPAWN FAILED: {role_name.capitalize()} - {e}")
-        return False
+    # Use deterministic script to record state atomically
+    mark_result = run(f"./.loom/scripts/spawn-support-role.sh --mark-running {role_name} --task-id {result.task_id}")
+    debug(f"State update: {mark_result.strip()}")
+
+    # Also update in-memory state for consistency within this iteration
+    if "support_roles" not in state:
+        state["support_roles"] = {}
+    state["support_roles"][role_name] = {
+        "status": "running",
+        "task_id": result.task_id,
+        "output_file": result.output_file,
+        "started_at": now()
+    }
 
     print(f"  AUTO-SPAWNED: {role_name.capitalize()} (verified, task_id={result.task_id})")
     return True
@@ -901,9 +1014,15 @@ Complete one PR review iteration."""
 
 ## Check Support Role Completions
 
+Uses `spawn-support-role.sh --mark-completed` for atomic state transitions:
+
 ```python
 def check_support_role_completions(state, debug_mode=False):
-    """Check if any support roles have completed and update their state."""
+    """Check if any support roles have completed and update their state.
+
+    Uses spawn-support-role.sh --mark-completed for atomic state updates
+    when a role transitions from running to idle.
+    """
 
     def debug(msg):
         if debug_mode:
@@ -930,6 +1049,9 @@ def check_support_role_completions(state, debug_mode=False):
         if not validate_task_id(task_id):
             debug(f"WARNING: {role_name.capitalize()} has fabricated task_id in state: '{task_id}'")
             debug(f"  Resetting {role_name} to idle (task was never actually spawned)")
+            # Use deterministic script for atomic state update
+            run(f"./.loom/scripts/spawn-support-role.sh --mark-completed {role_name}")
+            # Update in-memory state
             role_info["status"] = "idle"
             role_info["last_completed"] = now_iso
             role_info["last_error"] = f"fabricated_task_id: {task_id}"
@@ -943,6 +1065,9 @@ def check_support_role_completions(state, debug_mode=False):
             check = TaskOutput(task_id=task_id, block=False, timeout=1000)
 
             if check.status == "completed":
+                # Use deterministic script for atomic state update
+                run(f"./.loom/scripts/spawn-support-role.sh --mark-completed {role_name}")
+                # Update in-memory state
                 role_info["status"] = "idle"
                 role_info["last_completed"] = now_iso
                 role_info["task_id"] = None
@@ -952,6 +1077,9 @@ def check_support_role_completions(state, debug_mode=False):
                 debug(f"{role_name.capitalize()} completed (task {task_id})")
 
             elif check.status == "failed":
+                # Use deterministic script for atomic state update
+                run(f"./.loom/scripts/spawn-support-role.sh --mark-completed {role_name}")
+                # Update in-memory state
                 role_info["status"] = "idle"
                 role_info["last_completed"] = now_iso
                 role_info["last_error"] = "task_failed"
@@ -1020,6 +1148,46 @@ def check_stale_building(state, debug_mode=False):
             print(f"  RECOVERED: #{issue['number']} (stale {issue['age_hours']}h, no PR)")
 
         return len(recovered)
+
+    return 0
+```
+
+### Orphan Recovery (In-Session)
+
+```python
+def check_orphaned_shepherds(state, debug_mode=False):
+    """Detect and recover orphaned shepherds from crashes mid-session.
+
+    This runs every 5 iterations (not just at startup) to catch:
+    - Shepherds with stale task IDs (tasks that no longer exist)
+    - loom:building issues without active shepherds
+    - Progress files with stale heartbeats
+    """
+
+    def debug(msg):
+        if debug_mode:
+            print(f"[DEBUG] {msg}")
+
+    debug("Running in-session orphan recovery check")
+
+    result = run("./.loom/scripts/recover-orphaned-shepherds.sh --recover --json")
+
+    if result.exit_code == 0:
+        try:
+            data = json.loads(result.stdout)
+            recovered_issues = data.get("recovered_issues", [])
+            recovered_shepherds = data.get("recovered_shepherds", [])
+
+            for issue in recovered_issues:
+                print(f"  RECOVERED: #{issue} (orphaned - no active shepherd)")
+
+            for shepherd_id in recovered_shepherds:
+                debug(f"Reset orphaned shepherd: {shepherd_id}")
+
+            return len(recovered_issues)
+        except Exception as e:
+            debug(f"Failed to parse orphan recovery result: {e}")
+            return 0
 
     return 0
 ```
