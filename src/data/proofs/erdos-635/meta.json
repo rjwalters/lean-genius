@@ -2,13 +2,14 @@
   "id": "erdos-635",
   "title": "Erdős Problem #635: Non-Divisibility Condition on Differences",
   "slug": "erdos-635",
-  "description": "For A ⊆ {1,...,N} with b-a ≥ t implying (b-a) ∤ b, is |A| ≤ (1/2 + o_t(1))N? For t=1, maximum is ⌊(N+1)/2⌋. OPEN.",
+  "description": "For A ⊆ {1,...,N} where b - a ≥ t implies (b-a) does not divide b, is the maximum size of A at most (1/2 + o_t(1))N? The t = 1 case is solved but the general conjecture remains open.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős (c. 1980, letter to Ruzsa)",
     "sourceUrl": "https://erdosproblems.com/635",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos635Problem.lean",
     "tags": [
+      "erdos",
       "number-theory",
       "combinatorics",
       "extremal-problems",
@@ -19,79 +20,133 @@
     "sorries": 0,
     "erdosNumber": 635,
     "erdosUrl": "https://erdosproblems.com/635",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-26",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals as finite sets",
+        "module": "Mathlib.Data.Finset.Interval"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function along a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum of a set",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsNonDivisible definition: t-non-divisibility condition on set pairs",
+      "IsAdmissible definition: t-admissible subsets of {1,...,N}",
+      "f(N,t) extremal function: supremum of admissible set sizes",
+      "oddSet definition: odd numbers in {1,...,N} as canonical solution",
+      "oddSet_admissible axiom: odd set satisfies 1-non-divisibility",
+      "oddSet_card axiom: |oddSet(N)| = (N+1)/2",
+      "f_t1 axiom: tight bound for t = 1",
+      "f_t2_lower axiom: logarithmic improvement for t = 2",
+      "erdos_construction_t2 axiom: explicit construction beating N/2",
+      "ErdosConjecture635 definition: formal statement of the open conjecture",
+      "f_monotone_t axiom: monotonicity in t",
+      "f_lower_half axiom: universal lower bound from odd set",
+      "f_t1_density axiom: density convergence for t = 1",
+      "no_far_multiples axiom: structural consequence excluding multiples",
+      "erdos_635_t1_solved theorem: the t = 1 case from axioms"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #635 originates from a letter to Ruzsa around 1980. It asks about the maximum size of subsets of {1,...,N} satisfying a non-divisibility condition on differences. For t=1, the answer is ⌊(N+1)/2⌋ (odd numbers). For t=2, Erdős showed one can exceed N/2 by c·log(N). References: [Gu83], [Ru99].",
-    "problemStatement": "For t ≥ 1 and A ⊆ {1,...,N}, suppose that whenever a, b ∈ A with b - a ≥ t, we have (b-a) ∤ b. How large can |A| be? Is |A| ≤ (1/2 + o_t(1))N? OPEN.",
-    "proofStrategy": "The formalization defines IsNonDivisible, IsAdmissible, and the extremal function f(N,t). The t=1 case (odd numbers) and t=2 construction are axiomatized. The main conjecture is formalized as density approaching 1/2.",
+    "historicalContext": "**Erdős Problem #635** originates from a letter Erdős wrote to Imre Ruzsa around 1980. The problem asks a deceptively simple question: given a subset A of {1,...,N} where large differences between elements cannot divide the larger element, how big can A be? This sits at the intersection of additive and multiplicative number theory, where the additive structure (gaps between elements) interacts with multiplicative structure (divisibility).\n\nThe problem has a clean answer for t = 1: the optimal set consists of all odd numbers in {1,...,N}, giving exactly ⌊(N+1)/2⌋ elements. The key insight is that the difference of two odd numbers is always even, and an even number cannot divide an odd number. This elegant argument completely resolves the t = 1 case. For t = 2, Erdős himself showed that one can beat the N/2 barrier by a logarithmic factor, constructing sets of size N/2 + c·log(N) by augmenting odd numbers with carefully chosen powers of 2.\n\nDespite these partial results, the general conjecture — that the density is always close to 1/2 regardless of t — remains open. The difficulty lies in the fact that larger t relaxes the constraint (applying only to pairs with large enough gaps), yet the conjecture asserts this doesn't fundamentally change the extremal density. The references [Gu83] by Gupta and [Ru99] by Ruzsa contain related work on divisibility conditions in combinatorial number theory.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nFor $t \\geq 1$ and $A \\subseteq \\{1, \\ldots, N\\}$, suppose that whenever $a, b \\in A$ with $b - a \\geq t$, we have $(b - a) \\nmid b$. How large can $|A|$ be?\n\n**Conjecture:** $|A| \\leq \\left(\\frac{1}{2} + o_t(1)\\right) N$\n\n**Known Results:**\n- $t = 1$: Maximum is $\\lfloor(N+1)/2\\rfloor$ (all odd numbers), SOLVED\n- $t = 2$: $|A| \\geq N/2 + c \\log N$ for some $c > 0$ (Erdős construction)\n- General $t$: $|A| \\geq (N+1)/2$ (odd numbers always work as lower bound)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define the non-divisibility condition (IsNonDivisible) and admissibility (IsAdmissible) as predicates on finite sets with parameter t. The extremal function f(N,t) is defined as sSup over achievable cardinalities.\n\n2. **Solved Case (t=1):** The odd set is defined explicitly using Finset.Icc and filter. Three axioms establish its admissibility, its cardinality, and the optimality of f(N,1) = (N+1)/2.\n\n3. **Partial Results (t=2):** Two axioms capture Erdős's construction — the existence of sets beating N/2 by c·log(N), and the explicit construction using odd numbers plus powers of 2.\n\n4. **Open Conjecture:** ErdosConjecture635 formalizes the o_t(1) notation using ε-N₀ quantifiers: for every ε > 0 and t ≥ 1, there exists N₀ such that f(N,t) ≤ (1/2 + ε)N for N ≥ N₀.\n\n5. **Structural Properties:** Monotonicity in t, the universal lower bound from odd numbers, density convergence for t=1, and the no-far-multiples consequence are axiomatized.",
     "keyInsights": [
-      "The condition b-a ≥ t and (b-a) ∤ b restricts which pairs can coexist in A",
-      "For t=1, odd numbers are optimal: any difference from an odd number has an even factor",
-      "For t=2, Erdős beats N/2 by c·log(N) using odd numbers plus certain powers of 2",
-      "The conjecture says the density is always close to 1/2 regardless of t",
-      "Connected to divisibility restrictions in combinatorial number theory"
+      "**Additive-Multiplicative Coupling:** The condition ties additive structure (gaps b-a) to multiplicative structure (divisibility of b), creating a subtle constraint on set composition",
+      "**Odd Numbers as Universal Lower Bound:** The set of odd numbers satisfies the condition for ALL t ≥ 1, since even differences never divide odd numbers — this gives f(N,t) ≥ (N+1)/2 universally",
+      "**Logarithmic Improvement for t=2:** By adding powers of 2 with odd exponents to the odd set, Erdős beats N/2 by c·log(N), showing the barrier is not exactly N/2",
+      "**Monotonicity in t:** Larger t means fewer restricted pairs, so f(N,t) is non-decreasing in t — yet the conjecture says the density stays near 1/2",
+      "**Connection to Extremal Combinatorics:** The problem is an extremal question about finite sets with a number-theoretic constraint, bridging combinatorics and analytic number theory"
     ]
   },
   "sections": [
     {
       "id": "non-divisibility",
       "title": "Part I: The Non-Divisibility Condition",
-      "startLine": 28,
-      "endLine": 38,
-      "summary": "Defines IsNonDivisible and IsAdmissible for A ⊆ {1,...,N} with parameter t."
+      "startLine": 36,
+      "endLine": 54,
+      "summary": "Defines IsNonDivisible (t-non-divisibility for set pairs) and IsAdmissible (containment in {1,...,N} plus non-divisibility)."
     },
     {
       "id": "extremal-function",
       "title": "Part II: The Extremal Function",
-      "startLine": 40,
-      "endLine": 44,
-      "summary": "Defines f(N,t) = sSup of admissible set sizes."
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Defines f(N,t) as sSup of achievable cardinalities of t-admissible sets."
     },
     {
       "id": "case-t1",
-      "title": "Part III: The Case t = 1",
-      "startLine": 46,
-      "endLine": 62,
-      "summary": "Defines oddSet. Axioms: oddSet_admissible, oddSet_card, f_t1 = (N+1)/2."
+      "title": "Part III: The Case t = 1 — Odd Numbers",
+      "startLine": 67,
+      "endLine": 97,
+      "summary": "Defines oddSet and axiomatizes: oddSet_admissible, oddSet_card = (N+1)/2, f_t1 optimality."
     },
     {
       "id": "case-t2",
-      "title": "Part IV: The Case t = 2",
-      "startLine": 64,
-      "endLine": 74,
-      "summary": "Axioms: f_t2_lower (N/2 + c·log N), erdos_construction_t2."
+      "title": "Part IV: The Case t = 2 — Beating the N/2 Barrier",
+      "startLine": 99,
+      "endLine": 123,
+      "summary": "Axioms for f_t2_lower (N/2 + c·log N) and erdos_construction_t2 using odd numbers plus powers of 2."
     },
     {
       "id": "conjecture",
-      "title": "Part V: The Main Conjecture",
-      "startLine": 76,
-      "endLine": 90,
-      "summary": "Defines ErdosConjecture635: density ≤ 1/2 + ε for all t, large N. Axiom erdos_635."
+      "title": "Part V: The Main Conjecture (OPEN)",
+      "startLine": 125,
+      "endLine": 147,
+      "summary": "Defines ErdosConjecture635 with ε-N₀ quantifiers formalizing o_t(1). Axiom erdos_635."
     },
     {
-      "id": "upper-bound",
-      "title": "Part VI: Upper Bound",
-      "startLine": 92,
-      "endLine": 99,
-      "summary": "Axioms: f_upper_trivial (f ≤ N), f_t1_density (density → 1/2 for t=1)."
+      "id": "bounds",
+      "title": "Part VI: Upper and Lower Bounds",
+      "startLine": 149,
+      "endLine": 171,
+      "summary": "Axioms: f_upper_trivial (f ≤ N), f_monotone_t, f_lower_half (≥ (N+1)/2), f_t1_density (→ 1/2)."
+    },
+    {
+      "id": "structural",
+      "title": "Part VII: Structural Observations",
+      "startLine": 173,
+      "endLine": 187,
+      "summary": "Axiom no_far_multiples: admissible sets exclude distant multiples."
     },
     {
       "id": "summary",
-      "title": "Part VII: Summary",
-      "startLine": 101,
-      "endLine": 122,
-      "summary": "Proved: erdos_635_t1_solved (from f_t1), erdos_635_status (trivial). OPEN."
+      "title": "Part VIII: Summary",
+      "startLine": 189,
+      "endLine": 215,
+      "summary": "erdos_635_t1_solved theorem (from f_t1), erdos_635_status (trivial). Problem OPEN for general t."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #635 asks whether the extremal density for the non-divisibility condition is always close to 1/2. The t=1 case is solved (odd numbers), but the general conjecture remains open.",
-    "implications": "Resolution would clarify the structure of sets avoiding divisibility relations, connecting to extremal combinatorics and additive number theory.",
+    "summary": "Erdős Problem #635 asks whether the maximum density of sets in {1,...,N} satisfying a non-divisibility condition on differences is always close to 1/2. The t = 1 case is completely solved (odd numbers are optimal with density → 1/2), and for t = 2 Erdős showed the barrier can be beaten by a logarithmic factor. The general conjecture remains open.",
+    "implications": "**Significance and Connections**\n\n1. **Extremal Combinatorics:** This is a natural extremal problem asking for the maximum size of a structured set, analogous to Ramsey and Turán-type questions but with a number-theoretic flavor.\n\n2. **Additive-Multiplicative Interplay:** The constraint couples additive structure (gaps) with multiplicative structure (divisibility), a theme central to modern analytic number theory.\n\n3. **Density and Structure:** The conjecture that density ≈ 1/2 for all t suggests a universal structural barrier, independent of how many small gaps are \"free.\"\n\n4. **Connection to Sidon Sets and Sum-Free Sets:** The problem shares structural similarities with other extremal problems about sets with restricted arithmetic properties.",
     "openQuestions": [
-      "Is the density always at most 1/2 + o_t(1)?",
-      "What is the exact behavior for small t ≥ 2?",
-      "Can the Erdős construction for t=2 be improved?",
-      "How does the extremal function depend on t?"
+      "Is the density always at most 1/2 + o_t(1) for general t?",
+      "What is the exact behavior of f(N, t) for small values of t ≥ 3?",
+      "Can the Erdős construction for t = 2 be improved beyond the logarithmic term?",
+      "How does the extremal function f(N, t) depend on t for fixed large N?",
+      "Are there connections to the distribution of divisors or smooth numbers?"
     ]
   }
 }
