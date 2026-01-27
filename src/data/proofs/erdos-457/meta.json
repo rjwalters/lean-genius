@@ -2,88 +2,162 @@
   "id": "erdos-457",
   "title": "Erdős Problem #457: Small Prime Divisors of Consecutive Products",
   "slug": "erdos-457",
-  "description": "Is there ε > 0 such that infinitely many n have all primes p ≤ (2+ε)log(n) dividing the product of log(n) consecutive integers starting at n+1? Equivalently, q(n,log n) ≥ (2+ε)log(n) i.o. OPEN.",
+  "description": "Is there ε > 0 such that infinitely many n have all primes p ≤ (2+ε)log(n) dividing the product of ⌊log n⌋ consecutive integers starting at n+1? Equivalently, is q(n, log n) ≥ (2+ε)log(n) infinitely often? Open.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős-Pomerance (c. 1979-1980)",
     "sourceUrl": "https://erdosproblems.com/457",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos457Problem.lean",
     "tags": [
+      "erdos",
       "number-theory",
       "prime-divisors",
       "consecutive-products",
+      "smooth-numbers",
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 457,
     "erdosUrl": "https://erdosproblems.com/457",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-26",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals as finite sets",
+        "module": "Mathlib.Data.Finset.Interval"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventually statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Constructive minimum of a nonempty decidable predicate",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "consecutiveProduct definition: ∏(n+i) for i in [1,k]",
+      "consecutiveProduct_pos axiom: positivity of consecutive products",
+      "small_primes_divide axiom: primes ≤ k divide k consecutive integers",
+      "q definition: smallest prime not dividing the consecutive product",
+      "q_prime, q_not_dvd, q_minimal axioms: properties of q(n,k)",
+      "q_lower_trivial axiom: q(n,k) > k",
+      "ErdosConjecture457 definition: main conjecture with Set.Infinite",
+      "ErdosConjecture457_q definition: equivalent q formulation",
+      "conjecture_equivalence axiom: both formulations are equivalent",
+      "construction_lower axiom: (2+o(1))log(n) construction",
+      "two_barrier_significance axiom: the 2 barrier is achievable",
+      "UpperBoundConjecture definition: q < (1-ε)(log n)² eventually",
+      "IsSmooth definition: y-smooth numbers",
+      "consecutive_product_smooth_support axiom: smoothness property"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #457, posed by Erdős and Pomerance [Er79d], [ErGr80], asks about small prime divisors of consecutive products. The function q(n,k) = smallest prime not dividing the product of k consecutive integers after n provides an equivalent formulation. A construction shows q(n, log n) >= (2+o(1))log(n). Related to Problem #663.",
-    "problemStatement": "Is there ε > 0 such that for infinitely many n, all primes p <= (2+ε)log(n) divide the product of the first floor(log n) integers after n? OPEN.",
-    "proofStrategy": "The formalization defines consecutiveProduct and smallestNonDividingPrime (q(n,k)). The main conjecture uses Set.Infinite. The equivalent q(n,k) formulation and upper bound sub-question are stated separately.",
+    "historicalContext": "**Erdős Problem #457** was posed by Erdős and Pomerance in the late 1970s, appearing in [Er79d] and [ErGr80, p.91]. The problem explores a fundamental question about the prime factorization of products of consecutive integers: how many small primes can simultaneously divide such a product? This sits at the intersection of multiplicative number theory, sieve methods, and smooth number theory.\n\nThe key function q(n, k) — the least prime not dividing ∏_{i=1}^{k}(n+i) — was introduced to make the problem precise. Since any k consecutive integers contain a multiple of every prime p ≤ k, we trivially have q(n, k) > k. For k = ⌊log n⌋, the question becomes: how much larger than log(n) can q be? Erdős and Pomerance showed that choosing n as a product of primes between log(n) and (2+o(1))log(n) gives q(n, log n) ≥ (2+o(1))log(n), but whether a fixed ε > 0 improvement over the factor 2 is possible remains open.\n\nThe problem is related to Erdős Problem #663, which also concerns prime divisors of consecutive products. Both problems connect to the broader study of smooth numbers (numbers whose prime factors are all small) and the distribution of primes in short intervals. The OEIS sequence A391668 is related to this problem.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs there some $\\varepsilon > 0$ such that infinitely many $n$ have all primes $p \\leq (2 + \\varepsilon) \\log n$ dividing $\\prod_{i=1}^{\\lfloor \\log n \\rfloor} (n + i)$?\n\n**Equivalent formulation:** Let $q(n, k)$ be the least prime not dividing $\\prod_{i=1}^k (n+i)$. Is $q(n, \\lfloor \\log n \\rfloor) \\geq (2 + \\varepsilon) \\log n$ infinitely often?\n\n**Known:** $q(n, \\lfloor \\log n \\rfloor) \\geq (2 + o(1)) \\log n$ is achievable.\n\n**Open sub-question:** Is $q(n, \\lfloor \\log n \\rfloor) < (1 - \\varepsilon)(\\log n)^2$ for all large $n$?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Consecutive Product:** Define ∏(n+i) using Finset.Icc and Finset.prod. Axiomatize positivity and the basic fact that primes ≤ k divide k consecutive integers.\n\n2. **Function q(n,k):** Define using Nat.find with a constructive existence proof (there always exists a prime not dividing a finite product). Axiomatize primality, non-divisibility, and minimality.\n\n3. **Main Conjecture:** ErdosConjecture457 uses Set.Infinite to express \"infinitely many n\" and quantifies over all primes below the threshold. The equivalent q-formulation is stated separately with an equivalence axiom.\n\n4. **Known Results:** The (2+o(1)) construction and the \"2 barrier\" significance are axiomatized. The upper bound sub-question uses Filter.atTop for \"eventually.\"\n\n5. **Connections:** Smooth number definition and the relationship to Problem #663 provide mathematical context.",
     "keyInsights": [
-      "The product of log(n) consecutive integers after n is divisible by many small primes",
-      "q(n,k) = smallest prime not dividing the consecutive product captures the problem",
-      "Known construction: q(n, log n) >= (2+o(1))log(n)",
-      "Open sub-question: q(n, log n) < (1-ε)(log n)² for all large n",
-      "Connected to the distribution of primes in short intervals"
+      "**The 2 Barrier:** The known construction achieves q ≥ (2+o(1))log(n), but crossing to a fixed (2+ε) requires fundamentally new ideas — this is the central difficulty",
+      "**Trivial Lower Bound:** Among k consecutive integers, every prime p ≤ k has a multiple, so q(n,k) > k always holds — the question is how much further we can go",
+      "**Prime Product Construction:** Taking n as a product of primes in [log(n), (2+o(1))log(n)] forces the consecutive product to be divisible by all those primes",
+      "**Connection to Smooth Numbers:** The problem asks when the consecutive product is 'smoother than expected' in terms of small prime divisors",
+      "**Upper Bound Question:** Whether q < (1-ε)(log n)² eventually would provide a ceiling on how far small prime divisibility can extend"
     ]
   },
   "sections": [
     {
       "id": "consecutive-products",
       "title": "Part I: Consecutive Products",
-      "startLine": 30,
-      "endLine": 38,
-      "summary": "Defines consecutiveProduct(n, k) = product of (n+i) for i in [1, k]."
+      "startLine": 38,
+      "endLine": 62,
+      "summary": "Defines consecutiveProduct(n, k). Axioms for positivity and small_primes_divide (primes ≤ k divide the product)."
     },
     {
       "id": "smallest-prime",
       "title": "Part II: The Smallest Non-Dividing Prime",
-      "startLine": 40,
-      "endLine": 46,
-      "summary": "Defines smallestNonDividingPrime(n, k) = q(n, k) via Nat.find. 1 sorry."
+      "startLine": 64,
+      "endLine": 90,
+      "summary": "Defines q(n, k) via Nat.find. Axioms: q_prime, q_not_dvd, q_minimal, q_lower_trivial."
     },
     {
       "id": "main-conjecture",
-      "title": "Part III: The Main Conjecture",
-      "startLine": 48,
-      "endLine": 60,
-      "summary": "Defines ErdosConjecture457: exists ε > 0 with infinitely many n where all small primes divide. Axiom erdos_457."
+      "title": "Part III: The Main Conjecture (OPEN)",
+      "startLine": 92,
+      "endLine": 111,
+      "summary": "ErdosConjecture457: ∃ ε > 0 with infinitely many n where all primes ≤ (2+ε)log(n) divide. Axiom erdos_457."
     },
     {
       "id": "q-formulation",
       "title": "Part IV: Equivalent Formulation via q(n, k)",
-      "startLine": 62,
-      "endLine": 72,
-      "summary": "Defines ErdosConjecture457_q: q(n, log n) >= (2+ε)log(n) infinitely often. Axiom erdos_457_q."
+      "startLine": 113,
+      "endLine": 128,
+      "summary": "ErdosConjecture457_q and conjecture_equivalence axiom."
     },
     {
-      "id": "construction-upper",
-      "title": "Part V: Known Construction and Upper Bound Question",
-      "startLine": 74,
-      "endLine": 91,
-      "summary": "Axiom construction_lower: q >= (2+o(1))log(n) achievable. Defines UpperBoundConjecture. Axiom erdos_457_upper."
+      "id": "construction",
+      "title": "Part V: Known Construction — The (2 + o(1)) Barrier",
+      "startLine": 130,
+      "endLine": 154,
+      "summary": "construction_lower axiom: (2+o(1))log(n) achievable. two_barrier_significance axiom."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Part VI: Upper Bound Sub-Question",
+      "startLine": 156,
+      "endLine": 170,
+      "summary": "UpperBoundConjecture: q < (1-ε)(log n)² eventually. Axiom erdos_457_upper."
+    },
+    {
+      "id": "smooth-numbers",
+      "title": "Part VII: Connection to Smooth Numbers",
+      "startLine": 172,
+      "endLine": 187,
+      "summary": "IsSmooth definition. consecutive_product_smooth_support axiom."
+    },
+    {
+      "id": "related",
+      "title": "Part VIII: Relationship to Problem #663",
+      "startLine": 189,
+      "endLine": 198,
+      "summary": "Connection to Erdős Problem #663 on prime factors of consecutive products."
     },
     {
       "id": "summary",
-      "title": "Part VI: Summary",
-      "startLine": 93,
-      "endLine": 110,
-      "summary": "Proved: erdos_457_statement (simp), erdos_457_status (trivial). All formulations OPEN."
+      "title": "Part IX: Summary",
+      "startLine": 200,
+      "endLine": 225,
+      "summary": "erdos_457_t1_solved (from axiom), erdos_457_status (trivial). The 2 barrier is the central open question."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #457 asks whether small primes frequently divide consecutive products of length log(n). The equivalent q(n,k) formulation and upper bound sub-question are also open.",
-    "implications": "Resolution would clarify the divisibility structure of short consecutive products and connect to smooth number theory.",
+    "summary": "Erdős Problem #457 asks whether the function q(n, ⌊log n⌋) — the least prime not dividing a product of ⌊log n⌋ consecutive integers — exceeds (2+ε)log(n) infinitely often for some fixed ε > 0. The (2+o(1)) threshold is achievable by construction, but crossing to a fixed improvement remains open. A companion upper bound question asks whether q stays below (1-ε)(log n)².",
+    "implications": "**Significance and Connections**\n\n1. **Multiplicative Number Theory:** Understanding which primes divide consecutive products reveals structure in the multiplicative decomposition of integers near n.\n\n2. **Smooth Number Theory:** The problem connects to how 'smooth' (having only small prime factors) a product of consecutive integers can be.\n\n3. **Sieve Methods:** The prime product construction uses ideas from sieve theory — selecting n to control which primes appear as factors.\n\n4. **Prime Distribution:** Resolution would illuminate how primes in short intervals interact with consecutive products.\n\n5. **Related Problem #663:** Both problems form part of Erdős's systematic study of prime factors of consecutive integer products.",
     "openQuestions": [
-      "Is q(n, log n) >= (2+ε)log(n) infinitely often for some ε > 0?",
-      "Is q(n, log n) < (1-ε)(log n)² for all large n?",
-      "What is the true growth rate of q(n, log n)?",
-      "How does this connect to Problem #663?"
+      "Is q(n, ⌊log n⌋) ≥ (2+ε)log(n) infinitely often for some fixed ε > 0?",
+      "Is q(n, ⌊log n⌋) < (1-ε)(log n)² for all sufficiently large n?",
+      "What is the true growth rate of q(n, ⌊log n⌋)?",
+      "Can the prime product construction be improved to cross the 2 barrier?",
+      "How does this connect to the distribution of smooth numbers near n?"
     ]
   }
 }
