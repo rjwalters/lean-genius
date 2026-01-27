@@ -9,6 +9,7 @@
 #   ./scripts/lean/launch.sh spawn erdos|aristotle|researcher|seeker|deployer
 #   ./scripts/lean/launch.sh scale erdos|researcher|seeker N
 #   ./scripts/lean/launch.sh status
+#   ./scripts/lean/launch.sh daemon [--interval N] [--erdos N] [--researcher N] [...]
 #
 
 set -euo pipefail
@@ -25,10 +26,17 @@ NC='\033[0m'
 # Config
 STATE_FILE="research/lean-daemon-state.json"
 SIGNALS_DIR=".loom/signals"
+STOP_SIGNAL_FILE="research/lean-stop-daemon"
+DAEMON_PID_FILE="research/lean-daemon.pid"
+DAEMON_LOG_FILE="research/lean-daemon.log"
 
 # Health check thresholds
 STUCK_THRESHOLD_MINUTES=30
 STUCK_CPU_THRESHOLD="0.5"
+
+# Daemon defaults
+DEFAULT_DAEMON_INTERVAL=60
+RESPAWN_COOLDOWN_SECONDS=300  # 5 minutes between respawns of same agent
 
 # Default pool sizes
 DEFAULT_ERDOS=2
@@ -56,6 +64,7 @@ Usage:
   $0 spawn <type>        Spawn one additional agent
   $0 scale <type> <N>    Scale agent pool to N instances
   $0 status              Show current status
+  $0 daemon [options]    Run continuous monitoring daemon
 
 Start Options:
   --erdos N              Number of Erdős enhancers (default: $DEFAULT_ERDOS, max: $MAX_ERDOS)
@@ -66,6 +75,14 @@ Start Options:
 
 Stop Options:
   --force                Kill tmux sessions immediately (skip graceful signal files)
+
+Daemon Options:
+  --interval N           Seconds between health check cycles (default: $DEFAULT_DAEMON_INTERVAL)
+  --erdos N              Initial Erdős enhancer count (default: $DEFAULT_ERDOS, max: $MAX_ERDOS)
+  --aristotle N          Initial Aristotle agent count (default: $DEFAULT_ARISTOTLE, max: $MAX_ARISTOTLE)
+  --researcher N         Initial Researcher count (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
+  --seeker N             Initial Seeker agent count (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
+  --deployer N           Initial Deployer count (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
 
 Agent Types:
   erdos       Enhances Erdős problem stubs with Lean formalizations
@@ -84,6 +101,9 @@ Examples:
   $0 stop                               # Graceful stop (signal files)
   $0 stop --force                       # Force stop (kill sessions)
   $0 health                             # Check agent health
+  $0 daemon                             # Run daemon with defaults
+  $0 daemon --interval 30 --erdos 3     # Custom interval and pool
+  $0 daemon &                           # Run daemon in background
 EOF
 }
 
@@ -635,6 +655,389 @@ check_for_stuck_agents() {
     return $stuck_count
 }
 
+# =============================================================================
+# Daemon: Continuous monitoring loop with agent respawning
+# =============================================================================
+
+# Associative array for tracking last respawn time per session (bash 4+)
+# Fallback to flat variables for bash 3 (macOS default)
+declare -A LAST_RESPAWN_TIME 2>/dev/null || true
+
+# Helper: Get last respawn epoch for a session
+get_last_respawn() {
+    local session="$1"
+    if declare -p LAST_RESPAWN_TIME &>/dev/null 2>&1; then
+        echo "${LAST_RESPAWN_TIME[$session]:-0}"
+    else
+        # Fallback for bash 3: use a temp file
+        local cache_file="/tmp/lean-daemon-respawn-${session}"
+        if [[ -f "$cache_file" ]]; then
+            cat "$cache_file"
+        else
+            echo "0"
+        fi
+    fi
+}
+
+# Helper: Set last respawn epoch for a session
+set_last_respawn() {
+    local session="$1"
+    local epoch="$2"
+    if declare -p LAST_RESPAWN_TIME &>/dev/null 2>&1; then
+        LAST_RESPAWN_TIME[$session]="$epoch"
+    else
+        echo "$epoch" > "/tmp/lean-daemon-respawn-${session}"
+    fi
+}
+
+# Helper: Daemon log with timestamp
+daemon_log() {
+    local level="$1"
+    shift
+    local msg="$*"
+    local timestamp
+    timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    echo "[$timestamp] $level: $msg"
+}
+
+# Helper: Determine agent type from session name
+get_agent_type() {
+    local session="$1"
+    case "$session" in
+        erdos-enhancer-*) echo "erdos" ;;
+        aristotle-agent)  echo "aristotle" ;;
+        researcher-*)     echo "researcher" ;;
+        seeker-agent)     echo "seeker" ;;
+        deployer)         echo "deployer" ;;
+        *)                echo "unknown" ;;
+    esac
+}
+
+# Helper: Respawn a single agent by session name
+# Kills the old tmux session and spawns a fresh agent in its slot
+respawn_agent() {
+    local session="$1"
+    local agent_type
+    agent_type=$(get_agent_type "$session")
+
+    daemon_log "INFO" "Respawning $agent_type agent (session: $session)"
+
+    # Kill old session
+    tmux kill-session -t "$session" 2>/dev/null || true
+    sleep 1
+
+    case "$agent_type" in
+        erdos)
+            if check_script "./scripts/erdos/parallel-enhance.sh" 2>/dev/null; then
+                ./scripts/erdos/parallel-enhance.sh 1 &
+                sleep 2
+                daemon_log "INFO" "Erdos enhancer respawned"
+            else
+                daemon_log "WARN" "Cannot respawn erdos: script not found"
+            fi
+            ;;
+        aristotle)
+            if check_script "./scripts/aristotle/launch-agent.sh" 2>/dev/null; then
+                ./scripts/aristotle/launch-agent.sh &
+                sleep 1
+                daemon_log "INFO" "Aristotle agent respawned"
+            else
+                daemon_log "WARN" "Cannot respawn aristotle: script not found"
+            fi
+            ;;
+        researcher)
+            if check_script "./scripts/research/parallel-research.sh" 2>/dev/null; then
+                ./scripts/research/parallel-research.sh 1 &
+                sleep 2
+                daemon_log "INFO" "Researcher respawned"
+            else
+                daemon_log "WARN" "Cannot respawn researcher: script not found"
+            fi
+            ;;
+        seeker)
+            if check_script "./scripts/research/launch-seeker.sh" 2>/dev/null; then
+                ./scripts/research/launch-seeker.sh &
+                sleep 1
+                daemon_log "INFO" "Seeker agent respawned"
+            else
+                daemon_log "WARN" "Cannot respawn seeker: script not found"
+            fi
+            ;;
+        deployer)
+            if check_script "./scripts/deploy/launch-agent.sh" 2>/dev/null; then
+                ./scripts/deploy/launch-agent.sh &
+                sleep 1
+                daemon_log "INFO" "Deployer respawned"
+            else
+                daemon_log "WARN" "Cannot respawn deployer: script not found"
+            fi
+            ;;
+        *)
+            daemon_log "WARN" "Unknown agent type for session: $session"
+            ;;
+    esac
+
+    set_last_respawn "$session" "$(date +%s)"
+}
+
+# Helper: Kill a stuck agent and respawn it
+kill_and_respawn() {
+    local session="$1"
+    daemon_log "WARN" "Force-killing stuck session: $session"
+    tmux kill-session -t "$session" 2>/dev/null || true
+    sleep 2
+    respawn_agent "$session"
+}
+
+# Helper: Check if respawn cooldown has elapsed for a session
+is_cooldown_elapsed() {
+    local session="$1"
+    local now
+    now=$(date +%s)
+    local last
+    last=$(get_last_respawn "$session")
+    local elapsed=$((now - last))
+    if [[ $elapsed -ge $RESPAWN_COOLDOWN_SECONDS ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Helper: Get work queue stats (with timeout protection)
+get_work_queue_stats() {
+    local stubs="?"
+    local candidates="0"
+    local aristotle_jobs="0"
+    local ready_prs="0"
+
+    # Stubs count (with 10s timeout)
+    if command -v npx &>/dev/null && [[ -f "scripts/erdos/find-stubs.ts" ]]; then
+        stubs=$(timeout 10 npx tsx scripts/erdos/find-stubs.ts --stats 2>/dev/null | grep -oE "with sources: [0-9]+" | grep -oE "[0-9]+" || echo "?")
+    fi
+
+    # Research candidates
+    if [[ -f "research/candidate-pool.json" ]]; then
+        candidates=$(jq '[.candidates[] | select(.status == "available")] | length' "research/candidate-pool.json" 2>/dev/null || echo "0")
+    fi
+
+    # Aristotle jobs
+    if [[ -f "research/aristotle-jobs.json" ]]; then
+        aristotle_jobs=$(jq '[.jobs[] | select(.status == "submitted")] | length' "research/aristotle-jobs.json" 2>/dev/null || echo "0")
+    fi
+
+    # PRs ready to merge
+    ready_prs=$(timeout 10 gh pr list --label "loom:pr" --json number 2>/dev/null | jq 'length' 2>/dev/null || echo "0")
+
+    echo "$stubs $candidates $aristotle_jobs $ready_prs"
+}
+
+# Helper: Write daemon state to state file
+update_daemon_state() {
+    local cycle_count="$1"
+    local respawn_count="$2"
+
+    if [[ -f "$STATE_FILE" ]]; then
+        local tmp
+        tmp=$(mktemp)
+        jq \
+            --argjson cycle "$cycle_count" \
+            --argjson respawns "$respawn_count" \
+            --arg last_cycle "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+            '.daemon_cycles = $cycle | .daemon_respawns = $respawns | .last_daemon_cycle = $last_cycle' \
+            "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
+    fi
+}
+
+# Helper: Clean up daemon PID file and signal handler
+daemon_cleanup() {
+    daemon_log "INFO" "Daemon shutting down (PID $$)"
+    rm -f "$DAEMON_PID_FILE"
+    # Clean up temp respawn cache files
+    rm -f /tmp/lean-daemon-respawn-* 2>/dev/null || true
+    set_running false
+}
+
+# Command: daemon - Continuous monitoring loop
+cmd_daemon() {
+    local interval=$DEFAULT_DAEMON_INTERVAL
+    local erdos=$DEFAULT_ERDOS
+    local aristotle=$DEFAULT_ARISTOTLE
+    local researcher=$DEFAULT_RESEARCHER
+    local seeker=$DEFAULT_SEEKER
+    local deployer=$DEFAULT_DEPLOYER
+
+    # Parse options
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --interval)
+                interval="$2"
+                shift 2
+                ;;
+            --erdos)
+                erdos="$2"
+                shift 2
+                ;;
+            --aristotle)
+                aristotle="$2"
+                shift 2
+                ;;
+            --researcher)
+                researcher="$2"
+                shift 2
+                ;;
+            --seeker)
+                seeker="$2"
+                shift 2
+                ;;
+            --deployer)
+                deployer="$2"
+                shift 2
+                ;;
+            *)
+                echo -e "${RED}Unknown daemon option: $1${NC}" >&2
+                usage
+                exit 1
+                ;;
+        esac
+    done
+
+    # Check for existing daemon
+    if [[ -f "$DAEMON_PID_FILE" ]]; then
+        local existing_pid
+        existing_pid=$(cat "$DAEMON_PID_FILE" 2>/dev/null || echo "")
+        if [[ -n "$existing_pid" ]] && kill -0 "$existing_pid" 2>/dev/null; then
+            echo -e "${RED}Daemon already running (PID: $existing_pid)${NC}" >&2
+            echo "Stop it first: $0 stop"
+            exit 1
+        else
+            daemon_log "WARN" "Stale PID file found (PID $existing_pid not running), removing"
+            rm -f "$DAEMON_PID_FILE"
+        fi
+    fi
+
+    # Remove stale stop signal if present from a previous run
+    rm -f "$STOP_SIGNAL_FILE" 2>/dev/null || true
+
+    # Write PID file
+    mkdir -p "$(dirname "$DAEMON_PID_FILE")"
+    echo $$ > "$DAEMON_PID_FILE"
+
+    # Set up signal handlers for clean shutdown
+    trap daemon_cleanup EXIT
+    trap 'daemon_log "INFO" "Received SIGTERM"; exit 0' TERM
+    trap 'daemon_log "INFO" "Received SIGINT"; exit 0' INT
+
+    daemon_log "INFO" "Starting daemon (PID $$, interval ${interval}s)"
+    daemon_log "INFO" "Pool config: erdos=$erdos, aristotle=$aristotle, researcher=$researcher, seeker=$seeker, deployer=$deployer"
+
+    # Start initial agents via cmd_start
+    cmd_start --erdos "$erdos" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer"
+
+    local cycle_count=0
+    local total_respawns=0
+
+    # Main monitoring loop
+    while true; do
+        sleep "$interval"
+
+        cycle_count=$((cycle_count + 1))
+
+        # 1. Check stop signal
+        if [[ -f "$STOP_SIGNAL_FILE" ]]; then
+            daemon_log "INFO" "Stop signal detected ($STOP_SIGNAL_FILE), shutting down agents..."
+            cmd_stop --force
+            rm -f "$STOP_SIGNAL_FILE" 2>/dev/null || true
+            daemon_log "INFO" "Daemon stopped after $cycle_count cycles, $total_respawns total respawns"
+            break
+        fi
+
+        # 2. Health check all agent sessions
+        local sessions
+        sessions=$(get_all_agent_sessions)
+
+        if [[ -z "$sessions" ]]; then
+            daemon_log "WARN" "No agent sessions found, cycle $cycle_count"
+            update_daemon_state "$cycle_count" "$total_respawns"
+            continue
+        fi
+
+        local cycle_respawns=0
+        local running_count=0
+        local completed_count=0
+        local stuck_count=0
+
+        while IFS= read -r session; do
+            [[ -z "$session" ]] && continue
+
+            local status
+            status=$(get_agent_status "$session")
+
+            case "$status" in
+                RUNNING)
+                    running_count=$((running_count + 1))
+                    ;;
+                COMPLETED)
+                    completed_count=$((completed_count + 1))
+                    if is_cooldown_elapsed "$session"; then
+                        daemon_log "INFO" "Agent $session COMPLETED, respawning..."
+                        respawn_agent "$session"
+                        cycle_respawns=$((cycle_respawns + 1))
+                    else
+                        local last
+                        last=$(get_last_respawn "$session")
+                        local now
+                        now=$(date +%s)
+                        local remaining=$(( RESPAWN_COOLDOWN_SECONDS - (now - last) ))
+                        daemon_log "INFO" "Agent $session COMPLETED but in cooldown (${remaining}s remaining)"
+                    fi
+                    ;;
+                STUCK)
+                    stuck_count=$((stuck_count + 1))
+                    if is_cooldown_elapsed "$session"; then
+                        daemon_log "WARN" "Agent $session STUCK, killing and respawning..."
+                        kill_and_respawn "$session"
+                        cycle_respawns=$((cycle_respawns + 1))
+                    else
+                        local last
+                        last=$(get_last_respawn "$session")
+                        local now
+                        now=$(date +%s)
+                        local remaining=$(( RESPAWN_COOLDOWN_SECONDS - (now - last) ))
+                        daemon_log "WARN" "Agent $session STUCK but in cooldown (${remaining}s remaining)"
+                    fi
+                    ;;
+                *)
+                    daemon_log "WARN" "Agent $session has status: $status"
+                    ;;
+            esac
+        done <<< "$sessions"
+
+        total_respawns=$((total_respawns + cycle_respawns))
+
+        # 3. Work queue assessment (with timeout protection)
+        local queue_stats
+        queue_stats=$(get_work_queue_stats)
+        local stubs candidates aristotle_jobs ready_prs
+        read -r stubs candidates aristotle_jobs ready_prs <<< "$queue_stats"
+
+        # 4. Log cycle summary
+        daemon_log "INFO" "Cycle $cycle_count: running=$running_count, completed=$completed_count, stuck=$stuck_count, respawned=$cycle_respawns | queues: stubs=$stubs, candidates=$candidates, aristotle=$aristotle_jobs, prs=$ready_prs"
+
+        # 5. Update state file with daemon stats
+        update_daemon_state "$cycle_count" "$total_respawns"
+
+        # 6. Re-check stop signal after respawning (race condition prevention)
+        if [[ -f "$STOP_SIGNAL_FILE" ]]; then
+            daemon_log "INFO" "Stop signal detected after respawn, shutting down..."
+            cmd_stop --force
+            rm -f "$STOP_SIGNAL_FILE" 2>/dev/null || true
+            daemon_log "INFO" "Daemon stopped after $cycle_count cycles, $total_respawns total respawns"
+            break
+        fi
+    done
+}
+
 # Command: stop (graceful by default, --force for immediate kill)
 cmd_stop() {
     local force=false
@@ -694,8 +1097,19 @@ cmd_stop() {
         # Update state
         set_running false
 
-        # Create stop signal file
-        touch research/lean-stop-daemon 2>/dev/null || true
+        # Create stop signal file (also stops the daemon loop if running)
+        touch "$STOP_SIGNAL_FILE" 2>/dev/null || true
+
+        # Kill daemon process if running
+        if [[ -f "$DAEMON_PID_FILE" ]]; then
+            local daemon_pid
+            daemon_pid=$(cat "$DAEMON_PID_FILE" 2>/dev/null || echo "")
+            if [[ -n "$daemon_pid" ]] && kill -0 "$daemon_pid" 2>/dev/null; then
+                echo -e "${BLUE}Stopping daemon (PID: $daemon_pid)...${NC}"
+                kill "$daemon_pid" 2>/dev/null || true
+            fi
+            rm -f "$DAEMON_PID_FILE" 2>/dev/null || true
+        fi
 
         echo ""
         echo -e "${GREEN}${BOLD}All agent sessions killed${NC}"
@@ -734,13 +1148,16 @@ cmd_stop() {
         # Update state
         set_running false
 
-        # Create stop signal file
-        touch research/lean-stop-daemon 2>/dev/null || true
+        # Create stop signal file (also stops the daemon loop if running)
+        touch "$STOP_SIGNAL_FILE" 2>/dev/null || true
 
         echo ""
         echo -e "${GREEN}${BOLD}Signal files created for graceful shutdown${NC}"
         echo ""
         echo "Agents will finish their current work before stopping."
+        if [[ -f "$DAEMON_PID_FILE" ]]; then
+            echo "Daemon will detect stop signal and exit on next cycle."
+        fi
         echo "Use './scripts/lean/status.sh' to monitor shutdown progress."
 
         # Check for stuck agents and warn
@@ -930,6 +1347,10 @@ main() {
             ;;
         status)
             cmd_status
+            ;;
+        daemon)
+            shift
+            cmd_daemon "$@"
             ;;
         -h|--help|help)
             usage
