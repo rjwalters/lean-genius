@@ -74,7 +74,7 @@ export function ContributeSection() {
             </div>
 
             {/* Steps */}
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4">
               {/* Step 1: Fork & Clone */}
               <div className="bg-card/50 border border-border rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-3">
