@@ -1,366 +1,2176 @@
 {
-  "completed": [
-    7,
-    8,
-    9,
-    18,
-    19,
-    21,
-    22,
-    23,
-    80,
-    81,
-    84,
-    93,
-    96,
-    99,
-    105,
-    110,
-    111,
-    132,
-    133,
-    134,
-    136,
-    146,
-    147,
-    149,
-    154,
-    161,
-    163,
-    164,
-    166,
-    169,
-    173,
-    174,
-    175,
-    176,
-    177,
-    178,
-    184,
-    192,
-    195,
-    204,
-    206,
-    209,
-    210,
-    211,
-    213,
-    216,
-    217,
-    220,
-    221,
-    222,
-    223,
-    227,
-    230,
-    231,
-    246,
-    251,
-    254,
-    255,
-    262,
-    270,
-    272,
-    274,
-    275,
-    280,
-    283,
-    284,
-    287,
-    290,
-    291,
-    292,
-    293,
-    295,
-    297,
-    300,
-    302,
-    305,
-    320,
-    322,
-    328,
-    331,
-    336,
-    337,
-    339,
-    343,
-    344,
-    355,
-    356,
-    360,
-    362,
-    365,
-    368,
-    372,
-    381,
-    391,
-    393,
-    394,
-    395,
-    398,
-    405,
-    407,
-    412,
-    419,
-    420,
-    425,
-    426,
-    429,
-    431,
-    433,
-    436,
-    438,
-    439,
-    440,
-    442,
-    443,
-    444,
-    445,
-    446,
-    447,
-    449,
-    452,
-    459,
-    464,
-    465,
-    470,
-    471,
-    473,
-    474,
-    475,
-    479,
-    481,
-    482,
-    484,
-    487,
-    489,
-    491,
-    514,
-    515,
-    519,
-    521,
-    522,
-    525,
-    526,
-    528,
-    529,
-    532,
-    534,
-    535,
-    539,
-    540,
-    543,
-    550,
-    556,
-    558,
-    561,
-    565,
-    570,
-    571,
-    573,
-    577,
-    578,
-    580,
-    581,
-    583,
-    584,
-    586,
-    588,
-    594,
-    595,
-    597,
-    599,
-    600,
-    601,
-    616,
-    617,
-    618,
-    619,
-    622,
-    625,
-    637,
-    650,
-    651,
-    652,
-    653,
-    657,
-    658,
-    665,
-    666,
-    669,
-    671,
-    683,
-    692,
-    696,
-    701,
-    704,
-    708,
-    709,
-    712,
-    713,
-    714,
-    716,
-    718,
-    721,
-    725,
-    729,
-    734,
-    735,
-    736,
-    737,
-    739,
-    743,
-    745,
-    746,
-    747,
-    752,
-    754,
-    760,
-    763,
-    764,
-    765,
-    767,
-    769,
-    773,
-    777,
-    778,
-    780,
-    784,
-    787,
-    789,
-    790,
-    794,
-    796,
-    797,
-    799,
-    800,
-    801,
-    803,
-    804,
-    805,
-    806,
-    808,
-    809,
-    811,
-    812,
-    813,
-    814,
-    815,
-    816,
-    818,
-    819,
-    821,
-    822,
-    823,
-    824,
-    829,
-    832,
-    836,
-    841,
-    842,
-    843,
-    855,
-    856,
-    857,
-    861,
-    862,
-    865,
-    866,
-    872,
-    874,
-    876,
-    878,
-    879,
-    880,
-    882,
-    886,
-    887,
-    902,
-    903,
-    904,
-    907,
-    908,
-    909,
-    912,
-    914,
-    915,
-    917,
-    920,
-    921,
-    922,
-    923,
-    925,
-    927,
-    928,
-    934,
-    947,
-    955,
-    957,
-    962,
-    967,
-    970,
-    973,
-    974,
-    976,
-    980,
-    981,
-    982,
-    983,
-    984,
-    987,
-    988,
-    989,
-    990,
-    991,
-    992,
-    993,
-    994,
-    995,
-    996,
-    998,
-    999,
-    1001,
-    1003,
-    1009,
-    1033,
-    1044,
-    1045,
-    1046,
-    1054,
-    1058,
-    1066,
-    1067,
-    1069,
-    1075,
-    1077,
-    1078,
-    1079,
-    1080,
-    1082,
-    1083,
-    1086,
-    1088,
-    1091,
-    1096,
-    1098,
-    1099,
-    1109,
-    1110,
-    1111,
-    1112,
-    1113,
-    1114,
-    1115,
-    1119,
-    1121,
-    1123,
-    1124,
-    1125,
-    1126,
-    1127,
-    1131,
-    1132,
-    1133,
-    1134
-  ]
+  "completed": {
+    "7": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "8": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "9": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "18": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "19": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "21": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "22": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "23": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "80": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "81": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "84": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "93": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "96": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "99": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "105": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "110": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "111": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "132": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "133": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "134": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "136": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "146": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "147": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "149": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "154": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "161": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "163": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "164": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "166": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "169": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "173": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "174": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "175": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "176": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "177": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "178": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "184": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "192": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "195": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "204": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "206": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "209": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "210": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "211": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "213": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "216": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "217": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "220": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "221": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "222": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "223": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "227": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "230": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "231": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "246": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "251": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "254": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "255": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "262": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "270": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "272": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "274": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "275": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "280": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "283": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "284": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "287": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "290": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "291": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "292": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "293": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "295": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "297": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "300": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "302": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "305": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "320": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "322": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "328": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "331": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "336": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "337": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "339": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "343": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "344": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "355": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "356": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "360": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "362": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "365": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "368": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "372": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "381": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "391": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "393": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "394": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "395": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "398": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "405": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "407": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "412": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "419": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "420": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "425": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "426": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "429": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "431": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "433": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "436": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "438": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "439": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "440": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "442": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "443": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "444": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "445": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "446": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "447": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "449": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "452": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "459": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "464": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "465": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "470": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "471": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "473": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "474": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "475": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "479": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "481": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "482": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "484": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "487": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "489": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "491": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "514": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "515": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "519": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "521": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "522": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "525": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "526": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "528": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "529": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "532": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "534": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "535": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "539": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "540": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "543": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "550": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "556": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "558": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "561": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "565": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "570": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "571": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "573": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "577": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "578": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "580": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "581": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "583": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "584": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "586": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "588": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "594": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "595": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "597": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "599": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "600": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "601": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "616": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "617": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "618": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "619": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "622": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "625": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "637": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "650": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "651": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "652": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "653": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "657": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "658": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "665": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "666": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "669": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "671": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "683": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "692": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "696": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "701": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "704": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "708": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "709": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "712": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "713": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "714": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "716": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "718": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "721": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "725": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "729": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "734": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "735": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "736": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "737": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "739": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "743": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "745": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "746": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "747": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "752": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "754": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "760": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "763": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "764": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "765": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "767": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "769": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "773": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "777": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "778": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "780": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "784": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "787": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "789": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "790": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "794": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "796": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "797": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "799": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "800": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "801": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "803": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "804": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "805": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "806": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "808": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "809": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "811": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "812": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "813": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "814": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "815": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "816": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "818": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "819": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "821": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "822": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "823": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "824": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "829": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "832": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "836": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "841": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "842": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "843": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "855": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "856": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "857": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "861": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "862": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "865": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "866": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "872": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "874": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "876": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "878": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "879": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "880": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "882": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "886": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "887": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "902": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "903": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "904": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "907": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "908": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "909": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "912": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "914": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "915": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "917": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "920": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "921": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "922": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "923": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "925": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "927": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "928": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "934": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "947": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "955": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "957": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "962": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "967": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "970": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "973": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "974": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "976": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "980": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "981": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "982": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "983": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "984": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "987": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "988": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "989": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "990": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "991": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "992": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "993": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "994": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "995": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "996": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "998": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "999": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1001": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1003": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1009": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1033": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1044": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1045": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1046": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1054": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1058": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1066": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1067": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1069": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1075": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1077": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1078": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1079": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1080": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1082": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1083": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1086": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1088": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1091": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1096": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1098": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1099": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1109": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1110": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1111": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1112": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1113": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1114": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1115": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1119": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1121": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1123": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1124": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1125": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1126": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1127": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1131": {
+      "status": "quality",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1132": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1133": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    },
+    "1134": {
+      "status": "needs-work",
+      "enhanced_at": "2026-01-27T00:00:00Z",
+      "agent": "legacy",
+      "issues": []
+    }
+  }
 }
