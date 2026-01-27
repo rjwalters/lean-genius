@@ -9,9 +9,9 @@
  * - WIP and conditional proofs
  *
  * Usage:
- *   npx tsx .loom/scripts/extract-problems.ts
- *   npx tsx .loom/scripts/extract-problems.ts --json
- *   npx tsx .loom/scripts/extract-problems.ts --category=extension
+ *   npx tsx .lean/scripts/extract-problems.ts
+ *   npx tsx .lean/scripts/extract-problems.ts --json
+ *   npx tsx .lean/scripts/extract-problems.ts --category=extension
  */
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
@@ -294,7 +294,7 @@ const categoryFilter = args.find(a => a.startsWith('--category='))?.split('=')[1
 const tractabilityFilter = args.find(a => a.startsWith('--tractability='))?.split('=')[1];
 
 const proofsDir = join(process.cwd(), 'src/data/proofs');
-const outputPath = join(process.cwd(), '.loom/research/problems.json');
+const outputPath = join(process.cwd(), '.lean/research/problems.json');
 
 console.log('Extracting problems from proof gallery...\n');
 
@@ -339,5 +339,5 @@ if (outputJson) {
     console.log('');
   }
 
-  console.log('\nRun with --json to export full list to .loom/research/problems.json');
+  console.log('\nRun with --json to export full list to .lean/research/problems.json');
 }

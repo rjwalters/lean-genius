@@ -1,5 +1,5 @@
 -- Auto-generated file - do not edit manually
--- Run: ./.loom/scripts/generate-proofs-imports.sh
+-- Run: ./.lean/scripts/generate-proofs-imports.sh
 
 import Proofs.AMGMInequality
 import Proofs.AbelRuffini

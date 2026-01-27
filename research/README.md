@@ -45,10 +45,10 @@ Repeat `/research` to continue advancing through the loop.
 
 ```bash
 # See all extractable problems
-npx tsx .loom/scripts/extract-problems.ts
+npx tsx .lean/scripts/extract-problems.ts
 
 # Initialize specific problem
-./.loom/scripts/research.sh init goldbach-weak
+./.lean/scripts/research.sh init goldbach-weak
 
 # Edit problem definition
 # research/problems/goldbach-weak/problem.md
@@ -61,10 +61,10 @@ npx tsx .loom/scripts/extract-problems.ts
 
 ```bash
 # See all active problems
-./.loom/scripts/research.sh status
+./.lean/scripts/research.sh status
 
 # See specific problem state
-./.loom/scripts/research.sh state goldbach-weak
+./.lean/scripts/research.sh state goldbach-weak
 ```
 
 ## Problem Sources
@@ -86,13 +86,13 @@ Problems are automatically extracted from the proof gallery:
 
 ```bash
 # Tractable (best for autonomous research)
-npx tsx .loom/scripts/extract-problems.ts --tractability=tractable
+npx tsx .lean/scripts/extract-problems.ts --tractability=tractable
 
 # Challenging
-npx tsx .loom/scripts/extract-problems.ts --tractability=challenging
+npx tsx .lean/scripts/extract-problems.ts --tractability=challenging
 
 # Export full list
-npx tsx .loom/scripts/extract-problems.ts --json
+npx tsx .lean/scripts/extract-problems.ts --json
 ```
 
 ## The OODA Loop
@@ -237,19 +237,19 @@ See `STATE_MACHINE.md` for full state definitions and transitions.
 
 ```bash
 # Initialize new problem
-./.loom/scripts/research.sh init <slug>
+./.lean/scripts/research.sh init <slug>
 
 # Show all problems and their states
-./.loom/scripts/research.sh status
+./.lean/scripts/research.sh status
 
 # Show specific problem state
-./.loom/scripts/research.sh state <slug>
+./.lean/scripts/research.sh state <slug>
 
 # Create a new approach
-./.loom/scripts/research.sh approach <slug> <N>
+./.lean/scripts/research.sh approach <slug> <N>
 
 # List all problems
-./.loom/scripts/research.sh list
+./.lean/scripts/research.sh list
 ```
 
 ## Knowledge Accumulation

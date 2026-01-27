@@ -26,10 +26,10 @@ Problems are extracted from the lean-genius proof gallery:
 Run the extractor to generate the problem list:
 
 ```bash
-npx tsx .loom/scripts/extract-problems.ts --json
+npx tsx .lean/scripts/extract-problems.ts --json
 ```
 
-This creates `.loom/research/problems.json` with all 400+ open problems.
+This creates `.lean/research/problems.json` with all 400+ open problems.
 
 ## Problem Categories
 
@@ -57,10 +57,10 @@ This creates `.loom/research/problems.json` with all 400+ open problems.
 
 ```bash
 # Refresh the problem list
-npx tsx .loom/scripts/extract-problems.ts --json
+npx tsx .lean/scripts/extract-problems.ts --json
 
 # Read the registry
-cat .loom/research/problems.json | head -100
+cat .lean/research/problems.json | head -100
 ```
 
 ### Step 2: Filter by Criteria
@@ -86,7 +86,7 @@ Consider these factors:
 ```
 
 **Avoid**:
-- Problems already in `.loom/research/problems/` (active or completed)
+- Problems already in `.lean/research/problems/` (active or completed)
 - Problems marked as blocked in registry
 - Problems with no clear first step
 
@@ -106,7 +106,7 @@ For each candidate, ask:
 PROBLEM_ID="sqrt2-irrational-oq-01"
 
 # Initialize research workspace
-./.loom/scripts/research.sh init $(echo $PROBLEM_ID | sed 's/-oq-[0-9]*$//')
+./.lean/scripts/research.sh init $(echo $PROBLEM_ID | sed 's/-oq-[0-9]*$//')
 
 # Update problem.md with the specific question
 ```
@@ -115,7 +115,7 @@ PROBLEM_ID="sqrt2-irrational-oq-01"
 
 ```
 function select_problem():
-  problems = load(".loom/research/problems.json")
+  problems = load(".lean/research/problems.json")
   active = list_active_research_problems()
 
   # Filter out already-active problems
@@ -197,7 +197,7 @@ When you select a problem:
 
 After selecting a problem:
 
-1. **Create workspace**: `./.loom/scripts/research.sh init [slug]`
+1. **Create workspace**: `./.lean/scripts/research.sh init [slug]`
 2. **Populate problem.md**: Copy the problem description and context
 3. **Set initial state**: OBSERVE phase
 4. **Hand off**: The Researcher takes over from here

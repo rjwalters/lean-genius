@@ -2,7 +2,7 @@
 # generate-proofs-imports.sh - Auto-generate proofs/Proofs.lean from directory contents
 # Ensures consistent sorting across all platforms using LC_ALL=C
 #
-# Usage: ./.loom/scripts/generate-proofs-imports.sh [--check]
+# Usage: ./.lean/scripts/generate-proofs-imports.sh [--check]
 #
 # Options:
 #   --check    Verify Proofs.lean is up to date (exit 1 if out of sync)
@@ -33,7 +33,7 @@ fi
 # Generate the imports file content
 generate_imports() {
     echo "-- Auto-generated file - do not edit manually"
-    echo "-- Run: ./.loom/scripts/generate-proofs-imports.sh"
+    echo "-- Run: ./.lean/scripts/generate-proofs-imports.sh"
     echo ""
 
     # Find all .lean files, extract module names, and sort them
@@ -61,7 +61,7 @@ if [[ "$CHECK_MODE" == true ]]; then
     if [[ "$NEW_CONTENT" != "$EXISTING_CONTENT" ]]; then
         echo "Error: proofs/Proofs.lean is out of sync with proofs/Proofs/ directory" >&2
         echo "" >&2
-        echo "Run: ./.loom/scripts/generate-proofs-imports.sh" >&2
+        echo "Run: ./.lean/scripts/generate-proofs-imports.sh" >&2
         echo "" >&2
         echo "Diff:" >&2
         diff <(echo "$EXISTING_CONTENT") <(echo "$NEW_CONTENT") || true

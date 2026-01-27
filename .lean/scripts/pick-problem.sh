@@ -180,7 +180,7 @@ pick_random() {
     echo "  Notes: $notes"
     echo ""
     echo -e "${YELLOW}To start research:${NC}"
-    echo "  ./.loom/scripts/research.sh init $id"
+    echo "  ./.lean/scripts/research.sh init $id"
 }
 
 # Mark candidate as in-progress

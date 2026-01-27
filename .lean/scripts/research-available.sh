@@ -139,7 +139,7 @@ if [[ "$RANDOM_PICK" == "true" ]]; then
 
     if [[ "$AUTO_CLAIM" == "true" ]]; then
         # Claim the selected problem
-        if "$REPO_ROOT/.loom/scripts/research-claim.sh" "$SELECTED"; then
+        if "$REPO_ROOT/.lean/scripts/research-claim.sh" "$SELECTED"; then
             if [[ "$JSON_OUTPUT" == "true" ]]; then
                 jq ".candidates[] | select(.id == \"$SELECTED\")" "$POOL_FILE"
             else
