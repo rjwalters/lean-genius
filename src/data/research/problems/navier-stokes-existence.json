@@ -16,12 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "INFRASTRUCTURE",
+    "since": "2026-01-27T19:46:50Z",
+    "iteration": 2,
+    "focus": "Converted key axiom to proof, fixed Mathlib API breakage",
+    "blockers": [
+      "3D problem is mathematically OPEN (Millennium Prize)",
+      "Even known 2D case requires 4000+ lines of missing PDE infrastructure",
+      "No partial formalization tractable without multi-year foundation work"
+    ],
+    "nextAction": "Do not revisit until Mathlib has substantial PDE infrastructure",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +33,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Converted E_bounded_after from axiom to proved theorem. Fixed 3 Mathlib API issues that prevented compilation. Strengthened 2D enstrophy bound. File compiles clean.",
+    "builtItems": [
+      "Proved E_bounded_after in NavierStokes.lean:604-636 (antitone approach)",
+      "Proved enstrophy_bound_in_domain_2d in NavierStokes.lean:1770-1775",
+      "Fixed ancient_E_monotone Mathlib API in NavierStokes.lean:374,399"
+    ],
+    "insights": [
+      "3D Navier-Stokes is an OPEN Millennium Prize Problem - no formalization can prove what mathematicians haven't solved",
+      "Related 2d-navier-stokes problem already assessed as BLOCKED due to same infrastructure gaps",
+      "Required PDE infrastructure (Sobolev spaces, weak solutions, Galerkin methods) exceeds 4000 lines",
+      "Tempered distributions formalized Oct 2025 but general distribution theory still missing",
+      "No tractable partial formalization exists without building substantial PDE foundations first",
+      "Even stating the Millennium Problem precisely requires infrastructure we don't have",
+      "E_bounded_after axiom converted to proved theorem using Convex.antitoneOn_of_deriv_nonpos",
+      "Pre-existing Mathlib API breakage fixed: monotoneOn_of_deriv_nonneg and convex_Ici type annotation",
+      "2D enstrophy_bounded_2d strengthened by removing unnecessary hE0 hypothesis",
+      "New theorem enstrophy_bound_in_domain_2d proves E bound within (0,T) without axioms",
+      "File now compiles clean with 0 sorries (previously had Mathlib API errors)"
+    ],
     "mathlibGaps": [
       "Sobolev spaces",
       "PDEs"
@@ -51,14 +71,16 @@
     "pde",
     "open-conjecture"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Relevance"
+  ],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-01-01T21:55:27.888Z",
+  "lastUpdate": "2026-01-27T19:46:50Z",
   "significance": 10,
   "tractability": 1
 }
