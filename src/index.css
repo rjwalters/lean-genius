@@ -1,4 +1,7 @@
 @import "tailwindcss";
+/* tw-animate-css provides enter/exit animation utilities (animate-in, animate-out,
+   fade-in/out, zoom-in/out, slide-in/out) used by shadcn/ui components: dialog, tooltip, sheet.
+   depcheck flags this as unused because it tracks JS imports, not CSS @import. See #1421. */
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
