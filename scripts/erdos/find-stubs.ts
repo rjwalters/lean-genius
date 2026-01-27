@@ -33,6 +33,7 @@ interface StubInfo {
   hasFormalConjecturesSource: boolean
   formalConjecturesPath?: string
   problemStatus?: string  // proved, disproved, open, solved
+  isRework?: boolean      // true if flagged needs-work in completed.json
   stubScore: number       // Higher = more stub-like (worse quality)
   priorityScore: number   // Higher = should fix first
 }
@@ -46,6 +47,7 @@ interface StubStats {
   emptyAnnotations: number
   garbageDescriptions: number
   qualityEntries: number
+  reworkEntries: number
 }
 
 function isPlaceholderProof(proofPath: string): boolean {
@@ -96,6 +98,25 @@ function hasFormalConjecturesSource(erdosNumber: number): { has: boolean; path?:
   return { has: false }
 }
 
+const COMPLETED_FILE = path.join('research/stub-claims', 'completed.json')
+
+interface CompletedEntry {
+  status: string
+  enhanced_at?: string
+  agent?: string
+  issues?: string[]
+}
+
+function loadCompleted(): Record<string, CompletedEntry> {
+  if (!fs.existsSync(COMPLETED_FILE)) return {}
+  try {
+    const data = JSON.parse(fs.readFileSync(COMPLETED_FILE, 'utf-8'))
+    return data.completed || {}
+  } catch {
+    return {}
+  }
+}
+
 function calculateStubScore(info: Partial<StubInfo>): number {
   let score = 0
   if (info.hasPlaceholderProof) score += 3
@@ -129,6 +150,7 @@ function calculatePriorityScore(info: Partial<StubInfo>): number {
 
 function findAllStubs(): StubInfo[] {
   const stubs: StubInfo[] = []
+  const completed = loadCompleted()
 
   // Find all erdos-* directories
   const entries = fs.readdirSync(GALLERY_DIR)
@@ -143,6 +165,14 @@ function findAllStubs(): StubInfo[] {
     if (!match) continue
 
     const erdosNumber = parseInt(match[1])
+    const erdosKey = erdosNumber.toString()
+    const completionEntry = completed[erdosKey]
+
+    // EXCLUSION RULE: Skip entries marked as quality in completed.json (truly done)
+    if (completionEntry?.status === 'quality') {
+      continue
+    }
+
     const galleryPath = path.join(GALLERY_DIR, entry)
     const proofPath = path.join(PROOFS_DIR, `Erdos${erdosNumber}Problem.lean`)
 
@@ -150,8 +180,13 @@ function findAllStubs(): StubInfo[] {
     const emptyAnnotations = hasEmptyAnnotations(galleryPath)
     const garbageDesc = hasGarbageDescription(galleryPath)
 
-    // Only include if it's a stub (at least one quality issue)
-    if (!hasPlaceholder && !emptyAnnotations && !garbageDesc) continue
+    // INCLUSION RULES:
+    // 1. Has file system issues (current logic), OR
+    // 2. Marked needs-work in completed.json (quality audit flagged it)
+    const hasFileIssues = hasPlaceholder || emptyAnnotations || garbageDesc
+    const markedNeedsWork = completionEntry?.status === 'needs-work'
+
+    if (!hasFileIssues && !markedNeedsWork) continue
 
     const formalSource = hasFormalConjecturesSource(erdosNumber)
     const status = getProblemStatus(galleryPath)
@@ -166,6 +201,7 @@ function findAllStubs(): StubInfo[] {
       hasFormalConjecturesSource: formalSource.has,
       formalConjecturesPath: formalSource.path,
       problemStatus: status,
+      isRework: markedNeedsWork || undefined,
       stubScore: 0,
       priorityScore: 0,
     }
@@ -185,6 +221,10 @@ function computeStats(stubs: StubInfo[]): StubStats {
     .filter(e => e.startsWith('erdos-') && fs.statSync(path.join(GALLERY_DIR, e)).isDirectory())
     .length
 
+  const completed = loadCompleted()
+  const qualityCount = Object.values(completed).filter(e => e.status === 'quality').length
+  const reworkCount = stubs.filter(s => s.isRework).length
+
   return {
     totalGalleryEntries: entries,
     totalStubs: stubs.length,
@@ -193,7 +233,8 @@ function computeStats(stubs: StubInfo[]): StubStats {
     placeholderProofs: stubs.filter(s => s.hasPlaceholderProof).length,
     emptyAnnotations: stubs.filter(s => s.hasEmptyAnnotations).length,
     garbageDescriptions: stubs.filter(s => s.hasGarbageDescription).length,
-    qualityEntries: entries - stubs.length,
+    qualityEntries: qualityCount,
+    reworkEntries: reworkCount,
   }
 }
 
@@ -216,7 +257,8 @@ function formatStubList(stubs: StubInfo[], limit?: number): void {
                          stub.problemStatus === 'disproved' ? '✗' :
                          stub.problemStatus === 'solved' ? '✓' : '?'
 
-      console.log(`  #${stub.erdosNumber} [${statusIcon} ${stub.problemStatus || 'unknown'}] - ${issues.join(', ')}`)
+      const reworkTag = stub.isRework ? ' [REWORK]' : ''
+      console.log(`  #${stub.erdosNumber}${reworkTag} [${statusIcon} ${stub.problemStatus || 'unknown'}] - ${issues.join(', ')}`)
       console.log(`    Source: ${stub.formalConjecturesPath}`)
     }
     if (limit && withSources.length > limit) {
@@ -239,7 +281,8 @@ function formatStubList(stubs: StubInfo[], limit?: number): void {
                          stub.problemStatus === 'disproved' ? '✗' :
                          stub.problemStatus === 'solved' ? '✓' : '?'
 
-      console.log(`  #${stub.erdosNumber} [${statusIcon} ${stub.problemStatus || 'unknown'}] - ${issues.join(', ')}`)
+      const reworkTag = stub.isRework ? ' [REWORK]' : ''
+      console.log(`  #${stub.erdosNumber}${reworkTag} [${statusIcon} ${stub.problemStatus || 'unknown'}] - ${issues.join(', ')}`)
     }
     if (withoutSources.length > (limit || 20)) {
       console.log(`  ... and ${withoutSources.length - (limit || 20)} more`)
@@ -268,7 +311,7 @@ function showNextStub(stubs: StubInfo[], stub?: StubInfo | null, isRandom: boole
 
   const header = isRandom ? '=== Random Stub to Enhance ===' : '=== Next Stub to Enhance ==='
   console.log(`${header}\n`)
-  console.log(`Erdős Problem #${next.erdosNumber}`)
+  console.log(`Erdős Problem #${next.erdosNumber}${next.isRework ? ' [REWORK]' : ''}`)
   console.log(`Status: ${next.problemStatus || 'unknown'}`)
   console.log(`Priority Score: ${next.priorityScore}`)
   console.log(`Stub Score: ${next.stubScore}/6\n`)
@@ -326,7 +369,11 @@ function showStats(stats: StubStats): void {
 
   console.log(`Total gallery entries:     ${stats.totalGalleryEntries}`)
   console.log(`Quality entries:           ${stats.qualityEntries} (${pct(stats.qualityEntries, stats.totalGalleryEntries)}%)`)
-  console.log(`Stubs needing enhancement: ${stats.totalStubs} (${pct(stats.totalStubs, stats.totalGalleryEntries)}%)\n`)
+  console.log(`Stubs needing enhancement: ${stats.totalStubs} (${pct(stats.totalStubs, stats.totalGalleryEntries)}%)`)
+  if (stats.reworkEntries > 0) {
+    console.log(`  Including rework entries: ${stats.reworkEntries} (flagged by quality audit)`)
+  }
+  console.log('')
 
   console.log('Stub breakdown:')
   console.log(`  With formal-conjectures: ${stats.stubsWithSources} (easier to fix)`)
@@ -362,6 +409,7 @@ A stub has one or more of:
   - Placeholder Lean proof (True := trivial)
   - Empty annotations.json (<10 lines)
   - Garbage meta.json description (scraping artifacts)
+  - Marked needs-work in completed.json (quality audit flagged)
 
 Default Behavior:
   Running without flags selects a RANDOM stub that has a formal-conjectures
