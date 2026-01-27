@@ -118,7 +118,7 @@ check_usage_limits() {
 
         if [[ "$throttle" -ge 3 ]]; then
             local usage_info
-            usage_info=$("$REPO_ROOT/.loom/scripts/check-usage.sh" --human 2>/dev/null || echo "High usage")
+            usage_info=$("$REPO_ROOT/.loom/scripts/check-usage.sh" --status 2>/dev/null || echo "High usage")
             log_warn "Usage limit reached (throttle level $throttle): $usage_info"
             return 1
         fi
