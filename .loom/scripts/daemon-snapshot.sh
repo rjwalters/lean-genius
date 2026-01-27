@@ -24,10 +24,15 @@
 set -euo pipefail
 
 # Colors for output (only used with --pretty)
+# shellcheck disable=SC2034
 RED='\033[0;31m'
+# shellcheck disable=SC2034
 GREEN='\033[0;32m'
+# shellcheck disable=SC2034
 YELLOW='\033[1;33m'
+# shellcheck disable=SC2034
 BLUE='\033[0;34m'
+# shellcheck disable=SC2034
 NC='\033[0m' # No Color
 
 # Default configuration thresholds
@@ -696,6 +701,31 @@ TMUX_AVAILABLE=$(echo "$TMUX_POOL" | jq -r '.available')
 TMUX_SHEPHERD_COUNT=$(echo "$TMUX_POOL" | jq -r '.shepherd_count')
 TMUX_EXECUTION_MODE=$(echo "$TMUX_POOL" | jq -r '.execution_mode')
 
+# Validate task IDs in daemon-state.json
+INVALID_TASK_IDS="[]"
+if [[ -f "$DAEMON_STATE_FILE" ]]; then
+    # Check shepherd task IDs
+    while IFS=$'\t' read -r key task_id; do
+        [[ -z "$key" ]] && continue
+        if [[ ! "$task_id" =~ ^[a-f0-9]{7}$ ]]; then
+            INVALID_TASK_IDS=$(echo "$INVALID_TASK_IDS" | jq \
+                --arg loc "shepherds" --arg key "$key" --arg tid "$task_id" \
+                '. + [{location: $loc, key: $key, task_id: $tid}]')
+        fi
+    done <<< "$(jq -r '.shepherds // {} | to_entries[] | select(.value.task_id != null and .value.task_id != "") | "\(.key)\t\(.value.task_id)"' "$DAEMON_STATE_FILE" 2>/dev/null || echo "")"
+
+    # Check support role task IDs
+    while IFS=$'\t' read -r key task_id; do
+        [[ -z "$key" ]] && continue
+        if [[ ! "$task_id" =~ ^[a-f0-9]{7}$ ]]; then
+            INVALID_TASK_IDS=$(echo "$INVALID_TASK_IDS" | jq \
+                --arg loc "support_roles" --arg key "$key" --arg tid "$task_id" \
+                '. + [{location: $loc, key: $key, task_id: $tid}]')
+        fi
+    done <<< "$(jq -r '.support_roles // {} | to_entries[] | select(.value.task_id != null and .value.task_id != "") | "\(.key)\t\(.value.task_id)"' "$DAEMON_STATE_FILE" 2>/dev/null || echo "")"
+fi
+INVALID_TASK_ID_COUNT=$(echo "$INVALID_TASK_IDS" | jq 'length')
+
 # Count stale heartbeats for warnings
 STALE_HEARTBEAT_COUNT=$(echo "$SHEPHERD_PROGRESS" | jq '[.[] | select(.heartbeat_stale == true and .status == "working")] | length')
 
@@ -709,10 +739,8 @@ detect_orphaned_shepherds() {
 
     # Get tracked issues from daemon-state
     local daemon_tracked_issues="[]"
-    local daemon_shepherd_task_ids="[]"
     if [[ -f "$DAEMON_STATE_FILE" ]]; then
         daemon_tracked_issues=$(jq '[.shepherds // {} | to_entries[] | select(.value.status == "working") | .value.issue] | map(select(. != null))' "$DAEMON_STATE_FILE" 2>/dev/null || echo "[]")
-        daemon_shepherd_task_ids=$(jq '[.shepherds // {} | to_entries[] | select(.value.status == "working") | .value.task_id] | map(select(. != null))' "$DAEMON_STATE_FILE" 2>/dev/null || echo "[]")
     fi
 
     # Check 1: loom:building issues not tracked in daemon-state
@@ -773,6 +801,11 @@ ORPHANED_COUNT=$(echo "$ORPHANED_SHEPHERDS" | jq 'length')
 # Add recover_orphans action if any orphans detected
 if [[ "$ORPHANED_COUNT" -gt 0 ]]; then
     ACTIONS=$(echo "$ACTIONS" | jq '. + ["recover_orphans"]')
+fi
+
+# Add validate_state action if invalid task IDs detected
+if [[ "$INVALID_TASK_ID_COUNT" -gt 0 ]]; then
+    ACTIONS=$(echo "$ACTIONS" | jq '. + ["validate_state"]')
 fi
 
 # Build the final JSON output
@@ -841,6 +874,8 @@ OUTPUT=$(jq -n \
     --argjson tmux_available "$TMUX_AVAILABLE" \
     --argjson tmux_shepherd_count "$TMUX_SHEPHERD_COUNT" \
     --arg tmux_execution_mode "$TMUX_EXECUTION_MODE" \
+    --argjson invalid_task_ids "$INVALID_TASK_IDS" \
+    --argjson invalid_task_id_count "$INVALID_TASK_ID_COUNT" \
     '{
         timestamp: $timestamp,
         pipeline: {
@@ -863,6 +898,10 @@ OUTPUT=$(jq -n \
             stale_heartbeat_count: $stale_heartbeat_count,
             orphaned: $orphaned_shepherds,
             orphaned_count: $orphaned_count
+        },
+        validation: {
+            invalid_task_ids: $invalid_task_ids,
+            invalid_task_id_count: $invalid_task_id_count
         },
         support_roles: {
             guide: {

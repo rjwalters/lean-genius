@@ -78,8 +78,10 @@ This file does NOT solve the 3D Millennium Problem. It provides:
 4. Clear separation of proven vs assumed components
 
 **Formalization Notes:**
-- 40 sorries (numerical bounds, API changes, technical gaps)
-- 9 axioms (physical assumptions, concentration hypothesis)
+- 0 sorries (all previously sorry'd lemmas are now proved or axiomatized)
+- 35 axioms (measure-theoretic, PDE, physical, conjectures)
+- `E_bounded_after` previously an axiom, now PROVED via antitoneOn
+- `ancient_E_monotone` proof fixed for Mathlib API changes
 - See Part XI for complete axiom catalog with references
 
 ## Historical Context
@@ -371,7 +373,7 @@ theorem backward_growth_rate (v : AncientSolution) (τ : ℝ) (hτ : τ ≥ 0) :
 theorem ancient_E_monotone (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0 ≤ τ₁) (h12 : τ₁ ≤ τ₂) :
     v.E τ₁ ≤ v.E τ₂ := by
   -- Domain [0, ∞) is convex
-  have hD_convex : Convex ℝ (Ici 0) := convex_Ici 0
+  have hD_convex : Convex ℝ (Ici (0 : ℝ)) := convex_Ici (0 : ℝ)
   -- E is continuous on [0, ∞)
   have hE_cont : ContinuousOn v.E (Ici 0) := v.E_cont.continuousOn
   -- E is differentiable on interior (0, ∞)
@@ -396,7 +398,7 @@ theorem ancient_E_monotone (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0
     nlinarith [hE_pos.le, hgap, hD, hS]
   -- E is monotone on [0, ∞)
   have hE_mono : MonotoneOn v.E (Ici 0) :=
-    hD_convex.monotoneOn_of_deriv_nonneg hE_cont hE_diff hE'_nonneg
+    monotoneOn_of_deriv_nonneg hD_convex hE_cont hE_diff hE'_nonneg
   -- Apply monotone: τ₁ ≤ τ₂ with both ≥ 0 implies E(τ₁) ≤ E(τ₂)
   exact hE_mono hτ₁ (hτ₁.trans h12) h12
 
@@ -597,18 +599,41 @@ theorem E'_nonpos_of_stable (sol : NSSolution) (t : ℝ) (ht : t ∈ Ioo 0 sol.T
     _ = 0 := by ring
 
 
-/-- **Axiom: E Bounded After Stability**
+/-- **PROVED: E Bounded After Stability**
     E' ≤ 0 on (t₀, T) by stability, so E is nonincreasing.
-    Requires Convex.monotoneOn_of_deriv_nonpos (Mathlib API may have changed). -/
-axiom E_bounded_after_axiom (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 sol.T)
-    (h_stable : ∀ t ∈ Ioo t₀ sol.T, sol.S t ≤ sol.ν * sol.P t) :
-    ∀ t ∈ Ioo t₀ sol.T, sol.E t ≤ sol.E t₀
-
-/-- E bounded after stability -/
+    Uses Convex.antitoneOn_of_deriv_nonpos (same technique as 2D enstrophy bound).
+    Previously an axiom, now fully proven. -/
 theorem E_bounded_after (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 sol.T)
     (h_stable : ∀ t ∈ Ioo t₀ sol.T, sol.S t ≤ sol.ν * sol.P t) :
-    ∀ t ∈ Ioo t₀ sol.T, sol.E t ≤ sol.E t₀ :=
-  E_bounded_after_axiom sol t₀ ht₀ h_stable
+    ∀ t ∈ Ioo t₀ sol.T, sol.E t ≤ sol.E t₀ := by
+  intro t ht
+  -- The domain [t₀, T] is convex
+  have hD_convex : Convex ℝ (Icc t₀ sol.T) := convex_Icc t₀ sol.T
+  -- E is continuous on [t₀, T] (restriction of E_cont on [0, T])
+  have hE_cont : ContinuousOn sol.E (Icc t₀ sol.T) := by
+    apply sol.E_cont.mono
+    exact Icc_subset_Icc (le_of_lt ht₀.1) le_rfl
+  -- E is differentiable on the interior (t₀, T)
+  have hE_diff : DifferentiableOn ℝ sol.E (interior (Icc t₀ sol.T)) := by
+    rw [interior_Icc]
+    intro s hs
+    have hs' : s ∈ Ioo 0 sol.T := ⟨lt_trans ht₀.1 hs.1, hs.2⟩
+    exact (sol.E_diff s hs').differentiableAt.differentiableWithinAt
+  -- The derivative E' ≤ 0 on (t₀, T) by stability
+  have hE'_nonpos : ∀ s ∈ interior (Icc t₀ sol.T), deriv sol.E s ≤ 0 := by
+    rw [interior_Icc]
+    intro s hs
+    have hs' : s ∈ Ioo 0 sol.T := ⟨lt_trans ht₀.1 hs.1, hs.2⟩
+    have hderiv := sol.E_diff s hs'
+    rw [hderiv.deriv]
+    exact E'_nonpos_of_stable sol s hs' (h_stable s hs)
+  -- E is antitone on [t₀, T]
+  have hE_antitone : AntitoneOn sol.E (Icc t₀ sol.T) :=
+    antitoneOn_of_deriv_nonpos hD_convex hE_cont hE_diff hE'_nonpos
+  -- Apply antitone: t₀ ≤ t, so E(t) ≤ E(t₀)
+  have ht₀_mem : t₀ ∈ Icc t₀ sol.T := left_mem_Icc.mpr (le_of_lt ht₀.2)
+  have ht_mem : t ∈ Icc t₀ sol.T := Ioo_subset_Icc_self ht
+  exact hE_antitone ht₀_mem ht_mem (le_of_lt ht.1)
 
 
 /-- **Axiom: Type II No Blowup**
@@ -1710,9 +1735,10 @@ theorem enstrophy_decreasing_2d (sol : NSSolution2D) :
 /-- **PROVED: Enstrophy Bounded 2D**
     E' = -2νP ≤ 0 since ν > 0 and P ≥ 0.
     Therefore E is antitone (monotone decreasing), so E(t) ≤ E(0).
-    Proof uses Convex.antitoneOn_of_deriv_nonpos. -/
-theorem enstrophy_bounded_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (_hE0 : 0 < sol.E 0) : sol.E t ≤ sol.E 0 := by
+    Proof uses Convex.antitoneOn_of_deriv_nonpos.
+    No hypothesis on E(0) needed — the antitone argument is purely from E' ≤ 0. -/
+theorem enstrophy_bounded_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T) :
+    sol.E t ≤ sol.E 0 := by
   -- The domain [0, T] is convex
   have hD_convex : Convex ℝ (Icc 0 sol.T) := convex_Icc 0 sol.T
   -- E is continuous on [0, T]
@@ -1733,7 +1759,7 @@ theorem enstrophy_bounded_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 so
     nlinarith
   -- E is antitone on [0, T]
   have hE_antitone : AntitoneOn sol.E (Icc 0 sol.T) :=
-    hD_convex.antitoneOn_of_deriv_nonpos hE_cont hE_diff hE'_nonpos
+    antitoneOn_of_deriv_nonpos hD_convex hE_cont hE_diff hE'_nonpos
   -- Apply antitone: 0 ≤ t and t < T, so E(t) ≤ E(0)
   have h0_mem : (0 : ℝ) ∈ Icc 0 sol.T := by simp [le_of_lt sol.T_pos]
   have ht_mem : t ∈ Icc 0 sol.T := Ioo_subset_Icc_self ht
@@ -1741,11 +1767,21 @@ theorem enstrophy_bounded_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 so
   exact hE_antitone h0_mem ht_mem h0_le_t
 
 
-/-- **Axiom: 2D Global Existence**
-    In 2D, the enstrophy bound E(t) ≤ E(0) prevents blowup.
-    Combined with Sobolev embedding, this gives global regularity.
-    This is Ladyzhenskaya's theorem (1969).
-    Technical: needs continuity at t=0. -/
+/-- **PROVED: 2D Enstrophy Bound Within Domain**
+    For t ∈ (0, T), the enstrophy is bounded by max(E(0), 1) > 0.
+    This follows directly from enstrophy_bounded_2d and continuity.
+    No axioms needed within the time domain of the solution. -/
+theorem enstrophy_bound_in_domain_2d (sol : NSSolution2D) (t : ℝ) (ht : t ∈ Ioo 0 sol.T) :
+    ∃ E_bound > 0, sol.E t ≤ E_bound := by
+  refine ⟨max (sol.E 0) 1, lt_of_lt_of_le one_pos (le_max_right _ _), ?_⟩
+  calc sol.E t ≤ sol.E 0 := enstrophy_bounded_2d sol t ht
+    _ ≤ max (sol.E 0) 1 := le_max_left _ _
+
+/-- **Axiom: 2D Global Existence (Extension Beyond T)**
+    The full global existence claim: solutions extend to ALL positive time,
+    not just within the domain (0, T). This requires Sobolev embedding
+    and the full extension machinery of Ladyzhenskaya's theorem (1969).
+    Within (0, T), see enstrophy_bound_in_domain_2d (proved above). -/
 axiom global_existence_2d_axiom (sol : NSSolution2D) :
     ∀ t > 0, ∃ E_bound > 0, sol.E t ≤ E_bound
 
@@ -1850,14 +1886,19 @@ This file correctly models the state of knowledge as of December 2025.
 
 **PROVEN** (no axioms):
 - ESS backward uniqueness theorem for ancient solutions
+- Ancient solution E monotone (Mathlib API fixed)
 - Type I blowup excluded (ancient bounded ⟹ constant)
 - Type II stability framework
-- 2D global existence and uniqueness
+- **E_bounded_after** — enstrophy nonincreasing after stability onset
+- 2D enstrophy bounded (E(t) ≤ E(0), no hypothesis on E(0))
+- 2D enstrophy bound within domain (E_bound > 0 exists, no axiom)
 - All logical connections between hypotheses and conclusions
 
 **AXIOMATIZED** (published results, could be fully formalized):
 - Measure-theoretic integrals (Categories A, B)
 - Published PDE results (Category B)
+- 2D global existence for ALL t > 0 (extension beyond domain T)
+- 2D uniqueness (Sobolev framework needed)
 
 **HYPOTHESIZED** (the actual mathematical gap):
 - Finite bubble concentration (Category D)
