@@ -1,4 +1,21 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 53ad8a5a-cb79-424d-a474-eb6a05318d2c
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+The following was proved by Aristotle:
+
+- theorem boundedGaps_implies_positiveDensity (a : ℕ → ℕ) (C : ℕ) (hC : C > 0)
+    (hmono : StrictMono a) (hpos : ∀ n, a n > 0) (hgap : HasUniformBoundedGaps a C) :
+    HasPositiveUpperDensity (Set.range a)
+-/
+
+/-
 Erdős Problem #299: Bounded Gap Sequences and Unit Fractions
 
 Source: https://erdosproblems.com/299
@@ -35,6 +52,7 @@ import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Tactic
+
 
 open Filter Asymptotics Finset
 
@@ -91,15 +109,68 @@ If a strictly increasing sequence has bounded gaps, its range has positive densi
 This is the crucial connection between Problems #298 and #299.
 -/
 
-/-- A strictly increasing sequence with gaps bounded by C has density at least 1/C.
+/- A strictly increasing sequence with gaps bounded by C has density at least 1/C.
     Intuition: Every C consecutive integers contains at least one element of the sequence. -/
+noncomputable section AristotleLemmas
+
+/-
+If a sequence has gaps bounded by C, then a_n is bounded by a_0 + n*C.
+-/
+lemma Erdos299.bounded_gaps_growth {a : ℕ → ℕ} {C : ℕ} (h : Erdos299.HasUniformBoundedGaps a C) (n : ℕ) :
+    a n ≤ a 0 + n * C := by
+      -- By definition of HasUniformBoundedGaps, we have \( a(n + 1) - a(n) ≤ C \).
+      have h_diff : ∀ n, a (n + 1) ≤ a n + C := by
+        intro n; specialize h n; omega;
+      induction' n with n ih <;> [ norm_num; linarith [ h_diff n ] ]
+
+end AristotleLemmas
+
 theorem boundedGaps_implies_positiveDensity (a : ℕ → ℕ) (C : ℕ) (hC : C > 0)
     (hmono : StrictMono a) (hpos : ∀ n, a n > 0) (hgap : HasUniformBoundedGaps a C) :
     HasPositiveUpperDensity (Set.range a) := by
   -- The proof requires showing that |{a_i : a_i ≤ N}| / N ≥ 1/C eventually.
   -- This is because the gaps being ≤ C means a_n ≤ a_0 + n·C, so n ≥ (a_n - a_0)/C.
   -- Thus there are at least N/C elements below N (approximately).
-  sorry
+  -- We claim that for large N, countingFunction (Set.range a) N ≥ (N - a 0) / C.
+  have h_counting : ∀ N ≥ a 0 + C, (countingFunction (Set.range a) N : ℝ) ≥ (N - a 0) / C := by
+    -- Let $k$ be the largest index such that $a k \leq N$.
+    intro N hN
+    obtain ⟨k, hk⟩ : ∃ k, a k ≤ N ∧ a (k + 1) > N := by
+      -- Since $a$ is strictly increasing and unbounded, there exists some $k$ such that $a k > N$.
+      obtain ⟨k, hk⟩ : ∃ k, a k > N := by
+        exact ⟨ _, hmono.id_le _ ⟩;
+      contrapose! hk;
+      exact Nat.recOn k ( by linarith ) hk;
+    -- Then $A \cap [0, N]$ contains $\{a 0, ..., a k\}$, so countingFunction A N ≥ k + 1.
+    have h_counting_ge_k : (countingFunction (Set.range a) N : ℝ) ≥ k + 1 := by
+      have h_counting_ge_k : (Set.range a ∩ Set.Iic N).ncard ≥ (Finset.image a (Finset.range (k + 1))).card := by
+        rw [ ← Set.ncard_coe_finset ];
+        apply Set.ncard_le_ncard;
+        · exact fun x hx => by rcases Finset.mem_image.mp hx with ⟨ i, hi, rfl ⟩ ; exact ⟨ Set.mem_range_self _, by simpa using by linarith [ hmono.monotone ( show i ≤ k from Finset.mem_range_succ_iff.mp hi ) ] ⟩ ;
+        · exact Set.finite_iff_bddAbove.mpr ⟨ N, fun x hx => hx.2 ⟩;
+      exact_mod_cast h_counting_ge_k.trans' ( by rw [ Finset.card_image_of_injective _ hmono.injective ] ; norm_num );
+    -- By the helper lemma `Erdos299.bounded_gaps_growth`, $a k \leq a 0 + k * C$.
+    have h_ak_le : (a k : ℝ) ≤ a 0 + k * C := by
+      exact_mod_cast Erdos299.bounded_gaps_growth hgap k;
+    -- Since $k$ is maximal, $a (k+1) > N$. By bounded gaps, $a (k+1) \leq a k + C$.
+    have h_ak1_le : (a (k + 1) : ℝ) ≤ a k + C := by
+      exact_mod_cast by linarith [ hgap k, Nat.sub_add_cancel ( hmono.monotone ( Nat.le_succ k ) ) ] ;
+    rw [ ge_iff_le, div_le_iff₀ ] <;> norm_num <;> nlinarith [ ( by norm_cast : ( a k : ℝ ) ≤ N ∧ ( a ( k + 1 ) : ℝ ) > N ) ];
+  -- Dividing both sides of the inequality by N, we get (countingFunction (Set.range a) N : ℝ) / N ≥ (N - a 0) / (C * N).
+  have h_dividing : ∀ N ≥ a 0 + C, (countingFunction (Set.range a) N : ℝ) / N ≥ (1 - a 0 / N) / C := by
+    -- By dividing both sides of the inequality from h_counting by N, we obtain the desired result.
+    intros N hN
+    have := h_counting N hN
+    field_simp [hN] at this ⊢;
+    rw [ sub_div', div_le_div_iff_of_pos_right ] <;> linarith [ show ( N : ℝ ) > 0 by norm_cast; linarith [ hpos 0 ] ];
+  -- As N → ∞, (1 - a 0 / N) / C converges to 1 / C.
+  have h_limit : Filter.Tendsto (fun N : ℕ => (1 - a 0 / (N : ℝ)) / C) Filter.atTop (nhds (1 / C)) := by
+    exact le_trans ( Filter.Tendsto.div_const ( tendsto_const_nhds.sub <| tendsto_const_nhds.div_atTop <| tendsto_natCast_atTop_atTop ) _ ) <| by norm_num;
+  refine' lt_of_lt_of_le _ ( le_csInf _ _ ) <;> norm_num;
+  exact one_div_pos.mpr ( Nat.cast_pos.mpr hC );
+  · exact ⟨ 1, ⟨ a 0 + C, fun n hn => div_le_one_of_le₀ ( mod_cast by
+      exact le_trans ( Set.ncard_le_ncard ( show Set.range a ∩ Set.Iic n ⊆ Set.Icc 1 n from fun x hx => ⟨ by obtain ⟨ k, rfl ⟩ := hx.1; exact hpos k, hx.2 ⟩ ) ) ( by simp +decide [ Set.ncard_eq_toFinset_card' ] ) ) ( Nat.cast_nonneg _ ) ⟩ ⟩;
+  · exact fun b x hx => le_of_tendsto h_limit ( Filter.eventually_atTop.mpr ⟨ x + a 0 + C, fun N hN => le_trans ( h_dividing N ( by linarith ) ) ( hx N ( by linarith ) ) ⟩ )
 
 /-!
 ## Part IV: Bloom's Theorem (Problem #298)
@@ -107,6 +178,9 @@ theorem boundedGaps_implies_positiveDensity (a : ℕ → ℕ) (C : ℕ) (hC : C 
 This is the key result: positive density sets contain Egyptian fractions.
 -/
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos299.bloom_theorem', 'harmonicSorry177575']-/
 /-- **Bloom's Theorem (2021)** - Erdős Problem #298
 
     If A ⊆ ℕ has positive upper density and contains no zero,
@@ -121,6 +195,7 @@ axiom bloom_theorem (A : Set ℕ) (h0 : 0 ∉ A) (hdens : HasPositiveUpperDensit
 ## Part V: The Main Result - Erdős Problem #299
 -/
 
+/- Aristotle took a wrong turn (reason code: 0). Please try again. -/
 /-- **Erdős Problem #299** (SOLVED - Answer: NO)
 
     There does NOT exist an infinite sequence a₁ < a₂ < ... such that:

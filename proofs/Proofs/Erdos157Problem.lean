@@ -1,4 +1,19 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 2c0deff5-83dc-45bd-a8dc-7d900c102ea5
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+The following was proved by Aristotle:
+
+- theorem example_is_sidon : IsSidon (↑exampleSidonSet : Set ℕ)
+-/
+
+/-
   Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis
 
   Source: https://erdosproblems.com/157
@@ -20,6 +35,7 @@
 -/
 
 import Mathlib
+
 
 open Set Finset BigOperators
 
@@ -84,6 +100,7 @@ def Erdos157Conjecture : Prop :=
 
 /-! ## Pilatte's Theorem -/
 
+/- Aristotle failed to find a proof. -/
 /--
 **Pilatte's Theorem (2023)**:
 There exists an infinite Sidon set that is an asymptotic basis of order 3.
@@ -93,6 +110,7 @@ theorem pilatte_existence : Erdos157Conjecture := by
 
 /-! ## Related Results -/
 
+/- Aristotle failed to find a proof. -/
 /-- No Sidon set can be an asymptotic basis of order 2.
 
 This is because Sidon sets are too sparse: |A ∩ [1,N]| ≤ √N + O(1),
@@ -101,10 +119,16 @@ theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :
     ¬IsAsymptoticBasis A 2 := by
   sorry
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos157.sidon_counting_bound', 'harmonicSorry959915']-/
 /-- Sidon sets have counting function at most √N + O(N^{1/4}). -/
 axiom sidon_counting_bound (A : Set ℕ) (hSidon : IsSidon A) :
     ∃ C : ℝ, ∀ N : ℕ, (Set.ncard (A ∩ Set.Icc 1 N) : ℝ) ≤ Real.sqrt N + C * N^(1/4 : ℝ)
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos157.basis_counting_lower', 'harmonicSorry489465']-/
 /-- Asymptotic bases of order k have counting function at least N^{1/k}. -/
 axiom basis_counting_lower (A : Set ℕ) (k : ℕ) (hk : k ≥ 1) (hBasis : IsAsymptoticBasis A k) :
     ∃ c : ℝ, c > 0 ∧ ∀ᶠ (N : ℕ) in Filter.atTop,
@@ -150,6 +174,7 @@ def exampleSidonSet : Finset ℕ := {1, 2, 5, 11}
     Note: The original set {1, 2, 5, 10, 11, 13} was NOT Sidon since 1+11 = 2+10 = 12.
     Aristotle proof search discovered this bug. -/
 theorem example_is_sidon : IsSidon (↑exampleSidonSet : Set ℕ) := by
-  sorry
+  simp_all +arith +decide [ Erdos157.exampleSidonSet ];
+  rintro a b c d ( rfl | rfl | rfl | rfl ) ( rfl | rfl | rfl | rfl ) ( rfl | rfl | rfl | rfl ) ( rfl | rfl | rfl | rfl ) <;> trivial
 
 end Erdos157
