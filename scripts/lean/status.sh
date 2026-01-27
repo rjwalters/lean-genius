@@ -141,7 +141,7 @@ gather_status() {
     fi
 
     # Researchers
-    for i in 1 2 3; do
+    for i in 1 2 3 4 5; do
         if session_exists "researcher-$i"; then
             researcher_sessions+=("researcher-$i:$(get_session_uptime "researcher-$i")")
         fi
@@ -243,7 +243,9 @@ EOF
 
         # Work Queue
         echo -e "  ${CYAN}Work Queue:${NC}"
-        echo "    Stubs needing enhancement: $stubs_count (with sources)"
+        if [[ "$stubs_count" != "0" ]]; then
+            echo "    Stubs needing enhancement: $stubs_count (with sources)"
+        fi
         echo "    Aristotle jobs pending: $aristotle_jobs"
         echo "    Research problems available: $research_problems"
         echo "    PRs ready to merge: $ready_prs"
@@ -252,7 +254,7 @@ EOF
         # Agent Pool
         echo -e "  ${CYAN}Agent Pool:${NC}"
 
-        # Erdős
+        # Erdős (only shown when active, since enhancement campaign is complete)
         local erdos_count=${#erdos_sessions[@]}
         if [[ $erdos_count -gt 0 ]]; then
             echo -e "    ${BOLD}Erdős Enhancers:${NC} ${GREEN}$erdos_count active${NC}"
@@ -261,8 +263,6 @@ EOF
                 local uptime="${session#*:}"
                 echo "      $name: Running ($uptime)"
             done
-        else
-            echo -e "    ${BOLD}Erdős Enhancers:${NC} ${YELLOW}0 active${NC}"
         fi
 
         # Aristotle
@@ -315,10 +315,10 @@ EOF
 
         # Commands hint
         echo -e "  ${BLUE}Commands:${NC}"
-        echo "    /lean start --erdos 2 --researcher 1    Start agents"
-        echo "    /lean spawn erdos                       Add one Erdős enhancer"
+        echo "    /lean start --researcher 3              Start agents"
+        echo "    /lean spawn researcher                  Add one Researcher"
         echo "    /lean spawn seeker                      Add seeker agent"
-        echo "    /lean scale erdos 3                     Scale to 3 enhancers"
+        echo "    /lean scale researcher 4                Scale to 4 Researchers"
         echo "    /lean stop                              Stop all agents"
         echo ""
     fi

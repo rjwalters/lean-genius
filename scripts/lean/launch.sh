@@ -39,17 +39,17 @@ STUCK_CPU_THRESHOLD="0.5"
 DEFAULT_DAEMON_INTERVAL=60
 RESPAWN_COOLDOWN_SECONDS=300  # 5 minutes between respawns of same agent
 
-# Default pool sizes
-DEFAULT_ERDOS=2
+# Default pool sizes (Erdos enhancement campaign completed 2026-01-27)
+DEFAULT_ERDOS=0
 DEFAULT_ARISTOTLE=1
-DEFAULT_RESEARCHER=1
+DEFAULT_RESEARCHER=2
 DEFAULT_SEEKER=1
 DEFAULT_DEPLOYER=1
 
 # Max pool sizes
 MAX_ERDOS=5
 MAX_ARISTOTLE=2
-MAX_RESEARCHER=3
+MAX_RESEARCHER=5
 MAX_SEEKER=1
 MAX_DEPLOYER=1
 
@@ -94,16 +94,16 @@ Agent Types:
 
 Examples:
   $0 start                              # Start with defaults
-  $0 start --erdos 3 --researcher 2     # Custom pool sizes
-  $0 start --seeker 1 --researcher 2    # Research team with seeker
-  $0 spawn erdos                        # Add one Erdős enhancer
+  $0 start --researcher 3               # Custom pool sizes
+  $0 start --erdos 2 --researcher 1     # Include Erdős enhancers
+  $0 spawn researcher                   # Add one Researcher
   $0 spawn seeker                       # Add seeker agent
-  $0 scale erdos 4                      # Scale to 4 enhancers
+  $0 scale researcher 4                 # Scale to 4 Researchers
   $0 stop                               # Graceful stop (signal files)
   $0 stop --force                       # Force stop (kill sessions)
   $0 health                             # Check agent health
   $0 daemon                             # Run daemon with defaults
-  $0 daemon --interval 30 --erdos 3     # Custom interval and pool
+  $0 daemon --interval 30 --researcher 3  # Custom interval and pool
   $0 daemon &                           # Run daemon in background
 EOF
 }
@@ -360,7 +360,7 @@ get_all_agent_sessions() {
         sessions+=("aristotle-agent")
     fi
     # Researchers
-    for i in 1 2 3; do
+    for i in 1 2 3 4 5; do
         if tmux has-session -t "researcher-$i" 2>/dev/null; then
             sessions+=("researcher-$i")
         fi
@@ -1215,7 +1215,7 @@ cmd_spawn() {
             ;;
         researcher)
             echo -e "${BLUE}Spawning additional Researcher...${NC}"
-            for i in 1 2 3; do
+            for i in 1 2 3 4 5; do
                 if ! tmux has-session -t "researcher-$i" 2>/dev/null; then
                     ./scripts/research/parallel-research.sh 1 &
                     sleep 2
@@ -1299,7 +1299,7 @@ cmd_scale() {
             fi
 
             local current=0
-            for i in 1 2 3; do
+            for i in 1 2 3 4 5; do
                 if tmux has-session -t "researcher-$i" 2>/dev/null; then
                     current=$((current + 1))
                 fi
