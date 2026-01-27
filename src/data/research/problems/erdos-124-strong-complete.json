@@ -1,0 +1,95 @@
+{
+  "slug": "erdos-124-strong-complete",
+  "title": "Erdős #124 Strong Complete Sequences (Excluding d^0=1)",
+  "phase": "SURVEY",
+  "status": "surveyed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall k \\geq 1, \\forall^\\infty n, n = \\sum c_i a_i \\text{ with } a_i \\in P(d_i, k)",
+    "plain": "Prove the strong version of Erdős #124: with gcd condition, representations can exclude low-order digits (P(dᵢ, k) for arbitrary k ≥ 1).",
+    "whyMatters": [
+      "Generalizes the solved Question 1 to higher digit positions",
+      "The {3,4,7} case is already proven - can we extend to other base tuples?",
+      "Connects to additive number theory and digit representations"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Q1 fully proved (Aristotle/Alexeev): Σ 1/(dᵢ-1) ≥ 1 suffices for P(dᵢ, 0)",
+      "Pomerance necessity: Σ 1/(dᵢ-1) ≥ 1 is necessary",
+      "{3,4,7} case proved for Q2 (all k ≥ 1)",
+      "Full Lean formalization in Erdos124Problem.lean (97 lines) and Erdos124CompleteSequences.lean (507 lines)"
+    ],
+    "open": [
+      "Q2 for general base tuples beyond {3,4,7}",
+      "Understanding which base tuples with gcd = 1 satisfy Q2"
+    ],
+    "goal": "Extend Q2 proof to more base tuples or prove in general"
+  },
+  "currentState": {
+    "phase": "SURVEY",
+    "since": "2026-01-26",
+    "iteration": 1,
+    "focus": "Initial survey of existing formalization and open directions",
+    "blockers": [],
+    "nextAction": "Study Erdos124CompleteSequences.lean to understand proof technique for {3,4,7}",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Existing formalization is substantial (604 lines total). Q1 fully axiomatized, Q2 partially proved for {3,4,7}. The 'strong' version is Q2.",
+    "builtItems": [],
+    "insights": [
+      "The 'strong' version excluding d^0=1 is precisely Question 2 from the Erdős problem",
+      "P(d, k) means digits starting from position k, so P(d, 0) allows d^0=1 terms",
+      "The gcd condition gcd(d₁,...,dᵣ) = 1 is needed for Q2",
+      "Existing proof for {3,4,7}: 1/2 + 1/3 + 1/6 = 1 satisfies reciprocal condition, gcd(3,4,7) = 1",
+      "Other candidate tuples: {3,5} (1/2+1/4=3/4<1 fails), {3,4,5} (1/2+1/3+1/4=13/12≥1, gcd=1)",
+      "Key technique likely involves showing digit representations become dense enough at higher positions"
+    ],
+    "mathlibGaps": [
+      "No general theory of digit-restricted representations in Mathlib"
+    ],
+    "nextSteps": [
+      "Read Erdos124CompleteSequences.lean to understand {3,4,7} proof technique",
+      "Identify if proof generalizes to other tuples like {3,4,5}",
+      "Verify {3,4,5} satisfies reciprocal and gcd conditions",
+      "Attempt Q2 for {3,4,5} if techniques transfer"
+    ],
+    "markdown": ""
+  },
+  "approaches": [
+    {
+      "name": "Extend {3,4,7} technique",
+      "description": "Study proof for {3,4,7} and attempt to generalize to other tuples",
+      "status": "planned"
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "complete-sequences",
+    "extension",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Erdos124CompleteSequences",
+    "Erdos124Problem"
+  ],
+  "references": {
+    "papers": [
+      "Burr, Erdős, Graham, Li (1996) - Complete sequences of sets of integer powers"
+    ],
+    "urls": [
+      "https://erdosproblems.com/124"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-01-26T01:50:00Z",
+  "lastUpdate": "2026-01-26T01:50:00Z",
+  "significance": 7,
+  "tractability": 7
+}

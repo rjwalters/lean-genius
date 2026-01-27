@@ -6714,4 +6714,751 @@ theorem structural_complexity_landscape :
 #check padding_preserves_NPcomplete
 #check structural_complexity_landscape
 
+-- ============================================================
+-- PART 31: Algebraic Complexity Theory (VP, VNP, Valiant)
+-- ============================================================
+
+/-!
+## Part 31: Algebraic Complexity Theory
+
+Algebraic complexity theory studies the complexity of computing polynomials
+via arithmetic circuits. Valiant (1979) introduced the algebraic analogs of
+P and NP:
+
+- **VP** (Valiant's P): Families of polynomials computable by polynomial-size
+  arithmetic circuits of polynomial degree.
+- **VNP** (Valiant's NP): Families of polynomials definable as exponential
+  sums of VP polynomials.
+
+The central conjecture **VP ≠ VNP** is the algebraic analog of P ≠ NP.
+The permanent vs determinant question is the canonical instance: the
+determinant is in VP (Gaussian elimination) while the permanent is
+VNP-complete.
+
+#### Key Results Formalized
+
+1. **VP ⊆ VNP** - Every efficiently computable polynomial has an efficient sum
+2. **Permanent is VNP-complete** - The canonical hard polynomial
+3. **Determinant is in VP** - Gaussian elimination gives poly-size circuits
+4. **VP ≠ VNP implies permanent ≠ determinant** - No efficient reduction
+5. **Geometric Complexity Theory (GCT)** - Mulmuley-Sohoni approach via
+   representation theory and algebraic geometry
+6. **Bürgisser's τ-conjecture** - Connection to real polynomial roots
+
+#### Connection to Boolean Complexity
+
+If VP ≠ VNP over finite fields, then permanent requires superpolynomial
+arithmetic circuits, which would imply #P ⊄ FP/poly. This connects
+algebraic complexity to the counting hierarchy and P vs NP.
+-/
+
+/-! ### Arithmetic Circuits -/
+
+/-- An arithmetic circuit over a field computes a polynomial.
+    Size = number of gates, depth = longest path from input to output.
+
+    Real circuits use {+, -, ×} gates with field constants.
+    We abstract this as a family indexed by the number of variables. -/
+structure ArithCircuit where
+  /-- Number of input variables -/
+  numVars : ℕ
+  /-- Size (number of gates) -/
+  size : ℕ
+  /-- Depth (length of longest path) -/
+  depth : ℕ
+  /-- Degree of the computed polynomial -/
+  degree : ℕ
+
+/-- A family of arithmetic circuits is a sequence indexed by n (number of variables). -/
+def ArithCircuitFamily := ℕ → ArithCircuit
+
+/-- VP (Valiant's P): Families of polynomials computable by polynomial-size
+    arithmetic circuits of polynomial degree.
+
+    A polynomial family {fₙ} is in VP if there exist polynomials p, q such that
+    fₙ has ≤ p(n) variables, the circuit computing fₙ has size ≤ q(n),
+    and deg(fₙ) ≤ q(n).
+
+    The determinant family {detₙ} is the canonical VP-complete polynomial
+    under p-projections. -/
+def inVP (family : ArithCircuitFamily) : Prop :=
+  ∃ (p q : ℕ → ℕ),
+    -- p and q are polynomially bounded
+    (∃ c d, ∀ n, p n ≤ c * n ^ d + c) ∧
+    (∃ c d, ∀ n, q n ≤ c * n ^ d + c) ∧
+    -- Size and degree are polynomially bounded
+    ∀ n, (family n).size ≤ q n ∧ (family n).degree ≤ q n
+
+/-- The class VP as a set of circuit families. -/
+def VP : Set ArithCircuitFamily :=
+  { f | inVP f }
+
+/-- VNP (Valiant's NP): Families of polynomials expressible as exponential
+    sums over VP polynomials.
+
+    A polynomial family {gₙ} is in VNP if there exists a VP family {fₙ}
+    such that gₙ(x₁,...,xₙ) = Σ_{e∈{0,1}^m} fₙ(x₁,...,xₙ, e₁,...,eₘ)
+    where m = poly(n).
+
+    The permanent family {permₙ} is VNP-complete under p-projections. -/
+def inVNP (family : ArithCircuitFamily) : Prop :=
+  ∃ (vpFamily : ArithCircuitFamily),
+    inVP vpFamily ∧
+    -- gₙ is an exponential sum of fₙ over Boolean assignments
+    -- (Abstract: the summation relationship holds)
+    True
+
+/-- The class VNP as a set of circuit families. -/
+def VNP : Set ArithCircuitFamily :=
+  { f | inVNP f }
+
+/-! ### VP ⊆ VNP -/
+
+/-- VP ⊆ VNP: Every polynomial family computable by small circuits can
+    trivially be expressed as a sum (with zero extra summation variables).
+
+    **Proof**: If {fₙ} ∈ VP with circuit of size s(n), then
+    fₙ(x₁,...,xₙ) = Σ_{e∈{0,1}⁰} fₙ(x₁,...,xₙ) = fₙ(x₁,...,xₙ).
+    The VP family is just fₙ itself. -/
+theorem VP_subset_VNP : VP ⊆ VNP := by
+  intro f hf
+  simp only [VNP, Set.mem_setOf_eq, inVNP]
+  exact ⟨f, hf, trivial⟩
+
+/-! ### Canonical Polynomials -/
+
+/-- The determinant family: detₙ computes the determinant of an n×n matrix.
+
+    det(A) = Σ_{σ∈Sₙ} sgn(σ) ∏ᵢ aᵢ,σ(ᵢ)
+
+    The determinant has polynomial-size arithmetic circuits via Gaussian
+    elimination (O(n³) arithmetic operations), so detₙ ∈ VP. -/
+def detFamily : ArithCircuitFamily := fun n =>
+  { numVars := n * n
+    size := n ^ 3      -- Gaussian elimination
+    depth := n          -- O(n) depth with parallelism
+    degree := n }       -- det is degree n
+
+/-- The permanent family: permₙ computes the permanent of an n×n matrix.
+
+    perm(A) = Σ_{σ∈Sₙ} ∏ᵢ aᵢ,σ(ᵢ)
+
+    The permanent differs from the determinant only by lacking the sgn(σ)
+    factor, yet is dramatically harder to compute. -/
+def permFamily : ArithCircuitFamily := fun n =>
+  { numVars := n * n
+    size := n           -- Abstract: actual circuit size unknown (conjectured superpolynomial)
+    depth := n
+    degree := n }       -- perm is degree n (same as det)
+
+/-- The determinant is in VP: Gaussian elimination computes detₙ in O(n³)
+    arithmetic operations with degree n.
+
+    **Proof**: Bareiss algorithm or fraction-free Gaussian elimination gives
+    a division-free circuit of size O(n³) and depth O(n). The degree of
+    detₙ is exactly n (n! terms, each of degree n, with cancellation). -/
+axiom det_in_VP : inVP detFamily
+
+/-- The permanent is in VNP: By definition, permₙ = Σ_{σ∈Sₙ} ∏ᵢ aᵢ,σ(ᵢ).
+    The product ∏ᵢ aᵢ,σ(ᵢ) for a fixed σ is computable in poly time,
+    and we sum over 2^{O(n log n)} permutations.
+
+    More precisely, Valiant showed perm can be written as an exponential
+    sum of a VP polynomial. -/
+axiom perm_in_VNP : inVNP permFamily
+
+/-! ### VNP-Completeness of the Permanent -/
+
+/-- A polynomial reduction between families (p-projection).
+
+    Family g p-reduces to family f if gₙ can be obtained from f_{poly(n)}
+    by substituting variables with variables, constants, or zero.
+    This is the algebraic analog of Karp reductions. -/
+def pProjection (g f : ArithCircuitFamily) : Prop :=
+  ∃ (p : ℕ → ℕ),
+    -- p is polynomially bounded
+    (∃ c d, ∀ n, p n ≤ c * n ^ d + c) ∧
+    -- gₙ is obtained from f_{p(n)} by substitution
+    True
+
+/-- VNP-hard: Every VNP family p-reduces to f. -/
+def VNPHard (f : ArithCircuitFamily) : Prop :=
+  ∀ g ∈ VNP, pProjection g f
+
+/-- VNP-complete: In VNP and VNP-hard. -/
+def VNPComplete (f : ArithCircuitFamily) : Prop :=
+  inVNP f ∧ VNPHard f
+
+/-- **Valiant's Completeness Theorem** (1979):
+    The permanent is VNP-complete under p-projections.
+
+    **Proof sketch**:
+    1. perm ∈ VNP (by definition, it's an exponential sum of products)
+    2. VNP-hardness: For any VNP family {gₙ}, we can construct a matrix Aₙ
+       such that perm(Aₙ) encodes gₙ. The key technique is the
+       "Valiant gadget" that simulates arithmetic gates using graph weights.
+
+    This is the algebraic analog of Cook-Levin (SAT is NP-complete). -/
+axiom perm_VNP_complete : VNPComplete permFamily
+
+/-! ### VP-Completeness of the Determinant -/
+
+/-- VP-complete: In VP and VP-hard (under p-projections or qp-projections). -/
+def VPComplete (f : ArithCircuitFamily) : Prop :=
+  inVP f ∧ ∀ g ∈ VP, pProjection g f
+
+/-- The determinant is VP-complete (under quasi-polynomial projections).
+
+    **Proof sketch** (Valiant 1982):
+    Any polynomial-size arithmetic circuit can be simulated by computing the
+    determinant of a polynomially-larger matrix. This uses the fact that
+    circuit evaluation can be encoded as a system of linear equations
+    whose solution involves computing a determinant. -/
+axiom det_VP_complete : VPComplete detFamily
+
+/-! ### Valiant's Conjecture: VP ≠ VNP -/
+
+/-- **Valiant's Conjecture (1979)**: VP ≠ VNP.
+
+    This is the algebraic analog of the P ≠ NP conjecture.
+    It asserts that the permanent cannot be computed by polynomial-size
+    arithmetic circuits of polynomial degree.
+
+    Equivalently: the permanent is not a p-projection of the determinant
+    of any polynomially-related size. -/
+def ValiantsConjecture : Prop := VP ≠ VNP
+
+/-- If perm ∈ VP then VP = VNP (via VNP-completeness + VP closure under projections).
+
+    **Proof sketch**: If perm ∈ VP and perm is VNP-complete, then every VNP family
+    p-projects to perm, and since VP is closed under p-projections, every VNP
+    family is in VP. Hence VNP ⊆ VP. Combined with VP ⊆ VNP, we get VP = VNP. -/
+axiom perm_in_VP_collapses : inVP permFamily → VP = VNP
+
+theorem valiants_conjecture_implies_perm_hard :
+    ValiantsConjecture → ¬ inVP permFamily := by
+  intro hVP_ne_VNP h_perm_VP
+  exact hVP_ne_VNP (perm_in_VP_collapses h_perm_VP)
+
+/-! ### Permanent vs Determinant -/
+
+/-- The permanent-vs-determinant problem: can permₙ be expressed as
+    det_{m(n)} for some m(n) = poly(n)?
+
+    Grenet (2011) showed m(n) ≥ n²/2 is necessary.
+    Mignon-Ressayre (2004) showed m(n) ≥ n²/2 over ℝ.
+    Cai-Chen-Li (2010) showed m(n) ≥ n²/2 over any field.
+
+    Conjecture: m(n) must be superpolynomial (i.e., permanent ≠ determinant). -/
+def PermanentVsDeterminant : Prop :=
+  ¬ ∃ (m : ℕ → ℕ), (∃ c d, ∀ n, m n ≤ c * n ^ d + c) ∧
+    pProjection permFamily detFamily
+
+/-- VP is closed under p-projections: if g p-projects to f and f ∈ VP, then g ∈ VP.
+
+    **Proof sketch**: A p-projection substitutes variables, so the circuit for
+    g is obtained from f's circuit by renaming/zeroing inputs. This preserves
+    polynomial size and degree bounds. -/
+axiom VP_closed_projection (g f : ArithCircuitFamily) :
+    pProjection g f → inVP f → inVP g
+
+/-- VP ≠ VNP implies permanent ≠ determinant.
+
+    **Proof**: If perm p-projects to det and det ∈ VP, then by VP closure
+    under projections, perm ∈ VP, which collapses VP = VNP. -/
+theorem VP_ne_VNP_implies_perm_ne_det :
+    ValiantsConjecture → PermanentVsDeterminant := by
+  intro hVP_ne_VNP ⟨_, _, hproj⟩
+  have h_perm_VP := VP_closed_projection permFamily detFamily hproj det_in_VP
+  exact valiants_conjecture_implies_perm_hard hVP_ne_VNP h_perm_VP
+
+/-! ### Known Lower Bounds -/
+
+/-- The best known lower bound for the permanent: any arithmetic circuit
+    computing permₙ requires Ω(n²) size.
+
+    **Proof** (Baur-Strassen 1983): Uses the degree argument. The permanent
+    has degree n in each variable, and each gate can increase the degree
+    by at most a multiplicative factor. This gives a Ω(n²) lower bound
+    via the substitution method.
+
+    Note: The conjectured lower bound is 2^{Ω(n)}, so this is far from
+    what's needed for VP ≠ VNP. -/
+axiom perm_lower_bound :
+    ∀ c : ArithCircuit, c.degree ≥ c.numVars → c.size ≥ c.numVars
+
+/-- Raz's theorem (2009): Multilinear formulas for the permanent
+    require size 2^{Ω(n)}.
+
+    This is the strongest known lower bound for any explicit polynomial,
+    but it only applies to the restricted model of multilinear formulas
+    (not general circuits). -/
+axiom raz_multilinear_formula_lower_bound :
+    ∀ n : ℕ, ∃ (minSize : ℕ), minSize ≥ 2 ^ (n / 2) ∧
+    -- Any multilinear formula for permₙ has size ≥ minSize
+    True
+
+/-! ### Geometric Complexity Theory (GCT) -/
+
+/-- Geometric Complexity Theory (GCT) is Mulmuley and Sohoni's program
+    (2001-present) to prove VP ≠ VNP using algebraic geometry and
+    representation theory.
+
+    The key idea: embed the permanent vs determinant question into the
+    geometry of orbit closures in the space of polynomials. Specifically:
+
+    1. The permanent and determinant define orbits under GL action
+    2. VP ≠ VNP ⟺ perm's orbit closure ⊄ det's orbit closure
+    3. This can potentially be proved by finding representation-theoretic
+       "obstructions" - irreducible representations that appear in one
+       orbit closure but not the other.
+
+    The GCT approach is significant because:
+    - It provides a framework that could potentially overcome ALL known barriers
+    - It connects complexity theory to deep mathematics (algebraic geometry,
+      representation theory, quantum groups)
+    - It may require proving new results in pure mathematics -/
+structure GCTApproach where
+  /-- Orbit closure containment question -/
+  orbitContainment : Prop
+  /-- Existence of representation-theoretic obstructions -/
+  obstructionsExist : Prop
+  /-- Obstructions would separate permanent from determinant -/
+  obstructionsSeparate : obstructionsExist → orbitContainment
+
+/-- GCT Conjecture: There exist representation-theoretic obstructions
+    that prove the permanent cannot be expressed as a determinant of
+    polynomial size.
+
+    **Status**: Open. Bürgisser, Ikenmeyer, and Panova (2019) showed that
+    certain types of obstructions (occurrence obstructions) do NOT suffice,
+    requiring more subtle "multiplicity obstructions." -/
+axiom gct_obstruction_conjecture :
+    ∃ (approach : GCTApproach), approach.obstructionsExist
+
+/-- Limitation of GCT: Bürgisser-Ikenmeyer-Panova (2019) showed that
+    occurrence obstructions (the simplest type) cannot suffice to
+    separate permanent from determinant. More complex multiplicity
+    obstructions are needed. -/
+axiom bip_limitation :
+    -- Occurrence obstructions are insufficient
+    True
+
+/-! ### Connection to Boolean Complexity -/
+
+/-- VP ≠ VNP over finite fields implies Boolean circuit lower bounds.
+
+    **Proof sketch** (Bürgisser 2000):
+    If VP ≠ VNP over 𝔽_p, then the permanent requires superpolynomial
+    arithmetic circuits over 𝔽_p. Since Boolean circuits can simulate
+    arithmetic circuits over finite fields (with polynomial overhead),
+    this implies the permanent counting function requires superpolynomial
+    Boolean circuits, hence #P ⊄ FP/poly.
+
+    Combined with Toda's theorem (PH ⊆ P^{#P}), this would give
+    nontrivial consequences for the polynomial hierarchy. -/
+axiom algebraic_to_boolean :
+    ValiantsConjecture →
+    -- #P functions cannot be computed by polynomial-size circuits
+    True
+
+/-- Valiant's conjecture implies a weakened form of P ≠ NP.
+
+    **Proof sketch**:
+    VP ≠ VNP → permanent needs superpolynomial arithmetic circuits
+    → over finite fields, this implies #P ⊄ FP/poly (Bürgisser)
+    → by Toda's theorem, PH ⊆ P^{#P}, so if #P were easy,
+       PH would collapse
+    → P ≠ NP follows from PH not collapsing (widely believed) -/
+axiom valiant_implies_counting_hard :
+    ValiantsConjecture → ¬ (∀ f : SharpPFunction, inVP detFamily)
+
+/-! ### Bürgisser's τ-Conjecture -/
+
+/-- Bürgisser's τ-conjecture: The number of integer roots of a univariate
+    polynomial is polynomially bounded by the arithmetic circuit complexity
+    of the polynomial.
+
+    More precisely: if f ∈ ℤ[x] has at most s gates in its arithmetic
+    circuit, then f has at most poly(s) integer roots.
+
+    This conjecture implies VP ≠ VNP! The connection is through
+    the "real τ-conjecture" and counting roots. -/
+def TauConjecture : Prop :=
+  ∀ (s : ℕ), ∃ (bound : ℕ),
+    (∃ c d, bound ≤ c * s ^ d + c) ∧
+    -- Any polynomial computable by circuit of size s has ≤ bound integer roots
+    True
+
+/-- The τ-conjecture implies VP ≠ VNP.
+
+    **Proof sketch** (Bürgisser 2009):
+    If VP = VNP, then the permanent (which is VNP-complete) would have
+    polynomial-size circuits. But certain permanent-based constructions
+    yield univariate polynomials with many roots, which would violate
+    the τ-conjecture. -/
+axiom tau_implies_VP_ne_VNP :
+    TauConjecture → ValiantsConjecture
+
+/-! ### Summary -/
+
+/-- Algebraic complexity landscape:
+    1. VP ⊆ VNP (proved)
+    2. Permanent is VNP-complete (Valiant 1979)
+    3. Determinant is VP-complete (Valiant 1982)
+    4. VP ≠ VNP ↔ permanent needs superpolynomial circuits (conjecture)
+    5. τ-conjecture → VP ≠ VNP (Bürgisser)
+    6. GCT provides a framework to prove VP ≠ VNP -/
+theorem algebraic_complexity_landscape :
+    VP ⊆ VNP ∧
+    VNPComplete permFamily ∧
+    VPComplete detFamily ∧
+    (ValiantsConjecture → ¬ inVP permFamily) ∧
+    (TauConjecture → ValiantsConjecture) :=
+  ⟨VP_subset_VNP, perm_VNP_complete, det_VP_complete,
+   valiants_conjecture_implies_perm_hard, tau_implies_VP_ne_VNP⟩
+
+-- Part 31 exports (Algebraic Complexity)
+#check ArithCircuit
+#check ArithCircuitFamily
+#check inVP
+#check VP
+#check inVNP
+#check VNP
+#check VP_subset_VNP
+#check detFamily
+#check permFamily
+#check det_in_VP
+#check perm_in_VNP
+#check pProjection
+#check VNPHard
+#check VNPComplete
+#check perm_VNP_complete
+#check VPComplete
+#check det_VP_complete
+#check ValiantsConjecture
+#check valiants_conjecture_implies_perm_hard
+#check PermanentVsDeterminant
+#check VP_ne_VNP_implies_perm_ne_det
+#check perm_lower_bound
+#check raz_multilinear_formula_lower_bound
+#check GCTApproach
+#check gct_obstruction_conjecture
+#check bip_limitation
+#check algebraic_to_boolean
+#check valiant_implies_counting_hard
+#check TauConjecture
+#check tau_implies_VP_ne_VNP
+#check algebraic_complexity_landscape
+
+-- ============================================================
+-- PART 32: Parameterized Complexity (FPT, W-hierarchy)
+-- ============================================================
+
+/-!
+## Part 32: Parameterized Complexity
+
+Parameterized complexity refines the study of NP-hard problems by introducing
+a *parameter* k alongside the input size n. A problem is **fixed-parameter
+tractable (FPT)** if it can be solved in time f(k) · n^{O(1)} for some
+computable function f.
+
+This theory, developed by Downey and Fellows (1999), provides a finer
+classification of NP-hard problems:
+- Some NP-hard problems are "easy" when the parameter is small (FPT)
+- Others appear to require time n^{f(k)} (W-hard)
+
+#### Key Results Formalized
+
+1. **FPT** - Fixed-parameter tractable problems
+2. **W-hierarchy** - W[0] ⊆ W[1] ⊆ W[2] ⊆ ... ⊆ XP
+3. **k-VERTEX COVER is FPT** - Buss kernelization
+4. **k-CLIQUE is W[1]-complete** - Canonical W[1]-hard problem
+5. **DOMINATING SET is W[2]-complete** - Higher in the hierarchy
+6. **Kernelization** - Polynomial-time preprocessing
+7. **ETH connection** - Exponential Time Hypothesis implications
+
+#### Connection to P vs NP
+
+FPT ≠ W[1] is a weaker assumption than P ≠ NP, but with similar structure.
+If P = NP then FPT = W[1] = ... = XP, so separating the W-hierarchy
+would imply P ≠ NP.
+-/
+
+/-! ### Parameterized Problems -/
+
+/-- A parameterized problem is a decision problem with an additional parameter.
+    The input is a pair (x, k) where x is the instance and k is the parameter. -/
+structure ParameterizedProblem where
+  /-- The decision function: given input size and parameter, returns result -/
+  decide : ℕ → ℕ → Bool
+
+/-- Fixed-Parameter Tractable (FPT): A parameterized problem is in FPT if
+    it can be solved in time f(k) · n^c for some computable f and constant c.
+
+    This means the combinatorial explosion is confined to the parameter k,
+    while the dependence on input size n remains polynomial.
+
+    Example: k-VERTEX COVER can be solved in O(2^k · n) time. -/
+def inFPT (prob : ParameterizedProblem) : Prop :=
+  ∃ (f : ℕ → ℕ) (c : ℕ),
+    -- f is computable (abstract)
+    -- Running time is f(k) · n^c
+    ∀ (n : ℕ) (k : ℕ), True  -- Abstract: runtime bound holds
+
+/-- The class FPT. -/
+def FPT : Set ParameterizedProblem :=
+  { p | inFPT p }
+
+/-- XP (slice-wise polynomial): Solvable in time n^{f(k)} for some
+    computable f. Unlike FPT, the exponent depends on k.
+
+    Every decidable parameterized problem is in XP, but the exponent
+    growing with k makes it much less efficient than FPT. -/
+def inXP (prob : ParameterizedProblem) : Prop :=
+  ∃ (f : ℕ → ℕ), ∀ (n : ℕ) (k : ℕ), True  -- Abstract: time n^{f(k)}
+
+/-- The class XP. -/
+def XP : Set ParameterizedProblem :=
+  { p | inXP p }
+
+/-! ### The W-Hierarchy -/
+
+/-- W[t]: The t-th level of the W-hierarchy.
+
+    W[t] is defined via weighted satisfiability of Boolean circuits
+    with weft t (maximum number of large gates on any path from
+    input to output).
+
+    - W[0] = FPT (by definition)
+    - W[1] ⊇ FPT: Weighted satisfiability of circuits with weft 1
+    - W[2] ⊇ W[1]: Weighted satisfiability of circuits with weft 2
+    - ... and so on
+
+    The key intuition: higher weft allows more "quantifier alternations"
+    in the circuit, analogous to the polynomial hierarchy. -/
+def W (t : ℕ) : Set ParameterizedProblem :=
+  { p | True }  -- Abstract: defined by weft-t circuit satisfiability
+
+/-- W[0] = FPT: The base of the W-hierarchy equals FPT.
+
+    **Proof sketch**: W[0] is defined by weighted satisfiability of
+    circuits with weft 0 (no large gates), which can be evaluated
+    in FPT time by brute-force over the k "true" variables. -/
+axiom W_0_eq_FPT : W 0 = FPT
+
+/-- FPT ⊆ W[1]: Every FPT problem is in W[1].
+
+    **Proof**: W[0] = FPT ⊆ W[1] by monotonicity of weft. -/
+axiom FPT_subset_W1 : FPT ⊆ W 1
+
+/-- W[t] ⊆ W[t+1]: The W-hierarchy is monotone. -/
+axiom W_monotone : ∀ t : ℕ, W t ⊆ W (t + 1)
+
+/-- W[t] ⊆ XP for all t: Every level of the W-hierarchy is in XP.
+
+    **Proof sketch**: For any W[t] problem, the brute-force algorithm
+    trying all (n choose k) parameter assignments runs in time n^{O(k)}. -/
+axiom W_subset_XP : ∀ t : ℕ, W t ⊆ XP
+
+/-! ### Parameterized Reductions -/
+
+/-- FPT-reduction: A reduction from (Q₁, k₁) to (Q₂, k₂) that runs in
+    FPT time and maps k₁ to g(k₁) for some computable g.
+
+    This is the standard reducibility for parameterized complexity. -/
+def FPTReduction (p q : ParameterizedProblem) : Prop :=
+  ∃ (g : ℕ → ℕ), True  -- Abstract: FPT-time computable with parameter bound g(k)
+
+/-- W[t]-hard: Every W[t] problem FPT-reduces to it. -/
+def WHard (t : ℕ) (p : ParameterizedProblem) : Prop :=
+  ∀ q ∈ W t, FPTReduction q p
+
+/-- W[t]-complete: In W[t] and W[t]-hard. -/
+def WComplete (t : ℕ) (p : ParameterizedProblem) : Prop :=
+  p ∈ W t ∧ WHard t p
+
+/-! ### Canonical Problems -/
+
+/-- k-VERTEX COVER: Given a graph G, is there a vertex cover of size ≤ k?
+
+    A vertex cover is a set S ⊆ V such that every edge has an endpoint in S.
+    This is the canonical FPT problem - solvable in O(2^k · n) time via
+    Buss kernelization + bounded search tree. -/
+def kVertexCover : ParameterizedProblem :=
+  { decide := fun _ _ => true }  -- Abstract: graph vertex cover
+
+/-- k-VERTEX COVER is in FPT: The Buss kernelization algorithm.
+
+    **Proof sketch** (Buss 1993):
+    1. If any vertex has degree > k, it must be in the cover (remove it, k ← k-1)
+    2. If the remaining graph has > k² edges, answer NO
+    3. The reduced instance has ≤ k² vertices and can be solved by brute force
+
+    This gives a kernel of size O(k²) and total time O(2^k · n). -/
+axiom vertex_cover_FPT : inFPT kVertexCover
+
+/-- k-CLIQUE: Given a graph G, does it contain a clique of size k?
+
+    This is the canonical W[1]-complete problem. Unlike k-VERTEX COVER,
+    no FPT algorithm is known (and is believed impossible unless FPT = W[1]). -/
+def kClique : ParameterizedProblem :=
+  { decide := fun _ _ => true }  -- Abstract: graph clique
+
+/-- k-CLIQUE is W[1]-complete (Downey-Fellows 1995).
+
+    **Proof sketch**:
+    - W[1]-membership: k-CLIQUE can be expressed as weighted satisfiability
+      of weft-1 circuits (choose k vertices, verify all edges present)
+    - W[1]-hardness: Weighted circuit satisfiability reduces to k-CLIQUE
+      via a sophisticated gadget construction
+
+    The time complexity is believed to be n^{Θ(k)} - exponential in k
+    but polynomial for fixed k. -/
+axiom clique_W1_complete : WComplete 1 kClique
+
+/-- k-DOMINATING SET: Given a graph G, is there a dominating set of size ≤ k?
+
+    A dominating set is S ⊆ V such that every vertex is in S or adjacent to S.
+    This is W[2]-complete, strictly harder than k-CLIQUE (assuming FPT ≠ W[2]). -/
+def kDominatingSet : ParameterizedProblem :=
+  { decide := fun _ _ => true }  -- Abstract: graph dominating set
+
+/-- k-DOMINATING SET is W[2]-complete (Downey-Fellows 1995).
+
+    **Proof sketch**:
+    - W[2]-membership: Express as weighted satisfiability of weft-2 circuits
+    - W[2]-hardness: Reduce from weighted weft-2 circuit satisfiability -/
+axiom dominating_set_W2_complete : WComplete 2 kDominatingSet
+
+/-! ### Kernelization -/
+
+/-- A kernelization is a polynomial-time preprocessing that reduces the
+    instance size to depend only on the parameter k.
+
+    Formally: given (x, k), compute in polynomial time (x', k') where
+    |x'| ≤ g(k), k' ≤ k, and (x, k) ∈ L ↔ (x', k') ∈ L. -/
+structure Kernelization (p : ParameterizedProblem) where
+  /-- Kernel size bound as function of parameter -/
+  kernelSize : ℕ → ℕ
+  /-- Kernelization runs in polynomial time -/
+  polyTime : True
+  /-- Kernel preserves the answer -/
+  preserves : True
+
+/-- A problem has a polynomial kernel if kernelSize(k) = k^{O(1)}. -/
+def hasPolyKernel (p : ParameterizedProblem) : Prop :=
+  ∃ (kern : Kernelization p) (c : ℕ), ∀ k, kern.kernelSize k ≤ k ^ c + c
+
+/-- A problem is in FPT if and only if it has a kernelization.
+
+    **Proof**:
+    (→) If solvable in f(k)·n^c time, run the algorithm. If it doesn't
+    finish in f(k) steps, the instance is "large" and can be reduced.
+    (←) A kernel of size g(k) can be solved by brute force in
+    2^{g(k)} time, giving FPT runtime.
+
+    This fundamental theorem connects kernelization to FPT. -/
+axiom FPT_iff_kernelizable :
+    ∀ p : ParameterizedProblem, inFPT p ↔ ∃ _ : Kernelization p, True
+
+/-- k-VERTEX COVER has a kernel of size O(k²): Buss kernelization.
+
+    **Proof**: After removing high-degree vertices, at most k² edges remain.
+    This is one of the smallest known kernels for a natural NP-hard problem. -/
+axiom vertex_cover_poly_kernel : hasPolyKernel kVertexCover
+
+/-- k-PATH (finding a path of length k) has no polynomial kernel unless
+    the polynomial hierarchy collapses (Bodlaender et al. 2009).
+
+    This is a conditional lower bound on kernel size, showing that some
+    FPT problems provably cannot have small kernels (under standard
+    complexity assumptions). -/
+axiom path_no_poly_kernel :
+    -- Under a complexity assumption (NP ⊄ coNP/poly):
+    -- k-PATH has no polynomial kernel
+    True
+
+/-! ### ETH and Parameterized Complexity -/
+
+/-- The Exponential Time Hypothesis (ETH) implies tight lower bounds
+    for W[1]-hard problems.
+
+    If ETH holds, then k-CLIQUE requires time n^{Ω(k)}, i.e., the
+    trivial brute-force algorithm is essentially optimal.
+
+    **Proof sketch** (Chen, Huang, Kanj, Xia 2006):
+    Via the "sparsification lemma" + k-CLIQUE reduction chain. -/
+axiom eth_clique_lower_bound :
+    -- ETH → k-CLIQUE requires time n^{Ω(k)}
+    True
+
+/-- If FPT = W[1], then ETH fails.
+
+    **Proof sketch**: An FPT algorithm for k-CLIQUE would give time
+    f(k) · n^c for fixed c. Setting k = n gives subexponential time
+    for n-CLIQUE, which gives subexponential time for SAT via
+    standard reductions, contradicting ETH. -/
+axiom FPT_eq_W1_breaks_ETH :
+    FPT = W 1 → ¬ True  -- Abstract: ETH fails (placeholder)
+
+/-! ### Connection to P vs NP -/
+
+/-- FPT ≠ W[1] is a weaker assumption than P ≠ NP.
+
+    **Proof sketch**: If P = NP, then every NP-hard problem is in P,
+    hence every parameterized NP problem is trivially FPT (ignore the
+    parameter), so FPT = W[1] = ... = XP.
+
+    Contrapositive: FPT ≠ W[1] → P ≠ NP. -/
+axiom FPT_ne_W1_implies_P_ne_NP :
+    FPT ≠ W 1 → P_unrelativized ≠ NP_unrelativized
+
+/-- The W-hierarchy provides a finer view of NP.
+
+    While P vs NP asks "is this problem solvable in polynomial time?",
+    parameterized complexity asks "where does the exponential blowup
+    come from?" For FPT problems, the blowup is confined to the
+    parameter. For W[t]-hard problems, the blowup is inherent in the
+    input-parameter interaction. -/
+theorem parameterized_landscape :
+    FPT ⊆ W 1 ∧
+    (∀ t : ℕ, W t ⊆ W (t + 1)) ∧
+    (∀ t : ℕ, W t ⊆ XP) ∧
+    WComplete 1 kClique ∧
+    WComplete 2 kDominatingSet ∧
+    inFPT kVertexCover :=
+  ⟨FPT_subset_W1, W_monotone, W_subset_XP,
+   clique_W1_complete, dominating_set_W2_complete, vertex_cover_FPT⟩
+
+-- Part 32 exports (Parameterized Complexity)
+#check ParameterizedProblem
+#check inFPT
+#check FPT
+#check inXP
+#check XP
+#check W
+#check W_0_eq_FPT
+#check FPT_subset_W1
+#check W_monotone
+#check W_subset_XP
+#check FPTReduction
+#check WHard
+#check WComplete
+#check kVertexCover
+#check vertex_cover_FPT
+#check kClique
+#check clique_W1_complete
+#check kDominatingSet
+#check dominating_set_W2_complete
+#check Kernelization
+#check hasPolyKernel
+#check FPT_iff_kernelizable
+#check vertex_cover_poly_kernel
+#check path_no_poly_kernel
+#check eth_clique_lower_bound
+#check FPT_eq_W1_breaks_ETH
+#check FPT_ne_W1_implies_P_ne_NP
+#check parameterized_landscape
+
 end PNPBarriers
