@@ -2,7 +2,7 @@
   "id": "erdos-482",
   "title": "Erdős Problem #482",
   "slug": "erdos-482",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDefine a sequence by ... and\\[a_{n+1}=\\lfloor(a_n+1/2)\\rfloor\\]for .... The difference ... is the ...th digit in the binary e...",
+  "description": "Define a sequence by ... and\\[a_{n+1}=\\lfloor(a_n+1/2)\\rfloor\\]for .... The difference ... is the ...th digit in the binary e...",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/482",
@@ -20,7 +20,7 @@
   },
   "overview": {
     "historicalContext": "Erdős Problem #482 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDefine a sequence by $a_1=1$ and\\[a_{n+1}=\\lfloor\\sqrt{2}(a_n+1/2)\\rfloor\\]for $n\\geq 1$. The difference $a_{2n+1}-2a_{2n-1}$ is the $n$th digit in the binary expansion of $\\sqrt{2}$.\n\nFind similar results for $\\theta=\\sqrt{m}$, and other algebraic numbers.\n\n\n\nThe result for $\\sqrt{2}$ was obtained by Graham and Pollak \\cite{GrPo70}. The problem statement is open-ended, but presumably Erd\\H{o}s and Graham would have been satisfied with the wide-ranging generalisations of Stoll (\\cite{St05} and \\cite{St06}).\n\n\n\n\nReferences\n\n\n[GrPo70] Graham, R. L. and Pollak, H. O., Note on a nonlinear recurrence related to {$\\surd 2$}. Math. Mag. (1970), 143-145.\n\n[St05] Stoll, Th., On families of nonlinear recurrences related to digits. J. Integer Seq. (2005), Article 05.3.2, 8.\n\n[St06] Stoll, Thomas, On a problem of Erd\\H{o}s and Graham concerning digits. Acta Arith. (2006), 89-100.\n\n\nBack to the problem",
+    "problemStatement": "Define a sequence by $a_1=1$ and\\[a_{n+1}=\\lfloor\\sqrt{2}(a_n+1/2)\\rfloor\\]for $n\\geq 1$. The difference $a_{2n+1}-2a_{2n-1}$ is the $n$th digit in the binary expansion of $\\sqrt{2}$.\n\nFind similar results for $\\theta=\\sqrt{m}$, and other algebraic numbers.\n\n\n\nThe result for $\\sqrt{2}$ was obtained by Graham and Pollak \\cite{GrPo70}. The problem statement is open-ended, but presumably Erd\\H{o}s and Graham would have been satisfied with the wide-ranging generalisations of Stoll (\\cite{St05} and \\cite{St06}).\n\n\n\n\nReferences\n\n\n[GrPo70] Graham, R. L. and Pollak, H. O., Note on a nonlinear recurrence related to {$\\surd 2$}. Math. Mag. (1970), 143-145.\n\n[St05] Stoll, Th., On families of nonlinear recurrences related to digits. J. Integer Seq. (2005), Article 05.3.2, 8.\n\n[St06] Stoll, Thomas, On a problem of Erd\\H{o}s and Graham concerning digits. Acta Arith. (2006), 89-100.",
     "proofStrategy": "TODO: Document proof strategy",
     "keyInsights": []
   },

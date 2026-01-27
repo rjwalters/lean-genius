@@ -2,7 +2,7 @@
   "id": "erdos-164",
   "title": "Erdős Problem #164",
   "slug": "erdos-164",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA set ... is primitive if no member of ... divides another. Is the sum\\[\\sum_{n\\in A}{n\\log n}\\]maximised over all primitive ...",
+  "description": "A set ... is primitive if no member of ... divides another. Is the sum\\[\\sum_{n\\in A}{n\\log n}\\]maximised over all primitive ...",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/164",
@@ -20,7 +20,7 @@
   },
   "overview": {
     "historicalContext": "Erdős Problem #164 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA set $A\\subset \\mathbb{N}$ is primitive if no member of $A$ divides another. Is the sum\\[\\sum_{n\\in A}\\frac{1}{n\\log n}\\]maximised over all primitive sets when $A$ is the set of primes?\n\n\n\nErd\\H{o}s \\cite{Er35} proved that this sum always converges for a primitive set. Lichtman \\cite{Li23} proved that the answer is yes.\n\n\n\n\nReferences\n\n\n[Er35] Erd\\\"{o}s, Paul, Note on Sequences of Integers No One of Which is Divisible By Any Other. J. London Math. Soc. (1935), 126-128.\n\n[Li23] Lichtman, J. D., A proof of the Erd\\H{o}s primitive set conjecture. arXiv:2202.02384 (2023).\n\n\nBack to the problem",
+    "problemStatement": "A set $A\\subset \\mathbb{N}$ is primitive if no member of $A$ divides another. Is the sum\\[\\sum_{n\\in A}\\frac{1}{n\\log n}\\]maximised over all primitive sets when $A$ is the set of primes?\n\n\n\nErd\\H{o}s \\cite{Er35} proved that this sum always converges for a primitive set. Lichtman \\cite{Li23} proved that the answer is yes.\n\n\n\n\nReferences\n\n\n[Er35] Erd\\\"{o}s, Paul, Note on Sequences of Integers No One of Which is Divisible By Any Other. J. London Math. Soc. (1935), 126-128.\n\n[Li23] Lichtman, J. D., A proof of the Erd\\H{o}s primitive set conjecture. arXiv:2202.02384 (2023).",
     "proofStrategy": "TODO: Document proof strategy",
     "keyInsights": []
   },

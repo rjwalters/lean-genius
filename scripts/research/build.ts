@@ -232,7 +232,11 @@ function extractRelatedProofs(content: string): string[] {
     const parts = line.split('|').filter(p => p.trim())
     if (parts.length > 0 && !parts[0].includes('---')) {
       const slug = parts[0].trim()
-      if (slug && !slug.includes('Proof')) {
+      // Skip table headers ("Proof", "Relevance") and separator rows
+      if (slug &&
+          !slug.includes('Proof') &&
+          slug !== 'Relevance' &&
+          !slug.match(/^[-=]+$/)) {
         proofs.push(slug)
       }
     }
@@ -674,8 +678,23 @@ function build(): void {
   console.log(`   Active:    ${activeCount} problems`)
   console.log(`   Graduated: ${graduatedCount} problems`)
   console.log(`   Total:     ${problems.length} problems`)
+  // Clean stale problem JSON files that were not regenerated
+  const generatedSlugs = new Set(problems.map(p => p.slug))
+  const existingFiles = fs.readdirSync(PROBLEMS_OUTPUT_DIR).filter(f => f.endsWith('.json'))
+  let removedCount = 0
+  for (const file of existingFiles) {
+    const slug = file.replace('.json', '')
+    if (!generatedSlugs.has(slug)) {
+      fs.unlinkSync(path.join(PROBLEMS_OUTPUT_DIR, file))
+      removedCount++
+    }
+  }
+
   console.log(`\n✅ Generated research-listings.json (${Math.round(fs.statSync(listingsPath).size / 1024)}KB)`)
   console.log(`   Generated ${problems.length} individual problem files`)
+  if (removedCount > 0) {
+    console.log(`   Removed ${removedCount} stale problem files`)
+  }
 }
 
 // Run

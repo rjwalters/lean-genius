@@ -298,7 +298,19 @@ function extractProblemStatement(html: string): string {
     .replace(/\s+/g, ' ')
     .trim()
 
-  return statement || 'Problem statement not found'
+  // Strip navigation artifacts that leak through from erdosproblems.com layout
+  const navPattern = /^Forum\s*\n?Favourites\s*\n?Tags\s*\n?More\s*\n?\s*Go\s*\n?\s*Go\s*\n?Dual View\s*\n?Random Solved\s*\n?Random Open\s*\n*/
+  statement = statement.replace(navPattern, '').trim()
+
+  // Strip trailing "Back to the problem" link text
+  statement = statement.replace(/\s*Back to the problem\s*$/, '').trim()
+
+  // Validate minimum length
+  if (!statement || statement.length < 20) {
+    return 'Problem statement not found'
+  }
+
+  return statement
 }
 
 /**
