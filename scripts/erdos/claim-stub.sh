@@ -8,9 +8,10 @@
 #   ./claim-stub.sh claim-random-any         # Claim any stub (including unsourced)
 #   ./claim-stub.sh claim-missing            # Create and claim a missing problem
 #   ./claim-stub.sh claim-any                # Try existing, then create missing
+#   ./claim-stub.sh claim-needs-work         # Claim a completed stub needing quality repair
 #   ./claim-stub.sh release <erdos-number>   # Release a claimed stub
-#   ./claim-stub.sh complete <erdos-number>  # Mark as completed and release
-#   ./claim-stub.sh status                   # Show all claims
+#   ./claim-stub.sh complete <erdos-number>  # Mark as completed (with quality check) and release
+#   ./claim-stub.sh status                   # Show all claims with quality breakdown
 #   ./claim-stub.sh cleanup                  # Remove stale claims
 #
 # Environment:
@@ -38,6 +39,7 @@ REPO_ROOT="$(find_repo_root)"
 CLAIMS_DIR="$REPO_ROOT/research/stub-claims"
 COMPLETED_FILE="$CLAIMS_DIR/completed.json"
 STUBS_SCRIPT="$REPO_ROOT/scripts/erdos/find-stubs.ts"
+HAS_QUALITY_ISSUES="$REPO_ROOT/scripts/erdos/has-quality-issues.sh"
 
 # Defaults
 TTL_MINUTES="${CLAIM_TTL:-60}"
@@ -48,8 +50,34 @@ mkdir -p "$CLAIMS_DIR"
 
 # Initialize completed file if missing
 if [[ ! -f "$COMPLETED_FILE" ]]; then
-    echo '{"completed": []}' > "$COMPLETED_FILE"
+    echo '{"completed": {}}' > "$COMPLETED_FILE"
 fi
+
+# Detect completed.json format (array = legacy, object = new)
+is_legacy_format() {
+    jq -e '.completed | type == "array"' "$COMPLETED_FILE" > /dev/null 2>&1
+}
+
+# Check if a number is in the completed list (supports both formats)
+is_completed() {
+    local num="$1"
+    if is_legacy_format; then
+        jq -e ".completed | index($num)" "$COMPLETED_FILE" > /dev/null 2>&1
+    else
+        jq -e ".completed[\"$num\"]" "$COMPLETED_FILE" > /dev/null 2>&1
+    fi
+}
+
+# Check if a completed entry needs work (new format only)
+is_needs_work() {
+    local num="$1"
+    if is_legacy_format; then
+        # In legacy format, fall back to has-quality-issues check
+        "$HAS_QUALITY_ISSUES" "$num" 2>/dev/null
+    else
+        jq -e ".completed[\"$num\"].status == \"needs-work\"" "$COMPLETED_FILE" > /dev/null 2>&1
+    fi
+}
 
 # Calculate timestamps
 get_timestamps() {
@@ -96,9 +124,14 @@ claim_stub() {
     local branch_name="feature/erdos-$erdos_number-enhance"
 
     # Check if already completed
-    if jq -e ".completed | index($erdos_number)" "$COMPLETED_FILE" > /dev/null 2>&1; then
-        echo "Error: Erdős #$erdos_number already completed" >&2
-        return 1
+    if is_completed "$erdos_number"; then
+        # Allow re-claiming if it still has quality issues
+        if is_needs_work "$erdos_number" || "$HAS_QUALITY_ISSUES" "$erdos_number" 2>/dev/null; then
+            echo "Re-claiming erdos-$erdos_number (completed but has quality issues)"
+        else
+            echo "Error: Erdős #$erdos_number already completed with no quality issues" >&2
+            return 1
+        fi
     fi
 
     get_timestamps
@@ -220,18 +253,16 @@ claim_random_stub() {
         stub_numbers=$(echo "$stubs_json" | jq -r '.stubs[] | select(.hasFormalConjecturesSource == true) | .erdosNumber')
     fi
 
-    # Get completed list
-    local completed
-    completed=$(jq -r '.completed[]' "$COMPLETED_FILE" 2>/dev/null || echo "")
-
     # Find unclaimed stubs
     local available=()
     while IFS= read -r num; do
         [[ -z "$num" ]] && continue
 
-        # Skip if completed
-        if echo "$completed" | grep -q "^$num$"; then
-            continue
+        # Skip if completed AND has no quality issues
+        if is_completed "$num"; then
+            if ! is_needs_work "$num" && ! "$HAS_QUALITY_ISSUES" "$num" 2>/dev/null; then
+                continue
+            fi
         fi
 
         # Skip if currently claimed (and not expired)
@@ -281,16 +312,43 @@ release_stub() {
 complete_stub() {
     local erdos_number="$1"
 
-    # Add to completed list
+    # Run quality check
+    local status="quality"
+    if "$HAS_QUALITY_ISSUES" "$erdos_number" 2>/dev/null; then
+        status="needs-work"
+        echo "WARNING: erdos-$erdos_number still has quality issues." >&2
+        echo "Marking as completed with status 'needs-work'." >&2
+        echo "This entry can be re-claimed by other agents for improvement." >&2
+    fi
+
+    get_timestamps
+
     local tmp_file
     tmp_file=$(mktemp)
-    jq ".completed += [$erdos_number] | .completed |= unique | .completed |= sort" "$COMPLETED_FILE" > "$tmp_file"
+
+    if is_legacy_format; then
+        # Legacy array format - add to array
+        jq ".completed += [$erdos_number] | .completed |= unique | .completed |= sort" "$COMPLETED_FILE" > "$tmp_file"
+    else
+        # New object format - add with metadata
+        jq --arg num "$erdos_number" \
+           --arg status "$status" \
+           --arg enhanced_at "$CLAIMED_AT" \
+           --arg agent "$AGENT_ID" \
+           '.completed[$num] = {
+               "status": $status,
+               "enhanced_at": $enhanced_at,
+               "agent": $agent,
+               "issues": []
+           }' "$COMPLETED_FILE" > "$tmp_file"
+    fi
+
     mv "$tmp_file" "$COMPLETED_FILE"
 
     # Release the claim
     release_stub "$erdos_number"
 
-    echo "Marked erdos-$erdos_number as completed"
+    echo "Marked erdos-$erdos_number as completed (status: $status)"
 }
 
 # Show status
@@ -331,10 +389,19 @@ show_status() {
 
     echo ""
 
-    # Show completed count
+    # Show completed count with quality breakdown
     local completed_count
     completed_count=$(jq '.completed | length' "$COMPLETED_FILE" 2>/dev/null || echo 0)
     echo "Completed: $completed_count stubs"
+
+    if ! is_legacy_format 2>/dev/null; then
+        local quality_count needs_work_count
+        quality_count=$(jq '[.completed[] | select(.status == "quality")] | length' "$COMPLETED_FILE" 2>/dev/null || echo "?")
+        needs_work_count=$(jq '[.completed[] | select(.status == "needs-work")] | length' "$COMPLETED_FILE" 2>/dev/null || echo "?")
+        echo "  Quality: $quality_count"
+        echo "  Needs rework: $needs_work_count"
+    fi
+
     echo "Active claims: $active_count"
     echo "Stale claims: $stale_count"
 }
@@ -404,6 +471,52 @@ claim_any_work() {
     claim_missing_stub
 }
 
+# Claim a completed stub that needs quality rework
+claim_needs_work() {
+    local needs_work=""
+
+    if is_legacy_format; then
+        # Legacy format: check each completed number for quality issues
+        while IFS= read -r num; do
+            [[ -z "$num" ]] && continue
+            if "$HAS_QUALITY_ISSUES" "$num" 2>/dev/null; then
+                # Skip if currently claimed
+                if [[ -d "$CLAIMS_DIR/erdos-$num.lock" ]] && ! is_claim_expired "$CLAIMS_DIR/erdos-$num.json"; then
+                    continue
+                fi
+                needs_work="$needs_work $num"
+            fi
+        done < <(jq -r '.completed[]' "$COMPLETED_FILE")
+    else
+        # New format: use status field
+        while IFS= read -r num; do
+            [[ -z "$num" ]] && continue
+            # Skip if currently claimed
+            if [[ -d "$CLAIMS_DIR/erdos-$num.lock" ]] && ! is_claim_expired "$CLAIMS_DIR/erdos-$num.json"; then
+                continue
+            fi
+            needs_work="$needs_work $num"
+        done < <(jq -r '.completed | to_entries[] | select(.value.status == "needs-work") | .key' "$COMPLETED_FILE")
+    fi
+
+    needs_work=$(echo "$needs_work" | xargs)  # trim
+
+    if [[ -z "$needs_work" ]]; then
+        echo "No completed stubs need rework" >&2
+        return 1
+    fi
+
+    # Pick random from needs-work pool
+    local count
+    count=$(echo "$needs_work" | wc -w | xargs)
+    local random_index=$(( RANDOM % count + 1 ))
+    local selected
+    selected=$(echo "$needs_work" | tr ' ' '\n' | sed -n "${random_index}p")
+
+    echo "Selected erdos-$selected (needs quality repair, $count available)"
+    claim_stub "$selected"
+}
+
 # Extend a claim (renew TTL)
 extend_claim() {
     local erdos_number="$1"
@@ -453,6 +566,9 @@ case "${1:-help}" in
     claim-any)
         claim_any_work
         ;;
+    claim-needs-work)
+        claim_needs_work
+        ;;
     release)
         if [[ -z "${2:-}" ]]; then
             echo "Usage: $0 release <erdos-number>" >&2
@@ -487,15 +603,16 @@ Erdős Stub Claiming System
 Provides atomic claiming for parallel stub enhancement.
 
 Commands:
-  claim <erdos-number>    Claim a specific stub
+  claim <erdos-number>    Claim a specific stub (allows re-claiming broken completions)
   claim-random            Claim a random stub with formal-conjectures source
   claim-random-any        Claim a random stub (including unsourced)
   claim-missing           Create and claim a random MISSING problem
   claim-any               Try existing stubs first, then create missing if none
+  claim-needs-work        Claim a completed stub that still has quality issues
   release <erdos-number>  Release a claimed stub
-  complete <erdos-number> Mark as completed and release
+  complete <erdos-number> Mark as completed with quality check and release
   extend <erdos-number>   Extend claim TTL
-  status                  Show all claims
+  status                  Show all claims with quality breakdown
   cleanup                 Remove stale claims
   help                    Show this help
 
