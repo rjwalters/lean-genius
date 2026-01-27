@@ -82,6 +82,7 @@ EOF
 }
 
 # Helper: Initialize state file
+# Preserves session_stats and stopped_at from previous state across daemon restarts
 init_state() {
     local erdos="${1:-$DEFAULT_ERDOS}"
     local aristotle="${2:-$DEFAULT_ARISTOTLE}"
@@ -90,25 +91,51 @@ init_state() {
 
     mkdir -p "$(dirname "$STATE_FILE")"
 
-    cat > "$STATE_FILE" <<EOF
-{
-  "started_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
-  "running": true,
-  "config": {
-    "erdos": $erdos,
-    "aristotle": $aristotle,
-    "researcher": $researcher,
-    "deployer": $deployer
-  },
-  "agents": {},
-  "session_stats": {
-    "stubs_enhanced": 0,
-    "proofs_submitted": 0,
-    "proofs_integrated": 0,
-    "deployments": 0
-  }
-}
-EOF
+    # Preserve previous session stats if state file exists
+    local prev_stats='{}'
+    local prev_stopped_at=""
+    if [[ -f "$STATE_FILE" ]]; then
+        prev_stats=$(jq '.session_stats // {}' "$STATE_FILE" 2>/dev/null || echo '{}')
+        prev_stopped_at=$(jq -r '.stopped_at // ""' "$STATE_FILE" 2>/dev/null || echo "")
+    fi
+
+    # Build new state JSON with jq for proper structure
+    local new_state
+    new_state=$(jq -n \
+        --arg started_at "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+        --argjson erdos "$erdos" \
+        --argjson aristotle "$aristotle" \
+        --argjson researcher "$researcher" \
+        --argjson deployer "$deployer" \
+        --argjson prev_stats "$prev_stats" \
+        '{
+            started_at: $started_at,
+            running: true,
+            config: {
+                erdos: $erdos,
+                aristotle: $aristotle,
+                researcher: $researcher,
+                deployer: $deployer
+            },
+            agents: {},
+            session_stats: (
+                if ($prev_stats | length) > 0 then $prev_stats
+                else {
+                    stubs_enhanced: 0,
+                    proofs_submitted: 0,
+                    proofs_integrated: 0,
+                    deployments: 0
+                }
+                end
+            )
+        }')
+
+    # Add previous_stopped_at if previous session had a stopped_at timestamp
+    if [[ -n "$prev_stopped_at" ]]; then
+        new_state=$(echo "$new_state" | jq --arg stopped "$prev_stopped_at" '.previous_stopped_at = $stopped')
+    fi
+
+    echo "$new_state" > "$STATE_FILE"
 }
 
 # Helper: Update state running flag
