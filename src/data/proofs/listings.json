@@ -10021,18 +10021,22 @@
     "id": "erdos-457",
     "title": "Erdős Problem #457: Small Prime Divisors of Consecutive Products",
     "slug": "erdos-457",
-    "description": "Is there ε > 0 such that infinitely many n have all primes p ≤ (2+ε)log(n) dividing the product of log(n) consecutive integers starting at n+1? Equivalently, q(n,log n) ≥ (2+ε)log(n) i.o. OPEN.",
-    "status": "formalized",
+    "description": "Is there ε > 0 such that infinitely many n have all primes p ≤ (2+ε)log(n) dividing the product of ⌊log n⌋ consecutive integers starting at n+1? Equivalently, is q(n, log n) ≥ (2+ε)log(n) infinitely often? Open.",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
+      "erdos",
       "number-theory",
       "prime-divisors",
       "consecutive-products",
+      "smooth-numbers",
       "open-problem"
     ],
+    "dateAdded": "2026-01-26",
     "erdosNumber": 457,
-    "sorries": 1,
-    "annotationCount": 6
+    "mathlibCount": 6,
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-458",
@@ -11911,21 +11915,6 @@
     "mathlibCount": 3,
     "sorries": 1,
     "annotationCount": 10
-  },
-  {
-    "id": "erdos-569",
-    "title": "Erdős Problem #569: Erdős Problem #569",
-    "slug": "erdos-569",
-    "description": "Problem statement pending. ",
-    "status": "stub",
-    "badge": "stub",
-    "tags": [
-      "graph theory",
-      "ramsey theory"
-    ],
-    "erdosNumber": 569,
-    "sorries": 1,
-    "annotationCount": 1
   },
   {
     "id": "erdos-57",
