@@ -4,7 +4,8 @@
 #
 # Usage:
 #   ./scripts/lean/launch.sh start [--erdos N] [--aristotle N] [--researcher N] [--deployer N]
-#   ./scripts/lean/launch.sh stop
+#   ./scripts/lean/launch.sh stop [--force]
+#   ./scripts/lean/launch.sh health
 #   ./scripts/lean/launch.sh spawn erdos|aristotle|researcher|deployer
 #   ./scripts/lean/launch.sh scale erdos|researcher N
 #   ./scripts/lean/launch.sh status
@@ -23,6 +24,11 @@ NC='\033[0m'
 
 # Config
 STATE_FILE="research/lean-daemon-state.json"
+SIGNALS_DIR=".loom/signals"
+
+# Health check thresholds
+STUCK_THRESHOLD_MINUTES=30
+STUCK_CPU_THRESHOLD="0.5"
 
 # Default pool sizes
 DEFAULT_ERDOS=2
@@ -43,7 +49,8 @@ Lean Genius Launch - Mathematical Agent Orchestration
 
 Usage:
   $0 start [options]     Start agents with specified pool sizes
-  $0 stop                Stop all agents gracefully
+  $0 stop [--force]      Stop all agents (graceful by default, --force kills immediately)
+  $0 health              Show agent process health and detect stuck agents
   $0 spawn <type>        Spawn one additional agent
   $0 scale <type> <N>    Scale agent pool to N instances
   $0 status              Show current status
@@ -53,6 +60,9 @@ Start Options:
   --aristotle N          Number of Aristotle agents (default: $DEFAULT_ARISTOTLE, max: $MAX_ARISTOTLE)
   --researcher N         Number of Researchers (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
   --deployer N           Number of Deployers (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
+
+Stop Options:
+  --force                Kill tmux sessions immediately (skip graceful signal files)
 
 Agent Types:
   erdos       Enhances Erdős problem stubs with Lean formalizations
@@ -65,7 +75,9 @@ Examples:
   $0 start --erdos 3 --researcher 2     # Custom pool sizes
   $0 spawn erdos                        # Add one Erdős enhancer
   $0 scale erdos 4                      # Scale to 4 enhancers
-  $0 stop                               # Stop all agents
+  $0 stop                               # Graceful stop (signal files)
+  $0 stop --force                       # Force stop (kill sessions)
+  $0 health                             # Check agent health
 EOF
 }
 
@@ -192,7 +204,7 @@ cmd_start() {
             ./scripts/erdos/parallel-enhance.sh "$erdos" &
             sleep 2
             echo -e "${GREEN}✓ Erdős enhancers launched${NC}"
-            ((started++))
+            started=$((started + 1))
         fi
     fi
 
@@ -203,7 +215,7 @@ cmd_start() {
             ./scripts/aristotle/launch-agent.sh &
             sleep 1
             echo -e "${GREEN}✓ Aristotle agent launched${NC}"
-            ((started++))
+            started=$((started + 1))
         fi
     fi
 
@@ -214,7 +226,7 @@ cmd_start() {
             ./scripts/research/parallel-research.sh "$researcher" &
             sleep 2
             echo -e "${GREEN}✓ Researchers launched${NC}"
-            ((started++))
+            started=$((started + 1))
         fi
     fi
 
@@ -225,7 +237,7 @@ cmd_start() {
             ./scripts/deploy/launch-agent.sh &
             sleep 1
             echo -e "${GREEN}✓ Deployer launched${NC}"
-            ((started++))
+            started=$((started + 1))
         fi
     fi
 
@@ -242,52 +254,415 @@ cmd_start() {
     fi
 }
 
-# Command: stop
+# Helper: Get all known agent tmux session names
+get_all_agent_sessions() {
+    local sessions=()
+    # Erdős enhancers
+    for i in 1 2 3 4 5; do
+        if tmux has-session -t "erdos-enhancer-$i" 2>/dev/null; then
+            sessions+=("erdos-enhancer-$i")
+        fi
+    done
+    # Aristotle
+    if tmux has-session -t "aristotle-agent" 2>/dev/null; then
+        sessions+=("aristotle-agent")
+    fi
+    # Researchers
+    for i in 1 2 3; do
+        if tmux has-session -t "researcher-$i" 2>/dev/null; then
+            sessions+=("researcher-$i")
+        fi
+    done
+    # Deployer
+    if tmux has-session -t "deployer" 2>/dev/null; then
+        sessions+=("deployer")
+    fi
+    if [[ ${#sessions[@]} -gt 0 ]]; then
+        printf '%s\n' "${sessions[@]}"
+    fi
+}
+
+# Helper: Get the pane PID for a tmux session
+get_pane_pid() {
+    local session="$1"
+    tmux list-panes -t "$session" -F '#{pane_pid}' 2>/dev/null | head -1
+}
+
+# Helper: Find child claude processes for a given PID
+# Outputs the PID of the first claude child/grandchild found, or nothing
+find_claude_child() {
+    local parent_pid="$1"
+    local children
+    children=$(pgrep -P "$parent_pid" 2>/dev/null) || true
+
+    if [[ -z "$children" ]]; then
+        return 0
+    fi
+
+    local child
+    while IFS= read -r child; do
+        [[ -z "$child" ]] && continue
+        local cmd
+        cmd=$(ps -o comm= -p "$child" 2>/dev/null || true)
+        if [[ "$cmd" == *claude* ]]; then
+            echo "$child"
+            return 0
+        fi
+        # Also check grandchildren (claude may be launched via wrapper)
+        local grandchildren
+        grandchildren=$(pgrep -P "$child" 2>/dev/null) || true
+        if [[ -n "$grandchildren" ]]; then
+            local grandchild
+            while IFS= read -r grandchild; do
+                [[ -z "$grandchild" ]] && continue
+                local gcmd
+                gcmd=$(ps -o comm= -p "$grandchild" 2>/dev/null || true)
+                if [[ "$gcmd" == *claude* ]]; then
+                    echo "$grandchild"
+                    return 0
+                fi
+            done <<< "$grandchildren"
+        fi
+    done <<< "$children"
+}
+
+# Helper: Get process elapsed time in minutes
+get_elapsed_minutes() {
+    local pid="$1"
+    local etime
+    etime=$(ps -o etime= -p "$pid" 2>/dev/null | xargs) || return 1
+    # etime format: [[DD-]HH:]MM:SS
+    local days=0 hours=0 mins=0 secs=0
+    if [[ "$etime" == *-* ]]; then
+        days="${etime%%-*}"
+        etime="${etime#*-}"
+    fi
+    # Count colons
+    local colons
+    colons=$(echo "$etime" | tr -cd ':' | wc -c | tr -d ' ')
+    if [[ "$colons" -eq 2 ]]; then
+        hours="${etime%%:*}"
+        etime="${etime#*:}"
+    fi
+    mins="${etime%%:*}"
+    secs="${etime#*:}"
+    # Remove leading zeros
+    days=$((10#$days))
+    hours=$((10#$hours))
+    mins=$((10#$mins))
+    echo $(( days * 24 * 60 + hours * 60 + mins ))
+}
+
+# Helper: Get human-readable elapsed time
+get_elapsed_human() {
+    local pid="$1"
+    ps -o etime= -p "$pid" 2>/dev/null | xargs || echo "N/A"
+}
+
+# Helper: Get CPU usage for a process
+get_cpu_usage() {
+    local pid="$1"
+    ps -o %cpu= -p "$pid" 2>/dev/null | xargs || echo "0.0"
+}
+
+# Helper: Check if a process has active network connections
+has_network() {
+    local pid="$1"
+    # Check for any established TCP connections
+    if lsof -Pan -p "$pid" -i 2>/dev/null | grep -q ESTABLISHED; then
+        return 0
+    fi
+    return 1
+}
+
+# Helper: Get the current command running in a tmux pane
+get_pane_command() {
+    local session="$1"
+    tmux display-message -t "$session" -p '#{pane_current_command}' 2>/dev/null || echo "unknown"
+}
+
+# Helper: Determine agent health status
+# Returns: RUNNING, COMPLETED, STUCK, or UNKNOWN
+get_agent_status() {
+    local session="$1"
+    local pane_pid
+    pane_pid=$(get_pane_pid "$session")
+
+    if [[ -z "$pane_pid" ]]; then
+        echo "UNKNOWN"
+        return
+    fi
+
+    # Check current command in pane
+    local pane_cmd
+    pane_cmd=$(get_pane_command "$session")
+
+    # Find claude child process
+    local claude_pid
+    claude_pid=$(find_claude_child "$pane_pid" | head -1)
+
+    if [[ -z "$claude_pid" ]]; then
+        # No claude process - check if shell is at prompt
+        if [[ "$pane_cmd" == "zsh" || "$pane_cmd" == "bash" || "$pane_cmd" == "sh" ]]; then
+            echo "COMPLETED"
+            return
+        fi
+        echo "UNKNOWN"
+        return
+    fi
+
+    # Claude process exists - check if it's stuck
+    local elapsed_mins
+    elapsed_mins=$(get_elapsed_minutes "$claude_pid" 2>/dev/null || echo "0")
+    local cpu
+    cpu=$(get_cpu_usage "$claude_pid")
+
+    # Check for stuck: long runtime, near-zero CPU, no network
+    if [[ "$elapsed_mins" -ge "$STUCK_THRESHOLD_MINUTES" ]]; then
+        # Compare CPU with threshold (using awk for float comparison)
+        local is_low_cpu
+        is_low_cpu=$(awk "BEGIN { print ($cpu < $STUCK_CPU_THRESHOLD) ? 1 : 0 }")
+        if [[ "$is_low_cpu" -eq 1 ]] && ! has_network "$claude_pid"; then
+            echo "STUCK"
+            return
+        fi
+    fi
+
+    echo "RUNNING"
+}
+
+# Command: health - Show agent process health
+cmd_health() {
+    echo -e "${BOLD}Agent Health Check${NC}"
+    echo ""
+
+    local sessions
+    sessions=$(get_all_agent_sessions)
+
+    if [[ -z "$sessions" ]]; then
+        echo "No agent tmux sessions found."
+        return 0
+    fi
+
+    # Print table header
+    printf "%-22s %-8s %-10s %-7s %-5s %-10s\n" "Agent" "PID" "Elapsed" "CPU" "Net" "Status"
+    printf "%-22s %-8s %-10s %-7s %-5s %-10s\n" "-----" "---" "-------" "---" "---" "------"
+
+    local stuck_count=0
+    local running_count=0
+    local completed_count=0
+
+    while IFS= read -r session; do
+        [[ -z "$session" ]] && continue
+
+        local pane_pid
+        pane_pid=$(get_pane_pid "$session")
+
+        if [[ -z "$pane_pid" ]]; then
+            printf "%-22s %-8s %-10s %-7s %-5s %-10s\n" "$session" "-" "-" "-" "-" "NO PANE"
+            continue
+        fi
+
+        # Find claude child
+        local claude_pid
+        claude_pid=$(find_claude_child "$pane_pid" | head -1)
+
+        local status
+        status=$(get_agent_status "$session")
+
+        if [[ -z "$claude_pid" ]]; then
+            # No claude process
+            local status_display
+            if [[ "$status" == "COMPLETED" ]]; then
+                status_display="${GREEN}COMPLETED${NC}"
+                completed_count=$((completed_count + 1))
+            else
+                status_display="${YELLOW}$status${NC}"
+            fi
+            printf "%-22s %-8s %-10s %-7s %-5s " "$session" "-" "-" "-" "-"
+            echo -e "$status_display"
+        else
+            local elapsed_human
+            elapsed_human=$(get_elapsed_human "$claude_pid")
+            local cpu
+            cpu=$(get_cpu_usage "$claude_pid")
+            local net_status="none"
+            if has_network "$claude_pid"; then
+                net_status="yes"
+            fi
+
+            local status_display
+            case "$status" in
+                STUCK)
+                    status_display="${RED}STUCK${NC}"
+                    stuck_count=$((stuck_count + 1))
+                    ;;
+                RUNNING)
+                    status_display="${GREEN}RUNNING${NC}"
+                    running_count=$((running_count + 1))
+                    ;;
+                *)
+                    status_display="${YELLOW}$status${NC}"
+                    ;;
+            esac
+
+            printf "%-22s %-8s %-10s %-7s %-5s " "$session" "$claude_pid" "$elapsed_human" "${cpu}%" "$net_status"
+            echo -e "$status_display"
+        fi
+    done <<< "$sessions"
+
+    echo ""
+    echo -e "Summary: ${GREEN}$running_count running${NC}, ${completed_count} completed, ${RED}$stuck_count stuck${NC}"
+
+    if [[ $stuck_count -gt 0 ]]; then
+        echo ""
+        echo -e "${YELLOW}Stuck agents detected. Use './scripts/lean/launch.sh stop --force' to kill them.${NC}"
+    fi
+
+    return $stuck_count
+}
+
+# Helper: Check for stuck agents and print warnings
+# Returns: number of stuck agents
+check_for_stuck_agents() {
+    local sessions
+    sessions=$(get_all_agent_sessions)
+
+    if [[ -z "$sessions" ]]; then
+        return 0
+    fi
+
+    local stuck_count=0
+    local stuck_names=()
+
+    while IFS= read -r session; do
+        [[ -z "$session" ]] && continue
+        local status
+        status=$(get_agent_status "$session")
+        if [[ "$status" == "STUCK" ]]; then
+            stuck_count=$((stuck_count + 1))
+            stuck_names+=("$session")
+        fi
+    done <<< "$sessions"
+
+    if [[ $stuck_count -gt 0 ]]; then
+        echo ""
+        echo -e "${YELLOW}WARNING: Detected $stuck_count stuck agent(s) that may not respond to graceful shutdown:${NC}"
+        for name in "${stuck_names[@]}"; do
+            echo -e "  ${YELLOW}- $name${NC}"
+        done
+        echo ""
+        echo -e "${YELLOW}Stuck agents have 0% CPU and no network activity for >$STUCK_THRESHOLD_MINUTES minutes.${NC}"
+        echo -e "${YELLOW}They will not check signal files. Use '--force' to kill them:${NC}"
+        echo -e "  ${BOLD}./scripts/lean/launch.sh stop --force${NC}"
+        echo ""
+    fi
+
+    return $stuck_count
+}
+
+# Command: stop (graceful by default, --force for immediate kill)
 cmd_stop() {
-    echo -e "${BOLD}Stopping Lean Genius Mathematical Orchestration${NC}"
-    echo ""
+    local force=false
 
-    local stopped=0
+    # Parse stop options
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --force|-f)
+                force=true
+                shift
+                ;;
+            *)
+                echo -e "${RED}Unknown stop option: $1${NC}" >&2
+                echo "Usage: $0 stop [--force]"
+                exit 1
+                ;;
+        esac
+    done
 
-    # Stop Erdős enhancers
-    echo -e "${BLUE}Stopping Erdős enhancers...${NC}"
-    if [[ -x "./scripts/erdos/parallel-enhance.sh" ]]; then
-        ./scripts/erdos/parallel-enhance.sh --stop 2>/dev/null || true
-        ((stopped++))
+    if [[ "$force" == "true" ]]; then
+        echo -e "${BOLD}Force-Stopping Lean Genius Mathematical Orchestration${NC}"
+        echo ""
+
+        local stopped=0
+
+        # Force stop: kill tmux sessions directly
+        echo -e "${BLUE}Killing Erdős enhancer sessions...${NC}"
+        if [[ -x "./scripts/erdos/parallel-enhance.sh" ]]; then
+            ./scripts/erdos/parallel-enhance.sh --stop 2>/dev/null || true
+            stopped=$((stopped + 1))
+        fi
+
+        echo -e "${BLUE}Killing Aristotle agent session...${NC}"
+        if [[ -x "./scripts/aristotle/launch-agent.sh" ]]; then
+            ./scripts/aristotle/launch-agent.sh --stop 2>/dev/null || true
+            stopped=$((stopped + 1))
+        fi
+
+        echo -e "${BLUE}Killing Researcher sessions...${NC}"
+        if [[ -x "./scripts/research/parallel-research.sh" ]]; then
+            ./scripts/research/parallel-research.sh --stop 2>/dev/null || true
+            stopped=$((stopped + 1))
+        fi
+
+        echo -e "${BLUE}Killing Deployer session...${NC}"
+        if [[ -x "./scripts/deploy/launch-agent.sh" ]]; then
+            ./scripts/deploy/launch-agent.sh --stop 2>/dev/null || true
+            stopped=$((stopped + 1))
+        fi
+
+        # Update state
+        set_running false
+
+        # Create stop signal file
+        touch research/lean-stop-daemon 2>/dev/null || true
+
+        echo ""
+        echo -e "${GREEN}${BOLD}All agent sessions killed${NC}"
+    else
+        echo -e "${BOLD}Gracefully Stopping Lean Genius Mathematical Orchestration${NC}"
+        echo ""
+
+        # Create signal files for graceful shutdown
+        mkdir -p "$SIGNALS_DIR"
+        touch "$SIGNALS_DIR/stop-all"
+        echo -e "${GREEN}Created stop-all signal file${NC}"
+
+        # Also signal each agent type through their own mechanisms
+        echo -e "${BLUE}Signaling Erdős enhancers...${NC}"
+        if [[ -x "./scripts/erdos/parallel-enhance.sh" ]]; then
+            ./scripts/erdos/parallel-enhance.sh --graceful-stop 2>/dev/null || true
+        fi
+
+        echo -e "${BLUE}Signaling Aristotle agent...${NC}"
+        if [[ -x "./scripts/aristotle/launch-agent.sh" ]]; then
+            ./scripts/aristotle/launch-agent.sh --graceful-stop 2>/dev/null || true
+        fi
+
+        echo -e "${BLUE}Signaling Researchers...${NC}"
+        if [[ -x "./scripts/research/parallel-research.sh" ]]; then
+            ./scripts/research/parallel-research.sh --graceful-stop 2>/dev/null || true
+        fi
+
+        echo -e "${BLUE}Signaling Deployer...${NC}"
+        # Deployer's --stop already creates signal + kills, so just create signal
+        touch "$SIGNALS_DIR/stop-deployer" 2>/dev/null || true
+
+        # Update state
+        set_running false
+
+        # Create stop signal file
+        touch research/lean-stop-daemon 2>/dev/null || true
+
+        echo ""
+        echo -e "${GREEN}${BOLD}Signal files created for graceful shutdown${NC}"
+        echo ""
+        echo "Agents will finish their current work before stopping."
+        echo "Use './scripts/lean/status.sh' to monitor shutdown progress."
+
+        # Check for stuck agents and warn
+        check_for_stuck_agents || true
     fi
-
-    # Stop Aristotle
-    echo -e "${BLUE}Stopping Aristotle agent...${NC}"
-    if [[ -x "./scripts/aristotle/launch-agent.sh" ]]; then
-        ./scripts/aristotle/launch-agent.sh --stop 2>/dev/null || true
-        ((stopped++))
-    fi
-
-    # Stop Researchers
-    echo -e "${BLUE}Stopping Researchers...${NC}"
-    if [[ -x "./scripts/research/parallel-research.sh" ]]; then
-        ./scripts/research/parallel-research.sh --stop 2>/dev/null || true
-        ((stopped++))
-    fi
-
-    # Stop Deployer
-    echo -e "${BLUE}Stopping Deployer...${NC}"
-    if [[ -x "./scripts/deploy/launch-agent.sh" ]]; then
-        ./scripts/deploy/launch-agent.sh --stop 2>/dev/null || true
-        ((stopped++))
-    fi
-
-    # Update state
-    set_running false
-
-    # Create stop signal file
-    touch research/lean-stop-daemon 2>/dev/null || true
-
-    echo ""
-    echo -e "${GREEN}${BOLD}✓ Stop signals sent to all agents${NC}"
-    echo ""
-    echo "Note: Agents will finish their current work before stopping."
-    echo "Use './scripts/lean/status.sh' to monitor shutdown progress."
 }
 
 # Command: spawn
@@ -446,7 +821,11 @@ main() {
             cmd_start "$@"
             ;;
         stop)
-            cmd_stop
+            shift
+            cmd_stop "$@"
+            ;;
+        health)
+            cmd_health
             ;;
         spawn)
             shift
