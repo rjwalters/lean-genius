@@ -2,7 +2,7 @@
   "id": "erdos-284",
   "title": "Erdős Problem #284",
   "slug": "erdos-284",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal value of ... such that there exist ... with\\[1={n_1}+\\cdots+{n_k}.\\]Is it true that\\[f(k)=(1+o(1)){e-1...",
+  "description": "Let ... be the maximal value of ... such that there exist ... with\\[1={n_1}+\\cdots+{n_k}.\\]Is it true that\\[f(k)=(1+o(1)){e-1...",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/284",
@@ -20,7 +20,7 @@
   },
   "overview": {
     "historicalContext": "Erdős Problem #284 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the maximal value of $n_1$ such that there exist $n_1<n_2<\\cdots <n_k$ with\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Is it true that\\[f(k)=(1+o(1))\\frac{k}{e-1}?\\]\n\n\n\nThe upper bound $f(k) \\leq (1+o(1))\\frac{k}{e-1}$ is trivial since for any $u\\geq 1$ we have\\[\\sum_{u\\leq n\\leq eu}\\frac{1}{n}=1+o(1),\\]and hence if $f(k)=u$ then we must have $k\\geq (e-1-o(1))u$.\n\nEssentially solved by Croot \\cite{Cr01}, who showed that for any $N>1$ there exists some $k\\geq 1$ and\\[N<n_1<\\cdots <n_k \\leq (e+o(1))N\\]with $1=\\sum \\frac{1}{n_i}$.\n\n\n\n\nReferences\n\n\n[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.\n\n\nBack to the problem",
+    "problemStatement": "Let $f(k)$ be the maximal value of $n_1$ such that there exist $n_1<n_2<\\cdots <n_k$ with\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Is it true that\\[f(k)=(1+o(1))\\frac{k}{e-1}?\\]\n\n\n\nThe upper bound $f(k) \\leq (1+o(1))\\frac{k}{e-1}$ is trivial since for any $u\\geq 1$ we have\\[\\sum_{u\\leq n\\leq eu}\\frac{1}{n}=1+o(1),\\]and hence if $f(k)=u$ then we must have $k\\geq (e-1-o(1))u$.\n\nEssentially solved by Croot \\cite{Cr01}, who showed that for any $N>1$ there exists some $k\\geq 1$ and\\[N<n_1<\\cdots <n_k \\leq (e+o(1))N\\]with $1=\\sum \\frac{1}{n_i}$.\n\n\n\n\nReferences\n\n\n[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.",
     "proofStrategy": "TODO: Document proof strategy",
     "keyInsights": []
   },

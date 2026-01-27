@@ -1,8 +1,8 @@
 {
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
-  "phase": "SKIPPED",
-  "status": "skipped",
+  "phase": "NEW",
+  "status": "blocked",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,26 +16,22 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SKIPPED",
-    "since": "2026-01-25T08:45:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-01T05:32:39.478Z",
     "iteration": 1,
-    "focus": "Already covered by PerfectNumbers.lean",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "No action needed - covered elsewhere",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SKIPPED: Already covered by PerfectNumbers.lean (202 lines, 0 sorries). Odd perfect numbers remain OPEN for 2000+ years.",
+    "progressSummary": "Open for 2000+ years!",
     "builtItems": [],
-    "insights": [
-      "Core σ function properties formalized in PerfectNumbers.lean",
-      "Euclid-Euler theorem for even perfect numbers completed",
-      "Odd perfect number existence is OPEN - not tractable"
-    ],
+    "insights": [],
     "mathlibGaps": [
       "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
       "`Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors"
@@ -49,16 +45,14 @@
     "arithmetic-functions",
     "classical"
   ],
-  "relatedProofs": [
-    "Relevance"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-01-01T05:32:39.478Z",
-  "lastUpdate": "2026-01-25T08:45:00.000Z",
+  "lastUpdate": "2026-01-01T05:32:39.478Z",
   "significance": 5,
   "tractability": 9
 }
