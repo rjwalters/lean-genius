@@ -75,7 +75,9 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | `/lean start [options]` | Start with custom pool sizes |
 | `/lean spawn <type>` | Add one agent (erdos, aristotle, researcher, deployer) |
 | `/lean scale <type> <N>` | Scale pool to N agents |
-| `/lean stop` | Graceful shutdown of all agents |
+| `/lean stop` | Graceful shutdown of all agents (creates signal files) |
+| `/lean stop --force` | Force stop all agents (kills tmux sessions immediately) |
+| `/lean health` | Show agent process health and detect stuck agents |
 
 ## Pool Limits
 
@@ -95,7 +97,9 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 
 # Launch/stop (also works outside /lean skill)
 ./scripts/lean/launch.sh start --erdos 2
-./scripts/lean/launch.sh stop
+./scripts/lean/launch.sh stop                # Graceful (signal files)
+./scripts/lean/launch.sh stop --force        # Force (kill sessions)
+./scripts/lean/launch.sh health              # Check agent health
 ./scripts/lean/launch.sh spawn erdos
 ./scripts/lean/launch.sh scale erdos 3
 ```
