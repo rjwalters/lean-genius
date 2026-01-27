@@ -3,11 +3,11 @@
 # Lean Genius Launch - Start/stop/scale the mathematical agent team
 #
 # Usage:
-#   ./scripts/lean/launch.sh start [--erdos N] [--aristotle N] [--researcher N] [--deployer N]
+#   ./scripts/lean/launch.sh start [--erdos N] [--aristotle N] [--researcher N] [--seeker N] [--deployer N]
 #   ./scripts/lean/launch.sh stop [--force]
 #   ./scripts/lean/launch.sh health
-#   ./scripts/lean/launch.sh spawn erdos|aristotle|researcher|deployer
-#   ./scripts/lean/launch.sh scale erdos|researcher N
+#   ./scripts/lean/launch.sh spawn erdos|aristotle|researcher|seeker|deployer
+#   ./scripts/lean/launch.sh scale erdos|researcher|seeker N
 #   ./scripts/lean/launch.sh status
 #
 
@@ -34,12 +34,14 @@ STUCK_CPU_THRESHOLD="0.5"
 DEFAULT_ERDOS=2
 DEFAULT_ARISTOTLE=1
 DEFAULT_RESEARCHER=1
+DEFAULT_SEEKER=1
 DEFAULT_DEPLOYER=1
 
 # Max pool sizes
 MAX_ERDOS=5
 MAX_ARISTOTLE=2
 MAX_RESEARCHER=3
+MAX_SEEKER=1
 MAX_DEPLOYER=1
 
 # Helper: Print usage
@@ -59,6 +61,7 @@ Start Options:
   --erdos N              Number of Erdős enhancers (default: $DEFAULT_ERDOS, max: $MAX_ERDOS)
   --aristotle N          Number of Aristotle agents (default: $DEFAULT_ARISTOTLE, max: $MAX_ARISTOTLE)
   --researcher N         Number of Researchers (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
+  --seeker N             Number of Seeker agents (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
   --deployer N           Number of Deployers (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
 
 Stop Options:
@@ -68,12 +71,15 @@ Agent Types:
   erdos       Enhances Erdős problem stubs with Lean formalizations
   aristotle   Manages proof search queue for Aristotle system
   researcher  Works on open mathematical problems
+  seeker      Selects research problems when candidate pool runs low
   deployer    Merges PRs and deploys website
 
 Examples:
   $0 start                              # Start with defaults
   $0 start --erdos 3 --researcher 2     # Custom pool sizes
+  $0 start --seeker 1 --researcher 2    # Research team with seeker
   $0 spawn erdos                        # Add one Erdős enhancer
+  $0 spawn seeker                       # Add seeker agent
   $0 scale erdos 4                      # Scale to 4 enhancers
   $0 stop                               # Graceful stop (signal files)
   $0 stop --force                       # Force stop (kill sessions)
@@ -87,7 +93,8 @@ init_state() {
     local erdos="${1:-$DEFAULT_ERDOS}"
     local aristotle="${2:-$DEFAULT_ARISTOTLE}"
     local researcher="${3:-$DEFAULT_RESEARCHER}"
-    local deployer="${4:-$DEFAULT_DEPLOYER}"
+    local seeker="${4:-$DEFAULT_SEEKER}"
+    local deployer="${5:-$DEFAULT_DEPLOYER}"
 
     mkdir -p "$(dirname "$STATE_FILE")"
 
@@ -106,6 +113,7 @@ init_state() {
         --argjson erdos "$erdos" \
         --argjson aristotle "$aristotle" \
         --argjson researcher "$researcher" \
+        --argjson seeker "$seeker" \
         --argjson deployer "$deployer" \
         --argjson prev_stats "$prev_stats" \
         '{
@@ -115,6 +123,7 @@ init_state() {
                 erdos: $erdos,
                 aristotle: $aristotle,
                 researcher: $researcher,
+                seeker: $seeker,
                 deployer: $deployer
             },
             agents: {},
@@ -124,6 +133,7 @@ init_state() {
                     stubs_enhanced: 0,
                     proofs_submitted: 0,
                     proofs_integrated: 0,
+                    problems_selected: 0,
                     deployments: 0
                 }
                 end
@@ -162,6 +172,7 @@ cmd_start() {
     local erdos=$DEFAULT_ERDOS
     local aristotle=$DEFAULT_ARISTOTLE
     local researcher=$DEFAULT_RESEARCHER
+    local seeker=$DEFAULT_SEEKER
     local deployer=$DEFAULT_DEPLOYER
 
     # Parse options
@@ -177,6 +188,10 @@ cmd_start() {
                 ;;
             --researcher)
                 researcher="$2"
+                shift 2
+                ;;
+            --seeker)
+                seeker="$2"
                 shift 2
                 ;;
             --deployer)
@@ -204,6 +219,10 @@ cmd_start() {
         echo -e "${YELLOW}Warning: Researcher count $researcher exceeds max $MAX_RESEARCHER, using $MAX_RESEARCHER${NC}"
         researcher=$MAX_RESEARCHER
     fi
+    if [[ $seeker -gt $MAX_SEEKER ]]; then
+        echo -e "${YELLOW}Warning: Seeker count $seeker exceeds max $MAX_SEEKER, using $MAX_SEEKER${NC}"
+        seeker=$MAX_SEEKER
+    fi
     if [[ $deployer -gt $MAX_DEPLOYER ]]; then
         echo -e "${YELLOW}Warning: Deployer count $deployer exceeds max $MAX_DEPLOYER, using $MAX_DEPLOYER${NC}"
         deployer=$MAX_DEPLOYER
@@ -215,11 +234,12 @@ cmd_start() {
     echo "  Erdős Enhancers: $erdos"
     echo "  Aristotle Agents: $aristotle"
     echo "  Researchers: $researcher"
+    echo "  Seekers: $seeker"
     echo "  Deployers: $deployer"
     echo ""
 
     # Initialize state
-    init_state "$erdos" "$aristotle" "$researcher" "$deployer"
+    init_state "$erdos" "$aristotle" "$researcher" "$seeker" "$deployer"
 
     # Start agents
     local started=0
@@ -253,6 +273,17 @@ cmd_start() {
             ./scripts/research/parallel-research.sh "$researcher" &
             sleep 2
             echo -e "${GREEN}✓ Researchers launched${NC}"
+            started=$((started + 1))
+        fi
+    fi
+
+    # Seeker
+    if [[ $seeker -gt 0 ]]; then
+        echo -e "${BLUE}Starting Seeker agent...${NC}"
+        if check_script "./scripts/research/launch-seeker.sh"; then
+            ./scripts/research/launch-seeker.sh &
+            sleep 1
+            echo -e "${GREEN}✓ Seeker agent launched${NC}"
             started=$((started + 1))
         fi
     fi
@@ -300,6 +331,10 @@ get_all_agent_sessions() {
             sessions+=("researcher-$i")
         fi
     done
+    # Seeker
+    if tmux has-session -t "seeker-agent" 2>/dev/null; then
+        sessions+=("seeker-agent")
+    fi
     # Deployer
     if tmux has-session -t "deployer" 2>/dev/null; then
         sessions+=("deployer")
@@ -632,6 +667,12 @@ cmd_stop() {
             stopped=$((stopped + 1))
         fi
 
+        echo -e "${BLUE}Killing Seeker agent session...${NC}"
+        if tmux has-session -t "seeker-agent" 2>/dev/null; then
+            tmux kill-session -t "seeker-agent" 2>/dev/null || true
+            stopped=$((stopped + 1))
+        fi
+
         echo -e "${BLUE}Killing Deployer session...${NC}"
         if [[ -x "./scripts/deploy/launch-agent.sh" ]]; then
             ./scripts/deploy/launch-agent.sh --stop 2>/dev/null || true
@@ -670,6 +711,9 @@ cmd_stop() {
         if [[ -x "./scripts/research/parallel-research.sh" ]]; then
             ./scripts/research/parallel-research.sh --graceful-stop 2>/dev/null || true
         fi
+
+        echo -e "${BLUE}Signaling Seeker agent...${NC}"
+        touch "$SIGNALS_DIR/stop-seeker" 2>/dev/null || true
 
         echo -e "${BLUE}Signaling Deployer...${NC}"
         # Deployer's --stop already creates signal + kills, so just create signal
@@ -738,6 +782,16 @@ cmd_spawn() {
             done
             echo -e "${YELLOW}All Researcher slots are full (max: $MAX_RESEARCHER)${NC}"
             ;;
+        seeker)
+            echo -e "${BLUE}Spawning Seeker agent...${NC}"
+            if tmux has-session -t "seeker-agent" 2>/dev/null; then
+                echo -e "${YELLOW}Seeker agent already running${NC}"
+            else
+                ./scripts/research/launch-seeker.sh &
+                sleep 1
+                echo -e "${GREEN}✓ Seeker agent spawned${NC}"
+            fi
+            ;;
         deployer)
             echo -e "${BLUE}Spawning Deployer...${NC}"
             if tmux has-session -t "deployer" 2>/dev/null; then
@@ -750,7 +804,7 @@ cmd_spawn() {
             ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: erdos, aristotle, researcher, deployer"
+            echo "Valid types: erdos, aristotle, researcher, seeker, deployer"
             exit 1
             ;;
     esac
@@ -821,7 +875,7 @@ cmd_scale() {
                 echo -e "${GREEN}Already at $count Researchers${NC}"
             fi
             ;;
-        aristotle|deployer)
+        aristotle|seeker|deployer)
             echo -e "${YELLOW}$agent_type can only have 0 or 1 instance${NC}"
             echo "Use 'spawn' or 'stop' to control single-instance agents"
             ;;

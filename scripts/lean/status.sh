@@ -119,6 +119,7 @@ gather_status() {
     local erdos_sessions=()
     local aristotle_status="stopped"
     local researcher_sessions=()
+    local seeker_status="stopped"
     local deployer_status="stopped"
 
     # Erdős enhancers
@@ -140,6 +141,11 @@ gather_status() {
         fi
     done
 
+    # Seeker
+    if session_exists "seeker-agent"; then
+        seeker_status="running:$(get_session_uptime "seeker-agent")"
+    fi
+
     # Deployer
     if session_exists "deployer"; then
         deployer_status="running:$(get_session_uptime "deployer")"
@@ -159,11 +165,13 @@ gather_status() {
     # Session stats from state file
     local stubs_enhanced=0
     local proofs_submitted=0
+    local problems_selected=0
     local deployments=0
 
     if [[ -f "$STATE_FILE" ]]; then
         stubs_enhanced=$(jq -r '.session_stats.stubs_enhanced // 0' "$STATE_FILE")
         proofs_submitted=$(jq -r '.session_stats.proofs_submitted // 0' "$STATE_FILE")
+        problems_selected=$(jq -r '.session_stats.problems_selected // 0' "$STATE_FILE")
         deployments=$(jq -r '.session_stats.deployments // 0' "$STATE_FILE")
     fi
 
@@ -195,6 +203,10 @@ gather_status() {
       "count": ${#researcher_sessions[@]},
       "sessions": $(printf '%s\n' "${researcher_sessions[@]:-}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
     },
+    "seeker": {
+      "status": "${seeker_status%%:*}",
+      "uptime": "${seeker_status#*:}"
+    },
     "deployer": {
       "status": "${deployer_status%%:*}",
       "uptime": "${deployer_status#*:}"
@@ -203,6 +215,7 @@ gather_status() {
   "session_stats": {
     "stubs_enhanced": $stubs_enhanced,
     "proofs_submitted": $proofs_submitted,
+    "problems_selected": $problems_selected,
     "deployments": $deployments
   }
 }
@@ -267,6 +280,14 @@ EOF
             echo -e "    ${BOLD}Researcher:${NC} ${YELLOW}0 active${NC}"
         fi
 
+        # Seeker
+        if [[ "${seeker_status%%:*}" == "running" ]]; then
+            echo -e "    ${BOLD}Seeker:${NC} ${GREEN}1/1 active${NC}"
+            echo "      seeker-agent: Running (${seeker_status#*:})"
+        else
+            echo -e "    ${BOLD}Seeker:${NC} ${YELLOW}0/1 active${NC}"
+        fi
+
         # Deployer
         if [[ "${deployer_status%%:*}" == "running" ]]; then
             echo -e "    ${BOLD}Deployer:${NC} ${GREEN}1/1 active${NC}"
@@ -280,6 +301,7 @@ EOF
         echo -e "  ${CYAN}Session Stats:${NC}"
         echo "    Stubs enhanced: $stubs_enhanced"
         echo "    Proofs submitted: $proofs_submitted"
+        echo "    Problems selected: $problems_selected"
         echo "    Deployments: $deployments"
 
         echo -e "${BOLD}═══════════════════════════════════════════════════${NC}"
@@ -289,6 +311,7 @@ EOF
         echo -e "  ${BLUE}Commands:${NC}"
         echo "    /lean start --erdos 2 --researcher 1    Start agents"
         echo "    /lean spawn erdos                       Add one Erdős enhancer"
+        echo "    /lean spawn seeker                      Add seeker agent"
         echo "    /lean scale erdos 3                     Scale to 3 enhancers"
         echo "    /lean stop                              Stop all agents"
         echo ""
