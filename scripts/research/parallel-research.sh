@@ -226,7 +226,7 @@ launch_agent() {
     # Launch in tmux with resilient wrapper for error handling
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     tmux new-session -d -s "$session_name" -c "$worktree_path" \
-        "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT $wrapper_script --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file' --max-retries 5"
+        "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT $wrapper_script --daemon --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file'"
 
     print_success "Launched $session_name (worktree: $worktree_path)"
 }
@@ -466,7 +466,9 @@ How it works:
   3. Agents claim problems atomically (knowledge-prioritized)
   4. Each agent: claim → research → commit → push → create PR → repeat
   5. When no work available, agents WAIT and RETRY (don't exit)
-  6. PRs can be reviewed and merged independently
+  6. Agents use daemon mode: infinite retry with exponential backoff for transient errors
+  7. Stop via graceful signal files (.loom/signals/stop-all or stop-researcher-N)
+  8. PRs can be reviewed and merged independently
 
 Examples:
   ./parallel-research.sh              # Launch 2 agents (default)
