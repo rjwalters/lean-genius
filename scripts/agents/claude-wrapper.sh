@@ -224,6 +224,11 @@ run_claude_once() {
     # Run Claude CLI with timeout to prevent indefinite hangs.
     # The 'timeout' command sends SIGTERM after CLAUDE_TIMEOUT seconds,
     # and SIGKILL 30s later if the process hasn't exited.
+    #
+    # NOTE: 'timeout' adds an intermediate process to the tree:
+    #   shell -> claude-wrapper.sh -> timeout -> claude
+    # The health check in launch.sh (find_claude_child) walks the full
+    # process subtree, so additional nesting levels are handled correctly.
     if [[ -n "$LOG_FILE" ]]; then
         last_output=$(timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude --dangerously-skip-permissions "$PROMPT" 2>&1 | tee -a "$LOG_FILE"; echo "EXIT_CODE:${PIPESTATUS[0]}")
     else

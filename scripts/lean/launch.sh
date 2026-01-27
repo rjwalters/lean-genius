@@ -351,41 +351,53 @@ get_pane_pid() {
 }
 
 # Helper: Find child claude processes for a given PID
-# Outputs the PID of the first claude child/grandchild found, or nothing
+# Walks the entire process subtree rooted at parent_pid to find a claude process.
+# This handles arbitrary nesting depth (e.g., shell -> wrapper -> timeout -> claude).
+# Uses a single `ps` call to snapshot the process tree, then walks it via awk.
 find_claude_child() {
     local parent_pid="$1"
-    local children
-    children=$(pgrep -P "$parent_pid" 2>/dev/null) || true
 
-    if [[ -z "$children" ]]; then
-        return 0
-    fi
-
-    local child
-    while IFS= read -r child; do
-        [[ -z "$child" ]] && continue
-        local cmd
-        cmd=$(ps -o comm= -p "$child" 2>/dev/null || true)
-        if [[ "$cmd" == *claude* ]]; then
-            echo "$child"
-            return 0
-        fi
-        # Also check grandchildren (claude may be launched via wrapper)
-        local grandchildren
-        grandchildren=$(pgrep -P "$child" 2>/dev/null) || true
-        if [[ -n "$grandchildren" ]]; then
-            local grandchild
-            while IFS= read -r grandchild; do
-                [[ -z "$grandchild" ]] && continue
-                local gcmd
-                gcmd=$(ps -o comm= -p "$grandchild" 2>/dev/null || true)
-                if [[ "$gcmd" == *claude* ]]; then
-                    echo "$grandchild"
-                    return 0
-                fi
-            done <<< "$grandchildren"
-        fi
-    done <<< "$children"
+    # Snapshot the entire process table once, then use awk to:
+    # 1. Build a set of PIDs in the subtree rooted at parent_pid
+    # 2. Return the first process whose command matches "claude"
+    #
+    # We make multiple passes over the data to handle arbitrary depth,
+    # since ps output order is not guaranteed to be parent-before-child.
+    ps -eo pid,ppid,comm 2>/dev/null | awk -v root="$parent_pid" '
+        NR == 1 { next }  # Skip header
+        {
+            pid = $1 + 0
+            ppid = $2 + 0
+            cmd = $3
+            pids[NR] = pid
+            ppids[NR] = ppid
+            cmds[NR] = cmd
+            count = NR
+        }
+        END {
+            # Seed the subtree with the root PID
+            intree[root] = 1
+            # Iteratively expand the subtree until no new PIDs are added.
+            # Each pass discovers one more level of descendants.
+            changed = 1
+            while (changed) {
+                changed = 0
+                for (i = 2; i <= count; i++) {
+                    if (!intree[pids[i]] && intree[ppids[i]]) {
+                        intree[pids[i]] = 1
+                        changed = 1
+                    }
+                }
+            }
+            # Now find the first claude process in the subtree (excluding root)
+            for (i = 2; i <= count; i++) {
+                if (intree[pids[i]] && pids[i] != root && cmds[i] ~ /claude/) {
+                    print pids[i]
+                    exit 0
+                }
+            }
+        }
+    '
 }
 
 # Helper: Get process elapsed time in minutes
