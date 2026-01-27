@@ -36,9 +36,9 @@
       "problem_id": "erdos-1",
       "submitted": "2026-01-12T09:31:03Z",
       "sorries": [
-        "theorem erdos_1_lower_bound {A : Finset \u2115} {N : \u2115}",
-        "theorem max_element_bound {A : Finset \u2115} (hA : A.Nonempty)",
-        "theorem subset_sums_spacing {A : Finset \u2115} (hA_pos : \u2200 a \u2208 A, 0 < a)"
+        "theorem erdos_1_lower_bound {A : Finset ℕ} {N : ℕ}",
+        "theorem max_element_bound {A : Finset ℕ} (hA : A.Nonempty)",
+        "theorem subset_sums_spacing {A : Finset ℕ} (hA_pos : ∀ a ∈ A, 0 < a)"
       ],
       "notes": "Distinct subset sums - tractability 9/10",
       "status": "expired",
@@ -64,14 +64,14 @@
         "theorem primeSum_irrational : Irrational primeSum := by",
         "theorem tao_identity : omegaSum = primeSum := by"
       ],
-      "notes": "Tao identity: double sum manipulation for \u2211\u03c9(n)/2^n = \u22111/(2^p-1)",
+      "notes": "Tao identity: double sum manipulation for ∑ω(n)/2^n = ∑1/(2^p-1)",
       "status": "expired",
       "last_check": {
         "timestamp": "2026-01-14T05:21:20Z",
         "percent": 100,
         "runtime_minutes": 0
       },
-      "outcome": "PROVED tao_identity. primeSum_irrational requires Tao-Ter\u00e4v\u00e4inen 2025 (beyond Aristotle scope). [Expired on Aristotle]",
+      "outcome": "PROVED tao_identity. primeSum_irrational requires Tao-Teräväinen 2025 (beyond Aristotle scope). [Expired on Aristotle]",
       "integrated": "2026-01-13",
       "theorems_proven": [
         "tao_identity"
@@ -95,7 +95,7 @@
       "problem_id": "erdos-659",
       "submitted": "2026-01-13T18:46:10Z",
       "sorries": [
-        "def isConfiguration : Finset (\u211d \u00d7 \u211d) \u2192 TwoDistanceConfig \u2192 Prop := fun _ _ => sorry"
+        "def isConfiguration : Finset (ℝ × ℝ) → TwoDistanceConfig → Prop := fun _ _ => sorry"
       ],
       "notes": "Definition sorries: moreeOsburnLattice, isConfiguration. Testing concurrent job limits.",
       "status": "expired",
@@ -152,7 +152,7 @@
       "problem_id": "erdos-92",
       "submitted": "2026-01-13T23:59:00Z",
       "sorries": [
-        "theorem f_le_n_minus_one (n : \u2115) (hn : n \u2265 1) : f n \u2264 n - 1 := by",
+        "theorem f_le_n_minus_one (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1 := by",
         "theorem strong_implies_weak (h : StrongConjecture) : WeakConjecture := by"
       ],
       "notes": "HARD sorries: f_le_n_minus_one (trivial bound from definitions), strong_implies_weak (limits analysis). Both are provable!",
@@ -174,7 +174,7 @@
       "problem_id": "erdos-97",
       "submitted": "2026-01-14T17:10:00Z",
       "sorries": [
-        "theorem kEquidistant_implies_unitDistance_bound (k : \u2115)"
+        "theorem kEquidistant_implies_unitDistance_bound (k : ℕ)"
       ],
       "notes": "Resubmitted after previous job expired. HARD sorry: kEquidistant_implies_unitDistance_bound (counting argument). danzerPoints is a construction.",
       "status": "expired",
@@ -262,9 +262,9 @@
         "lemma computeA_22 : computeA (![2, 2] : HomologyClass 2) = 10 := by",
         "lemma computeA_31 : computeA (![3, 1] : HomologyClass 2) = 11 := by",
         "theorem GL5_class : GLnClass K 5 =",
-        "theorem GLn_product_expansion (n : \u2115) :",
-        "theorem L_ne_zero (hK : (1 : K.carrier) \u2260 0) : K.L \u2260 0 \u2228 K.L = 0 := by",
-        "theorem triangular_sum (n : \u2115) :"
+        "theorem GLn_product_expansion (n : ℕ) :",
+        "theorem L_ne_zero (hK : (1 : K.carrier) ≠ 0) : K.L ≠ 0 ∨ K.L = 0 := by",
+        "theorem triangular_sum (n : ℕ) :"
       ],
       "notes": "GL5, Fl5, computeA cases - overnight run",
       "status": "expired",
@@ -401,8 +401,8 @@
       "sorries": [
         "theorem f_3_value : f 3 = 3 := by",
         "theorem f_4_lb : 4 < f 4 := by",
-        "theorem f_4_ub : f 4 \u2264 5 := by",
-        "theorem f_finite (n : \u2115) (hn : 3 \u2264 n) : (CardSet n).Nonempty := by",
+        "theorem f_4_ub : f 4 ≤ 5 := by",
+        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
         "theorem f_three_eq : f 3 = 3 := by"
       ],
       "notes": "Happy Ending Problem - small cases f(3), f(4) bounds",
@@ -417,8 +417,8 @@
       "problem_id": "erdos-45",
       "submitted": "2026-01-14T19:34:08Z",
       "sorries": [
-        "lemma egyptian_fraction_bound (D' : Finset \u2115) (hsum : reciprocalSum D' = 1)",
-        "theorem croot_existence (k : \u2115) (hk : k \u2265 2) :"
+        "lemma egyptian_fraction_bound (D' : Finset ℕ) (hsum : reciprocalSum D' = 1)",
+        "theorem croot_existence (k : ℕ) (hk : k ≥ 2) :"
       ],
       "notes": "Monochromatic divisor sums - Croot theorem",
       "status": "expired",
@@ -439,13 +439,13 @@
       "problem_id": "erdos-157",
       "submitted": "2026-01-14T19:34:20Z",
       "sorries": [
-        "def exampleSidonSet : Finset \u2115 := {1, 2, 5, 10, 11, 13}",
-        "def IsSidonAlt (A : Set \u2115) : Prop :=",
-        "theorem example_is_sidon : IsSidon (\u2191exampleSidonSet : Set \u2115) := by",
+        "def exampleSidonSet : Finset ℕ := {1, 2, 5, 10, 11, 13}",
+        "def IsSidonAlt (A : Set ℕ) : Prop :=",
+        "theorem example_is_sidon : IsSidon (↑exampleSidonSet : Set ℕ) := by",
         "theorem pilatte_existence : Erdos157Conjecture := by",
-        "theorem powers_of_two_sidon : IsSidon { n | \u2203 k : \u2115, n = 2^k } := by",
-        "theorem sidon_iff_sidon_alt (A : Set \u2115) : IsSidon A \u2194 IsSidonAlt A := by",
-        "theorem sidon_not_basis_2 (A : Set \u2115) (hA : A.Infinite) (hSidon : IsSidon A) :"
+        "theorem powers_of_two_sidon : IsSidon { n | ∃ k : ℕ, n = 2^k } := by",
+        "theorem sidon_iff_sidon_alt (A : Set ℕ) : IsSidon A ↔ IsSidonAlt A := by",
+        "theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :"
       ],
       "notes": "Sidon asymptotic basis - Pilatte theorem",
       "status": "expired",
@@ -501,7 +501,7 @@
       "problem_id": "erdos-4",
       "submitted": "2026-01-14T19:34:44Z",
       "sorries": [
-        "theorem improved_stronger (n : \u2115) (hn : n \u2265 100) :"
+        "theorem improved_stronger (n : ℕ) (hn : n ≥ 100) :"
       ],
       "notes": "Prime gaps - technical inequality",
       "status": "expired",
@@ -543,7 +543,7 @@
       "problem_id": "erdos-30",
       "submitted": "2026-01-14T19:35:14Z",
       "sorries": [
-        "theorem sidon_is_b2 (A : Finset \u2115) : IsSidonSet A \u2194 IsBhSet A 2 := by"
+        "theorem sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2 := by"
       ],
       "notes": "Covering systems",
       "status": "expired",
@@ -559,7 +559,7 @@
       "sorries": [
         "theorem f_one : f 1 = 1 := by",
         "theorem f_two : f 2 = 3 := by",
-        "theorem lower_bound_simplified (n : \u2115) (hn : n \u2265 2) :"
+        "theorem lower_bound_simplified (n : ℕ) (hn : n ≥ 2) :"
       ],
       "notes": "Covering intersecting families - Kahn 1994 resolution",
       "status": "expired",
@@ -573,11 +573,11 @@
       "problem_id": "erdos-29",
       "submitted": "2026-01-15T08:27:02Z",
       "sorries": [
-        "def IsEconomical' (A : Set \u2115) : Prop :=",
-        "theorem basis_size_lower_bound (A : Set \u2115) (hA : IsAdditiveBasis A) :",
-        "theorem economical_equiv (A : Set \u2115) : IsEconomical A \u2194 IsEconomical' A := by",
-        "theorem sidon_not_basis (A : Set \u2115) (hS : IsSidon A) : \u00acIsAdditiveBasis A := by",
-        "theorem univ_not_economical : \u00acIsEconomical Set.univ := by"
+        "def IsEconomical' (A : Set ℕ) : Prop :=",
+        "theorem basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) :",
+        "theorem economical_equiv (A : Set ℕ) : IsEconomical A ↔ IsEconomical' A := by",
+        "theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) : ¬IsAdditiveBasis A := by",
+        "theorem univ_not_economical : ¬IsEconomical Set.univ := by"
       ],
       "notes": "Explicit economical additive basis - JPSZ 2024",
       "status": "expired",
@@ -597,7 +597,7 @@
       "problem_id": "erdos-135",
       "submitted": "2026-01-15T08:27:05Z",
       "sorries": [
-        "theorem parallelogram_few_distances (p\u2081 p\u2082 p\u2083 p\u2084 : Point)",
+        "theorem parallelogram_few_distances (p₁ p₂ p₃ p₄ : Point)",
         "theorem trivial_distance_bound (A : Finset Point) :"
       ],
       "notes": "Four points five distances - Tao 2024 counterexample",
@@ -612,11 +612,11 @@
       "problem_id": "erdos-139",
       "submitted": "2026-01-15T08:27:15Z",
       "sorries": [
-        "def SzemerediTheorem : Prop := \u2200 k : \u2115, k \u2265 2 \u2192 SzemerediDensity k",
-        "theorem erdos_139 (k : \u2115) (hk : 1 < k) :",
-        "theorem erdos_139_k3 : Tendsto (fun N => (r 3 N / N : \u211d)) atTop (\ud835\udcdd 0) := by",
-        "theorem erdos_139_main (k : \u2115) (hk : k \u2265 2) :",
-        "theorem erdos_139_of_szemeredi (k : \u2115) (hk : 1 < k) (hsz : SzemerediDensity k) :"
+        "def SzemerediTheorem : Prop := ∀ k : ℕ, k ≥ 2 → SzemerediDensity k",
+        "theorem erdos_139 (k : ℕ) (hk : 1 < k) :",
+        "theorem erdos_139_k3 : Tendsto (fun N => (r 3 N / N : ℝ)) atTop (𝓝 0) := by",
+        "theorem erdos_139_main (k : ℕ) (hk : k ≥ 2) :",
+        "theorem erdos_139_of_szemeredi (k : ℕ) (hk : 1 < k) (hsz : SzemerediDensity k) :"
       ],
       "notes": "Szemeredi theorem - density version",
       "status": "expired",
@@ -635,9 +635,9 @@
       "problem_id": "erdos-166",
       "submitted": "2026-01-15T08:27:18Z",
       "sorries": [
-        "theorem ramsey_one_left (t : \u2115) (ht : t \u2265 1) : R(1, t) = 1 := by",
-        "theorem ramsey_symmetric (s t : \u2115) : R(s, t) = R(t, s) := by",
-        "theorem ramsey_two_left (t : \u2115) (ht : t \u2265 2) : R(2, t) = t := by"
+        "theorem ramsey_one_left (t : ℕ) (ht : t ≥ 1) : R(1, t) = 1 := by",
+        "theorem ramsey_symmetric (s t : ℕ) : R(s, t) = R(t, s) := by",
+        "theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by"
       ],
       "notes": "Ramsey R(4,k) lower bound - Mattheus-Verstraete 2023",
       "status": "integrated",
@@ -651,8 +651,8 @@
       "problem_id": "erdos-167",
       "submitted": "2026-01-15T08:27:20Z",
       "sorries": [
-        "theorem k4_tight : \u2203 (G : SimpleGraph (Fin 4)),",
-        "theorem k5_tight : \u2203 (G : SimpleGraph (Fin 5)),",
+        "theorem k4_tight : ∃ (G : SimpleGraph (Fin 4)),",
+        "theorem k5_tight : ∃ (G : SimpleGraph (Fin 5)),",
         "theorem trivial_bound (G : SimpleGraph V) :"
       ],
       "notes": "Tuza triangle covering conjecture",
@@ -667,10 +667,10 @@
       "problem_id": "erdos-168",
       "submitted": "2026-01-15T08:27:30Z",
       "sorries": [
-        "theorem better_construction (N : \u2115) :",
-        "theorem density_bounded (N : \u2115) (hN : N \u2265 1) :",
-        "theorem F_monotone (N : \u2115) : F N \u2264 F (N + 1) := by",
-        "theorem simple_lower_bound (N : \u2115) (hN : N \u2265 1) :"
+        "theorem better_construction (N : ℕ) :",
+        "theorem density_bounded (N : ℕ) (hN : N ≥ 1) :",
+        "theorem F_monotone (N : ℕ) : F N ≤ F (N + 1) := by",
+        "theorem simple_lower_bound (N : ℕ) (hN : N ≥ 1) :"
       ],
       "notes": "n 2n 3n free sets - GSW 1977",
       "status": "integrated",
@@ -684,10 +684,10 @@
       "problem_id": "erdos-169",
       "submitted": "2026-01-15T08:27:32Z",
       "sorries": [
-        "theorem ex_k1t (n t : \u2115) (ht : t \u2265 1) (hn : n \u2265 t) :",
-        "theorem ex_k22_bounds (n : \u2115) (hn : n \u2265 4) :",
-        "theorem kst_asymptotic (s t : \u2115) (hs : s \u2265 1) (ht : t \u2265 s) :",
-        "theorem zarankiewicz_known (s : \u2115) (hs : (s - 1).Prime) :"
+        "theorem ex_k1t (n t : ℕ) (ht : t ≥ 1) (hn : n ≥ t) :",
+        "theorem ex_k22_bounds (n : ℕ) (hn : n ≥ 4) :",
+        "theorem kst_asymptotic (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ s) :",
+        "theorem zarankiewicz_known (s : ℕ) (hs : (s - 1).Prime) :"
       ],
       "notes": "Bipartite Turan numbers - KST 1954",
       "status": "expired",
@@ -702,7 +702,7 @@
       "submitted": "2026-01-15T08:27:35Z",
       "sorries": [
         "theorem chromatic_ge_clique {V : Type*} [Fintype V] (G : SimpleGraph V) :",
-        "theorem trivial_upper (n : \u2115) : maxChromaticSegments n \u2264 n := by"
+        "theorem trivial_upper (n : ℕ) : maxChromaticSegments n ≤ n := by"
       ],
       "notes": "Segment intersection chromatic - Pawlik 2014",
       "status": "integrated",
@@ -717,8 +717,8 @@
       "submitted": "2026-01-15T08:27:38Z",
       "sorries": [
         "theorem clique_number_3 :",
-        "theorem de_grey : chromaticNumberPlane \u2265 5 := by",
-        "theorem lower_bound_4 : chromaticNumberPlane \u2265 4 := by",
+        "theorem de_grey : chromaticNumberPlane ≥ 5 := by",
+        "theorem lower_bound_4 : chromaticNumberPlane ≥ 4 := by",
         "theorem no_4_clique :"
       ],
       "notes": "Unit distance chromatic - de Grey 2018",
@@ -733,8 +733,8 @@
       "problem_id": "erdos-140",
       "submitted": "2026-01-16T03:44:58Z",
       "sorries": [
-        "def greedyAP3Free : \u2115 \u2192 \u2115",
-        "theorem r3_density_vanishes : \u2200 C > 0, Filter.Tendsto"
+        "def greedyAP3Free : ℕ → ℕ",
+        "theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto"
       ],
       "notes": "Kelley-Meka theorem corollaries: r3_superlogarithmic, r3_density_vanishes. Definition sorry greedyAP3Free expected to skip.",
       "status": "expired",
@@ -814,7 +814,7 @@
       "sorries": [
         ""
       ],
-      "notes": "Chromatic subgraphs - R\u00f6dl 1977",
+      "notes": "Chromatic subgraphs - Rödl 1977",
       "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-16"
@@ -918,7 +918,7 @@
         "squarefree_double_odd",
         "squarefree_one"
       ],
-      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erd\u0151s 1951, Granville 1998). Build verified.",
+      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erdős 1951, Granville 1998). Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. All sorries converted to axioms. No theorems proved.",
@@ -939,7 +939,7 @@
         "liu_montgomery",
         "penman_uncountable"
       ],
-      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erd\u0151s, Bondy-Simonovits, high degree cycle results. Build verified.",
+      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erdős, Bondy-Simonovits, high degree cycle results. Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. Unexpected axioms added. No theorems proved.",
@@ -960,7 +960,7 @@
         "harborth_five",
         "kreisel_kurz_seven"
       ],
-      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erd\u0151s, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
+      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erdős, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. No theorems proved - all axiomatized.",
@@ -974,8 +974,8 @@
       "sorries": [
         "kovac_tao_all_rationals",
         "stolarsky_conjecture_false",
-        "theorem harmonic_diverges : \u00acSummable (fun n : \u2115 => (1 : \u211d) / (n + 1)) := by",
-        "theorem sum_reciprocal_squares_summable : Summable (fun n : \u2115 => (1 : \u211d) / (n + 1)^2) := by"
+        "theorem harmonic_diverges : ¬Summable (fun n : ℕ => (1 : ℝ) / (n + 1)) := by",
+        "theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (n + 1)^2) := by"
       ],
       "notes": "Standard convergence/divergence results for series",
       "status": "failed",
@@ -997,8 +997,8 @@
         "suk_bound",
         "theorem f_3_value : f 3 = 3 := by",
         "theorem f_4_lb : 4 < f 4 := by",
-        "theorem f_4_ub : f 4 \u2264 5 := by",
-        "theorem f_finite (n : \u2115) (hn : 3 \u2264 n) : (CardSet n).Nonempty := by",
+        "theorem f_4_ub : f 4 ≤ 5 := by",
+        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
         "theorem f_three_eq : f 3 = 3 := by"
       ],
       "notes": "5 sorries: Happy Ending Problem - f_3_value, f_4_lb, f_4_ub, f_finite, f_three_eq",
@@ -1036,9 +1036,9 @@
         "theorem example_binomial_square :",
         "theorem example_trinomial_square :",
         "theorem f_one : f 1 = 1 := by",
-        "theorem f_pos (k : \u2115) (hk : k \u2265 1) : f k \u2265 1 := by",
+        "theorem f_pos (k : ℕ) (hk : k ≥ 1) : f k ≥ 1 := by",
         "theorem f_two : f 2 = 3 := by",
-        "theorem general_divergence (n : \u2115) (hn : n \u2265 1) :",
+        "theorem general_divergence (n : ℕ) (hn : n ≥ 1) :",
         "theorem schinzel_lower_bound :",
         "theorem schinzel_zannier_improved :"
       ],
@@ -1053,10 +1053,10 @@
       "problem_id": "erdos-402",
       "submitted": "2026-01-17T19:20:27Z",
       "sorries": [
-        "theorem erdos_402_equality_cases (A : Finset \u2115) (hA : A.Nonempty)",
-        "theorem erdos_402_graham_conjecture (A : Finset \u2115) (hA : A.Nonempty)",
-        "theorem erdos_402_range (n : \u2115) (hn : n \u2265 1) :",
-        "theorem erdos_402_ratio_bound (A : Finset \u2115) (hA : A.Nonempty)"
+        "theorem erdos_402_equality_cases (A : Finset ℕ) (hA : A.Nonempty)",
+        "theorem erdos_402_graham_conjecture (A : Finset ℕ) (hA : A.Nonempty)",
+        "theorem erdos_402_range (n : ℕ) (hn : n ≥ 1) :",
+        "theorem erdos_402_ratio_bound (A : Finset ℕ) (hA : A.Nonempty)"
       ],
       "notes": "SOLVED: Graham GCD conjecture. 5 theorem sorries - main theorem and equality characterization.",
       "status": "expired",
@@ -1087,7 +1087,7 @@
       "sorries": [
         "fejer_riesz",
         "littlewood_lower_bound",
-        "theorem erdos_225_main (n : \u2115) (p : TrigPoly n)",
+        "theorem erdos_225_main (n : ℕ) (p : TrigPoly n)",
         "theorem erdos_225_optimal :",
         "theorem sup_on_circle_eq_trig_sup (p : TrigPoly n) :"
       ],
@@ -1113,7 +1113,7 @@
         "gpf_prime_of_gt_one",
         "gpf_prime_pow",
         "steinerberger_factorization",
-        "theorem erdos_370 : \u2203 f : \u2115 \u2192 \u2115, Function.Injective f \u2227",
+        "theorem erdos_370 : ∃ f : ℕ → ℕ, Function.Injective f ∧",
         "theorem erdos_370_infinitely_many :"
       ],
       "notes": "SOLVED: Consecutive smooth numbers. 2 theorem sorries for infinitude proof.",
@@ -1135,8 +1135,8 @@
         "identity_is_little_o",
         "konieczny_quarter_bound",
         "random_permutation_limit",
-        "theorem consecutiveSum_pos (n : \u2115) (hn : n \u2265 1) (\u03c0 : Perm n)",
-        "theorem S_upper_bound (n : \u2115) (\u03c0 : Perm n) :"
+        "theorem consecutiveSum_pos (n : ℕ) (hn : n ≥ 1) (π : Perm n)",
+        "theorem S_upper_bound (n : ℕ) (π : Perm n) :"
       ],
       "notes": "DISPROVED: Consecutive sums in permutations. 2 theorem sorries for counterexample bounds.",
       "status": "expired",
@@ -1155,8 +1155,8 @@
         "ruzsa_essential_component_lower_bound",
         "schnirelmann_theorem",
         "smooth23_counting",
-        "theorem lacunary_counting_bound (A : Set \u2115) (hA : IsLacunarySet A) :",
-        "theorem schnirelmannDensity_mem_Icc (A : Set \u2115) :"
+        "theorem lacunary_counting_bound (A : Set ℕ) (hA : IsLacunarySet A) :",
+        "theorem schnirelmannDensity_mem_Icc (A : Set ℕ) :"
       ],
       "notes": "DISPROVED: Essential components and lacunary sets. 2 theorem sorries for Ruzsa theorem.",
       "status": "expired",
@@ -1183,10 +1183,10 @@
         "brownRodl_theorem",
         "erdos303_true",
         "theorem infinitely_many_solutions :",
-        "theorem monochromatic_iff_alt (\ud835\udcd2 : \u2124 \u2192 \u03b1) (a b c : \u2124) :",
-        "theorem unitFractionEq_iff_alt (a b c : \u2124) (ha : a \u2260 0) (hb : b \u2260 0) (hc : c \u2260 0) :"
+        "theorem monochromatic_iff_alt (𝓒 : ℤ → α) (a b c : ℤ) :",
+        "theorem unitFractionEq_iff_alt (a b c : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) :"
       ],
-      "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-R\u00f6dl 1991)",
+      "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-Rödl 1991)",
       "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-19",
@@ -1206,7 +1206,7 @@
         "theorem jkly_strengthened : StrengthenedConjecture := by",
         "theorem original_conjecture_solved : OriginalConjecture := by",
         "theorem ramsey_not_too_regular (G : SimpleGraph V) (hRamsey : IsRamseyGraph G)",
-        "theorem regular_one_degree (G : SimpleGraph V) (k : \u2115) (h : IsRegular G k) :",
+        "theorem regular_one_degree (G : SimpleGraph V) (k : ℕ) (h : IsRegular G k) :",
         "theorem upper_bound_construction :"
       ],
       "notes": "Distinct Degrees in Induced Subgraphs - SOLVED (Bukh-Sudakov 2007, JKLY 2020)",
@@ -1220,9 +1220,9 @@
       "problem_id": "erdos-27",
       "submitted": "2026-01-18T04:34:10Z",
       "sorries": [
-        "theorem averaging_bound (m\u2081 m\u2082 : \u2115) (hm : m\u2081 \u2264 m\u2082) (hm\u2081 : m\u2081 > 0) :",
+        "theorem averaging_bound (m₁ m₂ : ℕ) (hm : m₁ ≤ m₂) (hm₁ : m₁ > 0) :",
         "theorem bbmst_bound :",
-        "theorem conjecture_dichotomy : ErdosConjecture \u2194 \u00acErdosConjectureNegation := by",
+        "theorem conjecture_dichotomy : ErdosConjecture ↔ ¬ErdosConjectureNegation := by",
         "theorem erdos_27_disproved : ErdosConjectureNegation := by",
         "theorem ffkpy_main_theorem :",
         "theorem growing_C_works :",
@@ -1230,8 +1230,8 @@
         "theorem no_universal_constant :",
         "theorem perfect_covering_min_modulus :",
         "theorem perfect_is_zero_almost (S : CongruenceSystem) (h : IsPerfectCovering S) :",
-        "theorem product_bounded_below (N : \u2115) (C : \u211d) (hC : C > 1) (hN : N \u2265 2) :",
-        "theorem sufficient_C_works (\u03b5 : \u211d) (h\u03b5 : \u03b5 > 0) :"
+        "theorem product_bounded_below (N : ℕ) (C : ℝ) (hC : C > 1) (hN : N ≥ 2) :",
+        "theorem sufficient_C_works (ε : ℝ) (hε : ε > 0) :"
       ],
       "notes": "Almost Covering Systems - SOLVED/DISPROVED (FFKPY)",
       "status": "expired",
@@ -1245,10 +1245,10 @@
       "submitted": "2026-01-18T04:34:13Z",
       "sorries": [
         "theorem aks_bipartite_bound :",
-        "theorem cycle_edge_count (n : \u2115) (hn : n \u2265 3) :",
-        "theorem cycle_ramsey_linear (n : \u2115) (hn : n \u2265 3) :",
-        "theorem path_edge_count (n : \u2115) (hn : n \u2265 1) :",
-        "theorem path_ramsey_linear (n : \u2115) (hn : n \u2265 2) :",
+        "theorem cycle_edge_count (n : ℕ) (hn : n ≥ 3) :",
+        "theorem cycle_ramsey_linear (n : ℕ) (hn : n ≥ 3) :",
+        "theorem path_edge_count (n : ℕ) (hn : n ≥ 1) :",
+        "theorem path_ramsey_linear (n : ℕ) (hn : n ≥ 2) :",
         "theorem probabilistic_lower_bound :",
         "theorem sparse_graphs_better_bound :",
         "theorem sudakov_implies_545_partial :",
@@ -1267,8 +1267,8 @@
       "sorries": [
         "erdosSarkozy_partial",
         "szemeredi_theorem",
-        "theorem g_ge_n (k n : \u2115) (hk : k \u2265 3) (hn : n \u2265 1) : g k n \u2265 n := by",
-        "theorem g3_le_exp (n : \u2115) (hn : n \u2265 1) : g 3 n \u2264 3^n := by",
+        "theorem g_ge_n (k n : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) : g k n ≥ n := by",
+        "theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by",
         "theorem g3_one : g 3 1 = 1 := by",
         "theorem g3_two : g 3 2 = 2 := by"
       ],
@@ -1294,11 +1294,11 @@
         "huang_loh_sudakov",
         "kleitman_exact",
         "luczak_mieczkowska",
-        "theorem f_2_explicit (n k : \u2115) (hk : k \u2265 1) (hn : n \u2265 2 * k) :",
-        "theorem large_n_construction2_dominates (r k : \u2115) (hr : r \u2265 2) (hk : k \u2265 1) :",
-        "theorem upper_bound_tight_construction2 (n r k : \u2115) (hr : r \u2265 2) (hk : k \u2265 1) (hn : n \u2265 r * k) :"
+        "theorem f_2_explicit (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ 2 * k) :",
+        "theorem large_n_construction2_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) :",
+        "theorem upper_bound_tight_construction2 (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n ≥ r * k) :"
       ],
-      "notes": "The Erd\u0151s Matching Conjecture - SOLVED for r=2,3",
+      "notes": "The Erdős Matching Conjecture - SOLVED for r=2,3",
       "status": "expired",
       "last_check": null,
       "outcome": "3 sorries remaining [Expired on Aristotle]"
@@ -1324,7 +1324,7 @@
         "R_satisfies",
         "R_symm",
         "ramsey_exists",
-        "theorem ratio_lower_from_befs (k : \u2115) (hk : k \u2265 3) :",
+        "theorem ratio_lower_from_befs (k : ℕ) (hk : k ≥ 3) :",
         "trivial_diff_bound"
       ],
       "notes": "Ramsey growth rate - 1 sorry, 16 axioms",
@@ -1349,7 +1349,7 @@
         "pyber_covering",
         "ramsey_3_3",
         "small_case_5",
-        "theorem edge_partition (n : \u2115) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :",
+        "theorem edge_partition (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :",
         "theorem mono_iff_red_or_blue (c : EdgeColoring n) (t : Triangle n) :"
       ],
       "notes": "Graph packing - 3 sorries, 10 axioms",
@@ -1366,7 +1366,7 @@
         "aks_theorem",
         "aks_tight",
         "critical_transition",
-        "def WithHighProbability (P : \u2115 \u2192 Prop) : Prop :=",
+        "def WithHighProbability (P : ℕ → Prop) : Prop :=",
         "dfs_path_finding",
         "f_at_one",
         "f_at_two",
@@ -1382,7 +1382,7 @@
         "subcritical_forest",
         "subcritical_path_length",
         "supercritical_giant",
-        "theorem large_c_almost_hamiltonian (c : \u211d) (hc : c > 10) :",
+        "theorem large_c_almost_hamiltonian (c : ℝ) (hc : c > 10) :",
         "tree_diameter"
       ],
       "notes": "Arithmetic progressions - 3 sorries, 19 axioms",
@@ -1409,8 +1409,8 @@
         "planar_edge_bound",
         "planar_girth_5_choosable",
         "smallest_known_not_4_choosable",
-        "theorem choosable_implies_colorable (G : SimpleGraph V) (k : \u2115) :",
-        "theorem choosable_monotone (G : SimpleGraph V) (k : \u2115) :",
+        "theorem choosable_implies_colorable (G : SimpleGraph V) (k : ℕ) :",
+        "theorem choosable_monotone (G : SimpleGraph V) (k : ℕ) :",
         "theorem list_chromatic_ge_chromatic (G : SimpleGraph V) :",
         "theorem outerplanar_is_planar (G : SimpleGraph V) (h : IsOuterplanar G) :",
         "theorem planar_5_choosable :",
@@ -1448,7 +1448,7 @@
         "theorem bipartite_iff_no_odd_cycle (G : SimpleGraph V) :",
         "theorem bipartite_list_can_exceed_2 :",
         "theorem bound_is_tight :",
-        "theorem complete_graph_list_chromatic (n : \u2115) :",
+        "theorem complete_graph_list_chromatic (n : ℕ) :",
         "theorem list_chromatic_ge_chromatic (G : SimpleGraph V) :",
         "theorem nonplanar_bipartite_unbounded :",
         "theorem outerplanar_is_planar (G : SimpleGraph V) (h : IsOuterplanar G) :",
@@ -1497,13 +1497,13 @@
         "brown_jung_theorem",
         "def IsLineGraph (G : SimpleGraph V) : Prop :=",
         "theorem contains_critical (G : SimpleGraph V)",
-        "theorem critical_min_degree (G : SimpleGraph V) (k : \u2115) (hcrit : IsCritical G k) :",
+        "theorem critical_min_degree (G : SimpleGraph V) (k : ℕ) (hcrit : IsCritical G k) :",
         "theorem disjoint_odd_cycles_splittable (G : SimpleGraph V)",
-        "theorem odd_cycle_chi_3 (n : \u2115) (hn : n \u2265 3) (hodd : n % 2 = 1) :",
+        "theorem odd_cycle_chi_3 (n : ℕ) (hn : n ≥ 3) (hodd : n % 2 = 1) :",
         "theorem perfect_clique_free (G : SimpleGraph V) (hperf : IsPerfect G) :",
         "theorem perfect_tihany_vacuous (G : SimpleGraph V) (hperf : IsPerfect G)",
-        "theorem tihany_a_eq_2 (b : \u2115) (hb : b \u2265 2) :",
-        "theorem weak_splittability (G : SimpleGraph V) (k a b : \u2115)"
+        "theorem tihany_a_eq_2 (b : ℕ) (hb : b ≥ 2) :",
+        "theorem weak_splittability (G : SimpleGraph V) (k a b : ℕ)"
       ],
       "notes": "Tihany conjecture - OPEN but special cases proven",
       "status": "expired",
@@ -1859,7 +1859,7 @@
       "file": "proofs/Proofs/Erdos154Problem.lean",
       "problem_id": "erdos-154",
       "submitted": "2026-01-26T19:55:30Z",
-      "status": "submitted",
+      "status": "expired",
       "notes": "Restored - QUEUED on API (pagination issue in check script)"
     },
     {
@@ -1867,7 +1867,7 @@
       "file": "proofs/Proofs/Erdos186Problem.lean",
       "problem_id": "erdos-186",
       "submitted": "2026-01-26T19:55:33Z",
-      "status": "submitted",
+      "status": "expired",
       "notes": "Restored - QUEUED on API (pagination issue in check script)"
     },
     {
@@ -1875,7 +1875,7 @@
       "file": "proofs/Proofs/Erdos192Problem.lean",
       "problem_id": "erdos-192",
       "submitted": "2026-01-26T19:55:35Z",
-      "status": "submitted",
+      "status": "expired",
       "notes": "Restored - QUEUED on API (pagination issue in check script)"
     },
     {
@@ -1883,7 +1883,7 @@
       "file": "proofs/Proofs/Erdos217Problem.lean",
       "problem_id": "erdos-217",
       "submitted": "2026-01-26T19:55:39Z",
-      "status": "submitted",
+      "status": "expired",
       "notes": "Restored - QUEUED on API (pagination issue in check script)"
     },
     {
@@ -1891,7 +1891,7 @@
       "file": "proofs/Proofs/Erdos464Problem.lean",
       "problem_id": "erdos-464",
       "submitted": "2026-01-26T19:55:41Z",
-      "status": "submitted",
+      "status": "expired",
       "notes": "Restored - QUEUED on API (pagination issue in check script)"
     },
     {
@@ -1899,7 +1899,7 @@
       "file": "proofs/Proofs/Erdos588Problem.lean",
       "problem_id": "erdos-588",
       "submitted": "2026-01-26T19:55:44Z",
-      "status": "submitted",
+      "status": "expired",
       "notes": "Restored - QUEUED on API (pagination issue in check script)"
     },
     {
@@ -1907,16 +1907,18 @@
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "erdos-602",
       "submitted": "2026-01-26T20:42:16Z",
-      "status": "submitted",
-      "notes": "Manual submission after orphan cleanup"
+      "status": "completed",
+      "notes": "Manual submission after orphan cleanup",
+      "outcome": "No improvement: 1->1 sorries. Aristotle had loading errors (failed to synthesize Inter, universe metavariables)."
     },
     {
       "project_id": "e77b4f64-fe9b-453b-af10-9b47229abb80",
       "file": "proofs/Proofs/Erdos312Problem.lean",
       "problem_id": "erdos-312",
       "submitted": "2026-01-26T20:42:23Z",
-      "status": "submitted",
-      "notes": "Manual submission"
+      "status": "completed",
+      "notes": "Manual submission",
+      "outcome": "No improvement: 2->3 sorries. Aristotle rewrote file but added sorries. Parsing errors on docstrings and formal-conjectures syntax."
     },
     {
       "project_id": "ca04f1a1-cfab-4183-85f5-03e9b592c79f",
@@ -1927,7 +1929,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 3,
-      "notes": "Integrated from batch - 5\u21923 sorries"
+      "notes": "Integrated from batch - 5→3 sorries"
     },
     {
       "project_id": "e8c7f151-cf4a-4257-9ee1-cc564571ebff",
@@ -1938,7 +1940,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 2,
-      "notes": "Integrated from batch - 3\u21922 sorries"
+      "notes": "Integrated from batch - 3→2 sorries"
     },
     {
       "project_id": "463fd6f9-3344-4387-82fe-0c9a02da0dec",
@@ -1949,7 +1951,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2\u21921 sorries"
+      "notes": "Integrated from batch - 2→1 sorries"
     },
     {
       "project_id": "4d4f46e7-8d9e-49a3-8943-4c97ee8a241f",
@@ -1960,7 +1962,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 5\u21921 sorries"
+      "notes": "Integrated from batch - 5→1 sorries"
     },
     {
       "project_id": "254112df-e7b4-495b-8be3-2d2617d6d9e6",
@@ -1971,7 +1973,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2\u21921 sorries"
+      "notes": "Integrated from batch - 2→1 sorries"
     },
     {
       "project_id": "a906ad36-22fc-4cc3-9c05-75bb1642dce8",
@@ -1982,7 +1984,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3\u21921 sorries"
+      "notes": "Integrated from batch - 3→1 sorries"
     },
     {
       "project_id": "f5d0f273-819d-49bf-9021-01842b19bafa",
@@ -1993,7 +1995,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 5\u21921 sorries"
+      "notes": "Integrated from batch - 5→1 sorries"
     },
     {
       "project_id": "ca6f73f6-7352-477a-9749-0820bcfd35b4",
@@ -2004,7 +2006,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3\u21921 sorries"
+      "notes": "Integrated from batch - 3→1 sorries"
     },
     {
       "project_id": "b01a17b8-e26e-43e4-be75-3aed52544d5f",
@@ -2015,7 +2017,7 @@
       "status": "integrated",
       "original_sorries": 4,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 4\u21921 sorries"
+      "notes": "Integrated from batch - 4→1 sorries"
     },
     {
       "project_id": "8942450f-e396-4846-97d7-20d51ef5dc57",
@@ -2026,7 +2028,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3\u21921 sorries"
+      "notes": "Integrated from batch - 3→1 sorries"
     },
     {
       "project_id": "74278ca0-5769-438b-99fa-24efaa3f8ab9",
@@ -2037,7 +2039,7 @@
       "status": "integrated",
       "original_sorries": 4,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 4\u21921 sorries"
+      "notes": "Integrated from batch - 4→1 sorries"
     },
     {
       "project_id": "fc551401-f8db-40d2-9c00-d35b6708cb8e",
@@ -2048,7 +2050,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3\u21921 sorries"
+      "notes": "Integrated from batch - 3→1 sorries"
     },
     {
       "project_id": "0981c660-3812-4596-b582-37bcd8147b2f",
@@ -2059,7 +2061,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3\u21921 sorries"
+      "notes": "Integrated from batch - 3→1 sorries"
     },
     {
       "project_id": "07534fa5-cea1-4211-ac2e-66e3b86304f3",
@@ -2070,7 +2072,7 @@
       "status": "integrated",
       "original_sorries": 7,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 7\u21921 sorries"
+      "notes": "Integrated from batch - 7→1 sorries"
     },
     {
       "project_id": "b68219bf-f6f6-468d-aaf9-dee153ed25e4",
@@ -2081,7 +2083,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3\u21921 sorries"
+      "notes": "Integrated from batch - 3→1 sorries"
     },
     {
       "project_id": "2c0deff5-83dc-45bd-a8dc-7d900c102ea5",
@@ -2092,7 +2094,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 2,
-      "notes": "Integrated from batch - 3\u21922 sorries"
+      "notes": "Integrated from batch - 3→2 sorries"
     },
     {
       "project_id": "53ad8a5a-cb79-424d-a474-eb6a05318d2c",
@@ -2103,7 +2105,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2\u21921 sorries"
+      "notes": "Integrated from batch - 2→1 sorries"
     },
     {
       "project_id": "ecfa895b-88ce-4432-aa19-9f0b5db1f88c",
@@ -2114,7 +2116,7 @@
       "status": "integrated",
       "original_sorries": 11,
       "solved_sorries": 6,
-      "notes": "Integrated from batch - 11\u21926 sorries"
+      "notes": "Integrated from batch - 11→6 sorries"
     },
     {
       "project_id": "5e879a4b-c313-4d93-ada9-41f2dcf2407c",
@@ -2125,7 +2127,136 @@
       "status": "integrated",
       "original_sorries": 1,
       "solved_sorries": 0,
-      "notes": "Integrated from batch - 1\u21920 sorries"
+      "notes": "Integrated from batch - 1→0 sorries"
+    },
+    {
+      "project_id": "1c920353-abca-41a6-bb2b-27d952279ee9",
+      "file": "proofs/Proofs/Erdos1115Problem.lean",
+      "problem_id": "erdos-1115",
+      "submitted": "2026-01-27T19:19:54Z",
+      "status": "submitted",
+      "notes": "Batch submission - 1 sorries, prepared for Aristotle",
+      "sorries_at_submission": 1
+    },
+    {
+      "project_id": "2e22d8d7-5453-464f-9a43-626a44f7e84b",
+      "file": "proofs/Proofs/Erdos1124Problem.lean",
+      "problem_id": "erdos-1124",
+      "submitted": "2026-01-27T19:19:58Z",
+      "status": "submitted",
+      "notes": "Batch submission - 1 sorries, prepared for Aristotle",
+      "sorries_at_submission": 1
+    },
+    {
+      "project_id": "4879c5ee-b510-4489-b576-e4325df40ed3",
+      "file": "proofs/Proofs/Erdos147Problem.lean",
+      "problem_id": "erdos-147",
+      "submitted": "2026-01-27T19:20:02Z",
+      "status": "submitted",
+      "notes": "Batch submission - 1 sorries, prepared for Aristotle",
+      "sorries_at_submission": 1
+    },
+    {
+      "project_id": "f18135bc-f44e-4886-80ea-670f98e1692e",
+      "file": "proofs/Proofs/Erdos164Problem.lean",
+      "problem_id": "erdos-164",
+      "submitted": "2026-01-27T19:20:06Z",
+      "status": "submitted",
+      "notes": "Batch submission - 1 sorries, prepared for Aristotle",
+      "sorries_at_submission": 1
+    },
+    {
+      "project_id": "99a296f5-c5ba-470b-9c95-d800ef7b2daa",
+      "file": "proofs/Proofs/Erdos177Problem.lean",
+      "problem_id": "erdos-177",
+      "submitted": "2026-01-27T19:20:10Z",
+      "status": "submitted",
+      "notes": "Batch submission - 1 sorries, prepared for Aristotle",
+      "sorries_at_submission": 1
+    },
+    {
+      "project_id": "2437fa7d-2948-4aa5-8c69-2b8a7ac58aa5",
+      "file": "proofs/Proofs/Erdos287Problem.lean",
+      "problem_id": "erdos-287",
+      "submitted": "2026-01-27T19:20:14Z",
+      "status": "submitted",
+      "notes": "Batch submission - 1 sorries, prepared for Aristotle",
+      "sorries_at_submission": 1
+    },
+    {
+      "project_id": "3cc1ea63-19b2-41d9-b0dc-5b0658546d3a",
+      "file": "proofs/Proofs/Erdos35Problem.lean",
+      "problem_id": "erdos-35",
+      "submitted": "2026-01-27T19:20:18Z",
+      "status": "submitted",
+      "notes": "Batch submission - 8 sorries, prepared for Aristotle",
+      "sorries_at_submission": 8
+    },
+    {
+      "project_id": "b165e6fc-9a6b-42f2-8d52-820b427a1ea8",
+      "file": "proofs/Proofs/Erdos263Problem.lean",
+      "problem_id": "erdos-263",
+      "submitted": "2026-01-27T19:20:22Z",
+      "status": "submitted",
+      "notes": "Batch submission - 10 sorries, prepared for Aristotle",
+      "sorries_at_submission": 10
+    },
+    {
+      "project_id": "661eb1bd-6ec6-4d88-8c36-0718fa4dc284",
+      "file": "proofs/Proofs/Erdos552Problem.lean",
+      "problem_id": "erdos-552",
+      "submitted": "2026-01-27T19:20:26Z",
+      "status": "submitted",
+      "notes": "Batch submission - 12 sorries, prepared for Aristotle",
+      "sorries_at_submission": 12
+    },
+    {
+      "project_id": "1df0c38e-080a-4c75-8147-a6f85f3c8425",
+      "file": "proofs/Proofs/Erdos811Problem.lean",
+      "problem_id": "erdos-811",
+      "submitted": "2026-01-27T19:22:06Z",
+      "status": "submitted",
+      "notes": "Batch submission - prepared for Aristotle"
+    },
+    {
+      "project_id": "868745ef-895a-4f00-80a1-06044012f618",
+      "file": "proofs/Proofs/Erdos543Problem.lean",
+      "problem_id": "erdos-543",
+      "submitted": "2026-01-27T19:22:06Z",
+      "status": "submitted",
+      "notes": "Batch submission - prepared for Aristotle"
+    },
+    {
+      "project_id": "5517d05b-7b79-4db4-a56b-1db41364c154",
+      "file": "proofs/Proofs/Erdos586Problem.lean",
+      "problem_id": "erdos-586",
+      "submitted": "2026-01-27T19:22:06Z",
+      "status": "submitted",
+      "notes": "Batch submission - prepared for Aristotle"
+    },
+    {
+      "project_id": "c4442234-67f2-4281-b709-2ee5f6737393",
+      "file": "proofs/Proofs/Erdos633Problem.lean",
+      "problem_id": "erdos-633",
+      "submitted": "2026-01-27T19:22:06Z",
+      "status": "submitted",
+      "notes": "Batch submission - prepared for Aristotle"
+    },
+    {
+      "project_id": "22d200bb-f0a9-4daf-919f-4a93348d4a11",
+      "file": "proofs/Proofs/Erdos660Problem.lean",
+      "problem_id": "erdos-660",
+      "submitted": "2026-01-27T19:22:06Z",
+      "status": "submitted",
+      "notes": "Batch submission - prepared for Aristotle"
+    },
+    {
+      "project_id": "82c12d9c-37f2-439d-a98c-9bb5ae6c7798",
+      "file": "proofs/Proofs/Erdos678Problem.lean",
+      "problem_id": "erdos-678",
+      "submitted": "2026-01-27T19:22:06Z",
+      "status": "submitted",
+      "notes": "Batch submission - prepared for Aristotle"
     }
   ],
   "completed": [],
@@ -2134,7 +2265,7 @@
     "Aristotle = proof search (known results), Claude = creative work (OPEN problems)",
     "Don't send OPEN conjectures to Aristotle - no proof exists to find",
     "DO attempt OPEN problems ourselves - that's our mission!",
-    "ALLOW OVERNIGHT RUNS - Erd\u0151s #728 took 6 hours and succeeded with 1416 lines!",
+    "ALLOW OVERNIGHT RUNS - Erdős #728 took 6 hours and succeeded with 1416 lines!",
     "Aristotle can formalize hard theorems if a proof exists somewhere",
     "Use --no-wait for async workflow, check status next morning",
     "Classify sorries: TRIVIAL (fast), HARD (overnight OK), OPEN (Claude only)"
@@ -9075,6 +9206,6 @@
     "2026-01-11: Verified problems via erdosproblems.com directly",
     "REMOVED as OPEN: erdos-17, erdos-18, erdos-19, erdos-20",
     "erdos-205 and erdos-333 already have Lean proofs (check codebase)",
-    "erdos-69 (Tao-Ter\u00e4v\u00e4inen 2025) omitted - analytic proof may be hard to formalize"
+    "erdos-69 (Tao-Teräväinen 2025) omitted - analytic proof may be hard to formalize"
   ]
 }
