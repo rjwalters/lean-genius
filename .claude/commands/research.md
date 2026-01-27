@@ -176,6 +176,15 @@ fi
 
 ### Step 3: Feasibility Check
 
+**Invoke Scout for structured survey:**
+
+```
+/scout <problem-id>
+```
+
+Scout returns gallery proofs, techniques, Mathlib gaps, and recommended approaches. Use this as your primary ORIENT tool.
+
+**Supplement with manual checks if needed:**
 1. **Search Mathlib**: WebSearch "Mathlib4 Lean [topic] 2025 2026"
 2. **Check codebase**: Search `proofs/Proofs/` for related work
 3. **Assess tractability**: What exists? What needs building?
@@ -243,14 +252,34 @@ When pool is empty, we scout for new knowledge and attempt if promising.
 
 ### Step 3: Scout for Changes
 
-Search for new knowledge:
+**AUTOMATIC SCOUT INVOCATION:**
+
+When in the ORIENT phase, invoke the Scout skill for a structured literature survey:
+
+```
+Use the /scout skill with the problem ID:
+/scout <problem-id>
+```
+
+Scout will return:
+- Related gallery proofs and techniques
+- Recent Mathlib additions relevant to this problem
+- Cross-problem insights from other research
+- Literature highlights and key papers
+- Recommended approaches with evidence
+
+**Incorporate Scout's findings into your ORIENT exploration.** Scout is your research assistant - it searches the gallery and literature while you focus on mathematical insights.
+
+**Manual searches (if Scout results are incomplete):**
+
+If Scout's survey is incomplete or you need deeper exploration:
 - `WebSearch "Mathlib4 [topic] 2025 2026"`
 - `WebSearch "Mathlib4 GitHub PR [topic] merged"`
 - `WebSearch "[theorem] elementary proof"`
 
 **Decision point:**
-- Found new infrastructure/approach → Proceed to attempt
-- Nothing new → Document scout, pick different problem or end session
+- Found new infrastructure/approach (from Scout or manual search) → Proceed to attempt
+- Nothing new → Document scout results, pick different problem or end session
 
 ### Step 4: Attempt (if promising)
 
@@ -321,6 +350,27 @@ jq '.knowledge.nextSteps += ["Try descent argument for case n≡7 mod 8"]' "$FIL
 # Update progress summary
 jq '.knowledge.progressSummary = "PROGRESS: Proved necessity direction"' "$FILE" > tmp.json && mv tmp.json "$FILE"
 ```
+
+### Update Technique Index (Recommended)
+
+When you use a specific proof technique during a session, update the global technique index to help future problem selection:
+
+```bash
+# Add a technique entry to the global index
+TECHNIQUE_FILE="research/knowledge/technique-index.json"
+if [ -f "$TECHNIQUE_FILE" ]; then
+  jq --arg name "Circle Method" \
+     --arg problem "$PROBLEM_ID" \
+     --arg outcome "partial" \
+     --arg date "$(date +%Y-%m-%d)" \
+     '.techniques += [{"name": $name, "used_in_problems": [$problem], "outcome": $outcome, "date": $date}]' \
+     "$TECHNIQUE_FILE" > tmp.json && mv tmp.json "$TECHNIQUE_FILE"
+fi
+```
+
+**Outcome values:** `success`, `partial`, `blocked`, `failed`
+
+This feeds into the Seeker's problem selection (prefer problems where successful techniques are available) and the Scout's technique survey.
 
 **What to capture:**
 

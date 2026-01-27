@@ -16,6 +16,7 @@ As the **Lean Daemon**, you **continuously** orchestrate the mathematical agent 
 - **Spawn Erdős enhancers** to upgrade gallery stubs with Lean formalizations
 - **Spawn Aristotle agents** to manage proof search queue
 - **Spawn Researchers** to work on open mathematical problems
+- **Spawn Seekers** to select research problems when the candidate pool runs low
 - **Spawn Deployers** to merge PRs and deploy the website
 - **Monitor progress** by checking tmux sessions and work queues
 - **Scale pools** based on available work
@@ -26,12 +27,13 @@ You don't do the mathematical work yourself - you spawn worker agents to do the 
 ## Usage
 
 ```
-/lean                     # Start daemon with default pool (2 erdos, 1 aristotle, 1 researcher, 1 deployer)
+/lean                     # Start daemon with default pool (2 erdos, 1 aristotle, 1 researcher, 1 seeker, 1 deployer)
 /lean status              # Report current system state only
 /lean start --erdos 3 --researcher 2    # Start with custom pool sizes
 /lean spawn erdos         # Manually spawn one Erdős enhancer
 /lean spawn aristotle     # Manually spawn Aristotle agent
 /lean spawn researcher    # Manually spawn Researcher agent
+/lean spawn seeker        # Manually spawn Seeker agent
 /lean spawn deployer      # Manually spawn Deployer agent
 /lean scale erdos 3       # Scale Erdős pool to 3 agents
 /lean stop                # Graceful shutdown of all agents
@@ -55,6 +57,7 @@ You don't do the mathematical work yourself - you spawn worker agents to do the 
 | `--erdos N` | 2 | Number of Erdős enhancer agents |
 | `--aristotle N` | 1 | Number of Aristotle agents |
 | `--researcher N` | 1 | Number of Researcher agents |
+| `--seeker N` | 1 | Number of Seeker agents |
 | `--deployer N` | 1 | Number of Deployer agents |
 
 ## Pool Configuration
@@ -64,6 +67,7 @@ You don't do the mathematical work yourself - you spawn worker agents to do the 
   "erdos": { "min": 0, "max": 5, "default": 2 },
   "aristotle": { "min": 0, "max": 2, "default": 1 },
   "researcher": { "min": 0, "max": 3, "default": 1 },
+  "seeker": { "min": 0, "max": 1, "default": 1 },
   "deployer": { "min": 0, "max": 1, "default": 1 }
 }
 ```
@@ -116,6 +120,9 @@ Agents are spawned via the existing launch scripts which create tmux sessions:
 # Spawn Researchers
 ./scripts/research/parallel-research.sh N
 
+# Spawn Seeker agent
+./scripts/research/launch-seeker.sh
+
 # Spawn Deployer
 ./scripts/deploy/launch-agent.sh
 ```
@@ -129,6 +136,7 @@ The daemon monitors these tmux sessions to track agent status.
 | Erdős | Stubs needing enhancement | `npx tsx scripts/erdos/find-stubs.ts --stats` |
 | Aristotle | Pending proof search jobs | `jq '.jobs \| map(select(.status=="submitted")) \| length' research/aristotle-jobs.json` |
 | Researcher | Available research problems | `jq '.candidates \| map(select(.status=="available")) \| length' research/candidate-pool.json` |
+| Seeker | Low candidate pool | `jq '.candidates \| map(select(.status=="available")) \| length' research/candidate-pool.json` (triggers when < 5) |
 | Deployer | PRs ready to merge | `gh pr list --label "loom:pr" --json number \| jq length` |
 
 ## Status Report
@@ -153,12 +161,15 @@ The daemon monitors these tmux sessions to track agent status.
       aristotle-agent: Running
     Researcher: 1/1 active
       researcher-1: Running (1h 20m)
+    Seeker: 1/1 active
+      seeker-agent: Running (15m cycle)
     Deployer: 1/1 active
       deployer: Last cycle 30m ago
 
   Session Stats:
     Stubs enhanced: 5
     Proofs submitted: 3
+    Problems selected: 2
     Deployments: 1
 ═══════════════════════════════════════════════════
 ```
@@ -175,6 +186,7 @@ State tracked in `research/lean-daemon-state.json`:
     "erdos": 2,
     "aristotle": 1,
     "researcher": 1,
+    "seeker": 1,
     "deployer": 1
   },
   "agents": {
@@ -182,12 +194,14 @@ State tracked in `research/lean-daemon-state.json`:
     "erdos-enhancer-2": { "status": "running", "started": "2026-01-24T10:05:00Z" },
     "aristotle-agent": { "status": "running", "started": "2026-01-24T10:00:00Z" },
     "researcher-1": { "status": "running", "started": "2026-01-24T10:00:00Z" },
+    "seeker-agent": { "status": "running", "started": "2026-01-24T10:00:00Z" },
     "deployer": { "status": "running", "started": "2026-01-24T10:00:00Z" }
   },
   "session_stats": {
     "stubs_enhanced": 5,
     "proofs_submitted": 3,
     "proofs_integrated": 2,
+    "problems_selected": 2,
     "deployments": 1
   }
 }
@@ -227,6 +241,13 @@ touch research/lean-stop-daemon
 - Each works in isolated worktree
 - Creates PR with proof progress
 
+### Seeker
+- Monitors candidate pool depth (triggers when < 5 available)
+- Selects problems using knowledge score + tractability ranking
+- Initializes research workspaces for new problems
+- Runs on 15-minute cycle
+- Single instance (max 1 agent)
+
 ### Deployer
 - Merges approved PRs (`loom:pr` label)
 - Syncs data and deploys to Cloudflare
@@ -237,16 +258,16 @@ touch research/lean-stop-daemon
 | Layer | Role | Purpose |
 |-------|------|---------|
 | Layer 2 | **Lean Daemon** (`/lean`) | Spawns workers, manages pools, monitors progress |
-| Layer 1 | **Workers** (`/erdos`, `/aristotle`, `/research`, `/deploy`) | Execute mathematical work |
+| Layer 1 | **Workers** (`/erdos`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`) | Execute mathematical work |
 
-Use `/erdos`, `/aristotle`, `/research`, or `/deploy` for single-agent work.
+Use `/erdos`, `/aristotle`, `/research`, `/scout`, `/seeker`, or `/deploy` for single-agent work.
 Use `/lean` to run the continuous orchestrator that manages the full team.
 
 ## Integration with Loom
 
 The Lean Daemon coexists with the Loom Daemon:
 - `/loom` orchestrates development work (Builder, Judge, Curator)
-- `/lean` orchestrates mathematical work (Erdős, Aristotle, Researcher, Deployer)
+- `/lean` orchestrates mathematical work (Erdős, Aristotle, Researcher, Seeker, Deployer)
 
 They share:
 - Worktree infrastructure (`.loom/worktrees/`)
@@ -257,7 +278,7 @@ They share:
 
 ```bash
 # Start the mathematical team
-/lean start --erdos 2 --aristotle 1 --researcher 1 --deployer 1
+/lean start --erdos 2 --aristotle 1 --researcher 1 --seeker 1 --deployer 1
 
 # Check status periodically
 /lean status

@@ -124,9 +124,68 @@ OBSERVE → ORIENT → DECIDE → ACT → VERIFY → LEARN
 
 | Role | Purpose | When Used |
 |------|---------|-----------|
-| **Scout** (`/scout`) | Deep exploration | ORIENT phase |
+| **Scout** (`/scout`) | Structured gallery, technique, and literature survey | ORIENT phase (auto-invoked by Researcher) |
+| **Seeker** (`/seeker`) | Selects next research problem from candidate pool | Between research iterations (daemon-managed) |
 | **Adversary** (`/adversary`) | Attack proofs | VERIFY phase |
-| **Chronicler** (`/chronicler`) | Document learnings | LEARN phase |
+| **Chronicler** (`/chronicler`) | Document learnings, update technique index | LEARN phase |
+
+## Autonomous OODA Loop
+
+The full autonomous research pipeline runs end-to-end without human intervention:
+
+```
+Seeker selects problem
+    |
+    v
+Researcher claims problem
+    |
+    v
+Scout surveys during ORIENT
+    |
+    v
+Researcher runs OODA cycle (OBSERVE -> ORIENT -> DECIDE -> ACT -> VERIFY -> LEARN)
+    |
+    v
+Chronicler documents learnings, updates technique index
+    |
+    v
+Seeker selects next problem (loop repeats)
+```
+
+### Starting the Autonomous Loop
+
+```bash
+# Start the full mathematical team with seeker
+/lean start --seeker 1 --researcher 1
+
+# Or start individual agents
+/seeker                    # Select next problem
+/scout weak-goldbach       # Survey a specific problem
+/research                  # Run one OODA iteration
+```
+
+### Pipeline Health
+
+```bash
+# Check pipeline status
+./scripts/lean/launch.sh health
+
+# Check candidate pool depth
+jq '[.candidates[] | select(.status == "available")] | length' research/candidate-pool.json
+
+# Run knowledge synthesis
+./scripts/research/synthesize-knowledge.sh
+```
+
+### Cross-Problem Knowledge
+
+The system accumulates knowledge across research problems:
+
+- **Technique index** (`research/knowledge/technique-index.json`): Tracks which proof techniques have been tried on which problems
+- **Knowledge synthesis** (`scripts/research/synthesize-knowledge.sh`): Aggregates patterns across all problems
+- **Patterns file** (`research/knowledge/patterns.md`): Cross-problem insights and common blockers
+
+The Seeker uses this knowledge to select problems where successful techniques are available, and the Scout surfaces cross-problem insights during surveys.
 
 ## Creativity Engine
 
@@ -177,6 +236,9 @@ research/
 │   └── strategies.md         # Technique catalog
 │
 ├── knowledge/                # Cross-problem insights
+│   ├── technique-index.json  # Which techniques used on which problems
+│   ├── synthesis-report.md   # Auto-generated cross-problem report
+│   ├── patterns.md           # Cross-problem patterns
 │   └── techniques.md         # General learnings
 │
 └── problems/                 # Active research
@@ -250,6 +312,21 @@ See `STATE_MACHINE.md` for full state definitions and transitions.
 
 # List all problems
 ./.lean/scripts/research.sh list
+
+# Extract problems from gallery
+npx tsx .lean/scripts/extract-problems.ts --json
+
+# Knowledge scores (sorted by weakest first)
+.lean/scripts/knowledge-scores.sh
+
+# Cross-problem knowledge synthesis
+./scripts/research/synthesize-knowledge.sh
+
+# Launch seeker agent
+./scripts/research/launch-seeker.sh
+
+# Pick a random problem from candidate pool
+.lean/scripts/pick-problem.sh
 ```
 
 ## Knowledge Accumulation
