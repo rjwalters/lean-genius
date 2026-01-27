@@ -1,110 +1,134 @@
 [
   {
-    "id": "erdos-385-header",
+    "id": "ann-e385-header",
     "proofId": "erdos-385",
-    "type": "context",
-    "range": { "startLine": 1, "endLine": 31 },
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #385 defines F(n) = max{m + p(m) : m < n composite} where p(m) is the least prime divisor. Question 1: F(n) > n for large n? Question 2: F(n) - n → ∞?",
-    "significance": "key"
+    "content": "**Erdős Problem #385** studies F(n) = max{m + p(m) : m < n, m composite}, where p(m) is the least prime divisor. Two questions: (1) Is F(n) > n for all large n? (2) Does F(n) - n → ∞? Both remain open. Posed by Erdős, Eggleton, and Selfridge.",
+    "mathContext": "The function F(n) measures how far composite numbers below n can 'reach beyond' n when augmented by their smallest prime factor. F(10) = 12 via m = 9, p(9) = 3.",
+    "significance": "critical",
+    "relatedConcepts": ["composite numbers", "least prime divisor", "OEIS A322292"]
   },
   {
-    "id": "erdos-385-composite",
+    "id": "ann-e385-imports",
     "proofId": "erdos-385",
+    "range": { "startLine": 28, "endLine": 36 },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "**Targeted Mathlib imports** for prime numbers, factorization, finite sets, filters, and real analysis. The namespace Erdos385 encapsulates all definitions.",
+    "mathContext": "Uses Nat.minFac for least prime divisor, Filter.atTop for 'eventually' statements, Set.Finite for finiteness results, and Real.sqrt for the conjectured lower bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "Lean 4", "namespace"]
+  },
+  {
+    "id": "ann-e385-composite",
+    "proofId": "erdos-385",
+    "range": { "startLine": 50, "endLine": 51 },
     "type": "definition",
-    "range": { "startLine": 44, "endLine": 45 },
     "title": "Composite Numbers",
-    "content": "A number n is composite if n > 1 and n is not prime. These are exactly the numbers with non-trivial factorizations: 4, 6, 8, 9, 10, ...",
-    "significance": "supporting"
+    "content": "**A composite number** is an integer greater than 1 that is not prime. These are exactly the numbers with non-trivial factorizations: 4, 6, 8, 9, 10, 12, ... The definition is straightforward: n > 1 ∧ ¬n.Prime.",
+    "mathContext": "IsComposite(n) ≡ n > 1 ∧ ¬n.Prime. This captures the standard mathematical definition. The key property for this problem is that composite numbers have a prime divisor ≤ √n.",
+    "significance": "key",
+    "relatedConcepts": ["primality", "factorization"]
   },
   {
-    "id": "erdos-385-least-prime",
+    "id": "ann-e385-least-prime",
     "proofId": "erdos-385",
+    "range": { "startLine": 53, "endLine": 75 },
     "type": "definition",
-    "range": { "startLine": 47, "endLine": 64 },
     "title": "Least Prime Divisor",
-    "content": "For n > 1, p(n) is the smallest prime dividing n. For composite n, p(n) ≤ √n (key property). We use Mathlib's minFac which computes this efficiently.",
-    "significance": "key"
+    "content": "**leastPrimeDivisor(n)** wraps Mathlib's `minFac` to compute the smallest prime dividing n. Two theorems are proved: (1) it is prime for composite inputs, (2) it divides n. The axiom states p(m) ≤ √m for composite m.",
+    "mathContext": "For composite n, if p(n) > √n then n/p(n) < √n < p(n), but n/p(n) is a divisor smaller than p(n), contradicting minimality. This is why p(m) ≤ √m, which gives the trivial upper bound F(n) ≤ n + √n.",
+    "significance": "critical",
+    "relatedConcepts": ["minFac", "prime divisor", "square root bound"]
   },
   {
-    "id": "erdos-385-function-f",
+    "id": "ann-e385-function-f",
     "proofId": "erdos-385",
+    "range": { "startLine": 79, "endLine": 94 },
     "type": "definition",
-    "range": { "startLine": 68, "endLine": 87 },
     "title": "The Function F(n)",
-    "content": "F(n) = max{m + p(m) : m < n, m composite}. We take the maximum of m + p(m) over all composite m less than n. This measures how far composite values can 'reach beyond' n.",
-    "significance": "key"
+    "content": "**F(n)** is the maximum of m + p(m) over all composite m < n, implemented using Finset.sup'. FSet provides an alternative set-based view. F(n) measures how far composite numbers below n can 'reach' when augmented by their smallest prime factor.",
+    "mathContext": "F(n) = sup'{m + p(m) : m ∈ Finset.range(n), m composite}. Uses Finset.sup' (nonempty supremum) with a proof that at least one composite exists below n. Returns 0 for small n with no composites below.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset.sup'", "optimization", "composite structure"]
   },
   {
-    "id": "erdos-385-upper-bound",
+    "id": "ann-e385-upper-bound",
     "proofId": "erdos-385",
-    "type": "theorem",
-    "range": { "startLine": 91, "endLine": 97 },
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "axiom",
     "title": "Trivial Upper Bound",
-    "content": "F(n) ≤ n + √n. Since any composite m < n has p(m) ≤ √m ≤ √n, we get m + p(m) < n + √n. This is tight asymptotically.",
-    "significance": "supporting"
+    "content": "**F(n) ≤ n + √n** because any composite m < n has p(m) ≤ √m ≤ √(n-1), giving m + p(m) < n + √n. This bound is tight: Erdős conjectured F(n) ≥ n + (1-o(1))√n.",
+    "mathContext": "The axiom states F(n) ≤ n + Nat.sqrt(n) for n > 4. The proof would chain leastPrimeDivisor_le_sqrt with the monotonicity of √ and the bound m < n.",
+    "significance": "key",
+    "relatedConcepts": ["upper bound", "square root", "asymptotic tightness"]
   },
   {
-    "id": "erdos-385-question1",
+    "id": "ann-e385-question1",
     "proofId": "erdos-385",
-    "type": "theorem",
-    "range": { "startLine": 101, "endLine": 110 },
-    "title": "Question 1 (OPEN)",
-    "content": "Is F(n) > n for all sufficiently large n? Equivalently: for large n, can we always find a composite m < n with m + p(m) > n? Plausible prime conjectures imply this.",
-    "significance": "key"
+    "range": { "startLine": 104, "endLine": 109 },
+    "type": "definition",
+    "title": "Question 1: F(n) > n Eventually",
+    "content": "**Question 1 (OPEN)**: Is F(n) > n for all sufficiently large n? This asks whether for large n, we can always find a composite m < n whose sum with its least prime factor exceeds n. Equivalent to Problem #430.",
+    "mathContext": "erdos385Question1 ≡ ∀ᶠ n in atTop, F(n) > n. The 'eventually' quantifier (∀ᶠ in atTop) means there exists N such that F(n) > n for all n ≥ N.",
+    "significance": "critical",
+    "relatedConcepts": ["eventually", "Filter.atTop", "Problem #430"]
   },
   {
-    "id": "erdos-385-question2",
+    "id": "ann-e385-question2",
     "proofId": "erdos-385",
-    "type": "theorem",
-    "range": { "startLine": 112, "endLine": 123 },
-    "title": "Question 2 (OPEN)",
-    "content": "Does F(n) - n → ∞ as n → ∞? This is stronger than Question 1, asking not just that F(n) exceeds n but that the excess grows without bound.",
-    "significance": "key"
+    "range": { "startLine": 111, "endLine": 121 },
+    "type": "definition",
+    "title": "Question 2: F(n) - n → ∞",
+    "content": "**Question 2 (OPEN)**: Does F(n) - n → ∞ as n → ∞? This is stronger than Question 1 — not only does F(n) eventually exceed n, but the excess grows without bound.",
+    "mathContext": "erdos385Question2 ≡ Tendsto (λ n ↦ (F n : ℤ) - n) atTop atTop. Uses integer subtraction to avoid natural number truncation issues. Question 2 ⟹ Question 1.",
+    "significance": "critical",
+    "relatedConcepts": ["Tendsto", "divergence", "integer subtraction"]
   },
   {
-    "id": "erdos-385-problem430",
+    "id": "ann-e385-connection430",
     "proofId": "erdos-385",
-    "type": "context",
-    "range": { "startLine": 127, "endLine": 135 },
+    "range": { "startLine": 123, "endLine": 132 },
+    "type": "concept",
     "title": "Connection to Problem #430",
-    "content": "Sarosh Adenwalla observed Question 1 is equivalent to Problem #430. This asks about the same phenomenon from different angles - density of composites with large m + p(m).",
-    "significance": "supporting"
+    "content": "**Sarosh Adenwalla** observed that Question 1 is equivalent to Erdős Problem #430. The axiom q2_implies_q1 records that Question 2 (divergence) is strictly stronger than Question 1 (eventual positivity).",
+    "mathContext": "q2_implies_q1 : erdos385Question2 → erdos385Question1. If F(n) - n → ∞ then eventually F(n) - n > 0, i.e., F(n) > n. This is a standard relationship between divergence and eventual positivity.",
+    "significance": "key",
+    "relatedConcepts": ["Problem #430", "logical implication", "Adenwalla"]
   },
   {
-    "id": "erdos-385-examples",
+    "id": "ann-e385-lower-bound",
     "proofId": "erdos-385",
-    "type": "example",
-    "range": { "startLine": 139, "endLine": 154 },
-    "title": "Concrete Example",
-    "content": "F(10) = 12, achieved by m = 9 with p(9) = 3 so 9 + 3 = 12. The composites below 10 are {4,6,8,9} giving sums {6,8,10,12}. Here F(10) > 10. ✓",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-385-lower-bound",
-    "proofId": "erdos-385",
-    "type": "theorem",
-    "range": { "startLine": 158, "endLine": 167 },
+    "range": { "startLine": 134, "endLine": 144 },
+    "type": "definition",
     "title": "Conjectured Lower Bound",
-    "content": "It's conjectured that F(n) ≥ n + (1 - o(1))√n, meaning we can always find m < n composite with m + p(m) close to n + √n (the upper bound). Gap is o(√n).",
-    "significance": "supporting"
+    "content": "**Conjectured**: F(n) ≥ n + (1 - o(1))√n. This means the upper bound F(n) ≤ n + √n is essentially tight. For any ε > 0, eventually F(n) ≥ n + (1 - ε)√n.",
+    "mathContext": "conjecturedLowerBound ≡ ∀ ε > 0, ∀ᶠ n in atTop, (F n : ℝ) ≥ n + (1 - ε)·√n. Uses real-valued arithmetic to express the o(1) term. This is stronger than both questions.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic lower bound", "o(1) notation", "real analysis"]
   },
   {
-    "id": "erdos-385-difficulty",
+    "id": "ann-e385-examples",
     "proofId": "erdos-385",
-    "type": "context",
-    "range": { "startLine": 171, "endLine": 182 },
-    "title": "Why This Is Hard",
-    "content": "The problem connects to prime distribution, the parity problem in sieve theory, and Siegel zeros (discussed by Terry Tao). Proving F(n) > n requires understanding when composites with small p(m) appear close to n.",
-    "significance": "supporting"
+    "range": { "startLine": 146, "endLine": 155 },
+    "type": "proof",
+    "title": "Composite Number Examples",
+    "content": "**Concrete verification** that 4, 9, and 6 are composite numbers. These serve as witnesses for the F function: F(10) = 12 is achieved by m = 9 with p(9) = 3, giving 9 + 3 = 12 > 10.",
+    "mathContext": "Each proof uses omega for the n > 1 condition and decide for the ¬n.Prime condition. These are fully constructive with no sorry.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "omega", "concrete verification"]
   },
   {
-    "id": "erdos-385-summary",
+    "id": "ann-e385-derived",
     "proofId": "erdos-385",
-    "type": "conclusion",
-    "range": { "startLine": 194, "endLine": 220 },
-    "title": "Summary",
-    "content": "Both questions remain OPEN. F(n) ≤ n + √n is trivial. Conjecturally F(n) ≥ n + (1-o(1))√n. Related to Problems #430, #463, and OEIS A322292. Terry Tao connected it to Siegel zeros.",
-    "significance": "key"
+    "range": { "startLine": 169, "endLine": 175 },
+    "type": "axiom",
+    "title": "Derived: Finite Exceptions",
+    "content": "**If Question 1 holds**, then only finitely many n have F(n) ≤ n. This is the contrapositive view: the 'eventually' quantifier means the exceptions form a finite set.",
+    "mathContext": "finitely_many_exceptions : erdos385Question1 → {n : ℕ | F n ≤ n}.Finite. This follows from the definition of Filter.Eventually for atTop: eventually P means {n | ¬P n} is bounded.",
+    "significance": "key",
+    "relatedConcepts": ["finite exceptions", "eventually", "Filter semantics"]
   }
 ]
