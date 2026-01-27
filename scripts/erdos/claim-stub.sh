@@ -10,7 +10,8 @@
 #   ./claim-stub.sh claim-any                # Try existing, then create missing
 #   ./claim-stub.sh claim-needs-work         # Claim a completed stub needing quality repair
 #   ./claim-stub.sh release <erdos-number>   # Release a claimed stub
-#   ./claim-stub.sh complete <erdos-number>  # Mark as completed (with quality check) and release
+#   ./claim-stub.sh complete <erdos-number>  # Mark as completed (strict quality gate) and release
+#   ./claim-stub.sh complete <erdos-number> --force  # Force completion despite quality issues
 #   ./claim-stub.sh status                   # Show all claims with quality breakdown
 #   ./claim-stub.sh cleanup                  # Remove stale claims
 #
@@ -311,14 +312,49 @@ release_stub() {
 # Mark as completed and release
 complete_stub() {
     local erdos_number="$1"
+    local force_flag="${2:-}"
 
     # Run quality check
     local status="quality"
     if "$HAS_QUALITY_ISSUES" "$erdos_number" 2>/dev/null; then
+        if [[ "$force_flag" != "--force" ]]; then
+            # STRICT MODE: Fail completion
+            echo "ERROR: Cannot complete erdos-$erdos_number -- quality issues remain" >&2
+            echo "" >&2
+            echo "Quality issues detected:" >&2
+
+            local lean_file="$REPO_ROOT/proofs/Proofs/Erdos${erdos_number}Problem.lean"
+            local entry_dir="$REPO_ROOT/src/data/proofs/erdos-$erdos_number"
+
+            if [[ ! -f "$lean_file" ]] || grep -q 'True := trivial' "$lean_file" 2>/dev/null; then
+                echo "  - Placeholder proof (True := trivial)" >&2
+            fi
+
+            local annotations_file="$entry_dir/annotations.json"
+            if [[ ! -f "$annotations_file" ]]; then
+                echo "  - Missing annotations.json" >&2
+            else
+                local count
+                count=$(python3 -c "import json; print(len(json.load(open('$annotations_file'))))" 2>/dev/null || echo "0")
+                if [[ "$count" -lt 3 ]]; then
+                    echo "  - Insufficient annotations ($count < 3)" >&2
+                fi
+            fi
+
+            local meta_file="$entry_dir/meta.json"
+            if [[ -f "$meta_file" ]] && grep -qE 'Forum|Favourites|Random Solved' "$meta_file" 2>/dev/null; then
+                echo "  - Scraping garbage in meta.json" >&2
+            fi
+
+            echo "" >&2
+            echo "Fix these issues and try again, or use:" >&2
+            echo "  $0 complete $erdos_number --force" >&2
+            return 1
+        fi
+
+        # Force mode: allow completion with needs-work status
+        echo "WARNING: Forcing completion despite quality issues" >&2
         status="needs-work"
-        echo "WARNING: erdos-$erdos_number still has quality issues." >&2
-        echo "Marking as completed with status 'needs-work'." >&2
-        echo "This entry can be re-claimed by other agents for improvement." >&2
     fi
 
     get_timestamps
@@ -578,10 +614,10 @@ case "${1:-help}" in
         ;;
     complete)
         if [[ -z "${2:-}" ]]; then
-            echo "Usage: $0 complete <erdos-number>" >&2
+            echo "Usage: $0 complete <erdos-number> [--force]" >&2
             exit 1
         fi
-        complete_stub "$2"
+        complete_stub "$2" "${3:-}"
         ;;
     extend)
         if [[ -z "${2:-}" ]]; then
@@ -610,7 +646,8 @@ Commands:
   claim-any               Try existing stubs first, then create missing if none
   claim-needs-work        Claim a completed stub that still has quality issues
   release <erdos-number>  Release a claimed stub
-  complete <erdos-number> Mark as completed with quality check and release
+  complete <erdos-number> [--force]  Mark as completed (strict quality gate)
+                                   Fails if quality issues remain unless --force
   extend <erdos-number>   Extend claim TTL
   status                  Show all claims with quality breakdown
   cleanup                 Remove stale claims
