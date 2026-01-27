@@ -7,7 +7,8 @@
     "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/1122",
     "date": "1946",
-    "status": "verified",
+    "dateAdded": "2026-01-26",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1122Problem.lean",
     "tags": [
       "erdos",
@@ -15,16 +16,47 @@
       "additive-functions",
       "analytic-number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 4,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1122,
     "erdosUrl": "https://erdosproblems.com/1122",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Definition of prime numbers and basic properties",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.gcd",
+        "description": "GCD computation and coprimality for natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm and its properties (log_mul, log_le_log)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter-based limits for expressing asymptotic convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "log_completely_additive: proved log(ab) = log(a) + log(b) for natural numbers",
+      "empty_defect_means_increasing: proved empty defect set implies monotonicity",
+      "zero_is_logarithmic: proved the zero function has logarithmic form",
+      "logarithmic_is_additive: proved logarithmic functions are additive",
+      "empty_implies_littleO: proved empty defect implies o(X) density",
+      "log_has_empty_defect: proved log has empty defect set",
+      "erdos_1122_summary: consolidated three known positive results"
+    ]
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's 1946 work on additive functions. An additive function f satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. The canonical example is f(n) = c·log(n). Erdős proved that if f is strictly increasing (no defects), or if increments f(n+1) - f(n) → 0, then f must be logarithmic. The conjecture asks whether merely having sparse defects (o(X) of them up to X) suffices. Mangerel made significant progress in 2022, proving the result when defects are O(X/(log X)^{2+c}).",
     "problemStatement": "Let f: ℕ → ℝ be an additive function (f(ab) = f(a) + f(b) when gcd(a,b) = 1). Define A = {n ≥ 1 : f(n+1) < f(n)} as the monotonicity defect set. If |A ∩ [1,X]| = o(X), must f(n) = c·log(n) for some c ∈ ℝ?",
-    "proofStrategy": "The formalization defines additive functions, the defect set, and little-o density conditions. Known results are axiomatized: Erdős's theorems for empty defects and vanishing increments, and Mangerel's 2022 theorem for stronger density bounds. The main conjecture is stated and marked as open. Examples include log(n) (has empty defect) and ω(n) (prime factors function, additive but not logarithmic).",
+    "proofStrategy": "The formalization defines additive functions, the defect set, and little-o density conditions. Known results are axiomatized: Erdős's theorems for empty defects and vanishing increments, and Mangerel's 2022 theorem for stronger density bounds. The main conjecture is stated and axiomatized as open. Several lemmas are proved directly, including that logarithmic functions are additive, empty defects imply monotonicity, and the condition hierarchy between empty/Mangerel/o(X) defects.",
     "keyInsights": [
       "Additive functions are determined by values on prime powers",
       "log(n) is the unique (up to scaling) completely additive monotone function",
@@ -37,44 +69,65 @@
     {
       "id": "sec-additive",
       "title": "Additive Functions",
-      "startLine": 40,
-      "endLine": 74,
-      "summary": "Defines additive and completely additive functions"
+      "startLine": 44,
+      "endLine": 63,
+      "summary": "Defines additive and completely additive functions, proves log is completely additive"
     },
     {
       "id": "sec-defect-set",
       "title": "Monotonicity Defect Set",
-      "startLine": 75,
-      "endLine": 115,
-      "summary": "Defines the defect set A and counting functions"
+      "startLine": 65,
+      "endLine": 91,
+      "summary": "Defines the defect set A, counting functions, and o(X) density condition"
     },
     {
       "id": "sec-logarithmic",
       "title": "Logarithmic Form",
-      "startLine": 116,
-      "endLine": 146,
-      "summary": "Characterizes f(n) = c·log(n) functions"
+      "startLine": 93,
+      "endLine": 111,
+      "summary": "Characterizes f(n) = c·log(n) and proves properties of logarithmic functions"
     },
     {
       "id": "sec-erdos-results",
       "title": "Erdős's Known Results",
-      "startLine": 147,
-      "endLine": 169,
-      "summary": "Axiomatizes Erdős's theorems for special cases"
+      "startLine": 113,
+      "endLine": 126,
+      "summary": "Axiomatizes Erdős's theorems for empty defects and vanishing increments"
     },
     {
       "id": "sec-mangerel",
       "title": "Mangerel's Progress",
-      "startLine": 170,
-      "endLine": 198,
-      "summary": "Formalizes the 2022 partial result"
+      "startLine": 128,
+      "endLine": 144,
+      "summary": "Formalizes the 2022 partial result with density and bounded prime conditions"
     },
     {
       "id": "sec-conjecture",
       "title": "The Conjecture",
-      "startLine": 199,
-      "endLine": 215,
-      "summary": "States the main open conjecture"
+      "startLine": 146,
+      "endLine": 154,
+      "summary": "States and axiomatizes the main open conjecture"
+    },
+    {
+      "id": "sec-hierarchy",
+      "title": "Condition Hierarchy",
+      "startLine": 156,
+      "endLine": 179,
+      "summary": "Proves empty implies o(X) and states the condition hierarchy"
+    },
+    {
+      "id": "sec-examples",
+      "title": "Examples",
+      "startLine": 181,
+      "endLine": 199,
+      "summary": "Concrete examples: log(n) has empty defect, ω(n) is additive but not logarithmic"
+    },
+    {
+      "id": "sec-summary",
+      "title": "Summary of Known Results",
+      "startLine": 201,
+      "endLine": 217,
+      "summary": "Consolidates the three known positive results into one theorem"
     }
   ],
   "conclusion": {
