@@ -8,6 +8,8 @@
 # - Implements exponential backoff retry
 # - Respects stop signals
 # - Daemon mode for long-running agents (infinite retry)
+# - Appends to log files with timestamped cycle separators
+# - Automatic log rotation when files exceed size limit
 #
 # Usage:
 #   ./claude-wrapper.sh --prompt "Your prompt" [--log logfile.log] [--max-retries N]
@@ -19,6 +21,8 @@
 #   CLAUDE_TIMEOUT - Max seconds for a single Claude CLI invocation (default: 3600)
 #                    Set to 0 to disable timeout. Agents that run longer tasks
 #                    (e.g., researchers) may need higher values.
+#   LOG_MAX_SIZE   - Max log file size in bytes before rotation (default: 52428800 = 50MB)
+#   LOG_KEEP_COUNT - Number of rotated log files to keep (default: 3)
 #
 
 set -uo pipefail
@@ -33,6 +37,10 @@ SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOG_FILE=""
 PROMPT=""
 DAEMON_MODE=false
+
+# Log rotation configuration
+LOG_MAX_SIZE="${LOG_MAX_SIZE:-52428800}"  # 50MB default (in bytes)
+LOG_KEEP_COUNT="${LOG_KEEP_COUNT:-3}"     # Number of rotated logs to keep
 
 # Colors
 RED='\033[0;31m'
@@ -110,6 +118,51 @@ check_usage_limits() {
     return 0
 }
 
+# Rotate log file if it exceeds LOG_MAX_SIZE
+rotate_log() {
+    if [[ -z "$LOG_FILE" ]]; then
+        return
+    fi
+    if [[ ! -f "$LOG_FILE" ]]; then
+        return
+    fi
+
+    local file_size
+    file_size=$(stat -f%z "$LOG_FILE" 2>/dev/null || stat -c%s "$LOG_FILE" 2>/dev/null || echo "0")
+
+    if [[ "$file_size" -ge "$LOG_MAX_SIZE" ]]; then
+        log_info "Log file $(basename "$LOG_FILE") exceeds $(( LOG_MAX_SIZE / 1048576 ))MB, rotating"
+
+        # Shift existing rotated logs (e.g., .3 -> deleted, .2 -> .3, .1 -> .2)
+        local i=$LOG_KEEP_COUNT
+        while [[ $i -gt 1 ]]; do
+            local prev=$((i - 1))
+            if [[ -f "${LOG_FILE}.${prev}" ]]; then
+                mv "${LOG_FILE}.${prev}" "${LOG_FILE}.${i}"
+            fi
+            i=$((i - 1))
+        done
+
+        # Rotate current log to .1
+        mv "$LOG_FILE" "${LOG_FILE}.1"
+        log_info "Rotated log to $(basename "${LOG_FILE}.1")"
+    fi
+}
+
+# Write a cycle separator to the log file
+write_cycle_separator() {
+    local cycle_num="${1:-}"
+    if [[ -n "$LOG_FILE" ]]; then
+        local timestamp
+        timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        {
+            echo ""
+            echo "--- [$timestamp] Cycle ${cycle_num} start ---"
+            echo ""
+        } >> "$LOG_FILE"
+    fi
+}
+
 # Check if error is recoverable
 is_recoverable_error() {
     local output="$1"
@@ -164,7 +217,7 @@ run_claude_once() {
     # The 'timeout' command sends SIGTERM after CLAUDE_TIMEOUT seconds,
     # and SIGKILL 30s later if the process hasn't exited.
     if [[ -n "$LOG_FILE" ]]; then
-        last_output=$(timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude --dangerously-skip-permissions "$PROMPT" 2>&1 | tee "$LOG_FILE"; echo "EXIT_CODE:${PIPESTATUS[0]}")
+        last_output=$(timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude --dangerously-skip-permissions "$PROMPT" 2>&1 | tee -a "$LOG_FILE"; echo "EXIT_CODE:${PIPESTATUS[0]}")
     else
         last_output=$(timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude --dangerously-skip-permissions "$PROMPT" 2>&1; echo "EXIT_CODE:$?")
     fi
@@ -209,6 +262,10 @@ run_with_retry() {
         fi
 
         log_info "Starting Claude (attempt $attempt/$MAX_RETRIES)"
+
+        # Rotate log if needed, then write cycle separator
+        rotate_log
+        write_cycle_separator "$attempt"
 
         # Run Claude
         if run_claude_once; then
@@ -278,6 +335,10 @@ run_daemon() {
         fi
 
         log_info "Daemon cycle $cycle: starting Claude"
+
+        # Rotate log if needed, then write cycle separator
+        rotate_log
+        write_cycle_separator "$cycle"
 
         # Run Claude
         if run_claude_once; then
