@@ -384,7 +384,7 @@ You are working in an isolated git worktree with your own branch.
 6. Commit: \`git add src/data/proofs/erdos-N/ proofs/Proofs/ErdosNProblem.lean && git commit -m "Enhance Erdős #N: Title"\`
 7. Push: \`git push -u origin feature/enhancer-$i\`
 8. Create PR: \`gh pr create --title "Enhance Erdős #N" --body "Stub enhancement" --label erdos-enhancement\`
-9. Mark complete: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh complete N\`
+9. Mark complete: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh complete N\` (fails if quality issues remain; use --force to override)
 10. Reset for next: \`git checkout main && git pull && git checkout -B feature/enhancer-$i main\`
 11. Repeat from step 2
 

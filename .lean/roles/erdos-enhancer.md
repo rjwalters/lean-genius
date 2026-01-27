@@ -346,8 +346,21 @@ EOF
 ## Step 9: Mark Complete
 
 ```bash
-$REPO_ROOT/scripts/erdos/claim-stub.sh complete {NUMBER}
+# Strict quality gate: fails if quality issues remain
+if ! $REPO_ROOT/scripts/erdos/claim-stub.sh complete {NUMBER}; then
+    echo "Completion rejected - quality issues remain for erdos-{NUMBER}"
+
+    # Re-run quality check to see specific issues
+    $REPO_ROOT/scripts/erdos/has-quality-issues.sh {NUMBER} || true
+
+    # Release claim so other agents can attempt this problem
+    $REPO_ROOT/scripts/erdos/claim-stub.sh release {NUMBER}
+
+    # Move to next problem (skip to Step 10)
+fi
 ```
+
+**Note:** Completion now enforces a strict quality gate. If quality issues remain, you must either fix them and retry, or release the claim and move on. Use `--force` only for genuinely unfixable cases.
 
 ## Step 10: Clean Up and Loop
 
