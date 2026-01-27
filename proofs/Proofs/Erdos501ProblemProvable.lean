@@ -29,7 +29,7 @@ import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Set.Finite
 import Mathlib.Tactic
 
-namespace Erdos501
+namespace Erdos501Provable
 
 open Set MeasureTheory
 
@@ -169,7 +169,7 @@ theorem max_size_infinite (A : SetFamily) (hA : BoundedOuterMeasureFamily A) :
     maxIndependentSize A = ⊤ := by
   sorry
 
-end Erdos501
+end Erdos501Provable
 
 /-
   ## Summary

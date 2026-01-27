@@ -32,7 +32,7 @@ import Mathlib.Data.Set.Basic
 
 open Cardinal SimpleGraph
 
-namespace Erdos740
+namespace Erdos740Provable
 
 /-
 ## Part I: Graph Coloring and Chromatic Number
@@ -338,4 +338,4 @@ def erdosMostWanted : Prop :=
     ∀ r : ℕ, r ≥ 1 →
       erdosHajnalConjecture 𝔪 ⟨Cardinal.aleph0_le_of_isInfinite 𝔪⟩ r
 
-end Erdos740
+end Erdos740Provable
