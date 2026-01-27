@@ -105,7 +105,7 @@ You are the **deployer** agent. Your mission is to keep the website current.
 ## Start Now
 
 Begin by:
-1. Reading the deployer role: \`cat $REPO_ROOT/.loom/roles/deployer.md\`
+1. Reading the deployer role: \`cat $REPO_ROOT/.lean/roles/deployer.md\`
 2. Running your first deploy cycle
 3. Continuing the loop
 

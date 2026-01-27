@@ -14,4 +14,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check Proofs.lean is in sync
-        run: ./.loom/scripts/generate-proofs-imports.sh --check
+        run: ./.lean/scripts/generate-proofs-imports.sh --check

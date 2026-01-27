@@ -21,7 +21,7 @@ MAX_AGENTS=8
 SESSION_PREFIX="erdos-enhancer"
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
-ROLE_FILE="$REPO_ROOT/.loom/roles/erdos-enhancer.md"
+ROLE_FILE="$REPO_ROOT/.lean/roles/erdos-enhancer.md"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 CLAIM_TTL=90  # Minutes
@@ -375,7 +375,7 @@ You are working in an isolated git worktree with your own branch.
 
 ## Quick Start
 
-1. Read the full instructions: \`cat .loom/roles/erdos-enhancer.md\`
+1. Read the full instructions: \`cat .lean/roles/erdos-enhancer.md\`
 2. **Check for stop signal before each iteration:**
    \`[[ -f \$REPO_ROOT/.loom/signals/stop-all ]] && echo "Stopping" && exit 0\`
 3. Claim a stub: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random-any\`

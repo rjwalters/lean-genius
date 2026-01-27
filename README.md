@@ -148,7 +148,7 @@ node scripts/import-proof.cjs --all
 ### Adding a New Proof
 
 1. Create the Lean proof in `proofs/Proofs/YourProof.lean`
-2. Regenerate imports: `./.loom/scripts/generate-proofs-imports.sh`
+2. Regenerate imports: `./.lean/scripts/generate-proofs-imports.sh`
 3. Build: `cd proofs && lake build`
 4. Run LeanInk: `./scripts/extract-proof-info.sh Proofs/YourProof.lean`
 5. Create the frontend structure in `src/data/proofs/your-proof/`:

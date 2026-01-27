@@ -195,7 +195,7 @@ Do NOT exit on transient errors. Only exit on stop signals.
 ## Start Now
 
 Begin by:
-1. Reading the researcher role: \`cat $REPO_ROOT/.loom/roles/researcher.md\`
+1. Reading the researcher role: \`cat $REPO_ROOT/.lean/roles/researcher.md\`
 2. Checking current status: \`$REPO_ROOT/scripts/research/claim-problem.sh status\`
 3. Starting your continuous research loop
 

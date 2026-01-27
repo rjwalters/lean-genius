@@ -24,7 +24,7 @@ BRANCH_NAME="feature/aristotle-integrations"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOG_FILE="$LOGS_DIR/$SESSION_NAME.log"
-ROLE_FILE="$REPO_ROOT/.loom/roles/aristotle-agent.md"
+ROLE_FILE="$REPO_ROOT/.lean/roles/aristotle-agent.md"
 
 # Defaults
 TARGET_ACTIVE="${ARISTOTLE_TARGET:-20}"

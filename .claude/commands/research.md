@@ -85,7 +85,7 @@ fi
 
 ```bash
 # Show all problems sorted by knowledge accumulation (ascending)
-.loom/scripts/knowledge-scores.sh
+.lean/scripts/knowledge-scores.sh
 ```
 
 ### Selection Rule
@@ -157,7 +157,7 @@ Invalid: "Verify n=7, 9, 11... and keep going" or "extend to n ≤ 1000".
 find research/claims -name "*.lock" -type d -mmin +120 -exec rm -rf {} \; 2>/dev/null || true
 
 # List available problems by knowledge score (lowest first)
-.loom/scripts/knowledge-scores.sh --status available
+.lean/scripts/knowledge-scores.sh --status available
 
 # Select the one with lowest knowledge score
 ```
@@ -228,7 +228,7 @@ When pool is empty, we scout for new knowledge and attempt if promising.
 
 ```bash
 # List revisitable problems by knowledge score (lowest first)
-.loom/scripts/knowledge-scores.sh --revisit
+.lean/scripts/knowledge-scores.sh --revisit
 ```
 
 **Selection priority:**
@@ -286,13 +286,13 @@ research/problems/<id>/
 1. `knowledge.md` keeps only the **last 5 sessions** + problem summary
 2. Older sessions are archived to `sessions/` subdirectory
 3. Archive when knowledge.md exceeds **500 lines** or **10 sessions**
-4. Use `.loom/scripts/archive-sessions.sh <problem-id>` to archive
+4. Use `.lean/scripts/archive-sessions.sh <problem-id>` to archive
 
 ### Archive Sessions
 
 ```bash
 # Archive old sessions for a problem (keeps last 5)
-.loom/scripts/archive-sessions.sh pnp-barriers
+.lean/scripts/archive-sessions.sh pnp-barriers
 
 # Manual archive: move session block to sessions/YYYY-MM-DD-sNN.md
 ```
