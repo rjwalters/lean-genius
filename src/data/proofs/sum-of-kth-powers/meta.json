@@ -2,7 +2,7 @@
   "id": "sum-of-kth-powers",
   "title": "Sum of kth Powers (Faulhaber's Formulas)",
   "slug": "sum-of-kth-powers",
-  "description": "Closed-form formulas for sums of consecutive kth powers, including the remarkable identity that the sum of cubes equals the square of the sum.",
+  "description": "Closed-form formulas for sums of consecutive kth powers (k=1 through k=5), including the remarkable identity that the sum of cubes equals the square of the sum.",
   "meta": {
     "wiedijkNumber": 77,
     "author": "Johann Faulhaber / Nicomachus (formalized)",
@@ -34,13 +34,15 @@
     "originalContributions": [
       "Direct proofs of sum of squares and sum of cubes formulas",
       "Divisibility lemmas for the closed forms",
-      "The elegant 'sum of cubes = square of sum' identity (Nicomachus theorem)"
+      "The elegant 'sum of cubes = square of sum' identity (Nicomachus theorem)",
+      "Closed-form formula for sum of fourth powers: n(n+1)(2n+1)(3n²+3n-1)/30",
+      "Closed-form formula for sum of fifth powers: n²(n+1)²(2n²+2n-1)/12"
     ],
     "dateAdded": "12/27/25"
   },
   "overview": {
     "historicalContext": "Johann Faulhaber (1580-1635) discovered closed-form formulas for sums of powers up to k=17 without knowing the general pattern involving Bernoulli numbers.\n\nThe sum of cubes formula was known to Nicomachus of Gerasa (c. 100 CE) and later proved by Aryabhata in India (499 CE). The sum of squares formula appears in Archimedes' work on spirals.",
-    "problemStatement": "**Theorems proven:**\n\n1. Sum of first powers: sum_{i=0}^n i = n(n+1)/2 (Gauss's formula)\n2. Sum of squares: sum_{i=0}^n i^2 = n(n+1)(2n+1)/6\n3. Sum of cubes: sum_{i=0}^n i^3 = [n(n+1)/2]^2\n4. **Nicomachus**: sum of cubes = (sum of first powers)^2\n\nThis is Wiedijk's 100 Theorems #77.",
+    "problemStatement": "**Theorems proven:**\n\n1. Sum of first powers: sum_{i=0}^n i = n(n+1)/2 (Gauss's formula)\n2. Sum of squares: sum_{i=0}^n i^2 = n(n+1)(2n+1)/6\n3. Sum of cubes: sum_{i=0}^n i^3 = [n(n+1)/2]^2\n4. **Nicomachus**: sum of cubes = (sum of first powers)^2\n5. Sum of fourth powers: sum_{i=0}^n i^4 = n(n+1)(2n+1)(3n²+3n-1)/30\n6. Sum of fifth powers: sum_{i=0}^n i^5 = n²(n+1)²(2n²+2n-1)/12\n\nThis is Wiedijk's 100 Theorems #77.",
     "proofStrategy": "**Proof by Induction**:\n\n1. For each formula, prove the base case (n=0)\n2. Assume the formula holds for n\n3. Add the (n+1)th term and simplify\n4. Verify algebraically that the formula holds for n+1\n\nDivisibility lemmas (e.g., 6 | n(n+1)(2n+1)) are proven using modular arithmetic.",
     "keyInsights": [
       "The sum of cubes equals the square of the sum - a remarkable coincidence",
@@ -78,11 +80,25 @@
       "summary": "The remarkable identity: sum of cubes = square of sum."
     },
     {
+      "id": "sum-fourth",
+      "title": "Sum of Fourth Powers",
+      "startLine": 241,
+      "endLine": 302,
+      "summary": "The formula sum i^4 = n(n+1)(2n+1)(3n²+3n-1)/30 with divisibility proof."
+    },
+    {
+      "id": "sum-fifth",
+      "title": "Sum of Fifth Powers",
+      "startLine": 304,
+      "endLine": 345,
+      "summary": "The formula sum i^5 = n²(n+1)²(2n²+2n-1)/12 with divisibility proof."
+    },
+    {
       "id": "verification",
       "title": "Numerical Verification",
-      "startLine": 241,
-      "endLine": 256,
-      "summary": "Concrete examples verifying the formulas."
+      "startLine": 347,
+      "endLine": 380,
+      "summary": "Concrete examples verifying all formulas for k=1 through k=5."
     }
   ],
   "conclusion": {

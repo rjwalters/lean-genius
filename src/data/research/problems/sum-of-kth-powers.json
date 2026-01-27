@@ -1,0 +1,132 @@
+{
+  "slug": "sum-of-kth-powers",
+  "title": "Sum of kth Powers (Faulhaber's Formulas)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\sum_{i=0}^{n} i^k = \\text{(closed form involving Bernoulli numbers)}",
+    "plain": "Closed-form formulas for sums of consecutive kth powers: k=1 (Gauss), k=2 (squares), k=3 (cubes/Nicomachus), k=4 (fourth powers), k=5 (fifth powers). Wiedijk #77.",
+    "whyMatters": [
+      "Fundamental identities in algebra and number theory",
+      "Wiedijk's 100 Great Theorems #77",
+      "Building blocks for Riemann sums, algorithm analysis, and combinatorics"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "sum_first_powers: ∑i = n(n-1)/2 (0-indexed, from Mathlib)",
+      "sum_first_powers_classical: ∑_{0}^{n} i = n(n+1)/2 (Gauss)",
+      "sum_squares_classical: ∑_{0}^{n} i² = n(n+1)(2n+1)/6",
+      "sum_cubes_classical: ∑_{0}^{n} i³ = [n(n+1)/2]²",
+      "nicomachus_theorem: ∑i³ = (∑i)² (sum of cubes = square of sum)",
+      "sum_fourth_powers_classical: ∑_{0}^{n} i⁴ = n(n+1)(2n+1)(3n²+3n-1)/30",
+      "sum_fifth_powers_classical: ∑_{0}^{n} i⁵ = n²(n+1)²(2n²+2n-1)/12",
+      "six_dvd_sum_squares_formula: 6 | n(n+1)(2n+1)",
+      "two_dvd_consecutive: 2 | n(n+1)",
+      "Verification examples for n=5, 10, 100 via native_decide"
+    ],
+    "open": [
+      "General Faulhaber formula with Bernoulli numbers (not in Mathlib)",
+      "Extensions to non-integer exponents"
+    ],
+    "goal": "Complete. Formulas proved for k=1 through k=5 with 0 sorries."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-01-27T21:30:00.000Z",
+    "iteration": 1,
+    "focus": "Extended from k≤3 to k≤5 with closed-form proofs.",
+    "blockers": [],
+    "nextAction": "No further action needed. General Faulhaber formula is a separate effort.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: SumOfKthPowers.lean (Wiedijk #77) extended from k=1,2,3 to include k=4 and k=5 closed-form power sum formulas. All proofs by induction + nlinarith/omega. 0 sorries. Key technique: rearrange formulas to avoid ℕ subtraction.",
+    "builtItems": [
+      "SumOfKthPowers.lean:67 - sum_first_powers (0-indexed, from Mathlib)",
+      "SumOfKthPowers.lean:75 - sum_first_powers_classical (Gauss)",
+      "SumOfKthPowers.lean:120 - sum_squares_mul_six (induction proof)",
+      "SumOfKthPowers.lean:133 - sum_squares_classical",
+      "SumOfKthPowers.lean:176 - sum_cubes_mul_four (induction proof)",
+      "SumOfKthPowers.lean:189 - sum_cubes_classical",
+      "SumOfKthPowers.lean:230 - sum_cubes_eq_sum_squared / nicomachus_theorem",
+      "SumOfKthPowers.lean:274 - sum_fourth_powers_mul_thirty (induction + nlinarith)",
+      "SumOfKthPowers.lean:297 - sum_fourth_powers_classical (k=4 formula)",
+      "SumOfKthPowers.lean:319 - sum_fifth_powers_mul_twelve (induction + nlinarith)",
+      "SumOfKthPowers.lean:340 - sum_fifth_powers_classical (k=5 formula)",
+      "SumOfKthPowers.lean:347+ - Verification examples for n=5,10,100"
+    ],
+    "insights": [
+      "Natural number subtraction in Lean underflows: 3n²+3n-1 = 0 when n=0. Must rearrange formulas to avoid subtraction.",
+      "Key technique: state 30*∑i⁴ + n(n+1)(2n+1) = 3n²(n+1)²(2n+1) to keep everything non-negative",
+      "The induction step for k=4,5 requires nlinarith (nonlinear arithmetic), not omega (linear only)",
+      "sum_range_succ + Nat.mul_add are the key rewrite lemmas for the induction step",
+      "Mathlib provides sum_range_id (k=1) but NOT higher power formulas",
+      "Bernoulli numbers available in Mathlib.NumberTheory.ZetaValues but no Faulhaber formula",
+      "Pattern: each power sum formula is proved by (1) multiplied form by induction, (2) divisibility, (3) divide",
+      "For k=4: the multiplied form is 30*∑i⁴ + n(n+1)(2n+1) = 3n²(n+1)²(2n+1)",
+      "For k=5: the multiplied form is 12*∑i⁵ + n²(n+1)² = 2n³(n+1)³"
+    ],
+    "mathlibGaps": [
+      "No general Faulhaber formula in Mathlib",
+      "No sum-of-kth-powers for k≥2 in Mathlib (only sum_range_id for k=1)",
+      "Bernoulli numbers exist (bernoulli function) but not connected to power sums",
+      "Bernoulli polynomial sums not formalized"
+    ],
+    "nextSteps": [
+      "No further work needed - k=1 through k=5 complete with 0 sorries",
+      "Future: general Faulhaber formula would need Bernoulli polynomial infrastructure",
+      "Future: k=6 formula involves 42 as denominator, increasingly complex but same pattern"
+    ],
+    "markdown": "# Knowledge Base: Sum of kth Powers\n\n## Status: COMPLETED\n\nAll power sum formulas k=1 through k=5 proved with 0 sorries. Wiedijk #77.\n\n## Theorems Proved\n\n| k | Formula | Theorem | Line |\n|---|---------|---------|------|\n| 1 | ∑i = n(n+1)/2 | sum_first_powers_classical | 75 |\n| 2 | ∑i² = n(n+1)(2n+1)/6 | sum_squares_classical | 133 |\n| 3 | ∑i³ = [n(n+1)/2]² | sum_cubes_classical | 189 |\n| 3 | ∑i³ = (∑i)² | nicomachus_theorem | 237 |\n| 4 | ∑i⁴ = n(n+1)(2n+1)(3n²+3n-1)/30 | sum_fourth_powers_classical | 297 |\n| 5 | ∑i⁵ = n²(n+1)²(2n²+2n-1)/12 | sum_fifth_powers_classical | 340 |\n\n## Key Technique\n\nTo avoid ℕ subtraction underflow, formulas are rearranged:\n- k=4: `30*∑i⁴ + n(n+1)(2n+1) = 3n²(n+1)²(2n+1)`\n- k=5: `12*∑i⁵ + n²(n+1)² = 2n³(n+1)³`\n\nEach proved by induction with nlinarith for the polynomial step.\n\n## Research Session (2026-01-27)\n\n**Mode**: DEEP DIVE\n**Agent**: researcher-2\n**Outcome**: Extended Wiedijk #77 from k≤3 to k≤5. All proofs complete, 0 sorries.\n"
+  },
+  "approaches": [
+    {
+      "name": "induction-with-nlinarith",
+      "description": "Prove multiplied form by induction (nlinarith for step), then divide using divisibility",
+      "status": "completed",
+      "sessions": [
+        {
+          "date": "2026-01-27",
+          "agent": "researcher-2",
+          "outcome": "k=4 and k=5 closed-form formulas proved. 0 sorries.",
+          "notes": "Key insight: rearrange to avoid ℕ subtraction. nlinarith handles nonlinear induction steps."
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "algebra",
+    "combinatorics",
+    "sums",
+    "wiedijk-100",
+    "induction",
+    "number-theory"
+  ],
+  "relatedProofs": [
+    "SumOfKthPowers"
+  ],
+  "references": {
+    "papers": [
+      "Faulhaber, J. (1631). Academia Algebrae",
+      "Bernoulli, J. (1713). Ars Conjectandi"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Faulhaber%27s_formulas"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.BigOperators.Intervals",
+      "Mathlib.NumberTheory.ZetaValues"
+    ]
+  },
+  "started": "2026-01-27T21:00:00.000Z",
+  "lastUpdate": "2026-01-27T21:30:00.000Z",
+  "significance": 7,
+  "tractability": 9
+}
