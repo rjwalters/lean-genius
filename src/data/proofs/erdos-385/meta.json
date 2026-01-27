@@ -1,60 +1,166 @@
 {
   "id": "erdos-385",
-  "title": "Erdős Problem #385: Composites and Least Prime Divisors",
+  "title": "Erdős Problem #385: Composite Numbers and Least Prime Divisors",
   "slug": "erdos-385",
-  "description": "Is F(n) = max{m + p(m) : m < n composite} greater than n for all large n, where p(m) is the least prime divisor?",
+  "description": "Is F(n) = max{m + p(m) : m < n, m composite} greater than n for all large n, and does F(n) - n tend to infinity?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős, Eggleton, Selfridge [Er79d]; Erdős, Graham [ErGr80]",
     "sourceUrl": "https://erdosproblems.com/385",
-    "status": "enhanced",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos385Problem.lean",
-    "tags": ["number theory", "prime divisors", "composite numbers"],
-    "badge": "formalized",
-    "sorries": 5,
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-divisors",
+      "composite-numbers",
+      "sieve-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 385,
     "erdosUrl": "https://erdosproblems.com/385",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-26",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.minFac",
+        "description": "Minimum factor of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finiteness of sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "The at-top filter for 'eventually' statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "IsComposite definition: composite number predicate",
+      "leastPrimeDivisor definition: wrapper around Mathlib's minFac",
+      "leastPrimeDivisor_prime theorem: least prime divisor is prime (proved)",
+      "leastPrimeDivisor_dvd theorem: least prime divisor divides n (proved)",
+      "leastPrimeDivisor_le_sqrt axiom: p(m) ≤ √m for composite m",
+      "F definition: max{m + p(m) : m < n, m composite} using Finset.sup'",
+      "FSet definition: set-based alternative for F(n)",
+      "F_upper_bound axiom: F(n) ≤ n + √n",
+      "erdos385Question1 definition: F(n) > n eventually",
+      "erdos385Question2 definition: F(n) - n → ∞",
+      "q2_implies_q1 axiom: Question 2 implies Question 1",
+      "conjecturedLowerBound definition: F(n) ≥ n + (1 - ε)√n",
+      "finitely_many_exceptions axiom: Q1 implies finite exceptions",
+      "Concrete examples: 4, 6, 9 verified as composite"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős, Eggleton, and Selfridge. It connects to deep questions about prime distribution, sieve theory, and Siegel zeros. Terry Tao discussed it in a 2024 blog post.",
-    "problemStatement": "Let F(n) = max{m + p(m) : m < n, m composite}, where p(m) is the least prime divisor of m. Question 1: Is F(n) > n for all large n? Question 2: Does F(n) - n → ∞?",
-    "proofStrategy": "The formalization defines composite numbers, least prime divisor, and the function F(n). It states both questions as conjectures, provides upper/lower bounds, and connects to related problems.",
+    "historicalContext": "Erdős Problem #385 was posed by Erdős, Eggleton, and Selfridge and appears in [Er79d, p.73] and in the Erdős-Graham monograph [ErGr80, p.74]. It studies the function F(n) = max{m + p(m) : m < n, m composite}, where p(m) denotes the least prime divisor of m.\n\nThe problem asks two questions of increasing strength about the growth of F(n). Question 1 asks whether F(n) > n for all sufficiently large n — in other words, whether we can always find a composite m < n whose sum with its least prime factor exceeds n. Question 2 asks the stronger question of whether F(n) - n → ∞.\n\nSarosh Adenwalla observed that Question 1 is equivalent to Erdős Problem #430. In 2024, Terry Tao discussed this problem in a blog post, connecting it to Siegel zeros and the parity problem in sieve theory. The trivial upper bound F(n) ≤ n + √n is easy to establish, and Erdős conjectured that the matching lower bound F(n) ≥ n + (1 - o(1))√n also holds.",
+    "problemStatement": "Let $F(n) = \\max\\{m + p(m) : m < n, m \\text{ composite}\\}$, where $p(m)$ is the least prime divisor of $m$.\n\n**Question 1:** Is $F(n) > n$ for all sufficiently large $n$?\n\n**Question 2:** Does $F(n) - n \\to \\infty$ as $n \\to \\infty$?\n\n**Status: OPEN** — both questions remain unresolved.",
+    "proofStrategy": "Since both questions are open, the formalization axiomatizes the conjectures. The approach is:\n\n1. **Define composites and least prime divisors** using Mathlib's `minFac`.\n2. **Prove** that the least prime divisor of a composite is prime and divides the number.\n3. **Define F(n)** as a `Finset.sup'` over composites below n.\n4. **Axiomatize** the upper bound F(n) ≤ n + √n and the two main conjectures.\n5. **State the conjectured lower bound** F(n) ≥ n + (1 - ε)√n using real-valued analysis.\n6. **Connect** Question 1 to the finiteness of exceptions {n | F(n) ≤ n}.",
     "keyInsights": [
-      "F(n) ≤ n + √n (trivial upper bound since p(m) ≤ √m for composite m)",
-      "Conjectured: F(n) ≥ n + (1 - o(1))√n",
-      "Equivalent to Problem #430 for large n (Sarosh Adenwalla)",
-      "Connected to prime gaps and the parity problem in sieve theory"
+      "**Trivial Upper Bound**: F(n) ≤ n + √n because for composite m, p(m) ≤ √m, so m + p(m) ≤ m + √m < n + √n.",
+      "**Conjectured Tightness**: It is conjectured that F(n) ≥ n + (1 - o(1))√n, meaning the upper bound is essentially tight.",
+      "**Equivalence with #430**: Question 1 is equivalent to Erdős Problem #430 (Sarosh Adenwalla), asking the same question from a different perspective.",
+      "**Sieve Theory Connection**: Proving F(n) > n requires understanding the distribution of composites with small prime factors near n, which runs into the parity problem in sieve theory.",
+      "**Siegel Zeros**: Terry Tao (2024) showed that the existence of Siegel zeros would have implications for this problem, connecting it to deep questions in analytic number theory.",
+      "**Example**: F(10) = 12, achieved by m = 9 with p(9) = 3, so 9 + 3 = 12 > 10."
     ]
   },
   "sections": [
     {
+      "id": "header-docs",
+      "title": "Problem Documentation",
+      "summary": "Header with problem statement, known results, references, and OEIS link",
+      "startLine": 1,
+      "endLine": 26
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "summary": "Specific Mathlib imports and namespace opening",
+      "startLine": 28,
+      "endLine": 46
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
-      "description": "Composite numbers and least prime divisor"
+      "summary": "IsComposite, leastPrimeDivisor, and their properties",
+      "startLine": 47,
+      "endLine": 75
     },
     {
       "id": "function-f",
       "title": "The Function F(n)",
-      "description": "Maximum of m + p(m) over composites m < n"
-    },
-    {
-      "id": "main-conjectures",
-      "title": "The Main Conjectures",
-      "description": "Question 1 (F(n) > n) and Question 2 (F(n) - n → ∞)"
+      "summary": "F(n) using Finset.sup' and alternative FSet definition",
+      "startLine": 76,
+      "endLine": 94
     },
     {
       "id": "bounds",
-      "title": "Known Bounds",
-      "description": "Upper bound n + √n and conjectured lower bound"
+      "title": "Basic Properties",
+      "summary": "Upper bound F(n) ≤ n + √n",
+      "startLine": 95,
+      "endLine": 100
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Main Conjectures",
+      "summary": "Question 1 (F(n) > n) and Question 2 (F(n) - n → ∞)",
+      "startLine": 101,
+      "endLine": 121
+    },
+    {
+      "id": "connection-430",
+      "title": "Connection to Problem #430",
+      "summary": "Equivalence with Problem #430, q2_implies_q1",
+      "startLine": 122,
+      "endLine": 132
+    },
+    {
+      "id": "lower-bound",
+      "title": "Conjectured Lower Bound",
+      "summary": "F(n) ≥ n + (1 - ε)√n conjecture using real analysis",
+      "startLine": 133,
+      "endLine": 144
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Verified composites: 4, 6, 9",
+      "startLine": 145,
+      "endLine": 155
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This Is Hard",
+      "summary": "Connections to prime distribution, sieve theory, Siegel zeros",
+      "startLine": 156,
+      "endLine": 175
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #385 asks two questions about F(n), the maximum of m + p(m) over composites. Both remain open, though plausible prime conjectures would imply F(n) > n for large n.",
-    "implications": "A positive answer would reveal structure in how composites with small prime factors are distributed. The connection to Siegel zeros makes this particularly deep.",
+    "summary": "Erdős Problem #385 defines F(n) = max{m + p(m) : m < n, m composite} and asks whether F(n) > n for all large n (Question 1) and whether F(n) - n → ∞ (Question 2). Both questions remain open. The formalization proves basic properties of least prime divisors, axiomatizes the main conjectures, and connects to the conjectured lower bound F(n) ≥ n + (1 - o(1))√n.",
+    "implications": "Resolution of Question 1 would reveal structure in the distribution of composites with small prime factors. The connection to Siegel zeros (Tao, 2024) shows this seemingly elementary question touches deep analytic number theory. A proof of F(n) > n for large n would also resolve Problem #430.",
     "openQuestions": [
-      "Are there infinitely many n with F(n) ≤ n?",
-      "What is the growth rate of F(n) - n?",
-      "How does this relate to prime gap conjectures?"
+      "Is F(n) > n for all sufficiently large n? (Question 1)",
+      "Does F(n) - n → ∞? (Question 2)",
+      "What is the exact growth rate of F(n) - n?",
+      "Can the connection to Siegel zeros yield unconditional results?",
+      "What is the distribution of n where F(n) - n is unusually small?"
     ]
   }
 }
