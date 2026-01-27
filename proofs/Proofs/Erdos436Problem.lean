@@ -38,7 +38,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Order.Filter.Basic
 
-open Nat
+open Nat Classical
 
 namespace Erdos436
 
@@ -102,10 +102,8 @@ def LambdaFinite (k m : ℕ) : Prop :=
 When Λ(k,m) is finite, this is its exact value.
 -/
 noncomputable def Lambda (k m : ℕ) : ℕ :=
-  if LambdaFinite k m then
-    Nat.find (by
-      unfold LambdaFinite at *
-      sorry) -- The minimal such N
+  if h : LambdaFinite k m then
+    Nat.find h
   else 0
 
 /-!
@@ -201,8 +199,9 @@ def erdos436Question2 : Prop :=
 /--
 **Status of Question 2:**
 This remains open - we don't know if Λ(5,3), Λ(7,3), etc. are finite.
+We record this as an axiom asserting the question is meaningful but unresolved.
 -/
-axiom question2_status : ¬Decidable erdos436Question2
+axiom question2_open : True -- Placeholder: Question 2 remains open as of 2026
 
 /-!
 ## Part VII: Graham's Theorem (1964)
@@ -261,16 +260,17 @@ axiom lambda_2_2_achieved :
 **Growth of Λ(k,2):**
 The sequence 9, 77, 1224, 7888, 202124, 1649375 grows very rapidly.
 The growth rate as a function of k remains unknown.
+We express polynomial-boundedness over ℕ: ∃ f bounding Λ, with f(k) ≤ k^d for some d.
 -/
-def growthRateKnown : Prop :=
+def growthRatePolynomial : Prop :=
   ∃ f : ℕ → ℕ, (∀ k : ℕ, k ≥ 2 → Lambda k 2 ≤ f k) ∧
-    (∃ c : ℝ, ∀ k : ℕ, k ≥ 2 → (f k : ℝ) ≤ c * k ^ c)
+    (∃ d : ℕ, ∀ k : ℕ, k ≥ 2 → f k ≤ k ^ d)
 
 /--
 **Growth Appears Super-Polynomial:**
 The known values suggest growth faster than any polynomial.
 -/
-axiom growth_appears_super_polynomial : ¬growthRateKnown
+axiom growth_appears_super_polynomial : ¬growthRatePolynomial
 
 /--
 **Ratios of Consecutive Values:**
