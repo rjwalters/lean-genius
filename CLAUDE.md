@@ -57,11 +57,11 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 ## Quick Start
 
 ```bash
-# Start with defaults (2 erdos, 1 aristotle, 1 researcher, 1 seeker, 1 deployer)
+# Start with defaults (0 erdos, 1 aristotle, 2 researcher, 1 seeker, 1 deployer)
 /lean
 
 # Start with custom pool sizes
-/lean start --erdos 3 --researcher 2
+/lean start --researcher 3
 
 # Check status
 /lean status
@@ -88,9 +88,9 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 
 | Agent | Default | Max |
 |-------|---------|-----|
-| Erdős Enhancer | 2 | 5 |
+| Erdős Enhancer | 0 | 5 |
 | Aristotle | 1 | 2 |
-| Researcher | 1 | 3 |
+| Researcher | 2 | 5 |
 | Seeker | 1 | 1 |
 | Deployer | 1 | 1 |
 
@@ -102,17 +102,17 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 ./scripts/lean/status.sh --json
 
 # Launch/stop (also works outside /lean skill)
-./scripts/lean/launch.sh start --erdos 2
+./scripts/lean/launch.sh start --researcher 3
 ./scripts/lean/launch.sh stop                # Graceful (signal files)
 ./scripts/lean/launch.sh stop --force        # Force (kill sessions)
 ./scripts/lean/launch.sh health              # Check agent health
-./scripts/lean/launch.sh spawn erdos
+./scripts/lean/launch.sh spawn researcher
 ./scripts/lean/launch.sh spawn seeker
-./scripts/lean/launch.sh scale erdos 3
+./scripts/lean/launch.sh scale researcher 4
 
 # Continuous daemon (monitors and respawns agents)
 ./scripts/lean/launch.sh daemon                             # Default 60s interval
-./scripts/lean/launch.sh daemon --interval 30 --erdos 3     # Custom settings
+./scripts/lean/launch.sh daemon --interval 30 --researcher 3  # Custom settings
 ./scripts/lean/launch.sh daemon &                           # Run in background
 ```
 
