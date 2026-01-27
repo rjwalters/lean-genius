@@ -99,17 +99,56 @@ For each candidate, ask:
 3. **Clear first step?** Can we at least start exploring?
 4. **Learning potential?** Even if we fail, will we learn something?
 
-### Step 4: Select and Initialize
+### Step 4: Select and Register in Database
+
+**CRITICAL**: You MUST write the selected problem to the database before initializing
+the workspace. This ensures `candidate-pool.json` stays in sync and Researchers can
+discover the problem.
 
 ```bash
 # Pick a problem
 PROBLEM_ID="sqrt2-irrational-oq-01"
+PROBLEM_TITLE="Square Root of 2 Irrationality Extensions"
+TIER="B"
+SIGNIFICANCE=6
+TRACTABILITY=7
 
-# Initialize research workspace
+# Step 4a: Ensure the database exists (build from SQL data files if needed)
+if [ ! -f research/db/knowledge.db ]; then
+    python3 research/db/migrate.py
+fi
+
+# Step 4b: Insert into database (upsert - update if exists)
+sqlite3 research/db/knowledge.db <<SQL
+INSERT INTO problems (slug, title, tier, significance, tractability, status, tags, last_updated)
+VALUES ('$PROBLEM_ID', '$PROBLEM_TITLE', '$TIER', $SIGNIFICANCE, $TRACTABILITY, 'available', '["seeker-selected"]', datetime('now'))
+ON CONFLICT(slug) DO UPDATE SET
+  status = CASE
+    WHEN problems.status IN ('in-progress', 'completed', 'graduated') THEN problems.status
+    ELSE 'available'
+  END,
+  tier = excluded.tier,
+  significance = excluded.significance,
+  tractability = excluded.tractability,
+  last_updated = datetime('now');
+SQL
+
+# Step 4c: Regenerate candidate-pool.json from database
+python3 research/db/sync_pool.py
+
+# Step 4d: Verify the problem appears in the pool
+jq -e ".candidates[] | select(.id == \"$PROBLEM_ID\")" research/candidate-pool.json > /dev/null
+
+# Step 4e: Initialize research workspace
 ./.lean/scripts/research.sh init $(echo $PROBLEM_ID | sed 's/-oq-[0-9]*$//')
 
 # Update problem.md with the specific question
 ```
+
+> **Why database-first?** The database (`research/db/knowledge.db`) is the single
+> source of truth. `candidate-pool.json` is auto-generated from it via `sync_pool.py`.
+> If you only create workspace directories, Researchers cannot discover the problem
+> because they query the pool JSON, not the filesystem.
 
 ## Selection Algorithm
 
@@ -195,12 +234,18 @@ When you select a problem:
 
 ## Integration with Researcher
 
-After selecting a problem:
+After selecting a problem, follow this **database-first** sequence:
 
-1. **Create workspace**: `./.lean/scripts/research.sh init [slug]`
-2. **Populate problem.md**: Copy the problem description and context
-3. **Set initial state**: OBSERVE phase
-4. **Hand off**: The Researcher takes over from here
+1. **Register in database**: Insert into `research/db/knowledge.db` with status `'available'`
+2. **Regenerate pool JSON**: Run `python3 research/db/sync_pool.py`
+3. **Verify pool entry**: Confirm the problem appears in `research/candidate-pool.json`
+4. **Create workspace**: `./.lean/scripts/research.sh init [slug]`
+5. **Populate problem.md**: Copy the problem description and context
+6. **Set initial state**: OBSERVE phase
+7. **Hand off**: The Researcher takes over from here
+
+> **Important**: Steps 1-3 are required for Researchers to discover the problem.
+> Skipping them causes the pool to show 0 available problems even though workspaces exist.
 
 ## Autonomous Operation
 
