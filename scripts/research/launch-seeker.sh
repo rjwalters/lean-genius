@@ -35,6 +35,7 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
+WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 SESSION_NAME="seeker-agent"
@@ -42,6 +43,8 @@ LOG_FILE="$LOGS_DIR/seeker.log"
 INTERVAL="${SEEKER_INTERVAL:-15}"
 THRESHOLD="${SEEKER_THRESHOLD:-5}"
 CANDIDATE_POOL="$REPO_ROOT/research/candidate-pool.json"
+WORKTREE_PATH="$WORKTREES_DIR/seeker"
+BRANCH_NAME="feature/seeker"
 
 # Colors
 RED='\033[0;31m'
@@ -66,6 +69,54 @@ check_deps() {
         print_error "Missing dependencies: ${missing[*]}"
         exit 1
     fi
+}
+
+# Create or update worktree for seeker
+create_worktree() {
+    mkdir -p "$WORKTREES_DIR"
+
+    if [[ -d "$WORKTREE_PATH" ]]; then
+        print_info "Worktree already exists, syncing with main..."
+        (
+            cd "$WORKTREE_PATH"
+            git fetch origin main 2>/dev/null || true
+            git stash 2>/dev/null || true
+
+            # Rebase on main to keep branch up to date
+            if git rebase origin/main 2>/dev/null; then
+                print_success "Rebased on origin/main"
+            else
+                # Abort rebase and reset if conflicts
+                git rebase --abort 2>/dev/null || true
+                print_warning "Rebase conflicts - resetting to origin/main"
+                git reset --hard origin/main 2>/dev/null || true
+            fi
+
+            git stash pop 2>/dev/null || true
+        )
+        return 0
+    fi
+
+    print_info "Creating worktree for seeker at $WORKTREE_PATH..."
+
+    # Try to create worktree
+    git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || {
+        # Branch might exist, try to use it
+        git worktree add "$WORKTREE_PATH" "$BRANCH_NAME" 2>/dev/null || {
+            # Remove and recreate branch
+            git branch -D "$BRANCH_NAME" 2>/dev/null || true
+            git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main
+        }
+    }
+
+    # Symlink .lake for fast Lean builds (if proofs directory exists)
+    if [[ -d "$REPO_ROOT/proofs/.lake" ]] && [[ -d "$WORKTREE_PATH/proofs" ]]; then
+        rm -rf "$WORKTREE_PATH/proofs/.lake" 2>/dev/null || true
+        ln -s "$REPO_ROOT/proofs/.lake" "$WORKTREE_PATH/proofs/.lake"
+        print_info "Linked .lake for fast Lean builds"
+    fi
+
+    print_success "Created seeker worktree"
 }
 
 # Check if candidate pool needs replenishment
@@ -157,6 +208,9 @@ launch_agent() {
     # Kill existing session if any
     tmux kill-session -t "$SESSION_NAME" 2>/dev/null || true
 
+    # Create or update worktree
+    create_worktree
+
     # Check pool depth first
     local available
     available=$(check_pool_depth)
@@ -169,15 +223,17 @@ launch_agent() {
     print_info "Interval: $INTERVAL minutes"
     print_info "Threshold: $THRESHOLD available problems"
     print_info "Current available: $available"
+    print_info "Worktree: $WORKTREE_PATH"
 
     if [[ "$available" -lt "$THRESHOLD" ]]; then
         print_warning "Pool is low ($available < $THRESHOLD) - seeker will select problems immediately"
     fi
 
     # Launch in tmux with resilient wrapper in DAEMON mode
+    # Run in worktree to isolate from main repo
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
-    tmux new-session -d -s "$SESSION_NAME" -c "$REPO_ROOT" \
-        "ENHANCER_ID=seeker REPO_ROOT=$REPO_ROOT $wrapper_script --daemon --prompt 'You are the seeker agent. Read $prompt_file for your instructions, then start the selection loop.' --log '$LOG_FILE'"
+    tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH" \
+        "ENHANCER_ID=seeker REPO_ROOT=$WORKTREE_PATH $wrapper_script --daemon --prompt 'You are the seeker agent. Read $prompt_file for your instructions, then start the selection loop.' --log '$LOG_FILE'"
 
     print_success "Launched seeker agent"
     echo ""
@@ -226,9 +282,17 @@ check_status() {
         print_success "Seeker is running"
         echo ""
         echo "Session: $SESSION_NAME"
+        echo "Worktree: $WORKTREE_PATH"
         echo "Log file: $LOG_FILE"
         echo "Interval: $INTERVAL minutes"
         echo "Threshold: $THRESHOLD available problems"
+
+        # Show worktree git status
+        if [[ -d "$WORKTREE_PATH" ]]; then
+            local branch
+            branch=$(cd "$WORKTREE_PATH" && git branch --show-current 2>/dev/null || echo "unknown")
+            echo "Branch: $branch"
+        fi
 
         local available
         available=$(check_pool_depth)
@@ -248,6 +312,9 @@ check_status() {
     else
         print_info "Seeker is not running"
         echo ""
+        if [[ -d "$WORKTREE_PATH" ]]; then
+            echo "Worktree exists: $WORKTREE_PATH"
+        fi
         local available
         available=$(check_pool_depth)
         echo "Available problems: $available"
@@ -300,6 +367,9 @@ Seeker Agent Launcher
 
 Launches an autonomous agent that periodically checks the candidate pool
 and selects new research problems when the pool runs low.
+
+The agent runs in an isolated git worktree at $WORKTREES_DIR/seeker
+to prevent contention with other agents working in the main repository.
 
 Usage:
   ./launch-seeker.sh              Launch seeker (default 15min interval)
