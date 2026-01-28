@@ -1,0 +1,111 @@
+{
+  "slug": "erdos-1109",
+  "title": "Squarefree Sumsets",
+  "phase": "SURVEYED",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let f(N) = sSup { m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N+1) ∧ hasSquarefreeSumset A ∧ A.card = m }. Estimate f(N).",
+    "plain": "Let f(N) be the size of the largest subset A ⊆ {1,...,N} such that every element of A+A is squarefree. Current bounds: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}. Is f(N) polylogarithmic?",
+    "whyMatters": [
+      "Connects additive combinatorics with multiplicative number theory",
+      "Tests how squarefree constraint limits sumset structure",
+      "Related to infinite analogue (Erdős #1103)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "all_odd: All elements of a squarefree-sumset set must be odd",
+      "prime_sq_avoidance: No two elements sum to a multiple of p² for any prime p",
+      "squarefree_iff_no_prime_sq: Squarefree characterization via prime squares",
+      "current_bounds: Combined Konyagin 2004 bounds",
+      "erdos_1109_summary: Full summary theorem"
+    ],
+    "open": [
+      "Is f(N) ≤ N^{o(1)} (subpolynomial)?",
+      "Is f(N) ≤ (log N)^{O(1)} (polylogarithmic)?",
+      "What is the exact asymptotic growth of f(N)?"
+    ],
+    "goal": "Improve bounds or prove structural constraints on optimal sets"
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-01-28T04:49:00.000Z",
+    "iteration": 1,
+    "focus": "Fix compilation, prove structural constraints, Aristotle-ready format",
+    "blockers": [
+      "distinct_primes_squarefree remains an axiom (needs Mathlib list/product API)"
+    ],
+    "nextAction": "Submit to Aristotle for distinct_primes_squarefree, explore mod p² constraints for small primes",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Fixed compilation (was broken), proved 2 new structural theorems (all_odd, prime_sq_avoidance), fixed /-! to /- for Aristotle, fixed type issues with Real.log/Real.pow imports, 0 sorries, 8 axioms for deep results",
+    "builtItems": [
+      "all_odd theorem in Erdos1109Problem.lean:237 - all elements must be odd",
+      "prime_sq_avoidance theorem in Erdos1109Problem.lean:261 - no pair sums to p²-multiple",
+      "Fixed f(N) definition using proper sSup set builder syntax",
+      "Added Real.log, Real.pow imports for compilation",
+      "Knowledge entry at research/problems/erdos-1109/knowledge.md"
+    ],
+    "insights": [
+      "Original file did not compile - missing Real.log, Real.pow imports and wrong sSup syntax",
+      "/-! docstrings break Aristotle parser - must use /-",
+      "Even elements are impossible: a even → a+a = 4k → divisible by 2², not squarefree",
+      "The all_odd constraint is the p=2 special case of general mod p² avoidance",
+      "Axiom quantifier patterns need explicit types for Lean 4 (∃ C : ℝ, C > 0 ∧ ... not ∃ C > 0, ...)"
+    ],
+    "mathlibGaps": [
+      "No direct squarefree product theorem for lists of distinct primes"
+    ],
+    "nextSteps": [
+      "Attempt proof of distinct_primes_squarefree using Mathlib coprimality API",
+      "Submit to Aristotle for automated proof search on axioms",
+      "Explore residue class constraints for p=3 (mod 9 avoidance)"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Structural constraints",
+      "description": "Prove necessary conditions on elements of squarefree-sumset sets via modular arithmetic",
+      "status": "progress",
+      "results": "Proved all_odd and prime_sq_avoidance theorems"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "additive-combinatorics",
+    "sumsets",
+    "squarefree",
+    "0-sorry"
+  ],
+  "relatedProofs": [
+    "erdos-1103",
+    "erdos-1102"
+  ],
+  "references": {
+    "papers": [
+      "Erdős-Sárközy 1987: On divisibility properties of integers a+a'",
+      "Konyagin 2004: Problems of the set of square-free numbers",
+      "Sárközy 1992: k-power-free sumsets generalization"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1109"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ]
+  },
+  "started": "2026-01-27T22:18:02.332Z",
+  "lastUpdate": "2026-01-28T04:49:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}
