@@ -869,7 +869,7 @@ daemon_cleanup() {
     rm -f "$DAEMON_PID_FILE"
     # Clean up temp respawn cache files
     rm -f /tmp/lean-daemon-respawn-* 2>/dev/null || true
-    set_running false
+    set_stopped
 }
 
 # Command: daemon - Continuous monitoring loop
