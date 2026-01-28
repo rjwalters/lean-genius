@@ -411,6 +411,86 @@ PYTHON
 }
 
 # ============================================================================
+# Quality Trend Analysis
+# ============================================================================
+
+# Compare current quality audit snapshot to the previous one and log trends.
+# Non-blocking: deploy always succeeds regardless of regression.
+compare_quality_trends() {
+    local audit_dir="$1"
+    local current_file="$2"
+
+    # Find previous snapshot (second most recent file)
+    local prev_file
+    prev_file=$(ls -t "$audit_dir"/*.json 2>/dev/null | sed -n '2p')
+
+    if [[ -z "$prev_file" ]]; then
+        print_info "Quality trend: No previous audit for comparison (first run)"
+        return 0
+    fi
+
+    # Extract total counts
+    local prev_total curr_total
+    prev_total=$(jq '.summary.totalIssues' "$prev_file" 2>/dev/null) || prev_total=""
+    curr_total=$(jq '.summary.totalIssues' "$current_file" 2>/dev/null) || curr_total=""
+
+    # Bail out if either value is not a valid number
+    if ! [[ "$prev_total" =~ ^[0-9]+$ ]] || ! [[ "$curr_total" =~ ^[0-9]+$ ]]; then
+        print_warning "Quality trend: Could not parse audit snapshots for comparison"
+        return 0
+    fi
+
+    local delta=$((curr_total - prev_total))
+
+    if [[ $delta -eq 0 ]]; then
+        print_info "Quality trend: Stable at $curr_total issues"
+    elif [[ $delta -gt 0 ]]; then
+        print_warning "Quality regression: $prev_total → $curr_total (+$delta issues)"
+    else
+        # delta is negative, use absolute value for display
+        local abs_delta=$(( -delta ))
+        print_success "Quality improvement: $prev_total → $curr_total (-$abs_delta issues)"
+    fi
+
+    # Per-type breakdown: show changes for each issue type
+    local prev_types curr_types
+    prev_types=$(jq -r '.summary.issuesByType // {}' "$prev_file" 2>/dev/null) || prev_types="{}"
+    curr_types=$(jq -r '.summary.issuesByType // {}' "$current_file" 2>/dev/null) || curr_types="{}"
+
+    if [[ "$prev_types" != "{}" ]] && [[ "$curr_types" != "{}" ]]; then
+        local type_changes
+        type_changes=$(jq -n \
+            --argjson prev "$prev_types" \
+            --argjson curr "$curr_types" \
+            '[$curr | to_entries[] | {key, prev: ($prev[.key] // 0), curr: .value} | select(.curr - .prev | . > 0 or . < 0)] |
+             sort_by(-.curr + .prev) |
+             .[] | "  \(.key): \(.prev) -> \(.curr) (\(if .curr > .prev then "+\(.curr - .prev)" else "\(.curr - .prev)" end))"' 2>/dev/null)
+
+        if [[ -n "$type_changes" ]]; then
+            print_info "Issue type changes:"
+            echo "$type_changes"
+        fi
+    fi
+
+    return 0
+}
+
+# Prune old quality history snapshots, keeping the most recent N files.
+prune_quality_history() {
+    local audit_dir="$1"
+    local keep_count="${QUALITY_HISTORY_KEEP:-30}"
+
+    local file_count
+    file_count=$(ls -1 "$audit_dir"/*.json 2>/dev/null | wc -l | tr -d ' ')
+
+    if [[ "$file_count" -gt "$keep_count" ]]; then
+        local to_delete=$((file_count - keep_count))
+        print_info "Pruning $to_delete old quality snapshot(s) (keeping last $keep_count)..."
+        ls -t "$audit_dir"/*.json | tail -n "$to_delete" | xargs rm -f
+    fi
+}
+
+# ============================================================================
 # Step 3: Build
 # ============================================================================
 build_website() {
@@ -438,6 +518,12 @@ build_website() {
         local total_issues
         total_issues=$(jq '.summary.totalIssues' "$audit_file" 2>/dev/null || echo "?")
         print_info "Quality audit: $total_issues issues logged to $audit_file"
+
+        # Compare to previous snapshot for trend analysis
+        compare_quality_trends "$audit_dir" "$audit_file"
+
+        # Prune old snapshots to prevent unbounded growth
+        prune_quality_history "$audit_dir"
     else
         print_warning "Quality audit failed (non-blocking)"
         rm -f "$audit_file"
