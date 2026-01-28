@@ -27,6 +27,7 @@ NC='\033[0m'
 STATE_FILE=".loom/lean-daemon-state.json"
 OLD_STATE_FILE="research/lean-daemon-state.json"
 SIGNALS_DIR=".loom/signals"
+COMPLETIONS_DIR="$SIGNALS_DIR/completions"
 STOP_SIGNAL_FILE="$SIGNALS_DIR/stop-lean-daemon"
 DAEMON_PID_FILE="research/lean-daemon.pid"
 DAEMON_LOG_FILE="research/lean-daemon.log"
@@ -863,6 +864,57 @@ update_daemon_state() {
     fi
 }
 
+# Helper: Process completion signals and update session stats
+# Agents create signal files when they complete work, daemon consumes them and updates counters
+process_completion_signals() {
+    # Ensure completions directory exists
+    mkdir -p "$COMPLETIONS_DIR/archive"
+
+    local stubs=0
+    local proofs=0
+    local integrated=0
+    local selected=0
+    local deploys=0
+
+    # Count signals by type (use find to avoid glob expansion issues)
+    stubs=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'stub-enhanced-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    proofs=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'proof-submitted-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    integrated=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'proof-integrated-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    selected=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'problem-selected-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    deploys=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'deployment-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+
+    local total=$((stubs + proofs + integrated + selected + deploys))
+
+    # Update state file if any completions
+    if [[ $total -gt 0 ]]; then
+        if [[ -f "$STATE_FILE" ]]; then
+            local tmp
+            tmp=$(mktemp)
+            jq \
+                --argjson stubs "$stubs" \
+                --argjson proofs "$proofs" \
+                --argjson integrated "$integrated" \
+                --argjson selected "$selected" \
+                --argjson deploys "$deploys" \
+                '.session_stats.stubs_enhanced += $stubs |
+                 .session_stats.proofs_submitted += $proofs |
+                 .session_stats.proofs_integrated += $integrated |
+                 .session_stats.problems_selected += $selected |
+                 .session_stats.deployments += $deploys' \
+                "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
+        fi
+
+        daemon_log "INFO" "Stats updated: +$stubs stubs, +$proofs proofs, +$integrated integrated, +$selected selected, +$deploys deploys"
+
+        # Archive signals (preserve for debugging but don't recount)
+        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'stub-enhanced-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
+        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'proof-submitted-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
+        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'proof-integrated-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
+        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'problem-selected-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
+        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'deployment-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
+    fi
+}
+
 # Helper: Clean up daemon PID file and signal handler
 daemon_cleanup() {
     daemon_log "INFO" "Daemon shutting down (PID $$)"
@@ -932,6 +984,9 @@ cmd_daemon() {
 
     # Remove stale stop signal if present from a previous run
     rm -f "$STOP_SIGNAL_FILE" 2>/dev/null || true
+
+    # Ensure completions directory exists for session stats tracking
+    mkdir -p "$COMPLETIONS_DIR/archive"
 
     # Write PID file
     mkdir -p "$(dirname "$DAEMON_PID_FILE")"
@@ -1037,13 +1092,16 @@ cmd_daemon() {
         local stubs candidates aristotle_jobs ready_prs
         read -r stubs candidates aristotle_jobs ready_prs <<< "$queue_stats"
 
-        # 4. Log cycle summary
+        # 4. Process completion signals and update session stats
+        process_completion_signals
+
+        # 5. Log cycle summary
         daemon_log "INFO" "Cycle $cycle_count: running=$running_count, completed=$completed_count, stuck=$stuck_count, respawned=$cycle_respawns | queues: stubs=$stubs, candidates=$candidates, aristotle=$aristotle_jobs, prs=$ready_prs"
 
-        # 5. Update state file with daemon stats
+        # 6. Update state file with daemon stats
         update_daemon_state "$cycle_count" "$total_respawns"
 
-        # 6. Re-check stop signal after respawning (race condition prevention)
+        # 7. Re-check stop signal after respawning (race condition prevention)
         if [[ -f "$STOP_SIGNAL_FILE" ]]; then
             daemon_log "INFO" "Stop signal detected after respawn, shutting down..."
             daemon_log "INFO" "Signal file details: $(ls -la "$STOP_SIGNAL_FILE" 2>&1)"

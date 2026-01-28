@@ -159,6 +159,11 @@ integrate_solution() {
 
                 # Update job status
                 update_job_status "$project_id" "integrated" "$new_sorries sorries remaining"
+
+                # Create completion signal for daemon stats tracking
+                local completions_dir="$PROJECT_ROOT/.loom/signals/completions"
+                mkdir -p "$completions_dir"
+                touch "$completions_dir/proof-integrated-$problem_id-$(date +%s)"
             fi
         elif [[ "$new_sorries" -eq 0 && "$orig_sorries" -eq 0 ]]; then
             echo -e "  ${YELLOW}Already complete${NC} (both have 0 sorries)"

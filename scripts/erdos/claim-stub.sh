@@ -41,6 +41,7 @@ CLAIMS_DIR="$REPO_ROOT/research/stub-claims"
 COMPLETED_FILE="$CLAIMS_DIR/completed.json"
 STUBS_SCRIPT="$REPO_ROOT/scripts/erdos/find-stubs.ts"
 HAS_QUALITY_ISSUES="$REPO_ROOT/scripts/erdos/has-quality-issues.sh"
+COMPLETIONS_DIR="$REPO_ROOT/.loom/signals/completions"
 
 # Defaults
 TTL_MINUTES="${CLAIM_TTL:-60}"
@@ -383,6 +384,10 @@ complete_stub() {
 
     # Release the claim
     release_stub "$erdos_number"
+
+    # Create completion signal for daemon stats tracking
+    mkdir -p "$COMPLETIONS_DIR"
+    touch "$COMPLETIONS_DIR/stub-enhanced-$erdos_number-$(date +%s)"
 
     echo "Marked erdos-$erdos_number as completed (status: $status)"
 }

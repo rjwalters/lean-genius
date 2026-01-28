@@ -544,6 +544,11 @@ deploy_website() {
     print_info "Running pnpm run deploy..."
     if pnpm run deploy 2>&1 | tail -10; then
         print_success "Deployment completed"
+
+        # Create completion signal for daemon stats tracking
+        local completions_dir="$REPO_ROOT/.loom/signals/completions"
+        mkdir -p "$completions_dir"
+        touch "$completions_dir/deployment-$(date +%s)"
     else
         print_error "Deployment failed"
         return 1

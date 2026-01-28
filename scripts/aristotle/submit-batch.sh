@@ -118,6 +118,11 @@ submit_file() {
          notes: "Batch submission"
        }]' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 
+    # Create completion signal for daemon stats tracking
+    local completions_dir="$PROJECT_ROOT/.loom/signals/completions"
+    mkdir -p "$completions_dir"
+    touch "$completions_dir/proof-submitted-$problem_id-$(date +%s)"
+
     return 0
 }
 

@@ -479,6 +479,11 @@ EOF
         '(.problems[] | select(.slug == $slug)) |= . + {"derived_from": $source}' \
         "$REGISTRY_FILE" > "$tmp" && mv "$tmp" "$REGISTRY_FILE"
 
+    # Create completion signal for daemon stats tracking (problem selected for research)
+    local completions_dir="$REPO_ROOT/.loom/signals/completions"
+    mkdir -p "$completions_dir"
+    touch "$completions_dir/problem-selected-$slug-$(date +%s)"
+
     echo ""
     echo -e "${GREEN}✓ Derived problem created!${NC}"
     echo ""
@@ -690,6 +695,11 @@ EOF
             '(.problems[] | select(.slug == $slug)) |= . + {"template": $template, "template_value": $value}' \
             "$REGISTRY_FILE" > "$tmp" && mv "$tmp" "$REGISTRY_FILE"
 
+        # Create completion signal for daemon stats tracking (problem selected for research)
+        local completions_dir="$REPO_ROOT/.loom/signals/completions"
+        mkdir -p "$completions_dir"
+        touch "$completions_dir/problem-selected-$slug-$(date +%s)"
+
         echo ""
         echo -e "${GREEN}✓ Template-generated problem created!${NC}"
         echo ""
@@ -762,6 +772,11 @@ EOF
 
     # Register in registry
     register_problem "$slug" "OBSERVE" "$path_type"
+
+    # Create completion signal for daemon stats tracking (problem selected for research)
+    local completions_dir="$REPO_ROOT/.loom/signals/completions"
+    mkdir -p "$completions_dir"
+    touch "$completions_dir/problem-selected-$slug-$(date +%s)"
 
     # Create knowledge.md
     cat > "$problem_dir/knowledge.md" << EOF
