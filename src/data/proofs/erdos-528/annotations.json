@@ -1,24 +1,14 @@
 [
   {
-    "id": "ann-e528-overview",
-    "proofId": "erdos-528",
-    "range": { "startLine": 1, "endLine": 25 },
-    "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #528: Connective Constant for Self-Avoiding Walks**\n\nLet f(n,k) count n-step self-avoiding walks in ℤ^k. Determine:\nC_k = lim_{n→∞} f(n,k)^{1/n}\n\nLimit EXISTS (Hammersley-Morton), bounds k ≤ C_k ≤ 2k-1, but exact closed forms remain OPEN.",
-    "mathContext": "Combinatorics, statistical mechanics, polymer physics.",
-    "significance": "critical",
-    "relatedConcepts": ["Self-avoiding walks", "Submultiplicativity", "Fekete's lemma"]
-  },
-  {
     "id": "ann-e528-latticepoint",
     "proofId": "erdos-528",
     "range": { "startLine": 44, "endLine": 45 },
     "type": "definition",
     "title": "Lattice Point",
-    "content": "**LatticePoint k:** A point in ℤ^k.\n\nRepresented as Fin k → ℤ (a function from k coordinates to integers).",
-    "significance": "key",
-    "leanSymbol": "LatticePoint"
+    "content": "`LatticePoint k` is a point in $\\mathbb{Z}^k$, represented as `Fin k → ℤ` — a function from $k$ coordinates to integers. This provides the ambient space for self-avoiding walks.",
+    "mathContext": "The integer lattice $\\mathbb{Z}^k$ is the standard setting for self-avoiding walk problems. Using `Fin k → ℤ` gives a type-theoretically clean representation where each coordinate is independently an integer, and the dimension $k$ is a natural number parameter.",
+    "relatedConcepts": ["Fin", "Int", "abbrev", "function type"],
+    "significance": "key"
   },
   {
     "id": "ann-e528-neighbors",
@@ -26,9 +16,21 @@
     "range": { "startLine": 47, "endLine": 49 },
     "type": "definition",
     "title": "Lattice Neighbors",
-    "content": "**areNeighbors k p q:** Two points are neighbors if they differ by exactly 1 in exactly one coordinate.\n\nThis is the standard adjacency for ℤ^k.",
-    "significance": "key",
-    "leanSymbol": "areNeighbors"
+    "content": "`areNeighbors k p q` holds when points $p$ and $q$ differ by exactly $\\pm 1$ in exactly one coordinate: $\\exists i, (\\forall j \\neq i, p_j = q_j) \\wedge |p_i - q_i| = 1$. This defines the standard adjacency relation on $\\mathbb{Z}^k$.",
+    "mathContext": "This is the $\\ell^1$ unit ball adjacency: two points are neighbors iff their Manhattan distance is 1. Each point in $\\mathbb{Z}^k$ has exactly $2k$ neighbors (one in each direction along each axis). The absolute value `|p i - q i| = 1` uses `Int.natAbs` or the `abs` on integers.",
+    "relatedConcepts": ["Int.natAbs", "Fin", "Manhattan distance", "lattice adjacency"],
+    "significance": "key"
+  },
+  {
+    "id": "ann-e528-walk",
+    "proofId": "erdos-528",
+    "range": { "startLine": 51, "endLine": 52 },
+    "type": "definition",
+    "title": "Walk",
+    "content": "`Walk k n` is a sequence of $n+1$ lattice points in $\\mathbb{Z}^k$, representing an $n$-step walk. Defined as `Fin (n + 1) → LatticePoint k`.",
+    "mathContext": "An $n$-step walk visits $n+1$ points (including the starting point). Using `Fin (n+1)` ensures the walk has exactly the right number of vertices. This is a raw sequence — the SAW properties (origin, connectivity, self-avoidance) are imposed separately by `isSAW`.",
+    "relatedConcepts": ["Fin", "function type", "LatticePoint"],
+    "significance": "supporting"
   },
   {
     "id": "ann-e528-saw",
@@ -36,188 +38,152 @@
     "range": { "startLine": 66, "endLine": 68 },
     "type": "definition",
     "title": "Self-Avoiding Walk (SAW)",
-    "content": "**isSAW k n w:** A walk w is a self-avoiding walk if it:\n1. Starts at the origin\n2. Is connected (consecutive points are neighbors)\n3. Is self-avoiding (no repeated vertices)\n\nSAWs model polymers and random paths.",
-    "significance": "critical",
-    "leanSymbol": "isSAW"
+    "content": "`isSAW k n w` is a conjunction of three properties:\n1. `startsAtOrigin`: $w(0) = \\mathbf{0}$\n2. `isConnected`: consecutive points are neighbors\n3. `isSelfAvoiding`: no two distinct indices map to the same point ($i \\neq j \\Rightarrow w(i) \\neq w(j)$)",
+    "mathContext": "Self-avoiding walks are central objects in combinatorics and statistical mechanics. They model ideal polymer chains — linear molecules that cannot occupy the same spatial position twice. The self-avoidance constraint makes SAW enumeration vastly harder than unrestricted walk counting (which is simply $(2k)^n$).",
+    "relatedConcepts": ["startsAtOrigin", "isConnected", "isSelfAvoiding", "polymer model"],
+    "significance": "critical"
   },
   {
     "id": "ann-e528-sawcount",
     "proofId": "erdos-528",
-    "range": { "startLine": 83, "endLine": 84 },
+    "range": { "startLine": 76, "endLine": 80 },
     "type": "definition",
     "title": "SAW Count f(n,k)",
-    "content": "**sawCount n k:** The number of n-step self-avoiding walks in ℤ^k.\n\nExamples in 2D:\nf(0,2) = 1, f(1,2) = 4, f(2,2) = 12, f(3,2) = 36, f(4,2) = 100",
-    "significance": "critical",
-    "leanSymbol": "sawCount"
+    "content": "`sawCount n k` is the number of $n$-step self-avoiding walks in $\\mathbb{Z}^k$ starting at the origin. Axiomatized because enumerating SAWs in Lean requires decidability of `isSAW`, which involves quantifying over all lattice points visited — an infinite set.",
+    "mathContext": "The function $f(n,k)$ = `sawCount n k` is always finite (bounded by $(2k)^n$) but computing it exactly is \\#P-complete. Known 2D values: $f(0,2)=1$, $f(1,2)=4$, $f(2,2)=12$, $f(3,2)=36$, $f(4,2)=100$, $f(5,2)=284$. The sequence grows exponentially as $f(n,k) \\sim A \\cdot \\mu_k^n \\cdot n^{\\gamma-1}$.",
+    "relatedConcepts": ["isSAW", "Nat", "#P-completeness", "exponential growth"],
+    "significance": "critical"
   },
   {
     "id": "ann-e528-submult",
     "proofId": "erdos-528",
-    "range": { "startLine": 98, "endLine": 100 },
-    "type": "axiom",
+    "range": { "startLine": 94, "endLine": 96 },
+    "type": "theorem",
     "title": "Submultiplicativity",
-    "content": "**submultiplicativity:**\n\nf(m+n, k) ≤ f(m, k) · f(n, k)\n\nThis is the key property that implies the limit exists. A walk of m+n steps can be split into an m-step prefix and an n-step suffix.",
-    "significance": "critical",
-    "leanSymbol": "submultiplicativity"
+    "content": "`submultiplicativity`: $f(m+n, k) \\leq f(m, k) \\cdot f(n, k)$. An $(m+n)$-step SAW can be decomposed into an $m$-step prefix and an $n$-step suffix (translated to start at the origin), but the concatenation of two independent SAWs may self-intersect — hence the inequality.",
+    "mathContext": "Submultiplicativity is the crucial structural property of SAW counts. It follows because: given an $(m+n)$-step SAW, its first $m$ steps form an $m$-step SAW and its last $n$ steps (translated) form an $n$-step SAW. The reverse fails because concatenating two SAWs may create self-intersections. Combined with Fekete's lemma, this implies $\\lim f(n,k)^{1/n}$ exists.",
+    "relatedConcepts": ["Fekete's lemma", "limit_exists", "Nat.mul", "Nat.le"],
+    "significance": "critical"
   },
   {
     "id": "ann-e528-limitexists",
     "proofId": "erdos-528",
-    "range": { "startLine": 102, "endLine": 104 },
-    "type": "axiom",
-    "title": "Hammersley-Morton (1954)",
-    "content": "**limit_exists:**\n\nThe limit C_k = lim f(n,k)^{1/n} exists and is positive.\n\nThis follows from submultiplicativity via Fekete's lemma.",
-    "significance": "critical",
-    "leanSymbol": "limit_exists"
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "theorem",
+    "title": "Hammersley-Morton (1954): Limit Exists",
+    "content": "`limit_exists`: $\\exists C > 0$ such that $(f(n,k))^{1/n} \\to C$ as $n \\to \\infty$. This fundamental result follows from submultiplicativity via **Fekete's lemma**: if $\\{a_n\\}$ is submultiplicative ($a_{m+n} \\leq a_m \\cdot a_n$), then $\\lim a_n^{1/n} = \\inf a_n^{1/n}$.",
+    "mathContext": "Fekete's lemma (1923) states that for a submultiplicative sequence, the limit of $n$-th roots equals the infimum. Applied to $a_n = f(n,k)$, this gives $C_k = \\inf_n f(n,k)^{1/n}$. The positivity $C > 0$ follows from $f(n,k) \\geq k^n$ (the lower bound). The `Tendsto` formulation uses Mathlib's filter-based limits.",
+    "relatedConcepts": ["Filter.Tendsto", "Filter.atTop", "nhds", "Real.rpow", "Fekete's lemma"],
+    "significance": "critical"
   },
   {
     "id": "ann-e528-connective",
     "proofId": "erdos-528",
-    "range": { "startLine": 106, "endLine": 110 },
+    "range": { "startLine": 102, "endLine": 108 },
     "type": "definition",
-    "title": "Connective Constant",
-    "content": "**connectiveConstant k:** μ_k = lim f(n,k)^{1/n}\n\nThe connective constant governs the exponential growth rate of SAWs: f(n,k) ~ A·μ_k^n·n^{γ-1}.",
-    "significance": "critical",
-    "leanSymbol": "connectiveConstant"
-  },
-  {
-    "id": "ann-e528-lowerbound",
-    "proofId": "erdos-528",
-    "range": { "startLine": 120, "endLine": 122 },
-    "type": "axiom",
-    "title": "Lower Bound μ_k ≥ k",
-    "content": "**connective_lower_bound:**\n\nμ_k ≥ k.\n\nAt each step, you can always move to at least one new vertex in at least k directions (ignoring where you came from).",
-    "significance": "key",
-    "leanSymbol": "connective_lower_bound"
-  },
-  {
-    "id": "ann-e528-upperbound",
-    "proofId": "erdos-528",
-    "range": { "startLine": 124, "endLine": 126 },
-    "type": "axiom",
-    "title": "Upper Bound μ_k ≤ 2k-1",
-    "content": "**connective_upper_bound:**\n\nμ_k ≤ 2k-1.\n\nAt each step after the first, at most 2k-1 directions are available (you can't go back).",
-    "significance": "key",
-    "leanSymbol": "connective_upper_bound"
+    "title": "Connective Constant μ_k",
+    "content": "`connectiveConstant k` extracts the limit $\\mu_k = \\lim f(n,k)^{1/n}$ using `Classical.choose` on the `limit_exists` axiom. For $k = 0$ (degenerate case), it defaults to 1. The notation `μ` is introduced for readability.",
+    "mathContext": "The use of `Classical.choose` extracts the witness $C$ from the existential in `limit_exists`. This makes `connectiveConstant` noncomputable — its value cannot be extracted by computation, only reasoned about via the properties guaranteed by `limit_exists`. The `dite` (decidable if-then-else) handles $k \\geq 1$ vs $k = 0$.",
+    "relatedConcepts": ["Classical.choose", "noncomputable", "dite", "notation"],
+    "significance": "critical"
   },
   {
     "id": "ann-e528-trivialbounds",
     "proofId": "erdos-528",
-    "range": { "startLine": 128, "endLine": 131 },
+    "range": { "startLine": 124, "endLine": 127 },
     "type": "theorem",
-    "title": "Trivial Bounds",
-    "content": "**trivial_bounds:**\n\nk ≤ μ_k ≤ 2k-1.\n\nFor large k, μ_k ≈ 2k-1 (approaches the upper bound).",
-    "significance": "key",
-    "leanSymbol": "trivial_bounds"
+    "title": "Trivial Bounds: k ≤ μ_k ≤ 2k-1",
+    "content": "`trivial_bounds` is a **genuine theorem** (not an axiom): $(k : \\mathbb{R}) \\leq \\mu_k \\wedge \\mu_k \\leq 2k - 1$. The proof combines the axiomatized lower and upper bounds via anonymous constructor `⟨⟩`.",
+    "mathContext": "**Lower bound:** At each step, a SAW in $\\mathbb{Z}^k$ can move in at least one new direction per axis pair, giving $f(n,k) \\geq k^n$ and thus $\\mu_k \\geq k$.\n**Upper bound:** After the first step, at most $2k-1$ of the $2k$ neighbors are available (you can't return), giving $f(n,k) \\leq 2k \\cdot (2k-1)^{n-1}$ and thus $\\mu_k \\leq 2k-1$.",
+    "relatedConcepts": ["connective_lower_bound", "connective_upper_bound", "And.intro"],
+    "significance": "key"
   },
   {
     "id": "ann-e528-kesten",
     "proofId": "erdos-528",
-    "range": { "startLine": 139, "endLine": 142 },
-    "type": "axiom",
+    "range": { "startLine": 135, "endLine": 144 },
+    "type": "theorem",
     "title": "Kesten's Asymptotic (1963)",
-    "content": "**kesten_asymptotic:**\n\nμ_k = 2k - 1 - 1/(2k) + O(1/k²)\n\nFor large k, the connective constant approaches 2k-1 with a negative correction of order 1/k.",
-    "significance": "critical",
-    "leanSymbol": "kesten_asymptotic"
+    "content": "`kesten_asymptotic`: $\\mu_k = 2k - 1 - \\frac{1}{2k} + R/k^2$ where $|R| \\leq 1$. The first-order version `kesten_first_order` gives $|\\mu_k - (2k-1)| \\leq 1/k$ for $k \\geq 2$.",
+    "mathContext": "Kesten's result shows the trivial upper bound $2k-1$ is asymptotically sharp: $\\mu_k / (2k-1) \\to 1$ as $k \\to \\infty$. The correction $-1/(2k)$ comes from the probability that a SAW's immediate neighborhood blocks an extra direction. The remainder $R/k^2$ with $|R| \\leq 1$ is a rigorous error bound, not just big-O notation.",
+    "relatedConcepts": ["connective_upper_bound", "normalized_limit", "abs", "Real.div"],
+    "significance": "critical"
   },
   {
-    "id": "ann-e528-cglower",
+    "id": "ann-e528-2dbounds",
     "proofId": "erdos-528",
-    "range": { "startLine": 158, "endLine": 159 },
-    "type": "axiom",
-    "title": "Conway-Guttmann Lower (1993)",
-    "content": "**conway_guttmann_lower:**\n\nμ_2 ≥ 2.62.\n\nThis rigorous lower bound uses generating function techniques.",
-    "significance": "key",
-    "leanSymbol": "conway_guttmann_lower"
+    "range": { "startLine": 155, "endLine": 167 },
+    "type": "theorem",
+    "title": "Two-Dimensional Bounds and Computation",
+    "content": "Rigorous bounds $2.62 \\leq \\mu_2 \\leq 2.696$ (Conway-Guttmann 1993, Alm 1993) and high-precision computation $|\\mu_2 - 2.6381585303279| < 10^{-12}$ (Jacobsen-Scullard-Guttmann 2016). The `two_d_bounds` theorem is a **genuine proof** combining the two bound axioms.",
+    "mathContext": "The 2D connective constant $\\mu_2 \\approx 2.638$ has been computed to extraordinary precision but has no known closed form. The rigorous bounds use generating function analysis and transfer matrix methods. The Conway-Guttmann lower bound $2.62$ comes from analyzing specific SAW configurations, while Alm's upper bound $2.696$ uses pattern-avoidance arguments.",
+    "relatedConcepts": ["conway_guttmann_lower", "alm_upper", "jsg_computation", "two_d_bounds"],
+    "significance": "critical"
   },
   {
-    "id": "ann-e528-almupper",
+    "id": "ann-e528-largek",
     "proofId": "erdos-528",
-    "range": { "startLine": 161, "endLine": 162 },
-    "type": "axiom",
-    "title": "Alm Upper (1993)",
-    "content": "**alm_upper:**\n\nμ_2 ≤ 2.696.\n\nThis rigorous upper bound complements Conway-Guttmann.",
-    "significance": "key",
-    "leanSymbol": "alm_upper"
-  },
-  {
-    "id": "ann-e528-jsg",
-    "proofId": "erdos-528",
-    "range": { "startLine": 164, "endLine": 166 },
-    "type": "axiom",
-    "title": "JSG High-Precision (2016)",
-    "content": "**jsg_computation:**\n\nμ_2 = 2.6381585303279...\n\nJacobsen, Scullard, and Guttmann computed the 2D connective constant to 12+ decimal places.",
-    "significance": "critical",
-    "leanSymbol": "jsg_computation"
+    "range": { "startLine": 178, "endLine": 184 },
+    "type": "theorem",
+    "title": "Higher-Dimensional Asymptotics",
+    "content": "`large_k_limit`: $\\mu_k / k \\to 2$ as $k \\to \\infty$, and `normalized_limit`: $\\mu_k / (2k-1) \\to 1$. These formalize that for high dimensions, the connective constant approaches the trivial upper bound.",
+    "mathContext": "In high dimensions, SAWs are less constrained because the lattice has more room to avoid self-intersections. As $k \\to \\infty$, the probability that a random walk self-intersects approaches zero, so $\\mu_k$ approaches the unrestricted walk growth rate $(2k-1)$. The ratio $\\mu_k / k \\to 2$ follows from $\\mu_k \\approx 2k - 1 \\approx 2k$ for large $k$.",
+    "relatedConcepts": ["Filter.Tendsto", "Filter.atTop", "nhds", "kesten_asymptotic"],
+    "significance": "supporting"
   },
   {
     "id": "ann-e528-honeycomb",
     "proofId": "erdos-528",
-    "range": { "startLine": 195, "endLine": 196 },
-    "type": "definition",
-    "title": "Honeycomb Connective Constant",
-    "content": "**mu_honeycomb:** √(2 + √2) ≈ 1.8478\n\nDuminil-Copin and Smirnov (2012, Fields Medal work) proved this EXACT value for the honeycomb lattice.",
-    "significance": "critical",
-    "leanSymbol": "mu_honeycomb"
+    "range": { "startLine": 192, "endLine": 206 },
+    "type": "theorem",
+    "title": "Honeycomb Lattice: Exact Value √(2+√2)",
+    "content": "`mu_honeycomb` = $\\sqrt{2 + \\sqrt{2}} \\approx 1.8478$ is the exact connective constant for the honeycomb (hexagonal) lattice. The `honeycomb_exact` axiom asserts this value exists with $0 < \\mu_{\\text{hex}} < 2$.",
+    "mathContext": "Duminil-Copin and Smirnov (2012, contributing to Smirnov's Fields Medal) proved this using **discrete holomorphicity** and **parafermionic observables** — techniques from conformal field theory applied to combinatorics. This is the only lattice for which the connective constant has a known exact closed form. The honeycomb lattice has coordination number 3 (each vertex has 3 neighbors), lower than the square lattice's 4.",
+    "relatedConcepts": ["Real.sqrt", "mu_honeycomb_approx", "discrete holomorphicity", "parafermionic observables"],
+    "significance": "critical"
   },
   {
-    "id": "ann-e528-closed",
+    "id": "ann-e528-conjectures",
     "proofId": "erdos-528",
-    "range": { "startLine": 213, "endLine": 215 },
+    "range": { "startLine": 214, "endLine": 225 },
     "type": "definition",
-    "title": "Closed Form Conjecture",
-    "content": "**mu2_closed_form_conjecture:**\n\nConjecture: μ_2 might have a closed algebraic form.\n\nDespite extensive computation, no such form is known.",
-    "significance": "key",
-    "leanSymbol": "mu2_closed_form_conjecture"
-  },
-  {
-    "id": "ann-e528-irrational",
-    "proofId": "erdos-528",
-    "range": { "startLine": 217, "endLine": 219 },
-    "type": "definition",
-    "title": "Irrationality Conjecture",
-    "content": "**irrationality_conjecture:**\n\nConjecture: μ_k is irrational for all k ≥ 2.\n\nNot proven for any k (including k = 2).",
-    "significance": "key",
-    "leanSymbol": "irrationality_conjecture"
+    "title": "Open Conjectures",
+    "content": "`mu2_closed_form_conjecture`: $\\mu_2$ might equal $\\sqrt{(a + b\\sqrt{c})/c}$ for some integers $a, b, c$. `irrationality_conjecture`: $\\mu_k$ is irrational for all $k \\geq 2$. `mu2_irrationality_open_status` formalizes that neither possibility is ruled out.",
+    "mathContext": "The irrationality of $\\mu_k$ for any $k \\geq 2$ is completely open — despite computing $\\mu_2$ to 12+ decimal places, no one has proved it is irrational (or rational). The closed-form conjecture is speculative, inspired by the honeycomb result $\\sqrt{2 + \\sqrt{2}}$. The `mu2_irrationality_open_status` axiom uses excluded middle ($\\neg P \\vee P$) to express that the question is logically determined but unknown.",
+    "relatedConcepts": ["Irrational", "Real.sqrt", "Classical.em", "mu_honeycomb"],
+    "significance": "key"
   },
   {
     "id": "ann-e528-counts2d",
     "proofId": "erdos-528",
-    "range": { "startLine": 230, "endLine": 237 },
-    "type": "axiom",
-    "title": "2D SAW Counts",
-    "content": "**saw_counts_2d:**\n\nf(0,2)=1, f(1,2)=4, f(2,2)=12, f(3,2)=36, f(4,2)=100, f(5,2)=284\n\nThese are computed exactly. The ratio f(n+1,2)/f(n,2) → μ_2.",
-    "significance": "supporting",
-    "leanSymbol": "saw_counts_2d"
+    "range": { "startLine": 233, "endLine": 244 },
+    "type": "theorem",
+    "title": "2D SAW Enumeration and Ratio Convergence",
+    "content": "`saw_counts_2d` gives exact SAW counts in 2D: $f(0,2)=1, f(1,2)=4, f(2,2)=12, f(3,2)=36, f(4,2)=100, f(5,2)=284$. The `ratio_convergence` axiom states $f(n+1,2)/f(n,2) \\to \\mu_2$ as $n \\to \\infty$.",
+    "mathContext": "The ratio $f(n+1,k)/f(n,k)$ converges to $\\mu_k$ — this is a standard consequence of the exponential growth $f(n,k) \\sim A \\cdot \\mu_k^n \\cdot n^{\\gamma-1}$. The enumeration sequence (OEIS A001411) has been computed to $n = 79$ steps in 2D, requiring sophisticated algorithms like the pivot algorithm and lace expansion. The early ratios 4/1, 12/4=3, 36/12=3, 100/36≈2.78, 284/100=2.84 already approach $\\mu_2 \\approx 2.638$.",
+    "relatedConcepts": ["sawCount", "ratio_convergence", "Filter.Tendsto", "OEIS A001411"],
+    "significance": "supporting"
   },
   {
     "id": "ann-e528-critical",
     "proofId": "erdos-528",
-    "range": { "startLine": 252, "endLine": 255 },
-    "type": "axiom",
-    "title": "Critical Exponent",
-    "content": "**critical_exponent_exists:**\n\nf(n,k) ~ A · μ_k^n · n^{γ-1}\n\nThe critical exponent γ governs sub-exponential corrections. In 2D, γ = 43/32 is conjectured.",
-    "significance": "key",
-    "leanSymbol": "critical_exponent_exists"
+    "range": { "startLine": 252, "endLine": 263 },
+    "type": "theorem",
+    "title": "Critical Exponent and 2D Conjecture",
+    "content": "`critical_exponent_exists`: $f(n,k) \\sim A \\cdot \\mu_k^n \\cdot n^{\\gamma-1}$ for some $A > 0, \\gamma > 0$. `gamma_2d_conjecture_value`: In 2D, the exponent is conjectured to be $\\gamma = 43/32 = 1.34375$.",
+    "mathContext": "The critical exponent $\\gamma$ captures the sub-exponential growth of SAW counts. In statistical mechanics, $\\gamma$ is a **universal** quantity — it depends only on dimension, not lattice type. For 2D, conformal field theory predicts $\\gamma = 43/32$ (Nienhuis 1982). For 3D, $\\gamma \\approx 1.1596$ (numerical). For $d \\geq 4$, $\\gamma = 1$ (mean-field behavior). Rigorous proof of $\\gamma = 43/32$ for 2D remains open.",
+    "relatedConcepts": ["critical_exponent_exists", "gamma_2d_conjecture_value", "universality", "conformal field theory"],
+    "significance": "key"
   },
   {
     "id": "ann-e528-summary",
     "proofId": "erdos-528",
-    "range": { "startLine": 266, "endLine": 281 },
+    "range": { "startLine": 271, "endLine": 284 },
     "type": "theorem",
-    "title": "Main Summary",
-    "content": "**erdos_528_summary:**\n\n1. Limit C_k exists (Hammersley-Morton)\n2. Bounds k ≤ C_k ≤ 2k-1\n3. Kesten's asymptotic C_k = 2k-1 - 1/(2k) + O(1/k²)\n4. C_2 = 2.6381585... (numerical)\n5. Exact closed forms remain OPEN",
-    "significance": "critical",
-    "leanSymbol": "erdos_528_summary"
-  },
-  {
-    "id": "ann-e528-main",
-    "proofId": "erdos-528",
-    "range": { "startLine": 283, "endLine": 284 },
-    "type": "theorem",
-    "title": "Main Theorem",
-    "content": "**erdos_528:**\n\nErdős Problem #528: Limit exists, but exact closed form OPEN.\n\nThe connective constant is known numerically but not algebraically.",
-    "significance": "critical",
-    "leanSymbol": "erdos_528"
+    "title": "Main Results Summary",
+    "content": "`erdos_528_summary` is a **genuine theorem** (not an axiom) combining three results:\n1. $\\forall k \\geq 1$, the limit $C_k$ exists and is positive (Hammersley-Morton)\n2. $\\forall k \\geq 1$, $k \\leq \\mu_k \\leq 2k-1$ (trivial bounds)\n3. $2.62 \\leq \\mu_2 \\leq 2.696$ (rigorous 2D bounds)\n\nThe proof directly applies `limit_exists`, `trivial_bounds`, and `two_d_bounds`.",
+    "mathContext": "This summary captures the state of knowledge for Problem #528: the limit is well-defined with known bounds, but exact closed forms remain open. The proof is constructed as an anonymous tuple `⟨..., ..., ...⟩`, applying previously established results. The omission of Kesten's asymptotic and the honeycomb result from the summary keeps it focused on the three main structural results.",
+    "relatedConcepts": ["limit_exists", "trivial_bounds", "two_d_bounds", "And.intro"],
+    "significance": "critical"
   }
 ]
