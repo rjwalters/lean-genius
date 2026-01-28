@@ -1,10 +1,10 @@
 {
   "id": "erdos-356",
-  "title": "Consecutive Sums in Strictly Increasing Sequences",
+  "title": "Erdős Problem #356: Consecutive Sums in Strictly Increasing Sequences",
   "slug": "erdos-356",
-  "description": "Is there c > 0 such that strictly increasing sequences a₁ < ... < aₖ ≤ n can achieve cn² distinct consecutive sums? SOLVED: YES (Beker 2023). The trivial sequence {1,...,n} fails with only O(n) distinct sums.",
+  "description": "Is there c > 0 such that strictly increasing sequences a₁ < ... < aₖ ≤ n can achieve cn² distinct consecutive sums? YES, proved by Beker (2023).",
   "meta": {
-    "author": "Erdős-Graham (problem), Beker (solved, 2023)",
+    "author": "Erdős-Graham (problem), Beker (2023 proof), Konieczny (2015 permutation variant)",
     "sourceUrl": "https://erdosproblems.com/356",
     "date": "2023",
     "status": "complete",
@@ -14,107 +14,139 @@
       "combinatorics",
       "sequences",
       "additive-combinatorics",
-      "sums"
+      "consecutive-sums",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 4,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 356,
     "erdosUrl": "https://erdosproblems.com/356",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-28",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "List.Pairwise",
+        "description": "Pairwise relation on lists for strict ordering",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets for counting distinct sums",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "List.range'",
+        "description": "Range of naturals starting from a given value",
+        "module": "Mathlib.Data.List.Range"
+      },
+      {
+        "theorem": "Finset.range'",
+        "description": "Finset of naturals in a range",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "consecutiveSubsum definition: sum of a contiguous slice of a sequence",
+      "consecutiveSums definition: Finset of all consecutive subsums",
+      "distinctConsecutiveSums: cardinality of the consecutive sums Finset",
+      "trivialSequence: the sequence {1,...,n} as a baseline",
+      "trivial_fails axiom: {1,...,n} achieves only O(n) distinct sums",
+      "trivial_collision_structure: arithmetic structure causes sub-quadratic growth",
+      "isValidSequence: strictly increasing and bounded by n",
+      "erdosGrahamConjecture: formal statement of the cn² conjecture",
+      "beker_theorem axiom: the conjecture is true (Beker 2023)",
+      "permutationConjecture and konieczny_theorem axiom (Konieczny 2015)",
+      "erdos357Question: related consecutive-integers variant",
+      "upper_bound and lower_bound_exists axioms: Θ(n²) growth",
+      "erdos_356_solved: combined main result theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem comes from the Erdős-Graham collaboration on combinatorial number theory. The question asks whether one can do better than the trivial sequence {1, 2, ..., n} in terms of distinct consecutive subsums. The trivial sequence fails because many consecutive sums coincide (e.g., arithmetic progressions have highly structured sums).",
-    "problemStatement": "Is there c > 0 such that for all large n, there exist integers a₁ < a₂ < ... < aₖ ≤ n with at least cn² distinct consecutive sums Σ_{u≤i≤v} aᵢ?",
-    "proofStrategy": "The formalization defines consecutive subsums and the counting function. The trivial sequence failure is established, and Beker's theorem (2023) proving the affirmative answer is axiomatized. Konieczny's related result on permutations is also included.",
+    "historicalContext": "Erdős Problem #356 originates from the Erdős-Graham collaboration on combinatorial number theory [ErGr80]. The question asks whether carefully chosen strictly increasing sequences can achieve quadratically many distinct consecutive subsums — far more than the trivial sequence {1, 2, ..., n}, which achieves only O(n) distinct values due to arithmetic structure causing sum collisions.\n\nThe problem connects to broader themes in additive combinatorics: how does the structure of a set affect the richness of its sumset? The trivial sequence fails because arithmetic progressions produce highly regular sums with many coincidences. Breaking this regularity is the key to achieving quadratic growth.\n\nKonieczny (2015) first showed that permutations of {1,...,n} can achieve cn² distinct consecutive sums, solving a related variant. Beker (2023) then settled the original problem, proving that strictly increasing sequences bounded by n can also achieve cn² distinct sums. This resolved the problem in the affirmative.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIs there some constant $c > 0$ such that for all sufficiently large $n$, there exist integers $a_1 < a_2 < \\cdots < a_k \\leq n$ with at least $cn^2$ distinct integers of the form $\\sum_{u \\leq i \\leq v} a_i$ (consecutive subsums)?\n\n**Answer: YES** — proved by Adrian Beker (2023).\n\nThe trivial sequence $\\{1, 2, \\ldots, n\\}$ fails (only $O(n)$ distinct sums). Konieczny (2015) proved the permutation variant. Beker (2023) proved the original strictly increasing version.",
+    "proofStrategy": "The formalization defines consecutive subsums and the counting function distinctConsecutiveSums. The trivial sequence {1,...,n} is shown to fail via axiom. The main concepts — strictly increasing sequences, valid sequences, and the Erdős-Graham conjecture — are formalized as Lean definitions. Beker's theorem and Konieczny's theorem are axiomatized since their proofs require deep combinatorial constructions beyond Mathlib. Upper and lower bounds establish that the growth rate is Θ(n²). A summary theorem combines both results.",
     "keyInsights": [
-      "The trivial sequence {1,...,n} achieves only O(n) distinct consecutive sums",
-      "Careful spacing between elements prevents sum collisions",
-      "Permutations can also achieve cn² distinct sums (Konieczny 2015)",
-      "The problem is closely related to sumset problems in additive combinatorics",
-      "Beker's 2023 construction uses number-theoretic techniques"
+      "**Trivial Failure**: The sequence {1,...,n} achieves only O(n) distinct consecutive sums due to arithmetic regularity — sums (v-u+1)(v+u)/2 collide frequently",
+      "**Spacing Principle**: To achieve cn² distinct sums, elements must be spaced to break arithmetic regularity and minimize sum collisions",
+      "**Permutation Variant**: Konieczny (2015) showed permutations of {1,...,n} can achieve cn² distinct sums, settling the related Problem #34",
+      "**Beker's Resolution**: Beker (2023) proved the original conjecture using number-theoretic construction techniques",
+      "**Tight Growth Rate**: The growth is Θ(n²) — at most k(k+1)/2 ≈ n²/2 sums are possible, and cn² is achievable"
     ]
   },
   "sections": [
     {
       "id": "consecutive-sums",
-      "title": "Consecutive Sums",
-      "startLine": 35,
+      "title": "Part I: Consecutive Sums",
+      "startLine": 36,
       "endLine": 60,
-      "summary": "Defines consecutive subsums and the count of distinct values.",
-      "description": "A consecutive subsum is Σ_{i=u}^{v} aᵢ for indices u ≤ v. The goal is to maximize the number of distinct such sums."
+      "summary": "Defines consecutiveSubsum, consecutiveSums Finset, and distinctConsecutiveSums counting function."
     },
     {
       "id": "trivial-sequence",
-      "title": "The Trivial Sequence",
+      "title": "Part II: The Trivial Sequence",
       "startLine": 62,
-      "endLine": 89,
-      "summary": "Shows {1, 2, ..., n} achieves only O(n) distinct consecutive sums.",
-      "description": "The sequence 1, 2, ..., n has consecutive sums of the form (v-u+1)(v+u)/2. Many of these collide, giving only linear growth."
+      "endLine": 91,
+      "summary": "trivialSequence {1,...,n}. Axioms: trivial_fails (O(n) distinct sums), trivial_collision_structure (sub-quadratic)."
     },
     {
       "id": "increasing-sequences",
-      "title": "Strictly Increasing Sequences",
-      "startLine": 91,
+      "title": "Part III: Strictly Increasing Sequences",
+      "startLine": 93,
       "endLine": 114,
-      "summary": "Defines the constraints: strictly increasing with elements ≤ n.",
-      "description": "A valid sequence for the problem must be strictly increasing (a₁ < a₂ < ... < aₖ) with all elements bounded by n."
+      "summary": "isStrictlyIncreasing, boundedBy, isValidSequence definitions."
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
+      "title": "Part IV: The Main Conjecture",
       "startLine": 116,
       "endLine": 137,
-      "summary": "States the Erdős-Graham conjecture and Beker's resolution.",
-      "description": "The conjecture asks for c > 0 and sequences achieving cn² distinct sums. Beker (2023) proved this is possible."
+      "summary": "erdosGrahamConjecture definition. beker_theorem axiom resolving it."
     },
     {
       "id": "permutation-variant",
-      "title": "The Permutation Variant",
+      "title": "Part V: The Permutation Variant",
       "startLine": 139,
-      "endLine": 166,
-      "summary": "Konieczny (2015) proved permutations can achieve cn² distinct sums.",
-      "description": "When monotonicity is dropped and we consider permutations of {1,...,n}, quadratic growth is also achievable."
+      "endLine": 168,
+      "summary": "isPermutation, permutationConjecture, konieczny_theorem axiom."
     },
     {
       "id": "constructions",
-      "title": "Constructions",
-      "startLine": 168,
-      "endLine": 191,
-      "summary": "Discusses the construction strategies for achieving quadratic growth.",
-      "description": "The key is spacing elements to minimize collisions among consecutive sums. Number-theoretic techniques are used in the constructions."
+      "title": "Part VI: Construction Insights",
+      "startLine": 170,
+      "endLine": 183,
+      "summary": "beker_construction_yields_quadratic: explicit constant exists with c < 1."
     },
     {
-      "id": "related-questions",
-      "title": "Related Questions",
-      "startLine": 193,
-      "endLine": 214,
-      "summary": "Connections to Problems #34, #357, and #358.",
-      "description": "These related problems ask about permutations, consecutive integers representable as sums, and other variants."
+      "id": "related-problems",
+      "title": "Part VII: Related Problems",
+      "startLine": 185,
+      "endLine": 209,
+      "summary": "Connections to Problems #34, #357. permutation_implies_increasing axiom. erdos357Question definition."
     },
     {
       "id": "bounds",
-      "title": "Upper and Lower Bounds",
-      "startLine": 216,
-      "endLine": 238,
-      "summary": "Upper bound is O(n²), lower bound of cn² is achieved.",
-      "description": "The maximum possible is k(k+1)/2 where k is the sequence length. Beker's construction achieves cn² for some c > 0."
+      "title": "Part VIII: Upper and Lower Bounds",
+      "startLine": 211,
+      "endLine": 231,
+      "summary": "upper_bound axiom (k(k+1)/2). lower_bound_exists axiom (cn² achievable)."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 240,
-      "endLine": 272,
-      "summary": "Erdős #356 is SOLVED: quadratic growth is achievable.",
-      "description": "The main conjecture and permutation variant are both proven. The answer is YES."
+      "title": "Part IX: Summary",
+      "startLine": 233,
+      "endLine": 263,
+      "summary": "erdos_356_solved: combines beker_theorem and konieczny_theorem. erdos_356: main result."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #356 is SOLVED. The answer is YES: there exist strictly increasing sequences achieving Ω(n²) distinct consecutive sums. Beker (2023) proved the original conjecture; Konieczny (2015) proved the permutation variant.",
-    "implications": "This result shows that the trivial sequence {1,...,n} is far from optimal. Careful construction can achieve quadratic growth in distinct subsums, connecting to broader questions in additive combinatorics.",
+    "summary": "Erdős Problem #356 is SOLVED. The answer is YES: there exist strictly increasing sequences bounded by n achieving Ω(n²) distinct consecutive sums. Beker (2023) proved the original conjecture; Konieczny (2015) proved the permutation variant. The growth rate is Θ(n²).",
+    "implications": "This result demonstrates that the trivial sequence {1,...,n} is far from optimal for producing distinct consecutive sums. Careful construction can break arithmetic regularity and achieve quadratic growth, connecting to fundamental questions in additive combinatorics about the structure-richness tradeoff in sumsets.",
     "openQuestions": [
-      "What is the optimal constant c?",
-      "Can explicit constructions be given with good constants?",
-      "How many consecutive integers > n can be represented as such sums (Problem #357)?"
+      "What is the optimal constant c in Beker's result?",
+      "Can explicit constructions with good constants be given?",
+      "How many consecutive integers > n can be represented as consecutive sums (Problem #357)?",
+      "What is the relationship between sequence structure and achievable sum count?"
     ]
   }
 }
