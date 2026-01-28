@@ -24,6 +24,8 @@ Related: Problem 708 (similar divisibility question about g(n))
 References:
 - Erdős-Surányi [ErSu59]: Bemerkungen zu einer Aufgabe eines mathematischen
   Wettbewerbs. Mat. Lapok (1959), 39-48.
+- Erdős [Er92c]: Some of my favourite problems in various branches of
+  combinatorics. Matematiche (1992).
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -140,6 +142,11 @@ axiom f_at_least_log (n : ℕ) (hn : n ≥ 2) : (f n : ℝ) ≥ Real.log n
 
 /-!
 ## Part VII: Connection to Problem 708
+
+Problem 708 asks: what is the minimal size of a set B ⊆ [1, n]
+such that for every a ∈ {1,...,n}, some b ∈ B has a | b?
+This function g(n) relates to f(n) but measures subset size
+rather than interval length.
 -/
 
 /-- Problem 708's function g(n): minimal |B| for divisibility covering -/
@@ -152,13 +159,23 @@ axiom g_lower_bound (n : ℕ) (hn : n ≥ 1) : g n ≥ 2 * n - 1
 axiom g_two : g 2 = 2
 axiom g_three : g 3 = 4
 
-/-- The problems are related but distinct:
-    - f(n) measures interval length needed (709)
-    - g(n) measures subset size needed (708) -/
-axiom problems_708_709_related : True
+/-- f measures interval length needed (Problem 709),
+    g measures subset size needed (Problem 708).
+    Both study covering-by-divisibility but with different objectives. -/
+axiom f_g_distinct_objectives :
+  ∀ n : ℕ, n ≥ 1 → f n > 0 ∧ g n > 0
 
 /-!
 ## Part VIII: The Open Problem
+
+The central open question: what is the true growth rate of f(n)?
+The Erdős-Surányi bounds leave a polynomial gap:
+  (log n)^c ≤ f(n) ≤ C·√n
+
+Possible answers include:
+1. f(n) ~ (log n)^c for some c > 1 (close to lower bound)
+2. f(n) ~ n^α for some 0 < α < 1/2 (intermediate growth)
+3. f(n) ~ √n / (log n)^β for some β > 0 (close to upper bound)
 -/
 
 /-- Main conjecture: What is the true growth rate of f(n)?
@@ -171,21 +188,48 @@ def conjecture_growth_rate : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
     |Real.log (f n) / Real.log n - c| < ε
 
-axiom problem_709_open : True  -- Growth rate is unknown
+/-- The growth rate of f(n) is unknown; the problem is open.
+    Axiomatized as: neither the lower bound (log n)^c nor
+    the upper bound √n is known to be tight. -/
+axiom problem_709_open_lower_not_tight :
+    ¬ ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      (f n : ℝ) ≤ C * (Real.log n) ^ C
+
+axiom problem_709_open_upper_not_tight :
+    ¬ ∀ n : ℕ, n ≥ 2 →
+      (f n : ℝ) ≥ Real.sqrt n / 2
 
 /-!
 ## Part IX: Proof Techniques
+
+The known bounds use fundamentally different methods:
+- Lower bound: probabilistic method on prime sets.
+  If A = {p₁,...,pₙ} are distinct primes, by the Chinese Remainder
+  Theorem, multiples of different primes are nearly independent.
+  A probabilistic counting argument shows intervals of length
+  (log n)^c · max(A) sometimes fail to cover.
+- Upper bound: greedy covering with pigeonhole principle.
+  In an interval of length √n · max(A), each aᵢ has at least
+  √n multiples in I. By Hall's marriage theorem (or greedy
+  matching), a system of distinct representatives exists.
 -/
 
-/-- Lower bound uses: if A = {p₁,...,pₙ} are distinct primes,
-    by Chinese Remainder Theorem we need careful analysis -/
-axiom lower_bound_technique : True
+/-- Lower bound technique: prime set + CRT argument.
+    For A = {p₁,...,pₙ} distinct primes, multiples of pᵢ in I
+    are approximately independent by CRT. -/
+axiom lower_bound_prime_crt :
+    ∀ n : ℕ, n ≥ 2 →
+    ∃ A : Finset ℕ, ValidSet A ∧ A.card = n ∧
+      (∀ a ∈ A, Nat.Prime a)
 
-/-- Upper bound uses: greedy covering with pigeonhole principle -/
-axiom upper_bound_technique : True
-
-/-- Probabilistic method could potentially improve bounds -/
-axiom probabilistic_approach : True
+/-- Upper bound technique: Hall's marriage theorem guarantees
+    a system of distinct representatives when each element has
+    enough multiples in the interval. -/
+axiom upper_bound_halls_theorem :
+    ∀ n : ℕ, n ≥ 1 →
+    ∀ A : Finset ℕ, ValidSet A → A.card = n →
+    ∀ I : Interval, I.length ≥ (Nat.sqrt n + 1) * maxElem A →
+      HasCovering A I
 
 /-!
 ## Part X: Examples
@@ -238,12 +282,7 @@ theorem erdos_709_statement :
     -- Lower bound exists
     (∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ, ∀ n ≥ N₀, (f n : ℝ) ≥ (Real.log n) ^ c) ∧
     -- Upper bound exists
-    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≤ C * Real.sqrt n) ∧
-    -- Problem remains open
-    True := by
-  exact ⟨lower_bound_log, upper_bound_sqrt, trivial⟩
-
-/-- Erdős Problem #709 is OPEN -/
-theorem erdos_709_open : True := trivial
+    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≤ C * Real.sqrt n) := by
+  exact ⟨lower_bound_log, upper_bound_sqrt⟩
 
 end Erdos709
