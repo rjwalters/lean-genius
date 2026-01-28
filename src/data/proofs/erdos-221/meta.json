@@ -7,7 +7,7 @@
     "author": "Lorentz (1954), Ruzsa (1972, 2001)",
     "sourceUrl": "https://erdosproblems.com/221",
     "date": "1972",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos221Problem.lean",
     "tags": [
       "erdos",
@@ -21,7 +21,51 @@
     "sorries": 0,
     "erdosNumber": 221,
     "erdosUrl": "https://erdosproblems.com/221",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-28",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n",
+        "module": "Mathlib.NumberTheory.ZetaFunction"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter convergence for limits",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "PowersOfTwo definition: {n | ∃ k, n = 2^k}",
+      "IsAdditiveComplementForLarge definition",
+      "IsComplementToPowersOfTwo definition",
+      "countingFunction, HasDensityNOverLogN, HasLorentzDensity, HasAsymptoticOptimalDensity",
+      "Erdos221Conjecture: main problem statement",
+      "lorentz_1954 axiom: first positive result",
+      "ruzsaConstant, RuzsaCoreSet, RuzsaSet: Ruzsa's construction",
+      "two_primitive_root_mod_five_power axiom",
+      "ruzsa_is_complement, ruzsa_density axioms",
+      "ruzsa_1972 theorem: verified from axioms",
+      "ExactComplementExists, ruzsa_2001_exact_complement axiom",
+      "density_lower_bound axiom: optimality of N/log N",
+      "optimal_density theorem: tight bounds",
+      "primitive_root_order axiom: multiplicative order of 2 mod 5^n",
+      "powers_cover_residues axiom: coverage of coprime residues",
+      "GeneralizedComplement definition, generalization_to_any_base axiom",
+      "sumset_covering, additive_basis_order_two axioms",
+      "erdos_221_summary, erdos_221_main, erdos_221 theorems"
+    ]
   },
   "overview": {
     "historicalContext": "This problem asks about additive complements to the exponentially sparse set of powers of 2. Lorentz (1954) first showed such complements exist with density O(N log log N / log N). Ruzsa (1972) achieved the optimal bound O(N / log N) with an elegant construction using powers of 5, exploiting the fact that 2 is a primitive root mod 5^n. In 2001, Ruzsa refined this to construct an 'exact' complement with asymptotically optimal density N / log₂ N.",
@@ -73,6 +117,13 @@
       "summary": "Defines Ruzsa's set using powers of 5 and proves the main theorem."
     },
     {
+      "id": "solved",
+      "title": "Erdős Problem #221 - SOLVED",
+      "startLine": 132,
+      "endLine": 137,
+      "summary": "The answer to Problem #221 is YES."
+    },
+    {
       "id": "optimal-construction",
       "title": "Ruzsa's Optimal Construction (2001)",
       "startLine": 139,
@@ -90,15 +141,29 @@
       "id": "primitive-roots",
       "title": "Connection to Primitive Roots",
       "startLine": 170,
-      "endLine": 184,
-      "summary": "Explains why 2 being a primitive root mod 5^n is crucial."
+      "endLine": 188,
+      "summary": "primitive_root_order and powers_cover_residues axioms."
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 190,
+      "endLine": 204,
+      "summary": "GeneralizedComplement definition, generalization_to_any_base axiom."
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 206,
+      "endLine": 225,
+      "summary": "sumset_covering and additive_basis_order_two axioms."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 215,
-      "endLine": 255,
-      "summary": "Complete summary and main theorem statements."
+      "startLine": 227,
+      "endLine": 274,
+      "summary": "erdos_221_summary, erdos_221_main, erdos_221 theorems."
     }
   ],
   "conclusion": {
