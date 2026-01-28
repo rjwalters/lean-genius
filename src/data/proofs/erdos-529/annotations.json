@@ -5,96 +5,79 @@
     "range": { "startLine": 1, "endLine": 28 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdos Problem #529: Self-Avoiding Walk Distance**\n\nThis problem studies the expected end-to-end distance d_k(n) of self-avoiding walks (SAW) in Z^k.\n\n**Two Questions:**\n1. Is d_2(n)/sqrt(n) -> infinity? (2D grows faster than sqrt(n)?)\n2. Is d_k(n) << sqrt(n) for k >= 3?\n\n**Status:** Partially resolved - high dimensions (k >= 5) solved, low dimensions open.",
-    "mathContext": "Self-avoiding walks are fundamental in statistical mechanics and polymer physics, modeling linear polymers that cannot cross themselves.",
-    "significance": "critical",
-    "relatedConcepts": ["Random walks", "Polymer physics", "Critical phenomena"]
+    "content": "Erdős Problem #529 studies the expected end-to-end distance d_k(n) of self-avoiding walks (SAW) in Z^k. Question 1: Is d_2(n)/√n → ∞? Question 2: Is d_k(n) ≪ √n for k ≥ 3? Status: OPEN — high dimensions (k ≥ 5) resolved, low dimensions remain open.",
+    "significance": "critical"
   },
   {
     "id": "ann-e529-saw",
     "proofId": "erdos-529",
-    "range": { "startLine": 46, "endLine": 76 },
+    "range": { "startLine": 40, "endLine": 75 },
     "type": "definition",
-    "title": "Self-Avoiding Walk",
-    "content": "**SelfAvoidingWalk:**\n\nA SAW on Z^k is a path where:\n- Each step changes one coordinate by +/- 1\n- No vertex is visited twice\n\n**End-to-End Distance:**\nThe Euclidean distance from origin to endpoint.\n\n**Expected Distance:**\nd_k(n) = E[|X_n|] where X_n is the endpoint after n steps.",
-    "mathContext": "The self-avoidance constraint makes SAW fundamentally different from simple random walk, especially in low dimensions.",
-    "significance": "critical",
-    "relatedConcepts": ["Random walks", "Euclidean distance", "Expected value"]
+    "title": "Self-Avoiding Walk and Expected Distance",
+    "content": "SelfAvoidingWalk structure: walk on Z^k with no self-intersections. endToEndDistance axiom: Euclidean distance from origin to endpoint. expectedEndDistance axiom: d_k(n) = E[|X_n|] over all n-step SAWs.",
+    "significance": "critical"
   },
   {
     "id": "ann-e529-exponent",
     "proofId": "erdos-529",
-    "range": { "startLine": 78, "endLine": 107 },
+    "range": { "startLine": 77, "endLine": 106 },
     "type": "definition",
-    "title": "Critical Exponent nu",
-    "content": "**criticalExponent:**\n\nThe growth exponent nu describes d_k(n) ~ n^nu.\n\n**Conjectured Values:**\n- k = 2: nu = 3/4 = 0.75\n- k = 3: nu ~ 0.588 (numerical)\n- k >= 4: nu = 1/2 (mean-field)\n\n**Key Insight:** nu > 1/2 in low dimensions shows self-avoidance has strong effect.",
-    "mathContext": "Critical exponents are universal - they depend only on dimension, not on lattice details.",
-    "significance": "critical",
-    "relatedConcepts": ["Critical exponents", "Universality", "Scaling"]
+    "title": "Critical Exponent ν",
+    "content": "criticalExponent: dimension-dependent growth exponent ν with d_k(n) ~ n^ν. Values: k=2 → 3/4, k=3 → 0.588, k≥4 → 1/2. meanField_exponent theorem: for k ≥ 5, ν = 1/2 (proved by simp + omega).",
+    "significance": "critical"
   },
   {
     "id": "ann-e529-high-dim",
     "proofId": "erdos-529",
-    "range": { "startLine": 109, "endLine": 143 },
+    "range": { "startLine": 108, "endLine": 142 },
     "type": "axiom",
-    "title": "High-Dimensional Results",
-    "content": "**haraSlade_five_dim:**\n\nFor k >= 5, d_k(n) ~ D*sqrt(n) for some constant D > 0.\n\n**History:**\n- Slade (1987): First proved for very large k\n- Hara-Slade (1991-92): Extended to all k >= 5\n\n**Meaning:** In high dimensions, SAW behaves like simple random walk - self-avoidance is not significant.",
-    "mathContext": "The proof uses lace expansion, a technique developed by Brydges and Spencer.",
-    "significance": "critical",
-    "relatedConcepts": ["Lace expansion", "Mean-field theory", "High dimensions"]
+    "title": "High-Dimensional Results (k ≥ 5)",
+    "content": "slade_high_dim: for k sufficiently large, d_k(n) ~ D√n. haraSlade_five_dim: extended to all k ≥ 5 (Hara-Slade 1991-92). high_dim_sqrt theorem: derives directly from Hara-Slade. Uses lace expansion technique.",
+    "significance": "critical"
   },
   {
     "id": "ann-e529-question1",
     "proofId": "erdos-529",
-    "range": { "startLine": 145, "endLine": 186 },
+    "range": { "startLine": 144, "endLine": 182 },
     "type": "definition",
     "title": "Question 1: Two Dimensions",
-    "content": "**Question 1:**\n\nIs lim d_2(n)/sqrt(n) = infinity?\n\n**Known:** d_2(n) = o(n) (Duminil-Copin-Hammond 2013)\n\n**Conjectured:** d_2(n) ~ D*n^{3/4}\n\n**If conjecture true:** d_2(n)/sqrt(n) ~ D*n^{1/4} -> infinity,\nso Question 1 would be YES.\n\n**Status:** Likely YES, awaiting rigorous proof of nu = 3/4.",
-    "mathContext": "The sub-ballistic result is a breakthrough but doesn't determine the exact exponent.",
-    "significance": "critical",
-    "relatedConcepts": ["Sub-ballistic", "2D random walks", "SLE"]
+    "content": "question1: ∀ M, ∃ N₀, ∀ n ≥ N₀, d_2(n)/√n ≥ M (diverges). duminilCopin_subBallistic: d_2(n)/n → 0 (sub-ballistic, 2013). conjecture_2d: d_2(n) ~ D·n^{3/4}. conjecture_implies_question1: if conjecture holds, Question 1 is YES.",
+    "significance": "critical"
   },
   {
     "id": "ann-e529-question2",
     "proofId": "erdos-529",
-    "range": { "startLine": 188, "endLine": 229 },
+    "range": { "startLine": 184, "endLine": 231 },
     "type": "definition",
     "title": "Question 2: Three and Four Dimensions",
-    "content": "**Question 2:**\n\nIs d_k(n) << sqrt(n) for k >= 3?\n\n**Current belief:** FALSE for k = 3, 4!\n\n**Conjectures:**\n- k = 3: d_3(n) ~ n^{0.588} > sqrt(n)\n- k = 4: d_4(n) ~ (log n)^{1/8}*sqrt(n) > sqrt(n)\n\nFor k >= 5, Question 2 is TRUE (Hara-Slade).",
-    "mathContext": "The dimensions k = 3, 4 are below or at the upper critical dimension, where anomalous behavior persists.",
-    "significance": "critical",
-    "relatedConcepts": ["3D polymers", "Logarithmic corrections", "Anomalous scaling"]
+    "content": "question2: d_k(n) ≤ C√n for k ≥ 3. conjecture_3d: ν ≈ 0.588 > 1/2 (refutes for k=3). conjecture_4d: (log n)^{1/8} correction (refutes for k=4). question2_high_dim: TRUE for k ≥ 5 (Hara-Slade). question2_false_3d: conditional refutation.",
+    "significance": "critical"
   },
   {
     "id": "ann-e529-critical-dim",
     "proofId": "erdos-529",
-    "range": { "startLine": 231, "endLine": 263 },
+    "range": { "startLine": 233, "endLine": 265 },
     "type": "definition",
     "title": "Upper Critical Dimension",
-    "content": "**upperCriticalDimension = 4:**\n\nThe upper critical dimension d_c = 4 separates:\n- d < 4: Anomalous scaling, nu > 1/2\n- d > 4: Mean-field scaling, nu = 1/2\n- d = 4: Borderline with logarithmic corrections\n\n**Physical meaning:** Above d_c, space is \"large enough\" that self-avoidance doesn't significantly affect scaling.",
-    "mathContext": "This is a general phenomenon in statistical mechanics - many systems have d_c = 4.",
-    "significance": "key",
-    "relatedConcepts": ["Critical dimension", "Mean-field theory", "Phase transitions"]
+    "content": "upperCriticalDimension = 4: separates anomalous (d < 4, ν > 1/2) from mean-field (d > 4, ν = 1/2) behavior. below_critical: ν > 1/2 for k < 4. above_critical: ν = 1/2 for k > 4. at_critical: ν = 1/2 at k=4 with log corrections.",
+    "significance": "key"
   },
   {
     "id": "ann-e529-flory",
     "proofId": "erdos-529",
-    "range": { "startLine": 265, "endLine": 286 },
+    "range": { "startLine": 267, "endLine": 288 },
     "type": "theorem",
     "title": "Flory's Prediction",
-    "content": "**floryExponent:**\n\nFlory (1949) predicted nu = 3/(d+2) for d <= 4.\n\n**Values:**\n- d = 2: nu = 3/4 (exact!)\n- d = 3: nu = 3/5 = 0.6 (close to numerical 0.588)\n- d = 4: nu = 1/2 (exact base exponent)\n\nRemarkably accurate despite being a simple mean-field argument!",
-    "mathContext": "Flory's formula comes from balancing entropic and energetic contributions in a polymer.",
-    "significance": "key",
-    "relatedConcepts": ["Flory theory", "Polymer physics", "Mean-field"]
+    "content": "floryExponent d = 3/(d+2): Flory (1949) prediction for ν. flory_2d: gives 3/4 (exact). flory_3d: gives 3/5 ≈ 0.6 (close to numerical 0.588). Remarkably accurate despite simple mean-field argument.",
+    "significance": "key"
   },
   {
     "id": "ann-e529-summary",
     "proofId": "erdos-529",
-    "range": { "startLine": 288, "endLine": 320 },
+    "range": { "startLine": 290, "endLine": 328 },
     "type": "theorem",
     "title": "Main Results Summary",
-    "content": "**erdos_529_summary:**\n\nCombines all established and conjectured results:\n\n**Proved:**\n1. k >= 5: d_k(n) ~ D*sqrt(n) (Hara-Slade)\n2. k = 2: d_2(n) = o(n) (Duminil-Copin-Hammond)\n\n**Conjectured:**\n1. k = 2: d_2(n) ~ D*n^{3/4}\n2. k = 3: d_3(n) ~ n^{0.588}\n3. k = 4: d_4(n) ~ (log n)^{1/8}*sqrt(n)\n\n**Question 1:** Likely YES\n**Question 2:** TRUE for k >= 5, likely FALSE for k = 3, 4",
-    "significance": "critical",
-    "relatedConcepts": ["Summary", "Partial resolution", "Open problems"]
+    "content": "erdos_529_summary: combines haraSlade_five_dim + duminilCopin_subBallistic + criticalExponent 2 = 3/4. erdos_529 (main theorem): combines high-dimensional resolution + sub-ballistic + Question 2 for k ≥ 5. Problem remains OPEN for low dimensions.",
+    "significance": "critical"
   }
 ]
