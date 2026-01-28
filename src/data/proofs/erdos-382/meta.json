@@ -2,66 +2,109 @@
   "id": "erdos-382",
   "title": "Erdős Problem #382: Prime Powers in Factorial Products",
   "slug": "erdos-382",
-  "description": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent ≥ 2: Is v−u = v^o(1)? Can v−u be arbitrarily large? Ramachandra: v−u ≤ v^{1/2+o(1)}. OPEN.",
+  "description": "For intervals [u,v] where the largest prime dividing u(u+1)...v has exponent ≥ 2, is v−u = v^o(1)? Can v−u be arbitrarily large? Ramachandra showed v−u ≤ v^{1/2+o(1)}. OPEN.",
   "meta": {
-    "author": "Erdős-Graham",
+    "author": "Erdős-Graham (1980 problem), Ramachandra (partial result)",
     "sourceUrl": "https://erdosproblems.com/382",
-    "status": "formalized",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos382Problem.lean",
-    "tags": ["number-theory", "prime-numbers", "factorization", "prime-gaps", "open-problem"],
+    "tags": ["erdos", "number-theory", "prime-numbers", "factorization", "prime-gaps", "open-problem"],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 382,
     "erdosUrl": "https://erdosproblems.com/382",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-28",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed-closed interval as a Finset",
+        "module": "Mathlib.Order.Interval.Finset.Nat"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization as a Finsupp",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm for Cramér's conjecture statement",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "prodInterval definition: product of integers in [u,v] via Finset.Icc",
+      "largestPrimeDivisor definition: largest prime in factorization",
+      "exponent / exponentInProduct: p-adic valuation wrappers",
+      "satisfiesCondition: Erdős-Graham condition formalized",
+      "question1: subpolynomial growth conjecture (v−u = v^o(1))",
+      "question2: unbounded length conjecture",
+      "ramachandra_bound axiom: v−u ≤ v^{1/2+ε}",
+      "cramersConjecture definition and cramer_implies_q1 axiom",
+      "noPrimeLargerThanSqrt: equivalent prime-free interval formulation",
+      "erdos_382_summary: combined known results theorem",
+      "Concrete example: prodInterval 2 4 = 24 via native_decide"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem from Erdős and Graham [ErGr80] studies the structure of products of consecutive integers from a prime factorization perspective. When we multiply consecutive integers u, u+1, ..., v, the largest prime in this product is typically some prime p in the interval. For p to appear with exponent ≥ 2, we need p² to also divide the product, which constrains how large p can be relative to v. Ramachandra established that v − u ≤ v^{1/2 + o(1)}.",
-    "problemStatement": "Let u ≤ v be positive integers such that the largest prime dividing the product u(u+1)...v appears with exponent at least 2. Questions: (1) Is v − u = v^o(1)? (2) Can v − u be arbitrarily large? Both questions remain OPEN.",
-    "proofStrategy": "The formalization defines prodInterval, largestPrimeDivisor, exponent (p-adic valuation), and satisfiesCondition. Questions 1 and 2 are stated as formal propositions. Ramachandra's bound and Cramér's implication are axioms. The equivalent characterization via prime-free intervals is given. A summary theorem combines the known results.",
+    "historicalContext": "Erdős Problem #382 originates from the 1980 monograph by Erdős and Graham [ErGr80], which systematically cataloged open problems in combinatorial number theory. The problem studies the factorization structure of products of consecutive integers u·(u+1)·...·v, specifically asking about the exponent of the largest prime divisor.\n\nThe key constraint is that the largest prime p dividing the product must appear with exponent ≥ 2. Since p² must divide some integer in [u,v], this forces p ≤ √v, meaning the interval [u,v] is 'prime-free' above √v. The problem asks two questions: whether v−u grows subpolynomially in v, and whether v−u can be arbitrarily large.\n\nRamachandra established the best known upper bound v−u ≤ v^{1/2+o(1)}, using techniques from the distribution of primes in short intervals. Cramér's famous conjecture on prime gaps would imply the stronger result that v−u = v^o(1). Cambie's heuristic analysis suggests that v−u can indeed be arbitrarily large, but both questions remain open.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $u \\leq v$ be positive integers such that the largest prime dividing the product $\\prod_{m=u}^{v} m$ appears with exponent at least 2.\n\n**Question 1:** Is $v - u = v^{o(1)}$? That is, for every $\\varepsilon > 0$ and sufficiently large $v$, is $v - u < v^\\varepsilon$?\n\n**Question 2:** Can $v - u$ be arbitrarily large?\n\n**Known:** Ramachandra: $v - u \\leq v^{1/2 + o(1)}$. Under Cramér's conjecture, Question 1 has answer YES.",
+    "proofStrategy": "The formalization defines the product of an interval via Finset.Icc, the largest prime divisor via primeFactorsList maximum, and the p-adic valuation via Nat.factorization. The Erdős-Graham condition (largest prime has exponent ≥ 2) is captured by satisfiesCondition. Both questions are stated as formal Prop values. Known results (Ramachandra's bound, Cramér's implication) are axiomatized since they require deep analytic number theory beyond Mathlib. The key equivalence — the condition means no prime larger than √v lies in [u,v] — is formalized via noPrimeLargerThanSqrt. A summary theorem combines all known results.",
     "keyInsights": [
-      "The condition means no prime p with √v < p ≤ v lies in [u, v]",
-      "If p > √v, then p² > v, so p appears exactly once in the product",
-      "Ramachandra: v − u cannot exceed roughly √v",
-      "Cramér's conjecture on prime gaps would imply Question 1 has answer YES",
-      "Near squares of large primes, intervals may satisfy the condition with large v − u"
+      "**Prime-Free Reformulation**: The condition is equivalent to all primes in [u,v] being ≤ √v, since a prime p > √v has p² > v and thus exponent exactly 1",
+      "**Ramachandra's Bound**: v − u ≤ v^{1/2+o(1)} is the best known upper bound, derived from prime distribution in short intervals",
+      "**Cramér Connection**: Cramér's conjecture (prime gaps are O((log p)²)) would imply Question 1 is YES, since it prevents long prime-free intervals above √v",
+      "**Heuristic for Question 2**: Near squares of large primes, prime-free intervals can be long, suggesting v−u can be arbitrarily large",
+      "**Concrete Example**: [2,4] has product 24 = 2³·3 where the largest prime 3 has exponent 1, so it does NOT satisfy the condition"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Part I: Basic Definitions",
-      "startLine": 41,
-      "endLine": 61,
-      "summary": "prodInterval via Finset.Icc, prodInterval_singleton proved by simp, prodInterval_factorial axiom."
+      "startLine": 44,
+      "endLine": 63,
+      "summary": "prodInterval via Finset.Icc product, prodInterval_singleton proved by simp, prodInterval_factorial axiom."
     },
     {
       "id": "largest-prime",
       "title": "Part II: Largest Prime Divisor",
-      "startLine": 63,
-      "endLine": 86,
+      "startLine": 65,
+      "endLine": 87,
       "summary": "largestPrimeDivisor via primeFactorsList maximum. Axioms: divides n, is prime, is maximal."
     },
     {
       "id": "exponent",
       "title": "Part III: Exponent of Prime in Product",
-      "startLine": 88,
-      "endLine": 103,
+      "startLine": 89,
+      "endLine": 104,
       "summary": "exponent (p-adic valuation wrapper), exponentInProduct, sum decomposition axiom."
     },
     {
       "id": "condition",
       "title": "Part IV: The Condition",
-      "startLine": 105,
+      "startLine": 106,
       "endLine": 130,
-      "summary": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on when exponent equals 1."
+      "summary": "satisfiesCondition: largest prime has exponent ≥ 2. Structural axioms on exponent behavior."
     },
     {
       "id": "questions",
       "title": "Part V: The Questions",
       "startLine": 132,
       "endLine": 159,
-      "summary": "question1 (v−u = v^o(1)?) and question2 (v−u arbitrarily large?) as formal propositions."
+      "summary": "question1 (subpolynomial growth) and question2 (unbounded length) as formal propositions."
     },
     {
       "id": "ramachandra",
@@ -81,32 +124,32 @@
       "id": "examples",
       "title": "Part VIII: Examples",
       "startLine": 193,
-      "endLine": 207,
-      "summary": "Worked example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom."
+      "endLine": 206,
+      "summary": "Concrete example: prodInterval 2 4 = 24 via native_decide. Structural constraint axiom."
     },
     {
       "id": "prime-free",
       "title": "Part IX: Prime-Free Interval Perspective",
-      "startLine": 209,
-      "endLine": 221,
+      "startLine": 208,
+      "endLine": 224,
       "summary": "noPrimeLargerThanSqrt predicate and equivalence axiom condition_iff_no_large_prime."
     },
     {
       "id": "summary",
       "title": "Part X: Summary",
-      "startLine": 223,
-      "endLine": 258,
-      "summary": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Status: OPEN."
+      "startLine": 226,
+      "endLine": 266,
+      "summary": "erdos_382_summary theorem combining Ramachandra bound, Cramér implication, and problem statement. Consistency theorem. Status: OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #382 asks about intervals [u, v] where the largest prime in the product u(u+1)...v has exponent ≥ 2. Both questions — whether v−u is subpolynomial and whether v−u can be arbitrarily large — remain open. Ramachandra established v−u ≤ v^{1/2+o(1)}, and Cramér's conjecture would resolve Question 1.",
-    "implications": "Resolution would illuminate the relationship between prime distribution in short intervals and the factorization structure of products of consecutive integers.",
+    "summary": "Erdős Problem #382 asks about intervals [u,v] where the largest prime in the product u(u+1)...v has exponent ≥ 2. Both questions — whether v−u is subpolynomial and whether v−u can be arbitrarily large — remain open. The key insight is that the condition is equivalent to the interval being prime-free above √v. Ramachandra established v−u ≤ v^{1/2+o(1)}, and Cramér's conjecture would resolve Question 1.",
+    "implications": "Resolution of this problem would illuminate the relationship between prime distribution in short intervals and the multiplicative structure of products of consecutive integers. It connects to fundamental open questions in analytic number theory including Cramér's conjecture on prime gaps and the structure of prime-free intervals.",
     "openQuestions": [
       "Is v − u = v^o(1) for all intervals satisfying the condition?",
       "Can v − u be made arbitrarily large?",
-      "Can the Ramachandra bound v−u ≤ v^{1/2+o(1)} be improved?",
-      "Are there explicit constructions with large v − u satisfying the condition?"
+      "Can the Ramachandra bound v−u ≤ v^{1/2+o(1)} be improved unconditionally?",
+      "Are there explicit constructions yielding large v−u satisfying the condition?"
     ]
   }
 }
