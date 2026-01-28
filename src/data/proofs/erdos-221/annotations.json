@@ -138,12 +138,39 @@
     "significance": "critical"
   },
   {
+    "id": "ann-e221-primitive-order",
+    "proofId": "erdos-221",
+    "range": { "startLine": 177, "endLine": 183 },
+    "type": "axiom",
+    "title": "Primitive Root Order",
+    "content": "primitive_root_order: The multiplicative order of 2 mod 5^n is φ(5^n) = 4·5^(n-1). This is the quantitative statement that 2 is a primitive root modulo all powers of 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e221-generalization",
+    "proofId": "erdos-221",
+    "range": { "startLine": 194, "endLine": 204 },
+    "type": "axiom",
+    "title": "Generalization to Any Base",
+    "content": "generalization_to_any_base: For any base g ≥ 2, sparse complements to {g^k} exist with density O(N/log N). The construction adapts using primes p where g is a primitive root mod p^n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e221-sumset",
+    "proofId": "erdos-221",
+    "range": { "startLine": 210, "endLine": 225 },
+    "type": "axiom",
+    "title": "Sumset and Basis Connections",
+    "content": "sumset_covering: A + {2^k} covers all large integers. additive_basis_order_two: A ∪ PowersOfTwo forms a thin additive basis of order 2. These connect Problem #221 to the broader theory of additive bases.",
+    "significance": "supporting"
+  },
+  {
     "id": "ann-e221-summary",
     "proofId": "erdos-221",
-    "range": { "startLine": 219, "endLine": 253 },
+    "range": { "startLine": 232, "endLine": 274 },
     "type": "theorem",
     "title": "Problem Summary",
-    "content": "**erdos_221_summary:**\n\n1. The conjecture is TRUE (Ruzsa 1972)\n2. Ruzsa's set works: complement + sparse\n3. Exact optimal complement exists (Ruzsa 2001)\n\n**Status:** SOLVED\n\nKey: 2 is a primitive root mod 5^n enables the construction.",
+    "content": "erdos_221: Combines erdos_221_answer (YES, sparse complement exists) with density_lower_bound (N/log N is optimal). The problem is SOLVED with tight bounds.",
     "significance": "critical"
   }
 ]
