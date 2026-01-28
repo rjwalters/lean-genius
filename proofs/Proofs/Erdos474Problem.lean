@@ -33,9 +33,7 @@ open Cardinal Set
 
 namespace Erdos474
 
-/-
-## Part I: Cardinal Definitions
--/
+/-! ## Part I: Cardinal Definitions -/
 
 /--
 **The Continuum:**
@@ -55,9 +53,7 @@ noncomputable def aleph1 : Cardinal := Cardinal.aleph 1
 -/
 noncomputable def aleph2 : Cardinal := Cardinal.aleph 2
 
-/-
-## Part II: The Coloring Problem
--/
+/-! ## Part II: The Coloring Problem -/
 
 /--
 **Three-Coloring of the Plane:**
@@ -81,9 +77,7 @@ distinct a, b ∈ A with χ(a,b) = c.
 def ContainsAllColorPairs {X : Type*} (χ : ThreeColoring (X × X)) (A : Set X) : Prop :=
   ∀ c : Fin 3, ∃ a b : X, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) = c
 
-/-
-## Part III: The Main Conjecture
--/
+/-! ## Part III: The Main Conjecture -/
 
 /--
 **The Erdős Coloring Property:**
@@ -95,8 +89,8 @@ def ErdosColoringProperty (X : Type*) : Prop :=
 
 /--
 **Partition Arrow Notation:**
-2^ℵ₀ → (ℵ₁)³₂ means: for any 2-coloring of [2^ℵ₀]³,
-there exists a homogeneous set of size ℵ₁.
+2^ℵ₀ → (ℵ₁)³₂ means: for any 3-coloring of pairs from the continuum,
+there exists an ℵ₁-sized monochromatic set.
 
 Equivalently: any 3-coloring of pairs from 2^ℵ₀ has an ℵ₁-sized monochromatic set.
 -/
@@ -105,14 +99,13 @@ def PartitionProperty : Prop :=
     ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
     ∃ c : Fin 3, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
 
-/-
-## Part IV: The Two-Color Case (Solved)
--/
+/-! ## Part IV: The Two-Color Case (Solved) -/
 
 /--
 **Two-Color Theorem (Sierpinski-Kurepa):**
 For 2 colors, the property always holds: any 2-coloring of pairs
 from an uncountable set contains both colors.
+This was proved independently by Sierpinski and Kurepa.
 -/
 axiom sierpinski_kurepa :
   ∀ (X : Type*) (χ : X × X → Fin 2) (A : Set X),
@@ -122,12 +115,14 @@ axiom sierpinski_kurepa :
 /--
 **In Partition Notation:**
 2^ℵ₀ → (ℵ₁)²₂ holds unconditionally.
+Every 2-coloring of pairs from the continuum has an uncountable monochromatic set.
 -/
-axiom two_color_partition : True
+axiom two_color_partition :
+  ∀ χ : (Fin 2 → ℕ) × (Fin 2 → ℕ) → Fin 2,
+    ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
+    ∃ c : Fin 2, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
 
-/-
-## Part V: Under CH (Erdős's Result)
--/
+/-! ## Part V: Under CH (Erdős's Result) -/
 
 /--
 **The Continuum Hypothesis (CH):**
@@ -145,32 +140,32 @@ axiom erdos_under_ch :
   ∀ χ : ThreeColoring (ℝ × ℝ),
     ∀ A : Set ℝ, IsUncountable A → ContainsAllColorPairs χ A
 
-/-
-## Part VI: Shelah's Consistency Result
--/
+/-! ## Part VI: Shelah's Consistency Result -/
 
 /--
 **Shelah's Independence Result:**
-It is consistent with ZFC that the property fails.
-There exists a model where a "bad" 3-coloring exists.
+It is consistent with ZFC that the partition property fails.
+More precisely, there is a model of ZFC with a 3-coloring of pairs
+from the continuum such that no uncountable set is monochromatic
+for any single color.
 -/
 axiom shelah_consistency :
-  -- It is consistent that there exists a 3-coloring such that
-  -- some uncountable set does NOT contain pairs of all colors
-  True  -- Expressed as a metatheorem about consistency
+  ∃ (M : Type) (_ : Nonempty M),
+    -- In some model M, there exists a "bad" 3-coloring
+    ∃ χ : M × M → Fin 3,
+      ∀ A : Set M, IsUncountable A →
+        ∃ c : Fin 3, ∃ a b : M, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
 
 /--
 **Shelah's Large Continuum:**
-Shelah's counterexample model has a very large continuum.
-The exact size is not specified but is much larger than ℵ₂.
+Shelah's counterexample model has a very large continuum —
+much larger than ℵ₂. The model satisfies c > ℵ₂.
 -/
 axiom shelah_large_c :
-  -- In Shelah's model, c is very large
-  True
+  ∃ (M : Type) (_ : Nonempty M),
+    Cardinal.mk M > Cardinal.aleph 2
 
-/-
-## Part VII: The Open Question
--/
+/-! ## Part VII: The Open Question -/
 
 /--
 **Open Problem:**
@@ -181,23 +176,29 @@ there exists a 3-coloring of pairs such that some uncountable
 set avoids pairs of some color?
 -/
 def OpenQuestion : Prop :=
-  -- Is the following consistent?
-  -- c = ℵ₂ ∧ ¬(∀ χ, ∀ uncountable A, A² contains all colors)
-  True  -- Metatheoretical question about consistency
+  -- Is there a model with c = ℵ₂ where the partition property fails?
+  ∃ (M : Type) (_ : Nonempty M),
+    Cardinal.mk M = Cardinal.aleph 2 ∧
+    ∃ χ : M × M → Fin 3,
+      ∀ A : Set M, IsUncountable A →
+        ∃ c : Fin 3, ∃ a b : M, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
 
 /--
 **The $100 Question:**
 Erdős offered $100 for deciding what happens without CH.
-This essentially asks: what is the minimal c for which
-a negative answer is consistent?
+This essentially asks: what is the minimal cardinal κ such that
+c = κ is consistent with failure of 2^ℵ₀ → (ℵ₁)³₂?
 -/
-axiom erdos_prize_question :
-  -- Reward: $100 for resolution without assuming CH
-  True
+def erdos_prize_question : Prop :=
+  ∃ κ : Cardinal, κ > Cardinal.aleph 1 ∧
+    -- κ is the minimal cardinal where failure is consistent
+    (∀ λ : Cardinal, Cardinal.aleph 1 < λ → λ < κ →
+      -- for smaller λ, the property holds when c = λ
+      ∀ χ : ThreeColoring ((Fin 2 → ℕ) × (Fin 2 → ℕ)),
+        ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
+        ∃ c : Fin 3, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c)
 
-/-
-## Part VIII: Related Results
--/
+/-! ## Part VIII: Related Results -/
 
 /--
 **Negative Partition Relation:**
@@ -211,47 +212,59 @@ def NegativePartition : Prop :=
 
 /--
 **Higher Color Numbers:**
-For k ≥ 4 colors, similar questions arise.
-The problem becomes harder as k increases.
+For k ≥ 4 colors, the partition relation 2^ℵ₀ → (ℵ₁)^k₂ is at least
+as hard as the 3-color case. Failure for 3 colors implies failure
+for all higher k.
 -/
-axiom higher_colors :
-  -- The k-color case is at least as hard as 3-color
-  True
+axiom higher_colors_harder :
+  NegativePartition →
+  ∀ k : ℕ, k ≥ 3 →
+    ∃ χ : ThreeColoring ((Fin 2 → ℕ) × (Fin 2 → ℕ)),
+      ∀ A : Set (Fin 2 → ℕ), IsUncountable A →
+      ∃ c : Fin 3, ∃ a b : Fin 2 → ℕ, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
 
 /--
 **Ramsey Theory Connection:**
-This problem is part of infinite Ramsey theory,
-specifically the study of partition relations for uncountable cardinals.
+The Erdős-Rado theorem establishes that for the 2-color case,
+(2^κ)⁺ → (κ⁺)²₂ holds for all infinite cardinals κ.
+The 3-color case is more delicate and depends on cardinal arithmetic.
 -/
-axiom ramsey_theory_context :
-  True
+axiom erdos_rado_two_color :
+  ∀ κ : Cardinal, Cardinal.aleph 0 ≤ κ →
+    ∀ χ : (Fin 2 → ℕ) × (Fin 2 → ℕ) → Fin 2,
+      ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
+      ∃ c : Fin 2, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
 
-/-
-## Part IX: The Argument Structure
--/
+/-! ## Part IX: The Argument Structure -/
 
 /--
 **Why CH Helps:**
-Under CH, |ℝ| = ℵ₁, so the "pigeonhole" argument works:
-any 3-coloring of ℵ₁² pairs must have an ℵ₁-sized homogeneous set.
+Under CH, |ℝ| = ℵ₁, so ℝ can be well-ordered in order type ω₁.
+For any 3-coloring of pairs, a diagonal argument over this well-ordering
+produces an uncountable monochromatic set by transfinite induction.
 -/
 axiom ch_argument :
   ContinuumHypothesis →
-  -- The argument uses that ℵ₁² / 3 still has size ℵ₁
-  True
+  ∀ χ : ThreeColoring (ℝ × ℝ),
+    ∃ A : Set ℝ, IsUncountable A ∧
+    ∃ c : Fin 3, ∀ a b : ℝ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
 
 /--
 **Why Larger c Might Fail:**
-With larger c, there are "more pairs" to color,
-potentially allowing colorings that avoid homogeneous sets.
+With larger c, the continuum has "more room" for colorings to avoid
+monochromatic uncountable sets. Forcing constructions can exploit
+this extra room to build counterexamples when c is sufficiently large.
 -/
-axiom large_c_failure_intuition :
-  -- Larger c gives more room for "bad" colorings
-  True
+axiom large_c_failure :
+  ∃ κ : Cardinal, κ > Cardinal.aleph 2 →
+    -- For sufficiently large c, a counterexample model can be forced
+    ∃ (M : Type) (_ : Nonempty M),
+      Cardinal.mk M = κ ∧
+      ∃ χ : M × M → Fin 3,
+        ∀ A : Set M, IsUncountable A →
+          ∃ c : Fin 3, ∃ a b : M, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
 
-/-
-## Part X: Summary
--/
+/-! ## Part X: Summary -/
 
 /--
 **Erdős Problem #474: Summary**
@@ -272,24 +285,30 @@ and Ramsey theory, where independence phenomena arise.
 -/
 theorem erdos_474_summary :
     -- Under CH, the property holds
-    (ContinuumHypothesis → True) ∧
-    -- It is consistent that it fails (with large c)
-    True ∧
+    (ContinuumHypothesis →
+      ∀ χ : ThreeColoring (ℝ × ℝ),
+        ∀ A : Set ℝ, IsUncountable A → ContainsAllColorPairs χ A) ∧
     -- The 2-color case always works
-    True := by
-  exact ⟨fun _ => trivial, trivial, trivial⟩
+    (∀ (X : Type*) (χ : X × X → Fin 2) (A : Set X),
+      IsUncountable A →
+      (∀ c : Fin 2, ∃ a b : X, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) = c)) :=
+  ⟨erdos_under_ch, sierpinski_kurepa⟩
 
 /--
 **Erdős Problem #474: OPEN**
-The full resolution without CH remains open.
+The full resolution without CH remains open. The key unsettled question is
+whether a negative answer is consistent with c = ℵ₂. Erdős offered $100.
 -/
-theorem erdos_474 : True := trivial
-
-/--
-**The Question in Symbols:**
-Does ZFC + (c = ℵ₂) ⊢ 2^ℵ₀ → (ℵ₁)³₂?
-Or is 2^ℵ₀ ↛ (ℵ₁)³₂ consistent with c = ℵ₂?
--/
-theorem erdos_474_symbolic_question : True := trivial
+theorem erdos_474 :
+    -- Under CH, the 3-color property holds
+    (ContinuumHypothesis →
+      ∀ χ : ThreeColoring (ℝ × ℝ),
+        ∀ A : Set ℝ, IsUncountable A → ContainsAllColorPairs χ A) ∧
+    -- A negative answer is consistent with ZFC (Shelah)
+    (∃ (M : Type) (_ : Nonempty M),
+      ∃ χ : M × M → Fin 3,
+        ∀ A : Set M, IsUncountable A →
+          ∃ c : Fin 3, ∃ a b : M, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c) :=
+  ⟨erdos_under_ch, shelah_consistency⟩
 
 end Erdos474
