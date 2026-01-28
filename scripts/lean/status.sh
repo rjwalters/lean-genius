@@ -68,7 +68,7 @@ get_session_uptime() {
 # Helper: Count stubs needing enhancement
 count_stubs() {
     if command -v npx &>/dev/null && [[ -f "scripts/erdos/find-stubs.ts" ]]; then
-        npx tsx scripts/erdos/find-stubs.ts --stats 2>/dev/null | grep -oE "with sources: [0-9]+" | grep -oE "[0-9]+" || echo "?"
+        npx tsx scripts/erdos/find-stubs.ts --stats 2>/dev/null | grep -oE "Stubs needing enhancement: +[0-9]+" | grep -oE "[0-9]+" || echo "?"
     else
         echo "?"
     fi
@@ -193,7 +193,7 @@ gather_status() {
     "started_at": "$started_at"
   },
   "work_queue": {
-    "stubs_with_sources": "$stubs_count",
+    "stubs_needing_enhancement": "$stubs_count",
     "aristotle_pending": $aristotle_jobs,
     "research_available": $research_problems,
     "prs_ready": $ready_prs
@@ -246,7 +246,7 @@ EOF
         # Work Queue
         echo -e "  ${CYAN}Work Queue:${NC}"
         if [[ "$stubs_count" != "0" ]]; then
-            echo "    Stubs needing enhancement: $stubs_count (with sources)"
+            echo "    Stubs needing enhancement: $stubs_count"
         fi
         echo "    Aristotle jobs pending: $aristotle_jobs"
         echo "    Research problems available: $research_problems"

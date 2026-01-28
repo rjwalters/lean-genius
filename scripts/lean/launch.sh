@@ -827,7 +827,7 @@ get_work_queue_stats() {
 
     # Stubs count (with 10s timeout)
     if command -v npx &>/dev/null && [[ -f "scripts/erdos/find-stubs.ts" ]]; then
-        stubs=$(timeout 10 npx tsx scripts/erdos/find-stubs.ts --stats 2>/dev/null | grep -oE "with sources: [0-9]+" | grep -oE "[0-9]+" || echo "?")
+        stubs=$(timeout 10 npx tsx scripts/erdos/find-stubs.ts --stats 2>/dev/null | grep -oE "Stubs needing enhancement: +[0-9]+" | grep -oE "[0-9]+" || echo "?")
     fi
 
     # Research candidates
