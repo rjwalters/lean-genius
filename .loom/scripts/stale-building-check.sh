@@ -162,9 +162,9 @@ for i in $(seq 0 $((ISSUE_COUNT - 1))); do
   # Without this, macOS date interprets the time as local timezone, causing
   # negative ages for users west of UTC (e.g., PST shows times as "in the future")
   if [[ "$(uname)" == "Darwin" ]]; then
-    # macOS: Handle different timestamp formats with UTC timezone
-    UPDATED_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%SZ" "$UPDATED_AT" +%s 2>/dev/null || \
-                    TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "${UPDATED_AT%Z}" +%s 2>/dev/null || echo "0")
+    # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+    clean_ts="${UPDATED_AT%Z}"
+    UPDATED_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" +%s 2>/dev/null || echo "0")
   else
     # Linux
     UPDATED_EPOCH=$(date -d "$UPDATED_AT" +%s 2>/dev/null || echo "0")

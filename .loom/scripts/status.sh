@@ -255,8 +255,9 @@ check_stale() {
     # Convert ISO timestamp to epoch
     local updated_epoch
     if [[ "$(uname)" == "Darwin" ]]; then
-        # macOS
-        updated_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$updated_at" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        local clean_ts="${updated_at%Z}"
+        updated_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         # Linux
         updated_epoch=$(date -d "$updated_at" "+%s" 2>/dev/null || echo "0")

@@ -255,7 +255,9 @@ get_working_seconds() {
     now_epoch=$(date +%s)
 
     if [[ "$(uname)" == "Darwin" ]]; then
-        started_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$started" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        local clean_ts="${started%Z}"
+        started_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         started_epoch=$(date -d "$started" "+%s" 2>/dev/null || echo "0")
     fi
@@ -364,7 +366,9 @@ get_heartbeat_age() {
     now_epoch=$(date +%s)
 
     if [[ "$(uname)" == "Darwin" ]]; then
-        hb_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$last_heartbeat" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        local clean_ts="${last_heartbeat%Z}"
+        hb_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         hb_epoch=$(date -d "$last_heartbeat" "+%s" 2>/dev/null || echo "0")
     fi

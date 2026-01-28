@@ -135,7 +135,9 @@ else
         # Compare timestamps
         NOW_EPOCH=$(date -u +%s)
         if [[ "$(uname)" == "Darwin" ]]; then
-            EXPIRES_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$EXISTING_EXPIRES" +%s 2>/dev/null || echo 0)
+            # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+            clean_ts="${EXISTING_EXPIRES%Z}"
+            EXPIRES_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" +%s 2>/dev/null || echo 0)
         else
             EXPIRES_EPOCH=$(date -d "$EXISTING_EXPIRES" +%s 2>/dev/null || echo 0)
         fi

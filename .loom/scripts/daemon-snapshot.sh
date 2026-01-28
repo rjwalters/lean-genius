@@ -383,7 +383,9 @@ HERMIT_COOLDOWN_OK="false"
 if [[ -n "$LAST_ARCHITECT_TRIGGER" ]]; then
     # Convert ISO timestamp to epoch
     if [[ "$(uname)" == "Darwin" ]]; then
-        ARCH_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_ARCHITECT_TRIGGER" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        clean_ts="${LAST_ARCHITECT_TRIGGER%Z}"
+        ARCH_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         ARCH_EPOCH=$(date -d "$LAST_ARCHITECT_TRIGGER" "+%s" 2>/dev/null || echo "0")
     fi
@@ -397,7 +399,9 @@ fi
 
 if [[ -n "$LAST_HERMIT_TRIGGER" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        HERMIT_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_HERMIT_TRIGGER" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        clean_ts="${LAST_HERMIT_TRIGGER%Z}"
+        HERMIT_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         HERMIT_EPOCH=$(date -d "$LAST_HERMIT_TRIGGER" "+%s" 2>/dev/null || echo "0")
     fi
@@ -414,7 +418,9 @@ GUIDE_IDLE_SECONDS=0
 GUIDE_NEEDS_TRIGGER="false"
 if [[ -n "$GUIDE_LAST_COMPLETED" && "$GUIDE_LAST_COMPLETED" != "null" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        GUIDE_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$GUIDE_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        clean_ts="${GUIDE_LAST_COMPLETED%Z}"
+        GUIDE_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         GUIDE_EPOCH=$(date -d "$GUIDE_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
     fi
@@ -434,7 +440,9 @@ CHAMPION_IDLE_SECONDS=0
 CHAMPION_NEEDS_TRIGGER="false"
 if [[ -n "$CHAMPION_LAST_COMPLETED" && "$CHAMPION_LAST_COMPLETED" != "null" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        CHAMPION_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$CHAMPION_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        clean_ts="${CHAMPION_LAST_COMPLETED%Z}"
+        CHAMPION_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         CHAMPION_EPOCH=$(date -d "$CHAMPION_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
     fi
@@ -452,7 +460,9 @@ DOCTOR_IDLE_SECONDS=0
 DOCTOR_NEEDS_TRIGGER="false"
 if [[ -n "$DOCTOR_LAST_COMPLETED" && "$DOCTOR_LAST_COMPLETED" != "null" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        DOCTOR_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$DOCTOR_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        clean_ts="${DOCTOR_LAST_COMPLETED%Z}"
+        DOCTOR_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         DOCTOR_EPOCH=$(date -d "$DOCTOR_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
     fi
@@ -470,7 +480,9 @@ AUDITOR_IDLE_SECONDS=0
 AUDITOR_NEEDS_TRIGGER="false"
 if [[ -n "$AUDITOR_LAST_COMPLETED" && "$AUDITOR_LAST_COMPLETED" != "null" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        AUDITOR_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$AUDITOR_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        clean_ts="${AUDITOR_LAST_COMPLETED%Z}"
+        AUDITOR_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         AUDITOR_EPOCH=$(date -d "$AUDITOR_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
     fi
@@ -488,7 +500,9 @@ JUDGE_IDLE_SECONDS=0
 JUDGE_NEEDS_TRIGGER="false"
 if [[ -n "$JUDGE_LAST_COMPLETED" && "$JUDGE_LAST_COMPLETED" != "null" ]]; then
     if [[ "$(uname)" == "Darwin" ]]; then
-        JUDGE_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$JUDGE_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        clean_ts="${JUDGE_LAST_COMPLETED%Z}"
+        JUDGE_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         JUDGE_EPOCH=$(date -d "$JUDGE_LAST_COMPLETED" "+%s" 2>/dev/null || echo "0")
     fi
@@ -616,7 +630,9 @@ read_shepherd_progress() {
                     if [[ -n "$last_heartbeat" && "$last_heartbeat" != "null" ]]; then
                         local hb_epoch
                         if [[ "$(uname)" == "Darwin" ]]; then
-                            hb_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$last_heartbeat" "+%s" 2>/dev/null || echo "0")
+                            # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+                            local clean_ts="${last_heartbeat%Z}"
+                            hb_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
                         else
                             hb_epoch=$(date -d "$last_heartbeat" "+%s" 2>/dev/null || echo "0")
                         fi

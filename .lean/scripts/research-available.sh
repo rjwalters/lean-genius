@@ -99,7 +99,9 @@ for problem_id in $AVAILABLE_IN_POOL; do
             EXPIRES_AT=$(jq -r '.expires_at' "$CLAIM_FILE")
             NOW_EPOCH=$(date -u +%s)
             if [[ "$(uname)" == "Darwin" ]]; then
-                EXPIRES_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$EXPIRES_AT" +%s 2>/dev/null || echo 0)
+                # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+                clean_ts="${EXPIRES_AT%Z}"
+                EXPIRES_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" +%s 2>/dev/null || echo 0)
             else
                 EXPIRES_EPOCH=$(date -d "$EXPIRES_AT" +%s 2>/dev/null || echo 0)
             fi

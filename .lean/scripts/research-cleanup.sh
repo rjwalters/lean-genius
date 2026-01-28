@@ -90,7 +90,9 @@ for claim_file in "$CLAIMS_DIR"/*.json; do
 
     # Parse expiry time
     if [[ "$(uname)" == "Darwin" ]]; then
-        EXPIRES_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$expires_at" +%s 2>/dev/null || echo 0)
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        clean_ts="${expires_at%Z}"
+        EXPIRES_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" +%s 2>/dev/null || echo 0)
     else
         EXPIRES_EPOCH=$(date -d "$expires_at" +%s 2>/dev/null || echo 0)
     fi

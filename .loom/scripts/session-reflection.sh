@@ -174,9 +174,11 @@ calculate_duration() {
     start_epoch=$(date -d "$started_at" +%s 2>/dev/null || echo "0")
     end_epoch=$(date -d "$end_time" +%s 2>/dev/null || echo "0")
   else
-    # BSD date (macOS)
-    start_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$started_at" +%s 2>/dev/null || echo "0")
-    end_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$end_time" +%s 2>/dev/null || echo "0")
+    # BSD date (macOS) - Strip Z suffix and parse as UTC
+    local clean_start="${started_at%Z}"
+    local clean_end="${end_time%Z}"
+    start_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_start" +%s 2>/dev/null || echo "0")
+    end_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_end" +%s 2>/dev/null || echo "0")
   fi
 
   echo $((end_epoch - start_epoch))
