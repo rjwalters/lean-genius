@@ -132,8 +132,9 @@ time_ago() {
 
     # Parse ISO timestamp
     if [[ "$(uname)" == "Darwin" ]]; then
-        # macOS
-        then_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$timestamp" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        local clean_ts="${timestamp%Z}"
+        then_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         # Linux
         then_epoch=$(date -d "$timestamp" "+%s" 2>/dev/null || echo "0")
@@ -176,7 +177,9 @@ format_uptime() {
     now_epoch=$(date +%s)
 
     if [[ "$(uname)" == "Darwin" ]]; then
-        then_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$timestamp" "+%s" 2>/dev/null || echo "0")
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        local clean_ts="${timestamp%Z}"
+        then_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0")
     else
         then_epoch=$(date -d "$timestamp" "+%s" 2>/dev/null || echo "0")
     fi

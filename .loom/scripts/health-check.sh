@@ -171,7 +171,9 @@ timestamp_to_epoch() {
         return
     fi
     if [[ "$(uname)" == "Darwin" ]]; then
-        date -j -f "%Y-%m-%dT%H:%M:%SZ" "$timestamp" "+%s" 2>/dev/null || echo "0"
+        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+        local clean_ts="${timestamp%Z}"
+        TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0"
     else
         date -d "$timestamp" "+%s" 2>/dev/null || echo "0"
     fi

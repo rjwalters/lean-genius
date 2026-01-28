@@ -200,8 +200,9 @@ check_grace_period() {
   # Parse merged_at timestamp
   local merged_ts
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS
-    merged_ts=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$merged_at" +%s 2>/dev/null || echo "0")
+    # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+    local clean_ts="${merged_at%Z}"
+    merged_ts=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" +%s 2>/dev/null || echo "0")
   else
     # Linux
     merged_ts=$(date -d "$merged_at" +%s 2>/dev/null || echo "0")
