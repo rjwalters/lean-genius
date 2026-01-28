@@ -29,11 +29,14 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
+WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 SESSION_NAME="deployer"
 LOG_FILE="$LOGS_DIR/deployer.log"
 INTERVAL="${DEPLOYER_INTERVAL:-30}"
+WORKTREE_PATH="$WORKTREES_DIR/deployer"
+BRANCH_NAME="feature/deployer"
 
 # Colors
 RED='\033[0;31m'
@@ -57,6 +60,57 @@ check_deps() {
         print_error "Missing dependencies: ${missing[*]}"
         exit 1
     fi
+}
+
+# Create or update worktree for deployer
+create_worktree() {
+    mkdir -p "$WORKTREES_DIR"
+
+    if [[ -d "$WORKTREE_PATH" ]]; then
+        print_info "Worktree already exists, syncing with main..."
+        (
+            cd "$WORKTREE_PATH"
+            git fetch origin main 2>/dev/null || true
+            git stash 2>/dev/null || true
+
+            # Deployer works on main, so reset to origin/main
+            if git reset --hard origin/main 2>/dev/null; then
+                print_success "Synced with origin/main"
+            else
+                print_warning "Could not sync with origin/main"
+            fi
+
+            git stash pop 2>/dev/null || true
+        )
+        return 0
+    fi
+
+    print_info "Creating worktree for deployer at $WORKTREE_PATH..."
+
+    # Try to create worktree
+    git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main 2>/dev/null || {
+        # Branch might exist, try to use it
+        git worktree add "$WORKTREE_PATH" "$BRANCH_NAME" 2>/dev/null || {
+            # Remove and recreate branch
+            git branch -D "$BRANCH_NAME" 2>/dev/null || true
+            git worktree add "$WORKTREE_PATH" -b "$BRANCH_NAME" main
+        }
+    }
+
+    # Symlink .lake for fast Lean builds (if proofs directory exists)
+    if [[ -d "$REPO_ROOT/proofs/.lake" ]] && [[ -d "$WORKTREE_PATH/proofs" ]]; then
+        rm -rf "$WORKTREE_PATH/proofs/.lake" 2>/dev/null || true
+        ln -s "$REPO_ROOT/proofs/.lake" "$WORKTREE_PATH/proofs/.lake"
+        print_info "Linked .lake for fast Lean builds"
+    fi
+
+    # Install node dependencies in worktree
+    if [[ -f "$WORKTREE_PATH/package.json" ]]; then
+        print_info "Installing node dependencies..."
+        (cd "$WORKTREE_PATH" && pnpm install --frozen-lockfile 2>/dev/null) || true
+    fi
+
+    print_success "Created deployer worktree"
 }
 
 # Create prompt file for deployer
@@ -126,18 +180,23 @@ launch_agent() {
     # Kill existing session if any
     tmux kill-session -t "$SESSION_NAME" 2>/dev/null || true
 
+    # Create or update worktree
+    create_worktree
+
     # Create prompt file
     local prompt_file
     prompt_file=$(create_prompt_file)
 
     print_info "Launching deployer agent..."
     print_info "Interval: $INTERVAL minutes"
+    print_info "Worktree: $WORKTREE_PATH"
 
     # Launch in tmux with resilient wrapper in DAEMON mode for infinite retry
     # The --daemon flag ensures the deployer survives API outages indefinitely
+    # Run in worktree to isolate from main repo
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
-    tmux new-session -d -s "$SESSION_NAME" -c "$REPO_ROOT" \
-        "ENHANCER_ID=deployer REPO_ROOT=$REPO_ROOT $wrapper_script --daemon --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE'"
+    tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH" \
+        "ENHANCER_ID=deployer REPO_ROOT=$WORKTREE_PATH $wrapper_script --daemon --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE'"
 
     print_success "Launched deployer agent"
     echo ""
@@ -178,7 +237,15 @@ check_status() {
         print_success "Deployer is running"
         echo ""
         echo "Session: $SESSION_NAME"
+        echo "Worktree: $WORKTREE_PATH"
         echo "Log file: $LOG_FILE"
+
+        # Show worktree git status
+        if [[ -d "$WORKTREE_PATH" ]]; then
+            local branch
+            branch=$(cd "$WORKTREE_PATH" && git branch --show-current 2>/dev/null || echo "unknown")
+            echo "Branch: $branch"
+        fi
 
         if [[ -f "$LOG_FILE" ]]; then
             echo ""
@@ -187,6 +254,9 @@ check_status() {
         fi
     else
         print_info "Deployer is not running"
+        if [[ -d "$WORKTREE_PATH" ]]; then
+            echo "Worktree exists: $WORKTREE_PATH"
+        fi
     fi
 
     echo ""
@@ -233,6 +303,9 @@ Deployer Agent Launcher
 
 Launches an autonomous agent that periodically merges PRs, syncs data,
 builds, and deploys the website to Cloudflare.
+
+The agent runs in an isolated git worktree at $WORKTREES_DIR/deployer
+to prevent contention with other agents working in the main repository.
 
 Usage:
   ./launch-agent.sh              Launch deployer (default 30min interval)

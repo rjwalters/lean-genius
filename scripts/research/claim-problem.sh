@@ -35,14 +35,91 @@ REPO_ROOT="$(find_repo_root)"
 CLAIMS_DIR="$REPO_ROOT/research/claims"
 POOL_FILE="$REPO_ROOT/research/candidate-pool.json"
 PROBLEMS_DIR="$REPO_ROOT/src/data/research/problems"
+LOCKS_DIR="$REPO_ROOT/.loom/locks"
+POOL_LOCK_FILE="$LOCKS_DIR/candidate-pool.lock"
 
 # Defaults
 TTL_MINUTES="${CLAIM_TTL:-90}"
 AGENT_ID="${RESEARCHER_ID:-researcher-$$}"
+LOCK_TIMEOUT="${POOL_LOCK_TIMEOUT:-30}"  # Max seconds to wait for lock
 
 # Ensure directories exist
 mkdir -p "$CLAIMS_DIR"
 mkdir -p "$PROBLEMS_DIR"
+mkdir -p "$LOCKS_DIR"
+
+# ============================================================================
+# File Locking for candidate-pool.json
+# ============================================================================
+# Uses flock for advisory locking. On macOS, falls back to mkdir-based locking.
+
+# Acquire lock on candidate-pool.json with timeout
+# Returns 0 on success, 1 on timeout
+acquire_pool_lock() {
+    local lock_acquired=false
+    local start_time=$(date +%s)
+
+    # Create lock file if it doesn't exist
+    touch "$POOL_LOCK_FILE"
+
+    # Try flock if available (Linux)
+    if command -v flock &>/dev/null; then
+        exec 200>"$POOL_LOCK_FILE"
+        if flock -w "$LOCK_TIMEOUT" 200; then
+            lock_acquired=true
+        fi
+    else
+        # Fallback for macOS: mkdir-based locking with timeout
+        local lock_dir="${POOL_LOCK_FILE}.d"
+        while ! mkdir "$lock_dir" 2>/dev/null; do
+            local now=$(date +%s)
+            local elapsed=$((now - start_time))
+            if [[ $elapsed -ge $LOCK_TIMEOUT ]]; then
+                echo "Warning: Timeout waiting for pool lock after ${LOCK_TIMEOUT}s" >&2
+                return 1
+            fi
+            sleep 0.5
+        done
+        lock_acquired=true
+        # Store our PID for debugging
+        echo "$$" > "${lock_dir}/pid"
+    fi
+
+    if $lock_acquired; then
+        return 0
+    else
+        echo "Warning: Could not acquire pool lock" >&2
+        return 1
+    fi
+}
+
+# Release lock on candidate-pool.json
+release_pool_lock() {
+    if command -v flock &>/dev/null; then
+        # flock releases automatically when file descriptor closes
+        exec 200>&- 2>/dev/null || true
+    else
+        # mkdir-based locking
+        local lock_dir="${POOL_LOCK_FILE}.d"
+        rm -rf "$lock_dir" 2>/dev/null || true
+    fi
+}
+
+# Run a command with pool lock
+# Usage: with_pool_lock <command> [args...]
+with_pool_lock() {
+    if ! acquire_pool_lock; then
+        echo "Error: Could not acquire lock, operation may have race conditions" >&2
+        # Continue anyway to avoid blocking entirely
+    fi
+
+    # Run the command
+    "$@"
+    local result=$?
+
+    release_pool_lock
+    return $result
+}
 
 # Calculate timestamps
 get_timestamps() {
@@ -260,17 +337,20 @@ release_problem() {
     fi
 }
 
-# Update problem status in pool
+# Update problem status in pool (with locking)
 update_problem_status() {
     local problem_id="$1"
     local new_status="$2"
 
-    local tmp_file
-    tmp_file=$(mktemp)
-    jq "(.candidates[] | select(.id == \"$problem_id\")).status = \"$new_status\"" "$POOL_FILE" > "$tmp_file"
-    mv "$tmp_file" "$POOL_FILE"
+    _update_problem_status_inner() {
+        local tmp_file
+        tmp_file=$(mktemp)
+        jq "(.candidates[] | select(.id == \"$problem_id\")).status = \"$new_status\"" "$POOL_FILE" > "$tmp_file"
+        mv "$tmp_file" "$POOL_FILE"
+        echo "Updated $problem_id status to: $new_status"
+    }
 
-    echo "Updated $problem_id status to: $new_status"
+    with_pool_lock _update_problem_status_inner
 }
 
 # Show status
