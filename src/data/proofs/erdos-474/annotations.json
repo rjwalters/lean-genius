@@ -5,7 +5,9 @@
     "range": { "startLine": 1, "endLine": 25 },
     "type": "context",
     "title": "Problem Overview",
-    "content": "Erdős Problem #474 asks: Under what set-theoretic assumptions can ℝ² be 3-colored so every uncountable A has A² containing pairs of all colors? In partition calculus notation: 2^ℵ₀ → (ℵ₁)³₂. Posed in 1954 with a $100 prize. The 2-color case always works; the 3-color case depends on cardinal arithmetic.",
+    "content": "Erdős Problem #474 asks: Under what set-theoretic assumptions can $\\mathbb{R}^2$ be 3-colored so every uncountable $A$ has $A^2$ containing pairs of all colors? In partition calculus notation: $2^{\\aleph_0} \\to (\\aleph_1)^3_2$. Posed in 1954 with a $100 prize. The 2-color case always works; the 3-color case depends on cardinal arithmetic.",
+    "mathContext": "This problem lies at the intersection of infinite Ramsey theory and set-theoretic independence. The partition arrow notation $\\kappa \\to (\\lambda)^r_s$ asks whether every $s$-coloring of $r$-element subsets of $\\kappa$ has a monochromatic subset of size $\\lambda$. The transition from 2 to 3 colors reveals deep sensitivity to the axioms of set theory — a phenomenon characteristic of problems at the boundary of ZFC.",
+    "relatedConcepts": ["Partition calculus", "Ramsey theory", "Cardinal arithmetic", "Continuum Hypothesis", "ZFC independence"],
     "significance": "critical"
   },
   {
@@ -14,7 +16,9 @@
     "range": { "startLine": 42, "endLine": 54 },
     "type": "definition",
     "title": "Cardinal Definitions",
-    "content": "continuum = 2^ℵ₀ (cardinality of ℝ), aleph1 = ℵ₁ (first uncountable cardinal), aleph2 = ℵ₂ (second uncountable cardinal). These are defined using Mathlib's Cardinal.aleph function.",
+    "content": "`continuum` $= 2^{\\aleph_0}$ (cardinality of $\\mathbb{R}$), `aleph1` $= \\aleph_1$ (first uncountable cardinal), `aleph2` $= \\aleph_2$ (second uncountable cardinal). These are defined using Mathlib's `Cardinal.aleph` function.",
+    "mathContext": "The aleph sequence $\\aleph_0 < \\aleph_1 < \\aleph_2 < \\cdots$ enumerates all infinite cardinals. The relationship between $2^{\\aleph_0}$ (the continuum) and the aleph sequence is the subject of the Continuum Hypothesis. Gödel (1940) showed CH is consistent with ZFC; Cohen (1963) showed its negation is also consistent. The value of the continuum is thus 'undetermined' by ZFC alone.",
+    "relatedConcepts": ["Cardinal.aleph", "Cardinal power", "Continuum Hypothesis", "Gödel-Cohen independence"],
     "significance": "key"
   },
   {
@@ -23,7 +27,9 @@
     "range": { "startLine": 62, "endLine": 62 },
     "type": "definition",
     "title": "Three-Coloring",
-    "content": "ThreeColoring X = X → Fin 3, assigning each element one of three colors {0, 1, 2}. For pairs, we color X × X.",
+    "content": "`ThreeColoring X` $= X \\to \\text{Fin}\\,3$, assigning each element one of three colors $\\{0, 1, 2\\}$. For pairs, we color $X \\times X$.",
+    "mathContext": "The coloring function is applied to ordered pairs $(a,b)$ rather than unordered pairs $\\{a,b\\}$. This is slightly stronger than the unordered version: if the ordered coloring has the desired property, so does the underlying unordered coloring. Using $\\text{Fin}\\,3$ provides decidable equality and finiteness automatically in Lean.",
+    "relatedConcepts": ["Fin", "Function type", "Graph coloring", "Ramsey theory"],
     "significance": "key"
   },
   {
@@ -32,7 +38,9 @@
     "range": { "startLine": 68, "endLine": 69 },
     "type": "definition",
     "title": "Uncountable Set",
-    "content": "IsUncountable A means |A| ≥ ℵ₁. This is the threshold for 'large' sets in the partition calculus problem.",
+    "content": "`IsUncountable A` means $|A| \\geq \\aleph_1$, i.e., the set $A$ has cardinality at least the first uncountable cardinal. This is the threshold for 'large' sets in partition calculus.",
+    "mathContext": "The condition $|A| \\geq \\aleph_1$ is equivalent to $A$ not being countable. In ZFC, every uncountable subset of $\\mathbb{R}$ has cardinality either $\\aleph_1$ (under CH) or possibly larger. The choice of $\\aleph_1$ as the threshold is natural: it is the smallest cardinal where the coloring problem becomes non-trivial.",
+    "relatedConcepts": ["Cardinal.mk", "Cardinal.aleph", "Countable", "Cantor's theorem"],
     "significance": "key"
   },
   {
@@ -41,7 +49,9 @@
     "range": { "startLine": 77, "endLine": 78 },
     "type": "definition",
     "title": "Contains All Color Pairs",
-    "content": "ContainsAllColorPairs χ A means for each color c ∈ {0,1,2}, there exist distinct a, b ∈ A with χ(a,b) = c. The set A's pairs 'see' every color.",
+    "content": "`ContainsAllColorPairs χ A` means for each color $c \\in \\{0,1,2\\}$, there exist distinct $a, b \\in A$ with $\\chi(a,b) = c$. The set $A$'s pairs 'see' every color.",
+    "mathContext": "This is the 'rainbow' condition: the image of $A \\times A$ under $\\chi$ is surjective onto $\\text{Fin}\\,3$. The distinctness requirement $a \\neq b$ excludes diagonal pairs. For 2 colors, the analogous condition holds unconditionally (Sierpinski-Kurepa). For 3 colors, whether this can always be arranged depends on set-theoretic axioms.",
+    "relatedConcepts": ["ThreeColoring", "Set membership", "Surjectivity", "Rainbow condition"],
     "significance": "critical"
   },
   {
@@ -50,7 +60,9 @@
     "range": { "startLine": 86, "endLine": 88 },
     "type": "definition",
     "title": "Erdős Coloring Property",
-    "content": "ErdosColoringProperty X: there exists a 3-coloring of X × X such that every uncountable subset A has ContainsAllColorPairs. This is the main property under investigation.",
+    "content": "`ErdosColoringProperty X`: there exists a 3-coloring of $X \\times X$ such that every uncountable subset $A$ has `ContainsAllColorPairs`. This is the main property under investigation.",
+    "mathContext": "The existential quantifier over colorings is crucial: we ask whether there EXISTS a good coloring, not whether ALL colorings are good. This makes the property harder to refute — one must show that every possible 3-coloring fails on some uncountable subset. The negation (NegativePartition) asserts the existence of a specific 'bad' coloring.",
+    "relatedConcepts": ["ThreeColoring", "ContainsAllColorPairs", "IsUncountable", "Existential quantification"],
     "significance": "critical"
   },
   {
@@ -59,7 +71,9 @@
     "range": { "startLine": 97, "endLine": 100 },
     "type": "definition",
     "title": "Partition Property",
-    "content": "PartitionProperty formalizes 2^ℵ₀ → (ℵ₁)³₂: every 3-coloring of pairs from the continuum has an uncountable monochromatic set. Uses Fin 2 → ℕ as a model for the continuum.",
+    "content": "`PartitionProperty` formalizes $2^{\\aleph_0} \\to (\\aleph_1)^3_2$: every 3-coloring of pairs from the continuum has an $\\aleph_1$-sized monochromatic set. Uses `Fin 2 → ℕ` as a model for the continuum (Cantor space $2^{\\omega}$).",
+    "mathContext": "The partition arrow notation originates from Ramsey theory. $\\kappa \\to (\\lambda)^r_s$ asserts that for every $s$-coloring of $r$-element subsets of $\\kappa$, there exists a monochromatic subset of size $\\lambda$. The classical Ramsey theorem handles the finite case; the infinite case requires cardinal arithmetic. Using $\\text{Fin}\\,2 \\to \\mathbb{N}$ (binary sequences) as the carrier type is natural since $|\\text{Fin}\\,2 \\to \\mathbb{N}| = 2^{\\aleph_0}$.",
+    "relatedConcepts": ["Ramsey theory", "Partition arrow", "Cantor space", "Monochromatic set"],
     "significance": "critical"
   },
   {
@@ -68,7 +82,9 @@
     "range": { "startLine": 110, "endLine": 113 },
     "type": "axiom",
     "title": "Sierpinski-Kurepa Theorem",
-    "content": "For 2 colors, the property ALWAYS holds: any 2-coloring of pairs from an uncountable set contains both colors. Proved independently by Sierpinski and Kurepa. This is unconditional — no set-theoretic assumptions needed.",
+    "content": "`sierpinski_kurepa`: For 2 colors, the property ALWAYS holds: any 2-coloring of pairs from an uncountable set contains both colors. Proved independently by Sierpiński and Kurepa. This is unconditional — no set-theoretic assumptions needed.",
+    "mathContext": "The proof uses a pigeonhole argument: given an uncountable set $A$ and a 2-coloring $\\chi$ of $A \\times A$, for each $a \\in A$ the function $b \\mapsto \\chi(a,b)$ must take both values on uncountably many $b$ (otherwise $A$ would split into at most countably many monochromatic parts). This argument fails for 3 colors because the pigeonhole bound is no longer tight — three colors can be distributed more subtly.",
+    "relatedConcepts": ["Fin 2", "Pigeonhole principle", "Unconditional result", "Two-coloring"],
     "significance": "critical"
   },
   {
@@ -77,7 +93,9 @@
     "range": { "startLine": 120, "endLine": 123 },
     "type": "axiom",
     "title": "Two-Color Partition",
-    "content": "2^ℵ₀ → (ℵ₁)²₂ holds unconditionally. Every 2-coloring of pairs from the continuum has an uncountable monochromatic set. The partition relation form of Sierpinski-Kurepa.",
+    "content": "`two_color_partition`: $2^{\\aleph_0} \\to (\\aleph_1)^2_2$ holds unconditionally. Every 2-coloring of pairs from the continuum has an uncountable monochromatic set. The partition relation form of Sierpiński-Kurepa.",
+    "mathContext": "This is a strengthening of the Sierpiński-Kurepa result to partition relation notation. The result says not just that both colors appear in pairs from any uncountable set, but that there is an entire uncountable monochromatic set. This is part of the Erdős-Rado partition calculus, which systematically studies such relations.",
+    "relatedConcepts": ["PartitionProperty", "Erdős-Rado", "Monochromatic set", "Cardinal Ramsey theory"],
     "significance": "key"
   },
   {
@@ -86,7 +104,9 @@
     "range": { "startLine": 131, "endLine": 131 },
     "type": "definition",
     "title": "Continuum Hypothesis",
-    "content": "ContinuumHypothesis: c = ℵ₁, meaning 2^ℵ₀ equals the first uncountable cardinal. Independent of ZFC (Gödel 1940, Cohen 1963). CH is the key assumption under which Erdős proved the 3-color case.",
+    "content": "`ContinuumHypothesis`: $\\mathfrak{c} = \\aleph_1$, meaning $2^{\\aleph_0}$ equals the first uncountable cardinal. Independent of ZFC (Gödel 1940, Cohen 1963). CH is the key assumption under which Erdős proved the 3-color case.",
+    "mathContext": "The Continuum Hypothesis was Hilbert's first problem (1900). Gödel constructed the constructible universe $L$ where CH holds; Cohen invented forcing to build models where CH fails. The independence means ZFC cannot determine the value of the continuum. In the context of Problem #474, CH makes the continuum 'small' ($\\aleph_1$), which allows transfinite induction arguments that fail for larger continua.",
+    "relatedConcepts": ["continuum", "aleph1", "Gödel's constructible universe", "Cohen forcing", "Hilbert's problems"],
     "significance": "critical"
   },
   {
@@ -95,7 +115,9 @@
     "range": { "startLine": 138, "endLine": 141 },
     "type": "axiom",
     "title": "Erdős Under CH",
-    "content": "erdos_under_ch: If CH holds (c = ℵ₁), then for any 3-coloring of ℝ × ℝ, every uncountable set's pairs contain all 3 colors. CH has Ramsey-theoretic consequences.",
+    "content": "`erdos_under_ch`: If CH holds ($\\mathfrak{c} = \\aleph_1$), then for any 3-coloring of $\\mathbb{R} \\times \\mathbb{R}$, every uncountable set's pairs contain all 3 colors.",
+    "mathContext": "The proof works by well-ordering $\\mathbb{R}$ in order type $\\omega_1$ (possible under CH since $|\\mathbb{R}| = \\aleph_1$). For a given 3-coloring, one builds an uncountable set $A$ by transfinite induction, at each stage $\\alpha < \\omega_1$ adding a point that ensures all three colors appear in pairs with earlier points. The key is that at each stage, only countably many constraints exist, and the continuum provides enough points to satisfy them.",
+    "relatedConcepts": ["ContinuumHypothesis", "ThreeColoring", "Transfinite induction", "Well-ordering"],
     "significance": "critical"
   },
   {
@@ -104,7 +126,9 @@
     "range": { "startLine": 152, "endLine": 157 },
     "type": "axiom",
     "title": "Shelah's Consistency Result",
-    "content": "shelah_consistency: There exists a model of ZFC with a 'bad' 3-coloring — a coloring such that every uncountable set avoids pairs of some color. This shows failure of the partition property is consistent.",
+    "content": "`shelah_consistency`: There exists a model of ZFC with a 'bad' 3-coloring — a coloring such that every uncountable set avoids pairs of some color. This shows failure of the partition property is consistent.",
+    "mathContext": "Shelah's proof uses iterated forcing to construct a model of ZFC where a specific 3-coloring witnesses the failure of $2^{\\aleph_0} \\to (\\aleph_1)^3_2$. The forcing adds many reals (making the continuum large) while maintaining careful control of the coloring. The model necessarily has $\\mathfrak{c} > \\aleph_2$ — this is why the $\\mathfrak{c} = \\aleph_2$ case remains open.",
+    "relatedConcepts": ["Forcing", "ZFC consistency", "Iterated forcing", "NegativePartition"],
     "significance": "critical"
   },
   {
@@ -113,7 +137,9 @@
     "range": { "startLine": 164, "endLine": 166 },
     "type": "axiom",
     "title": "Shelah's Large Continuum",
-    "content": "shelah_large_c: Shelah's counterexample model has continuum much larger than ℵ₂. This is why the c = ℵ₂ case remains open.",
+    "content": "`shelah_large_c`: Shelah's counterexample model has continuum much larger than $\\aleph_2$. This is why the $\\mathfrak{c} = \\aleph_2$ case remains open.",
+    "mathContext": "The technical reason Shelah's construction requires a large continuum is that the iterated forcing adds many Cohen reals. The number of forcing conditions needed to define the 'bad' coloring grows with the iteration, requiring the final model to have $\\mathfrak{c} \\gg \\aleph_2$. Whether the construction can be refined to work with $\\mathfrak{c} = \\aleph_2$ is the central open question.",
+    "relatedConcepts": ["Cardinal.aleph 2", "Cohen reals", "Forcing iteration", "shelah_consistency"],
     "significance": "key"
   },
   {
@@ -122,7 +148,9 @@
     "range": { "startLine": 178, "endLine": 184 },
     "type": "definition",
     "title": "The Open Question",
-    "content": "OpenQuestion: Is there a model with c = ℵ₂ where the partition property fails? This is the key remaining question — can we have a 'bad' 3-coloring with only the second-smallest uncountable continuum?",
+    "content": "`OpenQuestion`: Is there a model with $\\mathfrak{c} = \\aleph_2$ where the partition property fails? This is the key remaining question — can we have a 'bad' 3-coloring with only the second-smallest uncountable continuum?",
+    "mathContext": "The question asks whether $\\text{Con}(\\text{ZFC} + \\mathfrak{c} = \\aleph_2 + 2^{\\aleph_0} \\not\\to (\\aleph_1)^3_2)$ holds. A positive answer would require a more delicate forcing construction than Shelah's. A negative answer would mean that $\\mathfrak{c} = \\aleph_2$ already implies the partition property, which would be a remarkable set-theoretic dichotomy.",
+    "relatedConcepts": ["Cardinal.aleph 2", "Consistency strength", "Forcing", "NegativePartition"],
     "significance": "critical"
   },
   {
@@ -131,7 +159,9 @@
     "range": { "startLine": 192, "endLine": 199 },
     "type": "definition",
     "title": "The $100 Prize Question",
-    "content": "erdos_prize_question: Erdős offered $100 for determining the minimal cardinal κ > ℵ₁ such that c = κ is consistent with failure of 2^ℵ₀ → (ℵ₁)³₂. Is it ℵ₂ or something larger?",
+    "content": "`erdos_prize_question`: Erdős offered $100 for determining the minimal cardinal $\\kappa > \\aleph_1$ such that $\\mathfrak{c} = \\kappa$ is consistent with failure of $2^{\\aleph_0} \\to (\\aleph_1)^3_2$. Is it $\\aleph_2$ or something larger?",
+    "mathContext": "The prize question is equivalent to asking whether $\\aleph_2$ is the 'threshold cardinal' for failure. If the threshold is $\\aleph_2$, then $\\mathfrak{c} = \\aleph_2$ suffices for failure and the answer is 'small'. If the threshold is larger, there is a range of continuum sizes where the property automatically holds — an unexpected phenomenon in cardinal arithmetic. The formalization captures this as the existence of a minimal $\\kappa$ with a partition between success and failure.",
+    "relatedConcepts": ["erdos_prize_question", "Cardinal threshold", "Minimal failure cardinal"],
     "significance": "key"
   },
   {
@@ -140,7 +170,9 @@
     "range": { "startLine": 208, "endLine": 211 },
     "type": "definition",
     "title": "Negative Partition Relation",
-    "content": "NegativePartition: 2^ℵ₀ ↛ (ℵ₁)³₂ — there exists a 3-coloring with no ℵ₁-sized monochromatic set. This is the negation of the partition property, shown consistent by Shelah.",
+    "content": "`NegativePartition`: $2^{\\aleph_0} \\not\\to (\\aleph_1)^3_2$ — there exists a 3-coloring with no $\\aleph_1$-sized monochromatic set. This is the negation of the partition property, shown consistent by Shelah.",
+    "mathContext": "The negative partition relation is the existential statement asserting a 'bad' coloring exists. Its consistency means that ZFC cannot prove the partition property. Combined with Erdős's result under CH, this establishes that the partition property is independent of ZFC — it holds in some models (those with CH) and fails in others (Shelah's model).",
+    "relatedConcepts": ["PartitionProperty", "shelah_consistency", "Independence", "ZFC"],
     "significance": "key"
   },
   {
@@ -149,7 +181,9 @@
     "range": { "startLine": 246, "endLine": 250 },
     "type": "axiom",
     "title": "Why CH Helps",
-    "content": "ch_argument: Under CH, |ℝ| = ℵ₁ so ℝ can be well-ordered in type ω₁. A diagonal argument over this well-ordering produces an uncountable monochromatic set by transfinite induction.",
+    "content": "`ch_argument`: Under CH, $|\\mathbb{R}| = \\aleph_1$ so $\\mathbb{R}$ can be well-ordered in type $\\omega_1$. A diagonal argument over this well-ordering produces an uncountable monochromatic set by transfinite induction.",
+    "mathContext": "The transfinite induction argument is constructive given a well-ordering. At successor stage $\\alpha + 1$, we have a set $A_\\alpha$ of size $|\\alpha| < \\aleph_1$ and need to add a new point $x_{\\alpha+1}$ such that $\\chi(x_{\\alpha+1}, a) = c$ for all $a \\in A_\\alpha$ and some fixed color $c$. Since $|A_\\alpha|$ is countable, the number of constraints is countable, and by pigeonhole among the uncountably many remaining points, one works. At limit stages, we take unions. The argument relies on $|\\mathbb{R}| = \\aleph_1$ to ensure the induction runs for $\\omega_1$ steps.",
+    "relatedConcepts": ["ContinuumHypothesis", "Well-ordering", "Transfinite induction", "Pigeonhole principle"],
     "significance": "key"
   },
   {
@@ -157,8 +191,10 @@
     "proofId": "erdos-474",
     "range": { "startLine": 286, "endLine": 312 },
     "type": "theorem",
-    "title": "Erdős 474 Main Theorem",
-    "content": "erdos_474: Combines erdos_under_ch (CH implies the property) and shelah_consistency (failure is consistent with ZFC). The c = ℵ₂ question remains open with a $100 prize.",
+    "title": "Erdős 474 Main Theorems",
+    "content": "`erdos_474_summary` is a **genuine theorem** combining: (1) `erdos_under_ch` — CH implies the 3-color property, and (2) `sierpinski_kurepa` — the 2-color case always works.\n\n`erdos_474` is a **genuine theorem** combining: (1) `erdos_under_ch` — CH implies the property, and (2) `shelah_consistency` — failure is consistent with ZFC. Together, these establish the independence of the partition property from ZFC + ¬CH.",
+    "mathContext": "Both theorems use the anonymous constructor $\\langle\\ldots, \\ldots\\rangle$ to combine axiomatized results. The `erdos_474` theorem captures the state of the art: the partition property is independent of ZFC, holding under CH but consistently failing without it. The $\\mathfrak{c} = \\aleph_2$ case remains the key open question, worth Erdős's $100 prize.",
+    "relatedConcepts": ["erdos_under_ch", "shelah_consistency", "sierpinski_kurepa", "And.intro", "Independence"],
     "significance": "critical"
   }
 ]
