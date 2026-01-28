@@ -1859,64 +1859,72 @@
       "file": "proofs/Proofs/Erdos154Problem.lean",
       "problem_id": "erdos-154",
       "submitted": "2026-01-26T19:55:30Z",
-      "status": "submitted",
-      "notes": "Restored - QUEUED on API (pagination issue in check script)"
+      "status": "expired",
+      "notes": "Restored - QUEUED on API (pagination issue in check script)",
+      "outcome": "Expired on Aristotle (NOT_FOUND)"
     },
     {
       "project_id": "e634e79f-a5d5-4a61-8be8-0f8fc8699322",
       "file": "proofs/Proofs/Erdos186Problem.lean",
       "problem_id": "erdos-186",
       "submitted": "2026-01-26T19:55:33Z",
-      "status": "submitted",
-      "notes": "Restored - QUEUED on API (pagination issue in check script)"
+      "status": "expired",
+      "notes": "Restored - QUEUED on API (pagination issue in check script)",
+      "outcome": "Expired on Aristotle (NOT_FOUND)"
     },
     {
       "project_id": "57bc6fc6-cead-45ac-ba30-ea11482c0d93",
       "file": "proofs/Proofs/Erdos192Problem.lean",
       "problem_id": "erdos-192",
       "submitted": "2026-01-26T19:55:35Z",
-      "status": "submitted",
-      "notes": "Restored - QUEUED on API (pagination issue in check script)"
+      "status": "expired",
+      "notes": "Restored - QUEUED on API (pagination issue in check script)",
+      "outcome": "Expired on Aristotle (NOT_FOUND)"
     },
     {
       "project_id": "577c766f-d1a9-4d15-9f13-7fad8dd6671d",
       "file": "proofs/Proofs/Erdos217Problem.lean",
       "problem_id": "erdos-217",
       "submitted": "2026-01-26T19:55:39Z",
-      "status": "submitted",
-      "notes": "Restored - QUEUED on API (pagination issue in check script)"
+      "status": "expired",
+      "notes": "Restored - QUEUED on API (pagination issue in check script)",
+      "outcome": "Expired on Aristotle (NOT_FOUND)"
     },
     {
       "project_id": "b5a69703-0830-461b-aa6c-cd51fc635ebe",
       "file": "proofs/Proofs/Erdos464Problem.lean",
       "problem_id": "erdos-464",
       "submitted": "2026-01-26T19:55:41Z",
-      "status": "submitted",
-      "notes": "Restored - QUEUED on API (pagination issue in check script)"
+      "status": "expired",
+      "notes": "Restored - QUEUED on API (pagination issue in check script)",
+      "outcome": "Expired on Aristotle (NOT_FOUND)"
     },
     {
       "project_id": "1ed4a8c5-9e67-48c6-899e-fcf0d2096620",
       "file": "proofs/Proofs/Erdos588Problem.lean",
       "problem_id": "erdos-588",
       "submitted": "2026-01-26T19:55:44Z",
-      "status": "submitted",
-      "notes": "Restored - QUEUED on API (pagination issue in check script)"
+      "status": "expired",
+      "notes": "Restored - QUEUED on API (pagination issue in check script)",
+      "outcome": "Expired on Aristotle (NOT_FOUND)"
     },
     {
       "project_id": "876e23c2-34dc-4c69-876a-27721dc5c04a",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "erdos-602",
       "submitted": "2026-01-26T20:42:16Z",
-      "status": "submitted",
-      "notes": "Manual submission after orphan cleanup"
+      "status": "expired",
+      "notes": "Manual submission after orphan cleanup",
+      "outcome": "Expired on Aristotle (NOT_FOUND)"
     },
     {
       "project_id": "e77b4f64-fe9b-453b-af10-9b47229abb80",
       "file": "proofs/Proofs/Erdos312Problem.lean",
       "problem_id": "erdos-312",
       "submitted": "2026-01-26T20:42:23Z",
-      "status": "submitted",
-      "notes": "Manual submission"
+      "status": "expired",
+      "notes": "Manual submission",
+      "outcome": "Expired on Aristotle (NOT_FOUND)"
     },
     {
       "project_id": "ca04f1a1-cfab-4183-85f5-03e9b592c79f",
@@ -2128,199 +2136,190 @@
       "notes": "Integrated from batch - 1\u21920 sorries"
     },
     {
-      "project_id": "478bae37-3347-455b-8c06-595722599dc5",
+      "project_id": "787af027-6d8f-476a-8114-9f16d6b2e09c",
+      "file": "proofs/Proofs/Erdos263Problem.lean",
+      "problem_id": "erdos-263",
+      "submitted": "2026-01-28T04:01:05Z",
+      "status": "expired",
+      "notes": "Clean file: 10 sorries, no def sorries, no docstrings. Adopted from previous session.",
+      "outcome": "Adopted from previous session but already expired on Aristotle API."
+    },
+    {
+      "project_id": "57e4ab45-9830-481a-ae5e-99f1a542c6ed",
       "file": "proofs/Proofs/Erdos35Problem.lean",
       "problem_id": "erdos-35",
-      "submitted": "2026-01-26T00:00:00Z",
-      "status": "completed",
-      "outcome": "No improvement - same or more sorries than original",
-      "last_check": {
-        "timestamp": "2026-01-27T22:32:12Z",
-        "percent": 100,
-        "runtime_minutes": 0
-      },
-      "theorems_proven": [],
-      "notes": "Auto-detected from Aristotle API - no sorry reduction"
+      "submitted": "2026-01-28T04:01:05Z",
+      "status": "expired",
+      "notes": "Clean file: 8 sorries, no def sorries, no docstrings. Adopted from previous session.",
+      "outcome": "Adopted from previous session but already expired on Aristotle API."
     },
     {
-      "project_id": "6d42829e-8af0-4870-88e3-477e55f8ed22",
-      "file": "proofs/Proofs/Erdos586Problem.lean",
-      "problem_id": "erdos-586",
-      "submitted": "2026-01-26T00:00:00Z",
-      "status": "completed",
-      "outcome": "No improvement - same or more sorries than original",
-      "last_check": {
-        "timestamp": "2026-01-27T22:32:12Z",
-        "percent": 100,
-        "runtime_minutes": 0
-      },
-      "theorems_proven": [],
-      "notes": "Auto-detected from Aristotle API - no sorry reduction"
-    },
-    {
-      "project_id": "c5dfef92-3a48-4ddc-a82b-b1ff59170425",
-      "file": "proofs/Proofs/Erdos811Problem.lean",
-      "problem_id": "erdos-811",
-      "submitted": "2026-01-26T00:00:00Z",
-      "status": "completed",
-      "outcome": "No improvement - same or more sorries than original",
-      "last_check": {
-        "timestamp": "2026-01-27T22:32:12Z",
-        "percent": 100,
-        "runtime_minutes": 0
-      },
-      "theorems_proven": [],
-      "notes": "Auto-detected from Aristotle API - no sorry reduction"
-    },
-    {
-      "project_id": "f5b602ed-0915-4847-8f8a-6e13a506848a",
-      "file": "proofs/Proofs/Erdos633Problem.lean",
-      "problem_id": "erdos-633",
-      "submitted": "2026-01-26T00:00:00Z",
-      "status": "completed",
-      "outcome": "No improvement - same or more sorries than original",
-      "last_check": {
-        "timestamp": "2026-01-27T22:32:12Z",
-        "percent": 100,
-        "runtime_minutes": 0
-      },
-      "theorems_proven": [],
-      "notes": "Auto-detected from Aristotle API - no sorry reduction"
-    },
-    {
-      "project_id": "fefeaf00-f861-4a7d-b404-0f0d6c6cd91f",
-      "file": "proofs/Proofs/Erdos543Problem.lean",
-      "problem_id": "erdos-543",
-      "submitted": "2026-01-26T00:00:00Z",
-      "status": "completed",
-      "outcome": "No improvement - same or more sorries than original",
-      "last_check": {
-        "timestamp": "2026-01-27T22:32:12Z",
-        "percent": 100,
-        "runtime_minutes": 0
-      },
-      "theorems_proven": [],
-      "notes": "Auto-detected from Aristotle API - no sorry reduction"
-    },
-    {
-      "project_id": "82c12d9c-37f2-439d-a98c-9bb5ae6c7798",
-      "file": "unknown",
-      "problem_id": "queued-82c12d9c",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "2a0a8676-7936-4523-ae16-d26b0095d747",
+      "file": "proofs/Proofs/Erdos551Problem.lean",
+      "problem_id": "erdos-551",
+      "submitted": "2026-01-28T04:01:21Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "23 theorem sorries, no def sorries, no docstrings, no axioms. Top candidate."
     },
     {
-      "project_id": "22d200bb-f0a9-4daf-919f-4a93348d4a11",
-      "file": "unknown",
-      "problem_id": "queued-22d200bb",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "adacf320-ef68-40dc-9935-78c588c89260",
+      "file": "proofs/Proofs/Erdos977Problem.lean",
+      "problem_id": "erdos-977",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "23 theorem sorries, clean"
     },
     {
-      "project_id": "c4442234-67f2-4281-b709-2ee5f6737393",
-      "file": "unknown",
-      "problem_id": "queued-c4442234",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "85d3aa51-14cc-4dbb-9099-38ad8aeb1c1c",
+      "file": "proofs/Proofs/Erdos674Problem.lean",
+      "problem_id": "erdos-674",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "22 theorem sorries, clean"
     },
     {
-      "project_id": "5517d05b-7b79-4db4-a56b-1db41364c154",
-      "file": "unknown",
-      "problem_id": "queued-5517d05b",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "768126da-63da-4d8d-bcef-29e0a593805a",
+      "file": "proofs/Proofs/Erdos673Problem.lean",
+      "problem_id": "erdos-673",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "868745ef-895a-4f00-80a1-06044012f618",
-      "file": "unknown",
-      "problem_id": "queued-868745ef",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "582faf3a-04a2-4add-9257-2a0d7380ff25",
+      "file": "proofs/Proofs/Erdos625Problem.lean",
+      "problem_id": "erdos-625",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "1df0c38e-080a-4c75-8147-a6f85f3c8425",
-      "file": "unknown",
-      "problem_id": "queued-1df0c38e",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "9ea7ab00-3c0c-454e-9c53-6c94bc9e50de",
+      "file": "proofs/Proofs/Erdos621Problem.lean",
+      "problem_id": "erdos-621",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "661eb1bd-6ec6-4d88-8c36-0718fa4dc284",
-      "file": "unknown",
-      "problem_id": "queued-661eb1bd",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "b68bc398-e912-4c81-aa83-4898a221c459",
+      "file": "proofs/Proofs/Erdos901Problem.lean",
+      "problem_id": "erdos-901",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "b165e6fc-9a6b-42f2-8d52-820b427a1ea8",
-      "file": "unknown",
-      "problem_id": "queued-b165e6fc",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "e5571f4b-b63b-4ece-905e-ac8ce5499b26",
+      "file": "proofs/Proofs/Erdos644Problem.lean",
+      "problem_id": "erdos-644",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "3cc1ea63-19b2-41d9-b0dc-5b0658546d3a",
-      "file": "unknown",
-      "problem_id": "queued-3cc1ea63",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "87998e21-5d64-4d04-b435-69bcc42af15e",
+      "file": "proofs/Proofs/Erdos671Problem.lean",
+      "problem_id": "erdos-671",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "2437fa7d-2948-4aa5-8c69-2b8a7ac58aa5",
-      "file": "unknown",
-      "problem_id": "queued-2437fa7d",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "fc271c92-a365-4db7-92d3-c19fccb73b86",
+      "file": "proofs/Proofs/Erdos202Problem.lean",
+      "problem_id": "erdos-202",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "99a296f5-c5ba-470b-9c95-d800ef7b2daa",
-      "file": "unknown",
-      "problem_id": "queued-99a296f5",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "2276e456-c442-4080-af52-27b50b04f6b9",
+      "file": "proofs/Proofs/Erdos622Problem.lean",
+      "problem_id": "erdos-622",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "f18135bc-f44e-4886-80ea-670f98e1692e",
-      "file": "unknown",
-      "problem_id": "queued-f18135bc",
-      "submitted": "2026-01-26T00:00:00Z",
+      "project_id": "d55e28ad-0e80-4cde-82fb-b474dc0d7f2a",
+      "file": "proofs/Proofs/Erdos629Problem.lean",
+      "problem_id": "erdos-629",
+      "submitted": "2026-01-28T04:01:59Z",
       "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "notes": "Curated submission. Clean file."
     },
     {
-      "project_id": "4879c5ee-b510-4489-b576-e4325df40ed3",
-      "file": "unknown",
-      "problem_id": "queued-4879c5ee",
-      "submitted": "2026-01-26T00:00:00Z",
-      "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "project_id": "1613396d-8960-4314-9c7e-056c8ecb077c",
+      "file": "proofs/Proofs/Erdos679Problem.lean",
+      "problem_id": "erdos-679",
+      "submitted": "2026-01-28T04:01:59Z",
+      "status": "failed",
+      "notes": "Curated submission. Clean file.",
+      "outcome": "Project created but solve failed (NOT_STARTED, no file). Needs resubmission."
     },
     {
-      "project_id": "2e22d8d7-5453-464f-9a43-626a44f7e84b",
-      "file": "unknown",
-      "problem_id": "queued-2e22d8d7",
-      "submitted": "2026-01-26T00:00:00Z",
-      "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "project_id": "20fe83c2-822a-4bbd-87b0-51e3bd6c3466",
+      "file": "proofs/Proofs/Erdos601Problem.lean",
+      "problem_id": "erdos-601",
+      "submitted": "2026-01-28T04:01:59Z",
+      "status": "failed",
+      "notes": "Curated submission. Clean file.",
+      "outcome": "Project created but solve failed (NOT_STARTED, no file). Needs resubmission."
     },
     {
-      "project_id": "1c920353-abca-41a6-bb2b-27d952279ee9",
-      "file": "unknown",
-      "problem_id": "queued-1c920353",
-      "submitted": "2026-01-26T00:00:00Z",
-      "status": "submitted",
-      "notes": "Auto-detected from Aristotle API - source file unknown"
+      "project_id": "00f8625c-5390-42b5-83fe-6f9de8bea892",
+      "file": "proofs/Proofs/Erdos608Problem.lean",
+      "problem_id": "erdos-608",
+      "submitted": "2026-01-28T04:01:59Z",
+      "status": "failed",
+      "notes": "Curated submission. Clean file.",
+      "outcome": "Project created but solve failed (NOT_STARTED, no file). Needs resubmission."
+    },
+    {
+      "project_id": "90c381f6-1683-472a-858f-6a88fa8cf3ec",
+      "file": "proofs/Proofs/Erdos552Problem.lean",
+      "problem_id": "erdos-552",
+      "submitted": "2026-01-28T04:01:59Z",
+      "status": "failed",
+      "notes": "Curated submission. Clean file.",
+      "outcome": "Project created but solve failed (NOT_STARTED, no file). Needs resubmission."
+    },
+    {
+      "project_id": "44303cdd-3976-4142-9c56-8317e8d3be8f",
+      "file": "proofs/Proofs/Erdos94Problem.lean",
+      "problem_id": "erdos-94",
+      "submitted": "2026-01-28T04:01:59Z",
+      "status": "failed",
+      "notes": "Curated submission. Clean file.",
+      "outcome": "Project created but solve failed (NOT_STARTED, no file). Needs resubmission."
+    },
+    {
+      "project_id": "fd14a995-daec-439c-96f7-69fbf8e20616",
+      "file": "proofs/Proofs/Erdos1036Problem.lean",
+      "problem_id": "erdos-1036",
+      "submitted": "2026-01-28T04:01:59Z",
+      "status": "failed",
+      "notes": "Curated submission. Clean file.",
+      "outcome": "Project created but solve failed (NOT_STARTED, no file). Needs resubmission."
+    },
+    {
+      "project_id": "d203d41a-fa0d-4eb3-9946-711174a40e77",
+      "file": "proofs/Proofs/Erdos1039Problem.lean",
+      "problem_id": "erdos-1039",
+      "submitted": "2026-01-28T04:01:59Z",
+      "status": "failed",
+      "notes": "Curated submission. Clean file.",
+      "outcome": "Project created but solve failed (NOT_STARTED, no file). Needs resubmission."
+    },
+    {
+      "project_id": "e36936fe-c324-490c-b594-17701512a518",
+      "file": "proofs/Proofs/Erdos798Problem.lean",
+      "problem_id": "erdos-798",
+      "submitted": "2026-01-28T04:01:59Z",
+      "status": "failed",
+      "notes": "Curated submission. Clean file.",
+      "outcome": "Project created but solve failed (NOT_STARTED, no file). Needs resubmission."
     }
   ],
   "completed": [],
