@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 857,
     "erdosUrl": "https://erdosproblems.com/857",
     "erdosProblemStatus": "open",
@@ -43,13 +43,22 @@
     "originalContributions": [
       "IsSunflower definition: family with common pairwise intersection",
       "ContainsSunflower definition: k-sunflower existence",
-      "Petal definition and sunflower_petals_disjoint theorem",
+      "Petal definition and sunflower_petals_disjoint verified theorem",
       "sunflowerNumber definition: the function m(n,k)",
       "erdos_ko_rado_sunflower axiom: classical (k-1)!·ℓ^ℓ bound",
-      "bounded_sets_sunflower corollary",
+      "bounded_sets_sunflower corollary: verified proof from EKR",
       "naslund_sawin_bound axiom: m(n,3) ≤ (3/2^(2/3))^n",
+      "cap_set_connection axiom: cap set density controls sunflowers",
       "sunflower_conjecture axiom: c(k)^n bound",
-      "singleton_sunflower_example: verified 3-sunflower"
+      "trivial_upper_bound axiom: m(n,k) ≤ 2^n+1",
+      "lower_bound axiom: exponential lower bound for sunflower-free families",
+      "singleton_sunflower_example: verified 3-sunflower with ∅ core",
+      "nonempty_core_example axiom: 3-sunflower with 2-element core",
+      "sunflower_free_family_bound axiom: 4-element sunflower-free family",
+      "strong_sunflower_bound definition: strong vs weak distinction",
+      "weak_from_strong axiom: weak bound from strong bounds",
+      "union_formulation_equivalent axiom: intersection/union equivalence",
+      "erdos_857 theorem: combines EKR + Naslund-Sawin"
     ]
   },
   "overview": {
@@ -70,49 +79,56 @@
       "title": "Basic Definitions",
       "summary": "IsSunflower, ContainsSunflower, Petal, sunflower_petals_disjoint",
       "startLine": 46,
-      "endLine": 89
+      "endLine": 87
     },
     {
       "id": "sunflower-function",
       "title": "The Sunflower Function m(n,k)",
       "summary": "sunflowerNumber definition and existence axiom",
-      "startLine": 91,
-      "endLine": 111
+      "startLine": 89,
+      "endLine": 107
     },
     {
       "id": "erdos-ko-rado",
       "title": "Classical Sunflower Lemma",
       "summary": "erdos_ko_rado_sunflower axiom and bounded_sets_sunflower corollary",
-      "startLine": 113,
-      "endLine": 148
+      "startLine": 109,
+      "endLine": 142
     },
     {
       "id": "naslund-sawin",
       "title": "Naslund-Sawin Bound",
-      "summary": "naslund_sawin_bound axiom for k=3 case",
-      "startLine": 150,
+      "summary": "naslund_sawin_bound axiom and cap_set_connection axiom",
+      "startLine": 144,
       "endLine": 169
     },
     {
       "id": "sunflower-conjecture",
       "title": "The Sunflower Conjecture",
-      "summary": "sunflower_conjecture axiom and trivial_upper_bound",
+      "summary": "sunflower_conjecture axiom, trivial_upper_bound, lower_bound",
       "startLine": 171,
-      "endLine": 195
+      "endLine": 200
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "singleton_sunflower_example and conceptual examples",
-      "startLine": 197,
-      "endLine": 244
+      "summary": "singleton_sunflower_example, nonempty_core_example, sunflower_free_family_bound",
+      "startLine": 202,
+      "endLine": 233
+    },
+    {
+      "id": "weak-vs-strong",
+      "title": "Weak vs Strong Sunflower Problem",
+      "summary": "strong_sunflower_bound, weak_from_strong, union_formulation_equivalent",
+      "startLine": 235,
+      "endLine": 275
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_857_summary combining main results",
-      "startLine": 246,
-      "endLine": 283
+      "summary": "erdos_857_summary, erdos_857 combining EKR + Naslund-Sawin",
+      "startLine": 277,
+      "endLine": 324
     }
   ],
   "conclusion": {
