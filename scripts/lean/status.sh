@@ -109,7 +109,9 @@ gather_status() {
         started_at=$(jq -r '.started_at // ""' "$STATE_FILE")
         if [[ -n "$started_at" && "$daemon_running" == "true" ]]; then
             local start_epoch
-            start_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$started_at" +%s 2>/dev/null || date -d "$started_at" +%s 2>/dev/null || echo "0")
+            # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
+            local clean_ts="${started_at%Z}"
+            start_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" +%s 2>/dev/null || date -d "$started_at" +%s 2>/dev/null || echo "0")
             if [[ "$start_epoch" != "0" ]]; then
                 local now
                 now=$(date +%s)
