@@ -1,122 +1,178 @@
 [
   {
-    "id": "coloring-def",
+    "id": "ann-e532-header",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 55,
-      "endLine": 59
-    },
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #532** asks: if the natural numbers are finitely colored, must some color class be an IP set? An IP set is one containing all finite sums from some infinite sequence. The problem was posed by Graham and Rothschild in the early 1970s and solved affirmatively by Hindman in 1974, establishing one of the most important results in Ramsey theory.",
+    "mathContext": "The problem sits at the intersection of Ramsey theory, additive combinatorics, and topological dynamics. Hindman's theorem generalizes Schur's theorem and Van der Waerden's theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "IP sets", "Partition regularity"]
+  },
+  {
+    "id": "ann-e532-coloring-def",
+    "proofId": "erdos-532",
+    "range": { "startLine": 55, "endLine": 59 },
     "type": "definition",
     "title": "Finite Coloring",
-    "content": "A k-coloring of ℕ assigns one of k colors to each natural number. Formally, it's a function c : ℕ → Fin k. This is the standard setup for partition regularity problems in Ramsey theory. The original Graham-Rothschild question asked about 2-colorings, but Hindman's theorem works for any k ≥ 1.",
-    "significance": "core"
+    "content": "A **k-coloring** of ℕ assigns one of k colors to each natural number. Formally, it's a function c : ℕ → Fin k, where Fin k is the type with exactly k elements {0, 1, ..., k-1}. This is the standard setup for partition regularity problems in Ramsey theory. The original Graham-Rothschild question asked about 2-colorings, but Hindman proved the result for any k ≥ 1.",
+    "mathContext": "Finite colorings partition ℕ into finitely many classes. Ramsey-type theorems guarantee monochromatic structure in at least one class.",
+    "significance": "critical",
+    "relatedConcepts": ["Partition regularity", "Fin type", "Ramsey theory"]
   },
   {
-    "id": "monochromatic-def",
+    "id": "ann-e532-monochromatic-def",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 61,
-      "endLine": 66
-    },
+    "range": { "startLine": 61, "endLine": 66 },
     "type": "definition",
     "title": "Monochromatic Set",
-    "content": "A set S is monochromatic under coloring c if all elements of S receive the same color. This means ∃ color, ∀ n ∈ S, c(n) = color. Finding large monochromatic structures is the central goal of Ramsey theory.",
-    "significance": "core"
+    "content": "A set S is **monochromatic** under coloring c if every element of S receives the same color: ∃ color, ∀ n ∈ S, c(n) = color. The goal of Ramsey theory is to find large monochromatic structures guaranteed to exist in any finite coloring.",
+    "mathContext": "Monochromaticity is existentially quantified over colors, so we don't need to specify which color in advance.",
+    "significance": "key",
+    "relatedConcepts": ["Coloring", "Ramsey theory"]
   },
   {
-    "id": "finite-sums-def",
+    "id": "ann-e532-finite-sums",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 78,
-      "endLine": 84
-    },
+    "range": { "startLine": 72, "endLine": 84 },
     "type": "definition",
     "title": "Finite Sums FS(A)",
-    "content": "The finite sums of a set A, denoted FS(A), is the collection of all sums Σ_{n∈S} n where S ranges over non-empty finite subsets of A. For example, if A = {2, 3, 5}, then FS(A) includes 2, 3, 5, 2+3=5, 2+5=7, 3+5=8, and 2+3+5=10. When A is infinite, FS(A) is also infinite.",
-    "significance": "core"
+    "content": "The **finite sums** of a set A, denoted FS(A), is the collection of all sums Σ_{n∈S} n where S ranges over non-empty finite subsets of A. For example, if A = {2, 3, 5}, then FS(A) = {2, 3, 5, 5, 7, 8, 10} (where 5 appears as both a singleton and as 2+3). When A is infinite, FS(A) is also infinite and has rich combinatorial structure.",
+    "mathContext": "FS(A) is sometimes called the set of finite subset sums. It is central to the formulation of Hindman's theorem. The definition uses Finset.sum from Mathlib's BigOperators library.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset.sum", "Subset sums", "BigOperators"]
   },
   {
-    "id": "ip-set-def",
+    "id": "ann-e532-ip-set",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 90,
-      "endLine": 96
-    },
+    "range": { "startLine": 90, "endLine": 96 },
     "type": "definition",
     "title": "IP Set",
-    "content": "An IP set is a set that contains all finite sums from some infinite sequence. The name 'IP' stands for 'infinite-dimensional parallelepiped' or alternatively references 'idempotent' ultrafilters. Formally, S is an IP set if FS(A) ⊆ S for some infinite A. IP sets are central to additive combinatorics and have rich algebraic structure.",
-    "significance": "core"
+    "content": "An **IP set** is a set that contains FS(A) for some infinite set A. The name 'IP' stands for 'infinite-dimensional parallelepiped' (from the geometric interpretation) or references 'idempotent' ultrafilters (from the algebraic proof). IP sets are the central objects of Hindman's theorem. Every IP set is infinite, and IP sets are partition regular: if an IP set is finitely colored, some color class is again an IP set.",
+    "mathContext": "IP sets form an important class in additive combinatorics. They are closed under supersets and have strong partition regularity properties.",
+    "significance": "critical",
+    "relatedConcepts": ["FiniteSums", "Set.Infinite", "Partition regularity"]
   },
   {
-    "id": "hindman-theorem",
+    "id": "ann-e532-ip-star",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 109,
-      "endLine": 119
-    },
-    "type": "theorem",
+    "range": { "startLine": 98, "endLine": 103 },
+    "type": "definition",
+    "title": "IP* Set (Dual Notion)",
+    "content": "An **IP* set** is a set that intersects every IP set. This is the dual notion to IP sets. IP* sets are precisely the sets that belong to every idempotent ultrafilter in (βℕ, +). The IP*/IP duality parallels the syndetic/thick duality in topological dynamics.",
+    "mathContext": "IP* sets form a filter (closed under supersets and finite intersections), and every IP* set is syndetic.",
+    "significance": "key",
+    "relatedConcepts": ["IP sets", "Ultrafilters", "Topological dynamics"]
+  },
+  {
+    "id": "ann-e532-hindman-theorem",
+    "proofId": "erdos-532",
+    "range": { "startLine": 109, "endLine": 119 },
+    "type": "axiom",
     "title": "Hindman's Theorem (1974)",
-    "content": "This is the main result: for any finite coloring of ℕ, there exists an infinite set A such that all finite subset sums of A are monochromatic. Hindman's original 1974 proof was over 40 pages of intricate combinatorial arguments. Modern proofs use ultrafilter methods, showing that idempotent ultrafilters in (βℕ, +) give a more elegant approach.",
-    "significance": "core"
+    "content": "**Hindman's Theorem:** For any finite k-coloring of ℕ (with k ≥ 1), there exists an infinite set A such that all finite subset sums of A are monochromatic. Equivalently, some color class contains an IP set.\n\nThis is axiomatized because the proof requires either (1) an intricate 40+ page combinatorial argument (Hindman's original 1974 proof), or (2) ultrafilter methods via idempotent elements in (βℕ, +), neither of which is available in Mathlib.",
+    "mathContext": "Neil Hindman's 1974 paper 'Finite sums from sequences within cells of a partition of ℕ' (J. Combin. Theory Ser. A) was over 40 pages. The ultrafilter proof by Galvin-Glazer is much shorter but requires βℕ infrastructure.",
+    "significance": "critical",
+    "relatedConcepts": ["Coloring", "FiniteSums", "IsMonochromatic"]
   },
   {
-    "id": "color-class-form",
+    "id": "ann-e532-color-class",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 121,
-      "endLine": 138
-    },
+    "range": { "startLine": 121, "endLine": 138 },
     "type": "theorem",
     "title": "Color Class Form",
-    "content": "An equivalent formulation: for any finite coloring, some color class contains an IP set. This directly answers the Graham-Rothschild question. The proof derives this from the main Hindman theorem by observing that if FS(A) is monochromatic with color c, then FS(A) ⊆ {n | c(n) = color}, making that color class an IP set.",
-    "significance": "core"
+    "content": "An equivalent formulation of Hindman's theorem: for any finite coloring, **some color class contains an IP set**. The proof derives this from the main theorem by noting that if FS(A) is monochromatic with some color, then FS(A) ⊆ {n | c(n) = color}, making that color class an IP set. This form directly answers the Graham-Rothschild question.",
+    "mathContext": "The derivation unpacks the monochromatic witness to construct the IP set inclusion. Uses Set.mem_setOf_eq for the set comprehension.",
+    "significance": "critical",
+    "relatedConcepts": ["hindman_theorem", "IsIPSet", "IsMonochromatic"]
   },
   {
-    "id": "erdos-532-answer",
+    "id": "ann-e532-two-colors",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 140,
-      "endLine": 148
-    },
+    "range": { "startLine": 140, "endLine": 148 },
     "type": "theorem",
     "title": "Answer to Problem #532",
-    "content": "This theorem directly answers the original Erdős problem: for any 2-coloring of ℕ, some color class is an IP set. The proof is a simple application of Hindman's theorem with k=2. This was the original question posed by Graham and Rothschild, answered affirmatively by Hindman for any number of colors.",
-    "significance": "core"
+    "content": "This theorem directly answers Erdős Problem #532: for any **2-coloring** of ℕ, some color class is an IP set. The proof is a one-line application of Hindman's color class form with k=2. Graham and Rothschild originally asked about 2 colors; Hindman's theorem gives the stronger result for any number of colors.",
+    "mathContext": "The specialization to k=2 uses norm_num to verify 2 ≥ 1.",
+    "significance": "critical",
+    "relatedConcepts": ["hindman_color_class", "Graham-Rothschild"]
   },
   {
-    "id": "singleton-property",
+    "id": "ann-e532-singleton",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 164,
-      "endLine": 175
-    },
+    "range": { "startLine": 155, "endLine": 165 },
     "type": "theorem",
     "title": "Singleton in FS(A)",
-    "content": "Every element a ∈ A appears in FS(A) via the singleton sum {a}. This shows that A ⊆ FS(A) for any set A. It's one of the basic structural properties of finite sums, and implies that if FS(A) is monochromatic, then A itself is monochromatic.",
-    "significance": "standard"
+    "content": "Every element a ∈ A appears in FS(A) via the **singleton sum** {a}. This shows that A ⊆ FS(A) for any set A. It's one of the basic structural properties of finite sums, and implies that if FS(A) is monochromatic, then A itself is monochromatic. The proof constructs the singleton finset {a} and verifies the three conditions: nonemptiness, subset inclusion, and sum equality.",
+    "mathContext": "Uses Finset.singleton_nonempty and simp lemmas for singleton sums. The finsetSum of {a} equals a since Σ_{n ∈ {a}} n = a.",
+    "significance": "key",
+    "relatedConcepts": ["FiniteSums", "Finset.singleton"]
   },
   {
-    "id": "ultrafilter-approach",
+    "id": "ann-e532-ip-infinite",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 202,
-      "endLine": 225
-    },
-    "type": "insight",
+    "range": { "startLine": 167, "endLine": 180 },
+    "type": "theorem",
+    "title": "IP Sets are Infinite",
+    "content": "**Every IP set is infinite.** The proof: if S is an IP set, then S ⊇ FS(A) for some infinite A. Since A ⊆ FS(A) (by singleton membership), and A is infinite, FS(A) is infinite, so S is infinite. This uses Set.Infinite.mono twice: first to pass from FS(A) to S, then from A to FS(A).",
+    "mathContext": "This was previously left as sorry. Now proved using singleton_in_finite_sums and Set.Infinite.mono from Mathlib. The key insight is the chain A ⊆ FS(A) ⊆ S with A infinite.",
+    "significance": "key",
+    "relatedConcepts": ["Set.Infinite.mono", "singleton_in_finite_sums"]
+  },
+  {
+    "id": "ann-e532-disjoint-closure",
+    "proofId": "erdos-532",
+    "range": { "startLine": 182, "endLine": 201 },
+    "type": "theorem",
+    "title": "Disjoint Sum Closure",
+    "content": "If x and y come from **disjoint** finite subsets S and T of A, then x + y ∈ FS(A). The proof takes S ∪ T (which is nonempty, contained in A, and has sum equal to finsetSum S + finsetSum T by Finset.sum_union). The disjointness condition is essential to avoid double-counting.",
+    "mathContext": "Uses Finset.sum_union which requires disjointness. The subset inclusion for S ∪ T follows from cases on membership.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_union", "Disjoint", "FiniteSums"]
+  },
+  {
+    "id": "ann-e532-ultrafilter",
+    "proofId": "erdos-532",
+    "range": { "startLine": 206, "endLine": 248 },
+    "type": "axiom",
     "title": "Ultrafilter Proof Method",
-    "content": "The modern approach to Hindman's theorem uses the Stone-Čech compactification βℕ with an extended addition operation. The key insight is that (βℕ, +) is a compact right-topological semigroup, so by Ellis's lemma, it contains idempotent elements p = p + p. Any set in such an idempotent ultrafilter is an IP set, and the ultra property ensures that for any partition, some cell belongs to p.",
-    "significance": "advanced"
+    "content": "The **modern proof** of Hindman's theorem uses the Stone-Čech compactification βℕ with an extended addition operation. Key steps:\n\n1. (βℕ, +) is a compact right-topological semigroup\n2. By **Ellis's lemma**, it contains an idempotent p = p + p\n3. Every set in an idempotent ultrafilter is an IP set\n4. The ultra property ensures some color class belongs to p\n\nTwo axioms formalize this: `idempotent_ultrafilter_exists` (existence of such a p with the IP property) and `ultrafilter_implies_hindman` (that this yields Hindman's theorem).",
+    "mathContext": "The Galvin-Glazer proof via ultrafilters is significantly shorter than Hindman's original. It requires the algebraic structure of βℕ which is not yet in Mathlib. The idempotent property p + p = p is the key algebraic ingredient.",
+    "significance": "key",
+    "relatedConcepts": ["Stone-Čech compactification", "Ellis's lemma", "Idempotent ultrafilter"]
   },
   {
-    "id": "summary-theorem",
+    "id": "ann-e532-hales-jewett",
     "proofId": "erdos-532",
-    "range": {
-      "startLine": 270,
-      "endLine": 301
-    },
-    "type": "insight",
-    "title": "Problem Status Summary",
-    "content": "Erdős Problem #532 was SOLVED by Hindman in 1974. The result is now a cornerstone of Ramsey theory with three main proof approaches: (1) Hindman's original combinatorial induction, (2) ultrafilter/topological dynamics via idempotents in βℕ, and (3) derivation from the Hales-Jewett theorem. The theorem has profound implications in combinatorics, ergodic theory, and algebra.",
-    "significance": "standard"
+    "range": { "startLine": 267, "endLine": 279 },
+    "type": "axiom",
+    "title": "Hales-Jewett Connection",
+    "content": "Hindman's theorem can also be derived from the **Hales-Jewett theorem**, which guarantees combinatorial lines in high-dimensional cubes under finite colorings. This shows the deep interconnections within Ramsey theory: Hales-Jewett implies Van der Waerden, Hindman, and many other partition regularity results.\n\nAxiomatized because the Hales-Jewett theorem itself is not in Mathlib.",
+    "mathContext": "The derivation goes through the observation that finite sums can be encoded as combinatorial lines in product spaces.",
+    "significance": "key",
+    "relatedConcepts": ["Hales-Jewett theorem", "Van der Waerden's theorem", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e532-hindman-numbers",
+    "proofId": "erdos-532",
+    "range": { "startLine": 286, "endLine": 308 },
+    "type": "definition",
+    "title": "Hindman Numbers",
+    "content": "**Hindman numbers** HJ(k) give the finite version: the smallest N such that any k-coloring of {1,...,N} has a monochromatic triple {a, b, a+b}. The existence is axiomatized (follows from compactness), and the Hindman number is defined as the least such N via Nat.find. Known: HJ(2) = 5 since any 2-coloring of {1,...,5} must have a monochromatic Schur triple.",
+    "mathContext": "The finite version relates to Schur numbers. Hindman numbers grow extremely fast (Ackermann-level or beyond). The noncomputable definition uses Nat.find which requires a decidability witness.",
+    "significance": "supporting",
+    "relatedConcepts": ["Schur numbers", "Finite Ramsey theory", "Nat.find"]
+  },
+  {
+    "id": "ann-e532-summary",
+    "proofId": "erdos-532",
+    "range": { "startLine": 313, "endLine": 340 },
+    "type": "theorem",
+    "title": "Summary: Problem Solved",
+    "content": "The **summary theorem** combines the key results: (1) for any 2-coloring, some color class is an IP set (answering the original question), and (2) for any k-coloring (k ≥ 1), there exists an infinite set A with monochromatic finite sums (the full Hindman theorem). Proved by combining `erdos_532_two_colors` and `hindman_theorem`.",
+    "mathContext": "This replaces the previous placeholder proof that used True := trivial. The summary now carries genuine mathematical content as a conjunction of the two main formalized results.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos_532_two_colors", "hindman_theorem"]
   }
 ]

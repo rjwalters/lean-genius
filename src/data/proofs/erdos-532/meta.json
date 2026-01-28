@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 532,
     "erdosUrl": "https://erdosproblems.com/532",
     "erdosProblemStatus": "solved",
@@ -45,13 +45,19 @@
     "originalContributions": [
       "Finite coloring definition via Fin k",
       "IP set definition: FS(A) ⊆ S for infinite A",
+      "IP* set definition: dual notion intersecting all IP sets",
       "Finite sums (FS) set definition",
-      "Hindman's theorem axiomatization",
-      "Color class form derivation",
-      "IP set basic properties (singleton membership, disjoint addition)",
-      "Ultrafilter proof approach sketch",
-      "Milliken-Taylor theorem statement",
-      "Connection to Hales-Jewett theorem"
+      "Hindman's theorem axiomatization (main result)",
+      "Color class form derivation from Hindman's theorem",
+      "Two-color specialization (original Graham-Rothschild question)",
+      "Proved IP set infinitude from singleton membership",
+      "Singleton membership in FS(A) for a ∈ A",
+      "Disjoint sum closure for FS(A)",
+      "Idempotent ultrafilter existence axiom with IP-set property",
+      "Ultrafilter implies Hindman axiom (modern proof path)",
+      "Hales-Jewett implies Hindman axiom (alternative proof path)",
+      "Finite Hindman theorem axiom and Hindman numbers definition",
+      "Milliken-Taylor theorem statement (generalization)"
     ]
   },
   "overview": {
@@ -100,30 +106,44 @@
     {
       "id": "ip-properties",
       "title": "Basic Properties of IP Sets",
-      "summary": "Infinitude, singleton membership, closure",
+      "summary": "Singleton membership, infinitude, disjoint sum closure",
       "startLine": 150,
-      "endLine": 197
+      "endLine": 201
     },
     {
       "id": "ultrafilter",
-      "title": "Ultrafilter Proof",
-      "summary": "Modern proof via idempotent ultrafilters",
-      "startLine": 198,
-      "endLine": 226
+      "title": "Ultrafilter Proof (Modern Approach)",
+      "summary": "Idempotent ultrafilters in (βℕ, +) and ultrafilter proof strategy",
+      "startLine": 202,
+      "endLine": 248
     },
     {
-      "id": "generalizations",
-      "title": "Generalizations",
-      "summary": "Milliken-Taylor, Hales-Jewett connections",
-      "startLine": 227,
-      "endLine": 265
+      "id": "milliken-taylor",
+      "title": "Milliken-Taylor Theorem",
+      "summary": "Strengthening of Hindman's theorem for k-tuples",
+      "startLine": 249,
+      "endLine": 262
+    },
+    {
+      "id": "hales-jewett",
+      "title": "Hales-Jewett Connection",
+      "summary": "Deriving Hindman from Hales-Jewett theorem",
+      "startLine": 263,
+      "endLine": 280
+    },
+    {
+      "id": "computational",
+      "title": "Computational Aspects",
+      "summary": "Hindman numbers and the finite version",
+      "startLine": 281,
+      "endLine": 308
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Problem status and impact",
-      "startLine": 266,
-      "endLine": 303
+      "summary": "Problem status, combined results, and impact",
+      "startLine": 309,
+      "endLine": 343
     }
   ],
   "conclusion": {
