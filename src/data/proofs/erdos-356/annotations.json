@@ -1,119 +1,200 @@
 [
   {
-    "id": "ann-356-1",
+    "id": "ann-e356-header",
+    "proofId": "erdos-356",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 24 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #356 asks whether strictly increasing sequences a₁ < ... < aₖ ≤ n can achieve cn² distinct consecutive subsums (sums of contiguous subsequences). The trivial sequence {1,...,n} fails with only O(n) distinct sums. Beker (2023) proved the answer is YES. Konieczny (2015) earlier solved the permutation variant.",
+    "mathContext": "From Erdős-Graham [ErGr80]. A consecutive subsum is Σ_{i=u}^{v} aᵢ for u ≤ v. The question is whether |{Σ_{i=u}^{v} aᵢ : u ≤ v}| ≥ cn² is achievable. Solved affirmatively by Beker (2023).",
+    "significance": "critical",
+    "relatedConcepts": ["consecutive sums", "additive combinatorics", "Beker's theorem", "Konieczny"]
+  },
+  {
+    "id": "ann-e356-subsum",
     "proofId": "erdos-356",
     "type": "definition",
+    "range": { "startLine": 38, "endLine": 44 },
     "title": "Consecutive Subsum",
-    "content": "A consecutive subsum of a sequence a_1, ..., a_k is a sum of the form Sigma_{i=u}^{v} a_i for some 1 <= u <= v <= k.",
-    "range": { "startLine": 43, "endLine": 44 },
-    "significance": "high"
+    "content": "consecutiveSubsum(seq, u, v) computes the sum of elements from index u to index v inclusive. It works by dropping the first u elements, taking (v-u+1) elements, and summing them. This is the fundamental building block — the problem asks how many distinct values these sums can take.",
+    "mathContext": "consecutiveSubsum seq u v = (seq.drop u).take (v - u + 1) |>.sum. Represents Σ_{i=u}^{v} seq[i] for 0-indexed sequences.",
+    "significance": "critical",
+    "relatedConcepts": ["List.drop", "List.take", "List.sum"]
   },
   {
-    "id": "ann-356-2",
+    "id": "ann-e356-sums-finset",
     "proofId": "erdos-356",
     "type": "definition",
-    "title": "Set of Consecutive Sums",
-    "content": "The set of all consecutive subsums of a sequence, used to count distinct values.",
-    "range": { "startLine": 50, "endLine": 53 },
-    "significance": "high"
+    "range": { "startLine": 46, "endLine": 53 },
+    "title": "Set of All Consecutive Sums",
+    "content": "consecutiveSums(seq) collects all possible consecutive subsums into a Finset, automatically deduplicating. It iterates over all starting indices u and offsets d, computing consecutiveSubsum(seq, u, u+d) for each valid pair. The cardinality of this Finset is what the problem asks to maximize.",
+    "mathContext": "consecutiveSums seq = {consecutiveSubsum seq u (u+d) | 0 ≤ u < |seq|, 0 ≤ d < |seq|-u}.toFinset. The toFinset conversion removes duplicates.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset", "List.bind", "List.toFinset"]
   },
   {
-    "id": "ann-356-3",
+    "id": "ann-e356-count",
     "proofId": "erdos-356",
     "type": "definition",
-    "title": "Trivial Sequence",
-    "content": "The sequence {1, 2, ..., n} is the natural first candidate, but it fails to achieve quadratic growth.",
-    "range": { "startLine": 71, "endLine": 72 },
-    "significance": "medium"
+    "range": { "startLine": 55, "endLine": 60 },
+    "title": "Count of Distinct Sums",
+    "content": "distinctConsecutiveSums(seq) returns the number of distinct consecutive subsums, computed as the cardinality of the consecutiveSums Finset. This is the quantity the problem asks to make at least cn².",
+    "mathContext": "distinctConsecutiveSums seq = (consecutiveSums seq).card. The problem asks: ∃ c > 0, ∃ N, ∀ n ≥ N, ∃ seq valid, distinctConsecutiveSums seq ≥ cn².",
+    "significance": "critical",
+    "relatedConcepts": ["Finset.card", "quadratic growth"]
   },
   {
-    "id": "ann-356-4",
-    "proofId": "erdos-356",
-    "type": "theorem",
-    "title": "Trivial Fails",
-    "content": "The consecutive sums of 1, 2, ..., n are only O(n) in number, not O(n^2). Many sums collide.",
-    "range": { "startLine": 79, "endLine": 81 },
-    "significance": "high"
-  },
-  {
-    "id": "ann-356-5",
+    "id": "ann-e356-trivial",
     "proofId": "erdos-356",
     "type": "definition",
-    "title": "Strictly Increasing",
-    "content": "A valid sequence must satisfy a_1 < a_2 < ... < a_k (strict monotonicity).",
-    "range": { "startLine": 99, "endLine": 100 },
-    "significance": "medium"
+    "range": { "startLine": 64, "endLine": 70 },
+    "title": "Trivial Sequence {1,...,n}",
+    "content": "trivialSequence(n) = [1, 2, ..., n] is the simplest strictly increasing sequence bounded by n. It is the natural first candidate, but it fails to achieve quadratic growth in distinct sums because its arithmetic regularity causes many sum collisions.",
+    "mathContext": "trivialSequence n = List.range' 1 n = [1, 2, ..., n]. Its consecutive sums are (v-u+1)(v+u)/2, which form a structured set with many collisions.",
+    "significance": "key",
+    "relatedConcepts": ["List.range'", "arithmetic progression", "baseline"]
   },
   {
-    "id": "ann-356-6",
+    "id": "ann-e356-trivial-fails",
+    "proofId": "erdos-356",
+    "type": "axiom",
+    "range": { "startLine": 72, "endLine": 79 },
+    "title": "Trivial Sequence Fails",
+    "content": "The trivial sequence {1,...,n} achieves only O(n) distinct consecutive sums, not O(n²). The sum from index u to v is (v-u+1)(v+u)/2. Although there are O(n²) pairs (u,v), many produce the same sum value. The collision rate is so high that only linearly many distinct values emerge.",
+    "mathContext": "trivial_fails: ∃ C, distinctConsecutiveSums(trivialSequence n) ≤ C·n. Axiomatized: requires counting argument about triangular number representations.",
+    "significance": "critical",
+    "relatedConcepts": ["O(n) growth", "sum collisions", "triangular numbers"]
+  },
+  {
+    "id": "ann-e356-collision",
+    "proofId": "erdos-356",
+    "type": "axiom",
+    "range": { "startLine": 81, "endLine": 91 },
+    "title": "Arithmetic Collision Structure",
+    "content": "In an arithmetic progression, consecutive sums are determined by length and midpoint: sum(u..v) = (v-u+1)·(u+v)/2. Different (u,v) pairs can yield the same product, causing collisions. This structural constraint prevents any arithmetic progression from achieving quadratic growth in distinct sums.",
+    "mathContext": "trivial_collision_structure: ∀ n ≥ 2, distinctConsecutiveSums(trivialSequence n) < n². This formalizes that the trivial sequence is sub-quadratic.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic structure", "product collisions", "sub-quadratic"]
+  },
+  {
+    "id": "ann-e356-valid",
     "proofId": "erdos-356",
     "type": "definition",
+    "range": { "startLine": 95, "endLine": 114 },
     "title": "Valid Sequence",
-    "content": "A valid sequence is strictly increasing with all elements at most n.",
-    "range": { "startLine": 113, "endLine": 114 },
-    "significance": "medium"
+    "content": "A valid sequence for the problem has three properties: isStrictlyIncreasing (a₁ < a₂ < ... < aₖ, formalized via List.Pairwise), boundedBy n (all elements ≤ n), combined as isValidSequence. These are the constraints under which we seek cn² distinct consecutive sums.",
+    "mathContext": "isStrictlyIncreasing seq ≡ seq.Pairwise (· < ·). boundedBy seq n ≡ ∀ x ∈ seq, x ≤ n. isValidSequence seq n ≡ isStrictlyIncreasing seq ∧ boundedBy seq n.",
+    "significance": "key",
+    "relatedConcepts": ["List.Pairwise", "monotone sequences", "bounded sequences"]
   },
   {
-    "id": "ann-356-7",
+    "id": "ann-e356-conjecture",
     "proofId": "erdos-356",
     "type": "definition",
-    "title": "Erdos-Graham Conjecture",
-    "content": "There exists c > 0 such that for large n, some valid sequence achieves cn^2 distinct consecutive sums.",
-    "range": { "startLine": 125, "endLine": 129 },
-    "significance": "high"
+    "range": { "startLine": 118, "endLine": 127 },
+    "title": "Erdős-Graham Conjecture",
+    "content": "The formal statement of the Erdős-Graham conjecture: there exists a rational c > 0 and a threshold N such that for all n ≥ N, some valid sequence achieves at least cn² distinct consecutive sums. The use of ℚ for c allows exact rational arithmetic in the formalization.",
+    "mathContext": "erdosGrahamConjecture: ∃ c : ℚ, c > 0 ∧ ∃ N, ∀ n ≥ N, ∃ seq, isValidSequence seq n ∧ (distinctConsecutiveSums seq : ℚ) ≥ c·n².",
+    "significance": "critical",
+    "relatedConcepts": ["existential quantification", "quadratic lower bound", "ℚ arithmetic"]
   },
   {
-    "id": "ann-356-8",
+    "id": "ann-e356-beker",
     "proofId": "erdos-356",
     "type": "axiom",
+    "range": { "startLine": 129, "endLine": 137 },
     "title": "Beker's Theorem (2023)",
-    "content": "The Erdos-Graham conjecture is TRUE. Strictly increasing sequences can achieve quadratic growth.",
-    "range": { "startLine": 137, "endLine": 137 },
-    "significance": "high"
+    "content": "The Erdős-Graham conjecture is TRUE: strictly increasing sequences can achieve quadratically many distinct consecutive sums. Adrian Beker proved this in 2023, resolving the problem in the affirmative. The proof constructs specific sequences using number-theoretic techniques that minimize sum collisions.",
+    "mathContext": "beker_theorem: erdosGrahamConjecture. Axiomatized: the proof requires deep combinatorial construction techniques beyond Mathlib. Reference: Beker (2023).",
+    "significance": "critical",
+    "relatedConcepts": ["solved problem", "constructive proof", "number-theoretic construction"]
   },
   {
-    "id": "ann-356-9",
+    "id": "ann-e356-permutation",
     "proofId": "erdos-356",
     "type": "definition",
-    "title": "Permutation Conjecture",
-    "content": "Can permutations of {1,...,n} achieve cn^2 distinct consecutive sums?",
-    "range": { "startLine": 154, "endLine": 158 },
-    "significance": "medium"
+    "range": { "startLine": 141, "endLine": 158 },
+    "title": "Permutation Variant",
+    "content": "isPermutation(seq, n) requires seq to be a rearrangement of {1,...,n} (formalized as seq.toFinset = Finset.range' 1 n). The permutationConjecture asks the same cn² question for permutations instead of arbitrary increasing sequences. This is a stronger variant since any sorted permutation is a valid sequence but not vice versa.",
+    "mathContext": "isPermutation seq n ≡ seq.toFinset = Finset.range' 1 n. permutationConjecture: ∃ c > 0, ∃ N, ∀ n ≥ N, ∃ seq permutation, distinctConsecutiveSums ≥ cn².",
+    "significance": "key",
+    "relatedConcepts": ["permutations", "Finset equality", "stronger variant"]
   },
   {
-    "id": "ann-356-10",
+    "id": "ann-e356-konieczny",
     "proofId": "erdos-356",
     "type": "axiom",
+    "range": { "startLine": 160, "endLine": 168 },
     "title": "Konieczny's Theorem (2015)",
-    "content": "The permutation conjecture is TRUE. Permutations can achieve quadratic growth in distinct sums.",
-    "range": { "startLine": 166, "endLine": 166 },
-    "significance": "high"
+    "content": "The permutation conjecture is TRUE: permutations of {1,...,n} can achieve cn² distinct consecutive sums. Konieczny proved this in 2015, preceding Beker's more general result. This also resolves the related Erdős Problem #34.",
+    "mathContext": "konieczny_theorem: permutationConjecture. Axiomatized: requires combinatorial construction. Reference: Konieczny (2015).",
+    "significance": "critical",
+    "relatedConcepts": ["permutation variant", "Problem #34", "precursor result"]
   },
   {
-    "id": "ann-356-11",
+    "id": "ann-e356-construction",
     "proofId": "erdos-356",
-    "type": "insight",
-    "title": "Construction Key",
-    "content": "To maximize distinct sums, elements must be spaced to prevent collisions among consecutive subsums.",
-    "range": { "startLine": 172, "endLine": 177 },
-    "significance": "medium"
+    "type": "axiom",
+    "range": { "startLine": 172, "endLine": 183 },
+    "title": "Construction Principle",
+    "content": "Beker's construction achieves cn² distinct sums with an explicit constant c ∈ (0, 1). The key insight is that elements must be spaced to break arithmetic regularity — the sum collisions in {1,...,n} arise from its arithmetic structure. Number-theoretic techniques produce sequences where consecutive subsums are 'spread out' across different values.",
+    "mathContext": "beker_construction_yields_quadratic: ∃ c : ℚ, c > 0 ∧ c < 1 ∧ erdosGrahamConjecture. The constant c < 1 is natural since at most n²/2 sums are possible.",
+    "significance": "key",
+    "relatedConcepts": ["explicit constant", "spacing principle", "collision avoidance"]
   },
   {
-    "id": "ann-356-12",
+    "id": "ann-e356-related",
     "proofId": "erdos-356",
-    "type": "theorem",
+    "type": "concept",
+    "range": { "startLine": 185, "endLine": 209 },
+    "title": "Related Problems",
+    "content": "Problem #34 asks the permutation variant (solved by Konieczny). Problem #357 asks about consecutive integers > n representable as sums. The axiom permutation_implies_increasing formalizes that the permutation variant implies the increasing variant (any sorted permutation is valid for #356).",
+    "mathContext": "permutation_implies_increasing: permutationConjecture → erdosGrahamConjecture. erdos357Question: ∃ c > 0, sequences achieving cn consecutive representable integers > n.",
+    "significance": "supporting",
+    "relatedConcepts": ["Problem #34", "Problem #357", "variant hierarchy"]
+  },
+  {
+    "id": "ann-e356-upper-bound",
+    "proofId": "erdos-356",
+    "type": "axiom",
+    "range": { "startLine": 213, "endLine": 220 },
     "title": "Upper Bound",
-    "content": "At most k(k+1)/2 consecutive sums are possible for a sequence of length k.",
-    "range": { "startLine": 225, "endLine": 227 },
-    "significance": "medium"
+    "content": "A sequence of length k has at most k(k+1)/2 distinct consecutive subsums, since there are exactly k(k+1)/2 choices of (u,v) with u ≤ v. For a valid sequence with k ≤ n, this gives an O(n²) upper bound. Combined with Beker's lower bound, the optimal growth rate is Θ(n²).",
+    "mathContext": "upper_bound: distinctConsecutiveSums seq ≤ seq.length·(seq.length+1)/2. This is a combinatorial counting argument: at most one sum per (u,v) pair.",
+    "significance": "key",
+    "relatedConcepts": ["combinatorial upper bound", "pair counting", "Θ(n²) growth"]
   },
   {
-    "id": "ann-356-13",
+    "id": "ann-e356-lower-bound",
+    "proofId": "erdos-356",
+    "type": "axiom",
+    "range": { "startLine": 222, "endLine": 231 },
+    "title": "Lower Bound from Beker",
+    "content": "There exist valid sequences achieving cn² distinct sums for some explicit c > 0 and all n ≥ 10. This lower bound, combined with the upper bound of O(n²), establishes that the optimal growth rate is Θ(n²). The threshold n ≥ 10 is a technical convenience.",
+    "mathContext": "lower_bound_exists: ∃ c > 0, ∀ n ≥ 10, ∃ seq valid, distinctConsecutiveSums seq ≥ cn². This is essentially a restatement of beker_theorem with explicit threshold.",
+    "significance": "key",
+    "relatedConcepts": ["explicit lower bound", "threshold", "Beker construction"]
+  },
+  {
+    "id": "ann-e356-solved",
     "proofId": "erdos-356",
     "type": "theorem",
-    "title": "Main Theorem",
-    "content": "Erdos #356 is SOLVED: both the main conjecture (Beker) and permutation variant (Konieczny) are true.",
-    "range": { "startLine": 259, "endLine": 264 },
-    "significance": "high"
+    "range": { "startLine": 250, "endLine": 255 },
+    "title": "Main Result: Problem Solved",
+    "content": "erdos_356_solved combines both key results: the Erdős-Graham conjecture (Beker) and the permutation variant (Konieczny) are both true. The proof is a direct pair construction ⟨beker_theorem, konieczny_theorem⟩. This is a genuine Lean proof assembling the axiomatized results.",
+    "mathContext": "erdos_356_solved: erdosGrahamConjecture ∧ permutationConjecture. Proof: ⟨beker_theorem, konieczny_theorem⟩. Both components are axioms for deep results.",
+    "significance": "critical",
+    "relatedConcepts": ["combined result", "anonymous constructor", "solved"]
+  },
+  {
+    "id": "ann-e356-main",
+    "proofId": "erdos-356",
+    "type": "theorem",
+    "range": { "startLine": 257, "endLine": 261 },
+    "title": "erdos_356: The Answer is YES",
+    "content": "The clean one-line main theorem: erdos_356 : erdosGrahamConjecture := beker_theorem. This directly states that the Erdős-Graham conjecture is true, citing Beker's theorem as the proof. Strictly increasing sequences can achieve Ω(n²) distinct consecutive sums.",
+    "mathContext": "erdos_356: erdosGrahamConjecture := beker_theorem. The simplest statement of the resolved problem.",
+    "significance": "critical",
+    "relatedConcepts": ["main theorem", "direct proof", "Beker 2023"]
   }
 ]
