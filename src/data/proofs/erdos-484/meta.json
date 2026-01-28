@@ -14,7 +14,8 @@
       "additive-combinatorics",
       "colorings",
       "sumsets",
-      "ramsey-theory"
+      "ramsey-theory",
+      "solved"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -47,10 +48,20 @@
       "monochromaticSums set: all representable sums",
       "roth_conjecture definition: formal problem statement",
       "ESS_theorem axiom: N/2 - O(N^{1-1/2^{k+1}}) bound",
+      "even_sum_parity axiom: parity of monochromatic sums",
+      "exponent_sublinear axiom: error exponent < 1",
       "ESS_two_coloring axiom: O(log N) bound for k=2",
-      "two_coloring_optimal axiom: optimality construction",
-      "positive_density theorem: derives from ESS",
-      "Related theorem connections: Schur, Rado, Folkman, Hindman"
+      "two_coloring_optimal axiom: powers of 2 obstruction",
+      "optimal_construction_exists axiom: 2-adic valuation construction",
+      "sumset_lower_bound axiom: pigeonhole for color classes",
+      "sumset_density axiom: sumset size lower bound",
+      "fourier_representation_count axiom: unrepresented sums bounded",
+      "positive_density theorem: derives from roth_conjecture_true",
+      "constant_half_minus_epsilon axiom: c → 1/2",
+      "ben_green_refinement axiom: exact error term question",
+      "schur_theorem axiom: monochromatic a+b=c",
+      "hindman_theorem axiom: infinite monochromatic sum-free sets",
+      "erdos_484 theorem: combines ESS + optimality"
     ]
   },
   "overview": {
@@ -67,60 +78,60 @@
   },
   "sections": [
     {
-      "id": "section-1",
+      "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 34,
-      "endLine": 66,
-      "summary": "Defines k-colorings, color classes, monochromatic sums, and the set of representable integers."
+      "endLine": 63,
+      "summary": "Coloring, colorClass, isMonochromaticSum, monochromaticSums definitions."
     },
     {
-      "id": "section-2",
+      "id": "roth-conjecture",
       "title": "Roth's Conjecture (Proved)",
-      "startLine": 67,
-      "endLine": 87,
-      "summary": "Formalizes Roth's conjecture about the existence of constant c > 0 and states it was proved by ESS."
+      "startLine": 65,
+      "endLine": 82,
+      "summary": "roth_conjecture definition and roth_conjecture_true axiom."
     },
     {
-      "id": "section-3",
+      "id": "ess-theorem",
       "title": "Erdős-Sárközy-Sós Theorem",
-      "startLine": 88,
-      "endLine": 121,
-      "summary": "States the main theorem: N/2 - O(N^{1-1/2^{k+1}}) even numbers are monochromatic sums."
+      "startLine": 84,
+      "endLine": 118,
+      "summary": "ESS_theorem, even_sum_parity, exponent_sublinear axioms."
     },
     {
-      "id": "section-4",
+      "id": "two-coloring",
       "title": "Two-Coloring Case",
-      "startLine": 122,
-      "endLine": 154,
-      "summary": "The special case k=2 with O(log N) error and its optimality via the 2-adic coloring."
+      "startLine": 120,
+      "endLine": 157,
+      "summary": "ESS_two_coloring, two_coloring_optimal, optimal_construction_exists axioms."
     },
     {
-      "id": "section-5",
+      "id": "proof-ideas",
       "title": "Key Proof Ideas",
-      "startLine": 155,
-      "endLine": 186,
-      "summary": "Explains the main proof techniques: sumset structure, density arguments, Fourier methods, pigeonhole."
+      "startLine": 159,
+      "endLine": 198,
+      "summary": "sumset_lower_bound, sumset_density, fourier_representation_count axioms."
     },
     {
-      "id": "section-6",
+      "id": "consequences",
       "title": "Consequences",
-      "startLine": 187,
-      "endLine": 215,
-      "summary": "Derives consequences including the specific constant c = 1/4 and its improvement to 1/2 - ε."
+      "startLine": 200,
+      "endLine": 224,
+      "summary": "positive_density theorem, constant_half_minus_epsilon axiom."
     },
     {
-      "id": "section-7",
-      "title": "Related Problems",
-      "startLine": 248,
-      "endLine": 279,
-      "summary": "Connections to Schur's theorem, Rado's theorem, Folkman's theorem, and Hindman's theorem."
+      "id": "extensions",
+      "title": "Extensions and Related Results",
+      "startLine": 226,
+      "endLine": 265,
+      "summary": "ben_green_refinement, schur_theorem, hindman_theorem axioms."
     },
     {
-      "id": "section-8",
-      "title": "Summary and Status",
-      "startLine": 305,
-      "endLine": 358,
-      "summary": "Complete summary stating the problem was solved by ESS in 1989 with precise bounds."
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 267,
+      "endLine": 322,
+      "summary": "erdos_484_status, power_of_two_obstruction, erdos_484 theorems."
     }
   ],
   "conclusion": {
