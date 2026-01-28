@@ -98,7 +98,7 @@ The daemon runs **continuously** until cancelled:
 
 ```
 while not cancelled:
-    1. Check for shutdown signal (research/lean-stop-daemon)
+    1. Check for shutdown signal (.loom/signals/stop-lean-daemon)
     2. Assess work queues (stubs, proofs, research problems, PRs)
     3. Check agent completions (tmux session status)
     4. Spawn/scale agents based on work availability
@@ -211,7 +211,7 @@ State tracked in `.loom/lean-daemon-state.json`:
 
 ```bash
 # Option 1: Create stop signal
-touch research/lean-stop-daemon
+touch .loom/signals/stop-lean-daemon
 
 # Option 2: Use command
 /lean stop

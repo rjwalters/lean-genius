@@ -27,7 +27,7 @@ NC='\033[0m'
 STATE_FILE=".loom/lean-daemon-state.json"
 OLD_STATE_FILE="research/lean-daemon-state.json"
 SIGNALS_DIR=".loom/signals"
-STOP_SIGNAL_FILE="research/lean-stop-daemon"
+STOP_SIGNAL_FILE="$SIGNALS_DIR/stop-lean-daemon"
 DAEMON_PID_FILE="research/lean-daemon.pid"
 DAEMON_LOG_FILE="research/lean-daemon.log"
 
@@ -960,6 +960,8 @@ cmd_daemon() {
         # 1. Check stop signal
         if [[ -f "$STOP_SIGNAL_FILE" ]]; then
             daemon_log "INFO" "Stop signal detected ($STOP_SIGNAL_FILE), shutting down agents..."
+            daemon_log "INFO" "Signal file details: $(ls -la "$STOP_SIGNAL_FILE" 2>&1)"
+            daemon_log "INFO" "Signal file stat: $(stat -f 'created=%SB modified=%Sm owner=%Su' "$STOP_SIGNAL_FILE" 2>/dev/null || stat --format='modified=%y owner=%U' "$STOP_SIGNAL_FILE" 2>/dev/null || echo 'N/A')"
             cmd_stop --force
             rm -f "$STOP_SIGNAL_FILE" 2>/dev/null || true
             daemon_log "INFO" "Daemon stopped after $cycle_count cycles, $total_respawns total respawns"
@@ -1044,6 +1046,8 @@ cmd_daemon() {
         # 6. Re-check stop signal after respawning (race condition prevention)
         if [[ -f "$STOP_SIGNAL_FILE" ]]; then
             daemon_log "INFO" "Stop signal detected after respawn, shutting down..."
+            daemon_log "INFO" "Signal file details: $(ls -la "$STOP_SIGNAL_FILE" 2>&1)"
+            daemon_log "INFO" "Signal file stat: $(stat -f 'created=%SB modified=%Sm owner=%Su' "$STOP_SIGNAL_FILE" 2>/dev/null || stat --format='modified=%y owner=%U' "$STOP_SIGNAL_FILE" 2>/dev/null || echo 'N/A')"
             cmd_stop --force
             rm -f "$STOP_SIGNAL_FILE" 2>/dev/null || true
             daemon_log "INFO" "Daemon stopped after $cycle_count cycles, $total_respawns total respawns"
@@ -1112,6 +1116,7 @@ cmd_stop() {
         set_stopped
 
         # Create stop signal file (also stops the daemon loop if running)
+        mkdir -p "$SIGNALS_DIR"
         touch "$STOP_SIGNAL_FILE" 2>/dev/null || true
 
         # Kill daemon process if running
