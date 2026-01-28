@@ -74,12 +74,17 @@ create_worktree() {
             cd "$worktree_path"
             git fetch origin main 2>/dev/null || true
             git stash 2>/dev/null || true
+
             if git rebase origin/main 2>/dev/null; then
                 print_success "Rebased successfully"
             else
+                # Abort rebase to keep worktree clean (no conflict markers)
                 git rebase --abort 2>/dev/null || true
-                print_warning "Rebase had conflicts - continuing with current state"
+                print_warning "Rebase conflicts detected - continuing with current branch state (slightly stale)"
+                print_warning "    Worktree: $worktree_path"
+                print_warning "    Manual sync: cd $worktree_path && git reset --hard origin/main"
             fi
+
             git stash pop 2>/dev/null || true
         )
         return 0
