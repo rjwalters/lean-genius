@@ -166,7 +166,9 @@ Trivially h(x) ≤ x², since there are at most x² pairs (a, b) with a, b < x.
 -/
 theorem h_upper_bound (x : ℕ) : h x ≤ x ^ 2 := by
   -- h(x) counts pairs in a set of size at most x²
-  sorry
+  -- Proved by Aristotle (Harmonic)
+  refine le_trans (Finset.card_filter_le _ _) ?_
+  simpa using by nlinarith
 
 /--
 **Gap Between Known and Conjectured:**
