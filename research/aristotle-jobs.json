@@ -2321,7 +2321,7 @@
       "problem_id": "erdos-1115",
       "submitted": "2026-02-04T10:53:25Z",
       "status": "expired",
-      "notes": "Batch 2026-02-04 - 1 sorry, score 1 | Expired (NOT_FOUND on Aristotle API 2026-02-04)"
+      "notes": "Batch 2026-02-04 - 1 sorry, score 1"
     },
     {
       "project_id": "6f00be2e-2aa5-4f92-920c-b35d1c48d043",
@@ -2329,7 +2329,7 @@
       "problem_id": "erdos-1124",
       "submitted": "2026-02-04T10:53:25Z",
       "status": "expired",
-      "notes": "Batch 2026-02-04 - 1 sorry, score 1 | Expired (NOT_FOUND on Aristotle API 2026-02-04)"
+      "notes": "Batch 2026-02-04 - 1 sorry, score 1"
     },
     {
       "project_id": "80081026-db5c-49a4-84f7-1cb70e6ebda2",
@@ -2337,7 +2337,7 @@
       "problem_id": "erdos-147",
       "submitted": "2026-02-04T10:53:25Z",
       "status": "expired",
-      "notes": "Batch 2026-02-04 - 1 sorry, score 1 | Expired (NOT_FOUND on Aristotle API 2026-02-04)"
+      "notes": "Batch 2026-02-04 - 1 sorry, score 1"
     },
     {
       "project_id": "6d2efc4e-7773-4e6c-8cf2-1a8fb53511bc",
@@ -2345,7 +2345,31 @@
       "problem_id": "erdos-164",
       "submitted": "2026-02-04T10:53:25Z",
       "status": "expired",
-      "notes": "Batch 2026-02-04 - 1 sorry, score 1 | Expired (NOT_FOUND on Aristotle API 2026-02-04)"
+      "notes": "Batch 2026-02-04 - 1 sorry, score 1"
+    },
+    {
+      "project_id": "8c8ce0d3-92b6-4a2c-85ef-95e875545870",
+      "file": "proofs/Proofs/Erdos633Problem.lean",
+      "problem_id": "erdos-633",
+      "submitted": "2026-02-04 08:57:04.919020",
+      "status": "submitted",
+      "notes": "Discovered via API (IN_PROGRESS)"
+    },
+    {
+      "project_id": "9044674e-e088-4c38-81b5-c358a2283053",
+      "file": "proofs/Proofs/Erdos586Problem.lean",
+      "problem_id": "erdos-586",
+      "submitted": "2026-02-04 08:57:01.880799",
+      "status": "submitted",
+      "notes": "Discovered via API (IN_PROGRESS)"
+    },
+    {
+      "project_id": "b5ec8482-4785-4ac2-9e40-ffdd83c5b81a",
+      "file": "proofs/Proofs/Erdos811Problem.lean",
+      "problem_id": "erdos-811",
+      "submitted": "2026-02-04 08:56:55.993797",
+      "status": "submitted",
+      "notes": "Discovered via API (IN_PROGRESS)"
     }
   ],
   "completed": [],
@@ -9296,11 +9320,5 @@
     "REMOVED as OPEN: erdos-17, erdos-18, erdos-19, erdos-20",
     "erdos-205 and erdos-333 already have Lean proofs (check codebase)",
     "erdos-69 (Tao-Ter\u00e4v\u00e4inen 2025) omitted - analytic proof may be hard to formalize"
-  ],
-  "metadata": {
-    "last_check": "2026-02-04T11:30:00Z",
-    "rate_limit_note": "BLOCKED: 31+ orphaned NOT_STARTED projects on Aristotle. Each submission attempt creates new orphan (project created then solve fails with 429). Account limit is 5 concurrent projects but NOT_STARTED count toward it. Cannot submit until Aristotle auto-cleans orphans.",
-    "orphaned_projects": 31,
-    "blocked_since": "2026-02-04T11:00:00Z"
-  }
+  ]
 }
