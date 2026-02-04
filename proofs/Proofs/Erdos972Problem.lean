@@ -75,7 +75,8 @@ theorem primeSet_lt_one_finite_or_special (α : ℝ) (hα : 0 < α) (hα1 : α <
   -- Since α * p < p and floor is at most α * p, we have ⌊α * p⌋ < p
   have hfloor : (⌊α * p⌋₊ : ℝ) ≤ α * p := Nat.floor_le (by positivity)
   have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr (Nat.Prime.pos hp.1)
-  sorry -- Technical: ⌊α * p⌋ ≤ α * p < p implies ⌊α * p⌋ < p
+  -- Since $\alpha * p < p$, we have $\lfloor \alpha * p \rfloor \leq \alpha * p < p$, thus $\lfloor \alpha * p \rfloor < p$.
+  exact Nat.floor_lt (by positivity) |>.2 hαp
 
 /-
 ## The Main Conjecture (OPEN)
@@ -212,9 +213,10 @@ theorem goldenRatio_gt_one : goldenRatio > 1 := by
   linarith
 
 /-- The golden ratio is irrational.
-This is a classical result: √5 is irrational, so (1 + √5)/2 is irrational.
-We state this as an axiom since the Mathlib API for irrationality is complex. -/
-axiom goldenRatio_irrational : Irrational goldenRatio
+This is a classical result: √5 is irrational, so (1 + √5)/2 is irrational. -/
+theorem goldenRatio_irrational : Irrational goldenRatio := by
+  unfold goldenRatio
+  exact_mod_cast Nat.Prime.irrational_sqrt (by norm_num) |> Irrational.ratCast_add 1 |> Irrational.div_ratCast <| by norm_num
 
 /-- The problem for the golden ratio is a special case of the conjecture. -/
 theorem golden_ratio_case : erdos972Conjecture → (primeSet goldenRatio).Infinite := by
