@@ -26,7 +26,7 @@ namespace Erdos285
 open Finset Filter Real BigOperators
 open scoped Topology Real
 
-/-! ## Background on Egyptian Fractions -/
+/- ## Background on Egyptian Fractions -/
 
 /--
 An Egyptian fraction representation of 1 using k terms is a strictly increasing
@@ -52,7 +52,7 @@ Egyptian fraction representations of 1 using k+1 terms.
 noncomputable def f (k : ℕ) : ℕ :=
   sInf {m : ℕ | ∃ n : Fin k.succ → ℕ, IsEgyptianRepresentation k n ∧ n (Fin.last k) = m}
 
-/-! ## The Main Asymptotic Result -/
+/- ## The Main Asymptotic Result -/
 
 /--
 The constant e/(e-1) ≈ 1.5819... that appears in the asymptotics.
@@ -76,7 +76,7 @@ theorem erdos_285 :
   let ⟨o, ho, hf⟩ := martin_egyptian_fractions
   ⟨o, ho, hf⟩
 
-/-! ## The Lower Bound (Trivial) -/
+/- ## The Lower Bound (Trivial) -/
 
 /--
 **Lower Bound**: f(k) ≥ (1 + o(1)) · e/(e-1) · k.
@@ -88,7 +88,7 @@ theorem egyptian_lower_bound :
   obtain ⟨o, ho, hf⟩ := martin_egyptian_fractions
   exact ⟨o, ho, fun k hk => le_of_eq (hf k hk).symm⟩
 
-/-! ## Understanding the Constant -/
+/- ## Understanding the Constant -/
 
 /-
 The value e/(e-1) ≈ 1.5819 means:
@@ -153,7 +153,7 @@ theorem egyptianConstant_inv : egyptianConstant⁻¹ = 1 - (rexp 1)⁻¹ := by
   rw [inv_div]
   field_simp
 
-/-! ## Concrete Valid Lengths -/
+/- ## Concrete Valid Lengths -/
 
 /-- k = 2 is a valid length: 1 = 1/2 + 1/3 + 1/6 (3 terms). -/
 theorem two_mem_validLengths : 2 ∈ ValidLengths := by
@@ -200,7 +200,7 @@ theorem egyptianConstant_gt_79_over_50 : egyptianConstant > 79 / 50 := by
   -- 29 * 2.7182818286 < 29 * 2.72 = 78.88 < 79. True.
   nlinarith
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- The classic 3-term representation: 1 = 1/2 + 1/3 + 1/6 -/
 example : (1 : ℝ) / 2 + 1 / 3 + 1 / 6 = 1 := by norm_num
@@ -221,7 +221,104 @@ theorem zero_mem_validLengths : 0 ∈ ValidLengths := by
   · simp
   · simp
 
-/- ## Structural Properties of f -/
+/- ## Additional Properties -/
+
+/-- k = 1 is NOT a valid length: there is no way to write 1 = 1/a + 1/b with a < b.
+    Proof: clearing denominators gives a + b = ab. With a,b positive integers and a < b,
+    this forces a = b = 2 (unique solution), contradicting a < b. -/
+theorem one_not_mem_validLengths : 1 ∉ ValidLengths := by
+  intro ⟨n, hstrict, hnonzero, hsum⟩
+  have h01 : n 0 < n 1 := hstrict (by omega : (0 : Fin 2) < 1)
+  have hn0_pos : 0 < n 0 := by
+    by_contra h; push_neg at h
+    have heq : n 0 = 0 := Nat.le_zero.mp h
+    exact hnonzero (Set.mem_range.mpr ⟨0, heq⟩)
+  have hn1_pos : 0 < n 1 := by omega
+  -- Get: (1 : ℝ) = (↑(n 0))⁻¹ + (↑(n 1))⁻¹ from the Finset sum
+  have hcalc : (1 : ℝ) = (↑(n 0) : ℝ)⁻¹ + (↑(n 1) : ℝ)⁻¹ := by
+    simp [Fin.sum_univ_succ] at hsum; exact hsum
+  -- Clear denominators in ℝ: n0 * n1 = n0 + n1
+  have h0 : (n 0 : ℝ) > 0 := Nat.cast_pos.mpr hn0_pos
+  have h1 : (n 1 : ℝ) > 0 := Nat.cast_pos.mpr hn1_pos
+  have hmul_real : (↑(n 0) : ℝ) * ↑(n 1) = ↑(n 0) + ↑(n 1) := by
+    have h := hcalc
+    rw [inv_eq_one_div, inv_eq_one_div] at h
+    field_simp at h
+    linarith
+  -- Transfer to ℕ
+  have hnat : n 0 * n 1 = n 0 + n 1 := by exact_mod_cast hmul_real
+  -- In ℕ: a*b = a + b with a ≥ 1 and a < b has no solutions
+  -- Key: n0 ≤ 2 (from n0 * n1 = n0 + n1 and n1 ≥ n0 + 1)
+  have hn0_le : n 0 ≤ 2 := by
+    -- n0 * n1 = n0 + n1 with n1 ≥ n0 + 1
+    -- n0 * (n0 + 1) ≤ n0 * n1 = n0 + n1 ≤ n0 + n0 * n1 ... wrong direction
+    -- Better: n0 * n1 = n0 + n1, so n0 * (n1 - 1) = n1 (for n1 ≥ 1)
+    -- n1 ≥ n0 + 1 means n1 - 1 ≥ n0, so n0 * n0 ≤ n0 * (n1 - 1)
+    -- We need to be careful with ℕ subtraction
+    -- From n0 * n1 = n0 + n1: n0 * n1 - n1 = n0, i.e., n1 * (n0 - 1) = n0
+    -- For n0 ≥ 3: n1 * (n0 - 1) ≥ n1 * 2 ≥ (n0+1)*2 ≥ 8 > 3 ≥ n0. Contradiction!
+    by_contra h; push_neg at h
+    -- n 0 ≥ 3
+    have : n 0 ≥ 3 := by omega
+    -- n 0 * n 1 = n 0 + n 1 implies n 0 * n 1 ≤ 2 * n 1 (since n 0 ≤ n 1)
+    -- Actually n 0 * n 1 ≥ 3 * (n 0 + 1) since n 1 ≥ n 0 + 1 ≥ 4
+    have : n 1 ≥ 4 := by omega
+    -- n 0 * n 1 ≥ 3 * 4 = 12
+    -- n 0 + n 1 ≤ n 1 - 1 + n 1 = 2 * n 1 - 1
+    -- Actually both are complicated. Let nlinarith try with the bound.
+    nlinarith
+  interval_cases (n 0)
+  · omega  -- n 0 = 1: n 1 = 1 + n 1, impossible
+  · omega  -- n 0 = 2: 2 * n 1 = 2 + n 1, n 1 = 2, but 2 < 2 is false
+
+/-- k = 5 is a valid length: 1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/21 + 1/420 (6 terms).
+    Decomposition: 1/20 = 1/21 + 1/420 applied to the k=4 witness. -/
+theorem five_mem_validLengths : 5 ∈ ValidLengths := by
+  refine ⟨![3, 4, 5, 6, 21, 420], ?_, ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [Matrix.cons_val_zero, Matrix.cons_val_one]
+  · simp
+  · simp [Fin.sum_univ_succ, Matrix.cons_val_zero]
+    norm_num
+
+/-- Example: 1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/21 + 1/420 -/
+example : (1 : ℝ) / 3 + 1 / 4 + 1 / 5 + 1 / 6 + 1 / 21 + 1 / 420 = 1 := by norm_num
+
+/- ## Structural Properties -/
+
+/--
+**Strictly increasing positive sequences have large last elements:**
+If n : Fin (k+1) → ℕ is strictly increasing with all values positive,
+then n(last k) ≥ k + 1.
+-/
+theorem strict_mono_last_ge_succ {k : ℕ} {n : Fin k.succ → ℕ}
+    (hstrict : StrictMono n) (hpos : 0 ∉ Set.range n) :
+    n (Fin.last k) ≥ k + 1 := by
+  -- Each n(i) ≥ i.val + 1 by induction on i.val
+  suffices h : ∀ i : Fin k.succ, n i ≥ i.val + 1 by
+    have := h (Fin.last k)
+    simp [Fin.last] at this
+    exact this
+  intro ⟨i, hi⟩
+  induction i with
+  | zero =>
+    have hne : n ⟨0, hi⟩ ≠ 0 := by
+      intro heq
+      exact hpos (Set.mem_range.mpr ⟨⟨0, hi⟩, heq⟩)
+    show n ⟨0, hi⟩ ≥ (⟨0, hi⟩ : Fin k.succ).val + 1
+    show n ⟨0, hi⟩ ≥ 0 + 1
+    omega
+  | succ j ih =>
+    have hj : j < k.succ := by omega
+    have ihj := ih hj
+    show n ⟨j + 1, hi⟩ ≥ (⟨j + 1, hi⟩ : Fin k.succ).val + 1
+    show n ⟨j + 1, hi⟩ ≥ j + 1 + 1
+    have hlt : (⟨j, hj⟩ : Fin k.succ) < ⟨j + 1, hi⟩ := by
+      exact Fin.mk_lt_mk.mpr (by omega)
+    have hmon := hstrict hlt
+    change n ⟨j, hj⟩ ≥ (⟨j, hj⟩ : Fin k.succ).val + 1 at ihj
+    change n ⟨j, hj⟩ ≥ j + 1 at ihj
+    omega
 
 /--
 **f is defined on valid lengths:**
