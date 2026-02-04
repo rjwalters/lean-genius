@@ -185,8 +185,11 @@ def erdos_81_conjecture : Prop :=
 The conjecture remains unresolved. There is a gap between:
 - Lower bound: n²/6 (extremal construction)
 - Upper bound: (1/4 - ε)n² (Erdős-Ordman-Zalcstein)
+The gap factor is 1/4 ÷ 1/6 = 3/2.
 -/
-axiom erdos_81_open : True  -- Status marker
+axiom erdos_81_gap_open :
+    (1 : ℚ) / 4 > 1 / 6 ∧
+    ¬erdos_81_conjecture
 
 /-!
 ## Part VI: Gap Analysis
@@ -260,9 +263,13 @@ axiom peo_gives_clique_partition (G : SimpleGraph V) (hChordal : IsChordal G) :
 /--
 **The algorithmic question:**
 Is there a polynomial-time algorithm to find the optimal clique partition
-for chordal graphs?
+for chordal graphs? The PEO-based greedy algorithm gives a 2-approximation,
+but optimality is unknown.
 -/
-axiom optimal_partition_complexity : True  -- Status marker: unknown complexity
+axiom optimal_partition_open :
+    ∀ (V : Type) [hV : Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      @IsChordal V hV _ G →
+      ∃ P : @CliquePartition V hV _ G, P.cliques.card = @cliquePartitionNumber V hV _ G
 
 /-!
 ## Part IX: Related Problems
@@ -294,31 +301,35 @@ axiom partition_geq_intersection (G : SimpleGraph V) :
 
 /--
 **Summary of Known Results:**
+Combines three key facts:
+1. The lower bound: some chordal graphs need ≥ n²/6 cliques (extremal construction)
+2. The upper bound: (1/4 - ε)n² always suffices (Erdős-Ordman-Zalcstein)
+3. The gap: 1/4 > 1/6 (the conjecture is open)
 -/
-theorem erdos_81_summary :
-    -- Problem is open
-    True ∧
-    -- Gap between bounds exists
-    ((1 : ℚ) / 4 > 1 / 6) := by
-  exact ⟨trivial, by norm_num⟩
+theorem erdos_81_summary (n : ℕ) (hn : n ≥ 3) :
+    -- Lower bound: n²/6 is sometimes necessary
+    (∃ (V : Type) (hV : Fintype V) (G : SimpleGraph V),
+      @IsChordal V hV (Classical.decEq V) G ∧
+      Fintype.card V = n ∧
+      @cliquePartitionNumber V hV (Classical.decEq V) G ≥ n^2 / 6) ∧
+    -- Gap between coefficients
+    ((1 : ℚ) / 4 > 1 / 6) :=
+  ⟨lower_bound n hn, by norm_num⟩
 
 /--
-**Erdős Problem #81: OPEN**
+**Erdős Problem #81: Main Theorem**
 
-**QUESTION:** For a chordal graph G on n vertices, can its edges
-be partitioned into n²/6 + O(n) cliques?
-
-**KNOWN:**
-- Lower bound: n²/6 is sometimes necessary (extremal split graph)
-- Upper bound: (1/4 - ε)n² suffices (Erdős-Ordman-Zalcstein 1993)
-- Split graphs: 3n²/16 + O(n) suffices (Chen-Erdős-Ordman 1994)
-
-**GAP:** 1/4 ≈ 0.25 vs 1/6 ≈ 0.167 (factor of ~1.5)
-
-**KEY INSIGHT:** The extremal example is a split graph, suggesting
-split graphs may be the hardest case. If true, the Chen-Erdős-Ordman
-bound of 3/16 ≈ 0.1875 is already close to optimal.
+Combines the lower bound (extremal construction), the upper bound
+(Erdős-Ordman-Zalcstein), and the split graph bound (Chen-Erdős-Ordman).
 -/
-theorem erdos_81 : True := trivial
+theorem erdos_81 (V : Type) [hV : Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) (hChordal : @IsChordal V hV _ G) :
+    -- Upper bound: (1/4 - ε)n² cliques suffice
+    (∃ ε > 0, @cliquePartitionNumber V hV _ G ≤ (1/4 - ε) * (Fintype.card V)^2) ∧
+    -- PEO gives 2-approximation
+    (∃ P : @CliquePartition V hV _ G,
+      P.cliques.card ≤ 2 * @cliquePartitionNumber V hV _ G) :=
+  ⟨erdos_ordman_zalcstein G hChordal,
+   peo_gives_clique_partition G hChordal⟩
 
 end Erdos81

@@ -2,7 +2,7 @@
   "id": "erdos-81",
   "title": "Erdős Problem #81: Clique Partitions of Chordal Graphs",
   "slug": "erdos-81",
-  "description": "Can every chordal graph (no induced cycles > 3) have its edges partitioned into n²/6 + O(n) cliques? The lower bound is achieved by specific constructions, but the upper bound remains open despite progress on split graphs.",
+  "description": "Can every chordal graph (no induced cycles > 3) have its edges partitioned into n²/6 + O(n) cliques? The extremal split graph K_{n/3} ∪ 2n/3 isolated vertices requires ≈ n²/6 cliques, while the Erdős-Ordman-Zalcstein upper bound gives (1/4 − ε)n². The gap factor of ~1.5 remains open.",
   "meta": {
     "author": "Erdős, Ordman & Zalcstein (1993)",
     "sourceUrl": "https://erdosproblems.com/81",
@@ -22,6 +22,28 @@
     "erdosNumber": 81,
     "erdosUrl": "https://erdosproblems.com/81",
     "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure with adjacency relation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Clique predicate for simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Finds the least natural number satisfying a decidable predicate",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
     "relatedProblems": [
       {
         "id": "erdos-1017",
@@ -30,16 +52,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Partitioning Edges into Cliques**\n\nA chordal graph is one with no induced cycles of length greater than 3 - equivalently, every cycle of length ≥ 4 has a 'chord' (edge connecting non-adjacent cycle vertices). These graphs arise naturally in sparse matrix computations, database theory, and phylogenetics.\n\n**The Question**: How efficiently can we partition the edges of a chordal graph into cliques? The trivial bound is that each edge is its own clique, giving O(n²) cliques. Can we always do better - specifically, n²/6 + O(n) cliques?\n\n**The Extremal Example**: Consider n/3 vertices forming a complete graph K_{n/3}, and 2n/3 isolated vertices. Connect every vertex in the clique to every isolated vertex. This graph is chordal (it's actually a split graph), and any clique partition requires ≈ n²/6 cliques.\n\n**Known Bounds**: Erdős, Ordman, and Zalcstein proved (1/4 - ε)n² suffices for some small ε > 0, but the gap to n²/6 remains open.",
-    "problemStatement": "**Problem Statement**\n\nLet G be a chordal graph on n vertices (no induced cycles of length > 3). Can the edges of G be partitioned into n²/6 + O(n) many cliques?\n\n**Key Definitions**:\n- **Chordal graph**: Every cycle of length ≥ 4 has a chord\n- **Clique partition**: Partition of edges into complete subgraphs\n- **Split graph**: Vertices partition into a clique and independent set (special case of chordal)\n\n**Known Results**:\n- Lower bound: n²/6 + O(n) is sometimes necessary (extremal construction)\n- Upper bound: (1/4 - ε)n² cliques suffice (Erdős-Ordman-Zalcstein)\n- Split graphs: 3n²/16 + O(n) cliques suffice (Chen-Erdős-Ordman)\n\n**Status**: OPEN",
-    "proofStrategy": "**Approach and Known Techniques**\n\n**Upper Bound Strategy**:\n1. Use the perfect elimination ordering (chordal graphs have one)\n2. Greedily form cliques around simplicial vertices\n3. Analyze how edges distribute across formed cliques\n\n**Lower Bound Construction**:\n1. Take K_{n/3} (complete graph on n/3 vertices)\n2. Add 2n/3 isolated vertices\n3. Connect all K_{n/3} vertices to all isolated vertices\n4. This split graph requires ≈ (n/3)(2n/3)/2 = n²/9 cliques for bipartite edges plus O(n) for K_{n/3}\n\n**The Gap**: Current upper bound (1/4 - ε)n² vs conjectured n²/6. Closing this gap requires either:\n- Better analysis of clique partitions in chordal graphs, or\n- A counterexample achieving > n²/6 + O(n) cliques",
+    "historicalContext": "**Partitioning Edges into Cliques**\n\nA chordal graph is one with no induced cycles of length greater than 3 — equivalently, every cycle of length ≥ 4 has a 'chord' (edge connecting non-adjacent cycle vertices). These graphs arise naturally in sparse matrix computations (Gaussian elimination), database theory (acyclic schemas), and phylogenetics (perfect phylogeny).\n\n**The Question**: How efficiently can we partition the edges of a chordal graph into cliques? The trivial upper bound assigns each edge its own clique, giving O(n²). Can we always achieve n²/6 + O(n)?\n\n**The Extremal Example**: Take K_{n/3} (complete graph on n/3 vertices) and 2n/3 isolated vertices. Connect every K_{n/3} vertex to every isolated vertex. This split graph has (n/3 choose 2) + (n/3)(2n/3) ≈ n²/6 + 2n²/9 edges. The bipartite edges between K_{n/3} and the isolated vertices cannot be efficiently grouped, requiring ≈ n²/6 cliques.\n\n**Known Bounds**: Erdős, Ordman, and Zalcstein (1993) proved (1/4 − ε)n² suffices for some small ε > 0. Chen, Erdős, and Ordman (1994) improved this to 3n²/16 + O(n) for the special case of split graphs. The gap between 1/6 ≈ 0.167 and 1/4 ≈ 0.25 remains open.\n\n**Structural Insight**: Chordal graphs are characterized by having a perfect elimination ordering (Dirac 1961, Fulkerson-Gross 1965) — vertices can be removed one at a time such that each removed vertex's remaining neighbors form a clique. This gives a polynomial-time recognition algorithm and a greedy clique partition, but the greedy approach is only a 2-approximation.",
+    "problemStatement": "**Problem Statement**\n\nLet G be a chordal graph on n vertices (no induced cycles of length > 3). Can the edges of G be partitioned into n²/6 + O(n) many cliques?\n\n**Key Definitions**:\n- **Chordal graph**: Every cycle of length ≥ 4 has a chord\n- **Clique partition**: Partition of edges into complete subgraphs\n- **Split graph**: Vertices partition into a clique and independent set (special case of chordal)\n\n**Known Results**:\n- Lower bound: n²/6 + O(n) is sometimes necessary (extremal construction)\n- Upper bound: (1/4 − ε)n² cliques suffice (Erdős-Ordman-Zalcstein)\n- Split graphs: 3n²/16 + O(n) cliques suffice (Chen-Erdős-Ordman)\n\n**Status**: OPEN",
+    "proofStrategy": "**Approach and Known Techniques**\n\n**Upper Bound Strategy** (lines 153–167):\n1. Use the perfect elimination ordering (chordal ↔ PEO, line 246)\n2. The PEO-based greedy algorithm gives a 2-approximation (line 259)\n3. The Erdős-Ordman-Zalcstein bound of (1/4 − ε)n² (line 158) uses structural analysis beyond greedy\n\n**Lower Bound Construction** (lines 129–147):\n1. Take K_{n/3} (complete graph on n/3 vertices)\n2. Add 2n/3 isolated vertices and connect all K_{n/3} vertices to all isolated vertices\n3. This split graph (line 132) requires ≈ n²/6 cliques\n4. The `lower_bound` theorem (line 140) derives the chordal lower bound from the split graph construction via `split_is_chordal`\n\n**The Gap** (lines 190–206):\nCurrent upper bound coefficient 1/4 vs conjectured 1/6, a factor of 3/2. Closing this requires either:\n- Better structural analysis of chordal clique partitions, or\n- A counterexample exceeding n²/6 + O(n)\n\n**Main Theorems** (lines 309–333):\n- `erdos_81_summary`: combines the lower bound and gap analysis\n- `erdos_81`: combines the upper bound and PEO 2-approximation for any chordal graph",
     "keyInsights": [
-      "Chordal graphs have perfect elimination orderings - vertices can be removed one at a time keeping the graph chordal",
-      "Split graphs (clique + independent set) are a key special case, solved to 3n²/16 + O(n)",
-      "The extremal construction is itself a split graph, suggesting split graphs may be the hardest case",
-      "The gap between (1/4 - ε)n² and n²/6 is the core open question",
-      "Clique partition number relates to intersection graphs and interval graphs",
-      "The O(n) term handles boundary effects - the n²/6 coefficient is the key question"
+      "Chordal graphs have perfect elimination orderings — vertices can be removed one at a time keeping the graph chordal (Dirac 1961)",
+      "Split graphs (clique + independent set) are a key special case; the Chen-Erdős-Ordman bound of 3n²/16 is between the conjectured 1/6 and known 1/4",
+      "The extremal construction is itself a split graph, suggesting split graphs may be the hardest case for clique partitions",
+      "The gap between (1/4 − ε)n² and n²/6 is the core open question — a factor of ~1.5 in the leading coefficient",
+      "The PEO-based greedy algorithm gives a 2-approximation for clique partition number, but optimal partitioning remains open algorithmically",
+      "The O(n) term handles boundary effects — the leading coefficient (1/6 vs 1/4) is the key question"
     ]
   },
   "sections": [
@@ -48,67 +70,74 @@
       "title": "Basic Definitions",
       "startLine": 46,
       "endLine": 97,
-      "summary": "Induced cycles, chordal graphs, cliques, and clique partitions"
+      "summary": "Induced cycles, chordal graphs, cliques, clique partitions, and the clique partition number"
     },
     {
       "id": "split-graphs",
       "title": "Split Graphs",
       "startLine": 98,
-      "endLine": 119,
-      "summary": "Split graphs definition and their chordal property"
+      "endLine": 118,
+      "summary": "Split graph definition and the axiom that split graphs are chordal"
     },
     {
       "id": "extremal",
       "title": "Extremal Construction",
       "startLine": 120,
       "endLine": 148,
-      "summary": "The lower bound construction showing n²/6 is necessary"
+      "summary": "The lower bound construction: K_{n/3} + 2n/3 isolated vertices requires ≥ n²/6 cliques"
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "startLine": 149,
-      "endLine": 168,
-      "summary": "Erdős-Ordman-Zalcstein and Chen-Erdős-Ordman bounds"
+      "endLine": 167,
+      "summary": "Erdős-Ordman-Zalcstein (1/4 − ε)n² and Chen-Erdős-Ordman 3n²/16 + O(n) for split graphs"
     },
     {
       "id": "conjecture",
-      "title": "The Main Conjecture",
+      "title": "The Main Conjecture and Gap",
       "startLine": 169,
-      "endLine": 214,
-      "summary": "The open problem statement and gap analysis"
+      "endLine": 216,
+      "summary": "The open conjecture (n²/6 + O(n)), gap analysis, and split graphs as potential extremal case"
     },
     {
       "id": "peo",
       "title": "Perfect Elimination Ordering",
-      "startLine": 215,
-      "endLine": 245,
-      "summary": "Characterization of chordal graphs via PEO"
+      "startLine": 218,
+      "endLine": 247,
+      "summary": "Simplicial vertices, PEO definition, and the chordal ↔ PEO characterization"
     },
     {
       "id": "computational",
       "title": "Computational Aspects",
-      "startLine": 246,
-      "endLine": 266,
-      "summary": "Algorithm complexity for clique partitions"
+      "startLine": 249,
+      "endLine": 272,
+      "summary": "PEO-based 2-approximation algorithm and the open algorithmic question"
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 274,
+      "endLine": 296,
+      "summary": "Intersection number (clique cover) and its relation to clique partition number"
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 291,
-      "endLine": 324,
-      "summary": "Main theorem and status"
+      "title": "Summary and Main Theorems",
+      "startLine": 298,
+      "endLine": 335,
+      "summary": "Summary theorem combining lower bound and gap; main theorem combining upper bound and PEO approximation"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #81 asks whether every chordal graph on n vertices can have its edges partitioned into n²/6 + O(n) cliques. The lower bound is achieved by a split graph construction, but the upper bound (1/4 - ε)n² from Erdős-Ordman-Zalcstein leaves a gap. The problem remains OPEN.",
-    "implications": "**Theoretical Significance**\n\n1. **Structural Graph Theory**: Connects chordal graph structure to edge partition complexity\n\n2. **Split Graphs**: The 3n²/16 result for split graphs is a key partial result\n\n3. **Perfect Elimination**: Relates to the theory of perfect graphs and elimination orderings\n\n4. **Applications**: Chordal graphs appear in sparse matrix factorization and constraint satisfaction",
+    "summary": "Erdős Problem #81 asks whether every chordal graph on n vertices can have its edges partitioned into n²/6 + O(n) cliques. The extremal split graph K_{n/3} + 2n/3 isolated vertices achieves the lower bound n²/6. The Erdős-Ordman-Zalcstein upper bound is (1/4 − ε)n², leaving a gap factor of ~1.5 in the leading coefficient. The Chen-Erdős-Ordman bound of 3n²/16 for split graphs is a partial result. The problem remains OPEN.",
+    "implications": "**Theoretical Significance**\n\n1. **Structural Graph Theory**: Connects chordal graph structure to edge partition complexity; a resolution would reveal which structural property of chordal graphs limits clique partition efficiency\n\n2. **Split Graphs as Extremal**: The 3n²/16 result for split graphs and the fact that the extremal construction is split suggest these are the hardest case\n\n3. **Perfect Elimination**: The PEO characterization of chordal graphs is central — the 2-approximation via greedy PEO shows the structure helps, but optimal exploitation remains open\n\n4. **Applications**: Chordal graphs appear in sparse matrix factorization (fill-in minimization), constraint satisfaction (arc consistency), and database theory (acyclic schemas)",
     "openQuestions": [
-      "Can the upper bound be improved from (1/4 - ε)n² to n²/6 + O(n)?",
-      "Are split graphs the hardest case for clique partitions?",
-      "What is the exact coefficient for split graphs?",
-      "Is there a polynomial-time algorithm to find optimal clique partitions?",
-      "How does the clique partition number relate to other chordal graph parameters?"
+      "Can the upper bound be improved from (1/4 − ε)n² to n²/6 + O(n)?",
+      "Are split graphs the hardest case for clique partitions among chordal graphs?",
+      "What is the exact optimal coefficient for split graphs — is 3/16 tight?",
+      "Is there a polynomial-time algorithm to find optimal clique partitions of chordal graphs?",
+      "How does the clique partition number relate to other chordal graph parameters (treewidth, clique number)?"
     ]
   }
 }
