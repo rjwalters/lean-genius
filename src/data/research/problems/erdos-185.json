@@ -1,110 +1,57 @@
 {
   "slug": "erdos-185",
   "title": "Cap Sets in {0,1,2}^n",
-  "phase": "SURVEYED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
-  "path": "full",
+  "path": "fast",
   "problemStatement": {
-    "formal": "f₃(n) = o(3^n) where f₃(n) = max cap set size in {0,1,2}^n",
-    "plain": "PROVED. Furstenberg-Katznelson (1991) via density Hales-Jewett. Ellenberg-Gijswijt (2016): f₃(n) ≤ c^n for c < 3.",
-    "whyMatters": [
-      "Central problem in additive combinatorics",
-      "Connection to matrix multiplication complexity",
-      "Ellenberg-Gijswijt polynomial method breakthrough"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "hypercube_card: |{0,1,2}^n| = 3^n",
-      "onLine_symm: collinearity symmetric in outer args",
-      "isCapSet_empty: empty set is a cap set",
-      "isCapSet_pair: any two distinct points form a cap set",
-      "erdos_185_answer: ∀ ε > 0, ∃ n₀, ∀ n ≥ n₀, f₃(n) ≤ ε·3^n"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Main results (Hales-Jewett, Ellenberg-Gijswijt) stated as axioms"
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-04T09:30:00Z",
-    "iteration": 2,
-    "focus": "Fixed compilation, added structural lemmas, corrected Moser axiom",
-    "blockers": [
-      "f3_1 sorry: proving f₃(1)=2 requires sSup reasoning on finite enumeration",
-      "Density Hales-Jewett theorem requires ergodic theory not in Mathlib",
-      "Ellenberg-Gijswijt polynomial method not formalized"
-    ],
-    "nextAction": "Could prove moser_set_is_cap_combinatorial or verify small cases",
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.333Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed compilation (broken imports, set builder syntax, type mismatches). Added 4 proved lemmas. Corrected false moser_set_is_cap axiom. File compiles with 1 sorry (f3_1).",
-    "builtItems": [
-      "proofs/Proofs/Erdos185Problem.lean: TernaryHypercube, OnLine, CombinatorialLine definitions",
-      "proofs/Proofs/Erdos185Problem.lean: IsCapSet, IsCapSetCombinatorial, f3, R3 definitions",
-      "proofs/Proofs/Erdos185Problem.lean: 4 proved theorems + erdos_185_answer from axioms",
-      "proofs/Proofs/Erdos185Problem.lean: moserSet definition with corrected axiom"
-    ],
-    "insights": [
-      "Mathlib.Analysis.Asymptotics.Asymptotics split into Defs and Lemmas in v4.26.0",
-      "Set builder with subtype // syntax not valid in Lean 4 - use explicit ∃",
-      "isLittleO_iff gives ≤ not < (changed erdos_185_answer accordingly)",
-      "Moser set (sum ∈ {0,1} mod 3) contains collinear triples (e.g., 0...0, 1...1, 2...2)",
-      "moser_set_is_cap was FALSE - corrected to IsCapSetCombinatorial",
-      "density_hales_jewett had ZMod 3 vs Fin k type mismatch - specialized to k=3",
-      "Finset.not_mem_empty deprecated to Finset.notMem_empty",
-      "Fintype.card_fun simp lemma unused for TernaryHypercube card proof"
-    ],
-    "mathlibGaps": [
-      "No density Hales-Jewett theorem",
-      "No polynomial method (Ellenberg-Gijswijt)",
-      "No cap set theory"
-    ],
-    "nextSteps": [
-      "Prove moser_set_is_cap_combinatorial (the Moser set avoids combinatorial lines)",
-      "Prove f3_1 = 2 via explicit enumeration",
-      "Add more examples of specific cap sets",
-      "Submit to Aristotle after converting axioms to theorem sorries"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Direct formalization with axiomatized deep results",
-      "description": "Define cap sets, state main results as axioms, prove structural properties",
-      "status": "completed",
-      "outcome": "4 theorems proved, compilation fixed, false axiom corrected"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "combinatorics",
     "additive-combinatorics",
     "cap-sets",
     "1-sorry",
-    "solved",
-    "formalized"
+    "solved"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Furstenberg, Katznelson (1991). Density Hales-Jewett theorem.",
-      "Ellenberg, Gijswijt (2016). On large subsets of F_q^n with no three-term AP."
-    ],
-    "urls": [
-      "https://erdosproblems.com/185"
-    ],
-    "mathlib": [
-      "Mathlib.Analysis.Asymptotics.Defs (IsLittleO)",
-      "Mathlib.Data.ZMod.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-27T22:18:02.333Z",
-  "lastUpdate": "2026-02-04T09:30:00Z",
+  "lastUpdate": "2026-01-27T22:18:02.333Z",
   "significance": 7,
   "tractability": 7
 }

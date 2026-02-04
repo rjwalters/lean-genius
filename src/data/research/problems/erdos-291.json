@@ -1,125 +1,58 @@
 {
   "slug": "erdos-291",
-  "title": "Erdos #291: Harmonic Number Divisibility",
-  "phase": "PROGRESS",
+  "title": "Harmonic Number Divisibility",
+  "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let H_n = 1 + 1/2 + ... + 1/n = a_n / L_n where L_n = lcm(1,...,n). Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1 occur infinitely often?",
-    "plain": "Does the GCD of the harmonic number numerator with the LCM denominator equal 1 infinitely often?",
-    "whyMatters": [
-      "Connects harmonic numbers to Wolstenholme's theorem and transcendence theory",
-      "Part 2 is trivially true; Part 1 (gcd=1 infinitely often) is OPEN",
-      "Heuristic: ~x/log(x) values n <= x have gcd=1"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Part 2 (gcd > 1 infinitely often): YES via Steinerberger/Wolstenholme",
-      "Wolstenholme: p^2 | numerator of H_{p-1} for prime p >= 5",
-      "Characterization: p | gcd(a_n, L_n) iff p | numerator of H_k where k = leading digit of n in base p",
-      "Wu-Yan (2022): Conditional on Schanuel's conjecture, density of gcd > 1 is 1"
-    ],
-    "open": [
-      "Part 1: Are there infinitely many n with gcd(a_n, L_n) = 1?",
-      "Exact asymptotic for count of n with gcd = 1",
-      "Making the heuristic rigorous without Schanuel"
-    ],
-    "goal": "Formalize known results; the OPEN part (Part 1) cannot be proved"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-04T00:00:00.000Z",
-    "iteration": 2,
-    "focus": "Cleaned up placeholders, proved 8 new theorems including LCM/H properties",
+    "since": "2026-02-04T10:00:00Z",
+    "iteration": 3,
+    "focus": "Cleaned up axioms and made definitions computable.",
+    "activeApproach": "Axiom reduction and computability improvements.",
     "blockers": [],
-    "nextAction": "Prove small_examples computationally, submit axioms to Aristotle",
+    "nextAction": "Consider submitting to Aristotle for steinerberger_criterion or wolstenholme_theorem.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Cleaned up 5 placeholder True axioms, added 8 new proved theorems (L_zero, L_one, L_two, H_zero, H_one, H_pos, H_strict_mono, H_mono). Fixed docstring sections for Aristotle compatibility. Total: 12 theorems, 8 axioms, 0 sorries.",
-    "builtItems": [
-      "Erdos291Problem.lean:106-115 - leadingDigit definition (was sorry, now implemented)",
-      "Erdos291Problem.lean:35-39 - Fixed imports for Mathlib v4.26.0",
-      "Erdos291Problem.lean:53 - Disambiguated Nat.lcm",
-      "Erdos291Problem.lean:72 - Added noncomputable to harmonicGCD",
-      "L_zero, L_one, L_two: LCM base cases proved",
-      "H_zero, H_one: Harmonic number base cases proved",
-      "H_pos: H(n) > 0 for n >= 1 (by positivity)",
-      "H_strict_mono: H(n+1) > H(n) proved",
-      "H_mono: H monotone proved",
-      "harmonicGCD_dvd_L, harmonicGCD_dvd_a: GCD divisibility properties",
-      "Removed 5 placeholder True axioms"
-    ],
-    "insights": [
-      "Mathlib.Data.Rat.Basic and Mathlib.Algebra.BigOperators.Group.Finset removed in Mathlib v4.26.0",
-      "Use Mathlib.Data.Rat.Defs and Mathlib.Algebra.BigOperators.Ring.Finset instead",
-      "harmonicGCD must be noncomputable because it depends on noncomputable a (via Rat.num)",
-      "The lcm function is ambiguous between Nat.lcm and GCDMonoid.lcm when Mathlib.Tactic is imported",
-      "File has 10 axioms which is appropriate for an OPEN problem with known partial results",
-      "small_examples axiom could potentially be converted to a theorem via native_decide if harmonicGCD were computable",
-      "Finset.fold for LCM makes proofs about L(n) values challenging",
-      "H(n) positivity and monotonicity follow from Finset.sum_pos and sum_le_sum_of_subset_of_nonneg",
-      "leadingDigit recursive go function is hard to reason about - axiomatize instead"
-    ],
-    "mathlibGaps": [
-      "leadingDigit (most significant digit in base p) - not in Mathlib, implemented here",
-      "Wolstenholme's theorem is in Mathlib as Nat.Prime.prime_dvd_ascFactorial_sub_one but not in the exact form used here"
-    ],
-    "nextSteps": [
-      "Prove small_examples computationally",
-      "Submit meaningful axioms to Aristotle",
-      "Prove leadingDigit properties via well-founded recursion"
-    ],
-    "markdown": ""
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "fix-compilation",
-      "description": "Fix broken imports and implement leadingDigit",
-      "status": "completed",
-      "sessions": [
-        {
-          "date": "2026-01-27",
-          "agent": "researcher-2",
-          "outcome": "Fixed 3 compilation issues, implemented leadingDigit, file builds successfully",
-          "notes": "Mathlib v4.26.0 renamed Rat.Basic and BigOperators.Group.Finset"
-        }
-      ]
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
+    "seeker-selected",
     "number-theory",
     "harmonic-numbers",
     "divisibility",
-    "0-sorry"
+    "wolstenholme",
+    "1-sorry"
   ],
-  "relatedProofs": [
-    "Erdos291Problem"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Shiu (2016): The denominators of harmonic numbers",
-      "Wu-Yan (2022): On the denominators of harmonic numbers IV",
-      "Wolstenholme (1862)"
-    ],
-    "urls": [
-      "https://erdosproblems.com/291"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Nat.GCD.Basic",
-      "Mathlib.Algebra.BigOperators.Ring.Finset",
-      "Mathlib.Data.Rat.Defs"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2026-01-15T09:39:18.200Z",
-  "lastUpdate": "2026-02-04T00:00:00.000Z",
+  "started": "2026-01-27T22:18:02.333Z",
+  "lastUpdate": "2026-01-27T22:18:02.333Z",
   "significance": 6,
   "tractability": 6
 }

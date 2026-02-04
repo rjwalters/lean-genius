@@ -1,79 +1,41 @@
 {
   "slug": "erdos-1057",
   "title": "Counting Carmichael Numbers",
-  "phase": "PROGRESS",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "def erdos1057Conjecture : Prop := ∀ ε > 0, ∃ X : ℕ, ∀ x ≥ X, (C x : ℝ) > x^(1 - ε : ℝ)",
-    "plain": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}?",
-    "whyMatters": [
-      "Carmichael numbers fool Fermat primality test for all bases",
-      "Understanding their density is key to primality testing",
-      "Gap between known bounds (0.34 vs 1-o(1)) is enormous"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "561, 1105, 1729 verified as Carmichael numbers",
-      "C(x) is monotone",
-      "Carmichael numbers are odd (proved from Korselt + squarefree)",
-      "No semiprime (pq) is Carmichael (proved via coprimality argument)",
-      "Carmichael numbers are not prime powers"
-    ],
-    "open": [
-      "C(x) = x^{1-o(1)} (the main conjecture)",
-      "Pomerance heuristic order",
-      "Proving ≥3 prime factors from first principles (card=2 case needs n=pq extraction)"
-    ],
-    "goal": "Prove structural properties; main conjecture is OPEN"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "PROGRESS",
-    "since": "2026-02-04T14:15:00.000Z",
-    "iteration": 2,
-    "focus": "Proved carmichael_odd (axiom→theorem), korselt_two_primes_impossible, carmichael_not_semiprime",
-    "blockers": [
-      "carmichael_at_least_3_primes: card=2 case needs extracting n=p*q from primeFactors={p,q}+squarefree"
-    ],
-    "nextAction": "Prove carmichael_at_least_3_primes by building squarefree_eq_prod_primeFactors infrastructure",
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.332Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted carmichael_odd from axiom to proved theorem. Added 3 new theorems (korselt_two_primes_impossible, carmichael_not_semiprime, carmichael_odd). Reduced axiom count from 8 to 7.",
-    "builtItems": [
-      "carmichael_odd theorem (Erdos1057Problem.lean:228-282)",
-      "korselt_two_primes_impossible theorem (Erdos1057Problem.lean:284-309)",
-      "carmichael_not_semiprime theorem (Erdos1057Problem.lean:311-324)"
-    ],
-    "insights": [
-      "ℤ cast approach essential for Korselt divisibility proofs - ℕ subtraction too fragile",
-      "Coprimality of consecutive integers: Nat.coprime_self_add_one via rw trick",
-      "Squarefree + single prime factor → prime requires careful m>1 argument",
-      "carmichael_at_least_3_primes: card=0,1 cases straightforward; card=2 blocked on extracting n=p*q from primeFactors"
-    ],
-    "mathlibGaps": [
-      "No direct lemma for squarefree_eq_prod_distinct_primes (would simplify card=2 case)",
-      "Nat.dvd_sub' lookup issues - exists in some files but not always resolved"
-    ],
-    "nextSteps": [
-      "Prove carmichael_at_least_3_primes by building n = ∏ primeFactors infrastructure for squarefree numbers",
-      "Submit to Aristotle for remaining axioms (bounds, infinitely_many, korselt_theorem)",
-      "Consider proving carmichael_odd independently of ≥3 primes (already done in this session)"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Elementary structural proofs",
-      "status": "active",
-      "description": "Prove Carmichael number properties from Korselt's criterion using elementary number theory"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
@@ -83,22 +45,12 @@
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Erdős 1956: On pseudoprimes and Carmichael numbers",
-      "Alford-Granville-Pomerance 1994: There are infinitely many Carmichael numbers",
-      "Lichtman 2022: Improved bounds on the counting function"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1057"
-    ],
-    "mathlib": [
-      "Squarefree",
-      "Nat.primeFactors",
-      "Nat.coprime_self_add_one"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-02-04T14:15:00.000Z",
+  "lastUpdate": "2026-01-27T22:18:02.332Z",
   "significance": 7,
   "tractability": 6
 }

@@ -22,7 +22,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 6,
-      "endLine": 41
+      "endLine": 32
     },
     "type": "concept",
     "title": "Mathlib Imports",
@@ -39,7 +39,7 @@
     "proofId": "abel-ruffini",
     "range": {
       "startLine": 6,
-      "endLine": 41
+      "endLine": 32
     },
     "type": "definition",
     "title": "Solvable by Radicals",
@@ -53,29 +53,11 @@
     ]
   },
   {
-    "id": "ann-abel-ruffini-theorem",
-    "proofId": "abel-ruffini",
-    "range": {
-      "startLine": 58,
-      "endLine": 60
-    },
-    "type": "theorem",
-    "title": "Abel-Ruffini Theorem (One Direction)",
-    "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe proof proceeds by induction on `IsSolvableByRad`. The key case: if α^n is solvable, then adjoining α creates a cyclic extension, and cyclic groups are abelian (hence solvable).",
-    "mathContext": "$\\alpha$ solvable by radicals $\\Rightarrow$ Gal(minpoly(α)) is solvable\n\nContrapositive: If Galois group is NOT solvable, roots are NOT expressible by radicals.",
-    "significance": "critical",
-    "relatedConcepts": [
-      "Galois group",
-      "solvable group",
-      "minimal polynomial"
-    ]
-  },
-  {
     "id": "ann-a5-simple",
     "proofId": "abel-ruffini",
     "range": {
-      "startLine": 79,
-      "endLine": 86
+      "startLine": 77,
+      "endLine": 84
     },
     "type": "theorem",
     "title": "A₅ is Simple",

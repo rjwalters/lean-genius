@@ -1,124 +1,55 @@
 {
   "slug": "erdos-436",
-  "title": "Erdos Problem #436: Consecutive kth Power Residues",
-  "phase": "COMPLETED",
-  "status": "completed",
-  "tier": "B",
-  "path": "fast",
+  "title": "Consecutive kth Power Residues",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
   "problemStatement": {
-    "formal": "\\Lambda(k,m) = \\limsup_{p \\to \\infty} r(k,m,p) \\text{ where } r(k,m,p) = \\min\\{r: r,\\ldots,r+m-1 \\text{ are } k\\text{th power residues mod } p\\}",
-    "plain": "For prime p and k,m >= 2, study the minimal r such that r,...,r+m-1 are all kth power residues mod p. Key questions: Is Lambda(k,2) finite? Is Lambda(k,3) finite for odd k?",
-    "whyMatters": [
-      "Deep connections between power residues and consecutive integers",
-      "Partially solved: Lambda(k,2) finite by Hildebrand (1991)",
-      "Lambda(k,3) for odd k >= 5 remains OPEN"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Hildebrand (1991): Lambda(k,2) finite for all k >= 2",
-      "Graham (1964): Lambda(k,m) = infinity for m >= 4",
-      "Lehmer-Lehmer: Lambda(k,3) = infinity for even k",
-      "Lambda(2,2) = 9, Lambda(3,2) = 77, Lambda(4,2) = 1224",
-      "Lambda(5,2) = 7888, Lambda(6,2) = 202124, Lambda(7,2) = 1649375",
-      "Lambda(3,3) = 23532"
-    ],
-    "open": [
-      "Is Lambda(k,3) finite for odd k >= 5?",
-      "Growth rate of Lambda(k,2) as function of k",
-      "Compute Lambda(8,2), Lambda(9,2), etc."
-    ],
-    "goal": "Comprehensive formalization of known results with 0 sorries."
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-01-27T21:45:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.333Z",
     "iteration": 1,
-    "focus": "Fixed compilation errors: removed sorry in Lambda definition, fixed decidability via open Classical, fixed type errors.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "No further action needed. All compilation issues resolved.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Erdos436Problem.lean now compiles with 0 sorries. Fixed: (1) Lambda definition sorry via open Classical for decidability, (2) type error in question2_status, (3) growthRateKnown using ℝ without import. File has comprehensive axiomatization of Hildebrand, Graham, Lehmer-Lehmer theorems with known values.",
-    "builtItems": [
-      "Erdos436Problem.lean:53 - IsKthPowerResidue definition",
-      "Erdos436Problem.lean:60 - AreConsecutiveKthResidues definition",
-      "Erdos436Problem.lean:77 - minConsecKthResidues function (now compiles with Classical)",
-      "Erdos436Problem.lean:104 - Lambda function (sorry removed, uses Classical decidability)",
-      "Erdos436Problem.lean:165 - hildebrand_theorem axiom",
-      "Erdos436Problem.lean:218 - graham_theorem axiom",
-      "Erdos436Problem.lean:225 - only_small_m_matters theorem (proved from axioms)",
-      "Erdos436Problem.lean:293 - erdos_436_summary theorem combining all results"
-    ],
-    "insights": [
-      "Nat.find requires DecidablePred which doesn't hold for these propositions over all primes",
-      "open Classical provides universal decidability, solving the compilation issue",
-      "The question2_status axiom had a type error: Decidable is a Type, not Prop",
-      "growthRateKnown used ℝ without importing Mathlib reals - reformulated over ℕ",
-      "The file uses axioms extensively for deep analytic number theory results (character sums, large sieve)",
-      "Lambda(k,3) exhibits parity dichotomy: infinite for even k, unknown for odd k >= 5",
-      "Known values 9, 77, 1224, 7888, 202124, 1649375 suggest super-polynomial growth"
-    ],
-    "mathlibGaps": [
-      "No character sum estimates in Mathlib (needed for Hildebrand's proof)",
-      "No large sieve inequality in Mathlib",
-      "Power residue distribution theory not formalized",
-      "kth power residues not directly in Mathlib (only quadratic via Legendre symbol)"
-    ],
-    "nextSteps": [
-      "No further work needed - file compiles cleanly",
-      "Future: could prove Lambda(2,2) <= 9 constructively (the elegant Lehmer-Lehmer argument)",
-      "Future: computational verification of small Lambda values"
-    ],
-    "markdown": "# Knowledge Base: Erdos #436 - Consecutive kth Power Residues\n\n## Status: COMPLETED\n\nFixed compilation errors, file now builds with 0 sorries.\n\n## Changes Made\n\n1. **Lambda definition sorry removed**: Added `open Classical` for decidability\n2. **Type error fixed**: `¬Decidable erdos436Question2` (Type, not Prop) → placeholder axiom\n3. **ℝ import removed**: Reformulated `growthRateKnown` over ℕ as `growthRatePolynomial`\n\n## Key Results Formalized (as axioms)\n\n| Result | Status | Source |\n|--------|--------|--------|\n| Lambda(k,2) finite | Axiom | Hildebrand 1991 |\n| Lambda(k,m) = ∞ for m ≥ 4 | Axiom | Graham 1964 |\n| Lambda(k,3) = ∞ for even k | Axiom | Lehmer-Lehmer 1962 |\n| Lambda(k,3) finite for odd k? | OPEN | - |\n| Known values (k ≤ 7) | Axioms | Various 1960s papers |\n\n## Research Session (2026-01-27)\n\n**Mode**: FIX\n**Agent**: researcher-2\n**Outcome**: Removed sorry, fixed 3 compilation errors, file now builds cleanly.\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "fix-compilation",
-      "description": "Fix compilation errors in existing formalization",
-      "status": "completed",
-      "sessions": [
-        {
-          "date": "2026-01-27",
-          "agent": "researcher-2",
-          "outcome": "Fixed sorry in Lambda def (Classical decidability), type error, ℝ import. 0 sorries.",
-          "notes": "File was previously unbuildable due to these issues."
-        }
-      ]
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
+    "seeker-selected",
     "number-theory",
     "power-residues",
-    "analytic-number-theory",
-    "partially-open"
+    "1-sorry"
   ],
-  "relatedProofs": [
-    "Erdos436Problem"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Lehmer-Lehmer (1962): On runs of residues",
-      "Hildebrand (1991): On consecutive kth power residues II",
-      "Graham (1964): On quadruples of consecutive kth power residues"
-    ],
-    "urls": [
-      "https://erdosproblems.com/436"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.ZMod.Basic",
-      "Mathlib.Order.Filter.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2026-01-27T21:30:00.000Z",
-  "lastUpdate": "2026-01-27T21:45:00.000Z",
+  "started": "2026-01-27T22:18:02.333Z",
+  "lastUpdate": "2026-01-27T22:18:02.333Z",
   "significance": 7,
   "tractability": 6
 }

@@ -1,107 +1,59 @@
 {
   "slug": "erdos-285",
   "title": "Egyptian Fractions Asymptotics",
-  "phase": "SURVEYED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "f(k) = (1 + o(1)) · e/(e-1) · k where f(k) is the minimal largest denominator in k+1-term Egyptian fraction representations of 1",
-    "plain": "AVAILABLE. Proved by Greg Martin (2000).",
-    "whyMatters": [
-      "Fundamental question about unit fraction representations",
-      "Connects Egyptian fractions to harmonic series structure",
-      "The constant e/(e-1) emerges naturally from the problem"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "egyptianConstant_gt_one: e/(e-1) > 1",
-      "egyptianConstant_lt_two: e/(e-1) < 2",
-      "egyptianConstant_gt_three_halves: e/(e-1) > 3/2",
-      "egyptianConstant_pos: e/(e-1) > 0",
-      "egyptianConstant_eq: e/(e-1) = 1 + 1/(e-1)",
-      "egyptianConstant_inv: (e/(e-1))⁻¹ = 1 - 1/e",
-      "Three Egyptian fraction examples verified (norm_num)"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Main result (Martin 2000) stated as axiom - deep analytic number theory"
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-04T08:00:00Z",
+    "phase": "PROGRESS",
+    "since": "2026-02-04T10:40:00Z",
     "iteration": 2,
-    "focus": "Formalization complete with proved constant properties.",
+    "focus": "Axiom reduction and ValidLengths membership proofs.",
+    "activeApproach": "Convert redundant axioms to theorems; prove concrete instances.",
     "blockers": [
-      "Main theorem requires deep analytic number theory not in Mathlib",
-      "Lower bound similarly requires harmonic series analysis infrastructure"
+      "None. The remaining axiom (martin_egyptian_fractions) requires Martin (2000) proof which is beyond Mathlib."
     ],
-    "nextAction": "Submit to Aristotle if axioms are converted to theorem sorries.",
+    "nextAction": "Consider Aristotle submission for martin_egyptian_fractions (unlikely to succeed - deep result).",
     "attemptCounts": {
-      "total": 2,
+      "total": 1,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Full formalization with 6 proved theorems about the Egyptian constant e/(e-1). Main result (Martin 2000) and lower bound stated as axioms. All constant-related properties proved from Mathlib exp bounds.",
-    "builtItems": [
-      "proofs/Proofs/Erdos285Problem.lean: IsEgyptianRepresentation, ValidLengths, f definitions",
-      "proofs/Proofs/Erdos285Problem.lean: egyptianConstant definition and 6 proved properties",
-      "proofs/Proofs/Erdos285Problem.lean: martin_egyptian_fractions axiom",
-      "proofs/Proofs/Erdos285Problem.lean: egyptian_lower_bound axiom",
-      "proofs/Proofs/Erdos285Problem.lean: erdos_285 theorem (derives from axiom)"
-    ],
-    "insights": [
-      "The constant e/(e-1) ≈ 1.5819 arises from harmonic series: reciprocals in [e, eu] sum to ~1",
-      "Real.exp_one_gt_d9 and Real.exp_one_lt_d9 provide tight bounds on e for nlinarith",
-      "one_lt_exp_iff replaces one_lt_exp_of_pos in Mathlib v4.26.0",
-      "Mathlib.Analysis.Asymptotics.Asymptotics was split into Defs and Lemmas",
-      "Mathlib.Topology.Instances.Real was split into Real.Lemmas",
-      "Main result (Martin 2000) uses greedy algorithm analysis - not derivable from Mathlib"
-    ],
-    "mathlibGaps": [
-      "No Egyptian fraction theory in Mathlib",
-      "No asymptotic analysis of greedy algorithms",
-      "Martin's 2000 proof technique not formalized anywhere"
-    ],
-    "nextSteps": [
-      "Could submit axiom-to-theorem converted file to Aristotle for bound-checking",
-      "Could add more examples or verify specific small cases",
-      "Lower bound proof could potentially be partially formalized with harmonic series work"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Direct formalization with constant analysis",
-      "description": "Define Egyptian fraction representations, state the main asymptotic result as axiom, prove properties of the constant e/(e-1)",
-      "status": "completed",
-      "outcome": "6 theorems proved, main result axiomatized"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
     "egyptian-fractions",
     "asymptotics",
-    "formalized",
-    "constant-proved"
+    "1-sorry"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Martin, Greg. 'Denser Egyptian fractions.' Acta Arithmetica 95.3 (2000): 231-260."
-    ],
-    "urls": [
-      "https://erdosproblems.com/285"
-    ],
-    "mathlib": [
-      "Mathlib.Analysis.Complex.ExponentialBounds (exp_one_gt_d9, exp_one_lt_d9)",
-      "Mathlib.Analysis.Asymptotics.Defs (IsLittleO)"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-27T22:18:02.333Z",
-  "lastUpdate": "2026-02-04T08:00:00Z",
+  "lastUpdate": "2026-01-27T22:18:02.333Z",
   "significance": 7,
   "tractability": 6
 }
