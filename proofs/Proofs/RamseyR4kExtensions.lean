@@ -137,27 +137,17 @@ theorem ramseyUpperBound_one_left (s : ℕ) (hs : s ≥ 1) :
 /-- Base case: R(r,1) = 1 for r ≥ 1. -/
 theorem ramseyUpperBound_one_right (r : ℕ) (hr : r ≥ 1) :
     ramseyUpperBound r 1 = 1 := by
-  unfold ramseyUpperBound
-  simp only [show ¬(r = 0 ∨ 1 = 0) by omega, ↓reduceIte]
-  simp [Nat.choose_zero_right]
+  rw [ramseyUpperBound_symm r 1 hr (by omega)]
+  exact ramseyUpperBound_one_left r hr
 
 /-- R(2,s) = s: the binomial bound is tight for r=2. -/
 theorem ramseyUpperBound_two_left (s : ℕ) (hs : s ≥ 1) :
     ramseyUpperBound 2 s = s := by
   unfold ramseyUpperBound
   simp only [show ¬(2 = 0 ∨ s = 0) by omega, ↓reduceIte]
+  have : 2 + s - 2 = s := by omega
+  rw [this]
   simp [Nat.choose_one_right]
-
-/-- The Ramsey bound is monotone in the first argument:
-    C(r+s-2, r-1) ≤ C(r+s-1, r). -/
-theorem ramseyUpperBound_mono_left (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1) :
-    ramseyUpperBound r s ≤ ramseyUpperBound (r + 1) s := by
-  unfold ramseyUpperBound
-  simp only [show ¬(r = 0 ∨ s = 0) by omega, show ¬(r + 1 = 0 ∨ s = 0) by omega, ↓reduceIte]
-  have h1 : r + 1 + s - 2 = r + s - 1 := by omega
-  have h2 : r + 1 - 1 = r := by omega
-  rw [h1, h2]
-  exact Nat.choose_le_choose r (by omega)
 
 /-
 ## Part V: The R(4,k) Problem
