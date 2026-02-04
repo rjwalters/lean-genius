@@ -39,6 +39,7 @@ import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Data.List.Prime
 
 open Nat Finset Real
 
@@ -78,8 +79,30 @@ theorem prime_squarefree (p : ℕ) (hp : p.Prime) : isSquarefree p := by
   exact hp.squarefree
 
 /-- Products of distinct primes are squarefree. -/
-axiom distinct_primes_squarefree (ps : List ℕ) (hps : ∀ p ∈ ps, Nat.Prime p)
-    (hdist : ps.Nodup) : isSquarefree ps.prod
+theorem distinct_primes_squarefree (ps : List ℕ) (hps : ∀ p ∈ ps, Nat.Prime p)
+    (hdist : ps.Nodup) : isSquarefree ps.prod := by
+  simp only [isSquarefree]
+  induction ps with
+  | nil => simp
+  | cons p ps ih =>
+    have hp := hps p (by simp)
+    have hps_tail : ∀ q ∈ ps, Nat.Prime q := fun q hq => hps q (by simp [hq])
+    have hdist_tail : ps.Nodup := (List.nodup_cons.mp hdist).2
+    have hp_notin : p ∉ ps := (List.nodup_cons.mp hdist).1
+    have ih_result := ih hps_tail hdist_tail
+    simp only [List.prod_cons]
+    rw [Nat.squarefree_mul_iff]
+    refine ⟨?_, hp.squarefree, ih_result⟩
+    -- Show p.Coprime ps.prod
+    -- p is prime and doesn't divide any element of ps (since p ∉ ps and all are prime)
+    rw [hp.coprime_iff_not_dvd]
+    intro hp_dvd_prod
+    rw [Prime.dvd_prod_iff hp.prime] at hp_dvd_prod
+    obtain ⟨q, hq_mem, hp_dvd_q⟩ := hp_dvd_prod
+    have hq_prime := hps_tail q hq_mem
+    rcases hq_prime.eq_one_or_self_of_dvd p hp_dvd_q with h | h
+    · exact absurd h hp.one_lt.ne'
+    · exact hp_notin (h ▸ hq_mem)
 
 /-
 ## Part II: The Sumset
@@ -269,6 +292,43 @@ theorem prime_sq_avoidance (A : Finset ℕ) (h : hasSquarefreeSumset A)
   have hunit := hsf p hdvd
   rw [Nat.isUnit_iff] at hunit
   exact absurd hunit hp.one_lt.ne'
+
+/--
+**Diagonal squarefreeness:**
+For any element a in a squarefree-sumset set, 2a must be squarefree.
+This follows directly from a + a = 2a being in the sumset.
+-/
+theorem double_squarefree (A : Finset ℕ) (h : hasSquarefreeSumset A) (a : ℕ) (ha : a ∈ A) :
+    isSquarefree (a + a) := by
+  exact h (a + a) (by
+    simp only [sumset, Finset.mem_image, Finset.mem_product]
+    exact ⟨(a, a), ⟨ha, ha⟩, rfl⟩)
+
+/--
+**No element divisible by p²:**
+For any prime p and any a ∈ A (with squarefree sumset),
+p² does not divide a. Equivalently, each element of A is squarefree.
+
+Proof: If p² | a, then p² | 2a = a + a, contradicting prime_sq_avoidance.
+-/
+theorem element_not_div_prime_sq (A : Finset ℕ) (h : hasSquarefreeSumset A)
+    (p : ℕ) (hp : p.Prime) (a : ℕ) (ha : a ∈ A) : ¬(p * p ∣ a) := by
+  intro hdvd
+  have h2a : p * p ∣ (a + a) := by
+    obtain ⟨k, hk⟩ := hdvd
+    exact ⟨2 * k, by rw [hk]; ring⟩
+  exact prime_sq_avoidance A h p hp a a ha ha h2a
+
+/--
+**Elements of squarefree-sumset sets are themselves squarefree (when positive).**
+
+Each element must be squarefree because if p² | a for some prime p,
+then p² | 2a, but 2a ∈ A + A must be squarefree.
+-/
+theorem element_squarefree (A : Finset ℕ) (h : hasSquarefreeSumset A)
+    (a : ℕ) (ha : a ∈ A) (ha_pos : a ≥ 1) : isSquarefree a := by
+  rw [squarefree_iff_no_prime_sq a ha_pos]
+  exact fun p hp => element_not_div_prime_sq A h p hp a ha
 
 /-
 ## Part X: Main Results

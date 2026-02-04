@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1109",
   "title": "Squarefree Sumsets",
-  "phase": "SURVEYED",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,9 +16,15 @@
   },
   "knownResults": {
     "proven": [
+      "squarefree_iff_no_prime_sq: Squarefree characterization via prime squares",
+      "one_squarefree: 1 is squarefree",
+      "prime_squarefree: Primes are squarefree",
+      "distinct_primes_squarefree: Products of distinct primes are squarefree (PROVED, was axiom)",
       "all_odd: All elements of a squarefree-sumset set must be odd",
       "prime_sq_avoidance: No two elements sum to a multiple of p² for any prime p",
-      "squarefree_iff_no_prime_sq: Squarefree characterization via prime squares",
+      "double_squarefree: For any element a in A, 2a is squarefree",
+      "element_not_div_prime_sq: No element is divisible by p² for any prime p",
+      "element_squarefree: All positive elements of A are themselves squarefree",
       "current_bounds: Combined Konyagin 2004 bounds",
       "erdos_1109_summary: Full summary theorem"
     ],
@@ -30,43 +36,45 @@
     "goal": "Improve bounds or prove structural constraints on optimal sets"
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-01-28T04:49:00.000Z",
-    "iteration": 1,
-    "focus": "Fix compilation, prove structural constraints, Aristotle-ready format",
-    "blockers": [
-      "distinct_primes_squarefree remains an axiom (needs Mathlib list/product API)"
-    ],
-    "nextAction": "Submit to Aristotle for distinct_primes_squarefree, explore mod p² constraints for small primes",
+    "phase": "PROGRESS",
+    "since": "2026-02-03T08:00:00.000Z",
+    "iteration": 2,
+    "focus": "Proved distinct_primes_squarefree (was axiom), added element squarefreeness chain",
+    "blockers": [],
+    "nextAction": "Submit remaining 7 axioms to Aristotle, explore upper bound improvements via sieve methods",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed compilation (was broken), proved 2 new structural theorems (all_odd, prime_sq_avoidance), fixed /-! to /- for Aristotle, fixed type issues with Real.log/Real.pow imports, 0 sorries, 8 axioms for deep results",
+    "progressSummary": "PROGRESS: Converted distinct_primes_squarefree from axiom to proved theorem using Nat.squarefree_mul_iff + Prime.dvd_prod_iff by induction. Added 3 new structural theorems: double_squarefree, element_not_div_prime_sq, element_squarefree. Now 11 proved theorems, 7 axioms (down from 8), 0 sorries.",
     "builtItems": [
-      "all_odd theorem in Erdos1109Problem.lean:237 - all elements must be odd",
-      "prime_sq_avoidance theorem in Erdos1109Problem.lean:261 - no pair sums to p²-multiple",
-      "Fixed f(N) definition using proper sSup set builder syntax",
-      "Added Real.log, Real.pow imports for compilation",
+      "distinct_primes_squarefree theorem (proved, was axiom) - induction on list using Nat.squarefree_mul_iff",
+      "double_squarefree theorem - 2a is squarefree for a ∈ A",
+      "element_not_div_prime_sq theorem - no element divisible by p²",
+      "element_squarefree theorem - all positive elements are squarefree",
+      "Added import Mathlib.Data.List.Prime for Prime.dvd_prod_iff",
+      "all_odd theorem in Erdos1109Problem.lean - all elements must be odd",
+      "prime_sq_avoidance theorem in Erdos1109Problem.lean - no pair sums to p²-multiple",
       "Knowledge entry at research/problems/erdos-1109/knowledge.md"
     ],
     "insights": [
-      "Original file did not compile - missing Real.log, Real.pow imports and wrong sSup syntax",
-      "/-! docstrings break Aristotle parser - must use /-",
+      "distinct_primes_squarefree is provable by induction using Nat.squarefree_mul_iff and Prime.dvd_prod_iff",
+      "Key step: prime p coprime to product of other distinct primes because p ∤ any q in list (all prime, distinct)",
+      "Elements of squarefree-sumset sets are themselves squarefree: if p² | a then p² | 2a = a+a",
+      "Squarefreeness of elements is a stronger constraint than just oddness",
+      "The hierarchy: all_odd (p=2 case) → prime_sq_avoidance (general) → element_not_div_prime_sq (diagonal) → element_squarefree",
       "Even elements are impossible: a even → a+a = 4k → divisible by 2², not squarefree",
-      "The all_odd constraint is the p=2 special case of general mod p² avoidance",
-      "Axiom quantifier patterns need explicit types for Lean 4 (∃ C : ℝ, C > 0 ∧ ... not ∃ C > 0, ...)"
+      "Axiom quantifier patterns need explicit types for Lean 4"
     ],
-    "mathlibGaps": [
-      "No direct squarefree product theorem for lists of distinct primes"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Attempt proof of distinct_primes_squarefree using Mathlib coprimality API",
-      "Submit to Aristotle for automated proof search on axioms",
-      "Explore residue class constraints for p=3 (mod 9 avoidance)"
+      "Submit remaining 7 axioms to Aristotle (bound axioms likely unprovable from Mathlib)",
+      "Prove that elements must avoid residue 0 mod p² for all primes p (follows from element_squarefree)",
+      "Explore density bounds: count forbidden residue classes mod p² to derive upper bounds",
+      "Consider Chinese Remainder Theorem approach for simultaneous mod p² constraints"
     ]
   },
   "approaches": [
@@ -74,7 +82,7 @@
       "name": "Structural constraints",
       "description": "Prove necessary conditions on elements of squarefree-sumset sets via modular arithmetic",
       "status": "progress",
-      "results": "Proved all_odd and prime_sq_avoidance theorems"
+      "results": "Proved all_odd, prime_sq_avoidance, distinct_primes_squarefree (was axiom), double_squarefree, element_not_div_prime_sq, element_squarefree. Full chain of structural constraints established."
     }
   ],
   "tags": [
@@ -100,12 +108,13 @@
     ],
     "mathlib": [
       "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.List.Prime",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Real"
     ]
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-01-28T04:49:00.000Z",
+  "lastUpdate": "2026-02-03T08:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
