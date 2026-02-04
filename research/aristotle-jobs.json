@@ -9298,8 +9298,9 @@
     "erdos-69 (Tao-Ter\u00e4v\u00e4inen 2025) omitted - analytic proof may be hard to formalize"
   ],
   "metadata": {
-    "last_check": "2026-02-04T11:15:00Z",
-    "rate_limit_note": "30 orphaned NOT_STARTED projects on Aristotle from failed batch submission (429 rate limit). Cannot submit new jobs until cleanup.",
-    "orphaned_projects": 30
+    "last_check": "2026-02-04T11:30:00Z",
+    "rate_limit_note": "BLOCKED: 31+ orphaned NOT_STARTED projects on Aristotle. Each submission attempt creates new orphan (project created then solve fails with 429). Account limit is 5 concurrent projects but NOT_STARTED count toward it. Cannot submit until Aristotle auto-cleans orphans.",
+    "orphaned_projects": 31,
+    "blocked_since": "2026-02-04T11:00:00Z"
   }
 }
