@@ -364,6 +364,107 @@ theorem sum_fourth_formula_check_10 :
 theorem sum_fifth_formula_check_10 :
     (2 * 1000 * 1331 - 100 * 121) / 12 = 220825 := by native_decide
 
+/- ## Sum of Sixth Powers
+
+The formula ∑i⁶ = n(n+1)(2n+1)(3n⁴+6n³-3n+1)/42
+
+To avoid natural number subtraction, we use:
+  42 * ∑i⁶ + n(n+1)(2n+1) * 3n = n(n+1)(2n+1)(3n⁴ + 6n³ + 1)
+which rearranges to:
+  42 * ∑i⁶ = n(n+1)(2n+1)(3n⁴ + 6n³ - 3n + 1)
+-/
+
+/-- **Sum of sixth powers times 42 (rearranged)**
+
+    42 * ∑_{i=0}^{n} i⁶ + n(n+1)(2n+1) * 3n = n(n+1)(2n+1)(3n⁴ + 6n³ + 1)
+
+    Rearranged to avoid natural number subtraction. -/
+theorem sum_sixth_powers_mul_fortytwo (n : ℕ) :
+    42 * ∑ i ∈ range (n + 1), i ^ 6 + n * (n + 1) * (2 * n + 1) * (3 * n) =
+    n * (n + 1) * (2 * n + 1) * (3 * n ^ 4 + 6 * n ^ 3 + 1) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [sum_range_succ, Nat.mul_add]
+    nlinarith [ih]
+
+/-- Helper: 42 divides the sixth power sum expression. -/
+private lemma fortytwo_dvd_sixth_sum (n : ℕ) :
+    42 ∣ (n * (n + 1) * (2 * n + 1) * (3 * n ^ 4 + 6 * n ^ 3 + 1) -
+           n * (n + 1) * (2 * n + 1) * (3 * n)) := by
+  have h := sum_sixth_powers_mul_fortytwo n
+  use ∑ i ∈ range (n + 1), i ^ 6
+  omega
+
+/-- **Sum of sixth powers formula (classical version)**
+
+    ∑_{i=0}^{n} i⁶ = (n(n+1)(2n+1)(3n⁴+6n³+1) - n(n+1)(2n+1)(3n)) / 42
+
+    Equivalently: n(n+1)(2n+1)(3n⁴+6n³-3n+1)/42. -/
+theorem sum_sixth_powers_classical (n : ℕ) :
+    ∑ i ∈ range (n + 1), i ^ 6 =
+    (n * (n + 1) * (2 * n + 1) * (3 * n ^ 4 + 6 * n ^ 3 + 1) -
+     n * (n + 1) * (2 * n + 1) * (3 * n)) / 42 := by
+  have h := sum_sixth_powers_mul_fortytwo n
+  have hdvd := fortytwo_dvd_sixth_sum n
+  omega
+
+/-- Sum of sixth powers from 0 to 5: verified -/
+theorem sum_sixth_powers_5 : ∑ i ∈ range 6, i ^ 6 = 20515 := by native_decide
+
+/-- Sum of sixth powers from 0 to 10 -/
+theorem sum_sixth_powers_10 : ∑ i ∈ range 11, i ^ 6 = 1978405 := by native_decide
+
+/- ## Sum of Seventh Powers
+
+The formula ∑i⁷ = n²(n+1)²(3n⁴+6n³-n²-4n+2)/24
+
+To avoid subtraction, we rearrange:
+  24 * ∑i⁷ + n²(n+1)²(n²+4n) = n²(n+1)²(3n⁴+6n³+2)
+where 3n⁴+6n³+2 ≥ n²+4n for all n ≥ 0.
+-/
+
+/-- **Sum of seventh powers times 24 (rearranged)**
+
+    24 * ∑_{i=0}^{n} i⁷ + n²(n+1)²(n²+4n) = n²(n+1)²(3n⁴+6n³+2)
+
+    Rearranged to avoid natural number subtraction. -/
+theorem sum_seventh_powers_mul_twentyfour (n : ℕ) :
+    24 * ∑ i ∈ range (n + 1), i ^ 7 + n ^ 2 * (n + 1) ^ 2 * (n ^ 2 + 4 * n) =
+    n ^ 2 * (n + 1) ^ 2 * (3 * n ^ 4 + 6 * n ^ 3 + 2) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [sum_range_succ, Nat.mul_add]
+    nlinarith [ih]
+
+/-- Helper: 24 divides the seventh power sum expression. -/
+private lemma twentyfour_dvd_seventh_sum (n : ℕ) :
+    24 ∣ (n ^ 2 * (n + 1) ^ 2 * (3 * n ^ 4 + 6 * n ^ 3 + 2) -
+           n ^ 2 * (n + 1) ^ 2 * (n ^ 2 + 4 * n)) := by
+  have h := sum_seventh_powers_mul_twentyfour n
+  use ∑ i ∈ range (n + 1), i ^ 7
+  omega
+
+/-- **Sum of seventh powers formula (classical version)**
+
+    ∑_{i=0}^{n} i⁷ = (n²(n+1)²(3n⁴+6n³+2) - n²(n+1)²(n²+4n)) / 24
+
+    Equivalently: n²(n+1)²(3n⁴+6n³-n²-4n+2)/24. -/
+theorem sum_seventh_powers_classical (n : ℕ) :
+    ∑ i ∈ range (n + 1), i ^ 7 =
+    (n ^ 2 * (n + 1) ^ 2 * (3 * n ^ 4 + 6 * n ^ 3 + 2) -
+     n ^ 2 * (n + 1) ^ 2 * (n ^ 2 + 4 * n)) / 24 := by
+  have h := sum_seventh_powers_mul_twentyfour n
+  have hdvd := twentyfour_dvd_seventh_sum n
+  omega
+
+/-- Sum of seventh powers from 0 to 5: verified -/
+theorem sum_seventh_powers_5 : ∑ i ∈ range 6, i ^ 7 = 96825 := by native_decide
+
+/-- Sum of seventh powers from 0 to 10 -/
+theorem sum_seventh_powers_10 : ∑ i ∈ range 11, i ^ 7 = 18080425 := by native_decide
+
 /- ## Structural Properties -/
 
 /-- Sum of k-th powers is zero when the range is empty. -/
