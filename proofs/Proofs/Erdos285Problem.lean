@@ -79,17 +79,14 @@ theorem erdos_285 :
 /-! ## The Lower Bound (Trivial) -/
 
 /--
-**Trivial Lower Bound**: f(k) ≥ (1 + o(1)) · e/(e-1) · k.
-
-This follows from the harmonic series: for any u ≥ 1,
-∑_{e ≤ n ≤ eu} 1/n = 1 + o(1).
-
-If the largest denominator is ~eu, we can have at most ~(e-1)u terms
-from the interval [e, eu], so k ≤ (e-1)/e · f(k), giving f(k) ≥ e/(e-1) · k.
+**Lower Bound**: f(k) ≥ (1 + o(1)) · e/(e-1) · k.
+This follows directly from Martin's asymptotic equality (equality implies ≤).
 -/
-axiom egyptian_lower_bound :
+theorem egyptian_lower_bound :
     ∃ (o : ℕ → ℝ) (_ : Asymptotics.IsLittleO atTop o (fun _ : ℕ => (1 : ℝ))),
-      ∀ k ∈ ValidLengths, (1 + o k) * egyptianConstant * (k + 1) ≤ f k
+      ∀ k ∈ ValidLengths, (1 + o k) * egyptianConstant * (k + 1) ≤ f k := by
+  obtain ⟨o, ho, hf⟩ := martin_egyptian_fractions
+  exact ⟨o, ho, fun k hk => le_of_eq (hf k hk).symm⟩
 
 /-! ## Understanding the Constant -/
 
@@ -155,6 +152,26 @@ theorem egyptianConstant_inv : egyptianConstant⁻¹ = 1 - (rexp 1)⁻¹ := by
     linarith
   rw [inv_div]
   field_simp
+
+/-! ## Concrete Valid Lengths -/
+
+/-- k = 2 is a valid length: 1 = 1/2 + 1/3 + 1/6 (3 terms). -/
+theorem two_mem_validLengths : 2 ∈ ValidLengths := by
+  refine ⟨![2, 3, 6], ?_, ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [Matrix.cons_val_zero, Matrix.cons_val_one]
+  · simp
+  · simp [Fin.sum_univ_succ, Matrix.cons_val_zero]
+    norm_num
+
+/-- k = 3 is a valid length: 1 = 1/2 + 1/4 + 1/5 + 1/20 (4 terms). -/
+theorem three_mem_validLengths : 3 ∈ ValidLengths := by
+  refine ⟨![2, 4, 5, 20], ?_, ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [Matrix.cons_val_zero, Matrix.cons_val_one]
+  · simp
+  · simp [Fin.sum_univ_succ, Matrix.cons_val_zero]
+    norm_num
 
 /-! ## Examples -/
 
