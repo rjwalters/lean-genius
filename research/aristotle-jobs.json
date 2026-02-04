@@ -2142,7 +2142,8 @@
       "submitted": "2026-02-04T07:17:55Z",
       "sorries": [],
       "notes": "Batch submission - 3 theorem sorries, score 3",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "c4e08fc2-e84f-40cf-a3de-97978268a952",
@@ -2151,7 +2152,8 @@
       "submitted": "2026-02-04T07:17:59Z",
       "sorries": [],
       "notes": "Batch submission - 3 theorem sorries, score 3",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "471ecda4-7504-41f3-b88c-b191cf094413",
@@ -2160,7 +2162,8 @@
       "submitted": "2026-02-04T07:18:02Z",
       "sorries": [],
       "notes": "Batch submission - 4 theorem sorries, score 4",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "67774bc0-a2b3-414d-8228-e30f2d95c03d",
@@ -2187,7 +2190,8 @@
       "submitted": "2026-02-04T07:18:14Z",
       "sorries": [],
       "notes": "Batch submission - 6 theorem sorries, score 6",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "a6dcf41d-e692-4854-9f6f-8c3efe81b601",
@@ -2196,7 +2200,8 @@
       "submitted": "2026-02-04T07:18:18Z",
       "sorries": [],
       "notes": "Batch submission - 8 theorem sorries, score 8",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "4a43a03d-cd34-4dad-8da9-b3b2dc782bb2",
@@ -2205,7 +2210,8 @@
       "submitted": "2026-02-04T07:18:23Z",
       "sorries": [],
       "notes": "Batch submission - 10 theorem sorries, score 10",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "afab3c42-ead4-4667-be72-b7b022cc746d",
@@ -2214,7 +2220,8 @@
       "submitted": "2026-02-04T07:18:28Z",
       "sorries": [],
       "notes": "Batch submission - 12 theorem sorries, score 12",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "047a7854-29c5-42ca-a332-b36b7d7c64e3",
@@ -2223,7 +2230,8 @@
       "submitted": "2026-02-04T07:18:32Z",
       "sorries": [],
       "notes": "Batch submission - 13 theorem sorries, score 13",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "45b2cd95-41b7-4099-9f37-82ac2fef6ab5",
@@ -2250,7 +2258,8 @@
       "submitted": "2026-02-04T07:18:45Z",
       "sorries": [],
       "notes": "Batch submission - 14 theorem sorries, score 14",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "d93b8122-bc6e-4a42-aee3-7a9ddedcc0fb",
@@ -2268,7 +2277,8 @@
       "submitted": "2026-02-04T07:18:52Z",
       "sorries": [],
       "notes": "Batch submission - 19 theorem sorries, score 19",
-      "status": "submitted"
+      "status": "failed",
+      "failure_reason": "mathlib_incompatibility_or_load_error"
     },
     {
       "project_id": "69f3bb4e-7fbc-4fd6-abdd-7511301b2ff7",
@@ -2314,6 +2324,86 @@
       "sorries": [],
       "notes": "Batch submission - 23 theorem sorries, score 23",
       "status": "submitted"
+    },
+    {
+      "project_id": "89c505fe-4c7d-4b14-98d0-4b6edf767bd0",
+      "file": "proofs/Proofs/Erdos1115Problem.lean",
+      "problem_id": "erdos-1115",
+      "submitted": "2026-02-04T08:56:38Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "fbc2d3d8-838c-4375-958e-13551fe842af",
+      "file": "proofs/Proofs/Erdos1124Problem.lean",
+      "problem_id": "erdos-1124",
+      "submitted": "2026-02-04T08:56:41Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "a62f6fed-2023-42ae-9dd2-bf31dea72839",
+      "file": "proofs/Proofs/Erdos147Problem.lean",
+      "problem_id": "erdos-147",
+      "submitted": "2026-02-04T08:56:44Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "79d1c6d2-3a9e-45b3-8197-46c3329d66d2",
+      "file": "proofs/Proofs/Erdos164Problem.lean",
+      "problem_id": "erdos-164",
+      "submitted": "2026-02-04T08:56:46Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "0183029b-c95c-49fe-8098-ed3efbf42d12",
+      "file": "proofs/Proofs/Erdos177Problem.lean",
+      "problem_id": "erdos-177",
+      "submitted": "2026-02-04T08:56:49Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "a6d6073a-8ae6-4e81-bea6-a24a87d4ae72",
+      "file": "proofs/Proofs/Erdos287Problem.lean",
+      "problem_id": "erdos-287",
+      "submitted": "2026-02-04T08:56:54Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "b5ec8482-4785-4ac2-9e40-ffdd83c5b81a",
+      "file": "proofs/Proofs/Erdos811Problem.lean",
+      "problem_id": "erdos-811",
+      "submitted": "2026-02-04T08:56:57Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "a0d2c61e-0154-4853-81a8-a5e677e476a7",
+      "file": "proofs/Proofs/Erdos543Problem.lean",
+      "problem_id": "erdos-543",
+      "submitted": "2026-02-04T08:57:00Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "9044674e-e088-4c38-81b5-c358a2283053",
+      "file": "proofs/Proofs/Erdos586Problem.lean",
+      "problem_id": "erdos-586",
+      "submitted": "2026-02-04T08:57:03Z",
+      "status": "submitted",
+      "notes": "Batch submission"
+    },
+    {
+      "project_id": "8c8ce0d3-92b6-4a2c-85ef-95e875545870",
+      "file": "proofs/Proofs/Erdos633Problem.lean",
+      "problem_id": "erdos-633",
+      "submitted": "2026-02-04T08:57:06Z",
+      "status": "submitted",
+      "notes": "Batch submission"
     }
   ],
   "completed": [],
