@@ -100,6 +100,16 @@ def erdos291Statement : Prop := question_part1 ∧ question_part2
 -/
 
 /--
+**Leading digit helper:**
+Repeatedly divides m by p, decrementing fuel each step.
+Returns when m < p or fuel runs out.
+-/
+def leadingDigitAux (p m fuel : ℕ) : ℕ :=
+  if fuel = 0 then m
+  else if m < p then m
+  else leadingDigitAux p (m / p) (fuel - 1)
+
+/--
 **Leading Digit in Base p:**
 The leading (most significant) digit of n in base p.
 For n = 0 or p ≤ 1, returns n.
@@ -107,12 +117,7 @@ Otherwise, repeatedly divides n by p until result < p.
 -/
 def leadingDigit (n p : ℕ) : ℕ :=
   if p ≤ 1 then n
-  else
-    let rec go (m : ℕ) (fuel : ℕ) : ℕ :=
-      if fuel = 0 then m
-      else if m < p then m
-      else go (m / p) (fuel - 1)
-    go n n
+  else leadingDigitAux p n n
 
 /--
 **Steinerberger's Observation:**
@@ -321,9 +326,62 @@ theorem H_mono (m n : ℕ) (hmn : m ≤ n) : H m ≤ H n := by
   intro i _ _
   positivity
 
+/-- L(n) > 0 for all n -/
+theorem L_pos (n : ℕ) : L n > 0 := by
+  induction n with
+  | zero => simp [L]
+  | succ k ih =>
+    simp only [L] at ih ⊢
+    rw [Finset.range_succ, Finset.fold_insert (Finset.not_mem_range_self)]
+    exact Nat.pos_of_ne_zero (Nat.lcm_ne_zero (by omega) (by omega))
+
+/-- Every k in {1,...,n} divides L(n) -/
+theorem dvd_L (n k : ℕ) (hk1 : 1 ≤ k) (hkn : k ≤ n) : k ∣ L n := by
+  have : L n ∣ n.factorial := L_dvd_factorial n
+  -- k | n! since 1 ≤ k ≤ n, and L n is a multiple of k since it's the lcm
+  -- Actually: k | L n directly from the fold definition
+  -- L n = lcm of {1,...,n}, so k divides L n
+  simp only [L]
+  -- k = (k-1) + 1, and (k-1) ∈ range n since k ≤ n means k-1 < n
+  have hk_mem : k - 1 ∈ Finset.range n := Finset.mem_range.mpr (by omega)
+  have hk_eq : k - 1 + 1 = k := by omega
+  rw [← hk_eq]
+  exact Finset.dvd_fold_lcm hk_mem
+
+/-- leadingDigit of 0 is 0 -/
+theorem leadingDigit_zero (p : ℕ) (hp : p > 1) : leadingDigit 0 p = 0 := by
+  unfold leadingDigit
+  simp only [show ¬(p ≤ 1) from by omega, ↓reduceIte]
+  unfold leadingDigitAux
+  simp
+
+/-- Helper: leadingDigitAux returns < p when fuel ≥ m and p > 1 -/
+theorem leadingDigitAux_lt (p m fuel : ℕ) (hp : p > 1) (hfuel : fuel ≥ m) :
+    leadingDigitAux p m fuel < p := by
+  induction fuel generalizing m with
+  | zero =>
+    have : m = 0 := by omega
+    subst this
+    unfold leadingDigitAux
+    simp; omega
+  | succ k ih =>
+    unfold leadingDigitAux
+    simp only [show k + 1 ≠ 0 from Nat.succ_ne_zero k, ↓reduceIte]
+    split
+    · assumption
+    · push_neg at *
+      rename_i hmp
+      apply ih
+      -- m / p < m when m ≥ p > 1, so m / p ≤ m - 1 ≤ k
+      have h1 : m / p < m := Nat.div_lt_self (by omega) hp
+      omega
+
 /-- leadingDigit returns a value < p for p > 1 and n > 0 -/
-axiom leadingDigit_lt_base (n p : ℕ) (hp : p > 1) (hn : n > 0) :
-    leadingDigit n p < p
+theorem leadingDigit_lt_base (n p : ℕ) (hp : p > 1) (_hn : n > 0) :
+    leadingDigit n p < p := by
+  unfold leadingDigit
+  simp only [show ¬(p ≤ 1) from by omega, ↓reduceIte]
+  exact leadingDigitAux_lt p n n hp (le_refl n)
 
 /-- The GCD divides L_n -/
 theorem harmonicGCD_dvd_L (n : ℕ) : harmonicGCD n ∣ L n :=
@@ -333,13 +391,31 @@ theorem harmonicGCD_dvd_L (n : ℕ) : harmonicGCD n ∣ L n :=
 theorem harmonicGCD_dvd_a (n : ℕ) : harmonicGCD n ∣ a n :=
   Nat.gcd_dvd_left (a n) (L n)
 
+/-- L(n) divides n! -/
+theorem L_dvd_factorial (n : ℕ) : L n ∣ n.factorial := by
+  simp only [L]
+  induction n with
+  | zero => simp
+  | succ k ih =>
+    rw [Finset.range_succ, Finset.fold_insert (Finset.not_mem_range_self)]
+    rw [Nat.factorial_succ]
+    -- Goal: Nat.lcm (k + 1) (fold Nat.lcm 1 (·+1) (range k)) | (k + 1) * k!
+    -- fold is L k by definition, so need lcm(k+1, L k) | (k+1) * k!
+    apply Nat.lcm_dvd
+    · exact Nat.dvd_mul_right (k + 1) k.factorial
+    · exact dvd_trans ih (Nat.dvd_mul_left k.factorial (k + 1))
+
+/-- If prime p divides L(n), then p ≤ n -/
+theorem prime_dvd_L_le (n p : ℕ) (hp : Nat.Prime p) (hpdvd : p ∣ L n) : p ≤ n := by
+  have h1 : p ∣ n.factorial := dvd_trans hpdvd (L_dvd_factorial n)
+  exact (Nat.Prime.dvd_factorial hp).mp h1
+
 /--
 **If p | gcd(a_n, L_n), then p ≤ n.**
-A prime dividing the GCD must divide L_n = lcm(1,...,n),
-hence must be ≤ n. (Proving this formally requires showing that
-primes > n do not divide lcm(1,...,n), which needs fold-lcm infrastructure.)
+A prime dividing the GCD must divide L_n = lcm(1,...,n), hence p ≤ n.
 -/
-axiom prime_div_gcd_le (n p : ℕ) (hp : Nat.Prime p) (hpdvd : p ∣ harmonicGCD n) :
-    p ≤ n
+theorem prime_div_gcd_le (n p : ℕ) (hp : Nat.Prime p) (hpdvd : p ∣ harmonicGCD n) :
+    p ≤ n :=
+  prime_dvd_L_le n p hp (dvd_trans hpdvd (harmonicGCD_dvd_L n))
 
 end Erdos291
