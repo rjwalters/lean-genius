@@ -211,4 +211,53 @@ example : (1 : ℝ) / 2 + 1 / 4 + 1 / 5 + 1 / 20 = 1 := by norm_num
 /-- And: 1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20 -/
 example : (1 : ℝ) / 3 + 1 / 4 + 1 / 5 + 1 / 6 + 1 / 20 = 1 := by norm_num
 
+/- ## Additional Valid Lengths -/
+
+/-- k = 0 is a valid length: 1 = 1/1 (1 term). -/
+theorem zero_mem_validLengths : 0 ∈ ValidLengths := by
+  refine ⟨![1], ?_, ?_, ?_⟩
+  · intro i j hij
+    exact absurd (Fin.ext_iff.mpr (by omega : i.val = j.val) |>.symm ▸ hij) (lt_irrefl _)
+  · simp
+  · simp
+
+/- ## Structural Properties of f -/
+
+/--
+**f is defined on valid lengths:**
+If k ∈ ValidLengths, then the set of achievable largest denominators is nonempty.
+-/
+theorem f_set_nonempty (k : ℕ) (hk : k ∈ ValidLengths) :
+    ∃ m : ℕ, ∃ n : Fin k.succ → ℕ, IsEgyptianRepresentation k n ∧ n (Fin.last k) = m := by
+  obtain ⟨n, hn⟩ := hk
+  exact ⟨n (Fin.last k), n, hn, rfl⟩
+
+/--
+**Egyptian constant is in (3/2, 2).**
+Combines the previously established bounds into a single statement.
+-/
+theorem egyptianConstant_in_interval : 3 / 2 < egyptianConstant ∧ egyptianConstant < 2 :=
+  ⟨egyptianConstant_gt_three_halves, egyptianConstant_lt_two⟩
+
+/--
+**The Egyptian constant as 1 + 1/(e-1).**
+This form is useful for understanding the relationship to the harmonic series.
+-/
+theorem egyptianConstant_eq_one_plus_inv :
+    egyptianConstant = 1 + (rexp 1 - 1)⁻¹ := by
+  unfold egyptianConstant
+  have hpos : rexp 1 - 1 > 0 := by
+    have : rexp 1 > 1 := Real.one_lt_exp_iff.mpr (by norm_num : (1 : ℝ) > 0)
+    linarith
+  rw [div_eq_iff (ne_of_gt hpos)]
+  rw [add_mul, one_mul, inv_mul_cancel₀ (ne_of_gt hpos)]
+  ring
+
+/--
+**The product e·(e-1)⁻¹ is well-defined.**
+Both factors are positive, confirming the constant makes sense.
+-/
+theorem egyptianConstant_well_defined : rexp 1 > 0 ∧ rexp 1 - 1 > 0 :=
+  ⟨exp_pos 1, by have : rexp 1 > 1 := Real.one_lt_exp_iff.mpr (by norm_num : (1 : ℝ) > 0); linarith⟩
+
 end Erdos285
