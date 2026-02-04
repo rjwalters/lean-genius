@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "NEW",
-    "since": "2026-01-27T22:18:02.334Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "since": "2026-02-04T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "Added 11 theorems: lower bounds, concrete values, structural properties",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: RamseyR4kExtensions.lean now has 33 proved theorems (0 sorries) and 5 axioms. Added 11 new theorems: R(r,s)>=s, R(r,s)>=r lower bounds, 8 concrete values (R(3,6..9), R(4,6..7), R(5,6), R(6,6)), diagonal monotonicity, strict monotonicity.",
+    "builtItems": [
+      "ramseyUpperBound_ge_right: proved R(r,s) >= s via choose_symm + choose_le_choose",
+      "ramseyUpperBound_ge_left: proved R(r,s) >= r via symmetry",
+      "r3_6_upper through r6_6_upper: 8 new concrete values via native_decide",
+      "ramseyUpperBound_diag_mono: proved R(k,k) <= R(k+1,k+1)",
+      "ramseyUpperBound_strict_mono_right: proved R(r,s+1) >= R(r,s) + 1 via Pascal"
+    ],
+    "insights": [
+      "R(r,s) >= s proved via choose_symm + choose_le_choose: C(r+s-2,s-1) >= C(s,s-1) = s",
+      "Strict monotonicity from Pascal rule: R(r,s+1) = R(r-1,s+1) + R(r,s) >= 1 + R(r,s)",
+      "Diagonal monotonicity chains mono_left then mono_right"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Submit axioms as theorem sorries to Aristotle for proof search",
+      "Prove R(r,s) >= (r-1)*(s-1) + 1 (product lower bound, Greenwood-Gleason style)",
+      "Add R(3,10), R(4,8), R(5,7) concrete values",
+      "Connect to existing RamseyTheorem.lean in the gallery"
+    ]
   },
   "approaches": [],
   "tags": [
