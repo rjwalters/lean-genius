@@ -23,18 +23,18 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-02-04T22:00:00.000Z",
-    "iteration": 2,
-    "focus": "All goals achieved",
+    "iteration": 3,
+    "focus": "Added higher cardinalities and factorial identities (55→68 theorems)",
     "blockers": [],
     "nextAction": "None - completed",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "44+ theorems, 0 sorries, 0 axioms. Complete classification of solvability for S_n and A_n, plus connection to radical solvability.",
+    "progressSummary": "68 theorems, 0 sorries, 0 axioms. Complete classification of solvability for S_n and A_n, plus connection to radical solvability. Extended with higher cardinalities and factorial identities.",
     "builtItems": [
       "perm_fin_{0,1,2,3,4}_solvable",
       "alternating_fin_{3,4}_solvable",
@@ -44,13 +44,19 @@
       "a5_simple",
       "commutator_solvable",
       "sign_kernel_is_alternating",
-      "Non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅"
+      "Non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅",
+      "card_s7=5040, card_s8=40320 (NEW)",
+      "card_a7=2520, card_a8=20160 (NEW)",
+      "a{6,7,8}_not_solvable (NEW)",
+      "factorial_s{3,4,5} (NEW)",
+      "half_factorial_a{3,4,5} (NEW)"
     ],
     "insights": [
       "S₂ solvable via commutativity",
       "S₃, S₄ solvable via short exact sequences with alternating group kernel",
       "A₄ solvable via Klein four-group V₄ as normal subgroup",
-      "A₅ is simple, providing the obstruction for n ≥ 5"
+      "A₅ is simple, providing the obstruction for n ≥ 5",
+      "native_decide handles large cardinalities (up to 8!) efficiently"
     ],
     "mathlibGaps": [],
     "nextSteps": []
