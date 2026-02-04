@@ -2,7 +2,7 @@ import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic
 
-/-!
+/-
 # Sum of kth Powers (Faulhaber's Formulas)
 
 ## What This Proves
@@ -55,7 +55,7 @@ namespace SumOfKthPowers
 
 open Finset BigOperators
 
-/-! ## Sum of First Powers (Gauss's Formula)
+/- ## Sum of First Powers (Gauss's Formula)
 
 The foundation for all power sum formulas. -/
 
@@ -78,7 +78,7 @@ theorem sum_first_powers_classical (n : ℕ) : ∑ i ∈ range (n + 1), i = n * 
   rw [Nat.mul_comm] at h
   exact h
 
-/-! ## Sum of Squares
+/- ## Sum of Squares
 
 The formula ∑i² = n(n+1)(2n+1)/6 is one of the most important power sum identities. -/
 
@@ -153,7 +153,7 @@ theorem sum_squares (n : ℕ) : ∑ i ∈ range n, i ^ 2 = n * (n - 1) * (2 * n 
     have h2 : (m + 1) * m = m * (m + 1) := by ring
     rw [h1, h2]
 
-/-! ## Sum of Cubes
+/- ## Sum of Cubes
 
 The remarkable identity ∑i³ = (∑i)² = [n(n+1)/2]² -/
 
@@ -217,7 +217,7 @@ theorem sum_cubes (n : ℕ) : ∑ i ∈ range n, i ^ 3 = (n * (n - 1) / 2) ^ 2 :
     have h2 : m * (m + 1) = (m + 1) * m := by ring
     rw [h2]
 
-/-! ## The Remarkable Identity: Sum of Cubes = Square of Sum
+/- ## The Remarkable Identity: Sum of Cubes = Square of Sum
 
 This is one of the most elegant identities in mathematics: the sum of the first n
 cubes equals the square of the sum of the first n natural numbers. -/
@@ -238,7 +238,7 @@ theorem nicomachus_theorem (n : ℕ) :
     (∑ i ∈ range (n + 1), i ^ 3) = (∑ i ∈ range (n + 1), i) ^ 2 :=
   sum_cubes_eq_sum_squared n
 
-/-! ## Sum of Fourth Powers
+/- ## Sum of Fourth Powers
 
 The formula ∑i⁴ = n(n+1)(2n+1)(3n²+3n-1)/30
 
@@ -283,7 +283,7 @@ theorem sum_fourth_powers_classical (n : ℕ) :
   have hdvd := thirty_dvd_fourth_sum n
   omega
 
-/-! ## Sum of Fifth Powers
+/- ## Sum of Fifth Powers
 
 The formula ∑i⁵ = n²(n+1)²(2n²+2n-1)/12
 
@@ -327,7 +327,7 @@ theorem sum_fifth_powers_classical (n : ℕ) :
   have hdvd := twelve_dvd_fifth_sum n
   omega
 
-/-! ## Verification Examples -/
+/- ## Verification Examples -/
 
 /-- Sum of squares from 0 to 10: 0² + 1² + ... + 10² = 385 -/
 theorem sum_squares_10 : ∑ i ∈ range 11, i ^ 2 = 385 := by native_decide
@@ -364,19 +364,48 @@ theorem sum_fourth_formula_check_10 :
 theorem sum_fifth_formula_check_10 :
     (2 * 1000 * 1331 - 100 * 121) / 12 = 220825 := by native_decide
 
-/-! ## Key Theorems Summary -/
+/- ## Structural Properties -/
 
-#check sum_first_powers
-#check sum_first_powers_classical
-#check sum_squares
-#check sum_squares_classical
-#check sum_cubes
-#check sum_cubes_classical
-#check sum_cubes_eq_sum_squared
-#check nicomachus_theorem
-#check sum_fourth_powers_mul_thirty
-#check sum_fourth_powers_classical
-#check sum_fifth_powers_mul_twelve
-#check sum_fifth_powers_classical
+/-- Sum of k-th powers is zero when the range is empty. -/
+theorem sum_pow_zero_range (k : ℕ) : ∑ i ∈ range 0, i ^ k = 0 := by simp
+
+/-- Sum of k-th powers is monotone in the range: adding one more term increases the sum. -/
+theorem sum_pow_le_succ (n k : ℕ) :
+    ∑ i ∈ range n, i ^ k ≤ ∑ i ∈ range (n + 1), i ^ k := by
+  rw [sum_range_succ]
+  omega
+
+/-- Each summand i^k ≤ n^k for i < n+1, giving an upper bound. -/
+theorem sum_pow_le_mul (n k : ℕ) :
+    ∑ i ∈ range (n + 1), i ^ k ≤ (n + 1) * n ^ k := by
+  calc ∑ i ∈ range (n + 1), i ^ k
+      ≤ ∑ _i ∈ range (n + 1), n ^ k := by
+        apply Finset.sum_le_sum
+        intro i hi
+        exact Nat.pow_le_pow_left (by simp [Finset.mem_range] at hi; omega) k
+    _ = (n + 1) * n ^ k := by simp [Finset.sum_const, Finset.card_range]
+
+/-- The sum of k-th powers is at least n^k (from the last term). -/
+theorem sum_pow_ge_last (n k : ℕ) :
+    ∑ i ∈ range (n + 1), i ^ k ≥ n ^ k := by
+  rw [sum_range_succ]
+  omega
+
+/-- The sum of 0th powers from 0 to n is n+1 (counting). -/
+theorem sum_zeroth_powers (n : ℕ) : ∑ i ∈ range (n + 1), i ^ 0 = n + 1 := by
+  simp
+
+/-- Sum of cubes of even numbers: ∑_{i=0}^{n} (2i)³ = 8 · ∑_{i=0}^{n} i³. -/
+theorem sum_even_cubes (n : ℕ) :
+    ∑ i ∈ range (n + 1), (2 * i) ^ 3 = 8 * ∑ i ∈ range (n + 1), i ^ 3 := by
+  simp only [mul_pow]
+  rw [← Finset.mul_sum]
+  ring_nf
+
+/-- Telescoping: the difference of consecutive power sums gives the last term. -/
+theorem sum_pow_succ_sub (n k : ℕ) :
+    ∑ i ∈ range (n + 1), i ^ k - ∑ i ∈ range n, i ^ k = n ^ k := by
+  rw [sum_range_succ]
+  omega
 
 end SumOfKthPowers
