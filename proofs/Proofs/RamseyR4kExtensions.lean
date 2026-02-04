@@ -288,24 +288,91 @@ axiom r4k_lower_bound :
         ¬(∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = false))
 
 /-
+## Part V-B: Additional Structural Properties
+-/
+
+/-- R(r,s) ≥ s for r ≥ 2, s ≥ 1: the upper bound is at least s. -/
+theorem ramseyUpperBound_ge_right (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 1) :
+    ramseyUpperBound r s ≥ s := by
+  unfold ramseyUpperBound
+  simp only [show ¬(r = 0 ∨ s = 0) by omega, ↓reduceIte]
+  -- Need: C(r+s-2, r-1) ≥ s
+  -- C(r+s-2, r-1) = C(r+s-2, s-1) by symmetry
+  -- For r ≥ 2: C(r+s-2, s-1) ≥ C(s, s-1) = s by monotonicity of choose
+  have h1 : r - 1 ≤ r + s - 2 := by omega
+  calc Nat.choose (r + s - 2) (r - 1)
+      = Nat.choose (r + s - 2) ((r + s - 2) - (r - 1)) := Nat.choose_symm h1
+    _ = Nat.choose (r + s - 2) (s - 1) := by congr 1; omega
+    _ ≥ Nat.choose s (s - 1) := Nat.choose_le_choose (s - 1) (by omega)
+    _ = s := by rw [Nat.choose_symm (by omega : s - 1 ≤ s)]; simp [show s - (s - 1) = 1 from by omega]; exact Nat.choose_one_right s
+
+/-- R(r,s) ≥ r for r ≥ 1, s ≥ 2: the upper bound is at least r. -/
+theorem ramseyUpperBound_ge_left (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 2) :
+    ramseyUpperBound r s ≥ r := by
+  rw [ramseyUpperBound_symm r s hr (by omega)]
+  exact ramseyUpperBound_ge_right s r hs hr
+
+/-- More concrete bounds: R(3,6) ≤ C(7,2) = 21. -/
+theorem r3_6_upper : ramseyUpperBound 3 6 = 21 := by native_decide
+
+/-- R(3,7) ≤ C(8,2) = 28. -/
+theorem r3_7_upper : ramseyUpperBound 3 7 = 28 := by native_decide
+
+/-- R(3,8) ≤ C(9,2) = 36. -/
+theorem r3_8_upper : ramseyUpperBound 3 8 = 36 := by native_decide
+
+/-- R(3,9) ≤ C(10,2) = 45. Known exact value: R(3,9) = 36. -/
+theorem r3_9_upper : ramseyUpperBound 3 9 = 45 := by native_decide
+
+/-- R(4,6) ≤ C(8,3) = 56. -/
+theorem r4_6_upper : ramseyUpperBound 4 6 = 56 := by native_decide
+
+/-- R(4,7) ≤ C(9,3) = 84. -/
+theorem r4_7_upper : ramseyUpperBound 4 7 = 84 := by native_decide
+
+/-- R(5,6) ≤ C(9,4) = 126. -/
+theorem r5_6_upper : ramseyUpperBound 5 6 = 126 := by native_decide
+
+/-- R(6,6) ≤ C(10,5) = 252. -/
+theorem r6_6_upper : ramseyUpperBound 6 6 = 252 := by native_decide
+
+/-- Diagonal monotonicity: R(k,k) ≤ R(k+1,k+1) for k ≥ 1. -/
+theorem ramseyUpperBound_diag_mono (k : ℕ) (hk : k ≥ 1) :
+    ramseyUpperBound k k ≤ ramseyUpperBound (k + 1) (k + 1) :=
+  calc ramseyUpperBound k k
+      ≤ ramseyUpperBound (k + 1) k := ramseyUpperBound_mono_left k k hk hk
+    _ ≤ ramseyUpperBound (k + 1) (k + 1) := ramseyUpperBound_mono_right (k + 1) k (by omega) hk
+
+/-- The upper bound grows strictly: R(r, s+1) ≥ R(r, s) + 1 for r ≥ 2, s ≥ 2. -/
+theorem ramseyUpperBound_strict_mono_right (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
+    ramseyUpperBound r (s + 1) ≥ ramseyUpperBound r s + 1 := by
+  rw [ramseyUpperBound_pascal r (s + 1) hr (by omega)]
+  have : ramseyUpperBound (r - 1) (s + 1) ≥ 1 :=
+    ramseyUpperBound_pos (r - 1) (s + 1) (by omega) (by omega)
+  simp only [show s + 1 - 1 = s from by omega]
+  omega
+
+/-
 ## Summary
 
 This file formalizes:
-1. **Proved theorems (22 total, 0 sorries)**:
+1. **Proved theorems (33 total, 0 sorries)**:
    - Concrete values: R(3,3)=6, R(3,4)=10, R(3,5)=15,
-     R(4,4)=20, R(4,5)=35, R(5,5)=70  (6 theorems)
+     R(4,4)=20, R(4,5)=35, R(5,5)=70, R(3,6)=21, R(3,7)=28,
+     R(3,8)=36, R(3,9)=45, R(4,6)=56, R(4,7)=84, R(5,6)=126,
+     R(6,6)=252  (14 concrete values)
    - ramseyUpperBound_symm: R(r,s) = R(s,r)
    - ramseyUpperBound_one_left/right: R(1,s) = R(r,1) = 1
    - ramseyUpperBound_two_left/right: R(2,s) = s, R(r,2) = r
    - ramseyUpperBound_zero_left/right: R(0,s) = R(r,0) = 0
    - ramseyUpperBound_pos: R(r,s) ≥ 1 for r,s ≥ 1
-   - ramseyUpperBound_mono_right: R(r,s) ≤ R(r,s+1)
-   - ramseyUpperBound_mono_left: R(r,s) ≤ R(r+1,s)
-   - ramseyUpperBound_pascal: R(r,s) = R(r-1,s) + R(r,s-1)  [NEW]
-   - ramseyUpperBound_pascal_check_33: R(3,3) = R(2,3) + R(3,2)  [NEW]
-   - ramseyUpperBound_pascal_check_44: R(4,4) = R(3,4) + R(4,3)  [NEW]
-   - ramseyUpperBound_ge_pred_left: R(r,s) ≥ R(r-1,s)  [NEW]
-   - ramseyUpperBound_ge_pred_right: R(r,s) ≥ R(r,s-1)  [NEW]
+   - ramseyUpperBound_mono_right/left: monotonicity
+   - ramseyUpperBound_pascal: R(r,s) = R(r-1,s) + R(r,s-1)
+   - ramseyUpperBound_pascal_check_33/44: Pascal rule verifications
+   - ramseyUpperBound_ge_pred_left/right: pred corollaries
+   - ramseyUpperBound_ge_right/left: R(r,s) ≥ s and ≥ r  [NEW]
+   - ramseyUpperBound_diag_mono: R(k,k) ≤ R(k+1,k+1)  [NEW]
+   - ramseyUpperBound_strict_mono_right: R(r,s+1) ≥ R(r,s) + 1  [NEW]
 
 2. **Axioms (5 total)**: Deep probabilistic results
    - erdos_probabilistic_lower_bound: R(k,k) > 2^(k/2)
