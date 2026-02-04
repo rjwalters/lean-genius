@@ -122,10 +122,11 @@ theorem ramseyUpperBound_symm (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1) :
   unfold ramseyUpperBound
   simp only [show ¬(r = 0 ∨ s = 0) by omega, show ¬(s = 0 ∨ r = 0) by omega, ↓reduceIte]
   have hrs : r + s - 2 = s + r - 2 := by omega
-  rw [hrs]
+  have hle : r - 1 ≤ r + s - 2 := by omega
+  conv_rhs => rw [show s - 1 = s + r - 2 - (r - 1) from by omega]
+  rw [← Nat.choose_symm (by omega : r - 1 ≤ s + r - 2)]
   congr 1
-  have h : s - 1 = s + r - 2 - (r - 1) := by omega
-  rw [h, Nat.choose_symm (by omega : r - 1 ≤ s + r - 2)]
+  omega
 
 /-- Base case: R(1,s) = 1 for s ≥ 1. -/
 theorem ramseyUpperBound_one_left (s : ℕ) (hs : s ≥ 1) :
