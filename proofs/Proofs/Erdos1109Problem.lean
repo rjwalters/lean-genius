@@ -36,12 +36,15 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Nat.Squarefree
+import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
-open Nat Finset
+open Nat Finset Real
 
 namespace Erdos1109
 
-/-!
+/-
 ## Part I: Squarefree Numbers
 -/
 
@@ -54,21 +57,15 @@ theorem squarefree_iff_no_prime_sq (n : ℕ) (hn : n ≥ 1) :
     isSquarefree n ↔ ∀ p : ℕ, p.Prime → ¬(p * p ∣ n) := by
   simp only [isSquarefree]
   constructor
-  · -- Forward: squarefree → no prime square divides n
-    intro hsf p hp hppn
+  · intro hsf p hp hppn
     have h1 : IsUnit p := hsf p hppn
     rw [Nat.isUnit_iff] at h1
     exact absurd h1 hp.one_lt.ne'
-  · -- Backward: no prime square divides → squarefree
-    intro h
-    intro x hx
+  · intro h x hx
     by_contra hnu
     rw [Nat.isUnit_iff] at hnu
-    -- x ≠ 1 and x * x ∣ n, so x has a prime factor p
     have hx_pos : x > 0 := Nat.pos_of_ne_zero (fun h0 => by simp [h0] at hx; omega)
-    have hx_gt1 : x > 1 := by omega
     obtain ⟨p, hp, hpx⟩ := Nat.exists_prime_and_dvd (by omega : x ≠ 1)
-    -- p | x implies p*p | x*x | n
     have : p * p ∣ x * x := Nat.mul_dvd_mul hpx hpx
     exact h p hp (dvd_trans this hx)
 
@@ -84,7 +81,7 @@ theorem prime_squarefree (p : ℕ) (hp : p.Prime) : isSquarefree p := by
 axiom distinct_primes_squarefree (ps : List ℕ) (hps : ∀ p ∈ ps, Nat.Prime p)
     (hdist : ps.Nodup) : isSquarefree ps.prod
 
-/-!
+/-
 ## Part II: The Sumset
 -/
 
@@ -96,15 +93,15 @@ def sumset (A : Finset ℕ) : Finset ℕ :=
 def hasSquarefreeSumset (A : Finset ℕ) : Prop :=
   ∀ s ∈ sumset A, isSquarefree s
 
-/-!
+/-
 ## Part III: The Function f(N)
 -/
 
 /-- f(N) = max size of A ⊆ {1,...,N} with squarefree A + A. -/
 noncomputable def f (N : ℕ) : ℕ :=
-  sSup { A.card | A : Finset ℕ // A ⊆ range (N + 1) ∧ hasSquarefreeSumset A }
+  sSup { m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m }
 
-/-!
+/-
 ## Part IV: Erdős-Sárközy Bounds (1987)
 -/
 
@@ -115,16 +112,16 @@ f(N) ≫ log N
 Construction: A set of size log N can be found with squarefree sumset.
 -/
 axiom erdos_sarkozy_lower_1987 (N : ℕ) (hN : N ≥ 2) :
-    ∃ C > 0, f N ≥ C * Real.log N
+    ∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≥ C * Real.log N
 
 /--
 **Erdős-Sárközy Upper Bound (1987):**
 f(N) ≪ N^{3/4} log N
 -/
 axiom erdos_sarkozy_upper_1987 (N : ℕ) (hN : N ≥ 2) :
-    ∃ C > 0, f N ≤ C * N^(3/4 : ℝ) * Real.log N
+    ∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≤ C * (N : ℝ)^((3 : ℝ)/4) * Real.log N
 
-/-!
+/-
 ## Part V: Konyagin's Improvements (2004)
 -/
 
@@ -135,7 +132,7 @@ axiom erdos_sarkozy_upper_1987 (N : ℕ) (hN : N ≥ 2) :
 This significantly improves the log N bound.
 -/
 axiom konyagin_lower_2004 (N : ℕ) (hN : N ≥ 16) :
-    ∃ C > 0, f N ≥ C * Real.log (Real.log N) * (Real.log N)^2
+    ∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≥ C * Real.log (Real.log N) * (Real.log N)^2
 
 /--
 **Konyagin Upper Bound (2004):**
@@ -144,17 +141,14 @@ f(N) ≪ N^{11/15 + o(1)}
 The exponent 11/15 ≈ 0.733 improves 3/4 = 0.75.
 -/
 axiom konyagin_upper_2004 (N : ℕ) (hN : N ≥ 2) :
-    ∃ C > 0, ∃ ε > 0, f N ≤ C * N^(11/15 + ε : ℝ)
+    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≤ C * (N : ℝ)^((11 : ℝ)/15 + ε)
 
-/-!
+/-
 ## Part VI: Current State of Knowledge
 -/
 
 /-- The best known exponent in the upper bound. -/
 def bestUpperExponent : ℚ := 11 / 15
-
-/-- 11/15 ≈ 0.7333... -/
-#check (11 : ℚ) / 15  -- ≈ 0.733
 
 /--
 **Current Best Bounds:**
@@ -163,11 +157,11 @@ def bestUpperExponent : ℚ := 11 / 15
 The gap is enormous: polylogarithmic vs polynomial.
 -/
 theorem current_bounds (N : ℕ) (hN : N ≥ 16) :
-    (∃ C > 0, f N ≥ C * Real.log (Real.log N) * (Real.log N)^2) ∧
-    (∃ C > 0, ∃ ε > 0, f N ≤ C * N^(11/15 + ε : ℝ)) := by
+    (∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≥ C * Real.log (Real.log N) * (Real.log N)^2) ∧
+    (∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≤ C * (N : ℝ)^((11 : ℝ)/15 + ε)) := by
   exact ⟨konyagin_lower_2004 N hN, konyagin_upper_2004 N (by omega)⟩
 
-/-!
+/-
 ## Part VII: The Open Questions
 -/
 
@@ -178,7 +172,7 @@ Is f(N) ≤ N^{o(1)}?
 This asks whether f(N) grows slower than any polynomial.
 -/
 def question1_subpolynomial : Prop :=
-  ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, f N ≤ N^ε
+  ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → (f N : ℝ) ≤ (N : ℝ)^ε
 
 /--
 **Erdős's Question 2 (Stronger):**
@@ -187,7 +181,7 @@ Is f(N) ≤ (log N)^{O(1)}?
 This asks whether f(N) is bounded by a polynomial in log N.
 -/
 def question2_polylogarithmic : Prop :=
-  ∃ k : ℕ, ∃ C > 0, ∀ N ≥ 2, f N ≤ C * (Real.log N)^k
+  ∃ k : ℕ, ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 → (f N : ℝ) ≤ C * (Real.log N)^(k : ℝ)
 
 /--
 **Erdős-Sárközy Conjecture:**
@@ -195,7 +189,7 @@ The lower bound is closer to the truth, i.e., f(N) is polylogarithmic.
 -/
 axiom erdos_sarkozy_conjecture : question2_polylogarithmic
 
-/-!
+/-
 ## Part VIII: Related Problems
 -/
 
@@ -208,8 +202,8 @@ Upper bounds for f(N) imply lower bounds for the a_i.
 -/
 axiom connection_to_1103 :
     question2_polylogarithmic →
-      ∃ c > 0, ∀ (a : ℕ → ℕ), (∀ i j : ℕ, isSquarefree (a i + a j)) →
-        ∀ n : ℕ, a n ≥ n^(c : ℝ)
+      ∃ c : ℝ, c > 0 ∧ ∀ (a : ℕ → ℕ), (∀ i j : ℕ, isSquarefree (a i + a j)) →
+        ∀ n : ℕ, (a n : ℝ) ≥ (n : ℝ)^c
 
 /--
 **k-power-free Generalization (Sárközy 1992):**
@@ -220,35 +214,63 @@ def isKPowerFree (k n : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → ¬(p^k ∣ n)
 
 axiom sarkozy_k_power_free (k : ℕ) (hk : k ≥ 2) :
-    ∃ C₁ C₂ > 0, ∀ N ≥ 2, C₁ * Real.log N ≤ f N ∧ f N ≤ C₂ * N^(1 - 1/(2*k) : ℝ)
+    ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧
+      ∀ N : ℕ, N ≥ 2 → C₁ * Real.log N ≤ (f N : ℝ) ∧
+        (f N : ℝ) ≤ C₂ * (N : ℝ)^(1 - 1/((2 : ℝ) * k))
 
-/-!
-## Part IX: Why Squarefree Sumsets are Small
+/-
+## Part IX: Structural Constraints on Squarefree Sumsets
 -/
 
 /--
-**Density of Squarefree Numbers:**
-The density of squarefree numbers in {1,...,N} is 6/π² ≈ 0.608.
+**All elements in a squarefree-sumset set must be odd.**
 
-But for sumsets, the constraint is much more restrictive.
+If a is even and a ∈ A with hasSquarefreeSumset A, then a + a = 2a.
+Since a is even, a = 2k for some k. Then a + a = 4k, which is divisible
+by 4 = 2². But 2² | (a + a) contradicts squarefreeness of a + a (when k > 0).
+When k = 0, a + a = 0, which is also not squarefree.
+
+This is the simplest structural constraint: avoiding p² = 4 in the sumset
+already forces all elements to be odd. For larger primes p, similar
+residue class restrictions apply modulo p².
 -/
-axiom squarefree_density : ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    |({n ∈ range (N+1) | isSquarefree n}.card : ℝ) / N - 6 / Real.pi^2| < ε
+theorem all_odd (A : Finset ℕ) (h : hasSquarefreeSumset A) (a : ℕ) (ha : a ∈ A) :
+    a % 2 = 1 := by
+  by_contra heven
+  have ⟨k, hk⟩ : ∃ k, a = 2 * k := ⟨a / 2, by omega⟩
+  have hsf_aa := h (a + a) (by
+    simp only [sumset, Finset.mem_image, Finset.mem_product]
+    exact ⟨(a, a), ⟨ha, ha⟩, rfl⟩)
+  simp only [isSquarefree] at hsf_aa
+  rw [hk] at hsf_aa
+  have h_eq : 2 * k + 2 * k = 2 * (2 * k) := by ring
+  rw [h_eq] at hsf_aa
+  by_cases hk0 : k = 0
+  · subst hk0
+    simp at hsf_aa
+  · have h4 : 2 * 2 ∣ 2 * (2 * k) := ⟨k, by ring⟩
+    have h2unit := hsf_aa 2 h4
+    rw [Nat.isUnit_iff] at h2unit
+    omega
 
 /--
-**Intuition:**
-If A has size m, then A + A has ~m² elements (with some overlap).
-For all m² sums to be squarefree is a strong constraint.
-
-Specifically, avoiding multiples of 4 (= 2²) in A + A already forces
-A to have special structure (e.g., all in the same residue class mod 4).
+**Modular constraint for prime p:**
+For any prime p and any set A with squarefree sumset, if a, b ∈ A
+then a + b is not divisible by p².
 -/
-theorem mod4_constraint (A : Finset ℕ) (h : hasSquarefreeSumset A) :
-    -- All elements of A must be in the same residue class mod 4,
-    -- or in complementary classes that don't produce 0 mod 4.
-    True := trivial
+theorem prime_sq_avoidance (A : Finset ℕ) (h : hasSquarefreeSumset A)
+    (p : ℕ) (hp : p.Prime) (a b : ℕ) (ha : a ∈ A) (hb : b ∈ A) :
+    ¬(p * p ∣ (a + b)) := by
+  intro hdvd
+  have hsf := h (a + b) (by
+    simp only [sumset, Finset.mem_image, Finset.mem_product]
+    exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩)
+  simp only [isSquarefree] at hsf
+  have hunit := hsf p hdvd
+  rw [Nat.isUnit_iff] at hunit
+  exact absurd hunit hp.one_lt.ne'
 
-/-!
+/-
 ## Part X: Main Results
 -/
 
@@ -264,28 +286,12 @@ The problem remains OPEN. Erdős-Sárközy conjectured polylogarithmic growth.
 -/
 theorem erdos_1109_summary :
     -- Lower bound polylogarithmic
-    (∀ N ≥ 16, ∃ C > 0, f N ≥ C * Real.log (Real.log N) * (Real.log N)^2) ∧
+    (∀ N : ℕ, N ≥ 16 → ∃ C : ℝ, C > 0 ∧
+      (f N : ℝ) ≥ C * Real.log (Real.log N) * (Real.log N)^2) ∧
     -- Upper bound polynomial
-    (∀ N ≥ 2, ∃ C > 0, ∃ ε > 0, f N ≤ C * N^(11/15 + ε : ℝ)) ∧
-    -- Gap remains open
-    True := by
-  constructor
-  · intro N hN
-    exact konyagin_lower_2004 N hN
-  constructor
-  · intro N hN
-    exact konyagin_upper_2004 N hN
-  · trivial
-
-/--
-**Open Question:**
-Is f(N) polylogarithmic or polynomial in N?
-
-The massive gap between (log N)^{2+ε} and N^{0.733+ε} represents
-fundamental uncertainty about the structure of squarefree-sumset sets.
--/
-theorem erdos_1109_open :
-    -- The answer to whether f(N) = N^{o(1)} remains unknown
-    True := trivial
+    (∀ N : ℕ, N ≥ 2 → ∀ ε : ℝ, ε > 0 →
+      ∃ C : ℝ, C > 0 ∧ (f N : ℝ) ≤ C * (N : ℝ)^((11 : ℝ)/15 + ε)) := by
+  exact ⟨fun N hN => konyagin_lower_2004 N hN,
+         fun N hN ε hε => konyagin_upper_2004 N hN ε hε⟩
 
 end Erdos1109
