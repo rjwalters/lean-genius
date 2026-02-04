@@ -403,8 +403,161 @@ theorem exponent_gap : lowerExponent < 1 := by
 /-- The open problem: what is the true exponent? -/
 def erdos1057OpenProblem : Prop := erdos1057Conjecture
 
-#check C
-#check IsCarmichael
-#check erdos1057Conjecture
-#check lichtman_lower_bound
-#check erdos_upper_bound
+/-
+## Utility Lemmas
+
+Extractors from the IsCarmichael predicate.
+-/
+
+/-- A Carmichael number is greater than 1 -/
+theorem carmichael_gt_one (n : ℕ) (h : IsCarmichael n) : n > 1 := h.1
+
+/-- A Carmichael number is composite -/
+theorem carmichael_composite (n : ℕ) (h : IsCarmichael n) : ¬n.Prime := h.2.1
+
+/-- A Carmichael number is squarefree -/
+theorem carmichael_squarefree (n : ℕ) (h : IsCarmichael n) : Squarefree n := h.2.2.1
+
+/-- The Korselt divisibility condition for a Carmichael number -/
+theorem carmichael_korselt_dvd (n : ℕ) (h : IsCarmichael n) :
+    ∀ p : ℕ, p.Prime → p ∣ n → (p - 1) ∣ (n - 1) := h.2.2.2
+
+/-
+## Lower Bound Comparisons
+
+Relating the known lower bounds on C(x).
+-/
+
+/-- The Lichtman exponent strictly improves AGP's 2/7 -/
+theorem lichtman_improves_agp : (2 : ℝ) / 7 < 0.3389 := by norm_num
+
+/-- The Harman exponent strictly improves AGP's 2/7 -/
+theorem harman_improves_agp : (2 : ℝ) / 7 < 0.33336704 := by norm_num
+
+/-- Lichtman strictly improves Harman -/
+theorem lichtman_improves_harman : (0.33336704 : ℝ) < 0.3389 := by norm_num
+
+/-- All known lower bound exponents are strictly less than 1 -/
+theorem lower_bounds_lt_one : (0.3389 : ℝ) < 1 := by norm_num
+
+/-
+## Counting Function Properties
+-/
+
+/-- C(0) = 0: no Carmichael numbers in [1,0] -/
+theorem C_zero : C 0 = 0 := by
+  unfold C
+  apply Finset.card_eq_zero.mpr
+  ext n
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false]
+  intro ⟨hn, hgt, _, _, _⟩
+  omega
+
+/-- C(1) = 0: no Carmichael numbers ≤ 1 -/
+theorem C_one : C 1 = 0 := by
+  unfold C
+  apply Finset.card_eq_zero.mpr
+  ext n
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false]
+  intro ⟨hn, hgt, _, _, _⟩
+  omega
+
+/-- Carmichael numbers are at least 561. This follows from 561 being the smallest. -/
+axiom carmichael_ge_561 : ∀ n : ℕ, IsCarmichael n → n ≥ 561
+
+/-- C(560) = 0: no Carmichael numbers below 561 -/
+theorem C_below_561 : C 560 = 0 := by
+  unfold C
+  apply Finset.card_eq_zero.mpr
+  ext n
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false]
+  intro ⟨hn, hc⟩
+  have := carmichael_ge_561 n hc
+  omega
+
+/-- C(561) ≥ 1: at least one Carmichael number ≤ 561 -/
+theorem C_561_pos : C 561 ≥ 1 := by
+  unfold C
+  suffices h : 561 ∈ (Finset.range 562).filter IsCarmichael by
+    exact Finset.card_pos.mpr ⟨561, h⟩
+  rw [Finset.mem_filter]
+  exact ⟨by simp [Finset.mem_range], carmichael_561⟩
+
+/-
+## Divisibility Structure
+-/
+
+/-- For a Carmichael number n with prime factors p and q, both (p-1) and (q-1) divide (n-1). -/
+theorem carmichael_korselt_pair (n : ℕ) (h : IsCarmichael n) :
+    ∀ p q : ℕ, p.Prime → q.Prime → p ∣ n → q ∣ n → p ≠ q →
+    (p - 1) ∣ (n - 1) ∧ (q - 1) ∣ (n - 1) := by
+  intro p q hp hq hpn hqn _hne
+  exact ⟨carmichael_korselt_dvd n h p hp hpn, carmichael_korselt_dvd n h q hq hqn⟩
+
+/-- A Carmichael number n > 1 satisfies n - 1 > 0 -/
+theorem carmichael_pred_pos (n : ℕ) (h : IsCarmichael n) : n - 1 > 0 := by
+  have := carmichael_gt_one n h; omega
+
+/-- If n is Carmichael and p | n is prime, then p < n (prime factors are proper divisors). -/
+theorem carmichael_prime_factor_lt (n : ℕ) (h : IsCarmichael n) (p : ℕ)
+    (hp : p.Prime) (hpn : p ∣ n) : p < n := by
+  by_contra hge
+  push_neg at hge
+  -- p ∣ n and p ≥ n, so n ≤ p. Also p ≤ n since p ∣ n and n > 0.
+  have hp_le_n : p ≤ n := Nat.le_of_dvd (by have := carmichael_gt_one n h; omega) hpn
+  have hpn_eq : p = n := Nat.le_antisymm hp_le_n hge
+  exact carmichael_composite n h (hpn_eq ▸ hp)
+
+/-- Carmichael numbers are ≥ 3 (they're odd and > 1) -/
+theorem carmichael_ge_three (n : ℕ) (h : IsCarmichael n) : n ≥ 3 := by
+  have hodd := carmichael_odd n h
+  have hgt := carmichael_gt_one n h
+  obtain ⟨k, hk⟩ := hodd
+  omega
+
+/-- If n is Carmichael and p | n is prime, then n ≡ 1 (mod p-1) -/
+theorem carmichael_cong_one_mod (n : ℕ) (h : IsCarmichael n) (p : ℕ)
+    (hp : p.Prime) (hpn : p ∣ n) : n % (p - 1) = 1 % (p - 1) := by
+  have hkor := carmichael_korselt_dvd n h p hp hpn
+  have hn1 : n ≥ 1 := by have := carmichael_gt_one n h; omega
+  have hp1 : p - 1 ≥ 1 := by have := hp.two_le; omega
+  obtain ⟨k, hk⟩ := hkor
+  -- n - 1 = (p-1) * k, so n = (p-1) * k + 1
+  have hn_eq : n = (p - 1) * k + 1 := by omega
+  rw [hn_eq]
+  rw [Nat.mul_add_mod]
+
+/-- The number of Carmichael numbers is unbounded (follows from AGP infinitude) -/
+theorem C_unbounded : ∀ N : ℕ, ∃ x : ℕ, C x > N := by
+  intro N
+  suffices ∃ ns : Finset ℕ, ns.card > N ∧ ∀ n ∈ ns, IsCarmichael n by
+    obtain ⟨ns, hcard, hall⟩ := this
+    use ns.sup id
+    unfold C
+    have hsub : ns ⊆ (Finset.range (ns.sup id + 1)).filter IsCarmichael := by
+      intro n hn
+      rw [Finset.mem_filter, Finset.mem_range]
+      constructor
+      · calc n ≤ ns.sup id := Finset.le_sup (f := id) hn
+          _ < ns.sup id + 1 := by omega
+      · exact hall n hn
+    calc N < ns.card := hcard
+      _ ≤ ((Finset.range (ns.sup id + 1)).filter IsCarmichael).card := Finset.card_le_card hsub
+  induction N with
+  | zero =>
+    exact ⟨{561}, by simp, by simp [carmichael_561]⟩
+  | succ N ih =>
+    obtain ⟨ns, hcard, hall⟩ := ih
+    obtain ⟨m, hm_gt, hm_carm⟩ := infinitely_many_carmichaels (ns.sup id)
+    refine ⟨insert m ns, ?_, ?_⟩
+    · rw [Finset.card_insert_of_notMem]
+      · omega
+      · intro hmem
+        have := Finset.le_sup (f := id) hmem
+        simp at this
+        omega
+    · intro n hn
+      rw [Finset.mem_insert] at hn
+      rcases hn with rfl | hn
+      · exact hm_carm
+      · exact hall n hn

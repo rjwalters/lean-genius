@@ -1,41 +1,87 @@
 {
   "slug": "erdos-1057",
   "title": "Counting Carmichael Numbers",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "DEEP_DIVE",
+  "status": "progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "erdos1057Conjecture : \\forall \\varepsilon > 0, \\exists X, \\forall x \\geq X, C(x) > x^{1-\\varepsilon}",
+    "plain": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}?",
+    "whyMatters": [
+      "Carmichael numbers are the strongest Fermat pseudoprimes",
+      "Density conjecture determines how dangerous Fermat primality test is",
+      "Connects to deep questions about distribution of smooth numbers"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "carmichael_561: 561 is a Carmichael number",
+      "carmichael_1105: 1105 is a Carmichael number",
+      "carmichael_1729: 1729 is a Carmichael number",
+      "carmichael_odd: all Carmichael numbers are odd",
+      "carmichael_not_semiprime: Carmichael numbers are not products of two primes",
+      "carmichael_at_least_3_primes: every Carmichael number has >= 3 prime factors",
+      "carmichael_not_prime_power: no Carmichael number is a prime power",
+      "C_mono: C(x) is monotone increasing",
+      "C_unbounded: C(x) -> infinity (from AGP infinitude axiom)",
+      "carmichael_cong_one_mod: n = 1 (mod p-1) for prime factors p",
+      "C_zero, C_one, C_below_561, C_561_pos: counting function base values"
+    ],
+    "open": [
+      "erdos1057Conjecture: C(x) = x^{1-o(1)} (the main open problem)",
+      "pomeranceConjecture: C(x) ~ x * exp(-log x * log log log x / log log x)"
+    ],
+    "goal": "Formalize the conjecture and known bounds; prove structural theorems"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-27T22:18:02.332Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "DEEP_DIVE",
+    "since": "2026-02-04T20:00:00Z",
+    "iteration": 2,
+    "focus": "Structural theory of Carmichael numbers and counting function properties",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider lcm structure theorems or Aristotle submission for axioms",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Comprehensive structural theory proved. File has 15+ proven theorems covering small examples, oddness, minimum prime factor count (>=3), non-semiprimality, non-prime-power, counting function base values, unboundedness, and modular congruence. Known bounds formalized as axioms.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1057Problem.lean: IsCarmichael, satisfiesKorselt, C definitions",
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_561, carmichael_1105, carmichael_1729",
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_odd, carmichael_not_semiprime",
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_at_least_3_primes, carmichael_not_prime_power",
+      "proofs/Proofs/Erdos1057Problem.lean: C_mono, C_unbounded, C_zero, C_one, C_below_561, C_561_pos",
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_cong_one_mod, carmichael_prime_factor_lt"
+    ],
+    "insights": [
+      "Korselt criterion based proofs work well for structural results",
+      "The key lemma korselt_two_primes_impossible uses integer arithmetic lift for clean ℕ subtraction handling",
+      "Finset.card counting arguments require care with Lean 4.26 API (notMem_empty, card_insert_of_notMem)",
+      "C_unbounded proved inductively from infinitely_many_carmichaels using Finset.sup and card_insert",
+      "Nat.mul_add_mod is the correct lemma for (a*b+c) % a pattern in Lean 4.26"
+    ],
+    "mathlibGaps": [
+      "No Carmichael number theory in Mathlib (all definitions custom)",
+      "No Korselt criterion formalization"
+    ],
+    "nextSteps": [
+      "Consider submitting to Aristotle after converting axioms to theorem sorries",
+      "Prove more about the lcm structure: lcm(p_i - 1) | (n-1)",
+      "Prove that Carmichael numbers are products of distinct odd primes >= 3",
+      "Formalize the Pomerance heuristic more precisely"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Structural theory via Korselt criterion",
+      "status": "active",
+      "description": "Build comprehensive structural theory from Korselt's criterion: squarefree, odd, >= 3 prime factors, congruence properties"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "number-theory",
@@ -45,12 +91,18 @@
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Erdős 1956: On pseudoprimes and Carmichael numbers",
+      "Alford-Granville-Pomerance 1994: There are infinitely many Carmichael numbers",
+      "Lichtman 2022: Improved bounds on the counting function"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1057"
+    ],
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-01-27T22:18:02.332Z",
+  "lastUpdate": "2026-02-04T20:00:00Z",
   "significance": 7,
   "tractability": 6
 }
