@@ -63,13 +63,13 @@ def H (n : ℕ) : ℚ := ∑ k ∈ Finset.range n, (1 : ℚ) / (k + 1)
 The numerator when H_n is written with denominator L_n.
 a_n = H_n * L_n (as an integer)
 -/
-noncomputable def a (n : ℕ) : ℕ := (H n * L n).num.natAbs
+def a (n : ℕ) : ℕ := (H n * L n).num.natAbs
 
 /--
 **The GCD in question:**
 gcd(a_n, L_n)
 -/
-noncomputable def harmonicGCD (n : ℕ) : ℕ := Nat.gcd (a n) (L n)
+def harmonicGCD (n : ℕ) : ℕ := Nat.gcd (a n) (L n)
 
 /-!
 ## Part II: The Problem Statement
@@ -148,8 +148,9 @@ axiom wolstenholme_theorem (p : ℕ) (hp : Nat.Prime p) (hp5 : p ≥ 5) :
 **Connection to the Problem:**
 Wolstenholme implies that for n with leading digit p-1 in base p,
 we have p | gcd(a_n, L_n).
+(Documentation only; the logical content is in steinerberger_criterion.)
 -/
-axiom wolstenholme_implies_divisibility : True
+theorem wolstenholme_implies_divisibility : True := trivial
 
 /-!
 ## Part V: Characterization of Divisibility
@@ -173,7 +174,7 @@ axiom divisibility_characterization (n p : ℕ) (hp : Nat.Prime p) (hp_le : p �
 **Count of n with gcd = 1:**
 Let f(x) = #{n ≤ x : gcd(a_n, L_n) = 1}.
 -/
-noncomputable def countGCDOne (x : ℕ) : ℕ :=
+def countGCDOne (x : ℕ) : ℕ :=
   ((Finset.range x).filter (fun n => harmonicGCD n = 1)).card
 
 /--
@@ -184,17 +185,17 @@ This suggests:
 1. Infinitely many n with gcd = 1
 2. But the density is 0
 -/
-axiom shiu_heuristic :
+theorem shiu_heuristic :
     -- Informally: countGCDOne x ~ x / log x as x → ∞
-    True
+    True := trivial
 
 /--
 **Density Prediction:**
 The set {n : gcd(a_n, L_n) = 1} has density 0.
 -/
-axiom density_zero_prediction :
+theorem density_zero_prediction :
     -- The density of n with gcd = 1 should be 0
-    True
+    True := trivial
 
 /-!
 ## Part VII: Conditional Results
@@ -205,7 +206,9 @@ axiom density_zero_prediction :
 If α₁, ..., αₙ are complex numbers linearly independent over ℚ,
 then the transcendence degree of ℚ(α₁,...,αₙ,e^α₁,...,e^αₙ) over ℚ is ≥ n.
 -/
-axiom schanuelConjecture : Prop
+def schanuelConjecture : Prop :=
+  -- Schanuel's conjecture (see docstring above for informal statement)
+  True -- Placeholder; full formalization would require complex algebraic independence
 
 /--
 **Linear Independence Assumption:**
@@ -214,19 +217,19 @@ For any finite set of primes {p₁,...,pₖ}, the numbers
 
 (This follows from Schanuel's conjecture.)
 -/
-axiom log_prime_independence (primes : Finset ℕ) (h : ∀ p ∈ primes, Nat.Prime p) :
+theorem log_prime_independence (primes : Finset ℕ) (h : ∀ p ∈ primes, Nat.Prime p) :
     -- The 1/log(p) values are ℚ-linearly independent
-    True
+    True := trivial
 
 /--
 **Wu-Yan Theorem (2022):**
 Assuming Schanuel's conjecture (or just log-prime independence),
 the set {n : gcd(a_n, L_n) > 1} has upper density 1.
 -/
-axiom wu_yan_conditional :
+theorem wu_yan_conditional :
     -- Under Schanuel's conjecture:
     -- upper density of {n : harmonicGCD n > 1} = 1
-    True
+    True := trivial
 
 /-!
 ## Part VIII: Small Examples
@@ -244,9 +247,10 @@ n=6: H_6 = 49/20, L_6 = 60, a_6 = 147, gcd = 3
 
 So gcd > 1 first occurs at n = 6.
 -/
-axiom small_examples :
+/-- Small values verified computationally (previously axiom). -/
+theorem small_examples :
     harmonicGCD 1 = 1 ∧ harmonicGCD 2 = 1 ∧ harmonicGCD 3 = 1 ∧
-    harmonicGCD 4 = 1 ∧ harmonicGCD 5 = 1 ∧ harmonicGCD 6 = 3
+    harmonicGCD 4 = 1 ∧ harmonicGCD 5 = 1 ∧ harmonicGCD 6 = 3 := by native_decide
 
 /-!
 ## Part IX: Why Part 1 is Hard
@@ -262,7 +266,7 @@ axiom small_examples :
 
 The problem is open because the heuristic is hard to make rigorous.
 -/
-axiom why_hard : True
+theorem why_hard : True := trivial
 
 /-!
 ## Part X: Summary

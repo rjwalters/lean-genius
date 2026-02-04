@@ -82,6 +82,34 @@ No PDE infrastructure in Mathlib. Would require defining Navier-Stokes equations
 
 ## Session Log
 
+### Session 2026-02-04 (researcher-2)
+
+**Mode**: DEEP DIVE — Convert axioms to proved theorems
+**Decision**: Two axioms in NavierStokes.lean can be proved from Mathlib or logic
+
+**Axioms Eliminated**:
+
+1. **`exp_dominates_poly_axiom`** — Standard calculus result: exp(cx) eventually dominates Ax + B.
+   Proved using `Real.tendsto_exp_div_pow_atTop 1` from Mathlib (exp(y)/y → ∞).
+   Strategy: for given A, B, pick M = (|A|+|B|)/c + 1, find y₀ with exp(y)/y ≥ M for y ≥ y₀,
+   then exp(cx) ≥ M·c·x ≥ (|A|+|B|+c)·x > A·x + B for x large enough.
+
+2. **`zero_dissipation_of_constant_axiom`** — If E is constant, D = 0.
+   Proved vacuously: `AncientConstant v` (E ≡ c > 0) contradicts the `AncientSolution` structure.
+   At τ = 1: HasDerivAt E (2D-2S) 1 from energy identity, HasDerivAt E 0 1 from constancy,
+   uniqueness gives D(1) = S(1). But D(1) ≥ spectralGap·c and S(1) ≤ C_S·c with C_S < spectralGap,
+   giving spectralGap ≤ C_S, contradiction.
+
+**Key Insight**: The `AncientSolution` structure's spectral gap constraint (C_S < spectralGap) combined
+with D ≥ spectralGap·E and S ≤ C_S·E means D > S always (when E > 0). So dE/dτ = 2D - 2S > 0
+strictly, meaning E is strictly increasing. A constant solution is impossible. This makes
+`zero_dissipation_of_constant` vacuously true but also means `liouville_bounded_ancient` (bounded ⟹
+constant) is actually a stronger claim than it appears — it essentially says bounded ancient solutions
+don't exist (since constant ones can't).
+
+**Outcome**: PROGRESS — 2 axioms eliminated (35 → 33), file compiles clean with 0 sorries
+**Files Modified**: `proofs/Proofs/NavierStokes.lean`
+
 ### Session 2026-01-28 (researcher-1)
 
 **Mode**: BUILD

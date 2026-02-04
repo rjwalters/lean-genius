@@ -79,7 +79,10 @@ This file does NOT solve the 3D Millennium Problem. It provides:
 
 **Formalization Notes:**
 - 0 sorries (all previously sorry'd lemmas are now proved or axiomatized)
-- 35 axioms (measure-theoretic, PDE, physical, conjectures)
+- 33 axioms (measure-theoretic, PDE, physical, conjectures) — down from 35
+- `exp_dominates_poly` previously an axiom, now PROVED via Real.tendsto_exp_div_pow_atTop
+- `zero_dissipation_of_constant` previously an axiom, now PROVED (vacuously: AncientConstant
+  contradicts spectral gap structure, so conclusion is vacuously true)
 - `E_bounded_after` previously an axiom, now PROVED via antitoneOn
 - `ancient_E_monotone` proof fixed for Mathlib API changes
 - Part X-B: `GlobalNSSolution2D` proves global enstrophy bound WITHOUT axioms
@@ -292,16 +295,48 @@ theorem growth_unbounded (E₀ : ℝ) (hE₀ : 0 < E₀) (h : ℝ) (hh : 0 < h) 
   nlinarith [hE₀, hEc, h3]
 
 
-/-- **Axiom: Exponential Dominates Polynomial**
+/-- **PROVED: Exponential Dominates Polynomial** (previously axiom)
     Standard calculus result: exp grows faster than any polynomial.
-    For any linear function Ax + B, exp(cx) eventually dominates. -/
-axiom exp_dominates_poly_axiom (c : ℝ) (hc : c > 0) :
-    ∀ A B : ℝ, ∃ x₀ > 0, ∀ x > x₀, Real.exp (c * x) > A * x + B
-
-/-- Exponential dominates polynomial -/
+    For any linear function Ax + B, exp(cx) eventually dominates.
+    Proof uses Real.tendsto_exp_div_pow_atTop from Mathlib:
+    exp(y)/y → ∞ as y → ∞, which gives exp(cx) ≫ cx ≫ Ax + B. -/
 theorem exp_dominates_poly (c : ℝ) (hc : c > 0) :
-    ∀ A B : ℝ, ∃ x₀ > 0, ∀ x > x₀, Real.exp (c * x) > A * x + B :=
-  exp_dominates_poly_axiom c hc
+    ∀ A B : ℝ, ∃ x₀ > 0, ∀ x > x₀, Real.exp (c * x) > A * x + B := by
+  intro A B
+  -- We use: exp(y)/y → ∞ as y → ∞ (Mathlib)
+  have h_tendsto := Real.tendsto_exp_div_pow_atTop 1
+  simp only [pow_one] at h_tendsto
+  rw [Filter.tendsto_atTop_atTop] at h_tendsto
+  -- Choose M so that M*c > |A| and M*c > |B|, i.e., M > (|A| + |B|)/c
+  set M := (|A| + |B|) / c + 1 with hM_def
+  obtain ⟨y₀, hy₀⟩ := h_tendsto M
+  -- x₀ = max (y₀/c + 1) 1 ensures x₀ > 0 and c*x₀ > y₀
+  refine ⟨max (y₀ / c + 1) 1, lt_of_lt_of_le one_pos (le_max_right _ _), fun x hx => ?_⟩
+  have hx_pos : x > 0 := by linarith [le_max_right (y₀ / c + 1) 1]
+  have hcx_pos : c * x > 0 := mul_pos hc hx_pos
+  have hx_ge_1 : x ≥ 1 := by linarith [le_max_right (y₀ / c + 1) 1]
+  -- c*x ≥ y₀
+  have hcx_ge : c * x ≥ y₀ := by
+    have : x > y₀ / c + 1 := lt_of_le_of_lt (le_max_left _ _) hx
+    nlinarith [div_mul_cancel₀ y₀ (ne_of_gt hc)]
+  -- exp(cx)/(cx) ≥ M, so exp(cx) ≥ M * cx
+  have h_ratio : Real.exp (c * x) / (c * x) ≥ M := hy₀ (c * x) hcx_ge
+  have h_exp_ge : Real.exp (c * x) ≥ M * (c * x) := by
+    rwa [ge_iff_le, le_div_iff₀ hcx_pos] at h_ratio
+  -- M * c * x = ((|A|+|B|)/c + 1) * c * x = (|A|+|B|+c) * x ≥ (|A|+|B|) * x + x
+  -- For x ≥ 1: (|A|+|B|)*x + x ≥ |A|*x + |B| + 1 > A*x + B
+  -- Actually: exp(cx) ≥ M*c*x and M*c = |A|+|B| + c, so
+  -- M*c*x = (|A|+|B|)*x + c*x ≥ |A|*x + |B|*x + c*x
+  -- |A|*x ≥ A*x (since |A| ≥ A) and |B|*x ≥ |B| ≥ B (since x ≥ 1, |B| ≥ B)
+  -- So M*c*x ≥ A*x + B + c*x > A*x + B
+  have hMc : M * c = |A| + |B| + c := by
+    rw [hM_def]; field_simp; ring
+  calc Real.exp (c * x) ≥ M * (c * x) := h_exp_ge
+    _ = M * c * x := by ring
+    _ = (|A| + |B| + c) * x := by rw [hMc]
+    _ = |A| * x + |B| * x + c * x := by ring
+    _ > A * x + B := by nlinarith [abs_nonneg A, le_abs_self A, neg_abs_le A,
+                                    abs_nonneg B, le_abs_self B, neg_abs_le B]
 
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -420,16 +455,64 @@ theorem liouville_bounded_ancient (v : AncientSolution) (hb : AncientBounded v) 
   liouville_bounded_ancient_axiom v hb
 
 
-/-- **Axiom: Zero Dissipation of Constant**
-    If E is constant, dE/dτ = 0, so 2D - 2S = 0.
-    Combined with D ≥ spectralGap·E and S ≤ C_S·E, this forces D = 0. -/
-axiom zero_dissipation_of_constant_axiom (v : AncientSolution) (hc : AncientConstant v) :
-    ∀ τ ≥ 0, v.D τ = 0
+/-- **PROVED: Zero Dissipation of Constant** (previously axiom)
+    If E is constant c > 0, then dE/dτ = 0, so 2D - 2S = 0, i.e., D = S.
+    But D ≥ spectralGap·E = spectralGap·c and S ≤ C_S·c with C_S < spectralGap.
+    This gives spectralGap·c ≤ D = S ≤ C_S·c, contradicting C_S < spectralGap (since c > 0).
+    Therefore AncientConstant is vacuously impossible, making this theorem vacuously true.
 
-/-- Zero dissipation for constant energy -/
+    Proof at τ = 1: The energy identity gives HasDerivAt E (2D(1) - 2S(1)) 1.
+    Since E is constant c on [0,∞) ⊃ (0,2) ∋ 1, E also has derivative 0 at 1.
+    Uniqueness of derivatives gives 2D(1) = 2S(1), but spectral gap contradicts this. -/
 theorem zero_dissipation_of_constant (v : AncientSolution) (hc : AncientConstant v) :
-    ∀ τ ≥ 0, v.D τ = 0 :=
-  zero_dissipation_of_constant_axiom v hc
+    ∀ τ ≥ 0, v.D τ = 0 := by
+  -- AncientConstant v means ∃ c > 0, ∀ τ ≥ 0, E τ = c
+  obtain ⟨c, hc_pos, hconst⟩ := hc
+  -- We derive a contradiction, making the conclusion vacuously true.
+  exfalso
+  -- At τ = 1 (> 0), the energy identity gives HasDerivAt E (2D(1) - 2S(1)) 1
+  have hderiv_energy : HasDerivAt v.E (2 * v.D 1 - 2 * v.S 1) 1 := v.E_diff 1 (by norm_num)
+  -- E is constant c on [0, ∞), so on the open interval (0, 2) ∋ 1, E agrees with (fun _ => c)
+  -- HasDerivAt (fun _ => c) 0 1
+  have hderiv_const : HasDerivAt (fun _ : ℝ => c) 0 1 := hasDerivAt_const 1 c
+  -- E agrees with the constant function c in a neighborhood of 1
+  -- Specifically, on the open set Ioi 0 which is a neighborhood of 1
+  have hE_eq_c : ∀ᶠ x in nhds (1 : ℝ), v.E x = c := by
+    rw [Filter.eventually_iff_exists_mem]
+    refine ⟨Ioi 0, Ioi_mem_nhds (by norm_num : (0:ℝ) < 1), fun x hx => ?_⟩
+    exact hconst x (le_of_lt hx)
+  -- E is also 0 at 1: use HasDerivAt for constant function, transfer via local equality
+  -- HasDerivAt (fun _ => c) 0 1 from hasDerivAt_const
+  have hg : HasDerivAt (fun _ : ℝ => c) 0 1 := hasDerivAt_const 1 c
+  -- v.E =ᶠ[nhds 1] (fun _ => c) since E x = c for all x > 0, and Ioi 0 ∈ nhds 1
+  have hE_eq : v.E =ᶠ[nhds 1] (fun _ => c) := by
+    filter_upwards [Ioi_mem_nhds (show (0:ℝ) < 1 by norm_num)] with x hx
+    exact hconst x (le_of_lt hx)
+  -- Transfer derivative: HasDerivAt v.E 0 1
+  -- congr_of_eventuallyEq : HasDerivAt f f' x → (f₁ =ᶠ[nhds x] f) → f₁ x = f x → HasDerivAt f₁ f' x
+  have hderiv_zero : HasDerivAt v.E 0 1 :=
+    hg.congr_of_eventuallyEq hE_eq (hconst 1 (by norm_num : (1:ℝ) ≥ 0))
+  -- Uniqueness of derivatives: 2D(1) - 2S(1) = 0
+  have h_eq : 2 * v.D 1 - 2 * v.S 1 = 0 := hderiv_energy.unique hderiv_zero
+  -- So D(1) = S(1)
+  have hDS : v.D 1 = v.S 1 := by linarith
+  -- But D(1) ≥ spectralGap * E(1) = spectralGap * c
+  have hD_lower : v.D 1 ≥ spectralGap * c := by
+    have := v.spectral_gap 1 (by norm_num : (1:ℝ) ≥ 0)
+    rw [hconst 1 (by norm_num : (1:ℝ) ≥ 0)] at this
+    exact this
+  -- And S(1) ≤ C_S * E(1) = C_S * c
+  have hS_upper : v.S 1 ≤ v.C_S * c := by
+    have := v.stretching_bound 1 (by norm_num : (1:ℝ) ≥ 0)
+    rw [hconst 1 (by norm_num : (1:ℝ) ≥ 0)] at this
+    exact this
+  -- So spectralGap * c ≤ D(1) = S(1) ≤ C_S * c
+  -- This gives spectralGap * c ≤ C_S * c, hence spectralGap ≤ C_S (since c > 0)
+  have h_gap_le : spectralGap ≤ v.C_S := by
+    have : spectralGap * c ≤ v.C_S * c := by linarith [hD_lower, hS_upper, hDS]
+    exact le_of_mul_le_mul_right this hc_pos
+  -- But C_S < spectralGap by the structure constraint
+  exact absurd h_gap_le (not_le.mpr v.C_S_lt_spectralGap)
 
 
 /-- Constant ⟹ no blowup rate [PROVED] -/
@@ -2093,6 +2176,8 @@ This file correctly models the state of knowledge as of December 2025.
 /-- Summary: What this file proves vs. assumes
 
 **PROVEN** (no axioms):
+- **exp_dominates_poly** — exp(cx) eventually dominates Ax + B (via Mathlib asymptotics)
+- **zero_dissipation_of_constant** — vacuously true: AncientConstant contradicts spectral gap
 - ESS backward uniqueness theorem for ancient solutions
 - Ancient solution E monotone (Mathlib API fixed)
 - Type I blowup excluded (ancient bounded ⟹ constant)
@@ -2108,8 +2193,8 @@ This file correctly models the state of knowledge as of December 2025.
 **AXIOMATIZED** (published results, could be fully formalized):
 - Measure-theoretic integrals (Categories A, B)
 - Published PDE results (Category B)
+- Liouville bounded ancient (bounded ⟹ constant; needs monotone convergence)
 - 2D global existence for ALL t > 0 (finite-horizon extension, see Part X)
-- 2D global enstrophy bound (proved in Part X-B via GlobalNSSolution2D)
 - 2D uniqueness (Sobolev framework needed)
 
 **HYPOTHESIZED** (the actual mathematical gap):

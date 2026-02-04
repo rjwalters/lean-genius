@@ -42,29 +42,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed compilation issues (broken Mathlib imports, ambiguous lcm, noncomputable). Implemented leadingDigit definition removing the only sorry. File now builds successfully with 0 sorries, 10 axioms (appropriate for OPEN problem).",
+    "progressSummary": "PROGRESS: Eliminated 6 axioms (10 → 4). Made harmonicGCD computable, proved small_examples via native_decide. Remaining 4 axioms are all mathematically substantive.",
     "builtItems": [
       "Erdos291Problem.lean:106-115 - leadingDigit definition (was sorry, now implemented)",
       "Erdos291Problem.lean:35-39 - Fixed imports for Mathlib v4.26.0",
-      "Erdos291Problem.lean:53 - Disambiguated Nat.lcm",
-      "Erdos291Problem.lean:72 - Added noncomputable to harmonicGCD"
+      "Removed noncomputable from a, harmonicGCD, countGCDOne (all computable now)",
+      "Converted 6 vacuous True axioms to trivial theorems",
+      "Converted schanuelConjecture from axiom to def",
+      "Proved small_examples via native_decide (was axiom)"
     ],
     "insights": [
       "Mathlib.Data.Rat.Basic and Mathlib.Algebra.BigOperators.Group.Finset removed in Mathlib v4.26.0",
       "Use Mathlib.Data.Rat.Defs and Mathlib.Algebra.BigOperators.Ring.Finset instead",
-      "harmonicGCD must be noncomputable because it depends on noncomputable a (via Rat.num)",
-      "The lcm function is ambiguous between Nat.lcm and GCDMonoid.lcm when Mathlib.Tactic is imported",
-      "File has 10 axioms which is appropriate for an OPEN problem with known partial results",
-      "small_examples axiom could potentially be converted to a theorem via native_decide if harmonicGCD were computable"
+      "harmonicGCD IS computable - Rat arithmetic in Lean 4 is fully computable",
+      "Previous noncomputable annotation was unnecessary - Rat.num and natAbs are both computable",
+      "native_decide successfully verifies small_examples (harmonicGCD 1..6 values)",
+      "6 axioms were vacuously True (documentation-only) and could be proved trivially",
+      "Remaining 4 axioms are genuine math: steinerberger_criterion, part2_trivially_true, wolstenholme_theorem, divisibility_characterization"
     ],
     "mathlibGaps": [
       "leadingDigit (most significant digit in base p) - not in Mathlib, implemented here",
       "Wolstenholme's theorem is in Mathlib as Nat.Prime.prime_dvd_ascFactorial_sub_one but not in the exact form used here"
     ],
     "nextSteps": [
-      "Try to make small_examples provable (would require computable harmonicGCD)",
-      "Consider Aristotle submission for theorem sorries (but most are axioms for OPEN problem)",
-      "Update gallery meta.json to reflect 0 sorries"
+      "Consider Aristotle submission for wolstenholme_theorem (exists in Mathlib, different form)",
+      "Try proving steinerberger_criterion from divisibility_characterization + wolstenholme",
+      "Update gallery meta.json to reflect reduced axiom count"
     ],
     "markdown": ""
   },
