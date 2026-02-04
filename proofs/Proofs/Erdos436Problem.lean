@@ -42,7 +42,7 @@ open Nat Classical
 
 namespace Erdos436
 
-/-!
+/-
 ## Part I: Power Residue Definitions
 -/
 
@@ -66,7 +66,71 @@ For k = 2, this is the classical quadratic residue.
 -/
 def IsQuadraticResidue (r p : ℕ) : Prop := IsKthPowerResidue r 2 p
 
-/-!
+/-
+## Part Ib: Structural Properties of Power Residues
+-/
+
+/-- 0 is always a kth power residue mod p (witnessed by 0^k). -/
+theorem zero_is_kth_power_residue (k p : ℕ) (hk : k ≥ 1) :
+    IsKthPowerResidue 0 k p := by
+  exact ⟨0, by simp [Nat.zero_pow (by omega)]⟩
+
+/-- 1 is always a kth power residue mod p (witnessed by 1^k = 1). -/
+theorem one_is_kth_power_residue (k p : ℕ) (hk : k ≥ 1) :
+    IsKthPowerResidue 1 k p := by
+  exact ⟨1, by simp⟩
+
+/-- Any perfect kth power is a kth power residue mod p. -/
+theorem power_is_kth_residue (a k p : ℕ) : IsKthPowerResidue (a^k) k p := by
+  exact ⟨a, rfl⟩
+
+/-- Every integer is a 1st power residue (k=1). -/
+theorem first_power_residue (r p : ℕ) : IsKthPowerResidue r 1 p := by
+  exact ⟨r, by simp⟩
+
+/-- If r is a kth power residue mod p, then r % p is also. -/
+theorem kth_residue_mod (r k p : ℕ) (h : IsKthPowerResidue r k p) :
+    IsKthPowerResidue (r % p) k p := by
+  obtain ⟨x, hx⟩ := h
+  exact ⟨x, by rwa [Nat.mod_mod_of_dvd]⟩
+
+/-- A single element is trivially consecutive kth power residues (m=1). -/
+theorem consecutive_single (r k p : ℕ) (hr : IsKthPowerResidue r k p) :
+    AreConsecutiveKthResidues r k 1 p := by
+  intro i hi
+  simp at hi
+  subst hi
+  simpa
+
+/-- Consecutive residues: if r,...,r+m-1 are all kth power residues,
+    then so is r+i for any i < m. -/
+theorem consecutive_at (r k m p i : ℕ) (hi : i < m)
+    (h : AreConsecutiveKthResidues r k m p) :
+    IsKthPowerResidue (r + i) k p :=
+  h i hi
+
+/-- Extending: if r,...,r+m-1 are consecutive kth residues and r+m is also,
+    then r,...,r+m are consecutive. -/
+theorem consecutive_extend (r k m p : ℕ)
+    (h : AreConsecutiveKthResidues r k m p)
+    (hm : IsKthPowerResidue (r + m) k p) :
+    AreConsecutiveKthResidues r k (m + 1) p := by
+  intro i hi
+  by_cases him : i < m
+  · exact h i him
+  · have : i = m := by omega
+    subst this
+    exact hm
+
+/-- Shortening: consecutive kth residues of length m are also of length m'
+    for any m' ≤ m. -/
+theorem consecutive_shorten (r k m m' p : ℕ) (hm : m' ≤ m)
+    (h : AreConsecutiveKthResidues r k m p) :
+    AreConsecutiveKthResidues r k m' p := by
+  intro i hi
+  exact h i (by omega)
+
+/-
 ## Part II: The r(k,m,p) Function
 -/
 
@@ -86,7 +150,7 @@ For sufficiently large p, consecutive kth power residues always exist.
 axiom consecutive_residues_exist (k m p : ℕ) (hp : Nat.Prime p) (hp_large : p > m) :
     ∃ r : ℕ, r ≥ 1 ∧ AreConsecutiveKthResidues r k m p
 
-/-!
+/-
 ## Part III: The Λ(k,m) Function
 -/
 
@@ -106,7 +170,7 @@ noncomputable def Lambda (k m : ℕ) : ℕ :=
     Nat.find h
   else 0
 
-/-!
+/-
 ## Part IV: Known Exact Values for m = 2
 -/
 
@@ -148,7 +212,7 @@ Proved by Brillhart, Lehmer, and Lehmer (1964).
 -/
 axiom lambda_7_2 : Lambda 7 2 = 1649375
 
-/-!
+/-
 ## Part V: Hildebrand's Theorem (1991)
 -/
 
@@ -168,7 +232,7 @@ axiom hildebrand_theorem (k : ℕ) (hk : k ≥ 2) : LambdaFinite k 2
 theorem erdos_436_question1 : ∀ k : ℕ, k ≥ 2 → LambdaFinite k 2 :=
   hildebrand_theorem
 
-/-!
+/-
 ## Part VI: The m = 3 Case
 -/
 
@@ -196,14 +260,7 @@ Only Λ(3,3) = 23532 is known among odd k.
 def erdos436Question2 : Prop :=
   ∀ k : ℕ, k ≥ 3 → k % 2 = 1 → LambdaFinite k 3
 
-/--
-**Status of Question 2:**
-This remains open - we don't know if Λ(5,3), Λ(7,3), etc. are finite.
-We record this as an axiom asserting the question is meaningful but unresolved.
--/
-axiom question2_open : True -- Placeholder: Question 2 remains open as of 2026
-
-/-!
+/-
 ## Part VII: Graham's Theorem (1964)
 -/
 
@@ -228,7 +285,7 @@ theorem only_small_m_matters (k m : ℕ) (hk : k ≥ 2) :
   push_neg at h
   exact graham_theorem k m hk h hfin
 
-/-!
+/-
 ## Part VIII: The Quadratic Residue Case
 -/
 
@@ -252,7 +309,7 @@ consecutive pair of quadratic residues.
 axiom lambda_2_2_achieved :
     ∀ N : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > N ∧ minConsecKthResidues 2 2 p = 9
 
-/-!
+/-
 ## Part IX: Growth Rate Questions
 -/
 
@@ -267,19 +324,14 @@ def growthRatePolynomial : Prop :=
     (∃ d : ℕ, ∀ k : ℕ, k ≥ 2 → f k ≤ k ^ d)
 
 /--
-**Growth Appears Super-Polynomial:**
-The known values suggest growth faster than any polynomial.
+**Growth Rate:**
+The known values suggest rapid growth. The ratios
+77/9 ≈ 8.6, 1224/77 ≈ 15.9, 7888/1224 ≈ 6.4, 202124/7888 ≈ 25.6
+are irregular. The exact growth rate as a function of k remains open.
 -/
 axiom growth_appears_super_polynomial : ¬growthRatePolynomial
 
-/--
-**Ratios of Consecutive Values:**
-77/9 ≈ 8.6, 1224/77 ≈ 15.9, 7888/1224 ≈ 6.4, 202124/7888 ≈ 25.6
-The ratios are irregular but generally increasing.
--/
-axiom growth_ratio_observations : True
-
-/-!
+/-
 ## Part X: Summary
 -/
 
@@ -319,13 +371,26 @@ unknown for odd k ≥ 5), and m ≥ 4 is always infinite (Graham).
 -/
 theorem erdos_436 : True := trivial
 
-/--
-**Historical Note:**
-The Lehmers (D.H. and Emma) initiated this problem in 1962.
-The elegant proof of Λ(2,2) = 9 shows the beauty of the subject.
-Machine computations in the 1960s found exact values through k = 7.
-Hildebrand's 1991 theorem used deep analytic number theory.
--/
-theorem historical_note : True := trivial
+/-- The parity dichotomy: for even k, m=3 is infinite. -/
+theorem even_k_m3_infinite (k : ℕ) (hk : k ≥ 2) (heven : Even k) :
+    ¬LambdaFinite k 3 :=
+  lambda_even_3_infinite k hk (Even.two_dvd heven)
+
+/-- Λ(k,m) = ∞ for m ≥ 4 implies m ≤ 3 when Λ is finite (restatement). -/
+theorem lambda_finite_small_m (k m : ℕ) (hk : k ≥ 2) (hfin : LambdaFinite k m) :
+    m ≤ 3 :=
+  only_small_m_matters k m hk hfin
+
+/-- Combining Hildebrand with known values: the quadratic case is complete. -/
+theorem quadratic_case_complete : LambdaFinite 2 2 ∧ Lambda 2 2 = 9 :=
+  ⟨hildebrand_theorem 2 (by omega), lambda_2_2⟩
+
+/-- For k=2: Graham implies no 4 consecutive quadratic residues universally. -/
+theorem no_four_consecutive_qr : ¬LambdaFinite 2 4 :=
+  graham_theorem 2 4 (by omega) (by omega)
+
+/-- Combining Graham: m=5 is also infinite. -/
+theorem no_five_consecutive : ∀ k : ℕ, k ≥ 2 → ¬LambdaFinite k 5 :=
+  fun k hk => graham_theorem k 5 hk (by omega)
 
 end Erdos436
