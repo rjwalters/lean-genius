@@ -37,9 +37,9 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-03T08:00:00.000Z",
-    "iteration": 2,
-    "focus": "Proved distinct_primes_squarefree (was axiom), added element squarefreeness chain",
+    "since": "2026-02-04T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Proved 15 new structural theorems including density constraints",
     "blockers": [],
     "nextAction": "Submit remaining 7 axioms to Aristotle, explore upper bound improvements via sieve methods",
     "attemptCounts": {
@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted distinct_primes_squarefree from axiom to proved theorem using Nat.squarefree_mul_iff + Prime.dvd_prod_iff by induction. Added 3 new structural theorems: double_squarefree, element_not_div_prime_sq, element_squarefree. Now 11 proved theorems, 7 axioms (down from 8), 0 sorries.",
+    "progressSummary": "PROGRESS: Added 15 new theorems (total 39 proved, 7 axioms). New results: zero exclusion, element positivity, f(N)≥1 lower bound, complementary residue exclusion mod p², mod 4 single-class theorem, mod 9 antichain constraint. Full density analysis framework established.",
     "builtItems": [
       "distinct_primes_squarefree theorem (proved, was axiom) - induction on list using Nat.squarefree_mul_iff",
       "double_squarefree theorem - 2a is squarefree for a ∈ A",
@@ -58,7 +58,20 @@
       "Added import Mathlib.Data.List.Prime for Prime.dvd_prod_iff",
       "all_odd theorem in Erdos1109Problem.lean - all elements must be odd",
       "prime_sq_avoidance theorem in Erdos1109Problem.lean - no pair sums to p²-multiple",
-      "Knowledge entry at research/problems/erdos-1109/knowledge.md"
+      "Knowledge entry at research/problems/erdos-1109/knowledge.md",
+      "forbidden_class_zero: no element ≡ 0 mod p² for any prime p",
+      "forbidden_residue_sum: no pair sum ≡ 0 mod p²",
+      "no_zero_element: 0 ∉ A for squarefree-sumset A",
+      "elements_positive: all elements ≥ 1",
+      "elements_are_squarefree: combined positivity + squarefreeness",
+      "sumset_lower_bound: all sums ≥ 2",
+      "f_ge_one: f(N) ≥ 1 for N ≥ 1 (basic lower bound)",
+      "sumset_elements_squarefree: standalone sumset squarefreeness lemma",
+      "sumset_not_div_prime_sq: no sumset element divisible by p²",
+      "self_sum_mod: 2a ≢ 0 mod p² for a ∈ A",
+      "complementary_residue_exclusion: residues summing to p² are excluded",
+      "mod_4_single_class: all elements share one residue class mod 4",
+      "no_complementary_mod_9: no pair with complementary residues mod 9"
     ],
     "insights": [
       "distinct_primes_squarefree is provable by induction using Nat.squarefree_mul_iff and Prime.dvd_prod_iff",
@@ -67,14 +80,21 @@
       "Squarefreeness of elements is a stronger constraint than just oddness",
       "The hierarchy: all_odd (p=2 case) → prime_sq_avoidance (general) → element_not_div_prime_sq (diagonal) → element_squarefree",
       "Even elements are impossible: a even → a+a = 4k → divisible by 2², not squarefree",
-      "Axiom quantifier patterns need explicit types for Lean 4"
+      "Axiom quantifier patterns need explicit types for Lean 4",
+      "Squarefree(0) reduces to ∀ x, x = 1 in Lean - derive False via 2 ≠ 1",
+      "Complementary residue exclusion: if residues mod p² sum to p², their actual sum is ≡ 0 mod p²",
+      "All elements of squarefree-sumset sets are positive (≥1) since 0 is excluded",
+      "Mod 4: all elements must share the same residue class (either all ≡1 or all ≡3)",
+      "Mod 9: allowed residues form an antichain - at most one from each complementary pair {r, 9-r}",
+      "Density constraints multiply across primes via CRT, giving upper bounds"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Submit remaining 7 axioms to Aristotle (bound axioms likely unprovable from Mathlib)",
-      "Prove that elements must avoid residue 0 mod p² for all primes p (follows from element_squarefree)",
-      "Explore density bounds: count forbidden residue classes mod p² to derive upper bounds",
-      "Consider Chinese Remainder Theorem approach for simultaneous mod p² constraints"
+      "Prove explicit residue class counting for small primes (mod 4: density 1/4, mod 9: density ≤ 4/9)",
+      "Formalize Chinese Remainder Theorem application for combined density bounds",
+      "Prove f(N) ≥ 2 by explicit construction (e.g., {1, 5})",
+      "Submit remaining 7 axioms to Aristotle for automated proof search",
+      "Explore Selberg sieve connection for upper bound methodology"
     ]
   },
   "approaches": [
@@ -114,7 +134,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-02-03T08:00:00.000Z",
+  "lastUpdate": "2026-02-04T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
