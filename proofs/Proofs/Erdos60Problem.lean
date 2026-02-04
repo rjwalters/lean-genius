@@ -195,8 +195,8 @@ def PanGraph : SimpleGraph (Fin 4) :=
 The Pan graph has 4 edges.
 -/
 lemma pan_graph_edge_count : PanGraph.edgeSet.ncard = 4 := by
-  -- TODO: Needs DecidableRel PanGraph.Adj instance for native_decide
-  sorry
+  unfold Erdos60.PanGraph;
+  simp +decide [ Set.ncard_eq_toFinset_card' ]
 
 /-
 The Pan graph has no C4 copies.
@@ -259,9 +259,8 @@ lemma five_edges_eq_K4_minus_edge (G : SimpleGraph (Fin 4)) (h : G.edgeSet.ncard
       -- Let's choose any edge $e$ in $K_4$ and show that $G$ is equal to $K_4$ with that edge removed.
       obtain ⟨e, he⟩ : ∃ e ∈ AllEdges, G.edgeSet = AllEdges.erase e := by
         have h_edge_subset : G.edgeSet ⊆ AllEdges := by
-          intro e he
-          simp only [AllEdges, Finset.coe_filter, Set.mem_setOf_eq]
-          exact ⟨Finset.mem_univ e, G.not_isDiag_of_mem_edgeSet he⟩
+          rintro ⟨ a, b ⟩ hab;
+          exact Finset.mem_filter.mpr ⟨ Finset.mem_univ _, by fin_cases a <;> fin_cases b <;> simp_all +decide ⟩;
         -- Since $G$ has 5 edges and $AllEdges$ has 6 edges, $G$ must be missing exactly one edge from $AllEdges$.
         obtain ⟨e, he⟩ : ∃ e ∈ AllEdges, e ∉ G.edgeSet := by
           contrapose! h;
