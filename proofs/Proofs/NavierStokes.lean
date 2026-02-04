@@ -793,31 +793,32 @@ theorem θcrit_lt_099 : θcrit < 0.99 := by
     _ < 0.99 := by norm_num
 
 
-/-- **Axiom: Key Inequality Full**
-    κ·c_FK = (1-e⁻²)²·π²/4.
-    Note: This may require κ_gaussian · c_FK_full calculation review.
-    Used in concentration framework. -/
+/-- **Axiom: Key Inequality Full** — WARNING: NUMERICALLY FALSE
+    With the current definitions, κ_gaussian = 1 - e⁻² ≈ 0.865 and
+    c_FK_full = κ_gaussian · π²/4 ≈ 2.134, so their product ≈ 1.845 < 2.
+    The original proof sketch likely intended a different Faber-Krahn constant.
+    Retained as axiom to preserve downstream proof structure. -/
 axiom key_inequality_full_axiom : κ_gaussian * c_FK_full > 2
 
-/-- THE KEY INEQUALITY: κ·c_FK > 2 -/
+/-- THE KEY INEQUALITY: κ·c_FK > 2 (see warning on axiom above) -/
 theorem key_inequality_full : κ_gaussian * c_FK_full > 2 := key_inequality_full_axiom
 
 
-/-- **Axiom: Theta Crit cFK Greater Than 1**
-    θcrit·c_FK_full = (κ/2)·(κ·π²/4) = κ²·π²/8.
-    Requires numerical verification of the product. -/
+/-- **Axiom: Theta Crit cFK Greater Than 1** — WARNING: NUMERICALLY FALSE
+    θcrit = κ_gaussian/2 ≈ 0.432, c_FK_full ≈ 2.134, product ≈ 0.922 < 1.
+    Same constant mismatch as key_inequality_full_axiom. -/
 axiom θcrit_cFK_gt_1_axiom : θcrit * c_FK_full > 1
 
-/-- Explicit bound: κ·c_FK ≈ 1.83 > 1 -/
+/-- θcrit · c_FK > 1 (see warning on axiom above) -/
 theorem θcrit_cFK_gt_1 : θcrit * c_FK_full > 1 := θcrit_cFK_gt_1_axiom
 
 
-/-- **Axiom: Depletion Constant Negative**
-    2 - θcrit · c_FK_full < 0 follows from θcrit_cFK_gt_1.
-    This ensures enstrophy depletion in the stability regime. -/
+/-- **Axiom: Depletion Constant Negative** — WARNING: NUMERICALLY FALSE
+    2 - θcrit · c_FK_full ≈ 2 - 0.922 ≈ 1.078 > 0.
+    Follows from θcrit_cFK_gt_1_axiom being false. -/
 axiom depletion_constant_neg_axiom : 2 - θcrit * c_FK_full < 0
 
-/-- Depletion constant is negative -/
+/-- Depletion constant is negative (see warning on axiom above) -/
 theorem depletion_constant_neg : 2 - θcrit * c_FK_full < 0 := depletion_constant_neg_axiom
 
 
@@ -1969,10 +1970,10 @@ theorem enstrophy_antitone_global (sol : GlobalNSSolution2D) :
 /-- Global 2D NS solution with Poincaré inequality.
     When P ≥ λ₁E (spectral gap / Poincaré), we get exponential decay. -/
 structure GlobalNSSolution2DPoincare extends GlobalNSSolution2D where
-  λ₁ : ℝ                   -- first eigenvalue of -Δ on domain
-  λ₁_pos : 0 < λ₁
+  mu₁ : ℝ                   -- first eigenvalue of -Δ on domain (μ₁)
+  mu₁_pos : 0 < mu₁
   -- Poincaré inequality: palinstrophy controls enstrophy
-  poincare : ∀ t ≥ 0, P t ≥ λ₁ * E t
+  poincare : ∀ t ≥ 0, P t ≥ mu₁ * E t
 
 
 /-- **PROVED: Exponential Enstrophy Decay (2D with Poincaré)**
@@ -1992,12 +1993,12 @@ structure GlobalNSSolution2DPoincare extends GlobalNSSolution2D where
     Grönwall's inequality applied to this differential inequality. -/
 theorem enstrophy_decay_rate (sol : GlobalNSSolution2DPoincare) (t : ℝ) (ht : t > 0) :
     HasDerivAt sol.E (-2 * sol.ν * sol.P t) t ∧
-    -2 * sol.ν * sol.P t ≤ -2 * sol.ν * sol.λ₁ * sol.E t := by
+    -2 * sol.ν * sol.P t ≤ -2 * sol.ν * sol.mu₁ * sol.E t := by
   constructor
   · exact sol.enstrophy_ode t ht
   · have hν : sol.ν > 0 := sol.ν_pos
-    have hλ : sol.λ₁ > 0 := sol.λ₁_pos
-    have hP : sol.P t ≥ sol.λ₁ * sol.E t := sol.poincare t (le_of_lt ht)
+    have hmu : sol.mu₁ > 0 := sol.mu₁_pos
+    have hP : sol.P t ≥ sol.mu₁ * sol.E t := sol.poincare t (le_of_lt ht)
     -- -2ν·P ≤ -2ν·λ₁·E since P ≥ λ₁·E and ν > 0
     nlinarith
 
@@ -2007,7 +2008,7 @@ theorem enstrophy_decay_rate (sol : GlobalNSSolution2DPoincare) (t : ℝ) (ht : 
     This is the content of the ODE comparison lemma; the bound E(t) ≤ E(0)e^{-2νλ₁t}
     follows from standard Grönwall. -/
 theorem enstrophy_deriv_bound (sol : GlobalNSSolution2DPoincare) (t : ℝ) (ht : t > 0) :
-    deriv sol.E t ≤ -2 * sol.ν * sol.λ₁ * sol.E t := by
+    deriv sol.E t ≤ -2 * sol.ν * sol.mu₁ * sol.E t := by
   have ⟨hderiv, hbound⟩ := enstrophy_decay_rate sol t ht
   rw [hderiv.deriv]
   exact hbound

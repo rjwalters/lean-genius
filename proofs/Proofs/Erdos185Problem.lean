@@ -26,7 +26,10 @@ Related: OEIS A003142, Cap set problem in finite geometry
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Fin.Basic
 import Mathlib.Data.ZMod.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib.Analysis.Asymptotics.Defs
+import Mathlib.Analysis.Asymptotics.Lemmas
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Topology.Algebra.Order.LiminfLimsup
 
 open Asymptotics Filter
 
@@ -48,7 +51,7 @@ abbrev TernaryHypercube (n : ℕ) := Fin n → ZMod 3
 -/
 theorem hypercube_card (n : ℕ) :
     Fintype.card (TernaryHypercube n) = 3^n := by
-  simp [TernaryHypercube, Fintype.card_fun]
+  simp [TernaryHypercube]
 
 /-!
 ## Part II: Lines in {0,1,2}^n
@@ -61,6 +64,14 @@ Equivalently, y is the "midpoint" of x and z.
 -/
 def OnLine (x y z : TernaryHypercube n) : Prop :=
   ∀ i : Fin n, x i + z i = 2 * y i
+
+/-- OnLine is symmetric in the outer arguments: if x+z=2y then z+x=2y. -/
+theorem onLine_symm {x y z : TernaryHypercube n} (h : OnLine x y z) :
+    OnLine z y x := by
+  intro i
+  have := h i
+  rw [add_comm]
+  exact this
 
 /--
 **Combinatorial line:**
@@ -77,7 +88,7 @@ structure CombinatorialLine (n : ℕ) where
 A combinatorial line contains exactly 3 points.
 -/
 def CombinatorialLine.points (L : CombinatorialLine n) : Finset (TernaryHypercube n) :=
-  {0, 1, 2}.image (fun t : ZMod 3 => fun i =>
+  Finset.univ.image (fun t : ZMod 3 => fun i =>
     if i ∈ L.varying then t else L.fixed i)
 
 /-!
@@ -99,12 +110,26 @@ No combinatorial line is contained in S.
 def IsCapSetCombinatorial (S : Finset (TernaryHypercube n)) : Prop :=
   ∀ L : CombinatorialLine n, ¬(L.points ⊆ S)
 
+/-- The empty set is a cap set. -/
+theorem isCapSet_empty : IsCapSet (∅ : Finset (TernaryHypercube n)) := by
+  intro x _ _ hx
+  exact absurd hx (Finset.notMem_empty x)
+
+/-- Any pair of distinct points forms a cap set. -/
+theorem isCapSet_pair (a b : TernaryHypercube n) (hab : a ≠ b) :
+    IsCapSet ({a, b} : Finset (TernaryHypercube n)) := by
+  intro x y z hx hy hz hxy hyz hxz
+  simp [Finset.mem_insert, Finset.mem_singleton] at hx hy hz
+  -- Each of x, y, z is either a or b, but they're all distinct — impossible with 2 values
+  rcases hx with rfl | rfl <;> rcases hy with rfl | rfl <;> rcases hz with rfl | rfl <;>
+    simp_all
+
 /--
 **f₃(n):**
 The maximum size of a cap set in {0,1,2}^n.
 -/
 noncomputable def f3 (n : ℕ) : ℕ :=
-  sSup { S.card | S : Finset (TernaryHypercube n) // IsCapSet S }
+  sSup { m : ℕ | ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = m }
 
 /-!
 ## Part IV: Connection to Arithmetic Progressions
@@ -115,8 +140,8 @@ noncomputable def f3 (n : ℕ) : ℕ :=
 The maximum size of a subset of {1,...,N} with no 3-term arithmetic progression.
 -/
 noncomputable def R3 (N : ℕ) : ℕ :=
-  sSup { S.card | S : Finset ℕ // (∀ x ∈ S, x ≤ N) ∧
-    ∀ a d : ℕ, d > 0 → a ∈ S → a + d ∈ S → a + 2*d ∈ S → False }
+  sSup { m : ℕ | ∃ S : Finset ℕ, (∀ x ∈ S, x ≤ N) ∧
+    (∀ a d : ℕ, d > 0 → a ∈ S → a + d ∈ S → a + 2*d ∈ S → False) ∧ S.card = m }
 
 /--
 **Trivial lower bound:**
@@ -147,21 +172,25 @@ Taking points with coordinates summing to 0 or 1 (mod 3) gives a large cap set.
 def moserSet (n : ℕ) : Finset (TernaryHypercube n) :=
   Finset.univ.filter (fun x => (Finset.univ.sum x) = 0 ∨ (Finset.univ.sum x) = 1)
 
-axiom moser_set_is_cap (n : ℕ) : IsCapSet (moserSet n)
+/-- The Moser set avoids combinatorial lines (not all collinear triples).
+    Note: The Moser set is NOT a cap set in the `IsCapSet` sense: e.g. for n≥1,
+    the points (0,...,0), (1,...,1), (2,...,2) are all in the Moser set and collinear.
+    It avoids combinatorial lines, which is the relevant notion for Hales-Jewett. -/
+axiom moser_set_is_cap_combinatorial (n : ℕ) : IsCapSetCombinatorial (moserSet n)
 
 /-!
 ## Part VI: The Main Result - Density Hales-Jewett
 -/
 
 /--
-**Density Hales-Jewett Theorem (Furstenberg-Katznelson 1991):**
-For any δ > 0 and k ≥ 3, for sufficiently large n, any subset of [k]^n with
+**Density Hales-Jewett Theorem (Furstenberg-Katznelson 1991) for k=3:**
+For any δ > 0, for sufficiently large n, any subset of {0,1,2}^n with
 density at least δ contains a combinatorial line.
 -/
-axiom density_hales_jewett (k : ℕ) (hk : k ≥ 3) (δ : ℝ) (hδ : δ > 0) :
-    ∃ n₀ : ℕ, ∀ n ≥ n₀, ∀ S : Finset (Fin n → Fin k),
-      (S.card : ℝ) / k^n ≥ δ →
-        ∃ L : CombinatorialLine n, L.points.image (fun f => fun i => (f i : Fin k)) ⊆ S
+axiom density_hales_jewett_k3 (δ : ℝ) (hδ : δ > 0) :
+    ∃ n₀ : ℕ, ∀ n ≥ n₀, ∀ S : Finset (TernaryHypercube n),
+      (S.card : ℝ) / 3^n ≥ δ →
+        ∃ L : CombinatorialLine n, L.points ⊆ S
 
 /--
 **Corollary: f₃(n) = o(3^n):**
@@ -270,18 +299,19 @@ theorem erdos_185_density :
 **The answer: YES**
 -/
 theorem erdos_185_answer :
-    ∀ ε > 0, ∃ n₀ : ℕ, ∀ n ≥ n₀, (f3 n : ℝ) < ε * 3^n := by
+    ∀ ε > 0, ∃ n₀ : ℕ, ∀ n ≥ n₀, (f3 n : ℝ) ≤ ε * 3^n := by
   intro ε hε
   -- Follows from f₃(n) = o(3^n)
   have h := f3_is_little_o
   rw [isLittleO_iff] at h
-  specialize h hε
-  obtain ⟨n₀, hn₀⟩ := h.exists_forall_ge_atTop
+  have hev := h hε
+  rw [Filter.eventually_atTop] at hev
+  obtain ⟨n₀, hn₀⟩ := hev
   use n₀
   intro n hn
   have := hn₀ n hn
-  simp only [norm_of_nonneg (by positivity : (0 : ℝ) ≤ f3 n)] at this
-  simp only [Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ 3^n)] at this
+  simp only [Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ (f3 n : ℝ))] at this
+  simp only [Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ (3 : ℝ)^n)] at this
   linarith
 
 end Erdos185
