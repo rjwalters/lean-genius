@@ -462,9 +462,63 @@ theorem a5_not_comm : ¬ ∀ (a b : alternatingGroup (Fin 5)), a * b = b * a := 
 end NonCommutativity
 
 /-
+## Part XIV: Higher Cardinalities and Structure
+-/
+
+section HigherCardinalities
+
+/-- |S₇| = 5040 = 7!. -/
+theorem card_s7 : Fintype.card (Equiv.Perm (Fin 7)) = 5040 := by native_decide
+
+/-- |S₈| = 40320 = 8!. -/
+theorem card_s8 : Fintype.card (Equiv.Perm (Fin 8)) = 40320 := by native_decide
+
+/-- |A₇| = 2520 = 7!/2. -/
+theorem card_a7 : Fintype.card (alternatingGroup (Fin 7)) = 2520 := by native_decide
+
+/-- |A₈| = 20160 = 8!/2. -/
+theorem card_a8 : Fintype.card (alternatingGroup (Fin 8)) = 20160 := by native_decide
+
+/-- A₆ is not solvable. -/
+theorem a6_not_solvable_explicit : ¬ IsSolvable (alternatingGroup (Fin 6)) :=
+  alternating_not_solvable_of_five_le (by omega)
+
+/-- A₇ is not solvable. -/
+theorem a7_not_solvable_explicit : ¬ IsSolvable (alternatingGroup (Fin 7)) :=
+  alternating_not_solvable_of_five_le (by omega)
+
+/-- A₈ is not solvable. -/
+theorem a8_not_solvable : ¬ IsSolvable (alternatingGroup (Fin 8)) :=
+  alternating_not_solvable_of_five_le (by omega)
+
+end HigherCardinalities
+
+/-
+## Part XV: Factorial Identity Verification
+-/
+
+section FactorialIdentities
+
+/-- S_n has cardinality n! for small n (computational verification). -/
+theorem factorial_s3 : Fintype.card (Equiv.Perm (Fin 3)) = Nat.factorial 3 := by decide
+
+theorem factorial_s4 : Fintype.card (Equiv.Perm (Fin 4)) = Nat.factorial 4 := by decide
+
+theorem factorial_s5 : Fintype.card (Equiv.Perm (Fin 5)) = Nat.factorial 5 := by decide
+
+/-- A_n has cardinality n!/2 for n ≥ 2. -/
+theorem half_factorial_a3 : Fintype.card (alternatingGroup (Fin 3)) = Nat.factorial 3 / 2 := by decide
+
+theorem half_factorial_a4 : Fintype.card (alternatingGroup (Fin 4)) = Nat.factorial 4 / 2 := by decide
+
+theorem half_factorial_a5 : Fintype.card (alternatingGroup (Fin 5)) = Nat.factorial 5 / 2 := by decide
+
+end FactorialIdentities
+
+/-
 ## Summary
 
-Theorem Count: 44+ theorems/instances, 0 sorries, 0 axioms
+Theorem Count: 55+ theorems/instances, 0 sorries, 0 axioms
 
 **Small Groups Solvable**: S₀, S₁, S₂, A₃, S₃, A₄, S₄
 **Non-Solvable**: S_n (n ≥ 5), A_n (n ≥ 5)
