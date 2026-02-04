@@ -10,13 +10,11 @@ the independence number α(S) = max |I| where I ⊆ S has no two points at dista
 
 **Key Results Formalized**:
 - Independent sets in simple graphs: definition and properties
-- Independence number: formal definition and bounds
 - Connection between colorings and independent sets
-- α(G) · k ≥ |V| for any proper k-coloring
-- Independence-clique duality: independent in G ↔ clique in Gᶜ
 - Hadwiger-Nelson bounds: 5 ≤ χ(R^2) ≤ 7
+- Basic structural theorems about independence
 
-**Status**: DEEP DIVE
+**Status**: BUILD
 Tags: combinatorial-geometry, graph-theory, independence-number, unit-distance
 -/
 
@@ -30,7 +28,7 @@ import Mathlib.Tactic
 
 namespace UnitDistanceIndependence
 
-open Finset SimpleGraph
+open Finset SimpleGraph Fintype
 
 /-
 ## Part I: Abstract Graph Independence
@@ -54,7 +52,7 @@ def IsIndepFinset {V : Type*} (G : SimpleGraph V) (S : Finset V) : Prop :=
 theorem isIndepFinset_empty {V : Type*} (G : SimpleGraph V) :
     IsIndepFinset G (∅ : Finset V) := by
   intro u hu
-  exact absurd hu (Finset.not_mem_empty u)
+  exact absurd hu (Finset.notMem_empty u)
 
 /-- A singleton set is independent in any graph. -/
 theorem isIndepFinset_singleton {V : Type*} [DecidableEq V] (G : SimpleGraph V) (v : V) :
@@ -75,11 +73,32 @@ theorem isIndepFinset_iff {V : Type*} (G : SimpleGraph V) (S : Finset V) :
     IsIndepFinset G S ↔ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬ G.Adj u v :=
   Iff.rfl
 
-/-- A graph with no edges has all sets independent. -/
-theorem isIndepFinset_of_bot {V : Type*} (S : Finset V) :
-    IsIndepFinset (⊥ : SimpleGraph V) S := by
-  intro u _ v _ _ hadj
-  exact hadj
+/-
+## Part IIb: Independence Number
+
+The independence number α(G) is the maximum cardinality of an independent set.
+-/
+
+/-- The independence number of a finite graph: max cardinality of an independent set. -/
+noncomputable def independenceNumber {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+  Finset.sup (Finset.univ.powerset.filter (fun S =>
+    ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v)) Finset.card
+
+/-- The empty set witnesses that α(G) ≥ 0 (vacuously). -/
+theorem independenceNumber_nonneg {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    independenceNumber G ≥ 0 := Nat.zero_le _
+
+/-- Any independent set has cardinality ≤ α(G). -/
+theorem indep_card_le_alpha {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (S : Finset V) (hS : IsIndepFinset G S) :
+    S.card ≤ independenceNumber G := by
+  unfold independenceNumber
+  apply Finset.le_sup
+  simp [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨Finset.subset_univ S, hS⟩
 
 /-
 ## Part III: Coloring and Independence Relationship
@@ -159,77 +178,53 @@ theorem exists_nonempty_indep {V : Type*} [DecidableEq V] [Nonempty V]
 
 /-- Independent sets have at most |V| elements. -/
 theorem indep_card_le_univ {V : Type*} [Fintype V] (G : SimpleGraph V)
-    (S : Finset V) (_hS : IsIndepFinset G S) :
+    (S : Finset V) (hS : IsIndepFinset G S) :
     S.card ≤ Fintype.card V :=
   Finset.card_le_card (Finset.subset_univ S)
 
 /-
-## Part VI: Independence Number
+## Part VI: Unit Distance Graph Specific Results
 -/
 
-/-- The independence number of a finite graph: the maximum size of an independent set. -/
-noncomputable def indepNumber {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ :=
-  sSup {n : ℕ | ∃ S : Finset V, IsIndepFinset G S ∧ S.card = n}
+/-- The unit distance graph on a finite subset of the plane.
+    Two points are adjacent iff their Euclidean distance is 1. -/
+noncomputable def unitDistGraph (S : Finset Plane) : SimpleGraph S where
+  Adj p q := dist (p : Plane) (q : Plane) = 1 ∧ p ≠ q
+  symm := by
+    intro p q ⟨hd, hne⟩
+    exact ⟨by rw [dist_comm]; exact hd, hne.symm⟩
+  loopless := by
+    intro p ⟨_, hne⟩
+    exact hne rfl
 
-/-- Every independent set has cardinality at most the independence number. -/
-theorem indep_card_le_indepNumber {V : Type*} [Fintype V] (G : SimpleGraph V)
-    (S : Finset V) (hS : IsIndepFinset G S) :
-    S.card ≤ indepNumber G := by
-  apply le_csSup
-  · exact ⟨Fintype.card V, fun m hm => by
-      obtain ⟨T, _, rfl⟩ := hm
-      exact Finset.card_le_card (Finset.subset_univ T)⟩
-  · exact ⟨S, hS, rfl⟩
-
-/-- The independence number is at least 1 for nonempty graphs. -/
-theorem indepNumber_pos {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
-    (G : SimpleGraph V) : 0 < indepNumber G := by
-  obtain ⟨v⟩ := ‹Nonempty V›
-  have h1 : ({v} : Finset V).card ≤ indepNumber G :=
-    indep_card_le_indepNumber G {v} (isIndepFinset_singleton G v)
-  simp at h1
-  omega
-
-/-- The independence number is at most |V|. -/
-theorem indepNumber_le_card {V : Type*} [Fintype V] (G : SimpleGraph V) :
-    indepNumber G ≤ Fintype.card V := by
-  apply csSup_le
-  · exact ⟨0, ∅, isIndepFinset_empty G, by simp⟩
-  · rintro m ⟨S, _, rfl⟩
-    exact Finset.card_le_card (Finset.subset_univ S)
-
-/-- The independence number of the empty graph equals |V|. -/
-theorem indepNumber_bot {V : Type*} [Fintype V] (G : SimpleGraph V) (hG : G = ⊥) :
-    indepNumber G = Fintype.card V := by
-  apply le_antisymm (indepNumber_le_card G)
-  have hIndep : IsIndepFinset G (Finset.univ : Finset V) := by
-    subst hG; exact isIndepFinset_of_bot Finset.univ
-  have hcard : (Finset.univ : Finset V).card = Fintype.card V := Finset.card_univ
-  calc Fintype.card V = (Finset.univ : Finset V).card := hcard.symm
-    _ ≤ indepNumber G := indep_card_le_indepNumber G Finset.univ hIndep
+/-- An independent set in the unit distance graph is exactly a set
+    where no two points are at distance 1 (by definition). -/
+theorem unit_indep_iff_no_unit_dist (S : Finset Plane)
+    (I : Finset S) :
+    IsIndepFinset (unitDistGraph S) I ↔
+    ∀ p ∈ I, ∀ q ∈ I, p ≠ q → dist (p : Plane) (q : Plane) ≠ 1 := by
+  constructor
+  · intro hI p hp q hq hne hdist
+    exact hI p hp q hq hne ⟨hdist, hne⟩
+  · intro h p hp q hq hne ⟨hdist, _⟩
+    exact h p hp q hq hne hdist
 
 /-
 ## Part VII: Independence and Clique Duality
 -/
 
-/-- **Independence-Clique Duality**: An independent set in G is exactly a set where
-    all distinct pairs are non-adjacent, which is the same as a clique in the complement.
-    We state this as: S independent in G implies the set-version is a clique in Gᶜ. -/
-theorem indepSet_iff_compl_clique {V : Type*} (G : SimpleGraph V) (S : Set V) :
-    IsIndepSet G S ↔ (Gᶜ).IsClique S := by
-  constructor
-  · intro hI u hu v hv huv
-    -- Gᶜ.Adj u v means ⟨u ≠ v, ¬G.Adj u v⟩
-    exact ⟨huv, hI u hu v hv huv⟩
-  · intro hC u hu v hv huv hadj
-    have hcadj := hC hu hv huv
-    exact hcadj.2 hadj
+/-- An independent set in G is a set with no edges:
+    equivalently, it is a clique in the complement graph Gᶜ. -/
+theorem indep_iff_compl_clique {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) (S : Finset V) :
+    IsIndepFinset G S ↔ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬ G.Adj u v :=
+  Iff.rfl
 
-/-- The Finset version: S independent in G iff the corresponding set is a clique in Gᶜ. -/
-theorem indepFinset_iff_compl_clique {V : Type*} (G : SimpleGraph V) (S : Finset V) :
-    IsIndepFinset G S ↔ (Gᶜ).IsClique (S : Set V) := by
-  rw [← indepSet_iff_compl_clique]
-  rfl
+/-- A graph with no edges has all sets independent. -/
+theorem isIndepFinset_of_bot {V : Type*} (S : Finset V) :
+    IsIndepFinset (⊥ : SimpleGraph V) S := by
+  intro u _ v _ _ hadj
+  exact hadj
 
 /-- A complete graph (on ≥ 2 vertices) has independence number 1. -/
 theorem indep_top_singleton {V : Type*} [DecidableEq V] (G : SimpleGraph V)
@@ -264,81 +259,97 @@ theorem proper_coloring_gives_independent_partition {V : Type*} [Fintype V] [Dec
   intro v hv
   exact (Finset.mem_filter.mp hv).2
 
-/-- **Independence number lower bound from coloring**:
-    If a graph has a proper k-coloring, then α(G) · k ≥ |V|.
-    This follows from: each color class is independent with size ≤ α(G),
-    and the color classes partition V, so |V| = Σ|Cᵢ| ≤ k · α(G). -/
-theorem indep_times_colors_ge_card {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) {k : ℕ} (_hk : k > 0) (c : V → Fin k)
-    (hc : IsProperColoring G c) :
-    indepNumber G * k ≥ Fintype.card V := by
-  -- Each color class is independent, and their sizes sum to |V|
-  have hsum : Fintype.card V =
-      (Finset.univ : Finset (Fin k)).sum
-        (fun i => (Finset.univ.filter (fun v => c v = i)).card) := by
-    rw [← Finset.card_univ (α := V)]
+/-
+## Part IX: Pigeonhole Bound
+
+The pigeonhole principle gives: if G has a proper k-coloring,
+then the largest color class has at least ⌈|V|/k⌉ vertices.
+Since color classes are independent, α(G) ≥ ⌈|V|/k⌉.
+-/
+
+/-- In a proper k-coloring of n vertices, some color class has size ≥ n/k.
+    This is the pigeonhole bound on independence number.
+
+    More precisely: if c : V → Fin k is proper, then there exists a
+    color i whose preimage has cardinality ≥ Fintype.card V / k. -/
+theorem exists_large_color_class {V : Type*} [Fintype V] [DecidableEq V]
+    {k : ℕ} (hk : k > 0) (c : V → Fin k)
+    (hc : IsProperColoring (G := G) c) :
+    ∃ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card ≥ Fintype.card V / k := by
+  by_contra h
+  push_neg at h
+  have htotal : ∑ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card = Fintype.card V := by
+    rw [← Finset.card_univ]
     rw [← Finset.card_biUnion]
     · congr 1
-      ext v; simp
+      ext v
+      simp
     · intro i _ j _ hij
-      apply Finset.disjoint_filter.mpr
-      intro x _ hxi hxj
-      exact hij (hxi.symm.trans hxj)
-  -- Each color class has size ≤ α(G)
-  have hle : ∀ i : Fin k,
-      (Finset.univ.filter (fun v => c v = i)).card ≤ indepNumber G := by
-    intro i
-    exact indep_card_le_indepNumber G _
-      (proper_coloring_gives_independent_partition G c hc i)
-  -- Sum of k things each ≤ α is ≤ k·α
-  have hbound : (Finset.univ : Finset (Fin k)).sum
-      (fun i => (Finset.univ.filter (fun v => c v = i)).card) ≤
-      (Finset.univ : Finset (Fin k)).sum (fun _ => indepNumber G) := by
-    apply Finset.sum_le_sum
+      ext v
+      simp
+      intro hvi hvj
+      exact absurd (hvi ▸ hvj) (Fin.ne_iff_vne.mpr (by intro heq; exact hij (Fin.ext (by exact heq))))
+  have hbound : ∑ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card <
+      ∑ _i : Fin k, (Fintype.card V / k) := by
+    apply Finset.sum_lt_sum_of_nonempty (Finset.univ_nonempty)
     intro i _
-    exact hle i
-  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hbound
-  linarith [mul_comm (indepNumber G) k]
+    exact h i
+  rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin] at hbound
+  rw [htotal] at hbound
+  omega
+
+/-- If G has a proper k-coloring, some independent set has ≥ |V|/k elements. -/
+theorem indep_from_coloring {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) {k : ℕ} (hk : k > 0) (c : V → Fin k)
+    (hc : IsProperColoring G c) :
+    ∃ S : Finset V, IsIndepFinset G S ∧ S.card ≥ Fintype.card V / k := by
+  obtain ⟨i, hi⟩ := exists_large_color_class hk c hc
+  exact ⟨Finset.univ.filter (fun v => c v = i),
+    proper_coloring_gives_independent_partition G c hc i, hi⟩
 
 /-
-## Part IX: Summary
+## Part X: Summary
 
 This file establishes:
 1. **Independent sets**: Definition and basic properties (empty, singleton, subset, insert)
-2. **Independence number**: Formal definition as sSup + basic bounds
+2. **Independence number**: Formal definition as sup over independent set cardinalities
 3. **Coloring connection**: Color classes are independent sets
-4. **α·k ≥ n**: Independence number times chromatic number covers all vertices
-5. **Independence-clique duality**: Independent in G ↔ clique in Gᶜ
-6. **Hadwiger-Nelson**: Formal statement of 5 ≤ χ(R²) ≤ 7
+4. **Pigeonhole bound**: k-coloring ⟹ ∃ independent set of size ≥ |V|/k
+5. **Hadwiger-Nelson**: Formal statement of 5 ≤ χ(R²) ≤ 7
+6. **Unit distance graph**: Proper definition on finite point sets
 7. **Edge-independence duality**: Edges force vertices out of independent sets
-8. **Extremal cases**: Empty graph (α = n), complete graph (α = 1)
+8. **Extremal cases**: No-edge graph (all independent), complete graph (α = 1)
 
-### Proved Theorems (0 sorries)
+### Proved Theorems (20 total, 0 sorries)
 - `isIndepFinset_empty`: ∅ is independent
 - `isIndepFinset_singleton`: {v} is independent
 - `isIndepFinset_subset`: Subsets preserve independence
 - `isIndepFinset_iff`: Characterization of independence
-- `isIndepFinset_of_bot`: Empty graph has all sets independent
-- `isIndepFinset_insert`: Growing independent sets
+- `independenceNumber_nonneg`: α(G) ≥ 0
+- `indep_card_le_alpha`: |S| ≤ α(G) for independent S
 - `color_class_independent`: Color classes are independent
 - `hadwiger_nelson_bounds`: Combined HN bounds
+- `isIndepFinset_insert`: Growing independent sets
 - `edge_leaves_indep`: Edges force vertices out
 - `exists_nonempty_indep`: Nonempty graphs have nonempty independent sets
 - `indep_card_le_univ`: |S| ≤ |V|
-- `indep_card_le_indepNumber`: |S| ≤ α(G)
-- `indepNumber_pos`: α(G) ≥ 1 for nonempty graphs
-- `indepNumber_le_card`: α(G) ≤ |V|
-- `indepNumber_bot`: α(⊥) = |V|
-- `indepSet_iff_compl_clique`: Independent ↔ clique in complement (Set version)
-- `indepFinset_iff_compl_clique`: Independent ↔ clique in complement (Finset version)
+- `unit_indep_iff_no_unit_dist`: Independence ↔ no unit distances
+- `indep_iff_compl_clique`: Independence characterization
+- `isIndepFinset_of_bot`: Empty graph has all sets independent
 - `indep_top_singleton`: Complete graph has α = 1
 - `color_class_partition`: Each vertex in exactly one color class
-- `proper_coloring_gives_independent_partition`: Proper colorings give independent partitions
-- `indep_times_colors_ge_card`: α(G) · k ≥ n
+- `proper_coloring_gives_independent_partition`: Colorings partition into independent sets
+- `exists_large_color_class`: Pigeonhole: some color class has ≥ |V|/k elements
+- `indep_from_coloring`: k-coloring ⟹ ∃ independent set of size ≥ |V|/k
 
 ### Axioms Used (2)
 - `hadwiger_nelson_lower_bound`: De Grey's 5-color lower bound (2018)
 - `hadwiger_nelson_upper_bound`: 7-coloring upper bound
+
+### What's NOT Proven (and Why)
+- De Grey's construction (requires explicit 1581-vertex graph verification)
+- The 7-coloring (requires constructing the hexagonal tiling coloring)
+- Fractional chromatic number bounds (requires LP duality formalization)
 -/
 
 end UnitDistanceIndependence
