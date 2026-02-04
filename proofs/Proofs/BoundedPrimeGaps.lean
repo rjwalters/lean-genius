@@ -385,24 +385,185 @@ theorem not_admissible_of_covers_residues {H : Finset ℕ} {p : ℕ} (hp : Nat.P
   omega
 
 /-
+## Part XI: Structural Properties of Admissible Tuples
+-/
+
+/-- Admissible tuples have cardinality strictly less than every prime.
+    This is exactly the admissibility condition rephrased. -/
+theorem admissible_card_lt_of_prime {H : Finset ℕ} (hadm : IsAdmissible H) (p : ℕ)
+    (hp : Nat.Prime p) : (H.image (· % p)).card < p :=
+  hadm p hp
+
+/-- The image of an admissible set under mod p has strictly fewer
+    elements than p, so admissible sets always miss at least one residue class. -/
+theorem admissible_misses_residue {H : Finset ℕ} (hadm : IsAdmissible H) (p : ℕ)
+    (hp : Nat.Prime p) : (H.image (· % p)).card ≤ p - 1 := by
+  have h := hadm p hp
+  omega
+
+/-- EH conditional bound (12) implies the unconditional Polymath bound (246). -/
+theorem eh_implies_polymath :
+    (∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 12) →
+    (∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 246) := by
+  intro hEH N
+  obtain ⟨n, hn, hgap⟩ := hEH N
+  exact ⟨n, hn, by omega⟩
+
+/-- From Maynard-Tao with m = 2: there exist infinitely many bounded
+    consecutive prime gaps (recovers the Zhang/Polymath-type statement). -/
+theorem maynard_tao_consecutive_gaps :
+    ∃ C : ℕ, ∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ C := by
+  obtain ⟨C, hC⟩ := maynard_tao_m_tuples 2 (by omega)
+  refine ⟨C, fun N => ?_⟩
+  obtain ⟨n, hn, hbound⟩ := hC N
+  refine ⟨n, hn, ?_⟩
+  -- nthPrime (n + 2 - 1) - nthPrime n = nthPrime (n + 1) - nthPrime n = primeGap n
+  have : n + 2 - 1 = n + 1 := by omega
+  rw [this] at hbound
+  exact hbound
+
+/-- The 0th prime is 2. -/
+theorem nthPrime_zero : nthPrime 0 = 2 := by
+  unfold nthPrime
+  exact Nat.nth_prime_zero_eq_two
+
+/-- The 1st prime is 3. -/
+theorem nthPrime_one : nthPrime 1 = 3 := by
+  unfold nthPrime
+  exact Nat.nth_prime_one_eq_three
+
+/-- The first prime gap g(0) = p₁ - p₀ = 3 - 2 = 1. -/
+theorem primeGap_zero : primeGap 0 = 1 := by
+  show nthPrime 1 - nthPrime 0 = 1
+  rw [nthPrime_zero, nthPrime_one]
+
+/-- nthPrime is monotone (non-strict version of nthPrime_strictMono). -/
+theorem nthPrime_mono : Monotone nthPrime :=
+  nthPrime_strictMono.monotone
+
+/-- For n ≥ 1, nthPrime n ≥ 3 (all primes after p₀ = 2 are ≥ 3). -/
+theorem nthPrime_ge_three (n : ℕ) (hn : n ≥ 1) : nthPrime n ≥ 3 := by
+  have h1 : nthPrime 1 = 3 := nthPrime_one
+  have hmono : nthPrime 1 ≤ nthPrime n := nthPrime_mono hn
+  omega
+
+/-- nthPrime n ≥ 2 for all n (every prime is at least 2). -/
+theorem nthPrime_ge_two (n : ℕ) : nthPrime n ≥ 2 := by
+  have := nthPrime_prime n
+  exact this.two_le
+
+/-- The prime gap is bounded by the difference of consecutive primes:
+    primeGap n = nthPrime (n+1) - nthPrime n. -/
+theorem primeGap_eq (n : ℕ) : primeGap n = nthPrime (n + 1) - nthPrime n :=
+  rfl
+
+/-- Consecutive primes satisfy p_{n+1} = p_n + g(n). -/
+theorem nthPrime_succ_eq (n : ℕ) : nthPrime (n + 1) = nthPrime n + primeGap n := by
+  have h : nthPrime n < nthPrime (n + 1) := nthPrime_strictMono (Nat.lt_succ_self n)
+  unfold primeGap
+  omega
+
+/-- {0, 2, 6, 8, 12} is an admissible 5-tuple (prime quintuplet pattern).
+    Checked mod 2,3,5: misses residues. For p ≥ 7: image card ≤ 5 < 7 ≤ p. -/
+theorem admissible_quintuple_0_2_6_8_12 : IsAdmissible {0, 2, 6, 8, 12} := by
+  intro p hp
+  have himg : (({0, 2, 6, 8, 12} : Finset ℕ).image (· % p)).card ≤ 5 := by
+    calc (({0, 2, 6, 8, 12} : Finset ℕ).image (· % p)).card
+        ≤ ({0, 2, 6, 8, 12} : Finset ℕ).card := Finset.card_image_le
+      _ = 5 := by decide
+  by_cases hp2 : p = 2
+  · subst hp2; decide
+  · by_cases hp3 : p = 3
+    · subst hp3; decide
+    · by_cases hp5 : p = 5
+      · subst hp5; decide
+      · -- p ≥ 7, so image card ≤ 5 < 7 ≤ p
+        have hp7 : p ≥ 7 := by
+          have h2le := hp.two_le
+          rcases hp.eq_two_or_odd with h2 | hodd
+          · exact absurd h2 hp2
+          · omega
+        linarith
+
+/-- {0, 4, 6, 10, 12} is an admissible 5-tuple. -/
+theorem admissible_quintuple_0_4_6_10_12 : IsAdmissible {0, 4, 6, 10, 12} := by
+  intro p hp
+  have himg : (({0, 4, 6, 10, 12} : Finset ℕ).image (· % p)).card ≤ 5 := by
+    calc (({0, 4, 6, 10, 12} : Finset ℕ).image (· % p)).card
+        ≤ ({0, 4, 6, 10, 12} : Finset ℕ).card := Finset.card_image_le
+      _ = 5 := by decide
+  by_cases hp2 : p = 2
+  · subst hp2; decide
+  · by_cases hp3 : p = 3
+    · subst hp3; decide
+    · by_cases hp5 : p = 5
+      · subst hp5; decide
+      · have hp7 : p ≥ 7 := by
+          have h2le := hp.two_le
+          rcases hp.eq_two_or_odd with h2 | hodd
+          · exact absurd h2 hp2
+          · omega
+        linarith
+
+/-- {0, 1, 2, 3, 4} is NOT admissible: it is Finset.range 5, covering all residues mod 5. -/
+theorem not_admissible_0_1_2_3_4 : ¬ IsAdmissible {0, 1, 2, 3, 4} := by
+  intro h
+  have h5 := h 5 (by decide : Nat.Prime 5)
+  have : (({0, 1, 2, 3, 4} : Finset ℕ).image (· % 5)).card = 5 := by decide
+  omega
+
+/-- Dickson conjecture for the twin prime tuple implies twin prime conjecture. -/
+theorem dickson_twin_implies_twin_primes :
+    DicksonConjecture {0, 2} →
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ Nat.Prime n ∧ Nat.Prime (n + 2) := by
+  intro hDC N
+  obtain ⟨n, hn, hprimes⟩ := hDC admissible_twin N
+  refine ⟨n, hn, ?_⟩
+  constructor
+  · have h0 : (0 : ℕ) ∈ ({0, 2} : Finset ℕ) := by simp
+    have := hprimes 0 h0
+    simp at this
+    exact this
+  · have h2 : (2 : ℕ) ∈ ({0, 2} : Finset ℕ) := by simp
+    exact hprimes 2 h2
+
+/-- Dickson conjecture for {0, 2, 6} implies infinitely many prime triples. -/
+theorem dickson_triple_implies_prime_triples :
+    DicksonConjecture {0, 2, 6} →
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 6) := by
+  intro hDC N
+  obtain ⟨n, hn, hprimes⟩ := hDC admissible_triple_0_2_6 N
+  refine ⟨n, hn, ?_⟩
+  exact ⟨by simpa using hprimes 0 (by simp),
+         hprimes 2 (by simp),
+         hprimes 6 (by simp)⟩
+
+/-
 ## Summary
 
 This file establishes:
 1. **Admissible tuples**: Definition and basic properties (subset, singleton, empty)
-2. **Small examples**: Verified {0,2}, {0,2,6}, {0,4,6}, {0,2,6,8}
-3. **Non-examples**: {0,1}, {0,1,2}, Finset.range p are NOT admissible
-4. **The theorem hierarchy**: Zhang follows from Polymath (proved); Maynard-Tao generalizes
-5. **Consequences**: Infinitely many small gaps, liminf ≤ 246
-6. **Connections**: Admissible tuples ↔ Dickson conjecture ↔ twin primes
-7. **Gap properties**: Positivity, evenness, and ≥ 2 bound for prime gaps
-8. **Non-admissibility criteria**: Complete residue systems prevent admissibility
+2. **Small examples**: Verified {0,2}, {0,2,6}, {0,4,6}, {0,2,6,8}, {0,2,6,8,12}, {0,4,6,10,12}
+3. **Non-examples**: {0,1}, {0,1,2}, {0,1,2,3,4}, Finset.range p are NOT admissible
+4. **The theorem hierarchy**: Zhang follows from Polymath (proved); EH implies Polymath (proved)
+5. **Maynard-Tao**: Consecutive gaps bounded (proved from m-tuples with m=2)
+6. **Consequences**: Infinitely many small gaps, liminf ≤ 246
+7. **Connections**: Admissible tuples ↔ Dickson conjecture ↔ twin primes ↔ prime triples
+8. **Gap properties**: Positivity, evenness, ≥ 2 bound, g(0) = 1
+9. **Prime properties**: nthPrime values, monotonicity, ge bounds
+10. **Non-admissibility criteria**: Complete residue systems prevent admissibility
 
-### Proved Theorems (23 total, 0 sorries)
+### Proved Theorems (40 total, 0 sorries)
 All theorems are fully proved from Mathlib, including:
-- `zhang_bounded_gaps_70M` (derived from Polymath bound - was axiom)
-- `nthPrime_pos`, `primeGap_ge_two` (new structural results)
-- `not_admissible_range` (Finset.range p is not admissible)
-- `not_admissible_of_covers_residues` (general non-admissibility criterion)
+- `zhang_bounded_gaps_70M` (derived from Polymath bound)
+- `eh_implies_polymath` (EH bound implies Polymath bound)
+- `maynard_tao_consecutive_gaps` (bounded gaps from m-tuple theorem)
+- `primeGap_zero`, `nthPrime_zero`, `nthPrime_one` (concrete values)
+- `nthPrime_ge_two`, `nthPrime_ge_three`, `nthPrime_succ_eq` (structural)
+- `admissible_quintuple_0_2_6_8_12`, `admissible_quintuple_0_4_6_10_12` (5-tuples)
+- `dickson_twin_implies_twin_primes` (Dickson → twin primes)
+- `dickson_triple_implies_prime_triples` (Dickson → prime triples)
+- `not_admissible_0_1_2_3_4` (mod 5 non-admissibility)
 
 ### Axioms Used (4)
 - `polymath_bounded_gaps_246`: Polymath 8b optimization (2014)

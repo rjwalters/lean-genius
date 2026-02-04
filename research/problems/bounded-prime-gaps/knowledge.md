@@ -91,3 +91,26 @@ Note: `zhang_bounded_gaps_70M` was converted from axiom to theorem (derived from
 4. **Proved `not_admissible_range`**: Finset.range p is not admissible for prime p (covers all residues).
 5. **Proved `not_admissible_of_covers_residues`**: General criterion for non-admissibility.
 **Outcome**: 23 proved theorems, 4 axioms, 0 sorries. Build verified via Docker.
+
+### Research Session (2026-02-04)
+**Mode**: BUILD (researcher-1)
+**Decision**: BUILD - Add structural theorems, quintuple examples, Dickson/Maynard-Tao consequences
+**Changes** (17 new theorems):
+1. **`admissible_misses_residue`**: Admissible sets miss at least one residue class mod any prime
+2. **`eh_implies_polymath`**: EH conditional bound (12) implies Polymath bound (246)
+3. **`maynard_tao_consecutive_gaps`**: Bounded consecutive prime gaps from m-tuple theorem (m=2)
+4. **`nthPrime_zero`**: p₀ = 2
+5. **`nthPrime_one`**: p₁ = 3
+6. **`primeGap_zero`**: g(0) = 1
+7. **`nthPrime_mono`**: Monotonicity (non-strict)
+8. **`nthPrime_ge_three`**: For n ≥ 1, pₙ ≥ 3
+9. **`nthPrime_ge_two`**: For all n, pₙ ≥ 2
+10. **`primeGap_eq`**: Gap definition unfolded
+11. **`nthPrime_succ_eq`**: p_{n+1} = pₙ + g(n)
+12. **`admissible_quintuple_0_2_6_8_12`**: {0,2,6,8,12} is admissible (5-tuple)
+13. **`admissible_quintuple_0_4_6_10_12`**: {0,4,6,10,12} is admissible (5-tuple)
+14. **`not_admissible_0_1_2_3_4`**: {0,1,2,3,4} covers all residues mod 5
+15. **`dickson_twin_implies_twin_primes`**: Dickson for {0,2} → twin prime conjecture
+16. **`dickson_triple_implies_prime_triples`**: Dickson for {0,2,6} → prime triples infinitely often
+17. **`admissible_card_lt_of_prime`**: Rephrased admissibility condition
+**Outcome**: 40 proved theorems, 4 axioms, 0 sorries. Build verified via Docker.
