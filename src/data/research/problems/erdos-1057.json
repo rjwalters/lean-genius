@@ -1,56 +1,120 @@
 {
   "slug": "erdos-1057",
   "title": "Counting Carmichael Numbers",
-  "phase": "NEW",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "Let C(x) = |{n ≤ x : IsCarmichael n}|. Is C(x) = x^{1-o(1)}?",
+    "plain": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} ≪ C(x) ≪ x·exp(-c·log x·log log log x / log log x).",
+    "whyMatters": [
+      "Fundamental question about density of pseudoprimes",
+      "Connects to Fermat primality test reliability",
+      "AGP 1994 proved infinitely many exist"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "carmichael_561: 561 is Carmichael (PROVED from Korselt criterion)",
+      "carmichael_1105: 1105 is Carmichael (PROVED from Korselt criterion)",
+      "carmichael_1729: 1729 is Carmichael (PROVED from Korselt criterion)",
+      "carmichael_odd: Carmichael numbers are odd (PROVED)",
+      "carmichael_not_prime_power: No Carmichael number is a prime power",
+      "carmichael_not_div_4: Carmichael numbers are not divisible by 4",
+      "carmichael_squarefree: Carmichael numbers are squarefree",
+      "C_mono: C(x) is monotone",
+      "C_ge_C561: C(x) ≥ C(561) for x ≥ 561",
+      "exponent_gap: lowerExponent < 1",
+      "bound_improvement: 2/7 < 0.33336704 < 0.3389",
+      "conjecture_implies_faster_than: Conjecture implies C(x) > x^α for any α < 1"
+    ],
+    "open": [
+      "Is C(x) = x^{1-o(1)}?",
+      "What is the true exponent of C(x)?",
+      "Pomerance conjecture on exact asymptotics"
+    ],
+    "goal": "Improve bounds on C(x) or prove structural properties of Carmichael numbers"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-27T22:18:02.332Z",
+    "phase": "PROGRESS",
+    "since": "2026-02-04T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved 22 new theorems including carmichael_561/1105/1729, carmichael_odd, structural properties",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Submit remaining axioms to Aristotle, prove carmichael_at_least_3_primes",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved 27 theorems (was 5), 8 axioms (was 11). Converted carmichael_561/1105/1729 from axioms to proved theorems via explicit Korselt verification. Proved carmichael_odd via even/odd parity argument. Added structural theorems and bound relationships.",
+    "builtItems": [
+      "carmichael_561 theorem (PROVED, was axiom) - Korselt verification",
+      "carmichael_1105 theorem (PROVED, was axiom) - Korselt verification",
+      "carmichael_1729 theorem (PROVED, was axiom) - Korselt verification",
+      "carmichael_odd theorem (PROVED, was axiom) - parity argument",
+      "squarefree_561, satisfiesKorselt_561 helper theorems",
+      "satisfiesKorselt_1105, satisfiesKorselt_1729 helper theorems",
+      "carmichael_squarefree, carmichael_gt_one, carmichael_composite extractors",
+      "carmichael_not_div_4, carmichael_korselt_condition structural theorems",
+      "C_ge_C561, conjecture_implies_faster_than, bound_improvement"
+    ],
+    "insights": [
+      "Korselt verification pattern: compute primeFactors via native_decide, case split on primes, verify divisibility via norm_num",
+      "Squarefree verification: factorize into primes, check coprimality via native_decide",
+      "Carmichael oddness follows from: if even, some odd prime p divides n, (p-1) even divides (n-1) odd, contradiction",
+      "IsCarmichael is not DecidablePred - need open Classical for Finset.filter",
+      "import Mathlib brings in everything but not classical decidability by default"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove carmichael_at_least_3_primes (currently axiom) - key structural fact",
+      "Submit korselt_theorem to Aristotle for automated proof",
+      "Prove no_carmichael_below_561 computationally or via case analysis",
+      "Explore Korselt condition consequences for prime factor structure"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Korselt verification",
+      "description": "Verify specific Carmichael numbers via explicit Korselt criterion checking",
+      "status": "progress",
+      "results": "Proved 561, 1105, 1729 are Carmichael via native_decide + norm_num"
+    },
+    {
+      "name": "Structural properties",
+      "description": "Prove general properties of Carmichael numbers from Korselt criterion",
+      "status": "progress",
+      "results": "Proved oddness, squarefreeness, not prime power, not divisible by 4"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "number-theory",
     "carmichael-numbers",
     "pseudoprimes",
-    "1-sorry"
+    "0-sorry"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős 1956: On pseudoprimes and Carmichael numbers",
+      "Alford-Granville-Pomerance 1994: There are infinitely many Carmichael numbers",
+      "Pomerance 1989: Two methods in elementary analytic number theory",
+      "Lichtman 2022: Improved bounds on the counting function"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1057"
+    ],
+    "mathlib": [
+      "Mathlib (full import)"
+    ]
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-01-27T22:18:02.332Z",
+  "lastUpdate": "2026-02-04T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
