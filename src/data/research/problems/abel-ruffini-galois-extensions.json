@@ -1,56 +1,121 @@
 {
   "slug": "abel-ruffini-galois-extensions",
   "title": "Abel-Ruffini Galois Theory Extensions",
-  "phase": "NEW",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "For n ≥ 5, ¬ IsSolvable (Equiv.Perm (Fin n)), and IsSolvableByRad F α → IsSolvable q.Gal for irreducible q with q(α) = 0.",
+    "plain": "Extend the Abel-Ruffini theorem formalization with explicit proofs of S₅ non-solvability, A₅ simplicity, the Galois bridge theorem, and small group solvability.",
+    "whyMatters": [
+      "Connects solvability by radicals to group-theoretic solvability",
+      "A₅ is the smallest non-abelian simple group - threshold for unsolvability",
+      "Demonstrates the precise degree-5 boundary for radical solvability"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "galois_bridge: IsSolvableByRad F α → IsSolvable q.Gal (wraps solvableByRad.isSolvable')",
+      "symmetric_group_not_solvable: Sₙ not solvable for n ≥ 5",
+      "s5_not_solvable: S₅ not solvable (specific case)",
+      "s6_not_solvable: S₆ not solvable (specific case)",
+      "a5_is_simple: A₅ is a simple group",
+      "s0_solvable: S₀ is solvable (trivial group)",
+      "s1_solvable: S₁ is solvable (trivial group)",
+      "not_solvable_by_rad_of_not_solvable_gal: contrapositive Abel-Ruffini",
+      "exists_quintic: there exists a degree-5 polynomial over Q"
+    ],
+    "open": [
+      "Prove IsSolvable (Equiv.Perm (Fin n)) for n = 2, 3, 4 (not currently in Mathlib)",
+      "Prove alternatingGroup simple for general n ≥ 5 (only Fin 5 in Mathlib)",
+      "Construct explicit polynomial with Galois group S₅ and show its root is not solvable by radicals"
+    ],
+    "goal": "Complete the solvability threshold picture: Sₙ solvable iff n ≤ 4"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-27T22:18:02.332Z",
+    "phase": "PROGRESS",
+    "since": "2026-02-03T23:39:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Proved galois_bridge, S₅/S₆ non-solvability, A₅ simplicity, contrapositive Abel-Ruffini, S₀/S₁ solvability",
+    "blockers": [
+      "Mathlib lacks IsSolvable instances for Equiv.Perm (Fin 2/3/4)",
+      "alternatingGroup.isSimpleGroup only exists for Fin 5, not general n ≥ 5"
+    ],
+    "nextAction": "Prove S₂, S₃, S₄ solvable (may need custom proofs since Mathlib lacks instances)",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Added 9 named theorems to AbelRuffini.lean (0 sorries, 0 axioms). Key results: galois_bridge wrapping Mathlib's solvableByRad.isSolvable', explicit S₅/S₆ non-solvability, A₅ simplicity, contrapositive Abel-Ruffini form, S₀/S₁ solvability.",
+    "builtItems": [
+      "galois_bridge theorem - wraps solvableByRad.isSolvable' with named theorem",
+      "s5_not_solvable theorem - S₅ not solvable via symmetric_group_not_solvable 5",
+      "s6_not_solvable theorem - S₆ not solvable",
+      "a5_is_simple theorem - A₅ is simple via alternatingGroup.isSimpleGroup_five",
+      "s0_solvable, s1_solvable theorems - trivial groups solvable via inferInstance",
+      "not_solvable_by_rad_of_not_solvable_gal - contrapositive form of Abel-Ruffini",
+      "exists_quintic - existence of degree-5 polynomial over Q",
+      "Comprehensive documentation of the solvability threshold at degree 5"
+    ],
+    "insights": [
+      "Mathlib's solvableByRad.isSolvable' is the core bridge but benefits from named wrapping",
+      "IsSolvable instances only exist for Equiv.Perm (Fin 0) and (Fin 1) in current Mathlib",
+      "alternatingGroup.isSimpleGroup_five exists but general isSimpleGroup for n≥5 does not",
+      "CommGroup.isSolvable exists but Equiv.Perm (Fin n) doesn't have CommGroup instance for n≥2",
+      "The contrapositive form (not_solvable_by_rad_of_not_solvable_gal) is often more useful in practice",
+      "Proving S₂, S₃, S₄ solvable would require constructing the derived series explicitly"
+    ],
+    "mathlibGaps": [
+      "IsSolvable (Equiv.Perm (Fin 2)) - S₂ is abelian hence solvable",
+      "IsSolvable (Equiv.Perm (Fin 3)) - derived series S₃ ▷ A₃ ▷ {e}",
+      "IsSolvable (Equiv.Perm (Fin 4)) - derived series S₄ ▷ A₄ ▷ V₄ ▷ {e}",
+      "alternatingGroup.isSimpleGroup for general n ≥ 5"
+    ],
+    "nextSteps": [
+      "Prove S₂ solvable (S₂ ≅ Z/2, abelian hence solvable)",
+      "Prove S₃ solvable (derived subgroup is A₃ ≅ Z/3, abelian)",
+      "Prove S₄ solvable (derived subgroup chain through V₄)",
+      "Submit to Aristotle for possible automated proof of small group solvability"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Named theorem wrapping + specific instantiation",
+      "description": "Wrap Mathlib's core results as named theorems with documentation, prove specific instances",
+      "status": "progress",
+      "results": "9 theorems proved (0 sorries). Galois bridge, S₅/S₆ non-solvability, A₅ simplicity, S₀/S₁ solvability, contrapositive Abel-Ruffini, exists_quintic."
+    }
+  ],
   "tags": [
     "seeker-selected",
     "algebra",
     "galois-theory",
     "group-theory",
-    "extension"
+    "extension",
+    "0-sorry"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "abel-ruffini"
+  ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Abel 1824: Mémoire sur les équations algébriques",
+      "Galois 1846: Sur les conditions de résolubilité des équations par radicaux"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.FieldTheory.Galois.Basic"
+    ]
   },
   "started": "2026-01-27T22:18:02.331Z",
-  "lastUpdate": "2026-01-27T22:18:02.332Z",
+  "lastUpdate": "2026-02-03T23:55:00.000Z",
   "significance": 7,
   "tractability": 6
 }
