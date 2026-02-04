@@ -127,6 +127,10 @@ axiom steinerberger_criterion (n p : ℕ) (hp : Nat.Prime p) (hp_le : p ≤ n)
 /--
 **Corollary: Part 2 is trivially YES:**
 There are infinitely many n with gcd(a_n, L_n) > 1.
+
+For any prime p and any k, the number n = (p-1)·p^k has leading digit p-1
+in base p, so by Steinerberger's criterion, p | gcd(a_n, L_n).
+Since there are infinitely many such n, Part 2 follows.
 -/
 axiom part2_trivially_true : question_part2
 
@@ -235,7 +239,7 @@ theorem wu_yan_conditional :
 ## Part VIII: Small Examples
 -/
 
-/--
+/-
 **Small values of gcd(a_n, L_n):**
 
 n=1: H_1 = 1/1, L_1 = 1, a_1 = 1, gcd = 1
@@ -251,6 +255,13 @@ So gcd > 1 first occurs at n = 6.
 theorem small_examples :
     harmonicGCD 1 = 1 ∧ harmonicGCD 2 = 1 ∧ harmonicGCD 3 = 1 ∧
     harmonicGCD 4 = 1 ∧ harmonicGCD 5 = 1 ∧ harmonicGCD 6 = 3 := by native_decide
+
+/-- n=6 is the first occurrence of gcd > 1 -/
+theorem first_gcd_gt_one : harmonicGCD 6 = 3 ∧ ∀ k, k < 6 → k ≥ 1 → harmonicGCD k = 1 := by
+  constructor
+  · native_decide
+  · intro k hk hk1
+    interval_cases k <;> native_decide
 
 /-!
 ## Part IX: Why Part 1 is Hard
