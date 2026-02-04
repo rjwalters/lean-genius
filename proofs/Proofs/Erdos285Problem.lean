@@ -15,9 +15,11 @@
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib.Analysis.Asymptotics.Defs
+import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Data.Fintype.BigOperators
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.Instances.Real.Lemmas
+import Mathlib.Analysis.Complex.ExponentialBounds
 
 namespace Erdos285
 
@@ -48,7 +50,7 @@ f(k) is the minimal value of the largest denominator nₖ among all
 Egyptian fraction representations of 1 using k+1 terms.
 -/
 noncomputable def f (k : ℕ) : ℕ :=
-  sInf {n (Fin.last k) | n : Fin k.succ → ℕ, h : IsEgyptianRepresentation k n}
+  sInf {m : ℕ | ∃ n : Fin k.succ → ℕ, IsEgyptianRepresentation k n ∧ n (Fin.last k) = m}
 
 /-! ## The Main Asymptotic Result -/
 
@@ -91,7 +93,7 @@ axiom egyptian_lower_bound :
 
 /-! ## Understanding the Constant -/
 
-/--
+/-
 The value e/(e-1) ≈ 1.5819 means:
 - For k=100 terms: f(100) ≈ 158 (largest denominator ~158)
 - For k=1000 terms: f(1000) ≈ 1582
@@ -103,15 +105,56 @@ so the interval [e, e·u] contains approximately 1 unit of "harmonic mass".
 /-- e/(e-1) > 1, showing f(k) > k always -/
 theorem egyptianConstant_gt_one : egyptianConstant > 1 := by
   unfold egyptianConstant
-  have he : rexp 1 > 1 := Real.one_lt_exp_of_pos (by norm_num : (1 : ℝ) > 0)
+  have he : rexp 1 > 1 := Real.one_lt_exp_iff.mpr (by norm_num : (1 : ℝ) > 0)
   have hpos : rexp 1 - 1 > 0 := by linarith
-  rw [gt_iff_lt, div_lt_iff_of_pos hpos]
-  ring_nf
-  exact he
+  rw [gt_iff_lt, one_lt_div hpos]
+  linarith
 
-/-- e/(e-1) < 2, so f(k) < 2k asymptotically -/
+/-- e/(e-1) < 2, so f(k) < 2k asymptotically.
+    Proof: e > 2 (from exp bounds), so e - 1 > 1, so 1/(e-1) < 1,
+    so e/(e-1) = 1 + 1/(e-1) < 2. -/
 theorem egyptianConstant_lt_two : egyptianConstant < 2 := by
-  sorry -- Requires: e > 2, so e/(e-1) = 1 + 1/(e-1) < 1 + 1 = 2
+  unfold egyptianConstant
+  have he : rexp 1 > 2 := by linarith [Real.exp_one_gt_d9]
+  have hpos : rexp 1 - 1 > 0 := by linarith
+  rw [div_lt_iff₀ hpos]
+  nlinarith
+
+/-- e/(e-1) > 3/2, a tighter lower bound showing f(k) > 1.5k asymptotically.
+    Proof: e < 2.72 (from exp bounds), so e-1 < 1.72, so 1/(e-1) > 1/1.72 > 0.5,
+    so e/(e-1) = 1 + 1/(e-1) > 1.5. -/
+theorem egyptianConstant_gt_three_halves : egyptianConstant > 3 / 2 := by
+  unfold egyptianConstant
+  have he_lower : rexp 1 > 2 := by linarith [Real.exp_one_gt_d9]
+  have he_upper : rexp 1 < 2.7182818286 := Real.exp_one_lt_d9
+  have hpos : rexp 1 - 1 > 0 := by linarith
+  rw [gt_iff_lt, lt_div_iff₀ hpos]
+  nlinarith
+
+/-- The Egyptian constant is positive. -/
+theorem egyptianConstant_pos : egyptianConstant > 0 := by
+  linarith [egyptianConstant_gt_one]
+
+/-- e/(e-1) = 1 + 1/(e-1): the constant decomposes as 1 plus the reciprocal gap. -/
+theorem egyptianConstant_eq : egyptianConstant = 1 + 1 / (rexp 1 - 1) := by
+  unfold egyptianConstant
+  have hpos : rexp 1 - 1 > 0 := by
+    have : rexp 1 > 1 := Real.one_lt_exp_iff.mpr (by norm_num : (1 : ℝ) > 0)
+    linarith
+  field_simp
+  ring
+
+/-- The reciprocal of the Egyptian constant is (e-1)/e = 1 - 1/e.
+    This is the "density" of usable denominators: in any range [a, ea],
+    a fraction (e-1)/e of the integers contribute useful unit fractions. -/
+theorem egyptianConstant_inv : egyptianConstant⁻¹ = 1 - (rexp 1)⁻¹ := by
+  unfold egyptianConstant
+  have he_pos : rexp 1 > 0 := exp_pos 1
+  have hpos : rexp 1 - 1 > 0 := by
+    have : rexp 1 > 1 := Real.one_lt_exp_iff.mpr (by norm_num : (1 : ℝ) > 0)
+    linarith
+  rw [inv_div]
+  field_simp
 
 /-! ## Examples -/
 
