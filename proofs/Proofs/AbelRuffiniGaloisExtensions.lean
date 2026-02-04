@@ -66,6 +66,18 @@ theorem perm_fin_2_comm : ∀ (a b : Equiv.Perm (Fin 2)), a * b = b * a := by
 instance perm_fin_2_solvable : IsSolvable (Equiv.Perm (Fin 2)) :=
   isSolvable_of_comm perm_fin_2_comm
 
+/-- A₀ is solvable (as subgroup of solvable S₀). -/
+instance alternating_fin_0_solvable : IsSolvable (alternatingGroup (Fin 0)) :=
+  inferInstance
+
+/-- A₁ is solvable (as subgroup of solvable S₁). -/
+instance alternating_fin_1_solvable : IsSolvable (alternatingGroup (Fin 1)) :=
+  inferInstance
+
+/-- A₂ is solvable (as subgroup of solvable S₂). -/
+instance alternating_fin_2_solvable : IsSolvable (alternatingGroup (Fin 2)) :=
+  inferInstance
+
 /-- A₃ is commutative (cyclic of order 3). -/
 theorem alternating_fin_3_comm :
     ∀ (a b : alternatingGroup (Fin 3)), a * b = b * a := by
@@ -298,6 +310,21 @@ theorem card_a4 : Fintype.card (alternatingGroup (Fin 4)) = 12 := by decide
 /-- |S₂| = 2. -/
 theorem card_s2 : Fintype.card (Equiv.Perm (Fin 2)) = 2 := by decide
 
+/-- |S₆| = 720. -/
+theorem card_s6 : Fintype.card (Equiv.Perm (Fin 6)) = 720 := by native_decide
+
+/-- |A₀| = 1. -/
+theorem card_a0 : Fintype.card (alternatingGroup (Fin 0)) = 1 := by decide
+
+/-- |A₁| = 1. -/
+theorem card_a1 : Fintype.card (alternatingGroup (Fin 1)) = 1 := by decide
+
+/-- |A₂| = 1. -/
+theorem card_a2 : Fintype.card (alternatingGroup (Fin 2)) = 1 := by decide
+
+/-- |A₆| = 360. -/
+theorem card_a6 : Fintype.card (alternatingGroup (Fin 6)) = 360 := by native_decide
+
 end Cardinalities
 
 /-
@@ -342,6 +369,14 @@ end IndexTheorems
 -/
 
 section SpecificNonSolvable
+
+/-- S₅ is not solvable. -/
+theorem s5_not_solvable : ¬ IsSolvable (Equiv.Perm (Fin 5)) :=
+  symmetric_not_solvable_of_five_le le_rfl
+
+/-- S₆ is not solvable. -/
+theorem s6_not_solvable : ¬ IsSolvable (Equiv.Perm (Fin 6)) :=
+  symmetric_not_solvable_of_five_le (by omega)
 
 /-- S₇ is not solvable. -/
 theorem s7_not_solvable : ¬ IsSolvable (Equiv.Perm (Fin 7)) :=
