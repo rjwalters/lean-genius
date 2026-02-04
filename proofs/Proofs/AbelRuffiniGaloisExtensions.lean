@@ -236,23 +236,100 @@ theorem subgroup_solvable_of_solvable {G : Type*} [Group G] [IsSolvable G]
 end SubgroupSolvability
 
 /-
+## Part VII: Alternating Group Non-Solvability
+-/
+
+section AlternatingNonSolvable
+
+/-- A_n is NOT solvable for n ≥ 5.
+    Follows because A₅ is simple and non-abelian, hence not solvable,
+    and A_n contains A₅ as a subgroup for n ≥ 5. -/
+theorem alternating_not_solvable_of_five_le {n : ℕ} (hn : 5 ≤ n) :
+    ¬ IsSolvable (alternatingGroup (Fin n)) := by
+  intro hsol
+  have : IsSolvable (Equiv.Perm (Fin n)) := by
+    apply solvable_of_ker_le_range
+      (alternatingGroup (Fin n)).subtype
+      Equiv.Perm.sign
+    intro x hx
+    rw [MonoidHom.mem_ker] at hx
+    exact ⟨⟨x, Equiv.Perm.mem_alternatingGroup.mpr hx⟩, rfl⟩
+  exact symmetric_not_solvable_of_five_le hn this
+
+/-- A_n IS solvable for n ≤ 4. -/
+theorem alternating_solvable_of_le_four {n : ℕ} (hn : n ≤ 4) :
+    IsSolvable (alternatingGroup (Fin n)) := by
+  have : IsSolvable (Equiv.Perm (Fin n)) := symmetric_solvable_of_le_four hn
+  exact inferInstance
+
+/-- Complete classification: A_n is solvable iff n ≤ 4. -/
+theorem alternating_solvable_iff (n : ℕ) :
+    IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4 := by
+  constructor
+  · intro h
+    by_contra hle
+    push_neg at hle
+    exact alternating_not_solvable_of_five_le (by omega) h
+  · exact alternating_solvable_of_le_four
+
+end AlternatingNonSolvable
+
+/-
+## Part VIII: Factorial Cardinalities
+-/
+
+section Cardinalities
+
+/-- |S₃| = 6. -/
+theorem card_s3 : Fintype.card (Equiv.Perm (Fin 3)) = 6 := by decide
+
+/-- |S₄| = 24. -/
+theorem card_s4 : Fintype.card (Equiv.Perm (Fin 4)) = 24 := by decide
+
+/-- |S₅| = 120. -/
+theorem card_s5 : Fintype.card (Equiv.Perm (Fin 5)) = 120 := by decide
+
+/-- |A₃| = 3. -/
+theorem card_a3 : Fintype.card (alternatingGroup (Fin 3)) = 3 := by decide
+
+/-- |A₄| = 12. -/
+theorem card_a4 : Fintype.card (alternatingGroup (Fin 4)) = 12 := by decide
+
+/-- |S₂| = 2. -/
+theorem card_s2 : Fintype.card (Equiv.Perm (Fin 2)) = 2 := by decide
+
+end Cardinalities
+
+/-
+## Part IX: Solvability Preservation
+-/
+
+section SolvabilityPreservation
+
+/-- Quotient groups of solvable groups are solvable. -/
+theorem quotient_solvable_of_solvable {G : Type*} [Group G] [IsSolvable G]
+    (N : Subgroup G) [N.Normal] : IsSolvable (G ⧸ N) :=
+  inferInstance
+
+/-- Solvability is equivalent for isomorphic groups. -/
+theorem solvable_of_mul_equiv {G H : Type*} [Group G] [Group H]
+    (e : G ≃* H) [IsSolvable G] : IsSolvable H := by
+  have : Function.Surjective (e : G →* H) := e.surjective
+  exact solvable_of_surjective this
+
+end SolvabilityPreservation
+
+/-
 ## Summary
 
-Theorem Count: 19 theorems/instances, 0 sorries, 0 axioms
+Theorem Count: 29 theorems/instances, 0 sorries, 0 axioms
 
-1. S₀, S₁: solvable (trivial)
-2. S₂: solvable (commutative, decide)
-3. A₃: solvable (commutative, decide)
-4. S₃: solvable (short exact sequence 1 → A₃ → S₃ → ℤˣ → 1)
-5. V₄ (Klein four-group): defined, normal in A₄, commutative (native_decide)
-6. A₄: solvable (short exact sequence 1 → V₄ → A₄ → A₄/V₄ → 1)
-7. S₄: solvable (short exact sequence 1 → A₄ → S₄ → ℤˣ → 1)
-8. S_n (n ≥ 5): NOT solvable (Mathlib)
-9. Complete iff: S_n solvable iff n ≤ 4
-10. A₅ simple with |A₅| = 60
-11. Contrapositive of Galois's theorem
-12. Galois group order = extension degree
-13. Subgroup solvability inheritance
+**Small Groups Solvable**: S₀, S₁, S₂, A₃, S₃, A₄, S₄
+**Non-Solvable**: S_n (n ≥ 5), A_n (n ≥ 5)
+**Complete Iff**: S_n solvable ↔ n ≤ 4, A_n solvable ↔ n ≤ 4
+**Structure**: A₅ simple, |A₅|=60, |S₃|=6, |S₄|=24, |S₅|=120, |A₃|=3, |A₄|=12, |S₂|=2
+**Galois Theory**: contrapositive of Abel-Ruffini, Galois group order = degree
+**Preservation**: subgroup solvability, quotient solvability, isomorphism solvability
 -/
 
 end AbelRuffiniGaloisExtensions

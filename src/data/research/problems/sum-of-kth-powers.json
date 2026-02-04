@@ -1,7 +1,7 @@
 {
   "slug": "sum-of-kth-powers",
   "title": "Sum of kth Powers (Faulhaber Formulas)",
-  "phase": "NEW",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "B",
   "path": "fast",
@@ -16,24 +16,45 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-27T22:18:02.334Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "PROGRESS",
+    "since": "2026-02-04T10:30:00.000Z",
+    "iteration": 2,
+    "focus": "Fixed Aristotle compatibility, added structural properties",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Add sum of 6th powers or Bernoulli number connection",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: ~30 theorems, 0 axioms, 0 sorries. Complete Faulhaber formulas for powers 1-5, Nicomachus identity, structural properties (monotonicity, bounds, telescoping).",
+    "builtItems": [
+      "sum_first_powers/classical: Gauss formula",
+      "sum_squares/classical: n(n+1)(2n+1)/6",
+      "sum_cubes/classical: [n(n+1)/2]^2",
+      "sum_cubes_eq_sum_squared: Nicomachus identity",
+      "sum_fourth_powers_classical: n(n+1)(2n+1)(3n^2+3n-1)/30",
+      "sum_fifth_powers_classical: n^2(n+1)^2(2n^2+2n-1)/12",
+      "sum_pow_le_succ: monotonicity in range",
+      "sum_pow_le_mul: upper bound (n+1)*n^k",
+      "sum_pow_ge_last: lower bound n^k",
+      "sum_even_cubes: sum of even cubes = 8 * sum of cubes",
+      "sum_pow_succ_sub: telescoping difference"
+    ],
+    "insights": [
+      "Avoiding ℕ subtraction by rearranging formulas (e.g., 30*sum + correction = product)",
+      "nlinarith handles polynomial induction steps after sum_range_succ expansion",
+      "omega resolves final division from multiplied form + divisibility lemma",
+      "All docstrings converted from /-! to /- for Aristotle compatibility"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Add sum of 6th powers formula",
+      "Connect to Bernoulli numbers via Mathlib",
+      "Formalize general Faulhaber polynomial structure"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -52,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-01-27T22:18:02.334Z",
+  "lastUpdate": "2026-02-04T10:30:00.000Z",
   "significance": 6,
   "tractability": 7
 }

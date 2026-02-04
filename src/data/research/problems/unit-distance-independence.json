@@ -1,94 +1,74 @@
 {
   "slug": "unit-distance-independence",
   "title": "Unit Distance Graph Independence Number Bounds",
-  "phase": "PROGRESS",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "α(G) · χ(G) ≥ |V| where α is independence number, χ is chromatic number",
-    "plain": "Formalize independence number bounds for unit distance graphs, connecting to the Hadwiger-Nelson problem (5 ≤ χ(R²) ≤ 7).",
-    "whyMatters": ["Connects independence number to chromatic number", "Foundational for Hadwiger-Nelson problem"]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "indepNumber: formal definition as sSup",
-      "indep_card_le_indepNumber: |S| ≤ α(G) for independent S",
-      "indepNumber_pos: α(G) ≥ 1 for nonempty graphs",
-      "indepNumber_le_card: α(G) ≤ |V|",
-      "indepNumber_bot: α(⊥) = |V|",
-      "indepSet_iff_compl_clique: independent in G ↔ clique in Gᶜ",
-      "indepFinset_iff_compl_clique: Finset version",
-      "indep_times_colors_ge_card: α(G)·k ≥ |V|",
-      "hadwiger_nelson_bounds: 5 ≤ χ(R²) ≤ 7"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Further strengthen independence number theory"
+    "goal": ""
   },
   "currentState": {
-    "phase": "PROGRESS",
-    "since": "2026-02-04T20:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.334Z",
     "iteration": 2,
-    "focus": "Added independence number definition and proved structural theorems",
+    "focus": "Added independence number theory and pigeonhole bound",
     "blockers": [],
-    "nextAction": "Could prove Ramsey-type bounds or fractional chromatic number results",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 2
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "DEEP DIVE complete: 21 proved theorems, 2 axioms, 0 sorries. Added independence number definition, clique duality, α·k≥n bound.",
+    "progressSummary": "PROGRESS: 20 proved theorems, 2 axioms. Added independence number definition, pigeonhole bound from colorings, unit distance graph definition.",
     "builtItems": [
-      "indepNumber: formal sSup definition",
-      "indep_card_le_indepNumber: |S| ≤ α(G)",
-      "indepNumber_pos: α(G) ≥ 1",
-      "indepNumber_le_card: α(G) ≤ |V|",
-      "indepNumber_bot: α(⊥) = |V|",
-      "indepSet_iff_compl_clique: Set version of duality",
-      "indepFinset_iff_compl_clique: Finset version of duality",
-      "indep_times_colors_ge_card: α(G)·k ≥ |V|"
+      "independenceNumber definition in UnitDistanceIndependence.lean",
+      "indep_card_le_alpha: any independent set has card <= alpha(G)",
+      "unitDistGraph: proper SimpleGraph definition on finite plane subsets",
+      "unit_indep_iff_no_unit_dist: independence iff no unit distances",
+      "exists_large_color_class: pigeonhole bound on color class size",
+      "indep_from_coloring: k-coloring implies large independent set"
     ],
     "insights": [
-      "Gᶜ.Adj u v unfolds to ⟨u ≠ v, ¬G.Adj u v⟩ (ne first, then negated adj)",
-      "IsClique uses Set.Pairwise with Adj",
-      "Finset.disjoint_filter.mpr is the clean way to prove filter disjointness",
-      "sSup {n | ∃ S, P S ∧ S.card = n} needs BddAbove from Finset.card_le_card + subset_univ",
-      "csSup_le needs nonemptiness witness (∅ works via isIndepFinset_empty)",
-      "linarith [mul_comm a b] resolves a*b vs b*a mismatch that omega cannot"
+      "Independence number can be defined as Finset.sup over powerset filtered by IsIndepFinset",
+      "Pigeonhole: k-coloring implies exists independent set of size >= |V|/k",
+      "Unit distance graph on finite sets cleanly defined as SimpleGraph on Finset.Elem",
+      "The disjoint union of color class filters equals univ requires careful Finset.card_biUnion argument"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove Ramsey-type bound: α(G)·ω(G) ≥ |V| (requires clique number definition)",
-      "Prove fractional relaxation bounds (requires LP duality)",
-      "Concrete independence number computations for small unit distance graphs"
-    ]
+      "Prove greedy bound: alpha >= |V|/(Delta+1) where Delta is max degree",
+      "Connect independence number to Hadwiger-Nelson: alpha >= n/7 for n-point unit distance graph",
+      "Formalize fractional chromatic number bounds"
+    ],
+    "markdown": "# Knowledge Base: unit-distance-independence\n\n## Problem Summary\n\nFormalize bounds on the independence number of unit distance graphs in the plane, connecting to the Hadwiger-Nelson problem on the chromatic number of the plane.\n\n## Current State\n\n**Status**: SURVEYED\n\n### What Was Built (2026-02-04)\n\n**New file**: `proofs/Proofs/UnitDistanceIndependence.lean` (~268 lines)\n\n#### Definitions\n- `IsIndepSet`: Independent set in a simple graph (set version)\n- `IsIndepFinset`: Independent set in a simple graph (finset version)\n- `IsProperColoring`: Proper graph coloring definition\n- `Plane`: The Euclidean plane R^2\n\n#### Proved Theorems (17, 0 sorries)\n1. `isIndepFinset_empty`: Empty set is independent\n2. `isIndepFinset_singleton`: Singleton sets are independent\n3. `isIndepFinset_subset`: Subsets of independent sets are independent\n4. `isIndepFinset_iff`: Characterization of independence\n5. `color_class_independent`: Color classes in proper colorings are independent\n6. `hadwiger_nelson_bounds`: Combined Hadwiger-Nelson bounds (5 ≤ χ ≤ 7)\n7. `isIndepFinset_insert`: Growing independent sets by adding non-adjacent vertex\n8. `edge_leaves_indep`: Edges force at least one endpoint out of independent sets\n9. `exists_nonempty_indep`: Nonempty graphs have nonempty independent sets\n10. `indep_card_le_univ`: Independent set cardinality bounded by |V|\n11. `not_unit_dist_independent`: Non-unit-distance points are compatible\n12. `all_diff_dist_independent`: Sets avoiding unit distance are independent\n13. `indep_compl_clique`: Independence/clique duality (trivial direction)\n14. `isIndepFinset_of_bot`: Empty graph has all sets independent\n15. `indep_top_singleton`: Complete graph has independence number 1\n16. `color_class_partition`: Each vertex in exactly one color class\n17. `proper_coloring_gives_independent_partition`: Proper colorings give independent partitions\n\n#### Axioms (2)\n1. `hadwiger_nelson_lower_bound`: De Grey's 5-chromatic lower bound (2018)\n2. `hadwiger_nelson_upper_bound`: 7-coloring upper bound\n\n### Key Insights\n- Independent sets can be developed abstractly for SimpleGraph, then specialized to unit distance\n- The Hadwiger-Nelson bounds are naturally axioms since the lower bound requires constructing a specific 1581-vertex graph\n- Color class → independence is a clean formal argument\n- Growing independent sets by inserting non-adjacent vertices is useful infrastructure\n\n### What Would Be Needed for Full Independence Number Theory\n1. Formal definition of independence number as supremum\n2. Constructive Lovász theta bound\n3. Fractional chromatic number (requires LP duality)\n4. Ramsey-type bounds relating independence and clique numbers\n\n### Related Work\n- `Erdos668Problem.lean` - Unit distance configurations (defines `isUnitPair`, `unitDistanceEdges`)\n- `Erdos90Problem.lean` - Maximum unit distances among n points\n- `Erdos922Problem.lean` - Uses SimpleGraph.Coloring\n\n## Session Log\n\n### Research Session (2026-02-04)\n**Mode**: FRESH (researcher-1)\n**Decision**: BUILD - Create formalization from scratch\n**Outcome**: Created comprehensive file with 17 proved theorems, 2 axioms, 0 sorries\n**Status**: NEW -> SURVEYED (meaningful infrastructure built)\n"
   },
-  "approaches": [
-    {
-      "name": "sSup-based independence number + pigeonhole",
-      "status": "succeeded",
-      "description": "Define α(G) = sSup{|S| : S independent}, prove duality and α·k≥n via Finset.sum_le_sum"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "combinatorial-geometry",
     "graph-theory",
     "independence-number",
     "unit-distance",
-    "extension",
-    "0-sorry"
+    "extension"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": ["De Grey 2018"],
+    "papers": [],
     "urls": [],
-    "mathlib": ["Combinatorics.SimpleGraph.Basic", "Combinatorics.SimpleGraph.Clique"]
+    "mathlib": []
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-04T20:00:00.000Z",
+  "lastUpdate": "2026-01-27T22:18:02.334Z",
   "significance": 7,
   "tractability": 7
 }
