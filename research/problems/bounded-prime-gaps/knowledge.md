@@ -42,12 +42,13 @@ work is possible without proving the theorem itself.
 17. `primeGap_pos`: Prime gaps are positive
 18. `primeGap_even`: Prime gaps for n >= 1 are even
 
-#### Axioms (deep results, not provable from Mathlib)
-1. `zhang_bounded_gaps_70M`: Zhang's original bound (2013)
-2. `polymath_bounded_gaps_246`: Polymath 8b optimization (2014)
-3. `maynard_tao_m_tuples`: Maynard-Tao generalization to m-tuples (2015)
-4. `bounded_gaps_conditional_EH`: Conditional result assuming Elliott-Halberstam
-5. `exists_admissible_50_tuple_246`: Existence of Polymath's specific admissible tuple
+#### Axioms (4 - deep results, not provable from Mathlib)
+1. `polymath_bounded_gaps_246`: Polymath 8b optimization (2014)
+2. `maynard_tao_m_tuples`: Maynard-Tao generalization to m-tuples (2015)
+3. `bounded_gaps_conditional_EH`: Conditional result assuming Elliott-Halberstam
+4. `exists_admissible_50_tuple_246`: Existence of Polymath's specific admissible tuple
+
+Note: `zhang_bounded_gaps_70M` was converted from axiom to theorem (derived from Polymath bound).
 
 ### Key Insights
 - Admissible tuples are the right abstraction for bounded gaps work
@@ -79,3 +80,14 @@ work is possible without proving the theorem itself.
 **Decision**: DEEP DIVE - Build admissible tuple framework
 **Outcome**: Created comprehensive formalization with 18 proved theorems, 5 axioms, 0 sorries
 **Status upgraded**: SKIPPED -> SURVEYED (meaningful infrastructure built)
+
+### Research Session (2026-02-04)
+**Mode**: BUILD (researcher-2)
+**Decision**: BUILD - Convert axiom, add structural theorems
+**Changes**:
+1. **Converted `zhang_bounded_gaps_70M` from axiom to theorem** - trivially follows from Polymath's stronger bound (246 ≤ 70,000,000). Axioms reduced from 5 to 4.
+2. **Proved `nthPrime_pos`**: The nth prime is positive (follows from primality).
+3. **Proved `primeGap_ge_two`**: For n ≥ 1, prime gaps are ≥ 2 (from evenness + positivity).
+4. **Proved `not_admissible_range`**: Finset.range p is not admissible for prime p (covers all residues).
+5. **Proved `not_admissible_of_covers_residues`**: General criterion for non-admissibility.
+**Outcome**: 23 proved theorems, 4 axioms, 0 sorries. Build verified via Docker.
