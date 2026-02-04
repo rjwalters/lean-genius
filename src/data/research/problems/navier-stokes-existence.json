@@ -33,8 +33,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed λ₁ keyword conflict (renamed to mu₁), documented 3 numerically false axioms. File compiles clean (0 sorries, 35 axioms). Previous: E_bounded_after proved, enstrophy bounds strengthened.",
+    "progressSummary": "PROGRESS: Eliminated 2 more axioms (35 → 33). exp_dominates_poly proved via Mathlib asymptotics, zero_dissipation_of_constant proved vacuously (AncientConstant contradicts spectral gap). File compiles clean (0 sorries, 33 axioms).",
     "builtItems": [
+      "Proved exp_dominates_poly in NavierStokes.lean (via Real.tendsto_exp_div_pow_atTop)",
+      "Proved zero_dissipation_of_constant in NavierStokes.lean (vacuously: spectral gap contradiction)",
       "Proved E_bounded_after in NavierStokes.lean:604-636 (antitone approach)",
       "Proved enstrophy_bound_in_domain_2d in NavierStokes.lean:1770-1775",
       "Fixed ancient_E_monotone Mathlib API in NavierStokes.lean:374,399",
@@ -55,7 +57,10 @@
       "File now compiles clean with 0 sorries (previously had Mathlib API errors)",
       "Lean 4 parses λ as keyword - field name λ₁ must be renamed (used mu₁)",
       "Three numerical axioms are FALSE: κ_gaussian ≈ 0.865 gives products ~1.845, ~0.922, ~1.078 failing bounds >2, >1, <0",
-      "The false axioms likely intended a different Faber-Krahn constant (κ=4 universal constant, not κ_gaussian=1-e⁻²)"
+      "The false axioms likely intended a different Faber-Krahn constant (κ=4 universal constant, not κ_gaussian=1-e⁻²)",
+      "exp_dominates_poly proved using Real.tendsto_exp_div_pow_atTop from Mathlib asymptotics",
+      "AncientConstant contradicts spectral gap: constant E implies D=S but spectral gap forces D>S",
+      "liouville_bounded_ancient essentially claims bounded ancient solutions don't exist (not just that they're constant)"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
