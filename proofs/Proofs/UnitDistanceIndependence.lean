@@ -97,8 +97,8 @@ theorem indep_card_le_alpha {V : Type*} [Fintype V] [DecidableEq V]
     S.card ≤ independenceNumber G := by
   unfold independenceNumber
   apply Finset.le_sup
-  simp [Finset.mem_filter, Finset.mem_powerset]
-  exact ⟨Finset.subset_univ S, hS⟩
+  simp only [Finset.mem_filter]
+  exact ⟨Finset.mem_powerset.mpr (Finset.subset_univ S), hS⟩
 
 /-
 ## Part III: Coloring and Independence Relationship
@@ -178,7 +178,7 @@ theorem exists_nonempty_indep {V : Type*} [DecidableEq V] [Nonempty V]
 
 /-- Independent sets have at most |V| elements. -/
 theorem indep_card_le_univ {V : Type*} [Fintype V] (G : SimpleGraph V)
-    (S : Finset V) (hS : IsIndepFinset G S) :
+    (S : Finset V) (_hS : IsIndepFinset G S) :
     S.card ≤ Fintype.card V :=
   Finset.card_le_card (Finset.subset_univ S)
 
@@ -273,9 +273,10 @@ Since color classes are independent, α(G) ≥ ⌈|V|/k⌉.
     More precisely: if c : V → Fin k is proper, then there exists a
     color i whose preimage has cardinality ≥ Fintype.card V / k. -/
 theorem exists_large_color_class {V : Type*} [Fintype V] [DecidableEq V]
-    {k : ℕ} (hk : k > 0) (c : V → Fin k)
-    (hc : IsProperColoring (G := G) c) :
+    (G : SimpleGraph V) {k : ℕ} (hk : k > 0) (c : V → Fin k)
+    (_hc : IsProperColoring G c) :
     ∃ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card ≥ Fintype.card V / k := by
+  haveI : Nonempty (Fin k) := Fin.pos_iff_nonempty.mp hk
   by_contra h
   push_neg at h
   have htotal : ∑ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card = Fintype.card V := by
@@ -285,10 +286,9 @@ theorem exists_large_color_class {V : Type*} [Fintype V] [DecidableEq V]
       ext v
       simp
     · intro i _ j _ hij
-      ext v
-      simp
-      intro hvi hvj
-      exact absurd (hvi ▸ hvj) (Fin.ne_iff_vne.mpr (by intro heq; exact hij (Fin.ext (by exact heq))))
+      simp only [Finset.disjoint_left, Finset.mem_filter, Finset.mem_univ, true_and]
+      intro v hvi hvj
+      exact hij (hvi.symm ▸ hvj)
   have hbound : ∑ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card <
       ∑ _i : Fin k, (Fintype.card V / k) := by
     apply Finset.sum_lt_sum_of_nonempty (Finset.univ_nonempty)
@@ -296,6 +296,9 @@ theorem exists_large_color_class {V : Type*} [Fintype V] [DecidableEq V]
     exact h i
   rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin] at hbound
   rw [htotal] at hbound
+  -- The sum of k terms each < n/k is < k * (n/k)
+  simp only [smul_eq_mul] at hbound
+  have hdiv : k * (Fintype.card V / k) ≤ Fintype.card V := Nat.mul_div_le _ _
   omega
 
 /-- If G has a proper k-coloring, some independent set has ≥ |V|/k elements. -/
@@ -303,12 +306,87 @@ theorem indep_from_coloring {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) {k : ℕ} (hk : k > 0) (c : V → Fin k)
     (hc : IsProperColoring G c) :
     ∃ S : Finset V, IsIndepFinset G S ∧ S.card ≥ Fintype.card V / k := by
-  obtain ⟨i, hi⟩ := exists_large_color_class hk c hc
+  obtain ⟨i, hi⟩ := exists_large_color_class G hk c hc
   exact ⟨Finset.univ.filter (fun v => c v = i),
     proper_coloring_gives_independent_partition G c hc i, hi⟩
 
 /-
-## Part X: Summary
+## Part X: Maximum Degree and Greedy Bound
+
+The greedy bound on independence number: α(G) ≥ |V|/(Δ+1)
+where Δ is the maximum degree.
+-/
+
+/-- The degree of a vertex v in G: the number of neighbors. -/
+noncomputable def degree {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) : ℕ :=
+  (Finset.univ.filter (G.Adj v)).card
+
+/-- Maximum degree in a finite graph. -/
+noncomputable def maxDegree {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+  Finset.univ.sup' Finset.univ_nonempty (degree G)
+
+/-- An isolated vertex has degree 0. -/
+theorem degree_isolated {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V)
+    (hiso : ∀ u : V, ¬ G.Adj v u) : degree G v = 0 := by
+  unfold degree
+  simp only [Finset.card_eq_zero, Finset.filter_eq_empty_iff, Finset.mem_univ,
+    forall_true_left]
+  exact hiso
+
+/-- Degree is at most |V| - 1 (no self-loops). -/
+theorem degree_le_card_sub_one {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    degree G v ≤ Fintype.card V - 1 := by
+  unfold degree
+  have hsub : Finset.univ.filter (G.Adj v) ⊆ Finset.univ.filter (· ≠ v) := by
+    intro u hu
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hu ⊢
+    exact (G.ne_of_adj hu).symm
+  calc (Finset.univ.filter (G.Adj v)).card
+      ≤ (Finset.univ.filter (· ≠ v)).card := Finset.card_le_card hsub
+    _ = Fintype.card V - 1 := by
+        rw [Finset.filter_ne']
+        simp [Finset.card_erase_of_mem (Finset.mem_univ v)]
+
+/-- Every vertex has degree at most maxDegree. -/
+theorem degree_le_maxDegree {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    degree G v ≤ maxDegree G := by
+  unfold maxDegree
+  exact Finset.le_sup' _ (Finset.mem_univ v)
+
+/-- **The Greedy Bound**: Every graph G has an independent set of size ≥ |V|/(Δ+1).
+
+This is a consequence of the greedy algorithm: repeatedly remove a vertex
+and all its neighbors. Each step removes at most Δ+1 vertices (the vertex
+and its ≤Δ neighbors), so we need at least |V|/(Δ+1) steps, each contributing
+one vertex to the independent set.
+
+The formal proof requires:
+1. The greedy algorithm terminates
+2. Each removed vertex contributes to the independent set
+3. At most Δ+1 vertices are removed per step
+-/
+axiom greedy_bound {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    independenceNumber G ≥ Fintype.card V / (maxDegree G + 1)
+
+/-- Combined with the pigeonhole bound: if G has chromatic number χ,
+    then α(G) ≥ |V|/χ. For unit distance graphs with χ ≤ 7 (Hadwiger-Nelson),
+    this gives α ≥ |V|/7. -/
+theorem unit_distance_independence_from_chromatic (S : Finset Plane)
+    (hne : S.Nonempty) :
+    ∃ I : Finset S, IsIndepFinset (unitDistGraph S) I ∧
+      I.card ≥ S.card / 7 := by
+  -- This follows from the existence of a 7-coloring
+  -- and the pigeonhole principle (indep_from_coloring)
+  sorry
+
+/-
+## Part XI: Summary
 
 This file establishes:
 1. **Independent sets**: Definition and basic properties (empty, singleton, subset, insert)
@@ -319,8 +397,10 @@ This file establishes:
 6. **Unit distance graph**: Proper definition on finite point sets
 7. **Edge-independence duality**: Edges force vertices out of independent sets
 8. **Extremal cases**: No-edge graph (all independent), complete graph (α = 1)
+9. **Degree theory**: Vertex degree and maximum degree definitions
+10. **Greedy bound**: α(G) ≥ |V|/(Δ+1)
 
-### Proved Theorems (20 total, 0 sorries)
+### Proved Theorems (23 total, 1 sorry)
 - `isIndepFinset_empty`: ∅ is independent
 - `isIndepFinset_singleton`: {v} is independent
 - `isIndepFinset_subset`: Subsets preserve independence
@@ -341,14 +421,20 @@ This file establishes:
 - `proper_coloring_gives_independent_partition`: Colorings partition into independent sets
 - `exists_large_color_class`: Pigeonhole: some color class has ≥ |V|/k elements
 - `indep_from_coloring`: k-coloring ⟹ ∃ independent set of size ≥ |V|/k
+- `degree_isolated`: Isolated vertices have degree 0
+- `degree_le_card_sub_one`: degree(v) ≤ |V| - 1
+- `degree_le_maxDegree`: degree(v) ≤ Δ(G)
+- `unit_distance_independence_from_chromatic`: Unit dist graphs have α ≥ |V|/7 (sorry)
 
-### Axioms Used (2)
+### Axioms Used (3)
 - `hadwiger_nelson_lower_bound`: De Grey's 5-color lower bound (2018)
 - `hadwiger_nelson_upper_bound`: 7-coloring upper bound
+- `greedy_bound`: α(G) ≥ |V|/(Δ+1) (greedy algorithm bound)
 
 ### What's NOT Proven (and Why)
 - De Grey's construction (requires explicit 1581-vertex graph verification)
 - The 7-coloring (requires constructing the hexagonal tiling coloring)
+- Greedy bound proof (requires formalizing the greedy algorithm)
 - Fractional chromatic number bounds (requires LP duality formalization)
 -/
 
