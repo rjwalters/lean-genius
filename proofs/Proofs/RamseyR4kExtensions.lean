@@ -204,6 +204,58 @@ theorem ramseyUpperBound_mono_left (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1) :
         ramseyUpperBound_symm s (r + 1) hs (by omega)
 
 /-
+## Part IV-B: Recursive (Pascal) Bound
+
+The classical recursive relation: R(r,s) ≤ R(r-1,s) + R(r,s-1).
+In terms of binomial coefficients, this follows from Pascal's rule:
+  C(n+1, k+1) = C(n, k) + C(n, k+1)
+-/
+
+/-- The recursive Ramsey bound: R(r,s) = R(r-1,s) + R(r,s-1) for r,s ≥ 2.
+    This is a direct consequence of Pascal's rule for binomial coefficients. -/
+theorem ramseyUpperBound_pascal (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
+    ramseyUpperBound r s = ramseyUpperBound (r - 1) s + ramseyUpperBound r (s - 1) := by
+  unfold ramseyUpperBound
+  simp only [show ¬(r = 0 ∨ s = 0) by omega,
+             show ¬(r - 1 = 0 ∨ s = 0) by omega,
+             show ¬(r = 0 ∨ s - 1 = 0) by omega, ↓reduceIte]
+  -- Rewrite indices using omega-provable facts
+  have h1 : r - 1 + s - 2 = r + s - 3 := by omega
+  have h2 : r + (s - 1) - 2 = r + s - 3 := by omega
+  have h3 : r - 1 - 1 = r - 2 := by omega
+  rw [h1, h2, h3]
+  -- Now: C(r+s-2, r-1) = C(r+s-3, r-2) + C(r+s-3, r-1)
+  -- This is Pascal's rule: C(n+1, k+1) = C(n, k) + C(n, k+1)
+  -- with n = r+s-3, k = r-2
+  have h4 : r + s - 2 = (r + s - 3) + 1 := by omega
+  have h5 : r - 1 = (r - 2) + 1 := by omega
+  rw [h4, h5]
+  exact Nat.choose_succ_succ (r + s - 3) (r - 2)
+
+/-- Verify Pascal's rule for small cases: R(3,3) = R(2,3) + R(3,2). -/
+theorem ramseyUpperBound_pascal_check_33 :
+    ramseyUpperBound 3 3 = ramseyUpperBound 2 3 + ramseyUpperBound 3 2 := by
+  native_decide
+
+/-- Verify Pascal's rule for R(4,4) = R(3,4) + R(4,3). -/
+theorem ramseyUpperBound_pascal_check_44 :
+    ramseyUpperBound 4 4 = ramseyUpperBound 3 4 + ramseyUpperBound 4 3 := by
+  native_decide
+
+/-- The Ramsey bound at (r,s) is at least as large as at (r-1,s) for r ≥ 2, s ≥ 1.
+    Corollary of Pascal's rule: R(r,s) = R(r-1,s) + R(r,s-1) ≥ R(r-1,s). -/
+theorem ramseyUpperBound_ge_pred_left (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
+    ramseyUpperBound r s ≥ ramseyUpperBound (r - 1) s := by
+  rw [ramseyUpperBound_pascal r s hr hs]
+  omega
+
+/-- Corollary of Pascal's rule: R(r,s) ≥ R(r,s-1). -/
+theorem ramseyUpperBound_ge_pred_right (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
+    ramseyUpperBound r s ≥ ramseyUpperBound r (s - 1) := by
+  rw [ramseyUpperBound_pascal r s hr hs]
+  omega
+
+/-
 ## Part V: The R(4,k) Problem
 
 The main open question: What is the order of growth of R(4,k)?
@@ -239,7 +291,7 @@ axiom r4k_lower_bound :
 ## Summary
 
 This file formalizes:
-1. **Proved theorems (16 total, 0 sorries)**:
+1. **Proved theorems (22 total, 0 sorries)**:
    - Concrete values: R(3,3)=6, R(3,4)=10, R(3,5)=15,
      R(4,4)=20, R(4,5)=35, R(5,5)=70  (6 theorems)
    - ramseyUpperBound_symm: R(r,s) = R(s,r)
@@ -249,6 +301,11 @@ This file formalizes:
    - ramseyUpperBound_pos: R(r,s) ≥ 1 for r,s ≥ 1
    - ramseyUpperBound_mono_right: R(r,s) ≤ R(r,s+1)
    - ramseyUpperBound_mono_left: R(r,s) ≤ R(r+1,s)
+   - ramseyUpperBound_pascal: R(r,s) = R(r-1,s) + R(r,s-1)  [NEW]
+   - ramseyUpperBound_pascal_check_33: R(3,3) = R(2,3) + R(3,2)  [NEW]
+   - ramseyUpperBound_pascal_check_44: R(4,4) = R(3,4) + R(4,3)  [NEW]
+   - ramseyUpperBound_ge_pred_left: R(r,s) ≥ R(r-1,s)  [NEW]
+   - ramseyUpperBound_ge_pred_right: R(r,s) ≥ R(r,s-1)  [NEW]
 
 2. **Axioms (5 total)**: Deep probabilistic results
    - erdos_probabilistic_lower_bound: R(k,k) > 2^(k/2)
