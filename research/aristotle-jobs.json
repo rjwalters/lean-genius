@@ -2320,32 +2320,32 @@
       "file": "proofs/Proofs/Erdos1115Problem.lean",
       "problem_id": "erdos-1115",
       "submitted": "2026-02-04T10:53:25Z",
-      "status": "submitted",
-      "notes": "Batch 2026-02-04 - 1 sorry, score 1"
+      "status": "expired",
+      "notes": "Batch 2026-02-04 - 1 sorry, score 1 | Expired (NOT_FOUND on Aristotle API 2026-02-04)"
     },
     {
       "project_id": "6f00be2e-2aa5-4f92-920c-b35d1c48d043",
       "file": "proofs/Proofs/Erdos1124Problem.lean",
       "problem_id": "erdos-1124",
       "submitted": "2026-02-04T10:53:25Z",
-      "status": "submitted",
-      "notes": "Batch 2026-02-04 - 1 sorry, score 1"
+      "status": "expired",
+      "notes": "Batch 2026-02-04 - 1 sorry, score 1 | Expired (NOT_FOUND on Aristotle API 2026-02-04)"
     },
     {
       "project_id": "80081026-db5c-49a4-84f7-1cb70e6ebda2",
       "file": "proofs/Proofs/Erdos147Problem.lean",
       "problem_id": "erdos-147",
       "submitted": "2026-02-04T10:53:25Z",
-      "status": "submitted",
-      "notes": "Batch 2026-02-04 - 1 sorry, score 1"
+      "status": "expired",
+      "notes": "Batch 2026-02-04 - 1 sorry, score 1 | Expired (NOT_FOUND on Aristotle API 2026-02-04)"
     },
     {
       "project_id": "6d2efc4e-7773-4e6c-8cf2-1a8fb53511bc",
       "file": "proofs/Proofs/Erdos164Problem.lean",
       "problem_id": "erdos-164",
       "submitted": "2026-02-04T10:53:25Z",
-      "status": "submitted",
-      "notes": "Batch 2026-02-04 - 1 sorry, score 1"
+      "status": "expired",
+      "notes": "Batch 2026-02-04 - 1 sorry, score 1 | Expired (NOT_FOUND on Aristotle API 2026-02-04)"
     }
   ],
   "completed": [],
@@ -9296,5 +9296,10 @@
     "REMOVED as OPEN: erdos-17, erdos-18, erdos-19, erdos-20",
     "erdos-205 and erdos-333 already have Lean proofs (check codebase)",
     "erdos-69 (Tao-Ter\u00e4v\u00e4inen 2025) omitted - analytic proof may be hard to formalize"
-  ]
+  ],
+  "metadata": {
+    "last_check": "2026-02-04T11:15:00Z",
+    "rate_limit_note": "30 orphaned NOT_STARTED projects on Aristotle from failed batch submission (429 rate limit). Cannot submit new jobs until cleanup.",
+    "orphaned_projects": 30
+  }
 }
