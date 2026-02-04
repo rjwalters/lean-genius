@@ -79,7 +79,7 @@ This file does NOT solve the 3D Millennium Problem. It provides:
 
 **Formalization Notes:**
 - 0 sorries (all previously sorry'd lemmas are now proved or axiomatized)
-- 28 axioms (measure-theoretic, PDE, physical, conjectures) — down from 35
+- 25 axioms (measure-theoretic, PDE, physical, conjectures) — down from 35
 - `typeII_no_blowup` previously axiom, now PROVED: E bounded on compact [0,T] → BKM → Ω bounded → contradiction with blowup
 - `liouville_bounded_ancient` previously axiom, now PROVED (vacuously: bounded ancient solutions can't exist — spectral gap forces linear growth E(τ) ≥ E(0) + cτ)
 - `eff_beta_vanishes` previously axiom, now PROVED: (T-t)^(α-1) → 0 via rpow monotonicity
@@ -90,6 +90,9 @@ This file does NOT solve the 3D Millennium Problem. It provides:
   contradicts spectral gap structure, so conclusion is vacuously true)
 - `E_bounded_after` previously axiom, now PROVED via antitoneOn
 - `ancient_E_monotone` proof fixed for Mathlib API changes
+- `exists_center_of_thetaAt_gt` previously axiom, now PROVED via exists_lt_of_lt_csSup
+- `hasMassConcentration_of_thetaAt_gt` previously axiom, now PROVED from witness extraction + div bound
+- `thetaAtK_le_one` previously axiom, now PROVED via csSup_le + ratioK_le_one
 - Part X-B: `GlobalNSSolution2D` proves global enstrophy bound WITHOUT axioms
 - Part X-B: Exponential decay rate under Poincaré inequality (no Grönwall needed)
 - See Part XI for complete axiom catalog with references
@@ -1145,16 +1148,18 @@ lemma thetaAt_le_one (sol : NSSolution) (t : ℝ) (ht : t ∈ Ioo 0 sol.T) :
   exact hx₀ ▸ ratio_le_one sol t ht x₀
 
 
-/-- **Axiom: Exists Center of ThetaAt Greater**
-    From θ₀ < sup, extract witnessing element.
-    Uses order theory: if θ₀ < sSup S, then ∃ x ∈ S with θ₀ < x. -/
-axiom exists_center_of_thetaAt_gt_axiom (sol : NSSolution) (t θ₀ : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (hθ : θ₀ < thetaAt sol t) : ∃ x₀ : Fin 3 → ℝ, θ₀ < ratio sol t x₀
-
-/-- ORDER THEORY WITNESS: θ₀ < thetaAt → ∃ x₀ with ratio > θ₀ -/
+/-- **PROVED: Exists Center of ThetaAt Greater** (previously axiom)
+    From θ₀ < sSup S, extract witnessing element via order theory. -/
 theorem exists_center_of_thetaAt_gt (sol : NSSolution) (t θ₀ : ℝ) (ht : t ∈ Ioo 0 sol.T)
-    (hθ : θ₀ < thetaAt sol t) : ∃ x₀ : Fin 3 → ℝ, θ₀ < ratio sol t x₀ :=
-  exists_center_of_thetaAt_gt_axiom sol t θ₀ ht hθ
+    (hθ : θ₀ < thetaAt sol t) : ∃ x₀ : Fin 3 → ℝ, θ₀ < ratio sol t x₀ := by
+  unfold thetaAt at hθ
+  -- θ₀ < sSup S where S = Set.range f, S is bddAbove and nonempty
+  have hne := ratio_range_nonempty sol t
+  have hbdd := ratio_bddAbove sol t ht
+  -- Extract witness from sSup
+  obtain ⟨y, hy_mem, hy_gt⟩ := exists_lt_of_lt_csSup hne hθ
+  obtain ⟨x₀, rfl⟩ := hy_mem
+  exact ⟨x₀, hy_gt⟩
 
 
 /-- Has mass concentration at level θ -/
@@ -1162,16 +1167,18 @@ def HasMassConcentration (sol : NSSolution) (t θ : ℝ) : Prop :=
   ∃ x₀ : Fin 3 → ℝ, E_loc sol t x₀ (diffusion_scale sol.ν (sol.Ω t)) ≥ θ * sol.E t
 
 
-/-- **Axiom: Has Mass Concentration of ThetaAt Greater**
-    Extract witness from supremum and derive bound.
-    Uses exists_center_of_thetaAt_gt and ratio definition. -/
-axiom hasMassConcentration_of_thetaAt_gt_axiom (sol : NSSolution) (t θ₀ : ℝ)
-    (ht : t ∈ Ioo 0 sol.T) (hθ : θ₀ < thetaAt sol t) : HasMassConcentration sol t θ₀
-
-/-- WITNESS THEOREM: thetaAt > θ₀ → HasMassConcentration -/
+/-- **PROVED: Has Mass Concentration of ThetaAt Greater** (previously axiom)
+    Extract witness from sSup and convert ratio bound to mass concentration. -/
 theorem hasMassConcentration_of_thetaAt_gt (sol : NSSolution) (t θ₀ : ℝ)
-    (ht : t ∈ Ioo 0 sol.T) (hθ : θ₀ < thetaAt sol t) : HasMassConcentration sol t θ₀ :=
-  hasMassConcentration_of_thetaAt_gt_axiom sol t θ₀ ht hθ
+    (ht : t ∈ Ioo 0 sol.T) (hθ : θ₀ < thetaAt sol t) : HasMassConcentration sol t θ₀ := by
+  obtain ⟨x₀, hx₀⟩ := exists_center_of_thetaAt_gt sol t θ₀ ht hθ
+  refine ⟨x₀, ?_⟩
+  -- hx₀ : θ₀ < ratio sol t x₀ = E_loc / E
+  -- Need: E_loc ≥ θ₀ * E
+  unfold ratio at hx₀
+  have hE_pos : 0 < sol.E t := sol.E_pos t ht
+  rw [lt_div_iff₀ hE_pos] at hx₀
+  exact le_of_lt hx₀
 
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -1229,15 +1236,24 @@ lemma E_loc_K_nonneg (sol : NSSolution) (t : ℝ) (K : ℕ) (cfg : KBallConfig K
   exact E_loc_nonneg sol t (cfg.centers i) (diffusion_scale sol.ν (sol.Ω t))
 
 
-/-- **Axiom: ThetaAtK Less Than Or Equal One**
-    Each K-ball configuration captures at most the total enstrophy.
-    Uses E_loc_K_le_E and supremum properties. -/
-axiom thetaAtK_le_one_axiom (sol : NSSolution) (t : ℝ) (K : ℕ) (ht : t ∈ Ioo 0 sol.T) :
-    thetaAtK sol t K ≤ 1
+/-- **PROVED: ThetaAtK Less Than Or Equal One** (previously axiom)
+    Each K-ball configuration captures at most the total enstrophy. -/
+lemma ratioK_le_one (sol : NSSolution) (t : ℝ) (K : ℕ) (ht : t ∈ Ioo 0 sol.T)
+    (cfg : KBallConfig K) : ratioK sol t K cfg ≤ 1 := by
+  have hE_pos : 0 < sol.E t := sol.E_pos t ht
+  exact div_le_one_of_le₀ (E_loc_K_le_E sol t K cfg) (le_of_lt hE_pos)
+
+/-- Range of ratioK is nonempty -/
+lemma ratioK_range_nonempty (sol : NSSolution) (t : ℝ) (K : ℕ) :
+    (Set.range (fun cfg : KBallConfig K => ratioK sol t K cfg)).Nonempty :=
+  ⟨ratioK sol t K ⟨fun _ => 0⟩, ⟨⟨fun _ => 0⟩, rfl⟩⟩
 
 /-- θₖ ≤ 1 -/
 lemma thetaAtK_le_one (sol : NSSolution) (t : ℝ) (K : ℕ) (ht : t ∈ Ioo 0 sol.T) :
-    thetaAtK sol t K ≤ 1 := thetaAtK_le_one_axiom sol t K ht
+    thetaAtK sol t K ≤ 1 := by
+  apply csSup_le (ratioK_range_nonempty sol t K)
+  intro y ⟨cfg, hcfg⟩
+  exact hcfg ▸ ratioK_le_one sol t K ht cfg
 
 
 /-- **Axiom: ThetaAtK Monotonicity**
@@ -2270,16 +2286,16 @@ end TwoDimensionalGlobal
 PART XI: AXIOM CATALOG AND STATUS
 ═══════════════════════════════════════════════════════════════════════════════
 
-This file uses 9 axioms for the 3D conditional theorem. Here is a complete
+This file uses 25 axioms total (down from 35). Here is a complete
 catalog with their justifications and status.
 
 ## Axiom Categories
 
-### Category A: Measure-Theoretic (3 axioms)
+### Category A: Measure-Theoretic (2 axioms)
 These axiomatize integral quantities that would require full Mathlib MeasureTheory:
 1. `E_loc_le_E` - Local enstrophy ≤ total enstrophy
-2. `E_loc_nonneg` - Local enstrophy is nonnegative
-3. `E_loc_K_le_E` - K-ball enstrophy ≤ total enstrophy
+2. `E_loc_K_le_E` - K-ball enstrophy ≤ total enstrophy
+(Note: `E_loc_nonneg` previously here, now PROVED)
 
 ### Category B: PDE Results (3 axioms)
 These axiomatize published theorems from the NS literature:
@@ -2301,8 +2317,11 @@ The key hypothesis bridging known results to regularity:
 | Axiom | Category | Status | Reference |
 |-------|----------|--------|-----------|
 | E_loc_le_E | A | Definitional | Integral monotonicity |
-| E_loc_nonneg | A | Definitional | Integral nonnegativity |
+| E_loc_nonneg | A | **PROVED** | Trivial from E_loc = 0 |
 | E_loc_K_le_E | A | Definitional | Sum of disjoint integrals |
+| exists_center_of_thetaAt_gt | - | **PROVED** | exists_lt_of_lt_csSup |
+| hasMassConcentration_of_thetaAt_gt | - | **PROVED** | Witness + div bound |
+| thetaAtK_le_one | - | **PROVED** | csSup_le + ratioK_le_one |
 | faber_krahn_on_ball | B | Published | Faber (1923), Krahn (1925) |
 | faber_krahn_K_balls | B | Published | Additive over disjoint domains |
 | poincare_dissipation_bound | B | Published | Poincaré (1894) |
@@ -2336,6 +2355,9 @@ This file correctly models the state of knowledge as of December 2025.
 - **2D global enstrophy bound** (GlobalNSSolution2D, no axiom needed)
 - **2D enstrophy antitone on [0,∞)** (global monotonicity)
 - **2D exponential decay rate** E'(t) ≤ -2νλ₁E(t) (Poincaré)
+- **exists_center_of_thetaAt_gt** — sSup witness extraction via exists_lt_of_lt_csSup
+- **hasMassConcentration_of_thetaAt_gt** — witness + ratio → mass concentration
+- **thetaAtK_le_one** — K-ball ratio ≤ 1 via csSup_le
 - All logical connections between hypotheses and conclusions
 
 **AXIOMATIZED** (published results, could be fully formalized):

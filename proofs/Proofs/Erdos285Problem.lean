@@ -173,6 +173,33 @@ theorem three_mem_validLengths : 3 ∈ ValidLengths := by
   · simp [Fin.sum_univ_succ, Matrix.cons_val_zero]
     norm_num
 
+/-- k = 4 is a valid length: 1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20 (5 terms). -/
+theorem four_mem_validLengths : 4 ∈ ValidLengths := by
+  refine ⟨![3, 4, 5, 6, 20], ?_, ?_, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [Matrix.cons_val_zero, Matrix.cons_val_one]
+  · simp
+  · simp [Fin.sum_univ_succ, Matrix.cons_val_zero]
+    norm_num
+
+/-- Tighter lower bound: e/(e-1) > 79/50.
+    We need e > 79/50 * (e-1) = 79e/50 - 79/50, i.e., e(1 - 79/50) > -79/50,
+    i.e., -29e/50 > -79/50, i.e., 29e < 79 * 2 = 158, need e < 158/29 ≈ 5.45. True. -/
+theorem egyptianConstant_gt_79_over_50 : egyptianConstant > 79 / 50 := by
+  unfold egyptianConstant
+  have he_lower : rexp 1 > 2.718281828 := by linarith [Real.exp_one_gt_d9]
+  have hpos : rexp 1 - 1 > 0 := by linarith
+  -- e/(e-1) > 79/50 iff 50*e > 79*(e-1) = 79e - 79 iff 79 > 29e iff e < 79/29
+  -- Since e < 2.72 < 79/29 ≈ 2.724, this is true
+  rw [gt_iff_lt, lt_div_iff₀ hpos]
+  have he_upper : rexp 1 < 2.7182818286 := Real.exp_one_lt_d9
+  -- Goal: 79/50 * (rexp 1 - 1) < rexp 1
+  -- i.e., 79*(rexp 1 - 1) < 50 * rexp 1
+  -- i.e., 79*rexp 1 - 79 < 50*rexp 1
+  -- i.e., 29*rexp 1 < 79
+  -- 29 * 2.7182818286 < 29 * 2.72 = 78.88 < 79. True.
+  nlinarith
+
 /-! ## Examples -/
 
 /-- The classic 3-term representation: 1 = 1/2 + 1/3 + 1/6 -/
