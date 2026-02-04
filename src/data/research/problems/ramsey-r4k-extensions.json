@@ -22,7 +22,9 @@
       "Base cases: R(1,s) = R(r,1) = 1, R(0,s) = R(r,0) = 0",
       "R(2,s) = s, R(r,2) = r",
       "Positivity: R(r,s) >= 1 for r,s >= 1",
-      "Monotonicity: R(r,s) <= R(r+1,s) and R(r,s) <= R(r,s+1)"
+      "Monotonicity: R(r,s) <= R(r+1,s) and R(r,s) <= R(r,s+1)",
+      "Pascal recursive bound: R(r,s) = R(r-1,s) + R(r,s-1)",
+      "Pred corollaries: R(r,s) >= R(r-1,s) and R(r,s) >= R(r,s-1)"
     ],
     "open": [
       "Exact order of growth of R(4,k): between k^{5/2} and k^3 (up to log factors)",
@@ -34,8 +36,8 @@
   },
   "currentState": {
     "phase": "FORMALIZED",
-    "since": "2026-02-04T04:00:00.000Z",
-    "iteration": 2,
+    "since": "2026-02-04T14:15:00.000Z",
+    "iteration": 3,
     "focus": "Structural properties of the Ramsey upper bound function",
     "blockers": [
       "Probabilistic method proofs require Lovasz Local Lemma and random graph models not yet in Mathlib"
@@ -48,13 +50,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created RamseyR4kExtensions.lean with 16 proved theorems (0 sorries) and 5 axioms. Proved symmetry, base cases, positivity, and monotonicity of the binomial coefficient Ramsey bound. Axiomatized deep probabilistic results (Erdos 1947, AKS 1980, Kim 1995, R(4,k) bounds).",
+    "progressSummary": "PROGRESS: RamseyR4kExtensions.lean now has 22 proved theorems (0 sorries) and 5 axioms. Added Pascal recursive bound R(r,s) = R(r-1,s) + R(r,s-1), verified for small cases, and proved pred corollaries.",
     "builtItems": [
       "proofs/Proofs/RamseyR4kExtensions.lean - 250+ lines, 16 theorems, 5 axioms",
       "ramseyUpperBound definition using Nat.choose",
       "ramseyUpperBound_symm proof using choose_symm",
       "ramseyUpperBound_mono_right/left proofs using choose_le_choose",
-      "ramseyUpperBound_pos proof using choose_pos"
+      "ramseyUpperBound_pos proof using choose_pos",
+      "ramseyUpperBound_pascal: R(r,s) = R(r-1,s) + R(r,s-1) via Nat.choose_succ_succ",
+      "ramseyUpperBound_pascal_check_33, _check_44: native_decide verifications",
+      "ramseyUpperBound_ge_pred_left/right: corollaries of Pascal rule"
     ],
     "insights": [
       "Nat.choose_symm signature: (hk : k <= n) -> C(n, n-k) = C(n, k) - careful with Nat subtraction",
@@ -62,7 +67,9 @@
       "Nat.choose_pos gives positivity: C(n, k) > 0 when k <= n",
       "native_decide works well for small concrete Ramsey bound computations",
       "Probabilistic method proofs are fundamentally blocked by missing Mathlib infrastructure",
-      "The R(4,k) gap (k^{5/2} vs k^3) is an active research problem"
+      "The R(4,k) gap (k^{5/2} vs k^3) is an active research problem",
+      "Nat.choose_succ_succ gives Pascal rule: C(n+1, k+1) = C(n, k) + C(n, k+1)",
+      "Pascal rule enables both recursive computation and proving R(r,s) >= R(r-1,s)"
     ],
     "mathlibGaps": [
       "No Lovasz Local Lemma formalization in Mathlib",
@@ -71,9 +78,9 @@
     ],
     "nextSteps": [
       "Submit axioms as theorem sorries to Aristotle",
-      "Add the recursive Pascal-like bound: R(r,s) <= R(r-1,s) + R(r,s-1)",
       "Connect to existing RamseyTheorem.lean in the gallery",
-      "Consider proving small exact values (R(3,3) = 6 exact, not just <= 6)"
+      "Consider proving small exact values (R(3,3) = 6 exact, not just <= 6)",
+      "Add more concrete Ramsey bounds (R(3,6), R(3,7), etc.)"
     ]
   },
   "approaches": [
@@ -113,7 +120,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-04T04:00:00.000Z",
+  "lastUpdate": "2026-02-04T14:15:00.000Z",
   "significance": 7,
   "tractability": 6
 }
