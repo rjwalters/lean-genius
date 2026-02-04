@@ -1,41 +1,95 @@
 {
   "slug": "erdos-1057",
   "title": "Counting Carmichael Numbers",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "FORMALIZED",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "C(x) = x^{1-o(1)} where C(x) counts Carmichael numbers up to x",
+    "plain": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} < C(x) < x*exp(-c*log x*log log log x / log log x). OPEN.",
+    "whyMatters": [
+      "Carmichael numbers are the ultimate pseudoprimes - fooling Fermat tests for all bases",
+      "Understanding their density impacts primality testing algorithms",
+      "The gap between exponent 0.34 and 1 is a major open problem in number theory"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "IsCarmichael definition via Korselt's criterion (squarefree + divisibility condition)",
+      "carmichael_561: 561 = 3*11*17 is Carmichael (fully proved from Korselt criterion)",
+      "carmichael_1105: 1105 = 5*13*17 is Carmichael (fully proved)",
+      "carmichael_1729: 1729 = 7*13*19 is Carmichael (fully proved)",
+      "carmichael_not_prime_power: No Carmichael number is a prime power",
+      "C_mono: The counting function C(x) is monotone",
+      "factorization_561: 561 = 3*11*17",
+      "korselt_561: 2|560, 10|560, 16|560",
+      "exponent_gap: lowerExponent < 1"
+    ],
+    "open": [
+      "Is C(x) = x^{1-o(1)}? (the main Erdos conjecture #1057)",
+      "carmichael_odd: all Carmichael numbers are odd (axiomatized, proof sketch documented)",
+      "carmichael_at_least_3_primes: minimum 3 prime factors (axiomatized)",
+      "korselt_theorem: equivalence of Korselt and Fermat characterizations (axiomatized)"
+    ],
+    "goal": "Eliminate axioms for provable structural results; the main conjecture is OPEN"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-27T22:18:02.332Z",
+    "phase": "FORMALIZED",
+    "since": "2026-02-04T04:30:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Eliminate axioms for concrete Carmichael number verifications",
+    "blockers": [
+      "carmichael_odd proof requires careful Nat subtraction handling",
+      "carmichael_at_least_3_primes requires Korselt analysis for 2-factor case",
+      "Main conjecture is OPEN - cannot be proved"
+    ],
+    "nextAction": "Try proving carmichael_odd and carmichael_at_least_3_primes",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Eliminated 3 axioms by proving carmichael_561, carmichael_1105, carmichael_1729 from Korselt criterion. Fixed C_mono proof warnings. Added open Classical for DecidablePred issue. File now has 9 proved results and 7 axioms (reduced from 10).",
+    "builtItems": [
+      "carmichael_561 proof: squarefree via prime_squarefree + primeFactors, Korselt via norm_num",
+      "carmichael_1105 proof: same pattern with primeFactors {5, 13, 17}",
+      "carmichael_1729 proof: same pattern with primeFactors {7, 13, 19}",
+      "Fixed C_mono to use Finset.filter_subset_filter + range_mono"
+    ],
+    "insights": [
+      "Proving Carmichael numbers: use native_decide for not-prime, Nat.squarefree_iff_prime_squarefree + primeFactors for squarefree, norm_num for divisibility",
+      "Nat.primeFactors computability: native_decide works for specific numbers",
+      "open Classical needed for Finset.filter with non-decidable predicates",
+      "carmichael_odd proof sketch is correct but Nat subtraction makes formalization tedious",
+      "Pattern for Korselt verification: compute primeFactors, case split, check divisibility"
+    ],
+    "mathlibGaps": [
+      "No Carmichael number theory in Mathlib",
+      "No sieve methods for counting function bounds",
+      "Nat.Even/Odd + subtraction interactions are painful in proofs"
+    ],
+    "nextSteps": [
+      "Prove carmichael_odd using Int instead of Nat to avoid subtraction issues",
+      "Prove carmichael_at_least_3_primes (requires showing 2-factor case impossible)",
+      "Submit to Aristotle for korselt_theorem and other axioms",
+      "Consider adding more small Carmichael number verifications"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Korselt criterion verification for concrete numbers",
+      "status": "completed",
+      "description": "Prove specific numbers are Carmichael by computing primeFactors and checking divisibility conditions"
+    },
+    {
+      "name": "Structural property proofs",
+      "status": "in-progress",
+      "description": "Prove carmichael_odd and carmichael_at_least_3_primes from Korselt criterion"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "number-theory",
@@ -43,14 +97,26 @@
     "pseudoprimes",
     "1-sorry"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "proofs/Proofs/Erdos1057Problem.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdos (1956) - On pseudoprimes and Carmichael numbers",
+      "Alford-Granville-Pomerance (1994) - There are infinitely many Carmichael numbers",
+      "Lichtman (2022) - Improved bounds on the counting function"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1057"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Squarefree",
+      "Mathlib.Data.Nat.PrimeNormNum"
+    ]
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-01-27T22:18:02.332Z",
+  "lastUpdate": "2026-02-04T04:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }

@@ -34,7 +34,7 @@
 
 import Mathlib
 
-open Nat BigOperators Finset
+open Nat BigOperators Finset Classical
 
 /-
 ## Carmichael Numbers
@@ -65,7 +65,30 @@ The first few Carmichael numbers.
 -/
 
 /-- 561 = 3 × 11 × 17 is the smallest Carmichael number -/
-axiom carmichael_561 : IsCarmichael 561
+theorem carmichael_561 : IsCarmichael 561 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · -- Squarefree 561: no prime square divides 561
+    rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    -- p² | 561, so p | 561. Prime factors of 561 are {3, 11, 17}.
+    have hpdvd : p ∣ 561 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 561 := by
+      rw [Nat.mem_primeFactors]
+      exact ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 561 = {3, 11, 17} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    -- Check: 9 ∤ 561, 121 ∤ 561, 289 ∤ 561
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · -- ∀ p prime, p ∣ 561 → (p-1) ∣ 560
+    intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 561 := by
+      rw [Nat.mem_primeFactors]
+      exact ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 561 = {3, 11, 17} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> norm_num
 
 /-- 561 = 3 × 11 × 17 -/
 theorem factorization_561 : 561 = 3 * 11 * 17 := by native_decide
@@ -79,10 +102,44 @@ theorem korselt_561 : (2 ∣ 560) ∧ (10 ∣ 560) ∧ (16 ∣ 560) := by
   · exact ⟨35, rfl⟩
 
 /-- 1105 = 5 × 13 × 17 is the second Carmichael number -/
-axiom carmichael_1105 : IsCarmichael 1105
+theorem carmichael_1105 : IsCarmichael 1105 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    have hpdvd : p ∣ 1105 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 1105 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 1105 = {5, 13, 17} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 1105 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 1105 = {5, 13, 17} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> norm_num
 
-/-- 1729 = 7 × 13 × 19 is the Hardy-Ramanujan taxicab number -/
-axiom carmichael_1729 : IsCarmichael 1729
+/-- 1729 = 7 × 13 × 19 is the Hardy-Ramanujan taxicab number and a Carmichael number -/
+theorem carmichael_1729 : IsCarmichael 1729 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    have hpdvd : p ∣ 1729 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 1729 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 1729 = {7, 13, 19} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 1729 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 1729 = {7, 13, 19} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> norm_num
 
 /-- List of first few Carmichael numbers (OEIS A002997) -/
 def smallCarmichaels : List ℕ := [561, 1105, 1729, 2465, 2821, 6601, 8911]
@@ -102,9 +159,9 @@ theorem C_mono : ∀ x y : ℕ, x ≤ y → C x ≤ C y := by
   intro x y hxy
   unfold C
   apply Finset.card_le_card
-  intro n hn
-  simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
-  exact ⟨Nat.lt_of_lt_of_le hn.1 (Nat.add_le_add_right hxy 1), hn.2⟩
+  apply Finset.filter_subset_filter
+  apply Finset.range_mono
+  omega
 
 /-
 ## Known Bounds
@@ -189,7 +246,11 @@ theorem carmichael_not_prime_power (n : ℕ) (h : IsCarmichael n) :
       _ = 1 := Finset.card_singleton p
   omega
 
-/-- Carmichael numbers are odd (except there are no even ones > 2) -/
+/-- Carmichael numbers are odd.
+    Proof sketch: If n is even and Carmichael, then 2 | n. Since n is squarefree,
+    4 ∤ n, so n ≡ 2 (mod 4), meaning n - 1 is odd. But n has an odd prime
+    factor p (it's composite and squarefree), and (p-1) | (n-1) with p-1 even
+    gives 2 | (n-1), contradicting n - 1 odd. -/
 axiom carmichael_odd :
   ∀ n : ℕ, IsCarmichael n → Odd n
 
