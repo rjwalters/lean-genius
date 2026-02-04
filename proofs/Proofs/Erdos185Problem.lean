@@ -35,7 +35,7 @@ open Asymptotics Filter
 
 namespace Erdos185
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -53,7 +53,7 @@ theorem hypercube_card (n : ℕ) :
     Fintype.card (TernaryHypercube n) = 3^n := by
   simp [TernaryHypercube]
 
-/-!
+/-
 ## Part II: Lines in {0,1,2}^n
 -/
 
@@ -91,7 +91,7 @@ def CombinatorialLine.points (L : CombinatorialLine n) : Finset (TernaryHypercub
   Finset.univ.image (fun t : ZMod 3 => fun i =>
     if i ∈ L.varying then t else L.fixed i)
 
-/-!
+/-
 ## Part III: Cap Sets
 -/
 
@@ -131,7 +131,7 @@ The maximum size of a cap set in {0,1,2}^n.
 noncomputable def f3 (n : ℕ) : ℕ :=
   sSup { m : ℕ | ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = m }
 
-/-!
+/-
 ## Part IV: Connection to Arithmetic Progressions
 -/
 
@@ -152,7 +152,7 @@ AP-free sets embed to cap sets (lines generalize APs).
 -/
 axiom f3_geq_R3 (n : ℕ) : f3 n ≥ R3 (3^n)
 
-/-!
+/-
 ## Part V: Known Bounds
 -/
 
@@ -178,7 +178,7 @@ def moserSet (n : ℕ) : Finset (TernaryHypercube n) :=
     It avoids combinatorial lines, which is the relevant notion for Hales-Jewett. -/
 axiom moser_set_is_cap_combinatorial (n : ℕ) : IsCapSetCombinatorial (moserSet n)
 
-/-!
+/-
 ## Part VI: The Main Result - Density Hales-Jewett
 -/
 
@@ -206,7 +206,7 @@ f₃(n) / 3^n → 0 as n → ∞.
 axiom f3_density_tends_to_zero :
     Filter.Tendsto (fun n => (f3 n : ℝ) / 3^n) atTop (nhds 0)
 
-/-!
+/-
 ## Part VII: More Recent Progress
 -/
 
@@ -233,16 +233,95 @@ The best known upper bound has base ≈ 2.756.
 -/
 noncomputable def capSetConstant : ℝ := 2.756
 
-/-!
+/-
 ## Part VIII: Examples
 -/
+
+/-- The three elements of TernaryHypercube 1. -/
+private def pt0 : TernaryHypercube 1 := fun _ => 0
+private def pt1 : TernaryHypercube 1 := fun _ => 1
+private def pt2 : TernaryHypercube 1 := fun _ => 2
+
+private theorem pt0_ne_pt1 : pt0 ≠ (pt1 : TernaryHypercube 1) := by
+  intro h; have h0 := congr_fun h ⟨0, by omega⟩; norm_num [pt0, pt1] at h0
+
+private theorem pt1_ne_pt2 : pt1 ≠ (pt2 : TernaryHypercube 1) := by
+  intro h
+  have h0 := congr_fun h ⟨0, by omega⟩
+  have h1 : (1 : ZMod 3).val = (2 : ZMod 3).val := congr_arg ZMod.val h0
+  simp +decide at h1
+
+private theorem pt0_ne_pt2 : pt0 ≠ (pt2 : TernaryHypercube 1) := by
+  intro h
+  have h0 := congr_fun h ⟨0, by omega⟩
+  have h1 : (0 : ZMod 3).val = (2 : ZMod 3).val := congr_arg ZMod.val h0
+  simp +decide at h1
+
+/-- The Finset of all elements of TernaryHypercube 1 has cardinality 3. -/
+private theorem ternary1_card : Fintype.card (TernaryHypercube 1) = 3 :=
+  hypercube_card 1
+
+/-- pt0, pt1, pt2 are on a line: pt0 + pt2 = 2 * pt1. -/
+private theorem line_012 : OnLine pt0 pt1 pt2 := by
+  intro ⟨i, hi⟩
+  have : i = 0 := by omega
+  subst this
+  simp [pt0, pt1, pt2]
+
+/-- The full set TernaryHypercube 1 is NOT a cap set. -/
+private theorem full_set_not_cap :
+    ¬IsCapSet (Finset.univ : Finset (TernaryHypercube 1)) := by
+  intro h
+  exact h pt0 pt1 pt2 (Finset.mem_univ _) (Finset.mem_univ _) (Finset.mem_univ _)
+    pt0_ne_pt1 pt1_ne_pt2 pt0_ne_pt2 line_012
+
+/-- Any cap set in TernaryHypercube 1 has at most 2 elements. -/
+private theorem capSet1_card_le_2 (S : Finset (TernaryHypercube 1)) (hS : IsCapSet S) :
+    S.card ≤ 2 := by
+  by_contra hgt
+  push_neg at hgt
+  have hcard : Fintype.card (TernaryHypercube 1) = 3 := hypercube_card 1
+  have hle : S.card ≤ 3 := by
+    calc S.card ≤ (Finset.univ : Finset (TernaryHypercube 1)).card :=
+          Finset.card_le_card (Finset.subset_univ _)
+      _ = Fintype.card (TernaryHypercube 1) := by rw [Finset.card_univ]
+      _ = 3 := hcard
+  have hS_eq : S.card = 3 := by omega
+  have huniv : S = Finset.univ :=
+    Finset.eq_univ_of_card S (hS_eq.trans hcard.symm)
+  subst huniv
+  exact full_set_not_cap hS
+
+/-- There exists a cap set of size 2 in TernaryHypercube 1. -/
+private theorem exists_capSet1_size_2 :
+    ∃ S : Finset (TernaryHypercube 1), IsCapSet S ∧ S.card = 2 := by
+  exact ⟨{pt0, pt1}, isCapSet_pair pt0 pt1 pt0_ne_pt1,
+    Finset.card_pair pt0_ne_pt1⟩
 
 /--
 **n = 1:**
 f₃(1) = 2. The points are 0, 1, 2, and any two form a cap set.
 -/
 theorem f3_1 : f3 1 = 2 := by
-  sorry
+  unfold f3
+  apply le_antisymm
+  · -- Upper bound: sSup ≤ 2
+    apply csSup_le
+    · -- Nonempty
+      exact ⟨0, ∅, isCapSet_empty, rfl⟩
+    · -- Bound
+      rintro m ⟨S, hcap, rfl⟩
+      exact capSet1_card_le_2 S hcap
+  · -- Lower bound: 2 ≤ sSup
+    apply le_csSup
+    · -- BddAbove
+      exact ⟨3, fun m hm => by
+        obtain ⟨S, _, rfl⟩ := hm
+        calc S.card ≤ (Finset.univ : Finset (TernaryHypercube 1)).card :=
+              Finset.card_le_card (Finset.subset_univ _)
+          _ = Fintype.card (TernaryHypercube 1) := by rw [Finset.card_univ]
+          _ = 3 := hypercube_card 1⟩
+    · exact exists_capSet1_size_2
 
 /--
 **n = 2:**
@@ -262,7 +341,7 @@ f₃(4) = 20.
 -/
 axiom f3_4 : f3 4 = 20
 
-/-!
+/-
 ## Part IX: Summary
 
 **Erdős Problem #185: PROVED**
