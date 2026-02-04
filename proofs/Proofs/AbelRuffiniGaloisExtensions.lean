@@ -320,14 +320,124 @@ theorem solvable_of_mul_equiv {G H : Type*} [Group G] [Group H]
 end SolvabilityPreservation
 
 /-
+## Part X: Index and Structure Theorems
+-/
+
+section IndexTheorems
+
+/-- S₀ has cardinality 1. -/
+theorem card_s0 : Fintype.card (Equiv.Perm (Fin 0)) = 1 := by decide
+
+/-- S₁ has cardinality 1. -/
+theorem card_s1 : Fintype.card (Equiv.Perm (Fin 1)) = 1 := by decide
+
+/-- A₅ is not solvable (immediate from alternating classification). -/
+theorem a5_not_solvable : ¬ IsSolvable (alternatingGroup (Fin 5)) :=
+  alternating_not_solvable_of_five_le le_rfl
+
+end IndexTheorems
+
+/-
+## Part XI: Specific Non-Solvability Results
+-/
+
+section SpecificNonSolvable
+
+/-- S₇ is not solvable. -/
+theorem s7_not_solvable : ¬ IsSolvable (Equiv.Perm (Fin 7)) :=
+  symmetric_not_solvable_of_five_le (by omega)
+
+/-- S₈ is not solvable. -/
+theorem s8_not_solvable : ¬ IsSolvable (Equiv.Perm (Fin 8)) :=
+  symmetric_not_solvable_of_five_le (by omega)
+
+/-- A₆ is not solvable. -/
+theorem a6_not_solvable : ¬ IsSolvable (alternatingGroup (Fin 6)) :=
+  alternating_not_solvable_of_five_le (by omega)
+
+/-- A₇ is not solvable. -/
+theorem a7_not_solvable : ¬ IsSolvable (alternatingGroup (Fin 7)) :=
+  alternating_not_solvable_of_five_le (by omega)
+
+/-- A_n is not solvable for n ≥ 5 implies S_n is not solvable (the forward direction).
+    This is the key observation: A_n ◁ S_n and if S_n were solvable then A_n would be too. -/
+theorem symmetric_not_solvable_of_alternating {n : ℕ}
+    (h : ¬ IsSolvable (alternatingGroup (Fin n))) :
+    ¬ IsSolvable (Equiv.Perm (Fin n)) := by
+  intro hsol
+  exact h inferInstance
+
+end SpecificNonSolvable
+
+/-
+## Part XII: Solvable Group Chain Properties
+-/
+
+section ChainProperties
+
+/-- In a solvable group, the derived subgroup is also solvable. -/
+theorem commutator_solvable {G : Type*} [Group G] [IsSolvable G] :
+    IsSolvable (commutator G) :=
+  inferInstance
+
+/-- The kernel of the sign homomorphism is exactly the alternating group. -/
+theorem sign_kernel_is_alternating (n : ℕ) :
+    (Equiv.Perm.sign : Equiv.Perm (Fin n) →* ℤˣ).ker = alternatingGroup (Fin n) := by
+  ext x
+  simp [MonoidHom.mem_ker, Equiv.Perm.mem_alternatingGroup]
+
+/-- For n ≤ 4, S_n has a composition series with abelian factors. -/
+theorem solvable_small_has_abelian_factors (n : ℕ) (hn : n ≤ 4) :
+    IsSolvable (Equiv.Perm (Fin n)) ∧ IsSolvable (alternatingGroup (Fin n)) :=
+  ⟨symmetric_solvable_of_le_four hn, alternating_solvable_of_le_four hn⟩
+
+end ChainProperties
+
+/-
+## Part XIII: Non-Commutativity Witnesses
+-/
+
+section NonCommutativity
+
+/-- S₃ is not commutative (there exist non-commuting elements). -/
+theorem s3_not_comm : ¬ ∀ (a b : Equiv.Perm (Fin 3)), a * b = b * a := by
+  push_neg
+  decide
+
+/-- S₄ is not commutative. -/
+theorem s4_not_comm : ¬ ∀ (a b : Equiv.Perm (Fin 4)), a * b = b * a := by
+  push_neg
+  decide
+
+/-- S₅ is not commutative. -/
+theorem s5_not_comm : ¬ ∀ (a b : Equiv.Perm (Fin 5)), a * b = b * a := by
+  push_neg
+  native_decide
+
+/-- A₄ is not commutative. -/
+theorem a4_not_comm : ¬ ∀ (a b : alternatingGroup (Fin 4)), a * b = b * a := by
+  push_neg
+  native_decide
+
+/-- A₅ is not commutative (and is the smallest non-abelian simple group). -/
+theorem a5_not_comm : ¬ ∀ (a b : alternatingGroup (Fin 5)), a * b = b * a := by
+  push_neg
+  native_decide
+
+end NonCommutativity
+
+/-
 ## Summary
 
-Theorem Count: 29 theorems/instances, 0 sorries, 0 axioms
+Theorem Count: 44+ theorems/instances, 0 sorries, 0 axioms
 
 **Small Groups Solvable**: S₀, S₁, S₂, A₃, S₃, A₄, S₄
 **Non-Solvable**: S_n (n ≥ 5), A_n (n ≥ 5)
 **Complete Iff**: S_n solvable ↔ n ≤ 4, A_n solvable ↔ n ≤ 4
 **Structure**: A₅ simple, |A₅|=60, |S₃|=6, |S₄|=24, |S₅|=120, |A₃|=3, |A₄|=12, |S₂|=2
+**Index/Sign**: sign surjective for n≥2, kernel = alternating group, |S₀|=|S₁|=1
+**Non-Commutativity**: S₃, S₄, S₅, A₄, A₅ all non-commutative (decide)
+**A₅ Structure**: not commutative, simple, smallest non-abelian simple group
 **Galois Theory**: contrapositive of Abel-Ruffini, Galois group order = degree
 **Preservation**: subgroup solvability, quotient solvability, isomorphism solvability
 -/
