@@ -79,11 +79,16 @@ This file does NOT solve the 3D Millennium Problem. It provides:
 
 **Formalization Notes:**
 - 0 sorries (all previously sorry'd lemmas are now proved or axiomatized)
-- 33 axioms (measure-theoretic, PDE, physical, conjectures) — down from 35
-- `exp_dominates_poly` previously an axiom, now PROVED via Real.tendsto_exp_div_pow_atTop
-- `zero_dissipation_of_constant` previously an axiom, now PROVED (vacuously: AncientConstant
+- 28 axioms (measure-theoretic, PDE, physical, conjectures) — down from 35
+- `typeII_no_blowup` previously axiom, now PROVED: E bounded on compact [0,T] → BKM → Ω bounded → contradiction with blowup
+- `liouville_bounded_ancient` previously axiom, now PROVED (vacuously: bounded ancient solutions can't exist — spectral gap forces linear growth E(τ) ≥ E(0) + cτ)
+- `eff_beta_vanishes` previously axiom, now PROVED: (T-t)^(α-1) → 0 via rpow monotonicity
+- `typeII_eventual_stability` previously axiom, now PROVED: follows from eff_beta_vanishes + beta_bound/diss_coercive
+- `E_loc_nonneg` previously axiom, now PROVED: trivial from definition (E_loc = 0 placeholder)
+- `exp_dominates_poly` previously axiom, now PROVED via Real.tendsto_exp_div_pow_atTop
+- `zero_dissipation_of_constant` previously axiom, now PROVED (vacuously: AncientConstant
   contradicts spectral gap structure, so conclusion is vacuously true)
-- `E_bounded_after` previously an axiom, now PROVED via antitoneOn
+- `E_bounded_after` previously axiom, now PROVED via antitoneOn
 - `ancient_E_monotone` proof fixed for Mathlib API changes
 - Part X-B: `GlobalNSSolution2D` proves global enstrophy bound WITHOUT axioms
 - Part X-B: Exponential decay rate under Poincaré inequality (no Grönwall needed)
@@ -330,7 +335,7 @@ theorem exp_dominates_poly (c : ℝ) (hc : c > 0) :
   -- |A|*x ≥ A*x (since |A| ≥ A) and |B|*x ≥ |B| ≥ B (since x ≥ 1, |B| ≥ B)
   -- So M*c*x ≥ A*x + B + c*x > A*x + B
   have hMc : M * c = |A| + |B| + c := by
-    rw [hM_def]; field_simp; ring
+    simp only [hM_def]; field_simp
   calc Real.exp (c * x) ≥ M * (c * x) := h_exp_ge
     _ = M * c * x := by ring
     _ = (|A| + |B| + c) * x := by rw [hMc]
@@ -440,19 +445,66 @@ theorem ancient_E_monotone (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0
   exact hE_mono hτ₁ (hτ₁.trans h12) h12
 
 
-/-- **Axiom: Liouville Bounded Ancient**
-    Bounded ancient solutions are constant. The proof:
-    1. E is monotone increasing (backward) since dE/dτ ≥ 2(spectralGap-C_S)E > 0
-    2. E is bounded above by M
-    3. Therefore E is constant (monotone + bounded ⟹ constant by completeness)
-    Requires monotone convergence theorem (Mathlib API may have changed). -/
-axiom liouville_bounded_ancient_axiom (v : AncientSolution) (hb : AncientBounded v) :
-    AncientConstant v
-
-/-- LIOUVILLE THEOREM: Bounded ancient ⟹ constant -/
+/-- **PROVED: Liouville Bounded Ancient** (previously axiom)
+    Bounded ancient solutions are constant — proved VACUOUSLY.
+    The spectral gap condition forces E'(τ) ≥ 2(spectralGap - C_S)·E(τ) > 0,
+    which (since E(0) > 0 and E is monotone) gives E'(τ) ≥ c₀ > 0 for all τ ≥ 0.
+    Linear growth E(τ) ≥ E(0) + c₀·τ contradicts any finite bound M.
+    So AncientBounded v is False, making the implication vacuously true. -/
 theorem liouville_bounded_ancient (v : AncientSolution) (hb : AncientBounded v) :
-    AncientConstant v :=
-  liouville_bounded_ancient_axiom v hb
+    AncientConstant v := by
+  exfalso
+  -- Extract the bound M
+  obtain ⟨M, hM_pos, hM_bound⟩ := hb
+  -- Key constant: c₀ = 2 * (spectralGap - C_S) * E(0) > 0
+  have hgap : v.C_S < spectralGap := v.C_S_lt_spectralGap
+  have hE0_pos : (0:ℝ) < v.E 0 := v.E_pos 0 (le_refl 0)
+  set c₀ := 2 * (spectralGap - v.C_S) * v.E 0
+  have hc₀_pos : c₀ > 0 := mul_pos (mul_pos (by norm_num : (2:ℝ) > 0) (by linarith)) hE0_pos
+  -- E is continuous on [0, ∞)
+  have hE_cont : ContinuousOn v.E (Ici 0) := v.E_cont.continuousOn
+  -- E is differentiable on (0, ∞) with derivative ≥ c₀
+  have hE_deriv_ge : ∀ τ ∈ interior (Ici (0:ℝ)), c₀ ≤ deriv v.E τ := by
+    rw [interior_Ici]
+    intro τ hτ
+    have hτ' : τ ≥ 0 := le_of_lt hτ
+    have hderiv := v.E_diff τ hτ'
+    rw [hderiv.deriv]
+    -- 2D - 2S ≥ 2(spectralGap - C_S)·E(τ) ≥ 2(spectralGap - C_S)·E(0) = c₀
+    have hD := v.spectral_gap τ hτ'
+    have hS := v.stretching_bound τ hτ'
+    have hE_mono := ancient_E_monotone v 0 τ (le_refl 0) hτ'
+    -- E(τ) ≥ E(0), so (spectralGap - C_S)·E(τ) ≥ (spectralGap - C_S)·E(0) = c₀/2
+    nlinarith [v.E_pos τ hτ']
+  -- MVT/linear bound: for n ≥ 1, E(n) ≥ E(0) + c₀ * n
+  -- Use Convex.mul_sub_le_image_sub_of_le_deriv on [0, n]
+  have hconvex : Convex ℝ (Ici (0:ℝ)) := convex_Ici 0
+  have hE_diffOn : DifferentiableOn ℝ v.E (interior (Ici (0:ℝ))) := by
+    rw [interior_Ici]
+    intro τ hτ
+    exact (v.E_diff τ (le_of_lt hτ)).differentiableAt.differentiableWithinAt
+  -- Get linear growth: E(n) - E(0) ≥ c₀ · n for any n
+  have hlinear : ∀ (n : ℕ), v.E 0 + c₀ * n ≤ v.E n := by
+    intro n
+    have hn_mem : (0:ℝ) ∈ Ici (0:ℝ) := mem_Ici.mpr le_rfl
+    have hn_mem' : (n:ℝ) ∈ Ici (0:ℝ) := mem_Ici.mpr (Nat.cast_nonneg n)
+    have h0_le_n : (0:ℝ) ≤ n := Nat.cast_nonneg n
+    -- Apply mul_sub_le_image_sub_of_le_deriv: x ∈ D → ∀ y ∈ D, x ≤ y → C*(y-x) ≤ f(y)-f(x)
+    have hmvt := Convex.mul_sub_le_image_sub_of_le_deriv hconvex hE_cont hE_diffOn
+      hE_deriv_ge (0:ℝ) hn_mem (n:ℝ) hn_mem' h0_le_n
+    -- hmvt : c₀ * (↑n - 0) ≤ v.E ↑n - v.E 0
+    linarith
+  -- Choose n large enough: c₀ * n > M - E(0)
+  -- i.e., n > (M - E(0)) / c₀
+  -- Then E(n) ≥ E(0) + c₀ * n > M
+  have ⟨n, hn⟩ := exists_nat_gt ((M - v.E 0) / c₀)
+  have hEn := hlinear n
+  have hMn := hM_bound n (Nat.cast_nonneg n)
+  -- c₀ * n > M - E(0), so E(0) + c₀ * n > M ≥ E(n) ≥ E(0) + c₀ * n
+  have : M - v.E 0 < c₀ * (n:ℝ) := by
+    have := (div_lt_iff₀ hc₀_pos).mp hn
+    linarith
+  linarith
 
 
 /-- **PROVED: Zero Dissipation of Constant** (previously axiom)
@@ -489,9 +541,9 @@ theorem zero_dissipation_of_constant (v : AncientSolution) (hc : AncientConstant
     filter_upwards [Ioi_mem_nhds (show (0:ℝ) < 1 by norm_num)] with x hx
     exact hconst x (le_of_lt hx)
   -- Transfer derivative: HasDerivAt v.E 0 1
-  -- congr_of_eventuallyEq : HasDerivAt f f' x → (f₁ =ᶠ[nhds x] f) → f₁ x = f x → HasDerivAt f₁ f' x
+  -- congr_of_eventuallyEq transfers derivative through eventual equality
   have hderiv_zero : HasDerivAt v.E 0 1 :=
-    hg.congr_of_eventuallyEq hE_eq (hconst 1 (by norm_num : (1:ℝ) ≥ 0))
+    hg.congr_of_eventuallyEq hE_eq
   -- Uniqueness of derivatives: 2D(1) - 2S(1) = 0
   have h_eq : 2 * v.D 1 - 2 * v.S 1 = 0 := hderiv_energy.unique hderiv_zero
   -- So D(1) = S(1)
@@ -649,30 +701,80 @@ PART VI: STABILITY AND NO BLOWUP
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 
-/-- **Axiom: Effective Beta Vanishes**
-    For Type II (α > 1), (T-t)^{α-1} → 0 as t → T.
-    So C_β·(T-t)^{α-1} < ε for t sufficiently close to T. -/
-axiom eff_beta_vanishes_axiom (sol : NSSolution) (sc : TypeIIScenario sol) :
-    ∀ ε > 0, ∃ t₀ ∈ Ioo 0 sol.T, ∀ t ∈ Ioo t₀ sol.T,
-      sc.C_β * (sol.T - t)^(sc.α - 1) < ε
-
-/-- Effective β vanishes for Type II -/
+/-- **PROVED: Effective Beta Vanishes** (previously axiom)
+    For Type II (α > 1), (T-t)^{α-1} → 0 as t → T⁻.
+    Proof: Pick δ = min(T/2, (ε/C_β)^(1/(α-1))). For t ∈ (T-δ, T):
+    T-t < δ and rpow monotonicity gives (T-t)^(α-1) < δ^(α-1) ≤ ε/C_β. -/
 theorem eff_beta_vanishes (sol : NSSolution) (sc : TypeIIScenario sol) :
     ∀ ε > 0, ∃ t₀ ∈ Ioo 0 sol.T, ∀ t ∈ Ioo t₀ sol.T,
-      sc.C_β * (sol.T - t)^(sc.α - 1) < ε :=
-  eff_beta_vanishes_axiom sol sc
+      sc.C_β * (sol.T - t)^(sc.α - 1) < ε := by
+  intro ε hε
+  have hα_sub : sc.α - 1 > 0 := by linarith [sc.α_gt_one]
+  have hCβ := sc.C_β_pos
+  have hT := sol.T_pos
+  -- δ₁ = (ε / C_β) ^ (1/(α-1))  — the rpow threshold
+  set β := sc.α - 1
+  set δ₁ := (ε / sc.C_β) ^ (1 / β)
+  have hεC_pos : ε / sc.C_β > 0 := div_pos hε hCβ
+  have hβ_pos : β > 0 := hα_sub
+  have hδ₁_pos : δ₁ > 0 := by
+    apply Real.rpow_pos_of_pos hεC_pos
+  -- δ = min(T/2, δ₁) > 0
+  set δ := min (sol.T / 2) δ₁
+  have hδ_pos : δ > 0 := lt_min (by linarith) hδ₁_pos
+  -- t₀ = T - δ ∈ (0, T)
+  have ht₀_lt_T : sol.T - δ < sol.T := by linarith
+  have ht₀_pos : 0 < sol.T - δ := by
+    have : δ ≤ sol.T / 2 := min_le_left _ _
+    linarith
+  refine ⟨sol.T - δ, ⟨ht₀_pos, ht₀_lt_T⟩, ?_⟩
+  -- For t ∈ (T - δ, T): T - t ∈ (0, δ)
+  intro t ⟨ht_lo, ht_hi⟩
+  have hTt_pos : sol.T - t > 0 := by linarith
+  have hTt_lt_δ : sol.T - t < δ := by linarith
+  have hTt_lt_δ₁ : sol.T - t < δ₁ := lt_of_lt_of_le hTt_lt_δ (min_le_right _ _)
+  -- (T-t)^β < δ₁^β since 0 < T-t < δ₁ and β > 0
+  have hrpow_lt : (sol.T - t) ^ β < δ₁ ^ β := by
+    exact Real.rpow_lt_rpow hTt_pos.le hTt_lt_δ₁ hβ_pos
+  -- δ₁^β = (ε/C_β)^(1/β · β) = (ε/C_β)^1 = ε/C_β
+  have hβ_ne : β ≠ 0 := ne_of_gt hβ_pos
+  have hδ₁_pow : δ₁ ^ β = ε / sc.C_β := by
+    show ((ε / sc.C_β) ^ (1 / β)) ^ β = ε / sc.C_β
+    rw [← Real.rpow_mul (le_of_lt hεC_pos)]
+    have h1β : 1 / β * β = 1 := by field_simp
+    rw [h1β, Real.rpow_one]
+  -- C_β * (T-t)^β < C_β * (ε/C_β) = ε
+  calc sc.C_β * (sol.T - t) ^ β < sc.C_β * (ε / sc.C_β) := by
+        apply mul_lt_mul_of_pos_left _ hCβ
+        calc (sol.T - t) ^ β < δ₁ ^ β := hrpow_lt
+          _ = ε / sc.C_β := hδ₁_pow
+    _ = ε := by field_simp
 
 
-/-- **Axiom: Type II Eventual Stability**
+/-- **PROVED: Type II Eventual Stability** (previously axiom)
     For Type II, β → 0 as t → T, so eventually S ≤ νP.
-    Follows from eff_beta_vanishes and the beta_bound/diss_coercive conditions. -/
-axiom typeII_eventual_stability_axiom (sol : NSSolution) (sc : TypeIIScenario sol) :
-    ∃ t₀ ∈ Ioo 0 sol.T, ∀ t ∈ Ioo t₀ sol.T, sol.S t ≤ sol.ν * sol.P t
-
-/-- Type II implies eventual stability -/
+    Proof: By eff_beta_vanishes, C_β*(T-t)^(α-1) < c_d for t near T.
+    Then S ≤ C_β*(T-t)^(α-1)*Ω*E < c_d*Ω*E ≤ ν*P by beta_bound/diss_coercive. -/
 theorem typeII_eventual_stability (sol : NSSolution) (sc : TypeIIScenario sol) :
-    ∃ t₀ ∈ Ioo 0 sol.T, ∀ t ∈ Ioo t₀ sol.T, sol.S t ≤ sol.ν * sol.P t :=
-  typeII_eventual_stability_axiom sol sc
+    ∃ t₀ ∈ Ioo 0 sol.T, ∀ t ∈ Ioo t₀ sol.T, sol.S t ≤ sol.ν * sol.P t := by
+  -- Get t₀ where C_β * (T-t)^(α-1) < c_d
+  obtain ⟨t₀, ht₀, hβ_small⟩ := eff_beta_vanishes sol sc sc.c_d sc.c_d_pos
+  exact ⟨t₀, ht₀, fun t ht => by
+    have hE_pos := sol.E_pos t ⟨lt_trans ht₀.1 ht.1, ht.2⟩
+    have hΩ_pos := sol.Ω_pos t ⟨lt_trans ht₀.1 ht.1, ht.2⟩
+    have hΩE_pos : sol.Ω t * sol.E t > 0 := mul_pos hΩ_pos hE_pos
+    -- S ≤ C_β*(T-t)^(α-1) * Ω*E  [beta_bound]
+    have hS := sc.beta_bound t ⟨lt_trans ht₀.1 ht.1, ht.2⟩
+    -- C_β*(T-t)^(α-1) < c_d  [from eff_beta_vanishes]
+    have hβ := hβ_small t ht
+    -- c_d * Ω*E ≤ ν*P  [diss_coercive]
+    have hP := sc.diss_coercive t ⟨lt_trans ht₀.1 ht.1, ht.2⟩
+    -- Chain: S ≤ C_β*(T-t)^(α-1)*Ω*E < c_d*Ω*E ≤ ν*P
+    -- Step 1: S ≤ β_coeff * Ω * E where β_coeff = C_β*(T-t)^(α-1)
+    -- Step 2: β_coeff < c_d (from eff_beta_vanishes)
+    -- Step 3: β_coeff * Ω * E < c_d * Ω * E (since Ω * E > 0)
+    -- Step 4: c_d * Ω * E ≤ ν * P (from diss_coercive)
+    nlinarith [mul_le_mul_of_nonneg_right hβ.le hΩE_pos.le]⟩
 
 
 /-- Stability implies E' ≤ 0 -/
@@ -721,17 +823,61 @@ theorem E_bounded_after (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 
   exact hE_antitone ht₀_mem ht_mem (le_of_lt ht.1)
 
 
-/-- **Axiom: Type II No Blowup**
-    Requires chaining multiple lemmas:
-    1. typeII_eventual_stability → E' ≤ 0 eventually
-    2. E_bounded_after → E bounded
-    3. BKM criterion → Ω bounded
-    4. Bounded Ω contradicts blowup -/
-axiom typeII_no_blowup_axiom (sol : NSSolution) (sc : TypeIIScenario sol) : ¬IsBlowup sol
-
-/-- Type II blowup is impossible -/
-theorem typeII_no_blowup (sol : NSSolution) (sc : TypeIIScenario sol) : ¬IsBlowup sol :=
-  typeII_no_blowup_axiom sol sc
+/-- **PROVED: Type II No Blowup** (previously axiom)
+    Chain: E continuous on compact [0,T] → E bounded → BKM → Ω bounded → no blowup.
+    The key insight is that E_cont on [0,T] (part of NSSolution) already gives boundedness,
+    and BKM (part of TypeIIScenario) converts bounded E to bounded Ω. -/
+theorem typeII_no_blowup (sol : NSSolution) (sc : TypeIIScenario sol) : ¬IsBlowup sol := by
+  -- Step 1: E is bounded on [0, T] by continuity on compact set
+  have hcompact : IsCompact (Icc 0 sol.T) := isCompact_Icc
+  -- E continuous on compact [0,T] → image is compact → bounded above
+  have himg_compact : IsCompact (sol.E '' Icc (0:ℝ) sol.T) :=
+    hcompact.image_of_continuousOn sol.E_cont
+  have himg_bdd : BddAbove (sol.E '' Icc (0:ℝ) sol.T) := himg_compact.bddAbove
+  obtain ⟨M, hM⟩ := himg_bdd
+  -- E ≤ M on [0, T], hence on (0, T) ⊆ [0, T]
+  have hE_le : ∀ t ∈ Ioo 0 sol.T, sol.E t ≤ M := by
+    intro t ht
+    have ht_mem : t ∈ Icc 0 sol.T := Ioo_subset_Icc_self ht
+    exact hM (Set.mem_image_of_mem sol.E ht_mem)
+  -- Take M' = max M 1 > 0
+  have hM'_pos : max M 1 > 0 := lt_max_of_lt_right (by norm_num : (0:ℝ) < 1)
+  have hE_le' : ∀ t ∈ Ioo 0 sol.T, sol.E t ≤ max M 1 := by
+    intro t ht; exact le_max_of_le_left (hE_le t ht)
+  -- Step 2: BKM criterion → Ω bounded on (0, T)
+  obtain ⟨C, hC_pos, hΩ_bound⟩ := sc.bkm_criterion (max M 1) hM'_pos hE_le'
+  -- Step 3: Bounded Ω contradicts IsBlowup (Tendsto Ω ... atTop)
+  intro hblow
+  -- IsBlowup means Tendsto sol.Ω (nhdsWithin sol.T (Iio sol.T)) atTop
+  -- From tendsto_atTop: for C + 1, eventually Ω ≥ C + 1
+  have hev : ∀ᶠ t in nhdsWithin sol.T (Iio sol.T), C + 1 ≤ sol.Ω t := by
+    apply Filter.Tendsto.eventually_ge_atTop hblow
+  -- Extract witness from eventually
+  rw [Filter.Eventually, mem_nhdsWithin] at hev
+  obtain ⟨U, hU_open, hT_mem, hSub⟩ := hev
+  -- U is open containing T, so T has a metric ball in U
+  obtain ⟨ε, hε_pos, hball⟩ := Metric.isOpen_iff.mp hU_open sol.T hT_mem
+  -- Pick t₁ = T - min(ε/2, T/2) ∈ (0, T) ∩ ball(T, ε)
+  have hδ_pos : min (ε / 2) (sol.T / 2) > 0 := lt_min (by linarith) (by linarith [sol.T_pos])
+  set δ := min (ε / 2) (sol.T / 2)
+  have ht₁_lt_T : sol.T - δ < sol.T := by linarith [hδ_pos]
+  have ht₁_pos : 0 < sol.T - δ := by
+    have : δ ≤ sol.T / 2 := min_le_right _ _
+    linarith [sol.T_pos]
+  have ht₁_in_ball : sol.T - δ ∈ Metric.ball sol.T ε := by
+    rw [Metric.mem_ball, Real.dist_eq]
+    have : sol.T - δ - sol.T = -δ := by ring
+    rw [this, abs_neg, abs_of_pos hδ_pos]
+    exact lt_of_le_of_lt (min_le_left _ _) (by linarith)
+  have ht₁_in_U : sol.T - δ ∈ U := hball ht₁_in_ball
+  have ht₁_in_Iio : sol.T - δ ∈ Iio sol.T := ht₁_lt_T
+  -- From hSub: Ω(T - δ) ≥ C + 1
+  have hΩ_large : C + 1 ≤ sol.Ω (sol.T - δ) := hSub ⟨ht₁_in_U, ht₁_in_Iio⟩
+  -- From BKM: Ω(T - δ) ≤ C (since T - δ ∈ (0, T))
+  have ht₁_Ioo : sol.T - δ ∈ Ioo 0 sol.T := ⟨ht₁_pos, ht₁_lt_T⟩
+  have hΩ_small := hΩ_bound (sol.T - δ) ht₁_Ioo
+  -- Contradiction: C + 1 ≤ Ω(T - δ) ≤ C
+  linarith
 
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
@@ -954,9 +1100,11 @@ axiom E_loc_le_E (sol : NSSolution) (t : ℝ) (x₀ : Fin 3 → ℝ) (R : ℝ) :
   E_loc sol t x₀ R ≤ sol.E t
 
 
-/-- E_loc is nonneg -/
-axiom E_loc_nonneg (sol : NSSolution) (t : ℝ) (x₀ : Fin 3 → ℝ) (R : ℝ) :
-  0 ≤ E_loc sol t x₀ R
+/-- **PROVED: E_loc is nonneg** (previously axiom)
+    Since E_loc is defined as 0 (placeholder), this is trivially 0 ≤ 0. -/
+theorem E_loc_nonneg (sol : NSSolution) (t : ℝ) (x₀ : Fin 3 → ℝ) (R : ℝ) :
+    0 ≤ E_loc sol t x₀ R := by
+  unfold E_loc; exact le_refl 0
 
 
 /-- Local enstrophy ratio at center x₀ -/
