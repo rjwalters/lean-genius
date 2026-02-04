@@ -33,11 +33,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted E_bounded_after from axiom to proved theorem. Fixed 3 Mathlib API issues that prevented compilation. Strengthened 2D enstrophy bound. File compiles clean.",
+    "progressSummary": "PROGRESS: Fixed λ₁ keyword conflict (renamed to mu₁), documented 3 numerically false axioms. File compiles clean (0 sorries, 35 axioms). Previous: E_bounded_after proved, enstrophy bounds strengthened.",
     "builtItems": [
       "Proved E_bounded_after in NavierStokes.lean:604-636 (antitone approach)",
       "Proved enstrophy_bound_in_domain_2d in NavierStokes.lean:1770-1775",
-      "Fixed ancient_E_monotone Mathlib API in NavierStokes.lean:374,399"
+      "Fixed ancient_E_monotone Mathlib API in NavierStokes.lean:374,399",
+      "Fixed λ₁ → mu₁ keyword conflict in GlobalNSSolution2DPoincare structure",
+      "Documented 3 false numerical axioms: key_inequality_full, θcrit_cFK_gt_1, depletion_constant_neg"
     ],
     "insights": [
       "3D Navier-Stokes is an OPEN Millennium Prize Problem - no formalization can prove what mathematicians haven't solved",
@@ -50,7 +52,10 @@
       "Pre-existing Mathlib API breakage fixed: monotoneOn_of_deriv_nonneg and convex_Ici type annotation",
       "2D enstrophy_bounded_2d strengthened by removing unnecessary hE0 hypothesis",
       "New theorem enstrophy_bound_in_domain_2d proves E bound within (0,T) without axioms",
-      "File now compiles clean with 0 sorries (previously had Mathlib API errors)"
+      "File now compiles clean with 0 sorries (previously had Mathlib API errors)",
+      "Lean 4 parses λ as keyword - field name λ₁ must be renamed (used mu₁)",
+      "Three numerical axioms are FALSE: κ_gaussian ≈ 0.865 gives products ~1.845, ~0.922, ~1.078 failing bounds >2, >1, <0",
+      "The false axioms likely intended a different Faber-Krahn constant (κ=4 universal constant, not κ_gaussian=1-e⁻²)"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -80,7 +85,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-01-27T19:46:50Z",
+  "lastUpdate": "2026-02-04T09:30:00Z",
   "significance": 10,
   "tractability": 1
 }
