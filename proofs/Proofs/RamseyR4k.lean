@@ -276,16 +276,143 @@ theorem ramsey_recursion (n1 n2 r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2)
       rw [this, card_erase_of_mem (mem_univ v)]
       simp [Fintype.card_fin]
     -- By pigeonhole: |Nred| ≥ n1 or |Nblue| ≥ n2
+    -- Helper: given a finset T of size ≥ m, extract a subset of size exactly m
+    -- and an injection from Fin m into the ambient type through that subset
+    have embed_from_finset : ∀ (m : ℕ) (T : Finset (Fin (n1 + n2))),
+        T.card ≥ m →
+        ∃ (embed : Fin m → Fin (n1 + n2)),
+          Function.Injective embed ∧
+          ∀ i, embed i ∈ T := by
+      intro m T hcard
+      obtain ⟨T', hT'sub, hT'card⟩ := Finset.exists_subset_card_eq hcard
+      -- Get an equivalence Fin m ≃ T'
+      have hequiv := T'.orderIsoOfFin hT'card
+      refine ⟨fun i => (hequiv i).val, ?_, ?_⟩
+      · intro a b hab
+        exact hequiv.injective (Subtype.val_injective hab)
+      · intro i
+        exact hT'sub (hequiv i).prop
     by_cases hred_big : Nred.card ≥ n1
     · -- Red neighborhood has ≥ n1 vertices
-      -- We need to embed Fin n1 into Nred and restrict the coloring
-      -- Then apply h1 to find (r-1)-red-clique or s-blue-clique
-      -- This is the standard Ramsey recursion argument
-      sorry -- Embedding argument: restrict coloring to Nred, apply h1, lift back
+      obtain ⟨embed_r, hembed_r_inj, hembed_r_mem⟩ := embed_from_finset n1 Nred hred_big
+      -- All embedded vertices are red neighbors of v and distinct from v
+      have hembed_r_red : ∀ i, f v (embed_r i) = true := by
+        intro i
+        have := hembed_r_mem i
+        simp only [Nred, mem_filter, mem_univ, true_and] at this
+        exact this.1
+      have hembed_r_ne_v : ∀ i, embed_r i ≠ v := by
+        intro i
+        have := hembed_r_mem i
+        simp only [Nred, mem_filter, mem_univ, true_and] at this
+        exact this.2
+      -- Restrict coloring to the red neighborhood
+      let f_r : Fin n1 → Fin n1 → Bool := fun i j => f (embed_r i) (embed_r j)
+      have hf_r_sym : ∀ x y, f_r x y = f_r y x := fun x y => hfsym _ _
+      have hf_r_irr : ∀ x, f_r x x = false := fun x => hfirr _
+      rcases h1 f_r hf_r_sym hf_r_irr with ⟨S, hS_card, hS_red⟩ | ⟨S, hS_card, hS_blue⟩
+      · -- Found an (r-1)-red-clique in Nred: extend with v to get r-red-clique
+        left
+        use (S.map ⟨embed_r, hembed_r_inj⟩) ∪ {v}
+        constructor
+        · -- Card: |S.map embed_r ∪ {v}| ≥ r
+          have hv_notin : v ∉ S.map ⟨embed_r, hembed_r_inj⟩ := by
+            simp only [mem_map, Function.Embedding.coeFn_mk]
+            rintro ⟨i, _, hi_eq⟩
+            exact hembed_r_ne_v i hi_eq
+          rw [card_union_of_disjoint (by rwa [Finset.disjoint_singleton_right]),
+              card_map, card_singleton]
+          omega
+        · -- All pairs in the extended clique are red
+          intro x y hx hy hxy
+          rw [mem_union, mem_singleton] at hx hy
+          rcases hx with hx | rfl <;> rcases hy with hy | rfl
+          · -- Both from S: use hS_red
+            simp only [mem_map, Function.Embedding.coeFn_mk] at hx hy
+            obtain ⟨a, ha, rfl⟩ := hx
+            obtain ⟨b, hb, rfl⟩ := hy
+            exact hS_red a b ha hb (fun h => hxy (congrArg embed_r h))
+          · -- x from S, y = v: use that embed_r maps into Nred
+            simp only [mem_map, Function.Embedding.coeFn_mk] at hx
+            obtain ⟨a, _, rfl⟩ := hx
+            rw [hfsym]
+            exact hembed_r_red a
+          · -- x = v, y from S
+            simp only [mem_map, Function.Embedding.coeFn_mk] at hy
+            obtain ⟨b, _, rfl⟩ := hy
+            exact hembed_r_red b
+          · -- x = v, y = v: contradiction
+            exact absurd rfl hxy
+      · -- Found an s-blue-clique in Nred: lift back
+        right
+        use S.map ⟨embed_r, hembed_r_inj⟩
+        refine ⟨by simp [card_map]; exact hS_card, ?_⟩
+        intro x y hx hy hxy
+        simp only [mem_map, Function.Embedding.coeFn_mk] at hx hy
+        obtain ⟨a, ha, rfl⟩ := hx
+        obtain ⟨b, hb, rfl⟩ := hy
+        exact hS_blue a b ha hb (fun h => hxy (congrArg embed_r h))
     · -- Blue neighborhood has ≥ n2 vertices
       push_neg at hred_big
       have hblue_big : Nblue.card ≥ n2 := by omega
-      sorry -- Symmetric: restrict coloring to Nblue, apply h2, lift back
+      obtain ⟨embed_b, hembed_b_inj, hembed_b_mem⟩ := embed_from_finset n2 Nblue hblue_big
+      -- All embedded vertices are blue neighbors of v and distinct from v
+      have hembed_b_blue : ∀ i, f v (embed_b i) = false := by
+        intro i
+        have := hembed_b_mem i
+        simp only [Nblue, mem_filter, mem_univ, true_and] at this
+        exact this.1
+      have hembed_b_ne_v : ∀ i, embed_b i ≠ v := by
+        intro i
+        have := hembed_b_mem i
+        simp only [Nblue, mem_filter, mem_univ, true_and] at this
+        exact this.2
+      -- Restrict coloring to the blue neighborhood
+      let f_b : Fin n2 → Fin n2 → Bool := fun i j => f (embed_b i) (embed_b j)
+      have hf_b_sym : ∀ x y, f_b x y = f_b y x := fun x y => hfsym _ _
+      have hf_b_irr : ∀ x, f_b x x = false := fun x => hfirr _
+      rcases h2 f_b hf_b_sym hf_b_irr with ⟨S, hS_card, hS_red⟩ | ⟨S, hS_card, hS_blue⟩
+      · -- Found an r-red-clique in Nblue: lift back
+        left
+        use S.map ⟨embed_b, hembed_b_inj⟩
+        refine ⟨by simp [card_map]; exact hS_card, ?_⟩
+        intro x y hx hy hxy
+        simp only [mem_map, Function.Embedding.coeFn_mk] at hx hy
+        obtain ⟨a, ha, rfl⟩ := hx
+        obtain ⟨b, hb, rfl⟩ := hy
+        exact hS_red a b ha hb (fun h => hxy (congrArg embed_b h))
+      · -- Found an (s-1)-blue-clique in Nblue: extend with v to get s-blue-clique
+        right
+        use (S.map ⟨embed_b, hembed_b_inj⟩) ∪ {v}
+        constructor
+        · -- Card: |S.map embed_b ∪ {v}| ≥ s
+          have hv_notin : v ∉ S.map ⟨embed_b, hembed_b_inj⟩ := by
+            simp only [mem_map, Function.Embedding.coeFn_mk]
+            rintro ⟨i, _, hi_eq⟩
+            exact hembed_b_ne_v i hi_eq
+          rw [card_union_of_disjoint (by rwa [Finset.disjoint_singleton_right]),
+              card_map, card_singleton]
+          omega
+        · -- All pairs in the extended clique are blue
+          intro x y hx hy hxy
+          rw [mem_union, mem_singleton] at hx hy
+          rcases hx with hx | rfl <;> rcases hy with hy | rfl
+          · -- Both from S: use hS_blue
+            simp only [mem_map, Function.Embedding.coeFn_mk] at hx hy
+            obtain ⟨a, ha, rfl⟩ := hx
+            obtain ⟨b, hb, rfl⟩ := hy
+            exact hS_blue a b ha hb (fun h => hxy (congrArg embed_b h))
+          · -- x from S, y = v: use that embed_b maps into Nblue
+            simp only [mem_map, Function.Embedding.coeFn_mk] at hx
+            obtain ⟨a, _, rfl⟩ := hx
+            rw [hfsym]
+            exact hembed_b_blue a
+          · -- x = v, y from S
+            simp only [mem_map, Function.Embedding.coeFn_mk] at hy
+            obtain ⟨b, _, rfl⟩ := hy
+            exact hembed_b_blue b
+          · -- x = v, y = v: contradiction
+            exact absurd rfl hxy
 
 /-
 ## Part V: Concrete R(4,k) Bounds
