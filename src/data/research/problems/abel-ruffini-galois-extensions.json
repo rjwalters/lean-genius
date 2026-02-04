@@ -2,50 +2,67 @@
   "slug": "abel-ruffini-galois-extensions",
   "title": "Abel-Ruffini Galois Theory Extensions",
   "phase": "PROGRESS",
-  "status": "active",
+  "status": "progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "symmetric_solvable_iff (n : ℕ) : IsSolvable (Equiv.Perm (Fin n)) ↔ n ≤ 4",
+    "plain": "S_n is solvable iff n ≤ 4; A_n is solvable iff n ≤ 4. Complete group-theoretic classification underlying the Abel-Ruffini theorem.",
+    "whyMatters": [
+      "Characterizes exactly when polynomial equations are solvable by radicals",
+      "Complete classification of solvability for symmetric and alternating groups",
+      "Connects abstract group theory to concrete polynomial solvability"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "symmetric_solvable_iff: S_n solvable iff n <= 4",
+      "alternating_solvable_iff: A_n solvable iff n <= 4",
+      "All small S_n and A_n instances (n=0..4)",
+      "A₅ simple, non-solvable, non-commutative",
+      "Sign kernel = alternating group",
+      "Non-commutativity witnesses for S₃,S₄,S₅,A₄,A₅",
+      "Group cardinalities: |S₀|=|S₁|=1, |S₂|=2, |S₃|=6, |S₄|=24, |S₅|=120, |A₃|=3, |A₄|=12, |A₅|=60",
+      "Galois contrapositive: unsolvable Galois group => not solvable by radicals",
+      "Solvability preservation: subgroups, quotients, isomorphisms"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Complete group-theoretic classification and connection to radical solvability"
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-04T10:15:00.000Z",
-    "iteration": 3,
-    "focus": "Added A_n solvability iff, cardinalities, solvability preservation",
+    "since": "2026-02-04T20:30:00Z",
+    "iteration": 4,
+    "focus": "Added index theorems, non-commutativity, chain properties",
     "blockers": [],
-    "nextAction": "Construct explicit unsolvable quintic or formalize intermediate value theorem connections",
+    "nextAction": "Construct explicit unsolvable quintic or formalize radical tower",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
+      "total": 4,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 29 theorems/instances, 0 axioms, 0 sorries. Complete S_n and A_n solvability classification, small group cardinalities, Galois theory connections, solvability preservation.",
+    "progressSummary": "PROGRESS: 44+ theorems/instances, 0 axioms, 0 sorries. Complete S_n and A_n solvability classification, small group cardinalities, Galois theory connections, solvability preservation, non-commutativity witnesses, sign kernel characterization.",
     "builtItems": [
-      "symmetric_solvable_iff: S_n solvable iff n <= 4",
-      "alternating_solvable_iff: A_n solvable iff n <= 4",
+      "symmetric_solvable_iff, alternating_solvable_iff: complete iff theorems",
       "perm_fin_0..4_solvable: instances for small S_n",
-      "alternating_fin_4_solvable: A4 solvable via V4 short exact sequence",
-      "a5_simple: A5 is simple, card_a5: |A5|=60",
-      "not_solvable_by_rad_of_not_solvable_galois: contrapositive Abel-Ruffini",
-      "galois_group_order: |Gal(E/F)| = [E:F]",
-      "card_s2..s5, card_a3..a4: group cardinalities",
-      "quotient_solvable_of_solvable, solvable_of_mul_equiv: preservation"
+      "alternating_fin_3/4_solvable: via commutativity and Klein four-group",
+      "a5_simple, a5_not_solvable: A₅ structure",
+      "sign_kernel_is_alternating: ker(sign) = A_n",
+      "s3_not_comm, s4_not_comm, s5_not_comm: non-commutativity (native_decide)",
+      "a4_not_comm, a5_not_comm: alternating non-commutativity",
+      "commutator_solvable, solvable_small_has_abelian_factors: chain properties",
+      "s7/s8_not_solvable, a6/a7_not_solvable: specific non-solvability",
+      "symmetric_not_solvable_of_alternating: lifting theorem"
     ],
     "insights": [
       "S_n solvability for n<=4 proved via interval_cases + infer_instance",
       "A4 solvable via Klein four-group as normal subgroup with abelian quotient",
       "A_n non-solvable for n>=5 follows from S_n non-solvable via sign SES",
-      "solvable_of_surjective works for MulEquiv via e.surjective coercion"
+      "native_decide needed for non-commutativity of groups with >24 elements",
+      "Lean 4.26: decide hits max recursion for Perm (Fin 5) existential goals",
+      "sign_kernel_is_alternating: direct ext + simp proof"
     ],
     "mathlibGaps": [
       "IsSolvable (alternatingGroup (Fin n)) for specific small n not instances",
@@ -54,10 +71,17 @@
     "nextSteps": [
       "Construct explicit polynomial with Galois group S5 (e.g., x^5 - 4x + 2)",
       "Formalize the insolvability of a specific quintic equation",
-      "Connect to radical tower formalization"
+      "Connect to radical tower formalization",
+      "Prove the derived series explicitly for S₃ and S₄"
     ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Group-theoretic classification",
+      "status": "active",
+      "description": "Build complete solvability classification for S_n and A_n, with structural results"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "algebra",
@@ -65,14 +89,20 @@
     "group-theory",
     "extension"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "proofs/Proofs/AbelRuffini.lean"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating"
+    ]
   },
   "started": "2026-01-27T22:18:02.331Z",
-  "lastUpdate": "2026-02-04T10:15:00.000Z",
+  "lastUpdate": "2026-02-04T20:30:00Z",
   "significance": 7,
   "tractability": 6
 }
