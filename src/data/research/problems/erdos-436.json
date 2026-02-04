@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-27T22:18:02.333Z",
-    "iteration": 2,
-    "focus": "Proved structural properties, fixed Aristotle compatibility",
+    "iteration": 3,
+    "focus": "Fixed compilation errors, added 3 new structural theorems (19→22 total)",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider ZMod-based alternative definitions for Aristotle.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed Aristotle compat, proved 14 structural theorems about power residues, removed 2 placeholder axioms",
+    "progressSummary": "PROGRESS: 22 theorems, 12 axioms. Fixed 2 compilation errors (omega→hk, dvd_refl). Added consecutive_shift, consecutive_max_element, all_are_first_power_residues.",
     "builtItems": [
       "zero_is_kth_power_residue: 0 is always a kth power residue",
       "one_is_kth_power_residue: 1 is always a kth power residue",
@@ -40,6 +40,9 @@
       "consecutive_at: extract element from consecutive run",
       "consecutive_extend: extend consecutive run by one",
       "consecutive_shorten: shorten consecutive run",
+      "consecutive_shift: shift run start by 1 (NEW)",
+      "consecutive_max_element: max in run is r+m-1 (NEW)",
+      "all_are_first_power_residues: k=1 trivial case (NEW)",
       "even_k_m3_infinite: even k implies m=3 infinite",
       "lambda_finite_small_m: finite implies m<=3",
       "quadratic_case_complete: finite and equals 9 for k=2,m=2",
@@ -48,10 +51,12 @@
     ],
     "insights": [
       "0 and 1 are always kth power residues for k>=1",
-      "Consecutive residues can be extended, shortened, and queried at specific positions",
+      "Consecutive residues can be extended, shortened, shifted, and queried at specific positions",
       "Every integer is a 1st power residue (k=1 trivial case)",
       "The parity dichotomy for m=3: finite for odd k (known for k=3), infinite for even k",
-      "Fixed docstring sections that would cause Aristotle parsing failures"
+      "Fixed docstring sections that would cause Aristotle parsing failures",
+      "Fixed omega tactic with explicit hypothesis hk",
+      "Fixed Nat.mod_mod_of_dvd with explicit dvd_refl proof"
     ],
     "mathlibGaps": [],
     "nextSteps": [
