@@ -327,7 +327,52 @@ theorem sum_fifth_powers_classical (n : ℕ) :
   have hdvd := twelve_dvd_fifth_sum n
   omega
 
+/- ## Sum of Sixth Powers
+
+The formula ∑i⁶ = n(n+1)(2n+1)(3n⁴+6n³-3n+1)/42
+
+To avoid natural number subtraction, we use:
+  42 * ∑i⁶ + 3n²(n+1)(2n+1) = n(n+1)(2n+1)(3n⁴ + 6n³ + 1)
+-/
+
+/-- **Sum of sixth powers times 42 (rearranged)**
+
+    42 * ∑_{i=0}^{n} i⁶ + 3n²(n+1)(2n+1) = n(n+1)(2n+1)(3n⁴ + 6n³ + 1)
+
+    Rearranged to avoid natural number subtraction. This is equivalent to
+    42 * ∑i⁶ = n(n+1)(2n+1)(3n⁴ + 6n³ - 3n + 1). -/
+theorem sum_sixth_powers_mul_fortytwo (n : ℕ) :
+    42 * ∑ i ∈ range (n + 1), i ^ 6 + 3 * n ^ 2 * (n + 1) * (2 * n + 1) =
+    n * (n + 1) * (2 * n + 1) * (3 * n ^ 4 + 6 * n ^ 3 + 1) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [sum_range_succ, Nat.mul_add]
+    nlinarith [ih]
+
+/-- Helper: 42 divides the RHS minus LHS constant term. -/
+private lemma fortytwo_dvd_sixth_sum (n : ℕ) :
+    42 ∣ (n * (n + 1) * (2 * n + 1) * (3 * n ^ 4 + 6 * n ^ 3 + 1)
+         - 3 * n ^ 2 * (n + 1) * (2 * n + 1)) := by
+  have h := sum_sixth_powers_mul_fortytwo n
+  use ∑ i ∈ range (n + 1), i ^ 6
+  omega
+
+/-- **Sum of sixth powers formula (classical version)**
+
+    ∑_{i=0}^{n} i⁶ = (n(n+1)(2n+1)(3n⁴+6n³+1) - 3n²(n+1)(2n+1)) / 42 -/
+theorem sum_sixth_powers_classical (n : ℕ) :
+    ∑ i ∈ range (n + 1), i ^ 6 =
+    (n * (n + 1) * (2 * n + 1) * (3 * n ^ 4 + 6 * n ^ 3 + 1)
+     - 3 * n ^ 2 * (n + 1) * (2 * n + 1)) / 42 := by
+  have h := sum_sixth_powers_mul_fortytwo n
+  have hdvd := fortytwo_dvd_sixth_sum n
+  omega
+
 /- ## Verification Examples -/
+
+/-- Sum of sixth powers from 0 to 10 -/
+theorem sum_sixth_powers_10 : ∑ i ∈ range 11, i ^ 6 = 1978405 := by native_decide
 
 /-- Sum of squares from 0 to 10: 0² + 1² + ... + 10² = 385 -/
 theorem sum_squares_10 : ∑ i ∈ range 11, i ^ 2 = 385 := by native_decide

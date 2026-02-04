@@ -124,12 +124,81 @@ theorem isCapSet_pair (a b : TernaryHypercube n) (hab : a ≠ b) :
   rcases hx with rfl | rfl <;> rcases hy with rfl | rfl <;> rcases hz with rfl | rfl <;>
     simp_all
 
+/-- Subsets of cap sets are cap sets. -/
+theorem isCapSet_subset {S T : Finset (TernaryHypercube n)} (hST : S ⊆ T) (hT : IsCapSet T) :
+    IsCapSet S :=
+  fun x y z hx hy hz hxy hyz hxz => hT x y z (hST hx) (hST hy) (hST hz) hxy hyz hxz
+
+/-- A singleton is a cap set. -/
+theorem isCapSet_singleton (a : TernaryHypercube n) :
+    IsCapSet ({a} : Finset (TernaryHypercube n)) := by
+  intro x _ _ hx hy _
+  simp at hx hy; subst hx; subst hy; intro h; exact absurd rfl h
+
 /--
 **f₃(n):**
 The maximum size of a cap set in {0,1,2}^n.
 -/
 noncomputable def f3 (n : ℕ) : ℕ :=
   sSup { m : ℕ | ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = m }
+
+/-- The set of achievable cap set cardinalities is bounded above by 3^n. -/
+private lemma f3_bddAbove (n : ℕ) :
+    BddAbove { m : ℕ | ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = m } :=
+  ⟨3^n, fun m hm => by
+    obtain ⟨S, _, rfl⟩ := hm
+    calc S.card ≤ (Finset.univ : Finset (TernaryHypercube n)).card :=
+          Finset.card_le_card (Finset.subset_univ _)
+      _ = Fintype.card (TernaryHypercube n) := by rw [Finset.card_univ]
+      _ = 3^n := hypercube_card n⟩
+
+/-- The set of achievable cap set cardinalities is nonempty (the empty set is always a cap set). -/
+private lemma f3_nonempty (n : ℕ) :
+    (0 : ℕ) ∈ { m : ℕ | ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = m } :=
+  ⟨∅, isCapSet_empty, rfl⟩
+
+/-- f₃(0) = 1: the hypercube {0,1,2}^0 has exactly one element. -/
+theorem f3_0 : f3 0 = 1 := by
+  unfold f3
+  apply le_antisymm
+  · apply csSup_le ⟨0, f3_nonempty 0⟩
+    rintro m ⟨S, _, rfl⟩
+    calc S.card ≤ (Finset.univ : Finset (TernaryHypercube 0)).card :=
+          Finset.card_le_card (Finset.subset_univ _)
+      _ = Fintype.card (TernaryHypercube 0) := by rw [Finset.card_univ]
+      _ = 3^0 := hypercube_card 0
+      _ = 1 := by norm_num
+  · apply le_csSup (f3_bddAbove 0)
+    show ∃ S : Finset (TernaryHypercube 0), IsCapSet S ∧ S.card = 1
+    exact ⟨{fun _ => 0}, isCapSet_singleton _, by simp⟩
+
+/-- f₃(n) ≤ 3^n: a cap set cannot be larger than the entire hypercube. -/
+theorem f3_le_three_pow (n : ℕ) : f3 n ≤ 3^n := by
+  unfold f3
+  apply csSup_le ⟨0, f3_nonempty n⟩
+  rintro m ⟨S, _, rfl⟩
+  calc S.card ≤ (Finset.univ : Finset (TernaryHypercube n)).card :=
+        Finset.card_le_card (Finset.subset_univ _)
+    _ = Fintype.card (TernaryHypercube n) := by rw [Finset.card_univ]
+    _ = 3^n := hypercube_card n
+
+/-- f₃(n) ≥ 1 for all n: the singleton {0,...,0} is a cap set. -/
+theorem f3_ge_one (n : ℕ) : f3 n ≥ 1 := by
+  unfold f3
+  apply le_csSup (f3_bddAbove n)
+  show ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = 1
+  exact ⟨{fun _ => 0}, isCapSet_singleton _, by simp⟩
+
+/-- f₃(n) ≥ 2 for n ≥ 1: any two distinct points form a cap set, and they exist for n ≥ 1. -/
+theorem f3_ge_two (n : ℕ) (hn : n ≥ 1) : f3 n ≥ 2 := by
+  unfold f3
+  apply le_csSup (f3_bddAbove n)
+  show ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = 2
+  have hdist : (fun _ : Fin n => (0 : ZMod 3)) ≠ (fun _ => 1) := by
+    intro h
+    have := congr_fun h ⟨0, by omega⟩
+    simp at this
+  exact ⟨{fun _ => 0, fun _ => 1}, isCapSet_pair _ _ hdist, Finset.card_pair hdist⟩
 
 /-
 ## Part IV: Connection to Arithmetic Progressions
@@ -172,11 +241,14 @@ Taking points with coordinates summing to 0 or 1 (mod 3) gives a large cap set.
 def moserSet (n : ℕ) : Finset (TernaryHypercube n) :=
   Finset.univ.filter (fun x => (Finset.univ.sum x) = 0 ∨ (Finset.univ.sum x) = 1)
 
-/-- The Moser set avoids combinatorial lines (not all collinear triples).
-    Note: The Moser set is NOT a cap set in the `IsCapSet` sense: e.g. for n≥1,
-    the points (0,...,0), (1,...,1), (2,...,2) are all in the Moser set and collinear.
-    It avoids combinatorial lines, which is the relevant notion for Hales-Jewett. -/
-axiom moser_set_is_cap_combinatorial (n : ℕ) : IsCapSetCombinatorial (moserSet n)
+/-
+**Moser set and combinatorial lines:**
+The Moser set does NOT avoid all combinatorial lines.
+Counterexample: for n ≡ 0 mod 3 (e.g., n=3), the diagonal line (0,...,0),(1,...,1),(2,...,2)
+has coordinate sums 0, n, 2n. When 3 | n, all sums ≡ 0, so all are in {0,1} and
+the full line lies in moserSet n. The Moser set only avoids lines where |varying| ≢ 0 (mod 3).
+(Previous axiom moser_set_is_cap_combinatorial was FALSE and has been removed.)
+-/
 
 /-
 ## Part VI: The Main Result - Density Hales-Jewett
@@ -202,9 +274,11 @@ axiom f3_is_little_o :
 /--
 **Equivalent formulation:**
 f₃(n) / 3^n → 0 as n → ∞.
+Derived from f3_is_little_o via IsLittleO.tendsto_div_nhds_zero.
 -/
-axiom f3_density_tends_to_zero :
-    Filter.Tendsto (fun n => (f3 n : ℝ) / 3^n) atTop (nhds 0)
+theorem f3_density_tends_to_zero :
+    Filter.Tendsto (fun n => (f3 n : ℝ) / 3^n) atTop (nhds 0) :=
+  f3_is_little_o.tendsto_div_nhds_zero
 
 /-
 ## Part VII: More Recent Progress

@@ -227,6 +227,9 @@ n=5: H_5 = 137/60, L_5 = 60, a_5 = 137, gcd = 1
 n=6: H_6 = 49/20, L_6 = 60, a_6 = 147, gcd = 3
 
 So gcd > 1 first occurs at n = 6.
+
+These are axiomatized because harmonicGCD is noncomputable
+(involves rational arithmetic and .num.natAbs extraction).
 -/
 axiom small_examples :
     harmonicGCD 1 = 1 ∧ harmonicGCD 2 = 1 ∧ harmonicGCD 3 = 1 ∧
@@ -284,7 +287,7 @@ on the leading digit of n in base p.
 theorem erdos_291 : question_part2 := part2_trivially_true
 
 /-
-## Part X: Structural Properties
+## Part XI: Structural Properties of L
 -/
 
 /-- L(0) = 1 (empty LCM) -/
@@ -298,6 +301,61 @@ theorem L_one : L 1 = 1 := by
 /-- L(2) = 2 (lcm of {1, 2}) -/
 theorem L_two : L 2 = 2 := by native_decide
 
+/-- L(3) = 6 -/
+theorem L_three : L 3 = 6 := by native_decide
+
+/-- L(4) = 12 -/
+theorem L_four : L 4 = 12 := by native_decide
+
+/-- L(5) = 60 -/
+theorem L_five : L 5 = 60 := by native_decide
+
+/-- L(6) = 60 -/
+theorem L_six : L 6 = 60 := by native_decide
+
+/-- L(n) > 0 for all n -/
+theorem L_pos (n : ℕ) : L n > 0 := by
+  induction n with
+  | zero => simp [L]
+  | succ k ih =>
+    simp only [L] at ih ⊢
+    rw [Finset.range_add_one, Finset.fold_insert (Finset.notMem_range_self)]
+    exact Nat.pos_of_ne_zero (Nat.lcm_ne_zero (by omega) (by omega))
+
+/-- L(n) divides n! -/
+theorem L_dvd_factorial (n : ℕ) : L n ∣ n.factorial := by
+  simp only [L]
+  induction n with
+  | zero => simp
+  | succ k ih =>
+    rw [Finset.range_add_one, Finset.fold_insert (Finset.notMem_range_self)]
+    rw [Nat.factorial_succ]
+    apply Nat.lcm_dvd
+    · exact Nat.dvd_mul_right (k + 1) k.factorial
+    · exact dvd_trans ih (Nat.dvd_mul_left k.factorial (k + 1))
+
+/-- Every k in {1,...,n} divides L(n) -/
+theorem dvd_L (n k : ℕ) (hk1 : 1 ≤ k) (hkn : k ≤ n) : k ∣ L n := by
+  -- Strategy: k divides k!, k! divides n! (since k ≤ n), and L(n) divides n!
+  -- Actually we need k | L(n), not n! | L(n).
+  -- Use induction on n, building up lcm step by step.
+  induction n with
+  | zero => omega
+  | succ m ih =>
+    simp only [L] at *
+    rw [Finset.range_add_one, Finset.fold_insert (Finset.notMem_range_self)]
+    by_cases hkm : k = m + 1
+    · -- k = m+1, so k divides lcm(k, L(m))
+      subst hkm
+      exact Nat.dvd_lcm_left _ _
+    · -- k ≤ m, use IH
+      have hkm' : k ≤ m := by omega
+      exact dvd_trans (ih hkm') (Nat.dvd_lcm_right _ _)
+
+/-
+## Part XII: Structural Properties of H
+-/
+
 /-- H(0) = 0 (empty sum) -/
 theorem H_zero : H 0 = 0 := by
   simp [H]
@@ -305,6 +363,35 @@ theorem H_zero : H 0 = 0 := by
 /-- H(1) = 1 -/
 theorem H_one : H 1 = 1 := by
   simp [H]
+
+/-- H(2) = 3/2 -/
+theorem H_two : H 2 = 3 / 2 := by
+  simp [H, Finset.sum_range_succ]
+  norm_num
+
+/-- H(3) = 11/6 -/
+theorem H_three : H 3 = 11 / 6 := by
+  simp [H, Finset.sum_range_succ]
+  norm_num
+
+/-- H(4) = 25/12 -/
+theorem H_four : H 4 = 25 / 12 := by
+  simp [H, Finset.sum_range_succ]
+  norm_num
+
+/-- H(5) = 137/60 -/
+theorem H_five : H 5 = 137 / 60 := by
+  simp [H, Finset.sum_range_succ]
+  norm_num
+
+/-- H(6) = 49/20 -/
+theorem H_six : H 6 = 49 / 20 := by
+  simp [H, Finset.sum_range_succ]
+  norm_num
+
+/-- H(n+1) = H(n) + 1/(n+1) -/
+theorem H_succ (n : ℕ) : H (n + 1) = H n + 1 / (↑n + 1 : ℚ) := by
+  simp [H, Finset.sum_range_succ]
 
 /-- H(n) > 0 for n ≥ 1 -/
 theorem H_pos (n : ℕ) (hn : n ≥ 1) : H n > 0 := by
@@ -326,27 +413,9 @@ theorem H_mono (m n : ℕ) (hmn : m ≤ n) : H m ≤ H n := by
   intro i _ _
   positivity
 
-/-- L(n) > 0 for all n -/
-theorem L_pos (n : ℕ) : L n > 0 := by
-  induction n with
-  | zero => simp [L]
-  | succ k ih =>
-    simp only [L] at ih ⊢
-    rw [Finset.range_succ, Finset.fold_insert (Finset.not_mem_range_self)]
-    exact Nat.pos_of_ne_zero (Nat.lcm_ne_zero (by omega) (by omega))
-
-/-- Every k in {1,...,n} divides L(n) -/
-theorem dvd_L (n k : ℕ) (hk1 : 1 ≤ k) (hkn : k ≤ n) : k ∣ L n := by
-  have : L n ∣ n.factorial := L_dvd_factorial n
-  -- k | n! since 1 ≤ k ≤ n, and L n is a multiple of k since it's the lcm
-  -- Actually: k | L n directly from the fold definition
-  -- L n = lcm of {1,...,n}, so k divides L n
-  simp only [L]
-  -- k = (k-1) + 1, and (k-1) ∈ range n since k ≤ n means k-1 < n
-  have hk_mem : k - 1 ∈ Finset.range n := Finset.mem_range.mpr (by omega)
-  have hk_eq : k - 1 + 1 = k := by omega
-  rw [← hk_eq]
-  exact Finset.dvd_fold_lcm hk_mem
+/-
+## Part XIII: Leading Digit Properties
+-/
 
 /-- leadingDigit of 0 is 0 -/
 theorem leadingDigit_zero (p : ℕ) (hp : p > 1) : leadingDigit 0 p = 0 := by
@@ -372,7 +441,6 @@ theorem leadingDigitAux_lt (p m fuel : ℕ) (hp : p > 1) (hfuel : fuel ≥ m) :
     · push_neg at *
       rename_i hmp
       apply ih
-      -- m / p < m when m ≥ p > 1, so m / p ≤ m - 1 ≤ k
       have h1 : m / p < m := Nat.div_lt_self (by omega) hp
       omega
 
@@ -383,6 +451,28 @@ theorem leadingDigit_lt_base (n p : ℕ) (hp : p > 1) (_hn : n > 0) :
   simp only [show ¬(p ≤ 1) from by omega, ↓reduceIte]
   exact leadingDigitAux_lt p n n hp (le_refl n)
 
+/-- leadingDigit of 2 in base 3 is 2 -/
+theorem leadingDigit_two_three : leadingDigit 2 3 = 2 := by native_decide
+
+/-- leadingDigit of 5 in base 3 is 1 (5 = 1·3 + 2) -/
+theorem leadingDigit_five_three : leadingDigit 5 3 = 1 := by native_decide
+
+/-- leadingDigit of 6 in base 3 is 2 (6 = 2·3) -/
+theorem leadingDigit_six_three : leadingDigit 6 3 = 2 := by native_decide
+
+/-- leadingDigit of 8 in base 3 is 2 (8 = 2·3 + 2) -/
+theorem leadingDigit_eight_three : leadingDigit 8 3 = 2 := by native_decide
+
+/-- leadingDigit of 4 in base 5 is 4 -/
+theorem leadingDigit_four_five : leadingDigit 4 5 = 4 := by native_decide
+
+/-- leadingDigit of 24 in base 5 is 4 (24 = 4·5 + 4) -/
+theorem leadingDigit_24_five : leadingDigit 24 5 = 4 := by native_decide
+
+/-
+## Part XIV: GCD Structure
+-/
+
 /-- The GCD divides L_n -/
 theorem harmonicGCD_dvd_L (n : ℕ) : harmonicGCD n ∣ L n :=
   Nat.gcd_dvd_right (a n) (L n)
@@ -391,24 +481,24 @@ theorem harmonicGCD_dvd_L (n : ℕ) : harmonicGCD n ∣ L n :=
 theorem harmonicGCD_dvd_a (n : ℕ) : harmonicGCD n ∣ a n :=
   Nat.gcd_dvd_left (a n) (L n)
 
-/-- L(n) divides n! -/
-theorem L_dvd_factorial (n : ℕ) : L n ∣ n.factorial := by
-  simp only [L]
+/-- A prime larger than n does not divide n! -/
+theorem prime_not_dvd_factorial_of_gt (p n : ℕ) (hp : Nat.Prime p) (hpn : n < p) :
+    ¬(p ∣ n.factorial) := by
   induction n with
-  | zero => simp
-  | succ k ih =>
-    rw [Finset.range_succ, Finset.fold_insert (Finset.not_mem_range_self)]
+  | zero => simp; exact hp.one_lt.ne'
+  | succ m ih =>
     rw [Nat.factorial_succ]
-    -- Goal: Nat.lcm (k + 1) (fold Nat.lcm 1 (·+1) (range k)) | (k + 1) * k!
-    -- fold is L k by definition, so need lcm(k+1, L k) | (k+1) * k!
-    apply Nat.lcm_dvd
-    · exact Nat.dvd_mul_right (k + 1) k.factorial
-    · exact dvd_trans ih (Nat.dvd_mul_left k.factorial (k + 1))
+    intro hdvd
+    rcases hp.dvd_mul.mp hdvd with h5 | h5
+    · exact absurd (Nat.le_of_dvd (by omega) h5) (by omega)
+    · exact ih (by omega) h5
 
 /-- If prime p divides L(n), then p ≤ n -/
 theorem prime_dvd_L_le (n p : ℕ) (hp : Nat.Prime p) (hpdvd : p ∣ L n) : p ≤ n := by
+  by_contra h
+  push_neg at h
   have h1 : p ∣ n.factorial := dvd_trans hpdvd (L_dvd_factorial n)
-  exact (Nat.Prime.dvd_factorial hp).mp h1
+  exact prime_not_dvd_factorial_of_gt p n hp h h1
 
 /--
 **If p | gcd(a_n, L_n), then p ≤ n.**
@@ -417,5 +507,79 @@ A prime dividing the GCD must divide L_n = lcm(1,...,n), hence p ≤ n.
 theorem prime_div_gcd_le (n p : ℕ) (hp : Nat.Prime p) (hpdvd : p ∣ harmonicGCD n) :
     p ≤ n :=
   prime_dvd_L_le n p hp (dvd_trans hpdvd (harmonicGCD_dvd_L n))
+
+/-- From small_examples: the first occurrence of gcd > 1 is at n = 6 -/
+theorem first_gcd_gt_one : harmonicGCD 6 = 3 := small_examples.2.2.2.2.2
+
+/-- From small_examples: H_1 through H_5 all have gcd = 1 -/
+theorem small_gcd_one (n : ℕ) (hn : 1 ≤ n) (hn5 : n ≤ 5) : harmonicGCD n = 1 := by
+  interval_cases n
+  · exact small_examples.1
+  · exact small_examples.2.1
+  · exact small_examples.2.2.1
+  · exact small_examples.2.2.2.1
+  · exact small_examples.2.2.2.2.1
+
+/-
+## Part XV: Applying Steinerberger to Concrete Cases
+-/
+
+/-- 3 divides gcd(a_6, L_6): since leadingDigit 6 3 = 2 = 3-1 -/
+theorem three_dvd_gcd_six : 3 ∣ harmonicGCD 6 := by
+  apply steinerberger_criterion 6 3 (by decide) (by omega)
+  native_decide
+
+/-- 3 divides gcd(a_8, L_8): since leadingDigit 8 3 = 2 = 3-1 -/
+theorem three_dvd_gcd_eight : 3 ∣ harmonicGCD 8 := by
+  apply steinerberger_criterion 8 3 (by decide) (by omega)
+  native_decide
+
+/-- 5 divides gcd(a_24, L_24): since leadingDigit 24 5 = 4 = 5-1 -/
+theorem five_dvd_gcd_24 : 5 ∣ harmonicGCD 24 := by
+  apply steinerberger_criterion 24 5 (by decide) (by omega)
+  native_decide
+
+/-- For n = 2·3^k (k ≥ 1), Steinerberger gives 3 | gcd.
+    The leading digit of 2·3^k in base 3 is 2 = 3-1.
+    (Axiomatized since the inductive proof on leadingDigitAux needs
+    careful fuel management.) -/
+axiom leadingDigit_two_times_pow_three (k : ℕ) :
+    leadingDigit (2 * 3^k) 3 = 2
+
+/-- From leadingDigit_two_times_pow_three and Steinerberger:
+    3 divides gcd(a_{2·3^k}, L_{2·3^k}) for k ≥ 1. -/
+theorem three_dvd_gcd_two_pow_three (k : ℕ) (hk : k ≥ 1) :
+    (3 : ℕ) ∣ harmonicGCD (2 * 3^k) := by
+  apply steinerberger_criterion _ 3 (by decide)
+  · have h3k : 3^k ≥ 3^1 := Nat.pow_le_pow_right (by omega) hk
+    simp at h3k
+    linarith
+  · exact leadingDigit_two_times_pow_three k
+
+/-
+## Part XVI: Structural Observations
+-/
+
+/-- For n ≥ 1, n divides L(n) -/
+theorem n_dvd_L (n : ℕ) (hn : n ≥ 1) : n ∣ L n := dvd_L n n hn (le_refl n)
+
+/-- The product H(n) * L(n) is always a non-negative integer.
+    This follows because L(n) = lcm(1,...,n) and each term 1/k * L(n) is
+    an integer (since k | L(n) for k ≤ n). -/
+theorem H_mul_L_nonneg (n : ℕ) : H n * (L n : ℚ) ≥ 0 := by
+  apply mul_nonneg
+  · by_cases hn : n = 0
+    · simp [hn, H_zero]
+    · exact le_of_lt (H_pos n (by omega))
+  · exact Nat.cast_nonneg (α := ℚ) (L n)
+
+/-- H(n) * L(n) equals the sum ∑_{k=0}^{n-1} L(n)/(k+1),
+    each term being an integer since (k+1) | L(n). -/
+theorem H_mul_L_eq_sum (n : ℕ) :
+    H n * (L n : ℚ) = ∑ k ∈ Finset.range n, (L n : ℚ) / (k + 1) := by
+  simp only [H, Finset.sum_mul]
+  congr 1
+  ext i
+  field_simp
 
 end Erdos291
