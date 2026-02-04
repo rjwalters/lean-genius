@@ -73,10 +73,10 @@ def IsQuadraticResidue (r p : ℕ) : Prop := IsKthPowerResidue r 2 p
 /-- 0 is always a kth power residue mod p (witnessed by 0^k). -/
 theorem zero_is_kth_power_residue (k p : ℕ) (hk : k ≥ 1) :
     IsKthPowerResidue 0 k p := by
-  exact ⟨0, by simp [Nat.zero_pow (by omega)]⟩
+  exact ⟨0, by simp [Nat.zero_pow hk]⟩
 
 /-- 1 is always a kth power residue mod p (witnessed by 1^k = 1). -/
-theorem one_is_kth_power_residue (k p : ℕ) (hk : k ≥ 1) :
+theorem one_is_kth_power_residue (k p : ℕ) (_hk : k ≥ 1) :
     IsKthPowerResidue 1 k p := by
   exact ⟨1, by simp⟩
 
@@ -92,7 +92,7 @@ theorem first_power_residue (r p : ℕ) : IsKthPowerResidue r 1 p := by
 theorem kth_residue_mod (r k p : ℕ) (h : IsKthPowerResidue r k p) :
     IsKthPowerResidue (r % p) k p := by
   obtain ⟨x, hx⟩ := h
-  exact ⟨x, by rwa [Nat.mod_mod_of_dvd]⟩
+  exact ⟨x, by rwa [Nat.mod_mod_of_dvd _ (dvd_refl p)]⟩
 
 /-- A single element is trivially consecutive kth power residues (m=1). -/
 theorem consecutive_single (r k p : ℕ) (hr : IsKthPowerResidue r k p) :
@@ -129,6 +129,28 @@ theorem consecutive_shorten (r k m m' p : ℕ) (hm : m' ≤ m)
     AreConsecutiveKthResidues r k m' p := by
   intro i hi
   exact h i (by omega)
+
+/-- Shifting: if r,...,r+m-1 are consecutive kth residues, then
+    so are r+1,...,r+m-1 (with one fewer element). -/
+theorem consecutive_shift (r k m p : ℕ) (hm : m ≥ 1)
+    (h : AreConsecutiveKthResidues r k m p) :
+    AreConsecutiveKthResidues (r + 1) k (m - 1) p := by
+  intro i hi
+  have hi' : i + 1 < m := by omega
+  have := h (i + 1) hi'
+  convert this using 1
+  omega
+
+/-- The maximal element in a consecutive run of length m starting at r is r+m-1. -/
+theorem consecutive_max_element (r m : ℕ) (hm : m ≥ 1) :
+    ∃ j : ℕ, j < m ∧ r + j = r + m - 1 := by
+  exact ⟨m - 1, by omega, by omega⟩
+
+/-- For k = 1, ALL integers are kth power residues. -/
+theorem all_are_first_power_residues (r m p : ℕ) :
+    AreConsecutiveKthResidues r 1 m p := by
+  intro i _
+  exact first_power_residue (r + i) p
 
 /-
 ## Part II: The r(k,m,p) Function
