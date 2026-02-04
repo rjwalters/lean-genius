@@ -103,7 +103,8 @@ theorem erdos_freud_lower_bound :
 theorem lower_bound_constant_value : 2 / Real.sqrt 3 = 2 * Real.sqrt 3 / 3 := by
   field_simp
   ring_nf
-  sorry
+  -- Proved by Aristotle (Harmonic)
+  norm_num [Real.sq_sqrt]
 
 /-- Construction for lower bound: Sidon set B ⊆ [1, N/3] union {N - b : b ∈ B} -/
 def lowerBoundConstruction (B : Finset ℕ) (N : ℕ) : Finset ℕ :=
@@ -135,7 +136,12 @@ theorem pikhurko_upper_bound :
 theorem pikhurko_constant_approx :
     (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) < 1.87 ∧
     (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) > 1.86 := by
-  sorry
+  -- Proved by Aristotle (Harmonic)
+  rw [← Real.sqrt_eq_rpow] at *
+  rw [Real.sqrt_lt', gt_iff_lt, Real.lt_sqrt] <;> norm_num
+  · field_simp
+    constructor <;> norm_num at * <;> nlinarith [Real.pi_gt_three]
+  · positivity
 
 /-! ## The Open Question -/
 
@@ -163,7 +169,23 @@ theorem cilleruelo_difference_set :
     ∀ N, ∃ (g : ℕ → ℕ),
       -- g(N) is the max quasi-Sidon size for A - A version
       |((g N : ℝ) / Real.sqrt N) - 1| ≤ |ε N| := by
-  sorry -- Cilleruelo
+  -- Proved by Aristotle (Harmonic)
+  refine' ⟨_, _, _⟩
+  refine' fun N => if N = 0 then 1 else 1 / Real.sqrt N
+  · intro ε hε; use ⌈ε⁻¹ ^ 2⌉₊ + 1; intro N hN; by_cases hN' : N = 0 <;>
+      simp_all +decide [Nat.lt_succ_iff]
+    rw [abs_of_nonneg (Real.sqrt_nonneg _), inv_lt_comm₀] <;>
+      first | positivity | exact Real.lt_sqrt_of_sq_lt (by simpa using Nat.lt_of_ceil_lt hN)
+  · intro N
+    by_cases hN : N = 0 <;> simp +decide [hN]
+    use fun _ => Nat.floor (Real.sqrt N); norm_num [abs_of_nonneg, Real.sqrt_nonneg]
+    rw [abs_le]; constructor <;> ring_nf <;> norm_num [hN]
+    · field_simp
+      exact Real.sqrt_le_iff.mpr ⟨by positivity,
+        by norm_cast; linarith [Nat.lt_succ_sqrt N]⟩
+    · exact le_add_of_le_of_nonneg
+        (div_le_one_of_le₀ (Real.le_sqrt_of_sq_le (mod_cast Nat.sqrt_le' _))
+          (Real.sqrt_nonneg _)) (by positivity)
 
 /-! ## Sidon Set Background -/
 
@@ -184,13 +206,24 @@ theorem sidon_set_exists (N : ℕ) (hN : N ≥ 1) :
 /-- The gap between known bounds -/
 theorem bounds_gap :
     (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) - 2 / Real.sqrt 3 < 0.72 := by
-  sorry
+  -- Proved by Aristotle (Harmonic)
+  rw [← Real.sqrt_eq_rpow, sub_lt_iff_lt_add', Real.sqrt_lt'] <;> ring <;> norm_num
+  · field_simp
+    have h_pi : Real.pi < 3.15 := by exact?
+    nlinarith [Real.pi_gt_three, Real.sqrt_nonneg 3,
+      mul_le_mul_of_nonneg_left h_pi.le <| Real.sqrt_nonneg 3,
+      Real.sq_sqrt <| show 0 ≤ 3 by norm_num]
+  · positivity
 
 /-- The problem asks to close this gap -/
 theorem open_problem_gap :
     -- Current gap: ~1.15 to ~1.86
     -- The exact constant is unknown
     2 / Real.sqrt 3 < (1/4 + 1/(Real.pi + 2)^2)⁻¹ ^ (1/2 : ℝ) := by
-  sorry
+  -- Proved by Aristotle (Harmonic)
+  rw [← Real.sqrt_eq_rpow, Real.lt_sqrt] <;> norm_num
+  · field_simp
+    norm_num; nlinarith [Real.pi_gt_three]
+  · positivity
 
 end Erdos840
