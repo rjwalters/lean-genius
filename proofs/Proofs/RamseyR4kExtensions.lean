@@ -121,12 +121,17 @@ theorem ramseyUpperBound_symm (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1) :
     ramseyUpperBound r s = ramseyUpperBound s r := by
   unfold ramseyUpperBound
   simp only [show ¬(r = 0 ∨ s = 0) by omega, show ¬(s = 0 ∨ r = 0) by omega, ↓reduceIte]
-  have hrs : r + s - 2 = s + r - 2 := by omega
-  have hle : r - 1 ≤ r + s - 2 := by omega
-  conv_rhs => rw [show s - 1 = s + r - 2 - (r - 1) from by omega]
-  rw [← Nat.choose_symm (by omega : r - 1 ≤ s + r - 2)]
-  congr 1
-  omega
+  -- Goal: (r + s - 2).choose (r - 1) = (s + r - 2).choose (s - 1)
+  -- Step 1: Normalize the top argument
+  have h1 : r + s - 2 = s + r - 2 := by omega
+  rw [h1]
+  -- Goal: (s + r - 2).choose (r - 1) = (s + r - 2).choose (s - 1)
+  -- Step 2: Show s - 1 = (s + r - 2) - (r - 1)
+  have h2 : s - 1 = (s + r - 2) - (r - 1) := by omega
+  rw [h2]
+  -- Goal: (s + r - 2).choose (r - 1) = (s + r - 2).choose ((s + r - 2) - (r - 1))
+  -- Step 3: Apply symmetry of binomial coefficients
+  exact (Nat.choose_symm (by omega : r - 1 ≤ s + r - 2)).symm
 
 /-- Base case: R(1,s) = 1 for s ≥ 1. -/
 theorem ramseyUpperBound_one_left (s : ℕ) (hs : s ≥ 1) :
@@ -149,6 +154,54 @@ theorem ramseyUpperBound_two_left (s : ℕ) (hs : s ≥ 1) :
   have : 2 + s - 2 = s := by omega
   rw [this]
   simp [Nat.choose_one_right]
+
+/-- R(r,2) = r: symmetric to the two_left case. -/
+theorem ramseyUpperBound_two_right (r : ℕ) (hr : r ≥ 1) :
+    ramseyUpperBound r 2 = r := by
+  rw [ramseyUpperBound_symm r 2 hr (by omega)]
+  exact ramseyUpperBound_two_left r hr
+
+/-- The Ramsey upper bound is zero when r = 0. -/
+theorem ramseyUpperBound_zero_left (s : ℕ) :
+    ramseyUpperBound 0 s = 0 := by
+  unfold ramseyUpperBound
+  simp
+
+/-- The Ramsey upper bound is zero when s = 0. -/
+theorem ramseyUpperBound_zero_right (r : ℕ) :
+    ramseyUpperBound r 0 = 0 := by
+  unfold ramseyUpperBound
+  simp
+
+/-- The Ramsey upper bound R(r,s) is positive for r,s ≥ 1. -/
+theorem ramseyUpperBound_pos (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1) :
+    ramseyUpperBound r s ≥ 1 := by
+  unfold ramseyUpperBound
+  simp only [show ¬(r = 0 ∨ s = 0) by omega, ↓reduceIte]
+  exact Nat.one_le_iff_ne_zero.mpr (Nat.choose_pos (by omega)).ne'
+
+/-- R(r,s) ≤ R(r, s+1) for r ≥ 1, s ≥ 1.
+    This follows because C(r+s-2, r-1) ≤ C(r+s-1, r-1).
+    We use Pascal's rule: C(n+1, k) = C(n, k) + C(n, k-1) ≥ C(n, k). -/
+theorem ramseyUpperBound_mono_right (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1) :
+    ramseyUpperBound r s ≤ ramseyUpperBound r (s + 1) := by
+  unfold ramseyUpperBound
+  simp only [show ¬(r = 0 ∨ s = 0) by omega,
+             show ¬(r = 0 ∨ s + 1 = 0) by omega, ↓reduceIte]
+  have h1 : r + (s + 1) - 2 = (r + s - 2) + 1 := by omega
+  rw [h1]
+  exact Nat.choose_le_choose _ (by omega)
+
+/-- R(r,s) ≤ R(r+1, s) for r ≥ 1, s ≥ 1.
+    Follows from monotonicity via symmetry. -/
+theorem ramseyUpperBound_mono_left (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1) :
+    ramseyUpperBound r s ≤ ramseyUpperBound (r + 1) s := by
+  calc ramseyUpperBound r s = ramseyUpperBound s r :=
+        ramseyUpperBound_symm r s hr hs
+    _ ≤ ramseyUpperBound s (r + 1) :=
+        ramseyUpperBound_mono_right s r hs hr
+    _ = ramseyUpperBound (r + 1) s :=
+        ramseyUpperBound_symm s (r + 1) hs (by omega)
 
 /-
 ## Part V: The R(4,k) Problem
@@ -186,12 +239,15 @@ axiom r4k_lower_bound :
 ## Summary
 
 This file formalizes:
-1. **Proved theorems (10 total, 0 sorries)**:
-   - ramseyUpperBound concrete values: R(3,3)≤6, R(3,4)≤10, R(3,5)≤15,
-     R(4,4)≤20, R(4,5)≤35, R(5,5)≤70
+1. **Proved theorems (16 total, 0 sorries)**:
+   - Concrete values: R(3,3)=6, R(3,4)=10, R(3,5)=15,
+     R(4,4)=20, R(4,5)=35, R(5,5)=70  (6 theorems)
    - ramseyUpperBound_symm: R(r,s) = R(s,r)
    - ramseyUpperBound_one_left/right: R(1,s) = R(r,1) = 1
-   - ramseyUpperBound_two_left: R(2,s) = s
+   - ramseyUpperBound_two_left/right: R(2,s) = s, R(r,2) = r
+   - ramseyUpperBound_zero_left/right: R(0,s) = R(r,0) = 0
+   - ramseyUpperBound_pos: R(r,s) ≥ 1 for r,s ≥ 1
+   - ramseyUpperBound_mono_right: R(r,s) ≤ R(r,s+1)
    - ramseyUpperBound_mono_left: R(r,s) ≤ R(r+1,s)
 
 2. **Axioms (5 total)**: Deep probabilistic results
