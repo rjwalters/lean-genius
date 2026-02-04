@@ -200,6 +200,33 @@ theorem f3_ge_two (n : ℕ) (hn : n ≥ 1) : f3 n ≥ 2 := by
     simp at this
   exact ⟨{fun _ => 0, fun _ => 1}, isCapSet_pair _ _ hdist, Finset.card_pair hdist⟩
 
+/-- The union of empty sets is a cap set. -/
+theorem isCapSet_union_empty {S : Finset (TernaryHypercube n)} (hS : IsCapSet S) :
+    IsCapSet (S ∪ ∅) := by
+  simp [hS]
+
+/-- Monotonicity: if n ≤ m, there's a relationship between hypercubes. -/
+theorem hypercube_card_mono {n m : ℕ} (h : n ≤ m) :
+    Fintype.card (TernaryHypercube n) ≤ Fintype.card (TernaryHypercube m) := by
+  simp only [hypercube_card]
+  exact Nat.pow_le_pow_right (by omega) h
+
+/-- f₃(n) is always positive. -/
+theorem f3_pos (n : ℕ) : 0 < f3 n := by
+  have := f3_ge_one n
+  omega
+
+/-- f₃(0) = 1 implies the singleton is the only cap set in dimension 0. -/
+theorem f3_0_unique (S : Finset (TernaryHypercube 0)) (hS : IsCapSet S) :
+    S.card ≤ 1 := by
+  have hf := f3_0
+  calc S.card
+      ≤ f3 0 := by
+        unfold f3
+        apply le_csSup (f3_bddAbove 0)
+        exact ⟨S, hS, rfl⟩
+    _ = 1 := hf
+
 /-
 ## Part IV: Connection to Arithmetic Progressions
 -/

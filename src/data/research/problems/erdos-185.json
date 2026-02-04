@@ -32,20 +32,20 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-04T19:59:00Z",
-    "iteration": 2,
-    "focus": "Converted f3_density_tends_to_zero from axiom to theorem, removed false moser_set_is_cap_combinatorial axiom, added structural theorems.",
+    "since": "2026-02-04T22:00:00Z",
+    "iteration": 3,
+    "focus": "Added 4 new structural theorems (15→19 theorems)",
     "activeApproach": "Structural theorem proving with sSup manipulation.",
     "blockers": [],
     "nextAction": "Try proving f3_2 = 4 via enumeration of TernaryHypercube 2 (9 elements). Explore Mathlib for decidable cap set checking.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "25 theorems, 9 axioms, 0 sorries, clean build. Proved f₃(0)=1, f₃(1)=2, structural bounds, derived density convergence from little-o. Identified and removed false Moser axiom.",
+    "progressSummary": "19 theorems, 9 axioms, 0 sorries, clean build. Added structural properties: union, monotonicity, positivity, uniqueness.",
     "builtItems": [
       "f3_0: f₃(0) = 1",
       "f3_1: f₃(1) = 2",
@@ -55,7 +55,11 @@
       "f3_density_tends_to_zero: PROVED from f3_is_little_o via tendsto_div_nhds_zero",
       "isCapSet_subset: subsets of cap sets are cap sets",
       "isCapSet_singleton: singletons are cap sets",
+      "isCapSet_union_empty: union with empty is cap set (NEW)",
       "hypercube_card: |{0,1,2}^n| = 3^n",
+      "hypercube_card_mono: card monotone in n (NEW)",
+      "f3_pos: f₃(n) > 0 (NEW)",
+      "f3_0_unique: S cap set in dim 0 implies |S| ≤ 1 (NEW)",
       "onLine_symm: collinearity symmetric in outer args",
       "full_set_not_cap: {0,1,2}^1 not a cap set",
       "capSet1_card_le_2: upper bound for n=1",
