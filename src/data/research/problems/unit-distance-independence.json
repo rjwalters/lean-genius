@@ -12,14 +12,12 @@
   },
   "knownResults": {
     "proven": [
-      "indepNumber: formal definition as sSup",
-      "indep_card_le_indepNumber: |S| ≤ α(G) for independent S",
-      "indepNumber_pos: α(G) ≥ 1 for nonempty graphs",
-      "indepNumber_le_card: α(G) ≤ |V|",
-      "indepNumber_bot: α(⊥) = |V|",
-      "indepSet_iff_compl_clique: independent in G ↔ clique in Gᶜ",
-      "indepFinset_iff_compl_clique: Finset version",
-      "indep_times_colors_ge_card: α(G)·k ≥ |V|",
+      "isIndepFinset_empty: ∅ is independent",
+      "isIndepFinset_singleton: {v} is independent",
+      "isIndepFinset_subset: Subsets preserve independence",
+      "indep_card_le_alpha: |S| ≤ α(G) for independent S",
+      "alpha_chi_ge_card: k * α(G) ≥ |V| (chromatic-independence relation)",
+      "independenceNumber_ge_of_indep: α(G) ≥ |I| for independent I",
       "hadwiger_nelson_bounds: 5 ≤ χ(R²) ≤ 7",
       "exists_maximal_indep: Every finite graph has a maximal independent set (NEW)",
       "maximal_indep_covers: Maximal independent sets cover all vertices (NEW)",
@@ -70,7 +68,6 @@
       "Finset.exists_max_image gives max-cardinality element from nonempty finset",
       "Nat.mul_div_cancel and Nat.div_le_div_right sufficient for nat division bounds"
     ],
-    "mathlibGaps": [],
     "nextSteps": [
       "Consider Aristotle submission for Hadwiger-Nelson axioms",
       "Prove Ramsey-type bound: α(G)·ω(G) ≥ |V|"
