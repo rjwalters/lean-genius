@@ -1,96 +1,41 @@
 {
-  "slug": "abel-ruffini-galois-extensions",
-  "title": "Abel-Ruffini Galois Theory Extensions",
-  "phase": "COMPLETED",
-  "status": "completed",
-  "tier": "A",
-  "path": "full",
-  "problemStatement": {
-    "formal": "S_n is solvable iff n ≤ 4; unsolvable Galois group implies not solvable by radicals",
-    "plain": "COMPLETED: Complete classification of solvability for symmetric and alternating groups, with connection to Abel-Ruffini theorem.",
-    "whyMatters": ["Fundamental result in algebra", "Explains why quintics can't be solved by radicals"]
-  },
-  "knownResults": {
-    "proven": [
-      "S_n solvable iff n ≤ 4",
-      "A_n solvable iff n ≤ 4",
-      "A₅ is simple",
-      "Contrapositive Abel-Ruffini"
-    ],
-    "open": [],
-    "goal": "Complete classification achieved"
-  },
-  "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-02-04T22:00:00.000Z",
-    "iteration": 3,
-    "focus": "Added higher cardinalities and factorial identities (55→68 theorems)",
-    "blockers": [],
-    "nextAction": "None - completed",
-    "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
-      "approachesTried": 1
-    }
-  },
-  "knowledge": {
-    "progressSummary": "68 theorems, 0 sorries, 0 axioms. Complete classification of solvability for S_n and A_n, plus connection to radical solvability. Extended with higher cardinalities and factorial identities.",
-    "builtItems": [
-      "perm_fin_{0,1,2,3,4}_solvable",
-      "alternating_fin_{3,4}_solvable",
-      "symmetric_solvable_iff",
-      "alternating_solvable_iff",
-      "not_solvable_by_rad_of_not_solvable_galois",
-      "a5_simple",
-      "commutator_solvable",
-      "sign_kernel_is_alternating",
-      "Non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅",
-      "card_s7=5040, card_s8=40320 (NEW)",
-      "card_a7=2520, card_a8=20160 (NEW)",
-      "a{6,7,8}_not_solvable (NEW)",
-      "factorial_s{3,4,5} (NEW)",
-      "half_factorial_a{3,4,5} (NEW)"
-    ],
-    "insights": [
-      "S₂ solvable via commutativity",
-      "S₃, S₄ solvable via short exact sequences with alternating group kernel",
-      "A₄ solvable via Klein four-group V₄ as normal subgroup",
-      "A₅ is simple, providing the obstruction for n ≥ 5",
-      "native_decide handles large cardinalities (up to 8!) efficiently"
-    ],
-    "mathlibGaps": [],
-    "nextSteps": []
-  },
-  "approaches": [
-    {
-      "name": "Short exact sequences",
-      "status": "SUCCESS",
-      "description": "Use 1 → A_n → S_n → ℤˣ → 1 to reduce S_n solvability to A_n solvability"
-    }
-  ],
-  "tags": [
-    "seeker-selected",
-    "algebra",
-    "galois-theory",
-    "group-theory",
-    "extension",
-    "completed"
-  ],
-  "relatedProofs": [
-    "AbelRuffini.lean",
-    "AbelRuffiniGaloisExtensions.lean"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": [
-      "Equiv.Perm.not_solvable",
-      "solvableByRad.isSolvable'",
-      "alternatingGroup.isSimpleGroup_five"
-    ]
-  },
-  "started": "2026-01-27T22:18:02.331Z",
-  "lastUpdate": "2026-02-04T22:00:00.000Z",
+  "id": "abel-ruffini-galois-extensions",
+  "name": "Abel-Ruffini Galois Theory Extensions",
+  "tier": "B",
   "significance": 7,
-  "tractability": 6
+  "tractability": 10,
+  "status": "completed",
+  "tags": ["algebra", "galois-theory", "group-theory", "extension"],
+  "proofFile": "proofs/Proofs/AbelRuffiniGaloisExtensions.lean",
+  "knowledge": {
+    "insights": [
+      "68 theorems/instances, 0 sorries, 0 axioms - fully complete",
+      "Complete classification: S_n solvable iff n ≤ 4, same for A_n",
+      "Klein four-group V₄ used for A₄ solvability via short exact sequence",
+      "Sign homomorphism ker = alternating group is key structure",
+      "Cardinalities verified for S₀-S₈ and A₀-A₈",
+      "Non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅",
+      "Factorial identity verification for small groups"
+    ],
+    "builtItems": [
+      "perm_fin_0_solvable through perm_fin_4_solvable (5 instances)",
+      "alternating_fin_0_solvable through alternating_fin_4_solvable (5 instances)",
+      "symmetric_solvable_iff, alternating_solvable_iff (complete classifications)",
+      "a5_simple, card_a5 (A₅ structure)",
+      "not_solvable_by_rad_of_not_solvable_galois (Galois contrapositive)",
+      "card_s0 through card_s8 (symmetric cardinalities)",
+      "card_a0 through card_a8 (alternating cardinalities)",
+      "s3_not_comm through a5_not_comm (non-commutativity)",
+      "factorial_s3 through half_factorial_a5 (factorial identities)",
+      "klein_four normal subgroup construction"
+    ],
+    "nextSteps": [
+      "File is complete - no further work needed",
+      "Could potentially add degree 5 specific polynomial examples if Mathlib has infrastructure",
+      "Integration with main AbelRuffini.lean already done"
+    ],
+    "progressSummary": "COMPLETED: 68 theorems, 0 sorries, 0 axioms. Comprehensive coverage of symmetric/alternating group solvability, cardinalities, non-commutativity, and Galois theory connections.",
+    "knowledgeScore": 5
+  },
+  "notes": "File already fully developed. Complete classification of solvable symmetric and alternating groups with all supporting infrastructure."
 }
