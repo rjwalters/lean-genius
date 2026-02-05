@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Comprehensive structural theory proved. File has 15+ proven theorems covering small examples, oddness, minimum prime factor count (>=3), non-semiprimality, non-prime-power, counting function base values, unboundedness, and modular congruence. Known bounds formalized as axioms.",
+    "progressSummary": "PROGRESS: Comprehensive structural theory proved. File has 30 proven theorems covering small examples, oddness, minimum prime factor count (>=3), non-semiprimality, non-prime-power, counting function base values, unboundedness, and modular congruence. 7 axioms remain (down from 8): bounds axioms + carmichael_ge_561.",
     "builtItems": [
       "proofs/Proofs/Erdos1057Problem.lean: IsCarmichael, satisfiesKorselt, C definitions",
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_561, carmichael_1105, carmichael_1729",
@@ -87,7 +87,7 @@
     "number-theory",
     "carmichael-numbers",
     "pseudoprimes",
-    "1-sorry"
+    "7-axioms"
   ],
   "relatedProofs": [],
   "references": {
@@ -102,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-02-04T20:00:00Z",
+  "lastUpdate": "2026-02-04T18:55:00Z",
   "significance": 7,
   "tractability": 6
 }

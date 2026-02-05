@@ -361,8 +361,57 @@ theorem carmichael_not_semiprime (n : ℕ) (h : IsCarmichael n) :
 /-- Every Carmichael number has at least 3 prime factors.
     Card 0 → n ≤ 1, contradiction. Card 1 → squarefree means n is prime, contradiction.
     Card 2 → n = pq semiprime, impossible by Korselt. -/
-axiom carmichael_at_least_3_primes :
-  ∀ n : ℕ, IsCarmichael n → n.primeFactors.card ≥ 3
+theorem carmichael_at_least_3_primes :
+    ∀ n : ℕ, IsCarmichael n → n.primeFactors.card ≥ 3 := by
+  intro n ⟨hn1, hnp, hsq, hkor⟩
+  by_contra hlt
+  push_neg at hlt
+  -- Case split on card: 0, 1, or 2
+  have h012 : n.primeFactors.card = 0 ∨ n.primeFactors.card = 1 ∨ n.primeFactors.card = 2 := by omega
+  rcases h012 with h0 | h1 | h2
+  · -- Card = 0: n has no prime factors → n ≤ 1
+    exfalso
+    -- n > 1, so n has a prime factor
+    obtain ⟨p, hp, hpdvd⟩ := Nat.exists_prime_and_dvd (show n ≠ 1 by omega)
+    have hmem : p ∈ n.primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by omega⟩
+    rw [Finset.card_eq_zero.mp h0] at hmem
+    exact Finset.not_mem_empty p hmem
+  · -- Card = 1: n is a prime power. But squarefree + one prime factor = prime.
+    exfalso
+    obtain ⟨p, hp⟩ := Finset.card_eq_one.mp h1
+    have hp_prime : p.Prime := by
+      have hmem : p ∈ n.primeFactors := by rw [hp]; simp
+      exact (Nat.mem_primeFactors.mp hmem).1
+    -- For squarefree n with primeFactors = {p}, we have n = p
+    have hneq0 : n ≠ 0 := by omega
+    have hn_eq_p : n = p := by
+      have hprod := Nat.prod_primeFactors_of_squarefree hsq
+      rw [hp] at hprod
+      simp at hprod
+      exact hprod.symm
+    exact hnp (hn_eq_p ▸ hp_prime)
+  · -- Card = 2: n is a semiprime. Already proved impossible.
+    exfalso
+    obtain ⟨p, q, hpq, hpf⟩ := Finset.card_eq_two.mp h2
+    have hp_prime : p.Prime := by
+      have hmem : p ∈ n.primeFactors := by rw [hpf]; simp
+      exact (Nat.mem_primeFactors.mp hmem).1
+    have hq_prime : q.Prime := by
+      have hmem : q ∈ n.primeFactors := by rw [hpf]; simp
+      exact (Nat.mem_primeFactors.mp hmem).1
+    have hpdvd : p ∣ n := by
+      have hmem : p ∈ n.primeFactors := by rw [hpf]; simp
+      exact (Nat.mem_primeFactors.mp hmem).2.1
+    have hqdvd : q ∣ n := by
+      have hmem : q ∈ n.primeFactors := by rw [hpf]; simp
+      exact (Nat.mem_primeFactors.mp hmem).2.1
+    -- Since squarefree and primeFactors = {p, q}, we have n = p * q
+    have hn_eq_pq : n = p * q := by
+      have hprod := Nat.prod_primeFactors_of_squarefree hsq
+      rw [hpf] at hprod
+      rw [Finset.prod_insert (by simp [hpq]), Finset.prod_singleton] at hprod
+      exact hprod.symm
+    exact carmichael_not_semiprime n ⟨hn1, hnp, hsq, hkor⟩ ⟨p, q, hp_prime, hq_prime, hpq, hn_eq_pq⟩
 
 /-- No Carmichael number is a prime power -/
 theorem carmichael_not_prime_power (n : ℕ) (h : IsCarmichael n) :
