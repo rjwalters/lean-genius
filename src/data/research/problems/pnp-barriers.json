@@ -1,8 +1,8 @@
 {
   "slug": "pnp-barriers",
   "title": "P vs NP Barrier Formalization",
-  "phase": "COMPLETE",
-  "status": "complete",
+  "phase": "ACT",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -11,37 +11,26 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "153 theorems fully proved",
-      "Relativization barrier (Baker-Gill-Solovay)",
-      "Natural proofs barrier (Razborov-Rudich)",
-      "Algebrization barrier (Aaronson-Wigderson)",
-      "Complete complexity class hierarchy (P, NP, coNP, BPP, PSPACE, EXP)",
-      "PCP theorem, IP = PSPACE, MIP = NEXP",
-      "Average-case complexity, Kolmogorov complexity",
-      "Fine-grained complexity (SETH)",
-      "Proof complexity barriers"
-    ],
-    "open": [
-      "P vs NP itself (OPEN MILLENNIUM PROBLEM)"
-    ],
-    "goal": "COMPLETE: 153 theorems, 192 axioms, 0 sorries"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-04T19:15:00Z",
-    "iteration": 26,
-    "focus": "Complete: 153 theorems, 192 axioms, 0 sorries. Massive P vs NP barriers formalization.",
+    "phase": "ACT",
+    "since": "2025-12-31",
+    "iteration": 3,
+    "focus": "Extending complexity class formalization with PSPACE, EXP, and NP-completeness framework.",
+    "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "None - comprehensive barrier formalization complete",
+    "nextAction": "Add coNP, PSPACE-completeness, and explore removing sorries.",
     "attemptCounts": {
-      "total": 26,
-      "currentApproach": 26,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 153 theorems, 192 axioms, 0 sorries (~6000 lines). Comprehensive P vs NP barriers formalization including relativization, natural proofs, algebrization, PCP theorem, IP=PSPACE, MIP=NEXP, BQP, QMA, average-case complexity, Kolmogorov complexity, fine-grained SETH, proof complexity, and communication complexity.",
+    "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -145,14 +134,9 @@
     "complexity-theory",
     "impossibility",
     "formalization",
-    "p-vs-np",
-    "millennium-prize",
-    "0-sorry",
-    "complete"
+    "p-vs-np"
   ],
-  "relatedProofs": [
-    "PNPBarriers.lean"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
