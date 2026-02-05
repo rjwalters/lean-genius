@@ -29,6 +29,8 @@
       "carmichael_prime_factors_ge_3: all prime factors are >= 3",
       "C_mono: C(x) is monotone increasing",
       "C_unbounded: C(x) -> infinity (from AGP infinitude axiom)",
+      "C_2821_ge_5: at least 5 Carmichael numbers ≤ 2821 (NEW)",
+      "first_five_carmichael: combined verification of first 5 (NEW)",
       "carmichael_cong_one_mod: n = 1 (mod p-1) for prime factors p",
       "C_zero, C_one, C_below_561, C_561_pos: counting function base values"
     ],
@@ -41,13 +43,13 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-02-04T20:00:00Z",
-    "iteration": 2,
-    "focus": "Structural theory of Carmichael numbers and counting function properties",
+    "iteration": 3,
+    "focus": "Added 9 new theorems: 2 more examples (2465, 2821), structural properties, counting verification (C(2821)≥5)",
     "blockers": [],
-    "nextAction": "Consider lcm structure theorems or Aristotle submission for axioms",
+    "nextAction": "Survey as complete or submit to Aristotle for axiom attempts",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
