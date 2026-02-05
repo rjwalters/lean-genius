@@ -1,31 +1,44 @@
 {
   "slug": "erdos-1109",
   "title": "Squarefree Sumsets",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "complete",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "Let f(N) = sup { |A| : A ⊆ {1,...,N}, ∀s ∈ A+A, s is squarefree }. Estimate f(N).",
+    "plain": "Let f(N) be the size of the largest subset A ⊆ {1,...,N} such that every element of A+A is squarefree. Estimate f(N).",
+    "whyMatters": [
+      "Connects number theory (squarefree numbers) with additive combinatorics",
+      "Best known bounds have a huge gap: polylogarithmic vs polynomial",
+      "Related to density arguments and Chinese Remainder Theorem"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "58+ theorems in Erdos1109Problem.lean including residue class constraints",
+      "All elements of squarefree-sumset sets must be odd (all_odd)",
+      "No pair sums to a multiple of p^2 for any prime p (prime_sq_avoidance)",
+      "Elements themselves are squarefree (element_squarefree)",
+      "Mod 4: single residue class (mod_4_single_class)",
+      "Mod 9: at most 4 residue classes (mod_9_residue_image_le_4)"
+    ],
+    "open": [
+      "The conjecture f(N) = (log N)^{O(1)} remains open"
+    ],
+    "goal": "Formalization complete. 7 axioms for published bounds (Erdős-Sárközy, Konyagin)."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-27T22:18:02.333Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETE",
+    "since": "2026-02-04T01:45:00Z",
+    "iteration": 4,
+    "focus": "All theorems proved. File compiles with 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Problem formalization complete. 7 axioms remain for published research bounds.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 4,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -53,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-01-27T22:18:02.332Z",
+  "lastUpdate": "2026-02-04T01:45:00Z",
   "significance": 7,
   "tractability": 6
 }

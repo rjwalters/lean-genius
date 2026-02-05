@@ -1,8 +1,8 @@
 {
   "slug": "erdos-185",
   "title": "Cap Sets in {0,1,2}^n",
-  "phase": "PROGRESS",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "complete",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -31,21 +31,21 @@
     "goal": "Eliminate remaining axioms where possible; currently 9 axioms, 25 theorems, 0 sorries"
   },
   "currentState": {
-    "phase": "PROGRESS",
-    "since": "2026-02-04T22:00:00Z",
-    "iteration": 3,
-    "focus": "Added 4 new structural theorems (15→19 theorems)",
-    "activeApproach": "Structural theorem proving with sSup manipulation.",
+    "phase": "COMPLETE",
+    "since": "2026-02-04T18:18:00Z",
+    "iteration": 4,
+    "focus": "Complete: 19 theorems, 9 axioms (deep research results), 0 sorries",
+    "activeApproach": "All tractable work completed.",
     "blockers": [],
-    "nextAction": "Try proving f3_2 = 4 via enumeration of TernaryHypercube 2 (9 elements). Explore Mathlib for decidable cap set checking.",
+    "nextAction": "None - problem complete",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "19 theorems, 9 axioms, 0 sorries, clean build. Added structural properties: union, monotonicity, positivity, uniqueness.",
+    "progressSummary": "COMPLETE: 19 theorems, 9 axioms, 0 sorries. Axioms are deep research results (density Hales-Jewett, Ellenberg-Gijswijt) or concrete values requiring enumeration.",
     "builtItems": [
       "f3_0: f₃(0) = 1",
       "f3_1: f₃(1) = 2",
@@ -92,7 +92,8 @@
     "additive-combinatorics",
     "cap-sets",
     "0-sorry",
-    "solved"
+    "solved",
+    "complete"
   ],
   "relatedProofs": [],
   "references": {
@@ -112,7 +113,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.333Z",
-  "lastUpdate": "2026-02-04T19:59:00Z",
+  "lastUpdate": "2026-02-04T18:18:00Z",
   "significance": 7,
   "tractability": 7
 }

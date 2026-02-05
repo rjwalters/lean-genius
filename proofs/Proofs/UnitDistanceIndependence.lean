@@ -381,9 +381,21 @@ theorem unit_distance_independence_from_chromatic (S : Finset Plane)
     (hne : S.Nonempty) :
     ∃ I : Finset S, IsIndepFinset (unitDistGraph S) I ∧
       I.card ≥ S.card / 7 := by
-  -- This follows from the existence of a 7-coloring
-  -- and the pigeonhole principle (indep_from_coloring)
-  sorry
+  -- Get the 7-coloring of the plane
+  obtain ⟨c, hc⟩ := hadwiger_nelson_upper_bound
+  -- Restrict coloring to S
+  let c' : S → Fin 7 := fun p => c p
+  -- c' is a proper coloring of the unit distance graph on S
+  have hproper : IsProperColoring (unitDistGraph S) c' := by
+    intro u v hadj
+    have hdist : dist (u : Plane) (v : Plane) = 1 := hadj.1
+    exact hc (u : Plane) (v : Plane) hdist
+  -- Apply pigeonhole
+  haveI : Nonempty S := hne.coe_sort
+  obtain ⟨I, hI, hcard⟩ := indep_from_coloring (unitDistGraph S) (Nat.zero_lt_succ 6) c' hproper
+  refine ⟨I, hI, ?_⟩
+  simp only [Fintype.card_coe] at hcard
+  exact hcard
 
 /-
 ## Part XI: Summary
@@ -400,7 +412,7 @@ This file establishes:
 9. **Degree theory**: Vertex degree and maximum degree definitions
 10. **Greedy bound**: α(G) ≥ |V|/(Δ+1)
 
-### Proved Theorems (23 total, 1 sorry)
+### Proved Theorems (24 total, 0 sorries)
 - `isIndepFinset_empty`: ∅ is independent
 - `isIndepFinset_singleton`: {v} is independent
 - `isIndepFinset_subset`: Subsets preserve independence
@@ -424,7 +436,7 @@ This file establishes:
 - `degree_isolated`: Isolated vertices have degree 0
 - `degree_le_card_sub_one`: degree(v) ≤ |V| - 1
 - `degree_le_maxDegree`: degree(v) ≤ Δ(G)
-- `unit_distance_independence_from_chromatic`: Unit dist graphs have α ≥ |V|/7 (sorry)
+- `unit_distance_independence_from_chromatic`: Unit dist graphs have α ≥ |V|/7
 
 ### Axioms Used (3)
 - `hadwiger_nelson_lower_bound`: De Grey's 5-color lower bound (2018)

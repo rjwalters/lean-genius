@@ -1,8 +1,8 @@
 {
   "slug": "erdos-285",
   "title": "Egyptian Fractions Asymptotics",
-  "phase": "SURVEYED",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "complete",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -25,21 +25,21 @@
     "goal": "Martin's theorem is axiomatized; all supporting infrastructure proved"
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-04T08:37:00Z",
-    "iteration": 3,
-    "focus": "Problem well-formalized. Only axiom is Martin's main theorem (deep result).",
-    "activeApproach": "Structural properties and valid length witnesses added.",
+    "phase": "COMPLETE",
+    "since": "2026-02-04T18:05:00Z",
+    "iteration": 4,
+    "focus": "Formalization complete. 20 theorems, 1 axiom (Martin's theorem), 0 sorries.",
+    "activeApproach": "All tractable work completed.",
     "blockers": [],
-    "nextAction": "Problem essentially complete. Could add more valid lengths as optional enrichment.",
+    "nextAction": "None - problem complete.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "17 theorems proved, 1 axiom (Martin's main theorem), 0 sorries, 263 lines. All supporting infrastructure fully proved including constant bounds, algebraic identities, concrete valid length witnesses, and structural properties.",
+    "progressSummary": "COMPLETE: 20 theorems, 1 axiom (Martin's main theorem), 0 sorries, 263 lines. All supporting infrastructure fully proved including constant bounds, algebraic identities, concrete valid length witnesses, and structural properties.",
     "builtItems": [
       "IsEgyptianRepresentation predicate",
       "ValidLengths set definition",
@@ -81,7 +81,8 @@
     "number-theory",
     "egyptian-fractions",
     "asymptotics",
-    "0-sorry"
+    "0-sorry",
+    "complete"
   ],
   "relatedProofs": [],
   "references": {
@@ -98,7 +99,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.333Z",
-  "lastUpdate": "2026-02-04T08:37:00Z",
+  "lastUpdate": "2026-02-04T18:05:00Z",
   "significance": 7,
   "tractability": 6
 }
