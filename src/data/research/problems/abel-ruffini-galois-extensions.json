@@ -53,5 +53,39 @@
   "started": "2026-01-27T22:18:02.331Z",
   "lastUpdate": "2026-01-27T22:18:02.332Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 10,
+  "status": "completed",
+  "tags": ["algebra", "galois-theory", "group-theory", "extension"],
+  "proofFile": "proofs/Proofs/AbelRuffiniGaloisExtensions.lean",
+  "knowledge": {
+    "insights": [
+      "68 theorems/instances, 0 sorries, 0 axioms - fully complete",
+      "Complete classification: S_n solvable iff n ≤ 4, same for A_n",
+      "Klein four-group V₄ used for A₄ solvability via short exact sequence",
+      "Sign homomorphism ker = alternating group is key structure",
+      "Cardinalities verified for S₀-S₈ and A₀-A₈",
+      "Non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅",
+      "Factorial identity verification for small groups"
+    ],
+    "builtItems": [
+      "perm_fin_0_solvable through perm_fin_4_solvable (5 instances)",
+      "alternating_fin_0_solvable through alternating_fin_4_solvable (5 instances)",
+      "symmetric_solvable_iff, alternating_solvable_iff (complete classifications)",
+      "a5_simple, card_a5 (A₅ structure)",
+      "not_solvable_by_rad_of_not_solvable_galois (Galois contrapositive)",
+      "card_s0 through card_s8 (symmetric cardinalities)",
+      "card_a0 through card_a8 (alternating cardinalities)",
+      "s3_not_comm through a5_not_comm (non-commutativity)",
+      "factorial_s3 through half_factorial_a5 (factorial identities)",
+      "klein_four normal subgroup construction"
+    ],
+    "nextSteps": [
+      "File is complete - no further work needed",
+      "Could potentially add degree 5 specific polynomial examples if Mathlib has infrastructure",
+      "Integration with main AbelRuffini.lean already done"
+    ],
+    "progressSummary": "COMPLETED: 68 theorems, 0 sorries, 0 axioms. Comprehensive coverage of symmetric/alternating group solvability, cardinalities, non-commutativity, and Galois theory connections.",
+    "knowledgeScore": 5
+  },
+  "notes": "File already fully developed. Complete classification of solvable symmetric and alternating groups with all supporting infrastructure."
 }
