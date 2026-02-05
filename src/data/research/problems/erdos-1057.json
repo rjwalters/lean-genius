@@ -19,12 +19,20 @@
       "carmichael_561: 561 is a Carmichael number",
       "carmichael_1105: 1105 is a Carmichael number",
       "carmichael_1729: 1729 is a Carmichael number",
+      "carmichael_2465: 2465 is a Carmichael number (NEW)",
+      "carmichael_2821: 2821 is a Carmichael number (NEW)",
       "carmichael_odd: all Carmichael numbers are odd",
       "carmichael_not_semiprime: Carmichael numbers are not products of two primes",
       "carmichael_at_least_3_primes: every Carmichael number has >= 3 prime factors",
       "carmichael_not_prime_power: no Carmichael number is a prime power",
+      "carmichael_min_prime_ge_3: smallest prime factor ≥ 3 (NEW)",
+      "carmichael_distinct_prime_factors: all prime factors distinct (NEW)",
+      "carmichael_eq_prod_primes: n = product of prime factors (NEW)",
+      "carmichael_prime_multiplicity_one: each prime appears once (NEW)",
       "C_mono: C(x) is monotone increasing",
       "C_unbounded: C(x) -> infinity (from AGP infinitude axiom)",
+      "C_2821_ge_5: at least 5 Carmichael numbers ≤ 2821 (NEW)",
+      "first_five_carmichael: combined verification of first 5 (NEW)",
       "carmichael_cong_one_mod: n = 1 (mod p-1) for prime factors p",
       "C_zero, C_one, C_below_561, C_561_pos: counting function base values"
     ],
@@ -37,25 +45,27 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-02-04T20:00:00Z",
-    "iteration": 2,
-    "focus": "Structural theory of Carmichael numbers and counting function properties",
+    "iteration": 3,
+    "focus": "Added 9 new theorems: 2 more examples (2465, 2821), structural properties, counting verification (C(2821)≥5)",
     "blockers": [],
-    "nextAction": "Consider lcm structure theorems or Aristotle submission for axioms",
+    "nextAction": "Survey as complete or submit to Aristotle for axiom attempts",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Comprehensive structural theory proved. File has 30 proven theorems covering small examples, oddness, minimum prime factor count (>=3), non-semiprimality, non-prime-power, counting function base values, unboundedness, and modular congruence. 7 axioms remain (down from 8): bounds axioms + carmichael_ge_561.",
+    "progressSummary": "PROGRESS: 39 theorems, 7 axioms, 0 sorries. Added 9 new theorems: 2 more Carmichael examples (2465, 2821), structural properties (min prime ≥3, distinct factors, multiplicity=1, product formula), and counting verification (C(2821)≥5).",
     "builtItems": [
       "proofs/Proofs/Erdos1057Problem.lean: IsCarmichael, satisfiesKorselt, C definitions",
-      "proofs/Proofs/Erdos1057Problem.lean: carmichael_561, carmichael_1105, carmichael_1729",
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_561, carmichael_1105, carmichael_1729, carmichael_2465, carmichael_2821",
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_odd, carmichael_not_semiprime",
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_at_least_3_primes, carmichael_not_prime_power",
-      "proofs/Proofs/Erdos1057Problem.lean: C_mono, C_unbounded, C_zero, C_one, C_below_561, C_561_pos",
-      "proofs/Proofs/Erdos1057Problem.lean: carmichael_cong_one_mod, carmichael_prime_factor_lt"
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_min_prime_ge_3, carmichael_distinct_prime_factors",
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_eq_prod_primes, carmichael_prime_multiplicity_one",
+      "proofs/Proofs/Erdos1057Problem.lean: C_mono, C_unbounded, C_zero, C_one, C_below_561, C_561_pos, C_2821_ge_5",
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_cong_one_mod, carmichael_prime_factor_lt, first_five_carmichael"
     ],
     "insights": [
       "Korselt criterion based proofs work well for structural results",
@@ -102,7 +112,7 @@
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-02-04T18:55:00Z",
+  "lastUpdate": "2026-02-05T05:15:00Z",
   "significance": 7,
   "tractability": 6
 }
