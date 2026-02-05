@@ -399,7 +399,103 @@ theorem unit_distance_independence_from_chromatic (S : Finset Plane)
   exact hcard
 
 /-
-## Part XI: Summary
+## Part XI: Additional Structural Theorems
+-/
+
+/-- Independence and chromatic number relation: k * α(G) ≥ |V|.
+    Each color class is independent with size ≤ α(G), so k * α(G) ≥ |V|. -/
+theorem alpha_chi_ge_card {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {k : ℕ} (hk : k > 0)
+    (c : V → Fin k) (hc : IsProperColoring G c) :
+    k * independenceNumber G ≥ Fintype.card V := by
+  have hclass : ∀ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card ≤ independenceNumber G := by
+    intro i
+    have hindep : IsIndepFinset G (Finset.univ.filter (fun v => c v = i)) :=
+      proper_coloring_gives_independent_partition G c hc i
+    exact indep_card_le_alpha G (Finset.univ.filter (fun v => c v = i)) hindep
+  have htotal : ∑ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card = Fintype.card V := by
+    rw [← Finset.card_univ]
+    rw [← Finset.card_biUnion]
+    · congr 1; ext v; simp
+    · intro i _ j _ hij
+      simp only [Finset.disjoint_left, Finset.mem_filter, Finset.mem_univ, true_and]
+      intro v hvi hvj; exact hij (hvi.symm ▸ hvj)
+  calc Fintype.card V = ∑ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card := htotal.symm
+    _ ≤ ∑ _i : Fin k, independenceNumber G := Finset.sum_le_sum (fun i _ => hclass i)
+    _ = k * independenceNumber G := by simp [Finset.sum_const, smul_eq_mul]
+
+/-- For any independent set I, α(G) ≥ |I|. -/
+theorem independenceNumber_ge_of_indep {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (I : Finset V) (hI : IsIndepFinset G I) :
+    independenceNumber G ≥ I.card :=
+  indep_card_le_alpha G I hI
+
+/-- Extending an independent set by a vertex non-adjacent to all. -/
+theorem independent_extend {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) {I : Finset V} (hI : IsIndepFinset G I)
+    {v : V} (hv : v ∉ I) (hnadj : ∀ u ∈ I, ¬G.Adj v u ∧ ¬G.Adj u v) :
+    IsIndepFinset G (insert v I) := by
+  apply isIndepFinset_insert G hI hv
+  intro u hu; exact (hnadj u hu).1
+
+/-- Union of independent sets with no cross-edges is independent. -/
+theorem disjoint_indep_union {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) {A B : Finset V}
+    (hA : IsIndepFinset G A) (hB : IsIndepFinset G B)
+    (hno_edge : ∀ a ∈ A, ∀ b ∈ B, ¬G.Adj a b) :
+    IsIndepFinset G (A ∪ B) := by
+  intro u hu v hv huv
+  simp only [Finset.mem_union] at hu hv
+  rcases hu with hu | hu <;> rcases hv with hv | hv
+  · exact hA u hu v hv huv
+  · exact hno_edge u hu v hv
+  · intro hadj; exact hno_edge v hv u hu (G.symm hadj)
+  · exact hB u hu v hv huv
+
+/-- Removing a vertex preserves independence. -/
+theorem indep_erase {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) {I : Finset V} (hI : IsIndepFinset G I) (v : V) :
+    IsIndepFinset G (I.erase v) :=
+  isIndepFinset_subset G (Finset.erase_subset v I) hI
+
+/-- Any graph with at least one vertex has α(G) ≥ 1. -/
+theorem alpha_ge_one {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V] :
+    independenceNumber G ≥ 1 := by
+  obtain ⟨v⟩ := ‹Nonempty V›
+  have hindep : IsIndepFinset G ({v} : Finset V) := isIndepFinset_singleton G v
+  have := indep_card_le_alpha G {v} hindep
+  simp at this; exact this
+
+/-- The neighborhood of a vertex v. -/
+def neighborhood {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) : Finset V :=
+  Finset.univ.filter (G.Adj v)
+
+/-- Neighborhood size equals degree. -/
+theorem neighborhood_card_eq_degree {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    (neighborhood G v).card = degree G v := rfl
+
+/-- A vertex is not in its own neighborhood. -/
+theorem not_mem_neighborhood {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    v ∉ neighborhood G v := by
+  unfold neighborhood
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  exact G.loopless v
+
+/-- Fewer edges means more independent sets: if G ≤ H, independent in H implies independent in G. -/
+theorem independent_mono {V : Type*} [Fintype V] [DecidableEq V]
+    (G H : SimpleGraph V) [DecidableRel G.Adj] [DecidableRel H.Adj]
+    (hle : G ≤ H) (I : Finset V) (hI : IsIndepFinset H I) :
+    IsIndepFinset G I := by
+  intro u hu v hv huv hadj
+  exact hI u hu v hv huv (hle hadj)
+
+/-
+## Part XII: Summary
 
 This file establishes:
 1. **Independent sets**: Definition and basic properties (empty, singleton, subset, insert)
@@ -412,8 +508,10 @@ This file establishes:
 8. **Extremal cases**: No-edge graph (all independent), complete graph (α = 1)
 9. **Degree theory**: Vertex degree and maximum degree definitions
 10. **Greedy bound**: α(G) ≥ |V|/(Δ+1)
+11. **Chromatic-independence**: k * α(G) ≥ |V|
+12. **Neighborhood theory**: Definition and properties
 
-### Proved Theorems (24 total, 0 sorries)
+### Proved Theorems (33 total, 0 sorries)
 - `isIndepFinset_empty`: ∅ is independent
 - `isIndepFinset_singleton`: {v} is independent
 - `isIndepFinset_subset`: Subsets preserve independence
@@ -438,6 +536,15 @@ This file establishes:
 - `degree_le_card_sub_one`: degree(v) ≤ |V| - 1
 - `degree_le_maxDegree`: degree(v) ≤ Δ(G)
 - `unit_distance_independence_from_chromatic`: Unit dist graphs have α ≥ |V|/7
+- `alpha_chi_ge_card`: k * α(G) ≥ |V| for k-colorable graphs
+- `independenceNumber_ge_of_indep`: α(G) ≥ |I| for independent I
+- `independent_extend`: Extending independent sets
+- `disjoint_indep_union`: Union of independent sets
+- `indep_erase`: Removing vertices preserves independence
+- `alpha_ge_one`: α(G) ≥ 1 for nonempty graphs
+- `neighborhood_card_eq_degree`: |N(v)| = deg(v)
+- `not_mem_neighborhood`: v ∉ N(v)
+- `independent_mono`: Fewer edges → more independent sets
 
 ### Axioms Used (3)
 - `hadwiger_nelson_lower_bound`: De Grey's 5-color lower bound (2018)
