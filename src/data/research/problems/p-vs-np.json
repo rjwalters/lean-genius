@@ -1,8 +1,8 @@
 {
   "slug": "p-vs-np",
   "title": "P versus NP Problem",
-  "phase": "NEW",
-  "status": "blocked",
+  "phase": "COMPLETE",
+  "status": "superseded",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-01T21:55:27.888Z",
+    "phase": "COMPLETE",
+    "since": "2026-02-04T19:25:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Superseded by pnp-barriers (153 theorems, 192 axioms, 0 sorries)",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - see pnp-barriers for comprehensive barrier formalization",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SUPERSEDED by pnp-barriers (153 theorems, 192 axioms, 0 sorries). P vs NP remains OPEN but barrier formalization is complete.",
     "builtItems": [
       {
         "name": "P",
@@ -113,7 +113,8 @@
   "tags": [
     "millennium-prize",
     "complexity-theory",
-    "open-conjecture"
+    "open-conjecture",
+    "superseded"
   ],
   "relatedProofs": [],
   "references": {
