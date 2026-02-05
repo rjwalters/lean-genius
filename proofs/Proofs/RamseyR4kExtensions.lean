@@ -301,10 +301,16 @@ theorem ramseyUpperBound_ge_right (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 1) :
   -- For r ≥ 2: C(r+s-2, s-1) ≥ C(s, s-1) = s by monotonicity of choose
   have h1 : r - 1 ≤ r + s - 2 := by omega
   calc Nat.choose (r + s - 2) (r - 1)
-      = Nat.choose (r + s - 2) ((r + s - 2) - (r - 1)) := Nat.choose_symm h1
+      = Nat.choose (r + s - 2) ((r + s - 2) - (r - 1)) := (Nat.choose_symm h1).symm
     _ = Nat.choose (r + s - 2) (s - 1) := by congr 1; omega
     _ ≥ Nat.choose s (s - 1) := Nat.choose_le_choose (s - 1) (by omega)
-    _ = s := by rw [Nat.choose_symm (by omega : s - 1 ≤ s)]; simp [show s - (s - 1) = 1 from by omega]; exact Nat.choose_one_right s
+    _ = s := by
+        have h2 : s - 1 ≤ s := Nat.pred_le s
+        have h3 : s - (s - 1) = 1 := Nat.sub_sub_self hs
+        calc Nat.choose s (s - 1)
+            = Nat.choose s (s - (s - 1)) := (Nat.choose_symm h2).symm
+          _ = Nat.choose s 1 := by rw [h3]
+          _ = s := Nat.choose_one_right s
 
 /-- R(r,s) ≥ r for r ≥ 1, s ≥ 2: the upper bound is at least r. -/
 theorem ramseyUpperBound_ge_left (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 2) :
