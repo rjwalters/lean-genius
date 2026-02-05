@@ -1,8 +1,8 @@
 {
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
-  "phase": "NEW",
-  "status": "blocked",
+  "phase": "COMPLETE",
+  "status": "superseded",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-01T05:32:39.478Z",
+    "phase": "COMPLETE",
+    "since": "2026-02-04T18:35:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Superseded by PerfectNumbers.lean which covers σ function properties",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - content covered in PerfectNumbers.lean",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Open for 2000+ years!",
+    "progressSummary": "SUPERSEDED: Content covered by PerfectNumbers.lean which formalizes σ function, perfect number characterization, and Euclid-Euler theorem.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [
@@ -43,7 +43,8 @@
   "tags": [
     "number-theory",
     "arithmetic-functions",
-    "classical"
+    "classical",
+    "superseded"
   ],
   "relatedProofs": [],
   "references": {
