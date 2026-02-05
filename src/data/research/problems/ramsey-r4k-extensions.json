@@ -16,36 +16,41 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "PROGRESS",
     "since": "2026-02-04T00:00:00.000Z",
-    "iteration": 4,
-    "focus": "Added 11 theorems: lower bounds, concrete values, structural properties",
+    "iteration": 5,
+    "focus": "Fixed Mathlib API compatibility issue with Nat.choose_symm",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Continue with product lower bound proof or Aristotle submission.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 5,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: RamseyR4kExtensions.lean now has 33 proved theorems (0 sorries) and 5 axioms. Added 11 new theorems: R(r,s)>=s, R(r,s)>=r lower bounds, 8 concrete values (R(3,6..9), R(4,6..7), R(5,6), R(6,6)), diagonal monotonicity, strict monotonicity.",
+    "progressSummary": "PROGRESS: RamseyR4kExtensions.lean has 33 proved theorems (0 sorries) and 5 axioms. Fixed Mathlib API compatibility - Nat.choose_symm now requires .symm to flip equation direction. Explored product lower bound R(r,s)>=(r-1)*(s-1)+1 but omega/nlinarith can't verify the algebraic inequality for r,s>=3.",
     "builtItems": [
       "ramseyUpperBound_ge_right: proved R(r,s) >= s via choose_symm + choose_le_choose",
       "ramseyUpperBound_ge_left: proved R(r,s) >= r via symmetry",
       "r3_6_upper through r6_6_upper: 8 new concrete values via native_decide",
       "ramseyUpperBound_diag_mono: proved R(k,k) <= R(k+1,k+1)",
-      "ramseyUpperBound_strict_mono_right: proved R(r,s+1) >= R(r,s) + 1 via Pascal"
+      "ramseyUpperBound_strict_mono_right: proved R(r,s+1) >= R(r,s) + 1 via Pascal",
+      "API FIX: Added .symm to Nat.choose_symm calls for Mathlib compatibility"
     ],
     "insights": [
       "R(r,s) >= s proved via choose_symm + choose_le_choose: C(r+s-2,s-1) >= C(s,s-1) = s",
       "Strict monotonicity from Pascal rule: R(r,s+1) = R(r-1,s+1) + R(r,s) >= 1 + R(r,s)",
-      "Diagonal monotonicity chains mono_left then mono_right"
+      "Diagonal monotonicity chains mono_left then mono_right",
+      "MATHLIB API CHANGE: Nat.choose_symm h now has type C(n,n-k)=C(n,k), need .symm for C(n,k)=C(n,n-k)",
+      "Product lower bound proof requires verifying (r+s-2)(r+s-3) >= 2(r-1)(s-1)+2 which omega can't handle for general r,s"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "omega/nlinarith limited for polynomial inequalities with multiple variables"
+    ],
     "nextSteps": [
       "Submit axioms as theorem sorries to Aristotle for proof search",
-      "Prove R(r,s) >= (r-1)*(s-1) + 1 (product lower bound, Greenwood-Gleason style)",
+      "Product lower bound: need explicit polynomial manipulation or interval_cases for small values",
       "Add R(3,10), R(4,8), R(5,7) concrete values",
       "Connect to existing RamseyTheorem.lean in the gallery"
     ]
