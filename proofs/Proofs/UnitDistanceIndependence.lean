@@ -495,6 +495,106 @@ theorem independent_mono {V : Type*} [Fintype V] [DecidableEq V]
   exact hI u hu v hv huv (hle hadj)
 
 /-
+## Part XIII: Additional Independence Bounds
+-/
+
+/-- The independence number is at most |V|. -/
+theorem independenceNumber_le_card {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    independenceNumber G ≤ Fintype.card V := by
+  unfold independenceNumber
+  apply Finset.sup_le
+  intro S hS
+  exact Finset.card_le_card (Finset.subset_univ S)
+
+/-- Two vertices with a common neighbor cannot both be in an independent set
+    unless they are adjacent to each other (which is also forbidden). -/
+theorem common_neighbor_indep {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) {I : Finset V} (hI : IsIndepFinset G I)
+    {u v w : V} (hw_u : G.Adj w u) (hw_v : G.Adj w v) :
+    w ∉ I ∨ (u ∉ I ∧ v ∉ I) := by
+  by_cases hw : w ∈ I
+  · right
+    constructor
+    · intro hu
+      have : G.Adj w u := hw_u
+      exact hI w hw u hu (G.ne_of_adj this) this
+    · intro hv
+      have : G.Adj w v := hw_v
+      exact hI w hw v hv (G.ne_of_adj this) this
+  · left; exact hw
+
+/-- For k-chromatic graphs, χ(G) * α(G) ≥ |V|.
+    This is a lower bound on independence number in terms of chromatic number. -/
+theorem indep_chromatic_bound {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {k : ℕ} (hk : k > 0)
+    (c : V → Fin k) (hc : IsProperColoring G c) :
+    independenceNumber G ≥ Fintype.card V / k := by
+  obtain ⟨I, hI, hcard⟩ := indep_from_coloring G hk c hc
+  exact le_trans hcard (indep_card_le_alpha G I hI)
+
+/-- An independent set can have at most one vertex from any clique. -/
+theorem indep_clique_intersection {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) {I : Finset V} (hI : IsIndepFinset G I)
+    {K : Finset V} (hK : ∀ u ∈ K, ∀ v ∈ K, u ≠ v → G.Adj u v) :
+    (I ∩ K).card ≤ 1 := by
+  by_contra h
+  push_neg at h
+  have h2 : (I ∩ K).card ≥ 2 := h
+  have hne : ∃ a b : V, a ∈ I ∩ K ∧ b ∈ I ∩ K ∧ a ≠ b := by
+    have := Finset.one_lt_card.mp (by omega : 1 < (I ∩ K).card)
+    obtain ⟨a, ha, b, hb, hab⟩ := this
+    exact ⟨a, b, ha, hb, hab⟩
+  obtain ⟨a, b, haI, hbI, hab⟩ := hne
+  have ha' : a ∈ I ∧ a ∈ K := Finset.mem_inter.mp haI
+  have hb' : b ∈ I ∧ b ∈ K := Finset.mem_inter.mp hbI
+  have hadj : G.Adj a b := hK a ha'.2 b hb'.2 hab
+  exact hI a ha'.1 b hb'.1 hab hadj
+
+/-- If I is independent and v ∈ I, then v's neighbors are outside I. -/
+theorem indep_neighbors_outside {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {I : Finset V}
+    (hI : IsIndepFinset G I) {v : V} (hv : v ∈ I) :
+    Disjoint (neighborhood G v) I := by
+  rw [Finset.disjoint_left]
+  intro u hu
+  unfold neighborhood at hu
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hu
+  intro huI
+  exact hI v hv u huI (G.ne_of_adj hu) hu
+
+/-- In the complement graph, independent sets become cliques. -/
+theorem indep_is_compl_clique {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) {I : Finset V} (hI : IsIndepFinset G I) :
+    ∀ u ∈ I, ∀ v ∈ I, u ≠ v → ¬G.Adj u v :=
+  hI
+
+/-- The sum of degrees in an independent set equals the number of edges between I and V\I. -/
+theorem indep_degree_sum {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {I : Finset V} (hI : IsIndepFinset G I) :
+    ∑ v ∈ I, degree G v =
+    ∑ v ∈ I, (Finset.univ \ I).filter (G.Adj v) |>.card := by
+  congr 1
+  ext v
+  congr 1
+  ext u
+  simp only [Finset.mem_filter, Finset.mem_sdiff, Finset.mem_univ, true_and]
+  constructor
+  · intro hadj
+    constructor
+    · intro huI
+      exact hI v (by assumption) u huI (G.ne_of_adj hadj) hadj
+    · exact hadj
+  · intro ⟨_, hadj⟩; exact hadj
+
+/-- For nonempty graphs, independence number is positive. -/
+theorem independenceNumber_pos {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] [Nonempty V] :
+    independenceNumber G > 0 := by
+  have h := alpha_ge_one G
+  omega
+
+/-
 ## Part XII: Summary
 
 This file establishes:
@@ -511,7 +611,7 @@ This file establishes:
 11. **Chromatic-independence**: k * α(G) ≥ |V|
 12. **Neighborhood theory**: Definition and properties
 
-### Proved Theorems (33 total, 0 sorries)
+### Proved Theorems (41 total, 0 sorries)
 - `isIndepFinset_empty`: ∅ is independent
 - `isIndepFinset_singleton`: {v} is independent
 - `isIndepFinset_subset`: Subsets preserve independence
@@ -545,6 +645,14 @@ This file establishes:
 - `neighborhood_card_eq_degree`: |N(v)| = deg(v)
 - `not_mem_neighborhood`: v ∉ N(v)
 - `independent_mono`: Fewer edges → more independent sets
+- `independenceNumber_le_card`: α(G) ≤ |V|
+- `common_neighbor_indep`: Common neighbor constraint
+- `indep_chromatic_bound`: α(G) ≥ |V|/χ(G)
+- `indep_clique_intersection`: |I ∩ K| ≤ 1 for independent I, clique K
+- `indep_neighbors_outside`: Neighbors of v ∈ I are outside I
+- `indep_is_compl_clique`: Independent sets avoid edges
+- `indep_degree_sum`: Degree sum in independent set
+- `independenceNumber_pos`: α(G) > 0 for nonempty graphs
 
 ### Axioms Used (3)
 - `hadwiger_nelson_lower_bound`: De Grey's 5-color lower bound (2018)

@@ -35,36 +35,44 @@
   "currentState": {
     "phase": "PROGRESS",
     "since": "2026-02-04T16:00:00Z",
-    "iteration": 5,
-    "focus": "Added 9 new theorems (24→33 total)",
+    "iteration": 6,
+    "focus": "Added 8 new theorems (33→41 total): independence bounds, clique intersection, chromatic bounds",
     "blockers": [
       "greedy_bound remains an axiom (requires algorithmic formalization)",
       "hadwiger_nelson_lower_bound requires 1581-vertex graph verification",
       "hadwiger_nelson_upper_bound requires hexagonal tiling construction"
     ],
-    "nextAction": "Submit to Aristotle or work on different problem",
+    "nextAction": "Survey as complete or submit to Aristotle",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 1,
+      "total": 6,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 9 new theorems (24→33 total). Added chromatic-independence relation (k*α≥n), neighborhood definitions, independent set operations (union, erase, extend), edge monotonicity. 33 theorems, 3 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: 41 theorems, 3 axioms, 0 sorries. Added 8 new theorems: α(G)≤|V|, common neighbor constraint, indep-chromatic bound α≥|V|/χ, indep-clique intersection |I∩K|≤1, neighbors outside I, degree sum in I, α(G)>0.",
     "builtItems": [
       "isIndepFinset: Definition of independent finset",
       "independenceNumber: Formal sSup definition",
       "unitDistGraph: Unit distance graph on finite plane subsets",
-      "alpha_chi_ge_card: k * α(G) ≥ |V| (NEW)",
-      "independenceNumber_ge_of_indep: α(G) ≥ |I| (NEW)",
-      "independent_extend: Extending independent sets (NEW)",
-      "disjoint_indep_union: Union of independent sets (NEW)",
-      "indep_erase: Removing vertices preserves independence (NEW)",
-      "alpha_ge_one: α(G) ≥ 1 for nonempty graphs (NEW)",
-      "neighborhood: Definition N(v) = {u : G.Adj v u} (NEW)",
-      "neighborhood_card_eq_degree: |N(v)| = deg(v) (NEW)",
-      "not_mem_neighborhood: v ∉ N(v) (NEW)",
-      "independent_mono: G ≤ H → IndepH ⊆ IndepG (NEW)"
+      "alpha_chi_ge_card: k * α(G) ≥ |V|",
+      "independenceNumber_ge_of_indep: α(G) ≥ |I|",
+      "independent_extend: Extending independent sets",
+      "disjoint_indep_union: Union of independent sets",
+      "indep_erase: Removing vertices preserves independence",
+      "alpha_ge_one: α(G) ≥ 1 for nonempty graphs",
+      "neighborhood: Definition N(v) = {u : G.Adj v u}",
+      "neighborhood_card_eq_degree: |N(v)| = deg(v)",
+      "not_mem_neighborhood: v ∉ N(v)",
+      "independent_mono: G ≤ H → IndepH ⊆ IndepG",
+      "independenceNumber_le_card: α(G) ≤ |V| (NEW)",
+      "common_neighbor_indep: Common neighbor constraint (NEW)",
+      "indep_chromatic_bound: α(G) ≥ |V|/χ(G) (NEW)",
+      "indep_clique_intersection: |I ∩ K| ≤ 1 (NEW)",
+      "indep_neighbors_outside: N(v) disjoint from I (NEW)",
+      "indep_is_compl_clique: Independent sets avoid edges (NEW)",
+      "indep_degree_sum: Degree sum in I (NEW)",
+      "independenceNumber_pos: α(G) > 0 (NEW)"
     ],
     "insights": [
       "Chromatic-independence relation follows from pigeonhole: each of k color classes has ≤ α elements",
@@ -111,7 +119,7 @@
     "mathlib": ["Combinatorics.SimpleGraph.Basic", "Combinatorics.SimpleGraph.Clique"]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-04T16:00:00Z",
+  "lastUpdate": "2026-02-05T05:30:00Z",
   "significance": 7,
   "tractability": 7,
   "knowledgeScore": 4
