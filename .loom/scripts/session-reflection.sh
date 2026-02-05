@@ -43,7 +43,7 @@ get_config() {
 
   if [[ -f "$CONFIG_FILE" ]]; then
     local value
-    value=$(jq -r ".reflection.$key // \"$default\"" "$CONFIG_FILE" 2>/dev/null || echo "$default")
+    value=$(jq -r --arg k "$key" --arg d "$default" '.reflection[$k] // $d' "$CONFIG_FILE" 2>/dev/null || echo "$default")
     if [[ "$value" == "null" || -z "$value" ]]; then
       echo "$default"
     else
@@ -174,11 +174,9 @@ calculate_duration() {
     start_epoch=$(date -d "$started_at" +%s 2>/dev/null || echo "0")
     end_epoch=$(date -d "$end_time" +%s 2>/dev/null || echo "0")
   else
-    # BSD date (macOS) - Strip Z suffix and parse as UTC
-    local clean_start="${started_at%Z}"
-    local clean_end="${end_time%Z}"
-    start_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_start" +%s 2>/dev/null || echo "0")
-    end_epoch=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_end" +%s 2>/dev/null || echo "0")
+    # BSD date (macOS)
+    start_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$started_at" +%s 2>/dev/null || echo "0")
+    end_epoch=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$end_time" +%s 2>/dev/null || echo "0")
   fi
 
   echo $((end_epoch - start_epoch))
@@ -228,11 +226,11 @@ extract_warnings() {
   local state="$1"
 
   # Extract warnings but remove any file paths or sensitive context
-  jq '[.warnings // [] | .[] | {
-    type: .type,
-    severity: .severity,
-    message: (.message | gsub("/[^\\s]+"; "[path]")),
-    time: .time
+  jq '[(.warnings // [])[] | {
+    type: (.type // "unknown"),
+    severity: (.severity // "unknown"),
+    message: ((.message // "") | gsub("/[^\\s]+"; "[path]")),
+    time: (.time // "unknown")
   }] | if length > 10 then .[-10:] else . end' "$state"
 }
 
@@ -242,14 +240,14 @@ extract_stuck_patterns() {
 
   jq '{
     config: (.stuck_detection.config // {}),
-    recent_detections: [
-      (.stuck_detection.recent_detections // [])[] | {
-        severity: .severity,
-        indicators: .indicators,
-        intervention: .intervention
+    recent_detections: ([
+      ((.stuck_detection // {}).recent_detections // [])[] | {
+        severity: (.severity // "unknown"),
+        indicators: (.indicators // []),
+        intervention: (.intervention // "none")
       }
-    ] | if length > 5 then .[-5:] else . end,
-    total: (.stuck_detection.total_detections // 0)
+    ] | if length > 5 then .[-5:] else . end),
+    total: ((.stuck_detection // {}).total_detections // 0)
   }' "$state"
 }
 

@@ -2,10 +2,10 @@
 
 This file contains detailed reference documentation for the Loom daemon. It is NOT loaded by agents during normal operation - it is for human reference only.
 
-For daemon execution instructions, see:
-- `loom.md` - Mode detection and routing
-- `loom-parent.md` - Parent loop mode instructions
-- `loom-iteration.md` - Iteration mode instructions
+For daemon execution:
+- `loom.md` - Skill that invokes the Python daemon
+- `.loom/scripts/loom-daemon.sh` - Shell wrapper for the daemon
+- `loom-tools/src/loom_tools/daemon/` - Python daemon implementation
 
 ## State File Format
 
@@ -275,16 +275,16 @@ The daemon maintains state in `.loom/daemon-state.json`. This file provides comp
 
 ```bash
 # Configure thresholds
-./.loom/scripts/stuck-detection.sh configure \
+loom-stuck-detection configure \
   --idle-threshold 900 \
   --working-threshold 2400 \
   --intervention-mode escalate
 
 # View current configuration
-./.loom/scripts/stuck-detection.sh status
+loom-stuck-detection status
 
 # Check specific agent
-./.loom/scripts/stuck-detection.sh check-agent shepherd-1 --verbose
+loom-stuck-detection check-agent shepherd-1 --verbose
 ```
 
 ### Intervention Files
@@ -453,7 +453,7 @@ The daemon integrates with cleanup scripts to manage task artifacts and worktree
 ./.loom/scripts/archive-logs.sh [--dry-run] [--retention-days N]
 
 # Safe worktree cleanup (only MERGED PRs)
-./.loom/scripts/safe-worktree-cleanup.sh [--dry-run] [--grace-period N]
+loom-clean --safe --worktrees-only [--dry-run] [--grace-period N]
 
 # Event-driven daemon cleanup
 ./.loom/scripts/daemon-cleanup.sh <event> [options]
