@@ -122,7 +122,7 @@ if [ -n "$DOCSTRINGS" ]; then
     if [ "$SHOW_FIX" = true ]; then
         echo ""
         echo -e "  ${BLUE}Fix:${NC} Replace /-! with /- or use regular comments"
-        echo "       sed -i 's|/-!|/-|g' $FILENAME"
+        echo "       sed -i '' 's|/-!|/-|g' $FILENAME"
     fi
     echo ""
 fi
