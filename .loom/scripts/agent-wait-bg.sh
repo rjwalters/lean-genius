@@ -19,12 +19,15 @@
 #   LOOM_STUCK_WARNING   - Seconds without progress before warning (default: 300)
 #   LOOM_STUCK_CRITICAL  - Seconds without progress before critical (default: 600)
 #   LOOM_STUCK_ACTION    - Action on stuck: warn, pause, restart, retry (default: warn)
+#   LOOM_PROMPT_STUCK_CHECK_INTERVAL - Check interval for 'stuck at prompt' detection (default: 10)
+#   LOOM_PROMPT_STUCK_AGE_THRESHOLD - How long stuck before triggering detection (default: 30)
+#   LOOM_PROMPT_STUCK_RECOVERY_COOLDOWN - Seconds before re-attempting recovery (default: 60)
 #
 # Usage:
-#   agent-wait-bg.sh <name> [--timeout <s>] [--poll-interval <s>] [--issue <N>] [--json]
+#   agent-wait-bg.sh <name> [--timeout <s>] [--poll-interval <s>] [--issue <N>] [--task-id <id>] [--json]
 #
 # Examples:
-#   agent-wait-bg.sh builder-issue-42 --timeout 1800 --issue 42
+#   agent-wait-bg.sh builder-issue-42 --timeout 1800 --issue 42 --task-id abc123
 #   agent-wait-bg.sh shepherd-1 --poll-interval 10 --json
 #   LOOM_STUCK_WARNING=180 LOOM_STUCK_ACTION=pause agent-wait-bg.sh builder-1
 
@@ -32,6 +35,14 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+# Use gh-cached for read-only queries to reduce API calls (see issue #1609)
+GH_CACHED="$REPO_ROOT/.loom/scripts/gh-cached"
+if [[ -x "$GH_CACHED" ]]; then
+    GH="$GH_CACHED"
+else
+    GH="gh"
+fi
 
 # tmux configuration (must match agent-spawn.sh)
 TMUX_SOCKET="loom"
@@ -52,21 +63,94 @@ log_warn() { echo -e "${YELLOW}[$(date '+%H:%M:%S')] ⚠${NC} $*" >&2; }
 # Default poll interval for signal checking
 DEFAULT_SIGNAL_POLL=5
 
-# Grace period (seconds) to wait after detecting completion before force-terminating
-DEFAULT_GRACE_PERIOD=30
+# Default interval (seconds) for emitting shepherd heartbeats during long waits.
+# Keeps progress files fresh so the snapshot and stuck-detection systems don't
+# falsely flag actively building shepherds as stale (see issue #1586).
+DEFAULT_HEARTBEAT_INTERVAL=60
 
 # Default idle timeout (seconds) before checking phase contract via GitHub state
-# This is separate from grace period - idle timeout triggers contract check,
-# grace period is how long to wait after detecting completion pattern
 DEFAULT_IDLE_TIMEOUT=60
 
+# Adaptive contract checking intervals (see issue #1678)
+# Contract checks are expensive (GitHub API calls), so we start with longer
+# intervals and decrease them over time as completion becomes more likely.
+#
+# Interval schedule based on elapsed time:
+#   0-180s:   No contract checks (wait for initial processing)
+#   180-270s: 90s interval (agent still early in work)
+#   270-330s: 60s interval (agent progressing)
+#   330-360s: 30s interval (likely nearing completion)
+#   360s+:    10s interval (final detection mode)
+#
+# Set CONTRACT_INTERVAL_OVERRIDE > 0 to use a fixed interval instead of adaptive.
+# Set to 0 to disable proactive checking entirely (fall back to idle timeout only).
+CONTRACT_INTERVAL_OVERRIDE=${LOOM_CONTRACT_INTERVAL_OVERRIDE:-0}
+
+# Initial delay before first contract check (seconds)
+CONTRACT_INITIAL_DELAY=180
+
 # Stuck detection thresholds (configurable via environment variables)
-STUCK_WARNING_THRESHOLD=${LOOM_STUCK_WARNING:-300}   # 5 min default
-STUCK_CRITICAL_THRESHOLD=${LOOM_STUCK_CRITICAL:-600} # 10 min default
+# Note: Set high to avoid killing agents mid-work (see issue #2001)
+STUCK_WARNING_THRESHOLD=${LOOM_STUCK_WARNING:-3600}   # 1 hour default
+STUCK_CRITICAL_THRESHOLD=${LOOM_STUCK_CRITICAL:-7200} # 2 hour default
 STUCK_ACTION=${LOOM_STUCK_ACTION:-warn}              # warn, pause, restart, retry
+
+# "Stuck at prompt" detection - command visible but not processing
+# This is a distinct, faster-detectable failure mode from general stuck detection.
+# Detection fires when agent has been stuck for >= AGE_THRESHOLD seconds.
+# We check at CHECK_INTERVAL frequency for responsiveness.
+#
+# LOOM_PROMPT_STUCK_CHECK_INTERVAL: How often to poll for stuck state (default: 10s)
+# LOOM_PROMPT_STUCK_AGE_THRESHOLD: How long stuck before detection fires (default: 30s)
+# LOOM_PROMPT_STUCK_RECOVERY_COOLDOWN: Seconds before re-attempting recovery (default: 60s)
+#
+# With defaults (check=10s, age=30s, poll=5s), detection fires within ~35-40s of becoming stuck.
+PROMPT_STUCK_CHECK_INTERVAL=${LOOM_PROMPT_STUCK_CHECK_INTERVAL:-10}  # check every 10 seconds
+PROMPT_STUCK_AGE_THRESHOLD=${LOOM_PROMPT_STUCK_AGE_THRESHOLD:-30}    # stuck for 30s before detection
+PROMPT_STUCK_RECOVERY_COOLDOWN=${LOOM_PROMPT_STUCK_RECOVERY_COOLDOWN:-60}  # 60s before re-trying recovery
+
+# Pattern for detecting Claude is processing a command (shared with agent-spawn.sh)
+# Claude Code shows "esc to interrupt" in the status bar whenever it is working
+# (thinking, running tools, streaming). This text is absent when idle at prompt.
+PROCESSING_INDICATORS='esc to interrupt'
 
 # Progress tracking file prefix
 PROGRESS_DIR="/tmp/loom-agent-progress"
+
+# Get adaptive contract check interval based on elapsed time since agent started.
+# Returns the appropriate interval in seconds, or 0 if we should skip this check.
+#
+# The schedule balances detection latency against API cost:
+#   0-180s:   Skip checks (return 0) - agent still processing initial work
+#   180-270s: 90s interval - early work phase
+#   270-330s: 60s interval - mid work phase
+#   330-360s: 30s interval - likely nearing completion
+#   360s+:    10s interval - final rapid detection mode
+#
+# If CONTRACT_INTERVAL_OVERRIDE is set > 0, returns that fixed value instead.
+# Returns 0 to signal "skip this check" (used during initial delay period).
+get_adaptive_contract_interval() {
+    local elapsed=$1
+
+    # Allow override for testing or specific use cases
+    if [[ "${CONTRACT_INTERVAL_OVERRIDE:-0}" -gt 0 ]]; then
+        echo "$CONTRACT_INTERVAL_OVERRIDE"
+        return
+    fi
+
+    # Adaptive schedule based on elapsed time
+    if [[ "$elapsed" -lt 180 ]]; then
+        echo "0"  # No check yet - wait for initial delay
+    elif [[ "$elapsed" -lt 270 ]]; then
+        echo "90"
+    elif [[ "$elapsed" -lt 330 ]]; then
+        echo "60"
+    elif [[ "$elapsed" -lt 360 ]]; then
+        echo "30"
+    else
+        echo "10"
+    fi
+}
 
 show_help() {
     cat <<EOF
@@ -79,11 +163,14 @@ ${YELLOW}OPTIONS:${NC}
     --timeout <seconds>        Maximum time to wait (default: 3600)
     --poll-interval <seconds>  Time between signal checks (default: $DEFAULT_SIGNAL_POLL)
     --issue <N>                Issue number for per-issue abort checking
+    --task-id <id>             Shepherd task ID for heartbeat emission during long waits
     --phase <phase>            Phase name (curator, builder, judge, doctor) for contract checking
+    --min-idle-elapsed <secs>  Override idle prompt detection threshold for agent-wait.sh (default: 10)
     --worktree <path>          Worktree path for builder phase recovery
     --pr <N>                   PR number for judge/doctor phase validation
-    --grace-period <seconds>   Time to wait after completion detection (default: $DEFAULT_GRACE_PERIOD)
+    --grace-period <seconds>   Deprecated (no-op). Agent is terminated immediately on completion detection.
     --idle-timeout <seconds>   Time without output before checking phase contract (default: $DEFAULT_IDLE_TIMEOUT)
+    --contract-interval <s>    Override adaptive interval with fixed value (default: adaptive, 0=disable)
     --json                     Output result as JSON
     --help                     Show this help message
 
@@ -99,10 +186,20 @@ ${YELLOW}SIGNALS CHECKED:${NC}
     - loom:abort label on issue (per-issue abort, requires --issue)
 
 ${YELLOW}COMPLETION DETECTION:${NC}
-    Primary: Phase contract validation via GitHub state (when --phase provided)
+    Primary: Proactive phase contract checking (when --phase provided)
     - Checks actual GitHub labels/PRs rather than parsing log output
+    - Uses adaptive intervals that decrease as agent runs longer (issue #1678):
+        0-180s:   No checks (initial processing delay)
+        180-270s: 90s interval
+        270-330s: 60s interval
+        330-360s: 30s interval
+        360s+:    10s interval (final rapid detection)
+    - Uses validate-phase.sh --check-only for safe, side-effect-free verification
+    - Override with --contract-interval <seconds> or LOOM_CONTRACT_INTERVAL_OVERRIDE env var
+
+    Secondary: Idle-triggered phase contract check (when --phase provided)
     - Triggers when agent is idle (no output for --idle-timeout seconds)
-    - Uses validate-phase.sh for contract verification
+    - Acts as fallback if proactive checks are disabled (--contract-interval 0)
 
     Fallback: Log pattern matching (when --phase not provided)
     - Builder: PR created with loom:review-requested
@@ -118,9 +215,24 @@ ${YELLOW}STUCK DETECTION:${NC}
     LOOM_STUCK_CRITICAL  Seconds without progress before critical (default: 600)
     LOOM_STUCK_ACTION    Action on stuck: warn, pause, restart (default: warn)
 
+${YELLOW}PROMPT STUCK DETECTION:${NC}
+    Fast detection of 'stuck at prompt' state - command visible but not processing.
+    This distinct failure mode is detected much faster than general stuck detection.
+    Configure via environment variables:
+
+    LOOM_PROMPT_STUCK_CHECK_INTERVAL   How often to check for stuck state (default: 10)
+    LOOM_PROMPT_STUCK_AGE_THRESHOLD    How long stuck before detection fires (default: 30)
+    LOOM_PROMPT_STUCK_RECOVERY_COOLDOWN  Seconds before re-attempting recovery (default: 60)
+
+    With defaults (check=10s, age=30s, poll=5s), detection fires within ~35-40s.
+    Recovery is attempted automatically after age threshold is reached:
+    1. Enter key nudge (command may just need Enter to submit)
+    2. Full command retry (if recoverable from session name)
+    Recovery can be re-attempted after RECOVERY_COOLDOWN if still stuck.
+
 ${YELLOW}EXAMPLES:${NC}
-    # Phase-aware completion detection (recommended)
-    agent-wait-bg.sh builder-issue-42 --timeout 1800 --issue 42 --phase builder --worktree .loom/worktrees/issue-42
+    # Phase-aware completion detection with heartbeat (recommended)
+    agent-wait-bg.sh builder-issue-42 --timeout 1800 --issue 42 --task-id abc123 --phase builder --worktree .loom/worktrees/issue-42
 
     # Legacy log-based detection
     agent-wait-bg.sh curator-issue-10 --poll-interval 10 --json
@@ -144,7 +256,7 @@ check_signals() {
     # Check per-issue abort label
     if [ -n "$issue" ]; then
         local labels
-        labels=$(gh issue view "$issue" --repo "$(gh repo view --json nameWithOwner --jq '.nameWithOwner')" --json labels --jq '.labels[].name' 2>/dev/null || true)
+        labels=$($GH issue view "$issue" --repo "$($GH repo view --json nameWithOwner --jq '.nameWithOwner')" --json labels --jq '.labels[].name' 2>/dev/null || true)
         if echo "$labels" | grep -q "loom:abort"; then
             log_warn "Abort signal detected for issue #${issue}"
             return 0
@@ -241,6 +353,84 @@ check_stuck_status() {
     else
         echo "OK"
     fi
+}
+
+# Check if agent is stuck at prompt - command visible but not processing.
+# This is a distinct failure mode from general stuck detection and can be
+# identified much faster (30s vs 5min).
+#
+# Returns 0 if stuck at prompt, 1 if processing normally or cannot determine.
+# This function checks for role slash commands visible at the prompt without
+# any processing indicators, suggesting the command was not dispatched.
+check_stuck_at_prompt() {
+    local session_name="$1"
+
+    # Capture current pane content
+    local pane_content
+    pane_content=$(tmux -L "$TMUX_SOCKET" capture-pane -t "$session_name" -p 2>/dev/null || true)
+
+    if [[ -z "$pane_content" ]]; then
+        return 1  # Can't determine, session may be gone
+    fi
+
+    # Check for role slash command visible at the prompt line
+    # Pattern: ❯ followed by a role command like /builder, /judge, /curator, /doctor, /shepherd
+    local command_at_prompt=false
+    if echo "$pane_content" | grep -qE '❯[[:space:]]*/?(builder|judge|curator|doctor|shepherd)'; then
+        command_at_prompt=true
+    fi
+
+    # Check for processing indicators that show Claude is working
+    local processing=false
+    if echo "$pane_content" | grep -qE "$PROCESSING_INDICATORS"; then
+        processing=true
+    fi
+
+    # Stuck at prompt = command visible but not processing
+    if [[ "$command_at_prompt" == "true" ]] && [[ "$processing" == "false" ]]; then
+        return 0  # Stuck at prompt
+    fi
+
+    return 1  # Not stuck at prompt (either processing or no command visible)
+}
+
+# Attempt to recover an agent stuck at the prompt.
+# Tries Enter key nudge first, then full command retry if that fails.
+# Returns 0 if recovered, 1 if recovery failed.
+attempt_prompt_stuck_recovery() {
+    local session_name="$1"
+    local role_cmd="$2"
+
+    # Strategy 1: Try an Enter key nudge first
+    # The command is typically already visible at the prompt and just needs Enter to trigger processing
+    log_info "Trying Enter key nudge to recover stuck prompt..."
+    tmux -L "$TMUX_SOCKET" send-keys -t "$session_name" C-m 2>/dev/null || return 1
+    sleep 3
+
+    # Check if now processing
+    local pane_content
+    pane_content=$(tmux -L "$TMUX_SOCKET" capture-pane -t "$session_name" -p 2>/dev/null || true)
+    if echo "$pane_content" | grep -qE "$PROCESSING_INDICATORS"; then
+        log_success "Agent recovered with Enter key nudge"
+        return 0
+    fi
+
+    # Strategy 2: If nudge failed and we have the role command, re-send it
+    if [[ -n "$role_cmd" ]]; then
+        log_info "Enter nudge failed, re-sending role command: $role_cmd"
+        sleep 2  # Additional wait for TUI
+        tmux -L "$TMUX_SOCKET" send-keys -t "$session_name" "$role_cmd" C-m 2>/dev/null || return 1
+        sleep 3
+
+        pane_content=$(tmux -L "$TMUX_SOCKET" capture-pane -t "$session_name" -p 2>/dev/null || true)
+        if echo "$pane_content" | grep -qE "$PROCESSING_INDICATORS"; then
+            log_success "Agent recovered with full command retry"
+            return 0
+        fi
+    fi
+
+    log_warn "Prompt stuck recovery failed - intervention may be needed"
+    return 1
 }
 
 # Capture diagnostic information from a stuck agent before killing it
@@ -431,10 +621,12 @@ check_completion_patterns() {
     # Only check the pattern relevant to the current phase to avoid false matches
     case "$phase" in
         builder)
-            # Builder completion: PR created with loom:review-requested
-            # Look for patterns like "gh pr create" followed by "loom:review-requested"
-            # or explicit PR creation success messages
-            if echo "$recent_log" | grep -qE 'loom:review-requested|PR #[0-9]+ created|pull request.*created'; then
+            # Builder completion: PR created successfully
+            # Match the actual gh pr create OUTPUT (the PR URL), not the command text.
+            # The command text (including "loom:review-requested") appears in Claude Code's
+            # UI rendering while the command is still running, causing false positives.
+            # gh pr create prints the PR URL on success: https://github.com/.../pull/NNN
+            if echo "$recent_log" | grep -qE 'https://github\.com/.*/pull/[0-9]+'; then
                 COMPLETION_REASON="builder_pr_created"
                 return 0
             fi
@@ -464,7 +656,7 @@ check_completion_patterns() {
         *)
             # Unknown phase or shepherd - check all patterns as fallback
             # This handles generic or shepherd sessions that may spawn worker roles
-            if echo "$recent_log" | grep -qE 'loom:review-requested|PR #[0-9]+ created|pull request.*created'; then
+            if echo "$recent_log" | grep -qE 'https://github\.com/.*/pull/[0-9]+'; then
                 COMPLETION_REASON="builder_pr_created"
                 return 0
             fi
@@ -489,11 +681,13 @@ check_completion_patterns() {
 # Check phase contract satisfaction via validate-phase.sh
 # Returns 0 if contract is satisfied (work complete), 1 otherwise
 # Sets CONTRACT_STATUS global variable with the validation result
+# Optional 5th parameter: "check_only" to skip side effects (for idle timeout checks)
 check_phase_contract() {
     local phase="$1"
     local issue="$2"
     local worktree="$3"
     local pr_number="$4"
+    local check_only="${5:-}"
 
     if [[ -z "$phase" ]] || [[ -z "$issue" ]]; then
         return 1
@@ -505,6 +699,11 @@ check_phase_contract() {
     fi
     if [[ -n "$pr_number" ]]; then
         validate_args+=("--pr" "$pr_number")
+    fi
+    # Use --check-only to avoid side effects (worktree removal, label changes)
+    # when checking during idle timeout (see issue #1536)
+    if [[ "$check_only" == "check_only" ]]; then
+        validate_args+=("--check-only")
     fi
     validate_args+=("--json")
 
@@ -581,11 +780,13 @@ main() {
     local timeout="3600"
     local poll_interval="$DEFAULT_SIGNAL_POLL"
     local issue=""
-    local grace_period="$DEFAULT_GRACE_PERIOD"
+    local task_id=""
     local idle_timeout="$DEFAULT_IDLE_TIMEOUT"
+    local contract_interval_override=""  # Empty = use adaptive, 0 = disable, >0 = fixed
     local phase=""
     local worktree=""
     local pr_number=""
+    local min_idle_elapsed=""
     local json_output=false
 
     if [[ $# -lt 1 ]]; then
@@ -610,16 +811,28 @@ main() {
                 issue="$2"
                 shift 2
                 ;;
+            --task-id)
+                task_id="$2"
+                shift 2
+                ;;
             --grace-period)
-                grace_period="$2"
+                # Deprecated: grace period is no longer used (agents are terminated immediately)
                 shift 2
                 ;;
             --idle-timeout)
                 idle_timeout="$2"
                 shift 2
                 ;;
+            --contract-interval)
+                contract_interval_override="$2"
+                shift 2
+                ;;
             --phase)
                 phase="$2"
+                shift 2
+                ;;
+            --min-idle-elapsed)
+                min_idle_elapsed="$2"
                 shift 2
                 ;;
             --worktree)
@@ -645,11 +858,37 @@ main() {
         esac
     done
 
-    log_info "Waiting for agent '$name' with signal checking (poll: ${poll_interval}s, timeout: ${timeout}s)"
-    log_info "Stuck detection: warning=${STUCK_WARNING_THRESHOLD}s, critical=${STUCK_CRITICAL_THRESHOLD}s, action=${STUCK_ACTION}"
+    # Apply contract interval override from CLI arg or environment variable
+    if [[ -n "$contract_interval_override" ]]; then
+        CONTRACT_INTERVAL_OVERRIDE="$contract_interval_override"
+    fi
 
-    # Launch agent-wait.sh in the background
-    "${SCRIPT_DIR}/agent-wait.sh" "$name" --timeout "$timeout" --poll-interval "$poll_interval" --json &
+    log_info "Waiting for agent '$name' with signal checking (poll: ${poll_interval}s, timeout: ${timeout}s)"
+    if [[ -n "$task_id" ]]; then
+        log_info "Heartbeat emission: every ${DEFAULT_HEARTBEAT_INTERVAL}s (task-id: $task_id)"
+    fi
+    if [[ -n "$phase" ]]; then
+        if [[ "${CONTRACT_INTERVAL_OVERRIDE:-0}" -eq 0 ]]; then
+            log_info "Proactive contract checking: adaptive intervals for phase '$phase' (initial delay: ${CONTRACT_INITIAL_DELAY}s)"
+        elif [[ "${CONTRACT_INTERVAL_OVERRIDE:-0}" -gt 0 ]]; then
+            log_info "Proactive contract checking: fixed ${CONTRACT_INTERVAL_OVERRIDE}s interval for phase '$phase'"
+        else
+            log_info "Proactive contract checking: disabled for phase '$phase'"
+        fi
+    fi
+    log_info "Stuck detection: warning=${STUCK_WARNING_THRESHOLD}s, critical=${STUCK_CRITICAL_THRESHOLD}s, action=${STUCK_ACTION}"
+    log_info "Prompt stuck detection: check_interval=${PROMPT_STUCK_CHECK_INTERVAL}s, age_threshold=${PROMPT_STUCK_AGE_THRESHOLD}s, recovery_cooldown=${PROMPT_STUCK_RECOVERY_COOLDOWN}s"
+
+    # Launch agent-wait.sh in the background with stdout redirected to a temp file.
+    # This prevents the child from writing JSON to the parent's stdout, which would
+    # produce two JSON objects when both scripts detect completion (issue #1792).
+    local wait_output
+    wait_output=$(mktemp "${TMPDIR:-/tmp}/agent-wait-output.XXXXXX")
+    local wait_cmd=("${SCRIPT_DIR}/agent-wait.sh" "$name" --timeout "$timeout" --poll-interval "$poll_interval" --json)
+    if [[ -n "$min_idle_elapsed" ]]; then
+        wait_cmd+=(--min-idle-elapsed "$min_idle_elapsed")
+    fi
+    "${wait_cmd[@]}" > "$wait_output" &
     local wait_pid=$!
 
     local start_time
@@ -659,10 +898,15 @@ main() {
     local log_file="${REPO_ROOT}/.loom/logs/${session_name}.log"
     local prompt_resolved=false
     local completion_detected=false
-    local completion_time=0
     local idle_contract_checked=false
+    local last_contract_check=0
     local stuck_warned=false
     local stuck_critical_reported=false
+    local last_prompt_stuck_check=$start_time
+    local prompt_stuck_since=0                  # When stuck state was first detected (0 = not stuck)
+    local prompt_stuck_recovery_attempted=false
+    local prompt_stuck_recovery_time=0          # When last recovery was attempted
+    local last_heartbeat_time=$start_time
     COMPLETION_REASON=""
     CONTRACT_STATUS=""
 
@@ -689,9 +933,10 @@ main() {
             cleanup_progress_files "$name"
 
             if [[ "$json_output" == "true" ]]; then
-                # agent-wait.sh already output JSON, just pass through exit code
-                :
+                # Pass through agent-wait.sh's JSON from the temp file (not shared stdout)
+                cat "$wait_output"
             fi
+            rm -f "$wait_output"
             exit "$exit_code"
         fi
 
@@ -703,14 +948,15 @@ main() {
             kill "$wait_pid" 2>/dev/null || true
             wait "$wait_pid" 2>/dev/null || true
 
-            # Clean up progress files
+            # Clean up progress files and temp output
             cleanup_progress_files "$name"
+            rm -f "$wait_output"
 
             if [[ "$json_output" == "true" ]]; then
                 local signal_type="shutdown"
                 if [ -n "$issue" ]; then
                     local labels
-                    labels=$(gh issue view "$issue" --json labels --jq '.labels[].name' 2>/dev/null || true)
+                    labels=$($GH issue view "$issue" --json labels --jq '.labels[].name' 2>/dev/null || true)
                     if echo "$labels" | grep -q "loom:abort"; then
                         signal_type="abort"
                     fi
@@ -722,8 +968,169 @@ main() {
             exit 3
         fi
 
+        # Check shepherd progress file for errored status (fast error detection)
+        # When loom-shepherd reports an error milestone, the progress file status
+        # is set to "errored". Detecting this here terminates the session within one
+        # poll cycle (~5s) rather than waiting for idle heuristics (issue #1619).
+        if [[ -n "$task_id" ]]; then
+            local progress_file="$REPO_ROOT/.loom/progress/shepherd-${task_id}.json"
+            if [[ -f "$progress_file" ]]; then
+                local progress_status
+                progress_status=$(jq -r '.status // "working"' "$progress_file" 2>/dev/null || echo "working")
+                if [[ "$progress_status" == "errored" ]]; then
+                    local elapsed=$(( $(date +%s) - start_time ))
+                    log_warn "Shepherd errored (progress file status), terminating session '$session_name'"
+
+                    # Kill the background wait process
+                    kill "$wait_pid" 2>/dev/null || true
+                    wait "$wait_pid" 2>/dev/null || true
+
+                    # Clean up progress files and temp output
+                    cleanup_progress_files "$name"
+                    rm -f "$wait_output"
+
+                    # Destroy the tmux session
+                    tmux -L "$TMUX_SOCKET" kill-session -t "$session_name" 2>/dev/null || true
+
+                    if [[ "$json_output" == "true" ]]; then
+                        echo "{\"status\":\"errored\",\"name\":\"$name\",\"reason\":\"progress_file_errored\",\"elapsed\":$elapsed}"
+                    fi
+                    exit 4
+                fi
+            fi
+        fi
+
+        # Fast "stuck at prompt" detection - command visible but not processing
+        # This failure mode can be detected faster than the 5min general stuck threshold.
+        #
+        # Key variables:
+        #   prompt_stuck_since: timestamp when stuck state was first detected (0 = not stuck)
+        #   prompt_stuck_recovery_attempted: whether recovery was tried this stuck episode
+        #   prompt_stuck_recovery_time: timestamp of last recovery attempt
+        #
+        # Detection fires when stuck for >= PROMPT_STUCK_AGE_THRESHOLD seconds.
+        # We check at PROMPT_STUCK_CHECK_INTERVAL frequency for responsiveness.
+        local now
+        now=$(date +%s)
+        local since_last_prompt_check=$((now - last_prompt_stuck_check))
+
+        if [[ "$since_last_prompt_check" -ge "$PROMPT_STUCK_CHECK_INTERVAL" ]]; then
+            last_prompt_stuck_check=$now
+
+            if check_stuck_at_prompt "$session_name"; then
+                # Agent appears stuck at prompt
+                if [[ "$prompt_stuck_since" -eq 0 ]]; then
+                    # First detection of stuck state
+                    prompt_stuck_since=$now
+                    log_info "Checking for stuck-at-prompt (first detection, waiting for age threshold)"
+                fi
+
+                local stuck_duration=$((now - prompt_stuck_since))
+
+                # Check if recovery cooldown has elapsed (allow re-attempt)
+                local since_recovery=0
+                if [[ "$prompt_stuck_recovery_time" -gt 0 ]]; then
+                    since_recovery=$((now - prompt_stuck_recovery_time))
+                fi
+                local recovery_allowed=true
+                if [[ "$prompt_stuck_recovery_attempted" == "true" ]] && [[ "$since_recovery" -lt "$PROMPT_STUCK_RECOVERY_COOLDOWN" ]]; then
+                    recovery_allowed=false
+                fi
+
+                # Only take action if stuck for >= threshold AND recovery is allowed
+                if [[ "$stuck_duration" -ge "$PROMPT_STUCK_AGE_THRESHOLD" ]] && [[ "$recovery_allowed" == "true" ]]; then
+                    local elapsed=$(( now - start_time ))
+                    log_warn "Agent stuck at prompt for ${stuck_duration}s (total elapsed: ${elapsed}s) - attempting recovery"
+
+                    # Attempt recovery
+                    prompt_stuck_recovery_attempted=true
+                    prompt_stuck_recovery_time=$now
+
+                    # Extract the likely role command from the session name for retry
+                    local role_cmd=""
+                    if [[ "$name" == builder-issue-* ]]; then
+                        local issue_num="${name#builder-issue-}"
+                        role_cmd="/builder ${issue_num}"
+                    elif [[ "$name" == judge-* ]] || [[ "$name" == curator-* ]] || [[ "$name" == doctor-* ]]; then
+                        # For other roles, we can't easily reconstruct the command
+                        # Enter nudge is still attempted
+                        role_cmd=""
+                    fi
+
+                    if attempt_prompt_stuck_recovery "$session_name" "$role_cmd"; then
+                        log_success "Agent recovered from stuck-at-prompt state"
+                        # Reset stuck tracking on successful recovery
+                        prompt_stuck_since=0
+                        prompt_stuck_recovery_attempted=false
+                    else
+                        # Recovery failed - log with timing info for debugging
+                        local remaining_cooldown=$((PROMPT_STUCK_RECOVERY_COOLDOWN - since_recovery))
+                        if [[ "$remaining_cooldown" -lt 0 ]]; then
+                            remaining_cooldown=0
+                        fi
+                        log_warn "Stuck-at-prompt recovery failed - will retry after ${PROMPT_STUCK_RECOVERY_COOLDOWN}s cooldown"
+                    fi
+                elif [[ "$stuck_duration" -lt "$PROMPT_STUCK_AGE_THRESHOLD" ]]; then
+                    # Still within initial detection period
+                    local remaining=$((PROMPT_STUCK_AGE_THRESHOLD - stuck_duration))
+                    log_info "Agent may be stuck at prompt (${stuck_duration}s/${PROMPT_STUCK_AGE_THRESHOLD}s threshold, ${remaining}s until detection)"
+                fi
+            else
+                # Agent is not stuck at prompt - reset tracking
+                if [[ "$prompt_stuck_since" -gt 0 ]]; then
+                    log_info "Agent no longer stuck at prompt - resetting tracking"
+                fi
+                prompt_stuck_since=0
+                prompt_stuck_recovery_attempted=false
+            fi
+        fi
+
+        # Also check for processing indicators to reset stuck tracking (even between checks)
+        # This provides faster recovery detection if agent starts processing
+        if [[ "$prompt_stuck_since" -gt 0 ]]; then
+            local pane_content
+            pane_content=$(tmux -L "$TMUX_SOCKET" capture-pane -t "$session_name" -p 2>/dev/null || true)
+            if echo "$pane_content" | grep -qE "$PROCESSING_INDICATORS"; then
+                # Agent is now processing - reset all stuck tracking
+                log_info "Agent now processing - resetting stuck-at-prompt tracking"
+                prompt_stuck_since=0
+                prompt_stuck_recovery_attempted=false
+            fi
+        fi
+
+        # Proactive phase contract checking with adaptive intervals (issue #1678)
+        # This detects completion within one interval of actual work finishing,
+        # rather than waiting for the idle timeout to trigger (see issue #1581).
+        # Intervals start long (90s) and decrease over time (down to 10s) to balance
+        # detection latency against GitHub API cost.
+        if [[ "$completion_detected" != "true" ]] && [[ -n "$phase" ]]; then
+            local now
+            now=$(date +%s)
+            local elapsed=$((now - start_time))
+            local adaptive_interval
+            adaptive_interval=$(get_adaptive_contract_interval "$elapsed")
+
+            # adaptive_interval of 0 means "skip this check" (during initial delay)
+            if [[ "$adaptive_interval" -gt 0 ]]; then
+                local since_last_check=$((now - last_contract_check))
+
+                if [[ "$since_last_check" -ge "$adaptive_interval" ]]; then
+                    last_contract_check=$now
+
+                    if check_phase_contract "$phase" "$issue" "$worktree" "$pr_number" "check_only"; then
+                        completion_detected=true
+                        COMPLETION_REASON="phase_contract_satisfied"
+
+                        log_info "Phase contract satisfied ($CONTRACT_STATUS) via proactive check (interval: ${adaptive_interval}s)"
+                        log_info "Agent completed work but didn't exit - terminating session"
+                    fi
+                fi
+            fi
+        fi
+
         # Activity-based completion detection: check phase contract when agent is idle
         # This is a backup mechanism when /exit doesn't work (see issue #1461)
+        # Skipped if proactive checking already detected completion above
         if [[ "$completion_detected" != "true" ]] && [[ -n "$phase" ]] && [[ "$idle_contract_checked" != "true" ]]; then
             local idle_time
             idle_time=$(get_log_idle_time "$log_file")
@@ -731,13 +1138,13 @@ main() {
             if [[ "$idle_time" -ge "$idle_timeout" ]]; then
                 log_info "Agent idle for ${idle_time}s (threshold: ${idle_timeout}s) - checking phase contract"
 
-                if check_phase_contract "$phase" "$issue" "$worktree" "$pr_number"; then
+                # Use check_only mode to avoid side effects during idle check
+                # This prevents premature worktree removal that breaks retry (issue #1536)
+                if check_phase_contract "$phase" "$issue" "$worktree" "$pr_number" "check_only"; then
                     completion_detected=true
-                    completion_time=$(date +%s)
                     COMPLETION_REASON="phase_contract_satisfied"
 
-                    log_info "Phase contract satisfied ($CONTRACT_STATUS) - treating as complete"
-                    log_warn "Agent completed work but didn't exit - waiting ${grace_period}s grace period"
+                    log_info "Phase contract satisfied ($CONTRACT_STATUS) - terminating session"
                 else
                     # Contract not satisfied, don't check again until next idle timeout
                     idle_contract_checked=true
@@ -758,21 +1165,37 @@ main() {
         # Check for completion patterns in log (backup detection)
         if [[ "$completion_detected" != "true" ]]; then
             if check_completion_patterns "$session_name"; then
-                completion_detected=true
-                completion_time=$(date +%s)
-                # Only warn about grace period for role-specific patterns, not explicit /exit
-                if [[ "$COMPLETION_REASON" != "explicit_exit" ]]; then
-                    log_warn "Completion pattern detected ($COMPLETION_REASON) but session still running - waiting ${grace_period}s grace period"
-                    log_warn "Agent should have executed /exit after completing task"
+                if [[ "$COMPLETION_REASON" == "explicit_exit" ]]; then
+                    completion_detected=true
+                elif [[ -n "$phase" ]] && [[ -n "$issue" ]]; then
+                    # Non-exit completion pattern detected (e.g., label command in log).
+                    # The pattern matches the *intent* to run a gh command, not its
+                    # confirmed execution. Sleep briefly to let the gh command finish,
+                    # then verify the phase contract is actually satisfied before
+                    # terminating. This prevents killing the session while gh is still
+                    # executing (see issue #1596).
+                    log_info "Completion pattern detected ($COMPLETION_REASON) - verifying phase contract"
+                    sleep 3
+                    if check_phase_contract "$phase" "$issue" "$worktree" "$pr_number" "check_only"; then
+                        completion_detected=true
+                        log_info "Phase contract verified ($CONTRACT_STATUS) - terminating session"
+                    else
+                        log_warn "Completion pattern detected but phase contract not yet satisfied - continuing to wait"
+                        COMPLETION_REASON=""
+                    fi
+                else
+                    # No phase info available, trust the pattern
+                    completion_detected=true
+                    log_info "Completion pattern detected ($COMPLETION_REASON) - terminating session"
                 fi
             fi
         fi
 
-        # If completion was detected, check if grace period has elapsed
+        # If completion was detected, terminate immediately
         if [[ "$completion_detected" == "true" ]]; then
-            # /exit is an explicit completion signal - no grace period needed
+            local elapsed=$(( $(date +%s) - start_time ))
+
             if [[ "$COMPLETION_REASON" == "explicit_exit" ]]; then
-                local elapsed=$(( $(date +%s) - start_time ))
                 log_info "/exit detected in output - sending /exit to prompt and terminating '$session_name'"
 
                 # Send /exit to the actual tmux prompt as backup
@@ -781,47 +1204,25 @@ main() {
 
                 # Brief pause to let /exit process
                 sleep 1
-
-                # Kill the background wait process
-                kill "$wait_pid" 2>/dev/null || true
-                wait "$wait_pid" 2>/dev/null || true
-
-                # Clean up progress files
-                cleanup_progress_files "$name"
-
-                # Destroy the tmux session to clean up
-                tmux -L "$TMUX_SOCKET" kill-session -t "$session_name" 2>/dev/null || true
-
-                if [[ "$json_output" == "true" ]]; then
-                    echo "{\"status\":\"completed\",\"name\":\"$name\",\"reason\":\"explicit_exit\",\"elapsed\":$elapsed}"
-                else
-                    log_success "Agent '$name' completed (explicit /exit after ${elapsed}s)"
-                fi
-                exit 0
             fi
 
-            local grace_elapsed=$(( $(date +%s) - completion_time ))
-            if [[ "$grace_elapsed" -ge "$grace_period" ]]; then
-                local elapsed=$(( $(date +%s) - start_time ))
-                log_warn "Grace period expired - force-terminating session '$session_name'"
+            # Kill the background wait process
+            kill "$wait_pid" 2>/dev/null || true
+            wait "$wait_pid" 2>/dev/null || true
 
-                # Kill the background wait process
-                kill "$wait_pid" 2>/dev/null || true
-                wait "$wait_pid" 2>/dev/null || true
+            # Clean up progress files and discard child's partial output
+            cleanup_progress_files "$name"
+            rm -f "$wait_output"
 
-                # Clean up progress files
-                cleanup_progress_files "$name"
+            # Destroy the tmux session to clean up
+            tmux -L "$TMUX_SOCKET" kill-session -t "$session_name" 2>/dev/null || true
 
-                # Destroy the tmux session to clean up
-                tmux -L "$TMUX_SOCKET" kill-session -t "$session_name" 2>/dev/null || true
-
-                if [[ "$json_output" == "true" ]]; then
-                    echo "{\"status\":\"completed\",\"name\":\"$name\",\"reason\":\"completion_pattern_detected\",\"pattern\":\"$COMPLETION_REASON\",\"elapsed\":$elapsed,\"grace_period_used\":true}"
-                else
-                    log_success "Agent '$name' completed (pattern: $COMPLETION_REASON, forced after ${grace_period}s grace period)"
-                fi
-                exit 0
+            if [[ "$json_output" == "true" ]]; then
+                echo "{\"status\":\"completed\",\"name\":\"$name\",\"reason\":\"$COMPLETION_REASON\",\"elapsed\":$elapsed}"
+            else
+                log_success "Agent '$name' completed ($COMPLETION_REASON after ${elapsed}s)"
             fi
+            exit 0
         fi
 
         # Check for progress and update stuck tracking
@@ -853,11 +1254,33 @@ main() {
                     kill "$wait_pid" 2>/dev/null || true
                     wait "$wait_pid" 2>/dev/null || true
 
-                    # Clean up progress files
+                    # Clean up progress files and temp output
                     cleanup_progress_files "$name"
+                    rm -f "$wait_output"
 
                     exit 4
                 fi
+            fi
+        fi
+
+        # Emit periodic heartbeat to keep shepherd progress file fresh (issue #1586).
+        # Without this, long-running phases (builder, doctor) cause the progress file's
+        # last_heartbeat to go stale, triggering false positives in the snapshot
+        # and stuck-detection systems which use a 120s stale threshold.
+        if [[ -n "$task_id" ]] && [[ -x "$SCRIPT_DIR/report-milestone.sh" ]]; then
+            local now
+            now=$(date +%s)
+            local since_last_heartbeat=$((now - last_heartbeat_time))
+
+            if [[ "$since_last_heartbeat" -ge "$DEFAULT_HEARTBEAT_INTERVAL" ]]; then
+                last_heartbeat_time=$now
+                local elapsed=$((now - start_time))
+                local elapsed_min=$((elapsed / 60))
+                local phase_desc="${phase:-agent}"
+                "$SCRIPT_DIR/report-milestone.sh" heartbeat \
+                    --task-id "$task_id" \
+                    --action "${phase_desc} running (${elapsed_min}m elapsed)" \
+                    --quiet 2>/dev/null || true
             fi
         fi
 

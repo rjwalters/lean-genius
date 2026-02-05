@@ -28,12 +28,44 @@ info() { echo -e "${BLUE}$*${NC}"; }
 success() { echo -e "${GREEN}$*${NC}"; }
 warning() { echo -e "${YELLOW}$*${NC}"; }
 
-# Find git repository root
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || \
+# Find the main repository root (works from worktrees too)
+# When run from a worktree, git rev-parse --show-toplevel returns the worktree path,
+# not the main repository. This function navigates via the gitdir to find the actual root.
+find_main_repo_root() {
+  local dir
+  dir="$(git rev-parse --show-toplevel 2>/dev/null)" || return 1
+
+  # Check if this is a worktree (has .git file, not directory)
+  if [[ -f "$dir/.git" ]]; then
+    local gitdir
+    gitdir=$(cat "$dir/.git" | sed 's/^gitdir: //')
+    # gitdir is like /path/to/repo/.git/worktrees/issue-123
+    # main repo is 3 levels up from there
+    local main_repo
+    main_repo=$(dirname "$(dirname "$(dirname "$gitdir")")")
+    if [[ -d "$main_repo/.loom" ]]; then
+      echo "$main_repo"
+      return 0
+    fi
+  fi
+
+  # Not a worktree or fallback - return the git root
+  echo "$dir"
+}
+
+REPO_ROOT="$(find_main_repo_root)" || \
   error "Not in a git repository"
 
+# Use gh-cached for read-only queries to reduce API calls (see issue #1609)
+GH_CACHED="$REPO_ROOT/.loom/scripts/gh-cached"
+if [[ -x "$GH_CACHED" ]]; then
+    GH="$GH_CACHED"
+else
+    GH="gh"
+fi
+
 # Auto-detect owner/repo from git remote
-REPO_NWO="$(gh repo view --json nameWithOwner --jq '.nameWithOwner' 2>/dev/null)" || \
+REPO_NWO="$($GH repo view --json nameWithOwner --jq '.nameWithOwner' 2>/dev/null)" || \
   error "Could not determine repository. Is 'gh' authenticated?"
 
 # Parse arguments
@@ -63,7 +95,7 @@ done
 [[ "$PR_NUMBER" =~ ^[0-9]+$ ]] || error "PR number must be numeric: $PR_NUMBER"
 
 # Fetch PR state
-PR_JSON=$(gh api "repos/$REPO_NWO/pulls/$PR_NUMBER" 2>/dev/null) || \
+PR_JSON=$($GH api "repos/$REPO_NWO/pulls/$PR_NUMBER" 2>/dev/null) || \
   error "Could not fetch PR #$PR_NUMBER"
 
 PR_STATE=$(echo "$PR_JSON" | jq -r '.state')
@@ -123,10 +155,25 @@ for MERGE_ATTEMPT in $(seq 1 $MAX_MERGE_RETRIES); do
     2>&1) && break  # Success, exit loop
 
   # Check if it merged despite error (race condition)
-  RECHECK=$(gh api "repos/$REPO_NWO/pulls/$PR_NUMBER" --jq '.merged' 2>/dev/null || echo "false")
+  RECHECK=$($GH --no-cache api "repos/$REPO_NWO/pulls/$PR_NUMBER" --jq '.merged' 2>/dev/null || echo "false")
   if [[ "$RECHECK" == "true" ]]; then
     warning "Merge reported error but PR is merged (race condition)"
     break
+  fi
+
+  # Check for "Merge already in progress" (HTTP 405)
+  # This happens when auto-merge triggers at the same time as our merge attempt
+  if echo "$MERGE_RESPONSE" | grep -q "Merge already in progress"; then
+    info "Merge already in progress (HTTP 405), waiting for completion..."
+    sleep 5
+    RECHECK=$($GH --no-cache api "repos/$REPO_NWO/pulls/$PR_NUMBER" --jq '.merged' 2>/dev/null || echo "false")
+    if [[ "$RECHECK" == "true" ]]; then
+      success "PR #$PR_NUMBER merged (concurrent merge completed)"
+      break
+    fi
+    # Still not merged after wait - continue retry loop
+    warning "Concurrent merge not yet complete, retrying..."
+    continue
   fi
 
   # Check for stale branch error (base branch was modified)
@@ -159,7 +206,7 @@ for MERGE_ATTEMPT in $(seq 1 $MAX_MERGE_RETRIES); do
 done
 
 # Verify merge
-VERIFY_MERGED=$(gh api "repos/$REPO_NWO/pulls/$PR_NUMBER" --jq '.merged' 2>/dev/null || echo "false")
+VERIFY_MERGED=$($GH --no-cache api "repos/$REPO_NWO/pulls/$PR_NUMBER" --jq '.merged' 2>/dev/null || echo "false")
 if [[ "$VERIFY_MERGED" != "true" ]]; then
   error "Merge API call returned but PR #$PR_NUMBER is not merged"
 fi
@@ -174,6 +221,8 @@ LINKED_ISSUE=$(echo "$PR_BODY" | grep -oE '(Closes|closes|Fixes|fixes|Resolves|r
 if [[ -n "$LINKED_ISSUE" ]]; then
   info "Found linked issue: #$LINKED_ISSUE"
   # Remove workflow labels that shouldn't persist on closed issues
+  # NOTE: Origin labels (loom:architect, loom:hermit, loom:auditor) are intentionally
+  # preserved for audit trail - they indicate where the issue originated from
   for label in loom:building loom:issue loom:curated loom:curating loom:treating loom:blocked; do
     gh issue edit "$LINKED_ISSUE" --remove-label "$label" 2>/dev/null && \
       info "  Removed label: $label" || true
@@ -183,11 +232,16 @@ else
   info "No linked issue found in PR body (no 'Closes #N' pattern)"
 fi
 
-# Delete remote branch
-info "Deleting remote branch: $PR_BRANCH"
-gh api "repos/$REPO_NWO/git/refs/heads/$PR_BRANCH" -X DELETE 2>/dev/null && \
-  success "Branch '$PR_BRANCH' deleted" || \
-  warning "Could not delete branch '$PR_BRANCH' (may already be deleted)"
+# Delete remote branch (skip if GitHub auto-deletes on merge)
+DELETE_BRANCH_ON_MERGE=$($GH api "repos/$REPO_NWO" --jq '.delete_branch_on_merge' 2>/dev/null || echo "false")
+if [[ "$DELETE_BRANCH_ON_MERGE" == "true" ]]; then
+  info "Skipping branch deletion (GitHub auto-delete is enabled)"
+else
+  info "Deleting remote branch: $PR_BRANCH"
+  gh api "repos/$REPO_NWO/git/refs/heads/$PR_BRANCH" -X DELETE 2>/dev/null && \
+    success "Branch '$PR_BRANCH' deleted" || \
+    warning "Could not delete branch '$PR_BRANCH' (may already be deleted)"
+fi
 
 # Cleanup worktree if requested
 if [[ "$CLEANUP_WORKTREE" == "true" ]]; then
@@ -196,10 +250,26 @@ if [[ "$CLEANUP_WORKTREE" == "true" ]]; then
   if [[ -n "$ISSUE_NUM" ]]; then
     WORKTREE_PATH="$REPO_ROOT/.loom/worktrees/issue-$ISSUE_NUM"
     if [[ -d "$WORKTREE_PATH" ]]; then
+      # Check if we're currently inside the worktree being removed
+      CURRENT_DIR="$(pwd -P 2>/dev/null || pwd)"
+      WORKTREE_REAL="$(cd "$WORKTREE_PATH" 2>/dev/null && pwd -P || echo "$WORKTREE_PATH")"
+      IN_WORKTREE=false
+      if [[ "$CURRENT_DIR" == "$WORKTREE_REAL"* ]]; then
+        IN_WORKTREE=true
+        cd "$REPO_ROOT"
+      fi
       info "Removing worktree: $WORKTREE_PATH"
-      git -C "$REPO_ROOT" worktree remove "$WORKTREE_PATH" --force 2>/dev/null && \
-        success "Worktree removed" || \
+      if git -C "$REPO_ROOT" worktree remove "$WORKTREE_PATH" --force 2>/dev/null; then
+        success "Worktree removed"
+        if [[ "$IN_WORKTREE" == "true" ]]; then
+          echo ""
+          warning "Your shell's working directory was inside the removed worktree."
+          warning "Run this command to fix:"
+          echo "  cd $REPO_ROOT"
+        fi
+      else
         warning "Could not remove worktree at $WORKTREE_PATH"
+      fi
     else
       info "No worktree found at $WORKTREE_PATH"
     fi

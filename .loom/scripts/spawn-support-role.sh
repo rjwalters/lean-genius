@@ -1,34 +1,31 @@
 #!/bin/bash
-# spawn-support-role.sh - Deterministic support role spawn logic
+# spawn-support-role.sh - Deterministic support role spawn decision logic
 #
 # This script encapsulates the decision logic for spawning support roles
-# (Guide, Champion, Doctor, Auditor, Judge) in the daemon. It replaces
-# LLM-interpreted pseudocode with deterministic bash logic.
+# (Guide, Champion, Doctor, Auditor, Judge, Architect, Hermit) in the daemon.
+# It replaces LLM-interpreted pseudocode with deterministic bash logic.
 #
-# The script does NOT spawn roles itself - it evaluates whether a role
-# should be spawned and updates daemon-state.json accordingly. The actual
-# spawning (Task subagent, tmux session, or MCP) is handled by the caller
-# (the iteration subagent or daemon-loop.sh).
+# This script is a PURE DECISION FUNCTION - it is read-only and does NOT
+# modify daemon-state.json. All state management (marking roles as running
+# or completed) is handled by the iteration subagent, which is the sole
+# writer of daemon-state.json. This eliminates race conditions between
+# concurrent writers.
 #
 # Usage:
 #   spawn-support-role.sh <role> [--demand] [--check-only] [--json]
 #   spawn-support-role.sh --check-all [--json]
-#   spawn-support-role.sh --mark-running <role> --task-id <id>
-#   spawn-support-role.sh --mark-completed <role>
 #   spawn-support-role.sh --help
 #
 # Options:
-#   <role>            Role name: guide, champion, doctor, auditor, judge
+#   <role>            Role name: guide, champion, doctor, auditor, judge, architect, hermit
 #   --demand          Demand-based spawn (skip interval check)
 #   --check-only      Only check if spawn is needed, don't modify state
 #   --check-all       Check all support roles and output combined result
-#   --mark-running    Mark a role as running with the given task_id
-#   --mark-completed  Mark a role as completed (transition to idle)
 #   --json            Output JSON instead of human-readable text
 #   --help            Show this help message
 #
 # Exit Codes:
-#   0 - Role should be spawned (or state updated successfully)
+#   0 - Role should be spawned
 #   1 - Role should NOT be spawned (already running, interval not elapsed)
 #   2 - Error (invalid role, missing state file, etc.)
 #
@@ -38,6 +35,8 @@
 #   LOOM_DOCTOR_INTERVAL     Doctor re-trigger interval in seconds (default: 300)
 #   LOOM_AUDITOR_INTERVAL    Auditor re-trigger interval in seconds (default: 600)
 #   LOOM_JUDGE_INTERVAL      Judge re-trigger interval in seconds (default: 300)
+#   LOOM_ARCHITECT_COOLDOWN  Architect re-trigger interval in seconds (default: 1800)
+#   LOOM_HERMIT_COOLDOWN     Hermit re-trigger interval in seconds (default: 1800)
 #
 # Examples:
 #   # Check if Guide should be spawned (interval-based)
@@ -48,12 +47,6 @@
 #
 #   # Check all roles and get JSON output
 #   spawn-support-role.sh --check-all --json
-#
-#   # Mark role as running after successful Task spawn
-#   spawn-support-role.sh --mark-running champion --task-id a7dc1e0
-#
-#   # Mark role as completed
-#   spawn-support-role.sh --mark-completed champion
 
 set -euo pipefail
 
@@ -80,19 +73,23 @@ CHAMPION_INTERVAL="${LOOM_CHAMPION_INTERVAL:-600}"  # 10 minutes
 DOCTOR_INTERVAL="${LOOM_DOCTOR_INTERVAL:-300}"      # 5 minutes
 AUDITOR_INTERVAL="${LOOM_AUDITOR_INTERVAL:-600}"    # 10 minutes
 JUDGE_INTERVAL="${LOOM_JUDGE_INTERVAL:-300}"        # 5 minutes
+ARCHITECT_INTERVAL="${LOOM_ARCHITECT_COOLDOWN:-1800}"  # 30 minutes
+HERMIT_INTERVAL="${LOOM_HERMIT_COOLDOWN:-1800}"        # 30 minutes
 
 # Valid roles
-VALID_ROLES=("guide" "champion" "doctor" "auditor" "judge")
+VALID_ROLES=("guide" "champion" "doctor" "auditor" "judge" "architect" "hermit")
 
 show_help() {
     cat <<'EOF'
-spawn-support-role.sh - Deterministic support role spawn logic
+spawn-support-role.sh - Deterministic support role spawn decision logic
+
+This script is a PURE DECISION FUNCTION - it is read-only and does NOT
+modify daemon-state.json. State management is handled by the iteration
+subagent (the sole writer of daemon-state.json).
 
 USAGE:
     spawn-support-role.sh <role> [--demand] [--check-only] [--json]
     spawn-support-role.sh --check-all [--json]
-    spawn-support-role.sh --mark-running <role> --task-id <id>
-    spawn-support-role.sh --mark-completed <role>
     spawn-support-role.sh --help
 
 ROLES:
@@ -101,18 +98,18 @@ ROLES:
     doctor      PR conflict resolution (interval: 5 min)
     auditor     Main branch validation (interval: 10 min)
     judge       PR review (interval: 5 min)
+    architect   Work generation / architectural proposals (cooldown: 30 min)
+    hermit      Simplification proposals (cooldown: 30 min)
 
 OPTIONS:
     --demand        Demand-based spawn (skip interval check)
     --check-only    Only check if spawn is needed, don't modify state
     --check-all     Check all roles and output combined result
-    --mark-running  Mark a role as running with a task_id
-    --mark-completed Mark a role as completed (transition to idle)
     --json          Output JSON format
     --help          Show this help message
 
 EXIT CODES:
-    0 - Role should be spawned (or state updated)
+    0 - Role should be spawned
     1 - Role should NOT be spawned
     2 - Error
 
@@ -122,6 +119,8 @@ ENVIRONMENT VARIABLES:
     LOOM_DOCTOR_INTERVAL     (default: 300)
     LOOM_AUDITOR_INTERVAL    (default: 600)
     LOOM_JUDGE_INTERVAL      (default: 300)
+    LOOM_ARCHITECT_COOLDOWN  (default: 1800)
+    LOOM_HERMIT_COOLDOWN     (default: 1800)
 EOF
 }
 
@@ -129,12 +128,14 @@ EOF
 get_interval() {
     local role="$1"
     case "$role" in
-        guide)    echo "$GUIDE_INTERVAL" ;;
-        champion) echo "$CHAMPION_INTERVAL" ;;
-        doctor)   echo "$DOCTOR_INTERVAL" ;;
-        auditor)  echo "$AUDITOR_INTERVAL" ;;
-        judge)    echo "$JUDGE_INTERVAL" ;;
-        *)        echo "0" ;;
+        guide)     echo "$GUIDE_INTERVAL" ;;
+        champion)  echo "$CHAMPION_INTERVAL" ;;
+        doctor)    echo "$DOCTOR_INTERVAL" ;;
+        auditor)   echo "$AUDITOR_INTERVAL" ;;
+        judge)     echo "$JUDGE_INTERVAL" ;;
+        architect) echo "$ARCHITECT_INTERVAL" ;;
+        hermit)    echo "$HERMIT_INTERVAL" ;;
+        *)         echo "0" ;;
     esac
 }
 
@@ -162,6 +163,17 @@ validate_task_id() {
     return 1
 }
 
+# Check if a tmux session exists and is running
+# Returns 0 if session exists, 1 otherwise
+check_tmux_session_exists() {
+    local session_name="$1"
+    if [[ -z "$session_name" ]]; then
+        return 1
+    fi
+    # Check if tmux session exists using loom socket
+    tmux -L loom has-session -t "$session_name" 2>/dev/null
+}
+
 # Convert ISO timestamp (UTC) to epoch seconds (cross-platform)
 iso_to_epoch() {
     local timestamp="$1"
@@ -170,9 +182,8 @@ iso_to_epoch() {
         return
     fi
     if [[ "$(uname)" == "Darwin" ]]; then
-        # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
-        local clean_ts="${timestamp%Z}"
-        TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" "+%s" 2>/dev/null || echo "0"
+        # macOS: date -j -f interprets as local time, so we must set TZ=UTC
+        TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%SZ" "$timestamp" "+%s" 2>/dev/null || echo "0"
     else
         # Linux: date -d handles ISO 8601 with timezone suffix natively
         date -d "$timestamp" "+%s" 2>/dev/null || echo "0"
@@ -199,10 +210,23 @@ check_role() {
 
     # Check if already running - never spawn duplicates
     if [[ "$status" == "running" ]]; then
-        local task_id
+        local task_id tmux_session
         task_id=$(jq -r ".support_roles.${role}.task_id // \"\"" "$STATE_FILE" 2>/dev/null || echo "")
+        tmux_session=$(jq -r ".support_roles.${role}.tmux_session // \"\"" "$STATE_FILE" 2>/dev/null || echo "")
 
-        # Validate the task_id - if fabricated, treat as idle
+        # First check tmux_session (preferred for agent-spawn.sh execution model)
+        if [[ -n "$tmux_session" && "$tmux_session" != "null" ]]; then
+            if check_tmux_session_exists "$tmux_session"; then
+                echo '{"should_spawn":false,"reason":"already_running","role":"'"$role"'","tmux_session":"'"$tmux_session"'"}'
+                return 1
+            else
+                # tmux_session recorded but session doesn't exist - stale state
+                echo '{"should_spawn":true,"reason":"stale_tmux_session","role":"'"$role"'","stale_session":"'"$tmux_session"'"}'
+                return 0
+            fi
+        fi
+
+        # Fall back to task_id check (for backward compatibility with Task() execution)
         if [[ -n "$task_id" && "$task_id" != "null" ]]; then
             if validate_task_id "$task_id"; then
                 echo '{"should_spawn":false,"reason":"already_running","role":"'"$role"'","task_id":"'"$task_id"'"}'
@@ -213,8 +237,9 @@ check_role() {
                 return 0
             fi
         fi
-        # Running but no task_id - something is wrong, allow spawn
-        echo '{"should_spawn":true,"reason":"running_no_task_id","role":"'"$role"'"}'
+
+        # Running but no task_id or tmux_session - something is wrong, allow spawn
+        echo '{"should_spawn":true,"reason":"running_no_identifier","role":"'"$role"'"}'
         return 0
     fi
 
@@ -307,77 +332,6 @@ check_all_roles() {
     return 1
 }
 
-# Mark a role as running in daemon-state.json
-mark_running() {
-    local role="$1"
-    local task_id="$2"
-    local now_iso
-    now_iso=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-
-    # Validate task_id format
-    if ! validate_task_id "$task_id"; then
-        echo "Error: Invalid task_id format: '$task_id' (expected 7-char hex like 'a7dc1e0')" >&2
-        return 2
-    fi
-
-    if [[ ! -f "$STATE_FILE" ]]; then
-        echo "Error: State file not found: $STATE_FILE" >&2
-        return 2
-    fi
-
-    # Atomic update using temp file
-    local temp_file
-    temp_file=$(mktemp)
-    if jq --arg role "$role" \
-          --arg task_id "$task_id" \
-          --arg started_at "$now_iso" \
-          '.support_roles[$role] = (.support_roles[$role] // {}) + {
-              status: "running",
-              task_id: $task_id,
-              started_at: $started_at
-          }' "$STATE_FILE" > "$temp_file" 2>/dev/null; then
-        mv "$temp_file" "$STATE_FILE"
-        echo "Marked $role as running (task_id=$task_id)"
-        return 0
-    else
-        rm -f "$temp_file"
-        echo "Error: Failed to update state file" >&2
-        return 2
-    fi
-}
-
-# Mark a role as completed in daemon-state.json
-mark_completed() {
-    local role="$1"
-    local now_iso
-    now_iso=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-
-    if [[ ! -f "$STATE_FILE" ]]; then
-        echo "Error: State file not found: $STATE_FILE" >&2
-        return 2
-    fi
-
-    # Atomic update using temp file
-    local temp_file
-    temp_file=$(mktemp)
-    if jq --arg role "$role" \
-          --arg last_completed "$now_iso" \
-          '.support_roles[$role] = (.support_roles[$role] // {}) + {
-              status: "idle",
-              task_id: null,
-              output_file: null,
-              last_completed: $last_completed
-          }' "$STATE_FILE" > "$temp_file" 2>/dev/null; then
-        mv "$temp_file" "$STATE_FILE"
-        echo "Marked $role as completed"
-        return 0
-    else
-        rm -f "$temp_file"
-        echo "Error: Failed to update state file" >&2
-        return 2
-    fi
-}
-
 # Main entry point
 main() {
     local role=""
@@ -386,9 +340,6 @@ main() {
     local check_only=false
     local check_all=false
     local json_output=false
-    local mark_running_mode=false
-    local mark_completed_mode=false
-    local task_id=""
 
     # Parse arguments
     while [[ $# -gt 0 ]]; do
@@ -409,20 +360,6 @@ main() {
             --json)
                 json_output=true
                 shift
-                ;;
-            --mark-running)
-                mark_running_mode=true
-                role="$2"
-                shift 2
-                ;;
-            --mark-completed)
-                mark_completed_mode=true
-                role="$2"
-                shift 2
-                ;;
-            --task-id)
-                task_id="$2"
-                shift 2
                 ;;
             --help|-h)
                 show_help
@@ -447,38 +384,6 @@ main() {
     # Handle --check-all
     if [[ "$check_all" == "true" ]]; then
         check_all_roles "$json_output" && exit 0 || exit $?
-    fi
-
-    # Handle --mark-running
-    if [[ "$mark_running_mode" == "true" ]]; then
-        if [[ -z "$role" ]]; then
-            echo "Error: --mark-running requires a role name" >&2
-            exit 2
-        fi
-        if ! validate_role "$role"; then
-            echo "Error: Invalid role: $role" >&2
-            exit 2
-        fi
-        if [[ -z "$task_id" ]]; then
-            echo "Error: --mark-running requires --task-id" >&2
-            exit 2
-        fi
-        mark_running "$role" "$task_id"
-        exit $?
-    fi
-
-    # Handle --mark-completed
-    if [[ "$mark_completed_mode" == "true" ]]; then
-        if [[ -z "$role" ]]; then
-            echo "Error: --mark-completed requires a role name" >&2
-            exit 2
-        fi
-        if ! validate_role "$role"; then
-            echo "Error: Invalid role: $role" >&2
-            exit 2
-        fi
-        mark_completed "$role"
-        exit $?
     fi
 
     # Handle role check (default mode)

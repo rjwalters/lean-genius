@@ -100,7 +100,7 @@ If no queues have work, report "No work for Champion" and stop.
 
 ## Force Mode (Aggressive Autonomous Development)
 
-When the Loom daemon is running with `--force` flag, Champion operates in **force mode** for aggressive autonomous development. This mode auto-promotes all qualifying proposals without applying the full 8-criterion evaluation.
+When the Loom daemon is running with `--merge` flag, Champion operates in **force mode** for aggressive autonomous development. This mode auto-promotes all qualifying proposals without applying the full 8-criterion evaluation.
 
 ### Detecting Force Mode
 
@@ -201,7 +201,7 @@ Force mode still respects these boundaries:
 
 | Criterion | Normal Mode | Force Mode |
 |-----------|-------------|------------|
-| Size limit | <= 200 lines | **No limit** (trust Judge review) |
+| Size limit | <= configured limit (default 200, see `champion.auto_merge_max_lines` in `.loom/config.json`; waived by `loom:auto-merge-ok` label) | **No limit** (trust Judge review) |
 | Critical files | Block `Cargo.toml`, `package.json`, etc. | **Allow all** (trust Judge review) |
 | Recency | Updated within 24h | Updated within **72h** |
 | CI status | All checks must pass | All checks must pass (unchanged) |
@@ -213,7 +213,7 @@ Force mode still respects these boundaries:
 ### Exiting Force Mode
 
 Force mode can be disabled by:
-1. Stopping daemon and restarting without `--force`
+1. Stopping daemon and restarting without `--merge`
 2. Manually updating daemon state: `jq '.force_mode = false' .loom/daemon-state.json`
 3. Creating `.loom/stop-force-mode` file (daemon will detect and disable)
 

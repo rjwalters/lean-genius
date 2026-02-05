@@ -26,6 +26,15 @@
 
 set -euo pipefail
 
+# Use gh-cached for read-only queries to reduce API calls (see issue #1609)
+_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+GH_CACHED="$_SCRIPT_DIR/gh-cached"
+if [[ -x "$GH_CACHED" ]]; then
+    GH="$GH_CACHED"
+else
+    GH="gh"
+fi
+
 # Configuration
 STALE_THRESHOLD_HOURS="${STALE_THRESHOLD_HOURS:-2}"
 STALE_WITH_PR_HOURS="${STALE_WITH_PR_HOURS:-24}"
@@ -129,7 +138,7 @@ log_info "Threshold (no PR): ${STALE_THRESHOLD_HOURS} hours"
 log_info "Threshold (with PR): ${STALE_WITH_PR_HOURS} hours"
 
 # Get all loom:building issues with their creation/update times
-BUILDING_ISSUES=$(gh issue list --label "loom:building" --state open --json number,title,createdAt,updatedAt 2>/dev/null || echo "[]")
+BUILDING_ISSUES=$($GH issue list --label "loom:building" --state open --json number,title,createdAt,updatedAt 2>/dev/null || echo "[]")
 
 if [[ "$BUILDING_ISSUES" == "[]" ]]; then
   log_success "No loom:building issues found"
@@ -144,7 +153,7 @@ log_info "Found $TOTAL_BUILDING issues with loom:building label"
 
 # Get all open PRs once (more efficient than per-issue queries)
 # Include labels to detect blocked PRs (loom:changes-requested)
-OPEN_PRS=$(gh pr list --state open --json number,headRefName,body,labels 2>/dev/null || echo "[]")
+OPEN_PRS=$($GH pr list --state open --json number,headRefName,body,labels 2>/dev/null || echo "[]")
 
 # Collect stale issues using a temp file to avoid subshell issues
 STALE_FILE=$(mktemp)
@@ -163,9 +172,9 @@ for i in $(seq 0 $((ISSUE_COUNT - 1))); do
   # Without this, macOS date interprets the time as local timezone, causing
   # negative ages for users west of UTC (e.g., PST shows times as "in the future")
   if [[ "$(uname)" == "Darwin" ]]; then
-    # Strip Z suffix and parse as UTC - macOS date -j doesn't respect Z timezone suffix
-    clean_ts="${UPDATED_AT%Z}"
-    UPDATED_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "$clean_ts" +%s 2>/dev/null || echo "0")
+    # macOS: Handle different timestamp formats with UTC timezone
+    UPDATED_EPOCH=$(TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%SZ" "$UPDATED_AT" +%s 2>/dev/null || \
+                    TZ=UTC date -j -f "%Y-%m-%dT%H:%M:%S" "${UPDATED_AT%Z}" +%s 2>/dev/null || echo "0")
   else
     # Linux
     UPDATED_EPOCH=$(date -d "$UPDATED_AT" +%s 2>/dev/null || echo "0")
