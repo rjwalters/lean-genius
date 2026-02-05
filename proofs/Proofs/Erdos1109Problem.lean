@@ -1111,54 +1111,147 @@ theorem mod_9_residue_image_le_4 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
   -- and {w,x,y,z} are distinct (from different pairs). So |{1,...,8} \ S| ≥ 4.
   -- Therefore |S| ≤ 8 - 4 = 4.
 
-  -- In Lean, it's most practical to just handle each pair:
+  -- We need: if S ⊆ {1,...,8} avoids complementary pairs and has card ≥ 5, contradiction.
+  -- The 4 complementary pairs {1,8}, {2,7}, {3,6}, {4,5} partition {1,...,8}.
+  -- From each pair, at most 1 element can be in S. So |S| ≤ 4.
+
   set S := A.image (· % 9) with hS_def
 
-  -- From each pair, at least one element is NOT in S
-  have h18 : 1 ∉ S ∨ 8 ∉ S := by tauto
-  have h27 : 2 ∉ S ∨ 7 ∉ S := by tauto
-  have h36 : 3 ∉ S ∨ 6 ∉ S := by tauto
-  have h45 : 4 ∉ S ∨ 5 ∉ S := by tauto
+  -- S ⊆ {1,...,8} and we have the pair exclusions
+  have h_no_1_8 : ¬(1 ∈ S ∧ 8 ∈ S) := by
+    intro ⟨h1, h8⟩
+    simp only [hS_def, Finset.mem_image] at h1 h8
+    obtain ⟨a, ha, ha1⟩ := h1
+    obtain ⟨b, hb, hb8⟩ := h8
+    exact mod_9_pair_1_8 A h a b ha hb ha1 hb8
 
-  -- S ⊆ {1,...,8} and misses at least one from each pair means card ≤ 4
-  -- We show this by removing the missing elements.
-  -- S ⊆ {1,...,8} has card ≤ 8.
-  -- S misses ≥ 1 from {1,8}, ≥ 1 from {2,7}, ≥ 1 from {3,6}, ≥ 1 from {4,5}.
-  -- The 4 missing elements are from distinct pairs, hence distinct.
-  -- So |S| ≤ 8 - 4 = 4.
+  have h_no_2_7 : ¬(2 ∈ S ∧ 7 ∈ S) := by
+    intro ⟨h2, h7⟩
+    simp only [hS_def, Finset.mem_image] at h2 h7
+    obtain ⟨a, ha, ha2⟩ := h2
+    obtain ⟨b, hb, hb7⟩ := h7
+    exact mod_9_pair_2_7 A h a b ha hb ha2 hb7
 
-  -- Formalize using Finset.card_le_card and the complement.
-  -- |S| = |{1,...,8}| - |{1,...,8} \ S| = 8 - |{1,...,8} \ S|
-  -- |{1,...,8} \ S| ≥ 4 since it contains one from each pair.
+  have h_no_3_6 : ¬(3 ∈ S ∧ 6 ∈ S) := by
+    intro ⟨h3, h6⟩
+    simp only [hS_def, Finset.mem_image] at h3 h6
+    obtain ⟨a, ha, ha3⟩ := h3
+    obtain ⟨b, hb, hb6⟩ := h6
+    exact mod_9_pair_3_6 A h a b ha hb ha3 hb6
 
-  have h18_card : ({1, 8} : Finset ℕ).card - (S ∩ {1, 8}).card ≥ 1 := by
-    rcases h18 with h1 | h8
-    · have : 1 ∉ S ∩ {1, 8} := fun hmem => h1 (Finset.mem_inter.mp hmem).1
-      have hsub' : S ∩ {1, 8} ⊆ {8} := by
-        intro r hr; simp only [Finset.mem_inter, Finset.mem_insert, Finset.mem_singleton] at hr
-        simp; rcases hr.2 with rfl | rfl; exact absurd hr.1 h1; rfl
-      have := Finset.card_le_card hsub'
-      simp at this ⊢; omega
-    · have : 8 ∉ S ∩ {1, 8} := fun hmem => h8 (Finset.mem_inter.mp hmem).1
-      have hsub' : S ∩ {1, 8} ⊆ {1} := by
-        intro r hr; simp only [Finset.mem_inter, Finset.mem_insert, Finset.mem_singleton] at hr
-        simp; rcases hr.2 with rfl | rfl; rfl; exact absurd hr.1 h8
-      have := Finset.card_le_card hsub'
-      simp at this ⊢; omega
+  have h_no_4_5 : ¬(4 ∈ S ∧ 5 ∈ S) := by
+    intro ⟨h4, h5⟩
+    simp only [hS_def, Finset.mem_image] at h4 h5
+    obtain ⟨a, ha, ha4⟩ := h4
+    obtain ⟨b, hb, hb5⟩ := h5
+    exact mod_9_pair_4_5 A h a b ha hb ha4 hb5
 
-  -- This approach is getting very verbose. Let me use a more direct method.
-  -- Since S ⊆ {1,...,8} and S.card ≥ 5, but from each pair one is missing,
-  -- S has at most 4 elements. Let's just show this via Finset.card_sdiff_add_card_eq_card.
+  -- Key counting argument:
+  -- From each pair, at most 1 element is in S. With 4 pairs, |S| ≤ 4.
+  -- We prove: |S ∩ P| ≤ 1 for each pair P, and S ⊆ ∪P, so |S| ≤ 4.
 
-  -- Even simpler: show there exist 4 distinct elements not in S from {1,...,8}.
-  -- Then card S ≤ card {1,...,8} - 4 = 4.
-  -- Actually the simplest: S ⊆ {1,...,8}, card ≥ 5, but we can find ≥ 4 elements
-  -- in {1,...,8} \ S.
+  -- Helper: for any 2-element set {a,b}, if ¬(a ∈ S ∧ b ∈ S), then |S ∩ {a,b}| ≤ 1
+  have pair_card_le_1 : ∀ (a b : ℕ), a ≠ b → ¬(a ∈ S ∧ b ∈ S) →
+      (S ∩ ({a, b} : Finset ℕ)).card ≤ 1 := by
+    intro a b _ hne
+    push_neg at hne
+    by_cases ha : a ∈ S
+    · -- a ∈ S, so b ∉ S by hne
+      have hb := hne ha
+      have hsub' : S ∩ {a, b} ⊆ {a} := by
+        intro x hx
+        simp only [Finset.mem_inter, Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+        rcases hx.2 with rfl | rfl
+        · rfl
+        · exact absurd hx.1 hb
+      calc (S ∩ {a, b}).card ≤ ({a} : Finset ℕ).card := Finset.card_le_card hsub'
+        _ = 1 := Finset.card_singleton a
+    · -- a ∉ S
+      have hsub' : S ∩ {a, b} ⊆ {b} := by
+        intro x hx
+        simp only [Finset.mem_inter, Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+        rcases hx.2 with rfl | rfl
+        · exact absurd hx.1 ha
+        · rfl
+      calc (S ∩ {a, b}).card ≤ ({b} : Finset ℕ).card := Finset.card_le_card hsub'
+        _ = 1 := Finset.card_singleton b
 
-  -- The pair exclusions above establish that each complementary pair contributes ≤ 1.
-  -- The final counting step (4 pairs × 1 element each = 4 total) requires
-  -- a finite partition argument on {1,...,8} that we leave for Aristotle.
-  sorry
+  have hc18 : (S ∩ ({1, 8} : Finset ℕ)).card ≤ 1 := pair_card_le_1 1 8 (by omega) h_no_1_8
+  have hc27 : (S ∩ ({2, 7} : Finset ℕ)).card ≤ 1 := pair_card_le_1 2 7 (by omega) h_no_2_7
+  have hc36 : (S ∩ ({3, 6} : Finset ℕ)).card ≤ 1 := pair_card_le_1 3 6 (by omega) h_no_3_6
+  have hc45 : (S ∩ ({4, 5} : Finset ℕ)).card ≤ 1 := pair_card_le_1 4 5 (by omega) h_no_4_5
+
+  -- The four pairs are pairwise disjoint
+  have hdisj : Disjoint ({1, 8} : Finset ℕ) ({2, 7} ∪ {3, 6} ∪ {4, 5}) := by
+    rw [Finset.disjoint_iff_inter_eq_empty]
+    native_decide
+
+  have hdisj2 : Disjoint ({2, 7} : Finset ℕ) ({3, 6} ∪ {4, 5}) := by
+    rw [Finset.disjoint_iff_inter_eq_empty]
+    native_decide
+
+  have hdisj3 : Disjoint ({3, 6} : Finset ℕ) ({4, 5}) := by
+    rw [Finset.disjoint_iff_inter_eq_empty]
+    native_decide
+
+  -- S ⊆ {1,8} ∪ {2,7} ∪ {3,6} ∪ {4,5}
+  have hsub' : S ⊆ {1, 8} ∪ {2, 7} ∪ {3, 6} ∪ {4, 5} := by
+    intro r hr
+    have := hsub hr
+    simp only [Finset.mem_insert, Finset.mem_singleton, Finset.mem_union] at this ⊢
+    omega
+
+  -- Using the disjoint decomposition, card S = sum of intersection cards
+  -- The union is right-associated: {1,8} ∪ ({2,7} ∪ ({3,6} ∪ {4,5}))
+  -- Rewrite union to match this
+  have hunion_eq : ({1, 8} ∪ {2, 7} ∪ {3, 6} ∪ {4, 5} : Finset ℕ) =
+      {1, 8} ∪ ({2, 7} ∪ ({3, 6} ∪ {4, 5})) := by
+    simp only [Finset.union_assoc]
+
+  have hpart1 : (S ∩ ({1, 8} ∪ ({2, 7} ∪ ({3, 6} ∪ {4, 5})))).card =
+      (S ∩ {1, 8}).card + (S ∩ ({2, 7} ∪ ({3, 6} ∪ {4, 5}))).card := by
+    conv_lhs => rw [Finset.inter_union_distrib_left]
+    have hdisj' : Disjoint ({1, 8} : Finset ℕ) ({2, 7} ∪ ({3, 6} ∪ {4, 5})) := by
+      rw [Finset.disjoint_iff_inter_eq_empty]; native_decide
+    have hd : Disjoint (S ∩ {1, 8}) (S ∩ ({2, 7} ∪ ({3, 6} ∪ {4, 5}))) :=
+      Finset.disjoint_of_subset_left Finset.inter_subset_right
+        (Finset.disjoint_of_subset_right Finset.inter_subset_right hdisj')
+    exact Finset.card_union_of_disjoint hd
+
+  have hpart2 : (S ∩ ({2, 7} ∪ ({3, 6} ∪ {4, 5}))).card =
+      (S ∩ {2, 7}).card + (S ∩ ({3, 6} ∪ {4, 5})).card := by
+    conv_lhs => rw [Finset.inter_union_distrib_left]
+    have hdisj' : Disjoint ({2, 7} : Finset ℕ) ({3, 6} ∪ {4, 5}) := by
+      rw [Finset.disjoint_iff_inter_eq_empty]; native_decide
+    have hd : Disjoint (S ∩ {2, 7}) (S ∩ ({3, 6} ∪ {4, 5})) :=
+      Finset.disjoint_of_subset_left Finset.inter_subset_right
+        (Finset.disjoint_of_subset_right Finset.inter_subset_right hdisj')
+    exact Finset.card_union_of_disjoint hd
+
+  have hpart3 : (S ∩ ({3, 6} ∪ {4, 5})).card = (S ∩ {3, 6}).card + (S ∩ {4, 5}).card := by
+    conv_lhs => rw [Finset.inter_union_distrib_left]
+    have hd : Disjoint (S ∩ {3, 6}) (S ∩ {4, 5}) :=
+      Finset.disjoint_of_subset_left Finset.inter_subset_right
+        (Finset.disjoint_of_subset_right Finset.inter_subset_right hdisj3)
+    exact Finset.card_union_of_disjoint hd
+
+  -- Since S ⊆ union, S ∩ union = S
+  have hsub'' : S ⊆ {1, 8} ∪ ({2, 7} ∪ ({3, 6} ∪ {4, 5})) := by
+    rw [← hunion_eq]; exact hsub'
+
+  have hS_eq : S = S ∩ ({1, 8} ∪ ({2, 7} ∪ ({3, 6} ∪ {4, 5}))) :=
+    (Finset.inter_eq_left.mpr hsub'').symm
+
+  -- Final calculation: |S| ≤ 4 but we assumed |S| > 4, contradiction
+  have hS_le4 : S.card ≤ 4 := by
+    calc S.card = (S ∩ ({1, 8} ∪ ({2, 7} ∪ ({3, 6} ∪ {4, 5})))).card := by rw [← hS_eq]
+      _ = (S ∩ {1, 8}).card + (S ∩ ({2, 7} ∪ ({3, 6} ∪ {4, 5}))).card := hpart1
+      _ = (S ∩ {1, 8}).card + ((S ∩ {2, 7}).card + (S ∩ ({3, 6} ∪ {4, 5})).card) := by rw [hpart2]
+      _ = (S ∩ {1, 8}).card + ((S ∩ {2, 7}).card + ((S ∩ {3, 6}).card + (S ∩ {4, 5}).card)) := by rw [hpart3]
+      _ ≤ 1 + (1 + (1 + 1)) := by omega
+      _ = 4 := by omega
+
+  omega
 
 /-
 ## Part XVIII: General Density Framework
