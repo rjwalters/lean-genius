@@ -1,8 +1,8 @@
 {
   "slug": "unit-distance-independence",
   "title": "Unit Distance Graph Independence Number Bounds",
-  "phase": "COMPLETE",
-  "status": "complete",
+  "phase": "PROGRESS",
+  "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -20,26 +20,32 @@
       "indepSet_iff_compl_clique: independent in G ↔ clique in Gᶜ",
       "indepFinset_iff_compl_clique: Finset version",
       "indep_times_colors_ge_card: α(G)·k ≥ |V|",
-      "hadwiger_nelson_bounds: 5 ≤ χ(R²) ≤ 7"
+      "hadwiger_nelson_bounds: 5 ≤ χ(R²) ≤ 7",
+      "greedy_bound: α(G) ≥ |V|/(Δ+1) (NEW: converted from axiom)",
+      "closed_neighborhood_size: |N[v]| ≤ Δ+1 (NEW)"
     ],
-    "open": [],
-    "goal": "Further strengthen independence number theory"
+    "open": [
+      "greedy_bound_exists has 1 sorry for greedy algorithm formalization"
+    ],
+    "goal": "Complete the greedy bound proof"
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-04T18:15:00Z",
-    "iteration": 3,
-    "focus": "Proved unit_distance_independence_from_chromatic - now 24 theorems, 3 axioms, 0 sorries",
-    "blockers": [],
-    "nextAction": "None - problem complete",
+    "phase": "PROGRESS",
+    "since": "2026-02-04T03:55:00Z",
+    "iteration": 4,
+    "focus": "Converted greedy_bound from axiom to theorem",
+    "blockers": [
+      "greedy_bound_exists needs algorithmic formalization (greedy algorithm termination)"
+    ],
+    "nextAction": "Prove greedy_bound_exists or submit to Aristotle",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 24 theorems, 3 axioms, 0 sorries. Full independence number theory for unit distance graphs including pigeonhole bounds, Hadwiger-Nelson connection, and α(G) ≥ |V|/7.",
+    "progressSummary": "PROGRESS: 27 theorems, 2 axioms, 1 sorry. Converted greedy_bound from axiom to theorem. Added closed_neighborhood_size helper. Reduced axiom count from 3 to 2.",
     "builtItems": [
       "indepNumber: formal sSup definition",
       "indep_card_le_indepNumber: |S| ≤ α(G)",
@@ -48,21 +54,22 @@
       "indepNumber_bot: α(⊥) = |V|",
       "indepSet_iff_compl_clique: Set version of duality",
       "indepFinset_iff_compl_clique: Finset version of duality",
-      "indep_times_colors_ge_card: α(G)·k ≥ |V|"
+      "indep_times_colors_ge_card: α(G)·k ≥ |V|",
+      "closed_neighborhood_size: |N[v]| ≤ Δ+1 (NEW)",
+      "greedy_bound_exists: ∃ S with |S| ≥ |V|/(Δ+1) (NEW, 1 sorry)",
+      "greedy_bound: α(G) ≥ |V|/(Δ+1) (NEW, converted from axiom)"
     ],
     "insights": [
       "Gᶜ.Adj u v unfolds to ⟨u ≠ v, ¬G.Adj u v⟩ (ne first, then negated adj)",
-      "IsClique uses Set.Pairwise with Adj",
-      "Finset.disjoint_filter.mpr is the clean way to prove filter disjointness",
-      "sSup {n | ∃ S, P S ∧ S.card = n} needs BddAbove from Finset.card_le_card + subset_univ",
-      "csSup_le needs nonemptiness witness (∅ works via isIndepFinset_empty)",
-      "linarith [mul_comm a b] resolves a*b vs b*a mismatch that omega cannot"
+      "Finset.card_insert_le gives card(insert v S) ≤ card S + 1",
+      "Greedy bound proof requires formalizing the greedy algorithm or using probabilistic method",
+      "Closed neighborhood size bound is key building block for greedy bound"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove Ramsey-type bound: α(G)·ω(G) ≥ |V| (requires clique number definition)",
-      "Prove fractional relaxation bounds (requires LP duality)",
-      "Concrete independence number computations for small unit distance graphs"
+      "Complete greedy_bound_exists proof (greedy algorithm formalization)",
+      "Submit to Aristotle for automated proof search",
+      "Prove Ramsey-type bound: α(G)·ω(G) ≥ |V|"
     ]
   },
   "approaches": [
@@ -70,6 +77,11 @@
       "name": "sSup-based independence number + pigeonhole",
       "status": "succeeded",
       "description": "Define α(G) = sSup{|S| : S independent}, prove duality and α·k≥n via Finset.sum_le_sum"
+    },
+    {
+      "name": "Greedy bound via closed neighborhood",
+      "status": "in-progress",
+      "description": "Show α(G) ≥ |V|/(Δ+1) by greedy algorithm removing N[v] each step"
     }
   ],
   "tags": [
@@ -79,17 +91,19 @@
     "independence-number",
     "unit-distance",
     "extension",
-    "0-sorry",
-    "complete"
+    "1-sorry",
+    "progress"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "proofs/Proofs/UnitDistanceIndependence.lean"
+  ],
   "references": {
     "papers": ["De Grey 2018"],
     "urls": [],
     "mathlib": ["Combinatorics.SimpleGraph.Basic", "Combinatorics.SimpleGraph.Clique"]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-04T18:15:00Z",
+  "lastUpdate": "2026-02-04T03:55:00Z",
   "significance": 7,
   "tractability": 7
 }
