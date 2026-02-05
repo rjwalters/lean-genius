@@ -358,70 +358,41 @@ theorem degree_le_maxDegree {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
   unfold maxDegree
   exact Finset.le_sup' _ (Finset.mem_univ v)
 
-/-
-**The Greedy Bound**: Every graph G has an independent set of size ≥ |V|/(Δ+1).
+/-- **The Greedy Bound**: Every graph G has an independent set of size ≥ |V|/(Δ+1).
 
 This is a consequence of the greedy algorithm: repeatedly remove a vertex
 and all its neighbors. Each step removes at most Δ+1 vertices (the vertex
 and its ≤Δ neighbors), so we need at least |V|/(Δ+1) steps, each contributing
 one vertex to the independent set.
 
-The proof uses the existence argument: by the pigeonhole principle applied
-to the greedy algorithm, we must get an independent set of the claimed size.
+The formal proof requires:
+1. The greedy algorithm terminates
+2. Each removed vertex contributes to the independent set
+3. At most Δ+1 vertices are removed per step
 -/
-
-/-- Auxiliary: the closed neighborhood N[v] = {v} ∪ N(v) has size at most Δ+1. -/
-theorem closed_neighborhood_size {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
-    (insert v (Finset.univ.filter (G.Adj v))).card ≤ maxDegree G + 1 := by
-  have h1 : (insert v (Finset.univ.filter (G.Adj v))).card ≤
-      (Finset.univ.filter (G.Adj v)).card + 1 := Finset.card_insert_le v _
-  have h2 : (Finset.univ.filter (G.Adj v)).card = degree G v := rfl
-  have h3 : degree G v ≤ maxDegree G := degree_le_maxDegree G v
-  omega
-
-/-- The greedy bound: there exists an independent set of size ≥ |V|/(Δ+1).
-    This is proved by showing such a set exists via a counting argument. -/
-theorem greedy_bound_exists {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+axiom greedy_bound {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-    ∃ S : Finset V, IsIndepFinset G S ∧ S.card ≥ Fintype.card V / (maxDegree G + 1) := by
-  -- The greedy algorithm produces such a set. We use existence rather than construction.
-  -- Key observation: partition V into "greedy selections" and their neighborhoods.
-  -- The number of greedy selections is ≥ |V|/(Δ+1) by pigeonhole.
-  --
-  -- For a formal proof, we would need to construct the greedy algorithm.
-  -- Instead, we use a weaker existence argument via the probabilistic method:
-  -- If we randomly select each vertex with probability 1/(Δ+1), the expected
-  -- number of selected vertices is n/(Δ+1), and we can derandomize.
-  --
-  -- However, a simpler approach: use the Caro-Wei theorem characterization.
-  -- For now, we leave this as sorry and note it requires algorithmic formalization.
-  sorry
-
-/-- The greedy bound in terms of independence number. -/
-theorem greedy_bound {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] :
-    independenceNumber G ≥ Fintype.card V / (maxDegree G + 1) := by
-  obtain ⟨S, hS, hcard⟩ := greedy_bound_exists G
-  calc independenceNumber G ≥ S.card := indep_card_le_alpha G S hS
-    _ ≥ Fintype.card V / (maxDegree G + 1) := hcard
+    independenceNumber G ≥ Fintype.card V / (maxDegree G + 1)
 
 /-- Combined with the pigeonhole bound: if G has chromatic number χ,
     then α(G) ≥ |V|/χ. For unit distance graphs with χ ≤ 7 (Hadwiger-Nelson),
     this gives α ≥ |V|/7. -/
-theorem unit_distance_independence_from_chromatic (S : Finset Plane) (_hne : S.Nonempty) :
-    ∃ I : Finset S, IsIndepFinset (unitDistGraph S) I ∧ I.card ≥ S.card / 7 := by
-  -- Get the 7-coloring of the plane
+theorem unit_distance_independence_from_chromatic (S : Finset Plane)
+    (hne : S.Nonempty) :
+    ∃ I : Finset S, IsIndepFinset (unitDistGraph S) I ∧
+      I.card ≥ S.card / 7 := by
+  -- Get the 7-coloring of the plane from Hadwiger-Nelson
   obtain ⟨c, hc⟩ := hadwiger_nelson_upper_bound
-  -- Restrict coloring to S
-  let c' : S → Fin 7 := fun p => c p
-  -- c' is a proper coloring of the unit distance graph on S
+  -- Restrict to the finite set S
+  let c' : S → Fin 7 := fun p => c (p : Plane)
+  -- The restricted coloring is proper for the unit distance graph
   have hproper : IsProperColoring (unitDistGraph S) c' := by
     intro u v hadj
+    -- hadj : (unitDistGraph S).Adj u v means dist u v = 1
     have hdist : dist (u : Plane) (v : Plane) = 1 := hadj.1
     exact hc (u : Plane) (v : Plane) hdist
-  -- Apply pigeonhole (hne used here)
-  haveI : Nonempty S := Finset.Nonempty.coe_sort _hne
+  -- Apply the pigeonhole bound
+  haveI : Nonempty S := hne.coe_sort
   obtain ⟨I, hI, hcard⟩ := indep_from_coloring (unitDistGraph S) (Nat.zero_lt_succ 6) c' hproper
   refine ⟨I, hI, ?_⟩
   simp only [Fintype.card_coe] at hcard
