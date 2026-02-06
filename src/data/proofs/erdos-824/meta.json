@@ -19,7 +19,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 824,
     "erdosUrl": "https://erdosproblems.com/824",
     "erdosProblemStatus": "open",
@@ -56,7 +56,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #824** asks about the density of coprime pairs sharing the same sum of divisors. The sum of divisors function σ(n) = Σ_{d|n} d is one of the most classical functions in number theory, studied since antiquity in connection with perfect and amicable numbers.\n\n**Historical Development:**\n- **1974 (Erdős):** Proved limsup h(x)/x = ∞, showing infinitely many coprime σ-equal pairs exist with density exceeding any linear bound.\n- **2016 (Pollack-Pomerance):** Strengthened to h(x)/x → ∞, meaning the ratio grows without bound (not just unbounded limsup).\n\nThe question asks whether h(x) grows nearly as fast as the trivial upper bound x², which would mean coprime σ-equal pairs are remarkably common.",
+    "historicalContext": "The sum of divisors function σ(n) = Σ_{d|n} d is one of the most classical functions in number theory, studied since antiquity in connection with perfect numbers (σ(n) = 2n) and amicable pairs. Erdős Problem #824 asks about the density of coprime pairs (a, b) with gcd(a,b) = 1 and σ(a) = σ(b). The coprimality constraint is crucial: without it, one could manufacture σ-equal pairs by multiplying both arguments by common factors.\n\nErdős (1974) proved limsup h(x)/x = ∞, showing that the ratio of coprime σ-equal pairs to x is unbounded. Pollack and Pomerance (2016) strengthened this to h(x)/x → ∞ — not just that the ratio occasionally exceeds any bound, but that it eventually stays above any bound. Their result appears in Trans. Amer. Math. Soc. Ser. B and uses deep results on the distribution of values of σ.\n\nThe strong conjecture asks whether h(x) > x^{2-o(1)}, meaning coprime σ-equal pairs are nearly as common as all pairs (since h(x) ≤ x² trivially). The gap between the known linear-surpassing growth and the conjectured near-quadratic growth is enormous: we don't even know h(x) > x^{1.01} for large x. Closing this gap would require fundamentally new understanding of σ-value collisions among coprime arguments.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $h(x)$ count the number of pairs $(a, b)$ with $1 \\leq a < b < x$ such that $\\gcd(a, b) = 1$ and $\\sigma(a) = \\sigma(b)$.\n\n**Question:** Is it true that $h(x) > x^{2-o(1)}$?\n\n**Known Results:**\n- $h(x)/x \\to \\infty$ (Pollack-Pomerance 2016)\n- $h(x) \\leq x^2$ (trivial upper bound)\n\n**Gap:** We don't even know $h(x) > x^{1.01}$ for large $x$. The conjecture would imply nearly quadratic growth.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define the sum-of-divisors function σ and the counting function h(x) for coprime σ-equal pairs.\n\n2. **Key Properties:** Prove basic facts about σ (σ(1) = 1, σ(n) ≥ n+1 for n > 1).\n\n3. **Known Results:** Axiomatize Erdős's 1974 result and the Pollack-Pomerance 2016 strengthening.\n\n4. **The Conjecture:** State the strong conjecture h(x) > x^{2-ε} precisely.\n\n5. **Variants:** Include the squarefree variant and Weisenberg's stronger condition.",
     "keyInsights": [
@@ -86,44 +86,44 @@
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Erdős 1974 and Pollack-Pomerance 2016 results",
+      "summary": "Erdős 1974, Pollack-Pomerance 2016, superlinear growth",
       "startLine": 118,
-      "endLine": 147
+      "endLine": 142
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "Strong conjecture h(x) > x^{2-o(1)}",
-      "startLine": 149,
-      "endLine": 178
+      "summary": "Strong conjecture h(x) > x^{2-o(1)} and upper bound",
+      "startLine": 144,
+      "endLine": 166
     },
     {
       "id": "coprimality",
       "title": "Why Coprimality Matters",
-      "summary": "Importance of the gcd constraint and examples",
-      "startLine": 180,
-      "endLine": 203
+      "summary": "Example coprime σ-equal pair (14, 15)",
+      "startLine": 168,
+      "endLine": 182
     },
     {
       "id": "variants",
       "title": "Related Variants",
       "summary": "Squarefree and Weisenberg variants",
-      "startLine": 205,
-      "endLine": 232
+      "startLine": 184,
+      "endLine": 211
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
-      "summary": "Amicable numbers and untouchable numbers",
-      "startLine": 234,
-      "endLine": 251
+      "summary": "Untouchable numbers",
+      "startLine": 213,
+      "endLine": 223
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Current state of knowledge on Erdős #824",
-      "startLine": 253,
-      "endLine": 278
+      "summary": "erdos_824_summary combining superlinear growth and conjecture",
+      "startLine": 225,
+      "endLine": 252
     }
   ],
   "conclusion": {
