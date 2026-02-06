@@ -161,7 +161,7 @@ sleep ${wait_interval}m
 1. Run one research iteration following the research methodology
 2. Commit and push your progress
 3. Create/update a PR with your findings
-4. Update problem status and release claim
+4. Update problem status and release claim (stats signal is created automatically when status is set to "completed")
 
 ### Step 5: Repeat from Step 1
 

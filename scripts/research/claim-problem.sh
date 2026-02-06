@@ -351,6 +351,13 @@ update_problem_status() {
     }
 
     with_pool_lock _update_problem_status_inner
+
+    # Create completion signal when problem is marked completed
+    if [[ "$new_status" == "completed" ]]; then
+        local completions_dir="$REPO_ROOT/.loom/signals/completions"
+        mkdir -p "$completions_dir"
+        touch "$completions_dir/research-completed-$problem_id-$(date +%s)"
+    fi
 }
 
 # Show status

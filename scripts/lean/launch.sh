@@ -165,7 +165,8 @@ init_state() {
                     proofs_submitted: 0,
                     proofs_integrated: 0,
                     problems_selected: 0,
-                    deployments: 0
+                    deployments: 0,
+                    research_completed: 0
                 }
                 end
             )
@@ -875,6 +876,7 @@ process_completion_signals() {
     local integrated=0
     local selected=0
     local deploys=0
+    local researched=0
 
     # Count signals by type (use find to avoid glob expansion issues)
     stubs=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'stub-enhanced-*' -type f 2>/dev/null | wc -l | tr -d ' ')
@@ -882,8 +884,9 @@ process_completion_signals() {
     integrated=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'proof-integrated-*' -type f 2>/dev/null | wc -l | tr -d ' ')
     selected=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'problem-selected-*' -type f 2>/dev/null | wc -l | tr -d ' ')
     deploys=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'deployment-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    researched=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'research-completed-*' -type f 2>/dev/null | wc -l | tr -d ' ')
 
-    local total=$((stubs + proofs + integrated + selected + deploys))
+    local total=$((stubs + proofs + integrated + selected + deploys + researched))
 
     # Update state file if any completions
     if [[ $total -gt 0 ]]; then
@@ -896,15 +899,17 @@ process_completion_signals() {
                 --argjson integrated "$integrated" \
                 --argjson selected "$selected" \
                 --argjson deploys "$deploys" \
+                --argjson researched "$researched" \
                 '.session_stats.stubs_enhanced += $stubs |
                  .session_stats.proofs_submitted += $proofs |
                  .session_stats.proofs_integrated += $integrated |
                  .session_stats.problems_selected += $selected |
-                 .session_stats.deployments += $deploys' \
+                 .session_stats.deployments += $deploys |
+                 .session_stats.research_completed += $researched' \
                 "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
         fi
 
-        daemon_log "INFO" "Stats updated: +$stubs stubs, +$proofs proofs, +$integrated integrated, +$selected selected, +$deploys deploys"
+        daemon_log "INFO" "Stats updated: +$stubs stubs, +$proofs proofs, +$integrated integrated, +$selected selected, +$deploys deploys, +$researched researched"
 
         # Archive signals (preserve for debugging but don't recount)
         find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'stub-enhanced-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
@@ -912,6 +917,7 @@ process_completion_signals() {
         find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'proof-integrated-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
         find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'problem-selected-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
         find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'deployment-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
+        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'research-completed-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
     fi
 }
 
