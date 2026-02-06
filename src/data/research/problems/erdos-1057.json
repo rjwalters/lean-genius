@@ -29,7 +29,16 @@
       "carmichael_prime_factors_ge_3: all prime factors are >= 3",
       "C_mono: C(x) is monotone increasing",
       "C_unbounded: C(x) -> infinity (from AGP infinitude axiom)",
-      "carmichael_cong_one_mod: n = 1 (mod p-1) for prime factors p",
+      "C_2821_ge_5: at least 5 Carmichael numbers ≤ 2821",
+      "C_8911_ge_7: at least 7 Carmichael numbers ≤ 8911 (NEW)",
+      "first_five_carmichael: combined verification of first 5",
+      "first_seven_carmichael: combined verification of first 7 (NEW)",
+      "carmichael_cong_one_mod: n ≡ 1 (mod p-1) for prime factors p",
+      "carmichael_double_congruence: p|n and (p-1)|(n-1) combined (NEW)",
+      "distinct_prime_pair_dvd: product of distinct prime divisors divides n (NEW)",
+      "small_carmichaels_three_factors: all 7 small examples have exactly 3 prime factors (NEW)",
+      "C_ge_one_above_561: C(x) ≥ 1 for x ≥ 561 (NEW)",
+      "factorization_6601, factorization_8911: factorization identities (NEW)",
       "C_zero, C_one, C_below_561, C_561_pos: counting function base values"
     ],
     "open": [
@@ -41,13 +50,13 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-02-04T20:00:00Z",
-    "iteration": 2,
-    "focus": "Structural theory of Carmichael numbers and counting function properties",
+    "iteration": 4,
+    "focus": "Added 10 new theorems + fixed 5 Lean 4.26 API compat bugs. New: 6601, 8911 verifications, C(8911)≥7, structural theorems, coprime pair lemma.",
     "blockers": [],
-    "nextAction": "Consider lcm structure theorems or Aristotle submission for axioms",
+    "nextAction": "Consider submitting to Aristotle after converting axioms to theorem sorries",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
@@ -55,7 +64,7 @@
     "progressSummary": "PROGRESS: Comprehensive structural theory proved. File has 34 proven theorems covering small examples (561,1105,1729,2465,2821), oddness, prime factor properties (odd, >=3), minimum prime factor count (>=3), non-semiprimality, non-prime-power, counting function base values, unboundedness, and modular congruence. 7 axioms remain: bounds axioms + carmichael_ge_561.",
     "builtItems": [
       "proofs/Proofs/Erdos1057Problem.lean: IsCarmichael, satisfiesKorselt, C definitions",
-      "proofs/Proofs/Erdos1057Problem.lean: carmichael_561, carmichael_1105, carmichael_1729, carmichael_2465, carmichael_2821",
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_561, carmichael_1105, carmichael_1729, carmichael_2465, carmichael_2821, carmichael_6601, carmichael_8911",
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_odd, carmichael_not_semiprime",
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_at_least_3_primes, carmichael_not_prime_power",
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_prime_factors_odd, carmichael_prime_factors_ge_3",
@@ -67,7 +76,8 @@
       "The key lemma korselt_two_primes_impossible uses integer arithmetic lift for clean ℕ subtraction handling",
       "Finset.card counting arguments require care with Lean 4.26 API (notMem_empty, card_insert_of_notMem)",
       "C_unbounded proved inductively from infinitely_many_carmichaels using Finset.sup and card_insert",
-      "Nat.mul_add_mod is the correct lemma for (a*b+c) % a pattern in Lean 4.26"
+      "Nat.mul_add_mod is the correct lemma for (a*b+c) % a pattern in Lean 4.26",
+      "Lean 4.26 API changes: Finset.not_mem_empty→notMem_empty, Nat.Prime.not_unit removed (use hp.one_lt.ne' with Nat.isUnit_iff), prod_primeFactors_of_squarefree reversed direction, Nat.factorization_pos_iff_dvd removed (use Nat.Prime.dvd_iff_one_le_factorization), List.mem_singleton no longer applicable for cons lists (use mem_nil_iff)"
     ],
     "mathlibGaps": [
       "No Carmichael number theory in Mathlib (all definitions custom)",
@@ -76,7 +86,7 @@
     "nextSteps": [
       "Consider submitting to Aristotle after converting axioms to theorem sorries",
       "Prove more about the lcm structure: lcm(p_i - 1) | (n-1)",
-      "Prove that Carmichael numbers are products of distinct odd primes >= 3",
+      "Convert carmichael_ge_561 axiom to a theorem (needs decidable Korselt check)",
       "Formalize the Pomerance heuristic more precisely"
     ]
   },

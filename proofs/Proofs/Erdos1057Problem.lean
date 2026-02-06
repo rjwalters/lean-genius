@@ -183,6 +183,48 @@ theorem carmichael_2821 : IsCarmichael 2821 := by
     -- Need: 6 | 2820, 12 | 2820, 30 | 2820
     rcases hpf with rfl | rfl | rfl <;> norm_num
 
+/-- 6601 = 7 × 23 × 41 is a Carmichael number -/
+theorem carmichael_6601 : IsCarmichael 6601 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    have hpdvd : p ∣ 6601 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 6601 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 6601 = {7, 23, 41} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 6601 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 6601 = {7, 23, 41} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    -- Need: 6 | 6600, 22 | 6600, 40 | 6600
+    rcases hpf with rfl | rfl | rfl <;> norm_num
+
+/-- 8911 = 7 × 19 × 67 is a Carmichael number -/
+theorem carmichael_8911 : IsCarmichael 8911 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    have hpdvd : p ∣ 8911 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 8911 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 8911 = {7, 19, 67} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 8911 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 8911 = {7, 19, 67} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    -- Need: 6 | 8910, 18 | 8910, 66 | 8910
+    rcases hpf with rfl | rfl | rfl <;> norm_num
+
 /-- List of first few Carmichael numbers (OEIS A002997) -/
 def smallCarmichaels : List ℕ := [561, 1105, 1729, 2465, 2821, 6601, 8911]
 
@@ -417,7 +459,7 @@ theorem carmichael_at_least_3_primes :
     obtain ⟨p, hp, hpdvd⟩ := Nat.exists_prime_and_dvd (show n ≠ 1 by omega)
     have hmem : p ∈ n.primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by omega⟩
     rw [Finset.card_eq_zero.mp h0] at hmem
-    exact Finset.not_mem_empty p hmem
+    exact Finset.notMem_empty p hmem
   · -- Card = 1: n is a prime power. But squarefree + one prime factor = prime.
     exfalso
     obtain ⟨p, hp⟩ := Finset.card_eq_one.mp h1
@@ -668,7 +710,10 @@ theorem carmichael_min_prime_ge_3 (n : ℕ) (h : IsCarmichael n) :
   have hp2 : p ≤ 2 := by omega
   have hp_eq : p = 2 := by have := hp.two_le; omega
   rw [hp_eq] at hdvd
-  exact Nat.two_not_dvd_two_mul_add_one _ (hodd.two_mul_add_one ▸ hdvd)
+  -- 2 | n contradicts n being odd
+  obtain ⟨k, hk⟩ := hdvd
+  obtain ⟨j, hj⟩ := hodd
+  omega
 
 /-- All prime factors of a Carmichael number are distinct (follows from squarefree) -/
 theorem carmichael_distinct_prime_factors (n : ℕ) (h : IsCarmichael n) :
@@ -676,13 +721,13 @@ theorem carmichael_distinct_prime_factors (n : ℕ) (h : IsCarmichael n) :
   intro p hp hdvd hpp
   have hsq := carmichael_squarefree n h
   have hunit := hsq p hpp
-  exact Nat.Prime.not_unit hp hunit
+  -- hunit : IsUnit p, but p is prime (≥ 2) so not a unit (unit in ℕ is 1)
+  exact hp.one_lt.ne' (Nat.isUnit_iff.mp hunit)
 
-/-- The product of all prime factors equals the Carmichael number (since squarefree) -/
+/-- A Carmichael number equals the product of its prime factors (since squarefree) -/
 theorem carmichael_eq_prod_primes (n : ℕ) (h : IsCarmichael n) :
-    n.primeFactors.prod id = n := by
-  have hsq := carmichael_squarefree n h
-  exact (Nat.prod_primeFactors_of_squarefree hsq).symm
+    n = ∏ p ∈ n.primeFactors, p := by
+  exact (Nat.prod_primeFactors_of_squarefree (carmichael_squarefree n h)).symm
 
 /-- A Carmichael number has no repeated prime factors -/
 theorem carmichael_prime_multiplicity_one (n : ℕ) (h : IsCarmichael n) (p : ℕ)
@@ -692,15 +737,15 @@ theorem carmichael_prime_multiplicity_one (n : ℕ) (h : IsCarmichael n) (p : �
   rw [Nat.squarefree_iff_factorization_le_one hn0] at hsq
   have hle := hsq p
   have hpos : n.factorization p ≥ 1 := by
-    rw [Nat.one_le_iff_ne_zero]
-    exact (Nat.factorization_pos_iff_dvd hn0 hp).mpr hdvd
+    rw [Nat.Prime.dvd_iff_one_le_factorization hp hn0] at hdvd
+    omega
   omega
 
 /-- All Carmichael numbers in smallCarmichaels are verified Carmichael -/
 theorem small_carmichaels_verified :
     ∀ n ∈ smallCarmichaels, n = 561 ∨ n = 1105 ∨ n = 1729 ∨ n = 2465 ∨ n = 2821 ∨ n = 6601 ∨ n = 8911 := by
   intro n hn
-  simp only [smallCarmichaels, List.mem_cons, List.mem_singleton] at hn
+  simp only [smallCarmichaels, List.mem_cons, List.mem_nil_iff, or_false] at hn
   rcases hn with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> tauto
 
 /-- The first five Carmichael numbers are all verified -/
@@ -736,3 +781,72 @@ theorem C_2821_ge_5 : C 2821 ≥ 5 := by
     exacts [h561, h1105, h1729, h2465, h2821]
   calc 5 = ({561, 1105, 1729, 2465, 2821} : Finset ℕ).card := hdist.symm
     _ ≤ ((Finset.range 2822).filter IsCarmichael).card := Finset.card_le_card hsub
+
+/-- The first seven Carmichael numbers are all verified -/
+theorem first_seven_carmichael :
+    IsCarmichael 561 ∧ IsCarmichael 1105 ∧ IsCarmichael 1729 ∧
+    IsCarmichael 2465 ∧ IsCarmichael 2821 ∧ IsCarmichael 6601 ∧ IsCarmichael 8911 :=
+  ⟨carmichael_561, carmichael_1105, carmichael_1729, carmichael_2465,
+   carmichael_2821, carmichael_6601, carmichael_8911⟩
+
+/-- C(8911) ≥ 7: at least 7 Carmichael numbers at or below 8911 -/
+theorem C_8911_ge_7 : C 8911 ≥ 7 := by
+  unfold C
+  have h561 : 561 ∈ (Finset.range 8912).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]; exact ⟨by omega, carmichael_561⟩
+  have h1105 : 1105 ∈ (Finset.range 8912).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]; exact ⟨by omega, carmichael_1105⟩
+  have h1729 : 1729 ∈ (Finset.range 8912).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]; exact ⟨by omega, carmichael_1729⟩
+  have h2465 : 2465 ∈ (Finset.range 8912).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]; exact ⟨by omega, carmichael_2465⟩
+  have h2821 : 2821 ∈ (Finset.range 8912).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]; exact ⟨by omega, carmichael_2821⟩
+  have h6601 : 6601 ∈ (Finset.range 8912).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]; exact ⟨by omega, carmichael_6601⟩
+  have h8911 : 8911 ∈ (Finset.range 8912).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]; exact ⟨by omega, carmichael_8911⟩
+  have hdist : ({561, 1105, 1729, 2465, 2821, 6601, 8911} : Finset ℕ).card = 7 := by native_decide
+  have hsub : ({561, 1105, 1729, 2465, 2821, 6601, 8911} : Finset ℕ) ⊆ (Finset.range 8912).filter IsCarmichael := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    exacts [h561, h1105, h1729, h2465, h2821, h6601, h8911]
+  calc 7 = ({561, 1105, 1729, 2465, 2821, 6601, 8911} : Finset ℕ).card := hdist.symm
+    _ ≤ ((Finset.range 8912).filter IsCarmichael).card := Finset.card_le_card hsub
+
+/-
+## Deeper Structural Results
+-/
+
+/-- Every prime factor of a Carmichael number satisfies both p | n and (p-1) | (n-1). -/
+theorem carmichael_double_congruence (n : ℕ) (h : IsCarmichael n) (p : ℕ)
+    (hp : p.Prime) (hpn : p ∣ n) : n % p = 0 ∧ n % (p - 1) = 1 % (p - 1) := by
+  exact ⟨Nat.mod_eq_zero_of_dvd hpn, carmichael_cong_one_mod n h p hp hpn⟩
+
+/-- For any two distinct primes p, q dividing n, their product divides n. -/
+theorem distinct_prime_pair_dvd (n : ℕ) (p q : ℕ)
+    (hp : p.Prime) (hq : q.Prime) (hpn : p ∣ n) (hqn : q ∣ n) (hne : p ≠ q) :
+    p * q ∣ n := by
+  have hcop : Nat.Coprime p q :=
+    hp.coprime_iff_not_dvd.mpr fun h_dvd =>
+      hne (Nat.Prime.eq_one_or_self_of_dvd hq p h_dvd |>.resolve_left hp.one_lt.ne')
+  exact hcop.mul_dvd_of_dvd_of_dvd hpn hqn
+
+/-- Factorization identity for 6601 -/
+theorem factorization_6601 : 6601 = 7 * 23 * 41 := by native_decide
+
+/-- Factorization identity for 8911 -/
+theorem factorization_8911 : 8911 = 7 * 19 * 67 := by native_decide
+
+/-- All seven small Carmichael numbers have exactly 3 prime factors -/
+theorem small_carmichaels_three_factors :
+    (561 : ℕ).primeFactors.card = 3 ∧ (1105 : ℕ).primeFactors.card = 3 ∧
+    (1729 : ℕ).primeFactors.card = 3 ∧ (2465 : ℕ).primeFactors.card = 3 ∧
+    (2821 : ℕ).primeFactors.card = 3 ∧ (6601 : ℕ).primeFactors.card = 3 ∧
+    (8911 : ℕ).primeFactors.card = 3 := by native_decide
+
+/-- Carmichael numbers greater than or equal to 561 have C(n) ≥ 1 -/
+theorem C_ge_one_above_561 (x : ℕ) (hx : x ≥ 561) : C x ≥ 1 := by
+  calc C x ≥ C 561 := C_mono 561 x hx
+    _ ≥ 1 := C_561_pos
