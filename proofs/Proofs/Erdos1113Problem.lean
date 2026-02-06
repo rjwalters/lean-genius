@@ -24,12 +24,10 @@ If the answer is NO (all Sierpinski numbers have covering sets), this would impl
 infinitely many Fermat primes exist - considered unlikely.
 
 References:
-- [Si60] Sierpinski, "Sur un problème concernant les nombres k·2^n+1" (1960)
-- [Iz95] Izotov, "A note on Sierpinski numbers" (1995)
-- [FFK08] Filaseta, Finch, Kozek, "On powers associated with Sierpinski numbers" (2008)
-- [ErGr80] Erdős-Graham, "Old and new problems in combinatorial number theory" (1980)
-
-Tags: number-theory, primes, sierpinski-numbers, covering-systems, open
+- [Si60] Sierpinski (1960)
+- [Iz95] Izotov (1995)
+- [FFK08] Filaseta, Finch, Kozek (2008)
+- [ErGr80] Erdős-Graham (1980)
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -41,9 +39,7 @@ namespace Erdos1113
 
 open Nat
 
-/-!
-## Part I: Sierpinski Numbers
--/
+/- ## Part I: Sierpinski Numbers -/
 
 /-- m is a Sierpinski number if 2^k·m + 1 is composite for all k ≥ 0. -/
 def IsSierpinskiNumber (m : ℕ) : Prop :=
@@ -65,9 +61,7 @@ theorem sierpinski_iff_all_composite (m : ℕ) (hm : Odd m) (hpos : m > 0) :
   · intro h
     exact ⟨hm, hpos, h⟩
 
-/-!
-## Part II: Covering Sets
--/
+/- ## Part II: Covering Sets -/
 
 /-- A finite set P of primes is a covering set for m if every 2^k·m + 1
     is divisible by some p ∈ P. -/
@@ -79,18 +73,12 @@ def IsCoveringSet (m : ℕ) (P : Finset ℕ) : Prop :=
 def HasFiniteCoveringSet (m : ℕ) : Prop :=
   ∃ P : Finset ℕ, IsCoveringSet m P
 
-/-- If m has a covering set, then m is a Sierpinski number.
-    Proof: Each 2^k·m + 1 is divisible by some prime p ∈ P.
-    For large enough k, we have p < 2^k·m + 1, so 2^k·m + 1 has a proper
-    prime divisor and is therefore composite.
-    (The proof is axiomatized due to subtle finiteness arguments.) -/
+/-- If m has a covering set, then m is a Sierpinski number. -/
 axiom covering_set_implies_sierpinski (m : ℕ) (hm : Odd m) (hpos : m > 0)
     (P : Finset ℕ) (hP : IsCoveringSet m P) :
     IsSierpinskiNumber m
 
-/-!
-## Part III: The Main Question
--/
+/- ## Part III: The Main Question -/
 
 /-- **Erdős Problem #1113:** Are there Sierpinski numbers without finite covering sets? -/
 def ErdosProblem1113 : Prop :=
@@ -110,9 +98,7 @@ theorem problem_equivalence :
     push_neg at h
     exact h
 
-/-!
-## Part IV: Known Sierpinski Numbers
--/
+/- ## Part IV: Known Sierpinski Numbers -/
 
 /-- The smallest known Sierpinski number is 78557 (Selfridge). -/
 def smallestKnownSierpinski : ℕ := 78557
@@ -125,21 +111,14 @@ def coveringSetFor78557 : Finset ℕ := {3, 5, 7, 13, 19, 37, 73}
 
 axiom covering_78557 : IsCoveringSet smallestKnownSierpinski coveringSetFor78557
 
-/-!
-## Part V: Sierpinski's Construction
--/
+/- ## Part V: Sierpinski's Construction -/
 
 /-- Sierpinski (1960) proved infinitely many Sierpinski numbers exist
     using covering systems. -/
 axiom sierpinski_infinitely_many :
     ∀ N : ℕ, ∃ m > N, IsSierpinskiNumber m ∧ HasFiniteCoveringSet m
 
-/-- There's a positive density of Sierpinski numbers with covering sets. -/
-axiom positive_density_covered : True
-
-/-!
-## Part VI: Izotov's Candidate
--/
+/- ## Part VI: Izotov's Candidate -/
 
 /-- Izotov's candidate: m = 734110615000775^4 -/
 def izotovCandidate : ℕ := 734110615000775^4
@@ -147,15 +126,10 @@ def izotovCandidate : ℕ := 734110615000775^4
 /-- Izotov (1995) proved this is a Sierpinski number. -/
 axiom izotov_is_sierpinski : IsSierpinskiNumber izotovCandidate
 
-/-- Izotov suggested it has no covering set.
-    This remains unproven but is strong evidence for Problem 1113. -/
-axiom izotov_no_covering_conjecture :
-    -- Conjectured: ¬HasFiniteCoveringSet izotovCandidate
-    True
+/- Izotov suggested it has no covering set,
+   but this remains unproven. -/
 
-/-!
-## Part VII: Filaseta-Finch-Kozek Conjecture
--/
+/- ## Part VII: Filaseta-Finch-Kozek Conjecture -/
 
 /-- m is a perfect power: m = n^k for some n, k ≥ 2. -/
 def IsPerfectPower (m : ℕ) : Prop :=
@@ -166,22 +140,20 @@ def IsPerfectPower (m : ℕ) : Prop :=
 def FFKConjecture : Prop :=
   ∀ m : ℕ, IsSierpinskiNumber m → IsPerfectPower m ∨ HasFiniteCoveringSet m
 
-/-- Note: Izotov's candidate IS a perfect power (4th power). -/
+/-- Izotov's candidate IS a perfect power (4th power). -/
 theorem izotov_is_power : IsPerfectPower izotovCandidate := by
   use 734110615000775, 4
   constructor
   · norm_num
   · rfl
 
-/-- So FFK conjecture is consistent with Izotov's example! -/
+/-- FFK conjecture is consistent with Izotov's example. -/
 theorem ffk_consistent_with_izotov :
     FFKConjecture → (IsPerfectPower izotovCandidate ∨ HasFiniteCoveringSet izotovCandidate) := by
   intro hffk
   exact hffk izotovCandidate izotov_is_sierpinski
 
-/-!
-## Part VIII: Connection to Fermat Primes
--/
+/- ## Part VIII: Connection to Fermat Primes -/
 
 /-- Fermat numbers: F_n = 2^(2^n) + 1. -/
 def FermatNumber (n : ℕ) : ℕ := 2^(2^n) + 1
@@ -194,21 +166,16 @@ axiom fermat_primes_known :
     IsFermatPrime 0 ∧ IsFermatPrime 1 ∧ IsFermatPrime 2 ∧
     IsFermatPrime 3 ∧ IsFermatPrime 4
 
-/-- F_5 and beyond are known to be composite (up to a point). -/
+/-- F_5 is known to be composite. -/
 axiom f5_composite : ¬IsFermatPrime 5
 
-/-- **Erdős-Graham's observation:**
+/-- **Erdős-Graham observation:**
     If ALL Sierpinski numbers have covering sets, then there are
     infinitely many Fermat primes. (Considered unlikely.) -/
 axiom erdos_graham_connection :
     AllSierpinskiHaveCoverings → (∀ N : ℕ, ∃ n > N, IsFermatPrime n)
 
-/-- Since infinitely many Fermat primes is unlikely, ErdosProblem1113 is likely YES. -/
-theorem heuristic_argument : True := trivial
-
-/-!
-## Part IX: FFK's Additional Result
--/
+/- ## Part IX: FFK Power Result -/
 
 /-- FFK proved: for every l ≥ 1, there exists m such that
     2^k·m^i + 1 is composite for all 1 ≤ i ≤ l and k ≥ 0. -/
@@ -216,9 +183,7 @@ axiom ffk_power_result :
     ∀ l : ℕ, l ≥ 1 → ∃ m : ℕ, ∀ i k : ℕ, 1 ≤ i → i ≤ l →
       ¬Nat.Prime (2^k * m^i + 1)
 
-/-!
-## Part X: Summary
--/
+/- ## Part X: Summary -/
 
 /-- **Erdős Problem #1113: OPEN**
 
@@ -229,30 +194,14 @@ EVIDENCE FOR YES:
 - If NO, infinitely many Fermat primes exist (unlikely)
 
 RELATED CONJECTURE (FFK):
-Every Sierpinski number is either a perfect power or has a covering set.
-(Izotov's candidate is a 4th power, consistent with FFK.)
-
-KEY FACTS:
-- 78557 is the smallest known Sierpinski number (with covering set)
-- Sierpinski (1960) constructed infinitely many covered examples
-- The problem connects to covering systems and Fermat primes
--/
-theorem erdos_1113 :
-    -- The question remains open
-    True ∧
-    -- Strong candidate exists (Izotov)
+Every Sierpinski number is either a perfect power or has a covering set. -/
+theorem erdos_1113_summary :
+    -- Strong candidate exists (Izotov is Sierpinski)
     IsSierpinskiNumber izotovCandidate ∧
+    -- Izotov is a perfect power (consistent with FFK)
+    IsPerfectPower izotovCandidate ∧
     -- FFK conjecture is compatible
-    (FFKConjecture → IsPerfectPower izotovCandidate ∨ HasFiniteCoveringSet izotovCandidate) := by
-  refine ⟨trivial, izotov_is_sierpinski, ffk_consistent_with_izotov⟩
-
-/-- The problem status. -/
-def erdos_1113_status : String :=
-  "OPEN: Sierpinski numbers without covering sets likely exist (Izotov's candidate)"
-
-#check erdos_1113
-#check IsSierpinskiNumber
-#check HasFiniteCoveringSet
-#check FFKConjecture
+    (FFKConjecture → IsPerfectPower izotovCandidate ∨ HasFiniteCoveringSet izotovCandidate) :=
+  ⟨izotov_is_sierpinski, izotov_is_power, ffk_consistent_with_izotov⟩
 
 end Erdos1113
