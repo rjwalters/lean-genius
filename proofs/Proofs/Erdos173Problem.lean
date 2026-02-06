@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #173: Monochromatic Triangles in Plane Colorings
 
 **Source:** [erdosproblems.com/173](https://erdosproblems.com/173)
@@ -31,7 +31,7 @@ open EuclideanSpace
 
 namespace Erdos173
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 A 2-coloring of the plane ℝ².
@@ -74,7 +74,7 @@ A triangle is monochromatic under coloring c if all three vertices have the same
 def IsMonochromatic (T : Triangle) (c : PlaneColoring) : Prop :=
   c T.v1 = c T.v2 ∧ c T.v2 = c T.v3
 
-/-! ## Part II: Triangle Types -/
+/- ## Part II: Triangle Types -/
 
 /--
 **Equilateral Triangle:**
@@ -102,7 +102,7 @@ def IsIsosceles (T : Triangle) : Prop :=
   sideLengths T 1 = sideLengths T 2 ∨
   sideLengths T 0 = sideLengths T 2
 
-/-! ## Part III: Ramsey Property -/
+/- ## Part III: Ramsey Property -/
 
 /--
 **Triangle is Ramsey in ℝ²:**
@@ -121,7 +121,7 @@ def AlmostAllTrianglesRamsey : Prop :=
     ∀ T : Triangle, (∀ T_exc : Triangle, exceptional = some T_exc → ¬Congruent T T_exc) →
     IsRamseyTriangle T
 
-/-! ## Part IV: Shader's Theorem -/
+/- ## Part IV: Shader's Theorem -/
 
 /--
 **Shader's Theorem (1976):**
@@ -148,7 +148,7 @@ theorem right_345_ramsey (T : Triangle)
   simp only [ha, hb, hc]
   norm_num
 
-/-! ## Part V: The Strip Coloring Example -/
+/- ## Part V: The Strip Coloring Example -/
 
 /--
 **Strip Coloring:**
@@ -181,7 +181,7 @@ theorem at_most_one_is_tight :
   push_neg
   exact ⟨stripColoring 1 one_pos, hNotMono⟩
 
-/-! ## Part VI: The Conjecture -/
+/- ## Part VI: The Conjecture -/
 
 /--
 **Erdős Conjecture:**
@@ -190,7 +190,7 @@ The equilateral triangle is the natural candidate for this exception.
 -/
 axiom erdos_173_conjecture : AlmostAllTrianglesRamsey
 
-/-! ## Part VII: Similarity Invariance -/
+/- ## Part VII: Similarity Invariance -/
 
 /--
 **Similar Triangles:**
@@ -208,7 +208,7 @@ only on shape, not size.
 axiom similarity_preserves_ramsey :
     ∀ T1 T2 : Triangle, Similar T1 T2 → (IsRamseyTriangle T1 ↔ IsRamseyTriangle T2)
 
-/-! ## Part VIII: Summary
+/- ## Part VIII: Summary
 
 **Erdős Problem #173: Monochromatic Triangles**
 
