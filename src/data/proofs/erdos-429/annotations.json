@@ -1,164 +1,68 @@
 [
   {
-    "id": "ann-429-1",
+    "id": "ann-e429-header",
     "proofId": "erdos-429",
-    "range": { "startLine": 1, "endLine": 33 },
-    "type": "context",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdos Problem #429 asks whether sparse admissible sets must have a prime shift. Answer: NO (Weisenberg 2024). Even arbitrarily sparse sets avoiding one residue class mod p for each prime can fail to have any n with all n+a prime.",
-    "significance": "high"
+    "content": "**Erdős Problem #429** asks whether sparse admissible sets must have prime shifts. An admissible set avoids one residue class mod p for every prime p, so simple sieve arguments cannot rule out a prime shift. Erdős and Graham conjectured that adding sparsity (zero density) should guarantee existence of n with all n + a prime. Weisenberg (2024) proved the answer is NO: even lacunary admissible sets can fail to have any prime shift.",
+    "mathContext": "The problem sits at the intersection of sieve theory and combinatorial number theory. Admissibility is the standard necessary condition for prime tuples — the Hardy-Littlewood conjecture predicts finite admissible tuples have infinitely many prime shifts. The surprise is that for infinite sparse sets, this local-to-global principle fails: passing mod-p tests everywhere does not guarantee a global prime shift.",
+    "significance": "critical",
+    "relatedConcepts": ["admissible sets", "prime tuples conjecture", "covering congruences"]
   },
   {
-    "id": "ann-429-2",
+    "id": "ann-e429-admissibility",
     "proofId": "erdos-429",
-    "range": { "startLine": 54, "endLine": 55 },
+    "range": { "startLine": 44, "endLine": 79 },
     "type": "definition",
-    "title": "Covers Residue",
-    "content": "CoversResidue A m r means some element a in A satisfies a mod m = r. This is the basic building block for admissibility.",
-    "significance": "medium"
+    "title": "Admissibility Framework",
+    "content": "**CoversResidue A m r** checks if some a ∈ A satisfies a ≡ r (mod m). **CoversAllResidues A m** means A hits every residue class mod m. **IsAdmissible A** requires that for every prime p, A does NOT cover all residue classes. **AvoidedResidue A p r** says no element of A is congruent to r mod p. **admissible_iff_avoided** (proved): these two formulations are equivalent — A is admissible iff every prime has an avoided residue.",
+    "mathContext": "The proof of the equivalence uses classical logic: ¬∀r<p, ∃a∈A, a%p=r is equivalent to ∃r<p, ∀a∈A, a%p≠r. This characterization is useful because avoided residues provide the 'free' residue class that could accommodate a prime shift: if n ≡ -r (mod p) for the avoided residue r, then no n + a is divisible by p.",
+    "significance": "critical",
+    "relatedConcepts": ["residue classes", "sieve of Eratosthenes", "modular arithmetic"]
   },
   {
-    "id": "ann-429-3",
+    "id": "ann-e429-prime-shifts",
     "proofId": "erdos-429",
-    "range": { "startLine": 61, "endLine": 62 },
+    "range": { "startLine": 81, "endLine": 105 },
     "type": "definition",
-    "title": "Covers All Residues",
-    "content": "CoversAllResidues A m means A has elements in every residue class mod m. Non-admissible sets cover all residues for some prime.",
-    "significance": "medium"
+    "title": "Prime Shifts and Sparsity",
+    "content": "**AllPrimesInShift A n** requires Nat.Prime (n + a) for all a ∈ A. **HasPrimeShift A** existentially quantifies over n. **HasZeroDensity A** says |A ∩ [1,N]|/N → 0 — the set is sparse. **IsLacunary** is even stronger: consecutive term ratios a_{n+1}/a_n → ∞, meaning gaps grow faster than any linear function.",
+    "mathContext": "Zero density is a weak sparsity condition — the primes themselves have zero density (by the prime number theorem, π(N)/N → 0). Lacunary sets are much sparser: examples include {2^n} or {n!}. The strength of Weisenberg's result is that even this extreme sparsity is insufficient.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic density", "lacunary sequences", "prime number theorem"]
   },
   {
-    "id": "ann-429-4",
+    "id": "ann-e429-weisenberg",
     "proofId": "erdos-429",
-    "range": { "startLine": 69, "endLine": 70 },
-    "type": "definition",
-    "title": "Admissible Set",
-    "content": "IsAdmissible A means for every prime p, A avoids at least one residue class mod p. Such sets cannot be ruled out from prime shifts by simple mod p arguments.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-429-5",
-    "proofId": "erdos-429",
-    "range": { "startLine": 76, "endLine": 77 },
-    "type": "definition",
-    "title": "Avoided Residue",
-    "content": "AvoidedResidue A p r means no element of A is congruent to r mod p. Admissible sets have at least one avoided residue for each prime.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-429-6",
-    "proofId": "erdos-429",
-    "range": { "startLine": 119, "endLine": 120 },
-    "type": "definition",
-    "title": "All Primes in Shift",
-    "content": "AllPrimesInShift A n means for all a in A, n+a is prime. This is what we want for a 'prime shift'.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-429-7",
-    "proofId": "erdos-429",
-    "range": { "startLine": 126, "endLine": 127 },
-    "type": "definition",
-    "title": "Has Prime Shift",
-    "content": "HasPrimeShift A means there exists n such that all n+a are prime. The main question is whether sparse admissible sets have this property.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-429-8",
-    "proofId": "erdos-429",
-    "range": { "startLine": 146, "endLine": 148 },
-    "type": "definition",
-    "title": "Zero Density",
-    "content": "HasZeroDensity A means |A cap [1,N]|/N tends to 0 as N tends to infinity. This captures 'sparse enough' in the problem statement.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-429-9",
-    "proofId": "erdos-429",
-    "range": { "startLine": 162, "endLine": 164 },
-    "type": "definition",
-    "title": "Lacunary Set",
-    "content": "IsLacunary means consecutive terms ratio grows without bound. This is an extremely strong sparsity condition.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-429-10",
-    "proofId": "erdos-429",
-    "range": { "startLine": 176, "endLine": 177 },
-    "type": "definition",
-    "title": "Erdos Conjecture 429",
-    "content": "ErdosConjecture429: sparse + admissible implies has prime shift. This is the statement that Weisenberg disproved.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-429-11",
-    "proofId": "erdos-429",
-    "range": { "startLine": 184, "endLine": 185 },
+    "range": { "startLine": 107, "endLine": 132 },
     "type": "theorem",
-    "title": "Weisenberg's Theorem",
-    "content": "weisenberg_theorem: There exist zero-density admissible sets with no prime shift. This is the main counterexample result.",
-    "significance": "high"
+    "title": "Weisenberg's Theorem and the Disproof",
+    "content": "**ErdosConjecture429** states: zero density + admissible ⟹ has prime shift. **weisenberg_theorem** (axiom): there exists A with zero density, admissible, and NO prime shift. **weisenberg_lacunary** (axiom): even lacunary admissible sets can fail. **erdos_429_disproved** (proved): ¬ErdosConjecture429, derived by contradiction from weisenberg_theorem — if the conjecture held, the counterexample A would have a prime shift, contradicting ¬HasPrimeShift A.",
+    "mathContext": "The disproof is a clean application of modus tollens: assume the conjecture, apply it to Weisenberg's counterexample A (which satisfies both hypotheses), obtain HasPrimeShift A, contradicting the third property. The lacunary strengthening shows the failure is not about density but about the infinite nature of A.",
+    "significance": "critical",
+    "relatedConcepts": ["proof by contradiction", "counterexample", "modus tollens"]
   },
   {
-    "id": "ann-429-12",
+    "id": "ann-e429-covering",
     "proofId": "erdos-429",
-    "range": { "startLine": 191, "endLine": 195 },
-    "type": "theorem",
-    "title": "Lacunary Counterexample",
-    "content": "weisenberg_lacunary: Even lacunary (extremely sparse) admissible sets can fail to have prime shifts. This strengthens the main result.",
-    "significance": "high"
+    "range": { "startLine": 134, "endLine": 146 },
+    "type": "axiom",
+    "title": "Covering Systems and Necessity",
+    "content": "**IsCoveringSystem** formalizes a covering system: a list of pairs (aᵢ, mᵢ) such that every integer n satisfies n ≡ aᵢ (mod mᵢ) for some i. Weisenberg's construction builds A so that the 'blocking' congruences form a covering system over all potential shifts. **admissibility_necessary** (axiom): if A has a prime shift, A must be admissible — this is the easy direction, showing admissibility is a necessary condition.",
+    "mathContext": "Covering systems were introduced by Erdős himself in the 1950s and play a central role in many number-theoretic constructions. The idea: assign to each element aₖ ∈ A a prime pₖ such that n + aₖ ≡ 0 (mod pₖ) for 'many' values of n. If the congruences {n : pₖ | n + aₖ} collectively cover all integers, then every shift n has some composite element. The challenge is doing this while maintaining admissibility.",
+    "significance": "key",
+    "relatedConcepts": ["covering systems", "Erdős covering conjecture", "Chinese remainder theorem"]
   },
   {
-    "id": "ann-429-13",
+    "id": "ann-e429-summary",
     "proofId": "erdos-429",
-    "range": { "startLine": 200, "endLine": 203 },
-    "type": "theorem",
-    "title": "Conjecture Disproved",
-    "content": "erdos_429_disproved: The Erdos conjecture is false. Derives this from weisenberg_theorem.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-429-14",
-    "proofId": "erdos-429",
-    "range": { "startLine": 229, "endLine": 230 },
-    "type": "definition",
-    "title": "Covering System",
-    "content": "IsCoveringSystem: A set of congruences that covers all integers. Key technique in Weisenberg's construction.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-429-15",
-    "proofId": "erdos-429",
-    "range": { "startLine": 253, "endLine": 267 },
-    "type": "theorem",
-    "title": "Admissibility Necessary",
-    "content": "admissibility_necessary: If A has a prime shift, then A is admissible. This shows admissibility is a necessary condition.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-429-16",
-    "proofId": "erdos-429",
-    "range": { "startLine": 273, "endLine": 276 },
-    "type": "insight",
-    "title": "Prime Tuples Conjecture",
-    "content": "prime_tuples_conjecture: For finite admissible sets, conjecturally there are infinitely many prime shifts. Contrast with the infinite sparse case.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-429-17",
-    "proofId": "erdos-429",
-    "range": { "startLine": 344, "endLine": 351 },
+    "range": { "startLine": 148, "endLine": 171 },
     "type": "theorem",
     "title": "Summary Theorem",
-    "content": "erdos_429_summary: Combines the disproof, existence of counterexamples, and necessity of admissibility into a single statement.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-429-18",
-    "proofId": "erdos-429",
-    "range": { "startLine": 357, "endLine": 357 },
-    "type": "theorem",
-    "title": "Erdos 429 Status",
-    "content": "erdos_429: SOLVED with answer NO. Weisenberg (2024) disproved the conjecture by constructing counterexamples.",
-    "significance": "high"
+    "content": "**erdos_429_summary** packages three results: (1) ¬ErdosConjecture429 — the conjecture is false, (2) existence of a zero-density admissible counterexample, (3) existence of a lacunary admissible counterexample. The proof is ⟨erdos_429_disproved, weisenberg_theorem, weisenberg_lacunary⟩. The three parts capture increasing strength: the conjecture fails, it fails for zero-density sets, and it fails even for lacunary sets.",
+    "mathContext": "The three-part conjunction progresses from the qualitative (conjecture is false) through the quantitative (zero density suffices for counterexample) to the structural (even the strongest reasonable sparsity condition fails). This organization reflects how Weisenberg's paper strengthens the basic result in stages.",
+    "significance": "critical",
+    "relatedConcepts": ["conjunction", "complete resolution", "counterexample hierarchy"]
   }
 ]
