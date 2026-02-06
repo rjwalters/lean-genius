@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #82: Regular Induced Subgraphs
 
 **Problem Statement (OPEN)**
@@ -348,8 +348,5 @@ theorem erdos_82_bounds_summary :
 
 **Source:** Erdős, Fajtlowicz, Staton (1988)
 -/
-
-/-- The problem remains OPEN. -/
-theorem erdos_82_status : True := trivial
 
 end Erdos82
