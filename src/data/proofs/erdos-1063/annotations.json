@@ -1,56 +1,101 @@
 [
   {
-    "id": "erdos-1063-divisibility",
+    "id": "erdos-1063-divides-choose",
     "proofId": "erdos-1063",
     "type": "definition",
-    "range": { "startLine": 35, "endLine": 52 },
-    "title": "Divisibility Conditions",
-    "content": "DividesChoose: (n-i) | C(n,k). divisibilityCount: how many i ∈ {0,...,k-1} satisfy this. AllButOneDivide: at least k-1 of the k values divide.",
+    "range": { "startLine": 42, "endLine": 43 },
+    "title": "DividesChoose predicate",
+    "content": "Defines when (n - i) divides the binomial coefficient C(n, k). The predicate requires i < k (so n - i ranges over {n, n-1, ..., n-k+1}), n >= 2k (the regime studied by Erdős-Selfridge), and the divisibility condition (n - i) | C(n, k). This captures the fundamental arithmetic relationship at the heart of the problem.",
     "significance": "essential"
   },
   {
-    "id": "erdos-1063-threshold",
+    "id": "erdos-1063-divisibility-count",
     "proofId": "erdos-1063",
     "type": "definition",
-    "range": { "startLine": 58, "endLine": 62 },
-    "title": "Threshold n_k",
-    "content": "IsThreshold nk k: nk is the least n ≥ 2k where all but one of {n,...,n-k+1} divide C(n,k). The central object to estimate.",
+    "range": { "startLine": 48, "endLine": 49 },
+    "title": "Divisibility counting function",
+    "content": "Counts how many values 0 <= i < k satisfy (n - i) | C(n, k). Uses Finset.filter over Finset.range k to select indices where divisibility holds, then takes the cardinality. Marked noncomputable because Decidable instances for divisibility require classical logic in Lean's framework. The Erdős-Selfridge result says this count is always strictly less than k.",
     "significance": "essential"
   },
   {
-    "id": "erdos-1063-selfridge",
+    "id": "erdos-1063-all-but-one",
+    "proofId": "erdos-1063",
+    "type": "definition",
+    "range": { "startLine": 54, "endLine": 55 },
+    "title": "AllButOneDivide predicate",
+    "content": "The key property for Erdős Problem #1063: all but one of the integers {n, n-1, ..., n-k+1} divide C(n, k). Formally, n >= 2k and divisibilityCount n k >= k - 1. Since Erdős-Selfridge shows divisibilityCount < k, the maximum achievable count is exactly k - 1, making this the 'best possible' divisibility condition.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-is-threshold",
+    "proofId": "erdos-1063",
+    "type": "definition",
+    "range": { "startLine": 63, "endLine": 65 },
+    "title": "Threshold n_k definition",
+    "content": "Defines n_k as the least n >= 2k satisfying AllButOneDivide. The definition has two parts: (1) nk itself satisfies the all-but-one divisibility, and (2) no smaller m >= 2k satisfies it (minimality). This is the central object of Erdős Problem #1063 — the problem asks for the growth rate of n_k as a function of k.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-erdos-selfridge",
     "proofId": "erdos-1063",
     "type": "result",
-    "range": { "startLine": 68, "endLine": 77 },
-    "title": "Erdős–Selfridge Non-Divisibility",
-    "content": "For n ≥ 2k, at least one (n-i) does not divide C(n,k). Full divisibility never occurs. This motivates the 'all but one' question.",
+    "range": { "startLine": 77, "endLine": 80 },
+    "title": "Erdős-Selfridge nondivisibility theorem",
+    "content": "The foundational result (Erdős-Selfridge, 1983): for n >= 2k, at least one of {n, n-1, ..., n-k+1} fails to divide C(n, k). Equivalently, divisibilityCount n k < k. This means full divisibility is impossible, motivating the question of when all-but-one divisibility first occurs. The proof uses properties of prime factorizations of binomial coefficients.",
     "significance": "essential"
   },
   {
-    "id": "erdos-1063-small",
+    "id": "erdos-1063-threshold-k2",
     "proofId": "erdos-1063",
     "type": "result",
-    "range": { "startLine": 83, "endLine": 99 },
-    "title": "Known Small Values",
-    "content": "n_2 = 4, n_3 = 6, n_4 = 9, n_5 = 12. These are the known exact thresholds for small k.",
+    "range": { "startLine": 88, "endLine": 88 },
+    "title": "n_2 = 4",
+    "content": "The first known threshold value: n_2 = 4. For k = 2, we need n >= 4 where one of {n, n-1} divides C(n, 2) = n(n-1)/2. At n = 4: C(4,2) = 6, and 3 | 6 but 4 does not divide 6, so exactly one divisibility fails. For n = 3, the constraint n >= 2k is not met, confirming 4 is minimal.",
     "significance": "essential"
   },
   {
-    "id": "erdos-1063-bounds",
+    "id": "erdos-1063-threshold-k3-k5",
     "proofId": "erdos-1063",
     "type": "result",
-    "range": { "startLine": 105, "endLine": 127 },
-    "title": "Upper Bounds",
-    "content": "Monier (1985): n_k ≤ k! for k ≥ 3. Cambie: n_k ≤ k · lcm(2,...,k-1) ≤ e^{(1+o(1))k}. The polynomial vs exponential growth question remains open.",
+    "range": { "startLine": 93, "endLine": 103 },
+    "title": "Known thresholds n_3 = 6, n_4 = 9, n_5 = 12",
+    "content": "The remaining computed threshold values. n_3 = 6: C(6,3) = 20, and among {6,5,4}, two divide 20 (5 | 20 and 4 | 20) but 6 does not. n_4 = 9: C(9,4) = 126, and among {9,8,7,6}, three divide 126 but 8 does not. n_5 = 12: verified similarly. The growth pattern 4, 6, 9, 12 is suggestive but insufficient to determine asymptotic behavior.",
     "significance": "essential"
   },
   {
-    "id": "erdos-1063-summary",
+    "id": "erdos-1063-monier-bound",
     "proofId": "erdos-1063",
-    "type": "context",
-    "range": { "startLine": 133, "endLine": 139 },
-    "title": "Summary",
-    "content": "The growth rate of n_k remains open. Known bounds are exponential; the question is whether polynomial growth is achievable.",
-    "significance": "supporting"
+    "type": "result",
+    "range": { "startLine": 110, "endLine": 112 },
+    "title": "Monier's factorial upper bound",
+    "content": "Monier (1985) proved n_k <= k! for k >= 3. The proof shows that n = k! satisfies AllButOneDivide because for most i, the factor (k! - i) divides C(k!, k) due to the highly composite nature of k!. This was the first non-trivial upper bound but grows super-exponentially, far from the polynomial growth Erdős hoped for.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-cambie-bound",
+    "proofId": "erdos-1063",
+    "type": "result",
+    "range": { "startLine": 118, "endLine": 121 },
+    "title": "Cambie's improved LCM bound",
+    "content": "Cambie improved the upper bound to n_k <= k * lcm(2, 3, ..., k-1), which is at most e^{(1+o(1))k} by the prime number theorem. This is a dramatic improvement from super-exponential (k!) to single-exponential growth. The formalization uses k * (k-1)! as a crude upper bound since lcm(2,...,k-1) <= (k-1)!.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-open-question",
+    "proofId": "erdos-1063",
+    "type": "definition",
+    "range": { "startLine": 128, "endLine": 131 },
+    "title": "Polynomial growth question",
+    "content": "The central open question formalized as a Lean Prop: does there exist a constant C >= 1 such that n_k <= k^C for all k >= 2? If true, the growth is polynomial; if false, it is at least exponential. Cambie's bound shows n_k <= e^{(1+o(1))k}, so the gap between polynomial and exponential remains wide open.",
+    "significance": "essential"
+  },
+  {
+    "id": "erdos-1063-summary-theorem",
+    "proofId": "erdos-1063",
+    "type": "result",
+    "range": { "startLine": 152, "endLine": 157 },
+    "title": "Summary theorem combining key results",
+    "content": "Packages the two main established results into a conjunction: (1) the Erdős-Selfridge nondivisibility — full divisibility never occurs for n >= 2k, and (2) Monier's factorial bound — a threshold n_k <= k! exists for k >= 3. The proof is exact ⟨erdos_selfridge_nondivisibility, monier_factorial_bound⟩, directly combining the two axioms. This serves as the formalization's main entry point summarizing what is known.",
+    "significance": "essential"
   }
 ]
