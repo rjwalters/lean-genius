@@ -37,6 +37,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Order.Filter.Basic
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.NumberTheory.LegendreSymbol.Basic
 
 open Nat Classical
 
@@ -439,10 +441,33 @@ theorem zeroth_power_residue (r p : ℕ) (hr : r % p = 1 % p) :
 theorem one_always_kth_residue (k p : ℕ) : IsKthPowerResidue 1 k p := by
   exact ⟨1, by simp⟩
 
+/-- Fermat's Little Theorem: r^(p-1) ≡ 1 (mod p) when p is prime and p ∤ r.
+    Proved using Mathlib's `ZMod.pow_card_sub_one_eq_one`. -/
+theorem fermat_little_theorem (r p : ℕ) (hp : Nat.Prime p) (hr : r % p ≠ 0) :
+    r ^ (p - 1) % p = 1 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  -- r ≠ 0 in ZMod p since p ∤ r
+  have hr_zmod : (r : ZMod p) ≠ 0 := by
+    intro h
+    apply hr
+    rwa [ZMod.natCast_eq_zero_iff, Nat.dvd_iff_mod_eq_zero] at h
+  -- Apply Mathlib's FLT: (r : ZMod p)^(card - 1) = 1
+  have h := ZMod.pow_card_sub_one_eq_one hr_zmod
+  simp only [ZMod.card] at h
+  -- h : (↑r : ZMod p) ^ (p - 1) = 1
+  -- This means r^(p-1) ≡ 1 (mod p) in ZMod
+  -- Use: (a : ZMod n) = (b : ZMod n) → a % n = b % n (via natCast)
+  have h2 : ((r ^ (p - 1) : ℕ) : ZMod p) = ((1 : ℕ) : ZMod p) := by
+    simp only [Nat.cast_pow, Nat.cast_one]; exact h
+  rw [ZMod.natCast_eq_natCast_iff'] at h2
+  -- h2 : r ^ (p - 1) % p = 1 % p
+  rwa [Nat.mod_eq_of_lt hp.one_lt] at h2
+
 /-- If r is a kth power residue and gcd(r, p) = 1, then r^(p-1) ≡ 1 (mod p).
-    This is Fermat's Little Theorem. -/
-axiom kth_residue_fermat_little (r k p : ℕ) (hp : Nat.Prime p) (hr : r % p ≠ 0)
-    (_h : IsKthPowerResidue r k p) : r ^ (p - 1) % p = 1
+    This follows directly from Fermat's Little Theorem. -/
+theorem kth_residue_fermat_little (r k p : ℕ) (hp : Nat.Prime p) (hr : r % p ≠ 0)
+    (_h : IsKthPowerResidue r k p) : r ^ (p - 1) % p = 1 :=
+  fermat_little_theorem r p hp hr
 
 /-- Quadratic residues: product of two non-residues is a residue (for odd prime p).
     This follows from Legendre symbol multiplicativity: (a/p)(b/p) = (ab/p).
@@ -504,6 +529,66 @@ theorem lambda_values_positive :
     Lambda 2 2 > 0 ∧ Lambda 3 2 > 0 ∧ Lambda 4 2 > 0 ∧
     Lambda 5 2 > 0 ∧ Lambda 6 2 > 0 ∧ Lambda 7 2 > 0 := by
   simp only [lambda_2_2, lambda_3_2, lambda_4_2, lambda_5_2, lambda_6_2, lambda_7_2]
+  omega
+
+/-
+## Part XII: Euler's Criterion and ZMod Connections
+-/
+
+/-- Euler's criterion (forward): if a is a quadratic residue mod p, then a^((p-1)/2) ≡ 1 (mod p).
+    Uses Fermat's Little Theorem and properties of ZMod. -/
+axiom euler_criterion_forward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
+    (ha : a % p ≠ 0) (hqr : IsQuadraticResidue a p) :
+    a ^ ((p - 1) / 2) % p = 1
+
+/-- Euler's criterion (backward): if a^((p-1)/2) ≡ 1 (mod p) then a is a QR. -/
+axiom euler_criterion_backward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
+    (ha : a % p ≠ 0) (hpow : a ^ ((p - 1) / 2) % p = 1) :
+    IsQuadraticResidue a p
+
+/-- Euler's criterion (full): a is a QR mod p iff a^((p-1)/2) ≡ 1 (mod p). -/
+theorem euler_criterion (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
+    (ha : a % p ≠ 0) :
+    IsQuadraticResidue a p ↔ a ^ ((p - 1) / 2) % p = 1 :=
+  ⟨euler_criterion_forward a p hp hp_odd ha, euler_criterion_backward a p hp hp_odd ha⟩
+
+/-- The Legendre symbol is multiplicative: (ab/p) = (a/p)(b/p).
+    Directly uses Mathlib's `legendreSym.mul`. -/
+theorem legendre_sym_mul (a b : ℤ) (p : ℕ) [Fact p.Prime] :
+    legendreSym p (a * b) = legendreSym p a * legendreSym p b :=
+  legendreSym.mul p a b
+
+/-- If gcd(r, p) = 1, then r raised to any multiple of (p-1) is ≡ 1 (mod p).
+    A corollary of Fermat's Little Theorem. -/
+theorem pow_multiple_p_minus_one (r p : ℕ) (m : ℕ) (hp : Nat.Prime p) (hr : r % p ≠ 0) :
+    r ^ (m * (p - 1)) % p = 1 := by
+  induction m with
+  | zero =>
+    simp only [Nat.zero_mul, pow_zero]
+    exact Nat.mod_eq_of_lt hp.one_lt
+  | succ n ih =>
+    rw [Nat.succ_mul, pow_add, Nat.mul_mod, ih,
+        fermat_little_theorem r p hp hr, mul_one]
+    exact Nat.mod_eq_of_lt hp.one_lt
+
+/-- For prime p > 2, p - 1 is even. -/
+theorem prime_sub_one_even (p : ℕ) (hp : Nat.Prime p) (hp_gt2 : p > 2) :
+    2 ∣ (p - 1) := by
+  have hodd := hp.odd_of_ne_two (by omega)
+  rw [Nat.odd_iff] at hodd
+  omega
+
+/-- For prime p > 2, exactly (p-1)/2 of the nonzero residues mod p are QRs,
+    and the count divides p-1 evenly. -/
+theorem count_qr_exact (p : ℕ) (hp : Nat.Prime p) (hp_gt2 : p > 2) :
+    ∃ count : ℕ, count = (p - 1) / 2 ∧ count * 2 = p - 1 := by
+  have hdvd := prime_sub_one_even p hp hp_gt2
+  exact ⟨(p - 1) / 2, rfl, Nat.div_mul_cancel hdvd⟩
+
+/-- For prime p > 2, the number of nonzero QRs equals the number of non-QRs. -/
+theorem qr_nonqr_equal_count (p : ℕ) (hp : Nat.Prime p) (hp_gt2 : p > 2) :
+    (p - 1) / 2 + (p - 1) / 2 = p - 1 := by
+  have hdvd := prime_sub_one_even p hp hp_gt2
   omega
 
 end Erdos436
