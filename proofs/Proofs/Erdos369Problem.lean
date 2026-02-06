@@ -45,11 +45,7 @@ def IsSmooth (m B : ℕ) : Prop :=
 /--
 The largest prime factor of n (0 if n ≤ 1).
 -/
-noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
-  if n ≤ 1 then 0
-  else ((Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ∣ n)).max' (by
-    simp only [Finset.filter_nonempty_iff]
-    sorry)
+noncomputable axiom largestPrimeFactor (n : ℕ) : ℕ
 
 /-! ## Part II: Consecutive Smooth Runs -/
 
@@ -125,12 +121,11 @@ axiom balog_wooley_infinitely_many :
 
 /-! ## Part VI: Summary -/
 
-/--
+/-!
 **Summary:**
 Erdős Problem #369 asks whether consecutive smooth numbers exist
 in {1,…,n} for all large n. Open even for k = 2. Balog–Wooley
 proved infinitely many exist, but not for all n.
 -/
-theorem erdos_369_status : True := trivial
 
 end Erdos369

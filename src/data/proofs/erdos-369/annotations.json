@@ -3,7 +3,7 @@
     "id": "erdos-369-smooth",
     "proofId": "erdos-369",
     "type": "definition",
-    "range": { "startLine": 39, "endLine": 52 },
+    "range": { "startLine": 39, "endLine": 48 },
     "title": "Smooth Number Definitions",
     "content": "IsSmooth m B: all prime factors of m are ≤ B. largestPrimeFactor gives the largest prime dividing n. B-smooth numbers have all primes bounded by B.",
     "significance": "essential"
@@ -12,7 +12,7 @@
     "id": "erdos-369-runs",
     "proofId": "erdos-369",
     "type": "definition",
-    "range": { "startLine": 56, "endLine": 71 },
+    "range": { "startLine": 50, "endLine": 67 },
     "title": "Consecutive Smooth Runs",
     "content": "ConsecutiveSmoothRun: k ≥ 2 consecutive integers starting at m, each B-smooth. HasConsecutiveSmoothRun: such a run exists within {1,…,n}.",
     "significance": "essential"
@@ -21,7 +21,7 @@
     "id": "erdos-369-conjecture",
     "proofId": "erdos-369",
     "type": "conjecture",
-    "range": { "startLine": 75, "endLine": 91 },
+    "range": { "startLine": 69, "endLine": 87 },
     "title": "Erdős–Graham Conjecture",
     "content": "ErdosConjecture369: for every k ≥ 2 and smoothness bound growing to ∞ (but ≤ n), all sufficiently large n have k consecutive smooth integers in {1,…,n}.",
     "significance": "essential"
@@ -30,7 +30,7 @@
     "id": "erdos-369-k2",
     "proofId": "erdos-369",
     "type": "conjecture",
-    "range": { "startLine": 95, "endLine": 109 },
+    "range": { "startLine": 89, "endLine": 105 },
     "title": "The k = 2 Case",
     "content": "ErdosConjecture369_k2: the simplest open case. Even two consecutive smooth numbers in {1,…,n} is unresolved for all large n. Erdős–Graham called it 'very hard.'",
     "significance": "essential"
@@ -39,7 +39,7 @@
     "id": "erdos-369-balog-wooley",
     "proofId": "erdos-369",
     "type": "result",
-    "range": { "startLine": 113, "endLine": 124 },
+    "range": { "startLine": 107, "endLine": 120 },
     "title": "Balog–Wooley Partial Result",
     "content": "Balog and Wooley (1998) proved infinitely many n have n, n+1 both smooth. This is the best known partial result, but falls short of 'all sufficiently large n.'",
     "significance": "essential"
@@ -48,7 +48,7 @@
     "id": "erdos-369-summary",
     "proofId": "erdos-369",
     "type": "context",
-    "range": { "startLine": 128, "endLine": 136 },
+    "range": { "startLine": 122, "endLine": 131 },
     "title": "Summary",
     "content": "The problem remains open even for k = 2. The gap between 'infinitely many' (Balog–Wooley) and 'all sufficiently large' is the core difficulty.",
     "significance": "supporting"
