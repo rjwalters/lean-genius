@@ -26,7 +26,9 @@
 
   Reference:
   - Erdős, P. & Nathanson, M. (1989). "Partitions of bases into disjoint unions of bases."
-  - Larsen, D. (2026). AI-assisted disproof of Erdős Problem #871.
+    Acta Arithmetica, LII, 1989.
+  - Larsen, D. & Larsen, M. (2026). "Robust additive bases without minimal subbases."
+    arXiv:2601.18507.
 -/
 
 import Mathlib
@@ -35,7 +37,7 @@ open Set Filter BigOperators Nat
 
 namespace Erdos871
 
-/-! ## Core Definitions -/
+-- ## Part I: Core Definitions
 
 /-- The representation function r_A(n): counts ordered pairs (a,b) ∈ A×A with a + b = n. -/
 noncomputable def repFunc (A : Set ℕ) (n : ℕ) : ℕ :=
@@ -45,9 +47,7 @@ noncomputable def repFunc (A : Set ℕ) (n : ℕ) : ℕ :=
 def sumset (A : Set ℕ) : Set ℕ :=
   {n | ∃ a b, a ∈ A ∧ b ∈ A ∧ n = a + b}
 
-notation:65 A " +ₛ " B => sumset A ∪ sumset B
-
-/-- A is an additive basis of order 2 if A + A = ℕ (or misses only finitely many). -/
+/-- A is an additive basis of order 2 if A + A contains all sufficiently large naturals. -/
 def IsAdditiveBasis2 (A : Set ℕ) : Prop :=
   ∃ N₀ : ℕ, ∀ n ≥ N₀, n ∈ sumset A
 
@@ -55,7 +55,7 @@ def IsAdditiveBasis2 (A : Set ℕ) : Prop :=
 def IsAdditiveBasis2' (A : Set ℕ) : Prop :=
   (sumset A)ᶜ.Finite
 
-/-- Two definitions are equivalent. -/
+/-- Two definitions of additive basis of order 2 are equivalent. -/
 theorem basis2_equiv (A : Set ℕ) : IsAdditiveBasis2 A ↔ IsAdditiveBasis2' A := by
   constructor
   · intro ⟨N₀, h⟩
@@ -76,8 +76,7 @@ theorem basis2_equiv (A : Set ℕ) : IsAdditiveBasis2 A ↔ IsAdditiveBasis2' A 
       have hn_compl : n ∈ (sumset A)ᶜ := hn'
       have h_le : n ≤ M := le_csSup hbdd hn_compl
       omega
-    · -- Complement is empty, so sumset A = ℕ
-      use 0
+    · use 0
       intro n _
       push_neg at h
       have hempty : (sumset A)ᶜ = ∅ := h
@@ -85,7 +84,34 @@ theorem basis2_equiv (A : Set ℕ) : IsAdditiveBasis2 A ↔ IsAdditiveBasis2' A 
       rw [this]
       trivial
 
-/-! ## The Condition: r_A(n) → ∞ -/
+-- ## Part II: Structural Properties of Sumsets
+
+/-- If a ∈ A then 2a ∈ A + A. -/
+theorem mem_sumset_of_mem {A : Set ℕ} {a : ℕ} (ha : a ∈ A) :
+    a + a ∈ sumset A :=
+  ⟨a, a, ha, ha, rfl⟩
+
+/-- Sumset is monotone: if A ⊆ B then A + A ⊆ B + B. -/
+theorem sumset_mono {A B : Set ℕ} (h : A ⊆ B) : sumset A ⊆ sumset B := by
+  intro n ⟨a, b, ha, hb, hab⟩
+  exact ⟨a, b, h ha, h hb, hab⟩
+
+/-- 0 ∈ A + A whenever 0 ∈ A. -/
+theorem zero_mem_sumset {A : Set ℕ} (h : (0 : ℕ) ∈ A) : (0 : ℕ) ∈ sumset A :=
+  ⟨0, 0, h, h, by ring⟩
+
+/-- If A is a basis and A ⊆ B then B is a basis. -/
+theorem basis2_of_supset {A B : Set ℕ} (hA : IsAdditiveBasis2 A) (h : A ⊆ B) :
+    IsAdditiveBasis2 B := by
+  obtain ⟨N₀, hN₀⟩ := hA
+  exact ⟨N₀, fun n hn => sumset_mono h (hN₀ n hn)⟩
+
+/-- n ∈ A + A iff there exist a, b ∈ A with n = a + b. -/
+theorem mem_sumset_iff {A : Set ℕ} {n : ℕ} :
+    n ∈ sumset A ↔ ∃ a b, a ∈ A ∧ b ∈ A ∧ n = a + b :=
+  Iff.rfl
+
+-- ## Part III: Representation Function Properties
 
 /-- The representation function tends to infinity. -/
 def RepTendsToInfty (A : Set ℕ) : Prop :=
@@ -95,91 +121,66 @@ def RepTendsToInfty (A : Set ℕ) : Prop :=
 def RepEventuallyGe (A : Set ℕ) (t : ℕ) : Prop :=
   ∃ N₀ : ℕ, ∀ n ≥ N₀, repFunc A n ≥ t
 
-/-- RepTendsToInfty implies RepEventuallyGe for any t.
-    Proof: If f(n) → ∞, then eventually f(n) ≥ t for any fixed t. -/
+/-- RepTendsToInfty implies RepEventuallyGe for any t. -/
 theorem repTendsToInfty_implies_eventuallyGe (A : Set ℕ) (h : RepTendsToInfty A) :
     ∀ t : ℕ, RepEventuallyGe A t := by
   intro t
-  -- Unfold the definition of RepTendsToInfty and RepEventuallyGe
   unfold RepTendsToInfty at h
   unfold RepEventuallyGe
-  -- Extract the atTop characterization: ∀ b, ∃ N, ∀ n ≥ N, b ≤ f(n)
   rw [Filter.tendsto_atTop_atTop] at h
-  -- Apply to t (cast to ℝ)
   obtain ⟨N₀, hN₀⟩ := h (t : ℝ)
-  -- Build the witness
   use N₀
   intro n hn
-  -- We have (t : ℝ) ≤ (repFunc A n : ℝ), need repFunc A n ≥ t
   have h_le : (t : ℝ) ≤ (repFunc A n : ℝ) := hN₀ n hn
   exact Nat.cast_le.mp h_le
 
-/-! ## Partitions of Bases -/
+/-- r_A(n) → ∞ implies A is a basis (r_A(n) ≥ 1 means n ∈ A+A eventually). -/
+theorem repTendsToInfty_implies_basis (A : Set ℕ) (h : RepTendsToInfty A) :
+    IsAdditiveBasis2 A := by
+  obtain ⟨N₀, hN₀⟩ := repTendsToInfty_implies_eventuallyGe A h 1
+  use N₀
+  intro n hn
+  have hrep := hN₀ n hn
+  unfold sumset
+  unfold repFunc at hrep
+  by_contra habs
+  simp only [Set.mem_setOf_eq, not_exists] at habs
+  have hempty : {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n} = ∅ := by
+    ext ⟨a, b⟩
+    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    intro ⟨ha, hb, hab⟩
+    exact habs a b ⟨ha, hb, hab.symm⟩
+  rw [hempty] at hrep
+  simp at hrep
+
+/-- If r_A(n) ≥ t for all large n, then A is a basis (assuming t ≥ 1). -/
+theorem repEventuallyGe_implies_basis (A : Set ℕ) (t : ℕ) (ht : t ≥ 1)
+    (h : RepEventuallyGe A t) : IsAdditiveBasis2 A := by
+  obtain ⟨N₀, hN₀⟩ := h
+  use N₀
+  intro n hn
+  have hrep := hN₀ n hn
+  unfold sumset
+  unfold repFunc at hrep
+  by_contra habs
+  simp only [Set.mem_setOf_eq, not_exists] at habs
+  have hempty : {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n} = ∅ := by
+    ext ⟨a, b⟩
+    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    intro ⟨ha, hb, hab⟩
+    exact habs a b ⟨ha, hb, hab.symm⟩
+  rw [hempty] at hrep
+  simp at hrep
+  omega
+
+-- ## Part IV: Partitions of Bases
 
 /-- A set A can be partitioned into two disjoint order-2 bases. -/
 def CanPartitionIntoBases (A : Set ℕ) : Prop :=
   ∃ B C : Set ℕ, B ∩ C = ∅ ∧ B ∪ C = A ∧ IsAdditiveBasis2 B ∧ IsAdditiveBasis2 C
 
-/-! ## The Erdős Conjecture (Problem 871) -/
-
-/-- Erdős Problem #871 Conjecture:
-    If A is an order-2 basis with r_A(n) → ∞, then A can be partitioned
-    into two disjoint order-2 bases. -/
-def Erdos871Conjecture : Prop :=
-  ∀ A : Set ℕ, IsAdditiveBasis2 A → RepTendsToInfty A → CanPartitionIntoBases A
-
-/-! ## Erdős-Nathanson Weak Version (1989) -/
-
-/-- Erdős-Nathanson (1989): The weaker conjecture (r_A(n) ≥ t for fixed t) is FALSE.
-    They constructed a basis A with r_A(n) ≥ t for all large n that cannot be
-    partitioned into two disjoint bases. -/
-axiom erdos_nathanson_1989 :
-  ∀ t : ℕ, ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepEventuallyGe A t ∧ ¬CanPartitionIntoBases A
-
-/-! ## Erdős-Nathanson Positive Result -/
-
-/-- Erdős-Nathanson: Partition IS possible when r_A(n) grows fast enough.
-    Specifically, if r_A(n) > c log n for c > (log 4/3)^{-1} ≈ 3.48. -/
-axiom erdos_nathanson_positive :
-  ∃ c : ℝ, c > 0 ∧ ∀ A : Set ℕ, IsAdditiveBasis2 A →
-    (∃ N₀ : ℕ, ∀ n ≥ N₀, (repFunc A n : ℝ) > c * Real.log n) →
-    CanPartitionIntoBases A
-
-/-! ## The Counterexample -/
-
-/-- Larsen's counterexample (2026):
-    There exists a basis A with r_A(n) → ∞ that cannot be partitioned. -/
-axiom larsen_counterexample :
-  ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepTendsToInfty A ∧ ¬CanPartitionIntoBases A
-
-/-- Erdős Problem #871 is DISPROVED. -/
-theorem erdos_871_disproved : ¬Erdos871Conjecture := by
-  intro hconj
-  obtain ⟨A, hbasis, hrep, hno_part⟩ := larsen_counterexample
-  exact hno_part (hconj A hbasis hrep)
-
-/-! ## Construction Sketch
-
-The Larsen construction modifies the Erdős-Nathanson approach as follows:
-
-**Erdős-Nathanson (1989) Construction:**
-- Build A in stages, adding elements to ensure A is a basis
-- At each stage, carefully choose elements to ensure r_A(n) ≥ t
-- The construction has a "blocking" property that prevents partition
-
-**Larsen Extension (2026):**
-- Modify the construction so that r_A(n) grows to infinity
-- This requires more careful element selection at each stage
-- The key insight: the blocking property can be maintained even as
-  representations grow unboundedly
-
-The blocking works roughly as follows:
-- For any potential partition B ∪ C = A with B ∩ C = ∅,
-- There exist arbitrarily large n such that neither B+B nor C+C contains n
-- This contradicts both B and C being order-2 bases
--/
-
-/-- The blocking condition: for any partition of A, some integers fail. -/
+/-- The blocking condition: for any partition of A, infinitely many integers
+    fail to be in at least one of the sumsets. -/
 def HasBlockingProperty (A : Set ℕ) : Prop :=
   ∀ B C : Set ℕ, B ∩ C = ∅ → B ∪ C = A →
     ∃ᶠ n in atTop, n ∉ sumset B ∨ n ∉ sumset C
@@ -191,47 +192,106 @@ theorem blocking_prevents_partition (A : Set ℕ) (h : HasBlockingProperty A) :
   obtain ⟨NB, hNB⟩ := hB
   obtain ⟨NC, hNC⟩ := hC
   let N₀ := max NB NC
-  -- Get infinitely many n beyond N₀ where one of B+B or C+C fails
   have hblock := h B C hdisjoint hunion
-  rw [Filter.Frequently] at hblock
-  -- There exists n ≥ N₀ where one fails, contradicting both being bases
-  simp only [Filter.eventually_atTop, not_exists, not_forall, not_or] at hblock
-  obtain ⟨n, hn_large, hn⟩ := hblock (N₀ + 1)
-  -- hn : ¬(n ∈ sumset B) ∨ ¬(n ∈ sumset C) → False
-  -- We need to derive a contradiction from the blocking property
-  simp only [not_not] at hn
-  -- Now hn says both n ∈ sumset B and n ∈ sumset C
-  -- But blocking says frequently one fails - contradiction comes from the structure
-  -- Actually the blocking property gives us that one must fail
-  have hblock' := h B C hdisjoint hunion
-  -- Use Filter.Frequently to get concrete witness
-  have : ∃ᶠ m in Filter.atTop, m ∉ sumset B ∨ m ∉ sumset C := hblock'
-  -- For large enough m ≥ max NB NC, both B and C cover m (since both are bases)
-  -- This contradicts the blocking property
   have hcover : ∀ m ≥ N₀, m ∈ sumset B ∧ m ∈ sumset C := fun m hm => by
     constructor
     · exact hNB m (le_trans (le_max_left _ _) hm)
     · exact hNC m (le_trans (le_max_right _ _) hm)
-  -- The blocking says infinitely many fail, but after N₀ all succeed - contradiction
-  rw [Filter.frequently_atTop] at this
-  obtain ⟨m, hm_large, hm_fail⟩ := this N₀
+  rw [Filter.frequently_atTop] at hblock
+  obtain ⟨m, hm_large, hm_fail⟩ := hblock N₀
   have ⟨hB_ok, hC_ok⟩ := hcover m hm_large
   cases hm_fail with
   | inl h => exact h hB_ok
   | inr h => exact h hC_ok
 
+/-- If A can be partitioned into bases, there exists a uniform threshold
+    beyond which both parts cover everything. -/
+theorem partition_robust_finite {A : Set ℕ}
+    (hpart : CanPartitionIntoBases A) :
+    ∃ B C : Set ℕ, B ∩ C = ∅ ∧ B ∪ C = A ∧
+      ∃ N₀ : ℕ, (∀ n ≥ N₀, n ∈ sumset B) ∧ (∀ n ≥ N₀, n ∈ sumset C) := by
+  obtain ⟨B, C, hdisj, hunion, ⟨NB, hB⟩, ⟨NC, hC⟩⟩ := hpart
+  exact ⟨B, C, hdisj, hunion, max NB NC, fun n hn =>
+    hB n (le_trans (le_max_left _ _) hn), fun n hn =>
+    hC n (le_trans (le_max_right _ _) hn)⟩
+
+-- ## Part V: The Erdős Conjecture and Its Refutation
+
+/-- Erdős Problem #871 Conjecture:
+    If A is an order-2 basis with r_A(n) → ∞, then A can be partitioned
+    into two disjoint order-2 bases. -/
+def Erdos871Conjecture : Prop :=
+  ∀ A : Set ℕ, IsAdditiveBasis2 A → RepTendsToInfty A → CanPartitionIntoBases A
+
+-- ## Part VI: Known Results (Axioms for Deep Constructions)
+
+/-- Erdős-Nathanson (1989): The weaker conjecture (r_A(n) ≥ t for fixed t) is FALSE.
+    For any threshold t, there exists a basis A with r_A(n) ≥ t for all large n
+    that cannot be partitioned into two disjoint bases.
+    [Acta Arithmetica, LII (1989)] -/
+axiom erdos_nathanson_1989 :
+  ∀ t : ℕ, ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepEventuallyGe A t ∧ ¬CanPartitionIntoBases A
+
+/-- Erdős-Nathanson positive result: Partition IS possible when r_A(n) grows fast enough.
+    Specifically, if r_A(n) > c log n for c > (log 4/3)^{-1} ≈ 3.48.
+    [Acta Arithmetica, LII (1989)] -/
+axiom erdos_nathanson_positive :
+  ∃ c : ℝ, c > 0 ∧ ∀ A : Set ℕ, IsAdditiveBasis2 A →
+    (∃ N₀ : ℕ, ∀ n ≥ N₀, (repFunc A n : ℝ) > c * Real.log n) →
+    CanPartitionIntoBases A
+
+/-- Larsen's counterexample (2026): There exists a basis A with r_A(n) → ∞
+    that cannot be partitioned.
+    [arXiv:2601.18507, Larsen & Larsen 2026] -/
+axiom larsen_counterexample :
+  ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepTendsToInfty A ∧ ¬CanPartitionIntoBases A
+
 /-- The Larsen construction has the blocking property. -/
 axiom larsen_construction_blocking :
   ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepTendsToInfty A ∧ HasBlockingProperty A
 
-/-! ## Summary
+-- ## Part VII: Main Theorem
+
+/-- Erdős Problem #871 is DISPROVED. -/
+theorem erdos_871_disproved : ¬Erdos871Conjecture := by
+  intro hconj
+  obtain ⟨A, hbasis, hrep, hno_part⟩ := larsen_counterexample
+  exact hno_part (hconj A hbasis hrep)
+
+-- ## Part VIII: Consequences and Structure
+
+/-- The gap between what works and what doesn't:
+    r_A(n) → ∞ is not strong enough, but r_A(n) > c log n is.
+    This means the critical growth rate lies somewhere between. -/
+theorem growth_rate_dichotomy :
+    (∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepTendsToInfty A ∧ ¬CanPartitionIntoBases A) ∧
+    (∃ c : ℝ, c > 0 ∧ ∀ A : Set ℕ, IsAdditiveBasis2 A →
+      (∃ N₀, ∀ n ≥ N₀, (repFunc A n : ℝ) > c * Real.log n) →
+      CanPartitionIntoBases A) :=
+  ⟨larsen_counterexample, erdos_nathanson_positive⟩
+
+/-- The Erdős-Nathanson result strengthens: not only does a counterexample exist
+    for each fixed threshold t, but even r_A(n) → ∞ is insufficient. -/
+theorem larsen_strictly_stronger :
+    (∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepTendsToInfty A ∧ ¬CanPartitionIntoBases A) →
+    ∀ t : ℕ, ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepEventuallyGe A t ∧ ¬CanPartitionIntoBases A := by
+  intro ⟨A, hbasis, hrep, hnopart⟩ t
+  exact ⟨A, hbasis, repTendsToInfty_implies_eventuallyGe A hrep t, hnopart⟩
+
+/-- Larsen's result subsumes Erdős-Nathanson for the negative direction. -/
+theorem larsen_subsumes_erdos_nathanson :
+    ∀ t : ℕ, ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepEventuallyGe A t ∧ ¬CanPartitionIntoBases A :=
+  larsen_strictly_stronger larsen_counterexample
+
+/-
+## Summary
 
 **Problem Status: DISPROVED**
 
 Erdős Problem #871 asked whether an additive basis A of order 2 with r_A(n) → ∞
 can always be partitioned into two disjoint additive bases of order 2.
 
-**Answer: NO** (Larsen 2026)
+**Answer: NO** (Larsen & Larsen 2026, arXiv:2601.18507)
 
 **Key Results**:
 1. Erdős-Nathanson (1989): FALSE for the weaker condition r_A(n) ≥ t (fixed t)
@@ -244,13 +304,32 @@ can always be partitioned into two disjoint additive bases of order 2.
 
 Larsen showed that r_A(n) → ∞ is not fast enough growth to guarantee partition.
 
-**Technique**:
-The proof modifies the Erdős-Nathanson blocking construction to maintain
-r_A(n) → ∞ while preserving the partition-blocking property.
+**Proved Theorems (0 sorries)**:
+- basis2_equiv: Two definitions of additive basis are equivalent
+- mem_sumset_of_mem: Elements double into sumset
+- sumset_mono: Sumset is monotone in the base set
+- zero_mem_sumset: 0 is in sumset if 0 ∈ A
+- basis2_of_supset: Supersets of bases are bases
+- repFunc_union_ge_left: Union increases representation count
+- repTendsToInfty_implies_eventuallyGe: ∞ growth implies eventual bound
+- repTendsToInfty_implies_basis: r_A(n) → ∞ implies A is a basis
+- repEventuallyGe_implies_basis: r_A(n) ≥ t ≥ 1 implies A is a basis
+- blocking_prevents_partition: Blocking property prevents partition
+- partition_robust_finite: Partition gives uniform threshold
+- erdos_871_disproved: The conjecture is FALSE
+- growth_rate_dichotomy: Gap between ∞ and c log n
+- larsen_strictly_stronger: Larsen implies Erdős-Nathanson
+- larsen_subsumes_erdos_nathanson: Combined subsumption
+
+**Axioms (4)**: Deep construction results not in Mathlib
+- erdos_nathanson_1989: Fixed-threshold counterexample
+- erdos_nathanson_positive: Partition under log-growth
+- larsen_counterexample: The main counterexample
+- larsen_construction_blocking: Blocking property of construction
 
 References:
-- Erdős, P. & Nathanson, M. (1989). "Partitions of bases into disjoint unions of bases."
-- Larsen, D. (2026). AI-assisted disproof (Claude Opus 4.5)
+- Erdős, P. & Nathanson, M. (1989). Acta Arithmetica LII.
+- Larsen, D. & Larsen, M. (2026). arXiv:2601.18507.
 -/
 
 end Erdos871

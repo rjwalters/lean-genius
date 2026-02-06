@@ -238,9 +238,19 @@ theorem unbounded_excess :
   refine ⟨r₀, (hf_infty r₀).mono fun n ⟨a₁, a₂, hdvd, hexcess⟩ => ?_⟩
   refine ⟨a₁, a₂, hdvd, ?_⟩
   have hf_ge_C : f r₀ ≥ C := le_trans (le_max_left C 0) hr₀
+<<<<<<< Updated upstream
   -- log(n) ≥ 0 for all natural n (since n ≥ 0 and Real.log maps non-positive to 0)
   have hlog : Real.log (n : ℝ) ≥ 0 := Real.log_natCast_nonneg n
   linarith [mul_le_mul_of_nonneg_right hf_ge_C hlog]
+=======
+  by_cases hlog : Real.log (n : ℝ) ≥ 0
+  · linarith [mul_le_mul_of_nonneg_right hf_ge_C hlog]
+  · push_neg at hlog
+    have hf_nonneg : f r₀ ≥ 0 := le_trans (le_max_right C 0) hr₀
+    have : C * Real.log (n : ℝ) ≤ f r₀ * Real.log (n : ℝ) := by
+      apply mul_le_mul_of_nonpos_right hf_ge_C hlog.le
+    linarith
+>>>>>>> Stashed changes
 
 /-- Complete resolution: YES for infinitely many n, NO for all large n -/
 theorem erdos_401_complete :

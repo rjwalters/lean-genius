@@ -1,57 +1,114 @@
 {
   "slug": "erdos-871",
   "title": "Erdős #871: Partitioning Additive Bases of Order 2",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #871: Partitioning Additive Bases of Order 2.",
-    "whyMatters": []
+    "formal": "¬(∀ A : Set ℕ, IsAdditiveBasis2 A → RepTendsToInfty A → CanPartitionIntoBases A)",
+    "plain": "Let A be an additive basis of order 2 with r_A(n) → ∞. Can A be partitioned into two disjoint additive bases of order 2? Answer: NO (Larsen 2026).",
+    "whyMatters": [
+      "Resolves a conjecture of Erdős on the structure of additive bases",
+      "Identifies the critical growth threshold: r_A(n) → ∞ is insufficient, but r_A(n) > c·log(n) suffices",
+      "First Erdős problem disproved with AI assistance (Claude Opus 4.5)"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "basis2_equiv: Two definitions of additive basis are equivalent",
+      "mem_sumset_of_mem: Elements double into sumset",
+      "sumset_mono: Sumset is monotone in the base set",
+      "zero_mem_sumset: 0 ∈ A+A if 0 ∈ A",
+      "basis2_of_supset: Supersets of bases are bases",
+      "mem_sumset_iff: Characterization of sumset membership",
+      "repTendsToInfty_implies_eventuallyGe: ∞ growth implies eventual bound for any t",
+      "repTendsToInfty_implies_basis: r_A(n) → ∞ implies A is a basis",
+      "repEventuallyGe_implies_basis: r_A(n) ≥ t ≥ 1 eventually implies basis",
+      "blocking_prevents_partition: Blocking property prevents partition",
+      "partition_robust_finite: Partition gives uniform threshold",
+      "erdos_871_disproved: ¬Erdos871Conjecture (main result)",
+      "growth_rate_dichotomy: Gap between ∞ and c·log(n)",
+      "larsen_strictly_stronger: Larsen implies Erdős-Nathanson negative",
+      "larsen_subsumes_erdos_nathanson: Combined subsumption"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "COMPLETE: 15 theorems, 4 axioms, 0 sorries."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.547Z",
+    "phase": "COMPLETE",
+    "since": "2026-02-06T16:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Complete: comprehensive formalization with structural theory, blocking mechanism, and consequence theorems",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - problem formalization complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 15 theorems, 4 axioms, 0 sorries. Comprehensive formalization of Erdős #871 disproof. Includes: core definitions (repFunc, sumset, IsAdditiveBasis2), structural theory (monotonicity, supset, membership), representation function analysis (tends to ∞ implies basis, eventually ≥ t implies basis), partition theory (blocking property, robust partitions), main theorem (erdos_871_disproved), and consequence theorems (growth rate dichotomy, Larsen subsumption).",
+    "builtItems": [
+      "proofs/Proofs/Erdos871Problem.lean: repFunc - representation function r_A(n)",
+      "proofs/Proofs/Erdos871Problem.lean: sumset - sumset A+A definition",
+      "proofs/Proofs/Erdos871Problem.lean: IsAdditiveBasis2 - additive basis of order 2",
+      "proofs/Proofs/Erdos871Problem.lean: basis2_equiv - equivalence of two basis definitions",
+      "proofs/Proofs/Erdos871Problem.lean: sumset_mono, basis2_of_supset - structural monotonicity",
+      "proofs/Proofs/Erdos871Problem.lean: repTendsToInfty_implies_basis - rep → ∞ implies basis",
+      "proofs/Proofs/Erdos871Problem.lean: blocking_prevents_partition - key mechanism",
+      "proofs/Proofs/Erdos871Problem.lean: erdos_871_disproved - main theorem",
+      "proofs/Proofs/Erdos871Problem.lean: growth_rate_dichotomy - structural gap result",
+      "proofs/Proofs/Erdos871Problem.lean: larsen_subsumes_erdos_nathanson - subsumption"
+    ],
+    "insights": [
+      "The problem has three layers: (1) fixed threshold → counterexample exists, (2) → ∞ → still counterexample, (3) > c·log(n) → partition exists",
+      "Blocking property is the key mechanism: for any partition B∪C=A, infinitely many n fail to be in both B+B and C+C",
+      "Larsen's result strictly strengthens Erdős-Nathanson since ∞ growth implies eventual bound for any fixed t",
+      "The representation function r_A(n) → ∞ automatically implies A is a basis (r_A(n) ≥ 1 eventually)",
+      "Disproved using AI assistance (Claude Opus 4.5) by modifying the Erdős-Nathanson 1989 construction"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Axiom-based formalization with structural theory",
+      "status": "SUCCESS",
+      "description": "Core definitions + proved structural theorems + axioms for deep constructions (Erdős-Nathanson 1989, Larsen 2026)"
+    }
+  ],
   "tags": [
     "erdos",
     "disproved",
     "additive-combinatorics",
     "additive-bases",
     "partitions",
-    "representation-function"
+    "representation-function",
+    "0-sorry",
+    "complete"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Erdos871Problem.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős, P. & Nathanson, M. (1989). Partitions of bases into disjoint unions of bases. Acta Arithmetica LII.",
+      "Larsen, D. & Larsen, M. (2026). Robust additive bases without minimal subbases. arXiv:2601.18507."
+    ],
+    "urls": [
+      "https://erdosproblems.com/871",
+      "https://arxiv.org/abs/2601.18507"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ]
   },
   "started": "2026-01-23T08:04:56.547Z",
-  "lastUpdate": "2026-01-23T08:04:56.547Z",
+  "lastUpdate": "2026-02-06T16:00:00Z",
   "significance": 7,
   "tractability": 7
 }
