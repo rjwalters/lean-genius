@@ -52,14 +52,14 @@
       "mahler_1935 axiom: (log n)^{1/4} lower bound",
       "stewart_2008 axiom: (log n)^{11/13} lower bound",
       "hardy_ramanujan_1729 axiom: taxicab number",
-      "elliptic_curve_connection axiom: connection to curves",
-      "erdos_829_summary theorem: state of knowledge"
+      "density_of_sums axiom: asymptotic density of cube sums",
+      "erdos_829_summary theorem: combines Stewart and Mordell results"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #829**\n\nA question about the growth rate of the representation function for sums of two cubes.\n\n**Key History:**\n- Mordell: Proved the representation function is unbounded\n- Mahler (1935): Established lower bound (log n)^{1/4} infinitely often\n- Stewart (2008): Improved to (log n)^{11/13} infinitely often\n\n**Connection to 1729:**\nThe Hardy-Ramanujan number 1729 = 1³ + 12³ = 9³ + 10³ is the smallest taxicab number.",
+    "historicalContext": "**Erdős Problem #829** asks whether the number of representations of n as a sum of two positive cubes is bounded by a power of log n. This question sits at the intersection of additive number theory, the theory of elliptic curves, and analytic number theory. The representation function r₂(n) counts the number of ways to write n = a³ + b³, and is equivalent to the convolution 1_A ∗ 1_A(n) where A is the set of perfect cubes.\n\nMordell first established that limsup r₂(n) = ∞, showing the representation function is unbounded. Mahler (1935) quantified this by proving r₂(n) ≫ (log n)^{1/4} for infinitely many n, in his work on lattice points on curves of genus 1. Stewart (2008) significantly improved the exponent to 11/13, showing r₂(n) ≫ (log n)^{11/13} infinitely often, using methods from the theory of cubic Thue equations.\n\nThe famous Hardy-Ramanujan number 1729 = 1³ + 12³ = 9³ + 10³ illustrates that multiple representations exist. The deep connection to elliptic curves — representations of n as a³ + b³ correspond to rational points on x³ + y³ = n — makes the upper bound question particularly challenging, as it requires controlling the ranks of infinitely many elliptic curves simultaneously.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet A ⊂ ℕ be the set of perfect cubes. Is it true that\n\n1_A * 1_A(n) << (log n)^{O(1)} ?\n\nIn words: Is the number of representations of n as a sum of two cubes bounded by some power of log n?\n\n**Status: OPEN**\n\nWe know lower bounds but no upper bound has been established.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Cubes:** Define IsCube, CubeSet for perfect cubes\n\n2. **Representation Function:** cubeRepresentations counting pairs\n\n3. **The Question:** HasPolylogBound, ErdosQuestion\n\n4. **Lower Bounds:** mordell_unbounded, mahler_1935, stewart_2008\n\n5. **Examples:** Hardy-Ramanujan 1729, taxicab numbers\n\n6. **Theory:** Elliptic curve connections",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Cubes:** Define IsCube, CubeSet for perfect cubes\n\n2. **Representation Function:** cubeRepresentations counting pairs\n\n3. **The Question:** HasPolylogBound, ErdosQuestion\n\n4. **Lower Bounds:** mordell_unbounded, mahler_1935, stewart_2008\n\n5. **Examples:** Hardy-Ramanujan 1729, taxicab numbers\n\n6. **Theory:** Density of sums, asymptotic counting",
     "keyInsights": [
       "**Unbounded Growth:** Mordell showed limsup r_2(n) = infinity",
       "**Best Lower Bound:** Stewart (2008): r_2(n) >> (log n)^{11/13} infinitely often",
@@ -72,51 +72,51 @@
     {
       "id": "cubes-representation",
       "title": "Cubes and Representation Function",
-      "summary": "IsCube, CubeSet, cubeRepresentations definitions",
+      "summary": "IsCube, CubeSet, cubeRepresentations, orderedCubeRepresentations definitions",
       "startLine": 38,
-      "endLine": 72
+      "endLine": 70
     },
     {
       "id": "erdos-question",
       "title": "The Erdős Question",
-      "summary": "HasPolylogBound, ErdosQuestion definitions",
-      "startLine": 74,
-      "endLine": 92
+      "summary": "HasPolylogBound and ErdosQuestion definitions",
+      "startLine": 72,
+      "endLine": 88
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
-      "summary": "mordell_unbounded, mahler_1935, stewart_2008 axioms",
-      "startLine": 94,
-      "endLine": 143
+      "summary": "mordell_unbounded, infinitely_many_large_aux, mahler_1935, stewart_2008 axioms",
+      "startLine": 90,
+      "endLine": 127
     },
     {
       "id": "famous-examples",
       "title": "Famous Examples",
-      "summary": "1729 Hardy-Ramanujan number, taxicab numbers",
-      "startLine": 145,
-      "endLine": 172
+      "summary": "Taxicab numbers: 1729 Hardy-Ramanujan number and taxicab(3)",
+      "startLine": 128,
+      "endLine": 157
     },
     {
       "id": "theory",
       "title": "Theoretical Framework",
-      "summary": "Elliptic curves, density, cube-free numbers",
-      "startLine": 174,
-      "endLine": 208
+      "summary": "Density of cube sums and cube-free numbers",
+      "startLine": 159,
+      "endLine": 181
     },
     {
       "id": "the-gap",
       "title": "The Gap",
-      "summary": "What remains unknown, why it's hard",
-      "startLine": 210,
-      "endLine": 234
+      "summary": "Stewart improves Mahler's exponent",
+      "startLine": 183,
+      "endLine": 189
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_829_summary, erdos_829 theorems",
-      "startLine": 260,
-      "endLine": 313
+      "summary": "erdos_829_summary theorem combining Stewart and Mordell",
+      "startLine": 191,
+      "endLine": 218
     }
   ],
   "conclusion": {
