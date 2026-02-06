@@ -35,6 +35,8 @@ DAEMON_LOG_FILE="research/lean-daemon.log"
 # Health check thresholds
 STUCK_THRESHOLD_MINUTES=30
 STUCK_CPU_THRESHOLD="0.5"
+# Agent statuses: RUNNING, COMPLETED, STUCK, IDLE, UNKNOWN
+# IDLE = polling agent (deployer/seeker) that is healthy but waiting between cycles
 
 # Daemon defaults
 DEFAULT_DAEMON_INTERVAL=60
@@ -505,8 +507,18 @@ is_script_based_agent() {
     [[ "$agent_type" == "aristotle" ]]
 }
 
+# Helper: Check if an agent is a polling agent that legitimately idles between cycles
+# Polling agents (deployer, seeker) sleep between work cycles, so low CPU + no network
+# is normal behavior, not a stuck state.
+is_polling_agent() {
+    local session="$1"
+    local agent_type
+    agent_type=$(get_agent_type "$session")
+    [[ "$agent_type" == "deployer" || "$agent_type" == "seeker" ]]
+}
+
 # Helper: Determine agent health status
-# Returns: RUNNING, COMPLETED, STUCK, or UNKNOWN
+# Returns: RUNNING, COMPLETED, STUCK, IDLE, or UNKNOWN
 get_agent_status() {
     local session="$1"
     local pane_pid
@@ -563,7 +575,12 @@ get_agent_status() {
         local is_low_cpu
         is_low_cpu=$(awk "BEGIN { print ($cpu < $STUCK_CPU_THRESHOLD) ? 1 : 0 }")
         if [[ "$is_low_cpu" -eq 1 ]] && ! has_network "$claude_pid"; then
-            echo "STUCK"
+            # Polling agents (deployer, seeker) legitimately idle between cycles
+            if is_polling_agent "$session"; then
+                echo "IDLE"
+            else
+                echo "STUCK"
+            fi
             return
         fi
     fi
@@ -591,6 +608,7 @@ cmd_health() {
     local stuck_count=0
     local running_count=0
     local completed_count=0
+    local idle_count=0
 
     while IFS= read -r session; do
         [[ -z "$session" ]] && continue
@@ -660,6 +678,10 @@ cmd_health() {
                     status_display="${RED}STUCK${NC}"
                     stuck_count=$((stuck_count + 1))
                     ;;
+                IDLE)
+                    status_display="${BLUE}IDLE${NC}"
+                    idle_count=$((idle_count + 1))
+                    ;;
                 RUNNING)
                     status_display="${GREEN}RUNNING${NC}"
                     running_count=$((running_count + 1))
@@ -675,7 +697,12 @@ cmd_health() {
     done <<< "$sessions"
 
     echo ""
-    echo -e "Summary: ${GREEN}$running_count running${NC}, ${completed_count} completed, ${RED}$stuck_count stuck${NC}"
+    local summary="Summary: ${GREEN}$running_count running${NC}, ${completed_count} completed"
+    if [[ $idle_count -gt 0 ]]; then
+        summary+=", ${BLUE}$idle_count idle${NC}"
+    fi
+    summary+=", ${RED}$stuck_count stuck${NC}"
+    echo -e "$summary"
 
     if [[ $stuck_count -gt 0 ]]; then
         echo ""
@@ -1129,6 +1156,7 @@ cmd_daemon() {
         local running_count=0
         local completed_count=0
         local stuck_count=0
+        local idle_count=0
 
         while IFS= read -r session; do
             [[ -z "$session" ]] && continue
@@ -1139,6 +1167,10 @@ cmd_daemon() {
             case "$status" in
                 RUNNING)
                     running_count=$((running_count + 1))
+                    ;;
+                IDLE)
+                    # Polling agents (deployer, seeker) are healthy but waiting between cycles
+                    idle_count=$((idle_count + 1))
                     ;;
                 COMPLETED)
                     completed_count=$((completed_count + 1))
@@ -1248,7 +1280,7 @@ cmd_daemon() {
         process_completion_signals
 
         # 5. Log cycle summary
-        daemon_log "INFO" "Cycle $cycle_count: running=$running_count, completed=$completed_count, stuck=$stuck_count, respawned=$cycle_respawns | queues: stubs=$stubs, candidates=$candidates, aristotle=$aristotle_jobs, prs=$ready_prs"
+        daemon_log "INFO" "Cycle $cycle_count: running=$running_count, idle=$idle_count, completed=$completed_count, stuck=$stuck_count, respawned=$cycle_respawns | queues: stubs=$stubs, candidates=$candidates, aristotle=$aristotle_jobs, prs=$ready_prs"
 
         # 6. Update state file with daemon stats
         update_daemon_state "$cycle_count" "$total_respawns"
