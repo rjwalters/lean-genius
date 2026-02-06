@@ -16,13 +16,14 @@
   },
   "knownResults": {
     "proven": [
-      "41 theorems across RamseyR4kExtensions.lean, 0 sorries",
+      "46 theorems across RamseyR4kExtensions.lean, 0 sorries",
       "Paley graph on F_17: symmetry, no red K_4, no blue K_4 (all proved by native_decide)",
       "R(4,4) > 16 via Paley graph (fully proved, no axioms)",
       "Concrete upper bounds: R(3,3)=6, R(4,4)=20, R(5,5)=70, etc.",
       "Structural: symmetry, monotonicity, Pascal's rule, positivity",
       "R(r,s) ≥ s and R(r,s) ≥ r for appropriate bounds",
       "Strict monotonicity, diagonal monotonicity",
+      "R(3,3) = 6 exact: upper bound from C(4,2), lower bound from C_5 coloring",
       "small_graph_no_red_K4 for n < 4"
     ],
     "open": [
@@ -34,8 +35,8 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-02-06T04:00:00Z",
-    "iteration": 1,
-    "focus": "Converted 3 Paley axioms to theorems, making R(4,4)>16 fully proved",
+    "iteration": 2,
+    "focus": "Added R(3,3) = 6 exact determination via C_5 lower bound construction",
     "blockers": [],
     "nextAction": "Consider proving more concrete Ramsey lower bounds or submitting axioms to Aristotle",
     "attemptCounts": {
@@ -45,8 +46,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 41 theorems, 7 axioms, 0 sorries. Converted 3 Paley graph axioms (symmetry, no red K_4, no blue K_4) to theorems via native_decide. The R(4,4) > 16 lower bound is now fully proved with no axioms. 7 axioms remain for deep probabilistic/asymptotic results.",
+    "progressSummary": "PROGRESS: 46 theorems, 7 axioms, 0 sorries. Added R(3,3) ≥ 6 lower bound via C_5 construction (5 new theorems). Combined with r3_3_upper, R(3,3) = 6 is now exactly determined. Paley graph axioms converted to theorems. 7 axioms remain for deep probabilistic/asymptotic results.",
     "builtItems": [
+      "proofs/Proofs/RamseyR4kExtensions.lean: c5Color, c5Color_symm, c5Color_irrefl (C_5 construction)",
+      "proofs/Proofs/RamseyR4kExtensions.lean: c5_no_red_K3, c5_no_blue_K3 (triangle-free via native_decide)",
+      "proofs/Proofs/RamseyR4kExtensions.lean: r3_3_lower_bound (R(3,3) ≥ 6 via C_5)",
       "proofs/Proofs/RamseyR4kExtensions.lean: paleyColor17_symm (converted from axiom)",
       "proofs/Proofs/RamseyR4kExtensions.lean: paley17_no_red_K4 (converted from axiom)",
       "proofs/Proofs/RamseyR4kExtensions.lean: paley17_no_blue_K4 (converted from axiom)",
@@ -67,8 +71,7 @@
     ],
     "nextSteps": [
       "Consider Aristotle submission for simpler axioms",
-      "Prove more Ramsey lower bounds via explicit colorings",
-      "Add R(3,3) = 6 exact value proof (both upper and lower)"
+      "Prove R(3,4) ≥ 9 or R(3,5) ≥ 14 via explicit constructions"
     ]
   },
   "approaches": [
@@ -106,7 +109,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-06T04:00:00Z",
+  "lastUpdate": "2026-02-06T04:35:00Z",
   "significance": 7,
   "tractability": 6
 }
