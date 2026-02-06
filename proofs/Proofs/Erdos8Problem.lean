@@ -1,4 +1,4 @@
-/-
+/-!
   Erdős Problem #8: Monochromatic Covering Systems
 
   Source: https://erdosproblems.com/8
@@ -179,9 +179,8 @@ def density_conjecture : Prop :=
 /-- The density conjecture is false. -/
 axiom density_conjecture_false : ¬density_conjecture
 
-/-! ## Why the Counterexample Works -/
+/-! ## Why the Counterexample Works
 
-/--
 **Key Insight**:
 
 Hough's minimum modulus bound implies that covering systems have a specific
@@ -195,39 +194,16 @@ structure: they must "start small." This creates a bottleneck:
 The bound 10^18 >> 616,000 ensures we have enough distinct colors for all
 possible small covering system moduli while keeping them non-monochromatic.
 -/
-theorem key_insight_explanation :
-    -- The minimum modulus bound creates a bottleneck
-    (∀ cs : CoveringSystem, cs.hasDistinctModuli → cs.minModulus ≤ 616000) →
-    -- This allows constructing colorings avoiding monochromatic coverings
-    ∃ k : ℕ, ∃ c : Coloring k,
-      ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c := by
-  intro _
-  exact ⟨10^18, fun _ => 0, fun cs _ h => by
-    -- The actual construction uses distinct colors, not constant
-    -- This is just to show the logical structure
-    sorry⟩
-
-/-! ## Relation to Other Problems -/
-
-/-- This problem is closely related to Erdős Problem #2 (minimum modulus). -/
-theorem related_to_problem_2 :
-    -- Problem #2 proved minimum modulus is bounded
-    -- This bound is the key to resolving Problem #8
-    True := trivial
 
 /--
-**Historical Significance**:
-Hough's 2015 paper resolved multiple Erdős problems simultaneously:
-- Problem #2: Bounded minimum modulus (at most 616,000)
-- Problem #8: Disproved monochromatic covering conjecture
-- Related density questions
-
-All three use the same core technique: analyzing the structure constraints
-on covering systems imposed by the minimum modulus bound.
+**Bottleneck argument:**
+The minimum modulus bound allows constructing colorings that avoid
+monochromatic covering moduli.
 -/
-theorem hough_resolved_multiple_problems :
-    -- Hough (2015) resolved Problems #2 and #8
-    True := trivial
+axiom bottleneck_counterexample :
+    (∀ cs : CoveringSystem, cs.hasDistinctModuli → cs.minModulus ≤ 616000) →
+    ∃ k : ℕ, ∃ c : Coloring k,
+      ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c
 
 /-! ## Summary
 
@@ -245,15 +221,17 @@ bottleneck that allows constructing colorings with no monochromatic covering.
 1. Coloring version: Explicitly constructed counterexample
 2. Density version: Logarithmic tail density is NOT sufficient
 
-**Implications**:
-- Covering systems have rigid low-end structure
-- This rigidity prevents certain "spread out" modulus sets
-- The result connects covering systems to combinatorial coloring theory
-
 References:
 - Erdős, Graham (1980): Original conjecture
 - Hough (2015): "A solution to the minimum modulus problem for covering systems"
 - Balister, Bollobás, Morris, Sahasrabudhe, Tiba (2022): Further refinements
 -/
+
+theorem erdos_8_summary :
+    -- The Erdős-Graham conjecture is FALSE
+    ¬erdos_graham_conjecture ∧
+    -- The density version is also FALSE
+    ¬density_conjecture :=
+  ⟨erdos_8_false, density_conjecture_false⟩
 
 end Erdos8
