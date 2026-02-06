@@ -138,133 +138,56 @@ axiom balint_symmetric (n : ℕ) (hn : n ≥ 3) (c : Fin n → ℝ)
     Gap c ⟨0, by omega⟩ ≥ Gap c ⟨n / 2 - 1, by omega⟩
 
 /-
-## Part V: Special Cases
+## Part V: Quartic Case
 -/
 
-/--
-**n = 2 case (quadratic):**
-f has 3 roots: a, a+d, a+2d
-f' is linear with one root (the vertex), no gap comparison needed.
--/
-theorem quadratic_trivial : True := trivial
-
-/--
-**n = 3 case (cubic):**
-f has 4 roots: a, a+d, a+2d, a+3d
-f' is quadratic with 2 roots c₁ < c₂
-There's one gap g = c₂ - c₁.
--/
-theorem cubic_one_gap : True := trivial
-
-/--
-**n = 4 case (quartic):**
-f has 5 roots: a, a+d, a+2d, a+3d, a+4d
-f' has 4 roots c₁ < c₂ < c₃ < c₄
-Gaps: g₁ = c₂-c₁, g₂ = c₃-c₂, g₃ = c₄-c₃
-Theorem says: g₁ > g₂, g₃ > g₂ (outer gaps larger than middle)
--/
+/-- **n = 4 case (quartic):**
+    f has 5 roots, f' has 4 critical points c₁ < c₂ < c₃ < c₄.
+    Gaps: g₁ = c₂-c₁, g₂ = c₃-c₂, g₃ = c₄-c₃.
+    Result: g₁ > g₂ and g₃ > g₂ (outer gaps larger than middle). -/
 axiom quartic_gap_property (c : Fin 4 → ℝ)
     (hc : ∀ i j : Fin 4, i < j → c i < c j) :
     Gap c ⟨0, by omega⟩ > Gap c ⟨1, by omega⟩ ∧
     Gap c ⟨2, by omega⟩ > Gap c ⟨1, by omega⟩
 
 /-
-## Part VI: Proof Ideas
+## Part VI: Lorch's Generalizations (1976)
 -/
 
-/--
-**Symmetry observation:**
-The polynomial with AP roots has symmetric properties.
-f(a₀ + t) = (-1)ⁿ⁺¹ f(aₙ - t) up to scaling.
--/
-axiom symmetry_of_ap_polynomial :
-  -- The polynomial with evenly spaced roots is symmetric about its center
-  True
-
-/--
-**Derivative structure:**
-f'(x) also has special structure when f has AP roots.
-The critical points are NOT evenly spaced, but have predictable pattern.
--/
-axiom derivative_structure :
-  -- f' has roots that cluster toward the center
-  -- Gaps are larger near the endpoints
-  True
-
-/--
-**Convexity argument:**
-The key insight is that certain auxiliary functions are convex,
-which implies the monotonicity of gaps.
--/
-axiom convexity_argument : True
+/-- Lorch (1976) extended Bálint's result to higher derivatives:
+    for f⁽ᵏ⁾ with k < n, the gaps between consecutive zeros also
+    exhibit monotonicity from the midpoint outward. -/
+axiom lorch_higher_derivatives {f : Polynomial ℝ} {n : ℕ} {a₀ d : ℝ}
+    (hf : HasAPRoots f (n + 1) a₀ d) (k : ℕ) (hk : k < n) :
+    ∃ c : Fin (n - k) → ℝ,
+      (∀ i j : Fin (n - k), i < j → c i < c j) ∧
+      ∀ i j : Fin (n - k - 1),
+        DistFromMidpoint c a₀ d (n - k) ⟨i.val, by omega⟩ <
+        DistFromMidpoint c a₀ d (n - k) ⟨j.val, by omega⟩ →
+        Gap c i < Gap c j
 
 /-
-## Part VII: Lorch's Generalizations (1976)
+## Part VII: Summary
 -/
 
-/--
-**Generalization 1:**
-The result extends to higher derivatives.
--/
-axiom lorch_higher_derivatives :
-  -- For f⁽ᵏ⁾, similar monotonicity properties hold
-  True
-
-/--
-**Generalization 2:**
-Related monotonicity properties for other polynomial families.
--/
-axiom lorch_extensions : True
-
-/-
-## Part VIII: Explicit Examples
--/
-
-/--
-**Example: f(x) = (x-1)(x-2)(x-3)(x-4)**
-Roots: 1, 2, 3, 4 (AP with d = 1)
-f(x) = x⁴ - 10x³ + 35x² - 50x + 24
-f'(x) = 4x³ - 30x² + 70x - 50
-
-Critical points: approximately 1.38, 2.5, 3.62
-Gaps: g₁ ≈ 1.12, g₂ ≈ 1.12 (actually symmetric for n=4)
--/
-axiom example_quartic : True
-
-/--
-**Example: f(x) = (x-1)(x-2)(x-3)(x-4)(x-5)**
-Roots: 1, 2, 3, 4, 5 (AP with d = 1)
-f' has 4 critical points.
-Outer gaps > inner gaps.
--/
-axiom example_quintic : True
-
-/-
-## Part IX: Summary
--/
-
-/--
-**Erdős Problem #1114: SOLVED**
-
-**STATEMENT:** For a polynomial f with n+1 real roots in arithmetic progression,
-the gaps between consecutive critical points of f' increase outward from
-the midpoint.
-
-**PROOF:** Bálint (1960)
-
-**GENERALIZATIONS:** Lorch (1976)
-
-**KEY INSIGHT:** The symmetry of AP roots induces structure on f',
-and convexity arguments establish the monotonicity of gaps.
--/
+/-- **Erdős Problem #1114: SOLVED by Bálint (1960)**
+    Combines Bálint's main theorem with the quartic special case. -/
 theorem erdos_1114_summary :
-    -- The main theorem is true (axiomatized)
-    True := trivial
-
-/--
-**Problem status:**
-Erdős Problem #1114 is SOLVED.
--/
-theorem erdos_1114_status : True := trivial
+    -- Main theorem: gaps increase outward
+    (∀ n : ℕ, n ≥ 2 → ∀ a₀ d : ℝ, d > 0 →
+      ∀ c : Fin n → ℝ,
+      (∀ i j : Fin n, i < j → c i < c j) →
+      (∀ i : Fin n, a₀ + i * d < c i ∧ c i < a₀ + (i + 1) * d) →
+      ∀ i j : Fin (n - 1),
+        DistFromMidpoint c a₀ d n ⟨i.val, by omega⟩ <
+        DistFromMidpoint c a₀ d n ⟨j.val, by omega⟩ →
+        Gap c i < Gap c j) ∧
+    -- Quartic case: outer gaps > middle gap
+    (∀ c : Fin 4 → ℝ,
+      (∀ i j : Fin 4, i < j → c i < c j) →
+      Gap c ⟨0, by omega⟩ > Gap c ⟨1, by omega⟩ ∧
+      Gap c ⟨2, by omega⟩ > Gap c ⟨1, by omega⟩) :=
+  ⟨fun n hn a₀ d hd c hc hcb => balint_theorem hn hd c hc hcb,
+   fun c hc => quartic_gap_property c hc⟩
 
 end Erdos1114

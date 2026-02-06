@@ -15,7 +15,7 @@
       "analysis",
       "critical-points"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1114,
     "erdosUrl": "https://erdosproblems.com/1114",
@@ -59,42 +59,28 @@
       "title": "The Main Theorem",
       "startLine": 107,
       "endLine": 138,
-      "summary": "Bálint's theorem: gaps increase outward from midpoint."
+      "summary": "Bálint's theorem and symmetric formulation: gaps increase outward from midpoint."
     },
     {
-      "id": "special-cases",
-      "title": "Special Cases",
+      "id": "quartic-case",
+      "title": "Quartic Case",
       "startLine": 140,
-      "endLine": 169,
-      "summary": "Cases n = 2, 3, 4 with explicit gap properties."
-    },
-    {
-      "id": "proof-ideas",
-      "title": "Proof Ideas",
-      "startLine": 171,
-      "endLine": 199,
-      "summary": "Symmetry, derivative structure, and convexity arguments."
+      "endLine": 151,
+      "summary": "Explicit quartic case: outer gaps larger than middle gap."
     },
     {
       "id": "generalizations",
-      "title": "Lorch's Generalizations",
-      "startLine": 201,
-      "endLine": 217,
-      "summary": "Extensions to higher derivatives and related polynomials."
-    },
-    {
-      "id": "examples",
-      "title": "Explicit Examples",
-      "startLine": 219,
-      "endLine": 240,
-      "summary": "Concrete examples with quartic and quintic polynomials."
+      "title": "Lorch's Generalizations (1976)",
+      "startLine": 153,
+      "endLine": 167,
+      "summary": "Extension to higher derivatives with formalized axiom."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 242,
-      "endLine": 270,
-      "summary": "Complete summary of the SOLVED problem."
+      "startLine": 169,
+      "endLine": 193,
+      "summary": "erdos_1114_summary combining Bálint's theorem and quartic case."
     }
   ],
   "conclusion": {
