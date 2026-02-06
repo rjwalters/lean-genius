@@ -1,1 +1,73 @@
-[]
+[
+  {
+    "id": "ann-e254-overview",
+    "proofId": "erdos-254",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #254** asks: if A ⊆ ℕ satisfies a growth condition and an irrationality condition, must every sufficiently large integer be a sum of distinct elements of A?\n\n**Status**: OPEN. Cassels (1960) proved a related result under stronger hypotheses.\n\nThe two conditions are:\n1. Growth: |A ∩ [1,2x]| - |A ∩ [1,x]| → ∞ (enough elements in each dyadic interval)\n2. Irrationality: Σ_{n ∈ A} {θn} = ∞ for all θ ∈ (0,1) (A well-distributed mod θ)",
+    "significance": "critical",
+    "relatedConcepts": ["subset sums", "additive number theory", "Cassels theorem"]
+  },
+  {
+    "id": "ann-e254-fracdist",
+    "proofId": "erdos-254",
+    "range": { "startLine": 43, "endLine": 53 },
+    "type": "definition",
+    "title": "Fractional Distance and Counting",
+    "content": "**fracDist(x)** = |x - round(x)|: distance from x to the nearest integer. Values in [0, 1/2].\n\n**fracDist'(x)** = min(x - ⌊x⌋, ⌈x⌉ - x): equivalent alternative definition.\n\n**countTo(A, x)**: number of elements of A in {1, 2, ..., ⌊x⌋}. Used to express growth conditions.",
+    "mathContext": "The fractional distance {x} measures how far x is from being an integer. When θ is irrational, the sequence {θn} is equidistributed by Weyl's theorem, so Σ {θn} = ∞ for any infinite set A. The interesting constraint is for rational θ.",
+    "significance": "key",
+    "relatedConcepts": ["fractional part", "Weyl's theorem", "equidistribution"]
+  },
+  {
+    "id": "ann-e254-conditions",
+    "proofId": "erdos-254",
+    "range": { "startLine": 55, "endLine": 81 },
+    "type": "definition",
+    "title": "Growth and Irrationality Conditions",
+    "content": "**HasGrowthCondition(A)**: For every M, eventually countTo(A, 2x) - countTo(A, x) ≥ M. This means A has arbitrarily many elements in each dyadic interval.\n\n**HasIrrationalityCondition(A)**: For every θ ∈ (0,1), the sum Σ_{n ∈ A} fracDist(θn) diverges. This prevents A from being too structured (e.g., all elements ≡ 0 mod some q).\n\nTogether these two conditions should force A to be 'rich enough' for complete representation.",
+    "significance": "critical",
+    "relatedConcepts": ["dyadic intervals", "divergent series", "additive structure"]
+  },
+  {
+    "id": "ann-e254-conjecture",
+    "proofId": "erdos-254",
+    "range": { "startLine": 95, "endLine": 108 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**ErdosConjecture**: If A has growth + irrationality, then RepresentsAllLarge(A).\n\n**RepresentsAllLarge(A)**: ∃ N, ∀ n ≥ N, n is a sum of distinct elements of A.\n\n**IsSubsetSum(A, n)**: ∃ S ⊆ A (finite, distinct), Σ S = n.\n\nThe conjecture remains OPEN in its original form.",
+    "significance": "critical",
+    "relatedConcepts": ["complete sequences", "representation problems", "open conjecture"]
+  },
+  {
+    "id": "ann-e254-cassels",
+    "proofId": "erdos-254",
+    "range": { "startLine": 110, "endLine": 137 },
+    "type": "axiom",
+    "title": "Cassels's Theorem (1960)",
+    "content": "**cassels_theorem (axiom):** Under strictly stronger hypotheses, every large integer is a subset sum.\n\n**HasStrongGrowthCondition**: (count(2x) - count(x)) / log log x → ∞. Strictly stronger than Erdős's condition.\n\n**HasStrongIrrationalityCondition**: Σ {θn}² = ∞. Strictly weaker than Erdős's Σ {θn} = ∞ (since {θn}² ≤ {θn}).\n\nThe 'paradox': Cassels weakens one condition but strengthens the other, and the combination works. The gap between Erdős's and Cassels's conditions is the open question.",
+    "mathContext": "The growth strengthening (dividing by log log x) is substantial — Erdős only requires divergence to ∞, while Cassels requires divergence faster than log log x.",
+    "significance": "critical",
+    "relatedConcepts": ["Cassels 1960", "stronger hypotheses", "log log growth"]
+  },
+  {
+    "id": "ann-e254-examples",
+    "proofId": "erdos-254",
+    "range": { "startLine": 139, "endLine": 156 },
+    "type": "axiom",
+    "title": "Powers of 2 Example",
+    "content": "**PowersOf2** = {1, 2, 4, 8, 16, ...} satisfies both conditions:\n\n1. **Growth**: Each dyadic interval [2^k, 2^{k+1}] contains exactly one power of 2, so the count grows.\n2. **Irrationality**: For irrational θ, {θ · 2^k} is equidistributed; for rational θ = p/q, eventually 2^k mod q cycles through residues.\n3. **Representation**: Every n ∈ ℕ has a unique binary representation as a sum of distinct powers of 2.\n\nThis is the canonical example confirming the conjecture's conclusion is reasonable.",
+    "significance": "key",
+    "relatedConcepts": ["binary representation", "equidistribution", "concrete example"]
+  },
+  {
+    "id": "ann-e254-summary",
+    "proofId": "erdos-254",
+    "range": { "startLine": 158, "endLine": 185 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_254_summary (proved from axioms):**\n\nCombines three results:\n1. Cassels's theorem: representation under strong conditions\n2. Powers of 2 satisfy growth + irrationality conditions\n3. Powers of 2 represent all large integers\n\nProved by: `⟨cassels_theorem, ⟨powers_of_2_growth, powers_of_2_irrationality⟩, powers_of_2_representation⟩`",
+    "significance": "critical"
+  }
+]
