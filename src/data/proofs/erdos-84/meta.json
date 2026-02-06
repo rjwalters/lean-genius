@@ -53,64 +53,64 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 47,
-      "endLine": 84,
+      "endLine": 83,
       "summary": "Valid cycle lengths, cycle sets, achievable sets, and f(n)"
     },
     {
       "id": "erdos-faudree",
       "title": "Erdős-Faudree Bounds",
       "startLine": 85,
-      "endLine": 116,
+      "endLine": 115,
       "summary": "The initial bounds 2^{n/2} < f(n) ≤ 2^{n-2}"
     },
     {
       "id": "part1-solved",
       "title": "Part 1 - SOLVED",
       "startLine": 117,
-      "endLine": 150,
+      "endLine": 149,
       "summary": "Verstraëte's theorem proving f(n) = o(2^n)"
     },
     {
       "id": "nenadov",
       "title": "Nenadov's Improvement",
       "startLine": 151,
-      "endLine": 171,
+      "endLine": 170,
       "summary": "Best known bound f(n) ≪ 2^{n - n^{1/2-o(1)}}"
     },
     {
       "id": "part2-open",
       "title": "Part 2 - OPEN",
       "startLine": 172,
-      "endLine": 192,
+      "endLine": 190,
       "summary": "The open question: Does f(n)/2^{n/2} → ∞?"
     },
     {
       "id": "limit",
       "title": "The Limit Question",
-      "startLine": 193,
-      "endLine": 222,
+      "startLine": 192,
+      "endLine": 215,
       "summary": "Does lim f(n)^{1/n} exist?"
     },
     {
       "id": "structural",
       "title": "Structural Results",
-      "startLine": 223,
-      "endLine": 244,
+      "startLine": 218,
+      "endLine": 229,
       "summary": "Not all subsets are achievable cycle sets"
     },
     {
-      "id": "examples",
-      "title": "Examples",
-      "startLine": 245,
-      "endLine": 289,
-      "summary": "Complete graph, cycle graph, path graph, and small values"
+      "id": "small-values",
+      "title": "Small Values",
+      "startLine": 232,
+      "endLine": 244,
+      "summary": "f(3) = 2, f(4) = 4, f(5) = 8"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 290,
-      "endLine": 342,
-      "summary": "Main theorem and historical note"
+      "startLine": 246,
+      "endLine": 288,
+      "summary": "Main theorem: Part 1 solved, structural constraints established"
     }
   ],
   "conclusion": {

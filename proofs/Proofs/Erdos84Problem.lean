@@ -188,7 +188,6 @@ Erdős and Faudree asked: Does f(n)/2^{n/2} → ∞?
 This would show that the lower bound 2^{n/2} can be improved.
 The question remains open.
 -/
-axiom part2_open : True  -- Status marker: Part 2 is open
 
 /-!
 ## Part VI: The Limit Question
@@ -215,10 +214,6 @@ axiom limit_bounds (h : limit_exists) :
     ∃ L : ℝ, Real.sqrt 2 ≤ L ∧ L ≤ 2 ∧
       Filter.Tendsto (fun n => Real.rpow (f n) (1/n : ℝ)) Filter.atTop (nhds L)
 
-/--
-**Limit Question: OPEN**
--/
-axiom limit_question_open : True  -- Status marker
 
 /-!
 ## Part VII: Structural Results
@@ -233,48 +228,9 @@ axiom structural_constraint :
     ∃ n : ℕ, ∃ A : Finset ℕ, A ⊆ validCycleLengths n ∧
       ¬isAchievableCycleSet n (A : Set ℕ)
 
-/--
-**Cycle Set Constraints:**
-If a graph has a cycle of length k, certain other cycle lengths
-may be forced or forbidden.
--/
-axiom cycle_implications :
-    -- Informally: Having certain cycle lengths implies having others
-    True
 
 /-!
-## Part VIII: Examples
--/
-
-/--
-**Example: Complete Graph:**
-K_n has cycles of all lengths from 3 to n.
-Cycle set of K_n = {3, 4, ..., n}.
--/
-axiom complete_graph_cycles (n : ℕ) (hn : n ≥ 3) :
-    -- cycleSet K_n = {3, 4, ..., n}
-    True
-
-/--
-**Example: Cycle Graph:**
-C_n has a unique cycle of length n.
-Cycle set of C_n = {n}.
--/
-axiom cycle_graph_cycles (n : ℕ) (hn : n ≥ 3) :
-    -- cycleSet C_n = {n}
-    True
-
-/--
-**Example: Path Graph:**
-P_n (path) has no cycles.
-Cycle set of P_n = ∅.
--/
-axiom path_graph_cycles (n : ℕ) :
-    -- cycleSet P_n = ∅
-    True
-
-/-!
-## Part IX: Small Values
+## Part VIII: Small Values
 -/
 
 /--
@@ -288,22 +244,21 @@ axiom small_values :
     f 3 = 2 ∧ f 4 = 4 ∧ f 5 = 8
 
 /-!
-## Part X: Summary
+## Part IX: Summary
 -/
 
 /--
 **Summary of Results:**
+Part 1 (f(n) = o(2^n)) is SOLVED by Verstraëte (2004).
+There exist subsets of {3,...,n} that are not achievable cycle sets.
 -/
 theorem erdos_84_summary :
     -- Part 1: SOLVED
     part1_statement ∧
-    -- Part 2: OPEN (status marker)
-    True ∧
-    -- Bounds: 2^{n/2} < f(n) ≤ 2^{n - n^{1/2-o(1)}}
-    True := by
-  constructor
-  · exact part1_solved
-  · exact ⟨trivial, trivial⟩
+    -- Structural constraint: not all subsets are achievable
+    (∃ n : ℕ, ∃ A : Finset ℕ, A ⊆ validCycleLengths n ∧
+      ¬isAchievableCycleSet n (A : Set ℕ)) :=
+  ⟨part1_solved, structural_constraint⟩
 
 /--
 **Erdős Problem #84: PARTIALLY SOLVED**
@@ -329,14 +284,5 @@ There are structural constraints that limit which cycle length combinations
 can coexist in a graph.
 -/
 theorem erdos_84 : part1_statement := part1_solved
-
-/--
-**Historical Note:**
-This problem connects cycle enumeration to extremal graph theory.
-The progression of upper bounds (2^{n-2} → 2^{n-n^{1/10}} → 2^{n-n^{1/2}})
-shows active progress. Determining the exact growth rate of f(n) remains
-an important open problem in graph theory.
--/
-theorem historical_note : True := trivial
 
 end Erdos84
