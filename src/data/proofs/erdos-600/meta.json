@@ -1,34 +1,37 @@
 {
   "id": "erdos-600",
-  "title": "Edge-Triangle Containment Thresholds",
+  "title": "Erdős Problem #600: Edge-Triangle Containment Thresholds",
   "slug": "erdos-600",
-  "description": "Let e(n,r) be the minimal number of edges such that every graph on n vertices with at least e(n,r) edges, where each edge is in at least one triangle, must have some edge in at least r triangles. Questions: (1) Does e(n,r+1) - e(n,r) → ∞? (2) Does e(n,r+1)/e(n,r) → 1?",
+  "description": "Let e(n,r) be the minimal number of edges such that every triangle-covered graph on n vertices with ≥ e(n,r) edges has some edge in ≥ r triangles. Does e(n,r+1) - e(n,r) → ∞? Does e(n,r+1)/e(n,r) → 1?",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Erdős (1987), Ruzsa-Szemerédi (1978)",
     "sourceUrl": "https://erdosproblems.com/600",
     "date": "1987",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos600Problem.lean",
     "tags": [
       "erdos",
       "combinatorics",
       "extremal-graph-theory",
-      "triangle-counting"
+      "triangle-counting",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 600,
     "erdosUrl": "https://erdosproblems.com/600",
     "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Basic",
-        "description": "Basic natural number operations and properties",
+        "description": "Basic natural number operations",
         "module": "Mathlib.Data.Nat.Basic"
       },
       {
         "theorem": "Finset.Basic",
-        "description": "Finite sets for representing edge sets and vertices",
+        "description": "Finite sets for edge sets and vertices",
         "module": "Mathlib.Data.Finset.Basic"
       },
       {
@@ -43,113 +46,97 @@
       },
       {
         "theorem": "Filter.Basic",
-        "description": "Filters for expressing limits and eventual properties",
+        "description": "Filters for expressing eventual properties",
         "module": "Mathlib.Order.Filter.Basic"
       }
     ],
     "originalContributions": [
-      "Formal definition of Graph structure with symmetry and irreflexivity",
-      "Definition of edgeCount for undirected edges",
-      "Formalization of IsTriangle predicate",
-      "Definition of triangleCount for edge-triangle containment",
-      "Formalization of AllEdgesTriangleCovered property",
-      "Definition of the e(n,r) threshold function",
-      "Axiomatization of Ruzsa-Szemerédi subquadratic result",
-      "Formalization of Question 1 (absolute difference)",
-      "Formalization of Question 2 (ratio convergence)",
-      "Proof of subquadratic_growth from Ruzsa-Szemerédi",
-      "Axiomatization of monotonicity properties"
-    ],
-    "dateAdded": "2026-01-19"
+      "Graph structure with edge set, symmetry, and irreflexivity",
+      "edgeCount, IsTriangle, triangleCount definitions",
+      "IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles predicates",
+      "e(n,r) threshold function via sInf",
+      "ruzsa_szemeredi axiom: e(n,r) = o(n²)",
+      "Question1 and Question2 formal statements",
+      "e_monotone_r and e_monotone_n monotonicity axioms",
+      "questions_together proved theorem",
+      "upper_bound and lower_bound axioms for known bounds",
+      "erdos_600_summary: three-part conjunction of known results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1987, building on the influential work of Ruzsa and Szemerédi (1978) on triple systems and the triangle removal lemma. The problem asks about the fine structure of how the edge threshold changes as we require more triangles per edge.",
-    "problemStatement": "Let e(n,r) be the minimal number of edges such that every graph on n vertices with at least e(n,r) edges, where each edge is in at least one triangle, must have some edge contained in at least r triangles. For r ≥ 2: (1) Does e(n,r+1) - e(n,r) → ∞ as n → ∞? (2) Does e(n,r+1)/e(n,r) → 1 as n → ∞?",
-    "proofStrategy": "The formalization defines graphs, triangles, and edge-triangle containment, then constructs the e(n,r) threshold function. The known Ruzsa-Szemerédi result e(n,r) = o(n²) is axiomatized, and both open questions are formalized as precise mathematical statements about limits.",
+    "historicalContext": "Erdős posed this problem in 1987, building on the influential work of Ruzsa and Szemerédi from 1978 on triple systems. Their seminal paper proved that in any graph on n vertices where every edge is in at least one triangle, if the graph has o(n²) edges then one cannot guarantee that some edge is in many triangles — equivalently, e(n,r) = o(n²) for fixed r. This result is intimately connected to the triangle removal lemma, one of the cornerstones of extremal graph theory.\n\nThe problem asks two specific questions about the fine structure of the function e(n,r). Question 1 asks whether the absolute gap e(n,r+1) - e(n,r) grows without bound as n → ∞, meaning that requiring one additional triangle per edge always costs significantly more edges for large graphs. Question 2 asks whether the ratio e(n,r+1)/e(n,r) → 1, meaning that while the absolute cost may grow, the relative cost becomes negligible. If both are true, the thresholds grow at the same asymptotic rate but with unbounded absolute separation.\n\nThe known bounds place e(n,r) at roughly n²/log n from above and n^{2-o(1)} from below, leaving a significant gap even for the basic asymptotics. Both questions remain completely open. The problem connects to Turán-type extremal theory, the Szemerédi regularity lemma, and the broader study of how graph density forces local substructure.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $e(n,r)$ be the minimal number of edges such that every graph on $n$ vertices with $\\geq e(n,r)$ edges, where each edge is in at least one triangle, must have some edge contained in $\\geq r$ triangles.\n\n**Questions:**\n1. Does $e(n, r+1) - e(n, r) \\to \\infty$ as $n \\to \\infty$?\n2. Does $e(n, r+1) / e(n, r) \\to 1$ as $n \\to \\infty$?\n\n**Status: OPEN** — Known: $e(n,r) = o(n^2)$ for fixed $r$ (Ruzsa-Szemerédi 1978).",
+    "proofStrategy": "The formalization defines a custom Graph structure on Fin n and builds the edge-triangle counting framework: triangles, triangle counts per edge, and the predicates for triangle-covered graphs and high-multiplicity edges. The threshold function e(n,r) is defined via sInf. The Ruzsa-Szemerédi result is axiomatized as the main known result, and both open questions are formalized as precise limit statements using Lean's Filter.atTop. Monotonicity properties are axiomatized. The summary theorem combines subquadratic growth with both monotonicity results.",
     "keyInsights": [
-      "The e(n,r) function measures edge-triangle containment thresholds",
-      "Ruzsa-Szemerédi (1978) proved e(n,r) = o(n²) for fixed r",
-      "The triangle removal lemma underlies the subquadratic bound",
-      "Question 1 asks if absolute differences grow unboundedly",
-      "Question 2 asks if ratios converge to 1 (asymptotic equivalence)",
-      "If both are true, differences → ∞ but relative differences → 0"
+      "**e(n,r) measures edge-triangle containment thresholds:** the minimum edges in a triangle-covered graph forcing some edge to be in many triangles",
+      "**Ruzsa-Szemerédi (1978):** e(n,r) = o(n²) for fixed r, proved via the triangle removal lemma",
+      "**Question 1 (OPEN):** Does e(n,r+1) - e(n,r) → ∞? Asks if the absolute gap grows without bound",
+      "**Question 2 (OPEN):** Does e(n,r+1)/e(n,r) → 1? Asks if consecutive thresholds are asymptotically equivalent",
+      "**Known bounds:** n²/log n from above and n^{2-o(1)} from below, leaving a significant gap",
+      "**questions_together (proved):** If both questions hold, differences → ∞ but relative differences → 0"
     ]
   },
   "sections": [
     {
-      "id": "basic-definitions",
-      "title": "Part I: Basic Definitions",
+      "id": "graph-definitions",
+      "title": "Graph Definitions",
+      "summary": "Graph structure, edgeCount, IsTriangle",
       "startLine": 36,
-      "endLine": 62,
-      "summary": "Defines the Graph structure with edge sets, symmetry, and irreflexivity. Introduces edgeCount and the IsTriangle predicate."
+      "endLine": 54
     },
     {
       "id": "edge-triangle-containment",
-      "title": "Part II: Edge-Triangle Containment",
-      "startLine": 64,
-      "endLine": 94,
-      "summary": "Defines triangleCount for edges, IsTriangleCovered, AllEdgesTriangleCovered, and HasEdgeInRTriangles predicates."
+      "title": "Edge-Triangle Containment",
+      "summary": "triangleCount, IsTriangleCovered, AllEdgesTriangleCovered, HasEdgeInRTriangles",
+      "startLine": 56,
+      "endLine": 76
     },
     {
       "id": "e-function",
-      "title": "Part III: The e(n,r) Function",
-      "startLine": 96,
-      "endLine": 117,
-      "summary": "Defines the threshold function e(n,r) as the infimum forcing some edge to be in r triangles."
+      "title": "The e(n,r) Function",
+      "summary": "e(n,r) definition via sInf and e_well_defined axiom",
+      "startLine": 78,
+      "endLine": 90
     },
     {
       "id": "ruzsa-szemeredi",
-      "title": "Part IV: Ruzsa-Szemerédi Result",
-      "startLine": 119,
-      "endLine": 152,
-      "summary": "Axiomatizes the 1978 result that e(n,r) = o(n²) for fixed r, with connection to triangle removal lemma."
+      "title": "Ruzsa-Szemerédi Result",
+      "summary": "ruzsa_szemeredi: e(n,r) = o(n²) for fixed r",
+      "startLine": 92,
+      "endLine": 99
     },
     {
-      "id": "question-1",
-      "title": "Part V: Question 1",
-      "startLine": 154,
-      "endLine": 178,
-      "summary": "Formalizes the open question: Does e(n,r+1) - e(n,r) → ∞ as n → ∞?"
-    },
-    {
-      "id": "question-2",
-      "title": "Part VI: Question 2",
-      "startLine": 180,
-      "endLine": 204,
-      "summary": "Formalizes the open question: Does e(n,r+1)/e(n,r) → 1 as n → ∞?"
+      "id": "open-questions",
+      "title": "The Two Open Questions",
+      "summary": "Question1 (absolute difference) and Question2 (ratio convergence)",
+      "startLine": 101,
+      "endLine": 114
     },
     {
       "id": "monotonicity",
-      "title": "Part VII: Monotonicity",
-      "startLine": 206,
-      "endLine": 236,
-      "summary": "Axiomatizes monotonicity of e in both n and r, with theorem about both questions together."
-    },
-    {
-      "id": "problem-80",
-      "title": "Part VIII: Connection to Problem #80",
-      "startLine": 238,
-      "endLine": 255,
-      "summary": "Relates to Turán-type problems and the Turán number ex(n, K₃)."
+      "title": "Monotonicity",
+      "summary": "e_monotone_r, e_monotone_n, questions_together theorem",
+      "startLine": 116,
+      "endLine": 134
     },
     {
       "id": "known-bounds",
-      "title": "Part IX: Known Bounds",
-      "startLine": 257,
-      "endLine": 274,
-      "summary": "Axiomatizes upper bound e(n,r) ≤ C_r·n²/log n and lower bound e(n,r) ≥ c_r·n^{2-o(1)}."
+      "title": "Known Bounds",
+      "summary": "turan_number_bound, upper_bound, lower_bound",
+      "startLine": 136,
+      "endLine": 154
     },
     {
       "id": "summary",
-      "title": "Part X: Summary",
-      "startLine": 276,
-      "endLine": 313,
-      "summary": "Summarizes the problem: both questions about e(n,r) remain OPEN."
+      "title": "Summary",
+      "summary": "erdos_600_summary: three-part conjunction of known results",
+      "startLine": 156,
+      "endLine": 179
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #600 asks two questions about the edge-triangle containment threshold e(n,r): whether consecutive differences grow unboundedly, and whether consecutive ratios approach 1. The Ruzsa-Szemerédi result (1978) establishes subquadratic growth, but both questions remain open.",
-    "implications": "Resolution would reveal the fine structure of extremal graph theory thresholds for triangle containment, connecting to the triangle removal lemma and Turán-type problems.",
+    "summary": "Erdős Problem #600 is OPEN. It asks two questions about the edge-triangle containment threshold e(n,r): whether consecutive differences grow unboundedly (Q1) and whether consecutive ratios approach 1 (Q2). The Ruzsa-Szemerédi result establishes subquadratic growth, and monotonicity is axiomatized. The summary theorem combines these known results.",
+    "implications": "Resolution would reveal the fine structure of extremal graph theory thresholds, connecting to the triangle removal lemma and Turán-type problems. Understanding how the threshold changes with r is fundamental to the study of triangle distribution in dense graphs.",
     "openQuestions": [
       "Does e(n, r+1) - e(n, r) → ∞ as n → ∞?",
       "Does e(n, r+1) / e(n, r) → 1 as n → ∞?",
