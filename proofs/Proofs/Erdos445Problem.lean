@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #445: Multiplicative Inverses in Short Intervals
 
 Source: https://erdosproblems.com/445
@@ -30,7 +30,7 @@ namespace Erdos445
 
 open Nat Finset Real
 
-/-! ## Part 1: Basic Definitions -/
+/- ## Part 1: Basic Definitions -/
 
 /-- An element a has multiplicative inverse b mod p -/
 def HasInverse (p : ℕ) [hp : Fact (Nat.Prime p)] (a b : ℕ) : Prop :=
@@ -46,7 +46,7 @@ def HasInversePairInInterval (p : ℕ) [Fact (Nat.Prime p)] (n : ℕ) (c : ℝ) 
              b ∈ OpenInterval n (Nat.floor (p ^ c)) ∧
              HasInverse p a b
 
-/-! ## Part 2: The Main Conjecture -/
+/- ## Part 2: The Main Conjecture -/
 
 /-- The main conjecture: for c > 1/2, there exist inverses in (n, n + p^c) -/
 def MainConjecture : Prop :=
@@ -60,7 +60,7 @@ def StrongConjecture : Prop :=
   ¬(∀ P₀ : ℕ, ∀ p : ℕ, [Fact (Nat.Prime p)] → p > P₀ →
       ∀ n : ℕ, HasInversePairInInterval p n (1/2))
 
-/-! ## Part 3: Heilbronn's Result -/
+/- ## Part 3: Heilbronn's Result -/
 
 /-- Heilbronn's threshold: some c₀ close to 1 -/
 axiom heilbronn_threshold : ℝ
@@ -72,7 +72,7 @@ axiom heilbronn_unpublished :
     ∃ P₀ : ℕ, ∀ p : ℕ, [Fact (Nat.Prime p)] → p > P₀ →
       ∀ n : ℕ, HasInversePairInInterval p n c
 
-/-! ## Part 4: Heath-Brown's Result -/
+/- ## Part 4: Heath-Brown's Result -/
 
 /-- Kloosterman sum K(m, n; p) = Σₓ e^{2πi(mx + nx⁻¹)/p}.
     Axiomatized as it requires exponential sum machinery. -/
@@ -97,7 +97,7 @@ theorem heath_brown_threshold : ∃ c₀ : ℝ, c₀ = 3/4 ∧
   · rfl
   · exact heath_brown_2000
 
-/-! ## Part 5: The Open Range -/
+/- ## Part 5: The Open Range -/
 
 /-- The open range c ∈ (1/2, 3/4] -/
 def OpenRange : Set ℝ := Set.Ioc (1/2) (3/4)
@@ -115,7 +115,7 @@ theorem current_knowledge :
     · calc x ≤ 3/4 := hx.2
            _ < 1 := by norm_num
 
-/-! ## Part 6: Summary -/
+/- ## Part 6: Summary -/
 
 /-- **Summary of Erdős Problem #445:**
 
