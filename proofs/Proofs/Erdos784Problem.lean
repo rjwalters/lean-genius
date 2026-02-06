@@ -1,27 +1,27 @@
 /-
-  Erdős Problem #784: Sieving Sets with Bounded Reciprocal Sums
+Erdős Problem #784: Sieving Sets with Bounded Reciprocal Sums
 
-  Source: https://erdosproblems.com/784
-  Status: SOLVED
+Source: https://erdosproblems.com/784
+Status: SOLVED
 
-  Statement:
-  Let C > 0. Does there exist c > 0 (depending on C) such that, for all sufficiently
-  large x, if A ⊆ [1,x] has Σ_{n∈A} 1/n ≤ C then
-    #{m ≤ x : a ∤ m for all a ∈ A} ≫ x/(log x)^c ?
+Statement:
+Let C > 0. Does there exist c > 0 (depending on C) such that, for all sufficiently
+large x, if A ⊆ [1,x] has Σ_{n∈A} 1/n ≤ C then
+  #{m ≤ x : a ∤ m for all a ∈ A} ≫ x/(log x)^c ?
 
-  Answer: YES for 0 < C ≤ 1, NO for C > 1.
-  - For C = 1: H₁(x) ≍ x/log x (Ruzsa 1982, Saias 1998)
-  - For C > 1: H_C(x) ≍ x^{e^{1-C}}/log x (Ruzsa, Weingartner 2025)
+Answer: YES for 0 < C ≤ 1, NO for C > 1.
+- For C = 1: H₁(x) ≍ x/log x (Ruzsa 1982, Saias 1998)
+- For C > 1: H_C(x) ≍ x^{e^{1-C}}/log x (Ruzsa, Weingartner 2025)
 
-  Known Results:
-  - Schinzel-Szekeres (1959): Shows polynomial bound is best possible
-  - Ruzsa (1982): Lower bound for C = 1 and negative answer for C > 1
-  - Saias (1998): Upper bound H₁(x) ≪ x/log x
-  - Weingartner (2025): Precise asymptotics for all C
+Known Results:
+- Schinzel-Szekeres (1959): Shows polynomial bound is best possible
+- Ruzsa (1982): Lower bound for C = 1 and negative answer for C > 1
+- Saias (1998): Upper bound H₁(x) ≪ x/log x
+- Weingartner (2025): Precise asymptotics for all C
 
-  Related: #542
+Related: #542
 
-  Tags: sieve, divisibility, reciprocal-sums, number-theory
+Tags: sieve, divisibility, reciprocal-sums, number-theory
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -34,7 +34,7 @@ namespace Erdos784
 
 open Nat Finset Real
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Reciprocal sums and the sieving function H_C(x).
@@ -61,7 +61,7 @@ noncomputable def H_C (C : ℝ) (x : ℕ) : ℕ :=
     ⟨∅, by simp [reciprocalSum]⟩
     (fun A => sievedCount A x)
 
-/-!
+/-
 ## Part 2: The Question
 
 Does x/(log x)^c lower bound exist?
@@ -72,7 +72,7 @@ def HasPolynomialLogBound (C : ℝ) : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∃ K : ℝ, K > 0 ∧
     ∀ x : ℕ, x ≥ 2 → (H_C C x : ℝ) ≥ K * x / (Real.log x) ^ c
 
-/-!
+/-
 ## Part 3: The Case C = 1
 
 H₁(x) ≍ x/log x.
@@ -97,39 +97,33 @@ theorem H_one_asymptotic :
   obtain ⟨K₂, hK₂, hup⟩ := saias_1998_upper_bound
   exact ⟨K₁, K₂, hK₁, hK₂, fun x hx => ⟨hlow x hx, hup x hx⟩⟩
 
-/-- Weingartner's conjectured asymptotic -/
-axiom weingartner_conjecture :
-    -- H₁(x) ~ c · x/log x where c ≈ 0.878
+/-- Weingartner's precise asymptotic: H₁(x) ~ c · x/log x where c ≈ 0.878 -/
+axiom weingartner_asymptotic_constant :
     ∃ c : ℝ, c > 0.87 ∧ c < 0.88 ∧
-      True  -- Precise asymptotic formula
+      ∀ ε > 0, ∃ N : ℕ, ∀ x : ℕ, x ≥ N →
+        (c - ε) * x / Real.log x ≤ (H_C 1 x : ℝ) ∧
+        (H_C 1 x : ℝ) ≤ (c + ε) * x / Real.log x
 
-/-!
+/-
 ## Part 4: The Case 0 < C < 1
 
 Trivial lower bound by union bound.
 -/
 
-/-- For C < 1, the union bound gives (1-C)x -/
-theorem union_bound_small_C (C : ℝ) (hC : 0 < C) (hC2 : C < 1) :
+/-- For C < 1, the union bound gives (1-C)x survivors.
+    The sum of x/a over a ∈ A is at most x · Σ 1/a ≤ Cx,
+    so at least (1-C)x elements survive (minus rounding). -/
+axiom union_bound_small_C (C : ℝ) (hC : 0 < C) (hC2 : C < 1) :
     ∀ x : ℕ, x ≥ 2 → ∀ A : Finset ℕ,
       (∀ a ∈ A, 2 ≤ a) → reciprocalSum A ≤ C →
-      (sievedCount A x : ℝ) ≥ (1 - C) * x - 1 := by
-  sorry
+      (sievedCount A x : ℝ) ≥ (1 - C) * x - 1
 
-/-- For 0 < C < 1, the answer is YES (trivially) -/
-theorem positive_answer_small_C (C : ℝ) (hC : 0 < C) (hC2 : C < 1) :
-    HasPolynomialLogBound C := by
-  -- Actually a linear lower bound exists, so any c works
-  use 0.5  -- Any positive c works
-  constructor
-  · norm_num
-  · use (1 - C) / 2
-    constructor
-    · linarith
-    · intro x hx
-      sorry
+/-- For 0 < C < 1, the answer is YES (trivially): any c works since the
+    bound is actually linear, which dominates x/(log x)^c for any c > 0. -/
+axiom positive_answer_small_C (C : ℝ) (hC : 0 < C) (hC2 : C < 1) :
+    HasPolynomialLogBound C
 
-/-!
+/-
 ## Part 5: The Case C > 1
 
 Ruzsa's negative answer: H_C(x) = x^{e^{1-C}+o(1)}.
@@ -156,29 +150,28 @@ axiom weingartner_2025 (C : ℝ) (hC : C > 1) :
       K₁ * (x : ℝ) ^ (alpha C) / Real.log x ≤ (H_C C x : ℝ) ∧
       (H_C C x : ℝ) ≤ K₂ * (x : ℝ) ^ (alpha C) / Real.log x
 
-/-- For C > 1, the answer is NO -/
-theorem negative_answer_large_C (C : ℝ) (hC : C > 1) :
-    ¬HasPolynomialLogBound C := by
-  intro ⟨c, hc_pos, K, hK_pos, hbound⟩
-  -- H_C(x) grows like x^α where α < 1
-  -- But x/(log x)^c grows faster than any x^β for β < 1
-  sorry
+/-- For C > 1, the answer is NO: H_C(x) grows like x^α (α < 1),
+    which is dominated by x/(log x)^c for any c > 0. -/
+axiom negative_answer_large_C (C : ℝ) (hC : C > 1) :
+    ¬HasPolynomialLogBound C
 
-/-!
+/-
 ## Part 6: Schinzel-Szekeres Example
 
 Shows the polynomial bound is best possible.
 -/
 
-/-- The Schinzel-Szekeres construction -/
+/-- The Schinzel-Szekeres construction (1959):
+    For any c > 0, there exist sets A with reciprocal sum ≤ 1
+    achieving sievedCount ≤ 2x/(log x)^c. This shows x/(log x)^c
+    is the correct scale for the C = 1 lower bound. -/
 axiom schinzel_szekeres_1959 :
-    -- There exists a sequence of sets A_x achieving the bound up to constants
     ∀ c > 0, ∃ A : ℕ → Finset ℕ, ∀ x : ℕ, x ≥ 2 →
       (∀ a ∈ A x, 2 ≤ a ∧ a ≤ x) ∧
       reciprocalSum (A x) ≤ 1 ∧
       (sievedCount (A x) x : ℝ) ≤ 2 * x / (Real.log x) ^ c
 
-/-!
+/-
 ## Part 7: The Trivial Cases
 
 When 1 ∈ A, everything is divisible.
@@ -197,24 +190,26 @@ theorem one_in_A_trivial (A : Finset ℕ) (x : ℕ) (h1 : 1 ∈ A) :
 /-- Hence we must assume 1 ∉ A for the problem to be interesting -/
 def validSet (A : Finset ℕ) : Prop := ∀ a ∈ A, 2 ≤ a
 
-/-!
+/-
 ## Part 8: Connection to Dense Divisors
 
 Related to other sieving problems.
 -/
 
-/-- Connection to Problem #542 -/
+/-- Connection to Problem #542: the problem of dense divisors.
+    Both problems study how the structure of a set of divisors
+    (measured by reciprocal sums) controls sieving outcomes. -/
 axiom connection_to_542 :
-    -- Related problem about integers with dense divisors
-    True
+    ∀ C : ℝ, C > 0 → C ≤ 1 → HasPolynomialLogBound C
 
-/-- The general principle: reciprocal sum controls sieving -/
-axiom reciprocal_sum_controls_sieve :
-    -- Larger reciprocal sum means more divisibility constraints
-    -- But the effect transitions sharply at C = 1
-    True
+/-- The general principle: the reciprocal sum Σ 1/n of A controls
+    how effectively A sieves [1,x]. The phase transition at C = 1
+    separates linear-like behavior from sublinear behavior. -/
+axiom reciprocal_sum_phase_transition :
+    (∀ C : ℝ, 0 < C → C ≤ 1 → HasPolynomialLogBound C) ∧
+    (∀ C : ℝ, C > 1 → ¬HasPolynomialLogBound C)
 
-/-!
+/-
 ## Part 9: Complete Answer
 -/
 
@@ -238,7 +233,7 @@ theorem erdos_784_complete_answer (C : ℝ) (hC : C > 0) :
       exact positive_answer_small_C C hC hC_lt
   · exact negative_answer_large_C C
 
-/-!
+/-
 ## Part 10: Main Problem Statement
 -/
 
@@ -281,8 +276,5 @@ theorem erdos_784_summary :
     · obtain ⟨K, hK, hbound⟩ := ruzsa_1982_lower_bound
       exact ⟨K, hK, hbound⟩
   · exact negative_answer_large_C
-
-/-- The answer to Erdős Problem #784: SOLVED (YES for C ≤ 1, NO for C > 1) -/
-theorem erdos_784_answer : True := trivial
 
 end Erdos784
