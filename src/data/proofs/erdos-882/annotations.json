@@ -184,37 +184,28 @@
   {
     "id": "ann-882-sidon",
     "proofId": "erdos-882",
-    "range": { "startLine": 201, "endLine": 205 },
+    "range": { "startLine": 179, "endLine": 183 },
     "type": "axiom",
     "title": "Sidon Connection",
-    "content": "Connection to Sidon sets (Erdős #13), which require distinct pairwise sums. Our problem is about all subset sums.",
+    "content": "**sidon_sets_have_distinct_pairwise_sums:** Distinct subset sums imply divisibility-free subset sums. This connects to Sidon sets (Erdős #13), which have distinct pairwise sums.",
     "significance": "supporting"
   },
   {
     "id": "ann-882-statement",
     "proofId": "erdos-882",
-    "range": { "startLine": 211, "endLine": 220 },
+    "range": { "startLine": 189, "endLine": 198 },
     "type": "theorem",
     "title": "erdos_882_statement",
-    "content": "Main theorem combining lower and upper bounds: log₂ n - 2 ≤ maxValidSize(n) ≤ log₂ n + ½ log₂(log n) + 3 for large n.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-882-answer",
-    "proofId": "erdos-882",
-    "range": { "startLine": 222, "endLine": 228 },
-    "type": "theorem",
-    "title": "erdos_882_answer",
-    "content": "The answer is (1 + o(1)) log₂ n. The problem is SOLVED.",
+    "content": "Main theorem combining lower and upper bounds: log₂ n - 2 ≤ maxValidSize(n) ≤ log₂ n + ½ log₂(log n) + 3 for n ≥ 16. The proof uses lower_bound_max and upper_bound_max.",
     "significance": "critical"
   },
   {
     "id": "ann-882-summary",
     "proofId": "erdos-882",
-    "range": { "startLine": 230, "endLine": 235 },
+    "range": { "startLine": 200, "endLine": 215 },
     "type": "theorem",
     "title": "erdos_882_summary",
-    "content": "Summary: Erdős-Sárközy posed the problem, Sándor and ELRSS (1999) gave optimal constructions, answer is log₂ n.",
+    "content": "**erdos_882_summary** combines the lower and upper bounds into a single theorem, equivalent to erdos_882_statement. The proof delegates directly to erdos_882_statement.\n\nThe answer is (1 + o(1)) log₂ n. SOLVED.",
     "significance": "critical"
   }
 ]

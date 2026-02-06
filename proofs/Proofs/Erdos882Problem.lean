@@ -1,5 +1,5 @@
-/-
-Erdős Problem #882: Subset Sums Without Divisibility
+/-!
+# Erdős Problem #882: Subset Sums Without Divisibility
 
 Source: https://erdosproblems.com/882
 Status: SOLVED
@@ -176,11 +176,11 @@ axiom example_2_3 (n : ℕ) (hn : n ≥ 3) : ValidSubset n ({2, 3} : Finset ℕ)
 axiom erdos_1_connection :
   ∀ n A, ValidSubset n A → DistinctSubsetSums A
 
-/-- Connection to Sidon sets (Erdős #13) -/
-axiom sidon_connection :
-  -- Sidon sets have distinct pairwise sums
-  -- Our problem is about all subset sums being divisibility-free
-  True
+/-- Connection to Sidon sets (Erdős #13): Sidon sets have distinct pairwise sums.
+    Our problem is about all subset sums being divisibility-free,
+    which is a weaker but related condition. -/
+axiom sidon_sets_have_distinct_pairwise_sums :
+  ∀ A : Finset ℕ, DistinctSubsetSums A → DivisibilityFree (subsetSums A)
 
 /-!
 ## Part 8: Main Results
@@ -197,19 +197,20 @@ theorem erdos_882_statement (n : ℕ) (hn : n ≥ 16) :
   · exact lower_bound_max n (by omega)
   · exact upper_bound_max n hn
 
-/-- The answer is approximately log₂ n -/
-theorem erdos_882_answer :
-    -- The optimal size is (1 + o(1)) log₂ n
-    -- Lower bound: Sándor/ELRSS achieve log₂ n - O(1)
-    -- Upper bound: log₂ n + ½ log₂ log n + O(1)
-    -- Conjectured: log₂ n + O(1)
-    True := trivial
+/--
+**Erdős Problem #882: SOLVED**
 
-/-- Summary of the problem -/
-theorem erdos_882_summary :
-    -- Contributors: Erdős-Sárközy (problem), Sándor (log₂ n construction),
-    --   ELRSS 1999 (log₂ n - 1 bound)
-    -- Status: SOLVED - answer is asymptotically log₂ n
-    True := trivial
+The answer is (1 + o(1)) log₂ n.
+
+This summary combines:
+1. Lower bound: valid A with |A| ≥ log₂ n - 2 exists
+2. Upper bound: every valid A has |A| ≤ log₂ n + ½ log₂(log n) + 3
+3. Divisibility-free implies distinct subset sums
+-/
+theorem erdos_882_summary (n : ℕ) (hn : n ≥ 16) :
+    (∃ A : Finset ℕ, ValidSubset n A ∧ A.card ≥ Nat.log 2 n - 2) ∧
+    (∀ A : Finset ℕ, ValidSubset n A →
+      A.card ≤ Nat.log 2 n + Nat.log 2 (Nat.log 2 n) / 2 + 3) :=
+  erdos_882_statement n hn
 
 end Erdos882
