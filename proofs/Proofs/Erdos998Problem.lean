@@ -40,7 +40,7 @@ open Set
 
 namespace Erdos998
 
-/-
+/-!
 ## Part I: Basic Definitions
 -/
 
@@ -68,7 +68,7 @@ theorem frac_lt_one (x : ℝ) : frac x < 1 := by
 -/
 def Irrational (α : ℝ) : Prop := ¬∃ (p q : ℤ), q ≠ 0 ∧ α = p / q
 
-/-
+/-!
 ## Part II: Counting Function
 -/
 
@@ -86,7 +86,7 @@ noncomputable def countingFunction (α : ℝ) (u v : ℝ) (n : ℕ) : ℕ :=
 def countSet (α : ℝ) (u v : ℝ) (n : ℕ) : Set ℕ :=
   {m : ℕ | 1 ≤ m ∧ m ≤ n ∧ u ≤ frac (α * m) ∧ frac (α * m) < v}
 
-/-
+/-!
 ## Part III: O(1) Discrepancy Property
 -/
 
@@ -106,7 +106,7 @@ axiom weyl_generic_bound (α : ℝ) (hα : Irrational α) (u v : ℝ) :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
       |((countingFunction α u v n : ℝ) - n * (v - u))| ≤ C * Real.sqrt n
 
-/-
+/-!
 ## Part IV: The Characterization
 -/
 
@@ -145,7 +145,7 @@ theorem erdos_szusz_characterization (α : ℝ) (hα : Irrational α) (u v : ℝ
   · exact kesten_theorem α hα u v hu hv huv
   · exact hecke_ostrowski α hα u v
 
-/-
+/-!
 ## Part V: Three-Distance Theorem Connection
 -/
 
@@ -160,7 +160,7 @@ axiom three_distance_theorem (α : ℝ) (hα : Irrational α) (n : ℕ) (hn : n 
       L₃ = L₁ + L₂ ∧
       n * L₁ + (n + 1 - n) * L₂ = 1
 
-/-
+/-!
 ## Part VI: Weyl's Equidistribution
 -/
 
@@ -171,7 +171,7 @@ axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) (u v : ℝ)
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       |(countingFunction α u v n : ℝ) / n - (v - u)| < ε
 
-/-
+/-!
 ## Part VII: Summary
 -/
 

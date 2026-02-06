@@ -16,8 +16,37 @@
     "erdosUrl": "https://erdosproblems.com/998",
     "erdosProblemStatus": "proved",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
-    "originalContributions": []
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.floor",
+        "description": "Floor function on real numbers",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals"
+      }
+    ],
+    "originalContributions": [
+      "frac definition: fractional part {x} = x - ⌊x⌋",
+      "frac_nonneg theorem: 0 ≤ {x} (proved)",
+      "frac_lt_one theorem: {x} < 1 (proved)",
+      "countingFunction definition: counts {αm} ∈ [u,v) for m = 1..n",
+      "hasBoundedDiscrepancy definition: O(1) discrepancy property",
+      "endpointsFromOrbit definition: u,v are fractional parts of α-multiples",
+      "hecke_ostrowski axiom: orbit endpoints imply bounded discrepancy",
+      "kesten_theorem axiom: bounded discrepancy implies orbit endpoints",
+      "erdos_szusz_characterization theorem: complete iff characterization (proved)",
+      "three_distance_theorem axiom: at most 3 gap lengths",
+      "weyl_equidistribution axiom: equidistribution for irrational rotations",
+      "erdos_998_summary theorem: restates full characterization (proved)"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #998 was posed by Erdős and Szüsz, asking for a characterization of intervals with minimal discrepancy for irrational rotations. The sequence of fractional parts {αm} for irrational α is equidistributed in [0,1) by Weyl's theorem, meaning the count of points in any interval is approximately proportional to its length.\n\nHecke (1922) and Ostrowski (1927, 1930) proved that if u = {αk} and v = {αℓ} for integers k, ℓ, then the interval [u,v) has O(1) discrepancy—the count differs from the expected value by at most a constant. Erdős and Szüsz asked the converse: are these the only such intervals?\n\nKesten (1966) proved yes, completing the characterization. This connects equidistribution theory to the orbit structure of irrational rotations, with deep connections to continued fractions and the three-distance theorem.",
