@@ -75,63 +75,56 @@
       "title": "Basic Definitions",
       "summary": "setProduct, consecutiveSet, productDivides",
       "startLine": 43,
-      "endLine": 63
+      "endLine": 55
     },
     {
       "id": "g-function",
       "title": "The Function g(n)",
-      "summary": "validSubset, g_exists axiom, g definition",
-      "startLine": 65,
-      "endLine": 102
+      "summary": "validSubset, g_exists axiom, g definition via Nat.find",
+      "startLine": 57,
+      "endLine": 87
     },
     {
       "id": "known-values",
       "title": "Known Values",
-      "summary": "g_two, g_three (Gallai and Erdős-Surányi)",
-      "startLine": 104,
-      "endLine": 118
+      "summary": "g(2) = 2 (Gallai), g(3) = 4 (Erdős-Surányi)",
+      "startLine": 89,
+      "endLine": 97
     },
     {
       "id": "bounds",
       "title": "Bounds on g(n)",
-      "summary": "Trivial upper, Erdős-Surányi lower bound",
-      "startLine": 120,
-      "endLine": 145
+      "summary": "Trivial upper bound, Erdős-Surányi lower bound",
+      "startLine": 99,
+      "endLine": 112
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "summary": "ErdosConjecture, StrongerConjecture",
-      "startLine": 147,
-      "endLine": 166
+      "summary": "ErdosConjecture and StrongerConjecture definitions",
+      "startLine": 114,
+      "endLine": 127
     },
     {
       "id": "variant",
       "title": "Related Variant",
-      "summary": "Interval length c_n problem",
-      "startLine": 168,
-      "endLine": 184
+      "summary": "Interval length c_n problem, c₂ = 1, c₃ = √2",
+      "startLine": 129,
+      "endLine": 143
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Concrete examples for g(2) and g(3)",
-      "startLine": 186,
-      "endLine": 205
-    },
-    {
-      "id": "difficulty",
-      "title": "Why This is Hard",
-      "summary": "Obstacles to solving the problem",
-      "startLine": 207,
-      "endLine": 228
+      "startLine": 145,
+      "endLine": 154
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_708_summary, problem status",
-      "startLine": 230,
-      "endLine": 263
+      "summary": "erdos_708 and erdos_708_summary theorems",
+      "startLine": 156,
+      "endLine": 190
     }
   ],
   "conclusion": {
