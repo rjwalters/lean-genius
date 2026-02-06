@@ -169,12 +169,13 @@ known results into a single summary statement.
     • For exponent α > 1/2, no bound exists
     • For exponent α < 1/4, the bound is 2
     • The general case at exponent 1/4 is OPEN -/
-axiom erdos_887_summary :
+theorem erdos_887_summary :
   (∀ C : ℝ, C ≥ 1 → Set.Infinite { n : ℕ | divisorsNearSqrt n C = 4 }) ∧
   (∀ n : ℕ, isPerfectSquare n → ∀ c : ℝ, c > 0 →
     divisorsSymmetricInterval n c ≤ 5) ∧
   (∀ α : ℝ, α > 1/2 → ∀ K : ℕ, ∃ n : ℕ, n ≥ 1 ∧ divisorsNearSqrtAlpha n 1 α > K) ∧
-  (∀ α : ℝ, 0 < α → α < 1/4 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrtAlpha n 1 α ≤ 2)
+  (∀ α : ℝ, 0 < α → α < 1/4 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrtAlpha n 1 α ≤ 2) :=
+  ⟨erdos_rosenfeld_four_divisors, chan_perfect_square_bound, no_bound_for_large_alpha, bound_for_small_alpha⟩
 
 /-- Erdős Problem #887: Main entry point.
     The conjecture is stated as a Prop; its truth value is unknown. -/
