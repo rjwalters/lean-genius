@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #272: Intersection Properties of Subsets
 
 Source: https://erdosproblems.com/272
@@ -28,7 +28,7 @@ namespace Erdos272
 
 open Finset
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- The set {1,...,N} -/
 def interval (N : ℕ) : Finset ℕ := Finset.range N |>.map ⟨(· + 1), fun _ _ => Nat.succ_injective⟩
@@ -67,7 +67,7 @@ theorem pair_is_ap (a b : ℕ) (hab : a < b) : IsArithProg {a, b} := by
     · intro ⟨i, hi, hx⟩
       interval_cases i <;> simp_all; omega
 
-/-! ## Part II: The AP-Intersection Property -/
+/- ## Part II: The AP-Intersection Property -/
 
 /-- A family has the AP-intersection property: all pairwise intersections
 are non-empty arithmetic progressions -/
@@ -81,7 +81,7 @@ for general N requires deep combinatorial arguments.
 -/
 axiom maxAPFamily (N : ℕ) : ℕ
 
-/-! ## Part III: The Simonovits-Sós Bounds (1981) -/
+/- ## Part III: The Simonovits-Sós Bounds (1981) -/
 
 /-- Simonovits-Sós (1981): t = O(N²) -/
 axiom simonovits_sos_upper (N : ℕ) (hN : N ≥ 1) :
@@ -91,7 +91,7 @@ axiom simonovits_sos_upper (N : ℕ) (hN : N ≥ 1) :
 axiom simonovits_sos_lower (N : ℕ) (hN : N ≥ 1) :
   ∃ c : ℝ, c > 0 ∧ (maxAPFamily N : ℝ) ≥ c * N^2
 
-/-! ## Part IV: The Erdős-Graham Conjecture (Disproved) -/
+/- ## Part IV: The Erdős-Graham Conjecture (Disproved) -/
 
 /--
 The Erdős-Graham conjecture that APs through ⌊N/2⌋ are optimal was
@@ -109,7 +109,7 @@ axiom erdos_graham_conjecture_false :
       (∀ A ∈ G, N / 2 ∈ A) ∧
       F.card > G.card
 
-/-! ## Part V: The Simonovits-Sós Construction -/
+/- ## Part V: The Simonovits-Sós Construction -/
 
 /-- Sets of size ≤ 3 containing a fixed element -/
 def smallSetsThroughElement (N k : ℕ) : Finset (Finset ℕ) :=
@@ -124,7 +124,7 @@ through k intersects in {k}, which is a singleton AP) -/
 axiom small_sets_has_AP (N k : ℕ) (hN : N ≥ 3) (hk : k ∈ interval N) :
   hasAPIntersectionProperty (smallSetsThroughElement N k)
 
-/-! ## Part VI: Szabó's Theorem (1999) -/
+/- ## Part VI: Szabó's Theorem (1999) -/
 
 /-- Szabó's main theorem: the asymptotic for maxAPFamily -/
 axiom szabo_theorem (N : ℕ) (hN : N ≥ 2) :
@@ -136,7 +136,7 @@ axiom szabo_leading_constant :
   Filter.Tendsto (fun N => (maxAPFamily N : ℝ) / N^2)
     Filter.atTop (nhds (1/2))
 
-/-! ## Part VII: Szabó's Refined Results -/
+/- ## Part VII: Szabó's Refined Results -/
 
 /-- Szabó's improved lower bound -/
 axiom szabo_lower_bound (N : ℕ) (hN : N ≥ 4) :
@@ -148,7 +148,7 @@ axiom szabo_common_element_conjecture (N : ℕ) (hN : N ≥ 2)
     (hAP : hasAPIntersectionProperty F) (hmax : F.card = maxAPFamily N) :
   ∃ k : ℕ, ∀ A ∈ F, k ∈ A
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #272: Summary**
