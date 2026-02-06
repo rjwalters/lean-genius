@@ -46,19 +46,19 @@
       }
     ],
     "originalContributions": [
-      "interval definition: {1,...,N}",
-      "IsGCDIntersecting definition: gcd(a,b) > 1 for all pairs",
-      "maxGCDIntersecting definition: supremum of valid set sizes",
-      "multiplesOfSmallestPrime construction",
-      "evenMultiplesSharing construction",
-      "OriginalConjecture statement (proved false)",
+      "interval, IsGCDIntersecting, ContainsN, maxGCDIntersecting definitions",
+      "multiplesOfSmallestPrime construction with size and intersecting axioms",
+      "evenMultiplesSharing construction with intersecting axiom",
+      "OriginalConjecture statement and original_conjecture_false axiom",
+      "counterexample_exists axiom",
       "optimalFamily definition with 2qᵢ and product terms",
-      "ahlswede_khachatrian_theorem axiom",
-      "prime_power_case and two_times_prime_case special cases"
+      "ahlswede_khachatrian_theorem axiom: correct characterization",
+      "prime_power_case and two_times_prime_case special cases",
+      "erdos_534_summary combining all main results"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #534: Maximum GCD-Intersecting Sets**\n\nThis problem asks for the largest subset of {1,...,N} containing N where every pair shares a common factor > 1.\n\n**Key History:**\n- Erdős-Graham: Original conjecture (max is N/p or even multiples sharing factor with N)\n- Ahlswede-Khachatrian (1992): Found counterexample\n- Ahlswede-Khachatrian (1996): Proved correct characterization\n\n**Mathematical Setting:**\nThe problem is an arithmetic analog of intersecting families, where gcd > 1 plays the role of 'shares an element'.",
+    "historicalContext": "This problem asks for the largest subset A ⊆ {1,...,N} containing N where every pair of distinct elements shares a common factor greater than 1. Erdős posed this as an arithmetic analog of intersecting family problems, where gcd(a,b) > 1 plays the role of 'shares an element' in classical Erdős-Ko-Rado theory.\n\nErdős and Graham conjectured that the maximum is either N/p (where p is the smallest prime factor of N, achieved by taking all multiples of p) or the number of even integers in {1,...,N} sharing a factor with N. However, Ahlswede and Khachatrian found a counterexample in 1992, showing that the maximum can exceed both these candidates for certain values of N.\n\nAhlswede and Khachatrian proved the correct characterization in 1996. For N = q₁^k₁ ⋯ qᵣ^kᵣ (with distinct primes q₁ < ⋯ < qᵣ), the maximum is achieved by integers that are multiples of at least one element from {2q₁,...,2qⱼ, q₁⋯qⱼ} for some optimal j ∈ {1,...,r}. The optimal j balances between using '2 times prime' divisors (which capture many multiples) and the product of several primes (which gives fewer but structurally richer divisors).",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nWhat is the largest $A \\subseteq \\{1, \\ldots, N\\}$ containing $N$ such that $\\gcd(a, b) > 1$ for all distinct $a, b \\in A$?\n\n**Answer:** For $N = q_1^{k_1} \\cdots q_r^{k_r}$ (distinct primes $q_1 < \\cdots < q_r$), the maximum is achieved by integers that are multiples of at least one of $\\{2q_1, \\ldots, 2q_j, q_1 \\cdots q_j\\}$ for some optimal $1 \\leq j \\leq r$.\n\n**Note:** The original Erdős-Graham conjecture was wrong!",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - interval: {1,...,N}\n   - IsGCDIntersecting: pairwise gcd > 1\n   - maxGCDIntersecting: supremum of valid set sizes\n\n2. **Constructions:**\n   - multiplesOfSmallestPrime: size N/p\n   - evenMultiplesSharing: even numbers sharing factor with N\n   - optimalFamily: the Ahlswede-Khachatrian construction\n\n3. **Main Results:**\n   - original_conjecture_false: the counterexample exists\n   - ahlswede_khachatrian_theorem: correct characterization",
     "keyInsights": [
@@ -74,50 +74,43 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "interval, IsGCDIntersecting, ContainsN, maxGCDIntersecting",
-      "startLine": 39,
-      "endLine": 56
+      "startLine": 35,
+      "endLine": 50
     },
     {
-      "id": "simple-bounds",
-      "title": "Simple Upper Bounds",
-      "summary": "multiplesOfSmallestPrime construction and size N/p",
-      "startLine": 58,
+      "id": "simple-constructions",
+      "title": "Simple Constructions",
+      "summary": "multiplesOfSmallestPrime and evenMultiplesSharing with axioms",
+      "startLine": 52,
       "endLine": 73
-    },
-    {
-      "id": "even-multiples",
-      "title": "Even Multiples Construction",
-      "summary": "evenMultiplesSharing: even numbers sharing factor with N",
-      "startLine": 75,
-      "endLine": 85
     },
     {
       "id": "original-conjecture",
       "title": "Original Conjecture (WRONG)",
       "summary": "OriginalConjecture, original_conjecture_false, counterexample_exists",
-      "startLine": 87,
-      "endLine": 103
+      "startLine": 75,
+      "endLine": 89
     },
     {
       "id": "correct-characterization",
       "title": "Correct Characterization",
-      "summary": "optimalFamily, ahlswede_khachatrian_theorem",
-      "startLine": 105,
-      "endLine": 127
+      "summary": "optimalFamily definition and ahlswede_khachatrian_theorem",
+      "startLine": 91,
+      "endLine": 108
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "prime_power_case, two_times_prime_case, squarefree_case",
-      "startLine": 129,
-      "endLine": 147
+      "summary": "prime_power_case and two_times_prime_case",
+      "startLine": 110,
+      "endLine": 120
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_534_characterization, erdos_534_solved",
-      "startLine": 195,
-      "endLine": 232
+      "summary": "erdos_534_summary combining all main results",
+      "startLine": 122,
+      "endLine": 150
     }
   ],
   "conclusion": {
