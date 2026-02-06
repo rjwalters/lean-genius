@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #992: Discrepancy of Sequences mod 1
 
 Source: https://erdosproblems.com/992
@@ -36,7 +36,7 @@ namespace Erdos992
 
 open MeasureTheory
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Sequences of integers and fractional parts.
@@ -52,7 +52,7 @@ noncomputable def frac (t : ℝ) : ℝ := t - ⌊t⌋
 /-- Fractional part is in [0, 1) -/
 axiom frac_in_unit_interval (t : ℝ) : 0 ≤ frac t ∧ frac t < 1
 
-/-!
+/-
 ## Part II: Discrepancy Definition
 
 The discrepancy measures deviation from uniform distribution.
@@ -70,7 +70,7 @@ noncomputable def discrepancy (x : ℕ → ℕ) (α : ℝ) (N : ℕ) : ℝ :=
   sSup { |↑(countInInterval x α N a b) - (b - a) * N| |
          (a : ℝ) (b : ℝ) (_ : 0 ≤ a) (_ : a ≤ b) (_ : b ≤ 1) }
 
-/-!
+/-
 ## Part III: Known Bounds
 -/
 
@@ -88,7 +88,7 @@ axiom baker_1981 (x : ℕ → ℕ) (hx : StrictlyIncreasingSeq x) :
       ∀ N : ℕ, N ≥ 2 →
         discrepancy x α N ≤ C * Real.sqrt N * (Real.log N) ^ (3/2 : ℝ)
 
-/-!
+/-
 ## Part IV: Lacunary Sequences (Special Case)
 -/
 
@@ -103,7 +103,7 @@ axiom erdos_gal_lacunary (x : ℕ → ℕ) (λ : ℝ) (hx : Lacunary x λ) :
       ∀ N : ℕ, N ≥ 3 →
         discrepancy x α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k
 
-/-!
+/-
 ## Part V: The Main Conjectures
 -/
 
@@ -123,7 +123,7 @@ def conjecture_loglog_polynomial (x : ℕ → ℕ) : Prop :=
       ∀ N : ℕ, N ≥ 3 →
         discrepancy x α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k
 
-/-!
+/-
 ## Part VI: Lower Bounds
 -/
 
@@ -134,7 +134,7 @@ axiom lower_bound_sqrt :
     ∀ α ∈ S, ∀ C > 0, ∃ N : ℕ, N ≥ 2 ∧
       discrepancy x α N ≥ C * Real.sqrt N
 
-/-!
+/-
 ## Part VII: Examples
 -/
 
@@ -155,7 +155,7 @@ axiom powers_of_two_bound :
       ∀ N : ℕ, N ≥ 3 →
         discrepancy powersOfTwo α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k
 
-/-!
+/-
 ## Part VIII: Summary
 -/
 
