@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #532: Hindman's Theorem (IP Sets)
 
 Source: https://erdosproblems.com/532
