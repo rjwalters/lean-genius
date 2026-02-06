@@ -28,7 +28,7 @@ open Finset Nat
 
 namespace Erdos459
 
-/-!
+/-
 ## Overview
 
 This problem asks to estimate f(u), defined as the largest v such that no integer
@@ -41,7 +41,7 @@ all prime factors of v divide u. The function exhibits highly irregular behavior
 - For "almost all" n, f(n) = (1 + o(1))n (linear growth)
 -/
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -69,7 +69,7 @@ theorem smooth_iff_composed (m n : ℕ) (hm : m > 0) (hn : n > 0) :
     have ⟨hpp, hpm, _⟩ := mem_primeFactors.mp hp
     exact mem_primeFactors.mpr ⟨hpp, h p hpp hpm, hn⟩
 
-/-!
+/-
 ## Part II: The Function f(u)
 -/
 
@@ -105,7 +105,7 @@ def f_alt (u : ℕ) : ℕ :=
   then Nat.find h
   else u + 1  -- Fallback (shouldn't occur)
 
-/-!
+/-
 ## Part III: Trivial Bounds
 -/
 
@@ -121,7 +121,7 @@ axiom f_upper_bound (u : ℕ) (hu : u ≥ 2) : f u ≤ u * u
 theorem trivial_bounds (u : ℕ) (hu : u ≥ 2) : u + 2 ≤ f u ∧ f u ≤ u * u :=
   ⟨f_lower_bound u (le_trans (by norm_num) hu), f_upper_bound u hu⟩
 
-/-!
+/-
 ## Part IV: Special Cases (Cambie)
 -/
 
@@ -138,7 +138,7 @@ axiom f_even_bound (u : ℕ) (hu : Even u) (hu_pos : u > 0) :
     Reason: u + 2 = 2^k, which is smooth with respect to 2^k - 2 = u. -/
 axiom f_minimal_case (k : ℕ) (hk : k ≥ 2) : f (2^k - 2) = 2^k
 
-/-!
+/-
 ## Part V: Asymptotic Behavior
 -/
 
@@ -157,7 +157,7 @@ def LinearGrowthAlmostSurely : Prop :=
       Filter.atTop
       (nhds 0)
 
-/-!
+/-
 ## Part VI: Irregular Growth Patterns
 -/
 
@@ -174,7 +174,7 @@ theorem irregular_growth :
     { u : ℕ | f u = u + 2 }.Infinite ∧ { u : ℕ | f u = u * u }.Infinite :=
   ⟨infinitely_many_minimal, infinitely_many_maximal⟩
 
-/-!
+/-
 ## Part VII: Examples
 -/
 
@@ -191,7 +191,7 @@ axiom f_6 : f 6 = 8
 /-- f(14) = 16: 14 = 2·7. The first v > 14 smooth w.r.t. {2,7} is 16 = 2⁴. -/
 axiom f_14 : f 14 = 16
 
-/-!
+/-
 ## Part VIII: The Resolution
 -/
 
@@ -218,14 +218,12 @@ theorem erdos_459_solved :
     { u : ℕ | f u = u * u }.Infinite := by
   refine ⟨trivial_bounds, f_prime, infinitely_many_minimal, infinitely_many_maximal⟩
 
-/-- Summary theorem. -/
-theorem erdos_459_summary :
-    -- The function f(u) is well-understood:
-    -- It has irregular growth with both minimal (u+2) and maximal (u²) values
-    -- occurring infinitely often, yet is linear for almost all inputs.
-    True := trivial
-
-/-- Main result. -/
-theorem erdos_459 : True := trivial
+/-- Main result: combines trivial bounds, prime characterization, and irregularity. -/
+theorem erdos_459 :
+    (∀ u ≥ 2, u + 2 ≤ f u ∧ f u ≤ u * u) ∧
+    (∀ p, p.Prime → f p = p * p) ∧
+    { u : ℕ | f u = u + 2 }.Infinite ∧
+    { u : ℕ | f u = u * u }.Infinite :=
+  erdos_459_solved
 
 end Erdos459
