@@ -2,7 +2,7 @@
   "id": "erdos-300",
   "title": "Erdős Problem #300: Maximum Subsets Avoiding Unit Fraction Sum 1",
   "slug": "erdos-300",
-  "description": "Let A(N) be the max size of A ⊆ {1,...,N} with no subset summing to 1 via unit fractions. SOLVED: A(N) = (1 - 1/e + o(1))N (Liu-Sawhney 2024). Erdős-Graham conjecture A(N) ≈ N disproved by Croot (2003).",
+  "description": "Let A(N) be the max size of A ⊆ {1,...,N} with no subset of unit fractions summing to 1. SOLVED: A(N) = (1 - 1/e + o(1))N by Liu-Sawhney (2024), disproving the Erdős-Graham conjecture.",
   "meta": {
     "author": "Erdős-Graham (1980 conjecture), Croot (2003 disproof), Liu-Sawhney (2024 solution)",
     "sourceUrl": "https://erdosproblems.com/300",
@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/Erdos300Problem.lean",
     "tags": ["erdos", "number-theory", "unit-fractions", "subset-sums", "combinatorics", "egyptian-fractions"],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 300,
     "erdosUrl": "https://erdosproblems.com/300",
     "erdosProblemStatus": "solved",
@@ -26,28 +26,28 @@
       "unitFractionSum: Σ_{n∈S} 1/n for finite sets",
       "IsUnitSumFree: no subset sums to exactly 1",
       "A: maximum size function A(N)",
-      "erdosGrahamConjecture: A(N) = (1+o(1))N",
+      "erdosGrahamConjecture: formal statement of A(N) = (1+o(1))N",
       "croot_theorem: conjecture is false, A(N) < cN",
       "trivial_lower_bound: A(N) ≥ (1-1/e-o(1))N",
       "liu_sawhney_theorem: A(N) = (1-1/e+o(1))N exactly",
-      "optimalDensity: 1 - 1/e ≈ 0.632",
+      "asymptotic_formula: combined sandwich bounds",
       "HasEgyptianRepresentation: Egyptian fraction connection",
-      "erdos_300_summary: complete solution"
+      "erdos_300_summary: complete solution combining key results"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős and Graham (1980) studied the maximum size of subsets of {1,...,N} avoiding unit fraction sums equal to 1. They conjectured A(N) = (1+o(1))N, meaning almost all integers can be included. Croot (2003) disproved this by showing A(N) < cN for some c < 1. Liu and Sawhney (2024) determined the exact asymptotic: A(N) = (1 - 1/e + o(1))N, matching the trivial lower bound.",
+    "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph \"Old and New Problems and Results in Combinatorial Number Theory.\" Given a set A ⊆ {1,...,N}, they defined A to be unit sum-free if no subset of A has reciprocals summing to exactly 1. They asked for the maximum size A(N) of such a set, and conjectured that A(N) = (1 + o(1))N, meaning that asymptotically almost all integers could be included.\n\nThe first major breakthrough came from Ernest Croot in 2003, who disproved the Erdős-Graham conjecture by showing that A(N) < cN for some constant c strictly less than 1. Croot's proof used deep density arguments involving coloring techniques and the structure of Egyptian fraction representations. This established that a positive-density fraction of integers must always be excluded from any unit sum-free set, but the exact density remained unknown for another two decades.\n\nThe problem was finally resolved by Jingbo Liu and Mehtaab Sawhney in 2024, who proved A(N) = (1 - 1/e + o(1))N. This remarkable result shows that the \"trivial\" lower bound — obtained by simply excluding integers n ≤ e — is asymptotically optimal. The constant 1 - 1/e ≈ 0.632 connects this combinatorial problem to the exponential function through the harmonic series and optimal exclusion patterns. The proof uses sophisticated probabilistic combinatorics techniques.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet A(N) denote the maximum cardinality of A ⊆ {1,...,N} such that no subset S ⊆ A has Σ_{n∈S} 1/n = 1.\n\n**Question:** Estimate A(N).\n\n**Conjecture (Erdős-Graham 1980):** A(N) = (1 + o(1))N\n\n**Answer:** A(N) = (1 - 1/e + o(1))N where 1/e ≈ 0.368\n\n**Constant:** 1 - 1/e ≈ 0.6321205588...",
-    "proofStrategy": "The formalization defines unit sum-free sets and the maximum function A(N). Croot's theorem is axiomatized to disprove the Erdős-Graham conjecture. The trivial lower bound (density 1 - 1/e) comes from avoiding small n. Liu-Sawhney's theorem gives matching upper bound. Connections to Egyptian fractions and greedy algorithms are explored.",
+    "proofStrategy": "The formalization defines unit sum-free sets and the maximum function A(N), then axiomatizes the three key results in the problem's history. Croot's theorem is stated as the existence of c < 1 bounding A(N)/N, directly disproving the Erdős-Graham conjecture. The trivial lower bound captures the density 1 - 1/e from excluding small n. The Liu-Sawhney theorem gives the matching upper bound, and the asymptotic_formula theorem combines both bounds into a complete sandwich inequality. Egyptian fractions and greedy constructions provide supporting context.",
     "keyInsights": [
-      "**Unit Sum-Free:** No subset S has Σ 1/n = 1 exactly",
-      "**Erdős-Graham Conjecture:** A(N) ≈ N (DISPROVED)",
-      "**Croot (2003):** A(N)/N < c < 1 for some constant c",
-      "**Trivial Lower Bound:** Avoid n < e, get density ≈ 1 - 1/e",
-      "**Liu-Sawhney (2024):** A(N) = (1 - 1/e + o(1))N exactly",
-      "**Optimal Constant:** 1 - 1/e ≈ 0.632",
-      "**Egyptian Fractions:** 1 has many representations as unit fraction sums"
+      "**Unit Sum-Free:** No subset S has Σ 1/n = 1 exactly — a surprisingly restrictive condition",
+      "**Erdős-Graham Conjecture:** A(N) ≈ N was a natural but incorrect guess (DISPROVED by Croot 2003)",
+      "**Croot's Breakthrough:** Density arguments show A(N)/N < c < 1 for some constant c",
+      "**Trivial Lower Bound:** Excluding integers n ≤ e gives density 1 - 1/e ≈ 0.632",
+      "**Liu-Sawhney (2024):** The trivial lower bound is actually optimal: A(N) = (1 - 1/e + o(1))N",
+      "**Egyptian Fractions:** 1 has many representations as Σ 1/nᵢ, making avoidance hard",
+      "**The Constant e:** Appears naturally through the harmonic series Σ 1/n ≈ ln(N)"
     ]
   },
   "sections": [
@@ -55,71 +55,57 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 44,
-      "endLine": 77,
-      "summary": "Unit fraction sum, unit sum-free sets, A(N)"
+      "endLine": 76,
+      "summary": "Unit fraction sum, unit sum-free sets, interval {1,...,N}, and A(N)"
     },
     {
       "id": "erdos-graham",
       "title": "The Erdős-Graham Conjecture",
       "startLine": 78,
-      "endLine": 106,
-      "summary": "Original conjecture and Croot's disproof"
+      "endLine": 104,
+      "summary": "Original conjecture statement and Croot's disproof"
     },
     {
       "id": "lower-bound",
       "title": "The Trivial Lower Bound",
-      "startLine": 107,
-      "endLine": 145,
-      "summary": "A(N) ≥ (1 - 1/e - o(1))N via small fractions"
+      "startLine": 106,
+      "endLine": 135,
+      "summary": "A(N) ≥ (1 - 1/e - o(1))N via excluding small n"
     },
     {
       "id": "liu-sawhney",
       "title": "Liu-Sawhney Theorem (2024)",
-      "startLine": 146,
-      "endLine": 192,
-      "summary": "A(N) = (1 - 1/e + o(1))N exact asymptotic"
-    },
-    {
-      "id": "why-1-over-e",
-      "title": "Why 1 - 1/e Appears",
-      "startLine": 193,
-      "endLine": 225,
-      "summary": "Probabilistic and harmonic series intuition"
+      "startLine": 137,
+      "endLine": 185,
+      "summary": "Main result A(N) = (1 - 1/e + o(1))N with combined asymptotic formula"
     },
     {
       "id": "egyptian",
       "title": "Egyptian Fractions Connection",
-      "startLine": 226,
-      "endLine": 255,
-      "summary": "Many ways to sum unit fractions to 1"
+      "startLine": 187,
+      "endLine": 209,
+      "summary": "Egyptian fraction representations and multiple decompositions of 1"
     },
     {
       "id": "variants",
       "title": "Variants and Generalizations",
-      "startLine": 256,
-      "endLine": 281,
-      "summary": "Avoiding other sums, related problems"
-    },
-    {
-      "id": "croot-method",
-      "title": "The Croot Technique",
-      "startLine": 282,
-      "endLine": 304,
-      "summary": "How Croot disproved the conjecture"
+      "startLine": 211,
+      "endLine": 240,
+      "summary": "Avoiding other integer sums, greedy algorithm construction"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 305,
-      "endLine": 352,
-      "summary": "Main theorem and historical note"
+      "startLine": 242,
+      "endLine": 280,
+      "summary": "Main theorem erdos_300 and complete summary combining all results"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #300 is SOLVED. The maximum size of a subset of {1,...,N} avoiding unit fraction sums equal to 1 is A(N) = (1 - 1/e + o(1))N. Erdős-Graham's conjecture A(N) ≈ N was disproved by Croot (2003). Liu-Sawhney (2024) determined the exact constant, showing the trivial lower bound is optimal.",
-    "implications": "This result connects combinatorial number theory with analysis (the constant e) and Egyptian fraction theory. It shows that avoiding even one particular sum (1) significantly constrains set size - only about 63.2% of integers can be included.",
+    "summary": "Erdős Problem #300 is SOLVED. The maximum size of a subset of {1,...,N} avoiding unit fraction sums equal to 1 is A(N) = (1 - 1/e + o(1))N. The Erdős-Graham conjecture A(N) ≈ N was disproved by Croot (2003), and Liu-Sawhney (2024) determined the exact constant, showing the trivial lower bound is optimal.",
+    "implications": "This result reveals a deep connection between combinatorial number theory and the exponential constant e. The fact that the naive construction (avoiding only n ≤ e) is asymptotically optimal is surprising — it means no clever combinatorial trick can include more than about 63.2% of {1,...,N} while avoiding unit fraction sums of 1.",
     "openQuestions": [
-      "What is the exact value of the implicit constant in the o(1) term?",
+      "What is the exact second-order term in A(N) = (1 - 1/e)N + o(N)?",
       "How does the maximum change if we avoid sum = k for other integers k?",
       "What are efficient algorithms to find maximum unit sum-free sets?"
     ]
