@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #716: The Ruzsa-Szemerédi (6,3) Problem
 
 Source: https://erdosproblems.com/716
@@ -45,7 +45,7 @@ open SimpleGraph Finset
 
 namespace Erdos716
 
-/-! ## Part I: Hypergraph Basics -/
+/- ## Part I: Hypergraph Basics -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -77,7 +77,7 @@ A hypergraph with no 6 vertices spanning 3 edges. -/
 def is63Free (H : Hypergraph3 V) : Prop :=
   ¬has63Configuration H
 
-/-! ## Part II: Extremal Numbers -/
+/- ## Part II: Extremal Numbers -/
 
 /-- **Extremal Number f^(3)(n; v, e):**
 Maximum edges in a 3-uniform hypergraph on n vertices with no
@@ -92,7 +92,7 @@ def ex63 (n : ℕ) : ℕ := extremalHypergraph n 6 3
 The trivial upper bound is O(n²) since there are ≈ n³/6 possible 3-edges. -/
 axiom ex63_trivial_upper : ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ex63 n : ℝ) ≤ C * n^2
 
-/-! ## Part III: Graph Formulation -/
+/- ## Part III: Graph Formulation -/
 
 /-- **Edge in Unique Triangle Property:**
 In a graph G, edge uv is in a unique triangle if there is exactly one
@@ -113,7 +113,7 @@ axiom rs_hypergraph_equivalence (n : ℕ) :
     Fintype.card V = n → isRSGraph G → G.edgeFinset.card ≤ M) ∧
     M = 3 * ex63 n
 
-/-! ## Part IV: The Main Theorem -/
+/- ## Part IV: The Main Theorem -/
 
 /-- **Little-o Notation:**
 f(n) = o(g(n)) means f(n)/g(n) → 0 as n → ∞. -/
@@ -141,7 +141,7 @@ axiom ex63_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
     (ex63 n : ℝ) ≥ (n : ℝ)^2 * Real.exp (-c * Real.sqrt (Real.log n))
 
-/-! ## Part V: The Triangle Removal Lemma -/
+/- ## Part V: The Triangle Removal Lemma -/
 
 /-- **Triangle Removal Lemma:**
 For every ε > 0, there exists δ > 0 such that every n-vertex graph with
@@ -160,7 +160,7 @@ This was a key insight connecting graph theory to additive combinatorics. -/
 axiom rs_from_removal_lemma :
   isLittleO (fun n => (ex63 n : ℝ)) (fun n => (n : ℝ)^2)
 
-/-! ## Part VI: Connection to Arithmetic Progressions -/
+/- ## Part VI: Connection to Arithmetic Progressions -/
 
 /-- **3-AP Free Set:**
 A subset of {1,...,n} containing no 3-term arithmetic progression. -/
@@ -195,7 +195,7 @@ axiom rs_implies_roth :
   isLittleO (fun n => (ex63 n : ℝ)) (fun n => (n : ℝ)^2) →
   isLittleO (fun n => (roth_r3 n : ℝ)) (fun n => (n : ℝ))
 
-/-! ## Part VII: The Brown-Erdős-Sós Conjecture -/
+/- ## Part VII: The Brown-Erdős-Sós Conjecture -/
 
 /-- **Brown-Erdős-Sós Conjecture:**
 For any k ≥ 3, f^(3)(n; k+3, k) = o(n²).
@@ -219,7 +219,7 @@ axiom bes_k4_solved : brownErdosSosConjecture 4
 The full conjecture was proved by Delcourt-Postle (2024). -/
 axiom bes_general_solved : ∀ k : ℕ, k ≥ 3 → brownErdosSosConjecture k
 
-/-! ## Part VIII: Erdős's Stronger Question -/
+/- ## Part VIII: Erdős's Stronger Question -/
 
 /-- **Erdős's Stronger Question:**
 Is it true that f^(3)(n; k+3, k) ≍ n · r_{k-3}(n)?
@@ -239,7 +239,7 @@ axiom ruzsa_lower_bound_k678 :
     ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
       (extremalHypergraph n (k + 3) k : ℝ) ≥ c * (n : ℝ) * (roth_r3 n : ℝ)
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /-- **Erdős Problem #716: Statement**
 Let ℱ be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges.
