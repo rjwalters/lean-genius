@@ -19,7 +19,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 713,
     "erdosUrl": "https://erdosproblems.com/713",
     "erdosProblemStatus": "open",
@@ -49,20 +49,17 @@
       "extremalNumber axiom: ex(n; G)",
       "hasPowerLawGrowth definition: ex ~ cn^α",
       "hasPowerLawOrder definition: ex ≍ n^α",
-      "erdos713StrongQuestion: strong form",
-      "erdos713WeakQuestion: weak form",
-      "erdos713RationalQuestion: rationality question",
-      "kovari_sos_turan axiom: upper bound",
-      "complete_bipartite_lower axiom: lower bound",
+      "erdos713StrongQuestion, erdos713WeakQuestion, erdos713RationalQuestion",
+      "kovari_sos_turan axiom: upper bound O(n^{2-1/s})",
+      "complete_bipartite_lower axiom: lower bound Ω(n^{2-1/s})",
       "complete_bipartite_exponent theorem: rational for K_{s,t}",
-      "erdosOriginalConjecture definition",
-      "erdos_simonovits_counterexample axiom: original conjecture false",
-      "frankl_furedi_hypergraph_counterexample: hypergraph case",
-      "erdos_713_summary theorem"
+      "erdosOriginalConjecture definition and erdos_simonovits_counterexample",
+      "frankl_furedi_hypergraph axiom: hypergraph counterexample for k ≥ 5",
+      "erdos_713 summary theorem"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #713**\n\nThis problem concerns the extremal number ex(n; G) for bipartite graphs G.\n\n**Key History:**\n- Erdős (1967): Conjectured α ∈ {1+1/k, 2-1/k}\n- Erdős-Simonovits (1970): Disproved original conjecture\n- Frankl-Füredi (1987): Hypergraph counterexamples for k ≥ 5\n- Füredi-Gerbner (2021): Extended hypergraph results\n\n**The Setting:**\nex(n; G) = maximum edges in n-vertex G-free graph\nFor bipartite G, ex(n; G) = o(n²) but what is the precise growth?",
+    "historicalContext": "Erdős Problem #713 asks fundamental questions about the extremal number ex(n; G) for bipartite graphs G, where ex(n; G) is the maximum number of edges in an n-vertex G-free graph. For non-bipartite G, the Erdős-Stone-Simonovits theorem determines ex(n; G) up to lower-order terms. For bipartite G, we only know ex(n; G) = o(n²), and the precise growth rate is the subject of this problem.\n\nErdős initially conjectured (1967) that for every bipartite G, the exponent α in ex(n; G) ~ cn^α always has the restricted form 1+1/k or 2-1/k for integer k ≥ 2. This was natural given that ex(n; K_{s,t}) has exponent 2-1/s by the Kővári-Sós-Turán theorem. However, Erdős and Simonovits (1970) disproved this restricted form, finding bipartite graphs with other exponents.\n\nThe broader questions remain open and carry a $500 prize: Does every bipartite graph have a well-defined power-law exponent? Must such exponents be rational? Frankl-Füredi (1987) showed the analogous statement fails for k-uniform hypergraphs with k ≥ 5, and Füredi-Gerbner (2021) extended this to all k ≥ 5, but the graph case remains unresolved.",
     "problemStatement": "**Problem Statement (OPEN)**\n\n1. Does there exist α ∈ [1,2) and c > 0 such that ex(n; G) ~ c·n^α for every bipartite G?\n\n2. Does ex(n; G) ≍ n^α for some α?\n\n3. Must α be rational?\n\n**Known:**\n- Original conjecture α ∈ {1+1/k, 2-1/k} is FALSE\n- For K_{s,t}: α = 2 - 1/s (rational)\n- Hypergraph version fails for k ≥ 5\n\n**Prize:** $500 (still open)",
     "proofStrategy": "**Formalization Approach**\n\n1. **Bipartite Graphs:** isBipartite definition\n\n2. **Extremal Number:** extremalNumber axiom for ex(n; G)\n\n3. **Growth Conditions:** hasPowerLawGrowth and hasPowerLawOrder\n\n4. **Key Results:**\n   - kovari_sos_turan: upper bound O(n^{2-1/s})\n   - erdos_simonovits_counterexample: original conjecture false\n   - frankl_furedi_hypergraph_counterexample: hypergraph fails",
     "keyInsights": [
@@ -80,70 +77,56 @@
       "title": "Basic Definitions",
       "summary": "isBipartite, isGFree definitions",
       "startLine": 42,
-      "endLine": 62
+      "endLine": 60
     },
     {
       "id": "extremal-numbers",
       "title": "Extremal Numbers",
-      "summary": "extremalNumber axiom and properties",
-      "startLine": 64,
-      "endLine": 81
+      "summary": "extremalNumber axiom and bound",
+      "startLine": 62,
+      "endLine": 75
     },
     {
       "id": "asymptotic-growth",
       "title": "Asymptotic Growth",
       "summary": "hasPowerLawGrowth, hasPowerLawOrder definitions",
-      "startLine": 83,
-      "endLine": 101
+      "startLine": 77,
+      "endLine": 93
     },
     {
       "id": "main-questions",
       "title": "The Main Questions",
       "summary": "Strong, weak, and rationality questions",
-      "startLine": 103,
-      "endLine": 132
+      "startLine": 95,
+      "endLine": 122
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Kővári-Sós-Turán, complete bipartite bounds",
-      "startLine": 134,
-      "endLine": 161
+      "summary": "Kővári-Sós-Turán, complete bipartite bounds and exponent",
+      "startLine": 124,
+      "endLine": 150
     },
     {
       "id": "original-conjecture",
-      "title": "Erdős's Original Conjecture",
-      "summary": "Conjecture and Erdős-Simonovits counterexample",
-      "startLine": 163,
-      "endLine": 181
+      "title": "Erdős's Original Conjecture (Disproved)",
+      "summary": "erdosOriginalConjecture definition and Erdős-Simonovits counterexample",
+      "startLine": 152,
+      "endLine": 168
     },
     {
       "id": "hypergraph",
       "title": "Hypergraph Counterexamples",
-      "summary": "Frankl-Füredi, Füredi-Gerbner results",
-      "startLine": 183,
-      "endLine": 212
-    },
-    {
-      "id": "status",
-      "title": "Current Status",
-      "summary": "What's known and what's open",
-      "startLine": 214,
-      "endLine": 238
-    },
-    {
-      "id": "related",
-      "title": "Related Problems",
-      "summary": "Problem 571, Zarankiewicz, Turán density",
-      "startLine": 240,
-      "endLine": 261
+      "summary": "Frankl-Füredi-Gerbner results for k ≥ 5",
+      "startLine": 170,
+      "endLine": 186
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_713_summary, erdos_713_open",
-      "startLine": 263,
-      "endLine": 300
+      "summary": "erdos_713 main theorem",
+      "startLine": 188,
+      "endLine": 212
     }
   ],
   "conclusion": {
