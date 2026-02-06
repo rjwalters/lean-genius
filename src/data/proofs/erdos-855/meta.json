@@ -56,7 +56,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #855: The Second Hardy-Littlewood Conjecture**\n\nThis problem concerns a fundamental inequality in the distribution of primes.\n\n**Key History:**\n- Hardy-Littlewood: Original conjecture π(x+y) ≤ π(x) + π(y)\n- Erdős (1985): Described it as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood'\n- Hensley-Richards (1973): Proved incompatibility with the prime k-tuples conjecture\n- Montgomery-Vaughan (1973): Proved π(x+y) ≤ π(x) + 2y/log(y) unconditionally\n\n**The Tension:** This conjecture and the prime k-tuples conjecture cannot both be true!",
+    "historicalContext": "The Second Hardy-Littlewood Conjecture asserts that π(x+y) ≤ π(x) + π(y) for all sufficiently large x and y, where π denotes the prime counting function. Erdős described it as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood.' The conjecture suggests that the interval [1, x+y] can never contain more primes than the intervals [1, x] and [1, y] combined.\n\nThe major development came in 1973 when Hensley and Richards proved that this conjecture is incompatible with the prime k-tuples conjecture, which asserts that any admissible pattern of primes occurs infinitely often. Their proof showed that admissible tuples can be denser than the primes themselves: for large k, there exist admissible k-tuples in [0,k) with more than π(k) elements. If k-tuples holds, placing these dense tuples at the right position would violate π(x+y) ≤ π(x) + π(y).\n\nSince most number theorists believe the k-tuples conjecture is true (it is supported by extensive numerical evidence and heuristic arguments), the Second Hardy-Littlewood Conjecture is considered likely false. However, no explicit counterexample has been found despite extensive computation. Montgomery and Vaughan proved the unconditional bound π(x+y) ≤ π(x) + 2y/log(y), which is weaker but does not require any unproved hypothesis.",
     "problemStatement": "**Problem Statement (Open, Likely False)**\n\nIf $\\pi(x)$ counts the number of primes in $[1,x]$, is it true that for all sufficiently large $x$ and $y$:\n$$\\pi(x+y) \\leq \\pi(x) + \\pi(y)$$?\n\n**Status:** OPEN but LIKELY FALSE\n\n**Key Result:** Hensley and Richards (1973) proved this is **incompatible** with the prime k-tuples conjecture. Under k-tuples:\n$$\\pi(x+y) > \\pi(x) + \\pi(y) + (\\log 2 - o(1))\\frac{y}{(\\log y)^2}$$\nfor infinitely many x.\n\nSince the k-tuples conjecture is widely believed, this conjecture is likely false.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Prime Counting Function:** Define π(n) as the count of primes ≤ n.\n\n2. **Main Conjecture:** Formalize the Second Hardy-Littlewood Conjecture.\n\n3. **k-Tuples Conjecture:** Define admissible tuples and the prime k-tuples conjecture.\n\n4. **Incompatibility:** State Hensley-Richards theorem showing the two conjectures conflict.\n\n5. **Unconditional Bounds:** Include Montgomery-Vaughan's π(x+y) ≤ π(x) + 2y/log(y).\n\n6. **Related Variants:** Straus's modification and Erdős's weaker conjecture.",
     "keyInsights": [
@@ -78,51 +78,44 @@
     {
       "id": "second-hl",
       "title": "The Second Hardy-Littlewood Conjecture",
-      "summary": "SecondHardyLittlewoodConjecture definition and status",
+      "summary": "SecondHardyLittlewoodConjecture definition",
       "startLine": 58,
-      "endLine": 78
+      "endLine": 71
     },
     {
       "id": "k-tuples",
       "title": "The Prime k-Tuples Conjecture",
       "summary": "IsAdmissibleTuple, PrimeKTuplesConjecture definitions",
-      "startLine": 80,
-      "endLine": 106
+      "startLine": 73,
+      "endLine": 93
     },
     {
       "id": "hensley-richards",
       "title": "Hensley-Richards Incompatibility",
       "summary": "hensley_richards_incompatibility, quantitative version, dense tuples",
-      "startLine": 108,
-      "endLine": 144
+      "startLine": 95,
+      "endLine": 131
     },
     {
       "id": "unconditional",
       "title": "Unconditional Results",
       "summary": "montgomery_vaughan_bound, primePi_add_ge theorem",
-      "startLine": 146,
-      "endLine": 174
+      "startLine": 133,
+      "endLine": 153
     },
     {
       "id": "related",
       "title": "Related Conjectures",
       "summary": "StrausConjecture, ErdosWeakerConjecture definitions",
-      "startLine": 176,
-      "endLine": 203
-    },
-    {
-      "id": "significance",
-      "title": "Why This Matters",
-      "summary": "Philosophical and computational notes",
-      "startLine": 205,
-      "endLine": 225
+      "startLine": 155,
+      "endLine": 180
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_855 and erdos_855_summary theorems",
-      "startLine": 227,
-      "endLine": 264
+      "summary": "erdos_855 summary theorem",
+      "startLine": 182,
+      "endLine": 200
     }
   ],
   "conclusion": {
