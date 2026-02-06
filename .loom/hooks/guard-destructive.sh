@@ -19,9 +19,10 @@ fi
 
 # --- Git destructive operations ---
 
-# git push --force variants (--force, -f, --force-with-lease)
-if echo "$COMMAND" | grep -qE 'git\s+push\s+.*(-f|--force)'; then
-  echo "BLOCKED: git push --force is destructive. Use normal 'git push' instead." >&2
+# git push --force (but allow --force-with-lease which is safe)
+if echo "$COMMAND" | grep -qE 'git\s+push\s+.*(-f|--force)' && \
+   ! echo "$COMMAND" | grep -qF -- '--force-with-lease'; then
+  echo "BLOCKED: git push --force is destructive. Use 'git push --force-with-lease' or normal 'git push' instead." >&2
   exit 2
 fi
 
@@ -43,14 +44,16 @@ if echo "$COMMAND" | grep -qE 'git\s+branch\s+.*-[a-zA-Z]*D'; then
   exit 2
 fi
 
-# git checkout . (discard all changes)
-if echo "$COMMAND" | grep -qE 'git\s+checkout\s+\.'; then
+# git checkout . or git checkout -- . (discard all changes)
+# Match bare "." but not "./path" (which restores a single file, safe)
+if echo "$COMMAND" | grep -qE 'git\s+checkout\s+(--\s+)?\.\s*$'; then
   echo "BLOCKED: git checkout . discards all uncommitted changes." >&2
   exit 2
 fi
 
 # git restore . (discard all changes)
-if echo "$COMMAND" | grep -qE 'git\s+restore\s+\.'; then
+# Match bare "." but not "./path" (which restores a single file, safe)
+if echo "$COMMAND" | grep -qE 'git\s+restore\s+\.\s*$'; then
   echo "BLOCKED: git restore . discards all uncommitted changes." >&2
   exit 2
 fi
