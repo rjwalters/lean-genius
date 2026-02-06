@@ -33,7 +33,7 @@ namespace Erdos1119
 
 open Cardinal Set
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- An entire function (holomorphic on all of ℂ). Axiomatized since full complex
 analysis formalization is extensive. -/
@@ -47,7 +47,7 @@ def valuesAtPoint (family : ι → (ℂ → ℂ)) (z₀ : ℂ) : Set ℂ :=
 def IsWetzelFamily (family : ι → (ℂ → ℂ)) (m : Cardinal) : Prop :=
   ∀ z₀ : ℂ, #(valuesAtPoint family z₀) ≤ m
 
-/-! ## Part II: The Original Wetzel Problem (Erdős 1964) -/
+/- ## Part II: The Original Wetzel Problem (Erdős 1964) -/
 
 /-- The original Wetzel problem: countably many values at each point -/
 def WetzelProblem (family : ι → (ℂ → ℂ)) : Prop :=
@@ -68,7 +68,7 @@ axiom erdos_1964_wetzel_ch
       WetzelProblem family ∧
       #(aleph 1).ord.toType = aleph 1
 
-/-! ## Part III: The Easy Case (𝔪⁺ < 𝔠) -/
+/- ## Part III: The Easy Case (𝔪⁺ < 𝔠) -/
 
 /-- The successor cardinal -/
 noncomputable def succCard (m : Cardinal) : Cardinal := Order.succ m
@@ -83,7 +83,7 @@ axiom easy_case (m : Cardinal) (hm_inf : ℵ₀ < m) (hm_cont : m < continuum)
     (hwetzel : IsWetzelFamily family m) :
     #ι ≤ m
 
-/-! ## Part IV: The Undecidable Case (𝔪⁺ = 𝔠) -/
+/- ## Part IV: The Undecidable Case (𝔪⁺ = 𝔠) -/
 
 /-- The critical condition: 𝔪⁺ = 𝔠 -/
 def SuccessorEqualsContinuum (m : Cardinal) : Prop := succCard m = continuum
@@ -108,7 +108,7 @@ axiom schilhan_weinert_2024 :
         IsWetzelFamily family m ∧
         #ι > m
 
-/-! ## Part V: The Identity Theorem -/
+/- ## Part V: The Identity Theorem -/
 
 /-- Two entire functions agreeing on uncountably many points are equal.
 This is the key fact making the Wetzel condition nontrivial. -/
@@ -118,7 +118,7 @@ axiom identity_theorem_entire (f g : ℂ → ℂ)
     (hagree : ∀ z ∈ S, f z = g z) :
     f = g
 
-/-! ## Part VI: Cardinal Arithmetic Background -/
+/- ## Part VI: Cardinal Arithmetic Background -/
 
 /-- The continuum is 2^{ℵ₀} -/
 theorem continuum_eq_two_aleph_zero : continuum = 2 ^ ℵ₀ := rfl
@@ -133,7 +133,7 @@ axiom not_ch_intermediate :
     continuum > aleph 1 →
     ∃ m : Cardinal, ℵ₀ < m ∧ m < continuum
 
-/-! ## Part VII: Wetzel's Question and CH -/
+/- ## Part VII: Wetzel's Question and CH -/
 
 /-- Wetzel's original question (1963): is every Wetzel family countable? -/
 def WetzelQuestion : Prop :=
@@ -146,7 +146,7 @@ def WetzelQuestion : Prop :=
 axiom wetzel_equivalent_to_ch :
     WetzelQuestion ↔ continuum > aleph 1
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #1119: Summary**
