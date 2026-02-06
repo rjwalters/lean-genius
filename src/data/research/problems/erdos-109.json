@@ -1,57 +1,118 @@
 {
   "slug": "erdos-109",
-  "title": "Erdős #109: The Erdős Sumset Conjecture",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Erdos #109: The Erdos Sumset Conjecture",
+  "phase": "COMPLETE",
+  "status": "complete",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #109: The Erdős Sumset Conjecture.",
-    "whyMatters": []
+    "formal": "\\forall A \\subseteq \\mathbb{N},\\, \\overline{d}(A) > 0 \\Rightarrow \\exists B, C \\text{ infinite},\\, B + C \\subseteq A",
+    "plain": "Any A subset of N with positive upper density contains a sumset B + C where both B and C are infinite.",
+    "whyMatters": [
+      "Connects density and additive structure in a fundamental way",
+      "Proved by Moreira-Richter-Robertson (2019) in Annals of Mathematics",
+      "Uses ergodic theory and Furstenberg correspondence"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "15+ theorems in Erdos109Problem.lean, 0 sorries, 1 axiom",
+      "upperDensity and lowerDensity definitions via Filter.limsup/liminf",
+      "lowerDensity_le_upperDensity: liminf <= limsup (fully proved)",
+      "posLowerDensity_implies_posUpperDensity: lower density => upper density",
+      "Sumset definition with commutativity",
+      "ErdosSumsetConjecture statement and erdos_109_solved",
+      "sumset_infinite_implies_superset_infinite: B+C infinite if B,C infinite",
+      "posUpperDensity_infinite: positive density sets are infinite",
+      "naturals_have_full_density: N has density 1",
+      "even_has_pos_density: even numbers have positive density (fully proved)",
+      "evenNumbers_infinite: even numbers are infinite",
+      "even_sumset_example: even + even subset even",
+      "even_count_lower_bound: counting even numbers in [1,N]",
+      "StrongerSumsetConjecture: statement of stronger form"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "All tractable results proved. 1 axiom (Moreira-Richter-Robertson 2019)."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.540Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETE",
+    "since": "2026-02-05T07:15:00Z",
+    "iteration": 2,
+    "focus": "Verified file is complete. Updated metadata.",
+    "activeApproach": "Metadata synchronization",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Problem is complete. The main theorem is axiomatized (deep ergodic theory result).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "COMPLETE: 15+ theorems, 0 sorries, 1 axiom (Moreira-Richter-Robertson 2019). Density definitions, sumset properties, examples all fully proved.",
+    "builtItems": [
+      "countingFn, upperDensity, lowerDensity: density infrastructure",
+      "lowerDensity_le_upperDensity: liminf <= limsup",
+      "Sumset, sumset_comm: sumset B + C definition",
+      "moreira_richter_robertson: main theorem (AXIOM)",
+      "erdos_109_solved: conjecture is true",
+      "sumset_infinite_implies_superset_infinite: structural theorem",
+      "posUpperDensity_infinite: density consequence",
+      "naturals_have_full_density: N has density 1",
+      "even_has_pos_density: even numbers positive density (FULLY PROVED)",
+      "even_sumset_example: B = C = even numbers works"
+    ],
+    "insights": [
+      "Filter.liminf_le_limsup needs boundedness proof (both above and below)",
+      "Density proofs require careful handling of N/N ratios with Nat cast",
+      "Aristotle proved even_has_pos_density (was originally an axiom)",
+      "The main theorem requires deep ergodic theory (Furstenberg correspondence)"
+    ],
+    "mathlibGaps": [
+      "No Furstenberg correspondence principle in Mathlib",
+      "No IP-sets or polynomial recurrence in Mathlib"
+    ],
+    "nextSteps": [
+      "Problem is complete for formalization purposes",
+      "The moreira_richter_robertson axiom is NOT tractable (deep ergodic theory)"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Density framework + axiom for main theorem",
+      "status": "completed",
+      "description": "Build density definitions, prove structural results, axiomatize main theorem"
+    }
+  ],
   "tags": [
     "erdos",
     "solved",
     "additive-combinatorics",
     "density",
     "sumsets",
-    "ergodic-theory"
+    "ergodic-theory",
+    "0-sorry",
+    "complete"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "proofs/Proofs/Erdos109Problem.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Moreira, Richter, Robertson (2019): A proof of a sumset conjecture of Erdos, Ann. Math. 189(2):605-652"
+    ],
+    "urls": [
+      "https://erdosproblems.com/109"
+    ],
+    "mathlib": [
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Order.LiminfLimsup",
+      "Mathlib.Data.Set.Finite.Basic"
+    ]
   },
   "started": "2026-01-23T08:04:56.540Z",
-  "lastUpdate": "2026-01-23T08:04:56.540Z",
+  "lastUpdate": "2026-02-05T07:15:00Z",
   "significance": 8,
-  "tractability": 7
+  "tractability": 7,
+  "knowledgeScore": 5
 }
