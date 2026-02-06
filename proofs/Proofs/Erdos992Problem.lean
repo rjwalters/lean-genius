@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #992: Discrepancy of Sequences mod 1
 
 Source: https://erdosproblems.com/992
@@ -67,8 +67,6 @@ noncomputable def countInInterval (x : ℕ → ℕ) (α : ℝ) (N : ℕ) (a b : 
 
 /-- The discrepancy D(N) for sequence x and multiplier α -/
 noncomputable def discrepancy (x : ℕ → ℕ) (α : ℝ) (N : ℕ) : ℝ :=
-  -- D(N) = max over all intervals I ⊆ [0,1] of |count - |I|·N|
-  -- We axiomatize this supremum
   sSup { |↑(countInInterval x α N a b) - (b - a) * N| |
          (a : ℝ) (b : ℝ) (_ : 0 ≤ a) (_ : a ≤ b) (_ : b ≤ 1) }
 
@@ -79,12 +77,11 @@ noncomputable def discrepancy (x : ℕ → ℕ) (α : ℝ) (N : ℕ) : ℝ :=
 /-- Erdős-Koksma (1949) and Cassels (1950): D(N) ≪ N^{1/2}(log N)^{5/2+o(1)} -/
 axiom erdos_koksma_cassels (x : ℕ → ℕ) (hx : StrictlyIncreasingSeq x) :
     ∃ C : ℝ, C > 0 ∧
-    -- For almost all α ∈ [0,1]
     ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
       ∀ N : ℕ, N ≥ 2 →
         discrepancy x α N ≤ C * Real.sqrt N * (Real.log N) ^ (5/2 : ℝ)
 
-/-- Baker (1981): D(N) ≪ N^{1/2}(log N)^{3/2+o(1)} -/
+/-- Baker (1981): D(N) ≪ N^{1/2}(log N)^{3/2+o(1)} — current best general bound -/
 axiom baker_1981 (x : ℕ → ℕ) (hx : StrictlyIncreasingSeq x) :
     ∃ C : ℝ, C > 0 ∧
     ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
@@ -126,9 +123,6 @@ def conjecture_loglog_polynomial (x : ℕ → ℕ) : Prop :=
       ∀ N : ℕ, N ≥ 3 →
         discrepancy x α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k
 
-/-- Status: Both conjectures remain OPEN for general sequences -/
-axiom conjectures_open : True
-
 /-!
 ## Part VI: Lower Bounds
 -/
@@ -140,27 +134,8 @@ axiom lower_bound_sqrt :
     ∀ α ∈ S, ∀ C > 0, ∃ N : ℕ, N ≥ 2 ∧
       discrepancy x α N ≥ C * Real.sqrt N
 
-/-- The √N factor is unavoidable - question is about the logarithmic factor -/
-axiom sqrt_is_correct_order : True
-
 /-!
-## Part VII: Connection to Uniform Distribution
--/
-
-/-- Weyl's criterion: αxₙ is equidistributed mod 1 iff exponential sums vanish -/
-axiom weyl_criterion (x : ℕ → ℕ) (α : ℝ) :
-    -- Sequence is equidistributed mod 1 iff for all h ≠ 0:
-    -- lim_{N→∞} (1/N) Σₙ≤N exp(2πi h α xₙ) = 0
-    True
-
-/-- Erdős-Turán inequality relates discrepancy to exponential sums -/
-axiom erdos_turan_inequality : True
-
-/-- Van der Corput's difference theorem for exponential sums -/
-axiom van_der_corput : True
-
-/-!
-## Part VIII: Examples
+## Part VII: Examples
 -/
 
 /-- Example: x_n = n (natural numbers) -/
@@ -180,81 +155,25 @@ axiom powers_of_two_bound :
       ∀ N : ℕ, N ≥ 3 →
         discrepancy powersOfTwo α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k
 
-/-- Numerical example: At N = 1000000, √N = 1000, log N ≈ 13.8, (log N)^{3/2} ≈ 51 -/
-example : (1000000 : ℕ).sqrt = 1000 := by native_decide
-
 /-!
-## Part IX: The Gap in Bounds
+## Part VIII: Summary
 -/
 
-/-- Current best: (log N)^{3/2+o(1)}
-    Conjecture: (log N)^{o(1)} or (log log N)^{O(1)}
-    Gap: From polynomial in log N to subpolynomial -/
-axiom gap_analysis : True
-
-/-- At N = 10^6: (log N)^{3/2} ≈ 51, (log log N) ≈ 2.6
-    The difference is significant for understanding fine structure -/
-axiom numerical_gap_illustration : True
-
-/-!
-## Part X: Techniques
--/
-
-/-- Probabilistic method for almost all α -/
-axiom probabilistic_method : True
-
-/-- Metric number theory techniques -/
-axiom metric_number_theory : True
-
-/-- Connection to Diophantine approximation -/
-axiom diophantine_approximation : True
-
-/-!
-## Part XI: Summary
--/
-
-/--
-**Erdős Problem #992: Summary**
-
-**Question:** For integer sequence x₁ < x₂ < ⋯ and almost all α ∈ [0,1],
-what is the optimal bound for discrepancy D(N)?
-
-**Known Bounds:**
-- Erdős-Koksma & Cassels (1949-50): D(N) ≪ √N · (log N)^{5/2}
-- Baker (1981): D(N) ≪ √N · (log N)^{3/2}
-- Erdős-Gál (lacunary case): D(N) ≪ √N · (log log N)^{O(1)}
-
-**Conjectures:**
-1. D(N) ≪ √N · (log N)^{o(1)} (subpolynomial in log)
-2. D(N) ≪ √N · (log log N)^{O(1)} (polynomial in log log)
-
-**Status:** OPEN for general sequences
-The √N factor is optimal; the question is the logarithmic correction.
-
-**Key Insight:** The discrepancy measures how uniformly {αxₙ} is distributed.
-For lacunary sequences the stronger bound is known, suggesting the conjecture
-may be true in general.
--/
-theorem erdos_992_statement :
-    -- Baker's bound holds for all sequences
+/-- **Summary of Erdős Problem #992:**
+    Combines the two main known results:
+    1. Baker's bound (1981): D(N) ≪ √N · (log N)^{3/2} for all sequences (current best)
+    2. Erdős-Gál: D(N) ≪ √N · (log log N)^{O(1)} for lacunary sequences -/
+theorem erdos_992_summary :
     (∀ x : ℕ → ℕ, StrictlyIncreasingSeq x →
       ∃ C : ℝ, C > 0 ∧
       ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
         ∀ N : ℕ, N ≥ 2 →
           discrepancy x α N ≤ C * Real.sqrt N * (Real.log N) ^ (3/2 : ℝ)) ∧
-    -- Stronger bound for lacunary sequences
     (∀ x : ℕ → ℕ, ∀ λ : ℝ, Lacunary x λ →
       ∃ C k : ℝ, C > 0 ∧ k > 0 ∧
       ∀ᵐ α ∂volume.restrict (Set.Icc 0 1),
         ∀ N : ℕ, N ≥ 3 →
-          discrepancy x α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k) ∧
-    -- Problem remains open
-    True := by
-  refine ⟨?_, ?_, trivial⟩
-  · intro x hx; exact baker_1981 x hx
-  · intro x λ hλ; exact erdos_gal_lacunary x λ hλ
-
-/-- Erdős Problem #992 is OPEN -/
-theorem erdos_992_open : True := trivial
+          discrepancy x α N ≤ C * Real.sqrt N * (Real.log (Real.log N)) ^ k) :=
+  ⟨fun x hx => baker_1981 x hx, fun x λ hλ => erdos_gal_lacunary x λ hλ⟩
 
 end Erdos992
