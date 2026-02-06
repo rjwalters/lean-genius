@@ -35,7 +35,7 @@ open Set Nat
 
 namespace Erdos1112
 
-/- ## Part I: Lacunary Sequences
+/-! ## Part I: Lacunary Sequences
 
 A lacunary sequence is one that grows at least exponentially.
 -/
@@ -54,7 +54,7 @@ def HasBoundedGaps (d₁ d₂ : ℕ) (A : ℕ → ℕ) : Prop :=
   (∀ i : ℕ, d₁ ≤ A (i + 1) - A i) ∧
   (∀ i : ℕ, A (i + 1) - A i ≤ d₂)
 
-/- ## Part II: k-fold Sumsets
+/-! ## Part II: k-fold Sumsets
 
 The k-fold sumset kA consists of all sums a₁ + a₂ + ⋯ + a_k
 where a_i ∈ A (not necessarily distinct).
@@ -78,7 +78,7 @@ def KFoldSumset (k : ℕ) (A : Set ℕ) : Set ℕ :=
   | 1 => A
   | n + 1 => {s : ℕ | ∃ a t : ℕ, a ∈ A ∧ t ∈ KFoldSumset n A ∧ s = a + t}
 
-/- ## Part III: The Avoidance Problem
+/-! ## Part III: The Avoidance Problem
 
 Can we find A with bounded gaps such that kA avoids a lacunary B?
 -/
@@ -95,7 +95,7 @@ def AvoidancePossible (k r d₁ d₂ : ℕ) : Prop :=
 def RkExists (k d₁ d₂ : ℕ) : Prop :=
   ∃ r : ℕ, r ≥ 2 ∧ AvoidancePossible k r d₁ d₂
 
-/- ## Part IV: Erdős-Graham Result (1980)
+/-! ## Part IV: Erdős-Graham Result (1980)
 
 For k = 2 and gaps [2, 3], r = 2 suffices.
 -/
@@ -130,7 +130,7 @@ theorem r2_23_equals_2 : RkExists 2 2 3 := by
         exact hDisj
     · exact ⟨fun n => 2 * n + 1, ⟨by intro i; omega, by intro i; omega, by intro i; omega⟩, by simp [KFoldSumset, SeqRange]; ext; constructor <;> intro h <;> simp_all⟩
 
-/- ## Part V: Bollobás-Hegyvári-Jin Result (1997)
+/-! ## Part V: Bollobás-Hegyvári-Jin Result (1997)
 
 The situation changes dramatically for k = 3.
 -/
@@ -167,7 +167,7 @@ theorem r3_23_not_exists : ¬RkExists 3 2 3 := by
   rw [threefold_eq_kfold] at hIntersect
   exact hIntersect hDisj
 
-/- ## Part VI: Chen's Generalization (2000) -/
+/-! ## Part VI: Chen's Generalization (2000) -/
 
 /-- **Chen's Theorem (2000):**
 For any integers a < b with b ≠ 2a, we have r₂(a, b) ≤ 2.
@@ -175,7 +175,7 @@ When b = 2a, a different behavior occurs. -/
 axiom chen_r2_bound :
     ∀ a b : ℕ, a ≥ 1 → b > a → b ≠ 2 * a → RkExists 2 a b
 
-/- ## Part VII: Tang-Yang Results (2021)
+/-! ## Part VII: Tang-Yang Results (2021)
 
 Further non-existence results for k ≥ 3.
 -/
@@ -186,7 +186,7 @@ axiom tang_yang_2021 :
     ∃ params : List (ℕ × ℕ × ℕ), params.length > 0 ∧
       ∀ p ∈ params, let (k, d₁, d₂) := p; k ≥ 3 → ¬RkExists k d₁ d₂
 
-/- ## Part VIII: Summary
+/-! ## Part VIII: Summary
 
 **Erdős Problem #1112: PARTIALLY RESOLVED**
 
