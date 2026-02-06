@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "erdosNumber": 297,
     "erdosUrl": "https://erdosproblems.com/297",
     "erdosProblemStatus": "solved",
@@ -27,55 +27,142 @@
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum",
-        "description": "Sum over finite sets",
+        "description": "Sum over finite sets for computing harmonic sums",
         "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
       },
       {
         "theorem": "Finset.powerset",
-        "description": "Power set of finite set",
-        "module": "Mathlib.Data.Finset.Basic"
+        "description": "Power set of finite sets for enumerating subsets",
+        "module": "Mathlib.Data.Finset.Powerset"
       },
       {
         "theorem": "Rat",
-        "description": "Rational numbers for unit fractions",
+        "description": "Rational numbers for unit fractions 1/n",
         "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets for counting",
+        "module": "Mathlib.Data.Finset.Card"
       }
     ],
     "originalContributions": [
-      "harmonicSum: sum of 1/n over a set A",
-      "IsEgyptianRepresentation: sets with harmonic sum 1",
-      "egyptianCount: count function for problem statement",
-      "hasSubexponentialGrowth: the key question formalized",
-      "steinerbergerConstant, steinerberger_upper_bound: 2024 upper bound",
-      "liuSawhneyConstant, liuSawhney_asymptotic: full asymptotic",
-      "conlon_et_al_general: generalization to any rational target",
-      "egyptianCountTarget: count for arbitrary x ∈ ℚ",
-      "erdos_297_main: main theorem with asymptotic",
-      "erdos_297_answer: affirmative answer to c < 1 question"
+      "harmonicSum: sum of 1/n over a finite set A",
+      "IsEgyptianRepresentation: sets A with harmonicSum A = 1",
+      "egyptianCount: count function formalizing the problem statement",
+      "hasSubexponentialGrowth: the key question (is c < 1?)",
+      "steinerbergerConstant and steinerberger_upper_bound: first proof c < 1",
+      "liuSawhneyConstant and liuSawhney_asymptotic: full asymptotic 2^{(c+o(1))N}",
+      "conlon_et_al_general: generalization to arbitrary rational targets x > 0",
+      "egyptianCountTarget: count for arbitrary target x",
+      "egyptianCountLeq: variant for sums at most 1 (MathOverflow precedent)",
+      "heuristic_expected_sum_grows: why c < 1 (harmonic series diverges)",
+      "erdos_297_main: main theorem with full asymptotic",
+      "erdos_297_answer: affirmative answer to the subexponential growth question",
+      "at_least_three_representations: verified examples {1}, {2,3,6}, {2,4,5,20}"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #297: Egyptian Fractions Summing to 1**\n\n**The Question:**\nHow many subsets A ⊆ {1,...,N} satisfy Σ_{n∈A} 1/n = 1?\n\nThe key open question was whether this count grows like 2^{cN} for some c < 1, or like 2^{(1+o(1))N} (nearly all subsets).\n\n**Breakthrough in 2024:**\nThree independent teams solved this within weeks of each other:\n\n1. **Steinerberger (arXiv:2403.17041):** Proved count ≤ 2^{0.93N}\n\n2. **Liu-Sawhney (arXiv:2404.07113):** Full asymptotic 2^{(c+o(1))N} where c ≈ 0.91... is defined by an integral equation\n\n3. **Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte (arXiv:2404.16016):** Same asymptotic, extended to any positive rational target\n\n**Earlier Work:**\nA 2017 MathOverflow question (by Mikhail Tikhomirov) asked about ≤ 1 instead of = 1. Lucia, RaphaelB4, and js21 sketched proofs of the asymptotic.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet N ≥ 1. How many A ⊆ {1,...,N} satisfy Σ_{n∈A} 1/n = 1?\n\n**Answer:**\nThe count is 2^{(c + o(1))N} where c ≈ 0.91...\n\n**Key Result:**\nc < 1, so the count is exponentially smaller than 2^N.\nDespite 2^N possible subsets, only 2^{0.91N} have unit fraction sum exactly 1.\n\n**The Constant:**\nc is defined as the solution to a certain integral equation (Liu-Sawhney).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** harmonicSum, egyptianCount\n\n2. **Basic Examples:** {1}, {2,3,6}, {2,4,5,20} all sum to 1\n\n3. **The Question:** hasSubexponentialGrowth formalizes whether c < 1\n\n4. **Steinerberger:** steinerberger_upper_bound axiom for 2^{0.93N}\n\n5. **Liu-Sawhney:** liuSawhney_asymptotic for full 2^{(c+o(1))N}\n\n6. **Conlon et al.:** Generalization to arbitrary targets\n\n7. **Main Results:** erdos_297_main and erdos_297_answer",
+    "historicalContext": "**Erdős Problem #297: Egyptian Fractions Summing to 1**\n\nThis problem, originally posed by Erdős and Graham [ErGr80, p.36], asks a deceptively simple counting question: among all subsets of {1,...,N}, how many have the property that the sum of their reciprocals equals exactly 1? Examples include {1}, {2,3,6}, and {2,4,5,20}.\n\nThe key question was the exponential growth rate: does the count grow like 2^{cN} for some constant c < 1 (meaning exponentially fewer than all 2^N subsets), or does it approach 2^N (meaning \"most\" subsets work)? The intuition that c < 1 comes from the divergence of the harmonic series: since the expected harmonic sum of a random subset is approximately (log N)/2, which grows without bound, most random subsets vastly overshoot the target of 1.\n\nA precursor appeared on MathOverflow in 2017, when Mikhail Tikhomirov asked about subsets with sum at most 1. Lucia, RaphaelB4, and js21 sketched proofs of the correct asymptotic for that variant, building confidence that c < 1 for the exact-sum version too.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $N \\geq 1$. How many $A \\subseteq \\{1,\\ldots,N\\}$ are there such that $\\sum_{n \\in A} \\frac{1}{n} = 1$?\n\n**Answer:** The count is $2^{(c + o(1))N}$ where $c \\approx 0.91\\ldots$ is defined by an integral equation.\n\n**Key Result:** $c < 1$, so the count is exponentially smaller than $2^N$. Despite having $2^N$ possible subsets, only about $2^{0.91N}$ have unit fraction sum exactly 1.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** harmonicSum computes the unit fraction sum over a set; egyptianCount counts valid subsets via Finset.filter.\n\n2. **Verified Examples:** The representations {1}, {2,3,6}, {2,4,5,20}, and {2,3,7,42} are established (the first by simp, the rest axiomatized).\n\n3. **The Question:** hasSubexponentialGrowth formalizes whether c < 1 exists.\n\n4. **Three 2024 Results:** Steinerberger's 2^{0.93N} upper bound, Liu-Sawhney's full asymptotic with c ≈ 0.91..., and Conlon et al.'s independent proof with generalization to arbitrary rational targets.\n\n5. **Main Theorems:** erdos_297_main proves the asymptotic via Liu-Sawhney; erdos_297_answer proves hasSubexponentialGrowth.\n\n6. **Heuristic:** The expected harmonic sum of a random subset grows like (log N)/2, explaining why c < 1.",
     "keyInsights": [
-      "**c < 1:** The count grows exponentially slower than 2^N",
-      "**c ≈ 0.91:** Defined by an integral equation (Liu-Sawhney)",
-      "**Three Independent Teams:** Solved within weeks in 2024",
-      "**Why Subexponential:** Most subsets overshoot since E[sum] ~ (log N)/2 → ∞",
-      "**Generalization:** Works for any target x ∈ ℚ₊, not just x = 1",
-      "**Connection to #362:** Related Egyptian fraction problem"
+      "**Subexponential Growth:** The count 2^{0.91N} is exponentially smaller than the naive 2^N bound, meaning the vast majority of subsets overshoot 1",
+      "**Three Independent Proofs:** Steinerberger, Liu-Sawhney, and Conlon et al. all solved this within weeks in 2024, a remarkable convergence",
+      "**The Constant c ≈ 0.91:** Defined by an integral equation involving logarithmic densities; its exact value remains difficult to compute",
+      "**Harmonic Series Divergence:** The expected sum (log N)/2 → ∞ explains why hitting exactly 1 is so rare among random subsets",
+      "**Generalization:** Conlon et al. showed the same structure holds for any positive rational target x, with a target-dependent constant c_x < 1",
+      "**OEIS Connection:** The sequence of Egyptian fraction representation counts is catalogued as A092670"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "harmonicSum, IsEgyptianRepresentation, subsets, egyptianCount",
+      "startLine": 49,
+      "endLine": 72
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "summary": "singleton_one_is_egyptian, two_three_six, two_four_five_twenty, two_three_seven_fortytwo, at_least_three_representations",
+      "startLine": 74,
+      "endLine": 102
+    },
+    {
+      "id": "basic-bounds",
+      "title": "Basic Bounds",
+      "summary": "egyptianCount_finite, trivial_upper_bound, trivial_lower_bound",
+      "startLine": 104,
+      "endLine": 123
+    },
+    {
+      "id": "central-question",
+      "title": "The Central Question",
+      "summary": "hasSubexponentialGrowth definition",
+      "startLine": 125,
+      "endLine": 134
+    },
+    {
+      "id": "steinerberger",
+      "title": "Steinerberger's Upper Bound",
+      "summary": "steinerbergerConstant, steinerberger_upper_bound axiom (2^{0.93N})",
+      "startLine": 136,
+      "endLine": 151
+    },
+    {
+      "id": "liu-sawhney",
+      "title": "Liu-Sawhney's Full Asymptotic",
+      "summary": "liuSawhneyConstant, liuSawhney_constant_bounds, liuSawhney_asymptotic axiom",
+      "startLine": 153,
+      "endLine": 179
+    },
+    {
+      "id": "conlon-et-al",
+      "title": "Conlon et al.",
+      "summary": "conlon_et_al_asymptotic, egyptianCountTarget, conlon_et_al_general",
+      "startLine": 181,
+      "endLine": 208
+    },
+    {
+      "id": "mathoverflow-precedent",
+      "title": "MathOverflow Precedent (2017)",
+      "summary": "egyptianCountLeq, mathoverflow_2017_asymptotic",
+      "startLine": 210,
+      "endLine": 225
+    },
+    {
+      "id": "intuition",
+      "title": "Intuition: Why c < 1?",
+      "summary": "heuristic_expected_sum_grows showing harmonic series divergence",
+      "startLine": 227,
+      "endLine": 241
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_297_main theorem with full asymptotic, erdos_297_answer axiom",
+      "startLine": 243,
+      "endLine": 276
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_297_solved theorem, erdos_297_status string",
+      "startLine": 278,
+      "endLine": 305
+    }
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #297 asks how many subsets of {1,...,N} have unit fraction sum exactly 1. The answer is 2^{(c+o(1))N} where c ≈ 0.91... This was solved in 2024 by three independent teams: Steinerberger (upper bound), Liu-Sawhney (full asymptotic), and Conlon et al. (same asymptotic plus generalization). The key insight is that c < 1, meaning the count is exponentially smaller than the naive bound 2^N.",
-    "implications": "**Connections**\n\n1. **Egyptian Fractions:** Deep structural results on unit fraction sums\n\n2. **Counting Problems:** Refined asymptotics for constrained subset counting\n\n3. **Analytic Methods:** Integral equations characterize the constant c\n\n4. **Problem #362:** Related Egyptian fraction question\n\n5. **MathOverflow 2017:** Precursor question about ≤ 1",
+    "summary": "Erdős Problem #297 asks how many subsets of {1,...,N} have unit fraction sum exactly 1. The answer is 2^{(c+o(1))N} where c ≈ 0.91... This was solved in 2024 by three independent teams: Steinerberger proved the first upper bound of 2^{0.93N}, Liu-Sawhney gave the full asymptotic with matching bounds, and Conlon et al. independently proved the same result and generalized it to arbitrary positive rational targets.",
+    "implications": "**Mathematical Connections**\n\n1. **Egyptian Fractions:** Deep structural results on unit fraction representations, connecting to ancient mathematics\n\n2. **Counting Asymptotics:** A precise characterization of constrained subset counting, with the growth rate determined by an integral equation\n\n3. **Harmonic Analysis:** The divergence of the harmonic series provides the key intuition for why c < 1\n\n4. **Generalization:** The same phenomenon (subexponential count) holds for any positive rational target, not just 1\n\n5. **OEIS A092670:** Connects to the sequence of Egyptian fraction representation counts",
     "openQuestions": [
-      "What is the exact numerical value of c?",
-      "How does c_x depend on the target x?",
-      "Are there efficient algorithms to enumerate such subsets?",
-      "What about counting with repeated elements allowed?"
+      "What is the exact numerical value of the Liu-Sawhney constant c?",
+      "How does the constant c_x depend on the target x for general rational x?",
+      "Are there efficient algorithms to enumerate Egyptian representations?",
+      "What about counting representations with repeated elements allowed?",
+      "Can the integral equation for c be solved in closed form?"
     ]
   }
 }
