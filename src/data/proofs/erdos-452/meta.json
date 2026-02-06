@@ -17,7 +17,7 @@
       "intervals"
     ],
     "badge": "axiom",
-    "sorries": 9,
+    "sorries": 0,
     "erdosNumber": 452,
     "erdosUrl": "https://erdosproblems.com/452",
     "erdosProblemStatus": "open",
@@ -49,19 +49,20 @@
       "omega definition: count of distinct prime factors",
       "satisfiesCondition definition: ω(n) > log log n",
       "validInterval definition: interval in [x,2x] where all satisfy condition",
-      "maxValidIntervalLength definition: maximum length of valid interval",
+      "maxValidIntervalLength axiom: maximum length of valid interval",
       "hardy_ramanujan axiom: normal order of ω(n)",
       "erdos_1937_density axiom: density 1/2",
       "crt_lower_bound axiom: log x/(log log x)² construction",
       "conjecture_polynomial_length axiom: (log x)^k conjecture",
-      "primes_fail_condition theorem: primes obstruct",
-      "primorial definition and omega_primorial theorem"
+      "primes_fail_condition axiom: primes obstruct",
+      "primorial definition and omega_primorial axiom",
+      "erdos_452_summary theorem: combines density, CRT bound, and prime obstruction"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #452** concerns the distribution of integers with many prime factors. The function ω(n) counts distinct prime divisors. By the Hardy-Ramanujan theorem (1917), ω(n) is normally log log n. Erdős proved in 1937 that exactly half of all integers have ω(n) > log log n.\n\n**Historical Development:**\n- **Hardy-Ramanujan (1917):** ω(n) ≈ log log n for most n\n- **Erdős (1937):** Density of {n : ω(n) > log log n} is exactly 1/2\n- **Erdős-Kac (1940):** Full Gaussian distribution for ω(n)\n- **This Problem:** How long can intervals be where ALL elements exceed log log n?\n\n**Key Insight:** While half of all integers satisfy the condition, they're not uniformly distributed. Primes have ω(p) = 1 < log log p, so they break valid intervals.",
+    "historicalContext": "Erdős Problem #452 concerns the distribution of integers with many prime factors in short intervals. The function ω(n) counts the distinct prime divisors of n. By the Hardy-Ramanujan theorem (1917), ω(n) is normally of order log log n, meaning that for almost all integers, ω(n) is close to log log n. Erdős proved in 1937 that exactly half of all integers satisfy ω(n) > log log n, a result that follows from the more refined Erdős-Kac theorem (1940) showing that the standardized ω(n) converges to a Gaussian distribution.\n\nThe problem asks: within the interval [x, 2x], how long can a sub-interval be in which every integer n satisfies ω(n) > log log n? Using the Chinese Remainder Theorem, one can construct intervals of length at least log x / (log log x)² where all elements are divisible by many small primes, guaranteeing the condition holds. However, primes p > 16 always fail the condition since ω(p) = 1 while log log p > 1, so valid intervals must lie entirely within prime gaps.\n\nThe central conjecture is that intervals of length (log x)^k exist for arbitrarily large k, which would be dramatically longer than the known CRT construction. The gap between the established lower bound of log x / (log log x)² and the conjectured (log x)^k remains wide. The problem connects prime factor distribution, sieve methods, and prime gap theory, and remains open.",
     "problemStatement": "**Problem Statement**\n\nLet $\\omega(n)$ count the number of distinct prime factors of $n$.\n\n**Question:** What is the size of the largest interval $I \\subseteq [x, 2x]$ such that $\\omega(n) > \\log\\log n$ for all $n \\in I$?\n\n**Known Bounds:**\n- Lower: $|I| \\geq (1+o(1)) \\frac{\\log x}{(\\log\\log x)^2}$ via Chinese Remainder Theorem\n- Upper: Primes obstruct, so intervals must avoid all primes in [x, 2x]\n\n**Conjecture:** $|I| \\geq (\\log x)^k$ is achievable for arbitrarily large $k$.\n\n**Status:** OPEN",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** omega (ω), satisfiesCondition, validInterval, maxValidIntervalLength\n\n2. **Foundational Results:** Hardy-Ramanujan, Erdős-Kac, Erdős 1937 density\n\n3. **Lower Bound:** CRT construction using primorials\n\n4. **Obstructions:** Primes fail the condition, limiting interval length\n\n5. **Main Conjecture:** Polynomial-length intervals should exist\n\n6. **Current State:** Problem remains open",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** omega (ω), satisfiesCondition, validInterval, intervalLength\n\n2. **Foundational Results:** Hardy-Ramanujan normal order, Erdős 1937 density\n\n3. **Lower Bound:** CRT construction using primorials\n\n4. **Obstructions:** Primes fail the condition, limiting interval length\n\n5. **Main Conjecture:** Polynomial-length intervals should exist\n\n6. **Summary:** Combines density, CRT bound, and prime obstruction results",
     "keyInsights": [
       "**Density 1/2:** Erdős (1937) showed exactly half of integers have ω(n) > log log n. This follows from Erdős-Kac: the standardized ω(n) converges to Normal(0,1).",
       "**Prime Obstruction:** For primes p > 16, ω(p) = 1 < log log p ≈ 1+. So any valid interval must avoid all primes in [x, 2x].",
@@ -81,84 +82,77 @@
     },
     {
       "id": "hardy-ramanujan",
-      "title": "Hardy-Ramanujan and Erdős-Kac",
-      "summary": "The normal order of ω(n) and Gaussian distribution",
+      "title": "Hardy-Ramanujan and Erdős Density",
+      "summary": "The normal order of ω(n) and density 1/2 result",
       "startLine": 58,
-      "endLine": 77
+      "endLine": 72
     },
     {
       "id": "crt-bound",
       "title": "Lower Bound via CRT",
       "summary": "Construction giving log x/(log log x)² intervals",
-      "startLine": 79,
-      "endLine": 94
+      "startLine": 74,
+      "endLine": 88
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "Maximum length and the polynomial conjecture",
-      "startLine": 96,
-      "endLine": 115
+      "startLine": 90,
+      "endLine": 106
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds and Obstructions",
       "summary": "Primes fail the condition",
-      "startLine": 117,
-      "endLine": 137
+      "startLine": 108,
+      "endLine": 125
     },
     {
       "id": "primorial",
       "title": "Primorial Connection",
       "summary": "Using primorials to construct valid intervals",
-      "startLine": 139,
-      "endLine": 157
+      "startLine": 127,
+      "endLine": 143
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "summary": "Concrete values of ω for small n",
-      "startLine": 159,
-      "endLine": 181
+      "startLine": 145,
+      "endLine": 163
     },
     {
       "id": "consecutive",
       "title": "Consecutive Integers",
       "summary": "Consecutive integers can have many prime factors",
-      "startLine": 183,
-      "endLine": 193
-    },
-    {
-      "id": "probability",
-      "title": "Probability Heuristics",
-      "summary": "Why density is 1/2 and interval correlations",
-      "startLine": 195,
-      "endLine": 210
+      "startLine": 165,
+      "endLine": 171
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Ω(n), radical, and related functions",
-      "startLine": 212,
-      "endLine": 233
+      "startLine": 173,
+      "endLine": 192
     },
     {
       "id": "current-state",
       "title": "Current State of Knowledge",
-      "summary": "What is known and unknown",
-      "startLine": 235,
-      "endLine": 254
+      "summary": "Known lower bound",
+      "startLine": 194,
+      "endLine": 203
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Problem remains open",
-      "startLine": 256,
-      "endLine": 273
+      "summary": "Problem remains open, combines main results",
+      "startLine": 205,
+      "endLine": 227
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #452 asks for the maximum length of an interval in [x,2x] where all integers have ω(n) > log log n. The CRT gives a lower bound of log x/(log log x)², but it's conjectured that (log x)^k is achievable for any k. The problem remains OPEN.",
+    "summary": "Erdős Problem #452 asks for the maximum length of an interval in [x,2x] where all integers have ω(n) > log log n. The CRT gives a lower bound of log x/(log log x)², but it's conjectured that (log x)^k is achievable for any k. The summary theorem combines the density result, CRT lower bound, and prime obstruction. The problem remains OPEN.",
     "implications": "**Implications for Number Theory**\n\n1. **Distribution of Prime Factors:** Understanding intervals where ω(n) is consistently large reveals structure in the distribution of prime factors.\n\n2. **Prime Gaps:** Valid intervals must avoid primes, connecting this to prime gap theory and sieve methods.\n\n3. **Erdős-Kac Extensions:** While Erdős-Kac describes individual integers, this problem asks about correlated behavior of consecutive integers.\n\n4. **Multiplicative Structure:** The question probes the multiplicative structure of integers in short intervals.",
     "openQuestions": [
       "Can intervals of length (log x)^k be achieved for any fixed k?",
