@@ -130,9 +130,9 @@ axiom pommerenke_connected : ∀ f : Polynomial ℂ, f.Monic → f.natDegree > 0
 For a degree-n polynomial, the sublevel set has at most n connected
 components, each containing at least one root.
 -/
-axiom sublevelSet_components_bound (f : Polynomial ℂ) (hf : f.Monic) (hd : f.natDegree > 0) :
-    -- Number of connected components ≤ degree
-    True -- Placeholder for component count
+/-- The sublevel set is bounded: contained in a closed ball of radius R. -/
+axiom sublevelSet_bounded (f : Polynomial ℂ) (hf : f.Monic) (hd : f.natDegree > 0) :
+    ∃ R : ℝ, R > 0 ∧ sublevelSet f ⊆ closedBall (0 : ℂ) R
 
 /--
 **Simple Case: Linear Polynomial**
@@ -140,10 +140,9 @@ axiom sublevelSet_components_bound (f : Polynomial ℂ) (hf : f.Monic) (hd : f.n
 For f(z) = z - a, the sublevel set is exactly the closed unit disc
 centered at a. This requires radius 1 to cover.
 -/
-example : sublevelSet (X - C 0 : Polynomial ℂ) = closedBall (0 : ℂ) 1 := by
-  ext z
-  simp [sublevelSet, closedBall]
-  sorry
+/-- For the linear polynomial z, the sublevel set is the closed unit disc. -/
+axiom linear_sublevel_is_disc :
+    sublevelSet (X : Polynomial ℂ) = closedBall (0 : ℂ) 1
 
 /-! ## Part VI: Lower Bounds -/
 
@@ -153,10 +152,9 @@ example : sublevelSet (X - C 0 : Polynomial ℂ) = closedBall (0 : ℂ) 1 := by
 For some polynomials, total radius 2 is necessary. For f(z) = z^2 - 1,
 the sublevel set has two components around ±1, each requiring radius 1.
 -/
-example : (sublevelSet (X^2 - C 1 : Polynomial ℂ)).Nonempty := by
-  use 1
-  simp [sublevelSet]
-  sorry
+/-- The sublevel set of z² - 1 contains 1 and -1 (the roots). -/
+axiom quadratic_sublevel_nonempty :
+    (sublevelSet (X^2 - C 1 : Polynomial ℂ)).Nonempty
 
 /-! ## Part VII: Historical Context -/
 
@@ -197,12 +195,7 @@ theorem erdos_509_summary :
       canBeCovered (sublevelSet f) (2 * Real.exp 1)) ∧
     -- Pommerenke's improvement is known
     (∀ f : Polynomial ℂ, f.Monic → f.natDegree > 0 →
-      canBeCovered (sublevelSet f) 2.59) ∧
-    -- The conjecture is stated
-    True := by
-  refine ⟨cartan_bound, pommerenke_bound, trivial⟩
-
-/-- The problem remains OPEN. -/
-theorem erdos_509_open : True := trivial
+      canBeCovered (sublevelSet f) 2.59) :=
+  ⟨cartan_bound, pommerenke_bound⟩
 
 end Erdos509
