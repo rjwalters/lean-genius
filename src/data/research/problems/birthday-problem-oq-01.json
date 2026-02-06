@@ -1,0 +1,97 @@
+{
+  "slug": "birthday-problem-oq-01",
+  "title": "Expected Number of Shared Birthday Pairs",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "expected_shared_pairs n = (n.choose 2 : Q) / 365",
+    "plain": "In a group of n people with 365 equally likely birthdays, the expected number of pairs sharing a birthday is C(n,2)/365. With 28 people, we expect more than 1 shared pair.",
+    "whyMatters": [
+      "Natural extension of the birthday problem (Wiedijk #93) to expected pairs",
+      "Demonstrates linearity of expectation in a classic setting",
+      "The 28-person threshold for E[pairs] > 1 contrasts with the 23-person threshold for P(match) > 1/2"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "expected_shared_pairs: definition as C(n,2)/365",
+      "expected_shared_pairs_nat_eq: C(n,2) = n*(n-1)/2",
+      "expected_pairs_23: E[23] = 253/365",
+      "expected_shared_pairs_nonneg: E[n] >= 0",
+      "expected_pairs_zero, _one: E[0] = E[1] = 0",
+      "expected_pairs_two: E[2] = 1/365",
+      "expected_pairs_28_gt_one: E[28] > 1 (threshold)",
+      "expected_pairs_27_lt_one: E[27] < 1"
+    ],
+    "open": [],
+    "goal": "Complete formalization of expected shared birthday pairs with threshold results."
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-06T06:00:00Z",
+    "iteration": 1,
+    "focus": "Extended BirthdayProblem.lean with expected shared pairs section (8 theorems, 1 definition).",
+    "activeApproach": "Direct formalization using Nat.choose and rational arithmetic",
+    "blockers": [],
+    "nextAction": "Problem is complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 8 new theorems + 1 definition added to BirthdayProblem.lean. Expected shared pairs formalized with threshold results (28 people for E > 1).",
+    "builtItems": [
+      "expected_shared_pairs: definition as C(n,2)/365 in Q",
+      "expected_shared_pairs_nat_eq: C(n,2) = n*(n-1)/2 identity",
+      "expected_pairs_23: concrete value 253/365",
+      "expected_shared_pairs_nonneg: nonnegativity",
+      "expected_pairs_zero, _one: base cases",
+      "expected_pairs_two: 1/365",
+      "expected_pairs_28_gt_one: threshold E > 1",
+      "expected_pairs_27_lt_one: below threshold"
+    ],
+    "insights": [
+      "norm_num [Nat.choose] handles concrete choose computations efficiently",
+      "unfold + norm_num pattern works well for rational inequality goals",
+      "The 28-person expected pairs threshold (E>1) vs 23-person probability threshold (P>0.5) is a nice contrast"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Birthday Problem OQ-01: Expected Shared Pairs\n\n## Status: COMPLETE\n8 theorems, 1 definition, 0 sorries. Added to existing BirthdayProblem.lean.\n\n## Key Results\n- expected_shared_pairs(n) = C(n,2)/365\n- E[23] = 253/365 ~ 0.693\n- E[28] > 1 (first n with expected pairs > 1)\n- E[27] < 1 (threshold is sharp)\n\n## Proof Technique\nDirect computation using Nat.choose and norm_num for concrete values."
+  },
+  "approaches": [
+    {
+      "name": "Direct formalization with Nat.choose",
+      "status": "completed",
+      "description": "Define expected pairs as C(n,2)/365, prove properties and threshold results using norm_num"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "combinatorics",
+    "extension",
+    "0-sorry",
+    "complete"
+  ],
+  "relatedProofs": [
+    "proofs/Proofs/BirthdayProblem.lean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Nat.choose",
+      "Nat.choose_two_right"
+    ]
+  },
+  "started": "2026-02-06T05:43:00Z",
+  "lastUpdate": "2026-02-06T06:00:00Z",
+  "significance": 6,
+  "tractability": 8,
+  "knowledgeScore": 14
+}
