@@ -83,28 +83,6 @@ def HasLocalIndependence (G : SimpleGraph V) (m k : ℕ) : Prop :=
   ∀ S : Finset V, S.card = m →
     ∃ I : Finset V, I ⊆ S ∧ IsIndependent G I ∧ I.card ≥ k
 
-/--
-**The f(m, n) function:**
-f(m, n) is the maximum f such that every graph on n vertices with
-(m, log n)-local independence has an independent set of size ≥ f.
-
-More precisely: if every induced subgraph on m vertices has an
-independent set of size ≥ log n, then the whole graph has an
-independent set of size ≥ f(m, n).
--/
-noncomputable def f_local_to_global (m n : ℕ) : ℕ :=
-  -- The minimum independence number over all graphs with the property
-  -- (This is a noncomputable idealization)
-  Classical.choose (⟨0, trivial⟩ : ∃ k : ℕ, True)
-
-/--
-**Key observation:**
-If every m-vertex subgraph has a large independent set, the whole graph
-might not have a proportionally large one. The question is: how large
-must it be?
--/
-theorem local_to_global_intuition : True := trivial
-
 /-
 ## Part III: Erdős-Hajnal's Conjectures
 
@@ -196,11 +174,11 @@ axiom alon_sudakov_tight_bound_2 :
             (independenceNumber G : ℝ) ≤ C * (Nat.log n) ^ 2 / Nat.log (Nat.log n))
 
 /-
-## Part V: Main Results Summary
+## Part V: Main Results
 -/
 
 /--
-**Erdős Problem #804: DISPROVED**
+**Erdős Problem #804: DISPROVED (Alon-Sudakov, 2007)**
 
 Q1: Is f((log n)², n) ≥ n^(1/2 - o(1))?
 A: NO. The true answer is Θ((log n)² / log log n).
@@ -224,103 +202,23 @@ theorem erdos_804 :
   exact ⟨erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false⟩
 
 /-
-## Part VI: Proof Intuition
-
-Why are the conjectures false?
+## Part VI: Alon-Sudakov Full Resolution
 -/
 
 /--
-**Intuition: Random Graphs**
+**Complete resolution of Problem #804:**
 
-Consider a random graph G(n, p) with edge probability p ≈ 1 - 1/log n.
+The true bounds are:
+1. f((log n)², n) = Θ((log n)² / log log n) — between lower and upper bounds
+2. f((log n)³, n) = Θ((log n)² / log log n) — tight characterization
 
-- In any m-vertex induced subgraph, there are likely ≈ m/log n vertices
-  with no edges, giving independent sets of size ≈ log n when m = (log n)².
+Both conjectures overestimated the local-to-global propagation strength.
 
-- But the global independence number is only ≈ (log n)² because the graph
-  is quite dense.
-
-Random constructions often give tight examples in extremal graph theory.
+Remarkably, increasing m from (log n)² to (log n)³ does NOT significantly
+improve the global bound — the bottleneck is elsewhere.
 -/
-theorem random_graph_intuition : True := trivial
-
-/--
-**Intuition: Ramsey Theory Connection**
-
-The problem relates to Ramsey numbers. In Ramsey terms:
-- Local independence says small subgraphs have "controlled" structure
-- The question is how this propagates globally
-
-Erdős-Hajnal conjectured stronger propagation than actually occurs.
--/
-theorem ramsey_connection : True := trivial
-
-/-
-## Part VII: Related Results
--/
-
-/--
-**Connection to Problem #805:**
-Problem #805 asks related questions about local-to-global independence.
-The Alon-Sudakov techniques apply to both problems.
--/
-theorem related_to_805 : True := trivial
-
-/--
-**Erdős-Hajnal Conjecture (different problem):**
-The famous Erdős-Hajnal conjecture says that for any graph H,
-graphs that don't contain H as an induced subgraph have polynomial
-independence number. That is a different (and still open!) problem.
--/
-theorem erdos_hajnal_conjecture_different : True := trivial
-
-/-
-## Part VIII: Examples
--/
-
-/--
-**Example: Complete Graph**
-K_n has α(K_n) = 1 (only singletons are independent).
-Every induced subgraph on m vertices is K_m, which also has α = 1.
-This trivially satisfies the local condition with k = 1.
--/
-theorem complete_graph_example : True := trivial
-
-/--
-**Example: Empty Graph**
-The empty graph (no edges) has α = n (the whole vertex set is independent).
-Every induced subgraph on m vertices has α = m.
-This shows f(m, n) ≥ min{n, log n requirement} when conditions are met.
--/
-theorem empty_graph_example : True := trivial
-
-/--
-**Example: Paley Graphs**
-Paley graphs are quadratic residue graphs on prime fields.
-They have independence number ≈ √n and can be analyzed for local properties.
--/
-theorem paley_graph_example : True := trivial
-
-/-
-## Part IX: Summary
--/
-
-/--
-**Erdős Problem #804: DISPROVED (Alon-Sudakov, 2007)**
-
-**Original Questions:**
-1. f((log n)², n) ≥ n^(1/2 - o(1))? NO
-2. f((log n)³, n) ≫ (log n)³? NO
-
-**True Bounds:**
-1. f((log n)², n) = Θ((log n)² / log log n)
-2. f((log n)³, n) = Θ((log n)² / log log n)
-
-**Key Lesson:** Local structure doesn't imply global structure as strongly
-as intuition might suggest. The loss from local to global is significant.
--/
-theorem erdos_804_summary :
-    -- The conjectures were false
+theorem erdos_804_resolution :
+    -- Conjectures are false
     (¬(∀ ε > 0, ∀ᶠ n : ℕ in atTop,
         ∀ G : SimpleGraph (Fin n),
           HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) →
@@ -329,8 +227,18 @@ theorem erdos_804_summary :
         ∀ G : SimpleGraph (Fin n),
           HasLocalIndependence G ((Nat.log n) ^ 3) (Nat.log n) →
             independenceNumber G ≥ (Nat.log n) ^ 3 * Nat.log n)) ∧
-    -- But we do have bounds (existence statements from Alon-Sudakov)
-    True := by
-  exact ⟨erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false, trivial⟩
+    -- But precise bounds exist (Alon-Sudakov 2007)
+    (∃ C : ℝ, C > 0 ∧
+      ∀ᶠ n : ℕ in atTop,
+        ∃ G : SimpleGraph (Fin n),
+          HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) ∧
+            independenceNumber G ≤ C * (Nat.log n) ^ 2) ∧
+    (∃ c : ℝ, c > 0 ∧
+      ∀ᶠ n : ℕ in atTop,
+        ∀ G : SimpleGraph (Fin n),
+          HasLocalIndependence G ((Nat.log n) ^ 2) (Nat.log n) →
+            (independenceNumber G : ℝ) ≥ c * (Nat.log n) ^ 2 / Nat.log (Nat.log n)) :=
+  ⟨erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false,
+   alon_sudakov_upper_bound_1, alon_sudakov_lower_bound_1⟩
 
 end Erdos804
