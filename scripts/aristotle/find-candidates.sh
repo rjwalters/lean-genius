@@ -38,7 +38,9 @@ done
 # Get list of already-submitted files
 get_submitted_files() {
     if [[ -f "$JOBS_FILE" ]]; then
-        jq -r '.jobs[].file' "$JOBS_FILE" 2>/dev/null | xargs -I{} basename {} .lean | sort -u
+        # Only exclude files with active or successful jobs
+        # Expired and failed files are eligible for resubmission
+        jq -r '.jobs[] | select(.status == "submitted" or .status == "completed" or .status == "integrated") | .file' "$JOBS_FILE" 2>/dev/null | xargs -I{} basename {} .lean | sort -u
     fi
 }
 

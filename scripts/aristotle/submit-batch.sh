@@ -3,14 +3,14 @@
 # submit-batch.sh - Submit a batch of files to Aristotle
 #
 # Usage:
-#   ./submit-batch.sh                    # Submit up to TARGET (default 20) total active
+#   ./submit-batch.sh                    # Submit up to TARGET (default 10) total active
 #   ./submit-batch.sh --count N          # Submit exactly N files
 #   ./submit-batch.sh --dry-run          # Show what would be submitted
-#   ./submit-batch.sh --target N         # Maintain N active jobs (default 20)
+#   ./submit-batch.sh --target N         # Maintain N active jobs (default 10)
 #
 # Environment:
 #   ARISTOTLE_API_KEY - Required for submission
-#   ARISTOTLE_TARGET  - Target number of active jobs (default 20)
+#   ARISTOTLE_TARGET  - Target number of active jobs (default 10)
 #
 
 set -euo pipefail
@@ -28,7 +28,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Defaults
-TARGET_ACTIVE="${ARISTOTLE_TARGET:-20}"
+TARGET_ACTIVE="${ARISTOTLE_TARGET:-10}"
 SUBMIT_COUNT=0
 DRY_RUN=false
 
@@ -43,7 +43,7 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Options:"
             echo "  --count N    Submit exactly N files"
-            echo "  --target N   Maintain N active jobs (default: 20)"
+            echo "  --target N   Maintain N active jobs (default: 10)"
             echo "  --dry-run    Show what would be submitted"
             exit 0
             ;;

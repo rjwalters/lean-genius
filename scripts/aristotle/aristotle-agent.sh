@@ -6,7 +6,7 @@
 #   ./aristotle-agent.sh              # Run one cycle
 #   ./aristotle-agent.sh --loop       # Run continuously
 #   ./aristotle-agent.sh --interval N # Loop interval in minutes (default: 30)
-#   ./aristotle-agent.sh --target N   # Target active jobs (default: 20)
+#   ./aristotle-agent.sh --target N   # Target active jobs (default: 10)
 #   ./aristotle-agent.sh --status     # Show current status
 #
 # This agent:
@@ -32,7 +32,7 @@ NC='\033[0m'
 # Defaults
 LOOP_MODE=false
 INTERVAL_MINUTES="${ARISTOTLE_INTERVAL:-30}"
-TARGET_ACTIVE="${ARISTOTLE_TARGET:-20}"
+TARGET_ACTIVE="${ARISTOTLE_TARGET:-10}"
 SHOW_STATUS=false
 
 while [[ $# -gt 0 ]]; do
@@ -47,7 +47,7 @@ while [[ $# -gt 0 ]]; do
             echo "Options:"
             echo "  --loop        Run continuously"
             echo "  --interval N  Loop interval in minutes (default: 30)"
-            echo "  --target N    Target active jobs (default: 20)"
+            echo "  --target N    Target active jobs (default: 10)"
             echo "  --status      Show current status and exit"
             exit 0
             ;;
@@ -70,6 +70,7 @@ show_status() {
     local completed=$(jq '[.jobs[] | select(.status == "completed")] | length' "$JOBS_FILE")
     local integrated=$(jq '[.jobs[] | select(.status == "integrated")] | length' "$JOBS_FILE")
     local failed=$(jq '[.jobs[] | select(.status == "failed" or .status == "build_failed")] | length' "$JOBS_FILE")
+    local expired=$(jq '[.jobs[] | select(.status == "expired")] | length' "$JOBS_FILE")
 
     echo "Total jobs: $total"
     echo ""
@@ -77,6 +78,7 @@ show_status() {
     echo "  Completed (pending integration): $completed"
     echo "  Integrated: $integrated"
     echo "  Failed: $failed"
+    echo "  Expired: $expired"
     echo ""
     echo "Target active: $TARGET_ACTIVE"
 
