@@ -403,6 +403,24 @@ private theorem squarefree_10 : Squarefree (10 : ℕ) := by
   have : Nat.Prime 5 := by native_decide
   exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
 
+private theorem squarefree_22 : Squarefree (22 : ℕ) := by
+  rw [show (22 : ℕ) = 2 * 11 from by norm_num]
+  have : Nat.Prime 11 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_26 : Squarefree (26 : ℕ) := by
+  rw [show (26 : ℕ) = 2 * 13 from by norm_num]
+  have : Nat.Prime 13 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_42 : Squarefree (42 : ℕ) := by
+  rw [show (42 : ℕ) = 2 * 21 from by norm_num]
+  have h21 : Squarefree (21 : ℕ) := by
+    rw [show (21 : ℕ) = 3 * 7 from by norm_num]
+    have : Nat.Prime 7 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, three_prime.squarefree, this.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h21⟩)
+
 /--
 **{1, 5} has a squarefree sumset.**
 Sums: 1+1=2 (prime), 1+5=6=2·3 (squarefree), 5+5=10=2·5 (squarefree).
@@ -418,6 +436,56 @@ theorem pair_1_5_squarefree_sumset : hasSquarefreeSumset ({1, 5} : Finset ℕ) :
   · exact squarefree_6
   · exact squarefree_6
   · exact squarefree_10
+
+/--
+**{1, 5, 21} has a squarefree sumset.**
+Sums: 1+1=2, 1+5=6, 1+21=22, 5+5=10, 5+21=26, 21+21=42.
+All sums are squarefree: 2, 6=2·3, 10=2·5, 22=2·11, 26=2·13, 42=2·3·7.
+-/
+theorem triple_1_5_21_squarefree_sumset : hasSquarefreeSumset ({1, 5, 21} : Finset ℕ) := by
+  intro s hs
+  simp only [sumset, Finset.mem_image, Finset.mem_product, Finset.mem_insert,
+    Finset.mem_singleton] at hs
+  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, hab⟩ := hs
+  simp only [isSquarefree]
+  rcases ha with rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl <;>
+    simp at hab <;> rw [← hab]
+  · exact squarefree_2          -- 1+1=2
+  · exact squarefree_6          -- 1+5=6
+  · exact squarefree_22         -- 1+21=22
+  · exact squarefree_6          -- 5+1=6
+  · exact squarefree_10         -- 5+5=10
+  · exact squarefree_26         -- 5+21=26
+  · exact squarefree_22         -- 21+1=22
+  · exact squarefree_26         -- 21+5=26
+  · exact squarefree_42         -- 21+21=42
+
+/--
+**f(N) ≥ 3 for N ≥ 21:**
+The set {1, 5, 21} ⊆ {1,...,N} has squarefree sumset, giving f(N) ≥ 3.
+-/
+theorem f_ge_three (N : ℕ) (hN : N ≥ 21) : f N ≥ 3 := by
+  unfold f
+  have h3 : (3 : ℕ) ∈ {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    simp only [Set.mem_setOf_eq]
+    refine ⟨{1, 5, 21}, ?_, triple_1_5_21_squarefree_sumset, ?_⟩
+    · intro x hx
+      simp [Finset.mem_insert, Finset.mem_singleton] at hx
+      simp [Finset.mem_range]
+      rcases hx with rfl | rfl | rfl <;> omega
+    · have h15 : (1 : ℕ) ≠ 5 := by omega
+      have h121 : (1 : ℕ) ≠ 21 := by omega
+      have h521 : (5 : ℕ) ≠ 21 := by omega
+      simp [Finset.card_insert_of_not_mem, Finset.mem_insert, Finset.mem_singleton,
+        h15, h121, h521, Finset.card_pair h521]
+  have hbdd : BddAbove {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    use N + 1
+    intro m hm
+    simp only [Set.mem_setOf_eq] at hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm
+    rw [← hA_card]
+    exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
+  exact le_csSup hbdd h3
 
 /--
 **Residue class constraint modulo p²:**
@@ -1250,6 +1318,221 @@ theorem mod_9_residue_image_le_4 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
       _ = (S ∩ {1, 8}).card + ((S ∩ {2, 7}).card + ((S ∩ {3, 6}).card + (S ∩ {4, 5}).card)) := by rw [hpart3]
       _ ≤ 1 + (1 + (1 + 1)) := by omega
       _ = 4 := by omega
+
+  omega
+
+/-
+## Part XIX: Counting Allowed Residues mod 25
+
+For p = 5, the residue classes mod 25 split into complementary pairs
+{r, 25-r}. The pairs are: {1,24}, {2,23}, {3,22}, {4,21}, {5,20},
+{6,19}, {7,18}, {8,17}, {9,16}, {10,15}, {11,14}, {12,13}.
+Class 0 is forbidden. At most one from each pair can be used.
+
+Result: at most 12 out of 25 residue classes are available.
+Density factor: ≤ 12/25 for prime p = 5.
+-/
+
+/--
+**No complementary residues mod 25 (general):**
+If a % 25 + b % 25 sums to 0 mod 25, then 25 | a+b, contradiction.
+-/
+theorem no_complementary_mod_25_general (A : Finset ℕ) (h : hasSquarefreeSumset A)
+    (a b : ℕ) (ha : a ∈ A) (hb : b ∈ A)
+    (hab : a % 25 + b % 25 = 25) : False := by
+  have h25 : 25 ∣ (a + b) := by omega
+  exact no_sum_div_25 A h a b ha hb h25
+
+/--
+**Mod 25: at most 12 residue classes.**
+The residue image of A mod 25 has at most 12 elements:
+one from each of 12 complementary pairs {r, 25-r} for r = 1,...,12.
+Class 0 is forbidden and there is no self-complementary class (since 2r ≡ 0 mod 25
+has no nonzero solution, as gcd(2,25)=1).
+-/
+theorem mod_25_residue_image_le_12 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
+    (A.image (· % 25)).card ≤ 12 := by
+  -- Image avoids 0
+  have h0 : (0 : ℕ) ∉ A.image (· % 25) := by
+    simp only [Finset.mem_image]
+    intro ⟨a, ha, h0⟩
+    exact forbidden_class_zero_25 A h a ha h0
+  -- Image ⊆ {1,...,24}
+  have hbnd : A.image (· % 25) ⊆ Finset.range 25 := by
+    intro r hr
+    simp only [Finset.mem_image] at hr
+    obtain ⟨a, _, rfl⟩ := hr
+    simp [Finset.mem_range]; omega
+  -- For each pair {r, 25-r}, at most one appears
+  -- We use the same partition argument as mod 9
+  -- The 12 pairs {1,24},{2,23},...,{12,13} partition {1,...,24}
+  -- Each pair contributes at most 1 element to the image
+  -- So |image| ≤ 12
+  set S := A.image (· % 25) with hS_def
+  by_contra hgt
+  push_neg at hgt
+  -- S ⊆ {1,...,24} with |S| ≥ 13
+  -- The 12 pairs partition {1,...,24} into 12 groups of size 2
+  -- By pigeonhole, some pair has both elements in S
+  -- For that pair {r, 25-r}, a+b ≡ 0 (mod 25) → contradiction
+  -- We prove by showing S has ≤ 12 elements via the partition argument:
+  -- for each r in S, define f(r) = min(r, 25-r), mapping S → {1,...,12}
+  -- For each v ∈ {1,...,12}, at most 1 of {v, 25-v} is in S
+  -- (if both v ∈ S and 25-v ∈ S, then ∃ a,b with a%25=v, b%25=25-v, sum=25 → contradiction)
+  -- So |f(S)| = |S| - #{v : both v, 25-v ∈ S} ≥ |S| ... no, we need cardinality via injection
+  -- Actually: f maps S into {1,...,12} and is at most 2-to-1.
+  -- But if both v and 25-v ∈ S, contradiction. So f is injective on S.
+  -- Therefore |S| ≤ 12.
+  -- We need to show: if r, r' ∈ S with f(r) = f(r'), then r = r'.
+  -- f(r) = min(r, 25-r). If f(r) = f(r') and r ≠ r', then {r, r'} = {v, 25-v} for some v.
+  -- But then both v and 25-v are in S, giving a contradiction.
+  -- Let's formalize the injection.
+  -- Define g : ℕ → ℕ := fun r => min r (25 - r)  (for r ∈ {1,...,24})
+  -- g maps {1,...,24} → {1,...,12}
+  -- g(r) = g(r') and r ≠ r' implies {r, r'} = {g(r), 25 - g(r)}
+  -- If both are in S, we get a contradiction
+
+  -- Simpler approach: S.image g has card ≤ 12 (range is {1,...,12})
+  -- and g is injective on S (no pair {r, 25-r} both in S)
+  -- so S.card = (S.image g).card ≤ 12
+
+  -- We can actually just use the fact that S ⊆ {1,...,24} and no complementary pair
+  -- Use the general complementary pair exclusion to construct an injection into {1,...,12}
+  -- For now, use the more direct counting argument:
+
+  -- For r ∈ {1,...,12}: if r ∈ S, then 25-r ∉ S
+  -- So S ⊆ {1,...,24} and for each r ∈ {1,...,12}, |S ∩ {r, 25-r}| ≤ 1
+  -- These 12 pairs partition {1,...,24}, so |S| ≤ 12
+
+  -- Pair exclusion for each of the 12 pairs
+  have hpair : ∀ r : ℕ, r ≥ 1 → r ≤ 12 → ¬(r ∈ S ∧ (25 - r) ∈ S) := by
+    intro r _ hr_le ⟨hr_in, hc_in⟩
+    simp only [hS_def, Finset.mem_image] at hr_in hc_in
+    obtain ⟨a, ha, ha_r⟩ := hr_in
+    obtain ⟨b, hb, hb_c⟩ := hc_in
+    apply no_complementary_mod_25_general A h a b ha hb
+    omega
+
+  -- Each pair contributes at most 1
+  have pair_le_1 : ∀ r : ℕ, r ≥ 1 → r ≤ 12 →
+      (S ∩ ({r, 25 - r} : Finset ℕ)).card ≤ 1 := by
+    intro r hr1 hr12
+    have hne : r ≠ 25 - r := by omega
+    have hpair_r := hpair r hr1 hr12
+    push_neg at hpair_r
+    by_cases hr : r ∈ S
+    · have hc := hpair_r hr
+      have : S ∩ {r, 25 - r} ⊆ {r} := by
+        intro x hx
+        simp only [Finset.mem_inter, Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+        rcases hx.2 with rfl | rfl
+        · rfl
+        · exact absurd hx.1 hc
+      calc (S ∩ {r, 25 - r}).card ≤ ({r} : Finset ℕ).card := Finset.card_le_card this
+        _ = 1 := Finset.card_singleton r
+    · have : S ∩ {r, 25 - r} ⊆ {25 - r} := by
+        intro x hx
+        simp only [Finset.mem_inter, Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+        rcases hx.2 with rfl | rfl
+        · exact absurd hx.1 hr
+        · rfl
+      calc (S ∩ {r, 25 - r}).card ≤ ({25 - r} : Finset ℕ).card := Finset.card_le_card this
+        _ = 1 := Finset.card_singleton (25 - r)
+
+  -- S ⊆ union of all pairs
+  have hsub : S ⊆ Finset.range 25 \ {0} := by
+    intro r hr
+    simp only [Finset.mem_sdiff, Finset.mem_singleton]
+    exact ⟨hbnd hr, fun heq => h0 (heq ▸ hr)⟩
+
+  -- Direct: since image is in {1,...,24} which has 24 elements, and
+  -- we need ≥ 13, but each of 12 pairs contributes ≤ 1...
+  -- We need |S| ≤ 12 but we assumed |S| ≥ 13.
+
+  -- Use the injection argument via min(r, 25-r)
+  -- For each s ∈ S, define g(s) = if s ≤ 12 then s else 25 - s
+  -- g maps S → {1,...,12}
+  -- g is injective: if g(s) = g(t) and s ≠ t, then one of them is g(s) and the other is 25-g(s)
+  -- both in S → contradicts pair exclusion
+
+  -- Actually let's use a cleaner approach with Finset.card_le_card_of_injOn
+  have g_inj : Set.InjOn (fun r => min r (25 - r)) (S : Set ℕ) := by
+    intro r hr s hs hg
+    simp only [Finset.mem_coe] at hr hs
+    by_contra hne
+    -- r ≠ s and min(r, 25-r) = min(s, 25-s)
+    -- Since r, s ∈ {1,...,24} and r ≠ s, with same min value v,
+    -- one must be v and the other 25-v (the two preimages of v)
+    have hr_range := hsub hr
+    have hs_range := hsub hs
+    simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton] at hr_range hs_range
+    -- r ∈ {1,...,24} and s ∈ {1,...,24}
+    have hr_pos : r ≥ 1 := by omega
+    have hs_pos : s ≥ 1 := by omega
+    have hr_le : r ≤ 24 := by omega
+    have hs_le : s ≤ 24 := by omega
+    -- min(r, 25-r) = min(s, 25-s) and r ≠ s
+    -- Case analysis on whether r ≤ 12 or r > 12
+    -- If r ≤ 12: min(r,25-r) = r since r ≤ 25-r iff r ≤ 12
+    -- If r > 12: min(r,25-r) = 25-r
+    -- Similarly for s
+    -- So if both ≤ 12: r = s. If both > 12: 25-r = 25-s, so r = s.
+    -- If r ≤ 12, s > 12: r = 25-s, so s = 25-r.
+    -- Then both r and 25-r = s are in S → pair contradiction
+    -- Similarly if r > 12, s ≤ 12.
+    by_cases hr12 : r ≤ 12 <;> by_cases hs12 : s ≤ 12
+    · -- Both ≤ 12: min = r and min = s, so r = s, contradiction
+      have : min r (25 - r) = r := Nat.min_eq_left (by omega)
+      have : min s (25 - s) = s := Nat.min_eq_left (by omega)
+      omega
+    · -- r ≤ 12, s > 12: min(r,25-r) = r, min(s,25-s) = 25-s, so r = 25-s
+      have hmin_r : min r (25 - r) = r := Nat.min_eq_left (by omega)
+      have hmin_s : min s (25 - s) = 25 - s := Nat.min_eq_right (by omega)
+      have : r = 25 - s := by omega
+      -- So s = 25 - r, and both r and s = 25-r are in S
+      have : s = 25 - r := by omega
+      have hr1 : r ≥ 1 := by omega
+      exact hpair r hr1 (by omega) ⟨hr, this ▸ hs⟩
+    · -- r > 12, s ≤ 12: min(r,25-r) = 25-r, min(s,25-s) = s, so 25-r = s
+      have hmin_r : min r (25 - r) = 25 - r := Nat.min_eq_right (by omega)
+      have hmin_s : min s (25 - s) = s := Nat.min_eq_left (by omega)
+      have : 25 - r = s := by omega
+      -- So r = 25 - s, and both s and r = 25-s are in S
+      have : r = 25 - s := by omega
+      have hs1 : s ≥ 1 := by omega
+      exact hpair s hs1 (by omega) ⟨hs, this ▸ hr⟩
+    · -- Both > 12: min = 25-r and min = 25-s, so 25-r = 25-s, so r = s, contradiction
+      have : min r (25 - r) = 25 - r := Nat.min_eq_right (by omega)
+      have : min s (25 - s) = 25 - s := Nat.min_eq_right (by omega)
+      omega
+
+  -- g maps S into Finset.range 13 \ {0} = {1,...,12} (which has card 12)
+  have g_range : ∀ r ∈ S, min r (25 - r) ∈ Finset.range 13 \ {0} := by
+    intro r hr
+    have hr_range := hsub hr
+    simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton] at hr_range ⊢
+    constructor
+    · -- min(r, 25-r) < 13, i.e., ≤ 12
+      omega
+    · -- min(r, 25-r) ≠ 0
+      omega
+
+  -- |S| ≤ |range 13 \ {0}| = 12
+  have hcard_target : (Finset.range 13 \ ({0} : Finset ℕ)).card = 12 := by native_decide
+
+  have := Finset.card_le_card_of_injOn (fun r => min r (25 - r)) g_inj
+    (fun r hr => Finset.mem_image.mpr ⟨r, hr, rfl⟩)
+  -- S.image g has card = S.card (by injectivity) and is ⊆ {1,...,12}
+  have himg_sub : S.image (fun r => min r (25 - r)) ⊆ Finset.range 13 \ {0} := by
+    intro v hv
+    simp only [Finset.mem_image] at hv
+    obtain ⟨r, hr, rfl⟩ := hv
+    exact g_range r hr
+
+  have hle : S.card ≤ (Finset.range 13 \ ({0} : Finset ℕ)).card := by
+    calc S.card = (S.image (fun r => min r (25 - r))).card :=
+            (Finset.card_image_of_injOn g_inj).symm
+      _ ≤ (Finset.range 13 \ ({0} : Finset ℕ)).card := Finset.card_le_card himg_sub
 
   omega
 
