@@ -53,17 +53,22 @@ theorem order_one_basis (A : Set ℕ) :
     use N
     intro n hn
     obtain ⟨s, hsA, hscard, hssum⟩ := hN n hn
-    have : s.card = 1 := by omega
-    rw [Finset.card_eq_one] at this
-    obtain ⟨a, rfl⟩ := this
-    simp at hssum
-    rw [hssum]
-    exact hsA (Finset.mem_singleton_self a)
+    -- s.card ≤ 1 and s.sum id = n ≥ N; if s empty, sum = 0 ≠ n (when n ≥ N ≥ 0)
+    -- But we need s nonempty to get card = 1
+    have hne : s.Nonempty := by
+      by_contra h
+      rw [Finset.not_nonempty_iff_eq_empty] at h
+      simp [h] at hssum
+    have hcard1 : s.card = 1 := by have := hne.card_pos; omega
+    rw [Finset.card_eq_one] at hcard1
+    obtain ⟨a, rfl⟩ := hcard1
+    simp only [Finset.sum_singleton, id] at hssum
+    rw [← hssum]
+    exact hsA (Finset.mem_coe.mpr (Finset.mem_singleton_self a))
   · intro ⟨N, hN⟩
     use N
     intro n hn
-    use {n}
-    simp [hN n hn]
+    exact ⟨{n}, by simp [hN n hn], by simp, by simp⟩
 
 /- ## Part II: Minimal Bases -/
 
@@ -80,10 +85,55 @@ def IsMinimalAsymptoticAddBasisOfOrder (k : ℕ) (A : Set ℕ) : Prop :=
   IsAsymptoticAddBasisOfOrder k A ∧
     ∀ B : Set ℕ, B ⊆ A → B.Infinite → ¬IsAsymptoticAddBasisOfOrder k (A \ B)
 
-/-- A minimal basis must be infinite.
-    A finite set can only represent finitely many sums, so cannot be a basis. -/
-axiom minimal_basis_infinite (k : ℕ) (A : Set ℕ)
-    (hA : IsMinimalAsymptoticAddBasisOfOrder k A) : A.Infinite
+/-- A finite set cannot be an asymptotic additive basis of any order. -/
+theorem finite_not_basis (k : ℕ) (A : Set ℕ) (hfin : A.Finite) :
+    ¬IsAsymptoticAddBasisOfOrder k A := by
+  intro ⟨N, hN⟩
+  -- If A is finite (possibly empty), bound the max element
+  by_cases hA_empty : A = ∅
+  · -- A is empty: no finset s with ↑s ⊆ ∅ can have sum = N (unless N = 0 and s = ∅)
+    obtain ⟨s, hsA, _, hssum⟩ := hN (N + 1) (by omega)
+    have : s = ∅ := by
+      by_contra hne
+      rw [Finset.ne_empty_iff_nonempty] at hne
+      obtain ⟨x, hx⟩ := hne
+      exact (hA_empty ▸ hsA (Finset.mem_coe.mpr hx) : x ∈ (∅ : Set ℕ))
+    simp [this] at hssum
+  · -- A is nonempty and finite
+    push_neg at hA_empty
+    have hA_ne : hfin.toFinset.Nonempty := by
+      rw [Finset.nonempty_iff_ne_empty]
+      intro h
+      apply hA_empty
+      ext x
+      simp only [Set.mem_empty_iff_false, iff_false]
+      intro hx
+      have := hfin.mem_toFinset.mpr hx
+      rw [h] at this
+      exact Finset.not_mem_empty _ this
+    -- Let M be the maximum element of A
+    let M := hfin.toFinset.max' hA_ne
+    -- For any s ⊆ A with s.card ≤ k, s.sum id ≤ k * M
+    have hbound : ∀ (s : Finset ℕ), ↑s ⊆ A → s.card ≤ k → s.sum id ≤ k * M := by
+      intro s hsA hscard
+      calc s.sum id = s.sum (fun x => x) := by simp [Function.comp_id]
+        _ ≤ s.sum (fun _ => M) := by
+            apply Finset.sum_le_sum
+            intro x hx
+            have hxA : x ∈ A := hsA (Finset.mem_coe.mpr hx)
+            exact Finset.le_max' _ _ (hfin.mem_toFinset.mpr hxA)
+        _ = s.card * M := by simp [Finset.sum_const, Algebra.id.smul_eq_mul]
+        _ ≤ k * M := Nat.mul_le_mul_right M hscard
+    -- Take n = max(N, k * M + 1): n ≥ N but s.sum id ≤ k * M < n
+    obtain ⟨s, hsA, hscard, hssum⟩ := hN (max N (k * M + 1)) (le_max_left N _)
+    have hle := hbound s hsA hscard
+    omega
+
+/-- A minimal basis must be infinite (since removing finite sets preserves basis property). -/
+theorem minimal_basis_infinite (k : ℕ) (A : Set ℕ) (hA : IsMinimalAsymptoticAddBasisOfOrder k A) :
+    A.Infinite := by
+  by_contra h
+  exact finite_not_basis k A (Set.not_infinite.mp h) hA.1
 
 /- ## Part III: The Main Conjecture -/
 
@@ -172,7 +222,21 @@ theorem basis_subset (A A' : Set ℕ) (k : ℕ) (hAA' : A ⊆ A') :
   obtain ⟨s, hsA, hscard, hssum⟩ := hN n hn
   exact ⟨s, fun x hx => hAA' (hsA hx), hscard, hssum⟩
 
-/- ## Part VII: Summary -/
+/- ## Part VII: Why This Is Hard -/
+
+/--
+**The Challenge**
+
+The problem asks about a delicate balance:
+- Minimal bases are "tight" - they have no redundancy for their order
+- Yet we want to show there's always a way to remove elements to get
+  exactly one higher order (not two or more)
+
+This requires understanding the fine structure of additive bases and how
+their order changes under removal of infinite subsets.
+-/
+
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #881: Summary**

@@ -26,10 +26,15 @@
       "Homeomorphism preserves compactness",
       "Homeomorphism preserves nonemptiness",
       "Homeomorph → AreHomeomorphic",
-      "High-dim sphere (from Smale axiom)"
+      "High-dim sphere (from Smale axiom)",
+      "S3 connectedness (PROVED from Mathlib isConnected_sphere + rank argument)",
+      "S3 path-connectedness (PROVED from Mathlib isPathConnected_sphere)",
+      "n-sphere connected for n >= 1 (generalized)",
+      "n-sphere path-connected for n >= 1 (generalized)",
+      "n-sphere nonempty for all n",
+      "n-sphere compact for all n"
     ],
     "open": [
-      "sphere3_connected (axiom - needs cardinal arithmetic)",
       "Full Perelman proof formalization",
       "Ricci flow formalization"
     ],
@@ -37,19 +42,19 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-06T04:20:00Z",
-    "iteration": 2,
-    "focus": "Proved sphere3_nonempty constructively, added structural theorems",
+    "since": "2026-02-06T07:00:00Z",
+    "iteration": 3,
+    "focus": "Converted sphere3_connected axiom to theorem. Added generalized n-sphere properties.",
     "blockers": [],
-    "nextAction": "Consider proving sphere3_connected, add more structural consequences",
+    "nextAction": "Remaining 9 axioms are deep results (Perelman, Smale, Freedman). Consider proving more structural consequences.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 19 theorems, 10 axioms, 0 sorries. Converted sphere3_nonempty from axiom to theorem. Added 7 new structural theorems.",
+    "progressSummary": "PROGRESS: 25 theorems, 9 axioms, 0 sorries. Converted sphere3_connected from axiom to theorem via Mathlib isConnected_sphere. Added sphere3_pathConnected and generalized n-sphere properties.",
     "builtItems": [
       "sphere3_nonempty: constructive proof via EuclideanSpace.single (converted from axiom)",
       "poincare_dichotomy: S3 or nontrivial pi_1",
@@ -58,12 +63,22 @@
       "compact_of_homeomorphic: homeomorphism preserves compactness",
       "nonempty_of_homeomorphic: homeomorphism preserves nonemptiness",
       "areHomeomorphic_of_homeomorph: Homeomorph → AreHomeomorphic",
-      "high_dim_sphere: generalized Poincare for n >= 5"
+      "high_dim_sphere: generalized Poincare for n >= 5",
+      "sphere3_connected: PROVED via isConnected_sphere + one_lt_rank_of_two_le_finrank",
+      "sphere3_pathConnected: PROVED via isPathConnected_sphere",
+      "rank_R4_gt_one: helper lemma for rank condition",
+      "sphere_n_connected: generalized for any n >= 1",
+      "sphere_n_pathConnected: generalized for any n >= 1",
+      "sphere_n_nonempty: generalized for any n",
+      "sphere_n_compact: generalized for any n"
     ],
     "insights": [
       "EuclideanSpace.single 0 1 creates a basis vector, EuclideanSpace.norm_single gives its norm",
       "Metric.mem_sphere + dist_zero_right reduces sphere membership to norm = 1",
-      "isClosedEmbedding.compactSpace transfers compactness via homeomorphism inverse"
+      "isClosedEmbedding.compactSpace transfers compactness via homeomorphism inverse",
+      "isConnected_sphere requires 1 < Module.rank ℝ E; use one_lt_rank_of_two_le_finrank",
+      "EuclideanSpace.finrank_eq gives finrank of EuclideanSpace = Fintype.card ι",
+      "For Fin n, Fintype.card = n, so EuclideanSpace ℝ (Fin 4) has finrank 4"
     ],
     "mathlibGaps": [
       "3-manifolds",
@@ -95,7 +110,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-02-06T04:20:00Z",
+  "lastUpdate": "2026-02-06T07:00:00Z",
   "significance": 10,
   "tractability": 3
 }
