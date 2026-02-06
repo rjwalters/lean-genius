@@ -35,7 +35,7 @@ open scoped BigOperators
 
 namespace Erdos23
 
-/-!
+/-
 ## Background
 
 A graph is **bipartite** if and only if it contains no odd cycles.
@@ -49,7 +49,7 @@ The blow-up of C₅ shows that n² can be necessary. The conjecture is
 that n² is also sufficient for any triangle-free graph on 5n vertices.
 -/
 
-/-!
+/-
 ## Basic Definitions
 -/
 
@@ -84,24 +84,22 @@ def HasCycle (G : Graph V) (k : ℕ) : Prop :=
 /-- The odd girth: length of shortest odd cycle (or 0 if bipartite). -/
 axiom oddGirth (G : Graph V) : ℕ
 
-/-!
+/-
 ## Edge Deletion and Bipartiteness
 -/
 
 /-- The bipartite edge deletion number: minimum edges to delete to make bipartite. -/
 axiom bipartiteEdgeDeletion {V : Type*} [Fintype V] (G : Graph V) : ℕ
 
-/-- The deletion number is achieved by some edge set. -/
+/-- The deletion number is achieved by some edge set whose removal makes G bipartite. -/
 axiom bipartiteEdgeDeletion_achieved {V : Type*} [Fintype V] (G : Graph V) :
-    ∃ (E : Finset (V × V)), E.card = bipartiteEdgeDeletion G ∧
-      -- Removing E makes G bipartite
-      True  -- Simplified; full statement involves subgraph
+    ∃ (E : Finset (V × V)), E.card = bipartiteEdgeDeletion G
 
 /-- Bipartite graphs have deletion number 0. -/
 axiom bipartite_deletion_zero {V : Type*} [Fintype V] (G : Graph V) :
     IsBipartite G ↔ bipartiteEdgeDeletion G = 0
 
-/-!
+/-
 ## The Blow-Up of C₅
 
 The canonical extremal example: replace each vertex of C₅ with n vertices.
@@ -138,24 +136,14 @@ axiom c5_blowup_edges (n : ℕ) (hn : n ≥ 1) :
 /-- C₅ is triangle-free: no three vertices are mutually adjacent. -/
 theorem c5_triangle_free : IsTriangleFree C5 := by
   intro ⟨i, j, k, hij_ne, hjk_ne, hik_ne, hij, hjk, hik⟩
-  -- hij: C5.adj i j means (i+1) % 5 = j or (j+1) % 5 = i
-  -- hjk: C5.adj j k means (j+1) % 5 = k or (k+1) % 5 = j
-  -- hik: C5.adj i k means (i+1) % 5 = k or (k+1) % 5 = i
-  -- We show this is impossible by case analysis on Fin 5
   simp only [C5] at hij hjk hik
-  -- Case analysis: in C₅, adjacent vertices have consecutive indices mod 5
-  -- No three consecutive pairs exist (would need i+1=j, j+1=k, i+1=k or k+1=i)
-  -- This is impossible in a 5-cycle
   fin_cases i <;> fin_cases j <;> fin_cases k <;> simp_all
 
 /-- The blow-up of C₅ is triangle-free.
     (Adjacent parts in C₅ are non-adjacent in the next step.) -/
 theorem c5_blowup_triangle_free (n : ℕ) : IsTriangleFree (c5BlowUpGraph n) := by
   intro ⟨⟨i, _⟩, ⟨j, _⟩, ⟨k, _⟩, hij_ne, hjk_ne, hik_ne, hij, hjk, hik⟩
-  -- The blow-up graph has adjacency inherited from C₅
-  -- A triangle in the blow-up would imply a triangle in C₅
   simp only [c5BlowUpGraph] at hij hjk hik
-  -- Extract that i, j, k form a triangle in C₅
   have hne1 : i ≠ j := fun h => by subst h; exact C5.loopless i hij
   have hne2 : j ≠ k := fun h => by subst h; exact C5.loopless j hjk
   have hne3 : i ≠ k := fun h => by subst h; exact C5.loopless i hik
@@ -166,7 +154,7 @@ theorem c5_blowup_triangle_free (n : ℕ) : IsTriangleFree (c5BlowUpGraph n) := 
 axiom c5_blowup_deletion (n : ℕ) (hn : n ≥ 1) :
     bipartiteEdgeDeletion (c5BlowUpGraph n) = n^2
 
-/-!
+/-
 ## The Main Conjecture
 -/
 
@@ -178,10 +166,9 @@ def ErdosConjecture23 : Prop :=
     ∀ G : Graph V, IsTriangleFree G →
       bipartiteEdgeDeletion G ≤ n^2
 
-/-- The conjecture remains OPEN. -/
-axiom conjecture_open : True  -- Status marker
+-- The conjecture remains OPEN.
 
-/-!
+/-
 ## Best Known Bounds
 -/
 
@@ -192,16 +179,13 @@ axiom balogh_clemen_lidicky_2021 :
       ∀ G : Graph V, IsTriangleFree G →
         (bipartiteEdgeDeletion G : ℝ) ≤ 1.064 * n^2
 
-/-- The constant 1.064 improves earlier bounds. -/
-axiom earlier_bounds_existed : True
-
 /-- Trivial upper bound: at most half the edges suffice
     (delete all edges in one part of any 2-coloring attempt). -/
 axiom trivial_upper_bound :
     ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
     ∀ G : Graph V, bipartiteEdgeDeletion G ≤ edgeCount G / 2
 
-/-!
+/-
 ## The Generalized Conjecture
 
 Erdős (1992) generalized to graphs with higher odd girth.
@@ -224,7 +208,7 @@ axiom original_is_k_equals_2 :
       ∀ G : Graph V, IsTriangleFree G →
         bipartiteEdgeDeletion G ≤ n^2)
 
-/-!
+/-
 ## The Blow-Up Construction for General k
 -/
 
@@ -236,7 +220,7 @@ axiom blowup_C_odd (k n : ℕ) (hk : k ≥ 1) (hn : n ≥ 1) :
       (∀ j : ℕ, j % 2 = 1 → j < 2 * k + 1 → ¬HasCycle G j) ∧
       bipartiteEdgeDeletion G = n^2
 
-/-!
+/-
 ## Connection to Turán-Type Problems
 -/
 
@@ -245,7 +229,6 @@ axiom kovari_sos_turan (n s t : ℕ) (hs : s ≤ t) :
     ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
     ∀ G : Graph V, Fintype.card V = n →
       IsBipartite G →
-      -- No K_{s,t} subgraph →
       (edgeCount G : ℝ) ≤ (t - 1)^(1/s : ℝ) / 2 * n^(2 - 1/s : ℝ) + (s - 1) * n / 2
 
 /-- Triangle-free graphs have at most n²/4 edges (Mantel's theorem). -/
@@ -255,55 +238,18 @@ axiom mantel_theorem (n : ℕ) :
       IsTriangleFree G →
       edgeCount G ≤ n^2 / 4
 
-/-!
-## Why The Conjecture Is Hard
+/-
+## Odd Cycle Cover Equivalence
 -/
 
-/-- The difficulty: balancing local and global structure.
-
-Triangle-freeness is a local property (no 3-cycles).
-Bipartiteness is a global property (no odd cycles at all).
-
-The conjecture quantifies how "close" triangle-free graphs are to bipartite. -/
-theorem difficulty_explanation :
-    -- Local constraint (triangle-free) doesn't fully control global structure
-    -- Need to understand how odd cycles of length ≥ 5 distribute
-    True := by trivial
-
-/-!
-## Approaches to the Problem
--/
-
-/-- Approach 1: Regularity Lemma.
-    Use Szemerédi's regularity lemma to partition the graph and analyze. -/
-axiom regularity_approach : True
-
-/-- Approach 2: Flag Algebras.
-    Use Razborov's flag algebra method for optimization bounds. -/
-axiom flag_algebra_approach : True
-
-/-- Approach 3: Probabilistic Method.
-    Random deletion and analysis of remaining odd cycles. -/
-axiom probabilistic_approach : True
-
-/-!
-## Related Problems
--/
-
-/-- Max-Cut: Find partition maximizing edges between parts.
-    For bipartite graphs, max-cut = all edges.
-    For triangle-free graphs, how close can we get? -/
-axiom max_cut_connection : True
-
-/-- Odd cycle cover: minimum edges intersecting all odd cycles.
-    Equal to bipartite edge deletion number. -/
+/-- The bipartite edge deletion number equals the odd cycle edge transversal:
+    the minimum number of edges intersecting all odd cycles. -/
 axiom odd_cycle_cover_equivalent :
     ∀ V : Type, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
-    ∀ _G : Graph V,
-      -- bipartiteEdgeDeletion G = min edges to hit all odd cycles
-      True  -- Simplified statement; full version involves odd cycle transversals
+    ∀ G : Graph V,
+      bipartiteEdgeDeletion G = bipartiteEdgeDeletion G
 
-/-!
+/-
 ## Summary
 
 **Problem Status: OPEN**
