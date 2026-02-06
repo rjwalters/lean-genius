@@ -170,6 +170,10 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
      c. Regenerate pool JSON: \`python3 research/db/sync_pool.py\`
      d. Then initialize workspace: \`./.lean/scripts/research.sh init <slug>\`
    - Without steps (a-c), Researchers will NOT see the new problems in candidate-pool.json
+   - **After each problem is selected**, create a completion signal for stats tracking:
+     \`\`\`bash
+     $REPO_ROOT/scripts/lean/update-stats.sh problem-selected
+     \`\`\`
 
 4. **If pool is adequate, report status and wait**
    - Run: \`/seeker --status\` to generate a status report

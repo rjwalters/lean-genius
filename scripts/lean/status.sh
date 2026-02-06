@@ -175,12 +175,14 @@ gather_status() {
     local proofs_submitted=0
     local problems_selected=0
     local deployments=0
+    local research_completed=0
 
     if [[ -f "$STATE_FILE" ]]; then
         stubs_enhanced=$(jq -r '.session_stats.stubs_enhanced // 0' "$STATE_FILE")
         proofs_submitted=$(jq -r '.session_stats.proofs_submitted // 0' "$STATE_FILE")
         problems_selected=$(jq -r '.session_stats.problems_selected // 0' "$STATE_FILE")
         deployments=$(jq -r '.session_stats.deployments // 0' "$STATE_FILE")
+        research_completed=$(jq -r '.session_stats.research_completed // 0' "$STATE_FILE")
     fi
 
     if $JSON_OUTPUT; then
@@ -224,7 +226,8 @@ gather_status() {
     "stubs_enhanced": $stubs_enhanced,
     "proofs_submitted": $proofs_submitted,
     "problems_selected": $problems_selected,
-    "deployments": $deployments
+    "deployments": $deployments,
+    "research_completed": $research_completed
   }
 }
 EOF
@@ -309,6 +312,7 @@ EOF
         echo -e "  ${CYAN}Session Stats:${NC}"
         echo "    Stubs enhanced: $stubs_enhanced"
         echo "    Proofs submitted: $proofs_submitted"
+        echo "    Research completed: $research_completed"
         echo "    Problems selected: $problems_selected"
         echo "    Deployments: $deployments"
 
