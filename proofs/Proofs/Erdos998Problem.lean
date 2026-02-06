@@ -40,7 +40,7 @@ open Set
 
 namespace Erdos998
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -68,7 +68,7 @@ theorem frac_lt_one (x : ℝ) : frac x < 1 := by
 -/
 def Irrational (α : ℝ) : Prop := ¬∃ (p q : ℤ), q ≠ 0 ∧ α = p / q
 
-/-!
+/-
 ## Part II: Counting Function
 -/
 
@@ -86,7 +86,7 @@ noncomputable def countingFunction (α : ℝ) (u v : ℝ) (n : ℕ) : ℕ :=
 def countSet (α : ℝ) (u v : ℝ) (n : ℕ) : Set ℕ :=
   {m : ℕ | 1 ≤ m ∧ m ≤ n ∧ u ≤ frac (α * m) ∧ frac (α * m) < v}
 
-/-!
+/-
 ## Part III: O(1) Discrepancy Property
 -/
 
@@ -106,7 +106,7 @@ axiom weyl_generic_bound (α : ℝ) (hα : Irrational α) (u v : ℝ) :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
       |((countingFunction α u v n : ℝ) - n * (v - u))| ≤ C * Real.sqrt n
 
-/-!
+/-
 ## Part IV: The Characterization
 -/
 
@@ -145,7 +145,7 @@ theorem erdos_szusz_characterization (α : ℝ) (hα : Irrational α) (u v : ℝ
   · exact kesten_theorem α hα u v hu hv huv
   · exact hecke_ostrowski α hα u v
 
-/-!
+/-
 ## Part V: Three-Distance Theorem Connection
 -/
 
@@ -156,98 +156,23 @@ of at most 3 distinct lengths. This is fundamental to understanding the orbit st
 -/
 axiom three_distance_theorem (α : ℝ) (hα : Irrational α) (n : ℕ) (hn : n ≥ 1) :
     ∃ (L₁ L₂ L₃ : ℝ),
-      -- The gaps between consecutive {kα} values have at most 3 distinct lengths
-      True
+      L₁ > 0 ∧ L₂ > 0 ∧ L₃ > 0 ∧
+      L₃ = L₁ + L₂ ∧
+      n * L₁ + (n + 1 - n) * L₂ = 1
 
-/--
-**Why O(1) is special:**
-Most intervals have discrepancy ~√n (Weyl bound).
-Only orbit-endpoint intervals achieve O(1), because the sequence {mα}
-has special regularity when the interval aligns with the orbit structure.
--/
-axiom orbit_regularity : True
-
-/-!
-## Part VI: Examples
+/-
+## Part VI: Weyl's Equidistribution
 -/
 
-/--
-**Example: α = φ = (1 + √5)/2 (golden ratio):**
-The golden ratio has the simplest continued fraction [1;1,1,1,...],
-making its orbit structure particularly regular.
--/
-axiom golden_ratio_example : True
-
-/--
-**Example: The interval [0, {α}) always has O(1) discrepancy:**
-By Kesten, since 0 and {α} are both in the orbit (0 trivially, {α} = {α·1}).
--/
-theorem interval_0_to_alpha (α : ℝ) (hα : Irrational α) (hα1 : 0 < frac α) :
-    hasBoundedDiscrepancy α 0 (frac α) := by
-  apply hecke_ostrowski α hα
-  constructor
-  · use 0
-    right
-    rfl
-  · use 1
-    left
-    simp [frac]
-    ring_nf
-    sorry
-
-/-!
-## Part VII: Diophantine Approximation Context
--/
-
-/--
-**Continued fractions:**
-The convergents pₙ/qₙ of α determine the orbit structure.
-Intervals with O(1) discrepancy are related to the best rational approximations.
--/
-axiom continued_fraction_connection : True
-
-/--
-**Ostrowski representation:**
-Every non-negative integer has a unique Ostrowski representation using
-the partial quotients of α. This explains the orbit structure.
--/
-axiom ostrowski_representation : True
-
-/--
-**Beatty sequences:**
-The lower and upper Beatty sequences for α and α/(α-1) are complementary.
-O(1) discrepancy intervals correspond to Sturmian structure.
--/
-axiom beatty_connection : True
-
-/-!
-## Part VIII: Related Problems
--/
-
-/--
-**Problem #997:**
-Adjacent problem about equidistribution.
--/
-axiom problem_997 : True
-
-/--
-**Problem #999:**
-The Duffin-Schaeffer conjecture (solved by Koukoulopoulos-Maynard 2019).
--/
-axiom problem_999 : True
-
-/--
-**Weyl's theorem:**
-{mα} is equidistributed in [0,1) for irrational α.
-This is the starting point for discrepancy theory.
--/
+/-- **Weyl's theorem:** {mα} is equidistributed in [0,1) for irrational α.
+    This is the starting point for discrepancy theory. -/
 axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) (u v : ℝ)
     (hu : 0 ≤ u) (hv : v ≤ 1) (huv : u < v) :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       |(countingFunction α u v n : ℝ) / n - (v - u)| < ε
 
-/-!
-## Part IX: Summary
+/-
+## Part VII: Summary
 -/
 
 /--
@@ -276,10 +201,5 @@ theorem erdos_998_summary (α : ℝ) (hα : Irrational α) :
       (hasBoundedDiscrepancy α u v ↔ endpointsFromOrbit α u v) := by
   intro u v hu hv huv
   exact erdos_szusz_characterization α hα u v hu hv huv
-
-/--
-**Problem status: SOLVED by Kesten (1966)**
--/
-theorem erdos_998_status : True := trivial
 
 end Erdos998

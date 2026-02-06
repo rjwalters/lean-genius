@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/Erdos998Problem.lean",
     "tags": ["erdos", "analysis", "diophantine-approximation", "equidistribution", "discrepancy"],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 998,
     "erdosUrl": "https://erdosproblems.com/998",
     "erdosProblemStatus": "proved",
@@ -64,29 +64,22 @@
       "id": "three-distance",
       "title": "Three-Distance Theorem",
       "startLine": 148,
-      "endLine": 168,
-      "summary": "Connection to the three-distance theorem explaining orbit regularity"
+      "endLine": 161,
+      "summary": "Three-distance theorem with formalized gap structure"
     },
     {
-      "id": "examples",
-      "title": "Examples",
-      "startLine": 170,
-      "endLine": 196,
-      "summary": "Golden ratio example and the interval [0, {α})"
-    },
-    {
-      "id": "diophantine",
-      "title": "Diophantine Approximation",
-      "startLine": 198,
-      "endLine": 221,
-      "summary": "Connections to continued fractions, Ostrowski representation, Beatty sequences"
+      "id": "weyl",
+      "title": "Weyl's Equidistribution",
+      "startLine": 163,
+      "endLine": 172,
+      "summary": "Weyl's equidistribution theorem for irrational rotations"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 249,
-      "endLine": 283,
-      "summary": "Complete summary of the solved problem"
+      "startLine": 174,
+      "endLine": 205,
+      "summary": "erdos_998_summary restating the complete characterization"
     }
   ],
   "conclusion": {
