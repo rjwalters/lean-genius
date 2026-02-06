@@ -1,4 +1,4 @@
-/-
+/-!
   Erdős Problem #443: Common Products k(m-k) and l(n-l)
 
   Source: https://erdosproblems.com/443
@@ -255,6 +255,10 @@ theorem erdos_443_summary :
     exact subpolynomial_bound 2 2 (by norm_num) (by norm_num) ε hε
 
 /-- Erdős Problem #443: SOLVED -/
-theorem erdos_443 : True := trivial
+theorem erdos_443 :
+    (∀ s : ℕ, ∃ m n : ℕ, s ≤ commonProductCount m n) ∧
+    (∀ ε > 0, ∃ M : ℕ, ∀ m n : ℕ, M ≤ m → M ≤ n →
+      (commonProductCount m n : ℝ) ≤ ((m : ℝ) * n) ^ ε) :=
+  erdos_443_summary
 
 end Erdos443
