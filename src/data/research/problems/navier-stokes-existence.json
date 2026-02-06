@@ -1,8 +1,8 @@
 {
   "slug": "navier-stokes-existence",
   "title": "Navier-Stokes Existence and Smoothness",
-  "phase": "COMPLETE",
-  "status": "superseded",
+  "phase": "NEW",
+  "status": "blocked",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-04T18:45:00Z",
+    "phase": "NEW",
+    "since": "2026-01-01T21:55:27.888Z",
     "iteration": 1,
-    "focus": "Superseded by 2d-navier-stokes. 3D Millennium Problem remains open.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - 2D formalized in 2d-navier-stokes; 3D is open Millennium Problem",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SUPERSEDED: 2D Navier-Stokes formalized in NavierStokes.lean (97 theorems, 17 axioms, 0 sorries) - see 2d-navier-stokes problem. 3D Millennium Problem remains genuinely OPEN.",
+    "progressSummary": "",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [
@@ -49,8 +49,7 @@
     "millennium-prize",
     "analysis",
     "pde",
-    "open-conjecture",
-    "superseded"
+    "open-conjecture"
   ],
   "relatedProofs": [],
   "references": {

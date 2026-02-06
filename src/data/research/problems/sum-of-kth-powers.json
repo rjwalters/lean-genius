@@ -1,81 +1,41 @@
 {
   "slug": "sum-of-kth-powers",
   "title": "Sum of kth Powers (Faulhaber Formulas)",
-  "phase": "COMPLETE",
-  "status": "complete",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "∑_{i=0}^{n} i^k for k=1..7 with closed-form Faulhaber formulas",
-    "plain": "Prove closed-form Faulhaber formulas for sums of consecutive kth powers (k=1 through 7), plus Nicomachus' identity.",
-    "whyMatters": [
-      "Wiedijk's 100 Theorems #77",
-      "Foundation for Bernoulli number theory and Euler-Maclaurin formula"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Sum of 1st powers (Gauss formula): n(n+1)/2",
-      "Sum of squares: n(n+1)(2n+1)/6",
-      "Sum of cubes: [n(n+1)/2]^2 = (sum of 1st powers)^2",
-      "Sum of 4th powers: n(n+1)(2n+1)(3n^2+3n-1)/30",
-      "Sum of 5th powers: n^2(n+1)^2(2n^2+2n-1)/12",
-      "Sum of 6th powers: n(n+1)(2n+1)(3n^4+6n^3-3n+1)/42",
-      "Sum of 7th powers: n^2(n+1)^2(3n^4+6n^3-n^2-4n+2)/24",
-      "Nicomachus identity: sum of cubes = square of sum"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "COMPLETE: Faulhaber formulas for k=1..7, structural properties, verification examples"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-04T02:00:00Z",
-    "iteration": 4,
-    "focus": "Complete Faulhaber formulas k=1..7. 8th powers attempted but nlinarith fails on high-degree polynomials.",
-    "activeApproach": "Inductive proofs with nlinarith for polynomial algebra.",
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.334Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem complete. 8th+ powers require more sophisticated tactics.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 45 theorems, 0 axioms, 0 sorries. Faulhaber formulas for powers 1-7, Nicomachus identity, structural properties, verification examples. 8th powers attempted but nlinarith fails on degree-9 polynomials.",
-    "builtItems": [
-      "sum_first_powers/classical: Gauss formula",
-      "sum_squares/classical: n(n+1)(2n+1)/6",
-      "sum_cubes/classical: [n(n+1)/2]^2",
-      "sum_cubes_eq_sum_squared: Nicomachus identity",
-      "sum_fourth_powers_classical: n(n+1)(2n+1)(3n^2+3n-1)/30",
-      "sum_fifth_powers_classical: n^2(n+1)^2(2n^2+2n-1)/12",
-      "sum_sixth_powers_classical: n(n+1)(2n+1)(3n^4+6n^3-3n+1)/42",
-      "sum_seventh_powers_classical: n^2(n+1)^2(3n^4+6n^3-n^2-4n+2)/24",
-      "sum_pow_le_succ: monotonicity in range",
-      "sum_pow_le_mul: upper bound (n+1)*n^k",
-      "sum_pow_ge_last: lower bound n^k",
-      "sum_even_cubes: sum of even cubes = 8 * sum of cubes",
-      "sum_pow_succ_sub: telescoping difference",
-      "Various verification examples up to n=100"
-    ],
-    "insights": [
-      "Avoiding ℕ subtraction by rearranging formulas (e.g., 42*sum + correction = product)",
-      "nlinarith handles polynomial induction up to degree ~8 (powers 1-7)",
-      "8th powers (degree 9) exceed nlinarith's practical limits",
-      "omega resolves final division from multiplied form + divisibility lemma",
-      "Pattern: multiply by denominator, rearrange subtraction to addition, induction+nlinarith, omega for division"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Inductive Faulhaber formulas",
-      "status": "active",
-      "description": "Prove each power sum by induction with nlinarith, avoiding subtraction via rearrangement"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
@@ -83,20 +43,16 @@
     "series",
     "faulhaber",
     "bernoulli-numbers",
-    "0-sorry",
-    "complete"
+    "extension"
   ],
   "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Algebra.BigOperators.Intervals",
-      "Mathlib.Algebra.BigOperators.Ring.Finset"
-    ]
+    "mathlib": []
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-04T02:00:00Z",
+  "lastUpdate": "2026-01-27T22:18:02.334Z",
   "significance": 6,
   "tractability": 7
 }
