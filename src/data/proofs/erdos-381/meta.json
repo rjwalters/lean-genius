@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 3,
     "erdosNumber": 381,
     "erdosUrl": "https://erdosproblems.com/381",
     "erdosProblemStatus": "solved",
@@ -50,7 +50,11 @@
       "nicolas_upper_bound axiom (1971)",
       "erdos_question_false theorem: disproof",
       "Q_bounds combined asymptotic bounds",
+      "HC_exponent_decreasing: prime factorization structure",
+      "ramanujan_characterization: largest prime factor property",
+      "HC_sparser_than_primes: Q(x)/π(x) → 0",
       "IsSuperiorHighlyComposite definition",
+      "erdos_381_summary: combines lower bound, upper bound, and disproof",
       "Proofs: one_highly_composite, two_highly_composite, four_highly_composite, six_highly_composite, twelve_highly_composite",
       "Computational verification: tau values for small n via native_decide"
     ]
@@ -73,70 +77,63 @@
       "title": "Basic Definitions",
       "summary": "tau, IsHighlyComposite, HC, Q(x)",
       "startLine": 36,
-      "endLine": 68
+      "endLine": 66
     },
     {
       "id": "examples",
       "title": "Small Highly Composite Numbers",
       "summary": "1, 2, 4, 6, 12 are HC; divisor counts; OEIS A002182",
-      "startLine": 70,
-      "endLine": 143
+      "startLine": 68,
+      "endLine": 139
     },
     {
       "id": "erdos-lower",
       "title": "Erdős's Lower Bound (1944)",
       "summary": "Q(x) ≫ (log x)^{1+c} for some c > 0",
-      "startLine": 145,
-      "endLine": 168
+      "startLine": 141,
+      "endLine": 162
     },
     {
       "id": "question",
       "title": "The Erdős Question",
       "summary": "Is Q(x) ≫_k (log x)^k for all k?",
-      "startLine": 170,
-      "endLine": 190
+      "startLine": 164,
+      "endLine": 182
     },
     {
       "id": "nicolas",
       "title": "Nicolas's Disproof (1971)",
       "summary": "Q(x) ≪ (log x)^C disproves the conjecture",
-      "startLine": 192,
-      "endLine": 228
+      "startLine": 184,
+      "endLine": 218
     },
     {
       "id": "bounds",
       "title": "Tight Bounds",
       "summary": "(log x)^{1+c} ≪ Q(x) ≪ (log x)^C",
-      "startLine": 230,
-      "endLine": 252
+      "startLine": 220,
+      "endLine": 240
     },
     {
       "id": "structure",
       "title": "Structure of HC Numbers",
-      "summary": "Prime factorization properties, superior HC numbers",
-      "startLine": 254,
-      "endLine": 281
+      "summary": "Prime factorization properties, Ramanujan characterization, superior HC numbers",
+      "startLine": 242,
+      "endLine": 271
     },
     {
       "id": "comparison",
       "title": "Comparison with Other Sequences",
-      "summary": "HC vs primes, highly abundant numbers",
-      "startLine": 283,
-      "endLine": 304
-    },
-    {
-      "id": "history",
-      "title": "Historical Context",
-      "summary": "Ramanujan (1915), Erdős (1944), Nicolas (1971)",
-      "startLine": 306,
-      "endLine": 327
+      "summary": "HC vs primes (Q(x)/π(x) → 0), highly abundant numbers",
+      "startLine": 273,
+      "endLine": 292
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
-      "summary": "erdos_381 theorem: the conjecture is FALSE",
-      "startLine": 329,
-      "endLine": 377
+      "summary": "erdos_381 theorem: the conjecture is FALSE; erdos_381_summary combines all key results",
+      "startLine": 294,
+      "endLine": 350
     }
   ],
   "conclusion": {

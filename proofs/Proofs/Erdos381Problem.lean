@@ -33,9 +33,7 @@ open Filter
 
 namespace Erdos381
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Divisor function τ(n):**
@@ -67,9 +65,7 @@ Q(x) = |{n ∈ HC : n ≤ x}|, the number of highly composite numbers up to x.
 noncomputable def Q (x : ℕ) : ℕ :=
   Nat.card { n : ℕ | n ≤ x ∧ IsHighlyComposite n }
 
-/-!
-## Part II: Properties of Highly Composite Numbers
--/
+/- ## Part II: Properties of Highly Composite Numbers -/
 
 /--
 **1 is highly composite:**
@@ -142,9 +138,7 @@ From OEIS A002182.
 -/
 def first_HC : List ℕ := [1, 2, 4, 6, 12, 24, 36, 48, 60, 120, 180, 240, 360, 720, 840]
 
-/-!
-## Part III: Erdős's Lower Bound
--/
+/- ## Part III: Erdős's Lower Bound -/
 
 /--
 **Erdős's Lower Bound (1944):**
@@ -167,9 +161,7 @@ noncomputable def erdos_constant : ℝ :=
 theorem erdos_constant_pos : erdos_constant > 0 :=
   (Classical.choose_spec erdos_lower_bound).1
 
-/-!
-## Part IV: The Erdős Question
--/
+/- ## Part IV: The Erdős Question -/
 
 /--
 **The Erdős Question:**
@@ -189,9 +181,7 @@ def erdos_question_alt : Prop :=
   ∀ k : ℕ, k ≥ 1 →
     Tendsto (fun x => (Q x : ℝ) / (Real.log x)^k) atTop atTop
 
-/-!
-## Part V: Nicolas's Disproof (1971)
--/
+/- ## Part V: Nicolas's Disproof (1971) -/
 
 /--
 **Nicolas's Upper Bound (1971):**
@@ -227,9 +217,7 @@ theorem erdos_question_false : ¬erdos_question := by
   -- Contradiction for large x when k > C
   sorry
 
-/-!
-## Part VI: Tight Bounds
--/
+/- ## Part VI: Tight Bounds -/
 
 /--
 **Combined bounds:**
@@ -251,9 +239,7 @@ axiom Q_polynomial_in_log :
     ∃ α : ℝ, α > 1 ∧ (∃ K : ℝ, K > 0 ∧
     ∀ᶠ x in atTop, |Real.log (Q x) - α * Real.log (Real.log x)| ≤ K)
 
-/-!
-## Part VII: Structure of Highly Composite Numbers
--/
+/- ## Part VII: Structure of Highly Composite Numbers -/
 
 /--
 **Prime factorization structure:**
@@ -262,14 +248,18 @@ primorials with decreasing exponents. If n = 2^{a₁} · 3^{a₂} · ... · p^{a
 then a₁ ≥ a₂ ≥ ... ≥ a_k ≥ 1.
 -/
 axiom HC_exponent_decreasing (n : ℕ) (hn : IsHighlyComposite n) :
-    True -- Detailed statement involves prime factorizations
+    ∀ p q : ℕ, Nat.Prime p → Nat.Prime q → p < q →
+    n.factorization q ≤ n.factorization p
 
 /--
 **Ramanujan's characterization:**
 Ramanujan (1915) gave a complete characterization of highly composite numbers
-based on their prime factorizations.
+based on their prime factorizations. The exponents are non-increasing and the
+largest prime factor divides n exactly once (with finitely many exceptions).
 -/
-axiom ramanujan_characterization : True
+axiom ramanujan_characterization (n : ℕ) (hn : IsHighlyComposite n) (hn_large : n > 720) :
+    ∃ p : ℕ, Nat.Prime p ∧ n.factorization p = 1 ∧
+    ∀ q : ℕ, Nat.Prime q → q > p → n.factorization q = 0
 
 /--
 **Superior highly composite numbers:**
@@ -280,18 +270,16 @@ def IsSuperiorHighlyComposite (n : ℕ) : Prop :=
   ∃ ε : ℝ, ε > 0 ∧ ∀ m : ℕ, m ≠ n → m ≥ 1 →
     (tau n : ℝ) / (n : ℝ)^ε > (tau m : ℝ) / (m : ℝ)^ε
 
-/-!
-## Part VIII: Comparison with Other Sequences
--/
+/- ## Part VIII: Comparison with Other Sequences -/
 
 /--
 **Highly composite vs primes:**
 The count Q(x) of highly composite numbers up to x grows much slower
 than π(x), the count of primes: π(x) ~ x/log x, while Q(x) ~ (log x)^α.
+Since (log x)^α / (x/log x) → 0 for any fixed α, Q(x)/π(x) → 0.
 -/
-theorem HC_sparser_than_primes :
-    -- Q(x)/π(x) → 0 as x → ∞
-    True := trivial
+axiom HC_sparser_than_primes :
+    Tendsto (fun x => (Q x : ℝ) / (x / Real.log x)) atTop (nhds 0)
 
 /--
 **Highly composite vs highly abundant:**
@@ -303,32 +291,9 @@ def IsHighlyAbundant (n : ℕ) : Prop :=
     (Finset.filter (· ∣ n) (Finset.range (n + 1))).sum id >
     (Finset.filter (· ∣ m) (Finset.range (m + 1))).sum id
 
-/-!
-## Part IX: Historical Context
--/
+/- ## Part IX: Summary -/
 
-/--
-**Ramanujan's original work (1915):**
-"Highly Composite Numbers" was one of Ramanujan's most substantial papers,
-containing a systematic study of these numbers.
--/
-axiom ramanujan_1915 : True
-
-/--
-**Erdős's contribution (1944):**
-Erdős proved the lower bound Q(x) ≫ (log x)^{1+c} and posed the question.
--/
-axiom erdos_1944 : True
-
-/--
-**Nicolas's resolution (1971):**
-Nicolas completely resolved the problem by proving the polynomial upper bound.
--/
-axiom nicolas_1971 : True
-
-/-!
-## Part X: Summary
-
+/-
 **Erdős Problem #381: DISPROVED**
 
 **Question:** Is Q(x) ≫_k (log x)^k for every k ≥ 1?
@@ -370,8 +335,16 @@ theorem erdos_381_answer_no :
   sorry
 
 /--
-**Problem status: DISPROVED by Nicolas (1971)**
+**Summary of erdos_381:**
+Combines the key results: Erdős's lower bound, Nicolas's upper bound,
+and the disproof of the conjecture.
 -/
-theorem erdos_381_status : True := trivial
+theorem erdos_381_summary :
+    (∃ c : ℝ, c > 0 ∧ ∃ C₁ : ℝ, C₁ > 0 ∧
+      ∀ᶠ x in atTop, (Q x : ℝ) ≥ C₁ * (Real.log x)^(1 + c)) ∧
+    (∃ C : ℝ, C > 0 ∧ ∃ K : ℝ, K > 0 ∧
+      ∀ᶠ x in atTop, (Q x : ℝ) ≤ K * (Real.log x)^C) ∧
+    ¬erdos_question :=
+  ⟨erdos_lower_bound, nicolas_upper_bound, erdos_question_false⟩
 
 end Erdos381
