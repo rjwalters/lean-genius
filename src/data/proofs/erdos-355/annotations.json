@@ -112,8 +112,8 @@
   {
     "id": "ann-e355-intuition",
     "proofId": "erdos-355",
-    "range": { "startLine": 363, "endLine": 373 },
-    "type": "lemma",
+    "range": { "startLine": 363, "endLine": 372 },
+    "type": "concept",
     "title": "Intuition: Why λ < 2 Works",
     "content": "**The key intuition**: For λ = 2, reciprocal sums are exactly dyadic rationals - a discrete, nowhere-dense set. For λ < 2, the 'overlap' between consecutive levels of the sequence allows reciprocal sums to become dense, eventually covering all rationals in some interval.",
     "mathContext": "When λ < 2, we have a_{n+1} < 2a_n, so the intervals [1/a_{n+1}, 1/a_n] overlap in a way that allows filling gaps. The construction is delicate and requires careful analysis.",
@@ -123,7 +123,7 @@
   {
     "id": "ann-e355-summary",
     "proofId": "erdos-355",
-    "range": { "startLine": 375, "endLine": 386 },
+    "range": { "startLine": 374, "endLine": 385 },
     "type": "theorem",
     "title": "Summary of Results",
     "content": "**erdos_355_summary** packages the main results: (1) existence of lacunary sequences covering intervals, (2) powers of 2 form a lacunary sequence with λ = 2, (3) 3/2 is in the valid range (1, 2).",

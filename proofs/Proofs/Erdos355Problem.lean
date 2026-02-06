@@ -370,7 +370,6 @@ theorem fibLikeSeq_pos : ∀ n, fibLikeSeq n > 0 := by
     rationals in some interval.
 
     The van Doorn-Kovač proof constructs explicit sequences achieving this. -/
-theorem intuition_explained : True := trivial
 
 /-- Summary: Erdős Problem #355 (SOLVED - YES)
 
