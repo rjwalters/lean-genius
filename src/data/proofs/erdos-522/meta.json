@@ -98,39 +98,39 @@
       "summary": "Axiomatized root counting function for the unit disk."
     },
     {
-      "id": "main-theorems",
-      "title": "Main Theorems",
-      "startLine": 148,
-      "endLine": 197,
-      "summary": "Erdős-Offord, Yakir's theorem, and the open almost sure question."
+      "id": "main-results",
+      "title": "Main Results (Doc Comments)",
+      "startLine": 147,
+      "endLine": 187,
+      "summary": "Erdős-Offord theorem, Yakir's theorem, and the open almost sure convergence question (documented as comments; no trivial axioms)."
     },
     {
       "id": "heuristics",
-      "title": "Heuristics and Bounds",
-      "startLine": 199,
-      "endLine": 229,
-      "summary": "Why n/2? Symmetry argument and geometric series example."
+      "title": "Heuristics and Geometric Polynomial",
+      "startLine": 189,
+      "endLine": 216,
+      "summary": "Why n/2? Symmetry argument. Geometric polynomial with all roots on unit circle."
     },
     {
       "id": "connections",
       "title": "Connections to Other Areas",
-      "startLine": 231,
-      "endLine": 255,
-      "summary": "Links to Salem numbers and Mahler measure."
+      "startLine": 218,
+      "endLine": 239,
+      "summary": "Links to Salem numbers and Mahler measure (doc comments)."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
-      "startLine": 257,
-      "endLine": 271,
-      "summary": "Proofs that specific polynomials have roots on the unit circle."
+      "startLine": 241,
+      "endLine": 255,
+      "summary": "Proofs that z-1, z+1, z²+1 have roots on the unit circle."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 273,
-      "endLine": 297,
-      "summary": "Summary of what we know and the open question."
+      "startLine": 257,
+      "endLine": 281,
+      "summary": "unitCircle_summary theorem packaging verified facts."
     }
   ],
   "conclusion": {
