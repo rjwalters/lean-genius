@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #857: The Weak Sunflower Problem
 
 Source: https://erdosproblems.com/857
@@ -89,13 +89,6 @@ theorem sunflower_petals_disjoint {α : Type*} [DecidableEq α]
 /-! ## Part II: The Sunflower Function m(n, k) -/
 
 /--
-**m(n, k):**
-The minimal m such that any family of m subsets of {1,...,n} contains a k-sunflower.
--/
-noncomputable def sunflowerNumber (n k : ℕ) : ℕ :=
-  Nat.find (sunflower_number_exists n k)
-
-/--
 **Existence of m(n, k):**
 For any n and k ≥ 2, there exists an m such that any family of m subsets
 of {1,...,n} must contain a k-sunflower.
@@ -105,6 +98,13 @@ This follows from the pigeonhole principle: at most 2^n subsets exist.
 axiom sunflower_number_exists (n k : ℕ) :
     ∃ m : ℕ, ∀ family : Finset (Finset (Fin n)),
       family.card ≥ m → ContainsSunflower family k
+
+/--
+**m(n, k):**
+The minimal m such that any family of m subsets of {1,...,n} contains a k-sunflower.
+-/
+noncomputable def sunflowerNumber (n k : ℕ) : ℕ :=
+  Nat.find (sunflower_number_exists n k)
 
 /-! ## Part III: Classical Sunflower Lemma (Erdős-Ko-Rado) -/
 
