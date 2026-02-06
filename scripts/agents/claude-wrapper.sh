@@ -221,24 +221,25 @@ run_claude_once() {
 
     log_info "Claude CLI timeout set to ${CLAUDE_TIMEOUT}s"
 
-    # Run Claude CLI with timeout to prevent indefinite hangs.
-    # The 'timeout' command sends SIGTERM after CLAUDE_TIMEOUT seconds,
-    # and SIGKILL 30s later if the process hasn't exited.
-    #
-    # NOTE: 'timeout' adds an intermediate process to the tree:
-    #   shell -> claude-wrapper.sh -> timeout -> claude
-    # The health check in launch.sh (find_claude_child) walks the full
-    # process subtree, so additional nesting levels are handled correctly.
+    # IMPORTANT: We write to a temp file and redirect stdin from /dev/null.
+    # Claude CLI tries to set up terminal access during initialization.
+    # When run inside $() command substitution or pipelines in tmux, this
+    # causes SIGTTIN/SIGTTOU signals that suspend the process (state T).
+    # Redirecting stdin from /dev/null and stdout to a file avoids all
+    # TTY interaction issues.
+    local tmpfile
+    tmpfile=$(mktemp)
+
+    timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions "$PROMPT" < /dev/null > "$tmpfile" 2>&1
+    exit_code=$?
+
+    # Append to log file if configured
     if [[ -n "$LOG_FILE" ]]; then
-        last_output=$(timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude --dangerously-skip-permissions "$PROMPT" 2>&1 | tee -a "$LOG_FILE"; echo "EXIT_CODE:${PIPESTATUS[0]}")
-    else
-        last_output=$(timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude --dangerously-skip-permissions "$PROMPT" 2>&1; echo "EXIT_CODE:$?")
+        cat "$tmpfile" >> "$LOG_FILE"
     fi
 
-    # Extract exit code from output
-    exit_code=$(echo "$last_output" | grep -o 'EXIT_CODE:[0-9]*' | cut -d: -f2)
-    exit_code="${exit_code:-1}"
-    last_output=$(echo "$last_output" | sed '/EXIT_CODE:[0-9]*/d')
+    last_output=$(cat "$tmpfile")
+    rm -f "$tmpfile"
 
     # Check for timeout (exit code 124 = SIGTERM, 137 = SIGKILL)
     if [[ "$exit_code" -eq 124 ]]; then
