@@ -25,8 +25,6 @@ References:
 - [EGR98]: Erdős, Gyárfás, Ruszinkó, "How to decrease the diameter
   of triangle-free graphs", Combinatorica (1998), 493-501
 - Related: Problem #134, Problem #619
-
-Tags: graph-theory, diameter, triangle-free, extremal-graphs
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
@@ -179,22 +177,6 @@ axiom alon_theorem :
     (maxDegree G : ℝ) ≤ n^(1/2 - ε : ℝ) →
     (h₂ G : ℝ) ≤ ε * n^2
 
-/--
-**Connection to Problem #134:**
-Alon observed this problem is essentially identical to Problem #134.
--/
-axiom problem_134_connection :
-  -- Problem #134 asks about a related extremal problem
-  True
-
-/--
-**Alon's Proof Technique:**
-Uses probabilistic and extremal graph theory methods.
--/
-axiom alon_proof_method :
-  -- Combines probabilistic constructions with counting arguments
-  True
-
 /-!
 ## Part V: Asymptotic Formulation
 
@@ -255,53 +237,6 @@ axiom threshold_is_sharp :
     IsTriangleFree G ∧ (maxDegree G : ℝ) ≥ (Fintype.card V : ℝ)^(1/2 : ℝ) ∧
     (h₂ G : ℝ) ≥ (Fintype.card V : ℝ)^2 / 10)
 
-/-!
-## Part VII: Related Problems
--/
-
-/--
-**Problem #619:**
-A related problem about diameter reduction.
--/
-axiom problem_619_related :
-  -- Problem #619 asks about similar diameter questions
-  True
-
-/--
-**Problem #134:**
-The problem Alon showed is essentially identical.
--/
-axiom problem_134_identical :
-  -- Alon: "This problem is essentially identical to [134]"
-  True
-
-/--
-**Triangle-Free Process:**
-The random triangle-free graph process is related.
--/
-axiom triangle_free_process_connection :
-  -- The random triangle-free process gives insights
-  True
-
-/-!
-## Part VIII: The Geometry Intuition
-
-Why the n^{1/2} threshold appears.
--/
-
-/--
-**Why n^{1/2}:**
-A graph with Δ ≈ n^{1/2} has roughly n^{3/2} edges.
-The complete bipartite graph K_{n^{1/2}, n - n^{1/2}} is triangle-free
-with Θ(n^{3/2}) edges and diameter 2.
--/
-axiom why_sqrt_threshold :
-  -- n^{1/2} appears because:
-  -- - Triangle-free graphs have ≤ n²/4 edges (Mantel)
-  -- - Graphs with Δ ≤ k have ≤ nk/2 edges
-  -- - For diameter 2, need Θ(n) edges from each vertex's neighborhood
-  True
-
 /--
 **Mantel's Theorem:**
 Triangle-free graphs have at most n²/4 edges.
@@ -310,38 +245,32 @@ axiom mantel_theorem (G : SimpleGraph V) (hG : IsTriangleFree G) :
   2 * G.edgeFinset.card ≤ (Fintype.card V)^2 / 2
 
 /-!
-## Part IX: Summary
--/
+## Part VII: Summary
 
-/--
-**Erdős Problem #618: Summary**
+**Erdős Problem #618 - SOLVED (Alon)**
 
-PROBLEM: For triangle-free G with Δ = o(n^{1/2}), is h₂(G) = o(n²)?
+**PROBLEM:** For triangle-free G with Δ = o(n^{1/2}), is h₂(G) = o(n²)?
 
-ANSWER: YES (Alon)
+**ANSWER:** YES (Alon)
 
-KEY RESULTS:
+**KEY RESULTS:**
 1. Simonovits: Δ ≫ n^{1/2} allows h₂(G) ≫ n²
 2. EGR98: Δ = O(1) implies h₂(G) = O(n log n)
 3. Alon: Δ = o(n^{1/2}) implies h₂(G) = o(n²)
 
-THRESHOLD: n^{1/2} is the critical maximum degree threshold
+**THRESHOLD:** n^{1/2} is the critical maximum degree threshold
 
-CONNECTION: Essentially identical to Problem #134
+**CONNECTION:** Essentially identical to Problem #134
 -/
-theorem erdos_618_summary :
-    -- The main conjecture is proved
+
+/-- Complete resolution of Erdős Problem #618.
+Combines Alon's proof of the main conjecture with the sharp threshold result. -/
+theorem erdos_618 :
     MainConjecture ∧
-    -- There is a sharp threshold at n^{1/2}
-    True ∧
-    -- Connection to Problem #134
-    True := by
-  exact ⟨main_conjecture_proved, trivial, trivial⟩
-
-/--
-**Erdős Problem #618: SOLVED**
-Alon proved the conjecture affirmatively.
--/
-theorem erdos_618 : True := trivial
+    (∀ ε > 0, ∃ c : ℝ, ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      let n := Fintype.card V
+      IsTriangleFree G → (maxDegree G : ℝ) ≤ n^(1/2 - ε : ℝ) →
+      (h₂ G : ℝ) ≤ c * n^(2 - ε : ℝ)) :=
+  ⟨main_conjecture_proved, threshold_is_sharp.1⟩
 
 end Erdos618
