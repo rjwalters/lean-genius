@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 955,
     "erdosUrl": "https://erdosproblems.com/955",
     "erdosProblemStatus": "open",
@@ -62,72 +62,72 @@
     {
       "id": "divisor-function",
       "title": "The Sum of Proper Divisors Function",
-      "summary": "sigma, s, s_alt definitions",
+      "summary": "sigma, s, s_alt definitions and equivalence axiom",
       "startLine": 38,
-      "endLine": 71
+      "endLine": 57
     },
     {
       "id": "perfect-numbers",
       "title": "Perfect, Deficient, and Abundant Numbers",
-      "summary": "IsPerfect, IsDeficient, IsAbundant",
-      "startLine": 72,
-      "endLine": 102
+      "summary": "IsPerfect, IsDeficient, IsAbundant definitions and examples",
+      "startLine": 59,
+      "endLine": 74
     },
     {
       "id": "density",
       "title": "Natural Density",
       "summary": "countUpTo, HasDensity, HasZeroDensity, HasPositiveDensity",
-      "startLine": 103,
-      "endLine": 133
+      "startLine": 76,
+      "endLine": 93
     },
     {
       "id": "preimage",
       "title": "The Preimage s⁻¹(A)",
       "summary": "preimage_s definition",
-      "startLine": 134,
-      "endLine": 149
+      "startLine": 95,
+      "endLine": 101
     },
     {
       "id": "egps-conjecture",
       "title": "The EGPS Conjecture",
-      "summary": "EGPSConjecture, egps_conjecture_open",
-      "startLine": 150,
-      "endLine": 167
+      "summary": "EGPSConjecture definition",
+      "startLine": 103,
+      "endLine": 111
     },
     {
       "id": "contrasts",
       "title": "Contrasting Behaviors",
       "summary": "forward_fails, erdos_1973_empty_preimage, IsUntouchable",
-      "startLine": 168,
-      "endLine": 202
+      "startLine": 113,
+      "endLine": 135
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
       "summary": "pollack_primes, troupe_many_factors, troupe_two_squares",
-      "startLine": 203,
-      "endLine": 234
+      "startLine": 137,
+      "endLine": 161
     },
     {
       "id": "ppt-bound",
       "title": "The PPT Bound",
-      "summary": "ppt_bound, sparse_sets_work",
-      "startLine": 235,
-      "endLine": 259
+      "summary": "ppt_bound axiom and sparse_sets_work corollary",
+      "startLine": 163,
+      "endLine": 179
     },
     {
-      "id": "threshold",
-      "title": "The Threshold 1/2",
-      "summary": "threshold_explanation, s_bound",
-      "startLine": 260,
-      "endLine": 280
+      "id": "growth-bound",
+      "title": "Growth Bound on s(n)",
+      "summary": "s_bound axiom for s(n) ≪ n log log n",
+      "startLine": 181,
+      "endLine": 189
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_955_statement, erdos_955, historical_note",
-      "startLine": 281,
-      "endLine": 325
+      "summary": "erdos_955_summary axiom and erdos_955 theorem",
+      "startLine": 191,
+      "endLine": 219
     }
   ],
   "conclusion": {
