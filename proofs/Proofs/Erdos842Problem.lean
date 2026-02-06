@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #842: 3-Colorability of Triangle-Hamiltonian Graphs
 
 Source: https://erdosproblems.com/842
