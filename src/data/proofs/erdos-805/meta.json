@@ -14,96 +14,95 @@
     "sorries": 0,
     "erdosNumber": 805,
     "erdosUrl": "https://erdosproblems.com/805",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
-    "originalContributions": []
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Natural logarithm for threshold functions",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsClique definition: pairwise adjacent vertex set",
+      "IsIndependentSet definition: pairwise non-adjacent vertex set",
+      "HasEverywhereRamsey definition: every g-subgraph has k-clique and k-independent set",
+      "ExistsEverywhereRamseyGraph definition: existence of graph with everywhere-Ramsey property",
+      "alon_sudakov_2007 axiom: negative result for g(n) = c(log n)³/(log log n)",
+      "alon_bucic_sudakov_2021 axiom: positive result for g(n) ≤ 2^{2^{√(log log n)}}",
+      "ErdosHajnalConjecture805 definition: conjecture that (log n)³ is too small",
+      "erdos_805 summary theorem combining both bounds"
+    ],
+    "dateAdded": "2026-01-18"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #805 asks about the 'everywhere Ramsey' property of graphs. The question: for which threshold functions g(n) does there exist an n-vertex graph where EVERY induced subgraph on g(n) vertices contains both a large clique and a large independent set?\n\nErdős and Hajnal conjectured that g(n) = (log n)³ is too small—no such graph should exist. Alon and Sudakov (2007) proved this up to a log log n factor: no such graph exists for g(n) = c(log n)³/(log log n).\n\nAlon, Bucić, and Sudakov (2021) showed the positive direction: such graphs DO exist for g(n) ≤ 2^{2^{√(log log n)}}. The exact threshold remains open.",
-    "problemStatement": "For which functions $g(n)$ with $n > g(n) \\geq (\\log n)^2$ is there a graph on $n$ vertices in which every induced subgraph on $g(n)$ vertices contains:\n- a clique of size $\\geq \\log n$, AND\n- an independent set of size $\\geq \\log n$?\n\nIn particular, is there such a graph for $g(n) = (\\log n)^3$?\n\n**Status:** PARTIALLY SOLVED\n\n**Results:**\n- Alon-Sudakov (2007): No such graph for $g(n) = c(\\log n)^3/(\\log\\log n)$\n- Alon-Bucić-Sudakov (2021): Yes for $g(n) \\leq 2^{2^{\\sqrt{\\log\\log n}}}$",
-    "proofStrategy": "The Lean formalization defines cliques, independent sets, and the 'everywhere Ramsey' property. The negative result of Alon-Sudakov and positive result of Alon-Bucić-Sudakov are axiomatized. The gap between the bounds shows the exact threshold is still undetermined.",
+    "historicalContext": "Erdős Problem #805 asks about the 'everywhere Ramsey' property of graphs: for which threshold functions g(n) does there exist an n-vertex graph where every induced subgraph on g(n) vertices contains both a clique of size at least log n and an independent set of size at least log n? This question sits at the intersection of Ramsey theory and extremal graph theory, probing how local Ramsey properties constrain global graph structure.\n\nErdős and Hajnal conjectured that g(n) = (log n)³ is too small — no such graph should exist at this threshold. Alon and Sudakov (2007) proved this up to a logarithmic factor: no such graph exists when g(n) = c(log n)³/(log log n). This provides a strong upper bound on the threshold function.\n\nAlon, Bucić, and Sudakov (2021) established the positive direction, showing that such graphs do exist when g(n) ≤ 2^{2^{(log log n)^{1/2+o(1)}}}. Their construction uses probabilistic methods and careful analysis of Ramsey numbers. The enormous gap between the upper bound (near (log n)³) and the lower bound (near 2^{2^{√(log log n)}}) shows that determining the exact threshold requires fundamentally new techniques.",
+    "problemStatement": "For which functions g(n) with n > g(n) ≥ (log n)² is there a graph on n vertices in which every induced subgraph on g(n) vertices contains both a clique of size ≥ log n and an independent set of size ≥ log n?\n\nIn particular, is there such a graph for g(n) = (log n)³?\n\n**Status:** PARTIALLY SOLVED — bounds established but exact threshold unknown.",
+    "proofStrategy": "The Lean formalization defines cliques, independent sets, and the everywhere-Ramsey property. The two main results (Alon-Sudakov negative, Alon-Bucić-Sudakov positive) are axiomatized. The Erdős-Hajnal conjecture for (log n)³ is stated as a definition. The summary theorem packages both bounds via exact.",
     "keyInsights": [
-      "**Everywhere Ramsey:** Every induced subgraph of size g(n) has both (log n)-clique and (log n)-independent set",
-      "**Erdős-Hajnal conjecture:** Believed g(n) = (log n)³ is too small (unproven)",
-      "**Alon-Sudakov (2007):** No graph for g(n) = c(log n)³/(log log n) - upper bound",
-      "**Alon-Bucić-Sudakov (2021):** Graph exists for g(n) ≤ 2^{2^{√(log log n)}} - lower bound",
-      "**Gap:** The exact threshold is between these bounds and remains open",
-      "**Related:** Problem #804 asks similar questions about local Ramsey properties"
+      "Every induced g(n)-subgraph must contain both a large clique AND a large independent set",
+      "Alon-Sudakov (2007): no graph for g(n) = c(log n)³/(log log n) — upper bound on threshold",
+      "Alon-Bucić-Sudakov (2021): graph exists for g(n) ≤ 2^{2^{√(log log n)}} — lower bound",
+      "The gap between bounds is enormous, indicating fundamentally different growth regimes",
+      "Whether g(n) = (log n)³ works remains the central open question"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 35,
-      "endLine": 59,
-      "summary": "Defines cliques, independent sets, clique number, and independence number."
+      "startLine": 38,
+      "endLine": 46,
+      "summary": "IsClique and IsIndependentSet definitions for graph vertex sets"
     },
     {
       "id": "everywhere-ramsey",
       "title": "Everywhere Ramsey Property",
-      "startLine": 61,
-      "endLine": 75,
-      "summary": "Defines the HasEverywhereRamsey property and ExistsEverywhereRamseyGraph."
-    },
-    {
-      "id": "erdos-hajnal-conjecture",
-      "title": "Erdős-Hajnal Conjecture",
-      "startLine": 77,
-      "endLine": 86,
-      "summary": "States the conjecture that g(n) = (log n)³ is too small."
+      "startLine": 48,
+      "endLine": 60,
+      "summary": "HasEverywhereRamsey and ExistsEverywhereRamseyGraph definitions"
     },
     {
       "id": "alon-sudakov",
       "title": "Alon-Sudakov Negative Result (2007)",
-      "startLine": 88,
-      "endLine": 101,
-      "summary": "No such graph for g(n) = c(log n)³/(log log n)."
+      "startLine": 62,
+      "endLine": 68,
+      "summary": "No such graph for g(n) = c(log n)³/(log log n)"
     },
     {
       "id": "alon-bucic-sudakov",
       "title": "Alon-Bucić-Sudakov Positive Result (2021)",
-      "startLine": 103,
-      "endLine": 120,
-      "summary": "Graph exists for g(n) ≤ 2^{2^{√(log log n)}}."
+      "startLine": 70,
+      "endLine": 77,
+      "summary": "Graph exists for g(n) ≤ 2^{2^{√(log log n)}}"
     },
     {
-      "id": "the-gap",
-      "title": "The Gap",
-      "startLine": 122,
-      "endLine": 137,
-      "summary": "The exact threshold is between the bounds and remains open."
-    },
-    {
-      "id": "ramsey-connection",
-      "title": "Connection to Ramsey Numbers",
-      "startLine": 139,
-      "endLine": 155,
-      "summary": "Relation to classical Ramsey theory and local Ramsey properties."
-    },
-    {
-      "id": "related-problems",
-      "title": "Related Problems",
-      "startLine": 157,
-      "endLine": 172,
-      "summary": "Connection to Problem #804 and the general Erdős-Hajnal conjecture."
+      "id": "conjecture",
+      "title": "The Conjectured Threshold",
+      "startLine": 79,
+      "endLine": 84,
+      "summary": "Erdős-Hajnal conjecture that (log n)³ is too small"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 174,
-      "endLine": 202,
-      "summary": "Partial resolution: bounds established but exact threshold open."
+      "startLine": 86,
+      "endLine": 105,
+      "summary": "erdos_805 summary theorem combining both bounds"
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #805 has been PARTIALLY SOLVED. Alon-Sudakov (2007) proved no such graph exists for g(n) = c(log n)³/(log log n), and Alon-Bucić-Sudakov (2021) constructed graphs for g(n) ≤ 2^{2^{√(log log n)}}. The exact threshold and whether g(n) = (log n)³ works remain open.",
-    "implications": "This problem reveals the delicate balance between local and global Ramsey properties in graphs. The gap between the bounds shows that determining the exact threshold requires new techniques beyond current probabilistic and combinatorial methods.",
+    "implications": "This problem reveals the delicate balance between local and global Ramsey properties in graphs. The gap between the bounds shows that determining the exact threshold requires new techniques.",
     "openQuestions": [
       "Does there exist such a graph for g(n) = (log n)³ exactly?",
       "What is the precise threshold function?",
-      "Can the construction methods be improved?"
+      "Can the Alon-Bucić-Sudakov construction be improved?"
     ]
   }
 }
