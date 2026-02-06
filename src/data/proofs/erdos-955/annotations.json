@@ -1,82 +1,58 @@
 [
   {
-    "id": "ann-1",
-    "range": { "startLine": 46, "endLine": 47 },
-    "type": "definition",
-    "title": "Sum of Divisors σ(n)",
-    "content": "σ(n) is the sum of all positive divisors of n, including n itself. For example, σ(6) = 1 + 2 + 3 + 6 = 12. This is a fundamental multiplicative function in number theory.",
-    "significance": "essential"
-  },
-  {
-    "id": "ann-2",
-    "range": { "startLine": 56, "endLine": 57 },
+    "id": "ann-e955-sigma",
+    "range": { "startLine": 42, "endLine": 57 },
     "type": "definition",
     "title": "Sum of Proper Divisors s(n)",
-    "content": "s(n) = σ(n) - n is the sum of proper divisors (all divisors except n). Also called the 'aliquot sum'. For n = 6: s(6) = 1 + 2 + 3 = 6. The function s is central to this problem.",
+    "content": "The formalization defines σ(n) as the sum of all divisors via Mathlib's `Nat.divisors`, then s(n) = σ(n) - n as the sum of proper divisors (the 'aliquot sum'). An alternative definition s_alt sums over `Nat.properDivisors` directly, and an axiom asserts equivalence. For example, s(6) = 1 + 2 + 3 = 6, making 6 a perfect number. The function s is the central object in the EGPS conjecture.",
     "significance": "essential"
   },
   {
-    "id": "ann-3",
-    "range": { "startLine": 76, "endLine": 92 },
+    "id": "ann-e955-density",
+    "range": { "startLine": 76, "endLine": 93 },
     "type": "definition",
-    "title": "Perfect, Deficient, Abundant",
-    "content": "Numbers are classified by how s(n) compares to n. Perfect: s(n) = n (examples: 6, 28). Deficient: s(n) < n (most numbers). Abundant: s(n) > n (e.g., 12 with s(12) = 16). Perfect numbers have been studied since antiquity.",
-    "significance": "important"
-  },
-  {
-    "id": "ann-4",
-    "range": { "startLine": 118, "endLine": 119 },
-    "type": "definition",
-    "title": "Natural Density",
-    "content": "A set A ⊂ ℕ has density d if |A ∩ [1,x]|/x → d as x → ∞. Zero density means the set is 'sparse' - its elements become increasingly rare among natural numbers.",
+    "title": "Natural Density Framework",
+    "content": "Natural density is defined via the counting function |A ∩ [1,x]| and the limit |A ∩ [1,x]|/x → d as x → ∞. A set has zero density if this ratio tends to 0 — informally, its elements become vanishingly rare. The primes have density 0, as do sums of two squares. Positive-density sets include the even numbers (density 1/2) and the multiples of k (density 1/k). The EGPS conjecture is fundamentally about preservation of zero density under the map n ↦ s(n).",
     "significance": "essential"
   },
   {
-    "id": "ann-5",
-    "range": { "startLine": 142, "endLine": 143 },
-    "type": "definition",
-    "title": "Preimage s⁻¹(A)",
-    "content": "s⁻¹(A) = {n ∈ ℕ : s(n) ∈ A} is the set of all n whose sum of proper divisors lies in A. The problem asks about density preservation under this preimage operation.",
-    "significance": "essential"
-  },
-  {
-    "id": "ann-6",
-    "range": { "startLine": 160, "endLine": 161 },
+    "id": "ann-e955-egps",
+    "range": { "startLine": 103, "endLine": 111 },
     "type": "conjecture",
-    "title": "EGPS Conjecture (OPEN)",
-    "content": "The Erdős-Granville-Pomerance-Spiro conjecture (1990): If A ⊂ ℕ has density 0, then s⁻¹(A) must also have density 0. This is the main statement of Problem #955, still OPEN in general.",
+    "title": "The EGPS Conjecture (1990, OPEN)",
+    "content": "The Erdős-Granville-Pomerance-Spiro conjecture: if A ⊂ ℕ has density 0, then s⁻¹(A) = {n : s(n) ∈ A} must also have density 0. Equivalently, 'sparse' target sets cannot attract a positive fraction of all integers under the sum-of-proper-divisors map. This is Problem #955 in the Erdős Problems database and remains open in full generality despite substantial partial progress.",
     "significance": "essential"
   },
   {
-    "id": "ann-7",
-    "range": { "startLine": 179, "endLine": 187 },
+    "id": "ann-e955-contrasts",
+    "range": { "startLine": 113, "endLine": 135 },
     "type": "insight",
-    "title": "Contrasting Behaviors",
-    "content": "s exhibits asymmetric behavior: (1) s(A) can have positive density even if A has density 0 (forward expansion). (2) s⁻¹(A) can be empty even if A has positive density (untouchable numbers). The conjecture concerns the reverse direction only.",
+    "title": "Asymmetry of s: Forward vs Backward",
+    "content": "The function s exhibits a striking asymmetry. In the forward direction, s can amplify density: there exist zero-density sets A whose image s(A) has positive density (e.g., A = semiprimes pq). In the backward direction, large sets can have empty preimages: untouchable numbers (like 2 and 5) are never the sum of proper divisors of any number. The conjecture concerns only backward density: does small A force small s⁻¹(A)? The untouchable phenomenon shows that the converse (large A implies large s⁻¹(A)) is false.",
     "significance": "important"
   },
   {
-    "id": "ann-8",
-    "range": { "startLine": 194, "endLine": 195 },
-    "type": "definition",
-    "title": "Untouchable Numbers",
-    "content": "A number k is 'untouchable' if s(n) = k has no solution n. Examples: 2, 5, 52, 88, 96. These are values never achieved as a sum of proper divisors. Discussed in Guy's 'Unsolved Problems' as B10.",
-    "significance": "important"
-  },
-  {
-    "id": "ann-9",
-    "range": { "startLine": 211, "endLine": 233 },
+    "id": "ann-e955-partial",
+    "range": { "startLine": 137, "endLine": 161 },
     "type": "theorem",
-    "title": "Partial Results",
-    "content": "The conjecture is proved for specific sets A: (1) Pollack 2014: A = primes. (2) Troupe 2015: A = integers with many prime factors. (3) Troupe 2020: A = sums of two squares. These show the conjecture holds for natural 'structured' sets.",
+    "title": "Partial Results: Pollack, Troupe",
+    "content": "Three key partial results verify the conjecture for specific structured sets. Pollack (2014) proved it for A = primes, using deep results on the distribution of s(n) modulo primes. Troupe (2015) extended this to integers with unusually many prime factors (ω(n) > k log log n). Troupe (2020) proved the case A = sums of two squares, exploiting the known density (~x/√(log x)) and multiplicative structure of such numbers. Each proof requires specialized analytic techniques tailored to the arithmetic structure of A.",
     "significance": "essential"
   },
   {
-    "id": "ann-10",
-    "range": { "startLine": 246, "endLine": 258 },
+    "id": "ann-e955-ppt",
+    "range": { "startLine": 163, "endLine": 179 },
     "type": "theorem",
-    "title": "PPT Bound",
-    "content": "Pollack-Pomerance-Thompson (2018): If |A ∩ [1,x]| ≤ x^{1/2+o(1)}, then s⁻¹(A) has density 0. This shows all 'sufficiently sparse' sets satisfy the conjecture. The exponent 1/2 comes from the growth bound s(n) ≪ n log log n.",
+    "title": "The PPT Threshold: x^{1/2+o(1)}",
+    "content": "Pollack-Pomerance-Thompson (2018) proved the conjecture for all sets A with |A ∩ [1,x]| ≤ x^{1/2+o(1)} — any set sparser than x^{1/2} satisfies EGPS. The exponent 1/2 arises from the growth bound s(n) ≤ n·(2 + log log n): since s maps [1,x] into [1, O(x log log x)], sets growing slower than the square root of the range cannot accumulate enough preimages. The corollary `sparse_sets_work` is a direct application. Closing the gap between this threshold and general zero-density sets is the main open challenge.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-e955-summary",
+    "range": { "startLine": 195, "endLine": 217 },
+    "type": "summary",
+    "title": "Summary: Known Results and Main Theorem",
+    "content": "The summary axiom and main theorem `erdos_955` combine the three established partial results: Pollack's prime case, Troupe's sums-of-two-squares case, and the PPT sparse-set threshold. Together they delineate the boundary of current knowledge: the conjecture holds for all 'natural' zero-density sets and for any set growing like x^{1/2+o(1)}, but the general case — arbitrary zero-density sets — remains open after over 30 years.",
     "significance": "essential"
   }
 ]
