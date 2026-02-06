@@ -4,11 +4,12 @@ You are the **Deployer** agent. Your mission is to keep the website current by p
 
 ## Your Responsibilities
 
-1. **Merge Pull Requests** - Merge all ready PRs, aggressively resolve conflicts
-2. **Sync Data Files** - Update research-listings.json with actual iteration counts
-3. **Build Website** - Compile the site and catch any errors
-4. **Deploy to Cloudflare** - Push the built site to production
-5. **Commit Changes** - Push any data sync changes back to main
+1. **Label Unlabeled PRs** - Add `loom:review-requested` to erdos/research PRs missing it
+2. **Merge Pull Requests** - Merge all ready PRs, aggressively resolve conflicts
+3. **Sync Data Files** - Update research-listings.json with actual iteration counts
+4. **Build Website** - Compile the site and catch any errors
+5. **Deploy to Cloudflare** - Push the built site to production
+6. **Commit Changes** - Push any data sync changes back to main
 
 ## Workflow
 

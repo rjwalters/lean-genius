@@ -95,6 +95,40 @@ if $ONLY_DEPLOY; then run_merge=false; run_sync=false; run_build=false; fi
 [[ "${SKIP_DEPLOY:-}" == "1" ]] && run_deploy=false
 
 # ============================================================================
+# Step 0: Label unlabeled erdos/research PRs
+# ============================================================================
+label_unlabeled_prs() {
+    print_header "Labeling Unlabeled Erdos/Research PRs"
+
+    # Find open PRs with erdos-enhancement, research, or aristotle-integration labels
+    # that are missing loom:review-requested (safety net for old worktrees or gh errors)
+    local labeled=0
+    for pr in $(gh pr list --state open --limit 100 --json number,labels \
+        --jq '.[] |
+            select(.labels | map(.name) | any(. == "erdos-enhancement" or . == "research" or . == "aristotle-integration")) |
+            select(.labels | map(.name) | any(. == "loom:review-requested") | not) |
+            .number'); do
+        if $DRY_RUN; then
+            echo "  Would label PR #$pr with loom:review-requested"
+        else
+            echo -n "  #$pr: "
+            if gh pr edit "$pr" --add-label "loom:review-requested" 2>/dev/null; then
+                echo "labeled"
+            else
+                echo "failed to label"
+            fi
+        fi
+        ((labeled++)) || true
+    done
+
+    if [[ $labeled -eq 0 ]]; then
+        print_info "No unlabeled erdos/research PRs found"
+    else
+        print_success "Labeled $labeled PR(s) with loom:review-requested"
+    fi
+}
+
+# ============================================================================
 # Step 1: Merge PRs
 # ============================================================================
 merge_prs() {
@@ -603,6 +637,7 @@ main() {
     echo "  Deploy:    $run_deploy"
     echo "  Dry Run:   $DRY_RUN"
 
+    $run_merge && label_unlabeled_prs
     $run_merge && merge_prs
     $run_sync && sync_data
     $run_build && build_website
