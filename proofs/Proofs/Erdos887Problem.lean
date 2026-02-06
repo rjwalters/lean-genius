@@ -1,30 +1,17 @@
-/-
+/-!
 Erdős Problem #887: Divisors in Short Intervals Near √n
 
-Source: https://erdosproblems.com/887
-Status: OPEN (partial results known)
-
-Statement:
 Is there an absolute constant K such that, for every C > 0, if n is
 sufficiently large then n has at most K divisors in (√n, √n + C·n^{1/4})?
 
-Background:
+**Status**: OPEN
+
 Erdős and Rosenfeld (1997) proved that there are infinitely many n with
 4 divisors in (√n, √n + n^{1/4}), and asked whether 4 is best possible.
+Tsz Ho Chan (2013) proved that perfect squares have at most 5 divisors
+in such intervals. The general case remains open.
 
-Known Results:
-- Erdős-Rosenfeld: ∃ infinitely many n with 4 divisors in the interval
-- Tsz Ho Chan (2013): Perfect squares have ≤ 5 divisors in such intervals
-- Letendre (2025): Further bounds for perfect squares
-
-The general case remains OPEN.
-
-References:
-- [ErRo97] Erdős-Rosenfeld, "On the number of divisors of n!"
-- [Ch13] Chan, "Perfect squares have at most five divisors close to √n"
-- [Le25] Letendre, "Divisors of an Integer in a Short Interval"
-
-Tags: number-theory, divisors, analytic-number-theory
+Reference: https://erdosproblems.com/887
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -37,71 +24,85 @@ namespace Erdos887
 
 /-!
 ## Part 1: Basic Definitions
+
+We define the set of divisors, the divisor-counting function τ(n),
+and a mechanism for counting divisors within a real interval.
 -/
 
-/-- The set of divisors of n -/
+/-- The set of divisors of n as a finite set -/
 def divisors (n : ℕ) : Finset ℕ :=
   Finset.filter (· ∣ n) (Finset.range (n + 1))
 
-/-- The divisor function τ(n) -/
+/-- The divisor function τ(n): number of positive divisors of n -/
 def tau (n : ℕ) : ℕ := (divisors n).card
 
-/-- Divisors in an interval [a, b] -/
+/-- Divisors of n lying in the real interval [a, b] -/
 def divisorsInInterval (n : ℕ) (a b : ℝ) : Finset ℕ :=
   (divisors n).filter (fun d => a ≤ d ∧ (d : ℝ) ≤ b)
 
-/-- Count of divisors in an interval -/
+/-- Count of divisors of n in the interval [a, b] -/
 def countDivisorsInInterval (n : ℕ) (a b : ℝ) : ℕ :=
   (divisorsInInterval n a b).card
 
 /-!
 ## Part 2: The Erdős-Rosenfeld Conjecture
+
+The central question: does a universal constant K exist bounding
+the number of divisors any integer can have near its square root?
 -/
 
-/-- The interval (√n, √n + C·n^{1/4}) -/
+/-- The Erdős-Rosenfeld interval (√n, √n + C·n^{1/4}) -/
 def erdosRosenfeldInterval (n : ℕ) (C : ℝ) : Set ℝ :=
   { x | Real.sqrt n < x ∧ x ≤ Real.sqrt n + C * (n : ℝ) ^ (1/4 : ℝ) }
 
-/-- Divisors in the Erdős-Rosenfeld interval -/
+/-- Count of divisors of n in the Erdős-Rosenfeld interval -/
 def divisorsNearSqrt (n : ℕ) (C : ℝ) : ℕ :=
   countDivisorsInInterval n (Real.sqrt n) (Real.sqrt n + C * (n : ℝ) ^ (1/4 : ℝ))
 
-/-- The Erdős-Rosenfeld Conjecture:
-    There exists K such that for all C > 0 and sufficiently large n,
-    n has at most K divisors in (√n, √n + C·n^{1/4}) -/
+/-- The Erdős-Rosenfeld Conjecture (strong form):
+    There exists a universal constant K such that for all C > 0
+    and all sufficiently large n, n has at most K divisors in
+    (√n, √n + C·n^{1/4}).  The constant K is independent of C. -/
 def ErdosRosenfeldConjecture : Prop :=
   ∃ K : ℕ, ∀ C : ℝ, C > 0 →
     ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrt n C ≤ K
 
-/-- Weaker version: K depends on C -/
+/-- Weak form: K may depend on C -/
 def WeakErdosRosenfeld : Prop :=
   ∀ C : ℝ, C > 0 → ∃ K : ℕ, ∃ N₀ : ℕ,
     ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrt n C ≤ K
 
 /-!
-## Part 3: Erdős-Rosenfeld Result
+## Part 3: Erdős-Rosenfeld Lower Bound (1997)
+
+Erdős and Rosenfeld proved that infinitely many n achieve exactly
+4 divisors in the interval, so K ≥ 4 if the conjecture holds.
 -/
 
-/-- Erdős-Rosenfeld (1997): Infinitely many n have 4 divisors in the interval -/
+/-- Erdős-Rosenfeld (1997): infinitely many n have exactly 4 divisors
+    in (√n, √n + C·n^{1/4}) for C ≥ 1.
+    This is the key lower bound: if K exists, then K ≥ 4. -/
 axiom erdos_rosenfeld_four_divisors :
   ∀ C : ℝ, C ≥ 1 →
     Set.Infinite { n : ℕ | divisorsNearSqrt n C = 4 }
 
-/-- The natural question: is 4 the maximum? -/
+/-- The conjectured answer: 4 is the maximum -/
 def FourIsMaximum : Prop :=
   ∀ C : ℝ, C > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrt n C ≤ 4
 
-/-- The conjecture that 4 is the answer -/
-axiom four_conjectured : True
-
 /-!
-## Part 4: Perfect Square Case (Chan 2013)
+## Part 4: Perfect Square Case — Chan's Theorem (2013)
+
+Tsz Ho Chan resolved the conjecture for perfect squares: they have
+at most 5 divisors in the interval (the extra one being √n itself).
 -/
 
-/-- A number is a perfect square -/
-def isPerfectSquare (n : ℕ) : Prop := ∃ k : ℕ, k^2 = n
+/-- A natural number is a perfect square -/
+def isPerfectSquare (n : ℕ) : Prop := ∃ k : ℕ, k ^ 2 = n
 
-/-- Chan's Theorem: Perfect squares have at most 5 divisors in the interval -/
+/-- Chan's Theorem (2013): perfect squares have at most 5 divisors
+    in a symmetric interval of width 2c·n^{1/4} around √n.
+    The bound is 5 rather than 4 because √n is an integer divisor. -/
 axiom chan_perfect_square_bound :
   ∀ n : ℕ, isPerfectSquare n →
     ∀ c : ℝ, c > 0 →
@@ -109,143 +110,77 @@ axiom chan_perfect_square_bound :
         (Real.sqrt n - c * (n : ℝ) ^ (1/4 : ℝ))
         (Real.sqrt n + c * (n : ℝ) ^ (1/4 : ℝ)) ≤ 5
 
-/-- For perfect squares, the bound is 5 (includes √n itself) -/
+/-- For perfect squares, √n is itself a divisor of n -/
 theorem perfect_square_has_sqrt_divisor (n : ℕ) (hn : isPerfectSquare n) :
-    ∃ d : ℕ, d ∣ n ∧ d^2 = n := by
+    ∃ d : ℕ, d ∣ n ∧ d ^ 2 = n := by
   obtain ⟨k, hk⟩ := hn
   exact ⟨k, ⟨Dvd.intro k (by ring_nf; rw [← hk]), hk⟩⟩
 
 /-!
-## Part 5: Why the Problem is Interesting
+## Part 5: General Divisor Bounds
+
+Classical results on the divisor function provide context.
 -/
 
-/-- Divisors tend to cluster near √n -/
-axiom divisors_cluster_near_sqrt :
-  -- Most numbers have their "middle" divisors near √n
-  -- The distribution of τ(n) relates to divisor clustering
-  True
-
-/-- Connection to the multiplication table problem -/
-axiom multiplication_table_connection :
-  -- The distribution of divisors relates to how often integers
-  -- appear in the multiplication table
-  True
-
-/-- The "anatomy" of integers -/
-axiom anatomy_of_integers :
-  -- Understanding divisor distribution near √n helps understand
-  -- the typical structure of integers
-  True
-
-/-!
-## Part 6: Related Bounds
--/
-
-/-- Total number of divisors: τ(n) ≪ n^ε for any ε > 0 -/
+/-- τ(n) ≪ n^ε for any ε > 0: the divisor function grows
+    slower than any positive power of n. -/
 axiom divisor_bound_epsilon :
   ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, ∀ n : ℕ, n ≥ 1 → (tau n : ℝ) ≤ C * (n : ℝ) ^ ε
 
-/-- Average number of divisors: Σ_{n≤x} τ(n) ~ x log x -/
-axiom average_divisor_count :
-  -- The average of τ(n) for n ≤ x is approximately log x
-  True
-
-/-- Divisors of n! (related to original Erdős-Rosenfeld paper) -/
-axiom factorial_divisors :
-  -- τ(n!) has specific behavior studied in [ErRo97]
-  True
-
 /-!
-## Part 7: Heuristics
+## Part 6: Interval Width Variations
+
+The exponent 1/4 in n^{1/4} is critical. Changing it
+dramatically alters the problem's character.
 -/
 
-/-- Heuristic: Why K might exist -/
-axiom heuristic_for_K :
-  -- If d₁ < d₂ < ... < dₖ are divisors of n in the interval,
-  -- then n/d_i are also divisors, creating constraints.
-  -- Near √n, pairs (d, n/d) interact in specific ways.
-  True
-
-/-- Why 4 might be special -/
-axiom why_four_is_special :
-  -- With 4 divisors d₁ < d₂ < d₃ < d₄ near √n,
-  -- we have n = d_i · (n/d_i) with specific structure.
-  -- More divisors require more arithmetic coincidences.
-  True
-
-/-- Construction idea for n with 4 divisors -/
-axiom construction_with_four :
-  -- Take n = p · q · r · s where p < q < r < s are primes
-  -- with pq, pr, ps, qr all near √n
-  -- This can be achieved with careful prime selection
-  True
-
-/-!
-## Part 8: Interval Variations
--/
-
-/-- The symmetric interval case -/
+/-- The symmetric interval case: divisors in (√n - c·n^{1/4}, √n + c·n^{1/4}) -/
 def divisorsSymmetricInterval (n : ℕ) (c : ℝ) : ℕ :=
   countDivisorsInInterval n
     (Real.sqrt n - c * (n : ℝ) ^ (1/4 : ℝ))
     (Real.sqrt n + c * (n : ℝ) ^ (1/4 : ℝ))
 
-/-- Different exponents: n^α instead of n^{1/4} -/
+/-- Divisors near √n with general exponent α: (√n, √n + C·n^α) -/
 def divisorsNearSqrtAlpha (n : ℕ) (C α : ℝ) : ℕ :=
   countDivisorsInInterval n (Real.sqrt n) (Real.sqrt n + C * (n : ℝ) ^ α)
 
-/-- For α > 1/2, no bound is possible -/
+/-- For α > 1/2 the interval grows faster than √n, so no uniform
+    bound K exists: for every K there is some n exceeding it. -/
 axiom no_bound_for_large_alpha :
   ∀ α : ℝ, α > 1/2 → ∀ K : ℕ,
     ∃ n : ℕ, n ≥ 1 ∧ divisorsNearSqrtAlpha n 1 α > K
 
-/-- For α < 1/4, bounded by 2 (only d and n/d) -/
+/-- For α < 1/4 the interval is too narrow to contain more than
+    a complementary pair d, n/d, so the count is at most 2. -/
 axiom bound_for_small_alpha :
   ∀ α : ℝ, 0 < α → α < 1/4 → ∃ N₀ : ℕ,
     ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrtAlpha n 1 α ≤ 2
 
 /-!
-## Part 9: Computational Evidence
+## Part 7: Summary
+
+The Erdős-Rosenfeld Conjecture remains open. We collect the
+known results into a single summary statement.
 -/
 
-/-- Computational search: no n found with > 4 divisors (for reasonable C) -/
-axiom computational_evidence :
-  -- Extensive computation has not found n with more than 4 divisors
-  -- in the Erdős-Rosenfeld interval for C = 1
-  True
+/-- Summary of known results for Erdős Problem #887:
+    • Infinitely many n achieve exactly 4 divisors (Erdős-Rosenfeld 1997)
+    • Perfect squares have at most 5 divisors (Chan 2013)
+    • For exponent α > 1/2, no bound exists
+    • For exponent α < 1/4, the bound is 2
+    • The general case at exponent 1/4 is OPEN -/
+axiom erdos_887_summary :
+  (∀ C : ℝ, C ≥ 1 → Set.Infinite { n : ℕ | divisorsNearSqrt n C = 4 }) ∧
+  (∀ n : ℕ, isPerfectSquare n → ∀ c : ℝ, c > 0 →
+    divisorsSymmetricInterval n c ≤ 5) ∧
+  (∀ α : ℝ, α > 1/2 → ∀ K : ℕ, ∃ n : ℕ, n ≥ 1 ∧ divisorsNearSqrtAlpha n 1 α > K) ∧
+  (∀ α : ℝ, 0 < α → α < 1/4 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrtAlpha n 1 α ≤ 2)
 
-/-- The examples with 4 divisors are rare but infinite -/
-axiom examples_are_sparse :
-  -- Numbers with exactly 4 divisors in the interval are O(x^{1/2+ε})?
-  True
-
-/-!
-## Part 10: Summary
--/
-
-/-- Problem Status: OPEN -/
-def problemStatus : Prop :=
-  -- General case: OPEN - no bound K proven
-  -- Perfect squares: K ≤ 5 (Chan 2013)
-  -- Lower bound: 4 can be achieved infinitely often
-  -- Conjecture: K = 4 suffices
-  True
-
-/-- Main theorem statement (OPEN) -/
-theorem erdos_887 : True := trivial
-
-/-- What we know -/
-theorem erdos_887_known :
-  -- 1. Perfect squares: at most 5 divisors in interval
-  -- 2. Lower bound: 4 is achieved infinitely often
-  -- 3. General case: Unknown if K exists
-  -- 4. Conjecture: K = 4 is the answer
-  True := trivial
-
-/-- The problem remains open -/
-theorem erdos_887_open :
-  -- The Erdős-Rosenfeld conjecture has not been proven or disproven
-  -- in the general case. Perfect squares have been resolved (K ≤ 5).
-  True := trivial
+/-- Erdős Problem #887: Main entry point.
+    The conjecture is stated as a Prop; its truth value is unknown. -/
+theorem erdos_887 : ErdosRosenfeldConjecture =
+    (∃ K : ℕ, ∀ C : ℝ, C > 0 →
+      ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrt n C ≤ K) := by
+  rfl
 
 end Erdos887
