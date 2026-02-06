@@ -202,7 +202,6 @@ def erdos_1054_part_iii : Prop :=
 The main Erdős Problem #1054 asks about the relationship between these questions.
 The status is OPEN - the "almost all" version remains unresolved.
 -/
-theorem erdos_1054_is_open : True := trivial
 
 /-!
 ## Tao's Partial Result
