@@ -218,9 +218,6 @@ Hegyvári's approach uses divisibility and sieve methods.
 axiom divisibility_constraint (m n k l : ℕ) :
     sameProduct m n k l → (k ∣ l * n ∨ n - l ∣ m - k)
 
-/-- Counting solutions uses sieve bounds -/
-axiom sieve_bound_application :
-    True  -- Placeholder for the sieve method details
 
 /-!
 ## Part 11: Comparison with Related Problems
