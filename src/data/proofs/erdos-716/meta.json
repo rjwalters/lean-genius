@@ -1,6 +1,6 @@
 {
   "id": "erdos-716",
-  "title": "The Ruzsa-Szemerédi (6,3) Problem",
+  "title": "Erdős Problem #716: The Ruzsa-Szemerédi (6,3) Problem",
   "slug": "erdos-716",
   "description": "Let ℱ be the family of all 3-uniform hypergraphs with 6 vertices and 3 edges. Is ex₃(n, ℱ) = o(n²)? Equivalently, what is the maximum number of edges in a graph where every edge belongs to a unique triangle? Solved by Ruzsa-Szemerédi (1978).",
   "meta": {
@@ -17,7 +17,7 @@
       "triangle-removal-lemma",
       "additive-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 716,
     "erdosUrl": "https://erdosproblems.com/716",
@@ -38,31 +38,66 @@
   "sections": [
     {
       "id": "hypergraph-basics",
-      "title": "Hypergraph Definitions",
+      "title": "Part I: Hypergraph Basics",
       "summary": "3-uniform hypergraphs, (v,e)-configurations, and the (6,3)-free condition",
       "startLine": 48,
-      "endLine": 91
+      "endLine": 78
+    },
+    {
+      "id": "extremal-numbers",
+      "title": "Part II: Extremal Numbers",
+      "summary": "extremalHypergraph, ex63 definitions, trivial O(n²) bound",
+      "startLine": 80,
+      "endLine": 93
     },
     {
       "id": "graph-formulation",
-      "title": "Graph Formulation",
-      "summary": "RS graphs where every edge belongs to a unique triangle",
-      "startLine": 115,
-      "endLine": 142
+      "title": "Part III: Graph Formulation",
+      "summary": "RS graphs (every edge in unique triangle), hypergraph equivalence",
+      "startLine": 95,
+      "endLine": 114
     },
     {
       "id": "main-theorem",
-      "title": "Ruzsa-Szemerédi Theorem",
-      "summary": "Main result: ex₃(n; 6, 3) = o(n²)",
-      "startLine": 144,
-      "endLine": 212
+      "title": "Part IV: The Main Theorem",
+      "summary": "Ruzsa-Szemerédi theorem: ex₃(n; 6, 3) = o(n²). Tight bounds n² · e^{±c√(log n)}",
+      "startLine": 116,
+      "endLine": 142
     },
     {
-      "id": "roth-connection",
-      "title": "Connection to Arithmetic Progressions",
-      "summary": "Link to Roth's theorem and Behrend's construction",
-      "startLine": 214,
-      "endLine": 261
+      "id": "triangle-removal",
+      "title": "Part V: The Triangle Removal Lemma",
+      "summary": "Triangle removal lemma and its derivation of the RS theorem",
+      "startLine": 144,
+      "endLine": 161
+    },
+    {
+      "id": "arithmetic-progressions",
+      "title": "Part VI: Connection to Arithmetic Progressions",
+      "summary": "3-AP-free sets, Roth's theorem, Behrend construction, RS implies Roth",
+      "startLine": 163,
+      "endLine": 196
+    },
+    {
+      "id": "bes-conjecture",
+      "title": "Part VII: The Brown-Erdős-Sós Conjecture",
+      "summary": "BES conjecture definition, k=3 is erdos-716, k=4 by Glock, general by Delcourt-Postle",
+      "startLine": 198,
+      "endLine": 220
+    },
+    {
+      "id": "stronger-question",
+      "title": "Part VIII: Erdős's Stronger Question",
+      "summary": "f^(3)(n; k+3, k) ≍ n · r_{k-3}(n)? Ruzsa's lower bound for k = 6, 7, 8",
+      "startLine": 222,
+      "endLine": 240
+    },
+    {
+      "id": "summary",
+      "title": "Part IX: Summary",
+      "summary": "erdos_716 (proved from RS theorem) and erdos_716_summary combining main result with tight bounds",
+      "startLine": 242,
+      "endLine": 265
     }
   ],
   "conclusion": {
