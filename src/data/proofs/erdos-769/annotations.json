@@ -2,177 +2,100 @@
   {
     "id": "ann-e769-header",
     "proofId": "erdos-769",
-    "range": { "startLine": 1, "endLine": 25 },
+    "range": { "startLine": 1, "endLine": 32 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #769: Cube Dissection**\n\nLet c(n) be the minimal k such that any m ≥ k cubes can tile the n-dimensional unit cube.\n\n**Status:** OPEN\n\n**Known Bounds:**\n- Lower: c(n) ≥ 2^{n+1} - 1\n- Upper: c(n) ≤ O(n^{n+1})\n\nMain question: Is c(n) ≫ n^n?",
-    "mathContext": "This problem sits at the intersection of combinatorial geometry, packing theory, and number theory.",
+    "content": "**Erdős Problem #769: Cube Dissection**\n\nLet c(n) be the minimal k such that for all m ≥ k, the n-dimensional unit cube can be decomposed into m homothetic (scaled, axis-aligned) cubes. The problem asks for good bounds on c(n), and in particular whether c(n) ≫ n^n.\n\n**Known Bounds:**\n- Lower: c(n) ≥ 2^{n+1} - 1 (Connor-Marmorino 2018)\n- Upper: c(n) ≤ O(n^{n+1}) (Burgess-Erdős 1974)\n- Exact: c(2) = 6\n\nThe gap between exponential lower and super-exponential upper bound is enormous. Erdős conjectured c(n) > n^n when n+1 is prime.",
+    "mathContext": "This problem sits at the intersection of combinatorial geometry, packing theory, and number theory. The primality condition on n+1 in the upper bounds reveals unexpected arithmetic structure.",
     "significance": "critical",
-    "relatedConcepts": ["Cube dissection", "Homothety", "Packing problems", "Squaring the square"]
+    "relatedConcepts": ["Cube dissection", "Homothety", "Packing problems"]
   },
   {
-    "id": "ann-e769-decomp-predicate",
+    "id": "ann-e769-decomp",
     "proofId": "erdos-769",
-    "range": { "startLine": 40, "endLine": 48 },
+    "range": { "startLine": 34, "endLine": 41 },
     "type": "definition",
     "title": "Decomposability Predicate",
-    "content": "**CanDecomposeCubeIntoKCubes:**\n\nThe n-dimensional unit cube can be decomposed into exactly k smaller homothetic cubes.\n\n**Constraints:**\n1. All cubes have side length in (0, 1)\n2. Total volume: Σ sideᵢⁿ = 1\n3. (Implicitly) The cubes must actually pack geometrically",
-    "significance": "critical"
+    "content": "**CanDecomposeCubeIntoKCubes n k** asserts the n-dimensional unit cube can be decomposed into exactly k smaller homothetic cubes.\n\nThe formalization captures two constraints:\n1. All cubes have side length in (0, 1) — strictly smaller than the original\n2. Total volume: Σ sideᵢⁿ = 1 — cubes fill the unit cube exactly\n\nThe implicit geometric constraint (cubes must actually fit without overlap) is not captured by the volume equation alone, which is why the problem is hard.",
+    "mathContext": "A homothetic cube is obtained from the unit cube by scaling and translation only — no rotation is allowed. The sides remain parallel to the original axes.",
+    "significance": "critical",
+    "relatedConcepts": ["Volume constraint", "Geometric packing", "Homothetic copies"]
   },
   {
     "id": "ann-e769-c-function",
     "proofId": "erdos-769",
-    "range": { "startLine": 50, "endLine": 65 },
+    "range": { "startLine": 43, "endLine": 56 },
     "type": "definition",
-    "title": "Cube Dissection Function",
-    "content": "**cubeDissectionNumber c(n):**\n\nThe minimal k such that for all m ≥ k, the n-dimensional unit cube can be decomposed into m homothetic cubes.\n\nA 'homothetic cube' is a smaller cube with parallel sides (scaling + translation, no rotation).\n\nThis function captures the threshold beyond which all decompositions become possible.",
-    "significance": "critical"
+    "title": "Cube Dissection Function c(n)",
+    "content": "**cubeDissectionNumber** is axiomatized as a function ℕ → ℕ with two characterizing properties:\n\n- **cubeDissectionNumber_spec**: for all k ≥ c(n), decomposition into k cubes is possible (threshold property)\n- **cubeDissectionNumber_minimal**: there exists some k < c(n) where decomposition is impossible (minimality)\n\nThis replaces the original `Nat.find`-based definition which required a `sorry` for the existence proof. The axiomatization cleanly captures the same mathematical content.",
+    "mathContext": "The function c(n) is well-defined by the finite obstruction principle: only finitely many values of k fail to admit decomposition. Beyond some threshold, splitting a cube into one more piece is always possible (by subdividing an existing piece).",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal function", "Threshold", "Axiomatization"]
   },
   {
-    "id": "ann-e769-2d-impossible",
+    "id": "ann-e769-dim2",
     "proofId": "erdos-769",
-    "range": { "startLine": 75, "endLine": 81 },
+    "range": { "startLine": 58, "endLine": 70 },
     "type": "axiom",
-    "title": "Impossible 2D Cases",
-    "content": "**square_not_2, square_not_3, square_not_4, square_not_5:**\n\nA square cannot be decomposed into 2, 3, 4, or 5 smaller squares.\n\n- 2 squares: impossible (would need half the square each)\n- 3 squares: cannot fit without overlap\n- 4 squares: tempting (2×2 grid) but must be strict squares\n- 5 squares: geometric constraints forbid this",
-    "significance": "key"
+    "title": "The Dimension 2 Case: c(2) = 6",
+    "content": "**c(2) = 6** is the only dimension where the exact value is known.\n\n**Impossible cases** (square_not_2 through square_not_5): A unit square cannot be decomposed into 2, 3, 4, or 5 smaller squares. For k=2, any partition into two rectangles cannot both be square. For k=4, a 2×2 grid of equal squares works, but these aren't strictly smaller (they're exactly half the side).\n\n**Achievable** (square_6_achievable): Six squares suffice — various constructions exist using squares of different sizes.\n\n**Exact value** (c_of_2): cubeDissectionNumber 2 = 6.",
+    "mathContext": "The impossibility proofs for k = 2,3,4,5 use geometric arguments about how squares can tile a square. The key insight is that any square touching a corner must have its corner there, constraining the configuration.",
+    "significance": "critical",
+    "relatedConcepts": ["Square dissection", "Exact values", "Geometric constraints"]
   },
   {
-    "id": "ann-e769-c2-equals-6",
+    "id": "ann-e769-lower-bounds",
     "proofId": "erdos-769",
-    "range": { "startLine": 83, "endLine": 90 },
-    "type": "axiom",
-    "title": "c(2) = 6",
-    "content": "**c_of_2:**\n\nThe exact value c(2) = 6.\n\nA unit square CAN be decomposed into 6, 7, 8, ... squares (and k = 1 trivially), but NOT into 2, 3, 4, or 5 squares.\n\nThis is the only dimension where c(n) is known exactly.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e769-hadwiger",
-    "proofId": "erdos-769",
-    "range": { "startLine": 99, "endLine": 105 },
-    "type": "axiom",
-    "title": "Hadwiger's Lower Bound",
-    "content": "**hadwiger_lower_bound:**\n\nc(n) ≥ 2^n + 2^{n-1} = 3 · 2^{n-1}\n\nThis was the first non-trivial lower bound, proved by Hadwiger using geometric packing arguments.\n\nFor n = 3: c(3) ≥ 8 + 4 = 12\nFor n = 4: c(4) ≥ 16 + 8 = 24",
-    "mathContext": "Hadwiger was a pioneer in convex geometry and combinatorial geometry.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e769-connor-marmorino-lower",
-    "proofId": "erdos-769",
-    "range": { "startLine": 125, "endLine": 131 },
-    "type": "axiom",
-    "title": "Connor-Marmorino Lower Bound",
-    "content": "**connor_marmorino_lower (2018):**\n\nc(n) ≥ 2^{n+1} - 1 for all n ≥ 3.\n\nThis improves Hadwiger's bound since:\n2^{n+1} - 1 > 2^n + 2^{n-1}\n\nFor n = 3: c(3) ≥ 15 (vs Hadwiger's 12)\nFor n = 4: c(4) ≥ 31 (vs Hadwiger's 24)",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e769-burgess-erdos",
-    "proofId": "erdos-769",
-    "range": { "startLine": 150, "endLine": 156 },
-    "type": "axiom",
-    "title": "Burgess-Erdős Upper Bound",
-    "content": "**burgess_erdos_upper (1974):**\n\nc(n) ≪ n^{n+1}\n\nThere exists a constant C such that c(n) ≤ C · n^{n+1} for all n.\n\nThis was the first super-exponential upper bound, showing c(n) grows at most like n! · n.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e769-hudelson",
-    "proofId": "erdos-769",
-    "range": { "startLine": 158, "endLine": 172 },
-    "type": "axiom",
-    "title": "Hudelson's Bounds",
-    "content": "**hudelson_upper_general and hudelson_special (1998):**\n\n- General: c(n) ≪ (2n)^{n-1}\n- Special: If gcd(2^n - 1, 3^n - 1) = 1, then c(n) < 6^n\n\nHudelson's bounds depend on number-theoretic divisibility conditions, revealing unexpected connections.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e769-connor-marmorino-upper",
-    "proofId": "erdos-769",
-    "range": { "startLine": 174, "endLine": 185 },
-    "type": "axiom",
-    "title": "Connor-Marmorino Upper Bounds",
-    "content": "**connor_marmorino_upper_prime and _composite (2018):**\n\n- If n+1 is prime: c(n) ≤ 1.8 · n^{n+1}\n- Otherwise: c(n) ≤ e² · n^n ≈ 7.39 · n^n\n\nThe primality of n+1 affects the upper bound, connecting to number theory.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e769-erdos-conjecture",
-    "proofId": "erdos-769",
-    "range": { "startLine": 195, "endLine": 202 },
-    "type": "definition",
-    "title": "Erdős's Conjecture",
-    "content": "**erdosConjecture:**\n\nIf n+1 is prime, then c(n) > n^n.\n\nErdős wrote: 'I am certain that if n+1 is a prime then c(n) > n^n.'\n\nThis would show c(n) grows strictly faster than n^n for infinitely many n.",
-    "mathContext": "Erdős's confidence suggests he had heuristic arguments but no proof.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e769-main-question",
-    "proofId": "erdos-769",
-    "range": { "startLine": 204, "endLine": 210 },
-    "type": "definition",
-    "title": "The Main Open Question",
-    "content": "**mainQuestion:**\n\nIs c(n) ≫ n^n in general?\n\nMore precisely: does there exist c > 0 such that c(n) ≥ c · n^n for all large n?\n\nThe current gap is huge: 2^n << n^n for large n.\nWe don't know which side of n^n the truth lies.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e769-gap",
-    "proofId": "erdos-769",
-    "range": { "startLine": 220, "endLine": 232 },
+    "range": { "startLine": 72, "endLine": 95 },
     "type": "theorem",
-    "title": "Gap Statement",
-    "content": "**gap_statement:**\n\nCombines the known bounds:\n1. Lower: c(n) ≥ 2^{n+1} - 1 (exponential)\n2. Upper: c(n) ≤ e² · n^n (super-exponential)\n\nFor n = 10:\n- Lower: 2^{11} - 1 = 2047\n- Upper: ~7.39 × 10^{10} = 73,900,000,000\n\nThe gap is enormous!",
-    "significance": "key"
+    "title": "Lower Bounds: Hadwiger and Connor-Marmorino",
+    "content": "**Hadwiger's bound** (hadwiger_lower_bound): c(n) ≥ 2^n + 2^{n-1} = 3·2^{n-1}. The theorem hadwiger_explicit restates this as c(n) ≥ 3·2^{n-1}, proved via `omega`.\n\n**Connor-Marmorino (2018)** (connor_marmorino_lower): c(n) ≥ 2^{n+1} - 1 for n ≥ 3. This improves Hadwiger.\n\n**connor_vs_hadwiger** is a proved theorem showing 2^{n+1} - 1 > 2^n + 2^{n-1} for n ≥ 3, via `omega`.\n\nFor n = 10: Hadwiger gives c(10) ≥ 1536, Connor-Marmorino gives c(10) ≥ 2047.",
+    "mathContext": "Both lower bounds are exponential in n. The Connor-Marmorino improvement roughly doubles the constant: from 3·2^{n-1} to 2^{n+1} - 1 ≈ 2·2^n. The proof uses refined geometric arguments about face-touching constraints in cube packings.",
+    "significance": "critical",
+    "relatedConcepts": ["Hadwiger", "Connor-Marmorino 2018", "Exponential bounds"]
   },
   {
-    "id": "ann-e769-meier",
+    "id": "ann-e769-upper-bounds",
     "proofId": "erdos-769",
-    "range": { "startLine": 234, "endLine": 238 },
+    "range": { "startLine": 97, "endLine": 122 },
     "type": "axiom",
-    "title": "Meier's Conjecture",
-    "content": "**meier_conjecture_c3:**\n\nc(3) = 48 (conjectured by Meier, still unproven).\n\nIf true, this would give the exact value for dimension 3, complementing c(2) = 6.",
-    "significance": "supporting"
+    "title": "Upper Bounds",
+    "content": "**Burgess-Erdős (1974)** (burgess_erdos_upper): c(n) ≪ n^{n+1}. The first super-exponential upper bound.\n\n**Hudelson (1998)**: Two results — c(n) ≪ (2n)^{n-1} in general, and c(n) < 6^n under the coprimality condition gcd(2^n - 1, 3^n - 1) = 1.\n\n**Connor-Marmorino (2018)**: Refined upper bounds depending on primality:\n- c(n) ≤ 1.8·n^{n+1} if n+1 is prime\n- c(n) ≤ e²·n^n ≈ 7.39·n^n if n+1 is not prime\n\nThe composite case gives a tighter bound (~n^n vs ~n^{n+1}).",
+    "mathContext": "The primality condition arises because the constructions use modular arithmetic: when n+1 is prime, certain subdivision schemes become available. The factor e² ≈ 7.39 in the composite case comes from optimizing a construction parameter.",
+    "significance": "critical",
+    "relatedConcepts": ["Burgess-Erdős 1974", "Hudelson 1998", "Primality dependence"]
   },
   {
-    "id": "ann-e769-volume",
+    "id": "ann-e769-conjecture",
     "proofId": "erdos-769",
-    "range": { "startLine": 250, "endLine": 256 },
-    "type": "theorem",
-    "title": "Volume Constraint",
-    "content": "**volume_constraint:**\n\nIf the unit cube is decomposed into k cubes with side lengths a₁,...,aₖ, then:\n\nΣ aᵢⁿ = 1\n\nThis is necessary but NOT sufficient - the cubes must also pack geometrically.",
-    "significance": "key"
+    "range": { "startLine": 124, "endLine": 134 },
+    "type": "definition",
+    "title": "Erdős's Conjecture and Main Question",
+    "content": "**erdosConjecture**: If n+1 is prime, then c(n) > n^n. Erdős wrote: 'I am certain that if n+1 is a prime then c(n) > n^n.' This is defined as a Prop since it remains unproven.\n\n**mainQuestion**: Is c(n) ≫ n^n in general? Formally: does there exist C > 0 and N such that c(n) ≥ C·n^n for all n ≥ N?\n\nThe current lower bound (~2^n) is far from n^n, so proving either conjecture would require fundamentally new techniques.",
+    "mathContext": "The gap between the best lower bound (exponential) and the conjectured lower bound (super-exponential) is vast. For n = 20: 2^21 ≈ 2 million vs 20^20 ≈ 10^26.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős conjecture", "Open problem", "Super-exponential growth"]
   },
   {
     "id": "ann-e769-packing",
     "proofId": "erdos-769",
-    "range": { "startLine": 258, "endLine": 268 },
+    "range": { "startLine": 136, "endLine": 144 },
     "type": "axiom",
-    "title": "Packing Is Hard",
-    "content": "**packing_is_hard:**\n\nThere exist configurations satisfying:\n1. All sides in (0, 1)\n2. Total volume = 1\n\nBut which CANNOT be packed into the cube.\n\nThis is why the problem is hard - volume is not enough.",
-    "significance": "key"
+    "title": "Packing Beyond Volume",
+    "content": "**packing_beyond_volume** asserts that volume matching is necessary but not sufficient for cube decomposition. There exist configurations where:\n1. All cubes have side lengths in (0, 1)\n2. Total volume Σ sideᵢⁿ = 1\n3. But the cubes CANNOT be packed into the unit cube\n\nThis axiom captures the fundamental difficulty: the problem is geometric, not just arithmetic.",
+    "mathContext": "In dimension 2, this is easy to see: four squares of side 0.6 have total area 4 × 0.36 = 1.44 > 1, so they can't fit. But even with total area exactly 1, the shapes may not tile the square.",
+    "significance": "key",
+    "relatedConcepts": ["Volume constraint", "Geometric feasibility", "Packing hardness"]
   },
   {
-    "id": "ann-e769-squared-square",
+    "id": "ann-e769-summary",
     "proofId": "erdos-769",
-    "range": { "startLine": 278, "endLine": 286 },
-    "type": "definition",
-    "title": "Squaring the Square",
-    "content": "**PerfectSquaredSquare:**\n\nA squared rectangle is tiled by squares.\nA 'perfect' squared square has all different sizes.\n\nThe smallest perfect squared square has side 112 and uses 21 squares.\n\nThis classical problem inspired Erdős's cube dissection question.",
-    "mathContext": "Squaring the square was solved in 1939 by Sprague, and the smallest was found in 1978.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-e769-main",
-    "proofId": "erdos-769",
-    "range": { "startLine": 310, "endLine": 325 },
+    "range": { "startLine": 146, "endLine": 158 },
     "type": "theorem",
-    "title": "Main Result",
-    "content": "**erdos_769:**\n\nSummary of known results:\n1. c(2) = 6 exactly\n2. c(n) ≥ 2^{n+1} - 1 for n ≥ 3\n3. c(n) ≤ C · n^{n+1} for some constant C\n\n```lean\ntheorem erdos_769 :\n    cubeDissectionNumber 2 = 6 ∧\n    (∀ n ≥ 3, cubeDissectionNumber n ≥ 2^(n+1) - 1) ∧\n    (∃ C > 0, ∀ n ≥ 2, c(n) ≤ C · n^{n+1})\n```",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e769-open",
-    "proofId": "erdos-769",
-    "range": { "startLine": 327, "endLine": 333 },
-    "type": "theorem",
-    "title": "Problem Status: OPEN",
-    "content": "**erdos_769_open:**\n\nErdős Problem #769 remains OPEN.\n\nThe main question 'Is c(n) ≫ n^n?' has neither been proved nor disproved.\n\nThe gap between exponential and super-exponential bounds is the central mystery.",
-    "significance": "critical"
+    "title": "Summary Theorem",
+    "content": "**erdos_769_summary** is a proved theorem combining three key results:\n1. c(2) = 6 exactly (c_of_2)\n2. c(n) ≥ 2^{n+1} - 1 for n ≥ 3 (connor_marmorino_lower)\n3. c(n) ≤ C·n^{n+1} for some C > 0 (burgess_erdos_upper)\n\nProof: `⟨c_of_2, connor_marmorino_lower, burgess_erdos_upper⟩`\n\nThis captures the complete current state of knowledge: an exponential lower bound, a super-exponential upper bound, and one exact value.",
+    "mathContext": "The summary demonstrates that despite 50+ years of work, the gap between lower and upper bounds remains enormous. The exact growth rate of c(n) is one of the main open problems in combinatorial geometry.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary theorem", "State of knowledge", "Open problem"]
   }
 ]
