@@ -2,7 +2,7 @@
   {
     "id": "ann-881-header",
     "proofId": "erdos-881",
-    "range": { "startLine": 1, "endLine": 31 },
+    "range": { "startLine": 1, "endLine": 25 },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #881** concerns minimal additive bases. An additive basis of order k is a set A ⊂ ℕ where every sufficiently large integer is a sum of at most k elements from A. A minimal basis cannot have any infinite subset removed while maintaining the same order. The question: can we always find an infinite subset to remove that increases the order by exactly 1?",
@@ -11,19 +11,9 @@
     "relatedConcepts": ["additive basis", "Waring's problem", "Lagrange's theorem"]
   },
   {
-    "id": "ann-881-imports",
-    "proofId": "erdos-881",
-    "range": { "startLine": 33, "endLine": 40 },
-    "type": "supporting",
-    "title": "Imports and Setup",
-    "content": "We import basic set theory, natural number arithmetic, and big operators for finite sums. The namespace Erdos881 contains all definitions for this problem.",
-    "significance": "supporting",
-    "relatedConcepts": ["Mathlib", "Lean 4"]
-  },
-  {
     "id": "ann-881-basis-def",
     "proofId": "erdos-881",
-    "range": { "startLine": 44, "endLine": 51 },
+    "range": { "startLine": 38, "endLine": 45 },
     "type": "definition",
     "title": "Asymptotic Additive Basis",
     "content": "**IsAsymptoticAddBasisOfOrder k A** means A is an additive basis of order k: there exists N such that every n ≥ N can be written as a sum of at most k elements from A. The 'asymptotic' qualifier means we only care about sufficiently large integers.",
@@ -34,7 +24,7 @@
   {
     "id": "ann-881-order-one",
     "proofId": "erdos-881",
-    "range": { "startLine": 53, "endLine": 72 },
+    "range": { "startLine": 47, "endLine": 66 },
     "type": "theorem",
     "title": "Order 1 Characterization",
     "content": "**order_one_basis**: A set is a basis of order 1 iff it contains all sufficiently large integers. This is because order 1 means each number represents itself (one element sum). This is a fully proved theorem, not an axiom.",
@@ -45,7 +35,7 @@
   {
     "id": "ann-881-minimal-def",
     "proofId": "erdos-881",
-    "range": { "startLine": 76, "endLine": 87 },
+    "range": { "startLine": 70, "endLine": 81 },
     "type": "definition",
     "title": "Minimal Additive Basis",
     "content": "**IsMinimalAsymptoticAddBasisOfOrder k A** means A is a basis of order k that is 'tight': removing ANY infinite subset B ⊆ A destroys the order-k property (makes A\\B not a basis of order k). These are bases with no redundancy.",
@@ -56,18 +46,18 @@
   {
     "id": "ann-881-minimal-infinite",
     "proofId": "erdos-881",
-    "range": { "startLine": 89, "endLine": 97 },
-    "type": "theorem",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "axiom",
     "title": "Minimal Bases Are Infinite",
-    "content": "**minimal_basis_infinite**: Every minimal basis must be infinite. A finite set can only produce finitely many sums, so it cannot be a basis of any order. This is proved by contradiction.",
+    "content": "**minimal_basis_infinite**: Every minimal basis must be infinite. A finite set can only produce finitely many sums, so it cannot be a basis of any order. Axiomatized since the full proof requires careful analysis of finite sum bounds.",
     "significance": "key",
     "relatedConcepts": ["infinite sets", "finiteness"]
   },
   {
     "id": "ann-881-conjecture",
     "proofId": "erdos-881",
-    "range": { "startLine": 101, "endLine": 113 },
-    "type": "axiom",
+    "range": { "startLine": 90, "endLine": 102 },
+    "type": "definition",
     "title": "Main Conjecture (OPEN)",
     "content": "**erdos881Conjecture**: For every minimal basis A of order k, there exists an infinite B ⊆ A such that A\\B is a basis of order exactly k+1. This asks: can minimal bases always 'degrade gracefully' by exactly one order?",
     "mathContext": "The conjecture is stated as a Prop and axiomatized via erdos_881. The challenge is proving the order increases by exactly 1, not 2 or more.",
@@ -75,19 +65,9 @@
     "relatedConcepts": ["open problem", "order increase"]
   },
   {
-    "id": "ann-881-axiom",
-    "proofId": "erdos-881",
-    "range": { "startLine": 115, "endLine": 115 },
-    "type": "axiom",
-    "title": "The Open Problem",
-    "content": "**erdos_881**: This axiom asserts the conjecture is true. Since the problem is open, we axiomatize it rather than prove it.",
-    "significance": "critical",
-    "relatedConcepts": ["axiom", "open problem"]
-  },
-  {
     "id": "ann-881-weak",
     "proofId": "erdos-881",
-    "range": { "startLine": 119, "endLine": 128 },
+    "range": { "startLine": 109, "endLine": 118 },
     "type": "definition",
     "title": "Weak Version",
     "content": "**erdos881Weak**: A weaker question asks if we can increase the order by SOME finite amount m > 0, not necessarily 1. This is easier than the main conjecture but still open.",
@@ -97,42 +77,31 @@
   {
     "id": "ann-881-implication",
     "proofId": "erdos-881",
-    "range": { "startLine": 130, "endLine": 134 },
+    "range": { "startLine": 120, "endLine": 124 },
     "type": "theorem",
     "title": "Strong Implies Weak",
-    "content": "**strong_implies_weak**: The main conjecture (m=1) implies the weak version (any m). This is proved by taking m=1 and using the strong conjecture's witness.",
+    "content": "**strong_implies_weak**: The main conjecture (m=1) implies the weak version (any m). This is proved by taking m=1 and using the strong conjecture's witness. A clean, fully proved theorem.",
     "significance": "key",
     "relatedConcepts": ["implication", "weakening"]
   },
   {
     "id": "ann-881-squares",
     "proofId": "erdos-881",
-    "range": { "startLine": 138, "endLine": 148 },
+    "range": { "startLine": 128, "endLine": 137 },
     "type": "definition",
-    "title": "Perfect Squares",
+    "title": "Perfect Squares Example",
     "content": "**squares**: The set {n² : n ∈ ℕ} of perfect squares. By Lagrange's four-square theorem, every positive integer is a sum of four squares, so squares form a basis of order 4.",
     "mathContext": "This is the classical example motivating Waring's problem. The axiom squares_basis_order_4 asserts the basis property.",
     "significance": "key",
     "relatedConcepts": ["Lagrange", "four squares"]
   },
   {
-    "id": "ann-881-powers",
-    "proofId": "erdos-881",
-    "range": { "startLine": 150, "endLine": 156 },
-    "type": "definition",
-    "title": "Higher Powers",
-    "content": "**powers k**: The set of k-th powers {nᵏ : n ∈ ℕ}. Waring's problem establishes these form bases of order g(k), where g(k) is the Waring function.",
-    "mathContext": "g(2)=4 (Lagrange), g(3)=9 (Wieferich-Kempner), g(4)=19 (Dress), etc.",
-    "significance": "supporting",
-    "relatedConcepts": ["Waring's problem", "g(k)"]
-  },
-  {
     "id": "ann-881-monotone",
     "proofId": "erdos-881",
-    "range": { "startLine": 160, "endLine": 171 },
+    "range": { "startLine": 149, "endLine": 160 },
     "type": "theorem",
     "title": "Monotonicity of Order",
-    "content": "**basis_order_monotone**: If A is a basis of order k and k' ≥ k, then A is also a basis of order k'. Using more summands can only make representation easier or the same.",
+    "content": "**basis_order_monotone**: If A is a basis of order k and k' ≥ k, then A is also a basis of order k'. Using more summands can only make representation easier. Fully proved.",
     "mathContext": "The proof simply observes that any k-representation is also a k'-representation when k' ≥ k.",
     "significance": "key",
     "relatedConcepts": ["monotonicity", "order"]
@@ -140,42 +109,21 @@
   {
     "id": "ann-881-subset",
     "proofId": "erdos-881",
-    "range": { "startLine": 173, "endLine": 184 },
+    "range": { "startLine": 162, "endLine": 173 },
     "type": "theorem",
     "title": "Subset Property",
-    "content": "**basis_subset**: If A ⊆ A' and A is a basis of order k, then A' is also a basis of order k. Adding more elements can only improve or maintain representability.",
-    "mathContext": "Any representation using A also uses A' since A ⊆ A'.",
+    "content": "**basis_subset**: If A ⊆ A' and A is a basis of order k, then A' is also a basis of order k. Adding more elements can only improve or maintain representability. Fully proved.",
     "significance": "key",
     "relatedConcepts": ["subset", "superset"]
   },
   {
-    "id": "ann-881-difficulty",
-    "proofId": "erdos-881",
-    "range": { "startLine": 188, "endLine": 198 },
-    "type": "concept",
-    "title": "Why This Is Hard",
-    "content": "The challenge is the delicate balance: minimal bases are tight (no redundancy for their order), yet we want to show there's always a way to remove elements to get exactly k+1 (not k+2 or more). This requires understanding the fine structure of how basis order changes under subset removal.",
-    "significance": "supporting",
-    "relatedConcepts": ["difficulty", "structure"]
-  },
-  {
     "id": "ann-881-summary",
     "proofId": "erdos-881",
-    "range": { "startLine": 202, "endLine": 226 },
-    "type": "concept",
+    "range": { "startLine": 177, "endLine": 197 },
+    "type": "theorem",
     "title": "Summary",
-    "content": "**erdos_881_summary**: Erdős Problem #881 remains OPEN. It asks whether every minimal basis of order k contains an infinite subset whose removal yields a basis of order exactly k+1. Related to Waring's problem, Sidon sets, and the Erdős-Turán conjecture.",
+    "content": "**erdos_881_summary**: Erdős Problem #881 remains OPEN. The summary theorem shows the conjecture is definitionally equal to its natural language form. Related to Waring's problem, Sidon sets, and the Erdős-Turán conjecture.",
     "significance": "critical",
     "relatedConcepts": ["summary", "open problems"]
-  },
-  {
-    "id": "ann-881-open",
-    "proofId": "erdos-881",
-    "range": { "startLine": 228, "endLine": 229 },
-    "type": "theorem",
-    "title": "Open Status",
-    "content": "**erdos_881_open**: A trivial theorem (True) marking that this problem is unresolved. The actual content is in the axiom erdos_881.",
-    "significance": "supporting",
-    "relatedConcepts": ["status", "placeholder"]
   }
 ]

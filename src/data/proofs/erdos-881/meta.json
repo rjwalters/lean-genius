@@ -15,8 +15,8 @@
       "additive-basis",
       "open-problem"
     ],
-    "badge": "open-problem",
-    "sorries": 2,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 881,
     "erdosUrl": "https://erdosproblems.com/881",
     "erdosProblemStatus": "open",
@@ -74,70 +74,56 @@
       "title": "Problem Overview",
       "summary": "Header with problem statement and key concepts",
       "startLine": 1,
-      "endLine": 31
-    },
-    {
-      "id": "imports-setup",
-      "title": "Imports and Setup",
-      "summary": "Mathlib imports and namespace",
-      "startLine": 33,
-      "endLine": 40
+      "endLine": 25
     },
     {
       "id": "additive-bases",
       "title": "Additive Bases",
       "summary": "IsAsymptoticAddBasisOfOrder definition and order 1 characterization",
-      "startLine": 42,
-      "endLine": 72
+      "startLine": 36,
+      "endLine": 66
     },
     {
       "id": "minimal-bases",
       "title": "Minimal Bases",
-      "summary": "IsMinimalAsymptoticAddBasisOfOrder and infinite theorem",
-      "startLine": 74,
-      "endLine": 97
+      "summary": "IsMinimalAsymptoticAddBasisOfOrder and infinite axiom",
+      "startLine": 68,
+      "endLine": 86
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "erdos881Conjecture and erdos_881 axiom",
-      "startLine": 99,
-      "endLine": 115
+      "startLine": 88,
+      "endLine": 105
     },
     {
       "id": "weak-version",
       "title": "Weaker Questions",
       "summary": "erdos881Weak and strong_implies_weak",
-      "startLine": 117,
-      "endLine": 134
+      "startLine": 107,
+      "endLine": 124
     },
     {
       "id": "examples",
       "title": "Examples and Special Cases",
       "summary": "Perfect squares, higher powers, and Waring's problem",
-      "startLine": 136,
-      "endLine": 156
+      "startLine": 126,
+      "endLine": 145
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "summary": "Monotonicity and subset property of bases",
-      "startLine": 158,
-      "endLine": 184
-    },
-    {
-      "id": "difficulty",
-      "title": "Why This Is Hard",
-      "summary": "Discussion of the challenge",
-      "startLine": 186,
-      "endLine": 198
+      "startLine": 147,
+      "endLine": 173
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Final summary and open status",
-      "startLine": 200,
-      "endLine": 231
+      "summary": "Final summary theorem",
+      "startLine": 175,
+      "endLine": 199
     }
   ],
   "conclusion": {
