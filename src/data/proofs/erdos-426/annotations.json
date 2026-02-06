@@ -96,7 +96,7 @@
   {
     "id": "ann-e426-prizes",
     "proofId": "erdos-426",
-    "range": { "startLine": 146, "endLine": 161 },
+    "range": { "startLine": 146, "endLine": 159 },
     "type": "concept",
     "title": "Prize Structure",
     "content": "**The Erdős Prizes:**\n\n- $100 for a construction achieving ≫ 2^(n choose 2)/n! (Spencer's belief)\n- $25 for proving no such construction exists (Erdős's belief)\n\nErdős believed Brouwer was optimal; Spencer disagreed.",
@@ -107,7 +107,7 @@
   {
     "id": "ann-e426-bradac",
     "proofId": "erdos-426",
-    "range": { "startLine": 167, "endLine": 176 },
+    "range": { "startLine": 163, "endLine": 172 },
     "type": "axiom",
     "title": "Bradač-Christoph (2024)",
     "content": "**bradac_christoph_2024:**\n\nThe answer is NO: f(n) = o(2^(n choose 2)/n!)\n\nFor any ε > 0, eventually f(n) < ε · nonIsomorphicGraphs(n).\n\nThis resolves Erdős Problem #426 negatively.",
@@ -118,7 +118,7 @@
   {
     "id": "ann-e426-quantitative",
     "proofId": "erdos-426",
-    "range": { "startLine": 178, "endLine": 185 },
+    "range": { "startLine": 174, "endLine": 181 },
     "type": "axiom",
     "title": "Quantitative Bound",
     "content": "**bradac_christoph_quantitative:**\n\nThe o(1) factor is explicitly O(log log log n / log log n).\n\nThis is a very slowly decreasing function, showing uniqueness decays gradually.",
@@ -128,7 +128,7 @@
   {
     "id": "ann-e426-resolved",
     "proofId": "erdos-426",
-    "range": { "startLine": 187, "endLine": 202 },
+    "range": { "startLine": 183, "endLine": 202 },
     "type": "theorem",
     "title": "Problem Resolved",
     "content": "**original_question_false, erdos_426_resolved:**\n\n¬OriginalQuestion\n\nThe answer to Erdős's question is NO. Unique subgraphs are rare - they cannot approach the total count of non-isomorphic graphs.",
@@ -138,7 +138,7 @@
   {
     "id": "ann-e426-insight",
     "proofId": "erdos-426",
-    "range": { "startLine": 208, "endLine": 229 },
+    "range": { "startLine": 204, "endLine": 223 },
     "type": "concept",
     "title": "Why Unique Subgraphs Are Rare",
     "content": "**Key Insights:**\n\n1. **Automorphisms:** Graphs with symmetries create multiple embeddings\n2. **Structural regularity:** Repeated patterns prevent uniqueness\n3. **The gap:** Brouwer loses 2^{O(n)} from the naive bound\n4. **Unavoidable:** Even the naive bound is unreachable\n\nUniqueness requires that every embedding produces a distinct 'fingerprint'.",
@@ -148,7 +148,7 @@
   {
     "id": "ann-e426-automorphism",
     "proofId": "erdos-426",
-    "range": { "startLine": 235, "endLine": 257 },
+    "range": { "startLine": 228, "endLine": 249 },
     "type": "definition",
     "title": "Automorphisms and Asymmetry",
     "content": "**HasAutomorphism, IsAsymmetric:**\n\nAn automorphism is a bijection σ : V → V preserving adjacency.\n\nA graph is asymmetric if its only automorphism is the identity.\n\n**Key fact:** Almost all graphs are asymmetric (Erdős-Rényi), yet unique subgraphs are still rare - the obstacle is deeper than just symmetry.",
@@ -158,7 +158,7 @@
   {
     "id": "ann-e426-summary",
     "proofId": "erdos-426",
-    "range": { "startLine": 263, "endLine": 293 },
+    "range": { "startLine": 255, "endLine": 281 },
     "type": "theorem",
     "title": "Problem Summary",
     "content": "**erdos_426_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Can f(n) = Ω(2^(n choose 2)/n!)? |\n| Answer | NO (Bradač-Christoph 2024) |\n| Upper bound | f(n) = o(2^(n choose 2)/n!) |\n| Best construction | 2^{(n choose 2) - O(n)}/n! (Brouwer) |\n| Prize | $25 for impossibility proof |",

@@ -40,7 +40,7 @@ open Nat SimpleGraph
 
 namespace Erdos426
 
-/-
+/-!
 ## Part I: Basic Definitions
 -/
 
@@ -82,7 +82,7 @@ The conceptual definition is clear but the formalization is technically complex.
 axiom CountUniqueSubgraphs (G : SimpleGraph V) [Fintype V]
     [DecidableEq V] [DecidableRel G.Adj] : ℕ
 
-/-
+/-!
 ## Part II: The Counting Bounds
 -/
 
@@ -114,7 +114,7 @@ noncomputable def maxUniqueSubgraphs (n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
     CountUniqueSubgraphs G = k}
 
-/-
+/-!
 ## Part III: Historical Constructions
 -/
 
@@ -134,7 +134,7 @@ axiom brouwer_1975 (n : ℕ) (hn : n ≥ 10) :
     ∃ C : ℝ, C > 0 ∧
       (maxUniqueSubgraphs n : ℝ) ≥ (2 : ℝ)^(n.choose 2 - C * n) / n.factorial
 
-/-
+/-!
 ## Part IV: The Main Conjecture and Its Resolution
 -/
 
@@ -148,24 +148,17 @@ def OriginalQuestion : Prop :=
   ∃ c : ℝ, c > 0 ∧
     ∀ n : ℕ, n ≥ 10 → (maxUniqueSubgraphs n : ℝ) ≥ c * nonIsomorphicGraphs n
 
-/--
+/-!
 **Spencer's suggestion:**
 Spencer suggested that the answer might be YES (i.e., one could achieve
-≫ 2^(n choose 2) / n! unique subgraphs).
+≫ 2^(n choose 2) / n! unique subgraphs). Erdős offered $100 for such a construction.
 
-Erdős offered $100 for such a construction.
--/
-axiom spencer_suggestion : True
-
-/--
 **Erdős's belief:**
 Erdős believed Brouwer's construction was essentially best possible.
-
 He offered $25 for a proof that no better construction exists.
 -/
-axiom erdos_belief : True
 
-/-
+/-!
 ## Part V: Bradač-Christoph Resolution (2024)
 -/
 
@@ -208,11 +201,11 @@ The answer is NO - unique subgraphs are rare.
 -/
 theorem erdos_426_resolved : ¬OriginalQuestion := original_question_false
 
-/-
+/-!
 ## Part VI: Understanding the Result
 -/
 
-/--
+/-!
 **Why unique subgraphs are rare:**
 The key insight is that most graphs have many automorphisms or structural
 regularities that create multiple copies of any subgraph.
@@ -220,10 +213,7 @@ regularities that create multiple copies of any subgraph.
 To have a unique subgraph, we need:
 1. The subgraph must embed in exactly one way
 2. This is increasingly rare as graphs become larger and more complex
--/
-axiom uniqueness_insight : True
 
-/--
 **The gap between constructions and the upper bound:**
 - Brouwer achieved 2^{(n choose 2) - O(n)} / n!
 - The upper bound is 2^(n choose 2) / n! (all non-isomorphic graphs)
@@ -231,11 +221,8 @@ axiom uniqueness_insight : True
 
 Bradač-Christoph show that even 2^{(n choose 2)} / n! is unachievable.
 -/
-theorem gap_explanation (n : ℕ) (hn : n ≥ 10) :
-    -- Brouwer's lower bound is a factor of 2^{O(n)} below the naive upper bound
-    True := trivial
 
-/-
+/-!
 ## Part VII: Related Concepts
 -/
 
@@ -255,15 +242,13 @@ Almost all graphs are asymmetric (Erdős-Rényi), which relates to uniqueness.
 def IsAsymmetric (G : SimpleGraph V) : Prop :=
   ∀ σ : V → V, HasAutomorphism G σ → σ = id
 
-/--
-**Almost all graphs are asymmetric:**
+/-!
+**Almost all graphs are asymmetric (Erdős-Rényi):**
+For any ε > 0, the fraction of graphs on n vertices that are asymmetric
+exceeds 1 - ε for all sufficiently large n.
 -/
-axiom almost_all_asymmetric :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-      -- Fraction of graphs on n vertices that are asymmetric > 1 - ε
-      True
 
-/-
+/-!
 ## Part VIII: Summary
 -/
 
@@ -290,13 +275,7 @@ theorem erdos_426_summary :
     (¬OriginalQuestion) ∧
     -- Brouwer's construction exists
     (∀ n : ℕ, n ≥ 10 → ∃ C : ℝ, C > 0 ∧
-      (maxUniqueSubgraphs n : ℝ) ≥ (2 : ℝ)^(n.choose 2 - C * n) / n.factorial) ∧
-    -- But it cannot reach the full bound
-    True := by
-  constructor
-  · exact original_question_false
-  constructor
-  · exact brouwer_1975
-  · trivial
+      (maxUniqueSubgraphs n : ℝ) ≥ (2 : ℝ)^(n.choose 2 - C * n) / n.factorial) :=
+  ⟨original_question_false, brouwer_1975⟩
 
 end Erdos426
