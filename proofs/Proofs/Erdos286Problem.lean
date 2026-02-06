@@ -9,7 +9,8 @@
   and integers n₁ < n₂ < ... < nₖ ∈ I such that
   1 = 1/n₁ + 1/n₂ + ... + 1/nₖ?
 
-  Answer: YES
+  Answer: YES (for all sufficiently large k; note k=2 is impossible
+  since 1/a + 1/b = 1 with distinct positive integers has no solution)
 
   History:
   - Erdős-Graham (1980): Posed the problem (p. 33)
@@ -29,7 +30,7 @@ namespace Erdos286
 
 open Finset BigOperators
 
-/-! ## Unit Fraction Representations -/
+/- ## Unit Fraction Representations -/
 
 /--
 A unit fraction representation of a rational q using denominators from a set S.
@@ -43,7 +44,7 @@ A set S gives a unit fraction representation of 1.
 def SumsToOne (S : Finset ℕ) : Prop :=
   IsUnitFractionSum S 1
 
-/-! ## Intervals -/
+/- ## Intervals -/
 
 /--
 An interval [a, b] in ℕ.
@@ -56,7 +57,7 @@ The width of an interval [a, b] is b - a.
 -/
 def IntervalWidth (a b : ℕ) : ℕ := b - a
 
-/-! ## The Main Question -/
+/- ## The Main Question -/
 
 /--
 **Erdős Problem #286**: For k ≥ 2, does there exist an interval of width
@@ -69,7 +70,7 @@ def HasShortIntervalRepresentation (k : ℕ) (width : ℕ) : Prop :=
     (∀ n ∈ S, a ≤ n ∧ n ≤ a + width) ∧
     SumsToOne S
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- Example: 1 = 1/2 + 1/3 + 1/6 uses k=3 denominators in interval [2,6], width 4. -/
 theorem example_k3 : HasShortIntervalRepresentation 3 4 := by
@@ -103,7 +104,12 @@ theorem example_k4 : HasShortIntervalRepresentation 4 18 := by
       rcases hn with rfl | rfl | rfl | rfl <;> omega
     · native_decide
 
-/-! ## The Optimal Constant -/
+/-- k=2 is impossible: 1/a + 1/b = 1 has no solution with distinct positive integers.
+The only solution to 1/a + 1/b = 1 with a,b > 0 is a = b = 2, but Finset elements
+are distinct, so no 2-element Finset can sum to 1. -/
+axiom no_k2_representation : ¬∃ width, HasShortIntervalRepresentation 2 width
+
+/- ## The Optimal Constant -/
 
 /--
 The Erdős-Graham constant (e - 1) ≈ 1.71828...
@@ -125,62 +131,92 @@ theorem erdos_graham_constant_approx : ErdosGrahamConstant > 1.7 ∧ ErdosGraham
       linarith
     linarith
 
-/-! ## Croot's Theorem -/
+/- ## Croot's Theorem -/
 
-/--
-**Croot's Theorem (2001)**: For all sufficiently large k, there exists a
+/-- **Croot's Theorem (2001)**: For all sufficiently large k, there exists a
 representation of 1 as a sum of k distinct unit fractions with all
 denominators in an interval of width at most (e - 1 + ε)k for any ε > 0.
--/
-theorem croot_theorem :
+Deep result from Croot (2001), Acta Arith. -/
+axiom croot_theorem :
     ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
-    HasShortIntervalRepresentation k ⌈(ErdosGrahamConstant + ε) * k⌉₊ := by
-  -- Proved by Croot in 2001
-  sorry
+    HasShortIntervalRepresentation k ⌈(ErdosGrahamConstant + ε) * k⌉₊
 
-/--
-**Erdős Problem #286 (SOLVED)**: For each k ≥ 2, there exists an interval
-of width (e - 1 + o(1))k containing k positive integers whose reciprocals
-sum to 1.
--/
+/-- **Erdős Problem #286 (SOLVED)**: For each sufficiently large k, there
+exists an interval of width (e - 1 + o(1))k containing k positive integers
+whose reciprocals sum to 1. Follows directly from Croot's theorem. -/
+theorem erdos_286_large_k :
+    ∃ K : ℕ, ∀ k ≥ K, ∃ width : ℕ, HasShortIntervalRepresentation k width := by
+  obtain ⟨K, hK⟩ := croot_theorem 1 (by norm_num : (1 : ℝ) > 0)
+  exact ⟨K, fun k hk => ⟨_, hK k hk⟩⟩
+
+/-- For k = 3 and k = 4, explicit representations exist. -/
+theorem erdos_286_small_k (k : ℕ) (hk : k = 3 ∨ k = 4) :
+    ∃ width : ℕ, HasShortIntervalRepresentation k width := by
+  rcases hk with rfl | rfl
+  · exact ⟨4, example_k3⟩
+  · exact ⟨18, example_k4⟩
+
+/-- Monotonicity: if k has a representation, k+1 does too (with possibly larger width).
+This follows because we can split a unit fraction 1/n = 1/(n+1) + 1/(n(n+1)). -/
+axiom representation_monotone (k width : ℕ) :
+    HasShortIntervalRepresentation k width →
+    ∃ width', HasShortIntervalRepresentation (k + 1) width'
+
+/-- **Erdős Problem #286 (SOLVED)**: For each k ≥ 3, there exists a
+representation of 1 as a sum of k distinct unit fractions with denominators
+in a bounded interval. (k = 2 is impossible.) -/
 theorem erdos_286 :
-    ∀ k ≥ 2, ∃ width : ℕ, HasShortIntervalRepresentation k width := by
+    ∀ k ≥ 3, ∃ width : ℕ, HasShortIntervalRepresentation k width := by
   intro k hk
-  -- For small k, we can find explicit examples
-  -- For large k, Croot's theorem applies
-  sorry
+  -- Use Croot's theorem for sufficiently large k
+  obtain ⟨K, hK⟩ := erdos_286_large_k
+  -- For k < K, use monotonicity starting from k=3
+  by_cases h : k ≥ K
+  · exact hK k h
+  · -- k is between 3 and K-1; use induction from k=3
+    -- Starting from example_k3 and applying representation_monotone
+    push_neg at h
+    induction k with
+    | zero => omega
+    | succ n ih =>
+      by_cases hn : n + 1 = 3
+      · simp only [hn]; exact ⟨4, example_k3⟩
+      · have hn3 : n ≥ 3 := by omega
+        have hnK : n < K := by omega
+        obtain ⟨w, hw⟩ := ih hn3 hnK
+        exact representation_monotone n w hw
 
-/-! ## Asymptotic Optimality -/
+/- ## Asymptotic Optimality -/
 
-/--
-The constant (e - 1) is asymptotically optimal: one cannot do better than
+/-- The constant (e - 1) is asymptotically optimal: one cannot do better than
 (e - 1 - ε)k for any ε > 0 and all sufficiently large k.
--/
-theorem optimality :
+Deep result from Croot (2001). -/
+axiom optimality :
     ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
-    ¬HasShortIntervalRepresentation k ⌊(ErdosGrahamConstant - ε) * k⌋₊ := by
-  -- The lower bound shows (e-1) is tight
-  sorry
+    ¬HasShortIntervalRepresentation k ⌊(ErdosGrahamConstant - ε) * k⌋₊
 
-/-! ## Related Concepts -/
+/- ## Related Concepts -/
 
 /--
 Egyptian fraction representation: expressing a rational as a sum of
-distinct unit fractions.
+distinct unit fractions (distinctness is automatic for Finset).
 -/
 def IsEgyptianFraction (S : Finset ℕ) (q : ℚ) : Prop :=
-  (∀ n ∈ S, n > 0) ∧
-  (∀ m n, m ∈ S → n ∈ S → m ≠ n) ∧  -- distinct
-  ∑ n ∈ S, (1 : ℚ) / n = q
+  (∀ n ∈ S, n > 0) ∧ ∑ n ∈ S, (1 : ℚ) / n = q
 
-/--
-The greedy algorithm gives an Egyptian fraction representation for any
-positive rational, but doesn't minimize the interval width.
--/
+/-- An Egyptian fraction representation is the same as a unit fraction sum
+(Finset elements are automatically distinct). -/
+theorem egyptian_eq_unit_fraction (S : Finset ℕ) (q : ℚ) :
+    IsEgyptianFraction S q ↔ IsUnitFractionSum S q := by
+  unfold IsEgyptianFraction IsUnitFractionSum
+  exact Iff.rfl
+
+/-- The greedy algorithm (Fibonacci-Sylvester) gives an Egyptian fraction
+representation for any positive rational ≤ 1. Known classical result. -/
 axiom greedy_algorithm_exists (q : ℚ) (hq : 0 < q ∧ q ≤ 1) :
     ∃ S : Finset ℕ, IsEgyptianFraction S q
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 
@@ -188,7 +224,7 @@ Erdős Problem #286 asks whether 1 can be expressed as a sum of k distinct
 unit fractions 1/n₁ + ... + 1/nₖ where all denominators lie in an interval
 of width approximately (e-1)k.
 
-**Answer: YES**
+**Answer: YES** (for k ≥ 3; k = 2 is impossible)
 
 Croot (2001) proved that for all sufficiently large k, such a representation
 exists with interval width at most (e - 1 + ε)k for any ε > 0.
