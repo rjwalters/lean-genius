@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #903: Block Designs and the de Bruijn-Erdős Gap
 
 Source: https://erdosproblems.com/903
@@ -28,7 +28,7 @@ import Mathlib.Data.Set.Finite.Basic
 
 namespace Erdos903
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Block designs and the key parameters.
@@ -54,7 +54,7 @@ def IsPrimePower (q : ℕ) : Prop :=
 def IsProjectivePlaneSize (n : ℕ) : Prop :=
   ∃ q, IsPrimePower q ∧ n = q^2 + q + 1
 
-/-!
+/-
 ## Part 2: The de Bruijn-Erdős Theorem
 
 Fundamental lower bound: t ≥ n.
@@ -72,7 +72,7 @@ def IsMinimalDesign {n : ℕ} (D : BlockDesign n) : Prop :=
 axiom minimal_design_uniform (n : ℕ) (D : BlockDesign n) (h : IsMinimalDesign D) :
   ∃ k, ∀ A ∈ D.blocks, A.card = k
 
-/-!
+/-
 ## Part 3: Projective Plane Constructions
 
 The classic construction achieving t = n.
@@ -97,7 +97,7 @@ axiom projective_plane_exists (q : ℕ) (hq : IsPrimePower q) :
 axiom projective_plane_design (q : ℕ) (hq : IsPrimePower q) :
     ∃ D : BlockDesign (q^2 + q + 1), D.numBlocks = q^2 + q + 1
 
-/-!
+/-
 ## Part 4: The Erdős-Sós Conjecture (Now Theorem)
 
 If t > n, then t ≥ n + p where p is the projective plane order.
@@ -118,7 +118,7 @@ axiom efsw_strong (p : ℕ) (hp : IsPrimePower p) (c : ℝ)
       D.numBlocks = p^2 + p + 1 + 1)
     : D.numBlocks ≥ (p^2 + p + 1) + Nat.ceil (c * p)
 
-/-!
+/-
 ## Part 5: The Gap Structure
 
 What values of t are achievable?
@@ -145,7 +145,7 @@ theorem first_above_n (p : ℕ) (hp : IsPrimePower p) (t : ℕ)
   push_neg at h
   exact gap_theorem p hp t hn h ht
 
-/-!
+/-
 ## Part 6: Examples
 -/
 
@@ -161,7 +161,7 @@ example : 4^2 + 4 + 1 = 21 := by norm_num
 /-- For p = 5: n = 31, gap is (31, 36), first achievable above 31 is ≥ 36 -/
 example : 5^2 + 5 + 1 = 31 := by norm_num
 
-/-!
+/-
 ## Part 7: Connection to Combinatorial Designs
 -/
 
@@ -181,7 +181,7 @@ theorem de_bruijn_erdos_from_fisher {n : ℕ} (hn : n ≥ 2) (D : BlockDesign n)
     D.numBlocks ≥ n :=
   fisher_inequality D k hk h
 
-/-!
+/-
 ## Part 8: Summary
 
 **Erdős Problem #903: SOLVED (YES)**
