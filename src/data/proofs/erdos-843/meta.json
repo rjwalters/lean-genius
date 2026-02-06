@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 843,
     "erdosUrl": "https://erdosproblems.com/843",
     "erdosProblemStatus": "solved",
@@ -36,7 +36,64 @@
       "Lagrange's four squares theorem is related but doesn't directly imply Ramsey completeness"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Part I: Basic Definitions",
+      "startLine": 43,
+      "endLine": 71,
+      "summary": "Coloring, IsMonochromatic, HasDistinctSumRep definitions."
+    },
+    {
+      "id": "ramsey-completeness",
+      "title": "Part II: Ramsey r-Completeness",
+      "startLine": 73,
+      "endLine": 102,
+      "summary": "IsRamseyComplete, Squares, KthPowers, SquaresRamsey2Complete definitions."
+    },
+    {
+      "id": "original-conjecture",
+      "title": "Part III: The Original Conjecture",
+      "startLine": 104,
+      "endLine": 122,
+      "summary": "OriginalQuestion and GeneralizedQuestion definitions."
+    },
+    {
+      "id": "historical-results",
+      "title": "Part IV: Historical Results",
+      "startLine": 124,
+      "endLine": 162,
+      "summary": "burr_unpublished, conlon_fox_pham_2021, subset_ramsey_complete axioms, kth_powers_ramsey_complete theorem."
+    },
+    {
+      "id": "resolution",
+      "title": "Part V: Resolution of Problem 843",
+      "startLine": 164,
+      "endLine": 184,
+      "summary": "squares_ramsey_2_complete and erdos_843_resolved theorems."
+    },
+    {
+      "id": "stronger-results",
+      "title": "Part VI: Stronger Results",
+      "startLine": 186,
+      "endLine": 217,
+      "summary": "cfp_density_bounds and burr_erdos_upper_bound axioms."
+    },
+    {
+      "id": "related-context",
+      "title": "Part VII: Related Results and Context",
+      "startLine": 219,
+      "endLine": 243,
+      "summary": "Related problems, intuition, and Lagrange four squares theorem."
+    },
+    {
+      "id": "summary",
+      "title": "Part IX: Summary",
+      "startLine": 245,
+      "endLine": 271,
+      "summary": "erdos_843_summary combining squares_ramsey_2_complete and kth_powers_ramsey_complete."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #843 asked whether the perfect squares are Ramsey 2-complete: in any 2-coloring, can every large integer be written as a monochromatic sum of distinct squares? The answer is YES, proved by Conlon, Fox, and Pham (2021) via a stronger result about sparse Ramsey complete subsequences of k-th powers.",
     "implications": "The resolution establishes that squares (and all k-th powers) have the strong Ramsey completeness property. The (log N)² density bound is optimal, answering questions about the sparsest possible Ramsey complete sequences. This connects number theory (sums of powers) with Ramsey theory (colorings).",

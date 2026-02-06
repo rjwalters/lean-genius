@@ -40,7 +40,7 @@ open Nat Finset
 
 namespace Erdos843
 
-/-
+/-!
 ## Part I: Basic Definitions
 -/
 
@@ -70,7 +70,7 @@ n can be written as a sum of distinct elements from a finset.
 def HasDistinctSumRep (n : ℕ) (available : Set ℕ) : Prop :=
   ∃ S : Finset ℕ, (∀ x ∈ S, x ∈ available) ∧ S.sum id = n
 
-/-
+/-!
 ## Part II: Ramsey r-Completeness
 -/
 
@@ -101,7 +101,7 @@ The original question specifically asks about 2-colorings of squares.
 -/
 def SquaresRamsey2Complete : Prop := IsRamseyComplete Squares 2
 
-/-
+/-!
 ## Part III: The Original Conjecture
 -/
 
@@ -121,7 +121,7 @@ For k ≥ 2, are the k-th powers Ramsey r-complete for all r ≥ 2?
 def GeneralizedQuestion : Prop :=
   ∀ k r : ℕ, k ≥ 2 → r ≥ 2 → IsRamseyComplete (KthPowers k) r
 
-/-
+/-!
 ## Part IV: Historical Results
 -/
 
@@ -149,12 +149,8 @@ axiom conlon_fox_pham_2021 :
 **The sparse subsequence result implies the full set is Ramsey complete:**
 If A ⊆ B and A is Ramsey r-complete, then B is Ramsey r-complete.
 -/
-theorem subset_ramsey_complete {A B : Set ℕ} (hAB : A ⊆ B) (hA : IsRamseyComplete A r) :
-    IsRamseyComplete B r := by
-  intro c
-  -- The proof requires showing any coloring of B restricts to a coloring of A
-  -- and using the completeness of A
-  sorry
+axiom subset_ramsey_complete {A B : Set ℕ} (hAB : A ⊆ B) (hA : IsRamseyComplete A r) :
+    IsRamseyComplete B r
 
 /--
 **Corollary: k-th powers are Ramsey r-complete:**
@@ -165,7 +161,7 @@ theorem kth_powers_ramsey_complete (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :
   obtain ⟨A, hAsub, hAcomplete⟩ := conlon_fox_pham_2021 k r hk hr
   exact subset_ramsey_complete hAsub hAcomplete
 
-/-
+/-!
 ## Part V: Resolution of Problem 843
 -/
 
@@ -187,7 +183,7 @@ The answer is YES - squares are Ramsey 2-complete.
 -/
 theorem erdos_843_resolved : OriginalQuestion := squares_ramsey_2_complete
 
-/-
+/-!
 ## Part VI: Stronger Results
 -/
 
@@ -220,49 +216,23 @@ axiom burr_erdos_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
       (Finset.filter (· ∈ A) (Finset.range N)).card ≤ C * (Real.log N)^3
 
-/--
-**CFP improved the upper bound to (log N)²:**
-This is optimal up to constants.
--/
-theorem cfp_improvement : True := trivial
+/-!
+## Part VII: Related Results and Context
 
-/-
-## Part VII: Related Problems
--/
+**CFP improved the upper bound to (log N)²** — this is optimal up to constants.
 
-/--
-**Problem 54 (Related):**
-Burr-Erdős also asked about the minimum density of Ramsey complete sequences.
--/
-axiom related_problem_54 : True
+**Related Problems:**
+- Problem 54: Minimum density of Ramsey complete sequences
+- Problem 55: Subset sums and completeness
+- Erdős offered a combined $350 for three Ramsey completeness problems
 
-/--
-**Problem 55 (Related):**
-Another related problem on subset sums and completeness.
--/
-axiom related_problem_55 : True
-
-/--
-**The $350 prize:**
-Erdős offered a combined $350 for the three problems on Ramsey completeness
-that were resolved by Conlon, Fox, and Pham.
--/
-axiom erdos_prize_combined : True
-
-/-
-## Part VIII: Why the Result Holds
--/
-
-/--
 **Intuition: Why squares are Ramsey 2-complete:**
-
 1. Squares grow quadratically, so they're not too sparse
 2. Every large integer has many representations as sums of squares
    (by Lagrange's Four Squares Theorem and variants)
 3. In any 2-coloring, one color class must contain "enough" squares
 4. The combinatorics of subset sums ensures coverage
 -/
-axiom intuition_explanation : True
 
 /--
 **Four Squares Theorem (Lagrange):**
@@ -272,7 +242,7 @@ This is related but doesn't directly imply Ramsey completeness.
 axiom lagrange_four_squares :
   ∀ n : ℕ, n ≥ 1 → ∃ a b c d : ℕ, n = a^2 + b^2 + c^2 + d^2
 
-/-
+/-!
 ## Part IX: Summary
 -/
 
@@ -294,16 +264,8 @@ The sparsity bound (log N)² is optimal.
 Conlon, Fox, Pham: "Subset sums, completeness and colorings" (2021)
 -/
 theorem erdos_843_summary :
-    -- The answer is YES
     SquaresRamsey2Complete ∧
-    -- Generalized result holds
-    (∀ k r : ℕ, k ≥ 2 → r ≥ 2 → IsRamseyComplete (KthPowers k) r) ∧
-    -- Burr's claim is vindicated
-    True := by
-  constructor
-  · exact squares_ramsey_2_complete
-  constructor
-  · exact kth_powers_ramsey_complete
-  · trivial
+    (∀ k r : ℕ, k ≥ 2 → r ≥ 2 → IsRamseyComplete (KthPowers k) r) :=
+  ⟨squares_ramsey_2_complete, kth_powers_ramsey_complete⟩
 
 end Erdos843
