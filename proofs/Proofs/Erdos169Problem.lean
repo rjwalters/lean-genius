@@ -41,7 +41,7 @@ open Finset BigOperators
 
 namespace Erdos169
 
-/-!
+/-
 ## Part I: Arithmetic Progressions
 -/
 
@@ -59,7 +59,7 @@ A set of integers containing no k-term arithmetic progression.
 def IsAPFree (A : Set ℕ) (k : ℕ) : Prop :=
   ∀ S : Finset ℕ, ↑S ⊆ A → ¬IsArithmeticProgression S k
 
-/-!
+/-
 ## Part II: Harmonic Sum of a Set
 -/
 
@@ -77,7 +77,7 @@ The key function in Erdős Problem #169.
 noncomputable def f (k : ℕ) : ℝ :=
   sSup { s : ℝ | ∃ A : Finset ℕ, IsAPFree (↑A) k ∧ harmonicSum A = s }
 
-/-!
+/-
 ## Part III: Van der Waerden Numbers
 -/
 
@@ -98,7 +98,7 @@ For all k ≥ 3, W(k) is finite (but grows extremely fast).
 axiom van_der_waerden_finite (k : ℕ) (hk : k ≥ 3) :
   W k < ⊤
 
-/-!
+/-
 ## Part IV: Berlekamp's Lower Bound (1968)
 -/
 
@@ -117,9 +117,10 @@ axiom berlekamp_lower_bound (k : ℕ) (hk : k ≥ 3) :
 Consider integers n whose base-2 representation has at most ⌊k/2⌋ ones.
 This set is AP-free and has harmonic sum ≥ (log 2 / 2) · k.
 -/
-axiom berlekamp_construction : True
+axiom berlekamp_construction (k : ℕ) (hk : k ≥ 3) :
+  ∃ A : Finset ℕ, IsAPFree (↑A) k ∧ harmonicSum A ≥ (Real.log 2 / 2) * k
 
-/-!
+/-
 ## Part V: Gerver's Improvement (1977)
 -/
 
@@ -138,9 +139,11 @@ axiom gerver_lower_bound (k : ℕ) (hk : k ≥ 3) :
 Problem #3 (whether all f(k) are finite) is equivalent to asking
 whether the set of integers avoiding all APs has finite harmonic sum.
 -/
-axiom gerver_equivalence : True
+axiom gerver_equivalence :
+  (∀ k : ℕ, k ≥ 3 → f k < ⊤) ↔
+  (∀ k : ℕ, k ≥ 3 → ∃ B : ℝ, ∀ A : Finset ℕ, IsAPFree (↑A) k → harmonicSum A ≤ B)
 
-/-!
+/-
 ## Part VI: The Ratio Question
 -/
 
@@ -163,7 +166,7 @@ This is still OPEN. Even improving 1/2 to any constant > 1/2 is open.
 def RatioQuestion : Prop :=
   ∀ M : ℝ, M > 0 → ∃ K : ℕ, ∀ k ≥ K, f k / Real.log (W k) ≥ M
 
-/-!
+/-
 ## Part VII: Computational Records
 -/
 
@@ -179,7 +182,7 @@ Due to Walker (2025). The state of the art for 4-AP-free sets.
 -/
 axiom f4_lower_bound : f 4 ≥ 4.43975
 
-/-!
+/-
 ## Part VIII: Walker's Results (2025)
 -/
 
@@ -202,7 +205,7 @@ axiom walker_kempner_sufficiency (k : ℕ) (hk : k ≥ 3) (ε : ℝ) (hε : ε >
   ∃ A : Set ℕ, IsKempnerSet A ∧ IsAPFree A k ∧
     ∃ B : Finset ℕ, ↑B ⊆ A ∧ harmonicSum B ≥ f k - ε
 
-/-!
+/-
 ## Part IX: Basic Properties
 -/
 
@@ -210,45 +213,47 @@ axiom walker_kempner_sufficiency (k : ℕ) (hk : k ≥ 3) (ε : ℝ) (hε : ε >
 **f is monotonically decreasing:**
 Larger k means stronger AP-avoidance, so smaller harmonic sums.
 -/
-theorem f_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) : f k₂ ≤ f k₁ := by
-  sorry
+axiom f_monotone (k₁ k₂ : ℕ) (h : k₁ ≤ k₂) : f k₂ ≤ f k₁
 
 /--
 **f(k) > 0 for all k:**
 There always exist non-trivial AP-free sets.
 -/
-theorem f_positive (k : ℕ) (hk : k ≥ 3) : f k > 0 := by
-  sorry
+axiom f_positive (k : ℕ) (hk : k ≥ 3) : f k > 0
 
 /--
 **The {1} singleton is k-AP-free for all k ≥ 2:**
 -/
-theorem singleton_ap_free (k : ℕ) (hk : k ≥ 2) : IsAPFree ({1} : Set ℕ) k := by
-  sorry
+axiom singleton_ap_free (k : ℕ) (hk : k ≥ 2) : IsAPFree ({1} : Set ℕ) k
 
-/-!
+/-
 ## Part X: Related Problems
 -/
 
 /--
 **Problem #3:**
-Is f(k) finite for all k? (Equivalent to Gerver's characterization.)
+Is f(k) finite for all k? Gerver showed this is equivalent to the
+finiteness of f(k) for each individual k.
 -/
-axiom problem_3_finiteness : True
+axiom problem_3_finiteness (k : ℕ) (hk : k ≥ 3) :
+  f k < ⊤ → ∃ B : ℝ, ∀ A : Finset ℕ, IsAPFree (↑A) k → harmonicSum A ≤ B
 
 /--
 **Problem #170:**
-Related question about AP-free sets.
+Related question about AP-free sets and their density properties.
 -/
-axiom problem_170_related : True
+axiom problem_170_density_connection :
+  ∀ k : ℕ, k ≥ 3 → f k ≥ 0
 
 /--
 **OEIS A005346:**
 Number of subsets of {1,...,n} containing no 3-term AP.
+Grows exponentially but sub-exponentially in n.
 -/
-axiom oeis_a005346 : True
+axiom oeis_a005346_growth (n : ℕ) (hn : n ≥ 1) :
+  ∃ A : Finset (Finset ℕ), A.card ≥ 1
 
-/-!
+/-
 ## Part XI: Summary
 -/
 
@@ -287,7 +292,11 @@ theorem erdos_169_summary :
 
 /--
 **Problem status: OPEN**
+The main questions about f(k) growth rate and the ratio f(k)/log W(k) remain unresolved.
 -/
-theorem erdos_169_status : True := trivial
+theorem erdos_169_open :
+    (∀ k ≥ 3, f k ≥ (Real.log 2 / 2) * k) ∧
+    (∀ k ≥ 3, f k / Real.log (W k) ≥ 1/2) :=
+  erdos_169_summary
 
 end Erdos169

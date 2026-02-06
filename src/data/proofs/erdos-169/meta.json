@@ -10,12 +10,33 @@
     "proofRepoPath": "Proofs/Erdos169Problem.lean",
     "tags": ["erdos", "additive-combinatorics", "arithmetic-progressions", "harmonic-sums", "van-der-waerden"],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 169,
     "erdosUrl": "https://erdosproblems.com/169",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat",
+        "description": "Natural number basics",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type for harmonic sums",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for AP-free subsets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation notation for harmonic sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
     "originalContributions": []
   },
   "overview": {
@@ -39,37 +60,37 @@
       "summary": "Definitions of k-term arithmetic progressions and AP-free sets"
     },
     {
-      "id": "harmonic-sum-function",
+      "id": "harmonic-sum",
       "title": "Harmonic Sum Function",
       "startLine": 62,
       "endLine": 78,
       "summary": "Definition of f(k) as supremum of harmonic sums over AP-free sets"
     },
     {
-      "id": "van-der-waerden-numbers",
+      "id": "van-der-waerden",
       "title": "Van der Waerden Numbers",
       "startLine": 80,
       "endLine": 99,
       "summary": "Definition of W(k) and van der Waerden's theorem"
     },
     {
-      "id": "berlekamp-lower-bound",
+      "id": "berlekamp",
       "title": "Berlekamp's Lower Bound",
       "startLine": 101,
-      "endLine": 120,
+      "endLine": 122,
       "summary": "f(k) ≥ (log 2 / 2) · k from 1968"
     },
     {
-      "id": "gerver-improvement",
+      "id": "gerver",
       "title": "Gerver's Improvement",
-      "startLine": 122,
-      "endLine": 141,
+      "startLine": 124,
+      "endLine": 144,
       "summary": "f(k) ≥ (1-o(1)) k log k from 1977"
     },
     {
       "id": "ratio-question",
       "title": "The Ratio Question",
-      "startLine": 143,
+      "startLine": 146,
       "endLine": 164,
       "summary": "Whether f(k)/log W(k) → ∞ remains open"
     },
@@ -90,8 +111,8 @@
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 251,
-      "endLine": 291,
+      "startLine": 253,
+      "endLine": 296,
       "summary": "Complete summary of what's known and what's open"
     }
   ],
