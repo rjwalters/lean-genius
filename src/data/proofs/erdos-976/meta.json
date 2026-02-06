@@ -61,11 +61,11 @@
     "problemStatement": "Let f ∈ ℤ[x] be an irreducible polynomial of degree d ≥ 2. Define F_f(n) = max{p prime : p | f(m) for some 1 ≤ m ≤ n}, equivalently the greatest prime divisor of ∏_{m=1}^n f(m). Question: Is F_f(n) ≫ n^{1+c} for some constant c > 0? Or even ≫ n^d?",
     "proofStrategy": "The formalization defines F_f computationally via Nat.factors and presents the three known lower bounds (Nagell-Ricci, Erdős, Tenenbaum) as axioms with precise type signatures. The two open conjectures are formalized as Prop definitions. The summary theorem erdos_976_status is proved by applying the tenenbaum_bound axiom, establishing the current best known result. Computational examples verify greatestPrimeDivisor via native_decide.",
     "keyInsights": [
-      "The degree d of the polynomial should control the growth rate of F_f(n)",
-      "Current best bound n·exp((log n)^c) is sub-polynomial but super-linear",
-      "The gap between known bounds and conjectures is enormous",
-      "Prime distribution in polynomial values connects to algebraic number theory",
-      "Sieve methods and large sieve inequalities are the key analytic tools"
+      "**Degree Controls Growth:** The degree d of the polynomial should control the growth rate of F_f(n), with the strongest conjecture predicting F_f(n) ~ n^d",
+      "**Sub-Polynomial Gap:** Current best bound n·exp((log n)^c) is sub-polynomial but super-linear — enormously weaker than the conjectured n^{1+c}",
+      "**Three Eras of Progress:** Nagell-Ricci (1922) → n log n; Erdős (1952) → n(log n)^{log log log n}; Tenenbaum (1990) → n·exp((log n)^c)",
+      "**Smoothness Connection:** P(n) = greatest prime factor measures how 'smooth' a number is; this problem asks how non-smooth polynomial values must be",
+      "**Sieve Methods:** Large sieve inequalities and multiplicative number theory are the key analytic tools for these bounds"
     ]
   },
   "sections": [
