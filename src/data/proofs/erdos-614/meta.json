@@ -9,104 +9,117 @@
     "date": "1997",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos614Problem.lean",
-    "tags": ["erdos", "extremal-graph-theory", "induced-subgraphs", "maximum-degree"],
+    "tags": ["erdos", "extremal-graph-theory", "induced-subgraphs", "maximum-degree", "open"],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 614,
     "erdosUrl": "https://erdosproblems.com/614",
     "erdosProblemStatus": "open",
+    "dateAdded": "2026-02-06",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
-    "originalContributions": []
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type for vertex-edge structures",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for vertex subsets and counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "degree definition: vertex degree via adjacency filter",
+      "maxDegree definition: maximum degree over all vertices",
+      "inducedSubgraph definition: graph restriction to vertex subset",
+      "inducedMaxDegree definition: max degree in induced subgraph",
+      "hasPropertyP definition: (m,k)-local degree property",
+      "edgeCount definition: number of edges in a graph",
+      "existsGraphWithPropertyP definition: existence predicate for f(n,k)",
+      "f_lower_bound axiom: kn/2 lower bound on edges",
+      "f_upper_bound axiom: complete graph upper bound",
+      "f_case_k_eq_1 axiom: k=1 requires n-2 edges",
+      "f_max_k axiom: k=n-2 requires complete graph",
+      "f_mono_k axiom: monotonicity in k",
+      "erdos_614_existence axiom: well-definedness of f(n,k)",
+      "erdos_614_summary theorem: combines existence and upper bound"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #614 is an extremal graph theory problem asking for the minimum number of edges needed in a graph to guarantee that every sufficiently large induced subgraph has high maximum degree.\n\nThe problem combines ideas from Turán-type extremal theory (minimizing edges while forcing structure) with a Ramsey-theoretic flavor (guaranteeing properties in ALL subsets of a given size).\n\nThe problem was referenced in [FRS97] and remains open. No closed-form formula for f(n,k) is known, and even the asymptotic behavior is not fully understood.",
-    "problemStatement": "Let $f(n,k)$ be the minimal number of edges such that there exists a graph $G$ with $n$ vertices and $f(n,k)$ edges where every set of $k+2$ vertices induces a subgraph with maximum degree at least $k$.\n\n**Problem:** Determine $f(n,k)$.\n\n**Status:** OPEN\n\nThe problem asks: how sparse can a graph be while still guaranteeing that every moderately-sized induced subgraph has high local connectivity?",
-    "proofStrategy": "The Lean formalization defines:\n\n1. **Basic graph concepts**: Degree, maximum degree, induced subgraphs\n2. **Property P(k)**: Every (k+2)-subset has induced max degree ≥ k\n3. **The function f(n,k)**: Minimum edges for property P(k) on n vertices\n4. **Basic bounds**: Lower bounds from density, upper bound from complete graph\n5. **Special cases**: f(n,0) = 0, f(n, n-2) = complete graph\n6. **Monotonicity**: f is non-decreasing in both n and k\n\nThe main theorems establish the framework; the exact value of f(n,k) remains unknown.",
+    "historicalContext": "**Erdős Problem #614** is an extremal graph theory problem asking for the minimum number of edges needed in a graph to guarantee that every sufficiently large induced subgraph has high maximum degree.\n\n**Background:** The problem combines ideas from Turán-type extremal theory (minimizing edges while forcing structure) with a Ramsey-theoretic flavor (guaranteeing properties in ALL subsets of a given size). It was referenced in [FRS97] by Füredi, Ruszinkó, and Selkow.\n\n**Current Status:** The problem remains OPEN. No closed-form formula for f(n,k) is known, and even the asymptotic behavior is not fully understood. Basic bounds and monotonicity properties have been established, but the exact determination of f(n,k) for general n, k is an unsolved problem.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $f(n,k)$ be the minimal number of edges such that there exists a graph $G$ with $n$ vertices and $f(n,k)$ edges where every set of $k+2$ vertices induces a subgraph with maximum degree at least $k$.\n\n**Problem:** Determine $f(n,k)$.\n\n**Status:** OPEN\n\nThe problem asks: how sparse can a graph be while still guaranteeing that every moderately-sized induced subgraph has high local connectivity?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic graph concepts:** Degree, maximum degree, induced subgraphs\n2. **Property P(k):** Every (k+2)-subset has induced max degree ≥ k\n3. **Existence predicate:** existsGraphWithPropertyP captures when f(n,k) ≤ m\n4. **Basic bounds:** Lower bound kn/2, upper bound from complete graph\n5. **Special cases:** k=1 needs n-2 edges, k=n-2 needs complete graph\n6. **Monotonicity:** f is non-decreasing in k\n7. **Summary theorem:** Combines existence and upper bound results",
     "keyInsights": [
-      "**Extremal nature:** Finding the minimum edges to guarantee a property",
-      "**Turán connection:** Related to avoiding sparse induced subgraphs",
-      "**Ramsey flavor:** Property must hold for ALL subsets of size k+2",
-      "**Trivial bounds:** 0 ≤ f(n,k) ≤ n(n-1)/2 (empty to complete)",
-      "**Special cases:** f(n,0) = 0 and f(n, n-2) = n(n-1)/2",
-      "**Monotonicity:** f is non-decreasing in both parameters"
+      "**Extremal Nature:** Finding the minimum edges to guarantee a property in ALL large induced subgraphs",
+      "**Turán Connection:** Related to avoiding sparse induced subgraphs; Turán numbers give related bounds",
+      "**Ramsey Flavor:** Property must hold for ALL subsets of size k+2, not just one — a strong universal condition",
+      "**Trivial Bounds:** 0 ≤ f(n,k) ≤ n(n-1)/2 — from empty graph to complete graph",
+      "**Special Cases:** f(n,0) = 0 trivially; f(n,n-2) = n(n-1)/2 forces the complete graph",
+      "**Monotonicity:** f is non-decreasing in k — stronger degree requirements need more edges"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 28,
-      "endLine": 47,
+      "startLine": 31,
+      "endLine": 49,
       "summary": "Degree, maximum degree, and induced subgraph definitions."
     },
     {
       "id": "property-p",
       "title": "Property P(k)",
-      "startLine": 49,
-      "endLine": 65,
-      "summary": "Definition of the property that every (k+2)-subset has high induced max degree."
+      "startLine": 51,
+      "endLine": 67,
+      "summary": "Definition of inducedMaxDegree and hasPropertyP for (k+2)-subsets."
     },
     {
       "id": "function-f",
       "title": "The Function f(n,k)",
-      "startLine": 67,
-      "endLine": 90,
-      "summary": "Definition of f(n,k) as the minimum edges achieving property P(k)."
+      "startLine": 69,
+      "endLine": 85,
+      "summary": "Edge count, existence predicate, and the f(n,k) function framework."
     },
     {
       "id": "basic-bounds",
       "title": "Basic Bounds",
-      "startLine": 92,
-      "endLine": 110,
-      "summary": "Lower and upper bounds on f(n,k)."
+      "startLine": 87,
+      "endLine": 103,
+      "summary": "Lower bound kn/2 and upper bound from complete graph."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 112,
-      "endLine": 128,
-      "summary": "Cases k=1 and k=n-2."
+      "startLine": 105,
+      "endLine": 120,
+      "summary": "k=1 requires n-2 edges; k=n-2 requires complete graph."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
-      "startLine": 130,
-      "endLine": 140,
-      "summary": "f is non-decreasing in both n and k."
-    },
-    {
-      "id": "connections",
-      "title": "Connections to Other Problems",
-      "startLine": 142,
-      "endLine": 156,
-      "summary": "Relations to Turán numbers and Ramsey theory."
+      "startLine": 122,
+      "endLine": 132,
+      "summary": "f is non-decreasing in k: P(k+1) implies P(k)."
     },
     {
       "id": "open-problem",
       "title": "The Open Problem",
-      "startLine": 158,
-      "endLine": 175,
-      "summary": "Statement of what remains unknown about f(n,k)."
-    },
-    {
-      "id": "examples",
-      "title": "Examples",
-      "startLine": 177,
-      "endLine": 193,
-      "summary": "Examples of graphs that fail property P(k)."
+      "startLine": 134,
+      "endLine": 153,
+      "summary": "Existence axiom and statement of what remains unknown."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 195,
-      "endLine": 218,
-      "summary": "Complete problem status: OPEN."
+      "startLine": 155,
+      "endLine": 177,
+      "summary": "erdos_614_summary theorem combining existence and upper bound."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #614 asks for f(n,k), the minimum number of edges in an n-vertex graph such that every (k+2)-subset induces a subgraph with maximum degree at least k. The problem remains OPEN with no closed-form solution known.",
-    "implications": "This problem sits at the intersection of extremal graph theory and Ramsey theory. Understanding f(n,k) would illuminate the trade-off between global edge sparsity and local structural guarantees.",
+    "summary": "Erdős Problem #614 asks for f(n,k), the minimum number of edges in an n-vertex graph such that every (k+2)-subset induces a subgraph with maximum degree at least k. The problem remains OPEN with no closed-form solution known. We formalize basic bounds, special cases, and monotonicity.",
+    "implications": "This problem sits at the intersection of extremal graph theory and Ramsey theory. Understanding f(n,k) would illuminate the trade-off between global edge sparsity and local structural guarantees in graphs.",
     "openQuestions": [
       "What is the exact formula for f(n,k)?",
       "What is the asymptotic behavior of f(n,k)/n² as n → ∞ for fixed k?",
