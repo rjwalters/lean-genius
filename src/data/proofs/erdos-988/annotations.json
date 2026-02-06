@@ -130,12 +130,12 @@
     "proofId": "erdos-988",
     "range": {
       "startLine": 140,
-      "endLine": 144
+      "endLine": 145
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Discrepancy Tends to Infinity",
-    "content": "The theorem **min_discrepancy_tends_to_infinity** states that minDiscrepancy(d,n) → ∞ as n → ∞, for any dimension d ≥ 1. This follows from Schmidt's lower bound.",
-    "mathContext": "Using Filter.Tendsto with atTop atTop expresses that the minimum discrepancy grows without bound. The proof uses Schmidt's c·n^{d/(2d+2)} → ∞.",
+    "content": "The axiom **min_discrepancy_tends_to_infinity** states that minDiscrepancy(d,n) → ∞ as n → ∞, for any dimension d ≥ 1. This follows from Schmidt's lower bound.",
+    "mathContext": "Using Filter.Tendsto with atTop atTop expresses that the minimum discrepancy grows without bound. Axiomatized because formalizing the filter proof from the existential bound is non-trivial.",
     "significance": "key",
     "relatedConcepts": ["Tendsto", "Filter", "atTop"]
   },
@@ -143,8 +143,8 @@
     "id": "ann-988-mainresult",
     "proofId": "erdos-988",
     "range": {
-      "startLine": 160,
-      "endLine": 163
+      "startLine": 161,
+      "endLine": 164
     },
     "type": "theorem",
     "title": "Main Result: erdos_988_solved",
@@ -157,8 +157,8 @@
     "id": "ann-988-lowerbound",
     "proofId": "erdos-988",
     "range": {
-      "startLine": 174,
-      "endLine": 178
+      "startLine": 175,
+      "endLine": 179
     },
     "type": "axiom",
     "title": "Lower Bound for S²",
@@ -171,8 +171,8 @@
     "id": "ann-988-upperbound",
     "proofId": "erdos-988",
     "range": {
-      "startLine": 180,
-      "endLine": 185
+      "startLine": 181,
+      "endLine": 186
     },
     "type": "axiom",
     "title": "Upper Bound for S²",
@@ -185,8 +185,8 @@
     "id": "ann-988-summary",
     "proofId": "erdos-988",
     "range": {
-      "startLine": 231,
-      "endLine": 239
+      "startLine": 218,
+      "endLine": 226
     },
     "type": "theorem",
     "title": "Summary Theorem",
