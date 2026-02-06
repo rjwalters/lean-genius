@@ -1,10 +1,10 @@
 {
   "id": "erdos-1133",
-  "title": "Erdos Problem #1133: Large Polynomial Interpolation Bound",
+  "title": "Erdős Problem #1133: Large Polynomial Interpolation Bound",
   "slug": "erdos-1133",
   "description": "For any C > 0, can one always choose target values y_i in [-1,1] for sample points x_i such that any low-degree polynomial approximating most points must exceed C somewhere in [-1,1]? OPEN.",
   "meta": {
-    "author": "Erdos (1967)",
+    "author": "Erdős (1967)",
     "sourceUrl": "https://erdosproblems.com/1133",
     "date": "1967",
     "status": "complete",
@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1133,
     "erdosUrl": "https://erdosproblems.com/1133",
     "erdosProblemStatus": "open",
@@ -53,25 +53,26 @@
       "ApproximatelyInterpolates definition: P passes through >= (1-epsilon)n points",
       "HasBoundedDegree definition: deg(P) < (1+epsilon)n",
       "ErdosConjecture1133 formal statement",
-      "erdos_related_result axiom: Erdos's weaker result about polynomial existence",
+      "erdos_related_result axiom: Erdős's weaker result about polynomial existence",
       "lagrange_interpolation axiom: existence and uniqueness",
       "lagrange_divergence axiom: divergence for uniform nodes",
       "chebyshevNodes definition: cos(pi(2k+1)/(2n))",
       "chebyshev_optimal axiom: Chebyshev nodes are optimal",
-      "exact_interpolation_case theorem"
+      "exact_interpolation_case theorem",
+      "erdos_1133_summary theorem"
     ]
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdos in 1967 in his paper 'Problems and results on the convergence and divergence properties of Lagrange interpolation polynomials'. It concerns the behavior of polynomial interpolation on [-1,1]. Lagrange showed that given n distinct points, there is a unique polynomial of degree < n passing through them. However, this polynomial can behave badly between the sample points, leading to Runge's phenomenon and related issues.\n\nErdos proved a weaker result: for any bound C, one can find polynomials that stay small at many sample points but become large in [-1,1]. The conjecture asks the converse: can one always CHOOSE the target values to force this behavior for ANY approximating polynomial?",
-    "problemStatement": "**Conjecture:** For any C > 0, there exists epsilon > 0 such that for sufficiently large n: Given any x_1,...,x_n in [-1,1], one can choose y_1,...,y_n in [-1,1] such that if P is a polynomial of degree < (1+epsilon)n passing through at least (1-epsilon)n of the points (x_i, y_i), then max_{x in [-1,1]} |P(x)| > C.\n\n**Status: OPEN**\n\nErdos could not prove this even for the case m = n (exact interpolation).",
-    "proofStrategy": "We formalize:\n\n1. **Basic setup:** Polynomial evaluation, max norm on [-1,1], sample/target points\n\n2. **Interpolation conditions:** ApproximatelyInterpolates (>= (1-epsilon)n matches), HasBoundedDegree (< (1+epsilon)n)\n\n3. **The conjecture:** ErdosConjecture1133 - formal statement with all quantifiers\n\n4. **Related result:** Erdos's weaker existence theorem (axiomatized)\n\n5. **Lagrange theory:** Uniqueness, divergence for uniform nodes\n\n6. **Chebyshev connection:** Optimal node placement",
+    "historicalContext": "This problem was posed by Erdős in 1967 in his paper on convergence and divergence of Lagrange interpolation polynomials. It concerns the behavior of polynomial interpolation on [-1,1]. Lagrange showed that given n distinct points, there is a unique polynomial of degree < n passing through them. However, this polynomial can behave badly between the sample points, leading to Runge's phenomenon and related divergence issues.\n\nErdős proved a weaker result: for any bound C, one can find polynomials that stay small at many sample points but become large in [-1,1]. The conjecture asks the converse: can one always CHOOSE the target values to force this behavior for ANY approximating polynomial? The adversarial nature of this quantifier reversal makes the conjecture fundamentally harder.\n\nThe problem connects to the Chebyshev theory of optimal node placement. Chebyshev nodes give the best possible interpolation behavior, but even their properties do not resolve the conjecture. Erdős noted that he could not prove the conjecture even in the case of exact interpolation (ε = 0), making this a challenging open problem in approximation theory.",
+    "problemStatement": "**Conjecture:** For any C > 0, there exists epsilon > 0 such that for sufficiently large n: Given any x_1,...,x_n in [-1,1], one can choose y_1,...,y_n in [-1,1] such that if P is a polynomial of degree < (1+epsilon)n passing through at least (1-epsilon)n of the points (x_i, y_i), then max_{x in [-1,1]} |P(x)| > C.\n\n**Status: OPEN**",
+    "proofStrategy": "We formalize:\n\n1. **Basic setup:** Polynomial evaluation, max norm on [-1,1], sample/target points\n\n2. **Interpolation conditions:** ApproximatelyInterpolates (>= (1-epsilon)n matches), HasBoundedDegree (< (1+epsilon)n)\n\n3. **The conjecture:** ErdosConjecture1133 - formal statement with all quantifiers\n\n4. **Related result:** Erdős's weaker existence theorem (axiomatized)\n\n5. **Lagrange theory:** Uniqueness, divergence for uniform nodes\n\n6. **Chebyshev connection:** Optimal node placement",
     "keyInsights": [
       "**Adversarial choice:** The conjecture requires choosing y_i values that work against ALL polynomials",
       "**Degree flexibility:** The (1+epsilon)n degree bound allows slightly more than n degrees of freedom",
       "**Approximate matching:** Only (1-epsilon)n points need to match, giving some slack",
       "**Lagrange connection:** For exact interpolation (epsilon=0), this is about Lagrange polynomials",
       "**Chebyshev nodes:** These give optimal interpolation behavior, but don't resolve the conjecture",
-      "**Erdos's weaker result:** Existence is proven; universal choice of y_i is open"
+      "**Erdős's weaker result:** Existence is proven; universal choice of y_i is open"
     ]
   },
   "sections": [
@@ -91,7 +92,7 @@
     },
     {
       "id": "conjecture",
-      "title": "The Erdos Conjecture",
+      "title": "The Erdős Conjecture",
       "summary": "ErdosConjecture1133 formal statement",
       "startLine": 95,
       "endLine": 115
@@ -108,39 +109,31 @@
       "title": "Lagrange Interpolation",
       "summary": "lagrange_interpolation, lagrange_divergence",
       "startLine": 139,
-      "endLine": 164
+      "endLine": 162
     },
     {
       "id": "chebyshev",
       "title": "Chebyshev Connection",
       "summary": "chebyshevNodes, chebyshev_optimal",
-      "startLine": 166,
-      "endLine": 185
-    },
-    {
-      "id": "difficulty",
-      "title": "Why the Conjecture is Hard",
-      "summary": "conjecture_difficulty, approximation_theory_connection",
-      "startLine": 187,
-      "endLine": 206
+      "startLine": 164,
+      "endLine": 183
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_1133_summary, erdos_1133, exact_interpolation_case",
-      "startLine": 208,
-      "endLine": 251
+      "summary": "exact_interpolation_case, erdos_1133_summary",
+      "startLine": 185,
+      "endLine": 218
     }
   ],
   "conclusion": {
-    "summary": "Erdos Problem #1133 asks whether one can always choose target values for polynomial interpolation that force any approximating polynomial to be large somewhere in [-1,1]. The problem remains OPEN. Erdos proved a weaker existence result but could not prove the conjectured universal choice property.",
-    "implications": "**Approximation Theory Impact:**\n\n1. **Interpolation limits:** Shows fundamental limits on controlling polynomial behavior through interpolation\n\n2. **Adversarial approximation:** Connects to game-theoretic aspects of function approximation\n\n3. **Chebyshev theory:** The role of optimal node placement in polynomial approximation\n\n4. **Computational complexity:** Potential connections to hardness of approximation",
+    "summary": "Erdős Problem #1133 asks whether one can always choose target values for polynomial interpolation that force any approximating polynomial to be large somewhere in [-1,1]. The problem remains OPEN. Erdős proved a weaker existence result but could not prove the conjectured universal choice property.",
+    "implications": "**Approximation Theory Impact:**\n\n1. **Interpolation limits:** Shows fundamental limits on controlling polynomial behavior through interpolation\n\n2. **Adversarial approximation:** Connects to game-theoretic aspects of function approximation\n\n3. **Chebyshev theory:** The role of optimal node placement in polynomial approximation",
     "openQuestions": [
       "Is the conjecture true for epsilon = 0 (exact interpolation)?",
       "What is the optimal epsilon(C) if the conjecture is true?",
       "Are there special node configurations where the conjecture fails?",
-      "What happens in higher dimensions or for other domains?",
-      "Is there a constructive way to choose the y_i values?"
+      "What happens in higher dimensions or for other domains?"
     ]
   }
 }

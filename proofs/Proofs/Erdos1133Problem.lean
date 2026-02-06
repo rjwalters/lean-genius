@@ -1,5 +1,5 @@
-/-
-Erdős Problem #1133: Large Polynomial Interpolation Bound
+/-!
+# Erdős Problem #1133: Large Polynomial Interpolation Bound
 
 Source: https://erdosproblems.com/1133
 Status: OPEN
@@ -151,17 +151,15 @@ axiom lagrange_interpolation (n : ℕ) (x y : Fin n → ℝ)
 
 /--
 **Divergence of Lagrange Interpolation:**
-Lagrange interpolation can diverge badly for uniformly spaced points.
-The max norm can grow exponentially even for smooth functions.
+There exist continuous functions for which Lagrange interpolation
+on uniformly spaced nodes diverges.
 -/
 axiom lagrange_divergence :
     ∃ f : ℝ → ℝ, Continuous f ∧
-    ¬ Filter.Tendsto
-      (fun n => maxNormOnInterval (Classical.choose (lagrange_interpolation n
-        (fun i : Fin n => -1 + 2 * i / (n - 1))
-        (fun i => f (-1 + 2 * i / (n - 1)))
-        sorry)))
-      Filter.atTop (nhds 0)
+    ∀ M : ℝ, ∃ n : ℕ, ∀ P : Polynomial ℝ,
+      P.natDegree < n →
+      (∀ i : Fin n, P.eval (-1 + 2 * i / (n - 1)) = f (-1 + 2 * i / (n - 1))) →
+      maxNormOnInterval P > M
 
 /-!
 ## Part VI: The Chebyshev Connection
@@ -185,55 +183,8 @@ axiom chebyshev_optimal :
     maxNormOnInterval P ≤ 1
 
 /-!
-## Part VII: Why the Conjecture is Hard
+## Part VII: Summary
 -/
-
-/--
-**Key Difficulty:**
-The conjecture requires choosing yᵢ values adversarially.
-Erdős couldn't even prove the case m = n (exact interpolation).
--/
-axiom conjecture_difficulty :
-    -- Even for m = n (exact degree), the problem is open
-    True
-
-/--
-**Relationship to Approximation Theory:**
-The conjecture relates to how well polynomials can approximate
-with constraints on both sample values and degree.
--/
-axiom approximation_theory_connection :
-    True
-
-/-!
-## Part VIII: Summary
--/
-
-/--
-**Erdős Problem #1133: OPEN**
-
-CONJECTURE: For any C > 0, there exists ε > 0 such that for large n:
-Given any sample points, one can choose target values in [-1,1] that
-force any approximating polynomial (degree < (1+ε)n, matching ≥ (1-ε)n points)
-to exceed C somewhere in [-1,1].
-
-KNOWN: Erdős proved a weaker result about existence of polynomials.
-
-WHY HARD: Requires adversarial choice of target values.
--/
-theorem erdos_1133_summary :
-    -- The conjecture statement is well-defined
-    ErdosConjecture1133 = ErdosConjecture1133 ∧
-    -- The related result exists
-    True := by
-  constructor
-  · rfl
-  · trivial
-
-/--
-**Main Status: OPEN**
--/
-theorem erdos_1133 : True := trivial
 
 /--
 **The ε parameter matters:**
@@ -247,5 +198,21 @@ theorem exact_interpolation_case :
     ∃ P : Polynomial ℝ, P.natDegree < n ∧ ∀ i, P.eval (x i) = y i := by
   intro n hn x hx y
   exact Classical.choose_spec (ExistsUnique.exists (lagrange_interpolation n x y hx))
+
+/--
+**Erdős Problem #1133: Summary**
+
+Status: OPEN
+
+The conjecture ErdosConjecture1133 is formally stated.
+The related weaker result (existence of polynomial) is axiomatized.
+Lagrange interpolation provides the exact interpolation case.
+-/
+theorem erdos_1133_summary :
+    (∀ n : ℕ, n ≥ 1 →
+      ∀ x : Fin n → ℝ, Function.Injective x →
+      ∀ y : Fin n → ℝ,
+      ∃ P : Polynomial ℝ, P.natDegree < n ∧ ∀ i, P.eval (x i) = y i) :=
+  exact_interpolation_case
 
 end Erdos1133
