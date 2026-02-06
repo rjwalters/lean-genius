@@ -1,0 +1,118 @@
+{
+  "slug": "inclusion-exclusion-oq-01",
+  "title": "General n-set Inclusion-Exclusion with Formal Induction",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a family of finite sets {Sᵢ}ᵢ∈s, |⋃ᵢ∈s Sᵢ| = Σ_{∅≠t⊆s} (-1)^(|t|+1) |⋂ᵢ∈t Sᵢ|",
+    "plain": "Extend the inclusion-exclusion principle from two and three sets to n sets using formal induction, proving the general alternating sum formula.",
+    "whyMatters": [
+      "The general formula subsumes all finite-set inclusion-exclusion instances",
+      "Inductive proof structure demonstrates how the pattern extends to arbitrary n",
+      "Foundation for Bonferroni inequalities and complementary counting"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "13 theorems, 0 sorries, 0 axioms",
+      "General n-set inclusion-exclusion via Mathlib (alternating sum over powerset)",
+      "Inductive step: |⋃ᵢ∈(s∪{j}) Sᵢ| = |⋃ᵢ∈s Sᵢ| + |Sⱼ| - |⋃ᵢ∈s(Sᵢ∩Sⱼ)|",
+      "Distributivity: (⋃ᵢ∈s Sᵢ) ∩ B = ⋃ᵢ∈s(Sᵢ ∩ B)",
+      "Base cases: empty and singleton index sets",
+      "Two-set and three-set specializations in ℤ",
+      "Four-set inclusion-exclusion (all 15 terms)",
+      "Union bound / Boole's inequality by Finset induction",
+      "Union lower bound: |A ∪ B| ≥ max(|A|, |B|)",
+      "Complementary counting: |U \\ ⋃Sᵢ| = |U| - |⋃Sᵢ|",
+      "Complementary counting for two sets in ℤ"
+    ],
+    "open": [],
+    "goal": "All goals achieved. General n-set formula proved via Mathlib + inductive extensions."
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-06T04:55:00Z",
+    "iteration": 1,
+    "focus": "Proved general n-set inclusion-exclusion with formal induction and extensions.",
+    "activeApproach": "Mathlib-leveraged with custom inductive extensions",
+    "blockers": [],
+    "nextAction": "Problem is complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 13 theorems, 0 sorries, 0 axioms. General n-set inclusion-exclusion via Mathlib, inductive step, base cases, 2/3/4-set specializations, Bonferroni inequality, complementary counting.",
+    "builtItems": [
+      "general_inclusion_exclusion: n-set formula via Mathlib",
+      "card_union_step: |U ∪ B| = |U| + |B| - |U ∩ B| in ℤ",
+      "biUnion_inter_right: (⋃Sᵢ) ∩ B = ⋃(Sᵢ ∩ B)",
+      "card_biUnion_insert: inductive step for indexed unions",
+      "card_biUnion_empty: base case for empty index",
+      "card_biUnion_singleton: base case for singleton index",
+      "two_set_from_general: 2-set specialization in ℤ",
+      "three_set_from_general: 3-set specialization in ℤ",
+      "union_bound: Boole's inequality by Finset induction",
+      "union_lower_bound: |A ∪ B| ≥ max(|A|, |B|)",
+      "card_sdiff_biUnion_int: complementary counting in ℤ",
+      "card_complement_two: |U \\ (A∪B)| in ℤ",
+      "four_set_inclusion_exclusion: full 4-set formula"
+    ],
+    "insights": [
+      "Mathlib has Finset.inclusion_exclusion_card_biUnion for the general formula",
+      "Working in ℤ avoids natural number subtraction issues",
+      "Finset.induction_on with @insert pattern for proper variable binding",
+      "Intersection distributes over biUnion: key for the inductive step",
+      "Four-set case decomposes via 2-set formula + 3-set formula applied twice"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Problem is complete for formalization purposes",
+      "Optional: Prove general Bonferroni inequalities (truncations at any level)",
+      "Optional: Connect to Möbius inversion on lattice of sets"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Mathlib-leveraged with inductive extensions",
+      "status": "completed",
+      "description": "Use Mathlib's inclusion_exclusion_card_biUnion as base, prove inductive step and specializations"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "set-theory",
+    "counting",
+    "wiedijk-100",
+    "classic",
+    "0-sorry",
+    "0-axiom",
+    "complete"
+  ],
+  "relatedProofs": [
+    "proofs/Proofs/InclusionExclusionGeneral.lean",
+    "proofs/Proofs/InclusionExclusion.lean"
+  ],
+  "references": {
+    "papers": [
+      "da Silva (1854): On the general inclusion-exclusion formula",
+      "Sylvester (1883): On the partition of numbers"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Combinatorics.Enumerative.InclusionExclusion",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Lattice.Basic"
+    ]
+  },
+  "started": "2026-02-06T04:52:00Z",
+  "lastUpdate": "2026-02-06T05:30:00Z",
+  "significance": 7,
+  "tractability": 7,
+  "knowledgeScore": 13
+}
