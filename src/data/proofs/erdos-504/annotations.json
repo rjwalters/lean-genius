@@ -1,101 +1,78 @@
 [
   {
-    "id": "erdos-504-header",
+    "id": "header-comment",
     "proofId": "erdos-504",
-    "type": "context",
+    "type": "concept",
     "range": { "startLine": 1, "endLine": 32 },
-    "title": "Problem Overview",
-    "content": "Blumenthal's Problem: determine α_n, the supremum of angles α such that every n-point planar set contains three points forming angle ≥ α. Completely solved by Sendov in 1993 after partial results by Szekeres (1941) and Erdős-Szekeres (1960).",
-    "significance": "key"
+    "title": "Problem Overview: Blumenthal's Problem",
+    "content": "Erdős Problem #504 asks: given n points in the plane, what is the largest angle α such that every n-point set must contain three points forming angle ≥ α? This is the α_n function. Solved completely by Sendov (1993) after partial results by Szekeres (1941) and Erdős-Szekeres (1960). The solution has a beautiful binary structure.",
+    "significance": "critical"
   },
   {
-    "id": "erdos-504-angle-def",
+    "id": "angle-definition",
     "proofId": "erdos-504",
     "type": "definition",
     "range": { "startLine": 45, "endLine": 66 },
-    "title": "Angle Definition",
-    "content": "The angle ∠xyz is computed using the dot product formula: angle = arccos((v1·v2)/(|v1||v2|)) where v1 = x-y and v2 = z-y. The angle is always in [0, π] and is symmetric in x and z.",
-    "significance": "supporting"
+    "title": "Angle Between Three Points",
+    "content": "The angle ∠xyz at vertex y is computed via the dot product formula: arccos((v1·v2)/(|v1||v2|)) where v1 = x−y and v2 = z−y. Returns 0 when either vector is zero. Axioms establish the range [0, π] and symmetry angle(x,y,z) = angle(z,y,x).",
+    "mathContext": "This is the standard inner product angle formula. The arccos ensures the result lies in [0, π], which is the correct range for angles in a plane.",
+    "significance": "key"
   },
   {
-    "id": "erdos-504-max-angle",
+    "id": "max-angle-axiom",
     "proofId": "erdos-504",
     "type": "definition",
-    "range": { "startLine": 68, "endLine": 82 },
-    "title": "Maximum Angle in Set",
-    "content": "Given a finite point set A, maxAngleInSet(A) is the largest angle that can be formed by choosing three distinct points from A. This is the quantity we're trying to minimize over all n-point sets.",
-    "significance": "supporting"
+    "range": { "startLine": 68, "endLine": 83 },
+    "title": "Maximum Angle in a Point Set",
+    "content": "maxAngleInSet is axiomatized as a function from finite point sets to ℝ, giving the maximum angle formed by any triple of distinct points. Axioms: positive for sets of size ≥ 3 (maxAngleInSet_pos) and bounded by π (maxAngleInSet_le_pi). Axiomatized to avoid a sorry in the Finset.sup' nonempty proof.",
+    "significance": "key"
   },
   {
-    "id": "erdos-504-alpha-n",
+    "id": "alpha-n-function",
     "proofId": "erdos-504",
     "type": "definition",
-    "range": { "startLine": 84, "endLine": 102 },
-    "title": "The α_n Function",
-    "content": "α_n = inf { maxAngleInSet(A) : |A| = n } is the infimum of maximum angles over all n-point sets. Equivalently, it's the largest angle that MUST appear in every n-point configuration. This function is monotonically non-increasing.",
-    "significance": "key"
+    "range": { "startLine": 85, "endLine": 111 },
+    "title": "The α_n Function and Small Cases",
+    "content": "α_n = ⨅ { maxAngleInSet(A) : A.card = n } is the infimum of maximum angles over all n-point configurations. Well-defined for n ≥ 3 with 0 < α_n ≤ π. Monotonically non-increasing: more points means a potentially smaller guaranteed angle. Small cases: α_3 = α_4 = π.",
+    "mathContext": "The infimum is taken over all possible n-point planar configurations. The monotonicity follows because any (n+1)-point set contains n-point subsets, so the infimum can only decrease. α_3 = π because any triangle has an angle ≥ 60° but the maximum angle is always ≥ π/3.",
+    "significance": "critical"
   },
   {
-    "id": "erdos-504-erdos-szekeres",
+    "id": "sendov-solution",
     "proofId": "erdos-504",
     "type": "theorem",
-    "range": { "startLine": 112, "endLine": 134 },
-    "title": "Erdős-Szekeres Result (1960)",
-    "content": "For powers of 2, Erdős and Szekeres proved α_{2^n} = π(1-1/n). This elegant formula relates optimal angles to regular 2^n-gons. They conjectured this held more broadly, which Sendov later disproved.",
-    "significance": "key"
+    "range": { "startLine": 129, "endLine": 167 },
+    "title": "Sendov's Complete Solution (1993)",
+    "content": "The full determination of α_N via two formulas: (1) For 2^{n-1} + 2^{n-3} < N ≤ 2^n: α_N = π(1 − 1/n), matching the Erdős-Szekeres formula. (2) For 2^{n-1} < N ≤ 2^{n-1} + 2^{n-3}: α_N = π(1 − 1/(2n−1)), a new formula that Erdős and Szekeres missed. The threshold 2^{n-1} + 2^{n-3} = 5·2^{n-3} divides each range into upper and lower parts.",
+    "mathContext": "The binary threshold 2^{n-1} + 2^{n-3} arises from the structure of optimal configurations. In the lower range, the optimal configuration is not a regular polygon but a more complex arrangement, leading to the different formula π(1 − 1/(2n−1)).",
+    "significance": "critical"
   },
   {
-    "id": "erdos-504-sendov-upper",
+    "id": "counterexample",
     "proofId": "erdos-504",
     "type": "theorem",
-    "range": { "startLine": 136, "endLine": 165 },
-    "title": "Sendov's Upper Range Formula",
-    "content": "For 2^{n-1} + 2^{n-3} < N ≤ 2^n, Sendov proved α_N = π(1-1/n). This is the same as the Erdős-Szekeres formula, valid for the 'upper part' of each range between powers of 2.",
+    "range": { "startLine": 169, "endLine": 182 },
+    "title": "Sendov's Counterexample (1992)",
+    "content": "Axiomatized: there exist n ≥ 3 and N with 2^{n-1} < N ≤ 2^n such that α_N ≠ π(1−1/n). For example, N = 5 lies in (4, 5] = (2², 2² + 2⁰], so α_5 = π(1−1/5) ≠ π(1−1/3). This disproved the Erdős-Szekeres conjecture that α_N = π(1−1/n) for all N in (2^{n-1}, 2^n].",
     "significance": "key"
   },
   {
-    "id": "erdos-504-sendov-lower",
+    "id": "optimal-configs",
+    "proofId": "erdos-504",
+    "type": "concept",
+    "range": { "startLine": 184, "endLine": 219 },
+    "title": "Optimal Configurations and Convex Position",
+    "content": "Regular n-gon vertices are defined via cos/sin on the unit circle. For N = 2^k, the regular polygon achieves the optimal (minimum) maximum angle (regularNGon_optimal). The isConvexPosition predicate (axiomatized) captures when all points are on the convex hull. Optimal configurations achieving α_N are always in convex position (optimal_is_convex).",
+    "mathContext": "The connection between optimal angle configurations and convex position is deep: adding interior points always creates larger angles. The inscribed angle theorem for regular polygons explains why they achieve optimal angles for power-of-2 sizes.",
+    "significance": "key"
+  },
+  {
+    "id": "summary-theorem",
     "proofId": "erdos-504",
     "type": "theorem",
-    "range": { "startLine": 167, "endLine": 174 },
-    "title": "Sendov's Lower Range Formula",
-    "content": "For 2^{n-1} < N ≤ 2^{n-1} + 2^{n-3}, Sendov proved α_N = π(1-1/(2n-1)). This different formula for the 'lower part' was the key insight that disproved the Erdős-Szekeres conjecture.",
-    "significance": "key"
-  },
-  {
-    "id": "erdos-504-counterexample",
-    "proofId": "erdos-504",
-    "type": "example",
-    "range": { "startLine": 176, "endLine": 199 },
-    "title": "Counterexample to Erdős-Szekeres",
-    "content": "Sendov (1992) showed that N=5 is a counterexample: 5 is in range (4, 5] = (2^2, 2^2+2^0], so α_5 = π(1-1/5) ≠ π(1-1/3). The conjecture that α_N = π(1-1/n) for all N ∈ (2^{n-1}, 2^n] was false.",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-504-regular-polygon",
-    "proofId": "erdos-504",
-    "type": "definition",
-    "range": { "startLine": 201, "endLine": 218 },
-    "title": "Regular Polygon Configurations",
-    "content": "The vertices of a regular n-gon, placed on the unit circle, achieve the optimal configuration for N = 2^k. The maximum angle among any three vertices relates to the inscribed angle theorem.",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-504-convex",
-    "proofId": "erdos-504",
-    "type": "context",
-    "range": { "startLine": 220, "endLine": 236 },
-    "title": "Convex Position",
-    "content": "The problem considers all planar point sets, not just convex position. Remarkably, optimal configurations achieving α_N are typically in convex position - all points are vertices of the convex hull.",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-504-summary",
-    "proofId": "erdos-504",
-    "type": "conclusion",
-    "range": { "startLine": 238, "endLine": 274 },
-    "title": "Summary",
-    "content": "Problem SOLVED by Sendov (1993). The answer has a beautiful binary structure: α_N depends on whether N is in the upper part (2^{n-1}+2^{n-3}, 2^n] or lower part (2^{n-1}, 2^{n-1}+2^{n-3}] of each range between powers of 2.",
-    "significance": "key"
+    "range": { "startLine": 221, "endLine": 255 },
+    "title": "Summary Theorem",
+    "content": "erdos_504_summary combines three key results into a single proved statement: (1) Sendov's upper range formula, (2) Sendov's lower range formula, and (3) the existence of a counterexample to the Erdős-Szekeres conjecture. Proved by direct application of the axioms sendov_upper, sendov_lower, and erdos_szekeres_conjecture_false.",
+    "significance": "critical"
   }
 ]
