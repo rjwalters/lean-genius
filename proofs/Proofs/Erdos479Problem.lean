@@ -25,7 +25,7 @@ open Nat Set
 
 namespace Erdos479
 
-/-!
+/-
 ## Background: The Congruence 2^n ≡ k (mod n)
 
 For a given residue k, we ask whether there exist infinitely many n
@@ -42,7 +42,7 @@ For most k, this set is believed to be infinite (Graham's conjecture).
 def SolutionSet (k : ℤ) : Set ℕ :=
   { n : ℕ | n > 0 ∧ (2 : ℤ) ^ n ≡ k [ZMOD n] }
 
-/-!
+/-
 ## Why k = 1 is Impossible
 
 It's easy to prove that 2^n ≢ 1 (mod n) for all n > 1.
@@ -65,7 +65,7 @@ The solution set for k = 1 is empty (except possibly n = 1, which is trivial).
 -/
 axiom solution_set_one_finite : (SolutionSet 1).Finite
 
-/-!
+/-
 ## Known Partial Results
 
 Several special cases of Graham's conjecture have been proved:
@@ -85,7 +85,7 @@ Also proved by Graham, Lehmer, and Lehmer.
 axiom minus_one_infinite :
     { n : ℕ | n > 0 ∧ (2 : ℤ) ^ n ≡ -1 [ZMOD n] }.Infinite
 
-/-!
+/-
 ## The Open Conjecture
 
 Graham's conjecture states that for EVERY k ≠ 1, the solution set is infinite.
@@ -101,7 +101,7 @@ reduced to positive residues by taking k mod n.
 def grahams_conjecture : Prop :=
   ∀ k : ℕ, k > 1 → (SolutionSet k).Infinite
 
-/-!
+/-
 ## Computational Difficulty
 
 The problem is computationally difficult because solutions can be rare.
@@ -127,7 +127,7 @@ For any n < 4700063497, we have 2^n ≢ 3 (mod n).
 axiom three_no_smaller_solutions (n : ℕ) (hn : 0 < n) (hn' : n < 4700063497) :
     n ∉ SolutionSet 3
 
-/-!
+/-
 ## Understanding the Structure
 
 Why is 2^n (mod n) difficult to analyze?
@@ -156,7 +156,7 @@ the set is infinite.
 -/
 axiom solution_set_two_infinite : (SolutionSet 2).Infinite
 
-/-!
+/-
 ## The OEIS Connection
 
 The sequence A036236 in OEIS gives the smallest n for each k:
@@ -182,7 +182,7 @@ So 4 ∈ SolutionSet(0).
 -/
 example : (2 : ℤ) ^ 4 ≡ 0 [ZMOD 4] := by decide
 
-/-!
+/-
 ## Pattern Recognition
 
 Looking at known minimal values from OEIS A036236:
