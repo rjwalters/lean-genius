@@ -22,6 +22,7 @@
     "erdosNumber": 765,
     "erdosUrl": "https://erdosproblems.com/765",
     "erdosProblemStatus": "solved",
+    "dateAdded": "2026-02-05",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
@@ -81,72 +82,63 @@
       "title": "Basic Definitions",
       "startLine": 29,
       "endLine": 56,
-      "summary": "Defines 4-cycles, C₄-free graphs, and edge counting for simple graphs.",
-      "description": "A 4-cycle consists of four distinct vertices v₁,v₂,v₃,v₄ forming a cycle. A graph is C₄-free if it contains no such cycle."
+      "summary": "Defines 4-cycles, C₄-free graphs, and edge counting for simple graphs."
     },
     {
       "id": "extremal-function",
       "title": "Extremal Function ex(n; C₄)",
       "startLine": 58,
-      "endLine": 77,
-      "summary": "Defines the extremal number as the maximum edges in an n-vertex C₄-free graph.",
-      "description": "The extremal function ex(n;C₄) is the central object of study. Its existence is guaranteed by finiteness of the graph space."
+      "endLine": 72,
+      "summary": "Axiomatizes ex(n;C₄) and its realization by C₄-free graphs."
     },
     {
       "id": "historical-bounds",
       "title": "Historical Bounds",
-      "startLine": 79,
-      "endLine": 118,
-      "summary": "Axiomatizes Erdős-Klein, Reiman, and Erdős-Rényi-Brown results establishing n^{3/2} growth.",
-      "description": "The upper bound O(n^{3/2}) was first proved by Erdős-Klein (1938). Reiman (1958) refined the constant. The projective plane construction gives matching lower bounds."
+      "startLine": 74,
+      "endLine": 106,
+      "summary": "Erdős-Klein O(n^{3/2}), Reiman's refined constants, Erdős-Rényi-Brown projective plane construction."
     },
     {
       "id": "asymptotic-formula",
       "title": "The Asymptotic Formula",
-      "startLine": 120,
-      "endLine": 150,
-      "summary": "States and proves the main result: ex(n;C₄) ~ (1/2)n^{3/2}.",
-      "description": "The asymptotic ratio r(n) = ex(n;C₄)/n^{3/2} converges to 1/2. This is the main theorem answering Erdős Problem #765."
+      "startLine": 108,
+      "endLine": 134,
+      "summary": "States and proves the main result: ex(n;C₄) ~ (1/2)n^{3/2}."
     },
     {
       "id": "furedi-exact",
       "title": "Füredi's Exact Result",
-      "startLine": 152,
-      "endLine": 166,
-      "summary": "For large prime powers q, gives exact values of ex(n;C₄) for n = q² + q + 1.",
-      "description": "Füredi (1983) proved that for q > 13, the projective plane construction is exactly optimal: ex(n;C₄) = (1/2)q(q+1)²."
+      "startLine": 136,
+      "endLine": 149,
+      "summary": "Exact values ex(n;C₄) = (1/2)q(q+1)² for q > 13 prime power."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Refined Conjecture",
-      "startLine": 168,
-      "endLine": 196,
-      "summary": "States Erdős's conjecture about lower-order terms and its disproof by Ma-Yang (2023).",
-      "description": "Erdős conjectured ex(n;C₄) = (1/2)n^{3/2} + (1/4)n + O(√n), but Ma-Yang proved this is false for a positive density of n."
+      "startLine": 151,
+      "endLine": 180,
+      "summary": "Erdős's conjecture about lower-order terms and Ma-Yang's disproof (2023)."
     },
     {
       "id": "number-theory",
       "title": "Connection to Number Theory",
-      "startLine": 198,
-      "endLine": 224,
-      "summary": "Describes the historical connection to B₂ sequences and Sidon sets.",
-      "description": "Erdős discovered the n^{3/2} bound while studying B₂ sequences, predating Turán's work by 5 years."
+      "startLine": 182,
+      "endLine": 194,
+      "summary": "B₂ sequences (Sidon sets) and their connection to C₄-free graphs."
     },
     {
       "id": "examples",
       "title": "Examples",
-      "startLine": 226,
-      "endLine": 274,
-      "summary": "Concrete examples: bipartite graphs, Fano plane PG(2,2), PG(2,3), PG(2,4), PG(2,5).",
-      "description": "Multiple projective plane examples prove projectivePlaneVertices formula for q = 2, 3, 4, 5 giving n = 7, 13, 21, 31."
+      "startLine": 196,
+      "endLine": 235,
+      "summary": "Proved examples: Fano plane PG(2,2)=7, PG(2,3)=13, PG(2,4)=21, PG(2,5)=31."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 276,
-      "endLine": 296,
-      "summary": "Consolidates the main results and their implications.",
-      "description": "Problem #765 is SOLVED: ex(n;C₄) ~ (1/2)n^{3/2}, with exact values known for infinitely many n."
+      "startLine": 237,
+      "endLine": 255,
+      "summary": "Proved summary combining asymptotic formula and Fano plane example."
     }
   ],
   "conclusion": {
