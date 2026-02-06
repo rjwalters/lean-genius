@@ -185,65 +185,30 @@ The graph has exactly ℵ₁ many vertices.
 def hasAleph1Vertices (V : Type*) : Prop :=
   Cardinal.mk V = Cardinal.aleph 1
 
-/--
-**Komjáth's Independence Result:**
-For graphs with ℵ₁ vertices, the answer is independent of ZFC.
--/
-axiom komjath_independence_aleph1_vertices :
-    -- The statement "all such graphs have the property" is independent of ZFC
-    -- meaning neither it nor its negation can be proved from ZFC alone
-    True  -- We state the independence informally
+/-- **Komjáth's Independence Result:**
+For graphs with exactly ℵ₁ vertices, the Erdős-Hajnal question is
+independent of ZFC: counterexamples exist in some models but not others.
+We axiomatize one direction (consistency of counterexample). -/
+axiom komjath_aleph1_vertex_counterexample_consistent :
+    -- In some models of ZFC with ℵ₁-vertex graphs:
+    ∃ V : Type*, ∃ G : SimpleGraph V,
+      hasAleph1Vertices V ∧ hasAleph1ChromaticNumber G ∧
+      ¬∃ H : SimpleGraph V, IsSubgraph H G ∧
+        InfinitelyConnected H ∧ hasAleph1ChromaticNumber H
 
 /-!
 ## Part VII: Key Observations
 -/
 
-/--
-**Why counterexamples exist:**
-The key insight is that high chromatic number doesn't force high connectivity.
-
-One can construct graphs where:
-1. χ(G) = ℵ₁ (uncountable chromatic number)
-2. Any infinitely connected subgraph has χ ≤ ℵ₀ (countable chromatic number)
--/
-theorem counterexample_insight :
-    -- Chromatic number and connectivity are somewhat independent
-    True := trivial
-
-/--
-**Soukup's construction idea:**
-Build a "ladder" structure where:
-- The overall graph needs ℵ₁ colors
-- But any infinitely connected piece can be colored with fewer colors
--/
+/-- **Soukup's construction principle:**
+One can build a graph from "ladder" structures of trees where
+the overall graph needs ℵ₁ colors but any infinitely connected
+piece can be colored with fewer colors. -/
 axiom soukup_construction_principle :
     ∃ V : Type*, ∃ G : SimpleGraph V,
-      -- G is built from "trees" arranged so connectivity forces separation
-      hasAleph1ChromaticNumber G
-
-/--
-**Bowler-Pitz simplification:**
-Their example is more elementary and avoids sophisticated set-theoretic machinery.
--/
-axiom bowler_pitz_elementary :
-    -- The construction is "elementary" - uses basic graph theory only
-    True
-
-/-!
-## Part VIII: Related Results
--/
-
-/--
-**Connection to Problem #1068:**
-Related question about similar connectivity vs chromatic number issues.
--/
-def related_1068 : Prop := True
-
-/--
-**Erdős-Hajnal Original (1966):**
-The question originated in their paper on chromatic numbers and set systems.
--/
-def original_erdos_hajnal_1966 : Prop := True
+      hasAleph1ChromaticNumber G ∧
+      ∀ H : SimpleGraph V, IsSubgraph H G →
+        InfinitelyConnected H → ¬hasAleph1ChromaticNumber H
 
 /-!
 ## Part IX: Summary
