@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #976: Greatest Prime Divisor of Polynomial Products
 
 Source: https://erdosproblems.com/976
@@ -32,7 +32,7 @@ import Mathlib.Algebra.Polynomial.Basic
 
 namespace Erdos976
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -66,7 +66,7 @@ def F_f (f : Polynomial ℤ) (n : ℕ) : ℕ :=
   (List.range n).map (fun m => greatestPrimeDivisor (f.eval (m + 1)).natAbs)
     |>.maximum? |>.getD 1
 
-/-!
+/-
 ## Part II: Known Lower Bounds
 -/
 
@@ -98,7 +98,7 @@ axiom tenenbaum_bound (f : Polynomial ℤ) :
     ∃ C c : ℝ, C > 0 ∧ c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       (F_f f n : ℝ) ≥ C * n * Real.exp ((Real.log n) ^ c)
 
-/-!
+/-
 ## Part III: The Main Conjectures
 -/
 
@@ -120,7 +120,7 @@ def conjecture_degree_growth (f : Polynomial ℤ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
     (F_f f n : ℝ) ≥ C * (n : ℝ) ^ (polyDegree f)
 
-/-!
+/-
 ## Part IV: Upper Bounds
 -/
 
@@ -132,7 +132,7 @@ axiom trivial_upper_bound (f : Polynomial ℤ) :
     isIrreducible f → polyDegree f ≥ 2 →
     ∃ C : ℝ, ∀ n : ℕ, (F_f f n : ℝ) ≤ C * (n : ℝ) ^ (polyDegree f)
 
-/-!
+/-
 ## Part V: Computational Examples
 -/
 
@@ -160,7 +160,7 @@ At n = 1000, for degree d = 2:
 example : (1000 : ℕ) * 7 = 7000 := by native_decide  -- ≈ n log n
 example : (1000 : ℕ) ^ 2 = 1000000 := by native_decide  -- n^d for d=2
 
-/-!
+/-
 ## Part VI: Summary
 -/
 
