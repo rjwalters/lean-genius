@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 132,
     "erdosUrl": "https://erdosproblems.com/132",
     "erdosProblemStatus": "open",
@@ -48,27 +48,20 @@
       }
     ],
     "originalContributions": [
-      "Point type: EuclideanSpace ℝ (Fin 2) for planar points",
-      "dist definition: Euclidean distance via norm",
-      "pairsAtDistance: pairs at given distance",
-      "multiplicity: count of pairs at distance d",
-      "isRareDistance: distance occurring 1 to n times",
-      "countRareDistances: number of rare distances",
-      "erdos132_question1/2: formal problem statements",
-      "hopf_pannwitz axiom: max distance ≤ n occurrences",
-      "at_least_one_rare theorem: corollary of Hopf-Pannwitz",
-      "counterexample_n4 axiom: n=4 counterexample",
-      "erdos132_false_for_4 theorem: proves n=4 fails",
-      "erdos_fishburn_5/6 axioms: n=5,6 results",
-      "inConvexPosition definition: convex hull condition",
-      "clemen_dumitrescu_liu_convex axiom: convex case result",
-      "unit_distance_bound: O(n^{4/3}) bound",
-      "guth_katz_distinct_distances: Ω(n/log n) distinct distances",
-      "erdos_132_summary theorem: combines all known results"
+      "Point, dist, pairsAtDistance, multiplicity definitions for planar distance analysis",
+      "dist_symm and dist_nonneg theorems proved from norm properties",
+      "isRareDistance predicate for distances occurring 1 to n times",
+      "erdos132_question1/2 and erdos132_strong_conjecture formal problem statements",
+      "hopf_pannwitz axiom: at least one rare distance exists for n ≥ 2",
+      "counterexample_n4 axiom: n=4 fails (rhombus from two equilateral triangles)",
+      "erdos_fishburn_5/6 axioms for small case verification",
+      "inConvexPosition definition and clemen_dumitrescu_liu_convex axiom",
+      "unit_distance_bound and guth_katz_distinct_distances related bounds",
+      "erdos_132_summary theorem combining Hopf-Pannwitz, counterexample, and small cases"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #132**\n\nThis problem concerns 'rare distances' in finite planar point sets.\n\n**Key History:**\n- Hopf-Pannwitz (1934): Maximum distance occurs ≤ n times\n- Erdős-Pach: Posed the question about a second rare distance\n- Erdős-Fishburn (1995): Proved for n=5,6\n- Clemen-Dumitrescu-Liu (2025): Proved for convex position\n\n**The Prize:**\nErdős offered $100 for 'any nontrivial result' on this problem.\n\n**Related Problems:**\nConnected to the distinct distances problem (Erdős) and the unit distance problem.",
+    "historicalContext": "Erdős Problem #132 concerns 'rare distances' in finite planar point sets — distances that occur at least once but at most n times among the C(n,2) pairs. The foundational result is Hopf and Pannwitz's 1934 theorem ('Aufgabe 167', Jber. Deutsch. Math. Verein.) showing that the maximum distance in any n-point set occurs at most n times, guaranteeing at least one rare distance. The hard question, posed by Erdős and Pach, is whether a SECOND rare distance must exist.\n\nThe problem has a rich history of partial results. Two equilateral triangles sharing an edge provide a 4-point counterexample: the side length occurs 4 times (equaling n, the boundary of 'rare'), and only the maximum distance qualifies as rare. Erdős and Fishburn ('Multiplicities of interpoint distances', 1995) verified the statement for n = 5 and n = 6 through careful case analysis. Erdős offered $100 for 'any nontrivial result', suggesting he considered it accessible yet surprisingly resistant.\n\nThe most significant recent progress is due to Clemen, Dumitrescu, and Liu (2025, arXiv:2505.04283), who proved the statement for points in convex position — where every point is a vertex of the convex hull. The general case for n ≥ 7 remains open. The problem connects to Erdős's distinct distances conjecture (resolved by Guth-Katz, 2015, who showed Ω(n/log n) distinct distances) and the unit distance problem (O(n^{4/3}) occurrences, Spencer-Szemerédi-Trotter). Erdős conjectured there should be at least n^{1-o(1)} rare distances.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet A ⊂ ℝ² be a set of n points.\n\n**Question 1:** Must there exist two distances that each occur at least once but at most n times?\n\n**Question 2:** Does the count of such 'rare' distances → ∞ as n → ∞?\n\n**Known Results:**\n- n = 4: FALSE (two equilateral triangles counterexample)\n- n = 5, 6: TRUE (Erdős-Fishburn 1995)\n- Convex position: TRUE (Clemen-Dumitrescu-Liu 2025)\n- General n ≥ 7: OPEN\n\n**Conjecture:** At least n^{1-o(1)} rare distances exist.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Point Representation:** Use EuclideanSpace ℝ (Fin 2) from Mathlib\n\n2. **Key Definitions:**\n   - multiplicity: count pairs at distance d\n   - isRareDistance: d occurs 1 to n times\n   - inConvexPosition: no point in convex hull of others\n\n3. **Known Results:**\n   - hopf_pannwitz: maximum distance is rare\n   - counterexample_n4: n=4 fails\n   - erdos_fishburn_5/6: small cases work\n   - clemen_dumitrescu_liu_convex: convex case works\n\n4. **Related Bounds:**\n   - Unit distance O(n^{4/3}) upper bound\n   - Guth-Katz Ω(n/log n) distinct distances",
     "keyInsights": [
@@ -85,72 +78,65 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Point type, dist function, dist_symm, dist_nonneg",
-      "startLine": 42,
-      "endLine": 68
+      "summary": "Point type, dist function, symmetry and non-negativity",
+      "startLine": 40,
+      "endLine": 54
     },
     {
       "id": "distance-multiplicity",
       "title": "Distance Multiplicity",
-      "summary": "pairsAtDistance, multiplicity, distancesOccurring",
-      "startLine": 70,
-      "endLine": 93
+      "summary": "pairsAtDistance and multiplicity definitions",
+      "startLine": 56,
+      "endLine": 66
     },
     {
       "id": "rare-distances",
       "title": "Rare Distances",
-      "summary": "isRareDistance, countRareDistances, erdos132_question1/2",
-      "startLine": 95,
-      "endLine": 135
+      "summary": "isRareDistance, erdos132_question1/2, strong conjecture",
+      "startLine": 68,
+      "endLine": 101
     },
     {
       "id": "hopf-pannwitz",
       "title": "Hopf-Pannwitz Theorem",
-      "summary": "maxDistance, hopf_pannwitz axiom, at_least_one_rare theorem",
-      "startLine": 137,
-      "endLine": 167
+      "summary": "At least one rare distance exists for n ≥ 2",
+      "startLine": 103,
+      "endLine": 114
     },
     {
       "id": "counterexample",
       "title": "Counterexample for n=4",
-      "summary": "counterexample_n4, erdos132_false_for_4 theorem",
-      "startLine": 169,
-      "endLine": 204
+      "summary": "Rhombus from two equilateral triangles — only one rare distance",
+      "startLine": 116,
+      "endLine": 128
     },
     {
       "id": "positive-results",
       "title": "Positive Results",
-      "summary": "erdos_fishburn_5, erdos_fishburn_6 for small n",
-      "startLine": 206,
-      "endLine": 224
+      "summary": "Erdős-Fishburn n=5,6 axioms",
+      "startLine": 130,
+      "endLine": 144
     },
     {
       "id": "convex-position",
       "title": "Convex Position",
-      "summary": "inConvexPosition, clemen_dumitrescu_liu_convex axiom",
-      "startLine": 226,
-      "endLine": 257
+      "summary": "inConvexPosition, Clemen-Dumitrescu-Liu 2025 result",
+      "startLine": 146,
+      "endLine": 162
     },
     {
       "id": "related-bounds",
       "title": "Related Bounds",
-      "summary": "distinctDistances, unit_distance_bound, guth_katz_distinct_distances",
-      "startLine": 259,
-      "endLine": 285
-    },
-    {
-      "id": "difficulty",
-      "title": "Why This Is Hard",
-      "summary": "open_problem_difficulty, erdos_conjectured_bound",
-      "startLine": 287,
-      "endLine": 310
+      "summary": "Unit distance O(n^{4/3}) and Guth-Katz Ω(n/log n) distinct distances",
+      "startLine": 164,
+      "endLine": 184
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_132_summary combining all results, erdos_132 main theorem",
-      "startLine": 312,
-      "endLine": 356
+      "summary": "erdos_132_summary combining Hopf-Pannwitz, counterexample, and small cases",
+      "startLine": 186,
+      "endLine": 217
     }
   ],
   "conclusion": {
