@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 784,
     "erdosUrl": "https://erdosproblems.com/784",
     "erdosProblemStatus": "solved",
@@ -76,56 +76,56 @@
       "id": "case-c-equals-1",
       "title": "The Case C = 1",
       "startLine": 75,
-      "endLine": 104,
-      "summary": "States Ruzsa's lower bound and Saias's upper bound giving H₁(x) ≍ x/log x. Mentions Weingartner's conjectured constant c ≈ 0.878."
+      "endLine": 105,
+      "summary": "States Ruzsa's lower bound and Saias's upper bound giving H₁(x) ≍ x/log x. Includes Weingartner's precise asymptotic constant c ≈ 0.878."
     },
     {
       "id": "case-small-c",
       "title": "The Case 0 < C < 1",
-      "startLine": 106,
-      "endLine": 130,
+      "startLine": 107,
+      "endLine": 124,
       "summary": "The trivial case: union bound gives (1-C)x, which beats any polynomial-log bound. Answer is YES for all c."
     },
     {
       "id": "case-large-c",
       "title": "The Case C > 1",
-      "startLine": 132,
-      "endLine": 165,
+      "startLine": 126,
+      "endLine": 156,
       "summary": "Ruzsa's negative answer: H_C(x) ≍ x^{e^{1-C}}/log x. Since e^{1-C} < 1 for C > 1, this is sublinear—no polynomial-log bound exists."
     },
     {
       "id": "schinzel-szekeres",
       "title": "Schinzel-Szekeres Example",
-      "startLine": 167,
-      "endLine": 179,
+      "startLine": 158,
+      "endLine": 172,
       "summary": "The 1959 construction showing the x/(log x)^c bound is best possible (up to the value of c)."
     },
     {
       "id": "trivial-cases",
       "title": "The Trivial Cases",
-      "startLine": 181,
-      "endLine": 198,
+      "startLine": 174,
+      "endLine": 191,
       "summary": "If 1 ∈ A, all elements are divisible. Hence we assume 1 ∉ A (validSet requires a ≥ 2)."
     },
     {
       "id": "connections",
       "title": "Connection to Dense Divisors",
-      "startLine": 200,
-      "endLine": 215,
-      "summary": "Notes connection to Problem #542 and the general principle that reciprocal sums control sieving."
+      "startLine": 193,
+      "endLine": 210,
+      "summary": "Connection to Problem #542 and the phase transition principle for reciprocal sum control of sieving."
     },
     {
       "id": "complete-answer",
       "title": "Complete Answer",
-      "startLine": 217,
-      "endLine": 239,
+      "startLine": 212,
+      "endLine": 234,
       "summary": "Combines all cases: YES for C ≤ 1, NO for C > 1. The transition at C = 1 is sharp."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
-      "startLine": 241,
-      "endLine": 286,
+      "startLine": 236,
+      "endLine": 281,
       "summary": "Complete formalization with both asymptotic formulas and the dichotomous answer to the original question."
     }
   ],
