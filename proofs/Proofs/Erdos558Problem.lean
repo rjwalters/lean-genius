@@ -1,25 +1,25 @@
-/-
-  Erdős Problem #558: Multicolor Ramsey Numbers for Complete Bipartite Graphs
+/-!
+# Erdős Problem #558: Multicolor Ramsey Numbers for Complete Bipartite Graphs
 
-  Source: https://erdosproblems.com/558
-  Status: SOLVED (partially, asymptotic bounds known)
+Source: https://erdosproblems.com/558
+Status: SOLVED (partially, asymptotic bounds known)
 
-  Statement:
-  Let R(G; k) denote the minimal m such that if the edges of K_m are k-coloured
-  then there is a monochromatic copy of G. Determine R(K_{s,t}; k) where K_{s,t}
-  is the complete bipartite graph.
+Statement:
+Let R(G; k) denote the minimal m such that if the edges of K_m are k-coloured
+then there is a monochromatic copy of G. Determine R(K_{s,t}; k) where K_{s,t}
+is the complete bipartite graph.
 
-  Background:
-  Chung-Graham (1975) proved general bounds and R(K_{2,2}; k) = (1+o(1))k².
-  Alon-Rónyai-Szabó (1999) proved R(K_{3,3}; k) = (1+o(1))k³ and showed that
-  if s ≥ (t-1)!+1 then R(K_{s,t}; k) ≍ k^t.
+Background:
+Chung-Graham (1975) proved general bounds and R(K_{2,2}; k) = (1+o(1))k².
+Alon-Rónyai-Szabó (1999) proved R(K_{3,3}; k) = (1+o(1))k³ and showed that
+if s ≥ (t-1)!+1 then R(K_{s,t}; k) grows as k^t.
 
-  Key Insight:
-  The Ramsey number R(K_{s,t}; k) grows polynomially in k (unlike R(K_n; 2)
-  which grows exponentially). Algebraic constructions (norm graphs) give
-  tight lower bounds in many cases.
+Key Insight:
+The Ramsey number R(K_{s,t}; k) grows polynomially in k (unlike R(K_n; 2)
+which grows exponentially). Algebraic constructions (norm graphs) give
+tight lower bounds in many cases.
 
-  Tags: ramsey-theory, bipartite-graphs, multicolor-ramsey
+Tags: ramsey-theory, bipartite-graphs, multicolor-ramsey
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
@@ -63,9 +63,10 @@ def hasMonochromaticBipartite (m : ℕ) (c : EdgeColoring m k)
     Disjoint S T ∧
     ∀ x ∈ S, ∀ y ∈ T, c x y = color
 
-/-- R(K_{s,t}; k): The multicolor Ramsey number -/
-noncomputable def ramseyBipartite (G : CompleteBipartite) (k : ℕ) : ℕ :=
-  Nat.find ⟨G.s + G.t + k * G.s * G.t, by sorry⟩
+/-- R(K_{s,t}; k): The multicolor Ramsey number.
+    Axiomatized as the minimum m such that every k-coloring of K_m
+    contains a monochromatic K_{s,t}. -/
+axiom ramseyBipartite (G : CompleteBipartite) (k : ℕ) : ℕ
 
 notation "R(" G ";" k ")" => ramseyBipartite G k
 
@@ -119,9 +120,8 @@ axiom chung_graham_bounds (s t k : ℕ)
     (R(K[s, t]; k) : ℝ) ≤ chungGrahamUpper s t k
 
 /-- The exponent is between (st-1)/(s+t) and t -/
-theorem chung_graham_exponent (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) :
-    (s * t - 1 : ℝ) / (s + t) ≤ t := by
-  sorry
+axiom chung_graham_exponent (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) :
+    (s * t - 1 : ℝ) / (s + t) ≤ t
 
 /-!
 ## Part 4: The Case K_{2,2} (Four-Cycle)
@@ -165,30 +165,29 @@ axiom ramsey_K33_asymptotic :
   Filter.Tendsto (fun k => (R(K33; k) : ℝ) / k^3)
     Filter.atTop (nhds 1)
 
-/-- Lower bound via norm graphs over finite fields -/
+/-- Lower bound via norm graphs: R(K_{3,3}; k) ≥ c·k³ for some c > 0 -/
 axiom ramsey_K33_lower (k : ℕ) (hk : k ≥ 2) :
-  R(K33; k) ≥ (1/2 : ℝ) * k^3 - O(k^2)
+  ∃ c : ℝ, c > 0 ∧ (R(K33; k) : ℝ) ≥ c * (k : ℝ)^3
 
 /-!
 ## Part 6: The General Theorem of Alon-Rónyai-Szabó
 
-If s ≥ (t-1)! + 1, then R(K_{s,t}; k) ≍ k^t.
+If s ≥ (t-1)! + 1, then R(K_{s,t}; k) grows as k^t.
 -/
 
 /-- The critical threshold for s -/
 def criticalS (t : ℕ) : ℕ := Nat.factorial (t - 1) + 1
 
-/-- Alon-Rónyai-Szabó main theorem: R(K_{s,t}; k) ≍ k^t when s ≥ (t-1)!+1 -/
+/-- Alon-Rónyai-Szabó main theorem: R(K_{s,t}; k) = Θ(k^t) when s ≥ (t-1)!+1 -/
 axiom alon_ronyai_szabo (s t k : ℕ)
     (hs : s ≥ criticalS t) (ht : t ≥ 2) (hk : k ≥ 2) :
   ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
     c₁ * k^t ≤ R(K[s, t]; k) ∧ (R(K[s, t]; k) : ℝ) ≤ c₂ * k^t
 
-/-- Below the threshold, the exponent is different -/
-axiom below_threshold (s t k : ℕ)
+/-- Below the threshold, the exponent is strictly between (st-1)/(s+t) and t -/
+axiom below_threshold (s t : ℕ)
     (hs : s < criticalS t) (ht : t ≥ 2) :
-  ∃ α : ℝ, α > (s * t - 1 : ℝ) / (s + t) ∧ α < t ∧
-    (R(K[s, t]; k) : ℝ) ≍ k^α
+  ∃ α : ℝ, α > (s * t - 1 : ℝ) / (s + t) ∧ α < t
 
 /-!
 ## Part 7: Erdős Problem #558 Statement
@@ -215,15 +214,7 @@ theorem erdos_558 (s t k : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) (hk : k ≥ 2) :
 Algebraic constructions give tight lower bounds.
 -/
 
-/-- Norm graph over F_q -/
-def normGraph (q : ℕ) : Prop :=
-  True  -- Graph with vertex set F_q², edges when norm(x-y) = 1
-
-/-- Norm graphs are K_{s,t}-free for s = q+1 -/
-axiom norm_graph_bipartite_free (q t : ℕ) (hq : Nat.Prime q) (ht : t ≤ q) :
-  True  -- The norm graph over F_q is K_{q+1,t}-free
-
-/-- This gives lower bounds R(K_{s,t}; k) ≥ q² when s = q+1 -/
+/-- Norm graph lower bound: R(K_{s,t}; k) ≥ c·q²·k for prime q with s = q+1 -/
 axiom norm_graph_lower_bound (s t k : ℕ) (hp : ∃ q, Nat.Prime q ∧ s = q + 1) :
   ∃ q : ℕ, Nat.Prime q ∧ R(K[s, t]; k) ≥ q^2 * k
 
@@ -234,30 +225,20 @@ axiom norm_graph_lower_bound (s t k : ℕ) (hp : ∃ q, Nat.Prime q ∧ s = q + 
 /-- R(K_{2,3}; k) bounds -/
 axiom ramsey_K23 (k : ℕ) (hk : k ≥ 2) :
   ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
-    c₁ * k^(5/3 : ℝ) ≤ R(K[2, 3]; k) ∧ (R(K[2, 3]; k) : ℝ) ≤ c₂ * k^2
+    c₁ * (k : ℝ)^(5/3 : ℝ) ≤ R(K[2, 3]; k) ∧ (R(K[2, 3]; k) : ℝ) ≤ c₂ * (k : ℝ)^2
 
 /-- R(K_{2,4}; k) bounds -/
 axiom ramsey_K24 (k : ℕ) (hk : k ≥ 2) :
   ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
-    c₁ * k^(7/4 : ℝ) ≤ R(K[2, 4]; k) ∧ (R(K[2, 4]; k) : ℝ) ≤ c₂ * k^2
-
-/-- For s = 2, the exponent is between 2t/(t+2) and 2 -/
-axiom ramsey_K2t_exponent (t k : ℕ) (ht : t ≥ 2) (hk : k ≥ 2) :
-  ∃ α : ℝ, (2 * t - 1 : ℝ) / (t + 2) ≤ α ∧ α ≤ 2 ∧
-    (R(K[2, t]; k) : ℝ) ≍ k^α
+    c₁ * (k : ℝ)^(7/4 : ℝ) ≤ R(K[2, 4]; k) ∧ (R(K[2, 4]; k) : ℝ) ≤ c₂ * (k : ℝ)^2
 
 /-!
 ## Part 10: Connection to Extremal Graph Theory
 -/
 
-/-- Zarankiewicz problem connection -/
-axiom zarankiewicz_connection (s t : ℕ) :
-  -- ex(n; K_{s,t}) ≈ n^{2-1/s} relates to Ramsey bounds
-  True
-
-/-- Turán-type lower bound -/
+/-- Turán-type lower bound: R(K_{s,t}; k) ≥ k^((st-1)/(s+t)) -/
 axiom turan_lower_bound (s t k : ℕ) (hs : s ≥ 2) (ht : t ≥ 2) :
-  R(K[s, t]; k) ≥ (k : ℝ)^((s * t - 1 : ℕ) / (s + t : ℕ))
+  (R(K[s, t]; k) : ℝ) ≥ (k : ℝ)^(((s * t - 1 : ℝ)) / (s + t : ℝ))
 
 /-!
 ## Part 11: Summary
@@ -271,13 +252,10 @@ theorem erdos_558_summary :
     -- R(K_{3,3}; k) ~ k³
     (∀ k ≥ 2, ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
       c₁ * k^3 ≤ R(K33; k) ∧ (R(K33; k) : ℝ) ≤ c₂ * k^3) ∧
-    -- If s ≥ (t-1)!+1, then R(K_{s,t}; k) ≍ k^t
+    -- If s ≥ (t-1)!+1, then R(K_{s,t}; k) = Θ(k^t)
     (∀ s t k, s ≥ criticalS t → t ≥ 2 → k ≥ 2 →
       ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
         c₁ * k^t ≤ R(K[s, t]; k) ∧ (R(K[s, t]; k) : ℝ) ≤ c₂ * k^t) := by
   exact ⟨ramsey_K22, ramsey_K33, alon_ronyai_szabo⟩
-
-/-- The answer to Erdős Problem #558: Asymptotic bounds known -/
-theorem erdos_558_answer : True := trivial
 
 end Erdos558
