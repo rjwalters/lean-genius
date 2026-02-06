@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 439,
     "erdosUrl": "https://erdosproblems.com/439",
     "erdosProblemStatus": "solved",
@@ -41,18 +41,17 @@
       "FiniteColoring definition via Fin k",
       "IsPerfectSquare and SumIsSquare definitions",
       "HasMonochromaticSquarePair definition",
-      "squareGraph SimpleGraph definition",
-      "HasInfiniteChromaticNumber definition",
-      "ESS 1989 partial results axiomatization",
+      "squareGraph SimpleGraph definition with symmetry/loopless proofs",
+      "ESS 1989 partial results axiomatization (2 and 3 colors)",
       "Khalfalah-Szemerédi main theorem axiomatization",
-      "Polynomial generalization (PolyIsEvenSomewhere)",
-      "k-th power generalization",
-      "kthPowerGraph definition",
-      "Related Problem #438 connection"
+      "Polynomial generalization (PolyIsEvenSomewhere, HasMonochromaticPolyPair)",
+      "k-th power generalization (IsKthPower, kth_power_result)",
+      "kthPowerGraph definition with square_is_second_power theorem",
+      "erdos_439_summary combining main result with ESS partial results"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #439: Monochromatic Square Sums**\n\nThis problem asks about partition regularity of the equation x + y = z². It connects number theory with Ramsey theory via chromatic numbers of infinite graphs.\n\n**Historical Development:**\n- **1977:** Erdős-Silverman conversation (origin)\n- **1989:** Erdős-Sárközy-Sós proved for 2 or 3 colors\n- **2006:** Khalfalah-Szemerédi proved for all finite colorings\n\n**Graph Interpretation:** The square graph G on ℕ where m ~ n iff m + n is a square has χ(G) = ℵ₀.",
+    "historicalContext": "This problem in additive combinatorics and Ramsey theory asks whether the equation x + y = z² is partition regular over the integers: does every finite coloring of ℤ contain a monochromatic solution with x ≠ y? The question originated from discussions between Erdős and Silverman around 1977, and connects number-theoretic structure of squares with chromatic properties of infinite graphs.\n\nErdős, Sárközy, and Sós made the first progress in 1989, proving the result for 2- and 3-colorings using Fourier-analytic methods and density arguments. Their approach exploited the fact that the set of integers representable as differences of two squares is dense enough to force monochromatic pairs in few colors, but the method did not extend to arbitrary finite colorings.\n\nKhalfalah and Szemerédi resolved the problem completely in 2006, proving that for any finite k-coloring, monochromatic pairs x ≠ y with x + y a perfect square must exist. Their proof combined the regularity method with careful counting of square-sum representations. They also proved a sweeping generalization: the result holds whenever z² is replaced by f(z) for any non-constant integer polynomial f satisfying 2 | f(z) for some z ∈ ℤ. This includes k-th powers for all k ≥ 2.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nIs it true that, in any finite coloring of the integers, there must be two distinct integers x ≠ y of the same color such that x + y is a perfect square? What about a k-th power?\n\n**Solution (Khalfalah-Szemerédi 2006):**\nYES! For any finite k-coloring, such monochromatic pairs exist.\n\n**Generalization:** Works for any non-constant polynomial f(z) ∈ ℤ[z] with 2 | f(z) for some z.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Colorings:** Define k-colorings as functions ℤ → Fin k.\n\n2. **Square Sums:** Define SumIsSquare predicate.\n\n3. **Monochromatic Pairs:** Define HasMonochromaticSquarePair.\n\n4. **Square Graph:** Define as SimpleGraph where m ~ n iff m + n is a square.\n\n5. **Partial Results:** Axiomatize ESS 1989 for 2 and 3 colors.\n\n6. **Main Theorem:** Axiomatize Khalfalah-Szemerédi for all k.\n\n7. **Generalizations:** Extend to polynomials and k-th powers.",
     "keyInsights": [
@@ -70,57 +69,57 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Colorings, perfect squares, monochromatic pairs",
-      "startLine": 38,
-      "endLine": 67
+      "startLine": 36,
+      "endLine": 63
     },
     {
       "id": "square-graph",
       "title": "The Square Graph",
-      "summary": "Graph where m ~ n iff m + n is a square",
-      "startLine": 69,
-      "endLine": 91
+      "summary": "SimpleGraph where m ~ n iff m + n is a perfect square",
+      "startLine": 65,
+      "endLine": 78
     },
     {
       "id": "ess-1989",
       "title": "ESS Partial Results (1989)",
-      "summary": "2 and 3 colors",
-      "startLine": 93,
-      "endLine": 109
+      "summary": "Axiomatized results for 2 and 3 colors",
+      "startLine": 80,
+      "endLine": 94
     },
     {
       "id": "main-theorem",
       "title": "Khalfalah-Szemerédi Theorem",
       "summary": "Main result for all finite colorings",
-      "startLine": 111,
-      "endLine": 134
+      "startLine": 96,
+      "endLine": 109
     },
     {
       "id": "polynomial-generalization",
       "title": "Polynomial Generalization",
-      "summary": "x + y = f(z) for polynomials",
-      "startLine": 136,
-      "endLine": 162
+      "summary": "x + y = f(z) for polynomials with evenness condition",
+      "startLine": 111,
+      "endLine": 135
     },
     {
       "id": "kth-powers",
       "title": "k-th Powers",
-      "summary": "Sums being k-th powers",
-      "startLine": 164,
-      "endLine": 195
+      "summary": "Monochromatic pairs with k-th power sums",
+      "startLine": 137,
+      "endLine": 167
     },
     {
       "id": "graph-perspective",
       "title": "Graph Perspective",
-      "summary": "k-th power graphs",
-      "startLine": 197,
-      "endLine": 222
+      "summary": "k-th power graphs and square_is_second_power theorem",
+      "startLine": 169,
+      "endLine": 192
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Problem status and main results",
-      "startLine": 259,
-      "endLine": 293
+      "summary": "Combined summary: main result with ESS partial results",
+      "startLine": 194,
+      "endLine": 225
     }
   ],
   "conclusion": {

@@ -1,206 +1,86 @@
 [
   {
-    "id": "finite-coloring-def",
+    "id": "ann-439-1",
     "proofId": "erdos-439",
-    "range": {
-      "startLine": 42,
-      "endLine": 46
-    },
-    "type": "definition",
-    "title": "Finite Coloring",
-    "content": "A k-coloring of ℤ assigns one of k colors to each integer. Formally, it's a function c : ℤ → Fin k. This is the standard setup for partition regularity problems in Ramsey theory. The question asks what patterns must appear within some color class.",
-    "significance": "core"
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #439: Monochromatic Solutions to x + y = z²**\n\nIn any finite coloring of ℤ, must there exist distinct x ≠ y of the same color with x + y a perfect square? The answer is YES, proved by Khalfalah-Szemerédi (2006). The formalization defines colorings, square-sum predicates, and the square graph, then axiomatizes the ESS partial results and the full Khalfalah-Szemerédi theorem.",
+    "mathContext": "This is a partition regularity problem: the equation x + y = z² is partition regular over ℤ. Equivalently, the square graph on ℕ (where m ~ n iff m + n is a square) has infinite chromatic number.",
+    "significance": "critical",
+    "relatedConcepts": ["Partition regularity", "Ramsey theory", "Chromatic number", "Additive combinatorics"]
   },
   {
-    "id": "perfect-square-def",
+    "id": "ann-439-2",
     "proofId": "erdos-439",
-    "range": {
-      "startLine": 48,
-      "endLine": 52
-    },
+    "range": { "startLine": 42, "endLine": 63 },
     "type": "definition",
-    "title": "Perfect Square",
-    "content": "A natural number m is a perfect square if m = n² for some n. Examples: 1, 4, 9, 16, 25, 36, ... The density of squares up to N is about √N, making them sparse but still present in arithmetic structures.",
-    "significance": "core"
+    "title": "Core Definitions",
+    "content": "**FiniteColoring k:** A function ℤ → Fin k assigning one of k colors to each integer. **IsPerfectSquare m:** m = n·n for some n ∈ ℕ. **SumIsSquare x y:** x + y = n·n for some n ∈ ℕ (using integer cast). **HasMonochromaticSquarePair c:** There exist distinct x ≠ y with c(x) = c(y) and x + y a perfect square. These definitions set up the partition regularity framework.",
+    "significance": "key"
   },
   {
-    "id": "sum-is-square-def",
+    "id": "ann-439-3",
     "proofId": "erdos-439",
-    "range": {
-      "startLine": 54,
-      "endLine": 59
-    },
-    "type": "definition",
-    "title": "Sum is Square",
-    "content": "Two integers x, y satisfy the property if their sum x + y is a perfect square. For example, 2 + 7 = 9 = 3². The problem asks whether any finite coloring must have a monochromatic such pair.",
-    "significance": "core"
-  },
-  {
-    "id": "monochromatic-pair-def",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 61,
-      "endLine": 67
-    },
-    "type": "definition",
-    "title": "Monochromatic Square-Sum Pair",
-    "content": "A coloring has a monochromatic square-sum pair if there exist distinct x ≠ y with the same color and x + y a perfect square. This is the main object of study - proving such pairs exist for any finite coloring.",
-    "significance": "core"
-  },
-  {
-    "id": "square-graph-def",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 73,
-      "endLine": 84
-    },
+    "range": { "startLine": 71, "endLine": 78 },
     "type": "definition",
     "title": "Square Graph",
-    "content": "The square graph on ℕ has m ~ n iff m + n is a perfect square. This is a concrete SimpleGraph definition using Adj predicate. The graph encodes all pairs whose sum is a square, making coloring questions equivalent to chromatic number questions.",
-    "significance": "core"
+    "content": "**squareGraph : SimpleGraph ℕ** with Adj m n := m ≠ n ∧ IsPerfectSquare (m + n). Symmetry follows from add_comm and neq symmetry. Looplessness holds because m ≠ m is false. This graph encodes the problem: a proper k-coloring of squareGraph would avoid monochromatic square-sum pairs, but the Khalfalah-Szemerédi theorem shows no such finite coloring exists.",
+    "significance": "key"
   },
   {
-    "id": "infinite-chromatic-def",
+    "id": "ann-439-4",
     "proofId": "erdos-439",
-    "range": {
-      "startLine": 86,
-      "endLine": 91
-    },
-    "type": "definition",
-    "title": "Infinite Chromatic Number",
-    "content": "A graph has infinite chromatic number if for every k ≥ 1, any k-coloring contains a monochromatic edge. The main result implies the square graph has χ(G) = ℵ₀. No finite number of colors suffices to avoid monochromatic square-sum pairs.",
-    "significance": "core"
+    "range": { "startLine": 86, "endLine": 94 },
+    "type": "axiom",
+    "title": "ESS Partial Results (1989)",
+    "content": "**ess_two_colors** and **ess_three_colors:** Erdős, Sárközy, and Sós (1989) proved that for 2- and 3-colorings of ℤ, monochromatic square-sum pairs exist. Their method used Fourier analysis on cyclic groups and density arguments. These partial results were the state of the art for 17 years before the general theorem.",
+    "significance": "key"
   },
   {
-    "id": "ess-two-colors",
+    "id": "ann-439-5",
     "proofId": "erdos-439",
-    "range": {
-      "startLine": 97,
-      "endLine": 102
-    },
-    "type": "theorem",
-    "title": "ESS: 2 Colors",
-    "content": "Erdős-Sárközy-Sós (1989) proved that for 2 colors, there exist distinct x ≠ y of the same color with x + y = z². This was a partial result on the way to the full theorem.",
-    "significance": "standard"
-  },
-  {
-    "id": "ess-three-colors",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 104,
-      "endLine": 109
-    },
-    "type": "theorem",
-    "title": "ESS: 3 Colors",
-    "content": "ESS also proved the result for 3 colors. The general case for k colors required more sophisticated techniques and was not resolved until 2006.",
-    "significance": "standard"
-  },
-  {
-    "id": "khalfalah-szemeredi",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 117,
-      "endLine": 125
-    },
-    "type": "theorem",
+    "range": { "startLine": 108, "endLine": 109 },
+    "type": "axiom",
     "title": "Khalfalah-Szemerédi Theorem (2006)",
-    "content": "The main result: for any finite k-coloring of the integers, there exist distinct x ≠ y of the same color with x + y a perfect square. This resolved Problem #439, proving the square graph has infinite chromatic number.",
-    "significance": "core"
+    "content": "**khalfalah_szemeredi (k : ℕ) (hk : k ≥ 1):** For any k ≥ 1 and any k-coloring c of ℤ, there exist distinct x ≠ y with c(x) = c(y) and x + y a perfect square. This is the main result solving Problem #439. The proof combines Szemerédi's regularity lemma with careful counting of square-sum representations in arithmetic progressions.",
+    "mathContext": "The theorem implies the square graph has infinite chromatic number: χ(squareGraph) = ℵ₀.",
+    "significance": "critical"
   },
   {
-    "id": "poly-condition",
+    "id": "ann-439-6",
     "proofId": "erdos-439",
-    "range": {
-      "startLine": 140,
-      "endLine": 145
-    },
-    "type": "definition",
-    "title": "Polynomial Condition",
-    "content": "A polynomial f(z) satisfies the condition if 2 | f(z) for some integer z. This means f takes an even value somewhere. Examples: z² (takes 0 at z=0), z³ (takes 0 at z=0), z² + 1 (takes 2 at z=1). This is the key condition for the generalization.",
-    "significance": "standard"
+    "range": { "startLine": 117, "endLine": 135 },
+    "type": "concept",
+    "title": "Polynomial Generalization",
+    "content": "**PolyIsEvenSomewhere f:** ∃ z : ℤ, 2 ∣ f(z) — the function f takes an even value somewhere. **HasMonochromaticPolyPair c f:** There exist distinct x ≠ y with same color and x + y = f(z) for some z. **khalfalah_szemeredi_general:** For any non-constant integer polynomial f satisfying the evenness condition, any finite coloring yields monochromatic f-pairs. The evenness condition is necessary: if f is always odd, then coloring by parity avoids monochromatic pairs.",
+    "significance": "key"
   },
   {
-    "id": "ks-general",
+    "id": "ann-439-7",
     "proofId": "erdos-439",
-    "range": {
-      "startLine": 155,
-      "endLine": 162
-    },
+    "range": { "startLine": 143, "endLine": 167 },
+    "type": "concept",
+    "title": "k-th Power Generalization",
+    "content": "**IsKthPower m k:** m = n^k for some n. **SumIsKthPower x y k:** x + y = n^k as integers. **HasMonochromaticKthPowerPair c k:** Monochromatic pair whose sum is a k-th power. **kth_power_result:** For k ≥ 2 and any finite coloring, such pairs exist. This answers the 'what about k-th powers?' part of the original problem, following from the polynomial generalization since f(z) = z^k satisfies 2 | f(0).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-439-8",
+    "proofId": "erdos-439",
+    "range": { "startLine": 175, "endLine": 192 },
     "type": "theorem",
-    "title": "Khalfalah-Szemerédi General",
-    "content": "The general theorem: for any non-constant polynomial f(z) ∈ ℤ[z] with 2 | f(z) for some z, any finite coloring has a monochromatic pair with x + y = f(z). This vastly generalizes the square result to all suitable polynomials.",
-    "significance": "core"
+    "title": "k-th Power Graph and Square Connection",
+    "content": "**kthPowerGraph k:** SimpleGraph ℕ where m ~ n iff m + n is a k-th power, with symmetry and looplessness proofs. **square_is_second_power:** squareGraph = kthPowerGraph 2, proved by extensionality and converting between n·n and n^2 via pow_two. This formally connects the two graph definitions.",
+    "significance": "supporting"
   },
   {
-    "id": "kth-power-def",
+    "id": "ann-439-9",
     "proofId": "erdos-439",
-    "range": {
-      "startLine": 168,
-      "endLine": 172
-    },
-    "type": "definition",
-    "title": "k-th Power",
-    "content": "A number is a k-th power if m = n^k for some n. Squares are k=2, cubes are k=3, etc. The sparsity increases with k: density of k-th powers up to N is about N^{1/k}.",
-    "significance": "standard"
-  },
-  {
-    "id": "kth-power-result",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 189,
-      "endLine": 195
-    },
+    "range": { "startLine": 215, "endLine": 223 },
     "type": "theorem",
-    "title": "k-th Powers Result",
-    "content": "For any k ≥ 2, any finite coloring has distinct x ≠ y of the same color with x + y a k-th power. This answers the 'what about k-th powers?' part of the original question affirmatively.",
-    "significance": "standard"
-  },
-  {
-    "id": "kth-power-graph",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 201,
-      "endLine": 212
-    },
-    "type": "definition",
-    "title": "k-th Power Graph",
-    "content": "The k-th power graph has m ~ n iff m + n is a k-th power. The square graph is the special case k=2. All these graphs have infinite chromatic number by the general polynomial theorem.",
-    "significance": "standard"
-  },
-  {
-    "id": "square-second-power",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 214,
-      "endLine": 222
-    },
-    "type": "theorem",
-    "title": "Square is Second Power",
-    "content": "The square graph equals the 2nd power graph, since n² = n^2. This theorem formally connects the two definitions, showing they describe the same graph structure.",
-    "significance": "advanced"
-  },
-  {
-    "id": "related-438",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 228,
-      "endLine": 239
-    },
-    "type": "insight",
-    "title": "Related Problem #438",
-    "content": "Problem #438 asks about differences: x - y = z² instead of sums. Both problems concern partition regularity of quadratic equations. The techniques for sums and differences are related but not identical.",
-    "significance": "advanced"
-  },
-  {
-    "id": "summary-theorem",
-    "proofId": "erdos-439",
-    "range": {
-      "startLine": 284,
-      "endLine": 292
-    },
-    "type": "insight",
-    "title": "Problem Summary",
-    "content": "Erdős Problem #439 was SOLVED by Khalfalah-Szemerédi in 2006. The theorem proves partition regularity of x + y = z², showing the square graph has infinite chromatic number. This generalizes to any polynomial f(z) with 2 | f(z) for some z.",
-    "significance": "core"
+    "title": "Summary Theorem",
+    "content": "**erdos_439_summary:** Packages three facts: (1) the Khalfalah-Szemerédi theorem for all k ≥ 1, (2) the ESS 2-color result, and (3) the ESS 3-color result. The proof uses refine to split the conjunction, then applies khalfalah_szemeredi for the first component and the ESS axioms for the other two.",
+    "significance": "critical"
   }
 ]
