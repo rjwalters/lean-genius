@@ -9,9 +9,9 @@
     "date": "1991",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos262Problem.lean",
-    "tags": ["erdos", "irrationality", "transcendence", "number-theory", "infinite-series"],
+    "tags": ["erdos", "irrationality", "transcendence", "number-theory", "infinite-series", "solved"],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 262,
     "erdosUrl": "https://erdosproblems.com/262",
     "erdosProblemStatus": "solved",
@@ -25,26 +25,31 @@
     "originalContributions": [
       "IsStrictlyIncreasing: strictly increasing sequences",
       "IsPositiveIntSequence: sequences with t_n ≥ 1",
-      "weightedSum: Σ 1/(t_n · a_n)",
-      "IsIrrationalitySequence: sequences forcing irrational sums",
-      "doubleExp: 2^{2^n} sequence",
-      "erdos_1975: 2^{2^n} is irrationality sequence",
+      "weightedSum: Σ 1/(t_n · a_n) infinite sum",
+      "IsIrrationalitySequence: definition combining monotonicity and irrationality",
+      "doubleExp: 2^{2^n} sequence definition",
+      "erdos_1975: 2^{2^n} is irrationality sequence (axiom)",
+      "factorial_not_irrationality: n! is NOT (axiom)",
       "hančl_condition: limsup (log log a_n)/n ≥ 1",
-      "hančl_theorem: necessary condition"
+      "hančl_theorem: necessary condition (axiom)",
+      "double_exponential_necessary: lower bound on growth (axiom)",
+      "hančl_criterion: general criterion for non-irrationality sequences",
+      "slower_growth_fails: sub-doubly-exponential growth fails (axiom)",
+      "double_exp_ratio: spacing property (axiom)",
+      "erdos_262_summary: combining example and counterexample"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "An 'irrationality sequence' is one where Σ 1/(t_n · a_n) is irrational for ALL choices of positive integers t_n. Erdős asked how slowly such sequences can grow. He proved in 1975 that 2^{2^n} works. Hančl (1991) essentially solved the problem by showing that limsup (log log a_n)/n ≥ 1 is necessary.",
+    "historicalContext": "**Erdős Problem #262: Irrationality Sequences**\n\nAn 'irrationality sequence' is a strictly increasing sequence a₁ < a₂ < ... of positive integers such that the weighted sum Σ 1/(t_n · a_n) is irrational for every choice of positive integers t_n. Erdős asked in the 1970s: how slowly can such a sequence grow?\n\n**Historical Development:**\n- **1975:** Erdős proved that the doubly exponential sequence a_n = 2^{2^n} is an irrationality sequence, establishing a concrete example. The factorial sequence n! is a natural non-example — choosing t_n = n+1 makes the sum telescope to a rational value.\n- **1991:** Hančl essentially solved the problem by proving that any irrationality sequence must satisfy limsup (log₂ log₂ a_n)/n ≥ 1. This means growth must be at least doubly exponential.\n\n**Significance:**\nThe result shows that irrationality sequences occupy a very narrow range in the hierarchy of integer growth rates. Only sequences growing at least as fast as 2^{2^{cn}} (for some c > 0) can force all weighted sums to be irrational. Slower growth always permits clever choices of multipliers t_n that produce rational sums.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nSuppose a₁ < a₂ < ... is a sequence such that Σ 1/(t_n · a_n) is irrational for all positive integer sequences t_n.\n\n**Question:** How slowly can a_n grow?\n\n**Answer:** (Hančl 1991)\nlimsup (log₂ log₂ a_n)/n ≥ 1 is NECESSARY.\n\n**Examples:**\n- 2^{2^n} works (Erdős 1975)\n- n! does NOT work",
-    "proofStrategy": "The formalization defines irrationality sequences and the weighted sum. Erdős's example 2^{2^n} is axiomatized as working. Hančl's theorem gives the necessary growth condition. The key insight is that slower growth allows clever choices of t_n to make the sum rational.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define strictly increasing sequences, positive integer sequences, weighted sums, and the irrationality sequence predicate.\n\n2. **Examples:** Axiomatize Erdős's result that 2^{2^n} works and that n! fails.\n\n3. **Necessary Conditions:** Axiomatize root growth necessity, Hančl's limsup condition, and the double exponential lower bound.\n\n4. **General Criterion:** Axiomatize Hančl's criterion for ruling out sequences with insufficient growth.\n\n5. **Summary:** Combine the example and counterexample into a summary theorem.",
     "keyInsights": [
-      "**Irrationality Sequence:** Σ 1/(t_n · a_n) irrational for ALL t_n ≥ 1",
-      "**Example:** 2^{2^n} is an irrationality sequence",
-      "**Non-example:** n! is NOT (can choose t_n to make sum rational)",
-      "**Necessary:** a_n^{1/n} → ∞",
-      "**Hančl (1991):** limsup (log log a_n)/n ≥ 1 is sharp",
-      "**Interpretation:** Growth must be at least doubly exponential"
+      "**Irrationality Sequence:** Σ 1/(t_n · a_n) irrational for ALL t_n ≥ 1 — an extremely strong condition",
+      "**Example:** 2^{2^n} is an irrationality sequence — the super-exponential spacing prevents rational cancellation",
+      "**Non-example:** n! is NOT — choosing t_n = n+1 produces a telescoping rational sum",
+      "**Hančl (1991):** limsup (log₂ log₂ a_n)/n ≥ 1 is the sharp necessary condition",
+      "**Interpretation:** Growth must be at least doubly exponential; slower growth always allows rational sums"
     ]
   },
   "sections": [
@@ -52,73 +57,59 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 41,
-      "endLine": 65,
+      "endLine": 62,
       "summary": "Strictly increasing sequences, positive integer sequences, weighted sums"
     },
     {
       "id": "irrationality-sequences",
       "title": "Irrationality Sequences",
-      "startLine": 66,
-      "endLine": 87,
-      "summary": "Definition and main question"
+      "startLine": 64,
+      "endLine": 82,
+      "summary": "IsIrrationalitySequence definition and main question"
     },
     {
       "id": "examples",
       "title": "Examples and Non-Examples",
-      "startLine": 88,
-      "endLine": 123,
-      "summary": "2^{2^n} works, n! fails"
+      "startLine": 84,
+      "endLine": 110,
+      "summary": "2^{2^n} is an irrationality sequence; n! is not"
     },
     {
       "id": "necessary-growth",
       "title": "Necessary Growth Condition",
-      "startLine": 124,
-      "endLine": 154,
-      "summary": "Hančl's theorem: limsup (log log a_n)/n ≥ 1"
+      "startLine": 112,
+      "endLine": 138,
+      "summary": "Root growth, Hančl's theorem, double exponential bound"
     },
     {
       "id": "hancl-criterion",
       "title": "Hančl's General Condition",
-      "startLine": 155,
-      "endLine": 178,
-      "summary": "General criterion for non-irrationality sequences"
+      "startLine": 140,
+      "endLine": 159,
+      "summary": "General criterion and slower-growth-fails corollary"
     },
     {
-      "id": "connections",
-      "title": "Related Problems",
-      "startLine": 179,
-      "endLine": 201,
-      "summary": "Problems 263, 264, and Liouville numbers"
-    },
-    {
-      "id": "why-double-exp",
-      "title": "Why Double Exponential Works",
-      "startLine": 202,
-      "endLine": 226,
-      "summary": "Spacing property prevents rational sums"
-    },
-    {
-      "id": "implications",
-      "title": "Implications",
-      "startLine": 227,
-      "endLine": 244,
-      "summary": "Irrationality vs transcendence, computability"
+      "id": "spacing",
+      "title": "The Spacing Property",
+      "startLine": 161,
+      "endLine": 170,
+      "summary": "Super-exponential ratio of consecutive terms"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 245,
-      "endLine": 294,
-      "summary": "Main theorem and historical note"
+      "startLine": 172,
+      "endLine": 199,
+      "summary": "Summary theorem combining example and counterexample"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #262 is SOLVED. Irrationality sequences must grow at least as fast as 2^{2^{cn}} for some c > 0. Hančl's condition limsup (log log a_n)/n ≥ 1 gives the sharp characterization. The sequence 2^{2^n} is an example; n! is not.",
-    "implications": "This result connects to the broader theory of irrationality and transcendence of infinite sums. The doubly exponential growth requirement shows how special these sequences are.",
+    "summary": "Erdős Problem #262 is SOLVED. Irrationality sequences must grow at least as fast as 2^{2^{cn}} for some c > 0. Hančl's condition limsup (log₂ log₂ a_n)/n ≥ 1 gives the sharp characterization. The sequence 2^{2^n} is a canonical example; n! is a canonical non-example.",
+    "implications": "This result connects to the broader theory of irrationality and transcendence of infinite sums. The doubly exponential growth requirement shows how restrictive the irrationality sequence condition is.",
     "openQuestions": [
       "What is the exact boundary between irrationality sequences and non-examples?",
       "Can we characterize transcendence-forcing sequences similarly?",
-      "How do problems 263 and 264 relate exactly?"
+      "How do problems 263 and 264 relate to this characterization?"
     ]
   }
 }

@@ -1,94 +1,79 @@
 [
   {
-    "id": "ann-262-1",
+    "id": "ann-e262-header",
     "proofId": "erdos-262",
     "range": { "startLine": 1, "endLine": 29 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #262: Irrationality Sequences**\n\n**Definition:** a_n is an 'irrationality sequence' if Σ 1/(t_n · a_n) is irrational for ALL positive integer sequences t_n.\n\n**Question:** How slowly can such sequences grow?\n\n**Answer:** limsup (log₂ log₂ a_n)/n ≥ 1 (Hančl 1991)",
-    "mathContext": "This is one of several definitions of 'irrationality sequence' studied by Erdős. The key is that the sum must be irrational for ALL choices of multipliers.",
+    "content": "**Erdős Problem #262** asks: how slowly can an irrationality sequence grow? An irrationality sequence is a strictly increasing sequence a_n such that Σ 1/(t_n · a_n) is irrational for ALL choices of positive integers t_n. Erdős proved 2^{2^n} works (1975), and Hančl (1991) showed that limsup (log₂ log₂ a_n)/n ≥ 1 is necessary — meaning doubly exponential growth is required.",
+    "mathContext": "The problem sits at the intersection of number theory, irrationality theory, and infinite series. The universality condition (for ALL t_n) makes this much stronger than asking for a single irrational sum.",
     "significance": "critical",
-    "relatedConcepts": ["Irrationality", "Transcendence", "Liouville numbers", "Infinite series"]
+    "relatedConcepts": ["Irrationality", "Infinite series", "Growth rates", "Doubly exponential"]
   },
   {
-    "id": "ann-262-2",
+    "id": "ann-e262-definitions",
     "proofId": "erdos-262",
-    "range": { "startLine": 59, "endLine": 65 },
+    "range": { "startLine": 41, "endLine": 62 },
     "type": "definition",
-    "title": "Weighted Sum",
-    "content": "**weightedSum a t:**\n\nΣ_{n=1}^∞ 1/(t_n · a_n)\n\nThis sum depends on both the base sequence a_n and the 'multiplier' sequence t_n ≥ 1.\n\nFor an irrationality sequence, this must be irrational for ALL t.",
-    "significance": "critical"
+    "title": "Basic Definitions",
+    "content": "Three foundational definitions:\n\n1. **IsStrictlyIncreasing a**: ∀ n < m, a(n) < a(m). Ensures distinct denominators.\n\n2. **IsPositiveIntSequence t**: ∀ n, t(n) ≥ 1. The multiplier sequence — each t_n is a positive integer.\n\n3. **weightedSum a t**: Σ_{n=0}^∞ 1/(t_n · a_n). This is the sum whose irrationality is being tested. Uses Mathlib's tsum (infinite series) with real-valued terms.",
+    "mathContext": "The weighted sum uses tsum from Mathlib.Topology.Algebra.InfiniteSum.Basic. The noncomputable annotation is needed because tsum relies on classical choice for convergence.",
+    "significance": "critical",
+    "relatedConcepts": ["tsum", "Summable", "ℕ → ℕ"]
   },
   {
-    "id": "ann-262-3",
+    "id": "ann-e262-irrationality-seq",
     "proofId": "erdos-262",
-    "range": { "startLine": 70, "endLine": 78 },
+    "range": { "startLine": 64, "endLine": 82 },
     "type": "definition",
-    "title": "Irrationality Sequence",
-    "content": "**IsIrrationalitySequence a:**\n\na_n is strictly increasing AND\nΣ 1/(t_n · a_n) is irrational for ALL positive integer sequences t_n.\n\nThis is a very strong condition - the sum must be irrational no matter how we choose the multipliers.",
-    "significance": "critical"
+    "title": "Irrationality Sequences",
+    "content": "**IsIrrationalitySequence a** combines two conditions: a must be strictly increasing AND Σ 1/(t_n · a_n) must be irrational for ALL positive integer sequences t_n. This is an extremely strong condition — it requires irrationality regardless of how the multipliers t_n are chosen.\n\nThe **mainQuestion** asks whether there exists an optimal (slowest-growing) irrationality sequence that eventually dominates all others.",
+    "mathContext": "The universality over all t makes this much harder than finding a single irrational sum. The Irrational predicate from Mathlib.Data.Real.Irrational ensures the sum is not rational.",
+    "significance": "critical",
+    "relatedConcepts": ["Irrational", "Universal quantification", "Growth rate"]
   },
   {
-    "id": "ann-262-4",
+    "id": "ann-e262-examples",
     "proofId": "erdos-262",
-    "range": { "startLine": 92, "endLine": 103 },
+    "range": { "startLine": 84, "endLine": 110 },
     "type": "axiom",
-    "title": "Erdős's Example: 2^{2^n}",
-    "content": "**erdos_1975:**\n\nThe doubly exponential sequence a_n = 2^{2^n} IS an irrationality sequence.\n\nThe terms: 2, 4, 16, 256, 65536, ...\n\nProved by Erdős in 1975. The rapid growth prevents rational sums.",
-    "significance": "critical"
+    "title": "Examples and Non-Examples",
+    "content": "Two key results axiomatized:\n\n1. **erdos_1975:** The doubly exponential sequence a_n = 2^{2^n} (i.e., 2, 4, 16, 256, 65536, ...) IS an irrationality sequence. The terms grow so fast that no choice of t_n can produce a rational sum. Proved by Erdős in 1975.\n\n2. **factorial_not_irrationality:** The factorial sequence a_n = n! is NOT an irrationality sequence. Choosing t_n = n+1 gives a telescoping series Σ 1/((n+1)·n!) = Σ (1/n! − 1/(n+1)!) which converges to a rational value.",
+    "mathContext": "The doubleExp function computes 2^(2^n) using Lean's natural number exponentiation. The factorial_seq uses Nat.factorial from Mathlib.",
+    "significance": "critical",
+    "relatedConcepts": ["doubleExp", "Nat.factorial", "Telescoping series"]
   },
   {
-    "id": "ann-262-5",
+    "id": "ann-e262-hancl",
     "proofId": "erdos-262",
-    "range": { "startLine": 104, "endLine": 123 },
+    "range": { "startLine": 112, "endLine": 138 },
     "type": "axiom",
-    "title": "Counterexample: n!",
-    "content": "**factorial_not_irrationality:**\n\nThe factorial sequence a_n = n! is NOT an irrationality sequence.\n\n**Why?** We can choose t_n cleverly to make the sum rational.\n\nFor example: t_n = n+1 gives a telescoping series, yielding a rational sum.",
-    "significance": "critical"
+    "title": "Hančl's Theorem and Growth Bounds",
+    "content": "Three necessary conditions for irrationality sequences:\n\n1. **root_growth_necessary:** a_n^{1/n} → ∞. Even exponential growth (like 2^n) is not enough.\n\n2. **hančl_theorem (1991):** The sharp condition limsup (log₂ log₂ a_n)/n ≥ 1. This essentially says a_n must grow at least as fast as 2^{2^n}. The condition is formulated as: for every ε > 0, eventually log₂(log₂(a_n))/n ≥ 1 − ε.\n\n3. **double_exponential_necessary:** There exists c > 0 such that eventually a_n ≥ 2^{2^{cn}}. This is the quantitative version of Hančl's condition.",
+    "mathContext": "Hančl's condition uses iterated logarithms (Real.log composed twice) divided by Real.log 2 to convert to base-2. The double exponential bound uses Real.rpow for real exponentiation.",
+    "significance": "critical",
+    "relatedConcepts": ["Real.log", "Real.rpow", "Filter.atTop", "limsup"]
   },
   {
-    "id": "ann-262-6",
+    "id": "ann-e262-criterion",
     "proofId": "erdos-262",
-    "range": { "startLine": 128, "endLine": 146 },
-    "type": "axiom",
-    "title": "Hančl's Theorem",
-    "content": "**hančl_theorem (1991):**\n\nAny irrationality sequence must satisfy:\n\nlimsup_{n→∞} (log₂ log₂ a_n)/n ≥ 1\n\n**Interpretation:** a_n must grow at least as fast as 2^{2^{cn}} for some c > 0.\n\nThis essentially solves the problem - doubly exponential growth is necessary.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-262-7",
-    "proofId": "erdos-262",
-    "range": { "startLine": 159, "endLine": 169 },
+    "range": { "startLine": 140, "endLine": 159 },
     "type": "axiom",
     "title": "Hančl's General Criterion",
-    "content": "**hančl_criterion:**\n\nIf a_n ≪ 2^{2^{n-F(n)}} where:\n- F(n) < n, and\n- Σ 2^{-F(n)} < ∞\n\nThen a_n is NOT an irrationality sequence.\n\nThis gives a precise way to rule out slower-growing sequences.",
-    "significance": "key"
+    "content": "**hančl_criterion** gives a precise sufficient condition for a sequence to NOT be an irrationality sequence: if a_n ≤ C · 2^{2^{n−F(n)}} where F(n) < n and Σ 2^{−F(n)} converges, then a_n is not an irrationality sequence.\n\n**slower_growth_fails** is a cleaner corollary: if a_n ≤ 2^{2^{n(1−ε)}} for some ε > 0, then a_n is not an irrationality sequence. Any sub-doubly-exponential growth rate fails.",
+    "mathContext": "The criterion uses Summable for the convergence condition on F. The corollary specializes F(n) = εn, where Σ 2^{-εn} converges as a geometric series.",
+    "significance": "key",
+    "relatedConcepts": ["Summable", "Geometric series", "Sufficient condition"]
   },
   {
-    "id": "ann-262-8",
+    "id": "ann-e262-summary",
     "proofId": "erdos-262",
-    "range": { "startLine": 206, "endLine": 226 },
-    "type": "definition",
-    "title": "Why Double Exponential Works",
-    "content": "**double_exp_insight:**\n\nFor a_n = 2^{2^n}, the ratio a_{n+1}/a_n = 2^{2^n} grows super-exponentially.\n\nThis huge 'gap' between consecutive terms prevents any choice of t_n from making the sum rational.\n\nThe spacing is simply too large for rational combinations.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-262-9",
-    "proofId": "erdos-262",
-    "range": { "startLine": 183, "endLine": 201 },
-    "type": "definition",
-    "title": "Related Problems",
-    "content": "**Connections:**\n\n- Problem 263: Different irrationality sequence definition\n- Problem 264: Another variant\n- Liouville Numbers: Very fast growth gives transcendence\n\nThese problems form a family studying when infinite sums must be irrational or transcendental.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-262-10",
-    "proofId": "erdos-262",
-    "range": { "startLine": 265, "endLine": 294 },
+    "range": { "startLine": 172, "endLine": 199 },
     "type": "theorem",
-    "title": "Summary: SOLVED",
-    "content": "**erdos_262:**\n\n**STATUS:** SOLVED\n\n**Example:** 2^{2^n} works (Erdős 1975)\n\n**Non-example:** n! fails\n\n**Necessary:** limsup (log log a_n)/n ≥ 1 (Hančl 1991)\n\n**Conclusion:** Irrationality sequences must grow at least doubly exponentially.",
-    "significance": "critical"
+    "title": "Summary Theorem",
+    "content": "**erdos_262_summary** combines the two central results: (1) 2^{2^n} IS an irrationality sequence (Erdős 1975), and (2) n! is NOT. The proof is `⟨erdos_1975, factorial_not_irrationality⟩`, directly pairing the two axioms.\n\nThis replaces a previous version that included a trivial `∧ True` conjunct. The theorem now carries only genuine mathematical content.",
+    "mathContext": "The conjunction is proved by the anonymous constructor ⟨·, ·⟩. Together with Hančl's theorem, this gives a complete picture: doubly exponential growth is both sufficient and necessary.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos_1975", "factorial_not_irrationality"]
   }
 ]

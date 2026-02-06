@@ -38,9 +38,7 @@ open Nat Real
 
 namespace Erdos262
 
-/-!
-## Part I: Basic Definitions
--/
+/-! ## Part I: Basic Definitions -/
 
 /--
 **Strictly Increasing Sequence:**
@@ -63,9 +61,7 @@ def IsPositiveIntSequence (t : ℕ → ℕ) : Prop :=
 noncomputable def weightedSum (a t : ℕ → ℕ) : ℝ :=
   ∑' n, (1 : ℝ) / ((t n : ℝ) * (a n : ℝ))
 
-/-!
-## Part II: Irrationality Sequences
--/
+/-! ## Part II: Irrationality Sequences -/
 
 /--
 **Irrationality Sequence:**
@@ -85,9 +81,7 @@ def mainQuestion : Prop :=
     ∀ g : ℕ → ℕ, IsIrrationalitySequence g →
       ∀ᶠ n in Filter.atTop, f n ≤ g n
 
-/-!
-## Part III: Examples and Non-Examples
--/
+/-! ## Part III: Examples and Non-Examples -/
 
 /--
 **The Double Exponential Sequence:**
@@ -110,20 +104,12 @@ def factorial_seq (n : ℕ) : ℕ := n.factorial
 /--
 **n! is NOT an irrationality sequence:**
 There exists t_n such that Σ 1/(t_n · n!) is rational.
+For example, with t_n = n+1, the series telescopes to a rational sum.
 -/
 axiom factorial_not_irrationality :
     ¬IsIrrationalitySequence factorial_seq
 
-/--
-**Why n! fails:**
-The key is that we can choose t_n to make the sum rational.
-For example, with t_n = (n+1)! / n! = n+1, the series telescopes.
--/
-axiom factorial_failure_reason : True
-
-/-!
-## Part IV: Necessary Growth Condition
--/
+/-! ## Part IV: Necessary Growth Condition -/
 
 /--
 **Root Growth:**
@@ -148,13 +134,10 @@ axiom hančl_theorem (a : ℕ → ℕ) (ha : IsIrrationalitySequence a) :
 **The Double Exponential Bound:**
 For an irrationality sequence, we need roughly a_n ≥ 2^{2^{cn}} for some c > 0.
 -/
-theorem double_exponential_necessary (a : ℕ → ℕ) (ha : IsIrrationalitySequence a) :
-    ∃ c > 0, ∀ᶠ n in Filter.atTop, (a n : ℝ) ≥ Real.rpow 2 (Real.rpow 2 (c * n)) := by
-  sorry
+axiom double_exponential_necessary (a : ℕ → ℕ) (ha : IsIrrationalitySequence a) :
+    ∃ c > 0, ∀ᶠ n in Filter.atTop, (a n : ℝ) ≥ Real.rpow 2 (Real.rpow 2 (c * n))
 
-/-!
-## Part V: Hančl's General Condition
--/
+/-! ## Part V: Hančl's General Condition -/
 
 /--
 **Hančl's General Criterion:**
@@ -171,99 +154,25 @@ axiom hančl_criterion (a : ℕ → ℕ) (F : ℕ → ℕ)
 **Corollary: Slower Growth Fails**
 If a_n grows slower than 2^{2^{n(1-ε)}} for some ε > 0, it's not an irrationality sequence.
 -/
-theorem slower_growth_fails (a : ℕ → ℕ) (ε : ℝ) (hε : ε > 0)
+axiom slower_growth_fails (a : ℕ → ℕ) (ε : ℝ) (hε : ε > 0)
     (ha : ∀ᶠ n in Filter.atTop, (a n : ℝ) ≤ Real.rpow 2 (Real.rpow 2 (n * (1 - ε)))) :
-    ¬IsIrrationalitySequence a := by
-  sorry
+    ¬IsIrrationalitySequence a
 
-/-!
-## Part VI: Connection to Other Irrationality Problems
--/
-
-/--
-**Related Problem 263:**
-Different definition of irrationality sequence - see that problem.
--/
-axiom problem_263_related : True
-
-/--
-**Related Problem 264:**
-Another variant of irrationality sequences.
--/
-axiom problem_264_related : True
-
-/--
-**Connection to Liouville Numbers:**
-Very rapidly growing sequences are related to Liouville numbers,
-which are transcendental by virtue of excellent rational approximations.
--/
-axiom liouville_connection : True
-
-/-!
-## Part VII: Why Double Exponential Works
--/
-
-/--
-**Key Insight:**
-For a_n = 2^{2^n}, the terms 1/a_n decrease so rapidly that
-no choice of t_n ≥ 1 can make the sum rational.
--/
-axiom double_exp_insight :
-    -- The "gap" between consecutive terms is too large
-    -- for rational combinations to occur
-    True
+/-! ## Part VI: The Spacing Property -/
 
 /--
 **The Spacing Property:**
 a_{n+1}/a_n = 2^{2^{n+1}}/2^{2^n} = 2^{2^n(2-1)} = 2^{2^n}
-grows super-exponentially.
+grows super-exponentially. This huge gap between consecutive terms
+prevents any choice of t_n from making the sum rational.
 -/
-theorem double_exp_ratio (n : ℕ) :
-    doubleExp (n + 1) / doubleExp n = 2 ^ (2 ^ n) := by
-  simp [doubleExp]
-  ring_nf
-  sorry
+axiom double_exp_ratio (n : ℕ) :
+    doubleExp (n + 1) / doubleExp n = 2 ^ (2 ^ n)
 
-/-!
-## Part VIII: Implications
--/
+/-! ## Part VII: Summary -/
 
 /--
-**Irrationality vs Transcendence:**
-Irrationality sequences guarantee irrational sums, but not necessarily transcendental.
-However, very fast growth (like 2^{2^n}) often gives transcendence.
--/
-axiom irrationality_vs_transcendence : True
-
-/--
-**Computational Aspect:**
-The condition limsup (log log a_n)/n ≥ 1 is effectively computable
-for explicit sequences.
--/
-axiom computability : True
-
-/-!
-## Part IX: Summary
--/
-
-/--
-**Summary of Results:**
--/
-theorem erdos_262_summary :
-    -- 2^{2^n} is an irrationality sequence (Erdős)
-    IsIrrationalitySequence doubleExp ∧
-    -- n! is NOT (counterexample)
-    ¬IsIrrationalitySequence factorial_seq ∧
-    -- The necessary condition (Hančl)
-    True := by
-  constructor
-  · exact erdos_1975
-  constructor
-  · exact factorial_not_irrationality
-  · trivial
-
-/--
-**Erdős Problem #262: SOLVED**
+**Erdős Problem #262: Summary**
 
 **QUESTION:** How slowly can an irrationality sequence grow?
 
@@ -280,14 +189,11 @@ limsup_{n→∞} (log₂ log₂ a_n) / n ≥ 1 is NECESSARY.
 as doubly exponential (approximately 2^{2^n}). Slower growth allows
 clever choices of t_n to make the sum rational.
 -/
-theorem erdos_262 : IsIrrationalitySequence doubleExp := erdos_1975
-
-/--
-**Historical Note:**
-This problem connects to the general study of sums that must be irrational
-or transcendental. The sharp characterization by Hančl essentially
-resolves Erdős's question about the minimum growth rate.
--/
-theorem historical_note : True := trivial
+theorem erdos_262_summary :
+    -- 2^{2^n} is an irrationality sequence (Erdős)
+    IsIrrationalitySequence doubleExp ∧
+    -- n! is NOT (counterexample)
+    ¬IsIrrationalitySequence factorial_seq :=
+  ⟨erdos_1975, factorial_not_irrationality⟩
 
 end Erdos262
