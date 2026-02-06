@@ -200,7 +200,7 @@
   {
     "id": "ann-774-implications",
     "proofId": "erdos-774",
-    "range": { "startLine": 233, "endLine": 239 },
+    "range": { "startLine": 223, "endLine": 230 },
     "type": "theorem",
     "title": "Implications Between Notions",
     "content": "**Key Implications:**\n\n1. Proportionately Sidon ⟹ Proportionately Dissociated\n   (Sidon subsets are dissociated subsets)\n\n2. Finite union of Sidon ⟹ Finite union of Dissociated\n   (Each Sidon piece is dissociated)\n\n```lean\naxiom prop_sidon_implies_prop_dissociated (A : Set ℕ) :\n    IsProportionatelySidon A → IsProportionatelyDissociated A\n\naxiom union_sidon_implies_union_dissociated (A : Set ℕ) :\n    IsFiniteUnionSidon A → IsFiniteUnionDissociated A\n```",
@@ -211,7 +211,7 @@
   {
     "id": "ann-774-maxsize",
     "proofId": "erdos-774",
-    "range": { "startLine": 254, "endLine": 263 },
+    "range": { "startLine": 236, "endLine": 245 },
     "type": "theorem",
     "title": "max_dissociated_log_bound",
     "content": "**Maximum Dissociated Subset Size:**\n\nThe maximum size of a dissociated subset of {1, 2, ..., n} is Θ(log n).\n\n```lean\naxiom max_dissociated_log_bound :\n    ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ n : ℕ, n ≥ 2 →\n      c * Real.log n ≤ maxDissociatedSize n ∧\n      maxDissociatedSize n ≤ C * Real.log n\n```\n\n**Upper bound:** Subset sums range in [0, n(n+1)/2], so at most O(n²) possible sums. Dissociated sets have 2^|A| distinct sums, giving |A| ≤ O(log n²) = O(log n).\n\n**Lower bound:** Powers of 2 up to n give log₂(n) elements.",
@@ -222,12 +222,12 @@
   {
     "id": "ann-774-summary",
     "proofId": "erdos-774",
-    "range": { "startLine": 269, "endLine": 293 },
-    "type": "concept",
-    "title": "Summary and Status",
-    "content": "**Summary of Erdős Problem #774:**\n\n**Problem:** Is every proportionately dissociated set a finite union of dissociated sets?\n\n**Status:** OPEN (conjectured NO)\n\n**Key Results:**\n1. Pisier (1983): Proportionately dissociated ⟺ Sidon (harmonic)\n2. Alon-Erdős (1985): Introduced the problem, conjectured NO\n3. Nešetřil-Rödl-Sales (2024): The Sidon analogue is FALSE\n\n**Connections:**\n- Harmonic analysis (Sidon sets)\n- Additive combinatorics\n- Graph theory (hypergraph independent sets)\n- Probabilistic method\n\nThe NRS result provides strong evidence that #774 also has a negative answer.",
-    "mathContext": "This problem sits at the intersection of multiple mathematical areas, making it a rich example of how different fields inform each other.",
+    "range": { "startLine": 247, "endLine": 260 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_774_summary** (PROVED): Combines two key established results:\n1. Finite union of dissociated ⟹ proportionately dissociated (the easy direction)\n2. The Sidon analogue is FALSE (NRS 2024)\n\nProof: `⟨finite_union_is_proportionately, nesetril_rodl_sales_theorem⟩`\n\nThis captures the known mathematical landscape: the converse direction of Problem #774 holds trivially, and the closely related Sidon analogue has been resolved negatively, providing strong evidence that #774 also has a negative answer.",
+    "mathContext": "The summary theorem packages the two main established results without claiming resolution of the open problem. The NRS result on Sidon sets provides the strongest available evidence.",
     "significance": "critical",
-    "relatedConcepts": ["Open problems", "Interdisciplinary mathematics"]
+    "relatedConcepts": ["Summary theorems", "Known results", "Open problem formalization"]
   }
 ]
