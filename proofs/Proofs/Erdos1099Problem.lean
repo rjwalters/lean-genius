@@ -38,7 +38,7 @@ open Nat Finset BigOperators
 
 namespace Erdos1099
 
-/-!
+/-
 ## Part I: Divisors and Consecutive Ratios
 
 For a positive integer n, its divisors can be ordered as 1 = d₁ < d₂ < ⋯ < d_τ(n) = n.
@@ -72,7 +72,7 @@ For n ≥ 1, the last divisor is always n.
 axiom last_divisor_is_n (n : ℕ) (hn : n ≥ 1) :
     (sortedDivisors n).getLast? = some n
 
-/-!
+/-
 ## Part II: The h_α Function
 
 The key function measures how "spread out" the divisor ratios are.
@@ -104,7 +104,7 @@ theorem h_alpha_eq_sum (α : ℝ) (n : ℕ) :
     h_alpha α n = (divisorRatios n).map (fun r => ((r : ℝ) - 1) ^ α) |>.sum := by
   rfl
 
-/-!
+/-
 ## Part III: The Trivial Lower Bound
 
 The first term alone gives h_α(n) ≥ 1 for n ≥ 2.
@@ -126,7 +126,7 @@ Proof: The first term is ((d₂/1) - 1)^α ≥ (2-1)^α = 1.
 axiom h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
     h_alpha α n ≥ 1
 
-/-!
+/-
 ## Part IV: Special Sequences
 
 Erdős suggested that n! and lcm{1,...,n} might have bounded h_α.
@@ -145,14 +145,14 @@ lcm{1,...,n} has many small divisors as well.
 def lcmDivisors (n : ℕ) : Finset ℕ :=
   (List.range (n + 1) |>.foldl lcm 1).divisors
 
-/-!
+/-
 **Open Sub-questions:**
 - Does h_α(n!) remain bounded as n → ∞?
 - Does h_α(lcm{1,...,n}) remain bounded as n → ∞?
 These specific candidates suggested by Erdős remain unresolved.
 -/
 
-/-!
+/-
 ## Part V: Vose's Theorem (1984)
 
 Vose answered the question affirmatively by constructing a different sequence.
@@ -193,7 +193,7 @@ theorem erdos_1099 (α : ℝ) (hα : α > 1) :
     obtain ⟨n, hn_pos, hn_bound⟩ := hbound ε hε
     exact ⟨n, hn_pos, by linarith⟩
 
-/-!
+/-
 ## Part VI: The Related Sum Σ(d_{i+1}/dᵢ)
 
 Erdős also studied the unweighted sum of ratios.
@@ -222,24 +222,24 @@ Is liminf (Σᵢ (d_{i+1}/dᵢ) - τ(n) - log(n)) < ∞?
 
 This would follow from a positive answer to the main question.
 -/
-/-!
+/-
 If h_α is bounded along a subsequence, the related sum question
 Σ(d_{i+1}/dᵢ) - τ(n) - log(n) < ∞ follows along the same subsequence.
 -/
 
-/-!
+/-
 ## Part VII: Connection to Problem #673
 
 This problem resembles the function considered in Erdős Problem #673.
 -/
 
-/-!
+/-
 **Connection to Problem #673:**
 Both problems study functions of consecutive divisor ratios,
 exploring how "smooth" the divisor structure of integers can be.
 -/
 
-/-!
+/-
 ## Part VIII: Proof Strategy
 
 Vose's approach and why Erdős's candidates remain open.
@@ -262,7 +262,7 @@ lcm{1,...,n} has many prime factors, giving it many divisors.
 But proving uniform bounds on consecutive ratios is non-trivial.
 -/
 
-/-!
+/-
 ## Part IX: Examples
 -/
 
@@ -289,7 +289,7 @@ Ratios: 2/1=2, 3/2=1.5, 4/3≈1.33, 6/4=1.5, 12/6=2
 h_α(12) = 1^α + 0.5^α + 0.33^α + 0.5^α + 1^α (approximately)
 -/
 
-/-!
+/-
 ## Part X: Summary
 -/
 
