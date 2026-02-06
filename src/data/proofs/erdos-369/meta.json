@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/369",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos369Problem.lean",
     "tags": [
       "number-theory",
@@ -15,7 +15,7 @@
       "prime-factors"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 369,
     "erdosUrl": "https://erdosproblems.com/369",
     "erdosProblemStatus": "open"
@@ -37,42 +37,42 @@
       "id": "smooth-numbers",
       "title": "Part I: Smooth Numbers",
       "startLine": 37,
-      "endLine": 52,
+      "endLine": 48,
       "summary": "Defines IsSmooth (all prime factors ≤ B) and largestPrimeFactor."
     },
     {
       "id": "consecutive-runs",
       "title": "Part II: Consecutive Smooth Runs",
-      "startLine": 54,
-      "endLine": 71,
+      "startLine": 50,
+      "endLine": 67,
       "summary": "Defines ConsecutiveSmoothRun and HasConsecutiveSmoothRun for k consecutive B-smooth integers."
     },
     {
       "id": "conjecture",
       "title": "Part III: The Erdős–Graham Conjecture",
-      "startLine": 73,
-      "endLine": 91,
+      "startLine": 69,
+      "endLine": 87,
       "summary": "ErdosConjecture369: for all k ≥ 2 and growing smoothBound, all large n have a smooth run."
     },
     {
       "id": "k2-case",
       "title": "Part IV: The k = 2 Case",
-      "startLine": 93,
-      "endLine": 109,
+      "startLine": 89,
+      "endLine": 105,
       "summary": "ErdosConjecture369_k2: the simplest open case, two consecutive smooth numbers."
     },
     {
       "id": "balog-wooley",
       "title": "Part V: Balog–Wooley Partial Result",
-      "startLine": 111,
-      "endLine": 124,
+      "startLine": 107,
+      "endLine": 120,
       "summary": "Axiom: infinitely many n have n, n+1 both smooth (but not for all large n)."
     },
     {
       "id": "summary",
       "title": "Part VI: Summary",
-      "startLine": 126,
-      "endLine": 136,
+      "startLine": 122,
+      "endLine": 131,
       "summary": "Status: open even for k = 2. Balog–Wooley gives infinitely many, not all."
     }
   ],
