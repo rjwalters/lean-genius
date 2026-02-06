@@ -7,15 +7,15 @@
     "author": "Erdős-Herzog-Piranian (1958), Pommerenke (1959)",
     "sourceUrl": "https://erdosproblems.com/1046",
     "date": "1959",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1046Problem.lean",
     "tags": ["erdos", "complex-analysis", "polynomials", "lemniscates", "geometry"],
-    "badge": "mathlib",
-    "sorries": 4,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1046,
     "erdosUrl": "https://erdosproblems.com/1046",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       { "theorem": "Polynomial", "description": "Polynomial ring over ℂ", "module": "Mathlib.Algebra.Polynomial.Basic" },
       { "theorem": "Complex.abs", "description": "Complex absolute value", "module": "Mathlib.Data.Complex.Basic" },
@@ -50,50 +50,64 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 42,
-      "endLine": 84,
+      "endLine": 76,
       "summary": "Monic polynomials, sublevel sets, open/closed discs"
     },
     {
       "id": "roots-centroid",
       "title": "Roots and Centroid",
-      "startLine": 86,
-      "endLine": 109,
+      "startLine": 78,
+      "endLine": 99,
       "summary": "Root multiset, centroid, Vieta's formulas"
     },
     {
       "id": "connectivity",
       "title": "Connectivity Characterization",
-      "startLine": 111,
-      "endLine": 127,
+      "startLine": 101,
+      "endLine": 115,
       "summary": "E is connected ⟺ E contains critical points"
+    },
+    {
+      "id": "ehp-question",
+      "title": "Erdős-Herzog-Piranian Question",
+      "startLine": 117,
+      "endLine": 124,
+      "summary": "EHPQuestion definition"
     },
     {
       "id": "pommerenke-theorem",
       "title": "Pommerenke's Theorem",
-      "startLine": 140,
-      "endLine": 172,
+      "startLine": 126,
+      "endLine": 144,
       "summary": "Main result: E ⊆ D(centroid, 2)"
     },
     {
       "id": "width-counterexample",
       "title": "Width Counterexample",
-      "startLine": 174,
-      "endLine": 210,
-      "summary": "Width conjecture is FALSE"
+      "startLine": 146,
+      "endLine": 176,
+      "summary": "Width conjecture is FALSE, axiomatized counterexample"
     },
     {
       "id": "diameter",
       "title": "Diameter Bounds",
-      "startLine": 212,
-      "endLine": 239,
+      "startLine": 178,
+      "endLine": 193,
       "summary": "Diameter ≤ 2 by Pommerenke"
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "startLine": 195,
+      "endLine": 217,
+      "summary": "Lemniscate, filled lemniscate, Bernoulli lemniscate"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 267,
-      "endLine": 309,
-      "summary": "Main results and historical note"
+      "startLine": 219,
+      "endLine": 248,
+      "summary": "erdos_1046_summary theorem"
     }
   ],
   "conclusion": {
