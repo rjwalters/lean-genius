@@ -32,7 +32,7 @@
     "range": { "startLine": 91, "endLine": 107 },
     "type": "definition",
     "title": "The Sunflower Function m(n,k)",
-    "content": "sunflowerNumber n k: The minimal m such that any family of m subsets of {1,...,n} contains a k-sunflower. Defined via Nat.find from the existence axiom. Well-defined since at most 2^n subsets exist.",
+    "content": "sunflower_number_exists axiom: For any n and k, there exists m such that any family of m subsets of {1,...,n} contains a k-sunflower. sunflowerNumber n k: Defined as the minimal such m via Nat.find. Well-defined since at most 2^n subsets exist.",
     "significance": "critical"
   },
   {
