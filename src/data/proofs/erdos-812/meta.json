@@ -15,118 +15,81 @@
       "ramsey-theory",
       "graph-theory"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "mathlib_version": "4.15.0",
+    "erdosNumber": 812,
+    "erdosUrl": "https://erdosproblems.com/812",
+    "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      {
-        "theorem": "Nat.Basic",
-        "description": "Natural number operations",
-        "module": "Mathlib.Data.Nat.Basic"
-      },
-      {
-        "theorem": "Real.Basic",
-        "description": "Real number operations for bounds",
-        "module": "Mathlib.Data.Real.Basic"
-      },
-      {
-        "theorem": "SimpleGraph.Basic",
-        "description": "Graph definitions for Ramsey context",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
-      }
+      { "theorem": "Nat.Basic", "description": "Natural number operations", "module": "Mathlib.Data.Nat.Basic" },
+      { "theorem": "Real.Basic", "description": "Real number operations for bounds", "module": "Mathlib.Data.Real.Basic" }
     ],
     "originalContributions": [
       "R axiom: the diagonal Ramsey number",
       "R_basic: R(1)=1, R(2)=2, strict increasing",
       "R_known_values: R(3)=6, R(4)=18",
       "ramsey_bounds axiom: 2^{n/2} ≤ R(n) ≤ 4^n/√n",
-      "ratio_conjecture definition: R(n+1)/R(n) ≥ 1+c question",
-      "quadratic_difference_conjecture definition: R(n+1)-R(n) ≫ n² question",
+      "ratio_conjecture and quadratic_difference_conjecture definitions",
       "BEFS_theorem axiom: R(n+1) - R(n) ≥ 4n - 8",
       "problem_165_bound axiom: two-step almost-quadratic bound",
       "ratio_implies_exponential: logical consequence",
-      "Computational verifications: ratios and BEFS bounds for small n",
-      "erdos_812_status theorem: captures known state"
-    ],
-    "erdosNumber": 812,
-    "erdosUrl": "https://erdosproblems.com/812",
-    "erdosProblemStatus": "open"
+      "Computational verifications for small n"
+    ]
   },
   "overview": {
-    "historicalContext": "**The Birth of Ramsey Theory (1930)**\n\nFrank Ramsey proved his fundamental theorem in 1930, establishing that R(n) exists for all n. This was the beginning of an entire field, but exact growth rates remained mysterious.\n\n**The Classical Bounds (1935-1947)**\n\nErdős and Szekeres (1935) proved R(n) ≤ C(2n-2, n-1) < 4^n/√n, a remarkably simple bound. In 1947, Erdős revolutionized combinatorics by proving R(n) > 2^{n/2} using the probabilistic method - showing that random 2-colorings work with positive probability. Despite 80+ years of effort, these bounds have only been improved by polynomial factors!\n\n**The BEFS Linear Bound (1989)**\n\nBurr, Erdős, Faudree, and Schelp proved R(n+1) - R(n) ≥ 4n - 8, the best known bound on consecutive differences. This linear bound stands in stark contrast to the suspected quadratic truth. The related Problem #165 shows R(n+2) - R(n) ≫ n^{2-o(1)}, tantalizingly close to quadratic for two-step differences.\n\n**Erdős's Famous Quote**\n\nErdős illustrated the difficulty with his 'aliens' thought experiment: if aliens demanded R(5) or R(6), 'We could marshal the world's best minds and computers' for R(5), 'But if they asked for R(6), we should have to just surrender.' We still don't know R(5) exactly (43 ≤ R(5) ≤ 48).",
+    "historicalContext": "Erdős Problem #812 asks two fundamental questions about how fast consecutive Ramsey numbers grow. The diagonal Ramsey number R(n) — the minimum N guaranteeing a monochromatic K_n in any 2-coloring of K_N — is known to satisfy 2^{n/2} ≤ R(n) ≤ 4^n/√n, but the exact growth rate remains one of the biggest mysteries in combinatorics.\n\nBurr, Erdős, Faudree, and Schelp proved in 1989 that R(n+1) - R(n) ≥ 4n - 8, giving a linear lower bound on consecutive differences. This is the best known result. Tantalizingly, the related Problem #165 shows that the TWO-step difference R(n+2) - R(n) is almost quadratic (≫ n^{2-o(1)}), but the one-step gap remains wide.\n\nErdős illustrated the difficulty of Ramsey numbers with his famous aliens thought experiment: 'if aliens demanded R(5), we could marshal the world's best minds... but if they asked for R(6), we should have to just surrender.' We still don't know R(5) exactly (43 ≤ R(5) ≤ 48). Both questions in Problem #812 remain completely open.",
     "problemStatement": "Is it true that R(n+1)/R(n) ≥ 1 + c for some constant c > 0 and all large n? Is it true that R(n+1) - R(n) ≫ n²?",
-    "proofStrategy": "The formalization defines the Ramsey function R(n), states the two main conjectures, and presents the known results. The BEFS theorem gives a linear lower bound on differences. The connection to Problem #165 shows that two-step differences are almost quadratic. The gap between one-step and two-step bounds is highlighted.",
+    "proofStrategy": "The formalization defines the Ramsey function R(n), states the two main conjectures, and presents the known results. The BEFS theorem gives a linear lower bound on differences. The connection to Problem #165 shows that two-step differences are almost quadratic. Computational verifications for small n are included.",
     "keyInsights": [
       "The linear bound R(n+1) - R(n) ≥ 4n - 8 is best known",
       "Two-step differences R(n+2) - R(n) ≫ n^{2-o(1)} are much larger",
-      "Cannot be resolved by finite computation - needs asymptotic arguments",
       "Ramsey numbers have mysterious growth between 2^{n/2} and 4^n",
-      "The sequence R(n) may have irregular jumps"
+      "The ratio conjecture would imply true exponential growth",
+      "Even R(5) is not known exactly"
     ]
   },
   "sections": [
     {
-      "id": "section-1",
-      "title": "Ramsey Number Definitions",
-      "startLine": 35,
-      "endLine": 71,
-      "summary": "Defines the diagonal Ramsey number R(n), basic properties (R(1)=1, R(2)=2, monotonicity), known values (R(3)=6, R(4)=18), and the classical bounds 2^{n/2} ≤ R(n) ≤ 4^n/√n."
+      "id": "ramsey-defs",
+      "title": "Part I: Ramsey Number Definitions",
+      "startLine": 31,
+      "endLine": 66,
+      "summary": "R(n) axiom, basic properties, known values, classical bounds."
     },
     {
-      "id": "section-2",
-      "title": "Main Questions",
-      "startLine": 72,
-      "endLine": 95,
-      "summary": "Formalizes the two main conjectures: the ratio conjecture (R(n+1)/R(n) ≥ 1+c) and the quadratic difference conjecture (R(n+1) - R(n) ≫ n²)."
+      "id": "main-questions",
+      "title": "Part II: The Main Questions",
+      "startLine": 68,
+      "endLine": 84,
+      "summary": "ratio_conjecture and quadratic_difference_conjecture definitions."
     },
     {
-      "id": "section-3",
-      "title": "Known Results",
-      "startLine": 96,
-      "endLine": 129,
-      "summary": "States the BEFS theorem (R(n+1) - R(n) ≥ 4n - 8), notes this linear bound is best known, and presents the related result from Problem #165 about two-step differences."
+      "id": "known-results",
+      "title": "Part III: Known Results",
+      "startLine": 86,
+      "endLine": 105,
+      "summary": "BEFS theorem and Problem #165 two-step bound."
     },
     {
-      "id": "section-4",
-      "title": "Implications",
-      "startLine": 130,
-      "endLine": 158,
-      "summary": "Shows what would follow from the conjectures: ratio bound implies exponential growth, quadratic differences imply super-polynomial growth."
+      "id": "consequences",
+      "title": "Part IV: Consequences",
+      "startLine": 107,
+      "endLine": 118,
+      "summary": "Ratio bound implies exponential growth."
     },
     {
-      "id": "section-5",
-      "title": "Why Questions Are Hard",
-      "startLine": 159,
-      "endLine": 190,
-      "summary": "Explains difficulties: even R(5) is unknown, irregular behavior, probabilistic methods don't give consecutive differences, and computational barriers."
+      "id": "computations",
+      "title": "Part V: Computational Verifications",
+      "startLine": 120,
+      "endLine": 145,
+      "summary": "Verified ratios and BEFS bound for small n."
     },
     {
-      "id": "section-6",
-      "title": "Related Problems",
-      "startLine": 191,
-      "endLine": 214,
-      "summary": "Connections to Problem #165 (Ramsey lower bounds), off-diagonal Ramsey numbers R(s,t), and hypergraph Ramsey numbers."
-    },
-    {
-      "id": "section-7",
-      "title": "Historical Context",
-      "startLine": 215,
-      "endLine": 247,
-      "summary": "History from Ramsey (1930) through Erdős-Szekeres (1935) to Erdős's probabilistic method (1947). Includes the famous 'aliens' quote about R(5) and R(6)."
-    },
-    {
-      "id": "section-8",
-      "title": "Known Values and Computational Verification",
-      "startLine": 248,
-      "endLine": 290,
-      "summary": "Known Ramsey values, computed ratios R(3)/R(2)=3, R(4)/R(3)=3, BEFS bound verification for small n, and quadratic vs linear comparison."
-    },
-    {
-      "id": "section-9",
-      "title": "Summary and Status",
-      "startLine": 291,
-      "endLine": 333,
-      "summary": "Complete summary with main status theorem capturing the BEFS bound and open status."
+      "id": "summary",
+      "title": "Part VI: Summary",
+      "startLine": 147,
+      "endLine": 173,
+      "summary": "erdos_812_summary combining BEFS and Problem #165 bounds."
     }
   ],
   "conclusion": {
