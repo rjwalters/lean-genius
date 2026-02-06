@@ -156,12 +156,8 @@ More precisely, as n → ∞, the expected number of real roots satisfies:
 E[# real roots] = (2/π + o(1)) log n
 
 This is one of the foundational results in the theory of random polynomials.
+Formalization requires probability spaces not yet available in Mathlib.
 -/
-axiom erdos_offord_real_roots :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    -- For "typical" random polynomials, # real roots ≈ (2/π) log n
-    -- Formalized precisely would require probability spaces
-    True
 
 /--
 **Yakir's Theorem (2021)**: For random Rademacher polynomials of degree n,
@@ -175,11 +171,6 @@ probability, which is weaker than the almost sure convergence originally asked.
 Reference: O. Yakir, "Approximately half of the roots of a random Littlewood
 polynomial are inside the disk", 2021.
 -/
-axiom yakir_theorem :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    -- P(|R_n - n/2| ≥ n^{9/10}) ≤ ε
-    -- This says with high probability, R_n ≈ n/2
-    True
 
 /--
 **Erdős Problem #522 (OPEN for almost sure convergence)**:
@@ -194,7 +185,6 @@ the sequence R_n(ω)/(n/2) converges to 1.
 
 This is strictly stronger than convergence in probability.
 -/
-axiom erdos_522_open : Prop
 
 /-!
 ## Heuristic: Why n/2?
@@ -209,9 +199,6 @@ suggests about half should be inside the unit disk:
 
 The precise statement requires probability theory.
 -/
-
-/-- Heuristic: by symmetry, about half the roots should be inside the unit disk. -/
-theorem roots_heuristic_half (n : ℕ) : True := trivial
 
 /-!
 ## Extreme Cases
@@ -240,7 +227,6 @@ unit circle. The minimal polynomial of a Salem number is a Littlewood polynomial
 Random Littlewood polynomials provide insight into the distribution of roots
 that can give rise to Salem-like algebraic integers.
 -/
-axiom connection_salem : Prop
 
 /--
 **Mahler Measure**: For a polynomial p(z) = a_n ∏(z - α_i), the Mahler measure is
@@ -251,7 +237,6 @@ Jensen's formula relates: log M(p) = log|a_n| + ∑_{|α_i|>1} log|α_i|
 
 For Littlewood polynomials, bounds on M(p) are related to the "Lehmer problem".
 -/
-axiom connection_mahler : Prop
 
 /-!
 ## Verified Examples

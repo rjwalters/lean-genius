@@ -112,58 +112,30 @@
     "relatedConcepts": ["root multiplicity", "fundamental theorem of algebra", "counting"]
   },
   {
-    "id": "ann-e522-erdos-offord",
+    "id": "ann-e522-main-results",
     "proofId": "erdos-522",
     "range": {
-      "startLine": 148,
-      "endLine": 165
+      "startLine": 147,
+      "endLine": 187
     },
-    "type": "axiom",
-    "title": "Erdős-Offord Theorem (1956)",
-    "content": "**erdos_offord_real_roots**: Random degree-n ±1 polynomials have approximately (2/π) log n real roots.\n\nThe constant 2/π ≈ 0.6366 arises from the expected number of sign changes in the polynomial.\n\n**Key insight**: Real roots grow only as O(log n), while we expect ~n/2 total roots in the unit disk. Almost all roots in the disk are non-real!",
-    "mathContext": "This was one of the first rigorous results in random polynomial theory. The proof uses probability of sign changes between evaluation points.",
+    "type": "concept",
+    "title": "Known Results and Open Question",
+    "content": "**Three key results documented as doc comments** (no trivial axioms):\n\n1. **Erdős-Offord (1956)**: Random ±1 polynomials have ~(2/π) log n real roots. The constant 2/π ≈ 0.6366 arises from sign change probabilities. Real roots are O(log n) — far fewer than the ~n/2 complex roots in the disk.\n\n2. **Yakir (2021)**: R_n/(n/2) → 1 in probability: lim P(|R_n - n/2| ≥ n^{9/10}) = 0. The error n^{9/10} is likely not optimal.\n\n3. **OPEN**: Does R_n/(n/2) → 1 almost surely? Almost sure convergence ⟹ convergence in probability, but not vice versa. The gap is whether exceptional sequences have measure zero.",
+    "mathContext": "These results cannot be formalized in Lean without probability spaces. They are preserved as documentation rather than trivial `→ True` axioms.",
     "significance": "critical",
-    "relatedConcepts": ["real roots", "logarithmic growth", "sign changes"]
-  },
-  {
-    "id": "ann-e522-yakir",
-    "proofId": "erdos-522",
-    "range": {
-      "startLine": 167,
-      "endLine": 183
-    },
-    "type": "axiom",
-    "title": "Yakir's Theorem (2021)",
-    "content": "**yakir_theorem**: R_n/(n/2) → 1 in probability.\n\n**Quantitative form**: lim_{n→∞} P(|R_n - n/2| ≥ n^{9/10}) = 0\n\nThis says that with probability approaching 1, the root count R_n satisfies:\nn/2 - n^{9/10} ≤ R_n ≤ n/2 + n^{9/10}\n\nThe error term n^{9/10} is likely not optimal.",
-    "mathContext": "Convergence in probability means: for any ε > 0, P(|X_n - c| > ε) → 0. This is weaker than almost sure convergence.",
-    "significance": "critical",
-    "relatedConcepts": ["convergence in probability", "error bounds", "concentration"]
-  },
-  {
-    "id": "ann-e522-open-question",
-    "proofId": "erdos-522",
-    "range": {
-      "startLine": 185,
-      "endLine": 197
-    },
-    "type": "axiom",
-    "title": "The Open Question: Almost Sure Convergence",
-    "content": "**erdos_522_open**: Prop (axiomatized as unknown)\n\n**Question**: Does R_n/(n/2) → 1 almost surely?\n\n**What this means**: For a probability space (Ω, P), almost sure means:\nP({ω : lim R_n(ω)/(n/2) = 1}) = 1\n\n**Gap**: Yakir proved 'in probability' (typical polynomials). The open question asks about 'almost all sequences' simultaneously.",
-    "mathContext": "Almost sure convergence ⟹ convergence in probability, but not vice versa. The gap is whether exceptional sequences have measure zero.",
-    "significance": "critical",
-    "relatedConcepts": ["almost sure", "probability space", "measure zero"]
+    "relatedConcepts": ["real roots", "convergence in probability", "almost sure convergence"]
   },
   {
     "id": "ann-e522-heuristic",
     "proofId": "erdos-522",
     "range": {
-      "startLine": 199,
-      "endLine": 214
+      "startLine": 189,
+      "endLine": 201
     },
-    "type": "theorem",
+    "type": "concept",
     "title": "Heuristic: Why n/2?",
-    "content": "**roots_heuristic_half**: Informal symmetry argument.\n\nFor a degree-n polynomial, the fundamental theorem gives n roots in ℂ.\n\nThe involution z ↔ 1/z̄ relates roots inside and outside the unit disk:\n- If p(z) = 0 and p has real coefficients, then p(1/z̄) relates to p(z̄)\n- This suggests a natural pairing of roots inside/outside\n\n**Conclusion**: About half the roots should be inside the unit disk.",
-    "mathContext": "This heuristic is made precise by Yakir's theorem. The symmetry argument doesn't immediately give almost sure convergence.",
+    "content": "The involution z ↔ 1/z̄ relates roots inside and outside the unit disk. For 'generic' polynomials with real coefficients, roots come in conjugate pairs, suggesting a roughly equal split. This heuristic is made precise by Yakir's theorem.",
+    "mathContext": "The symmetry argument doesn't immediately give almost sure convergence — it only suggests the expected proportion.",
     "significance": "key",
     "relatedConcepts": ["symmetry", "involution", "root pairing"]
   },
@@ -171,8 +143,8 @@
     "id": "ann-e522-geometric",
     "proofId": "erdos-522",
     "range": {
-      "startLine": 216,
-      "endLine": 229
+      "startLine": 203,
+      "endLine": 216
     },
     "type": "axiom",
     "title": "Geometric Polynomial Example",
@@ -185,8 +157,8 @@
     "id": "ann-e522-salem",
     "proofId": "erdos-522",
     "range": {
-      "startLine": 231,
-      "endLine": 244
+      "startLine": 218,
+      "endLine": 229
     },
     "type": "axiom",
     "title": "Connection to Salem Numbers",
@@ -199,8 +171,8 @@
     "id": "ann-e522-mahler",
     "proofId": "erdos-522",
     "range": {
-      "startLine": 246,
-      "endLine": 255
+      "startLine": 231,
+      "endLine": 239
     },
     "type": "axiom",
     "title": "Connection to Mahler Measure",
@@ -213,8 +185,8 @@
     "id": "ann-e522-examples",
     "proofId": "erdos-522",
     "range": {
-      "startLine": 257,
-      "endLine": 271
+      "startLine": 241,
+      "endLine": 255
     },
     "type": "theorem",
     "title": "Verified Examples",
@@ -227,8 +199,8 @@
     "id": "ann-e522-summary",
     "proofId": "erdos-522",
     "range": {
-      "startLine": 273,
-      "endLine": 297
+      "startLine": 257,
+      "endLine": 281
     },
     "type": "theorem",
     "title": "Summary and Conclusions",
