@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1075,
     "erdosUrl": "https://erdosproblems.com/1075",
     "erdosProblemStatus": "open",
@@ -47,18 +47,19 @@
       }
     ],
     "originalContributions": [
-      "Hypergraph structure: r-uniform hypergraphs with uniformity constraint",
-      "Hypergraph.induced: induced subhypergraph on vertex subset",
-      "thresholdConstant: the constant r^{-r}",
-      "erdos_1964_result axiom: original result with c_r = r^{-r}",
-      "ErdosConjecture1075: formal statement of the open problem",
-      "completeHypergraphEdges: C(m,r) edges in complete hypergraph",
-      "Discussion of random hypergraph density",
-      "Potential approaches: regularity, probabilistic, algebraic methods"
+      "Hypergraph structure with r-uniformity constraint",
+      "Hypergraph.induced subhypergraph construction with proof of uniformity preservation",
+      "thresholdConstant r^{-r} definition",
+      "erdos_1964_result axiom formalizing the known result with threshold εn^r",
+      "threshold_decreasing axiom for monotonicity of r^{-r}",
+      "ErdosConjecture1075 formal statement of the open problem with threshold (1+ε)(n/r)^r",
+      "threshold_comparison axiom relating the two edge thresholds",
+      "binomial_asymptotic axiom for C(m,r) ~ m^r/r!",
+      "erdos_1075_summary theorem combining known result with monotonicity"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1075: Dense Subgraphs in Hypergraphs**\n\nThis problem appears in Erdős [Er74c, p.80] and concerns extremal hypergraph theory.\n\n**Key History:**\n- **Erdős [Er64f] (1964):** Proved that with edge threshold εn^r, one can find m-vertex subgraphs with density c_r = r^{-r}·m^r\n- **Erdős [Er74c] (1974):** Asked whether c_r > r^{-r} works with the weaker threshold (1+ε)(n/r)^r\n\n**Why It Matters:**\nThe constant r^{-r} is what random selection gives. Beating it requires exploiting structure from the edge density assumption. The weaker threshold (1+ε)(n/r)^r vs εn^r might enable this improvement.",
+    "historicalContext": "Erdős Problem #1075 sits at the intersection of extremal hypergraph theory and probabilistic combinatorics. In 1964, Erdős [Er64f] proved a foundational density result: any r-uniform hypergraph on n vertices with at least εn^r edges (for any fixed ε > 0) must contain a subhypergraph on m vertices with at least r^{-r} · m^r edges, where m grows with n. The constant r^{-r} is natural — it is precisely the density one obtains by selecting a random subset of vertices, since each r-element edge has probability roughly r^{-r} of being entirely contained in the random subset.\n\nIn [Er74c, p.80] (1974), Erdős posed the sharper question that became Problem #1075. He observed that the edge threshold (1+ε)(n/r)^r = (1+ε)n^r/r^r is much weaker than εn^r for large n, yet still guarantees slightly more edges than the 'typical' count. Can this weaker hypothesis — requiring only slightly above the expected number of edges rather than a fixed fraction of all possible edges — allow us to beat the random selection constant r^{-r} for the density of the subhypergraph?\n\nThe problem remains completely open. No improvement to c_r > r^{-r} has been achieved under either edge threshold. The decreasing values r^{-r} (1/27 for r=3, 1/256 for r=4, 1/3125 for r=5) suggest the problem becomes harder for larger r. Potential approaches include hypergraph regularity lemmas, spectral methods, and sophisticated probabilistic arguments, but controlling the density constant has proven elusive.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet r ≥ 3. Does there exist c_r > r^{-r} such that for any ε > 0, if n is sufficiently large:\n\nAny r-uniform hypergraph on n vertices with at least (1+ε)(n/r)^r edges contains a subgraph on m vertices with at least c_r·m^r edges, where m = m(n) → ∞ as n → ∞.\n\n**What's Known:**\n- Erdős [Er64f] proved this for c_r = r^{-r} with threshold εn^r\n- No improvement beyond r^{-r} is currently known\n\n**Key Point:** The edge threshold (1+ε)(n/r)^r is much smaller than εn^r, so the hypothesis is weaker. Can this lead to stronger conclusions?",
     "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Structure:** Define r-uniform hypergraphs with uniformity constraint on edge cardinality\n\n2. **Induced Subhypergraph:** Hypergraph.induced restricts to edges fully contained in a vertex subset\n\n3. **Threshold Constant:** thresholdConstant(r) = r^{-r}, the bound from random selection\n\n4. **Known Result:** erdos_1964_result axiomatizes Erdős's 1964 theorem\n\n5. **Open Conjecture:** ErdosConjecture1075 asks for c_r > r^{-r}\n\n6. **Approaches:** Document regularity lemma, probabilistic, and algebraic potential methods",
     "keyInsights": [
@@ -71,74 +72,39 @@
   },
   "sections": [
     {
-      "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "r-uniform hypergraphs, edge count, induced subhypergraph",
-      "startLine": 35,
-      "endLine": 59
+      "id": "definitions",
+      "title": "Hypergraph Definitions",
+      "summary": "r-uniform hypergraphs, edge count, induced subhypergraph, threshold constant",
+      "startLine": 39,
+      "endLine": 61
     },
     {
       "id": "known-result",
-      "title": "Erdős's Known Result",
-      "summary": "1964 result with c_r = r^{-r} and edge threshold εn^r",
-      "startLine": 61,
-      "endLine": 87
+      "title": "Erdős's Known Result (1964)",
+      "summary": "c_r = r^{-r} with edge threshold εn^r, threshold monotonicity and values",
+      "startLine": 63,
+      "endLine": 98
     },
     {
       "id": "conjecture",
-      "title": "The Conjecture",
-      "summary": "Open problem: can c_r > r^{-r} with threshold (1+ε)(n/r)^r?",
-      "startLine": 89,
-      "endLine": 110
-    },
-    {
-      "id": "difficulty",
-      "title": "Why This Is Difficult",
-      "summary": "Random selection gives r^{-r}, improvement requires structure",
-      "startLine": 112,
+      "title": "The Open Conjecture",
+      "summary": "ErdosConjecture1075: can c_r > r^{-r} with threshold (1+ε)(n/r)^r?",
+      "startLine": 100,
       "endLine": 133
     },
     {
-      "id": "related-results",
-      "title": "Related Extremal Results",
-      "summary": "Turán problems, complete hypergraph edges, asymptotics",
+      "id": "asymptotics",
+      "title": "Complete Hypergraphs and Asymptotics",
+      "summary": "C(m,r) edge count and binomial asymptotic C(m,r) ~ m^r/r!",
       "startLine": 135,
-      "endLine": 153
-    },
-    {
-      "id": "approaches",
-      "title": "Potential Approaches",
-      "summary": "Regularity lemma, probabilistic method, algebraic methods",
-      "startLine": 155,
-      "endLine": 175
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "r = 3 case, comparison with r = 2 (graphs)",
-      "startLine": 177,
-      "endLine": 191
-    },
-    {
-      "id": "bounds",
-      "title": "Lower Bounds on c_r",
-      "summary": "No improvement known, solution criteria",
-      "startLine": 193,
-      "endLine": 207
-    },
-    {
-      "id": "connections",
-      "title": "Connection to Other Problems",
-      "summary": "Supersaturation, Ramsey-type problems",
-      "startLine": 209,
-      "endLine": 222
+      "endLine": 148
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Current state: OPEN",
-      "startLine": 224,
-      "endLine": 258
+      "summary": "erdos_1075_summary combining known result with threshold monotonicity",
+      "startLine": 150,
+      "endLine": 180
     }
   ],
   "conclusion": {
