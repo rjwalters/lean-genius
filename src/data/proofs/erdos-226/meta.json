@@ -6,14 +6,16 @@
   "meta": {
     "author": "Barth-Schneider (1970 solution), Erdős (problem), Hayman (collection)",
     "sourceUrl": "https://erdosproblems.com/226",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos226Problem.lean",
     "tags": [
+      "erdos",
       "complex-analysis",
       "entire-functions",
       "transcendental-functions",
       "rationality",
-      "countable-dense-sets"
+      "countable-dense-sets",
+      "solved"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -87,21 +89,21 @@
       "id": "extensions",
       "title": "Part 8: Extensions",
       "startLine": 208,
-      "endLine": 230,
-      "summary": "barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ) and construction_flexibility placeholder."
+      "endLine": 222,
+      "summary": "barth_schneider_complex axiom (1971 extension to countable dense subsets of ℂ)."
     },
     {
       "id": "insights",
       "title": "Part 9: Why This Works",
-      "startLine": 231,
-      "endLine": 262,
-      "summary": "Weierstrass products, interpolation technique (placeholders), and no_polynomial_works axiom."
+      "startLine": 224,
+      "endLine": 240,
+      "summary": "no_polynomial_works axiom: no polynomial of degree > 1 can preserve rationality."
     },
     {
       "id": "summary",
       "title": "Part 10: Summary",
-      "startLine": 263,
-      "endLine": 312,
+      "startLine": 242,
+      "endLine": 289,
       "summary": "erdos_226_summary (proved), erdos_226, erdos_226_answer theorems. Problem SOLVED."
     }
   ],
