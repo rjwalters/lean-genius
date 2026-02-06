@@ -528,56 +528,20 @@ If |S| ≥ 5:
 This is verified computationally (256 subsets to check).
 -/
 
-/-- All 9 points of TernaryHypercube 2, enumerated. -/
-private def allPoints2 : Finset (TernaryHypercube 2) :=
-  {p00, p01, p02, p10, p11, p12, p20, p21, p22}
-
-/-- All 9 points of TernaryHypercube 2 are exactly {p00, ..., p22}. -/
-private theorem allPoints2_eq_univ : allPoints2 = Finset.univ := by native_decide
-
-/-- Helper: check if a finset contains a collinear triple.
-    Returns True if there exist distinct x, y, z ∈ S with OnLine x y z. -/
-private def hasCollinearTriple (S : Finset (TernaryHypercube 2)) : Bool :=
-  S.any fun x => S.any fun y => S.any fun z =>
-    x ≠ y && y ≠ z && x ≠ z && (Finset.univ : Finset (Fin 2)).all fun i => x i + z i == 2 * y i
-
-/-- Every subset of TernaryHypercube 2 with 5+ elements has a collinear triple (computational). -/
-private theorem five_or_more_has_line_bool :
-    (Finset.univ : Finset (Finset (TernaryHypercube 2))).all
-      fun S => S.card < 5 || hasCollinearTriple S = true := by native_decide
-
-/-- The key lemma: every subset of size ≥ 5 of AG(2,3) contains a collinear triple.
-
-    Proved by exhaustive finite verification using native_decide. -/
-private theorem five_or_more_contains_line (T : Finset (TernaryHypercube 2)) (hT : T.card ≥ 5) :
-    ∃ x y z, x ∈ T ∧ y ∈ T ∧ z ∈ T ∧ x ≠ y ∧ y ≠ z ∧ x ≠ z ∧ OnLine x y z := by
-  -- Use the computational verification
-  have hmem : T ∈ (Finset.univ : Finset (Finset (TernaryHypercube 2))) := Finset.mem_univ T
-  have hall := five_or_more_has_line_bool
-  rw [Finset.all_iff_forall] at hall
-  have hT_check := hall T hmem
-  simp only [Bool.or_eq_true, Nat.lt_iff_le_pred (by omega : 5 > 0)] at hT_check
-  have hcard : ¬ T.card < 5 := by omega
-  simp only [hcard, false_or, decide_eq_true_eq] at hT_check
-  -- Extract witness from hasCollinearTriple
-  unfold hasCollinearTriple at hT_check
-  simp only [Finset.any_eq_true, Bool.and_eq_true, beq_iff_eq, decide_eq_true_eq,
-             Finset.all_iff_forall, Finset.mem_univ, true_implies] at hT_check
-  obtain ⟨x, hx, y, hy, z, hz, hxy, hyz_hxz_line⟩ := hT_check
-  obtain ⟨hyz, hxz_line⟩ := hyz_hxz_line
-  obtain ⟨hxz, hline⟩ := hxz_line
-  exact ⟨x, y, z, hx, hy, hz, hxy, hyz, hxz, fun i => by
-    have := hline i; simp [eq_comm] at this; exact this⟩
+/-- Every subset of AG(2,3) either has size < 5 or contains a collinear triple.
+    Proved by exhaustive finite verification over all 2^9 = 512 subsets. -/
+private theorem ag23_line_or_small :
+    ∀ S : Finset (TernaryHypercube 2), S.card < 5 ∨
+      ∃ x ∈ S, ∃ y ∈ S, ∃ z ∈ S,
+        x ≠ y ∧ y ≠ z ∧ x ≠ z ∧ (∀ i : Fin 2, x i + z i = 2 * y i) := by
+  native_decide
 
 private theorem capSet2_card_le_4 (S : Finset (TernaryHypercube 2)) (hS : IsCapSet S) :
     S.card ≤ 4 := by
-  -- If S.card ≥ 5, then S contains a line.
-  by_contra hgt
-  push_neg at hgt
-  have h5 : S.card ≥ 5 := by omega
-  exfalso
-  obtain ⟨x, y, z, hx, hy, hz, hxy, hyz, hxz, hline⟩ := five_or_more_contains_line S h5
-  exact hS x y z hx hy hz hxy hyz hxz hline
+  have h := ag23_line_or_small S
+  rcases h with hlt | ⟨x, hx, y, hy, z, hz, hxy, hyz, hxz, hline⟩
+  · omega
+  · exfalso; exact hS x y z hx hy hz hxy hyz hxz hline
 
 /--
 **n = 2:**
