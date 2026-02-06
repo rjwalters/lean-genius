@@ -14,7 +14,7 @@ the independence number α(S) = max |I| where I ⊆ S has no two points at dista
 - Hadwiger-Nelson bounds: 5 ≤ χ(R^2) ≤ 7
 - Basic structural theorems about independence
 
-**Status**: BUILD
+**Status**: COMPLETE (0 sorries, 2 axioms)
 Tags: combinatorial-geometry, graph-theory, independence-number, unit-distance
 -/
 
@@ -358,21 +358,124 @@ theorem degree_le_maxDegree {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
   unfold maxDegree
   exact Finset.le_sup' _ (Finset.mem_univ v)
 
+/-- A maximal independent set: independent, and every non-member has a neighbor in it. -/
+def IsMaximalIndep {V : Type*} (G : SimpleGraph V) (I : Finset V) : Prop :=
+  IsIndepFinset G I ∧ ∀ v, v ∉ I → ∃ u ∈ I, G.Adj v u
+
+/-- The closed neighborhood of a vertex: v itself and its neighbors. -/
+def closedNeighborhoodIn {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) : Finset V :=
+  insert v (Finset.univ.filter (G.Adj v))
+
+/-- The closed neighborhood has size at most Δ+1. -/
+theorem closedNeighborhoodIn_card_le {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    (closedNeighborhoodIn G v).card ≤ maxDegree G + 1 := by
+  unfold closedNeighborhoodIn
+  calc (insert v (Finset.univ.filter (G.Adj v))).card
+      ≤ (Finset.univ.filter (G.Adj v)).card + 1 := Finset.card_insert_le v _
+    _ = degree G v + 1 := by rfl
+    _ ≤ maxDegree G + 1 := Nat.add_le_add_right (degree_le_maxDegree G v) 1
+
+/-- Every finite graph has a maximal independent set.
+    Proof: Take any independent set of maximum cardinality (exists by finiteness).
+    If it's not maximal, we can extend it, contradicting maximality. -/
+theorem exists_maximal_indep {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    ∃ I : Finset V, IsMaximalIndep G I := by
+  -- Take an independent set of maximum cardinality
+  -- First, the set of all independent finsets
+  let indepSets := Finset.univ.powerset.filter (fun S =>
+    ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v)
+  -- The empty set is independent, so indepSets is nonempty
+  have hne : indepSets.Nonempty := by
+    use ∅
+    simp only [indepSets, Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨Finset.empty_subset _, fun u hu => absurd hu (Finset.notMem_empty u)⟩
+  -- Pick the one with maximum cardinality
+  obtain ⟨I, hImem, hImax⟩ := indepSets.exists_max_image Finset.card hne
+  have hIindep : IsIndepFinset G I := by
+    simp only [indepSets, Finset.mem_filter] at hImem
+    exact hImem.2
+  refine ⟨I, hIindep, ?_⟩
+  -- Show maximality: every non-member has a neighbor in I
+  intro v hv
+  by_contra h
+  push_neg at h
+  -- v is non-adjacent to all of I, so I ∪ {v} is independent
+  have hext : IsIndepFinset G (insert v I) :=
+    isIndepFinset_insert G hIindep hv (fun u hu => h u hu)
+  -- But |I ∪ {v}| > |I|, contradicting maximality
+  have hcard : (insert v I).card > I.card := by
+    rw [Finset.card_insert_of_notMem hv]
+    omega
+  have hmem : insert v I ∈ indepSets := by
+    simp only [indepSets, Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨Finset.subset_univ _, hext⟩
+  have := hImax (insert v I) hmem
+  omega
+
+/-- Covering lemma: if I is a maximal independent set, then V is covered by
+    the union of closed neighborhoods of vertices in I. -/
+theorem maximal_indep_covers {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {I : Finset V} (hI : IsMaximalIndep G I) :
+    ∀ v : V, v ∈ I ∨ ∃ u ∈ I, G.Adj v u := by
+  intro v
+  by_cases hv : v ∈ I
+  · left; exact hv
+  · right; exact hI.2 v hv
+
+/-- Covering bound: if I is a maximal independent set, then
+    |V| ≤ |I| * (Δ + 1).
+    Each vertex in I covers itself and at most Δ neighbors. -/
+theorem maximal_indep_covering_bound {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {I : Finset V} (hI : IsMaximalIndep G I) :
+    Fintype.card V ≤ I.card * (maxDegree G + 1) := by
+  -- Every vertex is either in I or adjacent to something in I
+  -- So V ⊆ ⋃_{u ∈ I} closedNeighborhoodIn G u
+  have hcover : Finset.univ ⊆ I.biUnion (fun u => closedNeighborhoodIn G u) := by
+    intro v _
+    simp only [Finset.mem_biUnion]
+    rcases maximal_indep_covers G hI v with hv | ⟨u, hu, hadj⟩
+    · exact ⟨v, hv, Finset.mem_insert_self v _⟩
+    · exact ⟨u, hu, by
+        unfold closedNeighborhoodIn
+        rw [Finset.mem_insert]
+        right
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+        exact G.symm hadj⟩
+  calc Fintype.card V = Finset.univ.card := (Finset.card_univ).symm
+    _ ≤ (I.biUnion (fun u => closedNeighborhoodIn G u)).card :=
+        Finset.card_le_card hcover
+    _ ≤ I.card * (maxDegree G + 1) := by
+        calc (I.biUnion (fun u => closedNeighborhoodIn G u)).card
+            ≤ ∑ u ∈ I, (closedNeighborhoodIn G u).card := Finset.card_biUnion_le
+          _ ≤ ∑ _u ∈ I, (maxDegree G + 1) :=
+              Finset.sum_le_sum (fun u _ => closedNeighborhoodIn_card_le G u)
+          _ = I.card * (maxDegree G + 1) := by rw [Finset.sum_const, smul_eq_mul]
+
 /-- **The Greedy Bound**: Every graph G has an independent set of size ≥ |V|/(Δ+1).
 
-This is a consequence of the greedy algorithm: repeatedly remove a vertex
-and all its neighbors. Each step removes at most Δ+1 vertices (the vertex
-and its ≤Δ neighbors), so we need at least |V|/(Δ+1) steps, each contributing
-one vertex to the independent set.
-
-The formal proof requires:
-1. The greedy algorithm terminates
-2. Each removed vertex contributes to the independent set
-3. At most Δ+1 vertices are removed per step
--/
-axiom greedy_bound {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+Proof: By `exists_maximal_indep`, there exists a maximal independent set I.
+By `maximal_indep_covering_bound`, |V| ≤ |I|·(Δ+1), so |I| ≥ |V|/(Δ+1).
+Since α(G) ≥ |I|, the bound follows. -/
+theorem greedy_bound {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-    independenceNumber G ≥ Fintype.card V / (maxDegree G + 1)
+    independenceNumber G ≥ Fintype.card V / (maxDegree G + 1) := by
+  obtain ⟨I, hI⟩ := exists_maximal_indep G
+  have hbound : Fintype.card V ≤ I.card * (maxDegree G + 1) :=
+    maximal_indep_covering_bound G hI
+  have hindep : independenceNumber G ≥ I.card := indep_card_le_alpha G I hI.1
+  -- From hbound: n ≤ |I| * (Δ+1), so n/(Δ+1) ≤ |I|
+  have hpos : maxDegree G + 1 > 0 := Nat.succ_pos _
+  have hdiv : Fintype.card V / (maxDegree G + 1) ≤ I.card := by
+    calc Fintype.card V / (maxDegree G + 1)
+        ≤ I.card * (maxDegree G + 1) / (maxDegree G + 1) :=
+          Nat.div_le_div_right hbound
+      _ = I.card := Nat.mul_div_cancel _ hpos
+  omega
 
 /-- Combined with the pigeonhole bound: if G has chromatic number χ,
     then α(G) ≥ |V|/χ. For unit distance graphs with χ ≤ 7 (Hadwiger-Nelson),
@@ -573,18 +676,16 @@ theorem indep_is_compl_clique {V : Type*} [DecidableEq V]
 theorem indep_degree_sum {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] {I : Finset V} (hI : IsIndepFinset G I) :
     ∑ v ∈ I, degree G v =
-    ∑ v ∈ I, (Finset.univ \ I).filter (G.Adj v) |>.card := by
-  congr 1
-  ext v
-  congr 1
+    ∑ v ∈ I, ((Finset.univ \ I).filter (G.Adj v)).card := by
+  apply Finset.sum_congr rfl
+  intro v hv
+  unfold degree
+  apply congr_arg Finset.card
   ext u
   simp only [Finset.mem_filter, Finset.mem_sdiff, Finset.mem_univ, true_and]
   constructor
   · intro hadj
-    constructor
-    · intro huI
-      exact hI v (by assumption) u huI (G.ne_of_adj hadj) hadj
-    · exact hadj
+    exact ⟨fun huI => hI v hv u huI (G.ne_of_adj hadj) hadj, hadj⟩
   · intro ⟨_, hadj⟩; exact hadj
 
 /-- For nonempty graphs, independence number is positive. -/
@@ -611,7 +712,7 @@ This file establishes:
 11. **Chromatic-independence**: k * α(G) ≥ |V|
 12. **Neighborhood theory**: Definition and properties
 
-### Proved Theorems (41 total, 0 sorries)
+### Proved Theorems (48 total, 0 sorries)
 - `isIndepFinset_empty`: ∅ is independent
 - `isIndepFinset_singleton`: {v} is independent
 - `isIndepFinset_subset`: Subsets preserve independence
@@ -635,6 +736,11 @@ This file establishes:
 - `degree_isolated`: Isolated vertices have degree 0
 - `degree_le_card_sub_one`: degree(v) ≤ |V| - 1
 - `degree_le_maxDegree`: degree(v) ≤ Δ(G)
+- `closedNeighborhoodIn_card_le`: |N[v]| ≤ Δ+1 (NEW)
+- `exists_maximal_indep`: Every finite graph has a maximal independent set (NEW)
+- `maximal_indep_covers`: Maximal independent sets cover all vertices (NEW)
+- `maximal_indep_covering_bound`: |V| ≤ |I|·(Δ+1) for maximal I (NEW)
+- `greedy_bound`: α(G) ≥ |V|/(Δ+1) (NEW - converted from axiom)
 - `unit_distance_independence_from_chromatic`: Unit dist graphs have α ≥ |V|/7
 - `alpha_chi_ge_card`: k * α(G) ≥ |V| for k-colorable graphs
 - `independenceNumber_ge_of_indep`: α(G) ≥ |I| for independent I
@@ -654,15 +760,13 @@ This file establishes:
 - `indep_degree_sum`: Degree sum in independent set
 - `independenceNumber_pos`: α(G) > 0 for nonempty graphs
 
-### Axioms Used (3)
+### Axioms Used (2)
 - `hadwiger_nelson_lower_bound`: De Grey's 5-color lower bound (2018)
 - `hadwiger_nelson_upper_bound`: 7-coloring upper bound
-- `greedy_bound`: α(G) ≥ |V|/(Δ+1) (greedy algorithm bound)
 
 ### What's NOT Proven (and Why)
 - De Grey's construction (requires explicit 1581-vertex graph verification)
 - The 7-coloring (requires constructing the hexagonal tiling coloring)
-- Greedy bound proof (requires formalizing the greedy algorithm)
 - Fractional chromatic number bounds (requires LP duality formalization)
 -/
 

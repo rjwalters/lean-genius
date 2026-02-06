@@ -1,8 +1,8 @@
 {
   "slug": "unit-distance-independence",
   "title": "Unit Distance Graph Independence Number Bounds",
-  "phase": "PROGRESS",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "complete",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -21,31 +21,30 @@
       "indepFinset_iff_compl_clique: Finset version",
       "indep_times_colors_ge_card: α(G)·k ≥ |V|",
       "hadwiger_nelson_bounds: 5 ≤ χ(R²) ≤ 7",
-      "greedy_bound: α(G) ≥ |V|/(Δ+1) (NEW: converted from axiom)",
-      "closed_neighborhood_size: |N[v]| ≤ Δ+1 (NEW)"
+      "exists_maximal_indep: Every finite graph has a maximal independent set (NEW)",
+      "maximal_indep_covers: Maximal independent sets cover all vertices (NEW)",
+      "maximal_indep_covering_bound: |V| ≤ |I|·(Δ+1) for maximal I (NEW)",
+      "greedy_bound: α(G) ≥ |V|/(Δ+1) (PROVED - converted from axiom)",
+      "closedNeighborhoodIn_card_le: |N[v]| ≤ Δ+1"
     ],
-    "open": [
-      "greedy_bound_exists has 1 sorry for greedy algorithm formalization"
-    ],
-    "goal": "Complete the greedy bound proof"
+    "open": [],
+    "goal": "Complete. All theorems proved, 0 sorries."
   },
   "currentState": {
-    "phase": "PROGRESS",
-    "since": "2026-02-04T03:55:00Z",
-    "iteration": 4,
-    "focus": "Converted greedy_bound from axiom to theorem",
-    "blockers": [
-      "greedy_bound_exists needs algorithmic formalization (greedy algorithm termination)"
-    ],
-    "nextAction": "Prove greedy_bound_exists or submit to Aristotle",
+    "phase": "COMPLETE",
+    "since": "2026-02-06T03:45:00Z",
+    "iteration": 5,
+    "focus": "Proved greedy_bound theorem via maximal independent set covering argument",
+    "blockers": [],
+    "nextAction": "Problem formalization complete. 2 axioms remain for published results (Hadwiger-Nelson bounds).",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 27 theorems, 2 axioms, 1 sorry. Converted greedy_bound from axiom to theorem. Added closed_neighborhood_size helper. Reduced axiom count from 3 to 2.",
+    "progressSummary": "COMPLETE: 48 theorems, 2 axioms, 0 sorries. Greedy bound α(G) ≥ |V|/(Δ+1) fully proved via maximal independent set covering argument. Axiom count reduced from 3 to 2.",
     "builtItems": [
       "indepNumber: formal sSup definition",
       "indep_card_le_indepNumber: |S| ≤ α(G)",
@@ -55,22 +54,28 @@
       "indepSet_iff_compl_clique: Set version of duality",
       "indepFinset_iff_compl_clique: Finset version of duality",
       "indep_times_colors_ge_card: α(G)·k ≥ |V|",
-      "closed_neighborhood_size: |N[v]| ≤ Δ+1 (NEW)",
-      "greedy_bound_exists: ∃ S with |S| ≥ |V|/(Δ+1) (NEW, 1 sorry)",
-      "greedy_bound: α(G) ≥ |V|/(Δ+1) (NEW, converted from axiom)"
+      "IsMaximalIndep: Definition of maximal independent set (NEW)",
+      "closedNeighborhoodIn: Closed neighborhood definition (NEW)",
+      "closedNeighborhoodIn_card_le: |N[v]| ≤ Δ+1 (NEW)",
+      "exists_maximal_indep: Maximal independent set existence via max cardinality (NEW)",
+      "maximal_indep_covers: Covering property of maximal independent sets (NEW)",
+      "maximal_indep_covering_bound: |V| ≤ |I|·(Δ+1) for maximal I (NEW)",
+      "greedy_bound: α(G) ≥ |V|/(Δ+1) (PROVED - converted from axiom)"
     ],
     "insights": [
       "Gᶜ.Adj u v unfolds to ⟨u ≠ v, ¬G.Adj u v⟩ (ne first, then negated adj)",
       "Finset.card_insert_le gives card(insert v S) ≤ card S + 1",
-      "Greedy bound proof requires formalizing the greedy algorithm or using probabilistic method",
-      "Closed neighborhood size bound is key building block for greedy bound"
+      "Greedy bound proved via covering argument: maximal indep set covers all vertices via closed neighborhoods",
+      "Key insight: avoid greedy algorithm formalization entirely; use maximal independent set + covering bound instead",
+      "Finset.exists_max_image gives max-cardinality element from nonempty finset",
+      "Nat.mul_div_cancel and Nat.div_le_div_right sufficient for nat division bounds"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Complete greedy_bound_exists proof (greedy algorithm formalization)",
-      "Submit to Aristotle for automated proof search",
+      "Consider Aristotle submission for Hadwiger-Nelson axioms",
       "Prove Ramsey-type bound: α(G)·ω(G) ≥ |V|"
-    ]
+    ],
+    "markdown": "# Unit Distance Independence - Knowledge\n\n## Problem\nFormalize independence number bounds for unit distance graphs.\n\n## Status: COMPLETE (0 sorries, 48 theorems, 2 axioms)\n\n## Iteration 5 (2026-02-06) - FINAL\n\n**Proved `greedy_bound` theorem completely:**\n- Converted from axiom to theorem\n- Key proof strategy: maximal independent set covering argument\n- Defined `IsMaximalIndep`, `closedNeighborhoodIn`\n- Proved `exists_maximal_indep` via Finset.exists_max_image\n- Proved `maximal_indep_covering_bound`: |V| ≤ |I|·(Δ+1)\n- Combined: α(G) ≥ |V|/(Δ+1)\n- Also fixed pre-existing `indep_degree_sum` proof\n\n## Axiom Inventory (2 axioms - deep results)\n1. `hadwiger_nelson_lower_bound` - De Grey's 5-color lower bound (2018)\n2. `hadwiger_nelson_upper_bound` - 7-coloring upper bound\n\n## Key Proof Technique\nInstead of formalizing the greedy algorithm (which requires termination proofs),\nused a covering argument:\n1. Take a maximal independent set I (exists by max-cardinality argument)\n2. Every vertex is either in I or has a neighbor in I (maximality)\n3. Each vertex in I covers at most Δ+1 vertices (closed neighborhood)\n4. Therefore |V| ≤ |I|·(Δ+1), giving α(G) ≥ |V|/(Δ+1)"
   },
   "approaches": [
     {
@@ -80,8 +85,8 @@
     },
     {
       "name": "Greedy bound via closed neighborhood",
-      "status": "in-progress",
-      "description": "Show α(G) ≥ |V|/(Δ+1) by greedy algorithm removing N[v] each step"
+      "status": "succeeded",
+      "description": "Proved α(G) ≥ |V|/(Δ+1) via maximal independent set covering argument"
     }
   ],
   "tags": [
@@ -91,8 +96,8 @@
     "independence-number",
     "unit-distance",
     "extension",
-    "1-sorry",
-    "progress"
+    "0-sorry",
+    "complete"
   ],
   "relatedProofs": [
     "proofs/Proofs/UnitDistanceIndependence.lean"
@@ -103,7 +108,8 @@
     "mathlib": ["Combinatorics.SimpleGraph.Basic", "Combinatorics.SimpleGraph.Clique"]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-04T03:55:00Z",
+  "lastUpdate": "2026-02-06T03:45:00Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "knowledgeScore": 5
 }
