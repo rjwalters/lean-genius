@@ -2,131 +2,124 @@
   "id": "erdos-255",
   "title": "Erdős Problem #255: Discrepancy of Sequences in [0,1]",
   "slug": "erdos-255",
-  "description": "For any sequence in [0,1], must some interval have unbounded discrepancy? YES (Schmidt 1968). Tijdeman-Wagner (1980) proved discrepancy ≫ log N for almost all intervals.",
+  "description": "For any sequence in [0,1], must some interval have unbounded discrepancy? YES (Schmidt 1968). Discrepancy ≫ log N for almost all intervals (Tijdeman-Wagner 1980), and this is optimal.",
   "meta": {
     "author": "Schmidt (1968, 1972), Tijdeman-Wagner (1980)",
     "sourceUrl": "https://erdosproblems.com/255",
     "date": "1968",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos255Problem.lean",
-    "tags": ["erdos", "discrepancy-theory", "sequences", "distribution-mod-1", "number-theory"],
+    "tags": ["erdos", "discrepancy-theory", "sequences", "distribution-mod-1", "number-theory", "solved"],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 255,
     "erdosUrl": "https://erdosproblems.com/255",
     "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       { "theorem": "Set.Icc", "description": "Closed intervals", "module": "Mathlib.Data.Set.Basic" },
       { "theorem": "Set.Countable", "description": "Countable sets", "module": "Mathlib.Data.Set.Countable" },
-      { "theorem": "MeasureTheory.volume", "description": "Lebesgue measure", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" },
-      { "theorem": "Real.log", "description": "Logarithm function", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" }
+      { "theorem": "MeasureTheory.volume", "description": "Lebesgue measure", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" }
     ],
     "originalContributions": [
-      "IsSequenceInUnitInterval: sequences in [0,1]",
-      "countInInterval: counting function for discrepancy",
-      "discrepancy: D_N(I) = count - N·|I|",
-      "hasUnboundedDiscrepancy: limsup |D_N| = ∞",
-      "erdosQuestion: main problem statement",
+      "IsSequenceInUnitInterval, countInInterval, discrepancy definitions",
+      "hasUnboundedDiscrepancy and erdosQuestion formal statements",
       "schmidt_theorem_1968: affirmative answer",
+      "no_uniformly_bounded_discrepancy: proved corollary by contradiction",
       "schmidt_theorem_1972: uncountably many intervals",
-      "tijdeman_wagner_theorem: logarithmic bound",
-      "starDiscrepancy: sup over all intervals"
-    ],
-    "dateAdded": "2026-01-19"
+      "hasLogarithmicDiscrepancy and tijdeman_wagner_theorem",
+      "van_der_corput_sequence_exists: optimality of log N",
+      "isUniformlyDistributed and weyl_theorem",
+      "starDiscrepancy and star_discrepancy_unbounded",
+      "erdos_255_summary: three-part conjunction"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem concerns discrepancy theory - measuring how far a sequence deviates from uniform distribution. Erdős asked in the early 1960s whether every sequence in [0,1] must have unbounded discrepancy for some interval. Schmidt (1968) proved YES, and strengthened it (1972) to uncountably many intervals. Tijdeman-Wagner (1980) showed the optimal logarithmic bound.",
-    "problemStatement": "**Problem Statement (SOLVED: YES)**\n\nLet z₁, z₂, ... ∈ [0,1] be an infinite sequence. Define discrepancy:\n  D_N(I) = #{n ≤ N : zₙ ∈ I} - N·|I|\n\n**Question:** Must there exist some interval I ⊆ [0,1] such that\n  limsup |D_N(I)| = ∞?\n\n**Answer:** YES (Schmidt 1968)\n\n**Optimal:** Discrepancy ≫ log N for almost all intervals (Tijdeman-Wagner 1980)",
-    "proofStrategy": "The formalization defines discrepancy and the main question. Schmidt's theorem is axiomatized as the affirmative answer. We also formalize the strengthening (uncountably many intervals), Tijdeman-Wagner's logarithmic bound, and van der Corput's matching upper bound showing optimality.",
+    "historicalContext": "Erdős posed this problem in the early 1960s, asking whether every sequence in [0,1] must have unbounded discrepancy for some interval. This connects to the classical theory of uniform distribution initiated by Weyl (1916) and the study of irregularities of distribution.\n\nSchmidt proved the affirmative answer in 1968, showing that no sequence can have bounded discrepancy for all intervals simultaneously. He strengthened this in 1972, proving that for any sequence, all but countably many intervals [0,x] have unbounded discrepancy.\n\nTijdeman and Wagner (1980) proved the quantitatively optimal result: for almost all x ∈ [0,1], the discrepancy |D_N([0,x))| grows at least as fast as c·log N for some constant c > 0. Van der Corput's classical low-discrepancy sequence achieves O(log N), showing that logarithmic growth is the best possible rate. Together, these results give a complete picture: discrepancy grows exactly like Θ(log N) for typical intervals.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $z_1, z_2, \\ldots \\in [0,1]$ be an infinite sequence. Define discrepancy:\n$$D_N(I) = \\#\\{n \\leq N : z_n \\in I\\} - N \\cdot |I|$$\n\n**Question:** Must there exist some interval $I \\subseteq [0,1]$ such that $\\limsup_{N \\to \\infty} |D_N(I)| = \\infty$?\n\n**Answer: YES** (Schmidt 1968). Moreover, $|D_N| \\gg \\log N$ for almost all intervals (Tijdeman-Wagner 1980), and this is optimal.",
+    "proofStrategy": "The formalization builds the discrepancy framework: sequences in [0,1], counting functions, and the discrepancy D_N(I). Schmidt's 1968 theorem is axiomatized as the main result, and a corollary (no sequence has uniformly bounded discrepancy) is proved by contradiction. Schmidt's 1972 strengthening, Tijdeman-Wagner's logarithmic bound, and van der Corput's matching upper bound are axiomatized. The summary theorem combines Schmidt 1968, Schmidt 1972, and van der Corput.",
     "keyInsights": [
-      "**Discrepancy:** D_N(I) measures deviation from uniform distribution",
-      "**Schmidt (1968):** Some interval must have unbounded discrepancy",
-      "**Schmidt (1972):** All but countably many [0,x] have unbounded discrepancy",
-      "**Tijdeman-Wagner (1980):** |D_N| ≫ log N for almost all intervals",
-      "**Van der Corput:** |D_N| = O(log N) is achievable - log N is optimal",
-      "**Star Discrepancy:** D*_N = sup over all intervals → ∞"
+      "**Discrepancy Measures Irregularity:** D_N(I) quantifies how far a finite sequence deviates from perfect uniformity in interval I",
+      "**Schmidt (1968):** No sequence can have bounded discrepancy for all intervals — irregularities must occur somewhere",
+      "**Schmidt (1972):** The set of 'good' intervals (bounded discrepancy) is countable, so uncountably many intervals witness unbounded discrepancy",
+      "**Tijdeman-Wagner (1980):** Discrepancy grows at least logarithmically for Lebesgue-almost-all intervals — the strongest quantitative result",
+      "**Van der Corput Optimality:** Low-discrepancy sequences achieve O(log N), matching the Tijdeman-Wagner lower bound",
+      "**Weyl Connection:** Uniform distribution (D_N/N → 0) is compatible with unbounded D_N — the two concepts are at different scales"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "startLine": 44,
-      "endLine": 85,
-      "summary": "Sequences in [0,1], counting function, discrepancy"
+      "summary": "IsSequenceInUnitInterval, countInInterval, discrepancy, absDiscrepancy",
+      "startLine": 38,
+      "endLine": 59
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "startLine": 86,
-      "endLine": 104,
-      "summary": "Unbounded discrepancy and Erdős's question"
+      "summary": "hasUnboundedDiscrepancy, erdosQuestion",
+      "startLine": 61,
+      "endLine": 72
     },
     {
       "id": "schmidt-1968",
       "title": "Schmidt's Theorem (1968)",
-      "startLine": 105,
-      "endLine": 134,
-      "summary": "Affirmative answer - some interval has unbounded discrepancy"
+      "summary": "schmidt_theorem_1968 axiom, no_uniformly_bounded_discrepancy proved corollary",
+      "startLine": 74,
+      "endLine": 95
     },
     {
       "id": "schmidt-1972",
       "title": "Schmidt's Strengthening (1972)",
-      "startLine": 135,
-      "endLine": 152,
-      "summary": "Uncountably many intervals have unbounded discrepancy"
+      "summary": "schmidt_theorem_1972: all but countably many intervals have unbounded discrepancy",
+      "startLine": 97,
+      "endLine": 103
     },
     {
       "id": "tijdeman-wagner",
       "title": "Tijdeman-Wagner Theorem (1980)",
-      "startLine": 153,
-      "endLine": 174,
-      "summary": "Logarithmic lower bound for almost all intervals"
+      "summary": "hasLogarithmicDiscrepancy, tijdeman_wagner_theorem",
+      "startLine": 105,
+      "endLine": 116
     },
     {
       "id": "optimality",
-      "title": "Why This is Optimal",
-      "startLine": 175,
-      "endLine": 194,
-      "summary": "Van der Corput sequence achieves log N upper bound"
+      "title": "Optimality",
+      "summary": "van_der_corput_sequence_exists: O(log N) is achievable",
+      "startLine": 118,
+      "endLine": 126
     },
     {
       "id": "connections",
       "title": "Connections",
-      "startLine": 195,
-      "endLine": 220,
-      "summary": "Uniform distribution, Weyl's theorem, Diophantine approximation"
+      "summary": "isUniformlyDistributed, weyl_theorem",
+      "startLine": 128,
+      "endLine": 138
     },
     {
       "id": "star-discrepancy",
       "title": "Star Discrepancy",
-      "startLine": 221,
-      "endLine": 239,
-      "summary": "Supremum over all intervals also unbounded"
-    },
-    {
-      "id": "history",
-      "title": "Historical Context",
-      "startLine": 240,
-      "endLine": 254,
-      "summary": "Timeline from Weyl (1916) to Tijdeman-Wagner (1980)"
+      "summary": "starDiscrepancy, star_discrepancy_unbounded",
+      "startLine": 140,
+      "endLine": 148
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 255,
-      "endLine": 300,
-      "summary": "Main theorem and historical note"
+      "summary": "erdos_255_summary: three-part conjunction",
+      "startLine": 150,
+      "endLine": 172
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #255 is SOLVED with answer YES. For any sequence in [0,1], some interval must have unbounded discrepancy (Schmidt 1968). This holds for uncountably many intervals (Schmidt 1972), with discrepancy ≫ log N for almost all (Tijdeman-Wagner 1980). The logarithmic bound is optimal.",
-    "implications": "This result is fundamental in discrepancy theory with applications to quasi-Monte Carlo integration, numerical analysis, and computational number theory. It shows that no sequence can be 'too uniformly distributed' - irregularities must occur.",
+    "summary": "Erdős Problem #255 is SOLVED (YES). Schmidt (1968) proved every sequence has an interval with unbounded discrepancy. Schmidt (1972) strengthened this to uncountably many intervals. Tijdeman-Wagner (1980) proved the optimal logarithmic lower bound. Van der Corput's sequence shows log N growth is tight. The summary theorem combines these results.",
+    "implications": "This result is foundational in discrepancy theory, with applications to quasi-Monte Carlo integration, numerical analysis, and computational number theory. It shows that no sequence can be too uniformly distributed — irregularities are mathematically inevitable.",
     "openQuestions": [
-      "What are the precise constants in the logarithmic bounds?",
+      "What are the precise constants in the logarithmic bounds for specific sequences?",
       "How do multi-dimensional generalizations behave?",
-      "What is the discrepancy for specific number-theoretic sequences?"
+      "What is the discrepancy of algebraic number sequences?"
     ]
   }
 }
