@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #981: Character Sum Stabilization Threshold
 
 Source: https://erdosproblems.com/981
