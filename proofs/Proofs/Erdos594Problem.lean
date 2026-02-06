@@ -218,14 +218,13 @@ axiom mycielski_type_construction :
     ∀ κ : Cardinal, ∃ (V : Type*) (G : SimpleGraph V),
       isTriangleFree G ∧ hasLargeChromaticNumber G κ
 
-/-- The smallest odd cycle that MUST appear is length 3 only if
-    the graph has finite girth. -/
-def girth (G : SimpleGraph V) : ℕ := sorry -- Minimum cycle length
-
-/-- Graphs with high girth can still have high chromatic number. -/
+/-- Graphs with high girth can still have high chromatic number.
+    (Girth is the minimum cycle length; here we express the property
+    directly: no cycles of length < g exist, yet χ ≥ κ.) -/
 axiom high_girth_high_chromatic :
     ∀ g : ℕ, ∀ κ : Cardinal, ∃ (V : Type*) (G : SimpleGraph V),
-      girth G ≥ g ∧ hasLargeChromaticNumber G κ
+      (∀ n, 3 ≤ n → n < g → ¬hasCycleOfLength G n) ∧
+      hasLargeChromaticNumber G κ
 
 /-! ## Explicit Bounds -/
 
@@ -267,8 +266,5 @@ theorem erdos_594_summary (V : Type*) (G : SimpleGraph V)
   constructor
   · exact erdos_594 V G h
   · exact contains_all_finite_bipartite V G h
-
-/-- Problem status. -/
-theorem erdos_594_status : True := trivial
 
 end Erdos594

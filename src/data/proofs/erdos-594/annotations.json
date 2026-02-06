@@ -123,7 +123,7 @@
   {
     "id": "ann-e594-summary",
     "proofId": "erdos-594",
-    "range": {"startLine": 239, "endLine": 272},
+    "range": {"startLine": 238, "endLine": 270},
     "type": "theorem",
     "title": "Summary",
     "content": "**Erdős Problem #594: Complete Summary**\n\n```lean\ntheorem erdos_594_summary (V : Type*) (G : SimpleGraph V)\n    (h : hasLargeChromaticNumber G aleph1) :\n    containsAllLargeOddCycles G ∧\n    (∀ (W : Type*) [Fintype W] (H : SimpleGraph W), H.IsBipartite →\n      ∃ f : W → V, ∀ v w : W, H.Adj v w → G.Adj (f v) (f w))\n```\n\n**STATUS: SOLVED (1974)**\n\n**Question:** χ(G) ≥ ℵ₁ ⟹ all large odd cycles?\n**Answer:** YES\n\n**Key Results:**\n1. Erdős-Hajnal: Proved for ℵ₂\n2. Erdős-Hajnal-Shelah: Proved for ℵ₁ (optimal)\n3. Thomassen: Cycles pass through any given edge",
