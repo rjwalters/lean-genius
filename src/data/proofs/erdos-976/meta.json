@@ -15,10 +15,12 @@
       "prime-divisors",
       "polynomials",
       "sieve-methods",
-      "analytic-number-theory"
+      "analytic-number-theory",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
+    "dateAdded": "2026-02-05",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
@@ -44,20 +46,20 @@
       "nagell_ricci_bound axiom (n log n bound)",
       "erdos_1952_bound axiom (iterated logarithm bound)",
       "tenenbaum_bound axiom (exponential bound)",
+      "trivial_upper_bound axiom (n^d upper bound)",
       "conjecture_polynomial_growth formalization",
       "conjecture_degree_growth formalization",
-      "greatestPrimeDivisor computational examples (proved)",
-      "Numerical bound comparison examples",
-      "erdos_976_status corollary"
+      "greatestPrimeDivisor computational examples (proved via native_decide)",
+      "erdos_976_status theorem (proved via tenenbaum_bound)"
     ],
     "erdosNumber": 976,
     "erdosUrl": "https://erdosproblems.com/976",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "**The Founding Result (1922)**\\n\\nTrygve Nagell and Giovanni Ricci independently established the first non-trivial lower bound in 1922: for any irreducible polynomial f of degree d ≥ 2, F_f(n) ≫ n log n. This showed that polynomial products must contain larger prime factors than typical integers of comparable size.\\n\\n**Erdős's Sieve Improvement (1952)**\\n\\nErdős applied his revolutionary sieve methods to this problem, proving F_f(n) ≫ n(log n)^{log log log n}. The iterated logarithm exponent—while growing slowly—was a genuine improvement. In 1965, Erdős claimed a much stronger bound (n exp((log n)^c)) but called the proof 'fairly complicated' and never published it. The proof was later found to be flawed.\\n\\n**The Resolution (1990)**\\n\\nGérald Tenenbaum finally proved Erdős's claimed bound rigorously in 1990 using sophisticated large sieve inequalities. The bound n·exp((log n)^c) grows faster than any polynomial in log n but slower than any power n^ε. Meanwhile, Erdős and Schinzel published a weaker bound the same year, apparently unaware of the earlier issues.\\n\\n**The Gap Remains (Present)**\\n\\nDespite Tenenbaum's breakthrough, an enormous gap persists between the known bound n·exp((log n)^c) and the conjectured polynomial growth n^{1+c} or n^d. This gap reflects deep mysteries about how prime factors distribute among polynomial values.",
+    "historicalContext": "**The Founding Result (1922)**\n\nTrygve Nagell and Giovanni Ricci independently established the first non-trivial lower bound in 1922: for any irreducible polynomial f of degree d ≥ 2, F_f(n) ≫ n log n. This showed that polynomial products must contain larger prime factors than typical integers of comparable size.\n\n**Erdős's Sieve Improvement (1952) and Tenenbaum's Resolution (1990)**\n\nErdős applied his sieve methods in 1952, proving F_f(n) ≫ n(log n)^{log log log n}. In 1965, Erdős claimed the much stronger bound n·exp((log n)^c) but never published the proof, which was later found to be flawed. Gérald Tenenbaum finally proved this bound rigorously in 1990 using sophisticated large sieve inequalities, while Erdős and Schinzel published a weaker bound the same year.\n\n**The Gap Remains (Present)**\n\nDespite Tenenbaum's breakthrough, an enormous gap persists between the known bound n·exp((log n)^c) and the conjectured polynomial growth n^{1+c} or n^d. The sub-polynomial factor exp((log n)^c) grows faster than any power of log n but slower than any power n^ε. Resolving this gap remains one of the major open problems in analytic number theory.",
     "problemStatement": "Let f ∈ ℤ[x] be an irreducible polynomial of degree d ≥ 2. Define F_f(n) = max{p prime : p | f(m) for some 1 ≤ m ≤ n}, equivalently the greatest prime divisor of ∏_{m=1}^n f(m). Question: Is F_f(n) ≫ n^{1+c} for some constant c > 0? Or even ≫ n^d?",
-    "proofStrategy": "The formalization presents the known bounds as axioms and defines the main conjectures precisely. The Nagell-Ricci bound uses elementary methods. Erdős's 1952 improvement uses sieve techniques to count integers with large prime factors. Tenenbaum's proof employs sophisticated large sieve inequalities. The algebraic approach relates prime divisors of f(m) to prime splitting in the number field ℚ[x]/(f) via Chebotarev's density theorem.",
+    "proofStrategy": "The formalization defines F_f computationally via Nat.factors and presents the three known lower bounds (Nagell-Ricci, Erdős, Tenenbaum) as axioms with precise type signatures. The two open conjectures are formalized as Prop definitions. The summary theorem erdos_976_status is proved by applying the tenenbaum_bound axiom, establishing the current best known result. Computational examples verify greatestPrimeDivisor via native_decide.",
     "keyInsights": [
       "The degree d of the polynomial should control the growth rate of F_f(n)",
       "Current best bound n·exp((log n)^c) is sub-polynomial but super-linear",
@@ -71,61 +73,47 @@
       "id": "section-1",
       "title": "Basic Definitions",
       "startLine": 35,
-      "endLine": 68,
+      "endLine": 67,
       "summary": "Defines irreducible polynomials over ℤ, polynomial degree, greatest prime divisor P(n), and the main function F_f(n) = greatest prime dividing any f(m) for 1 ≤ m ≤ n."
     },
     {
       "id": "section-2",
       "title": "Known Lower Bounds",
       "startLine": 69,
-      "endLine": 100,
-      "summary": "States the three main known lower bounds: Nagell-Ricci (n log n), Erdős 1952 (n(log n)^{log log log n}), and Tenenbaum 1990 (n exp((log n)^c))."
+      "endLine": 99,
+      "summary": "States the three main known lower bounds as axioms: Nagell-Ricci (n log n), Erdős 1952 (n(log n)^{log log log n}), and Tenenbaum 1990 (n exp((log n)^c))."
     },
     {
       "id": "section-3",
       "title": "Main Conjectures",
       "startLine": 101,
-      "endLine": 128,
-      "summary": "Formalizes the two open conjectures: polynomial growth F_f(n) ≫ n^{1+c} for some c > 0, and the stronger degree growth F_f(n) ≫ n^d where d = deg(f)."
+      "endLine": 121,
+      "summary": "Formalizes the two open conjectures as Prop definitions: polynomial growth F_f(n) ≫ n^{1+c}, and the stronger degree growth F_f(n) ≫ n^d."
     },
     {
       "id": "section-4",
-      "title": "Special Cases",
-      "startLine": 129,
-      "endLine": 160,
-      "summary": "Examines special cases including linear polynomials (Dirichlet's theorem), quadratic polynomials (connection to Gaussian primes), x² - 2 (quadratic reciprocity), and cyclotomic polynomials."
+      "title": "Upper Bounds",
+      "startLine": 123,
+      "endLine": 133,
+      "summary": "States the trivial upper bound F_f(n) ≤ C·n^d as an axiom, bounding the function from above."
     },
     {
       "id": "section-5",
-      "title": "Proof Techniques",
-      "startLine": 161,
-      "endLine": 191,
-      "summary": "Describes the key proof techniques: sieve methods (Erdős), large sieve inequalities (Tenenbaum), algebraic number theory (prime splitting), and Chebotarev density theorem."
+      "title": "Computational Examples",
+      "startLine": 135,
+      "endLine": 161,
+      "summary": "Defines P(n) alias, proves greatestPrimeDivisor examples via native_decide, and gives numerical bound comparisons at n=1000."
     },
     {
       "id": "section-6",
-      "title": "Related Functions",
-      "startLine": 192,
-      "endLine": 216,
-      "summary": "Discusses related concepts including the greatest prime factor function P(n), comparison with P(n!), and smoothness of integers."
-    },
-    {
-      "id": "section-7",
-      "title": "Historical Notes",
-      "startLine": 217,
-      "endLine": 242,
-      "summary": "Historical context including Erdős's unpublished 1965 claim (later found flawed), the Erdős-Schinzel 1990 weaker bound, and Tenenbaum's final resolution of the stronger bound."
-    },
-    {
-      "id": "section-8",
-      "title": "Summary and Status",
-      "startLine": 243,
-      "endLine": 306,
-      "summary": "Summarizes the complete problem status: known bounds, open conjectures, and the significant gap between current results and conjectured growth rates."
+      "title": "Summary",
+      "startLine": 163,
+      "endLine": 188,
+      "summary": "Proves erdos_976_status theorem establishing the current best bound by applying tenenbaum_bound."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #976 asks about the growth rate of the greatest prime divisor of polynomial products ∏f(m). Tenenbaum (1990) proved F_f(n) ≫ n·exp((log n)^c), but the main conjectures that F_f(n) should grow like n^{1+c} or n^d remain OPEN. The problem lies at the intersection of analytic number theory (sieve methods) and algebraic number theory (prime splitting in number fields).",
+    "summary": "Erdős Problem #976 asks about the growth rate of the greatest prime divisor of polynomial products ∏f(m). Tenenbaum (1990) proved F_f(n) ≫ n·exp((log n)^c), but the main conjectures that F_f(n) should grow like n^{1+c} or n^d remain OPEN.",
     "implications": "A resolution of the polynomial growth conjecture would have implications for the distribution of prime factors in polynomial sequences and connect to fundamental questions about smooth numbers and the structure of multiplicative functions.",
     "openQuestions": [
       "Is F_f(n) ≫ n^{1+c} for some c > 0?",
