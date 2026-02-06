@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #420: Divisor Function Ratios for Factorials
 
 Source: https://erdosproblems.com/420
@@ -37,7 +37,7 @@ open Nat BigOperators Finset Real
 
 namespace Erdos420
 
-/-
+/-!
 ## Part I: The Divisor Function
 
 τ(n) = number of positive divisors of n.
@@ -68,7 +68,7 @@ theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
 axiom tau_multiplicative (m n : ℕ) (hmn : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n
 
-/-
+/-!
 ## Part II: Divisor Function of Factorials
 
 τ(n!) grows extremely fast. Understanding its behavior is key.
@@ -89,7 +89,7 @@ axiom tau_factorial_asymptotic :
     ∃ (C : ℝ), C > 0 ∧
       ∀ n : ℕ, n ≥ 3 → (tauFactorial n : ℝ) ≥ 2^(n / (2 * Real.log n))
 
-/-
+/-!
 ## Part III: The F Function
 
 F(f, n) = τ((n + ⌊f(n)⌋)!) / τ(n!)
@@ -109,7 +109,7 @@ F(f, n) ≥ 1 always, since (n + k)! is divisible by n!.
 -/
 axiom F_ge_one (f : ℕ → ℝ) (n : ℕ) (hf : f n ≥ 0) : F f n ≥ 1
 
-/-
+/-!
 ## Part IV: Easy Result - F(√n, n) → ∞
 -/
 
@@ -133,7 +133,7 @@ axiom subhalf_exponent_works :
     ∃ c : ℝ, c > 0 ∧ c < 1/2 ∧
       ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(1/2 - c)) n > M
 
-/-
+/-!
 ## Part V: EGIP96 Results
 
 Key results from Erdős-Graham-Ivić-Pomerance (1996).
@@ -169,10 +169,11 @@ axiom small_f_gives_one_almost_all :
     ∀ f : ℕ → ℝ, (∀ ε > 0, ∃ N, ∀ n ≥ N, f n < ε * (Real.log n)^2) →
       ∀ ε : ℝ, ε > 0 →
         ∃ E : Set ℕ, (∀ n ∈ E, |F f n - 1| ≥ ε) ∧
-          -- E has density 0
-          True  -- Formal density statement omitted
+          -- E has natural density 0
+          Filter.Tendsto (fun N => ({n ∈ Finset.range N | n ∈ E}.card : ℝ) / N)
+            Filter.atTop (nhds 0)
 
-/-
+/-!
 ## Part VI: Connection to Prime Gaps
 -/
 
@@ -222,39 +223,18 @@ axiom cramer_implies_limit_infinity :
       ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
         F (fun n => g n * (Real.log n)^2) n > M
 
-/-
+/-!
 ## Part VII: Open Questions
 -/
 
 /--
-**Question 1 (Partially Open):**
-Is lim_{n→∞} F((log n)^C, n) = ∞ for large C?
-
-Current status: Unknown for specific values of C.
-We know lim F(n^{4/9}, n) = ∞, which is much larger than (log n)^C.
+**Open Questions:**
+1. Is lim_{n→∞} F((log n)^C, n) = ∞ for large C? (Unknown for specific C values)
+2. Is F(log n, n) everywhere dense in (1, ∞)? (liminf = 1 but density unknown)
+3. For monotonic f ≤ log n with f → ∞, is F(f, n) everywhere dense in (1, ∞)?
 -/
-axiom question_1_partially_open :
-    -- The question asks if there exists C such that the limit is ∞
-    -- This remains open in the gap between log n and n^{4/9}
-    True
 
-/--
-**Question 2 (Open):**
-Is F(log n, n) everywhere dense in (1, ∞)?
-
-We know liminf = 1, but density is unknown.
--/
-axiom question_2_open :
-    -- Is {F(log n, n) : n ∈ ℕ} dense in (1, ∞)?
-    True
-
-/--
-**Question 3 (Open):**
-If f(n) ≤ log n is monotonic with f(n) → ∞, is F(f, n) everywhere dense in (1, ∞)?
--/
-axiom question_3_open : True
-
-/-
+/-!
 ## Part VIII: Main Result
 -/
 
@@ -268,20 +248,14 @@ Key established results:
 
 Open: Behavior for f between log n and n^{4/9}.
 -/
-theorem erdos_420 : True := trivial
-
-/--
-**Summary of EGIP96:**
-The paper "On the number of divisors of n!" establishes the key
-bounds relating divisor function growth to prime distribution.
--/
-theorem egip96_summary :
-    -- liminf F(c log n, n) = 1
+theorem erdos_420 :
+    -- lim F(√n, n) = ∞
+    (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => Real.sqrt n) n > M) ∧
     -- lim F(n^{4/9}, n) = ∞
-    -- F ~ 1 a.e. for small f
-    True ∧ True ∧ True := ⟨trivial, trivial, trivial⟩
+    (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(4/9)) n > M) :=
+  ⟨sqrt_gives_infinity, four_ninths_gives_infinity⟩
 
-/-
+/-!
 ## Part IX: Legendre's Formula and τ(n!)
 -/
 
@@ -309,29 +283,7 @@ axiom legendre_exponent (n p : ℕ) (hp : p.Prime) :
 -/
 
 /--
-**Mathematical Significance:**
-
-1. **Divisor Growth:** τ(n!) encodes deep information about
-   prime factorization structure.
-
-2. **Prime Distribution:** The behavior of F is intimately
-   connected to gaps between consecutive primes.
-
-3. **Density Questions:** Whether F takes all values in (1, ∞)
-   is a subtle question about integer structure.
-
-4. **Multiplicativity:** The multiplicative nature of τ makes
-   factorial analysis tractable but still challenging.
--/
-theorem mathematical_significance : True := trivial
-
-/--
-**Erdős Problem #420: OPEN**
-
-**QUESTIONS:**
-1. Is lim_{n→∞} F((log n)^C, n) = ∞ for large C?
-2. Is F(log n, n) everywhere dense in (1, ∞)?
-3. For monotonic f ≤ log n with f → ∞, is F(f,n) dense?
+**Erdős Problem #420: Summary**
 
 **KNOWN (EGIP96):**
 - liminf F(c log n, n) = 1 for any c > 0
@@ -343,21 +295,16 @@ theorem mathematical_significance : True := trivial
 - Density of F(log n, n) in (1, ∞)
 
 **KEY INSIGHT:**
-The problem has deep connections to prime gap theory.
 Zhang's bounded gaps theorem implies limsup F(g(n), n) = ∞
 for any g(n) → ∞.
 -/
-theorem erdos_420_main : True := trivial
-
-/--
-**Historical Note:**
-The key paper is Erdős-Graham-Ivić-Pomerance (1996):
-"On the number of divisors of n!"
-
-The connection to prime gaps was noted by van Doorn.
-Zhang's 2013 theorem on bounded prime gaps made one
-of the conditional results unconditional.
--/
-theorem historical_note : True := trivial
+theorem erdos_420_summary :
+    -- F(√n, n) → ∞ and F(n^{4/9}, n) → ∞
+    (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => Real.sqrt n) n > M) ∧
+    (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(4/9)) n > M) ∧
+    -- Bounded gaps consequence
+    (∀ g : ℕ → ℝ, (∀ M, ∃ N, ∀ n ≥ N, g n > M) →
+      ∀ M : ℝ, ∃ᶠ n in Filter.atTop, F g n > M) :=
+  ⟨sqrt_gives_infinity, four_ninths_gives_infinity, bounded_gaps_consequence⟩
 
 end Erdos420
