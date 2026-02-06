@@ -16,7 +16,7 @@
       "graph-theory",
       "probabilistic-method"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 166,
     "erdosUrl": "https://erdosproblems.com/166",
@@ -82,63 +82,35 @@
       "id": "section-4",
       "title": "Historical Lower Bounds",
       "startLine": 162,
-      "endLine": 190,
+      "endLine": 176,
       "summary": "Spencer's 1977 lower bound R(4,k) >> (k log k)^{5/2} using probabilistic methods."
     },
     {
       "id": "section-5",
       "title": "Upper Bound (AKS)",
-      "startLine": 191,
-      "endLine": 219,
+      "startLine": 178,
+      "endLine": 192,
       "summary": "Ajtai-Komlós-Szemerédi 1980 upper bound R(4,k) << k³/(log k)² using greedy coloring."
     },
     {
       "id": "section-6",
       "title": "The Solution (2023)",
-      "startLine": 220,
-      "endLine": 256,
-      "summary": "Mattheus-Verstraete breakthrough: R(4,k) >> k³/(log k)⁴ using finite geometry constructions."
+      "startLine": 194,
+      "endLine": 208,
+      "summary": "Mattheus-Verstraete breakthrough: R(4,k) >> k³/(log k)⁴ using finite geometry."
     },
     {
       "id": "section-7",
       "title": "Erdős's Conjecture (SOLVED)",
-      "startLine": 257,
-      "endLine": 294,
-      "summary": "Formalizes Erdős166Statement, proves erdos_166_solved, establishes current_bounds."
+      "startLine": 210,
+      "endLine": 247,
+      "summary": "Erdős166Statement, erdos_166_solved, current_bounds theorems."
     },
     {
       "id": "section-8",
-      "title": "Related Problems and Generalizations",
-      "startLine": 295,
-      "endLine": 326,
-      "summary": "General R(s,k), Ramsey multiplicity, hypergraph and multicolor Ramsey numbers."
-    },
-    {
-      "id": "section-9",
-      "title": "Techniques in Ramsey Theory",
-      "startLine": 327,
-      "endLine": 358,
-      "summary": "Probabilistic method, algebraic constructions, stepping-up lemma, Turán connection."
-    },
-    {
-      "id": "section-10",
-      "title": "The Prize Story",
-      "startLine": 359,
-      "endLine": 376,
-      "summary": "The $250 Erdős prize and how it was collected by Mattheus-Verstraete."
-    },
-    {
-      "id": "section-11",
-      "title": "Open Questions",
-      "startLine": 377,
-      "endLine": 401,
-      "summary": "Exact exponent, general s ≥ 5, explicit constructions."
-    },
-    {
-      "id": "section-12",
       "title": "Summary",
-      "startLine": 402,
-      "endLine": 461,
+      "startLine": 248,
+      "endLine": 302,
       "summary": "Complete summary with erdos_166_status and logarithmic_gap theorems."
     }
   ],

@@ -33,7 +33,7 @@ open Finset
 
 namespace Erdos166
 
-/-
+/-!
 ## Part I: Ramsey Number Definitions
 -/
 
@@ -52,7 +52,7 @@ noncomputable def RamseyNumber (s t : ℕ) : ℕ :=
 /-- Notation: R(s,t) for Ramsey numbers. -/
 notation "R(" s "," t ")" => RamseyNumber s t
 
-/-
+/-!
 ## Part II: Basic Properties
 -/
 
@@ -125,7 +125,7 @@ theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by
         fun x hx => by linarith [show x.card ≤ b by
           exact le_trans (Finset.card_le_univ _) (by simpa)]⟩
 
-/-
+/-!
 ## Part III: Known Exact Values
 -/
 
@@ -159,7 +159,7 @@ axiom ramsey_3_k_bounds (k : ℕ) (hk : k ≥ 3) :
     c₁ * k^2 / Real.log k ≤ R(3, k) ∧
     (R(3, k) : ℝ) ≤ c₂ * k^2 / Real.log k
 
-/-
+/-!
 ## Part IV: Historical Lower Bounds for R(4,k)
 -/
 
@@ -174,21 +174,8 @@ axiom spencer_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 3 →
     (R(4, k) : ℝ) ≥ c * (k * Real.log k)^(5/2 : ℝ)
 
-/--
-**Interpretation of Spencer's Bound:**
-Spencer's bound (k log k)^{5/2} = k^{5/2} · (log k)^{5/2}
-is far from the expected truth k³/(log k)^O(1).
--/
-axiom spencer_interpretation : True
 
-/--
-**Probabilistic Method:**
-Spencer's proof uses the probabilistic method: a random graph
-avoids K_4 with high probability while maintaining independence number.
--/
-axiom probabilistic_method : True
-
-/-
+/-!
 ## Part V: Upper Bound (Ajtai-Komlós-Szemerédi)
 -/
 
@@ -203,21 +190,8 @@ axiom aks_upper_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ, k ≥ 3 →
     (R(4, k) : ℝ) ≤ C * k^3 / (Real.log k)^2
 
-/--
-**AKS Algorithm:**
-The Ajtai-Komlós-Szemerédi proof constructs an explicit coloring
-avoiding K_4 in red and K_k in blue on N vertices.
--/
-axiom aks_algorithm : True
 
-/--
-**The Gap (1980-2023):**
-For 43 years, the gap between Spencer's lower bound (k log k)^{5/2}
-and the AKS upper bound k³/(log k)² remained open.
--/
-axiom the_gap : True
-
-/-
+/-!
 ## Part VI: The Solution (Mattheus-Verstraete 2023)
 -/
 
@@ -232,29 +206,8 @@ axiom mattheus_verstraete :
   ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 3 →
     (R(4, k) : ℝ) ≥ c * k^3 / (Real.log k)^4
 
-/--
-**The Key Innovation:**
-Mattheus and Verstraete used *algebraic graph constructions*
-based on finite geometry (incidence graphs of projective planes)
-rather than purely probabilistic methods.
--/
-axiom key_innovation : True
 
-/--
-**Pseudo-random Constructions:**
-The construction creates graphs that are "pseudo-random" enough
-to have small clique number while maintaining large independence number.
--/
-axiom pseudorandom_constructions : True
-
-/--
-**Finite Geometry Connection:**
-The proof exploits properties of incidence structures in
-projective planes over finite fields.
--/
-axiom finite_geometry_connection : True
-
-/-
+/-!
 ## Part VII: Erdős's Conjecture (SOLVED)
 -/
 
@@ -292,115 +245,8 @@ theorem current_bounds :
   obtain ⟨C, hC, hC_bound⟩ := aks_upper_bound
   exact ⟨c, C, hc, hC, fun k hk => ⟨hc_bound k hk, hC_bound k hk⟩⟩
 
-/-
-## Part VIII: Related Problems and Generalizations
--/
-
-/--
-**General R(s,k) Problem (Problem #986):**
-Determine the growth rate of R(s,k) for fixed s ≥ 3.
-The Mattheus-Verstraete result specifically handles s = 4.
--/
-axiom general_ramsey_problem : True
-
-/--
-**Ramsey Multiplicity:**
-How many monochromatic copies of K_s appear in any 2-coloring?
-Related to density versions of Ramsey problems.
--/
-axiom ramsey_multiplicity : True
-
-/--
-**Hypergraph Ramsey Numbers:**
-Extensions to hypergraphs where we color r-subsets.
-Growth rates are much faster than graph Ramsey numbers.
--/
-axiom hypergraph_ramsey : True
-
-/--
-**Multicolor Ramsey Numbers:**
-R(k₁,...,kᵣ) for r ≥ 3 colors. Much less is known
-about these compared to 2-color Ramsey numbers.
--/
-axiom multicolor_ramsey : True
-
-/-
-## Part IX: Techniques in Ramsey Theory
--/
-
-/--
-**Probabilistic Method:**
-A random 2-coloring often avoids monochromatic K_s in
-graphs of size much smaller than R(s,k).
--/
-axiom probabilistic_method_general : True
-
-/--
-**Algebraic Constructions:**
-Explicit constructions using algebraic structures
-(Paley graphs, incidence graphs) often achieve better bounds.
--/
-axiom algebraic_constructions : True
-
-/--
-**Stepping Up Lemma:**
-R(s+1, t+1) ≤ R(R(s,t+1), R(s+1,t)) + 1
-allows recursive bounds on Ramsey numbers.
--/
-axiom stepping_up_lemma : True
-
-/--
-**Turán's Theorem Connection:**
-The Turán number ex(n, K_s) relates to Ramsey theory
-through the relationship between cliques and independence.
--/
-axiom turan_connection : True
-
-/-
-## Part X: The Prize Story
--/
-
-/--
-**$250 Erdős Prize:**
-This was one of the problems Erdős offered money for.
-The solution by Mattheus-Verstraete earned the $250 prize.
--/
-axiom erdos_prize : True
-
-/--
-**Prize Collection:**
-Ron Graham managed Erdős's prize fund after Erdős's death (1996).
-The fund continues to pay for solutions to Erdős problems.
--/
-axiom prize_collection : True
-
-/-
-## Part XI: Open Questions
--/
-
-/--
-**Exact Exponent:**
-What is the exact exponent of log k in the lower bound?
-Currently we have (log k)⁴ but (log k)² might be achievable.
--/
-axiom exact_exponent : True
-
-/--
-**General s ≥ 5:**
-For s ≥ 5, what is R(s,k)? The asymptotics are unknown.
-Mattheus-Verstraete techniques may extend partially.
--/
-axiom general_s : True
-
-/--
-**Explicit Constructions:**
-Can we give fully explicit constructions matching
-the probabilistic lower bounds?
--/
-axiom explicit_constructions : True
-
-/-
-## Part XII: Summary
+/-!
+## Part VIII: Summary
 -/
 
 /--
@@ -432,12 +278,6 @@ A breakthrough result bridging 43 years of effort in Ramsey theory.
 theorem erdos_166_status :
     -- Erdős Problem #166 is solved
     Erdos166Statement := erdos_166_solved
-
-/--
-**Problem solved:**
-Erdős Problem #166 was completely solved by Mattheus and Verstraete in 2023.
--/
-theorem erdos_166_complete : True := trivial
 
 /--
 **The bounds match up to logarithmic factors:**
