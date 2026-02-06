@@ -1,4 +1,4 @@
-/-
+/-!
   Erdős Problem #7: Covering Systems with Odd Moduli
 
   Source: https://erdosproblems.com/7
@@ -219,20 +219,6 @@ def selfridge_challenge : Prop :=
 
 /-! ## Related Problem -/
 
-/--
-**Relation to Problem #2**:
-Problem #2 showed that minimum modulus is bounded (≤ 616,000).
-Problem #7 asks whether all moduli can avoid the prime 2.
-
-If Problem #7 is true (no odd covering exists), it would provide another
-constraint on covering systems beyond the minimum modulus bound.
--/
-theorem erdos_2_and_7_independent :
-    -- Problem #2: minimum modulus is bounded
-    -- Problem #7: some modulus must be even
-    -- These are logically independent constraints
-    True := trivial
-
 /-! ## Covering with Specific Properties -/
 
 /-- A covering has minimum odd modulus at least m. -/
@@ -272,5 +258,17 @@ References:
 - Balister, Bollobás, Morris, Sahasrabudhe, Tiba (2022)
 - Erdős, Selfridge: Original conjecture
 -/
+
+/-- Erdős Problem #7: OPEN
+
+    Combines: (1) Hough-Nielsen — some modulus divisible by 2 or 3,
+    (2) Balister et al. — no odd squarefree covering exists,
+    (3) LCM constraint — if odd covering exists, LCM divisible by 9 or 15. -/
+theorem erdos_7_summary :
+    (∀ cs : CoveringSystem, ∃ c ∈ cs.classes, DivisibleBy2Or3 c.modulus) ∧
+    (¬∃ cs : CoveringSystem, cs.allOddSquarefreeModuli) ∧
+    (∀ cs : CoveringSystem, cs.allOddModuli →
+      (9 ∣ cs.lcmModuli ∨ 15 ∣ cs.lcmModuli)) :=
+  ⟨hough_nielsen, balister_odd_squarefree, odd_covering_lcm_constraint⟩
 
 end Erdos7
