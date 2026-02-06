@@ -35,7 +35,7 @@ open Finset BigOperators
 
 namespace Erdos1121
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -78,7 +78,7 @@ The line doesn't intersect the closed disk.
 def Line.disjointFrom (l : Line) (C : Circle) : Prop :=
   ∀ p : ℝ × ℝ, l.contains p → ¬ C.contains p
 
-/-!
+/-
 ## Part II: The Separating Line Condition
 -/
 
@@ -118,7 +118,7 @@ def HasSeparatingLine (circles : Finset Circle) : Prop :=
 def IsConnectedConfiguration (circles : Finset Circle) : Prop :=
   ¬ HasSeparatingLine circles
 
-/-!
+/-
 ## Part III: Covering Circle
 -/
 
@@ -140,7 +140,7 @@ def Circle.coversAll (C : Circle) (circles : Finset Circle) : Prop :=
 noncomputable def sumOfRadii (circles : Finset Circle) : ℝ :=
   circles.sum (fun C => C.radius)
 
-/-!
+/-
 ## Part IV: The Erdős Conjecture (Now Theorem)
 -/
 
@@ -162,7 +162,7 @@ The Erdős conjecture is true.
 -/
 axiom goodman_goodman_theorem : ErdosConjecture1121
 
-/-!
+/-
 ## Part V: Special Cases
 -/
 
@@ -192,7 +192,7 @@ axiom overlap_implies_connected (circles : Finset Circle) :
     (∀ C₁ ∈ circles, ∀ C₂ ∈ circles, C₁ ≠ C₂ → CirclesOverlap C₁ C₂) →
     IsConnectedConfiguration circles
 
-/-!
+/-
 ## Part VI: Higher Dimensional Generalization
 -/
 
@@ -216,7 +216,7 @@ axiom goodman_goodman_higher_dim (n : ℕ) (hn : n ≥ 2) :
     -- then balls can be covered by a ball of radius = sum of radii
     ∃ r_sum : ℝ, r_sum = balls.sum (fun b => b.radius)
 
-/-!
+/-
 ## Part VII: Summary
 -/
 
