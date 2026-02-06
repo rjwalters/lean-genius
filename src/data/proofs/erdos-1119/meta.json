@@ -2,12 +2,12 @@
   "id": "erdos-1119",
   "title": "Erdős Problem #1119: Families of Entire Functions with Cardinal Constraints",
   "slug": "erdos-1119",
-  "description": "If a family of entire functions has at most 𝔪 distinct values at each point, must the family have cardinality ≤ 𝔪? Answer: YES if 𝔪⁺ < 𝔠, UNDECIDABLE if 𝔪⁺ = 𝔠.",
+  "description": "If a family of entire functions has at most 𝔪 distinct values at each point, must the family have cardinality ≤ 𝔪? Answer: YES if 𝔪⁺ < 𝔠, INDEPENDENT of ZFC if 𝔪⁺ = 𝔠.",
   "meta": {
-    "author": "Kumar-Shelah, Schilhan-Weinert",
+    "author": "Kumar-Shelah (2017), Schilhan-Weinert (2024)",
     "sourceUrl": "https://erdosproblems.com/1119",
-    "date": "2017-2024",
-    "status": "formalized",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1119Problem.lean",
     "tags": [
       "erdos",
@@ -15,128 +15,128 @@
       "cardinals",
       "set-theory",
       "undecidability",
-      "continuum-hypothesis"
+      "continuum-hypothesis",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1119,
     "erdosUrl": "https://erdosproblems.com/1119",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.continuum",
+        "description": "The cardinality of the continuum 2^{ℵ₀}",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "The aleph cardinals ℵ_α",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Order.succ",
+        "description": "Successor operation for cardinals",
+        "module": "Mathlib.Order.SuccPred.Basic"
+      },
+      {
+        "theorem": "Complex.Basic",
+        "description": "Basic complex number operations",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsEntire axiom for entire functions",
+      "valuesAtPoint and IsWetzelFamily definitions",
+      "WetzelProblem and WetzelQuestion definitions",
+      "erdos_1964_wetzel and erdos_1964_wetzel_ch axioms",
+      "easy_case axiom (Hayman 1974)",
+      "kumar_shelah_2017 and schilhan_weinert_2024 axioms",
+      "identity_theorem_entire axiom",
+      "wetzel_equivalent_to_ch axiom",
+      "erdos_1119_summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "This generalizes Wetzel's 1963 problem, which Erdős solved in 1964. The original problem asked about countable values (𝔪 = ℵ₀), and Erdős showed the answer depends on the Continuum Hypothesis. This problem extends to intermediate cardinals 𝔪 with ℵ₀ < 𝔪 < 𝔠. Hayman (1974) noted the easy case 𝔪⁺ < 𝔠. Kumar-Shelah (2017) and Schilhan-Weinert (2024) showed the case 𝔪⁺ = 𝔠 is undecidable.",
-    "problemStatement": "Let 𝔪 be an infinite cardinal with ℵ₀ < 𝔪 < 𝔠 = 2^{ℵ₀}. Let {f_α} be a family of entire functions such that, for every z₀ ∈ ℂ, there are at most 𝔪 distinct values of f_α(z₀). Must {f_α} have cardinality at most 𝔪?",
-    "proofStrategy": "The answer splits into two cases based on whether 𝔪⁺ < 𝔠 or 𝔪⁺ = 𝔠. In the first case, the answer is YES (provable in ZFC). In the second case, the problem is undecidable in ZFC: Kumar-Shelah constructed a model where YES holds, while Schilhan-Weinert constructed a model where NO holds.",
+    "historicalContext": "Erdős Problem #1119 generalizes Wetzel's 1963 question, which asked whether a family of entire functions with only countably many values at each point must itself be countable. Erdős solved Wetzel's problem in 1964 by showing the answer is equivalent to the negation of the Continuum Hypothesis: YES if 𝔠 > ℵ₁, but NO under CH. Problem #1119 extends this to arbitrary intermediate cardinals 𝔪 with ℵ₀ < 𝔪 < 𝔠.\n\nThe answer splits into two cases based on the cardinal successor 𝔪⁺. If 𝔪⁺ < 𝔠, the answer is YES — this was noted as 'easy to see' by Hayman (1974), using the identity theorem for entire functions (distinct entire functions agree on at most countably many points). The key insight is that a diagonalization argument over the value sets forces the family to be small.\n\nThe deep case occurs when 𝔪⁺ = 𝔠, particularly 𝔪 = ℵ₁ and 𝔠 = ℵ₂. Kumar and Shelah (2017) constructed a ZFC model where YES holds in this case, while Schilhan and Weinert (2024) constructed a different model where NO holds. Together, these results show the problem is independent of ZFC when 𝔪⁺ = 𝔠, completely resolving Erdős's question.",
+    "problemStatement": "**Problem Statement (Solved — Independent of ZFC)**\n\nLet $\\mathfrak{m}$ be an infinite cardinal with $\\aleph_0 < \\mathfrak{m} < \\mathfrak{c} = 2^{\\aleph_0}$. Let $\\{f_\\alpha\\}$ be a family of entire functions such that, for every $z_0 \\in \\mathbb{C}$, there are at most $\\mathfrak{m}$ distinct values of $f_\\alpha(z_0)$. Must $\\{f_\\alpha\\}$ have cardinality at most $\\mathfrak{m}$?\n\n**Answer:** YES if $\\mathfrak{m}^+ < \\mathfrak{c}$ (provable in ZFC). INDEPENDENT of ZFC if $\\mathfrak{m}^+ = \\mathfrak{c}$.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization axiomatizes entire functions (IsEntire) and defines Wetzel families via cardinality bounds on value sets. The original Wetzel problem (𝔪 = ℵ₀) is axiomatized via Erdős's 1964 result and its CH counterpart. The easy case (𝔪⁺ < 𝔠) is axiomatized following Hayman. The independence results are captured as structured axioms: Kumar-Shelah gives a model where the bound holds, Schilhan-Weinert gives one where it fails. The summary theorem combines the Erdős and Hayman results into a conjunction proved by exact ⟨...⟩.",
     "keyInsights": [
-      "The problem generalizes Wetzel's question from ℵ₀ to arbitrary intermediate cardinals 𝔪",
-      "If 𝔪⁺ < 𝔠, the answer is YES—the family size is bounded by the local multiplicity",
-      "If 𝔪⁺ = 𝔠 (e.g., 𝔪 = ℵ₁, 𝔠 = ℵ₂), the answer is independent of ZFC",
-      "Kumar-Shelah (2017) showed YES is consistent with ZFC in this case",
-      "Schilhan-Weinert (2024) showed NO is also consistent with ZFC",
-      "The identity theorem for entire functions is key: distinct entire functions agree on at most countably many points"
+      "**Generalized Wetzel:** Problem #1119 extends Wetzel's ℵ₀ question to arbitrary intermediate cardinals 𝔪",
+      "**Identity Theorem is Key:** Distinct entire functions agree on at most countably many points, constraining value sets",
+      "**Easy Case (𝔪⁺ < 𝔠):** Diagonalization via the identity theorem forces |family| ≤ 𝔪",
+      "**Independence (𝔪⁺ = 𝔠):** Both YES (Kumar-Shelah 2017) and NO (Schilhan-Weinert 2024) are consistent with ZFC",
+      "**Complex Analysis Meets Set Theory:** The problem demonstrates a deep interplay between analytic and set-theoretic constraints"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
+      "summary": "IsEntire axiom, valuesAtPoint, IsWetzelFamily",
       "startLine": 36,
-      "endLine": 56,
-      "summary": "Defines entire functions, the set of values at a point, Wetzel families with bounded values, and the main question about family cardinality."
+      "endLine": 48
     },
     {
       "id": "wetzel-problem",
-      "title": "The Original Wetzel Problem",
-      "startLine": 58,
-      "endLine": 81,
-      "summary": "Erdős's 1964 solution to Wetzel's problem: countable values implies countable family iff ¬CH. If CH holds, uncountable Wetzel families exist."
+      "title": "The Original Wetzel Problem (Erdős 1964)",
+      "summary": "WetzelProblem, erdos_1964_wetzel, erdos_1964_wetzel_ch",
+      "startLine": 50,
+      "endLine": 69
     },
     {
       "id": "easy-case",
-      "title": "The Easy Case",
-      "startLine": 83,
-      "endLine": 106,
-      "summary": "When 𝔪⁺ < 𝔠, the answer is YES. This is 'easy to see' according to Hayman (1974)."
+      "title": "The Easy Case (𝔪⁺ < 𝔠)",
+      "summary": "succCard, easy_case axiom (Hayman 1974)",
+      "startLine": 71,
+      "endLine": 84
     },
     {
       "id": "undecidable-case",
-      "title": "The Undecidable Case",
-      "startLine": 108,
-      "endLine": 140,
-      "summary": "When 𝔪⁺ = 𝔠 (e.g., 𝔪 = ℵ₁, 𝔠 = ℵ₂), the problem is undecidable. Kumar-Shelah and Schilhan-Weinert showed both YES and NO are consistent."
+      "title": "The Undecidable Case (𝔪⁺ = 𝔠)",
+      "summary": "SuccessorEqualsContinuum, kumar_shelah_2017, schilhan_weinert_2024",
+      "startLine": 86,
+      "endLine": 109
     },
     {
-      "id": "set-theory",
-      "title": "The Set-Theoretic Framework",
-      "startLine": 142,
-      "endLine": 165,
-      "summary": "Cardinal arithmetic background: the continuum 2^{ℵ₀}, GCH implications, and existence of intermediate cardinals."
+      "id": "identity-theorem",
+      "title": "The Identity Theorem",
+      "summary": "identity_theorem_entire axiom",
+      "startLine": 111,
+      "endLine": 119
     },
     {
-      "id": "entire-functions",
-      "title": "Entire Functions Background",
-      "startLine": 167,
-      "endLine": 184,
-      "summary": "Why entire functions are special: the identity theorem says distinct entire functions agree on at most countably many points."
+      "id": "cardinal-arithmetic",
+      "title": "Cardinal Arithmetic Background",
+      "summary": "continuum_eq_two_aleph_zero, gch_implies_no_intermediate, not_ch_intermediate",
+      "startLine": 121,
+      "endLine": 134
     },
     {
-      "id": "wetzel-connection",
-      "title": "Connection to Wetzel's Problem",
-      "startLine": 186,
-      "endLine": 201,
-      "summary": "Wetzel's original question and its equivalence to ¬CH. This problem generalizes that setting."
+      "id": "wetzel-question",
+      "title": "Wetzel's Question and CH",
+      "summary": "WetzelQuestion, wetzel_equivalent_to_ch",
+      "startLine": 136,
+      "endLine": 147
     },
     {
-      "id": "general-framework",
-      "title": "The General Framework",
-      "startLine": 203,
-      "endLine": 219,
-      "summary": "Formalizes the general problem: does local multiplicity bound global cardinality for families of entire functions?"
-    },
-    {
-      "id": "complete-picture",
-      "title": "The Complete Picture",
-      "startLine": 221,
-      "endLine": 238,
-      "summary": "Complete characterization: YES if 𝔪⁺ < 𝔠 (provable in ZFC), undecidable if 𝔪⁺ = 𝔠."
-    },
-    {
-      "id": "main-statement",
-      "title": "Main Problem Statement",
-      "startLine": 240,
-      "endLine": 269,
-      "summary": "Full formalization combining Erdős's Wetzel solution, the easy case, and the undecidability result."
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1119_summary theorem",
+      "startLine": 149,
+      "endLine": 171
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1119 is SOLVED. The answer is YES if 𝔪⁺ < 𝔠 (provable in ZFC) and UNDECIDABLE if 𝔪⁺ = 𝔠. Kumar-Shelah (2017) showed YES is consistent with ZFC when 𝔠 = ℵ₂, while Schilhan-Weinert (2024) showed NO is also consistent.",
-    "implications": "This demonstrates a deep connection between complex analysis (entire functions) and set theory (cardinal arithmetic). The identity theorem for entire functions constrains how much distinct functions can agree, but the global implications depend on set-theoretic assumptions.",
+    "summary": "Erdős Problem #1119 is resolved: YES if 𝔪⁺ < 𝔠 (provable in ZFC via the identity theorem), INDEPENDENT of ZFC if 𝔪⁺ = 𝔠 (Kumar-Shelah 2017 and Schilhan-Weinert 2024 give models for both answers).",
+    "implications": "**Significance**\n\n1. **Complex Analysis ↔ Set Theory:** The identity theorem for entire functions creates a bridge between analytic constraints and cardinal arithmetic\n\n2. **Independence Phenomena:** Shows that natural questions about function families can be independent of ZFC, extending the CH paradigm\n\n3. **Successor Cardinal Boundary:** The sharp transition at 𝔪⁺ = 𝔠 reveals the exact threshold where set-theoretic independence emerges\n\n4. **Generalizing Wetzel:** Provides a complete generalization of Erdős's 1964 solution to Wetzel's problem",
     "openQuestions": [
-      "Are there other natural function classes where similar undecidability arises?",
-      "What is the exact set-theoretic characterization of when YES holds?",
-      "Does the problem have a definite answer under large cardinal assumptions?"
+      "What is the exact set-theoretic characterization of when YES holds in the 𝔪⁺ = 𝔠 case?",
+      "Do large cardinal axioms settle the question?",
+      "Are there other natural function classes where similar independence phenomena arise?",
+      "What is the relationship between the Wetzel property and other cardinal characteristics of the continuum?"
     ]
-  },
-  "mathlibDependencies": [
-    {
-      "theorem": "Cardinal.continuum",
-      "description": "The cardinality of the continuum 2^{ℵ₀}",
-      "module": "Mathlib.SetTheory.Cardinal.Continuum"
-    },
-    {
-      "theorem": "Cardinal.aleph",
-      "description": "The aleph cardinals ℵ_α",
-      "module": "Mathlib.SetTheory.Cardinal.Basic"
-    },
-    {
-      "theorem": "Order.succ",
-      "description": "Successor operation for cardinals",
-      "module": "Mathlib.Order.SuccPred.Basic"
-    },
-    {
-      "theorem": "Complex.Basic",
-      "description": "Basic complex number operations",
-      "module": "Mathlib.Data.Complex.Basic"
-    }
-  ]
+  }
 }
