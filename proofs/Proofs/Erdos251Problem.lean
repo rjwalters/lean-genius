@@ -34,7 +34,7 @@ open Nat BigOperators Topology
 
 namespace Erdos251
 
-/-!
+/-
 ## The nth Prime Function
 
 We use Mathlib's `Nat.nth Nat.Prime` to get the nth prime.
@@ -54,7 +54,7 @@ axiom nthPrime_values :
     nthPrime 0 = 2 ∧ nthPrime 1 = 3 ∧ nthPrime 2 = 5 ∧
     nthPrime 3 = 7 ∧ nthPrime 4 = 11
 
-/-!
+/-
 ## The Main Sum
 
 We define the sum Σ_{n=0}^∞ pₙ/2^(n+1) = p₀/2 + p₁/4 + p₂/8 + ...
@@ -73,7 +73,7 @@ This equals 2/2 + 3/4 + 5/8 + 7/16 + 11/32 + ...
          ≈ 3.59686... -/
 noncomputable def erdosSum : ℝ := ∑' n, erdosTerm n
 
-/-!
+/-
 ## Convergence
 
 The sum converges because pₙ ~ n ln n (prime number theorem) and
@@ -90,7 +90,7 @@ axiom erdosSum_summable : Summable erdosTerm
 /-- The sum is positive (all terms are positive). -/
 axiom erdosSum_pos : erdosSum > 0
 
-/-!
+/-
 ## Partial Sums
 
 We can compute partial sums to approximate the constant.
@@ -105,7 +105,7 @@ theorem partialSum5_value : partialSum5 = 101/32 := by
   unfold partialSum5
   norm_num
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 Erdős asked whether the sum is irrational. This remains unresolved.
@@ -117,10 +117,9 @@ Is the sum Σ pₙ/2ⁿ irrational?
 The answer is unknown as of 2025. -/
 def erdos_251_conjecture : Prop := Irrational erdosSum
 
-/-- The conjecture remains open. This is stated as a placeholder axiom. -/
-axiom erdos_251_open : True
+-- The conjecture remains open (status: OPEN).
 
-/-!
+/-
 ## Related Results
 
 Erdős proved related irrationality results for different denominators.
@@ -145,7 +144,7 @@ This generalizes Problem #251 from k=1 to all positive integers k. -/
 def erdos_conjecture_general (k : ℕ) : Prop :=
     k ≥ 1 → Irrational (∑' n, ((nthPrime n : ℝ)^k) / (2 : ℝ)^(n + 1))
 
-/-!
+/-
 ## Why This Is Hard
 
 Proving irrationality of explicitly defined sums is notoriously difficult.
@@ -158,7 +157,7 @@ The key challenges are:
    rational approximations, which depends on the arithmetic of primes.
 -/
 
-/-!
+/-
 ## Generalized Conjecture
 
 Erdős made a more general conjecture about sequences gₙ with gₙ ≥ 2.
@@ -174,7 +173,7 @@ def general_conjecture (g : ℕ → ℕ) : Prop :=
     (∀ ε > 0, ∃ N, ∀ n ≥ N, (g n : ℝ) < ε * (nthPrime n : ℝ)) →
     Irrational (∑' n, (nthPrime n : ℝ) / (∏ k ∈ Finset.range (n + 1), (g k : ℝ)))
 
-/-!
+/-
 ## The OEIS Constant
 
 The decimal expansion of Σ pₙ/2ⁿ begins: 3.59686...
@@ -187,7 +186,7 @@ axiom erdosSum_bounds : 3 < erdosSum ∧ erdosSum < 4
 /-- More precise: the sum is approximately 3.5968... -/
 axiom erdosSum_approx : 3.596 < erdosSum ∧ erdosSum < 3.597
 
-/-!
+/-
 ## Explicit Partial Sums
 
 We can verify specific partial sums computationally.
