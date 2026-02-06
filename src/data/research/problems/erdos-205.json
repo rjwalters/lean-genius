@@ -1,8 +1,8 @@
 {
   "slug": "erdos-205",
-  "title": "Erdos #205: Powers of 2 plus numbers with few prime factors",
+  "title": "Erdős #205: Powers of 2 plus numbers with few prime factors",
   "phase": "COMPLETE",
-  "status": "complete",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -11,72 +11,84 @@
     "whyMatters": [
       "Connects powers of 2 with prime factor counting",
       "Related to Romanoff's theorem on 2^k + p",
-      "Uses covering systems, a key tool in combinatorial number theory"
+      "Uses covering systems, a key tool in combinatorial number theory",
+      "First Erdős problem disproved via AI-assisted proof (2026)"
     ]
   },
   "knownResults": {
     "proven": [
-      "15+ theorems in Erdos205Problem.lean, 0 sorries, 9 axioms",
+      "~85 declarations in Erdos205Problem.lean, 0 sorries, 6 axioms",
       "bigOmega definition via primeFactorsList.length",
-      "bigOmega_one: Omega(1) = 0",
-      "bigOmega_prime: Omega(p) = 1 for prime p",
-      "HasSmallOmegaRep and Erdos205Conjecture definitions",
-      "minOmegaRemainder and thresholdFunction definitions",
-      "erdos_205_disproved: negation of conjecture (PROVED from axioms)",
-      "loglog_mono_nat: log log monotonicity for m >= 16 (PROVED)",
-      "IsPowerPlusePrime definition",
-      "evenNumbers and related definitions"
+      "bigOmega_one/prime/prime_pow/mul: all Ω properties PROVED from Mathlib",
+      "remainder_achieves_min: PROVED from Finset.inf' definition",
+      "loglog_mono_nat: PROVED via Real.log monotonicity",
+      "erdos_205_disproved: ¬Erdos205Conjecture (PROVED from axioms)",
+      "12 concrete Ω computations via native_decide",
+      "Covering system infrastructure: IsCoveringSystem, erdosCoveringModulus",
+      "De Polignac number verification: 127 and 149 (all remainders composite)",
+      "Orders of 2 mod primes: verified for {3, 5, 7, 13, 17, 241}"
     ],
     "open": [],
-    "goal": "All tractable results proved. 9 axioms remain (deep results and Mathlib API gaps)."
+    "goal": "All tractable results proved. 6 axioms remain (deep analytic/number-theoretic results)."
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-02-05T07:30:00Z",
-    "iteration": 2,
-    "focus": "Converted loglog_mono_nat from axiom to theorem. Updated metadata.",
-    "activeApproach": "Axiom reduction via Real.log monotonicity",
+    "since": "2026-02-06T17:30:00Z",
+    "iteration": 3,
+    "focus": "Eliminated 3 axioms (bigOmega_prime_pow, bigOmega_mul, remainder_achieves_min). Added concrete computations and covering system formalization.",
+    "activeApproach": "Axiom reduction via Mathlib primeFactorsList API + Finset.inf'",
     "blockers": [],
-    "nextAction": "Problem is essentially complete. Remaining axioms are deep results or need Mathlib API for primeFactorsList.",
+    "nextAction": "Problem is complete. Remaining 6 axioms are deep published results not in Mathlib.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Converted loglog_mono_nat from axiom to theorem. 0 sorries, 9 axioms (deep results + Mathlib API gaps for primeFactorsList_pow/mul).",
+    "progressSummary": "COMPLETE: Eliminated 3 axioms (9→6) by proving bigOmega_prime_pow from Nat.primeFactorsList_prime_pow, bigOmega_mul from Nat.perm_primeFactorsList_mul, and remainder_achieves_min from Finset.inf'_le. Added 12 concrete Ω computations, covering system formalization with de Polignac number verification (127, 149), and orders of 2 mod primes.",
     "builtItems": [
-      "bigOmega: Omega function via primeFactorsList.length",
-      "bigOmega_one, bigOmega_prime: base cases",
-      "Erdos205Conjecture: formal statement",
-      "erdos_205_disproved: main result (PROVED from axioms)",
-      "loglog_mono_nat: log log monotonicity (PROVED)",
-      "minOmegaRemainder, thresholdFunction: helper definitions",
-      "IsPowerPlusePrime: representation predicate"
+      "bigOmega: Ω function via primeFactorsList.length",
+      "bigOmega_one/prime: base cases (proved)",
+      "bigOmega_prime_pow: Ω(p^k) = k (proved from Nat.primeFactorsList_prime_pow)",
+      "bigOmega_mul: Ω(ab) = Ω(a) + Ω(b) (proved from Nat.perm_primeFactorsList_mul)",
+      "remainder_achieves_min: Finset.inf' lower bound (proved from Finset.inf'_le)",
+      "loglog_mono_nat: log log monotonicity (proved from Real.log_le_log)",
+      "erdos_205_disproved: ¬Erdos205Conjecture (proved from axioms)",
+      "12 concrete Ω values: Ω(2)=1 through Ω(30030)=6",
+      "IsCoveringSystem, erdosCoveringModulus = 11184810",
+      "De Polignac verification: 127, 149 (all remainders composite)",
+      "Orders of 2: 2²≡1(mod3), 2⁴≡1(mod5), 2³≡1(mod7), 2¹²≡1(mod13), 2⁸≡1(mod17), 2²⁴≡1(mod241)"
     ],
     "insights": [
-      "loglog_mono_nat proved via Real.log_le_log and Real.log_pos",
-      "bigOmega_prime_pow and bigOmega_mul need Nat.primeFactorsList_pow/mul which may not exist in this Mathlib version",
-      "remainder_achieves_min is Finset.inf' property but tricky to unfold through minOmegaRemainder definition",
-      "erdos_205_disproved chains axioms: counterexample + threshold dominance + remainder min + loglog mono"
+      "Nat.primeFactorsList_prime_pow exists in current Mathlib - directly gives Ω(p^k) = k",
+      "Nat.perm_primeFactorsList_mul gives List.Perm, then .length_eq converts to length equality",
+      "Nat.log_le_of_le_pow is the key lemma for showing k ∈ Finset.range(log₂n + 1)",
+      "Finset.inf'_le directly proves the minimum is a lower bound for any element",
+      "The covering system {3,5,7,13,17,241} uses orders {2,4,3,12,8,24} with lcm=24",
+      "127 is the smallest de Polignac number (verified: all 7 remainders composite)"
     ],
     "mathlibGaps": [
-      "Nat.primeFactorsList_pow may not exist in current Mathlib version",
-      "Nat.primeFactorsList_mul may not exist in current Mathlib version",
-      "No Romanoff's theorem in Mathlib"
+      "No Romanoff's theorem in Mathlib",
+      "No Erdős-Kac theorem in Mathlib",
+      "No covering system theory in Mathlib"
     ],
     "nextSteps": [
-      "Problem is essentially complete for formalization purposes",
-      "Could try Nat.factors_mul_toFinset or other API paths for bigOmega multiplicativity",
-      "Remaining axioms are mostly deep published results"
+      "Problem is complete for formalization purposes",
+      "Could extend covering system verification to prove 127 is de Polignac",
+      "Could add more de Polignac numbers (251, 331, 337, 373)"
     ]
   },
   "approaches": [
     {
-      "name": "Axiom reduction",
+      "name": "Axiom reduction via Mathlib APIs",
       "status": "completed",
-      "description": "Converted loglog_mono_nat from axiom to theorem via Real.log monotonicity"
+      "description": "Used Nat.primeFactorsList_prime_pow, perm_primeFactorsList_mul, and Finset.inf'_le to eliminate 3 axioms"
+    },
+    {
+      "name": "Concrete computation + covering systems",
+      "status": "completed",
+      "description": "Added 12 Ω computations, de Polignac number verification, covering system infrastructure"
     }
   ],
   "tags": [
@@ -94,20 +106,23 @@
   ],
   "references": {
     "papers": [
-      "Romanoff (1934): Sur quelques questions d'additive",
-      "Barreto-Leeham (2026): Counterexample via AI-assisted proof"
+      "Romanoff (1934): Über einige Sätze der additiven Zahlentheorie",
+      "Erdős (1950): On integers of the form 2^k + p and some related problems",
+      "Barreto-Leeham (2026): Counterexample via AI-assisted proof",
+      "Tao-Alexeev (2026): Quantification of the counterexample"
     ],
     "urls": [
       "https://erdosproblems.com/205"
     ],
     "mathlib": [
       "Mathlib.Data.Nat.Factors",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.ArithmeticFunction"
     ]
   },
   "started": "2026-01-23T08:04:56.542Z",
-  "lastUpdate": "2026-02-05T07:30:00Z",
+  "lastUpdate": "2026-02-06T17:30:00Z",
   "significance": 7,
   "tractability": 8,
-  "knowledgeScore": 5
+  "knowledgeScore": 15
 }

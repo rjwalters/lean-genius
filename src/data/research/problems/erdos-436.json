@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 33 theorems, 16 axioms, 0 sorries. File builds cleanly. All provable structural results formalized.",
+    "progressSummary": "COMPLETE: 34 theorems, 15 axioms, 0 sorries. File builds cleanly. Euler criterion forward proved from Fermat's Little Theorem.",
     "builtItems": [
       "zero_is_kth_power_residue: 0 is always a kth power residue",
       "one_is_kth_power_residue: 1 is always a kth power residue",
@@ -57,7 +57,9 @@
       "lambda_8_2_finite: Hildebrand implies finite (NEW)",
       "lambda_up_to_100_finite: all k<=100 are finite (NEW)",
       "m_2_complete_picture: complete characterization for m=2 (NEW)",
-      "lambda_values_positive: all known values > 0 (NEW)"
+      "lambda_values_positive: all known values > 0 (NEW)",
+      "euler_criterion_forward: proved via FLT (was axiom) (NEW)",
+      "fermat_little_theorem: proved from ZMod.pow_card_sub_one_eq_one (NEW)"
     ],
     "insights": [
       "0 and 1 are always kth power residues for k>=1",
@@ -67,7 +69,9 @@
       "The parity dichotomy for m=3: finite for odd k (known for k=3), infinite for even k",
       "Hildebrand's theorem gives finiteness for all k>=2, m=2",
       "Known exact values: 9, 77, 1224, 7888, 202124, 1649375 for k=2..7",
-      "Gaps grow rapidly: 68, 1147, 6664, 194236, 1447251"
+      "Gaps grow rapidly: 68, 1147, 6664, 194236, 1447251",
+      "Euler criterion forward proved from FLT via calc chain: a^((p-1)/2) = (x^2)^((p-1)/2) = x^(p-1) ≡ 1",
+      "Fermat's Little Theorem proved from Mathlib's ZMod.pow_card_sub_one_eq_one"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -92,8 +96,8 @@
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.333Z",
-  "lastUpdate": "2026-02-04T16:36:00.000Z",
+  "lastUpdate": "2026-02-06T09:40:00.000Z",
   "significance": 7,
   "tractability": 6,
-  "knowledgeScore": 5
+  "knowledgeScore": 7
 }
