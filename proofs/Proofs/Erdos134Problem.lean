@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #134: Triangle-Free Graphs with Diameter 2
 
 Source: https://erdosproblems.com/134
@@ -214,26 +214,15 @@ axiom alon_implies_conjecture : erdosGyarfasConjecture
 
 /-!
 ## Part VI: The Role of the Exponent
--/
 
-/--
-**Critical Exponent 1/2:**
 The exponent 1/2 is critical:
 - Below 1/2 - ε: Extension possible with o(n²) edges (Alon)
 - At 1/2 (with large constant): Extension may need Ω(n²) edges (Simonovits)
 
 The ε "gap" below 1/2 is essential for the positive result.
+Triangle-free graphs with max degree constraints relate to Turán's theorem,
+Ramsey theory, and spectral graph theory.
 -/
-theorem critical_exponent_half : True := trivial
-
-/--
-**Connection to Extremal Graph Theory:**
-Triangle-free graphs with max degree constraints are related to:
-- Turán's theorem: max edges in triangle-free graphs
-- Ramsey theory: unavoidable structures
-- Spectral graph theory: eigenvalue bounds
--/
-theorem extremal_connection : True := trivial
 
 /-!
 ## Part VII: Related Concepts
@@ -256,25 +245,13 @@ axiom diameter2_equiv (G : SimpleGraph V) (hConn : G.Connected) :
     hasDiameter2 G ↔ commonNeighborProperty G
 
 /-!
-## Part VIII: Open Refinements
--/
+## Part VIII: Summary
 
-/--
-**Open Question: Tight Bound on Edges**
-What is the minimum number of edges needed in the worst case?
-Alon shows O(n^{2-ε}), but is this tight?
--/
-def openQuestion_tightBound : Prop := True
-
-/--
-**Open Question: Explicit Constructions**
-Can we explicitly construct the diameter-2 extension, or is the proof
-non-constructive (using probabilistic methods)?
--/
-def openQuestion_explicit : Prop := True
-
-/-!
-## Part IX: Summary
+**Open Refinements:**
+- Is the O(n^{2-ε}) bound tight?
+- Can the extension be constructed explicitly (vs. probabilistic methods)?
+- What about diameter k > 2?
+- Extensions to K_r-free graphs for r > 3?
 -/
 
 /--

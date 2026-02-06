@@ -102,27 +102,30 @@
     "id": "critical-exponent",
     "proofId": "erdos-134",
     "type": "concept",
-    "range": { "startLine": 219, "endLine": 227 },
+    "range": { "startLine": 215, "endLine": 225 },
     "title": "Critical Exponent 1/2",
-    "content": "The exponent 1/2 is critical: below 1/2-ε extension is possible with o(n²) edges (Alon), but at 1/2 with large constant, extension may need Ω(n²) edges (Simonovits).",
+    "content": "The exponent 1/2 is critical: below 1/2-ε extension is possible with o(n²) edges (Alon), but at 1/2 with large constant, extension may need Ω(n²) edges (Simonovits). The ε gap below 1/2 is essential. Triangle-free graphs with degree constraints relate to Turán's theorem, Ramsey theory, and spectral graph theory.",
+    "mathContext": "This phase transition at degree n^{1/2} is reminiscent of other thresholds in extremal graph theory where polynomial bounds shift from possible to impossible.",
     "significance": "key"
   },
   {
     "id": "common-neighbor",
     "proofId": "erdos-134",
     "type": "definition",
-    "range": { "startLine": 242, "endLine": 249 },
+    "range": { "startLine": 231, "endLine": 245 },
     "title": "Common Neighbor Property",
-    "content": "A graph has the common neighbor property if every pair of non-adjacent vertices has a common neighbor. For connected graphs, this is equivalent to diameter 2.",
+    "content": "**commonNeighborProperty(G)**: every pair of non-adjacent vertices has a common neighbor. For connected graphs, this is equivalent to diameter 2 (axiom diameter2_equiv). This characterization is useful because it converts a global property (diameter) into a local condition (common neighbors).",
+    "mathContext": "The equivalence between diameter 2 and the common neighbor property is standard in graph theory. It provides an alternative way to verify diameter-2 extensions.",
     "significance": "supporting"
   },
   {
     "id": "main-theorem",
     "proofId": "erdos-134",
     "type": "theorem",
-    "range": { "startLine": 280, "endLine": 316 },
-    "title": "Main Result",
-    "content": "erdos_134_main: The Erdős-Gyárfás conjecture is true (from Alon's theorem), with the stronger quantitative bound O(n^{2-ε}) edges.",
+    "range": { "startLine": 257, "endLine": 295 },
+    "title": "Main Results: erdos_134_solved and erdos_134_main",
+    "content": "**erdos_134_solved** (PROVED): derives erdosGyarfasConjecture directly from alon_implies_conjecture.\n\n**erdos_134_main** (PROVED): Combines two results:\n1. The conjecture is true (from Alon)\n2. The stronger O(n^{2-ε}) bound (from alon_theorem)\n\nProof uses `exact ⟨alon_implies_conjecture, ...⟩` with `obtain` to extract constants from alon_theorem.",
+    "mathContext": "The summary theorem packages both the qualitative result (the conjecture holds) and the quantitative improvement (O(n^{2-ε}) vs δn²) into a single statement.",
     "significance": "critical"
   }
 ]
