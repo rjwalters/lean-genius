@@ -35,7 +35,7 @@ namespace Erdos823
 
 open ArithmeticFunction Filter Topology
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 The sum of divisors function and related concepts.
@@ -62,7 +62,7 @@ axiom sigma_prime_power (p k : ℕ) (hp : Nat.Prime p) :
 axiom sigma_multiplicative (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1) (h : Nat.Coprime m n) :
     sigma (m * n) = sigma m * sigma n
 
-/-!
+/-
 ## Part II: The Main Problem
 
 Can we find sequences with equal σ values and any prescribed ratio limit?
@@ -79,7 +79,7 @@ def SigmaSequenceConvergingTo (α : ℝ) : Prop :=
     (∀ k, IsSigmaPair (n k) (m k)) ∧
     Tendsto (fun k => (n k : ℝ) / (m k : ℝ)) atTop (𝓝 α)
 
-/-!
+/-
 ## Part III: Pollack's Theorem (2015)
 -/
 
@@ -98,7 +98,7 @@ theorem erdos_823_solved (α : ℝ) (hα : α ≥ 1) :
   obtain ⟨n, m, hpos, hsigma, hconv⟩ := pollack_2015 α hα
   exact ⟨n, m, hpos, hsigma, hconv⟩
 
-/-!
+/-
 ## Part IV: Examples of σ-pairs
 
 Concrete examples where σ(n) = σ(m).
@@ -128,7 +128,7 @@ axiom sigma_957_958 : sigma 957 = sigma 958
 /-- 957/958 is very close to 1 -/
 example : (957 : ℕ) < 958 := by native_decide
 
-/-!
+/-
 ## Part V: The Analogous Result for φ(n)
 
 Erdős noted the Euler totient case is "easy to prove".
@@ -157,7 +157,7 @@ axiom phi_1_2 : phi 1 = phi 2
 /-- Example φ-pair: φ(3) = φ(4) = φ(6) = 2 -/
 axiom phi_3_4_6 : phi 3 = phi 4 ∧ phi 4 = phi 6
 
-/-!
+/-
 ## Part VI: Properties of Fibers of σ
 -/
 
@@ -175,7 +175,7 @@ axiom fibers_can_be_large :
 axiom even_sigma_values :
     ∃ N : ℕ, ∀ m : ℕ, m ≥ N → Even m → (sigmaFiber m).Nonempty
 
-/-!
+/-
 ## Part VII: Density Results
 -/
 
@@ -193,7 +193,7 @@ axiom many_multiple_preimages :
       ((Finset.filter (fun m => (sigmaFiber m).ncard ≥ 2) (Finset.range N)).card : ℝ)
       ≥ c * N
 
-/-!
+/-
 ## Part VIII: Computational Examples
 -/
 
@@ -212,7 +212,7 @@ example : 1 + 2 + 4 + 7 + 14 + 28 = 56 := by native_decide
 /-- Ratio 14/15: finding pairs close to ratio 1 -/
 example : (14 * 1000 : ℕ) / 15 = 933 := by native_decide
 
-/-!
+/-
 ## Part IX: Key Insight
 
 Why σ allows such sequences: The multiplicativity of σ combined with
@@ -227,10 +227,9 @@ axiom key_insight_sigma_pairs :
       (pairs k).1 ≠ (pairs k).2 ∧
       sigma (pairs k).1 = sigma (pairs k).2
 
-/-- Pollack's method: careful construction using prime factorizations -/
-axiom pollack_method : True
+-- Pollack's method uses careful construction with prime factorizations.
 
-/-!
+/-
 ## Part X: Summary
 -/
 
@@ -264,16 +263,8 @@ theorem erdos_823_statement :
     (∀ α : ℝ, α ≥ 1 →
       ∃ n m : ℕ → ℕ,
         (∀ k, phi (n k) = phi (m k)) ∧
-        Tendsto (fun k => (n k : ℝ) / (m k : ℝ)) atTop (𝓝 α)) ∧
-    -- Status is solved
-    True := by
-  refine ⟨?_, ?_, trivial⟩
-  · exact fun α hα => erdos_823_solved α hα
-  · intro α hα
-    obtain ⟨n, m, _, hphi, hconv⟩ := erdos_phi_easy α hα
-    exact ⟨n, m, hphi, hconv⟩
-
-/-- Erdős Problem #823 is SOLVED -/
-theorem erdos_823_solved_final : True := trivial
+        Tendsto (fun k => (n k : ℝ) / (m k : ℝ)) atTop (𝓝 α)) := by
+  exact ⟨fun α hα => erdos_823_solved α hα,
+    fun α hα => let ⟨n, m, _, hphi, hconv⟩ := erdos_phi_easy α hα; ⟨n, m, hphi, hconv⟩⟩
 
 end Erdos823
