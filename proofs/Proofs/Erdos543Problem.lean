@@ -1,5 +1,5 @@
-/-!
-  Erdős Problem #543: Random Subset Sums in Abelian Groups
+/-
+Erdős Problem #543: Random Subset Sums in Abelian Groups
 
   Source: https://erdosproblems.com/543
   Status: DISPROVED (answered in the negative)
@@ -38,7 +38,7 @@ namespace Erdos543
 
 open Finset Real
 
-/-! ## Part I: Subset Sums in Groups -/
+/- ## Part I: Subset Sums in Groups -/
 
 /-- The set of all subset sums of a finite set A in an additive group. -/
 def subsetSums {G : Type*} [AddCommGroup G] (A : Finset G) : Set G :=
@@ -54,7 +54,7 @@ theorem isSpanningSet_iff {G : Type*} [AddCommGroup G] [Fintype G] (A : Finset G
   unfold IsSpanningSet
   simp only [Set.eq_univ_iff_forall]
 
-/-! ## Part II: The Function f(N) -/
+/- ## Part II: The Function f(N) -/
 
 /-- The probability that a random k-subset of G is a spanning set.
     This is the fraction of k-subsets that span G. -/
@@ -73,7 +73,7 @@ axiom f (N : ℕ) : ℕ
 /-- f is well-defined: for each N ≥ 1, f(N) ≤ N (the full group trivially spans). -/
 axiom f_le_card (N : ℕ) (hN : N ≥ 1) : f N ≤ N
 
-/-! ## Part III: Elementary Properties -/
+/- ## Part III: Elementary Properties -/
 
 /-- The empty set only spans the trivial group: if ∅ spans G then |G| = 1. -/
 axiom empty_spanning_iff (G : Type*) [AddCommGroup G] [Fintype G] :
@@ -84,7 +84,7 @@ theorem spanning_of_generators {G : Type*} [AddCommGroup G] [Fintype G]
     (A : Finset G) (hgen : ∀ g : G, ∃ S : Finset G, S ⊆ A ∧ S.sum id = g) :
     IsSpanningSet A := hgen
 
-/-! ## Part IV: The Erdős-Rényi Upper Bound -/
+/- ## Part IV: The Erdős-Rényi Upper Bound -/
 
 /-- **Erdős-Rényi (1965):** f(N) ≤ log₂ N + O(log log N).
 
@@ -99,7 +99,7 @@ axiom erdos_renyi_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
       (f N : ℝ) ≤ Real.logb 2 N + C * Real.log (Real.log N)
 
-/-! ## Part V: The Conjecture and Its Disproof -/
+/- ## Part V: The Conjecture and Its Disproof -/
 
 /-- The question asks: can we improve O(log log N) to o(log log N)?
 
@@ -145,7 +145,7 @@ axiom chatgpt_tang_disproof : ErdosCounterConjecture
 theorem little_o_conjecture_false : ¬LittleOConjecture :=
   fun h => absurd chatgpt_tang_disproof (conjectures_complementary.mp h)
 
-/-! ## Part VI: Lower Bound -/
+/- ## Part VI: Lower Bound -/
 
 /-- **Information-theoretic lower bound:**
 A random k-subset has at most 2^k possible subset sums.
@@ -161,7 +161,7 @@ axiom erdos_hall_lower :
     ∃ c : ℝ, c > 0 ∧ ∀ N₀ : ℕ, ∃ N : ℕ, N ≥ N₀ ∧
       (f N : ℝ) > Real.logb 2 N + c * Real.log (Real.log (Real.log N))
 
-/-! ## Part VII: Special Cases -/
+/- ## Part VII: Special Cases -/
 
 /-- For cyclic groups ℤ/Nℤ, the problem has additional structure.
     The cyclic case: every element must be representable as a subset sum. -/
@@ -173,7 +173,7 @@ theorem cyclic_spanning_characterization (N : ℕ) [NeZero N] (A : Finset (ZMod 
 axiom prime_full_spanning (p : ℕ) [hp : Fact p.Prime] :
     ∀ A : Finset (ZMod p), A.card ≥ p → IsSpanningSet A
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /-- **Summary of Erdős Problem #543:**
 
