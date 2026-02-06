@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #561: Size Ramsey Numbers for Unions of Stars
 
 Source: https://erdosproblems.com/561
@@ -216,12 +216,13 @@ axiom size_vs_classical (F₁ F₂ : StarUnion) :
 /-- **Erdős Problem #561 Summary:**
 - The conjectured formula for R̂(F₁, F₂) is proven for uniform stars
 - The general case remains OPEN -/
-axiom erdos_561_summary :
+theorem erdos_561_summary :
     (-- BEFRS78 proves uniform case
      ∀ F₁ F₂ : StarUnion, F₁.isUniform → F₂.isUniform →
        sizeRamseyNumber F₁ F₂ = conjecturedFormula F₁ F₂) ∧
     (-- Lower bound
-     ∀ F₁ F₂, sizeRamseyNumber F₁ F₂ ≥ max F₁.totalEdges F₂.totalEdges)
+     ∀ F₁ F₂, sizeRamseyNumber F₁ F₂ ≥ max F₁.totalEdges F₂.totalEdges) :=
+  ⟨befrs78_theorem, sizeRamsey_lower_bound⟩
 
 /-- **Main Theorem:**
 The uniform case of Erdős #561 is SOLVED. -/
