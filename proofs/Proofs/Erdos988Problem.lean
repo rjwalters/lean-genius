@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #988: Discrepancy on the Sphere
 
 If P ⊆ S² is a subset of the unit sphere, define the discrepancy:
