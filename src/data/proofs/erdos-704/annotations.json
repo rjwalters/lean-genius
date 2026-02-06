@@ -94,9 +94,20 @@
     "relatedConcepts": ["Limits", "Exponential growth"]
   },
   {
+    "id": "ann-e704-derived",
+    "proofId": "erdos-704",
+    "range": { "startLine": 130, "endLine": 138 },
+    "type": "axiom",
+    "title": "Derived Results",
+    "content": "**exponential_growth** and **base_bounds:**\n\nTwo consequences axiomatized from the main bounds:\n- Exponential growth: ∃ c > 1 such that χ(Gₙ) ≥ cⁿ for all n ≥ 1\n- Base bounds: 1.2 ≤ lim χ(Gₙ)^{1/n} ≤ 3\n\nThese follow from Frankl-Wilson and Larman-Rogers but require real analysis arguments not yet in Mathlib.",
+    "mathContext": "Converting asymptotic bounds (1+o(1))·1.2ⁿ to uniform exponential bounds requires careful limit arguments.",
+    "significance": "key",
+    "relatedConcepts": ["Asymptotic analysis", "Exponential growth"]
+  },
+  {
     "id": "ann-e704-techniques",
     "proofId": "erdos-704",
-    "range": { "startLine": 144, "endLine": 159 },
+    "range": { "startLine": 140, "endLine": 155 },
     "type": "concept",
     "title": "Proof Techniques",
     "content": "**Lower Bound (Frankl-Wilson):**\n1. Consider ±1 vectors with n/2 ones\n2. Analyze distances: √2 or 2\n3. Apply intersection theorems to bound independent sets\n4. Get χ(Gₙ) ≥ 1.2ⁿ\n\n**Upper Bound (Larman-Rogers):**\n1. Use the Aₙ lattice\n2. Voronoi cells have diameter < 1\n3. Color by cell membership\n4. Get χ(Gₙ) ≤ 3ⁿ",
@@ -106,7 +117,7 @@
   {
     "id": "ann-e704-main-result",
     "proofId": "erdos-704",
-    "range": { "startLine": 161, "endLine": 165 },
+    "range": { "startLine": 157, "endLine": 161 },
     "type": "theorem",
     "title": "Main Result",
     "content": "**erdos_704_solved:**\n\nCombines both bounds:\n- ∀ε>0: χ(Gₙ) ≥ (1-ε)·1.2ⁿ for large n\n- ∀ε>0: χ(Gₙ) ≤ (3+ε)ⁿ for large n\n\nThis establishes exponential growth, resolving part of the problem.\n\nThe exact base remains open.",

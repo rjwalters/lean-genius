@@ -49,7 +49,9 @@
       "de_grey_2018 axiom: χ(G₂) ≥ 5",
       "hadwiger_nelson_bounds theorem: 5 ≤ χ(G₂) ≤ 7",
       "chromaticLimit definition: lim χ(Gₙ)^{1/n}",
-      "erdos_704_solved theorem: main result"
+      "exponential_growth axiom: ∃ c > 1 with χ(Gₙ) ≥ cⁿ",
+      "base_bounds axiom: 1.2 ≤ chromaticLimit ≤ 3",
+      "erdos_704_solved theorem: main result combining both bounds"
     ]
   },
   "overview": {
@@ -109,24 +111,24 @@
     },
     {
       "id": "open-questions",
-      "title": "Open Questions",
-      "summary": "Limit existence, base value, and exact n=2 value",
+      "title": "Open Questions and Derived Results",
+      "summary": "Limit definition, exponential growth axiom, base bounds axiom",
       "startLine": 118,
-      "endLine": 142
+      "endLine": 138
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
       "summary": "How lower and upper bounds are proved",
-      "startLine": 144,
-      "endLine": 159
+      "startLine": 140,
+      "endLine": 155
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_704_solved combining bounds",
-      "startLine": 161,
-      "endLine": 170
+      "summary": "erdos_704_solved combining both bounds",
+      "startLine": 157,
+      "endLine": 163
     }
   ],
   "conclusion": {

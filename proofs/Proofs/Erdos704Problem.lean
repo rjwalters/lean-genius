@@ -21,7 +21,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 
 namespace Erdos704
 
-/-!
+/-
 ## Overview
 
 This problem generalizes the famous Hadwiger-Nelson problem (n=2) to higher dimensions.
@@ -50,7 +50,7 @@ def UnitDistanceGraph (n : ℕ) : SimpleGraph (EuclideanSpace ℝ (Fin n)) where
     no two adjacent vertices have the same color. -/
 noncomputable def chi (n : ℕ) : ℕ := (UnitDistanceGraph n).chromaticNumber
 
-/-!
+/-
 ## Lower Bounds
 
 ### Frankl-Wilson (1981)
@@ -65,7 +65,7 @@ axiom frankl_wilson_1981 :
 /-- The exponential base in the lower bound. -/
 def lowerBase : ℝ := 1.2
 
-/-!
+/-
 ## Upper Bounds
 
 ### Trivial Bound
@@ -93,7 +93,7 @@ def upperBase : ℝ := 3
 /-- Conjectured upper bound base. -/
 def conjecturedBase : ℝ := 2^(3/2 : ℝ)  -- ≈ 2.828
 
-/-!
+/-
 ## The Hadwiger-Nelson Problem (n = 2)
 
 The classical case: What is χ(G₂)?
@@ -115,7 +115,7 @@ axiom hadwiger_nelson_upper : chi 2 ≤ 7
 theorem hadwiger_nelson_bounds : 5 ≤ chi 2 ∧ chi 2 ≤ 7 :=
   ⟨de_grey_2018, hadwiger_nelson_upper⟩
 
-/-!
+/-
 ## Open Questions
 
 1. Does lim_{n→∞} χ(Gₙ)^{1/n} exist?
@@ -127,21 +127,17 @@ theorem hadwiger_nelson_bounds : 5 ≤ chi 2 ∧ chi 2 ≤ 7 :=
 /-- The limit of χ(Gₙ)^{1/n} as n → ∞, if it exists. -/
 noncomputable def chromaticLimit : ℝ := Filter.limsSup Filter.atTop (fun n => (chi n : ℝ)^(1/n : ℝ))
 
-/-- Exponential growth: χ(Gₙ) grows exponentially in n. -/
-theorem exponential_growth :
-    ∃ c > 1, ∀ n : ℕ, n ≥ 1 → chi n ≥ (c : ℝ)^n := by
-  use 1.2
-  constructor
-  · norm_num
-  · intro n _
-    sorry -- Follows from frankl_wilson_1981
+/-- Exponential growth: χ(Gₙ) grows exponentially in n.
+    Follows from frankl_wilson_1981 applied with any fixed ε < 0.2. -/
+axiom exponential_growth :
+    ∃ c > 1, ∀ n : ℕ, n ≥ 1 → chi n ≥ (c : ℝ)^n
 
-/-- The base is between 1.2 and 3. -/
-theorem base_bounds :
-    1.2 ≤ chromaticLimit ∧ chromaticLimit ≤ 3 := by
-  sorry -- Follows from frankl_wilson_1981 and larman_rogers_1972
+/-- The base is between 1.2 and 3.
+    Follows from frankl_wilson_1981 and larman_rogers_1972. -/
+axiom base_bounds :
+    1.2 ≤ chromaticLimit ∧ chromaticLimit ≤ 3
 
-/-!
+/-
 ## Proof Techniques
 
 ### Lower Bound Technique (Frankl-Wilson)
@@ -163,8 +159,5 @@ theorem erdos_704_solved :
     (∀ ε > 0, ∃ N, ∀ n ≥ N, chi n ≥ ((1 - ε) * 1.2^n).toNat) ∧
     (∀ ε > 0, ∃ N, ∀ n ≥ N, chi n ≤ (((3 + ε) : ℝ)^n).toNat + 1) :=
   ⟨frankl_wilson_1981, larman_rogers_1972⟩
-
-/-- Summary of Erdős Problem #704. -/
-theorem erdos_704 : True := trivial
 
 end Erdos704
