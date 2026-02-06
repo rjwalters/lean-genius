@@ -31,20 +31,21 @@
       "IsRamsey definition formalizing the Euclidean Ramsey property",
       "IsSpherical definition for sets on sphere surfaces",
       "ramsey_implies_spherical axiom (EGMRSS 1973)",
-      "Graham's conjecture formalization",
-      "Leader-Russell-Walters subtransitivity conjecture",
+      "Graham's conjecture and LRW conjecture formalizations",
       "Known Ramsey families: rectangles, simplices, trapezoids, regular polygons",
-      "Non-Ramsey criterion via non-sphericity",
-      "Ramsey dimension bounds"
+      "not_spherical_not_ramsey theorem (proved)",
+      "collinear_not_ramsey theorem (proved)",
+      "characterization_exists theorem (proved)",
+      "erdos_174 summary combining four key axioms"
     ],
     "dateAdded": "2026-01-22"
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #174: Euclidean Ramsey Sets**\n\nEuclidean Ramsey theory was founded by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The theory extends classical combinatorial Ramsey theory into the geometric realm: which finite point configurations are guaranteed to appear monochromatically in any coloring of high-dimensional Euclidean space?\n\n**Key Developments:**\n- EGMRSS (1973): Proved the necessary condition—every Ramsey set must be spherical (all points equidistant from some center)\n- Frankl-Rödl (1990): All non-degenerate simplices are Ramsey\n- Kříž (1991-92): Regular polygons, polyhedra, and trapezoids are Ramsey\n- Leader-Russell-Walters (2012): Proposed subtransitivity as the characterizing property\n\n**The Open Problem:**\nThe characterization question remains unsolved. Graham conjectures that every spherical set is Ramsey. The LRW conjecture offers an algebraic alternative: Ramsey iff subtransitive. Neither has been proved or disproved.",
+    "historicalContext": "**Erdős Problem #174: Euclidean Ramsey Sets**\n\nEuclidean Ramsey theory was founded by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their landmark 1973 paper. The theory extends classical combinatorial Ramsey theory into the geometric realm: which finite point configurations are guaranteed to appear monochromatically in any coloring of high-dimensional Euclidean space?\n\n**Key Developments:**\n- EGMRSS (1973): Proved the necessary condition — every Ramsey set must be spherical\n- Frankl-Rödl (1990): All non-degenerate simplices are Ramsey\n- Kříž (1991-92): Regular polygons, polyhedra, and trapezoids are Ramsey\n- Leader-Russell-Walters (2012): Proposed subtransitivity as the characterizing property\n\n**The Open Problem:**\nThe characterization question remains unsolved. Graham conjectures that every spherical set is Ramsey. The LRW conjecture offers an algebraic alternative: Ramsey iff subtransitive. Neither has been proved or disproved.",
     "problemStatement": "A finite set A ⊂ ℝⁿ is called Ramsey if, for any k ≥ 1, there exists d = d(A,k) such that in any k-coloring of ℝᵈ there exists a monochromatic congruent copy of A. Characterize the Ramsey sets in ℝⁿ.",
     "proofStrategy": "The necessary condition (spherical) is proved via a contrapositive argument using distance-based colorings. The sufficient direction (characterizing which spherical sets are Ramsey) remains open, with Graham's conjecture and the Leader-Russell-Walters subtransitivity conjecture as the main candidates.",
     "keyInsights": [
-      "Every Ramsey set must be spherical—lie on the surface of some sphere",
+      "Every Ramsey set must be spherical — lie on the surface of some sphere",
       "Known Ramsey families: rectangles, simplices, trapezoids, regular polygons",
       "Graham conjectures spherical ⟹ Ramsey (complete characterization)",
       "LRW conjectures Ramsey ⟺ subtransitive (alternate characterization)",
@@ -53,60 +54,67 @@
   },
   "sections": [
     {
-      "id": "sec-174-header",
-      "title": "Problem Overview",
-      "startLine": 1,
-      "endLine": 34,
-      "summary": "Introduction to Euclidean Ramsey theory and the characterization problem, with references to key papers."
-    },
-    {
-      "id": "sec-174-setup",
+      "id": "basic-setup",
       "title": "Basic Setup",
-      "startLine": 40,
-      "endLine": 51,
-      "summary": "Definitions for finite configurations and congruent copies in Euclidean space."
+      "summary": "FiniteConfig, IsCongruentCopy definitions",
+      "startLine": 46,
+      "endLine": 56
     },
     {
-      "id": "sec-174-ramsey-def",
+      "id": "ramsey-property",
       "title": "Euclidean Ramsey Property",
-      "startLine": 53,
-      "endLine": 71,
-      "summary": "Formal definition of the Ramsey property: for any coloring, a monochromatic copy exists."
+      "summary": "Coloring, IsMonochromatic, IsRamsey definitions",
+      "startLine": 58,
+      "endLine": 77
     },
     {
-      "id": "sec-174-spherical",
-      "title": "Spherical Condition",
-      "startLine": 73,
-      "endLine": 84,
-      "summary": "The necessary condition: every Ramsey set must lie on a sphere's surface (EGMRSS 1973)."
+      "id": "spherical-sets",
+      "title": "Spherical Sets",
+      "summary": "IsSpherical definition and ramsey_implies_spherical axiom (EGMRSS 1973)",
+      "startLine": 79,
+      "endLine": 91
     },
     {
-      "id": "sec-174-conjectures",
+      "id": "conjectures",
       "title": "Open Conjectures",
-      "startLine": 86,
-      "endLine": 116,
-      "summary": "Graham's conjecture (spherical ⟹ Ramsey) and the Leader-Russell-Walters subtransitivity conjecture."
+      "summary": "Graham's conjecture, IsSubtransitive, LRW conjecture",
+      "startLine": 93,
+      "endLine": 113
     },
     {
-      "id": "sec-174-known-ramsey",
+      "id": "known-ramsey",
       "title": "Known Ramsey Sets",
-      "startLine": 118,
-      "endLine": 173,
-      "summary": "Proven Ramsey families: rectangles (EGMRSS), simplices (Frankl-Rödl), trapezoids (Kříž), regular polygons (Kříž)."
+      "summary": "Rectangles, simplices, trapezoids, regular polygons",
+      "startLine": 115,
+      "endLine": 159
     },
     {
-      "id": "sec-174-examples",
+      "id": "examples",
       "title": "Examples",
-      "startLine": 175,
-      "endLine": 218,
-      "summary": "Concrete examples of Ramsey and non-Ramsey sets, including the collinearity obstruction."
+      "summary": "twoPoints, equilateralTriangle, square",
+      "startLine": 161,
+      "endLine": 186
     },
     {
-      "id": "sec-174-characterization",
+      "id": "non-ramsey",
+      "title": "Non-Ramsey Sets",
+      "summary": "not_spherical_not_ramsey, collinearFour, collinear_not_ramsey",
+      "startLine": 188,
+      "endLine": 205
+    },
+    {
+      "id": "characterization",
       "title": "The Characterization Problem",
-      "startLine": 220,
-      "endLine": 257,
-      "summary": "The main open question and dimension bounds for Ramsey configurations."
+      "summary": "erdos_174_question, characterization_exists",
+      "startLine": 207,
+      "endLine": 220
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_174 and erdos_174_summary theorems",
+      "startLine": 222,
+      "endLine": 256
     }
   ],
   "conclusion": {
