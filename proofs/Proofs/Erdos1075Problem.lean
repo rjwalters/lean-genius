@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1075: Dense Subgraphs in r-Uniform Hypergraphs
 
 **Source:** [erdosproblems.com/1075](https://erdosproblems.com/1075)
@@ -36,7 +36,7 @@ open Finset Real
 
 namespace Erdos1075
 
-/-! ## Part I: Hypergraph Definitions -/
+/- ## Part I: Hypergraph Definitions -/
 
 /-- An r-uniform hypergraph on vertex set V -/
 structure Hypergraph (V : Type*) (r : ℕ) where
@@ -60,7 +60,7 @@ def Hypergraph.induced {V : Type*} [DecidableEq V] {r : ℕ}
 noncomputable def thresholdConstant (r : ℕ) : ℝ :=
   (r : ℝ)^(-(r : ℤ))
 
-/-! ## Part II: Erdős's Known Result (1964) -/
+/- ## Part II: Erdős's Known Result (1964) -/
 
 /--
 **Erdős [Er64f] (1964):** Any r-uniform hypergraph on n vertices
@@ -97,7 +97,7 @@ axiom threshold_values :
   thresholdConstant 4 = 1/256 ∧
   thresholdConstant 5 = 1/3125
 
-/-! ## Part III: The Open Conjecture -/
+/- ## Part III: The Open Conjecture -/
 
 /--
 **Erdős Problem #1075 (OPEN):**
@@ -132,7 +132,7 @@ axiom threshold_comparison :
   ∀ n r : ℕ, r ≥ 3 → n ≥ r →
     ((n : ℝ) / r)^r < (n : ℝ)^r
 
-/-! ## Part IV: Complete Hypergraphs and Asymptotics -/
+/- ## Part IV: Complete Hypergraphs and Asymptotics -/
 
 /-- Complete r-uniform hypergraph on m vertices has C(m,r) edges -/
 def completeHypergraphEdges (m r : ℕ) : ℕ := Nat.choose m r
@@ -147,7 +147,7 @@ axiom binomial_asymptotic :
       (fun m => (completeHypergraphEdges m r : ℝ) / ((m : ℝ)^r / (r.factorial : ℝ)))
       Filter.atTop (nhds 1)
 
-/-! ## Part V: Summary -/
+/- ## Part V: Summary -/
 
 /--
 **Summary of Erdős Problem #1075:**
