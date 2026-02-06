@@ -18,7 +18,7 @@
       "degree-bounds"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 752,
     "erdosUrl": "https://erdosproblems.com/752",
     "erdosProblemStatus": "solved",
@@ -94,58 +94,51 @@
     {
       "id": "sudakov-verstrate",
       "title": "Sudakov-Verstraëte Theorem",
-      "summary": "Stronger result with consecutive even lengths",
+      "summary": "Stronger result with consecutive even lengths and main proof",
       "startLine": 80,
-      "endLine": 108
+      "endLine": 127
     },
     {
       "id": "moore-bound",
       "title": "Why Girth Matters",
-      "summary": "Moore bound and tightness of results",
-      "startLine": 110,
-      "endLine": 129
+      "summary": "Moore bound, Moore graphs, and tightness",
+      "startLine": 128,
+      "endLine": 142
     },
     {
       "id": "girth-structure",
       "title": "Girth and Cycle Structure",
       "summary": "How girth constrains cycle lengths",
-      "startLine": 131,
-      "endLine": 154
+      "startLine": 144,
+      "endLine": 167
     },
     {
-      "id": "ramsey-connection",
-      "title": "Connection to Ramsey Theory",
-      "summary": "Ramsey and Zarankiewicz connections",
-      "startLine": 156,
-      "endLine": 168
+      "id": "extremal-connections",
+      "title": "Extremal Connections",
+      "summary": "Zarankiewicz-type bounds",
+      "startLine": 169,
+      "endLine": 178
     },
     {
       "id": "extensions",
       "title": "Extensions and Generalizations",
-      "summary": "Chromatic number and odd cycle versions",
-      "startLine": 170,
-      "endLine": 195
-    },
-    {
-      "id": "proof-techniques",
-      "title": "Proof Techniques",
-      "summary": "Dependent random choice and averaging",
-      "startLine": 197,
-      "endLine": 217
+      "summary": "Chromatic number, odd cycle, and consecutive lengths versions",
+      "startLine": 180,
+      "endLine": 205
     },
     {
       "id": "quantitative",
       "title": "Quantitative Bounds",
-      "summary": "Explicit constants and improved bounds",
-      "startLine": 219,
-      "endLine": 237
+      "summary": "Explicit constants and improved bounds for small s",
+      "startLine": 207,
+      "endLine": 225
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem and complete resolution",
-      "startLine": 239,
-      "endLine": 265
+      "summary": "Main theorems and summary combining conjecture resolution with stronger result",
+      "startLine": 227,
+      "endLine": 255
     }
   ],
   "conclusion": {
