@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #829: Representations as Sums of Two Cubes
 
 Source: https://erdosproblems.com/829
@@ -35,9 +35,7 @@ open Real BigOperators
 
 namespace Erdos829
 
-/-
-## Part I: Cubes and the Representation Function
--/
+/-! ## Part I: Cubes and the Representation Function -/
 
 /--
 **Perfect Cube:**
@@ -71,9 +69,7 @@ def orderedCubeRepresentations (n : ℕ) : ℕ :=
   (Finset.filter (fun p : ℕ × ℕ => p.1 ^ 3 + p.2 ^ 3 = n)
     (Finset.product (Finset.range (n + 1)) (Finset.range (n + 1)))).card
 
-/-
-## Part II: The Erdős Question
--/
+/-! ## Part II: The Erdős Question -/
 
 /--
 **Polynomial Bound on Representations:**
@@ -91,9 +87,7 @@ This is asking whether HasPolylogBound holds.
 -/
 def ErdosQuestion : Prop := HasPolylogBound
 
-/-
-## Part III: Known Lower Bounds
--/
+/-! ## Part III: Known Lower Bounds -/
 
 /--
 **Mordell's Theorem:**
@@ -107,23 +101,8 @@ axiom mordell_unbounded :
 
 /--
 **Infinitely Many Large Values:**
-There exist infinitely many n with r₂(n) > k for any fixed k.
+For any fixed k, there exist arbitrarily large n with r₂(n) > k.
 -/
-theorem infinitely_many_large : ∀ k : ℕ, ∃ᶠ n in Filter.atTop, cubeRepresentations n > k := by
-  intro k
-  rw [Filter.frequently_atTop]
-  intro N
-  -- Use mordell_unbounded to find n with at least k+1 representations
-  -- Then find a larger n' with the same property using mordell again
-  obtain ⟨n, hn⟩ := mordell_unbounded (k + 1)
-  -- Apply mordell_unbounded again to get n' > max(n, N+1)
-  obtain ⟨n', hn'⟩ := mordell_unbounded (k + 1)
-  -- We need n' > N, so use the axiom's arbitrary M parameter
-  obtain ⟨m, hm⟩ := mordell_unbounded (k + 1)
-  -- Actually, mordell just says ∃ n, not ∃ n ≥ M, so we axiomatize this
-  exact infinitely_many_large_aux k N
-
-/-- Auxiliary axiom for infinitely_many_large (the full statement needs more structure) -/
 axiom infinitely_many_large_aux (k N : ℕ) : ∃ n > N, cubeRepresentations n > k
 
 /--
@@ -146,9 +125,7 @@ axiom stewart_2008 :
     ∀ M : ℕ, ∃ n : ℕ, n ≥ M ∧
       (cubeRepresentations n : ℝ) ≥ c * (Real.log n) ^ (11/13 : ℝ)
 
-/-
-## Part IV: Famous Examples
--/
+/-! ## Part IV: Famous Examples -/
 
 /--
 **Taxicab Numbers:**
@@ -179,19 +156,7 @@ The smallest number with 3 representations as sum of two cubes.
 -/
 axiom taxicab_3 : cubeRepresentations 87539319 = 3
 
-/-
-## Part V: Theoretical Framework
--/
-
-/--
-**Connection to Elliptic Curves:**
-Representations of n as a³ + b³ = n correspond to rational points on
-the elliptic curve x³ + y³ = n.
-
-By Mordell-Weil, the group of rational points is finitely generated,
-but the rank can vary.
--/
-axiom elliptic_curve_connection : True
+/-! ## Part V: Theoretical Framework -/
 
 /--
 **Density of Sums of Two Cubes:**
@@ -215,59 +180,15 @@ axiom most_not_sum_of_cubes :
     Filter.atTop
     (nhds 1)
 
-/-
-## Part VI: The Gap
--/
+/-! ## Part VI: The Gap -/
 
 /--
-**Known Gap:**
-Stewart: r₂(n) ≫ (log n)^{11/13} for infinitely many n
-Question: r₂(n) ≪ (log n)^c for some c?
-
-The gap between 11/13 ≈ 0.846 (lower) and unknown (upper) remains open.
+**Best Known Lower Bound Exponent:**
+Stewart's exponent 11/13 ≈ 0.846 is strictly better than Mahler's 1/4 = 0.25.
 -/
-axiom the_gap :
-  -- Best known lower bound exponent
-  (11 : ℝ) / 13 > 0 ∧
-  -- Question: is there any upper bound?
-  True
+theorem stewart_improves_mahler : (11 : ℝ) / 13 > (1 : ℝ) / 4 := by norm_num
 
-/--
-**Why This is Hard:**
-The problem is connected to:
-1. Ranks of elliptic curves x³ + y³ = n
-2. Distribution of rational points
-3. Deep questions in algebraic number theory
--/
-axiom difficulty_reasons : True
-
-/-
-## Part VII: Related Problems
--/
-
-/--
-**Sums of Two Squares (Comparison):**
-For squares, r₂(n) = O(n^ε) for any ε > 0 (divisor bound).
-The cube case is more mysterious.
--/
-axiom squares_comparison : True
-
-/--
-**Higher Powers:**
-For sums of two k-th powers with k ≥ 4, representations become even rarer
-(Fermat's Last Theorem shows k≥3 has issues for equal terms).
--/
-axiom higher_powers : True
-
-/--
-**Waring's Problem Connection:**
-Related to how many k-th powers are needed to represent all integers.
--/
-axiom waring_connection : True
-
-/-
-## Part VIII: Summary
--/
+/-! ## Part VII: Summary -/
 
 /--
 **Erdős Problem #829:**
@@ -287,35 +208,11 @@ KEY INSIGHT: The problem is connected to ranks of elliptic curves
 x³ + y³ = n, making it deeply arithmetic.
 -/
 theorem erdos_829_summary :
-    -- Lower bounds are known
+    -- Stewart's lower bound
     (∃ c : ℝ, c > 0 ∧ ∀ M : ℕ, ∃ n : ℕ, n ≥ M ∧
       (cubeRepresentations n : ℝ) ≥ c * (Real.log n) ^ (11/13 : ℝ)) ∧
     -- Representation function is unbounded
-    (∀ M : ℕ, ∃ n : ℕ, cubeRepresentations n ≥ M) ∧
-    -- Most numbers have no representation
-    True := by
-  constructor
-  · exact stewart_2008
-  constructor
-  · exact mordell_unbounded
-  · trivial
-
-/--
-**Erdős Problem #829: OPEN**
--/
-theorem erdos_829 : True := trivial
-
-/--
-**Current State of Knowledge:**
-We know lower bounds but the upper bound question remains open.
--/
-theorem erdos_829_state :
-    -- Best lower bound exponent is 11/13
-    (11 : ℝ) / 13 > (1 : ℝ) / 4 ∧
-    -- Stewart improved Mahler
-    True := by
-  constructor
-  · norm_num
-  · trivial
+    (∀ M : ℕ, ∃ n : ℕ, cubeRepresentations n ≥ M) :=
+  ⟨stewart_2008, mordell_unbounded⟩
 
 end Erdos829
