@@ -16,16 +16,16 @@
       "admissible-sets",
       "covering-systems"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 429,
     "erdosUrl": "https://erdosproblems.com/429",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Graham and concerns the relationship between sparsity, admissibility, and prime shifts. An admissible set is one that avoids at least one residue class mod p for every prime p - such sets cannot be ruled out from having prime shifts by simple modular arguments. The Hardy-Littlewood prime tuples conjecture suggests dense finite admissible sets should have infinitely many prime shifts. Weisenberg (2024) resolved this problem negatively.",
+    "historicalContext": "Erdős and Graham asked whether sparsity combined with admissibility is sufficient to guarantee a prime shift. An admissible set A avoids at least one residue class mod p for every prime p, which means simple mod-p arguments cannot rule out the existence of n with all n + a prime. The Hardy-Littlewood prime tuples conjecture predicts that finite admissible sets should have infinitely many prime shifts.\n\nThe question was whether this extends to infinite but sparse sets: if A ⊆ ℕ has zero density and is admissible, must some shift n + A consist entirely of primes? This combines two conditions that each seem favorable: admissibility removes the obvious obstruction, and sparsity means fewer simultaneous primality constraints.\n\nWeisenberg (2024) resolved this decisively: NO. He constructed arbitrarily sparse admissible sets — even lacunary ones where consecutive term ratios grow without bound — for which no prime shift exists. The construction uses covering congruences: for each potential shift n, some element a ∈ A forces n + a to be divisible by a specific prime, and these primes collectively cover all possible shifts. This reveals a fundamental gap between the finite and infinite cases of the admissibility condition.",
     "problemStatement": "Is it true that if A ⊆ ℕ is sparse enough and does not cover all residue classes modulo p for any prime p, then there exists some n such that n + a is prime for all a ∈ A?",
-    "proofStrategy": "Weisenberg constructed arbitrarily sparse admissible sets A such that for every potential shift n, some element a ∈ A satisfies n + a is composite. The construction uses ideas from covering systems of congruences to ensure all shifts are 'blocked'.",
+    "proofStrategy": "The formalization defines admissibility via residue class avoidance, proves the equivalence between admissibility and having avoided residues for each prime, and records Weisenberg's counterexample results as axioms. The disproof erdos_429_disproved is derived from weisenberg_theorem by contradiction. The summary packages the disproof, basic counterexample, and lacunary strengthening.",
     "keyInsights": [
       "Admissibility is necessary but not sufficient for prime shifts",
       "Even lacunary (extremely sparse) admissible sets can fail",
@@ -33,10 +33,53 @@
       "Contrast with prime tuples conjecture for finite sets"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 44,
+      "endLine": 79,
+      "summary": "Residue coverage, admissibility, and the proved equivalence with avoided residues"
+    },
+    {
+      "id": "prime-shifts",
+      "title": "Prime Shifts and the Conjecture",
+      "startLine": 81,
+      "endLine": 91,
+      "summary": "AllPrimesInShift, HasPrimeShift definitions"
+    },
+    {
+      "id": "sparsity",
+      "title": "Sparsity Conditions",
+      "startLine": 93,
+      "endLine": 105,
+      "summary": "Zero density and lacunary conditions"
+    },
+    {
+      "id": "refutation",
+      "title": "The Erdős Conjecture and Its Refutation",
+      "startLine": 107,
+      "endLine": 132,
+      "summary": "ErdosConjecture429, Weisenberg's theorem, and the proved disproof"
+    },
+    {
+      "id": "covering",
+      "title": "Covering Systems",
+      "startLine": 134,
+      "endLine": 146,
+      "summary": "Covering system definition and admissibility necessity"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 148,
+      "endLine": 171,
+      "summary": "Three-part conjunction: disproof, counterexample, lacunary strengthening"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #429 is SOLVED with answer NO. Weisenberg (2024) proved that even arbitrarily sparse admissible sets can fail to have any prime shift, by constructing explicit counterexamples using covering system techniques.",
-    "implications": "The result shows that admissibility (avoiding one residue class mod p for each prime) combined with arbitrarily strong sparsity conditions is still not sufficient to guarantee the existence of a prime shift. This contrasts with the conjectured behavior for dense finite admissible sets.",
+    "implications": "The result shows that admissibility combined with arbitrarily strong sparsity conditions is still not sufficient to guarantee the existence of a prime shift. This contrasts with the conjectured behavior for dense finite admissible sets.",
     "openQuestions": [
       "What additional conditions beyond admissibility guarantee a prime shift?",
       "Is the prime tuples conjecture true for finite admissible sets?",
