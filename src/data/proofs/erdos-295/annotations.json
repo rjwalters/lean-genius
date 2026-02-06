@@ -158,19 +158,19 @@
     ]
   },
   {
-    "id": "ann-e295-is-open",
+    "id": "ann-e295-summary",
     "proofId": "erdos-295",
     "range": {
-      "startLine": 123,
-      "endLine": 127
+      "startLine": 158,
+      "endLine": 169
     },
     "type": "theorem",
-    "title": "Status: OPEN",
-    "content": "We include a trivial theorem `erdos_295_is_open : True` as documentation that the main conjecture remains **unsolved as of 2024**. Neither a proof nor a disproof is known.",
-    "significance": "supporting",
+    "title": "Summary Theorem",
+    "content": "**erdos_295_summary** combines the key known results: (1) the Erdős-Straus bounds showing -c < k(N) - (e-1)N < O(N/log N), and (2) the fact that e-1 > 0. The main conjecture (does the difference tend to ∞?) remains OPEN.",
+    "significance": "critical",
     "relatedConcepts": [
-      "open problems",
-      "research frontiers"
+      "erdos_straus_bounds",
+      "e_minus_one_positive"
     ]
   },
   {
