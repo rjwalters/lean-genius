@@ -2,119 +2,171 @@
   "id": "erdos-605",
   "title": "Erdős Problem #605: Repeated Distances on a Sphere",
   "slug": "erdos-605",
-  "description": "Can n points be placed on a sphere with at least f(n)·n pairs at the same distance, where f(n) → ∞? Solved affirmatively: Swanepoel-Valtr proved u(n) ≫ n·√(log n), and for radius √2 we have u(n) ≈ n^{4/3}.",
+  "description": "Is there f(n) → ∞ such that n points on a sphere can have at least f(n)·n pairs at the same distance? YES — Swanepoel-Valtr proved u_D(n) ≫ n·√(log n) for D > 1, and for D = √2 we have u(n) ≍ n^{4/3}.",
   "meta": {
     "author": "Erdős-Hickerson-Pach (1989), Swanepoel-Valtr (2004)",
     "sourceUrl": "https://erdosproblems.com/605",
     "date": "2004",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos605Problem.lean",
     "tags": [
+      "erdos",
       "geometry",
       "discrete-geometry",
       "distances",
-      "erdos",
-      "sphere"
+      "sphere",
+      "incidence-geometry",
+      "solved"
     ],
-    "badge": "wip",
-    "sorries": 4,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 605,
     "erdosUrl": "https://erdosproblems.com/605",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ^n as a metric and inner product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "dist",
+        "description": "Metric space distance function",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit/convergence of filters",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets for counting pairs",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "SphereConfig structure: points on a sphere with distinctness",
+      "distancePairs definition: counting ordered pairs at a given distance",
+      "u function: formal definition of max repeated-distance pairs u_D(n)",
+      "superlinearGrowth: formal statement of the Erdős problem",
+      "iterLog: iterated logarithm definition",
+      "IsOmega/IsBigO/AsympEquiv: asymptotic notation definitions"
+    ]
   },
   "overview": {
-    "historicalContext": "**The Unit Distance Problem on Spheres**\n\nThis problem extends the classical unit distance problem (how many pairs at distance 1 among n points in the plane?) to spherical surfaces. Erdős asked whether the number of repeated distances can grow faster than linear in n.\n\n**Key Historical Developments:**\n\n- **1989**: Erdős, Hickerson, and Pach proved the first superlinear bound using the iterated logarithm: u(n) ≫ n·log*(n)\n- **2004**: Swanepoel and Valtr improved this to u(n) ≫ n·√(log n)\n- **Special case**: For the sphere of radius √2, the bound n^{4/3} is achieved (tight)\n\n**Why √2 is Special**: A sphere of radius √2 can inscribe a cube with vertices on the sphere. The cube's edges and face diagonals create many repeated distances, giving the n^{4/3} bound.",
-    "problemStatement": "**Problem Statement**\n\nIs there a function f(n) → ∞ as n → ∞ such that n distinct points can be placed on a 2-sphere with at least f(n)·n pairs of points at the same distance?\n\n**The Function u_D(n)**: Let u_D(n) denote the maximum number of pairs at a single distance among n points on a sphere of radius D.\n\n**Answer**: YES. For any D > 1, we have u_D(n) ≥ c·n·√(log n) for some constant c > 0. So f(n) = √(log n) works.",
-    "proofStrategy": "**Proof Approach**\n\nThe proof combines geometric constructions with counting arguments:\n\n1. **Construction**: Use algebraic geometry to construct point sets with many repeated distances\n\n2. **The √2 Sphere**: Inscribed cubes and related polyhedra provide configurations with many pairs at the same distance\n\n3. **General Spheres**: Probabilistic and algebraic methods extend the result to all D > 1\n\n4. **Upper Bounds**: Incidence geometry gives u_D(n) ≪ n^{4/3} for all D\n\n**Key Insight**: The problem is sensitive to the sphere's radius - different radii allow different geometric configurations.",
+    "historicalContext": "**The Unit Distance Problem on Spheres**\n\nErdős Problem #605 extends the classical unit distance problem from the plane to spherical surfaces. The unit distance problem asks: among n points in ℝ², how many pairs can be at the same distance? For the plane, the answer grows slightly superlinearly. Erdős asked whether the spherical version also admits superlinear growth.\n\n**Key Historical Developments:**\n\n- **1989**: Erdős, Hickerson, and Pach proved the first superlinear bound u_D(n) ≫ n·log*(n) for spheres of radius D > 1, where log* is the iterated logarithm. This resolved the problem affirmatively, though the growth rate log*(n) is incredibly slow.\n- **2004**: Swanepoel and Valtr significantly improved the lower bound to u_D(n) ≫ n·√(log n), using algebraic constructions on the sphere.\n- **Special case D = √2**: The sphere of radius √2 is uniquely suited for these constructions because it can inscribe a cube. For this radius, the tight bound u(n) ≍ n^{4/3} is achieved, matching the general upper bound from incidence geometry.",
+    "problemStatement": "**Problem Statement**\n\nIs there a function f(n) → ∞ as n → ∞ such that n distinct points can be placed on the surface of a 2-sphere with at least f(n)·n pairs of points at the same distance?\n\n**The Function u_D(n)**: Let u_D(n) denote the maximum number of pairs at a single distance among n points on a sphere of radius D.\n\n**Answer**: YES. For any D > 1, we have u_D(n) ≥ c·n·√(log n) for some constant c > 0 (Swanepoel-Valtr 2004). Since √(log n) → ∞, we can take f(n) = √(log n).",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds up from first principles:\n\n1. **Sphere and configurations**: We define spheres in ℝ³ using EuclideanSpace and structures for point configurations with distinctness.\n\n2. **Distance counting**: We formalize counting pairs at a given distance, then define the maximum repeated-distance function u_D(n) as a supremum.\n\n3. **Iterated logarithm**: We define log*(n) recursively and state its divergence to infinity.\n\n4. **Axiomatized bounds**: The Erdős-Hickerson-Pach bound (1989), Swanepoel-Valtr bound (2004), and the √2 sphere tight bound are stated as axioms since their proofs require deep geometric and algebraic arguments beyond Mathlib.\n\n5. **Main theorem**: The superlinear growth theorem follows from the Swanepoel-Valtr bound and the divergence of √(log n).",
     "keyInsights": [
-      "The growth rate √(log n) is the best known lower bound for general D > 1",
-      "For D = √2, the tight bound n^{4/3} comes from cube-based constructions",
-      "The upper bound n^{4/3} holds for all radii via incidence geometry",
-      "The iterated logarithm log*(n) was the first superlinear bound (EHP 1989)",
-      "Regular polyhedra vertices give good small-n constructions"
+      "**Superlinear growth**: The key question is whether repeated distances grow faster than O(n). The answer is yes, but the exact growth rate for general spheres remains open.",
+      "**Iterated logarithm vs square root of log**: The EHP bound uses log*(n), which grows extraordinarily slowly (log*(10^{10^{10}}) ≈ 4). Swanepoel-Valtr's √(log n) is much larger for practical n.",
+      "**The √2 sphere is special**: A sphere of radius √2 can inscribe a cube, enabling algebraic constructions that achieve the tight bound n^{4/3}. No other radius is known to achieve this.",
+      "**Upper bound from incidence geometry**: The bound u_D(n) ≪ n^{4/3} for all D follows from Szemerédi-Trotter type incidence bounds for points and circles in ℝ³.",
+      "**Open gap**: For general D > 1, the gap between the lower bound n·√(log n) and the upper bound n^{4/3} remains one of the major open problems in discrete geometry."
     ]
   },
   "sections": [
     {
-      "id": "sphere-points",
-      "title": "Points on a Sphere",
-      "startLine": 37,
-      "endLine": 53,
-      "summary": "Definition of spheres and point configurations in R³"
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Problem statement, references, imports, and namespace declaration"
+    },
+    {
+      "id": "sphere-config",
+      "title": "Sphere and Point Configurations",
+      "startLine": 40,
+      "endLine": 65,
+      "summary": "Definitions of Point3, Sphere, and SphereConfig structure in ℝ³"
     },
     {
       "id": "distance-pairs",
       "title": "Distance Pairs",
-      "startLine": 55,
-      "endLine": 76,
-      "summary": "Counting pairs at specific distances"
+      "startLine": 66,
+      "endLine": 87,
+      "summary": "Counting pairs at specific distances and finding the maximum"
     },
     {
-      "id": "function-u",
+      "id": "u-function",
       "title": "The Function u_D(n)",
-      "startLine": 78,
-      "endLine": 87,
-      "summary": "Maximum repeated distance pairs for n points on sphere of radius D"
+      "startLine": 88,
+      "endLine": 98,
+      "summary": "Definition of the maximum repeated-distance function as a supremum"
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "startLine": 89,
-      "endLine": 98,
-      "summary": "Erdős's question about superlinear growth"
+      "startLine": 99,
+      "endLine": 115,
+      "summary": "Formal statement of superlinear growth and the growth ratio"
     },
     {
-      "id": "known-results",
-      "title": "Known Results",
-      "startLine": 100,
-      "endLine": 137,
-      "summary": "EHP bound, Swanepoel-Valtr bound, and √2 sphere tight bound"
+      "id": "iterated-log",
+      "title": "Iterated Logarithm",
+      "startLine": 116,
+      "endLine": 133,
+      "summary": "Recursive definition of log*(n) and its divergence"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 134,
+      "endLine": 187,
+      "summary": "EHP bound, Swanepoel-Valtr bound, upper bound, and √2 sphere tight bound"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "startLine": 139,
-      "endLine": 151,
-      "summary": "Erdős #605 solved affirmatively"
+      "startLine": 188,
+      "endLine": 221,
+      "summary": "Erdős #605 solved: superlinear growth and witness function"
     },
     {
       "id": "unit-distance",
       "title": "Unit Distance Connection",
-      "startLine": 153,
-      "endLine": 162,
-      "summary": "Relation to the classical unit distance problem"
+      "startLine": 222,
+      "endLine": 240,
+      "summary": "Relation to the classical planar unit distance problem"
     },
     {
       "id": "constructions",
       "title": "Geometric Constructions",
-      "startLine": 164,
-      "endLine": 175,
-      "summary": "Great circles and regular polyhedra"
+      "startLine": 241,
+      "endLine": 255,
+      "summary": "Great circle and cube vertex constructions"
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation",
-      "startLine": 177,
-      "endLine": 197,
-      "summary": "Big-Omega and asymptotic equivalence"
+      "startLine": 256,
+      "endLine": 281,
+      "summary": "Formal definitions of Ω, O, and asymptotic equivalence"
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
-      "startLine": 199,
-      "endLine": 209,
-      "summary": "Optimal growth rate and unit sphere behavior"
+      "startLine": 282,
+      "endLine": 299,
+      "summary": "Remaining open problems and the gap between bounds"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #605 asked whether repeated distances on spheres can grow superlinearly. The answer is yes: Swanepoel-Valtr proved u(n) ≫ n·√(log n) for spheres of radius D > 1. The special case D = √2 achieves the tight bound n^{4/3}.",
-    "implications": "**Theoretical Significance**\n\n1. **Discrete Geometry**: Extends the unit distance problem to curved surfaces\n\n2. **Algebraic Geometry**: The √2 sphere's special properties connect to inscribed polyhedra\n\n3. **Incidence Geometry**: Upper bounds use point-circle incidences\n\n4. **Extremal Combinatorics**: The gap between √(log n) and n^{1/3} remains mysterious",
+    "summary": "Erdős Problem #605 asked whether repeated distances on spheres can grow superlinearly. The answer is yes: Swanepoel-Valtr proved u_D(n) ≫ n·√(log n) for any sphere of radius D > 1. The formalization defines the sphere configuration framework, the function u_D(n), and states the key bounds as axioms.",
+    "implications": "**Theoretical Significance**\n\n1. **Discrete Geometry**: Establishes that spherical surfaces admit fundamentally more repeated distances than linear configurations, extending the unit distance problem to curved surfaces.\n\n2. **The √2 Sphere**: The tight bound n^{4/3} for the √2 sphere reveals deep connections between algebraic geometry (inscribed polyhedra) and distance counting.\n\n3. **Incidence Geometry**: The upper bound n^{4/3} connects to the Szemerédi-Trotter framework, showing the same exponent governs both planar and spherical incidence problems.\n\n4. **Open Gap**: The gap between √(log n) and n^{1/3} in the growth factor remains one of the most intriguing problems in combinatorial geometry.",
     "openQuestions": [
-      "Is √(log n) the optimal growth rate for general D > 1?",
-      "Can the n^{4/3} bound be achieved for all radii D > 1?",
-      "What happens for the unit sphere (D = 1)?",
-      "Are there better constructions than polyhedra-based ones?",
-      "What is the exact threshold radius where behavior changes?"
+      "Is √(log n) the optimal growth rate for general D > 1, or can it be improved?",
+      "Can the n^{4/3} bound be achieved for all radii D > 1, not just D = √2?",
+      "What happens for the unit sphere (D = 1)? Is the behavior qualitatively different?",
+      "What is the exact threshold radius where the behavior transitions?",
+      "Are there better constructions than polyhedra-based ones for general spheres?"
     ]
   }
 }
