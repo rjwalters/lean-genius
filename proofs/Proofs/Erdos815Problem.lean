@@ -49,7 +49,7 @@ namespace Erdos815
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- The minimum degree of a graph: the smallest degree among all vertices. -/
 noncomputable def minDegree (G : SimpleGraph V) : ℕ :=
@@ -73,7 +73,7 @@ def vertexCount (G : SimpleGraph V) : ℕ := Fintype.card V
 /-- The number of edges in the graph. -/
 noncomputable def edgeCount (G : SimpleGraph V) : ℕ := G.edgeFinset.card
 
-/-! ## Part II: Cycles -/
+/- ## Part II: Cycles -/
 
 /-- A cycle of length k in a graph.
     (Simplified definition using walks.) -/
@@ -84,7 +84,7 @@ def HasCycleOfLength (G : SimpleGraph V) (k : ℕ) : Prop :=
 def ContainsCk (G : SimpleGraph V) (k : ℕ) : Prop :=
   HasCycleOfLength G k
 
-/-! ## Part III: The Erdős-Hajnal Conjecture -/
+/- ## Part III: The Erdős-Hajnal Conjecture -/
 
 /-- **The Erdős-Hajnal Conjecture (original form):**
     For all k ≥ 3 and sufficiently large n, every degree 3 critical graph
@@ -96,7 +96,7 @@ def ErdosHajnalConjecture : Prop :=
       IsDegree3Critical G →
       ContainsCk G k
 
-/-! ## Part IV: Known Positive Results -/
+/- ## Part IV: Known Positive Results -/
 
 /-- **EFGS Theorem (1988):**
     Every degree 3 critical graph on n ≥ 5 vertices contains:
@@ -135,7 +135,7 @@ theorem erdos_hajnal_small_k (k : ℕ) (hk : 3 ≤ k ∧ k ≤ 6) :
   -- For k = 6: claimed by Erdős-Hajnal
   sorry
 
-/-! ## Part V: The Counterexample -/
+/- ## Part V: The Counterexample -/
 
 /--
 **Theorem (Narins-Pokrovskiy-Szabó 2017):**
@@ -163,7 +163,7 @@ theorem erdos_815_disproved : ¬ErdosHajnalConjecture := by
   have ⟨V, hFintype, hDecEq, G, hcard, hcrit, hno23⟩ := narins_pokrovskiy_szabo N
   exact hno23 (hN V G hcard hcrit)
 
-/-! ## Part VI: What Remains Open -/
+/- ## Part VI: What Remains Open -/
 
 /-- **Open Problem:** Does the conjecture hold for EVEN k?
 
@@ -176,10 +176,9 @@ def evenKConjecture : Prop :=
       IsDegree3Critical G →
       ContainsCk G k
 
-/-- The even k conjecture remains open. -/
-axiom even_k_open : True  -- Status: OPEN
+-- The even k conjecture remains open (status: OPEN).
 
-/-! ## Part VII: Why "Degree 3 Critical"? -/
+/- ## Part VII: Why "Degree 3 Critical"? -/
 
 /-- **Understanding the Condition:**
 
@@ -197,9 +196,8 @@ axiom even_k_open : True  -- Status: OPEN
     The name "degree 3 critical" comes from: these are minimal
     graphs (by edge count) that have a vertex of degree ≥ 3
     while all proper subgraphs stay at min degree ≤ 2. -/
-theorem critical_explanation : True := trivial
 
-/-! ## Part VIII: The Construction Idea -/
+/- ## Part VIII: The Construction Idea -/
 
 /-- **How the Counterexample Works (conceptual):**
 
@@ -216,9 +214,8 @@ theorem critical_explanation : True := trivial
     The choice of 23 is not magical - it's the smallest odd k
     where their construction works. Different techniques might
     find counterexamples for other odd k values. -/
-theorem construction_idea : True := trivial
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Summary of Erdős Problem #815**
@@ -245,6 +242,11 @@ avoid specific longer cycles like C_23.
 1991: Erdős states problem, claims k ≤ 6 case
 2017: Narins-Pokrovskiy-Szabó disprove with k = 23
 -/
-theorem erdos_815_summary : True := trivial
+theorem erdos_815_summary :
+    ¬ErdosHajnalConjecture ∧
+    (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+      Fintype.card V ≥ 5 → IsDegree3Critical G →
+      ContainsCk G 3 ∧ ContainsCk G 4 ∧ ContainsCk G 5) :=
+  ⟨erdos_815_disproved, fun V _ _ G hn hcrit => efgs_short_cycles V G hn hcrit⟩
 
 end Erdos815
