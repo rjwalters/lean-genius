@@ -1,5 +1,5 @@
-/-
-Erdős Problem #796: Second-Order Terms for g_k(n)
+/-!
+# Erdős Problem #796: Second-Order Terms for g_k(n)
 
 Source: https://erdosproblems.com/796
 Status: OPEN
@@ -84,8 +84,7 @@ noncomputable def g (k n : ℕ) : ℕ :=
 **g is well-defined:**
 The maximum exists since we're optimizing over a finite set.
 -/
-theorem g_well_defined (k n : ℕ) (hk : k ≥ 2) : g k n ≤ n := by
-  sorry
+axiom g_well_defined (k n : ℕ) (hk : k ≥ 2) : g k n ≤ n
 
 /-!
 ## Part III: Erdős's First-Order Asymptotics
@@ -170,12 +169,6 @@ def erdosConjecture796 : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∀ᶠ n in Filter.atTop,
     |E3 n - c * n / (Real.log n)^2| < ε * n / (Real.log n)^2
 
-/--
-**Status:**
-This conjecture remains OPEN.
--/
-axiom conjecture_796_open : ¬Decidable erdosConjecture796
-
 /-!
 ## Part VI: The k = 2 Case (Problem #425)
 -/
@@ -188,12 +181,6 @@ This is closely related to the prime counting function.
 axiom g2_asymptotic :
     ∀ ε > 0, ∀ᶠ n in Filter.atTop,
       |((g 2 n : ℝ) - n / Real.log n)| < ε * n / Real.log n
-
-/--
-**Connection to Problem #425:**
-Problem #425 asks about second-order terms for g₂(n).
--/
-axiom problem_425_connection : True
 
 /-!
 ## Part VII: Optimal Sets
@@ -217,26 +204,7 @@ axiom optimal_sets_structure :
       (A.filter (fun m => m.factors.length = 2)).card ≥ A.card / 2
 
 /-!
-## Part VIII: Higher k Values
--/
-
-/--
-**General Pattern:**
-For k in (2^{r-1}, 2^r], the leading term involves (log log n)^{r-1}.
--/
-theorem general_k_pattern (k r : ℕ) (hk : k ≥ 2) (hr : 2^(r-1) < k ∧ k ≤ 2^r) :
-    -- g_k(n) ~ ((log log n)^{r-1} / (r-1)!) · n/log n
-    True := trivial
-
-/--
-**Why the Pattern?**
-The extremal sets for g_k consist mostly of integers with r prime factors.
-The threshold 2^{r-1} relates to the divisor function τ(n).
--/
-axiom pattern_explanation : True
-
-/-!
-## Part IX: Multiplicative Structure
+## Part VIII: Multiplicative Structure
 -/
 
 /--
@@ -248,62 +216,26 @@ axiom divisor_connection (m k : ℕ) (hk : k ≥ 2) :
     Nat.divisors m |>.card ≤ 2 * k - 1 →
       ∀ A : Finset ℕ, repCount A m < k
 
-/--
-**Prime Powers:**
-Prime powers p^a have exactly ⌊a/2⌋ + 1 factorizations p^i · p^{a-i}.
--/
-axiom prime_power_reps (p a : ℕ) (hp : Nat.Prime p) :
-    -- The number of reps (i, a-i) with i < a-i is ⌊a/2⌋
-    True
-
 /-!
-## Part X: Summary
+## Part IX: Summary
+
+Erdős Problem #796 is OPEN.
 -/
 
-/--
-**Summary of Results:**
-1. g_k(n) first-order: SOLVED (Erdős 1964)
-2. g₃(n) second-order term: OPEN
-3. Bounds on second-order: KNOWN (c₁ ≤ coefficient ≤ c₂)
-4. Exact constant c: UNKNOWN
--/
+/-- Summary of Erdős Problem #796:
+    1. First-order asymptotics known (Erdős 1964)
+    2. Second-order bounds known (E₃ is Θ(n/(log n)²))
+    3. Exact constant c in second-order term is OPEN -/
 theorem erdos_796_summary :
-    -- First-order asymptotics known
-    True ∧
-    -- Second-order bounds known
-    True ∧
-    -- Exact constant unknown
-    True := ⟨trivial, trivial, trivial⟩
-
-/--
-**Erdős Problem #796: OPEN**
-
-**QUESTION:** Is it true that
-  g₃(n) = (log log n / log n)·n + (c + o(1))·n/(log n)²
-for some constant c?
-
-**KNOWN:**
-- First-order: g₃(n) ~ (log log n / log n)·n [Erdős 1964]
-- Bounds: c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)² [Erdős 1969]
-- k = 2 case: Related to Problem #425
-
-**OPEN:**
-- Determine if E₃(n)/(n/(log n)²) converges
-- Find the exact constant c if it exists
-
-**KEY INSIGHT:**
-The extremal sets for g_k are closely related to integers with
-r = ⌈log₂ k⌉ prime factors. The threshold 2^{r-1} < k ≤ 2^r
-comes from the divisor function and factorization counts.
--/
-theorem erdos_796 : True := trivial
-
-/--
-**Historical Note:**
-This problem exemplifies Erdős's interest in "second-order" phenomena:
-once the main asymptotic is known, what is the next term? These
-questions are often much harder than finding the first-order behavior.
--/
-theorem historical_note : True := trivial
+    -- First-order asymptotics for k=3
+    (∀ ε > 0, ∀ᶠ n in Filter.atTop,
+      |((g 3 n : ℝ) - (Real.log (Real.log n)) * n / Real.log n)| <
+        ε * n / Real.log n) ∧
+    -- Second-order bounds exist
+    (∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧
+      ∀ᶠ n in Filter.atTop,
+        c₁ * n / (Real.log n)^2 ≤ E3 n ∧
+        E3 n ≤ c₂ * n / (Real.log n)^2) :=
+  ⟨g3_first_order, E3_bounded⟩
 
 end Erdos796

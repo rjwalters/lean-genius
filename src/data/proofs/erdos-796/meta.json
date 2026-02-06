@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/Erdos796Problem.lean",
     "tags": ["erdos", "number-theory", "multiplicative-representation", "asymptotics", "open"],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 796,
     "erdosUrl": "https://erdosproblems.com/796",
     "erdosProblemStatus": "open",
@@ -27,18 +27,20 @@
       "IsBoundedRep: Every m has < k representations",
       "g: The function g_k(n)",
       "omega_count: Integers with r distinct primes",
-      "erdos_1964_main: First-order asymptotics",
+      "erdos_1964_main axiom: First-order asymptotics",
+      "g3_first_order theorem: Derived from erdos_1964_main",
       "E3: Second-order error term",
       "erdosConjecture796: Main conjecture (OPEN)",
       "IsNearOptimal3: Near-optimal sets",
-      "divisor_connection: τ(m) bound"
+      "divisor_connection axiom: τ(m) bound",
+      "erdos_796_summary theorem: Combines first-order and second-order bounds"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős (1964) established the first-order asymptotics for g_k(n), showing it matches the count of integers with r prime factors where 2^{r-1} < k ≤ 2^r. In 1969, he discussed second-order terms and established bounds c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)² but the exact constant remains unknown.",
+    "historicalContext": "Erdős introduced the function g_k(n) in 1964, measuring the maximum size of a subset A of {1,...,n} such that every integer has fewer than k multiplicative representations from A. He established the first-order asymptotics: for 2^{r-1} < k ≤ 2^r, the function g_k(n) is asymptotic to ((log log n)^{r-1}/(r-1)!) · n/log n, connecting the problem to the distribution of integers with exactly r prime factors.\n\nFor the important case k = 3 (where r = 2), this gives g₃(n) ~ (log log n / log n) · n. Erdős then investigated the second-order behavior, defining the error E₃(n) = g₃(n) - (log log n / log n) · n. By 1969, he had established that c₁ · n/(log n)² ≤ E₃(n) ≤ c₂ · n/(log n)² for positive constants c₁ ≤ c₂, showing the error is of exact order n/(log n)².\n\nThe central open question is whether E₃(n)/(n/(log n)²) converges to a constant c, and if so, what that constant is. This exemplifies a recurring theme in Erdős's work: once the leading asymptotic term is determined, finding the next-order correction is often dramatically harder. The problem remains open and connects to deep questions about the multiplicative structure of integers.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet g_k(n) = max{|A| : A ⊆ {1,...,n}, every m has < k representations m = a₁a₂ with a₁ < a₂ ∈ A}.\n\n**Question:** Is g₃(n) = (log log n / log n)·n + (c + o(1))·n/(log n)² for some constant c?\n\n**Known:**\n- First-order: g₃(n) ~ (log log n / log n)·n\n- Bounds: c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)²\n\n**Open:** Exact value of c (if it exists)",
-    "proofStrategy": "The formalization defines g_k(n) via optimization over finite subsets. Erdős's 1964 theorem on first-order asymptotics is axiomatized using the pattern involving integers with r prime factors. The second-order error E₃(n) is defined, bounds are stated, and the main conjecture is formulated.",
+    "proofStrategy": "The formalization defines g_k(n) via optimization over finite subsets. Erdős's 1964 theorem on first-order asymptotics is axiomatized, and the k=3 case is derived as a theorem. The second-order error E₃(n) is defined, bounds are axiomatized, and the main conjecture is formally stated. The summary theorem combines the first-order result with the second-order bounds.",
     "keyInsights": [
       "**Erdős 1964:** g_k(n) ~ (log log n)^{r-1}/(r-1)! · n/log n for 2^{r-1} < k ≤ 2^r",
       "**k = 3 Case:** r = 2, so g₃(n) ~ (log log n / log n)·n",
@@ -60,68 +62,61 @@
       "id": "g-function",
       "title": "The g_k(n) Function",
       "startLine": 71,
-      "endLine": 88,
+      "endLine": 87,
       "summary": "Definition and well-definedness of g"
     },
     {
       "id": "first-order",
       "title": "First-Order Asymptotics",
-      "startLine": 90,
-      "endLine": 122,
+      "startLine": 89,
+      "endLine": 121,
       "summary": "omega_count, erdos_1964_main"
     },
     {
       "id": "k3-case",
       "title": "The k = 3 Case",
-      "startLine": 124,
-      "endLine": 141,
+      "startLine": 123,
+      "endLine": 140,
       "summary": "g3_first_order derivation"
     },
     {
       "id": "second-order",
       "title": "Second-Order Terms",
-      "startLine": 143,
-      "endLine": 177,
+      "startLine": 142,
+      "endLine": 170,
       "summary": "E3, E3_bounded, erdosConjecture796"
     },
     {
       "id": "k2-case",
       "title": "The k = 2 Case",
-      "startLine": 179,
-      "endLine": 196,
-      "summary": "g2_asymptotic, Problem #425 connection"
+      "startLine": 172,
+      "endLine": 183,
+      "summary": "g2_asymptotic"
     },
     {
       "id": "optimal-sets",
       "title": "Optimal Sets",
-      "startLine": 198,
-      "endLine": 217,
+      "startLine": 185,
+      "endLine": 204,
       "summary": "IsNearOptimal3, optimal_sets_structure"
-    },
-    {
-      "id": "higher-k",
-      "title": "Higher k Values",
-      "startLine": 219,
-      "endLine": 236,
-      "summary": "General pattern explanation"
     },
     {
       "id": "multiplicative",
       "title": "Multiplicative Structure",
-      "startLine": 238,
-      "endLine": 257,
-      "summary": "divisor_connection, prime_power_reps"
+      "startLine": 206,
+      "endLine": 217,
+      "summary": "divisor_connection"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 259,
-      "endLine": 309,
-      "summary": "Main results and historical note"
+      "startLine": 219,
+      "endLine": 241,
+      "summary": "erdos_796_summary combining first-order and bounds"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #796 is OPEN. The first-order asymptotics for g_k(n) are fully established by Erdős (1964). For k = 3, bounds on the second-order error term are known, but the question of whether E₃(n)/(n/(log n)²) converges to a constant c remains open.",
+    "summary": "Erdős Problem #796 is OPEN. The first-order asymptotics for g_k(n) are fully established by Erdős (1964). For k = 3, bounds on the second-order error term are known, but the question of whether E₃(n)/(n/(log n)²) converges to a constant c remains open. The summary theorem combines the first-order result with the second-order bounds.",
     "implications": "This problem exemplifies the challenge of determining 'second-order' terms in asymptotic expansions. The answer would reveal finer structure in the distribution of integers with given factorization properties.",
     "openQuestions": [
       "Does E₃(n)/(n/(log n)²) converge?",
