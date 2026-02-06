@@ -41,7 +41,7 @@ open Set Real MeasureTheory
 
 namespace Erdos989
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- A point in the plane ℝ². -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
@@ -59,7 +59,7 @@ def Circle.disk (C : Circle) : Set Point :=
 /-- The area of a circle of radius r is πr². -/
 noncomputable def circleArea (r : ℝ) : ℝ := Real.pi * r^2
 
-/-! ## Part II: Point Sequences and Discrepancy -/
+/- ## Part II: Point Sequences and Discrepancy -/
 
 /-- An infinite sequence of points in the plane. -/
 def PointSequence := ℕ → Point
@@ -85,7 +85,7 @@ noncomputable def localDiscrepancy (A : PointSequence) (C : Circle) (n : ℕ) : 
 noncomputable def circleDiscrepancy (A : PointSequence) (r : ℝ) (hr : r > 0) : ℝ :=
   ⨆ (C : Circle) (_ : C.radius = r), ⨆ (n : ℕ), localDiscrepancy A C n
 
-/-! ## Part III: Beck's Lower Bound -/
+/- ## Part III: Beck's Lower Bound -/
 
 /-- **Beck's Lower Bound Theorem (1987):**
     For every infinite sequence A ⊂ ℝ², the circle discrepancy satisfies
@@ -127,7 +127,7 @@ theorem discrepancy_unbounded (A : PointSequence) :
     _ = M + c := by ring
     _ > M := by linarith
 
-/-! ## Part IV: Beck's Upper Bound (Existence) -/
+/- ## Part IV: Beck's Upper Bound (Existence) -/
 
 /-- **Beck's Upper Bound Theorem (1987):**
     There EXISTS an infinite sequence A ⊂ ℝ² such that the circle discrepancy
@@ -148,7 +148,7 @@ axiom beck_upper_bound :
 noncomputable def beckOptimalSequence : PointSequence :=
   Classical.choose beck_upper_bound
 
-/-! ## Part V: The Complete Answer -/
+/- ## Part V: The Complete Answer -/
 
 /-- **Erdős Problem #989: SOLVED**
 
@@ -181,7 +181,7 @@ theorem erdos_989_solved :
   · exact beck_lower_bound
   · exact beck_upper_bound
 
-/-! ## Part VI: Connection to Discrepancy Theory -/
+/- ## Part VI: Connection to Discrepancy Theory -/
 
 /-- **General Discrepancy Theory Context**
 
@@ -206,7 +206,7 @@ def allCircles : Set Circle := Set.univ
 noncomputable def generalCircleDiscrepancy (A : PointSequence) (n : ℕ) : ℝ :=
   ⨆ (C : Circle), localDiscrepancy A C n
 
-/-! ## Part VII: Proof Techniques -/
+/- ## Part VII: Proof Techniques -/
 
 /-- **Beck's Lower Bound Technique (Fourier Analysis)**
 
@@ -237,7 +237,7 @@ axiom probabilistic_upper_bound_construction :
     ∃ (A : PointSequence), ∀ C : Circle, ∀ n : ℕ,
       localDiscrepancy A C n ≤ 100 * (C.radius * (1 + C.radius.log)).sqrt + 100
 
-/-! ## Part VIII: Open Questions -/
+/- ## Part VIII: Open Questions -/
 
 /-- **Open Question 1: The Logarithmic Gap**
 
@@ -249,8 +249,9 @@ Is the log factor necessary? Specifically:
 
 This gap is one of the central open problems in geometric discrepancy. -/
 def openQuestion_logarithmic_gap : Prop :=
-  -- Is the log factor in the upper bound necessary?
-  True
+  ∃ (A : PointSequence), ∀ (C_const : ℝ), C_const > 0 →
+    ∃ r₀ : ℝ, ∀ r : ℝ, r > r₀ → ∀ hr : r > 0,
+      circleDiscrepancy A r hr ≤ C_const * r.sqrt
 
 /-- **Open Question 2: Explicit Constructions**
 
@@ -261,8 +262,10 @@ Some progress:
 - Lattice-based constructions give worse bounds
 - No fully explicit optimal construction is known -/
 def openQuestion_explicit_construction : Prop :=
-  -- Find deterministic sequence with f(r) = O(√(r log r))
-  True
+  ∃ (A : PointSequence) (C_const : ℝ), C_const > 0 ∧
+    ∃ r₀ : ℝ, ∀ r : ℝ, ∀ hr : r > r₀,
+      circleDiscrepancy A r (lt_trans (by linarith : (0 : ℝ) < r₀) hr)
+        ≤ C_const * (r * r.log).sqrt
 
 /-- **Open Question 3: Higher Dimensions**
 
@@ -271,11 +274,14 @@ What is the optimal discrepancy for balls in ℝ^d?
 - Upper bound: f(r) ≪ r^{(d-1)/2} (log r)^{1/2}?
 
 The dimension-dependence is understood but log factors remain open. -/
-def openQuestion_higher_dimensions : Prop :=
-  -- Determine optimal discrepancy for d-balls in ℝ^d
-  True
+def openQuestion_higher_dimensions (d : ℕ) (hd : d ≥ 2) : Prop :=
+  ∃ c : ℝ, c > 0 ∧ ∀ (A : ℕ → EuclideanSpace ℝ (Fin d)),
+    ∃ r₀ : ℝ, r₀ > 0 ∧ ∀ r : ℝ, r > r₀ →
+      ∃ (center : EuclideanSpace ℝ (Fin d)) (n : ℕ),
+        |(↑((Finset.range n).filter (fun i => dist (A i) center ≤ r)).card : ℝ) -
+          r ^ (d : ℝ)| ≥ c * r ^ (((d : ℝ) - 1) / 2)
 
-/-! ## Part IX: Related Results -/
+/- ## Part IX: Related Results -/
 
 /-- **Schmidt's Theorem (Related)**
 
@@ -284,10 +290,16 @@ For the classical discrepancy problem with axis-aligned boxes in [0,1]^d:
 
 This is Roth's lower bound (d=2) generalized by Schmidt.
 Circles behave differently due to their curved boundaries. -/
+/- Schmidt's theorem: For axis-aligned boxes in [0,1]^d, the discrepancy
+   D(N) ≥ c · (log N)^{d/2}. The full statement involves sup over all
+   axis-aligned boxes of |count - N·volume|. We state a simplified version. -/
 axiom schmidt_classical_discrepancy :
-    ∀ d : ℕ, d ≥ 1 → ∃ c : ℝ, c > 0 ∧
-      ∀ A : ℕ → Fin d → ℝ, ∀ N : ℕ, N ≥ 2 →
-        True  -- Simplified: the actual statement involves box discrepancy
+    ∃ c : ℝ, c > 0 ∧
+      ∀ (A : ℕ → Fin 2 → ℝ) (N : ℕ), N ≥ 2 →
+        ∃ (a b : Fin 2 → ℝ),
+          |(↑((Finset.range N).filter (fun i =>
+            ∀ j, a j ≤ A i j ∧ A i j ≤ b j)).card : ℝ) -
+            ↑N * ((b 0 - a 0) * (b 1 - a 1))| ≥ c * (N : ℝ).log
 
 /-- **Alexander's Theorem (Half-Planes)**
 
@@ -296,12 +308,17 @@ For half-plane discrepancy in ℝ²:
 
 Circles have higher discrepancy (√r) than half-planes (r^{1/4})
 because circles can "trap" points more effectively. -/
+/- Alexander's theorem: Half-plane discrepancy grows at least like N^{1/4}.
+   Circles have higher discrepancy (√r) than half-planes (r^{1/4})
+   because circles can "trap" points more effectively. -/
 axiom alexander_halfplane_discrepancy :
     ∃ c : ℝ, c > 0 ∧
-      ∀ A : PointSequence, ∃ r₀ : ℝ, r₀ > 0 ∧
-        True  -- Simplified: half-plane discrepancy ≥ c · r^{1/4}
+      ∀ (A : PointSequence) (N : ℕ), N ≥ 2 →
+        ∃ (a b : ℝ) (dir : Fin 2),
+          |(↑((Finset.range N).filter (fun i =>
+            (A i) dir ≤ a)).card : ℝ) - ↑N / 2| ≥ c * (N : ℝ) ^ ((1 : ℝ) / 4)
 
-/-! ## Part X: Summary -/
+/- ## Part X: Summary -/
 
 /--
 **Summary of Erdős Problem #989**
@@ -336,6 +353,13 @@ showing the fundamental limits of uniform distribution for circles.
 **Reference**:
 Beck, J. "Irregularities of distribution I" Acta Math. 159 (1987), 1-49
 -/
-theorem erdos_989_summary : True := trivial
+theorem erdos_989_answers_both_questions :
+    -- Q1: f(r) is always unbounded
+    (∀ A : PointSequence, ∀ M : ℝ, ∃ r : ℝ, ∃ hr : r > 0,
+      circleDiscrepancy A r hr > M) ∧
+    -- Q2: optimal growth is Θ̃(√r)
+    (∃ c : ℝ, c > 0 ∧ ∀ A : PointSequence, ∃ r₀ : ℝ, ∀ r : ℝ, ∀ hr : r > r₀,
+      circleDiscrepancy A r (lt_trans (by linarith : (0 : ℝ) < r₀) hr) ≥ c * r.sqrt) :=
+  ⟨discrepancy_unbounded, beck_lower_bound⟩
 
 end Erdos989
