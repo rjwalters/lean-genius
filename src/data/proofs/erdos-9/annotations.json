@@ -150,10 +150,10 @@
   {
     "id": "ann-e9-improvement",
     "proofId": "erdos-9",
-    "range": { "startLine": 248, "endLine": 254 },
-    "type": "theorem",
+    "range": { "startLine": 227, "endLine": 237 },
+    "type": "axiom",
     "title": "Linear Bound Would Solve",
-    "content": "If we could prove countA(N) ≥ cN for some c > 0, the problem would be solved.\n\nThis is equivalent to positive upper density.",
+    "content": "**improvement_would_solve** axiomatizes: if countA(N) ≥ cN for some c > 0 and all large N, then the Erdős question has a positive answer. The gap between Pan's N^{1-ε} bound and the needed linear bound N is the central difficulty. Closing this gap would resolve the problem.",
     "significance": "key"
   }
 ]

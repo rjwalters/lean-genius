@@ -172,21 +172,6 @@ theorem S_intersects_all_progressions (a d : ℕ) (hd : d ≥ 1) :
   obtain ⟨n, hn, hmod⟩ := form_in_every_arithmetic_progression a d hd
   exact ⟨n, hn, hmod⟩
 
-/--
-**Implication**: Any proof of positive density for A must use methods
-other than covering systems.
-
-Covering systems work by showing some residue class misses S.
-But Erdős's observation says every residue class meets S.
--/
-theorem covering_systems_insufficient :
-    -- Covering system proofs require an arithmetic progression disjoint from S
-    -- But no such progression exists
-    (∀ a d : ℕ, d ≥ 1 → (S ∩ { n | n ≡ a [MOD d] }).Nonempty) →
-    -- Therefore covering systems cannot prove A has positive density
-    True := by
-  intro _
-  trivial
 
 /-! ## Small Examples -/
 
@@ -239,16 +224,6 @@ theorem nine_in_S : 9 ∈ S := by
 
 /-! ## Bounds Comparison -/
 
-/-- The growth hierarchy of known bounds:
-    Crocker: ≫ log log N (very slow)
-    Pan: ≫ N^(1-ε) (almost linear)
-    Question: ≫ N (linear = positive density)?
--/
-theorem bounds_comparison :
-    -- Crocker < Pan < (potential positive density)
-    -- log log N << N^(1-ε) << N for any ε > 0
-    True := trivial
-
 /--
 **Linear Bound Implies Positive Density:**
 If one could prove countA(N) ≥ cN for some c > 0 and all large N,
@@ -260,21 +235,6 @@ arguments about limsup that are technical in Lean.
 axiom improvement_would_solve :
     (∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) ≥ c * N) →
     erdos_9_question
-
-/-! ## Related Problems -/
-
-/-- Connection to Romanoff's theorem and its variants. -/
-def romanoff_related : Prop :=
-  -- Romanoff (1934): Positive proportion of integers are p + 2^k
-  -- This problem asks about p + 2^k + 2^l for odd integers
-  True
-
-/-- Related problems on erdosproblems.com. -/
-theorem related_problems :
-    -- Problem #10: Is there an infinite set A with A - A not containing p - 2^k?
-    -- Problem #11: Similar problems about sums with prime
-    -- Problem #16: Related additive questions
-    True := trivial
 
 /-! ## Summary
 

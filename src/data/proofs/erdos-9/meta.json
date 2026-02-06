@@ -69,52 +69,59 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Core Definitions",
-      "summary": "Prime + two powers form, set A, counting function",
-      "startLine": 35,
-      "endLine": 72
+      "title": "Basic Definitions",
+      "summary": "HasPrimePlusTwoPowersForm, sets S and A, special cases",
+      "startLine": 39,
+      "endLine": 73
     },
     {
       "id": "density",
       "title": "Density Definitions",
-      "summary": "Upper density and positive density",
-      "startLine": 68,
-      "endLine": 80
+      "summary": "countA, upperDensity, hasPositiveUpperDensity",
+      "startLine": 75,
+      "endLine": 88
     },
     {
-      "id": "conjecture",
+      "id": "question",
       "title": "The Erdős Question",
-      "summary": "OPEN: Does A have positive upper density?",
-      "startLine": 82,
-      "endLine": 97
+      "summary": "erdos_9_question and erdos_9_alt definitions (OPEN)",
+      "startLine": 90,
+      "endLine": 105
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "Schinzel, Crocker, and Pan bounds",
-      "startLine": 99,
-      "endLine": 145
+      "summary": "Schinzel infinite, Crocker log log N, Pan N^{1-ε} bounds",
+      "startLine": 107,
+      "endLine": 155
     },
     {
       "id": "covering",
-      "title": "Covering Systems",
-      "summary": "Why covering systems cannot resolve this",
-      "startLine": 147,
-      "endLine": 179
+      "title": "Why Covering Systems Don't Work",
+      "summary": "form_in_every_arithmetic_progression axiom and S_intersects_all_progressions theorem",
+      "startLine": 157,
+      "endLine": 173
     },
     {
       "id": "examples",
       "title": "Small Examples",
-      "summary": "1, 3 are exceptional; 5, 9 are representable",
-      "startLine": 181,
-      "endLine": 228
+      "summary": "Proved: 1, 3 are exceptional; 5, 9 are representable",
+      "startLine": 176,
+      "endLine": 223
     },
     {
-      "id": "status",
-      "title": "Problem Status",
-      "summary": "Summary and open status",
-      "startLine": 265,
-      "endLine": 292
+      "id": "bounds",
+      "title": "Bounds Comparison",
+      "summary": "improvement_would_solve axiom: linear bound implies positive density",
+      "startLine": 225,
+      "endLine": 237
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Open problem status, known results, and key insight",
+      "startLine": 239,
+      "endLine": 267
     }
   ],
   "conclusion": {
