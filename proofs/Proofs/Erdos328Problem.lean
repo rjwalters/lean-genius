@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #328: Partitioning Sets with Bounded Representation Function
 
 Source: https://erdosproblems.com/328
@@ -31,7 +31,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos328
 
-/-! ## Part I: Representation Function -/
+/- ## Part I: Representation Function -/
 
 /--
 **Representation function (convolution):**
@@ -57,7 +57,7 @@ A set A has bounded convolution if r_A(n) ≤ C for all n.
 def hasBoundedConvolution (A : Set ℕ) (C : ℕ) : Prop :=
   ∀ n : ℕ, representationFunction A n ≤ C
 
-/-! ## Part II: B_h Sets (Sidon Sets) -/
+/- ## Part II: B_h Sets (Sidon Sets) -/
 
 /--
 **B₂ set (Sidon set):**
@@ -82,7 +82,7 @@ If A is a Sidon set, then r_A(n) ≤ 2 for all n.
 axiom sidon_bounded_convolution :
     ∀ A : Set ℕ, isSidonSet A → hasBoundedConvolution A 2
 
-/-! ## Part III: The Partition Question -/
+/- ## Part III: The Partition Question -/
 
 /--
 **Partition of a set:**
@@ -113,7 +113,7 @@ def erdos_newman_question : Prop :=
       isPartition A parts ∧
       hasStrictlySmaller parts C
 
-/-! ## Part IV: Erdős's Partial Results -/
+/- ## Part IV: Erdős's Partial Results -/
 
 /--
 **Erdős (1980) - Case C = 3:**
@@ -138,7 +138,7 @@ axiom erdos_C4_counterexample :
         isPartition A parts →
         ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ 4
 
-/-! ## Part V: Nešetřil-Rödl's Complete Solution -/
+/- ## Part V: Nešetřil-Rödl's Complete Solution -/
 
 /--
 **Nešetřil-Rödl Theorem (1985):**
@@ -173,7 +173,7 @@ axiom nesetril_rodl_strong :
           isPartition A parts →
           ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ C
 
-/-! ## Part VI: Special Cases -/
+/- ## Part VI: Special Cases -/
 
 /--
 **Case C = 2 (Sidon sets):**
@@ -201,7 +201,7 @@ If A has unique sums, so does every subset.
 axiom unique_sums_hereditary :
     ∀ A B : Set ℕ, B ⊆ A → hasUniqueSums A → hasUniqueSums B
 
-/-! ## Part VII: Density Considerations -/
+/- ## Part VII: Density Considerations -/
 
 /--
 **Density bound:**
@@ -213,7 +213,7 @@ axiom density_bound :
       (∀ n, rA A n ≤ C) →
       ∀ N : ℕ, (A.filter (· ≤ N)).card ≤ C * Nat.sqrt N + 1
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Summary of Erdős Problem #328:**
