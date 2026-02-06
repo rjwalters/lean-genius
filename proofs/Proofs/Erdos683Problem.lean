@@ -150,12 +150,6 @@ def erdosConjecture683 : Prop :=
     (P n k : ℝ) ≥ min (n - k + 1 : ℝ) ((k : ℝ) ^ (1 + c))
 
 /--
-**Current Status:**
-This conjecture remains OPEN.
--/
-axiom conjecture_683_open : ¬ Decidable erdosConjecture683
-
-/--
 **Erdős (1979) Strengthening:**
 Erdős wrote it "seems certain" that for any c > 0,
   P(C(n,k)) ≫ k^{1+c}
@@ -196,17 +190,6 @@ axiom heuristic_stronger_than_conjecture (c : ℝ) (hc : c > 0) :
 /-!
 ## Part VI: The min(n-k+1, k^{1+c}) Bound
 -/
-
-/--
-**Why min(n-k+1, k^{1+c})?**
-Two regimes:
-1. k small: The product (n-k+1)···n of k terms has prime divisor > k^{1+c}
-2. k close to n/2: Use n-k+1 as the obvious bound since n-k+1 ≤ P(C(n,k))
--/
-theorem min_bound_explanation (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
-    -- n-k+1 is the smallest factor in the numerator of C(n,k) = n!/(k!(n-k)!)
-    -- = (n-k+1)(n-k+2)···n / k!
-    True := trivial
 
 /--
 **Trivial Upper Bound:**
@@ -266,69 +249,31 @@ axiom small_k_case_2 (n : ℕ) (hn : n ≥ 4) :
     P n 2 ≥ (n - 1) / 2
 
 /-!
-## Part IX: Related Problem 961
+## Part IX: Summary
 -/
 
 /--
-**Problem 961 Equivalence:**
-Problem 683 is essentially equivalent to Problem 961.
--/
-axiom equivalent_to_961 : True
+**Erdős Problem #683: Summary**
 
-/--
-**Problem 961 Statement (for reference):**
-Similar bounds on prime divisors of binomial coefficients,
-focusing on different parameter ranges.
--/
-axiom problem_961_statement : True
-
-/-!
-## Part X: Summary
--/
-
-/--
-**Summary of Known Bounds:**
-1. Sylvester-Schur: P(C(n,k)) > k [PROVEN]
-2. Erdős 1955: P(C(n,k)) ≫ k log k [PROVEN]
-3. Erdős conjecture: P(C(n,k)) ≥ min(n-k+1, k^{1+c}) [OPEN]
-4. Heuristic: P(C(n,k)) > e^{c√k} [CONJECTURED]
--/
-theorem erdos_683_summary :
-    -- Sylvester-Schur proven
-    True ∧
-    -- Erdős 1955 proven
-    True ∧
-    -- Main conjecture open
-    True := ⟨trivial, trivial, trivial⟩
-
-/--
-**Erdős Problem #683: OPEN**
-
-**QUESTION:** For every 1 ≤ k ≤ n, is there a constant c > 0 such that
+QUESTION: For every 1 ≤ k ≤ n, is there a constant c > 0 such that
   P(C(n,k)) ≥ min(n - k + 1, k^{1+c})?
 
-**KNOWN:**
+KNOWN:
 - P(C(n,k)) > k for k ≤ n/2 (Sylvester-Schur 1892/1929)
 - P(C(n,k)) ≫ k log k (Erdős 1955)
 - For any c > 0, P(C(n,k)) > k^{1+c} with finitely many exceptions (believed)
 
-**HEURISTIC:**
+HEURISTIC:
 - P(C(n,k)) > e^{c√k} (from prime gap statistics)
 
-**KEY INSIGHT:**
-The binomial coefficient C(n,k) is divisible by primes that appear
-in the numerator (n-k+1)···n but are canceled in k!. Understanding
-the prime factorization of products of consecutive integers is key.
+STATUS: OPEN
 -/
-theorem erdos_683 : True := trivial
-
-/--
-**Historical Note:**
-This problem connects number theory (prime distribution) with
-combinatorics (binomial coefficients). The Sylvester-Schur theorem
-from 1892/1929 was a starting point, improved by Erdős over decades.
-The full conjecture remains elusive despite much progress.
--/
-theorem historical_note : True := trivial
+theorem erdos_683_summary :
+    -- Sylvester-Schur: P(C(n,k)) > k
+    (∀ n k : ℕ, 1 ≤ k → 2 * k ≤ n → P n k > k) ∧
+    -- Erdős 1955: P(C(n,k)) ≫ k log k
+    (∃ c : ℝ, c > 0 ∧ ∀ n k : ℕ, 1 ≤ k → 2 * k ≤ n →
+      (P n k : ℝ) ≥ c * k * Real.log k) :=
+  ⟨fun n k hk hn => sylvester_schur hk hn, erdos_1955_bound⟩
 
 end Erdos683
