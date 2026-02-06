@@ -40,8 +40,7 @@ open SimpleGraph Finset Cardinal
 
 namespace Erdos595
 
-/-
-## Part I: Basic Definitions
+/-! ## Part I: Basic Definitions
 
 We work with simple graphs (undirected, no loops, no multi-edges).
 -/
@@ -74,9 +73,7 @@ A graph containing no complete graph on 3 vertices (no triangles).
 -/
 def isTriangleFree (G : SimpleGraph V) : Prop := isKFreeInfinite G 3
 
-/-
-## Part II: Graph Coverings and Unions
--/
+/-! ## Part II: Graph Coverings and Unions -/
 
 /--
 **Subgraph Relation:**
@@ -103,8 +100,7 @@ def hasCountableTriangleFreeCover (G : SimpleGraph V) : Prop :=
     (∀ n, IsSubgraph (F n) G) ∧
     isCountableUnionOf G F
 
-/-
-## Part III: The Main Conjecture
+/-! ## Part III: The Main Conjecture
 
 The Erdős-Hajnal question asks whether these two properties can coexist.
 -/
@@ -123,8 +119,7 @@ def erdos595_conjecture : Prop :=
     isK4Free G ∧
     ¬ hasCountableTriangleFreeCover G
 
-/-
-## Part IV: Finite Analogues (Folkman-Nešetřil-Rödl)
+/-! ## Part IV: Finite Analogues (Folkman-Nešetřil-Rödl)
 
 While the infinite case is open, finite analogues are well understood.
 -/
@@ -152,46 +147,21 @@ axiom folkman_finite_resistance (n : ℕ) (hn : n ≥ 1) :
 
 /--
 **Nešetřil-Rödl (1975):**
-Alternative proof of finite resistance using type theory methods.
+Alternative proof of finite resistance using Ramsey-type methods.
 -/
 axiom nesetril_rodl_finite_resistance (n : ℕ) (hn : n ≥ 1) :
   ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V),
     isK4Free G ∧ ¬ hasFiniteTriangleFreeCover G n
 
-/-
-## Part V: Why the Infinite Case is Harder
+/-! ## Part V: Why the Infinite Case is Harder
 
 The gap between finite and countably infinite is fundamental.
--/
-
-/--
-**Finite vs Countable:**
 Having resistance to any finite cover does not automatically imply
-resistance to a countable cover. This is the core difficulty.
-
-In fact, a sequence of graphs G_n where G_n resists n-covers could
-potentially be "combined" in a way that admits a countable cover.
+resistance to a countable cover. A sequence of graphs G_n where
+G_n resists n-covers could potentially be "combined" in a way
+that admits a countable cover. This finite-to-countable gap is
+the core difficulty of Problem 595.
 -/
-def finiteDoesNotImplyCountable : Prop :=
-  -- The statement that finite resistance implies countable resistance
-  -- would be: if for all n, there exists a K₄-free graph not n-coverable,
-  -- then there exists a K₄-free graph not countably-coverable.
-  -- This implication is precisely what Problem 595 asks about!
-  True
-
-/-
-## Part VI: The Triangle-Free Chromatic Number
--/
-
-/--
-**Triangle-Free Chromatic Number (informal):**
-The minimum number of triangle-free subgraphs needed to cover a graph.
-For a K₄-free graph G, this might be finite, countably infinite, or undefined.
--/
-def triangleFreeChromatic (G : SimpleGraph V) : ℕ∞ :=
-  -- The minimum n such that G has an n-cover
-  -- If no finite cover exists, this would be ∞
-  ⊤  -- placeholder
 
 /--
 **Problem 595 Reformulation:**
@@ -202,60 +172,26 @@ def problem595_reformulated : Prop :=
   ∃ (V : Type) (G : SimpleGraph V),
     Infinite V ∧
     isK4Free G ∧
-    -- No countable family of triangle-free graphs covers G
     ∀ F : ℕ → SimpleGraph V,
       (∀ n, isTriangleFree (F n)) →
       ¬ isCountableUnionOf G F
 
-/-
-## Part VII: Related Problems
--/
+/-! ## Part VI: Related Results -/
 
 /--
-**Problem 582: Folkman Numbers (SOLVED)**
-Finite K₄-free graphs where every 2-coloring has a monochromatic triangle.
+**C₄-Free Special Case:**
+Erdős and Hajnal proved: every C₄-free graph is a countable union of trees.
+Since trees are triangle-free, this shows C₄-free graphs ARE countably coverable.
+This contrasts with the K₄-free case which remains open.
 -/
-def problem582_solved : Prop := True  -- See Erdos582Problem.lean
+axiom c4_free_countable_trees :
+  ∀ (V : Type) (G : SimpleGraph V),
+    (¬ ∃ (a b c d : V), a ≠ b ∧ b ≠ c ∧ c ≠ d ∧ d ≠ a ∧
+      a ≠ c ∧ b ≠ d ∧
+      G.Adj a b ∧ G.Adj b c ∧ G.Adj c d ∧ G.Adj d a) →
+    hasCountableTriangleFreeCover G
 
-/--
-**Problem 596: General (G₁, G₂) Pairs (OPEN)**
-For which pairs (G₁, G₂) does finite resistance coexist with countable covering?
-The pair (K₄, K₃) is exactly Problem 595.
--/
-def problem596_connection : Prop :=
-  -- Problem 595 is the special case G₁ = K₄, G₂ = K₃ of Problem 596
-  True
-
-/-
-## Part VIII: Potential Approaches
-
-Various mathematical frameworks could potentially resolve this problem.
--/
-
-/--
-**Random Graph Approach:**
-One might consider the Erdős-Rényi random graph G(n, p) and analyze
-whether a suitable limit graph could serve as a counterexample.
--/
-def randomGraphApproach : Prop := True
-
-/--
-**Algebraic Construction:**
-Similar to explicit Folkman number constructions (Cayley graphs),
-an algebraic approach might yield a concrete counterexample.
--/
-def algebraicApproach : Prop := True
-
-/--
-**Set-Theoretic Methods:**
-The problem touches on combinatorial set theory, particularly
-the interaction of local and global properties of infinite structures.
--/
-def setTheoreticApproach : Prop := True
-
-/-
-## Part IX: What We Know For Sure
--/
+/-! ## Part VII: Summary -/
 
 /--
 **Finite Resistance Theorem:**
@@ -268,54 +204,26 @@ theorem finite_case_complete :
   fun n hn => folkman_finite_resistance n hn
 
 /--
-**C₄-Free Special Case:**
-Erdős and Hajnal proved: every C₄-free graph is a countable union of trees.
-Since trees are triangle-free, this shows C₄-free graphs ARE countably coverable.
--/
-axiom c4_free_countable_trees :
-  ∀ (V : Type) (G : SimpleGraph V),
-    -- If G contains no 4-cycle
-    (¬ ∃ (a b c d : V), a ≠ b ∧ b ≠ c ∧ c ≠ d ∧ d ≠ a ∧
-      a ≠ c ∧ b ≠ d ∧
-      G.Adj a b ∧ G.Adj b c ∧ G.Adj c d ∧ G.Adj d a) →
-    hasCountableTriangleFreeCover G
+**Erdős Problem #595: OPEN**
 
-/-
-## Part X: Main Statement
--/
-
-/--
-**Erdős Problem #595:**
 Is there an infinite graph G which contains no K₄ and is not the union
 of countably many triangle-free graphs?
 
-Status: OPEN
 Prize: $250
 
-This captures the gap between:
-- Local constraint: K₄-free (every 4 vertices span at most 5 edges)
-- Global constraint: Not countably triangle-free-coverable
+Known:
+- Finite resistance exists for every n (Folkman 1970, Nešetřil-Rödl 1975)
+- C₄-free graphs ARE countably coverable (Erdős-Hajnal)
+- The countable case for K₄-free graphs remains open
 -/
-theorem erdos_595 : True := trivial
-
-/--
-**The Open Question:**
-The mathematical community believes such a graph likely exists,
-but no proof or construction has been found.
--/
-def erdos_595_open_question : Prop := erdos595_conjecture
-
-/-
-## Part XI: Prize History
-
-Erdős offered $250 for a solution, making this one of the more
-substantial prizes among his graph theory problems.
--/
-
-/--
-**Prize Status:**
-The $250 prize remains unclaimed as of 2024.
--/
-def prize_unclaimed : Prop := True
+theorem erdos_595_summary :
+    (∀ n : ℕ, n ≥ 1 → ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V),
+      isK4Free G ∧ ¬ hasFiniteTriangleFreeCover G n) ∧
+    (∀ (V : Type) (G : SimpleGraph V),
+      (¬ ∃ (a b c d : V), a ≠ b ∧ b ≠ c ∧ c ≠ d ∧ d ≠ a ∧
+        a ≠ c ∧ b ≠ d ∧
+        G.Adj a b ∧ G.Adj b c ∧ G.Adj c d ∧ G.Adj d a) →
+      hasCountableTriangleFreeCover G) :=
+  ⟨folkman_finite_resistance, c4_free_countable_trees⟩
 
 end Erdos595
