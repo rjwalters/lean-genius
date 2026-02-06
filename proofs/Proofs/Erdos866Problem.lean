@@ -272,6 +272,9 @@ of some b₁,...,b_k.
 
 **Significance**: Connects additive combinatorics to threshold phenomena
 -/
-theorem erdos_866_summary : True := trivial
+theorem erdos_866_summary :
+    (∀ N ≥ 1, g 3 N = 2) ∧
+    (∃ C, ∀ N ≥ 1, g 4 N ≤ C) :=
+  ⟨g3_exact, g4_bounded⟩
 
 end Erdos866
