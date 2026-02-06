@@ -362,7 +362,7 @@ theorem ramseyUpperBound_strict_mono_right (r s : ℕ) (hr : r ≥ 2) (hs : s �
 ## Summary
 
 This file formalizes:
-1. **Proved theorems (33 total, 0 sorries)**:
+1. **Proved theorems (36 total, 0 sorries)**:
    - Concrete values: R(3,3)=6, R(3,4)=10, R(3,5)=15,
      R(4,4)=20, R(4,5)=35, R(5,5)=70, R(3,6)=21, R(3,7)=28,
      R(3,8)=36, R(3,9)=45, R(4,6)=56, R(4,7)=84, R(5,6)=126,
@@ -380,7 +380,7 @@ This file formalizes:
    - ramseyUpperBound_diag_mono: R(k,k) ≤ R(k+1,k+1)  [NEW]
    - ramseyUpperBound_strict_mono_right: R(r,s+1) ≥ R(r,s) + 1  [NEW]
 
-2. **Axioms (5 total)**: Deep probabilistic results
+2. **Axioms (5 total, 3 converted to theorems)**: Deep probabilistic results
    - erdos_probabilistic_lower_bound: R(k,k) > 2^(k/2)
    - aks_r3k_upper_bound: R(3,k) = O(k²/log k)
    - kim_r3k_lower_bound: R(3,k) = Ω(k²/log k)
@@ -444,37 +444,34 @@ def paleyColor17 (i j : Fin 17) : Bool :=
 
     The proof uses the fact that in F*_17, multiplying by -1 preserves
     quadratic residuosity since -1 = 16 = 4² is itself a QR.
-    So isQR17(j - i) = isQR17(-(i - j)) = isQR17(-1 · (i - j)) = isQR17(i - j).
-
-    We axiomatize this since fin_cases over 17×17 = 289 cases times out. -/
-axiom paleyColor17_symm : ∀ i j : Fin 17, paleyColor17 i j = paleyColor17 j i
+    So isQR17(j - i) = isQR17(-(i - j)) = isQR17(-1 · (i - j)) = isQR17(i - j). -/
+theorem paleyColor17_symm : ∀ i j : Fin 17, paleyColor17 i j = paleyColor17 j i := by
+  native_decide
 
 /-- Paley coloring is irreflexive. -/
 theorem paleyColor17_irrefl (i : Fin 17) : paleyColor17 i i = false := by
   simp [paleyColor17]
 
 /-- The Paley graph on F_17 has no K_4 clique.
-    This is a deep result related to the structure of quadratic residues.
-    The key insight is that for p ≡ 1 (mod 4), the Paley graph is
-    self-complementary and has chromatic number O(√p).
-
-    A full proof would require showing that no 4 distinct vertices
-    have all 6 pairs with differences being QRs. We axiomatize this
-    since the computational verification is extensive. -/
-axiom paley17_no_red_K4 :
+    Verified computationally: no 4 distinct vertices in F_17 have all 6 pairs
+    with differences being quadratic residues. -/
+theorem paley17_no_red_K4 :
     ∀ (a b c d : Fin 17),
     a ≠ b → a ≠ c → a ≠ d → b ≠ c → b ≠ d → c ≠ d →
     ¬(paleyColor17 a b = true ∧ paleyColor17 a c = true ∧
       paleyColor17 a d = true ∧ paleyColor17 b c = true ∧
-      paleyColor17 b d = true ∧ paleyColor17 c d = true)
+      paleyColor17 b d = true ∧ paleyColor17 c d = true) := by
+  native_decide
 
-/-- The complement of the Paley graph also has no K_4 (by self-complementarity). -/
-axiom paley17_no_blue_K4 :
+/-- The complement of the Paley graph also has no K_4 (by self-complementarity).
+    Verified computationally. -/
+theorem paley17_no_blue_K4 :
     ∀ (a b c d : Fin 17),
     a ≠ b → a ≠ c → a ≠ d → b ≠ c → b ≠ d → c ≠ d →
     ¬(paleyColor17 a b = false ∧ paleyColor17 a c = false ∧
       paleyColor17 a d = false ∧ paleyColor17 b c = false ∧
-      paleyColor17 b d = false ∧ paleyColor17 c d = false)
+      paleyColor17 b d = false ∧ paleyColor17 c d = false) := by
+  native_decide
 
 /-- **R(4,4) > 16**: K_16 can be 2-colored without a monochromatic K_4.
     The Paley graph on F_17 restricted to vertices {0,...,15} witnesses this.
@@ -585,13 +582,13 @@ This extension file adds:
 - `qr17_correct`: Verification of quadratic residues mod 17
 - `nonqr17_correct`: Verification of non-residues mod 17
 - `paleyColor17_irrefl`: Paley coloring is irreflexive
-- `r4_4_lower_bound_17`: R(4,4) > 16 via Paley graph
+- `paleyColor17_symm`: Paley coloring is symmetric (proved by native_decide)
+- `paley17_no_red_K4`: Paley graph has no K_4 (proved by native_decide)
+- `paley17_no_blue_K4`: Complement has no K_4 (proved by native_decide)
+- `r4_4_lower_bound_17`: R(4,4) > 16 via Paley graph (fully proved)
 - `small_graph_no_red_K4`: Trivial bound for n < 4
 
-**Axioms added:**
-- `paleyColor17_symm`: Paley coloring is symmetric (computation too large)
-- `paley17_no_red_K4`: Paley graph has no K_4
-- `paley17_no_blue_K4`: Complement has no K_4
+**Axioms (3 remaining - deep probabilistic results):**
 - `spencer_diagonal_lower_bound`: R(k,k) ≥ c·k·2^(k/2)
 - `r4k_quadratic_lower`: R(4,k) ≥ c·k² framework
 
