@@ -41,7 +41,7 @@ open Finset BigOperators
 
 namespace Erdos344
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -74,7 +74,7 @@ A set is subcomplete if its subset sums contain an infinite arithmetic progressi
 def IsSubcomplete (A : Set ℕ) : Prop :=
   ∃ a d : ℕ, d > 0 ∧ arithmeticProgression a d ⊆ subsetSums A
 
-/-!
+/-
 ## Part II: Density Conditions
 -/
 
@@ -102,7 +102,7 @@ def HasFolkmanDensity (A : Set ℕ) : Prop :=
 def HasOptimalDensity (A : Set ℕ) : Prop :=
   ∀ N : ℕ, N > 0 → (countingFunction A N : ℝ) ≥ Real.sqrt (2 * N)
 
-/-!
+/-
 ## Part III: Folkman's Result
 -/
 
@@ -113,7 +113,7 @@ If |A ∩ {1,...,N}| ≫ N^{1/2+ε} for some ε > 0, then A is subcomplete.
 axiom folkman_theorem (A : Set ℕ) :
     HasFolkmanDensity A → IsSubcomplete A
 
-/-!
+/-
 ## Part IV: The Szemerédi-Vu Theorem (Main Result)
 -/
 
@@ -129,7 +129,7 @@ Published in J. Amer. Math. Soc. (2006), 119-169.
 axiom szemeredi_vu_2006 (A : Set ℕ) :
     HasSquareRootDensity A → IsSubcomplete A
 
-/-!
+/-
 ## Part V: The Open Conjecture
 -/
 
@@ -153,7 +153,7 @@ This would be best possible by erdos_optimality_example.
 def OptimalDensityConjecture : Prop :=
   ∀ A : Set ℕ, HasOptimalDensity A → IsSubcomplete A
 
-/-!
+/-
 ## Part VI: Related Concepts
 -/
 
@@ -188,20 +188,9 @@ Axiomatized: The technical bound N^{1/2+ε} ≥ C · N^{1/2} for large N is rout
 axiom folkman_implies_sqrt_density (A : Set ℕ) :
     HasFolkmanDensity A → HasSquareRootDensity A
 
-/-!
+/-
 ## Part VII: The Main Theorem
 -/
-
-/--
-**Erdős Problem #344: SOLVED**
-
-THEOREM (Szemerédi-Vu, 2006):
-If A ⊆ ℕ satisfies |A ∩ {1,...,N}| ≫ N^{1/2} for all N,
-then P(A) contains an infinite arithmetic progression.
-
-OPEN: Does this hold under the optimal bound |A ∩ {1,...,N}| ≥ √(2N)?
--/
-theorem erdos_344 : True := trivial
 
 /--
 **Summary of known results:**
@@ -220,16 +209,5 @@ theorem erdos_344_summary :
   constructor
   · exact szemeredi_vu_2006
   · exact erdos_optimality_example
-
-/--
-**The threshold question:**
-The gap between √(2N) (necessary) and N^{1/2} (sufficient) contains
-the true threshold, but its exact value remains open.
--/
-theorem threshold_gap :
-    -- Szemerédi-Vu shows √N density is sufficient
-    -- Erdős shows below √(2N) is insufficient
-    -- The exact threshold is open
-    True := trivial
 
 end Erdos344
