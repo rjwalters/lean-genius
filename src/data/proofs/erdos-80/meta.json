@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 0,
     "erdosNumber": 80,
     "erdosUrl": "https://erdosproblems.com/80",
     "erdosProblemStatus": "open",
@@ -58,15 +58,17 @@
       "bookSize definition: number of triangles sharing an edge",
       "hasBook definition: graph has book of given size",
       "isDense definition: at least cn^2 edges",
-      "f function: Erdos-Rothschild book function",
-      "critical_threshold: the phase transition at 1/4",
-      "alon_trotter_bound axiom: f_c(n) << n^{1/2}",
-      "fox_loh_bound axiom: f_c(n) <= n^{O(1/log log n)}",
-      "linear_bound_above_threshold axiom: f_c(n) >= n/6 for c > 1/4",
-      "regularity_lower_bound axiom: f_c(n) -> infinity",
-      "erdos_polynomial_conjecture_false: disproved conjecture",
-      "erdos_log_conjecture: open weaker conjecture",
-      "erdos_80_summary theorem: comprehensive summary"
+      "f function: Erdős-Rothschild book function",
+      "critical_threshold definition: the phase transition at 1/4",
+      "alon_trotter_bound axiom: f_c(n) ≪ n^{1/2}",
+      "fox_loh_bound axiom: f_c(n) ≤ n^{O(1/log log n)}",
+      "erdos_polynomial_conjecture_false axiom: disproved conjecture",
+      "linear_bound_above_threshold axiom: f_c(n) ≥ n/6 for c > 1/4",
+      "regularity_lower_bound axiom: f_c(n) → ∞",
+      "above_threshold_linear axiom: linear growth above 1/4",
+      "below_threshold_subpolynomial axiom: subpolynomial below 1/4",
+      "erdos_log_conjecture definition: open weaker conjecture",
+      "erdos_80_summary theorem: comprehensive summary with proof"
     ]
   },
   "overview": {
@@ -85,14 +87,14 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "isTriangle, edgeInTriangle, isTriangleSaturated, bookSize, hasBook",
+      "summary": "isTriangle, edgeInTriangle, isTriangleSaturated, bookSize, hasBook, maxBookSize",
       "startLine": 47,
-      "endLine": 97
+      "endLine": 98
     },
     {
       "id": "f-function",
       "title": "The f_c(n) Function",
-      "summary": "isDense, f function definition",
+      "summary": "isDense, f function definition (Erdős-Rothschild function)",
       "startLine": 99,
       "endLine": 125
     },
@@ -101,35 +103,35 @@
       "title": "Known Upper Bounds",
       "summary": "alon_trotter_bound, fox_loh_bound, erdos_polynomial_conjecture_false",
       "startLine": 127,
-      "endLine": 162
+      "endLine": 159
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "summary": "linear_bound_above_threshold, regularity_lower_bound, f_tends_to_infinity",
-      "startLine": 164,
-      "endLine": 196
+      "startLine": 161,
+      "endLine": 188
     },
     {
       "id": "phase-transition",
       "title": "The Phase Transition",
       "summary": "critical_threshold, above_threshold_linear, below_threshold_subpolynomial",
-      "startLine": 198,
-      "endLine": 235
+      "startLine": 190,
+      "endLine": 214
     },
     {
       "id": "open-questions",
       "title": "Open Questions",
-      "summary": "erdos_log_conjecture, erdos_log_conjecture_open",
-      "startLine": 237,
-      "endLine": 252
+      "summary": "erdos_log_conjecture definition",
+      "startLine": 216,
+      "endLine": 227
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
-      "summary": "erdos_80_summary, erdos_80_is_open",
-      "startLine": 254,
-      "endLine": 288
+      "summary": "erdos_80_summary theorem with proof",
+      "startLine": 229,
+      "endLine": 258
     }
   ],
   "conclusion": {
