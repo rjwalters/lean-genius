@@ -1,21 +1,24 @@
-/-
-  Erdős Problem #22
+/-!
+# Erdős Problem #22: Ramsey-Turán Numbers for K₄
 
-  Source: https://erdosproblems.com/22
-  Status: SOLVED
-  Prize: Not specified
+**Source:** [erdosproblems.com/22](https://erdosproblems.com/22)
+**Status:** SOLVED (Yes)
 
-  Statement:
-  Let ε > 0 and n be sufficiently large. Is there a graph on n vertices with
-  ≥ n²/8 edges which contains no K₄ such that the largest independent set
-  has size at most εn? Equivalently: Is rt(n; 4, εn) ≥ n²/8?
+**Statement:**
+Let ε > 0 and n be sufficiently large. Is there a graph on n vertices with
+≥ n²/8 edges which contains no K₄ such that the largest independent set
+has size at most εn? Equivalently: Is rt(n; 4, εn) ≥ n²/8?
 
-  History:
-  - Bollobás-Erdős (1976): Conjectured, proved existence with (1/8 + o(1))n² edges
-  - Fox-Loh-Zhao (2015): Proved rt(n; 4, εn) ≥ n²/8 with independence number
-    ≪ (log log n)^(3/2) / (log n)^(1/2) · n
+**Answer:** YES — Fox-Loh-Zhao (2015) proved rt(n; 4, εn) ≥ n²/8 with
+independence number ≪ (log log n)^{3/2} / (log n)^{1/2} · n.
 
-  Tags: Ramsey-Turán, graph theory, extremal combinatorics
+**History:**
+- Bollobás-Erdős (1976): Conjectured, proved (1/8 + o(1))n² edges
+- Fox-Loh-Zhao (2015): Full resolution via pseudorandom Cayley graphs
+
+**References:**
+- Bollobás, Erdős (1976): Original conjecture
+- Fox, Loh, Zhao (2015): Resolution
 -/
 
 import Mathlib
@@ -240,19 +243,9 @@ axiom cayley_graph_construction (n : ℕ) (hn : n ≥ 10) :
 ## Comparison with Turán Numbers
 -/
 
-/-- Turán graph T(n,3) has n²/3 edges but independence number n/3.
-    Ramsey-Turán asks: what if we want independence number o(n)? -/
-theorem turan_vs_ramsey_turan :
-    -- T(n,3) has ~n²/3 edges, much more than n²/8
-    -- But T(n,3) has independence number ~n/3, which is linear
-    -- The tradeoff: fewer edges for smaller independence number
-    True := by trivial
-
-/-- The gap: n²/3 (Turán) vs n²/8 (Ramsey-Turán with small independence). -/
+/-- The density gap: Turán gives 1/3 edge density; Ramsey-Turán gives 1/8.
+    We lose about 62% of edges to achieve sublinear independence number. -/
 theorem edge_density_gap :
-    -- Turán: (1 - 1/3) / 2 = 1/3 ≈ 0.333 edge density
-    -- Ramsey-Turán: 1/8 = 0.125 edge density
-    -- We lose about 62% of edges to get sublinear independence number
     (1 : ℚ) / 3 > 1 / 8 := by norm_num
 
 /-!
@@ -303,31 +296,6 @@ theorem density_interpretation :
     (1 : ℚ) / 8 / (1 / 2) = 1 / 4 := by norm_num
 
 /-!
-## Applications and Connections
--/
-
-/-- Connection to Szemerédi's Regularity Lemma.
-    Ramsey-Turán problems are often approached via regularity. -/
-axiom regularity_connection : True
-
-/-- Connection to the triangle removal lemma and graph limits. -/
-axiom triangle_removal_connection : True
-
-/-!
-## Historical Context
--/
-
-/-- The problem was part of Bollobás and Erdős's systematic study of
-    Ramsey-Turán problems in the 1970s. -/
-theorem historical_context : True := by trivial
-
-/-- Key papers:
-    - Bollobás, Erdős (1976): Original conjecture and weaker bounds
-    - Szemerédi (1972): Related regularity lemma techniques
-    - Fox, Loh, Zhao (2015): Resolution using pseudorandom methods -/
-theorem key_references : True := by trivial
-
-/-!
 ## Summary
 
 **Problem Status: SOLVED**
@@ -335,26 +303,25 @@ theorem key_references : True := by trivial
 Erdős Problem #22 (Bollobás-Erdős Conjecture) asks whether K₄-free graphs
 can have ≥ n²/8 edges while having independence number o(n).
 
-**Main Question**: Is rt(n; 4, εn) ≥ n²/8 for all ε > 0 and large n?
-
 **Answer: YES** (Fox-Loh-Zhao 2015)
 
-**Key results**:
-- Turán's theorem: K₄-free graphs have at most ~n²/3 edges
-- But Turán graph has independence number n/3 (linear)
-- Ramsey-Turán: Can we keep many edges with small independence?
-- Answer: Yes, n²/8 edges with independence (log log n)^(3/2)/(log n)^(1/2) · n
-
-**The bound n²/8 corresponds to**:
-- Edge density 1/4
-- Ramsey-Turán density ρ₄ = 1/4
-
-**Technique**: Pseudorandom Cayley graph constructions
-
-References:
-- Bollobás, Erdős (1976): Original conjecture
-- Fox, Loh, Zhao (2015): Resolution
-- Szemerédi (1972): Related regularity techniques
+The bound n²/8 corresponds to Ramsey-Turán density ρ₄ = 1/4.
 -/
+
+/--
+**Erdős Problem #22: SOLVED**
+
+The Bollobás-Erdős conjecture is TRUE: rt(n; 4, εn) ≥ n²/8.
+
+This theorem combines:
+1. The conjecture is resolved (from Fox-Loh-Zhao)
+2. The Turán vs Ramsey-Turán density gap (1/3 > 1/8)
+3. The density interpretation (n²/8 = 1/4 edge density)
+-/
+theorem erdos_22_summary :
+    BollobasErdosConjecture ∧
+    ((1 : ℚ) / 3 > 1 / 8) ∧
+    ((1 : ℚ) / 8 / (1 / 2) = 1 / 4) :=
+  ⟨conjecture_resolved, edge_density_gap, density_interpretation⟩
 
 end Erdos22
