@@ -2,7 +2,7 @@
   "id": "erdos-790",
   "title": "Erdős Problem #790: Maximum Sum-Free Subsequences",
   "slug": "erdos-790",
-  "description": "Let l(n) be the maximum size of a guaranteed sum-free subset of any n-element set. Known bounds: √(n log n / log log n) ≤ l(n) ≤ n / log n (CKS 1975). Main conjecture: l(n) ≥ n^{1-o(1)}. OPEN.",
+  "description": "Let l(n) be the maximum size of a guaranteed sum-free subset of any n-element integer set. Known bounds: √(n log n / log log n) ≤ l(n) ≤ n / log n (CKS 1975). Main conjecture: l(n) ≥ n^{1-o(1)}. OPEN.",
   "meta": {
     "author": "Choi-Komlós-Szemerédi (1975)",
     "sourceUrl": "https://erdosproblems.com/790",
@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 790,
     "erdosUrl": "https://erdosproblems.com/790",
     "erdosProblemStatus": "open",
@@ -42,40 +42,84 @@
       }
     ],
     "originalContributions": [
-      "IsSumFree: definition of sum-free subsets (no a = Σ aᵢ)",
-      "l(n): the extremal function for guaranteed sum-free subsets",
+      "IsSumFree definition: no element equals sum of ≥2 distinct others",
+      "classicalSumFree definition: no a + b = c (stronger condition)",
+      "l(n) axiom: extremal function for guaranteed sum-free subsets",
+      "l_characterization: every n-set has sum-free subset of size ≥ l(n)",
+      "l_optimal: l(n) is the best such bound",
       "erdos_lower_bound: l(n) ≥ √(n/2)",
       "choi_improvement: l(n) > (1+c)√n",
       "cks_lower_bound: l(n) ≥ c√(n log n / log log n)",
-      "cks_upper_bound: l(n) ≤ C n / log n",
-      "question1_affirmative: l(n)/√n → ∞",
-      "question2_answered: l(n) < n^{1-c}",
-      "cks_conjecture: l(n) ≥ n^{1-o(1)}",
-      "classicalSumFree: comparison to classical sum-free (a + b ≠ c)"
+      "cks_upper_bound: l(n) ≤ Cn/log n",
+      "cks_conjecture: l(n) ≥ n^{1-o(1)} (OPEN)",
+      "cks_bounds and erdos_790_summary theorems"
     ]
   },
   "overview": {
-    "historicalContext": "**Origins and History**\n\nThis problem appeared in Erdős's 1965 survey \"Extremal problems in number theory\" where he claimed to have a complicated proof that l(n) = o(n). However, by 1973 he reported \"difficulties in reconstructing [his] proof.\"\n\n**Choi-Komlós-Szemerédi Breakthrough (1975)**\n\nThe definitive paper appeared in Trans. Amer. Math. Soc. (1975). They proved both:\n- Lower bound: l(n) ≥ c√(n log n / log log n)\n- Upper bound: l(n) ≤ C n / log n\n\nThey conjectured l(n) ≥ n^{1-o(1)}, which remains open.\n\n**Connection to Sum-Free Sets**\n\nThis is a weaker notion than classical sum-free (no a + b = c). Here we forbid a = a₂ + ... + aᵣ for any r ≥ 2 distinct elements. The weaker condition means more sets are \"sum-free\" in this sense.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet l(n) be maximal such that for any A ⊆ ℤ with |A| = n, there exists a sum-free B ⊆ A with |B| ≥ l(n).\n\nHere \"sum-free\" means: no element equals a sum of ≥2 distinct other elements.\n\n**Questions:**\n1. Estimate l(n)\n2. Does l(n)/√n → ∞? (YES)\n3. Is l(n) < n^{1-c} for some c > 0? (YES: l(n) ≤ n/log n)\n\n**Status: OPEN** - The gap between √(n log n / log log n) and n/log n remains.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Sum-Free Definition:** IsSumFree forbids a = Σ_{i∈S} aᵢ for S ⊆ B\\{a} with |S| ≥ 2\n\n2. **Extremal Function:** l(n) characterized by l_characterization and l_optimal axioms\n\n3. **Lower Bounds:** Erdős (√(n/2)), Choi ((1+c)√n), CKS (√(n log n / log log n))\n\n4. **Upper Bound:** CKS (n / log n)\n\n5. **Main Questions:** Both answered affirmatively by CKS bounds\n\n6. **Conjecture:** l(n) ≥ n^{1-o(1)} remains open",
+    "historicalContext": "Erdős Problem #790 concerns the extremal function l(n) for sum-free subsequences. The problem appeared in Erdős's 1965 survey \"Extremal problems in number theory,\" where he claimed to have a complicated proof that l(n) = o(n) but by 1973 reported \"difficulties in reconstructing\" it. This is one of the rare cases where Erdős lost track of one of his own proofs.\n\nThe definitive work was done by Choi, Komlós, and Szemerédi in their 1975 Trans. Amer. Math. Soc. paper \"On sum-free subsequences.\" They proved both the best known lower bound l(n) ≥ c√(n log n / log log n) and the upper bound l(n) ≤ Cn/log n. This confirmed l(n) = o(n) rigorously and answered Erdős's main questions, but left a large gap between the bounds.\n\nThe notion of \"sum-free\" here is weaker than the classical definition: rather than forbidding a + b = c, it forbids a₁ = a₂ + ⋯ + aᵣ for any r ≥ 2 distinct elements. This weaker condition means more sets qualify as sum-free. Choi, Komlós, and Szemerédi conjectured l(n) ≥ n^{1-o(1)}, suggesting l(n) is nearly linear. This conjecture remains open and represents the central question.",
+    "problemStatement": "Let $l(n)$ be maximal such that for any $A \\subseteq \\mathbb{Z}$ with $|A| = n$, there exists a sum-free $B \\subseteq A$ with $|B| \\geq l(n)$. Here sum-free means no element equals a sum of $\\geq 2$ distinct other elements. **Known bounds:** $\\sqrt{n \\log n / \\log\\log n} \\ll l(n) \\ll n / \\log n$ (CKS 1975). **Questions:** (1) Does $l(n)/\\sqrt{n} \\to \\infty$? YES. (2) Is $l(n) < n^{1-c}$ for some $c > 0$? YES. **CKS Conjecture:** $l(n) \\geq n^{1-o(1)}$. STATUS: OPEN.",
+    "proofStrategy": "The formalization defines IsSumFree as the weak sum-free condition (no element is a sum of ≥2 distinct others) and classicalSumFree as the stronger classical condition (no a + b = c). The extremal function l(n) is axiomatized with characterization and optimality axioms. Three progressive lower bounds are stated (Erdős, Choi, CKS), followed by the CKS upper bound. The main questions are formalized as propositions and answered by axioms referencing the CKS bounds. Two theorems are proved: cks_bounds (combining both bounds) and erdos_790_summary (answering both questions).",
     "keyInsights": [
-      "**Weaker than classical:** No a = a₂ + ... + aᵣ (r ≥ 2) is weaker than no a + b = c",
-      "**Gap remains:** √(n log n / log log n) to n/log n is a huge gap",
-      "**Both questions answered:** CKS bounds answer Questions 1 and 2",
-      "**Conjecture:** l(n) ≥ n^{1-o(1)} would close the gap (nearly linear)",
-      "**Erdős's lost proof:** He claimed l(n) = o(n) but couldn't reconstruct it",
-      "**Related:** Problem #876 is a variant on sum-free sets"
+      "**Weak vs Classical Sum-Free**: No a = a₂ + ⋯ + aᵣ (r ≥ 2) is weaker than no a + b = c",
+      "**Huge Gap**: Current bounds span √(n log n / log log n) to n/log n — roughly n^{1/2+ε} to n^{1-ε}",
+      "**Both Questions Answered**: CKS bounds settle l(n)/√n → ∞ and l(n) < n^{1-c}",
+      "**CKS Conjecture (OPEN)**: l(n) ≥ n^{1-o(1)} would mean l(n) is nearly linear",
+      "**Erdős's Lost Proof**: He claimed l(n) = o(n) in 1965 but couldn't reconstruct it by 1973",
+      "**Probabilistic Methods**: Lower bound constructions use random or greedy selection"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "sum-free-sets",
+      "title": "Sum-Free Sets",
+      "startLine": 31,
+      "endLine": 45,
+      "summary": "IsSumFree and classicalSumFree definitions"
+    },
+    {
+      "id": "extremal-function",
+      "title": "The Extremal Function l(n)",
+      "startLine": 47,
+      "endLine": 63,
+      "summary": "l(n) axiom with characterization and optimality"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "startLine": 65,
+      "endLine": 84,
+      "summary": "Erdős, Choi, and CKS lower bounds"
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 86,
+      "endLine": 93,
+      "summary": "CKS upper bound l(n) ≤ Cn/log n"
+    },
+    {
+      "id": "main-questions",
+      "title": "The Main Questions",
+      "startLine": 95,
+      "endLine": 121,
+      "summary": "Questions 1 and 2 answered, CKS conjecture stated"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 123,
+      "endLine": 142,
+      "summary": "cks_bounds and erdos_790_summary theorems"
+    }
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #790 asks for the maximum guaranteed size l(n) of a sum-free subset in any n-element integer set, where sum-free means no element equals a sum of distinct others. Choi-Komlós-Szemerédi (1975) proved √(n log n / log log n) ≤ l(n) ≤ n/log n. This answers that l(n)/√n → ∞ and l(n) < n^{1-c}. The conjecture l(n) ≥ n^{1-o(1)} remains OPEN.",
-    "implications": "**Connections**\n\n1. **Sum-free sets:** Relates to Schur numbers and Ramsey theory\n\n2. **Additive combinatorics:** Questions about avoiding additive dependencies\n\n3. **Extremal combinatorics:** Finding optimal guaranteed structures\n\n4. **Problem #876:** Related sum-free variant\n\n5. **Probabilistic method:** Used in lower bound constructions",
+    "summary": "Erdős Problem #790 asks for the extremal function l(n) — the maximum guaranteed sum-free subset size in any n-element integer set. Choi-Komlós-Szemerédi (1975) proved √(n log n / log log n) ≤ l(n) ≤ n/log n, answering both of Erdős's questions (l(n)/√n → ∞ and l(n) < n^{1-c}). The CKS conjecture l(n) ≥ n^{1-o(1)} remains OPEN.",
+    "implications": "Closing the gap between the lower and upper bounds would resolve a fundamental question in additive combinatorics about the size of guaranteed sum-free structures. The problem connects to Ramsey theory, the probabilistic method, and Schur numbers.",
     "openQuestions": [
       "Is l(n) ≥ n^{1-o(1)}? (CKS Conjecture)",
       "Can the n/log n upper bound be improved?",
       "What is the correct asymptotic for l(n)?",
-      "What happens for sum-free in Z/mZ instead of Z?"
+      "What happens for sum-free sets in Z/mZ instead of Z?"
     ]
   }
 }
