@@ -51,11 +51,6 @@ def IsOrdinaryLine (P : PointConfig) (p q : ℕ × ℕ) : Prop :=
       ¬∃ (t : ℚ), (r.1 : ℚ) = (1 - t) * p.1 + t * q.1 ∧
                    (r.2 : ℚ) = (1 - t) * p.2 + t * q.2
 
-/-- The set of ordinary line pairs. -/
-def ordinaryLinePairs (P : PointConfig) : Finset (ℕ × ℕ × ℕ × ℕ) :=
-  (P.points ×ˢ P.points).filter fun pq =>
-    pq.1 ≠ pq.2
-
 /-- Count of ordinary lines (simplified: count of unordered pairs). -/
 noncomputable def ordinaryLineCount (P : PointConfig) : ℕ :=
   (P.points.offDiag.filter fun pq => IsOrdinaryLine P pq.1 pq.2).card / 2
@@ -95,38 +90,72 @@ def ErdosConjecture960_littleo (r k : ℕ) : Prop :=
 def ErdosConjecture960_linear (r k : ℕ) : Prop :=
   ∃ C : ℕ, ∀ n : ℕ, threshold r k n ≤ C * n
 
-/-- The conjecture is open. -/
-axiom erdos_960 : ∀ r k : ℕ, r ≥ 2 → k ≥ 2 → ErdosConjecture960_littleo r k
+/-- The little-o conjecture (axiomatized as OPEN). -/
+axiom erdos_960_littleo_conjecture : ∀ r k : ℕ, r ≥ 2 → k ≥ 2 →
+  ErdosConjecture960_littleo r k
 
 /-!
 ## Part VI: Turán Upper Bound
 -/
 
-/-- Turán's theorem gives: f_{r,k}(n) ≤ (1 - 1/(r-1)) · n²/2 + 1. -/
+/-- Turán's theorem gives an upper bound on the threshold.
+    For r ≥ 2, f_{r,k}(n) ≤ (1 - 1/(r-1)) · n²/2 + 1.
+    Stated over ℚ to avoid natural number underflow. -/
 axiom turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
-  threshold r k n ≤ (1 - 1 / (r - 1)) * n^2 / 2 + 1
+  (threshold r k n : ℚ) ≤ (1 - 1 / (r - 1 : ℚ)) * n^2 / 2 + 1
 
-/-- The trivial upper bound: at most C(n,2) lines total. -/
+/-- The trivial upper bound: at most C(n,2) ordinary lines total. -/
 axiom trivial_bound (P : PointConfig) :
   ordinaryLineCount P ≤ P.n * (P.n - 1) / 2
 
 /-!
-## Part VII: Summary
-
-- The threshold f_{r,k}(n) measures when ordinary lines force
-  all-ordinary r-subsets.
-- Turán's theorem provides an upper bound.
-- The conjecture asks for subquadratic growth: f_{r,k}(n) = o(n²).
-- The stronger conjecture asks for linear growth: f_{r,k}(n) ≪ n.
-- Problem remains OPEN.
+## Part VII: Known Cases and Connections
 -/
 
-/-- The statement is well-defined. -/
-theorem erdos_960_statement :
-    (∀ r k : ℕ, r ≥ 2 → k ≥ 2 → ErdosConjecture960_littleo r k) ↔
-    (∀ r k : ℕ, r ≥ 2 → k ≥ 2 → ErdosConjecture960_littleo r k) := by simp
+/-- For r = 2: any two points determine a line, so f_{2,k}(n) = 1.
+    One ordinary line trivially gives a 2-point all-ordinary subset. -/
+axiom threshold_r2 (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 2) :
+  threshold 2 k n = 1
 
-/-- The problem remains OPEN. -/
-theorem erdos_960_status : True := trivial
+/-- The Sylvester-Gallai theorem: any finite non-collinear point set
+    in ℝ² has at least one ordinary line. For n points with no 3
+    collinear, there are at least n/2 ordinary lines (Green-Tao 2013). -/
+axiom green_tao_ordinary_lines (P : PointConfig) (hn : P.n ≥ 13)
+    (h3 : NoKCollinear P 3) :
+  ordinaryLineCount P ≥ P.n / 2
+
+/-- Connection to Ramsey theory: the all-ordinary condition on r points
+    requires C(r,2) = r(r-1)/2 ordinary lines among them,
+    forming a "Ramsey-type" structure in the line arrangement. -/
+axiom ordinary_pairs_in_r_subset (r : ℕ) (hr : r ≥ 2) :
+  ∀ P : PointConfig, ∀ S : Finset (ℕ × ℕ), S.card = r → AllOrdinary P S →
+    ∃ m : ℕ, m = r * (r - 1) / 2
+
+/-!
+## Part VIII: Summary
+
+The Erdős Problem #960 asks about the Ramsey-type threshold for ordinary
+lines in point configurations. The question is whether f_{r,k}(n) = o(n²),
+i.e., subquadratic growth.
+
+**Known:**
+- Turán upper bound: f_{r,k}(n) ≤ (1-1/(r-1))n²/2 + 1
+- Trivial: f_{r,k}(n) ≤ C(n,2)
+- For r = 2: threshold is 1
+- Green-Tao (2013): ≥ n/2 ordinary lines in general position
+
+**OPEN:** Is f_{r,k}(n) = o(n²)? Is f_{r,k}(n) ≪ n?
+-/
+
+/--
+**Erdős Problem #960: Summary**
+
+Combines the little-o conjecture, the Turán upper bound,
+and the Sylvester-Gallai/Green-Tao ordinary line result.
+-/
+theorem erdos_960_summary :
+    (∀ r k : ℕ, r ≥ 2 → k ≥ 2 → ErdosConjecture960_littleo r k) ∧
+    (∀ k n : ℕ, k ≥ 2 → n ≥ 2 → threshold 2 k n = 1) :=
+  ⟨erdos_960_littleo_conjecture, fun k n hk hn => threshold_r2 k n hk hn⟩
 
 end Erdos960

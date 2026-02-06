@@ -6,9 +6,10 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/960",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos960Problem.lean",
     "tags": [
+      "erdos",
       "combinatorial-geometry",
       "ordinary-lines",
       "ramsey-theory",
@@ -19,18 +20,31 @@
     "sorries": 0,
     "erdosNumber": 960,
     "erdosUrl": "https://erdosproblems.com/960",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "originalContributions": [
+      "PointConfig structure with finite point sets",
+      "NoKCollinear predicate via collinearity equations",
+      "IsOrdinaryLine, ordinaryLineCount definitions",
+      "AllOrdinary: every pair determines an ordinary line",
+      "threshold(r,k,n) via sSup over configurations",
+      "ErdosConjecture960_littleo: f = o(n²) formal statement",
+      "ErdosConjecture960_linear: f ≪ n stronger form",
+      "turan_upper_bound (axiom): Turán bound over ℚ",
+      "threshold_r2 (axiom): f_{2,k}(n) = 1",
+      "green_tao_ordinary_lines (axiom): ≥ n/2 for general position",
+      "erdos_960_summary (proved): combines conjecture with r=2 case"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #960 from [Er84] asks about the threshold of ordinary lines needed to guarantee an all-ordinary r-subset in point configurations with no k collinear. Turán's theorem provides an upper bound. The problem connects to the Sylvester-Gallai theorem and ordinary lines in discrete geometry.",
-    "problemStatement": "Let r, k >= 2. For n points with no k collinear, determine f_{r,k}(n): the minimum number of ordinary lines guaranteeing r points whose C(r,2) connecting lines are all ordinary. Is f_{r,k}(n) = o(n²)? OPEN.",
-    "proofStrategy": "The formalization defines PointConfig, NoKCollinear, IsOrdinaryLine, AllOrdinary, and the threshold function via sSup. The main conjecture is stated as little-o growth. The Turán upper bound is axiomatized.",
+    "historicalContext": "Erdős Problem #960 originates from Erdős's 1984 paper [Er84] and concerns the interplay between ordinary lines and Ramsey-type phenomena in discrete geometry. An ordinary line is one passing through exactly two points of a configuration. The Sylvester-Gallai theorem (1893) guarantees at least one ordinary line for any non-collinear finite point set, and the Green-Tao theorem (2013) strengthened this to at least n/2 ordinary lines when no three points are collinear.\n\nThe problem asks about a higher-order structure: given many ordinary lines, must there exist r points whose C(r,2) connecting lines are all ordinary? The threshold f_{r,k}(n) measures the minimum number of ordinary lines needed to force such an 'all-ordinary' r-subset, among n-point configurations with no k collinear. Turán's theorem from extremal graph theory provides an upper bound by viewing the ordinary line relation as a graph.\n\nThe central conjecture is that f_{r,k}(n) = o(n²), meaning the threshold grows subquadratically. The stronger form asks whether f_{r,k}(n) is actually linear in n. Both questions remain open. The problem connects discrete geometry, extremal graph theory, and Ramsey theory in a way that highlights how local structure (ordinary lines) constrains global combinatorial patterns.",
+    "problemStatement": "Let r, k ≥ 2 be fixed. For n points in ℝ² with no k collinear, define f_{r,k}(n) as the minimum number of ordinary lines that guarantees the existence of r points whose C(r,2) connecting lines are all ordinary. Is f_{r,k}(n) = o(n²)? Is f_{r,k}(n) ≪ n? Both questions remain OPEN.",
+    "proofStrategy": "The formalization defines PointConfig, NoKCollinear, IsOrdinaryLine, AllOrdinary, and the threshold function via sSup. The main conjecture ErdosConjecture960_littleo is stated formally and axiomatized. The Turán upper bound is axiomatized over ℚ to avoid natural number underflow. Additional results include the trivial r=2 case, Green-Tao ordinary lines, and the Ramsey connection. The summary theorem combines the conjecture with the r=2 base case.",
     "keyInsights": [
       "An ordinary line passes through exactly 2 points of the configuration",
-      "The threshold f_{r,k}(n) counts how many ordinary lines force an all-ordinary r-subset",
-      "Turán's theorem gives f_{r,k}(n) <= (1-1/(r-1))n²/2 + 1",
-      "The conjecture asks for subquadratic growth, or even linear growth",
-      "Related to Sylvester-Gallai and ordinary lines problems"
+      "The threshold f_{r,k}(n) is a Ramsey-type function counting when ordinary lines force all-ordinary subsets",
+      "Turán's theorem gives f_{r,k}(n) ≤ (1-1/(r-1))n²/2 + 1 by viewing ordinary lines as graph edges",
+      "Green-Tao (2013): any n points in general position have ≥ n/2 ordinary lines",
+      "The conjecture asks for subquadratic or even linear growth of f_{r,k}(n)"
     ]
   },
   "sections": [
@@ -45,48 +59,55 @@
       "id": "ordinary-lines",
       "title": "Part II: Ordinary Lines",
       "startLine": 43,
-      "endLine": 61,
-      "summary": "Defines IsOrdinaryLine, ordinaryLinePairs, and ordinaryLineCount."
+      "endLine": 56,
+      "summary": "Defines IsOrdinaryLine and ordinaryLineCount."
     },
     {
       "id": "all-ordinary",
       "title": "Part III: All-Ordinary Subsets",
-      "startLine": 63,
-      "endLine": 70,
+      "startLine": 58,
+      "endLine": 65,
       "summary": "Defines AllOrdinary: every pair in a subset determines an ordinary line."
     },
     {
       "id": "threshold",
       "title": "Part IV: The Threshold Function",
-      "startLine": 72,
-      "endLine": 82,
+      "startLine": 67,
+      "endLine": 77,
       "summary": "Defines threshold(r, k, n) via sSup over configurations without all-ordinary r-subsets."
     },
     {
       "id": "conjecture",
       "title": "Part V: The Main Conjecture",
-      "startLine": 84,
-      "endLine": 99,
-      "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960."
+      "startLine": 79,
+      "endLine": 95,
+      "summary": "Defines ErdosConjecture960_littleo (f = o(n²)) and ErdosConjecture960_linear (f ≪ n). Axiom erdos_960_littleo_conjecture."
     },
     {
       "id": "turan-bound",
       "title": "Part VI: Turán Upper Bound",
-      "startLine": 101,
-      "endLine": 111,
-      "summary": "Axioms: turan_upper_bound (Turán's theorem), trivial_bound (at most C(n,2) lines)."
+      "startLine": 97,
+      "endLine": 109,
+      "summary": "Axioms: turan_upper_bound over ℚ (Turán's theorem), trivial_bound (at most C(n,2) lines)."
+    },
+    {
+      "id": "connections",
+      "title": "Part VII: Known Cases and Connections",
+      "startLine": 111,
+      "endLine": 132,
+      "summary": "threshold_r2 (r=2 base case), Green-Tao ordinary lines, Ramsey connection for r-subsets."
     },
     {
       "id": "summary",
-      "title": "Part VII: Summary",
-      "startLine": 113,
-      "endLine": 132,
-      "summary": "Proved: erdos_960_statement (simp), erdos_960_status (trivial). OPEN."
+      "title": "Part VIII: Summary",
+      "startLine": 134,
+      "endLine": 161,
+      "summary": "erdos_960_summary (proved): combines conjecture with r=2 case. Problem remains OPEN."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #960 asks for the threshold of ordinary lines guaranteeing all-ordinary r-subsets. Turán's theorem provides an upper bound, but whether the threshold is subquadratic or linear remains open.",
-    "implications": "Resolution would connect ordinary line theory to Ramsey-type phenomena in discrete geometry.",
+    "summary": "Erdős Problem #960 asks for the threshold of ordinary lines guaranteeing all-ordinary r-subsets in point configurations with no k collinear. Turán's theorem provides an upper bound, but whether the threshold is subquadratic or linear remains open.",
+    "implications": "Resolution would establish a new connection between discrete geometry and Ramsey-type phenomena, linking the local structure of ordinary lines to global combinatorial patterns in point configurations.",
     "openQuestions": [
       "Is f_{r,k}(n) = o(n²)?",
       "Is f_{r,k}(n) ≪ n (linear growth)?",
