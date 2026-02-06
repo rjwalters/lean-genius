@@ -354,4 +354,49 @@ theorem expected_pairs_27_lt_one : expected_shared_pairs 27 < 1 := by
   unfold expected_shared_pairs numDays
   norm_num [Nat.choose]
 
+/-! ## Part VIII: The 99% Threshold (OQ-04)
+
+The 99% threshold: how many people are needed for a 99% probability of a
+shared birthday? The answer is 57 people.
+
+P(57) > 0.99 and P(56) < 0.99, so 57 is the exact threshold.
+
+Proof strategy: P(shared) > 99/100 ⟺ 1 - desc/total > 99/100
+⟺ desc/total < 1/100 ⟺ 100*desc < total.
+Similarly, P(shared) < 99/100 ⟺ 100*desc > total.
+-/
+
+/-- **The 99% Threshold**: With 57 people, the probability of at least two
+    sharing a birthday exceeds 99%.
+
+    Proof: 100 * descFactorial(365, 57) < 365^57. -/
+theorem birthday_57_exceeds_99_percent : prob_shared_birthday 57 > (99 : ℚ) / 100 := by
+  simp only [prob_shared_birthday, prob_all_distinct, numDays]
+  have h_total_pos : (0 : ℚ) < (365 : ℕ) ^ 57 := by positivity
+  have h_ineq : (365 : ℕ) ^ 57 > 100 * Nat.descFactorial 365 57 := by native_decide
+  have h_frac_lt : ((Nat.descFactorial 365 57 : ℕ) : ℚ) / ((365 : ℕ) ^ 57 : ℚ) < 1 / 100 := by
+    have h : (100 : ℚ) * (Nat.descFactorial 365 57 : ℕ) < (365 : ℕ) ^ 57 := by exact_mod_cast h_ineq
+    have h2 : (Nat.descFactorial 365 57 : ℚ) < ((365 : ℕ) ^ 57 : ℚ) / 100 := by linarith
+    calc ((Nat.descFactorial 365 57 : ℕ) : ℚ) / ((365 : ℕ) ^ 57 : ℚ)
+        < ((365 : ℕ) ^ 57 : ℚ) / 100 / ((365 : ℕ) ^ 57 : ℚ) := by apply div_lt_div_of_pos_right h2 h_total_pos
+      _ = 1 / 100 := by field_simp
+  linarith
+
+/-- With 56 people, the probability is still below 99%.
+
+    Proof: 100 * descFactorial(365, 56) > 365^56.
+    So 57 is the exact threshold for 99% probability. -/
+theorem birthday_56_below_99_percent : prob_shared_birthday 56 < (99 : ℚ) / 100 := by
+  simp only [prob_shared_birthday, prob_all_distinct, numDays]
+  have h_total_pos : (0 : ℚ) < (365 : ℕ) ^ 56 := by positivity
+  have h_ineq : (365 : ℕ) ^ 56 < 100 * Nat.descFactorial 365 56 := by native_decide
+  have h_frac_gt : ((Nat.descFactorial 365 56 : ℕ) : ℚ) / ((365 : ℕ) ^ 56 : ℚ) > 1 / 100 := by
+    have h : ((365 : ℕ) ^ 56 : ℚ) < 100 * (Nat.descFactorial 365 56 : ℕ) := by exact_mod_cast h_ineq
+    have h2 : ((365 : ℕ) ^ 56 : ℚ) / 100 < (Nat.descFactorial 365 56 : ℚ) := by linarith
+    calc 1 / 100
+        = ((365 : ℕ) ^ 56 : ℚ) / 100 / ((365 : ℕ) ^ 56 : ℚ) := by field_simp
+      _ < ((Nat.descFactorial 365 56 : ℕ) : ℚ) / ((365 : ℕ) ^ 56 : ℚ) := by
+          apply div_lt_div_of_pos_right h2 h_total_pos
+  linarith
+
 end BirthdayProblem

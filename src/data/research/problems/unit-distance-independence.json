@@ -2,47 +2,59 @@
   "slug": "unit-distance-independence",
   "title": "Unit Distance Graph Independence Number Bounds",
   "phase": "COMPLETE",
-  "status": "complete",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
     "formal": "α(G) · χ(G) ≥ |V| where α is independence number, χ is chromatic number",
     "plain": "Formalize independence number bounds for unit distance graphs, connecting to the Hadwiger-Nelson problem (5 ≤ χ(R²) ≤ 7).",
-    "whyMatters": ["Connects independence number to chromatic number", "Foundational for Hadwiger-Nelson problem"]
+    "whyMatters": [
+      "Connects independence number to chromatic number",
+      "Foundational for Hadwiger-Nelson problem"
+    ]
   },
   "knownResults": {
     "proven": [
-      "isIndepFinset_empty: ∅ is independent",
-      "isIndepFinset_singleton: {v} is independent",
-      "isIndepFinset_subset: Subsets preserve independence",
-      "indep_card_le_alpha: |S| ≤ α(G) for independent S",
-      "alpha_chi_ge_card: k * α(G) ≥ |V| (chromatic-independence relation)",
-      "independenceNumber_ge_of_indep: α(G) ≥ |I| for independent I",
-      "hadwiger_nelson_bounds: 5 ≤ χ(R²) ≤ 7",
-      "exists_maximal_indep: Every finite graph has a maximal independent set (NEW)",
-      "maximal_indep_covers: Maximal independent sets cover all vertices (NEW)",
-      "maximal_indep_covering_bound: |V| ≤ |I|·(Δ+1) for maximal I (NEW)",
-      "greedy_bound: α(G) ≥ |V|/(Δ+1) (PROVED - converted from axiom)",
-      "closedNeighborhoodIn_card_le: |N[v]| ≤ Δ+1"
+      "isIndepFinset_empty, isIndepFinset_singleton, isIndepFinset_subset, isIndepFinset_iff",
+      "independenceNumber_nonneg, indep_card_le_alpha",
+      "color_class_independent, hadwiger_nelson_bounds",
+      "isIndepFinset_insert, edge_leaves_indep, exists_nonempty_indep, indep_card_le_univ",
+      "unit_indep_iff_no_unit_dist, indep_iff_compl_clique, isIndepFinset_of_bot, indep_top_singleton",
+      "color_class_partition, proper_coloring_gives_independent_partition",
+      "exists_large_color_class, indep_from_coloring",
+      "degree_isolated, degree_le_card_sub_one, degree_le_maxDegree",
+      "closedNeighborhoodIn_card_le, exists_maximal_indep, maximal_indep_covers",
+      "maximal_indep_covering_bound, greedy_bound: α(G) ≥ |V|/(Δ+1)",
+      "unit_distance_independence_from_chromatic: α ≥ |V|/7",
+      "alpha_chi_ge_card, independenceNumber_ge_of_indep, independent_extend",
+      "disjoint_indep_union, indep_erase, alpha_ge_one",
+      "neighborhood_card_eq_degree, not_mem_neighborhood, independent_mono",
+      "independenceNumber_le_card, common_neighbor_indep, indep_chromatic_bound",
+      "indep_clique_intersection, indep_neighbors_outside, indep_is_compl_clique",
+      "indep_degree_sum, independenceNumber_pos"
     ],
-    "open": [],
-    "goal": "Complete. All theorems proved, 0 sorries."
+    "open": [
+      "De Grey 1581-vertex graph construction (too large for native_decide)",
+      "7-coloring hexagonal tiling (requires explicit construction)",
+      "Fractional chromatic number (requires LP duality)"
+    ],
+    "goal": "Complete: comprehensive independence number theory for unit distance graphs"
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-02-06T03:45:00Z",
-    "iteration": 5,
-    "focus": "Proved greedy_bound theorem via maximal independent set covering argument",
+    "since": "2026-02-06T17:20:00Z",
+    "iteration": 3,
+    "focus": "Complete: 48 theorems, 0 sorries, 2 axioms. Fixed linting warning. Comprehensive independence number theory.",
     "blockers": [],
-    "nextAction": "Problem formalization complete. 2 axioms remain for published results (Hadwiger-Nelson bounds).",
+    "nextAction": "None - problem formalization complete.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 1,
-      "approachesTried": 3
+      "total": 3,
+      "currentApproach": 3,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 48 theorems, 2 axioms, 0 sorries. Greedy bound α(G) ≥ |V|/(Δ+1) fully proved via maximal independent set covering argument. Axiom count reduced from 3 to 2.",
+    "progressSummary": "COMPLETE: 48 theorems, 0 sorries, 2 axioms. Comprehensive unit distance graph independence theory: abstract independence sets, independence number, coloring/independence connection, Hadwiger-Nelson bounds (5 ≤ χ ≤ 7), greedy bound α ≥ |V|/(Δ+1), pigeonhole bound α ≥ |V|/k, unit distance α ≥ |V|/7, maximal independent sets, covering bounds, neighborhood theory, clique-independence duality.",
     "builtItems": [
       "indepNumber: formal sSup definition",
       "indep_card_le_indepNumber: |S| ≤ α(G)",
@@ -66,7 +78,8 @@
       "Greedy bound proved via covering argument: maximal indep set covers all vertices via closed neighborhoods",
       "Key insight: avoid greedy algorithm formalization entirely; use maximal independent set + covering bound instead",
       "Finset.exists_max_image gives max-cardinality element from nonempty finset",
-      "Nat.mul_div_cancel and Nat.div_le_div_right sufficient for nat division bounds"
+      "Nat.mul_div_cancel and Nat.div_le_div_right sufficient for nat division bounds",
+      "Linter false positive: hne flagged as unused but used in haveI binding"
     ],
     "nextSteps": [
       "Consider Aristotle submission for Hadwiger-Nelson axioms",
@@ -94,18 +107,26 @@
     "unit-distance",
     "extension",
     "0-sorry",
-    "complete"
+    "complete",
+    "complete",
+    "0-sorries",
+    "48-theorems"
   ],
   "relatedProofs": [
     "proofs/Proofs/UnitDistanceIndependence.lean"
   ],
   "references": {
-    "papers": ["De Grey 2018"],
+    "papers": [
+      "De Grey 2018"
+    ],
     "urls": [],
-    "mathlib": ["Combinatorics.SimpleGraph.Basic", "Combinatorics.SimpleGraph.Clique"]
+    "mathlib": [
+      "Combinatorics.SimpleGraph.Basic",
+      "Combinatorics.SimpleGraph.Clique"
+    ]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-06T03:45:00Z",
+  "lastUpdate": "2026-02-06T17:20:00Z",
   "significance": 7,
   "tractability": 7,
   "knowledgeScore": 5
