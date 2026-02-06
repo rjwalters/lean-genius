@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #1127: Decomposing ℝⁿ into Sets with Distinct Distances
 
 Source: https://erdosproblems.com/1127
@@ -305,13 +305,5 @@ theorem erdos_1127_summary :
     -- Davies for n = 2
     (ContinuumHypothesis → Erdos1127Question' 2) := by
   refine ⟨erdos_1127, erdos_kakutani_equivalence, davies_theorem⟩
-
-/--
-**Historical note:**
-This problem showcases how a simple geometric question can lead to deep
-connections with foundations of mathematics (set theory, axiom of choice,
-continuum hypothesis).
--/
-theorem historical_note : True := trivial
 
 end Erdos1127
