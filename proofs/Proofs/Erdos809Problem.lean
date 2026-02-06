@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #809: Rainbow Colorings of Odd Cycles
 
 **Source:** [erdosproblems.com/809](https://erdosproblems.com/809)
@@ -34,7 +34,7 @@ open Finset
 
 namespace Erdos809
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Simple Graph on n vertices:**
@@ -68,7 +68,7 @@ An assignment of colors (from {0, ..., r-1}) to edges.
 def EdgeColoring (n : ℕ) (G : Graph n) (r : ℕ) :=
   G.edgeSet → Fin r
 
-/-! ## Part II: Rainbow Property -/
+/- ## Part II: Rainbow Property -/
 
 /--
 **Rainbow Coloring:**
@@ -89,7 +89,7 @@ structure Cycle (n : ℕ) (G : Graph n) (m : ℕ) where
   distinct : ∀ i j, i ≠ j → i.val < m - 1 → j.val < m - 1 → vertices i ≠ vertices j
   edges : ∀ i : Fin m, G.Adj (vertices i) (vertices ⟨(i.val + 1) % m, by omega⟩)
 
-/-! ## Part III: The Function F_k(n)
+/- ## Part III: The Function F_k(n)
 
 F_k(n) is axiomatized as a function ℕ → ℕ → ℕ rather than defined via
 Nat.find, since the existence proof for the find would require sorry.
@@ -102,7 +102,7 @@ admits an r-coloring where every C_{2k+1} subgraph is rainbow.
 -/
 axiom F : ℕ → ℕ → ℕ
 
-/-! ## Part IV: The Conjecture -/
+/- ## Part IV: The Conjecture -/
 
 /--
 **Main Conjecture:**
@@ -121,7 +121,7 @@ def asymptoticEquivalence : Prop :=
   ∀ k ≥ 3, ∀ ε > 0, ∃ n₀ : ℕ, ∀ n ≥ n₀,
     |((F k n : ℝ) / ((n : ℝ)^2 / 8)) - 1| < ε
 
-/-! ## Part V: Known Bounds -/
+/- ## Part V: Known Bounds -/
 
 /--
 **Burr-Erdős-Graham-Sós Lower Bound:**
@@ -139,7 +139,7 @@ axiom quadratic_upper_bound :
   ∀ k ≥ 3, ∃ C : ℝ, ∀ n : ℕ, n ≥ 1 →
     (F k n : ℝ) ≤ C * (n : ℝ)^2
 
-/-! ## Part VI: Turán's Theorem Context -/
+/- ## Part VI: Turán's Theorem Context -/
 
 /--
 **Turán's Theorem:**
@@ -160,7 +160,7 @@ theorem threshold_significance :
   simp [turanThreshold]
   omega
 
-/-! ## Part VII: Summary
+/- ## Part VII: Summary
 
 **Erdős Problem #809: OPEN**
 
