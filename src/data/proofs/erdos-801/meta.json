@@ -16,7 +16,7 @@
       "extremal-combinatorics",
       "probabilistic-method"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 801,
     "erdosUrl": "https://erdosproblems.com/801",
@@ -33,7 +33,36 @@
       "Probabilistic sampling techniques are essential"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Graph Definitions",
+      "startLine": 40,
+      "endLine": 58,
+      "summary": "FiniteGraph, independenceNumber, HasBoundedIndependence, inducedEdges."
+    },
+    {
+      "id": "main-statement",
+      "title": "The Main Statement",
+      "startLine": 60,
+      "endLine": 78,
+      "summary": "Erdos801Statement definition and Alon's theorem (1996)."
+    },
+    {
+      "id": "tightness",
+      "title": "Tightness and Optimality",
+      "startLine": 79,
+      "endLine": 104,
+      "summary": "Log factor is necessary, vertex set size √n is optimal."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 105,
+      "endLine": 123,
+      "summary": "erdos_801_summary combining Alon's theorem and tightness."
+    }
+  ],
   "conclusion": {
     "summary": "Alon (1996) proved that graphs with independence number at most √n must contain a small dense subgraph. Specifically, there exists a set of ≤ √n vertices inducing ≫ √n log n edges. The bound is tight up to constants.",
     "implications": "The result demonstrates a local-global principle: global sparsity constraints (bounded independence) imply local density. Applications include community detection algorithms, dense subgraph discovery, and Ramsey-type structural theorems.",
