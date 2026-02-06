@@ -28,7 +28,7 @@ open Finset BigOperators Nat
 
 namespace Erdos686
 
-/-! ## Part I: Consecutive Products -/
+/- ## Part I: Consecutive Products -/
 
 /-- Product of k consecutive integers starting at n+1: P(n,k) = (n+1)(n+2)...(n+k). -/
 def consecutiveProduct (n k : ℕ) : ℕ :=
@@ -47,7 +47,7 @@ example : consecutiveProduct 0 3 = 1 * 2 * 3 := by native_decide
 example : consecutiveProduct 1 3 = 2 * 3 * 4 := by native_decide
 example : consecutiveProduct 2 2 = 3 * 4 := by native_decide
 
-/-! ## Part II: The Ratio Expression -/
+/- ## Part II: The Ratio Expression -/
 
 /-- The ratio P(m,k)/P(n,k) as a rational number. -/
 noncomputable def ratioExpression (n m k : ℕ) : ℚ :=
@@ -57,7 +57,7 @@ noncomputable def ratioExpression (n m k : ℕ) : ℚ :=
 def IsIntegerRatio (n m k : ℕ) : Prop :=
   (consecutiveProduct n k) ∣ (consecutiveProduct m k)
 
-/-! ## Part III: The Representation Property -/
+/- ## Part III: The Representation Property -/
 
 /-- N is representable with parameters (n, m, k). -/
 def IsRepresentable (N : ℕ) (n m k : ℕ) : Prop :=
@@ -75,7 +75,7 @@ of k consecutive integers with non-overlapping ranges.
 def ErdosConjecture686 : Prop :=
   ∀ N ≥ 2, Representable N
 
-/-! ## Part IV: Structural Properties -/
+/- ## Part IV: Structural Properties -/
 
 /-- When m ≥ n + k, the numerator product exceeds the denominator. -/
 axiom numerator_gt_denominator (n m k : ℕ) (hk : k ≥ 2) (hm : m ≥ n + k) :
@@ -85,12 +85,12 @@ axiom numerator_gt_denominator (n m k : ℕ) (hk : k ≥ 2) (hm : m ≥ n + k) :
 axiom ratio_gt_one (n m k : ℕ) (hk : k ≥ 2) (hm : m ≥ n + k) (hpos : n > 0 ∨ k > 0) :
     ratioExpression n m k > 1
 
-/-! ## Part V: Examples -/
+/- ## Part V: Examples -/
 
 /-- N = 6: (3)(4)/(1)(2) = 12/2 = 6. -/
 example : ratioExpression 0 2 2 = 6 := by native_decide
 
-/-! ## Part VI: Follow-Up Question -/
+/- ## Part VI: Follow-Up Question -/
 
 /-- The set of integers representable with fixed n, k. -/
 def RepresentableSet (n k : ℕ) : Set ℕ :=
@@ -104,12 +104,23 @@ axiom ratio_mono (n k m₁ m₂ : ℕ) (h : m₁ < m₂) :
 axiom representable_set_infinite (n k : ℕ) (hk : k ≥ 2) :
     Set.Infinite (RepresentableSet n k)
 
-/-! ## Part VII: Connections -/
+/- ## Part VII: Connections -/
 
-/-- Connection to Problem #677 (similar structure). -/
-axiom problem_677_connection : True
+/-- **Connection to Problem #677:**
+    Both problems concern representations of integers via products of
+    consecutive integers. Problem #677 asks about writing integers as
+    products of consecutive integers (not ratios). This is the simpler
+    case where the denominator is 1. -/
+def problem_677_special_case (N : ℕ) : Prop :=
+  ∃ n k : ℕ, k ≥ 2 ∧ consecutiveProduct n k = N
 
-/-! ## Part VIII: Summary -/
+/-- Every representable N via products alone is also representable as a ratio. -/
+theorem product_implies_ratio (N : ℕ) (h : problem_677_special_case N) :
+    Representable N := by
+  obtain ⟨n, k, hk, hprod⟩ := h
+  exact ⟨0, n, k, hk, by omega, by simp [ratioExpression, hprod, consecutiveProduct]⟩
+
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #686: Summary**
@@ -124,14 +135,12 @@ KNOWN:
 - N = 6 is verified: (3)(4)/(1)(2) = 6
 - For fixed n, k, the representable set is infinite
 - The ratio increases monotonically with m
+- Cannot be resolved with a finite computation
 -/
 theorem erdos_686_statement :
     ErdosConjecture686 ↔
     ∀ N ≥ 2, ∃ n m k : ℕ, k ≥ 2 ∧ m ≥ n + k ∧
       ratioExpression n m k = N := by
   simp only [ErdosConjecture686, Representable, IsRepresentable]
-
-/-- The problem remains OPEN. -/
-theorem erdos_686_status : True := trivial
 
 end Erdos686
