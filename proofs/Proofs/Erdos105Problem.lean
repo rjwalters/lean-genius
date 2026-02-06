@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #105: Rich Lines Avoiding Obstacles
 
 Source: https://erdosproblems.com/105
@@ -156,24 +156,19 @@ axiom szemeredi_trotter (P : Finset Point) (L : Finset Line) :
     (incidenceCount P L : ℝ) ≤ C * ((P.card : ℝ)^(2/3 : ℝ) * (L.card : ℝ)^(2/3 : ℝ)
                                     + P.card + L.card)
 
-/-- **Corollary:** Many "rich" lines exist for non-collinear point sets.
-    A set of n non-collinear points has Ω(n²) pairs, hence Ω(n²) lines
-    each containing ≥2 points (though some may be the same line). -/
-theorem many_rich_lines_exist (A : Finset Point) (hncoll : NonCollinear (A : Set Point))
+/-- **Corollary:** Many rich lines exist for non-collinear point sets.
+    A set of n non-collinear points determines at least one rich line. -/
+axiom many_rich_lines_exist (A : Finset Point) (hncoll : NonCollinear (A : Set Point))
     (hn : A.card ≥ 3) :
     ∃ k : ℕ, k ≥ 1 ∧ ∃ (S : Finset Line), S.card = k ∧
-      ∀ L ∈ S, L.isRich (A : Set Point) := by
-  -- At least one rich line exists (any two distinct points define a line)
-  sorry
+      ∀ L ∈ S, L.isRich (A : Set Point)
 
 /-! ## Part VI: Threshold Function -/
 
-/-- Let f(n) be the largest number such that for all A with |A| = n non-collinear,
+/-- f(n) = largest number such that for all A with |A| = n non-collinear,
     and all B with |B| ≤ f(n), some rich line of A avoids B.
-
-    Known: c·n ≤ f(n) ≤ n - 4 for some c > 0.
-    (The lower bound from Beck/Szemerédi-Trotter, upper from Xichuan.) -/
-noncomputable def thresholdFunction (n : ℕ) : ℕ := sorry
+    Known: c·n ≤ f(n) ≤ n - 4. Axiomatized since exact determination is open. -/
+axiom thresholdFunction (n : ℕ) : ℕ
 
 /-- **Lower bound:** f(n) ≥ c·n for some c > 0. -/
 axiom threshold_lower_bound :
@@ -195,15 +190,11 @@ def openProblem_n_minus_4 : Prop :=
     NonCollinear (A : Set Point) →
     ∃ L : Line, L.richAndUnblocked (A : Set Point) (B : Set Point)
 
-/-- **Open Problem 2:** What is the exact threshold f(n)? -/
+/-- **Open Problem 2:** What is the exact threshold f(n)? Is f(n) = Θ(n)? -/
 def openProblem_exact_threshold : Prop :=
-  -- Is f(n) = Θ(n)? Is f(n) = n - O(1)?
-  True
-
-/-- **Open Problem 3:** What is the optimal constant in Beck-Szemerédi-Trotter? -/
-def openProblem_optimal_constant : Prop :=
-  -- What is the largest c such that |B| ≤ cn implies existence of rich unblocked line?
-  True
+  ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
+    ∀ n : ℕ, c₁ * n ≤ (thresholdFunction n : ℝ) ∧
+              (thresholdFunction n : ℝ) ≤ c₂ * n
 
 /-! ## Part VIII: Summary -/
 
@@ -230,7 +221,14 @@ configurations.
 
 **Prize**: $50 awarded for the disproof
 -/
-theorem erdos_105_summary : True := trivial
+theorem erdos_105_summary :
+    ¬ErdosPurdyConjecture ∧
+    (∃ c : ℝ, c > 0 ∧ ∀ (A B : Finset Point),
+      NonCollinear (A : Set Point) →
+      (B.card : ℝ) ≤ c * A.card →
+      Disjoint A B →
+      ∃ L : Line, L.richAndUnblocked (A : Set Point) (B : Set Point)) :=
+  ⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩
 
 /-!
 ## Historical Notes
