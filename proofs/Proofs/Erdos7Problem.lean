@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #7: Covering Systems with Odd Moduli
 
   Source: https://erdosproblems.com/7
@@ -28,7 +28,7 @@ open Set Finset
 
 namespace Erdos7
 
-/-! ## Basic Definitions (from Problem #2) -/
+/- ## Basic Definitions (from Problem #2) -/
 
 /-- An arithmetic progression represented as a pair (residue, modulus). -/
 structure CongruenceClass where
@@ -54,7 +54,7 @@ def CoveringSystem.moduli (cs : CoveringSystem) : List ℕ :=
 def CoveringSystem.hasDistinctModuli (cs : CoveringSystem) : Prop :=
   cs.moduli.Nodup
 
-/-! ## Odd Moduli -/
+/- ## Odd Moduli -/
 
 /-- A congruence class has odd modulus. -/
 def CongruenceClass.hasOddModulus (c : CongruenceClass) : Prop :=
@@ -68,7 +68,7 @@ def CoveringSystem.allOddModuli (cs : CoveringSystem) : Prop :=
 def CoveringSystem.hasEvenModulus (cs : CoveringSystem) : Prop :=
   ∃ c ∈ cs.classes, Even c.modulus
 
-/-! ## The Erdős-Selfridge Conjecture -/
+/- ## The Erdős-Selfridge Conjecture -/
 
 /--
 **Erdős Problem 7** (Erdős-Selfridge Conjecture, OPEN):
@@ -99,7 +99,7 @@ theorem erdos_selfridge_equiv :
     obtain ⟨c, hc, heven⟩ := h cs
     exact Nat.not_even_iff_odd.mpr (hcs c hc) heven
 
-/-! ## Squarefree Moduli -/
+/- ## Squarefree Moduli -/
 
 /-- A natural number is squarefree if no prime squared divides it. -/
 def Squarefree (n : ℕ) : Prop := ∀ p : ℕ, p.Prime → ¬(p^2 ∣ n)
@@ -116,7 +116,7 @@ def CoveringSystem.allSquarefreeModuli (cs : CoveringSystem) : Prop :=
 def CoveringSystem.allOddSquarefreeModuli (cs : CoveringSystem) : Prop :=
   cs.allOddModuli ∧ cs.allSquarefreeModuli
 
-/-! ## Balister et al. (2022) -/
+/- ## Balister et al. (2022) -/
 
 /--
 **Balister-Bollobás-Morris-Sahasrabudhe-Tiba Theorem** (2022):
@@ -138,7 +138,7 @@ theorem balister_odd_squarefree_alt :
     exact Nat.not_even_iff_odd.mp (hne c hc)
   · exact hsf
 
-/-! ## Hough-Nielsen (2019) -/
+/- ## Hough-Nielsen (2019) -/
 
 /-- A modulus is divisible by 2 or 3. -/
 def DivisibleBy2Or3 (n : ℕ) : Prop := 2 ∣ n ∨ 3 ∣ n
@@ -157,7 +157,7 @@ theorem no_coprime_to_6_covering :
   obtain ⟨c, hc, hdiv⟩ := hough_nielsen cs
   exact hcs c hc hdiv
 
-/-! ## LCM Constraint -/
+/- ## LCM Constraint -/
 
 /-- The LCM of all moduli in a covering system. -/
 noncomputable def CoveringSystem.lcmModuli (cs : CoveringSystem) : ℕ :=
@@ -171,7 +171,7 @@ axiom odd_covering_lcm_constraint :
     ∀ cs : CoveringSystem, cs.allOddModuli →
       (9 ∣ cs.lcmModuli ∨ 15 ∣ cs.lcmModuli)
 
-/-! ## Simple Properties -/
+/- ## Simple Properties -/
 
 /-- Odd numbers are ≥ 1. -/
 theorem odd_pos (n : ℕ) (hn : Odd n) : n ≥ 1 := by
@@ -186,7 +186,7 @@ theorem odd_moduli_not_div_2 (cs : CoveringSystem) (h : cs.allOddModuli) :
   have heven : Even c.modulus := ⟨c.modulus / 2, by omega⟩
   exact Nat.not_even_iff_odd.mpr hodd heven
 
-/-! ## The Gap -/
+/- ## The Gap -/
 
 /--
 The current state of knowledge:
@@ -205,7 +205,7 @@ def odd_covering_constraints : Prop :=
     (9 ∣ cs.lcmModuli ∨ 15 ∣ cs.lcmModuli) ∧
     (∃ c ∈ cs.classes, ¬Squarefree c.modulus)
 
-/-! ## Selfridge's Prize -/
+/- ## Selfridge's Prize -/
 
 /--
 **Selfridge's Challenge** ($2000):
@@ -217,9 +217,9 @@ A non-constructive existence proof would not collect this prize.
 def selfridge_challenge : Prop :=
   ∃ cs : CoveringSystem, cs.allOddModuli ∧ cs.hasDistinctModuli
 
-/-! ## Related Problem -/
+/- ## Related Problem -/
 
-/-! ## Covering with Specific Properties -/
+/- ## Covering with Specific Properties -/
 
 /-- A covering has minimum odd modulus at least m. -/
 def CoveringSystem.minOddModulusAtLeast (cs : CoveringSystem) (m : ℕ) : Prop :=
@@ -232,7 +232,7 @@ noncomputable def CoveringSystem.minOddModulus (cs : CoveringSystem) : Option �
   | [] => none
   | h :: t => some (t.foldl min h)
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: OPEN**
 
