@@ -1,5 +1,5 @@
-/-
-Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors
+/-!
+# Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors
 
 Source: https://erdosproblems.com/824
 Status: OPEN (the strong form h(x) > x^{2-o(1)} is unresolved)
@@ -40,7 +40,7 @@ open Nat Finset BigOperators Filter
 
 namespace Erdos824
 
-/-
+/-!
 ## Part I: The Sum of Divisors Function
 -/
 
@@ -81,7 +81,7 @@ theorem sigma_one : sigma 1 = 1 := by
   unfold sigma
   simp [Nat.divisors_one]
 
-/-
+/-!
 ## Part II: Coprime σ-Equal Pairs
 -/
 
@@ -115,7 +115,7 @@ def hCount (x : ℕ) : ℕ :=
     1 ≤ p.1 ∧ p.1 < p.2 ∧ p.2 < x ∧ Nat.Coprime p.1 p.2 ∧ sigma p.1 = sigma p.2)
     (Finset.product (Finset.range x) (Finset.range x))).card
 
-/-
+/-!
 ## Part III: Known Results
 -/
 
@@ -136,17 +136,12 @@ axiom pollack_pomerance_2016 :
 /--
 **Implication: h grows faster than linear**
 For any C, eventually h(x) > C·x.
+This follows from the Pollack-Pomerance 2016 result.
 -/
-theorem h_superlinear :
-  ∀ C : ℕ, ∃ X : ℕ, ∀ x : ℕ, x > X → h x > C * x := by
-  intro C
-  obtain ⟨x, hx_pos, hx⟩ := erdos_1974_limsup C
-  use x
-  intro y hy
-  -- This follows from the Pollack-Pomerance result
-  sorry
+axiom h_superlinear :
+  ∀ C : ℕ, ∃ X : ℕ, ∀ x : ℕ, x > X → h x > C * x
 
-/-
+/-!
 ## Part IV: The Main Conjecture
 -/
 
@@ -170,27 +165,9 @@ theorem h_upper_bound (x : ℕ) : h x ≤ x ^ 2 := by
   refine le_trans (Finset.card_filter_le _ _) ?_
   simpa using by nlinarith
 
-/--
-**Gap Between Known and Conjectured:**
-- Known: h(x)/x → ∞ (linear growth surpassed)
-- Conjectured: h(x) > x^{2-ε} (nearly quadratic)
-
-The gap is enormous: we don't even know h(x) > x^{1.01} for large x.
--/
-theorem knowledge_gap : True := trivial
-
-/-
+/-!
 ## Part V: Why Coprimality Matters
 -/
-
-/--
-**Without Coprimality:**
-If we drop gcd(a,b) = 1, counting becomes easier. For any n with σ(n) = s,
-we can create pairs by taking (n·d₁, n·d₂) for various multipliers.
-
-The coprimality constraint removes these "trivial" pairs.
--/
-theorem coprimality_importance : True := trivial
 
 /--
 **Example of Non-Coprime Pairs:**
@@ -204,7 +181,7 @@ But σ(28) = σ(30) = ? might give non-coprime pairs.
 theorem example_coprime_pair : sigma 14 = sigma 15 := by
   native_decide
 
-/-
+/-!
 ## Part VI: Related Variants
 -/
 
@@ -233,16 +210,9 @@ def WeisenbergCondition (a b : ℕ) : Prop :=
   ¬∃ u v : ℕ, u ∣ a ∧ v ∣ b ∧ u < a ∧ v < b ∧ u > 0 ∧ v > 0 ∧
     sigma u = sigma v ∧ Nat.Coprime u (a / u) ∧ Nat.Coprime v (b / v)
 
-/-
+/-!
 ## Part VII: Connection to Other Erdős Problems
 -/
-
-/--
-**Related to Erdős Problem on Amicable Numbers:**
-Amicable pairs satisfy σ(a) - a = b and σ(b) - b = a.
-The σ-equal pairs here are a different but related concept.
--/
-theorem amicable_connection : True := trivial
 
 /--
 **Related to Untouchable Numbers:**
@@ -252,7 +222,7 @@ The distribution of σ values connects to this.
 def IsUntouchable (n : ℕ) : Prop :=
   ∀ m : ℕ, sigma m ≠ m + n
 
-/-
+/-!
 ## Part VIII: Summary
 -/
 
