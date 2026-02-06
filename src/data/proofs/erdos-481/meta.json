@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Ronald Graham",
     "sourceUrl": "https://erdosproblems.com/481",
     "date": "1982",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos481Problem.lean",
     "tags": [
       "erdos",
@@ -16,22 +16,55 @@
       "affine-maps",
       "iteration"
     ],
-    "badge": "mathlib",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 481,
     "erdosUrl": "https://erdosproblems.com/481",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Basic natural number operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "List.Basic",
+        "description": "List operations including bind and count",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "BigOperators.Group.Finset",
+        "description": "Finite sums (Σ notation)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Formalized AffineParams structure with positivity constraint",
+      "Defined satisfiesDensityCondition as Σ(1/aᵢ) > 1 over rationals",
+      "Defined applyT using List.bind and List.ofFn for sequence transformation",
+      "Defined iterateT for k-th iterate with initial sequence [1]",
+      "Defined hasRepeats via List.count ≥ 2",
+      "Axiomatized Erdős-Graham conjecture (proved by Klarner 1982)",
+      "Stated klarner_theorem as direct application of the axiom",
+      "Summary theorem combining the resolution"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem appears in Erdős and Graham's book (1980, p.96). They remarked that 'it is surprising that [this problem] offers difficulty.' Klarner provided the first proof in 1982 by connecting the problem to free semigroups of affine maps. The condition Σ(1/aᵢ) > 1 determines whether the semigroup is free - and non-freeness implies eventual collisions.",
+    "historicalContext": "This problem appears in Erdős and Graham's book (1980, p.96). They remarked that 'it is surprising that [this problem] offers difficulty.' Klarner provided the first proof in 1982 by connecting the problem to free semigroups of affine maps. The condition Σ(1/aᵢ) > 1 determines whether the semigroup is free - and non-freeness implies eventual collisions. Kolpakov and Talambutsa (2022) generalized these results to affine maps on the real line.",
     "problemStatement": "Let a₁,...,aᵣ,b₁,...,bᵣ ∈ ℕ such that Σᵢ(1/aᵢ) > 1. For a sequence A = (x₁,...,xₙ), define T(A) = (aᵢxⱼ + bᵢ) for all i,j. Prove that if A₁ = (1) and Aₖ₊₁ = T(Aₖ), then some Aₖ must have repeated elements.",
-    "proofStrategy": "The formalization defines affine transformations, the density condition Σ(1/aᵢ) > 1, and the iteration process. The key result (Klarner 1982) is axiomatized: the density condition forces collisions because it corresponds to the affine semigroup being non-free.",
+    "proofStrategy": "The formalization defines affine transformations, the density condition Σ(1/aᵢ) > 1, and the iteration process. The key result (Klarner 1982) is axiomatized: the density condition forces collisions because it corresponds to the affine semigroup being non-free. The density intuition is that intervals of length N/aᵢ covering [0,N] have total length exceeding N, so pigeonhole forces overlaps.",
     "keyInsights": [
       "The density condition Σ(1/aᵢ) > 1 is crucial and tight",
       "Relates to free semigroups: non-free ⟹ relations ⟹ collisions",
       "Sequence length grows as rᵏ⁻¹ (exponential)",
       "Value range grows, but slower than length when density > 1",
-      "Boundary case: Σ(1/aᵢ) = 1 is the threshold",
+      "Boundary case: Σ(1/aᵢ) = 1 is the exact threshold",
       "Original extra condition on minimum was redundant (Alweiss)"
     ]
   },
@@ -54,43 +87,15 @@
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 98,
-      "endLine": 118,
+      "endLine": 134,
       "summary": "Erdős-Graham conjecture and Klarner's proof"
-    },
-    {
-      "id": "why-condition-matters",
-      "title": "Why the Condition Matters",
-      "startLine": 120,
-      "endLine": 151,
-      "summary": "Growth analysis and density intuition"
-    },
-    {
-      "id": "klarner-approach",
-      "title": "Klarner's Approach",
-      "startLine": 153,
-      "endLine": 181,
-      "summary": "Free semigroup perspective and generalizations"
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 183,
-      "endLine": 206,
-      "summary": "Examples at, below, and above the threshold"
-    },
-    {
-      "id": "historical-notes",
-      "title": "Historical Notes",
-      "startLine": 208,
-      "endLine": 232,
-      "summary": "Erdős-Graham remark and independent discoveries"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 234,
-      "endLine": 274,
-      "summary": "Complete resolution and main theorem"
+      "startLine": 136,
+      "endLine": 164,
+      "summary": "Summary and resolution of Erdős Problem #481"
     }
   ],
   "conclusion": {
