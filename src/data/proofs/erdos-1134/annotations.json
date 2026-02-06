@@ -54,28 +54,19 @@
     "significance": "key"
   },
   {
-    "id": "erdos-1134-trivial-bound",
-    "proofId": "erdos-1134",
-    "type": "theorem",
-    "range": { "startLine": 107, "endLine": 114 },
-    "title": "Klarner-Rado Gives Trivial Bound",
-    "content": "Since 1/2 + 1/3 + 1/6 = 1, the Klarner-Rado theorem gives σ = 1, meaning |A ∩ [1,X]| ≪ X^{1+ε}. This doesn't prove density is 0—a stronger result is needed.",
-    "significance": "key"
-  },
-  {
     "id": "erdos-1134-tau",
     "proofId": "erdos-1134",
     "type": "definition",
-    "range": { "startLine": 122, "endLine": 131 },
+    "range": { "startLine": 116, "endLine": 125 },
     "title": "Crampin-Hilton Exponent τ",
-    "content": "τ ≈ 0.900626 is the unique positive root of 6^{-τ} + Σ_{k≥0} (3·2^k)^{-τ} = 1. This exponent controls the actual growth rate of |A ∩ [1,X]|.",
+    "content": "τ ≈ 0.900626 is the unique positive root of 6^{-τ} + Σ_{k≥0} (3·2^k)^{-τ} = 1. This exponent controls the actual growth rate of |A ∩ [1,X]|. Since 1/2 + 1/3 + 1/6 = 1, the Klarner-Rado bound gives the trivial σ = 1; the Crampin-Hilton improvement exploits the special structure of these operations.",
     "significance": "critical"
   },
   {
     "id": "erdos-1134-crampin-hilton",
     "proofId": "erdos-1134",
     "type": "axiom",
-    "range": { "startLine": 133, "endLine": 137 },
+    "range": { "startLine": 127, "endLine": 131 },
     "title": "Crampin-Hilton Theorem",
     "content": "|A ∩ [1,X]| ≍ X^τ where τ ≈ 0.9006. More precisely, for any ε > 0: C₁ X^{τ-ε} ≤ |A ∩ [1,X]| ≤ C₂ X^{τ+ε} for large X.",
     "significance": "critical"
@@ -83,26 +74,26 @@
   {
     "id": "erdos-1134-zero-density",
     "proofId": "erdos-1134",
-    "type": "theorem",
-    "range": { "startLine": 145, "endLine": 147 },
+    "type": "axiom",
+    "range": { "startLine": 139, "endLine": 142 },
     "title": "A Has Zero Density",
-    "content": "Since τ < 1, we have |A ∩ [1,X]|/X → 0 as X → ∞. Therefore lowerDensity(A) = 0 and A does not have positive lower density.",
+    "content": "Since τ < 1, we have |A ∩ [1,X]|/X → 0 as X → ∞. Therefore lowerDensity(A) = 0 and A does not have positive lower density. This is axiomatized since the proof requires analytic estimates.",
     "significance": "critical"
   },
   {
     "id": "erdos-1134-answer",
     "proofId": "erdos-1134",
     "type": "theorem",
-    "range": { "startLine": 149, "endLine": 153 },
+    "range": { "startLine": 144, "endLine": 148 },
     "title": "Answer: NO",
-    "content": "The answer to Erdős Problem #1134 is NO—A does not have positive lower density. The proof uses the Crampin-Hilton theorem showing sublinear growth.",
+    "content": "The answer to Erdős Problem #1134 is NO—A does not have positive lower density. The proof uses the zero density axiom derived from the Crampin-Hilton theorem.",
     "significance": "critical"
   },
   {
     "id": "erdos-1134-elements",
     "proofId": "erdos-1134",
     "type": "theorem",
-    "range": { "startLine": 171, "endLine": 184 },
+    "range": { "startLine": 166, "endLine": 179 },
     "title": "First Elements of A",
     "content": "The first elements of A are: 1, 3 (= f₁(1)), 4 (= f₂(1)), 7 (= f₃(1)), 9 (= f₁(f₁(1))), 10 (= f₂(3)), 13 (= f₁(4)), ... Each is a composition of the operations applied to 1.",
     "significance": "key"
@@ -111,34 +102,25 @@
     "id": "erdos-1134-characteristic-eq",
     "proofId": "erdos-1134",
     "type": "definition",
-    "range": { "startLine": 198, "endLine": 203 },
+    "range": { "startLine": 187, "endLine": 192 },
     "title": "Characteristic Equation",
     "content": "The characteristic equation 6^{-s} + (1 - 2^{-s})^{-1} · 3^{-s} = 1 determines τ. The infinite sum arises from the structure of compositions of operations.",
-    "significance": "key"
-  },
-  {
-    "id": "erdos-1134-collatz",
-    "proofId": "erdos-1134",
-    "type": "axiom",
-    "range": { "startLine": 211, "endLine": 215 },
-    "title": "Connection to 3x+1",
-    "content": "Lagarias (2016) discusses the connection to the Collatz problem. Both involve studying iteration of affine maps x ↦ mx + b on integers.",
     "significance": "key"
   },
   {
     "id": "erdos-1134-open-variant",
     "proofId": "erdos-1134",
     "type": "definition",
-    "range": { "startLine": 229, "endLine": 243 },
+    "range": { "startLine": 200, "endLine": 214 },
     "title": "Klarner's Open Variant",
-    "content": "A' is the set containing 0 and closed under 2x, 3x+2, 6x+3. Whether A' has positive density is OPEN—listed in Guy's 'Don't Try to Solve These Problems' (1983).",
+    "content": "A' is the set containing 0 and closed under 2x, 3x+2, 6x+3. Whether A' has positive density is OPEN. This problem is related to Collatz-type iterations and was discussed by Lagarias (2016) and Guy (1983).",
     "significance": "key"
   },
   {
     "id": "erdos-1134-main-statement",
     "proofId": "erdos-1134",
     "type": "theorem",
-    "range": { "startLine": 254, "endLine": 271 },
+    "range": { "startLine": 220, "endLine": 237 },
     "title": "Main Problem Statement",
     "content": "Complete formalization: (1) A does not have positive lower density, (2) |A ∩ [1,X]| ≤ C · X^{τ+ε} for any ε > 0, (3) τ < 1.",
     "significance": "critical"
@@ -147,9 +129,9 @@
     "id": "erdos-1134-summary",
     "proofId": "erdos-1134",
     "type": "theorem",
-    "range": { "startLine": 273, "endLine": 285 },
+    "range": { "startLine": 239, "endLine": 258 },
     "title": "Summary Theorem",
-    "content": "Summary establishes: A has no positive lower density, lower density is exactly 0, and τ ∈ (0.900, 0.901).",
+    "content": "Summary establishes: A has no positive lower density, lower density is exactly 0, and τ ∈ (0.900, 0.901). The final erdos_1134 theorem packages the core result.",
     "significance": "critical"
   }
 ]

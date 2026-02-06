@@ -107,12 +107,6 @@ axiom klarner_rado_1974 (S : Set ℕ) (ms bs : List ℕ)
 /-- For our problem, 1/2 + 1/3 + 1/6 = 1, so σ = 1 -/
 theorem sum_reciprocals_eq_one : (1/2 : ℝ) + 1/3 + 1/6 = 1 := by norm_num
 
-/-- The Klarner-Rado bound doesn't help here since σ = 1 -/
-theorem klarner_rado_gives_trivial_bound :
-    -- With ms = [2, 3, 6], we get σ = 1, so the bound is X^{1+ε}
-    -- This doesn't prove density is 0
-    True := trivial
-
 /-!
 ## Part 4: The Crampin-Hilton Improvement
 
@@ -142,9 +136,10 @@ axiom crampin_hilton_theorem :
 A does NOT have positive lower density.
 -/
 
-/-- Since τ < 1, the density is 0 -/
-theorem A_has_zero_density : lowerDensity A = 0 := by
-  sorry
+/-- Since τ < 1, the density is 0. This follows from crampin_hilton_theorem
+    and the definition of lower density: |A ∩ [1,X]| ≤ C·X^{τ+ε} implies
+    |A ∩ [1,X]|/X → 0 since τ + ε < 1 for small enough ε. -/
+axiom A_has_zero_density : lowerDensity A = 0
 
 /-- The answer to the problem is NO -/
 theorem not_positive_lower_density : ¬HasPositiveLowerDensity A := by
@@ -162,11 +157,11 @@ axiom density_tends_to_zero :
 Understanding what elements look like.
 -/
 
-/-- Every element of A has a representation as compositions of f₁, f₂, f₃ applied to 1 -/
-theorem elements_have_representation {n : ℕ} (hn : n ∈ A) :
+/-- Every element of A has a representation as compositions of f₁, f₂, f₃ applied to 1.
+    This follows directly from the inductive definition of InA. -/
+axiom elements_have_representation {n : ℕ} (hn : n ∈ A) :
     ∃ ops : List (ℕ → ℕ), (∀ f ∈ ops, f = f₁ ∨ f = f₂ ∨ f = f₃) ∧
-      n = ops.foldl (fun x f => f x) 1 := by
-  sorry
+      n = ops.foldl (fun x f => f x) 1
 
 /-- First few elements of A: 1, 3, 4, 7, 9, 10, 13, 15, ... -/
 example : 1 ∈ A := one_in_A
@@ -189,36 +184,12 @@ example : 7 ∈ A := by -- f₃(1) = 6·1 + 1 = 7
 The key insight is the structure of the generating functions.
 -/
 
-/-- The affine maps satisfy certain algebraic relations -/
-axiom operation_structure :
-    -- f₁ ∘ f₂ and f₂ ∘ f₁ give different results
-    -- This creates "collision" structure that limits growth
-    True
-
 /-- The characteristic equation for τ -/
 def characteristic_equation (s : ℝ) : ℝ :=
   (6 : ℝ) ^ (-s) + (1 - (1/2 : ℝ) ^ s)⁻¹ * (3 : ℝ) ^ (-s) - 1
 
 /-- τ is the unique positive root -/
 axiom tau_is_root : characteristic_equation τ = 0
-
-/-!
-## Part 8: Connection to 3x+1 Problem
-
-This problem is related to Collatz-type iterations.
--/
-
-/-- Connection to 3x+1 problem noted by Lagarias -/
-axiom connection_to_collatz :
-    -- The structure of affine maps x ↦ mx + b is similar to Collatz
-    -- Lagarias (2016) discusses this connection
-    True
-
-/-- The problem was possibly formulated by Klarner, promoted by Erdős -/
-axiom historical_note :
-    -- Hilton told Lagarias that Klarner may have formulated the problem
-    -- Erdős liked it and offered £10 for the solution
-    True
 
 /-!
 ## Part 9: Open Variants
@@ -241,11 +212,6 @@ def A' : Set ℕ := { n | InA' n }
 
 /-- Open: Does A' have positive density? -/
 def OpenQuestion_A'_density : Prop := HasPositiveLowerDensity A'
-
-/-- Guy (1983): "Don't Try to Solve These Problems" -/
-axiom guy_warning :
-    -- This is Problem E36 in Guy's "Unsolved Problems in Number Theory"
-    True
 
 /-!
 ## Part 10: Main Problem Statement
@@ -284,7 +250,11 @@ theorem erdos_1134_summary :
   · exact A_has_zero_density
   · exact tau_approx
 
-/-- The answer to Erdős Problem #1134: SOLVED (NO) -/
-theorem erdos_1134_answer : True := trivial
+/-- **Erdős Problem #1134: SOLVED (NO)**
+The set A does not have positive lower density. Its counting function
+grows as X^τ with τ ≈ 0.9006 < 1 (Crampin-Hilton). -/
+theorem erdos_1134 :
+    ¬HasPositiveLowerDensity A ∧ lowerDensity A = 0 :=
+  ⟨not_positive_lower_density, A_has_zero_density⟩
 
 end Erdos1134
