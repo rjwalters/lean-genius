@@ -35,128 +35,91 @@ open Set Nat
 
 namespace Erdos1112
 
-/-
-## Part I: Lacunary Sequences
+/- ## Part I: Lacunary Sequences
 
 A lacunary sequence is one that grows at least exponentially.
 -/
 
-/--
-**Lacunary Sequence:**
+/-- **Lacunary Sequence:**
 A strictly increasing sequence B = {b₁ < b₂ < ⋯} is r-lacunary if
-b_{i+1} ≥ r · b_i for all i ≥ 1.
-
-This models extremely sparse sequences with exponential growth.
--/
+b_{i+1} ≥ r · b_i for all i ≥ 1. -/
 def IsLacunary (r : ℕ) (B : ℕ → ℕ) : Prop :=
   (∀ i : ℕ, B i < B (i + 1)) ∧ (∀ i : ℕ, B (i + 1) ≥ r * B i)
 
-/--
-**Bounded Gap Sequence:**
+/-- **Bounded Gap Sequence:**
 A sequence A = {a₁ < a₂ < ⋯} has gaps bounded by [d₁, d₂] if
-d₁ ≤ a_{i+1} - a_i ≤ d₂ for all i.
--/
+d₁ ≤ a_{i+1} - a_i ≤ d₂ for all i. -/
 def HasBoundedGaps (d₁ d₂ : ℕ) (A : ℕ → ℕ) : Prop :=
   (∀ i : ℕ, A i < A (i + 1)) ∧
   (∀ i : ℕ, d₁ ≤ A (i + 1) - A i) ∧
   (∀ i : ℕ, A (i + 1) - A i ≤ d₂)
 
-/-
-## Part II: k-fold Sumsets
+/- ## Part II: k-fold Sumsets
 
 The k-fold sumset kA consists of all sums a₁ + a₂ + ⋯ + a_k
 where a_i ∈ A (not necessarily distinct).
 -/
 
-/--
-**Range of a Sequence:**
-The set of values taken by sequence A.
--/
+/-- **Range of a Sequence:** The set of values taken by sequence A. -/
 def SeqRange (A : ℕ → ℕ) : Set ℕ := {n : ℕ | ∃ i : ℕ, A i = n}
 
-/--
-**2-fold Sumset:**
-A + A = {a + a' | a, a' ∈ A}
--/
+/-- **2-fold Sumset:** A + A = {a + a' | a, a' ∈ A}. -/
 def TwoFoldSumset (A : Set ℕ) : Set ℕ :=
   {s : ℕ | ∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ s = a + b}
 
-/--
-**3-fold Sumset:**
-A + A + A = {a + a' + a'' | a, a', a'' ∈ A}
--/
+/-- **3-fold Sumset:** A + A + A = {a + a' + a'' | a, a', a'' ∈ A}. -/
 def ThreeFoldSumset (A : Set ℕ) : Set ℕ :=
   {s : ℕ | ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ s = a + b + c}
 
-/--
-**k-fold Sumset (general):**
-kA = {a₁ + ⋯ + a_k | a_i ∈ A}
--/
+/-- **k-fold Sumset (general):** kA = {a₁ + ⋯ + a_k | a_i ∈ A}. -/
 def KFoldSumset (k : ℕ) (A : Set ℕ) : Set ℕ :=
   match k with
   | 0 => {0}
   | 1 => A
   | n + 1 => {s : ℕ | ∃ a t : ℕ, a ∈ A ∧ t ∈ KFoldSumset n A ∧ s = a + t}
 
-/-
-## Part III: The Avoidance Problem
+/- ## Part III: The Avoidance Problem
 
 Can we find A with bounded gaps such that kA avoids a lacunary B?
 -/
 
-/--
-**r_k(d₁, d₂) Definition:**
-The smallest r (if it exists) such that for any r-lacunary B,
-there exists A with gaps in [d₁, d₂] satisfying (kA) ∩ B = ∅.
--/
+/-- **Avoidance Possible:**
+For given k, r, d₁, d₂: every r-lacunary B can be avoided by some
+A with gaps in [d₁, d₂], meaning (kA) ∩ B = ∅. -/
 def AvoidancePossible (k r d₁ d₂ : ℕ) : Prop :=
   ∀ B : ℕ → ℕ, IsLacunary r B →
     ∃ A : ℕ → ℕ, HasBoundedGaps d₁ d₂ A ∧
       (KFoldSumset k (SeqRange A)) ∩ (SeqRange B) = ∅
 
-/--
-**r_k(d₁, d₂) Exists:**
-There is some r making avoidance possible.
--/
+/-- **r_k(d₁, d₂) Exists:** There is some r making avoidance possible. -/
 def RkExists (k d₁ d₂ : ℕ) : Prop :=
   ∃ r : ℕ, r ≥ 2 ∧ AvoidancePossible k r d₁ d₂
 
-/-
-## Part IV: Erdős-Graham Result (1980)
+/- ## Part IV: Erdős-Graham Result (1980)
 
 For k = 2 and gaps [2, 3], r = 2 suffices.
 -/
 
-/--
-**Erdős-Graham Theorem (1980):**
+/-- **Erdős-Graham Theorem (1980):**
 If B is 2-lacunary starting from b₁ ≥ 5, then there exists A
 with gaps in [2, 3] such that (A + A) ∩ B = ∅.
-
-This shows r₂(2, 3) = 2.
--/
+This shows r₂(2, 3) = 2. -/
 axiom erdos_graham_1980 :
     ∀ B : ℕ → ℕ, IsLacunary 2 B → B 0 ≥ 5 →
       ∃ A : ℕ → ℕ, HasBoundedGaps 2 3 A ∧
         (TwoFoldSumset (SeqRange A)) ∩ (SeqRange B) = ∅
 
-/--
-**Avoidance helper:**
-The 2-fold sumset equals KFoldSumset 2 for avoidance purposes.
--/
+/-- The 2-fold sumset equals KFoldSumset 2 for avoidance purposes. -/
 axiom twofold_eq_kfold (A : Set ℕ) :
     TwoFoldSumset A = KFoldSumset 2 A
 
-/--
-**r₂(2, 3) = 2:**
-The minimal lacunary ratio for 2-fold avoidance with gaps [2,3].
--/
+/-- **r₂(2, 3) = 2:**
+The minimal lacunary ratio for 2-fold avoidance with gaps [2,3]. -/
 theorem r2_23_equals_2 : RkExists 2 2 3 := by
   use 2
   constructor
   · omega
   · intro B hB
-    -- Use Erdős-Graham for B with first element ≥ 5; other cases similar
-    -- The construction ensures (A + A) ∩ B = ∅
     have h := erdos_graham_1980 B hB
     by_cases hB0 : B 0 ≥ 5
     · obtain ⟨A, hA, hDisj⟩ := h hB0
@@ -165,166 +128,67 @@ theorem r2_23_equals_2 : RkExists 2 2 3 := by
       · exact hA
       · rw [← twofold_eq_kfold]
         exact hDisj
-    · -- For small initial values, existence still holds by direct construction
-      exact ⟨fun n => 2 * n + 1, ⟨by intro i; omega, by intro i; omega, by intro i; omega⟩, by simp [KFoldSumset, SeqRange]; ext; constructor <;> intro h <;> simp_all⟩
+    · exact ⟨fun n => 2 * n + 1, ⟨by intro i; omega, by intro i; omega, by intro i; omega⟩, by simp [KFoldSumset, SeqRange]; ext; constructor <;> intro h <;> simp_all⟩
 
-/-
-## Part V: Bollobás-Hegyvári-Jin Result (1997)
+/- ## Part V: Bollobás-Hegyvári-Jin Result (1997)
 
 The situation changes dramatically for k = 3.
 -/
 
-/--
-**Bollobás-Hegyvári-Jin Theorem (1997):**
+/-- **Bollobás-Hegyvári-Jin Theorem (1997):**
 For any sequence of integers r₁ < r₂ < ⋯, there exists a sequence B
 with b_{i+1} ≥ r_i · b_i such that (A + A + A) ∩ B ≠ ∅
 for any A with gaps in [2, 3].
-
-This shows r₃(2, 3) does NOT exist!
--/
+This shows r₃(2, 3) does NOT exist! -/
 axiom bollobas_hegevari_jin_1997 :
     ∀ R : ℕ → ℕ, (∀ i : ℕ, R i < R (i + 1)) →
       ∃ B : ℕ → ℕ, (∀ i : ℕ, B (i + 1) ≥ R i * B i) ∧
         ∀ A : ℕ → ℕ, HasBoundedGaps 2 3 A →
           (ThreeFoldSumset (SeqRange A)) ∩ (SeqRange B) ≠ ∅
 
-/--
-**ThreeFold equals KFoldSumset 3:**
--/
+/-- ThreeFold equals KFoldSumset 3. -/
 axiom threefold_eq_kfold (A : Set ℕ) :
     ThreeFoldSumset A = KFoldSumset 3 A
 
-/--
-**BHJ r-lacunary version:**
-For any r ≥ 2, there exists an r-lacunary B that defeats all A with gaps [2,3].
--/
+/-- BHJ r-lacunary version: for any r ≥ 2, there exists an r-lacunary B
+that defeats all A with gaps [2,3]. -/
 axiom bhj_r_lacunary (r : ℕ) (hr : r ≥ 2) :
     ∃ B : ℕ → ℕ, IsLacunary r B ∧
       ∀ A : ℕ → ℕ, HasBoundedGaps 2 3 A →
         (ThreeFoldSumset (SeqRange A)) ∩ (SeqRange B) ≠ ∅
 
-/--
-**r₃(2, 3) Does Not Exist:**
-No matter how lacunary B is, 3-fold sumsets cannot avoid it.
--/
+/-- **r₃(2, 3) Does Not Exist:**
+No matter how lacunary B is, 3-fold sumsets cannot avoid it. -/
 theorem r3_23_not_exists : ¬RkExists 3 2 3 := by
   intro ⟨r, hr, hAvoid⟩
-  -- BHJ constructs an r-lacunary B that defeats all A with gaps [2,3]
   obtain ⟨B, hBLac, hBDefeats⟩ := bhj_r_lacunary r hr
-  -- But hAvoid says such A exists for this B
   obtain ⟨A, hA, hDisj⟩ := hAvoid B hBLac
-  -- The 3-fold sumset must intersect B (by BHJ) but also must not (by hDisj)
   have hIntersect := hBDefeats A hA
   rw [threefold_eq_kfold] at hIntersect
   exact hIntersect hDisj
 
-/-
-## Part VI: Chen's Generalization (2000)
--/
+/- ## Part VI: Chen's Generalization (2000) -/
 
-/--
-**Chen's Theorem (2000):**
+/-- **Chen's Theorem (2000):**
 For any integers a < b with b ≠ 2a, we have r₂(a, b) ≤ 2.
-
-When b = 2a, a different behavior occurs: r₂(a, 2a) ≥ 2.
--/
+When b = 2a, a different behavior occurs. -/
 axiom chen_r2_bound :
     ∀ a b : ℕ, a ≥ 1 → b > a → b ≠ 2 * a → RkExists 2 a b
 
-/--
-**Critical Ratio:**
-When b = 2a, the gap ratio exactly matches doubling, creating
-special interference patterns.
--/
-theorem critical_ratio_2a :
-    ∀ a : ℕ, a ≥ 1 →
-      -- r₂(a, 2a) ≥ 2 and requires more careful analysis
-      True := by
-  intro a _
-  trivial
-
-/-
-## Part VII: Tang-Yang Results (2021)
+/- ## Part VII: Tang-Yang Results (2021)
 
 Further non-existence results for k ≥ 3.
 -/
 
-/--
-**Tang-Yang (2021):**
-Additional technical non-existence results for specific
-parameter combinations with k ≥ 3.
--/
+/-- **Tang-Yang (2021):**
+Additional non-existence results for specific parameter combinations with k ≥ 3. -/
 axiom tang_yang_2021 :
-    -- For various k ≥ 3 and (d₁, d₂), r_k does not exist
     ∃ params : List (ℕ × ℕ × ℕ), params.length > 0 ∧
       ∀ p ∈ params, let (k, d₁, d₂) := p; k ≥ 3 → ¬RkExists k d₁ d₂
 
-/-
-## Part VIII: The Open Problem
+/- ## Part VIII: Summary
 
-The general question for k ≥ 3 remains unresolved.
--/
-
-/--
-**Erdős Problem #1112:**
-Does r_k(d₁, d₂) exist for k ≥ 3?
-
-Known:
-- r₃(2, 3) does not exist (BHJ 1997)
-- Various other non-existence results (Tang-Yang 2021)
-
-Open:
-- Complete characterization of when r_k(d₁, d₂) exists
-- Whether there exist ANY (k, d₁, d₂) with k ≥ 3 where avoidance is possible
--/
-theorem erdos_1112_partially_resolved :
-    -- r₂ exists in most cases
-    (∀ a b : ℕ, a ≥ 1 → b > a → b ≠ 2 * a → RkExists 2 a b) ∧
-    -- r₃(2,3) does not exist
-    (¬RkExists 3 2 3) ∧
-    -- General k ≥ 3 remains open
-    True := by
-  exact ⟨chen_r2_bound, r3_23_not_exists, trivial⟩
-
-/-
-## Part IX: Why the Dichotomy?
-
-Understanding the k=2 vs k≥3 divide.
--/
-
-/--
-**Intuition for k = 2:**
-The 2-fold sumset A + A has "density" roughly 2 times the density of A.
-Lacunary sequences have density 0, so there's "room" to avoid them.
-
-For gaps [d₁, d₂], the sequence A has density about 1/((d₁+d₂)/2),
-and A + A stays relatively sparse.
--/
-theorem two_fold_density_argument :
-    -- A + A is still "manageable" for avoidance
-    ∀ d₁ d₂ : ℕ, d₁ ≥ 1 → d₂ ≥ d₁ → True := by
-  intros
-  trivial
-
-/--
-**Intuition for k ≥ 3:**
-As k increases, kA becomes increasingly dense.
-For any fixed gap bounds, kA will eventually hit ANY lacunary sequence
-no matter how fast it grows.
-
-The key insight: 3A has "too many" elements to avoid hitting
-a carefully constructed lacunary sequence.
--/
-theorem three_fold_density_threshold :
-    -- A + A + A becomes "unavoidably dense"
-    True := trivial
-
-/-
-## Part X: Summary
--/
-
-/--
-**Summary of Known Results:**
+**Erdős Problem #1112: PARTIALLY RESOLVED**
 
 | k | Gap [d₁,d₂] | r_k exists? | Reference |
 |---|-------------|-------------|-----------|
@@ -335,20 +199,19 @@ theorem three_fold_density_threshold :
 
 The problem represents a phase transition at k = 3.
 -/
-theorem erdos_1112_summary :
-    -- The essential dichotomy
-    (RkExists 2 2 3) ∧ (¬RkExists 3 2 3) := by
-  constructor
-  · exact r2_23_equals_2
-  · exact r3_23_not_exists
 
-/--
-**Open Questions:**
-1. Complete characterization of when r_k(d₁, d₂) exists
-2. For k ≥ 3, are there ANY parameters where avoidance is possible?
-3. What is the exact value of r₂(a, 2a)?
-4. Can probabilistic methods yield better understanding?
--/
-axiom open_questions_exist : True
+/-- **Erdős Problem #1112: PARTIALLY RESOLVED**
+
+The essential dichotomy: 2-fold sumsets can avoid lacunary sequences,
+but 3-fold sumsets cannot. -/
+theorem erdos_1112 :
+    (∀ a b : ℕ, a ≥ 1 → b > a → b ≠ 2 * a → RkExists 2 a b) ∧
+    (¬RkExists 3 2 3) :=
+  ⟨chen_r2_bound, r3_23_not_exists⟩
+
+/-- Summary: the k=2 vs k=3 dichotomy for gaps [2,3]. -/
+theorem erdos_1112_summary :
+    (RkExists 2 2 3) ∧ (¬RkExists 3 2 3) :=
+  ⟨r2_23_equals_2, r3_23_not_exists⟩
 
 end Erdos1112
