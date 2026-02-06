@@ -43,7 +43,7 @@ open Finset Real
 
 namespace Erdos818
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -75,7 +75,7 @@ A has a "small" sumset if |A + A| ≤ K · |A| for some constant K.
 def hasSmallSumset (A : Finset ℤ) (K : ℝ) : Prop :=
   ((sumset A).card : ℝ) ≤ K * A.card
 
-/-!
+/-
 ## Part II: The Trivial Bounds
 -/
 
@@ -103,7 +103,7 @@ theorem productSet_upper_bound (A : Finset ℤ) :
     (productSet A).card ≤ A.card ^ 2 := by
   sorry
 
-/-!
+/-
 ## Part III: The Original Conjecture
 -/
 
@@ -119,7 +119,7 @@ def ErdosConjecture818 : Prop :=
         hasSmallSumset A K →
         ((productSet A).card : ℝ) ≥ (A.card : ℝ)^2 / (log A.card)^C
 
-/-!
+/-
 ## Part IV: Solymosi's Theorem (2009)
 -/
 
@@ -153,7 +153,7 @@ theorem erdos_818_proved : ErdosConjecture818 := by
       _ ≥ (A.card : ℝ)^2 / (log A.card)^1 := by
           sorry  -- Follows if c ≥ 1 or by adjusting constants
 
-/-!
+/-
 ## Part V: Multiplicative Energy
 -/
 
@@ -188,7 +188,7 @@ Bounds multiplicative energy in terms of sumset size.
 axiom solymosi_energy_lemma (A : Finset ℤ) (hA : A.card ≥ 2) :
     (multiplicativeEnergy A : ℝ) ≤ (A.card : ℝ)^2 * ((sumset A).card : ℝ) * log A.card
 
-/-!
+/-
 ## Part VI: Proof Sketch
 -/
 
@@ -200,21 +200,29 @@ axiom solymosi_energy_lemma (A : Finset ℤ) (hA : A.card ≥ 2) :
 4. Rearranging: |AA| ≥ |A|⁴ / (|A|² · |A+A| · log|A|)
 5. If |A+A| ≤ K|A|: |AA| ≥ |A|² / (K · log|A|)
 -/
-theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2)
+/-- The energy bounds combine to give Solymosi's result:
+    From E×(A) ≥ |A|⁴/|AA| and E×(A) ≤ |A|²·|A+A|·log|A|,
+    we get |AA| ≥ |A|²/(K·log|A|) when |A+A| ≤ K|A|. -/
+theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2) (hne : A.Nonempty)
     (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K) :
-    -- The energy bounds combine to give the result
-    True := trivial
+    ((productSet A).card : ℝ) ≥
+      (A.card : ℝ)^2 / (K * log A.card) := by
+  sorry
 
 /--
 **The log factor is necessary:**
 There exist sets A with small sumset where |AA| = O(|A|² / log|A|).
 So the log factor cannot be removed entirely.
 -/
+/- The log factor is tight: there exist sets A with |A+A| ≤ 2|A| - 1
+   (arithmetic progressions) where |AA| = Θ(|A|²/log|A|) by the
+   Erdős multiplication table estimate. -/
 axiom log_factor_necessary :
-    -- Extremal examples show the bound is tight up to constants
-    True
+    ∀ ε > 0, ∃ A : Finset ℤ, A.card ≥ 2 ∧
+      hasSmallSumset A 2 ∧
+      ((productSet A).card : ℝ) ≤ (1 + ε) * (A.card : ℝ)^2 / log A.card
 
-/-!
+/-
 ## Part VII: Connection to Sum-Product Conjecture
 -/
 
@@ -237,9 +245,15 @@ Problem 818 asks: if |A+A| ≤ K|A|, then |AA| ≥ |A|²/log|A|?
 
 The latter is a conditional result: GIVEN small sumset, product set is large.
 -/
-axiom connection_to_problem_52 : True
+/- Problem 52 conjectures max(|A+A|, |AA|) ≥ |A|^{2-ε}.
+   Problem 818 is conditional: given |A+A| small, product set is large.
+   Solymosi's bound on 818 implies partial progress toward Problem 52. -/
+axiom connection_to_problem_52 :
+    ∀ ε > 0, ∃ c : ℝ, c > 0 ∧
+      ∀ A : Finset ℤ, A.card ≥ 2 →
+        (max (sumset A).card (productSet A).card : ℝ) ≥ c * (A.card : ℝ) ^ ((4 : ℝ) / 3 - ε)
 
-/-!
+/-
 ## Part VIII: Examples
 -/
 
@@ -249,9 +263,12 @@ If A = {1, 2, ..., n}, then:
 - |A + A| = 2n - 1 (small, additive doubling ~2)
 - |A · A| ≈ n²/log n (by Erdős multiplication table problem)
 -/
-axiom arithmetic_progression_example :
-    -- Shows the log factor is necessary even for simple sets
-    True
+/- For A = {1, ..., n}: |A+A| = 2n-1, |AA| ~ n²/log n.
+   This shows the log factor is necessary even for simple sets. -/
+axiom arithmetic_progression_example (n : ℕ) (hn : n ≥ 2) :
+    ∃ A : Finset ℤ, A.card = n ∧
+      hasSmallSumset A 2 ∧
+      ((productSet A).card : ℝ) ≤ 2 * (n : ℝ)^2 / log n
 
 /--
 **Example: Geometric progression**
@@ -260,9 +277,15 @@ If A = {1, r, r², ..., r^{n-1}}, then:
 - |A · A| = 2n - 1 (small, multiplicative structure)
 This shows the opposite extreme.
 -/
-axiom geometric_progression_example : True
+/- For A = {1, r, r², ..., r^{n-1}} with r > n:
+   |A+A| ≈ n² (large), |AA| = 2n - 1 (small).
+   Opposite extreme: multiplicative structure suppresses product set. -/
+axiom geometric_progression_example (n : ℕ) (hn : n ≥ 2) :
+    ∃ A : Finset ℤ, A.card = n ∧
+      (productSet A).card = 2 * n - 1 ∧
+      ((sumset A).card : ℝ) ≥ (n : ℝ)^2 / 2
 
-/-!
+/-
 ## Part IX: Summary
 -/
 
@@ -277,11 +300,7 @@ PROOF: Solymosi (2009) proved the stronger bound |AA| ≫ |A|²/log|A|.
 
 KEY TECHNIQUE: Bound multiplicative energy using sumset structure.
 -/
-theorem erdos_818 : True := trivial
-
-/--
-**Summary theorem:**
--/
+/-- **Summary theorem:** Original conjecture + Solymosi's stronger result. -/
 theorem erdos_818_summary :
     -- Original conjecture is true
     ErdosConjecture818 ∧
@@ -295,11 +314,12 @@ theorem erdos_818_summary :
   · exact erdos_818_proved
   · exact solymosi_theorem
 
-/--
-**Key insight:**
-Small additive doubling forces large multiplicative expansion.
-The sum-product phenomenon quantified!
--/
-theorem key_insight : True := trivial
+/-- Small additive doubling forces large multiplicative expansion:
+    the sum-product phenomenon quantified. -/
+theorem key_insight (A : Finset ℤ) (hA : A.card ≥ 2)
+    (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K) :
+    ((productSet A).card : ℝ) ≥ (A.card : ℝ)^2 / (log A.card)^1 := by
+  have ⟨_, _, _⟩ := erdos_818_proved
+  sorry
 
 end Erdos818
