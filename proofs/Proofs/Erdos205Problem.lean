@@ -48,11 +48,11 @@ theorem bigOmega_prime {p : ℕ} (hp : p.Prime) : bigOmega p = 1 := by
   simp [bigOmega, Nat.primeFactorsList_prime hp]
 
 /-- Ω(p^k) = k for prime p.
-    Proof: The prime factorization of p^k is [p, p, ..., p] with k copies. -/
+    The prime factorization of p^k is [p, p, ..., p] with k copies. -/
 axiom bigOmega_prime_pow_ax : ∀ {p k : ℕ}, p.Prime → bigOmega (p ^ k) = k
 
-/-- Ω is multiplicative: Ω(ab) = Ω(a) + Ω(b) for a, b > 0.
-    Proof: Prime factors of ab are the concatenation of factors of a and b. -/
+/-- Ω is additive: Ω(ab) = Ω(a) + Ω(b) for a, b > 0.
+    Prime factors of ab are the concatenation of factors of a and b. -/
 axiom bigOmega_mul_ax : ∀ {a b : ℕ}, a ≠ 0 → b ≠ 0 →
     bigOmega (a * b) = bigOmega a + bigOmega b
 
@@ -111,8 +111,16 @@ axiom remainder_achieves_min (n k : ℕ) (h : 2^k < n) :
 
 /-- Auxiliary: log log is monotone increasing for x ≥ 16.
     (Actually needs x > e^e ≈ 15.15, but 16 suffices for our purposes.) -/
-axiom loglog_mono_nat {m n : ℕ} (hm : m ≥ 16) (hmn : m ≤ n) :
-    Real.log (Real.log m) ≤ Real.log (Real.log n)
+theorem loglog_mono_nat {m n : ℕ} (hm : m ≥ 16) (hmn : m ≤ n) :
+    Real.log (Real.log m) ≤ Real.log (Real.log n) := by
+  apply Real.log_le_log
+  · -- log m > 0 for m ≥ 16 (since log 16 = 4 * log 2 > 0)
+    apply Real.log_pos
+    exact_mod_cast (show (1 : ℕ) < m by omega)
+  · -- log m ≤ log n since m ≤ n
+    apply Real.log_le_log
+    · exact_mod_cast (show (0 : ℕ) < m by omega)
+    · exact_mod_cast hmn
 
 
 /-- The negation of the Erdős conjecture follows from the counterexample. -/
