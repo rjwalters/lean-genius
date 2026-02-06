@@ -1,38 +1,37 @@
 {
   "id": "erdos-1121",
-  "title": "Circle Covering Theorem",
+  "title": "Erdős Problem #1121: Circle Covering Theorem",
   "slug": "erdos-1121",
   "description": "If circles C₁,...,Cₙ with radii r₁,...,rₙ have no separating line, they can be covered by a circle of radius Σrᵢ. Proved by Goodman-Goodman (1945), generalizes to higher dimensions.",
   "meta": {
-    "author": "Paul Erdős",
+    "author": "Goodman and Goodman (1945 proof), Erdős (problem)",
     "sourceUrl": "https://erdosproblems.com/1121",
-    "date": "",
-    "status": "verified",
+    "date": "1945",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1121Problem.lean",
     "tags": ["erdos", "geometry", "circles", "covering", "convexity"],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1121,
     "erdosUrl": "https://erdosproblems.com/1121",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "v4.x",
     "mathlibDependencies": [
       { "theorem": "Real.sqrt", "description": "Square root function", "module": "Mathlib.Data.Real.Basic" },
-      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
-      { "theorem": "Metric.ball", "description": "Metric balls for generalization", "module": "Mathlib.Topology.MetricSpace.Basic" }
+      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" }
     ],
     "originalContributions": [
       "Lean definitions of Circle, Line, and geometric predicates",
       "Formal statement of 'no separating line' condition",
-      "ErdosConjecture1121 and Goodman-Goodman theorem",
-      "Higher-dimensional generalization to balls in ℝⁿ"
+      "ErdosConjecture1121 and Goodman-Goodman theorem axiom",
+      "Special cases: two circles, overlapping implies connected",
+      "Higher-dimensional Ball structure and generalization axiom"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "This conjecture was reported as posed by Erdős in the 1945 paper by Goodman and Goodman. They proved it in the same paper, showing that 'connected' configurations of circles can always be covered by a circle whose radius equals the sum of all individual radii.",
+    "historicalContext": "Erdős Problem #1121 asks whether a 'connected' configuration of circles in the plane can always be covered by a single circle whose radius equals the sum of all individual radii. Here 'connected' means no line disjoint from all circles can separate them into two non-empty groups.\n\nGoodman and Goodman proved this conjecture in 1945, published in the American Mathematical Monthly. Their proof uses geometric arguments about convex hulls and the configuration of circle centers. The result is tight — the covering radius cannot in general be reduced below the sum of radii.\n\nThe Goodman-Goodman theorem naturally generalizes to higher dimensions: balls in ℝⁿ with no separating hyperplane can be covered by a ball of radius equal to the sum of radii. This was noted in their original paper.",
     "problemStatement": "If C₁,...,Cₙ are circles in ℝ² with radii r₁,...,rₙ such that no line disjoint from all circles divides them into two non-empty sets, then all circles can be covered by a single circle of radius r = r₁ + ... + rₙ.",
-    "proofStrategy": "The formalization defines circles, lines, and the 'no separating line' condition precisely. The Goodman-Goodman theorem is stated as an axiom. The proof uses convex hull arguments.",
+    "proofStrategy": "The formalization defines circles, lines, and the 'no separating line' condition precisely. The Goodman-Goodman theorem is axiomatized. Special cases (two circles, overlapping circles) and the higher-dimensional generalization are also formalized.",
     "keyInsights": [
       "The 'no separating line' condition defines a connected configuration",
       "The covering radius equals exactly the sum of radii",
@@ -43,52 +42,52 @@
   "sections": [
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
+      "title": "Part I: Basic Definitions",
       "startLine": 38,
-      "endLine": 80,
-      "summary": "Definitions of Circle, Line, and containment predicates"
+      "endLine": 79,
+      "summary": "Definitions of Circle, Line, and containment predicates."
     },
     {
       "id": "separating-line",
-      "title": "Separating Line Condition",
+      "title": "Part II: Separating Line Condition",
       "startLine": 81,
-      "endLine": 120,
-      "summary": "Definition of separating lines and connected configurations"
+      "endLine": 119,
+      "summary": "Definition of separating lines and connected configurations."
     },
     {
       "id": "covering",
-      "title": "Covering Circle",
+      "title": "Part III: Covering Circle",
       "startLine": 121,
-      "endLine": 142,
-      "summary": "Definition of covering and sum of radii"
+      "endLine": 141,
+      "summary": "Definition of covering and sum of radii."
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture",
+      "title": "Part IV: The Erdős Conjecture (Now Theorem)",
       "startLine": 143,
-      "endLine": 164,
-      "summary": "Statement of the conjecture and Goodman-Goodman theorem"
+      "endLine": 163,
+      "summary": "Statement of ErdosConjecture1121 and Goodman-Goodman theorem."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
+      "title": "Part V: Special Cases",
       "startLine": 165,
-      "endLine": 194,
-      "summary": "Two circles case and overlapping circles"
+      "endLine": 193,
+      "summary": "Two circles case and overlapping circles."
     },
     {
       "id": "higher-dim",
-      "title": "Higher Dimensional Generalization",
+      "title": "Part VI: Higher Dimensional Generalization",
       "startLine": 195,
-      "endLine": 216,
-      "summary": "Generalization to balls in ℝⁿ"
+      "endLine": 217,
+      "summary": "Ball structure in ℝⁿ and generalization axiom."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 217,
-      "endLine": 254,
-      "summary": "Main results and key insights"
+      "title": "Part VII: Summary",
+      "startLine": 219,
+      "endLine": 234,
+      "summary": "erdos_1121_summary: ErdosConjecture1121 := goodman_goodman_theorem."
     }
   ],
   "conclusion": {
