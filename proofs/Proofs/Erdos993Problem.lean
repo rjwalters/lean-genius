@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #993: Unimodal Independent Set Sequences in Trees
 
 If i_k(G) counts independent sets of size k in a graph G, is the
@@ -28,7 +28,7 @@ namespace Erdos993
 
 open Finset SimpleGraph
 
-/-! ## Independent Sets in Graphs -/
+/- ## Independent Sets in Graphs -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
 
@@ -45,7 +45,7 @@ noncomputable def independencePolynomial : Polynomial ℤ :=
   ∑ k ∈ Finset.range (Fintype.card V + 1),
     (indepCount G k : ℤ) * Polynomial.X ^ k
 
-/-! ## Unimodality -/
+/- ## Unimodality -/
 
 /-- A finite sequence is unimodal: it increases then decreases. -/
 def IsUnimodal (f : ℕ → ℕ) (n : ℕ) : Prop :=
@@ -59,7 +59,7 @@ def indepSequence : ℕ → ℕ := indepCount G
 def HasUnimodalIndepSequence : Prop :=
   IsUnimodal (indepSequence G) (Fintype.card V)
 
-/-! ## Trees and Forests -/
+/- ## Trees and Forests -/
 
 /-- A graph is acyclic (no cycles). -/
 def IsAcyclic : Prop :=
@@ -80,7 +80,7 @@ theorem tree_is_forest (hT : IsTree G) : IsForest G := hT.2
 axiom tree_edge_count (hT : IsTree G) :
     G.edgeFinset.card = Fintype.card V - 1
 
-/-! ## The Main Theorem -/
+/- ## The Main Theorem -/
 
 /-- Erdős Problem #993: Trees have unimodal independent set sequences.
 Proved using the fact that the independence polynomial of a tree has
@@ -105,14 +105,14 @@ theorem erdos_993_main :
   · intro W _ _ F _ hF
     exact forest_unimodal F hF
 
-/-! ## Counterexamples for General Graphs -/
+/- ## Counterexamples for General Graphs -/
 
 /-- Not all graphs have unimodal independent set sequences. -/
 axiom general_graph_not_unimodal :
     ∃ (W : Type*) (_ : Fintype W) (_ : DecidableEq W) (G : SimpleGraph W) (_ : DecidableRel G.Adj),
       ¬HasUnimodalIndepSequence G
 
-/-! ## Schwenk's Matching Theorem -/
+/- ## Schwenk's Matching Theorem -/
 
 /-- A matching: a set of edges with no shared vertices. -/
 def IsMatching (M : Finset (Sym2 V)) : Prop :=
@@ -128,7 +128,7 @@ This contrasts with independent sets, which are only unimodal for trees. -/
 axiom schwenk_matching_unimodal :
     IsUnimodal (matchingCount G) (G.edgeFinset.card / 2 + 1)
 
-/-! ## Proof Technique: Real-Rootedness -/
+/- ## Proof Technique: Real-Rootedness -/
 
 /-- The independence polynomial of a tree has all real roots.
 This is the key algebraic fact used in the proof: real-rooted polynomials
@@ -136,7 +136,7 @@ with non-negative coefficients have unimodal coefficient sequences. -/
 axiom tree_indep_poly_real_roots (hT : IsTree G) :
     ∀ z : ℂ, (independencePolynomial G).eval₂ (algebraMap ℤ ℂ) z = 0 → z.im = 0
 
-/-! ## Log-Concavity -/
+/- ## Log-Concavity -/
 
 /-- A sequence is log-concave if a_k² ≥ a_{k-1} · a_{k+1}. This is
 strictly stronger than unimodality for positive sequences. -/
@@ -151,7 +151,7 @@ axiom log_concave_implies_unimodal (f : ℕ → ℕ) (n : ℕ) :
 axiom tree_log_concave_conjecture (hT : IsTree G) :
     IsLogConcave (indepSequence G) (Fintype.card V)
 
-/-! ## Independence Number -/
+/- ## Independence Number -/
 
 /-- The independence number α(G): maximum size of an independent set. -/
 noncomputable def independenceNumber : ℕ :=
@@ -167,7 +167,7 @@ axiom peak_at_most_alpha (hT : IsTree G) :
       (∀ k ≤ m, indepCount G k ≤ indepCount G m) ∧
       (∀ k ≥ m, k ≤ Fintype.card V → indepCount G k ≤ indepCount G m)
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #993 Summary.**
 Trees and forests have unimodal independent set sequences, while general
