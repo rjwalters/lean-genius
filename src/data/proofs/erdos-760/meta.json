@@ -17,7 +17,7 @@
       "ramsey-theory",
       "solved"
     ],
-    "badge": "solved",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 760,
     "erdosUrl": "https://erdosproblems.com/760",
@@ -35,7 +35,57 @@
       "Improvement from √(m/log m) to m/log m required new recursive techniques"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "IsIndependentSet, IsClique, IsHomogeneous, IsProperColoring, chromaticNumber, IsCochromaticColoring, cochromaticNumber",
+      "startLine": 43,
+      "endLine": 103
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "cochromatic_le_chromatic, complete_graph_cochromatic, complete_graph_tight_bound",
+      "startLine": 105,
+      "endLine": 137
+    },
+    {
+      "id": "erdos-gimbel",
+      "title": "Erdős-Gimbel Partial Result",
+      "summary": "erdos_gimbel_theorem, erdos_gimbel_weaker",
+      "startLine": 139,
+      "endLine": 163
+    },
+    {
+      "id": "aks-theorem",
+      "title": "Alon-Krivelevich-Sudakov Theorem",
+      "summary": "aks_theorem, erdos_760_solved",
+      "startLine": 165,
+      "endLine": 196
+    },
+    {
+      "id": "proof-technique",
+      "title": "Proof Technique",
+      "summary": "ramsey_for_cochromatic",
+      "startLine": 198,
+      "endLine": 215
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "ramsey_number_bound",
+      "startLine": 217,
+      "endLine": 230
+    },
+    {
+      "id": "summary",
+      "title": "Main Results Summary",
+      "summary": "erdos_760",
+      "startLine": 232,
+      "endLine": 270
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #760 is SOLVED. Every graph with chromatic number m contains a subgraph with cochromatic number at least cm / log m for some constant c > 0. This was proved by Alon, Krivelevich, and Sudakov (1997), improving Erdős-Gimbel's earlier √(m / log m) bound.",
     "implications": "The result shows a fundamental relationship between chromatic and cochromatic numbers: high chromatic number forces high cochromatic number in some subgraph. The logarithmic loss is unavoidable due to Ramsey-theoretic limitations.",
