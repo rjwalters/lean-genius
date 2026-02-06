@@ -1,119 +1,75 @@
 [
   {
-    "id": "ann-832-overview",
+    "id": "ann-e832-header",
     "proofId": "erdos-832",
-    "range": { "startLine": 1, "endLine": 29 },
+    "range": { "startLine": 1, "endLine": 26 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #832: Minimum Edges for Chromatic Number**\n\nMust r-uniform hypergraphs with χ = k have ≥ C((r-1)(k-1)+1, r) edges?\n\n**Answer: NO** (for r ≥ 4)\n\n- r = 2: TRUE (classical)\n- r = 3, k = 3: FALSE (Fano plane)\n- r ≥ 4: FALSE (Alon 1985)\n\n**Asymptotic:** m(r,k) ~ c_r · k^r",
-    "significance": "critical"
+    "content": "**Erdős Problem #832** asks whether r-uniform hypergraphs with chromatic number k must have at least C((r-1)(k-1)+1, r) edges. Alon (1985) disproved this for r ≥ 4 using Turán number constructions. The Fano plane disproves r=3, k=3. Asymptotically, m(r,k) ~ c_r · k^r (Cherkashin-Petrov 2020).",
+    "mathContext": "This problem connects hypergraph coloring theory to extremal combinatorics, asking for the minimum edge count that forces high chromatic number.",
+    "significance": "critical",
+    "relatedConcepts": ["Hypergraph coloring", "Extremal combinatorics", "Turán numbers"]
   },
   {
-    "id": "ann-832-hypergraph",
+    "id": "ann-e832-defs",
     "proofId": "erdos-832",
-    "range": { "startLine": 42, "endLine": 54 },
+    "range": { "startLine": 35, "endLine": 53 },
     "type": "definition",
-    "title": "r-Uniform Hypergraph",
-    "content": "**Hypergraph and IsUniform:**\n\nA hypergraph is a collection of edges (subsets of vertices).\n\n```lean\nstructure Hypergraph (V : Type*) where\n  edges : Set (Finset V)\n\ndef IsUniform (H : Hypergraph V) (r : ℕ) : Prop :=\n  ∀ e ∈ H.edges, e.card = r\n```\n\nAll edges have exactly r vertices.",
-    "significance": "critical"
+    "title": "Hypergraph Definitions",
+    "content": "**Hypergraph(V):** A set of edges, each a Finset of vertices.\n\n**IsUniform(H, r):** Every edge has exactly r vertices.\n\n**IsProperColouring(H, c):** Assignment c : V → Fin k where no edge is monochromatic (every edge has at least two distinctly-colored vertices).\n\n**hasChromaticNumberAtLeast(H, k):** No proper (k-1)-colouring exists.",
+    "significance": "critical",
+    "relatedConcepts": ["Uniform hypergraphs", "Chromatic number", "Graph coloring"]
   },
   {
-    "id": "ann-832-colouring",
+    "id": "ann-e832-conjecture",
     "proofId": "erdos-832",
-    "range": { "startLine": 62, "endLine": 80 },
+    "range": { "startLine": 64, "endLine": 72 },
     "type": "definition",
-    "title": "Hypergraph Colouring",
-    "content": "**IsProperColouring and chromaticNumber:**\n\nA proper k-colouring assigns colours to vertices so no edge is monochromatic.\n\n```lean\ndef IsProperColouring (H : Hypergraph V) (c : V → Fin k) : Prop :=\n  ∀ e ∈ H.edges, ∃ u v, u ∈ e ∧ v ∈ e ∧ c u ≠ c v\n```\n\nChromatic number = minimum k for a proper colouring.",
-    "significance": "critical"
+    "title": "Erdős's Conjecture (Disproved)",
+    "content": "**erdosConjecture(r, k):** For r ≥ 3, every r-uniform hypergraph with chromatic number ≥ k has at least C((r-1)(k-1)+1, r) edges. The conjectured extremal example is the complete r-uniform hypergraph on (r-1)(k-1)+1 vertices.\n\nThis conjecture is FALSE for r ≥ 4 (Alon 1985) and for r = 3, k = 3 (Fano plane).",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal problems", "Complete hypergraphs", "Binomial coefficients"]
   },
   {
-    "id": "ann-832-classical",
+    "id": "ann-e832-counterexamples",
     "proofId": "erdos-832",
-    "range": { "startLine": 86, "endLine": 94 },
+    "range": { "startLine": 74, "endLine": 94 },
     "type": "axiom",
-    "title": "Classical Graph Case (r=2)",
-    "content": "**classical_graph_bound:**\n\nFor graphs (r=2), chromatic number k implies ≥ C(k,2) = k(k-1)/2 edges.\n\nThe complete graph K_k is the extremal example with exactly C(k,2) edges.\n\nThis classical result is TRUE.",
-    "significance": "key"
+    "title": "Counterexamples",
+    "content": "**steiner_counterexample:** The Fano plane is a 3-uniform hypergraph on 7 vertices with 7 edges and chromatic number 3. The conjecture predicts ≥ C(5,3) = 10 edges, so 7 < 10 is a counterexample for r = 3, k = 3.\n\n**alon_disproof:** For r ≥ C and k ≥ C·r, there exists an r-uniform hypergraph with chromatic number ≥ k having at most (7/8)^r times the conjectured edges. This disproves the conjecture for all r ≥ 4.",
+    "mathContext": "Alon's construction uses Turán numbers to find hypergraphs with high chromatic number but few edges relative to the complete hypergraph.",
+    "significance": "critical",
+    "relatedConcepts": ["Fano plane", "Steiner systems", "Turán numbers"]
   },
   {
-    "id": "ann-832-conjecture",
+    "id": "ann-e832-asymptotics",
     "proofId": "erdos-832",
-    "range": { "startLine": 100, "endLine": 119 },
-    "type": "definition",
-    "title": "Erdős's Conjecture",
-    "content": "**erdosConjecture:**\n\nFor r ≥ 3 and k sufficiently large, every r-uniform hypergraph with χ = k has ≥ C((r-1)(k-1)+1, r) edges.\n\nThe complete r-uniform hypergraph on (r-1)(k-1)+1 vertices achieves this bound.\n\n**STATUS: DISPROVED** (for r ≥ 4)",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-832-steiner",
-    "proofId": "erdos-832",
-    "range": { "startLine": 125, "endLine": 140 },
+    "range": { "startLine": 96, "endLine": 116 },
     "type": "axiom",
-    "title": "Steiner Triple Counterexample",
-    "content": "**steiner_counterexample:**\n\nThe Fano plane is a 3-uniform hypergraph with:\n- 7 vertices\n- 7 edges\n- Chromatic number 3\n\nErdős's conjecture would require C(5,3) = 10 edges.\n\nBut 7 < 10, so the conjecture fails for r=3, k=3.",
-    "significance": "critical"
+    "title": "Asymptotic Bounds on m(r,k)",
+    "content": "**m(r, k):** The minimum number of edges in any r-uniform hypergraph with chromatic number > k. Axiomatized since computing the minimum is not feasible.\n\n**akolzin_shabanov_bounds (2016):** (r/log r)·k^r ≪ m(r,k) ≪ (r³ log r)·k^r. These are the tightest known bounds.\n\n**cherkashin_petrov_limit (2020):** For fixed r ≥ 3, the ratio m(r,k)/k^r converges to a constant c_r > 0 as k → ∞.",
+    "mathContext": "The convergence result resolves the leading-order asymptotic, leaving only the determination of the constant c_r as an open problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic analysis", "Convergence", "Extremal thresholds"]
   },
   {
-    "id": "ann-832-alon",
+    "id": "ann-e832-examples",
     "proofId": "erdos-832",
-    "range": { "startLine": 146, "endLine": 161 },
-    "type": "axiom",
-    "title": "Alon's Disproof (1985)",
-    "content": "**alon_disproof:**\n\nFor r ≥ C and k ≥ C·r (some absolute constant C), there exist r-uniform hypergraphs with χ ≥ k having at most:\n\n(7/8)^r · C((r-1)(k-1)+1, r) edges\n\nThis exponential factor (7/8)^r disproves the conjecture for all r ≥ 4.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-832-m-function",
-    "proofId": "erdos-832",
-    "range": { "startLine": 188, "endLine": 196 },
-    "type": "definition",
-    "title": "The Function m(r,k)",
-    "content": "**m(r,k):**\n\nMinimum number of edges in any r-uniform hypergraph with chromatic number > k.\n\nThis is the key quantity for understanding the extremal problem.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-832-akolzin-shabanov",
-    "proofId": "erdos-832",
-    "range": { "startLine": 197, "endLine": 207 },
-    "type": "axiom",
-    "title": "Akolzin-Shabanov Bounds (2016)",
-    "content": "**akolzin_shabanov_bounds:**\n\n(r / log r) · k^r ≪ m(r,k) ≪ (r³ log r) · k^r\n\nThe implied constants are absolute.\n\nThis establishes the order of magnitude as k^r with polynomial factors in r.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-832-cherkashin-petrov",
-    "proofId": "erdos-832",
-    "range": { "startLine": 209, "endLine": 216 },
-    "type": "axiom",
-    "title": "Cherkashin-Petrov Limit (2020)",
-    "content": "**cherkashin_petrov_limit:**\n\nFor fixed r ≥ 3, the ratio m(r,k)/k^r converges to a limit c_r as k → ∞.\n\nThis proves the existence of an asymptotic constant for each r.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-832-turan",
-    "proofId": "erdos-832",
-    "range": { "startLine": 222, "endLine": 234 },
-    "type": "concept",
-    "title": "Turán Numbers",
-    "content": "**Turán Connection:**\n\nTurán number T(n,r,k) = max edges in r-uniform hypergraph on n vertices avoiding complete K_k^(r).\n\nAlon used Turán numbers to construct counterexamples - high Turán numbers allow hypergraphs with high chromatic number but relatively few edges.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-832-r3-open",
-    "proofId": "erdos-832",
-    "range": { "startLine": 240, "endLine": 250 },
-    "type": "concept",
-    "title": "r=3 Open Case",
-    "content": "**r3_open_question:**\n\nIs the conjecture true for r=3 with k sufficiently large?\n\n- FALSE for k=3 (Steiner triple)\n- OPEN for large k\n\nThis remains an interesting open problem.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-832-summary",
-    "proofId": "erdos-832",
-    "range": { "startLine": 281, "endLine": 317 },
+    "range": { "startLine": 118, "endLine": 130 },
     "type": "theorem",
-    "title": "Summary",
-    "content": "**Erdős Problem #832: Summary**\n\n**Conjecture:** r-uniform, χ=k ⟹ ≥ C((r-1)(k-1)+1, r) edges\n\n**Status:**\n- r=2: TRUE (classical)\n- r=3, k=3: FALSE (Fano plane: 7 vs 10)\n- r=3, large k: OPEN\n- r≥4: FALSE (Alon's (7/8)^r factor)\n\n**Asymptotic:** m(r,k)/k^r → c_r",
-    "significance": "critical"
+    "title": "Open Questions and Examples",
+    "content": "**r3_open_question:** Whether the conjecture holds for r = 3 with sufficiently large k remains open.\n\n**Concrete computations** verified by norm_num:\n- 7 < C(5,3) = 10: Fano plane has fewer edges than predicted\n- (7/8)^4 < 0.6: Alon's factor gives ~41% reduction for r = 4",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Computed bounds"]
+  },
+  {
+    "id": "ann-e832-summary",
+    "proofId": "erdos-832",
+    "range": { "startLine": 132, "endLine": 155 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_832** packages two key results:\n1. Alon's disproof: ∃ C, for r ≥ C and k ≥ C·r, counterexample hypergraphs exist\n2. Cherkashin-Petrov: m(r,k)/k^r → c_r for each r ≥ 3\n\nProved by `⟨alon_disproof, cherkashin_petrov_limit⟩`.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary theorem", "Disproof", "Asymptotics"]
   }
 ]
