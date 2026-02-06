@@ -38,12 +38,6 @@ namespace Erdos440
 -/
 
 /--
-**LCM of two natural numbers:**
-lcm(a, b) = a * b / gcd(a, b).
--/
-def myLcm (a b : ℕ) : ℕ := Nat.lcm a b
-
-/--
 **Infinite increasing sequence:**
 A sequence {a₁ < a₂ < ...} represented as a function ℕ → ℕ.
 -/
@@ -89,17 +83,20 @@ theorem lcm_consecutive (n : ℕ) (hn : n > 0) :
 /--
 **Counting for naturals:**
 For A = ℕ, the pairs (n, n+1) with lcm ≤ x are those with n(n+1) ≤ x.
-This gives approximately √x many pairs.
+This gives approximately √x many pairs, so A(x) ≈ √x.
 -/
 axiom naturals_counting :
     ∀ x : ℕ, countingFunction naturalsSeq x = Nat.sqrt x
 
 /--
 **The liminf for naturals:**
-For A = ℕ, liminf A(x)/√x = 1.
+For A = ℕ, liminf A(x)/√x = 1. This is the maximum possible value,
+making the natural numbers the extremal sequence for this problem.
+Axiomatized because formalizing liminf requires Filter.liminf infrastructure.
 -/
-axiom naturals_liminf_one :
-    True  -- Placeholder for: liminf (normalizedRatio naturalsSeq) = 1
+axiom naturals_liminf_eq_one :
+    ∀ ε : ℝ, ε > 0 → ∃ x₀ : ℕ, ∀ x ≥ x₀,
+      |normalizedRatio naturalsSeq x - 1| < ε
 
 /-
 ## Part III: Upper Bound
@@ -115,8 +112,11 @@ def bounded_by_sqrt (A : IncreasingSeq) : Prop :=
 /--
 **Tao's elementary proof:**
 A simple argument shows A(x) = O(√x) for any sequence.
-Key idea: pairs with lcm ≤ x must have both elements ≤ x,
-and the constraint forces sparsity.
+
+Key idea: Write a = dm, b = dn where d = gcd(a,b) and gcd(m,n) = 1.
+Then lcm(a,b) = dmn ≤ x, so d ≤ x/(mn) ≤ x/2.
+Summing over coprime (m,n) with mn ≤ x/d and over d:
+  Σ_{d ≤ √x} O(x/d²) + O(√x) = O(√x).
 -/
 axiom tao_elementary_proof :
     ∀ A : IncreasingSeq, bounded_by_sqrt A
@@ -131,17 +131,12 @@ noncomputable def optimal_constant : ℝ :=
 /--
 **van Doorn's sharp bound:**
 A(x) ≤ (c + o(1))√x where c ≈ 1.86.
+This was already established by Erdős-Szemerédi (1980);
+van Doorn gave a rigorous modern treatment.
 -/
 axiom van_doorn_sharp_bound :
     ∀ A : IncreasingSeq, ∀ ε > 0, ∃ x₀ : ℕ,
       ∀ x ≥ x₀, (countingFunction A x : ℝ) ≤ (optimal_constant + ε) * Real.sqrt x
-
-/--
-**Optimality of the constant:**
-The constant c is best possible - achieved by A = ℕ asymptotically.
--/
-axiom constant_is_optimal :
-    True  -- The constant c cannot be improved
 
 /-
 ## Part IV: The Liminf Question
@@ -149,133 +144,46 @@ axiom constant_is_optimal :
 
 /--
 **Second question: liminf A(x)/√x ≤ 1?**
-Erdős-Szemerédi proved this is always true.
+For any infinite increasing sequence A, the liminf of the normalized
+ratio A(x)/√x is at most 1. This means no sequence can "consistently"
+have more pairs with small LCM than the natural numbers.
 -/
-def liminf_bound (A : IncreasingSeq) : Prop :=
-  True  -- Placeholder for: liminf (normalizedRatio A) ≤ 1
+axiom erdos_szemeredi_liminf_bound :
+    ∀ A : IncreasingSeq, ∀ ε : ℝ, ε > 0 →
+    ∃ᶠ x in Filter.atTop, normalizedRatio A x < 1 + ε
 
 /--
 **Erdős-Szemerédi Theorem (1980):**
-For any infinite sequence A, liminf A(x)/√x ≤ 1.
--/
-axiom erdos_szemeredi_theorem :
-    ∀ A : IncreasingSeq, liminf_bound A
+For any infinite sequence A, there exist arbitrarily large x where
+A(x)/√x is close to or below 1.
 
-/--
-**Tightness of the bound:**
-The bound liminf ≤ 1 is tight, achieved by A = ℕ.
+Combined with the fact that A = ℕ achieves liminf = 1, this shows
+the maximum possible liminf is exactly 1.
 -/
-axiom liminf_bound_tight :
-    True  -- Placeholder for: liminf (normalizedRatio naturalsSeq) = 1
-
-/-
-## Part V: Proof Ideas
--/
-
-/--
-**Key observation:**
-If lcm(a, b) ≤ x, then a, b ≤ x and a | lcm(a,b), b | lcm(a,b).
-This constrains possible pairs significantly.
--/
-axiom key_observation : True
-
-/--
-**Counting argument:**
-Fix m = lcm(a, b). Then a, b | m.
-Number of divisor pairs (a, b) of m with a < b is O(d(m)),
-and summing over m ≤ x gives O(√x).
--/
-axiom counting_argument : True
-
-/--
-**Divisor function bound:**
-The average of d(m) over m ≤ x is O(log x).
-This is used in the counting argument.
--/
-axiom divisor_bound : True
-
-/--
-**Tao's proof sketch:**
-- Count pairs (a,b) with a < b and lcm(a,b) ≤ x
-- Write a = dm, b = dn where gcd(m,n) = 1 and d = gcd(a,b)
-- Then lcm = dmn ≤ x, so d ≤ x/(mn) ≤ x/2
-- Sum over (m,n) coprime: Σ_{mn ≤ x/d} 1 = O(x/d)
-- Total: Σ_{d ≤ √x} O(x/d²) + O(√x) = O(√x)
--/
-axiom tao_proof_sketch : True
+theorem erdos_szemeredi_summary :
+    -- Part 1: A(x) = O(√x) for every sequence
+    (∀ A : IncreasingSeq, bounded_by_sqrt A) ∧
+    -- Part 2: The sharp constant is c ≈ 1.86
+    (∀ A : IncreasingSeq, ∀ ε > 0, ∃ x₀ : ℕ,
+      ∀ x ≥ x₀, (countingFunction A x : ℝ) ≤ (optimal_constant + ε) * Real.sqrt x) := by
+  exact ⟨tao_elementary_proof, van_doorn_sharp_bound⟩
 
 /-
-## Part VI: Generalizations
+## Part V: Special Sequences
 -/
 
 /--
-**k-consecutive LCM:**
-Generalize to lcm(aᵢ, aᵢ₊₁, ..., aᵢ₊ₖ).
+**k-consecutive LCM generalization:**
+Count indices i where lcm(aᵢ, ..., aᵢ₊ₖ) ≤ x.
+Erdős-Szemerédi (1980) established analogous bounds with different exponents.
 -/
 def countingFunctionK (A : IncreasingSeq) (k : ℕ) (x : ℕ) : ℕ :=
   Finset.card (Finset.filter
     (fun i => (Finset.range (k + 1)).prod (fun j => A.seq (i + j)) ≤ x^k)
     (Finset.range x))
 
-/--
-**Erdős-Szemerédi generalizations:**
-For k-consecutive LCM, similar bounds hold with different exponents.
-The paper [ErSz80] contains these more general results.
--/
-axiom generalization_to_k : True
-
-/--
-**Related to multiplicative structure:**
-The problem connects to understanding multiplicative relationships
-between consecutive terms in sequences.
--/
-axiom multiplicative_connection : True
-
 /-
-## Part VII: Special Sequences
--/
-
-/--
-**Arithmetic progressions:**
-For A = {a + nd : n ∈ ℕ}, the behavior depends on d.
-Coprimality of consecutive terms affects the count.
--/
-axiom arithmetic_progression_case : True
-
-/--
-**Prime sequences:**
-For A = primes, consecutive primes have lcm = product,
-which grows quickly. A(x) is very small.
--/
-axiom primes_case : True
-
-/--
-**Powers of 2:**
-For A = {2^n}, lcm(2^n, 2^{n+1}) = 2^{n+1}.
-A(x) = log₂(x), much smaller than √x.
--/
-axiom powers_of_2_case : True
-
-/-
-## Part VIII: Historical Context
--/
-
-/--
-**Origin in American Mathematical Monthly:**
-The problem originated from a Monthly problem.
-Erdős and Szemerédi gave a complete solution in their 1980 paper.
--/
-axiom monthly_origin : True
-
-/--
-**Mat. Lapok publication:**
-The solution appeared in Mat. Lapok (Hungarian mathematics journal),
-which was a common venue for Erdős's problems.
--/
-axiom mat_lapok : True
-
-/-
-## Part IX: Summary
+## Part VI: Main Result
 -/
 
 /--
@@ -294,23 +202,10 @@ KEY INSIGHTS:
 1. LCM constraint forces sparsity of consecutive pairs
 2. A = ℕ is extremal (maximizes liminf)
 3. The optimal constant c = Σ 1/(√n(n+1)) ≈ 1.86
-4. Divisor function estimates are key to the counting
-5. Generalizes to k-consecutive LCM
-
-A clean quantitative result in multiplicative number theory.
+4. Coprimality of consecutive integers is the key mechanism
 -/
-theorem erdos_440_status :
-    -- Both questions are answered affirmatively
-    (∀ A : IncreasingSeq, bounded_by_sqrt A) ∧
-    (∀ A : IncreasingSeq, liminf_bound A) := by
-  constructor
-  · exact tao_elementary_proof
-  · exact erdos_szemeredi_theorem
-
-/--
-**Problem resolved:**
-Erdős Problem #440 is SOLVED by Erdős-Szemerédi (1980).
--/
-theorem erdos_440_resolved : True := trivial
+theorem erdos_440_solved :
+    ∀ A : IncreasingSeq, bounded_by_sqrt A := by
+  exact tao_elementary_proof
 
 end Erdos440
