@@ -2,11 +2,11 @@
   "id": "erdos-597",
   "title": "Erdős Problem #597: Partition Relations for Ordinal Powers",
   "slug": "erdos-597",
-  "description": "Does ω₁² → (ω₁ω, G)² for graphs G on ≤ℵ₁ vertices with no K₄ and no K_{ℵ₀,ℵ₀}? OPEN. Triangle case proven (Erdős-Hajnal), but K_{ℵ₀,ℵ₀} case fails (Baumgartner).",
+  "description": "Does ω₁² → (ω₁ω, G)² for graphs G on at most ℵ₁ vertices with no K₄ and no K_{ℵ₀,ℵ₀}? An open problem in infinite partition calculus connecting ordinal combinatorics with graph Ramsey theory.",
   "meta": {
     "author": "Paul Erdős, András Hajnal",
     "sourceUrl": "https://erdosproblems.com/597",
-    "date": "1969",
+    "date": "1987",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos597Problem.lean",
     "tags": [
@@ -22,87 +22,108 @@
     "sorries": 0,
     "erdosNumber": 597,
     "erdosUrl": "https://erdosproblems.com/597",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal",
+        "description": "Ordinal number type and arithmetic",
+        "module": "Mathlib.SetTheory.Ordinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "Aleph cardinal numbers",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Set.Countable",
+        "description": "Countability predicate for sets",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "SimpleGraph' structure for symmetric irreflexive relations",
+      "containsClique and isK4Free definitions",
+      "containsCountableBiclique and isKAleph0Free definitions",
+      "partitionArrow axiomatized relation α → (β, γ)²",
+      "erdos597Conjecture: the full open conjecture",
+      "finiteCaseConjecture: the finite subproblem",
+      "erdosHajnalTriangle axiom: ω₁² → (ω₁ω, 3)²",
+      "baumgartnerCounterexample axiom: ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})²",
+      "erdos597_knownResults theorem combining both results"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem lies at the intersection of partition calculus and graph theory. Erdős originally asked with only the K₄-free condition, but Baumgartner showed this fails for K_{ℵ₀,ℵ₀}. The current formulation with both forbidden subgraph conditions remains open. Erdős and Hajnal established the triangle case ω₁² → (ω₁ω, 3)², providing a foundation for the conjecture.",
-    "problemStatement": "Let G be a graph on at most ℵ₁ vertices containing no K₄ and no K_{ℵ₀,ℵ₀} (the complete bipartite graph with ℵ₀ vertices in each class). Is it true that ω₁² → (ω₁ω, G)²? The arrow notation means: for any 2-coloring of pairs from ω₁², either there exists a homogeneous set of order type ω₁ω in color 1, or a copy of G in color 2.",
-    "proofStrategy": "The formalization captures the ordinal notation (ω₁, ω₁², ω₁ω), the partition relation α → (β, γ)², and the graph conditions. Known results are axiomatized: Erdős-Hajnal's positive result for triangles and Baumgartner's counterexample for K_{ℵ₀,ℵ₀}. The main conjecture with both conditions remains an open problem.",
+    "historicalContext": "Erdős Problem #597 originates from the study of partition calculus, a branch of infinite combinatorics developed by Erdős and Rado in the 1950s. The partition arrow notation α → (β, γ)² encodes a Ramsey-type statement: every 2-coloring of pairs from a set of order type α yields either a homogeneous set of type β or a copy of γ. This problem was posed by Erdős in [Er87] and referenced in [Va99, 7.84].\n\nErdős originally asked whether ω₁² → (ω₁ω, G)² holds for all K₄-free graphs G on at most ℵ₁ vertices. However, Baumgartner demonstrated a counterexample: the complete bipartite graph K_{ℵ₀,ℵ₀} is K₄-free (being bipartite, it is even triangle-free), yet ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})². This forced a refinement of the conjecture to exclude K_{ℵ₀,ℵ₀} subgraphs.\n\nThe positive foundation comes from Erdős and Hajnal, who proved ω₁² → (ω₁ω, 3)² — the triangle case. The gap between the triangle (3 vertices) and K_{ℵ₀,ℵ₀} (infinitely many) is precisely where Problem #597 lives. The problem also asks specifically about finite K₄-free graphs G, which is a natural intermediate case. The problem may be sensitive to set-theoretic axioms beyond ZFC, as many partition relations at the level of ℵ₁ depend on assumptions like the Continuum Hypothesis or Martin's Axiom.",
+    "problemStatement": "Let $G$ be a graph on at most $\\aleph_1$ vertices containing no $K_4$ and no $K_{\\aleph_0,\\aleph_0}$ (the complete bipartite graph with $\\aleph_0$ vertices in each class). Is it true that $\\omega_1^2 \\to (\\omega_1\\omega, G)^2$? What about finite $G$? The arrow notation means: for any 2-coloring of pairs from $\\omega_1^2$, either there exists a homogeneous set of order type $\\omega_1\\omega$ in color 0, or a copy of $G$ in color 1. STATUS: OPEN.",
+    "proofStrategy": "The formalization defines the key mathematical structures from scratch: a simple graph type, clique containment, K₄-freeness, K_{ℵ₀,ℵ₀}-freeness (via countable bicliques), and a vertex cardinality bound. The partition relation α → (β, γ)² is axiomatized since its full definition requires substantial order-type and graph-embedding infrastructure. The two known partial results are stated as axioms: the Erdős-Hajnal positive result for triangles and Baumgartner's negative result for K_{ℵ₀,ℵ₀}. The summary theorem combines both via an exact proof.",
     "keyInsights": [
-      "ω₁² → (ω₁ω, 3)² is proven (Erdős-Hajnal)",
-      "ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})² (Baumgartner counterexample)",
-      "Both K₄-free AND K_{ℵ₀,ℵ₀}-free conditions are needed",
-      "The finite case (finite K₄-free G) is a natural subproblem",
-      "May depend on set-theoretic axioms beyond ZFC",
-      "Connects infinite combinatorics with graph Ramsey theory"
+      "**Partition Arrow**: α → (β, γ)² means every 2-coloring of pairs from α yields homogeneous β or a copy of γ",
+      "**Erdős-Hajnal Positive Result**: ω₁² → (ω₁ω, 3)² — the triangle case is fully proven",
+      "**Baumgartner Negative Result**: ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})² — the infinite bipartite case fails",
+      "**Both Conditions Essential**: K_{ℵ₀,ℵ₀} is K₄-free (bipartite), so the K_{ℵ₀,ℵ₀}-free condition is independently needed",
+      "**Finite Subproblem**: Whether the relation holds for all finite K₄-free G is itself open",
+      "**Set-Theoretic Sensitivity**: The answer may depend on axioms like CH or Martin's Axiom"
     ]
   },
   "sections": [
     {
       "id": "ordinal-notation",
       "title": "Ordinal Notation",
-      "startLine": 35,
-      "endLine": 61,
-      "summary": "ω₁, ω, ω₁ω, ω₁² definitions"
+      "startLine": 32,
+      "endLine": 56,
+      "summary": "Definitions of ω₁, ω, ω₁ω, and ω₁² as ordinals"
+    },
+    {
+      "id": "graph-structures",
+      "title": "Graph Structures",
+      "startLine": 58,
+      "endLine": 91,
+      "summary": "SimpleGraph', containsClique, isK4Free, containsCountableBiclique, isKAleph0Free, hasAtMostAleph1Vertices"
     },
     {
       "id": "partition-arrow",
       "title": "Partition Arrow Notation",
-      "startLine": 63,
-      "endLine": 95,
-      "summary": "α → (β, γ)² relation and graph structures"
+      "startLine": 93,
+      "endLine": 102,
+      "summary": "Axiomatized partition relation α → (β, γ)²"
     },
     {
-      "id": "main-question",
-      "title": "The Main Question",
-      "startLine": 97,
-      "endLine": 128,
-      "summary": "K₄-free, K_{ℵ₀,ℵ₀}-free conditions and the conjecture"
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 104,
+      "endLine": 123,
+      "summary": "erdos597Conjecture and finiteCaseConjecture definitions"
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 130,
-      "endLine": 156,
-      "summary": "Erdős-Hajnal triangle case, Baumgartner counterexample"
+      "startLine": 125,
+      "endLine": 141,
+      "summary": "Erdős-Hajnal triangle theorem and Baumgartner counterexample"
     },
     {
-      "id": "finite-case",
-      "title": "Finite Case",
-      "startLine": 158,
-      "endLine": 181,
-      "summary": "The question restricted to finite K₄-free graphs"
-    },
-    {
-      "id": "partition-calculus",
-      "title": "Partition Calculus Background",
-      "startLine": 183,
-      "endLine": 213,
-      "summary": "Erdős-Rado theorem, stepping-up lemmas"
-    },
-    {
-      "id": "set-theory",
-      "title": "Set-Theoretic Context",
-      "startLine": 215,
-      "endLine": 238,
-      "summary": "ZFC dependence, role of ℵ₁, consistency"
+      "id": "background",
+      "title": "Background and Context",
+      "startLine": 143,
+      "endLine": 171,
+      "summary": "Why both conditions are needed, partition calculus background, set-theoretic context"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 264,
-      "endLine": 302,
-      "summary": "Open problem status and known partial results"
+      "startLine": 173,
+      "endLine": 189,
+      "summary": "erdos597_knownResults theorem combining positive and negative results"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #597 is OPEN. The question asks whether ω₁² → (ω₁ω, G)² holds for graphs G on ≤ℵ₁ vertices with no K₄ and no K_{ℵ₀,ℵ₀}. Erdős-Hajnal proved the triangle case (G = K₃), but Baumgartner showed the relation fails for G = K_{ℵ₀,ℵ₀}. The combined condition (both forbidden subgraphs) remains unresolved.",
-    "implications": "This is a fundamental problem in infinite Ramsey theory connecting partition calculus with graph theory. A positive answer would extend the Erdős-Hajnal result significantly. A negative answer would require a subtle counterexample respecting both forbidden subgraph conditions.",
+    "summary": "Erdős Problem #597 remains OPEN. The formalization captures the two known partial results: Erdős-Hajnal proved ω₁² → (ω₁ω, 3)² (triangle case positive), and Baumgartner proved ω₁² ↛ (ω₁ω, K_{ℵ₀,ℵ₀})² (infinite bipartite case negative). The main question — whether the relation holds for all K₄-free, K_{ℵ₀,ℵ₀}-free graphs on ≤ℵ₁ vertices — sits in the gap between these results.",
+    "implications": "A positive answer would significantly extend the Erdős-Hajnal result from triangles to a broad class of graphs. A negative answer would require a subtle counterexample that is both K₄-free and K_{ℵ₀,ℵ₀}-free. The problem connects partition calculus, graph Ramsey theory, and set-theoretic independence, making it a central question in infinite combinatorics.",
     "openQuestions": [
-      "Does the relation hold for all finite K₄-free graphs?",
-      "What is the role of set-theoretic axioms beyond ZFC?",
-      "Can the K₄-free condition be relaxed?",
-      "What about higher ordinal powers like ω₂²?"
+      "Does ω₁² → (ω₁ω, G)² hold for all finite K₄-free graphs G?",
+      "Is the answer to Problem #597 independent of ZFC?",
+      "Can the K₄-free condition be relaxed to K_n-free for larger n?",
+      "What about analogous questions for higher ordinal powers like ω₂²?"
     ]
   }
 }
