@@ -18,7 +18,7 @@
       "partially-open"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 987,
     "erdosUrl": "https://erdosproblems.com/987",
     "erdosProblemStatus": "partially-open",
@@ -58,7 +58,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #987: Exponential Sums**\n\nThis problem concerns the behavior of exponential sums over arbitrary sequences. Given any sequence x₁,x₂,... in (0,1), we form the sums ∑e(kxⱼ) where e(x) = e^{2πix}. The function Aₖ measures how large these sums can get.\n\n**Historical Development:**\n- **Erdős (1964)**: Observed that the supremum over n is unbounded as k→∞.\n- **Erdős (1965)**: Proved the 'very easy' result that Aₖ ≫ log k infinitely often.\n- **Clunie (1967)**: Major breakthrough - proved Aₖ ≫ √k infinitely often, and constructed sequences with Aₖ ≤ k for all k.\n- **Tao**: Independently proved the √k lower bound.\n- **Liu (1969)**: For finitely many distinct points, showed Aₖ ≫ k^{1-ε}.\n\n**Problem Source:**\nThis is Problem 7.21 in Hayman's 'Research problems in function theory' (1974), attributed to Erdős.",
+    "historicalContext": "Erdős Problem #987 concerns the behavior of exponential sums over arbitrary sequences in (0,1). Given a sequence x₁, x₂, ... ∈ (0,1), define Aₖ = limsup_{n→∞} |∑_{j≤n} e(kxⱼ)| where e(x) = e^{2πix}. The problem asks two questions: is limsup Aₖ = ∞, and can Aₖ = o(k)? This appeared as Problem 7.21 in Hayman's 'Research problems in function theory' (1974).\n\nThe problem saw steady progress over the 1960s. Erdős (1964) observed that the supremum of partial sums over n is unbounded as k grows, and in 1965 gave a 'very easy' proof that Aₖ ≫ log k infinitely often. The major breakthrough came from Clunie (1967), who proved Aₖ ≫ √k infinitely often and also constructed sequences with Aₖ ≤ k for all k, establishing both a strong lower bound and an upper bound. Tao independently proved the √k lower bound. Liu (1969) showed that for sequences with finitely many distinct values, the bound improves to Aₖ ≫ k^{1-ε}.\n\nThe problem remains partially open. The first question (limsup Aₖ = ∞) is resolved affirmatively, but the second question—whether Aₖ = o(k) is achievable—remains open. The gap between the √k lower bound and the O(k) upper bound is a fundamental question connecting exponential sums to discrepancy theory and equidistribution.",
     "problemStatement": "**Problem Statement (Partially Open)**\n\nLet $x_1, x_2, \\ldots \\in (0,1)$ be an infinite sequence. Define:\n$$A_k = \\limsup_{n \\to \\infty}\\left|\\sum_{j \\leq n} e(kx_j)\\right|$$\nwhere $e(x) = e^{2\\pi ix}$.\n\n**Questions:**\n1. Is $\\limsup_{k \\to \\infty} A_k = \\infty$? **YES** (proved)\n2. Is it possible for $A_k = o(k)$? **OPEN**\n\n**Known:**\n- $A_k \\geq C\\sqrt{k}$ infinitely often (Clunie, Tao)\n- There exist sequences with $A_k \\leq k$ for all $k$ (Clunie)\n\n**Gap:** The question of whether $o(k)$ but $\\neq o(\\sqrt{k})$ is achievable remains open.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define e(x) = e^{2πix}, partial sums, and the Aₖ function using limsup.\n\n2. **Early Results:** Axiomatize Erdős's 1964 and 1965 results (unboundedness and log k bound).\n\n3. **Clunie's Theorems:** State √k lower bound and O(k) upper construction.\n\n4. **Liu's Results:** Axiomatize the stronger bounds for finite distinct points.\n\n5. **Open Question:** Define SublinearGrowth (Aₖ = o(k)) and state the open question.\n\n6. **Connections:** Include relationship to discrepancy theory via Erdős-Turán inequality.",
     "keyInsights": [
@@ -74,58 +74,58 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "e(x) = e^{2πix}, partialSum, A function",
-      "startLine": 32,
-      "endLine": 76
+      "summary": "e(x), partialSum, A function",
+      "startLine": 37,
+      "endLine": 74
     },
     {
       "id": "erdos-early",
       "title": "Erdős's Basic Results",
       "summary": "1964 unboundedness, 1965 log k lower bound",
-      "startLine": 78,
+      "startLine": 76,
       "endLine": 106
     },
     {
       "id": "clunie",
       "title": "Clunie's Results (1967)",
-      "summary": "√k lower bound, O(k) upper construction",
+      "summary": "√k lower bound, O(k) upper construction, Tao's proof",
       "startLine": 108,
-      "endLine": 140
+      "endLine": 137
     },
     {
       "id": "liu",
       "title": "Liu's Results (1969)",
       "summary": "Finite distinct points case, k^{1-ε} bound",
-      "startLine": 142,
-      "endLine": 175
+      "startLine": 139,
+      "endLine": 168
     },
     {
       "id": "open-question",
       "title": "The Open Question",
-      "summary": "SublinearGrowth definition, o(k) question",
-      "startLine": 177,
-      "endLine": 210
+      "summary": "SublinearGrowth, openQuestion, known_bounds",
+      "startLine": 170,
+      "endLine": 204
     },
     {
-      "id": "physical-interpretation",
-      "title": "Physical Interpretation",
-      "summary": "Random walk analogy, Weyl sums",
-      "startLine": 212,
-      "endLine": 250
+      "id": "weyl-sums",
+      "title": "Weyl Sums",
+      "summary": "Weyl sum bound for equidistributed sequences",
+      "startLine": 206,
+      "endLine": 222
     },
     {
       "id": "discrepancy",
       "title": "Connection to Discrepancy Theory",
       "summary": "discrepancy definition, Erdős-Turán inequality",
-      "startLine": 252,
-      "endLine": 280
+      "startLine": 224,
+      "endLine": 244
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_987 theorem, gap statement",
-      "startLine": 270,
-      "endLine": 319
+      "summary": "erdos_987 summary theorem",
+      "startLine": 246,
+      "endLine": 266
     }
   ],
   "conclusion": {
