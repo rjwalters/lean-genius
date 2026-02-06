@@ -1,5 +1,5 @@
-/-
-Erdős Problem #295: Egyptian Fractions with Large Denominators
+/-!
+# Erdős Problem #295: Egyptian Fractions with Large Denominators
 
 Let N ≥ 1 and let k(N) denote the smallest k such that there exist
 N ≤ n₁ < n₂ < ... < nₖ with 1 = 1/n₁ + 1/n₂ + ... + 1/nₖ.
