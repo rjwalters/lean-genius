@@ -42,101 +42,94 @@
       }
     ],
     "originalContributions": [
-      "GroundSet: [n] as Finset (Fin n)",
-      "IsUnionFree: no A ∪ B = C with distinct A, B, C",
-      "middleLayer: sets of size ⌊n/2⌋",
-      "middleBinomial: C(n, ⌊n/2⌋)",
-      "sperner_theorem axiom: antichain bound",
-      "IsLittleO: little-o notation",
-      "maxUnionFreeSize: maximum union-free collection size",
-      "sarkozy_szemeredi_bound axiom: o(2ⁿ)",
-      "AsymptoticUpperBound: (1+o(1)) notation",
-      "kleitman_theorem axiom: optimal bound",
-      "problem_487_from_447 axiom: connection to LCM problem",
-      "erdos_447 theorem: main result"
+      "IsUnionFree predicate for union-free set families",
+      "middleLayer and middleBinomial definitions",
+      "Axiomatized Sperner's theorem for antichain bounds",
+      "Axiomatized Kleitman's optimal bound (1+o(1))C(n,n/2)",
+      "Connection to Problem 487 via LCM representations",
+      "erdos_447_summary combining upper and lower bounds"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #447: Union-Free Collections**\n\nA collection ℱ of subsets is union-free if no set is the union of two other distinct sets in the collection.\n\n**Historical Development:**\n- **Erdős** posed the question of how large such collections can be\n- **Sárközy & Szemerédi (1965):** Proved |ℱ| = o(2ⁿ) (unpublished, reported by Erdős)\n- **Kleitman (1971):** Proved the optimal bound |ℱ| < (1+o(1)) C(n, ⌊n/2⌋)\n\n**Key Connection:**\nThe middle layer (all sets of size ⌊n/2⌋) is union-free and achieves the bound.\n\n**Reference:**\nKleitman, 'Collections of subsets containing no two sets and their union'\nProceedings of the LA Meeting AMS (1971), 153-155.",
+    "historicalContext": "Erdős posed the question of how large a union-free collection of subsets of [n] can be. A collection ℱ is union-free if no set in ℱ is the union of two other distinct sets in ℱ. The natural lower bound is C(n, ⌊n/2⌋), achieved by taking all sets of the same middle size (since sets of equal size cannot have one be the union of two others).\n\nSárközy and Szemerédi proved the weaker bound |ℱ| = o(2ⁿ) around 1965, but their proof was never published (reported by Erdős). This showed that union-free families are asymptotically much smaller than the full power set.\n\nKleitman (1971) proved the optimal bound |ℱ| < (1+o(1)) C(n, ⌊n/2⌋) in his paper 'Collections of subsets containing no two sets and their union'. Since the middle layer achieves C(n, ⌊n/2⌋), the bound is tight. The result connects to Problem 487: the union-free bound, via prime factorization encoding, implies that any set A ⊂ ℕ of positive density contains infinitely many triples with lcm(a,b) = c.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $\\mathcal{F}$ be a collection of subsets of $[n] = \\{1, \\ldots, n\\}$.\n\nWe call $\\mathcal{F}$ **union-free** if there are no distinct $A, B, C \\in \\mathcal{F}$ with $A \\cup B = C$.\n\n**Questions:**\n1. Must $|\\mathcal{F}| = o(2^n)$?\n2. Is $|\\mathcal{F}| < (1+o(1)) \\binom{n}{\\lfloor n/2 \\rfloor}$?\n\n**Answer (Kleitman 1971):** YES to both!\n$$|\\mathcal{F}| < (1+o(1)) \\binom{n}{\\lfloor n/2 \\rfloor}$$\n\nThe middle layer achieves this bound.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Set Family Definitions:** IsUnionFree predicate, power set\n\n2. **Middle Layer:** Sets of size ⌊n/2⌋, shown to be union-free\n\n3. **Sperner Connection:** Relate to antichain bounds\n\n4. **Little-o and Asymptotics:** Define IsLittleO, AsymptoticUpperBound\n\n5. **Main Bounds:** Axiomatize Sárközy-Szemerédi and Kleitman results\n\n6. **Applications:** Connection to Problem 487 (LCM representations)",
+    "proofStrategy": "The formalization defines union-free families via the IsUnionFree predicate. The middle layer (sets of size ⌊n/2⌋) provides the lower bound C(n, ⌊n/2⌋). Key results are axiomatized: Sperner's antichain theorem, the Sárközy-Szemerédi o(2ⁿ) bound, and Kleitman's optimal (1+o(1))C(n,⌊n/2⌋) bound. The summary theorem combines the upper and lower bounds via exact ⟨kleitman_theorem, lower_bound⟩.",
     "keyInsights": [
       "**Middle Layer is Optimal:** Sets of size ⌊n/2⌋ form a union-free family of size C(n, ⌊n/2⌋)",
-      "**Union-Free ≈ Antichain:** Union-free collections behave similarly to antichains",
-      "**Sperner Connection:** The bound C(n, ⌊n/2⌋) is the Sperner antichain bound",
-      "**Much Smaller than Power Set:** o(2ⁿ) is a strong constraint",
-      "**Application to Number Theory:** Implies LCM representations in positive density sets",
-      "**Generalizations:** k-union-free and strong union-free variants"
+      "**Union-Free ≈ Antichain:** Union-free collections behave similarly to antichains, bounded by Sperner's theorem",
+      "**Much Smaller than Power Set:** Union-free families have size o(2ⁿ), exponentially smaller than all subsets",
+      "**Application to Number Theory:** Implies LCM representations in positive density sets (Problem 487)",
+      "**Generalizations:** k-union-free and strong union-free (Problem 1023) variants extend the question"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "GroundSet, powerSet, IsUnionFree predicate",
+      "summary": "GroundSet, powerSet, IsUnionFree, IsUnionFree'",
       "startLine": 35,
-      "endLine": 73
+      "endLine": 56
     },
     {
-      "id": "trivial-bounds",
-      "title": "Trivial Bounds",
-      "summary": "middleLayer, middleBinomial, Sperner's theorem",
-      "startLine": 75,
-      "endLine": 114
+      "id": "middle-layer-sperner",
+      "title": "Middle Layer and Sperner Bound",
+      "summary": "middleLayer, middleLayer_union_free, middleBinomial, sperner_theorem",
+      "startLine": 58,
+      "endLine": 75
     },
     {
-      "id": "main-question",
-      "title": "The Main Question",
-      "summary": "IsLittleO notation, maxUnionFreeSize",
-      "startLine": 116,
-      "endLine": 134
+      "id": "asymptotic-notation",
+      "title": "Asymptotic Notation",
+      "summary": "IsLittleO, maxUnionFreeSize, AsymptoticUpperBound",
+      "startLine": 77,
+      "endLine": 89
     },
     {
       "id": "sarkozy-szemeredi",
-      "title": "Sárközy-Szemerédi Result",
-      "summary": "o(2ⁿ) bound (unpublished 1965)",
-      "startLine": 136,
-      "endLine": 150
+      "title": "Sárközy-Szemerédi Result (1965)",
+      "summary": "sarkozy_szemeredi_bound: o(2ⁿ)",
+      "startLine": 91,
+      "endLine": 96
     },
     {
       "id": "kleitman",
-      "title": "Kleitman's Theorem",
-      "summary": "(1+o(1)) C(n, ⌊n/2⌋) optimal bound",
-      "startLine": 152,
-      "endLine": 188
+      "title": "Kleitman's Theorem (1971)",
+      "summary": "kleitman_theorem: (1+o(1)) C(n, ⌊n/2⌋)",
+      "startLine": 98,
+      "endLine": 105
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound",
-      "summary": "Middle layer achieves the bound",
-      "startLine": 190,
-      "endLine": 220
+      "summary": "middleLayer_card, lower_bound",
+      "startLine": 107,
+      "endLine": 113
     },
     {
       "id": "problem-487",
       "title": "Connection to Problem 487",
-      "summary": "LCM representations in positive density sets",
-      "startLine": 222,
-      "endLine": 256
+      "summary": "lcmRepresentation, hasPositiveDensity, problem_487_from_447",
+      "startLine": 115,
+      "endLine": 133
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
-      "summary": "k-union-free, strong union-free",
-      "startLine": 258,
-      "endLine": 281
+      "summary": "IsKUnionFree, IsStrongUnionFree",
+      "startLine": 135,
+      "endLine": 147
     },
     {
-      "id": "main-results",
-      "title": "Main Results",
-      "summary": "erdos_447 theorem combining bounds",
-      "startLine": 283,
-      "endLine": 320
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_447_summary combining Kleitman and lower bound",
+      "startLine": 149,
+      "endLine": 165
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #447 is SOLVED. Kleitman (1971) proved that union-free collections have size at most (1+o(1)) C(n, ⌊n/2⌋), matching the middle layer construction. This is much smaller than 2ⁿ and connects to Sperner theory. The result implies infinite LCM representations in positive density sets (Problem 487).",
-    "implications": "**Combinatorial Significance**\n\n1. **Extremal Set Theory:** Union-free families are bounded by the Sperner bound\n\n2. **Structure of Set Families:** Forbidden union patterns severely restrict family size\n\n3. **Number Theory Application:** Implies results about LCM representations\n\n4. **Connection to Antichains:** Union-free ≈ antichain structure",
+    "implications": "The resolution reveals that union-free families are essentially antichain-like: the Sperner bound C(n, ⌊n/2⌋) governs their maximum size. This connects extremal set theory to number theory via prime factorization encodings.",
     "openQuestions": [
       "What is the exact maximum for small n?",
       "What about k-union-free families?",
