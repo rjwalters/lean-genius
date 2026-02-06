@@ -7,7 +7,7 @@
     "author": "Erdős (conjecture), Burr-Erdős-Faudree-Rousseau-Schelp (uniform case, 1978)",
     "sourceUrl": "https://erdosproblems.com/561",
     "date": "1978",
-    "status": "partial",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos561Problem.lean",
     "tags": [
       "erdos",
@@ -75,71 +75,71 @@
       "id": "star-graphs",
       "title": "Star Graphs",
       "startLine": 35,
-      "endLine": 63,
+      "endLine": 53,
       "summary": "Defines the Star structure representing K_{1,n} with n leaves, including edge and vertex counts.",
       "description": "A star graph K_{1,n} consists of one central vertex connected to n leaf vertices, giving n+1 total vertices and n edges. The Star structure requires at least one leaf."
     },
     {
       "id": "star-unions",
       "title": "Unions of Stars",
-      "startLine": 65,
-      "endLine": 99,
+      "startLine": 55,
+      "endLine": 76,
       "summary": "Defines StarUnion as a disjoint union of stars with component count and total edge/vertex calculations.",
       "description": "A StarUnion F = ∪_{i≤s} K_{1,nᵢ} is represented as a list of leaf counts. The structure tracks the number of components, total edges (sum of leaf counts), and total vertices."
     },
     {
       "id": "colorings-ramsey",
       "title": "Graph Colorings and Ramsey Theory",
-      "startLine": 101,
-      "endLine": 127,
+      "startLine": 78,
+      "endLine": 98,
       "summary": "Defines 2-edge-colorings, monochromatic subgraphs, and the Ramsey property for star unions.",
       "description": "Establishes the framework for Ramsey theory: an EdgeColoring assigns colors to edges, and a graph H has the Ramsey property for (F₁, F₂) if every 2-coloring contains either a red F₁ or blue F₂."
     },
     {
       "id": "size-ramsey-numbers",
       "title": "Size Ramsey Numbers",
-      "startLine": 129,
-      "endLine": 154,
+      "startLine": 100,
+      "endLine": 114,
       "summary": "Defines the size Ramsey number R̂(F₁, F₂) as the minimum edge count for a graph with the Ramsey property.",
       "description": "The size Ramsey number minimizes edges rather than vertices, making it particularly relevant for sparse graphs. An existence axiom guarantees finiteness."
     },
     {
       "id": "conjectured-formula",
       "title": "The Conjectured Formula",
-      "startLine": 156,
-      "endLine": 195,
+      "startLine": 116,
+      "endLine": 147,
       "summary": "Formalizes the Erdős conjecture: R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i + j = k}.",
       "description": "The formula sums over index pairs (i,j) with i+j=k, taking the maximum of nᵢ + mⱼ - 1 for each k from 2 to s+t. This captures how stars from the two unions interact."
     },
     {
       "id": "uniform-case",
       "title": "The Uniform Case (BEFRS78)",
-      "startLine": 197,
-      "endLine": 237,
+      "startLine": 149,
+      "endLine": 179,
       "summary": "States and applies the BEFRS78 theorem proving the conjecture when all stars in each union are identical.",
       "description": "Burr, Erdős, Faudree, Rousseau, and Schelp proved the formula in 1978 for the special case where F₁ consists of s copies of K_{1,n} and F₂ consists of t copies of K_{1,m}."
     },
     {
       "id": "bounds",
       "title": "Lower and Upper Bounds",
-      "startLine": 239,
-      "endLine": 257,
+      "startLine": 181,
+      "endLine": 194,
       "summary": "Establishes bounds: R̂(F₁,F₂) ≥ max(|E(F₁)|, |E(F₂)|) and upper bounds from complete graphs.",
       "description": "The lower bound follows because H must be able to contain either F₁ or F₂. The upper bound uses the complete graph K_N, though this is typically far from optimal for sparse graphs."
     },
     {
       "id": "classical-connection",
       "title": "Connection to Classical Ramsey Numbers",
-      "startLine": 259,
-      "endLine": 285,
+      "startLine": 196,
+      "endLine": 210,
       "summary": "Relates size Ramsey numbers to classical Ramsey numbers, noting that stars are particularly efficient.",
       "description": "While R̂(F₁,F₂) ≤ (R(F₁,F₂) choose 2), size Ramsey numbers for stars can be linear in vertex count rather than exponential, demonstrating their 'Ramsey efficiency'."
     },
     {
       "id": "summary-main",
       "title": "Summary and Main Results",
-      "startLine": 287,
-      "endLine": 320,
+      "startLine": 212,
+      "endLine": 236,
       "summary": "Consolidates the main theorem (uniform case proven) and states the open question for general star unions.",
       "description": "The erdos_561 theorem confirms the uniform case via BEFRS78. The openQuestion definition captures that the general conjecture remains unsolved."
     }
