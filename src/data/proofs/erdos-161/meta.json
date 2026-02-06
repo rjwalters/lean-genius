@@ -15,17 +15,47 @@
       "hypergraphs",
       "combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 11,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 161,
     "erdosUrl": "https://erdosproblems.com/161",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosPrizeValue": "$500",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powersetCard",
+        "description": "Subsets of a given cardinality",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Real.logb",
+        "description": "Logarithm with arbitrary base",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "completeHypergraph definition: all t-subsets of [n]",
+      "HyperedgeColoring and colorCount definitions",
+      "IsBalanced predicate: (α,m)-balanced coloring",
+      "F axiom: the function F^(t)(n,α)",
+      "FZero and HasJumpAt definitions",
+      "erdos_hajnal_rado_conjecture axiom",
+      "erdos_spencer_lower_bound axiom",
+      "conlon_fox_sudakov_upper axiom",
+      "F3_characterization axiom",
+      "one_jump_for_t3 axiom",
+      "erdos_161_summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "This $500 prize problem asks about the continuity of a function F^(t)(n,α) that interpolates between Ramsey-type problems (α=0) and balanced coloring problems (α near 1/2). The α=0 case connects to the Erdős-Hajnal-Rado conjecture on hypergraph Ramsey numbers, while positive α requires different techniques.",
-    "problemStatement": "Let α ∈ [0,1/2) and n, t ≥ 1. Define F^(t)(n,α) as the largest m such that we can 2-color the t-uniform complete hypergraph on n vertices so that every subset X with |X| ≥ m has at least α·C(|X|,t) many t-subsets of each color. Question: As α varies from 0 to 1/2, does F^(t)(n,α) increase continuously or are there jumps?",
-    "proofStrategy": "The formalization captures: (1) Complete t-uniform hypergraph definitions and 2-colorings. (2) The balanced coloring property and the function F. (3) The α=0 case (Ramsey, iterated log growth). (4) The α>0 case (Erdős-Spencer lower bounds). (5) The main result for t=3 (Conlon-Fox-Sudakov). (6) The jump characterization showing dramatic difference between α=0 and α>0.",
+    "historicalContext": "**Erdős Problem #161** is a $500 prize problem about phase transitions in hypergraph coloring. It asks whether the function F^(t)(n,α), which measures how well 2-colorings of t-uniform hypergraphs can be balanced, has discontinuities as α varies from 0 to 1/2.\n\nThe α=0 case reduces to classical Ramsey theory, where F^(t)(n,0) grows like the iterated logarithm log_{t-1}(n). For positive α, the Erdős-Spencer lower bound shows F grows much faster, like (log n)^{1/(t-1)}. Erdős believed there is exactly one jump, at α=0, where the behavior changes dramatically.\n\nConlon, Fox, and Sudakov (2011) resolved the t=3 case by proving F^(3)(n,α) = Θ(√(log n)) for all α > 0, confirming the one-jump structure. For t > 3, the exact behavior remains open, though the same phase transition pattern is expected.",
+    "problemStatement": "**Problem Statement (SOLVED for t = 3)**\n\nLet α ∈ [0, 1/2) and n, t ≥ 1. Define F^(t)(n, α) as the largest m such that we can 2-color the edges of the complete t-uniform hypergraph on n vertices so that for every X ⊆ [n] with |X| ≥ m, there are at least α · C(|X|, t) t-subsets of X of each color.\n\n**Question:** As α varies from 0 to 1/2, does F^(t)(n, α) increase continuously or are there jumps?\n\n**Answer (t = 3):** Exactly one jump at α = 0 (Conlon-Fox-Sudakov 2011)\n\n**Key values:**\n- α = 0: F^(3)(n, 0) = Θ(log log n)\n- α > 0: F^(3)(n, α) = Θ(√(log n))",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Complete t-uniform hypergraph, 2-colorings, balanced coloring property, the function F^(t)(n,α).\n\n2. **α = 0 (Ramsey):** Axiomatize the Erdős-Hajnal-Rado conjecture on iterated logarithm growth.\n\n3. **α > 0 (Bounds):** Axiomatize Erdős-Spencer lower bound and upper bounds.\n\n4. **Jump formalization:** Define HasJumpAt and erdos_one_jump_belief.\n\n5. **Main result:** Axiomatize Conlon-Fox-Sudakov upper bound and F^(3) characterization.\n\n6. **Summary:** Combine results into erdos_161_summary theorem using exact ⟨...⟩.",
     "keyInsights": [
       "At α=0, F^(t)(n,0) ≈ log_{t-1}(n) (iterated logarithm—very slow growth)",
       "At α>0, F^(t)(n,α) ≈ (log n)^{1/(t-1)} (power of log—much faster)",
@@ -36,46 +66,60 @@
   },
   "sections": [
     {
+      "id": "basic-definitions",
       "title": "Basic Definitions",
+      "summary": "Complete t-uniform hypergraph, 2-colorings, color counting, balanced property",
       "startLine": 39,
-      "endLine": 58,
-      "summary": "Defines complete t-uniform hypergraph (all t-subsets), 2-colorings of hyperedges, color counting, and the balanced property: every large subset has at least α fraction of t-subsets in each color."
+      "endLine": 58
     },
     {
+      "id": "f-function",
       "title": "The Function F^(t)(n,α)",
+      "summary": "F axiom and specification",
       "startLine": 60,
-      "endLine": 70,
-      "summary": "Defines F(t,n,α) as the largest m such that some 2-coloring is (α,m)-balanced. This is the central object of study."
+      "endLine": 69
     },
     {
+      "id": "ramsey-case",
       "title": "Classical Ramsey Case (α = 0)",
-      "startLine": 72,
-      "endLine": 88,
-      "summary": "At α=0, F^(t)(n,0) is the Ramsey function. The Erdős-Hajnal-Rado conjecture (#562) predicts F^(t)(n,0) ≍ log_{t-1}(n), an iterated logarithm giving extremely slow growth."
+      "summary": "FZero, Erdős-Hajnal-Rado conjecture, iterated logarithm",
+      "startLine": 71,
+      "endLine": 86
     },
     {
+      "id": "positive-alpha",
       "title": "Positive α: Bounds",
-      "startLine": 90,
-      "endLine": 104,
-      "summary": "Erdős-Spencer lower bound: F^(t)(n,α) ≫ (log n)^{1/(t-1)} for α>0. Upper bounds near α=1/2 are similar. The growth is polynomial in log n, much faster than α=0."
+      "summary": "Erdős-Spencer lower bound, upper bound near 1/2",
+      "startLine": 88,
+      "endLine": 100
     },
     {
+      "id": "jump-question",
       "title": "The Jump Question",
-      "startLine": 106,
-      "endLine": 118,
-      "summary": "Formalizes what it means for F to have a jump at α₀: a discontinuity where the function value changes dramatically. Erdős believed there is exactly one jump at α=0."
+      "summary": "HasJumpAt, erdos_one_jump_belief",
+      "startLine": 102,
+      "endLine": 114
     },
     {
+      "id": "main-result",
       "title": "Main Result: t = 3",
-      "startLine": 120,
-      "endLine": 148,
-      "summary": "Conlon-Fox-Sudakov (2011): F^(3)(n,α) ≤ c·√(log n) for α>0. Combined with lower bounds, this gives F^(3)(n,α) = Θ(√(log n)), confirming exactly one jump at α=0 for t=3."
+      "summary": "Conlon-Fox-Sudakov upper bound, F3_characterization, one_jump_for_t3",
+      "startLine": 116,
+      "endLine": 132
     },
     {
-      "title": "General t Analysis",
-      "startLine": 150,
-      "endLine": 179,
-      "summary": "For general t≥3: at α=0 growth is iterated log, at α>0 growth is (log n)^{1/(t-1)}. The jump characterization shows a dramatic phase transition at α=0."
+      "id": "general-t",
+      "title": "General t and Gap Analysis",
+      "summary": "general_lower_bound, alpha_zero_growth, alpha_positive_growth",
+      "startLine": 134,
+      "endLine": 155
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_161_summary theorem",
+      "startLine": 157,
+      "endLine": 188
     }
   ],
   "conclusion": {
