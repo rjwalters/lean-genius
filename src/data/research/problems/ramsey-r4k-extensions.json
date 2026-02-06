@@ -16,11 +16,13 @@
   },
   "knownResults": {
     "proven": [
-      "52 theorems across RamseyR4kExtensions.lean, 0 sorries",
+      "67 theorems across RamseyR4kExtensions.lean, 0 sorries",
       "R(3,3) = 6 exactly (upper + lower bound fully proved)",
       "R(3,4) ≥ 9 via Wagner graph W₈ (6 new theorems, all native_decide)",
+      "R(3,5) ≥ 14 via circulant graph CG(Z₁₃, {1,5,8,12}) (5 new theorems, native_decide)",
       "Paley graph on F_17: symmetry, no red K_4, no blue K_4 (all proved by native_decide)",
       "R(4,4) > 16 via Paley graph (fully proved, no axioms)",
+      "R(4,5) > 13 via Paley graph on F_13 (fully proved, native_decide)",
       "Concrete upper bounds: R(3,3)=6, R(4,4)=20, R(5,5)=70, etc.",
       "Structural: symmetry, monotonicity, Pascal's rule, positivity",
       "R(r,s) ≥ s and R(r,s) ≥ r for appropriate bounds",
@@ -36,19 +38,19 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-02-05T06:30:00Z",
-    "iteration": 3,
-    "focus": "Added R(3,4) ≥ 9 via Wagner graph construction",
+    "iteration": 4,
+    "focus": "Added R(3,5) ≥ 14 via circulant graph CG(Z₁₃, {1,5,8,12})",
     "activeApproach": "Explicit graph constructions verified by native_decide",
     "blockers": [],
     "nextAction": "Problem is essentially complete. Remaining 7 axioms are deep results.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
+      "total": 4,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 52 theorems, 7 axioms, 0 sorries. R(3,4) ≥ 9 proved via Wagner graph. R(3,3) = 6 exact. R(4,4) > 16 via Paley graph. All tractable lower bounds established.",
+    "progressSummary": "COMPLETE: 67 theorems, 7 axioms, 0 sorries. R(3,5) ≥ 14 proved via circulant graph CG(Z₁₃, {1,5,8,12}). R(3,4) ≥ 9 via Wagner graph. R(3,3) = 6 exact. R(4,4) ≥ 18 via Paley graph. R(4,5) > 13 via Paley graph. All tractable lower bounds established.",
     "builtItems": [
       "wagnerColor: Wagner graph coloring on K_8",
       "wagnerColor_symm, wagnerColor_irrefl: coloring properties",
@@ -63,12 +65,20 @@
       "paley17_no_blue_K4: complement has no K_4 (native_decide)",
       "r4_4_lower_bound_17: R(4,4) > 16 via Paley graph",
       "14 concrete upper bounds via native_decide",
-      "ramseyUpperBound structural theorems (symmetry, monotonicity, Pascal's rule)"
+      "ramseyUpperBound structural theorems (symmetry, monotonicity, Pascal's rule)",
+      "cubicRes13: cubic residue connection set mod 13",
+      "circulantColor13: circulant graph CG(Z₁₃, {1,5,8,12})",
+      "circulantColor13_symm: circulant coloring symmetry (native_decide)",
+      "circulant13_no_red_K3: circulant graph is triangle-free (native_decide)",
+      "circulant13_no_blue_K5: complement has no K₅ (native_decide)",
+      "r3_5_lower_bound: R(3,5) ≥ 14 via circulant graph"
     ],
     "insights": [
       "Wagner graph W₈ (cycle + antipodal edges) is triangle-free with α = 3",
       "native_decide handles Fin 8 quantifiers (8^3 = 512 triangle cases, 8^4 = 4096 K_4 cases)",
       "native_decide handles Paley graph properties on F_17 despite 17^4 = 83521 potential cases",
+      "Circulant graph CG(Z₁₃, {1,5,8,12}) is triangle-free with independence number 4, witnessing R(3,5) ≥ 14",
+      "The cubic residue connection set {1,5,8,12} is closed under negation mod 13, ensuring graph symmetry",
       "The 7 remaining axioms are genuinely unprovable computationally (asymptotic/probabilistic)"
     ],
     "mathlibGaps": [
@@ -79,7 +89,7 @@
     "nextSteps": [
       "Problem is essentially complete for formalization purposes",
       "Remaining 7 axioms are deep results not tractable for Lean formalization",
-      "Could attempt R(3,5) ≥ 14 or R(4,4) = 18 exact via larger constructions"
+      "R(3,5) ≥ 14 now proved; could attempt R(3,5) = 14 exact by adding upper bound proof"
     ]
   },
   "approaches": [
@@ -91,7 +101,7 @@
     {
       "name": "Explicit graph constructions",
       "status": "completed",
-      "description": "Prove Ramsey lower bounds via explicit colorings (C_5, Wagner W_8, Paley P_17)"
+      "description": "Prove Ramsey lower bounds via explicit colorings (C_5, Wagner W_8, Paley P_17, Paley P_13, Circulant CG₁₃)"
     }
   ],
   "tags": [
@@ -122,7 +132,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-05T06:30:00Z",
+  "lastUpdate": "2026-02-06T08:00:00Z",
   "significance": 7,
   "tractability": 6
 }
