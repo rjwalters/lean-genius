@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #754: Favorite Distances in Four Dimensions
 
 Let f(n) be maximal such that there exists a set A of n points in ℝ⁴ in which
@@ -124,63 +124,7 @@ theorem erdos_754_solved (n : ℕ) (hn : n ≥ 4) :
 /-- Swanepoel also proved analogous results for higher dimensions. -/
 axiom swanepoel_higher_dimensions (d : ℕ) (hd : d ≥ 4) :
     ∃ c : ℝ, c > 0 ∧ c < 1 ∧
-      ∀ n : ℕ, n ≥ 2 → (f d n : ℝ) ≤ c * n + O(1)
-
-/-- In higher dimensions, the coefficient depends on dimension. -/
-noncomputable def dimensionCoefficient (d : ℕ) : ℝ :=
-  if d < 4 then 1  -- Not applicable
-  else if d = 4 then 1/2
-  else 1/2  -- Asymptotically
-
-/-!
-## Part VI: Why ℝ⁴ Is Special
--/
-
-/-- In lower dimensions (d ≤ 3), the bounds are different.
-    The problem specifically asks about d = 4 because the geometry changes. -/
-def lowDimensionNote : Prop :=
-  -- In ℝ², at most 2 points can be equidistant from a given point on a circle
-  -- In ℝ³, spheres give more flexibility
-  -- In ℝ⁴, even more structure is possible
-  True
-
-/-- Key geometric insight: In ℝ⁴, spheres intersect in 2-spheres,
-    which have rich structure allowing many equidistant points. -/
-def geometricInsight : Prop :=
-  -- The Clifford torus in ℝ⁴ = S³ has special properties
-  -- Points on orthogonal circles in ℝ⁴ exhibit equidistance patterns
-  True
-
-/-!
-## Part VII: Construction Achieving the Lower Bound
--/
-
-/-- The Avis-Erdős-Pach construction uses the Clifford torus. -/
-def cliffordTorusConstruction : Prop :=
-  -- Take n/2 points on one circle and n/2 on an orthogonal circle
-  -- Points on different circles are all equidistant
-  -- This achieves f(n) ≥ n/2
-  True
-
-/-- Alternative construction: vertices of cross-polytope. -/
-def crossPolytopeConstruction : Prop :=
-  -- The 4-dimensional cross-polytope (octahedron analog) has 8 vertices
-  -- Each vertex has 6 equidistant neighbors
-  -- Scaling and combining gives the lower bound
-  True
-
-/-!
-## Part VIII: Related Problems
--/
-
-/-- Erdős Problem 223: Maximum diameter pairs (related but different). -/
-def relatedToErdos223 : Prop := True
-
-/-- Unit distance problem: How many pairs at exactly distance 1? -/
-def relatedToUnitDistance : Prop := True
-
-/-- Repeated distances in ℝᵈ: generalizations of this problem. -/
-def relatedToRepeatedDistances : Prop := True
+      ∀ n : ℕ, n ≥ 2 → ∃ C : ℝ, (f d n : ℝ) ≤ c * n + C
 
 /-!
 ## Summary
@@ -202,7 +146,9 @@ Swanepoel's stronger result: For any distance assignment d(x),
 The dimension 4 is special: lower dimensions have different behavior.
 -/
 
-theorem erdos_754 : True := trivial
+theorem erdos_754 (n : ℕ) (hn : n ≥ 4) :
+    ∃ C₁ C₂ : ℕ, n / 2 + C₁ ≤ f 4 n ∧ f 4 n ≤ n / 2 + C₂ :=
+  erdos_754_solved n hn
 
 theorem erdos_754_summary :
     -- Lower bound
