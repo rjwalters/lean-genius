@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #474: Coloring ℝ² for Uncountable Sets
 
 Source: https://erdosproblems.com/474
