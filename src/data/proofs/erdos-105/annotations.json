@@ -110,37 +110,37 @@
   {
     "id": "ann-105-13",
     "proofId": "erdos-105",
-    "range": { "startLine": 171, "endLine": 184 },
+    "range": { "startLine": 166, "endLine": 179 },
     "type": "definition",
     "title": "The Threshold Function",
-    "content": "f(n) = largest number such that f(n) obstacles can't block all rich lines of any n non-collinear points. Known: cn ≤ f(n) ≤ n-4. The exact value remains open.",
+    "content": "**thresholdFunction f(n)** is axiomatized as the largest number of obstacles that cannot block all rich lines.\n\n**threshold_lower_bound**: f(n) ≥ cn for some c > 0 (from Beck/Szemerédi-Trotter)\n**threshold_upper_bound**: f(n) ≤ n - 4 (from Xichuan's counterexample at n-3)\n\nThe gap between cn and n-4 is the main remaining open question.",
     "significance": "key"
   },
   {
     "id": "ann-105-14",
     "proofId": "erdos-105",
-    "range": { "startLine": 188, "endLine": 196 },
+    "range": { "startLine": 181, "endLine": 197 },
     "type": "concept",
-    "title": "Open Problem: n-4 Obstacles",
-    "content": "Xichuan disproved n-3, and Hickerson disproved n-2. But what about n-4? Does the conjecture hold there? This is the natural next question after Xichuan's result.",
+    "title": "Open Problems",
+    "content": "**openProblem_n_minus_4**: Does the conjecture hold with n-4 obstacles? Xichuan disproved n-3, Hickerson disproved n-2. The n-4 case is the natural next question.\n\n**openProblem_exact_threshold**: Is f(n) = Θ(n)? Formalized as: do there exist c₁, c₂ > 0 with c₁n ≤ f(n) ≤ c₂n for all n?",
     "significance": "supporting"
   },
   {
     "id": "ann-105-15",
     "proofId": "erdos-105",
-    "range": { "startLine": 210, "endLine": 233 },
+    "range": { "startLine": 199, "endLine": 231 },
     "type": "theorem",
     "title": "Summary",
-    "content": "Erdős Problem #105 is DISPROVED. The Erdős-Purdy conjecture (n-3 obstacles can't block all rich lines) is false. Key insight: while Szemerédi-Trotter guarantees many rich lines, carefully placed obstacles can block ALL of them.",
+    "content": "**erdos_105_summary** is a proved theorem combining two results:\n1. ¬ErdosPurdyConjecture (the disproof via Xichuan's counterexample)\n2. beck_szemeredi_trotter_positive (cn obstacles is not enough to block)\n\nProof: `⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩`\n\nKey insight: while many rich lines exist, n-3 obstacles CAN block them all in carefully constructed configurations.",
     "significance": "critical"
   },
   {
     "id": "ann-105-16",
     "proofId": "erdos-105",
-    "range": { "startLine": 235, "endLine": 248 },
+    "range": { "startLine": 233, "endLine": 248 },
     "type": "concept",
     "title": "Historical Timeline",
-    "content": "1983: Beck and Szemerédi-Trotter prove positive results with cn obstacles. 1995: Erdős-Purdy conjecture n-3. Later: Hickerson shows n-2 fails. 2024: Xichuan disproves n-3 with three counterexamples. The $50 prize was awarded.",
+    "content": "1983: Beck and Szemerédi-Trotter prove positive results with cn obstacles.\n1995: Erdős-Purdy conjecture the n-3 version.\nLater: Hickerson shows n-2 fails.\n2024: Xichuan disproves n-3 with three counterexamples.\n\nThe $50 prize was awarded for the disproof. The problem illustrates the subtle boundary between 'many rich lines exist' and 'not all can be blocked.'",
     "significance": "supporting"
   }
 ]
