@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #1003: Consecutive Equal Totients
 
 Are there infinitely many solutions to φ(n) = φ(n+1), where φ is the Euler
@@ -27,7 +27,7 @@ open Nat Set Filter Real
 
 namespace Erdos1003
 
-/-!
+/-
 ## Background: The Euler Totient Function
 
 The Euler totient function φ(n) counts integers from 1 to n that are
@@ -42,7 +42,7 @@ The question of when φ(n) = φ(n+1) involves understanding how
 the totient function behaves on consecutive integers.
 -/
 
-/-!
+/-
 ## When Can φ(n) = φ(n+1)?
 
 For φ(n) = φ(n+1) to hold, the prime factorizations of n and n+1 must
@@ -63,7 +63,7 @@ Erdős asks whether this set is infinite.
 def ConsecutiveEqualTotients : Set ℕ :=
   { n : ℕ | φ n = φ (n + 1) }
 
-/-!
+/-
 ## The Main Open Conjecture
 -/
 
@@ -74,7 +74,7 @@ This is the main open question. The conjecture is that the answer is yes.
 -/
 def erdos_1003_conjecture : Prop := ConsecutiveEqualTotients.Infinite
 
-/-!
+/-
 ## Verified Examples
 
 The OEIS sequence A001274 gives the first values where φ(n) = φ(n+1):
@@ -111,7 +111,7 @@ example : 104 ∈ ConsecutiveEqualTotients := by
   simp only [ConsecutiveEqualTotients, mem_setOf_eq]
   native_decide
 
-/-!
+/-
 ## Consecutive k Equal Values
 
 Erdős made a stronger conjecture: for every k ≥ 1, there should be
@@ -131,7 +131,7 @@ def ConsecutiveKEqualTotients (k : ℕ) : Set ℕ :=
 def erdos_1003_strong_conjecture : Prop :=
   ∀ k ≥ 1, (ConsecutiveKEqualTotients k).Infinite
 
-/-!
+/-
 ## The Erdős-Pomerance-Sárközy Upper Bound
 
 While we don't know if the set is infinite, we know it's sparse.
@@ -157,7 +157,7 @@ axiom eps_upper_bound :
     ∀ᶠ x : ℕ in atTop, (countConsecutiveEqual x : ℝ) ≤
       (x : ℝ) / exp ((log (x : ℝ)) ^ (1/3 : ℝ))
 
-/-!
+/-
 ## Known Values from OEIS A001274
 
 The sequence of n where φ(n) = φ(n+1) begins:
@@ -174,7 +174,7 @@ The sequence A001274 contains at least the first few known values.
 axiom oeis_A001274_partial :
     {1, 3, 15, 104, 164, 194, 255} ⊆ ConsecutiveEqualTotients
 
-/-!
+/-
 ## Connection to Other Totient Questions
 
 This problem is related to several other questions about the totient function:
@@ -196,7 +196,7 @@ is achieved at least twice.
 def carmichael_totient_conjecture : Prop :=
   ∀ n ≥ 1, ∃ m, m ≠ n ∧ φ m = φ n
 
-/-!
+/-
 ## Understanding the Examples
 
 Why does φ(15) = φ(16) = 8?
@@ -232,7 +232,7 @@ example : φ 104 = 48 := by native_decide
 -/
 example : φ 105 = 48 := by native_decide
 
-/-!
+/-
 ## The Consecutive Triple: 5186, 5187, 5188
 
 A remarkable fact: there exist three consecutive integers with equal totient.
@@ -255,7 +255,7 @@ axiom triple_consecutive_equal :
 -/
 axiom n_5186_triple : 5186 ∈ ConsecutiveKEqualTotients 2
 
-/-!
+/-
 ## Lower Bound on Solutions
 
 Ford, Luca, and Pomerance [FLP07] showed that there are at least
