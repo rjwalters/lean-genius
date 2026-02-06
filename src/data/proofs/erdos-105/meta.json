@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős & Purdy (conjecture), Xichuan (disproof)",
     "sourceUrl": "https://erdosproblems.com/105",
-    "date": "",
+    "date": "2024",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos105Problem.lean",
     "tags": [
@@ -22,6 +22,24 @@
     "erdosNumber": 105,
     "erdosUrl": "https://erdosproblems.com/105",
     "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "EuclideanSpace", "description": "Euclidean space ℝ²", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
+      { "theorem": "AffineSubspace", "description": "Affine subspace structure", "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace" },
+      { "theorem": "Finset.card", "description": "Finite set cardinality", "module": "Mathlib.Data.Finset.Card" }
+    ],
+    "originalContributions": [
+      "Point, Line, Line.contains, Line.isRich, Line.unblocked definitions",
+      "NonCollinear and ErdosPurdyConjecture definitions",
+      "xichuan_counterexample axiom (2024 disproof)",
+      "erdos_105_disproved: proved ¬ErdosPurdyConjecture",
+      "hickerson_n_minus_2 and beck_szemeredi_trotter_positive axioms",
+      "incidenceCount definition and szemeredi_trotter axiom",
+      "thresholdFunction with lower and upper bound axioms",
+      "openProblem_n_minus_4 and openProblem_exact_threshold definitions",
+      "erdos_105_summary theorem combining disproof and positive result"
+    ],
     "erdosPrizeValue": "$50",
     "relatedProblems": [
       {
@@ -78,28 +96,28 @@
       "title": "Szemerédi-Trotter Theorem",
       "summary": "incidenceCount, szemeredi_trotter, many_rich_lines_exist",
       "startLine": 142,
-      "endLine": 167
+      "endLine": 164
     },
     {
       "id": "threshold",
       "title": "Threshold Function",
       "summary": "thresholdFunction, threshold_lower_bound, threshold_upper_bound",
-      "startLine": 169,
-      "endLine": 184
+      "startLine": 166,
+      "endLine": 179
     },
     {
       "id": "open-problems",
       "title": "Open Problems",
-      "summary": "openProblem_n_minus_4, openProblem_exact_threshold, openProblem_optimal_constant",
-      "startLine": 186,
-      "endLine": 206
+      "summary": "openProblem_n_minus_4, openProblem_exact_threshold",
+      "startLine": 181,
+      "endLine": 197
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_105_summary, historical notes",
-      "startLine": 208,
-      "endLine": 250
+      "summary": "erdos_105_summary theorem combining disproof and positive result",
+      "startLine": 199,
+      "endLine": 248
     }
   ],
   "conclusion": {
