@@ -74,50 +74,50 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Cycle, isOdd, isDiagonal, diagonalCount, IsK4Free, chromaticNumber",
-      "startLine": 32,
-      "endLine": 75
+      "startLine": 27,
+      "endLine": 68
     },
     {
       "id": "larson-theorem",
       "title": "Larson's Theorem (1979)",
       "summary": "larson_one_diagonal, BollobasErdosAlternative, bollobas_erdos_conjecture",
-      "startLine": 77,
-      "endLine": 103
+      "startLine": 70,
+      "endLine": 94
     },
     {
       "id": "voss-theorem",
       "title": "Voss's Theorem (1982)",
       "summary": "voss_two_diagonals, voss_implies_larson",
-      "startLine": 105,
-      "endLine": 122
+      "startLine": 96,
+      "endLine": 111
     },
     {
       "id": "counterexample",
       "title": "Counterexample for Three Diagonals",
-      "summary": "PentagonalWheel, pentagonal_wheel_K4_free, pentagonal_wheel_chi_4, three_diagonals_not_guaranteed",
-      "startLine": 124,
-      "endLine": 170
+      "summary": "PentagonalWheel construction, three_diagonals_not_guaranteed",
+      "startLine": 113,
+      "endLine": 157
     },
     {
       "id": "general-question",
       "title": "The General Question (OPEN)",
-      "summary": "IsLocallyColorable, GeneralQuestion, general_question_open",
-      "startLine": 172,
-      "endLine": 193
+      "summary": "IsLocallyColorable, GeneralQuestion",
+      "startLine": 159,
+      "endLine": 175
     },
     {
-      "id": "related-problems",
-      "title": "Related Problems",
+      "id": "related-results",
+      "title": "Related Results",
       "summary": "K4_free_high_chi_possible, mycielski_construction",
-      "startLine": 195,
-      "endLine": 211
+      "startLine": 177,
+      "endLine": 189
     },
     {
-      "id": "main-results",
-      "title": "Main Results Summary",
-      "summary": "erdos_1091_first_question_solved, erdos_1091_upper_bound, erdos_1091_summary",
-      "startLine": 213,
-      "endLine": 244
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1091_summary combining Voss + counterexample",
+      "startLine": 191,
+      "endLine": 209
     }
   ],
   "conclusion": {

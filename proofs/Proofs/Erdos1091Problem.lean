@@ -1,25 +1,20 @@
 /-
 Erdős Problem #1091: Odd Cycles with Diagonals in K₄-Free Graphs
 
-Source: https://erdosproblems.com/1091
-Status: PARTIALLY SOLVED / OPEN
+Must a K₄-free graph with χ(G) = 4 contain an odd cycle with at least two diagonals?
 
-Statement:
-Let G be a K₄-free graph with chromatic number 4. Must G contain an odd cycle
-with at least two diagonals?
+**Answer**: YES - proved by Voss (1982), building on Larson (1979).
 
-More generally, is there some f(r)→∞ such that every graph with chromatic number 4,
-in which every subgraph on ≤r vertices has chromatic number ≤3, contains an odd
-cycle with at least f(r) diagonals?
+More generally, is there some f(r)→∞ such that every graph with χ ≥ 4,
+in which every subgraph on ≤r vertices has χ ≤ 3, contains an odd
+cycle with at least f(r) diagonals? This remains OPEN.
 
 History:
-- Erdős originally asked about existence of just one diagonal (simpler question)
 - Larson (1979): Proved one diagonal exists; proved Bollobás-Erdős conjecture
-- Voss (1982): Proved two diagonals are guaranteed (first question SOLVED)
+- Voss (1982): Proved two diagonals are guaranteed
 - Pentagonal wheel shows three diagonals cannot be guaranteed
-- General f(r) question remains OPEN
 
-Tags: graph-theory, chromatic-number, odd-cycles, K4-free
+Reference: https://erdosproblems.com/1091
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
@@ -29,11 +24,9 @@ import Mathlib.Data.Finset.Basic
 
 namespace Erdos1091
 
-/-!
-## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 
-Graphs, cycles, diagonals, and chromatic number.
--/
+Graphs, cycles, diagonals, and chromatic number. -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -74,11 +67,9 @@ def IsK4Free (G : SimpleGraph V) : Prop :=
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
   sSup { k : ℕ | ∃ (c : G.Coloring (Fin k)), True }
 
-/-!
-## Part 2: Larson's Theorem (1979)
+/- ## Part 2: Larson's Theorem (1979)
 
-One diagonal is guaranteed.
--/
+One diagonal is guaranteed. -/
 
 /-- Larson's Theorem (1979): Every K₄-free graph with χ(G) ≥ 4 has an odd cycle
     with at least one diagonal -/
@@ -102,11 +93,9 @@ axiom bollobas_erdos_conjecture (G : SimpleGraph V)
     let alt := BollobasErdosAlternative G
     alt.isBipartite ∨ alt.hasCutVertex ∨ alt.hasDegree2Vertex
 
-/-!
-## Part 3: Voss's Theorem (1982)
+/- ## Part 3: Voss's Theorem (1982)
 
-Two diagonals are guaranteed - answers the first question.
--/
+Two diagonals are guaranteed - answers the first question. -/
 
 /-- Voss's Theorem (1982): Every K₄-free graph with χ(G) ≥ 4 has an odd cycle
     with at least two diagonals -/
@@ -121,11 +110,9 @@ theorem voss_implies_larson (G : SimpleGraph V)
   obtain ⟨c, hOdd, hDiag⟩ := voss_two_diagonals G hK4 hChi
   exact ⟨c, hOdd, Nat.le_of_succ_le hDiag⟩
 
-/-!
-## Part 4: Counterexample for Three Diagonals
+/- ## Part 4: Counterexample for Three Diagonals
 
-The pentagonal wheel shows 3 diagonals cannot be guaranteed.
--/
+The pentagonal wheel shows 3 diagonals cannot be guaranteed. -/
 
 /-- The pentagonal wheel: a 5-cycle with a central vertex connected to all -/
 def PentagonalWheel : SimpleGraph (Fin 6) where
@@ -169,11 +156,9 @@ theorem three_diagonals_not_guaranteed :
   have hMax := pentagonal_wheel_max_2_diagonals c hOdd
   omega
 
-/-!
-## Part 5: The General Question (OPEN)
+/- ## Part 5: The General Question (OPEN)
 
-Is there f(r)→∞ such that locally 3-colorable graphs have f(r) diagonals?
--/
+Is there f(r)→∞ such that locally 3-colorable graphs have f(r) diagonals? -/
 
 /-- A graph is locally k-colorable up to size r if all subgraphs
     on ≤r vertices have chromatic number ≤k -/
@@ -189,14 +174,7 @@ def GeneralQuestion : Prop :=
       ∀ r : ℕ, IsLocallyColorable G r 3 →
         ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ f r
 
-/-- The general question remains OPEN -/
-axiom general_question_open : True  -- Status unknown
-
-/-!
-## Part 6: Relationship to Other Problems
-
-This connects to Erdős's work on graph coloring and structural graph theory.
--/
+/- ## Part 6: Related Results -/
 
 /-- Key insight: K₄-free graphs can still have high chromatic number -/
 theorem K4_free_high_chi_possible :
@@ -210,35 +188,22 @@ theorem K4_free_high_chi_possible :
 axiom mycielski_construction : ∀ k : ℕ, ∃ (V : Type*) [Fintype V]
     (G : SimpleGraph V), G.CliqueFree 3 ∧ chromaticNumber G ≥ k
 
-/-!
-## Part 7: Main Results Summary
--/
+/- ## Part 7: Summary -/
 
-/-- First question (two diagonals): SOLVED by Voss (1982) -/
-theorem erdos_1091_first_question_solved :
-    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+/-- **Erdős Problem #1091 Summary**:
+    - First question (≥2 diagonals): SOLVED by Voss (1982)
+    - Upper bound (not ≥3): Shown via pentagonal wheel counterexample
+    - General f(r) question: OPEN -/
+theorem erdos_1091_summary :
+    -- Two diagonals guaranteed (Voss)
+    (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsK4Free G → chromaticNumber G ≥ 4 →
-      ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 2 :=
-  fun _ _ _ G hK4 hChi => voss_two_diagonals G hK4 hChi
-
-/-- Upper bound: 3 diagonals cannot be guaranteed -/
-theorem erdos_1091_upper_bound :
+      ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 2) ∧
+    -- Three diagonals NOT guaranteed
     ¬ (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsK4Free G → chromaticNumber G ≥ 4 →
       ∃ c : Cycle G, c.isOdd ∧ c.diagonalCount ≥ 3) :=
-  three_diagonals_not_guaranteed
-
-/-- Second question (general f(r)): OPEN -/
-theorem erdos_1091_second_question_open :
-    -- General f(r)→∞ question status unknown
-    True := trivial
-
-/-- Complete summary -/
-theorem erdos_1091_summary :
-    -- Original question (one diagonal): SOLVED by Larson (1979)
-    -- First question (two diagonals): SOLVED by Voss (1982)
-    -- Upper bound: Pentagonal wheel shows ≤2 diagonals sometimes
-    -- General question (f(r)→∞): OPEN
-    True := trivial
+  ⟨fun _ _ _ G hK4 hChi => voss_two_diagonals G hK4 hChi,
+   three_diagonals_not_guaranteed⟩
 
 end Erdos1091
