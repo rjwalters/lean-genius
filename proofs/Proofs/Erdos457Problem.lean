@@ -193,9 +193,6 @@ consecutive products. The two problems share the underlying theme
 of understanding the prime factorization structure of products
 of consecutive integers. -/
 
-/-- Connection to Problem #663: both study prime divisors of
-    products of consecutive integers. -/
-axiom related_to_663 : True
 
 /-! ## Part IX: Summary -/
 
@@ -218,8 +215,5 @@ to a fixed (2 + ε) requires fundamentally new ideas about the
 distribution of primes in consecutive products.
 -/
 theorem erdos_457_t1_solved : ErdosConjecture457 := erdos_457
-
-/-- The problem remains OPEN. -/
-theorem erdos_457_status : True := trivial
 
 end Erdos457
