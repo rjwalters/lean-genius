@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #794: 3-Uniform Hypergraph Edge Density
 
 Source: https://erdosproblems.com/794
@@ -155,8 +155,8 @@ structure HarrisCounterexample where
   all_vertices : vertices = Finset.univ
   /-- Exactly 28 edges -/
   edge_count : edges.card = 28
-  /-- Avoiding K₄⁻ -/
-  avoids_target : True  -- Simplified; actual proof would verify
+  /-- All edges are 3-element subsets -/
+  all_three_element : ∀ e ∈ edges, e.card = 3
 
 /--
 **Threshold for n=3:**
@@ -223,20 +223,6 @@ The Turán density for K₄⁻ in 3-uniform hypergraphs is exactly 2/7.
 def current_conjecture : Prop := turanDensityK4Minus = 2/7
 
 /-! ## Remarks on the Problem Statement -/
-
-/--
-**Likely Typo:**
-The threshold n³+1 corresponds to density 2/9 (since on 3n vertices,
-the maximum possible is ~(3n choose 3)/something).
-
-Turán conjectured 1/4, Frankl-Füredi proved at least 2/7.
-So n³+1 is too low - the problem as stated is false.
--/
-theorem threshold_analysis :
-    -- n³+1 on 3n vertices gives asymptotic density approaching 2/9
-    -- But actual threshold is higher (at least 2/7)
-    -- So conjecture was too optimistic
-    True := trivial
 
 /-! ## Summary -/
 
