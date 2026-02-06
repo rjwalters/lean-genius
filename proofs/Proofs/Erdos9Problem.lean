@@ -36,7 +36,7 @@ open Set Nat Filter
 
 namespace Erdos9
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- An odd integer n has the form p + 2^k + 2^l for some prime p and k, l ≥ 0. -/
 def HasPrimePlusTwoPowersForm (n : ℕ) : Prop :=
@@ -49,7 +49,7 @@ def S : Set ℕ := { n | HasPrimePlusTwoPowersForm n }
     This is the set A in the problem statement. -/
 def A : Set ℕ := { n | Odd n ∧ n > 0 ∧ ¬HasPrimePlusTwoPowersForm n }
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- When k = l, we get p + 2^(k+1), so any odd of form p + 2^m is in S. -/
 theorem prime_plus_one_power_in_S (p m : ℕ) (hp : Nat.Prime p) (hm : m ≥ 1) :
@@ -72,7 +72,7 @@ def representationNonUnique : Prop :=
     n = p₁ + 2^k₁ + 2^l₁ ∧ n = p₂ + 2^k₂ + 2^l₂ ∧
     (p₁ ≠ p₂ ∨ k₁ ≠ k₂ ∨ l₁ ≠ l₂)
 
-/-! ## Density Definitions -/
+/- ## Density Definitions -/
 
 /-- The counting function: number of elements of A up to N.
     (We use an axiom since decidability is complex.) -/
@@ -87,7 +87,7 @@ noncomputable def upperDensity : ℝ :=
 def hasPositiveUpperDensity : Prop :=
   upperDensity > 0
 
-/-! ## The Erdős Question -/
+/- ## The Erdős Question -/
 
 /--
 **Erdős Problem 9** (OPEN):
@@ -104,7 +104,7 @@ def erdos_9_question : Prop :=
 def erdos_9_alt : Prop :=
   ∃ δ : ℝ, δ > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) ≥ δ * N
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /--
 **Schinzel's Theorem**:
@@ -154,7 +154,7 @@ but still doesn't prove it stays bounded away from 0.
 axiom pan_implies_lower_bound (ε : ℝ) (hε : ε > 0) :
     ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) / N ≥ c * (N : ℝ)^(-ε)
 
-/-! ## Why Covering Systems Don't Work -/
+/- ## Why Covering Systems Don't Work -/
 
 /--
 **Erdős's Observation**:
@@ -173,7 +173,7 @@ theorem S_intersects_all_progressions (a d : ℕ) (hd : d ≥ 1) :
   exact ⟨n, hn, hmod⟩
 
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- The first few elements of A (odd integers not representable).
     From OEIS A006286: 1, 3, 7, 127, 149, ... -/
@@ -222,7 +222,7 @@ theorem nine_in_S : 9 ∈ S := by
   · exact Nat.prime_five
   · norm_num
 
-/-! ## Bounds Comparison -/
+/- ## Bounds Comparison -/
 
 /--
 **Linear Bound Implies Positive Density:**
@@ -236,7 +236,7 @@ axiom improvement_would_solve :
     (∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop, (countA N : ℝ) ≥ c * N) →
     erdos_9_question
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: OPEN**
 
