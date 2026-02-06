@@ -2,7 +2,7 @@
   "id": "erdos-205",
   "title": "Erdős Problem #205: 2^k + m with Few Prime Factors",
   "slug": "erdos-205",
-  "description": "Can all large n be written as 2^k + m where Ω(m) < log log m? DISPROVED by Barreto-Leeham (2026).",
+  "description": "Can all large n be written as 2^k + m where Ω(m) < log log m? DISPROVED by Barreto-Leeham (2026). Formalization includes Ω function properties, covering systems, and de Polignac numbers.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/205",
@@ -13,34 +13,115 @@
       "erdos",
       "number-theory",
       "prime-factors",
-      "disproved"
+      "disproved",
+      "covering-systems"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 205,
     "erdosUrl": "https://erdosproblems.com/205",
-    "erdosProblemStatus": "solved"
-  },
-  "overview": {
-    "historicalContext": "Erdős asked whether all large n can be represented as 2^k + m with few prime factors. Related to Romanoff's theorem (1934) on 2^k + prime representations and Erdős's work on covering systems.",
-    "problemStatement": "Is it true that all sufficiently large n can be written as 2^k + m for some k ≥ 0, where Ω(m) < log log m? Here Ω(m) counts prime divisors with multiplicity.",
-    "proofStrategy": "The disproof uses a counterexample construction: there exist infinitely many n such that ALL remainders n - 2^k have at least c√(log n / log log n) prime factors, which dominates log log n for large n.",
-    "keyInsights": [
-      "Ω(n) averages to log log n by classical results (Hardy-Ramanujan)",
-      "Almost all n DO have such representations (probabilistic argument)",
-      "But infinitely many n fail: all their remainders have too many prime factors",
-      "The threshold √(log n / log log n) grows faster than log log n",
-      "Related to covering systems and 2^k + prime representations"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "02/06/26",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactorsList_prime_pow",
+        "description": "primeFactorsList of p^k has length k",
+        "module": "Mathlib.Data.Nat.Factors"
+      },
+      {
+        "theorem": "Nat.perm_primeFactorsList_mul",
+        "description": "Factors of a*b are permutation of factors(a) ++ factors(b)",
+        "module": "Mathlib.Data.Nat.Factors"
+      },
+      {
+        "theorem": "Real.log_le_log",
+        "description": "Monotonicity of natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.inf'_le",
+        "description": "Infimum over a nonempty finset is ≤ any element",
+        "module": "Mathlib.Order.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Eliminated 3 axioms (bigOmega_prime_pow, bigOmega_mul, remainder_achieves_min) via Mathlib APIs",
+      "Covering system formalization with Erdős modulus 11184810",
+      "De Polignac number verification (127 and 149: all remainders composite)",
+      "12 concrete Ω computations via native_decide",
+      "Main disproof theorem erdos_205_disproved from axiomatized counterexample"
     ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "Erdős asked whether all large n can be represented as 2^k + m with few prime factors. This extends classical questions about 2^k + prime representations. Romanoff (1934) proved a positive density of integers have 2^k + prime form. Erdős (1950) showed a positive density of odd integers do NOT, using covering systems. Problem 205 asked whether relaxing from primes to numbers with Ω(m) < log log m suffices. The answer, found in 2026 via AI-assisted proof, is no.",
+    "problemStatement": "Is it true that all sufficiently large n can be written as 2^k + m for some k ≥ 0, where Ω(m) < log log m? Here Ω(m) counts prime divisors with multiplicity.",
+    "proofStrategy": "The disproof uses a counterexample construction: there exist infinitely many n such that ALL remainders n - 2^k have at least c√(log n / log log n) prime factors, which dominates log log n for large n. The formalization axiomatizes the counterexample and proves the disproof by contradiction: if n had a small-Ω representation, then Ω(m) < log log m ≤ log log n < Ω(m), a contradiction.",
+    "keyInsights": [
+      "Ω(n) averages to log log n by the Hardy-Ramanujan theorem (1917)",
+      "The Erdős-Kac theorem (1940) shows Ω concentrates around log log n with Gaussian fluctuations",
+      "Covering systems using orders of 2 mod {3,5,7,13,17,241} obstruct 2^k + prime representations",
+      "127 is the smallest de Polignac number (odd, but 127 - 2^k is composite for all k)",
+      "The counterexample threshold √(log n / log log n) grows faster than log log n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "omega-function",
+      "title": "The Ω Function",
+      "startLine": 48,
+      "endLine": 77,
+      "summary": "Definition and properties of bigOmega: Ω(1)=0, Ω(p)=1, Ω(p^k)=k, Ω(ab)=Ω(a)+Ω(b)."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "startLine": 79,
+      "endLine": 91,
+      "summary": "HasSmallOmegaRep and Erdos205Conjecture definitions."
+    },
+    {
+      "id": "counterexample",
+      "title": "The Counterexample",
+      "startLine": 93,
+      "endLine": 217,
+      "summary": "Axiomatized counterexample, remainder_achieves_min (proved), loglog_mono_nat (proved), and erdos_205_disproved."
+    },
+    {
+      "id": "romanoff",
+      "title": "Romanoff's Theorem",
+      "startLine": 219,
+      "endLine": 241,
+      "summary": "IsPowerPlusePrime, Romanoff positive density and Erdős covering obstruction (axiomatized)."
+    },
+    {
+      "id": "concrete-omega",
+      "title": "Concrete Ω Computations",
+      "startLine": 243,
+      "endLine": 281,
+      "summary": "12 verified Ω values from Ω(2)=1 to Ω(30030)=6."
+    },
+    {
+      "id": "covering-systems",
+      "title": "Covering Systems and de Polignac Numbers",
+      "startLine": 283,
+      "endLine": 372,
+      "summary": "Covering system definitions, Erdős modulus, orders of 2, de Polignac verification for 127 and 149."
+    },
+    {
+      "id": "analytic-bounds",
+      "title": "Related Analytic Bounds",
+      "startLine": 374,
+      "endLine": 392,
+      "summary": "Hardy-Ramanujan average and Erdős-Kac concentration (axiomatized)."
+    }
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #205 is DISPROVED. Barreto-Leeham (2026) showed there are infinitely many n where every remainder n - 2^k has Ω ≥ c√(log n / log log n) prime factors, which exceeds log log m for large n.",
-    "implications": "Even with the very weak bound Ω(m) < log log m, not all integers can be represented as 2^k + m. This strengthens our understanding of the limitations of power-of-2 representations.",
+    "summary": "Erdős Problem #205 is DISPROVED. The formalization proves ¬Erdos205Conjecture from axiomatized counterexample results, with 0 sorries and only 6 axioms (all deep analytic results). Three previously-axiomatized properties (Ω(p^k)=k, Ω(ab)=Ω(a)+Ω(b), and the Finset.inf' bound) are now proved from Mathlib.",
+    "implications": "Even the very weak bound Ω(m) < log log m is insufficient to guarantee 2^k + m representations for all large integers. The covering system technique, pioneered by Erdős for the 2^k + prime case, extends to this more general setting.",
     "openQuestions": [
+      "Do arbitrarily large ODD counterexamples exist? (Current construction uses n divisible by large powers of 2)",
       "What is the optimal growth rate f(n) such that all large n have representation with Ω(m) < f(n)?",
-      "Can the density of exceptions be quantified?",
-      "What is the structure of the exceptional n?"
+      "Can the density of exceptional n be quantified?"
     ]
   }
 }
