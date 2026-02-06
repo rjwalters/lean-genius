@@ -2,7 +2,7 @@
   "slug": "erdos-285",
   "title": "Egyptian Fractions Asymptotics",
   "phase": "COMPLETE",
-  "status": "complete",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
   },
   "knownResults": {
     "proven": [
-      "22+ theorems, 0 sorries, 1 axiom (Martin's deep theorem)",
+      "23+ theorems, 0 sorries, 1 axiom (Martin's deep theorem)",
       "Egyptian constant e/(e-1) > 1, < 2, > 3/2, > 79/50",
       "Egyptian constant algebraic identities (eq, inv, one_plus_inv)",
       "Valid lengths k=0,2,3,4,5 with explicit witnesses",
       "k=1 is NOT valid (proved by contradiction)",
-      "Structural: strict_mono_last_ge_succ, f_set_nonempty",
+      "Structural: strict_mono_last_ge_succ, f_ge_succ, f_set_nonempty",
       "Main asymptotic from axiom: f(k) = (1+o(1)) · e/(e-1) · k"
     ],
     "open": [
@@ -32,19 +32,19 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-02-06T05:30:00Z",
-    "iteration": 3,
-    "focus": "Updated metadata to reflect structured knowledge from completed work.",
-    "activeApproach": "Metadata synchronization",
+    "iteration": 4,
+    "focus": "Added f_ge_succ lower bound. Updated structured metadata from rich markdown knowledge.",
+    "activeApproach": "Metadata synchronization and final structural theorem",
     "blockers": [],
     "nextAction": "Problem is complete. Martin's axiom is intractable for Lean formalization.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 22+ theorems, 0 sorries, 1 axiom. Egyptian fraction asymptotics fully formalized with constant analysis, valid length witnesses, and structural properties.",
+    "progressSummary": "COMPLETE: 23+ theorems, 0 sorries, 1 axiom. Egyptian fraction asymptotics fully formalized with constant analysis, valid length witnesses, structural properties, and trivial f lower bound.",
     "builtItems": [
       "IsEgyptianRepresentation: predicate for valid representations",
       "ValidLengths: set of valid lengths",
@@ -52,18 +52,22 @@
       "egyptianConstant: e/(e-1)",
       "martin_egyptian_fractions (axiom): main asymptotic",
       "erdos_285: main theorem (from axiom)",
+      "egyptian_lower_bound: asymptotic lower bound",
       "egyptianConstant_gt_one, _lt_two, _gt_three_halves, _gt_79_over_50: bounds",
       "egyptianConstant_eq, _inv, _eq_one_plus_inv: algebraic identities",
+      "egyptianConstant_pos, _in_interval, _well_defined: basic properties",
       "zero/two/three/four/five_mem_validLengths: concrete witnesses",
       "one_not_mem_validLengths: impossibility proof",
-      "strict_mono_last_ge_succ: structural bound",
-      "f_set_nonempty: well-definedness"
+      "strict_mono_last_ge_succ: strictly increasing seqs have large last elements",
+      "f_ge_succ: trivial lower bound f(k) >= k+1 for valid lengths",
+      "f_set_nonempty: well-definedness of f on valid lengths"
     ],
     "insights": [
       "e/(e-1) arises because ln(e·u) - ln(e) = 1, making [e, e·u] contain ~1 unit of harmonic mass",
       "Real.exp_one_gt_d9 and exp_one_lt_d9 give tight bounds on e for nlinarith proofs",
       "k=1 impossibility: 1/a + 1/b = 1 with a<b has unique solution a=b=2, contradicting a<b",
-      "Egyptian fraction splitting: 1/n = 1/(n+1) + 1/(n(n+1)) enables generating larger k witnesses"
+      "Egyptian fraction splitting: 1/n = 1/(n+1) + 1/(n(n+1)) enables generating larger k witnesses",
+      "le_csInf works for ℕ sInf lower bounds with nonemptiness proof"
     ],
     "mathlibGaps": [
       "Martin (2000) proof not in Mathlib (deep number theory)",
@@ -73,7 +77,8 @@
       "Problem is complete for formalization purposes",
       "Optional: more valid lengths via fraction splitting",
       "Optional: monotonicity of f"
-    ]
+    ],
+    "markdown": "# Erdős #285: Egyptian Fractions Asymptotics\n\n## Status: COMPLETE\n23+ theorems, 0 sorries, 1 axiom (Martin 2000).\n\n## Iteration 4 (2026-02-06, researcher-1)\n- Added `f_ge_succ`: trivial lower bound f(k) >= k+1 for valid lengths\n- Updated all structured metadata fields from rich markdown knowledge\n- Marked problem as COMPLETE\n\n## Iteration 3 (2026-02-04, researcher-1)\n- Added `one_not_mem_validLengths`: k=1 impossibility proof\n- Added `five_mem_validLengths`: k=5 via fraction splitting\n- Added `strict_mono_last_ge_succ`: structural bound on last elements\n\n## Iteration 2 (2026-02-04, researcher-1)\n- Added `zero_mem_validLengths`: k=0 via {1} witness\n- Added `f_set_nonempty`, constant properties\n\n## Iteration 1\n- Initial formalization with Martin theorem as axiom\n- Constant bounds, algebraic identities, valid lengths k=2,3,4\n\n## Axiom: martin_egyptian_fractions\nMartin (2000): deep number-theoretic result NOT in Mathlib. Intractable."
   },
   "approaches": [
     {

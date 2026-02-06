@@ -330,6 +330,20 @@ theorem f_set_nonempty (k : ℕ) (hk : k ∈ ValidLengths) :
   exact ⟨n (Fin.last k), n, hn, rfl⟩
 
 /--
+**Trivial lower bound**: For valid lengths, f(k) ≥ k+1.
+Any strictly increasing sequence of positive integers starting from ≥ 1 must have
+its (k+1)-th element ≥ k+1, so the sInf of all such last elements is ≥ k+1.
+-/
+theorem f_ge_succ (k : ℕ) (hk : k ∈ ValidLengths) : f k ≥ k + 1 := by
+  unfold f
+  apply le_csInf
+  · obtain ⟨m, hm⟩ := f_set_nonempty k hk
+    exact ⟨m, hm⟩
+  · intro m ⟨n, hn, hlast⟩
+    rw [← hlast]
+    exact strict_mono_last_ge_succ hn.1 hn.2.1
+
+/--
 **Egyptian constant is in (3/2, 2).**
 Combines the previously established bounds into a single statement.
 -/

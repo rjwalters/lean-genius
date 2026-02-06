@@ -301,8 +301,57 @@ example : (365 : ℕ) ^ 2 = 133225 := by native_decide
 /-- Verify the probability computation: 1 - 132860/133225 = 1/365 -/
 example : (1 : ℚ) - 132860 / 133225 = 1 / 365 := by norm_num
 
-#check birthday_problem_formula
-#check birthday_23_exceeds_half
-#check prob_certain
+/-! ## Part VII: Expected Number of Shared Birthday Pairs
+
+An extension of the birthday problem: how many pairs of people (i, j) with i < j
+are expected to share a birthday?
+
+By linearity of expectation, the answer is C(n, 2) / 365.
+Each of the C(n, 2) pairs independently has probability 1/365 of sharing a birthday.
+
+For n = 23: E[pairs] = C(23, 2) / 365 = 253/365 ≈ 0.693
+-/
+
+/-- The expected number of shared birthday pairs in a group of n people.
+    By linearity of expectation, E[pairs] = C(n, 2) / 365 = n*(n-1)/(2*365). -/
+noncomputable def expected_shared_pairs (n : ℕ) : ℚ :=
+  (n.choose 2 : ℚ) / numDays
+
+/-- The expected shared pairs formula: C(n,2) = n*(n-1)/2 in ℕ. -/
+theorem expected_shared_pairs_nat_eq (n : ℕ) :
+    n.choose 2 = n * (n - 1) / 2 :=
+  Nat.choose_two_right n
+
+/-- With 23 people, we expect about 253/365 ≈ 0.693 shared pairs. -/
+theorem expected_pairs_23 : expected_shared_pairs 23 = 253 / 365 := by
+  unfold expected_shared_pairs numDays
+  norm_num [Nat.choose]
+
+/-- The expected number of shared pairs is nonneg. -/
+theorem expected_shared_pairs_nonneg (n : ℕ) : 0 ≤ expected_shared_pairs n := by
+  unfold expected_shared_pairs
+  apply div_nonneg <;> positivity
+
+/-- With 0 or 1 person, expected shared pairs is 0. -/
+theorem expected_pairs_zero : expected_shared_pairs 0 = 0 := by
+  simp [expected_shared_pairs, Nat.choose]
+
+theorem expected_pairs_one : expected_shared_pairs 1 = 0 := by
+  simp [expected_shared_pairs, Nat.choose]
+
+/-- With 2 people, expected shared pairs is 1/365. -/
+theorem expected_pairs_two : expected_shared_pairs 2 = 1 / 365 := by
+  unfold expected_shared_pairs numDays
+  norm_num [Nat.choose]
+
+/-- With 28 people, we expect more than 1 shared pair (C(28,2)/365 = 378/365 > 1). -/
+theorem expected_pairs_28_gt_one : expected_shared_pairs 28 > 1 := by
+  unfold expected_shared_pairs numDays
+  norm_num [Nat.choose]
+
+/-- With 27 people, we still expect less than 1 shared pair (C(27,2)/365 = 351/365 < 1). -/
+theorem expected_pairs_27_lt_one : expected_shared_pairs 27 < 1 := by
+  unfold expected_shared_pairs numDays
+  norm_num [Nat.choose]
 
 end BirthdayProblem

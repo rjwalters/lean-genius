@@ -29,8 +29,8 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-02-04T18:40:00Z",
-    "iteration": 4,
-    "focus": "Complete: 48 theorems, 6 axioms, 0 sorries",
+    "iteration": 5,
+    "focus": "Complete: 50+ theorems, 4 axioms, 0 sorries",
     "blockers": [],
     "nextAction": "None - problem complete",
     "attemptCounts": {
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 48 theorems, 6 axioms, 0 sorries. Comprehensive harmonic number divisibility formalization with concrete H and L values, leading digit computations, Steinerberger applications, Wolstenholme theorem, and infinite family gcd>1 proof. leadingDigit_two_times_pow_three converted from axiom to theorem.",
+    "progressSummary": "COMPLETE: 50+ theorems, 4 axioms, 0 sorries. Converted part2_trivially_true from axiom to theorem (proved via Set.infinite_of_injective_forall_mem with family {2*3^k}). Converted small_examples from axiom to theorem (proved via H/L computation lemmas + native_decide). Remaining 4 axioms are deep mathematical results (Steinerberger, Wolstenholme, divisibility characterization, Schanuel conjecture).",
     "builtItems": [
       "prime_not_dvd_factorial_of_gt: prime larger than n does not divide n!",
       "H_two through H_six: concrete harmonic number values",
@@ -56,10 +56,14 @@
       "Fixed dvd_L: proper inductive proof using Nat.dvd_lcm_left/right",
       "leadingDigit_two_times_pow_three: proved from axiom (2*3^k has leading digit 2 in base 3)",
       "leadingDigitAux_two_pow_three: helper for induction",
-      "pow_three_ge: 3^k >= k for all k"
+      "pow_three_ge: 3^k >= k for all k",
+      "part2_trivially_true: PROVED from axiom - Set.infinite via {2*3^k} family injection",
+      "small_examples: PROVED from axiom - via H_n*L_n computation + native_decide on gcd",
+      "a_eq helper: reduces a(n) computation to H(n)*L(n) rational arithmetic",
+      "harmonicGCD_eq helper: reduces harmonicGCD to concrete gcd computation"
     ],
     "insights": [
-      "harmonicGCD is noncomputable, preventing native_decide on small_examples",
+      "harmonicGCD is noncomputable but small_examples can be proved by rewriting via H_n/L_n lemmas then native_decide on gcd",
       "Finset.dvd_fold_lcm does not exist in current Mathlib; use Nat.dvd_lcm_left/right with induction instead",
       "Nat.Prime.dvd_factorial does not exist as a dot notation; need custom lemma",
       "Steinerberger criterion axiom enables systematic applications to concrete cases via native_decide on leadingDigit",
@@ -90,7 +94,7 @@
     "divisibility",
     "wolstenholme",
     "0-sorry",
-    "6-axioms",
+    "4-axioms",
     "complete"
   ],
   "relatedProofs": [],
@@ -111,7 +115,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.333Z",
-  "lastUpdate": "2026-02-05T05:30:00Z",
+  "lastUpdate": "2026-02-06T06:00:00Z",
   "significance": 6,
   "tractability": 6
 }
