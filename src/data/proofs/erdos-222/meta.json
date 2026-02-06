@@ -18,7 +18,7 @@
       "analytic-number-theory"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 222,
     "erdosUrl": "https://erdosproblems.com/222",
     "erdosProblemStatus": "solved",
@@ -49,9 +49,8 @@
     "originalContributions": [
       "IsSumTwoSquares definition: n = a² + b² for integers a, b",
       "IsPrime3Mod4 definition: primes congruent to 3 mod 4",
-      "nthSumTwoSquares definition: the k-th sum of two squares",
+      "nthSumTwoSquares axiom: the k-th sum of two squares",
       "gap definition: consecutive difference n_{k+1} - n_k",
-      "landauRamanujanConstant definition: density constant ≈ 0.7642",
       "countSumTwoSquares definition: counting function",
       "fermat_sum_two_squares_criterion axiom: characterization via prime factors",
       "landau_density_theorem axiom: count ~ cx/√(log x)",
@@ -59,7 +58,7 @@
       "richards_1982_lower_bound axiom: limsup gap/log n ≥ 1/4",
       "dekkm_2022_lower_bound axiom: limsup gap/log n ≥ 0.868",
       "bambah_chowla_upper_bound axiom: gaps ≪ n^(1/4)",
-      "erdos_222_summary theorem: main bounds summary"
+      "erdos_222_summary theorem: main bounds summary with proof"
     ]
   },
   "overview": {
@@ -81,92 +80,50 @@
       "id": "sums-two-squares",
       "title": "Sums of Two Squares",
       "summary": "Definition and basic properties of integers representable as a² + b²",
-      "startLine": 37,
-      "endLine": 62
+      "startLine": 42,
+      "endLine": 61
     },
     {
       "id": "fermat-criterion",
       "title": "Fermat's Criterion",
       "summary": "Characterization: n is sum of two squares iff primes p ≡ 3 (mod 4) have even exponents",
-      "startLine": 64,
-      "endLine": 85
+      "startLine": 63,
+      "endLine": 80
     },
     {
       "id": "gap-function",
       "title": "The Gap Function",
       "summary": "Definitions of nthSumTwoSquares and gap between consecutive terms",
-      "startLine": 87,
-      "endLine": 101
+      "startLine": 82,
+      "endLine": 98
     },
     {
       "id": "density",
       "title": "Density of Sums of Two Squares",
-      "summary": "Landau's theorem: count ~ cx/√(log x) with Landau-Ramanujan constant",
-      "startLine": 103,
-      "endLine": 121
+      "summary": "Landau's theorem: count ~ cx/√(log x)",
+      "startLine": 100,
+      "endLine": 110
     },
     {
-      "id": "erdos-lower",
-      "title": "Erdős's Lower Bound (1951)",
-      "summary": "Infinitely many gaps ≫ log n / √(log log n)",
-      "startLine": 123,
-      "endLine": 137
-    },
-    {
-      "id": "richards",
-      "title": "Richards's Improvement (1982)",
-      "summary": "limsup(gap/log n) ≥ 1/4",
-      "startLine": 139,
-      "endLine": 152
-    },
-    {
-      "id": "dekkm",
-      "title": "DEKKM (2022)",
-      "summary": "Latest improvement: limsup(gap/log n) ≥ 0.868",
-      "startLine": 154,
-      "endLine": 173
+      "id": "lower-bounds",
+      "title": "Lower Bounds on Gaps",
+      "summary": "Erdős (1951), Richards (1982), and DEKKM (2022) lower bounds",
+      "startLine": 112,
+      "endLine": 132
     },
     {
       "id": "upper-bound",
       "title": "Bambah-Chowla Upper Bound",
       "summary": "All gaps are O(n^(1/4))",
-      "startLine": 175,
-      "endLine": 192
-    },
-    {
-      "id": "average-gap",
-      "title": "The Average Gap",
-      "summary": "Typical gap is √(log n), much smaller than maximal gaps",
-      "startLine": 194,
-      "endLine": 212
-    },
-    {
-      "id": "prime-connection",
-      "title": "Connection to Primes",
-      "summary": "Large gaps occur where primes ≡ 3 (mod 4) cluster",
-      "startLine": 214,
-      "endLine": 230
-    },
-    {
-      "id": "small-values",
-      "title": "Explicit Small Values",
-      "summary": "First gap of size 5 is between 20 and 25",
-      "startLine": 232,
-      "endLine": 268
-    },
-    {
-      "id": "heuristics",
-      "title": "Probabilistic Heuristics",
-      "summary": "Why limsup(gap/log n) = 1 is conjectured",
-      "startLine": 270,
-      "endLine": 305
+      "startLine": 134,
+      "endLine": 139
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem combining lower and upper bounds",
-      "startLine": 307,
-      "endLine": 334
+      "summary": "Main theorem combining lower and upper bounds with proof",
+      "startLine": 141,
+      "endLine": 163
     }
   ],
   "conclusion": {
