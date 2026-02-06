@@ -127,35 +127,30 @@ theorem distinct_moduli_not_exact :
   exact no_exact_covering_system this
 
 /-!
-## Part IV: Proof Sketch
+## Part IV: Proof Techniques
 -/
 
 /--
-**Proof idea (Mirsky-Newman):**
-Consider the polynomial f(x) = Π (1 - x^{nᵢ}) / Π (1 - x).
-For an exact covering, counting arguments lead to a contradiction.
+**Mirsky-Newman generating function approach:**
+Consider the generating function f(x) = Σᵢ x^{aᵢ}/(1 - x^{nᵢ}).
+For an exact covering, f(x) = 1/(1-x) (each integer represented exactly once).
+This imposes analytic constraints on the moduli that cannot be satisfied
+when all moduli are distinct. Axiomatized since the proof requires
+complex analysis of formal power series.
 -/
-axiom mirsky_newman_argument :
-    -- The generating function approach
-    True
+axiom mirsky_newman_argument (C : CoveringSystem) :
+    hasDistinctModuli C → isExact C →
+    densitySum C = 1
 
 /--
-**Proof idea (Davenport-Rado):**
-Use the fact that 1/n₁ + 1/n₂ + ... + 1/nₖ = 1 with distinct nᵢ
-has severe constraints. If all moduli appear exactly once and
-partition ℤ, the largest modulus must equal the LCM of the others.
--/
-axiom davenport_rado_argument :
-    -- The LCM argument
-    True
-
-/--
-**Key lemma: LCM property:**
+**Davenport-Rado LCM argument:**
 If distinct moduli n₁ < n₂ < ... < nₖ give an exact covering,
-then nₖ | lcm(n₁, ..., n_{k-1}), which leads to a contradiction.
+the largest modulus nₖ must divide lcm(n₁, ..., n_{k-1}).
+But then nₖ is not "new" — it's already a factor of the LCM —
+contradicting the ability to partition residues the covering requires.
 -/
-axiom lcm_property :
-    ∀ C : CoveringSystem, hasDistinctModuli C → isExact C →
+axiom davenport_rado_argument (C : CoveringSystem) :
+    hasDistinctModuli C → isExact C →
     ∃ p ∈ C.classes, ∀ q ∈ C.classes, q.2 < p.2 →
       p.2 ∣ C.classes.lcm (fun r => r.2)
 
@@ -198,32 +193,11 @@ def exactCoveringWithRepeats : CoveringSystem where
       exact ⟨(1, 2), by simp, by simp [this]⟩
 
 /-!
-## Part VI: Extensions
+## Part VI: Summary
 -/
 
 /--
-**Weaker notion: Almost exact:**
-Can we have a covering where "most" integers are covered exactly once?
--/
-def isAlmostExact (C : CoveringSystem) (density : ℚ) : Prop :=
-  -- Fraction of integers covered exactly once is at least 'density'
-  True  -- Formal definition would require asymptotic density
-
-/--
-**Chinese Remainder Theorem connection:**
-The non-existence of exact coverings is related to the structure of
-ℤ/nℤ and the Chinese Remainder Theorem.
--/
-axiom crt_connection :
-    -- CRT implies constraints on how congruences can partition ℤ
-    True
-
-/-!
-## Part VII: Summary
--/
-
-/--
-**Erdős Problem #947: SOLVED (PROVED)**
+**Erdős Problem #947: Summary**
 
 THEOREM (Mirsky-Newman, Davenport-Rado):
 There is no exact covering system with distinct moduli.
@@ -236,29 +210,11 @@ CONTRAST:
 - Ordinary covering systems (at least one coverage) with distinct moduli exist
 - Exact coverings exist if we allow repeated moduli
 -/
-theorem erdos_947 : True := trivial
-
-/--
-**Summary of the result:**
--/
 theorem erdos_947_summary :
     -- No exact covering with distinct moduli
     (¬∃ C : CoveringSystem, hasDistinctModuli C ∧ isExact C) ∧
     -- Ordinary coverings exist
-    (∃ C : CoveringSystem, hasDistinctModuli C) := by
-  constructor
-  · exact no_exact_covering_system
-  · obtain ⟨C, hD, _⟩ := covering_systems_exist
-    exact ⟨C, hD⟩
-
-/--
-**Key insight:**
-The impossibility of exact covering systems with distinct moduli
-reflects deep constraints from the Chinese Remainder Theorem and
-the multiplicative structure of ℤ.
--/
-theorem key_insight :
-    -- Exact partitioning requires too much "coordination" among residues
-    True := trivial
+    (∃ C : CoveringSystem, hasDistinctModuli C) :=
+  ⟨no_exact_covering_system, let ⟨C, hD, _⟩ := covering_systems_exist; ⟨C, hD⟩⟩
 
 end Erdos947

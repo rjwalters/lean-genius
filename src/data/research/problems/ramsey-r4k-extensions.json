@@ -16,7 +16,7 @@
   },
   "knownResults": {
     "proven": [
-      "67 theorems across RamseyR4kExtensions.lean, 0 sorries",
+      "76 theorems across RamseyR4kExtensions.lean, 0 sorries",
       "R(3,3) = 6 exactly (upper + lower bound fully proved)",
       "R(3,4) ≥ 9 via Wagner graph W₈ (6 new theorems, all native_decide)",
       "R(3,5) ≥ 14 via circulant graph CG(Z₁₃, {1,5,8,12}) (5 new theorems, native_decide)",
@@ -27,7 +27,11 @@
       "Structural: symmetry, monotonicity, Pascal's rule, positivity",
       "R(r,s) ≥ s and R(r,s) ≥ r for appropriate bounds",
       "Strict monotonicity, diagonal monotonicity",
-      "small_graph_no_red_K4 for n < 4"
+      "small_graph_no_red_K4 for n < 4",
+      "C(2m,m) ≤ 4^m (central binomial coefficient bound)",
+      "R(k,k) ≤ 4^(k-1) (exponential upper bound for diagonal Ramsey)",
+      "R(k,k) < 4^k (cleaner exponential bound)",
+      "R(r,s) ≤ 2^(r+s-2) (general exponential upper bound)"
     ],
     "open": [
       "Exact order of R(4,k): between k^{5/2} and k^3 (up to log factors)",
@@ -38,8 +42,8 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-02-05T06:30:00Z",
-    "iteration": 4,
-    "focus": "Added R(3,5) ≥ 14 via circulant graph CG(Z₁₃, {1,5,8,12})",
+    "iteration": 5,
+    "focus": "Added exponential upper bounds: C(2m,m) ≤ 4^m, R(k,k) ≤ 4^(k-1), R(r,s) ≤ 2^(r+s-2)",
     "activeApproach": "Explicit graph constructions verified by native_decide",
     "blockers": [],
     "nextAction": "Problem is essentially complete. Remaining 7 axioms are deep results.",
@@ -50,7 +54,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 67 theorems, 7 axioms, 0 sorries. R(3,5) ≥ 14 proved via circulant graph CG(Z₁₃, {1,5,8,12}). R(3,4) ≥ 9 via Wagner graph. R(3,3) = 6 exact. R(4,4) ≥ 18 via Paley graph. R(4,5) > 13 via Paley graph. All tractable lower bounds established.",
+    "progressSummary": "COMPLETE: 76 theorems, 7 axioms, 0 sorries. Added exponential upper bounds: C(2m,m) ≤ 4^m, R(k,k) ≤ 4^(k-1), R(k,k) < 4^k, R(r,s) ≤ 2^(r+s-2). Previous: R(3,5) ≥ 14, R(3,4) ≥ 9, R(3,3) = 6 exact, R(4,4) ≥ 18, R(4,5) > 13.",
     "builtItems": [
       "wagnerColor: Wagner graph coloring on K_8",
       "wagnerColor_symm, wagnerColor_irrefl: coloring properties",
@@ -71,7 +75,12 @@
       "circulantColor13_symm: circulant coloring symmetry (native_decide)",
       "circulant13_no_red_K3: circulant graph is triangle-free (native_decide)",
       "circulant13_no_blue_K5: complement has no K₅ (native_decide)",
-      "r3_5_lower_bound: R(3,5) ≥ 14 via circulant graph"
+      "r3_5_lower_bound: R(3,5) ≥ 14 via circulant graph",
+      "central_binom_le_four_pow: C(2m,m) ≤ 4^m via binomial sum (NEW)",
+      "ramseyUpperBound_diag_le_four_pow: R(k,k) ≤ 4^(k-1) (NEW)",
+      "ramseyUpperBound_diag_lt_four_pow: R(k,k) < 4^k cleaner form (NEW)",
+      "ramseyUpperBound_le_two_pow: R(r,s) ≤ 2^(r+s-2) general bound (NEW)",
+      "4 verification theorems for exponential bounds (NEW)"
     ],
     "insights": [
       "Wagner graph W₈ (cycle + antipodal edges) is triangle-free with α = 3",
@@ -79,7 +88,9 @@
       "native_decide handles Paley graph properties on F_17 despite 17^4 = 83521 potential cases",
       "Circulant graph CG(Z₁₃, {1,5,8,12}) is triangle-free with independence number 4, witnessing R(3,5) ≥ 14",
       "The cubic residue connection set {1,5,8,12} is closed under negation mod 13, ensuring graph symmetry",
-      "The 7 remaining axioms are genuinely unprovable computationally (asymptotic/probabilistic)"
+      "The 7 remaining axioms are genuinely unprovable computationally (asymptotic/probabilistic)",
+      "C(2m,m) ≤ 4^m follows from binomial theorem: C(2m,m) is one term in Σ C(2m,i) = 2^(2m) = 4^m",
+      "General bound R(r,s) ≤ 2^(r+s-2) from same technique: C(n,k) ≤ Σ C(n,i) = 2^n"
     ],
     "mathlibGaps": [
       "No Paley graph construction in Mathlib",
@@ -132,7 +143,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-02-06T08:00:00Z",
+  "lastUpdate": "2026-02-06T15:45:00Z",
   "significance": 7,
   "tractability": 6
 }

@@ -17,7 +17,7 @@
       "projective-planes"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 0,
     "erdosNumber": 903,
     "erdosUrl": "https://erdosproblems.com/903",
     "erdosProblemStatus": "solved",
@@ -71,58 +71,58 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "BlockDesign structure, numBlocks, IsPrimePower, projectivePlaneOrder, IsProjectivePlaneSize",
+      "summary": "BlockDesign structure, numBlocks, IsPrimePower, IsProjectivePlaneSize",
       "startLine": 29,
-      "endLine": 63
+      "endLine": 55
     },
     {
       "id": "de-bruijn-erdos",
       "title": "The de Bruijn-Erdős Theorem",
       "summary": "de_bruijn_erdos axiom, IsMinimalDesign, minimal_design_uniform",
-      "startLine": 64,
-      "endLine": 81
+      "startLine": 57,
+      "endLine": 73
     },
     {
       "id": "projective-planes",
       "title": "Projective Plane Constructions",
-      "summary": "ProjectivePlane structure, toBlockDesign, projective_plane_minimal",
-      "startLine": 82,
-      "endLine": 111
+      "summary": "ProjectivePlane structure, projective_plane_exists, projective_plane_design axioms",
+      "startLine": 75,
+      "endLine": 98
     },
     {
       "id": "erdos-sos-theorem",
       "title": "The Erdős-Sós Conjecture (Now Theorem)",
-      "summary": "erdos_sos_theorem, efsw_1985, efsw_strong",
-      "startLine": 112,
-      "endLine": 138
+      "summary": "efsw_1985 axiom, efsw_strong axiom with broken-plane condition",
+      "startLine": 100,
+      "endLine": 119
     },
     {
       "id": "gap-structure",
       "title": "The Gap Structure",
-      "summary": "achievableBlocks, n_achievable, gap_theorem, first_above_n",
-      "startLine": 139,
-      "endLine": 165
+      "summary": "achievableBlocks, n_achievable, gap_theorem, first_above_n (proved)",
+      "startLine": 121,
+      "endLine": 146
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "Concrete examples for p = 2, 3, 4, 5",
-      "startLine": 166,
-      "endLine": 181
+      "summary": "Concrete examples for p = 2, 3, 4, 5 (norm_num proofs)",
+      "startLine": 148,
+      "endLine": 162
     },
     {
       "id": "2-designs",
       "title": "Connection to Combinatorial Designs",
-      "summary": "Is2Design, fisher_inequality, de_bruijn_erdos_from_fisher",
-      "startLine": 182,
-      "endLine": 201
+      "summary": "Is2Design, fisher_inequality, de_bruijn_erdos_from_fisher (proved)",
+      "startLine": 164,
+      "endLine": 182
     },
     {
-      "id": "main-results",
-      "title": "Main Results",
-      "summary": "erdos_903_statement, erdos_903_answer, erdos_903_summary",
-      "startLine": 202,
-      "endLine": 246
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_903_summary (proved): combines de Bruijn-Erdős, projective plane, and gap theorem",
+      "startLine": 184,
+      "endLine": 228
     }
   ],
   "conclusion": {
