@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #395: Reverse Littlewood-Offord Problem
 
 Source: https://erdosproblems.com/395
