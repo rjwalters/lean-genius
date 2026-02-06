@@ -18,7 +18,7 @@
       "partially-solved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 917,
     "erdosUrl": "https://erdosproblems.com/917",
     "erdosProblemStatus": "partially-solved",
@@ -46,7 +46,7 @@
       "IsKChromatic predicate for exact chromatic number",
       "IsKCritical definition (chromatic + edge-critical)",
       "edgeCount for SimpleGraph",
-      "f function for maximum edges in k-critical graphs",
+      "f axiom for maximum edges in k-critical graphs",
       "Question1, Question2, Question3 formal definitions",
       "toft_1970 axiom: f_k(n) ≫_k n² for k ≥ 4",
       "question1_answered theorem",
@@ -55,12 +55,11 @@
       "stiebitz_1987_disproof axiom for k ≢ 0 (mod 3)",
       "turan_upper and stiebitz_upper bound axioms",
       "luo_ma_yang_2023 improved upper bound",
-      "DiracConstruction structure",
-      "erdos_917_summary main theorem"
+      "erdos_917 summary theorem"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #917: Critical Graphs and Edge Density**\n\nThis problem concerns the maximum number of edges in k-critical graphs—graphs whose chromatic number is exactly k but decreases when any edge is removed.\n\n**Key History:**\n- Erdős (1949): Asked Dirac about f_k(n) = o(n²), surprised by counterexamples\n- Dirac (1952): Constructed 6-critical graphs with >n²/4 edges using two odd cycles\n- Erdős (1969): Generalized for k ≡ 0 (mod 3)\n- Toft (1970): Proved f_k(n) ≫_k n² for all k ≥ 4\n- Stiebitz (1987): Disproved the asymptotic conjecture for k ≢ 0 (mod 3)\n- Luo-Ma-Yang (2023): Improved upper bounds\n\n**Mathematical Setting:**\nA k-critical graph has chromatic number k but removing ANY edge reduces it. The function f_k(n) measures the maximum edge density achievable by such graphs on n vertices.",
+    "historicalContext": "Erdős Problem #917 concerns the maximum number of edges in k-critical graphs, where a graph is k-critical if its chromatic number is exactly k but removing any edge decreases the chromatic number. The central object is f_k(n), the maximum number of edges in a k-critical graph on n vertices. Erdős originally asked (1949) whether f_k(n) = o(n²), expecting that critical graphs could not be too dense.\n\nDirac (1952) surprised Erdős by constructing 6-critical graphs with approximately n²/4 edges, using two disjoint odd cycles with all cross edges. Erdős (1969) generalized this construction for k divisible by 3, and Toft (1970) settled the quadratic growth question completely: f_k(n) grows at least quadratically for all k ≥ 4. The natural next question was whether a precise asymptotic f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n² holds for all k ≥ 6.\n\nStiebitz (1987) disproved the asymptotic conjecture for k not divisible by 3, showing that the mod 3 structure of k fundamentally matters. He also improved the upper bound to f_k(n) < ex(n; K_{k-1}). Luo-Ma-Yang (2023) further tightened the upper bound. The problem remains partially open: the precise asymptotic for k divisible by 3 and the exact value for k = 6 are still unknown.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet $k \\geq 4$ and let $f_k(n)$ be the maximum number of edges in a $k$-critical graph on $n$ vertices.\n\n**Question 1:** Is $f_k(n) \\gg_k n^2$? (Does edge count grow quadratically?)\n**Answer: YES** (Toft 1970)\n\n**Question 2:** Is $f_6(n) \\sim n^2/4$?\n**Status: OPEN** (Lower bound established by Dirac, upper bound not proven)\n\n**Question 3:** For $k \\geq 6$, is $f_k(n) \\sim \\frac{1}{2}(1 - \\frac{1}{\\lfloor k/3 \\rfloor})n^2$?\n**Partially Answered:**\n- FALSE for $k \\not\\equiv 0 \\pmod{3}$ (Stiebitz 1987)\n- OPEN for $k \\equiv 0 \\pmod{3}$",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - chromaticNumber via Nat.find on Colorable\n   - IsKChromatic: chromatic number equals k\n   - IsKCritical: k-chromatic AND edge-critical\n   - edgeCount via edgeFinset.card\n\n2. **Central Function:**\n   - f k n: maximum edges in k-critical graph on n vertices\n\n3. **Three Questions:**\n   - Question1: ∃ c > 0, f_k(n) ≥ c·n²\n   - Question2: f_6(n)/n² → 1/4\n   - Question3: f_k(n)/n² → (1/2)(1 - 1/⌊k/3⌋)\n\n4. **Key Results:**\n   - toft_1970: Question1 is YES\n   - dirac_construction: f_6(4n+2) ≥ 4n² + 8n + 3\n   - stiebitz_1987_disproof: Question3 FALSE for k ≢ 0 (mod 3)\n   - luo_ma_yang_2023: improved upper bounds\n\n5. **Summary Theorem:**\n   - Combines all partial results into erdos_917_summary",
     "keyInsights": [
@@ -77,56 +76,49 @@
       "title": "Basic Definitions",
       "summary": "chromaticNumber, IsKChromatic, IsKCritical, edgeCount",
       "startLine": 38,
-      "endLine": 61
+      "endLine": 60
     },
     {
       "id": "f-function",
       "title": "The Maximum Edge Function f_k(n)",
-      "summary": "Definition of f and f_defined axiom",
+      "summary": "Axiomatized f function and f_defined existence axiom",
       "startLine": 62,
-      "endLine": 78
+      "endLine": 75
     },
     {
       "id": "question1",
       "title": "Question 1: Quadratic Growth",
       "summary": "Question1 definition, toft_1970 axiom, question1_answered theorem",
-      "startLine": 79,
-      "endLine": 99
+      "startLine": 77,
+      "endLine": 96
     },
     {
       "id": "question2",
       "title": "Question 2: The k = 6 Case",
       "summary": "Question2 definition, dirac_construction axiom",
-      "startLine": 100,
-      "endLine": 129
+      "startLine": 98,
+      "endLine": 116
     },
     {
       "id": "question3",
       "title": "Question 3: The General Asymptotic",
       "summary": "Question3 definition, erdos_construction, stiebitz_1987_disproof",
-      "startLine": 131,
-      "endLine": 161
+      "startLine": 118,
+      "endLine": 147
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "turan_upper, stiebitz_upper, luo_ma_yang_2023",
-      "startLine": 162,
-      "endLine": 189
-    },
-    {
-      "id": "constructions",
-      "title": "Special Constructions",
-      "summary": "DiracConstruction structure, dirac_is_6_critical, dirac_edge_count",
-      "startLine": 190,
-      "endLine": 211
+      "startLine": 149,
+      "endLine": 175
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
-      "summary": "erdos_917_summary, erdos_917 main theorem",
-      "startLine": 212,
-      "endLine": 246
+      "summary": "erdos_917 main theorem combining all partial results",
+      "startLine": 177,
+      "endLine": 206
     }
   ],
   "conclusion": {

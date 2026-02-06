@@ -63,12 +63,10 @@ noncomputable def edgeCount (G : SimpleGraph V) : ℕ :=
 
 /--
 **f_k(n):** The maximum number of edges in a k-critical graph on n vertices.
-
-This is the central object of study in Erdős Problem #917.
+Axiomatized because computing the maximum over all k-critical graphs on n vertices
+requires dependent type manipulation beyond simple definitions.
 -/
-noncomputable def f (k n : ℕ) : ℕ :=
-  -- Maximum edges over all k-critical graphs on n vertices
-  Nat.find (⟨0, trivial⟩ : ∃ m : ℕ, True)  -- Simplified; actual max is complex
+axiom f (k n : ℕ) : ℕ
 
 /-- f_k is defined for k ≥ 4 (the interesting range). -/
 axiom f_defined (k n : ℕ) (hk : k ≥ 4) (hn : n ≥ k) :
@@ -116,17 +114,6 @@ This gives a 6-critical graph with approximately n²/4 edges.
 axiom dirac_construction :
     ∀ n : ℕ, n ≥ 1 →
       f 6 (4*n + 2) ≥ 4*n^2 + 8*n + 3
-
-/-- Dirac's construction shows f_6(4n+2)/n² → 1/4 as n → ∞. -/
-theorem dirac_asymptotic :
-    -- This shows f_6(n) ≥ (1/4 - ε)n² for large n
-    True := trivial
-
-/--
-**Status of Question 2:** OPEN.
-The lower bound is established, but the matching upper bound is not proven.
--/
-axiom question2_open : True
 
 /-! ## Question 3: The General Asymptotic -/
 
@@ -187,34 +174,9 @@ axiom luo_ma_yang_2023 (k : ℕ) (hk : k ≥ 4) :
     ∀ ε > 0, ∀ᶠ n in Filter.atTop,
       (f k n : ℝ) ≤ (1/2) * (1 - 1/(k-2) - 1/(36*(k-1)^2) + ε) * n^2
 
-/-! ## Special Constructions -/
+/-! ## Summary
 
-/--
-**Two Odd Cycles + Cross Edges:**
-Dirac's construction for k = 6: two disjoint odd cycles with all edges between them.
--/
-structure DiracConstruction (n : ℕ) where
-  cycle1 : Fin (2*n + 1)  -- First odd cycle
-  cycle2 : Fin (2*n + 1)  -- Second odd cycle
-  /-- Total vertices = 2(2n+1) = 4n+2 -/
-  total_vertices : (2*n + 1) + (2*n + 1) = 4*n + 2
-
-/-- The Dirac construction is 6-critical. -/
-axiom dirac_is_6_critical (n : ℕ) (hn : n ≥ 1) :
-    -- The graph on 4n+2 vertices is 6-critical
-    True
-
-/-- The Dirac construction has 4n² + 8n + 3 edges. -/
-axiom dirac_edge_count (n : ℕ) (hn : n ≥ 1) :
-    -- (2n+1)(2n+1) cross edges + 2(2n+1) cycle edges = 4n² + 4n + 1 + 4n + 2 = 4n² + 8n + 3
-    True
-
-/-! ## Summary -/
-
-/--
-**Erdős Problem #917: Summary**
-
-Status: PARTIALLY ANSWERED
+**Erdős Problem #917 - PARTIALLY SOLVED**
 
 **Question 1: Is f_k(n) ≫_k n²?**
 ANSWERED: YES by Toft (1970).
@@ -231,16 +193,13 @@ PARTIALLY ANSWERED:
 - Lower bounds: Erdős-Dirac constructions
 - Upper bounds: Stiebitz (1987), improved by Luo-Ma-Yang (2023)
 -/
-theorem erdos_917_summary :
-    -- Question 1 answered: f_k(n) ≫_k n² for k ≥ 4
+
+/-- Complete summary of Erdős Problem #917.
+Combines Toft's quadratic growth with Stiebitz's disproof. -/
+theorem erdos_917 :
     (∀ k ≥ 4, Question1 k) ∧
-    -- Question 3 false for k ≢ 0 (mod 3)
     (∀ k ≥ 4, k % 3 ≠ 0 → ¬Question3 k) ∧
-    -- Toft's quadratic growth
     (∀ k ≥ 4, ∃ c : ℝ, c > 0 ∧ ∀ n ≥ k, (f k n : ℝ) ≥ c * n^2) :=
   ⟨question1_answered, stiebitz_1987_disproof, toft_1970⟩
-
-/-- Main theorem: Current state of knowledge. -/
-theorem erdos_917 : True := trivial
 
 end Erdos917
