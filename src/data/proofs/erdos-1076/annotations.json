@@ -1,182 +1,123 @@
 [
   {
+    "id": "ann-1076-header",
+    "proofId": "erdos-1076",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1076** asks whether the extremal number ex₃(n, F_k) ~ n²/6 for all k ≥ 5, where F_k is the family of 3-uniform hypergraphs with k vertices and k-2 edges. The problem originated with Brown, Erdős, and Sós (1973). The answer is YES, proved independently by Bohman-Warnke (2019) and Glock-Kühn-Lo-Osthus (2020). The extremal density matches that of Steiner triple systems.",
+    "mathContext": "ex₃(n, F_k) = max{|E(H)| : H is 3-uniform on n vertices, F_k-free}. Brown-Erdős-Sós showed Θ_k(n²) growth. The conjecture pins down the constant: 1/6.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal numbers", "hypergraphs", "Steiner triple systems", "Brown-Erdős-Sós"]
+  },
+  {
     "id": "ann-1076-hypergraph3",
     "proofId": "erdos-1076",
-    "range": { "startLine": 42, "endLine": 45 },
+    "range": { "startLine": 40, "endLine": 54 },
     "type": "definition",
-    "title": "Hypergraph3",
-    "content": "3-uniform hypergraph structure on n vertices.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1076-numedges",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 47, "endLine": 48 },
-    "type": "definition",
-    "title": "numEdges",
-    "content": "Number of edges in a 3-uniform hypergraph.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1076-isinfamilyf",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 54, "endLine": 56 },
-    "type": "definition",
-    "title": "IsInFamilyF",
-    "content": "Hypergraph in F_k: k vertices and k-2 edges.",
-    "significance": "critical"
+    "title": "3-Uniform Hypergraph Structure",
+    "content": "Hypergraph3 represents a 3-uniform hypergraph on n vertices as a Finset of ordered triples (i, j, k) with i < j < k. The ordering constraint ensures each 3-element subset appears at most once. Key derived properties: numEdges counts edges via Finset.card; numVertices counts vertices appearing in at least one edge; IsInFamilyF checks whether the hypergraph has exactly k vertices and k-2 edges.",
+    "mathContext": "structure Hypergraph3 (n : ℕ) where edges : Finset (Fin n × Fin n × Fin n); uniform : ∀ e ∈ edges, e.1 < e.2.1 ∧ e.2.1 < e.2.2. Ordered triples encode unordered 3-element subsets.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset", "Fin", "uniform hypergraph", "3-element subsets"]
   },
   {
     "id": "ann-1076-familyf",
     "proofId": "erdos-1076",
-    "range": { "startLine": 62, "endLine": 64 },
+    "range": { "startLine": 56, "endLine": 78 },
     "type": "definition",
-    "title": "FamilyF",
-    "content": "The family F_k of forbidden hypergraphs.",
-    "significance": "critical"
+    "title": "The Family F_k",
+    "content": "FamilyF(k, n) is the set of all 3-uniform hypergraphs on n vertices that have exactly k vertices and k-2 edges. For k=4: 4 vertices, 2 triples. For k=5: 5 vertices, 3 triples. For k=6: 6 vertices, 4 triples. These are the forbidden configurations — the extremal number counts the maximum edges achievable while avoiding all members of F_k.",
+    "mathContext": "FamilyF k n = {H : Hypergraph3 n | numVertices H = k ∧ numEdges H = k-2}. Three description theorems verify the definition for k = 4, 5, 6 using simp.",
+    "significance": "critical",
+    "relatedConcepts": ["forbidden subgraphs", "extremal graph theory", "Turán-type problems"]
   },
   {
-    "id": "ann-1076-f4",
+    "id": "ann-1076-containment",
     "proofId": "erdos-1076",
-    "range": { "startLine": 66, "endLine": 70 },
-    "type": "theorem",
-    "title": "family_F4_description",
-    "content": "F_4: 4 vertices, 2 edges.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1076-f5",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 72, "endLine": 76 },
-    "type": "theorem",
-    "title": "family_F5_description",
-    "content": "F_5: 5 vertices, 3 edges.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1076-containssubgraph",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 88, "endLine": 96 },
+    "range": { "startLine": 80, "endLine": 94 },
     "type": "definition",
-    "title": "ContainsSubgraph",
-    "content": "H contains a copy of G as subgraph.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1076-isfkfree",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 98, "endLine": 100 },
-    "type": "definition",
-    "title": "IsFkFree",
-    "content": "Hypergraph avoiding all F_k members.",
-    "significance": "key"
+    "title": "Subgraph Containment and F_k-Freeness",
+    "content": "ContainsSubgraph(H, G) formalizes that H contains G as a subhypergraph: there exists an injective vertex map f such that every edge of G maps to an edge of H under some permutation of the triple. All 6 permutations of (f(a), f(b), f(c)) are checked because H uses ordered triples. IsFkFree(k, H) means H contains no member of F_k as a subgraph.",
+    "mathContext": "ContainsSubgraph H G := ∃ f : Fin m → Fin n, Function.Injective f ∧ ∀ e ∈ G.edges, some permutation of (f e.1, f e.2.1, f e.2.2) ∈ H.edges. IsFkFree k H := ∀ G ∈ FamilyF k n, ¬ContainsSubgraph H G.",
+    "significance": "key",
+    "relatedConcepts": ["injective maps", "graph homomorphism", "forbidden subgraphs"]
   },
   {
     "id": "ann-1076-ex3",
     "proofId": "erdos-1076",
-    "range": { "startLine": 106, "endLine": 113 },
-    "type": "definition",
-    "title": "ex3",
-    "content": "Extremal number ex₃(n, F_k).",
-    "significance": "critical"
+    "range": { "startLine": 96, "endLine": 109 },
+    "type": "axiom",
+    "title": "Extremal Number ex₃(n, F_k)",
+    "content": "The extremal number ex3(n, k) is axiomatized as a natural number together with two characterizing axioms: ex3_achieved states that some F_k-free hypergraph achieves this many edges; ex3_is_max states that no F_k-free hypergraph has more. This axiomatization avoids the need for decidability proofs that a constructive definition would require.",
+    "mathContext": "axiom ex3 (n k : ℕ) : ℕ. axiom ex3_achieved: ∃ H, IsFkFree k H ∧ numEdges H = ex3 n k. axiom ex3_is_max: ∀ H, IsFkFree k H → numEdges H ≤ ex3 n k.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal function", "Turán number", "axiomatization"]
   },
   {
-    "id": "ann-1076-besk4",
+    "id": "ann-1076-bes",
     "proofId": "erdos-1076",
-    "range": { "startLine": 123, "endLine": 125 },
-    "type": "theorem",
-    "title": "brown_erdos_sos_k4",
-    "content": "Brown-Erdős-Sós 1973: k=4 case.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1076-besgeneral",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 127, "endLine": 130 },
-    "type": "theorem",
-    "title": "brown_erdos_sos_general",
-    "content": "For k ≥ 4: ex₃(n, F_k) = Θ_k(n²).",
-    "significance": "key"
+    "range": { "startLine": 111, "endLine": 120 },
+    "type": "axiom",
+    "title": "Brown-Erdős-Sós (1973)",
+    "content": "Two foundational results from the 1973 paper. brown_erdos_sos_k4: for k=4, ex₃(n, F_4) ~ n²/6 (the asymptotic is exact). brown_erdos_sos_general: for all k ≥ 4, ex₃(n, F_k) = Θ_k(n²) — quadratic growth with constants depending on k. The k=4 case was the base case; the conjecture that the coefficient is always 1/6 for k ≥ 5 took 46 years to resolve.",
+    "mathContext": "brown_erdos_sos_k4: Tendsto (fun n => ex3 n 4 / n²) atTop (nhds (1/6)). brown_erdos_sos_general: ∃ c₁ c₂ > 0, c₁·n² ≤ ex3(n,k) ≤ c₂·n² for n ≥ k.",
+    "significance": "critical",
+    "relatedConcepts": ["k=4 base case", "Θ_k(n²)", "quadratic growth", "extremal bounds"]
   },
   {
     "id": "ann-1076-erdos1974",
     "proofId": "erdos-1076",
-    "range": { "startLine": 136, "endLine": 140 },
-    "type": "theorem",
-    "title": "erdos_1974_supporting",
-    "content": "Erdős 1974: > (1/3)C(n,2) edges forces F_5 or F_6.",
-    "significance": "key"
+    "range": { "startLine": 122, "endLine": 137 },
+    "type": "axiom",
+    "title": "Erdős's Supporting Theorem (1974)",
+    "content": "Erdős proved that any 3-uniform hypergraph on n vertices with more than (1/3)C(n,2) = n(n-1)/6 edges must contain a member of F_5 or F_6. The threshold n(n-1)/6 = n²/6 - n/6 is asymptotically n²/6, explaining why 1/6 is the right constant. The theorem threshold_asymptotic verifies this algebraically: (1/3)·n(n-1)/2 = n²/6 - n/6.",
+    "mathContext": "erdos_1974_supporting: numEdges H > (1/3)·n(n-1)/2 → F_5 or F_6 subgraph exists. threshold_asymptotic: (1/3)·n(n-1)/2 = n²/6 - n/6, proved by ring.",
+    "significance": "key",
+    "relatedConcepts": ["density threshold", "forced subgraphs", "C(n,2)", "asymptotic equivalence"]
   },
   {
     "id": "ann-1076-conjecture",
     "proofId": "erdos-1076",
-    "range": { "startLine": 155, "endLine": 157 },
+    "range": { "startLine": 139, "endLine": 148 },
     "type": "definition",
-    "title": "BrownErdosSosConjecture",
-    "content": "ex₃(n, F_k) ~ n²/6 for all k ≥ 5.",
-    "significance": "critical"
+    "title": "Brown-Erdős-Sós Conjecture",
+    "content": "The formal statement: for all k ≥ 5, the ratio ex₃(n, F_k)/n² tends to 1/6 as n → ∞. Formalized using Mathlib's Filter.Tendsto with the atTop filter on ℕ and nhds(1/6) in ℝ. An equivalent ε-δ formulation BrownErdosSosConjecture' makes the convergence explicit.",
+    "mathContext": "BrownErdosSosConjecture := ∀ k ≥ 5, Tendsto (fun n => ex3(n,k)/n²) atTop (nhds (1/6)). BrownErdosSosConjecture' := ∀ k ≥ 5, ∀ ε > 0, ∃ N, ∀ n ≥ N, |ex3(n,k)/n² - 1/6| < ε.",
+    "significance": "critical",
+    "relatedConcepts": ["Filter.Tendsto", "nhds", "atTop", "asymptotic density"]
   },
   {
-    "id": "ann-1076-bw",
+    "id": "ann-1076-solution",
     "proofId": "erdos-1076",
-    "range": { "startLine": 168, "endLine": 170 },
-    "type": "theorem",
-    "title": "bohman_warnke_theorem",
-    "content": "Bohman-Warnke 2019: Conjecture TRUE.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1076-gklo",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 172, "endLine": 174 },
-    "type": "theorem",
-    "title": "glock_kuhn_lo_osthus_theorem",
-    "content": "GKLO 2020: Independent proof.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1076-asymptotic",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 176, "endLine": 179 },
-    "type": "theorem",
-    "title": "ex3_asymptotic",
-    "content": "Asymptotic n²/6 for all k ≥ 5.",
-    "significance": "key"
+    "range": { "startLine": 150, "endLine": 164 },
+    "type": "axiom",
+    "title": "The Solution (2019-2020)",
+    "content": "Two independent proofs resolve the conjecture. Bohman-Warnke (2019) used probabilistic constructions of large girth approximate Steiner triple systems. Glock-Kühn-Lo-Osthus (2020) used different combinatorial methods. Both are axiomatized as stating BrownErdosSosConjecture. The theorem ex3_asymptotic extracts the convergence for any specific k ≥ 5.",
+    "mathContext": "bohman_warnke_theorem: BrownErdosSosConjecture. glock_kuhn_lo_osthus_theorem: BrownErdosSosConjecture. ex3_asymptotic k hk := bohman_warnke_theorem k hk.",
+    "significance": "critical",
+    "relatedConcepts": ["Bohman-Warnke", "GKLO", "independent proofs", "approximate Steiner systems"]
   },
   {
     "id": "ann-1076-sts",
     "proofId": "erdos-1076",
-    "range": { "startLine": 203, "endLine": 206 },
+    "range": { "startLine": 180, "endLine": 200 },
     "type": "definition",
-    "title": "IsSteinerTripleSystem",
-    "content": "Steiner triple system: each pair in unique triple.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1076-stsedges",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 208, "endLine": 211 },
-    "type": "theorem",
-    "title": "sts_num_edges",
-    "content": "STS(n) has n(n-1)/6 edges.",
-    "significance": "supporting"
+    "title": "Steiner Triple Systems Connection",
+    "content": "A Steiner triple system STS(n) is a 3-uniform hypergraph where every pair of vertices lies in exactly one triple. By counting: C(n,2) pairs, each triple covers 3 pairs, so |E| = n(n-1)/6. The extremal density n²/6 matches STS density asymptotically — this is no coincidence. Extremal F_k-free hypergraphs resemble approximate Steiner systems with large girth (no short cycles that would create F_k subgraphs).",
+    "mathContext": "IsSteinerTripleSystem H := ∀ i ≠ j, ∃! e ∈ H.edges covering both i and j. sts_num_edges: |E| = n(n-1)/6. extremal_sts_connection: F_k-free hypergraphs with near-STS density exist.",
+    "significance": "key",
+    "relatedConcepts": ["Steiner systems", "combinatorial designs", "girth", "approximate systems"]
   },
   {
     "id": "ann-1076-main",
     "proofId": "erdos-1076",
-    "range": { "startLine": 248, "endLine": 248 },
+    "range": { "startLine": 211, "endLine": 229 },
     "type": "theorem",
-    "title": "erdos_1076",
-    "content": "Main theorem: conjecture is TRUE.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1076-solved",
-    "proofId": "erdos-1076",
-    "range": { "startLine": 254, "endLine": 256 },
-    "type": "theorem",
-    "title": "erdos_1076_solved",
-    "content": "Problem solved for all k ≥ 5.",
-    "significance": "critical"
+    "title": "Main Result: Problem Solved",
+    "content": "erdos_1076 := bohman_warnke_theorem states the conjecture is TRUE. erdos_1076_solved extracts the convergence for any specific k ≥ 5: ex₃(n, F_k)/n² → 1/6. The proof is a direct reference to the axiomatized Bohman-Warnke theorem. Both theorems are genuine Lean proofs assembling the axiomatized results.",
+    "mathContext": "erdos_1076 : BrownErdosSosConjecture := bohman_warnke_theorem. erdos_1076_solved k hk : Tendsto ... := erdos_1076 k hk.",
+    "significance": "critical",
+    "relatedConcepts": ["main theorem", "direct proof", "axiom application"]
   }
 ]
