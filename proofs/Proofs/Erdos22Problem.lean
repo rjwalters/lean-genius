@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #22: Ramsey-Turán Numbers for K₄
 
 **Source:** [erdosproblems.com/22](https://erdosproblems.com/22)
@@ -28,7 +28,7 @@ open scoped BigOperators
 
 namespace Erdos22
 
-/-!
+/-
 ## Background
 
 This problem lies at the intersection of **Ramsey theory** and **Turán theory**:
@@ -47,7 +47,7 @@ independence number n/3 (linear). The question is whether we can maintain
 many edges while drastically reducing the independence number.
 -/
 
-/-!
+/-
 ## Basic Graph Definitions
 -/
 
@@ -78,7 +78,7 @@ def ContainsClique (G : Graph V) (k : ℕ) : Prop :=
 def IsCliqueFree (G : Graph V) (k : ℕ) : Prop :=
   ¬ContainsClique G k
 
-/-!
+/-
 ## Ramsey-Turán Numbers
 -/
 
@@ -101,7 +101,7 @@ axiom rt_maximal (n k ℓ : ℕ) :
       IsCliqueFree G k → independenceNumber G < ℓ →
       edgeCount G ≤ rt n k ℓ
 
-/-!
+/-
 ## Turán's Theorem (Classical)
 -/
 
@@ -125,7 +125,7 @@ axiom turan_graph_optimal (n r : ℕ) (hr : r ≥ 1) :
       IsCliqueFree G (r + 1) ∧
       edgeCount G = turanNumber n (r + 1)
 
-/-!
+/-
 ## The Main Conjecture and Solution
 -/
 
@@ -204,7 +204,7 @@ theorem conjecture_resolved : BollobasErdosConjecture := by
   -- Combine with hedges: edgeCount G ≥ n²/8
   linarith
 
-/-!
+/-
 ## The Key Bound: n²/8
 
 Why n²/8? This comes from a specific construction.
@@ -221,7 +221,7 @@ axiom bound_is_tight :
             IsCliqueFree G 4 → independenceNumber G ≤ ⌈ε * n⌉₊ →
             (edgeCount G : ℝ) ≤ (1/8 + ε) * n^2)
 
-/-!
+/-
 ## The Construction (Sketch)
 
 Fox-Loh-Zhao use a **pseudorandom construction** based on:
@@ -239,7 +239,7 @@ axiom cayley_graph_construction (n : ℕ) (hn : n ≥ 10) :
       -- Independence number is polylogarithmic in n
       (independenceNumber G : ℝ) ≤ (Real.log n)^3 * n / n
 
-/-!
+/-
 ## Comparison with Turán Numbers
 -/
 
@@ -248,7 +248,7 @@ axiom cayley_graph_construction (n : ℕ) (hn : n ≥ 10) :
 theorem edge_density_gap :
     (1 : ℚ) / 3 > 1 / 8 := by norm_num
 
-/-!
+/-
 ## Related Ramsey-Turán Results
 -/
 
@@ -262,7 +262,7 @@ axiom rt_K5_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ ε : ℝ, ε > 0 →
       ∃ N : ℕ, ∀ n ≥ N, (rt n 5 ⌈ε * n⌉₊ : ℝ) ≥ c * n^2
 
-/-!
+/-
 ## The Density Function ρ_r
 -/
 
@@ -282,7 +282,7 @@ axiom rho_5 : ramseyTuranDensity 5 = 1/4
 axiom rho_general_conjecture (r : ℕ) (hr : r ≥ 3) :
     ramseyTuranDensity r > 0 ↔ r ≥ 4
 
-/-!
+/-
 ## Why n²/8?
 
 The bound n²/8 corresponds to edge density 1/4 (since max edges is n²/2).
@@ -295,7 +295,7 @@ theorem density_interpretation :
     -- = ρ₄
     (1 : ℚ) / 8 / (1 / 2) = 1 / 4 := by norm_num
 
-/-!
+/-
 ## Summary
 
 **Problem Status: SOLVED**
