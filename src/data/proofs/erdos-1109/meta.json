@@ -76,63 +76,63 @@
       "title": "Squarefree Numbers",
       "summary": "Definition using Mathlib's Squarefree, basic properties",
       "startLine": 44,
-      "endLine": 69
+      "endLine": 67
     },
     {
       "id": "sumset",
       "title": "The Sumset",
       "summary": "sumset definition and hasSquarefreeSumset predicate",
-      "startLine": 71,
-      "endLine": 81
+      "startLine": 69,
+      "endLine": 79
     },
     {
       "id": "f-function",
       "title": "The Function f(N)",
       "summary": "Definition of f(N) as max size of squarefree-sumset sets",
-      "startLine": 83,
-      "endLine": 89
+      "startLine": 81,
+      "endLine": 87
     },
     {
       "id": "erdos-sarkozy",
       "title": "Erdős-Sárközy Bounds (1987)",
       "summary": "Original bounds: log N ≪ f(N) ≪ N^{3/4} log N",
-      "startLine": 91,
-      "endLine": 109
+      "startLine": 89,
+      "endLine": 107
     },
     {
       "id": "konyagin",
       "title": "Konyagin's Improvements (2004)",
-      "summary": "Current best: (log log N)(log N)² ≪ f(N) ≪ N^{11/15+o(1)}",
-      "startLine": 111,
-      "endLine": 152
+      "summary": "Current best bounds and current_bounds theorem",
+      "startLine": 109,
+      "endLine": 150
     },
     {
       "id": "open-questions",
       "title": "The Open Questions",
       "summary": "Subpolynomial and polylogarithmic conjectures",
-      "startLine": 154,
-      "endLine": 180
+      "startLine": 152,
+      "endLine": 178
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Connection to #1103, k-power-free generalization",
-      "startLine": 182,
-      "endLine": 207
+      "startLine": 180,
+      "endLine": 205
     },
     {
       "id": "intuition",
       "title": "Why Squarefree Sumsets are Small",
-      "summary": "Density argument and modular constraints",
-      "startLine": 209,
-      "endLine": 233
+      "summary": "Density of squarefree numbers and modular constraint intuition",
+      "startLine": 207,
+      "endLine": 230
     },
     {
       "id": "summary",
       "title": "Main Results",
-      "summary": "erdos_1109_summary theorem",
-      "startLine": 235,
-      "endLine": 275
+      "summary": "erdos_1109_summary theorem combining both bounds",
+      "startLine": 232,
+      "endLine": 253
     }
   ],
   "conclusion": {
