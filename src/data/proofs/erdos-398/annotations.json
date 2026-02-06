@@ -162,20 +162,21 @@
     ]
   },
   {
-    "id": "ann-e398-open",
+    "id": "ann-e398-summary",
     "proofId": "erdos-398",
     "range": {
       "startLine": 213,
-      "endLine": 218
+      "endLine": 225
     },
     "type": "theorem",
-    "title": "Status: Open",
-    "content": "The final theorem `erdos_398_is_open` is a trivial True statement serving as documentation.\n\nIt marks that this problem remains **OPEN** - we have formalized the conjecture but cannot prove it.",
-    "significance": "supporting",
+    "title": "Summary Theorem",
+    "content": "**erdos_398_summary** combines the key verified results:\n\n1. The three known Brown numbers (4,5), (5,11), (7,71) are verified\n2. {4, 5, 7} ⊆ BrocardSet\n3. 4² < 4! (factorial dominates squares)\n\nThe proof uses exact ⟨brown_4_5, brown_5_11, brown_7_71, known_brocard_elements, factorial_dominates_4⟩.",
+    "mathContext": "This summary captures what we CAN prove about the Brocard-Ramanujan problem: the known solutions are verified. The conjecture BrocardSet = {4, 5, 7} remains OPEN.",
+    "significance": "critical",
     "relatedConcepts": [
-      "open problem",
-      "documentation",
-      "research frontier"
+      "summary theorem",
+      "verified computation",
+      "open problem"
     ]
   }
 ]
