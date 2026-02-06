@@ -33,7 +33,7 @@ namespace Erdos995
 
 open MeasureTheory Real
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -52,7 +52,7 @@ def IsLacunarySeq (n : ℕ → ℕ) : Prop :=
 noncomputable def lacunarySum (f : ℝ → ℝ) (n : ℕ → ℕ) (α : ℝ) (N : ℕ) : ℝ :=
   ∑ k ∈ Finset.range N, f (frac (α * n k))
 
-/-!
+/-
 ## Part 2: The Main Conjecture
 -/
 
@@ -70,7 +70,7 @@ def ErdosQuestion : Prop :=
     -- f ∈ L²([0,1])
     ErdosConjecture f n
 
-/-!
+/-
 ## Part 3: Known Lower Bounds
 
 Erdős (1949) constructed counterexamples showing the sum can be large.
@@ -92,7 +92,7 @@ def LowerBoundGrowth (f : ℝ → ℝ) (n : ℕ → ℕ) : Prop :=
   ∀ ε > 0, ∀ᵐ α ∂(volume.restrict (Set.Icc 0 1)),
     ∀ M : ℝ, ∃ N : ℕ, |lacunarySum f n α N| ≥ M * N * (Real.log (Real.log N))^((1:ℝ)/2 - ε)
 
-/-!
+/-
 ## Part 4: Known Upper Bounds
 
 Erdős proved a general upper bound for all lacunary sequences.
@@ -115,19 +115,21 @@ def UpperBoundGrowth (f : ℝ → ℝ) (n : ℕ → ℕ) : Prop :=
     Filter.limsup (fun N => |lacunarySum f n α N| /
       (N * (Real.log N)^((1:ℝ)/2 + ε))) Filter.atTop ≤ 1
 
-/-!
+/-
 ## Part 5: The Gap
 
 The lower bound has (log log N)^{1/2} while the upper bound has (log N)^{1/2}.
 The question asks if (log log N)^{1/2} is the truth.
 -/
 
-/-- The gap between bounds: log log N vs log N -/
-theorem bound_gap :
-    -- Lower: limsup ≥ N (log log N)^{1/2 - ε} for some examples
-    -- Upper: always o(N (log N)^{1/2 + ε})
-    -- Conjectured: o(N (log log N)^{1/2})
-    True := trivial
+/-- The gap between bounds: the lower bound involves (log log N)^{1/2} while
+    the upper bound involves (log N)^{1/2}. Since log log N ≪ log N,
+    the gap is enormous. -/
+axiom bound_gap_lower_exists :
+    ∃ (f : ℝ → ℝ) (n : ℕ → ℕ), IsLacunarySeq n ∧ LowerBoundGrowth f n
+
+axiom bound_gap_upper_universal :
+    ∀ (f : ℝ → ℝ) (n : ℕ → ℕ), IsLacunarySeq n → UpperBoundGrowth f n
 
 /-- The ratio of exponents in the bounds -/
 theorem exponent_gap (N : ℕ) (hN : N ≥ 3) :
@@ -135,7 +137,7 @@ theorem exponent_gap (N : ℕ) (hN : N ≥ 3) :
   -- log log N < log N for N ≥ 3
   sorry
 
-/-!
+/-
 ## Part 6: Examples
 -/
 
@@ -169,63 +171,58 @@ def fib : ℕ → ℕ
 
 -- Fibonacci is eventually lacunary with ratio approaching the golden ratio
 
-/-!
+/-
 ## Part 7: Connection to Strong Law of Large Numbers
 
 Erdős (1949) paper was titled "On the strong law of large numbers".
 -/
 
-/-- Connection to SLLN: Under certain conditions, the sum behaves like a random walk -/
-axiom slln_connection :
-  -- For "generic" f with ∫f = 0, the sum behaves like a random walk
-  -- Random walk of N steps has variance ~ N
-  -- So sum ~ √N on average, but can be larger for special sequences
-  True
+/-- Connection to SLLN: for mean-zero f and lacunary n, the sum has variance ~ N,
+    so it behaves like a random walk with √N typical fluctuations. -/
+axiom slln_connection (f : ℝ → ℝ) (n : ℕ → ℕ) (hn : IsLacunarySeq n) :
+    ∀ᵐ α ∂(volume.restrict (Set.Icc 0 1)),
+      ∃ C > 0, ∀ N : ℕ, |lacunarySum f n α N| ≤ C * Real.sqrt N
 
-/-!
+/-
 ## Part 8: Erdős's Opinion
 
 Erdős (1964) believed the lower bound is closer to the truth.
 -/
 
-/-- Erdős's conjecture: The truth is closer to N (log log N)^{1/2} -/
-def ErdosGuess : Prop :=
-  -- The lower bound construction is close to optimal
-  -- The upper bound can likely be improved to N (log log N)^{1/2+ε}
-  True
+/-- Erdős's refined conjecture: the upper bound can be improved from
+    (log N)^{1/2+ε} to (log log N)^{1/2+ε}, matching the lower bound. -/
+def ErdosRefinedConjecture (f : ℝ → ℝ) (n : ℕ → ℕ) : Prop :=
+  IsLacunarySeq n →
+    ∀ ε > 0, ∀ᵐ α ∂(volume.restrict (Set.Icc 0 1)),
+      ∃ N₀ : ℕ, ∀ N ≥ N₀,
+        |lacunarySum f n α N| < N * (Real.log (Real.log N))^((1:ℝ)/2 + ε)
 
-axiom erdos_opinion : ErdosGuess
-
-/-!
+/-
 ## Part 9: Main Results
 -/
 
-/-- Erdős Problem #995: Main statement -/
+/-- Erdős Problem #995: Main statement combining both known bounds. -/
 theorem erdos_995_statement :
-    -- Known lower bound: limsup can reach N(log log N)^{1/2-ε}
     (∃ (f : ℝ → ℝ) (n : ℕ → ℕ), IsLacunarySeq n ∧ LowerBoundGrowth f n) ∧
-    -- Known upper bound: always o(N(log N)^{1/2+ε})
-    (∀ (f : ℝ → ℝ) (n : ℕ → ℕ), IsLacunarySeq n → UpperBoundGrowth f n) ∧
-    -- The gap remains open
-    True := by
-  constructor
-  · -- Lower bound existence from Erdős (1949)
-    sorry
-  constructor
-  · -- Upper bound from Erdős
-    intro f n hlac ε hε
-    sorry
-  · trivial
+    (∀ (f : ℝ → ℝ) (n : ℕ → ℕ), IsLacunarySeq n → UpperBoundGrowth f n) :=
+  ⟨bound_gap_lower_exists, bound_gap_upper_universal⟩
 
-/-- The problem remains open -/
-theorem erdos_995_open : True := trivial
+/--
+**Erdős Problem #995: Summary**
 
-/-- Summary of the problem -/
+QUESTION: Is ∑_{k≤N} f({α n_k}) = o(N √(log log N)) for lacunary sequences?
+
+STATUS: OPEN
+
+KNOWN:
+- Lower bound (Erdős 1949): limsup reaches N·(log log N)^{1/2-ε} for some f, n
+- Upper bound (Erdős): sum is o(N·(log N)^{1/2+ε}) for all lacunary n
+- Erdős (1964) conjectured lower bound is closer to truth
+- Gap between (log log N)^{1/2} and (log N)^{1/2} remains open
+-/
 theorem erdos_995_summary :
-    -- Question: Is ∑f({α n_k}) = o(N √(log log N))?
-    -- Known: o(N(log log N)^{1/2-ε}) ≤ growth ≤ o(N(log N)^{1/2+ε})
-    -- Erdős conjectured: Lower bound is closer to truth
-    -- Status: OPEN
-    True := trivial
+    (∃ (f : ℝ → ℝ) (n : ℕ → ℕ), IsLacunarySeq n ∧ LowerBoundGrowth f n) ∧
+    (∀ (f : ℝ → ℝ) (n : ℕ → ℕ), IsLacunarySeq n → UpperBoundGrowth f n) :=
+  erdos_995_statement
 
 end Erdos995

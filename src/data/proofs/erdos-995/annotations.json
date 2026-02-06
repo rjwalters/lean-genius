@@ -56,15 +56,6 @@
     "significance": "critical"
   },
   {
-    "id": "ann-995-lowergrowth",
-    "proofId": "erdos-995",
-    "range": { "startLine": 90, "endLine": 93 },
-    "type": "definition",
-    "title": "LowerBoundGrowth",
-    "content": "The lower bound means: for some examples, the sum exceeds any multiple of N(log log N)^{1/2-ε} infinitely often.",
-    "significance": "key"
-  },
-  {
     "id": "ann-995-upper",
     "proofId": "erdos-995",
     "range": { "startLine": 101, "endLine": 110 },
@@ -74,27 +65,18 @@
     "significance": "critical"
   },
   {
-    "id": "ann-995-uppergrowth",
-    "proofId": "erdos-995",
-    "range": { "startLine": 112, "endLine": 116 },
-    "type": "definition",
-    "title": "UpperBoundGrowth",
-    "content": "The upper bound: limsup of sum divided by N(log N)^{1/2+ε} is at most 1 for a.e. α.",
-    "significance": "key"
-  },
-  {
     "id": "ann-995-gap",
     "proofId": "erdos-995",
-    "range": { "startLine": 125, "endLine": 136 },
-    "type": "theorem",
-    "title": "The Gap",
-    "content": "Lower bound has (log log N)^{1/2}, upper has (log N)^{1/2}. This is a HUGE gap: log log N grows much slower than log N.",
+    "range": { "startLine": 125, "endLine": 138 },
+    "type": "concept",
+    "title": "The Bounds Gap",
+    "content": "Lower bound has (log log N)^{1/2}, upper has (log N)^{1/2}. Since log log N grows much slower than log N, the gap is enormous.",
     "significance": "critical"
   },
   {
     "id": "ann-995-geometric",
     "proofId": "erdos-995",
-    "range": { "startLine": 142, "endLine": 151 },
+    "range": { "startLine": 144, "endLine": 153 },
     "type": "theorem",
     "title": "geometric_is_lacunary",
     "content": "The geometric sequence 2^k is lacunary with q = 2. Proof: 2^{k+1} = 2·2^k ≥ 2·2^k.",
@@ -103,7 +85,7 @@
   {
     "id": "ann-995-powers3",
     "proofId": "erdos-995",
-    "range": { "startLine": 153, "endLine": 162 },
+    "range": { "startLine": 155, "endLine": 164 },
     "type": "theorem",
     "title": "powers3_lacunary",
     "content": "Powers of 3 are lacunary with q = 3: 3^{k+1} = 3·3^k.",
@@ -112,7 +94,7 @@
   {
     "id": "ann-995-fib",
     "proofId": "erdos-995",
-    "range": { "startLine": 164, "endLine": 170 },
+    "range": { "startLine": 166, "endLine": 172 },
     "type": "definition",
     "title": "Fibonacci Sequence",
     "content": "The Fibonacci sequence is eventually lacunary with q ≈ φ = (1+√5)/2 ≈ 1.618, the golden ratio.",
@@ -121,46 +103,37 @@
   {
     "id": "ann-995-slln",
     "proofId": "erdos-995",
-    "range": { "startLine": 178, "endLine": 183 },
+    "range": { "startLine": 180, "endLine": 184 },
     "type": "axiom",
     "title": "SLLN Connection",
-    "content": "The sum behaves like a random walk. For f with ∫f = 0, the variance grows with N, so the sum is ~ √N on average.",
+    "content": "For mean-zero f and lacunary n, the sum has variance ~ N, behaving like a random walk with √N typical fluctuations.",
     "significance": "key"
   },
   {
-    "id": "ann-995-guess",
+    "id": "ann-995-refined",
     "proofId": "erdos-995",
-    "range": { "startLine": 191, "endLine": 197 },
-    "type": "axiom",
-    "title": "Erdős's Opinion",
-    "content": "Erdős (1964) believed the lower bound is closer to the truth. The upper bound (log N)^{1/2} might be improvable to (log log N)^{1/2}.",
+    "range": { "startLine": 192, "endLine": 198 },
+    "type": "definition",
+    "title": "Erdős's Refined Conjecture",
+    "content": "Erdős (1964) conjectured the upper bound can be improved from (log N)^{1/2+ε} to (log log N)^{1/2+ε}, matching the lower bound.",
     "significance": "key"
   },
   {
     "id": "ann-995-statement",
     "proofId": "erdos-995",
-    "range": { "startLine": 203, "endLine": 218 },
+    "range": { "startLine": 204, "endLine": 208 },
     "type": "theorem",
     "title": "erdos_995_statement",
-    "content": "Main statement combining: (1) existence of examples reaching the lower bound, (2) universal upper bound, (3) the gap remains open.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-995-open",
-    "proofId": "erdos-995",
-    "range": { "startLine": 220, "endLine": 221 },
-    "type": "theorem",
-    "title": "erdos_995_open",
-    "content": "The problem remains OPEN. The true growth rate between (log log N)^{1/2} and (log N)^{1/2} is unknown.",
+    "content": "Main statement combining: (1) existence of examples reaching the lower bound, (2) universal upper bound for all lacunary sequences.",
     "significance": "critical"
   },
   {
     "id": "ann-995-summary",
     "proofId": "erdos-995",
-    "range": { "startLine": 223, "endLine": 229 },
+    "range": { "startLine": 210, "endLine": 226 },
     "type": "theorem",
     "title": "erdos_995_summary",
-    "content": "Summary: Is sum o(N √(log log N))? Lower bound shows at least (log log N)^{1/2-ε} sometimes. Upper bound gives (log N)^{1/2+ε} always. Erdős believed lower is closer. Status: OPEN.",
+    "content": "Summary: Is sum o(N √(log log N))? Lower bound shows at least (log log N)^{1/2-ε} sometimes. Upper bound gives (log N)^{1/2+ε} always. Gap remains OPEN.",
     "significance": "critical"
   }
 ]

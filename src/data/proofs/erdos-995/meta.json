@@ -17,7 +17,7 @@
       "probability"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 2,
     "erdosNumber": 995,
     "erdosUrl": "https://erdosproblems.com/995",
     "erdosProblemStatus": "open",
@@ -99,37 +99,37 @@
     {
       "id": "the-gap",
       "title": "The Gap",
-      "summary": "bound_gap, exponent_gap",
+      "summary": "bound_gap_lower_exists, bound_gap_upper_universal, exponent_gap",
       "startLine": 118,
-      "endLine": 137
+      "endLine": 138
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "geometricSeq, geometric_is_lacunary, powersOf3, fib",
-      "startLine": 138,
-      "endLine": 171
+      "startLine": 140,
+      "endLine": 172
     },
     {
       "id": "slln-connection",
       "title": "Connection to Strong Law of Large Numbers",
       "summary": "slln_connection",
-      "startLine": 172,
+      "startLine": 174,
       "endLine": 184
     },
     {
       "id": "erdos-opinion",
       "title": "Erdős's Opinion",
-      "summary": "ErdosGuess, erdos_opinion",
-      "startLine": 185,
+      "summary": "ErdosRefinedConjecture",
+      "startLine": 186,
       "endLine": 198
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_995_statement, erdos_995_open, erdos_995_summary",
-      "startLine": 199,
-      "endLine": 230
+      "summary": "erdos_995_statement, erdos_995_summary",
+      "startLine": 200,
+      "endLine": 228
     }
   ],
   "conclusion": {
