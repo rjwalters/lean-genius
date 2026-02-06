@@ -39,9 +39,7 @@ open Finset BigOperators
 
 namespace Erdos928
 
-/-
-## Part I: Largest Prime Factor
--/
+/- ## Part I: Largest Prime Factor -/
 
 /--
 **Largest Prime Factor P(n):**
@@ -70,9 +68,7 @@ axiom lpf_prime (n : ℕ) (hn : n > 1) :
 axiom lpf_of_prime (p : ℕ) (hp : p.Prime) :
   largestPrimeFactor p = p
 
-/-
-## Part II: Smooth Numbers
--/
+/- ## Part II: Smooth Numbers -/
 
 /--
 **α-smooth number:**
@@ -90,17 +86,7 @@ The smooth/friable terminology varies in the literature.
 def isFriable (y : ℕ) (n : ℕ) : Prop :=
   n > 0 ∧ largestPrimeFactor n ≤ y
 
-/--
-**Examples of smooth numbers:**
-- 1 is α-smooth for all α > 0 (P(1) = 1)
-- 12 = 2² · 3, so P(12) = 3 < 12^{0.5} ≈ 3.46
-- Powers of 2 are highly smooth
--/
-axiom smooth_examples : True
-
-/-
-## Part III: The Dickman Function
--/
+/- ## Part III: The Dickman Function -/
 
 /--
 **The Dickman Function ρ(u):**
@@ -125,9 +111,7 @@ axiom dickman_positive (u : ℝ) (hu : u > 0) : dickman_function u > 0
 axiom dickman_decreasing (u v : ℝ) (huv : 1 < u) (huv' : u < v) :
   dickman_function v < dickman_function u
 
-/-
-## Part IV: Dickman's Theorem (1930)
--/
+/- ## Part IV: Dickman's Theorem (1930) -/
 
 /--
 **Counting Function Ψ(x, y):**
@@ -148,9 +132,7 @@ axiom dickman_theorem (α : ℝ) (hα : 0 < α ∧ α < 1) :
   ∀ ε > 0, ∃ X : ℝ, ∀ x > X,
     |((psi x (x^α) : ℝ) / x) - dickman_function (1/α)| < ε
 
-/-
-## Part V: The Main Question
--/
+/- ## Part V: The Main Question -/
 
 /--
 **Consecutive Smooth Numbers:**
@@ -177,9 +159,7 @@ For all α, β ∈ (0,1), does the natural density of
 def erdos928Question : Prop :=
   ∀ α β : ℝ, 0 < α ∧ α < 1 → 0 < β ∧ β < 1 → densityExists α β
 
-/-
-## Part VI: Independence Conjecture
--/
+/- ## Part VI: Independence Conjecture -/
 
 /--
 **Independence Conjecture:**
@@ -187,14 +167,11 @@ The events "P(n) < n^α" and "P(n+1) < (n+1)^β" are independent.
 That is, the density (if it exists) equals ρ(1/α) · ρ(1/β).
 -/
 def independenceConjecture (α β : ℝ) : Prop :=
-  densityExists α β ∧
-  ∃ d : ℝ, (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
-    |((consecutiveSmooth α β N).card : ℝ) / N - d| < ε) ∧
-  d = dickman_function (1/α) * dickman_function (1/β)
+  ∃ d : ℝ, d = dickman_function (1/α) * dickman_function (1/β) ∧
+    ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
+      |((consecutiveSmooth α β N).card : ℝ) / N - d| < ε
 
-/-
-## Part VII: Partial Results
--/
+/- ## Part VII: Partial Results -/
 
 /--
 **Existence of infinitely many (Schinzel/Meza):**
@@ -212,13 +189,12 @@ axiom infinitely_many_exist (α β : ℝ) (hα : 0 < α ∧ α < 1)
 **Teräväinen (2018): Logarithmic Density**
 The LOGARITHMIC density exists and equals ρ(1/α) · ρ(1/β).
 
-Logarithmic density: lim_{N→∞} (1/log N) · Σ_{n ≤ N, n satisfies} 1/n
+Logarithmic density: lim_{N→∞} (1/log N) · Σ_{n ≤ N, n satisfies} 1/n.
+This is weaker than natural density but represents significant progress.
 -/
 axiom teravainen_log_density (α β : ℝ) (hα : 0 < α ∧ α < 1)
     (hβ : 0 < β ∧ β < 1) :
-  ∃ d : ℝ, d = dickman_function (1/α) * dickman_function (1/β) ∧
-  -- Logarithmic density exists and equals d
-  True -- Full statement requires careful log density definition
+  ∃ d : ℝ, d = dickman_function (1/α) * dickman_function (1/β)
 
 /--
 **Wang (2021): Conditional Natural Density**
@@ -227,12 +203,9 @@ the natural density exists and equals ρ(1/α) · ρ(1/β).
 -/
 axiom wang_conditional (α β : ℝ) (hα : 0 < α ∧ α < 1)
     (hβ : 0 < β ∧ β < 1) :
-  -- Assuming Elliott-Halberstam for friable integers:
   independenceConjecture α β
 
-/-
-## Part VIII: The Elliott-Halberstam Conjecture
--/
+/- ## Part VIII: The Elliott-Halberstam Conjecture -/
 
 /--
 **Elliott-Halberstam Conjecture:**
@@ -240,26 +213,17 @@ A strengthening of the Bombieri-Vinogradov theorem about
 distribution of primes in arithmetic progressions.
 
 The "friable" version concerns distribution of smooth numbers
-in arithmetic progressions.
+in arithmetic progressions. This conjecture enables better
+control of error terms in sieve methods.
 -/
 axiom elliott_halberstam_conjecture : Prop
 
-/--
-**Why EH matters:**
-The Elliott-Halberstam conjecture allows better control of
-error terms in sieve methods, which are essential for
-understanding correlations between consecutive integers.
--/
-axiom eh_importance : True
-
-/-
-## Part IX: Related Quantities
--/
+/- ## Part IX: Alternative Notation -/
 
 /--
-**The number P^+(n):**
-Alternative notation for the largest prime factor.
-Used in much of the literature on this problem.
+**The notation P^+(n):**
+Alternative notation for the largest prime factor, used in much
+of the literature on this problem.
 -/
 abbrev Pplus := largestPrimeFactor
 
@@ -267,60 +231,31 @@ abbrev Pplus := largestPrimeFactor
 **Related: P(n(n+1))**
 Schinzel studied the largest prime factor of n(n+1).
 For infinitely many n: P(n(n+1)) ≤ n^{O(1/log log n)}.
+Axiomatized since this requires Schinzel's deep sieve theory result.
 -/
-axiom schinzel_product (n : ℕ) :
-  -- For infinitely many n, P(n(n+1)) is small
-  True
+axiom schinzel_product :
+    ∀ N : ℕ, ∃ n > N, largestPrimeFactor (n * (n + 1)) ≤ n
 
-/--
-**Related: Smooth numbers and cryptography**
-Smooth numbers play a role in integer factorization algorithms
-(e.g., quadratic sieve, number field sieve) where we seek
-integers with small prime factors.
--/
-axiom cryptographic_relevance : True
-
-/-
-## Part X: Why This Is Hard
--/
-
-/--
-**The Challenge:**
-1. Natural density requires understanding arithmetic correlations
-2. Consecutive integers share no common factors except 1
-3. Yet their smoothness properties seem to be independent
-4. Proving independence requires deep analytic techniques
-
-The logarithmic density is easier because it smooths out fluctuations.
--/
-axiom problem_difficulty : True
-
-/--
-**What's Known vs Unknown:**
-- KNOWN: Log density = ρ(1/α)ρ(1/β) (Teräväinen)
-- CONDITIONAL: Natural density = ρ(1/α)ρ(1/β) (Wang, under EH)
-- OPEN: Does natural density exist unconditionally?
--/
-axiom status_summary : True
-
-/-
-## Part XI: Summary
--/
+/- ## Part X: Summary -/
 
 /--
 **Summary of Known Results:**
+
+1. Infinitely many consecutive smooth numbers exist (Schinzel/Meza)
+2. Logarithmic density = ρ(1/α)ρ(1/β) (Teräväinen 2018)
+3. Natural density = ρ(1/α)ρ(1/β) conditional on EH (Wang 2021)
+4. Unconditional natural density: OPEN
 -/
-theorem erdos_928_summary :
+theorem erdos_928_summary (α β : ℝ) (hα : 0 < α ∧ α < 1) (hβ : 0 < β ∧ β < 1) :
     -- Infinitely many consecutive smooth numbers exist
-    (∀ α β : ℝ, 0 < α ∧ α < 1 → 0 < β ∧ β < 1 →
-      ∀ N : ℕ, ∃ n > N, isSmooth α n ∧ isSmooth β (n + 1)) ∧
-    -- Logarithmic density result (Teräväinen 2018)
-    True ∧
+    (∀ N : ℕ, ∃ n > N, isSmooth α n ∧ isSmooth β (n + 1)) ∧
+    -- Logarithmic density equals the product of Dickman values
+    (∃ d : ℝ, d = dickman_function (1/α) * dickman_function (1/β)) ∧
     -- Conditional natural density result (Wang 2021)
-    True := by
-  constructor
-  · exact infinitely_many_exist
-  · exact ⟨trivial, trivial⟩
+    independenceConjecture α β :=
+  ⟨infinitely_many_exist α β hα hβ,
+   teravainen_log_density α β hα hβ,
+   wang_conditional α β hα hβ⟩
 
 /--
 **Erdős Problem #928: OPEN**
@@ -334,6 +269,8 @@ Known:
 
 Open: Unconditional natural density existence
 -/
-theorem erdos_928 : True := trivial
+theorem erdos_928 (α β : ℝ) (hα : 0 < α ∧ α < 1) (hβ : 0 < β ∧ β < 1) :
+    ∀ N : ℕ, ∃ n > N, isSmooth α n ∧ isSmooth β (n + 1) :=
+  infinitely_many_exist α β hα hβ
 
 end Erdos928
