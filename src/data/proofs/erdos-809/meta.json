@@ -7,33 +7,35 @@
     "author": "Burr, Erdős, Graham, Sós",
     "sourceUrl": "https://erdosproblems.com/809",
     "date": "1991",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos809Problem.lean",
     "tags": ["erdos", "extremal-graph-theory", "rainbow-colorings", "odd-cycles", "turan", "open-problem"],
-    "badge": "mathlib",
-    "sorries": 5,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 809,
     "erdosUrl": "https://erdosproblems.com/809",
     "erdosProblemStatus": "open",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       { "theorem": "SimpleGraph", "description": "Simple graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
       { "theorem": "Finset", "description": "Finite sets for vertices", "module": "Mathlib.Data.Finset.Basic" },
       { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" }
     ],
     "originalContributions": [
-      "Lean formalization of edge colorings and rainbow property",
-      "Cycle structure definition in graphs",
-      "Function F_k(n) formalization",
-      "Main conjecture F_k(n) ~ n²/8",
-      "Burr-Erdős-Graham-Sós lower bound axiomatized",
-      "Turán threshold significance",
-      "Connection to anti-Ramsey theory"
+      "Graph, edgeCount, turanThreshold, EdgeColoring definitions",
+      "isRainbowOn definition via image cardinality",
+      "Cycle structure with vertices, distinctness, adjacency",
+      "F axiom: F_k(n) axiomatized as ℕ → ℕ → ℕ",
+      "mainConjecture and asymptoticEquivalence definitions",
+      "begs_lower_bound axiom: F_k(n) ≫ n²",
+      "quadratic_upper_bound axiom",
+      "turan_odd_cycle axiom and threshold_significance theorem",
+      "erdos_809_summary combining lower and upper bounds"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "This problem was posed by Burr, Erdős, Graham, and Sós. They proved F_k(n) ≫ n², establishing a quadratic lower bound. The conjecture that F_k(n) ~ n²/8 remains open. The problem connects Turán-type extremal graph theory with rainbow coloring theory.",
+    "historicalContext": "This problem connects Turán-type extremal graph theory with rainbow (anti-Ramsey) coloring theory. The edge threshold ⌊n²/4⌋ + 1 is chosen to be just above the Turán number ex(n, C_{2k+1}) for odd cycles: by Turán's theorem, any graph with more than ⌊n²/4⌋ edges must contain odd cycles. The question asks how many colors are needed to make every odd cycle rainbow.\n\nBurr, Erdős, Graham, and Sós proved that F_k(n) ≫ n², establishing that the growth rate is quadratic. The conjecture F_k(n) ~ n²/8 predicts the exact leading constant: 1/8 is exactly half of the Turán threshold constant 1/4, suggesting a deep structural reason.\n\nThe problem remains open. Determining the exact constant would reveal connections between graph density (how many edges force odd cycles) and chromatic structure (how many colors are needed for rainbow copies). The problem is related to anti-Ramsey theory and the companion Problem #810.",
     "problemStatement": "For k ≥ 3, define F_k(n) as the minimal r such that there exists a graph G on n vertices with ⌊n²/4⌋ + 1 edges where the edges can be r-colored so that every C_{2k+1} subgraph is rainbow (no color repeats). Is F_k(n) ~ n²/8?",
     "proofStrategy": "The formalization defines graphs, edge colorings, cycles, and the rainbow property. The function F_k(n) is formalized, along with the main conjecture. The Burr-Erdős-Graham-Sós lower bound is axiomatized.",
     "keyInsights": [
@@ -48,44 +50,51 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 41,
-      "endLine": 75,
+      "startLine": 37,
+      "endLine": 69,
       "summary": "Graphs, edge counts, Turán threshold, edge colorings"
     },
     {
       "id": "rainbow-property",
       "title": "Rainbow Property",
-      "startLine": 77,
-      "endLine": 112,
-      "summary": "Rainbow colorings and cycle structures"
+      "startLine": 71,
+      "endLine": 90,
+      "summary": "Rainbow colorings and cycle structure"
     },
     {
       "id": "function-f",
       "title": "The Function F_k(n)",
-      "startLine": 114,
-      "endLine": 150,
-      "summary": "Definition of F_k(n) and valid graphs"
+      "startLine": 92,
+      "endLine": 103,
+      "summary": "F_k(n) axiomatized"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "startLine": 152,
-      "endLine": 171,
-      "summary": "Main conjecture F_k(n) ~ n²/8"
+      "startLine": 105,
+      "endLine": 122,
+      "summary": "Main conjecture F_k(n) ~ n²/8 in two equivalent forms"
     },
     {
-      "id": "lower-bound",
-      "title": "Known Lower Bound",
-      "startLine": 173,
-      "endLine": 193,
-      "summary": "Burr-Erdős-Graham-Sós quadratic lower bound"
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 124,
+      "endLine": 140,
+      "summary": "BEGS lower bound and quadratic upper bound"
+    },
+    {
+      "id": "turan-context",
+      "title": "Turán's Theorem Context",
+      "startLine": 142,
+      "endLine": 161,
+      "summary": "Why ⌊n²/4⌋ + 1 edges and threshold_significance"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 318,
-      "endLine": 363,
-      "summary": "Main results and open status"
+      "startLine": 163,
+      "endLine": 186,
+      "summary": "erdos_809_summary combining bounds"
     }
   ],
   "conclusion": {
