@@ -34,7 +34,7 @@ open scoped BigOperators
 
 namespace Erdos19
 
-/-!
+/-
 ## Background
 
 The Erdős-Faber-Lovász (EFL) Conjecture is one of the most famous
@@ -45,7 +45,7 @@ The conjecture has a deceptively simple statement but resisted proof
 for nearly 50 years until Kang et al. resolved it for large n in 2021.
 -/
 
-/-!
+/-
 ## Basic Graph Theory Definitions
 -/
 
@@ -65,7 +65,7 @@ def completeGraph (V : Type*) [DecidableEq V] : SimpleGraph' V where
 def EdgeDisjoint {V : Type*} (G H : SimpleGraph' V) : Prop :=
   ∀ x y, ¬(G.adj x y ∧ H.adj x y)
 
-/-!
+/-
 ## Chromatic Number
 
 The chromatic number χ(G) is the minimum number of colors needed
@@ -92,7 +92,7 @@ axiom chromaticNumber_colorable {V : Type*} [Finite V] (G : SimpleGraph' V) :
 axiom chromaticNumber_minimal {V : Type*} [Finite V] (G : SimpleGraph' V) (k : ℕ) :
     IsKColorable G k → chromaticNumber G ≤ k
 
-/-!
+/-
 ## The EFL Setup
 
 The conjecture concerns unions of complete graphs that share at most one vertex.
@@ -113,7 +113,7 @@ def eflUnionGraph (n : ℕ) (F : EFLFamily n) : SimpleGraph' (Fin (n * n)) where
   symm := fun _ _ ⟨hne, i, hx, hy⟩ => ⟨hne.symm, i, hy, hx⟩
   loopless := fun _ ⟨hne, _⟩ => hne rfl
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -126,7 +126,7 @@ theorem efl_edge_count_bound (n : ℕ) (_F : EFLFamily n) :
 axiom vertex_in_bounded_cliques (n : ℕ) (F : EFLFamily n) (v : Fin (n * n)) :
     (Finset.univ.filter fun i => v ∈ F.cliques i).card ≤ n
 
-/-!
+/-
 ## Lower Bound: χ(G) ≥ n
 
 The chromatic number is at least n because each clique K_n requires n colors.
@@ -136,7 +136,7 @@ The chromatic number is at least n because each clique K_n requires n colors.
 axiom efl_chromatic_lower_bound (n : ℕ) (hn : n ≥ 1) (F : EFLFamily n) :
     chromaticNumber (eflUnionGraph n F) ≥ n
 
-/-!
+/-
 ## Hindman's Result: Small Cases
 
 Hindman proved the conjecture for n < 10.
@@ -146,7 +146,7 @@ Hindman proved the conjecture for n < 10.
 axiom hindman_small_cases (n : ℕ) (hn : n < 10) (F : EFLFamily n) :
     chromaticNumber (eflUnionGraph n F) = n
 
-/-!
+/-
 ## Kahn's Asymptotic Result (1992)
 
 Kahn proved that χ(G) ≤ (1 + o(1))n, earning Erdős's $100 consolation prize.
@@ -161,7 +161,7 @@ axiom kahn_asymptotic :
 axiom kahn_explicit_bound (n : ℕ) (hn : n ≥ 2) (F : EFLFamily n) :
     (chromaticNumber (eflUnionGraph n F) : ℝ) ≤ n + n^(1 - 1/51 : ℝ)
 
-/-!
+/-
 ## The Main Result: Kang-Kelly-Kühn-Methuku-Osthus (2021)
 
 The conjecture was proved for all sufficiently large n in 2021.
@@ -180,11 +180,11 @@ def EFLConjecture : Prop :=
 /-- The full resolution (combining Hindman + Kang et al). -/
 axiom efl_conjecture_resolved : EFLConjecture
 
-/-!
+/-
 ## Equivalent Formulations
 -/
 
-/-!
+/-
 ### Linear Hypergraph Formulation
 
 A hypergraph is **linear** if any two edges share at most one vertex.
@@ -207,7 +207,7 @@ axiom efl_hypergraph_equivalent (V : Type*) [Finite V] [DecidableEq V]
     (H : LinearHypergraph V) (hn : H.edges.length = Nat.card V) :
     chromaticIndex H ≤ Nat.card V
 
-/-!
+/-
 ### Nearly Disjoint Sets Formulation
 
 If A₁, ..., Aₙ are sets with |Aᵢ| = n and |Aᵢ ∩ Aⱼ| ≤ 1 for i ≠ j,
@@ -226,7 +226,7 @@ axiom efl_nearly_disjoint_equivalent (α : Type*) [DecidableEq α] (n : ℕ)
     (F : NearlyDisjointFamily α n) :
     ∃ c : α → Fin n, ∀ i, Function.Bijective (fun x : F.sets i => c x.val)
 
-/-!
+/-
 ## Special Cases
 -/
 
@@ -245,7 +245,7 @@ where χ(G) = n. -/
 axiom steiner_system_case (n : ℕ) (F : EFLFamily n) :
     chromaticNumber (eflUnionGraph n F) = n
 
-/-!
+/-
 ## Related Results and Extensions
 -/
 
@@ -258,7 +258,7 @@ axiom erdos_furedi_generalization (n k : ℕ) (hk : k ≤ n)
     (F : EFLFamily n) :
     chromaticNumber (eflUnionGraph n F) ≤ n + k - 1
 
-/-!
+/-
 ## Summary
 
 **Problem Status: SOLVED** (for all n)
