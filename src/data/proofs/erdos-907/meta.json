@@ -7,7 +7,7 @@
     "author": "N. G. de Bruijn (1951)",
     "sourceUrl": "https://erdosproblems.com/907",
     "date": "1951",
-    "status": "axiom",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos907Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "analysis"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 907,
     "erdosUrl": "https://erdosproblems.com/907",
     "erdosProblemStatus": "solved"
@@ -38,72 +38,72 @@
     {
       "id": "additive-functions",
       "title": "Additive Functions (Cauchy's Equation)",
-      "summary": "IsAdditive definition, basic properties: φ(0)=0, φ(-x)=-φ(x), φ(nx)=nφ(x)",
+      "summary": "IsAdditive definition, basic properties: φ(0)=0, φ(-x)=-φ(x), φ(nx)=nφ(x), φ(qx)=qφ(x)",
       "startLine": 40,
-      "endLine": 78
+      "endLine": 77
     },
     {
       "id": "continuous-additive",
       "title": "Continuous Additive Functions are Linear",
       "summary": "IsLinear definition, continuous_additive_is_linear axiom",
-      "startLine": 80,
-      "endLine": 104
+      "startLine": 79,
+      "endLine": 103
     },
     {
       "id": "discontinuous-additive",
       "title": "Discontinuous Additive Functions",
       "summary": "Existence via AC, dense graph property",
-      "startLine": 106,
-      "endLine": 120
+      "startLine": 105,
+      "endLine": 119
     },
     {
       "id": "difference-operator",
       "title": "The Difference Operator",
       "summary": "difference definition, hasContinuousDifferences condition",
-      "startLine": 122,
-      "endLine": 150
+      "startLine": 121,
+      "endLine": 149
     },
     {
       "id": "de-bruijn-theorem",
       "title": "De Bruijn's Theorem",
       "summary": "hasDeBruijnDecomposition, de_bruijn_theorem axiom, erdos_907 theorem",
-      "startLine": 152,
-      "endLine": 170
+      "startLine": 151,
+      "endLine": 169
     },
     {
       "id": "decomposition-properties",
       "title": "Properties of the Decomposition",
       "summary": "Uniqueness up to linear functions, special cases",
-      "startLine": 172,
-      "endLine": 198
+      "startLine": 171,
+      "endLine": 197
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "f(x)=x² example, continuous functions satisfy condition",
-      "startLine": 200,
-      "endLine": 225
+      "startLine": 199,
+      "endLine": 224
     },
     {
       "id": "regularity-theory",
       "title": "Connection to Regularity Theory",
       "summary": "Bounded and measurable difference analogues",
-      "startLine": 227,
-      "endLine": 242
+      "startLine": 226,
+      "endLine": 241
     },
     {
       "id": "related",
       "title": "Related Problem",
       "summary": "Connection to Erdős #908, when φ is continuous",
-      "startLine": 244,
-      "endLine": 254
+      "startLine": 243,
+      "endLine": 253
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_907_summary and erdos_907_answer",
-      "startLine": 256,
-      "endLine": 276
+      "summary": "erdos_907_summary combining de Bruijn theorem, continuous differences, and additive constant differences",
+      "startLine": 255,
+      "endLine": 272
     }
   ],
   "conclusion": {
