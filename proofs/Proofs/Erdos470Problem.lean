@@ -134,10 +134,6 @@ def OddWeird : Set ℕ := { n | IsWeird n ∧ Odd n }
 -/
 def erdos_470_part1 : Prop := ∃ n : ℕ, IsWeird n ∧ Odd n
 
-/--
-The question remains open as of 2024.
--/
-theorem erdos_470_part1_is_open : True := trivial
 
 /-!
 ## Computational Bounds on Odd Weird Numbers
@@ -207,10 +203,6 @@ weird numbers?
 -/
 def erdos_470_part2 : Prop := PrimitiveWeirdSet.Infinite
 
-/--
-The question remains open as of 2024.
--/
-theorem erdos_470_part2_is_open : True := trivial
 
 /-!
 ## Conditional Result: Prime Gaps
@@ -325,5 +317,30 @@ The proper divisors of 70 are {1, 2, 5, 7, 10, 14, 35}.
 -/
 axiom proper_divisors_70 :
     (70 : ℕ).properDivisors = {1, 2, 5, 7, 10, 14, 35}
+
+/-!
+## Summary
+
+**Erdős Problem #470**: Both questions remain OPEN.
+We combine the key established results:
+1. 70 is the smallest weird number
+2. 70 is primitive weird
+3. Weird numbers have positive density (Benkoski-Erdős)
+4. Melfi's conditional infinitude of primitive weirds
+-/
+
+/--
+**Complete summary of Erdős Problem #470.**
+Combines the smallest weird number result, primitive weirdness of 70,
+positive density, and Melfi's conditional result.
+-/
+theorem erdos_470 :
+    (IsWeird 70 ∧ ∀ n < 70, ¬IsWeird n) ∧
+    IsPrimitiveWeird 70 ∧
+    (∃ c > 0, ∀ᶠ N in Filter.atTop, (↑((WeirdSet ∩ {n | n ≤ N}).ncard) : ℝ) / N ≥ c) ∧
+    ((∀ᶠ n in Filter.atTop, (primeGap n : ℝ) < Real.sqrt (nthPrime n) / 10) →
+      PrimitiveWeirdSet.Infinite) :=
+  ⟨smallest_weird_is_70, seventy_is_primitive_weird,
+   benkoski_erdos_density, melfi_conditional⟩
 
 end Erdos470
