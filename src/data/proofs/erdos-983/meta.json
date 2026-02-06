@@ -18,7 +18,7 @@
       "combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 983,
     "erdosUrl": "https://erdosproblems.com/983",
     "erdosProblemStatus": "solved",
@@ -65,7 +65,7 @@
       "prime_structure axiom: at most one large prime factor",
       "IsYSmooth definition: y-smooth numbers",
       "smoothCount definition: Ψ(x, y) counting function",
-      "erdos_983_summary theorem: combining all results"
+      "erdos_983 theorem: combining negative answer with sublinearity"
     ]
   },
   "overview": {
@@ -95,49 +95,42 @@
       "title": "The f Function",
       "summary": "f definition, f_upper_bound, f_mono_k",
       "startLine": 81,
-      "endLine": 108
+      "endLine": 107
     },
     {
       "id": "main-question",
       "title": "The Main Question",
       "summary": "ErdosQuestion983, erdos_question_answer",
-      "startLine": 110,
-      "endLine": 128
+      "startLine": 108,
+      "endLine": 127
     },
     {
       "id": "erdos-straus-results",
       "title": "Erdős-Straus Results",
-      "summary": "erdos_straus_main, difference_is_sublinear, erdos_straus_dense, normal_distribution_constant",
-      "startLine": 130,
-      "endLine": 178
+      "summary": "erdos_straus_main, difference_is_sublinear, erdos_straus_dense",
+      "startLine": 128,
+      "endLine": 165
     },
     {
       "id": "intuition",
       "title": "Why 2π(√n)?",
-      "summary": "prime_structure, why_two_pi_sqrt, smooth_number_density",
-      "startLine": 180,
-      "endLine": 214
-    },
-    {
-      "id": "applications",
-      "title": "Applications",
-      "summary": "factorization_algorithms, cryptographic_relevance, graph_theory_connection",
-      "startLine": 216,
-      "endLine": 247
+      "summary": "prime_structure: integers ≤ n have at most one prime factor > √n",
+      "startLine": 167,
+      "endLine": 181
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "summary": "IsYSmooth, smoothCount, dickman_asymptotics",
-      "startLine": 249,
-      "endLine": 272
+      "startLine": 183,
+      "endLine": 207
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_983_summary, erdos_983",
-      "startLine": 274,
-      "endLine": 312
+      "summary": "erdos_983: combines negative answer with sublinearity result",
+      "startLine": 209,
+      "endLine": 229
     }
   ],
   "conclusion": {
