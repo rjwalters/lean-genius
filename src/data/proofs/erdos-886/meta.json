@@ -86,77 +86,70 @@
       "title": "Divisors of n",
       "summary": "divisorsOf, divisorCount, divisorCount_pos",
       "startLine": 38,
-      "endLine": 58
+      "endLine": 49
     },
     {
       "id": "critical-interval",
       "title": "The Interval Near √n",
       "summary": "criticalInterval, intervalWidth, intervalWidth_sublinear",
-      "startLine": 60,
-      "endLine": 84
+      "startLine": 51,
+      "endLine": 67
     },
     {
       "id": "divisors-in-interval",
       "title": "Divisors in the Critical Interval",
       "summary": "divisorsInInterval, divisorsNearSqrt",
-      "startLine": 86,
-      "endLine": 102
+      "startLine": 69,
+      "endLine": 79
     },
     {
       "id": "conjecture",
       "title": "Ruzsa's Conjecture",
-      "summary": "ruzsaConjecture definition, erdos_886_open",
-      "startLine": 104,
-      "endLine": 125
+      "summary": "ruzsaConjecture definition",
+      "startLine": 81,
+      "endLine": 93
     },
     {
       "id": "erdos-rosenfeld",
       "title": "Erdős-Rosenfeld Result",
       "summary": "erdos_rosenfeld_four_divisors, erdos_rosenfeld axioms",
-      "startLine": 127,
-      "endLine": 148
+      "startLine": 95,
+      "endLine": 109
     },
     {
       "id": "factor-difference",
       "title": "Factor-Difference Set",
-      "summary": "factorDifferenceSet definition and properties",
-      "startLine": 150,
-      "endLine": 169
+      "summary": "factorDifferenceSet definition, factorDifferenceSet_nonempty",
+      "startLine": 111,
+      "endLine": 123
     },
     {
       "id": "density",
       "title": "Divisor Density Near √n",
       "summary": "localDivisorDensity, ruzsaConjectureAlt, conjecture_equivalence",
-      "startLine": 171,
-      "endLine": 195
+      "startLine": 125,
+      "endLine": 142
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "isHighlyComposite, square_example",
-      "startLine": 197,
-      "endLine": 218
-    },
-    {
-      "id": "connection-887",
-      "title": "Connection to Problem #887",
-      "summary": "related_to_887 axiom",
-      "startLine": 220,
-      "endLine": 230
+      "summary": "isHighlyComposite definition",
+      "startLine": 144,
+      "endLine": 151
     },
     {
       "id": "bounds",
       "title": "Bounds and Partial Results",
-      "summary": "trivial_bound, divisor_count_bound",
-      "startLine": 232,
-      "endLine": 250
+      "summary": "trivial_bound (proved), divisor_count_bound",
+      "startLine": 153,
+      "endLine": 165
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_886_summary combining main results",
-      "startLine": 252,
-      "endLine": 279
+      "summary": "erdos_886_summary theorem combining trivial_bound and Erdős-Rosenfeld",
+      "startLine": 167,
+      "endLine": 180
     }
   ],
   "conclusion": {
