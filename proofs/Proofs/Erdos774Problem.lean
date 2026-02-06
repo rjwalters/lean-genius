@@ -1,4 +1,4 @@
-/-
+/-!
   Erdős Problem #774: Dissociated and Proportionately Dissociated Sets
 
   Source: https://erdosproblems.com/774
@@ -38,7 +38,7 @@ open Finset Set
 
 namespace Erdos774
 
-/-
+/-!
 ## Part I: Dissociated Sets
 -/
 
@@ -68,7 +68,7 @@ theorem dissociated_iff_unique_sums (A : Finset ℕ) :
   · intro h X Y hX hY hne hsum
     exact hne (h X Y hX hY hsum)
 
-/-
+/-!
 ## Part II: Examples of Dissociated Sets
 -/
 
@@ -94,7 +94,7 @@ def IsLacunary (a : ℕ → ℕ) : Prop :=
 axiom lacunary_is_dissociated (a : ℕ → ℕ) (h : IsLacunary a) (n : ℕ) :
     IsDissociated ((Finset.range n).image a)
 
-/-
+/-!
 ## Part III: Proportionately Dissociated Sets
 -/
 
@@ -121,7 +121,7 @@ theorem dissociated_is_proportionately (A : Set ℕ) :
         exact h X Y (Subset.trans hX hB) (Subset.trans hY hB) hne
       · simp
 
-/-
+/-!
 ## Part IV: Sidon Sets (Harmonic Analysis)
 -/
 
@@ -139,7 +139,7 @@ def IsSidonHarmonic (A : Set ℕ) : Prop :=
 axiom pisier_theorem (A : Set ℕ) :
     IsProportionatelyDissociated A ↔ IsSidonHarmonic A
 
-/-
+/-!
 ## Part V: Sidon Sets (Additive Combinatorics)
 -/
 
@@ -157,7 +157,7 @@ axiom sidon_implies_dissociated (A : Finset ℕ) :
 axiom dissociated_not_implies_sidon :
     ∃ A : Finset ℕ, IsDissociated A ∧ ¬IsSidonAdditive A
 
-/-
+/-!
 ## Part VI: Union Decomposition
 -/
 
@@ -170,7 +170,7 @@ def IsFiniteUnionDissociated (A : Set ℕ) : Prop :=
 axiom finite_union_is_proportionately (A : Set ℕ) :
     IsFiniteUnionDissociated A → IsProportionatelyDissociated A
 
-/-
+/-!
 ## Part VII: The Main Conjecture
 -/
 
@@ -183,10 +183,7 @@ def ErdosConjecture774 : Prop :=
 /-- Alon-Erdős (1985) conjectured the answer is NO. -/
 axiom alon_erdos_conjecture : ¬ErdosConjecture774
 
-/-- The conjecture status: OPEN. -/
-axiom conjecture_open : True -- Placeholder for open status
-
-/-
+/-!
 ## Part VIII: The Sidon Analogue
 -/
 
@@ -219,15 +216,9 @@ axiom nrs_construction :
     ∃ A : Set ℕ, A.Infinite ∧ IsProportionatelySidon A ∧
       ¬IsFiniteUnionSidon A
 
-/-
+/-!
 ## Part IX: Connections and Implications
 -/
-
-/-- The NRS result suggests the dissociated conjecture is also false. -/
-theorem nrs_suggests_no :
-    ¬SidonAnalogue → True := by  -- Heuristic connection
-  intro _
-  trivial
 
 /-- Dissociated implies Sidon (additive), so:
     proportionately Sidon ⟹ proportionately dissociated. -/
@@ -238,17 +229,8 @@ axiom prop_sidon_implies_prop_dissociated (A : Set ℕ) :
 axiom union_sidon_implies_union_dissociated (A : Set ℕ) :
     IsFiniteUnionSidon A → IsFiniteUnionDissociated A
 
-/-
-## Part X: Graph Theory Connection
--/
-
-/-- Alon-Erdős used graph theory to study these problems.
-    Dissociated sets correspond to independent sets in
-    certain hypergraphs. -/
-axiom graph_theory_connection : True
-
-/-
-## Part XI: Bounds on Dissociated Subsets
+/-!
+## Part X: Bounds on Dissociated Subsets
 -/
 
 /-- Maximum size of a dissociated subset of {1,...,n}. -/
@@ -262,34 +244,17 @@ axiom max_dissociated_log_bound :
       c * Real.log n ≤ maxDissociatedSize n ∧
       maxDissociatedSize n ≤ C * Real.log n
 
-/-
-## Part XII: Summary
+/-!
+## Part XI: Summary
 -/
 
 /-- **Summary of Erdős Problem #774:**
-
-PROBLEM: Is every proportionately dissociated set a finite
-         union of dissociated sets?
-
-STATUS: OPEN (conjectured NO)
-
-KEY RESULTS:
-1. Pisier (1983): Proportionately dissociated ⟺ Sidon (harmonic)
-2. Alon-Erdős (1985): Introduced the problem, conjectured NO
-3. Nešetřil-Rödl-Sales (2024): The Sidon analogue is FALSE
-
-CONNECTIONS:
-- Graph theory (hypergraph independent sets)
-- Harmonic analysis (Sidon sets)
-- Additive combinatorics
-- Probabilistic method (NRS construction)
-
-The NRS result provides strong evidence against the conjecture.
--/
-theorem erdos_774_open : True := trivial
-
-/-- The problem remains open. -/
-def erdos_774_status : String :=
-  "OPEN - Conjectured NO (Alon-Erdős 1985), supported by NRS 2024"
+    Combines key established results:
+    1. Finite union of dissociated ⟹ proportionately dissociated (converse direction)
+    2. The Sidon analogue is FALSE (NRS 2024), providing evidence for #774 -/
+theorem erdos_774_summary :
+    (∀ A : Set ℕ, IsFiniteUnionDissociated A → IsProportionatelyDissociated A) ∧
+    ¬SidonAnalogue :=
+  ⟨finite_union_is_proportionately, nesetril_rodl_sales_theorem⟩
 
 end Erdos774
