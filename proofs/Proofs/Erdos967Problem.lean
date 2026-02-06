@@ -201,12 +201,11 @@ axiom sum_positive_at_zero (a : IntegerSequence) (ha : hasConvergentReciprocalSu
   -- At t = 0, all terms are positive real numbers (1/aₖ > 0)
   -- So the sum equals 1 + ∑ₖ 1/aₖ > 1, which is nonzero
 
-/--
+/-!
 **Oscillatory Behavior:**
 For large |t|, the terms 1/aₖ^(1+it) = (1/aₖ) · e^(-it·log(aₖ)) oscillate rapidly.
 This oscillation is what allows zeros to exist for appropriate sequences.
 -/
-theorem oscillatory_behavior : True := trivial
 
 /--
 **Example: The Geometric Sequence {2^n}:**
