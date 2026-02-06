@@ -109,12 +109,6 @@ reconstruct our proof, so our assertion now can be called only a conjecture."
 def erdosSelfridgeStrausConjecture : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, |ratio n - 1 / Real.exp 1| < ε
 
-/--
-**Historical Note:**
-The proof being lost is a famous story in mathematics history.
--/
-axiom historical_note : True
-
 /-!
 ## Part IV: The ACRSTUV Theorem (2025)
 -/
@@ -216,19 +210,7 @@ theorem guy_selfridge_2_proved : guySelfridgeConjecture2 :=
   lower_bound_explicit
 
 /-!
-## Part VIII: Connection to Prime Powers
--/
-
-/--
-**Prime Power Restriction:**
-Alladi and Grinstead (1977) studied the case where all aᵢ are prime powers.
--/
-axiom alladi_grinstead_theorem :
-    -- Similar results hold when factorization is restricted to prime powers
-    True
-
-/-!
-## Part IX: The Factorization Perspective
+## Part VIII: The Factorization Perspective
 -/
 
 /--
@@ -241,17 +223,8 @@ axiom balanced_factorization_view :
       ∃ f : OrderedFactorization n.factorial n,
         minFactor f = t n ∧ ∀ g : OrderedFactorization n.factorial n, minFactor g ≤ t n
 
-/--
-**Greedy Algorithm Perspective:**
-One can think of this as: given n!, distribute its prime factors among n boxes
-to maximize the minimum box value.
--/
-axiom greedy_perspective :
-    -- The problem can be viewed as optimal prime distribution
-    True
-
 /-!
-## Part X: Summary
+## Part IX: Summary
 
 **Erdős Problem #391: Status SOLVED** (ACRSTUV25)
 
