@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #669: k-Point Lines - Exact and At-Least Counts
 
 Source: https://erdosproblems.com/669
@@ -30,7 +30,7 @@ open Set Finset Nat
 
 namespace Erdos669
 
-/- ## Part I: Point and Line Definitions -/
+/-! ## Part I: Point and Line Definitions -/
 
 /-- A point in the plane R². -/
 abbrev Point := Fin 2 → ℝ
@@ -50,7 +50,7 @@ def OnLine (p : Point) (ℓ : Line) : Prop :=
 noncomputable def pointsOnLine (P : Finset Point) (ℓ : Line) : ℕ :=
   (P.filter (fun p => OnLine p ℓ)).card
 
-/- ## Part II: f_k and F_k Functions -/
+/-! ## Part II: f_k and F_k Functions -/
 
 /-- A line passes through exactly k points. -/
 def ExactlyKPoints (ℓ : Line) (P : Finset Point) (k : ℕ) : Prop :=
@@ -70,7 +70,7 @@ noncomputable def F_k (k n : ℕ) : ℕ :=
   sSup { m : ℕ | ∃ P : Finset Point, P.card = n ∧
     ∃ L : Finset Line, L.card = m ∧ ∀ ℓ ∈ L, AtLeastKPoints ℓ P k }
 
-/- ## Part III: The Orchard Problem (k=3) -/
+/-! ## Part III: The Orchard Problem (k=3) -/
 
 /-- The Orchard Problem asks whether f_3(n) and F_3(n) are both n²/6 - O(n). -/
 def orchardProblem : Prop :=
@@ -93,7 +93,7 @@ axiom k3_limit :
   Filter.Tendsto (fun n => (f_k 3 n : ℝ) / n^2) Filter.atTop (nhds (1/6)) ∧
   Filter.Tendsto (fun n => (F_k 3 n : ℝ) / n^2) Filter.atTop (nhds (1/6))
 
-/- ## Part IV: Trivial Upper Bound -/
+/-! ## Part IV: Trivial Upper Bound -/
 
 /-- **Trivial upper bound:** F_k(n) ≤ C(n,2)/C(k,2).
 Each line with ≥ k points contributes at least C(k,2) pairs,
@@ -106,7 +106,7 @@ axiom limit_upper (k : ℕ) (hk : k ≥ 2) :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     (F_k k n : ℝ) / n^2 ≤ 1 / (k * (k - 1)) + ε
 
-/- ## Part V: The General Conjecture -/
+/-! ## Part V: The General Conjecture -/
 
 /-- **Conjecture:** The limits equal 1/(k(k-1)) for all k ≥ 2. -/
 def limit_conjecture (k : ℕ) (hk : k ≥ 2) : Prop :=
@@ -120,7 +120,7 @@ theorem k3_matches : 1 / (3 * (3 - 1)) = 1 / 6 := by norm_num
 theorem k3_conjecture_true : limit_conjecture 3 (by norm_num) :=
   k3_limit
 
-/- ## Part VI: Optimal Configurations -/
+/-! ## Part VI: Optimal Configurations -/
 
 /-- **Optimal Configurations:**
 Configurations achieving f_3(n) = n²/6 - O(n) exist.
@@ -129,7 +129,7 @@ axiom optimal_configs_exist :
   ∀ n ≥ 7, ∃ P : Finset Point, P.card = n ∧
     (f_k 3 n : ℝ) ≥ (n^2 : ℝ) / 6 - 2 * n
 
-/- ## Part VII: Summary -/
+/-! ## Part VII: Summary -/
 
 /-- **Erdős Problem #669: OPEN (k=3 solved)**
 
