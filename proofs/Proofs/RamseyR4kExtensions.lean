@@ -774,11 +774,100 @@ theorem r4_5_lower_bound :
   ⟨paleyColor13, paleyColor13_symm, paleyColor13_irrefl, paley13_no_red_K4, paley13_no_blue_K5⟩
 
 /-
+## Part XIII: R(3,5) ≥ 14 via Cubic Residue Circulant Graph
+
+The exact value R(3,5) = 14 is known. To prove R(3,5) ≥ 14, we exhibit a 2-coloring of K₁₃
+with no red K₃ (triangle) and no blue K₅ (independent set of size 5).
+
+### The Construction
+
+The circulant graph CG(Z₁₃, {1, 5, 8, 12}) has:
+- 13 vertices (F₁₃)
+- Edge (i, j) iff (j - i) mod 13 ∈ {1, 5, 8, 12} (the non-zero cubes mod 13)
+- 4-regular (degree 4 at every vertex)
+- Triangle-free
+- Independence number = 4
+
+Properties:
+- 1³ ≡ 1, 2³ ≡ 8, 3³ ≡ 1, 5³ ≡ 8, 12³ ≡ 12 (mod 13)
+- The connection set {1, 5, 8, 12} is closed under negation mod 13: -1≡12, -5≡8, -8≡5, -12≡1
+- This ensures the graph is undirected (symmetric coloring)
+-/
+
+/-- The cubic residue connection set modulo 13: {1, 5, 8, 12}. -/
+def cubicRes13 : Finset (Fin 13) := {1, 5, 8, 12}
+
+/-- Check if a value is in the cubic residue connection set mod 13. -/
+def isCubicRes13 (n : Fin 13) : Bool :=
+  n ∈ cubicRes13
+
+/-- Circulant graph CG(Z₁₃, {1,5,8,12}): edge (i,j) iff (j-i) mod 13 ∈ {1,5,8,12}.
+    This is a 4-regular triangle-free graph with independence number 4. -/
+def circulantColor13 (i j : Fin 13) : Bool :=
+  if i = j then false
+  else isCubicRes13 ((j - i : Fin 13))
+
+/-- The circulant coloring is symmetric.
+    This holds because the connection set {1,5,8,12} is closed under negation mod 13:
+    -(1) = 12, -(5) = 8, -(8) = 5, -(12) = 1. -/
+theorem circulantColor13_symm : ∀ i j : Fin 13, circulantColor13 i j = circulantColor13 j i := by
+  native_decide
+
+/-- The circulant coloring is irreflexive. -/
+theorem circulantColor13_irrefl (i : Fin 13) : circulantColor13 i i = false := by
+  simp [circulantColor13]
+
+/-- The circulant graph CG(Z₁₃, {1,5,8,12}) is triangle-free.
+    No three vertices form a red triangle. -/
+theorem circulant13_no_red_K3 :
+    ∀ (a b c : Fin 13),
+    a ≠ b → a ≠ c → b ≠ c →
+    ¬(circulantColor13 a b = true ∧ circulantColor13 a c = true ∧ circulantColor13 b c = true) := by
+  native_decide
+
+/-- The complement of CG(Z₁₃, {1,5,8,12}) has no K₅ (independence number ≤ 4).
+    No five vertices are mutually non-adjacent in the circulant graph. -/
+theorem circulant13_no_blue_K5 :
+    ∀ (a b c d e : Fin 13),
+    a ≠ b → a ≠ c → a ≠ d → a ≠ e →
+    b ≠ c → b ≠ d → b ≠ e →
+    c ≠ d → c ≠ e → d ≠ e →
+    ¬(circulantColor13 a b = false ∧ circulantColor13 a c = false ∧
+      circulantColor13 a d = false ∧ circulantColor13 a e = false ∧
+      circulantColor13 b c = false ∧ circulantColor13 b d = false ∧
+      circulantColor13 b e = false ∧ circulantColor13 c d = false ∧
+      circulantColor13 c e = false ∧ circulantColor13 d e = false) := by
+  native_decide
+
+/-- **R(3,5) ≥ 14**: K₁₃ can be 2-colored with no red K₃ and no blue K₅.
+    The circulant graph CG(Z₁₃, {1,5,8,12}) witnesses this:
+    - Red = circulant edges → triangle-free (no red K₃)
+    - Blue = complement → independence number 4 (no blue K₅)
+
+    Combined with r3_5_upper (R(3,5) ≤ C(6,2) = 15), this gives 14 ≤ R(3,5) ≤ 15.
+    The exact value is R(3,5) = 14. -/
+theorem r3_5_lower_bound :
+    ∃ (color : Fin 13 → Fin 13 → Bool),
+      (∀ x y, color x y = color y x) ∧
+      (∀ x, color x x = false) ∧
+      (∀ (a b c : Fin 13), a ≠ b → a ≠ c → b ≠ c →
+        ¬(color a b = true ∧ color a c = true ∧ color b c = true)) ∧
+      (∀ (a b c d e : Fin 13),
+        a ≠ b → a ≠ c → a ≠ d → a ≠ e →
+        b ≠ c → b ≠ d → b ≠ e →
+        c ≠ d → c ≠ e → d ≠ e →
+        ¬(color a b = false ∧ color a c = false ∧ color a d = false ∧ color a e = false ∧
+          color b c = false ∧ color b d = false ∧ color b e = false ∧
+          color c d = false ∧ color c e = false ∧ color d e = false)) :=
+  ⟨circulantColor13, circulantColor13_symm, circulantColor13_irrefl,
+   circulant13_no_red_K3, circulant13_no_blue_K5⟩
+
+/-
 ## Part IX: Summary of Extensions
 
 This extension file contains:
 
-**Proved theorems (62 total, 0 sorries):**
+**Proved theorems (67 total, 0 sorries):**
 - 14 concrete upper bounds via native_decide (R(3,3)=6 through R(6,6)=252)
 - Structural: symmetry, monotonicity, Pascal's rule, positivity, base cases
 - R(r,s) ≥ s and R(r,s) ≥ r, strict monotonicity, diagonal monotonicity
@@ -787,6 +876,7 @@ This extension file contains:
 - R(4,4) > 16 via Paley graph on F_17 (6 theorems, all native_decide)
 - R(4,4) ≥ 18 as corollary (1 theorem)
 - R(4,5) > 13 via Paley graph on F_13 (7 theorems, native_decide)
+- R(3,5) ≥ 14 via circulant graph CG(Z₁₃, {1,5,8,12}) (5 theorems, native_decide)
 - `small_graph_no_red_K4`: Trivial bound for n < 4
 
 **Axioms (7 total - deep probabilistic/asymptotic results):**
@@ -803,9 +893,10 @@ This extension file contains:
 2. R(3,4) ≥ 9 via novel 3-regular triangle-free graph with α = 3
 3. R(4,4) ≥ 18 (narrowing gap to R(4,4) ∈ {18,19,20})
 4. R(4,5) > 13 via Paley graph on F_13 (14 ≤ R(4,5) ≤ 35)
-5. The Paley graph construction connects algebraic number theory to Ramsey theory
-6. Spencer's bound shows the probabilistic method can be refined via LLL
-7. The R(4,k) quadratic lower bound is an active research frontier
+5. R(3,5) ≥ 14 via cubic residue circulant on Z₁₃ (known exact: R(3,5) = 14)
+6. The Paley graph construction connects algebraic number theory to Ramsey theory
+7. Spencer's bound shows the probabilistic method can be refined via LLL
+8. The R(4,k) quadratic lower bound is an active research frontier
 -/
 
 end RamseyR4k
