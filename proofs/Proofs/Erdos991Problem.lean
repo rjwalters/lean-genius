@@ -356,9 +356,4 @@ theorem erdos_991_summary :
         normalizedCapArea cosAngle * points.card| ≤ C * (points.card : ℝ)^(2/3 : ℝ)) :=
   ⟨erdos_991, marzo_mas_bound⟩
 
-/--
-The answer to Erdős Problem #991 is YES.
--/
-theorem erdos_991_answer : True := trivial
-
 end Erdos991
