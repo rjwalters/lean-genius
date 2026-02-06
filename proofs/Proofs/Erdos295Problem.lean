@@ -120,12 +120,6 @@ the mathematical statement that k(N) - (e-1)N → +∞.
 def erdos_295_conjecture : Prop :=
   Tendsto (fun N => (k N : ℝ) - (Real.exp 1 - 1) * N) atTop atTop
 
-/--
-Note: The main conjecture `erdos_295_conjecture` is OPEN as of 2024.
-Neither a proof nor a disproof is known.
--/
-theorem erdos_295_is_open : True := trivial
-
 /-!
 ## Concrete Examples
 
@@ -160,5 +154,18 @@ ln(M/N) ≈ 1 (to sum to 1), giving M ≈ eN, so roughly (e-1)N terms.
 theorem e_minus_one_positive : Real.exp 1 - 1 > 0 := by
   have h := Real.one_lt_exp_iff.mpr (by norm_num : (1 : ℝ) > 0)
   linarith
+
+/--
+Summary: The Erdős-Straus bounds show k(N) grows like (e-1)N, with the
+difference bounded between -c and O(N/log N). The open question is whether
+this difference tends to infinity.
+-/
+theorem erdos_295_summary :
+    (∃ (C : ℝ) (O : ℝ), C > 0 ∧ O > 0 ∧
+      ∀ᶠ (N : ℕ) in atTop,
+        (k N : ℝ) - (Real.exp 1 - 1) * N > -C ∧
+        (k N : ℝ) - (Real.exp 1 - 1) * N < O * N / Real.log N) ∧
+    Real.exp 1 - 1 > 0 :=
+  ⟨erdos_straus_bounds, e_minus_one_positive⟩
 
 end Erdos295
