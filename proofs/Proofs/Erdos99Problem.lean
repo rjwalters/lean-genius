@@ -36,7 +36,7 @@ open Real Set Finset
 
 namespace Erdos99
 
-/-! ## Part I: Basic Geometric Definitions -/
+/- ## Part I: Basic Geometric Definitions -/
 
 /-- The Euclidean plane ℝ² -/
 abbrev Plane := EuclideanSpace ℝ (Fin 2)
@@ -69,7 +69,7 @@ noncomputable def diameter (A : Finset Plane) : ℝ :=
       (fun pq => dist pq.1 pq.2)
   else 0
 
-/-! ## Part II: Unit Distance and Equilateral Triangles -/
+/- ## Part II: Unit Distance and Equilateral Triangles -/
 
 /-- A point set has minimum distance at least 1 -/
 def HasMinDistanceOne (A : Finset Plane) : Prop :=
@@ -84,7 +84,7 @@ def ContainsUnitEquilateralTriangle (A : Finset Plane) : Prop :=
   ∃ p q r : Plane, p ∈ A ∧ q ∈ A ∧ r ∈ A ∧
     p ≠ q ∧ q ≠ r ∧ r ≠ p ∧ IsUnitEquilateralTriangle p q r
 
-/-! ## Part III: Optimal Point Configurations -/
+/- ## Part III: Optimal Point Configurations -/
 
 /-- A configuration has minimal diameter among all valid n-point configurations -/
 def HasMinimalDiameter (A : Finset Plane) : Prop :=
@@ -95,7 +95,7 @@ def HasMinimalDiameter (A : Finset Plane) : Prop :=
 def IsOptimalConfiguration (A : Finset Plane) : Prop :=
   HasMinDistanceOne A ∧ HasMinimalDiameter A
 
-/-! ## Part IV: The Triangular Lattice -/
+/- ## Part IV: The Triangular Lattice -/
 
 /-- A point in the triangular lattice with basis vectors (1, 0) and (1/2, √3/2) -/
 noncomputable def triangularLatticePoint (i j : ℤ) : Plane :=
@@ -126,7 +126,7 @@ axiom triangular_lattice_has_equilateral :
     (triangularLatticePoint (i+1) j)
     (triangularLatticePoint i (j+1))
 
-/-! ## Part V: Thue's Theorem and Lattice Structure -/
+/- ## Part V: Thue's Theorem and Lattice Structure -/
 
 /--
 Thue's theorem implies that diameter-minimizing configurations
@@ -139,7 +139,7 @@ axiom thue_diameter_consequence :
     A.card = n → IsOptimalConfiguration A →
     (A.filter (fun p => ∃ q ∈ TriangularLattice, dist p q < ε)).card ≥ n - n / 10
 
-/-! ## Part VI: Small Cases -/
+/- ## Part VI: Small Cases -/
 
 /-- n = 3: An optimal 3-point set must be an equilateral triangle -/
 axiom case_n3 :
@@ -155,7 +155,7 @@ axiom case_n4_no_equilateral :
   ∃ A : Finset Plane, A.card = 4 ∧ IsOptimalConfiguration A ∧
     ¬ContainsUnitEquilateralTriangle A
 
-/-! ## Part VII: The Main Conjecture (OPEN) -/
+/- ## Part VII: The Main Conjecture (OPEN) -/
 
 /--
 **Erdős Problem #99:** For sufficiently large n, every optimal n-point
@@ -183,7 +183,7 @@ This is the maximum packing density for unit circles in ℝ² (Thue's theorem).
 noncomputable def triangularPackingDensity : ℝ :=
   Real.pi / (2 * Real.sqrt 3)
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #99: Summary**
