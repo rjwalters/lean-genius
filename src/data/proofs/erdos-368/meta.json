@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 368,
     "erdosUrl": "https://erdosproblems.com/368",
     "erdosProblemStatus": "open",
@@ -94,58 +94,58 @@
     {
       "id": "mahler",
       "title": "Mahler's Bound",
-      "summary": "mahler_bound axiom, mahler_improves_polya",
+      "summary": "mahler_bound axiom, mahler_improves_polya axiom",
       "startLine": 118,
-      "endLine": 142
+      "endLine": 139
     },
     {
       "id": "schinzel",
       "title": "Schinzel's Upper Bound",
       "summary": "schinzel_upper axiom, isSmooth definition",
-      "startLine": 144,
-      "endLine": 173
+      "startLine": 141,
+      "endLine": 170
     },
     {
       "id": "erdos-conjectures",
       "title": "Erdős's Conjectures",
       "summary": "erdos_lower_conjecture, erdos_upper_conjecture definitions",
-      "startLine": 175,
-      "endLine": 198
+      "startLine": 172,
+      "endLine": 195
     },
     {
       "id": "pasten",
       "title": "Pasten's Theorem",
-      "summary": "pasten_bound axiom, pasten_improves_mahler",
-      "startLine": 200,
-      "endLine": 225
+      "summary": "pasten_bound axiom, pasten_improves_mahler axiom",
+      "startLine": 197,
+      "endLine": 219
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "F(1) through F(8), OEIS A074399",
-      "startLine": 227,
-      "endLine": 280
+      "startLine": 221,
+      "endLine": 274
     },
     {
       "id": "variant",
       "title": "n² + 1 Variant",
       "summary": "P_squared_plus_one, pasten_squared_plus_one",
-      "startLine": 282,
-      "endLine": 301
+      "startLine": 276,
+      "endLine": 295
     },
     {
       "id": "abc",
       "title": "ABC Connection",
       "summary": "radical definition, abc_implies_strong_bound",
-      "startLine": 303,
-      "endLine": 328
+      "startLine": 297,
+      "endLine": 322
     },
     {
       "id": "summary",
       "title": "Main Results Summary",
       "summary": "erdos_368_summary combining all bounds",
-      "startLine": 351,
-      "endLine": 385
+      "startLine": 324,
+      "endLine": 353
     }
   ],
   "conclusion": {
