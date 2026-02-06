@@ -1,13 +1,13 @@
 {
   "id": "erdos-586",
-  "title": "Erdős Problem #586",
+  "title": "Erdős Problem #586: Covering Systems with Antichain Moduli",
   "slug": "erdos-586",
-  "description": "Is there a covering system such that no two of the moduli divide each other?",
+  "description": "Is there a covering system such that no two of the moduli divide each other? Answer: NO (BBMST 2022).",
   "meta": {
     "author": "Balister, Bollobás, Morris, Sahasrabudhe, Tiba",
     "sourceUrl": "https://erdosproblems.com/586",
     "date": "2022",
-    "status": "solved",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos586Problem.lean",
     "tags": [
       "erdos",
@@ -16,79 +16,100 @@
       "combinatorics",
       "antichain"
     ],
-    "badge": "mathlib",
-    "sorries": 8,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 586,
     "erdosUrl": "https://erdosproblems.com/586",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.image",
+        "description": "Image of a finite set",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "ResidueClass and CongruenceClass definitions",
+      "CoveringSystem structure with moduli extraction",
+      "IsCovering predicate: every integer covered",
+      "IsAntichain: no two moduli divide each other",
+      "schinzel_question: existence of antichain covering",
+      "bbmst_theorem axiom: ¬schinzel_question",
+      "covering_implies_comparable axiom",
+      "uncoveredDensity definition",
+      "bbmst_density_bound axiom: positive uncovered density",
+      "IsKCovering and no_antichain_k_covering generalization",
+      "erdos_586_summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem was asked by Schinzel, motivated by questions of Erdős and Selfridge about the structure of covering systems. A covering system is a finite collection of congruence classes such that every integer belongs to at least one class. The question asks whether the moduli can form an antichain under divisibility—meaning no modulus divides any other. This is part of a broader investigation into what constraints covering systems must satisfy.",
+    "historicalContext": "This problem was asked by Schinzel, motivated by questions of Erdős and Selfridge about the structure of covering systems. A covering system is a finite collection of congruence classes a_i (mod n_i) such that every integer belongs to at least one class. The question asks whether the moduli can form an antichain under divisibility, meaning no modulus divides any other.\n\nBalister, Bollobás, Morris, Sahasrabudhe, and Tiba resolved this question negatively in 2022 as part of their breakthrough on the Erdős covering problem. Their proof uses probabilistic and analytic methods combined with careful sieving inequalities. The key insight is that any collection of congruence classes with antichain moduli must leave a positive density of integers uncovered, making full coverage impossible.\n\nThis result is part of a broader investigation into what structural constraints covering systems must satisfy. While the antichain question is now resolved, the related Erdős-Selfridge problem of whether covering systems with all odd moduli exist remains open. The density-based approach of BBMST has broader applications to related covering problems in combinatorial number theory.",
     "problemStatement": "Is there a covering system such that no two of the moduli divide each other? Equivalently: can we cover all integers with congruence classes whose moduli form an antichain under the divisibility relation?",
-    "proofStrategy": "The proof by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (2022) uses probabilistic and analytic methods combined with careful sieving inequalities. The key insight is showing that any collection of congruence classes with antichain moduli must leave a positive density of integers uncovered. This density bound is established through sophisticated analysis of the 'uncovered set' in covering problems.",
+    "proofStrategy": "The proof by BBMST (2022) uses probabilistic and analytic methods combined with careful sieving inequalities. The key insight is showing that any collection of congruence classes with antichain moduli must leave a positive density of integers uncovered. This density bound is established through sophisticated analysis of the 'uncovered set' in covering problems.",
     "keyInsights": [
       "The antichain condition on moduli severely restricts coverage capability",
       "Probabilistic methods can bound the density of uncovered integers from below",
       "The proof is part of the broader 'Erdős covering problem' breakthrough",
-      "Related questions about odd moduli covering systems remain open"
+      "Related questions about odd moduli covering systems remain open",
+      "The density argument extends to k-coverings for all k ≥ 1"
     ]
   },
   "sections": [
     {
-      "id": "sec-586-header",
-      "title": "Problem Overview",
-      "startLine": 1,
-      "endLine": 28,
-      "summary": "Header documentation explaining the problem, its history, and the negative resolution by BBMST (2022)."
-    },
-    {
-      "id": "sec-586-basic-defs",
+      "id": "basic-definitions",
       "title": "Basic Definitions",
+      "summary": "ResidueClass, CongruenceClass, toSet",
       "startLine": 34,
-      "endLine": 48,
-      "summary": "Foundational definitions for residue classes and congruence classes with their set representations."
+      "endLine": 50
     },
     {
-      "id": "sec-586-covering-systems",
+      "id": "covering-systems",
       "title": "Covering Systems",
-      "startLine": 50,
-      "endLine": 67,
-      "summary": "Definition of covering systems as finite collections of congruence classes that cover all integers."
+      "summary": "CoveringSystem, moduli, covers, IsCovering",
+      "startLine": 52,
+      "endLine": 71
     },
     {
-      "id": "sec-586-antichain",
+      "id": "antichain",
       "title": "Antichain Condition",
-      "startLine": 69,
-      "endLine": 86,
-      "summary": "Defines what it means for moduli to form an antichain under divisibility and the central question."
+      "summary": "Divides, IsAntichain, HasAntichainModuli, schinzel_question",
+      "startLine": 73,
+      "endLine": 94
     },
     {
-      "id": "sec-586-main-result",
-      "title": "Main Result",
-      "startLine": 88,
-      "endLine": 99,
-      "summary": "The BBMST theorem: there is no covering system with antichain moduli, answering Schinzel's question negatively."
+      "id": "main-result",
+      "title": "The Main Result",
+      "summary": "bbmst_theorem, covering_implies_comparable",
+      "startLine": 96,
+      "endLine": 107
     },
     {
-      "id": "sec-586-examples",
-      "title": "Classical Covering Systems",
-      "startLine": 101,
-      "endLine": 131,
-      "summary": "Examples of covering systems including the trivial covering and Erdős's non-trivial covering, demonstrating that known coverings have comparable moduli."
-    },
-    {
-      "id": "sec-586-density",
+      "id": "density",
       "title": "Density Results",
-      "startLine": 151,
-      "endLine": 170,
-      "summary": "The key density bound: antichain moduli systems leave positive density uncovered, making full coverage impossible."
+      "summary": "uncoveredDensity, bbmst_density_bound, antichain_not_covering",
+      "startLine": 109,
+      "endLine": 124
     },
     {
-      "id": "sec-586-generalizations",
+      "id": "generalizations",
       "title": "Generalizations",
-      "startLine": 196,
-      "endLine": 208,
-      "summary": "Extension to k-coverings: no k-covering with antichain moduli exists for any k ≥ 1."
+      "summary": "IsKCovering, no_antichain_k_covering",
+      "startLine": 126,
+      "endLine": 140
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_586_summary combining key results",
+      "startLine": 142,
+      "endLine": 172
     }
   ],
   "conclusion": {
