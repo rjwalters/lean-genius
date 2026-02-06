@@ -82,6 +82,26 @@ LEAN_FILE="$(cd "$(dirname "$LEAN_FILE")" && pwd)/$(basename "$LEAN_FILE")"
 
 log_info "Analyzing $LEAN_FILE..."
 
+# Run pre-submission validation
+VALIDATE_SCRIPT="$SCRIPT_DIR/validate-for-aristotle.sh"
+if [ -x "$VALIDATE_SCRIPT" ]; then
+    log_info "Running pre-submission validation..."
+    if ! "$VALIDATE_SCRIPT" "$LEAN_FILE"; then
+        echo ""
+        log_warn "Validation found issues. Run with --fix for suggestions:"
+        echo "  $VALIDATE_SCRIPT $LEAN_FILE --fix"
+        echo ""
+        read -p "Submit anyway? (y/N) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            log_info "Submission cancelled. Fix issues and retry."
+            exit 0
+        fi
+        log_warn "Proceeding despite validation issues..."
+    fi
+    echo ""
+fi
+
 # Count sorries and axioms (Aristotle proves both)
 SORRY_COUNT=$(grep -c "sorry" "$LEAN_FILE" 2>/dev/null) || SORRY_COUNT=0
 AXIOM_COUNT=$(grep -c "^axiom " "$LEAN_FILE" 2>/dev/null) || AXIOM_COUNT=0
