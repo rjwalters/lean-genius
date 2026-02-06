@@ -5,92 +5,92 @@
     "range": { "startLine": 1, "endLine": 31 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #909: Dimension of Product Spaces**\n\n**Question:** Is there a space S of dimension n such that S² = S × S also has dimension n?\n\n**Answer: YES** (Anderson-Keisler 1967)\n\nFor all n ≥ 1, such separable metric spaces exist.",
-    "mathContext": "This is a problem in dimension theory (topology). The covering dimension of products typically adds, so dim(S²) = dim(S) is surprising.",
+    "content": "**Erdős Problem #909: Dimension of Product Spaces**\n\n**Question:** For n ≥ 2, is there a space S of dimension n such that S² = S × S also has dimension n?\n\n**Answer: YES** (Anderson-Keisler 1967)\n\nFor all n ≥ 1, separable metric spaces with this property exist. The formalization axiomatizes covering dimension (not yet in Mathlib) and states the Anderson-Keisler theorem.",
+    "mathContext": "Covering dimension is one of several equivalent notions of topological dimension for separable metrizable spaces. The product inequality dim(X × Y) ≤ dim(X) + dim(Y) holds for compact metric spaces, making dim(S × S) = dim(S) surprising.",
     "significance": "critical",
-    "relatedConcepts": ["Covering dimension", "Product spaces", "Dimension theory"]
+    "relatedConcepts": ["Covering dimension", "Product spaces", "Dimension theory", "Descriptive set theory"]
   },
   {
     "id": "ann-909-2",
     "proofId": "erdos-909",
-    "range": { "startLine": 48, "endLine": 55 },
+    "range": { "startLine": 40, "endLine": 42 },
     "type": "axiom",
     "title": "Covering Dimension",
-    "content": "**coveringDimension X n:**\n\nA topological space X has covering dimension ≤ n if every finite open cover has a refinement such that no point is in more than n+1 sets.\n\nThis is the Lebesgue covering dimension, axiomatized here.",
+    "content": "**coveringDimension X n:** Axiomatized predicate asserting that the topological space X has covering dimension ≤ n. In the standard definition, this means every finite open cover of X has a refinement of order at most n+1 (no point lies in more than n+1 sets of the refinement). This is the Lebesgue covering dimension, equivalent to the small and large inductive dimensions for separable metrizable spaces.",
     "significance": "critical"
   },
   {
     "id": "ann-909-3",
     "proofId": "erdos-909",
-    "range": { "startLine": 62, "endLine": 66 },
+    "range": { "startLine": 47, "endLine": 48 },
     "type": "definition",
     "title": "Dimension Exactly n",
-    "content": "**hasDimensionExactly X n:**\n\nX has dimension exactly n if:\n- dim(X) ≤ n (covering dimension at most n)\n- dim(X) > n-1 (not dimension n-1 or less)\n\nThis captures 'dimension equals n'.",
+    "content": "**hasDimensionExactly X n:** X has dimension exactly n if dimLeq X n holds (dimension at most n) and, when n > 0, dimLeq X (n-1) fails (dimension is not at most n-1). The guard n > 0 avoids the meaningless case of negative dimension. This captures the standard notion dim(X) = n.",
     "significance": "key"
   },
   {
     "id": "ann-909-4",
     "proofId": "erdos-909",
-    "range": { "startLine": 68, "endLine": 75 },
+    "range": { "startLine": 55, "endLine": 57 },
     "type": "axiom",
     "title": "Product Dimension Inequality",
-    "content": "**dimension_product_ineq:**\n\nFor 'nice' spaces: dim(X × Y) ≤ dim(X) + dim(Y)\n\nThis is the standard logarithm law for dimension. The problem asks: when can this be much smaller?",
-    "mathContext": "For most spaces, the product dimension is the sum. But Anderson-Keisler shows it can be much less for special spaces.",
+    "content": "**dimension_product_ineq:** For topological spaces X, Y with dimLeq X m and dimLeq Y n, we have dimLeq (X × Y) (m + n). This is the standard product inequality for covering dimension. For compact metric spaces this is a theorem; here it is axiomatized. The problem asks when this bound can be far from tight — specifically, when dim(S × S) can equal dim(S) instead of 2·dim(S).",
+    "mathContext": "For cubes [0,1]^n, dim([0,1]^n) = n and dim([0,1]^n × [0,1]^m) = n+m, so the inequality is tight. Anderson-Keisler showed it can be maximally non-tight.",
     "significance": "key"
   },
   {
     "id": "ann-909-5",
     "proofId": "erdos-909",
-    "range": { "startLine": 81, "endLine": 89 },
+    "range": { "startLine": 66, "endLine": 68 },
     "type": "definition",
     "title": "The Problem Statement",
-    "content": "**erdos909Statement:**\n\n∀ n ≥ 1, ∃ space S with TopologicalSpace structure,\n  hasDimensionExactly S n ∧ hasDimensionExactly (S × S) n\n\nFor every n, there exists a space of dimension n whose square also has dimension n.",
+    "content": "**erdos909Statement:** ∀ n ≥ 1, ∃ (S : Type) with TopologicalSpace structure such that hasDimensionExactly S n ∧ hasDimensionExactly (S × S) n. This asks: for every positive integer n, can we find a space of dimension exactly n whose product with itself also has dimension exactly n?",
     "significance": "critical"
   },
   {
     "id": "ann-909-6",
     "proofId": "erdos-909",
-    "range": { "startLine": 95, "endLine": 102 },
+    "range": { "startLine": 78, "endLine": 80 },
     "type": "axiom",
     "title": "Rational Hilbert Space Example",
-    "content": "**rational_hilbert_example:**\n\nThe set of points in ℓ² (Hilbert space) with all rational coordinates has dimension 1, and its square also has dimension 1.\n\nThis is the classical n = 1 example.",
+    "content": "**rational_hilbert_example:** There exists a topological space S with hasDimensionExactly S 1 ∧ hasDimensionExactly (S × S) 1. The witness is the set of points in ℓ² (Hilbert space) with all rational coordinates, denoted ℓ²(ℚ). This countable dense subset of ℓ² has covering dimension 1, and its square also has covering dimension 1. This was the classical n = 1 case, known before the general Anderson-Keisler result.",
     "significance": "key"
   },
   {
     "id": "ann-909-7",
     "proofId": "erdos-909",
-    "range": { "startLine": 116, "endLine": 125 },
+    "range": { "startLine": 95, "endLine": 97 },
     "type": "axiom",
     "title": "Anderson-Keisler Theorem",
-    "content": "**anderson_keisler_theorem:**\n\nFor every n ≥ 1, there exists a separable metric space S_n with:\n- dim(S_n) = n\n- dim(S_n × S_n) = n\n\nThis is the main result solving Problem #909.",
-    "mathContext": "Anderson and Keisler (1967) used techniques from descriptive set theory to construct these spaces.",
+    "content": "**anderson_keisler_theorem:** For every n ≥ 1, there exists a separable metric space (witnessed by MetrizableSpace) S with dim(S) = n and dim(S × S) = n. The construction starts with an n-dimensional space and takes a carefully chosen subset using descriptive set theory techniques, controlling how open covers interact in the product. The resulting spaces are 'pathological' in that their product dimension is strictly less than expected.",
+    "mathContext": "Anderson and Keisler (1967) proved this using absolute Borel sets and decomposition techniques. The metrizability witness ensures the spaces are well-behaved enough for dimension theory to apply.",
     "significance": "critical"
   },
   {
     "id": "ann-909-8",
     "proofId": "erdos-909",
-    "range": { "startLine": 127, "endLine": 134 },
+    "range": { "startLine": 103, "endLine": 106 },
     "type": "theorem",
-    "title": "Main Theorem",
-    "content": "**erdos_909 : erdos909Statement**\n\nProves the problem statement using the Anderson-Keisler theorem.\n\nThe proof extracts the space and its properties from the axiom.",
+    "title": "Main Theorem: erdos_909",
+    "content": "**erdos_909 : erdos909Statement:** The proof introduces n ≥ 1, applies anderson_keisler_theorem to obtain S with MetrizableSpace instance and dimension properties, then drops the metrizability witness (which is not required by the problem statement) and packages S with its TopologicalSpace and dimension proofs. This cleanly reduces the problem to the Anderson-Keisler axiom.",
     "significance": "critical"
   },
   {
     "id": "ann-909-9",
     "proofId": "erdos-909",
-    "range": { "startLine": 140, "endLine": 154 },
+    "range": { "startLine": 110, "endLine": 115 },
     "type": "concept",
-    "title": "Construction Sketch",
-    "content": "**How Anderson-Keisler Works:**\n\n1. Start with an n-dimensional space like [0,1]^n\n2. Take a carefully chosen subset\n3. Control how covers behave in the product\n4. Uses absolute Borel sets and decompositions\n\nThe key insight is that 'pathological' subsets can have products with unexpectedly low dimension.",
-    "significance": "key"
+    "title": "Supporting Results",
+    "content": "**dimension_euclidean** and **dimension_subspace** provide standard background facts. The first asserts dim(ℝ^n) = n (the finite product Fin n → ℝ), establishing that Euclidean spaces have the expected dimension. The second states monotonicity: if Y ⊆ X, then dim(Y) ≤ dim(X). These are not directly used in the main proof but provide context for how dimension behaves in general.",
+    "significance": "supporting"
   },
   {
     "id": "ann-909-10",
     "proofId": "erdos-909",
-    "range": { "startLine": 264, "endLine": 286 },
+    "range": { "startLine": 132, "endLine": 138 },
     "type": "theorem",
-    "title": "Summary: SOLVED",
-    "content": "**erdos_909_answer:**\n\n**STATUS: SOLVED** (Anderson-Keisler 1967)\n\n**Question:** Does dim(S) = dim(S × S) = n exist for n ≥ 1?\n\n**Answer:** YES\n\n**The construction:** Separable metric spaces with special topological properties.\n\n**Historical significance:** Shows dimension theory has surprising phenomena.",
+    "title": "Summary Theorem",
+    "content": "**erdos_909_summary:** Packages two key results: (1) erdos909Statement holds (the problem is solved for all n ≥ 1), and (2) an explicit example exists for n = 1 (from rational_hilbert_example). The proof is exact ⟨erdos_909, rational_hilbert_example⟩, combining the main theorem with the classical example.",
     "significance": "critical"
   }
 ]
