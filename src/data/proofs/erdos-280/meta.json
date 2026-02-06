@@ -2,7 +2,7 @@
   "id": "erdos-280",
   "title": "Erdős Problem #280: Covering Congruences and Sieve Methods",
   "slug": "erdos-280",
-  "description": "For sequences n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k, count integers avoiding specified congruence classes. Erdős conjectured this count is Ω(k), but Cambie found a trivial counterexample.",
+  "description": "For sequences n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k, Erdős conjectured the count of integers avoiding specified congruence classes is Ω(k). Disproved by Cambie's trivial counterexample: nₖ = 2^k gives count = 1.",
   "meta": {
     "author": "Erdős-Graham (1980), Cambie (counterexample)",
     "sourceUrl": "https://erdosproblems.com/280",
@@ -18,32 +18,109 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 280,
     "erdosUrl": "https://erdosproblems.com/280",
-    "erdosProblemStatus": "solved"
-  },
-  "overview": {
-    "historicalContext": "This problem appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (page 29). They noted that the problem 'may have to await improvements in current sieve methods.' However, the problem was resolved not by sophisticated sieve theory but by a simple counterexample.\n\nThe bound nₖ > (1+ε)k log k is best possible because the k-th prime is asymptotically k log k (by the Prime Number Theorem). Using primes as moduli would create a much more constrained problem.",
-    "problemStatement": "Let $n_1 < n_2 < \\cdots$ be an infinite sequence of integers with associated residues $a_k \\pmod{n_k}$, such that for some $\\epsilon > 0$ we have $n_k > (1+\\epsilon)k \\log k$ for all $k$.\n\n**Original Conjecture (DISPROVED):**\n$$\\#\\{m < n_k : m \\not\\equiv a_i \\pmod{n_i} \\text{ for } 1 \\leq i \\leq k\\} \\neq o(k)$$\n\nIn other words, the count of integers less than $n_k$ avoiding all specified congruence classes should be $\\Omega(k)$.\n\n**Counterexample (Cambie):**\nTake $n_k = 2^k$ and $a_k = 2^{k-1} + 1$. Then only $m = 1$ avoids all classes, giving count = 1.",
-    "proofStrategy": "We formalize the congruence class definitions, the counting function, and the original conjecture. Cambie's counterexample is constructed explicitly: nₖ = 2^k grows exponentially (satisfying the bound), and the residues aₖ = 2^(k-1) + 1 are chosen so that only m = 1 escapes all classes. The theorem original_conjecture_false establishes that the conjecture is disproved.",
-    "keyInsights": [
-      "The problem allowed too much freedom in choosing (nₖ, aₖ)",
-      "Cambie's construction covers almost all integers with just k congruence classes",
-      "The growth bound nₖ > (1+ε)k log k is optimal (matches prime growth)",
-      "Adding constraints (coprimality, primality) may yield interesting variants",
-      "Sieve methods were not needed - the counterexample is elementary"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.pow_lt_pow_right",
+        "description": "Monotonicity of power for bases > 1",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Nat.nth",
+        "description": "The n-th element satisfying a predicate",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Range of natural numbers as a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "AvoidsAll and CountAvoiders definitions",
+      "SatisfiesGrowthBound definition",
+      "OriginalConjecture definition",
+      "cambie_n and cambie_a constructions",
+      "cambie_increasing theorem (constructive)",
+      "cambie_only_one_avoider axiom",
+      "original_conjecture_false axiom",
+      "erdos_280_summary theorem"
     ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "Erdős Problem #280 appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' Given a sequence n₁ < n₂ < ⋯ with nₖ > (1+ε)k log k and associated residues aₖ mod nₖ, Erdős conjectured that the count of integers m < nₖ avoiding all specified congruence classes should be Ω(k). They wrote that this 'may have to await improvements in current sieve methods.'\n\nThe bound nₖ > (1+ε)k log k is optimal because the k-th prime pₖ ~ k log k by the Prime Number Theorem. Using primes as moduli would create a much more constrained problem where covering is harder. The factor (1+ε) ensures the moduli grow slightly faster than the primes, allowing the problem to be meaningful.\n\nStijn Cambie found a trivial counterexample that made sieve theory unnecessary. Taking nₖ = 2^k (which grows exponentially, far exceeding the required bound) and aₖ = 2^(k-1) + 1, every integer m > 1 in [0, 2^k) is covered by some congruence class. Only m = 1 survives, giving count = 1 instead of Ω(k). The key insight is that powers of 2 as moduli create efficient coverings via binary representation.",
+    "problemStatement": "**Problem Statement (DISPROVED)**\n\nLet $n_1 < n_2 < \\cdots$ be an infinite sequence with $n_k > (1+\\varepsilon)k\\log k$ for some $\\varepsilon > 0$, and let $a_k$ be residues with $0 \\leq a_k < n_k$.\n\n**Original Conjecture:** $\\#\\{m < n_k : m \\not\\equiv a_i \\pmod{n_i} \\text{ for } 1 \\leq i \\leq k\\} \\neq o(k)$\n\n**Cambie's Counterexample:** $n_k = 2^k$, $a_k = 2^{k-1}+1$. Count = 1 for all $k$.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines avoidance and counting using direct modular arithmetic (avoiding the need to construct CongruenceClass structures inline). Cambie's sequences are defined explicitly, with cambie_increasing proved constructively using Nat.pow_lt_pow_right. The growth bound, covering property, exact count, and conjecture refutation are axiomatized. The summary theorem combines the disproof with the monotonicity proof.",
+    "keyInsights": [
+      "**Trivial Counterexample:** Powers of 2 as moduli cover almost all integers via binary representation",
+      "**Only m = 1 Survives:** Cambie's construction leaves exactly one uncovered integer",
+      "**Sieve Methods Unnecessary:** The problem allowed too much freedom in choosing (nₖ, aₖ)",
+      "**Optimal Bound:** The (1+ε)k log k threshold matches prime growth (PNT)",
+      "**Open Variants:** Coprime or prime moduli may restore interesting behavior"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "AvoidsAll, CountAvoiders, SatisfiesGrowthBound",
+      "startLine": 36,
+      "endLine": 48
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (DISPROVED)",
+      "summary": "OriginalConjecture definition",
+      "startLine": 50,
+      "endLine": 62
+    },
+    {
+      "id": "counterexample",
+      "title": "Cambie's Counterexample",
+      "summary": "cambie_n, cambie_a, cambie_increasing, cambie_satisfies_growth, cambie_only_one_avoider, cambie_count_is_one",
+      "startLine": 64,
+      "endLine": 92
+    },
+    {
+      "id": "refutation",
+      "title": "Refutation of the Conjecture",
+      "summary": "original_conjecture_false, erdos_280_disproved",
+      "startLine": 94,
+      "endLine": 101
+    },
+    {
+      "id": "bound-optimality",
+      "title": "Why the Bound is Best Possible",
+      "summary": "prime_number_theorem_approx axiom",
+      "startLine": 103,
+      "endLine": 111
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_280_summary theorem",
+      "startLine": 113,
+      "endLine": 128
+    }
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #280 asked whether integers avoiding specified congruence classes must be plentiful (Ω(k)). Cambie's trivial counterexample shows the answer is NO: by choosing nₖ = 2^k and appropriate residues, only m = 1 survives. The problem's formulation allowed too much flexibility.",
-    "implications": "The resolution highlights that problems about covering congruences can have surprising counterexamples. More constrained variants (e.g., requiring coprime moduli) may remain interesting open problems.",
+    "summary": "Erdős Problem #280 is disproved by Cambie's trivial counterexample. Taking nₖ = 2^k and aₖ = 2^(k-1)+1, only m = 1 avoids all congruence classes, giving count = 1 instead of the conjectured Ω(k).",
+    "implications": "**Significance**\n\n1. **Elementary Resolution:** Erdős expected sieve methods would be needed, but a trivial counterexample sufficed\n\n2. **Problem Design Lesson:** The conjecture allowed too much freedom in choosing moduli and residues\n\n3. **Binary Covering:** Powers of 2 create efficient covering systems via binary representation\n\n4. **Open Variants:** Adding constraints (coprime moduli, prime moduli) may yield difficult open problems",
     "openQuestions": [
-      "What happens if we require the moduli nₖ to be pairwise coprime?",
+      "Does the conjecture hold if the moduli nₖ must be pairwise coprime?",
       "What if the moduli must be prime numbers?",
-      "Are there natural conditions on (nₖ, aₖ) that restore the Ω(k) bound?",
-      "What is the correct answer for the 'non-trivial' variant with coprimality?"
+      "Are there natural conditions on (nₖ, aₖ) that restore the Ω(k) lower bound?",
+      "What is the exact answer when moduli are restricted to primes?"
     ]
   }
 }
