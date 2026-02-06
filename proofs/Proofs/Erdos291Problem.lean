@@ -539,12 +539,65 @@ theorem five_dvd_gcd_24 : 5 ∣ harmonicGCD 24 := by
   apply steinerberger_criterion 24 5 (by decide) (by omega)
   native_decide
 
-/-- For n = 2·3^k (k ≥ 1), Steinerberger gives 3 | gcd.
-    The leading digit of 2·3^k in base 3 is 2 = 3-1.
-    (Axiomatized since the inductive proof on leadingDigitAux needs
-    careful fuel management.) -/
-axiom leadingDigit_two_times_pow_three (k : ℕ) :
-    leadingDigit (2 * 3^k) 3 = 2
+/-- Helper: leadingDigitAux 3 (2 * 3^k) fuel = 2 when fuel ≥ k -/
+private theorem leadingDigitAux_two_pow_three (k fuel : ℕ) (hfuel : fuel ≥ k) :
+    leadingDigitAux 3 (2 * 3^k) fuel = 2 := by
+  induction k generalizing fuel with
+  | zero =>
+    simp only [pow_zero, mul_one]
+    unfold leadingDigitAux
+    simp
+  | succ j ih =>
+    -- 2 * 3^(j+1) ≥ 3, so we recurse
+    have h_ge_3 : 2 * 3^(j+1) ≥ 3 := by
+      have : 3^(j+1) ≥ 1 := Nat.one_le_pow (j+1) 3 (by omega)
+      omega
+    have h_not_lt_3 : ¬ (2 * 3^(j+1) < 3) := by omega
+    have h_fuel_pos : fuel ≠ 0 := by omega
+    unfold leadingDigitAux
+    simp only [h_fuel_pos, ↓reduceIte, h_not_lt_3]
+    -- recurse: (2 * 3^(j+1)) / 3 = 2 * 3^j
+    have hdiv : 2 * 3^(j+1) / 3 = 2 * 3^j := by
+      have : 2 * 3^(j+1) = 2 * 3^j * 3 := by ring
+      rw [this]
+      exact Nat.mul_div_cancel _ (by omega)
+    rw [hdiv]
+    exact ih (fuel - 1) (by omega)
+
+/-- 3^k ≥ k for all k (exponential dominates linear) -/
+private theorem pow_three_ge (k : ℕ) : 3^k ≥ k := by
+  induction k with
+  | zero => simp
+  | succ j ih =>
+    have h1 : 3^(j+1) = 3^j * 3 := pow_succ 3 j
+    rw [h1]
+    have h2 : 3^j ≥ 1 := Nat.one_le_pow j 3 (by omega)
+    have h3 : 3^j * 3 = 3 * 3^j := by ring
+    rw [h3]
+    have h4 : 3 * 3^j ≥ 3 * j := Nat.mul_le_mul_left 3 ih
+    -- 3 * 3^j ≥ 3 * j ≥ 3 * 0 = 0 for j ≥ 0
+    -- We need 3 * 3^j ≥ j + 1
+    -- Since 3^j ≥ 1, we have 3 * 3^j ≥ 3 ≥ 1
+    -- Since 3 * 3^j ≥ 3 * j and 3 * j + 3 ≥ j + 1 (i.e. 2*j + 3 ≥ 1), we have
+    -- 3 * 3^j ≥ 3 * j ≥ max(j, 1) and 3*3^j ≥ 3 ≥ 1
+    -- So 3 * 3^j = 3^j + 3^j + 3^j ≥ 1 + j + 0 = j + 1
+    calc 3 * 3^j = 3^j + 3^j + 3^j := by ring
+      _ ≥ 1 + j + 0 := by linarith [h2, ih]
+      _ = j + 1 := by ring
+
+/-- For n = 2·3^k, the leading digit in base 3 is 2 = 3-1.
+    Mathematical insight: 2·3^k in base 3 is written as 2 followed by k zeros. -/
+theorem leadingDigit_two_times_pow_three (k : ℕ) :
+    leadingDigit (2 * 3^k) 3 = 2 := by
+  unfold leadingDigit
+  simp only [show ¬(3 ≤ 1) from by omega, ↓reduceIte]
+  apply leadingDigitAux_two_pow_three
+  -- Need fuel = 2 * 3^k ≥ k
+  have h : 3^k ≥ k := pow_three_ge k
+  have h2 : 3^k ≥ 1 := Nat.one_le_pow k 3 (by omega)
+  calc 2 * 3^k ≥ 1 * 3^k := by omega
+    _ = 3^k := by ring
+    _ ≥ k := h
 
 /-- From leadingDigit_two_times_pow_three and Steinerberger:
     3 divides gcd(a_{2·3^k}, L_{2·3^k}) for k ≥ 1. -/
