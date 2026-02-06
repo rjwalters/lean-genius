@@ -23,7 +23,7 @@ ERDOS_NUM="$1"
 find_repo_root() {
     local dir="$PWD"
     while [[ "$dir" != "/" ]]; do
-        if [[ -d "$dir/.git" ]]; then
+        if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]]; then
             echo "$dir"
             return 0
         fi

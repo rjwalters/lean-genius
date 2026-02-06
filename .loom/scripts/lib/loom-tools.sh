@@ -14,7 +14,7 @@
 _find_repo_root() {
     local dir="${1:-$(pwd)}"
     while [[ "$dir" != "/" ]]; do
-        if [[ -d "$dir/.git" ]] || [[ -d "$dir/.loom" ]]; then
+        if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]] || [[ -d "$dir/.loom" ]]; then
             echo "$dir"
             return 0
         fi

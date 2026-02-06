@@ -62,13 +62,78 @@ if [[ -z "${ARISTOTLE_API_KEY:-}" ]]; then
     fi
 fi
 
-# Count currently active (submitted) jobs
+# Count locally tracked active (submitted) jobs
 count_active_jobs() {
     if [[ ! -f "$JOBS_FILE" ]]; then
         echo 0
         return
     fi
     jq '[.jobs[] | select(.status == "submitted")] | length' "$JOBS_FILE"
+}
+
+# Server capacity limit (hard limit is 5, use safe margin)
+SERVER_CAPACITY_LIMIT=3
+
+# Query server for actual active project count
+# Returns JSON: {"active": N, "breakdown": {"QUEUED": N, "IN_PROGRESS": N, "NOT_STARTED": N}}
+PYTHON_CAPACITY_CHECK='
+import asyncio
+import json
+from aristotlelib import Project
+
+async def check_capacity():
+    try:
+        projects, _ = await Project.list_projects()
+    except Exception as e:
+        print(json.dumps({"error": str(e)}))
+        return
+
+    active_statuses = {"QUEUED", "IN_PROGRESS", "NOT_STARTED"}
+    breakdown = {}
+    active = 0
+    for p in projects:
+        name = p.status.name
+        if name in active_statuses:
+            active += 1
+            breakdown[name] = breakdown.get(name, 0) + 1
+
+    print(json.dumps({"active": active, "breakdown": breakdown}))
+
+asyncio.run(check_capacity())
+'
+
+# Check server capacity. Returns 0 if under limit, 1 if at/over limit.
+# Sets SERVER_ACTIVE to the count.
+check_server_capacity() {
+    local output
+    output=$(uvx --from aristotlelib python3 -c "$PYTHON_CAPACITY_CHECK" 2>&1)
+
+    # Check for errors
+    if echo "$output" | jq -e '.error' >/dev/null 2>&1; then
+        local error
+        error=$(echo "$output" | jq -r '.error')
+        echo -e "${RED}Server capacity check failed: $error${NC}" >&2
+        echo -e "${YELLOW}Proceeding with local count only${NC}" >&2
+        SERVER_ACTIVE=-1
+        return 0  # Don't block on API errors, fall back to local count
+    fi
+
+    SERVER_ACTIVE=$(echo "$output" | jq -r '.active')
+    local breakdown
+    breakdown=$(echo "$output" | jq -r '.breakdown | to_entries | map("\(.key): \(.value)") | join(", ")')
+
+    echo "Server active projects: $SERVER_ACTIVE (limit: $SERVER_CAPACITY_LIMIT)"
+    if [[ -n "$breakdown" && "$breakdown" != "" ]]; then
+        echo "  Breakdown: $breakdown"
+    fi
+
+    if [[ "$SERVER_ACTIVE" -ge "$SERVER_CAPACITY_LIMIT" ]]; then
+        echo -e "${YELLOW}At or over server capacity limit ($SERVER_ACTIVE >= $SERVER_CAPACITY_LIMIT)${NC}"
+        echo -e "${YELLOW}Skipping batch to avoid creating zombie projects${NC}"
+        return 1
+    fi
+
+    return 0
 }
 
 # Submit a single file to Aristotle
@@ -144,8 +209,17 @@ main() {
     fi
 
     local active=$(count_active_jobs)
-    echo "Currently active jobs: $active"
+    echo "Currently active jobs (local): $active"
     echo "Target active jobs: $TARGET_ACTIVE"
+    echo ""
+
+    # Pre-flight: check actual server capacity before submitting
+    if [[ "$DRY_RUN" != true ]]; then
+        if ! check_server_capacity; then
+            return 0
+        fi
+        echo ""
+    fi
 
     # Calculate how many to submit
     local to_submit
@@ -158,8 +232,17 @@ main() {
         fi
     fi
 
-    if [[ "$to_submit" -eq 0 ]]; then
-        echo -e "${GREEN}Already at target. No submissions needed.${NC}"
+    # Cap submissions to stay within server capacity
+    if [[ "$DRY_RUN" != true && "$SERVER_ACTIVE" -ge 0 ]]; then
+        local server_headroom=$((SERVER_CAPACITY_LIMIT - SERVER_ACTIVE))
+        if [[ "$server_headroom" -lt "$to_submit" ]]; then
+            echo -e "${YELLOW}Capping submissions to $server_headroom (server headroom)${NC}"
+            to_submit="$server_headroom"
+        fi
+    fi
+
+    if [[ "$to_submit" -le 0 ]]; then
+        echo -e "${GREEN}No submissions needed (at capacity or target).${NC}"
         return 0
     fi
 

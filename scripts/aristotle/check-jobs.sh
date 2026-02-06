@@ -61,15 +61,25 @@ async def check_jobs():
 
     submitted = [j for j in data.get("jobs", []) if j.get("status") == "submitted"]
 
-    if not submitted:
-        print(json.dumps({"submitted": 0, "results": []}))
-        return
-
+    # Always query server for reconciliation (even with 0 submitted jobs)
     try:
         projects, _ = await Project.list_projects()
         project_map = {p.project_id: p for p in projects}
     except Exception as e:
         print(json.dumps({"error": str(e)}))
+        return
+
+    if not submitted:
+        # Still return server projects for reconciliation
+        all_server = []
+        for p in projects:
+            all_server.append({
+                "project_id": p.project_id,
+                "status": p.status.name,
+                "percent": p.percent_complete or 0,
+                "file_name": getattr(p, "file_name", None)
+            })
+        print(json.dumps({"submitted": 0, "results": [], "server_projects": all_server}))
         return
 
     results = []
@@ -93,7 +103,21 @@ async def check_jobs():
                 "percent": 0
             })
 
-    print(json.dumps({"submitted": len(submitted), "results": results}))
+    # Also return all server projects for reconciliation
+    all_server = []
+    for p in projects:
+        all_server.append({
+            "project_id": p.project_id,
+            "status": p.status.name,
+            "percent": p.percent_complete or 0,
+            "file_name": getattr(p, "file_name", None)
+        })
+
+    print(json.dumps({
+        "submitted": len(submitted),
+        "results": results,
+        "server_projects": all_server
+    }))
 
 asyncio.run(check_jobs())
 '
@@ -126,6 +150,48 @@ update_jobs_file() {
         ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 
         echo -e "  Updated $pid -> $new_status"
+    done
+}
+
+# Reconcile server projects: find zombies not tracked locally
+reconcile_server_projects() {
+    local results="$1"
+
+    # Get all tracked project IDs from jobs.json
+    local tracked_ids
+    tracked_ids=$(jq -r '.jobs[].project_id // empty' "$JOBS_FILE" | sort -u)
+
+    # Check each server project
+    echo "$results" | jq -r '.server_projects[] | "\(.project_id)|\(.status)|\(.file_name)"' | while IFS='|' read -r pid status fname; do
+        [[ -z "$pid" ]] && continue
+
+        # Skip if already tracked
+        if echo "$tracked_ids" | grep -q "^${pid}$"; then
+            continue
+        fi
+
+        # Only flag NOT_STARTED as zombies (these have no solve job)
+        if [[ "$status" == "NOT_STARTED" ]]; then
+            echo -e "  ${YELLOW}ZOMBIE:${NC} $pid (NOT_STARTED, file: ${fname:-unknown})"
+
+            if [[ "$UPDATE_STATUS" == true ]]; then
+                local now
+                now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+                local tmp_file
+                tmp_file=$(mktemp)
+                jq --arg pid "$pid" --arg fname "${fname:-unknown}" --arg now "$now" '
+                    .jobs += [{
+                        project_id: $pid,
+                        file: $fname,
+                        problem_id: ("zombie-" + ($pid | split("-") | .[0])),
+                        submitted: "unknown",
+                        status: "zombie",
+                        notes: ("Zombie project discovered by reconciliation at " + $now + ". NOT_STARTED on server, not tracked locally.")
+                    }]
+                ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+                echo -e "    ${GREEN}Added to tracking${NC}"
+            fi
+        fi
     done
 }
 
@@ -164,6 +230,7 @@ main() {
         local integrated=$(jq '[.jobs[] | select(.status == "integrated")] | length' "$JOBS_FILE")
         local failed=$(jq '[.jobs[] | select(.status == "failed")] | length' "$JOBS_FILE")
         local expired=$(jq '[.jobs[] | select(.status == "expired")] | length' "$JOBS_FILE")
+        local zombies=$(jq '[.jobs[] | select(.status == "zombie")] | length' "$JOBS_FILE")
 
         echo ""
         echo "Summary:"
@@ -171,45 +238,52 @@ main() {
         echo "  Integrated: $integrated"
         echo "  Failed: $failed"
         echo "  Expired: $expired"
-        exit 0
+        if [[ "$zombies" -gt 0 ]]; then
+            echo -e "  ${YELLOW}Zombies: $zombies${NC}"
+        fi
+    else
+        echo "Submitted jobs: $submitted"
+        echo ""
+
+        # Display results
+        echo "$output" | jq -r '.results[] | "\(.problem_id)|\(.status)|\(.percent)"' | while IFS='|' read -r prob status percent; do
+            case "$status" in
+                COMPLETE)
+                    echo -e "  ${GREEN}$prob${NC}: COMPLETE"
+                    ;;
+                IN_PROGRESS)
+                    echo -e "  ${YELLOW}$prob${NC}: IN_PROGRESS ($percent%)"
+                    ;;
+                QUEUED|NOT_STARTED)
+                    echo -e "  ${CYAN}$prob${NC}: QUEUED"
+                    ;;
+                FAILED)
+                    echo -e "  ${RED}$prob${NC}: FAILED"
+                    ;;
+                NOT_FOUND)
+                    echo -e "  ${RED}$prob${NC}: NOT_FOUND (expired?)"
+                    ;;
+                *)
+                    echo -e "  $prob: $status ($percent%)"
+                    ;;
+            esac
+        done
+
+        # Update if requested
+        if [[ "$UPDATE_STATUS" == true ]]; then
+            echo ""
+            echo "Updating job statuses..."
+            update_jobs_file "$output"
+        fi
     fi
 
-    echo "Submitted jobs: $submitted"
-    echo ""
-
-    # Display results
-    local complete_count=0
-    local in_progress_count=0
-    local failed_count=0
-
-    echo "$output" | jq -r '.results[] | "\(.problem_id)|\(.status)|\(.percent)"' | while IFS='|' read -r prob status percent; do
-        case "$status" in
-            COMPLETE)
-                echo -e "  ${GREEN}$prob${NC}: COMPLETE"
-                ;;
-            IN_PROGRESS)
-                echo -e "  ${YELLOW}$prob${NC}: IN_PROGRESS ($percent%)"
-                ;;
-            QUEUED|NOT_STARTED)
-                echo -e "  ${CYAN}$prob${NC}: QUEUED"
-                ;;
-            FAILED)
-                echo -e "  ${RED}$prob${NC}: FAILED"
-                ;;
-            NOT_FOUND)
-                echo -e "  ${RED}$prob${NC}: NOT_FOUND (expired?)"
-                ;;
-            *)
-                echo -e "  $prob: $status ($percent%)"
-                ;;
-        esac
-    done
-
-    # Update if requested
-    if [[ "$UPDATE_STATUS" == true ]]; then
+    # Reconcile server projects (find zombies) - always runs
+    local server_count
+    server_count=$(echo "$output" | jq '.server_projects | length')
+    if [[ "$server_count" -gt 0 ]]; then
         echo ""
-        echo "Updating job statuses..."
-        update_jobs_file "$output"
+        echo -e "${BLUE}Server reconciliation:${NC} $server_count projects on server"
+        reconcile_server_projects "$output"
     fi
 }
 
