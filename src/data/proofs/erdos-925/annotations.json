@@ -5,186 +5,86 @@
     "range": { "startLine": 1, "endLine": 33 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #925**\n\nIs there δ > 0 such that non-Ramsey graphs for K₃ on n vertices have independent sets of size ≫ n^(1/3+δ)?\n\n**Status:** DISPROVED (Alon-Rödl 2005)\n\nThe answer is NO - the n^(1/3) bound cannot be improved.",
-    "mathContext": "Connects multicolor Ramsey numbers to independent set sizes in graphs.",
+    "content": "**Erdős Problem #925** asks whether non-Ramsey graphs for K₃ on n vertices must contain independent sets of size ≫ n^(1/3+δ) for some fixed δ > 0. It is easy to show α(G) ≥ Ω(n^(1/3)) for such graphs, and the question asks if this exponent can be improved. Equivalently, does R(3,3,m) ≪ m^(3-c) for some c > 0? Alon and Rödl (2005) disproved this, showing R(3,3,m) grows like m³/polylog(m) — the improvement is only polylogarithmic, not polynomial.",
+    "mathContext": "A graph G is 'not Ramsey for K₃' if ∃ 2-coloring of E(G) with no monochromatic triangle. The question: ∃ δ > 0 s.t. α(G) ≫ n^(1/3+δ)? Answer: NO. R(3,3,m) ~ m³/(log m)^Θ(1).",
     "significance": "critical",
-    "relatedConcepts": ["Ramsey theory", "Independent sets", "Multicolor Ramsey"]
+    "relatedConcepts": ["Ramsey-theory", "independent-sets", "multicolor-Ramsey", "graph-coloring"]
   },
   {
-    "id": "ann-925-notramsey",
+    "id": "ann-925-definitions",
     "proofId": "erdos-925",
-    "range": { "startLine": 52, "endLine": 59 },
+    "range": { "startLine": 44, "endLine": 67 },
     "type": "definition",
-    "title": "Non-Ramsey for K₃",
-    "content": "**isNotRamseyForTriangle G:**\n\nThere exists a 2-coloring of edges of G with no monochromatic triangle.\n\nEquivalently, G is NOT guaranteed to have a monochromatic K₃ in every 2-coloring.",
-    "mathContext": "This is the negation of the Ramsey property for triangles.",
+    "title": "Graph Definitions",
+    "content": "Three key definitions establish the framework. **isNotRamseyForTriangle G** asserts that there exists a 2-coloring of G's edge set into Fin 2 such that no monochromatic triangle exists — formally, no triple (a,b,c) with G.Adj relations has all three edges receiving the same color. **hasIndependentSetOfSize G k** asserts existence of a Finset S with |S| ≥ k and G.IsCliqueFree 2 on S (no edges within S). **independenceNumber G** is axiomatized as the maximum independent set size α(G), since computing it constructively requires decidability of graph properties.",
+    "mathContext": "isNotRamseyForTriangle G := ∃ color : edgeSet → Fin 2, ¬∃ monochromatic triangle. hasIndependentSetOfSize G k := ∃ S, |S| ≥ k ∧ S is independent. axiom independenceNumber G : ℕ.",
     "significance": "critical",
-    "relatedConcepts": ["Ramsey property", "Edge coloring", "Triangle-free"]
+    "relatedConcepts": ["SimpleGraph.edgeSet", "Fin-2-coloring", "IsCliqueFree", "independence-number"]
   },
   {
-    "id": "ann-925-indep",
+    "id": "ann-925-ramsey",
     "proofId": "erdos-925",
-    "range": { "startLine": 61, "endLine": 63 },
-    "type": "definition",
-    "title": "Independent Set",
-    "content": "**hasIndependentSetOfSize G k:**\n\n∃S ⊆ V(G): |S| ≥ k and S is independent (no edges within S).\n\nEquivalently, G contains a clique-free set of size k.",
-    "significance": "key",
-    "relatedConcepts": ["Independence number", "Clique-free", "α(G)"]
-  },
-  {
-    "id": "ann-925-alpha",
-    "proofId": "erdos-925",
-    "range": { "startLine": 65, "endLine": 68 },
-    "type": "definition",
-    "title": "Independence Number",
-    "content": "**independenceNumber G:**\n\nα(G) = the size of the largest independent set in G.\n\nThis is a fundamental graph parameter.",
-    "significance": "key",
-    "relatedConcepts": ["Independent set", "Graph parameter"]
-  },
-  {
-    "id": "ann-925-r33m",
-    "proofId": "erdos-925",
-    "range": { "startLine": 76, "endLine": 81 },
-    "type": "definition",
-    "title": "Multicolor Ramsey R(3,3,m)",
-    "content": "**R_3_3 m:**\n\nThe minimum n such that any graph on n vertices either:\n- Is Ramsey for K₃ (every 2-coloring has monochromatic triangle), OR\n- Has an independent set of size m\n\nThe problem asks about the growth rate of R(3,3,m).",
-    "mathContext": "This is a multicolor generalization of the classical Ramsey number.",
-    "significance": "critical",
-    "relatedConcepts": ["Ramsey number", "R(3,k)", "Multicolor Ramsey"]
-  },
-  {
-    "id": "ann-925-trivial",
-    "proofId": "erdos-925",
-    "range": { "startLine": 83, "endLine": 90 },
+    "range": { "startLine": 69, "endLine": 88 },
     "type": "axiom",
-    "title": "Trivial Bound",
-    "content": "**trivial_independent_set_bound:**\n\nEvery non-Ramsey graph on n vertices has an independent set of size ≫ n^(1/3).\n\nThis is the \"easy\" result that Erdős wanted to improve.",
-    "mathContext": "This follows from basic counting arguments.",
-    "significance": "key",
-    "relatedConcepts": ["Lower bound", "Counting argument"]
+    "title": "Ramsey Numbers and Trivial Bound",
+    "content": "**R_3_3 m** axiomatizes the multicolor Ramsey number R(3,3,m): the minimum n such that every graph on n vertices either is Ramsey for K₃ (every 2-coloring has a monochromatic triangle) or has an independent set of size m. **trivial_independent_set_bound** captures the 'easy' result: every non-Ramsey graph on n vertices has an independent set of size at least n^(1/3). This follows from a counting argument: in a triangle-free 2-coloring, one color class has ≥ n/2 edges, and Ramsey theory gives independence number Ω(√(n/2)), leading to α ≥ Ω(n^(1/3)).",
+    "mathContext": "axiom R_3_3 (m : ℕ) : ℕ. trivial_independent_set_bound: ∀ non-Ramsey G on n vertices, hasIndependentSetOfSize G (n^(1/3)).toNat. The exponent 1/3 arises from R(3,t) ~ t².",
+    "significance": "critical",
+    "relatedConcepts": ["multicolor-Ramsey", "counting-argument", "R(3,t)"]
   },
   {
     "id": "ann-925-conjecture",
     "proofId": "erdos-925",
-    "range": { "startLine": 98, "endLine": 108 },
+    "range": { "startLine": 90, "endLine": 111 },
     "type": "definition",
-    "title": "Erdős's Conjecture",
-    "content": "**erdos_925_conjecture:**\n\n∃δ > 0, ∃C > 0: For all large n, every non-Ramsey graph on n vertices has α(G) ≥ C·n^(1/3+δ).\n\nThis conjecture was later DISPROVED by Alon and Rödl.",
+    "title": "The Conjecture (Disproved)",
+    "content": "**erdos_925_conjecture** formalizes Erdős's question: ∃ δ > 0, C > 0 such that every non-Ramsey graph on n vertices has an independent set of size ≥ C·n^(1/3+δ). **erdos_925_ramsey_form** gives the equivalent Ramsey formulation: ∃ c > 0 such that R(3,3,m) ≤ C·m^(3-c). The equivalence comes from the duality: if α(G) ≥ n^(1/3+δ) always, then R(3,3,m) ≤ m^(1/(1/3+δ)) = m^(3/(1+3δ)) = m^(3-c) for c = 9δ/(1+3δ). Both formulations are FALSE.",
+    "mathContext": "erdos_925_conjecture := ∃ δ C > 0, ∀ n, ∀ non-Ramsey G, hasIndependentSetOfSize G ⌈C·n^(1/3+δ)⌉. erdos_925_ramsey_form := ∃ c C > 0, ∀ m, R_3_3 m ≤ ⌈C·m^(3-c)⌉.",
     "significance": "critical",
-    "relatedConcepts": ["Main question", "Polynomial improvement"]
+    "relatedConcepts": ["polynomial-improvement", "Ramsey-equivalence", "disproved-conjecture"]
   },
   {
-    "id": "ann-925-ramseyform",
+    "id": "ann-925-alonrodl",
     "proofId": "erdos-925",
-    "range": { "startLine": 110, "endLine": 114 },
-    "type": "definition",
-    "title": "Ramsey Formulation",
-    "content": "**erdos_925_ramsey_form:**\n\n∃c > 0: R(3,3,m) ≪ m^(3-c).\n\nThis is equivalent to the conjecture - both are FALSE.",
-    "significance": "key",
-    "relatedConcepts": ["Equivalent formulation", "Growth rate"]
-  },
-  {
-    "id": "ann-925-arlower",
-    "proofId": "erdos-925",
-    "range": { "startLine": 122, "endLine": 127 },
+    "range": { "startLine": 113, "endLine": 143 },
     "type": "axiom",
-    "title": "Alon-Rödl Lower Bound",
-    "content": "**alon_rodl_lower_bound:**\n\nR(3,3,m) ≥ m³ / (log m)^(4+o(1)).\n\nThis lower bound shows R(3,3,m) grows essentially like m³/polylog(m), NOT m^(3-c).",
-    "mathContext": "Published in Combinatorica 2005, pp. 125-141.",
+    "title": "Alon-Rödl Disproof (2005)",
+    "content": "Four axioms capture the resolution. **alon_rodl_lower_bound**: R(3,3,m) ≥ m³/(log m)^(4+o(1)), formalized with a function f(m) satisfying f(m) ≤ (log m)^(4+ε) for large m. **alon_rodl_upper_bound**: R(3,3,m) ≤ C·m³·(log log m)/(log m)². **sudakov_improvement**: removes the log log factor, giving R(3,3,m) ≤ C·m³/(log m)². **erdos_925_disproved**: ¬erdos_925_conjecture. **erdos_925_ramsey_disproof**: ¬erdos_925_ramsey_form. The lower bound is the key: since R(3,3,m) ≥ m³/polylog(m), we cannot have R(3,3,m) ≤ m^(3-c) for any c > 0.",
+    "mathContext": "m³/(log m)^(4+o(1)) ≤ R(3,3,m) ≤ m³/(log m)². The lower bound disproves the conjecture: m³/polylog(m) > m^(3-c) for any c > 0 and large m. Published in Combinatorica 25 (2005), 125-141.",
     "significance": "critical",
-    "relatedConcepts": ["Lower bound", "Alon-Rödl 2005"]
-  },
-  {
-    "id": "ann-925-arupper",
-    "proofId": "erdos-925",
-    "range": { "startLine": 129, "endLine": 134 },
-    "type": "axiom",
-    "title": "Alon-Rödl Upper Bound",
-    "content": "**alon_rodl_upper_bound:**\n\nR(3,3,m) ≤ m³ · (log log m) / (log m)².\n\nCombined with the lower bound, this determines R(3,3,m) up to polylogarithmic factors.",
-    "mathContext": "The log log factor was later removed by Sudakov.",
-    "significance": "key",
-    "relatedConcepts": ["Upper bound", "Sharp bounds"]
-  },
-  {
-    "id": "ann-925-sudakov",
-    "proofId": "erdos-925",
-    "range": { "startLine": 136, "endLine": 140 },
-    "type": "axiom",
-    "title": "Sudakov's Improvement",
-    "content": "**sudakov_improvement:**\n\nR(3,3,m) ≤ m³ / (log m)².\n\nSudakov removed the log log m factor from the upper bound.",
-    "significance": "key",
-    "relatedConcepts": ["Improved bound", "Sudakov"]
-  },
-  {
-    "id": "ann-925-disproved",
-    "proofId": "erdos-925",
-    "range": { "startLine": 142, "endLine": 143 },
-    "type": "axiom",
-    "title": "Conjecture Disproved",
-    "content": "**erdos_925_disproved:**\n\nThe conjecture is FALSE.\n\nThere is NO δ > 0 giving independent sets of size n^(1/3+δ).",
-    "significance": "critical",
-    "relatedConcepts": ["Disproof", "Counterexample"]
+    "relatedConcepts": ["Alon-Rödl-2005", "Sudakov", "polylogarithmic-factors", "sharp-bounds"]
   },
   {
     "id": "ann-925-optimal",
     "proofId": "erdos-925",
-    "range": { "startLine": 157, "endLine": 166 },
-    "type": "theorem",
-    "title": "n^(1/3) is Optimal",
-    "content": "**n_one_third_is_optimal:**\n\nThe trivial bound n^(1/3) is essentially tight.\n\nFor any ε > 0, there exist non-Ramsey graphs with α(G) ≤ n^(1/3+ε).",
-    "mathContext": "This follows from the Alon-Rödl lower bound on R(3,3,m).",
+    "range": { "startLine": 145, "endLine": 159 },
+    "type": "axiom",
+    "title": "Optimality of n^(1/3)",
+    "content": "**n_one_third_is_optimal** formalizes that the trivial n^(1/3) bound is tight: for any ε > 0, there exist sufficiently large non-Ramsey graphs G on n vertices with α(G) ≤ n^(1/3+ε). This follows from the Alon-Rödl lower bound: if R(3,3,m) ≥ m³/polylog(m), then for n ~ m³/polylog(m), the extremal non-Ramsey graph has α ~ m ~ n^(1/3)·polylog(n)^(1/3), which is ≤ n^(1/3+ε) for any ε > 0 and large n.",
+    "mathContext": "n_one_third_is_optimal: ∀ ε > 0, ∃ n₀, ∀ n ≥ n₀, ∃ non-Ramsey G on n vertices with α(G) ≤ ⌈n^(1/3+ε)⌉. The improvement over n^(1/3) is at most polylogarithmic.",
     "significance": "key",
-    "relatedConcepts": ["Optimality", "Tight bound"]
+    "relatedConcepts": ["tight-bound", "optimality", "polylog-improvement"]
   },
   {
-    "id": "ann-925-553",
+    "id": "ann-925-easylower",
     "proofId": "erdos-925",
-    "range": { "startLine": 174, "endLine": 178 },
-    "type": "theorem",
-    "title": "Connection to #553",
-    "content": "**connection_to_553:**\n\nErdős Problem #553 asks related questions about Ramsey numbers.\n\nBoth problems concern bounds on multicolor Ramsey configurations.",
-    "significance": "supporting",
-    "relatedConcepts": ["Problem #553", "Related problems"]
-  },
-  {
-    "id": "ann-925-growth",
-    "proofId": "erdos-925",
-    "range": { "startLine": 180, "endLine": 185 },
-    "type": "theorem",
-    "title": "Correct Growth Rate",
-    "content": "**correct_growth_rate:**\n\nR(3,3,m) ~ m³ / (log m)^Θ(1).\n\nBetween m³/(log m)^4 and m³/(log m)².\n\nNeither m^(3-c) nor m³ is correct.",
-    "mathContext": "The truth lies in the polylogarithmic regime.",
+    "range": { "startLine": 161, "endLine": 177 },
+    "type": "axiom",
+    "title": "The Easy Lower Bound",
+    "content": "**easy_lower_bound** states that every non-Ramsey graph has α(G) ≥ c·n^(1/3) for an absolute constant c > 0. The proof sketch: given a 2-coloring of G with no monochromatic triangle, each color class is triangle-free. By Ramsey theory, R(3,t) ~ t² (up to log factors), so a triangle-free graph on N vertices has α ≥ Ω(√N). The denser color class has ≥ n/2 vertices, giving α ≥ Ω(n^(1/2)) in that class. But we need the independent set in G, not in a color class — a more careful argument via R(3,3,m) gives the n^(1/3) bound.",
+    "mathContext": "easy_lower_bound: ∃ c > 0, ∀ non-Ramsey G on n vertices, (α(G) : ℝ) ≥ c·n^(1/3). Uses Ramsey theory for triangle-free graphs and counting.",
     "significance": "key",
-    "relatedConcepts": ["Asymptotic growth", "Polylog factors"]
-  },
-  {
-    "id": "ann-925-easy",
-    "proofId": "erdos-925",
-    "range": { "startLine": 206, "endLine": 215 },
-    "type": "theorem",
-    "title": "Easy Lower Bound",
-    "content": "**easy_lower_bound:**\n\n∃c > 0: Every non-Ramsey graph has α(G) ≥ c·n^(1/3).\n\nThis is the starting point - Erdős asked if we can do better.",
-    "significance": "supporting",
-    "relatedConcepts": ["Lower bound", "Starting point"]
+    "relatedConcepts": ["Ramsey-for-triangles", "counting-argument", "independence-number-bound"]
   },
   {
     "id": "ann-925-summary",
     "proofId": "erdos-925",
-    "range": { "startLine": 236, "endLine": 238 },
+    "range": { "startLine": 179, "endLine": 217 },
     "type": "theorem",
-    "title": "Summary Theorem",
-    "content": "**erdos_925_summary:**\n\nErdős's conjecture was disproved.\n\nThe n^(1/3) bound cannot be improved to n^(1/3+δ).",
+    "title": "Summary Theorems",
+    "content": "Two summary theorems. **erdos_925** directly states the disproof: ¬erdos_925_conjecture, proved by erdos_925_disproved. **erdos_925_summary** combines both the negative and positive results: (1) the conjecture is false (no polynomial improvement over n^(1/3)), and (2) the easy lower bound c·n^(1/3) does hold. The proof is ⟨erdos_925_disproved, easy_lower_bound⟩, directly combining the two axioms via an anonymous constructor. This fully characterizes the situation: n^(1/3) is the right exponent, up to polylogarithmic factors.",
+    "mathContext": "erdos_925 : ¬erdos_925_conjecture := erdos_925_disproved. erdos_925_summary : ¬conjecture ∧ (∃ c > 0, α(G) ≥ c·n^(1/3)) := ⟨erdos_925_disproved, easy_lower_bound⟩.",
     "significance": "critical",
-    "relatedConcepts": ["Main result", "Summary"]
-  },
-  {
-    "id": "ann-925-solved",
-    "proofId": "erdos-925",
-    "range": { "startLine": 240, "endLine": 241 },
-    "type": "theorem",
-    "title": "Problem Resolved",
-    "content": "**erdos_925_resolved:**\n\nErdős Problem #925 was completely resolved (disproved) by Alon and Rödl in 2005.",
-    "significance": "supporting",
-    "relatedConcepts": ["Resolved", "2005"]
+    "relatedConcepts": ["disproof", "exact-constructor", "complete-characterization"]
   }
 ]
