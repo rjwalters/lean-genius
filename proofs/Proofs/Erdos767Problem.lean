@@ -170,27 +170,7 @@ example : 4 * 20 - 16 = 64 := by native_decide
 example : 6 * 30 - 36 = 144 := by native_decide
 
 /-!
-## Part VIII: Historical Note (Lewin)
--/
-
-/-- Erdős mentioned Lewin claimed a disproof for general k (1969),
-    but this was likely for small n or incorrect.
-    Jiang's 2004 proof confirms the conjecture. -/
-axiom lewin_historical_note : True
-
-/-!
-## Part IX: Extremal Graphs
--/
-
-/-- The extremal graph achieving g_k(n) edges -/
-axiom extremal_graph_exists (k n : ℕ) (hn : n ≥ k + 2) :
-    ∃ G : Graph n, AvoidsCycleWithKChords G k ∧ edgeCount G = g_k k n
-
-/-- Extremal graphs have specific structure -/
-axiom extremal_structure : True
-
-/-!
-## Part X: Summary
+## Part VIII: Combined Result
 -/
 
 /--
@@ -211,9 +191,6 @@ Proved for n ≥ 3k + 3.
 - Jiang: g_k(n) = (k+1)n - (k+1)² (n ≥ 3k+3)
 
 **Formula:** g_k(n) = (k+1)(n - k - 1) = (k+1)n - (k+1)²
-
-This is a beautiful extremal graph result showing the exact
-threshold for forbidden substructures involving chords.
 -/
 theorem erdos_767_statement :
     -- Jiang's theorem gives exact formula
@@ -226,8 +203,5 @@ theorem erdos_767_statement :
   · exact fun k n hn => jiang_2004 k n hn
   · exact fun k n hn => czipszer_upper k n hn
   · exact fun k n hn => erdos_lower k n hn
-
-/-- Erdős Problem #767 is SOLVED -/
-theorem erdos_767_solved_final : True := trivial
 
 end Erdos767
