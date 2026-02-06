@@ -101,12 +101,12 @@ label_unlabeled_prs() {
     print_header "Labeling Unlabeled Erdos/Research PRs"
 
     # Find open PRs with erdos-enhancement, research, or aristotle-integration labels
-    # that are missing loom:review-requested (safety net for old worktrees or gh errors)
+    # that have no loom: labels at all (safety net for old worktrees or gh errors)
     local labeled=0
     for pr in $(gh pr list --state open --limit 100 --json number,labels \
         --jq '.[] |
             select(.labels | map(.name) | any(. == "erdos-enhancement" or . == "research" or . == "aristotle-integration")) |
-            select(.labels | map(.name) | any(. == "loom:review-requested") | not) |
+            select(.labels | map(.name) | any(startswith("loom:")) | not) |
             .number'); do
         if $DRY_RUN; then
             echo "  Would label PR #$pr with loom:review-requested"
