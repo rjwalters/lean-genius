@@ -103,7 +103,7 @@
   {
     "id": "ann-882-divimplies",
     "proofId": "erdos-882",
-    "range": { "startLine": 115, "endLine": 122 },
+    "range": { "startLine": 115, "endLine": 120 },
     "type": "theorem",
     "title": "div_free_implies_distinct",
     "content": "If subset sums are divisibility-free, they must be distinct. This connects the problem to Erdős #1.",
@@ -112,7 +112,7 @@
   {
     "id": "ann-882-sumbound",
     "proofId": "erdos-882",
-    "range": { "startLine": 128, "endLine": 132 },
+    "range": { "startLine": 125, "endLine": 129 },
     "type": "theorem",
     "title": "sum_bound",
     "content": "For A ⊆ {1,...,n}, the sum σ(A) = ∑A ≤ |A| · n. This bounds the total sum by the set size times the maximum element.",
@@ -121,7 +121,7 @@
   {
     "id": "ann-882-upperrefined",
     "proofId": "erdos-882",
-    "range": { "startLine": 134, "endLine": 137 },
+    "range": { "startLine": 131, "endLine": 134 },
     "type": "axiom",
     "title": "Refined Upper Bound",
     "content": "|A| ≤ log₂ n + ½ log₂(log n) + 3 for n ≥ 16. This follows from the distinct subset sums bound.",
@@ -130,7 +130,7 @@
   {
     "id": "ann-882-conjectured",
     "proofId": "erdos-882",
-    "range": { "startLine": 139, "endLine": 141 },
+    "range": { "startLine": 136, "endLine": 138 },
     "type": "axiom",
     "title": "Conjectured Bound",
     "content": "Conjectured: |A| ≤ log₂ n + O(1), i.e., the ½ log₂(log n) term can be removed.",
@@ -139,7 +139,7 @@
   {
     "id": "ann-882-lowermax",
     "proofId": "erdos-882",
-    "range": { "startLine": 149, "endLine": 153 },
+    "range": { "startLine": 146, "endLine": 148 },
     "type": "theorem",
     "title": "lower_bound_max",
     "content": "For n ≥ 4, there exists a valid A with |A| ≥ log₂ n - 2. Uses ELRSS or Sándor construction.",
@@ -148,7 +148,7 @@
   {
     "id": "ann-882-uppermax",
     "proofId": "erdos-882",
-    "range": { "startLine": 155, "endLine": 160 },
+    "range": { "startLine": 152, "endLine": 156 },
     "type": "theorem",
     "title": "upper_bound_max",
     "content": "For n ≥ 16, every valid A satisfies |A| ≤ log₂ n + ½ log₂(log n) + 3.",
@@ -157,7 +157,7 @@
   {
     "id": "ann-882-singleton",
     "proofId": "erdos-882",
-    "range": { "startLine": 166, "endLine": 179 },
+    "range": { "startLine": 162, "endLine": 163 },
     "type": "theorem",
     "title": "example_singleton",
     "content": "A = {1} is valid for any n ≥ 1. Its only subset sum is 1, which is trivially divisibility-free.",
@@ -166,7 +166,7 @@
   {
     "id": "ann-882-example23",
     "proofId": "erdos-882",
-    "range": { "startLine": 181, "endLine": 191 },
+    "range": { "startLine": 166, "endLine": 169 },
     "type": "theorem",
     "title": "example_2_3",
     "content": "A = {2, 3} is valid for n ≥ 3. Subset sums are {2, 3, 5}, and none of 2, 3, 5 divide each other.",
@@ -175,7 +175,7 @@
   {
     "id": "ann-882-erdos1",
     "proofId": "erdos-882",
-    "range": { "startLine": 197, "endLine": 199 },
+    "range": { "startLine": 175, "endLine": 177 },
     "type": "axiom",
     "title": "Erdős #1 Connection",
     "content": "Connection to Erdős Problem #1: ValidSubset implies DistinctSubsetSums, giving the upper bound.",
@@ -202,7 +202,7 @@
   {
     "id": "ann-882-summary",
     "proofId": "erdos-882",
-    "range": { "startLine": 200, "endLine": 215 },
+    "range": { "startLine": 200, "endLine": 214 },
     "type": "theorem",
     "title": "erdos_882_summary",
     "content": "**erdos_882_summary** combines the lower and upper bounds into a single theorem, equivalent to erdos_882_statement. The proof delegates directly to erdos_882_statement.\n\nThe answer is (1 + o(1)) log₂ n. SOLVED.",
