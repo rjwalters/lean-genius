@@ -508,7 +508,7 @@ theorem unit_distance_independence_from_chromatic (S : Finset Plane)
 /-- Independence and chromatic number relation: k * α(G) ≥ |V|.
     Each color class is independent with size ≤ α(G), so k * α(G) ≥ |V|. -/
 theorem alpha_chi_ge_card {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] {k : ℕ} (hk : k > 0)
+    (G : SimpleGraph V) [DecidableRel G.Adj] {k : ℕ} (_hk : k > 0)
     (c : V → Fin k) (hc : IsProperColoring G c) :
     k * independenceNumber G ≥ Fintype.card V := by
   have hclass : ∀ i : Fin k, (Finset.univ.filter (fun v => c v = i)).card ≤ independenceNumber G := by
