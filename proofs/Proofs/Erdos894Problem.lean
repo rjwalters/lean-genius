@@ -1,4 +1,4 @@
-/-
+/-!
   Erdős Problem #894: Chromatic Numbers of Lacunary Cayley Graphs
 
   Source: https://erdosproblems.com/894
@@ -87,10 +87,9 @@ def AvoidsMonochromatic (c : Coloring k) (A : Set ℕ) : Prop :=
 def IsFinitelyColorable (A : Set ℕ) : Prop :=
   ∃ k : ℕ, ∃ c : Coloring k, AvoidsMonochromatic c A
 
-/-- The chromatic number of the difference set A. -/
-noncomputable def chromaticNumber (A : Set ℕ) : ℕ :=
-  Nat.find ⟨0, ⟨fun _ => 0, fun _ _ _ _ => False.elim⟩⟩
-  -- Placeholder
+/-- The chromatic number of the difference set A:
+    the minimum k such that a k-coloring avoiding monochromatic differences exists. -/
+axiom chromaticNumber (A : Set ℕ) : ℕ
 
 /-! ## Part III: The Diophantine Approximation Connection -/
 
@@ -185,11 +184,6 @@ def lacunaryCayleyGraph (A : Set ℕ) : CayleyGraph A where
 noncomputable def cayleyChromatic (A : Set ℕ) : ℕ :=
   chromaticNumber A
 
-/-- Lacunary Cayley graphs have finite chromatic number. -/
-theorem lacunary_cayley_finite_chromatic (a : ℕ → ℕ) (ε : ℝ) (h : IsLacunary a ε) :
-    cayleyChromatic {n | ∃ k, n = a k} < ⊤ := by
-  trivial
-
 /-! ## Part VIII: Connection to Problem #464 -/
 
 /-- Problem #464: Badly approximable numbers for lacunary sequences. -/
@@ -228,26 +222,12 @@ theorem powers_of_3_colorable :
 /-! ## Part X: Summary -/
 
 /-- **Summary of Erdős Problem #894:**
-
-PROBLEM: For a lacunary sequence A (n_{k+1} ≥ (1+ε)n_k),
-         does there exist a finite coloring of ℕ with no
-         monochromatic a - b ∈ A?
-
-STATUS: SOLVED (YES)
-
-PROOF:
-1. Problem #464: ∃ irrational θ with inf_k ||θn_k|| > δ > 0
-2. Katznelson: Color n by interval containing θn (mod 1)
-3. This uses O(1/δ) colors and avoids monochromatic differences
-
-QUANTITATIVE (Peres-Schlag 2010):
-O(ε⁻¹ log(1/ε)) colors suffice
-
-KEY INSIGHT: Irrational rotation provides the coloring
--/
-theorem erdos_894_solved : ErdosConjecture894 := erdos_894
-
-/-- The problem is resolved. -/
-theorem erdos_894_status : True := trivial
+    1. Every lacunary sequence is finitely colorable (proved from axioms)
+    2. O(ε⁻¹ log(1/ε)) colors suffice (Peres-Schlag, axiom)
+    3. Problem #464 implies Problem #894 (proved) -/
+theorem erdos_894_summary :
+    ErdosConjecture894 ∧
+    (Problem464Statement → ErdosConjecture894) :=
+  ⟨erdos_894, problem_464_implies_894⟩
 
 end Erdos894
