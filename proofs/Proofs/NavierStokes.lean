@@ -13,7 +13,6 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Topology.Order.Basic
-import Mathlib.Topology.Order.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
@@ -2336,20 +2335,18 @@ the NSAxioms hypotheses imply no blowup.
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 
-/-- Summary: What this file proves vs. assumes
-
-**PROVEN** (no axioms):
-- 3D conditional regularity via NSAxioms structure
-- ESS backward uniqueness, Type I exclusion, Type II stability
-- CKN dimension/capacity framework
-- 2D enstrophy bounded, global bound, exponential decay (axiom-free)
-- 2D headline theorem `navier_stokes_2d_solved` (axiom-free, via GlobalNSSolution2D)
-- All concentration infrastructure (thetaAt, thetaAtK)
-
-**REMOVED** (12 dead-code axioms, preserved as comments):
-- See PART XI catalog above for full list
--/
-theorem proof_status_summary : True := trivial
+-- Summary: What this file proves vs. assumes
+--
+-- **PROVEN** (no axioms):
+-- - 3D conditional regularity via NSAxioms structure
+-- - ESS backward uniqueness, Type I exclusion, Type II stability
+-- - CKN dimension/capacity framework
+-- - 2D enstrophy bounded, global bound, exponential decay (axiom-free)
+-- - 2D headline theorem `navier_stokes_2d_solved` (axiom-free, via GlobalNSSolution2D)
+-- - All concentration infrastructure (thetaAt, thetaAtK)
+--
+-- **REMOVED** (12 dead-code axioms, preserved as comments):
+-- - See PART XI catalog above for full list
 
 
 end NavierStokesRegularity
