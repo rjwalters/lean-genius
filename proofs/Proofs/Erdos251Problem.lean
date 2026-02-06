@@ -158,13 +158,6 @@ The key challenges are:
    rational approximations, which depends on the arithmetic of primes.
 -/
 
-/-- Comparison with known irrationals:
-- e = Σ 1/n! is irrational (Euler)
-- π is irrational (Lambert/Hermite)
-- e + π is unknown (!)
-- Σ pₙ/2ⁿ is unknown (this problem) -/
-theorem comparison_context : True := trivial
-
 /-!
 ## Generalized Conjecture
 
