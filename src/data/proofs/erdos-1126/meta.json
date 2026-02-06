@@ -53,72 +53,44 @@
     {
       "id": "cauchy",
       "title": "Cauchy's Functional Equation",
-      "startLine": 38,
-      "endLine": 73,
+      "startLine": 35,
+      "endLine": 57,
       "summary": "IsAdditive, basic properties, continuous case"
     },
     {
       "id": "almost-additive",
       "title": "Almost Additive Functions",
-      "startLine": 75,
-      "endLine": 107,
+      "startLine": 59,
+      "endLine": 77,
       "summary": "ae_holds, ae_pairs, IsAlmostAdditive, ae_eq"
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 109,
-      "endLine": 133,
-      "summary": "de_bruijn_jurkat_theorem"
+      "startLine": 79,
+      "endLine": 96,
+      "summary": "de_bruijn_jurkat_theorem, erdos_1126_main"
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness",
-      "startLine": 135,
-      "endLine": 152,
+      "startLine": 98,
+      "endLine": 108,
       "summary": "additive_ae_unique, additive_zero_ae"
     },
     {
-      "id": "construction",
-      "title": "Construction of g",
-      "startLine": 154,
-      "endLine": 173,
-      "summary": "Limit construction, good points approach"
-    },
-    {
       "id": "wild",
-      "title": "Wild Additive Functions",
-      "startLine": 175,
-      "endLine": 203,
-      "summary": "Existence via AC, Hamel basis, measurability"
-    },
-    {
-      "id": "generalizations",
-      "title": "Generalizations",
-      "startLine": 205,
-      "endLine": 228,
-      "summary": "Higher dimensions, general groups, stability"
-    },
-    {
-      "id": "applications",
-      "title": "Applications",
-      "startLine": 230,
-      "endLine": 246,
-      "summary": "Probability, harmonic analysis"
-    },
-    {
-      "id": "history",
-      "title": "Historical Context",
-      "startLine": 248,
-      "endLine": 269,
-      "summary": "Cauchy, Hamel, Erdős timeline"
+      "title": "Wild Additive Functions and Regularity",
+      "startLine": 110,
+      "endLine": 123,
+      "summary": "wild_additive_exist, measurable_additive_is_linear"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 271,
-      "endLine": 317,
-      "summary": "Main theorem and historical note"
+      "startLine": 125,
+      "endLine": 143,
+      "summary": "erdos_1126_summary theorem with proof"
     }
   ],
   "conclusion": {
