@@ -129,12 +129,6 @@ axiom steinerberger_criterion (n p : ℕ) (hp : Nat.Prime p) (hp_le : p ≤ n)
     (hleading : leadingDigit n p = p - 1) :
     p ∣ harmonicGCD n
 
-/--
-**Corollary: Part 2 is trivially YES:**
-There are infinitely many n with gcd(a_n, L_n) > 1.
--/
-axiom part2_trivially_true : question_part2
-
 /-
 ## Part IV: Wolstenholme's Theorem
 -/
@@ -213,30 +207,7 @@ leading digit p-1 in base p, making p | gcd(a_n, L_n).
 -/
 
 /-
-## Part VIII: Small Examples
--/
-
-/--
-**Small values of gcd(a_n, L_n):**
-
-n=1: H_1 = 1/1, L_1 = 1, a_1 = 1, gcd = 1
-n=2: H_2 = 3/2, L_2 = 2, a_2 = 3, gcd = 1
-n=3: H_3 = 11/6, L_3 = 6, a_3 = 11, gcd = 1
-n=4: H_4 = 25/12, L_4 = 12, a_4 = 25, gcd = 1
-n=5: H_5 = 137/60, L_5 = 60, a_5 = 137, gcd = 1
-n=6: H_6 = 49/20, L_6 = 60, a_6 = 147, gcd = 3
-
-So gcd > 1 first occurs at n = 6.
-
-These are axiomatized because harmonicGCD is noncomputable
-(involves rational arithmetic and .num.natAbs extraction).
--/
-axiom small_examples :
-    harmonicGCD 1 = 1 ∧ harmonicGCD 2 = 1 ∧ harmonicGCD 3 = 1 ∧
-    harmonicGCD 4 = 1 ∧ harmonicGCD 5 = 1 ∧ harmonicGCD 6 = 3
-
-/-
-## Part IX: Why Part 1 is Hard
+## Part VIII: Why Part 1 is Hard
 -/
 
 /-
@@ -251,43 +222,7 @@ The problem is open because the heuristic is hard to make rigorous.
 -/
 
 /-
-## Part X: Summary
--/
-
-/--
-**Summary of Known Results:**
--/
-theorem erdos_291_summary :
-    -- Part 2: Trivially YES (Steinerberger)
-    question_part2 ∧
-    -- Part 1: OPEN (heuristically YES)
-    True ∧
-    -- Wu-Yan: Conditional on Schanuel, density of gcd > 1 is 1
-    True := by
-  constructor
-  · exact part2_trivially_true
-  · exact ⟨trivial, trivial⟩
-
-/--
-**Erdős Problem #291: OPEN**
-
-**QUESTION:** Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1
-occur for infinitely many n?
-
-**KNOWN:**
-- Part 2 (gcd > 1): YES (trivial, via Steinerberger/Wolstenholme)
-- Part 1 (gcd = 1): OPEN
-  - Heuristic: ~x/log(x) such n up to x
-  - Conditional on Schanuel: density of gcd > 1 is 1
-  - But infinitely many gcd = 1 is unproven
-
-**KEY INSIGHT:** The divisibility p | gcd(a_n, L_n) depends only
-on the leading digit of n in base p.
--/
-theorem erdos_291 : question_part2 := part2_trivially_true
-
-/-
-## Part XI: Structural Properties of L
+## Part X: Structural Properties of L
 -/
 
 /-- L(0) = 1 (empty LCM) -/
@@ -414,6 +349,62 @@ theorem H_mono (m n : ℕ) (hmn : m ≤ n) : H m ≤ H n := by
   positivity
 
 /-
+## Part XII.5: Small Examples (proved from H and L lemmas)
+-/
+
+/--
+**Small values of gcd(a_n, L_n):**
+
+n=1: H_1 = 1/1, L_1 = 1, a_1 = 1, gcd = 1
+n=2: H_2 = 3/2, L_2 = 2, a_2 = 3, gcd = 1
+n=3: H_3 = 11/6, L_3 = 6, a_3 = 11, gcd = 1
+n=4: H_4 = 25/12, L_4 = 12, a_4 = 25, gcd = 1
+n=5: H_5 = 137/60, L_5 = 60, a_5 = 137, gcd = 1
+n=6: H_6 = 49/20, L_6 = 60, a_6 = 147, gcd = 3
+
+So gcd > 1 first occurs at n = 6.
+-/
+
+private theorem a_eq (n : ℕ) (v : ℚ) (hv : H n * ↑(L n) = v) :
+    a n = v.num.natAbs := by
+  unfold a; rw [hv]
+
+private theorem harmonicGCD_eq (n : ℕ) (an ln : ℕ) (ha : a n = an) (hl : L n = ln) :
+    harmonicGCD n = Nat.gcd an ln := by
+  unfold harmonicGCD; rw [ha, hl]
+
+theorem small_examples :
+    harmonicGCD 1 = 1 ∧ harmonicGCD 2 = 1 ∧ harmonicGCD 3 = 1 ∧
+    harmonicGCD 4 = 1 ∧ harmonicGCD 5 = 1 ∧ harmonicGCD 6 = 3 := by
+  -- Compute a(n) values from H(n) * L(n)
+  have ha1 : a 1 = 1 := a_eq 1 1 (by rw [H_one, L_one]; norm_num)
+  have ha2 : a 2 = 3 := a_eq 2 3 (by rw [H_two, L_two]; norm_num)
+  have ha3 : a 3 = 11 := a_eq 3 11 (by rw [H_three, L_three]; norm_num)
+  have ha4 : a 4 = 25 := a_eq 4 25 (by rw [H_four, L_four]; norm_num)
+  have ha5 : a 5 = 137 := a_eq 5 137 (by rw [H_five, L_five]; norm_num)
+  have ha6 : a 6 = 147 := a_eq 6 147 (by rw [H_six, L_six]; norm_num)
+  -- Compute harmonicGCD(n) = gcd(a(n), L(n))
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  · rw [harmonicGCD_eq 1 1 1 ha1 L_one]; native_decide
+  · rw [harmonicGCD_eq 2 3 2 ha2 L_two]; native_decide
+  · rw [harmonicGCD_eq 3 11 6 ha3 L_three]; native_decide
+  · rw [harmonicGCD_eq 4 25 12 ha4 L_four]; native_decide
+  · rw [harmonicGCD_eq 5 137 60 ha5 L_five]; native_decide
+  · rw [harmonicGCD_eq 6 147 60 ha6 L_six]; native_decide
+
+/-- From small_examples: the first occurrence of gcd > 1 is at n = 6 -/
+theorem first_gcd_gt_one : harmonicGCD 6 = 3 := small_examples.2.2.2.2.2
+
+/-- From small_examples: H_1 through H_5 all have gcd = 1 -/
+theorem small_gcd_one (n : ℕ) (hn : 1 ≤ n) (hn5 : n ≤ 5) : harmonicGCD n = 1 := by
+  interval_cases n
+  · exact small_examples.1
+  · exact small_examples.2.1
+  · exact small_examples.2.2.1
+  · exact small_examples.2.2.2.1
+  · exact small_examples.2.2.2.2.1
+
+/-
 ## Part XIII: Leading Digit Properties
 -/
 
@@ -507,18 +498,6 @@ A prime dividing the GCD must divide L_n = lcm(1,...,n), hence p ≤ n.
 theorem prime_div_gcd_le (n p : ℕ) (hp : Nat.Prime p) (hpdvd : p ∣ harmonicGCD n) :
     p ≤ n :=
   prime_dvd_L_le n p hp (dvd_trans hpdvd (harmonicGCD_dvd_L n))
-
-/-- From small_examples: the first occurrence of gcd > 1 is at n = 6 -/
-theorem first_gcd_gt_one : harmonicGCD 6 = 3 := small_examples.2.2.2.2.2
-
-/-- From small_examples: H_1 through H_5 all have gcd = 1 -/
-theorem small_gcd_one (n : ℕ) (hn : 1 ≤ n) (hn5 : n ≤ 5) : harmonicGCD n = 1 := by
-  interval_cases n
-  · exact small_examples.1
-  · exact small_examples.2.1
-  · exact small_examples.2.2.1
-  · exact small_examples.2.2.2.1
-  · exact small_examples.2.2.2.2.1
 
 /-
 ## Part XV: Applying Steinerberger to Concrete Cases
@@ -634,5 +613,72 @@ theorem H_mul_L_eq_sum (n : ℕ) :
   congr 1
   ext i
   field_simp
+
+/-
+## Part XVII: Proving Part 2 (Infinitely Many n with gcd > 1)
+-/
+
+/--
+**Part 2 is trivially YES:**
+There are infinitely many n with gcd(a_n, L_n) > 1.
+
+Proof: The family {2·3^k | k ≥ 1} is an infinite subset of {n | harmonicGCD n > 1},
+since Steinerberger shows 3 ∣ harmonicGCD(2·3^k) for each k ≥ 1.
+-/
+theorem part2_trivially_true : question_part2 := by
+  unfold question_part2
+  apply Set.infinite_of_injective_forall_mem (f := fun k => 2 * 3 ^ (k + 1))
+  · -- Injectivity: 2·3^(k₁+1) = 2·3^(k₂+1) → k₁ = k₂
+    intro k₁ k₂ h
+    have h1 : (3 : ℕ) ^ (k₁ + 1) = 3 ^ (k₂ + 1) := by linarith
+    have h2 : k₁ + 1 = k₂ + 1 := Nat.pow_right_injective (by norm_num : 1 < 3) h1
+    omega
+  · -- Every element of the family has harmonicGCD > 1
+    intro k
+    simp only [Set.mem_setOf_eq]
+    have h3_dvd : (3 : ℕ) ∣ harmonicGCD (2 * 3 ^ (k + 1)) :=
+      three_dvd_gcd_two_pow_three (k + 1) (by omega)
+    -- harmonicGCD > 0 since L > 0
+    have hgcd_pos : harmonicGCD (2 * 3 ^ (k + 1)) > 0 := by
+      unfold harmonicGCD
+      exact Nat.gcd_pos_of_pos_right _ (L_pos _)
+    -- 3 ∣ harmonicGCD and harmonicGCD > 0 implies harmonicGCD ≥ 3 > 1
+    exact Nat.lt_of_lt_of_le (by norm_num : 1 < 3) (Nat.le_of_dvd hgcd_pos h3_dvd)
+
+/-
+## Part XVIII: Summary
+-/
+
+/--
+**Summary of Known Results:**
+-/
+theorem erdos_291_summary :
+    -- Part 2: Trivially YES (Steinerberger)
+    question_part2 ∧
+    -- Part 1: OPEN (heuristically YES)
+    True ∧
+    -- Wu-Yan: Conditional on Schanuel, density of gcd > 1 is 1
+    True := by
+  constructor
+  · exact part2_trivially_true
+  · exact ⟨trivial, trivial⟩
+
+/--
+**Erdős Problem #291: OPEN**
+
+**QUESTION:** Do both gcd(a_n, L_n) = 1 and gcd(a_n, L_n) > 1
+occur for infinitely many n?
+
+**KNOWN:**
+- Part 2 (gcd > 1): YES (trivial, via Steinerberger/Wolstenholme)
+- Part 1 (gcd = 1): OPEN
+  - Heuristic: ~x/log(x) such n up to x
+  - Conditional on Schanuel: density of gcd > 1 is 1
+  - But infinitely many gcd = 1 is unproven
+
+**KEY INSIGHT:** The divisibility p | gcd(a_n, L_n) depends only
+on the leading digit of n in base p.
+-/
+theorem erdos_291 : question_part2 := part2_trivially_true
 
 end Erdos291
