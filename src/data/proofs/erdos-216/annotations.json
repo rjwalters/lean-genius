@@ -1,164 +1,58 @@
 [
   {
-    "id": "header-comment",
-    "proofId": "erdos-216",
-    "type": "concept",
-    "range": { "startLine": 1, "endLine": 37 },
-    "title": "Problem Overview",
-    "content": "Erdős Problem #216 asks about empty convex polygons. The function g(k) is the smallest n such that any n points in general position contain an empty convex k-gon. Complete resolution: g(k) exists iff k ≤ 6, with g(3)=3, g(4)=5, g(5)=10, g(6)=30.",
+    "id": "ann-e216-definitions",
+    "range": { "startLine": 49, "endLine": 69 },
+    "type": "definition",
+    "title": "Geometric Primitives",
+    "content": "The formalization represents points in ℝ² via Mathlib's EuclideanSpace ℝ (Fin 2), with PointSet as Finset Point. The predicates InGeneralPosition (no three collinear) and IsConvexKGon (k vertices in convex position) are axiomatized since full definitions require cross-product and convex-hull infrastructure not needed for the combinatorial content of the problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e216-empty",
+    "range": { "startLine": 71, "endLine": 86 },
+    "type": "definition",
+    "title": "Empty Convex Polygons",
+    "content": "An empty convex k-gon in a point set S is a convex k-gon whose interior contains no other points of S. This 'emptiness' condition is the key distinction from the Happy Ending Problem (#107): it makes the problem much harder and causes the function g(k) to have a finite threshold. IsEmptyConvexKGon is axiomatized with a structural axiom guaranteeing vertices lie in S.",
     "significance": "critical"
   },
   {
-    "id": "point-def",
-    "proofId": "erdos-216",
+    "id": "ann-e216-function-g",
+    "range": { "startLine": 88, "endLine": 100 },
     "type": "definition",
-    "range": { "startLine": 53, "endLine": 57 },
-    "title": "Point and PointSet",
-    "content": "Point is defined as EuclideanSpace ℝ (Fin 2), representing points in the plane. PointSet is a finite set of such points.",
-    "significance": "key"
-  },
-  {
-    "id": "general-position",
-    "proofId": "erdos-216",
-    "type": "definition",
-    "range": { "startLine": 59, "endLine": 64 },
-    "title": "General Position",
-    "content": "Points are in general position if no three are collinear. This is the standard assumption for empty polygon problems.",
-    "significance": "key"
-  },
-  {
-    "id": "convex-kgon",
-    "proofId": "erdos-216",
-    "type": "definition",
-    "range": { "startLine": 66, "endLine": 70 },
-    "title": "Convex k-gon",
-    "content": "IsConvexKGon defines when a set of vertices forms a convex k-gon - exactly k vertices forming a convex polygon.",
-    "significance": "key"
-  },
-  {
-    "id": "empty-convex",
-    "proofId": "erdos-216",
-    "type": "definition",
-    "range": { "startLine": 76, "endLine": 87 },
-    "title": "Empty Convex k-gon",
-    "content": "A convex k-gon is EMPTY if no other points from the set lie strictly inside it. This is the key condition distinguishing this problem from the Happy Ending Problem.",
-    "significance": "critical"
-  },
-  {
-    "id": "function-g",
-    "proofId": "erdos-216",
-    "type": "definition",
-    "range": { "startLine": 93, "endLine": 101 },
     "title": "The Function g(k)",
-    "content": "g(k) is defined as Option ℕ - it returns some n when a threshold exists (smallest n guaranteeing an empty k-gon), or none when no such threshold exists (for k ≥ 7).",
+    "content": "g(k) is defined as Option ℕ using Nat.find: it returns some n (the smallest threshold) when a finite threshold exists, and none otherwise. This elegant formulation captures both existence and non-existence in a single definition, enabling the characterization theorem g_exists_iff.",
     "significance": "critical"
   },
   {
-    "id": "g3-axiom",
-    "proofId": "erdos-216",
+    "id": "ann-e216-known-values",
+    "range": { "startLine": 102, "endLine": 120 },
     "type": "theorem",
-    "range": { "startLine": 107, "endLine": 108 },
-    "title": "g(3) = 3",
-    "content": "Any 3 points in general position form an empty triangle. This is trivial since the triangle has no other points to be inside it.",
-    "significance": "supporting"
+    "title": "Known Exact Values of g",
+    "content": "Four axioms record the known values: g(3)=3 (trivial), g(4)=5 (Erdős), g(5)=10 (Harborth 1978), and g(6)=30 (Heule-Scheucher 2024). The g(6)=30 result was a landmark: existence was proved by Nicolás (2007) and Gerken (2008), but the exact value required SAT solvers verifying all 29-point configurations and finding a 30-point universal property.",
+    "significance": "critical"
   },
   {
-    "id": "g4-axiom",
-    "proofId": "erdos-216",
+    "id": "ann-e216-horton",
+    "range": { "startLine": 122, "endLine": 148 },
     "type": "theorem",
-    "range": { "startLine": 110, "endLine": 111 },
-    "title": "g(4) = 5",
-    "content": "Any 5 points in general position contain an empty quadrilateral. Observed by Erdős.",
-    "significance": "supporting"
+    "title": "Horton's Theorem: g(7) Does Not Exist",
+    "content": "Horton (1983) constructed arbitrarily large point sets in general position containing no empty 7-gon. The key idea: recursively interlace two smaller Horton sets so that any potential empty heptagon must use points from both halves, but the interlacing prevents this. The theorem g_7_not_exists is actually proved (not axiomatized) from the horton_sets_exist axiom, demonstrating a genuine deduction in the formalization.",
+    "significance": "critical"
   },
   {
-    "id": "g5-axiom",
-    "proofId": "erdos-216",
-    "type": "theorem",
-    "range": { "startLine": 113, "endLine": 114 },
-    "title": "g(5) = 10",
-    "content": "Any 10 points in general position contain an empty pentagon. Proved by Harborth in 1978.",
+    "id": "ann-e216-happy-ending",
+    "range": { "startLine": 182, "endLine": 203 },
+    "type": "insight",
+    "title": "Connection to the Happy Ending Problem",
+    "content": "The Happy Ending Problem (Erdős #107) asks the same question without the emptiness condition. Its function g'(k) exists for ALL k (Erdős-Szekeres 1935), with conjectured value 2^(k-2)+1. The contrast is striking: removing the emptiness requirement eliminates the k=7 threshold entirely. The axiom empty_implies_nonempty formalizes g(k) ≥ g'(k), since every empty polygon is also a (non-empty) polygon.",
     "significance": "key"
   },
   {
-    "id": "g6-axiom",
-    "proofId": "erdos-216",
-    "type": "theorem",
-    "range": { "startLine": 116, "endLine": 121 },
-    "title": "g(6) = 30",
-    "content": "Any 30 points in general position contain an empty hexagon. This was a long-standing open problem finally resolved by Heule and Scheucher in 2024 using SAT solvers.",
-    "significance": "critical"
-  },
-  {
-    "id": "horton-set",
-    "proofId": "erdos-216",
-    "type": "definition",
-    "range": { "startLine": 127, "endLine": 135 },
-    "title": "Horton Sets",
-    "content": "A Horton set is a point configuration in general position that contains NO empty 7-gon. These can be constructed to arbitrary size by recursive interlacing.",
-    "significance": "critical"
-  },
-  {
-    "id": "g7-theorem",
-    "proofId": "erdos-216",
-    "type": "theorem",
-    "range": { "startLine": 137, "endLine": 146 },
-    "title": "g(7) Does Not Exist",
-    "content": "Horton's Theorem (1983): g(7) = none. The existence of arbitrarily large Horton sets (with no empty 7-gon) proves that no finite threshold exists.",
-    "significance": "critical"
-  },
-  {
-    "id": "g-ge-7-axiom",
-    "proofId": "erdos-216",
-    "type": "theorem",
-    "range": { "startLine": 148, "endLine": 149 },
-    "title": "g(k) Does Not Exist for k ≥ 7",
-    "content": "Since Horton sets have no empty 7-gon, they also have no empty k-gon for any k ≥ 7.",
-    "significance": "critical"
-  },
-  {
-    "id": "g-exists-le-6",
-    "proofId": "erdos-216",
-    "type": "theorem",
-    "range": { "startLine": 159, "endLine": 163 },
-    "title": "g Exists for k ≤ 6",
-    "content": "For k = 3, 4, 5, 6, the function g(k) is defined (finite). Proved by case analysis on the known axioms.",
-    "significance": "key"
-  },
-  {
-    "id": "happy-ending",
-    "proofId": "erdos-216",
-    "type": "definition",
-    "range": { "startLine": 187, "endLine": 193 },
-    "title": "Happy Ending Problem",
-    "content": "The Happy Ending function g'(k): smallest n such that any n points contain a convex k-gon (NOT necessarily empty). This is Erdős Problem #107.",
-    "significance": "key"
-  },
-  {
-    "id": "erdos-szekeres",
-    "proofId": "erdos-216",
-    "type": "concept",
-    "range": { "startLine": 198, "endLine": 200 },
-    "title": "Erdős-Szekeres Conjecture",
-    "content": "The famous conjecture that g'(k) = 2^(k-2) + 1 for the happy ending problem. Still open for k > 5.",
-    "significance": "supporting"
-  },
-  {
-    "id": "summary-theorem",
-    "proofId": "erdos-216",
-    "type": "theorem",
-    "range": { "startLine": 239, "endLine": 248 },
-    "title": "Complete Summary",
-    "content": "The main summary theorem: all known values of g and the non-existence for k ≥ 7 in one statement.",
-    "significance": "critical"
-  },
-  {
-    "id": "g-exists-iff",
-    "proofId": "erdos-216",
-    "type": "theorem",
-    "range": { "startLine": 258, "endLine": 269 },
-    "title": "Existence Characterization",
-    "content": "The complete characterization: for k ≥ 3, g(k) exists if and only if k ≤ 6. This fully resolves the existence question of Erdős Problem #216.",
+    "id": "ann-e216-summary",
+    "range": { "startLine": 235, "endLine": 270 },
+    "type": "summary",
+    "title": "Complete Resolution of Problem #216",
+    "content": "The summary theorem erdos_216_summary and the characterization g_exists_iff together completely resolve the problem: g(k) exists if and only if k ≤ 6, with exact values 3, 5, 10, 30. This is one of the few Erdős problems with a complete, clean answer — a sharp threshold at k=7 separating existence from non-existence.",
     "significance": "critical"
   }
 ]
