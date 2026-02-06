@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #184: Graph Decomposition into Cycles and Edges
 
 Source: https://erdosproblems.com/184
@@ -40,7 +40,7 @@ open Finset
 
 namespace Erdos184
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -79,7 +79,7 @@ structure SingleEdge (G : Graph V) where
   v : V
   adj : G.Adj u v
 
-/-!
+/-
 ## Part II: Decomposition
 -/
 
@@ -118,7 +118,7 @@ The minimum number of pieces needed to decompose G.
 -/
 axiom decompNumber (G : Graph V) : ℕ
 
-/-!
+/-
 ## Part III: The Erdős-Gallai Conjecture
 -/
 
@@ -130,7 +130,7 @@ def ErdosGallaiConjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
     (decompNumber G : ℝ) ≤ C * Fintype.card V
 
-/-!
+/-
 ## Part IV: Known Bounds
 -/
 
@@ -171,7 +171,7 @@ axiom bucic_montgomery_bound :
     Fintype.card V ≥ 2 →
     (decompNumber G : ℝ) ≤ C * Fintype.card V * (logStar (Fintype.card V) + 1)
 
-/-!
+/-
 ## Part V: Dense Graph Result
 -/
 
@@ -191,7 +191,7 @@ axiom conlon_fox_sudakov :
       (minDegree G : ℝ) ≥ ε * Fintype.card V →
       (decompNumber G : ℝ) ≤ C * Fintype.card V
 
-/-!
+/-
 ## Part VI: Non-Disjoint Case
 -/
 
@@ -215,7 +215,7 @@ axiom erdos_covering_bound :
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : Graph V),
     coverNumber G ≤ Fintype.card V - 1
 
-/-!
+/-
 ## Part VII: Summary
 -/
 
