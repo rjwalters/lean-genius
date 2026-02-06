@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/Erdos1124Problem.lean",
     "tags": ["erdos", "geometry", "equidecomposition", "tarski", "circle-squaring", "measure-theory", "solved"],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1124,
     "erdosUrl": "https://erdosproblems.com/1124",
     "erdosProblemStatus": "solved",
@@ -22,28 +22,34 @@
       {"theorem": "MeasurableSet", "description": "Measurable sets", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"}
     ],
     "originalContributions": [
-      "Point: R² definition", "disk/square: basic shapes", "TranslationCongruent: translation congruence",
-      "IsDecomposition: finite decomposition", "TranslationEquidecomposable: equidecomposability by translations",
-      "TarskiProblem: original question", "laczkovich_theorem: main result", "tarski_solved: derived theorem"
+      "Point/disk/square: R² geometry definitions",
+      "TranslationCongruent and IsometryCongruent: congruence relations",
+      "IsDecomposition: finite decomposition of sets",
+      "TranslationEquidecomposable/IsometryEquidecomposable: equidecomposability",
+      "TarskiProblem: formalized original question",
+      "laczkovich_theorem: Laczkovich's 1990 solution axiomatized",
+      "laczkovich_piece_count: bound on number of pieces",
+      "pieces_not_measurable and dubins_hirsch_karush: non-measurability results",
+      "erdos_1124: summary combining Tarski solved + translations suffice"
     ],
     "references": [
       {"key": "La90", "citation": "Laczkovich, M., Equidecomposability and discrepancy; a solution of Tarski's circle-squaring problem, J. Reine Angew. Math. (1990), 77-117.", "type": "paper"}
     ]
   },
   "overview": {
-    "historicalContext": "**Tarski's Circle-Squaring Problem (1925)**\n\nOne of the most famous problems in geometric measure theory. Tarski asked whether a circle and square of equal area can be decomposed into finitely many congruent pieces.\n\n**Erdős's Comment:** 'A very beautiful problem...if it were my problem I would offer $1000 for it.'\n\n**Solution:** Laczkovich (1990) proved YES, and surprisingly, translations alone suffice!",
+    "historicalContext": "Tarski's Circle-Squaring Problem, posed by Alfred Tarski in 1925, is one of the most celebrated problems in geometric measure theory. The question asks whether a circle and a square of equal area can be decomposed into finitely many congruent pieces that can be rearranged from one shape to the other. Erdős considered it 'a very beautiful problem' and said he would offer $1000 for its solution.\n\nThe problem remained open for 65 years until Miklós Laczkovich resolved it in 1990 with a striking positive answer. Laczkovich proved not only that such a decomposition exists, but that translations alone suffice—no rotations or reflections are needed. His proof uses approximately 10^50 pieces and relies fundamentally on the Axiom of Choice, making the decomposition non-constructive.\n\nThe result connects to deep themes in set theory and measure theory. Dubins, Hirsch, and Karush had earlier shown that no such decomposition is possible if the pieces are required to be Lebesgue measurable, explaining why the Axiom of Choice is essential. The problem is related to the Banach-Tarski paradox, which shows that similar non-constructive decompositions can produce even more paradoxical results in three dimensions.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nCan a circle and square of equal area be decomposed into a finite number of congruent parts?\n\n**Answer: YES** (Laczkovich 1990)\n\n- Translations alone suffice (stronger than asked)\n- Uses approximately 10^50 pieces\n- Proof is non-constructive (uses Axiom of Choice)",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basic Shapes:** Define disk and square in R².\n2. **Equidecomposability:** Define translation congruence and decompositions.\n3. **Tarski's Problem:** Formalize the original question.\n4. **Laczkovich's Theorem:** Axiomatize the solution.\n5. **Key Features:** Note non-constructive nature and piece count.",
     "keyInsights": ["**65 years open:** From 1925 to 1990", "**Translations suffice:** Stronger than required", "**10^50 pieces:** Astronomical number", "**Non-constructive:** Requires Axiom of Choice", "**Non-measurable:** Pieces cannot all be Lebesgue measurable"]
   },
   "sections": [
-    {"id": "basic-defs", "title": "Basic Definitions", "summary": "Points, disks, squares", "startLine": 41, "endLine": 62},
-    {"id": "equidecomposability", "title": "Equidecomposability", "summary": "Translations and decompositions", "startLine": 64, "endLine": 102},
-    {"id": "circle-squaring", "title": "Circle-Squaring Problem", "summary": "Same area condition", "startLine": 104, "endLine": 123},
-    {"id": "tarski-problem", "title": "Tarski's Question", "summary": "Original problem statement", "startLine": 125, "endLine": 136},
-    {"id": "laczkovich", "title": "Laczkovich's Solution", "summary": "Main theorem", "startLine": 138, "endLine": 177},
-    {"id": "key-features", "title": "Key Features", "summary": "Non-constructive aspects", "startLine": 179, "endLine": 201},
-    {"id": "summary", "title": "Summary", "summary": "Main result", "startLine": 203, "endLine": 240}
+    {"id": "basic-defs", "title": "Basic Definitions", "summary": "Points, disks, squares in R²", "startLine": 41, "endLine": 62},
+    {"id": "equidecomposability", "title": "Equidecomposability", "summary": "Translations, isometry congruence, decompositions", "startLine": 64, "endLine": 97},
+    {"id": "circle-squaring", "title": "Circle-Squaring Problem", "summary": "Same area condition and equal-area examples", "startLine": 99, "endLine": 118},
+    {"id": "tarski-problem", "title": "Tarski's Question", "summary": "Original problem statement formalized", "startLine": 120, "endLine": 131},
+    {"id": "laczkovich", "title": "Laczkovich's Solution", "summary": "Main theorem and derived results", "startLine": 133, "endLine": 165},
+    {"id": "key-features", "title": "Key Features", "summary": "Non-measurability and Dubins-Hirsch-Karush", "startLine": 167, "endLine": 184},
+    {"id": "summary", "title": "Summary", "summary": "Combined main result", "startLine": 186, "endLine": 211}
   ],
   "conclusion": {
     "summary": "Tarski's Circle-Squaring Problem asks whether a circle and square of equal area can be decomposed into finitely many congruent pieces. Laczkovich (1990) proved YES, and translations alone suffice. The proof uses approximately 10^50 pieces and relies on the Axiom of Choice.",

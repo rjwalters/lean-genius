@@ -18,120 +18,75 @@
     "significance": "key"
   },
   {
-    "id": "ann-1124-disk",
+    "id": "ann-1124-shapes",
     "proofId": "erdos-1124",
-    "range": { "startLine": 56, "endLine": 58 },
+    "range": { "startLine": 48, "endLine": 62 },
     "type": "definition",
-    "title": "disk",
-    "content": "**Disk of Radius r:** The set {p : ‖p‖ ≤ r}.\n\nA closed disk centered at the origin. This is one of the two shapes in Tarski's problem.",
+    "title": "Disks and Squares",
+    "content": "**Geometric Shapes:** Definitions of disks and squares in R².\n\n- `unitDisk`: The closed unit disk {p : ‖p‖ ≤ 1}\n- `unitSquare`: The unit square [0,1]²\n- `disk r`: A disk of radius r centered at the origin\n- `square s`: A square of side length s with corner at origin\n\nThese are the two shapes in Tarski's circle-squaring problem.",
     "significance": "critical"
   },
   {
-    "id": "ann-1124-square",
+    "id": "ann-1124-congruence",
     "proofId": "erdos-1124",
-    "range": { "startLine": 60, "endLine": 62 },
+    "range": { "startLine": 68, "endLine": 78 },
     "type": "definition",
-    "title": "square",
-    "content": "**Square of Side s:** The set [0,s] × [0,s].\n\nA closed square with corner at the origin. The other shape in Tarski's problem.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1124-translation",
-    "proofId": "erdos-1124",
-    "range": { "startLine": 68, "endLine": 76 },
-    "type": "definition",
-    "title": "TranslationCongruent",
-    "content": "**Translation Congruence:** Two sets A and B are translation-congruent if B = A + v for some vector v.\n\nLaczkovich's key insight was that translations alone suffice—no rotations or reflections needed!",
+    "title": "Congruence Relations",
+    "content": "**Translation and Isometry Congruence:**\n\n- `translateBy v`: translates a point by vector v\n- `TranslationCongruent A B`: B is a translate of A (B = A + v for some v)\n- `IsometryCongruent A B`: B is the image of A under a distance-preserving map\n\nLaczkovich's key insight was that translations alone suffice—no rotations or reflections needed!",
     "significance": "critical"
   },
   {
     "id": "ann-1124-decomposition",
     "proofId": "erdos-1124",
-    "range": { "startLine": 85, "endLine": 88 },
+    "range": { "startLine": 80, "endLine": 97 },
     "type": "definition",
-    "title": "IsDecomposition",
-    "content": "**Finite Decomposition:** A partition of set S into finitely many disjoint pieces.\n\nThe pieces must be pairwise disjoint and their union must equal S exactly.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1124-equidecomposable",
-    "proofId": "erdos-1124",
-    "range": { "startLine": 90, "endLine": 95 },
-    "type": "definition",
-    "title": "TranslationEquidecomposable",
-    "content": "**Translation Equidecomposable:** Sets A and B can each be decomposed into n pieces such that corresponding pieces are translation-congruent.\n\nThis is the key property Laczkovich proved for circles and squares of equal area.",
+    "title": "Decomposition and Equidecomposability",
+    "content": "**Finite Decomposition and Equidecomposability:**\n\n- `IsDecomposition S pieces`: S is partitioned into finitely many pairwise disjoint pieces\n- `TranslationEquidecomposable A B`: A and B can be decomposed into n pieces where corresponding pieces are translation-congruent\n- `IsometryEquidecomposable A B`: same but using isometry congruence\n\nEquidecomposability is the central concept: can two shapes be cut into the same finite number of pieces that match up?",
     "significance": "critical"
   },
   {
     "id": "ann-1124-samearea",
     "proofId": "erdos-1124",
-    "range": { "startLine": 108, "endLine": 110 },
+    "range": { "startLine": 103, "endLine": 118 },
     "type": "definition",
-    "title": "SameArea",
-    "content": "**Equal Area Condition:** A circle of radius r and square of side s have equal area iff πr² = s².\n\nThis is the necessary condition for any equidecomposition to be possible.",
+    "title": "Equal Area Condition",
+    "content": "**Same Area:** A circle of radius r and square of side s have equal area iff πr² = s².\n\n`equalAreaRadius = 1/√π` gives the radius of a circle with the same area as the unit square. The `equal_areas` theorem verifies this algebraically.",
     "significance": "key"
   },
   {
     "id": "ann-1124-tarski",
     "proofId": "erdos-1124",
-    "range": { "startLine": 129, "endLine": 136 },
+    "range": { "startLine": 124, "endLine": 131 },
     "type": "definition",
     "title": "TarskiProblem",
-    "content": "**Tarski's Original Question (1925):** Can a circle and square of equal area be decomposed into finitely many congruent pieces using isometries?\n\nThis was open for 65 years until Laczkovich's 1990 solution.",
+    "content": "**Tarski's Original Question (1925):** Can a circle and square of equal area be decomposed into finitely many congruent pieces using isometries?\n\nFormalized as: for all r, s > 0 with πr² = s², the disk of radius r and square of side s are isometry-equidecomposable. This was open for 65 years.",
     "significance": "critical"
   },
   {
     "id": "ann-1124-laczkovich",
     "proofId": "erdos-1124",
-    "range": { "startLine": 142, "endLine": 151 },
+    "range": { "startLine": 137, "endLine": 165 },
     "type": "axiom",
-    "title": "laczkovich_theorem",
-    "content": "**Laczkovich's Theorem (1990):** YES, and translations alone suffice!\n\nFor any circle and square of equal area, there exists a finite decomposition into pieces that can be rearranged by translations only.\n\n**Key facts:**\n- Uses approximately 10^50 pieces\n- Proof is non-constructive (requires Axiom of Choice)\n- Pieces are not Lebesgue measurable",
+    "title": "Laczkovich's Theorem and Consequences",
+    "content": "**Laczkovich's Theorem (1990):** YES, and translations alone suffice!\n\nAxiomatized as `laczkovich_theorem`: for any circle and square of equal area, there exists a finite decomposition into translation-congruent pieces.\n\n**Additional results:**\n- `laczkovich_piece_count`: at most 10^51 pieces needed\n- `translation_implies_isometry`: translations are isometries, so translation equidecomposability implies isometry equidecomposability\n- `tarski_solved`: Tarski's problem follows from Laczkovich's theorem",
     "significance": "critical"
   },
   {
-    "id": "ann-1124-piececount",
+    "id": "ann-1124-nonmeasurable",
     "proofId": "erdos-1124",
-    "range": { "startLine": 153, "endLine": 160 },
+    "range": { "startLine": 167, "endLine": 184 },
     "type": "axiom",
-    "title": "laczkovich_piece_count",
-    "content": "**Piece Count:** The number of pieces is bounded by 10^51.\n\nThe actual number is approximately 10^50—astronomically large but finite. The pieces cannot be explicitly constructed.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1124-tarski-solved",
-    "proofId": "erdos-1124",
-    "range": { "startLine": 174, "endLine": 177 },
-    "type": "theorem",
-    "title": "tarski_solved",
-    "content": "**Theorem:** Tarski's problem is solved.\n\nDerived from Laczkovich's theorem: translation equidecomposability implies isometry equidecomposability (translations are isometries).",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1124-choice",
-    "proofId": "erdos-1124",
-    "range": { "startLine": 183, "endLine": 186 },
-    "type": "concept",
-    "title": "Axiom of Choice",
-    "content": "**Non-Constructive Proof:** Laczkovich's proof fundamentally relies on the Axiom of Choice.\n\nThe pieces cannot be explicitly constructed—we only know they exist. This connects to the Banach-Tarski paradox.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1124-dhk",
-    "proofId": "erdos-1124",
-    "range": { "startLine": 195, "endLine": 201 },
-    "type": "axiom",
-    "title": "dubins_hirsch_karush",
-    "content": "**Dubins-Hirsch-Karush Theorem:** It is impossible to decompose a circle and square into measurable pieces that are translation-congruent.\n\nThis explains why Laczkovich's pieces must be non-measurable—the problem has no 'nice' solution.",
+    "title": "Non-Measurability Results",
+    "content": "**The pieces must be non-measurable.**\n\n- `pieces_not_measurable`: any finite decomposition of the disk must contain at least one non-Lebesgue-measurable piece\n- `dubins_hirsch_karush`: it is impossible to decompose a disk and square into measurable, translation-congruent pieces\n\nThis explains why Laczkovich's proof requires the Axiom of Choice—the pieces cannot be explicitly constructed. The result connects to the Banach-Tarski paradox in 3D.",
     "significance": "key"
   },
   {
     "id": "ann-1124-main",
     "proofId": "erdos-1124",
-    "range": { "startLine": 220, "endLine": 226 },
+    "range": { "startLine": 190, "endLine": 209 },
     "type": "theorem",
-    "title": "erdos_1124",
-    "content": "**Main Result:**\n1. Tarski's problem is SOLVED\n2. Translations alone suffice (stronger than asked)\n\nThis formalizes Erdős Problem #1124 as completely resolved by Laczkovich's 1990 breakthrough.",
+    "title": "erdos_1124: Main Result",
+    "content": "**Main Result:**\n1. Tarski's problem is SOLVED (TarskiProblem holds)\n2. Translations alone suffice (TranslationEquidecomposable for equal-area circles and squares)\n\nProved via `exact ⟨tarski_solved, laczkovich_theorem⟩`, combining the derived theorem with the axiomatized result.",
     "significance": "critical"
   }
 ]
