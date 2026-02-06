@@ -112,10 +112,10 @@
   {
     "id": "ann-e844-density",
     "proofId": "erdos-844",
-    "range": { "startLine": 192, "endLine": 196 },
+    "range": { "startLine": 191, "endLine": 194 },
     "type": "axiom",
-    "title": "Asymptotic Density",
-    "content": "**optimal_set_density:**\n\nThe optimal set has asymptotic density 1 - 4/π² ≈ 0.595.\n\nThe odd squarefree numbers (the excluded set) have density 4/π² ≈ 0.405.",
+    "title": "Density Bound",
+    "content": "**optimal_set_density:**\n\nThe optimal set has at most N elements (trivial upper bound). Asymptotically, the optimal set has density 1 - 4/π² ≈ 0.595, since the odd squarefree numbers (density 4/π² ≈ 0.405) are excluded.",
     "mathContext": "The squarefree numbers have density 6/π² ≈ 0.608, and half of them are even.",
     "significance": "supporting",
     "relatedConcepts": ["Squarefree density", "Asymptotic analysis"]
@@ -123,16 +123,16 @@
   {
     "id": "ann-e844-example",
     "proofId": "erdos-844",
-    "range": { "startLine": 205, "endLine": 206 },
+    "range": { "startLine": 200, "endLine": 211 },
     "type": "concept",
     "title": "Example for N = 10",
-    "content": "**optimalSet 10 = {2, 4, 6, 8, 9, 10}**\n\n- 2, 4, 6, 8, 10 are even\n- 9 = 3² is odd non-squarefree\n- Missing: 1, 3, 5, 7 (odd squarefree)",
+    "content": "**optimalSet 10 = {2, 4, 6, 8, 9, 10}**\n\n- 2, 4, 6, 8, 10 are even\n- 9 = 3² is odd non-squarefree\n- Missing: 1, 3, 5, 7 (odd squarefree)\n- Why 1 cannot be added: 1 × 3 = 3 is squarefree",
     "significance": "supporting"
   },
   {
     "id": "ann-e844-characterization",
     "proofId": "erdos-844",
-    "range": { "startLine": 229, "endLine": 242 },
+    "range": { "startLine": 217, "endLine": 230 },
     "type": "theorem",
     "title": "Complete Characterization",
     "content": "**erdos_844_characterization:**\n\n1. The optimal set has the non-squarefree product property\n2. No larger set has the property\n3. The optimal set = even numbers ∪ odd non-squarefree\n\nThis completely resolves Erdős Problem #844.",
@@ -141,10 +141,10 @@
   {
     "id": "ann-e844-summary",
     "proofId": "erdos-844",
-    "range": { "startLine": 244, "endLine": 267 },
+    "range": { "startLine": 232, "endLine": 244 },
     "type": "theorem",
-    "title": "Problem Solved",
-    "content": "**Erdős Problem #844: SOLVED**\n\nThe maximum A ⊆ {1,...,N} with ¬Squarefree(ab) for all a,b ∈ A is achieved by:\n- All even numbers\n- All odd non-squarefree numbers\n\nEquivalently: all numbers except odd squarefree numbers.\n\nKey insight: Chvátal's intersecting families result determines the optimal squarefree subset.",
+    "title": "Summary Theorem",
+    "content": "**erdos_844:**\n\nCombines the two main results:\n1. The optimal set has the non-squarefree product property\n2. No larger set has the property\n\nProved via exact ⟨optimal_set_has_property, weisenberg_proof⟩.",
     "significance": "critical"
   }
 ]

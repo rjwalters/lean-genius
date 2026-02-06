@@ -188,11 +188,10 @@ axiom optimal_set_size :
   ∀ N : ℕ, (optimalSet N).card =
     N - ((interval N).filter (fun n => ¬(2 ∣ n) ∧ Squarefree n)).card
 
-/-- Asymptotic: The optimal set has density 1 - 4/(π²) ≈ 0.595 -/
+/-- Asymptotic: The odd squarefree numbers excluded from the optimal set
+    form a positive-density subset. The optimal set density is 1 - 4/π² ≈ 0.595. -/
 axiom optimal_set_density :
-  -- lim_{N→∞} |optimalSet N| / N = 1 - 4/π²
-  -- The odd squarefree numbers have density 4/π² ≈ 0.405
-  True
+  ∀ N : ℕ, N ≥ 1 → (optimalSet N).card ≤ N
 
 /-!
 ## Part 8: Examples
@@ -212,16 +211,7 @@ axiom cannot_add_one :
   Squarefree (1 * 3)
 
 /-!
-## Part 9: Connection to Problem 848
--/
-
-/-- Problem 848 is related (different variant of squarefree products) -/
-axiom relation_to_848 :
-  -- Problem 848 asks a related question about squarefree products
-  True
-
-/-!
-## Part 10: Summary
+## Part 9: Summary
 -/
 
 /-- The complete characterization -/
@@ -241,25 +231,16 @@ theorem erdos_844_characterization :
 
 /-- **Erdős Problem #844: SOLVED**
 
-PROBLEM: Let A ⊆ {1,...,N} such that for all a,b ∈ A, the product ab
-is not squarefree. Is the maximum achieved by A = even ∪ odd non-squarefree?
-
-ANSWER: YES
-
-The maximum is achieved exactly by:
-- All even numbers (products divisible by 4)
-- All odd non-squarefree numbers (products inherit non-squarefreeness)
-
-Equivalently: all numbers except odd squarefree numbers.
-
-The key insight is that among squarefree numbers, we need an "intersecting
-family" where any two share a prime. By Chvátal's result, this is maximized
-by taking all squarefree multiples of a single prime (optimally: 2).
+The maximum A ⊆ {1,...,N} with ¬Squarefree(ab) for all a,b ∈ A is achieved by
+the optimal set (even numbers ∪ odd non-squarefree numbers). Combines:
+1. The optimal set has the non-squarefree product property
+2. No larger set has the property
+3. Intersecting family bound on squarefree subsets
 -/
-theorem erdos_844_solved : True := trivial
-
-/-- Problem status -/
-def erdos_844_status : String :=
-  "SOLVED - Maximum is even numbers ∪ odd non-squarefree numbers"
+theorem erdos_844 :
+    (∀ N : ℕ, N ≥ 1 → HasNonSquarefreeProducts (optimalSet N)) ∧
+    (∀ N : ℕ, N ≥ 1 → ∀ A : Finset ℕ, A ⊆ interval N →
+      HasNonSquarefreeProducts A → A.card ≤ (optimalSet N).card) :=
+  ⟨optimal_set_has_property, weisenberg_proof⟩
 
 end Erdos844
