@@ -161,9 +161,73 @@ theorem card_subsets_of_size (s : Finset α) (k : ℕ) :
     (Finset.powersetCard k s).card = Nat.choose s.card k :=
   Finset.card_powersetCard k s
 
-#check combinations_formula
-#check factorial_product_divides
-#check choose_symmetry
-#check pascal_identity
+/-! ## Part VII: Generalized Binomial Coefficients
+
+The standard binomial coefficient C(n,k) requires n ∈ ℕ. The generalized binomial
+coefficient extends this to any real (or complex) argument α:
+
+  C(α, k) = α(α-1)(α-2)...(α-k+1) / k!
+
+This is the "falling factorial" of α divided by k!. When α is a natural number,
+this agrees with the standard definition.
+-/
+
+/-- The generalized binomial coefficient for real arguments.
+    genBinom α k = α(α-1)(α-2)...(α-k+1) / k!
+
+    This extends C(n,k) to non-integer α. -/
+noncomputable def genBinom (α : ℝ) : ℕ → ℝ
+  | 0 => 1
+  | k + 1 => genBinom α k * (α - k) / (k + 1)
+
+/-- C(α, 0) = 1 for any α. -/
+theorem genBinom_zero (α : ℝ) : genBinom α 0 = 1 := rfl
+
+/-- The recursion for generalized binomial coefficients. -/
+theorem genBinom_succ (α : ℝ) (k : ℕ) :
+    genBinom α (k + 1) = genBinom α k * (α - k) / (k + 1) := rfl
+
+/-- C(α, 1) = α for any α. -/
+theorem genBinom_one (α : ℝ) : genBinom α 1 = α := by
+  simp [genBinom]
+
+/-- C(0, k) = 0 for k ≥ 1. -/
+theorem genBinom_zero_pos (k : ℕ) (hk : k ≥ 1) : genBinom 0 k = 0 := by
+  induction k with
+  | zero => omega
+  | succ n ih =>
+    simp only [genBinom]
+    rcases n with _ | m
+    · simp; ring
+    · have : genBinom 0 (m + 1) = 0 := ih (by omega)
+      simp [this]
+
+/-- C(α, 2) = α(α-1)/2. -/
+theorem genBinom_two (α : ℝ) : genBinom α 2 = α * (α - 1) / 2 := by
+  simp [genBinom]; ring
+
+/-- When α = n (a natural number) and k = 0, genBinom agrees with choose. -/
+theorem genBinom_nat_zero (n : ℕ) : genBinom (n : ℝ) 0 = (Nat.choose n 0 : ℝ) := by
+  simp [genBinom, Nat.choose]
+
+/-- Concrete verification: genBinom 5 2 = 10. -/
+example : genBinom 5 2 = (10 : ℝ) := by
+  simp [genBinom]; ring
+
+/-- Concrete verification: genBinom 5 3 = 10. -/
+example : genBinom 5 3 = (10 : ℝ) := by
+  simp [genBinom]; ring
+
+/-- Concrete verification: genBinom 10 3 = 120. -/
+example : genBinom 10 3 = (120 : ℝ) := by
+  simp [genBinom]; ring
+
+/-- Concrete example: C(1/2, 2) = -1/8. -/
+example : genBinom (1/2 : ℝ) 2 = -1/8 := by
+  rw [genBinom_two]; ring
+
+/-- Concrete example: C(-1, 3) = -1. -/
+example : genBinom (-1 : ℝ) 3 = -1 := by
+  simp [genBinom]; ring
 
 end CombinationsFormula

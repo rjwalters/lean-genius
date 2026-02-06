@@ -50,18 +50,18 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-02-04T20:00:00Z",
-    "iteration": 4,
-    "focus": "Added 10 new theorems + fixed 5 Lean 4.26 API compat bugs. New: 6601, 8911 verifications, C(8911)≥7, structural theorems, coprime pair lemma.",
+    "iteration": 5,
+    "focus": "Converted carmichael_ge_561 axiom to theorem via decidable Korselt check + native_decide",
     "blockers": [],
-    "nextAction": "Consider submitting to Aristotle after converting axioms to theorem sorries",
+    "nextAction": "Problem is essentially complete. Remaining 6 axioms are deep results.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Comprehensive structural theory proved. File has 34 proven theorems covering small examples (561,1105,1729,2465,2821), oddness, prime factor properties (odd, >=3), minimum prime factor count (>=3), non-semiprimality, non-prime-power, counting function base values, unboundedness, and modular congruence. 7 axioms remain: bounds axioms + carmichael_ge_561.",
+    "progressSummary": "PROGRESS: Comprehensive structural theory proved. Converted carmichael_ge_561 from axiom to theorem via decidable Korselt check over Fin 561 using native_decide. 6 axioms remain (all deep bounds/infinitude results).",
     "builtItems": [
       "proofs/Proofs/Erdos1057Problem.lean: IsCarmichael, satisfiesKorselt, C definitions",
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_561, carmichael_1105, carmichael_1729, carmichael_2465, carmichael_2821, carmichael_6601, carmichael_8911",
@@ -69,7 +69,10 @@
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_at_least_3_primes, carmichael_not_prime_power",
       "proofs/Proofs/Erdos1057Problem.lean: carmichael_prime_factors_odd, carmichael_prime_factors_ge_3",
       "proofs/Proofs/Erdos1057Problem.lean: C_mono, C_unbounded, C_zero, C_one, C_below_561, C_561_pos",
-      "proofs/Proofs/Erdos1057Problem.lean: carmichael_cong_one_mod, carmichael_prime_factor_lt"
+      "proofs/Proofs/Erdos1057Problem.lean: carmichael_cong_one_mod, carmichael_prime_factor_lt",
+      "isCarmichaelCheck: decidable Bool check for Carmichael property (attribute [-instance] Classical.propDecidable trick)",
+      "no_carmichael_below_561: exhaustive native_decide verification over Fin 561",
+      "carmichael_ge_561: converted from axiom to theorem (7→6 axioms)"
     ],
     "insights": [
       "Korselt criterion based proofs work well for structural results",
@@ -77,7 +80,9 @@
       "Finset.card counting arguments require care with Lean 4.26 API (notMem_empty, card_insert_of_notMem)",
       "C_unbounded proved inductively from infinitely_many_carmichaels using Finset.sup and card_insert",
       "Nat.mul_add_mod is the correct lemma for (a*b+c) % a pattern in Lean 4.26",
-      "Lean 4.26 API changes: Finset.not_mem_empty→notMem_empty, Nat.Prime.not_unit removed (use hp.one_lt.ne' with Nat.isUnit_iff), prod_primeFactors_of_squarefree reversed direction, Nat.factorization_pos_iff_dvd removed (use Nat.Prime.dvd_iff_one_le_factorization), List.mem_singleton no longer applicable for cons lists (use mem_nil_iff)"
+      "Lean 4.26 API changes: Finset.not_mem_empty→notMem_empty, Nat.Prime.not_unit removed (use hp.one_lt.ne' with Nat.isUnit_iff), prod_primeFactors_of_squarefree reversed direction, Nat.factorization_pos_iff_dvd removed (use Nat.Prime.dvd_iff_one_le_factorization), List.mem_singleton no longer applicable for cons lists (use mem_nil_iff)",
+      "attribute [-instance] Classical.propDecidable in a section enables computable decide/native_decide when open Classical is active",
+      "IsCarmichael decidability: all components (Squarefree, Prime, dvd, primeFactors membership) are decidable on ℕ"
     ],
     "mathlibGaps": [
       "No Carmichael number theory in Mathlib (all definitions custom)",
@@ -86,7 +91,7 @@
     "nextSteps": [
       "Consider submitting to Aristotle after converting axioms to theorem sorries",
       "Prove more about the lcm structure: lcm(p_i - 1) | (n-1)",
-      "Convert carmichael_ge_561 axiom to a theorem (needs decidable Korselt check)",
+      "carmichael_ge_561 now proved via decidable check + native_decide",
       "Formalize the Pomerance heuristic more precisely"
     ]
   },
@@ -102,7 +107,7 @@
     "number-theory",
     "carmichael-numbers",
     "pseudoprimes",
-    "7-axioms"
+    "6-axioms"
   ],
   "relatedProofs": [],
   "references": {
@@ -117,7 +122,7 @@
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-02-05T03:20:00Z",
+  "lastUpdate": "2026-02-06T08:15:00Z",
   "significance": 7,
   "tractability": 6
 }
