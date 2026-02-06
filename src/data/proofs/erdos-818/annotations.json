@@ -79,8 +79,8 @@
   {
     "id": "ann-818-8",
     "proofId": "erdos-818",
-    "range": { "startLine": 195, "endLine": 206 },
-    "type": "insight",
+    "range": { "startLine": 195, "endLine": 214 },
+    "type": "concept",
     "title": "Proof Strategy",
     "content": "1. Lower bound: E×(A) ≥ |A|⁴/|AA| (Cauchy-Schwarz)\n2. Upper bound: E×(A) ≤ |A|²·|A+A|·log|A| (Solymosi)\n3. Combine: |A|⁴/|AA| ≤ |A|²·|A+A|·log|A|\n4. Rearrange: |AA| ≥ |A|²/(|A+A|/|A|·log|A|)\n5. If |A+A| ≤ K|A|: |AA| ≥ |A|²/(K·log|A|)",
     "mathContext": "Sandwiching multiplicative energy gives the product set bound",
@@ -90,9 +90,9 @@
   {
     "id": "ann-818-9",
     "proofId": "erdos-818",
-    "range": { "startLine": 246, "endLine": 254 },
-    "type": "example",
-    "title": "Arithmetic Progressions",
+    "range": { "startLine": 262, "endLine": 290 },
+    "type": "concept",
+    "title": "Examples: Arithmetic and Geometric Progressions",
     "content": "For A = {1, 2, ..., n}: |A+A| = 2n-1 (additive doubling ~2, small). But |AA| ≈ n²/log n by the Erdős multiplication table problem. This shows the log factor in Solymosi's bound is NECESSARY.",
     "mathContext": "A = {1,...,n} ⟹ |A+A| = 2n-1, |AA| ≈ n²/log n",
     "significance": "supporting",
@@ -101,7 +101,7 @@
   {
     "id": "ann-818-10",
     "proofId": "erdos-818",
-    "range": { "startLine": 285, "endLine": 296 },
+    "range": { "startLine": 292, "endLine": 325 },
     "type": "theorem",
     "title": "Summary",
     "content": "Problem 818 is SOLVED. Solymosi proved that small sumsets force large product sets: |A+A| ≤ K|A| implies |AA| ≥ c|A|²/log|A|. This is a quantitative version of the sum-product dichotomy.",
