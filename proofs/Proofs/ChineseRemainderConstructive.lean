@@ -174,7 +174,7 @@ theorem crt_three (m₁ m₂ m₃ a₁ a₂ a₃ : ℕ)
   -- First solve for m₁, m₂
   obtain ⟨y, hy1, hy2⟩ := crt_exists m₁ m₂ a₁ a₂ h12
   -- y satisfies first two, now solve with m₃
-  have hcoprime : Nat.Coprime (m₁ * m₂) m₃ := Nat.Coprime.mul h13 h23
+  have hcoprime : Nat.Coprime (m₁ * m₂) m₃ := h13.mul_left h23
   obtain ⟨x, hx12, hx3⟩ := crt_exists (m₁ * m₂) m₃ y a₃ hcoprime
   -- x ≡ y (mod m₁·m₂) means x ≡ y (mod m₁) and x ≡ y (mod m₂)
   have hx1 : x ≡ a₁ [MOD m₁] := by
@@ -198,7 +198,7 @@ theorem crt_three_unique (m₁ m₂ m₃ a₁ a₂ a₃ x₁ x₂ : ℕ)
   -- Combine using CRT theorem
   have hab : x₁ ≡ x₂ [MOD m₁ * m₂] :=
     (Nat.modEq_and_modEq_iff_modEq_mul h12).mp ⟨ha, hb⟩
-  have h123 : Nat.Coprime (m₁ * m₂) m₃ := Nat.Coprime.mul h13 h23
+  have h123 : Nat.Coprime (m₁ * m₂) m₃ := h13.mul_left h23
   exact (Nat.modEq_and_modEq_iff_modEq_mul h123).mp ⟨hab, hc⟩
 
 /-!
@@ -230,7 +230,7 @@ theorem rns_unique (x y : ℕ) (hx : x < 105) (hy : y < 105)
   -- Use CRT uniqueness
   have h_all : x ≡ y [MOD 3 * 5 * 7] := by
     have h12 : x ≡ y [MOD 3 * 5] := (Nat.modEq_and_modEq_iff_modEq_mul h35).mp ⟨hx3, hx5⟩
-    have h123 : Nat.Coprime (3 * 5) 7 := Nat.Coprime.mul h37 h57
+    have h123 : Nat.Coprime (3 * 5) 7 := h37.mul_left h57
     exact (Nat.modEq_and_modEq_iff_modEq_mul h123).mp ⟨h12, hx7⟩
   simp only [Nat.ModEq] at h_all
   have hprod : 3 * 5 * 7 = 105 := by norm_num
@@ -276,10 +276,141 @@ In Western mathematics, the theorem was rediscovered and generalized by
 Leonhard Euler and Carl Friedrich Gauss.
 -/
 
+/-!
+## CRT for Four Moduli
+
+Extending the inductive CRT approach to four pairwise coprime moduli.
+-/
+
+/-- CRT for four pairwise coprime moduli -/
+theorem crt_four (m₁ m₂ m₃ m₄ a₁ a₂ a₃ a₄ : ℕ)
+    (h12 : Nat.Coprime m₁ m₂) (h13 : Nat.Coprime m₁ m₃) (h14 : Nat.Coprime m₁ m₄)
+    (h23 : Nat.Coprime m₂ m₃) (h24 : Nat.Coprime m₂ m₄) (h34 : Nat.Coprime m₃ m₄) :
+    ∃ x : ℕ, x ≡ a₁ [MOD m₁] ∧ x ≡ a₂ [MOD m₂] ∧ x ≡ a₃ [MOD m₃] ∧ x ≡ a₄ [MOD m₄] := by
+  -- First solve for m₁, m₂, m₃
+  obtain ⟨y, hy1, hy2, hy3⟩ := crt_three m₁ m₂ m₃ a₁ a₂ a₃ h12 h13 h23
+  -- Now solve y ≡ y (mod m₁·m₂·m₃), x ≡ a₄ (mod m₄)
+  have hcop : Nat.Coprime (m₁ * m₂ * m₃) m₄ := (h14.mul_left h24).mul_left h34
+  obtain ⟨x, hx123, hx4⟩ := crt_exists (m₁ * m₂ * m₃) m₄ y a₄ hcop
+  have hx12 : x ≡ y [MOD m₁ * m₂] := Nat.ModEq.of_mul_right m₃ hx123
+  have hx1 : x ≡ a₁ [MOD m₁] := (Nat.ModEq.of_mul_right m₂ hx12).trans hy1
+  have hx2 : x ≡ a₂ [MOD m₂] := (Nat.ModEq.of_mul_left m₁ hx12).trans hy2
+  have hx3 : x ≡ a₃ [MOD m₃] := (Nat.ModEq.of_mul_left (m₁ * m₂) hx123).trans hy3
+  exact ⟨x, hx1, hx2, hx3, hx4⟩
+
+/-- The four-moduli solution is unique mod m₁·m₂·m₃·m₄ -/
+theorem crt_four_unique (m₁ m₂ m₃ m₄ a₁ a₂ a₃ a₄ x₁ x₂ : ℕ)
+    (h12 : Nat.Coprime m₁ m₂) (h13 : Nat.Coprime m₁ m₃) (h14 : Nat.Coprime m₁ m₄)
+    (h23 : Nat.Coprime m₂ m₃) (h24 : Nat.Coprime m₂ m₄) (h34 : Nat.Coprime m₃ m₄)
+    (hx1 : x₁ ≡ a₁ [MOD m₁] ∧ x₁ ≡ a₂ [MOD m₂] ∧ x₁ ≡ a₃ [MOD m₃] ∧ x₁ ≡ a₄ [MOD m₄])
+    (hx2 : x₂ ≡ a₁ [MOD m₁] ∧ x₂ ≡ a₂ [MOD m₂] ∧ x₂ ≡ a₃ [MOD m₃] ∧ x₂ ≡ a₄ [MOD m₄]) :
+    x₁ ≡ x₂ [MOD m₁ * m₂ * m₃ * m₄] := by
+  have ha : x₁ ≡ x₂ [MOD m₁] := hx1.1.trans hx2.1.symm
+  have hb : x₁ ≡ x₂ [MOD m₂] := hx1.2.1.trans hx2.2.1.symm
+  have hc : x₁ ≡ x₂ [MOD m₃] := hx1.2.2.1.trans hx2.2.2.1.symm
+  have hd : x₁ ≡ x₂ [MOD m₄] := hx1.2.2.2.trans hx2.2.2.2.symm
+  have hab : x₁ ≡ x₂ [MOD m₁ * m₂] :=
+    (Nat.modEq_and_modEq_iff_modEq_mul h12).mp ⟨ha, hb⟩
+  have habc : x₁ ≡ x₂ [MOD m₁ * m₂ * m₃] :=
+    (Nat.modEq_and_modEq_iff_modEq_mul (h13.mul_left h23)).mp ⟨hab, hc⟩
+  exact (Nat.modEq_and_modEq_iff_modEq_mul ((h14.mul_left h24).mul_left h34)).mp ⟨habc, hd⟩
+
+/-!
+## Modular Arithmetic Preservation
+
+CRT-compatible operations: addition and multiplication preserve congruences.
+-/
+
+/-- Congruences are preserved under addition -/
+theorem modEq_add (m a₁ b₁ a₂ b₂ : ℕ)
+    (h1 : a₁ ≡ b₁ [MOD m]) (h2 : a₂ ≡ b₂ [MOD m]) :
+    a₁ + a₂ ≡ b₁ + b₂ [MOD m] :=
+  Nat.ModEq.add h1 h2
+
+/-- Congruences are preserved under multiplication -/
+theorem modEq_mul (m a₁ b₁ a₂ b₂ : ℕ)
+    (h1 : a₁ ≡ b₁ [MOD m]) (h2 : a₂ ≡ b₂ [MOD m]) :
+    a₁ * a₂ ≡ b₁ * b₂ [MOD m] :=
+  Nat.ModEq.mul h1 h2
+
+/-- Congruences are preserved under exponentiation -/
+theorem modEq_pow (m a b k : ℕ) (h : a ≡ b [MOD m]) :
+    a ^ k ≡ b ^ k [MOD m] :=
+  Nat.ModEq.pow k h
+
+/-!
+## Product of Coprime Moduli Properties
+-/
+
+/-- If m and n are coprime, then m * n divides x iff both m | x and n | x -/
+theorem coprime_mul_dvd_iff (m n x : ℕ) (h : Nat.Coprime m n) :
+    m * n ∣ x ↔ m ∣ x ∧ n ∣ x :=
+  ⟨fun hmn => ⟨dvd_trans (dvd_mul_right m n) hmn, dvd_trans (dvd_mul_left n m) hmn⟩,
+   fun ⟨hm, hn⟩ => h.mul_dvd_of_dvd_of_dvd hm hn⟩
+
+/-- CRT as a divisibility statement: x ≡ y (mod m*n) iff x ≡ y (mod m) and x ≡ y (mod n) -/
+theorem modEq_mul_iff (m n x y : ℕ) (h : Nat.Coprime m n) :
+    x ≡ y [MOD m * n] ↔ x ≡ y [MOD m] ∧ x ≡ y [MOD n] :=
+  (Nat.modEq_and_modEq_iff_modEq_mul h).symm
+
+/-!
+## Concrete Four-Moduli Example
+
+Solving: x ≡ 1 (mod 2), x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 4 (mod 7)
+Solution: x = 53 (unique mod 210 = 2·3·5·7)
+-/
+
+example : Nat.Coprime 2 3 := by decide
+example : Nat.Coprime 2 5 := by decide
+example : Nat.Coprime 2 7 := by decide
+example : Nat.Coprime 3 5 := by decide
+example : Nat.Coprime 3 7 := by decide
+example : Nat.Coprime 5 7 := by decide
+
+/-- 53 is the solution to x ≡ 1 (mod 2), x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 4 (mod 7) -/
+example : 53 ≡ 1 [MOD 2] := by native_decide
+example : 53 ≡ 2 [MOD 3] := by native_decide
+example : 53 ≡ 3 [MOD 5] := by native_decide
+example : 53 ≡ 4 [MOD 7] := by native_decide
+example : 53 < 2 * 3 * 5 * 7 := by norm_num
+
+/-- 53 + 210 = 263 also satisfies all four congruences -/
+example : 263 ≡ 1 [MOD 2] := by native_decide
+example : 263 ≡ 2 [MOD 3] := by native_decide
+example : 263 ≡ 3 [MOD 5] := by native_decide
+example : 263 ≡ 4 [MOD 7] := by native_decide
+
+/-!
+## CRT and Ring Isomorphism
+
+The CRT gives an isomorphism ℤ/mnℤ ≅ ℤ/mℤ × ℤ/nℤ when gcd(m,n) = 1.
+This means we can compute in the product ring instead of the larger ring.
+-/
+
+/-- The CRT mapping is injective: distinct residues mod m*n map to distinct pairs -/
+theorem crt_injective (m n x y : ℕ) (hcoprime : Nat.Coprime m n)
+    (hx : x < m * n) (hy : y < m * n)
+    (hm : x % m = y % m) (hn : x % n = y % n) :
+    x = y := by
+  have hxm : x ≡ y [MOD m] := hm
+  have hxn : x ≡ y [MOD n] := hn
+  have h := (Nat.modEq_and_modEq_iff_modEq_mul hcoprime).mp ⟨hxm, hxn⟩
+  simp only [Nat.ModEq] at h
+  rw [Nat.mod_eq_of_lt hx, Nat.mod_eq_of_lt hy] at h
+  exact h
+
+/-- Solving simultaneous congruences to zero: if m | x and n | x with coprime m, n then mn | x -/
+theorem coprime_zero_congruence (m n x : ℕ) (hcoprime : Nat.Coprime m n)
+    (hm : x ≡ 0 [MOD m]) (hn : x ≡ 0 [MOD n]) :
+    x ≡ 0 [MOD m * n] := by
+  exact (Nat.modEq_and_modEq_iff_modEq_mul hcoprime).mp ⟨hm, hn⟩
+
 #check crt_exists
 #check crt_unique
 #check crt_bounded
 #check crt_three
+#check crt_four
+#check crt_injective
 #check crtSolution
 
 end ChineseRemainderConstructive

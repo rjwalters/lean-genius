@@ -1,0 +1,111 @@
+{
+  "slug": "chinese-remainder-constructive-oq-02",
+  "title": "Chinese Remainder Theorem (Constructive)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "crt_exists (m n a b : ℕ) (hcoprime : Nat.Coprime m n) : ∃ x, x ≡ a [MOD m] ∧ x ≡ b [MOD n]",
+    "plain": "Formalize the Chinese Remainder Theorem with constructive proofs, explicit witnesses, and extensions to multiple moduli.",
+    "whyMatters": [
+      "CRT is one of the oldest and most fundamental theorems in number theory (~3rd century CE)",
+      "Foundation for modular arithmetic, RSA cryptography, and residue number systems",
+      "Constructive proofs provide computable solutions via Bézout coefficients"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "crt_exists: CRT existence for two coprime moduli via Nat.chineseRemainder",
+      "crt_unique: uniqueness of CRT solution mod m*n",
+      "crt_bounded: CRT solution with explicit bound x < m*n",
+      "bezout_identity: m * gcdA(m,n) + n * gcdB(m,n) = gcd(m,n)",
+      "bezout_coprime: Bézout coefficients give mu + nv = 1 when coprime",
+      "crt_three: CRT existence for three pairwise coprime moduli",
+      "crt_three_unique: uniqueness for three moduli mod m₁*m₂*m₃",
+      "rns_unique: RNS uniqueness for the 3×5×7 system",
+      "crt_four: CRT existence for four pairwise coprime moduli",
+      "crt_four_unique: uniqueness for four moduli mod m₁*m₂*m₃*m₄",
+      "modEq_add: congruences preserved under addition",
+      "modEq_mul: congruences preserved under multiplication",
+      "modEq_pow: congruences preserved under exponentiation",
+      "coprime_mul_dvd_iff: m*n | x ↔ m | x ∧ n | x (coprime case)",
+      "modEq_mul_iff: CRT as equivalence of congruences",
+      "crt_injective: CRT map injectivity (distinct residues mod m*n)",
+      "coprime_zero_congruence: simultaneous zero congruences combine"
+    ],
+    "open": [],
+    "goal": "Complete constructive formalization of CRT with multi-moduli extensions"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-06T04:30:00Z",
+    "iteration": 2,
+    "focus": "Deep dive complete: added 9 new theorems (8→17) and 15 new examples (27→42). Fixed 3 Lean 4.26 API compat issues (Nat.Coprime.mul → mul_left). Builds clean.",
+    "blockers": [],
+    "nextAction": "None - problem is complete",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 17 theorems, 42 examples, 2 defs, 0 axioms, 0 sorries. Comprehensive constructive CRT formalization covering 2/3/4-moduli existence and uniqueness, Bézout algorithm, modular arithmetic preservation, CRT injectivity, and extensive concrete examples including the classical Sunzi Suanjing problem.",
+    "builtItems": [
+      "proofs/Proofs/ChineseRemainderConstructive.lean: complete formalization (415 lines)",
+      "Core CRT: existence, uniqueness, bounded solution for two moduli",
+      "Constructive algorithm: Bézout coefficients and explicit formula",
+      "Multi-moduli: CRT for 3 and 4 pairwise coprime moduli",
+      "Modular arithmetic: addition, multiplication, exponentiation preservation",
+      "Ring properties: coprime divisibility, CRT equivalence, injectivity",
+      "Examples: Sunzi Suanjing (23 mod 105), four-moduli (53 mod 210), and many more"
+    ],
+    "insights": [
+      "Nat.Coprime.mul was renamed to Coprime.mul_left in Lean 4.26 Mathlib",
+      "Nat.chineseRemainder provides the computational CRT directly",
+      "Nat.modEq_and_modEq_iff_modEq_mul is the key combining lemma",
+      "Multi-moduli CRT follows by iterative application of two-moduli case",
+      "CRT injectivity proof requires Nat.mod_eq_of_lt to handle bounds"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Constructive via Mathlib CRT infrastructure",
+      "status": "completed",
+      "description": "Use Nat.chineseRemainder, Nat.modEq_and_modEq_iff_modEq_mul, and iterative composition for multi-moduli extensions. All proofs fully constructive with no axioms."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "constructive",
+    "classical-theorem",
+    "0-axioms",
+    "0-sorries"
+  ],
+  "relatedProofs": [
+    "proofs/Proofs/ChineseRemainderConstructive.lean"
+  ],
+  "references": {
+    "papers": [
+      "Sunzi Suanjing (~3rd-5th century CE): original CRT problem",
+      "Euler (1734): Western rediscovery and generalization",
+      "Gauss (1801): Disquisitiones Arithmeticae, systematic treatment"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Nat.chineseRemainder",
+      "Nat.Coprime",
+      "Nat.ModEq",
+      "Nat.modEq_and_modEq_iff_modEq_mul",
+      "Nat.chineseRemainder_lt_mul"
+    ]
+  },
+  "started": "2026-02-06T04:00:00Z",
+  "lastUpdate": "2026-02-06T04:30:00Z",
+  "significance": 6,
+  "tractability": 9
+}
