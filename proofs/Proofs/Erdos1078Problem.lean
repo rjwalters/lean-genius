@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #1078: Minimum Degree for K_r in r-Partite Graphs
 
 Source: https://erdosproblems.com/1078
@@ -14,16 +14,6 @@ Background:
 - Bollobás-Erdős-Szemerédi (1975): Conjectured, showed r-3/2 is best possible
 - Haxell (2001): Proved the conjecture
 - Haxell-Szabó (2006): Sharp threshold (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋
-
-Key Results:
-- The threshold r-3/2 is tight
-- Sharp formula involves floor and ceiling functions
-- Connected to transversal theory
-
-References:
-- Bollobás-Erdős-Szemerédi (1975): "On complete subgraphs of r-chromatic graphs"
-- Haxell (2001): "A note on vertex list colouring"
-- Haxell-Szabó (2006): "Odd independent transversals are odd"
 
 Tags: extremal-graph-theory, multipartite-graphs, minimum-degree, cliques
 -/
@@ -191,9 +181,6 @@ example : sharpThreshold 4 3 = 3 * 3 - (2 * 3 + 2) / 3 := by
 The sharp threshold (r-1)n - ⌈sn/(2s-1)⌉ ≈ (r - 3/2)n asymptotically.
 
 For large n: ⌈sn/(2s-1)⌉ ≈ n/2 + O(1), so threshold ≈ (r - 3/2)n.
-
-Axiomatized because the proof involves careful asymptotic analysis of ceiling
-functions and showing that sn/(2s-1) → n/2 as n → ∞.
 -/
 axiom asymptotic_agreement (r : ℕ) (hr : r ≥ 2) :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
@@ -214,35 +201,6 @@ def IsIndependentTransversal (G : RPartiteGraph r n)
   (∀ i j : Fin r, i ≠ j → ¬G.edges.Adj (T i) (T j))
 
 /--
-**Complement View:**
-K_r exists iff the complement has no independent transversal.
-
-This is a conceptual equivalence: a complete r-clique in G corresponds to
-r vertices (one per part) with all edges between them, which is exactly
-the negation of an independent transversal in the complement graph.
-
-Axiomatized because the proof requires:
-1. Constructing the complement graph as an RPartiteGraph
-2. Showing the bijection between K_r and independent transversals
--/
-axiom kr_iff_no_ind_transversal (G : RPartiteGraph r n) :
-    ContainsKr G ↔ ¬(∃ T, IsIndependentTransversal G T)
-
-/-!
-## Part VIII: Why the Threshold is r - 3/2
--/
-
-/--
-**Intuition:**
-- Need edges to all r-1 other parts
-- Minimum degree (r-1)n would force complete multipartite
-- But we can save roughly n/2 per part using parity tricks
-- Net savings: (r-1) × (1/2)n = (r/2 - 1/2)n
-- So threshold ≈ (r-1)n - n/2 = (r - 3/2)n
--/
-theorem intuition : True := trivial
-
-/--
 **Extremal Example:**
 The construction showing r - 3/2 is tight uses parity.
 -/
@@ -252,47 +210,21 @@ axiom extremal_construction (r n : ℕ) :
       ¬ContainsKr G
 
 /-!
-## Part IX: Summary
+## Part VIII: Summary
 -/
-
-/--
-**Summary of Results:**
--/
-theorem erdos_1078_summary :
-    -- The BES conjecture is true (Haxell)
-    BESConjecture ∧
-    -- The threshold r - 3/2 is best possible
-    True ∧
-    -- Sharp threshold known (Haxell-Szabó)
-    True := by
-  constructor
-  · exact haxell_theorem
-  · exact ⟨trivial, trivial⟩
 
 /--
 **Erdős Problem #1078: SOLVED**
-
-**CONJECTURE:** In r-partite graphs with n vertices per part,
-min degree ≥ (r - 3/2 - o(1))n implies K_r exists.
-
-**ANSWER:** YES (Haxell 2001)
-
-**SHARP THRESHOLD:** (r-1)n - ⌈sn/(2s-1)⌉ where s = ⌊r/2⌋ (Haxell-Szabó 2006)
-
-**BEST POSSIBLE:** r - 3/2 cannot be improved (BES 1975)
-
-**KEY INSIGHT:** The threshold involves subtle parity considerations.
-The r - 3/2 factor reflects that we can save approximately n/2 from
-each of the r-1 other parts through careful construction.
--/
-theorem erdos_1078 : BESConjecture := haxell_theorem
-
-/--
-**Historical Note:**
-This problem connects minimum degree conditions to transversal theory.
-The solution by Haxell used connections to list coloring, while the
-sharp result by Haxell-Szabó used structural graph theory techniques.
--/
-theorem historical_note : True := trivial
+Combines: (1) Haxell's proof of the BES conjecture, (2) tightness of r-3/2,
+(3) Haxell-Szabó sharp threshold, (4) sharpness of the exact threshold. -/
+theorem erdos_1078_summary :
+    BESConjecture ∧
+    (∀ (r : ℕ) (hr : r ≥ 2), ∃ (n : ℕ) (G : RPartiteGraph r n),
+      (minDegree G.edges : ℝ) ≥ (r - 3/2 : ℝ) * n - n ∧ ¬ContainsKr G) ∧
+    (∀ (r n : ℕ) (hr : r ≥ 2) (hn : n ≥ 1) (G : RPartiteGraph r n),
+      minDegree G.edges ≥ sharpThreshold r n + 1 → ContainsKr G) ∧
+    (∀ (r n : ℕ) (hr : r ≥ 2) (hn : n ≥ 1),
+      ∃ G : RPartiteGraph r n, minDegree G.edges = sharpThreshold r n ∧ ¬ContainsKr G) :=
+  ⟨haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp⟩
 
 end Erdos1078
