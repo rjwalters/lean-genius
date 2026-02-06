@@ -595,8 +595,38 @@ theorem C_one : C 1 = 0 := by
   intro ⟨hn, hgt, _, _, _⟩
   omega
 
+section CarmichaelDecidable
+-- Close Classical to use computable Decidable instances
+attribute [-instance] Classical.propDecidable
+
+/-- Decidable Carmichael check: composite n > 1 satisfying Korselt's criterion. -/
+def isCarmichaelCheck (n : ℕ) : Bool :=
+  decide (n > 1 ∧ ¬n.Prime ∧ Squarefree n ∧ ∀ p ∈ n.primeFactors, (p - 1) ∣ (n - 1))
+
+/-- No number below 561 passes the Carmichael check. -/
+theorem no_carmichael_below_561 :
+    ∀ n : Fin 561, isCarmichaelCheck n.val = false := by native_decide
+
+end CarmichaelDecidable
+
+/-- isCarmichaelCheck is complete: IsCarmichael n → isCarmichaelCheck n = true -/
+theorem isCarmichaelCheck_complete (n : ℕ) (h : IsCarmichael n) :
+    isCarmichaelCheck n = true := by
+  obtain ⟨hn1, hnp, hsq, hkor⟩ := h
+  simp only [isCarmichaelCheck, decide_eq_true_eq]
+  refine ⟨hn1, hnp, hsq, ?_⟩
+  intro p hp
+  have hpf := Nat.mem_primeFactors.mp hp
+  exact hkor p hpf.1 hpf.2.1
+
 /-- Carmichael numbers are at least 561. This follows from 561 being the smallest. -/
-axiom carmichael_ge_561 : ∀ n : ℕ, IsCarmichael n → n ≥ 561
+theorem carmichael_ge_561 : ∀ n : ℕ, IsCarmichael n → n ≥ 561 := by
+  intro n hc
+  by_contra hlt
+  push_neg at hlt
+  have hbool := isCarmichaelCheck_complete n hc
+  have hfalse := no_carmichael_below_561 ⟨n, hlt⟩
+  simp [hbool] at hfalse
 
 /-- C(560) = 0: no Carmichael numbers below 561 -/
 theorem C_below_561 : C 560 = 0 := by
