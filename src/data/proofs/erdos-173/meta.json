@@ -42,23 +42,21 @@
       }
     ],
     "originalContributions": [
-      "PlaneColoring definition for 2-colorings",
+      "PlaneColoring definition for 2-colorings of ℝ²",
       "Triangle structure with vertices and nondegeneracy",
-      "sideLengths function extracting three sides",
-      "Congruent definition via side length permutation",
-      "IsMonochromatic definition for triangles",
-      "IsEquilateral, IsRightTriangle, IsIsoceles predicates",
-      "IsRamseyTriangle definition for Ramsey property",
-      "AlmostAllTrianglesRamsey statement",
+      "sideLengths, Congruent, IsMonochromatic definitions",
+      "IsEquilateral, IsRightTriangle, IsIsosceles predicates",
+      "IsRamseyTriangle and AlmostAllTrianglesRamsey definitions",
       "shader_theorem axiom: right triangles are Ramsey",
-      "stripColoring explicit counterexample construction",
-      "equilateral_not_monochromatic_strip axiom",
-      "Similar definition and similarity_preserves_ramsey",
-      "erdos_173_summary main results"
+      "right_345_ramsey: concrete example from shader_theorem",
+      "stripColoring construction and equilateral_not_monochromatic_strip",
+      "at_most_one_is_tight theorem from strip coloring",
+      "Similar definition and similarity_preserves_ramsey axiom",
+      "erdos_173_summary combining all results"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdos Problem #173: Euclidean Ramsey Theory**\n\nThis problem belongs to Euclidean Ramsey theory, which studies whether geometric configurations must appear monochromatically in finite colorings of Euclidean space.\n\n**Key History:**\n- Erdos [Er75f, Er83c]: Posed the problem about monochromatic triangles\n- Shader [Sh76]: Proved all right triangles are Ramsey in R^2\n- Erdos-Graham [ErGr79, ErGr80]: Collected and extended the problem\n\n**Mathematical Setting:**\nGiven a 2-coloring of all points in R^2, we ask whether every triangle shape has a monochromatic congruent copy somewhere in the plane. The strip coloring example shows the equilateral triangle is problematic.",
+    "historicalContext": "This problem belongs to Euclidean Ramsey theory, which studies whether geometric configurations must appear monochromatically in finite colorings of Euclidean space. Erdős posed the problem [Er75f, Er83c] asking whether, in any 2-coloring of ℝ², all but at most one triangle shape (up to congruence) must have a monochromatic congruent copy somewhere in the plane.\n\nThe most significant partial result is due to Shader [Sh76, 1976], who proved that all right triangles are Ramsey in ℝ² — that is, for any right triangle T and any 2-coloring of the plane, there exists a monochromatic congruent copy of T. The proof uses geometric constructions that exploit the right angle structure.\n\nThe equilateral triangle is the natural candidate for the exceptional triangle. A simple strip coloring — alternating horizontal bands of two colors — shows that equilateral triangles whose height matches the strip width cannot be placed monochromatically. However, this does not prove the equilateral triangle is not Ramsey (since the same triangle at a different scale might still be placeable). The problem remains open.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nIn any 2-coloring of $\\mathbb{R}^2$, for all but at most one triangle $T$, there is a monochromatic congruent copy of $T$.\n\n**Known Results:**\n- All right triangles are Ramsey (Shader 1976)\n- The equilateral triangle is the candidate exception\n\n**Counterexample Idea:**\nColor $\\mathbb{R}^2$ with alternating horizontal strips. An equilateral triangle of the right height cannot be placed monochromatically.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - PlaneColoring: R^2 -> Bool\n   - Triangle: Three vertices with nondegeneracy\n   - Congruent, IsMonochromatic predicates\n\n2. **Triangle Types:**\n   - IsEquilateral, IsRightTriangle, IsIsoceles\n   - sideLengths to characterize congruence classes\n\n3. **Ramsey Property:**\n   - IsRamseyTriangle: Every coloring has monochromatic copy\n   - AlmostAllTrianglesRamsey: At most one exception\n\n4. **Key Results:**\n   - shader_theorem: Right triangles are Ramsey\n   - stripColoring: Counterexample for equilateral",
     "keyInsights": [
@@ -74,57 +72,57 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "PlaneColoring, Triangle, sideLengths, Congruent, IsMonochromatic",
-      "startLine": 36,
-      "endLine": 79
+      "startLine": 34,
+      "endLine": 75
     },
     {
       "id": "triangle-types",
       "title": "Triangle Types",
-      "summary": "IsEquilateral, IsRightTriangle, IsIsoceles predicates",
-      "startLine": 81,
-      "endLine": 109
+      "summary": "IsEquilateral, IsRightTriangle, IsIsosceles predicates",
+      "startLine": 77,
+      "endLine": 103
     },
     {
       "id": "ramsey-property",
       "title": "Ramsey Property",
       "summary": "IsRamseyTriangle, AlmostAllTrianglesRamsey definitions",
-      "startLine": 111,
-      "endLine": 130
+      "startLine": 105,
+      "endLine": 122
     },
     {
       "id": "shader-theorem",
       "title": "Shader's Theorem",
-      "summary": "shader_theorem axiom, right_345_ramsey example",
-      "startLine": 132,
-      "endLine": 159
+      "summary": "shader_theorem axiom and right_345_ramsey example",
+      "startLine": 124,
+      "endLine": 149
     },
     {
       "id": "strip-coloring",
       "title": "Strip Coloring Example",
-      "summary": "stripColoring, equilateral_not_monochromatic_strip",
-      "startLine": 161,
-      "endLine": 190
+      "summary": "stripColoring, equilateral counterexample, at_most_one_is_tight",
+      "startLine": 151,
+      "endLine": 182
     },
     {
       "id": "conjecture",
-      "title": "Conjectured Resolution",
-      "summary": "erdos_173_conjecture, equilateral_conjecture",
-      "startLine": 192,
+      "title": "The Conjecture",
+      "summary": "erdos_173_conjecture: AlmostAllTrianglesRamsey",
+      "startLine": 184,
+      "endLine": 191
+    },
+    {
+      "id": "similarity",
+      "title": "Similarity Invariance",
+      "summary": "Similar definition and similarity_preserves_ramsey axiom",
+      "startLine": 193,
       "endLine": 209
     },
     {
-      "id": "related",
-      "title": "Related Results",
-      "summary": "finite_ramsey_triangles, Similar, similarity_preserves_ramsey",
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_173_summary combining shader, strip coloring, and conjecture",
       "startLine": 211,
-      "endLine": 242
-    },
-    {
-      "id": "main-results",
-      "title": "Main Results Summary",
-      "summary": "erdos_173_summary combining all results",
-      "startLine": 244,
-      "endLine": 275
+      "endLine": 234
     }
   ],
   "conclusion": {
