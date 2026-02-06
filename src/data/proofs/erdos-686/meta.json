@@ -9,6 +9,7 @@
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos686Problem.lean",
     "tags": [
+      "erdos",
       "number-theory",
       "products",
       "consecutive-integers",
@@ -81,15 +82,15 @@
       "id": "connections",
       "title": "Part VII: Connections",
       "startLine": 107,
-      "endLine": 110,
-      "summary": "Placeholder connection to Problem #677."
+      "endLine": 121,
+      "summary": "Connection to Problem #677. Defines special case and proves product representation implies ratio representation."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
-      "startLine": 112,
-      "endLine": 137,
-      "summary": "Proved: erdos_686_statement (simp), erdos_686_status (trivial). Problem remains OPEN."
+      "startLine": 123,
+      "endLine": 146,
+      "summary": "Proved: erdos_686_statement (simp). Problem remains OPEN."
     }
   ],
   "conclusion": {
