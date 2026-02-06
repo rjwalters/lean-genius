@@ -15,7 +15,9 @@
     "erdosNumber": 344,
     "erdosUrl": "https://erdosproblems.com/344",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "v4.x",
+    "solvedBy": "Szemerédi, E. and Vu, V.",
+    "solvedYear": 2006,
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       { "theorem": "Finset.range", "description": "Finite sets of naturals up to N", "module": "Mathlib.Data.Finset.Basic" },
       { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
@@ -46,50 +48,50 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 44,
-      "endLine": 76,
+      "endLine": 75,
       "summary": "Core definitions: counting function, subset sums, arithmetic progressions, and subcomplete sets"
     },
     {
       "id": "density-conditions",
       "title": "Density Conditions",
       "startLine": 77,
-      "endLine": 104,
-      "summary": "Various density conditions: square root density, Folkman density, and optimal density"
+      "endLine": 103,
+      "summary": "Square root density, Folkman density, and optimal density conditions"
     },
     {
       "id": "folkman",
       "title": "Folkman's Result",
       "startLine": 105,
-      "endLine": 115,
+      "endLine": 114,
       "summary": "Folkman's theorem for N^{1/2+ε} density"
     },
     {
       "id": "szemeredi-vu",
       "title": "Szemerédi-Vu Theorem",
       "startLine": 116,
-      "endLine": 131,
+      "endLine": 130,
       "summary": "The main result proving Erdős's conjecture"
     },
     {
       "id": "open-conjecture",
       "title": "Open Conjecture",
       "startLine": 132,
-      "endLine": 155,
+      "endLine": 154,
       "summary": "The optimal density conjecture and Erdős's counterexample"
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "startLine": 156,
-      "endLine": 197,
-      "summary": "Complete sequences and density hierarchy relationships"
+      "endLine": 189,
+      "summary": "Complete sequences, complete_implies_subcomplete theorem, and density hierarchy"
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem and Summary",
-      "startLine": 198,
-      "endLine": 242,
-      "summary": "Statement of the solved problem and summary of known results"
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 191,
+      "endLine": 213,
+      "summary": "Summary combining Szemerédi-Vu theorem and Erdős optimality example"
     }
   ],
   "conclusion": {
