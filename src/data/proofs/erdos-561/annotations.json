@@ -68,7 +68,7 @@
   {
     "id": "ann-e561-main",
     "proofId": "erdos-561",
-    "range": { "startLine": 212, "endLine": 236 },
+    "range": { "startLine": 212, "endLine": 237 },
     "type": "theorem",
     "title": "Summary and Main Theorem",
     "content": "**erdos_561_summary** packages two results: (1) BEFRS78 proves the uniform case, and (2) the lower bound R̂ ≥ max edges holds universally.\n\n**erdos_561** is the main entry-point theorem: for all uniform star unions, the size Ramsey number equals the conjectured formula. Proved directly via `befrs78_theorem`.\n\n**openQuestion** captures the remaining challenge: does the formula hold for ALL star unions, including non-uniform ones?",
