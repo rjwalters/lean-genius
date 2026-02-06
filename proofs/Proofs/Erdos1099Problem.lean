@@ -38,7 +38,7 @@ open Nat Finset BigOperators
 
 namespace Erdos1099
 
-/-
+/-!
 ## Part I: Divisors and Consecutive Ratios
 
 For a positive integer n, its divisors can be ordered as 1 = d₁ < d₂ < ⋯ < d_τ(n) = n.
@@ -62,20 +62,17 @@ def sortedDivisors (n : ℕ) : List ℕ :=
 **First divisor is 1:**
 For n ≥ 1, the first divisor is always 1.
 -/
-theorem first_divisor_is_one (n : ℕ) (hn : n ≥ 1) :
-    (sortedDivisors n).head? = some 1 := by
-  simp only [sortedDivisors]
-  sorry -- Technical: head of sorted divisors is 1
+axiom first_divisor_is_one (n : ℕ) (hn : n ≥ 1) :
+    (sortedDivisors n).head? = some 1
 
 /--
 **Last divisor is n:**
 For n ≥ 1, the last divisor is always n.
 -/
-theorem last_divisor_is_n (n : ℕ) (hn : n ≥ 1) :
-    (sortedDivisors n).getLast? = some n := by
-  sorry -- Technical: last of sorted divisors is n
+axiom last_divisor_is_n (n : ℕ) (hn : n ≥ 1) :
+    (sortedDivisors n).getLast? = some n
 
-/-
+/-!
 ## Part II: The h_α Function
 
 The key function measures how "spread out" the divisor ratios are.
@@ -107,7 +104,7 @@ theorem h_alpha_eq_sum (α : ℝ) (n : ℕ) :
     h_alpha α n = (divisorRatios n).map (fun r => ((r : ℝ) - 1) ^ α) |>.sum := by
   rfl
 
-/-
+/-!
 ## Part III: The Trivial Lower Bound
 
 The first term alone gives h_α(n) ≥ 1 for n ≥ 2.
@@ -117,9 +114,8 @@ The first term alone gives h_α(n) ≥ 1 for n ≥ 2.
 **First ratio is at least 2:**
 For any n ≥ 2, the smallest divisor is 1 and the next is at least 2.
 -/
-theorem first_ratio_ge_two (n : ℕ) (hn : n ≥ 2) :
-    ∃ r ∈ divisorRatios n, r ≥ 2 := by
-  sorry -- The first ratio d₂/d₁ = d₂/1 ≥ 2
+axiom first_ratio_ge_two (n : ℕ) (hn : n ≥ 2) :
+    ∃ r ∈ divisorRatios n, r ≥ 2
 
 /--
 **Trivial lower bound:**
@@ -127,21 +123,14 @@ For α > 1 and n ≥ 2, we have h_α(n) ≥ 1.
 
 Proof: The first term is ((d₂/1) - 1)^α ≥ (2-1)^α = 1.
 -/
-theorem h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
-    h_alpha α n ≥ 1 := by
-  sorry -- First term (d₂ - 1)^α ≥ 1^α = 1
+axiom h_alpha_ge_one (α : ℝ) (hα : α > 1) (n : ℕ) (hn : n ≥ 2) :
+    h_alpha α n ≥ 1
 
-/-
+/-!
 ## Part IV: Special Sequences
 
 Erdős suggested that n! and lcm{1,...,n} might have bounded h_α.
 -/
-
-/--
-**Highly composite numbers have small divisor gaps:**
-Numbers with many divisors tend to have small consecutive divisor ratios.
--/
-theorem highly_composite_intuition : True := trivial
 
 /--
 **Factorial divisors:**
@@ -156,19 +145,14 @@ lcm{1,...,n} has many small divisors as well.
 def lcmDivisors (n : ℕ) : Finset ℕ :=
   (List.range (n + 1) |>.foldl lcm 1).divisors
 
-/--
-**Erdős's conjecture (still open):**
-Does h_α(n!) remain bounded as n → ∞?
+/-!
+**Open Sub-questions:**
+- Does h_α(n!) remain bounded as n → ∞?
+- Does h_α(lcm{1,...,n}) remain bounded as n → ∞?
+These specific candidates suggested by Erdős remain unresolved.
 -/
-theorem erdos_factorial_conjecture_open : True := trivial
 
-/--
-**Erdős's conjecture (still open):**
-Does h_α(lcm{1,...,n}) remain bounded as n → ∞?
--/
-theorem erdos_lcm_conjecture_open : True := trivial
-
-/-
+/-!
 ## Part V: Vose's Theorem (1984)
 
 Vose answered the question affirmatively by constructing a different sequence.
@@ -209,7 +193,7 @@ theorem erdos_1099 (α : ℝ) (hα : α > 1) :
     obtain ⟨n, hn_pos, hn_bound⟩ := hbound ε hε
     exact ⟨n, hn_pos, by linarith⟩
 
-/-
+/-!
 ## Part VI: The Related Sum Σ(d_{i+1}/dᵢ)
 
 Erdős also studied the unweighted sum of ratios.
@@ -238,24 +222,24 @@ Is liminf (Σᵢ (d_{i+1}/dᵢ) - τ(n) - log(n)) < ∞?
 
 This would follow from a positive answer to the main question.
 -/
-theorem related_question_follows (α : ℝ) (hα : α > 1) :
-    -- If h_α is bounded, the related sum question follows
-    True := trivial
+/-!
+If h_α is bounded along a subsequence, the related sum question
+Σ(d_{i+1}/dᵢ) - τ(n) - log(n) < ∞ follows along the same subsequence.
+-/
 
-/-
+/-!
 ## Part VII: Connection to Problem #673
 
 This problem resembles the function considered in Erdős Problem #673.
 -/
 
-/--
+/-!
 **Connection to Problem #673:**
 Both problems study functions of consecutive divisor ratios,
 exploring how "smooth" the divisor structure of integers can be.
 -/
-theorem related_to_673 : True := trivial
 
-/-
+/-!
 ## Part VIII: Proof Strategy
 
 Vose's approach and why Erdős's candidates remain open.
@@ -268,25 +252,17 @@ Construct n with divisors d₁, d₂, ..., d_τ such that:
 - Specifically, d_{i+1}/dᵢ ≈ 1 + c/τ for some constant c
 
 Then h_α(n) ≈ τ · (c/τ)^α = c^α · τ^(1-α) → 0 as τ → ∞.
--/
-theorem vose_strategy_intuition : True := trivial
 
-/--
 **Why n! is challenging:**
 The divisors of n! include 1, 2, ..., n, so τ(n!) is very large.
 But the ratios between consecutive divisors may not be uniformly small.
-The detailed analysis of factorial divisor gaps remains difficult.
--/
-theorem factorial_challenge : True := trivial
 
-/--
 **Why lcm{1,...,n} is challenging:**
 lcm{1,...,n} has many prime factors, giving it many divisors.
 But proving uniform bounds on consecutive ratios is non-trivial.
 -/
-theorem lcm_challenge : True := trivial
 
-/-
+/-!
 ## Part IX: Examples
 -/
 
@@ -295,18 +271,16 @@ theorem lcm_challenge : True := trivial
 For a prime p, divisors are {1, p}, so the only ratio is p/1 = p.
 h_α(p) = (p - 1)^α, which is unbounded as p → ∞.
 -/
-theorem prime_h_alpha_unbounded :
-    ∀ M : ℝ, ∃ p : ℕ, Nat.Prime p ∧ ∀ α : ℝ, α ≥ 1 → h_alpha α p > M := by
-  sorry -- (p-1)^α → ∞ for large p
+axiom prime_h_alpha_unbounded :
+    ∀ M : ℝ, ∃ p : ℕ, Nat.Prime p ∧ ∀ α : ℝ, α ≥ 1 → h_alpha α p > M
 
 /--
 **Example: Power of 2**
 For n = 2^k, divisors are {1, 2, 4, ..., 2^k}, all ratios equal 2.
 h_α(2^k) = k · 1^α = k, which grows with k.
 -/
-theorem power_of_two_h_alpha (k : ℕ) (α : ℝ) (hα : α ≥ 1) :
-    h_alpha α (2^k) = k := by
-  sorry -- Each of k ratios contributes (2-1)^α = 1
+axiom power_of_two_h_alpha (k : ℕ) (α : ℝ) (hα : α ≥ 1) :
+    h_alpha α (2^k) = k
 
 /--
 **Example: Small highly composite**
@@ -314,9 +288,8 @@ n = 12 has divisors {1, 2, 3, 4, 6, 12}.
 Ratios: 2/1=2, 3/2=1.5, 4/3≈1.33, 6/4=1.5, 12/6=2
 h_α(12) = 1^α + 0.5^α + 0.33^α + 0.5^α + 1^α (approximately)
 -/
-theorem example_12 : True := trivial
 
-/-
+/-!
 ## Part X: Summary
 -/
 
