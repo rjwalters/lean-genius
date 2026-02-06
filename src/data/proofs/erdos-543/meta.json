@@ -1,26 +1,29 @@
 {
   "id": "erdos-543",
-  "title": "Erdős #543: Random Subset Sums in Abelian Groups",
+  "title": "Erdős Problem #543: Random Subset Sums in Abelian Groups",
   "slug": "erdos-543",
-  "description": "What is the minimal size k such that a random k-subset of an abelian group spans all elements via subset sums with probability ≥ 1/2?",
+  "description": "Is f(N) ≤ log₂ N + o(log log N), where f(N) is the minimal random subset size to span an abelian group via subset sums? DISPROVED — the O(log log N) term is optimal.",
   "meta": {
-    "author": "Paul Erdős, Alfréd Rényi",
+    "author": "Erdős-Rényi (1965), ChatGPT-Tang (disproof)",
     "sourceUrl": "https://erdosproblems.com/543",
-    "date": "1965",
-    "status": "formalized",
+    "date": "1965-2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos543Problem.lean",
     "tags": [
       "erdos",
       "combinatorics",
       "group-theory",
       "probability",
-      "additive-combinatorics"
+      "additive-combinatorics",
+      "disproved"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 0,
     "erdosNumber": 543,
     "erdosUrl": "https://erdosproblems.com/543",
-    "erdosProblemStatus": "open",
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "AddCommGroup",
@@ -33,12 +36,7 @@
         "module": "Mathlib.Algebra.Group.Fintype"
       },
       {
-        "theorem": "Finset",
-        "description": "Finite sets for subsets and powersets",
-        "module": "Mathlib.Data.Finset.Basic"
-      },
-      {
-        "theorem": "powersetCard",
+        "theorem": "Finset.powersetCard",
         "description": "k-subsets of a finite set",
         "module": "Mathlib.Data.Finset.Powerset"
       },
@@ -54,77 +52,95 @@
       }
     ],
     "originalContributions": [
-      "Definition of subsetSums for additive groups",
-      "IsSpanningSet predicate for subset sum coverage",
+      "subsetSums definition for additive groups",
+      "IsSpanningSet predicate and equivalence with Set.univ",
       "spanningProbability formalization via k-subset counting",
-      "minimalSpanningSize definition using Nat.find",
-      "LittleOConjecture formalizing the o(log log N) question",
-      "ErdosCounterConjecture capturing Erdős's belief",
-      "Proof that conjectures are logical negations",
-      "Special case analysis for cyclic and prime groups"
+      "f axiomatized as the worst-case spanning threshold",
+      "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)",
+      "LittleOConjecture and ErdosCounterConjecture formal statements",
+      "conjectures_complementary: proved logical negation equivalence",
+      "chatgpt_tang_disproof: ErdosCounterConjecture holds",
+      "little_o_conjecture_false: derived from disproof + complementarity",
+      "erdos_hall_lower: intermediate lower bound on log log log N",
+      "erdos_543_summary: combines disproof and negation"
     ]
   },
   "overview": {
-    "historicalContext": "This problem originates from Erdős and Rényi's 1965 work on probabilistic methods in group theory [ErRe65]. They proved f(N) ≤ log₂ N + O(log log N), and the question asks whether the O(log log N) term can be improved to o(log log N). Erdős believed this improvement is impossible.",
-    "problemStatement": "Define f(N) as the minimal k such that: if G is an abelian group of size N and A ⊆ G is a random k-subset, then with probability ≥ 1/2, every element of G is a subset sum of A. Is f(N) ≤ log₂ N + o(log log N)?",
-    "proofStrategy": "We formalize the subset sum and spanning set definitions, define f(N) via the minimal spanning size, state the Erdős-Rényi upper bound, and capture both the 'little-o' conjecture and Erdős's counter-conjecture as formal propositions.",
+    "historicalContext": "Erdős and Rényi introduced this question in 1965 while developing probabilistic methods in group theory. They proved that f(N) ≤ log₂ N + O(log log N), where f(N) is the minimal random subset size needed to span an abelian group of size N via subset sums with probability at least 1/2. Erdős asked whether the O(log log N) term could be improved to o(log log N), but believed the answer was no.\n\nIn 1978, Erdős and Hall showed that the bound cannot even be improved to o(log log log N), providing evidence that the log log N term is inherent. This intermediate result foreshadowed the full resolution.\n\nThe conjecture was ultimately disproved by ChatGPT and Tang, who confirmed Erdős's prediction: the O(log log N) term in the Erdős-Rényi bound is optimal and cannot be improved to o(log log N). For sufficiently large primes p, a random subset of F_p of the prescribed size fails to generate all elements under subset sums. This resolves the problem in the negative.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nDefine $f(N)$ as the minimal $k$ such that if $G$ is an abelian group of size $N$ and $A \\subseteq G$ is a random $k$-subset, then with probability $\\geq 1/2$, every element of $G$ is a subset sum of $A$.\n\n**Question:** Is $f(N) \\leq \\log_2 N + o(\\log\\log N)$?\n\n**Answer: NO.** The $O(\\log\\log N)$ term is optimal (ChatGPT-Tang).",
+    "proofStrategy": "The formalization axiomatizes the function f(N) and the key results. The core definitions (subsetSums, IsSpanningSet, spanningProbability) are constructive. The Erdős-Rényi upper bound, information-theoretic lower bound, Erdős-Hall intermediate bound, and ChatGPT-Tang disproof are axiomatized. The logical equivalence between LittleOConjecture and ¬ErdosCounterConjecture is proved via push_neg. The summary theorem combines the disproof with its logical consequence.",
     "keyInsights": [
-      "Erdős-Rényi (1965): f(N) ≤ log₂ N + O(log log N)",
-      "Information-theoretic lower bound: f(N) ≥ log₂ N - O(1) since 2^k subset sums must cover N elements",
-      "The log log N term arises from collision probability in subset sums",
-      "Erdős believed the O(log log N) term is optimal and cannot be improved to o(log log N)"
+      "**Erdős-Rényi Bound:** f(N) ≤ log₂ N + O(log log N) gives the baseline. The log₂ N term is information-theoretic (2^k subset sums must cover N elements), and the log log N correction handles collisions.",
+      "**Erdős-Hall Lower Bound:** Even the weaker o(log log log N) improvement fails, showing the log log N term has deep structural significance.",
+      "**Disproof by ChatGPT-Tang:** The O(log log N) cannot be improved to o(log log N), confirming Erdős's belief. Collision effects in finite fields of prime order force the extra term.",
+      "**Logical Structure:** The two conjectures (little-o improvement vs. optimality) are formal negations, so proving one disproves the other. This is verified in Lean.",
+      "**Spanning via Subset Sums:** Unlike group generation (arbitrary linear combinations), subset sums only allow coefficients 0 or 1, making the covering problem harder."
     ]
   },
   "sections": [
     {
       "id": "subset-sums",
       "title": "Subset Sums in Groups",
-      "summary": "Definition of subset sums and spanning sets in abelian groups",
-      "startLine": 40,
-      "endLine": 54
+      "summary": "subsetSums, IsSpanningSet, isSpanningSet_iff",
+      "startLine": 41,
+      "endLine": 55
     },
     {
       "id": "f-definition",
       "title": "The Function f(N)",
-      "summary": "Spanning probability and the minimal spanning size definition",
-      "startLine": 56,
-      "endLine": 77
+      "summary": "spanningProbability, f axiom, f_le_card",
+      "startLine": 57,
+      "endLine": 74
     },
     {
       "id": "elementary",
       "title": "Elementary Properties",
-      "summary": "Basic lemmas: empty set, generators, monotonicity",
-      "startLine": 79,
-      "endLine": 107
+      "summary": "empty_spanning_iff, spanning_of_generators",
+      "startLine": 76,
+      "endLine": 85
     },
     {
       "id": "erdos-renyi",
       "title": "Erdős-Rényi Upper Bound",
-      "summary": "The 1965 result: f(N) ≤ log₂ N + O(log log N)",
-      "startLine": 109,
-      "endLine": 125
+      "summary": "erdos_renyi_upper_bound: f(N) ≤ log₂ N + O(log log N)",
+      "startLine": 87,
+      "endLine": 100
     },
     {
-      "id": "conjectures",
-      "title": "The Conjecture",
-      "summary": "The little-o question and Erdős's counter-conjecture",
-      "startLine": 127,
-      "endLine": 178
+      "id": "conjecture-disproof",
+      "title": "The Conjecture and Its Disproof",
+      "summary": "LittleOConjecture, ErdosCounterConjecture, conjectures_complementary, chatgpt_tang_disproof, little_o_conjecture_false",
+      "startLine": 102,
+      "endLine": 146
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "naive_lower_bound, erdos_hall_lower",
+      "startLine": 148,
+      "endLine": 162
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "Cyclic groups and prime order groups",
-      "startLine": 180,
-      "endLine": 196
+      "summary": "cyclic_spanning_characterization, prime_full_spanning",
+      "startLine": 164,
+      "endLine": 174
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_543_summary: ErdosCounterConjecture ∧ ¬LittleOConjecture",
+      "startLine": 176,
+      "endLine": 192
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #543 on the threshold for random subset sums to span an abelian group. The key tension is between the known O(log log N) upper bound from Erdős-Rényi and the question of whether it can be improved to o(log log N).",
-    "implications": "Resolving this would reveal fundamental limits of probabilistic covering in groups. A positive answer would improve algorithmic bounds; Erdős's predicted negative answer would establish the log log N term as an inherent barrier.",
+    "summary": "Erdős Problem #543 asked whether f(N) ≤ log₂ N + o(log log N). The answer is NO: the O(log log N) term in the Erdős-Rényi bound is optimal. This was disproved by ChatGPT and Tang, confirming Erdős's belief. The formalization captures the upper bound, lower bounds, both conjectures, their logical equivalence (proved), the disproof (axiomatized), and the summary combining them.",
+    "implications": "The disproof reveals that collision effects in subset sums create an inherent log log N barrier for random spanning. This has consequences for algorithmic approaches to subset sum problems and for understanding the structure of random subsets in finite abelian groups.",
     "openQuestions": [
-      "Can the Erdős-Rényi bound be improved to f(N) ≤ log₂ N + o(log log N)?",
-      "For which group structures is the log log N term necessary?",
+      "What is the exact constant in the O(log log N) term?",
+      "For which group structures is the log log N term largest?",
       "Is there a separation between cyclic and non-cyclic groups?"
     ]
   }
