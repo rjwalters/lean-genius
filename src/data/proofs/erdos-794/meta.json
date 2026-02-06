@@ -17,7 +17,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 794,
     "erdosUrl": "https://erdosproblems.com/794",
     "erdosProblemStatus": "solved",
@@ -49,7 +49,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #794: 3-Uniform Hypergraph Density**\n\nThis problem asks about Turán-type density for 3-uniform hypergraphs. The original question is now known to be FALSE.\n\n**Key History:**\n- Erdős (1969): Posed the problem in [Er69]\n- Balogh: Observed the problem is likely misstated\n- Frankl-Füredi (1984): Proved density at least 2/7 needed\n- Turán: Earlier conjectured 1/4\n- Harris: Provided explicit counterexample for n=3\n\n**The Issue:** The threshold n³+1 corresponds to density 2/9, but the true threshold is at least 2/7. The problem as stated is too optimistic.",
+    "historicalContext": "**Erdős Problem #794** concerns the Turán-type density problem for 3-uniform hypergraphs. Erdős posed this question in 1969, asking whether every 3-uniform hypergraph on 3n vertices with at least n³+1 edges must contain certain unavoidable substructures: either K₄⁻ (4 vertices with 3 edges) or a 5-vertex configuration with 7 edges.\n\nBalogh made the crucial observation that the second condition is redundant — any 5-vertex, 7-edge subhypergraph automatically contains a 4-vertex, 3-edge subhypergraph. This simplified the question to whether n³+1 edges forces K₄⁻ alone. Meanwhile, Frankl and Füredi (1984) proved that the Turán density for avoiding K₄⁻ is at least 2/7, while Turán had earlier conjectured it to be 1/4.\n\nHarris provided the definitive counterexample, disproving the conjecture for n=3. His construction places 9 vertices in three groups {1,2,3}, {4,5,6}, {7,8,9}, takes all 27 cross-product edges (one from each group), and adds the single edge {1,2,3}. This yields exactly 28 = 3³+1 edges while avoiding K₄⁻, showing the threshold n³+1 (corresponding to density 2/9) is insufficient. The correct density threshold is at least 2/7, and the problem as stated was likely too optimistic.",
     "problemStatement": "**Original Statement (DISPROVED)**\n\nIs it true that every 3-uniform hypergraph on $3n$ vertices with at least $n^3+1$ edges must contain either:\n1. A subgraph on 4 vertices with 3 edges (K₄⁻), OR\n2. A subgraph on 5 vertices with 7 edges?\n\n**Resolution:**\n- Balogh observed that condition (2) implies condition (1), so it can be dropped\n- Harris provided a counterexample: 9 vertices, 28 edges, no K₄⁻\n- The counterexample: 27 edges from {a,b,c} where a∈{1,2,3}, b∈{4,5,6}, c∈{7,8,9}, plus edge {1,2,3}",
     "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - Hypergraph3: 3-uniform hypergraph\n   - ContainsK4Minus: 4 vertices, 3 edges\n   - Contains5_7: 5 vertices, 7 edges\n\n2. **Balogh's Observation:**\n   - balogh_observation axiom: Contains5_7 → ContainsK4Minus\n   - Shows second condition is redundant\n\n3. **Harris's Counterexample:**\n   - 9 vertices (n=3), 28 = 3³+1 edges\n   - Avoids K₄⁻\n   - Disproves the conjecture\n\n4. **Density Bounds:**\n   - frankl_furedi_lower: density ≥ 2/7\n   - current_conjecture: density = 2/7",
     "keyInsights": [
@@ -114,8 +114,8 @@
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_794_summary, erdos_794 main theorem",
-      "startLine": 241,
-      "endLine": 268
+      "startLine": 227,
+      "endLine": 256
     }
   ],
   "conclusion": {
