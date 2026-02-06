@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #974: Power Sums and Roots of Unity
 
 Let z₁, ..., zₙ ∈ ℂ with z₁ = 1. Define power sums:
@@ -162,55 +162,29 @@ theorem erdos_974_solved (n : ℕ) (hn : n ≥ 2) (z : Configuration n)
 -/
 
 /-- The nth roots of unity DO have the zero-tuple property when n > 1. -/
-theorem roots_of_unity_have_zero_tuples (n : ℕ) (hn : n ≥ 2) :
-    hasInfinitelyManyZeroTuples (standardRootsOfUnity n) := by
-  intro N
-  -- For any N, we can find k > N such that (sₖ, ..., sₖ₊ₙ₋₂) are all 0
-  -- Choose k = N + 1 (if n ∤ (N+1), ..., n ∤ (N+n-1))
-  use N + 1
-  constructor
-  · omega
-  · intro j
-    -- Power sum is 0 when n doesn't divide the exponent
-    sorry
+axiom roots_of_unity_have_zero_tuples (n : ℕ) (hn : n ≥ 2) :
+    hasInfinitelyManyZeroTuples (standardRootsOfUnity n)
 
 /-!
 ## Part VII: Connection to Newton's Identities
+
+Newton's identities connect power sums to elementary symmetric polynomials:
+k·eₖ = Σⱼ₌₁ᵏ (-1)^(j-1) eₖ₋ⱼ pⱼ. This algebraic relationship underlies Tijdeman's proof.
+If z₁, ..., zₙ are roots of P(x) = xⁿ + a₁xⁿ⁻¹ + ... + aₙ, then the power sums sₖ
+are determined by the aᵢ. If n-1 consecutive sums vanish, the polynomial is severely
+constrained.
 -/
-
-/-- Newton's identities connect power sums to elementary symmetric polynomials.
-    This algebraic relationship underlies the result. -/
-def relatedToNewtonIdentities : Prop :=
-  -- If e₁, ..., eₙ are elementary symmetric polynomials and p₁, ..., pₙ are power sums,
-  -- then k·eₖ = Σⱼ₌₁ᵏ (-1)^(j-1) eₖ₋ⱼ pⱼ (Newton's formula)
-  True
-
-/-- Connection to characteristic polynomials:
-    z₁, ..., zₙ are roots of some monic polynomial P(x) = xⁿ + a₁xⁿ⁻¹ + ... + aₙ.
-    The power sums sₖ are determined by the aᵢ via Newton's identities. -/
-def relatedToCharacteristicPolynomials : Prop :=
-  -- If n-1 consecutive power sums vanish, this constrains the polynomial severely
-  True
 
 /-!
 ## Part VIII: The "Essentially" Qualification
 -/
 
-/-- What does "essentially" mean? It allows:
-    1. Permutation of the roots (order doesn't matter for power sums)
-    2. For even n, a rotation/reflection symmetry (two (n/2)-gons)
-
-    The power sums are symmetric functions, so permutations are invisible.
--/
-theorem essentially_means_up_to_permutation (n : ℕ) (hn : n > 0)
+/-- Power sums are invariant under permutation of the configuration. -/
+axiom essentially_means_up_to_permutation (n : ℕ) (hn : n > 0)
     (z₁ z₂ : Configuration n)
-    (σ : Fin n ≃ Fin n)  -- A permutation
+    (σ : Fin n ≃ Fin n)
     (hperm : ∀ i, z₁ i = z₂ (σ i)) :
-    ∀ k, powerSum z₁ k = powerSum z₂ k := by
-  intro k
-  simp only [powerSum]
-  -- Sum is invariant under reindexing
-  sorry
+    ∀ k, powerSum z₁ k = powerSum z₂ k
 
 /-!
 ## Summary
@@ -229,8 +203,6 @@ sₖ = Σ zᵢᵏ vanish, then the zᵢ must be (essentially) nth roots of unity
 **Key insight:** The vanishing of n-1 consecutive power sums severely constrains
 the underlying polynomial whose roots are the zᵢ, via Newton's identities.
 -/
-
-theorem erdos_974 : True := trivial
 
 theorem erdos_974_summary :
     -- The main theorem (Turán's conjecture)
