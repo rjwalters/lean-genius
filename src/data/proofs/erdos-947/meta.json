@@ -7,15 +7,15 @@
     "author": "Mirsky-Newman, Davenport-Rado",
     "sourceUrl": "https://erdosproblems.com/947",
     "date": "",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos947Problem.lean",
     "tags": ["erdos", "number-theory", "covering-systems", "congruences", "modular-arithmetic"],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 947,
     "erdosUrl": "https://erdosproblems.com/947",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       { "theorem": "ZMod", "description": "Integers modulo n", "module": "Mathlib.Data.ZMod.Basic" },
       { "theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic" },
@@ -24,20 +24,22 @@
     ],
     "originalContributions": [
       "Lean formalization of covering systems using Finset of pairs",
-      "Definition of exact covering (partition property)",
-      "Density argument formalization",
+      "Definition of exact covering (partition property via ∃!)",
+      "Density argument formalization with densitySum",
       "Statement of Mirsky-Newman / Davenport-Rado theorem",
-      "Contrast with ordinary covering systems"
+      "Mirsky-Newman generating function axiom with substantive type",
+      "Davenport-Rado LCM divisibility axiom",
+      "Contrast with ordinary covering systems and repeated-moduli example"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "This classical result was proved independently by Mirsky-Newman and Davenport-Rado. It answers a natural question: can we partition ℤ using congruence classes with distinct moduli? The surprising answer is no.",
+    "historicalContext": "Covering systems were introduced by Erdős in the 1950s. A covering system is a finite collection of congruence classes {aᵢ (mod nᵢ)} such that every integer belongs to at least one class. The natural question of whether an 'exact' covering exists — one that partitions ℤ into congruence classes with distinct moduli — was answered negatively by two independent proofs.\n\nMirsky and Newman proved the impossibility using generating functions: for an exact covering, the function f(x) = Σᵢ x^{aᵢ}/(1-x^{nᵢ}) must equal 1/(1-x), which imposes analytic constraints incompatible with distinct moduli. Davenport and Rado gave an algebraic proof using LCM properties: the largest modulus must divide the LCM of the smaller ones, leading to a contradiction.\n\nThe result is sharp in two senses: ordinary covering systems (allowing overlaps) with distinct moduli do exist — for example {0 (mod 2), 0 (mod 3), 1 (mod 4), 5 (mod 6), 7 (mod 12)} — and exact coverings exist when repeated moduli are allowed, as the trivial {0 (mod 2), 1 (mod 2)} demonstrates.",
     "problemStatement": "There is no exact covering system - a finite collection of congruence classes aᵢ (mod nᵢ) with distinct moduli nᵢ such that every integer satisfies exactly one congruence.",
-    "proofStrategy": "The proof uses density arguments: if we partition ℤ, the sum Σ 1/nᵢ must equal 1. Combined with LCM constraints, this leads to a contradiction.",
+    "proofStrategy": "The proof uses density arguments: if we partition ℤ, the sum Σ 1/nᵢ must equal 1. Combined with LCM constraints on the moduli, this leads to a contradiction. The formalization axiomatizes the main theorem and both proof techniques (Mirsky-Newman generating functions and Davenport-Rado LCM divisibility), while providing a verified construction of exact coverings with repeated moduli as contrast.",
     "keyInsights": [
       "For an exact covering, the sum of densities Σ 1/nᵢ = 1",
-      "The LCM of the moduli creates constraints that cannot be satisfied",
+      "The LCM of the moduli creates constraints that cannot be satisfied with distinct values",
       "Ordinary covering systems (at-least-once coverage) DO exist with distinct moduli",
       "Exact coverings exist if we allow repeated moduli (e.g., 0 mod 2, 1 mod 2)"
     ]
@@ -47,50 +49,43 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 47,
-      "endLine": 82,
-      "summary": "Congruence classes, covering systems, distinct moduli, exact covering"
+      "endLine": 81,
+      "summary": "CongruenceClass, CoveringSystem structure, hasDistinctModuli, isExact"
     },
     {
       "id": "density-argument",
       "title": "The Density Argument",
       "startLine": 83,
-      "endLine": 106,
-      "summary": "Density of congruence classes and the sum-to-one constraint"
+      "endLine": 105,
+      "summary": "density, densitySum, exact_density_sum axiom"
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 107,
-      "endLine": 128,
-      "summary": "Statement and immediate corollaries of the impossibility"
+      "endLine": 127,
+      "summary": "no_exact_covering_system axiom, distinct_moduli_not_exact theorem"
     },
     {
-      "id": "proof-sketch",
-      "title": "Proof Sketch",
+      "id": "proof-techniques",
+      "title": "Proof Techniques",
       "startLine": 129,
-      "endLine": 161,
-      "summary": "Mirsky-Newman generating function and Davenport-Rado LCM arguments"
+      "endLine": 155,
+      "summary": "mirsky_newman_argument and davenport_rado_argument axioms with substantive types"
     },
     {
       "id": "related-results",
       "title": "Related Results",
-      "startLine": 162,
-      "endLine": 199,
-      "summary": "Ordinary covering systems exist, exact coverings with repeated moduli"
-    },
-    {
-      "id": "extensions",
-      "title": "Extensions",
-      "startLine": 200,
-      "endLine": 220,
-      "summary": "Almost exact coverings and CRT connection"
+      "startLine": 157,
+      "endLine": 193,
+      "summary": "covering_systems_exist, erdos_covering_example, exactCoveringWithRepeats construction"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 221,
-      "endLine": 264,
-      "summary": "Main theorem statements and key insight"
+      "startLine": 195,
+      "endLine": 220,
+      "summary": "erdos_947_summary combining impossibility with existence of ordinary coverings"
     }
   ],
   "conclusion": {
