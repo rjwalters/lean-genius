@@ -17,7 +17,7 @@
       "van-der-waerden"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 984,
     "erdosUrl": "https://erdosproblems.com/984",
     "erdosProblemStatus": "solved",
@@ -46,86 +46,80 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem, posed by Spencer, asks whether the natural numbers can be 2-colored such that monochromatic arithmetic progressions have controlled length. Spencer (1975) showed 3 colors suffice with bound related to the inverse van der Waerden function. Erdős claimed a 2-coloring with k ≪ a^{1-c} but noted no non-trivial lower bound was known. Zach Hunter resolved the full question affirmatively.",
+    "historicalContext": "Erdős Problem #984 asks whether the natural numbers can be 2-colored such that monochromatic arithmetic progressions have controlled length relative to their starting point. Specifically, if {a, a+d, ..., a+(k-1)d} is monochromatic, must k ≪_ε a^ε for all ε > 0?\n\nSpencer (1975) showed this is achievable with 3 colors using a bound related to the inverse van der Waerden function. Erdős himself claimed a 2-coloring achieving the weaker bound k ≪ a^{1-c} for some absolute constant c > 0, but noted he knew no non-trivial lower bound on progression lengths.\n\nZach Hunter resolved the problem completely, proving that 2 colors suffice for the full k ≪_ε a^ε bound. His proof uses probabilistic methods and careful analysis of the structure of arithmetic progressions. Combined with the trivial observation that 1 color fails (via van der Waerden's theorem), this shows 2 is the optimal number of colors.",
     "problemStatement": "Can ℕ be 2-colored such that if {a, a+d, ..., a+(k-1)d} is a k-term monochromatic arithmetic progression, then k ≪_ε a^ε for all ε > 0?",
     "proofStrategy": "The proof uses: (1) Definition of colorings and monochromatic arithmetic progressions, (2) Formalization of the growth condition k ≪_ε a^ε, (3) Connection to van der Waerden's theorem which forces monochromatic APs, (4) Axiomatization of Hunter's probabilistic construction, and (5) Proof that 1 color is trivially insufficient.",
     "keyInsights": [
       "Van der Waerden's theorem guarantees monochromatic APs exist in any finite coloring",
       "The question is about controlling how long these progressions can be relative to their starting point",
       "With 3 colors, Spencer achieved a bound via the inverse van der Waerden function",
-      "Hunter's breakthrough shows 2 colors suffice for the k ≪_ε a^ε bound"
+      "Hunter's breakthrough shows 2 colors suffice for the k ≪_ε a^ε bound",
+      "1 color trivially fails since all sets are monochromatic, making 2 optimal"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
+      "title": "Part 1: Basic Definitions",
       "startLine": 33,
       "endLine": 52,
       "summary": "Definitions of colorings, arithmetic progressions, and monochromaticity."
     },
     {
       "id": "growth-condition",
-      "title": "The Growth Condition",
+      "title": "Part 2: The Growth Condition",
       "startLine": 54,
       "endLine": 68,
       "summary": "Formalization of k ≪_ε a^ε using GrowsSlowerThanAnyPower predicate."
     },
     {
       "id": "van-der-waerden",
-      "title": "Van der Waerden Connection",
+      "title": "Part 3: Van der Waerden Connection",
       "startLine": 70,
-      "endLine": 88,
-      "summary": "Van der Waerden's theorem and its inverse function."
+      "endLine": 81,
+      "summary": "Van der Waerden's theorem axiomatized."
     },
     {
       "id": "spencer-result",
-      "title": "Spencer's 3-Coloring",
-      "startLine": 90,
-      "endLine": 107,
+      "title": "Part 4: Spencer's 3-Coloring",
+      "startLine": 83,
+      "endLine": 100,
       "summary": "Spencer's 1975 result achieving the bound with 3 colors."
     },
     {
       "id": "erdos-partial",
-      "title": "Erdős's Partial Result",
-      "startLine": 109,
-      "endLine": 124,
+      "title": "Part 5: Erdős's Partial Result",
+      "startLine": 102,
+      "endLine": 117,
       "summary": "Erdős's weaker bound k ≪ a^{1-c} for some c > 0."
     },
     {
       "id": "hunter-solution",
-      "title": "Hunter's Complete Solution",
-      "startLine": 126,
-      "endLine": 140,
+      "title": "Part 6: Hunter's Complete Solution",
+      "startLine": 119,
+      "endLine": 127,
       "summary": "Hunter's theorem resolving the problem for 2 colors."
     },
     {
       "id": "chromatic-number",
-      "title": "Chromatic Number Perspective",
-      "startLine": 142,
-      "endLine": 174,
-      "summary": "Analysis of minimum colors needed for various growth bounds."
+      "title": "Part 7: Chromatic Number Perspective",
+      "startLine": 129,
+      "endLine": 157,
+      "summary": "Two colors suffice, one color insufficient (proved)."
     },
     {
       "id": "explicit-bounds",
-      "title": "Explicit Bounds",
-      "startLine": 176,
-      "endLine": 191,
-      "summary": "Known bounds on constants and open questions about lower bounds."
-    },
-    {
-      "id": "main-statement",
-      "title": "Main Problem Statement",
-      "startLine": 193,
-      "endLine": 211,
-      "summary": "Complete formalization combining Hunter, Spencer, and Erdős results."
+      "title": "Part 8: Explicit Bounds",
+      "startLine": 159,
+      "endLine": 168,
+      "summary": "Erdős's exponent bound 0 < c < 1."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 213,
-      "endLine": 236,
-      "summary": "Summary theorem with the affirmative answer and chromatic bounds."
+      "title": "Part 9: Summary",
+      "startLine": 170,
+      "endLine": 192,
+      "summary": "Summary theorem combining Hunter, Spencer, and Erdős results."
     }
   ],
   "conclusion": {
