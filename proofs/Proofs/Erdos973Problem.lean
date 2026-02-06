@@ -1,18 +1,19 @@
-/-
-  Erdős Problem #973: Power Sums of Complex Numbers
+/-!
+  Erdős Problem #973: Power Sums of Complex Numbers (Turán's Problem)
 
   Source: https://erdosproblems.com/973
-  Status: SOLVED (Erdős, L. Erdős 1992, Turán)
+  Status: OPEN (partial results known)
 
   Statement:
   Does there exist a constant C > 1 such that, for every n ≥ 2,
   there exists a sequence z_i ∈ ℂ with z₁ = 1 and |z_i| ≥ 1 such that
     max_{2 ≤ k ≤ n+1} |∑_{i=1}^n z_i^k| < C^{-n}?
 
-  Answer: YES (with qualifications)
+  Known results:
   - For |z_i| ≤ 1: Erdős showed such sequences exist with C ≈ 1.32
   - For |z_i| = 1: L. Erdős (1992) proved (1.746)^{-n} < M₂ < (1.745)^{-n}
   - For |z_i| ≥ 1: Turán's theorem gives lower bound (2e)^{-(1+o(1))n}
+  - The original question (|z_i| ≥ 1) remains open
 
   This is Turán's power sum problem, fundamental in analytic number theory.
 
@@ -20,7 +21,6 @@
   - [Ha74] Hayman, "Research problems in function theory" (1974), Problem 7.3
   - [Tu84b] Turán, "On a new method of analysis and its applications" (1984)
   - [Er92f] L. Erdős, "On some problems of P. Turán" (1992)
-  - Related: Problem #519
 -/
 
 import Mathlib.Data.Complex.Basic
@@ -33,9 +33,7 @@ open Complex Finset BigOperators
 
 namespace Erdos973
 
-/-
-## Part I: Power Sums of Complex Numbers
--/
+/-! ## Part I: Power Sums of Complex Numbers -/
 
 /-- A sequence of n complex numbers. -/
 def ComplexSeq (n : ℕ) := Fin n → ℂ
@@ -60,13 +58,16 @@ def AllOnUnitCircle (z : ComplexSeq n) : Prop :=
 def AllModulusLeOne (z : ComplexSeq n) : Prop :=
   ∀ i, abs (z i) ≤ 1
 
-/-- The maximum power sum over k from 2 to n+1. -/
-noncomputable def maxPowerSum (z : ComplexSeq n) : ℝ :=
-  (Finset.range n).sup' (by decide) (fun k => abs (powerSum z (k + 2)))
+/-- The maximum of |powerSum z k| over k from 2 to n+1.
+    Axiomatized because Finset.sup' requires a nonempty proof that
+    depends on the parameter n. -/
+axiom maxPowerSum (z : ComplexSeq n) : ℝ
 
-/-
-## Part II: The Erdős Question
--/
+/-- maxPowerSum is the supremum of |∑ z_i^k| for k ∈ {2, ..., n+1}. -/
+axiom maxPowerSum_spec (z : ComplexSeq n) (hn : n ≥ 2) :
+    ∀ k, 2 ≤ k → k ≤ n + 1 → abs (powerSum z k) ≤ maxPowerSum z
+
+/-! ## Part II: The Erdős Question -/
 
 /-- Erdős's Question: Does there exist C > 1 such that for all n,
     we can find z with first element 1, all |z_i| ≥ 1,
@@ -77,9 +78,7 @@ def ErdosQuestion973 : Prop :=
       ∃ z : ComplexSeq n, HasFirstOne z ∧ AllModulusGeOne z ∧
         maxPowerSum z < C^(-(n : ℤ))
 
-/-
-## Part III: Erdős's Construction (Unit Disk Case)
--/
+/-! ## Part III: Erdős's Construction (Unit Disk Case) -/
 
 /-- **Erdős's Original Result:**
     Such sequences exist with |z_i| ≤ 1 and C ≈ 1.32. -/
@@ -92,9 +91,7 @@ axiom erdos_unit_disk_construction :
 /-- Erdős's constant is approximately 1.32. -/
 def erdosConstant : ℝ := 1.32
 
-/-
-## Part IV: L. Erdős's Refinement (1992)
--/
+/-! ## Part IV: L. Erdős's Refinement (1992) -/
 
 /-- The minimum over sequences of the maximum power sum (for unit circle). -/
 noncomputable def M2 (n : ℕ) : ℝ :=
@@ -107,11 +104,9 @@ axiom l_erdos_1992_bounds (n : ℕ) (hn : n ≥ 2) :
     (1.746 : ℝ)^(-(n : ℤ)) < M2 n ∧ M2 n < (1.745 : ℝ)^(-(n : ℤ))
 
 /-- The optimal constant for unit circle sequences. -/
-def unitCircleConstant : ℝ := 1.7455  -- approximately
+def unitCircleConstant : ℝ := 1.7455
 
-/-
-## Part V: Turán's Lower Bound
--/
+/-! ## Part V: Turán's Lower Bound -/
 
 /-- **Turán's Theorem (Tu84b, Theorem 6.1):**
     If all |z_i| ≥ 1, then the maximum power sum is at least (2e)^{-(1+o(1))n}. -/
@@ -126,50 +121,24 @@ noncomputable def turanConstant : ℝ := 2 * Real.exp 1
 /-- 2e is approximately 5.44. -/
 axiom turan_constant_approx : 5.43 < turanConstant ∧ turanConstant < 5.45
 
-/-
-## Part VI: The Answer
--/
+/-! ## Part VI: The Answer -/
 
-/-- The answer depends on the constraint:
+/-- The answer depends on the modulus constraint:
     - |z_i| ≤ 1: YES with C ≈ 1.32
     - |z_i| = 1: C ≈ 1.7455 is optimal
-    - |z_i| ≥ 1: Lower bound (2e)^{-n} applies -/
+    - |z_i| ≥ 1: lower bound (2e)^{-n} shows exponential decay, but the
+      exact question (whether C > 1 exists) remains open -/
 def AnswerSummary : Prop :=
-  -- For unit disk: Erdős showed C ≈ 1.32 works
   (∃ C : ℝ, C > 1 ∧ ∀ n ≥ 2, ∃ z : ComplexSeq n,
     HasFirstOne z ∧ AllModulusLeOne z ∧ maxPowerSum z < C^(-(n : ℤ))) ∧
-  -- For unit circle: optimal C ≈ 1.7455
   (∀ n ≥ 2, (1.746 : ℝ)^(-(n : ℤ)) < M2 n ∧ M2 n < (1.745 : ℝ)^(-(n : ℤ))) ∧
-  -- For |z_i| ≥ 1: constrained by Turán
-  True
+  (∀ ε > 0, ∃ N : ℕ,
+    ∀ n ≥ N, ∀ z : ComplexSeq n, HasFirstOne z → AllModulusGeOne z →
+      maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * n))
 
-/-
-## Part VII: Connection to Turán's Power Sum Method
--/
+/-! ## Part VII: Extremal Sequences -/
 
-/-- Turán's power sum method is fundamental in analytic number theory. -/
-def TuranMethod : Prop :=
-  -- Used in estimates for Dirichlet polynomials, L-functions, etc.
-  True
-
-/-- Connection to zero-free regions of L-functions. -/
-def LFunctionConnection : Prop :=
-  -- Power sum bounds relate to zero-free regions
-  True
-
-/-- The power sum problem has applications in:
-    1. Dirichlet polynomials
-    2. L-function theory
-    3. Equidistribution of roots of unity
-    4. Discrepancy theory -/
-axiom applications :
-  True
-
-/-
-## Part VIII: Extremal Sequences
--/
-
-/-- Roots of unity provide natural candidates. -/
+/-- Roots of unity provide natural candidates for extremal sequences. -/
 def rootsOfUnitySequence (n : ℕ) : ComplexSeq n :=
   fun i => Complex.exp (2 * Real.pi * I * i / n)
 
@@ -181,41 +150,28 @@ theorem roots_on_circle (n : ℕ) :
   rw [Complex.abs_exp]
   simp
 
-/-- For n-th roots of unity, the k-th power sum is 0 or n. -/
+/-- For n-th roots of unity, the k-th power sum is 0 when n ∤ k and n when n ∣ k. -/
 axiom roots_power_sum (n k : ℕ) (hn : n > 0) :
     powerSum (rootsOfUnitySequence n) k = if n ∣ k then n else 0
 
-/-
-## Part IX: The Role of Dirichlet Polynomials
--/
+/-! ## Part VIII: Dirichlet Polynomial Connection -/
 
 /-- A Dirichlet polynomial: ∑ a_n n^{-s}. -/
 structure DirichletPolynomial where
   coeffs : ℕ → ℂ
   support : Finset ℕ
 
-/-- Connection: power sums relate to Dirichlet polynomial behavior. -/
-def dirichletConnection : Prop :=
-  -- If z_i = n_i^{it} for integers n_i, power sums become Dirichlet sums
-  True
+/-- Power sums of z_i = n_i^{it} for integers n_i yield Dirichlet sums.
+    This connects Turán's method to L-function zero-free regions. -/
+axiom dirichlet_power_sum_connection :
+    ∀ (N : ℕ) (ns : Fin N → ℕ) (t : ℝ),
+      powerSum (fun i => (Complex.ofReal (ns i : ℝ)) ^ (Complex.ofReal t * I)) 1 =
+      ∑ i : Fin N, (Complex.ofReal (ns i : ℝ)) ^ (Complex.ofReal t * I)
 
-/-
-## Part X: Summary
--/
+/-! ## Part IX: Summary -/
 
-/-- **Erdős Problem #973: SOLVED**
-
-Question: Does there exist C > 1 such that for all n ≥ 2,
-there exists a sequence z_i with z₁ = 1 and |z_i| ≥ 1 where
-  max_{2 ≤ k ≤ n+1} |∑ z_i^k| < C^{-n}?
-
-Answer (depends on constraint):
-- |z_i| ≤ 1: YES, C ≈ 1.32 (Erdős)
-- |z_i| = 1: Optimal C ≈ 1.7455 (L. Erdős 1992)
-- |z_i| ≥ 1: Constrained by Turán's bound (2e)^{-(1+o(1))n}
-
-This is Turán's power sum problem, fundamental in analytic number theory.
--/
+/-- **Unit disk result (PROVED from axiom):** Erdős showed C ≈ 1.32 works
+    when elements have modulus ≤ 1. -/
 theorem erdos_973_unit_disk :
     ∃ C : ℝ, C > 1 ∧
       ∀ n : ℕ, n ≥ 2 →
@@ -224,24 +180,22 @@ theorem erdos_973_unit_disk :
   obtain ⟨C, hC_gt, _, hExist⟩ := erdos_unit_disk_construction
   exact ⟨C, hC_gt, hExist⟩
 
-/-- For the original question with |z_i| ≥ 1, Turán's bound applies. -/
-theorem erdos_973_original_constrained :
+/-- **Turán's constraint (PROVED from axiom):** For |z_i| ≥ 1,
+    Turán's bound gives a lower limit on power sums. -/
+theorem erdos_973_turan_constrained :
     ∀ ε > 0, ∃ N : ℕ,
       ∀ n ≥ N, ∀ z : ComplexSeq n, HasFirstOne z → AllModulusGeOne z →
         maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * n) :=
   turan_lower_bound
 
-/-- Main theorem summarizing the complete picture. -/
+/-- **Main summary theorem:** Combines all three known results:
+    1. Unit disk: C ≈ 1.32 works (Erdős)
+    2. Unit circle: optimal constant ≈ 1.7455 (L. Erdős 1992)
+    3. Outside disk: Turán's lower bound applies -/
 theorem erdos_973 : AnswerSummary := by
-  constructor
-  · obtain ⟨C, hC, _, hExist⟩ := erdos_unit_disk_construction
-    exact ⟨C, hC, fun n hn => hExist n hn⟩
-  constructor
-  · intro n hn
-    exact l_erdos_1992_bounds n hn
-  · trivial
-
-/-- The problem is considered SOLVED in its various formulations. -/
-theorem erdos_973_solved : True := trivial
+  exact ⟨
+    (let ⟨C, hC, _, hExist⟩ := erdos_unit_disk_construction; ⟨C, hC, fun n hn => hExist n hn⟩),
+    l_erdos_1992_bounds,
+    turan_lower_bound⟩
 
 end Erdos973
