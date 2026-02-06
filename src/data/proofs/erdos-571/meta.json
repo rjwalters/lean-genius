@@ -18,6 +18,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
+    "previousSorries": 15,
     "erdosNumber": 571,
     "erdosUrl": "https://erdosproblems.com/571",
     "erdosProblemStatus": "open",
@@ -41,21 +42,18 @@
       }
     ],
     "originalContributions": [
-      "Graph structure definition with adjacency, symmetry, and loopless properties",
-      "IsBipartite definition: vertex partition with cross-partition edges only",
-      "edgeCount definition: counting edges in finite graphs",
-      "ContainsCopy and IsFree definitions: subgraph containment",
-      "extremalNumber definition: ex(n;G) for forbidden subgraphs",
-      "AsymptoticEquiv, IsBigO, IsBigOmega definitions: asymptotic notation",
-      "IsTuranExponent definition: achievable exponents for bipartite graphs",
-      "erdos_571_conjecture: formal statement of the open problem",
-      "conlon_janzer_lee_exponents: 3/2 - 1/(2s) family",
-      "jiang_qiu_exponents: multiple families including 1 + a/b",
-      "jiang_ma_yepremyan_exponents: 2 - 2/(2b+1) family and 7/5",
-      "conlon_janzer_near_two: exponents near 2",
-      "bukh_conlon_families: finite family version theorem",
-      "kovari_sos_turan: classical upper bound",
-      "path_exponent and even_cycle_exponent: fundamental examples"
+      "Graph, IsBipartite, edgeCount, ContainsCopy, IsFree definitions",
+      "AsymptoticEquiv and IsBigO asymptotic notation definitions",
+      "IsTuranExponent definition with existential witness graph",
+      "erdos_571_conjecture formal statement",
+      "conlon_janzer_lee_exponents axiom: 3/2 - 1/(2s) family",
+      "jiang_qiu_exponents axioms: 4/3 - 1/(3s), 5/4 - 1/(4s) families",
+      "jiang_qiu_low_exponents axiom: 1 + a/b with b > a²",
+      "jiang_ma_yepremyan_exponents and exponent_7_5 axioms",
+      "conlon_janzer_near_two axiom: 2 - a/b with b ≥ (a-1)²",
+      "bukh_conlon_families axiom: finite family version",
+      "kovari_sos_turan and bondy_simonovits_upper axioms",
+      "erdos_571_summary theorem combining CJL, JQ, and 7/5"
     ],
     "relatedProblems": [
       {
@@ -65,7 +63,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**The Erdős-Simonovits Conjecture**\n\nThis problem was posed by Erdős and Simonovits (1984) as a fundamental question connecting extremal graph theory with rational number theory.\n\n**The extremal number ex(n;G):** What is the maximum number of edges in an n-vertex graph that contains no copy of G? For bipartite G, ex(n;G) = o(n²), making precise growth rates meaningful.\n\n**Turán Exponents:** A rational α ∈ [1,2) is a Turán exponent if some bipartite G has ex(n;G) ≍ n^α. The conjecture asks: is every such α achievable?\n\n**Major Progress:**\n- Bukh-Conlon (2018): Solved the finite family variant\n- Conlon-Janzer (2022): Covered exponents near 2\n- Jiang-Qiu (2023): Made progress on low exponents\n\n**Current Status:** OPEN. Exponents close to 1 remain the hardest cases.",
+    "historicalContext": "Erdős Problem #571, known as the Erdős-Simonovits conjecture (1984), is one of the central open questions in extremal graph theory. For a graph G, the extremal number ex(n;G) counts the maximum edges in an n-vertex G-free graph. The classical Kővári-Sós-Turán theorem (1954) shows that for bipartite G, ex(n;G) = O(n^{2-1/s}) for some s, while trees give ex(n;G) = Θ(n). So bipartite Turán exponents lie in [1,2). The conjecture asks: does every rational in this interval arise?\n\nThe most significant breakthrough was Bukh and Conlon's 2018 result showing every rational α ∈ [1,2) is achievable for finite FAMILIES of forbidden bipartite graphs, though the single-graph version remains open. For specific exponent families, major progress includes: Conlon-Janzer-Lee (2021) established 3/2 - 1/(2s); Jiang-Qiu (2020) proved 4/3 - 1/(3s) and 5/4 - 1/(4s); Jiang-Ma-Yepremyan (2022) showed 2 - 2/(2b+1) and specifically 7/5; Conlon-Janzer (2022) covered 2 - a/b with b ≥ (a-1)², handling a dense set near 2; and Jiang-Qiu (2023) addressed low exponents 1 + a/b with b > a².\n\nDespite this extensive progress, the conjecture remains open. The known families of achievable exponents are dense in [1,2) but do not cover all rationals. The hardest cases are exponents very close to 1 — achieving ex(n;G) ≍ n^{1.01} for a single bipartite G seems to require fundamentally new construction techniques beyond subdivisions and algebraic graph constructions.",
     "problemStatement": "**Problem Statement (Open)**\n\nShow that for any rational $\\alpha \\in [1,2)$ there exists a bipartite graph $G$ such that $\\text{ex}(n;G) \\asymp n^\\alpha$.\n\n**Notation:**\n- $\\text{ex}(n;G)$: maximum edges in n-vertex G-free graph\n- $\\asymp$: asymptotic equivalence (both $O$ and $\\Omega$)\n- Turán exponent: a rational $\\alpha$ achievable this way\n\n**Known Results:**\n- Exponents near 2: well-covered by Conlon-Janzer\n- Specific families: $3/2 - 1/(2s)$, $4/3 - 1/(3s)$, $1 + a/b$ (with conditions)\n- Finite families: Bukh-Conlon proved every $\\alpha$ works for graph families",
     "proofStrategy": "**Formalization Approach**\n\n1. **Graph Foundations:**\n   - Graph structure with adjacency relation\n   - IsBipartite: vertex 2-partition property\n   - ContainsCopy, IsFree: subgraph relations\n   - edgeCount: cardinality of edge set\n\n2. **Extremal Theory:**\n   - extremalNumber: ex(n;G) definition\n   - Asymptotic notation: AsymptoticEquiv (≍), IsBigO, IsBigOmega\n\n3. **Turán Exponents:**\n   - IsTuranExponent: rational α with witness bipartite G\n   - erdos_571_conjecture: all rationals in [1,2) are Turán exponents\n\n4. **Known Results (Axiomatized):**\n   - Conlon-Janzer-Lee, Jiang-Qiu, Jiang-Ma-Yepremyan families\n   - Bukh-Conlon finite family theorem\n   - Kővári-Sós-Turán upper bounds\n\n5. **Classical Examples:**\n   - Paths: ex(n; P_k) = Θ(n)\n   - Even cycles: ex(n; C_{2k}) related to 1 + 1/k",
     "keyInsights": [
@@ -79,60 +77,53 @@
   },
   "sections": [
     {
-      "id": "basic-definitions",
-      "title": "Basic Definitions",
+      "id": "graph-definitions",
+      "title": "Graph Definitions",
       "summary": "Graph, IsBipartite, edgeCount, ContainsCopy, IsFree",
-      "startLine": 42,
-      "endLine": 69
+      "startLine": 35,
+      "endLine": 61
     },
     {
-      "id": "extremal-numbers",
-      "title": "Extremal Numbers",
-      "summary": "extremalNumber, AsymptoticEquiv, IsBigO, IsBigOmega",
-      "startLine": 71,
-      "endLine": 91
+      "id": "asymptotic-notation",
+      "title": "Extremal Numbers and Asymptotic Notation",
+      "summary": "AsymptoticEquiv, IsBigO definitions",
+      "startLine": 63,
+      "endLine": 72
     },
     {
       "id": "turan-exponents",
       "title": "Turán Exponents",
-      "summary": "IsTuranExponent, erdos_571_conjecture, erdos_571_is_open",
-      "startLine": 92,
-      "endLine": 111
+      "summary": "IsTuranExponent definition and erdos_571_conjecture",
+      "startLine": 74,
+      "endLine": 98
     },
     {
       "id": "known-exponents",
       "title": "Known Turán Exponents",
-      "summary": "conlon_janzer_lee_exponents, jiang_qiu_exponents, jiang_ma_yepremyan_exponents, conlon_janzer_near_two",
-      "startLine": 113,
-      "endLine": 147
+      "summary": "CJL, JQ, JMY, CJ axioms for specific exponent families",
+      "startLine": 100,
+      "endLine": 144
     },
     {
-      "id": "finite-families",
-      "title": "Bukh-Conlon Finite Families",
-      "summary": "extremalNumberFamily, bukh_conlon_families theorem",
-      "startLine": 149,
-      "endLine": 165
+      "id": "bukh-conlon",
+      "title": "Bukh-Conlon Finite Family Result",
+      "summary": "Every α ∈ [1,2) achievable for finite families",
+      "startLine": 146,
+      "endLine": 158
     },
     {
-      "id": "classical-results",
-      "title": "Classical Results",
-      "summary": "kovari_sos_turan, bondy_simonovits_upper",
-      "startLine": 167,
-      "endLine": 188
+      "id": "classical-bounds",
+      "title": "Classical Upper Bounds",
+      "summary": "Kővári-Sós-Turán and Bondy-Simonovits axioms",
+      "startLine": 160,
+      "endLine": 182
     },
     {
-      "id": "examples",
-      "title": "Important Examples",
-      "summary": "path_exponent, even_cycle_exponent",
-      "startLine": 190,
-      "endLine": 212
-    },
-    {
-      "id": "gap",
-      "title": "The Remaining Gap",
-      "summary": "gap_remains, near_two_covered, main_challenge",
-      "startLine": 214,
-      "endLine": 254
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_571_summary combining CJL, JQ low, and 7/5",
+      "startLine": 184,
+      "endLine": 209
     }
   ],
   "conclusion": {
