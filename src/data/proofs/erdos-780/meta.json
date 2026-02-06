@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 780,
     "erdosUrl": "https://erdosproblems.com/780",
     "erdosProblemStatus": "solved",
@@ -80,63 +80,49 @@
       "title": "The Kneser Hypergraph",
       "summary": "KneserHypergraph structure, chromaticNumber",
       "startLine": 56,
-      "endLine": 76
+      "endLine": 73
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem (AFL 1986)",
       "summary": "threshold, alon_frankl_lovasz_1986",
-      "startLine": 78,
-      "endLine": 97
+      "startLine": 75,
+      "endLine": 94
     },
     {
       "id": "tightness",
       "title": "Tightness Construction",
       "summary": "tightBound, tightness_construction",
-      "startLine": 99,
-      "endLine": 119
+      "startLine": 96,
+      "endLine": 113
     },
     {
       "id": "kneser-conjecture",
       "title": "Kneser's Conjecture (k=2)",
-      "summary": "kneser_conjecture, lovasz_1978, KneserGraph",
-      "startLine": 121,
-      "endLine": 143
-    },
-    {
-      "id": "topology",
-      "title": "Topological Proof Method",
-      "summary": "borsuk_ulam_theorem, independence_complex_connectivity",
-      "startLine": 145,
-      "endLine": 161
-    },
-    {
-      "id": "generalizations",
-      "title": "Generalizations",
-      "summary": "stable_kneser, schrijver_graph, fractional_chromatic",
-      "startLine": 163,
-      "endLine": 179
+      "summary": "kneser_conjecture, KneserGraph, kneserAdj",
+      "startLine": 115,
+      "endLine": 132
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "summary": "Petersen graph, KG(7,3), KG(2r,r), KG(2r+1,r)",
-      "startLine": 217,
-      "endLine": 233
+      "startLine": 134,
+      "endLine": 150
     },
     {
-      "id": "history",
-      "title": "Historical Context",
-      "summary": "Kneser 1955, Lovász 1978, AFL 1986, Matoušek 2004",
-      "startLine": 235,
-      "endLine": 255
+      "id": "connections",
+      "title": "Connections",
+      "summary": "Erdős-Ko-Rado theorem",
+      "startLine": 152,
+      "endLine": 165
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Problem status: SOLVED",
-      "startLine": 257,
-      "endLine": 274
+      "summary": "erdos_780_main and erdos_780_summary",
+      "startLine": 167,
+      "endLine": 200
     }
   ],
   "conclusion": {
