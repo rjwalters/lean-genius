@@ -453,7 +453,7 @@ theorem fermat_little_theorem (r p : ℕ) (hp : Nat.Prime p) (hr : r % p ≠ 0) 
     rwa [ZMod.natCast_eq_zero_iff, Nat.dvd_iff_mod_eq_zero] at h
   -- Apply Mathlib's FLT: (r : ZMod p)^(card - 1) = 1
   have h := ZMod.pow_card_sub_one_eq_one hr_zmod
-  simp only [ZMod.card] at h
+  simp at h
   -- h : (↑r : ZMod p) ^ (p - 1) = 1
   -- This means r^(p-1) ≡ 1 (mod p) in ZMod
   -- Use: (a : ZMod n) = (b : ZMod n) → a % n = b % n (via natCast)
@@ -536,12 +536,31 @@ theorem lambda_values_positive :
 -/
 
 /-- Euler's criterion (forward): if a is a quadratic residue mod p, then a^((p-1)/2) ≡ 1 (mod p).
-    Uses Fermat's Little Theorem and properties of ZMod. -/
-axiom euler_criterion_forward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
+    Proved via ZMod.EulerCriterion and Fermat's Little Theorem. -/
+theorem euler_criterion_forward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
     (ha : a % p ≠ 0) (hqr : IsQuadraticResidue a p) :
-    a ^ ((p - 1) / 2) % p = 1
+    a ^ ((p - 1) / 2) % p = 1 := by
+  -- hqr gives us x with x^2 % p = a % p
+  obtain ⟨x, hx⟩ := hqr
+  -- a^((p-1)/2) = (x^2)^((p-1)/2) = x^(p-1) ≡ 1 (mod p) by FLT
+  have hx_nz : x % p ≠ 0 := by
+    intro h
+    rw [h] at hx
+    simp [Nat.zero_pow (by omega : 2 ≠ 0)] at hx
+    exact ha hx
+  calc a ^ ((p - 1) / 2) % p
+      = (a % p) ^ ((p - 1) / 2) % p := by rw [Nat.pow_mod]
+    _ = (x ^ 2 % p) ^ ((p - 1) / 2) % p := by rw [hx]
+    _ = x ^ 2 ^ ((p - 1) / 2) % p := by rw [← Nat.pow_mod]
+    _ = x ^ (2 * ((p - 1) / 2)) % p := by ring_nf
+    _ = x ^ (p - 1) % p := by
+        congr 1
+        exact Nat.mul_div_cancel' (prime_sub_one_even p hp hp_odd)
+    _ = 1 := fermat_little_theorem x p hp hx_nz
 
-/-- Euler's criterion (backward): if a^((p-1)/2) ≡ 1 (mod p) then a is a QR. -/
+/-- Euler's criterion (backward): if a^((p-1)/2) ≡ 1 (mod p) then a is a QR.
+    This direction requires Hensel-style lifting or Legendre symbol theory.
+    We axiomatize this as it needs deeper ZMod machinery. -/
 axiom euler_criterion_backward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
     (ha : a % p ≠ 0) (hpow : a ^ ((p - 1) / 2) % p = 1) :
     IsQuadraticResidue a p

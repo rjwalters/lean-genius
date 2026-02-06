@@ -19,7 +19,9 @@
     "mathlibDependencies": [
       { "theorem": "Nat.Prime", "description": "Prime numbers", "module": "Mathlib.Data.Nat.Prime.Basic" },
       { "theorem": "ZMod", "description": "Integers mod n", "module": "Mathlib.Data.ZMod.Basic" },
-      { "theorem": "Filter.atTop", "description": "For lim sup", "module": "Mathlib.Order.Filter.Basic" }
+      { "theorem": "Filter.atTop", "description": "For lim sup", "module": "Mathlib.Order.Filter.Basic" },
+      { "theorem": "ZMod.pow_card_sub_one_eq_one", "description": "Fermat's Little Theorem in ZMod", "module": "Mathlib.FieldTheory.Finite.Basic" },
+      { "theorem": "ZMod.val_natCast_of_lt", "description": "ZMod value extraction", "module": "Mathlib.Data.ZMod.Basic" }
     ],
     "originalContributions": [
       "IsKthPowerResidue: x^k ≡ r (mod p)",
@@ -31,7 +33,9 @@
       "graham_theorem: Λ(k,m) = ∞ for m ≥ 4",
       "lambda_even_3_infinite: Λ(k,3) = ∞ for even k",
       "erdos436Question2: Open question for odd k",
-      "Known values: Λ(2,2)=9 through Λ(7,2)=1649375"
+      "Known values: Λ(2,2)=9 through Λ(7,2)=1649375",
+      "fermat_little_theorem: proved from Mathlib ZMod.pow_card_sub_one_eq_one",
+      "euler_criterion_forward: proved via calc chain using FLT (was axiom)"
     ],
     "dateAdded": "2026-01-19"
   },
