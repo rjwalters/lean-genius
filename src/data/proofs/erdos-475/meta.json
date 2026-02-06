@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 475,
     "erdosUrl": "https://erdosproblems.com/475",
     "erdosProblemStatus": "open",
@@ -51,105 +51,89 @@
       "kravitz_2024 axiom: t ≤ log p / log log p case",
       "bedert_kravitz_2024 axiom: t ≤ exp((log p)^{1/4}) case",
       "AlspachConjecture definition: generalization to abelian groups",
-      "CyclicGroupConjecture definition: for general cyclic groups",
-      "HasExplicitValidOrdering definition: constructive solutions",
-      "graham_is_alspach_for_prime_field theorem: equivalence"
+      "graham_is_alspach_for_prime_field theorem: equivalence proved",
+      "erdos_475_summary theorem: combines small, large, and medium cases"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #475** is Graham's Rearrangement Conjecture, a beautiful problem in additive combinatorics.\n\n**Historical Development:**\n- **Graham (original):** Proved the conjecture for t = p - 1 (the full non-zero set).\n- **Costa-Pellegrini (2020):** Verified for t ≤ 12 via computation/theory.\n- **Hicks-Ollis-Schmitt (2019):** Proved for large sets (p - 3 ≤ t ≤ p - 1).\n- **Kravitz (2024):** Extended to t ≤ log p / log log p.\n- **Bedert-Kravitz (2024):** Broke the 'rectification barrier' to reach t ≤ exp((log p)^{1/4}).\n\nAlspach conjectured the same holds for arbitrary abelian groups.",
+    "historicalContext": "Graham's Rearrangement Conjecture asks whether every non-zero subset of a prime field 𝔽ₚ can be ordered so that all partial sums are distinct. Graham himself proved the case where A is the entire non-zero set (t = p - 1), providing a constructive ordering. Alspach later generalized the question to arbitrary finite abelian groups.\n\nProgress came in waves. Costa and Pellegrini (2020) verified the conjecture for sets of size at most 12 through computation and theory. Hicks, Ollis, and Schmitt (2019) handled the opposite extreme: sets of size at least p - 3. Kravitz (2024) made a breakthrough for medium-sized sets, proving the conjecture for t ≤ log p / log log p, and Will Sawin independently observed the same bound.\n\nThe most dramatic advance came from Bedert and Kravitz (2024), who broke through the 'rectification barrier' — a technical obstacle that had limited all previous methods to at most log p / log log p. Their new techniques pushed the verified range to t ≤ exp((log p)^{1/4}), a vastly larger bound. Despite this progress, the general conjecture for arbitrary t remains open.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nLet $p$ be a prime. Given any finite set $A \\subseteq \\mathbb{F}_p \\setminus \\{0\\}$, is there always a rearrangement $A = \\{a_1, \\ldots, a_t\\}$ such that all partial sums $\\sum_{k=1}^{m} a_k$ are distinct for all $1 \\leq m \\leq t$?\n\n**Known Results:**\n- $t \\leq 12$: YES (Costa-Pellegrini 2020)\n- $t \\geq p - 3$: YES (Hicks-Ollis-Schmitt 2019)\n- $t \\leq \\exp((\\log p)^{1/4})$: YES (Bedert-Kravitz 2024)\n\n**Open:** General $t$ (the gap in the middle).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Valid Orderings:** Define partial sums and what makes an ordering valid.\n\n2. **Graham's Conjecture:** State the existence of valid orderings.\n\n3. **Known Ranges:** Axiomatize results for small t, large t, and medium t.\n\n4. **Alspach Generalization:** Connect to the broader conjecture for abelian groups.\n\n5. **Technical Barriers:** Explain the rectification barrier overcome in 2024.",
+    "proofStrategy": "The formalization defines partial sums and valid orderings, then states Graham's conjecture. Each known range is axiomatized as a separate result: Costa-Pellegrini for small sets, Hicks-Ollis-Schmitt for large sets, Kravitz for the logarithmic range, and Bedert-Kravitz for the rectification barrier breakthrough. Alspach's generalization to abelian groups is defined and shown equivalent to Graham's conjecture for prime fields. The summary theorem combines the three main verified ranges.",
     "keyInsights": [
-      "**Partial Sums:** We track cumulative sums a₁, a₁+a₂, ..., requiring all to be distinct.",
-      "**Valid Orderings:** Among t! orderings, we need at least one with distinct partial sums.",
-      "**Collision Avoidance:** In 𝔽ₚ there are p possible sum values; we need t to be distinct.",
-      "**Small vs Large:** Small t is verified computationally; large t (near p) uses structure.",
-      "**Rectification Barrier:** Previous methods hit log p / log log p; Bedert-Kravitz broke through.",
-      "**Alspach Generalization:** The same question for all abelian groups remains open."
+      "**Partial Sums:** We track cumulative sums a₁, a₁+a₂, ..., requiring all to be distinct in 𝔽ₚ.",
+      "**Valid Orderings:** Among t! orderings, we need just one with distinct partial sums.",
+      "**Small vs Large:** Small t verified computationally; large t (near p) uses structural arguments.",
+      "**Rectification Barrier:** Previous methods hit log p / log log p; Bedert-Kravitz broke through to exp((log p)^{1/4}).",
+      "**Alspach Generalization:** The same question for all finite abelian groups remains open.",
+      "**Constructive Proofs:** Graham's original proof gave explicit orderings; others are existential."
     ]
   },
   "sections": [
     {
       "id": "valid-orderings",
       "title": "Valid Orderings",
-      "summary": "Definitions of partial sums and valid orderings",
+      "summary": "partialSums, IsValidOrdering, GrahamConjecture definitions",
       "startLine": 44,
       "endLine": 62
     },
     {
       "id": "small-cases",
-      "title": "Small Cases",
-      "summary": "t ≤ 12 verified by Costa-Pellegrini",
+      "title": "Small Cases (Costa-Pellegrini 2020)",
+      "summary": "costa_pellegrini_2020 axiom, small_sets_have_valid_orderings theorem",
       "startLine": 64,
-      "endLine": 78
+      "endLine": 82
     },
     {
       "id": "large-cases",
-      "title": "Large Cases (Near p)",
-      "summary": "p - 3 ≤ t ≤ p - 1 by Hicks-Ollis-Schmitt",
-      "startLine": 80,
-      "endLine": 93
+      "title": "Large Cases — Near p (Hicks-Ollis-Schmitt 2019)",
+      "summary": "hicks_ollis_schmitt_2019 axiom, graham_full_set axiom",
+      "startLine": 84,
+      "endLine": 105
     },
     {
       "id": "logarithmic",
-      "title": "Logarithmic Range",
-      "summary": "t ≤ log p / log log p by Kravitz",
-      "startLine": 95,
-      "endLine": 107
+      "title": "Logarithmic Range (Kravitz 2024)",
+      "summary": "kravitz_2024 axiom: t ≤ log p / log log p",
+      "startLine": 107,
+      "endLine": 121
     },
     {
       "id": "rectification-barrier",
-      "title": "Beyond the Rectification Barrier",
-      "summary": "t ≤ exp((log p)^{1/4}) by Bedert-Kravitz",
-      "startLine": 109,
-      "endLine": 127
+      "title": "Beyond the Rectification Barrier (Bedert-Kravitz 2024)",
+      "summary": "bedert_kravitz_2024 axiom: t ≤ exp((log p)^{1/4})",
+      "startLine": 123,
+      "endLine": 141
     },
     {
       "id": "alspach",
       "title": "Alspach's Conjecture",
-      "summary": "Generalization to abelian groups",
-      "startLine": 129,
-      "endLine": 145
-    },
-    {
-      "id": "cyclic-groups",
-      "title": "Cyclic Groups",
-      "summary": "The case of ℤ/nℤ",
-      "startLine": 147,
-      "endLine": 160
+      "summary": "AlspachConjecture definition, graham_is_alspach_for_prime_field (proved)",
+      "startLine": 143,
+      "endLine": 159
     },
     {
       "id": "constructive",
       "title": "Constructive vs Existential",
-      "summary": "Some proofs are explicit, some existential",
-      "startLine": 162,
-      "endLine": 178
-    },
-    {
-      "id": "difficulty",
-      "title": "What Makes This Hard?",
-      "summary": "Why finding valid orderings is difficult",
-      "startLine": 180,
-      "endLine": 201
+      "summary": "HasExplicitValidOrdering, graham_constructive axiom",
+      "startLine": 161,
+      "endLine": 181
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Current status of Graham's Conjecture",
-      "startLine": 203,
-      "endLine": 234
+      "summary": "erdos_475_summary combining small, large, and medium verified ranges",
+      "startLine": 183,
+      "endLine": 221
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #475 (Graham's Conjecture) asks if every non-zero subset of 𝔽ₚ has an ordering with distinct partial sums. Proven for t ≤ 12 (computation), t ≥ p - 3 (structure), and t ≤ exp((log p)^{1/4}) (rectification breakthrough). The general case remains open.",
-    "implications": "**Implications for Combinatorics**\n\n1. **Additive Combinatorics:** Reveals structure of sumsets in prime fields.\n\n2. **Abelian Groups:** Connects to Alspach's broader conjecture.\n\n3. **Algorithmic:** Finding valid orderings has computational aspects.\n\n4. **Technique Development:** Breaking the rectification barrier required new methods.",
+    "summary": "Erdős Problem #475 (Graham's Conjecture) asks if every non-zero subset of 𝔽ₚ has an ordering with distinct partial sums. Proven for t ≤ 12 (Costa-Pellegrini), t ≥ p - 3 (Hicks-Ollis-Schmitt), and t ≤ exp((log p)^{1/4}) (Bedert-Kravitz). The general case remains open.",
+    "implications": "This problem connects additive combinatorics, prime field structure, and algorithmic questions about finding valid orderings. The breakthrough beyond the rectification barrier suggests new techniques may eventually close the gap.",
     "openQuestions": [
       "Does Graham's conjecture hold for all t?",
       "Can the gap between exp((log p)^{1/4}) and p-3 be closed?",
       "Does Alspach's conjecture hold for general abelian groups?",
-      "Is there an efficient algorithm to find valid orderings?",
-      "What is the structure of sets without valid orderings (if any exist)?"
+      "Is there an efficient algorithm to find valid orderings?"
     ]
   }
 }
