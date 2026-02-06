@@ -1,177 +1,90 @@
 [
   {
-    "id": "ann-e1132-header",
+    "id": "ann-1132-header",
     "proofId": "erdos-1132",
     "range": { "startLine": 1, "endLine": 28 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions**\n\nTwo open questions about the Lebesgue function Lₙ(x) = Σₖ |lₖ(x)| for infinite sequences of nodes in [-1,1]:\n\n1. **Existence:** Must there exist x with Lₙ(x) > (2/π)log(n) - O(1) infinitely often?\n2. **Almost Everywhere:** Is limsup Lₙ(x)/log(n) ≥ 2/π for almost all x?\n\n**Status: OPEN**\n\nPartial results: Bernstein showed good points are dense, Erdős showed the maximum exceeds the threshold.",
-    "mathContext": "The Lebesgue function measures interpolation error amplification. The (2/π)log(n) growth rate is optimal (achieved by Chebyshev nodes).",
+    "content": "**Erdős Problem #1132** poses two open questions about the Lebesgue function Lₙ(x) = Σₖ |lₖ(x)| for infinite sequences of interpolation nodes in [-1,1]. Question 1: must there exist a 'witness' x ∈ (-1,1) where Lₙ(x) > (2/π)log(n) - O(1) for infinitely many n? Question 2: is limsup Lₙ(x)/log(n) ≥ 2/π for almost all x? Bernstein (1931) showed the good points are dense, and Erdős (1961) showed the maximum always exceeds the threshold, but the gap between topological density and measure-theoretic almost-everywhere remains unresolved.",
+    "mathContext": "Lₙ(x) = Σₖ |lₖ(x)| where lₖ are Lagrange basis polynomials. The constant 2/π arises from the Chebyshev node optimality: Λₙ ~ (2/π)log n for Chebyshev nodes. Questions: ∀ seq, ∃ x, Lₙ(x) large i.o.? and ∀ seq, a.e. x, limsup Lₙ(x)/log n ≥ 2/π?",
     "significance": "critical",
-    "relatedConcepts": ["Lagrange interpolation", "Lebesgue constant", "Approximation theory"]
+    "relatedConcepts": ["Lagrange-interpolation", "Lebesgue-constant", "approximation-theory", "Bernstein-1931"]
   },
   {
-    "id": "ann-e1132-lagrange-basis",
+    "id": "ann-1132-lagrange",
     "proofId": "erdos-1132",
-    "range": { "startLine": 45, "endLine": 55 },
+    "range": { "startLine": 39, "endLine": 67 },
     "type": "definition",
-    "title": "Lagrange Basis Polynomial",
-    "content": "**lagrangeBasis nodes k x:**\n\nThe kth Lagrange basis polynomial for nodes x₁,...,xₙ:\n$$l_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$$\n\n**Key Properties:**\n- lₖ(xₖ) = 1 (value 1 at own node)\n- lₖ(xᵢ) = 0 for i ≠ k (vanishes at other nodes)\n\nThis is the unique polynomial of degree n-1 with these properties.",
-    "mathContext": "Lagrange basis polynomials are the building blocks of polynomial interpolation.",
+    "title": "Lagrange Basis Polynomials",
+    "content": "Two equivalent definitions of the Lagrange basis. **lagrangeBasis** computes lₖ(x) = ∏ᵢ (if i=k then 1 else (x-xᵢ)/(xₖ-xᵢ)) as a single product over all Fin n. **lagrangeBasis'** uses the more familiar form: numerator = ∏_{i≠k}(x-xᵢ), denominator = ∏_{i≠k}(xₖ-xᵢ), computed via Finset.univ.filter (· ≠ k). Two axioms capture the fundamental properties: **lagrangeBasis_self** (lₖ(xₖ) = 1) and **lagrangeBasis_other** (lₖ(xⱼ) = 0 for j ≠ k). These are axiomatized since the proof requires cancellation in the product formula and handling of the distinctness hypothesis.",
+    "mathContext": "lagrangeBasis nodes k x := ∏ᵢ (if i=k then 1 else (x-xᵢ)/(xₖ-xᵢ)). lagrangeBasis_self: lₖ(xₖ) = 1. lagrangeBasis_other: lₖ(xⱼ) = 0 for j≠k. Degree n-1 polynomial, unique with these properties.",
     "significance": "critical",
-    "relatedConcepts": ["Polynomial interpolation", "Vandermonde matrix"]
+    "relatedConcepts": ["polynomial-interpolation", "Finset.prod", "Vandermonde"]
   },
   {
-    "id": "ann-e1132-lagrange-props",
+    "id": "ann-1132-lebesgue",
     "proofId": "erdos-1132",
-    "range": { "startLine": 64, "endLine": 77 },
+    "range": { "startLine": 69, "endLine": 93 },
+    "type": "definition",
+    "title": "Lebesgue Function and Constant",
+    "content": "**lebesgueFunction** computes Lₙ(x) = Σₖ |lₖ(x)| as a sum of absolute values of all Lagrange basis polynomials. **lebesgueConstant** is Λₙ = sup_{x ∈ [-1,1]} Lₙ(x), using iSup over Set.Icc. **lebesgueFunction_ge_one** axiomatizes that Lₙ(x) ≥ 1 for all x when nodes are distinct — at any node xₖ, the term |lₖ(xₖ)| = 1 and all others are non-negative. The Lebesgue function controls interpolation error: |f(x) - Pₙ(x)| ≤ (1 + Lₙ(x)) · Eₙ(f) where Eₙ(f) is the best polynomial approximation error.",
+    "mathContext": "lebesgueFunction nodes x := Σₖ |lagrangeBasis nodes k x|. lebesgueConstant nodes := ⨆ x ∈ Icc(-1,1), Lₙ(x). lebesgueFunction_ge_one: Lₙ ≥ 1.",
+    "significance": "critical",
+    "relatedConcepts": ["interpolation-error", "best-approximation", "iSup"]
+  },
+  {
+    "id": "ann-1132-growth",
+    "proofId": "erdos-1132",
+    "range": { "startLine": 95, "endLine": 124 },
     "type": "axiom",
-    "title": "Lagrange Basis Properties",
-    "content": "**lagrangeBasis_self and lagrangeBasis_other:**\n\nFundamental properties of Lagrange basis polynomials:\n\n1. **Self:** lₖ(xₖ) = 1 (interpolation property)\n2. **Other:** lₖ(xⱼ) = 0 for j ≠ k (zeros at other nodes)\n\nThese properties ensure that the Lagrange interpolant P(xₖ) = fₖ for any data values.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1132-lebesgue-func",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 84, "endLine": 92 },
-    "type": "definition",
-    "title": "Lebesgue Function",
-    "content": "**lebesgueFunction nodes x:**\n\n$$L_n(x) = \\sum_{k=1}^n |l_k(x)|$$\n\nThe sum of absolute values of all Lagrange basis polynomials at point x.\n\n**Significance:** Controls interpolation error:\n|f(x) - Pₙ(x)| ≤ (1 + Lₙ(x)) · Eₙ(f)\n\nwhere Eₙ(f) is the best polynomial approximation error.",
-    "mathContext": "The Lebesgue function is the key quantity in understanding polynomial interpolation stability.",
+    "title": "Growth Bounds and Chebyshev Nodes",
+    "content": "**erdos_lower_bound** (1961): for any nodes in [-1,1], Λₙ > (2/π)log(n) - 10. This fundamental result shows logarithmic growth is unavoidable. **chebyshevNodes** defines the optimal nodes xₖ = cos((2k-1)π/(2n)), which are zeros of Chebyshev polynomials shifted to [-1,1]. **chebyshevNodes_in_interval** confirms they lie in [-1,1]. **chebyshev_lebesgue_constant** shows |Λₙ - (2/π)log(n)| ≤ 2 for Chebyshev nodes, proving they achieve the theoretical lower bound up to O(1). The constant 2/π ≈ 0.637 is thus the optimal leading coefficient.",
+    "mathContext": "erdos_lower_bound: Λₙ > (2/π)log(n) - 10. chebyshevNodes k := cos((2(k+1)-1)π/(2n)). chebyshev_lebesgue_constant: |Λₙ - (2/π)log n| ≤ 2. Optimal: 2/π ≈ 0.637.",
     "significance": "critical",
-    "relatedConcepts": ["Interpolation error", "Best approximation"]
+    "relatedConcepts": ["Erdős-1961", "Chebyshev-polynomials", "optimal-interpolation"]
   },
   {
-    "id": "ann-e1132-lebesgue-const",
+    "id": "ann-1132-questions",
     "proofId": "erdos-1132",
-    "range": { "startLine": 93, "endLine": 101 },
+    "range": { "startLine": 126, "endLine": 160 },
     "type": "definition",
-    "title": "Lebesgue Constant",
-    "content": "**lebesgueConstant nodes:**\n\n$$\\Lambda_n = \\max_{x \\in [-1,1]} L_n(x)$$\n\nThe maximum of the Lebesgue function over the interval.\n\n**Growth:** For any node configuration, Λₙ ≥ (2/π)log(n) - O(1).\nChebyshev nodes achieve Λₙ ~ (2/π)log(n), which is optimal.",
-    "significance": "critical"
+    "title": "The Two Open Questions",
+    "content": "**InfiniteNodeSequence** is a subtype of ℕ → ℝ satisfying ∀ n, f(n) ∈ [-1,1]. **lebesgueFunctionN** computes Lₙ for the first n nodes of a sequence (returns 1 for n=0). **existsGoodPoint** (Question 1): ∃ x ∈ (-1,1), ∃ C, ∀ N, ∃ n > N, Lₙ(x) > (2/π)log(n) - C. This asks for a single witness point that works infinitely often. **almostEverywhereGrowth** (Question 2): ∀ᵐ x ∂(volume.restrict Ioo(-1,1)), limsup Lₙ(x)/log(n) ≥ 2/π. This uses Mathlib's measure-theoretic 'almost everywhere' quantifier. The distinction is crucial: Erdős's max theorem gives witnesses for each n, but they may differ between n values.",
+    "mathContext": "existsGoodPoint: ∃ x ∈ Ioo(-1,1), ∃ C, Lₙ(x) > (2/π)log n - C i.o. almostEverywhereGrowth: ∀ᵐ x, limsup Lₙ(x)/log n ≥ 2/π. Both OPEN.",
+    "significance": "critical",
+    "relatedConcepts": ["Subtype", "Filter.limsup", "volume.restrict", "ae-filter"]
   },
   {
-    "id": "ann-e1132-erdos-bound",
+    "id": "ann-1132-partial",
     "proofId": "erdos-1132",
-    "range": { "startLine": 117, "endLine": 127 },
+    "range": { "startLine": 162, "endLine": 190 },
     "type": "axiom",
-    "title": "Erdős's Lower Bound",
-    "content": "**erdos_lower_bound (1961):**\n\nFor any choice of nodes in [-1,1]:\n$$\\max_{x \\in [-1,1]} L_n(x) > \\frac{2}{\\pi} \\log n - O(1)$$\n\nThis is a fundamental lower bound showing that the Lebesgue constant cannot be made smaller than logarithmic growth.",
-    "mathContext": "Published in 'Problems and results on the theory of interpolation. II', Acta Math. Acad. Sci. Hungar. (1961).",
-    "significance": "critical"
+    "title": "Partial Results",
+    "content": "**denseGoodPoints** defines the set of x where limsup Lₙ(x)/log(n) ≥ 2/π, and asks that this set be Dense in ℝ. **bernstein_density_theorem** (1931) axiomatizes that this holds for every infinite node sequence. **erdos_max_theorem** (1961): for each n ≥ 2, there exists x ∈ [-1,1] with Lₙ(x) > (2/π)log(n) - 10. The gap: Bernstein gives density (topological notion — the set intersects every open interval) but Question 2 asks for positive measure (measure-theoretic). It is possible for a set to be dense but have measure zero (like the rationals), so density alone doesn't resolve the almost-everywhere question.",
+    "mathContext": "bernstein_density_theorem: ∀ seq, Dense {x | limsup Lₙ(x)/log n ≥ 2/π}. erdos_max_theorem: ∀ n ≥ 2, ∃ x ∈ [-1,1], Lₙ(x) > (2/π)log n - 10. Dense ⊄ a.e. in general.",
+    "significance": "critical",
+    "relatedConcepts": ["Dense", "measure-zero", "Bernstein-1931", "Erdős-1961"]
   },
   {
-    "id": "ann-e1132-chebyshev",
+    "id": "ann-1132-equidistant",
     "proofId": "erdos-1132",
-    "range": { "startLine": 128, "endLine": 135 },
+    "range": { "startLine": 192, "endLine": 207 },
     "type": "definition",
-    "title": "Chebyshev Nodes",
-    "content": "**chebyshevNodes n:**\n\nThe optimal nodes for polynomial interpolation:\n$$x_k = \\cos\\left(\\frac{(2k-1)\\pi}{2n}\\right), \\quad k = 1, \\ldots, n$$\n\nThese nodes minimize the Lebesgue constant and achieve the optimal growth rate (2/π)log(n).",
-    "mathContext": "Chebyshev nodes are the zeros of the Chebyshev polynomial Tₙ(x).",
+    "title": "Equidistant Nodes and Runge Phenomenon",
+    "content": "**equidistantNodes** places n nodes equally spaced: xₖ = -1 + 2k/(n-1). **equidistant_exponential_growth** axiomatizes that Λₙ ≥ 2^(n/4) for n ≥ 10, showing the Lebesgue constant grows exponentially rather than logarithmically. This dramatic degradation is related to the Runge phenomenon (1901): polynomial interpolation of smooth functions like f(x) = 1/(1+25x²) at equidistant nodes diverges at endpoints. The cause lies in complex analysis — singularities of f near [-1,1] in the complex plane interact badly with equidistant node geometry.",
+    "mathContext": "equidistantNodes k := -1 + 2k/(n-1). equidistant_exponential_growth: Λₙ ≥ 2^(n/4). Compare: optimal log(n) vs equidistant 2^Θ(n).",
     "significance": "key",
-    "relatedConcepts": ["Chebyshev polynomials", "Optimal interpolation"]
+    "relatedConcepts": ["Runge-phenomenon", "exponential-growth", "equidistant-interpolation"]
   },
   {
-    "id": "ann-e1132-chebyshev-opt",
+    "id": "ann-1132-summary",
     "proofId": "erdos-1132",
-    "range": { "startLine": 143, "endLine": 150 },
-    "type": "axiom",
-    "title": "Optimal Growth Rate",
-    "content": "**chebyshev_lebesgue_constant:**\n\nFor Chebyshev nodes:\n$$\\left|\\Lambda_n - \\frac{2}{\\pi}\\log n\\right| \\leq O(1)$$\n\nThis shows Chebyshev nodes are asymptotically optimal: they achieve the theoretical lower bound.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1132-infinite-seq",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 157, "endLine": 171 },
-    "type": "definition",
-    "title": "Infinite Node Sequences",
-    "content": "**InfiniteNodeSequence and lebesgueFunctionN:**\n\nAn infinite sequence x₁, x₂, ... in [-1,1].\n\nFor such a sequence, lebesgueFunctionN computes the Lebesgue function for the first n nodes.\n\nThe main questions ask about the behavior of Lₙ(x) as n → ∞ for fixed x.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1132-question1",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 172, "endLine": 191 },
-    "type": "definition",
-    "title": "Question 1: Existence of Good Points",
-    "content": "**existsGoodPoint:**\n\nMust there exist x ∈ (-1,1) such that Lₙ(x) > (2/π)log(n) - C for infinitely many n?\n\n**Status: OPEN**\n\nThis asks whether every infinite sequence has a 'witness' point demonstrating near-optimal growth infinitely often.\n\nNote: Erdős's maximum theorem shows such x exist for each n, but the question asks for a single x that works infinitely often.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1132-question2",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 192, "endLine": 211 },
-    "type": "definition",
-    "title": "Question 2: Almost Everywhere Growth",
-    "content": "**almostEverywhereGrowth:**\n\nIs limsup_{n→∞} Lₙ(x)/log(n) ≥ 2/π for almost all x ∈ (-1,1)?\n\n**Status: OPEN**\n\nThis asks whether the optimal growth rate holds for Lebesgue-almost-every point, not just a dense set.\n\nThe gap between 'dense' (Bernstein's result) and 'almost everywhere' is the key unresolved issue.",
-    "mathContext": "Uses measure-theoretic 'almost everywhere' with respect to Lebesgue measure.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1132-bernstein",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 218, "endLine": 237 },
-    "type": "axiom",
-    "title": "Bernstein's Density Theorem",
-    "content": "**bernstein_density_theorem (1931):**\n\nFor any infinite sequence, the set of x where:\n$$\\limsup_{n\\to\\infty} \\frac{L_n(x)}{\\log n} \\geq \\frac{2}{\\pi}$$\nis **dense** in (-1,1).\n\n**Partial Answer:** This shows 'good' points exist everywhere locally, but doesn't establish measure > 0.",
-    "mathContext": "From 'Sur la limitation des valeurs d'un polynome', Izv. Akad. Nauk. SSSR (1931).",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1132-max-theorem",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 238, "endLine": 248 },
-    "type": "axiom",
-    "title": "Erdős's Maximum Theorem",
-    "content": "**erdos_max_theorem:**\n\nFor any finite set of nodes, the maximum of Lₙ exceeds (2/π)log(n) - O(1).\n\n**Limitation:** This doesn't answer Questions 1-2 because:\n- It's about the maximum, not fixed points x\n- The maximizing x may change with n",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1132-error-bound",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 255, "endLine": 266 },
-    "type": "axiom",
-    "title": "Interpolation Error Bound",
-    "content": "**interpolation_error_bound:**\n\nFor any continuous f and its Lagrange interpolant Pₙ:\n$$|f(x) - P_n(x)| \\leq (1 + L_n(x)) \\cdot E_n(f)$$\n\nwhere Eₙ(f) is the best polynomial approximation error.\n\n**Significance:** Large Lₙ(x) means interpolation can be much worse than best approximation at point x.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1132-equidistant",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 280, "endLine": 288 },
-    "type": "definition",
-    "title": "Equidistant Nodes",
-    "content": "**equidistantNodes:**\n\nEqually spaced nodes: xₖ = -1 + 2k/(n-1) for k = 0, ..., n-1.\n\n**Warning:** For equidistant nodes:\n$$\\Lambda_n \\sim \\frac{2^n}{e \\cdot n \\cdot \\log n}$$\n\nExponential growth! This is dramatically worse than the optimal log(n).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1132-runge",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 289, "endLine": 298 },
-    "type": "axiom",
-    "title": "Runge Phenomenon",
-    "content": "**runge_phenomenon_connection:**\n\nThe exponential growth of Lebesgue constants for equidistant nodes explains Runge's phenomenon:\n\nPolynomial interpolation of smooth functions like f(x) = 1/(1+25x²) with equidistant nodes diverges at the endpoints as n → ∞.\n\n**Cause:** Singularities in the complex plane near [-1,1].",
-    "mathContext": "Runge (1901) discovered this counterintuitive behavior.",
-    "significance": "supporting",
-    "relatedConcepts": ["Complex analysis", "Polynomial convergence"]
-  },
-  {
-    "id": "ann-e1132-summary",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 312, "endLine": 334 },
+    "range": { "startLine": 209, "endLine": 245 },
     "type": "theorem",
-    "title": "Summary: Two Open Questions",
-    "content": "**erdos_1132_summary:**\n\nTwo open questions about Lebesgue functions for infinite node sequences:\n\n1. **Existence:** Must there be a 'witness' point x for infinitely many n?\n2. **Almost Everywhere:** Does the growth property hold a.e.?\n\n**What We Know:**\n- Dense (Bernstein 1931) ≠ Almost everywhere (Open)\n- Maximum exceeds threshold (Erdős 1961) ≠ Fixed point works (Open)\n\nThe gap between topological density and measure-theoretic properties remains unresolved.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1132-status",
-    "proofId": "erdos-1132",
-    "range": { "startLine": 335, "endLine": 341 },
-    "type": "theorem",
-    "title": "Status: OPEN",
-    "content": "**erdos_1132_status:**\n\nBoth questions from Erdős Problem #1132 remain open.\n\nThe measure-theoretic and topological properties of 'good' points for Lagrange interpolation are not fully understood.",
-    "significance": "key"
+    "title": "Summary Theorems",
+    "content": "Two summary theorems. **erdos_1132** combines the two main known results: (1) Bernstein's density theorem holds for all sequences, and (2) the Erdős maximum bound holds for each n. Proved by ⟨bernstein_density_theorem, erdos_max_theorem⟩. **erdos_1132_summary** applies Bernstein's theorem to a specific sequence: denseGoodPoints seq := bernstein_density_theorem seq. Both questions remain OPEN — we know good points are dense but not whether they have positive measure or full measure.",
+    "mathContext": "erdos_1132 : (∀ seq, denseGoodPoints seq) ∧ (∀ seq n ≥ 2, ∃ x, Lₙ(x) > threshold) := ⟨bernstein, erdos_max⟩. erdos_1132_summary seq : denseGoodPoints seq := bernstein seq.",
+    "significance": "critical",
+    "relatedConcepts": ["exact-constructor", "open-problem", "dense-vs-ae"]
   }
 ]

@@ -84,56 +84,49 @@
       "title": "Lagrange Basis Polynomials",
       "summary": "lagrangeBasis definition and fundamental properties",
       "startLine": 39,
-      "endLine": 77
+      "endLine": 67
     },
     {
       "id": "lebesgue-function",
       "title": "The Lebesgue Function",
-      "summary": "lebesgueFunction and lebesgueConstant definitions",
-      "startLine": 78,
-      "endLine": 110
+      "summary": "lebesgueFunction, lebesgueConstant, lower bound ≥ 1",
+      "startLine": 69,
+      "endLine": 93
     },
     {
       "id": "growth-bounds",
       "title": "Growth of Lebesgue Constants",
-      "summary": "erdos_lower_bound, chebyshevNodes, optimal growth rate",
-      "startLine": 111,
-      "endLine": 150
+      "summary": "Erdős lower bound, Chebyshev nodes, optimal growth rate",
+      "startLine": 95,
+      "endLine": 124
     },
     {
       "id": "main-questions",
       "title": "The Main Questions",
       "summary": "existsGoodPoint, almostEverywhereGrowth predicates",
-      "startLine": 151,
-      "endLine": 211
+      "startLine": 126,
+      "endLine": 160
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
       "summary": "bernstein_density_theorem, erdos_max_theorem",
-      "startLine": 212,
-      "endLine": 248
+      "startLine": 162,
+      "endLine": 190
     },
     {
-      "id": "interpolation-error",
-      "title": "Connection to Interpolation Error",
-      "summary": "Why Lebesgue functions matter for interpolation",
-      "startLine": 249,
-      "endLine": 275
-    },
-    {
-      "id": "examples",
-      "title": "Special Cases and Examples",
-      "summary": "equidistantNodes, Runge phenomenon, Leja points",
-      "startLine": 276,
-      "endLine": 307
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "equidistantNodes and exponential growth",
+      "startLine": 192,
+      "endLine": 207
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_1132_summary and status",
-      "startLine": 308,
-      "endLine": 343
+      "summary": "erdos_1132 and erdos_1132_summary theorems",
+      "startLine": 209,
+      "endLine": 245
     }
   ],
   "conclusion": {
