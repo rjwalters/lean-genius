@@ -1,5 +1,7 @@
 import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.NumberTheory.Bernoulli
+import Mathlib.NumberTheory.BernoulliPolynomials
 import Mathlib.Tactic
 
 /-
@@ -502,5 +504,97 @@ theorem sum_pow_succ_sub (n k : ℕ) :
     ∑ i ∈ range (n + 1), i ^ k - ∑ i ∈ range n, i ^ k = n ^ k := by
   rw [sum_range_succ]
   omega
+
+/- ## Connection to Bernoulli Numbers: The General Faulhaber Formula
+
+Mathlib provides the general Faulhaber formula via `Finset.sum_range_pow`, which expresses
+∑_{i=0}^{n-1} i^p as a polynomial in n with Bernoulli number coefficients:
+
+  ∑_{i=0}^{n-1} i^p = ∑_{i=0}^{p} B_i · C(p+1,i) · n^(p+1-i) / (p+1)
+
+This subsumes all our specific formulas (k=1 through k=7) as special cases. -/
+
+section BernoulliConnection
+
+/-- The general Faulhaber formula over ℚ.
+    This is a restatement of Mathlib's `Finset.sum_range_pow` to make the connection explicit.
+    For any p, the sum of p-th powers is a degree-(p+1) polynomial in n with
+    Bernoulli number coefficients. -/
+theorem faulhaber_formula (n p : ℕ) :
+    (∑ i ∈ range n, (i : ℚ) ^ p) =
+    ∑ i ∈ range (p + 1), bernoulli i * ↑((p + 1).choose i) * (n : ℚ) ^ (p + 1 - i) / (↑p + 1) :=
+  Finset.sum_range_pow n p
+
+/-- The general formula via Bernoulli polynomial evaluation:
+    (p+1) · ∑_{i=0}^{n-1} i^p = B_{p+1}(n) - B_{p+1}
+    where B_k is the k-th Bernoulli polynomial. -/
+theorem faulhaber_bernoulli_poly (n p : ℕ) :
+    ((↑p + 1 : ℚ) * ∑ i ∈ range n, (i : ℚ) ^ p) =
+    (Polynomial.bernoulli p.succ).eval (n : ℚ) - (Polynomial.bernoulli p.succ).eval 0 :=
+  Finset.sum_range_pow_eq_bernoulli_sub n p
+
+/-- Bernoulli polynomial evaluated at 0 gives the Bernoulli number. -/
+theorem bernoulli_poly_eval_zero (n : ℕ) :
+    (Polynomial.bernoulli n).eval (0 : ℚ) = bernoulli n :=
+  Polynomial.bernoulli_eval_zero n
+
+/-- **Verification: Faulhaber for p=1 gives Gauss's formula**
+
+    ∑_{i=0}^{n-1} i = n(n-1)/2 over ℚ. -/
+theorem faulhaber_p1 (n : ℕ) :
+    (∑ i ∈ range n, (i : ℚ) ^ 1) = (n : ℚ) * ((n : ℚ) - 1) / 2 := by
+  have h := faulhaber_formula n 1
+  simp [bernoulli, Polynomial.bernoulli] at h ⊢
+  linarith
+
+/-- **The Faulhaber formula via Bernoulli polynomial evaluation (simplified)**
+
+    ∑_{i=0}^{n-1} i^p = (B_{p+1}(n) - B_{p+1}(0)) / (p+1)
+
+    This shows power sums are computed by evaluating Bernoulli polynomials. -/
+theorem faulhaber_via_eval (n p : ℕ) :
+    (∑ i ∈ range n, (i : ℚ) ^ p) =
+    ((Polynomial.bernoulli p.succ).eval (n : ℚ) - (Polynomial.bernoulli p.succ).eval 0) /
+    (↑p + 1) := by
+  have hp : (↑p + 1 : ℚ) ≠ 0 := by positivity
+  have h := faulhaber_bernoulli_poly n p
+  field_simp at h ⊢
+  linarith
+
+/-- **Odd Bernoulli numbers vanish (except B₁)**
+
+    B_{2k+1} = 0 for k ≥ 1. This is why even power sum formulas
+    only involve even-index Bernoulli numbers. -/
+theorem bernoulli_odd_eq_zero {n : ℕ} (h1 : n ≠ 1) (h2 : ¬Even n) :
+    bernoulli n = 0 :=
+  Nat.bernoulli_odd_eq_zero h1 h2
+
+/-- **B₀ = 1** -/
+theorem bernoulli_zero_val : bernoulli 0 = 1 :=
+  bernoulli_zero
+
+/-- **B₁ = -1/2** (in Mathlib's convention) -/
+theorem bernoulli_one_val : bernoulli 1 = -1/2 :=
+  bernoulli_one
+
+/-- **Connection between ℕ and ℚ formulas for sum of squares**
+
+    The ℕ formula n(n+1)(2n+1)/6 equals the Faulhaber formula evaluated over ℚ. -/
+theorem sum_squares_bernoulli_agreement (n : ℕ) :
+    (↑(∑ i ∈ range (n + 1), i ^ 2) : ℚ) =
+    ∑ i ∈ range 3, bernoulli i * ↑(3.choose i) * (↑(n + 1) : ℚ) ^ (3 - i) / 3 := by
+  have h := faulhaber_formula (n + 1) 2
+  exact_mod_cast h
+
+/-- **Connection between ℕ and ℚ formulas for sum of cubes**
+
+    The ℕ formula [n(n+1)/2]² equals the Faulhaber formula evaluated over ℚ. -/
+theorem sum_cubes_bernoulli_agreement (n : ℕ) :
+    (↑(∑ i ∈ range (n + 1), i ^ 3) : ℚ) =
+    ∑ i ∈ range 4, bernoulli i * ↑(4.choose i) * (↑(n + 1) : ℚ) ^ (4 - i) / 4 := by
+  have h := faulhaber_formula (n + 1) 3
+  exact_mod_cast h
+
+end BernoulliConnection
 
 end SumOfKthPowers

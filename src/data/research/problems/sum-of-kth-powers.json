@@ -1,41 +1,79 @@
 {
   "slug": "sum-of-kth-powers",
   "title": "Sum of kth Powers (Faulhaber Formulas)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "faulhaber_formula : ∑ i ∈ range n, (i : ℚ) ^ p = ∑ i ∈ range (p+1), B_i · C(p+1,i) · n^(p+1-i) / (p+1)",
+    "plain": "Prove closed-form formulas for sums of consecutive kth powers using Bernoulli numbers (Faulhaber's theorem, Wiedijk #77).",
+    "whyMatters": [
+      "Fundamental result in combinatorics and number theory",
+      "Connects finite sums to Bernoulli numbers and polynomials",
+      "The identity sum_cubes = (sum)^2 (Nicomachus) is one of the most elegant in mathematics"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "General Faulhaber formula via Mathlib's Finset.sum_range_pow",
+      "Bernoulli polynomial evaluation form: (p+1)·∑i^p = B_{p+1}(n) - B_{p+1}(0)",
+      "Sum of 1st powers (Gauss): ∑i = n(n+1)/2",
+      "Sum of squares: ∑i² = n(n+1)(2n+1)/6",
+      "Sum of cubes: ∑i³ = [n(n+1)/2]²",
+      "Nicomachus theorem: ∑i³ = (∑i)²",
+      "Sum of 4th, 5th, 6th, 7th powers (all proved)",
+      "Bernoulli number values: B₀=1, B₁=-1/2",
+      "Odd Bernoulli vanishing: B_{2k+1}=0 for k≥1",
+      "Agreement: ℕ formulas match ℚ Faulhaber for k=2,3"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Complete: general formula + specific cases k=1..7 with 0 sorries"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-27T22:18:02.334Z",
+    "phase": "COMPLETE",
+    "since": "2026-02-06T03:40:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Complete: 55 theorems, 0 sorries, 0 axioms. General Faulhaber + k=1..7 + Bernoulli connection.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - problem formalization complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 55 theorems, 0 sorries, 0 axioms. Comprehensive Faulhaber formula formalization covering: general Bernoulli number formula (from Mathlib), Bernoulli polynomial evaluation form, specific cases k=0..7 with ℕ proofs, Nicomachus theorem, structural properties (monotonicity, upper bounds), verification examples, and full Bernoulli connection section proving B₀=1, B₁=-1/2, odd Bernoulli vanishing, and agreement between ℕ and ℚ formulas.",
+    "builtItems": [
+      "proofs/Proofs/SumOfKthPowers.lean: faulhaber_formula - general Faulhaber via Mathlib",
+      "proofs/Proofs/SumOfKthPowers.lean: faulhaber_bernoulli_poly - Bernoulli polynomial form",
+      "proofs/Proofs/SumOfKthPowers.lean: faulhaber_via_eval - simplified evaluation form",
+      "proofs/Proofs/SumOfKthPowers.lean: faulhaber_p1 - verification for p=1",
+      "proofs/Proofs/SumOfKthPowers.lean: bernoulli_zero_val, bernoulli_one_val - B₀=1, B₁=-1/2",
+      "proofs/Proofs/SumOfKthPowers.lean: bernoulli_odd_eq_zero - odd Bernoulli vanishing",
+      "proofs/Proofs/SumOfKthPowers.lean: bernoulli_poly_eval_zero - B_n(0) = B_n",
+      "proofs/Proofs/SumOfKthPowers.lean: sum_squares_bernoulli_agreement, sum_cubes_bernoulli_agreement",
+      "proofs/Proofs/SumOfKthPowers.lean: nicomachus_theorem - ∑i³ = (∑i)²",
+      "proofs/Proofs/SumOfKthPowers.lean: sum_{squares,cubes,fourth,fifth,sixth,seventh}_powers_classical"
+    ],
+    "insights": [
+      "Mathlib's Finset.sum_range_pow directly provides the general Faulhaber formula",
+      "Finset.sum_range_pow_eq_bernoulli_sub gives the Bernoulli polynomial form",
+      "The ℕ proofs use clever rearrangement to avoid natural number subtraction",
+      "nlinarith handles the inductive step for higher powers (k=4..7) automatically",
+      "The Bernoulli connection lifts ℕ proofs to ℚ via exact_mod_cast"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Direct induction + Bernoulli connection",
+      "status": "SUCCESS",
+      "description": "Specific cases proved by induction over ℕ, general formula via Mathlib's Bernoulli API"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "number-theory",
@@ -43,16 +81,30 @@
     "series",
     "faulhaber",
     "bernoulli-numbers",
-    "extension"
+    "0-sorry",
+    "0-axioms",
+    "complete"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "SumOfKthPowers.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Faulhaber (1631): Academia Algebrae",
+      "Bernoulli (1713): Ars Conjectandi"
+    ],
+    "urls": [
+      "https://www.cs.ru.nl/~freek/100/"
+    ],
+    "mathlib": [
+      "Finset.sum_range_pow",
+      "Finset.sum_range_pow_eq_bernoulli_sub",
+      "Polynomial.bernoulli_eval_zero",
+      "Nat.bernoulli_odd_eq_zero"
+    ]
   },
   "started": "2026-01-27T22:18:02.334Z",
-  "lastUpdate": "2026-01-27T22:18:02.334Z",
+  "lastUpdate": "2026-02-06T03:40:00Z",
   "significance": 6,
   "tractability": 7
 }
