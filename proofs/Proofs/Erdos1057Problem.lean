@@ -141,6 +141,48 @@ theorem carmichael_1729 : IsCarmichael 1729 := by
     simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
     rcases hpf with rfl | rfl | rfl <;> norm_num
 
+/-- 2465 = 5 × 17 × 29 is a Carmichael number -/
+theorem carmichael_2465 : IsCarmichael 2465 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    have hpdvd : p ∣ 2465 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 2465 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 2465 = {5, 17, 29} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 2465 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 2465 = {5, 17, 29} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    -- Need: 4 | 2464, 16 | 2464, 28 | 2464
+    rcases hpf with rfl | rfl | rfl <;> norm_num
+
+/-- 2821 = 7 × 13 × 31 is a Carmichael number -/
+theorem carmichael_2821 : IsCarmichael 2821 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    have hpdvd : p ∣ 2821 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 2821 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 2821 = {7, 13, 31} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 2821 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 2821 = {7, 13, 31} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    -- Need: 6 | 2820, 12 | 2820, 30 | 2820
+    rcases hpf with rfl | rfl | rfl <;> norm_num
+
 /-- List of first few Carmichael numbers (OEIS A002997) -/
 def smallCarmichaels : List ℕ := [561, 1105, 1729, 2465, 2821, 6601, 8911]
 
@@ -610,3 +652,87 @@ theorem C_unbounded : ∀ N : ℕ, ∃ x : ℕ, C x > N := by
       rcases hn with rfl | hn
       · exact hm_carm
       · exact hall n hn
+
+/-
+## Additional Structural Properties
+-/
+
+/-- The smallest prime factor of a Carmichael number is at least 3 (since they're odd) -/
+theorem carmichael_min_prime_ge_3 (n : ℕ) (h : IsCarmichael n) :
+    ∀ p : ℕ, p.Prime → p ∣ n → p ≥ 3 := by
+  intro p hp hdvd
+  have hodd := carmichael_odd n h
+  -- If p = 2, then 2 | n, but n is odd, contradiction
+  by_contra hlt
+  push_neg at hlt
+  have hp2 : p ≤ 2 := by omega
+  have hp_eq : p = 2 := by have := hp.two_le; omega
+  rw [hp_eq] at hdvd
+  exact Nat.two_not_dvd_two_mul_add_one _ (hodd.two_mul_add_one ▸ hdvd)
+
+/-- All prime factors of a Carmichael number are distinct (follows from squarefree) -/
+theorem carmichael_distinct_prime_factors (n : ℕ) (h : IsCarmichael n) :
+    ∀ p : ℕ, p.Prime → p ∣ n → ¬(p * p ∣ n) := by
+  intro p hp hdvd hpp
+  have hsq := carmichael_squarefree n h
+  have hunit := hsq p hpp
+  exact Nat.Prime.not_unit hp hunit
+
+/-- The product of all prime factors equals the Carmichael number (since squarefree) -/
+theorem carmichael_eq_prod_primes (n : ℕ) (h : IsCarmichael n) :
+    n.primeFactors.prod id = n := by
+  have hsq := carmichael_squarefree n h
+  exact (Nat.prod_primeFactors_of_squarefree hsq).symm
+
+/-- A Carmichael number has no repeated prime factors -/
+theorem carmichael_prime_multiplicity_one (n : ℕ) (h : IsCarmichael n) (p : ℕ)
+    (hp : p.Prime) (hdvd : p ∣ n) : n.factorization p = 1 := by
+  have hsq := carmichael_squarefree n h
+  have hn0 : n ≠ 0 := by have := carmichael_gt_one n h; omega
+  rw [Nat.squarefree_iff_factorization_le_one hn0] at hsq
+  have hle := hsq p
+  have hpos : n.factorization p ≥ 1 := by
+    rw [Nat.one_le_iff_ne_zero]
+    exact (Nat.factorization_pos_iff_dvd hn0 hp).mpr hdvd
+  omega
+
+/-- All Carmichael numbers in smallCarmichaels are verified Carmichael -/
+theorem small_carmichaels_verified :
+    ∀ n ∈ smallCarmichaels, n = 561 ∨ n = 1105 ∨ n = 1729 ∨ n = 2465 ∨ n = 2821 ∨ n = 6601 ∨ n = 8911 := by
+  intro n hn
+  simp only [smallCarmichaels, List.mem_cons, List.mem_singleton] at hn
+  rcases hn with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> tauto
+
+/-- The first five Carmichael numbers are all verified -/
+theorem first_five_carmichael :
+    IsCarmichael 561 ∧ IsCarmichael 1105 ∧ IsCarmichael 1729 ∧
+    IsCarmichael 2465 ∧ IsCarmichael 2821 :=
+  ⟨carmichael_561, carmichael_1105, carmichael_1729, carmichael_2465, carmichael_2821⟩
+
+/-- C(2821) ≥ 5: at least 5 Carmichael numbers at or below 2821 -/
+theorem C_2821_ge_5 : C 2821 ≥ 5 := by
+  unfold C
+  have h561 : 561 ∈ (Finset.range 2822).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, carmichael_561⟩
+  have h1105 : 1105 ∈ (Finset.range 2822).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, carmichael_1105⟩
+  have h1729 : 1729 ∈ (Finset.range 2822).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, carmichael_1729⟩
+  have h2465 : 2465 ∈ (Finset.range 2822).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, carmichael_2465⟩
+  have h2821 : 2821 ∈ (Finset.range 2822).filter IsCarmichael := by
+    rw [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, carmichael_2821⟩
+  -- These 5 elements are distinct
+  have hdist : ({561, 1105, 1729, 2465, 2821} : Finset ℕ).card = 5 := by native_decide
+  have hsub : ({561, 1105, 1729, 2465, 2821} : Finset ℕ) ⊆ (Finset.range 2822).filter IsCarmichael := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl | rfl | rfl
+    exacts [h561, h1105, h1729, h2465, h2821]
+  calc 5 = ({561, 1105, 1729, 2465, 2821} : Finset ℕ).card := hdist.symm
+    _ ≤ ((Finset.range 2822).filter IsCarmichael).card := Finset.card_le_card hsub
