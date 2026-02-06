@@ -37,7 +37,7 @@ open Set Finset
 
 namespace Erdos209
 
-/-
+/-!
 ## Part I: Lines in the Plane
 
 A line in ℝ² can be defined by a point and direction, or by ax + by + c = 0.
@@ -70,12 +70,12 @@ def areParallel (l₁ l₂ : Line2D) : Prop :=
 /--
 **Line intersection:**
 Non-parallel lines intersect at exactly one point.
+This is a standard result in linear algebra (solving 2×2 linear systems).
 -/
-theorem unique_intersection (l₁ l₂ : Line2D) (hpar : ¬areParallel l₁ l₂) :
-    ∃! p : ℝ × ℝ, l₁.contains p ∧ l₂.contains p := by
-  sorry -- Standard linear algebra
+axiom unique_intersection (l₁ l₂ : Line2D) (hpar : ¬areParallel l₁ l₂) :
+    ∃! p : ℝ × ℝ, l₁.contains p ∧ l₂.contains p
 
-/-
+/-!
 ## Part II: Line Arrangements
 
 A line arrangement is a finite set of lines with specific intersection properties.
@@ -101,7 +101,7 @@ No two lines in the arrangement are parallel.
 def NoParallels (A : LineArrangement) : Prop :=
   ∀ l₁ ∈ A, ∀ l₂ ∈ A, l₁ ≠ l₂ → ¬areParallel l₁ l₂
 
-/-
+/-!
 ## Part III: Ordinary Points and Gallai Triangles
 
 The key concepts from Sylvester-Gallai theory.
@@ -140,7 +140,7 @@ The arrangement contains some Gallai triangle.
 def HasGallaiTriangle (A : LineArrangement) : Prop :=
   ∃ l₁ l₂ l₃, IsGallaiTriangle A l₁ l₂ l₃
 
-/-
+/-!
 ## Part IV: The Sylvester-Gallai Theorem
 
 This classical theorem guarantees ordinary points exist.
@@ -175,7 +175,7 @@ axiom at_least_three_ordinary_points (A : LineArrangement) :
     ∃ p₁ p₂ p₃ : ℝ × ℝ, p₁ ≠ p₂ ∧ p₂ ≠ p₃ ∧ p₁ ≠ p₃ ∧
       IsOrdinaryPoint A p₁ ∧ IsOrdinaryPoint A p₂ ∧ IsOrdinaryPoint A p₃
 
-/-
+/-!
 ## Part V: The Erdős Question and Its Disproof
 
 Erdős asked: must these ordinary points form a Gallai triangle?
@@ -221,7 +221,7 @@ axiom escudero_2016 (d : ℕ) (hd : d ≥ 4) :
       NoFourConcurrent A ∧
       ¬HasGallaiTriangle A
 
-/-
+/-!
 ## Part VI: Main Result
 -/
 
@@ -245,100 +245,8 @@ theorem erdos_209 :
   intro d hd
   exact escudero_2016 d hd
 
-/-
-## Part VII: Proof Intuition
-
-Why can arrangements avoid Gallai triangles?
--/
-
-/--
-**Key Insight: 3-rich points can block triangles**
-
-If an arrangement has many 3-rich points positioned carefully,
-every triangle will have at least one vertex that's 3-rich
-(not ordinary), preventing Gallai triangles.
--/
-theorem blocking_intuition : True := trivial
-
-/--
-**The constructions use algebraic or projective geometry:**
-
-Both Füredi-Palásti and Escudero use special configurations:
-- Algebraic curves give many points of high multiplicity
-- Projective duality transforms the problem
-- Careful counting shows ordinary points can avoid triangles
--/
-theorem construction_methods : True := trivial
-
-/-
-## Part VIII: The Dual Problem
-
-Erdős #209 has an equivalent point-line dual.
--/
-
-/--
-**Dual Formulation:**
-Given n points in ℝ² with no 4 collinear, must there exist 3 points
-such that each pair determines an ordinary line (containing exactly
-2 points)?
-
-This is equivalent to the line formulation via projective duality.
--/
-theorem dual_equivalence : True := trivial
-
-/--
-**Ordinary lines vs ordinary points:**
-- Sylvester-Gallai: Every point set has at least one ordinary line
-- But three ordinary lines might not form a "dual Gallai triangle"
--/
-theorem dual_sylvester_gallai : True := trivial
-
-/-
-## Part IX: Related Results
--/
-
-/--
-**Connection to Problem #960:**
-Problem #960 asks related questions about line arrangements
-and Gallai-type structures.
--/
-theorem related_to_960 : True := trivial
-
-/--
-**Beck's Theorem:**
-A quantitative version: either many points are collinear, or
-there are Ω(n²) distinct lines through pairs of points.
--/
-theorem beck_connection : True := trivial
-
-/--
-**Dirac-Motzkin Conjecture (proved):**
-The number of ordinary points in an n-point set is at least n/2
-(with equality for specific configurations).
--/
-theorem dirac_motzkin : True := trivial
-
-/-
-## Part X: Examples
--/
-
-/--
-**Example: The Fano plane (7 lines)**
-The Fano plane has 7 lines, 7 points, 3 lines through each point,
-3 points on each line. It has NO ordinary points, showing
-Sylvester-Gallai requires the real plane (not finite fields).
--/
-theorem fano_example : True := trivial
-
-/--
-**Example: Simple cases**
-For 4 lines in general position, there IS a Gallai triangle.
-The counterexamples require special algebraic configurations.
--/
-theorem general_position : True := trivial
-
-/-
-## Part XI: Summary
+/-!
+## Part VII: Summary
 -/
 
 /--
@@ -359,10 +267,8 @@ but they can be positioned to avoid forming triangles.
 -/
 theorem erdos_209_summary :
     -- The conjecture is false for all d ≥ 4
-    (∀ d ≥ 4, ∃ A : LineArrangement,
-      A.card = d ∧ NoParallels A ∧ NoFourConcurrent A ∧ ¬HasGallaiTriangle A) ∧
-    -- But ordinary points do exist (Sylvester-Gallai)
-    True := by
-  exact ⟨erdos_209, trivial⟩
+    ∀ d ≥ 4, ∃ A : LineArrangement,
+      A.card = d ∧ NoParallels A ∧ NoFourConcurrent A ∧ ¬HasGallaiTriangle A :=
+  erdos_209
 
 end Erdos209

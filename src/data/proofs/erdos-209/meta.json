@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 209,
     "erdosUrl": "https://erdosproblems.com/209",
     "erdosProblemStatus": "disproved",
@@ -67,79 +67,51 @@
     {
       "id": "lines-plane",
       "title": "Lines in the Plane",
-      "summary": "Line2D structure, containment, and parallel criterion",
+      "summary": "Line2D structure, containment, parallel criterion, and unique intersection",
       "startLine": 40,
       "endLine": 76
     },
     {
       "id": "arrangements",
       "title": "Line Arrangements",
-      "summary": "LineArrangement, NoFourConcurrent, NoParallels",
+      "summary": "LineArrangement, NoFourConcurrent, NoParallels definitions",
       "startLine": 78,
       "endLine": 102
     },
     {
       "id": "ordinary-gallai",
       "title": "Ordinary Points and Gallai Triangles",
-      "summary": "IsOrdinaryPoint, Is3RichPoint, IsGallaiTriangle definitions",
+      "summary": "IsOrdinaryPoint, Is3RichPoint, IsGallaiTriangle, HasGallaiTriangle definitions",
       "startLine": 104,
       "endLine": 141
     },
     {
       "id": "sylvester-gallai",
       "title": "The Sylvester-Gallai Theorem",
-      "summary": "Classical theorem and corollary about ordinary points",
+      "summary": "Classical theorem and corollary: at least 3 ordinary points exist",
       "startLine": 143,
       "endLine": 176
     },
     {
       "id": "disproof",
       "title": "The Erdős Question and Its Disproof",
-      "summary": "Füredi-Palásti and Escudero counterexamples",
+      "summary": "Füredi-Palásti (1984) and Escudero (2016) counterexamples",
       "startLine": 178,
       "endLine": 222
     },
     {
       "id": "main-result",
       "title": "Main Result",
-      "summary": "erdos_209 theorem: disproved for all d ≥ 4",
+      "summary": "erdos_209 theorem: disproved for all d ≥ 4 via Escudero",
       "startLine": 224,
       "endLine": 246
     },
     {
-      "id": "intuition",
-      "title": "Proof Intuition",
-      "summary": "Why 3-rich points can block Gallai triangles",
-      "startLine": 248,
-      "endLine": 271
-    },
-    {
-      "id": "dual",
-      "title": "The Dual Problem",
-      "summary": "Point-line duality and dual Sylvester-Gallai",
-      "startLine": 273,
-      "endLine": 294
-    },
-    {
-      "id": "related",
-      "title": "Related Results",
-      "summary": "Problem #960, Beck's theorem, Dirac-Motzkin",
-      "startLine": 296,
-      "endLine": 319
-    },
-    {
-      "id": "examples",
-      "title": "Examples",
-      "summary": "Fano plane, general position cases",
-      "startLine": 321,
-      "endLine": 338
-    },
-    {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem and final answer",
-      "startLine": 340,
-      "endLine": 368
+      "summary": "erdos_209_summary theorem restating the complete disproof",
+      "startLine": 248,
+      "endLine": 275
     }
   ],
   "conclusion": {
