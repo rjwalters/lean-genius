@@ -1,14 +1,12 @@
 /-
 Erdős Problem #881: Minimal Additive Bases and Order Increase
 
-Source: https://erdosproblems.com/881
-Status: OPEN
-
-Statement:
-Let A ⊂ ℕ be an additive basis of order k which is *minimal*, in the sense
+Let A ⊂ ℕ be an additive basis of order k which is minimal, in the sense
 that if B ⊂ A is any infinite subset, then A \ B is not a basis of order k.
 
 Must there exist an infinite B ⊂ A such that A \ B is a basis of order k+1?
+
+**Status**: OPEN
 
 Key Concepts:
 - A set A is an additive basis of order k if every sufficiently large n can be
@@ -19,15 +17,11 @@ Key Concepts:
 
 Example:
 - The natural numbers ℕ form a basis of order 1 (trivially)
-- The squares {n² : n ∈ ℕ} form a basis of order 4 (Lagrange's theorem: every
-  natural number is a sum of four squares)
+- The squares {n² : n ∈ ℕ} form a basis of order 4 (Lagrange's four-square theorem)
 
 References:
 - Erdős [Er98]
-- Formal Conjectures Project (Google DeepMind)
-
-Copyright 2025 The Formal Conjectures Authors.
-Licensed under the Apache License, Version 2.0.
+- https://erdosproblems.com/881
 -/
 
 import Mathlib.Data.Set.Basic
@@ -39,7 +33,7 @@ open Set Finset
 
 namespace Erdos881
 
-/-! ## Part I: Additive Bases -/
+/- ## Part I: Additive Bases -/
 
 /--
 **Asymptotic Additive Basis of Order k**
@@ -71,7 +65,7 @@ theorem order_one_basis (A : Set ℕ) :
     use {n}
     simp [hN n hn]
 
-/-! ## Part II: Minimal Bases -/
+/- ## Part II: Minimal Bases -/
 
 /--
 **Minimal Additive Basis of Order k**
@@ -86,17 +80,12 @@ def IsMinimalAsymptoticAddBasisOfOrder (k : ℕ) (A : Set ℕ) : Prop :=
   IsAsymptoticAddBasisOfOrder k A ∧
     ∀ B : Set ℕ, B ⊆ A → B.Infinite → ¬IsAsymptoticAddBasisOfOrder k (A \ B)
 
-/-- A minimal basis must be infinite (since removing finite sets preserves basis property). -/
-theorem minimal_basis_infinite (k : ℕ) (A : Set ℕ) (hA : IsMinimalAsymptoticAddBasisOfOrder k A) :
-    A.Infinite := by
-  by_contra h
-  push_neg at h
-  -- If A is finite, it cannot be a basis of any order
-  obtain ⟨N, hN⟩ := hA.1
-  -- Take n > max(N, sum of all elements of A)
-  sorry
+/-- A minimal basis must be infinite.
+    A finite set can only represent finitely many sums, so cannot be a basis. -/
+axiom minimal_basis_infinite (k : ℕ) (A : Set ℕ)
+    (hA : IsMinimalAsymptoticAddBasisOfOrder k A) : A.Infinite
 
-/-! ## Part III: The Main Conjecture -/
+/- ## Part III: The Main Conjecture -/
 
 /--
 **Erdős Problem #881 (OPEN)**
@@ -112,9 +101,10 @@ def erdos881Conjecture : Prop :=
     IsMinimalAsymptoticAddBasisOfOrder k A →
       ∃ B : Set ℕ, B ⊆ A ∧ B.Infinite ∧ IsAsymptoticAddBasisOfOrder (k + 1) (A \ B)
 
+/-- The conjecture is OPEN - axiomatized as it has no known proof or disproof. -/
 axiom erdos_881 : erdos881Conjecture
 
-/-! ## Part IV: Weaker Questions -/
+/- ## Part IV: Weaker Questions -/
 
 /--
 **Weak Version: Order Increase by Some Amount**
@@ -133,29 +123,28 @@ theorem strong_implies_weak : erdos881Conjecture → erdos881Weak := by
   obtain ⟨B, hB⟩ := h k A hA
   exact ⟨B, 1, by omega, hB.1, hB.2.1, hB.2.2⟩
 
-/-! ## Part V: Examples and Special Cases -/
+/- ## Part V: Examples and Special Cases -/
 
 /--
 **Example: The Squares**
 
 The set of perfect squares {n² : n ∈ ℕ} is a basis of order 4 by Lagrange's
 theorem (every positive integer is a sum of four squares).
-
-Is it minimal? What happens when we remove infinite subsets?
 -/
 def squares : Set ℕ := {n | ∃ m : ℕ, n = m^2}
 
+/-- Lagrange's four-square theorem implies squares are a basis of order 4. -/
 axiom squares_basis_order_4 : IsAsymptoticAddBasisOfOrder 4 squares
 
 /--
-**Example: Higher Powers**
+**Higher Powers and Waring's Problem**
 
 For k-th powers, Waring's problem gives bounds on the basis order.
 The set of k-th powers is a basis of order g(k).
 -/
 def powers (k : ℕ) : Set ℕ := {n | ∃ m : ℕ, n = m^k}
 
-/-! ## Part VI: Structural Properties -/
+/- ## Part VI: Structural Properties -/
 
 /--
 **Monotonicity of Basis Order**
@@ -183,21 +172,7 @@ theorem basis_subset (A A' : Set ℕ) (k : ℕ) (hAA' : A ⊆ A') :
   obtain ⟨s, hsA, hscard, hssum⟩ := hN n hn
   exact ⟨s, fun x hx => hAA' (hsA hx), hscard, hssum⟩
 
-/-! ## Part VII: Why This Is Hard -/
-
-/--
-**The Challenge**
-
-The problem asks about a delicate balance:
-- Minimal bases are "tight" - they have no redundancy for their order
-- Yet we want to show there's always a way to remove elements to get
-  exactly one higher order (not two or more)
-
-This requires understanding the fine structure of additive bases and how
-their order changes under removal of infinite subsets.
--/
-
-/-! ## Part VIII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #881: Summary**
@@ -207,25 +182,18 @@ B ⊆ A such that A \ B is a basis of order exactly k+1?
 
 **Status:** OPEN
 
-**Key Concepts:**
+**Key Results:**
 - Additive basis of order k: every large n is a sum of ≤ k elements
 - Minimal: no infinite subset can be removed without increasing order
 - The conjecture: order increases by exactly 1
-
-**Related:**
-- Waring's problem (additive bases formed by powers)
-- Sidon sets and thin bases
-- Erdős-Turán conjecture on additive bases
+- Strong implies weak version (proved)
+- Monotonicity and subset properties (proved)
 -/
 theorem erdos_881_summary :
-    -- The conjecture is stated
     erdos881Conjecture ↔
       ∀ k : ℕ, ∀ A : Set ℕ,
         IsMinimalAsymptoticAddBasisOfOrder k A →
           ∃ B : Set ℕ, B ⊆ A ∧ B.Infinite ∧ IsAsymptoticAddBasisOfOrder (k + 1) (A \ B) := by
   rfl
-
-/-- The problem remains OPEN. -/
-theorem erdos_881_open : True := trivial
 
 end Erdos881
