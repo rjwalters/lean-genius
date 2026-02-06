@@ -74,57 +74,36 @@
       "id": "section-1",
       "title": "Basic Definitions",
       "startLine": 31,
-      "endLine": 62,
+      "endLine": 61,
       "summary": "Defines infinite subsets, the generalized divisor function d_A(n), partial harmonic sum H_A(x), and maximum M_A(x)."
     },
     {
       "id": "section-2",
       "title": "Main Conjecture (Proved)",
       "startLine": 63,
-      "endLine": 86,
+      "endLine": 85,
       "summary": "Formalizes the Erdős-Graham conjecture about the limsup being infinite for all k."
     },
     {
       "id": "section-3",
       "title": "Special Cases",
       "startLine": 87,
-      "endLine": 113,
+      "endLine": 107,
       "summary": "Special cases: A = ℕ gives standard divisor function, A = primes gives prime omega function."
     },
     {
       "id": "section-4",
-      "title": "Why the Result Holds",
-      "startLine": 114,
-      "endLine": 140,
-      "summary": "Explains the key insight: highly composite numbers make d_A(n) exceed H_A(x)^k."
+      "title": "Structural Properties",
+      "startLine": 109,
+      "endLine": 130,
+      "summary": "Highly composite numbers, exponential lower bound, no uniform upper bound."
     },
     {
       "id": "section-5",
-      "title": "Proof Techniques",
-      "startLine": 141,
-      "endLine": 165,
-      "summary": "Key techniques: multiplicativity, probabilistic heuristics, extremal constructions."
-    },
-    {
-      "id": "section-6",
-      "title": "Related Divisor Functions",
-      "startLine": 166,
-      "endLine": 195,
-      "summary": "Related functions: standard divisor d(n), prime omega ω(n), sum of divisors σ(n)."
-    },
-    {
-      "id": "section-7",
-      "title": "Growth Rate Considerations",
-      "startLine": 196,
-      "endLine": 220,
-      "summary": "Growth rate analysis: lower bounds, no uniform upper bound, dependence on A."
-    },
-    {
-      "id": "section-8",
-      "title": "Summary and Status",
-      "startLine": 271,
-      "endLine": 318,
-      "summary": "Complete summary stating the problem was solved by Erdős-Sárközy in 1980."
+      "title": "Summary",
+      "startLine": 132,
+      "endLine": 160,
+      "summary": "Summary theorem and limsup_infinite proved from main axiom."
     }
   ],
   "conclusion": {
