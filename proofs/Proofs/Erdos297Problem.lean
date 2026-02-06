@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #297: Counting Egyptian Fraction Representations of 1
 
 Source: https://erdosproblems.com/297
@@ -297,9 +297,5 @@ axiom erdos_297_answer : hasSubexponentialGrowth
 
     STATUS: SOLVED -/
 theorem erdos_297_solved : hasSubexponentialGrowth := erdos_297_answer
-
-/-- Problem status string for display purposes. -/
-def erdos_297_status : String :=
-  "SOLVED (2024) - Count is 2^{(0.91...+o(1))N} (Steinerberger, Liu-Sawhney, Conlon et al.)"
 
 end Erdos297
