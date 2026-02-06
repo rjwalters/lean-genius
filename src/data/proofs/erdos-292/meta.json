@@ -17,7 +17,7 @@
       "unit-fractions"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 292,
     "erdosUrl": "https://erdosproblems.com/292",
     "erdosProblemStatus": "solved",
@@ -46,8 +46,8 @@
       "inSetA definition: alternative ordered sequence definition",
       "straus_multiplication_closure axiom: A is closed under multiplication",
       "prime_powers_not_in_A axiom: prime powers are excluded from A",
-      "two_not_in_A theorem: 2 ∉ A",
-      "four_not_in_A theorem: 4 ∉ A",
+      "two_not_in_A theorem: 2 ∉ A (from prime power exclusion)",
+      "four_not_in_A theorem: 4 ∉ A (from prime power exclusion)",
       "primes_not_in_A theorem: all primes are excluded",
       "doubling_in_A axiom: if n ∈ A then 2n ∈ A",
       "setB definition: complement B = ℕ \\ A",
@@ -85,65 +85,65 @@
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "Small examples and basic observations",
+      "summary": "Small examples: 6 and 12 are in A",
       "startLine": 63,
-      "endLine": 84
+      "endLine": 71
     },
     {
       "id": "straus-closure",
       "title": "Straus's Multiplication Closure",
       "summary": "A is closed under multiplication",
-      "startLine": 86,
-      "endLine": 102
+      "startLine": 73,
+      "endLine": 85
     },
     {
       "id": "prime-powers",
       "title": "Prime Powers Not in A",
-      "summary": "All prime powers are excluded from A",
-      "startLine": 104,
-      "endLine": 131
+      "summary": "All prime powers are excluded from A, with specific cases for 2, 4, and all primes",
+      "startLine": 87,
+      "endLine": 110
     },
     {
       "id": "doubling",
       "title": "Doubling Property",
       "summary": "If n ∈ A then 2n ∈ A",
-      "startLine": 133,
-      "endLine": 144
+      "startLine": 112,
+      "endLine": 118
     },
     {
       "id": "complement",
       "title": "The Complement Set B",
       "summary": "Structure and density of B = ℕ \\ A",
-      "startLine": 146,
-      "endLine": 165
+      "startLine": 120,
+      "endLine": 139
     },
     {
       "id": "martin-theorem",
       "title": "Martin's Main Theorem",
-      "summary": "A has density 1",
-      "startLine": 167,
-      "endLine": 184
+      "summary": "A has density 1, B has density 0",
+      "startLine": 141,
+      "endLine": 155
     },
     {
       "id": "small-examples",
       "title": "Small Examples Analysis",
       "summary": "Elements of A and B up to 20",
-      "startLine": 186,
-      "endLine": 200
+      "startLine": 157,
+      "endLine": 171
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
       "summary": "Erdős-Straus conjecture and general Egyptian fractions",
-      "startLine": 202,
-      "endLine": 218
+      "startLine": 173,
+      "endLine": 186
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Complete resolution: A has density 1",
-      "startLine": 220,
-      "endLine": 243
+      "summary": "Main result: A has density 1",
+      "startLine": 188,
+      "endLine": 195
     }
   ],
   "conclusion": {
