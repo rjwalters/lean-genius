@@ -160,10 +160,10 @@
   {
     "id": "ann-e297-summary",
     "proofId": "erdos-297",
-    "range": { "startLine": 282, "endLine": 305 },
+    "range": { "startLine": 282, "endLine": 301 },
     "type": "concept",
     "title": "Summary and Status",
-    "content": "**Erdős Problem #297: SOLVED (2024)**\n\n- **Question:** How many A ⊆ {1,...,N} have Σ 1/n = 1?\n- **Answer:** 2^{(0.91... + o(1))N}\n- **Key Insight:** c < 1, so count << 2^N\n- **Solved by:** Steinerberger, Liu-Sawhney, Conlon et al. (three independent teams, 2024)\n- **Why:** Most random subsets overshoot since the expected sum grows like (log N)/2\n\n**erdos_297_solved** reuses erdos_297_answer as the final summary theorem.",
+    "content": "**Erdős Problem #297: SOLVED (2024)**\n\n- **Question:** How many A ⊆ {1,...,N} have Σ 1/n = 1?\n- **Answer:** 2^{(0.91... + o(1))N}\n- **Key Insight:** c < 1, so count << 2^N\n- **Solved by:** Steinerberger, Liu-Sawhney, Conlon et al. (three independent teams, 2024)\n- **Why:** Most random subsets overshoot since the expected sum grows like (log N)/2\n\n**erdos_297_solved** packages the answer as a final summary theorem.",
     "significance": "critical",
     "relatedConcepts": ["Problem resolution", "Egyptian fractions"]
   }
