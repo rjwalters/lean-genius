@@ -1,58 +1,90 @@
 [
   {
+    "id": "ann-e653-header",
+    "proofId": "erdos-653",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Overview: Distinct Distance Counts",
+    "content": "**Erdős Problem #653** studies how the 'distance richness' of individual points varies across a planar configuration. For each point x_i in a set of n points, R(x_i) counts the number of distinct distances from x_i to other points. The function g(n) is the maximum number of distinct R-values achievable by any n-point configuration.\n\n**Conjecture:** g(n) ≥ (1 - o(1))n, meaning almost all points should have different distance-richness levels.\n\n**Known bounds:** 0.7n < g(n) < n - cn^{2/3}\n\n**Status: OPEN**",
+    "mathContext": "This is a problem in combinatorial geometry related to Erdős's famous distinct distances problem. It measures local distance diversity (per-point) rather than global distance counts.",
+    "significance": "critical",
+    "relatedConcepts": ["Distinct distances", "Combinatorial geometry", "Point configurations"]
+  },
+  {
     "id": "ann-e653-distance",
+    "proofId": "erdos-653",
     "range": { "startLine": 42, "endLine": 71 },
     "type": "definition",
     "title": "Distance Functions and R(x)",
-    "content": "The formalization defines euclidDist as the standard Euclidean metric √((x₁-x₂)² + (y₁-y₂)²). For a point set S, distanceSet(S, p) collects all distances from p to other points in S, and distinctDistCount (the R function) counts these. R(xᵢ) measures the 'distance richness' of each point — how many different distances emanate from it. For example, a point equidistant from all others has R = 1, while a point at distinct distances from every other has R = n-1.",
-    "significance": "essential"
+    "content": "**euclidDist(p, q):** Standard Euclidean distance √((x₁-x₂)² + (y₁-y₂)²) in ℝ².\n\n**distanceSet(S, p):** The set of all distances from p to other points in S, computed as S.filter(· ≠ p).image(euclidDist p).\n\n**distinctDistCount(S, p) = R(xᵢ):** The cardinality of distanceSet, counting how many distinct distances emanate from p.\n\nFor example, a point equidistant from all others has R = 1, while a point at distinct distances from every other has R = n-1.",
+    "mathContext": "R(xᵢ) measures the 'distance richness' or local diversity of point xᵢ. The variation in R across points is what the problem studies.",
+    "significance": "critical",
+    "relatedConcepts": ["Euclidean distance", "Distance set", "Local diversity"]
   },
   {
     "id": "ann-e653-g-function",
+    "proofId": "erdos-653",
     "range": { "startLine": 73, "endLine": 96 },
     "type": "definition",
     "title": "The Function g(n)",
-    "content": "g(n) is defined as the supremum over all n-point configurations of the number of distinct R-values. The rValueSet maps each point to its R-value via Finset.image, and numDistinctRValues counts the distinct values. The function g captures the maximum possible 'R-diversity' — how many different distance-richness levels can coexist in an n-point set. The conjecture asks whether g(n)/n → 1.",
-    "significance": "essential"
+    "content": "**rValueSet(S):** The set {R(x₁), ..., R(xₙ)} of all distance-count values, computed as S.image(distinctDistCount S).\n\n**numDistinctRValues(S):** How many different R-values appear in S.\n\n**g(n):** The supremum of numDistinctRValues over all n-point configurations. This captures the maximum possible 'R-diversity' — how many different distance-richness levels can coexist.\n\nThe conjecture asks whether g(n)/n → 1, meaning configurations exist where almost every point has a unique distance-count.",
+    "mathContext": "g(n) is defined as a supremum, which is natural but means proving lower bounds requires exhibiting specific configurations. The key difficulty is constructing configurations with many distinct R-values.",
+    "significance": "critical",
+    "relatedConcepts": ["Supremum", "R-diversity", "Extremal configurations"]
   },
   {
     "id": "ann-e653-bounds",
+    "proofId": "erdos-653",
     "range": { "startLine": 98, "endLine": 124 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Known Bounds on g(n)",
-    "content": "Three axioms capture the state of knowledge. Erdős-Fishburn proved g(n) > (3/8)n, later improved by Csizmadia to g(n) > (7/10)n — the current best lower bound. The upper bound g(n) < n - cn^{2/3} shows that perfect R-diversity (g = n) is impossible for large n, with the gap growing at least as n^{2/3}. The central open question is whether the gap is o(n), i.e., whether g(n)/n → 1.",
-    "significance": "essential"
+    "content": "**erdos_fishburn_bound** (axiom): g(n) > 3n/8 for n ≥ 8. The first nontrivial lower bound.\n\n**csizmadia_bound** (axiom): g(n) > 7n/10 for n ≥ 10. The current best lower bound, improving Erdős-Fishburn.\n\n**upper_bound** (axiom): g(n) < n - cn^{2/3} for some c > 0. This shows perfect R-diversity (g = n) is impossible for large n — there must always be some collision among R-values, with the gap growing at least as n^{2/3}.",
+    "mathContext": "The gap between the 0.7n lower bound and the n - cn^{2/3} upper bound brackets g(n) but leaves the precise asymptotics wide open. The conjecture predicts the lower bound is closer to truth.",
+    "significance": "critical",
+    "relatedConcepts": ["Lower bounds", "Upper bounds", "Csizmadia", "Erdős-Fishburn"]
   },
   {
     "id": "ann-e653-conjecture",
+    "proofId": "erdos-653",
     "range": { "startLine": 126, "endLine": 138 },
-    "type": "conjecture",
+    "type": "definition",
     "title": "The Erdős Conjecture (OPEN)",
-    "content": "The conjecture states that for any ε > 0, eventually g(n) ≥ (1-ε)n. Equivalently, g(n)/n → 1 as n → ∞: almost all points in an optimal configuration have distinct R-values. The gap between the 0.7 lower bound and the conjectured limit of 1 remains one of the key open questions in combinatorial geometry.",
-    "significance": "essential"
+    "content": "**erdos653Conjecture:** For any ε > 0, there exists N such that for all n ≥ N, g(n) ≥ (1-ε)n.\n\nEquivalently: g(n)/n → 1 as n → ∞. This says that in optimal configurations, almost all points have distinct R-values.\n\nThe conjecture remains open. The gap between the 0.7 lower bound and the conjectured limit of 1 is one of the key open questions in combinatorial geometry.",
+    "mathContext": "If true, this would mean the R-function is 'almost injective' on optimal configurations. The n^{2/3} upper gap prevents full injectivity but allows (1-o(1))-injectivity.",
+    "significance": "critical",
+    "relatedConcepts": ["Open conjecture", "Asymptotic analysis", "Almost-injectivity"]
   },
   {
     "id": "ann-e653-special",
+    "proofId": "erdos-653",
     "range": { "startLine": 160, "endLine": 187 },
-    "type": "insight",
-    "title": "Special Configurations: Worst and Best Cases",
-    "content": "Regular polygons are the worst case for R-diversity: by rotational symmetry, every vertex sees the same set of distances, giving only 1 distinct R-value regardless of n. Collinear (equally spaced) points are better: endpoints see different distance sets than interior points, yielding R-values that grow from endpoints inward. The axiom regular_polygon_r_value formalizes the symmetry argument. Understanding which configurations maximize R-diversity is itself an open problem.",
-    "significance": "important"
+    "type": "definition",
+    "title": "Special Configurations: Collinear and Regular Polygon",
+    "content": "**IsCollinear(S):** Points lying on a single line. Equally spaced collinear points give varying R-values since endpoints see different distance sets than interior points.\n\n**IsRegularPolygon(S):** Points on a circle at equal spacing. By rotational symmetry, every vertex has the same R-value, giving only g = 1 distinct R-value regardless of n — the worst case.\n\n**regular_polygon_r_value** (axiom): In a regular n-gon (n ≥ 3), all points have the same distinctDistCount. This formalizes the symmetry argument.",
+    "mathContext": "Regular polygons demonstrate that symmetric configurations are bad for R-diversity. Configurations maximizing g(n) must break symmetry to create varied local distance structures.",
+    "significance": "key",
+    "relatedConcepts": ["Symmetry", "Collinear points", "Regular polygons", "Worst case"]
   },
   {
     "id": "ann-e653-gap",
+    "proofId": "erdos-653",
     "range": { "startLine": 207, "endLine": 224 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "The Asymptotic Gap n - g(n)",
-    "content": "The gap n - g(n) measures how far g(n) falls short of perfect diversity. The gap_lower_bound axiom gives n - g(n) ≥ cn^{2/3}, while Csizmadia's bound gives n - g(n) ≤ 0.3n. The combined gap_bounds axiom packages both: cn^{2/3} ≤ n - g(n) ≤ 0.3n. The conjecture asserts n - g(n) = o(n), i.e., the gap is sublinear. The n^{2/3} lower bound on the gap is known to be achievable.",
-    "significance": "important"
+    "content": "**gap_lower_bound** (axiom): n - g(n) ≥ cn^{2/3} for some c > 0. The gap between n and g(n) is at least of order n^{2/3}.\n\n**gap_bounds** (axiom): For n ≥ 10, cn^{2/3} ≤ n - g(n) ≤ 0.3n. Packages both the n^{2/3} lower bound on the gap and the Csizmadia upper bound.\n\nThe conjecture asserts n - g(n) = o(n), meaning the gap is sublinear. The n^{2/3} lower bound on the gap shows it cannot vanish entirely.",
+    "mathContext": "The gap function n - g(n) is the key quantity. If o(n), the conjecture holds. The n^{2/3} lower bound suggests geometric constraints fundamentally limit R-diversity.",
+    "significance": "key",
+    "relatedConcepts": ["Gap function", "Sublinear growth", "Geometric constraints"]
   },
   {
     "id": "ann-e653-summary",
-    "range": { "startLine": 250, "endLine": 274 },
-    "type": "summary",
-    "title": "Summary: Known Results and Main Theorem",
-    "content": "The summary theorem erdos_653_summary and the main theorem erdos_653 combine the three established results: Csizmadia's g(n) > 0.7n, the trivial g(n) ≤ n, and the nontrivial upper bound g(n) < n - cn^{2/3}. Together they bracket g(n) between 0.7n and n - cn^{2/3}, leaving the precise asymptotics — and the conjecture g(n)/n → 1 — as the main open problem.",
-    "significance": "essential"
+    "proofId": "erdos-653",
+    "range": { "startLine": 246, "endLine": 274 },
+    "type": "theorem",
+    "title": "Summary Theorems",
+    "content": "**erdos_653_summary** (PROVED): Combines three results:\n1. ∀ n ≥ 10, g(n) > 7n/10 (Csizmadia lower bound)\n2. ∀ n, g(n) ≤ n (trivial upper bound)\n3. ∃ c > 0, ∀ n ≥ 2, g(n) < n - cn^{2/3} (nontrivial upper gap)\n\n**erdos_653** (PROVED): Definitionally equal to erdos_653_summary.\n\nProof: Direct application of csizmadia_bound, g_le_n, and upper_bound axioms via ⟨_, _, _⟩.",
+    "mathContext": "The summary packages all known quantitative results. The open conjecture (g(n)/n → 1) is stated separately as erdos653Conjecture but not included in the proved summary.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary theorems", "Axiom composition", "Known results"]
   }
 ]

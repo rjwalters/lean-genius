@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #653: Distinct Distance Counts in the Plane
 
 Source: https://erdosproblems.com/653
