@@ -2,7 +2,7 @@
   {
     "id": "ann-1114-overview",
     "proofId": "erdos-1114",
-    "range": { "startLine": 1, "endLine": 30 },
+    "range": { "startLine": 1, "endLine": 31 },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #1114:**\n\nFor a polynomial f with roots in arithmetic progression, the gaps between consecutive critical points of f' increase outward from the midpoint.\n\n**Setup:**\n- f has roots a₀, a₀+d, a₀+2d, ..., a₀+nd\n- By Rolle, f' has n critical points\n- Gaps gᵢ = cᵢ₊₁ - cᵢ\n\n**Result:** Gaps increase as we move from center to endpoints.\n\n**Status:** SOLVED by Bálint (1960)",
@@ -47,10 +47,10 @@
   {
     "id": "ann-1114-midpoint",
     "proofId": "erdos-1114",
-    "range": { "startLine": 93, "endLine": 98 },
+    "range": { "startLine": 93, "endLine": 105 },
     "type": "definition",
-    "title": "Midpoint",
-    "content": "**Midpoint of Root Interval:**\n\nm = a₀ + nd/2\n\nThe center of the interval containing all roots.",
+    "title": "Midpoint and Distance",
+    "content": "**Midpoint of Root Interval:**\n\nm = a₀ + nd/2\n\nThe center of the interval containing all roots.\n\n**DistFromMidpoint** measures how far each critical point is from m.",
     "significance": "key"
   },
   {
@@ -58,7 +58,7 @@
     "proofId": "erdos-1114",
     "range": { "startLine": 111, "endLine": 128 },
     "type": "axiom",
-    "title": "Bálint's Theorem",
+    "title": "Bálint's Theorem (1960)",
     "content": "**Main Theorem (Bálint 1960):**\n\nIf |cᵢ - m| < |cⱼ - m| (cᵢ is closer to midpoint), then gᵢ < gⱼ.\n\nThe gaps increase as we move outward from the center.\n\nThis is the core result of Problem #1114.",
     "significance": "critical"
   },
@@ -74,46 +74,28 @@
   {
     "id": "ann-1114-quartic",
     "proofId": "erdos-1114",
-    "range": { "startLine": 159, "endLine": 169 },
+    "range": { "startLine": 144, "endLine": 151 },
     "type": "axiom",
     "title": "Quartic Case",
     "content": "**n = 4 Example:**\n\nf has 5 roots, f' has 4 critical points.\n\nGaps: g₁, g₂, g₃\n\nResult: g₁ > g₂ and g₃ > g₂ (outer > middle).",
     "significance": "supporting"
   },
   {
-    "id": "ann-1114-symmetry",
-    "proofId": "erdos-1114",
-    "range": { "startLine": 175, "endLine": 182 },
-    "type": "axiom",
-    "title": "Symmetry Property",
-    "content": "**Symmetry of AP Polynomial:**\n\nf(a₀ + t) = (-1)^{n+1} f(aₙ - t) (up to scaling).\n\nThe polynomial is symmetric about its center, which induces structure on f'.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1114-convexity",
-    "proofId": "erdos-1114",
-    "range": { "startLine": 194, "endLine": 199 },
-    "type": "axiom",
-    "title": "Convexity Argument",
-    "content": "**Key Proof Technique:**\n\nCertain auxiliary functions are convex, which implies the monotonicity of gaps.\n\nThis is the technical core of Bálint's proof.",
-    "significance": "key"
-  },
-  {
     "id": "ann-1114-lorch",
     "proofId": "erdos-1114",
-    "range": { "startLine": 205, "endLine": 217 },
+    "range": { "startLine": 157, "endLine": 167 },
     "type": "axiom",
-    "title": "Lorch's Generalizations",
-    "content": "**Extensions (Lorch 1976):**\n\n1. Higher derivatives f⁽ᵏ⁾ have analogous properties\n2. Related monotonicity for other polynomial families\n\nThe original result extends broadly.",
-    "significance": "supporting"
+    "title": "Lorch's Generalization (1976)",
+    "content": "**lorch_higher_derivatives** formalizes Lorch's extension to higher derivatives: for f⁽ᵏ⁾ with k < n, the gaps between consecutive zeros also exhibit monotonicity from the midpoint outward. The axiom states existence of ordered critical points with the same gap-monotonicity property.",
+    "significance": "key"
   },
   {
     "id": "ann-1114-summary",
     "proofId": "erdos-1114",
-    "range": { "startLine": 246, "endLine": 262 },
+    "range": { "startLine": 173, "endLine": 191 },
     "type": "theorem",
     "title": "erdos_1114_summary",
-    "content": "**Complete Summary:**\n\nErdős Problem #1114 is **SOLVED**.\n\n**STATEMENT:** Critical point gaps increase outward from midpoint for AP-root polynomials.\n\n**PROOF:** Bálint (1960)\n\n**KEY INSIGHT:** Symmetry + convexity establish monotonicity.",
+    "content": "**erdos_1114_summary** combines two results:\n1. **balint_theorem** — gaps between consecutive critical points increase outward from the midpoint for any polynomial with AP roots\n2. **quartic_gap_property** — the quartic case explicitly: outer gaps > middle gap\n\nProved by exact ⟨balint_theorem, quartic_gap_property⟩.",
     "significance": "critical"
   }
 ]
