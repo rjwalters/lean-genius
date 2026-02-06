@@ -2,9 +2,9 @@
   "id": "erdos-767",
   "title": "Erdős Problem #767: Cycles with Chords",
   "slug": "erdos-767",
-  "description": "g_k(n) = max edges avoiding cycles with k chords incident to a vertex. Proved: g_k(n) = (k+1)n - (k+1)² for n ≥ 3k+3 (Jiang 2004). Status: SOLVED.",
+  "description": "What is the maximum number of edges in a graph avoiding cycles with k chords incident to a vertex? Answer: g_k(n) = (k+1)n - (k+1)² for n >= 3k+3 (Jiang 2004).",
   "meta": {
-    "author": "Erdős, Czipszer, Pósa, Jiang",
+    "author": "Erdős (conjecture), Jiang (2004 proof)",
     "sourceUrl": "https://erdosproblems.com/767",
     "date": "2004",
     "status": "complete",
@@ -14,10 +14,14 @@
       "graph-theory",
       "extremal-graphs",
       "cycles",
-      "chords"
+      "chords",
+      "solved"
     ],
     "badge": "axiom",
     "sorries": 0,
+    "erdosNumber": 767,
+    "erdosUrl": "https://erdosproblems.com/767",
+    "erdosProblemStatus": "solved",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
@@ -38,58 +42,52 @@
     ],
     "originalContributions": [
       "Graph abbreviation for SimpleGraph (Fin n)",
-      "edgeCount definition",
-      "IsCycle definition for closed paths",
-      "IsChord definition for non-adjacent edges",
+      "edgeCount definition using edgeFinset",
+      "IsCycle definition for closed paths with distinct vertices",
+      "IsChord definition for non-adjacent cycle edges",
       "chordsIncidentTo counting function",
-      "HasKChordsIncident predicate",
-      "AvoidsCycleWithKChords graph property",
-      "g_k function axiom with achievability",
-      "czipszer_upper: g_k(n) ≤ (k+1)n",
-      "erdos_lower: g_k(n) ≥ (k+1)n - (k+1)²",
-      "posa_k1, erdos_k2, erdos_k3 special cases",
-      "jiang_2004 main theorem",
+      "HasKChordsIncident and AvoidsCycleWithKChords predicates",
+      "g_k function axiom with achievability and maximality",
+      "czipszer_upper and erdos_lower bound axioms",
+      "posa_k1, erdos_k2, erdos_k3 special case axioms",
+      "jiang_2004 main theorem axiom",
+      "erdos_767_solved theorem from Jiang's result",
       "formula_factored algebraic verification",
       "Computational examples with native_decide",
-      "erdos_767_statement combining all results"
-    ],
-    "erdosNumber": 767,
-    "erdosUrl": "https://erdosproblems.com/767",
-    "erdosProblemStatus": "solved"
+      "erdos_767_statement combining all three results"
+    ]
   },
   "overview": {
-    "historicalContext": "**Cycles with Chords**\\n\\nA chord of a cycle is an edge connecting two non-adjacent vertices on the cycle. Erdős asked: what is the maximum number of edges in a graph that avoids cycles with k chords incident to a single vertex?\\n\\n**Early Results**\\n\\nCzipszer proved g_k(n) ≤ (k+1)n. Erdős showed g_k(n) ≥ (k+1)n - (k+1)² via an explicit construction. Pósa proved g_1(n) = 2n - 4 for n ≥ 4.\\n\\n**Jiang's Resolution (2004)**\\n\\nJiang proved the conjecture for n ≥ 3k + 3, showing g_k(n) = (k+1)n - (k+1)² exactly. This is a beautiful extremal result with a clean formula.\\n\\n**Curious Historical Note**\\n\\nIn 1969, Erdős mentioned that Lewin claimed to disprove the conjecture (via oral communication). This was likely for small n or simply incorrect, as Jiang's proof confirms the conjecture.",
-    "problemStatement": "Let g_k(n) be the maximal number of edges possible on a graph with n vertices which does not contain a cycle with k chords incident to a vertex on the cycle. Is it true that g_k(n) = (k+1)n - (k+1)² for n sufficiently large?",
-    "proofStrategy": "We formalize graphs using SimpleGraph from Mathlib, then define cycles, chords, and the property of avoiding cycles with k chords incident to a vertex. The function g_k is axiomatized with bounds from Czipszer (upper) and Erdős (lower). Special cases by Pósa (k=1) and Erdős (k=2,3) are included. Jiang's theorem gives the exact formula for n ≥ 3k+3. Computational examples verify the formula.",
+    "historicalContext": "Erdős Problem #767 concerns extremal graph theory: given a forbidden substructure (cycles with many chords at a vertex), what is the maximum number of edges a graph can have? A chord of a cycle is an edge connecting two non-adjacent vertices on the cycle. The problem asks for g_k(n), the maximum edges in an n-vertex graph where no cycle has k or more chords incident to a single vertex.\n\nThe problem has a rich history. Czipszer first showed that g_k(n) is finite, bounded by (k+1)n. Erdős provided a matching lower bound construction giving g_k(n) >= (k+1)n - (k+1)² and conjectured equality for large n. Pósa proved the exact formula for k=1 (g_1(n) = 2n-4 for n >= 4), and Erdős himself verified the cases k=2 and k=3.\n\nThe full conjecture was resolved by Jiang in 2004, who proved g_k(n) = (k+1)n - (k+1)² for all n >= 3k+3. Interestingly, Erdős mentioned in 1969 that Lewin claimed to disprove the conjecture, but this was either for small n values or incorrect — Jiang's proof confirms the conjecture definitively.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $g_k(n)$ be the maximal number of edges in a graph on $n$ vertices which does not contain a cycle with $k$ chords incident to a vertex on the cycle.\n\n**Conjecture:** $g_k(n) = (k+1)n - (k+1)^2$ for $n$ sufficiently large.\n\n**Answer:** YES — proved by Jiang (2004) for $n \\geq 3k+3$.\n\nThe formula factors as $g_k(n) = (k+1)(n-k-1)$.",
+    "proofStrategy": "The formalization uses Mathlib's SimpleGraph on Fin n to model graphs. Cycles are defined as closed paths with distinct vertices, and chords as edges between non-adjacent cycle vertices. The extremal function g_k is axiomatized with achievability and maximality properties. The key bounds (Czipszer upper, Erdős lower) and special cases (Pósa k=1, Erdős k=2,3) are axiomatized. Jiang's theorem provides the exact formula. The main theorem erdos_767_statement combines all three bounds into a single verified statement.",
     "keyInsights": [
-      "g_k(n) = (k+1)n - (k+1)² for n ≥ 3k+3 (Jiang 2004)",
-      "Formula factors as (k+1)(n - k - 1)",
-      "Upper bound g_k(n) ≤ (k+1)n (Czipszer)",
-      "Lower bound from explicit construction (Erdős)",
-      "Special cases: g_1 = 2n-4, g_2 = 3n-9, g_3 = 4n-16",
-      "Beautiful extremal graph theory result",
-      "Lewin's claimed disproof was incorrect"
+      "**Exact Formula:** g_k(n) = (k+1)n - (k+1)² = (k+1)(n-k-1) for n >= 3k+3",
+      "**Turán-Type Problem:** This is an extremal problem asking for max edges avoiding a specific substructure",
+      "**Clean Factorization:** The formula (k+1)(n-k-1) shows edge count grows linearly in both k and n",
+      "**Progressive Resolution:** Proved for k=1 (Pósa), k=2,3 (Erdős), then all k (Jiang 2004)",
+      "**Tight Bounds:** Czipszer's upper bound (k+1)n is within (k+1)² of the exact answer"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Graphs, cycles, chords",
+      "summary": "Graphs, cycles, chords, and avoidance predicates",
       "startLine": 32,
       "endLine": 71
     },
     {
       "id": "g-function",
       "title": "The Function g_k(n)",
-      "summary": "Definition and achievability",
+      "summary": "Definition, achievability, and maximality axioms",
       "startLine": 73,
       "endLine": 89
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "summary": "Czipszer upper, Erdős lower",
+      "summary": "Czipszer upper bound and Erdős lower bound",
       "startLine": 91,
       "endLine": 101
     },
@@ -102,41 +100,41 @@
     },
     {
       "id": "jiang",
-      "title": "Jiang's Theorem",
-      "summary": "Main result for n ≥ 3k+3",
+      "title": "Jiang's Theorem (2004)",
+      "summary": "Main result: exact formula for n >= 3k+3",
       "startLine": 119,
       "endLine": 131
     },
     {
       "id": "verification",
       "title": "Formula Verification",
-      "summary": "Algebraic checks",
+      "summary": "Algebraic checks and special case verification",
       "startLine": 133,
       "endLine": 154
     },
     {
       "id": "examples",
       "title": "Computational Examples",
-      "summary": "Numerical verification",
+      "summary": "Numerical verification with native_decide",
       "startLine": 156,
       "endLine": 170
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Main theorem",
-      "startLine": 192,
-      "endLine": 231
+      "id": "combined",
+      "title": "Combined Result",
+      "summary": "erdos_767_statement combining all bounds",
+      "startLine": 172,
+      "endLine": 207
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #767 asks for g_k(n), the max edges avoiding k-chord-incident cycles. Jiang (2004) proved g_k(n) = (k+1)n - (k+1)² for n ≥ 3k+3, confirming Erdős's conjecture. This is a clean extremal graph theory result.",
-    "implications": "The formula (k+1)(n - k - 1) shows the precise trade-off between edge density and forbidden substructures. This contributes to the theory of Turán-type problems.",
+    "summary": "Erdős Problem #767 asks for g_k(n), the maximum edges in an n-vertex graph avoiding cycles with k chords incident to a vertex. Jiang (2004) proved g_k(n) = (k+1)n - (k+1)² for n >= 3k+3, confirming Erdős's conjecture with a clean extremal formula.",
+    "implications": "This result contributes to Turán-type extremal graph theory, showing the precise trade-off between edge density and forbidden cycle-chord substructures. The formula (k+1)(n-k-1) demonstrates that the edge threshold grows linearly in both the number of vertices and the chord parameter.",
     "openQuestions": [
-      "What is the extremal graph structure achieving g_k(n)?",
-      "Can the threshold n ≥ 3k+3 be improved?",
-      "What happens for small n below the threshold?",
-      "How does this relate to other Turán-type problems?"
+      "Can the threshold n >= 3k+3 be improved to a smaller function of k?",
+      "What is the exact value of g_k(n) for small n below the threshold?",
+      "What is the structure of extremal graphs achieving g_k(n) edges?",
+      "How does this relate to other Turán-type problems involving cycle substructures?"
     ]
   }
 }
