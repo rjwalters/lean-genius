@@ -92,72 +92,72 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Point, PointSet, InGeneralPosition, IsConvexKGon definitions",
+      "summary": "Point, PointSet, InGeneralPosition, IsConvexKGon axioms",
       "startLine": 49,
-      "endLine": 70
+      "endLine": 69
     },
     {
       "id": "empty-polygons",
       "title": "Empty Convex Polygons",
-      "summary": "IsEmptyConvexKGon, ContainsEmptyKGon definitions",
-      "startLine": 72,
-      "endLine": 87
+      "summary": "IsEmptyConvexKGon axiom, ContainsEmptyKGon definition",
+      "startLine": 71,
+      "endLine": 86
     },
     {
       "id": "function-g",
       "title": "The Function g(k)",
       "summary": "Definition of g(k) as Option ℕ, gExists predicate",
-      "startLine": 89,
-      "endLine": 101
+      "startLine": 88,
+      "endLine": 100
     },
     {
       "id": "known-values",
       "title": "Known Values",
       "summary": "g_3, g_4, g_5, g_6 axioms with historical attribution",
-      "startLine": 103,
-      "endLine": 121
+      "startLine": 102,
+      "endLine": 120
     },
     {
       "id": "horton-theorem",
       "title": "Horton's Theorem",
       "summary": "IsHortonSet, horton_sets_exist, g_7_not_exists theorem",
-      "startLine": 123,
-      "endLine": 149
+      "startLine": 122,
+      "endLine": 148
     },
     {
       "id": "bounds-growth",
       "title": "Bounds and Growth",
       "summary": "g_lower_bound, g_exists_le_6 theorem",
-      "startLine": 151,
-      "endLine": 163
+      "startLine": 150,
+      "endLine": 162
     },
     {
       "id": "horton-construction",
       "title": "The Horton Construction",
       "summary": "hortonBase, horton_recursive, horton_has_empty_6 axioms",
-      "startLine": 165,
-      "endLine": 181
+      "startLine": 164,
+      "endLine": 180
     },
     {
       "id": "happy-ending",
       "title": "Connection to Happy Ending Problem",
       "summary": "happyEnding function, Erdős-Szekeres conjecture, comparison",
-      "startLine": 183,
-      "endLine": 204
+      "startLine": 182,
+      "endLine": 203
     },
     {
       "id": "computational",
       "title": "Computational Results",
-      "summary": "g_6_computer_verified, g_6_lower_witness, g_6_upper axioms",
-      "startLine": 206,
-      "endLine": 219
+      "summary": "g_6_lower_witness, g_6_upper axioms",
+      "startLine": 205,
+      "endLine": 215
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_216_summary, known_g_values, g_exists_iff theorems",
-      "startLine": 221,
-      "endLine": 270
+      "summary": "erdos_216_summary, erdos_216, known_g_values, g_exists_iff theorems",
+      "startLine": 217,
+      "endLine": 272
     }
   ],
   "conclusion": {

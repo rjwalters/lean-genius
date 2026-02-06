@@ -56,31 +56,30 @@ abbrev Point := EuclideanSpace ℝ (Fin 2)
 /-- A finite point set in the plane -/
 def PointSet := Finset Point
 
-/-- Points are in general position if no three are collinear -/
-def InGeneralPosition (S : PointSet) : Prop :=
-  ∀ p q r : Point, p ∈ S → q ∈ S → r ∈ S →
-    p ≠ q → q ≠ r → p ≠ r →
-    -- Not collinear (non-zero cross product)
-    True  -- Simplified; full definition requires cross product
+/-- Points are in general position if no three are collinear.
+Axiomatized since the full definition requires cross products. -/
+axiom InGeneralPosition (S : PointSet) : Prop
 
-/-- A subset forms a convex k-gon -/
-def IsConvexKGon (vertices : Finset Point) (k : ℕ) : Prop :=
-  vertices.card = k ∧
-  -- Vertices form convex polygon in order
-  True  -- Simplified; full definition requires convex hull check
+/-- A subset forms a convex k-gon (k vertices in convex position).
+Axiomatized since the full definition requires convex hull checks. -/
+axiom IsConvexKGon (vertices : Finset Point) (k : ℕ) : Prop
+
+/-- A convex k-gon has the expected number of vertices. -/
+axiom convexKGon_card (vertices : Finset Point) (k : ℕ) :
+  IsConvexKGon vertices k → vertices.card = k
 
 /-!
 ## Part II: Empty Convex Polygons
 -/
 
-/-- A convex k-gon is empty if no point of S lies strictly inside it -/
-def IsEmptyConvexKGon (S : PointSet) (vertices : Finset Point) (k : ℕ) : Prop :=
-  vertices ⊆ S ∧
-  IsConvexKGon vertices k ∧
-  -- No point of S \ vertices lies in the interior
-  ∀ p ∈ S, p ∉ vertices →
-    -- p is not in the interior of the convex hull of vertices
-    True  -- Simplified
+/-- A convex k-gon is empty if no point of S lies strictly inside it.
+Axiomatized since formalizing "interior of convex hull" requires
+substantial geometric infrastructure. -/
+axiom IsEmptyConvexKGon (S : PointSet) (vertices : Finset Point) (k : ℕ) : Prop
+
+/-- An empty convex k-gon has its vertices in S and forms a convex k-gon. -/
+axiom emptyConvexKGon_sub (S : PointSet) (vertices : Finset Point) (k : ℕ) :
+  IsEmptyConvexKGon S vertices k → vertices ⊆ S ∧ IsConvexKGon vertices k
 
 /-- S contains an empty convex k-gon -/
 def ContainsEmptyKGon (S : PointSet) (k : ℕ) : Prop :=
@@ -207,9 +206,6 @@ axiom empty_implies_nonempty :
 ## Part IX: Computational Results
 -/
 
-/-- The proof of g(6) = 30 uses SAT solvers and is computer-verified -/
-axiom g_6_computer_verified : True
-
 /-- Lower bound witnessed by 29-point configuration with no empty hexagon -/
 axiom g_6_lower_witness :
   ∃ S : PointSet, S.card = 29 ∧ InGeneralPosition S ∧ ¬ContainsEmptyKGon S 6
@@ -247,8 +243,12 @@ theorem erdos_216_summary :
     (∀ k ≥ 7, g k = none) := by
   exact ⟨g_3, g_4, g_5, g_6, g_7_not_exists, g_ge_7_not_exists⟩
 
-/-- The complete answer to Erdős Problem #216 -/
-theorem erdos_216 : True := trivial
+/-- The complete answer to Erdős Problem #216:
+g(k) exists iff k ≤ 6, with known exact values, and the summary theorem. -/
+theorem erdos_216 :
+    (g 3 = some 3) ∧ (g 4 = some 5) ∧ (g 5 = some 10) ∧ (g 6 = some 30) ∧
+    (g 7 = none) ∧ (∀ k ≥ 7, g k = none) :=
+  erdos_216_summary
 
 /-- Known values of g -/
 theorem known_g_values :
