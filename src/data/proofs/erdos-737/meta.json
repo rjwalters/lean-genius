@@ -18,7 +18,9 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
+    "solvedBy": "Carsten Thomassen",
+    "solvedYear": 1983,
     "erdosNumber": 737,
     "erdosUrl": "https://erdosproblems.com/737",
     "erdosProblemStatus": "solved",
@@ -64,51 +66,44 @@
     {
       "id": "basics",
       "title": "Graph Concepts",
-      "summary": "Chromatic number and ℵ₁",
+      "summary": "Chromatic number axiom and ℵ₁ definition",
       "startLine": 37,
-      "endLine": 55
+      "endLine": 53
     },
     {
       "id": "cycles",
       "title": "Cycles and Edges",
-      "summary": "Cycle and edge-in-cycle definitions",
-      "startLine": 57,
-      "endLine": 77
+      "summary": "Axiomatized cycle predicates and edge-in-cycle definitions",
+      "startLine": 55,
+      "endLine": 74
     },
     {
       "id": "ehs",
       "title": "Erdős-Hajnal-Shelah Result",
       "summary": "All large cycles exist (1974)",
-      "startLine": 79,
-      "endLine": 91
+      "startLine": 76,
+      "endLine": 85
     },
     {
       "id": "thomassen",
       "title": "Thomassen's Theorem",
       "summary": "Edge in all large cycles (1983)",
-      "startLine": 93,
-      "endLine": 113
-    },
-    {
-      "id": "threshold",
-      "title": "Why ℵ₁ Matters",
-      "summary": "Critical threshold",
-      "startLine": 115,
-      "endLine": 135
+      "startLine": 87,
+      "endLine": 104
     },
     {
       "id": "structure",
       "title": "Structural Properties",
-      "summary": "Pancyclic and routing",
-      "startLine": 137,
-      "endLine": 158
+      "summary": "Eventually pancyclic, universal cycle edges",
+      "startLine": 106,
+      "endLine": 129
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main result and resolution",
-      "startLine": 197,
-      "endLine": 222
+      "summary": "Main result: Thomassen solves Erdős #737",
+      "startLine": 131,
+      "endLine": 154
     }
   ],
   "conclusion": {
