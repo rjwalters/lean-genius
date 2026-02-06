@@ -18,7 +18,7 @@
       "fourier-analysis"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "erdosNumber": 362,
     "erdosUrl": "https://erdosproblems.com/362",
     "erdosProblemStatus": "solved",
@@ -47,17 +47,18 @@
       }
     ],
     "originalContributions": [
-      "setSum definition: sum of elements in a finite set",
-      "subsetsWithSum definition: subsets summing to target t",
-      "countSubsetsWithSum definition: count of such subsets",
-      "concentrationFunction definition: max over all targets",
-      "subsetsWithSumAndCard definition: fixed cardinality variant",
+      "setSum, subsetsWithSum, countSubsetsWithSum definitions",
+      "concentrationFunction: max concentration over all targets",
+      "subsetsWithSumAndCard: fixed cardinality variant",
       "symmetricSet definition: {-⌊(N-1)/2⌋, ..., ⌊N/2⌋}",
+      "vectorSetSum, countVectorSubsetsWithSum: d-dimensional variants",
+      "subsetSumGF: generating function for subset sums",
       "erdos_moser_1965_bound axiom: original bound with log factor",
       "sarkozy_szemeredi_1965 axiom: sharp 2^N/N^(3/2) bound",
       "halasz_1977 axiom: 2^N/N² bound with fixed cardinality",
       "stanley_1980_extremal axiom: symmetric set maximizes",
-      "halasz_multi_dim axiom: d-dimensional generalization",
+      "halasz_multi_dim axiom: d-dimensional bound 2^N/N^((d+1)/2)",
+      "fourier_extraction axiom: generating function integral formula",
       "erdos_362_summary theorem: main results combined"
     ]
   },
@@ -80,85 +81,50 @@
       "id": "definitions",
       "title": "Subset Sum Definitions",
       "summary": "setSum, subsetsWithSum, countSubsetsWithSum, concentrationFunction",
-      "startLine": 38,
-      "endLine": 60
+      "startLine": 34,
+      "endLine": 56
     },
     {
       "id": "question1",
       "title": "Question 1: General Bound",
-      "summary": "Sárközy-Szemerédi's 2^N / N^(3/2) bound",
-      "startLine": 62,
-      "endLine": 84
+      "summary": "Erdős-Moser weak bound and Sárközy-Szemerédi sharp 2^N / N^(3/2) bound",
+      "startLine": 58,
+      "endLine": 82
     },
     {
       "id": "question2",
       "title": "Question 2: Fixed Cardinality",
       "summary": "Halász's 2^N / N² bound with fixed |S| = l",
-      "startLine": 86,
-      "endLine": 112
+      "startLine": 84,
+      "endLine": 104
     },
     {
       "id": "stanley",
       "title": "Stanley's Extremal Result",
       "summary": "Symmetric set maximizes concentration via hard Lefschetz",
-      "startLine": 114,
-      "endLine": 139
-    },
-    {
-      "id": "clt",
-      "title": "Central Limit Perspective",
-      "summary": "Gaussian approximation explains the bounds",
-      "startLine": 141,
-      "endLine": 171
-    },
-    {
-      "id": "littlewood-offord",
-      "title": "Littlewood-Offord Connection",
-      "summary": "Related problem on signed sums",
-      "startLine": 173,
-      "endLine": 194
-    },
-    {
-      "id": "proof-sketch",
-      "title": "Proof Sketch",
-      "summary": "Fourier analysis and generating functions",
-      "startLine": 196,
-      "endLine": 216
+      "startLine": 106,
+      "endLine": 128
     },
     {
       "id": "multidim",
       "title": "Multi-dimensional Generalization",
-      "summary": "Halász's theorem for vector sums",
-      "startLine": 218,
-      "endLine": 238
+      "summary": "Halász's theorem for vector sums with bound 2^N / N^((d+1)/2)",
+      "startLine": 130,
+      "endLine": 152
     },
     {
-      "id": "algorithmic",
-      "title": "Algorithmic Perspective",
-      "summary": "Connection to NP-complete subset sum problem",
-      "startLine": 240,
-      "endLine": 262
-    },
-    {
-      "id": "examples",
-      "title": "Explicit Examples",
-      "summary": "Small cases like {1, 2, 3}",
-      "startLine": 323,
-      "endLine": 345
-    },
-    {
-      "id": "exponents",
-      "title": "Comparison of Exponents",
-      "summary": "Why Q1 gives N^(-3/2) and Q2 gives N^(-2)",
-      "startLine": 347,
-      "endLine": 366
+      "id": "generating-function",
+      "title": "Generating Function Approach",
+      "summary": "Fourier analysis and generating function for the proof",
+      "startLine": 154,
+      "endLine": 172
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem combining both answers",
-      "startLine": 368,
-      "endLine": 389
+      "summary": "Main theorem combining both answers from axioms",
+      "startLine": 174,
+      "endLine": 193
     }
   ],
   "conclusion": {
