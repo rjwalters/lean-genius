@@ -120,13 +120,9 @@ The Bollobás-Thomason paper also characterizes highly linked graphs.
 A graph is k-linked if any 2k vertices can be paired by k disjoint paths.
 -/
 
-/-- A graph is k-linked if any 2k vertices can be connected by k disjoint paths. -/
-def IsKLinked (G : SimpleGraph V) (k : ℕ) : Prop :=
-  ∀ (terminals : Finset V), terminals.card = 2 * k →
-    ∃ (paths : Fin k → List V),
-      -- Each path connects a pair of terminals
-      -- Paths are vertex-disjoint (except endpoints)
-      True  -- Simplified
+/-- A graph is k-linked if any 2k vertices can be connected by k disjoint paths.
+    Axiomatized as a predicate since full path-disjointness is complex to formalize. -/
+axiom IsKLinked (G : SimpleGraph V) (k : ℕ) : Prop
 
 /-- Sufficiently dense graphs are highly linked. -/
 axiom dense_graphs_linked :
@@ -143,10 +139,9 @@ A subdivision is stronger than a minor: if H is a subdivision in G,
 then H is a minor of G, but not conversely.
 -/
 
-/-- Minor relationship: H is a minor of G. -/
-def IsMinorOf (H G : SimpleGraph V) : Prop :=
-  -- H can be obtained from G by edge deletion, vertex deletion, and edge contraction
-  True  -- Placeholder
+/-- Minor relationship: H is a minor of G.
+    Axiomatized since the full definition requires edge contraction. -/
+axiom IsMinorOf (H G : SimpleGraph V) : Prop
 
 /-- Subdivision implies minor. -/
 axiom subdivision_implies_minor (G H : SimpleGraph V) :
@@ -161,10 +156,9 @@ The Komlós-Szemerédi theorem has applications in:
 3. Proving Hadwiger's conjecture for certain graph classes
 -/
 
-/-- Hadwiger's Conjecture: χ(G) ≥ r implies G has Kᵣ minor. -/
-axiom hadwiger_conjecture (G : SimpleGraph V) (r : ℕ) :
-  -- G.chromaticNumber ≥ r → has Kᵣ minor
-  True  -- Famous open problem
+/-- Hadwiger's Conjecture (open): χ(G) ≥ r implies G has Kᵣ minor.
+    One of the most important open problems in graph theory.
+    The Komlós-Szemerédi result on subdivisions is related but distinct. -/
 
 /-!
 ## The Main Theorem
@@ -193,7 +187,13 @@ theorem erdos_718_summary :
   · exact komlos_szemeredi_1996
   · exact mader_1967
 
-/-- The main result. -/
-theorem erdos_718 : True := trivial
+/-- The main result combining key facts. -/
+theorem erdos_718 :
+    MaderConjecture ∧
+    (∀ n r : ℕ, n ≥ r → r ≥ 2 →
+      ∀ G : SimpleGraph (Fin n),
+        G.edgeFinset.card ≥ 2^(r * (r - 1) / 2) * n →
+          ContainsSubdivisionOfKr (Fin n) G r) :=
+  ⟨komlos_szemeredi_1996, mader_1967⟩
 
 end Erdos718

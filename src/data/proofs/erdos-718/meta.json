@@ -77,13 +77,6 @@
       "endLine": 12
     },
     {
-      "id": "imports-namespace",
-      "title": "Imports and Setup",
-      "summary": "Mathlib imports for graphs, subgraphs, and basic types",
-      "startLine": 14,
-      "endLine": 19
-    },
-    {
       "id": "overview-section",
       "title": "Mathematical Overview",
       "summary": "Context on subdivisions, topological cliques, and historical bounds",
@@ -128,29 +121,22 @@
     {
       "id": "related-results",
       "title": "Related Results",
-      "summary": "k-linked graphs and dense graph linkedness",
+      "summary": "k-linked graphs (axiomatized) and dense graph linkedness",
       "startLine": 115,
-      "endLine": 137
+      "endLine": 133
     },
     {
       "id": "minors-subdivisions",
       "title": "Minors vs Subdivisions",
-      "summary": "Comparison of minor and subdivision relationships",
-      "startLine": 139,
-      "endLine": 153
-    },
-    {
-      "id": "applications",
-      "title": "Applications",
-      "summary": "Connections to graph minor theory and Hadwiger's conjecture",
-      "startLine": 155,
-      "endLine": 167
+      "summary": "Axiomatized minor relationship and subdivision-implies-minor",
+      "startLine": 135,
+      "endLine": 148
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_718_solved and erdos_718_summary theorems",
-      "startLine": 169,
+      "summary": "erdos_718_solved, erdos_718_summary, and erdos_718 theorems",
+      "startLine": 163,
       "endLine": 199
     }
   ],
