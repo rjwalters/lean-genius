@@ -1,182 +1,90 @@
 [
   {
-    "id": "ann-879-1",
+    "id": "ann-e879-header",
     "proofId": "erdos-879",
     "range": { "startLine": 1, "endLine": 28 },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdos Problem #879 studies the maximum sum G(n) of pairwise coprime (admissible) subsets of {1,...,n}. Two key questions: (1) Is G(n) > H(n) - n^{1+o(1)}? (2) Does the optimal set contain integers with many prime factors? Known bounds: H(n) - n^{3/2-o(1)} < G(n) < H(n).",
-    "significance": "high"
+    "content": "**Erdős Problem #879** studies the maximum sum achievable by a pairwise coprime subset of {1,...,n}. A set is called *admissible* if every pair of its elements is coprime (their GCD is 1). The function G(n) denotes this maximum sum, and H(n) = Σ_{p<n} p + n·π(√n) is a natural comparison function based on sums of primes. Erdős and Van Lint established tight bounds showing G(n) is close to H(n), but the exact gap remains unknown. Two key questions are posed: whether the gap is at most n^{1+o(1)}, and whether optimal admissible sets must contain composites with many prime factors.",
+    "mathContext": "The problem combines additive combinatorics with analytic number theory. The comparison function H(n) arises from considering the sum of all primes below n plus a correction for semiprimes pq where p, q > √n. By the prime number theorem, H(n) ~ n²/(2 ln n).",
+    "significance": "critical",
+    "relatedConcepts": ["pairwise coprime", "admissible sets", "prime sums", "additive combinatorics"]
   },
   {
-    "id": "ann-879-2",
+    "id": "ann-e879-admissible",
     "proofId": "erdos-879",
-    "range": { "startLine": 47, "endLine": 48 },
+    "range": { "startLine": 41, "endLine": 59 },
     "type": "definition",
-    "title": "Admissible Set",
-    "content": "IsAdmissible S means gcd(a,b) = 1 for all distinct a, b in S. Such sets are called 'pairwise coprime'. The primes form a canonical admissible set, but optimal sets also include carefully chosen composites.",
-    "significance": "high"
+    "title": "Admissible Sets and Their Sums",
+    "content": "**IsAdmissible** formalizes the key property: a finite set S of natural numbers is admissible if gcd(a,b) = 1 for every pair of distinct elements a, b ∈ S. This uses Lean's `Nat.Coprime` from Mathlib. The function **setSum** computes Σ_{a ∈ S} a using Finset.sum, and **admissibleSetsUpTo** collects all admissible subsets of {1,...,n} as a Set of Finsets. The optimization problem asks: among all such admissible subsets, which one has the largest sum?",
+    "mathContext": "Pairwise coprimality is a strong condition that forces elements to have disjoint prime factorizations. The primes themselves trivially satisfy this, making them a natural starting point for constructing large-sum admissible sets.",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.Coprime", "Finset", "pairwise coprime", "optimization"]
   },
   {
-    "id": "ann-879-3",
+    "id": "ann-e879-functions",
     "proofId": "erdos-879",
-    "range": { "startLine": 54, "endLine": 54 },
+    "range": { "startLine": 63, "endLine": 89 },
     "type": "definition",
-    "title": "Set Sum",
-    "content": "setSum S = sum of all elements in S. The goal is to maximize this over all admissible subsets of {1,...,n}.",
-    "significance": "medium"
+    "title": "The Functions G(n) and H(n)",
+    "content": "**G(n)** is defined as the supremum of setSum over all admissible subsets of {1,...,n}. Since the search space is finite, this supremum is achieved. The **comparison function H(n)** equals the sum of all primes below n, plus n times the number of primes up to √n. The term n·π(√n) accounts for the contribution of semiprimes pq with p, q > √n that can augment the prime set. The definitions use **primeCountingFn** (π(x) = |{p ≤ x : p prime}|) and **sumOfPrimes** (Σ_{p<n} p), both defined constructively using Finset.filter.",
+    "mathContext": "The definition of G uses sSup on a set of natural numbers, which is noncomputable. H(n) is also noncomputable due to primality testing in the filter. Both are well-defined since the underlying sets are finite.",
+    "significance": "critical",
+    "relatedConcepts": ["sSup", "prime counting function", "sum of primes", "noncomputable"]
   },
   {
-    "id": "ann-879-4",
+    "id": "ann-e879-bounds",
     "proofId": "erdos-879",
-    "range": { "startLine": 60, "endLine": 61 },
-    "type": "definition",
-    "title": "Admissible Sets Up To n",
-    "content": "admissibleSetsUpTo n collects all admissible subsets of {1,...,n}. This is the search space for maximizing the sum.",
-    "significance": "medium"
+    "range": { "startLine": 91, "endLine": 115 },
+    "type": "axiom",
+    "title": "Erdős-Van Lint Bounds",
+    "content": "The three core results of Erdős and Van Lint are axiomatized here. **G_upper_bound** states G(n) < H(n) for n ≥ 2: no admissible set can beat the primes-plus-semiprimes benchmark. **G_lower_bound** states G(n) > H(n) - c·n^{3/2} for some positive constant c, establishing that the gap is at most O(n^{3/2}). **gap_grows** captures the divergence (H(n) - G(n))/n → ∞, showing the gap is superlinear even though it's subquadratic. Together, these pin down G(n) as asymptotically close to H(n) with a gap between n^{1+o(1)} and n^{3/2-o(1)}.",
+    "mathContext": "These results require deep estimates from analytic number theory involving sieve methods and prime distribution, placing them well beyond current Mathlib capabilities. The lower bound proof constructs explicit large admissible sets using primes and carefully chosen semiprimes.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic bounds", "sieve methods", "analytic number theory"]
   },
   {
-    "id": "ann-879-5",
+    "id": "ann-e879-question1",
     "proofId": "erdos-879",
-    "range": { "startLine": 71, "endLine": 72 },
-    "type": "definition",
-    "title": "G(n) - Maximum Sum",
-    "content": "G(n) = max{sum(S) : S is admissible in {1,...,n}}. This is the main function of interest. Computing G(n) exactly is difficult; the problem asks about its asymptotic behavior relative to H(n).",
-    "significance": "high"
+    "range": { "startLine": 117, "endLine": 126 },
+    "type": "concept",
+    "title": "Question 1: Tighter Gap Bound",
+    "content": "**Question1** formalizes the open conjecture: for every ε > 0, does G(n) > H(n) - n^{1+ε} hold for all sufficiently large n? This would improve the known n^{3/2} gap to n^{1+o(1)}. Erdős and Van Lint showed this holds under plausible assumptions about prime distribution (related to prime gaps and the twin prime conjecture), but an unconditional proof remains elusive. The formalization expresses this as a ∀-∃ statement over reals and naturals.",
+    "mathContext": "The connection to prime gaps arises because the gap H(n) - G(n) depends on how many semiprimes pq with p, q > √n can be added to the prime set. Tighter prime gap results would allow more such semiprimes to be included.",
+    "significance": "key",
+    "relatedConcepts": ["prime gaps", "twin prime conjecture", "little-o notation"]
   },
   {
-    "id": "ann-879-6",
+    "id": "ann-e879-question2",
     "proofId": "erdos-879",
-    "range": { "startLine": 78, "endLine": 79 },
-    "type": "definition",
-    "title": "Prime Counting Function",
-    "content": "primeCountingFn(x) = pi(x) = number of primes <= x. This classical function appears in the definition of H(n) and in asymptotic analysis.",
-    "significance": "medium"
+    "range": { "startLine": 128, "endLine": 160 },
+    "type": "concept",
+    "title": "Question 2: Composites in Optimal Sets",
+    "content": "**Question2(k)** asks whether, for sufficiently large n, every optimal admissible set must contain at least one integer with k or more distinct prime factors. The formalization defines **numPrimeFactors** as the cardinality of the support of the prime factorization (counting distinct primes, i.e., ω(n)), and **hasManyPrimeFactors** as the predicate numPrimeFactors(n) ≥ k. The axiom **question2_k2** asserts the k=2 case: optimal sets contain semiprimes for large n. This is the only solved case; k ≥ 3 remains open.",
+    "mathContext": "The k=2 result shows that an optimal admissible set cannot consist solely of primes and 1. Some product of two large primes must be included to achieve the maximum sum. The proof constructs semiprimes pq with p, q > √n that beat replacing them with smaller primes.",
+    "significance": "key",
+    "relatedConcepts": ["prime factorization", "omega function", "semiprimes", "extremal sets"]
   },
   {
-    "id": "ann-879-7",
+    "id": "ann-e879-primes",
     "proofId": "erdos-879",
-    "range": { "startLine": 85, "endLine": 86 },
-    "type": "definition",
-    "title": "Sum of Primes",
-    "content": "sumOfPrimes(n) = sum of all primes p < n. Asymptotically, this is about n^2/(2 ln n) by the prime number theorem. This dominates H(n).",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-879-8",
-    "proofId": "erdos-879",
-    "range": { "startLine": 92, "endLine": 93 },
-    "type": "definition",
-    "title": "H(n) - Comparison Function",
-    "content": "H(n) = sum of primes < n + n * pi(sqrt(n)). This serves as a comparison target for G(n). The second term accounts for semiprimes that can be added to the primes.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-879-9",
-    "proofId": "erdos-879",
-    "range": { "startLine": 106, "endLine": 107 },
-    "type": "theorem",
-    "title": "Upper Bound",
-    "content": "G_upper_bound: G(n) < H(n) for n >= 2. You cannot do better than H(n). This is the easy direction of the Erdos-Van Lint bounds.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-879-10",
-    "proofId": "erdos-879",
-    "range": { "startLine": 115, "endLine": 116 },
-    "type": "theorem",
-    "title": "Lower Bound",
-    "content": "G_lower_bound: G(n) > H(n) - c*n^{3/2} for some c > 0. The gap between G(n) and H(n) is at most O(n^{3/2}). This is the harder direction.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-879-11",
-    "proofId": "erdos-879",
-    "range": { "startLine": 124, "endLine": 125 },
-    "type": "theorem",
-    "title": "Gap Growth",
-    "content": "gap_grows: (H(n) - G(n))/n tends to infinity. The gap grows faster than linearly, so G(n) is genuinely smaller than H(n) by more than O(n).",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-879-12",
-    "proofId": "erdos-879",
-    "range": { "startLine": 137, "endLine": 139 },
-    "type": "definition",
-    "title": "Question 1",
-    "content": "Question1: Is G(n) > H(n) - n^{1+epsilon} for all epsilon > 0 and large n? This asks if the gap can be bounded by n^{1+o(1)}, improving the known n^{3/2} bound.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-879-13",
-    "proofId": "erdos-879",
-    "range": { "startLine": 146, "endLine": 148 },
-    "type": "insight",
-    "title": "Conditional Result",
-    "content": "question1_conditional: Erdos-Van Lint proved Question 1 holds under plausible assumptions about prime distribution, related to twin prime-type conjectures.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-879-14",
-    "proofId": "erdos-879",
-    "range": { "startLine": 158, "endLine": 159 },
-    "type": "definition",
-    "title": "Number of Prime Factors",
-    "content": "numPrimeFactors(n) = number of distinct primes dividing n. This uses the support of the factorization function from Mathlib.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-879-15",
-    "proofId": "erdos-879",
-    "range": { "startLine": 173, "endLine": 177 },
-    "type": "definition",
-    "title": "Question 2",
-    "content": "Question2(k): For large n, does the optimal admissible set contain an integer with >= k distinct prime factors? This asks whether optimal sets must include 'complicated' composites.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-879-16",
-    "proofId": "erdos-879",
-    "range": { "startLine": 184, "endLine": 184 },
-    "type": "theorem",
-    "title": "k=2 Case Solved",
-    "content": "question2_k2: Question 2 holds for k=2. Optimal sets contain semiprimes (products of two distinct primes) for large n. This is proved by Erdos-Van Lint.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-879-17",
-    "proofId": "erdos-879",
-    "range": { "startLine": 202, "endLine": 206 },
+    "range": { "startLine": 162, "endLine": 174 },
     "type": "theorem",
     "title": "Primes are Admissible",
-    "content": "primes_admissible: The set of all primes < n is admissible. This is because distinct primes are coprime. This provides a baseline admissible set.",
-    "significance": "medium"
+    "content": "**primes_admissible** is the main constructive result: the set of all primes below n is admissible. The proof is direct — given two distinct primes a and b in the filtered set, their coprimality follows from Prime.coprime_iff_not_dvd: prime a is coprime to b unless a divides b, but a prime b can only be divided by 1 or itself, so a = b, contradicting distinctness. This theorem establishes the baseline for the optimization: G(n) is at least as large as the sum of primes below n.",
+    "mathContext": "The proof uses Nat.Prime.coprime_iff_not_dvd and Nat.Prime.eq_one_or_self_of_dvd from Mathlib. The omega tactic handles the arithmetic contradiction. This is a clean example of using Mathlib's prime API for a concrete combinatorial argument.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Prime.coprime_iff_not_dvd", "Finset.filter", "constructive proof"]
   },
   {
-    "id": "ann-879-18",
+    "id": "ann-e879-summary",
     "proofId": "erdos-879",
-    "range": { "startLine": 219, "endLine": 222 },
-    "type": "insight",
-    "title": "Why Semiprimes Help",
-    "content": "A semiprime pq with p, q > sqrt(n) can be added to the primes < n if p, q are not already in the set. This increases the sum without breaking coprimality.",
-    "significance": "medium"
-  },
-  {
-    "id": "ann-879-19",
-    "proofId": "erdos-879",
-    "range": { "startLine": 298, "endLine": 305 },
+    "range": { "startLine": 176, "endLine": 192 },
     "type": "theorem",
     "title": "Summary Theorem",
-    "content": "erdos_879_summary: Combines the upper bound G(n) < H(n), the lower bound G(n) > H(n) - cn^{3/2}, and the solved k=2 case. This captures the main known results.",
-    "significance": "high"
-  },
-  {
-    "id": "ann-879-20",
-    "proofId": "erdos-879",
-    "range": { "startLine": 311, "endLine": 311 },
-    "type": "theorem",
-    "title": "Erdos 879 Status",
-    "content": "erdos_879: The problem remains OPEN. Question 1 (tighter gap bound) is open unconditionally. Question 2 is open for k >= 3.",
-    "significance": "high"
+    "content": "**erdos_879_summary** combines the three main known results into a single conjunction: (1) the upper bound G(n) < H(n), (2) the lower bound G(n) > H(n) - c·n^{3/2}, and (3) the solved k=2 case of Question 2. The proof is constructive, using `exact ⟨G_upper_bound, fun n hn => G_lower_bound n hn, question2_k2⟩` to assemble the three axioms. This captures the complete state of knowledge for this open problem: tight asymptotic bounds on G(n) and partial structural information about optimal sets.",
+    "mathContext": "The anonymous constructor ⟨...⟩ builds the conjunction directly from the axioms. The lambda `fun n hn => G_lower_bound n hn` wraps the universally quantified lower bound to match the conjunction's expected type.",
+    "significance": "critical",
+    "relatedConcepts": ["conjunction", "anonymous constructor", "axiom composition"]
   }
 ]
