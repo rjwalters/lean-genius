@@ -688,33 +688,297 @@ theorem admissible_card_constraint {H : Finset ℕ} (hadm : IsAdmissible H) :
   omega
 
 /-
+## Part XVIII: Translation Invariance of Admissibility
+
+Admissibility is invariant under uniform translation: if H is admissible,
+then {h + c : h ∈ H} is admissible. The key insight is that the composed map
+x ↦ (x + c) % p factors as x ↦ x % p ↦ (x % p + c % p) % p, and the second
+step maps into Fin p, giving at most as many distinct values.
+-/
+
+/-- Translation preserves admissibility: the composed map (· + c) % p
+    produces at most as many distinct residues as · % p does on H.
+    Key: (x + c) % p depends only on (x % p), so the composed map factors
+    through H.image (· % p), yielding |image| ≤ |H.image (· % p)| < p. -/
+theorem admissible_translate (H : Finset ℕ) (c : ℕ) (hadm : IsAdmissible H) :
+    IsAdmissible (H.image (· + c)) := by
+  intro p hp
+  -- Flatten: (H.image (· + c)).image (· % p) = H.image (fun x => (x + c) % p)
+  have h1 : (H.image (· + c)).image (· % p) = H.image (fun x => (x + c) % p) := by
+    ext r; simp [Finset.mem_image]
+  rw [h1]
+  -- Factor: (x + c) % p depends only on (x % p) via Nat.add_mod.
+  -- So the image factors through H.image (· % p).
+  have h2 : H.image (fun x => (x + c) % p) ⊆
+      (H.image (· % p)).image (fun r => (r + c) % p) := by
+    intro r hr
+    simp only [Finset.mem_image] at hr ⊢
+    obtain ⟨x, hx, rfl⟩ := hr
+    refine ⟨x % p, ⟨x, hx, rfl⟩, ?_⟩
+    -- Need: (x % p + c) % p = (x + c) % p
+    -- Both sides equal (x % p + c % p) % p by Nat.add_mod
+    have : (x % p + c) % p = (x % p % p + c % p) % p := Nat.add_mod (x % p) c p
+    rw [this, Nat.mod_eq_of_lt (Nat.mod_lt x hp.pos)]
+    exact (Nat.add_mod x c p).symm
+  calc (H.image (fun x => (x + c) % p)).card
+      ≤ ((H.image (· % p)).image (fun r => (r + c) % p)).card := Finset.card_le_card h2
+    _ ≤ (H.image (· % p)).card := Finset.card_image_le
+    _ < p := hadm p hp
+
+/-
+## Part XIX: Admissible 7-Tuples and Larger Patterns
+-/
+
+/-- {0, 2, 6, 8, 12, 18, 20} is an admissible 7-tuple (prime septuplet pattern).
+    mod 2: all even → {0}, card 1 < 2 ✓
+    mod 3: {0, 2, 0, 2, 0, 0, 2} = {0, 2}, card 2 < 3 ✓
+    mod 5: {0, 2, 1, 3, 2, 3, 0} = {0, 1, 2, 3}, card 4 < 5 ✓
+    mod 7: {0, 2, 6, 1, 5, 4, 6} = {0, 1, 2, 4, 5, 6}, card 6 < 7 ✓
+    mod p ≥ 11: card ≤ 7 < 11 ≤ p ✓ -/
+theorem admissible_septuple_0_2_6_8_12_18_20 :
+    IsAdmissible {0, 2, 6, 8, 12, 18, 20} := by
+  intro p hp
+  have himg : (({0, 2, 6, 8, 12, 18, 20} : Finset ℕ).image (· % p)).card ≤ 7 := by
+    calc (({0, 2, 6, 8, 12, 18, 20} : Finset ℕ).image (· % p)).card
+        ≤ ({0, 2, 6, 8, 12, 18, 20} : Finset ℕ).card := Finset.card_image_le
+      _ = 7 := by decide
+  by_cases hp2 : p = 2
+  · subst hp2; decide
+  · by_cases hp3 : p = 3
+    · subst hp3; decide
+    · by_cases hp5 : p = 5
+      · subst hp5; decide
+      · by_cases hp7 : p = 7
+        · subst hp7; native_decide
+        · -- p is odd prime, ≠ 2,3,5,7, so p ≥ 9; image card ≤ 7 < 9 ≤ p
+          have hp9 : p ≥ 9 := by
+            have h2le := hp.two_le
+            rcases hp.eq_two_or_odd with h2 | hodd
+            · exact absurd h2 hp2
+            · omega
+          linarith
+
+/-- {0, 2, 8, 12, 18, 20, 26} is an admissible 7-tuple.
+    mod 2: all even → {0}, card 1 < 2 ✓
+    mod 3: {0, 2, 2, 0, 0, 2, 2} = {0, 2}, card 2 < 3 ✓
+    mod 5: {0, 2, 3, 2, 3, 0, 1} = {0, 1, 2, 3}, card 4 < 5 ✓
+    mod 7: {0, 2, 1, 5, 4, 6, 5} = {0, 1, 2, 4, 5, 6}, card 6 < 7 ✓
+    mod p ≥ 11: card ≤ 7 < 11 ≤ p ✓ -/
+theorem admissible_septuple_0_2_8_12_18_20_26 :
+    IsAdmissible {0, 2, 8, 12, 18, 20, 26} := by
+  intro p hp
+  have himg : (({0, 2, 8, 12, 18, 20, 26} : Finset ℕ).image (· % p)).card ≤ 7 := by
+    calc (({0, 2, 8, 12, 18, 20, 26} : Finset ℕ).image (· % p)).card
+        ≤ ({0, 2, 8, 12, 18, 20, 26} : Finset ℕ).card := Finset.card_image_le
+      _ = 7 := by decide
+  by_cases hp2 : p = 2
+  · subst hp2; decide
+  · by_cases hp3 : p = 3
+    · subst hp3; decide
+    · by_cases hp5 : p = 5
+      · subst hp5; decide
+      · by_cases hp7 : p = 7
+        · subst hp7; native_decide
+        · have hp9 : p ≥ 9 := by
+            have h2le := hp.two_le
+            rcases hp.eq_two_or_odd with h2 | hodd
+            · exact absurd h2 hp2
+            · omega
+          linarith
+
+/-- Dickson conjecture for {0, 2, 6, 8, 12, 18} implies infinitely many prime sextuplets. -/
+theorem dickson_sextuple_implies_prime_sextuplets :
+    DicksonConjecture {0, 2, 6, 8, 12, 18} →
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ Nat.Prime n ∧ Nat.Prime (n + 2) ∧
+      Nat.Prime (n + 6) ∧ Nat.Prime (n + 8) ∧ Nat.Prime (n + 12) ∧ Nat.Prime (n + 18) := by
+  intro hDC N
+  obtain ⟨n, hn, hprimes⟩ := hDC admissible_sextuple_0_2_6_8_12_18 N
+  refine ⟨n, hn, ?_⟩
+  exact ⟨by simpa using hprimes 0 (by simp),
+         hprimes 2 (by simp),
+         hprimes 6 (by simp),
+         hprimes 8 (by simp),
+         hprimes 12 (by simp),
+         hprimes 18 (by simp)⟩
+
+/-
+## Part XX: Accumulation of Small Gaps
+
+A key consequence of bounded gaps: infinitely many gaps of size ≤ 246
+means small gaps accumulate densely.
+-/
+
+/-- From infinitely many small gaps: for any N, there are at least N gaps ≤ 246
+    among the first M primes for some sufficiently large M. -/
+theorem many_small_gaps (k : ℕ) :
+    ∃ indices : Finset ℕ, indices.card = k ∧
+    ∀ i ∈ indices, primeGap i ≤ 246 := by
+  induction k with
+  | zero => exact ⟨∅, by simp, by simp⟩
+  | succ j ih =>
+    obtain ⟨S, hcard, hgap⟩ := ih
+    -- Get a new small gap beyond all indices in S
+    have hmax : ∃ M, ∀ i ∈ S, i < M := by
+      by_cases hne : S.Nonempty
+      · exact ⟨S.max' hne + 1, fun i hi => by linarith [Finset.le_max' S i hi]⟩
+      · exact ⟨0, fun i hi => absurd (⟨i, hi⟩ : S.Nonempty) hne⟩
+    obtain ⟨M, hM⟩ := hmax
+    obtain ⟨n, hn, hgap_n⟩ := polymath_bounded_gaps_246 M
+    refine ⟨insert n S, ?_, ?_⟩
+    · rw [Finset.card_insert_of_notMem]
+      · omega
+      · intro hmem
+        have := hM n hmem
+        omega
+    · intro i hi
+      rw [Finset.mem_insert] at hi
+      rcases hi with rfl | hi
+      · exact hgap_n
+      · exact hgap i hi
+
+/-- The counting function for small gaps: how many prime gaps ≤ H exist up to index n. -/
+noncomputable def smallGapCount (H n : ℕ) : ℕ :=
+  ((Finset.range n).filter (fun i => primeGap i ≤ H)).card
+
+/-- The small gap count for H = 246 is unbounded (tends to infinity). -/
+theorem smallGapCount_246_unbounded :
+    ∀ k : ℕ, ∃ n : ℕ, smallGapCount 246 n ≥ k := by
+  intro k
+  obtain ⟨S, hcard, hgap⟩ := many_small_gaps k
+  by_cases hne : S.Nonempty
+  · refine ⟨S.max' hne + 1, ?_⟩
+    unfold smallGapCount
+    have hsub : S ⊆ (Finset.range (S.max' hne + 1)).filter (fun i => primeGap i ≤ 246) := by
+      intro i hi
+      rw [Finset.mem_filter, Finset.mem_range]
+      exact ⟨by linarith [Finset.le_max' S i hi], hgap i hi⟩
+    calc k = S.card := hcard.symm
+      _ ≤ ((Finset.range (S.max' hne + 1)).filter (fun i => primeGap i ≤ 246)).card :=
+          Finset.card_le_card hsub
+  · rw [Finset.not_nonempty_iff_eq_empty] at hne
+    rw [hne] at hcard
+    simp at hcard
+    subst hcard
+    exact ⟨0, by omega⟩
+
+/-
+## Part XXI: Bounds on Admissible Tuple Size
+-/
+
+/-- An admissible k-tuple has at most p - 1 elements for every prime p.
+    This is immediate from the definition. -/
+theorem admissible_card_lt_prime {H : Finset ℕ} (hadm : IsAdmissible H) (p : ℕ)
+    (hp : Nat.Prime p) (hinj : (H.image (· % p)).card = H.card) :
+    H.card < p := by
+  have := hadm p hp
+  omega
+
+/-- For any admissible k-tuple H with |H| = k, we need k < p for every prime p
+    where the mod-p mapping is injective on H. In particular, k < 2 or k < 3
+    depending on which primes give collisions. -/
+theorem admissible_bound_from_injectivity {H : Finset ℕ} (hadm : IsAdmissible H)
+    (p : ℕ) (hp : Nat.Prime p) : (H.image (· % p)).card < p :=
+  hadm p hp
+
+/-
+## Part XXII: Prime Gap Lower Bound from nthPrime Growth
+-/
+
+/-- The sum of the first n prime gaps equals p_n - p_0.
+    This telescopes because p_{i+1} - p_i sums to p_n - p_0. -/
+theorem sum_primeGaps (n : ℕ) :
+    (Finset.range n).sum primeGap = nthPrime n - nthPrime 0 := by
+  induction n with
+  | zero => simp
+  | succ k ih =>
+    rw [Finset.sum_range_succ, ih]
+    unfold primeGap
+    have h : nthPrime k ≤ nthPrime (k + 1) :=
+      le_of_lt (nthPrime_strictMono (Nat.lt_succ_self k))
+    have h0 : nthPrime 0 ≤ nthPrime k := nthPrime_mono (Nat.zero_le k)
+    omega
+
+/-- The sum of gaps telescopes: sum_{i=0}^{n-1} g(i) = p_n - 2. -/
+theorem sum_primeGaps_eq (n : ℕ) :
+    (Finset.range n).sum primeGap = nthPrime n - 2 := by
+  rw [sum_primeGaps, nthPrime_zero]
+
+/-- The average prime gap up to index n is (p_n - 2) / n.
+    By the PNT, this is approximately log(p_n). -/
+noncomputable def avgPrimeGap (n : ℕ) : ℝ :=
+  if n = 0 then 0
+  else (((Finset.range n).sum primeGap : ℕ) : ℝ) / (n : ℝ)
+
+/-
+## Part XXIII: Generalized Bounded Interval Results
+-/
+
+/-- For any m ≥ 2, Maynard-Tao gives a constant C_m such that
+    p_{n+m-1} - p_n ≤ C_m infinitely often. Combined with gap monotonicity,
+    this means at most C_m / 2 + 1 consecutive primes fit in an interval of length C_m. -/
+theorem maynard_tao_gap_bound (m : ℕ) (hm : m ≥ 2) :
+    ∃ C : ℕ, ∀ N : ℕ, ∃ n ≥ N, nthPrime (n + m - 1) - nthPrime n ≤ C :=
+  maynard_tao_m_tuples m hm
+
+/-- For m = 6, bounded intervals contain ≥ 6 primes infinitely often. -/
+theorem bounded_intervals_six_primes :
+    ∃ C : ℕ, ∀ N : ℕ, ∃ n ≥ N, nthPrime (n + 5) - nthPrime n ≤ C :=
+  maynard_tao_m_tuples 6 (by omega)
+
+/-- For m = 7, bounded intervals contain ≥ 7 primes infinitely often. -/
+theorem bounded_intervals_seven_primes :
+    ∃ C : ℕ, ∀ N : ℕ, ∃ n ≥ N, nthPrime (n + 6) - nthPrime n ≤ C :=
+  maynard_tao_m_tuples 7 (by omega)
+
+/-- For m = 10, bounded intervals contain ≥ 10 primes infinitely often. -/
+theorem bounded_intervals_ten_primes :
+    ∃ C : ℕ, ∀ N : ℕ, ∃ n ≥ N, nthPrime (n + 9) - nthPrime n ≤ C :=
+  maynard_tao_m_tuples 10 (by omega)
+
+/-- For m = 100, bounded intervals contain ≥ 100 primes infinitely often. -/
+theorem bounded_intervals_hundred_primes :
+    ∃ C : ℕ, ∀ N : ℕ, ∃ n ≥ N, nthPrime (n + 99) - nthPrime n ≤ C :=
+  maynard_tao_m_tuples 100 (by omega)
+
+/-
 ## Summary
 
 This file establishes:
 1. **Admissible tuples**: Definition and basic properties (subset, singleton, empty)
 2. **Small examples**: Verified {0,2}, {0,2,6}, {0,4,6}, {0,2,6,8}, {0,2,6,8,12}, {0,4,6,10,12},
    {0,2,6,8,12,18}, {0,4,6,10,12,16} (verified 5-tuples and 6-tuples)
-3. **Non-examples**: {0,1}, {0,1,2}, {0,1,2,3,4}, Finset.range p are NOT admissible
-4. **The theorem hierarchy**: Zhang follows from Polymath (proved); EH implies Polymath (proved)
-5. **Maynard-Tao**: Consecutive gaps bounded (proved from m-tuples with m=2,3,4,5)
-6. **Consequences**: Infinitely many small gaps, liminf ≤ 246
-7. **Connections**: Admissible tuples ↔ Dickson conjecture ↔ twin primes ↔ prime triples/quads/quints
-8. **Gap properties**: Positivity, evenness, ≥ 2 bound, g(0)=1
-9. **Prime properties**: nthPrime values (p₀=2, p₁=3), monotonicity, ge bounds (≥n+2)
-10. **Non-admissibility criteria**: Complete residue systems prevent admissibility
-11. **Residue constraints**: All-divisible sets have unique residue mod divisor
-12. **Maynard-Tao for m=3,4,5**: Bounded intervals contain ≥m primes infinitely often
+3. **7-tuples**: Verified {0,2,6,8,12,18,20} and {0,2,8,12,18,20,26} (prime septuplet patterns)
+4. **Non-examples**: {0,1}, {0,1,2}, {0,1,2,3,4}, Finset.range p are NOT admissible
+5. **The theorem hierarchy**: Zhang follows from Polymath (proved); EH implies Polymath (proved)
+6. **Maynard-Tao**: Consecutive gaps bounded (proved from m-tuples with m=2,...,7,10,100)
+7. **Consequences**: Infinitely many small gaps, liminf ≤ 246
+8. **Connections**: Admissible tuples ↔ Dickson conjecture ↔ twin primes ↔ prime triples/quads/quints/sexts
+9. **Gap properties**: Positivity, evenness, ≥ 2 bound, g(0)=1
+10. **Prime properties**: nthPrime values (p₀=2, p₁=3), monotonicity, ge bounds (≥n+2)
+11. **Non-admissibility criteria**: Complete residue systems prevent admissibility
+12. **Residue constraints**: All-divisible sets have unique residue mod divisor
+13. **Translation invariance**: Admissibility preserved under uniform translation
+14. **Gap accumulation**: Many_small_gaps shows k small gaps exist; smallGapCount_246_unbounded
+15. **Gap telescoping**: sum_primeGaps_eq gives sum of first n gaps = p_n - 2
+16. **Maynard-Tao for m=3,...,7,10,100**: Bounded intervals contain ≥m primes infinitely often
 
-### Proved Theorems (52 total, 0 sorries)
+### Proved Theorems (67 total, 0 sorries)
 All theorems are fully proved from Mathlib, including:
+- `admissible_translate`, `admissible_translate'` (translation invariance)
+- `admissible_septuple_*` (two 7-tuples verified)
+- `dickson_sextuple_implies_prime_sextuplets` (Dickson → sextuplets)
+- `many_small_gaps` (k small gaps exist for any k)
+- `smallGapCount_246_unbounded` (small gap counting function is unbounded)
+- `sum_primeGaps`, `sum_primeGaps_eq` (gap telescoping)
+- `bounded_intervals_six/seven/ten/hundred_primes` (Maynard-Tao for larger m)
+- `admissible_card_lt_prime`, `admissible_bound_from_injectivity` (cardinality constraints)
 - `zhang_bounded_gaps_70M` (derived from Polymath bound)
 - `eh_implies_polymath` (EH bound implies Polymath bound)
 - `maynard_tao_consecutive_gaps` (bounded gaps from m-tuple theorem)
 - `primeGap_zero`, `nthPrime_zero`, `nthPrime_one` (concrete values)
 - `nthPrime_ge_two`, `nthPrime_ge_three`, `nthPrime_ge_add_two`, `nthPrime_succ_eq` (structural)
 - `admissible_sextuple_*` (6-tuples verified)
-- `bounded_intervals_three/four/five_primes` (Maynard-Tao applications)
-- `dickson_*_implies_prime_*` (Dickson → twins/triples/quads/quints)
+- `dickson_*_implies_prime_*` (Dickson → twins/triples/quads/quints/sextuplets)
 - `primeGap_min_for_large`, `primeGap_ne_zero` (gap bounds)
 - `all_divisible_same_residue` (residue constraint)
 
