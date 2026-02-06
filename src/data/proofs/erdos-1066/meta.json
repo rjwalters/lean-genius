@@ -7,7 +7,7 @@
     "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/1066",
     "date": "",
-    "status": "open",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1066Problem.lean",
     "tags": [
       "erdos",
@@ -15,30 +15,99 @@
       "graph-theory",
       "independence-number",
       "unit-distance-graphs",
-      "planar-graphs"
+      "planar-graphs",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1066,
     "erdosUrl": "https://erdosproblems.com/1066",
-    "erdosProblemStatus": "open"
-  },
-  "overview": {
-    "historicalContext": "This problem concerns unit distance graphs in the plane, where points at minimum distance 1 are connected by edges if exactly at distance 1. Such graphs are always planar (edges cannot cross without forcing points closer than 1). Erdős initially conjectured g(n) = n/3, but this was disproved. The problem connects to the Four Colour Theorem, planar graph coloring, and discrete geometry.",
-    "problemStatement": "Let G be a graph given by n points in ℝ², where any two distinct points are at least distance 1 apart, and we draw an edge between two points if they are distance 1 apart. Let g(n) be maximal such that any such graph always has an independent set on at least g(n) vertices. Estimate g(n), or perhaps lim g(n)/n.",
-    "proofStrategy": "The problem remains open. Current approach combines:\n\n1. **Lower bounds via planarity**: Unit distance graphs are planar (edges can't cross), so the Four Colour Theorem implies g(n) ≥ n/4. Improved by geometric arguments.\n\n2. **Upper bounds via constructions**: Explicit point configurations showing g(n) cannot exceed certain thresholds.\n\n**Current best bounds:**\n- Lower: (8/31)n ≈ 0.258n (Swanepoel 2002)\n- Upper: (5/16)n = 0.3125n (Pach-Tóth 1996)\n\nThe gap 8/31 to 5/16 remains to be closed.",
-    "keyInsights": [
-      "Unit distance graphs with minimum distance 1 are always planar - edges cannot cross",
-      "Planarity implies 4-colorability, giving g(n) ≥ n/4 as a baseline",
-      "Erdős's original conjecture g(n) = n/3 was disproved by constructions",
-      "The true asymptotic density lim g(n)/n lies in [8/31, 5/16] ≈ [0.258, 0.3125]",
-      "The problem generalizes to higher dimensions with g_d(n) ~ n/d"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "EuclideanSpace", "description": "Euclidean space for point representation", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
+      { "theorem": "Real.sqrt", "description": "Square root for distance computation", "module": "Mathlib.Data.Real.Basic" },
+      { "theorem": "Nat.find", "description": "Minimum element of nonempty set for independence number", "module": "Mathlib.Data.Nat.Basic" }
+    ],
+    "originalContributions": [
+      "Point2D, dist, UnitDistancePointSet, unitDistanceEdge: geometric definitions",
+      "IsIndependentSet, independenceNumber: independence definitions",
+      "g axiom: guaranteed independent set size function",
+      "pollack_lower_bound, csizmadia_lower_bound, swanepoel_lower_bound: lower bound axioms",
+      "chung_graham_pach_upper_bound, pach_toth_upper_bound: upper bound axioms",
+      "lower_bounds_comparison, upper_bounds_comparison: proved arithmetic comparisons",
+      "current_best_bounds, bound_gap: proved bounds",
+      "g_d axiom, erdos_higher_dimension_question: higher-dimensional generalization",
+      "erdos_1066_summary: proved summary combining all arithmetic results"
     ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "This problem concerns unit distance graphs in the plane, where n points at minimum pairwise distance 1 are connected by edges if exactly at distance 1. Such graphs are always planar (edges cannot cross without forcing points closer than 1). The key quantity g(n) measures the guaranteed independent set size.\n\nErdős initially conjectured g(n) = n/3, but this was disproved by Chung, Graham, and Pach who showed g(n) ≤ 6n/19 ≈ 0.316n. The baseline lower bound g(n) ≥ n/4 follows from planarity and the Four Colour Theorem (observed by Pollack in 1985). This was improved by Csizmadia (1998) to 9n/35 and then by Swanepoel (2002) to the current best 8n/31.\n\nThe current best upper bound is due to Pach and Tóth (1996): g(n) ≤ 5n/16 = 0.3125n. The gap between 8/31 ≈ 0.258 and 5/16 = 0.3125 remains to be closed. The problem also generalizes to higher dimensions, where g_d(n) ~ n/d is conjectured.",
+    "problemStatement": "Let G be a graph given by n points in ℝ², where any two distinct points are at least distance 1 apart, and we draw an edge between two points if they are distance 1 apart. Let g(n) be maximal such that any such graph always has an independent set on at least g(n) vertices. Estimate g(n), or perhaps lim g(n)/n.\n\n**Current Best Bounds:** (8/31)n ≤ g(n) ≤ (5/16)n\n**Status: OPEN**",
+    "proofStrategy": "The formalization defines unit distance point sets using EuclideanSpace ℝ (Fin 2) and axiomatizes g(n) since computing the infimum over all configurations is not feasible in Lean. The key historical bounds are axiomatized (Pollack, Csizmadia, Swanepoel for lower; Chung-Graham-Pach, Pach-Tóth for upper), while the arithmetic comparisons between bound constants are proved using norm_num. The summary theorem combines all verified arithmetic facts.",
+    "keyInsights": [
+      "**Planarity is key**: Unit distance graphs with minimum distance 1 are planar, giving the baseline g(n) ≥ n/4",
+      "**Erdős's n/3 conjecture was wrong**: Constructions show g(n) < n/3",
+      "**Current gap**: 8/31 ≤ lim g(n)/n ≤ 5/16, a gap of 27/496 ≈ 0.054",
+      "**Lower bounds use geometric structure**: Swanepoel's proof exploits specific properties of planar unit distance graphs",
+      "**Higher dimensions**: g_d(n) ~ n/d is the conjectured behavior"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Point2D, dist, UnitDistancePointSet, unitDistanceEdge, IsIndependentSet, independenceNumber",
+      "startLine": 34,
+      "endLine": 65
+    },
+    {
+      "id": "function-g",
+      "title": "The Function g(n)",
+      "summary": "g axiom: guaranteed independent set size",
+      "startLine": 67,
+      "endLine": 77
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Pollack n/4, Csizmadia 9n/35, Swanepoel 8n/31, comparison theorem",
+      "startLine": 79,
+      "endLine": 104
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Chung-Graham-Pach 6n/19, Pach-Tóth 5n/16, comparison theorem",
+      "startLine": 106,
+      "endLine": 125
+    },
+    {
+      "id": "current-bounds",
+      "title": "Current Best Bounds",
+      "summary": "current_best_bounds, bound_gap, current_knowledge axiom",
+      "startLine": 127,
+      "endLine": 145
+    },
+    {
+      "id": "higher-dimensions",
+      "title": "Higher Dimensions",
+      "summary": "g_d axiom, higher dimension question and upper bound",
+      "startLine": 147,
+      "endLine": 166
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1066_summary theorem combining all proved arithmetic results",
+      "startLine": 168,
+      "endLine": 185
+    }
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #1066 asks for the guaranteed independent set size g(n) in unit distance graphs. The current best bounds are (8/31)n ≤ g(n) ≤ (5/16)n, with a gap of about 5.4% of n. The problem connects planarity, the Four Colour Theorem, and discrete geometry.",
-    "implications": "Closing the gap between 8/31 and 5/16 would require either: (1) new geometric arguments improving the lower bound beyond Swanepoel's technique, or (2) clever constructions improving the upper bound beyond Pach-Tóth's configuration.",
+    "summary": "Erdős Problem #1066 asks for the guaranteed independent set size g(n) in unit distance graphs. The current best bounds are (8/31)n ≤ g(n) ≤ (5/16)n, with a gap of 27/496 ≈ 5.4%. The formalization axiomatizes the historical bounds and proves the arithmetic comparisons, with a summary theorem combining all verified facts.",
+    "implications": "Closing the gap between 8/31 and 5/16 would require either new geometric arguments improving the lower bound beyond Swanepoel's technique, or clever constructions improving the upper bound beyond Pach-Tóth's configuration.",
     "openQuestions": [
       "What is the exact value of lim g(n)/n?",
       "Can the lower bound 8/31 be improved?",
