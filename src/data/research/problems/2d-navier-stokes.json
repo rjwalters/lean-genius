@@ -16,7 +16,7 @@
   },
   "knownResults": {
     "proven": [
-      "97 theorems fully proved",
+      "131 theorems/lemmas/defs fully proved (12 axioms remain)",
       "2D global existence (Ladyzhenskaya 1969)",
       "2D uniqueness",
       "2D enstrophy bound WITHOUT axioms",
@@ -33,7 +33,7 @@
     "phase": "COMPLETE",
     "since": "2026-02-04T18:20:00Z",
     "iteration": 1,
-    "focus": "Complete: 97 theorems, 17 axioms (for 3D/infrastructure), 0 sorries",
+    "focus": "Complete: 131 theorems/lemmas/defs, 12 axioms (for 3D/infrastructure), 0 sorries",
     "blockers": [],
     "nextAction": "None - 2D problem complete",
     "attemptCounts": {
@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 97 theorems, 17 axioms, 0 sorries. The 2D Navier-Stokes problem is SOLVED - global existence and uniqueness proven. Axioms are for 3D conditional results and PDE infrastructure not in Mathlib.",
+    "progressSummary": "COMPLETE: 131 theorems/lemmas/defs, 12 axioms, 0 sorries. The 2D Navier-Stokes problem is SOLVED - global existence and uniqueness proven. Axioms are for 3D conditional results and PDE infrastructure not in Mathlib. E_loc_le_E and E_loc_K_le_E converted from axioms to theorems.",
     "builtItems": [
       "GlobalNSSolution2D: Complete 2D global existence",
       "2D enstrophy bound (no axioms needed)",
@@ -102,7 +102,7 @@
     ]
   },
   "started": "2026-02-04T18:20:00Z",
-  "lastUpdate": "2026-02-04T18:20:00Z",
+  "lastUpdate": "2026-02-06T15:30:00Z",
   "significance": 10,
   "tractability": 8,
   "knowledgeScore": 5
