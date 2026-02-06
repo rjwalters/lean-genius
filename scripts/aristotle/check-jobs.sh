@@ -115,6 +115,7 @@ update_jobs_file() {
         case "$status" in
             COMPLETE) new_status="completed" ;;
             FAILED) new_status="failed" ;;
+            NOT_FOUND) new_status="expired" ;;
             *) continue ;;  # Don't update in-progress jobs
         esac
 
@@ -162,12 +163,14 @@ main() {
         local completed=$(jq '[.jobs[] | select(.status == "completed")] | length' "$JOBS_FILE")
         local integrated=$(jq '[.jobs[] | select(.status == "integrated")] | length' "$JOBS_FILE")
         local failed=$(jq '[.jobs[] | select(.status == "failed")] | length' "$JOBS_FILE")
+        local expired=$(jq '[.jobs[] | select(.status == "expired")] | length' "$JOBS_FILE")
 
         echo ""
         echo "Summary:"
         echo "  Completed: $completed"
         echo "  Integrated: $integrated"
         echo "  Failed: $failed"
+        echo "  Expired: $expired"
         exit 0
     fi
 
