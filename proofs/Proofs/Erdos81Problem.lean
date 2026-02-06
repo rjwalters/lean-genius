@@ -1,5 +1,5 @@
-/-
-Erdős Problem #81: Clique Partitions of Chordal Graphs
+/-!
+# Erdős Problem #81: Clique Partitions of Chordal Graphs
 
 Source: https://erdosproblems.com/81
 Status: OPEN
@@ -180,17 +180,6 @@ def erdos_81_conjecture : Prop :=
     @IsChordal V hV _ G →
     @cliquePartitionNumber V hV _ G ≤ (Fintype.card V)^2 / 6 + Fintype.card V
 
-/--
-**Status: OPEN**
-The conjecture remains unresolved. There is a gap between:
-- Lower bound: n²/6 (extremal construction)
-- Upper bound: (1/4 - ε)n² (Erdős-Ordman-Zalcstein)
-The gap factor is 1/4 ÷ 1/6 = 3/2.
--/
-axiom erdos_81_gap_open :
-    (1 : ℚ) / 4 > 1 / 6 ∧
-    ¬erdos_81_conjecture
-
 /-!
 ## Part VI: Gap Analysis
 -/
@@ -204,16 +193,6 @@ The multiplicative gap is about 1.5×.
 -/
 theorem gap_analysis :
     (1 : ℚ) / 4 > 1 / 6 := by norm_num
-
-/--
-**If the conjecture is true:**
-Then split graphs are the "hardest" case for clique partitions.
--/
-axiom split_graphs_extremal :
-    erdos_81_conjecture →
-    (∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      @IsChordal V _ _ G → @IsSplitGraph V _ _ G →
-      @cliquePartitionNumber V _ _ G ≤ (Fintype.card V)^2 / 6 + Fintype.card V)
 
 /-!
 ## Part VII: Perfect Elimination Ordering

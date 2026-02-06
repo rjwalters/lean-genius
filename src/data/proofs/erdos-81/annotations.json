@@ -110,20 +110,9 @@
     "significance": "critical"
   },
   {
-    "id": "ann-81-gap-open",
-    "proofId": "erdos-81",
-    "range": { "startLine": 190, "endLine": 192 },
-    "type": "axiom",
-    "title": "Gap Status: OPEN",
-    "content": "`erdos_81_gap_open` asserts two facts: (1) the rational inequality $1/4 > 1/6$ (the gap exists), and (2) the conjecture `erdos_81_conjecture` is false (i.e., the problem remains unresolved — no proof of the conjecture exists).",
-    "mathContext": "This axiom encodes the current state of knowledge. The first conjunct is a trivial arithmetic fact. The second conjunct, $\\neg$`erdos_81_conjecture`, is a modeling choice: since the conjecture is open, we cannot assume it true. In a formal sense, axiomatizing its negation prevents the proof from being trivialized. If the conjecture is eventually proved, this axiom would need to be removed.",
-    "relatedConcepts": ["erdos_81_conjecture", "Rational arithmetic", "open problem status"],
-    "significance": "key"
-  },
-  {
     "id": "ann-81-gap-analysis",
     "proofId": "erdos-81",
-    "range": { "startLine": 205, "endLine": 206 },
+    "range": { "startLine": 194, "endLine": 195 },
     "type": "theorem",
     "title": "Gap Analysis",
     "content": "`gap_analysis`: The rational inequality $(1 : \\mathbb{Q})/4 > 1/6$, proved by `norm_num`. This quantifies the gap between the upper bound coefficient $1/4$ and the conjectured coefficient $1/6$.",
@@ -132,20 +121,9 @@
     "significance": "supporting"
   },
   {
-    "id": "ann-81-split-extremal",
-    "proofId": "erdos-81",
-    "range": { "startLine": 212, "endLine": 216 },
-    "type": "axiom",
-    "title": "Split Graphs as Extremal Case",
-    "content": "`split_graphs_extremal`: If the conjecture is true, then split graphs also satisfy the $n^2/6 + O(n)$ bound. This is a logical consequence — split graphs are chordal, so the conjecture implies the bound for them.",
-    "mathContext": "This axiom is logically redundant (it follows from the conjecture and `split_is_chordal`), but it highlights the structural insight: the extremal construction is a split graph, and split graphs may be the 'hardest' case. If a proof of the conjecture proceeds by first handling split graphs, this would be a natural intermediate step.",
-    "relatedConcepts": ["erdos_81_conjecture", "IsSplitGraph", "IsChordal"],
-    "significance": "supporting"
-  },
-  {
     "id": "ann-81-simplicial",
     "proofId": "erdos-81",
-    "range": { "startLine": 229, "endLine": 230 },
+    "range": { "startLine": 208, "endLine": 209 },
     "type": "definition",
     "title": "Simplicial Vertex",
     "content": "`IsSimplicial G v` states that for vertex $v$, all pairs of neighbors are adjacent — i.e., the neighborhood $N(v)$ forms a clique.",
@@ -156,7 +134,7 @@
   {
     "id": "ann-81-peo",
     "proofId": "erdos-81",
-    "range": { "startLine": 237, "endLine": 247 },
+    "range": { "startLine": 216, "endLine": 226 },
     "type": "definition",
     "title": "Perfect Elimination Ordering and Characterization",
     "content": "`HasPerfectEliminationOrdering G` states that there exists a bijection $\\sigma : \\text{Fin}\\,|V| \\to V$ such that each $\\sigma(i)$ is simplicial in the subgraph induced by $\\{\\sigma(j) : j \\geq i\\}$.\n\n`chordal_iff_peo` (line 246): A graph is chordal if and only if it has a PEO. This is the Fulkerson-Gross theorem (1965).",
@@ -167,7 +145,7 @@
   {
     "id": "ann-81-peo-partition",
     "proofId": "erdos-81",
-    "range": { "startLine": 259, "endLine": 261 },
+    "range": { "startLine": 238, "endLine": 240 },
     "type": "axiom",
     "title": "PEO-Based 2-Approximation",
     "content": "`peo_gives_clique_partition`: For a chordal graph, the PEO-based greedy algorithm produces a clique partition with $\\leq 2 \\cdot \\overline{\\chi}(G)$ cliques, where $\\overline{\\chi}(G)$ is the optimal clique partition number.",
@@ -178,7 +156,7 @@
   {
     "id": "ann-81-optimal-partition",
     "proofId": "erdos-81",
-    "range": { "startLine": 269, "endLine": 272 },
+    "range": { "startLine": 248, "endLine": 251 },
     "type": "axiom",
     "title": "Existence of Optimal Partition",
     "content": "`optimal_partition_open`: For every chordal graph, there exists a clique partition achieving the minimum size. This is the existence assertion for the optimization problem.",
@@ -189,7 +167,7 @@
   {
     "id": "ann-81-intersection",
     "proofId": "erdos-81",
-    "range": { "startLine": 283, "endLine": 296 },
+    "range": { "startLine": 262, "endLine": 275 },
     "type": "definition",
     "title": "Intersection Number and Relation",
     "content": "`intersectionNumber G` is the minimum number of cliques whose edges cover all of $G$'s edges (cliques may overlap). `partition_geq_intersection` (line 295): the clique partition number $\\geq$ the intersection number, since partition is more restrictive than cover.",
@@ -200,7 +178,7 @@
   {
     "id": "ann-81-summary",
     "proofId": "erdos-81",
-    "range": { "startLine": 309, "endLine": 317 },
+    "range": { "startLine": 288, "endLine": 296 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "`erdos_81_summary` is a **genuine theorem** for $n \\geq 3$: combines (1) the lower bound — some chordal graph on $n$ vertices needs $\\geq n^2/6$ cliques — with (2) the gap $1/4 > 1/6$. The proof applies `lower_bound` and `norm_num`.",
@@ -211,7 +189,7 @@
   {
     "id": "ann-81-main",
     "proofId": "erdos-81",
-    "range": { "startLine": 325, "endLine": 333 },
+    "range": { "startLine": 304, "endLine": 312 },
     "type": "theorem",
     "title": "Main Theorem",
     "content": "`erdos_81` is a **genuine theorem**: for any chordal graph $G$, combines (1) the Erdős-Ordman-Zalcstein upper bound $(1/4 - \\varepsilon)n^2$ with (2) the PEO-based 2-approximation. The proof directly applies both axiomatized results.",
