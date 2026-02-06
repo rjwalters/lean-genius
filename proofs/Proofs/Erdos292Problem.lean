@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #292: Egyptian Fractions Summing to 1
 
 Source: https://erdosproblems.com/292
@@ -64,19 +64,6 @@ def inSetA (n : ℕ) : Prop :=
 ## Part 2: Basic Properties
 -/
 
-/-- 1 is not in A (no Egyptian fraction sums to 1 with max denominator 1) -/
-theorem one_not_in_A : 1 ∉ setA := by
-  intro h
-  obtain ⟨S, hn, hmax, hsum, _⟩ := h
-  -- If max is 1, then S = {1}, but 1/1 = 1 ✓
-  -- Actually 1 IS in A! Let me reconsider...
-  sorry
-
-/-- Small examples in A -/
-axiom two_in_A : 2 ∈ setA  -- 1/2 + 1/3 + 1/6 = 1, max = 6, so 2 ∉ A?
--- Actually: 1/2 + 1/4 + 1/4 doesn't work (not distinct)
--- 1 = 1 with max = 1, so 1 ∈ A
-
 /-- 6 is in A: 1/2 + 1/3 + 1/6 = 1 -/
 axiom six_in_A : 6 ∈ setA
 
@@ -91,10 +78,6 @@ axiom twelve_in_A : 12 ∈ setA
 axiom straus_multiplication_closure :
   ∀ n m : ℕ, n ∈ setA → m ∈ setA → n * m ∈ setA
 
-/-- Proof idea: If Σ 1/aᵢ = 1 (max aₖ = n) and Σ 1/bⱼ = 1 (max bₗ = m),
-    then consider products aᵢ · bⱼ -/
-theorem multiplication_closure_idea : True := trivial
-
 /-- Corollary: If n ∈ A then all multiples n·k (with k ∈ A) are in A -/
 theorem multiples_in_A (n : ℕ) (hn : n ∈ setA) :
     ∀ k ∈ setA, n * k ∈ setA := by
@@ -108,10 +91,6 @@ theorem multiples_in_A (n : ℕ) (hn : n ∈ setA) :
 /-- Prime powers are not in A -/
 axiom prime_powers_not_in_A :
   ∀ p : ℕ, Nat.Prime p → ∀ k : ℕ, k ≥ 1 → p^k ∉ setA
-
-/-- Proof sketch: If p^k ∈ A, the only denominators divisible by p must
-    combine in a specific way, leading to contradiction -/
-theorem prime_power_exclusion_idea : True := trivial
 
 /-- Specific case: 2 ∉ A -/
 theorem two_not_in_A : 2 ∉ setA := by
@@ -137,11 +116,6 @@ theorem primes_not_in_A (p : ℕ) (hp : Nat.Prime p) : p ∉ setA := by
 /-- If n ∈ A (with n > 1), then 2n ∈ A -/
 axiom doubling_in_A :
   ∀ n : ℕ, n > 1 → n ∈ setA → 2 * n ∈ setA
-
-/-- Proof: If Σ 1/mᵢ = 1 with max mₖ = n, then
-    1/2 + Σ 1/(2mᵢ) = 1/2 + 1/2 · Σ 1/mᵢ = 1/2 + 1/2 = 1
-    But this doesn't increase max... different argument needed -/
-theorem doubling_idea : True := trivial
 
 /-!
 ## Part 6: The Complement Set B
@@ -180,9 +154,6 @@ axiom martin_main_theorem : hasNaturalDensity setA 1
 /-- Equivalently: B has density 0 -/
 axiom B_has_density_zero : hasNaturalDensity setB 0
 
-/-- The density of A goes to 1 -/
-theorem A_density_one : True := trivial
-
 /-!
 ## Part 8: Small Examples Analysis
 -/
@@ -208,9 +179,6 @@ def erdosStrausConjecture : Prop :=
   ∀ n : ℕ, n ≥ 2 → ∃ a b c : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ c ≥ 1 ∧
     (4 : ℚ) / n = 1/a + 1/b + 1/c
 
-/-- The Erdős-Straus conjecture remains open -/
-axiom erdos_straus_open : True
-
 /-- General unit fraction problem: every n/m has Egyptian representation -/
 axiom general_egyptian_fraction :
   ∀ n m : ℕ, m ≥ 1 → n ≤ m →
@@ -223,21 +191,5 @@ axiom general_egyptian_fraction :
 
 /-- Main Result: Erdős Problem #292 is SOLVED -/
 theorem erdos_292 : hasNaturalDensity setA 1 := martin_main_theorem
-
-/-- Summary of the solution -/
-theorem erdos_292_summary :
-  -- A = {n : ∃ Egyptian fraction summing to 1 with max denominator n}
-  -- A is closed under multiplication (Straus)
-  -- A excludes all prime powers
-  -- B = complement has density ~ (log log x)/(log x) (Martin 2000)
-  -- Therefore A has density 1
-  True := trivial
-
-/-- The structure of B is well-understood -/
-theorem B_structure_understood :
-  -- B consists of small multiples of prime powers
-  -- |B ∩ [1,x]| ≍ x (log log x)/(log x)
-  -- This is a sparse set with density 0
-  True := trivial
 
 end Erdos292
