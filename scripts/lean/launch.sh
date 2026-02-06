@@ -744,13 +744,46 @@ respawn_agent() {
 
     case "$agent_type" in
         erdos)
-            if check_script "./scripts/erdos/parallel-enhance.sh" 2>/dev/null; then
-                ./scripts/erdos/parallel-enhance.sh 1 &
-                sleep 2
-                daemon_log "INFO" "Erdos enhancer respawned"
-            else
-                daemon_log "WARN" "Cannot respawn erdos: script not found"
+            # Spawn a specific enhancer slot directly (parallel-enhance.sh refuses
+            # to start if any enhancer is already running, so we inline the logic)
+            local agent_num="${session##*-}"
+            local worktree_dir=".loom/worktrees/enhancer-$agent_num"
+            local branch="feature/enhancer-$agent_num"
+            local enhancer_id="enhancer-$agent_num"
+            local log_file=".loom/logs/$session.log"
+            local prompt_file=".loom/logs/$session-prompt.md"
+            local repo_root
+            repo_root=$(pwd)
+
+            # Recreate worktree from current main
+            if [[ -d "$worktree_dir" ]]; then
+                git worktree remove "$worktree_dir" --force 2>/dev/null || rm -rf "$worktree_dir"
             fi
+            git branch -D "$branch" 2>/dev/null || true
+            git worktree add "$worktree_dir" -b "$branch" main 2>/dev/null || {
+                daemon_log "WARN" "Cannot create worktree for $session"
+                return
+            }
+            if [[ -f "$worktree_dir/.gitmodules" ]]; then
+                (cd "$worktree_dir" && git submodule update --init --recursive 2>/dev/null) || true
+            fi
+            if [[ -d "proofs/.lake" ]] && [[ -d "$worktree_dir/proofs" ]]; then
+                rm -rf "$worktree_dir/proofs/.lake"
+                ln -s "$repo_root/proofs/.lake" "$worktree_dir/proofs/.lake"
+            fi
+
+            # Create tmux session and launch Claude
+            tmux new-session -d -s "$session" -c "$repo_root/$worktree_dir"
+            sleep 0.3
+            tmux send-keys -t "$session" "export ENHANCER_ID='$enhancer_id'" Enter
+            sleep 0.2
+            tmux send-keys -t "$session" "export REPO_ROOT='$repo_root'" Enter
+            sleep 0.2
+            local prompt="You are $enhancer_id. Read $repo_root/$prompt_file for your instructions, then start the enhancement workflow."
+            local wrapper_script="$repo_root/scripts/agents/claude-wrapper.sh"
+            tmux send-keys -t "$session" "$wrapper_script --prompt '$prompt' --log '$repo_root/$log_file' --max-retries 5" Enter
+            sleep 1
+            daemon_log "INFO" "Erdos enhancer $agent_num respawned (session: $session)"
             ;;
         aristotle)
             if check_script "./scripts/aristotle/launch-agent.sh" 2>/dev/null; then
@@ -1091,6 +1124,66 @@ cmd_daemon() {
         done <<< "$sessions"
 
         total_respawns=$((total_respawns + cycle_respawns))
+
+        # 2b. Pool gap detection: spawn missing agents whose sessions vanished
+        # (get_all_agent_sessions only returns existing sessions, so if a session
+        # exits entirely, the health check above never sees it)
+        local erdos_active=0 researcher_active=0 aristotle_active=0 seeker_active=0 deployer_active=0
+        for i in 1 2 3 4 5; do
+            tmux has-session -t "erdos-enhancer-$i" 2>/dev/null && erdos_active=$((erdos_active + 1))
+            tmux has-session -t "researcher-$i" 2>/dev/null && researcher_active=$((researcher_active + 1))
+        done
+        tmux has-session -t "aristotle-agent" 2>/dev/null && aristotle_active=1
+        tmux has-session -t "seeker-agent" 2>/dev/null && seeker_active=1
+        tmux has-session -t "deployer" 2>/dev/null && deployer_active=1
+
+        if [[ $erdos_active -lt $erdos ]]; then
+            local missing_erdos=$((erdos - erdos_active))
+            daemon_log "INFO" "Pool gap: erdos has $erdos_active/$erdos, spawning $missing_erdos"
+            for i in $(seq 1 5); do
+                [[ $missing_erdos -le 0 ]] && break
+                if ! tmux has-session -t "erdos-enhancer-$i" 2>/dev/null; then
+                    if is_cooldown_elapsed "erdos-enhancer-$i"; then
+                        respawn_agent "erdos-enhancer-$i"
+                        total_respawns=$((total_respawns + 1))
+                        missing_erdos=$((missing_erdos - 1))
+                    fi
+                fi
+            done
+        fi
+
+        if [[ $researcher_active -lt $researcher ]]; then
+            local missing_res=$((researcher - researcher_active))
+            daemon_log "INFO" "Pool gap: researcher has $researcher_active/$researcher, spawning $missing_res"
+            for i in $(seq 1 5); do
+                [[ $missing_res -le 0 ]] && break
+                if ! tmux has-session -t "researcher-$i" 2>/dev/null; then
+                    if is_cooldown_elapsed "researcher-$i"; then
+                        respawn_agent "researcher-$i"
+                        total_respawns=$((total_respawns + 1))
+                        missing_res=$((missing_res - 1))
+                    fi
+                fi
+            done
+        fi
+
+        if [[ $aristotle_active -lt $aristotle ]] && is_cooldown_elapsed "aristotle-agent"; then
+            daemon_log "INFO" "Pool gap: aristotle has 0/$aristotle, spawning"
+            respawn_agent "aristotle-agent"
+            total_respawns=$((total_respawns + 1))
+        fi
+
+        if [[ $seeker_active -lt $seeker ]] && is_cooldown_elapsed "seeker-agent"; then
+            daemon_log "INFO" "Pool gap: seeker has 0/$seeker, spawning"
+            respawn_agent "seeker-agent"
+            total_respawns=$((total_respawns + 1))
+        fi
+
+        if [[ $deployer_active -lt $deployer ]] && is_cooldown_elapsed "deployer"; then
+            daemon_log "INFO" "Pool gap: deployer has 0/$deployer, spawning"
+            respawn_agent "deployer"
+            total_respawns=$((total_respawns + 1))
+        fi
 
         # 3. Work queue assessment (with timeout protection)
         local queue_stats
