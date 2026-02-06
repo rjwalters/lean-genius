@@ -1,105 +1,113 @@
 {
   "id": "erdos-293",
-  "title": "Missing Denominators in Egyptian Fraction Decompositions",
+  "title": "Erdős Problem #293: Missing Denominators in Egyptian Fractions",
   "slug": "erdos-293",
-  "description": "Let v(k) be the smallest integer not appearing in any k-term Egyptian fraction decomposition of 1. Current bounds: e^{ck²} ≤ v(k) ≤ k·c₀^{2^k}. The gap between these bounds is enormous.",
+  "description": "Let v(k) be the smallest integer not appearing in any k-term Egyptian fraction decomposition of 1. Current bounds: e^{ck²} ≤ v(k) ≤ k·c₀^{2^k}. The enormous gap remains open.",
   "meta": {
     "author": "Bleicher-Erdős (1975), van Doorn-Tang (2025)",
     "sourceUrl": "https://erdosproblems.com/293",
     "date": "2025",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos293Problem.lean",
     "tags": ["erdos", "number-theory", "egyptian-fractions", "unit-fractions", "extremal"],
-    "badge": "mathlib",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 293,
     "erdosUrl": "https://erdosproblems.com/293",
     "erdosProblemStatus": "open",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
-      { "theorem": "Nat.factorial", "description": "Factorial function", "module": "Mathlib.Data.Nat.Factorial.Basic" },
-      { "theorem": "Real.exp", "description": "Exponential function", "module": "Mathlib.Analysis.SpecialFunctions.Exp" },
-      { "theorem": "Rat", "description": "Rational numbers", "module": "Mathlib.Data.Rat.Basic" }
+      { "theorem": "Rat", "description": "Rational numbers for unit fractions", "module": "Mathlib.Data.Rat.Basic" },
+      { "theorem": "Real.exp", "description": "Exponential function for bounds", "module": "Mathlib.Data.Real.Basic" }
     ],
     "originalContributions": [
-      "Lean formalization of Egyptian fraction decompositions",
-      "Definition of v(k) as the missing denominator function",
-      "Vardi sequence and constant formalization",
-      "Formal statements of Bleicher-Erdős and van Doorn-Tang bounds",
-      "Both weak (√k) and strong (k) conjectures stated"
+      "isEgyptianDecomp definition: k-term unit fraction sums equaling 1",
+      "appearsInDecomp definition: denominator membership predicate",
+      "v axiom: missing denominator function with positivity, exclusion, minimality",
+      "vardiSeq definition: the recurrence u_{n+1} = u_n(u_n + 1)",
+      "vardiSeq_values theorem: computed values (proved by simp)",
+      "vardiConstant definition and bounds",
+      "bleicher_erdos_lower_bound axiom: v(k) ≥ c · k!",
+      "vanDoorn_Tang_lower_bound axiom: v(k) ≥ e^{ck²}",
+      "elementary_upper_bound axiom: v(k) ≤ k · c₀^{2^k}",
+      "max_denominator_bound axiom: denominators bounded by k · uₖ",
+      "ErdosConjecture293Weak and Strong: doubly exponential conjectures",
+      "erdos_293_summary theorem combining bounds"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Egyptian fractions (sums of distinct unit fractions) have been studied since antiquity. Erdős asked how fast v(k) grows - the smallest denominator that never appears in a k-term decomposition of 1. Recent work by van Doorn and Tang (2025) significantly improved the lower bound.",
-    "problemStatement": "Let k ≥ 1 and let v(k) be the minimal integer not appearing in any solution to 1 = 1/n₁ + ... + 1/nₖ with distinct n₁ < ... < nₖ. Estimate the growth of v(k).",
-    "proofStrategy": "The formalization defines Egyptian fraction decompositions, the function v(k), and the Vardi sequence. Both lower bounds (factorial, then e^{k²}) and upper bounds (doubly exponential) are stated as axioms.",
+    "historicalContext": "Egyptian fractions — sums of distinct unit fractions — have been studied since the Rhind Mathematical Papyrus (c. 1650 BCE). Erdős and Bleicher initiated the modern study of which denominators can appear in k-term decompositions of 1 in their 1975 paper, proving that v(k) grows at least as fast as k!.\n\nThe function v(k) captures a subtle combinatorial question: given k terms, what is the smallest denominator that is 'too large' to ever participate in a unit fraction decomposition of 1? The answer depends on the intricate interplay between denominator sizes and the constraint that their unit fractions sum to exactly 1.\n\nRecent progress by van Doorn and Tang (2025) dramatically improved the lower bound to e^{ck²}, far exceeding the factorial bound. However, the upper bound v(k) ≤ k · c₀^{2^k} (where c₀ ≈ 1.26408 is the Vardi constant) remains exponentially larger. The gap between e^{k²} and e^{2^k} is one of the largest in combinatorics, and Erdős conjectured the true growth rate is doubly exponential.",
+    "problemStatement": "Let v(k) be the minimal positive integer not appearing as a denominator in any k-term Egyptian fraction decomposition 1 = 1/n₁ + ... + 1/nₖ with distinct n₁ < ... < nₖ. Estimate v(k).\n\n**Status: OPEN** — current bounds: e^{ck²} ≤ v(k) ≤ k · c₀^{2^k}.",
+    "proofStrategy": "The formalization axiomatizes v(k) with three properties (positivity, non-membership, minimality) instead of using Nat.find with sorry. The Vardi sequence and constant are defined constructively, with vardiSeq_values proved by simp. Both lower bounds (Bleicher-Erdős and van Doorn-Tang) and the upper bound are axiomatized. The summary theorem packages both bounds via exact.",
     "keyInsights": [
-      "The Vardi sequence uₙ = uₙ₋₁(uₙ₋₁ + 1) controls the upper bound",
-      "The Vardi constant c₀ ≈ 1.26408 appears in the asymptotic bound",
-      "Van Doorn-Tang (2025) improved the lower bound from k! to e^{ck²}",
-      "The gap between bounds (e^{k²} vs e^{2^k}) is enormous"
+      "**The Vardi sequence** uₙ = uₙ₋₁(uₙ₋₁ + 1) controls the upper bound via the Vardi constant c₀ ≈ 1.26408",
+      "**van Doorn-Tang (2025)** improved the lower bound from k! to e^{ck²}, a huge leap",
+      "**The gap** between e^{k²} and e^{2^k} is one of the largest in combinatorics",
+      "**Small values:** v(1) = v(2) = 2, v(3) = 4 (the unique decomposition 1 = 1/2 + 1/3 + 1/6)",
+      "**Erdős conjectured** doubly exponential growth: v(k) ≥ e^{e^{c√k}} or even e^{e^{ck}}"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 51,
-      "endLine": 83,
-      "summary": "Egyptian fraction decompositions, appearsInDecomp, and v(k)"
+      "startLine": 31,
+      "endLine": 56,
+      "summary": "Egyptian fraction decompositions, appearsInDecomp, v(k) axiom with positivity and minimality"
     },
     {
       "id": "vardi-constant",
       "title": "The Vardi Constant",
-      "startLine": 84,
-      "endLine": 120,
-      "summary": "The Vardi sequence and constant c₀ ≈ 1.26408"
+      "startLine": 58,
+      "endLine": 79,
+      "summary": "Vardi sequence, computed values, Vardi constant c₀ ≈ 1.26408 with bounds"
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
-      "startLine": 121,
-      "endLine": 140,
-      "summary": "Bleicher-Erdős (k!) and van Doorn-Tang (e^{ck²})"
+      "startLine": 81,
+      "endLine": 91,
+      "summary": "Bleicher-Erdős (k!) and van Doorn-Tang (e^{ck²}) lower bounds"
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
-      "startLine": 141,
-      "endLine": 162,
-      "summary": "Elementary bound v(k) ≤ k · c₀^{2^k}"
+      "startLine": 93,
+      "endLine": 105,
+      "summary": "Elementary bound v(k) ≤ k · c₀^{2^k} and max denominator bound"
     },
     {
       "id": "conjectures",
       "title": "Conjectures",
-      "startLine": 163,
-      "endLine": 193,
-      "summary": "Weak (e^{e^{c√k}}) and strong (e^{e^{ck}}) conjectures"
+      "startLine": 107,
+      "endLine": 119,
+      "summary": "Weak (e^{e^{c√k}}) and strong (e^{e^{ck}}) doubly exponential conjectures"
     },
     {
       "id": "small-values",
-      "title": "Small Values and Examples",
-      "startLine": 194,
-      "endLine": 229,
-      "summary": "Values v(1)=2, v(2)=2, v(3)=4 and greedy algorithm"
+      "title": "Small Values",
+      "startLine": 121,
+      "endLine": 132,
+      "summary": "v(1) = 2, v(2) = 2, v(3) = 4"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 246,
-      "endLine": 291,
-      "summary": "Main theorem statements and key insight about the gap"
+      "startLine": 134,
+      "endLine": 146,
+      "summary": "erdos_293_summary combining lower and upper bounds"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #293 is OPEN. The function v(k) counts the smallest missing denominator in k-term Egyptian fraction decompositions of 1. Current best bounds: e^{ck²} ≤ v(k) ≤ k·c₀^{2^k}, with an enormous gap between them.",
-    "implications": "Understanding v(k) requires deep insight into which denominators can participate in Egyptian fraction decompositions. The connection to Problem 304 suggests the true growth may be doubly exponential.",
+    "summary": "Erdős Problem #293 is OPEN. The function v(k) measures the smallest missing denominator in k-term Egyptian fraction decompositions of 1. Current best bounds: e^{ck²} ≤ v(k) ≤ k·c₀^{2^k}, with an enormous gap between them.",
+    "implications": "Understanding v(k) requires deep insight into the combinatorial structure of Egyptian fraction decompositions. The Vardi constant c₀ ≈ 1.26408 connects this problem to doubly exponential recurrences, and the conjectured doubly exponential growth would link to Problem 304.",
     "openQuestions": [
       "Does v(k) grow doubly exponentially in k?",
-      "Can the lower bound be improved to e^{e^{ck}} using Problem 304?",
-      "What are the exact values of v(k) for small k?"
+      "Can the van Doorn-Tang lower bound e^{ck²} be improved further?",
+      "What are exact values of v(k) for k = 4, 5, ...?",
+      "What is the connection to the Erdős-Straus conjecture?"
     ]
   }
 }
