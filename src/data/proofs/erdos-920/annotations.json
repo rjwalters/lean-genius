@@ -94,37 +94,28 @@
   {
     "id": "ann-e920-ramsey",
     "proofId": "erdos-920",
-    "range": { "startLine": 170, "endLine": 184 },
+    "range": { "startLine": 170, "endLine": 193 },
     "type": "concept",
     "title": "Ramsey-Chromatic Connection",
-    "content": "**ramsey_chromatic_connection:**\n\nIf R(k,m) ≥ m^α / (log m)^β\n⟹ g_k(n) ≥ n^{1-1/α} / (log n)^{β/α}\n\nBetter Ramsey bounds give better chromatic bounds!",
+    "content": "**ramsey_chromatic_connection** formalizes the key bridge: if R(k,m) ≥ c·m^α/(log m)^β, then g_k(n) ≥ c'·n^{1-1/α}/(log n)^{β/α}. Better Ramsey bounds directly give better chromatic bounds! The Erdős R(3,m) bound and Mattheus-Verstraete R(4,m) bound are axiomatized separately.",
     "significance": "critical"
   },
   {
     "id": "ann-e920-ramsey-k4",
     "proofId": "erdos-920",
-    "range": { "startLine": 194, "endLine": 203 },
+    "range": { "startLine": 199, "endLine": 207 },
     "type": "axiom",
     "title": "Mattheus-Verstraete Ramsey Bound",
-    "content": "**mattheus_verstraete_ramsey:**\n\nR(4,m) ≫ m³ / (log m)⁴\n\nThis was THE breakthrough of 2023!\nα=3, β=4 ⟹ g_4(n) exponent = 1-1/3 = 2/3 ✓",
+    "content": "**mattheus_verstraete_ramsey:** R(4,m) ≫ m³/(log m)⁴. This was the breakthrough of 2023! With α=3, β=4, the Ramsey-chromatic connection gives g_4(n) exponent = 1-1/3 = 2/3, matching the conjecture for k=4.",
     "significance": "critical"
   },
   {
     "id": "ann-e920-summary",
     "proofId": "erdos-920",
-    "range": { "startLine": 259, "endLine": 287 },
+    "range": { "startLine": 213, "endLine": 237 },
     "type": "theorem",
-    "title": "State of Knowledge",
-    "content": "**erdos_920_summary:**\n\n**Resolved:**\n- k=3: g_3(n) ≈ (n/log n)^{1/2}\n- k=4: g_4(n) ≫ n^{2/3}/(log n)^{4/3} [MV 2023]\n\n**Open:**\n- k≥5: gap between 1-2/(k+1) and 1-1/(k-1)",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e920-main",
-    "proofId": "erdos-920",
-    "range": { "startLine": 288, "endLine": 292 },
-    "type": "theorem",
-    "title": "Erdős Problem #920: OPEN",
-    "content": "**erdos_920:**\n\nStatus: OPEN for k ≥ 5\n\nThe general conjecture remains unresolved.",
+    "title": "Summary: Erdős #920 OPEN",
+    "content": "**erdos_920_summary** combines the general lower bound with the k=4 breakthrough:\n1. General: g_k(n) ≫ n^{1-2/(k+1)}/(log n)^c for all k ≥ 3\n2. k=4: g_4(n) ≫ n^{2/3}/(log n)^{4/3} [Mattheus-Verstraete 2023]\n\nThe conjecture (exponent 1-1/(k-1)) remains OPEN for k ≥ 5.",
     "significance": "critical"
   }
 ]
