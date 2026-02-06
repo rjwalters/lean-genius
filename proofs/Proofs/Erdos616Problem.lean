@@ -39,7 +39,7 @@ import Mathlib.Data.Real.Basic
 
 namespace Erdos616
 
-/-
+/-!
 ## Part I: Hypergraph Definitions
 -/
 
@@ -78,7 +78,7 @@ def inducedSubhypergraph {V : Type*} {r : ℕ}
     intro e he
     exact G.uniform e he.1
 
-/-
+/-!
 ## Part II: The Local Condition
 -/
 
@@ -101,7 +101,7 @@ For r-uniform hypergraphs, the relevant threshold is 3r-3 vertices.
 -/
 def localThreshold (r : ℕ) : ℕ := 3 * r - 3
 
-/-
+/-!
 ## Part III: The Main Question
 -/
 
@@ -121,9 +121,9 @@ def ErdosProblem616 (r : ℕ) (t : ℕ) : Prop :=
 **The optimal constant t(r):**
 There exists an optimal t(r) that works for all such hypergraphs.
 -/
-def optimalCoveringBound (r : ℕ) : ℕ := sorry  -- The exact value is OPEN
+axiom optimalCoveringBound (r : ℕ) : ℕ
 
-/-
+/-!
 ## Part IV: Known Bounds (Erdős-Hajnal-Tuza 1991)
 -/
 
@@ -167,7 +167,7 @@ theorem coefficient_bounds :
   unfold lowerCoefficient upperCoefficient
   norm_num
 
-/-
+/-!
 ## Part V: Special Cases
 -/
 
@@ -193,9 +193,8 @@ The bounds give:
 
 The bounds become meaningful for larger r.
 -/
-axiom bounds_meaningful_large_r : True
 
-/-
+/-!
 ## Part VI: Why the Condition 3r-3?
 -/
 
@@ -207,18 +206,13 @@ For an r-uniform hypergraph:
 - 3r-3 vertices can accommodate at most a few disjoint edges
 - The local condition τ(G') ≤ 1 is non-trivial only when G' has ≥ 2 edges
 - The bound 3r-3 captures the minimum needed for interesting structure
--/
-axiom threshold_explanation : True
 
-/--
-**Sunflowers and local conditions:**
-The problem relates to sunflower-type structures.
-A sunflower is a collection of edges sharing a common "core".
-The local condition τ ≤ 1 enforces sunflower-like structure locally.
+The problem relates to sunflower-type structures: a sunflower is a collection
+of edges sharing a common "core", and the local condition τ ≤ 1 enforces
+sunflower-like structure locally.
 -/
-axiom sunflower_connection : True
 
-/-
+/-!
 ## Part VII: Equivalent Formulations
 -/
 
@@ -247,7 +241,7 @@ theorem tau_one_iff_kernel {V : Type*} [Fintype V] {r : ℕ}
     use v
     exact ⟨Set.mem_singleton v, hv e he⟩
 
-/-
+/-!
 ## Part VIII: Fractional Relaxation
 -/
 
@@ -264,9 +258,8 @@ axiom fractionalCoveringNumber : ∀ {V : Type*} [Fintype V] {r : ℕ},
 τ*(G) ≤ τ(G) always.
 The gap between them relates to the integrality gap.
 -/
-axiom fractional_le_integer : True
 
-/-
+/-!
 ## Part IX: Summary
 -/
 
@@ -307,12 +300,5 @@ theorem erdos_616_summary :
     exact ⟨V, inferInstance, G, hlocal, by linarith⟩
   · intro r hr V _ G hlocal
     exact eht_upper_bound r hr V G hlocal
-
-/--
-**Problem status:**
-Erdős Problem #616 remains OPEN.
-The exact asymptotic coefficient c where t(r) ~ c·r is unknown.
--/
-theorem erdos_616_status : True := trivial
 
 end Erdos616
