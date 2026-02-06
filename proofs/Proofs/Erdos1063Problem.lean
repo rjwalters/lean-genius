@@ -133,12 +133,27 @@ def ErdosProblem1063 : Prop :=
 /-! ## Part VI: Summary -/
 
 /--
-**Summary:**
-Erdős Problem #1063 asks for the growth rate of n_k, the least n
-where all but one of {n,...,n-k+1} divide C(n,k). Known: n_2 = 4,
-n_3 = 6, n_4 = 9, n_5 = 12. Monier: n_k ≤ k!. Cambie: n_k ≤
-k · lcm(2,...,k-1). OPEN.
+**Summary of Erdős Problem #1063:**
+
+Erdős Problem #1063 asks for the growth rate of n_k, the least n ≥ 2k
+where all but one of {n,...,n-k+1} divide C(n,k).
+
+**Known values:** n_2 = 4, n_3 = 6, n_4 = 9, n_5 = 12.
+
+**Upper bounds:**
+- Monier (1985): n_k ≤ k!
+- Cambie: n_k ≤ k · lcm(2,...,k-1) ≤ e^{(1+o(1))k}
+
+**Status:** OPEN — the true growth rate (polynomial vs exponential) is unknown.
+
+**Key structural fact (Erdős-Selfridge):**
+Full divisibility (all k values dividing) never occurs for n ≥ 2k.
 -/
-theorem erdos_1063_status : True := trivial
+theorem erdos_1063_summary :
+    -- The Erdős-Selfridge non-divisibility holds
+    (∀ k : ℕ, k ≥ 2 → ∀ n : ℕ, n ≥ 2 * k → divisibilityCount n k < k) ∧
+    -- Monier's factorial bound exists
+    (∀ k : ℕ, k ≥ 3 → ∃ nk : ℕ, IsThreshold nk k ∧ nk ≤ Nat.factorial k) := by
+  exact ⟨erdos_selfridge_nondivisibility, monier_factorial_bound⟩
 
 end Erdos1063
