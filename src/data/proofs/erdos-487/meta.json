@@ -44,32 +44,38 @@
     {
       "id": "union-free",
       "startLine": 83,
-      "endLine": 111,
+      "endLine": 109,
       "summary": "Definition of union-free collections and the prime factorization bijection connecting LCM to set union."
     },
     {
       "id": "davenport-erdos",
-      "startLine": 112,
-      "endLine": 149,
-      "summary": "The 1936 result that sets with positive density contain infinite divisibility chains."
+      "startLine": 110,
+      "endLine": 156,
+      "summary": "The 1936 Davenport-Erdős result and the coprime multipliers LCM triple construction."
     },
     {
       "id": "kleitman",
-      "startLine": 150,
-      "endLine": 187,
-      "summary": "The 1971 theorem bounding union-free collections to (1+o(1))·C(n, ⌊n/2⌋), which resolves Problem #487."
+      "startLine": 158,
+      "endLine": 221,
+      "summary": "Kleitman's 1971 theorem bounding union-free collections, plus the o(2^n) corollary."
     },
     {
       "id": "main-result",
-      "startLine": 188,
-      "endLine": 209,
+      "startLine": 223,
+      "endLine": 243,
       "summary": "The main theorem: dense sets contain LCM triples, plus infinitely many such triples."
     },
     {
       "id": "examples",
-      "startLine": 210,
-      "endLine": 259,
+      "startLine": 245,
+      "endLine": 310,
       "summary": "Concrete examples including multiples of 6 (LCM triples exist) and powers of 2 (no LCM triples, but density 0)."
+    },
+    {
+      "id": "summary",
+      "startLine": 335,
+      "endLine": 368,
+      "summary": "Summary combining LCM triple existence and Kleitman's theorem."
     }
   ],
   "conclusion": {

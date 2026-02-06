@@ -107,8 +107,6 @@ def factorizationSet (n : ℕ) : Set (ℕ × ℕ) :=
 lcm(a, b) = c iff factorizationSet(a) ∪ factorizationSet(b) = factorizationSet(c)
 (under the max operation on exponents).
 -/
-theorem lcm_union_correspondence : True := trivial  -- Structural correspondence
-
 /-
 ## Part III: Davenport-Erdős Theorem (1936)
 -/
@@ -333,7 +331,6 @@ theorem even_numbers_example : IsLCMTriple 4 6 12 := by
 
 7. Contradiction: δN ≤ o(N) fails for large N.
 -/
-theorem proof_outline : True := trivial
 
 /-
 ## Part VIII: Summary
