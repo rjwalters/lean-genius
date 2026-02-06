@@ -35,7 +35,7 @@ open Nat Real Finset BigOperators
 
 namespace Erdos394
 
-/-
+/-!
 ## Part I: Basic Definitions
 -/
 
@@ -65,7 +65,7 @@ n divides the product of k consecutive integers starting at m.
 def divides_consecutive (n m k : ℕ) : Prop :=
   n ∣ consecutiveProduct m k
 
-/-
+/-!
 ## Part II: Basic Properties of t_k
 -/
 
@@ -93,7 +93,7 @@ theorem primes_large_t2 :
     ∀ p : ℕ, p.Prime → t 2 p = p - 1 :=
   t2_of_prime
 
-/-
+/-!
 ## Part III: The Sum Σ t₂(n)
 -/
 
@@ -122,7 +122,7 @@ axiom trivial_lower_bound :
 def erdos_original_conjecture : Prop :=
   ∀ ε > 0, ∀ᶠ x in Filter.atTop, (S 2 x : ℝ) < ε * x^2
 
-/-
+/-!
 ## Part IV: Erdős-Hall Theorem (1978)
 -/
 
@@ -137,13 +137,11 @@ axiom erdos_hall_upper_bound :
       (S 2 x : ℝ) ≤ C * (Real.log (Real.log (Real.log x))) /
                        (Real.log (Real.log x)) * x^2
 
-/--
-**Corollary: Original Conjecture is True**
--/
-/-- Follows from erdos_hall_upper_bound since (log log log x)/(log log x) → 0. -/
+/-- **Corollary: Original Conjecture is True.**
+Follows from erdos_hall_upper_bound since (log log log x)/(log log x) → 0. -/
 axiom erdos_conjecture_proved : erdos_original_conjecture
 
-/-
+/-!
 ## Part V: The Erdős-Hall Conjecture
 -/
 
@@ -166,16 +164,7 @@ theorem threshold_log_2 :
       (S 2 x : ℝ) ≥ C * x^2 / Real.log x := by
   exact trivial_lower_bound
 
-/--
-**Question 1 Status:**
-Is Σ t₂(n) ≪ x²/(log x)^c for some c > 0?
-
-Status: OPEN (conjectured YES for 0 < c < log 2)
--/
-axiom question_1_open :
-    erdos_hall_conjecture ∨ ¬erdos_hall_conjecture
-
-/-
+/-!
 ## Part VI: The Hierarchy Question
 -/
 
@@ -190,13 +179,7 @@ def hierarchy_conjecture : Prop :=
     ∀ ε > 0, ∀ᶠ x in Filter.atTop,
       (S (k+1) x : ℝ) < ε * (S k x : ℝ)
 
-/--
-**Question 2 Status:**
-Status: OPEN
--/
-axiom question_2_open : ¬hierarchy_conjecture ∨ hierarchy_conjecture
-
-/-
+/-!
 ## Part VII: Special Cases (Factorials)
 -/
 
@@ -229,7 +212,7 @@ Does t_{n-3}(n!) have any special structure?
 axiom factorial_t_n_minus_3_bound (n : ℕ) (hn : n ≥ 4) :
     t (n - 3) n.factorial ≤ n^2
 
-/-
+/-!
 ## Part VIII: The Selfridge Result
 -/
 
@@ -248,15 +231,7 @@ The strict decrease property holds for n = 10.
 -/
 axiom selfridge_n_10 : strict_decrease_property 10
 
-/--
-**Question: Infinitely Many n?**
-Does strict_decrease_property hold for infinitely many n?
--/
-axiom infinitely_many_strict_decrease :
-    (∃ᶠ n in Filter.atTop, strict_decrease_property n) ∨
-    ¬(∃ᶠ n in Filter.atTop, strict_decrease_property n)
-
-/-
+/-!
 ## Part IX: Why This is Interesting
 -/
 
@@ -285,7 +260,7 @@ since smooth numbers appear more frequently in short intervals.
 axiom smooth_t_bound (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 1) :
     ∃ m : ℕ, m ≤ n ∧ n ∣ consecutiveProduct m k
 
-/-
+/-!
 ## Part X: Summary
 -/
 
