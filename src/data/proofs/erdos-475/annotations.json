@@ -1,134 +1,83 @@
 [
   {
-    "id": "erdos-475-intro",
+    "id": "ann-475-overview",
     "proofId": "erdos-475",
-    "type": "context",
     "range": { "startLine": 1, "endLine": 31 },
-    "title": "Problem Introduction",
+    "type": "concept",
+    "title": "Problem Overview",
     "content": "**Erdős Problem #475: Graham's Rearrangement Conjecture**\n\nGiven a non-zero subset A of 𝔽ₚ, can we always arrange it as a₁, ..., aₜ so all partial sums are distinct?\n\n**Status:** OPEN in general; proven for various ranges of t.\n\nThis is a fundamental problem in additive combinatorics, connecting prime fields, sequencing, and partial sums.",
-    "mathContext": "The problem asks about the existence of special orderings. Among t! possible orderings, we need just one where no two partial sums coincide.",
-    "significance": "critical",
-    "relatedConcepts": ["Partial sums", "Prime fields", "Valid orderings", "Additive combinatorics"]
+    "significance": "critical"
   },
   {
-    "id": "erdos-475-partial-sums",
+    "id": "ann-475-partial-sums",
     "proofId": "erdos-475",
+    "range": { "startLine": 48, "endLine": 57 },
     "type": "definition",
-    "range": { "startLine": 48, "endLine": 50 },
-    "title": "Partial Sums",
-    "content": "**partialSums l:**\n\nThe sequence of cumulative sums of a list l.\n\nFor l = [a₁, a₂, ..., aₜ], the partial sums are:\n- a₁\n- a₁ + a₂\n- a₁ + a₂ + a₃\n- ...\n- a₁ + ... + aₜ\n\nWe need all t of these to be distinct.",
-    "mathContext": "Implemented using List.scanl for accumulation, then dropping the initial 0.",
-    "significance": "key",
-    "relatedConcepts": ["Cumulative sums", "Prefix sums", "Running totals"]
+    "title": "Partial Sums and Valid Orderings",
+    "content": "**partialSums l:** The sequence of cumulative sums of a list l, computed via List.scanl.\n\n**IsValidOrdering A ordering:** An ordering of A is valid if:\n1. The ordering contains exactly the elements of A (no duplicates, same set)\n2. All partial sums are distinct (no collisions in 𝔽ₚ)\n\n**GrahamConjecture p:** For prime p, every non-zero subset of 𝔽ₚ has a valid ordering.",
+    "significance": "critical"
   },
   {
-    "id": "erdos-475-valid-ordering",
+    "id": "ann-475-small-cases",
     "proofId": "erdos-475",
-    "type": "definition",
-    "range": { "startLine": 52, "endLine": 57 },
-    "title": "Valid Ordering",
-    "content": "**IsValidOrdering A ordering:**\n\nAn ordering of set A is valid if:\n1. The ordering contains exactly the elements of A (no duplicates, same set)\n2. All partial sums of the ordering are distinct\n\nThis is the central property we seek to guarantee.",
-    "mathContext": "Valid orderings are also called 'sequencings' in the literature on cyclic groups.",
-    "significance": "critical",
-    "relatedConcepts": ["Sequencing", "Distinct sums", "Permutations"]
-  },
-  {
-    "id": "erdos-475-conjecture",
-    "proofId": "erdos-475",
-    "type": "definition",
-    "range": { "startLine": 59, "endLine": 62 },
-    "title": "Graham's Conjecture",
-    "content": "**GrahamConjecture p:**\n\nFor prime p, every finite subset A ⊆ 𝔽ₚ \\ {0} has a valid ordering.\n\nThe non-zero condition is essential: if 0 ∈ A, any partial sum containing 0 could cause collisions.",
-    "mathContext": "The conjecture is strongest when A is large (near p elements) since there are fewer possible sum values.",
-    "significance": "critical",
-    "relatedConcepts": ["Existence conjectures", "Prime field structure", "Non-zero elements"]
-  },
-  {
-    "id": "erdos-475-small-cases",
-    "proofId": "erdos-475",
+    "range": { "startLine": 68, "endLine": 82 },
     "type": "axiom",
-    "range": { "startLine": 68, "endLine": 78 },
-    "title": "Small Cases: t ≤ 12",
-    "content": "**costa_pellegrini_2020:**\n\nFor |A| ≤ 12, valid orderings exist.\n\nThis was verified through a combination of:\n- Exhaustive computation for specific primes\n- Theoretical arguments reducing to manageable cases\n\nCosta and Pellegrini (2020) established this systematically.",
-    "mathContext": "Small cases often require checking t! orderings, but structure can reduce this.",
-    "significance": "key",
-    "relatedConcepts": ["Computational verification", "Small case analysis", "Exhaustive search"]
+    "title": "Small Cases: t ≤ 12 (Costa-Pellegrini 2020)",
+    "content": "**costa_pellegrini_2020 (axiom):** For |A| ≤ 12, valid orderings exist.\n\nVerified through a combination of exhaustive computation and theoretical reductions. Costa and Pellegrini (2020) established this systematically.\n\n**small_sets_have_valid_orderings (proved):** Derives the result by instantiating the axiom.",
+    "significance": "key"
   },
   {
-    "id": "erdos-475-large-cases",
+    "id": "ann-475-large-cases",
     "proofId": "erdos-475",
+    "range": { "startLine": 88, "endLine": 105 },
     "type": "axiom",
-    "range": { "startLine": 84, "endLine": 93 },
     "title": "Large Cases: t ≥ p - 3",
-    "content": "**hicks_ollis_schmitt_2019 and graham_full_set:**\n\nFor sets of size p - 3, p - 2, or p - 1 (near-complete sets), valid orderings exist.\n\nGraham originally proved t = p - 1. Hicks-Ollis-Schmitt extended this to p - 3.\n\n**Intuition:** When A is almost all of 𝔽ₚ \\ {0}, there's enough structure to guarantee valid orderings.",
-    "mathContext": "Large sets have limited missing elements, constraining the problem sufficiently.",
-    "significance": "key",
-    "relatedConcepts": ["Near-complete sets", "Structural arguments", "Graham's original proof"]
+    "content": "**hicks_ollis_schmitt_2019 (axiom):** For sets of size p - 3, p - 2, or p - 1, valid orderings exist. When A is almost all of 𝔽ₚ \\ {0}, structural arguments suffice.\n\n**graham_full_set (axiom):** Graham originally proved the t = p - 1 case constructively, providing an explicit algorithm to produce a valid ordering.",
+    "significance": "key"
   },
   {
-    "id": "erdos-475-logarithmic",
+    "id": "ann-475-kravitz",
     "proofId": "erdos-475",
+    "range": { "startLine": 111, "endLine": 121 },
     "type": "axiom",
-    "range": { "startLine": 99, "endLine": 107 },
-    "title": "Logarithmic Range: t ≤ log p / log log p",
-    "content": "**kravitz_2024:**\n\nFor |A| ≤ log p / log log p, valid orderings exist.\n\nThis was proven by Kravitz in 2024 (and independently observed by Will Sawin on MathOverflow).\n\nThis significantly extends beyond the constant bound of 12.",
-    "mathContext": "The log p / log log p bound grows slowly but unboundedly with p.",
-    "significance": "key",
-    "relatedConcepts": ["Logarithmic bounds", "Slow-growing functions", "Independent discoveries"]
+    "title": "Logarithmic Range (Kravitz 2024)",
+    "content": "**kravitz_2024 (axiom):** For |A| ≤ log p / log log p, valid orderings exist.\n\nKravitz (2024) proved this, and Will Sawin independently observed the same bound on MathOverflow. This significantly extends beyond the constant bound of 12, though log p / log log p grows slowly.",
+    "significance": "key"
   },
   {
-    "id": "erdos-475-rectification",
+    "id": "ann-475-rectification",
     "proofId": "erdos-475",
+    "range": { "startLine": 131, "endLine": 141 },
     "type": "axiom",
-    "range": { "startLine": 113, "endLine": 127 },
-    "title": "Beyond the Rectification Barrier",
-    "content": "**bedert_kravitz_2024:**\n\nFor |A| ≤ exp((log p)^{1/4}), valid orderings exist.\n\nThis is a major breakthrough! The 'rectification barrier' at log p / log log p was a technical obstacle that previous methods couldn't overcome.\n\nBedert and Kravitz (2024) developed new techniques to go far beyond this barrier.",
-    "mathContext": "exp((log p)^{1/4}) grows much faster than log p / log log p, representing a substantial improvement.",
-    "significance": "critical",
-    "relatedConcepts": ["Technical barriers", "New techniques", "Major improvements"]
+    "title": "Beyond the Rectification Barrier (Bedert-Kravitz 2024)",
+    "content": "**bedert_kravitz_2024 (axiom):** For |A| ≤ exp((log p)^{1/4}), valid orderings exist.\n\nThis is a major breakthrough. The 'rectification barrier' at log p / log log p was a technical obstacle that limited all previous methods. Bedert and Kravitz (2024) developed fundamentally new techniques to go far beyond.\n\nexp((log p)^{1/4}) grows much faster than log p / log log p, representing a substantial improvement.",
+    "significance": "critical"
   },
   {
-    "id": "erdos-475-alspach",
+    "id": "ann-475-alspach",
     "proofId": "erdos-475",
-    "type": "definition",
-    "range": { "startLine": 133, "endLine": 145 },
-    "title": "Alspach's Conjecture",
-    "content": "**AlspachConjecture G:**\n\nFor ANY finite abelian group G, every non-zero subset has a valid ordering.\n\nThis generalizes Graham's conjecture from 𝔽ₚ to all abelian groups.\n\n**graham_is_alspach_for_prime_field:** Graham's conjecture is exactly Alspach's for G = 𝔽ₚ.",
-    "mathContext": "Alspach's more general conjecture remains open even for cyclic groups ℤ/nℤ with composite n.",
-    "significance": "key",
-    "relatedConcepts": ["Generalization", "Abelian groups", "Cyclic groups"]
-  },
-  {
-    "id": "erdos-475-constructive",
-    "proofId": "erdos-475",
-    "type": "context",
-    "range": { "startLine": 162, "endLine": 178 },
-    "title": "Constructive vs Existential",
-    "content": "**HasExplicitValidOrdering:**\n\nSome proofs are constructive (giving explicit orderings), others are existential.\n\n- Graham's original proof for t = p - 1 was constructive\n- Small cases can be verified by explicit computation\n- Some proofs use probabilistic or counting arguments (non-constructive)",
-    "mathContext": "Constructive proofs are algorithmically useful; existential proofs establish truth without explicit examples.",
-    "significance": "key",
-    "relatedConcepts": ["Constructive proofs", "Existential proofs", "Algorithms"]
-  },
-  {
-    "id": "erdos-475-difficulty",
-    "proofId": "erdos-475",
-    "type": "context",
-    "range": { "startLine": 180, "endLine": 201 },
-    "title": "Why This Problem is Hard",
-    "content": "**Challenge Analysis:**\n\n1. **Factorial Search Space:** There are t! orderings to potentially check.\n\n2. **Collision Avoidance:** We need t distinct values among p possible sums.\n\n3. **Non-Local Constraint:** Whether partial sums collide depends on the full ordering.\n\n4. **General vs Specific:** We need it to work for ALL non-zero subsets A.",
-    "mathContext": "The problem combines combinatorial explosion with global constraints, making brute force infeasible for large t.",
-    "significance": "key",
-    "relatedConcepts": ["Computational complexity", "Global constraints", "Search space"]
-  },
-  {
-    "id": "erdos-475-summary",
-    "proofId": "erdos-475",
+    "range": { "startLine": 150, "endLine": 159 },
     "type": "theorem",
-    "range": { "startLine": 207, "endLine": 231 },
-    "title": "Main Theorem Summary",
-    "content": "**erdos_475:**\n\nStatus of Graham's Conjecture:\n\n**Proven for:**\n- t ≤ 12 (Costa-Pellegrini)\n- t ≥ p - 3 (Hicks-Ollis-Schmitt)\n- t ≤ exp((log p)^{1/4}) (Bedert-Kravitz)\n\n**Open:** The general case, especially the 'gap' between exp((log p)^{1/4}) and p - 3.\n\nThe conjecture is expected to be true for all t.",
-    "mathContext": "Progress has accelerated recently, with Bedert-Kravitz (2024) making a major breakthrough.",
-    "significance": "critical",
-    "relatedConcepts": ["Problem status", "Known results", "Open gaps"]
+    "title": "Alspach's Conjecture and Equivalence",
+    "content": "**AlspachConjecture G:** For any finite abelian group G, every non-zero subset has a valid ordering. This generalizes Graham's conjecture from 𝔽ₚ to all abelian groups.\n\n**graham_is_alspach_for_prime_field (proved):** Graham's conjecture is exactly Alspach's conjecture for G = 𝔽ₚ. The proof is by direct unfolding of definitions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-475-constructive",
+    "proofId": "erdos-475",
+    "range": { "startLine": 168, "endLine": 181 },
+    "type": "definition",
+    "title": "Constructive vs Existential Proofs",
+    "content": "**HasExplicitValidOrdering A:** There exists a function that computes a valid ordering for A.\n\n**graham_constructive (axiom):** Graham's proof for the full non-zero set was constructive, giving an explicit algorithm.\n\nSome proofs are constructive (giving explicit orderings), others are existential (proving one exists without constructing it).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-475-summary",
+    "proofId": "erdos-475",
+    "range": { "startLine": 204, "endLine": 219 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_475_summary (proved from axioms):**\n\nCombines the three main verified ranges:\n1. **Small t ≤ 12:** Costa-Pellegrini 2020\n2. **Large t ≥ p - 3:** Hicks-Ollis-Schmitt 2019\n3. **Medium t ≤ exp((log p)^{1/4}):** Bedert-Kravitz 2024\n\nProved by: `⟨costa_pellegrini_2020 p hp12, hicks_ollis_schmitt_2019 p, bedert_kravitz_2024 p hp2⟩`\n\nThe general conjecture for arbitrary t remains OPEN.",
+    "significance": "critical"
   }
 ]

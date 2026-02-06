@@ -1,5 +1,5 @@
-/-
-Erdős Problem #1003: Consecutive Equal Totients
+/-!
+  Erdős Problem #1003: Consecutive Equal Totients
 
 Are there infinitely many solutions to φ(n) = φ(n+1), where φ is the Euler
 totient function?
@@ -73,11 +73,6 @@ def ConsecutiveEqualTotients : Set ℕ :=
 This is the main open question. The conjecture is that the answer is yes.
 -/
 def erdos_1003_conjecture : Prop := ConsecutiveEqualTotients.Infinite
-
-/--
-The problem remains open as of 2024.
--/
-theorem erdos_1003_is_open : True := trivial
 
 /-!
 ## Verified Examples

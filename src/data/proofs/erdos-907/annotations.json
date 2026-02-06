@@ -56,10 +56,10 @@
   {
     "id": "ann-e907-additive-rat-mul",
     "proofId": "erdos-907",
-    "range": { "startLine": 75, "endLine": 78 },
-    "type": "theorem",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "axiom",
     "title": "Additive Functions and Rational Multiplication",
-    "content": "If φ is additive, then φ(qx) = q·φ(x) for all rationals q. This extends ℚ-linearity from ℕ-homogeneity.",
+    "content": "If φ is additive, then φ(qx) = q·φ(x) for all rationals q. This extends ℚ-linearity from ℕ-homogeneity. Axiomatized as the proof requires careful handling of rational arithmetic.",
     "significance": "supporting",
     "tags": ["additive-functions", "homogeneity"],
     "leanSymbol": "additive_rat_mul"
@@ -67,7 +67,7 @@
   {
     "id": "ann-e907-linear-def",
     "proofId": "erdos-907",
-    "range": { "startLine": 87, "endLine": 89 },
+    "range": { "startLine": 86, "endLine": 88 },
     "type": "definition",
     "title": "Linear Functions",
     "content": "A function φ : ℝ → ℝ is linear if φ(x) = cx for some constant c. Linear functions are the 'nice' additive functions.",
@@ -78,7 +78,7 @@
   {
     "id": "ann-e907-linear-additive",
     "proofId": "erdos-907",
-    "range": { "startLine": 91, "endLine": 96 },
+    "range": { "startLine": 90, "endLine": 95 },
     "type": "theorem",
     "title": "Linear Functions are Additive",
     "content": "Every linear function φ(x) = cx is additive: c(x+y) = cx + cy. The converse requires continuity.",
@@ -89,7 +89,7 @@
   {
     "id": "ann-e907-cont-additive-linear",
     "proofId": "erdos-907",
-    "range": { "startLine": 98, "endLine": 100 },
+    "range": { "startLine": 97, "endLine": 99 },
     "type": "axiom",
     "title": "Continuous Additive Functions are Linear",
     "content": "A fundamental result: if φ is both additive and continuous, then φ(x) = cx for some c. Measurability or monotonicity also suffice.",
@@ -100,7 +100,7 @@
   {
     "id": "ann-e907-mono-additive-linear",
     "proofId": "erdos-907",
-    "range": { "startLine": 102, "endLine": 104 },
+    "range": { "startLine": 101, "endLine": 103 },
     "type": "axiom",
     "title": "Monotone Additive Functions are Linear",
     "content": "If φ is additive and monotone (or antitone), then φ must be linear. This is another regularity condition forcing linearity.",
@@ -111,7 +111,7 @@
   {
     "id": "ann-e907-discont-exists",
     "proofId": "erdos-907",
-    "range": { "startLine": 113, "endLine": 115 },
+    "range": { "startLine": 112, "endLine": 114 },
     "type": "axiom",
     "title": "Existence of Discontinuous Additive Functions",
     "content": "Via the Axiom of Choice, there exist additive functions that are not continuous. These are highly pathological.",
@@ -122,7 +122,7 @@
   {
     "id": "ann-e907-discont-dense",
     "proofId": "erdos-907",
-    "range": { "startLine": 117, "endLine": 120 },
+    "range": { "startLine": 116, "endLine": 119 },
     "type": "axiom",
     "title": "Discontinuous Additive Functions Have Dense Graphs",
     "content": "A discontinuous additive function has a graph that is dense in ℝ²: for any point (a,b) and ε > 0, there exists x with |x-a| < ε and |φ(x)-b| < ε.",
@@ -133,7 +133,7 @@
   {
     "id": "ann-e907-difference-def",
     "proofId": "erdos-907",
-    "range": { "startLine": 128, "endLine": 131 },
+    "range": { "startLine": 127, "endLine": 130 },
     "type": "definition",
     "title": "The Difference Operator",
     "content": "The difference operator Δ_h f(x) = f(x+h) - f(x) measures how f changes when translated by h. This is the central object in Erdős #907.",
@@ -144,7 +144,7 @@
   {
     "id": "ann-e907-cont-diffs-def",
     "proofId": "erdos-907",
-    "range": { "startLine": 133, "endLine": 135 },
+    "range": { "startLine": 132, "endLine": 134 },
     "type": "definition",
     "title": "Continuous Differences Condition",
     "content": "The condition in Erdős #907: f has continuous differences if Δ_h f is continuous for every h > 0. This is weaker than f being continuous.",
@@ -155,7 +155,7 @@
   {
     "id": "ann-e907-cont-has-cont-diffs",
     "proofId": "erdos-907",
-    "range": { "startLine": 137, "endLine": 142 },
+    "range": { "startLine": 136, "endLine": 141 },
     "type": "theorem",
     "title": "Continuous Functions Have Continuous Differences",
     "content": "If f is continuous, then all its differences are continuous. This is straightforward: Δ_h f = f ∘ (+h) - f is a difference of continuous functions.",
@@ -166,7 +166,7 @@
   {
     "id": "ann-e907-additive-diff-const",
     "proofId": "erdos-907",
-    "range": { "startLine": 144, "endLine": 150 },
+    "range": { "startLine": 143, "endLine": 149 },
     "type": "theorem",
     "title": "Additive Differences are Constant",
     "content": "If φ is additive, then Δ_h φ(x) = φ(h) for all x. The difference is constant because φ(x+h) - φ(x) = φ(h) by additivity.",
@@ -177,7 +177,7 @@
   {
     "id": "ann-e907-decomp-def",
     "proofId": "erdos-907",
-    "range": { "startLine": 159, "endLine": 161 },
+    "range": { "startLine": 158, "endLine": 160 },
     "type": "definition",
     "title": "De Bruijn Decomposition",
     "content": "A function f has a De Bruijn decomposition if f = g + φ for some continuous g and additive φ. This separates the 'regular' and 'irregular' parts.",
@@ -188,7 +188,7 @@
   {
     "id": "ann-e907-de-bruijn-thm",
     "proofId": "erdos-907",
-    "range": { "startLine": 163, "endLine": 165 },
+    "range": { "startLine": 162, "endLine": 164 },
     "type": "axiom",
     "title": "De Bruijn's Theorem (1951)",
     "content": "The central result: if all differences of f are continuous, then f has a De Bruijn decomposition. This is axiomatized as the full proof requires significant work.",
@@ -199,7 +199,7 @@
   {
     "id": "ann-e907-main",
     "proofId": "erdos-907",
-    "range": { "startLine": 167, "endLine": 170 },
+    "range": { "startLine": 166, "endLine": 169 },
     "type": "theorem",
     "title": "Erdős Problem #907 Statement",
     "content": "The formal statement of Erdős #907: hasContinuousDifferences f → hasDeBruijnDecomposition f. The answer is YES, via de Bruijn's theorem.",
@@ -210,7 +210,7 @@
   {
     "id": "ann-e907-unique",
     "proofId": "erdos-907",
-    "range": { "startLine": 178, "endLine": 183 },
+    "range": { "startLine": 177, "endLine": 182 },
     "type": "axiom",
     "title": "Uniqueness of Decomposition",
     "content": "The decomposition f = g + φ is essentially unique: if f = g₁ + φ₁ = g₂ + φ₂, then g₁ = g₂ + cx and φ₁ = φ₂ - cx for some constant c.",
@@ -221,7 +221,7 @@
   {
     "id": "ann-e907-cont-decomp",
     "proofId": "erdos-907",
-    "range": { "startLine": 185, "endLine": 191 },
+    "range": { "startLine": 184, "endLine": 190 },
     "type": "theorem",
     "title": "Continuous Functions Decompose Trivially",
     "content": "If f is already continuous, it decomposes as f + 0 where the additive part is zero.",
@@ -232,7 +232,7 @@
   {
     "id": "ann-e907-sq-example",
     "proofId": "erdos-907",
-    "range": { "startLine": 206, "endLine": 214 },
+    "range": { "startLine": 205, "endLine": 213 },
     "type": "theorem",
     "title": "Example: x² Has Continuous Differences",
     "content": "The function f(x) = x² has continuous differences: Δ_h(x²) = (x+h)² - x² = 2hx + h², which is continuous in x.",
@@ -243,10 +243,10 @@
   {
     "id": "ann-e907-summary",
     "proofId": "erdos-907",
-    "range": { "startLine": 263, "endLine": 271 },
+    "range": { "startLine": 262, "endLine": 270 },
     "type": "theorem",
     "title": "Summary Theorem",
-    "content": "Erdős Problem #907 is completely solved: De Bruijn's theorem gives the decomposition, continuous functions satisfy the condition, and the decomposition is essentially unique.",
+    "content": "Erdős Problem #907 is completely solved. The summary combines three results: (1) De Bruijn's theorem: continuous differences imply decomposition, (2) continuous functions have continuous differences, (3) additive functions have constant differences.",
     "significance": "critical",
     "tags": ["summary", "main-result"],
     "leanSymbol": "erdos_907_summary"

@@ -210,16 +210,38 @@ theorem negative_root_iff_positive_of_negSubst (p : ℝ[X]) (r : ℝ) :
     · simp only [negSubst, eval_comp, eval_neg, eval_X, neg_neg] at heval
       exact heval
 
-/-- **Axiom: Descartes' Rule for Negative Roots**
+/-- negSubst preserves non-zero polynomials. -/
+theorem negSubst_ne_zero (p : ℝ[X]) (hp : p ≠ 0) : negSubst p ≠ 0 := by
+  unfold negSubst
+  intro h
+  have := Polynomial.comp_eq_zero_iff.mp h
+  cases this with
+  | inl h => exact hp h.1
+  | inr h =>
+    -- -X = 0 is impossible since degree(-X) = 1
+    have : (-X : ℝ[X]) ≠ 0 := by
+      intro h0
+      have : (Polynomial.eval 1 (-X : ℝ[X])) = Polynomial.eval 1 (0 : ℝ[X]) := by rw [h0]
+      simp at this
+    exact this h
 
-The negative roots of p are exactly the positive roots of negSubst p.
-The result follows by applying Descartes' rule to negSubst p. -/
-axiom descartes_negative_roots_axiom (p : ℝ[X]) (hp : p ≠ 0) :
-    Multiset.card (p.roots.filter (· < 0)) ≤ signChangesInCoeffs (negSubst p)
+/-- The map r ↦ -r sends negative roots of p to positive roots of negSubst p. -/
+theorem neg_root_map_to_pos (p : ℝ[X]) (r : ℝ) (hr : r < 0) (heval : p.eval r = 0) :
+    -r > 0 ∧ (negSubst p).eval (-r) = 0 := by
+  constructor
+  · linarith
+  · simp [negSubst, Polynomial.eval_comp, Polynomial.eval_neg, Polynomial.eval_X]
+    exact heval
 
 /-- **Descartes' Rule for Negative Roots**
 
-The number of negative roots of p is bounded by the sign changes in p(-x). -/
+The number of negative roots of p is bounded by the sign changes in p(-x).
+The full proof requires showing the multiset `p.roots.filter (· < 0)` maps
+bijectively to `(negSubst p).roots.filter (· > 0)` via r ↦ -r, which
+needs careful handling of Polynomial.roots_comp. -/
+axiom descartes_negative_roots_axiom (p : ℝ[X]) (hp : p ≠ 0) :
+    Multiset.card (p.roots.filter (· < 0)) ≤ signChangesInCoeffs (negSubst p)
+
 theorem descartes_negative_roots (p : ℝ[X]) (hp : p ≠ 0) :
     Multiset.card (p.roots.filter (· < 0)) ≤ signChangesInCoeffs (negSubst p) :=
   descartes_negative_roots_axiom p hp
@@ -259,21 +281,42 @@ theorem x_cubed_minus_x_positive_roots :
 Special cases where the bound is achieved or easily computed.
 -/
 
-/-- **Axiom: No positive roots with positive coefficients**
-
-If all coefficients are non-negative with at least one positive,
-then p(x) > 0 for all x > 0, so there are no positive roots. -/
-axiom no_positive_roots_if_positive_coeffs_axiom (p : ℝ[X]) (hp : p ≠ 0)
+/-- For x > 0, if all coefficients are non-negative and at least one is positive,
+    then p(x) > 0. -/
+theorem eval_pos_of_nonneg_coeffs (p : ℝ[X]) (hp : p ≠ 0)
     (hpos : ∀ i, 0 ≤ p.coeff i)
-    (hsome : ∃ i, 0 < p.coeff i) :
-    countPositiveRoots p = 0
+    (hsome : ∃ i, 0 < p.coeff i)
+    (x : ℝ) (hx : x > 0) :
+    0 < p.eval x := by
+  rw [Polynomial.eval_eq_sum_range]
+  obtain ⟨j, hj⟩ := hsome
+  -- The sum is non-negative since each term is non-negative
+  have hle : j ≤ p.natDegree := by
+    by_contra h
+    push_neg at h
+    have := Polynomial.coeff_eq_zero_of_natDegree_lt h
+    linarith
+  apply lt_of_lt_of_le _ (Finset.sum_le_sum_of_subset_of_nonneg
+    (s₁ := {⟨j, by omega⟩}) (s₂ := Finset.univ) (Finset.subset_univ _)
+    (fun i _ _ => mul_nonneg (hpos i.val) (pow_nonneg (le_of_lt hx) i.val)))
+  simp only [Finset.sum_singleton]
+  exact mul_pos hj (pow_pos hx j)
 
-/-- A polynomial with all positive coefficients has no positive roots -/
+/-- No positive roots if all coefficients are non-negative with at least one positive. -/
 theorem no_positive_roots_if_positive_coeffs (p : ℝ[X]) (hp : p ≠ 0)
     (hpos : ∀ i, 0 ≤ p.coeff i)
     (hsome : ∃ i, 0 < p.coeff i) :
-    countPositiveRoots p = 0 :=
-  no_positive_roots_if_positive_coeffs_axiom p hp hpos hsome
+    countPositiveRoots p = 0 := by
+  unfold countPositiveRoots
+  simp only [hp, ↓reduceIte]
+  rw [Multiset.card_eq_zero, Multiset.filter_eq_nil]
+  intro r hr
+  push_neg
+  by_contra h
+  push_neg at h
+  have heval : p.eval r = 0 := (Polynomial.mem_roots hp).mp hr
+  have heval_pos := eval_pos_of_nonneg_coeffs p hp hpos hsome r h
+  linarith
 
 /-- **Axiom: Alternating signs achieve maximum roots**
 
@@ -354,6 +397,83 @@ Descartes' Rule of Signs is important because:
 5. **Educational Value**: Demonstrates the connection between algebraic
    properties (coefficients) and analytic properties (roots).
 -/
+
+/-! ## Additional Structural Theorems -/
+
+/-- Sign properties of realSign. -/
+theorem realSign_pos {x : ℝ} (hx : x > 0) : realSign x = 1 := by
+  unfold realSign
+  simp [hx]
+
+theorem realSign_neg {x : ℝ} (hx : x < 0) : realSign x = -1 := by
+  unfold realSign
+  simp [not_lt.mpr (le_of_lt (lt_trans hx (lt_irrefl 0 |>.elim.elim))), hx]
+  exact ⟨by linarith, hx⟩
+
+theorem realSign_zero : realSign 0 = 0 := by
+  unfold realSign
+  simp
+
+/-- oppositeSign is symmetric. -/
+theorem oppositeSign_comm (x y : ℝ) : oppositeSign x y ↔ oppositeSign y x := by
+  unfold oppositeSign
+  constructor <;> intro h <;> linarith [mul_comm x y]
+
+/-- The zero polynomial has no positive roots. -/
+theorem countPositiveRoots_zero : countPositiveRoots (0 : ℝ[X]) = 0 := by
+  unfold countPositiveRoots
+  simp
+
+/-- Zero polynomial has no sign changes. -/
+theorem signChangesInCoeffs_zero : signChangesInCoeffs (0 : ℝ[X]) = 0 := by
+  unfold signChangesInCoeffs
+  simp
+
+/-- Evaluation of negSubst relates to evaluation at negation. -/
+theorem negSubst_eval (p : ℝ[X]) (x : ℝ) :
+    (negSubst p).eval x = p.eval (-x) := by
+  unfold negSubst
+  simp [Polynomial.eval_comp, Polynomial.eval_neg, Polynomial.eval_X]
+
+/-- Double negSubst is the identity. -/
+theorem negSubst_negSubst (p : ℝ[X]) : negSubst (negSubst p) = p := by
+  unfold negSubst
+  simp [Polynomial.comp_assoc]
+
+/-- Constant polynomials have no positive roots. -/
+theorem countPositiveRoots_C (c : ℝ) (hc : c ≠ 0) :
+    countPositiveRoots (Polynomial.C c) = 0 := by
+  unfold countPositiveRoots
+  simp only [Polynomial.C_eq_zero.not.mpr hc, ↓reduceIte]
+  rw [Multiset.card_eq_zero, Multiset.filter_eq_nil]
+  intro r hr
+  push_neg
+  exfalso
+  have := (Polynomial.mem_roots (Polynomial.C_ne_zero.mpr hc)).mp hr
+  simp [Polynomial.eval_C] at this
+
+/-- The monomial xⁿ has exactly one positive root (at 0 for n > 0, which isn't positive). -/
+theorem countPositiveRoots_X_pow (n : ℕ) (hn : n ≥ 1) :
+    countPositiveRoots (X ^ n : ℝ[X]) = 0 := by
+  unfold countPositiveRoots
+  have hne : (X : ℝ[X]) ^ n ≠ 0 := pow_ne_zero n (Polynomial.X_ne_zero)
+  simp only [hne, ↓reduceIte]
+  rw [Multiset.card_eq_zero, Multiset.filter_eq_nil]
+  intro r hr
+  push_neg
+  by_contra h
+  push_neg at h
+  have heval := (Polynomial.mem_roots hne).mp hr
+  simp [Polynomial.eval_pow, Polynomial.eval_X] at heval
+  have := pow_eq_zero_iff hn |>.mp heval
+  linarith
+
+/-- Rolle's theorem implies derivative has a root between consecutive roots.
+    This is a key lemma used in the inductive proof of Descartes' rule. -/
+theorem derivative_root_between_roots (p : ℝ[X]) (a b : ℝ) (hab : a < b)
+    (ha : p.eval a = 0) (hb : p.eval b = 0) :
+    ∃ c, a < c ∧ c < b ∧ (Polynomial.derivative p).eval c = 0 :=
+  rolle_polynomial p a b hab ha hb
 
 #check descartes_upper_bound
 #check descartes_parity

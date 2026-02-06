@@ -1,4 +1,4 @@
-/-
+/-!
   Erdős Problem #149: Strong Chromatic Index Conjecture
 
   Source: https://erdosproblems.com/149
@@ -15,13 +15,6 @@
   - Strong edge coloring: edges at distance ≤ 2 get different colors
   - The conjecture would be tight: blow-up of C₅ achieves (5/4)Δ²
   - Progress: 2Δ² → 1.998Δ² → 1.93Δ² → 1.835Δ² → 1.772Δ²
-
-  Key References:
-  - Erdős-Nešetřil (1985): Original conjecture
-  - Molloy-Reed (1997): 1.998Δ²
-  - Bruhn-Joos (2018): 1.93Δ²
-  - Bonamy-Perrett-Postle (2022): 1.835Δ²
-  - Hurley-de Joannis de Verclos-Kang (2022): 1.772Δ²
 
   Tags: graph-theory, edge-coloring, chromatic-index, combinatorics
 -/
@@ -65,23 +58,7 @@ noncomputable def strongChromaticIndex (G : SimpleGraph V) : ℕ :=
 notation "χ'_s" => strongChromaticIndex
 
 /-!
-## Part 2: Line Graph and Its Square
-
-The strong chromatic index equals χ(L(G)²) where L(G) is the line graph.
--/
-
-/-- The line graph L(G) has edges of G as vertices, adjacent when they share an endpoint. -/
-axiom lineGraph (G : SimpleGraph V) : SimpleGraph G.edgeSet
-
-/-- The square of a graph: G² has edge (u,v) if dist(u,v) ≤ 2 in G. -/
-axiom graphSquare (G : SimpleGraph V) : SimpleGraph V
-
-/-- Key equivalence: χ'_s(G) = χ(L(G)²). -/
-axiom strong_chromatic_eq_line_square (G : SimpleGraph V) :
-    χ'_s G = sorry  -- Would need chromatic number of L(G)²
-
-/-!
-## Part 3: The Erdős-Nešetřil Conjecture (1985)
+## Part 2: The Erdős-Nešetřil Conjecture (1985)
 
 The conjectured bound is (5/4)Δ², which would be best possible.
 -/
@@ -107,7 +84,7 @@ axiom c5_blowup_construction (Δ : ℕ) (hΔ : Even Δ) :
       (χ'_s G : ℚ) = (5/4 : ℚ) * Δ^2
 
 /-!
-## Part 4: Upper Bounds - Progress History
+## Part 3: Upper Bounds - Progress History
 
 The conjecture remains open, but bounds have improved steadily.
 -/
@@ -148,7 +125,7 @@ theorem current_gap :
     (1.772 : ℚ) - (5/4 : ℚ) = 0.522 := by norm_num
 
 /-!
-## Part 5: Special Graph Classes
+## Part 4: Special Graph Classes
 
 Better bounds are known for restricted graph classes.
 -/
@@ -171,7 +148,7 @@ axiom bipartite_bound :
       (χ'_s G : ℝ) ≤ c * (maxDegree G)^2
 
 /-!
-## Part 6: The Clique Number of L(G)²
+## Part 5: The Clique Number of L(G)²
 
 A related but weaker question: is ω(L(G)²) ≤ (5/4)Δ²?
 -/
@@ -193,18 +170,8 @@ axiom sleszynska_nowak_2015 (G : SimpleGraph V) (Δ : ℕ) (hΔ : maxDegree G �
 axiom faron_postle_2019 (G : SimpleGraph V) (Δ : ℕ) (hΔ : maxDegree G ≤ Δ) :
     (ω_L² G : ℚ) ≤ (4/3 : ℚ) * Δ^2
 
-/-- Cames van Batenburg-Kang-Pirot (2020): ω(L(G)²) ≤ (5/4)Δ² if G is triangle-free. -/
-axiom batenburg_kang_pirot_2020_trianglefree (G : SimpleGraph V) (Δ : ℕ)
-    (hΔ : maxDegree G ≤ Δ) (hTriFree : True) :  -- G is triangle-free
-    (ω_L² G : ℚ) ≤ (5/4 : ℚ) * Δ^2
-
-/-- Same paper: ω(L(G)²) ≤ Δ² if G is C₅-free. -/
-axiom batenburg_kang_pirot_2020_c5free (G : SimpleGraph V) (Δ : ℕ)
-    (hΔ : maxDegree G ≤ Δ) (hC5Free : True) :  -- G is C₅-free
-    (ω_L² G : ℚ) ≤ Δ^2
-
 /-!
-## Part 7: Related Problem - Strongly Independent Edge Pairs
+## Part 6: Strongly Independent Edge Pairs
 
 Erdős-Nešetřil also asked an easier problem about pairs of strongly independent edges.
 -/
@@ -222,7 +189,7 @@ axiom chung_gyarfas_tuza_trotter_1990 (G : SimpleGraph V) (Δ : ℕ)
     ∃ e₁ e₂ : G.edgeSet, StronglyIndependentEdges G e₁ e₂
 
 /-!
-## Part 8: Induced Matchings
+## Part 7: Induced Matchings
 
 Strong edge colorings partition edges into "induced matchings."
 -/
@@ -239,75 +206,20 @@ axiom strong_chromatic_eq_induced_matchings (G : SimpleGraph V) :
       (∀ e : G.edgeSet, ∃ i, e ∈ partition i)}
 
 /-!
-## Part 9: Small Cases and Exact Values
-
-For specific graphs, χ'_s is known exactly.
--/
-
-/-- For the complete graph K_n, χ'_s(K_n) = n(n-1)/2 when n ≥ 4. -/
-axiom strong_chromatic_complete (n : ℕ) (hn : n ≥ 4) :
-    True  -- Exact formula involves n
-
-/-- For paths P_n, χ'_s(P_n) = 3 for n ≥ 4. -/
-axiom strong_chromatic_path (n : ℕ) (hn : n ≥ 4) :
-    True  -- χ'_s = 3
-
-/-- For cycles C_n, χ'_s(C_n) depends on n mod 3. -/
-axiom strong_chromatic_cycle (n : ℕ) (hn : n ≥ 3) :
-    True  -- Formula based on n mod 3
-
-/-!
-## Part 10: Probabilistic Method Approach
-
-The best bounds use the probabilistic method and local lemma.
--/
-
-/-- The Lovász Local Lemma is key to proving upper bounds. -/
-axiom lovasz_local_lemma_application :
-    True  -- The technique behind Molloy-Reed and subsequent improvements
-
-/-- Entropy compression is used in recent improvements. -/
-axiom entropy_compression_technique :
-    True  -- Used by Hurley-de Joannis de Verclos-Kang
-
-/-!
-## Part 11: Algorithmic Aspects
-
-Finding optimal strong edge colorings is computationally hard.
--/
-
-/-- Computing χ'_s(G) is NP-hard. -/
-axiom strong_chromatic_np_hard :
-    True  -- Deciding if χ'_s(G) ≤ k is NP-complete for k ≥ 4
-
-/-- There exist polynomial-time approximation algorithms. -/
-axiom approximation_algorithms :
-    True  -- O(Δ²) coloring can be found efficiently
-
-/-!
-## Part 12: Summary
+## Part 8: Summary
 
 Erdős Problem #149 remains OPEN. Best bound is 1.772Δ², conjecture is (5/4)Δ².
 -/
 
-/-- Summary of known bounds on the strong chromatic index. -/
-theorem strong_chromatic_bounds_summary :
-    -- Trivial: ≤ 2Δ² (roughly)
-    -- Molloy-Reed (1997): ≤ 1.998Δ²
-    -- Bruhn-Joos (2018): ≤ 1.93Δ²
-    -- Bonamy-Perrett-Postle (2022): ≤ 1.835Δ²
-    -- Hurley-de Joannis de Verclos-Kang (2022): ≤ 1.772Δ²
-    -- Conjecture: ≤ (5/4)Δ² = 1.25Δ²
-    -- Lower bound (C₅ blow-up): ≥ (5/4)Δ² achievable
-    True := trivial
-
-/-- The conjecture status. -/
-theorem erdos_149_status :
-    -- OPEN: Gap between 1.772 and 1.25 remains
-    -- The clique number conjecture (weaker) is also open for general graphs
-    True := trivial
-
-/-- Erdős Problem #149: Strong Chromatic Index Conjecture - OPEN -/
-theorem erdos_149 : True := trivial
+/-- Erdős Problem #149: Strong Chromatic Index Conjecture (OPEN)
+    Combines: (1) current best upper bound 1.772Δ², (2) tightness of (5/4)Δ². -/
+theorem erdos_149_summary :
+    (∃ Δ₀ : ℕ, ∀ V : Type*, ∀ _ : Fintype V, ∀ _ : DecidableEq V,
+      ∀ G : SimpleGraph V, maxDegree G ≥ Δ₀ →
+        (χ'_s G : ℚ) ≤ 1.772 * (maxDegree G)^2) ∧
+    (∀ Δ : ℕ, Δ ≥ 2 →
+      ∃ V : Type*, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
+      ∃ G : SimpleGraph V, maxDegree G = Δ ∧ (χ'_s G : ℚ) = (5/4 : ℚ) * Δ^2) :=
+  ⟨hurley_joannis_kang_2022, conjecture_is_tight⟩
 
 end Erdos149

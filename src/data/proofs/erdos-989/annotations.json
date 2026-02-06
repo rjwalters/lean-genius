@@ -164,7 +164,7 @@
   {
     "id": "ann-989-19",
     "proofId": "erdos-989",
-    "range": { "startLine": 242, "endLine": 253 },
+    "range": { "startLine": 242, "endLine": 254 },
     "type": "concept",
     "title": "The Logarithmic Gap",
     "content": "Major open problem: Beck's bounds give c√r ≤ f(r) ≤ C√(r log r). Is the log factor necessary? This gap is one of the central unsolved questions in geometric discrepancy theory.",
@@ -173,7 +173,7 @@
   {
     "id": "ann-989-20",
     "proofId": "erdos-989",
-    "range": { "startLine": 255, "endLine": 265 },
+    "range": { "startLine": 256, "endLine": 268 },
     "type": "concept",
     "title": "Explicit Constructions",
     "content": "Open problem: Beck's optimal sequence is probabilistic. Can we give an explicit deterministic construction achieving √(r log r)? Lattice constructions give worse bounds; no explicit optimal construction is known.",
@@ -182,7 +182,7 @@
   {
     "id": "ann-989-21",
     "proofId": "erdos-989",
-    "range": { "startLine": 267, "endLine": 276 },
+    "range": { "startLine": 270, "endLine": 282 },
     "type": "concept",
     "title": "Higher Dimensions",
     "content": "Open problem: For balls in ℝ^d, expect f(r) ~ r^{(d-1)/2} from surface area considerations. The dimension dependence is understood but logarithmic factors remain open in all dimensions.",
@@ -191,7 +191,7 @@
   {
     "id": "ann-989-22",
     "proofId": "erdos-989",
-    "range": { "startLine": 280, "endLine": 290 },
+    "range": { "startLine": 286, "endLine": 304 },
     "type": "axiom",
     "title": "Schmidt's Classical Discrepancy",
     "content": "Related result: For axis-aligned boxes in [0,1]^d, Schmidt generalized Roth's lower bound to D(N) ≥ c(log N)^{d/2}. Circles behave differently due to curved boundaries - √r vs polylog.",
@@ -200,7 +200,7 @@
   {
     "id": "ann-989-23",
     "proofId": "erdos-989",
-    "range": { "startLine": 292, "endLine": 302 },
+    "range": { "startLine": 306, "endLine": 319 },
     "type": "axiom",
     "title": "Alexander's Half-Plane Discrepancy",
     "content": "Comparison: Half-planes have discrepancy r^{1/4}, much smaller than circles (√r). The curved boundary of circles can 'trap' points more effectively, leading to higher unavoidable discrepancy.",
@@ -209,7 +209,7 @@
   {
     "id": "ann-989-24",
     "proofId": "erdos-989",
-    "range": { "startLine": 306, "endLine": 339 },
+    "range": { "startLine": 321, "endLine": 365 },
     "type": "theorem",
     "title": "Summary",
     "content": "Complete summary of Erdős Problem #989: (1) f(r) unbounded for all A - YES, (2) optimal growth Θ̃(√r), (3) lower bound via Fourier/Bessel, (4) upper bound via probabilistic perturbation. Foundational result in geometric discrepancy.",

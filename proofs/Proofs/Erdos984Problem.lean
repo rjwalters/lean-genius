@@ -70,22 +70,15 @@ def SatisfiesCondition (χ : Coloring) : Prop :=
 /-!
 ## Part 3: Van der Waerden's Theorem Connection
 
-Van der Waerden's theorem guarantees monochromatic APs exist.
+Van der Waerden's theorem guarantees monochromatic APs exist in any finite coloring.
 -/
 
-/-- Van der Waerden number W(r, k): minimum N such that any r-coloring of [1..N]
-    has a monochromatic k-AP -/
-noncomputable def vanDerWaerden (r k : ℕ) : ℕ :=
-  Classical.choose (⟨1, fun _ _ _ _ => trivial⟩ : ∃ N : ℕ, N > 0)
-
-/-- Van der Waerden's theorem -/
+/-- Van der Waerden's theorem: any r-coloring of a sufficiently long initial
+    segment of ℕ contains a monochromatic k-term AP -/
 axiom van_der_waerden_theorem (r k : ℕ) (hr : 2 ≤ r) (hk : 3 ≤ k) :
-    ∀ χ : Fin (vanDerWaerden r k) → Fin r,
-    ∃ a d : ℕ, 0 < d ∧ ∀ i < k, χ ⟨a + i * d, sorry⟩ = χ ⟨a, sorry⟩
-
-/-- The inverse of the van der Waerden function grows extremely slowly -/
-axiom inverse_vdw_grows_slowly :
-    GrowsSlowerThanAnyPower (fun N => Nat.find ⟨3, fun _ _ => rfl⟩)
+    ∃ N : ℕ, ∀ χ : Fin N → Fin r,
+    ∃ a d : ℕ, 0 < d ∧ a + (k - 1) * d < N ∧
+      ∀ i < k, χ ⟨a + i * d, by omega⟩ = χ ⟨a, by omega⟩
 
 /-!
 ## Part 4: Spencer's 3-Coloring Result
@@ -133,21 +126,11 @@ Zach Hunter proved the full result with 2 colors.
 axiom hunter_theorem :
     ∃ χ : Coloring, SatisfiesCondition χ
 
-/-- The construction is explicit (probabilistic method) -/
-axiom hunter_construction_method :
-    -- The proof uses probabilistic methods and careful analysis
-    -- of the structure of arithmetic progressions
-    True
-
 /-!
 ## Part 7: The Chromatic Number Perspective
 
 How many colors are needed for various bounds?
 -/
-
-/-- Minimum colors needed for bound k ≪ f(a) -/
-noncomputable def chromaticNumber (f : ℕ → ℕ) : ℕ :=
-  Nat.find ⟨3, fun _ _ => trivial⟩
 
 /-- For f(a) = a^ε (any ε > 0), 2 colors suffice -/
 axiom two_colors_suffice_for_power_bound :
@@ -184,19 +167,19 @@ axiom erdos_exponent_bound :
     ∃ c : ℝ, c > 0 ∧ c < 1 ∧
     ∃ χ : Coloring, ErdosWeakBound χ c 1
 
-/-- No trivial lower bound was known by Erdős -/
-axiom no_known_lower_bound :
-    -- Erdős explicitly noted he knew no non-trivial lower bound
-    -- i.e., no proof that k ≥ g(a) for any slowly growing g
-    True
-
 /-!
-## Part 9: Main Problem Statement
+## Part 9: Summary
 -/
 
-/-- Erdős Problem #984: Complete statement -/
-theorem erdos_984_statement :
-    -- 2-coloring exists with k ≪_ε a^ε bound
+/-- **Erdős Problem #984: Summary**
+
+Combines the main results:
+1. Hunter's 2-coloring with k ≪_ε a^ε (the answer is YES)
+2. Spencer's 3-coloring with slowly growing bound
+3. Erdős's partial k ≪ a^{1-c} construction
+-/
+theorem erdos_984_summary :
+    -- The problem is solved affirmatively (Hunter)
     (∃ χ : Coloring, SatisfiesCondition χ) ∧
     -- Spencer: 3 colors achieve inverse vdW bound
     (∃ χ : Coloring3, ∀ a d k : ℕ, 0 < a → 0 < d → 2 ≤ k →
@@ -204,35 +187,6 @@ theorem erdos_984_statement :
       GrowsSlowerThanAnyPower (fun _ => k)) ∧
     -- Erdős partial: k ≪ a^{1-c}
     (∃ χ : Coloring, ∃ c C : ℝ, ErdosWeakBound χ c C) := by
-  constructor
-  · exact hunter_theorem
-  constructor
-  · exact spencer_1975
-  · exact erdos_partial_construction
-
-/-!
-## Part 10: Summary
--/
-
-/-- Summary of Erdős Problem #984 -/
-theorem erdos_984_summary :
-    -- The problem is solved affirmatively
-    (∃ χ : Coloring, SatisfiesCondition χ) ∧
-    -- 2 colors suffice (Hunter)
-    (∀ ε : ℝ, 0 < ε →
-      ∃ χ : Coloring, ∀ a d k : ℕ, 0 < a → 0 < d → 2 ≤ k →
-        MonochromaticAP χ a d k →
-        ∃ C : ℝ, C > 0 ∧ (k : ℝ) ≤ C * (a : ℝ) ^ ε) ∧
-    -- 1 color is insufficient
-    (¬∃ χ : ℕ → Fin 1, ∀ k : ℕ, 3 ≤ k →
-      ¬∃ a d : ℕ, 0 < d ∧ ∀ i < k, χ (a + i * d) = χ a) := by
-  constructor
-  · exact hunter_theorem
-  constructor
-  · exact two_colors_suffice_for_power_bound
-  · exact one_color_insufficient
-
-/-- The answer to Erdős Problem #984: SOLVED (YES) -/
-theorem erdos_984_answer : True := trivial
+  exact ⟨hunter_theorem, spencer_1975, erdos_partial_construction⟩
 
 end Erdos984

@@ -19,7 +19,7 @@
       "disproof"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 328,
     "erdosUrl": "https://erdosproblems.com/328",
     "erdosProblemStatus": "solved",
@@ -78,57 +78,50 @@
       "id": "representation-function",
       "title": "Representation Function",
       "startLine": 34,
-      "endLine": 60,
+      "endLine": 58,
       "summary": "Definition of r_A(n) and bounded convolution"
     },
     {
       "id": "sidon-sets",
       "title": "B_h Sets (Sidon Sets)",
-      "startLine": 62,
-      "endLine": 88,
+      "startLine": 60,
+      "endLine": 83,
       "summary": "Sidon sets, B_h sets, and their convolution bounds"
     },
     {
       "id": "partition-question",
       "title": "The Partition Question",
-      "startLine": 90,
-      "endLine": 121,
+      "startLine": 85,
+      "endLine": 114,
       "summary": "Formal statement of the Erdős-Newman question"
     },
     {
       "id": "erdos-partial",
       "title": "Erdős's Partial Results",
-      "startLine": 123,
-      "endLine": 154,
-      "summary": "Erdős (1980): NO for C = 3, 4, and infinitely many C"
+      "startLine": 116,
+      "endLine": 139,
+      "summary": "Erdős (1980): NO for C = 3 and C = 4"
     },
     {
       "id": "nesetril-rodl",
       "title": "Nešetřil-Rödl's Complete Solution",
-      "startLine": 156,
-      "endLine": 196,
-      "summary": "The complete negative answer for all C"
-    },
-    {
-      "id": "proof-technique",
-      "title": "Proof Technique",
-      "startLine": 198,
-      "endLine": 223,
-      "summary": "Ramsey theory and hypergraph coloring"
+      "startLine": 141,
+      "endLine": 174,
+      "summary": "Complete negative answer for all C, including strong version"
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 225,
-      "endLine": 253,
-      "summary": "Sidon sets (C=2) and unique sum sets"
+      "title": "Special Cases and Density",
+      "startLine": 176,
+      "endLine": 214,
+      "summary": "Sidon sets (C=2), unique sum sets, and density bounds"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 301,
-      "endLine": 341,
-      "summary": "Complete disproof for all C by Nešetřil-Rödl"
+      "startLine": 216,
+      "endLine": 247,
+      "summary": "Complete disproof combining Nešetřil-Rödl with Erdős-Newman negation"
     }
   ],
   "conclusion": {

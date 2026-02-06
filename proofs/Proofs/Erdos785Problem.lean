@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #785: Exact Additive Complements
 
 Source: https://erdosproblems.com/785
@@ -91,13 +91,6 @@ These are "optimally sparse" complement pairs.
 def IsExactAdditiveComplement (A B : Set ℕ) : Prop :=
   IsAdditiveComplement A B ∧ ProductAsymptoticToX A B
 
-/--
-**Why "Exact"?**
-For any additive complement pair, A(x)B(x) ≥ x - O(1) (by counting).
-"Exact" means A(x)B(x) ~ x, the minimum possible growth rate.
--/
-axiom exact_minimality : True
-
 /-!
 ## Part III: The Main Question
 -/
@@ -123,13 +116,6 @@ to be impossible while covering all large integers.
 axiom danzer_1964_existence :
     ∃ A B : Set ℕ, IsExactAdditiveComplement A B
 
-/--
-**Construction Idea:**
-Danzer's construction uses a careful greedy algorithm or
-probabilistic method to balance density.
--/
-axiom danzer_construction_idea : True
-
 /-!
 ## Part V: Sárközy-Szemerédi Solution
 -/
@@ -150,13 +136,6 @@ The Erdős-Danzer question has an affirmative answer.
 theorem erdos_danzer_solved : ErdosDanzerQuestion :=
   sarkozy_szemeredi_1994
 
-/--
-**Proof Technique:**
-The proof uses careful analysis of the representation function
-r(n) = |{(a,b) : a ∈ A, b ∈ B, a+b = n}| and variance estimates.
--/
-axiom proof_technique : True
-
 /-!
 ## Part VI: Ruzsa's Refinement
 -/
@@ -172,14 +151,6 @@ axiom ruzsa_2017 :
       ∃ A B : Set ℕ, IsExactAdditiveComplement A B ∧
         ∃ᶠ x in Filter.atTop,
           (countingFunction A x * countingFunction B x : ℝ) - x < w x
-
-/--
-**Interpretation:**
-A(x)B(x) - x → ∞ (Sárközy-Szemerédi), but the rate can be
-arbitrarily slow (Ruzsa). The growth to infinity is necessary
-but can be made as slow as desired.
--/
-axiom growth_rate_interpretation : True
 
 /-!
 ## Part VII: Related Concepts
@@ -201,30 +172,6 @@ axiom average_representation :
       Filter.Tendsto (fun x =>
         (Finset.range (x + 1)).sum (fun n => representationFunction A B n : ℝ) / x)
         Filter.atTop (nhds 1)
-
-/--
-**Variance Considerations:**
-The proof uses that Var(r(n)) cannot be too small if A(x)B(x) - x is bounded.
--/
-axiom variance_key : True
-
-/-!
-## Part VIII: Examples
--/
-
-/--
-**Non-Example: Squares and Squares**
-A = B = {n² : n ≥ 1} does NOT form an additive complement pair,
-as many integers are not sums of two squares.
--/
-axiom squares_not_complement : True
-
-/--
-**Simple Example:**
-A = {0} ∪ {2k : k ≥ 0}, B = {2k+1 : k ≥ 0} gives A + B = ℕ,
-but this is not "exact" as A(x)B(x) ~ x²/4.
--/
-axiom simple_complement_example : True
 
 /-!
 ## Part IX: Summary
@@ -251,19 +198,14 @@ theorem erdos_785_summary :
     -- Exact additive complements exist
     (∃ A B : Set ℕ, IsExactAdditiveComplement A B) ∧
     -- The main question is YES
-    ErdosDanzerQuestion ∧
-    -- Growth can be arbitrarily slow
-    True := by
-  constructor
-  · exact danzer_1964_existence
-  constructor
-  · exact erdos_danzer_solved
-  · trivial
+    ErdosDanzerQuestion :=
+  ⟨danzer_1964_existence, erdos_danzer_solved⟩
 
 /--
 **Erdős Problem #785: SOLVED**
 The answer is YES by Sárközy-Szemerédi (1994).
 -/
-theorem erdos_785 : True := trivial
+theorem erdos_785 : ErdosDanzerQuestion :=
+  erdos_danzer_solved
 
 end Erdos785

@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #339: Additive Bases and Distinct Element Sums
 
 Let A ⊆ ℕ be a basis of order r. This means every sufficiently large integer
@@ -232,8 +232,6 @@ Both results proved by Hegyvári-Hennecart-Plagne (2003).
 **Key insight:** Even though distinct sums are a subset, the density is
 preserved. The proof uses perturbation arguments and arithmetic progressions.
 -/
-
-theorem erdos_339 : True := trivial
 
 theorem erdos_339_solved :
     -- Conjecture 1: Basis → distinct sums have positive lower density

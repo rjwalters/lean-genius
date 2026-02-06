@@ -1,202 +1,83 @@
 [
   {
-    "id": "ann-764-header",
+    "id": "ann-764-overview",
     "proofId": "erdos-764",
-    "range": { "startLine": 1, "endLine": 19 },
+    "range": { "startLine": 1, "endLine": 18 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #764** asks: can the 3-fold convolution sum ∑ 1_A * 1_A * 1_A be cN + O(1)? Vaughan (1972) proved the answer is NO, even for the weaker bound o(N^{1/4}/(log N)^{1/2}).",
-    "mathContext": "This generalizes the Erdős-Fuchs theorem (1956) for 2-fold convolutions. The convolution counts ways to represent n as a sum of three elements from A.",
-    "significance": "critical",
-    "relatedConcepts": ["convolutions", "erdos-fuchs", "additive-combinatorics", "analytic-number-theory"]
-  },
-  {
-    "id": "ann-764-charfun",
-    "proofId": "erdos-764",
-    "range": { "startLine": 35, "endLine": 36 },
-    "type": "definition",
-    "title": "charFun",
-    "content": "Characteristic function 1_A: returns 1 if n ∈ A, else 0. The building block for convolution counting.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-764-conv2",
-    "proofId": "erdos-764",
-    "range": { "startLine": 38, "endLine": 41 },
-    "type": "definition",
-    "title": "conv2",
-    "content": "2-fold convolution: (1_A * 1_A)(n) = #{(a,b) ∈ A × A : a + b = n}. Counts representations of n as sum of two elements from A.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-764-conv3",
-    "proofId": "erdos-764",
-    "range": { "startLine": 43, "endLine": 48 },
-    "type": "definition",
-    "title": "conv3",
-    "content": "3-fold convolution: (1_A * 1_A * 1_A)(n) = #{(a,b,c) ∈ A³ : a + b + c = n}. Counts representations of n as sum of three elements from A.",
+    "content": "**Erdős Problem #764** asks: can the 3-fold convolution sum ∑ 1_A * 1_A * 1_A be cN + O(1)?\n\n**Answer: NO** (Vaughan 1972). Even the weaker bound cN + o(N^{1/4}/(log N)^{1/2}) is impossible.\n\nThis generalizes the Erdős-Fuchs theorem (1956) for 2-fold convolutions. The result applies to any h-fold convolution with h ≥ 2.",
     "significance": "critical"
   },
   {
-    "id": "ann-764-convh",
+    "id": "ann-764-convolutions",
     "proofId": "erdos-764",
-    "range": { "startLine": 50, "endLine": 51 },
+    "range": { "startLine": 35, "endLine": 63 },
     "type": "definition",
-    "title": "convH",
-    "content": "General h-fold convolution: counts ways to write n as sum of h elements from A. Vaughan's theorem applies to any h ≥ 2.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-764-sumconv",
-    "proofId": "erdos-764",
-    "range": { "startLine": 53, "endLine": 58 },
-    "type": "definition",
-    "title": "sumConv2 and sumConv3",
-    "content": "Cumulative sums: ∑_{n≤N} conv(n). The problem asks about the growth rate of these cumulative sums.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-764-linearbounded",
-    "proofId": "erdos-764",
-    "range": { "startLine": 66, "endLine": 68 },
-    "type": "definition",
-    "title": "IsLinearBounded",
-    "content": "f(N) = cN + O(1): the error |f(N) - cN| is bounded by some constant M for all N. This is the property Erdős asked about.",
+    "title": "Convolution Definitions",
+    "content": "**conv2 A n:** 2-fold convolution counting #{(a,b) ∈ A² : a + b = n}.\n\n**conv3 A n:** 3-fold convolution counting #{(a,b,c) ∈ A³ : a + b + c = n}.\n\n**convH h A n (axiom):** General h-fold convolution, axiomatized because the definition requires dependent types.\n\n**sumConv2, sumConv3:** Cumulative sums ∑_{n≤N} conv(A, n), the quantities whose growth rate is studied.",
     "significance": "critical"
   },
   {
-    "id": "ann-764-linearlittleo",
+    "id": "ann-764-error-hierarchy",
     "proofId": "erdos-764",
-    "range": { "startLine": 70, "endLine": 72 },
+    "range": { "startLine": 71, "endLine": 82 },
     "type": "definition",
-    "title": "IsLinearLittleO",
-    "content": "f(N) = cN + o(N^α): the error grows slower than N^α. A weaker property than bounded error.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-764-linearvaughan",
-    "proofId": "erdos-764",
-    "range": { "startLine": 74, "endLine": 77 },
-    "type": "definition",
-    "title": "IsLinearVaughan",
-    "content": "f(N) = cN + o(N^{1/4}/(log N)^{1/2}): the precise bound that Vaughan proved is impossible.",
+    "title": "Error Bound Hierarchy",
+    "content": "**IsLinearBounded f c:** f(N) = cN + O(1), bounded error. This is what Erdős asked about.\n\n**IsLinearLittleO f c α:** f(N) = cN + o(N^α), error grows slower than N^α.\n\n**IsLinearVaughan f c:** f(N) = cN + o(N^{1/4}/(log N)^{1/2}), the precise bound Vaughan proved impossible.\n\nThe hierarchy: IsLinearBounded ⟹ IsLinearVaughan ⟹ IsLinearLittleO (for α = 1/4).",
     "significance": "critical"
   },
   {
-    "id": "ann-764-erdosfuchs",
+    "id": "ann-764-erdos-fuchs",
     "proofId": "erdos-764",
-    "range": { "startLine": 85, "endLine": 87 },
+    "range": { "startLine": 91, "endLine": 105 },
     "type": "axiom",
-    "title": "Erdős-Fuchs Theorem",
-    "content": "Erdős-Fuchs (1956): No set A has ∑ 1_A * 1_A = cN + o(N^{1/4}/(log N)^{1/2}). The foundational result for 2-fold convolutions.",
+    "title": "Erdős-Fuchs Theorem (2-fold case)",
+    "content": "**erdos_fuchs_theorem (axiom):** No set A has ∑ 1_A * 1_A = cN + o(N^{1/4}/(log N)^{1/2}). The foundational 1956 result.\n\n**erdos_fuchs_corollary (axiom):** No set A has ∑ 1_A * 1_A = cN + O(1). Since bounded error implies the weaker bound, this follows.",
     "significance": "critical"
   },
   {
-    "id": "ann-764-efcorollary",
+    "id": "ann-764-vaughan",
     "proofId": "erdos-764",
-    "range": { "startLine": 89, "endLine": 100 },
+    "range": { "startLine": 113, "endLine": 135 },
+    "type": "axiom",
+    "title": "Vaughan's Theorem (3-fold and h-fold)",
+    "content": "**vaughan_3fold_theorem (axiom):** No set A has ∑ 1_A * 1_A * 1_A = cN + o(N^{1/4}/(log N)^{1/2}). The strong form.\n\n**vaughan_corollary (axiom):** No set A has ∑ 1_A * 1_A * 1_A = cN + O(1). The direct answer to Problem #764: NO.\n\n**vaughan_hfold_theorem (axiom):** Applies to any h-fold convolution with h ≥ 2. Completely general.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-764-oscillation",
+    "proofId": "erdos-764",
+    "range": { "startLine": 144, "endLine": 156 },
+    "type": "axiom",
+    "title": "Error Oscillation",
+    "content": "**ErrorOscillates f c:** The error f(N) - cN is infinitely often above N^{1/4} and infinitely often below -N^{1/4}. It cannot stay bounded on one side.\n\n**error_oscillation (axiom):** For any infinite set A, the 3-fold convolution error must oscillate by at least N^{1/4} infinitely often.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-764-squares",
+    "proofId": "erdos-764",
+    "range": { "startLine": 162, "endLine": 168 },
     "type": "theorem",
-    "title": "erdos_fuchs_corollary",
-    "content": "Corollary: No set has ∑ 1_A * 1_A = cN + O(1). Bounded error implies little-o for large N.",
+    "title": "Squares Example",
+    "content": "**squares_not_linear (proved):** Even for A = {0, 1, 4, 9, 16, ...} (perfect squares), the 3-fold sum cannot be cN + O(1).\n\nProved directly from vaughan_corollary. Waring's problem studies the same convolution but without requiring linear growth.",
     "significance": "key"
   },
   {
-    "id": "ann-764-vaughan3",
+    "id": "ann-764-refinement",
     "proofId": "erdos-764",
-    "range": { "startLine": 108, "endLine": 110 },
+    "range": { "startLine": 176, "endLine": 189 },
     "type": "axiom",
-    "title": "Vaughan 3-Fold Theorem",
-    "content": "Vaughan (1972): No set A has ∑ 1_A * 1_A * 1_A = cN + o(N^{1/4}/(log N)^{1/2}). The main result for 3-fold convolutions.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-764-vaughancorollary",
-    "proofId": "erdos-764",
-    "range": { "startLine": 112, "endLine": 120 },
-    "type": "theorem",
-    "title": "vaughan_corollary",
-    "content": "Corollary: No set has ∑ 1_A * 1_A * 1_A = cN + O(1). The answer to Erdős Problem #764 is NO.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-764-vaughanh",
-    "proofId": "erdos-764",
-    "range": { "startLine": 122, "endLine": 124 },
-    "type": "axiom",
-    "title": "Vaughan h-Fold Theorem",
-    "content": "Vaughan's theorem applies to any h-fold convolution with h ≥ 2. The result is completely general.",
+    "title": "Montgomery-Vaughan Refinement and Tightness",
+    "content": "**montgomery_vaughan_refinement (axiom):** Even o(N^{1/4}) is impossible (removing the log factor from Erdős-Fuchs).\n\n**quarter_exponent_tight (axiom):** There exist sets where the error is O(N^{α}) for any α > 1/4. The 1/4 exponent is essentially best possible — it cannot be improved.",
     "significance": "key"
-  },
-  {
-    "id": "ann-764-oscillates",
-    "proofId": "erdos-764",
-    "range": { "startLine": 132, "endLine": 135 },
-    "type": "definition",
-    "title": "ErrorOscillates",
-    "content": "The error term must oscillate: infinitely often above N^{1/4} and infinitely often below -N^{1/4}.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-764-errorosc",
-    "proofId": "erdos-764",
-    "range": { "startLine": 137, "endLine": 140 },
-    "type": "axiom",
-    "title": "error_oscillation",
-    "content": "For any infinite set A, the error in ∑ 1_A * 1_A * 1_A - cN must oscillate by at least N^{1/4} infinitely often.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-764-examples",
-    "proofId": "erdos-764",
-    "range": { "startLine": 146, "endLine": 162 },
-    "type": "example",
-    "title": "Examples",
-    "content": "Special cases: {0} gives trivial convolution, ℕ gives stars-and-bars count, squares still satisfy the impossibility result.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-764-mv",
-    "proofId": "erdos-764",
-    "range": { "startLine": 172, "endLine": 174 },
-    "type": "axiom",
-    "title": "Montgomery-Vaughan Refinement",
-    "content": "Montgomery-Vaughan (1990) refined Erdős-Fuchs: even o(N^{1/4}) is impossible (without the log factor).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-764-tight",
-    "proofId": "erdos-764",
-    "range": { "startLine": 176, "endLine": 178 },
-    "type": "axiom",
-    "title": "Quarter Exponent Tight",
-    "content": "The 1/4 exponent is essentially best possible: there exist sets where the error is O(N^{1/4+ε}) for any ε > 0.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-764-statement",
-    "proofId": "erdos-764",
-    "range": { "startLine": 184, "endLine": 200 },
-    "type": "theorem",
-    "title": "erdos_764_statement",
-    "content": "Main theorem: (1) 3-fold sum cannot be cN + O(1), (2) cannot even be cN + o(N^{1/4}/(log N)^{1/2}), (3) generalizes to h-fold.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-764-answer",
-    "proofId": "erdos-764",
-    "range": { "startLine": 202, "endLine": 206 },
-    "type": "theorem",
-    "title": "erdos_764_answer",
-    "content": "The answer to Erdős Problem #764 is NO: no set A exists with ∑ 1_A * 1_A * 1_A = cN + O(1).",
-    "significance": "critical"
   },
   {
     "id": "ann-764-summary",
     "proofId": "erdos-764",
-    "range": { "startLine": 208, "endLine": 214 },
+    "range": { "startLine": 206, "endLine": 216 },
     "type": "theorem",
-    "title": "erdos_764_summary",
-    "content": "Summary: Vaughan (1972) proved impossible. Error must exceed N^{1/4}/(log N)^{1/2} infinitely often. Generalizes Erdős-Fuchs (1956).",
+    "title": "Summary Theorem",
+    "content": "**erdos_764_summary (proved from axioms):**\n\nCombines three impossibility results:\n1. 3-fold sum cannot be cN + O(1) (vaughan_corollary)\n2. Cannot even be cN + o(N^{1/4}/(log N)^{1/2}) (vaughan_3fold_theorem)\n3. Generalizes to h-fold for all h ≥ 2 (vaughan_hfold_theorem)\n\nProved by: `⟨vaughan_corollary, vaughan_3fold_theorem, vaughan_hfold_theorem⟩`",
     "significance": "critical"
   }
 ]

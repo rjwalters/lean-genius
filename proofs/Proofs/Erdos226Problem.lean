@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #226: Entire Functions Preserving Rationality
 
 Source: https://erdosproblems.com/226
@@ -221,28 +221,7 @@ axiom barth_schneider_complex :
       IsTranscendental f ∧
       (∀ z : ℂ, z ∈ A ↔ f z ∈ B)
 
-/--
-**Additional Properties:**
-The constructed function can be made to have various
-additional properties (monotone on ℝ, specific growth, etc.).
--/
-axiom construction_flexibility : True
-
 /-! ## Part IX: Why This Works -/
-
-/--
-**Key Insight 1: Weierstrass Products:**
-The construction uses Weierstrass products to build entire
-functions with prescribed zeros.
--/
-axiom weierstrass_products : True
-
-/--
-**Key Insight 2: Interpolation:**
-The proof interpolates through all rational points while
-maintaining entirety and the bijectivity property.
--/
-axiom interpolation_technique : True
 
 /--
 **Key Insight 3: Transcendence:**
@@ -285,10 +264,8 @@ theorem erdos_226_summary :
     -- The answer is YES
     ErdosQuestion ∧
     -- The general question is also YES
-    GeneralQuestion ∧
-    -- No polynomial works
-    True := by
-  exact ⟨erdos_question_affirmative, general_question_affirmative, trivial⟩
+    GeneralQuestion := by
+  exact ⟨erdos_question_affirmative, general_question_affirmative⟩
 
 /--
 **Erdős Problem #226: SOLVED**

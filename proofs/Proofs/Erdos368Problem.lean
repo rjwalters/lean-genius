@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #368: Largest Prime Factor of n(n+1)
 
 Source: https://erdosproblems.com/368

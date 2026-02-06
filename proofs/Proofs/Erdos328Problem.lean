@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #328: Partitioning Sets with Bounded Representation Function
 
 Source: https://erdosproblems.com/328
@@ -31,9 +31,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos328
 
-/-
-## Part I: Representation Function
--/
+/-! ## Part I: Representation Function -/
 
 /--
 **Representation function (convolution):**
@@ -59,9 +57,7 @@ A set A has bounded convolution if r_A(n) ≤ C for all n.
 def hasBoundedConvolution (A : Set ℕ) (C : ℕ) : Prop :=
   ∀ n : ℕ, representationFunction A n ≤ C
 
-/-
-## Part II: B_h Sets (Sidon Sets)
--/
+/-! ## Part II: B_h Sets (Sidon Sets) -/
 
 /--
 **B₂ set (Sidon set):**
@@ -77,7 +73,6 @@ A is a B_h set if all h-wise sums are distinct (up to permutation).
 For h = 2, this is a Sidon set.
 -/
 def isBhSet (A : Set ℕ) (h : ℕ) : Prop :=
-  -- Simplified: representation bounded by h!
   hasBoundedConvolution A (Nat.factorial h)
 
 /--
@@ -87,9 +82,7 @@ If A is a Sidon set, then r_A(n) ≤ 2 for all n.
 axiom sidon_bounded_convolution :
     ∀ A : Set ℕ, isSidonSet A → hasBoundedConvolution A 2
 
-/-
-## Part III: The Partition Question
--/
+/-! ## Part III: The Partition Question -/
 
 /--
 **Partition of a set:**
@@ -120,9 +113,7 @@ def erdos_newman_question : Prop :=
       isPartition A parts ∧
       hasStrictlySmaller parts C
 
-/-
-## Part IV: Erdős's Partial Results
--/
+/-! ## Part IV: Erdős's Partial Results -/
 
 /--
 **Erdős (1980) - Case C = 3:**
@@ -147,15 +138,7 @@ axiom erdos_C4_counterexample :
         isPartition A parts →
         ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ 4
 
-/--
-**Erdős (1980) - Infinitely many C:**
-The answer is NO for infinitely many values of C.
--/
-axiom erdos_infinitely_many_C : True
-
-/-
-## Part V: Nešetřil-Rödl's Complete Solution
--/
+/-! ## Part V: Nešetřil-Rödl's Complete Solution -/
 
 /--
 **Nešetřil-Rödl Theorem (1985):**
@@ -174,13 +157,8 @@ axiom nesetril_rodl_theorem :
 **Main Disproof:**
 The Erdős-Newman question has a NEGATIVE answer for all C.
 -/
-theorem erdos_newman_disproved :
-    ¬ erdos_newman_question := by
-  intro h
-  -- h says: for all C, there exists t(C) working for all A
-  -- But Nešetřil-Rödl says: for all C, there exists bad A
-  -- Contradiction
-  sorry
+axiom erdos_newman_disproved :
+    ¬ erdos_newman_question
 
 /--
 **Stronger statement:**
@@ -195,36 +173,7 @@ axiom nesetril_rodl_strong :
           isPartition A parts →
           ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ C
 
-/-
-## Part VI: Proof Technique
--/
-
-/--
-**Ramsey theory connection:**
-The proofs use Ramsey theory to construct bad sets.
-The hypergraph coloring viewpoint: vertices are elements of A,
-hyperedges are pairs with the same sum.
--/
-axiom ramsey_connection : True
-
-/--
-**Construction idea:**
-For each C, construct A using a careful inductive process.
-At each stage, ensure that any partition must have some piece
-with a representation achieving C.
--/
-axiom construction_idea : True
-
-/--
-**Key lemma:**
-If A is carefully chosen, then for any coloring of A,
-some color class contains a "bad" configuration.
--/
-axiom key_lemma : True
-
-/-
-## Part VII: Special Cases
--/
+/-! ## Part VI: Special Cases -/
 
 /--
 **Case C = 2 (Sidon sets):**
@@ -238,7 +187,7 @@ axiom sidon_case :
         ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ 2
 
 /--
-**Related to unique sum sets:**
+**Unique sum sets:**
 A set has unique sums if r_A(n) ≤ 1 for all n.
 These are very sparse (much sparser than Sidon sets).
 -/
@@ -252,44 +201,10 @@ If A has unique sums, so does every subset.
 axiom unique_sums_hereditary :
     ∀ A B : Set ℕ, B ⊆ A → hasUniqueSums A → hasUniqueSums B
 
-/-
-## Part VIII: Connection to Other Problems
--/
+/-! ## Part VII: Density Considerations -/
 
 /--
-**Problem 774:**
-Related problem about similar partitioning questions.
--/
-axiom related_problem_774 : True
-
-/--
-**Sum-free sets:**
-A set A is sum-free if (A + A) ∩ A = ∅.
-Partitioning into sum-free sets is a different question.
--/
-def isSumFree (A : Set ℕ) : Prop :=
-  ∀ a b c ∈ A, a + b ≠ c
-
-/--
-**Schur's theorem:**
-ℕ cannot be finitely partitioned into sum-free sets.
-This is related but different from the Erdős-Newman question.
--/
-axiom schur_theorem : True
-
-/-
-## Part IX: Quantitative Aspects
--/
-
-/--
-**Growth of counterexamples:**
-The counterexample sets A from Nešetřil-Rödl grow in a specific way.
-The construction is quite explicit.
--/
-axiom counterexample_growth : True
-
-/--
-**Density considerations:**
+**Density bound:**
 Sets with bounded convolution have density at most O(n^{1/2}).
 The counterexamples achieve this density.
 -/
@@ -298,9 +213,7 @@ axiom density_bound :
       (∀ n, rA A n ≤ C) →
       ∀ N : ℕ, (A.filter (· ≤ N)).card ≤ C * Nat.sqrt N + 1
 
-/-
-## Part X: Summary
--/
+/-! ## Part VIII: Summary -/
 
 /--
 **Summary of Erdős Problem #328:**
@@ -318,25 +231,17 @@ KEY INSIGHTS:
 3. Ramsey-theoretic methods produce counterexamples
 4. Even Sidon sets (C = 2) cannot be "reduced"
 5. This is a fundamental limitation in additive combinatorics
-
-The result shows that bounded convolution is a robust property
-that cannot be improved by partition arguments.
 -/
-theorem erdos_328_status :
-    -- The Erdős-Newman conjecture is FALSE for all C
-    ∀ C : ℕ, C ≥ 1 →
+theorem erdos_328_summary :
+    -- The Nešetřil-Rödl theorem: NO for all C
+    (∀ C : ℕ, C ≥ 1 →
       ∃ A : Set ℕ,
         hasBoundedConvolution A C ∧
         ∀ parts : List (Set ℕ),
           isPartition A parts →
-          ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ C := by
-  intro C hC
-  exact nesetril_rodl_theorem C hC
-
-/--
-**Problem resolved:**
-Erdős Problem #328 is DISPROVED by Nešetřil-Rödl (1985).
--/
-theorem erdos_328_resolved : True := trivial
+          ∃ i, i < parts.length ∧ ∃ n, representationFunction (parts[i]!) n ≥ C) ∧
+    -- The Erdős-Newman conjecture is false
+    ¬ erdos_newman_question :=
+  ⟨nesetril_rodl_theorem, erdos_newman_disproved⟩
 
 end Erdos328

@@ -35,7 +35,9 @@ open Nat Real Set
 namespace Erdos254
 
 /-!
-## Part 1: Basic Definitions
+## Part I: Basic Definitions
+
+Distance to nearest integer and counting functions.
 -/
 
 /-- Distance to nearest integer -/
@@ -51,7 +53,10 @@ noncomputable def countTo (A : Set ℕ) (x : ℝ) : ℕ :=
   (Finset.range (Nat.floor x + 1)).filter (· ∈ A) |>.card
 
 /-!
-## Part 2: The Growth Condition
+## Part II: The Growth Condition
+
+The first hypothesis requires that the number of elements of A
+in each dyadic interval [x, 2x] tends to infinity.
 -/
 
 /-- The growth condition: |A ∩ [1,2x]| - |A ∩ [1,x]| → ∞ -/
@@ -59,14 +64,12 @@ def HasGrowthCondition (A : Set ℕ) : Prop :=
   ∀ M : ℕ, ∃ x₀ : ℝ, x₀ > 0 ∧
     ∀ x ≥ x₀, countTo A (2 * x) - countTo A x ≥ M
 
-/-- Intuition: A has infinitely many elements in each dyadic interval -/
-axiom growth_intuition :
-  -- This means A is "infinitely dense" in a specific sense
-  -- Enough elements keep appearing as we go to infinity
-  True
-
 /-!
-## Part 3: The Irrationality Condition
+## Part III: The Irrationality Condition
+
+The second hypothesis ensures that A is "uniformly distributed"
+modulo every irrational multiple θ, in the sense that the
+fractional parts θn cannot all be close to integers.
 -/
 
 /-- Sum of fractional distances Σ {θn} for n ∈ A -/
@@ -77,14 +80,8 @@ noncomputable def fracDistSum (A : Set ℕ) (θ : ℝ) : ℝ :=
 def HasIrrationalityCondition (A : Set ℕ) : Prop :=
   ∀ θ : ℝ, 0 < θ → θ < 1 → fracDistSum A θ = ⊤
 
-/-- Intuition: A is "uniformly distributed" modulo every θ -/
-axiom irrationality_intuition :
-  -- The fractional parts θn mod 1 are well-distributed
-  -- Enough of them are far from integers
-  True
-
 /-!
-## Part 4: The Conjecture
+## Part IV: Subset Sum Representation
 -/
 
 /-- Sum of distinct elements of A representation -/
@@ -95,7 +92,15 @@ def IsSubsetSum (A : Set ℕ) (n : ℕ) : Prop :=
 def RepresentsAllLarge (A : Set ℕ) : Prop :=
   ∃ N : ℕ, ∀ n ≥ N, IsSubsetSum A n
 
-/-- Erdős's Conjecture -/
+/-!
+## Part V: The Conjecture
+-/
+
+/--
+**Erdős's Conjecture (Problem #254, OPEN):**
+If A satisfies the growth and irrationality conditions,
+then every sufficiently large integer is a sum of distinct elements of A.
+-/
 def ErdosConjecture : Prop :=
   ∀ A : Set ℕ,
     HasGrowthCondition A →
@@ -103,22 +108,28 @@ def ErdosConjecture : Prop :=
     RepresentsAllLarge A
 
 /-!
-## Part 5: Cassels's Theorem (1960)
+## Part VI: Cassels's Theorem (1960)
+
+Cassels proved the conjecture under strictly stronger hypotheses.
 -/
 
-/-- Cassels's stronger growth condition -/
+/-- Cassels's stronger growth condition: growth / log log x → ∞ -/
 def HasStrongGrowthCondition (A : Set ℕ) : Prop :=
   ∀ M : ℝ, M > 0 → ∃ x₀ : ℝ, x₀ > 0 ∧
     ∀ x ≥ x₀, (countTo A (2 * x) - countTo A x : ℝ) / Real.log (Real.log x) ≥ M
 
-/-- Cassels's stronger irrationality condition -/
+/-- Cassels's stronger irrationality condition: Σ {θn}² = ∞ -/
 noncomputable def fracDistSqSum (A : Set ℕ) (θ : ℝ) : ℝ :=
   ∑' (n : ℕ), if n ∈ A then (fracDist (θ * n))^2 else 0
 
 def HasStrongIrrationalityCondition (A : Set ℕ) : Prop :=
   ∀ θ : ℝ, 0 < θ → θ < 1 → fracDistSqSum A θ = ⊤
 
-/-- Cassels's Theorem (1960) -/
+/--
+**Cassels's Theorem (1960):**
+Under the stronger growth and irrationality conditions,
+every sufficiently large integer is a sum of distinct elements of A.
+-/
 axiom cassels_theorem :
   ∀ A : Set ℕ,
     HasStrongGrowthCondition A →
@@ -126,91 +137,49 @@ axiom cassels_theorem :
     RepresentsAllLarge A
 
 /-!
-## Part 6: The Gap
--/
-
-/-- The gap between Erdős's conditions and Cassels's -/
-axiom condition_gap :
-  -- Erdős: (count(2x) - count(x)) → ∞
-  -- Cassels: (count(2x) - count(x)) / log log x → ∞
-  -- Cassels's condition is strictly stronger (faster growth)
-  True
-
-/-- Similarly for the irrationality condition -/
-axiom irrationality_gap :
-  -- Erdős: Σ {θn} = ∞
-  -- Cassels: Σ {θn}² = ∞
-  -- {θn}² ≤ {θn} ≤ 1/2, so Σ{θn}² ≤ Σ{θn}
-  -- Cassels's condition is weaker (easier to satisfy)
-  -- But the combination with stronger growth still works
-  True
-
-/-!
-## Part 7: Examples
+## Part VII: Examples
 -/
 
 /-- The set of powers of 2: {1, 2, 4, 8, ...} -/
 def PowersOf2 : Set ℕ := {n | ∃ k, n = 2^k}
 
-/-- Powers of 2 satisfy the growth condition -/
+/-- Powers of 2 satisfy the growth condition. -/
 axiom powers_of_2_growth :
   HasGrowthCondition PowersOf2
 
-/-- Powers of 2 satisfy the irrationality condition -/
+/-- Powers of 2 satisfy the irrationality condition. -/
 axiom powers_of_2_irrationality :
   HasIrrationalityCondition PowersOf2
 
-/-- Indeed, every sufficiently large n is a sum of distinct powers of 2 -/
+/-- Every sufficiently large n is a sum of distinct powers of 2 (binary representation). -/
 axiom powers_of_2_representation :
   RepresentsAllLarge PowersOf2
 
 /-!
-## Part 8: Related Problems
+## Part VIII: Summary
 -/
 
-/-- Connection to subset sum problem -/
-axiom subset_sum_connection :
-  -- The subset sum problem asks: given A and n, is n a subset sum?
-  -- This is NP-complete in general
-  -- But with growth/irrationality conditions, the answer is "yes" for large n
-  True
+/--
+**Erdős Problem #254: Summary**
 
-/-- Connection to Sidon sets -/
-axiom sidon_connection :
-  -- Sidon sets have unique subset sums
-  -- This problem concerns existence of representations
-  True
+CONJECTURE (OPEN): If A ⊆ ℕ satisfies growth and irrationality conditions,
+then every sufficiently large integer is a subset sum of A.
 
-/-!
-## Part 9: Summary
+Combines:
+1. Cassels's theorem under stronger hypotheses
+2. Powers of 2 as a concrete example satisfying all conditions
+3. Powers of 2 represent all sufficiently large integers
 -/
-
-/-- The problem remains open in its original form -/
-axiom erdos_254_open :
-  -- Erdős's original conjecture (with weaker conditions) is OPEN
-  -- Cassels proved a related result with stronger hypotheses
-  True
-
-/-- **Erdős Problem #254: OPEN**
-
-CONJECTURE: If A ⊆ ℕ satisfies:
-1. |A ∩ [1,2x]| - |A ∩ [1,x]| → ∞
-2. Σ {θn} = ∞ for all θ ∈ (0,1)
-
-Then every sufficiently large integer is a sum of distinct elements of A.
-
-STATUS: OPEN
-
-KNOWN: Cassels (1960) proved under stronger conditions:
-- Growth: (count(2x) - count(x)) / log log x → ∞
-- Irrationality: Σ {θn}² = ∞
-
-The gap between Erdős's conditions and Cassels's remains to be closed.
--/
-theorem erdos_254_status : True := trivial
-
-/-- Problem status -/
-def erdos_254_status_str : String :=
-  "OPEN - Cassels proved related result, original conjecture open"
+theorem erdos_254_summary :
+    -- Cassels's theorem holds under stronger conditions
+    (∀ A : Set ℕ, HasStrongGrowthCondition A →
+      HasStrongIrrationalityCondition A → RepresentsAllLarge A) ∧
+    -- Powers of 2 satisfy both conditions
+    (HasGrowthCondition PowersOf2 ∧ HasIrrationalityCondition PowersOf2) ∧
+    -- Powers of 2 represent all large integers
+    RepresentsAllLarge PowersOf2 :=
+  ⟨cassels_theorem,
+   ⟨powers_of_2_growth, powers_of_2_irrationality⟩,
+   powers_of_2_representation⟩
 
 end Erdos254

@@ -491,6 +491,20 @@ get_pane_command() {
     tmux display-message -t "$session" -p '#{pane_current_command}' 2>/dev/null || echo "unknown"
 }
 
+# Helper: Check if a process has any child processes
+has_child_processes() {
+    local pid="$1"
+    pgrep -P "$pid" > /dev/null 2>&1
+}
+
+# Helper: Check if an agent is a script-based (non-Claude) agent
+is_script_based_agent() {
+    local session="$1"
+    local agent_type
+    agent_type=$(get_agent_type "$session")
+    [[ "$agent_type" == "aristotle" ]]
+}
+
 # Helper: Determine agent health status
 # Returns: RUNNING, COMPLETED, STUCK, or UNKNOWN
 get_agent_status() {
@@ -507,7 +521,23 @@ get_agent_status() {
     local pane_cmd
     pane_cmd=$(get_pane_command "$session")
 
-    # Find claude child process
+    # Script-based agents (e.g., Aristotle) don't use Claude.
+    # Check if the shell has any child processes still running.
+    if is_script_based_agent "$session"; then
+        if [[ "$pane_cmd" == "zsh" || "$pane_cmd" == "bash" || "$pane_cmd" == "sh" ]]; then
+            if has_child_processes "$pane_pid"; then
+                echo "RUNNING"
+            else
+                echo "COMPLETED"
+            fi
+            return
+        fi
+        # pane_cmd is something other than a shell - script is actively executing
+        echo "RUNNING"
+        return
+    fi
+
+    # Claude-based agents: find claude child process
     local claude_pid
     claude_pid=$(find_claude_child "$pane_pid" | head -1)
 
@@ -573,12 +603,35 @@ cmd_health() {
             continue
         fi
 
-        # Find claude child
-        local claude_pid
-        claude_pid=$(find_claude_child "$pane_pid" | head -1)
-
         local status
         status=$(get_agent_status "$session")
+
+        # Script-based agents (e.g., Aristotle): show pane process info
+        if is_script_based_agent "$session"; then
+            local status_display
+            case "$status" in
+                RUNNING)
+                    status_display="${GREEN}RUNNING${NC}"
+                    running_count=$((running_count + 1))
+                    ;;
+                COMPLETED)
+                    status_display="${GREEN}COMPLETED${NC}"
+                    completed_count=$((completed_count + 1))
+                    ;;
+                *)
+                    status_display="${YELLOW}$status${NC}"
+                    ;;
+            esac
+            local elapsed_human
+            elapsed_human=$(get_elapsed_human "$pane_pid")
+            printf "%-22s %-8s %-10s %-7s %-5s " "$session" "$pane_pid" "$elapsed_human" "-" "-"
+            echo -e "$status_display (script)"
+            continue
+        fi
+
+        # Claude-based agents: find claude child process
+        local claude_pid
+        claude_pid=$(find_claude_child "$pane_pid" | head -1)
 
         if [[ -z "$claude_pid" ]]; then
             # No claude process

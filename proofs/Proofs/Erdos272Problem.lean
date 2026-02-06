@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #272: Intersection Properties of Subsets
 
 Source: https://erdosproblems.com/272

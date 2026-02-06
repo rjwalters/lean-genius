@@ -15,33 +15,31 @@
     "erdosNumber": 683,
     "erdosUrl": "https://erdosproblems.com/683",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.26.0",
-    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "dateAdded": "2026-01-19",
     "mathlibDependencies": [
       { "theorem": "Nat.choose", "description": "Binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic" },
       { "theorem": "Nat.Prime", "description": "Prime numbers", "module": "Mathlib.Data.Nat.Prime.Basic" },
       { "theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
-      { "theorem": "Real.rpow", "description": "Real exponentiation", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" },
-      { "theorem": "Finset.prod", "description": "Finite products", "module": "Mathlib.Algebra.BigOperators.Group.Finset" }
+      { "theorem": "Real.rpow", "description": "Real exponentiation", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
     ],
     "originalContributions": [
-      "largestPrimeDivisor: P(n) is the largest prime dividing n",
-      "P: Largest prime divisor of C(n,k)",
-      "sylvester_schur: P(C(n,k)) > k for k ≤ n/2",
-      "erdos_1955_bound: P(C(n,k)) ≥ c·k·log k",
-      "erdosConjecture683: The main open conjecture",
-      "erdos_1979_belief: k^{1+c} bound with finite exceptions",
-      "prime_gap_heuristic: e^{c√k} heuristic bound",
-      "consecutiveProduct: Product of k consecutive integers",
-      "bertrand_for_central: P(C(2n,n)) > n",
-      "central_binom_bound: P(C(2k,k)) > (4/3)k"
-    ],
-    "dateAdded": "2026-01-19"
+      "largestPrimeDivisor with P_is_prime, P_divides, P_largest axioms",
+      "P(C(n,k)) applied to binomial coefficients",
+      "sylvester_schur axiom: P(C(n,k)) > k",
+      "erdos_1955_bound axiom: P(C(n,k)) ≥ c·k·log k",
+      "erdosConjecture683: the main open conjecture formalized",
+      "erdos_1979_belief: k^{1+c} with finite exceptions",
+      "prime_gap_heuristic and heuristic_stronger_than_conjecture",
+      "consecutiveProduct, bertrand_for_central, consecutive_has_large_prime",
+      "central_binom_bound and small_k_case_2",
+      "erdos_683_summary combining proven bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Sylvester (1892) and Schur (1929) proved that for k ≤ n/2, the binomial coefficient C(n,k) has a prime divisor exceeding k. Erdős improved this in 1934 and 1955, showing P(C(n,k)) ≫ k log k. In 1979, Erdős conjectured the stronger bound P(C(n,k)) ≥ min(n-k+1, k^{1+c}), which remains open.",
+    "historicalContext": "Sylvester (1892) proved that the product of k consecutive integers greater than k contains a prime factor exceeding k. Schur (1929) refined this to show that the binomial coefficient C(n,k) itself has such a large prime divisor. This foundational result — P(C(n,k)) > k for k ≤ n/2 — became the starting point for deeper investigations.\n\nErdős made this problem his own over several decades. In 1934 he gave a new proof of the Sylvester-Schur theorem. In 1955, he significantly improved the bound to P(C(n,k)) ≫ k log k. By 1979, he conjectured the much stronger bound P(C(n,k)) ≥ min(n-k+1, k^{1+c}) for some absolute constant c > 0, and wrote that it 'seems certain' that P(C(n,k)) > k^{1+c} holds with only finitely many exceptions for any c > 0.\n\nThe problem remains open despite substantial progress. Standard heuristics based on prime gap statistics suggest the even stronger bound P(C(n,k)) > e^{c√k}, a stretched exponential that far exceeds any polynomial growth. The problem connects number theory (prime distribution in consecutive products) with combinatorics (binomial coefficients), and is essentially equivalent to Problem #961.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nFor every 1 ≤ k ≤ n, is there a constant c > 0 such that:\n  P(C(n,k)) ≥ min(n - k + 1, k^{1+c})\n\nwhere P(m) denotes the largest prime divisor of m?\n\n**Known:**\n- P(C(n,k)) > k for k ≤ n/2 (Sylvester-Schur)\n- P(C(n,k)) ≫ k log k (Erdős 1955)\n\n**Believed:**\n- For any c > 0, P(C(n,k)) > k^{1+c} with finitely many exceptions",
-    "proofStrategy": "The formalization defines the largest prime divisor function P and applies it to binomial coefficients. The Sylvester-Schur theorem and Erdős's 1955 improvement are axiomatized. The main conjecture is stated but marked as open. Connections to products of consecutive integers and Bertrand's postulate are explored.",
+    "proofStrategy": "The formalization defines the largest prime divisor function P and applies it to binomial coefficients. The Sylvester-Schur theorem and Erdős's 1955 improvement are axiomatized with proper type signatures. The main conjecture is stated as a definition. Connections to products of consecutive integers, Bertrand's postulate, and specific cases (central binomial, k=2) are explored. The summary theorem combines the two proven bounds.",
     "keyInsights": [
       "**Sylvester-Schur:** P(C(n,k)) > k is the foundation",
       "**Erdős 1955:** P(C(n,k)) ≫ k log k is a significant improvement",
@@ -57,70 +55,63 @@
       "title": "Basic Definitions",
       "startLine": 41,
       "endLine": 78,
-      "summary": "Largest prime divisor P(n), P(C(n,k)) for binomials"
+      "summary": "largestPrimeDivisor, P(C(n,k)), P_is_prime, P_divides, P_largest"
     },
     {
       "id": "sylvester-schur",
       "title": "Sylvester-Schur Theorem",
       "startLine": 80,
-      "endLine": 110,
-      "summary": "P(C(n,k)) > k for k ≤ n/2"
+      "endLine": 113,
+      "summary": "sylvester_schur axiom, choose_gt_one, binom_has_large_prime (proved)"
     },
     {
       "id": "erdos-1955",
       "title": "Erdős's 1955 Improvement",
-      "startLine": 112,
-      "endLine": 134,
-      "summary": "P(C(n,k)) ≫ k log k"
+      "startLine": 115,
+      "endLine": 137,
+      "summary": "erdos_1955_bound axiom, erdos_1955_asymptotic (proved)"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "startLine": 136,
-      "endLine": 164,
-      "summary": "erdosConjecture683: min(n-k+1, k^{1+c}) bound (OPEN)"
+      "startLine": 139,
+      "endLine": 161,
+      "summary": "erdosConjecture683 (OPEN), erdos_1979_belief"
     },
     {
       "id": "heuristics",
       "title": "Heuristic Bounds",
-      "startLine": 166,
-      "endLine": 191,
-      "summary": "Prime gap heuristic: e^{c√k}"
+      "startLine": 163,
+      "endLine": 188,
+      "summary": "prime_gap_heuristic, heuristic_stronger_than_conjecture"
     },
     {
       "id": "min-bound",
       "title": "The min(n-k+1, k^{1+c}) Bound",
-      "startLine": 193,
-      "endLine": 213,
-      "summary": "Why the minimum of two terms"
+      "startLine": 190,
+      "endLine": 199,
+      "summary": "P_upper_bound axiom"
     },
     {
       "id": "consecutive",
       "title": "Products of Consecutive Integers",
-      "startLine": 215,
-      "endLine": 241,
-      "summary": "Connection to C(n,k) numerator, Bertrand's postulate"
+      "startLine": 201,
+      "endLine": 227,
+      "summary": "consecutiveProduct, bertrand_for_central, consecutive_has_large_prime"
     },
     {
       "id": "specific-cases",
       "title": "Specific Cases",
-      "startLine": 243,
-      "endLine": 263,
-      "summary": "Central binomial, small k cases"
-    },
-    {
-      "id": "related-961",
-      "title": "Related Problem 961",
-      "startLine": 265,
-      "endLine": 280,
-      "summary": "Equivalence to Problem 961"
+      "startLine": 229,
+      "endLine": 249,
+      "summary": "central_binom_bound, small_k_case_2"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 282,
-      "endLine": 331,
-      "summary": "Main theorem and historical note"
+      "startLine": 251,
+      "endLine": 279,
+      "summary": "erdos_683_summary combining sylvester_schur and erdos_1955_bound"
     }
   ],
   "conclusion": {

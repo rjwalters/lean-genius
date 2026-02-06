@@ -49,8 +49,7 @@
       "avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2",
       "swanepoel_2013: favorite distance pairs bound",
       "swanepoel_erdos_754: f(n) ≤ n/2 + O(1)",
-      "erdos_754_solved: combining bounds",
-      "Construction descriptions: Clifford torus, cross-polytope"
+      "erdos_754_solved: combining bounds"
     ]
   },
   "overview": {
@@ -97,37 +96,23 @@
     {
       "id": "swanepoel",
       "title": "Swanepoel's Theorem",
-      "summary": "2013 solution, favorite distance pairs",
+      "summary": "2013 solution, favorite distance pairs, erdos_754_solved",
       "startLine": 88,
       "endLine": 118
     },
     {
       "id": "higher-dim",
       "title": "Higher Dimensions",
-      "summary": "Generalizations to d ≥ 4",
+      "summary": "swanepoel_higher_dimensions for d ≥ 4",
       "startLine": 120,
-      "endLine": 133
-    },
-    {
-      "id": "geometry",
-      "title": "Why ℝ⁴ Is Special",
-      "summary": "Dimensional phenomena",
-      "startLine": 135,
-      "endLine": 152
-    },
-    {
-      "id": "constructions",
-      "title": "Constructions",
-      "summary": "Clifford torus, cross-polytope",
-      "startLine": 154,
-      "endLine": 170
+      "endLine": 127
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_754_solved, erdos_754_summary",
-      "startLine": 185,
-      "endLine": 217
+      "summary": "erdos_754, erdos_754_summary",
+      "startLine": 129,
+      "endLine": 164
     }
   ],
   "conclusion": {

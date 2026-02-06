@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #923: Triangle-Free Subgraphs with High Chromatic Number
 
 Source: https://erdosproblems.com/923
@@ -42,9 +42,7 @@ open Nat SimpleGraph
 
 namespace Erdos923
 
-/-
-## Part I: Graph Colorings and Chromatic Number
--/
+/-! ## Part I: Graph Colorings and Chromatic Number -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -70,9 +68,7 @@ G has chromatic number at least k.
 def HasChromaticNumberAtLeast (G : SimpleGraph V) (k : ℕ) : Prop :=
   chromaticNumber G ≥ k
 
-/-
-## Part II: Triangle-Free Graphs
--/
+/-! ## Part II: Triangle-Free Graphs -/
 
 /--
 **Triangle:**
@@ -99,9 +95,7 @@ theorem emptyGraph_triangleFree : IsTriangleFree (⊥ : SimpleGraph V) := by
   intros a b c _ _ _
   simp [SimpleGraph.bot_adj]
 
-/-
-## Part III: Subgraphs
--/
+/-! ## Part III: Subgraphs -/
 
 /--
 **Spanning Subgraph:**
@@ -124,12 +118,8 @@ Subgraphs have chromatic number at most that of the parent.
 axiom subgraph_chromatic_le (H G : SimpleGraph V)
     (hsub : IsSpanningSubgraph H G) :
     chromaticNumber H ≤ chromaticNumber G
-  -- Any proper coloring of G is also a proper coloring of H
-  -- since H has fewer edges (non-adjacencies in H are also non-adjacencies in any valid coloring)
 
-/-
-## Part IV: Mycielski's Construction (Context)
--/
+/-! ## Part IV: Mycielski's Construction (Context) -/
 
 /--
 **Mycielski Graphs:**
@@ -141,19 +131,7 @@ axiom mycielski_triangle_free_high_chromatic :
     ∃ G : SimpleGraph W,
       IsTriangleFree G ∧ HasChromaticNumberAtLeast G k
 
-/-
-## Part V: The Main Problem
--/
-
-/--
-**The Erdős-Rödl Function:**
-f(k) is the threshold such that χ(G) ≥ f(k) implies G has a
-triangle-free subgraph with χ ≥ k.
--/
-def erdosRodlFunction : ℕ → ℕ := fun k =>
-  -- The actual function is a tower of 2s, roughly 2^2^...^2 (k times)
-  -- We leave this as an abstract function
-  k  -- Placeholder; actual bound is much larger
+/-! ## Part V: The Main Problem -/
 
 /--
 **Rödl's Theorem (1977):**
@@ -184,12 +162,10 @@ theorem erdos_923_true :
         HasChromaticNumberAtLeast H k :=
   rodl_1977
 
-/-
-## Part VI: Related Results
--/
+/-! ## Part VI: Tower Function Bounds -/
 
 /--
-**Tower Function Bound:**
+**Tower Function:**
 The function f(k) in Rödl's theorem can be taken to be roughly
 a tower of 2s of height k.
 -/
@@ -221,15 +197,7 @@ axiom rodl_bound :
         IsTriangleFree H ∧
         HasChromaticNumberAtLeast H k
 
-/--
-**Lower Bound Considerations:**
-The exponential tower is necessary; sub-tower bounds don't suffice.
--/
-theorem tower_necessary : True := trivial  -- Placeholder for lower bound
-
-/-
-## Part VII: Generalizations
--/
+/-! ## Part VII: Generalizations -/
 
 /--
 **H-Free Version (Problem #108):**
@@ -246,7 +214,6 @@ def HFreeSubgraphProblem (H : Type*) [Fintype H] [DecidableEq H]
       HasChromaticNumberAtLeast G f_k →
       ∃ Gsub : SimpleGraph V,
         IsSpanningSubgraph Gsub G ∧
-        -- Gsub is H-free (doesn't contain H as subgraph)
         HasChromaticNumberAtLeast Gsub k
 
 /--
@@ -255,35 +222,13 @@ The H-free version holds for any bipartite H.
 -/
 axiom rodl_general_bipartite :
   ∀ (H : Type*) [Fintype H] [DecidableEq H] (Hgraph : SimpleGraph H),
-    -- If H is bipartite
     (∃ c : Hgraph.Coloring (Fin 2), True) →
     HFreeSubgraphProblem H Hgraph
 
-/-
-## Part VIII: Connection to Ramsey Theory
--/
+/-! ## Part VIII: Summary -/
 
 /--
-**Ramsey Connection:**
-The proof of Rödl's theorem uses Ramsey-theoretic arguments.
-High chromatic number forces structure that can be partitioned
-to find triangle-free pieces.
--/
-theorem ramsey_connection : True := trivial
-
-/--
-**Probabilistic Intuition:**
-If G has very high chromatic number, then even after removing
-many edges (to eliminate triangles), enough chromatic structure remains.
--/
-theorem probabilistic_intuition : True := trivial
-
-/-
-## Part IX: Summary
--/
-
-/--
-**Erdős Problem #923: Status**
+**Erdős Problem #923: Summary**
 
 **Question:**
 For every k, is there f(k) such that χ(G) ≥ f(k) implies G
@@ -308,7 +253,12 @@ theorem erdos_923_summary :
           IsSpanningSubgraph H G ∧ IsTriangleFree H ∧
           HasChromaticNumberAtLeast H k) ∧
     -- The bound is tower-type
-    True := by
-  exact ⟨rodl_1977, trivial⟩
+    (∀ k : ℕ, ∃ C : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
+      ∀ G : SimpleGraph V,
+        HasChromaticNumberAtLeast G (towerFunction (C * k)) →
+        ∃ H : SimpleGraph V,
+          IsSpanningSubgraph H G ∧ IsTriangleFree H ∧
+          HasChromaticNumberAtLeast H k) :=
+  ⟨rodl_1977, rodl_bound⟩
 
 end Erdos923

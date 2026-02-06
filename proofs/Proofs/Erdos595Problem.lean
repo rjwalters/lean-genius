@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #595: Infinite Graphs and Countable Triangle-Free Decomposition
 
 Source: https://erdosproblems.com/595

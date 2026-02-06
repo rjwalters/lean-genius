@@ -1,4 +1,4 @@
-/-
+/-!
   Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)
 
   Source: https://erdosproblems.com/419
@@ -123,13 +123,6 @@ axiom large_prime_valuation (p n : ℕ) (hp : p.Prime) (hdiv : p ∣ n + 1)
     (hlarge : (p : ℝ) > n^(2/3 : ℝ)) :
     padicValNat p (n + 1) = 1
 
-/-- Large prime p > n^(2/3) dividing n+1 = pk contributes (1 + 1/k) -/
-axiom large_prime_contribution (p n : ℕ) (hp : p.Prime) (hdiv : p ∣ n + 1)
-    (hlarge : (p : ℝ) > n^(2/3 : ℝ)) :
-    let k := (n + 1) / p
-    (1 + (padicValNat p (n + 1) : ℚ) / (padicValNat p n.factorial + 1)) =
-      (1 : ℚ) + 1 / k + o(1)  -- Informal; actual statement uses limits
-
 /-- When n+1 is prime, the ratio is approximately 2 -/
 axiom prime_case (n : ℕ) (hp : (n + 1).Prime) (hn : n ≥ 4) :
     |factorialDivisorRatio n - 2| < 1 / n
@@ -164,7 +157,7 @@ axiom only_these_limit_points (x : ℚ) :
     x ∈ limitPointSet
 
 /-!
-## Part 7: Examples
+## Part 7: Examples and Concrete Cases
 
 Concrete cases illustrating the phenomenon.
 -/
@@ -187,9 +180,9 @@ axiom example_highly_composite :
       |factorialDivisorRatio n - 1| < ε
 
 /-!
-## Part 8: The Proof Structure
+## Part 8: The Proof Structure and Main Theorem
 
-Outline of the complete argument.
+The ratio decomposition and Sawhney's characterization.
 -/
 
 /-- Main decomposition: ratio = (small prime contribution) × (large prime contribution) -/
@@ -231,48 +224,8 @@ axiom tau_factorial_log_asymptotic :
     ∀ ε > 0, ∃ N, ∀ n ≥ N,
       |Real.log (tau n.factorial) - n * Real.log n / Real.log (Real.log n)| / n < ε
 
-/-- The number of divisors of n! is related to the primorial -/
-axiom tau_factorial_primorial_relation :
-    True  -- Connection to product of (1 + vₚ(n!))
-
 /-!
-## Part 10: Generalizations
-
-Extensions of the result.
--/
-
-/-- Could study τ((n+k)!)/τ(n!) for fixed k -/
-axiom generalization_fixed_k (k : ℕ) (hk : k ≥ 1) :
-    True  -- Similar analysis possible
-
-/-- Could study σ((n+1)!)/σ(n!) for sum-of-divisors function -/
-axiom sum_of_divisors_analog :
-    True  -- Different behavior
-
-/-- Could study d(n!^2)/d(n!)^2 -/
-axiom square_analog :
-    True  -- Related problem
-
-/-!
-## Part 11: Historical Context
-
-The problem and its resolution.
--/
-
-/-- Erdős-Graham asked this in 1980 -/
-axiom erdos_graham_1980 :
-    True  -- Original source
-
-/-- Erdős-Graham-Ivić-Pomerance proved it in 1996 -/
-axiom egip_1996 :
-    True  -- Complete solution
-
-/-- Sawhney independently rediscovered the argument -/
-axiom sawhney_rediscovery :
-    True  -- Simple and elegant reproof
-
-/-!
-## Part 12: Summary
+## Part 10: Summary
 
 The limit points are exactly {1, 2, 3/2, 4/3, 5/4, ...}.
 -/
@@ -297,7 +250,14 @@ theorem limit_set_properties :
       have : (k : ℚ) ≥ 1 := by exact Nat.one_le_cast.mpr hk_pos
       linarith [this, one_div_pos.mpr (by linarith : (k : ℚ) > 0)]
 
-/-- Erdős Problem #419: SOLVED -/
-theorem erdos_419 : True := trivial
+/-- Erdős Problem #419: SOLVED
+    The limit points of τ((n+1)!)/τ(n!) are exactly {1} ∪ {1+1/k : k ≥ 1}.
+    Combines: characterization theorem, limit point existence, and uniqueness. -/
+theorem erdos_419_summary :
+    (∀ x : ℚ, (∀ ε > 0, ∃ᶠ n in Filter.atTop, |factorialDivisorRatio n - x| < ε) ↔
+      x ∈ limitPointSet) ∧
+    (∀ ε > 0, ∃ᶠ n in Filter.atTop, |factorialDivisorRatio n - 1| < ε) ∧
+    (∀ k : ℕ, k ≥ 1 → ∀ ε > 0, ∃ᶠ n in Filter.atTop, |factorialDivisorRatio n - (1 + 1/k)| < ε) :=
+  ⟨sawhney_characterization, one_is_limit_point, one_plus_reciprocal_is_limit_point⟩
 
 end Erdos419

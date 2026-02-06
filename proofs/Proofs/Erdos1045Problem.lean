@@ -1,4 +1,4 @@
-/-
+/-!
   Erdős Problem #1045: Maximum Product of Distances
 
   Source: https://erdosproblems.com/1045

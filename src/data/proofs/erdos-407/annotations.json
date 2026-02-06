@@ -106,27 +106,17 @@
   {
     "id": "ann-e407-four-family",
     "proofId": "erdos-407",
-    "range": { "startLine": 176, "endLine": 205 },
+    "range": { "startLine": 176, "endLine": 204 },
     "type": "definition",
     "title": "Family with 4 Representations",
-    "content": "**FourRepFamily, four_reps_equal:**\n\nFor a, b ≥ 2, algebraic identities give four distinct representations of the same n:\n\n2^{a-1} + 3^b + 2^{a-1}·3^0 = 2^{a-2} + 3^b + 2^{a-2}·3^1 = ...\n\nThis produces infinitely many n with w(n) = 4.",
+    "content": "**FourRepFamily, four_reps_equal, infinitely_many_with_4_reps:**\n\nFor a, b ≥ 2, algebraic identities give four distinct representations of the same n:\n\n2^{a-1} + 3^b + 2^{a-1}·3^0 = 2^{a-2} + 3^b + 2^{a-2}·3^1 = ...\n\nThis produces infinitely many n with w(n) = 4 (axiomatized).",
     "significance": "key",
     "relatedConcepts": ["Algebraic identities", "Infinite families"]
   },
   {
-    "id": "ann-e407-sunit",
-    "proofId": "erdos-407",
-    "range": { "startLine": 211, "endLine": 233 },
-    "type": "concept",
-    "title": "S-Unit Equation Theory",
-    "content": "**Connections:**\n\n1. **S-Unit Equations:** x₁ + x₂ + x₃ = n where x_i are S-units.\n\n2. **Baker's Method:** Linear forms in logarithms give effective bounds.\n\n3. **Thue-Mahler Equations:** Generalization of Thue equations with S-unit constraints.\n\nThe theory guarantees finitely many solutions to such equations.",
-    "significance": "supporting",
-    "relatedConcepts": ["Transcendence theory", "Diophantine equations"]
-  },
-  {
     "id": "ann-e407-summary",
     "proofId": "erdos-407",
-    "range": { "startLine": 259, "endLine": 282 },
+    "range": { "startLine": 210, "endLine": 233 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_407_summary:**\n\nCombines the three main results:\n\n1. w(n) is bounded (EGST 1988)\n2. w(n) ≤ 4 for large n (Tijdeman-Wang 1988)\n3. w(n) ≤ 9 always (Bajpai-Bennett 2024)\n\n**Conclusion:** Newman's conjecture is TRUE with explicit bounds.",

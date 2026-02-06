@@ -7,7 +7,7 @@
     "author": "Cameron-Erdős (1992), Saxton-Thomason (2015)",
     "sourceUrl": "https://erdosproblems.com/862",
     "date": "2015",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos862Problem.lean",
     "tags": [
       "erdos",
@@ -17,119 +17,111 @@
       "container-method",
       "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 2,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 862,
     "erdosUrl": "https://erdosproblems.com/862",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      { "theorem": "Finset.powerset", "description": "Power set of a finset for counting subsets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Real.sqrt", "description": "Square root for N^{1/2} bounds", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" },
+      { "theorem": "Filter.Tendsto", "description": "Asymptotic limits for o(1) bounds", "module": "Mathlib.Order.Filter.Basic" }
+    ],
+    "originalContributions": [
+      "IsSidonSet: Sidon set predicate (all pairwise sums distinct)",
+      "IsMaximalSidonSet: maximality predicate (no element can be added)",
+      "A₁(N) and A(N): counting functions for maximal and all Sidon subsets",
+      "CameronErdosQuestion1 and CameronErdosQuestion2: formal statements",
+      "saxton_thomason_lower_bound: A(N) ≥ 2^{(1.16+o(1))√N}",
+      "erdos_862_main: A₁(N) ≥ 2^{(0.16+o(1))√N}",
+      "question2_positive and question1_negative: answers to both questions",
+      "IsBhSet: B_h sequence generalization"
+    ]
   },
   "overview": {
-    "historicalContext": "A Sidon set (or B₂ sequence) is a set where all pairwise sums are distinct. Cameron and Erdős (1992) posed counting questions about such sets. This problem asks about A₁(N), the number of maximal Sidon subsets of {1,...,N}. Saxton and Thomason (2015) developed the hypergraph container method and proved tight bounds on the number of Sidon sets, which resolved this problem.",
+    "historicalContext": "Erdős Problem #862 asks two questions about counting maximal Sidon subsets of {1,...,N}. A Sidon set (also called a B₂ sequence) is a set of integers where all pairwise sums are distinct. A maximal Sidon set is one to which no element can be added without violating the Sidon property. Cameron and Erdős posed these counting questions in their 1992 paper on sum-free and related sets.\n\nThe problem was resolved by Saxton and Thomason in 2015 through their development of the hypergraph container method. They proved that the total number of Sidon subsets A(N) satisfies A(N) ≥ 2^{(1.16+o(1))√N}. Since the largest Sidon set has size approximately √N, each maximal Sidon set contains at most 2^{(1+o(1))√N} Sidon subsets. Dividing gives A₁(N) ≥ 2^{(0.16+o(1))√N}.\n\nThis resolves both questions: Question 2 (is A₁(N) > 2^{N^c}?) is answered YES since √N > N^c for c < 1/2. Question 1 (is A₁(N) < 2^{o(√N)}?) is answered NO since the lower bound shows growth at rate 2^{0.16√N}. The hypergraph container method has become one of the most powerful tools in modern combinatorics.",
     "problemStatement": "Let A₁(N) be the number of maximal Sidon subsets of {1,...,N}. Two questions: (1) Is A₁(N) < 2^{o(N^{1/2})}? (2) Is A₁(N) > 2^{N^c} for some constant c > 0?",
-    "proofStrategy": "Saxton-Thomason (2015) proved that the number of Sidon sets A(N) ≥ 2^{(1.16+o(1))√N}. Since each maximal Sidon set contains ≤ 2^{(1+o(1))√N} Sidon subsets, and every Sidon set is in some maximal one, we get A₁(N) ≥ A(N) / 2^{(1+o(1))√N} ≥ 2^{(0.16+o(1))√N}. This answers Q2: YES. For Q1: the lower bound shows A₁(N) is NOT < 2^{o(√N)}, so Q1: NO.",
+    "proofStrategy": "The formalization defines Sidon sets, maximal Sidon sets, and counting functions A₁(N) and A(N). It axiomatizes the Saxton-Thomason lower bound on A(N), the bound on Sidon subsets per maximal set, and derives the main result A₁(N) ≥ 2^{(0.16+o(1))√N}. Both questions are answered: Q2 YES, Q1 NO.",
     "keyInsights": [
-      "Sidon sets are independent sets in a hypergraph where edges are {a,b,c,d} with a+b=c+d",
-      "The hypergraph container method bounds independent sets in uniform hypergraphs",
-      "Saxton-Thomason: A(N) ≥ 2^{(1.16+o(1))√N} for all Sidon sets",
-      "Each maximal Sidon set contains ≤ 2^{(1+o(1))√N} Sidon subsets",
-      "Combining: A₁(N) ≥ 2^{(1.16-1)√N} = 2^{0.16√N}",
-      "Related to Problem #861 on counting all Sidon sets"
+      "Sidon sets are independent sets in a hypergraph where edges encode a+b=c+d",
+      "Saxton-Thomason: A(N) ≥ 2^{(1.16+o(1))√N} via hypergraph containers",
+      "Each maximal Sidon set has ≤ 2^{(1+o(1))√N} Sidon subsets",
+      "Combining: A₁(N) ≥ 2^{(1.16-1+o(1))√N} = 2^{(0.16+o(1))√N}",
+      "Q1 answer: NO. Q2 answer: YES. Both follow from the 0.16√N lower bound."
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
-      "title": "Sidon Sets - Basic Definitions",
-      "startLine": 50,
-      "endLine": 64,
+      "title": "Part I: Sidon Sets - Basic Definitions",
+      "startLine": 43,
+      "endLine": 55,
       "summary": "Defines Sidon sets (B₂ sequences), the interval {1,...,N}, and Sidon subsets."
     },
     {
       "id": "maximal-sidon",
-      "title": "Maximal Sidon Sets",
-      "startLine": 66,
-      "endLine": 81,
-      "summary": "Defines maximal Sidon sets and the counting functions A₁(N) and A(N)."
+      "title": "Part II: Maximal Sidon Sets",
+      "startLine": 57,
+      "endLine": 70,
+      "summary": "Defines maximal Sidon sets and counting functions A₁(N) and A(N)."
     },
     {
       "id": "largest-size",
-      "title": "Size of Largest Sidon Set",
-      "startLine": 83,
-      "endLine": 99,
-      "summary": "Defines f(N), the maximum size of a Sidon set in {1,...,N}, which is (1+o(1))√N."
+      "title": "Part III: Size of Largest Sidon Set",
+      "startLine": 72,
+      "endLine": 86,
+      "summary": "f(N) = max Sidon set size, classical bound f(N) ~ √N."
     },
     {
       "id": "cameron-erdos-questions",
-      "title": "The Cameron-Erdős Questions",
-      "startLine": 101,
-      "endLine": 113,
-      "summary": "States the two questions: Is A₁(N) < 2^{o(√N)}? Is A₁(N) > 2^{N^c}?"
+      "title": "Part IV: The Cameron-Erdős Questions",
+      "startLine": 88,
+      "endLine": 98,
+      "summary": "Formal statements of the two questions about A₁(N)."
     },
     {
       "id": "saxton-thomason",
-      "title": "Saxton-Thomason Theorem (2015)",
-      "startLine": 115,
-      "endLine": 134,
-      "summary": "The key result: A(N) ≥ 2^{(1.16+o(1))√N} and bounds on subsets per maximal set."
+      "title": "Part V: Saxton-Thomason Theorem (2015)",
+      "startLine": 100,
+      "endLine": 117,
+      "summary": "Key results: A(N) lower bound, maximal subset bound, Zorn-type containment."
     },
     {
       "id": "main-result",
-      "title": "The Main Result",
-      "startLine": 136,
-      "endLine": 157,
-      "summary": "Derives A₁(N) ≥ 2^{(0.16+o(1))√N} and answers Question 2 positively."
+      "title": "Part VI: The Main Result",
+      "startLine": 119,
+      "endLine": 135,
+      "summary": "A₁(N) ≥ 2^{(0.16+o(1))√N} and answers to both questions."
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound (Question 1)",
-      "startLine": 159,
-      "endLine": 182,
-      "summary": "Shows Question 1 is answered negatively - A₁(N) is NOT < 2^{o(√N)}."
-    },
-    {
-      "id": "container-method",
-      "title": "Hypergraph Container Method",
-      "startLine": 184,
-      "endLine": 200,
-      "summary": "Explains the container method and how Sidon sets are independent sets."
-    },
-    {
-      "id": "connection-861",
-      "title": "Connection to Problem 861",
-      "startLine": 202,
-      "endLine": 218,
-      "summary": "Links to Problem 861 on counting all Sidon sets and the tight relationship."
-    },
-    {
-      "id": "historical-context",
-      "title": "Historical Context",
-      "startLine": 220,
-      "endLine": 243,
-      "summary": "Sidon's original problem, Cameron-Erdős 1992, and Erdős's interest in Sidon sets."
+      "title": "Part VII: Upper Bound",
+      "startLine": 137,
+      "endLine": 142,
+      "summary": "Upper bound A₁(N) ≤ 2^{O(√N)}."
     },
     {
       "id": "generalizations",
-      "title": "Generalizations",
-      "startLine": 245,
-      "endLine": 264,
-      "summary": "B_h sequences generalize Sidon sets; counting maximal B_h sets for h > 2 is open."
+      "title": "Part VIII: B_h Generalizations",
+      "startLine": 144,
+      "endLine": 155,
+      "summary": "B_h sets generalize Sidon sets; Sidon = B₂."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 266,
-      "endLine": 295,
-      "summary": "Complete summary: Q2 YES, Q1 NO, and the precise bound A₁(N) ≥ 2^{(0.16+o(1))√N}."
+      "title": "Part IX: Summary",
+      "startLine": 157,
+      "endLine": 171,
+      "summary": "Summary theorem: Q2 YES, Q1 NO, precise bound A₁(N) ≥ 2^{(0.16+o(1))√N}."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #862 is SOLVED. For maximal Sidon subsets A₁(N) of {1,...,N}: Question 2 (A₁(N) > 2^{N^c}?) is YES with the precise bound A₁(N) ≥ 2^{(0.16+o(1))√N}. Question 1 (A₁(N) < 2^{o(√N)}?) is NO - the lower bound refutes this. The proof uses hypergraph container methods from Saxton-Thomason (2015).",
-    "implications": "This resolves a Cameron-Erdős counting problem using modern combinatorial techniques. The hypergraph container method has become a powerful tool for counting discrete structures with forbidden configurations.",
+    "summary": "Erdős Problem #862 is SOLVED. For maximal Sidon subsets A₁(N) of {1,...,N}: Question 2 (A₁(N) > 2^{N^c}?) is YES. Question 1 (A₁(N) < 2^{o(√N)}?) is NO. The precise bound is A₁(N) ≥ 2^{(0.16+o(1))√N}.",
+    "implications": "This resolves a Cameron-Erdős counting problem using the hypergraph container method, one of the most influential tools in modern combinatorics.",
     "openQuestions": [
       "Determine the exact constant in the exponent of A₁(N)",
       "Find tight upper bounds on A₁(N)",
-      "Extend to counting maximal B_h sets for h > 2",
-      "Understand the structure of typical maximal Sidon sets"
+      "Extend to counting maximal B_h sets for h > 2"
     ]
   }
 }

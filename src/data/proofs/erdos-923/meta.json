@@ -17,104 +17,86 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "SimpleGraph.Basic",
-        "description": "Simple graph definitions",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
-      },
-      {
-        "theorem": "SimpleGraph.Coloring",
-        "description": "Graph coloring definitions",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
-      },
-      {
-        "theorem": "SimpleGraph.Subgraph",
-        "description": "Subgraph definitions",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
-      }
-    ],
-    "originalContributions": [
-      "chromaticNumber definition",
-      "IsKColorable, HasChromaticNumberAtLeast definitions",
-      "HasTriangle, IsTriangleFree definitions",
-      "emptyGraph_triangleFree theorem (proved)",
-      "IsSpanningSubgraph definition",
-      "subgraph_chromatic_le axiom",
-      "mycielski_triangle_free_high_chromatic axiom",
-      "erdosRodlFunction definition",
-      "rodl_1977 axiom (main theorem)",
-      "erdos_923_true corollary",
-      "towerFunction with computed examples",
-      "rodl_bound, HFreeSubgraphProblem, rodl_general_bipartite axioms"
-    ],
     "erdosNumber": 923,
     "erdosUrl": "https://erdosproblems.com/923",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "**Mycielski's Revelation (1955)**\n\nJan Mycielski stunned graph theorists in 1955 by constructing triangle-free graphs with arbitrarily high chromatic number. The Mycielski construction M_k satisfies χ(M_k) = k while being completely triangle-free. This shattered the intuition that high chromatic number requires dense local structure like triangles.\n\n**Erdős's Question (1969)**\n\nErdős posed Problem #923 in 1969 [Er69b]: if a graph has VERY high chromatic number, must it contain a triangle-free subgraph with moderately high chromatic number? This asks whether chromatic complexity must 'spread' beyond just the triangles.\n\n**Rödl's Solution (1977)**\n\nVojtěch Rödl proved YES in a one-page paper in Proc. Amer. Math. Soc. The proof uses Ramsey-theoretic ideas: partition edges of the high-chromatic graph into classes, and use Ramsey bounds to find a triangle-free piece with high chromatic number. The threshold f(k) is necessarily a tower of 2s - this exponential tower growth reflects deep connections to Ramsey numbers.",
+    "historicalContext": "Jan Mycielski stunned graph theorists in 1955 by constructing triangle-free graphs with arbitrarily high chromatic number. The Mycielski construction M_k satisfies χ(M_k) = k while being completely triangle-free. This shattered the intuition that high chromatic number requires dense local structure like triangles.\n\nErdős posed Problem #923 in 1969 [Er69b]: if a graph has VERY high chromatic number, must it contain a triangle-free subgraph with moderately high chromatic number? This asks whether chromatic complexity must 'spread' beyond just the triangles.\n\nVojtěch Rödl proved YES in a one-page paper in Proc. Amer. Math. Soc. (1977). The proof uses Ramsey-theoretic ideas: partition edges of the high-chromatic graph into classes, and use Ramsey bounds to find a triangle-free piece with high chromatic number. The threshold f(k) is necessarily a tower of 2s, reflecting deep connections to Ramsey numbers.",
     "problemStatement": "Is it true that, for every k, there is some f(k) such that if G has chromatic number ≥ f(k) then G contains a triangle-free subgraph with chromatic number ≥ k?",
     "proofStrategy": "Rödl proved the affirmative answer in 1977 using Ramsey-theoretic techniques. The key insight is that graphs with extremely high chromatic number (tower-type in k) must contain enough structure that a triangle-free piece with chromatic number k survives after removing all triangles.",
     "keyInsights": [
       "The threshold function f(k) is a tower of 2s of height roughly k",
       "Triangle-free graphs can have arbitrarily high chromatic number (Mycielski 1955)",
       "The result generalizes to H-free subgraphs for any bipartite graph H"
+    ],
+    "originalContributions": [
+      "chromaticNumber and related definitions",
+      "emptyGraph_triangleFree theorem (proved)",
+      "towerFunction with computed examples via native_decide",
+      "Summary theorem combining Rödl's theorem with tower bound"
     ]
   },
   "sections": [
     {
       "id": "chromatic-defs",
+      "title": "Graph Colorings and Chromatic Number",
       "startLine": 45,
-      "endLine": 72,
-      "summary": "Definitions of chromatic number, k-colorability, and related concepts"
+      "endLine": 69,
+      "summary": "Definitions of chromatic number, k-colorability, and high chromatic number predicates."
     },
     {
       "id": "triangle-free",
-      "startLine": 73,
-      "endLine": 101,
-      "summary": "Definition of triangle-free graphs and basic properties"
+      "title": "Triangle-Free Graphs",
+      "startLine": 71,
+      "endLine": 96,
+      "summary": "Definition of triangle-free graphs and proof that the empty graph is triangle-free."
     },
     {
       "id": "subgraphs",
-      "startLine": 102,
-      "endLine": 128,
-      "summary": "Spanning subgraph definitions and monotonicity properties"
+      "title": "Subgraphs",
+      "startLine": 98,
+      "endLine": 120,
+      "summary": "Spanning subgraph definitions and chromatic number monotonicity axiom."
     },
     {
       "id": "mycielski",
-      "startLine": 129,
-      "endLine": 142,
-      "summary": "Mycielski's construction of triangle-free graphs with high chromatic number"
+      "title": "Mycielski's Construction",
+      "startLine": 122,
+      "endLine": 132,
+      "summary": "Mycielski's construction of triangle-free graphs with high chromatic number."
     },
     {
       "id": "main-theorem",
-      "startLine": 143,
-      "endLine": 185,
-      "summary": "Rödl's theorem and the main result"
+      "title": "Rödl's Theorem",
+      "startLine": 134,
+      "endLine": 163,
+      "summary": "Rödl's theorem (1977) and the corollary that Problem #923 is true."
     },
     {
       "id": "bounds",
-      "startLine": 186,
-      "endLine": 218,
-      "summary": "Tower function bounds and their necessity"
+      "title": "Tower Function Bounds",
+      "startLine": 165,
+      "endLine": 198,
+      "summary": "Tower function definition, computed values, and upper bound on f(k)."
     },
     {
       "id": "generalizations",
-      "startLine": 219,
-      "endLine": 250,
-      "summary": "H-free generalizations for bipartite graphs"
+      "title": "Generalizations",
+      "startLine": 200,
+      "endLine": 226,
+      "summary": "H-free subgraph problem generalization and Rödl's result for bipartite H."
     },
     {
       "id": "summary",
-      "startLine": 270,
-      "endLine": 303,
-      "summary": "Summary theorem combining all results"
+      "title": "Summary",
+      "startLine": 228,
+      "endLine": 264,
+      "summary": "Summary theorem combining Rödl's main theorem with the tower-type bound."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #923 was proved by Rödl in 1977. For every k, there exists a threshold f(k) (a tower of 2s) such that any graph with chromatic number at least f(k) contains a triangle-free subgraph with chromatic number at least k. This reveals deep Ramsey-theoretic structure in highly chromatic graphs.",
+    "summary": "Erdős Problem #923 was proved by Rödl in 1977. For every k, there exists a threshold f(k) (a tower of 2s) such that any graph with chromatic number at least f(k) contains a triangle-free subgraph with chromatic number at least k.",
     "implications": "This result demonstrates that high chromatic number cannot be concentrated only in complete subgraphs—it must spread to triangle-free parts as well. The tower-type bound is necessary and connects to fundamental limits in Ramsey theory.",
     "openQuestions": [
       "What is the optimal constant in the tower bound?",

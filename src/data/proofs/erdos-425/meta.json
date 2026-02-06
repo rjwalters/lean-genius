@@ -67,72 +67,58 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 40,
-      "endLine": 77,
-      "summary": "IsMultiplicativeSidon, ProductSet, ordered pairs"
+      "startLine": 39,
+      "endLine": 75,
+      "summary": "SubsetOfInterval, OrderedPair, ProductSet, IsMultiplicativeSidon, IsMultiplicativeSidon'"
     },
     {
       "id": "function-f",
       "title": "The Function F(n)",
-      "startLine": 78,
-      "endLine": 116,
-      "summary": "F(n) definition, primes are Sidon, lower bound π(n)"
+      "startLine": 77,
+      "endLine": 108,
+      "summary": "F(n) definition via Finset.sup', primes_are_sidon axiom, F_ge_prime_count lower bound"
     },
     {
       "id": "erdos-bounds",
       "title": "Erdős's Bounds",
-      "startLine": 117,
-      "endLine": 152,
-      "summary": "The n^(3/4)·(log n)^(-3/2) bounds, main question open"
+      "startLine": 110,
+      "endLine": 134,
+      "summary": "erdos_bounds axiom with n^(3/4)·(log n)^(-3/2) term, MainQuestion definition"
     },
     {
       "id": "r-product",
       "title": "r-Product Generalization",
-      "startLine": 153,
-      "endLine": 179,
-      "summary": "IsRMultiplicativeSidon, conjectured bounds for r-fold products"
+      "startLine": 136,
+      "endLine": 161,
+      "summary": "IsRMultiplicativeSidon for r-fold products, RProductConjecture with O(n^((r+1)/(2r)))"
     },
     {
       "id": "real-version",
       "title": "The Real Number Version",
-      "startLine": 180,
-      "endLine": 227,
-      "summary": "RealMultSidon, Erdős's false conjecture, Alexander's construction"
+      "startLine": 163,
+      "endLine": 198,
+      "summary": "RealMultSidon, erdos_real_conjecture_false, alexander_construction"
     },
     {
       "id": "sidon-connection",
       "title": "Connection to Additive Sidon Sets",
-      "startLine": 228,
-      "endLine": 255,
-      "summary": "IsSidonSet, logarithm conversion, classical bounds"
-    },
-    {
-      "id": "related-problems",
-      "title": "Related Problems",
-      "startLine": 256,
-      "endLine": 283,
-      "summary": "Problems 490, 793, 796; complex version"
+      "startLine": 200,
+      "endLine": 232,
+      "summary": "IsSidonSet, log_conversion axiom, sidon_bound axiom"
     },
     {
       "id": "examples",
       "title": "Examples",
-      "startLine": 284,
-      "endLine": 318,
-      "summary": "Primes {2,3,5,7}, {1,2,3}, counterexample {1,2,3,6}"
-    },
-    {
-      "id": "upper-bound-ideas",
-      "title": "Upper Bound Ideas",
-      "startLine": 319,
-      "endLine": 347,
-      "summary": "Graph theory approach, counting arguments, tightness"
+      "startLine": 234,
+      "endLine": 247,
+      "summary": "Verified counterexample: {1,2,3,6} is not multiplicative Sidon"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 348,
-      "endLine": 394,
-      "summary": "Complete status: bounds known, constant open, real version disproved"
+      "startLine": 249,
+      "endLine": 287,
+      "summary": "erdos_425_summary theorem combining erdos_bounds and alexander_construction"
     }
   ],
   "conclusion": {

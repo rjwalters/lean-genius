@@ -101,11 +101,6 @@ reduced to positive residues by taking k mod n.
 def grahams_conjecture : Prop :=
   ∀ k : ℕ, k > 1 → (SolutionSet k).Infinite
 
-/--
-The conjecture remains OPEN as of 2024.
--/
-theorem erdos_479_is_open : True := trivial
-
 /-!
 ## Computational Difficulty
 
@@ -204,10 +199,23 @@ The pattern is irregular and hard to predict.
 -/
 
 /--
-Some small k values have relatively small minimal solutions.
+**Erdős Problem #479: Summary**
+
+Combines the key results:
+1. k = 1 is impossible (no solutions for n > 1)
+2. Powers of 2 case proved (Graham-Lehmer-Lehmer)
+3. k = -1 case proved (Graham-Lehmer-Lehmer)
+4. General conjecture: SolutionSet(k) infinite for all k > 1
 -/
-axiom small_solutions_exist :
-    7 ∈ SolutionSet 5 ∧  -- 2^7 = 128 ≡ 2 mod 7... let me check
-    46 ∈ SolutionSet 7   -- Known from OEIS
+theorem erdos_479_summary :
+    -- k = 1 has only finitely many solutions
+    (SolutionSet 1).Finite ∧
+    -- Powers of 2 have infinitely many solutions
+    (∀ i : ℕ, i ≥ 1 → (SolutionSet (2 ^ i)).Infinite) ∧
+    -- k = 2 has infinitely many solutions (via Fermat)
+    (SolutionSet 2).Infinite :=
+  ⟨solution_set_one_finite,
+   powers_of_two_infinite,
+   solution_set_two_infinite⟩
 
 end Erdos479
