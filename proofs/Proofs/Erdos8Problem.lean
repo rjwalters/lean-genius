@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #8: Monochromatic Covering Systems
 
   Source: https://erdosproblems.com/8
@@ -31,7 +31,7 @@ open Set Finset Function
 
 namespace Erdos8
 
-/-! ## Covering System Definitions -/
+/- ## Covering System Definitions -/
 
 /-- An arithmetic progression (residue class) defined by residue r mod m. -/
 structure CongruenceClass where
@@ -58,7 +58,7 @@ def CoveringSystem.moduli (cs : CoveringSystem) : Finset ℕ :=
 def CoveringSystem.hasDistinctModuli (cs : CoveringSystem) : Prop :=
   (cs.classes.map CongruenceClass.modulus).Nodup
 
-/-! ## Colorings -/
+/- ## Colorings -/
 
 /-- A k-coloring of the positive integers. -/
 def Coloring (k : ℕ) := ℕ → Fin k
@@ -76,7 +76,7 @@ def CoveringSystem.hasMonochromaticModuli {k : ℕ}
     (cs : CoveringSystem) (c : Coloring k) : Prop :=
   FinsetIsMonochromatic c cs.moduli
 
-/-! ## The Original Conjecture (DISPROVED) -/
+/- ## The Original Conjecture (DISPROVED) -/
 
 /--
 **Erdős-Graham Conjecture** (DISPROVED):
@@ -94,7 +94,7 @@ def erdos_8_disproved : Prop :=
   ∃ k : ℕ, k ≥ 2 ∧ ∃ c : Coloring k,
     ∀ cs : CoveringSystem, ¬cs.hasMonochromaticModuli c
 
-/-! ## Hough's Minimum Modulus Theorem -/
+/- ## Hough's Minimum Modulus Theorem -/
 
 /-- The minimum modulus in a covering system. -/
 def CoveringSystem.minModulus (cs : CoveringSystem) : ℕ :=
@@ -121,7 +121,7 @@ The minimum modulus bound has been further refined.
 axiom balister_improved_bound (cs : CoveringSystem) (hd : cs.hasDistinctModuli) :
     cs.minModulus ≤ 616000
 
-/-! ## The Counterexample Construction -/
+/- ## The Counterexample Construction -/
 
 /--
 **Hough's Counterexample Coloring**:
@@ -153,7 +153,7 @@ theorem erdos_8_false : ¬erdos_graham_conjecture := by
   obtain ⟨cs, hcs⟩ := h k hk c
   exact hc cs hcs
 
-/-! ## Density Version -/
+/- ## Density Version -/
 
 /-- The harmonic sum of elements of A greater than N. -/
 noncomputable def harmonicSumTail (A : Set ℕ) (N : ℕ) : ℝ :=
@@ -179,7 +179,7 @@ def density_conjecture : Prop :=
 /-- The density conjecture is false. -/
 axiom density_conjecture_false : ¬density_conjecture
 
-/-! ## Why the Counterexample Works
+/- ## Why the Counterexample Works
 
 **Key Insight**:
 
@@ -205,7 +205,7 @@ axiom bottleneck_counterexample :
     ∃ k : ℕ, ∃ c : Coloring k,
       ∀ cs : CoveringSystem, cs.hasDistinctModuli → ¬cs.hasMonochromaticModuli c
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: DISPROVED**
 
