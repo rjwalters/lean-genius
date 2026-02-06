@@ -67,65 +67,58 @@
     {
       "id": "q-expansions",
       "title": "q-Expansions",
-      "summary": "Definition of q-representable numbers and basic examples",
+      "summary": "Definition of q-representable numbers and proved examples",
       "startLine": 39,
       "endLine": 70
     },
     {
       "id": "ordered-sequence",
       "title": "The Ordered Sequence",
-      "summary": "Enumeration of q-representable numbers and gap definition",
+      "summary": "Axiomatized enumeration and gap definition",
       "startLine": 72,
-      "endLine": 97
+      "endLine": 89
     },
     {
       "id": "pisot-numbers",
       "title": "Pisot-Vijayaraghavan Numbers",
-      "summary": "Definition of Pisot numbers, smallest Pisot q₀, golden ratio φ",
-      "startLine": 99,
-      "endLine": 132
+      "summary": "Pisot predicate, smallest Pisot q₀, golden ratio φ",
+      "startLine": 91,
+      "endLine": 117
     },
     {
       "id": "ejk-results",
       "title": "Erdős-Joó-Komornik Results (1990)",
       "summary": "Pisot numbers lack gap property; universal gap bound ≤ 1",
-      "startLine": 134,
-      "endLine": 160
+      "startLine": 119,
+      "endLine": 134
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "Erdős-Joó conjecture: threshold at smallest Pisot",
-      "startLine": 162,
-      "endLine": 183
+      "summary": "Erdős-Joó conjecture with proved second part",
+      "startLine": 136,
+      "endLine": 151
     },
     {
       "id": "m-digit",
       "title": "Characterization via m-Digit Expansions",
-      "summary": "Bugeaud's characterization and Erdős-Joó-Schnitzer refinement",
-      "startLine": 185,
-      "endLine": 221
+      "summary": "Bugeaud's characterization and EJS refinement",
+      "startLine": 153,
+      "endLine": 179
     },
     {
-      "id": "hardness",
-      "title": "Why the Problem is Hard",
-      "summary": "Complexity of q-expansions and density near 1",
-      "startLine": 223,
-      "endLine": 245
-    },
-    {
-      "id": "related",
-      "title": "Related Problems",
-      "summary": "Connections to β-expansions and unique representations",
-      "startLine": 247,
-      "endLine": 268
+      "id": "density",
+      "title": "Density Result",
+      "summary": "q-representable numbers become dense as q → 1⁺",
+      "startLine": 181,
+      "endLine": 190
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main results combining what's known about gaps and Pisot numbers",
-      "startLine": 270,
-      "endLine": 301
+      "summary": "Main results combining known gaps and Pisot results",
+      "startLine": 192,
+      "endLine": 206
     }
   ],
   "conclusion": {
