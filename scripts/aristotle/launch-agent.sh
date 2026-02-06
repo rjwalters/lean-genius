@@ -50,10 +50,6 @@ check_deps() {
         missing+=("tmux")
     fi
 
-    if ! command -v claude &> /dev/null; then
-        missing+=("claude (Claude Code CLI)")
-    fi
-
     if ! command -v gh &> /dev/null; then
         missing+=("gh (GitHub CLI)")
     fi
@@ -188,74 +184,6 @@ launch_agent() {
     # Create worktree
     create_worktree
 
-    # Create prompt file
-    local prompt_file="$LOGS_DIR/$SESSION_NAME-prompt.md"
-    cat > "$prompt_file" << PROMPT_EOF
-# Aristotle Queue Management Agent
-
-You are the Aristotle agent, responsible for managing the flow of Lean proofs through Aristotle's proof search system.
-
-**Your worktree:** $WORKTREE_PATH
-**Your branch:** $BRANCH_NAME
-**Target active jobs:** $TARGET_ACTIVE
-**Check interval:** $INTERVAL_MINUTES minutes
-
-## Your Mission
-
-Maintain ~$TARGET_ACTIVE active Aristotle jobs at all times, maximizing throughput of automated proof search. When proofs are completed, integrate them and create PRs.
-
-## Instructions
-
-Read your full role definition: \`cat $ROLE_FILE\`
-
-## Main Loop
-
-Execute this workflow continuously:
-
-\`\`\`
-while true:
-    1. CHECK FOR STOP SIGNAL
-    2. Check status of submitted jobs (update completed/failed)
-    3. Retrieve completed solutions
-    4. For each improved proof:
-       a. Copy to proofs/Proofs/
-       b. Run pnpm build to verify
-       c. Commit changes
-       d. Push to branch
-       e. Create PR (or update existing)
-    5. Submit new files to maintain $TARGET_ACTIVE active
-    6. Sleep $INTERVAL_MINUTES minutes
-    7. Repeat
-\`\`\`
-
-### Stop Signal Check
-
-\`\`\`bash
-if [[ -f "\$REPO_ROOT/.loom/signals/stop-aristotle" ]]; then
-    echo "Stop signal received. Finishing current work and exiting."
-    # Complete any pending PRs first
-    exit 0
-fi
-\`\`\`
-
-## Key Scripts
-
-- \`\$REPO_ROOT/scripts/aristotle/find-candidates.sh\` - Find files to submit
-- \`\$REPO_ROOT/scripts/aristotle/submit-batch.sh\` - Submit files to Aristotle
-- \`\$REPO_ROOT/scripts/aristotle/check-jobs.sh\` - Check job status
-- \`\$REPO_ROOT/scripts/aristotle/retrieve-integrate.sh\` - Download and integrate proofs
-- \`\$REPO_ROOT/scripts/aristotle/aristotle-agent.sh\` - Run one complete cycle
-
-## PR Strategy
-
-Create PRs for batches of integrations:
-- Title: "Integrate Aristotle proofs: erdos-X, erdos-Y, erdos-Z"
-- Label: aristotle-integration
-- Body: List problems integrated and sorry counts
-
-Start now by reading your full role, then begin the main loop.
-PROMPT_EOF
-
     # Start tmux session
     tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH"
 
@@ -274,12 +202,10 @@ PROMPT_EOF
         sleep 0.3
     fi
 
-    # Launch Claude with resilient wrapper in DAEMON mode for infinite retry
-    # The --daemon flag ensures the Aristotle agent survives API outages indefinitely
+    # Launch the deterministic agent script directly (no Claude needed)
     sleep 0.5
-    local prompt="You are the Aristotle agent. Read $prompt_file for your instructions, then start the queue management workflow."
-    local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
-    tmux send-keys -t "$SESSION_NAME" "ENHANCER_ID=aristotle $wrapper_script --daemon --prompt '$prompt' --log '$LOG_FILE'" Enter
+    local agent_script="$REPO_ROOT/scripts/aristotle/aristotle-agent.sh"
+    tmux send-keys -t "$SESSION_NAME" "$agent_script --loop --target $TARGET_ACTIVE --interval $INTERVAL_MINUTES 2>&1 | tee -a '$LOG_FILE'" Enter
 
     print_success "Launched Aristotle agent"
     echo ""

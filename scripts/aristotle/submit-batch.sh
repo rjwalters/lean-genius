@@ -72,6 +72,7 @@ count_active_jobs() {
 }
 
 # Submit a single file to Aristotle
+# Returns: 0=success, 1=error, 2=rate-limited (caller should stop submitting)
 submit_file() {
     local file="$1"
     local problem_id=$(basename "$file" .lean | sed 's/Problem$//' | tr '[:upper:]' '[:lower:]' | sed 's/erdos/erdos-/')
@@ -86,6 +87,12 @@ submit_file() {
     # Use aristotlelib to submit (prove-from-file is the new command)
     local output
     output=$(uvx --from aristotlelib aristotle prove-from-file "$file" --no-wait 2>&1) || {
+        # Check for rate limiting (429) - stop batch immediately
+        if echo "$output" | grep -qi "429\|rate.limit\|too many\|already have.*projects"; then
+            echo -e "  ${YELLOW}Rate limited:${NC} $output"
+            echo -e "  ${YELLOW}Stopping batch to avoid creating zombie projects${NC}"
+            return 2
+        fi
         echo -e "  ${RED}Failed:${NC} $output"
         return 1
     }
@@ -171,24 +178,35 @@ main() {
     # Submit each candidate
     local submitted=0
     local failed=0
+    local rate_limited=false
 
     while IFS= read -r file; do
         [[ -z "$file" ]] && continue
 
-        if submit_file "$file"; then
+        local rc=0
+        submit_file "$file" || rc=$?
+
+        if [[ $rc -eq 0 ]]; then
             ((submitted++))
+        elif [[ $rc -eq 2 ]]; then
+            # Rate limited - stop batch immediately
+            rate_limited=true
+            break
         else
             ((failed++))
         fi
 
-        # Small delay between submissions
-        sleep 1
+        # Delay between submissions to avoid rate limits
+        sleep 3
     done < <(echo "$candidates" | jq -r '.[].file')
 
     echo ""
     echo -e "${GREEN}Submitted: $submitted${NC}"
     if [[ "$failed" -gt 0 ]]; then
         echo -e "${RED}Failed: $failed${NC}"
+    fi
+    if [[ "$rate_limited" == true ]]; then
+        echo -e "${YELLOW}Stopped early due to rate limiting${NC}"
     fi
 
     local new_active=$(count_active_jobs)
