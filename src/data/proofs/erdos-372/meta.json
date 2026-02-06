@@ -20,7 +20,7 @@
     "erdosNumber": 372,
     "erdosUrl": "https://erdosproblems.com/372",
     "erdosProblemStatus": "proved",
-    "mathlib_version": "4.26.0",
+    "mathlib_version": "4.15.0",
     "dateAdded": "2026-01-22",
     "mathlibDependencies": [
       {
@@ -73,72 +73,65 @@
     {
       "id": "largest-prime-factor",
       "title": "Largest Prime Factor",
-      "summary": "Definition of P(n) and basic properties",
-      "startLine": 29,
-      "endLine": 70
+      "summary": "Definition of P(n) using primeFactors.max' and basic properties.",
+      "startLine": 32,
+      "endLine": 71
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "Concrete computations of P(6), P(30), P(210)",
-      "startLine": 72,
-      "endLine": 92
+      "summary": "Concrete computations of P(6)=3, P(30)=5, P(210)=7 via native_decide.",
+      "startLine": 73,
+      "endLine": 91
     },
     {
       "id": "descending-triplet",
       "title": "Descending Triplet Property",
-      "summary": "Definition of descending and ascending triplets",
-      "startLine": 94,
-      "endLine": 110
+      "summary": "isDescendingTriple and descendingTriples definitions.",
+      "startLine": 93,
+      "endLine": 107
     },
     {
       "id": "erdos-pomerance",
       "title": "Erdős-Pomerance Ascending Case",
-      "summary": "The 1978 result for ascending triplets",
-      "startLine": 112,
-      "endLine": 131
+      "summary": "isAscendingTriple definition and erdos_pomerance_ascending axiom (1978).",
+      "startLine": 109,
+      "endLine": 125
     },
     {
       "id": "balog-theorem",
       "title": "Balog's Theorem",
-      "summary": "The 2001 resolution of the descending case",
-      "startLine": 133,
-      "endLine": 164
+      "summary": "balog_quantitative (≫√x bound) and balog_descending_infinite axioms.",
+      "startLine": 127,
+      "endLine": 148
     },
     {
       "id": "density-conjecture",
       "title": "Density Conjecture",
-      "summary": "Balog's conjecture that density is 1/6",
-      "startLine": 166,
-      "endLine": 187
+      "summary": "Balog's conjecture that natural density is 1/6.",
+      "startLine": 150,
+      "endLine": 163
     },
     {
-      "id": "smooth-numbers",
-      "title": "Smooth Numbers",
-      "summary": "Connection to smooth number theory",
-      "startLine": 189,
-      "endLine": 212
+      "id": "related-properties",
+      "title": "Related Properties",
+      "summary": "Smooth numbers and longer descending chains definitions.",
+      "startLine": 165,
+      "endLine": 182
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "summary": "The main result: infinitely many descending triplets",
-      "startLine": 214,
-      "endLine": 223
-    },
-    {
-      "id": "open-questions",
-      "title": "Open Questions",
-      "summary": "Remaining open problems",
-      "startLine": 225,
-      "endLine": 249
+      "summary": "erdos_372: infinitely many descending triplets exist.",
+      "startLine": 184,
+      "endLine": 191
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Complete summary of results",
-      "startLine": 251,
-      "endLine": 272
+      "summary": "erdos_372_summary combining descending and ascending results.",
+      "startLine": 193,
+      "endLine": 219
     }
   ],
   "conclusion": {
