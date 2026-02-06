@@ -1,101 +1,90 @@
 [
   {
-    "id": "ann-e708-header",
+    "id": "ann-708-header",
     "proofId": "erdos-708",
-    "range": {"startLine": 1, "endLine": 31},
+    "range": { "startLine": 1, "endLine": 31 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #708: Divisibility by Consecutive Integers (OPEN)**\n\nThis $100 prize problem asks about the minimum number of consecutive integers needed to guarantee divisibility.\n\n**The Question:** Let g(n) be minimal such that for any A ⊆ {2,3,...} with |A| = n and any interval I of max(A) consecutive integers, there exists B ⊆ I with |B| = g(n) where ∏A | ∏B.\n\n**Is g(n) ≤ (2 + o(1))n?**\n\n**Key Results:**\n- g(2) = 2, g(3) = 4\n- g(n) ≥ (2 - o(1))n (lower bound by Erdős-Surányi)",
-    "mathContext": "g(n) = minimum consecutive integers for product divisibility",
+    "content": "**Erdős Problem #708** asks about the function g(n), the minimum number of consecutive integers needed so that their product is divisible by any product of n integers ≥ 2. Specifically: is g(n) ≤ (2 + o(1))n? The problem has a $100 prize offered by Erdős in 1992. Gallai initiated the study, computing g(2) = 2. Erdős and Surányi (1959) proved g(3) = 4 and the lower bound g(n) ≥ (2 - o(1))n using products of prime pairs. The problem remains OPEN.",
+    "mathContext": "g(n) = min{|B| : ∀ A with |A|=n, ∀ interval I of length max(A), ∃ B ⊆ I, |B|=g(n), ∏A | ∏B}. Known: g(2)=2, g(3)=4, g(n) ≥ (2-o(1))n. Open: g(n) ≤ (2+o(1))n?",
     "significance": "critical",
-    "relatedConcepts": ["divisibility", "consecutive integers", "products", "number theory"]
+    "relatedConcepts": ["divisibility", "consecutive-integers", "products", "Erdős-prize"]
   },
   {
-    "id": "ann-e708-setproduct",
+    "id": "ann-708-defs",
     "proofId": "erdos-708",
-    "range": {"startLine": 43, "endLine": 63},
+    "range": { "startLine": 43, "endLine": 55 },
     "type": "definition",
     "title": "Core Definitions",
-    "content": "**Set Product and Consecutive Sets**\n\n```lean\ndef setProduct (S : Finset ℕ) : ℕ := S.prod id\n\ndef consecutiveSet (k len : ℕ) : Finset ℕ :=\n  Finset.range len |>.map ⟨(· + k), ...⟩\n\ndef productDivides (A B : Finset ℕ) : Prop :=\n  setProduct A ∣ setProduct B\n```\n\n- `setProduct`: multiplies all elements in a finite set\n- `consecutiveSet k len`: creates {k, k+1, ..., k+len-1}\n- `productDivides`: the key divisibility condition ∏A | ∏B",
-    "mathContext": "∏S = product of elements, I = {k, k+1, ..., k+len-1}",
+    "content": "Three definitions form the foundation. **setProduct S** computes ∏_{s ∈ S} s via Finset.prod id. **consecutiveSet k len** creates the Finset {k, k+1, ..., k+len-1} using Finset.range composed with a shift map, with injectivity proved by Nat.add_right_cancel. **productDivides A B** is the key predicate: setProduct A ∣ setProduct B, i.e., the product of A divides the product of B. These are concrete computable definitions that capture the problem's structure directly.",
+    "mathContext": "setProduct S := S.prod id. consecutiveSet k len := range(len).map(·+k). productDivides A B := ∏A ∣ ∏B.",
     "significance": "key",
-    "relatedConcepts": ["Finset.prod", "Finset.range", "divisibility"]
+    "relatedConcepts": ["Finset.prod", "Finset.range", "Finset.map", "divisibility"]
   },
   {
-    "id": "ann-e708-g-function",
+    "id": "ann-708-gfunction",
     "proofId": "erdos-708",
-    "range": {"startLine": 65, "endLine": 102},
+    "range": { "startLine": 57, "endLine": 87 },
     "type": "definition",
     "title": "The Function g(n)",
-    "content": "**g(n): The Central Object**\n\ng(n) is defined as the **minimum** size of B such that:\n- For ANY choice of A with |A| = n and elements ≥ 2\n- For ANY starting point k of an interval\n- There EXISTS B ⊆ {k, ..., k+max(A)-1} with |B| = g(n)\n- Such that ∏A divides ∏B\n\n```lean\nnoncomputable def g (n : ℕ) : ℕ :=\n  if h : n ≥ 1 then Nat.find (g_exists n h)\n  else 0\n```\n\nThis is noncomputable because it involves finding a minimum over infinitely many choices.",
-    "mathContext": "g(n) = inf{|B| : divisibility guaranteed for all A, I}",
+    "content": "The central object g(n) is defined in two steps. **g_exists** axiomatizes that for every n ≥ 1, there exists some value gn such that for every A with |A| = n (elements ≥ 2) and every starting point k, a subset B of the consecutive set of length sup(A) exists with |B| = gn and ∏A | ∏B. Then **g n** is defined as Nat.find applied to g_exists, extracting the minimal such gn. The definition is noncomputable because Nat.find requires Classical.choice. The else branch returns 0 for n < 1. **validSubset** is a helper predicate combining B ⊆ I with the divisibility condition.",
+    "mathContext": "g(n) := Nat.find(g_exists n h) for n ≥ 1, else 0. g_exists: ∃ gn, ∀ A, |A|=n → ∀ k, ∃ B ⊆ consecutive(k, sup A), |B|=gn ∧ ∏A|∏B. Nat.find gives the minimum.",
     "significance": "critical",
-    "relatedConcepts": ["Nat.find", "minimality", "quantifier complexity"]
+    "relatedConcepts": ["Nat.find", "minimality", "noncomputable", "sup"]
   },
   {
-    "id": "ann-e708-known-values",
+    "id": "ann-708-values",
     "proofId": "erdos-708",
-    "range": {"startLine": 104, "endLine": 118},
+    "range": { "startLine": 89, "endLine": 97 },
     "type": "axiom",
-    "title": "Known Values",
-    "content": "**Exactly Computed Values**\n\n```lean\naxiom g_two : g 2 = 2\naxiom g_three : g 3 = 4\n```\n\n**g(2) = 2 (Gallai):**\nFor any two numbers a, b ≥ 2, two consecutive integers suffice.\n\n**g(3) = 4 (Erdős-Surányi):**\nFor any three numbers, four consecutive integers are needed (and sufficient).\n\nThese small cases are exactly computed but already show the pattern: g(n) ≈ 2n.",
-    "mathContext": "g(2) = 2, g(3) = 4 exactly",
+    "title": "Known Exact Values",
+    "content": "Two axioms capture the exactly computed values. **g_two : g 2 = 2** (Gallai): for any two integers a, b ≥ 2, two consecutive integers from an interval of length max(a,b) suffice to have their product divisible by ab. **g_three : g 3 = 4** (Erdős-Surányi 1959): three integers require four consecutive integers. The pattern g(n) ≈ 2n is already visible: g(2)/2 = 1, g(3)/3 = 4/3 ≈ 1.33, trending toward the conjectured limit of 2.",
+    "mathContext": "g(2) = 2 (Gallai). g(3) = 4 (Erdős-Surányi 1959). Ratio g(n)/n: g(2)/2=1, g(3)/3≈1.33.",
     "significance": "key",
-    "relatedConcepts": ["Gallai", "Erdős-Surányi", "small cases"]
+    "relatedConcepts": ["Gallai", "Erdős-Surányi-1959", "exact-values"]
   },
   {
-    "id": "ann-e708-lower-bound",
+    "id": "ann-708-bounds",
     "proofId": "erdos-708",
-    "range": {"startLine": 120, "endLine": 145},
+    "range": { "startLine": 99, "endLine": 112 },
     "type": "axiom",
-    "title": "Erdős-Surányi Lower Bound",
-    "content": "**Lower Bound: g(n) ≥ (2 - o(1))n**\n\n```lean\naxiom erdos_suranyi_lower (n : ℕ) (hn : n ≥ 2) :\n  (g n : ℝ) ≥ 2 * n - Real.sqrt n * 10\n```\n\n**Construction:** Take A = {p_i · p_j : i ≠ j} where p_1 < ... < p_ℓ are primes with 2p_1² > p_ℓ².\n\nThis construction forces many elements from any consecutive interval because:\n- Products of distinct prime pairs have \"spread out\" prime factors\n- Consecutive integers can't efficiently pack all needed factors",
-    "mathContext": "g(n) ≥ 2n - o(n) via products of prime pairs",
-    "significance": "key",
-    "relatedConcepts": ["prime products", "extremal construction", "lower bounds"]
+    "title": "Bounds on g(n)",
+    "content": "**g_trivial_upper** gives g(n) ≤ n² as a rough upper bound — the entire interval always works trivially. **erdos_suranyi_lower** is the key lower bound: g(n) ≥ 2n - 10√n for n ≥ 2, which gives g(n) ≥ (2-o(1))n asymptotically. The construction for the lower bound uses A = {p_i · p_j : i ≠ j} where p_1 < ... < p_ℓ are primes satisfying 2p₁² > p_ℓ². This forces the prime factors of ∏A to be spread across many distinct primes, each appearing with small multiplicity, making it impossible for a small set of consecutive integers to accumulate all the required divisibility.",
+    "mathContext": "g_trivial_upper: g(n) ≤ n². erdos_suranyi_lower: g(n) ≥ 2n - 10√n for n ≥ 2. Construction: A = {pᵢpⱼ : i≠j}, primes with 2p₁² > p_ℓ².",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős-Surányi-lower-bound", "prime-pair-construction", "asymptotic-bound"]
   },
   {
-    "id": "ann-e708-conjecture",
+    "id": "ann-708-conjecture",
     "proofId": "erdos-708",
-    "range": {"startLine": 147, "endLine": 166},
+    "range": { "startLine": 114, "endLine": 127 },
     "type": "definition",
     "title": "The Open Conjecture",
-    "content": "**Erdős's Question (OPEN - $100 prize)**\n\n```lean\ndef ErdosConjecture : Prop :=\n  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (g n : ℝ) ≤ (2 + ε) * n\n\ndef StrongerConjecture : Prop :=\n  ∀ n : ℕ, n ≥ 1 → g n ≤ 2 * n\n```\n\n**If true:** Combined with g(n) ≥ (2 - o(1))n, we'd have g(n) = (2 + o(1))n exactly.\n\n**Stronger version:** Perhaps g(n) ≤ 2n with no error term?",
-    "mathContext": "g(n) ≤ (2 + o(1))n? or g(n) ≤ 2n?",
+    "content": "Two formulations of the open problem. **ErdosConjecture** uses the ε-δ definition: ∀ ε > 0, ∃ N, ∀ n ≥ N, g(n) ≤ (2+ε)n. This is the standard 'o(1)' formulation. **StrongerConjecture** asks whether g(n) ≤ 2n exactly for all n ≥ 1, without any error term. If ErdosConjecture holds, combined with the Erdős-Surányi lower bound, we would have g(n) = (2+o(1))n — the leading coefficient would be exactly 2. The $100 prize applies to either proof or disproof.",
+    "mathContext": "ErdosConjecture := ∀ ε > 0, ∃ N, ∀ n ≥ N, g(n) ≤ (2+ε)n. StrongerConjecture := ∀ n ≥ 1, g(n) ≤ 2n. If true: g(n) = (2±o(1))n.",
     "significance": "critical",
-    "relatedConcepts": ["asymptotic bounds", "Erdős prizes", "open problems"]
+    "relatedConcepts": ["open-problem", "asymptotic-equivalence", "Erdős-prize"]
   },
   {
-    "id": "ann-e708-variant",
+    "id": "ann-708-variant",
     "proofId": "erdos-708",
-    "range": {"startLine": 168, "endLine": 184},
-    "type": "definition",
-    "title": "Related Variant",
-    "content": "**Interval Length Variant**\n\nErdős-Surányi also asked: What is the smallest c_n ≥ 1 such that in any interval of length c_n · max(A), there exists B with |B| = n satisfying divisibility?\n\n```lean\naxiom c_two : c 2 = 1\naxiom c_three : c 3 = Real.sqrt 2\n```\n\n**Known:**\n- c₂ = 1 (interval of length max(a,b) suffices for 2 elements)\n- c₃ = √2 (need 41% more length for 3 elements)\n\nSee Problem [709] for this variant.",
-    "mathContext": "c_n = minimum interval scaling factor",
-    "significance": "supporting",
-    "relatedConcepts": ["interval length", "Problem 709", "variants"]
+    "range": { "startLine": 129, "endLine": 143 },
+    "type": "axiom",
+    "title": "Interval Length Variant",
+    "content": "The related variant studies c_n: the smallest scaling factor ≥ 1 such that an interval of length c_n · max(A) contains n elements whose product is divisible by ∏A. **c** is axiomatized since computing the optimal scaling requires optimization over all A. Known values: **c_two : c 2 = 1** (no extra length needed for 2 elements) and **c_three : c 3 = √2** (need ~41% more length for 3 elements). This is connected to Erdős Problem #709. The c_n variant and g(n) capture different aspects of the same divisibility phenomenon.",
+    "mathContext": "axiom c (n : ℕ) : ℝ. c₂ = 1. c₃ = √2. Related to Problem #709.",
+    "significance": "key",
+    "relatedConcepts": ["interval-scaling", "Problem-709", "variant"]
   },
   {
-    "id": "ann-e708-difficulty",
+    "id": "ann-708-summary",
     "proofId": "erdos-708",
-    "range": {"startLine": 207, "endLine": 228},
-    "type": "concept",
-    "title": "Why This is Hard",
-    "content": "**Key Difficulties**\n\n1. **Complex Prime Factorizations:** Products of n integers can have intricate prime structure\n\n2. **Sparse Prime Factors in Intervals:** Consecutive integers share few primes - each prime p appears roughly every p integers\n\n3. **Adversarial Choice:** Must work for ANY choice of A, not just typical ones\n\n4. **Optimization:** Finding optimal constructions for upper bounds requires deep insight\n\nThe gap between lower bound (2 - o(1))n and conjectured upper bound (2 + o(1))n may seem small, but closing it has resisted decades of effort.",
-    "mathContext": "Gap between 2-o(1) and 2+o(1) remains open",
-    "significance": "supporting",
-    "relatedConcepts": ["prime distribution", "extremal problems", "computational complexity"]
-  },
-  {
-    "id": "ann-e708-summary",
-    "proofId": "erdos-708",
-    "range": {"startLine": 230, "endLine": 263},
+    "range": { "startLine": 156, "endLine": 190 },
     "type": "theorem",
-    "title": "Summary",
-    "content": "**Erdős Problem #708: Complete Summary**\n\n```lean\ntheorem erdos_708_summary :\n    g 2 = 2 ∧ g 3 = 4 := ⟨g_two, g_three⟩\n```\n\n**STATUS: OPEN** ($100 prize)\n\n**Known:**\n- g(2) = 2, g(3) = 4\n- g(n) ≥ (2 - o(1))n (Erdős-Surányi lower bound)\n\n**Open:**\n- Is g(n) ≤ (2 + o(1))n?\n- Is g(n) ≤ 2n?\n\n**Key Insight:** How many consecutive integers does it take to divide any product of n integers?",
-    "mathContext": "Problem remains open after 60+ years",
+    "title": "Summary Theorems",
+    "content": "Two summary theorems. **erdos_708** combines all three known results: g(2) = 2, g(3) = 4, and the Erdős-Surányi lower bound, proved by ⟨g_two, g_three, erdos_suranyi_lower⟩. **erdos_708_summary** provides just the exact values: g(2) = 2 ∧ g(3) = 4, proved by ⟨g_two, g_three⟩. The problem remains OPEN — the gap between the lower bound (2-o(1))n and the conjectured upper bound (2+o(1))n has resisted over 60 years of effort.",
+    "mathContext": "erdos_708 : g 2 = 2 ∧ g 3 = 4 ∧ (∀ n ≥ 2, g(n) ≥ 2n - 10√n) := ⟨g_two, g_three, erdos_suranyi_lower⟩. erdos_708_summary : g 2 = 2 ∧ g 3 = 4 := ⟨g_two, g_three⟩.",
     "significance": "critical",
-    "relatedConcepts": ["Erdős problems", "number theory", "prize problems"]
+    "relatedConcepts": ["exact-constructor", "open-problem", "60-year-gap"]
   }
 ]

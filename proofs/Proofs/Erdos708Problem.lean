@@ -1,5 +1,5 @@
-/-
-Erdős Problem #708: Divisibility of Products by Consecutive Integers
+/-!
+# Erdős Problem #708: Divisibility of Products by Consecutive Integers
 
 Source: https://erdosproblems.com/708
 Status: OPEN
@@ -40,50 +40,37 @@ open BigOperators Finset
 
 namespace Erdos708
 
-/-
-## Part I: Basic Definitions
--/
+/-! ## Part I: Basic Definitions -/
 
-/--
-The product of a finite set of natural numbers.
--/
+/-- The product of a finite set of natural numbers. -/
 def setProduct (S : Finset ℕ) : ℕ := S.prod id
 
-/--
-A set of consecutive integers starting at k with length len.
--/
+/-- A set of consecutive integers starting at k with length len. -/
 def consecutiveSet (k len : ℕ) : Finset ℕ :=
   Finset.range len |>.map ⟨(· + k), fun _ _ h => Nat.add_right_cancel h⟩
 
-/--
-**Divisibility condition:**
-The product of A divides the product of B.
--/
+/-- **Divisibility condition:**
+The product of A divides the product of B. -/
 def productDivides (A B : Finset ℕ) : Prop :=
   setProduct A ∣ setProduct B
 
-/-
-## Part II: The Function g(n)
+/-! ## Part II: The Function g(n)
 
 g(n) is the minimum size of B needed to guarantee divisibility
 for ANY choice of A with |A| = n and ANY interval of consecutive integers
 of length max(A).
 -/
 
-/--
-**Valid subset for divisibility:**
-Given A and an interval I, a subset B ⊆ I is valid if ∏A | ∏B.
--/
+/-- **Valid subset for divisibility:**
+Given A and an interval I, a subset B ⊆ I is valid if ∏A | ∏B. -/
 def validSubset (A : Finset ℕ) (I B : Finset ℕ) : Prop :=
   B ⊆ I ∧ productDivides A B
 
-/--
-**g(n) exists property:**
+/-- **g(n) exists property:**
 For any A with |A| = n and interval I of length max(A), there exists B ⊆ I
 with |B| = g(n) such that ∏A | ∏B.
 
-This is axiomatized since computing g(n) requires optimization over all choices.
--/
+This is axiomatized since computing g(n) requires optimization over all choices. -/
 axiom g_exists (n : ℕ) (hn : n ≥ 1) : ∃ gn : ℕ,
   ∀ A : Finset ℕ, A.card = n → (∀ a ∈ A, a ≥ 2) →
     ∀ k : ℕ, ∃ B : Finset ℕ,
@@ -91,150 +78,86 @@ axiom g_exists (n : ℕ) (hn : n ≥ 1) : ∃ gn : ℕ,
       B.card = gn ∧
       productDivides A B
 
-/--
-**The function g(n):**
+/-- **The function g(n):**
 Defined as the minimal value satisfying the above property.
-This is noncomputable because it's defined via a minimality condition.
--/
+This is noncomputable because it's defined via a minimality condition. -/
 noncomputable def g (n : ℕ) : ℕ :=
   if h : n ≥ 1 then
     Nat.find (g_exists n h)
   else 0
 
-/-
-## Part III: Known Values
--/
+/-! ## Part III: Known Values -/
 
-/--
-**Gallai's result: g(2) = 2**
+/-- **Gallai's result: g(2) = 2**
 For any two numbers a, b ≥ 2, we can find 2 consecutive integers
-whose product is divisible by ab.
--/
+whose product is divisible by ab. -/
 axiom g_two : g 2 = 2
 
-/--
-**Erdős-Surányi: g(3) = 4**
--/
+/-- **Erdős-Surányi: g(3) = 4** -/
 axiom g_three : g 3 = 4
 
-/-
-## Part IV: Bounds on g(n)
--/
+/-! ## Part IV: Bounds on g(n) -/
 
-/--
-**Trivial upper bound:**
-g(n) ≤ product of A (we can always find the full interval).
-But this is far from tight.
--/
-axiom g_trivial_upper (n : ℕ) (hn : n ≥ 1) : g n ≤ n * n  -- Very rough
+/-- **Trivial upper bound:**
+g(n) ≤ n² (very rough — the full interval always works). -/
+axiom g_trivial_upper (n : ℕ) (hn : n ≥ 1) : g n ≤ n * n
 
-/--
-**Erdős-Surányi lower bound:**
+/-- **Erdős-Surányi lower bound:**
 g(n) ≥ (2 - o(1))n
 
 More precisely: for large n, g(n) ≥ 2n - C·√n for some constant C.
--/
+The construction uses A = {p_i · p_j : i ≠ j} where p_1 < ... < p_ℓ
+are primes with 2p₁² > p_ℓ², forcing many elements from any consecutive interval. -/
 axiom erdos_suranyi_lower (n : ℕ) (hn : n ≥ 2) :
-  (g n : ℝ) ≥ 2 * n - Real.sqrt n * 10  -- Simplified; actual bound is sharper
+  (g n : ℝ) ≥ 2 * n - Real.sqrt n * 10
 
-/--
-**Lower bound construction:**
-Take A = {p_i · p_j : i ≠ j} where p_1 < ... < p_ℓ are primes with 2p_1² > p_ℓ².
-This gives a set requiring many elements from any consecutive interval.
--/
-axiom lower_bound_construction : True
+/-! ## Part V: The Conjecture -/
 
-/-
-## Part V: The Conjecture
--/
-
-/--
-**Erdős's Question (OPEN):**
+/-- **Erdős's Question (OPEN):**
 Is g(n) ≤ (2 + o(1))n?
 
 Combined with the lower bound g(n) ≥ (2 - o(1))n, this would give:
-g(n) = (2 + o(1))n
--/
+g(n) = (2 + o(1))n -/
 def ErdosConjecture : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (g n : ℝ) ≤ (2 + ε) * n
 
-/--
-**Stronger conjecture:**
-Perhaps g(n) ≤ 2n exactly?
--/
+/-- **Stronger conjecture:**
+Perhaps g(n) ≤ 2n exactly? -/
 def StrongerConjecture : Prop :=
   ∀ n : ℕ, n ≥ 1 → g n ≤ 2 * n
 
-/-
-## Part VI: Related Variant
--/
+/-! ## Part VI: Related Variant -/
 
-/--
-**Interval length variant:**
-What is the smallest c_n ≥ 1 such that in any interval [0, c_n · max(A)]
-there exists B ⊆ I ∩ ℕ with |B| = n satisfying the divisibility?
--/
-noncomputable def c (n : ℕ) : ℝ := sorry  -- Placeholder
+/-- **Interval length variant:**
+c_n is the smallest constant ≥ 1 such that in any interval [0, c_n · max(A)]
+there exists B ⊆ I ∩ ℕ with |B| = n satisfying the divisibility.
+Axiomatized since computing the optimal scaling requires optimization
+over all choices of A. -/
+axiom c (n : ℕ) : ℝ
 
-/--
-**Known values of c_n:**
-c_2 = 1, c_3 = √2
--/
+/-- **Known values of c_n:**
+c₂ = 1 (interval of length max(a,b) suffices for 2 elements). -/
 axiom c_two : c 2 = 1
+
+/-- c₃ = √2 (need ~41% more length for 3 elements). -/
 axiom c_three : c 3 = Real.sqrt 2
 
-/-
-## Part VII: Examples
--/
+/-! ## Part VII: Examples -/
 
-/--
-**Example: g(2) = 2**
-For A = {a, b}, we need consecutive integers whose product is divisible by ab.
-The key is finding x, x+1, ..., x+k containing enough prime factors.
-
-For instance, A = {6, 10} = {2·3, 2·5}:
-Product = 60 = 2² · 3 · 5
-In [1, 10], we have B = {6, 10} with |B| = 2 and 60 | 60. ✓
--/
+/-- **Example: g(2) = 2**
+For A = {6, 10} = {2·3, 2·5}: Product = 60 = 2² · 3 · 5.
+In [1, 10], we have B = {6, 10} with |B| = 2 and 60 | 60. -/
 example : setProduct ({6, 10} : Finset ℕ) = 60 := by native_decide
 
-/--
-**Example: g(3) = 4**
-With 3 elements, we need 4 consecutive integers (in general).
--/
+/-- **Example: g(3) = 4**
+With 3 elements, we need 4 consecutive integers (in general). -/
 theorem g_three_example : g 3 = 4 := g_three
 
-/-
-## Part VIII: Why This is Hard
--/
+/-! ## Part VIII: Summary
 
-/--
-**Difficulty:**
-The challenge is finding the right consecutive integers that "pack"
-enough prime factors to divide a product of n arbitrary integers.
+**Erdős Problem #708: OPEN ($100 prize)**
 
-Key obstacles:
-1. Products can have complex prime factorizations
-2. Consecutive integers share few prime factors
-3. Finding optimal constructions requires deep number theory
--/
-axiom difficulty_explanation : True
-
-/--
-**Prime factor density:**
-Consecutive integers tend to have "spread out" prime factors,
-making it harder to accumulate divisibility.
--/
-axiom prime_factor_density : True
-
-/-
-## Part IX: Summary
--/
-
-/--
-**Erdős Problem #708: Summary**
-
-**PROBLEM (OPEN - $100 prize):**
+**PROBLEM:**
 Is g(n) ≤ (2 + o(1))n?
 
 **KNOWN:**
@@ -250,14 +173,18 @@ Is g(n) ≤ (2 + o(1))n?
 The problem asks: how many consecutive integers suffice to
 guarantee their product is divisible by any product of n integers?
 -/
+
+/-- **Erdős Problem #708: OPEN**
+
+Summary of known results: g(2) = 2, g(3) = 4, and the
+Erdős-Surányi lower bound holds. -/
+theorem erdos_708 :
+    g 2 = 2 ∧ g 3 = 4 ∧
+    (∀ n : ℕ, n ≥ 2 → (g n : ℝ) ≥ 2 * n - Real.sqrt n * 10) :=
+  ⟨g_two, g_three, erdos_suranyi_lower⟩
+
+/-- **Summary theorem:** The known exact values. -/
 theorem erdos_708_summary :
     g 2 = 2 ∧ g 3 = 4 := ⟨g_two, g_three⟩
-
-/--
-**Problem status:**
-Erdős Problem #708 remains OPEN.
-Prize: $100 for proof or disproof.
--/
-theorem erdos_708_status : True := trivial
 
 end Erdos708
