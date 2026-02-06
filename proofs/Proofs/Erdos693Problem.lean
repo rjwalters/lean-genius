@@ -144,18 +144,12 @@ axiom uniform_equiv_maxgap (n k : ℕ) (hn : n ≥ 1) (B : ℕ) :
 
 /-! ## Part VIII: Connections -/
 
-/--
+/-!
 **Connection to divisor distribution:**
 The problem relates to classical questions about divisor distribution,
 the Hooley divisor function τ(n; y, z), and sieve methods.
+It is also related to Erdős Problem #446 on divisor distribution.
 -/
-axiom divisor_distribution_connection : True
-
-/--
-**Connection to Problem #446:**
-This is related to other Erdős problems on divisor distribution.
--/
-axiom related_problem_446 : True
 
 /-! ## Part IX: Summary -/
 
@@ -171,13 +165,7 @@ where A = {m ∈ [n, n^k] : m has a divisor in (n, 2n)}
 **DIFFICULTY:** Controlling maximum gap, not just average.
 -/
 theorem erdos_693_summary :
-    -- Conjecture stated
-    (erdos693Conjecture ↔ ∀ k, k ≥ 2 → polylogBoundedGap k) ∧
-    -- Problem is open
-    True :=
-  ⟨Iff.rfl, trivial⟩
-
-/-- The problem remains OPEN. -/
-theorem erdos_693_status : True := trivial
+    erdos693Conjecture ↔ ∀ k, k ≥ 2 → polylogBoundedGap k :=
+  Iff.rfl
 
 end Erdos693
