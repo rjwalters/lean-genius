@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #777: Comparable Pairs in Families of Sets
 
 Source: https://erdosproblems.com/777
