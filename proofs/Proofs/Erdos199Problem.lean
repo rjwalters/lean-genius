@@ -33,7 +33,7 @@ namespace Erdos199
 
 open Set
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Arithmetic progressions and the problem setup.
@@ -53,7 +53,7 @@ def infiniteAP (a d : ℝ) : Set ℝ := {x : ℝ | ∃ n : ℕ, x = a + n * d}
 def containsInfiniteAP (A : Set ℝ) : Prop :=
   ∃ a d : ℝ, d ≠ 0 ∧ infiniteAP a d ⊆ A
 
-/-!
+/-
 ## Part II: Erdős's Conjecture
 
 The original question: If A is 3-AP-free, must ℝ \ A contain an infinite AP?
@@ -63,15 +63,12 @@ The original question: If A is 3-AP-free, must ℝ \ A contain an infinite AP?
 def ErdosConjecture199 : Prop :=
   ∀ A : Set ℝ, is3APFree A → containsInfiniteAP Aᶜ
 
-/-!
+/-
 ## Part III: Baumgartner's Counterexample (1975)
 
 Baumgartner showed that ℝ can be partitioned into two sets,
 neither containing an infinite arithmetic progression.
 -/
-
-/-- The Hamel basis: ℝ is a vector space over ℚ with a (non-constructive) basis -/
-axiom hamelBasisExists : ∃ B : Set ℝ, True  -- Full statement requires linear algebra
 
 /-- Baumgartner's partition: ℝ = A ∪ B where neither has an infinite AP -/
 axiom baumgartner_partition :
@@ -85,7 +82,7 @@ axiom baumgartner_partition :
 axiom baumgartner_3AP_free :
     ∃ A : Set ℝ, is3APFree A ∧ ¬containsInfiniteAP Aᶜ
 
-/-!
+/-
 ## Part IV: The Main Result
 
 Erdős Problem #199 is DISPROVED.
@@ -105,23 +102,13 @@ theorem erdos_199_disproved : ¬ErdosConjecture199 := by
 theorem erdos_199 : ∃ A : Set ℝ, is3APFree A ∧ ¬containsInfiniteAP Aᶜ :=
   baumgartner_3AP_free
 
-/-!
-## Part V: Key Insight - The Axiom of Choice
-
-Baumgartner's construction fundamentally requires the axiom of choice.
-The Hamel basis for ℝ over ℚ is not constructively definable.
--/
-
-/-- The construction uses a Hamel basis (requires AC) -/
-axiom construction_requires_AC : True
-
-/-- In ZF without AC, the problem may have a different answer -/
-axiom ZF_status_unknown : True
-
-/-!
-## Part VI: Related Results
+/-
+## Part V: Related Results
 
 Connections to Ramsey theory and van der Waerden's theorem.
+Note: Baumgartner's construction fundamentally requires the axiom of choice.
+The Hamel basis for ℝ over ℚ is not constructively definable.
+In ZF without AC, the problem may have a different answer.
 -/
 
 /-- Van der Waerden's theorem: for any finite coloring of ℕ, some color
@@ -130,12 +117,11 @@ axiom van_der_waerden :
     ∀ (k : ℕ) (c : ℕ → Fin k),
       ∀ n : ℕ, ∃ a d : ℕ, d > 0 ∧ ∀ i < n, c (a + i * d) = c a
 
-/-- Contrast: Van der Waerden guarantees APs in colorings of ℕ,
-    but Baumgartner shows this fails for infinite APs in ℝ -/
-axiom vdW_contrast : True
+/-
+## Part VI: Examples and Intuition
 
-/-!
-## Part VII: Examples and Intuition
+Contrast: Van der Waerden guarantees APs in colorings of ℕ,
+but Baumgartner shows this fails for infinite APs in ℝ.
 -/
 
 /-- Example: ℕ is 3-AP-free → False (since 0,1,2 is an AP if we include 0)
@@ -163,8 +149,8 @@ example : containsInfiniteAP {q : ℝ | ∃ r : ℚ, q = r} := by
     use n
     simp [hn]
 
-/-!
-## Part VIII: Summary
+/-
+## Part VII: Summary
 -/
 
 /--
@@ -193,12 +179,7 @@ theorem erdos_199_summary :
     -- The conjecture is false
     ¬ErdosConjecture199 ∧
     -- A counterexample exists
-    (∃ A : Set ℝ, is3APFree A ∧ ¬containsInfiniteAP Aᶜ) ∧
-    -- Problem is resolved
-    True := by
-  refine ⟨erdos_199_disproved, erdos_199, trivial⟩
-
-/-- Erdős Problem #199 is DISPROVED -/
-theorem erdos_199_final : ¬ErdosConjecture199 := erdos_199_disproved
+    (∃ A : Set ℝ, is3APFree A ∧ ¬containsInfiniteAP Aᶜ) := by
+  exact ⟨erdos_199_disproved, erdos_199⟩
 
 end Erdos199
