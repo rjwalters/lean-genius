@@ -1,82 +1,93 @@
 [
   {
-    "id": "ann-1",
-    "range": { "startLine": 47, "endLine": 48 },
-    "type": "definition",
-    "title": "Product Representation",
-    "content": "A representation of m is a pair (a₁, a₂) with a₁ < a₂ and a₁·a₂ = m. The problem asks about sets where each m has few such representations.",
-    "significance": "essential"
+    "id": "ann-e796-overview",
+    "proofId": "erdos-796",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #796: Second-Order Terms for g_k(n)**\n\nLet g_k(n) be the max size of A ⊆ {1,...,n} with < k representations per integer. Erdős (1964) found first-order asymptotics. The question: does the second-order error for k=3 converge to c · n/(log n)²?\n\nStatus: OPEN",
+    "mathContext": "Multiplicative number theory, representation functions, asymptotic analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős 1964 multiplicative representation", "Prime factorization", "Divisor function"]
   },
   {
-    "id": "ann-2",
-    "range": { "startLine": 79, "endLine": 81 },
+    "id": "ann-e796-definitions",
+    "proofId": "erdos-796",
+    "range": { "startLine": 43, "endLine": 69 },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**IsProductRep m a₁ a₂:** a₁ < a₂ and a₁ · a₂ = m. An ordered factorization of m.\n\n**repCount A m:** Number of ways to write m = a₁ · a₂ with a₁ < a₂ both in A. This is the key constraint.\n\n**IsBoundedRep A k:** Every integer m has fewer than k representations from A.\n\n**IsValidSubset A n k:** A ⊆ {1,...,n} with IsBoundedRep A k. The feasible region for the optimization.",
+    "significance": "critical",
+    "leanSymbol": "IsProductRep"
+  },
+  {
+    "id": "ann-e796-gfunction",
+    "proofId": "erdos-796",
+    "range": { "startLine": 79, "endLine": 87 },
     "type": "definition",
     "title": "The Function g_k(n)",
-    "content": "g_k(n) is the maximum size of A ⊆ {1,...,n} such that every integer m has fewer than k representations m = a₁a₂ with a₁ < a₂ both in A.",
-    "significance": "essential"
+    "content": "**g k n:** Maximum cardinality of a valid subset of {1,...,n} with < k representations per integer. Defined as a sup over the powerset, which is finite.\n\n**g_well_defined:** Axiom that g(k,n) ≤ n, ensuring the function is bounded. This follows from the finite optimization domain.",
+    "significance": "critical",
+    "leanSymbol": "g"
   },
   {
-    "id": "ann-3",
-    "range": { "startLine": 110, "endLine": 122 },
-    "type": "theorem",
+    "id": "ann-e796-erdos1964",
+    "proofId": "erdos-796",
+    "range": { "startLine": 104, "endLine": 121 },
+    "type": "axiom",
     "title": "Erdős 1964 Main Theorem",
-    "content": "For 2^{r-1} < k ≤ 2^r, g_k(n) ~ ((log log n)^{r-1} / (r-1)!) · n/log n. This matches the count of integers with r prime factors, connecting the problem to prime factorization.",
-    "significance": "essential"
+    "content": "**erdos_1964_main:** For 2^{r-1} < k ≤ 2^r, g_k(n) ~ ((log log n)^{r-1}/(r-1)!) · n/log n.\n\nThe key cases:\n- k = 2 (r=1): g₂(n) ~ n/log n (related to primes)\n- k = 3,4 (r=2): g_k(n) ~ (log log n / log n) · n\n- k = 5,...,8 (r=3): g_k(n) ~ ((log log n)²/2 · log n) · n\n\nThe threshold 2^{r-1} relates to the divisor function τ(n).",
+    "significance": "critical",
+    "leanSymbol": "erdos_1964_main"
   },
   {
-    "id": "ann-4",
-    "range": { "startLine": 128, "endLine": 141 },
+    "id": "ann-e796-k3case",
+    "proofId": "erdos-796",
+    "range": { "startLine": 133, "endLine": 140 },
     "type": "theorem",
     "title": "First-Order for k = 3",
-    "content": "Since 2 < 3 ≤ 4, we have r = 2, giving g₃(n) ~ (log log n / log n)·n. This is the leading term; the question asks about the next term.",
-    "significance": "essential"
+    "content": "**g3_first_order:** Derives g₃(n) ~ (log log n / log n) · n from erdos_1964_main with k=3, r=2.\n\nSince 2^1 = 2 < 3 ≤ 4 = 2^2, we get r = 2, and (log log n)^1 / 1! = log log n. The proof uses norm_num to verify the arithmetic bounds and simp to simplify the resulting expression.",
+    "significance": "critical",
+    "leanSymbol": "g3_first_order"
   },
   {
-    "id": "ann-5",
-    "range": { "startLine": 152, "endLine": 153 },
+    "id": "ann-e796-secondorder",
+    "proofId": "erdos-796",
+    "range": { "startLine": 151, "endLine": 170 },
     "type": "definition",
-    "title": "Second-Order Error E₃(n)",
-    "content": "E₃(n) = g₃(n) - (log log n / log n)·n is the error after removing the first-order term. The question is whether E₃(n) ~ c·n/(log n)² for some c.",
-    "significance": "essential"
+    "title": "Second-Order Error and Conjecture",
+    "content": "**E3 n:** The error term g₃(n) - (log log n / log n) · n. This measures how far g₃(n) deviates from the first-order asymptotic.\n\n**E3_bounded:** Axiom (Erdős 1969) that c₁ · n/(log n)² ≤ E₃(n) ≤ c₂ · n/(log n)² for 0 < c₁ ≤ c₂. The error is Θ(n/(log n)²).\n\n**erdosConjecture796:** The OPEN conjecture that E₃(n) = (c + o(1)) · n/(log n)² for some c > 0. Formally: ∃ c > 0, ∀ ε > 0, eventually |E₃(n) - c · n/(log n)²| < ε · n/(log n)².",
+    "significance": "critical",
+    "leanSymbol": "E3"
   },
   {
-    "id": "ann-6",
-    "range": { "startLine": 159, "endLine": 163 },
+    "id": "ann-e796-k2case",
+    "proofId": "erdos-796",
+    "range": { "startLine": 181, "endLine": 183 },
+    "type": "axiom",
+    "title": "The k = 2 Case",
+    "content": "**g2_asymptotic:** g₂(n) ~ n/log n, resembling the Prime Number Theorem. For k = 2, no integer should have two representations, which closely relates the extremal set to the primes.\n\nProblem #425 asks about second-order terms for g₂(n), which is a distinct but related question.",
+    "significance": "key",
+    "leanSymbol": "g2_asymptotic"
+  },
+  {
+    "id": "ann-e796-optimal",
+    "proofId": "erdos-796",
+    "range": { "startLine": 193, "endLine": 204 },
+    "type": "axiom",
+    "title": "Optimal Sets and Divisor Connection",
+    "content": "**optimal_sets_structure:** Near-optimal sets for g₃ consist primarily of integers with exactly 2 prime factors (with multiplicity). At least half of the elements have this property.\n\n**divisor_connection:** If τ(m) ≤ 2k-1, then m automatically has < k representations from any set A. Numbers with few divisors are 'safe' and don't constrain the optimization.",
+    "significance": "key",
+    "leanSymbol": "optimal_sets_structure"
+  },
+  {
+    "id": "ann-e796-summary",
+    "proofId": "erdos-796",
+    "range": { "startLine": 229, "endLine": 239 },
     "type": "theorem",
-    "title": "Bounds on E₃(n)",
-    "content": "Erdős (1969) proved c₁·n/(log n)² ≤ E₃(n) ≤ c₂·n/(log n)² for some 0 < c₁ ≤ c₂. So the second-order term is Θ(n/(log n)²), but the exact constant is unknown.",
-    "significance": "essential"
-  },
-  {
-    "id": "ann-7",
-    "range": { "startLine": 169, "endLine": 171 },
-    "type": "conjecture",
-    "title": "The Main Conjecture (OPEN)",
-    "content": "Erdős asked: does E₃(n)/(n/(log n)²) converge to some constant c? If yes, what is c? This remains OPEN - we don't even know if the limit exists.",
-    "significance": "essential"
-  },
-  {
-    "id": "ann-8",
-    "range": { "startLine": 188, "endLine": 190 },
-    "type": "insight",
-    "title": "Connection to k = 2",
-    "content": "For k = 2, g₂(n) ~ n/log n resembles the Prime Number Theorem. Problem #425 asks about second-order terms for g₂(n), which is related but distinct.",
-    "significance": "important"
-  },
-  {
-    "id": "ann-9",
-    "range": { "startLine": 247, "endLine": 249 },
-    "type": "insight",
-    "title": "Divisor Function Connection",
-    "content": "If τ(m) ≤ 2k-1 (m has few divisors), then m automatically has < k representations. Numbers with many divisors are the 'dangerous' ones for the constraint.",
-    "significance": "important"
-  },
-  {
-    "id": "ann-10",
-    "range": { "startLine": 278, "endLine": 298 },
-    "type": "summary",
-    "title": "Main Result: erdos_796",
-    "content": "OPEN problem on second-order asymptotics. First-order g₃(n) ~ (log log n / log n)n is known (1964). Bounds on E₃(n) are known (1969). Whether E₃(n)/(n/(log n)²) converges to a constant c is OPEN.",
-    "significance": "essential"
+    "title": "Summary Theorem",
+    "content": "**erdos_796_summary:** Combines two key results:\n1. g₃(n) ~ (log log n / log n) · n (from g3_first_order)\n2. c₁ · n/(log n)² ≤ E₃(n) ≤ c₂ · n/(log n)² (from E3_bounded)\n\nProved by exact ⟨g3_first_order, E3_bounded⟩.\n\nThe exact constant c in the second-order term remains OPEN.",
+    "significance": "critical",
+    "leanSymbol": "erdos_796_summary"
   }
 ]
