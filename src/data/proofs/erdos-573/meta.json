@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/Erdos573Problem.lean",
     "tags": ["erdos", "extremal-graph-theory", "turan", "forbidden-cycles", "open"],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 573,
     "erdosUrl": "https://erdosproblems.com/573",
     "erdosProblemStatus": "open",
@@ -49,50 +49,71 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 45,
-      "endLine": 78,
+      "endLine": 69,
       "summary": "Triangle-free, C₄-free, and {C₃, C₄}-free predicates"
     },
     {
       "id": "edge-counting",
       "title": "Edge Counting",
-      "startLine": 80,
-      "endLine": 88,
+      "startLine": 71,
+      "endLine": 75,
       "summary": "Edge count for simple graphs"
     },
     {
       "id": "extremal-function",
       "title": "Extremal Function",
-      "startLine": 90,
-      "endLine": 116,
-      "summary": "Definition of ex(n; {C₃, C₄}) and ex(n; C₄)"
+      "startLine": 77,
+      "endLine": 93,
+      "summary": "Definition of ex(n; {C₃, C₄}) and ex(n; C₄) with trivial bound"
     },
     {
       "id": "kst-theorem",
       "title": "Kővári-Sós-Turán Theorem",
-      "startLine": 118,
-      "endLine": 137,
-      "summary": "Upper bound ex(n; C₄) ≤ (1/2)n^(3/2) + O(n)"
+      "startLine": 95,
+      "endLine": 108,
+      "summary": "Upper bound ex(n; C₄) ≤ (1/2)n^(3/2) + O(n) and asymptotic"
+    },
+    {
+      "id": "erdos-simonovits",
+      "title": "Erdős-Simonovits Result",
+      "startLine": 110,
+      "endLine": 120,
+      "summary": "ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "startLine": 152,
-      "endLine": 177,
+      "startLine": 122,
+      "endLine": 131,
       "summary": "Formal statement: ex(n; {C₃, C₄}) ~ (n/2)^(3/2)"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 179,
-      "endLine": 201,
+      "startLine": 133,
+      "endLine": 144,
       "summary": "Upper and lower bounds on ex(n; {C₃, C₄})"
+    },
+    {
+      "id": "constructions",
+      "title": "Special Constructions",
+      "startLine": 146,
+      "endLine": 160,
+      "summary": "Polarity graphs and projective plane constructions"
+    },
+    {
+      "id": "asymptotic-gap",
+      "title": "The Asymptotic Gap",
+      "startLine": 162,
+      "endLine": 172,
+      "summary": "Gap between C₄-free and {C₃,C₄}-free leading constants"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 271,
-      "endLine": 315,
-      "summary": "Main theorems and historical context"
+      "startLine": 174,
+      "endLine": 198,
+      "summary": "Main theorems: erdos_573 and erdos_573_summary"
     }
   ],
   "conclusion": {
