@@ -1,122 +1,69 @@
 [
   {
-    "id": "min-degree-def",
+    "id": "ann-914-header",
     "proofId": "erdos-914",
-    "range": {
-      "startLine": 55,
-      "endLine": 62
-    },
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #914 asks: does every graph on rm vertices with minimum degree ≥ m(r-1) contain m vertex-disjoint copies of K_r? YES — this is the Hajnal-Szemerédi Theorem (1970). Special cases: r=2 follows from Dirac, r=3 from Corrádi-Hajnal (1963). The minimum degree threshold is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-914-mindegree",
+    "proofId": "erdos-914",
+    "range": { "startLine": 53, "endLine": 60 },
     "type": "definition",
     "title": "Minimum Degree",
-    "content": "The minimum degree δ(G) is the smallest degree over all vertices in G. This is the key parameter in the Hajnal-Szemerédi theorem - the threshold δ(G) ≥ m(r-1) determines when we can find m vertex-disjoint cliques.",
-    "significance": "core"
+    "content": "`minDegree G` computes δ(G) as the minimum over all vertex degrees using `Finset.min'`. The nonemptiness proof uses `Finset.univ_nonempty`. This is the key parameter: the threshold δ(G) ≥ m(r-1) determines when m vertex-disjoint K_r's must exist.",
+    "mathContext": "Minimum degree is a fundamental graph parameter in extremal graph theory. High minimum degree forces various substructures — Dirac (Hamiltonian cycles), Turán (cliques), and Hajnal-Szemerédi (clique factors).",
+    "significance": "critical"
   },
   {
-    "id": "r-clique-def",
+    "id": "ann-914-cliques",
     "proofId": "erdos-914",
-    "range": {
-      "startLine": 68,
-      "endLine": 73
-    },
+    "range": { "startLine": 62, "endLine": 96 },
     "type": "definition",
-    "title": "r-Clique",
-    "content": "An r-clique (or K_r) is a set of r vertices where every pair is adjacent - a complete subgraph on r vertices. For r=2 it's an edge, r=3 is a triangle, r=4 is a tetrahedron, etc. Finding vertex-disjoint copies of these is the main goal.",
-    "significance": "core"
+    "title": "Clique Structures",
+    "content": "Four key definitions: `IsRClique G S r` requires |S| = r and G.IsClique S. `AreVertexDisjoint cliques` requires pairwise disjointness. `HasMDisjointRCliques G m r` asserts existence of m vertex-disjoint r-cliques. `HasPerfectKrFactor G r` requires the cliques to cover ALL vertices (biUnion = univ), a strictly stronger property.",
+    "mathContext": "The distinction between m disjoint cliques and a perfect factor is subtle: m cliques use rm vertices total, which equals |V| when |V| = rm, but proving biUnion = univ requires additional cardinality reasoning.",
+    "significance": "critical"
   },
   {
-    "id": "vertex-disjoint-def",
+    "id": "ann-914-special",
     "proofId": "erdos-914",
-    "range": {
-      "startLine": 75,
-      "endLine": 90
-    },
-    "type": "definition",
-    "title": "Vertex-Disjoint Cliques",
-    "content": "A collection of cliques is vertex-disjoint if no two cliques share any vertex. This is crucial because we want to partition the vertex set into cliques, not just find overlapping ones. Having m vertex-disjoint K_r's uses exactly rm vertices.",
-    "significance": "core"
-  },
-  {
-    "id": "perfect-factor-def",
-    "proofId": "erdos-914",
-    "range": {
-      "startLine": 92,
-      "endLine": 100
-    },
-    "type": "definition",
-    "title": "Perfect K_r-Factor",
-    "content": "A perfect K_r-factor is a collection of vertex-disjoint r-cliques that cover ALL vertices. When |V(G)| = rm, finding m vertex-disjoint K_r's is equivalent to finding a perfect K_r-factor. This is a spanning structure, much stronger than just having a single K_r.",
-    "significance": "core"
-  },
-  {
-    "id": "corradi-hajnal",
-    "proofId": "erdos-914",
-    "range": {
-      "startLine": 126,
-      "endLine": 133
-    },
+    "range": { "startLine": 98, "endLine": 117 },
     "type": "theorem",
-    "title": "Corrádi-Hajnal Theorem (r=3)",
-    "content": "Corrádi and Hajnal (1963) proved the r=3 case: a graph on 3m vertices with minimum degree ≥ 2m contains m vertex-disjoint triangles. This was the crucial stepping stone to the general result, requiring 7 years of additional work to generalize.",
-    "significance": "core"
+    "title": "Special Cases: r=2 and r=3",
+    "content": "`case_r_equals_2`: 2m vertices + δ ≥ m → m disjoint edges (from Dirac/matching theory). `corradi_hajnal`: 3m vertices + δ ≥ 2m → m disjoint triangles (Corrádi-Hajnal 1963). The triangle case was the crucial stepping stone: generalizing from r=3 to arbitrary r took 7 additional years.",
+    "significance": "key"
   },
   {
-    "id": "hajnal-szemeredi-main",
+    "id": "ann-914-main",
     "proofId": "erdos-914",
-    "range": {
-      "startLine": 139,
-      "endLine": 151
-    },
+    "range": { "startLine": 119, "endLine": 146 },
     "type": "theorem",
     "title": "Hajnal-Szemerédi Theorem (1970)",
-    "content": "The main result: for all r ≥ 2 and m ≥ 1, every graph with rm vertices and minimum degree ≥ m(r-1) contains m vertex-disjoint copies of K_r. This is the optimal threshold - the degree condition cannot be weakened. The original proof was long and technical.",
-    "significance": "core"
+    "content": "`hajnal_szemeredi`: the main result. For r ≥ 2, m ≥ 1, rm vertices, δ ≥ m(r-1), there exist m vertex-disjoint K_r's. `hajnal_szemeredi_factor`: the perfect factor form (cliques cover all vertices). Both axiomatized since the proof uses a complex greedy algorithm with many case analyses.",
+    "mathContext": "The original 1970 proof was notoriously long. Kierstead-Kostochka (2008) gave a shorter proof using equitable colorings: partition vertices into r classes of equal size, then the classes form K_r's. An O(n^5) algorithm was found in 2010.",
+    "significance": "critical"
   },
   {
-    "id": "tightness",
+    "id": "ann-914-tightness",
     "proofId": "erdos-914",
-    "range": {
-      "startLine": 177,
-      "endLine": 189
-    },
+    "range": { "startLine": 148, "endLine": 162 },
     "type": "theorem",
     "title": "Tightness of Degree Condition",
-    "content": "The minimum degree condition is tight: there exist graphs with rm vertices and minimum degree m(r-1) - 1 that have no m vertex-disjoint K_r's. A construction is the disjoint union of m copies of K_{r-1}, which has the wrong degree and no K_r at all.",
-    "significance": "core"
+    "content": "`degree_condition_tight`: for all r ≥ 2, m ≥ 1, there exists a graph on rm vertices with δ = m(r-1) - 1 having no m disjoint K_r's. The tight example: take m copies of K_{r-1} plus isolated vertices, giving δ = r-2 < r-1 per group, which is too low for any K_r at all.",
+    "mathContext": "Tightness results are crucial in extremal graph theory — they show the threshold is exact, not just sufficient. Here one degree less destroys the property entirely.",
+    "significance": "key"
   },
   {
-    "id": "kierstead-kostochka",
+    "id": "ann-914-summary",
     "proofId": "erdos-914",
-    "range": {
-      "startLine": 209,
-      "endLine": 214
-    },
-    "type": "insight",
-    "title": "Equitable Coloring Proof",
-    "content": "Kierstead and Kostochka (2008) found a shorter proof using equitable colorings. An equitable r-coloring partitions vertices into r color classes of nearly equal size. The key insight is that graphs with high minimum degree have such colorings, and the color classes form the desired K_r's.",
-    "significance": "standard"
-  },
-  {
-    "id": "alon-yuster",
-    "proofId": "erdos-914",
-    "range": {
-      "startLine": 227,
-      "endLine": 232
-    },
+    "range": { "startLine": 194, "endLine": 208 },
     "type": "theorem",
-    "title": "Alon-Yuster Generalization",
-    "content": "Alon and Yuster generalized Hajnal-Szemerédi to arbitrary graphs H: if G has high enough minimum degree, it contains a perfect H-factor. The threshold depends on the chromatic number of H. This unified many scattered results in extremal graph theory.",
-    "significance": "standard"
-  },
-  {
-    "id": "summary-theorem",
-    "proofId": "erdos-914",
-    "range": {
-      "startLine": 263,
-      "endLine": 302
-    },
-    "type": "insight",
-    "title": "Problem Summary",
-    "content": "Erdős Problem #914 was SOLVED by Hajnal and Szemerédi in 1970. The theorem shows that the minimum degree threshold δ(G) ≥ (1 - 1/r)|V(G)| is exactly what's needed for a perfect K_r-factor. This is fundamental in extremal graph theory, showing how local conditions (minimum degree) force global structure (spanning clique factors).",
-    "significance": "core"
+    "title": "Summary Theorem",
+    "content": "`erdos_914_summary` combines both results: (1) Hajnal-Szemerédi holds for all r,m, and (2) the degree condition is tight. Proved by `⟨fun ... => hajnal_szemeredi ..., degree_condition_tight⟩`. This fully characterizes the minimum degree threshold for vertex-disjoint cliques.",
+    "significance": "critical"
   }
 ]

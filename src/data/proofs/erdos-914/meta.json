@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 914,
     "erdosUrl": "https://erdosproblems.com/914",
     "erdosProblemStatus": "solved",
@@ -72,58 +72,44 @@
     {
       "id": "graph-basics",
       "title": "Graph Basics",
-      "summary": "Complete graphs and minimum degree",
+      "summary": "Complete graphs and minimum degree definition",
       "startLine": 43,
-      "endLine": 63
+      "endLine": 60
     },
     {
       "id": "cliques",
       "title": "Cliques and Clique Covers",
       "summary": "r-cliques, vertex-disjoint collections, K_r-factors",
-      "startLine": 64,
-      "endLine": 101
+      "startLine": 62,
+      "endLine": 96
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "Dirac (r=2), Corrádi-Hajnal (r=3)",
-      "startLine": 102,
-      "endLine": 134
+      "summary": "r=2 (Dirac) and r=3 (Corrádi-Hajnal)",
+      "startLine": 98,
+      "endLine": 117
     },
     {
       "id": "main-theorem",
       "title": "Hajnal-Szemerédi Theorem",
-      "summary": "Main result for all r ≥ 2",
-      "startLine": 135,
-      "endLine": 172
+      "summary": "Main theorem and perfect factor form",
+      "startLine": 119,
+      "endLine": 146
     },
     {
       "id": "tightness",
       "title": "Tightness",
       "summary": "Degree condition is optimal",
-      "startLine": 173,
-      "endLine": 197
-    },
-    {
-      "id": "proof-approaches",
-      "title": "Proof Approaches",
-      "summary": "Original proof and Kierstead-Kostochka",
-      "startLine": 198,
-      "endLine": 222
-    },
-    {
-      "id": "generalizations",
-      "title": "Generalizations",
-      "summary": "Alon-Yuster, KSS theorems",
-      "startLine": 223,
-      "endLine": 240
+      "startLine": 148,
+      "endLine": 162
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Problem status and impact",
-      "startLine": 259,
-      "endLine": 305
+      "summary": "Combined theorem: Hajnal-Szemerédi holds and degree bound is tight",
+      "startLine": 164,
+      "endLine": 210
     }
   ],
   "conclusion": {
