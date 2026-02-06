@@ -7,15 +7,16 @@
     "author": "Erdős-Gallai (conjecture), Bucić-Montgomery (2022), Conlon-Fox-Sudakov (2014)",
     "sourceUrl": "https://erdosproblems.com/184",
     "date": "2022",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos184Problem.lean",
-    "tags": ["erdos", "graph-theory", "cycles", "decomposition", "iterated-logarithm"],
-    "badge": "mathlib",
-    "sorries": 2,
+    "tags": ["erdos", "graph-theory", "cycles", "decomposition", "iterated-logarithm", "open"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 184,
     "erdosUrl": "https://erdosproblems.com/184",
     "erdosProblemStatus": "open",
     "mathlib_version": "v4.x",
+    "dateAdded": "2026-02-05",
     "mathlibDependencies": [
       { "theorem": "SimpleGraph", "description": "Simple graphs in Mathlib", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
       { "theorem": "SimpleGraph.Subgraph", "description": "Subgraph theory", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
@@ -30,13 +31,12 @@
       "Formalization of iterated logarithm log*",
       "Dense graph result (Conlon-Fox-Sudakov)",
       "Lower bound from bipartite graph K_{3,n-3}"
-    ],
-    "dateAdded": "2026-01-19"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős and Gallai conjectured in 1966 that O(n) cycles and edges suffice to decompose any graph. They proved O(n log n). Progress continued with Conlon-Fox-Sudakov (2014) solving the dense case and Bucić-Montgomery (2022) achieving O(n log* n), tantalizingly close to linear.",
+    "historicalContext": "**The Erdős-Gallai Conjecture**\n\nErdős and Gallai conjectured in 1966 that any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges. This is a fundamental question in graph decomposition theory: how efficiently can a graph's edge set be partitioned into simple structural pieces? They proved the first upper bound of O(n log n), establishing the order of magnitude up to a logarithmic factor.\n\n**Progress Toward the Conjecture**\n\nConlon, Fox, and Sudakov (2014) proved that O(n) pieces suffice for dense graphs — those with minimum degree at least εn for any fixed ε > 0. This resolved the conjecture for the dense case. Bucić and Montgomery (2022) achieved the current best general bound of O(n log* n), where log* is the iterated logarithm — a function that grows so slowly that log*(10^{10^{10}}) ≈ 5.\n\n**The Remaining Gap**\n\nThe gap between the lower bound of (1+c)n (from K_{3,n-3}) and the upper bound of O(n log* n) is remarkably small in practical terms, since log* n ≤ 5 for all feasible n. Yet closing this gap and proving O(n) in full generality has resisted all attempts. The iterated logarithm barrier appears to be a fundamental obstacle in current approaches.",
     "problemStatement": "Any graph on n vertices can be decomposed into O(n) many edge-disjoint cycles and edges.",
-    "proofStrategy": "The formalization defines cycles, edges, and valid decompositions. Key bounds are axiomatized: original O(n log n), current best O(n log* n), the (1+c)n lower bound, and the dense graph result.",
+    "proofStrategy": "The formalization defines cycles, edges, and valid decompositions. Key bounds are axiomatized: original O(n log n), current best O(n log* n), the (1+c)n lower bound, and the dense graph result. The summary theorem combines the three main bounds.",
     "keyInsights": [
       "O(n) is conjectured but O(n log* n) is the best known",
       "log* n grows incredibly slowly: log*(10^{10^{10}}) ≈ 5",
@@ -50,50 +50,50 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 43,
-      "endLine": 81,
+      "endLine": 80,
       "summary": "Graph, cycle, and edge definitions"
     },
     {
       "id": "decomposition",
       "title": "Decomposition",
       "startLine": 82,
-      "endLine": 121,
+      "endLine": 119,
       "summary": "Decomposition pieces, validity, and decomposition number"
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Gallai Conjecture",
-      "startLine": 123,
-      "endLine": 133,
+      "startLine": 121,
+      "endLine": 131,
       "summary": "Statement of the O(n) conjecture"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 135,
-      "endLine": 174,
+      "startLine": 133,
+      "endLine": 172,
       "summary": "O(n log n), O(n log* n), and lower bound"
     },
     {
       "id": "dense-graphs",
       "title": "Dense Graph Result",
-      "startLine": 176,
-      "endLine": 194,
+      "startLine": 174,
+      "endLine": 192,
       "summary": "Conlon-Fox-Sudakov: O(n) for minimum degree ≥ εn"
     },
     {
       "id": "non-disjoint",
       "title": "Non-Disjoint Case",
-      "startLine": 196,
-      "endLine": 220,
+      "startLine": 194,
+      "endLine": 216,
       "summary": "n-1 pieces suffice without edge-disjointness"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 266,
-      "endLine": 316,
-      "summary": "Main theorem and key insight about log*"
+      "startLine": 218,
+      "endLine": 251,
+      "summary": "Main summary theorem and key insight about log*"
     }
   ],
   "conclusion": {

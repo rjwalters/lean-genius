@@ -2,7 +2,7 @@
   {
     "id": "ann-184-1",
     "proofId": "erdos-184",
-    "range": { "startLine": 1, "endLine": 30 },
+    "range": { "startLine": 1, "endLine": 31 },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #184: Graph Decomposition into Cycles and Edges**\n\n**Conjecture:** Any graph on n vertices can be decomposed into O(n) edge-disjoint cycles and edges.\n\n**Status: OPEN**\n\n**Best Known:** O(n log* n) by Bucić-Montgomery (2022)",
@@ -31,7 +31,16 @@
   {
     "id": "ann-184-4",
     "proofId": "erdos-184",
-    "range": { "startLine": 131, "endLine": 133 },
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "definition",
+    "title": "Decomposition Number",
+    "content": "**decompNumber G:**\n\nThe minimum number of cycles and edges needed to partition the edge set of G. Axiomatized as a function from graphs to ℕ. The Erdős-Gallai conjecture asserts this is O(n) where n is the number of vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-184-5",
+    "proofId": "erdos-184",
+    "range": { "startLine": 129, "endLine": 131 },
     "type": "definition",
     "title": "Erdős-Gallai Conjecture",
     "content": "**ErdosGallaiConjecture:**\n\n∃ C > 0, ∀ graphs G on n vertices: decompNumber(G) ≤ C·n\n\nThis asserts that the decomposition number grows at most linearly in n.",
@@ -39,28 +48,18 @@
     "significance": "critical"
   },
   {
-    "id": "ann-184-5",
-    "proofId": "erdos-184",
-    "range": { "startLine": 143, "endLine": 146 },
-    "type": "theorem",
-    "title": "Original Erdős-Gallai Bound",
-    "content": "**erdos_gallai_original_bound:**\n\nO(n log n) pieces suffice for any graph on n vertices.\n\nThis was the first upper bound, proved along with the conjecture statement.",
-    "significance": "key"
-  },
-  {
     "id": "ann-184-6",
     "proofId": "erdos-184",
-    "range": { "startLine": 152, "endLine": 156 },
+    "range": { "startLine": 141, "endLine": 144 },
     "type": "theorem",
-    "title": "Lower Bound from K_{3,n-3}",
-    "content": "**lower_bound_from_bipartite:**\n\nThe complete bipartite graph K_{3,n-3} requires at least (1+c)n pieces for some c > 0.\n\nThis shows the constant in O(n) must be > 1 if the conjecture is true.",
-    "mathContext": "K_{3,n-3} has 3(n-3) = 3n-9 edges, creating many short paths.",
+    "title": "Original Erdős-Gallai Bound",
+    "content": "**erdos_gallai_original_bound:**\n\nO(n log n) pieces suffice for any graph on n vertices.\n\nThis was the first upper bound, proved along with the conjecture statement in 1966.",
     "significance": "key"
   },
   {
     "id": "ann-184-7",
     "proofId": "erdos-184",
-    "range": { "startLine": 162, "endLine": 165 },
+    "range": { "startLine": 160, "endLine": 163 },
     "type": "definition",
     "title": "The Iterated Logarithm log*",
     "content": "**logStar n:**\n\nlog*(n) = 0 if n ≤ 1, else 1 + log*(log₂(n))\n\nThis function grows INCREDIBLY slowly:\n- log*(2) = 1\n- log*(4) = 2\n- log*(16) = 3\n- log*(65536) = 4\n- log*(2^65536) = 5\n\nFor any practical n, log*(n) ≤ 5.",
@@ -71,7 +70,7 @@
   {
     "id": "ann-184-8",
     "proofId": "erdos-184",
-    "range": { "startLine": 171, "endLine": 174 },
+    "range": { "startLine": 169, "endLine": 172 },
     "type": "theorem",
     "title": "Bucić-Montgomery Bound (2022)",
     "content": "**bucic_montgomery_bound:**\n\nO(n log* n) pieces suffice for any graph on n vertices.\n\nThis is the current best upper bound, tantalizingly close to linear since log* is essentially constant for all practical purposes.",
@@ -80,7 +79,7 @@
   {
     "id": "ann-184-9",
     "proofId": "erdos-184",
-    "range": { "startLine": 190, "endLine": 194 },
+    "range": { "startLine": 188, "endLine": 192 },
     "type": "theorem",
     "title": "Conlon-Fox-Sudakov (2014)",
     "content": "**conlon_fox_sudakov:**\n\nFor any ε > 0, if G has minimum degree ≥ εn, then O(n) pieces suffice.\n\nThe dense case is solved! Only sparse graphs remain for the full conjecture.",
@@ -89,10 +88,10 @@
   {
     "id": "ann-184-10",
     "proofId": "erdos-184",
-    "range": { "startLine": 270, "endLine": 286 },
+    "range": { "startLine": 225, "endLine": 249 },
     "type": "theorem",
-    "title": "Summary: OPEN",
-    "content": "**erdos_184:**\n\n**STATUS: OPEN**\n\n**Known bounds:**\n- Upper: O(n log* n) [Bucić-Montgomery 2022]\n- Lower: (1+c)n [from K_{3,n-3}]\n- Dense case: O(n) [CFS 2014]\n\nThe gap is tiny (log* is essentially constant) but closing it is hard.",
+    "title": "Summary Theorem",
+    "content": "**erdos_184_summary:**\n\nCombines the three main known bounds into a single theorem:\n1. O(n log* n) upper bound (Bucić-Montgomery)\n2. (1+c)n lower bound (from K_{3,n-3})\n3. O(n) for dense graphs (Conlon-Fox-Sudakov)\n\nProved by `exact ⟨bucic_montgomery_bound, lower_bound_from_bipartite, conlon_fox_sudakov⟩`.\n\nThe key_insight_log_star theorem verifies log*(65536)=4 and log*(4)=2 by native_decide.",
     "significance": "critical"
   }
 ]
