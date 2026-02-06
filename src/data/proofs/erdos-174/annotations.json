@@ -1,168 +1,90 @@
 [
   {
-    "id": "ann-e174-header",
+    "id": "ann-174-header",
     "proofId": "erdos-174",
+    "range": { "startLine": 1, "endLine": 44 },
     "type": "concept",
     "title": "Problem Overview",
-    "range": { "startLine": 1, "endLine": 34 },
-    "content": "**Erdős Problem #174: Euclidean Ramsey Sets**\n\n**Question:** Characterize which finite sets in ℝⁿ are Ramsey.\n\nA set is Ramsey if: for any k-coloring of sufficiently high-dimensional space, a monochromatic congruent copy exists.\n\n**Known:** Ramsey ⟹ Spherical (EGMRSS 1973)\n**Conjectured:** Spherical ⟹ Ramsey (Graham), Ramsey ⟺ Subtransitive (LRW)\n\n**STATUS: OPEN** - Characterization unknown.",
-    "mathContext": "Euclidean Ramsey theory extends combinatorial Ramsey theory to geometry, asking which point configurations must appear monochromatically in colored high-dimensional space.",
+    "content": "**Erdős Problem #174** asks for a characterization of Ramsey sets in Euclidean space. A finite set A ⊂ ℝⁿ is Ramsey if for any k-coloring of sufficiently high-dimensional space ℝᵈ, a monochromatic congruent copy of A must exist. The problem was introduced by Erdős, Graham, Montgomery, Rothschild, Spencer, and Straus in their foundational 1973 paper on Euclidean Ramsey theory. The EGMRSS theorem established the necessary condition (Ramsey ⟹ spherical), but the sufficient direction remains OPEN.",
+    "mathContext": "A is Ramsey := ∀ k ≥ 1, ∃ d, ∀ χ : ℝᵈ → [k], ∃ monochromatic congruent copy of A. Necessary: A spherical. Sufficient: OPEN.",
     "significance": "critical",
-    "relatedConcepts": ["Ramsey theory", "Euclidean geometry", "Graph coloring"]
+    "relatedConcepts": ["EGMRSS-1973", "Ramsey-theory", "spherical-sets", "coloring"]
   },
   {
-    "id": "ann-174-finite-config",
+    "id": "ann-174-ramsey-def",
     "proofId": "erdos-174",
+    "range": { "startLine": 46, "endLine": 77 },
     "type": "definition",
-    "title": "Finite Configuration",
-    "range": { "startLine": 48, "endLine": 49 },
-    "content": "**FiniteConfig n:**\n\nA finite configuration in ℝⁿ is simply a finite set of points (a Finset of EuclideanSpace vectors).\n\nThe Ramsey question asks which such configurations have the special property that they appear monochromatically in any coloring.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-174-congruent-copy",
-    "proofId": "erdos-174",
-    "type": "definition",
-    "title": "Congruent Copy",
-    "range": { "startLine": 51, "endLine": 57 },
-    "content": "**IsCongruentCopy:**\n\nA congruent copy of configuration A is its image under an isometry—a distance-preserving map.\n\nThis captures 'same shape and size' but possibly rotated, reflected, or translated. The Ramsey property requires finding such copies that are all one color.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-174-coloring",
-    "proofId": "erdos-174",
-    "type": "definition",
-    "title": "k-Coloring and Monochromaticity",
-    "range": { "startLine": 61, "endLine": 67 },
-    "content": "**Coloring and IsMonochromatic:**\n\nA k-coloring assigns one of k colors to every point in Euclidean space. A set is monochromatic if all its points have the same color.\n\nThe Ramsey property requires finding monochromatic copies no matter how the coloring is chosen—an adversarial guarantee.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-174-is-ramsey",
-    "proofId": "erdos-174",
-    "type": "definition",
-    "title": "IsRamsey Predicate",
-    "range": { "startLine": 69, "endLine": 77 },
-    "content": "**IsRamsey:**\n\nThe central definition: A ⊂ ℝⁿ is Ramsey if for any number of colors k, some high enough dimension d guarantees a monochromatic copy.\n\n**Formally:** ∀k ≥ 1, ∃d, ∀χ (k-coloring of ℝᵈ), ∃ monochromatic congruent copy of A.\n\nThe dimension d depends on both the configuration A and the number of colors k.",
-    "significance": "critical"
+    "title": "Finite Configurations and Ramsey Property",
+    "content": "Three definitions build the formal framework. **FiniteConfig n** is a Finset of EuclideanSpace ℝ (Fin n) — a finite point configuration. **IsCongruentCopy A B** asserts B is the image of A under an isometry (distance-preserving map). **IsRamsey A** is the central predicate: for any k ≥ 1 colors, there exists dimension d such that every k-coloring of ℝᵈ contains a monochromatic congruent copy. The existential over d is key — we go to high enough dimension, not a fixed one.",
+    "mathContext": "IsRamsey A := ∀ k ≥ 1, ∃ d, ∀ χ : ℝᵈ → Fin k, ∃ B with IsCongruentCopy A B ∧ IsMonochromatic B χ.",
+    "significance": "critical",
+    "relatedConcepts": ["EuclideanSpace", "Finset", "isometry", "Coloring"]
   },
   {
     "id": "ann-174-spherical",
     "proofId": "erdos-174",
+    "range": { "startLine": 79, "endLine": 91 },
+    "type": "axiom",
+    "title": "Spherical Sets and the EGMRSS Theorem",
+    "content": "**IsSpherical A** means all points lie on a sphere: ∃ center, radius > 0, ∀ x ∈ A, dist x center = radius. **ramsey_implies_spherical** (EGMRSS 1973) axiomatizes the necessary condition: every Ramsey set is spherical. The proof constructs a distance-based coloring: color x by the distance from x to some reference point modulo a threshold. If A is not spherical, the distances from A's points to the center vary, so no congruent copy can be monochromatic.",
+    "mathContext": "ramsey_implies_spherical : IsRamsey A → IsSpherical A. Contrapositive: non-spherical ⟹ non-Ramsey.",
+    "significance": "critical",
+    "relatedConcepts": ["EGMRSS-1973", "necessary-condition", "distance-coloring"]
+  },
+  {
+    "id": "ann-174-conjectures",
+    "proofId": "erdos-174",
+    "range": { "startLine": 93, "endLine": 113 },
     "type": "definition",
-    "title": "Spherical Set",
-    "range": { "startLine": 81, "endLine": 84 },
-    "content": "**IsSpherical:**\n\nA set is spherical if all its points lie on the surface of some sphere—equidistant from a common center.\n\n**Examples:** Vertices of regular polygons, simplices, rectangles.\n**Non-example:** Four collinear points with unequal spacing.",
-    "significance": "critical"
+    "title": "Graham's and LRW Conjectures",
+    "content": "Two competing conjectures for the sufficient direction. **graham_conjecture**: every spherical set is Ramsey, which would give the clean characterization Ramsey ⟺ Spherical. **IsSubtransitive A**: A embeds isometrically into a set S where isometries act transitively (any point can be mapped to any other while preserving S). **lrw_conjecture** (Leader-Russell-Walters 2012): Ramsey ⟺ Subtransitive. If Graham's conjecture is true, then LRW would follow since all subtransitive sets are spherical. Both remain OPEN.",
+    "mathContext": "graham_conjecture := ∀ A, IsSpherical A → IsRamsey A. lrw_conjecture := ∀ A, IsRamsey A ↔ IsSubtransitive A.",
+    "significance": "critical",
+    "relatedConcepts": ["Graham-conjecture", "LRW-2012", "subtransitivity", "isometry-group"]
   },
   {
-    "id": "ann-174-ramsey-spherical",
+    "id": "ann-174-known-ramsey",
     "proofId": "erdos-174",
+    "range": { "startLine": 115, "endLine": 159 },
     "type": "axiom",
-    "title": "Ramsey Implies Spherical (EGMRSS 1973)",
-    "range": { "startLine": 86, "endLine": 93 },
-    "content": "**ramsey_implies_spherical:**\n\nThe EGMRSS theorem (1973): Every Ramsey set must be spherical.\n\n**Contrapositive:** To show A is NOT Ramsey, exhibit that A is not spherical.\n\n**Proof idea:** If A is not spherical, construct a distance-based coloring that prevents monochromatic copies.",
-    "mathContext": "This is the only known NECESSARY condition for being Ramsey. The sufficient direction remains open.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-174-graham",
-    "proofId": "erdos-174",
-    "type": "definition",
-    "title": "Graham's Conjecture",
-    "range": { "startLine": 97, "endLine": 100 },
-    "content": "**graham_conjecture:**\n\nGraham conjectures the converse: Every spherical set is Ramsey.\n\nIf true, this would completely characterize Ramsey sets as exactly the spherical ones. The conjecture remains **OPEN**.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-174-subtransitive",
-    "proofId": "erdos-174",
-    "type": "definition",
-    "title": "Subtransitive Set (LRW)",
-    "range": { "startLine": 107, "endLine": 117 },
-    "content": "**IsSubtransitive:**\n\nA set is subtransitive if it embeds in a set S where rotations act transitively (any point can be rotated to any other while preserving S).\n\n**Intuition:** Sets with 'enough symmetry' should be Ramsey.\n\n**Examples:** Regular polygons are subtransitive (embed in circles).",
-    "mathContext": "The algebraic structure of rotation groups may be key to understanding Ramsey sets.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-174-lrw",
-    "proofId": "erdos-174",
-    "type": "definition",
-    "title": "LRW Conjecture",
-    "range": { "startLine": 119, "endLine": 122 },
-    "content": "**lrw_conjecture:**\n\nThe Leader-Russell-Walters conjecture (2012): A set is Ramsey if and only if it is subtransitive.\n\nThis provides an alternative algebraic characterization to Graham's geometric conjecture. The conjecture remains **OPEN**.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-174-rectangle",
-    "proofId": "erdos-174",
-    "type": "axiom",
-    "title": "Rectangles are Ramsey",
-    "range": { "startLine": 135, "endLine": 138 },
-    "content": "**rectangle_is_ramsey:**\n\nThe vertices of any k-dimensional rectangle (box) form a Ramsey set.\n\n**Proof method:** Product argument in high dimensions. This was one of the first non-trivial results (EGMRSS 1973).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-174-simplex",
-    "proofId": "erdos-174",
-    "type": "axiom",
-    "title": "Simplices are Ramsey",
-    "range": { "startLine": 148, "endLine": 151 },
-    "content": "**simplex_is_ramsey:**\n\nEvery non-degenerate simplex (k+1 affinely independent points) is Ramsey.\n\nProved by Frankl and Rödl (1990) using partite methods. Covers triangles, tetrahedra, and higher analogs.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-174-trapezoid",
-    "proofId": "erdos-174",
-    "type": "axiom",
-    "title": "Trapezoids are Ramsey",
-    "range": { "startLine": 161, "endLine": 164 },
-    "content": "**trapezoid_is_ramsey:**\n\nAll trapezoids (4 points with two parallel sides) are Ramsey.\n\nProved by Kříž (1992), extending Ramsey families beyond simplices and rectangles.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-174-regular-polygon",
-    "proofId": "erdos-174",
-    "type": "axiom",
-    "title": "Regular Polygons are Ramsey",
-    "range": { "startLine": 179, "endLine": 182 },
-    "content": "**regular_polygon_is_ramsey:**\n\nAll regular polygons and polyhedra are Ramsey.\n\nKříž (1991) used permutation group methods. Symmetry plays a crucial role.",
-    "significance": "supporting"
+    "title": "Known Ramsey Families",
+    "content": "Four families proved Ramsey. **rectangle_is_ramsey** (EGMRSS 1973): vertices of k-dimensional boxes are Ramsey, using product arguments. **simplex_is_ramsey** (Frankl-Rödl 1990): k+1 affinely independent points are Ramsey, using partite methods. **trapezoid_is_ramsey** (Kříž 1992): four points with two parallel sides. **regular_polygon_is_ramsey** (Kříž 1991): all regular polygons and polyhedra, using permutation group methods. The IsRegularPolygon definition simplifies to m ≥ 3 vertices that are spherical, which captures the essential geometric constraint.",
+    "mathContext": "rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey, regular_polygon_is_ramsey: four axioms for known Ramsey families.",
+    "significance": "key",
+    "relatedConcepts": ["EGMRSS-1973", "Frankl-Rodl-1990", "Kriz-1991", "Kriz-1992"]
   },
   {
     "id": "ann-174-examples",
     "proofId": "erdos-174",
-    "type": "definition",
-    "title": "Concrete Examples",
-    "range": { "startLine": 186, "endLine": 209 },
-    "content": "**twoPoints, equilateralTriangle, square:**\n\nConcrete Ramsey configurations with explicit coordinates:\n- **Two points:** Simplest Ramsey set (pigeonhole argument)\n- **Equilateral triangle:** Special simplex case\n- **Square:** Special rectangle case",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-174-not-ramsey",
-    "proofId": "erdos-174",
+    "range": { "startLine": 161, "endLine": 205 },
     "type": "theorem",
-    "title": "Non-Ramsey via Non-Spherical",
-    "range": { "startLine": 213, "endLine": 231 },
-    "content": "**not_spherical_not_ramsey and collinearFour:**\n\nThe contrapositive of EGMRSS: any non-spherical set cannot be Ramsey.\n\n**Example:** Points 0, 1, 2, 4 on a line cannot lie on a circle (unequal spacing), hence not spherical, hence not Ramsey.",
-    "significance": "key"
+    "title": "Concrete Examples and Non-Examples",
+    "content": "Concrete configurations with explicit coordinates. **twoPoints** ({![0], ![1]}) is the simplest Ramsey set — by pigeonhole in high dimension. **equilateralTriangle** and **square** are Ramsey as special cases of simplices and rectangles. **not_spherical_not_ramsey** is a genuine Lean proof: the contrapositive of EGMRSS, proved by `intro hNotSph hRam; exact hNotSph (ramsey_implies_spherical A hRam)`. **collinearFour** ({0,1,2,4}) demonstrates a non-Ramsey set: unequal spacing means non-spherical. **collinear_not_ramsey** chains the two results.",
+    "mathContext": "not_spherical_not_ramsey : ¬IsSpherical A → ¬IsRamsey A. Proved by contrapositive of EGMRSS axiom.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole", "contrapositive", "concrete-examples"]
   },
   {
     "id": "ann-174-characterization",
     "proofId": "erdos-174",
-    "type": "definition",
-    "title": "The Characterization Question",
-    "range": { "startLine": 235, "endLine": 258 },
-    "content": "**erdos_174_question:**\n\nThe main open problem: Find a nice property P such that P(A) ⟺ IsRamsey(A).\n\nWhile we can trivially take P = IsRamsey, the goal is a geometrically meaningful characterization.\n\n**Note:** characterization_exists shows P exists; nice_characterization_open marks the interesting problem as unsolved.",
-    "significance": "critical"
+    "range": { "startLine": 207, "endLine": 220 },
+    "type": "theorem",
+    "title": "The Characterization Problem",
+    "content": "**erdos_174_question** formalizes the main open problem: ∃ P, ∀ n A, P n A ↔ IsRamsey A — find a property characterizing Ramsey sets. **characterization_exists** is a genuine Lean proof that such a P exists trivially (take P = IsRamsey, proved by `rfl`). The real challenge is finding a *geometrically meaningful* P. The candidates are IsSpherical (Graham) and IsSubtransitive (LRW). This section highlights the gap between mathematical existence and mathematical understanding.",
+    "mathContext": "characterization_exists : erdos_174_question := ⟨IsRamsey, fun n A => rfl⟩. Trivial but illustrates the real question.",
+    "significance": "key",
+    "relatedConcepts": ["characterization", "existence-vs-construction", "open-problem"]
   },
   {
     "id": "ann-174-summary",
     "proofId": "erdos-174",
-    "type": "concept",
-    "title": "Summary: OPEN Problem",
-    "range": { "startLine": 272, "endLine": 294 },
-    "content": "**Erdős Problem #174: OPEN**\n\n**Known:**\n- Ramsey ⟹ Spherical (EGMRSS 1973)\n- Ramsey families: rectangles, simplices, trapezoids, regular polygons\n\n**Conjectured:**\n- Graham: Spherical ⟹ Ramsey\n- LRW: Subtransitive ⟺ Ramsey\n\n**Why hard:** Cannot be resolved by finite computation—infinite configuration space.",
-    "significance": "critical"
+    "range": { "startLine": 222, "endLine": 256 },
+    "type": "theorem",
+    "title": "Summary Theorems",
+    "content": "Two summary theorems. **erdos_174** combines four key results into a conjunction: (1) Ramsey ⟹ Spherical (EGMRSS), (2) Rectangles are Ramsey, (3) Simplices are Ramsey, (4) Trapezoids are Ramsey, proved by ⟨ramsey_implies_spherical, rectangle_is_ramsey, simplex_is_ramsey, trapezoid_is_ramsey⟩. **erdos_174_summary** gives just the EGMRSS necessary condition for a specific configuration. The problem remains OPEN — the gap between the necessary condition and the known sufficient conditions has persisted for over 50 years.",
+    "mathContext": "erdos_174 : (Ramsey→Spherical) ∧ (Rectangle→Ramsey) ∧ (Simplex→Ramsey) ∧ (Trapezoid→Ramsey) := ⟨...⟩.",
+    "significance": "critical",
+    "relatedConcepts": ["exact-constructor", "open-problem", "50-year-gap"]
   }
 ]
