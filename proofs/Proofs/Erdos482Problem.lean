@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #482: Binary Digits of √2 via Recurrence
 
 Source: https://erdosproblems.com/482
