@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #80: Book Size in Triangle-Saturated Graphs
 
 Source: https://erdosproblems.com/80
@@ -44,8 +44,7 @@ namespace Erdos80
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-
-## Part I: Basic Definitions
+/-! ## Part I: Basic Definitions
 
 Definitions for triangles and books in graphs.
 -/
@@ -96,8 +95,7 @@ noncomputable def maxBookSize (G : SimpleGraph V) : ℕ :=
     (by simp [Finset.attach_nonempty_iff])
     (fun ⟨⟨u, v⟩, _⟩ => if G.Adj u v then bookSize G u v else 0)
 
-/-
-## Part II: The f_c(n) Function
+/-! ## Part II: The f_c(n) Function
 
 The central object of Erdős Problem #80.
 -/
@@ -124,8 +122,7 @@ noncomputable def f (c : ℝ) (n : ℕ) : ℕ :=
     ∀ G : SimpleGraph V, isDense G c → isTriangleSaturated G →
     hasBook G m}
 
-/-
-## Part III: Known Upper Bounds
+/-! ## Part III: Known Upper Bounds
 
 The phase transition at c = 1/4.
 -/
@@ -158,9 +155,7 @@ Fox-Loh (2012) showed f_c(n) ≤ n^{O(1/log log n)}, which is o(n^ε).
 axiom erdos_polynomial_conjecture_false (c : ℝ) (hc : c < 1/4) :
     ¬∃ ε : ℝ, ε > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f c n : ℝ) > n ^ ε
 
-/-
-## Part IV: Known Lower Bounds
--/
+/-! ## Part IV: Known Lower Bounds -/
 
 /--
 **Edwards-Khadziivanov-Nikiforov Bound:**
@@ -187,9 +182,7 @@ axiom regularity_lower_bound (c : ℝ) (hc : c > 0) :
 axiom f_tends_to_infinity (c : ℝ) (hc : c > 0) :
     ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, f c n > M
 
-/-
-## Part V: The Phase Transition
--/
+/-! ## Part V: The Phase Transition -/
 
 /--
 **Phase Transition at c = 1/4:**
@@ -213,9 +206,7 @@ For c < 1/4, f_c(n) is eventually ≤ n^ε for any ε > 0.
 axiom below_threshold_subpolynomial (c : ℝ) (hc : c < critical_threshold) :
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, (f c n : ℝ) ≤ n ^ ε
 
-/-
-## Part VI: Open Questions
--/
+/-! ## Part VI: Open Questions -/
 
 /--
 **Erdős's Weaker Conjecture: OPEN**
@@ -226,9 +217,7 @@ def erdos_log_conjecture (c : ℝ) : Prop :=
 
 /-- The conjecture f_c(n) ≫ log n remains **OPEN** for c < 1/4. -/
 
-/-
-## Part VII: Main Results Summary
--/
+/-! ## Part VII: Main Results Summary -/
 
 /--
 **Erdős Problem #80: OPEN**
