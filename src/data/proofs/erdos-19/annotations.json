@@ -201,108 +201,36 @@
     "id": "ann-e19-special",
     "proofId": "erdos-19",
     "range": {
-      "startLine": 230,
-      "endLine": 249
+      "startLine": 233,
+      "endLine": 246
     },
     "type": "axiom",
     "title": "Special Cases",
-    "content": "**Projective Planes**: When cliques come from a projective plane of order n-1, χ(G) = n exactly.\n\n**Steiner Systems**: S(2, n, n²) Steiner systems provide explicit EFL families with optimal colorings.\n\nThese special cases are easier to analyze due to their regular structure.",
-    "mathContext": "Projective planes and Steiner systems have rich algebraic structure that makes the coloring problem tractable.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "projective-plane",
-      "steiner-system",
-      "regular-structure"
-    ]
+    "content": "**projective_plane_case (axiom):** When cliques come from a projective plane of order n-1, χ(G) = n exactly.\n\n**steiner_system_case (axiom):** S(2, n, n²) Steiner systems provide explicit EFL families with optimal colorings.\n\nThese special cases are easier to analyze due to their regular algebraic structure.",
+    "significance": "supporting"
   },
   {
     "id": "ann-e19-extensions",
     "proofId": "erdos-19",
     "range": {
-      "startLine": 259,
-      "endLine": 269
+      "startLine": 252,
+      "endLine": 258
     },
     "type": "axiom",
-    "title": "Extensions and Generalizations",
-    "content": "**Erdős-Füredi Generalization**: What if cliques can share up to k vertices?\n\n**axiom erdos_furedi_generalization**: χ(G) ≤ n + k - 1\n\n**Triangle-free Variant**: What if clique intersections form triangle-free subgraphs?\n\nKang et al. also proved these generalizations.",
-    "mathContext": "Generalizations test the limits of the technique. The k-wise case shows the bound degrades gracefully with more overlap.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "generalization",
-      "k-wise",
-      "erdos-furedi"
-    ]
-  },
-  {
-    "id": "ann-e19-boulder",
-    "proofId": "erdos-19",
-    "range": {
-      "startLine": 281,
-      "endLine": 292
-    },
-    "type": "concept",
-    "title": "The Boulder Party (1972)",
-    "content": "**Historical Origin**: The conjecture arose at a party in Boulder, Colorado, September 1972.\n\n**The Three Conjecturers**:\n- Paul Erdős (Hungarian mathematician)\n- Vance Faber (American mathematician)\n- László Lovász (Hungarian mathematician)\n\nThis is one of many famous problems from Erdős's legendary mathematical discussions at social gatherings.",
-    "mathContext": "Erdős was famous for posing problems at conferences and parties. Many bear his name along with collaborators met at such events.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "history",
-      "boulder-1972",
-      "erdos-style"
-    ]
-  },
-  {
-    "id": "ann-e19-difficulty",
-    "proofId": "erdos-19",
-    "range": {
-      "startLine": 294,
-      "endLine": 315
-    },
-    "type": "concept",
-    "title": "Why This Problem Was Hard",
-    "content": "**Four Difficulty Aspects**:\n\n1. **Combinatorial explosion**: EFL families grow extremely fast with n\n2. **Tight bound**: χ(G) = n is sharp - no room for error\n3. **Local vs global**: Local constraints (each K_n needs n colors) must coordinate globally\n4. **Irregular structure**: Unlike regular graphs, EFL unions can be highly irregular",
-    "mathContext": "The proof required sophisticated probabilistic and absorbing techniques developed over decades of extremal combinatorics research.",
-    "significance": "key",
-    "relatedConcepts": [
-      "difficulty",
-      "local-global",
-      "irregular"
-    ]
-  },
-  {
-    "id": "ann-e19-absorbing",
-    "proofId": "erdos-19",
-    "range": {
-      "startLine": 317,
-      "endLine": 332
-    },
-    "type": "concept",
-    "title": "The Absorbing Method",
-    "content": "**The Proof Technique** (Kang et al. 2021):\n\n1. **Absorbing structure**: Find small set A that can 'absorb' leftover vertices\n2. **Almost-cover**: Greedily color most vertices, leaving small remainder\n3. **Absorption**: Use A to handle the remainder\n\n**Related successes**: This technique also resolved the Ringel conjecture and other long-standing problems.",
-    "mathContext": "The absorbing method is a powerful technique in extremal combinatorics, developed for problems where greedy approaches fall just short.",
-    "significance": "critical",
-    "relatedConcepts": [
-      "absorbing-method",
-      "proof-technique",
-      "ringel-conjecture"
-    ]
+    "title": "Erdős-Füredi Generalization",
+    "content": "**erdos_furedi_generalization (axiom):** If cliques can share up to k vertices (instead of 1), then χ(G) ≤ n + k - 1.\n\nThe EFL conjecture is the k = 1 case. Kang et al. also proved this more general bound.",
+    "significance": "key"
   },
   {
     "id": "ann-e19-summary",
     "proofId": "erdos-19",
     "range": {
-      "startLine": 334,
-      "endLine": 361
+      "startLine": 299,
+      "endLine": 299
     },
-    "type": "concept",
-    "title": "Summary and Status",
-    "content": "**Erdős Problem #19: SOLVED** ($500 prize)\n\n**Timeline**:\n- 1972: Conjectured at Boulder party\n- Hindman: Proved for n < 10\n- 1992: Kahn proved χ(G) ≤ (1+o(1))n → **$100 consolation prize**\n- 2021: Kang, Kelly, Kühn, Methuku, Osthus proved for all large n\n\n**Result**: χ(G) = n for all edge-disjoint unions of n copies of K_n\n\n**Key Technique**: Absorbing method\n\n**Equivalent Forms**: Linear hypergraph chromatic index, rainbow partitions",
-    "mathContext": "50 years from conjecture to complete resolution. A landmark result in extremal combinatorics.",
-    "significance": "critical",
-    "relatedConcepts": [
-      "problem-status",
-      "solved",
-      "timeline"
-    ]
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_19_summary (proved from axioms):**\n\nCombines the two main results:\n1. EFLConjecture holds for all n (from efl_conjecture_resolved)\n2. Asymptotic proof threshold exists (from kang_kelly_kuhn_methuku_osthus)\n\nProved by: `⟨efl_conjecture_resolved, kang_kelly_kuhn_methuku_osthus⟩`\n\n**Timeline:** Boulder 1972 → Hindman (n<10) → Kahn 1992 (asymptotic) → KKMO 2021 (full proof).",
+    "significance": "critical"
   }
 ]
