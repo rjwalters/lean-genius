@@ -54,9 +54,9 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #443** appears in the Erdős-Graham book (1980, p.88). It asks about the intersection of two natural sets of products. Given integers m and n, the set A_m = {k(m-k) : 1 ≤ k ≤ m/2} consists of products of complementary parts of m. The question asks how large the intersection A_m ∩ B_n can be.\n\n**Historical Development:**\n- **Erdős-Graham (1980):** Posed the problem in their influential book on combinatorial number theory\n- **Hegyvári (2025):** Proved that |A_m ∩ B_n| ≤ m^{O(1/log log m)} when m > n\n- **Cambie (unpublished):** Independently obtained similar results\n\n**Key Insight:** The products k(m-k) can be written as (m/2)² - (k - m/2)², expressing them as differences of squares. This reformulation connects the problem to Diophantine equations and quadratic forms.",
+    "historicalContext": "Erdős Problem #443 appears in the Erdős-Graham book (1980, p.88). Given integers m and n, the product sets A_m = {k(m-k) : 1 ≤ k ≤ m/2} consist of products of complementary parts. Erdős asked two questions: can |A_m ∩ B_n| be arbitrarily large, and is it bounded by (mn)^{o(1)}?\n\nHegyvári (2025) proved the key upper bound |A_m ∩ B_n| ≤ m^{O(1/log log m)} when m > n, answering the subpolynomial question affirmatively. Cambie independently obtained similar results. The achievability result — that every finite intersection size s is realized by infinitely many pairs (m,n) — was also established.\n\nThe products k(m-k) can be written as (m/2)² - (k - m/2)², connecting the problem to differences of squares and Diophantine equations. Hegyvári's proof uses sieve methods and divisibility constraints from the equation k(m-k) = l(n-l) to bound the number of solutions.",
     "problemStatement": "**Problem Statement**\n\nFor integers $m, n \\geq 1$, define:\n$$A_m = \\{ k(m-k) : 1 \\leq k \\leq m/2 \\}$$\n$$B_n = \\{ l(n-l) : 1 \\leq l \\leq n/2 \\}$$\n\n**Questions:**\n1. Can $|A_m \\cap B_n|$ be arbitrarily large?\n2. Is $|A_m \\cap B_n| \\leq (mn)^{o(1)}$ for all sufficiently large $m, n$?\n\n**Answer:** YES to both!\n1. For any integer $s$, infinitely many pairs $(m,n)$ achieve $|A_m \\cap B_n| = s$\n2. When $m > n$, we have $|A_m \\cap B_n| \\leq m^{O(1/\\log\\log m)}$",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** productValue, productSet, commonProducts, commonProductCount\n\n2. **Diophantine Reformulation:** k(m-k) = l(n-l) as a quadratic Diophantine equation\n\n3. **Main Results:** Axiomatize Hegyvári's upper bound and the achievability result\n\n4. **Proof Technique:** The bound uses sieve methods and divisibility constraints\n\n5. **Growth Analysis:** The exponent O(1/log log m) tends to 0, giving subpolynomial growth",
+    "proofStrategy": "The formalization defines productValue, productSet, commonProducts, and commonProductCount as computable objects. The Diophantine equation k(m-k) = l(n-l) is reformulated via difference of squares. Hegyvári's upper bound and the achievability result are axiomatized, with the summary theorem proving both answers from axioms. Growth rate analysis shows the exponent O(1/log log m) → 0.",
     "keyInsights": [
       "**Difference of Squares:** k(m-k) = (m/2)² - (k - m/2)² when m is even. This reformulation makes the problem about matching quadratic forms.",
       "**Diophantine Connection:** Finding common products means solving k(m-k) = l(n-l), a system that can be analyzed via factorization and divisibility.",
@@ -133,23 +133,23 @@
     {
       "id": "technique",
       "title": "Proof Technique",
-      "summary": "Hegyvári's approach using divisibility and sieves",
-      "startLine": 220,
-      "endLine": 232
+      "summary": "Hegyvári's approach using divisibility constraints",
+      "startLine": 210,
+      "endLine": 219
     },
     {
       "id": "related",
       "title": "Related Problems",
       "summary": "Comparison with binomial coefficients and other common-value problems",
-      "startLine": 234,
-      "endLine": 246
+      "startLine": 222,
+      "endLine": 234
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Main theorem combining both results",
-      "startLine": 248,
-      "endLine": 269
+      "startLine": 236,
+      "endLine": 261
     }
   ],
   "conclusion": {
