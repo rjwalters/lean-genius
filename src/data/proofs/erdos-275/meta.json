@@ -16,25 +16,85 @@
       "congruences",
       "solved"
     ],
-    "badge": "solved",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 275,
     "erdosUrl": "https://erdosproblems.com/275",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.ModEq",
+        "description": "Modular equivalence for integers",
+        "module": "Mathlib.Data.Int.ModEq"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for covering systems",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "CongruenceClass definition: integers congruent to a mod n",
+      "CoveringSystem structure: finite collection of congruence classes",
+      "IsCovered, CoversSet, CoversAll predicates",
+      "erdos_275_theorem axiom: 2^r consecutive integers suffice",
+      "crittenden_vanden_eynden axiom: alternative formulation",
+      "OptimalExample construction: shows 2^r is tight",
+      "IsExactlyCovering definition: k-fold covering systems",
+      "erdos_275 summary theorem combining main result and tightness"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem concerns 'covering systems' - finite collections of congruence classes that cover all integers. Erdős pioneered the study of such systems. The question asks: how many consecutive integers must r congruence classes cover to guarantee they cover all integers? The answer is exactly 2^r, proved independently by Selfridge and by Crittenden-Vanden Eynden in 1970.",
+    "historicalContext": "**Erdős Problem #275** concerns covering systems — finite collections of congruence classes whose union covers all integers. Erdős pioneered the study of such systems and asked: how many consecutive integers must r congruence classes cover to guarantee they cover all of the integers? The answer turns out to be exactly 2^r.\n\nThe problem was solved independently by John Selfridge and by Crittenden and Vanden Eynden in 1970. Crittenden and Vanden Eynden published their proof in the Proceedings of the American Mathematical Society. The proof uses induction on the structure of the moduli, carefully analyzing their behavior modulo 2.\n\nThe bound 2^r is sharp, as shown by the elegant example {2^(i-1) (mod 2^i) : 1 ≤ i ≤ r}. This system covers every integer whose binary representation has at least one of its first r bits equal to 1 — equivalently, it covers all integers not divisible by 2^r. Since multiples of 2^r appear with spacing 2^r, any set of fewer than 2^r consecutive integers might miss one entirely.",
     "problemStatement": "If a finite system of r congruences {aᵢ (mod nᵢ) : 1 ≤ i ≤ r} covers 2^r consecutive integers, then it covers all integers.\n\n**This bound is tight:** The system {2^(i-1) (mod 2^i) : 1 ≤ i ≤ r} covers exactly the integers NOT divisible by 2^r, showing that 2^r - 1 consecutive integers don't suffice.",
-    "proofStrategy": "The formalization defines:\n1. Congruence classes as sets of integers\n2. Covering systems as finite collections of such classes\n3. The main theorem: 2^r consecutive integers suffice\n4. The optimal example showing tightness\n\nThe proof (axiomatized) uses induction on the structure of moduli mod 2.",
+    "proofStrategy": "The formalization defines congruence classes, covering systems, and the predicates IsCovered, CoversSet, and CoversAll. The main theorem and its alternative formulation are axiomatized. The optimal example is constructively defined, and its coverage properties are axiomatized. The summary theorem combines the main result with the tightness bound.",
     "keyInsights": [
-      "2^r consecutive integers suffice for r congruences to cover all ℤ",
+      "2^r consecutive integers suffice for r congruences to cover all of Z",
       "The bound is tight: {2^(i-1) (mod 2^i)} shows 2^r-1 doesn't work",
       "Binary representation intuition: all r-bit patterns appear in 2^r consecutive integers",
       "Independently proved by Selfridge and Crittenden-Vanden Eynden (1970)",
-      "Related to covering systems - a fundamental topic in combinatorial number theory"
+      "Related to covering systems — a fundamental topic in combinatorial number theory"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "CongruenceClass, CoveringSystem, IsCovered, CoversSet, CoversAll, ConsecutiveIntegers",
+      "startLine": 30,
+      "endLine": 76
+    },
+    {
+      "id": "main-theorem",
+      "title": "The 2^r Bound",
+      "summary": "erdos_275_theorem and crittenden_vanden_eynden axioms",
+      "startLine": 78,
+      "endLine": 98
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality — The 2^r Bound is Tight",
+      "summary": "OptimalExample construction and not_covered_2r_minus_1",
+      "startLine": 100,
+      "endLine": 130
+    },
+    {
+      "id": "related",
+      "title": "Related Definitions",
+      "summary": "IsCoveringSystem, IsExactlyCovering",
+      "startLine": 132,
+      "endLine": 149
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_275 summary theorem combining main result and tightness",
+      "startLine": 151,
+      "endLine": 181
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #275 is SOLVED. If r congruence classes cover 2^r consecutive integers, they cover all integers. The bound 2^r is optimal, as shown by the example {2^(i-1) (mod 2^i) : 1 ≤ i ≤ r} which needs exactly 2^r consecutive integers.",
     "implications": "This result characterizes the threshold for finite covering by congruence classes. It shows that the exponential bound 2^r, rather than any polynomial, is the critical threshold.",
