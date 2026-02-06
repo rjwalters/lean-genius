@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #932: Smooth Numbers in Prime Gaps
 
 Source: https://erdosproblems.com/932
@@ -303,17 +303,12 @@ theorem erdos_932_summary :
     -- The density result is known
     HasDensity { r : ℕ | smoothCount r ≥ 1 } 0 ∧
     -- r = 3 is an example
-    smoothCount 3 ≥ 2 ∧
-    -- The main question remains open
-    True := by
-  refine ⟨?_, ?_, trivial⟩
+    smoothCount 3 ≥ 2 := by
+  refine ⟨?_, ?_⟩
   · convert erdos_932_density_zero
     ext r
     simp [erdos932WeakCondition]
   · have := example_r3
     omega
-
-/-- The problem remains OPEN. -/
-theorem erdos_932_open : True := trivial
 
 end Erdos932
