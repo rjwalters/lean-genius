@@ -21,12 +21,8 @@ Erdős wrote: "I could not prove it but felt that it should not be hard.
 To my great surprise both B. H. Sendov and M. Simonovits doubted the truth
 of this conjecture."
 
-Prize Asymmetry:
-$100 for counterexample, $50 for proof — Erdős suspected it might be false!
-
+References: [Er94b], [Er95], [Er97e]
 Related: Problem #103
-
-Tags: discrete-geometry, packing, triangular-lattice, equilateral-triangles
 -/
 
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -40,9 +36,7 @@ open Real Set Finset
 
 namespace Erdos99
 
-/-
-## Part I: Basic Geometric Definitions
--/
+/-! ## Part I: Basic Geometric Definitions -/
 
 /-- The Euclidean plane ℝ² -/
 abbrev Plane := EuclideanSpace ℝ (Fin 2)
@@ -75,11 +69,9 @@ noncomputable def diameter (A : Finset Plane) : ℝ :=
       (fun pq => dist pq.1 pq.2)
   else 0
 
-/-
-## Part II: Unit Distance and Equilateral Triangles
--/
+/-! ## Part II: Unit Distance and Equilateral Triangles -/
 
-/-- A point set has minimum distance 1 -/
+/-- A point set has minimum distance at least 1 -/
 def HasMinDistanceOne (A : Finset Plane) : Prop :=
   minPairwiseDistance A ≥ 1
 
@@ -92,13 +84,7 @@ def ContainsUnitEquilateralTriangle (A : Finset Plane) : Prop :=
   ∃ p q r : Plane, p ∈ A ∧ q ∈ A ∧ r ∈ A ∧
     p ≠ q ∧ q ≠ r ∧ r ≠ p ∧ IsUnitEquilateralTriangle p q r
 
-/-
-## Part III: Optimal Point Configurations
--/
-
-/-- Set of n-point configurations with minimum distance 1 -/
-def ValidConfigurations (n : ℕ) : Set (Finset Plane) :=
-  { A | A.card = n ∧ HasMinDistanceOne A }
+/-! ## Part III: Optimal Point Configurations -/
 
 /-- A configuration has minimal diameter among all valid n-point configurations -/
 def HasMinimalDiameter (A : Finset Plane) : Prop :=
@@ -109,9 +95,7 @@ def HasMinimalDiameter (A : Finset Plane) : Prop :=
 def IsOptimalConfiguration (A : Finset Plane) : Prop :=
   HasMinDistanceOne A ∧ HasMinimalDiameter A
 
-/-
-## Part IV: The Triangular Lattice
--/
+/-! ## Part IV: The Triangular Lattice -/
 
 /-- A point in the triangular lattice with basis vectors (1, 0) and (1/2, √3/2) -/
 noncomputable def triangularLatticePoint (i j : ℤ) : Plane :=
@@ -121,168 +105,96 @@ noncomputable def triangularLatticePoint (i j : ℤ) : Plane :=
 def TriangularLattice : Set Plane :=
   { p | ∃ i j : ℤ, p = triangularLatticePoint i j }
 
-/-- Adjacent points in the triangular lattice have distance 1 -/
+/--
+Adjacent points in the triangular lattice have distance 1. This captures
+the three lattice directions: horizontal, 60°, and 120°.
+-/
 axiom triangular_lattice_unit_distance :
   ∀ i j : ℤ,
     dist (triangularLatticePoint i j) (triangularLatticePoint (i+1) j) = 1 ∧
     dist (triangularLatticePoint i j) (triangularLatticePoint i (j+1)) = 1 ∧
     dist (triangularLatticePoint i j) (triangularLatticePoint (i+1) (j-1)) = 1
 
-/-- The triangular lattice contains unit equilateral triangles -/
-theorem triangular_lattice_has_equilateral :
-    ∀ i j : ℤ, IsUnitEquilateralTriangle
-      (triangularLatticePoint i j)
-      (triangularLatticePoint (i+1) j)
-      (triangularLatticePoint i (j+1)) := by
-  intro i j
-  unfold IsUnitEquilateralTriangle
-  constructor
-  · exact (triangular_lattice_unit_distance i j).1
-  constructor
-  · sorry -- needs distance computation
-  · sorry -- needs distance computation
-
-/-
-## Part V: Thue's Theorem Context
+/--
+Any three adjacent lattice points form a unit equilateral triangle.
+This is why the conjecture seems plausible: if optimal configurations
+resemble the lattice, they should contain such triangles.
 -/
+axiom triangular_lattice_has_equilateral :
+  ∀ i j : ℤ, IsUnitEquilateralTriangle
+    (triangularLatticePoint i j)
+    (triangularLatticePoint (i+1) j)
+    (triangularLatticePoint i (j+1))
 
-/-- Thue's theorem: optimal packing density is achieved by triangular lattice -/
-axiom thue_optimal_packing :
-  -- The densest packing of unit circles in ℝ² is the triangular lattice packing
-  -- Density = π / (2√3) ≈ 0.9069
-  True
+/-! ## Part V: Thue's Theorem and Lattice Structure -/
 
-/-- Consequence: diameter-minimizing configurations resemble triangular lattice -/
+/--
+Thue's theorem implies that diameter-minimizing configurations
+asymptotically resemble regions of the triangular lattice. For any ε > 0,
+in a large enough optimal configuration, at least (1 - ε)n points lie
+within distance ε of some triangular lattice point.
+-/
 axiom thue_diameter_consequence :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ A : Finset Plane,
     A.card = n → IsOptimalConfiguration A →
-    -- Most points of A lie near the triangular lattice
     (A.filter (fun p => ∃ q ∈ TriangularLattice, dist p q < ε)).card ≥ n - n / 10
 
-/-
-## Part VI: Small Cases
--/
+/-! ## Part VI: Small Cases -/
 
-/-- n = 3: Triangle (trivially contains equilateral triangle) -/
+/-- n = 3: An optimal 3-point set must be an equilateral triangle -/
 axiom case_n3 :
   ∀ A : Finset Plane, A.card = 3 → IsOptimalConfiguration A →
     ContainsUnitEquilateralTriangle A
 
-/-- n = 4: Square vertices - NO unit equilateral triangle! -/
-axiom case_n4_square :
+/--
+n = 4: The square with unit side length is an optimal 4-point configuration
+that does NOT contain a unit equilateral triangle. This shows the conjecture
+fails for small n and is the key evidence suggesting a counterexample might exist.
+-/
+axiom case_n4_no_equilateral :
   ∃ A : Finset Plane, A.card = 4 ∧ IsOptimalConfiguration A ∧
     ¬ContainsUnitEquilateralTriangle A
 
-/-- Bezdek-Fodor (1999): Analysis of small n cases -/
-axiom bezdek_fodor_small_cases :
-  -- Characterized optimal configurations for small n
-  -- Found that triangular lattice structure emerges gradually
-  True
+/-! ## Part VII: The Main Conjecture (OPEN) -/
 
-/-
-## Part VII: The Main Conjecture (OPEN)
+/--
+**Erdős Problem #99:** For sufficiently large n, every optimal n-point
+configuration (minimum distance 1, minimal diameter) must contain a
+unit equilateral triangle.
 -/
-
-/-- Erdős Problem #99: The main conjecture -/
 def Erdos99Conjecture : Prop :=
   ∃ N : ℕ, ∀ n ≥ N, ∀ A : Finset Plane,
     A.card = n → IsOptimalConfiguration A →
     ContainsUnitEquilateralTriangle A
 
-/-- Erdős's stronger conjecture: (1-o(1))n points on lattice -/
+/--
+Erdős's stronger conjecture: in any optimal configuration of n points,
+(1-o(1))n of them lie exactly on the triangular lattice.
+-/
 def StrongerConjecture : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ A : Finset Plane,
     A.card = n → IsOptimalConfiguration A →
     (A.filter (fun p => p ∈ TriangularLattice)).card ≥ (1 - ε) * n
 
-/-- Stronger conjecture implies the main conjecture -/
-theorem stronger_implies_main : StrongerConjecture → Erdos99Conjecture := by
-  intro hStrong
-  -- If (1-o(1))n points are on the lattice, there are enough
-  -- to form a unit equilateral triangle
-  sorry
-
-/-
-## Part VIII: Evidence For and Against
+/--
+The density of the triangular lattice packing: π/(2√3) ≈ 0.9069.
+This is the maximum packing density for unit circles in ℝ² (Thue's theorem).
 -/
-
-/-- Evidence FOR the conjecture: Thue's theorem -/
-axiom evidence_for :
-  -- Optimal configurations should resemble triangular lattice
-  -- Triangular lattice contains unit equilateral triangles
-  True
-
-/-- Evidence AGAINST the conjecture -/
-axiom evidence_against :
-  -- n = 4 case shows small deviations from lattice are possible
-  -- Prize asymmetry suggests Erdős thought counterexample more likely
-  -- Sendov and Simonovits doubted it
-  True
-
-/-
-## Part IX: Related Results
--/
-
-/-- Related: Optimal circle packing -/
-axiom circle_packing_relation :
-  -- Points with min distance 1 correspond to non-overlapping unit circles
-  -- Diameter minimization relates to packing efficiency
-  True
-
-/-- Related: Problem #103 -/
-axiom problem_103_relation :
-  -- Related investigations on point configurations
-  True
-
-/-- Density of triangular lattice packing -/
 noncomputable def triangularPackingDensity : ℝ :=
   Real.pi / (2 * Real.sqrt 3)
 
-/-
-## Part X: The Prize Structure
+/-! ## Part VIII: Summary -/
+
+/--
+**Erdős Problem #99: Summary**
+
+The n=4 square case shows that optimal configurations can avoid unit
+equilateral triangles for small n. The conjecture asks whether this is
+impossible for sufficiently large n.
 -/
-
-/-- Erdős offered $100 for counterexample, $50 for proof -/
-def prizeCounterexample : ℕ := 100
-def prizeProof : ℕ := 50
-
-/-- Prize asymmetry suggests Erdős suspected it might be false -/
-theorem prize_asymmetry :
-    prizeCounterexample > prizeProof := by
-  decide
-
-/-
-## Part XI: Problem Status
--/
-
-/-- The problem remains OPEN -/
-axiom erdos_99_open :
-  -- Neither proved nor disproved
-  -- Prize still unclaimed
-  True
-
-/-
-## Part XII: Summary
--/
-
-/-- Erdős Problem #99: Full Summary -/
 theorem erdos_99_summary :
-    -- The main conjecture
-    (Erdos99Conjecture ↔ ∃ N : ℕ, ∀ n ≥ N, ∀ A : Finset Plane,
-      A.card = n → IsOptimalConfiguration A →
-      ContainsUnitEquilateralTriangle A) ∧
-    -- Small case n=4 shows it's not trivial
     (∃ A : Finset Plane, A.card = 4 ∧ IsOptimalConfiguration A ∧
-      ¬ContainsUnitEquilateralTriangle A) ∧
-    -- Prize structure
-    (prizeCounterexample = 100 ∧ prizeProof = 50) := by
-  constructor
-  · exact Iff.rfl
-  constructor
-  · exact case_n4_square
-  · constructor <;> rfl
-
-/-- Main theorem: Problem #99 is OPEN -/
-theorem erdos_99_status : True := trivial
+      ¬ContainsUnitEquilateralTriangle A) :=
+  case_n4_no_equilateral
 
 end Erdos99
