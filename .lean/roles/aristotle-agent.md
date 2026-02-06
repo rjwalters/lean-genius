@@ -154,7 +154,8 @@ Proofs automatically integrated from Aristotle proof search.
 - Sorry counts verified before/after
 EOF
 )" \
-    --label aristotle-integration
+    --label aristotle-integration \
+    --label "loom:review-requested"
 
 # Or update existing PR
 gh pr edit --add-label aristotle-integration
