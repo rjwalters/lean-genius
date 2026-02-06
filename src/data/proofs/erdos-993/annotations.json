@@ -55,6 +55,17 @@
     "relatedConcepts": ["Unimodality", "Real-rootedness", "Interlacing polynomials"]
   },
   {
+    "id": "ann-e993-counterexamples",
+    "proofId": "erdos-993",
+    "range": { "startLine": 108, "endLine": 113 },
+    "type": "axiom",
+    "title": "Counterexamples for General Graphs",
+    "content": "**general_graph_not_unimodal**: Not all graphs have unimodal independent set sequences. AEMS (1987) proved the remarkable result that for ANY finite sequence of positive integers, there exists a graph whose independent set sequence matches it.\n\nThis means the non-unimodal examples are not rare exceptions — they are the generic case. The unimodality of trees is the special phenomenon, not the lack of unimodality in general graphs.\n\nThe axiom states existence of a graph G with ¬HasUnimodalIndepSequence G, which is the weakest form of this wildness result.",
+    "mathContext": "The AEMS construction builds graphs with prescribed independent set sequences by carefully gluing complete bipartite graphs. For example, K_{1,3} ∪ K_2 gives sequence (1, 5, 6, 4, 1) which IS unimodal, but replacing K_2 with a larger graph can break unimodality at any desired position.",
+    "significance": "key",
+    "relatedConcepts": ["AEMS theorem", "Prescribed sequences", "Extremal graph theory"]
+  },
+  {
     "id": "ann-e993-schwenk",
     "proofId": "erdos-993",
     "range": { "startLine": 115, "endLine": 129 },
@@ -75,6 +86,17 @@
     "mathContext": "Newton's inequality states that for real-rooted polynomials with positive coefficients, the coefficient sequence is log-concave. This is strictly stronger than unimodality and provides quantitative control on how fast the sequence decreases after the peak.",
     "significance": "critical",
     "relatedConcepts": ["Real-rooted polynomials", "Newton's inequality", "Log-concavity"]
+  },
+  {
+    "id": "ann-e993-independence-number",
+    "proofId": "erdos-993",
+    "range": { "startLine": 154, "endLine": 168 },
+    "type": "definition",
+    "title": "Independence Number and Peak Location",
+    "content": "**independenceNumber G**: The independence number α(G) is the maximum size of an independent set. Computed as the supremum of card(S) over all independent sets S.\n\n**no_large_indep_sets**: For k > α(G), there are no independent sets of size k, so i_k(G) = 0. This means the sequence is eventually zero.\n\n**peak_at_most_alpha**: For trees, the peak of the unimodal sequence occurs at some position m ≤ α(G). Since i_k = 0 for k > α(G), the sequence must start decreasing by position α(G) at the latest.\n\nFor a path P_n, α = ⌈n/2⌉ and the peak is typically near n/3, well below the independence number.",
+    "mathContext": "Computing the independence number is NP-hard for general graphs but polynomial for trees (via dynamic programming). For a tree on n vertices, α(T) ≥ ⌈n/2⌉ always holds. The relationship between the peak location and α(T) is an active area of study.",
+    "significance": "key",
+    "relatedConcepts": ["Independence number", "Maximum independent set", "Peak location"]
   },
   {
     "id": "ann-e993-summary",
