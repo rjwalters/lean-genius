@@ -14,7 +14,8 @@
       "number-theory",
       "sum-of-divisors",
       "iteration",
-      "convergence"
+      "convergence",
+      "open"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -80,50 +81,43 @@
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 94,
-      "endLine": 113,
-      "summary": "σ-equivalence and the main problem statement"
+      "endLine": 105,
+      "summary": "σ-equivalence and the main conjecture statement"
     },
     {
       "id": "examples",
       "title": "Verified Examples",
-      "startLine": 115,
-      "endLine": 127,
+      "startLine": 107,
+      "endLine": 119,
       "summary": "Computationally verified equivalences for small numbers"
     },
     {
       "id": "aliquot",
       "title": "The Aliquot Sequence Connection",
-      "startLine": 129,
-      "endLine": 144,
+      "startLine": 121,
+      "endLine": 136,
       "summary": "Relation to proper divisor sums and perfect numbers"
     },
     {
       "id": "growth",
       "title": "Growth of Iterated Sigma",
-      "startLine": 146,
-      "endLine": 168,
-      "summary": "Proof that σ(n) > n for n ≥ 2"
-    },
-    {
-      "id": "difficulty",
-      "title": "Why This Is Hard",
-      "startLine": 170,
-      "endLine": 185,
-      "summary": "Discussion of the problem's difficulty"
+      "startLine": 138,
+      "endLine": 160,
+      "summary": "Proof that σ(n) ≥ n+1 and σ(n) > n for n ≥ 2"
     },
     {
       "id": "related",
       "title": "Related Concepts",
-      "startLine": 187,
-      "endLine": 197,
-      "summary": "σ-periodicity and first-step growth"
+      "startLine": 162,
+      "endLine": 173,
+      "summary": "σ-periodicity definition and no-periodicity proof"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 199,
-      "endLine": 223,
-      "summary": "Main theorem summarizing the formalization"
+      "startLine": 175,
+      "endLine": 192,
+      "summary": "Proved summary theorem combining growth, equivalence, and no-periodicity"
     }
   ],
   "conclusion": {
