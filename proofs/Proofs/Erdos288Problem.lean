@@ -27,7 +27,7 @@ open Finset BigOperators
 
 namespace Erdos288
 
-/-! ## Part I: Harmonic Sums Over Intervals -/
+/- ## Part I: Harmonic Sums Over Intervals -/
 
 /-- The harmonic sum over the interval [a, b] of positive integers:
     H(a, b) = Σ_{n=a}^{b} 1/n as a rational number. -/
@@ -46,7 +46,7 @@ noncomputable def pairSum (p : IntervalPair) : ℚ :=
 def IsIntegerSum (p : IntervalPair) : Prop :=
   ∃ n : ℕ+, pairSum p = (n : ℚ)
 
-/-! ## Part II: The Main Conjecture -/
+/- ## Part II: The Main Conjecture -/
 
 /-- The set of interval pairs whose harmonic sum is a positive integer. -/
 def integerSumPairs : Set IntervalPair :=
@@ -63,7 +63,7 @@ def ErdosConjecture288 : Prop :=
 /-- The conjecture is axiomatized. -/
 axiom erdos_288 : ErdosConjecture288
 
-/-! ## Part III: The Known Example -/
+/- ## Part III: The Known Example -/
 
 /-- Example: 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1.
     This uses intervals [3,6] and [20,20]. -/
@@ -71,7 +71,7 @@ axiom example_sum_one :
     harmonicInterval ⟨3, by omega⟩ ⟨6, by omega⟩ +
     harmonicInterval ⟨20, by omega⟩ ⟨20, by omega⟩ = 1
 
-/-! ## Part IV: Variant — Single Element I₂ -/
+/- ## Part IV: Variant — Single Element I₂ -/
 
 /-- The restricted version where I₂ has a single element. -/
 def singletonPairs : Set (ℕ+ × ℕ+ × ℕ+) :=
@@ -83,7 +83,7 @@ The conjecture is still open even when |I₂| = 1.
 -/
 axiom erdos_288_singleton : Set.Finite singletonPairs
 
-/-! ## Part V: Variant — k Intervals -/
+/- ## Part V: Variant — k Intervals -/
 
 /-- The generalization to k intervals: each interval represented
     as a pair (start, end) of positive naturals. -/
@@ -102,7 +102,7 @@ whose harmonic sums add to a positive integer.
 axiom erdos_288_k_intervals :
     ∀ k : ℕ, Set.Finite (kIntervalPairs k)
 
-/-! ## Part VI: Properties of Harmonic Sums -/
+/- ## Part VI: Properties of Harmonic Sums -/
 
 /-- The harmonic sum over [a, a] is 1/a. -/
 axiom harmonicInterval_singleton (a : ℕ+) :
@@ -121,7 +121,7 @@ axiom harmonicInterval_growth :
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
     harmonicInterval 1 ⟨n, by omega⟩ > (n : ℚ) * 0
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #288: Summary**
@@ -141,7 +141,21 @@ theorem erdos_288_statement :
     ErdosConjecture288 ↔ Set.Finite {p : IntervalPair | IsIntegerSum p} := by
   simp only [ErdosConjecture288, integerSumPairs]
 
-/-- The problem remains OPEN. -/
-theorem erdos_288_status : True := trivial
+/--
+**Erdős Problem #288: Summary**
+
+QUESTION: Are there only finitely many pairs of intervals (I₁, I₂) with
+Σ_{I₁} 1/n + Σ_{I₂} 1/n ∈ ℕ?
+
+STATUS: OPEN
+
+KNOWN:
+- Example: [3,6] ∪ [20,20] gives 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1
+- Open even when |I₂| = 1
+- Conjectured to hold for k intervals (any k)
+-/
+theorem erdos_288_summary :
+    ErdosConjecture288 ↔ Set.Finite {p : IntervalPair | IsIntegerSum p} :=
+  erdos_288_statement
 
 end Erdos288
