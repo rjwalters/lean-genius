@@ -1,137 +1,76 @@
 [
   {
-    "id": "ann-821-phi",
+    "id": "ann-821-header",
     "proofId": "erdos-821",
-    "range": { "startLine": 44, "endLine": 45 },
-    "type": "definition",
-    "title": "phi",
-    "content": "Euler's totient function φ(n).",
-    "significance": "key"
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #821 asks: for every ε > 0, are there infinitely many n with g(n) > n^{1-ε}, where g(n) = |{m : φ(m) = n}| counts preimages of n under Euler's totient? The problem is OPEN. Best known: g(n) > n^{0.71568} infinitely often (Lichtman 2022). The conjecture would follow from sufficient density of primes with smooth p-1.",
+    "mathContext": "The preimage counting function g(n) connects multiplicative number theory (Euler's totient) with smooth numbers and prime distribution.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's totient", "Preimage counting", "Smooth primes"]
   },
   {
-    "id": "ann-821-preimagecount",
+    "id": "ann-821-definitions",
     "proofId": "erdos-821",
-    "range": { "startLine": 53, "endLine": 55 },
+    "range": { "startLine": 40, "endLine": 56 },
     "type": "definition",
-    "title": "preimageCount",
-    "content": "g(n) = |{m : φ(m) = n}|.",
-    "significance": "critical"
+    "title": "Totient and Preimage Count",
+    "content": "phi: Euler's totient φ(n), defined as Nat.totient. g(n): a partial preimage count using Finset.filter (lower bound). preimageCount(n) = Nat.card {m : φ(m) = n}: the full preimage count. preimageCount_finite (axiom): g(n) < n² for all n, ensuring the count is bounded.",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.totient", "Nat.card", "Preimage"]
   },
   {
-    "id": "ann-821-pillai",
+    "id": "ann-821-known",
     "proofId": "erdos-821",
-    "range": { "startLine": 64, "endLine": 66 },
+    "range": { "startLine": 58, "endLine": 74 },
     "type": "theorem",
-    "title": "pillai_theorem",
-    "content": "lim sup g(n) = ∞.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-821-erdos1935",
-    "proofId": "erdos-821",
-    "range": { "startLine": 68, "endLine": 71 },
-    "type": "theorem",
-    "title": "erdos_1935",
-    "content": "∃ c > 0 with g(n) > n^c infinitely often.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-821-lichtmanexp",
-    "proofId": "erdos-821",
-    "range": { "startLine": 84, "endLine": 85 },
-    "type": "definition",
-    "title": "lichtmanExponent",
-    "content": "0.71568... the current best exponent.",
-    "significance": "critical"
+    "title": "Classical Results: Pillai and Erdős",
+    "content": "pillai_theorem (axiom): for any M, there exists n with g(n) > M, i.e., g(n) is unbounded. erdos_1935 (axiom): there exists c > 0 with g(n) > n^c infinitely often — the first power-law bound. erdos_explicit_bound: the same with a specific (placeholder) constant 0.1.",
+    "mathContext": "Pillai's result was qualitative; Erdős's 1935 paper was the breakthrough showing quantitative power-law growth.",
+    "significance": "key",
+    "relatedConcepts": ["Pillai", "Erdős 1935", "Power-law growth"]
   },
   {
     "id": "ann-821-lichtman",
     "proofId": "erdos-821",
-    "range": { "startLine": 87, "endLine": 90 },
+    "range": { "startLine": 76, "endLine": 91 },
     "type": "theorem",
-    "title": "lichtman_theorem",
-    "content": "Lichtman 2022: g(n) > n^{0.71568} infinitely.",
-    "significance": "critical"
+    "title": "Lichtman's Theorem (2022): Current Best",
+    "content": "lichtmanExponent = 0.71568: the current best exponent. lichtman_theorem (axiom): g(n) > n^{0.71568} infinitely often. lichtman_primes (axiom): there are ≥ cx/(log x)² primes p ≤ x with all prime factors of p-1 at most x^{0.2843}. This is the technical ingredient behind the improved exponent.",
+    "mathContext": "Lichtman's 2022 result improved on Baker-Harman (1998) and represents the state of the art.",
+    "significance": "critical",
+    "relatedConcepts": ["Lichtman 2022", "Best known bound", "Smooth primes density"]
   },
   {
     "id": "ann-821-conjecture",
     "proofId": "erdos-821",
-    "range": { "startLine": 103, "endLine": 106 },
+    "range": { "startLine": 93, "endLine": 118 },
     "type": "definition",
-    "title": "ErdosConjecture821",
-    "content": "∀ ε > 0, g(n) > n^{1-ε} infinitely.",
-    "significance": "critical"
+    "title": "The Conjecture and Smooth Primes Connection",
+    "content": "ErdosConjecture821: ∀ ε > 0, g(n) > n^{1-ε} infinitely often. ErdosConjecture821': equivalent formulation with α < 1. IsEpsilonSmooth p ε: all prime factors of p-1 are < p^ε. SmoothPrimesCondition: for every ε > 0, there are ≫ x/log x primes p < x with ε-smooth p-1. smooth_implies_conjecture (axiom): the smooth primes condition implies the full conjecture.",
+    "mathContext": "The reduction to smooth primes shows that the number-theoretic conjecture is equivalent to a question about prime distribution.",
+    "significance": "critical",
+    "relatedConcepts": ["Conjecture", "Smooth numbers", "Sufficient condition"]
   },
   {
-    "id": "ann-821-smooth",
+    "id": "ann-821-bounds",
     "proofId": "erdos-821",
-    "range": { "startLine": 116, "endLine": 118 },
-    "type": "definition",
-    "title": "IsEpsilonSmooth",
-    "content": "Prime p has ε-smooth p-1.",
-    "significance": "key"
+    "range": { "startLine": 120, "endLine": 135 },
+    "type": "axiom",
+    "title": "Upper Bounds and Examples",
+    "content": "preimageCount_upper_bound (axiom): g(n) ≤ C · n^{1.01} for all n ≥ 2. average_preimageCount (axiom): the average of g(n) over [1,N] is O(log N). preimage_of_1 (theorem): φ(1) = φ(2) = 1, so g(1) ≥ 2. The upper bound shows the conjecture asks for near-maximal behavior.",
+    "significance": "supporting",
+    "relatedConcepts": ["Upper bound", "Average order", "Base case"]
   },
   {
-    "id": "ann-821-smoothcond",
+    "id": "ann-821-summary",
     "proofId": "erdos-821",
-    "range": { "startLine": 120, "endLine": 124 },
-    "type": "definition",
-    "title": "SmoothPrimesCondition",
-    "content": "Sufficient smooth primes condition.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-821-reduction",
-    "proofId": "erdos-821",
-    "range": { "startLine": 126, "endLine": 128 },
+    "range": { "startLine": 137, "endLine": 163 },
     "type": "theorem",
-    "title": "smooth_implies_conjecture",
-    "content": "Smooth primes ⟹ conjecture.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-821-upper",
-    "proofId": "erdos-821",
-    "range": { "startLine": 134, "endLine": 136 },
-    "type": "theorem",
-    "title": "preimageCount_upper_bound",
-    "content": "Upper bound g(n) ≤ n^{1+o(1)}.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-821-average",
-    "proofId": "erdos-821",
-    "range": { "startLine": 138, "endLine": 141 },
-    "type": "theorem",
-    "title": "average_preimageCount",
-    "content": "Average g(n) ≤ C log N.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-821-partial",
-    "proofId": "erdos-821",
-    "range": { "startLine": 208, "endLine": 210 },
-    "type": "theorem",
-    "title": "erdos_821_partial",
-    "content": "Partial result: Lichtman bound.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-821-open",
-    "proofId": "erdos-821",
-    "range": { "startLine": 212, "endLine": 213 },
-    "type": "definition",
-    "title": "erdos_821_open",
-    "content": "Full conjecture remains OPEN.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-821-best",
-    "proofId": "erdos-821",
-    "range": { "startLine": 215, "endLine": 218 },
-    "type": "theorem",
-    "title": "erdos_821_best_known",
-    "content": "Best known: g(n) > n^{0.71568}.",
-    "significance": "critical"
+    "title": "Summary Theorem",
+    "content": "erdos_821 combines three partial results: (1) Lichtman's best known bound g(n) > n^{0.71568} infinitely often, (2) Erdős's 1935 power-law growth for some c > 0, and (3) the reduction showing the smooth primes condition implies the full conjecture. Proved by exact ⟨lichtman_theorem, erdos_1935, smooth_implies_conjecture⟩.",
+    "significance": "critical",
+    "relatedConcepts": ["Summary", "Partial results", "OPEN problem"]
   }
 ]
