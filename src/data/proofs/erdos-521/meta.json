@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/Erdos521Problem.lean",
     "tags": ["erdos", "probability", "random-polynomials", "real-roots", "almost-sure-convergence", "partially-open"],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 521,
     "erdosUrl": "https://erdosproblems.com/521",
     "erdosProblemStatus": "open",
@@ -25,100 +25,77 @@
     "originalContributions": [
       "RandomPlusMinus1Polynomial: f_n(z) = Σ εₖ z^k",
       "IsValidCoeffSeq: each coefficient is ±1",
-      "realRootCount: Rₙ counts real roots",
-      "realRootCountInUnit: Rₙ[-1,1] for interval",
-      "kacConstant: 2/π ≈ 0.6366",
-      "halfKacConstant: 1/π ≈ 0.3183",
+      "realRootCount, realRootCountInUnit axiomatized",
+      "kacConstant (2/π) and halfKacConstant (1/π)",
       "erdos_offord_expectation: E[Rₙ] = (2/π + o(1))log n",
-      "erdosConjecture: a.s. Rₙ/log n → 2/π",
       "do_theorem_2024: a.s. Rₙ[-1,1]/log n → 1/π",
-      "kac_formula: integral formula for expected roots"
+      "kac_integral_formula: integral formula for expected roots",
+      "erdos_521_summary combining variance bound, root bound, and Kac positivity"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Kac (1943) first computed expected real roots of random polynomials using an integral formula. Erdős and Offord (1956) extended this to ±1 coefficients, showing E[Rₙ] = (2/π + o(1))log n. Erdős asked whether this holds almost surely, not just in expectation. Do (2024) proved the a.s. result for roots in [-1,1], but the full problem remains open.",
+    "historicalContext": "The study of real roots of random polynomials began with Bloch and Pólya (1932) and was revolutionized by Kac's 1943 integral formula, which computes E[Rₙ] as an explicit integral of a root density function. For Gaussian coefficients, Kac showed E[Rₙ] = (2/π + o(1))log n, where the logarithmic growth comes from the root density ρ_n(x) ≈ 1/(π|1-x²|^{1/2}) near x = ±1.\n\nErdős and Offord (1956) extended Kac's result to discrete ±1 coefficients, proving E[Rₙ] = (2/π + o(1))log n for random Littlewood polynomials f_n(z) = Σ εₖ z^k. Their proof uses combinatorial counting arguments rather than Kac's analytic integral. The natural follow-up question, attributed to Erdős, asks whether Rₙ/log n → 2/π holds almost surely (for almost every coefficient sequence), not just in expectation.\n\nDo (2024) made breakthrough progress by proving the almost sure result for roots in [-1,1]: a.s. lim Rₙ[-1,1]/log n = 1/π. Since asymptotically half the real roots lie in [-1,1] and half outside, this resolves exactly half the problem. The full conjecture — a.s. convergence for all real roots — remains open, requiring new techniques to handle roots near ±∞.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED / OPEN)**\n\nLet (εₖ) be i.i.d. uniform on {-1, 1}. If Rₙ counts real roots of f_n(z) = Σ_{k=0}^n εₖ z^k, is it true that almost surely:\n  lim_{n→∞} Rₙ/log n = 2/π?\n\n**Known:** E[Rₙ] = (2/π + o(1))log n (Erdős-Offord 1956)\n\n**Partial:** A.s. lim Rₙ[-1,1]/log n = 1/π (Do 2024)\n\n**Open:** Full a.s. convergence Rₙ/log n → 2/π",
-    "proofStrategy": "The formalization defines random ±1 polynomials and the root counting functions. The Kac constant 2/π is defined. Erdős-Offord's expectation result and variance bound are axiomatized. Do's 2024 partial result for roots in [-1,1] is stated. Kac's integral formula explains the origin of 2/π.",
+    "proofStrategy": "The formalization defines random ±1 polynomials and axiomatizes root counting functions. The Kac constant 2/π and half-Kac constant 1/π are defined from Real.pi. The Erdős-Offord expectation result, Do's 2024 partial theorem, variance bound, and Kac's integral formula are axiomatized with meaningful type signatures using Filter.atTop for asymptotic statements. The summary theorem combines variance bound, root bound, and Kac positivity.",
     "keyInsights": [
-      "**Kac Constant:** 2/π ≈ 0.6366 appears in root counting",
-      "**Expectation Known:** E[Rₙ] = (2/π + o(1))log n (Erdős-Offord)",
-      "**A.S. vs Expectation:** A.s. convergence is harder than expectation",
-      "**Do's Partial Result:** A.s. Rₙ[-1,1]/log n → 1/π for roots in [-1,1]",
-      "**Root Density:** Roots cluster near x = ±1, giving log n growth",
-      "**{0,1} vs {-1,1}:** Different coefficient sets give different constants"
+      "**Kac Constant:** 2/π ≈ 0.6366 appears in root counting from integrating the root density",
+      "**Expectation Known:** E[Rₙ] = (2/π + o(1))log n (Erdős-Offord 1956)",
+      "**A.S. vs Expectation:** Almost sure convergence is strictly stronger than expectation convergence",
+      "**Do's Partial Result:** A.s. Rₙ[-1,1]/log n → 1/π resolves roots in [-1,1]",
+      "**Root Density:** Roots cluster near x = ±1, giving log n growth from integrating 1/|1-x²|^{1/2}",
+      "**{0,1} vs {-1,1}:** Different coefficient sets give different constants (1/π vs 2/π)"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "startLine": 39,
-      "endLine": 70,
+      "startLine": 32,
+      "endLine": 60,
       "summary": "Random polynomial, valid coefficients, root counts"
     },
     {
       "id": "kac-constant",
       "title": "The Kac Constant 2/π",
-      "startLine": 72,
-      "endLine": 94,
-      "summary": "kacConstant, halfKacConstant, numerical values"
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "kacConstant, halfKacConstant, positivity"
     },
     {
       "id": "erdos-offord",
       "title": "Erdős-Offord Theorem (1956)",
-      "startLine": 96,
-      "endLine": 118,
+      "startLine": 84,
+      "endLine": 116,
       "summary": "Expected number of real roots, variance bound"
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "startLine": 120,
-      "endLine": 148,
+      "startLine": 118,
+      "endLine": 131,
       "summary": "A.s. Rₙ/log n → 2/π (OPEN)"
     },
     {
       "id": "do-theorem",
       "title": "Do's Theorem (2024)",
-      "startLine": 150,
-      "endLine": 173,
+      "startLine": 133,
+      "endLine": 149,
       "summary": "A.s. result for roots in [-1,1]"
     },
     {
       "id": "kac-formula",
       "title": "Kac's Integral Formula",
-      "startLine": 175,
-      "endLine": 204,
-      "summary": "Why 2/π appears"
-    },
-    {
-      "id": "zero-one-case",
-      "title": "The {0,1} Case",
-      "startLine": 206,
-      "endLine": 223,
-      "summary": "Different coefficient sets"
-    },
-    {
-      "id": "complex-roots",
-      "title": "Complex Roots",
-      "startLine": 225,
-      "endLine": 247,
-      "summary": "Most roots are complex, near unit circle"
-    },
-    {
-      "id": "connections",
-      "title": "Connections",
-      "startLine": 249,
-      "endLine": 271,
-      "summary": "Littlewood polynomials, Barker sequences"
+      "startLine": 151,
+      "endLine": 172,
+      "summary": "Why 2/π appears, root bound"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 273,
-      "endLine": 317,
-      "summary": "Main theorem and historical note"
+      "startLine": 174,
+      "endLine": 193,
+      "summary": "erdos_521_summary combining key results"
     }
   ],
   "conclusion": {
