@@ -2,8 +2,9 @@
 # check-usage.sh - Query claude-monitor database for session usage
 #
 # Usage:
-#   ./.loom/scripts/check-usage.sh           # Returns JSON with usage data
-#   ./.loom/scripts/check-usage.sh --status  # Human-readable status
+#   ./.loom/scripts/check-usage.sh            # Returns JSON with usage data
+#   ./.loom/scripts/check-usage.sh --status   # Human-readable status
+#   ./.loom/scripts/check-usage.sh --throttle # Returns integer 0-5 throttle level
 #
 # Exit codes:
 #   0 - Data returned successfully
@@ -18,6 +19,42 @@
 set -e
 
 DB_PATH="$HOME/.claude-monitor/usage.db"
+
+# Throttle mode: fail-open on any error (return 0 so agents aren't blocked)
+if [ "${1:-}" = "--throttle" ]; then
+    if [ ! -f "$DB_PATH" ] || ! command -v sqlite3 &> /dev/null; then
+        echo "0"
+        exit 0
+    fi
+
+    session_pct=$(sqlite3 "$DB_PATH" "
+        SELECT CAST(session_percent AS INTEGER)
+        FROM usage_history
+        WHERE is_synthetic = 0
+        ORDER BY timestamp DESC
+        LIMIT 1
+    " 2>/dev/null) || { echo "0"; exit 0; }
+
+    if [ -z "$session_pct" ]; then
+        echo "0"
+        exit 0
+    fi
+
+    if [ "$session_pct" -ge 97 ]; then
+        echo "5"
+    elif [ "$session_pct" -ge 90 ]; then
+        echo "4"
+    elif [ "$session_pct" -ge 80 ]; then
+        echo "3"
+    elif [ "$session_pct" -ge 70 ]; then
+        echo "2"
+    elif [ "$session_pct" -ge 50 ]; then
+        echo "1"
+    else
+        echo "0"
+    fi
+    exit 0
+fi
 
 # Check if database exists
 if [ ! -f "$DB_PATH" ]; then
