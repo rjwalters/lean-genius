@@ -35,7 +35,7 @@ open Finset Set
 
 namespace Erdos651
 
-/-
+/-!
 ## Part I: Points in General Position
 -/
 
@@ -53,7 +53,7 @@ def InGeneralPosition (S : Finset (Fin k → ℝ)) : Prop :=
   ∀ T : Finset (Fin k → ℝ), T ⊆ S → T.card = k + 1 →
     AffineIndependent ℝ (fun i : T => (i : Fin k → ℝ))
 
-/-
+/-!
 ## Part II: Convex Polyhedra
 -/
 
@@ -80,7 +80,7 @@ a subset of n points that forms a convex polyhedron.
 def ContainsConvexPolyhedron (S : Finset (Fin k → ℝ)) (n : ℕ) : Prop :=
   ∃ T : Finset (Fin k → ℝ), T ⊆ S ∧ T.card = n ∧ DeterminesConvexPolyhedron T
 
-/-
+/-!
 ## Part III: The Function f_k(n)
 -/
 
@@ -111,7 +111,7 @@ axiom f_k_minimal (k n : ℕ) (hn : n ≥ k + 1) :
       S.card = f_k k n - 1 ∧
       ¬ContainsConvexPolyhedron S n
 
-/-
+/-!
 ## Part IV: The Erdős-Klein-Szekeres Case (k = 2)
 -/
 
@@ -131,7 +131,7 @@ f_2(n) = 2^{n-2} + 1 for all n ≥ 3.
 axiom suk_2017 (n : ℕ) (hn : n ≥ 3) :
     f_k 2 n = 2^(n - 2) + 1
 
-/-
+/-!
 ## Part V: Monotonicity in Dimension
 -/
 
@@ -145,7 +145,7 @@ there's "more room" for points to be in convex position.
 axiom f_k_decreasing (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k + 1) :
     f_k k n > f_k (k + 1) n
 
-/-
+/-!
 ## Part VI: The Original Conjecture
 -/
 
@@ -158,7 +158,7 @@ This would give exponential lower bounds for all dimensions.
 def ErdosConjecture : Prop :=
   ∀ k ≥ 2, ∃ c : ℝ, c > 0 ∧ ∀ n ≥ k + 1, (f_k k n : ℝ) > (1 + c)^n
 
-/-
+/-!
 ## Part VII: The Disproof
 -/
 
@@ -200,54 +200,8 @@ theorem erdos_651_disproved : ¬ErdosConjecture := by
   obtain ⟨c, hc, hBound⟩ := hConj 3 (by norm_num : (3 : ℕ) ≥ 2)
   exact conjecture_false_k3 ⟨c, hc, fun n hn => hBound n (by omega)⟩
 
-/-
-## Part VIII: Why Subexponential?
--/
-
-/--
-**The Pohoata-Zakharov construction:**
-They use a clever inductive construction that avoids the usual
-exponential blowup in Ramsey-type arguments.
-
-Key insight: Higher dimensions allow more flexibility in avoiding
-"bad" configurations, leading to smaller f_k(n).
--/
-axiom construction_technique :
-    -- The construction uses projections and careful combinatorial analysis
-    True
-
-/--
-**Comparison with k = 2:**
-For k = 2, we have f_2(n) = 2^{n-2} + 1 (exponential).
-For k = 3, we have f_3(n) ≤ 2^{o(n)} (subexponential).
-
-The jump from dimension 2 to 3 is dramatic!
--/
-theorem dimension_comparison :
-    -- f_2(n) is exponential: 2^{n-2} + 1
-    -- f_3(n) is subexponential: 2^{o(n)}
-    True := by trivial
-
-/-
-## Part IX: Related Problems
--/
-
-/--
-**Connection to Erdős-Szekeres:**
-Problem #107 asks about the exact value of f_2(n).
-This problem generalizes to higher dimensions.
--/
-axiom related_to_107 : True
-
-/--
-**Remaining questions for k ≥ 4:**
-Do we have f_k(n) ≤ 2^{o(n)} for all k ≥ 3?
-What are the precise asymptotics?
--/
-axiom higher_dimensions_open : True
-
-/-
-## Part X: Main Results
+/-!
+## Part VIII: Main Results
 -/
 
 /--
@@ -267,11 +221,15 @@ theorem erdos_651 : ¬ErdosConjecture := erdos_651_disproved
 
 /--
 **Summary:**
-- k = 2: f_2(n) = 2^{n-2} + 1 (exponential, Erdős-Szekeres)
-- k ≥ 3: f_k(n) ≤ 2^{o(n)} (subexponential, Pohoata-Zakharov)
-
-The conjecture of exponential lower bounds fails for all k ≥ 3.
+- The conjecture is false: ¬ErdosConjecture
+- The Pohoata-Zakharov bound is subexponential
+- The k = 2 case is exponential (Erdős-Szekeres / Suk)
+- Monotonicity in dimension: f_k decreases with k
 -/
-theorem erdos_651_summary : True := trivial
+theorem erdos_651_summary :
+    ¬ErdosConjecture ∧
+    (∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, (f_k 3 n : ℝ) ≤ 2^(ε * n)) ∧
+    (∀ n : ℕ, n ≥ 3 → f_k 2 n = 2^(n - 2) + 1) :=
+  ⟨erdos_651_disproved, pohoata_zakharov_2022, suk_2017⟩
 
 end Erdos651
