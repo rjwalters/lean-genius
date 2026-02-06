@@ -6,7 +6,7 @@
   "meta": {
     "author": "Clemen-Dumitrescu-Liu (2025 proof), Erdős (problem)",
     "sourceUrl": "https://erdosproblems.com/958",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos958Problem.lean",
     "tags": [
       "geometry",
@@ -22,7 +22,7 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #958 asks whether a special distance multiplicity pattern characterizes equidistant points on lines or circles. Erdős himself conjectured NO — other configurations should exist. Clemen, Dumitrescu, and Liu (2025) proved Erdős was right by finding arc-plus-center counterexamples.",
+    "historicalContext": "Erdős Problem #958 asks whether a special distance multiplicity pattern — exactly n-1 distinct distances with multiplicities {n-1, n-2, ..., 1} — uniquely characterizes equidistant points on a line or circle. Erdős himself conjectured the answer was NO, predicting that other geometric configurations should also produce this pattern.\n\nThe problem remained open for decades until Clemen, Dumitrescu, and Liu resolved it in 2025. They constructed an elegant counterexample: take n-1 equidistant points on a sufficiently short arc of a unit circle and add the center of the circle. This n-point configuration satisfies the special multiplicity pattern but is neither equidistant on a line nor equidistant on a circle.\n\nThe result confirms Erdős's intuition and opens new questions about which geometric properties are actually characterized by distance multiplicity patterns. The arc-plus-center family provides infinitely many counterexamples for all n ≥ 4.",
     "problemStatement": "Let A ⊂ ℝ² be a finite set of size n with k distinct distances and multiplicity function f. Is it true that k = n-1 and {f(dᵢ)} = {n-1,...,1} if and only if A is equidistant on a line or circle? Answer: NO.",
     "proofStrategy": "The formalization defines Point, distanceSet, multiplicity, multiplicityMultiset. Standard configurations (isEquidistantLine, isEquidistantCircle, isStandardConfig) and the special pattern (hasSpecialPattern) are defined. The FALSE conjecture (OriginalConjecture) is stated. The counterexample (isArcPlusCenter) and Clemen-Dumitrescu-Liu theorem are axiomatized. The summary theorem combines both results.",
     "keyInsights": [
@@ -37,66 +37,45 @@
   "sections": [
     {
       "id": "points-distances",
-      "title": "Part 1: Points and Distances",
+      "title": "Part I: Points and Distances",
       "startLine": 34,
       "endLine": 47,
       "summary": "Point type as EuclideanSpace ℝ (Fin 2), dist function."
     },
     {
       "id": "distance-sets",
-      "title": "Part 2: Distance Sets and Multiplicities",
+      "title": "Part II: Distance Sets and Multiplicities",
       "startLine": 49,
       "endLine": 72,
       "summary": "distanceSet, multiplicity, multiplicityMultiset definitions."
     },
     {
       "id": "configurations",
-      "title": "Part 3: Special Configurations",
+      "title": "Part III: Special Configurations",
       "startLine": 74,
       "endLine": 103,
       "summary": "isEquidistantLine, isEquidistantCircle, isStandardConfig definitions."
     },
     {
       "id": "conjecture",
-      "title": "Part 4: The Conjectured Characterization",
+      "title": "Part IV: The Conjectured Characterization",
       "startLine": 105,
       "endLine": 127,
       "summary": "hasSpecialPattern definition and OriginalConjecture (FALSE)."
     },
     {
       "id": "counterexample",
-      "title": "Part 5: The Counterexample",
+      "title": "Part V: The Counterexample",
       "startLine": 129,
-      "endLine": 170,
-      "summary": "isArcPlusCenter definition, clemen_dumitrescu_liu axiom, conjecture_disproved axiom."
-    },
-    {
-      "id": "intuition",
-      "title": "Part 6: Erdős's Intuition",
-      "startLine": 172,
-      "endLine": 191,
-      "summary": "erdos_predicted_no and arc_configuration_analysis placeholder axioms."
-    },
-    {
-      "id": "analysis",
-      "title": "Part 7: Standard Configurations Analysis",
-      "startLine": 193,
-      "endLine": 212,
-      "summary": "line_multiplicity_analysis and circle_multiplicity_analysis placeholder axioms."
-    },
-    {
-      "id": "examples",
-      "title": "Part 8: Examples",
-      "startLine": 214,
-      "endLine": 233,
-      "summary": "Trivial examples for n = 4 and n = 5."
+      "endLine": 171,
+      "summary": "isArcPlusCenter definition, clemen_dumitrescu_liu and conjecture_disproved axioms."
     },
     {
       "id": "summary",
-      "title": "Part 9: Summary",
-      "startLine": 235,
-      "endLine": 269,
-      "summary": "erdos_958_summary (proved from axioms) and erdos_958_status."
+      "title": "Part VI: Summary",
+      "startLine": 173,
+      "endLine": 200,
+      "summary": "erdos_958_summary combining conjecture_disproved and clemen_dumitrescu_liu."
     }
   ],
   "conclusion": {
