@@ -33,7 +33,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Avoiding Squares in Sumsets**\n\nThis problem asks for the maximum density of a set A ⊆ {1,...,N} such that no sum a+b with a,b ∈ A is a perfect square.\n\n**Simple Construction (mod 3)**: Take all n ≡ 1 (mod 3). Then a+b ≡ 2 (mod 3), but squares are only 0 or 1 mod 3. This gives density 1/3.\n\n**Massias's Improvement**: Take residues {1,5,9,13,14,17,21,25,26,29,30} mod 32. This gives density 11/32 ≈ 0.344, beating 1/3 ≈ 0.333.\n\n**Resolution**: Khalfalah-Lodha-Szemerédi (2002) proved 11/32 is optimal, using Szemerédi's regularity lemma.",
+    "historicalContext": "Erdős Problem #438 asks for the maximum density of a set A in {1,...,N} such that no sum a+b with a,b in A is a perfect square. The simplest construction takes all n congruent to 1 mod 3: since a+b is 2 mod 3 but squares are only 0 or 1 mod 3, this gives density 1/3.\n\nMassias improved this to density 11/32 using a mod 32 construction. The key observation is that there are only 7 quadratic residues mod 32 (namely 0, 1, 4, 9, 16, 17, 25), and one can find 11 residue classes whose pairwise sums avoid all of these. The specific residues are {1, 5, 9, 13, 14, 17, 21, 25, 26, 29, 30}, and 11 is provably the maximum.\n\nKhalfalah, Lodha, and Szemerédi (2002) proved that 11/32 is the true asymptotic density, using Szemerédi's regularity lemma to transfer the modular optimality result to the integer setting. Earlier, Lagarias, Odlyzko, and Shearer (1983) had established the weaker bound of 0.475N using character sum methods.",
     "problemStatement": "**Problem Statement**\n\nHow large can A ⊆ {1,...,N} be if A+A contains no square numbers?\n\n**Answer**: |A| = (11/32 + o(1))N\n\n**Lower Bound**: Massias construction achieves 11/32.\n\n**Upper Bound**: Khalfalah-Lodha-Szemerédi (2002) proved no set can exceed 11/32 + o(1).\n\n**Key**: 11/32 = 0.34375 is the exact asymptotic density.",
     "proofStrategy": "**Proof Strategy**\n\n**Lower Bound (Massias Construction)**:\n1. Squares mod 32 are: 0, 1, 4, 9, 16, 17, 25 (7 values)\n2. Find maximal set R of residues such that for all a,b ∈ R, (a+b) mod 32 is not a square\n3. R = {1,5,9,13,14,17,21,25,26,29,30} works and has 11 elements\n4. Taking all n ≡ r (mod 32) for r ∈ R gives density 11/32\n\n**Upper Bound (KLS 2002)**:\n1. Lagarias-Odlyzko-Shearer (1983): |A| ≤ 0.475N using character sums\n2. For modular version (A ⊆ ℤ/Nℤ), LOS proved 11/32 is sharp\n3. KLS used Szemerédi regularity to transfer modular result to integers",
     "keyInsights": [
@@ -84,9 +84,9 @@
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 208,
-      "endLine": 249,
-      "summary": "Complete characterization: density is exactly 11/32."
+      "startLine": 130,
+      "endLine": 148,
+      "summary": "erdos_438_summary combining construction, KLS theorem, and maximality."
     }
   ],
   "conclusion": {
