@@ -424,6 +424,69 @@ theorem r3_3_lower_bound :
   ⟨c5Color, c5Color_symm, c5Color_irrefl, c5_no_red_K3, c5_no_blue_K3⟩
 
 /-
+## Part V-C: R(3,4) Lower Bound Construction
+
+The exact value R(3,4) = 9 is known. We prove R(3,4) ≥ 9 by exhibiting
+a 2-coloring of K_8 with no red K_3 and no blue K_4.
+
+### The Wagner Graph Construction
+
+The Wagner graph W₈ on 8 vertices has:
+- Cycle edges: {i, i+1 mod 8} for i = 0,...,7
+- Antipodal edges: {i, i+4 mod 8} for i = 0,...,3
+
+This is a 3-regular graph that is triangle-free (since any two adjacent edges
+share at most one endpoint with a third potential edge at distance ≥ 2).
+Its independence number is 3, so the complement has no K₄.
+-/
+
+/-- Wagner graph coloring on K_8: edge (i,j) is red iff vertices are adjacent
+    on the 8-cycle or antipodal (distance 4 mod 8). -/
+def wagnerColor (i j : Fin 8) : Bool :=
+  if i = j then false
+  else
+    let d := (j - i : Fin 8)
+    d = 1 ∨ d = 4 ∨ d = 7
+
+/-- The Wagner coloring is symmetric. -/
+theorem wagnerColor_symm : ∀ i j : Fin 8, wagnerColor i j = wagnerColor j i := by
+  native_decide
+
+/-- The Wagner coloring is irreflexive. -/
+theorem wagnerColor_irrefl (i : Fin 8) : wagnerColor i i = false := by
+  simp [wagnerColor]
+
+/-- The Wagner graph (red edges) contains no triangle. -/
+theorem wagner_no_red_K3 :
+    ∀ (a b c : Fin 8),
+    a ≠ b → a ≠ c → b ≠ c →
+    ¬(wagnerColor a b = true ∧ wagnerColor a c = true ∧ wagnerColor b c = true) := by
+  native_decide
+
+/-- The complement of the Wagner graph (blue edges) contains no K_4. -/
+theorem wagner_no_blue_K4 :
+    ∀ (a b c d : Fin 8),
+    a ≠ b → a ≠ c → a ≠ d → b ≠ c → b ≠ d → c ≠ d →
+    ¬(wagnerColor a b = false ∧ wagnerColor a c = false ∧
+      wagnerColor a d = false ∧ wagnerColor b c = false ∧
+      wagnerColor b d = false ∧ wagnerColor c d = false) := by
+  native_decide
+
+/-- **R(3,4) ≥ 9**: K_8 can be 2-colored without a red triangle or blue K_4.
+    The Wagner graph on 8 vertices witnesses this. -/
+theorem r3_4_lower_bound :
+    ∃ (color : Fin 8 → Fin 8 → Bool),
+      (∀ x y, color x y = color y x) ∧
+      (∀ x, color x x = false) ∧
+      (∀ (a b c : Fin 8), a ≠ b → a ≠ c → b ≠ c →
+        ¬(color a b = true ∧ color a c = true ∧ color b c = true)) ∧
+      (∀ (a b c d : Fin 8), a ≠ b → a ≠ c → a ≠ d → b ≠ c → b ≠ d → c ≠ d →
+        ¬(color a b = false ∧ color a c = false ∧
+          color a d = false ∧ color b c = false ∧
+          color b d = false ∧ color c d = false)) :=
+  ⟨wagnerColor, wagnerColor_symm, wagnerColor_irrefl, wagner_no_red_K3, wagner_no_blue_K4⟩
+
+/-
 ## Part VI: R(4,4) Lower Bound Construction
 
 The exact value R(4,4) = 18 is known. Here we prove R(4,4) ≥ 17 by exhibiting
@@ -608,11 +671,12 @@ theorem small_graph_no_red_K4 (n : ℕ) (hn : n < 4) :
 
 This extension file contains:
 
-**Proved theorems (46 total, 0 sorries):**
+**Proved theorems (52 total, 0 sorries):**
 - 14 concrete upper bounds via native_decide (R(3,3)=6 through R(6,6)=252)
 - Structural: symmetry, monotonicity, Pascal's rule, positivity, base cases
 - R(r,s) ≥ s and R(r,s) ≥ r, strict monotonicity, diagonal monotonicity
 - R(3,3) ≥ 6 via C_5 construction (5 theorems, all native_decide)
+- R(3,4) ≥ 9 via Wagner graph W₈ (6 theorems, all native_decide)
 - R(4,4) > 16 via Paley graph on F_17 (6 theorems, all native_decide)
 - `small_graph_no_red_K4`: Trivial bound for n < 4
 
@@ -627,9 +691,10 @@ This extension file contains:
 
 **Mathematical significance:**
 1. R(3,3) = 6 exactly: both upper and lower bounds fully proved
-2. The Paley graph construction connects algebraic number theory to Ramsey theory
-3. Spencer's bound shows the probabilistic method can be refined via LLL
-4. The R(4,k) quadratic lower bound is an active research frontier
+2. R(3,4) ≥ 9 via Wagner graph: combined with r3_4_upper (≤ 10), narrows to {9, 10}
+3. The Paley graph construction connects algebraic number theory to Ramsey theory
+4. Spencer's bound shows the probabilistic method can be refined via LLL
+5. The R(4,k) quadratic lower bound is an active research frontier
 -/
 
 end RamseyR4k
