@@ -1322,6 +1322,17 @@ cmd_stop() {
             stopped=$((stopped + 1))
         fi
 
+        # Safety net: kill any remaining agent sessions
+        echo -e "${BLUE}Catch-all: cleaning remaining agent sessions...${NC}"
+        local remaining_sessions
+        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(erdos-enhancer-|researcher-|aristotle-agent$|seeker-agent$|deployer$)' || true)
+        if [[ -n "$remaining_sessions" ]]; then
+            while IFS= read -r session; do
+                echo -e "  Killing stale session: $session"
+                tmux kill-session -t "$session" 2>/dev/null || true
+            done <<< "$remaining_sessions"
+        fi
+
         # Update state (preserves agents, session_stats, etc.)
         set_stopped
 
