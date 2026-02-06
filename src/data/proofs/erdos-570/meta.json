@@ -1,10 +1,10 @@
 {
   "id": "erdos-570",
-  "title": "Cycle-Graph Ramsey Numbers",
+  "title": "Erdős Problem #570: Cycle-Graph Ramsey Numbers",
   "slug": "erdos-570",
   "description": "For k ≥ 3 and graph H with m edges (no isolated vertices), is R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉? YES - fully resolved through work spanning 1993-2024.",
   "meta": {
-    "author": "Erdős-Faudree-Rousseau-Schelp",
+    "author": "EFRS (1993), Sidorenko (1993), Jayawardene (1999), Cambie et al. (2024)",
     "sourceUrl": "https://erdosproblems.com/570",
     "date": "1993",
     "status": "complete",
@@ -13,71 +13,69 @@
       "erdos",
       "graph-theory",
       "ramsey-theory",
-      "cycles"
+      "cycles",
+      "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 570,
     "erdosUrl": "https://erdosproblems.com/570",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {"theorem": "SimpleGraph", "description": "Simple graph type", "module": "Mathlib.Combinatorics.SimpleGraph.Basic"},
+      {"theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic"}
+    ],
+    "originalContributions": [
+      "CycleGraph: constructive definition with proved symmetry and irreflexivity",
+      "edgeCount, NoIsolatedVertices: graph predicates",
+      "RamseyNumber, CycleRamseyNumber: formal Ramsey number definitions",
+      "UpperBound: the conjectured bound 2m + ⌈(k-1)/2⌉",
+      "Erdos570Conjecture: formal statement of the problem",
+      "efrs_1993_even axiom: even k case",
+      "sidorenko_1993_triangle axiom: k=3 case",
+      "jayawardene_1999_pentagon axiom: k=5 case",
+      "cfmpp_2024_odd axiom: odd k≥7 case",
+      "erdos_570_resolved axiom: complete resolution",
+      "ceiling_formula theorem: proved",
+      "erdos_570_summary theorem: proved"
+    ],
+    "references": [
+      {"key": "EFRS93", "citation": "Erdős, P., Faudree, R.J., Rousseau, C.C., Schelp, R.H., Ramsey size linear graphs (1993)", "type": "paper"},
+      {"key": "Si93", "citation": "Sidorenko, A., The Ramsey number of an n-edge graph versus triangle (1993)", "type": "paper"},
+      {"key": "Ja99", "citation": "Jayawardene, C.J., Size Ramsey numbers for C5 vs arbitrary graphs (1999)", "type": "paper"},
+      {"key": "CFMPP24", "citation": "Cambie, S., Freschi, A., Morawski, L., Petrova, E., Pokrovskiy, A., Cycle-complete graph Ramsey numbers (2024)", "type": "paper"}
+    ]
   },
   "overview": {
-    "historicalContext": "This Ramsey-type problem asks for upper bounds on R(C_k, H), where C_k is a k-cycle and H is any graph without isolated vertices. The conjecture was resolved incrementally: EFRS (1993) proved even k, Sidorenko and Goddard-Kleitman (1993-94) proved k=3, Jayawardene (1999) proved k=5, and Cambie-Freschi-Morawski-Petrova-Pokrovskiy (2024) completed the proof for all odd k≥7.",
-    "problemStatement": "Let k ≥ 3. For any graph H on m edges without isolated vertices, R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉.",
-    "proofStrategy": "The formalization defines cycle graphs, edge counts, and Ramsey numbers abstractly. Each case (even k, k=3, k=5, odd k≥7) is axiomatized based on the published results. The main theorem combines all cases by case-splitting on k's parity and value.",
+    "historicalContext": "**Erdős Problem #570** asks for an upper bound on the Ramsey number R(C_k, H), where C_k is a k-cycle and H is an arbitrary graph without isolated vertices. The conjectured bound R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉, where m = |E(H)|, was first proposed in the context of 'Ramsey size linear graphs' by Erdős, Faudree, Rousseau, and Schelp.\n\nThe resolution spanned over three decades. EFRS themselves proved the even k case in 1993. That same year, Sidorenko handled k = 3 (triangles). Jayawardene extended the result to k = 5 in 1999. The remaining cases - all odd k ≥ 7 - were finally resolved by Cambie, Freschi, Morawski, Petrova, and Pokrovskiy in 2024.\n\nThe problem is notable for requiring fundamentally different techniques for even and odd cycles, and for the 25-year gap between the k = 5 result and the final resolution.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $k \\geq 3$. For any graph $H$ on $m$ edges without isolated vertices,\n$$R(C_k, H) \\leq 2m + \\lceil(k-1)/2\\rceil$$\n\n**Answer:** YES. Proved for all $k \\geq 3$ through combined work of EFRS (even $k$, 1993), Sidorenko ($k=3$, 1993), Jayawardene ($k=5$, 1999), and Cambie et al. (odd $k \\geq 7$, 2024).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define cycle graphs constructively with proved symmetry and irreflexivity.\n2. **Ramsey Numbers:** Abstract definition via infimum over colorings of complete graphs.\n3. **Conjecture Statement:** Formalize Erdos570Conjecture with the UpperBound function.\n4. **Individual Cases:** Axiomatize each historical result as a separate axiom.\n5. **Resolution:** Axiomatize the full resolution, combining all cases.\n6. **The CycleGraph definition is constructive:** symm and loopless are fully proved.",
     "keyInsights": [
-      "R(C_k, H) measures when a 2-coloring of K_n must contain either a k-cycle or H",
-      "The bound 2m + ⌈(k-1)/2⌉ is linear in the number of edges",
-      "Even and odd k require different proof techniques",
-      "The problem was fully resolved over 30 years (1993-2024)",
-      "The bound is tight for certain extremal graphs"
+      "**Ramsey Numbers:** R(C_k, H) is the minimum n such that any 2-coloring of K_n contains either a red C_k or a blue H.",
+      "**Linear Bound:** The bound 2m + ⌈(k-1)/2⌉ is linear in the edge count m, with a small additive term depending on k.",
+      "**Even vs Odd Cycles:** Even and odd cycles require fundamentally different proof techniques.",
+      "**30-Year Resolution:** The problem was posed in 1993 and fully resolved only in 2024.",
+      "**Constructive CycleGraph:** The cycle graph definition includes fully proved symmetry and loop-freeness."
     ]
   },
   "sections": [
-    {
-      "id": "graphs",
-      "startLine": 42,
-      "endLine": 97,
-      "summary": "Definitions: cycle graphs, edge counts, isolated vertices, and the no-isolated-vertices predicate."
-    },
-    {
-      "id": "ramsey",
-      "startLine": 98,
-      "endLine": 120,
-      "summary": "Definition of Ramsey numbers R(G, H) and the specialized cycle Ramsey number R(C_k, H)."
-    },
-    {
-      "id": "conjecture",
-      "startLine": 121,
-      "endLine": 143,
-      "summary": "Statement of the main conjecture with the upper bound function 2m + ⌈(k-1)/2⌉."
-    },
-    {
-      "id": "cases",
-      "startLine": 144,
-      "endLine": 204,
-      "summary": "Axiomatized results for each case: EFRS (even), Sidorenko (k=3), Jayawardene (k=5), CFMPP (odd k≥7)."
-    },
-    {
-      "id": "resolution",
-      "startLine": 205,
-      "endLine": 237,
-      "summary": "Complete resolution combining all cases by case analysis on k."
-    },
-    {
-      "id": "examples",
-      "startLine": 238,
-      "endLine": 265,
-      "summary": "Concrete examples: R(C_3, K_3), R(C_4, P_3), and the ceiling formula."
-    }
+    {"id": "graphs", "title": "Graph Definitions", "summary": "CycleGraph (constructive), edgeCount, NoIsolatedVertices", "startLine": 35, "endLine": 72},
+    {"id": "ramsey", "title": "Ramsey Numbers", "summary": "RamseyNumber, CycleRamseyNumber", "startLine": 74, "endLine": 88},
+    {"id": "conjecture", "title": "The Conjecture", "summary": "UpperBound, Erdos570Conjecture", "startLine": 90, "endLine": 104},
+    {"id": "cases", "title": "Proven Cases", "summary": "EFRS (even), Sidorenko (k=3), Jayawardene (k=5), CFMPP (odd k≥7)", "startLine": 106, "endLine": 141},
+    {"id": "resolution", "title": "Complete Resolution", "summary": "erdos_570_resolved axiom", "startLine": 143, "endLine": 156},
+    {"id": "ceiling", "title": "The Ceiling Formula", "summary": "ceiling_formula theorem (proved)", "startLine": 158, "endLine": 164},
+    {"id": "summary", "title": "Summary", "summary": "erdos_570_summary theorem (proved)", "startLine": 166, "endLine": 178}
   ],
   "conclusion": {
-    "summary": "Erdős Problem #570 is SOLVED. For any k ≥ 3 and graph H with m edges (no isolated vertices), R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉. The proof was completed over 30+ years through contributions from EFRS, Sidorenko, Goddard-Kleitman, Jayawardene, and Cambie et al.",
-    "implications": "This establishes a linear upper bound for cycle-vs-graph Ramsey numbers, showing that avoiding both a k-cycle and an m-edge graph requires only O(m) vertices. This is a fundamental result in Ramsey theory.",
+    "summary": "Erdős Problem #570 is SOLVED. For any k ≥ 3 and graph H with m edges (no isolated vertices), R(C_k, H) ≤ 2m + ⌈(k-1)/2⌉. The proof was completed over 30+ years through contributions from EFRS, Sidorenko, Jayawardene, and Cambie et al.",
+    "implications": "This establishes a linear upper bound for cycle-vs-graph Ramsey numbers, showing that avoiding both a k-cycle and an m-edge graph requires only O(m) vertices. The bound is tight for certain extremal graphs.",
     "openQuestions": [
       "What is the exact value of R(C_k, H) for specific graphs H?",
       "Can the constant factors be improved for particular families of graphs?",
-      "How does the Ramsey number behave when isolated vertices are allowed?"
+      "What are the extremal graphs achieving the bound?"
     ]
   }
 }
