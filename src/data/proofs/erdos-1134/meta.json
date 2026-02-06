@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/Erdos1134Problem.lean",
     "tags": ["erdos", "density", "affine-maps", "recursively-defined-sets", "number-theory"],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 1134,
     "erdosUrl": "https://erdosproblems.com/1134",
     "erdosProblemStatus": "solved",
@@ -66,56 +66,49 @@
       "id": "klarner-rado",
       "title": "Klarner-Rado General Bound",
       "startLine": 89,
-      "endLine": 114,
+      "endLine": 108,
       "summary": "General upper bound and why it gives trivial σ = 1 here"
     },
     {
       "id": "crampin-hilton",
       "title": "Crampin-Hilton Improvement",
-      "startLine": 116,
-      "endLine": 137,
+      "startLine": 110,
+      "endLine": 131,
       "summary": "The sharp exponent τ ≈ 0.900626 and the main theorem"
     },
     {
       "id": "main-result",
       "title": "Main Result",
-      "startLine": 139,
-      "endLine": 157,
+      "startLine": 133,
+      "endLine": 152,
       "summary": "A does NOT have positive lower density"
     },
     {
       "id": "structure-of-A",
       "title": "Structure of A",
-      "startLine": 159,
-      "endLine": 184,
+      "startLine": 154,
+      "endLine": 179,
       "summary": "Elements as compositions, first few elements: 1, 3, 4, 7, ..."
     },
     {
       "id": "crampin-hilton-insight",
-      "title": "Why Crampin-Hilton Works",
-      "startLine": 186,
-      "endLine": 203,
-      "summary": "Algebraic structure and characteristic equation"
-    },
-    {
-      "id": "collatz-connection",
-      "title": "Connection to 3x+1",
-      "startLine": 205,
-      "endLine": 221,
-      "summary": "Lagarias's connection to Collatz-type iterations"
+      "title": "Characteristic Equation",
+      "startLine": 181,
+      "endLine": 192,
+      "summary": "Characteristic equation and τ as its root"
     },
     {
       "id": "open-variants",
       "title": "Open Variants",
-      "startLine": 223,
-      "endLine": 248,
+      "startLine": 194,
+      "endLine": 214,
       "summary": "Klarner's A' containing 0, closed under 2x, 3x+2, 6x+3"
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
-      "startLine": 250,
-      "endLine": 290,
+      "startLine": 216,
+      "endLine": 261,
       "summary": "Complete formalization and summary theorems"
     }
   ],
