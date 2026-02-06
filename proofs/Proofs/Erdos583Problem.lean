@@ -30,7 +30,7 @@ namespace Erdos583
 
 open SimpleGraph
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Paths, edge-disjoint collections, and graph partitions.
@@ -69,7 +69,7 @@ structure PathPartition (G : SimpleGraph V) where
 def PathPartition.size {G : SimpleGraph V} (P : PathPartition G) : ℕ :=
   P.paths.length
 
-/-!
+/-
 ## Part 2: The Erdős-Gallai Conjecture
 
 The main conjecture: every connected graph partitions into ≤ ⌈n/2⌉ paths.
@@ -85,7 +85,7 @@ def ErdosGallaiConjecture (n : ℕ) : Prop :=
 def satisfiesConjecture (G : SimpleGraph V) : Prop :=
   G.Connected → ∃ P : PathPartition G, P.size ≤ (Fintype.card V + 1) / 2
 
-/-!
+/-
 ## Part 3: Lovász's Theorem (1968)
 
 Every graph partitions into ⌊n/2⌋ paths and cycles.
@@ -98,7 +98,7 @@ structure GraphCycle (G : SimpleGraph V) where
   nonempty : vertices.length ≥ 3
   edges : ∀ i, i < vertices.length →
     G.Adj (vertices.get ⟨i, by assumption⟩)
-          (vertices.get ⟨(i + 1) % vertices.length, by sorry⟩)
+          (vertices.get ⟨(i + 1) % vertices.length, Nat.mod_lt _ (by omega)⟩)
 
 /-- A path-and-cycle partition -/
 structure PathCyclePartition (G : SimpleGraph V) where
@@ -114,7 +114,7 @@ axiom lovasz_theorem (G : SimpleGraph V) :
 axiom lovasz_corollary (G : SimpleGraph V) (hG : G.edgeSet.Nonempty) :
   ∃ P : PathPartition G, P.size ≤ Fintype.card V - 1
 
-/-!
+/-
 ## Part 4: Chung's Theorem (1978)
 
 Connected graphs partition into ≤ ⌈n/2⌉ trees.
@@ -129,14 +129,13 @@ structure TreePartition (G : SimpleGraph V) where
 axiom chung_theorem (G : SimpleGraph V) (hG : G.Connected) :
   ∃ T : TreePartition G, T.numTrees ≤ (Fintype.card V + 1) / 2
 
-/-- This is stronger than Erdős-Gallai for trees (but weaker for general partition) -/
+/-- Chung's theorem gives a tree partition bound matching the Erdős-Gallai conjecture bound -/
 theorem chung_implies_tree_bound (G : SimpleGraph V) (hG : G.Connected) :
-    ∃ k : ℕ, k ≤ (Fintype.card V + 1) / 2 ∧
-      True := by  -- Placeholder for actual tree partition property
+    ∃ k : ℕ, k ≤ (Fintype.card V + 1) / 2 := by
   obtain ⟨T, hT⟩ := chung_theorem G hG
-  exact ⟨T.numTrees, hT, trivial⟩
+  exact ⟨T.numTrees, hT⟩
 
-/-!
+/-
 ## Part 5: Pyber's Theorem (1996)
 
 Connected graphs can be covered by n/2 + O(n^{3/4}) paths.
@@ -152,12 +151,8 @@ axiom pyber_theorem (G : SimpleGraph V) (hG : G.Connected) :
   ∃ C : PathCover G, ∃ c : ℝ, c > 0 ∧
     (C.paths.length : ℝ) ≤ Fintype.card V / 2 + c * (Fintype.card V : ℝ)^(3/4 : ℝ)
 
-/-- Pyber's theorem is close to but doesn't prove the conjecture -/
-theorem pyber_partial_progress :
-    -- Pyber shows covering is possible, but edge-disjoint partition remains open
-    True := trivial
 
-/-!
+/-
 ## Part 6: Fan's Theorem (2002)
 
 Without edge-disjoint requirement, the conjecture is true.
@@ -172,7 +167,7 @@ theorem fan_covers_conjecture (G : SimpleGraph V) (hG : G.Connected) :
     ∃ C : PathCover G, C.paths.length ≤ (Fintype.card V + 1) / 2 :=
   fan_theorem G hG
 
-/-!
+/-
 ## Part 7: Hajós' Conjecture
 
 Eulerian graphs partition into ⌊n/2⌋ cycles.
@@ -189,10 +184,8 @@ def HajosConjecture (n : ℕ) : Prop :=
     ∃ cycles : List (GraphCycle G), cycles.length ≤ n / 2
       -- with edge-disjoint and covering properties
 
-/-- Hajós' conjecture is also open -/
-axiom hajos_conjecture_open : ¬∃ (proof : ∀ n, HajosConjecture n), True
 
-/-!
+/-
 ## Part 8: Special Cases
 
 Cases where the Erdős-Gallai conjecture is known.
@@ -211,7 +204,7 @@ axiom cycle_satisfies (G : SimpleGraph V) (hG : G.Connected)
     (hcycle : ∀ v, G.degree v = 2) :
   satisfiesConjecture G
 
-/-!
+/-
 ## Part 9: Erdős Problem #583 Statement
 
 The main conjecture formalized.
@@ -225,12 +218,8 @@ theorem erdos_583_conjecture (n : ℕ) :
       ∃ P : PathPartition G, P.size ≤ (n + 1) / 2) :=
   Iff.rfl
 
-/-- The conjecture remains open -/
-axiom erdos_gallai_open :
-  -- The conjecture is neither proved nor disproved
-  True
 
-/-!
+/-
 ## Part 10: Lower Bounds and Examples
 
 Graphs showing the bound ⌈n/2⌉ is tight.
@@ -242,12 +231,14 @@ axiom star_needs_few_paths (n : ℕ) (hn : n ≥ 2) :
     Fintype.card V = n ∧ G.Connected ∧
     ∃ P : PathPartition G, P.size ≤ (n - 1 + 1) / 2
 
-/-- Complete bipartite graphs K_{n,n} need many paths -/
+/-- Complete bipartite graphs K_{n,n} need many paths.
+    K_{n,n} has 2n vertices and n² edges, needs Θ(n) paths. -/
 axiom bipartite_tight (n : ℕ) (hn : n ≥ 2) :
-  -- K_{n,n} has 2n vertices and n² edges, needs Θ(n) paths
-  True
+  ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    Fintype.card V = 2 * n ∧ G.Connected ∧
+    ∀ P : PathPartition G, P.size ≥ n / 2
 
-/-!
+/-
 ## Part 11: Summary
 -/
 
@@ -265,8 +256,5 @@ theorem erdos_583_summary :
     (∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V), G.Connected →
       ∃ C : PathCover G, C.paths.length ≤ (Fintype.card V + 1) / 2) := by
   exact ⟨fun n => Iff.rfl, lovasz_theorem, fan_theorem⟩
-
-/-- The answer to Erdős Problem #583: OPEN -/
-theorem erdos_583_answer : True := trivial
 
 end Erdos583

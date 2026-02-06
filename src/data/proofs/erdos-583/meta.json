@@ -17,7 +17,7 @@
       "combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 583,
     "erdosUrl": "https://erdosproblems.com/583",
     "erdosProblemStatus": "open",
@@ -89,56 +89,56 @@
       "title": "Chung's Theorem (1978)",
       "summary": "TreePartition, chung_theorem, chung_implies_tree_bound",
       "startLine": 117,
-      "endLine": 137
+      "endLine": 136
     },
     {
       "id": "pyber-theorem",
       "title": "Pyber's Theorem (1996)",
-      "summary": "PathCover, pyber_theorem, pyber_partial_progress",
-      "startLine": 139,
-      "endLine": 158
+      "summary": "PathCover, pyber_theorem",
+      "startLine": 138,
+      "endLine": 153
     },
     {
       "id": "fan-theorem",
       "title": "Fan's Theorem (2002)",
       "summary": "fan_theorem, fan_covers_conjecture",
-      "startLine": 160,
-      "endLine": 173
+      "startLine": 155,
+      "endLine": 168
     },
     {
       "id": "hajos-conjecture",
       "title": "Hajós' Conjecture",
-      "summary": "IsEulerian, HajosConjecture, hajos_conjecture_open",
-      "startLine": 175,
-      "endLine": 193
+      "summary": "IsEulerian, HajosConjecture",
+      "startLine": 170,
+      "endLine": 186
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "tree_satisfies, complete_graph_satisfies, cycle_satisfies",
-      "startLine": 195,
-      "endLine": 212
+      "startLine": 188,
+      "endLine": 205
     },
     {
       "id": "main-statement",
       "title": "Erdős Problem #583 Statement",
-      "summary": "erdos_583_conjecture, erdos_gallai_open",
-      "startLine": 214,
-      "endLine": 231
+      "summary": "erdos_583_conjecture",
+      "startLine": 207,
+      "endLine": 220
     },
     {
       "id": "bounds-examples",
       "title": "Lower Bounds and Examples",
       "summary": "star_needs_few_paths, bipartite_tight",
-      "startLine": 233,
-      "endLine": 248
+      "startLine": 222,
+      "endLine": 240
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_583_summary and erdos_583_answer",
-      "startLine": 250,
-      "endLine": 272
+      "summary": "erdos_583_summary combining main conjecture, Lovász, and Fan results",
+      "startLine": 241,
+      "endLine": 260
     }
   ],
   "conclusion": {
