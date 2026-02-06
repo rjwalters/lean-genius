@@ -1,82 +1,73 @@
 [
   {
-    "id": "ann-1",
-    "range": { "startLine": 47, "endLine": 48 },
+    "id": "ann-e1126-overview",
+    "proofId": "erdos-1126",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1126: Almost Additive Functions**\n\nIf f(x+y) = f(x) + f(y) for almost all pairs (x,y), can f be 'repaired' to satisfy the equation for ALL pairs?\n\n**Answer: YES** — proved by de Bruijn (1966) and Jurkat (1965) independently.\n\nThe repaired function g agrees with f almost everywhere and is unique among additive functions.",
+    "mathContext": "Connects Cauchy's functional equation with measure theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Cauchy equation", "Measure theory", "Functional equations"]
+  },
+  {
+    "id": "ann-e1126-additive",
+    "proofId": "erdos-1126",
+    "range": { "startLine": 37, "endLine": 57 },
     "type": "definition",
     "title": "Cauchy's Functional Equation",
-    "content": "The equation f(x+y) = f(x) + f(y) for all x,y ∈ ℝ. Functions satisfying this are called 'additive'. The simplest examples are f(x) = cx for any constant c.",
-    "significance": "essential"
+    "content": "**IsAdditive f:** f(x+y) = f(x) + f(y) for all x,y ∈ ℝ.\n\nThe simplest examples are f(x) = cx for any constant c. If f is also continuous, then f(x) = cx is the only possibility (Cauchy's classical result). Without continuity, wild solutions exist via the Axiom of Choice.",
+    "significance": "critical",
+    "leanSymbol": "IsAdditive"
   },
   {
-    "id": "ann-2",
-    "range": { "startLine": 99, "endLine": 100 },
+    "id": "ann-e1126-almost-additive",
+    "proofId": "erdos-1126",
+    "range": { "startLine": 61, "endLine": 77 },
     "type": "definition",
-    "title": "Almost Additive Function",
-    "content": "A function f is almost additive if f(x+y) = f(x) + f(y) for almost all pairs (x,y) ∈ ℝ², meaning the equation fails only on a null set in ℝ² (Lebesgue measure zero).",
-    "significance": "essential"
+    "title": "Almost Additive Functions",
+    "content": "**IsAlmostAdditive f:** f(x+y) = f(x) + f(y) for almost all pairs (x,y) ∈ ℝ².\n\n'Almost all' means the equation fails only on a null set in ℝ² (Lebesgue measure zero). Also defines ae_holds (a.e. for single variable), ae_pairs (a.e. for pairs), and ae_eq (equal a.e.).",
+    "significance": "critical",
+    "leanSymbol": "IsAlmostAdditive"
   },
   {
-    "id": "ann-3",
-    "range": { "startLine": 122, "endLine": 124 },
-    "type": "theorem",
+    "id": "ann-e1126-main",
+    "proofId": "erdos-1126",
+    "range": { "startLine": 81, "endLine": 96 },
+    "type": "axiom",
     "title": "de Bruijn-Jurkat Theorem",
-    "content": "The main result: If f is almost additive, there exists a truly additive g with f = g almost everywhere. The 'defects' in almost-additivity can always be repaired by changing f on a null set!",
-    "significance": "essential"
+    "content": "**de_bruijn_jurkat_theorem:** If f is almost additive, there exists a truly additive g with f = g almost everywhere.\n\nThe 'defects' in almost-additivity can always be repaired by changing f on a null set! This is the main result of Erdős Problem #1126.",
+    "significance": "critical",
+    "leanSymbol": "de_bruijn_jurkat_theorem"
   },
   {
-    "id": "ann-4",
-    "range": { "startLine": 143, "endLine": 145 },
-    "type": "theorem",
+    "id": "ann-e1126-uniqueness",
+    "proofId": "erdos-1126",
+    "range": { "startLine": 98, "endLine": 108 },
+    "type": "axiom",
     "title": "Uniqueness of Correction",
-    "content": "If g₁ and g₂ are both additive and equal a.e., then g₁ = g₂ everywhere. This follows from: an additive function that is zero a.e. must be identically zero.",
-    "significance": "essential"
+    "content": "**additive_ae_unique:** If g₁ and g₂ are both additive and equal a.e., then g₁ = g₂ everywhere.\n\nThis follows from the key lemma: an additive function that is zero a.e. must be identically zero. So the repair g in the main theorem is unique.",
+    "significance": "critical",
+    "leanSymbol": "additive_ae_unique"
   },
   {
-    "id": "ann-5",
-    "range": { "startLine": 66, "endLine": 73 },
+    "id": "ann-e1126-wild",
+    "proofId": "erdos-1126",
+    "range": { "startLine": 110, "endLine": 123 },
+    "type": "axiom",
+    "title": "Wild Functions and Regularity",
+    "content": "**wild_additive_exist:** Discontinuous additive functions exist (using AC).\n\n**measurable_additive_is_linear:** If f is additive and Lebesgue measurable, then f(x) = cx.\n\nWild additive functions are necessarily non-measurable. This context shows why the almost-additivity question is subtle.",
+    "significance": "key",
+    "leanSymbol": "wild_additive_exist"
+  },
+  {
+    "id": "ann-e1126-summary",
+    "proofId": "erdos-1126",
+    "range": { "startLine": 127, "endLine": 143 },
     "type": "theorem",
-    "title": "Continuous Additive ⟹ Linear",
-    "content": "Cauchy's classical result (1821): If f is additive AND continuous, then f(x) = cx for some constant c. Without continuity, additive functions can be extremely pathological.",
-    "significance": "essential"
-  },
-  {
-    "id": "ann-6",
-    "range": { "startLine": 185, "endLine": 186 },
-    "type": "insight",
-    "title": "Wild Additive Functions",
-    "content": "Using the Axiom of Choice, one can construct additive functions that are discontinuous everywhere, unbounded on every interval, and whose graph is dense in ℝ². These 'wild' functions use Hamel bases.",
-    "significance": "important"
-  },
-  {
-    "id": "ann-7",
-    "range": { "startLine": 201, "endLine": 203 },
-    "type": "theorem",
-    "title": "Measurable Additive ⟹ Linear",
-    "content": "If f is additive and Lebesgue measurable, then f(x) = cx. Wild additive functions are necessarily non-measurable. This is why measurability/continuity assumptions are often needed.",
-    "significance": "important"
-  },
-  {
-    "id": "ann-8",
-    "range": { "startLine": 223, "endLine": 228 },
-    "type": "insight",
-    "title": "Stability Interpretation",
-    "content": "This theorem is a 'stability' result: approximate solutions (in the measure-theoretic sense) to Cauchy's equation can be corrected to exact solutions. Similar stability questions arise throughout functional equations.",
-    "significance": "important"
-  },
-  {
-    "id": "ann-9",
-    "range": { "startLine": 259, "endLine": 263 },
-    "type": "insight",
-    "title": "Hamel (1905)",
-    "content": "Hamel constructed discontinuous additive functions using a 'Hamel basis' - a basis for ℝ as a vector space over ℚ. Any additive function is determined by its values on such a basis, allowing pathological choices.",
-    "significance": "helpful"
-  },
-  {
-    "id": "ann-10",
-    "range": { "startLine": 287, "endLine": 305 },
-    "type": "summary",
-    "title": "Main Result: erdos_1126",
-    "content": "SOLVED by de Bruijn (1966) and Jurkat (1965) independently. Almost-additive functions can always be corrected to truly additive ones a.e. The correction is unique. This is a foundational result in functional equation stability.",
-    "significance": "essential"
+    "title": "Summary Theorem",
+    "content": "**erdos_1126_summary:** Combines the main theorem (de Bruijn-Jurkat) with uniqueness into a single result.\n\nProved directly from the axiomatized results.\n\n**SOLVED** by de Bruijn (1966) and Jurkat (1965).",
+    "significance": "critical",
+    "leanSymbol": "erdos_1126_summary"
   }
 ]
