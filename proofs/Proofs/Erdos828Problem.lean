@@ -66,14 +66,12 @@ theorem prime_totient_dvd_pred (p : ℕ) (hp : p.Prime) : totient p ∣ p - 1 :=
 /-- There are infinitely many n with φ(n) | n - 1 (namely, all primes). -/
 axiom totientDivisors_neg_one_infinite : (totientDivisors (-1)).Infinite
 
-/-- Lehmer's conjecture is axiomatized. -/
-axiom lehmer_conjecture : lehmerConjecture
-
 /-! ## Part IV: The Main Conjecture -/
 
 /--
 **Erdős Problem #828 (OPEN):**
 For every integer a, there are infinitely many n such that φ(n) | n + a.
+Attributed to Graham.
 -/
 def erdos828Conjecture : Prop :=
   ∀ a : ℤ, (totientDivisors a).Infinite
@@ -91,38 +89,17 @@ theorem totient_prime' (p : ℕ) (hp : p.Prime) : totient p = p - 1 :=
 axiom totient_prime_pow_formula (p k : ℕ) (hp : p.Prime) (hk : k > 0) :
     totient (p^k) = p^(k-1) * (p - 1)
 
-/-! ## Part VI: Connections -/
-
-/-- Connection to Fermat-Euler theorem: a^φ(n) ≡ 1 (mod n) for gcd(a,n) = 1. -/
-axiom fermat_euler_connection : True
-
-/-- Connection to Lehmer's conjecture and Carmichael's totient conjecture. -/
-axiom related_conjectures : True
-
-/-! ## Part VII: Summary -/
+/-! ## Part VI: Summary -/
 
 /--
 **Erdős Problem #828: Summary**
 
-QUESTION: For every a ∈ ℤ, are there infinitely many n with φ(n) | n + a?
-
-STATUS: OPEN
-
-KNOWN CASES:
-- a = 0: Completely characterized (n = 2^a · 3^b)
-- a = -1: All primes work; Lehmer's conjecture says these are the only ones > 1
-- General: Attributed to Graham, remains open
-
-RELATED: Lehmer's conjecture (1932), Carmichael's totient conjecture
+The a = 0 case is fully characterized: φ(n) | n iff n = 2^a · 3^b.
+Both totientDivisors(0) and totientDivisors(-1) are infinite.
 -/
 theorem erdos_828_summary :
-    -- The conjecture is stated
-    (erdos828Conjecture ↔ ∀ a : ℤ, (totientDivisors a).Infinite) ∧
-    -- Problem is open
-    True :=
-  ⟨Iff.rfl, trivial⟩
-
-/-- The problem remains OPEN. -/
-theorem erdos_828_status : True := trivial
+    (totientDivisors 0).Infinite ∧
+    (totientDivisors (-1)).Infinite :=
+  ⟨totientDivisors_zero_infinite, totientDivisors_neg_one_infinite⟩
 
 end Erdos828
