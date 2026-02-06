@@ -171,19 +171,10 @@
   {
     "id": "ann-e991-summary",
     "proofId": "erdos-991",
-    "range": { "startLine": 337, "endLine": 358 },
+    "range": { "startLine": 337, "endLine": 359 },
     "type": "theorem",
-    "title": "Summary Theorem",
-    "content": "**erdos_991_summary:**\n\nCombines the main results:\n```lean\ntheorem erdos_991_summary :\n  (∀ points, IsOptimalConfig points → HasSmallDiscrepancy points) ∧\n  (∀ points, IsOptimalConfig points →\n   ∃ C > 0, ∀ cap, discrepancy ≤ C · n^(2/3))\n```\n\n**What we proved:**\n1. Qualitative: optimal points have o(n) discrepancy\n2. Quantitative: the bound is O(n^{2/3})\n3. Follows from classical potential theory with modern improvements",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e991-answer",
-    "proofId": "erdos-991",
-    "range": { "startLine": 359, "endLine": 364 },
-    "type": "theorem",
-    "title": "The Answer",
-    "content": "**erdos_991_answer:**\n\nThe answer to Erdős Problem #991 is **YES**.\n\nOptimal logarithmic energy point configurations on S² have small spherical cap discrepancy. They distribute uniformly in the limit, with quantitative bounds of O(n^{2/3}).",
+    "title": "Summary: Erdős #991 SOLVED",
+    "content": "**erdos_991_summary:**\n\nCombines the main results into one theorem:\n1. Qualitative: optimal points have o(n) discrepancy (erdos_991)\n2. Quantitative: the bound is O(n^{2/3}) (marzo_mas_bound)\n\nThe answer to Erdős Problem #991 is **YES**: optimal logarithmic energy point configurations on S² distribute uniformly in the limit, with quantitative bounds of O(n^{2/3}).",
     "significance": "critical"
   }
 ]
