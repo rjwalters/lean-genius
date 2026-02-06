@@ -299,11 +299,97 @@ axiom density_hales_jewett_k3 (δ : ℝ) (hδ : δ > 0) :
         ∃ L : CombinatorialLine n, L.points ⊆ S
 
 /--
+**Cap sets avoid combinatorial lines:**
+An arithmetic cap set (no collinear triple) also avoids combinatorial lines.
+The key insight: the three points of a combinatorial line satisfy OnLine.
+-/
+theorem isCapSet_implies_isCapSetCombinatorial {S : Finset (TernaryHypercube n)}
+    (hS : IsCapSet S) : IsCapSetCombinatorial S := by
+  intro L hL
+  -- Extract the three points on the combinatorial line
+  let p : ZMod 3 → TernaryHypercube n := fun t i => if i ∈ L.varying then t else L.fixed i
+  -- All three points are in S (since L.points ⊆ S)
+  have hp : ∀ t : ZMod 3, p t ∈ S := by
+    intro t
+    apply hL
+    simp only [CombinatorialLine.points]
+    exact Finset.mem_image_of_mem _ (Finset.mem_univ _)
+  -- The three points are collinear: p 0 + p 2 = 2 * p 1
+  have hline : OnLine (p 0) (p 1) (p 2) := by
+    intro i
+    simp only [p]
+    split_ifs with h
+    · -- Varying coordinate: 0 + 2 = 2 * 1 in ZMod 3
+      decide
+    · -- Fixed coordinate: fixed i + fixed i = 2 * fixed i
+      ring
+  -- The three points are distinct (since varying is nonempty)
+  obtain ⟨j, hj⟩ := L.nonempty
+  have h01 : p 0 ≠ p 1 := by
+    intro h
+    have := congr_fun h j
+    simp only [p, if_pos hj] at this
+    exact absurd this (by decide)
+  have h12 : p 1 ≠ p 2 := by
+    intro h
+    have := congr_fun h j
+    simp only [p, if_pos hj] at this
+    exact absurd this (by decide)
+  have h02 : p 0 ≠ p 2 := by
+    intro h
+    have := congr_fun h j
+    simp only [p, if_pos hj] at this
+    exact absurd this (by decide)
+  -- This contradicts IsCapSet
+  exact hS (p 0) (p 1) (p 2) (hp 0) (hp 1) (hp 2) h01 h12 h02 hline
+
+/--
+**Cap set density bound from DHJ:**
+For any ε > 0, for sufficiently large n, every cap set has density < ε.
+-/
+private theorem capSet_density_lt (ε : ℝ) (hε : ε > 0) :
+    ∃ n₀ : ℕ, ∀ n ≥ n₀, ∀ S : Finset (TernaryHypercube n),
+      IsCapSet S → (S.card : ℝ) < ε * 3^n := by
+  obtain ⟨n₀, hn₀⟩ := density_hales_jewett_k3 ε hε
+  exact ⟨n₀, fun n hn S hcap => by
+    by_contra h
+    push_neg at h
+    have hdensity : (S.card : ℝ) / 3^n ≥ ε := by
+      rwa [ge_iff_le, le_div_iff₀ (by positivity : (3 : ℝ)^n > 0)]
+    obtain ⟨L, hL⟩ := hn₀ n hn S hdensity
+    exact isCapSet_implies_isCapSetCombinatorial hcap L hL⟩
+
+/--
+**f₃(n) bound from DHJ:**
+For any ε > 0, for sufficiently large n, f₃(n) ≤ ε * 3^n.
+-/
+private theorem f3_eventually_le (c : ℝ) (hc : c > 0) :
+    ∀ᶠ n in atTop, (f3 n : ℝ) ≤ c * (3 : ℝ)^n := by
+  obtain ⟨n₀, hn₀⟩ := capSet_density_lt c hc
+  rw [Filter.eventually_atTop]
+  refine ⟨n₀, fun n hn => ?_⟩
+  -- f3 n is a natural sSup of a bounded nonempty set, so it is achieved
+  have hf3_mem : f3 n ∈ { m : ℕ | ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = m } := by
+    unfold f3
+    exact Nat.sSup_mem ⟨0, f3_nonempty n⟩ (f3_bddAbove n)
+  obtain ⟨S, hcap, hcard⟩ := hf3_mem
+  have hlt := hn₀ n hn S hcap
+  rw [hcard] at hlt
+  linarith
+
+/--
 **Corollary: f₃(n) = o(3^n):**
 The density Hales-Jewett theorem implies cap sets have density → 0.
+Derived from the DHJ axiom (no longer an axiom itself).
 -/
-axiom f3_is_little_o :
-    (fun n => (f3 n : ℝ)) =o[atTop] (fun n => (3 : ℝ)^n)
+theorem f3_is_little_o :
+    (fun n => (f3 n : ℝ)) =o[atTop] (fun n => (3 : ℝ)^n) := by
+  rw [isLittleO_iff]
+  intro c hc
+  filter_upwards [f3_eventually_le c hc] with n hn
+  simp only [Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ (f3 n : ℝ)),
+             Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ (3 : ℝ)^n)]
+  exact hn
 
 /--
 **Equivalent formulation:**

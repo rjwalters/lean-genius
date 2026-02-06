@@ -140,13 +140,13 @@
   {
     "id": "ann-e185-f3-little-o",
     "proofId": "erdos-185",
-    "range": { "startLine": 166, "endLine": 171 },
-    "type": "axiom",
-    "title": "Main Result: f₃(n) = o(3^n)",
-    "content": "**f3_is_little_o:** (λ n, f₃(n)) =o[atTop] (λ n, 3^n).\n\nThis is the answer to Erdős Problem #185: **YES**.\n\nThe density Hales-Jewett theorem implies cap sets have density → 0.",
-    "mathContext": "For any ε > 0, eventually f₃(n) < ε · 3^n.",
+    "range": { "startLine": 301, "endLine": 389 },
+    "type": "theorem",
+    "title": "Main Result: f₃(n) = o(3^n) [PROVED from DHJ]",
+    "content": "**f3_is_little_o:** (λ n, f₃(n)) =o[atTop] (λ n, 3^n).\n\nThis is the answer to Erdős Problem #185: **YES**.\n\n**Now PROVED** (was previously axiomatized) via a chain:\n1. `isCapSet_implies_isCapSetCombinatorial`: cap sets avoid combinatorial lines\n2. `capSet_density_lt`: DHJ contrapositive gives density bound\n3. `f3_eventually_le`: bound lifts to f₃(n) via sSup\n4. `f3_is_little_o`: convert to asymptotic notation",
+    "mathContext": "For any ε > 0, eventually f₃(n) < ε · 3^n. Proved from density_hales_jewett_k3.",
     "significance": "critical",
-    "relatedConcepts": ["Little-o notation", "Asymptotic analysis"]
+    "relatedConcepts": ["Little-o notation", "Asymptotic analysis", "Density Hales-Jewett"]
   },
   {
     "id": "ann-e185-density-zero",
