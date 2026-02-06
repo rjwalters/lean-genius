@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #921: Chromatic Number and Odd Cycle Girth
 
 Source: https://erdosproblems.com/921
@@ -30,7 +30,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 
 namespace Erdos921
 
-/-
+/-!
 ## Part I: Basic Definitions
 -/
 
@@ -49,20 +49,13 @@ structure Graph (V : Type*) where
 A proper k-coloring assigns colors 1,...,k to vertices such that
 adjacent vertices get different colors.
 -/
-def chromaticNumber {V : Type*} (G : Graph V) : ℕ := sorry -- axiomatized below
-
-/--
-**Odd cycle:**
-A cycle of odd length in a graph. The shortest odd cycle has length ≥ 3.
--/
-def isOddCycle {V : Type*} (G : Graph V) (cycle : List V) : Prop :=
-  cycle.length % 2 = 1 ∧ cycle.length ≥ 3 ∧ True -- Simplified
+axiom chromaticNumber {V : Type*} (G : Graph V) : ℕ
 
 /--
 **Odd girth:**
-The length of the shortest odd cycle in G, or ∞ if G is bipartite.
+The length of the shortest odd cycle in G, or 0 if G is bipartite.
 -/
-def oddGirth {V : Type*} (G : Graph V) : ℕ ∪ {⊤} := sorry -- axiomatized
+axiom oddGirth {V : Type*} (G : Graph V) : ℕ
 
 /--
 **The function f_k(n):**
@@ -81,7 +74,7 @@ Graphs with high chromatic number but large odd girth exist.
 axiom f_well_defined (k n : ℕ) :
     k ≥ 4 → n ≥ k → f k n ≥ 1
 
-/-
+/-!
 ## Part II: The Main Conjecture
 -/
 
@@ -105,7 +98,7 @@ The conjecture is true for all k ≥ 4.
 axiom kierstead_szemeredi_trotter (k : ℕ) :
     erdos_gallai_conjecture k
 
-/-
+/-!
 ## Part III: The Case k = 4
 -/
 
@@ -138,19 +131,9 @@ theorem k4_case :
   obtain ⟨C, hC, hup⟩ := erdos_upper_bound
   exact ⟨c, C, hc, hC, fun n hn => ⟨hlow n hn, hup n hn⟩⟩
 
-/-
+/-!
 ## Part IV: General k Case
 -/
-
-/--
-**The exponent 1/(k-2):**
-For chromatic number k, the critical exponent is 1/(k-2).
-- k = 4: exponent = 1/2
-- k = 5: exponent = 1/3
-- k = 6: exponent = 1/4
-As k → ∞, the exponent → 0.
--/
-axiom exponent_formula : True
 
 /--
 **Lower bound for general k:**
@@ -168,118 +151,8 @@ axiom general_upper_bound (k : ℕ) :
     k ≥ 4 →
     ∃ C : ℝ, C > 0 ∧ ∀ n ≥ k, (f k n : ℝ) ≤ C * (n : ℝ) ^ (1 / (k - 2 : ℝ))
 
-/-
-## Part V: Why Odd Cycles Matter
--/
-
-/--
-**Bipartite graphs are 2-chromatic:**
-A graph is bipartite (2-colorable) iff it has no odd cycles.
--/
-axiom bipartite_no_odd_cycles : True
-
-/--
-**Odd cycles force higher chromatic number:**
-Every odd cycle needs 3 colors. Longer odd cycles don't directly
-increase chromatic number, but shorter ones constrain structure.
--/
-axiom odd_cycles_and_chromatic : True
-
-/--
-**Trade-off:**
-High chromatic number tends to create short cycles.
-Avoiding short odd cycles while maintaining high χ requires
-special graph constructions.
--/
-axiom chromatic_vs_girth_tradeoff : True
-
-/--
-**Constructions:**
-The lower bound proofs use explicit constructions of graphs
-with high chromatic number and large odd girth.
--/
-axiom construction_technique : True
-
-/-
-## Part VI: Proof Techniques
--/
-
-/--
-**Local chromatic number:**
-The proof uses the concept of local chromatic number and
-bounds on coloring graphs with locally bounded structure.
--/
-axiom local_chromatic_number : True
-
-/--
-**Regularity methods:**
-Szemerédi's regularity lemma plays a role in the analysis.
--/
-axiom regularity_methods : True
-
-/--
-**Probabilistic constructions:**
-Random graph constructions provide the lower bounds.
--/
-axiom probabilistic_constructions : True
-
-/--
-**Extremal graph theory:**
-The upper bounds use extremal graph theory arguments.
--/
-axiom extremal_arguments : True
-
-/-
-## Part VII: Related Problems
--/
-
-/--
-**Girth vs chromatic number:**
-The classical problem: for given g and k, what is the minimum n
-such that there exists a graph with girth > g and χ = k?
--/
-axiom girth_vs_chromatic : True
-
-/--
-**Erdős's girth conjecture:**
-There exist graphs with arbitrarily high girth and chromatic number.
-Proved by Erdős using the probabilistic method.
--/
-axiom erdos_girth_conjecture : True
-
-/--
-**Mycielski construction:**
-An explicit construction of triangle-free graphs with high χ.
--/
-axiom mycielski_construction : True
-
-/-
-## Part VIII: Historical Context
--/
-
-/--
-**Gallai's contribution (1963):**
-Tibor Gallai initiated the systematic study of critical graphs
-and proved the foundational lower bound for k = 4.
--/
-axiom gallai_1963 : True
-
-/--
-**Kierstead-Szemerédi-Trotter (1984):**
-The full resolution required combining ideas from extremal
-graph theory, regularity, and coloring theory.
--/
-axiom KST_1984 : True
-
-/--
-**Impact:**
-The result is important for understanding the interplay between
-local and global graph properties.
--/
-axiom mathematical_impact : True
-
-/-
-## Part IX: Summary
+/-!
+## Part V: Summary
 -/
 
 /--
@@ -307,11 +180,5 @@ theorem erdos_921_status :
     ∀ k ≥ 4, erdos_gallai_conjecture k := by
   intro k hk
   exact kierstead_szemeredi_trotter k
-
-/--
-**Problem resolved:**
-Erdős Problem #921 was completely solved in 1984.
--/
-theorem erdos_921_solved : True := trivial
 
 end Erdos921

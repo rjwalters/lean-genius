@@ -43,9 +43,8 @@
     ],
     "originalContributions": [
       "Graph structure definition with adjacency, symmetry, and looplessness",
-      "chromaticNumber definition: minimum k for proper k-coloring",
-      "isOddCycle predicate for odd-length cycles",
-      "oddGirth definition: length of shortest odd cycle",
+      "chromaticNumber axiom: minimum k for proper k-coloring",
+      "oddGirth axiom: length of shortest odd cycle",
       "f(k,n) axiom: maximum odd girth in k-chromatic n-vertex graphs",
       "erdos_gallai_conjecture formalization: f_k(n) ≍ n^{1/(k-2)}",
       "kierstead_szemeredi_trotter axiom: complete resolution for all k ≥ 4",
@@ -59,7 +58,7 @@
   "overview": {
     "historicalContext": "**Erdős Problem #921**\n\nThis problem, posed jointly by Erdős and Gallai, explores the fundamental tension between a graph's chromatic number and its odd cycle structure.\n\n**Key History:**\n- **Gallai (1963):** Initiated the study by proving f_4(n) ≫ n^{1/2}, constructing explicit 4-chromatic graphs with large odd girth\n- **Erdős (unpublished):** Proved the matching upper bound f_4(n) ≪ n^{1/2}, showing the k=4 case is completely characterized\n- **Kierstead-Szemerédi-Trotter (1984):** Resolved the full conjecture for all k ≥ 4, proving f_k(n) ≍ n^{1/(k-2)}\n\n**Mathematical Significance:**\nThe result quantifies a deep principle: high chromatic number forces short odd cycles. A bipartite graph (χ = 2) has no odd cycles at all. As chromatic number increases, some odd cycles must appear, and this problem determines exactly how short they must be.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet k ≥ 4 and let f_k(n) be the largest m such that there exists a graph on n vertices with chromatic number k in which every odd cycle has length > m.\n\n**Conjecture:** f_k(n) ≍ n^{1/(k-2)}\n\n**Answer: YES**\n\nKierstead, Szemerédi, and Trotter (1984) proved that for all k ≥ 4:\n- Lower bound: f_k(n) ≥ c_k · n^{1/(k-2)} for some c_k > 0\n- Upper bound: f_k(n) ≤ C_k · n^{1/(k-2)} for some C_k > 0",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define graph structure with adjacency, symmetry, and looplessness\n\n2. **Key Concepts:**\n   - Chromatic number χ(G): minimum k for proper k-coloring\n   - Odd girth: length of shortest odd cycle (or ∞ for bipartite)\n   - f(k,n): maximum odd girth - 1 among k-chromatic n-vertex graphs\n\n3. **Conjecture Formalization:** The Erdős-Gallai conjecture expressed as existence of constants c₁, c₂\n\n4. **Main Results:**\n   - Kierstead-Szemerédi-Trotter theorem (axiom): conjecture holds for all k ≥ 4\n   - Constructive k=4 case from Gallai and Erdős bounds\n\n5. **Why Axioms:** The proof requires deep results in extremal graph theory and regularity methods beyond current Mathlib scope",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define graph structure with adjacency, symmetry, and looplessness\n\n2. **Key Concepts:**\n   - Chromatic number χ(G): minimum k for proper k-coloring (axiomatized)\n   - Odd girth: length of shortest odd cycle (axiomatized)\n   - f(k,n): maximum odd girth - 1 among k-chromatic n-vertex graphs\n\n3. **Conjecture Formalization:** The Erdős-Gallai conjecture expressed as existence of constants c₁, c₂\n\n4. **Main Results:**\n   - Kierstead-Szemerédi-Trotter theorem (axiom): conjecture holds for all k ≥ 4\n   - Constructive k=4 case from Gallai and Erdős bounds\n\n5. **Why Axioms:** The proof requires deep results in extremal graph theory and regularity methods beyond current Mathlib scope",
     "keyInsights": [
       "**Bipartite = No Odd Cycles:** A graph is 2-colorable iff it has no odd cycles, so χ ≥ 3 forces odd cycles",
       "**Exponent Formula:** For chromatic number k, the critical exponent is 1/(k-2): k=4 gives 1/2, k=5 gives 1/3, k=6 gives 1/4",
@@ -74,57 +73,36 @@
       "id": "section-1",
       "title": "Basic Definitions",
       "startLine": 33,
-      "endLine": 83,
-      "summary": "Defines graph structure, chromatic number, odd cycles, odd girth, and the key function f_k(n) measuring maximum odd girth in k-chromatic graphs."
+      "endLine": 76,
+      "summary": "Defines graph structure, chromatic number (axiom), odd girth (axiom), and the key function f_k(n) measuring maximum odd girth in k-chromatic graphs."
     },
     {
       "id": "section-2",
       "title": "Main Conjecture",
-      "startLine": 84,
-      "endLine": 107,
+      "startLine": 77,
+      "endLine": 99,
       "summary": "Formalizes the Erdős-Gallai conjecture f_k(n) ≍ n^{1/(k-2)} and states the Kierstead-Szemerédi-Trotter theorem proving it."
     },
     {
       "id": "section-3",
       "title": "Case k = 4",
-      "startLine": 108,
-      "endLine": 140,
-      "summary": "The foundational case: Gallai's lower bound f_4(n) ≫ √n and Erdős's upper bound f_4(n) ≪ √n, showing f_4(n) ≍ √n."
+      "startLine": 101,
+      "endLine": 133,
+      "summary": "The foundational case: Gallai's lower bound f_4(n) ≫ √n and Erdős's upper bound f_4(n) ≪ √n, with a constructive proof that f_4(n) ≍ √n."
     },
     {
       "id": "section-4",
       "title": "General k Case",
-      "startLine": 141,
-      "endLine": 170,
-      "summary": "The exponent formula 1/(k-2) and the general lower and upper bounds for arbitrary k ≥ 4."
+      "startLine": 134,
+      "endLine": 153,
+      "summary": "The general lower and upper bounds for arbitrary k ≥ 4, establishing f_k(n) ≍ n^{1/(k-2)}."
     },
     {
       "id": "section-5",
-      "title": "Why Odd Cycles Matter",
-      "startLine": 171,
-      "endLine": 202,
-      "summary": "Explains the connection between odd cycles and chromatic number: bipartite graphs have no odd cycles, and the chromatic/girth trade-off."
-    },
-    {
-      "id": "section-6",
-      "title": "Proof Techniques",
-      "startLine": 203,
-      "endLine": 231,
-      "summary": "Key methods: local chromatic number, Szemerédi regularity, probabilistic constructions for lower bounds, extremal arguments for upper bounds."
-    },
-    {
-      "id": "section-7",
-      "title": "Related Problems",
-      "startLine": 232,
-      "endLine": 255,
-      "summary": "Connections to girth vs chromatic number problems, Erdős's girth conjecture, and the Mycielski construction."
-    },
-    {
-      "id": "section-8",
-      "title": "Summary and Status",
-      "startLine": 256,
-      "endLine": 316,
-      "summary": "Complete summary of the problem resolution, the main theorem, and historical context from Gallai (1963) to KST (1984)."
+      "title": "Summary",
+      "startLine": 154,
+      "endLine": 184,
+      "summary": "Complete summary theorem proving the conjecture for all k ≥ 4 using the Kierstead-Szemerédi-Trotter axiom."
     }
   ],
   "conclusion": {
