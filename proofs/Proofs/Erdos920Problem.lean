@@ -176,11 +176,16 @@ def RamseyNumber (k m : ℕ) : ℕ := sorry
 
 /--
 **Ramsey-Chromatic Connection:**
-If R(k,m) ≥ m^α / (log m)^β, then
-g_k(n) ≥ n^{1-1/α} / (log n)^{β/α}.
--/
+If R(k,m) ≥ c · m^α / (log m)^β, then
+g_k(n) ≥ c' · n^{1-1/α} / (log n)^{β/α}.
+This is the key bridge between Ramsey theory and chromatic numbers. -/
 axiom ramsey_chromatic_connection :
-  True
+  ∀ k : ℕ, k ≥ 3 →
+  ∀ α β : ℝ, α > 1 → β ≥ 0 →
+    (∃ c : ℝ, c > 0 ∧ ∀ m : ℕ, m ≥ 2 →
+      (RamseyNumber k m : ℝ) ≥ c * (m : ℝ) ^ α / (Real.log m) ^ β) →
+    ∃ c' : ℝ, c' > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      (maxChromaticKFree k n : ℝ) ≥ c' * (n : ℝ) ^ (1 - 1/α) / (Real.log n) ^ (β/α)
 
 /--
 **Erdős Ramsey Bound (1959):**
@@ -202,119 +207,31 @@ axiom mattheus_verstraete_ramsey :
       (RamseyNumber 4 m : ℝ) ≥ c * (m : ℝ) ^ 3 / (Real.log m) ^ 4
 
 /-
-## Part VI: Special Cases
+## Part VI: Summary
 -/
 
 /--
-**Triangle-Free Graphs (k=3):**
-For k=3, the situation is well-understood.
-See Erdős Problem #1013.
--/
-axiom triangle_free_case :
-  True  -- See Problem #1013
-
-/--
-**K_4-Free Graphs (k=4):**
-The Mattheus-Verstraete result (2023) gives the best known bound.
--/
-axiom k4_free_case :
-  True
-
-/--
-**Large k:**
-For large k, the gap between known and conjectured bounds grows.
--/
-axiom large_k_case :
-  True
-
-/-
-## Part VII: Probabilistic Methods
--/
-
-/--
-**Random Graphs:**
-Probabilistic constructions give lower bounds for g_k(n).
--/
-axiom random_graph_method :
-  True
-
-/--
-**First Moment Method:**
-Basic probabilistic technique for existence proofs.
--/
-axiom first_moment :
-  True
-
-/--
-**Lovász Local Lemma:**
-Advanced technique for dependent random variables.
--/
-axiom local_lemma :
-  True
-
-/-
-## Part VIII: Summary
--/
-
-/--
-**Erdős Problem #920:**
+**Erdős Problem #920: OPEN**
 
 PROBLEM: For k ≥ 4, is g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for some c?
 
-STATUS: OPEN
-
-KNOWN BOUNDS:
+KNOWN:
 - Upper: g_k(n) ≪ (n · log log n / log n)^{1-1/(k-1)} [Graver-Yackel]
 - Lower: g_k(n) ≫ n^{1-2/(k+1)} / (log n)^{c_k} [general]
 - k=3: g_3(n) ≈ (n/log n)^{1/2} [well-understood]
 - k=4: g_4(n) ≫ n^{2/3} / (log n)^{4/3} [Mattheus-Verstraete 2023]
 
-CONJECTURE: The exponent should be 1-1/(k-1), not 1-2/(k+1).
--/
+GAP: The exponent should be 1-1/(k-1), not 1-2/(k+1), for k ≥ 5. -/
 theorem erdos_920_summary :
     -- General lower bound is known
     (∀ k : ℕ, k ≥ 3 → ∃ c : ℝ, c > 0 ∧
       ∀ n : ℕ, n ≥ 2 →
         (maxChromaticKFree k n : ℝ) ≥
           c * (n : ℝ) ^ (1 - 2 / (k + 1 : ℝ)) / (Real.log n) ^ c) ∧
-    -- Upper bound is known
-    True ∧
-    -- Gap exists
-    True := by
-  constructor
-  · exact general_lower_bound
-  constructor <;> trivial
-
-/--
-**Erdős Problem #920: OPEN**
--/
-theorem erdos_920 : True := trivial
-
-/--
-**Known Exponents:**
-k=3: lower ≈ 1/2, conjectured 1/2 ✓ (resolved)
-k=4: lower = 2/3, conjectured 2/3 ✓ (Mattheus-Verstraete!)
-k=5: lower = 2/3, conjectured 3/4 (gap)
--/
-theorem erdos_920_exponents :
-    -- k=3 is resolved
-    True ∧
-    -- k=4 was resolved by Mattheus-Verstraete 2023
-    True ∧
-    -- k≥5 has a gap
-    True := by
-  constructor <;> trivial
-
-/--
-**Recent Progress:**
-The 2023 result of Mattheus-Verstraete was a major breakthrough,
-resolving the k=4 case with the optimal exponent 2/3.
--/
-theorem mattheus_verstraete_breakthrough :
-    -- They proved R(4,m) ≫ m^3/(log m)^4
-    True ∧
-    -- This implies g_4(n) ≫ n^{2/3}/(log n)^{4/3}
-    True := by
-  constructor <;> trivial
+    -- k=4 breakthrough by Mattheus-Verstraete (2023)
+    (∃ c : ℝ, c > 0 ∧
+      ∀ n : ℕ, n ≥ 2 →
+        (maxChromaticKFree 4 n : ℝ) ≥ c * (n : ℝ) ^ (2/3 : ℝ) / (Real.log n) ^ (4/3 : ℝ)) :=
+  ⟨general_lower_bound, mattheus_verstraete_2023⟩
 
 end Erdos920
