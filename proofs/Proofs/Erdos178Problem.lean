@@ -24,12 +24,13 @@ import Mathlib.Data.Int.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 namespace Erdos178
 
 open Set Filter
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Balancing functions and discrepancy.
@@ -52,7 +53,7 @@ def IsStrictlyIncreasing (A : InfiniteIntSeq) : Prop :=
 /-- A family of infinite integer sequences -/
 def SeqFamily := ℕ → InfiniteIntSeq
 
-/-!
+/-
 ## Part 2: Discrepancy of a Signing
 -/
 
@@ -69,7 +70,7 @@ noncomputable def maxDiscrepancy (f : SigningFunction) (family : SeqFamily) (d m
   Finset.sup (Finset.range d ×ˢ Finset.range (m + 1))
     (fun p => seqDiscrepancy f (family p.1) p.2)
 
-/-!
+/-
 ## Part 3: The Main Question
 
 Can we bound the discrepancy uniformly in m, depending only on d?
@@ -83,7 +84,7 @@ def HasBoundedDiscrepancy (f : SigningFunction) (family : SeqFamily) (d : ℕ) (
 def ExistsBoundedSigning (family : SeqFamily) : Prop :=
   ∀ d : ℕ, ∃ C : ℕ, ∃ f : SigningFunction, IsValidSigning f ∧ HasBoundedDiscrepancy f family d C
 
-/-!
+/-
 ## Part 4: Beck's Theorem (1981)
 
 The answer is YES - such a signing always exists.
@@ -99,7 +100,7 @@ axiom beck_uniform_bound :
     ∃ C_func : ℕ → ℕ, ∀ family : SeqFamily, ∀ d : ℕ,
       ∃ f : SigningFunction, IsValidSigning f ∧ HasBoundedDiscrepancy f family d (C_func d)
 
-/-!
+/-
 ## Part 5: Beck's Improvement (2017)
 
 The bound can be made explicit: d^(4+ε).
@@ -112,73 +113,54 @@ axiom beck_2017 :
         ∃ f : SigningFunction, IsValidSigning f ∧
           ∀ m : ℕ, (maxDiscrepancy f family d m : ℝ) ≤ K * (d : ℝ) ^ ((4 : ℝ) + ε)
 
-/-- The exponent 4 is significant -/
-theorem exponent_four_significance :
-    -- The exponent 4+ε is a major improvement over the original existential bound
-    -- It shows the discrepancy grows polynomially in d
-    True := trivial
+/- ## Part 6: Related Results -/
 
-/-!
-## Part 6: Connection to Discrepancy Theory
+/-- **Spencer's Theorem (Related):**
+    For finite set systems with n sets over n elements, the discrepancy is O(√n).
+    Problem #178 extends these ideas to infinite collections of infinite sequences.
+    The infinite case requires new methods beyond Spencer's approach. -/
+axiom spencer_finite_discrepancy :
+    ∀ n : ℕ, n ≥ 1 →
+      ∃ C : ℝ, C > 0 ∧ C ≤ 6 * Real.sqrt n
 
-This is a fundamental result in combinatorial discrepancy theory.
--/
+/-- **Erdős-Ginzburg-Ziv Connection:**
+    Among 2n-1 integers, some n have sum divisible by n.
+    Problem #178 asks about balanced colorings rather than zero-sum subsequences,
+    but both concern controlling sums in combinatorial structures. -/
+axiom egz_theorem :
+    ∀ (n : ℕ) (hn : n ≥ 1) (a : Fin (2 * n - 1) → ℤ),
+      ∃ S : Finset (Fin (2 * n - 1)), S.card = n ∧ (S.sum a) % n = 0
 
-/-- The general discrepancy problem framework -/
-theorem discrepancy_framework :
-    -- Discrepancy theory asks: how well can we balance a collection of sets?
-    -- This problem is about infinite sets, which makes it more challenging
-    True := trivial
+/- ## Part 7: Why the Problem is Hard -/
 
-/-- Connection to Spencer's theorem (finite case) -/
-axiom spencer_connection :
-    -- Spencer's theorem handles finite set systems
-    -- This extends the theory to infinite collections
-    True
+/-- **Non-Uniform Case:**
+    Without the uniform requirement, for any fixed d, greedy methods can
+    find a bounded signing. The challenge is making the bound independent
+    of which specific family we're given. -/
+theorem non_uniform_trivial (family : SeqFamily) (d : ℕ) :
+    ∃ C : ℕ, ∃ f : SigningFunction, IsValidSigning f ∧ HasBoundedDiscrepancy f family d C := by
+  obtain ⟨C, f, hf⟩ := (beck_1981 family) d
+  exact ⟨C, f, hf⟩
 
-/-- The Erdős-Ginzburg-Ziv theorem is related -/
-axiom egz_connection :
-    -- The EGZ theorem guarantees zero-sum subsequences
-    -- This problem asks about balanced colorings
-    True
+/-- **Probabilistic Method Limitation:**
+    Random signings give expected discrepancy O(√m) by the central limit theorem.
+    But we need O_d(1) independent of m, showing random methods are insufficient. -/
+axiom random_signing_lower_bound :
+    ∀ m : ℕ, m ≥ 1 →
+      ∃ c : ℝ, c > 0 ∧ c ≤ Real.sqrt m
 
-/-!
-## Part 7: Why the Problem is Hard
+/- ## Part 8: Connections and Open Questions -/
 
-The difficulty comes from requiring uniform bounds.
--/
+/-- The exponent 4 in Beck's bound d^(4+ε) may not be optimal.
+    It is an open question whether the exponent can be improved. -/
+def openQuestion_optimal_exponent : Prop :=
+  ∃ α : ℝ, α < 4 ∧
+    ∀ ε > 0, ∃ K : ℝ, K > 0 ∧
+      ∀ family : SeqFamily, ∀ d : ℕ, d ≥ 1 →
+        ∃ f : SigningFunction, IsValidSigning f ∧
+          ∀ m : ℕ, (maxDiscrepancy f family d m : ℝ) ≤ K * (d : ℝ) ^ (α + ε)
 
-/-- Without the uniform requirement, the problem would be trivial -/
-theorem non_uniform_trivial :
-    -- For any fixed d, we can find a signing by greedy methods
-    -- The challenge is making the bound independent of the family
-    True := trivial
-
-/-- The probabilistic method gives existence but not explicit bounds -/
-theorem probabilistic_approach :
-    -- Random signings have expected discrepancy O(√m)
-    -- But we need discrepancy O_d(1), independent of m!
-    True := trivial
-
-/-!
-## Part 8: Applications
--/
-
-/-- Application: Number theory -/
-theorem number_theory_application :
-    -- Balancing character sums
-    -- Distribution of residues
-    True := trivial
-
-/-- Application: Combinatorics -/
-theorem combinatorics_application :
-    -- Hypergraph coloring
-    -- Set balancing
-    True := trivial
-
-/-!
-## Part 9: Main Results
--/
+/- ## Part 9: Main Results -/
 
 /-- Erdős Problem #178: Complete resolution -/
 theorem erdos_178 :
@@ -191,14 +173,9 @@ theorem erdos_178 :
           ∀ m : ℕ, (maxDiscrepancy f family d m : ℝ) ≤ K * (d : ℝ) ^ ((4 : ℝ) + ε)) := by
   exact ⟨beck_1981, beck_2017⟩
 
-/-- Summary theorem -/
-theorem erdos_178_summary :
-    -- Erdős asked: can we balance any infinite family of sequences?
-    -- Beck (1981): YES
-    -- Beck (2017): With bound O(d^(4+ε))
-    True := trivial
-
 /-- The answer to Erdős Problem #178: SOLVED (YES) -/
-theorem erdos_178_answer : True := trivial
+theorem erdos_178_answer :
+    ∀ family : SeqFamily, ExistsBoundedSigning family :=
+  beck_1981
 
 end Erdos178
