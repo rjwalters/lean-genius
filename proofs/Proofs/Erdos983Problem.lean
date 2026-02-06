@@ -37,7 +37,7 @@ open Nat Finset BigOperators
 
 namespace Erdos983
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Prime counting, smooth numbers, and the f function.
@@ -78,7 +78,7 @@ A prime set P of size r "covers" A if at least r elements of A are P-smooth.
 def PrimesCover (P : Finset ℕ) (A : Finset ℕ) (r : ℕ) : Prop :=
   (∀ p ∈ P, Nat.Prime p) ∧ P.card = r ∧ r ≤ (smoothElements P A).card
 
-/-!
+/-
 ## Part II: The f Function
 
 f(k,n) = minimum r such that any k-subset of {1,...,n} can be r-covered.
@@ -105,7 +105,7 @@ f is increasing in k.
 -/
 axiom f_mono_k (k₁ k₂ n : ℕ) (hk : k₁ ≤ k₂) : f k₁ n ≤ f k₂ n
 
-/-!
+/-
 ## Part III: The Main Question
 
 Does 2π(√n) - f(π(n)+1, n) tend to infinity?
@@ -125,7 +125,7 @@ The difference is bounded, not tending to infinity.
 -/
 axiom erdos_question_answer : ¬ErdosQuestion983
 
-/-!
+/-
 ## Part IV: Erdős-Straus Results
 
 The precise asymptotics for f(k,n).
@@ -164,7 +164,7 @@ axiom erdos_straus_dense (c : ℝ) (hc : 0 < c ∧ c < 1) :
     |(f (⌊c * n⌋₊) n : ℝ) - Real.log (Real.log n) -
      c₁ * Real.sqrt (2 * Real.log (Real.log n))| < ε
 
-/-!
+/-
 ## Part V: Why 2π(√n)?
 
 The intuition behind the formula.
@@ -180,7 +180,7 @@ axiom prime_structure :
     (∀ p, Nat.Prime p → p ∣ m → p ≤ Nat.sqrt n) ∨
     (∃! q, Nat.Prime q ∧ q > Nat.sqrt n ∧ q ∣ m)
 
-/-!
+/-
 ## Part VI: Related Concepts
 -/
 
@@ -206,7 +206,7 @@ The count of y-smooth numbers up to x is asymptotically x·ρ(log x / log y).
 axiom dickman_asymptotics (x y : ℕ) (hx : x ≥ 2) (hy : y ≥ 2) (hyx : y ≤ x) :
   smoothCount x y ≤ x
 
-/-!
+/-
 ## Part VII: Summary
 -/
 
