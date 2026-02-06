@@ -34,7 +34,7 @@
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "This problem in dimension theory asks whether a topological space can have the same covering dimension as its product with itself. The covering dimension (Lebesgue dimension) of most 'nice' spaces satisfies dim(X × Y) ≤ dim(X) + dim(Y), with equality for many common spaces. The question is whether dim(S × S) = dim(S) is possible.\n\nFor n = 1, the rational points in Hilbert space provide an example. Anderson and Keisler (1967) generalized this to all n ≥ 1, constructing separable metric spaces with this surprising property.",
+    "historicalContext": "Covering dimension (Lebesgue dimension) is a fundamental topological invariant: dim(X) ≤ n means every finite open cover of X admits a refinement of order at most n+1. For well-behaved spaces such as compact metric spaces, the product inequality dim(X × Y) ≤ dim(X) + dim(Y) holds, with equality for most familiar spaces like cubes and manifolds. Erdős asked whether there exist spaces where the product dimension is strictly smaller than the sum — specifically, can dim(S × S) = dim(S) = n?\n\nFor n = 1, the answer was already known: the set of points in Hilbert space ℓ² with all rational coordinates has covering dimension 1, and its square also has covering dimension 1. This example, connected to classical results of Erdős and Sierpiński on totally disconnected spaces, showed that pathological dimension behavior in products is possible.\n\nAnderson and Keisler (1967) resolved the problem completely by constructing, for every n ≥ 1, a separable metric space S_n with dim(S_n) = n and dim(S_n × S_n) = n. Their construction uses techniques from descriptive set theory, selecting carefully structured subsets of n-dimensional spaces whose open covers interact efficiently in the product. The result demonstrates that the product dimension inequality can fail maximally for special spaces.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet n ≥ 1. Is there a space S of dimension n such that S² = S × S also has dimension n?\n\n**Answer:** YES (Anderson-Keisler 1967)\n\nFor every n ≥ 1, there exist separable metric spaces S_n with:\n- dim(S_n) = n\n- dim(S_n × S_n) = n",
     "proofStrategy": "The formalization axiomatizes covering dimension and states the Anderson-Keisler theorem. The proof uses:\n\n1. **Covering dimension definition:** dimension ≤ n if covers have refinements with multiplicity ≤ n+1\n\n2. **Examples:** Rational points in Hilbert space for n=1\n\n3. **Main theorem:** Anderson-Keisler construction works for all n ≥ 1\n\n4. **Background:** Product dimension inequality, dimension of subspaces",
     "keyInsights": [
@@ -49,51 +49,44 @@
     {
       "id": "covering-dimension",
       "title": "Covering Dimension",
-      "startLine": 42,
-      "endLine": 75,
-      "summary": "Definition of covering dimension and product inequality"
+      "startLine": 33,
+      "endLine": 57,
+      "summary": "Axiomatized covering dimension, dimension exactly n, and product inequality"
     },
     {
       "id": "problem-statement",
       "title": "The Problem Statement",
-      "startLine": 77,
-      "endLine": 89,
+      "startLine": 59,
+      "endLine": 68,
       "summary": "Formal statement of Erdős Problem #909"
     },
     {
       "id": "n-equals-1",
       "title": "Known Results for n=1",
-      "startLine": 91,
-      "endLine": 110,
-      "summary": "Rational Hilbert space and Erdős-Sierpiński examples"
+      "startLine": 70,
+      "endLine": 80,
+      "summary": "Rational Hilbert space example for n=1"
     },
     {
       "id": "anderson-keisler",
       "title": "Anderson-Keisler Theorem",
-      "startLine": 112,
-      "endLine": 134,
-      "summary": "Main theorem resolving the problem for all n"
+      "startLine": 82,
+      "endLine": 106,
+      "summary": "Main theorem resolving the problem for all n ≥ 1"
     },
     {
-      "id": "construction",
-      "title": "Construction Idea",
-      "startLine": 136,
-      "endLine": 162,
-      "summary": "Sketch of how the construction works"
-    },
-    {
-      "id": "dimension-theory",
-      "title": "Dimension Theory Background",
-      "startLine": 196,
-      "endLine": 222,
-      "summary": "Related results on dimension"
+      "id": "supporting-results",
+      "title": "Supporting Results",
+      "startLine": 108,
+      "endLine": 115,
+      "summary": "Euclidean dimension and subspace monotonicity"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 245,
-      "endLine": 286,
-      "summary": "Main theorem and historical note"
+      "startLine": 117,
+      "endLine": 140,
+      "summary": "Combined summary theorem: problem solved and n=1 example"
     }
   ],
   "conclusion": {
