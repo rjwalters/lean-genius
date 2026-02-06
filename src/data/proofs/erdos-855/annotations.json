@@ -1,146 +1,90 @@
 [
   {
-    "id": "prime-pi",
+    "id": "ann-e855-header",
     "proofId": "erdos-855",
-    "range": { "startLine": 37, "endLine": 42 },
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #855: The Second Hardy-Littlewood Conjecture**\n\nIs π(x+y) ≤ π(x) + π(y) for large x and y? Erdős described this as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood.' The conjecture is likely FALSE based on its incompatibility with the prime k-tuples conjecture (Hensley-Richards, 1973).",
+    "mathContext": "The conjecture asserts asymptotic subadditivity of the prime counting function. If true, it would mean that the primes in [1, x+y] are never more numerous than those in [1, x] and [1, y] combined.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-counting-function", "hardy-littlewood-conjectures", "prime-k-tuples"]
+  },
+  {
+    "id": "ann-e855-primepi",
+    "proofId": "erdos-855",
+    "range": { "startLine": 37, "endLine": 56 },
     "type": "definition",
     "title": "Prime Counting Function π(n)",
-    "content": "The prime counting function π(n) counts the number of primes in [1,n]. This is the fundamental object in the conjecture.",
-    "significance": "critical"
+    "content": "**primePi(n)** counts the number of primes p with 1 ≤ p ≤ n. This is the fundamental object in the conjecture.\n\nKey properties axiomatized:\n- **Monotonicity**: primePi is monotone increasing\n- **Prime Number Theorem**: π(n) ~ n/log(n) as n → ∞",
+    "mathContext": "Defined as the cardinality of {p ∈ [1,n] : p prime} using Finset.filter and Finset.Icc.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-number-theorem", "analytic-number-theory"]
   },
   {
-    "id": "prime-number-theorem",
-    "proofId": "erdos-855",
-    "range": { "startLine": 50, "endLine": 56 },
-    "type": "axiom",
-    "title": "Prime Number Theorem",
-    "content": "The fundamental asymptotic π(n) ~ n/log(n). This gives the basic growth rate of the prime counting function.",
-    "significance": "high"
-  },
-  {
-    "id": "second-hl-conjecture",
+    "id": "ann-e855-conjecture",
     "proofId": "erdos-855",
     "range": { "startLine": 62, "endLine": 71 },
     "type": "definition",
-    "title": "Second Hardy-Littlewood Conjecture",
-    "content": "The conjecture that π(x+y) ≤ π(x) + π(y) for all sufficiently large x and y. This asserts subadditivity of the prime counting function.",
-    "significance": "critical"
+    "title": "The Second Hardy-Littlewood Conjecture",
+    "content": "**SecondHardyLittlewoodConjecture**: For all sufficiently large x and y, π(x+y) ≤ π(x) + π(y).\n\nThis asserts that the prime counting function is 'subadditive' for large arguments. Intuitively, the interval [1, x+y] should never have more primes than [1, x] and [1, y] combined.",
+    "mathContext": "Formalized as: ∃ N₀, ∀ x y ≥ N₀, primePi(x+y) ≤ primePi(x) + primePi(y).",
+    "significance": "critical",
+    "relatedConcepts": ["subadditivity", "prime-distribution"]
   },
   {
-    "id": "admissible-tuple",
+    "id": "ann-e855-admissible",
     "proofId": "erdos-855",
-    "range": { "startLine": 84, "endLine": 91 },
+    "range": { "startLine": 77, "endLine": 93 },
     "type": "definition",
-    "title": "Admissible Tuple",
-    "content": "A k-tuple H is admissible if the residues don't cover all classes mod p for any prime p. This is the sieving condition for prime k-tuples.",
-    "significance": "high"
+    "title": "Admissible Tuples and k-Tuples Conjecture",
+    "content": "**IsAdmissibleTuple(H)**: A finite set H of natural numbers is admissible if for every prime p, the residues of H mod p do not cover all residue classes.\n\n**PrimeKTuplesConjecture**: For any admissible tuple H, there are infinitely many n such that n + h is prime for all h ∈ H. This is widely believed to be true and is the key conjecture that conflicts with the Second Hardy-Littlewood.",
+    "mathContext": "The admissibility condition prevents trivial obstructions: if H covered all residues mod p, then some n + h would always be divisible by p.",
+    "significance": "critical",
+    "relatedConcepts": ["sieve-theory", "prime-patterns", "twin-prime-conjecture"]
   },
   {
-    "id": "k-tuples-conjecture",
+    "id": "ann-e855-incompatibility",
     "proofId": "erdos-855",
-    "range": { "startLine": 93, "endLine": 100 },
+    "range": { "startLine": 95, "endLine": 131 },
+    "type": "axiom",
+    "title": "Hensley-Richards Incompatibility (1973)",
+    "content": "**hensley_richards_incompatibility**: The k-tuples conjecture implies ¬SecondHardyLittlewoodConjecture.\n\nThe key insight is that admissible tuples can be denser than the primes: **dense_admissible_tuples_exist** shows that for large k, there exist admissible k-tuples in [0,k) with more than π(k) elements.\n\nThe **quantitative version** shows the violation can be substantial: under k-tuples, π(x+y) > π(x) + π(y) + (log 2/2) · y/(log y)² for infinitely many x.",
+    "mathContext": "If an admissible H ⊂ [0,k) has |H| > π(k) elements, and k-tuples guarantees n where all n+h are prime, then π(n+k) ≥ π(n) + |H| > π(n) + π(k).",
+    "significance": "critical",
+    "relatedConcepts": ["sieve-theory", "prime-gaps", "extremal-combinatorics"]
+  },
+  {
+    "id": "ann-e855-unconditional",
+    "proofId": "erdos-855",
+    "range": { "startLine": 133, "endLine": 153 },
+    "type": "axiom",
+    "title": "Unconditional Results",
+    "content": "**montgomery_vaughan_bound**: Unconditionally, π(x+y) ≤ π(x) + 2y/log(y). This is weaker than the conjecture's π(x) + π(y) but requires no unproved hypothesis.\n\n**primePi_add_ge**: The trivial lower bound π(x+y) ≥ π(x) holds by monotonicity. This is the only fully proved result in the file (using primePi_monotone).",
+    "mathContext": "The Montgomery-Vaughan bound uses the large sieve inequality. The factor of 2 is the best known constant.",
+    "significance": "key",
+    "relatedConcepts": ["large-sieve", "brun-titchmarsh"]
+  },
+  {
+    "id": "ann-e855-related",
+    "proofId": "erdos-855",
+    "range": { "startLine": 155, "endLine": 180 },
     "type": "definition",
-    "title": "Prime k-Tuples Conjecture",
-    "content": "For any admissible tuple H, there are infinitely many n where all n + h are prime. This is the widely-believed conjecture that conflicts with the Second Hardy-Littlewood.",
-    "significance": "critical"
+    "title": "Related Conjectures",
+    "content": "**StrausConjecture**: π(x+y) ≤ π(x) + 2π(y/2). Straus suggested this as a potential 'correct' formulation, but it is also incompatible with k-tuples.\n\n**ErdosWeakerConjecture**: π(x+y) ≤ π(x) + π(y) + O(y/(log y)²). This weaker form allows an error term and may be consistent with k-tuples. If true, the Second Hardy-Littlewood fails by at most O(y/(log y)²).",
+    "mathContext": "The weaker conjecture suggests that even if π is not subadditive, the violation is bounded by a secondary term from the prime number theorem.",
+    "significance": "key",
+    "relatedConcepts": ["error-terms", "prime-number-theorem"]
   },
   {
-    "id": "hensley-richards",
+    "id": "ann-e855-summary",
     "proofId": "erdos-855",
-    "range": { "startLine": 112, "endLine": 122 },
-    "type": "axiom",
-    "title": "Hensley-Richards Incompatibility",
-    "content": "Hensley and Richards (1973) proved that the k-tuples conjecture implies the negation of the Second Hardy-Littlewood Conjecture. These two natural conjectures cannot both be true!",
-    "significance": "critical"
-  },
-  {
-    "id": "quantitative-version",
-    "proofId": "erdos-855",
-    "range": { "startLine": 124, "endLine": 133 },
-    "type": "axiom",
-    "title": "Quantitative Incompatibility",
-    "content": "Under k-tuples, for every large y and infinitely many x: π(x+y) > π(x) + π(y) + (log 2 - o(1))·y/(log y)². The violation can be substantial.",
-    "significance": "high"
-  },
-  {
-    "id": "dense-tuples",
-    "proofId": "erdos-855",
-    "range": { "startLine": 135, "endLine": 144 },
-    "type": "axiom",
-    "title": "Dense Admissible Tuples",
-    "content": "Hensley-Richards showed that admissible k-tuples can have more than π(k) elements in [0,k). This is the key to the incompatibility.",
-    "significance": "high"
-  },
-  {
-    "id": "montgomery-vaughan",
-    "proofId": "erdos-855",
-    "range": { "startLine": 150, "endLine": 158 },
-    "type": "axiom",
-    "title": "Montgomery-Vaughan Bound",
-    "content": "Unconditionally: π(x+y) ≤ π(x) + 2y/log(y). This is weaker than π(x) + π(y) but requires no unproved conjecture.",
-    "significance": "high"
-  },
-  {
-    "id": "trivial-bound",
-    "proofId": "erdos-855",
-    "range": { "startLine": 160, "endLine": 166 },
+    "range": { "startLine": 186, "endLine": 198 },
     "type": "theorem",
-    "title": "Trivial Lower Bound",
-    "content": "π(x+y) ≥ π(x) always holds by monotonicity. Adding y to the counting interval can only increase the prime count.",
-    "significance": "medium"
-  },
-  {
-    "id": "straus-conjecture",
-    "proofId": "erdos-855",
-    "range": { "startLine": 180, "endLine": 191 },
-    "type": "definition",
-    "title": "Straus's Modification",
-    "content": "Straus suggested π(x+y) ≤ π(x) + 2π(y/2) as the 'correct' formulation. This is also incompatible with k-tuples.",
-    "significance": "medium"
-  },
-  {
-    "id": "erdos-weaker",
-    "proofId": "erdos-855",
-    "range": { "startLine": 193, "endLine": 203 },
-    "type": "definition",
-    "title": "Erdős's Weaker Conjecture",
-    "content": "Erdős conjectured π(x+y) ≤ π(x) + π(y) + O(y/(log y)²). This weaker form may be true and is consistent with k-tuples.",
-    "significance": "medium"
-  },
-  {
-    "id": "philosophical",
-    "proofId": "erdos-855",
-    "range": { "startLine": 209, "endLine": 218 },
-    "type": "insight",
-    "title": "Philosophical Significance",
-    "content": "This illustrates a fundamental tension: two natural conjectures in number theory can be mutually exclusive. Most experts believe k-tuples, so the Second Hardy-Littlewood is likely false.",
-    "significance": "high"
-  },
-  {
-    "id": "no-counterexample",
-    "proofId": "erdos-855",
-    "range": { "startLine": 220, "endLine": 225 },
-    "type": "insight",
-    "title": "No Known Counterexample",
-    "content": "Despite extensive computation, no explicit values x, y with π(x+y) > π(x) + π(y) have been found. The first counterexample is expected to be astronomically large.",
-    "significance": "medium"
-  },
-  {
-    "id": "main-result",
-    "proofId": "erdos-855",
-    "range": { "startLine": 231, "endLine": 244 },
-    "type": "theorem",
-    "title": "Erdős Problem #855: LIKELY FALSE",
-    "content": "The Second Hardy-Littlewood Conjecture is open but likely false due to incompatibility with the k-tuples conjecture. The best unconditional bound is Montgomery-Vaughan's 2y/log(y).",
-    "significance": "critical"
-  },
-  {
-    "id": "summary",
-    "proofId": "erdos-855",
-    "range": { "startLine": 246, "endLine": 262 },
-    "type": "theorem",
-    "title": "Summary Theorem",
-    "content": "Combines the status (open, likely false) with the key result: if k-tuples holds, then the Second Hardy-Littlewood Conjecture fails.",
-    "significance": "high"
+    "title": "Main Result: erdos_855",
+    "content": "**erdos_855** combines the two incompatibility results:\n1. k-tuples → ¬SecondHardyLittlewoodConjecture\n2. k-tuples → ¬StrausConjecture\n\nProved via `exact ⟨hensley_richards_incompatibility, straus_also_incompatible⟩`. This captures the essence of the problem: if the widely-believed k-tuples conjecture is true, then both the original and Straus's variant are false.",
+    "mathContext": "The theorem is a clean conjunction of the two incompatibility axioms, demonstrating that one natural conjecture (k-tuples) refutes two others.",
+    "significance": "critical",
+    "relatedConcepts": ["incompatibility", "conditional-disproof"]
   }
 ]

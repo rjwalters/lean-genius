@@ -30,7 +30,7 @@ import Mathlib.Data.Real.Basic
 
 namespace Erdos855
 
-/-
+/-!
 ## Part I: The Prime Counting Function
 -/
 
@@ -55,7 +55,7 @@ axiom prime_number_theorem (ε : ℝ) (hε : ε > 0) :
     ∃ N₀ : ℕ, ∀ n ≥ N₀, (n : ℝ) > 0 →
       |((primePi n : ℝ) - n / Real.log n) / (n / Real.log n)| < ε
 
-/-
+/-!
 ## Part II: The Second Hardy-Littlewood Conjecture
 -/
 
@@ -70,14 +70,7 @@ def SecondHardyLittlewoodConjecture : Prop :=
   ∃ N₀ : ℕ, ∀ x y : ℕ, x ≥ N₀ → y ≥ N₀ →
     primePi (x + y) ≤ primePi x + primePi y
 
-/--
-**Status: OPEN, LIKELY FALSE**
-The conjecture remains unproved but is believed to be false
-based on its incompatibility with the prime k-tuples conjecture.
--/
-axiom conjecture_status_open : True
-
-/-
+/-!
 ## Part III: The Prime k-Tuples Conjecture
 -/
 
@@ -99,13 +92,7 @@ def PrimeKTuplesConjecture : Prop :=
   ∀ H : Finset ℕ, IsAdmissibleTuple H →
     ∀ N : ℕ, ∃ n > N, ∀ h ∈ H, (n + h).Prime
 
-/--
-**The k-Tuples Conjecture is widely believed to be true.**
-It is supported by extensive numerical evidence and heuristic arguments.
--/
-axiom k_tuples_widely_believed : True
-
-/-
+/-!
 ## Part IV: Hensley-Richards Incompatibility Theorem
 -/
 
@@ -143,7 +130,7 @@ axiom dense_admissible_tuples_exist (k : ℕ) (hk : k ≥ 2) :
     ∃ H : Finset ℕ, IsAdmissibleTuple H ∧ H.card > primePi k ∧
       ∀ h ∈ H, h < k
 
-/-
+/-!
 ## Part V: Unconditional Results
 -/
 
@@ -165,15 +152,7 @@ theorem primePi_add_ge (x y : ℕ) :
     primePi (x + y) ≥ primePi x :=
   primePi_monotone (Nat.le_add_right x y)
 
-/--
-**Best Known Asymptotic:**
-The true behavior is believed to be:
-  π(x+y) = π(x) + π(y) + O(y/(log y)²)
-with the error term sometimes positive, sometimes negative.
--/
-axiom true_asymptotic_behavior : True
-
-/-
+/-!
 ## Part VI: Related Conjectures
 -/
 
@@ -200,65 +179,22 @@ def ErdosWeakerConjecture : Prop :=
   ∃ C : ℝ, ∃ N₀ : ℕ, ∀ x y : ℕ, x ≥ N₀ → y ≥ N₀ →
     (primePi (x + y) : ℝ) ≤ primePi x + primePi y + C * y / (Real.log y)^2
 
-axiom erdos_weaker_consistent : True  -- Consistent with k-tuples
-
-/-
-## Part VII: Why This Matters
+/-!
+## Part VII: Main Results
 -/
 
-/--
-**Philosophical Point:**
-This problem illustrates a fundamental tension in number theory.
-Both conjectures (k-tuples and 2nd Hardy-Littlewood) seem natural,
-but they cannot both be true.
+/-- **Erdős Problem #855: Summary**
 
-Most experts believe k-tuples, so the 2nd Hardy-Littlewood conjecture
-is likely false - but no explicit counterexample is known!
--/
-axiom philosophical_significance : True
-
-/--
-**Computational Note:**
-No explicit counterexample has been found despite extensive computation.
-The first potential counterexample is expected to be astronomically large.
--/
-axiom no_known_counterexample : True
-
-/-
-## Part VIII: Main Results
--/
-
-/--
-**Erdős Problem #855: LIKELY FALSE**
-
-**Conjecture:** π(x+y) ≤ π(x) + π(y) for large x, y.
-
-**Status:** Open, but likely FALSE
-
-**Why:** Hensley-Richards (1973) proved this is incompatible with
-the prime k-tuples conjecture. Since k-tuples is widely believed,
-this conjecture is likely wrong.
-
-**Unconditional:** Montgomery-Vaughan proved π(x+y) ≤ π(x) + 2y/log(y).
--/
-theorem erdos_855 : True := trivial
-
-/--
-**Summary:**
-The Second Hardy-Littlewood Conjecture (Erdős #855) asserts
-π(x+y) ≤ π(x) + π(y) for large x, y. This is likely false:
-- Hensley-Richards showed incompatibility with k-tuples conjecture
-- The k-tuples conjecture is widely believed
-- No counterexample found despite computation
-
-The tension between these conjectures is a fascinating open problem
-in analytic number theory.
--/
-theorem erdos_855_summary :
-    -- The conjecture is open but likely false
-    True ∧
-    -- It contradicts k-tuples
-    (PrimeKTuplesConjecture → ¬SecondHardyLittlewoodConjecture) := by
-  exact ⟨trivial, hensley_richards_incompatibility⟩
+The Second Hardy-Littlewood Conjecture asserts π(x+y) ≤ π(x) + π(y)
+for large x, y. This is open but LIKELY FALSE:
+- Hensley-Richards (1973) proved incompatibility with k-tuples conjecture
+- Montgomery-Vaughan proved π(x+y) ≤ π(x) + 2y/log(y) unconditionally
+- Straus's variant is also incompatible with k-tuples -/
+theorem erdos_855 :
+    -- k-tuples contradicts the Second Hardy-Littlewood Conjecture
+    (PrimeKTuplesConjecture → ¬SecondHardyLittlewoodConjecture) ∧
+    -- k-tuples also contradicts Straus's modification
+    (PrimeKTuplesConjecture → ¬StrausConjecture) := by
+  exact ⟨hensley_richards_incompatibility, straus_also_incompatible⟩
 
 end Erdos855
