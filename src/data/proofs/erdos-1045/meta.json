@@ -21,6 +21,7 @@
     "erdosNumber": 1045,
     "erdosUrl": "https://erdosproblems.com/1045",
     "erdosProblemStatus": "open",
+    "dateAdded": "2026-02-05",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
@@ -48,13 +49,14 @@
       "Formalized configuration space and diameter constraint",
       "Stated Pommerenke's 2^{O(n)}·n^n upper bound",
       "Captured Hu-Tang and Cambie counterexamples for even n",
-      "Stated Sothanaphan and Cambie-Dong-Tang lower bounds"
+      "Stated Sothanaphan and Cambie-Dong-Tang lower bounds",
+      "Axiomatized ConnectedSublevelSet for EHP 1958 result"
     ]
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős, Herzog, and Piranian in 1958. Given n complex points z₁,...,zₙ with all pairwise distances at most 2 (diameter constraint), what is the maximum value of the product Δ = ∏_{i≠j} |zᵢ-zⱼ|? The natural conjecture was that the regular polygon inscribed in a circle of diameter 2 maximizes Δ.\n\nPommerenke (1961) proved the upper bound Δ ≤ 2^{O(n)}·n^n, showing the maximum is at most exponentially larger than the regular polygon value. For the regular polygon: Δ = n^n when n is even, and Δ ~ e^{π²/8}·n^n when n is odd.\n\nThe breakthrough came when Hu and Tang found explicit counterexamples for n = 4 and n = 6, showing the regular polygon is NOT optimal. Cambie then proved this holds for all even n ≥ 4. Recent work by Sothanaphan (2025) and Cambie-Dong-Tang establishes that liminf(max Δ / n^n) ≥ 1.304 for even n, significantly exceeding the regular polygon value of 1.",
     "problemStatement": "Let $z_1,\\ldots,z_n \\in \\mathbb{C}$ with $|z_i - z_j| \\leq 2$ for all $i,j$. Define\n$$\\Delta(z_1,\\ldots,z_n) = \\prod_{i \\neq j} |z_i - z_j|.$$\n\n**Question**: What is the maximum possible value of $\\Delta$? Is it maximized by the vertices of a regular polygon?\n\n**Answer**:\n- For **even** $n \\geq 4$: Regular polygon is NOT optimal. Better configurations exist with $\\max \\Delta / n^n \\geq 1.304$.\n- For **odd** $n$: Open. The regular polygon may still be optimal.\n\n**Status**: OPEN (partially resolved)",
-    "proofStrategy": "The formalization defines configurations as maps Fin n → ℂ, with DiameterAtMost2 expressing the constraint. The product Delta is defined over all ordered pairs. Key results are axiomatized: Pommerenke's upper bound, the Hu-Tang counterexamples, Cambie's generalization to all even n, and the Sothanaphan/Cambie-Dong-Tang lower bounds. The odd case is stated as an open conjecture.",
+    "proofStrategy": "The formalization defines configurations as maps Fin n → ℂ, with DiameterAtMost2 expressing the constraint. The product Delta is defined over all ordered pairs. Key results are axiomatized: Pommerenke's upper bound, the Hu-Tang counterexamples, Cambie's generalization to all even n, and the Sothanaphan/Cambie-Dong-Tang lower bounds. The odd case is stated as an open conjecture. The summary theorem combines Cambie's result with the Cambie-Dong-Tang lower bound.",
     "keyInsights": [
       "**Regular polygon value**: For even n, Δ = n^n. For odd n, Δ = cos(π/2n)^{-n(n-1)}·n^n ~ e^{π²/8}·n^n.",
       "**Counterexamples exist**: Hu-Tang found explicit configurations for n = 4,6 beating the regular polygon. Cambie generalized this to all even n ≥ 4.",
@@ -69,70 +71,56 @@
       "title": "Basic Definitions",
       "summary": "Configuration, DiameterAtMost2, Delta, DeltaSqrt",
       "startLine": 36,
-      "endLine": 55
+      "endLine": 51
     },
     {
       "id": "regular-polygon",
       "title": "Regular Polygon Configuration",
-      "summary": "RegularPolygon, delta_regular_even, delta_regular_odd",
-      "startLine": 57,
-      "endLine": 76
+      "summary": "RegularPolygon, regular_polygon_diameter, delta_regular_even, delta_regular_odd",
+      "startLine": 53,
+      "endLine": 70
     },
     {
       "id": "ehp-bound",
       "title": "Erdős-Herzog-Piranian Bound (1958)",
       "summary": "polynomialFromRoots, ConnectedSublevelSet, EHP_1958",
-      "startLine": 78,
-      "endLine": 95
+      "startLine": 72,
+      "endLine": 85
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Upper Bound (1961)",
       "summary": "pommerenke_1961",
-      "startLine": 97,
-      "endLine": 104
+      "startLine": 87,
+      "endLine": 92
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples for Even n",
       "summary": "hu_tang_n4, hu_tang_n6, cambie_even_not_optimal",
-      "startLine": 106,
-      "endLine": 125
+      "startLine": 94,
+      "endLine": 109
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds for Even n",
       "summary": "MaxDelta, sothanaphan_2025, cambie_dong_tang_6div, cambie_dong_tang_even",
-      "startLine": 127,
-      "endLine": 148
+      "startLine": 111,
+      "endLine": 130
     },
     {
-      "id": "odd-case",
-      "title": "Odd n Remains Open",
-      "summary": "RegularPolygonOptimalOdd, odd_case_open",
-      "startLine": 150,
-      "endLine": 160
-    },
-    {
-      "id": "examples",
-      "title": "Examples",
-      "summary": "optimal_n2, regular_optimal_n3",
-      "startLine": 162,
-      "endLine": 174
-    },
-    {
-      "id": "main-statement",
-      "title": "Erdős Problem #1045 Statement",
-      "summary": "erdos_1045_statement, erdos_1045_partial",
-      "startLine": 176,
-      "endLine": 203
+      "id": "odd-and-small",
+      "title": "Odd n and Small Cases",
+      "summary": "RegularPolygonOptimalOdd, optimal_n2, regular_optimal_n3",
+      "startLine": 132,
+      "endLine": 146
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_1045_summary and erdos_1045_answer",
-      "startLine": 205,
-      "endLine": 233
+      "summary": "erdos_1045_summary theorem combining Cambie and Cambie-Dong-Tang results",
+      "startLine": 148,
+      "endLine": 168
     }
   ],
   "conclusion": {
