@@ -1,5 +1,5 @@
-/-
-Erdős Problem #915: Disjoint Paths in Graphs
+/-!
+# Erdős Problem #915: Disjoint Paths in Graphs
 
 Source: https://erdosproblems.com/915
 Status: SOLVED (partially disproved, partially confirmed)
