@@ -41,7 +41,7 @@ open Real Set
 
 namespace Erdos221
 
-/-
+/-!
 ## Part I: Basic Definitions
 -/
 
@@ -58,7 +58,7 @@ def IsAdditiveComplementForLarge (A B : Set ℕ) : Prop :=
 def IsComplementToPowersOfTwo (A : Set ℕ) : Prop :=
   IsAdditiveComplementForLarge A PowersOfTwo
 
-/-
+/-!
 ## Part II: Counting Functions
 -/
 
@@ -82,7 +82,7 @@ def HasAsymptoticOptimalDensity (A : Set ℕ) : Prop :=
     (fun N => (countingFunction A N : ℝ) * Real.log 2 * Real.log N / N)
     Filter.atTop (nhds 1)
 
-/-
+/-!
 ## Part III: The Main Problem Statement
 -/
 
@@ -90,7 +90,7 @@ def HasAsymptoticOptimalDensity (A : Set ℕ) : Prop :=
 def Erdos221Conjecture : Prop :=
   ∃ A : Set ℕ, IsComplementToPowersOfTwo A ∧ HasDensityNOverLogN A
 
-/-
+/-!
 ## Part IV: Lorentz's Result (1954)
 -/
 
@@ -98,7 +98,7 @@ def Erdos221Conjecture : Prop :=
 axiom lorentz_1954 :
   ∃ A : Set ℕ, IsComplementToPowersOfTwo A ∧ HasLorentzDensity A
 
-/-
+/-!
 ## Part V: Ruzsa's Construction (1972)
 -/
 
@@ -129,14 +129,14 @@ theorem ruzsa_1972 : Erdos221Conjecture := by
   use RuzsaSet
   exact ⟨ruzsa_is_complement, ruzsa_density⟩
 
-/-
+/-!
 ## Part VI: Erdős Problem #221 - SOLVED
 -/
 
 /-- The answer to Problem #221 is YES -/
 theorem erdos_221_answer : Erdos221Conjecture := ruzsa_1972
 
-/-
+/-!
 ## Part VII: Ruzsa's Optimal Construction (2001)
 -/
 
@@ -147,7 +147,7 @@ def ExactComplementExists : Prop :=
 /-- Ruzsa (2001): Exact complement with asymptotically optimal density -/
 axiom ruzsa_2001_exact_complement : ExactComplementExists
 
-/-
+/-!
 ## Part VIII: Why N/log N is Optimal
 -/
 
@@ -167,7 +167,7 @@ theorem optimal_density :
   · exact erdos_221_answer
   · exact density_lower_bound
 
-/-
+/-!
 ## Part IX: Connection to Primitive Roots
 -/
 
@@ -187,7 +187,7 @@ axiom powers_cover_residues :
     ∀ r : ℕ, Nat.Coprime r (5^n) →
       ∃ k : ℕ, (2^k : ZMod (5^n)) = r
 
-/-
+/-!
 ## Part X: Generalizations
 -/
 
@@ -203,7 +203,7 @@ axiom generalization_to_any_base :
       ∃ C > 0, ∀ N : ℕ, N ≥ 2 →
         (countingFunction A N : ℝ) ≤ C * N / Real.log N
 
-/-
+/-!
 ## Part XI: Related Problems
 -/
 
@@ -224,7 +224,7 @@ axiom additive_basis_order_two :
     -- A ∪ PowersOfTwo forms a thin additive basis of order 2
     ∃ N₀ : ℕ, ∀ n ≥ N₀, ∃ a ∈ A, ∃ b ∈ PowersOfTwo, n = a + b
 
-/-
+/-!
 ## Part XII: Summary
 -/
 
