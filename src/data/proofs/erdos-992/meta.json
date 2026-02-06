@@ -81,65 +81,58 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Sequences and fractional parts",
+      "summary": "StrictlyIncreasingSeq, frac, frac_in_unit_interval",
       "startLine": 39,
       "endLine": 53
     },
     {
       "id": "discrepancy",
       "title": "Discrepancy Definition",
-      "summary": "D(N) via supremum over intervals",
+      "summary": "countInInterval, discrepancy D(N) via supremum",
       "startLine": 55,
-      "endLine": 73
+      "endLine": 71
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "Erdős-Koksma, Cassels, Baker",
-      "startLine": 75,
-      "endLine": 92
+      "summary": "erdos_koksma_cassels, baker_1981 axioms",
+      "startLine": 73,
+      "endLine": 89
     },
     {
       "id": "lacunary",
       "title": "Lacunary Sequences",
-      "summary": "Erdős-Gál stronger bound",
-      "startLine": 94,
-      "endLine": 107
+      "summary": "Lacunary definition, erdos_gal_lacunary axiom",
+      "startLine": 91,
+      "endLine": 104
     },
     {
       "id": "conjectures",
       "title": "Main Conjectures",
-      "summary": "Subpolynomial and loglog conjectures",
-      "startLine": 109,
-      "endLine": 130
+      "summary": "conjecture_log_subpolynomial, conjecture_loglog_polynomial",
+      "startLine": 106,
+      "endLine": 124
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "√N is necessary",
-      "startLine": 132,
-      "endLine": 144
-    },
-    {
-      "id": "connections",
-      "title": "Uniform Distribution",
-      "summary": "Weyl, Erdős-Turán, Van der Corput",
-      "startLine": 146,
-      "endLine": 160
+      "summary": "lower_bound_sqrt: √N is necessary",
+      "startLine": 126,
+      "endLine": 135
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "Natural numbers and powers of 2",
-      "startLine": 162,
-      "endLine": 184
+      "summary": "naturalSeq, powersOfTwo, powers_of_two_bound",
+      "startLine": 137,
+      "endLine": 156
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem and status",
-      "startLine": 212,
-      "endLine": 258
+      "summary": "erdos_992_summary combining Baker and Erdős-Gál",
+      "startLine": 158,
+      "endLine": 179
     }
   ],
   "conclusion": {
