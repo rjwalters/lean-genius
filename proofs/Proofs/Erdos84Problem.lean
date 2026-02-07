@@ -44,8 +44,7 @@ open Nat Finset Set
 
 namespace Erdos84
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
@@ -82,8 +81,7 @@ Axiomatized since the formal definition requires decidability machinery.
 -/
 axiom f (n : ℕ) : ℕ
 
-/-!
-## Part II: Erdős-Faudree Bounds
+/- ## Part II: Erdős-Faudree Bounds
 -/
 
 /--
@@ -114,8 +112,7 @@ theorem erdos_faudree_bounds (n : ℕ) (hn : n ≥ 6) :
   · exact erdos_faudree_lower_bound n hn
   · exact trivial_upper_bound n (by omega)
 
-/-!
-## Part III: Part 1 - SOLVED (Verstraëte 2004)
+/- ## Part III: Part 1 - SOLVED (Verstraëte 2004)
 -/
 
 /--
@@ -148,8 +145,7 @@ axiom verstraete_theorem (n : ℕ) (hn : n ≥ 10) :
 -/
 axiom part1_solved : part1_statement
 
-/-!
-## Part IV: Nenadov's Improvement (2025)
+/- ## Part IV: Nenadov's Improvement (2025)
 -/
 
 /--
@@ -169,8 +165,7 @@ theorem best_upper_bound (n : ℕ) (hn : n ≥ 100) (ε : ℝ) (hε : ε > 0) :
     (f n : ℝ) ≤ Real.rpow 2 (n - Real.rpow n (1/2 - ε)) :=
   nenadov_theorem n hn ε hε
 
-/-!
-## Part V: Part 2 - OPEN
+/- ## Part V: Part 2 - OPEN
 -/
 
 /--
@@ -189,8 +184,7 @@ This would show that the lower bound 2^{n/2} can be improved.
 The question remains open.
 -/
 
-/-!
-## Part VI: The Limit Question
+/- ## Part VI: The Limit Question
 -/
 
 /--
@@ -215,8 +209,7 @@ axiom limit_bounds (h : limit_exists) :
       Filter.Tendsto (fun n => Real.rpow (f n) (1/n : ℝ)) Filter.atTop (nhds L)
 
 
-/-!
-## Part VII: Structural Results
+/- ## Part VII: Structural Results
 -/
 
 /--
@@ -229,8 +222,7 @@ axiom structural_constraint :
       ¬isAchievableCycleSet n (A : Set ℕ)
 
 
-/-!
-## Part VIII: Small Values
+/- ## Part VIII: Small Values
 -/
 
 /--
@@ -243,8 +235,7 @@ f(5) = 8: Various combinations
 axiom small_values :
     f 3 = 2 ∧ f 4 = 4 ∧ f 5 = 8
 
-/-!
-## Part IX: Summary
+/- ## Part IX: Summary
 -/
 
 /--
