@@ -142,11 +142,12 @@ axiom cook_nguyen_distribution :
 ## Part VII: Special Cases and Examples
 -/
 
-/-- The Rudin-Shapiro polynomials have particularly nice behavior -/
+/-- The Rudin-Shapiro polynomials have particularly nice behavior.
+    They are Littlewood polynomials of degree 2^n - 1 satisfying a flat bound
+    on the unit circle: |p(z)| ≤ √(2^(n+1)) for all |z| = 1. -/
 def IsRudinShapiro (p : Polynomial ℂ) (n : ℕ) : Prop :=
   p.natDegree = 2^n - 1 ∧ IsLittlewoodPolynomial p ∧
-  -- The defining recurrence relation
-  True  -- Simplified
+  ∀ z ∈ UnitCircle, abs (p.eval z) ≤ Real.sqrt (2^(n+1))
 
 /-- Rudin-Shapiro polynomials satisfy |p(z)| ≤ √(2n) on the unit circle -/
 axiom rudin_shapiro_bound (p : Polynomial ℂ) (n : ℕ) (z : ℂ) :
