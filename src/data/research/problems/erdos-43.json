@@ -1,13 +1,13 @@
 {
   "slug": "erdos-43",
   "title": "Erdős #43",
-  "phase": "NEW",
+  "phase": "EXPLORED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "If $A,B\\subset \\{1,\\ldots,N\\}$ are two Sidon sets such that $(A-A)\\cap(B-B)=\\{0\\}$ then is it true that\\[ \\binom{\\lvert A\\rvert}{2}+\\binom{\\lvert B\\rvert}{2}\\leq\\binom{f(N)}{2}+O(1),\\]where $f(N)$ is the maximum possible size of a Sidon set in $\\{1,\\ldots,N\\}$? If $\\lvert A\\rvert=\\lvert B\\rvert$ then can this bound be improved to\\[\\binom{\\lvert A\\rvert}{2}+\\binom{\\lvert B\\rvert}{2}\\leq (1-c+o(1))\\binom{f(N)}{2}\\]for some constant $c>0$? Since it is known that $f(N)\\sim \\sqrt{N}$ (see [30]) th...",
+    "plain": "If $A,B\\subset \\{1,\\ldots,N\\}$ are two Sidon sets such that $(A-A)\\cap(B-B)=\\{0\\}$ then is it true that\\[ \\binom{\\lvert A\\rvert}{2}+\\binom{\\lvert B\\rvert}{2}\\leq\\binom{f(N)}{2}+O(1),\\]where $f(N)$ is the maximum possible size of a Sidon set in $\\{1,\\ldots,N\\}$?",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,25 +16,42 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "EXPLORED",
     "since": "2026-01-12T06:58:30.839Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Counting arguments and structural bounds",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Submit structural lemmas to Aristotle",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEY: Enhanced formalization. Converted axioms to theorem sorries. Added Tao equal-size bound, counting arguments. Fixed headers for Aristotle. 6 sorry lemmas are Aristotle candidates.",
+    "builtItems": [
+      "Converted sidon_pair_bound from axiom to theorem sorry",
+      "Converted disjoint_diff_combined_bound from axiom to theorem sorry",
+      "Added tao_equal_size_bound theorem (sorry): m^2 <= 2N+1 for equal-size case",
+      "Added sidon_diff_count theorem (sorry): |A-A| = |A|^2-|A|+1",
+      "Added disjoint_diff_total theorem (sorry): combined diff count lower bound",
+      "Fixed all docstring headers for Aristotle compatibility"
+    ],
+    "insights": [
+      "Key counting: Sidon set A in {1,...,N} has |A|^2-|A| distinct nonzero differences, all in {-(N-1),...,N-1}",
+      "Disjoint differences means combined count |A|^2-|A|+|B|^2-|B| distinct nonzero diffs, bounded by 2(N-1)",
+      "Equal-size case: 2*C(m,2) <= N gives m(m-1) <= N, so m <= sqrt(N+1/4) ~ (1/sqrt(2))sqrt(N)",
+      "Barreto disproved the -c strengthening: equal-size Sidon sets can achieve (1/sqrt(2))sqrt(N) asymptotically",
+      "Main conjecture remains OPEN: whether C(|A|,2)+C(|B|,2) <= C(f(N),2)+O(1) for unequal sizes"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #43 - Knowledge Base\n\n## Problem Statement\n\nIf $A,B\\subset \\{1,\\ldots,N\\}$ are two Sidon sets such that $(A-A)\\cap(B-B)=\\{0\\}$ then is it true that\\[ \\binom{\\lvert A\\rvert}{2}+\\binom{\\lvert B\\rvert}{2}\\leq\\binom{f(N)}{2}+O(1),\\]where $f(N)$ is the maximum possible size of a Sidon set in $\\{1,\\ldots,N\\}$? If $\\lvert A\\rvert=\\lvert B\\rvert$ then can this bound be improved to\\[\\binom{\\lvert A\\rvert}{2}+\\binom{\\lvert B\\rvert}{2}\\leq (1-c+o(1))\\binom{f(N)}{2}\\]for some constant $c>0$? Since it is known that $f(N)\\sim \\sqrt{N}$ (see [30]) the latter question is equivalent to asking whether, if $\\lvert A\\rvert=\\lvert B\\rvert$,\\[\\lvert A\\rvert \\leq \\left(\\frac{1}{\\sqrt{2}}-c+o(1)\\right)\\sqrt{N}\\]for some constant $c>0$. In the comments Tao has given a proof of this upper bound without the $-c$. In the comments Barreto has given a negative answer to the second question: for infinitely many $N$ there exist Sidon sets $A,B\\subset \\{1,\\ldots,N\\}$ with $\\lvert A\\rvert=\\lvert B\\rvert$ and $(A-A)\\cap (B-B)=\\{0\\}$ and\\[\\binom{\\lvert A\\rvert}{2}\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $100\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #30\n- Problem #42\n- Problem #44\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "nextSteps": [
+      "Submit to Aristotle: 6 sorry lemmas are provable counting arguments",
+      "Prove sidon_pair_bound manually (injection argument on differences)",
+      "Main conjecture is OPEN - not suitable for automated proving"
+    ],
+    "markdown": ""
   },
   "approaches": [],
   "tags": [
