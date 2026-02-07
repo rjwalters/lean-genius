@@ -4,7 +4,7 @@ import Mathlib.Data.Fin.Basic
 import Mathlib.Order.Monotone.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 # Erdős–Szekeres Theorem
 
 ## What This Proves
@@ -55,7 +55,7 @@ namespace ErdosSzekeres
 
 open Finset Function
 
-/-! ## Subsequence Definitions
+/- ## Subsequence Definitions
 
 A subsequence of a sequence `f : Fin n → α` is determined by a strictly increasing
 function `g : Fin k → Fin n` giving the positions. The subsequence is increasing
@@ -83,7 +83,7 @@ structure DecreasingSubseq {α : Type*} [Preorder α] {n : ℕ} (f : Sequence α
   /-- Values at those positions are strictly decreasing -/
   strictAnti_values : StrictAnti (f ∘ positions)
 
-/-! ## Length of Longest Subsequences
+/- ## Length of Longest Subsequences
 
 For each position i in a sequence, we define:
 - `maxIncLen f i` = length of longest increasing subsequence ending at position i
@@ -108,7 +108,7 @@ def HasDecreasingEndingAt {α : Type*} [Preorder α] {n : ℕ}
     (∀ j, k j < i ∨ (j = Fin.last (len - 1) ∧ k j = i)) ∧
     StrictAnti (f ∘ k)
 
-/-! ## The Main Theorem
+/- ## The Main Theorem
 
 We state and prove the Erdős–Szekeres theorem in several equivalent forms.
 -/
@@ -187,7 +187,7 @@ theorem erdos_szekeres_tight (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
       (¬∃ sub : IncreasingSubseq f r, True) ∧
       (¬∃ sub : DecreasingSubseq f s, True) := erdos_szekeres_tight_axiom r s hr hs
 
-/-! ## Concrete Examples
+/- ## Concrete Examples
 
 These examples verify the theorem bounds on specific cases.
 -/
@@ -232,7 +232,7 @@ theorem decreasing_example : ∃ (sub : DecreasingSubseq (![3, 2, 1] : Sequence 
   fin_cases i <;> fin_cases j <;> simp_all [Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, comp_apply, id_eq, Fin.lt_def]
 
-/-! ## Ramsey-Theoretic Perspective
+/- ## Ramsey-Theoretic Perspective
 
 The Erdős–Szekeres theorem can be viewed as a result in Ramsey theory.
 Color each pair (i, j) with i < j as:

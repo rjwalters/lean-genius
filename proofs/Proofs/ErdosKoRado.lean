@@ -5,7 +5,7 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 # Erdős-Ko-Rado Theorem
 
 ## What This Proves
@@ -59,7 +59,7 @@ open Finset Function Nat
 
 variable {α : Type*} [DecidableEq α] [Fintype α]
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A family of k-sets is intersecting if every two sets share an element -/
 def IsIntersectingFamily {n : ℕ} (A : Finset (Finset (Fin n))) (k : ℕ) : Prop :=
@@ -70,7 +70,7 @@ def IsIntersectingFamily {n : ℕ} (A : Finset (Finset (Fin n))) (k : ℕ) : Pro
 def Star {n : ℕ} (x : Fin n) (k : ℕ) : Finset (Finset (Fin n)) :=
   (powersetCard k (univ : Finset (Fin n))).filter (fun s => x ∈ s)
 
-/-! ## Cyclic Intervals -/
+/- ## Cyclic Intervals -/
 
 /-- A cyclic interval starting at position i with length k in a cyclic order of n elements.
     The cyclic interval contains positions {i, i+1, ..., i+k-1} mod n. -/
@@ -88,7 +88,7 @@ theorem card_cyclicIntervals (n k : ℕ) (_hn : 0 < n) (_hk : k ≤ n) :
 axiom card_cyclicInterval (n k i : ℕ) (_hn : 0 < n) (_hk : k ≤ n) :
     (cyclicInterval n k i).card = k
 
-/-! ## Key Lemma: At most k cyclic intervals can be intersecting -/
+/- ## Key Lemma: At most k cyclic intervals can be intersecting -/
 
 /-- **Key Lemma:** In any fixed cyclic order of n elements, at most k of the n
     cyclic intervals of length k can be pairwise intersecting.
@@ -101,7 +101,7 @@ axiom at_most_k_intersecting_cyclic_intervals (n k : ℕ) (hn : n ≥ 2 * k) (hk
     (∀ i j, i ∈ I → j ∈ I → (cyclicInterval n k i ∩ cyclicInterval n k j).Nonempty) →
     I.card ≤ k
 
-/-! ## Counting Arguments -/
+/- ## Counting Arguments -/
 
 /-- A cyclic order on n elements can be represented as a permutation.
     There are (n-1)! cyclic orders (fixing one element). -/
@@ -138,7 +138,7 @@ axiom double_counting_bound {n k : ℕ} (hn : n ≥ 2 * k) (hk : 0 < k)
     (A : Finset (Finset (Fin n))) (hA : IsIntersectingFamily A k) :
     A.card * (k.factorial * (n - k).factorial) ≤ k * (n - 1).factorial
 
-/-! ## Main Theorem -/
+/- ## Main Theorem -/
 
 /-- **Erdős-Ko-Rado Theorem**
 
@@ -346,7 +346,7 @@ theorem star_is_intersecting {n k : ℕ} (_hk : 0 < k) (x : Fin n) :
     -- Both s and t contain x, so x ∈ s ∩ t
     exact ⟨x, mem_inter.mpr ⟨hs.2, ht.2⟩⟩
 
-/-! ## Concrete Examples -/
+/- ## Concrete Examples -/
 
 /-- Example: For n=4, k=2 (pairs from a 4-element set)
     The star centered at 0 contains all pairs including 0: {0,1}, {0,2}, {0,3}
@@ -365,7 +365,7 @@ example : (5 : ℕ).choose 2 = 10 := by native_decide
     So all C(5,3) = 10 sets form an intersecting family, not just C(4,2) = 6. -/
 theorem ekr_condition_necessary : (5 : ℕ).choose 3 > (4 : ℕ).choose 2 := by native_decide
 
-/-! ## Historical Notes
+/- ## Historical Notes
 
 The Erdős-Ko-Rado theorem has been generalized in many directions:
 

@@ -1,6 +1,6 @@
 import Mathlib
 
-/-!
+/-
 # Erdős Problem 124: Complete Sequences of Integer Powers
 
 ## What This Proves
@@ -47,7 +47,7 @@ Proof found by Aristotle (Harmonic AI), formalized in Lean.
 Adapted for Lean Genius from plby/lean-proofs repository.
 -/
 
-/-!
+/-
 ## Core Definitions and Lemmas
 
 The proof constructs a sequence `u_seq` by iteratively selecting the base
@@ -97,7 +97,7 @@ lemma algebraic_gap (k : ℕ) (d : Fin k → ℕ) (y : Fin k → ℕ)
         _ ≤ (m : ℚ) * ∑ i, (1 : ℚ) / ((d i : ℚ) - 1) := mul_le_mul_of_nonneg_left h_sum (Nat.cast_nonneg m)
     linarith
 
-/-!
+/-
 ## Brown's Criterion
 
 The key insight: if a sequence starts with 1 and has small gaps (each term is at most
@@ -127,7 +127,7 @@ lemma browns_criterion {f : ℕ → ℕ} (h_mono : Monotone f) (h0 : f 0 = 1)
     exact ⟨ n, le_trans ( by norm_num ) ( Finset.sum_le_sum fun _ _ => Nat.one_le_iff_ne_zero.mpr <| by linarith [ h_mono <| Nat.zero_le ‹_› ] ) ⟩;
   exact Exists.imp ( fun s => And.right ) ( h_ind k n hk )
 
-/-!
+/-
 ## Sequence Construction
 
 We construct the sequence by greedily selecting the base with the smallest
@@ -153,7 +153,7 @@ noncomputable def u_seq {k : ℕ} (d : Fin k → ℕ) (n : ℕ) : ℕ :=
     d i ^ e i
   else 1
 
-/-!
+/-
 ## Sequence Properties
 
 Key properties of the constructed sequence needed for Brown's criterion.
@@ -349,7 +349,7 @@ lemma chosen_pair_injective {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) :
   norm_num +zetaDelta at *
   cases lt_or_gt_of_ne hmn_ne <;> [exact absurd (chosen_exponent_strict_mono hk _ _ ‹_› hmn.1) (by aesop); exact absurd (chosen_exponent_strict_mono hk _ _ ‹_› (hmn.1.symm)) (by aesop)]
 
-/-!
+/-
 ## Digit Decomposition
 
 A subset sum of u_seq can be decomposed into numbers with 0/1 digits in each base.
@@ -405,7 +405,7 @@ lemma u_seq_zero {k : ℕ} {d : Fin k → ℕ} : u_seq d 0 = 1 := by
 lemma k_ne_zero_of_sum_eq_one {k : ℕ} {d : Fin k → ℕ} (h : 1 ≤ ∑ i, (1 : ℚ) / (d i - 1)) : k ≠ 0 := by
   bound
 
-/-!
+/-
 ## Main Theorem
 
 The Erdős conjecture is true: under the given conditions, every natural number
@@ -455,7 +455,7 @@ theorem erdos_124 : ∀ k, ∀ d : Fin k → ℕ,
   intro i
   exact ⟨ha.left i, ha.right⟩
 
-/-!
+/-
 ## Formal Conjectures Compatibility
 
 These theorems match the statements from Google DeepMind's Formal Conjectures project.

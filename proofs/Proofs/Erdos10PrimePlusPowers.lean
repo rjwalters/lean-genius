@@ -33,7 +33,7 @@ import Mathlib.Tactic
 
 namespace Erdos10
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- A number n is representable as p + 2^a for a prime p. -/
 def IsPrimePlus2Pow (n : ℕ) : Prop :=
@@ -49,7 +49,7 @@ def IsPrimePlusDistinctPowers (k n : ℕ) : Prop :=
   ∃ (p : ℕ) (exps : Finset ℕ),
     p.Prime ∧ exps.card ≤ k ∧ n = p + exps.sum (2 ^ ·)
 
-/-! ## Part II: Basic Lemmas -/
+/- ## Part II: Basic Lemmas -/
 
 /-- Single power is special case of k powers. -/
 theorem primePlus2Pow_of_k_ge_one {n : ℕ} (h : IsPrimePlus2Pow n) :
@@ -79,7 +79,7 @@ theorem primePlusZeroPowers_iff {n : ℕ} :
     use n, ∅
     simp [hp]
 
-/-! ## Part III: Small Case Verification -/
+/- ## Part III: Small Case Verification -/
 
 /-- 3 = 2 + 2^0 -/
 theorem three_isPrimePlus2Pow : IsPrimePlus2Pow 3 :=
@@ -113,7 +113,7 @@ theorem nine_isPrimePlus2Pow : IsPrimePlus2Pow 9 :=
 theorem ten_isPrimePlus2Pow : IsPrimePlus2Pow 10 :=
   ⟨2, 3, Nat.prime_two, by norm_num⟩
 
-/-! ## Part IV: Special Cases and Counterexamples -/
+/- ## Part IV: Special Cases and Counterexamples -/
 
 /-- **Counterexample to k=1: 262**
 
@@ -216,7 +216,7 @@ theorem k_one_insufficient : ∃ n : ℕ, ¬n.Prime ∧ ¬IsPrimePlusKPowers 1 n
       simp only [ha, Multiset.map_singleton, Multiset.sum_singleton] at heq
       exact not_262_primePlus2Pow ⟨p, a, hp, heq⟩
 
-/-! ## k=2 Counterexample: 906
+/- ## k=2 Counterexample: 906
 
 OEIS A006286 lists numbers not of form p + 2^x + 2^y (EXACTLY 2 distinct positive powers).
 128 is in A006286, but our IsPrimePlusKPowers allows AT MOST k powers (including 2^0).
@@ -416,7 +416,7 @@ theorem summary_known_insufficient :
     (∃ n, ¬n.Prime ∧ ¬IsPrimePlusKPowers 3 n) :=
   ⟨k_one_insufficient, k_two_insufficient, k_three_insufficient⟩
 
-/-! ## Part V: Density Results (Statements) -/
+/- ## Part V: Density Results (Statements) -/
 
 /-- Romanoff's theorem (1934): A positive proportion of integers are p + 2^k.
     The lower asymptotic density of {n | IsPrimePlus2Pow n} is positive.
@@ -438,7 +438,7 @@ axiom gallagher_density :
     -- Informal: density of {n | IsPrimePlusKPowers k n} ≥ 1 - ε
     True
 
-/-! ## Part VI: Main Conjecture -/
+/- ## Part VI: Main Conjecture -/
 
 /-- **Erdős Problem #10** (Negative Formulation)
 
@@ -468,7 +468,7 @@ theorem erdos_10_pos_implies_not_neg : erdos_10_positive → ¬erdos_10_negative
   -- But hk says all n ≥ 2 are representable
   exact hnot (hk n hn2)
 
-/-! ## Part VII: Crocker's Theorem (1971) -/
+/- ## Part VII: Crocker's Theorem (1971) -/
 
 /-- The set of integers expressible as p + 2^a + 2^b for positive powers.
     This is Crocker's original definition with a,b > 0. -/
@@ -513,7 +513,7 @@ theorem k_two_insufficient_even :
   apply hn_not
   exact primePlusKPowers_mono (Nat.zero_le 2) (primePlusZeroPowers_iff.mpr hp)
 
-/-! ## Part VIII: Odd vs Even Analysis -/
+/- ## Part VIII: Odd vs Even Analysis -/
 
 /-- For odd n ≥ 3: n - 2 might be prime (then n = (n-2) + 2^1). -/
 theorem odd_minus_two_strategy {n : ℕ} (hn : Odd n) (hn3 : n ≥ 3)
@@ -534,7 +534,7 @@ def granville_soundararajan_even : Prop :=
 #check erdos_10_positive
 #check grechuk_counterexample
 
-/-! ## Part IX: De Polignac's Covering Congruence Method
+/- ## Part IX: De Polignac's Covering Congruence Method
 
 The fundamental reason counterexamples exist is Erdős's covering congruence method.
 
@@ -611,7 +611,7 @@ axiom chen_density_upper_bound :
     -- Informal: upper density ≤ δ
     True
 
-/-! ## Part X: Summary of Known Results -/
+/- ## Part X: Summary of Known Results -/
 
 /-- Complete summary of what we know about Erdős Problem #10:
 
