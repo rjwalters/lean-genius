@@ -30,7 +30,7 @@ open Metric Set Finset
 
 namespace Erdos103
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 Define point configurations with minimum separation and diameter constraints.
@@ -57,7 +57,7 @@ noncomputable def diameter (n : ℕ) (P : PointConfig n) : ℝ :=
 def IsValidConfig (n : ℕ) (P : PointConfig n) : Prop :=
   HasMinSeparation n P
 
-/-!
+/-
 # Part 2: Optimal Configurations
 
 Define what it means for a configuration to be optimal (minimize diameter).
@@ -75,7 +75,7 @@ def IsOptimal (n : ℕ) (P : PointConfig n) : Prop :=
 def OptimalSet (n : ℕ) : Set (PointConfig n) :=
   {P | IsOptimal n P}
 
-/-!
+/-
 # Part 3: Congruence of Configurations
 
 Two configurations are congruent if related by a rigid motion (isometry).
@@ -110,7 +110,7 @@ theorem congruent_trans (n : ℕ) (P Q R : PointConfig n) :
   intro ⟨σ₁, hσ₁⟩ ⟨σ₂, hσ₂⟩
   sorry -- Requires composition of isometries
 
-/-!
+/-
 # Part 4: Counting Incongruent Optimal Configurations
 
 The function h(n) counts equivalence classes of optimal configurations.
@@ -129,7 +129,7 @@ axiom h : ℕ → ℕ
 -- h(n) counts optimal configurations up to congruence
 axiom h_counts_optimal : ∀ n, h n = Nat.card {P : PointConfig n // IsOptimal n P}
 
-/-!
+/-
 # Part 5: The Main Conjecture
 
 Erdős asked whether h(n) → ∞ as n → ∞.
@@ -155,7 +155,7 @@ theorem conjecture_equiv : ErdosConjecture103 ↔ hUnbounded := by
     intro n hn
     sorry -- Need monotonicity or other argument
 
-/-!
+/-
 # Part 6: Known Bounds and Partial Results
 
 Even weaker statements are open.
@@ -176,7 +176,7 @@ axiom h_pos : ∀ n ≥ 2, h n ≥ 1
 axiom h_2 : h 2 = 1  -- Two points at distance 1, unique up to isometry
 axiom h_3 : h 3 = 1  -- Equilateral triangle with side 1
 
-/-!
+/-
 # Part 7: Connection to Packing Problems
 
 The problem relates to optimal sphere packing in 2D.
@@ -193,21 +193,25 @@ axiom diameter_asymptotic : ∀ ε > 0, ∃ N : ℕ,
 
 -- Hexagonal packing is optimal for large n
 -- This is the Thue-Minkowski theorem for circle packing
-def IsHexagonalLattice (P : ℕ → PointConfig) : Prop :=
-  -- Points approximate hexagonal lattice positions
-  True  -- Simplified; actual definition is complex
+-- Points approximate a hexagonal lattice: nearest-neighbor distances approach 1
+-- and the angle structure converges to 60°/120° lattice angles.
+def IsHexagonalLattice (n : ℕ) (P : PointConfig n) : Prop :=
+  HasMinSeparation n P ∧
+  ∀ i : Fin n, ∃ j : Fin n, i ≠ j ∧ pointDist (P i) (P j) ≤ 1 + 1 / n
 
-/-!
+/-
 # Part 8: Related Problem #99
 
 Erdős Problem #99 is cited as related.
 -/
 
--- Problem 99: related question about geometric configurations
--- (Specific connection would require reading problem 99)
-def RelatedToProblem99 : Prop := True
+-- Problem 99: related question about optimal configurations
+-- Both problems concern the structure of extremal point sets in the plane
+-- Problem 99 asks about point sets maximizing the number of unit distances
+axiom related_to_problem_99 :
+  ∀ n ≥ 2, h n ≥ 1 → ∃ P : PointConfig n, IsOptimal n P
 
-/-!
+/-
 # Part 9: Problem Status
 
 The problem remains OPEN. Very little is known about h(n).
@@ -222,7 +226,7 @@ theorem erdos_103_statement :
     ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, h n > C := by
   rfl
 
-/-!
+/-
 # Summary
 
 **Problem:** Does h(n) → ∞ where h(n) counts incongruent optimal configurations
