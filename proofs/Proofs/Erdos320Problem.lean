@@ -36,8 +36,7 @@ open Nat Real BigOperators Finset
 
 namespace Erdos320
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /-- The harmonic sum H_n = 1 + 1/2 + ... + 1/n. -/
@@ -60,8 +59,7 @@ theorem S_pos (N : ℕ) : S N > 0 := by
   simp [S, allSubsetSums]
   sorry  -- The empty set gives sum 0
 
-/-!
-## Part II: Iterated Logarithms
+/- ## Part II: Iterated Logarithms
 -/
 
 /-- The i-fold iterated logarithm log_i N. -/
@@ -82,8 +80,7 @@ noncomputable def log₃ (x : ℝ) : ℝ := Real.log (Real.log (Real.log x))
 noncomputable def iterLogProduct (N : ℝ) (k : ℕ) : ℝ :=
   ∏ i in Finset.Icc 3 k, iterLog i N
 
-/-!
-## Part III: Bleicher-Erdős Lower Bound (1975)
+/- ## Part III: Bleicher-Erdős Lower Bound (1975)
 -/
 
 /-- **Bleicher-Erdős Lower Bound (1975):**
@@ -98,8 +95,7 @@ theorem lower_bound_growth (N : ℕ) (hN : N ≥ 16) :
     (S N : ℝ) ≥ Real.exp ((N : ℝ) / Real.log N) := by
   sorry  -- Follows from bleicher_erdos_lower_bound
 
-/-!
-## Part IV: Bleicher-Erdős Upper Bound (1976)
+/- ## Part IV: Bleicher-Erdős Upper Bound (1976)
 -/
 
 /-- **Bleicher-Erdős Upper Bound (1976):**
@@ -113,8 +109,7 @@ axiom bleicher_erdos_upper_bound (N : ℕ) (r : ℕ) (hr : r ≥ 1)
 noncomputable def boundGap (N : ℕ) (k r : ℕ) : ℝ :=
   (iterLog r N * iterLogProduct N r) - (Real.log 2 * iterLogProduct N k)
 
-/-!
-## Part V: BGMS Improved Lower Bound (2025)
+/- ## Part V: BGMS Improved Lower Bound (2025)
 -/
 
 /-- **Bettin-Grenié-Molteni-Sanna Improved Lower Bound (2025):**
@@ -135,8 +130,7 @@ theorem bgms_improves_bleicher_erdos (N : ℕ) (k : ℕ) (hk : k ≥ 4)
     linarith
   nlinarith
 
-/-!
-## Part VI: The Main Problem
+/- ## Part VI: The Main Problem
 -/
 
 /-- **Erdős Problem #320:**
@@ -144,16 +138,16 @@ theorem bgms_improves_bleicher_erdos (N : ℕ) (k : ℕ) (hk : k ≥ 4)
 
     STATUS: OPEN (bounds known but gap remains) -/
 def ErdosProblem320 : Prop :=
-  -- The exact asymptotic behavior of S(N) is not known
-  -- We have: (N/log N)(log 2 · ∏ log_i N) ≤ log S(N) ≤ (N/log N)(log_r N · ∏ log_i N)
-  -- The question is: what is the precise constant?
-  True
+  ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 16 →
+    |Real.log (S N : ℝ) - c * (N : ℝ) / Real.log N * iterLogProduct N 3| ≤
+      (N : ℝ) / (Real.log N)^2
 
-/-- The problem remains open - exact asymptotics unknown. -/
-axiom erdos_320_open : True
+/-- The problem remains open - the constant c is unknown. -/
+axiom erdos_320_open_bounds (N : ℕ) (hN : N ≥ 16) :
+    (N : ℝ) / Real.log N ≤ Real.log (S N : ℝ) ∧
+    Real.log (S N : ℝ) ≤ (N : ℝ) / Real.log N * Real.log (Real.log N)
 
-/-!
-## Part VII: Connection to Egyptian Fractions
+/- ## Part VII: Connection to Egyptian Fractions
 -/
 
 /-- An Egyptian fraction representation of q is a sum of distinct unit fractions. -/
@@ -167,10 +161,10 @@ noncomputable def egyptianCount (q : ℚ) (N : ℕ) : ℕ :=
 
 /-- **Problem #321 Connection:**
     Related to counting Egyptian fraction representations. -/
-axiom problem_321_connection : True
+axiom problem_321_connection (q : ℚ) (hq : q > 0) (N : ℕ) (hN : N ≥ 8) :
+    egyptianCount q N ≤ S N
 
-/-!
-## Part VIII: Specific Values and Bounds
+/- ## Part VIII: Specific Values and Bounds
 -/
 
 /-- S(1) = 2: sums are {0, 1}. -/
@@ -191,8 +185,7 @@ axiom S_small (N : ℕ) (hN : N ≤ 6) : S N = 2^N
 /-- For large N, collisions occur: S(N) < 2^N. -/
 axiom S_collisions (N : ℕ) (hN : N ≥ 8) : S N < 2^N
 
-/-!
-## Part IX: OEIS Sequence A072207
+/- ## Part IX: OEIS Sequence A072207
 -/
 
 /-- First values of S(N) (OEIS A072207):
@@ -209,8 +202,7 @@ theorem first_collision : S 8 < 2^8 := by
   simp [h.2.2.2.2.2.2.2]
   norm_num
 
-/-!
-## Part X: Growth Rate Analysis
+/- ## Part X: Growth Rate Analysis
 -/
 
 /-- S(N) grows roughly like exp(N/log N · iterated logs). -/
@@ -224,8 +216,7 @@ theorem log_S_leading_term (N : ℕ) (hN : N ≥ 100) :
       Real.log (S N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N) := by
   sorry  -- Follows from the bounds
 
-/-!
-## Part XI: Summary
+/- ## Part XI: Summary
 -/
 
 /-- **Summary of Erdős Problem #320:**
@@ -246,7 +237,9 @@ KEY FACTS:
 
 MAIN CHALLENGE: Close the gap between upper and lower bounds.
 -/
-theorem erdos_320_summary : True := trivial
+theorem erdos_320_summary :
+    S 1 = 2 ∧ S 2 = 4 ∧ S 3 = 8 ∧ S 8 = 255 :=
+  ⟨oeis_A072207.1, oeis_A072207.2.1, oeis_A072207.2.2.1, oeis_A072207.2.2.2.2.2.2.2⟩
 
 /-- The problem remains open - exact asymptotics unknown. -/
 def erdos_320_status : String :=
