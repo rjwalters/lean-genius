@@ -61,13 +61,11 @@ def IsBipartite (G : SimpleGraph V) : Prop := G.IsBipartite
 
 /--
 **Turán Number ex(n; H):**
-The maximum number of edges in an n-vertex graph that contains no copy of H.
+The maximum number of edges in an n-vertex H-free graph.
+Axiomatized since formalizing graph homomorphism freeness requires extensive infrastructure.
 -/
-noncomputable def turanNumber (H : SimpleGraph V) (n : ℕ) : ℕ :=
-  sSup { e : ℕ | ∃ (W : Type*) [Fintype W] [DecidableEq W] (G : SimpleGraph W),
-    Fintype.card W = n ∧ G.edgeFinset.card = e ∧
-    -- G is H-free (simplified)
-    True }
+axiom turanNumber (V : Type*) [Fintype V] [DecidableEq V]
+    (H : SimpleGraph V) (n : ℕ) : ℕ
 
 /-!
 ## Part II: The Erdős-Simonovits Conjecture
@@ -89,13 +87,7 @@ This predicts the extremal exponent based solely on the degeneracy parameter r.
 def ErdosSimonovitsConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (H : SimpleGraph V) (r : ℕ),
     r ≥ 1 → IsBipartite H → IsRDegenerate H r →
-      IsAsymptoticallyBounded (turanNumber H) (2 - 1/r)
-
-/--
-**The conjecture remains OPEN:**
-Not resolved even for r = 2!
--/
-axiom conjecture_open : True
+      IsAsymptoticallyBounded (turanNumber V H) (2 - 1/r)
 
 /-!
 ## Part III: Partial Results
@@ -110,7 +102,7 @@ This is weaker than the conjecture (1/4r instead of 1/r).
 axiom aks_theorem (V : Type*) [Fintype V] [DecidableEq V]
     (H : SimpleGraph V) (r : ℕ) (hr : r ≥ 1)
     (hBip : IsBipartite H) (hDeg : IsRDegenerate H r) :
-    IsAsymptoticallyBounded (turanNumber H) (2 - 1/(4*r))
+    IsAsymptoticallyBounded (turanNumber V H) (2 - 1/(4*r))
 
 /--
 **AKS Special Case:**
@@ -125,7 +117,7 @@ def MaxDegreeOneSide (H : SimpleGraph V) (r : ℕ) : Prop :=
 axiom aks_special_case (V : Type*) [Fintype V] [DecidableEq V]
     (H : SimpleGraph V) (r : ℕ) (hr : r ≥ 1)
     (hBip : IsBipartite H) (hMaxDeg : MaxDegreeOneSide H r) :
-    IsAsymptoticallyBounded (turanNumber H) (2 - 1/r)
+    IsAsymptoticallyBounded (turanNumber V H) (2 - 1/r)
 
 /-!
 ## Part IV: Comparison of Bounds
@@ -180,7 +172,7 @@ ex(n; K_{r,s}) = Θ(n^{2-1/r}) when r ≤ s.
 This is the Kővári-Sós-Turán theorem!
 -/
 axiom kovari_sos_turan (r s : ℕ) (hrs : r ≤ s) (hs : s ≥ 1) :
-    IsAsymptoticallyBounded (turanNumber (completeBipartiteGraph r s)) (2 - 1/r)
+    IsAsymptoticallyBounded (turanNumber (Fin (r + s)) (completeBipartiteGraph r s)) (2 - 1/r)
 
 /--
 **Cycles C_{2k}:**
@@ -188,7 +180,7 @@ Even cycles are 2-degenerate.
 -/
 axiom even_cycle_2_degenerate (k : ℕ) (hk : k ≥ 2) :
     ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
-      IsRDegenerate G 2 ∧ IsBipartite G  -- C_{2k} is bipartite and 2-degenerate
+      IsRDegenerate G 2 ∧ IsBipartite G
 
 /-!
 ## Part VI: The r = 2 Case
@@ -213,62 +205,11 @@ ex(n; C_4) = Θ(n^{3/2}) is known (Bondy-Simonovits).
 axiom c4_turan :
     ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsRDegenerate G 2 ∧ IsBipartite G ∧
-      IsAsymptoticallyBounded (turanNumber G) (3/2)
+      IsAsymptoticallyBounded (turanNumber V G) (3/2)
 
 /-!
-## Part VII: Why the Problem is Hard
--/
+## Part VII: Summary
 
-/--
-**Difficulty Factors:**
-1. Degeneracy is a "local" condition but Turán numbers are "global"
-2. The construction H ⊆ G depends on entire graph structure
-3. Probabilistic methods give weaker bounds
-4. The gap between n^{2-1/4r} and n^{2-1/r} is substantial
--/
-theorem difficulty_insight : True := trivial
-
-/--
-**Known Approaches:**
-- Dependent random choice (gives AKS bound)
-- Regularity method (works for some special cases)
-- Algebraic methods (for specific graphs like K_{r,s})
--/
-axiom known_approaches : True
-
-/-!
-## Part VIII: Related Problems
--/
-
-/--
-**Problem #113:**
-Related question about extremal numbers.
--/
-axiom problem_113_related : True
-
-/--
-**Problem #147:**
-Related question about extremal numbers.
--/
-axiom problem_147_related : True
-
-/-!
-## Part IX: Summary
--/
-
-/--
-**Summary of Results:**
--/
-theorem erdos_146_summary :
-    -- AKS gives n^{2-1/4r}
-    True ∧
-    -- This is weaker than conjectured n^{2-1/r}
-    (∀ r : ℕ, r ≥ 1 → (2 : ℝ) - 1/r < 2 - 1/(4*r)) ∧
-    -- The conjecture remains OPEN
-    True := by
-  exact ⟨trivial, aks_weaker_than_conjecture, trivial⟩
-
-/--
 **Erdős Problem #146: OPEN**
 
 **CONJECTURE:** For bipartite r-degenerate H: ex(n; H) ≪ n^{2-1/r}
@@ -285,14 +226,15 @@ theorem erdos_146_summary :
 open problem in extremal graph theory. Even the simplest case r = 2 remains
 unresolved despite decades of research.
 -/
-theorem erdos_146 : True := trivial
 
 /--
-**Historical Note:**
-This problem exemplifies the deep connection between local graph properties
-(degeneracy) and global extremal behavior (Turán numbers). The $500 prize
-reflects its difficulty and importance in combinatorics.
+**Summary:** The AKS bound n^{2-1/4r} is strictly weaker than the conjectured
+n^{2-1/r} for all r ≥ 1, and the r=2 case exponents are 3/2 (conjectured) vs 15/8 (known).
 -/
-theorem historical_note : True := trivial
+theorem erdos_146_summary :
+    (∀ r : ℕ, r ≥ 1 → (2 : ℝ) - 1/r < 2 - 1/(4*r)) ∧
+    ((2 : ℝ) - 1/2 = 3/2 ∧ (2 : ℝ) - 1/8 = 15/8) ∧
+    ((2 : ℝ) - 1/2 < 2 - 1/(4*2)) :=
+  ⟨aks_weaker_than_conjecture, r2_case_exponents, bound_comparison_r2⟩
 
 end Erdos146

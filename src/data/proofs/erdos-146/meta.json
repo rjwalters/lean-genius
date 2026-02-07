@@ -24,22 +24,23 @@
     ],
     "originalContributions": [
       "IsRDegenerate: r-degeneracy definition via induced subgraph minimum degree",
-      "turanNumber: extremal number ex(n;H) definition",
+      "turanNumber: axiomatized extremal number ex(n;H)",
       "IsAsymptoticallyBounded: O(n^α) asymptotic notation",
       "ErdosSimonovitsConjecture: main conjecture statement",
-      "aks_theorem: n^{2-1/4r} partial result",
+      "aks_theorem: n^{2-1/4r} partial result axiom",
       "MaxDegreeOneSide: special case condition",
-      "aks_special_case: full bound for degree-restricted case",
-      "completeBipartiteGraph: explicit K_{r,s} construction",
-      "kovari_sos_turan: known result for complete bipartite",
-      "aks_weaker_than_conjecture: gap between bounds theorem"
+      "aks_special_case: full bound for degree-restricted case axiom",
+      "completeBipartiteGraph: explicit K_{r,s} construction with proved symmetry and irreflexivity",
+      "kovari_sos_turan: known result for complete bipartite axiom",
+      "aks_weaker_than_conjecture: gap between bounds proved theorem",
+      "erdos_146_summary: combines gap analysis, r=2 exponents, and bound comparison"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős and Simonovits (1984) conjectured that the Turán number for bipartite r-degenerate graphs H satisfies ex(n;H) ≪ n^{2-1/r}. A graph is r-degenerate if every induced subgraph has minimum degree ≤ r. This conjecture predicts that degeneracy alone determines the extremal exponent. Despite decades of work, the conjecture remains OPEN even for r=2. Erdős offered $500 for its resolution.",
+    "historicalContext": "Erdős and Simonovits conjectured in 1984 that the Turán number for any bipartite r-degenerate graph H satisfies ex(n;H) ≪ n^{2-1/r}. A graph is r-degenerate if every induced subgraph has a vertex of degree at most r. This elegant conjecture predicts that the extremal exponent depends only on the degeneracy parameter r, regardless of other structural properties of H. Erdős considered this problem important enough to offer a $500 prize for its resolution.\n\nThe best partial result was obtained by Alon, Krivelevich, and Sudakov (AKS) in 2003, who proved the weaker bound ex(n;H) ≪ n^{2-1/4r} using the dependent random choice technique. They also showed that the full conjectured bound holds in the special case where the maximum degree in one part of the bipartition equals r, which subsumes the classical Kővári-Sós-Turán theorem for complete bipartite graphs K_{r,s}.\n\nDespite decades of effort, the conjecture remains open even for r=2, where there is a substantial gap between the conjectured exponent 3/2 and the AKS bound 15/8. The difficulty lies in bridging local structure (degeneracy is a property of induced subgraphs) and global extremal behavior (Turán numbers depend on the entire graph). The problem is considered one of the most important open questions in extremal graph theory.",
     "problemStatement": "**Problem Statement (OPEN)**\n\n**Conjecture (Erdős-Simonovits 1984):** If H is bipartite and r-degenerate, then\n$$\\mathrm{ex}(n; H) \\ll n^{2-1/r}$$\n\n**Status:** OPEN (even for r = 2!)\n\n**Prize:** $500\n\n**Best Known (AKS 2003):**\n$$\\mathrm{ex}(n; H) \\ll n^{2-1/4r}$$\n\n**Special Case:** Full bound holds when max degree in one side = r",
-    "proofStrategy": "The formalization defines r-degeneracy, Turán numbers, and asymptotic bounds. The Erdős-Simonovits conjecture is stated precisely. The AKS partial result is axiomatized, along with the special case where max degree constraint holds. Key examples (complete bipartite graphs, cycles) are included, and the gap between known and conjectured bounds is verified.",
+    "proofStrategy": "The formalization defines r-degeneracy, Turán numbers (axiomatized), and asymptotic bounds. The Erdős-Simonovits conjecture is stated precisely. The AKS partial result and special case are axiomatized. Key examples (complete bipartite graphs with proved properties, even cycles) are included. The gap between known and conjectured bounds is verified by proved theorems, and the summary combines these results without any trivial placeholders.",
     "keyInsights": [
       "**r-Degenerate:** Every induced subgraph has a vertex of degree ≤ r",
       "**Turán Number:** ex(n;H) = max edges in n-vertex H-free graph",
@@ -55,64 +56,50 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 40,
-      "endLine": 71,
-      "summary": "IsRDegenerate, IsBipartite, turanNumber"
+      "endLine": 68,
+      "summary": "IsRDegenerate, IsBipartite, turanNumber (axiomatized)"
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Simonovits Conjecture",
-      "startLine": 72,
-      "endLine": 99,
-      "summary": "Main conjecture: ex(n;H) ≪ n^{2-1/r}"
+      "startLine": 70,
+      "endLine": 90,
+      "summary": "IsAsymptoticallyBounded, ErdosSimonovitsConjecture definition"
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
-      "startLine": 100,
-      "endLine": 129,
-      "summary": "AKS theorem: n^{2-1/4r}, special case for bounded degree"
+      "startLine": 92,
+      "endLine": 120,
+      "summary": "AKS theorem: n^{2-1/4r}, MaxDegreeOneSide, special case"
     },
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
-      "startLine": 130,
-      "endLine": 155,
-      "summary": "Gap analysis: n^{2-1/r} vs n^{2-1/4r}"
+      "startLine": 122,
+      "endLine": 146,
+      "summary": "bound_comparison_r2, aks_weaker_than_conjecture proved theorems"
     },
     {
       "id": "examples",
       "title": "Examples of r-Degenerate Graphs",
-      "startLine": 156,
-      "endLine": 192,
-      "summary": "Complete bipartite K_{r,s}, even cycles, Kővári-Sós-Turán"
+      "startLine": 148,
+      "endLine": 183,
+      "summary": "completeBipartiteGraph, Kővári-Sós-Turán, even cycles"
     },
     {
       "id": "r2-case",
       "title": "The r = 2 Case",
-      "startLine": 193,
-      "endLine": 217,
-      "summary": "Even simplest case open; C_4 example"
-    },
-    {
-      "id": "difficulty",
-      "title": "Why the Problem is Hard",
-      "startLine": 218,
-      "endLine": 238,
-      "summary": "Local vs global conditions, known approaches"
-    },
-    {
-      "id": "related",
-      "title": "Related Problems",
-      "startLine": 239,
-      "endLine": 254,
-      "summary": "Problems #113 and #147"
+      "startLine": 185,
+      "endLine": 208,
+      "summary": "r2_case_exponents proved, c4_turan axiom"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 255,
-      "endLine": 298,
-      "summary": "Main theorem and historical note"
+      "startLine": 210,
+      "endLine": 240,
+      "summary": "erdos_146_summary combining gap analysis, exponents, and bound comparison"
     }
   ],
   "conclusion": {
