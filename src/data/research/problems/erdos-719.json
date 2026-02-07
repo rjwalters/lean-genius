@@ -1,8 +1,8 @@
 {
   "slug": "erdos-719",
   "title": "Erdős #719",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "SURVEY",
+  "status": "surveyed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -11,40 +11,95 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Graph case (r=2): Turán number equals floor(n²/4) by Turán's theorem",
+      "C(r+1,r) = r+1: each complete clique piece has exactly r+1 edges",
+      "Empty hypergraph case satisfies conjecture trivially"
+    ],
+    "open": [
+      "Main Erdős-Sauer conjecture for all r ≥ 2",
+      "Hypergraph Turán problem: exact value of ex_r(n; K_{r+1}^r) for r ≥ 3"
+    ],
+    "goal": "Formalize the conjecture with proper hypergraph infrastructure"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-14T21:21:40.197Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEY",
+    "since": "2026-02-07T15:00:00Z",
+    "iteration": 2,
+    "focus": "Enhanced formalization with proper hypergraph infrastructure",
+    "blockers": [
+      "Main conjecture is OPEN - cannot prove",
+      "Hypergraph Turán problem is itself open for r ≥ 3"
+    ],
+    "nextAction": "Submit provable sorries to Aristotle for structural lemmas",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #719 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathrm{ex}_r(n;K_{r+1}^r)$ be the maximum number of $r$-edges that can be placed on $n$ vertices without forming a $K_{r+1}^r$ (the $r$-uniform complete graph on $r+1$ vertices).\n\nIs every $r$-hypergraph $G$ on $n$ vertices the union of at most $\\mathrm{ex}_{r}(n;K_{r+1}^r)$ many copies of $K_r^r$ and $K_{r+1}^r$, no two of which share a $K_r^r$?\n\n\n\nA conjecture of Erd\\H{o}s and Sauer.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #718\n- Problem #720\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+    "progressSummary": "SURVEY: Enhanced formalization from placeholder axioms to proper hypergraph infrastructure. Built RUniformHypergraph structure, decomposition framework (IsValidDecomp with edge-disjointness, coverage), Turán number definition via sSup, and proved empty case + C(r+1,r)=r+1. Main conjecture remains OPEN.",
+    "builtItems": [
+      "RUniformHypergraph structure with edge uniformity constraint",
+      "completeClique: all r-subsets of a vertex set",
+      "IsValidDecomp structure with edge-disjointness and coverage",
+      "IsCliqueFree predicate for K_{r+1}^r-freeness",
+      "turanHypergraph definition via sSup of clique-free hypergraphs",
+      "choose_succ_self: C(r+1,r) = r+1 proved",
+      "empty_case: empty hypergraph satisfies conjecture",
+      "graph_case_bound: reduces to n²/4 via Turán's theorem"
+    ],
+    "insights": [
+      "Problem is OPEN - Erdős-Sauer conjecture from 1981, no resolution known",
+      "For r ≥ 3, even computing the Turán number is a major open problem",
+      "Graph case (r=2) connects to Turán's theorem and triangle decompositions",
+      "Related to Erdős #718 (Turán number lower bounds), #720 (Turán densities), #83 (triangle decompositions)",
+      "Key structural insight: each clique piece K_{r+1}^r absorbs r+1 edges using only 1 piece, which is why the Turán number suffices as bound",
+      "Previous formalization had placeholder True axioms and hardcoded turanHypergraph = 0",
+      "Fixed /-! docstring sections for Aristotle compatibility"
+    ],
+    "mathlibGaps": [
+      "No Mathlib hypergraph library - must build from scratch using Finset (Finset V)",
+      "Turán's theorem not formalized in Mathlib for our representation"
+    ],
+    "nextSteps": [
+      "Try proving decomp_pieces_le_edges via injection from pieces to edges",
+      "Try proving trivial_decomp_exists by mapping each edge to its singleton",
+      "Submit provable file to Aristotle for structural lemma proofs"
+    ],
+    "markdown": "# Erdős #719 - Knowledge Base\n\n## Problem Statement\n\nLet ex_r(n; K_{r+1}^r) be the Turán number for r-uniform hypergraphs.\n\nConjecture (Erdős–Sauer, 1981): Every r-uniform hypergraph G on n vertices is the union of at most ex_r(n; K_{r+1}^r) copies of K_r^r and K_{r+1}^r, with no two sharing a K_r^r.\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Tractability Score**: 5/10\n**Aristotle Suitable**: Partially (structural lemmas only)\n\n## Session 1 (2026-02-07)\n\n### Enhanced Formalization\n- Built proper RUniformHypergraph structure\n- Defined completeClique, IsFullClique, IsDecompPiece\n- Created IsValidDecomp with edge-disjointness + coverage\n- Defined turanHypergraph via sSup (not hardcoded to 0)\n- Proved empty_case and choose_succ_self\n- Removed placeholder True axioms\n- Fixed /-! headers for Aristotle\n\n### Remaining Sorries (2)\n- decomp_pieces_le_edges: injection argument needed\n- trivial_decomp_exists: map edges to singleton pieces\n\n---\n\n*Updated by researcher-1 on 2026-02-07*\n"
   },
-  "approaches": [],
-  "tags": [
-    "erdos"
+  "approaches": [
+    {
+      "name": "Formalization enhancement",
+      "description": "Replace placeholder axioms with proper infrastructure",
+      "status": "completed",
+      "outcome": "Built hypergraph structure, decomposition framework, proved structural lemmas"
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "erdos",
+    "hypergraph",
+    "turan",
+    "extremal-combinatorics",
+    "decomposition"
+  ],
+  "relatedProofs": [
+    "Erdos1009Problem.lean (Turán threshold for graphs)",
+    "Erdos1020Problem.lean (Hypergraph matching)"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős (1981) - Hypergraph decomposition problems"
+    ],
+    "urls": [
+      "https://erdosproblems.com/719"
+    ],
+    "mathlib": [
+      "Finset.powerset",
+      "Nat.choose_symm"
+    ]
   },
   "started": "2026-01-14T21:21:40.197Z",
   "significance": 7,
