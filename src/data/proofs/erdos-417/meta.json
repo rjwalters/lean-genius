@@ -13,7 +13,33 @@
     "sorries": 5,
     "erdosNumber": 417,
     "erdosUrl": "https://erdosproblems.com/417",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic analysis",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined V'(x) and V(x) counting functions for totient values",
+      "Formalized IsTotientValue predicate",
+      "Stated three OPEN questions about V(x)/V'(x) ratio",
+      "Proved 1 and p-1 (prime p) are totient values",
+      "Connected to Erdős Problem #416"
+    ]
   },
   "overview": {
     "historicalContext": "This problem was posed by Erdős and concerns the counting functions for Euler's totient. In [Er98], Erdős conjectured that the ratio V(x)/V'(x) may tend to infinity.",

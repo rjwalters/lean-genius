@@ -42,7 +42,7 @@ open Nat Set Filter Finset
 
 namespace Erdos417
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **V'(x): Distinct Totient Values from Small Inputs**
@@ -71,7 +71,7 @@ This counts all totient values ≤ x, regardless of input size.
 noncomputable def V (x : ℕ) : ℕ :=
   (Finset.filter (fun n => ∃ m, totient m = n) (Finset.range (x + 1))).card
 
-/-! ## Part II: Basic Properties -/
+/- ## Part II: Basic Properties -/
 
 /-- V'(x) ≤ V(x) trivially. -/
 theorem V'_le_V (x : ℕ) : V' x ≤ V x := by
@@ -95,7 +95,7 @@ theorem odd_gt_one_not_totient (n : ℕ) (hn : n > 1) (hodd : Odd n) :
   -- φ(m) is even for m > 2, and φ(1) = φ(2) = 1
   sorry
 
-/-! ## Part III: The Main Questions -/
+/- ## Part III: The Main Questions -/
 
 /--
 **Erdős Problem #417, Question 1 (OPEN)**
@@ -125,7 +125,7 @@ axiom erdos_417_limit_exists : erdos417LimitExists
 axiom erdos_417_ratio_gt_one : erdos417RatioGtOne
 axiom erdos_417_conjecture : erdos417ConjectureInfinite
 
-/-! ## Part IV: Intuition for the Conjecture -/
+/- ## Part IV: Intuition for the Conjecture -/
 
 /--
 **Why V(x) Might Be Much Larger Than V'(x)**
@@ -139,7 +139,7 @@ So there are many totients ≤ x coming from m > x.
 Example: 2^10 = 1024, but φ(2^10) = 512. So 512 ∈ V(600) but 512 ∉ V'(600).
 -/
 
-/-! ## Part V: Connection to Problem #416 -/
+/- ## Part V: Connection to Problem #416 -/
 
 /--
 **Problem #416**
@@ -148,7 +148,7 @@ Problem #416 asks about the structure of the totient range more directly.
 Both problems concern understanding which integers appear as totient values.
 -/
 
-/-! ## Part VI: Totient Value Structure -/
+/- ## Part VI: Totient Value Structure -/
 
 /-- Every power of 2 (≥ 1) is a totient value: φ(2^(k+1)) = 2^k. -/
 theorem pow_two_totient_value (k : ℕ) : IsTotientValue (2^k) := by
@@ -163,7 +163,7 @@ theorem prime_pred_totient_value (p : ℕ) (hp : p.Prime) : IsTotientValue (p - 
   use p
   exact ⟨hp.pos, totient_prime hp⟩
 
-/-! ## Part VII: Asymptotic Estimates -/
+/- ## Part VII: Asymptotic Estimates -/
 
 /--
 **Asymptotic Behavior**
@@ -173,7 +173,7 @@ V'(x) also grows roughly like x/log(x), but the constants may differ.
 The question is whether their ratio has a limit and what it is.
 -/
 
-/-! ## Part VIII: Why This Is Hard -/
+/- ## Part VIII: Why This Is Hard -/
 
 /--
 **The Challenge**
@@ -187,7 +187,7 @@ The conjecture V(x)/V'(x) → ∞ suggests that most totients ≤ x
 come from large inputs, making V(x) much larger than V'(x).
 -/
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #417: Summary**
@@ -212,7 +212,8 @@ theorem erdos_417_summary :
     -- The trivial inequality
     ∀ x, V' x ≤ V x := V'_le_V
 
-/-- The problem remains OPEN. -/
-theorem erdos_417_open : True := trivial
+/-- The three open questions bundled together. -/
+def erdos_417_open_questions : Prop :=
+  erdos417LimitExists ∧ erdos417RatioGtOne ∧ erdos417ConjectureInfinite
 
 end Erdos417
