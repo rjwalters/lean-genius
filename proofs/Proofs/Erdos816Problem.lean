@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #816: Equal-Degree Vertices and Paths of Length 3
 
 Source: https://erdosproblems.com/816
@@ -30,7 +30,7 @@ open SimpleGraph Finset
 
 namespace Erdos816
 
-/-!
+/-
 ## Part I: Basic Graph Definitions
 -/
 
@@ -56,7 +56,7 @@ The degree of vertex v in graph G.
 noncomputable def degree (G : SimpleGraph V) (v : V) : ℕ :=
   (G.neighborFinset v).card
 
-/-!
+/-
 ## Part II: Paths of Length 3
 -/
 
@@ -83,7 +83,7 @@ theorem hasPath3_symm (G : SimpleGraph V) (u v : V) :
     exact ⟨b, a, h3.symm, h2.symm, h1.symm, h5.symm, h4.symm, h6.symm,
            G.symm hb, G.symm hab, G.symm ha⟩
 
-/-!
+/-
 ## Part III: Equal-Degree Pair Connected by Path
 -/
 
@@ -101,7 +101,7 @@ A pair of distinct vertices with the same degree connected by a path of length 3
 def hasEqualDegreePath3Pair (G : SimpleGraph V) : Prop :=
   ∃ u v : V, u ≠ v ∧ sameDegree G u v ∧ hasPath3 G u v
 
-/-!
+/-
 ## Part IV: The Erdős-Hajnal Condition
 -/
 
@@ -121,7 +121,7 @@ def satisfiesWeakerEH816 (G : SimpleGraph V) [DecidableRel G.Adj] (n : ℕ) : Pr
   numVertices V = 2 * n + 1 ∧
   numEdges G ≥ n^2 + n
 
-/-!
+/-
 ## Part V: The Counterexample
 -/
 
@@ -150,7 +150,7 @@ axiom K_counterexample (n : ℕ) :
       isCompleteBipartite G n ∧
       ¬hasEqualDegreePath3Pair G
 
-/-!
+/-
 ## Part VI: The Main Theorem (Chen-Ma 2025)
 -/
 
@@ -187,7 +187,7 @@ axiom erdos_816_full :
       @satisfiesEH816 V _ _ G _ n →
       hasEqualDegreePath3Pair G
 
-/-!
+/-
 ## Part VII: Pigeonhole for Degrees
 -/
 
@@ -199,7 +199,7 @@ axiom pigeonhole_degrees (G : SimpleGraph V) :
     numVertices V ≥ 2 →
     ∃ u v : V, u ≠ v ∧ sameDegree G u v
 
-/-!
+/-
 ## Part VIII: Summary
 -/
 
