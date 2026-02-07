@@ -38,7 +38,7 @@ open Complex Finset
 
 namespace Erdos519
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -70,7 +70,7 @@ The constraint z₁ = 1.
 def hasFirstOne {n : ℕ} (z : Fin n → ℂ) (hn : n > 0) : Prop :=
   z ⟨0, hn⟩ = 1
 
-/-!
+/-
 ## Part II: Turán's Original Result
 -/
 
@@ -93,7 +93,7 @@ def turanQuestion : Prop :=
     ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
     maxPowerSum n z > c
 
-/-!
+/-
 ## Part III: Atkinson's Theorem (1961)
 -/
 
@@ -116,7 +116,7 @@ theorem turan_question_yes : turanQuestion := by
   · intro n hn z hz
     exact atkinson_theorem n hn z hz
 
-/-!
+/-
 ## Part IV: Biró's Improvements
 -/
 
@@ -147,7 +147,7 @@ axiom optimal_constant_conjecture :
   -- This is based on computational evidence
   True
 
-/-!
+/-
 ## Part V: Key Observations
 -/
 
@@ -178,7 +178,7 @@ The other terms can cancel the 1, but not too much if we choose k wisely.
 -/
 axiom cancellation_bounds : True
 
-/-!
+/-
 ## Part VI: Special Cases
 -/
 
@@ -203,7 +203,7 @@ The problem is more about arbitrary configurations.
 -/
 axiom roots_of_unity_note : True
 
-/-!
+/-
 ## Part VII: Related Problem
 -/
 
@@ -222,7 +222,7 @@ under various constraints.
 -/
 axiom problem_connection : True
 
-/-!
+/-
 ## Part VIII: The Optimal Constant
 -/
 
@@ -250,7 +250,7 @@ The gap between c > 1/2 (proved) and c ≈ 0.7 (conjectured) remains.
 -/
 axiom gap_note : True
 
-/-!
+/-
 ## Part IX: Summary
 -/
 
@@ -284,12 +284,5 @@ theorem erdos_519_summary :
       ∀ z : Fin n → ℂ, hasFirstOne z (by omega) →
       maxPowerSum n z > c) := by
   exact ⟨atkinson_theorem, biro_2000⟩
-
-/--
-**Historical note:**
-This problem, originally posed by Turán, connects complex analysis
-to combinatorial questions about power sums.
--/
-theorem historical_note : True := trivial
 
 end Erdos519

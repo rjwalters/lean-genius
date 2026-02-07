@@ -33,7 +33,7 @@ namespace Erdos990
 
 open Complex Real Polynomial
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Setting up polynomials and their roots in the complex plane.
@@ -54,7 +54,7 @@ def nonzeroCoeffCount (d : ℕ) (p : ComplexPoly d) : ℕ :=
 noncomputable def argument (z : ℂ) : ℝ :=
   if z = 0 then 0 else arg z + (if arg z < 0 then 2 * π else 0)
 
-/-!
+/-
 ## Part 2: The Mahler Measure
 
 The quantity M appears in the Erdős-Turán bound.
@@ -76,7 +76,7 @@ axiom mahler_ge_two (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
     (hconst : p 0 ≠ 0) :
     mahlerM d p hd ≥ 2
 
-/-!
+/-
 ## Part 3: Root Counting and Discrepancy
 
 Counting roots in angular intervals.
@@ -105,7 +105,7 @@ noncomputable def discrepancy (d : ℕ) (p : ComplexPoly d) (α β : ℝ) : ℝ 
 noncomputable def maxDiscrepancy (d : ℕ) (p : ComplexPoly d) : ℝ :=
   sSup {discrepancy d p α β | (α : ℝ) (β : ℝ) (_hαβ : 0 ≤ α ∧ α ≤ β ∧ β ≤ 2 * π)}
 
-/-!
+/-
 ## Part 4: The Classical Erdős-Turán Inequality (1950)
 
 The original bound in terms of degree d.
@@ -128,7 +128,7 @@ axiom ganelius_improvement :
       (hp : p ⟨d, Nat.lt_succ_self d⟩ ≠ 0) (h0 : p 0 ≠ 0),
       maxDiscrepancy d p ≤ C * Real.sqrt (d * Real.log (mahlerM d p hd))
 
-/-!
+/-
 ## Part 5: The Sparse Conjecture (Erdős Problem #990)
 
 Can we replace d with n (number of nonzero coefficients)?
@@ -150,7 +150,7 @@ theorem sparse_improves_dense (d : ℕ) (p : ComplexPoly d) :
 axiom unity_root_sparse (d : ℕ) (hd : 0 < d) :
     ∃ p : ComplexPoly d, nonzeroCoeffCount d p = 2 ∧ polyDegree d p = d
 
-/-!
+/-
 ## Part 6: Sharp Constant
 
 Recent work on the optimal constant in Erdős-Turán.
@@ -168,7 +168,7 @@ axiom sharp_erdos_turan :
 axiom hilbert_connection :
     True  -- Placeholder for the connection to Fourier analysis
 
-/-!
+/-
 ## Part 7: Special Cases
 
 Polynomials where root distribution is well-understood.
@@ -191,7 +191,7 @@ axiom littlewood_root_distribution (d : ℕ) (p : ComplexPoly d)
     (hp : isLittlewood d p) (hd : 0 < d) :
     maxDiscrepancy d p ≤ Real.sqrt (d * Real.log d + d)
 
-/-!
+/-
 ## Part 8: Generalizations
 
 Extensions beyond the unit circle.
@@ -209,7 +209,7 @@ axiom potential_theory_connection :
 axiom trigonometric_version :
     True  -- Version for real trigonometric polynomials
 
-/-!
+/-
 ## Part 9: Applications
 
 Where the Erdős-Turán inequality is used.
@@ -227,7 +227,7 @@ axiom random_matrix_application :
 axiom l_function_application :
     True  -- Distribution of zeros
 
-/-!
+/-
 ## Part 10: Lower Bounds
 
 The Erdős-Turán bound is essentially tight.
@@ -243,7 +243,7 @@ axiom lower_bound_construction :
 axiom optimal_dependence :
     True  -- Both d and log M are necessary
 
-/-!
+/-
 ## Part 11: One-Sided Improvements
 
 Erdélyi's refinement.
@@ -260,7 +260,7 @@ axiom erdelyi_one_sided (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
 axiom totik_varju_corollary :
     True  -- Can be derived from Erdélyi's result
 
-/-!
+/-
 ## Part 12: Summary
 
 Erdős Problem #990 status: The classical Erdős-Turán (1950) is proved.
@@ -273,19 +273,13 @@ theorem erdos_turan_known (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
     ∃ C : ℝ, C > 0 ∧ maxDiscrepancy d p ≤ C * Real.sqrt (d * Real.log (mahlerM d p hd)) :=
   erdos_turan_classical d p hd hp h0
 
-/-- What is open: Can we replace d with n (sparsity)? -/
-theorem erdos_990_status :
-    -- Classical result with degree d is PROVED
-    (∃ C : ℝ, C > 0 ∧ ∀ (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
+/-- Summary of Erdős Problem #990:
+    The classical Erdős-Turán inequality with degree d is PROVED.
+    The sparse version (replacing d with n) remains OPEN. -/
+theorem erdos_990_summary :
+    ∃ C : ℝ, C > 0 ∧ ∀ (d : ℕ) (p : ComplexPoly d) (hd : 0 < d)
       (hp : p ⟨d, Nat.lt_succ_self d⟩ ≠ 0) (h0 : p 0 ≠ 0),
-      maxDiscrepancy d p ≤ C * Real.sqrt (d * Real.log (mahlerM d p hd))) ∧
-    -- Sparse version remains OPEN
-    True := by
-  constructor
-  · exact erdos_turan_explicit_constant
-  · trivial
-
-/-- Erdős Problem #990: OPEN for sparse case, PROVED for classical case -/
-theorem erdos_990 : True := trivial
+      maxDiscrepancy d p ≤ C * Real.sqrt (d * Real.log (mahlerM d p hd)) :=
+  erdos_turan_explicit_constant
 
 end Erdos990

@@ -32,7 +32,7 @@ namespace Erdos729
 
 open Nat Real
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Factorial divisibility and p-adic valuations.
@@ -54,7 +54,7 @@ def factorialQuotient (n a b : ℕ) : ℚ :=
 def DividesFactorial (n a b : ℕ) : Prop :=
   a.factorial * b.factorial ∣ n.factorial
 
-/-!
+/-
 ## Part 2: Erdős's Classical Result (1968)
 
 If a!b! | n! then a + b ≤ n + O(log n).
@@ -72,7 +72,7 @@ theorem erdos_proof_via_powers_of_two (n a b : ℕ) (hdiv : DividesFactorial n a
     ∃ C : ℝ, C > 0 ∧ (a + b : ℝ) ≤ n + C * Real.log n := by
   exact erdos_1968_classical n a b hdiv
 
-/-!
+/-
 ## Part 3: The Relaxed Condition
 
 What if we allow the denominator to have small prime factors?
@@ -92,7 +92,7 @@ def DividesFactorialModSmall (n a b : ℕ) (C : ℝ) : Prop :=
   ∃ k : ℕ, (∀ p ∈ Nat.primeFactors k, (p : ℝ) ≤ C) ∧
     k * a.factorial * b.factorial ∣ n.factorial
 
-/-!
+/-
 ## Part 4: The Question
 
 Can a + b > n + C·log n when considering only large primes?
@@ -105,7 +105,7 @@ def InfinitelyManyExceptions (C : ℝ) : Prop :=
     (a + b : ℝ) > n + C * Real.log n ∧
     DividesFactorialModSmall n a b C
 
-/-!
+/-
 ## Part 5: The Barreto-Leeham Resolution
 
 The answer is NO: the bound persists even modulo small primes.
@@ -121,24 +121,20 @@ axiom barreto_leeham_bound (C : ℝ) (hC : C > 0) :
       DividesFactorialModSmall n a b C →
       (a + b : ℝ) ≤ n + D * Real.log n
 
-/-!
+/-
 ## Part 6: The Proof Strategy
 
 Modification of the argument for Problem #728.
 -/
 
-/-- The proof extends the powers-of-2 argument -/
-axiom proof_extends_erdos_argument :
-    -- The key insight is that large primes contribute significantly
-    -- to the p-adic valuation constraints
-    True
+/-- The proof extends the powers-of-2 argument: large primes contribute
+    significantly to the p-adic valuation constraints. For any prime p > C,
+    the constraint v_p(a!) + v_p(b!) ≤ v_p(n!) still yields a + b ≤ n + O(log n). -/
+axiom proof_extends_erdos_argument (C : ℝ) (hC : C > 0) (p : ℕ) (hp : Nat.Prime p) (hpC : (p : ℝ) > C) :
+    ∀ n a b : ℕ, DividesFactorialModSmall n a b C →
+      padicValNat p (a.factorial) + padicValNat p (b.factorial) ≤ padicValNat p (n.factorial)
 
-/-- Connection to Problem #728 -/
-axiom connection_to_728 :
-    -- Problem #728 is similar and the solution technique transfers
-    True
-
-/-!
+/-
 ## Part 7: Legendre's Formula Details
 
 The p-adic valuation of factorials.
@@ -158,17 +154,17 @@ theorem legendre_for_two (n : ℕ) :
     padicValNat 2 n.factorial = n - digitSum 2 n := by
   sorry
 
-/-!
+/-
 ## Part 8: Implications
 
 What the result tells us about factorial structure.
 -/
 
-/-- The structure of factorials is rigid even on large primes -/
-axiom factorial_rigidity :
-    -- The constraint a + b ≤ n + O(log n) comes from ALL primes,
-    -- not just a few small ones
-    True
+/-- The structure of factorials is rigid: the constraint a + b ≤ n + O(log n)
+    comes from ALL sufficiently large primes, not just a few small ones. -/
+axiom factorial_rigidity (C : ℝ) (hC : C > 0) :
+    ∃ D : ℝ, D > 0 ∧ ∀ n a b : ℕ,
+      DividesFactorialModSmall n a b C → (a + b : ℝ) ≤ n + D * Real.log n
 
 /-- Binomial coefficients inherit this rigidity -/
 theorem binomial_rigidity (n a b : ℕ) (hab : a + b = n) :
@@ -176,7 +172,7 @@ theorem binomial_rigidity (n a b : ℕ) (hab : a + b = n) :
     DividesFactorial n a b := by
   sorry
 
-/-!
+/-
 ## Part 9: Main Problem Statement
 -/
 
@@ -191,7 +187,7 @@ theorem erdos_729_statement :
   · exact erdos_1968_classical
   · exact barreto_leeham_theorem
 
-/-!
+/-
 ## Part 10: Summary
 -/
 
@@ -207,8 +203,5 @@ theorem erdos_729_summary :
   constructor
   · exact barreto_leeham_theorem
   · exact barreto_leeham_bound
-
-/-- The answer to Erdős Problem #729: SOLVED (NO) -/
-theorem erdos_729_answer : True := trivial
 
 end Erdos729
