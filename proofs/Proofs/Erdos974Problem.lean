@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #974: Power Sums and Roots of Unity
 
 Let z₁, ..., zₙ ∈ ℂ with z₁ = 1. Define power sums:
@@ -27,8 +27,7 @@ open Complex Finset BigOperators
 
 namespace Erdos974
 
-/-!
-## Overview
+/- ## Overview
 
 This problem sits at the intersection of complex analysis and algebra. It asks:
 when can power sums sₖ = Σ zᵢᵏ vanish for many consecutive values of k?
@@ -37,8 +36,7 @@ The answer is essentially: only when the zᵢ are roots of unity (or close to it
 This reflects deep connections between power sums and polynomial structure.
 -/
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /-- A configuration is a finite set of complex numbers. -/
@@ -60,8 +58,7 @@ noncomputable def nthRootOfUnity (n : ℕ) (j : ℕ) : ℂ :=
 noncomputable def standardRootsOfUnity (n : ℕ) : Configuration n :=
   fun j => nthRootOfUnity n j.val
 
-/-!
-## Part II: Power Sum Properties for Roots of Unity
+/- ## Part II: Power Sum Properties for Roots of Unity
 -/
 
 /-- Key property: for the nth roots of unity, sₖ = 0 when n ∤ k, and sₖ = n when n ∣ k. -/
@@ -82,8 +79,7 @@ def consecutiveZeroTuple {n : ℕ} (z : Configuration n) (k : ℕ) : Prop :=
 def hasInfinitelyManyZeroTuples {n : ℕ} (z : Configuration n) : Prop :=
   ∀ N : ℕ, ∃ k > N, consecutiveZeroTuple z k
 
-/-!
-## Part III: The Configuration Constraint
+/- ## Part III: The Configuration Constraint
 -/
 
 /-- A configuration has z₁ = 1. -/
@@ -97,8 +93,7 @@ theorem standard_roots_first_is_one (n : ℕ) (hn : n > 0) :
   ring_nf
   simp [Complex.exp_zero]
 
-/-!
-## Part IV: The Main Theorems (Tijdeman 1966)
+/- ## Part IV: The Main Theorems (Tijdeman 1966)
 -/
 
 /-- A configuration is (essentially) roots of unity if it's a permutation of them. -/
@@ -139,8 +134,7 @@ axiom tijdeman_1966_even (n : ℕ) (hn : n ≥ 4) (heven : Even n)
     (ht2 : consecutiveZeroTuple z k₂) :
   isTwoRegularPolygons z
 
-/-!
-## Part V: Erdős Problem #974 Resolution
+/- ## Part V: Erdős Problem #974 Resolution
 -/
 
 /-- Erdős Problem #974: SOLVED (YES)
@@ -157,16 +151,14 @@ theorem erdos_974_solved (n : ℕ) (hn : n ≥ 2) (z : Configuration n)
     isEssentiallyRootsOfUnity z :=
   turan_conjecture n hn z hfirst htuples
 
-/-!
-## Part VI: Converse Direction
+/- ## Part VI: Converse Direction
 -/
 
 /-- The nth roots of unity DO have the zero-tuple property when n > 1. -/
 axiom roots_of_unity_have_zero_tuples (n : ℕ) (hn : n ≥ 2) :
     hasInfinitelyManyZeroTuples (standardRootsOfUnity n)
 
-/-!
-## Part VII: Connection to Newton's Identities
+/- ## Part VII: Connection to Newton's Identities
 
 Newton's identities connect power sums to elementary symmetric polynomials:
 k·eₖ = Σⱼ₌₁ᵏ (-1)^(j-1) eₖ₋ⱼ pⱼ. This algebraic relationship underlies Tijdeman's proof.
@@ -175,8 +167,7 @@ are determined by the aᵢ. If n-1 consecutive sums vanish, the polynomial is se
 constrained.
 -/
 
-/-!
-## Part VIII: The "Essentially" Qualification
+/- ## Part VIII: The "Essentially" Qualification
 -/
 
 /-- Power sums are invariant under permutation of the configuration. -/
@@ -186,8 +177,7 @@ axiom essentially_means_up_to_permutation (n : ℕ) (hn : n > 0)
     (hperm : ∀ i, z₁ i = z₂ (σ i)) :
     ∀ k, powerSum z₁ k = powerSum z₂ k
 
-/-!
-## Summary
+/- ## Summary
 
 **Erdős Problem #974: SOLVED (YES)**
 
