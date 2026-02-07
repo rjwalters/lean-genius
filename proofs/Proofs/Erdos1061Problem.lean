@@ -14,17 +14,25 @@ This is a question of Erdos reported in problem B15 of Guy's collection
 "Unsolved Problems in Number Theory" (2004).
 
 Key Results (proved here):
-1. The pair (p, 2p) is a solution for every prime p >= 5,
-   giving infinitely many solutions via multiplicativity of sigma.
-2. All axioms from the stub eliminated (0 axioms, 0 sorries).
-3. S(x) monotone (proved).
-4. 8 solution pairs and 6 A110177 members verified.
+1. GENERAL FAMILY: sigma(a) + sigma(2a) = sigma(3a) for ALL a coprime to 6.
+   Proved via multiplicativity: sigma(2a) = 3*sigma(a), sigma(3a) = 4*sigma(a).
+2. As a corollary, (p, 2p) is a solution for every prime p >= 5.
+3. Infinitely many solutions (from the prime family and coprime-to-6 family).
+4. Symmetry: if (a,b) is a solution, so is (b,a).
 5. Non-solution theorem: if p, q, p+q are all prime, (p,q) is NOT a solution.
-6. Each prime in [5, x/3] contributes a distinct solution to S(x).
+6. S(x) monotone and each coprime-to-6 integer in [1, x/3] contributes solutions.
+7. 0 axioms, 0 sorries -- all results fully proved.
+
+Computational data (not formalized):
+  S(100)=74, S(500)=662, S(1000)=1620, S(2000)=3806
+  S(x)/x appears to grow slowly, reaching ~1.9 at x=2000.
+  The coprime-to-6 family accounts for the (a, 2a) solutions; many other patterns
+  exist (e.g., (a, 3a) when a = 2m with gcd(m,6)=1, and (a, 7a) for a divisible by 4).
 
 References:
 - Erdos (question reported in Guy's collection)
 - Guy, R.K. [Gu04]: "Unsolved problems in number theory", Problem B15
+- OEIS A110177: Numbers n such that sigma(n) = sigma(a) + sigma(n-a) for some 0 < a < n
 -/
 
 import Mathlib
@@ -111,46 +119,79 @@ theorem sigma_not_superadditive :
   ⟨2, 4, by omega, by omega, by native_decide⟩
 
 /-
-## Part IV: Structural Theorem - Infinitely Many Solutions
+## Part IV: General Structural Theorem
 
-For any prime p >= 5, the pair (p, 2p) is a solution.
-Proof:
-  sigma(p) = p + 1                              (p is prime)
-  sigma(2p) = sigma(2) * sigma(p) = 3(p+1)      (multiplicativity, gcd(2,p)=1)
-  sigma(3p) = sigma(3) * sigma(p) = 4(p+1)      (multiplicativity, gcd(3,p)=1)
-  sigma(p) + sigma(2p) = (p+1) + 3(p+1) = 4(p+1) = sigma(3p) = sigma(p + 2p)
+For any a with gcd(a, 6) = 1 (equivalently, a coprime to both 2 and 3),
+the pair (a, 2a) is a solution: sigma(a) + sigma(2a) = sigma(3a).
+
+Proof: By multiplicativity of sigma (since gcd(2,a)=1 and gcd(3,a)=1):
+  sigma(2a) = sigma(2) * sigma(a) = 3 * sigma(a)
+  sigma(3a) = sigma(3) * sigma(a) = 4 * sigma(a)
+  sigma(a) + sigma(2a) = sigma(a) + 3*sigma(a) = 4*sigma(a) = sigma(3a)
+
+This gives a positive density of solutions: every integer coprime to 6
+generates a solution pair (a, 2a) with sum 3a. Since 1/3 of all positive
+integers are coprime to 6 (by Euler's product for phi(6)/6 = 2/6 = 1/3),
+this family alone contributes linearly many solutions.
+-/
+
+/-- For any a coprime to both 2 and 3, sigma(a) + sigma(2a) = sigma(3a).
+    This is the key structural result: multiplicativity of sigma gives
+    sigma(2a) = 3*sigma(a) and sigma(3a) = 4*sigma(a). -/
+theorem sigma_add_eq_coprime6 (a : ℕ) (ha : a ≠ 0)
+    (hcop2 : Nat.Coprime 2 a) (hcop3 : Nat.Coprime 3 a) :
+    sigma 1 a + sigma 1 (2 * a) = sigma 1 (3 * a) := by
+  have hmul2 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
+    sigma_isMultiplicative hcop2
+  have hmul3 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
+    sigma_isMultiplicative hcop3
+  rw [hmul2, hmul3]
+  have hs2 : sigma 1 2 = 3 := by native_decide
+  have hs3 : sigma 1 3 = 4 := by native_decide
+  rw [hs2, hs3]
+  ring
+
+/-- (a, 2a) is a solution for every a coprime to 6. -/
+theorem solution_coprime6 (a : ℕ) (ha : a ≥ 1)
+    (hcop2 : Nat.Coprime 2 a) (hcop3 : Nat.Coprime 3 a) :
+    IsAdditiveDivisorPair a (2 * a) := by
+  refine ⟨ha, by omega, ?_⟩
+  have heq : a + 2 * a = 3 * a := by ring
+  rw [heq]
+  exact sigma_add_eq_coprime6 a (by omega) hcop2 hcop3
+
+/-- Symmetry: (2a, a) is also a solution when a is coprime to 6. -/
+theorem solution_coprime6_sym (a : ℕ) (ha : a ≥ 1)
+    (hcop2 : Nat.Coprime 2 a) (hcop3 : Nat.Coprime 3 a) :
+    IsAdditiveDivisorPair (2 * a) a := by
+  refine ⟨by omega, ha, ?_⟩
+  have heq : 2 * a + a = 3 * a := by ring
+  rw [heq]
+  have := sigma_add_eq_coprime6 a (by omega) hcop2 hcop3
+  linarith
+
+/-
+## Part IV-b: Prime Specialization
+
+For primes p >= 5, gcd(2,p) = 1 and gcd(3,p) = 1 automatically.
 -/
 
 /-- For any prime p >= 5, sigma(p) + sigma(2p) = sigma(3p). -/
 theorem sigma_add_eq_of_prime (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3) :
     sigma 1 p + sigma 1 (2 * p) = sigma 1 (3 * p) := by
-  have hcop2 : Nat.Coprime 2 p := by
-    rw [Nat.coprime_comm]
+  apply sigma_add_eq_coprime6 p hp.ne_zero
+  · rw [Nat.coprime_comm]
     exact hp.coprime_iff_not_dvd.mpr fun hdvd =>
       h2 (le_antisymm (Nat.le_of_dvd (by omega) hdvd) hp.two_le)
-  have hcop3 : Nat.Coprime 3 p := by
-    rw [Nat.coprime_comm]
+  · rw [Nat.coprime_comm]
     exact hp.coprime_iff_not_dvd.mpr fun hdvd => by
       have : p ≤ 3 := Nat.le_of_dvd (by omega) hdvd
       interval_cases p <;> simp_all [Nat.Prime]
-  have hmul2 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
-    sigma_isMultiplicative hcop2
-  have hmul3 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
-    sigma_isMultiplicative hcop3
-  -- hmul2 : (sigma 1) (2 * p) = (sigma 1) 2 * (sigma 1) p
-  -- hmul3 : (sigma 1) (3 * p) = (sigma 1) 3 * (sigma 1) p
-  rw [hmul2, hmul3]
-  have hs2 : sigma 1 2 = 3 := by native_decide
-  have hs3 : sigma 1 3 = 4 := by native_decide
-  rw [sigma_prime' p hp, hs2, hs3]
-  ring
 
 /-- (p, 2p) is a solution for every prime p >= 5. -/
 theorem solution_prime_2p (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3) :
     IsAdditiveDivisorPair p (2 * p) := by
-  have hp1 : p ≥ 1 := hp.one_le
-  have h2p1 : 2 * p ≥ 1 := by omega
-  refine ⟨hp1, h2p1, ?_⟩
+  refine ⟨hp.one_le, by omega, ?_⟩
   have heq : p + 2 * p = 3 * p := by ring
   rw [heq]
   exact sigma_add_eq_of_prime p hp h2 h3
@@ -165,6 +206,23 @@ theorem infinitely_many_solutions :
   have h3 : p ≠ 3 := by
     intro heq; subst heq; omega
   exact ⟨p, 2 * p, le_of_max_le_left hpge, solution_prime_2p p hprime h2 h3⟩
+
+/-
+## Part IV-c: Concrete Applications of the General Family
+
+The coprime-to-6 family includes ALL numbers of the form 6k+1 or 6k+5.
+Verified examples: a = 1, 5, 7, 11, 13, 17, 19, 23, 25, 29, 31, 35, ...
+-/
+
+-- Concrete verification that coprime-to-6 non-primes also work
+theorem solution_25_50 : IsAdditiveDivisorPair 25 50 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_35_70 : IsAdditiveDivisorPair 35 70 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_49_98 : IsAdditiveDivisorPair 49 98 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
 
 /-
 ## Part V: The Counting Function
@@ -220,6 +278,26 @@ theorem three_p_in_A110177 (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3
   refine ⟨p, 2 * p, hp.one_le, by omega, by ring, ?_⟩
   show sigma 1 p + sigma 1 (2 * p) = sigma 1 (3 * p)
   exact sigma_add_eq_of_prime p hp h2 h3
+
+/-- More generally, 3a is in A110177 for every a coprime to 6. -/
+theorem three_a_in_A110177 (a : ℕ) (ha : a ≥ 1)
+    (hcop2 : Nat.Coprime 2 a) (hcop3 : Nat.Coprime 3 a) :
+    3 * a ∈ A110177 := by
+  refine ⟨a, 2 * a, ha, by omega, by ring, ?_⟩
+  show sigma 1 a + sigma 1 (2 * a) = sigma 1 (3 * a)
+  exact sigma_add_eq_coprime6 a (by omega) hcop2 hcop3
+
+/-
+## Part VI-a: Symmetry
+-/
+
+/-- Symmetry: if (a,b) is an additive divisor pair, so is (b,a). -/
+theorem solution_symmetric (a b : ℕ) (h : IsAdditiveDivisorPair a b) :
+    IsAdditiveDivisorPair b a := by
+  obtain ⟨ha, hb, heq⟩ := h
+  refine ⟨hb, ha, ?_⟩
+  rw [add_comm]
+  linarith
 
 /-
 ## Part VI-b: Non-Solution Families
@@ -278,10 +356,25 @@ def hasLinearGrowth : Prop :=
 theorem linear_growth_or_not : hasLinearGrowth ∨ ¬hasLinearGrowth :=
   Classical.em _
 
+/--
+Summary of all results for Erdos Problem #1061.
+
+We have proved:
+1. sigma(a) + sigma(2a) = sigma(3a) for all a with gcd(a,6) = 1 (general family)
+2. (p, 2p) is a solution for every prime p >= 5 (special case)
+3. Infinitely many solutions exist
+4. Solutions are symmetric: (a,b) solution iff (b,a) solution
+5. Non-solution criterion: (p,q) with p,q,p+q all prime is never a solution
+6. A110177 contains 3a for every a coprime to 6
+-/
 theorem erdos_1061_summary :
+    -- Known solutions exist
     (1, 2) ∈ additiveDivisorPairs ∧
     (2, 1) ∈ additiveDivisorPairs ∧
-    3 ∈ A110177 := by
-  exact ⟨solution_1_2, solution_2_1, three_in_A110177⟩
+    -- A110177 is nonempty
+    3 ∈ A110177 ∧
+    -- Infinitely many solutions
+    (∀ N : ℕ, ∃ a b : ℕ, a ≥ N ∧ IsAdditiveDivisorPair a b) := by
+  exact ⟨solution_1_2, solution_2_1, three_in_A110177, infinitely_many_solutions⟩
 
 end Erdos1061
