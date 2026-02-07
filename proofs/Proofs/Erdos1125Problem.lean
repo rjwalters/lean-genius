@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1125: Kemperman's Inequality and Monotonicity
 
 Source: https://erdosproblems.com/1125
@@ -37,7 +37,7 @@ open Set MeasureTheory
 
 namespace Erdos1125
 
-/-! ## Part I: The Kemperman Inequality
+/- ## Part I: The Kemperman Inequality
 
 The condition 2f(x) ≤ f(x+h) + f(x+2h) for all x and h > 0.
 -/
@@ -56,7 +56,7 @@ theorem kemperman_equiv (f : ℝ → ℝ) :
     satisfiesKemperman f ↔ satisfiesKempermanAlt f := by
   constructor <;> intro hf x h hh <;> specialize hf x h hh <;> linarith
 
-/-! ## Part II: Monotonicity
+/- ## Part II: Monotonicity
 
 A function is monotonic if it is either non-decreasing or non-increasing.
 -/
@@ -73,7 +73,7 @@ def isNonIncreasing (f : ℝ → ℝ) : Prop :=
 def isMonotonic (f : ℝ → ℝ) : Prop :=
   isNonDecreasing f ∨ isNonIncreasing f
 
-/-! ## Part III: The Main Question -/
+/- ## Part III: The Main Question -/
 
 /-- **Kemperman's Question:**
 Does satisfiesKemperman(f) imply isMonotonic(f)?
@@ -83,7 +83,7 @@ The question for general f was the content of Erdős #1125. -/
 def kemperman_question : Prop :=
   ∀ f : ℝ → ℝ, satisfiesKemperman f → isMonotonic f
 
-/-! ## Part IV: Kemperman's Partial Result (1969) -/
+/- ## Part IV: Kemperman's Partial Result (1969) -/
 
 /-- **Kemperman's Theorem (1969):**
 If f satisfies the Kemperman inequality AND is Lebesgue measurable,
@@ -91,7 +91,7 @@ then f is monotonic. -/
 axiom kemperman_1969 (f : ℝ → ℝ) :
     satisfiesKemperman f → Measurable f → isMonotonic f
 
-/-! ## Part V: Laczkovich's Theorem (1984) -/
+/- ## Part V: Laczkovich's Theorem (1984) -/
 
 /-- **Laczkovich's Theorem (1984):**
 If f : ℝ → ℝ satisfies 2f(x) ≤ f(x+h) + f(x+2h) for all x and h > 0,
@@ -107,7 +107,7 @@ axiom laczkovich_1984 :
 theorem kemperman_question_resolved : kemperman_question :=
   laczkovich_1984
 
-/-! ## Part VI: Interpretation and Context -/
+/- ## Part VI: Interpretation and Context -/
 
 /-- The Kemperman inequality prevents certain "local maximum" patterns.
     Specifically, we cannot have f(x+h) < f(x) and f(x+h) < f(x+2h) too strongly. -/
@@ -117,7 +117,7 @@ theorem kemperman_interpretation (f : ℝ → ℝ) (hf : satisfiesKemperman f)
   have := hf x h hh
   linarith
 
-/-! ## Part VII: Examples -/
+/- ## Part VII: Examples -/
 
 /-- Constant functions satisfy Kemperman. -/
 theorem constant_satisfies (c : ℝ) : satisfiesKemperman (fun _ => c) := by
@@ -140,7 +140,7 @@ theorem square_satisfies : satisfiesKemperman (fun x => x^2) := by
   ring_nf
   nlinarith [sq_nonneg h]
 
-/-! ## Part VIII: Summary
+/- ## Part VIII: Summary
 
 **Erdős Problem #1125 - SOLVED (Laczkovich 1984)**
 
