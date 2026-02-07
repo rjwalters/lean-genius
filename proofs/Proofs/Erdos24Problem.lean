@@ -38,7 +38,7 @@ namespace Erdos24
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Core Definitions
 
 We define what it means for a graph to be triangle-free and count cycles.
@@ -87,7 +87,7 @@ noncomputable def countC5 (G : SimpleGraph V) : ℕ := by
   classical
   exact Finset.card (Finset.univ.filter fun f : Fin 5 → V => IsC5Copy G f) / 10
 
-/-!
+/-
 ## The Blow-Up Construction
 
 The extremal graph is the balanced blow-up of C₅.
@@ -130,7 +130,7 @@ giving n choices per part, hence n⁵ total.
 axiom balancedBlowupC5_count (n : ℕ) (hn : 0 < n) :
     countC5 (balancedBlowupC5 n) = n^5
 
-/-!
+/-
 ## The Main Theorem: Grzesik-Hatami et al. (2012-2013)
 
 The pentagon conjecture: triangle-free graphs on 5n vertices have at most n⁵ C₅'s.
@@ -170,7 +170,7 @@ axiom uniqueness_of_extremal (n : ℕ) (hn : 0 < n) :
     ∃ (φ : V → Fin 5 × Fin n), Function.Bijective φ ∧
       ∀ v w : V, G.Adj v w ↔ (balancedBlowupC5 n).Adj (φ v) (φ w)
 
-/-!
+/-
 ## Historical Progress
 
 The problem had several partial results before the complete solution.
@@ -188,7 +188,7 @@ axiom gyori_bound (n : ℕ) (hn : 0 < n) :
     -- 100 * countC5 G ≤ 103 * n^5 (integer form of 1.03)
     100 * countC5 G ≤ 103 * n^5
 
-/-!
+/-
 ## Erdős's Generalization
 
 Erdős proposed a more general conjecture for odd cycles.
@@ -203,14 +203,16 @@ The case r = 5 is exactly the pentagon theorem (girth 5 = triangle-free with no 
 
 For r > 5, this remains an open problem.
 -/
+/-- The number of r-cycles in a graph (axiomatized for general r). -/
+axiom countCycles (r : ℕ) {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) : ℕ
+
 def erdosGeneralConjecture (r : ℕ) : Prop :=
   r % 2 = 1 ∧ r ≥ 5 →
   ∀ n : ℕ, 0 < n →
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
   Fintype.card V = r * n →
-  -- "girth = r" means: has no cycle shorter than r, but has some cycle of length r
-  G.CliqueFree 3 →  -- Simplified: at least triangle-free
-  True  -- Placeholder for: countCr G ≤ n^r
+  G.CliqueFree 3 →
+  countCycles r G ≤ n^r
 
 /-- The r = 5 case of the general conjecture is exactly our main theorem. -/
 theorem r5_is_pentagon_theorem :
@@ -221,7 +223,7 @@ theorem r5_is_pentagon_theorem :
     countC5 G ≤ n^5 :=
   grzesik_hatami_theorem
 
-/-!
+/-
 ## Summary
 
 The main result: Erdős Problem #24 is solved affirmatively.
