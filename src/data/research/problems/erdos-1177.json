@@ -1,52 +1,111 @@
 {
   "slug": "erdos-1177",
   "title": "Erdős #1177",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "Let G be a finite 3-uniform hypergraph, F_G(κ) = {H : 3-uniform, χ(H) = κ, G ⊄ H}. Conjectures: (1) F_G(ℵ₁) ≠ ∅ ⟹ ∃X ∈ F_G(ℵ₁), |X| ≤ 2^{2^{ℵ₀}}. (2) F_G(ℵ₁) ≠ ∅ ∧ F_H(ℵ₁) ≠ ∅ ⟹ F_G(ℵ₁) ∩ F_H(ℵ₁) ≠ ∅. (3) κ,μ uncountable, F_G(κ) ≠ ∅ ⟹ F_G(μ) ≠ ∅.",
+    "plain": "Three conjectures of Erdős, Galvin, Hajnal about forbidden subgraph families for 3-uniform hypergraphs with prescribed chromatic number. Conjecture 1: bounded witness size. Conjecture 2: intersection property. Conjecture 3: cardinal transfer.",
+    "whyMatters": [
+      "Connects infinitary combinatorics with hypergraph coloring theory",
+      "Generalizes classical Erdős high-chromatic-number-high-girth results to 3-uniform setting",
+      "Cardinal transfer property would establish deep structural results about hypergraph classes"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "For 2-uniform (graphs): Erdős 1959 probabilistic method gives G-free graphs with arbitrarily high chromatic number for any G containing a cycle",
+      "Monotonicity: F_G(κ) ⊆ F_{G'}(κ) when G' is a subgraph of G (anti-monotone in forbidden graph)"
+    ],
+    "open": [
+      "All three conjectures remain open for 3-uniform hypergraphs",
+      "The bounded witness conjecture (Conjecture 1) is the most accessible",
+      "Cardinal transfer (Conjecture 3) is deeply set-theoretic"
+    ],
+    "goal": "Prove any of the three Erdős-Galvin-Hajnal conjectures for 3-uniform hypergraphs"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T17:01:06.709Z",
+    "phase": "SURVEYED",
+    "since": "2026-02-07T20:35:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Formalized problem statement with all three conjectures and structural theorems",
+    "blockers": [
+      "Problem is fundamentally set-theoretic, requiring infinite cardinal arguments",
+      "No direct Mathlib infrastructure for 3-uniform hypergraph chromatic numbers",
+      "Conjectures likely require forcing or large cardinal techniques to resolve"
+    ],
+    "nextAction": "Explore connections to known set-theoretic results in Mathlib",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1177 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "progressSummary": "SURVEYED: Formalized all three Erdős-Galvin-Hajnal conjectures in Lean 4 with abstract cardinal/hypergraph framework. Proved structural theorems: Conjecture 3 → simultaneous nonemptiness, anti-monotonicity of forbidden families. File builds successfully.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1177Problem.lean - Full formalization (~206 lines)",
+      "Abstract Card type with aleph0, aleph1, beth2",
+      "Abstract Hypergraph3 type with chromatic number and subgraph containment",
+      "forbiddenFamily and forbiddenFamilyNonempty definitions",
+      "Conjecture1 (bounded witness), Conjecture2 (intersection), Conjecture3 (cardinal transfer)",
+      "conj3_implies_simultaneous_nonempty theorem (proved)",
+      "conj2_trivial_case theorem (proved)",
+      "forbiddenFamily_antimonotone theorem (proved)",
+      "forbiddenFamilyNonempty_antimonotone theorem (proved)"
+    ],
+    "insights": [
+      "Problem involves uncountable cardinals - heavy SetTheory imports OOM in Docker with many concurrent builds",
+      "Lightweight axiomatization of Card type avoids OOM while preserving problem structure",
+      "The three conjectures are progressively more abstract: (1) size bound, (2) intersection, (3) cardinal transfer",
+      "Conjecture 3 is strongest: implies both families are simultaneously nonempty at any uncountable cardinal",
+      "Anti-monotonicity in G: smaller forbidden graph makes family larger (harder to avoid larger structures)",
+      "2-uniform analogue (Erdős 1959 probabilistic method) is well-known but 3-uniform is wide open",
+      "Problem is NOT Aristotle-suitable: open conjectures in infinite combinatorics"
+    ],
+    "mathlibGaps": [
+      "No native 3-uniform hypergraph type in Mathlib",
+      "No hypergraph chromatic number in Mathlib",
+      "Cardinal.aleph imports cause OOM when system is memory-constrained"
+    ],
+    "nextSteps": [
+      "When system is less loaded, try importing Mathlib.SetTheory.Cardinal.Basic for real cardinal types",
+      "Look for partial results on Conjecture 1 (most accessible) in recent literature",
+      "Explore whether forcing independence results are known for any of the conjectures"
+    ],
+    "markdown": "# Erdős #1177 - Knowledge Base\n\n## Problem Statement\n\nThree conjectures of Erdős, Galvin, and Hajnal about forbidden subgraph families F_G(κ) for 3-uniform hypergraphs with chromatic number κ.\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Tractability Score**: 3/10 (deep set theory, likely requires forcing)\n**Aristotle Suitable**: No (open conjectures)\n\n## Formalization\n\n- **File**: proofs/Proofs/Erdos1177Problem.lean\n- **Build**: Succeeds (Docker, ~2s)\n- **Proved**: 4 structural theorems\n- **Axioms**: Abstract Card/Hypergraph3 framework + problem statement\n\n## Tags\n\n- erdos\n- set-theory\n- hypergraphs\n- chromatic-number\n- infinite-combinatorics\n\n## Related Problems\n\n- Problem #2000, #83, #888, #2, #39, #1\n\n## References\n\n- [Va99] Verstraëte 1999, Problem 7.94\n- Erdős, Galvin, Hajnal (original)\n\n## Sessions\n\n### Session 1 (2026-02-07)\n- **Outcome**: SURVEYED\n- Formalized all three conjectures\n- Proved 4 structural theorems\n- Identified as deep set-theoretic problem\n\n---\n\n*Updated by researcher-1 on 2026-02-07*\n"
   },
-  "approaches": [],
-  "tags": [
-    "erdos"
+  "approaches": [
+    {
+      "name": "Axiomatized formalization",
+      "status": "completed",
+      "description": "Abstract Card and Hypergraph3 types to avoid heavy Mathlib imports while cleanly stating all three conjectures",
+      "outcome": "Successful formalization with 4 proved structural theorems"
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "erdos",
+    "set-theory",
+    "hypergraphs",
+    "chromatic-number",
+    "infinite-combinatorics"
+  ],
+  "relatedProofs": [
+    "proofs/Proofs/Erdos1177Problem.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Verstraëte 1999 - Turán-type problems, Problem 7.94",
+      "Erdős, Galvin, Hajnal - original formulation"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1177"
+    ],
     "mathlib": []
   },
   "started": "2026-01-15T17:01:06.709Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 3
 }
