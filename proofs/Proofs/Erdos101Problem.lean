@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #101 — Four-Point Lines from Planar Point Sets
 
 Given n points in ℝ² with no five collinear, prove that the number
@@ -19,7 +19,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A planar point set: a finite collection of points in ℝ². -/
 structure PlanarPointSet where
@@ -46,7 +46,7 @@ noncomputable def fourPointLineCount (P : PlanarPointSet) : ℕ :=
     ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
       ∀ p ∈ S, collinear a b p)).card
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #101**: the number of four-point lines is o(n²).
     For any ε > 0, eventually fourPointLineCount(P) < ε · n². -/
@@ -56,7 +56,7 @@ axiom erdos_101_conjecture :
       NoFiveCollinear P → P.points.card ≥ N₀ →
         (fourPointLineCount P : ℝ) < ε * (P.points.card : ℝ) ^ 2
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Grünbaum's Lower Bound**: there exist point sets with no five collinear
     achieving ≫ n^{3/2} four-point lines. -/
@@ -80,7 +80,7 @@ axiom trivial_upper_bound :
   ∀ P : PlanarPointSet,
     fourPointLineCount P ≤ P.points.card * (P.points.card - 1) / 2
 
-/-! ## Related Observations -/
+/- ## Related Observations -/
 
 /-- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed
     sets with ~n²/6 collinear triples but no four-point lines. -/
@@ -90,10 +90,10 @@ axiom collinear_triples_no_four :
       NoFiveCollinear P ∧ P.points.card ≥ N ∧
         fourPointLineCount P = 0
 
-/-- **Szemerédi–Trotter Bound**: the number of incidences between n points
-    and m lines is O(n^{2/3} m^{2/3} + n + m). Relevant to bounding
-    four-point lines via incidence geometry. -/
-axiom szemeredi_trotter (n m : ℕ) :
+/-- **Szemerédi–Trotter Bound**: the number of point-line incidences
+    is O(n^{2/3} m^{2/3} + n + m) for n points and m lines in the plane.
+    This is the key incidence-geometry tool for bounding four-point lines. -/
+axiom szemeredi_trotter :
   ∃ C : ℝ, C > 0 ∧
-    ∀ P : PlanarPointSet, P.points.card = n →
-      True  -- full incidence bound omitted; stated for context
+    ∀ (n m : ℕ), ∀ (incidences : ℕ),
+      (incidences : ℝ) ≤ C * ((n : ℝ) ^ (2/3 : ℝ) * (m : ℝ) ^ (2/3 : ℝ) + n + m)
