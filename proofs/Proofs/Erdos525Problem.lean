@@ -40,7 +40,7 @@ open Complex Polynomial
 
 namespace Erdos525
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -63,7 +63,7 @@ def UnitCircle : Set ℂ := {z : ℂ | abs z = 1}
 noncomputable def minModulus (p : Polynomial ℂ) : ℝ :=
   ⨅ z ∈ UnitCircle, abs (p.eval z)
 
-/-!
+/-
 ## Part II: The First Question
 -/
 
@@ -83,7 +83,7 @@ axiom almost_all_small :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     ({p ∈ LittlewoodPolynomials n | minModulus p ≥ 1}).ncard < ε * 2^n
 
-/-!
+/-
 ## Part III: Littlewood's Conjecture
 -/
 
@@ -96,7 +96,7 @@ def LittlewoodConjecture : Prop :=
 /-- Kashin's Theorem (1987): Littlewood's conjecture is true -/
 axiom kashin_theorem : LittlewoodConjecture
 
-/-!
+/-
 ## Part IV: Konyagin's Improvement
 -/
 
@@ -111,7 +111,7 @@ axiom konyagin_exponent_tight :
   ∀ ε > 0, ∃ δ > 0, ∀ N : ℕ, ∃ n ≥ N,
     ({p ∈ LittlewoodPolynomials n | minModulus p ≤ n^(-(1/2 : ℝ) - ε)}).ncard < δ * 2^n
 
-/-!
+/-
 ## Part V: Konyagin-Schlag Lower Bound
 -/
 
@@ -121,7 +121,7 @@ axiom konyagin_schlag_lower_tail :
   ∀ ε > 0, ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, ∃ n ≥ N,
     ({p ∈ LittlewoodPolynomials n | minModulus p ≤ ε * n^(-(1/2 : ℝ))}).ncard ≤ C * ε * 2^n
 
-/-!
+/-
 ## Part VI: Cook-Nguyen Universal Distribution
 -/
 
@@ -138,7 +138,7 @@ axiom cook_nguyen_distribution :
     abs (({p ∈ LittlewoodPolynomials n | minModulus p > ε * n^(-(1/2 : ℝ))}).ncard / 2^n -
          Real.exp (-ε * cook_nguyen_lambda)) < δ
 
-/-!
+/-
 ## Part VII: Special Cases and Examples
 -/
 
@@ -160,7 +160,7 @@ def AllOnesPolynomial (n : ℕ) : Polynomial ℂ :=
 axiom all_ones_min_modulus (n : ℕ) :
   minModulus (AllOnesPolynomial n) = 1 / (n + 1)
 
-/-!
+/-
 ## Part VIII: Connection to Other Problems
 -/
 
@@ -178,7 +178,7 @@ axiom mahler_vs_min_modulus :
 def LehmerQuestion : Prop :=
   ∃ p : Polynomial ℂ, IsLittlewoodPolynomial p ∧ MahlerMeasure p < 1
 
-/-!
+/-
 ## Part IX: Summary
 -/
 
@@ -199,7 +199,8 @@ HISTORICAL SIGNIFICANCE:
 - Remarkable universality of the limiting distribution
 - Connections to random matrix theory and physics
 -/
-theorem erdos_525_solved : True := trivial
+theorem erdos_525_solved : LittlewoodConjecture :=
+  kashin_theorem
 
 /-- Summary of the main results -/
 theorem erdos_525_main :
