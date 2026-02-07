@@ -38,9 +38,7 @@ open Nat Real
 
 namespace Erdos683
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Largest Prime Divisor:**
@@ -77,9 +75,7 @@ P(n) is the largest prime divisor.
 axiom P_largest {n p : ℕ} (hn : n > 1) (hp : p.Prime) (hdvd : p ∣ n) :
     p ≤ largestPrimeDivisor n
 
-/-!
-## Part II: Sylvester-Schur Theorem
--/
+/- ## Part II: Sylvester-Schur Theorem -/
 
 /--
 **Sylvester-Schur Theorem (1892/1929):**
@@ -112,9 +108,7 @@ theorem binom_has_large_prime {n k : ℕ} (hk : 1 ≤ k) (hn : 2 * k ≤ n) :
   · exact P_divides (choose_gt_one hk hn)
   · exact sylvester_schur hk hn
 
-/-!
-## Part III: Erdős's 1955 Improvement
--/
+/- ## Part III: Erdős's 1955 Improvement -/
 
 /--
 **Erdős (1955):**
@@ -136,9 +130,7 @@ theorem erdos_1955_asymptotic {n k : ℕ} (hk : k ≥ 2) (hn : 2 * k ≤ n) :
   obtain ⟨c, hc_pos, hc_bound⟩ := erdos_1955_bound
   exact ⟨c, hc_pos, hc_bound n k (Nat.one_le_of_lt hk) hn⟩
 
-/-!
-## Part IV: The Main Conjecture
--/
+/- ## Part IV: The Main Conjecture -/
 
 /--
 **Erdős Conjecture (Main Question):**
@@ -160,9 +152,7 @@ axiom erdos_1979_belief :
       ∃ N : ℕ, ∀ n k : ℕ, k > N → 2 * k ≤ n →
         (P n k : ℝ) > (k : ℝ) ^ (1 + c)
 
-/-!
-## Part V: Heuristic Bounds
--/
+/- ## Part V: Heuristic Bounds -/
 
 /--
 **Prime Gap Heuristic:**
@@ -187,9 +177,7 @@ The stretched exponential eventually dominates any polynomial growth.
 axiom heuristic_stronger_than_conjecture (c : ℝ) (hc : c > 0) :
     ∀ᶠ k in Filter.atTop, Real.exp (c * Real.sqrt k) > (k : ℝ) ^ (1 + c)
 
-/-!
-## Part VI: The min(n-k+1, k^{1+c}) Bound
--/
+/- ## Part VI: The min(n-k+1, k^{1+c}) Bound -/
 
 /--
 **Trivial Upper Bound:**
@@ -198,9 +186,7 @@ P(C(n,k)) ≤ n since C(n,k) divides products of terms ≤ n.
 axiom P_upper_bound {n k : ℕ} (hk : 1 ≤ k) (hkn : k ≤ n) :
     P n k ≤ n
 
-/-!
-## Part VII: Products of Consecutive Integers
--/
+/- ## Part VII: Products of Consecutive Integers -/
 
 /--
 **Connection to Consecutive Products:**
@@ -226,9 +212,7 @@ a prime divisor > k.
 axiom consecutive_has_large_prime (m k : ℕ) (hm : m > k) (hk : k ≥ 1) :
     ∃ i : ℕ, i < k ∧ largestPrimeDivisor (m + i) > k
 
-/-!
-## Part VIII: Specific Cases
--/
+/- ## Part VIII: Specific Cases -/
 
 /--
 **Central Binomial Case k = n/2:**
@@ -248,9 +232,7 @@ Since C(n,2) = n(n-1)/2, and either n or n-1 has a prime factor ≥ (n-1)/2.
 axiom small_k_case_2 (n : ℕ) (hn : n ≥ 4) :
     P n 2 ≥ (n - 1) / 2
 
-/-!
-## Part IX: Summary
--/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #683: Summary**
