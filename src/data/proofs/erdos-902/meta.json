@@ -7,7 +7,7 @@
     "author": "Paul Erdős, György Szekeres, Esther Szekeres",
     "sourceUrl": "https://erdosproblems.com/902",
     "date": "1963",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos902Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "tournaments",
       "domination"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 902,
     "erdosUrl": "https://erdosproblems.com/902",
@@ -86,37 +86,37 @@
     {
       "id": "paley",
       "title": "Paley Tournament",
-      "summary": "Quadratic residue construction",
-      "startLine": 173,
-      "endLine": 187
+      "summary": "Quadratic residue construction and domination bound",
+      "startLine": 167,
+      "endLine": 175
     },
     {
       "id": "quadratic-residues",
       "title": "Quadratic Residues",
       "summary": "Half of nonzero elements are residues",
-      "startLine": 189,
-      "endLine": 198
+      "startLine": 177,
+      "endLine": 186
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "summary": "Domination number of a tournament",
-      "startLine": 200,
-      "endLine": 212
+      "startLine": 188,
+      "endLine": 200
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Method",
       "summary": "Random tournaments and existence proofs",
-      "startLine": 214,
-      "endLine": 229
+      "startLine": 202,
+      "endLine": 215
     },
     {
-      "id": "coding-theory",
-      "title": "Coding Theory Connection",
-      "summary": "Covering codes and dominating tournaments",
-      "startLine": 231,
-      "endLine": 241
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_902: combining Szekeres lower and Erdős upper bounds",
+      "startLine": 217,
+      "endLine": 237
     }
   ],
   "conclusion": {
