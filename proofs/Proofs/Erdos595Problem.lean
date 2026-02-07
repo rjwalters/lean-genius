@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #595: Infinite Graphs and Countable Triangle-Free Decomposition
 
 Source: https://erdosproblems.com/595
@@ -40,7 +40,7 @@ open SimpleGraph Finset Cardinal
 
 namespace Erdos595
 
-/-! ## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 
 We work with simple graphs (undirected, no loops, no multi-edges).
 -/
@@ -73,7 +73,7 @@ A graph containing no complete graph on 3 vertices (no triangles).
 -/
 def isTriangleFree (G : SimpleGraph V) : Prop := isKFreeInfinite G 3
 
-/-! ## Part II: Graph Coverings and Unions -/
+/- ## Part II: Graph Coverings and Unions -/
 
 /--
 **Subgraph Relation:**
@@ -100,7 +100,7 @@ def hasCountableTriangleFreeCover (G : SimpleGraph V) : Prop :=
     (∀ n, IsSubgraph (F n) G) ∧
     isCountableUnionOf G F
 
-/-! ## Part III: The Main Conjecture
+/- ## Part III: The Main Conjecture
 
 The Erdős-Hajnal question asks whether these two properties can coexist.
 -/
@@ -119,7 +119,7 @@ def erdos595_conjecture : Prop :=
     isK4Free G ∧
     ¬ hasCountableTriangleFreeCover G
 
-/-! ## Part IV: Finite Analogues (Folkman-Nešetřil-Rödl)
+/- ## Part IV: Finite Analogues (Folkman-Nešetřil-Rödl)
 
 While the infinite case is open, finite analogues are well understood.
 -/
@@ -153,7 +153,7 @@ axiom nesetril_rodl_finite_resistance (n : ℕ) (hn : n ≥ 1) :
   ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V),
     isK4Free G ∧ ¬ hasFiniteTriangleFreeCover G n
 
-/-! ## Part V: Why the Infinite Case is Harder
+/- ## Part V: Why the Infinite Case is Harder
 
 The gap between finite and countably infinite is fundamental.
 Having resistance to any finite cover does not automatically imply
@@ -176,7 +176,7 @@ def problem595_reformulated : Prop :=
       (∀ n, isTriangleFree (F n)) →
       ¬ isCountableUnionOf G F
 
-/-! ## Part VI: Related Results -/
+/- ## Part VI: Related Results -/
 
 /--
 **C₄-Free Special Case:**
@@ -191,7 +191,7 @@ axiom c4_free_countable_trees :
       G.Adj a b ∧ G.Adj b c ∧ G.Adj c d ∧ G.Adj d a) →
     hasCountableTriangleFreeCover G
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Finite Resistance Theorem:**
