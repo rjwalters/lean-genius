@@ -335,8 +335,6 @@ theorem erdos_218_summary :
       ext n
       exact gapEqual_iff_ap n
 
-/-- The problem remains OPEN. -/
-theorem erdos_218_open :
-    True := trivial
+/-- The problem remains OPEN (Tao: "looks difficult"). -/
 
 end Erdos218
