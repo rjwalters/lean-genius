@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #1042: Connected Components of Polynomial Lemniscates
 
 For polynomials f(z) = ∏ᵢ(z - zᵢ) with roots in a closed set F ⊆ ℂ,
@@ -28,7 +28,7 @@ open Complex
 
 namespace Erdos1042
 
-/-! ## Transfinite Diameter -/
+/- ## Transfinite Diameter -/
 
 /-- Transfinite diameter (logarithmic capacity) of a closed set F ⊆ ℂ.
 Defined as ρ(F) = lim_{n→∞} sup_{z₁,...,zₙ∈F} (∏_{i<j} |zᵢ-zⱼ|)^{1/C(n,2)}.
@@ -48,7 +48,7 @@ axiom disc_transfinite_diameter :
 axiom interval_transfinite_diameter :
     transfiniteDiameter {z : ℂ | z.im = 0 ∧ -1 ≤ z.re ∧ z.re ≤ 1} = 1/2
 
-/-! ## Polynomial Lemniscates -/
+/- ## Polynomial Lemniscates -/
 
 /-- A monic polynomial f(z) = ∏ᵢ(z - zᵢ) with all roots in F. -/
 structure PolynomialWithRoots (F : Set ℂ) where
@@ -68,7 +68,7 @@ axiom numComponents (S : Set ℂ) : ℕ
 of degree-n polynomials with roots in F. -/
 axiom maxComponents (F : Set ℂ) (n : ℕ) : ℕ
 
-/-! ## The Original Problem -/
+/- ## The Original Problem -/
 
 /-- Main Question 1: For F with transfinite diameter 1 not contained
 in any disc of radius 1, can the lemniscate have n components? -/
@@ -85,7 +85,7 @@ def mainQuestion2 : Prop :=
     ∃ c : ℝ, c > 0 ∧
       ∀ n : ℕ, (maxComponents F n : ℝ) ≤ (1 - c) * n
 
-/-! ## Erdős-Herzog-Piranian Result (1958) -/
+/- ## Erdős-Herzog-Piranian Result (1958) -/
 
 /-- For the unit disc, the lemniscate can have n connected components.
 Example: f(z) = zⁿ + 1 has n components. -/
@@ -100,7 +100,7 @@ axiom roots_of_unity_example :
       let f := fun z : ℂ => z^n + 1
       numComponents (lemniscate f) = n
 
-/-! ## Ghosh-Ramachandran Solution (2024) -/
+/- ## Ghosh-Ramachandran Solution (2024) -/
 
 /-- GR Theorem 1: If 0 < d < 1, the lemniscate has at most (1-c)n
 components for some c > 0 depending on F. -/
@@ -123,7 +123,7 @@ axiom ghosh_ramachandran_diameter_one_examples :
     ∃ F : Set ℂ, transfiniteDiameter F = 1 ∧
       ∀ N : ℕ, ∃ n : ℕ, n > N ∧ maxComponents F n = n
 
-/-! ## The Counterexample -/
+/- ## The Counterexample -/
 
 /-- The answer depends on geometry, not just diameter.
 Both the disc of radius 1/2 and [-1,1] have transfinite diameter 1/2,
@@ -136,7 +136,7 @@ axiom diameter_not_sufficient :
     (∀ n : ℕ, maxComponents F1 n = 1) ∧
     (∀ N : ℕ, ∃ n : ℕ, n > N ∧ (maxComponents F2 n : ℝ) ≥ 0.01 * n)
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #1042 Summary.**
 Combines the key results: Question 2 confirmed (d < 1 → bounded components),
