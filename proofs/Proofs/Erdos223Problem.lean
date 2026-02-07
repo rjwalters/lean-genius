@@ -29,8 +29,7 @@ open Finset
 
 namespace Erdos223
 
-/-!
-## Overview
+/- ## Overview
 
 This problem asks: how many pairs of points can realize the diameter in a
 point configuration of diameter 1?
@@ -43,8 +42,7 @@ The answer depends dramatically on dimension:
 This is one of Erdős's classic problems in combinatorial geometry.
 -/
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /-- A point configuration in d-dimensional Euclidean space. -/
@@ -74,8 +72,7 @@ noncomputable def countPairsAtDistance {d n : ℕ} (A : PointConfig d n) (r : �
 noncomputable def diameterPairs {d n : ℕ} (A : PointConfig d n) : ℕ :=
   countPairsAtDistance A (diameter A)
 
-/-!
-## Part II: The Function f_d(n)
+/- ## Part II: The Function f_d(n)
 -/
 
 /-- f_d(n) is the maximum number of diameter pairs over all n-point
@@ -83,8 +80,7 @@ noncomputable def diameterPairs {d n : ℕ} (A : PointConfig d n) : ℕ :=
 noncomputable def f (d n : ℕ) : ℕ :=
   ⨆ (A : PointConfig d n) (_ : hasDiameterExactly A 1), diameterPairs A
 
-/-!
-## Part III: Two-Dimensional Case (Hopf-Pannwitz 1934)
+/- ## Part III: Two-Dimensional Case (Hopf-Pannwitz 1934)
 -/
 
 /-- In 2D, f₂(n) = n exactly.
@@ -105,8 +101,7 @@ axiom f2_upper_bound (n : ℕ) (hn : n ≥ 2) :
 axiom f2_lower_bound (n : ℕ) (hn : n ≥ 3) :
   f 2 n ≥ n
 
-/-!
-## Part IV: Three-Dimensional Case (1956-57)
+/- ## Part IV: Three-Dimensional Case (1956-57)
 -/
 
 /-- In 3D, f₃(n) = 2n - 2.
@@ -124,8 +119,7 @@ axiom f3_upper_bound (n : ℕ) (hn : n ≥ 3) :
 axiom f3_lower_bound (n : ℕ) (hn : n ≥ 3) :
   f 3 n ≥ 2 * n - 2
 
-/-!
-## Part V: Higher Dimensions (Erdős 1960)
+/- ## Part V: Higher Dimensions (Erdős 1960)
 -/
 
 /-- For d ≥ 4, f_d(n) grows quadratically in n.
@@ -145,8 +139,7 @@ axiom asymptotic_formula (d : ℕ) (hd : d ≥ 4) :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     |((f d n : ℝ) / n^2) - leadingCoefficient d| < ε
 
-/-!
-## Part VI: Swanepoel's Complete Solution (2009)
+/- ## Part VI: Swanepoel's Complete Solution (2009)
 -/
 
 /-- Swanepoel (2009) gave exact formulas for f_d(n) for all sufficiently large n. -/
@@ -161,8 +154,7 @@ def extremalConfigurationExists (d n : ℕ) : Prop :=
 axiom swanepoel_extremal_configs (d : ℕ) (hd : d ≥ 4) :
   ∃ N : ℕ, ∀ n ≥ N, extremalConfigurationExists d n
 
-/-!
-## Part VII: Special Cases and Bounds
+/- ## Part VII: Special Cases and Bounds
 -/
 
 /-- For d = 4: p = 2, so coefficient is 1/4. -/
@@ -190,8 +182,7 @@ theorem coefficient_approaches_half :
   -- As p = d/2 → ∞, (p-1)/(2p) → 1/2
   sorry
 
-/-!
-## Part VIII: Geometric Interpretation
+/- ## Part VIII: Geometric Interpretation
 -/
 
 /-- The diameter graph: vertices are points, edges connect diameter pairs. -/
@@ -222,8 +213,7 @@ def higherDDiameterGraphStructure : Prop :=
   -- Key: cross-polytope configurations
   True
 
-/-!
-## Part IX: Related Problems
+/- ## Part IX: Related Problems
 -/
 
 /-- Problem 132: Unit distance graphs (minimum distance 1 instead of maximum). -/
@@ -232,8 +222,7 @@ def relatedToUnitDistanceGraphs : Prop := True
 /-- Problem 1084: Analogous problem with minimum distance 1. -/
 def relatedToMinDistanceProblem : Prop := True
 
-/-!
-## Summary
+/- ## Summary
 
 **Erdős Problem #223: SOLVED**
 
@@ -249,8 +238,6 @@ with diameter 1:
 The transition from linear to quadratic at d = 4 is a fundamental
 dimensional phenomenon in combinatorial geometry.
 -/
-
-theorem erdos_223 : True := trivial
 
 theorem erdos_223_summary :
     -- 2D case
