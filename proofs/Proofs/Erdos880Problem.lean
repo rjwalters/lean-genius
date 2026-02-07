@@ -21,6 +21,7 @@ References:
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Order.Filter.AtTopBot
 
 namespace Erdos880
 
@@ -123,13 +124,17 @@ axiom k2_bounded_gaps :
 - For sums a + b with a ≠ b: can produce odd numbers
 - Since both parities must appear densely, 2×A has bounded gaps
 -/
-axiom k2_parity_argument : True
+axiom k2_parity_argument (A : Set ℕ) (hA : isAdditiveBasis A 2) :
+    ∀ n : ℕ, n ≥ 1 → ∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ a + b ≤ n + 2 ∧ a + b ≥ n
 
 /--
 **The gap bound is exactly 2:**
 There exist bases A with 2A ~ ℕ where gaps of 2 occur infinitely often.
 -/
-axiom k2_gap_bound_tight : True
+axiom k2_gap_bound_tight :
+    ∃ A : Set ℕ, isAdditiveBasis A 2 ∧
+      ∃ᶠ n in Filter.atTop, n ∈ restrictedKFoldSumset A 2 ∧
+        n + 1 ∉ restrictedKFoldSumset A 2 ∧ n + 2 ∈ restrictedKFoldSumset A 2
 
 /-
 ## Part V: The k ≥ 3 Case (Negative Answer)
@@ -150,14 +155,20 @@ The counterexample for k ≥ 3 is constructed carefully so that:
 1. kA covers all large integers (basis property)
 2. But k×A has arbitrarily large gaps
 -/
-axiom k_ge_3_counterexample_construction : True
+axiom k_ge_3_counterexample_construction (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Set ℕ, isAdditiveBasis A k ∧
+      ∀ C : ℕ, ∃ b₁ b₂ : ℕ, b₁ ∈ restrictedKFoldSumset A k ∧
+        b₂ ∈ restrictedKFoldSumset A k ∧ b₂ > b₁ ∧ b₂ - b₁ > C ∧
+        ∀ b, b₁ < b → b < b₂ → b ∉ restrictedKFoldSumset A k
 
 /--
 **Why k ≥ 3 is different from k = 2:**
 For k ≥ 3, the distinctness constraint becomes more restrictive.
 There's more "room" for gaps because fewer combinations are available.
 -/
-axiom k_ge_3_distinctness_explanation : True
+axiom k_ge_3_distinctness_explanation (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Set ℕ, isAdditiveBasis A k ∧
+      restrictedKFoldSumset A k ⊂ kFoldSumset A k
 
 /-
 ## Part VI: Complete Resolution
@@ -194,7 +205,8 @@ The classical question asks about kA (unrestricted sums).
 The Erdős-Turán conjecture concerns representation functions.
 This problem asks about k×A (restricted to distinct elements).
 -/
-axiom relation_to_classical : True
+axiom relation_to_classical (A : Set ℕ) (k : ℕ) :
+    restrictedKFoldSumset A k ⊆ kFoldSumset A k
 
 /--
 **Representation function:**
@@ -209,7 +221,8 @@ noncomputable def representationFunction (A : Set ℕ) (k : ℕ) (n : ℕ) : ℕ
 Even though k×A ⊆ kA, the restricted sumset can be much sparser.
 For k ≥ 3, this sparseness allows for unbounded gaps.
 -/
-axiom density_considerations : True
+axiom density_considerations (k : ℕ) (hk : k ≥ 3) (A : Set ℕ) (hA : isAdditiveBasis A k) :
+    ¬hasBoundedGaps (kFoldSumset A k) → ¬hasBoundedGaps (restrictedKFoldSumset A k)
 
 /-
 ## Part VIII: The Parity Argument in Detail
@@ -224,7 +237,9 @@ Consider A with 2A ~ ℕ. Then:
   contain elements of both parities infinitely often
 - Hence gaps in 2×A are bounded
 -/
-axiom parity_argument_detail : True
+axiom parity_argument_detail (A : Set ℕ) (hA : isAdditiveBasis A 2) :
+    ∀ n : ℕ, Odd n → n ∈ kFoldSumset A 2 →
+      ∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ a + b = n
 
 /--
 **Why parity fails for k ≥ 3:**
@@ -232,7 +247,11 @@ For k = 3, sums a + b + c with all distinct can have any parity.
 There's no forced structure like in the k = 2 case.
 The counterexample exploits this freedom.
 -/
-axiom parity_fails_k3 : True
+axiom parity_fails_k3 :
+    ∃ A : Set ℕ, isAdditiveBasis A 3 ∧
+      ∃ n : ℕ, Odd n ∧ n ∈ kFoldSumset A 3 ∧
+        ∀ a b c : ℕ, a ∈ A → b ∈ A → c ∈ A →
+          a + b + c = n → ¬(a ≠ b ∧ b ≠ c ∧ a ≠ c)
 
 /-
 ## Part IX: Summary
@@ -272,6 +291,7 @@ theorem erdos_880_status :
 **Problem resolved:**
 The Burr-Erdős question on restricted additive bases is completely resolved.
 -/
-theorem erdos_880_resolved : True := trivial
+theorem erdos_880_resolved :
+    (burrErdosQuestion 2) ∧ (∀ k ≥ 3, ¬burrErdosQuestion k) := erdos_880_status
 
 end Erdos880
