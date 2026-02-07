@@ -1,50 +1,113 @@
 {
   "slug": "erdos-667",
   "title": "Erdős #667",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "SURVEYED",
+  "status": "surveyed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $p,q\\geq 1$ be fixed integers. We define $H(n)=H(N;p,q)$ to be the largest $m$ such that any graph on $n$ vertices where every set of $p$ vertices spans at least $q$ edges must contain a complete graph on $m$ vertices.\nIs\\[c(p,q)=\\liminf \\frac{\\log H(n)}{\\log n}\\]a strictly increasing function of $q$ for $1\\leq q\\leq \\binom{p-1}{2}+1$?\n\n\n\nA problem of Erd\\H{o}s, Faudree, Rousseau, and Schelp.\n\nWhen $q=1$ this corresponds exactly to the classical Ramsey problem, and hence for example\\[\\frac{1}{p-1}\\leq c(p,1) \\leq \\frac{2}{p+1}.\\]It is easy to see that if $q=\\binom{p-1}{2}+1$ then $c(p,q)=1$. Erd\\H{o}s, Faudree, Rousseau, and Schelp have shown that $c(p,\\binom{p-1}{2})\\leq 1/2$.",
-    "plain": "Let $p,q\\geq 1$ be fixed integers. We define $H(n)=H(N;p,q)$ to be the largest $m$ such that any graph on $n$ vertices where every set of $p$ vertices spans at least $q$ edges must contain a complete graph on $m$ vertices.",
-    "whyMatters": []
+    "formal": "Let p,q ≥ 1. Define H(n;p,q) as the largest m such that every graph on n vertices where every p-set spans ≥ q edges contains K_m. Is c(p,q) = liminf log H(n)/log n strictly increasing in q for 1 ≤ q ≤ C(p-1,2)+1?",
+    "plain": "Is the clique density exponent c(p,q) a strictly increasing function of q?",
+    "whyMatters": [
+      "Generalizes classical Ramsey theory to edge-density constraints",
+      "Connects extremal graph theory with Ramsey-type problems",
+      "Studied by Erdős, Faudree, Rousseau, and Schelp"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "c(p,1) is in [1/(p-1), 2/(p+1)] (classical Ramsey bounds)",
+      "c(p, C(p-1,2)+1) = 1 (maximum density forces complete graph)",
+      "c(p, C(p-1,2)) ≤ 1/2 (Erdős-Faudree-Rousseau-Schelp)",
+      "c(p,q) is weakly increasing in q (monotonicity of H in q)",
+      "c(p,q) is in [0,1] for all p,q",
+      "p=3 case: c(3,1) < c(3,2) = 1 (follows from Ramsey bound + max value)"
+    ],
+    "open": [
+      "Strict monotonicity of c(p,q) for general p and intermediate q",
+      "Whether c(p,q) has jump discontinuities or is continuous",
+      "Precise value of c(p,q) for specific p,q pairs beyond q=1"
+    ],
+    "goal": "Formalize definitions, axiomatize known bounds, prove consequences"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T18:22:04.305Z",
+    "phase": "SURVEYED",
+    "since": "2026-02-07T16:30:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Enhanced formalization with proved theorems from known bounds",
+    "blockers": [
+      "OPEN problem - strict monotonicity conjecture unresolved",
+      "Requires deep extremal graph theory for intermediate q values"
+    ],
+    "nextAction": "Could submit to Aristotle for auxiliary proofs, or extend to more small cases",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #667 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p,q\\geq 1$ be fixed integers. We define $H(n)=H(N;p,q)$ to be the largest $m$ such that any graph on $n$ vertices where every set of $p$ vertices spans at least $q$ edges must contain a complete graph on $m$ vertices.\nIs\\[c(p,q)=\\liminf \\frac{\\log H(n)}{\\log n}\\]a strictly increasing function of $q$ for $1\\leq q\\leq \\binom{p-1}{2}+1$?\n\n\n\nA problem of Erd\\H{o}s, Faudree, Rousseau, and Schelp.\n\nWhen $q=1$ this corresponds exactly to the classical Ramsey problem, and hence for example\\[\\frac{1}{p-1}\\leq c(p,1) \\leq \\frac{2}{p+1}.\\]It is easy to see that if $q=\\binom{p-1}{2}+1$ then $c(p,q)=1$. Erd\\H{o}s, Faudree, Rousseau, and Schelp have shown that $c(p,\\binom{p-1}{2})\\leq 1/2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #666\n- Problem #668\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97f\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "progressSummary": "SURVEYED: Enhanced existing formalization from 84 to 256 lines. Added graph-theoretic definitions (edgeCount, HasDensity), 9 new proved theorems including strict increase at top (EFRS bound), positivity of c(p,1), weak monotonicity extension, p=3 and p=4 small cases, and summary theorem. Fixed /-! headers for Aristotle compatibility.",
+    "builtItems": [
+      "proofs/Proofs/Erdos667Problem.lean - Enhanced formalization (256 lines, was 84)",
+      "edgeCount: computable edge count on vertex subsets",
+      "HasDensity: (p,q)-density condition definition",
+      "cpq_strict_at_top: proved c(p, C(p-1,2)) < c(p, C(p-1,2)+1)",
+      "cpq_pos_at_one: proved c(p,1) > 0 for p ≥ 3",
+      "cpq_mono_q_general: proved weak monotonicity for arbitrary q intervals",
+      "p3_strict: proved c(3,1) < c(3,2) = 1 (p=3 case resolved)",
+      "p4_strict_at_top: proved strict increase at top for p=4",
+      "erdos667_weak_evidence: proved c(p,1) < c(p,q_max) for all p ≥ 3",
+      "erdos667_summary: comprehensive summary theorem"
+    ],
+    "insights": [
+      "EFRS bound c(p,C(p-1,2)) ≤ 1/2 combined with c(p,C(p-1,2)+1) = 1 proves strict increase at top",
+      "For p=3, only two q values: conjecture reduces to c(3,1) < 1, which follows from Ramsey upper bound",
+      "Ramsey bounds are the key input: 1/(p-1) ≤ c(p,1) ≤ 2/(p+1) < 1 for p ≥ 2",
+      "Weak monotonicity c(p,q) ≤ c(p,q+1) follows from H(n;p,q) ≤ H(n;p,q+1)",
+      "The gap between weak monotonicity and strict monotonicity is the core open question",
+      "Original file had /-! sections (Aristotle-incompatible) - fixed to /-"
+    ],
+    "mathlibGaps": [
+      "No H(n;p,q) Ramsey-type function in Mathlib",
+      "No clique density exponent c(p,q) formalization",
+      "SimpleGraph.Clique available but not specialized for this setting"
+    ],
+    "nextSteps": [
+      "Could convert axioms to theorem sorries for Aristotle",
+      "Could add more small cases (p=5 has 7 q values)",
+      "Could formalize connection to Turán-type problems"
+    ],
+    "markdown": ""
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Axiomatize and prove consequences",
+      "status": "completed",
+      "description": "Axiomatize known bounds (Ramsey, EFRS, boundary values), then prove consequences like strict increase at top, positivity, and small cases."
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "extremal-graph-theory",
+    "ramsey-theory",
+    "clique-density"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "[Er97f]",
+      "Erdős-Faudree-Rousseau-Schelp"
+    ],
+    "urls": [
+      "https://www.erdosproblems.com/667"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique"
+    ]
   },
   "started": "2026-01-13T18:22:04.305Z",
   "significance": 6,
