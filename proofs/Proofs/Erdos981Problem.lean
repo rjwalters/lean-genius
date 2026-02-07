@@ -1,5 +1,4 @@
-/-!
-Erdős Problem #981: Character Sum Stabilization Threshold
+/- Erdős Problem #981: Character Sum Stabilization Threshold
 
 Source: https://erdosproblems.com/981
 Status: SOLVED (Elliott 1969)
@@ -39,8 +38,7 @@ open Filter Asymptotics Nat
 
 namespace Erdos981
 
-/-!
-## Part I: The Legendre Symbol
+/- ## Part I: The Legendre Symbol
 
 The Legendre symbol (n/p) for an odd prime p is:
 - +1 if n is a quadratic residue mod p (and p ∤ n)
@@ -56,8 +54,7 @@ noncomputable def legendreInt (n : ℤ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ :=
 noncomputable def characterSum (N : ℕ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ :=
   ∑ n in Finset.range N, legendreInt n p
 
-/-!
-## Part II: The Stabilization Threshold f_ε(p)
+/- ## Part II: The Stabilization Threshold f_ε(p)
 
 f_ε(p) is the smallest m such that |∑_{n≤N} (n/p)| < εN for all N ≥ m.
 This measures when the character sum becomes "permanently small" relative to N.
@@ -73,8 +70,7 @@ def isBoundedFrom (ε : ℝ) (p m : ℕ) [Fact (Nat.Prime p)] : Prop :=
 noncomputable def fEps (ε : ℝ) (p : ℕ) [Fact (Nat.Prime p)] : ℕ :=
   sInf { m : ℕ | isBoundedFrom ε p m }
 
-/-!
-## Part III: The Main Asymptotic
+/- ## Part III: The Main Asymptotic
 
 Elliott proved: ∑_{p<x} f_ε(p) ~ c_ε · x/log x
 -/
@@ -88,8 +84,7 @@ axiom sumFEps (ε : ℝ) (x : ℕ) : ℝ
 noncomputable def asymptoticFunc (x : ℕ) : ℝ :=
   (x : ℝ) / Real.log x
 
-/-!
-## Part IV: Elliott's Theorem (1969)
+/- ## Part IV: Elliott's Theorem (1969)
 -/
 
 /--
@@ -108,8 +103,7 @@ axiom elliott_1969_quantitative (ε : ℝ) (hε : ε > 0) :
     ∃ c : ℝ, c > 0 ∧ ∀ δ > 0, ∃ X : ℕ, ∀ x ≥ X,
       |sumFEps ε x / asymptoticFunc x - c| < δ
 
-/-!
-## Part V: Properties of Character Sums
+/- ## Part V: Properties of Character Sums
 -/
 
 /-- Character sums are bounded by √p · log p (Pólya-Vinogradov inequality).
@@ -127,8 +121,7 @@ axiom character_sum_cancellation (p : ℕ) [hp : Fact (Nat.Prime p)] :
 axiom fEps_finite (ε : ℝ) (hε : ε > 0) (p : ℕ) [hp : Fact (Nat.Prime p)] :
     ∃ m : ℕ, isBoundedFrom ε p m
 
-/-!
-## Part VI: Burgess Bounds
+/- ## Part VI: Burgess Bounds
 
 Classical bounds on character sums provide context for the problem.
 -/
@@ -138,8 +131,7 @@ axiom burgess_bound (p : ℕ) [hp : Fact (Nat.Prime p)] (r : ℕ) (hr : r ≥ 1)
     ∃ C : ℝ, C > 0 ∧ ∀ N H : ℕ, H ≥ p^(1/(4*r) + 1/r) →
       |∑ n in Finset.Ico N (N + H), legendreInt n p| ≤ C * H * p^(-(1/(4*r)))
 
-/-!
-## Part VII: Related Concepts
+/- ## Part VII: Related Concepts
 -/
 
 /-- Quadratic residue definition for context. -/
@@ -150,8 +142,7 @@ def isQuadraticResidue (a : ℤ) (p : ℕ) : Prop :=
 axiom complete_sum_zero (p : ℕ) [hp : Fact (Nat.Prime p)] :
     characterSum p p = 0
 
-/-!
-## Part VIII: The Alternative Formulation
+/- ## Part VIII: The Alternative Formulation
 
 Tang and Zhang (2025) studied a different formulation.
 -/
@@ -170,8 +161,7 @@ axiom tang_zhang_2025 (ε : ℝ) (hε : ε > 0) :
     ∃ c' : ℝ, c' > 0 ∧
       Tendsto (fun x => sumFEpsAlt ε x / asymptoticFunc x) atTop (𝓝 c')
 
-/-!
-## Part IX: Summary
+/- ## Part IX: Summary
 
 **Erdős Problem #981 - SOLVED (Elliott 1969)**
 
