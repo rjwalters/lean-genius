@@ -198,15 +198,6 @@ def bombieriBorgainExponent : ℚ := 7 / 18
 -/
 
 /--
-**Random unimodular polynomial:**
-If coefficients are chosen uniformly on the unit circle,
-what is the expected behavior of |P(z)|?
--/
-axiom random_polynomial_behavior :
-  -- Heuristically, random P has |P(z)| ≈ √n with fluctuations O(√(log n))
-  True
-
-/--
 **Rudin-Shapiro polynomials:**
 A deterministic family of unimodular polynomials with |P(z)| ≤ 2√n.
 Not ultraflat (lower bound can be small).
@@ -216,45 +207,7 @@ axiom rudin_shapiro :
     supNormOnCircle P ≤ 2 * Real.sqrt (2^n)
 
 /-
-## Part VIII: Why "Ultraflat"?
--/
-
-/--
-**Flatness interpretation:**
-A polynomial P is "flat" if |P(z)| is nearly constant on |z| = 1.
-"Ultra" flat means the ratio max/min approaches 1 as n → ∞.
-
-For perfect flatness, we'd need |P(z)| = √n for all |z| = 1,
-which is impossible (P would be constant, contradicting degree n).
--/
-axiom flatness_explanation : True
-
-/--
-**Equidistribution connection:**
-Ultraflat polynomials relate to equidistribution of polynomial values
-on the unit circle - a topic in harmonic analysis.
--/
-axiom equidistribution_connection : True
-
-/-
-## Part IX: Related Results
--/
-
-/--
-**Problem #228 connection:**
-Related to Problem #228 about coefficients and polynomial behavior.
--/
-axiom problem_228_connection : True
-
-/--
-**Littlewood conjecture:**
-A related conjecture asked about |P(z)| for polynomials with
-coefficients ±1. This is also studied extensively.
--/
-axiom littlewood_polynomials : True
-
-/-
-## Part X: Summary
+## Part VIII: Summary
 -/
 
 /--
