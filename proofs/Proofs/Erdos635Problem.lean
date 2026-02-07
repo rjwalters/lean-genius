@@ -33,7 +33,7 @@ open Nat Finset
 
 namespace Erdos635
 
-/-! ## Part I: The Non-Divisibility Condition
+/- ## Part I: The Non-Divisibility Condition
 
 The key constraint is: if two elements a < b of the set satisfy b - a ≥ t,
 then (b - a) must NOT divide b. This is a non-trivial restriction on which
@@ -53,7 +53,7 @@ def IsNonDivisible (A : Finset ℕ) (t : ℕ) : Prop :=
 def IsAdmissible (A : Finset ℕ) (N t : ℕ) : Prop :=
   (∀ x ∈ A, 1 ≤ x ∧ x ≤ N) ∧ IsNonDivisible A t
 
-/-! ## Part II: The Extremal Function
+/- ## Part II: The Extremal Function
 
 f(N, t) is the maximum size of a t-admissible set in {1,...,N}.
 This is the central quantity of the problem — Erdős asks for its
@@ -64,7 +64,7 @@ asymptotic behavior as N → ∞ for fixed t. -/
 noncomputable def f (N t : ℕ) : ℕ :=
   sSup {k | ∃ A : Finset ℕ, A.card = k ∧ IsAdmissible A N t}
 
-/-! ## Part III: The Case t = 1 — Odd Numbers
+/- ## Part III: The Case t = 1 — Odd Numbers
 
 When t = 1, every pair with a < b has b - a ≥ 1, so the condition
 applies to ALL pairs. The odd numbers {1, 3, 5, ...} form an optimal
@@ -96,7 +96,7 @@ axiom oddSet_card (N : ℕ) : (oddSet N).card = (N + 1) / 2
     (upper bound, since the condition applies to all pairs). -/
 axiom f_t1 (N : ℕ) (hN : N ≥ 1) : f N 1 = (N + 1) / 2
 
-/-! ## Part IV: The Case t = 2 — Beating the N/2 Barrier
+/- ## Part IV: The Case t = 2 — Beating the N/2 Barrier
 
 For t = 2, the condition only applies to pairs with b - a ≥ 2. This
 allows b - a = 1 to be "free," meaning consecutive elements can coexist.
@@ -122,7 +122,7 @@ axiom erdos_construction_t2 (N : ℕ) (hN : N ≥ 2) :
     ∃ A : Finset ℕ, IsAdmissible A N 2 ∧
     ∃ c : ℝ, c > 0 ∧ (A.card : ℝ) ≥ N / 2 + c * Real.log N
 
-/-! ## Part V: The Main Conjecture (OPEN)
+/- ## Part V: The Main Conjecture (OPEN)
 
 The central question: does the density of the extremal set always
 approach 1/2 as N → ∞, regardless of t? The o_t(1) notation means
@@ -146,7 +146,7 @@ def ErdosConjecture635 : Prop :=
 /-- The conjecture is axiomatized as it remains open. -/
 axiom erdos_635 : ErdosConjecture635
 
-/-! ## Part VI: Upper and Lower Bounds
+/- ## Part VI: Upper and Lower Bounds
 
 We collect known bounds on f(N, t). The trivial upper bound is N
 (the entire set {1,...,N}), but this is far from tight. -/
@@ -170,7 +170,7 @@ axiom f_lower_half (N t : ℕ) (hN : N ≥ 1) (ht : t ≥ 1) :
 axiom f_t1_density :
     Filter.Tendsto (fun N => (f N 1 : ℝ) / N) Filter.atTop (nhds (1 / 2))
 
-/-! ## Part VII: Structural Observations
+/- ## Part VII: Structural Observations
 
 Additional properties connecting the non-divisibility condition to
 number-theoretic structure. -/
@@ -186,7 +186,7 @@ axiom no_far_multiples (A : Finset ℕ) (N t : ℕ)
     (hab : a < b) (hd : b - a ≥ t) (k : ℕ) (hk : k ≥ 2) :
     b ≠ k * a
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #635: Summary**
@@ -209,7 +209,9 @@ structure (divisibility relations).
 theorem erdos_635_t1_solved (N : ℕ) (hN : N ≥ 1) :
     f N 1 = (N + 1) / 2 := f_t1 N hN
 
-/-- The problem remains OPEN for general t. -/
-theorem erdos_635_status : True := trivial
+/-- The t=1 case is solved; the general conjecture remains open. -/
+theorem erdos_635_status :
+    (∀ N : ℕ, N ≥ 1 → f N 1 = (N + 1) / 2) ∧ ErdosConjecture635 :=
+  ⟨f_t1, erdos_635⟩
 
 end Erdos635
