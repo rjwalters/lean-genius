@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #521: Real Roots of Random ±1 Polynomials
 
 **Source:** [erdosproblems.com/521](https://erdosproblems.com/521)
@@ -29,7 +29,7 @@ open Nat Real
 
 namespace Erdos521
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -59,7 +59,7 @@ Rₙ[-1,1] counts roots in the interval [-1, 1].
 -/
 axiom realRootCountInUnit (n : ℕ) (ε : ℕ → Int) : ℕ
 
-/-!
+/-
 ## Part II: The Kac-Erdős-Offord Constant
 -/
 
@@ -81,7 +81,7 @@ Since π > 0, the Kac constant 2/π is positive.
 -/
 axiom kac_constant_pos : kacConstant > 0
 
-/-!
+/-
 ## Part III: Erdős-Offord Theorem (1956)
 -/
 
@@ -115,7 +115,7 @@ axiom variance_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       varianceRealRoots n ≤ C * (Real.log n)^2
 
-/-!
+/-
 ## Part IV: The Main Conjecture
 -/
 
@@ -130,7 +130,7 @@ over infinite binary sequences.
 -/
 axiom erdosConjecture_open : Prop
 
-/-!
+/-
 ## Part V: Do's Theorem (2024)
 -/
 
@@ -148,7 +148,7 @@ axiom do_theorem_2024 :
       ∀ coeff, IsValidCoeffSeq coeff →
         |(realRootCountInUnit n coeff : ℝ) / Real.log n - halfKacConstant| < ε
 
-/-!
+/-
 ## Part VI: Kac's Integral Formula
 -/
 
@@ -171,7 +171,7 @@ A degree n polynomial has at most n+1 real roots.
 axiom real_root_bound (n : ℕ) (ε : ℕ → Int) :
     realRootCount n ε ≤ n + 1
 
-/-!
+/-
 ## Part VII: Summary
 -/
 
