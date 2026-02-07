@@ -38,7 +38,7 @@ open Finset Nat
 
 namespace Erdos766
 
-/-! ## Part I: Basic Graph Definitions -/
+/- ## Part I: Basic Graph Definitions -/
 
 /-- A simple graph on a finite type. -/
 abbrev Graph (V : Type*) [Fintype V] := SimpleGraph V
@@ -58,7 +58,7 @@ def isHFree {V W : Type*} [Fintype V] [Fintype W]
     (G : Graph V) (H : Graph W) : Prop :=
   ¬containsSubgraph G H
 
-/-! ## Part II: The Turán Number ex(n; H) -/
+/- ## Part II: The Turán Number ex(n; H) -/
 
 /-- ex(n; H) = maximum edges in an n-vertex H-free graph. -/
 noncomputable def turanNumber (n : ℕ) (H : Graph (Fin n)) : ℕ :=
@@ -68,7 +68,7 @@ noncomputable def turanNumber (n : ℕ) (H : Graph (Fin n)) : ℕ :=
 axiom turanNumber_wellDefined (n : ℕ) (H : Graph (Fin n)) :
     turanNumber n H < n * (n - 1) / 2 + 1
 
-/-! ## Part III: The Function f(n; k, l) -/
+/- ## Part III: The Function f(n; k, l) -/
 
 /-- The set of all graphs on k vertices with exactly l edges. -/
 def graphsWithEdges (k l : ℕ) : Set (Graph (Fin k)) :=
@@ -82,7 +82,7 @@ noncomputable def f (n k l : ℕ) : ℕ :=
 axiom f_wellDefined (n k l : ℕ) (hk : k ≥ 2) (hl : l > k) (hlu : l ≤ k * k / 4) :
     f n k l ≤ n * (n - 1) / 2
 
-/-! ## Part IV: The Range of Interest: k < l ≤ k²/4 -/
+/- ## Part IV: The Range of Interest: k < l ≤ k²/4 -/
 
 /-- The maximum edges in a bipartite graph on k vertices is ⌊k²/4⌋.
     This is the edge count of K_{⌊k/2⌋, ⌈k/2⌉}. -/
@@ -93,7 +93,7 @@ def maxBipartiteEdges (k : ℕ) : ℕ := k * k / 4
 def inRangeOfInterest (k l : ℕ) : Prop :=
   k < l ∧ l ≤ maxBipartiteEdges k
 
-/-! ## Part V: Known Results -/
+/- ## Part V: Known Results -/
 
 /--
 **Dirac-Erdős Theorem**:
@@ -122,7 +122,7 @@ noncomputable def turanGraphEdges (n k : ℕ) : ℕ :=
   -- T(n, k) = (1 - 1/k) · n²/2, edges in complete k-partite on n vertices
   (k - 1) * n * n / (2 * k)
 
-/-! ## Part VI: The Monotonicity Question -/
+/- ## Part VI: The Monotonicity Question -/
 
 /--
 **Question (OPEN)**: Is f(n; k, l) strictly monotone in l for fixed k, large n?
@@ -141,7 +141,7 @@ axiom f_nondecreasing (n k l₁ l₂ : ℕ) (hl : l₁ ≤ l₂)
     (h1 : inRangeOfInterest k l₁) (h2 : inRangeOfInterest k l₂) :
     f n k l₁ ≤ f n k l₂
 
-/-! ## Part VII: Bounds and Estimates -/
+/- ## Part VII: Bounds and Estimates -/
 
 /-- Lower bound: f(n; k, l) ≥ 0 (trivial). -/
 theorem f_nonneg (n k l : ℕ) : f n k l ≥ 0 := Nat.zero_le _
@@ -164,7 +164,7 @@ axiom f_for_trees (n k : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
 axiom f_near_bipartite_threshold (n k : ℕ) (hk : k ≥ 3) (hn : n ≥ k) :
     f n k (maxBipartiteEdges k) ≤ n * n / 4 + k
 
-/-! ## Part VIII: Special Cases -/
+/- ## Part VIII: Special Cases -/
 
 /-- When k = 3 and l = 3, the only graph is K₃.
     So f(n; 3, 3) = ex(n; K₃) = ⌊n²/4⌋.
@@ -184,7 +184,7 @@ axiom turan_c4 (n : ℕ) (hn : n ≥ 4) :
       C₁ * n^(3/2 : ℝ) ≤ turanNumber n (cycleGraph 4) ∧
       turanNumber n (cycleGraph 4) ≤ C₂ * n^(3/2 : ℝ)
 
-/-! ## Part IX: Connection to Turán Density -/
+/- ## Part IX: Connection to Turán Density -/
 
 /-- The Turán density of a graph H is π(H) = lim ex(n;H)/C(n,2) as n → ∞.
     This limit exists by the Erdős-Stone theorem.
@@ -204,7 +204,7 @@ axiom dense_graph_contains_triangle (k l : ℕ) (hk : k ≥ 3)
     (hdense : l > k * k / 4) :
     ∀ G : Graph (Fin k), numEdges G = l → containsSubgraph G (completeGraph (Fin 3))
 
-/-! ## Part X: Summary -/
+/- ## Part X: Summary -/
 
 /--
 **Erdős Problem #766: Summary**
@@ -225,16 +225,21 @@ Let f(n; k, l) = min ex(n; G) over graphs G with k vertices and l edges.
 theorem erdos_766_summary :
     -- Dirac-Erdős result
     (∀ n k, k ≥ 3 → n ≥ k → f n k (maxBipartiteEdges k + 1) ≤ n * n / 4 + 1) ∧
-    -- Monotonicity question remains open
-    True := by
+    -- f is non-decreasing in l
+    (∀ n k l₁ l₂, l₁ ≤ l₂ → inRangeOfInterest k l₁ → inRangeOfInterest k l₂ →
+      f n k l₁ ≤ f n k l₂) := by
   constructor
   · intro n k hk hn
     exact dirac_erdos_theorem n k hk hn
-  · trivial
+  · intro n k l₁ l₂ hl h1 h2
+    exact f_nondecreasing n k l₁ l₂ hl h1 h2
 
-/-- The problem remains OPEN. Strict monotonicity is unresolved. -/
-theorem erdos_766_open :
-    -- The strict monotonicity question is open
-    True := trivial
+/-- The strict monotonicity question is OPEN: is f(n;k,l) strictly increasing in l
+    for fixed k and large n? The weak version (non-decreasing) is known. -/
+axiom erdos_766_strict_monotonicity_open :
+    ∀ k : ℕ, k ≥ 3 →
+      ∃ N : ℕ, ∀ n ≥ N, ∀ l₁ l₂ : ℕ,
+        inRangeOfInterest k l₁ → inRangeOfInterest k l₂ →
+        l₁ < l₂ → f n k l₁ < f n k l₂
 
 end Erdos766
