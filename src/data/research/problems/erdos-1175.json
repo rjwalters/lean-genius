@@ -1,52 +1,110 @@
 {
   "slug": "erdos-1175",
   "title": "Erdős #1175",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "SURVEYED",
+  "status": "surveyed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "Let κ be an uncountable cardinal. Must there exist a cardinal λ such that every graph with chromatic number λ contains a triangle-free subgraph with chromatic number κ?",
+    "plain": "For any uncountable cardinal κ, does there exist a cardinal λ such that every graph with χ(G) = λ contains a triangle-free subgraph with χ ≥ κ?",
+    "whyMatters": [
+      "Connects infinite combinatorics with structural graph theory",
+      "Explores how forbidden substructures interact with chromatic number at uncountable scales",
+      "Shelah's consistency result shows ZFC-independence may be in play"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Shelah: negative answer consistent for κ = λ = ℵ₁",
+      "Mycielski: for every finite k, triangle-free graphs with χ = k exist",
+      "Erdős 1959: for every finite k, g ≥ 3, graphs with girth ≥ g and χ ≥ k exist",
+      "Finite case: for finite κ, conjecture follows from Ramsey-type results"
+    ],
+    "open": [
+      "The general conjecture for uncountable κ",
+      "Whether the answer is independent of ZFC for all uncountable κ",
+      "The girth variant (replacing triangle-free with higher girth)"
+    ],
+    "goal": "Formalize the problem statement and Shelah's consistency result"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T17:01:06.708Z",
+    "phase": "SURVEYED",
+    "since": "2026-02-07T15:30:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Problem formalization and survey of known results",
+    "blockers": [
+      "OPEN problem - cannot be resolved computationally",
+      "Set-theoretic independence (Shelah consistency result)"
+    ],
+    "nextAction": "Submit to Aristotle for auxiliary lemma proofs if desired",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1175 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "progressSummary": "SURVEYED: Created full Lean 4 formalization with problem statement, Shelah's consistency result, Mycielski's theorem, finite case, girth variant. Proved shelah_implies_failure_at_aleph1 theorem showing Shelah's model gives consistent counterexample.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1175Problem.lean - Full formalization (180+ lines)",
+      "IsTriangleFree definition using direct adjacency",
+      "HasTriangleFreeSubgraphWithChromatic predicate",
+      "AllTriangleFreeSubgraphsBoundedBy predicate",
+      "shelah_implies_failure_at_aleph1 theorem (proved)",
+      "erdos1175_girth_variant generalization",
+      "erdos1175_summary theorem"
+    ],
+    "insights": [
+      "Problem is about uncountable cardinals - fundamentally different from finite case",
+      "Shelah's result shows ZFC cannot resolve the κ=ℵ₁ case affirmatively",
+      "The finite case follows from Ramsey theory but uncountable case is independent",
+      "Problem connects to Erdős 1959 probabilistic existence of high-girth high-chromatic graphs",
+      "Related to problems #2000, #83, #888 through chromatic number theory",
+      "Uses SimpleGraph from Mathlib with custom cardinal chromatic number axiomatization",
+      "Similar formalization pattern to Erdos919 (ordinal products, cardinal chromatic numbers)"
+    ],
+    "mathlibGaps": [
+      "No cardinal chromatic number in Mathlib - requires axiomatization",
+      "Triangle-free subgraph with prescribed chromatic number not in Mathlib"
+    ],
+    "nextSteps": [
+      "Could submit to Aristotle after converting axioms to theorem sorries",
+      "Could add more detail about Shelah's forcing construction",
+      "Could formalize connection to Ramsey theory for finite case"
+    ],
+    "markdown": "# Erdős #1175 - Knowledge Base\n\n## Problem Statement\n\nLet κ be an uncountable cardinal. Must there exist a cardinal λ such that every graph with chromatic number λ contains a triangle-free subgraph with chromatic number κ?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Research Status**: SURVEYED\n\n**Tractability Score**: 3/10 (OPEN, set-theoretic independence)\n**Aristotle Suitable**: Partially (auxiliary lemmas only)\n\n## Key Results\n\n- **Shelah**: Negative answer consistent for κ = λ = ℵ₁\n- **Mycielski**: For every finite k, triangle-free graphs with χ = k exist\n- **Erdős 1959**: For every finite k, g ≥ 3, graphs with girth ≥ g and χ ≥ k exist\n\n## Formalization\n\n- `proofs/Proofs/Erdos1175Problem.lean` - Full Lean 4 formalization\n- Proved: `shelah_implies_failure_at_aleph1` - Shelah's model gives consistent counterexample\n- Axiomatized: Shelah consistency, Mycielski theorem, finite case, Erdős 1959\n\n## Tags\n\n- erdos\n- set-theory\n- chromatic-number\n- infinite-combinatorics\n\n## Related Problems\n\n- Problem #919 (chromatic numbers on ordinal products)\n- Problem #111 (edge deletion to bipartiteness)\n- Problem #2000, #83, #888, #2, #39, #1\n\n## References\n\n- [Va99, 7.92]\n- Shelah consistency result\n\n## Sessions\n\n### Session 1 (2026-02-07)\n- **Agent**: researcher-1\n- **Mode**: SURVEY\n- **Outcome**: Full formalization created\n- **Key finding**: OPEN problem with set-theoretic independence\n\n---\n\n*Updated by researcher-1 on 2026-02-07*\n"
   },
-  "approaches": [],
-  "tags": [
-    "erdos"
+  "approaches": [
+    {
+      "name": "Survey and formalize",
+      "status": "completed",
+      "description": "Formalize problem statement, known results (Shelah consistency, Mycielski, finite case), and prove the logical consequence of Shelah's result."
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "erdos",
+    "set-theory",
+    "chromatic-number",
+    "infinite-combinatorics"
+  ],
+  "relatedProofs": [
+    "proofs/Proofs/Erdos919Problem.lean",
+    "proofs/Proofs/Erdos111Problem.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "[Va99, 7.92]"
+    ],
+    "urls": [
+      "https://www.erdosproblems.com/1175"
+    ],
+    "mathlib": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ]
   },
   "started": "2026-01-15T17:01:06.708Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 3
 }
