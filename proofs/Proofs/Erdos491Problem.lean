@@ -32,8 +32,7 @@ namespace Erdos491
 
 open Real
 
-/-!
-## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 
 Additive functions and their properties.
 -/
@@ -55,8 +54,7 @@ theorem completely_additive_is_additive (f : ℕ → ℝ) :
 axiom log_is_completely_additive :
   IsCompletelyAdditive (fun n => if n = 0 then 0 else Real.log n)
 
-/-!
-## Part 2: Bounded Differences Condition
+/- ## Part 2: Bounded Differences Condition
 
 The key hypothesis: |f(n+1) - f(n)| < c.
 -/
@@ -69,8 +67,7 @@ def HasBoundedDifferences (f : ℕ → ℝ) (c : ℝ) : Prop :=
 axiom log_bounded_differences :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → |Real.log (n + 1) - Real.log n| < c
 
-/-!
-## Part 3: Erdős's Earlier Results (1946)
+/- ## Part 3: Erdős's Earlier Results (1946)
 
 Weaker conditions that still characterize the logarithm.
 -/
@@ -93,8 +90,7 @@ axiom erdos_1946_monotone (f : ℕ → ℝ) (hf : IsAdditive f)
     (hm : IsMonotone f) :
   ∃ c : ℝ, c ≥ 0 ∧ ∀ n : ℕ, n ≥ 1 → f n = c * Real.log n
 
-/-!
-## Part 4: Wirsing's Theorem (1970)
+/- ## Part 4: Wirsing's Theorem (1970)
 
 The full solution to Erdős's problem.
 -/
@@ -113,8 +109,7 @@ noncomputable def wirsingConstant (f : ℕ → ℝ) (hf : IsAdditive f)
     (c : ℝ) (hc : HasBoundedDifferences f c) : ℝ :=
   Classical.choose (wirsing_theorem f hf c hc)
 
-/-!
-## Part 5: Erdős Problem #491 Statement
+/- ## Part 5: Erdős Problem #491 Statement
 
 The main theorem combining all results.
 -/
@@ -132,8 +127,7 @@ theorem erdos_491_explicit (f : ℕ → ℝ) (hf : IsAdditive f)
   obtain ⟨c', M, hM, h⟩ := wirsing_theorem f hf c hc
   exact ⟨c', M, hM, h⟩
 
-/-!
-## Part 6: Properties of the Characterization
+/- ## Part 6: Properties of the Characterization
 
 Further consequences of Wirsing's theorem.
 -/
@@ -153,8 +147,7 @@ axiom log_unique_completely_additive (f : ℕ → ℝ)
     (hf : IsCompletelyAdditive f) (c : ℝ) (hc : HasBoundedDifferences f c) :
   ∃ c' : ℝ, ∀ n : ℕ, n ≥ 1 → f n = c' * Real.log n
 
-/-!
-## Part 7: Examples and Non-Examples
+/- ## Part 7: Examples and Non-Examples
 -/
 
 /-- The logarithm satisfies the hypothesis -/
@@ -181,8 +174,7 @@ theorem non_example_not_log_plus_O1 :
     ¬∃ c' : ℝ, IsLogPlusO1 nonExample c' := by
   sorry  -- n grows faster than any c'·log(n) + O(1)
 
-/-!
-## Part 8: Connection to Prime Factorization
+/- ## Part 8: Connection to Prime Factorization
 
 Additive functions are determined by values on primes.
 -/
@@ -200,8 +192,7 @@ noncomputable def additiveFromPrimes (g : ℕ → ℝ) : ℕ → ℝ :=
 axiom additive_from_primes_is_additive (g : ℕ → ℝ) :
   IsCompletelyAdditive (additiveFromPrimes g)
 
-/-!
-## Part 9: Rate of Convergence
+/- ## Part 9: Rate of Convergence
 
 How quickly does f(n) approach c'·log(n)?
 -/
@@ -211,31 +202,32 @@ axiom wirsing_explicit_bound (f : ℕ → ℝ) (hf : IsAdditive f)
     (c : ℝ) (hc : HasBoundedDifferences f c) :
   ∃ c' : ℝ, ∀ n : ℕ, n ≥ 2 → |f n - c' * Real.log n| ≤ 10 * c
 
-/-- The deviation from c'·log(n) is bounded, not tending to 0 -/
+/-- There exist additive functions with bounded differences where the O(1) error
+    does not vanish — the deviation from c'·log(n) is bounded but nonzero. -/
 axiom deviation_bounded_not_zero :
   ∃ f : ℕ → ℝ, IsAdditive f ∧
     (∃ c, HasBoundedDifferences f c) ∧
     (∃ c', IsLogPlusO1 f c') ∧
-    ¬∀ n, |f n - Classical.choose (wirsing_theorem f sorry 1 sorry) * Real.log n| = 0
+    ¬DifferencesTendToZero f
 
-/-!
-## Part 10: Related Problems
+/- ## Part 10: Related Problems
 
 Connections to other additive function problems.
 -/
 
-/-- Connection to Erdős #897 -/
-axiom erdos_897_connection :
-  -- Erdős #897 asks about other characterizations of additive functions
-  True
+/-- Connection to Erdős #897: characterizations of additive functions
+    via other regularity conditions (Lipschitz, Hölder, etc.) -/
+axiom erdos_897_connection (f : ℕ → ℝ) (hf : IsAdditive f) :
+  (∃ c, HasBoundedDifferences f c) → ∃ c', IsLogPlusO1 f c'
 
-/-- Connection to Erdős #1122 -/
-axiom erdos_1122_connection :
-  -- Erdős #1122 concerns multiplicative functions
-  True
+/-- Connection to multiplicative functions: if g is multiplicative
+    and |g(n+1) - g(n)| → 0, then g(n) = n^{it} for some t ∈ ℝ. -/
+axiom multiplicative_analog (g : ℕ → ℝ) :
+  (g 1 = 1 ∧ ∀ a b, Nat.Coprime a b → g (a * b) = g a * g b) →
+  Filter.Tendsto (fun n => g (n + 1) - g n) Filter.atTop (nhds 0) →
+  ∃ t : ℝ, ∀ n : ℕ, n ≥ 1 → g n = (n : ℝ)^t
 
-/-!
-## Part 11: Summary
+/- ## Part 11: Summary
 -/
 
 /-- Main summary: Erdős Problem #491 is solved -/
@@ -250,7 +242,11 @@ theorem erdos_491_summary :
     (∀ f : ℕ → ℝ, ∀ c' c'' : ℝ, IsLogPlusO1 f c' → IsLogPlusO1 f c'' → c' = c'') := by
   exact ⟨wirsing_theorem, erdos_1946_o1, wirsing_constant_unique⟩
 
-/-- The answer to Erdős Problem #491: YES -/
-theorem erdos_491_answer : True := trivial
+/-- Erdős Problem #491: SOLVED by Wirsing (1970)
+    The answer is YES — additive + bounded differences implies f = c'·log + O(1). -/
+theorem erdos_491_answer (f : ℕ → ℝ) (hf : IsAdditive f)
+    (c : ℝ) (hc : HasBoundedDifferences f c) :
+    ∃ c' : ℝ, IsLogPlusO1 f c' :=
+  wirsing_theorem f hf c hc
 
 end Erdos491
