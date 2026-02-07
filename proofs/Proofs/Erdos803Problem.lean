@@ -1,5 +1,4 @@
-/-!
-Erdős Problem #803: D-Balanced Subgraphs in Dense Graphs
+/- Erdős Problem #803: D-Balanced Subgraphs in Dense Graphs
 
 A graph H is D-balanced if Δ(H) ≤ D · δ(H). Is it true that for every
 m ≥ 1, any sufficiently large graph with n log n edges contains a
@@ -29,7 +28,7 @@ open Nat Real SimpleGraph
 
 namespace Erdos803
 
-/-! ## D-Balanced Graphs -/
+/- ##D-Balanced Graphs -/
 
 /-- Maximum degree Δ(G) of a graph G. -/
 noncomputable def maxDegree {V : Type*} [Fintype V] [DecidableEq V]
@@ -70,7 +69,7 @@ theorem balanced_monotone {V : Type*} [Fintype V] [DecidableEq V]
   calc maxDegree G ≤ D * minDegree G := hbal
     _ ≤ D' * minDegree G := Nat.mul_le_mul_right _ hle
 
-/-! ## Edge Density -/
+/- ##Edge Density -/
 
 /-- Number of edges in a graph. -/
 noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
@@ -85,7 +84,7 @@ def HasLogDensity {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   (edgeCount G : ℝ) ≥ (vertexCount V) * Real.log (vertexCount V)
 
-/-! ## The Conjecture (Disproved) -/
+/- ##The Conjecture (Disproved) -/
 
 /-- The original conjecture: for every m ≥ 1, if n is sufficiently large,
 any graph on n vertices with ≥ n log n edges contains a O(1)-balanced
@@ -104,7 +103,7 @@ def Erdos803Conjecture : Prop :=
         IsDBalanced H D ∧
         (edgeCount H : ℝ) ≥ m * Real.log m
 
-/-! ## Alon's Counterexample (2008) -/
+/- ##Alon's Counterexample (2008) -/
 
 /-- Alon's theorem (2008): The conjecture is FALSE. For every D > 1 and
 large n, there exists a graph G with n vertices and ≥ n log n edges such
@@ -127,7 +126,7 @@ axiom alon_2008_counterexample :
 /-- The conjecture is false: Alon's counterexample applies for D = 2. -/
 axiom erdos_803_disproved : ¬Erdos803Conjecture
 
-/-! ## Positive Results -/
+/- ##Positive Results -/
 
 /-- Erdős-Simonovits (polynomial density): For graphs with n^(1+c) edges
 (c > 0), there exist O(1)-balanced subgraphs with m^(1+c) edges. -/
@@ -164,7 +163,7 @@ axiom janzer_sudakov_2023 :
           IsDBalanced H D ∧
           (edgeCount H : ℝ) ≥ C * m * Real.sqrt (Real.log m) / (Real.log (Real.log m))^(3/2 : ℝ)
 
-/-! ## Summary -/
+/- ##Summary -/
 
 /-- **Erdős Problem #803 Summary.**
 The conjecture is disproved: logarithmic-density graphs do NOT always contain
