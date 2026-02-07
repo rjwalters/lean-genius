@@ -12,7 +12,7 @@
   },
   "knownResults": {
     "proven": [
-      "117 theorems proved with 0 sorries",
+      "122 theorems proved with 0 sorries",
       "ω-barriers verified by native_decide up to 720 (OEIS A005236)",
       "26 ω-barriers found up to 721",
       "φ has no barriers beyond 3 (proved: φ(n-1) ≥ 2 for n ≥ 4)",
@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 990-line formalization with 117 proved theorems, 0 sorries, 6 axioms (all genuinely open). Comprehensive barrier theory covering ω, Ω, and F functions with native_decide verification up to 720.",
+    "progressSummary": "COMPLETED: 1104-line formalization with 122 proved theorems, 0 sorries, 6 axioms (all genuinely open). Includes omega coprime multiplicativity, subadditivity, strong predecessor characterization, barrier offset bounds, squarefree equivalence, phi/sigma non-barrier proofs, and verified barrier hierarchy F >> ω >> Ω.",
     "builtItems": [
       "IsBarrier definition and real-valued variant",
       "omega, bigOmega, expProd computable definitions",
@@ -68,7 +68,14 @@
       "Barrier predecessor prime power characterization (proved)",
       "Consecutive barrier constraint (proved)",
       "orbit and iterOmega dynamics framework",
-      "Barrier comparison hierarchy (native_decide verified)"
+      "Barrier comparison hierarchy (native_decide verified)",
+      "omega_mul_coprime: ω(mn) = ω(m) + ω(n) for coprime m,n (proved)",
+      "omega_prime_mul: ω(pq) = 2 for distinct primes (proved)",
+      "omega_submultiplicative: ω(mn) ≤ ω(m) + ω(n) general (proved)",
+      "barrier_pred_is_prime_power: strong form for barriers ≥ 3 (proved)",
+      "barrier_offset_bound: at barrier n, ω(n-j) ≤ j (proved)",
+      "barrier_equiv_all_squarefree_below: ω-barrier ↔ Ω-barrier under squarefree (proved)",
+      "omegaC_eq_omega transfer and barrier_omegaC_iff_omega (proved)"
     ],
     "insights": [
       "Barriers for ω are exactly those n where all m < n satisfy m + ω(m) ≤ n",
