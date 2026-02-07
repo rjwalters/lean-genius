@@ -34,8 +34,7 @@ open Complex Real Filter
 
 namespace Erdos987
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 
 Exponential sums and the Aₖ function.
 -/
@@ -73,8 +72,7 @@ This measures how large the partial sums can get for the k-th harmonic.
 noncomputable def A (x : ℕ → ℝ) (k : ℕ) : ℝ :=
   Filter.limsup (fun n => Complex.abs (partialSum x k n)) Filter.atTop
 
-/-!
-## Part II: Erdős's Basic Results
+/- ## Part II: Erdős's Basic Results
 
 Early observations about exponential sums.
 -/
@@ -105,8 +103,7 @@ Aₖ ≫ log k for infinitely many k.
 axiom erdos_1965_log_bound (x : ℕ → ℝ) (hx : InUnitInterval x) :
     ∃ C : ℝ, C > 0 ∧ ∀ M : ℕ, ∃ k ≥ M, A x k ≥ C * Real.log k
 
-/-!
-## Part III: Clunie's Results (1967)
+/- ## Part III: Clunie's Results (1967)
 
 Stronger bounds and upper bound constructions.
 -/
@@ -136,8 +133,7 @@ Tao independently found that Aₖ ≫ √k infinitely often.
 axiom tao_sqrt_bound (x : ℕ → ℝ) (hx : InUnitInterval x) :
     ∃ C : ℝ, C > 0 ∧ ∀ M : ℕ, ∃ k ≥ M, A x k ≥ C * Real.sqrt k
 
-/-!
-## Part IV: Liu's Results (1969)
+/- ## Part IV: Liu's Results (1969)
 
 Finite distinct points case.
 -/
@@ -167,8 +163,7 @@ axiom clunie_observation_finite (x : ℕ → ℝ) (hx : InUnitInterval x)
     (hfin : FinitelyManyDistinct x) :
     ∀ M : ℝ, ∃ k : ℕ, A x k > M
 
-/-!
-## Part V: The Open Question
+/- ## Part V: The Open Question
 
 Is Aₖ = o(k) possible?
 -/
@@ -203,8 +198,7 @@ theorem known_bounds :
     (∃ x, InUnitInterval x ∧ ∀ k, A x k ≤ k) := by
   exact ⟨clunie_sqrt_bound, clunie_upper_construction⟩
 
-/-!
-## Part VI: Physical Interpretation
+/- ## Part VI: Physical Interpretation
 
 Understanding the problem geometrically.
 -/
@@ -221,8 +215,7 @@ Weyl sums: |∑_{j=1}^n e(jθ)| ≤ csc(πθ/2) for θ ∉ ℤ.
 axiom weyl_sum_bound (θ : ℝ) (hθ : ∀ k : ℤ, θ ≠ k) (n : ℕ) :
     Complex.abs (∑ j in Finset.range n, e (j * θ)) ≤ 1 / Real.sin (Real.pi * θ / 2)
 
-/-!
-## Part VII: Connection to Discrepancy Theory
+/- ## Part VII: Connection to Discrepancy Theory
 
 The relationship between exponential sums and uniform distribution.
 -/
@@ -243,8 +236,7 @@ axiom erdos_turan (x : ℕ → ℝ) (n K : ℕ) (hK : K ≥ 1) :
     discrepancy x n ≤ 1/K + ∑ k in Finset.range K,
       Complex.abs (partialSum x (k+1) n) / ((k+1) * n)
 
-/-!
-## Part VIII: Main Results
+/- ## Part VIII: Main Results
 
 Summary of Erdős Problem #987.
 -/
