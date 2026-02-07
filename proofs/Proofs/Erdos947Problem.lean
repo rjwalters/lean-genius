@@ -44,9 +44,7 @@ open Finset BigOperators
 
 namespace Erdos947
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Congruence class:**
@@ -80,9 +78,7 @@ Every integer satisfies exactly one congruence (a partition of ℤ).
 def isExact (C : CoveringSystem) : Prop :=
   ∀ x : ℤ, ∃! p, p ∈ C.classes ∧ x % p.2 = p.1 % p.2
 
-/-!
-## Part II: The Density Argument
--/
+/- ## Part II: The Density Argument -/
 
 /--
 **Density of a congruence class:**
@@ -104,9 +100,7 @@ For an exact covering system, the sum of densities equals 1.
 axiom exact_density_sum (C : CoveringSystem) (hE : isExact C) :
     densitySum C = 1
 
-/-!
-## Part III: The Main Theorem
--/
+/- ## Part III: The Main Theorem -/
 
 /--
 **Mirsky-Newman / Davenport-Rado Theorem:**
@@ -126,9 +120,7 @@ theorem distinct_moduli_not_exact :
   have : ∃ C' : CoveringSystem, hasDistinctModuli C' ∧ isExact C' := ⟨C, hD, hE⟩
   exact no_exact_covering_system this
 
-/-!
-## Part IV: Proof Techniques
--/
+/- ## Part IV: Proof Techniques -/
 
 /--
 **Mirsky-Newman generating function approach:**
@@ -154,9 +146,7 @@ axiom davenport_rado_argument (C : CoveringSystem) :
     ∃ p ∈ C.classes, ∀ q ∈ C.classes, q.2 < p.2 →
       p.2 ∣ C.classes.lcm (fun r => r.2)
 
-/-!
-## Part V: Related Results
--/
+/- ## Part V: Related Results -/
 
 /--
 **Covering systems do exist:**
@@ -192,9 +182,7 @@ def exactCoveringWithRepeats : CoveringSystem where
     · have : x % 2 = 1 := by omega
       exact ⟨(1, 2), by simp, by simp [this]⟩
 
-/-!
-## Part VI: Summary
--/
+/- ## Part VI: Summary -/
 
 /--
 **Erdős Problem #947: Summary**
