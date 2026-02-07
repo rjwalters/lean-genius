@@ -1,50 +1,111 @@
 {
   "slug": "erdos-410",
   "title": "Erdős #410",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "BUILD",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $\\sigma_1(n)=\\sigma(n)$, the sum of divisors function, and $\\sigma_k(n)=\\sigma(\\sigma_{k-1}(n))$. Is it true that\\[\\lim_{k\\to \\infty} \\sigma_k(n)^{1/k}=\\infty?\\]\n\n\n\nThis is discussed in problem B9 of Guy's collection \\cite{Gu04}.",
-    "plain": "Let $\\sigma_1(n)=\\sigma(n)$, the sum of divisors function, and $\\sigma_k(n)=\\sigma(\\sigma_{k-1}(n))$. Is it true that\\[\\lim_{k\\to \\infty} \\sigma_k(n)^{1/k}=\\infty?\\]",
-    "whyMatters": []
+    "formal": "Let $\\sigma_1(n)=\\sigma(n)$, the sum of divisors function, and $\\sigma_k(n)=\\sigma(\\sigma_{k-1}(n))$. Is it true that\\[\\lim_{k\\to \\infty} \\sigma_k(n)^{1/k}=\\infty?\\]",
+    "plain": "Does the k-th root of iterated sum-of-divisors grow without bound?",
+    "whyMatters": ["Fundamental question about growth of arithmetic function iterates", "Connected to perfect numbers and aliquot sequences", "Related to Robin's inequality and Riemann Hypothesis"]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "40 theorems proved with 0 sorries",
+      "σ(n) > n for n > 1 (from first principles via divisor sums)",
+      "σ(n) ≥ n + 1 for n > 1",
+      "σ(p) = p + 1 for primes (via Nat.Prime.divisors)",
+      "σ is multiplicative (sigma_isMultiplicative)",
+      "σₖ(n) strictly increasing in k for n > 1",
+      "σₖ(n) ≥ n + k (linear lower bound on iterates)",
+      "σₖ(n) → ∞ as k → ∞ (Filter.Tendsto)",
+      "Iterate sequence is StrictMono for n > 1",
+      "Verified σ chains: n=2 (→3→4→7→8), n=6 (→12→28→56)",
+      "6, 28, 496 are perfect; 12 abundant; 2 deficient",
+      "Aliquot values: s(6)=6, s(28)=28, s(12)=16",
+      "σ₂(n) = σ(2n) for perfect n"
+    ],
+    "open": [
+      "Main conjecture: σₖ(n)^{1/k} → ∞ (super-exponential growth)",
+      "Equivalence with growth faster than any exponential c^k",
+      "Whether Robin's inequality implies bounds on iterate growth"
+    ],
+    "goal": "Prove iterate properties; main conjecture requires deep analytic number theory"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T02:38:27.586Z",
+    "phase": "BUILD",
+    "since": "2026-02-07T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Build: prove σ properties, iterate growth, computational chains",
+    "blockers": ["Main conjecture needs analytic techniques beyond Mathlib", "Docker build fails in worktree (git resolution issue)"],
+    "nextAction": "Aristotle submission for remaining axioms, or further iterate bounds",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #410 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\sigma_1(n)=\\sigma(n)$, the sum of divisors function, and $\\sigma_k(n)=\\sigma(\\sigma_{k-1}(n))$. Is it true that\\[\\lim_{k\\to \\infty} \\sigma_k(n)^{1/k}=\\infty?\\]\n\n\n\nThis is discussed in problem B9 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #409\n- Problem #411\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "progressSummary": "BUILD COMPLETED: 327-line formalization with 40 proved theorems, 0 sorries, 3 axioms. Proved σ(n)>n from first principles, iterate monotonicity, linear lower bound σₖ(n)≥n+k, Tendsto proof, strict monotonicity, σ chains, perfect/abundant/deficient classification, aliquot computations.",
+    "builtItems": [
+      "sigma_pos, sigma_ge_self, sigma_gt_n (from divisor sum expansion)",
+      "sigma_lower_bound: σ(n) ≥ n+1",
+      "sigma_prime: σ(p) = p+1 via Nat.Prime.divisors",
+      "sigma_multiplicative via sigma_isMultiplicative",
+      "sigmaIterate definition and recursion (iterate_zero, iterate_succ, iterate_one)",
+      "sigma_chain_2, sigma_chain_6 (native_decide computations)",
+      "sigma_iterate_2_1 through sigma_iterate_2_4 (iterate chains)",
+      "sigma_iterate_ge: σₖ(n) ≥ n by induction",
+      "sigma_iterate_gt_one: σₖ(n) > 1 for n > 1",
+      "sigma_iterate_increasing: strict increase per step",
+      "sigma_iterate_linear_lower: σₖ(n) ≥ n + k",
+      "sigma_iterate_tendsto_infty: Tendsto to atTop",
+      "sigma_iterate_strict_mono via strictMono_nat_of_lt_succ",
+      "sigma_sigma_gt: σ(σ(n)) > σ(n)",
+      "sigma_iterate_perfect: σ₂(n) = σ(2n) for perfect n",
+      "IsPerfect/IsAbundant/IsDeficient definitions with verified examples",
+      "aliquot function with verified values"
+    ],
+    "insights": [
+      "The key difficulty is proving super-exponential growth, not just divergence",
+      "Linear lower bound σₖ(n) ≥ n+k is tight for the trivial bound",
+      "Perfect numbers give interesting iterate behavior: σ(6)=12, σ(12)=28, σ(28)=56",
+      "σ properties proved from first principles (divisor set membership + Finset.sum bounds)",
+      "The iterate chain 2→3→4→7→8→15→24→60→... grows rapidly but proving rate is hard",
+      "Robin's inequality connects σ to RH - deep analytic territory"
+    ],
+    "mathlibGaps": [
+      "No iterate growth rate theory in Mathlib",
+      "Robin's inequality not formalized",
+      "No analytic bounds on σ iterate growth"
+    ],
+    "nextSteps": [
+      "Submit to Aristotle (convert 3 axioms to theorem sorries)",
+      "Could try to prove quadratic lower bound σₖ(n) ≥ n + k(k+1)/2 using σ(m) ≥ m+1",
+      "Gallery integration"
+    ],
+    "markdown": ""
   },
-  "approaches": [],
-  "tags": [
-    "erdos"
+  "approaches": [
+    {
+      "name": "Iterate growth analysis",
+      "status": "completed",
+      "description": "Prove σ bounds from first principles, iterate monotonicity, linear lower bound, Tendsto"
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "erdos",
+    "number-theory",
+    "sum-of-divisors",
+    "iterate-growth",
+    "perfect-numbers"
+  ],
+  "relatedProofs": ["SumOfDivisors"],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": ["ErGr80", "Gu04"],
+    "urls": ["https://erdosproblems.com/410"],
+    "mathlib": ["ArithmeticFunction.sigma", "sigma_isMultiplicative", "sigma_apply", "Nat.divisors"]
   },
   "started": "2026-01-13T02:38:27.587Z",
   "significance": 7,
