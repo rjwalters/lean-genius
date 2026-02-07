@@ -16,15 +16,15 @@
       "probabilistic-method",
       "open-problem"
     ],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1029,
     "erdosUrl": "https://erdosproblems.com/1029",
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100/$1000"
   },
   "overview": {
-    "historicalContext": "This problem addresses the fundamental question in Ramsey theory: how fast do Ramsey numbers grow? The Erdős-Szekeres bounds from 1935 give k·2^{k/2} ≪ R(k) ≤ C(2k-2,k-1). The lower bound comes from the probabilistic method—one of its first applications. This problem asks whether the lower bound is far from tight.",
+    "historicalContext": "Ramsey theory, initiated by Ramsey (1930) and developed by Erdős and Szekeres (1935), studies the emergence of order in large structures. The diagonal Ramsey number R(k) is the minimum n such that every 2-coloring of the edges of K_n contains a monochromatic K_k. The Erdős-Szekeres theorem gives the upper bound R(k) ≤ C(2k-2, k-1) ≈ 4^k/√(πk), proved by a simple induction on the recurrence R(s,t) ≤ R(s-1,t) + R(s,t-1).\n\nThe lower bound R(k) ≥ c·k·2^{k/2} was one of the first applications of the probabilistic method, which Erdős pioneered. A random 2-coloring of K_n has expected number of monochromatic k-cliques roughly C(n,k)·2^{1-C(k,2)}, which is less than 1 when n ≈ k·2^{k/2}. Spencer (1975) refined this using the Lovász Local Lemma to improve the constant to √2/e ≈ 0.52.\n\nProblem #1029, posed by Erdős in 1993, asks whether R(k)/(k·2^{k/2}) → ∞, i.e., whether the probabilistic lower bound is far from tight. The enormous gap between the lower bound base √2 and upper bound base 4 suggests the answer is yes, but no proof exists. Erdős offered $100 for a proof and $1000 for a disproof, reflecting his belief that the conjecture is true but that a disproof would be more surprising and valuable.",
     "problemStatement": "If R(k) is the diagonal Ramsey number (minimal n such that every 2-coloring of K_n contains a monochromatic K_k), prove that R(k)/(k·2^{k/2}) → ∞ as k → ∞.",
     "proofStrategy": "The probabilistic method gives R(k) ≥ c·k·2^{k/2} for c ≈ √2/e. The conjecture asserts this is far from tight—R(k) grows faster than any constant times k·2^{k/2}. Proving this would require showing the probabilistic lower bound misses significant structure in Ramsey graphs.",
     "keyInsights": [
@@ -40,44 +40,44 @@
     {
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
-      "summary": "Definition of R(k) and edge colorings",
+      "summary": "EdgeColoring, IsMonochromatic, HasMonochromaticClique, ramsey_exists axiom, R definition, R_spec",
       "startLine": 39,
-      "endLine": 64
+      "endLine": 69
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "summary": "Erdős-Szekeres and Spencer bounds",
-      "startLine": 66,
-      "endLine": 87
+      "summary": "Erdős-Szekeres upper/lower bounds, Spencer's improvement",
+      "startLine": 70,
+      "endLine": 92
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "summary": "The ratio R(k)/(k·2^{k/2}) tends to infinity",
-      "startLine": 89,
-      "endLine": 118
+      "summary": "ramseyRatio, erdos1029Conjecture, equivalence proof",
+      "startLine": 93,
+      "endLine": 123
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Analysis",
-      "summary": "What we know about the ratio being bounded below",
-      "startLine": 120,
-      "endLine": 136
+      "summary": "ratio_bounded_below, conjectureNegation, negation_equiv axiom",
+      "startLine": 124,
+      "endLine": 140
     },
     {
       "id": "small-values",
       "title": "Known Values",
-      "summary": "Exact Ramsey numbers for small k",
-      "startLine": 138,
-      "endLine": 157
+      "summary": "R(1)=1, R(2)=2, R(3)=6, R(4)=18, R(5) bounds",
+      "startLine": 141,
+      "endLine": 161
     },
     {
       "id": "ratio-values",
       "title": "Ratio Computations",
-      "summary": "The ratio for known Ramsey numbers",
-      "startLine": 159,
-      "endLine": 173
+      "summary": "Ratio at k=3 and k=4, prize problem",
+      "startLine": 162,
+      "endLine": 190
     }
   ],
   "conclusion": {
