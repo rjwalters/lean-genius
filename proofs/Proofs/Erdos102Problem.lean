@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #102 — Maximum Collinear Points Forced by Many Rich Lines
 
 Given n points in ℝ² such that at least cn² lines each contain ≥ 4 points,
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A planar point configuration. -/
 structure PointConfig where
@@ -43,7 +43,7 @@ noncomputable def maxCollinear (P : PointConfig) : ℕ :=
     S.card ≥ 2 ∧ ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
       ∀ p ∈ S, collinear₃ a b p)).sup Finset.card
 
-/-! ## Main Problem -/
+/- ## Main Problem -/
 
 /-- **Erdős Problem #102**: h_c(n) → ∞. If cn² lines contain ≥ 4 points,
     some line must contain many points (growing with n). -/
@@ -53,7 +53,7 @@ axiom erdos_102_divergence (c : ℝ) (hc : c > 0) :
     (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
       maxCollinear P ≥ M
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Upper Bound**: h_c(n) ≪_c √n. The maximum collinear count from cn²
     rich lines is at most O(√n). -/
@@ -72,16 +72,32 @@ axiom hunter_counterexample :
         (richLineCount P : ℝ) ≥ c * n ^ 2 ∧
           (maxCollinear P : ℝ) ≤ f c n
 
-/-- **Connection to Problem #101**: if h_c(n) ≥ 5 is open, the o(n²)
-    bound for 4-point lines from Problem #101 would follow. -/
-axiom connection_101 : True
+/-- **Connection to Problem #101**: if h_c(n) → ∞ is proved, the o(n²)
+    bound for 4-point lines from Problem #101 would follow. Specifically,
+    cn² four-point lines force some line with ≥ h_c(n) collinear points,
+    eventually reaching ≥ 5, contradicting the no-five-collinear hypothesis. -/
+axiom connection_101 (c : ℝ) (hc : c > 0) :
+  (∀ M : ℕ, ∃ N₀ : ℕ, ∀ P : PointConfig,
+    P.points.card ≥ N₀ →
+    (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
+      maxCollinear P ≥ M) →
+  ∀ ε > 0, ∃ N₁ : ℕ, ∀ P : PointConfig,
+    P.points.card ≥ N₁ → maxCollinear P ≤ 4 →
+      (richLineCount P : ℝ) < ε * (P.points.card : ℝ) ^ 2
 
-/-! ## Observations -/
+/- ## Observations -/
 
-/-- **Szemerédi–Trotter**: the incidence bound I(P,L) = O(n^{2/3}m^{2/3}+n+m)
+/-- **Szemerédi–Trotter**: the incidence bound I(P,L) ≤ C(n^{2/3}m^{2/3}+n+m)
     constrains how many rich lines can pass through n points. -/
-axiom szemeredi_trotter_context : True
+axiom szemeredi_trotter_context :
+  ∃ C : ℝ, C > 0 ∧
+    ∀ (n m incidences : ℕ),
+      (incidences : ℝ) ≤ C * ((n : ℝ) ^ (2/3 : ℝ) * (m : ℝ) ^ (2/3 : ℝ) + n + m)
 
 /-- **Erdős–Purdy Origin**: this problem was posed by Erdős and Purdy
-    in their work on combinatorial geometry. -/
-axiom erdos_purdy_origin : True
+    in their survey of combinatorial geometry problems. It is closely
+    related to Problem #101 and to general point-line incidence questions. -/
+axiom erdos_purdy_connection :
+  ∀ c : ℝ, c > 0 →
+    ∀ P : PointConfig, (richLineCount P : ℝ) ≥ c * (P.points.card : ℝ) ^ 2 →
+      maxCollinear P ≥ 4
