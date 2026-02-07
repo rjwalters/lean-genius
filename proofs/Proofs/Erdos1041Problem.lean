@@ -22,7 +22,7 @@ open Polynomial MeasureTheory ENNReal Metric Set Filter Topology Classical
 
 namespace Erdos1041
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -42,7 +42,7 @@ structure PathInC (z₁ z₂ : ℂ) where
 def PathInC.range {z₁ z₂ : ℂ} (γ : PathInC z₁ z₂) : Set ℂ :=
   Set.range γ.toPath
 
-/-!
+/-
 ## The Erdős-Herzog-Piranian Component Lemma (SOLVED 1958)
 
 This is the known result: the sublevel set {z : |f(z)| < 1} always has
@@ -65,7 +65,7 @@ axiom erdos_herzog_piranian_component_lemma :
         ∃ C : Set ℂ, C ⊆ sublevelSet f 1 ∧ IsConnected C ∧
           2 ≤ (f.roots.toFinset.filter (· ∈ C)).card
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 Can we find not just a connected component, but a SHORT path connecting
@@ -91,7 +91,7 @@ axiom erdos_1041_conjecture :
           Set.range γ ⊆ sublevelSet f 1 ∧
           length (Set.range γ) < 2
 
-/-!
+/-
 ## Special Cases and Variants
 -/
 
@@ -117,7 +117,7 @@ axiom erdos_1041_quadratic :
           Set.range γ ⊆ sublevelSet f 1 ∧
           length (Set.range γ) < 2
 
-/-!
+/-
 ## Properties of Sublevel Sets
 -/
 
@@ -142,7 +142,7 @@ theorem roots_in_sublevelSet (f : ℂ[X]) (z : ℂ) (hz : z ∈ f.roots.toFinset
 theorem roots_subset_sublevelSet (f : ℂ[X]) :
     (f.roots.toFinset : Set ℂ) ⊆ sublevelSet f 1 := fun z hz => roots_in_sublevelSet f z hz
 
-/-!
+/-
 ## Length Properties
 -/
 
@@ -161,7 +161,7 @@ theorem dist_in_unit_disk (z₁ z₂ : ℂ) (h₁ : ‖z₁‖ < 1) (h₂ : ‖z
 axiom straight_path_length_bound (z₁ z₂ : ℂ) (h₁ : ‖z₁‖ < 1) (h₂ : ‖z₂‖ < 1) :
     ENNReal.ofReal ‖z₁ - z₂‖ < 2
 
-/-!
+/-
 ## Connection to Lemniscates
 
 The level sets {z : |f(z)| = c} are called polynomial lemniscates.
@@ -176,7 +176,7 @@ def lemniscate (f : ℂ[X]) (c : ℝ) : Set ℂ :=
 theorem sublevelSet_eq (f : ℂ[X]) (c : ℝ) :
     sublevelSet f c = {z : ℂ | ‖f.eval z‖ < c} := rfl
 
-/-!
+/-
 ## Why the bound 2?
 
 The constant 2 is sharp: it's the diameter of the unit disk. If roots can
