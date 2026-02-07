@@ -35,8 +35,7 @@ namespace Erdos1086
 
 open Real
 
-/-!
-## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 
 Points in ℝ² and triangle area.
 -/
@@ -68,8 +67,7 @@ structure Triangle where
 noncomputable def Triangle.area (t : Triangle) : ℝ :=
   triangleArea t.A t.B t.C
 
-/-!
-## Part 2: The Function g(n)
+/- ## Part 2: The Function g(n)
 
 g(n) = maximum number of triangles of the same area formable from n points.
 -/
@@ -90,8 +88,7 @@ noncomputable def maxTrianglesWithSameArea (S : Finset Point2D) : ℕ :=
 noncomputable def g (n : ℕ) : ℕ :=
   sSup { maxTrianglesWithSameArea S | S : Finset Point2D // S.card = n }
 
-/-!
-## Part 3: Known Bounds
+/- ## Part 3: Known Bounds
 -/
 
 /-- Lower bound: n² log log n ≪ g(n) -/
@@ -117,8 +114,7 @@ axiom erdos_purdy_conjecture :
       C₁ * n^2 * (Real.log n)^α ≤ g n ∧
       g n ≤ C₂ * n^2 * (Real.log n)^α
 
-/-!
-## Part 4: Higher-Dimensional Generalizations
+/- ## Part 4: Higher-Dimensional Generalizations
 
 Let g_d^r(n) = max simplices of same volume from n points in ℝ^d.
 -/
@@ -160,8 +156,7 @@ axiom erdos_purdy_conjecture_high_dim (k : ℕ) (hk : k ≥ 1) :
     ∃ (C : ℝ), C > 0 ∧ ∀ n ≥ 2,
       g_dim (2*k + 2) k n ≤ C * n^(k + 1 : ℕ)
 
-/-!
-## Part 5: Simple Examples
+/- ## Part 5: Simple Examples
 -/
 
 /-- For n = 3 points, there's exactly 1 triangle.
@@ -178,8 +173,7 @@ axiom collinear_degenerate (S : Finset Point2D) (h : ∀ A ∈ S, ∀ B ∈ S, �
 axiom grid_lower_bound (n : ℕ) (hn : ∃ k, n = k^2) :
   g n ≥ n^2 / 8
 
-/-!
-## Part 6: Connection to Incidence Geometry
+/- ## Part 6: Connection to Incidence Geometry
 -/
 
 /-- The equal-area triangle problem reduces to point-curve incidences.
@@ -199,8 +193,7 @@ axiom szemeredi_trotter_bound (n m : ℕ) :
       -- Incidences between n points and m lines ≤ C(n^{2/3}m^{2/3} + n + m)
       incidences ≤ C * (n^(2/3 : ℝ) * m^(2/3 : ℝ) + n + m)
 
-/-!
-## Part 7: Main Results
+/- ## Part 7: Main Results
 -/
 
 /-- Erdős Problem #1086: Main statement combining lower and upper bounds -/
