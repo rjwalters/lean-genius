@@ -33,7 +33,7 @@ open scoped Pointwise
 
 namespace Erdos38
 
-/-! ## Schnirelmann Density
+/- ## Schnirelmann Density
 
 The Schnirelmann density of A ⊆ ℕ is:
   σ(A) = inf_{N≥1} |A ∩ {1,...,N}| / N
@@ -54,7 +54,7 @@ noncomputable def schnirelmannDensity (A : Set ℕ) : ℝ :=
 axiom schnirelmann_density_bounds (A : Set ℕ) :
   0 ≤ schnirelmannDensity A ∧ schnirelmannDensity A ≤ 1
 
-/-! ## Additive Bases
+/- ## Additive Bases
 
 A set B is an additive basis of order k if every natural number can be
 written as a sum of at most k elements from B.
@@ -68,7 +68,7 @@ def IsAdditiveBasisOfOrder (B : Set ℕ) (k : ℕ) : Prop :=
 def IsAdditiveBasis (B : Set ℕ) : Prop :=
   ∃ k : ℕ, IsAdditiveBasisOfOrder B k
 
-/-! ## Essential Components
+/- ## Essential Components
 
 An essential component is a set that increases the Schnirelmann density
 of any set when added to it. This is weaker than being an additive basis.
@@ -86,7 +86,7 @@ def boostsCount (B : Set ℕ) (A : Set ℕ) (N : ℕ) (f : ℝ → ℝ) : Prop :
 def HasDensityBoostProperty (B : Set ℕ) (f : ℝ → ℝ) : Prop :=
   ∀ A : Set ℕ, ∀ N : ℕ, N ≥ 1 → boostsCount B A N f
 
-/-! ## The Main Problem
+/- ## The Main Problem
 
 **Erdős Problem #38**: Does there exist B that is NOT an additive basis
 but still has the density-boosting property?
@@ -100,7 +100,7 @@ def Erdos38Problem : Prop :=
     ∃ f : ℝ → ℝ, (∀ α : ℝ, 0 < α → α < 1 → f α > 0) ∧
       HasDensityBoostProperty B f
 
-/-! ## Known Related Results -/
+/- ## Known Related Results -/
 
 /-- **Erdős [1936]**: Additive bases of order k satisfy the property with
     f(α) = α(1-α)/(2k). This shows bases DO have the density-boost property. -/
@@ -121,7 +121,7 @@ axiom random_set_optimality :
   ∀ f : ℝ → ℝ, (∀ α, 0 < α → α < 1 → f α > α * (1 - α)) →
     ¬HasDensityBoostProperty (univ : Set ℕ) f
 
-/-! ## Problem Status
+/- ## Problem Status
 
 This problem remains OPEN. The gap is:
 - We know additive bases have the density-boost property
