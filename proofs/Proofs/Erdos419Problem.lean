@@ -1,5 +1,4 @@
-/-!
-  Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)
+/- Erdős Problem #419: Limit Points of τ((n+1)!)/τ(n!)
 
   Source: https://erdosproblems.com/419
   Status: SOLVED (Erdős-Graham-Ivić-Pomerance 1996, Sawhney rediscovery)
@@ -30,8 +29,7 @@ namespace Erdos419
 
 open Nat ArithmeticFunction
 
-/-!
-## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 
 The divisor function and factorials.
 -/
@@ -49,8 +47,7 @@ noncomputable def factorialDivisorRatio (n : ℕ) : ℚ :=
     (tau (n + 1).factorial : ℚ) / (tau n.factorial : ℚ)
   else 1
 
-/-!
-## Part 2: The Ratio Formula
+/- ## Part 2: The Ratio Formula
 
 Key identity relating the ratio to prime factorization of n+1.
 -/
@@ -73,8 +70,7 @@ axiom ratio_product_formula (n : ℕ) (hn : n ≥ 1) :
     factorialDivisorRatio n =
       ∏ p ∈ (n + 1).primeFactors, (1 + (padicValNat p (n + 1) : ℚ) / (padicValNat p n.factorial + 1))
 
-/-!
-## Part 3: Prime Factorization Bounds
+/- ## Part 3: Prime Factorization Bounds
 
 Bounds on prime factors and their valuations.
 -/
@@ -91,8 +87,7 @@ axiom padic_val_bound (p n : ℕ) (hp : p.Prime) (hn : n ≥ 2) :
 axiom at_most_one_large_prime (n : ℕ) (hn : n ≥ 8) :
     ((n + 1).primeFactors.filter (fun p => (p : ℝ) > n^(2/3 : ℝ))).card ≤ 1
 
-/-!
-## Part 4: Small Primes Contribution
+/- ## Part 4: Small Primes Contribution
 
 Primes p ≤ n^(2/3) contribute approximately 1 to the ratio.
 -/
@@ -112,8 +107,7 @@ axiom small_primes_limit :
         (1 + (padicValNat p (n + 1) : ℝ) / (padicValNat p n.factorial + 1))
       |contribution - 1| < ε
 
-/-!
-## Part 5: Large Prime Contribution
+/- ## Part 5: Large Prime Contribution
 
 If n+1 = pk where p > n^(2/3), this prime contributes exactly 1 + 1/k.
 -/
@@ -127,8 +121,7 @@ axiom large_prime_valuation (p n : ℕ) (hp : p.Prime) (hdiv : p ∣ n + 1)
 axiom prime_case (n : ℕ) (hp : (n + 1).Prime) (hn : n ≥ 4) :
     |factorialDivisorRatio n - 2| < 1 / n
 
-/-!
-## Part 6: The Set of Limit Points
+/- ## Part 6: The Set of Limit Points
 
 The complete characterization.
 -/
@@ -156,8 +149,7 @@ axiom only_these_limit_points (x : ℚ) :
     (∀ ε > 0, ∃ᶠ n in Filter.atTop, |factorialDivisorRatio n - x| < ε) →
     x ∈ limitPointSet
 
-/-!
-## Part 7: Examples and Concrete Cases
+/- ## Part 7: Examples and Concrete Cases
 
 Concrete cases illustrating the phenomenon.
 -/
@@ -179,8 +171,7 @@ axiom example_highly_composite :
     ∀ ε > 0, ∃ N, ∀ n ≥ N, (n + 1).minFac ≤ n^(1/3 : ℝ) →
       |factorialDivisorRatio n - 1| < ε
 
-/-!
-## Part 8: The Proof Structure and Main Theorem
+/- ## Part 8: The Proof Structure and Main Theorem
 
 The ratio decomposition and Sawhney's characterization.
 -/
@@ -209,8 +200,7 @@ theorem sawhney_characterization :
       rw [hx_eq]
       exact one_plus_reciprocal_is_limit_point k hk_pos
 
-/-!
-## Part 9: Asymptotics of τ(n!)
+/- ## Part 9: Asymptotics of τ(n!)
 
 Related results on the divisor function of factorials.
 -/
@@ -224,8 +214,7 @@ axiom tau_factorial_log_asymptotic :
     ∀ ε > 0, ∃ N, ∀ n ≥ N,
       |Real.log (tau n.factorial) - n * Real.log n / Real.log (Real.log n)| / n < ε
 
-/-!
-## Part 10: Summary
+/- ## Part 10: Summary
 
 The limit points are exactly {1, 2, 3/2, 4/3, 5/4, ...}.
 -/
