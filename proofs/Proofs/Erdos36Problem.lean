@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #36 — Minimum Overlap Problem
 
 Partition {1, ..., 2N} into two sets A, B of size N each.
@@ -22,7 +22,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- The overlap of sets A, B at difference k: the number of pairs
     (a, b) with a ∈ A, b ∈ B, a − b = k. -/
@@ -37,7 +37,7 @@ noncomputable def maxOverlap (A B : Finset ℤ) : ℕ :=
     of {1, ..., 2N}. -/
 noncomputable def minMaxOverlap : ℕ → ℕ := fun _ => 0  -- axiomatized
 
-/-! ## Main Question -/
+/- ## Main Question -/
 
 /-- **Erdős Problem #36**: Determine the asymptotic constant
     c = lim M(N)/N. The problem is to find the exact value of c. -/
@@ -46,7 +46,7 @@ axiom erdos_36_limit_exists :
     ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
       |((minMaxOverlap N : ℝ) / N) - c| < ε
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Erdős (1955)**: trivial lower bound M(N)/N > 1/4. -/
 axiom erdos_lower_quarter :
@@ -69,7 +69,7 @@ axiom upper_bound :
   ∀ N : ℕ, N ≥ 1 →
     (minMaxOverlap N : ℝ) / N < 380876 / 1000000
 
-/-! ## Small Values -/
+/- ## Small Values -/
 
 /-- Known exact values: M(1) = 1, M(2) = 1, M(3) = 2, M(4) = 2, M(5) = 3. -/
 axiom small_values :
@@ -77,7 +77,7 @@ axiom small_values :
   minMaxOverlap 3 = 2 ∧ minMaxOverlap 4 = 2 ∧
   minMaxOverlap 5 = 3
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Erdős' Original Conjecture**: Erdős initially conjectured c = 1/2,
     but this was disproved. The true value is near 0.38. -/
