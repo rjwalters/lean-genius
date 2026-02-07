@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #794: 3-Uniform Hypergraph Edge Density
 
 Source: https://erdosproblems.com/794
@@ -43,7 +43,7 @@ open Finset
 
 namespace Erdos794
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /--
 **3-Uniform Hypergraph:**
@@ -66,7 +66,7 @@ def Hypergraph3.vertexCount {V : Type*} (H : Hypergraph3 V) : ℕ := H.vertices.
 /-- Number of edges in a hypergraph. -/
 def Hypergraph3.edgeCount {V : Type*} (H : Hypergraph3 V) : ℕ := H.edges.card
 
-/-! ## Target Subgraphs -/
+/- ## Target Subgraphs -/
 
 /--
 **K₄⁻ in 3-uniform hypergraph:**
@@ -86,7 +86,7 @@ def Contains5_7 {V : Type*} (H : Hypergraph3 V) : Prop :=
   ∃ S : Finset V, S.card = 5 ∧ S ⊆ H.vertices ∧
     (H.edges.filter (fun e => e ⊆ S)).card = 7
 
-/-! ## Balogh's Observation -/
+/- ## Balogh's Observation -/
 
 /--
 **Balogh's Observation:**
@@ -103,7 +103,7 @@ theorem second_condition_redundant {V : Type*} (H : Hypergraph3 V) :
     Contains5_7 H → ContainsK4Minus H :=
   balogh_observation H
 
-/-! ## The Original Conjecture -/
+/- ## The Original Conjecture -/
 
 /--
 **Erdős's Original Conjecture (Problem 794):**
@@ -134,7 +134,7 @@ theorem simplified_implies_original :
   left
   exact h V H n hv he
 
-/-! ## Harris's Counterexample -/
+/- ## Harris's Counterexample -/
 
 /--
 **Harris's Counterexample Structure:**
@@ -175,7 +175,7 @@ axiom harris_counterexample_exists :
       H.edgeCount = 28 ∧
       ¬ContainsK4Minus H
 
-/-! ## The Problem is Disproved -/
+/- ## The Problem is Disproved -/
 
 /--
 **Main Result: Erdős Problem #794 is FALSE.**
@@ -195,7 +195,7 @@ theorem erdos_794_original_false : ¬Erdos794Conjecture := by
     Or.elim (h V H n hv he) id (balogh_observation H))
   exact erdos_794_disproved hs
 
-/-! ## Edge Density Questions -/
+/- ## Edge Density Questions -/
 
 /--
 **Turán Density for K₄⁻:**
@@ -222,9 +222,9 @@ The Turán density for K₄⁻ in 3-uniform hypergraphs is exactly 2/7.
 -/
 def current_conjecture : Prop := turanDensityK4Minus = 2/7
 
-/-! ## Remarks on the Problem Statement -/
+/- ## Remarks on the Problem Statement -/
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /--
 **Erdős Problem #794: 3-Uniform Hypergraph Density**
