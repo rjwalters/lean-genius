@@ -38,8 +38,7 @@ open Nat
 
 namespace Erdos473
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /--
@@ -63,8 +62,7 @@ A permutation where consecutive sums are always prime.
 def IsPrimeSumPermutation (a : ℕ → ℕ) : Prop :=
   IsPermutation a ∧ HasPrimeSumProperty a
 
-/-!
-## Part II: The Main Question
+/- ## Part II: The Main Question
 -/
 
 /--
@@ -80,8 +78,7 @@ There exists such a permutation. The answer is YES.
 -/
 axiom odlyzko_theorem : segalQuestion
 
-/-!
-## Part III: The Greedy Algorithm
+/- ## Part III: The Greedy Algorithm
 -/
 
 /--
@@ -132,8 +129,7 @@ Specifically, 197 never appears as a sum a_k + a_{k+1}.
 axiom van_doorn_197 :
     ∀ k : ℕ, k ≥ 1 → greedySeq k + greedySeq (k + 1) ≠ 197
 
-/-!
-## Part IV: Finite Version
+/- ## Part IV: Finite Version
 -/
 
 /--
@@ -159,8 +155,7 @@ Likely true by probabilistic arguments, confirmed for infinitely many n.
 axiom finite_version_true_infinitely_often :
     Set.Infinite {n : ℕ | ∃ a : Fin n → Fin n, IsFinitePrimeSumPermutation n a}
 
-/-!
-## Part V: Connections and Generalizations
+/- ## Part V: Connections and Generalizations
 -/
 
 /--
@@ -179,7 +174,12 @@ def primeSumGraph : ℕ → ℕ → Prop :=
 The structure of which pairs sum to primes is related to Goldbach's conjecture
 (every even n > 2 is the sum of two primes).
 -/
-theorem goldbach_connection : True := trivial
+axiom goldbach_implies_graph_connected :
+    (∀ n : ℕ, n > 2 → Even n → ∃ p q : ℕ, p.Prime ∧ q.Prime ∧ n = p + q) →
+    ∀ i j : ℕ, i ≥ 1 → j ≥ 1 → i ≠ j →
+      ∃ path : List ℕ, path.head? = some i ∧ path.getLast? = some j ∧
+        ∀ k : Fin (path.length - 1), primeSumGraph (path.get ⟨k.val, by omega⟩)
+          (path.get ⟨k.val + 1, by omega⟩)
 
 /--
 **Generalization: Other Conditions:**
@@ -189,10 +189,11 @@ One could ask for permutations where consecutive sums satisfy other properties:
 - Always a Fibonacci number
 These variants have different answers.
 -/
-theorem generalizations : True := trivial
+axiom composite_sum_permutation_exists :
+    ∃ a : ℕ → ℕ, Function.Bijective a ∧ (∀ n, a n ≥ 1) ∧
+      ∀ k : ℕ, k ≥ 1 → ¬(a k + a (k + 1)).Prime
 
-/-!
-## Part VI: Properties of Prime Sum Permutations
+/- ## Part VI: Properties of Prime Sum Permutations
 -/
 
 /--
@@ -213,10 +214,10 @@ axiom parity_constraint (a : ℕ → ℕ) (h : HasPrimeSumProperty a) :
 Among the first N integers, roughly half are even and half odd.
 A prime sum permutation must carefully interleave evens and odds.
 -/
-theorem density_consideration : True := trivial
+axiom alternating_parity (a : ℕ → ℕ) (h : IsPrimeSumPermutation a) :
+    ∀ k : ℕ, k ≥ 2 → (Even (a k) ↔ Odd (a (k + 1)))
 
-/-!
-## Part VII: The Greedy Sequence Values
+/- ## Part VII: The Greedy Sequence Values
 -/
 
 /--
@@ -231,8 +232,7 @@ axiom greedy_initial_values :
     greedySeq 4 = 4 ∧
     greedySeq 5 = 7
 
-/-!
-## Part VIII: Summary
+/- ## Part VIII: Summary
 -/
 
 /--
