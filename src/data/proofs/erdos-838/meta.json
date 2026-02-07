@@ -37,16 +37,21 @@
       "Point2D structure: 2D point representation with coordinates",
       "collinear definition: cross product test for three collinear points",
       "inGeneralPosition definition: no three points collinear",
-      "isConvexSubset definition: convex polygon with empty interior",
+      "isConvexSubset axiom: convex polygon with empty interior (axiomatized)",
       "numConvexSubsets definition: count of convex subsets in a point set",
-      "f definition: minimum convex subsets over all n-point configurations",
-      "f_definition axiom: f(n) is a lower bound for any n-point set",
+      "f axiom: minimum convex subsets over all n-point configurations",
+      "f_lower_bound axiom: f(n) is a lower bound for any n-point set",
+      "f_achieved axiom: f(n) is tight for some configuration",
       "erdos_lower_bound axiom: f(n) > n^{c₁ log n}",
       "erdos_upper_bound axiom: f(n) < n^{c₂ log n}",
-      "erdos_bounds theorem: combines lower and upper bounds",
+      "erdos_bounds theorem: combines lower and upper bounds (proved)",
       "normalizedLogF definition: (log f(n))/(log n)²",
-      "erdos_szekeres_connection axiom: relation to Erdős-Szekeres",
-      "erdos_838_status theorem: problem remains OPEN"
+      "limitExists definition: formal statement of limit existence",
+      "erdos_szekeres_convex_subset axiom: convex subset from Erdős-Szekeres",
+      "triangles_are_convex axiom: 3-element subsets are convex",
+      "f_superpolynomial axiom: f grows faster than any polynomial",
+      "f_subexponential axiom: f grows slower than any exponential",
+      "erdos_838_summary theorem: combines bounds with superpolynomial growth (proved)"
     ]
   },
   "overview": {
@@ -68,71 +73,57 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 34,
-      "endLine": 54,
+      "endLine": 53,
       "summary": "Defines Point2D, collinearity, and general position (no three points on a line)."
     },
     {
       "id": "convex-subsets",
       "title": "Convex Subsets",
-      "startLine": 55,
-      "endLine": 73,
-      "summary": "Defines when a subset forms a convex polygon and counts convex subsets."
+      "startLine": 54,
+      "endLine": 71,
+      "summary": "Axiomatizes convex subset predicate and counts convex subsets."
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
-      "startLine": 74,
-      "endLine": 90,
-      "summary": "Defines f(n) as the minimum convex subset count over all n-point configurations."
+      "startLine": 73,
+      "endLine": 91,
+      "summary": "Axiomatizes f(n) with lower bound and tightness properties."
     },
     {
       "id": "erdos-bounds",
       "title": "Erdős's Bounds (1978)",
-      "startLine": 91,
+      "startLine": 93,
       "endLine": 113,
-      "summary": "States Erdős's bounds: n^{c₁ log n} < f(n) < n^{c₂ log n}."
+      "summary": "States and combines Erdős's bounds: n^{c₁ log n} < f(n) < n^{c₂ log n}."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "startLine": 114,
-      "endLine": 136,
-      "summary": "The open question: does (log f(n))/(log n)² converge to a constant?"
+      "startLine": 115,
+      "endLine": 133,
+      "summary": "Formalizes the limit question and bounds on limit value."
     },
     {
       "id": "erdos-szekeres",
-      "title": "Relation to Erdős-Szekeres",
-      "startLine": 137,
-      "endLine": 153,
-      "summary": "Connection to the Erdős-Szekeres theorem on convex position."
+      "title": "Erdős-Szekeres Connection",
+      "startLine": 135,
+      "endLine": 154,
+      "summary": "Erdős-Szekeres theorem, triangles are convex, triangle count bound."
     },
     {
-      "id": "difficulty",
-      "title": "Why the Problem is Hard",
-      "startLine": 154,
-      "endLine": 171,
-      "summary": "Explains the difficulty of optimizing over all point configurations."
-    },
-    {
-      "id": "related-results",
-      "title": "Related Results",
-      "startLine": 172,
-      "endLine": 189,
-      "summary": "Connection to Problem #107 and empty convex polygon problems."
-    },
-    {
-      "id": "consequences",
-      "title": "Consequences of the Bounds",
-      "startLine": 190,
-      "endLine": 208,
-      "summary": "The bounds imply quasi-polynomial growth between polynomial and exponential."
+      "id": "growth-rate",
+      "title": "Growth Rate",
+      "startLine": 156,
+      "endLine": 165,
+      "summary": "f(n) is superpolynomial but subexponential."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 209,
-      "endLine": 237,
-      "summary": "Complete problem status: OPEN with known bounds."
+      "startLine": 167,
+      "endLine": 183,
+      "summary": "Summary theorem combining bounds with superpolynomial growth."
     }
   ],
   "conclusion": {
