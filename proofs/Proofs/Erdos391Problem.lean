@@ -37,9 +37,7 @@ open Finset BigOperators Real
 
 namespace Erdos391
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Ordered Factorization:**
@@ -74,9 +72,7 @@ The key quantity to study.
 -/
 noncomputable def ratio (n : ℕ) : ℝ := (t n : ℝ) / (n : ℝ)
 
-/-!
-## Part II: Easy Upper Bound
--/
+/- ## Part II: Easy Upper Bound -/
 
 /--
 **Easy Upper Bound:**
@@ -96,9 +92,7 @@ theorem limsup_le_one_over_e :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ratio n ≤ 1 / Real.exp 1 + ε :=
   easy_upper_bound
 
-/-!
-## Part III: The Lost Proof (Erdős-Selfridge-Straus)
--/
+/- ## Part III: The Lost Proof (Erdős-Selfridge-Straus) -/
 
 /--
 **The Erdős-Selfridge-Straus Claim (Lost):**
@@ -109,9 +103,7 @@ reconstruct our proof, so our assertion now can be called only a conjecture."
 def erdosSelfridgeStrausConjecture : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, |ratio n - 1 / Real.exp 1| < ε
 
-/-!
-## Part IV: The ACRSTUV Theorem (2025)
--/
+/- ## Part IV: The ACRSTUV Theorem (2025) -/
 
 /--
 **The Constant c₀:**
@@ -144,9 +136,7 @@ axiom second_order_correction :
     ∃ (c : ℝ) (N : ℕ), c > 0 ∧ ∀ n ≥ N,
       ratio n ≤ 1 / Real.exp 1 - c / Real.log n
 
-/-!
-## Part V: Explicit Bounds
--/
+/- ## Part V: Explicit Bounds -/
 
 /--
 **Upper Bound (ACRSTUV25):**
@@ -169,9 +159,7 @@ The threshold 43632 is sharp.
 axiom threshold_43632_sharp :
     ∃ n : ℕ, n < 43632 ∧ t n < n / 3
 
-/-!
-## Part VI: Small Cases
--/
+/- ## Part VI: Small Cases -/
 
 /--
 **Small Values:**
@@ -186,9 +174,7 @@ t(4) = 3 > 4/e ≈ 1.47, so n = 4 is a genuine exception to t(n) ≤ n/e.
 -/
 axiom exception_at_4 : (t 4 : ℝ) > 4 / Real.exp 1
 
-/-!
-## Part VII: Guy-Selfridge Conjectures
--/
+/- ## Part VII: Guy-Selfridge Conjectures -/
 
 /--
 **Guy-Selfridge Conjecture 1:**
@@ -209,9 +195,7 @@ def guySelfridgeConjecture2 : Prop :=
 theorem guy_selfridge_2_proved : guySelfridgeConjecture2 :=
   lower_bound_explicit
 
-/-!
-## Part VIII: The Factorization Perspective
--/
+/- ## Part VIII: The Factorization Perspective -/
 
 /--
 **Equivalent Formulation:**
@@ -223,7 +207,7 @@ axiom balanced_factorization_view :
       ∃ f : OrderedFactorization n.factorial n,
         minFactor f = t n ∧ ∀ g : OrderedFactorization n.factorial n, minFactor g ≤ t n
 
-/-!
+/-
 ## Part IX: Summary
 
 **Erdős Problem #391: Status SOLVED** (ACRSTUV25)
