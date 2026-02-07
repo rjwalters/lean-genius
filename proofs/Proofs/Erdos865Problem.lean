@@ -30,7 +30,7 @@ open Finset Nat
 
 namespace Erdos865
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Pairwise sums and the main predicate.
@@ -57,7 +57,7 @@ def HasKPairwiseSums (A : Finset ℕ) (k : ℕ) : Prop :=
   ∃ S : Finset ℕ, S ⊆ A ∧ S.card = k ∧
     ∀ a b : ℕ, a ∈ S → b ∈ S → a ≠ b → a + b ∈ A
 
-/-!
+/-
 ## Part II: Threshold Functions
 
 The minimum density needed to guarantee pairwise sums.
@@ -78,7 +78,7 @@ noncomputable def conjecturedThreshold (k N : ℕ) : ℚ :=
 axiom k3_conjectured_threshold (N : ℕ) :
     conjecturedThreshold 3 N = (5/8 : ℚ) * N
 
-/-!
+/-
 ## Part III: The k=2 Case
 
 Classical folklore result.
@@ -94,7 +94,7 @@ axiom classical_k2_result (N : ℕ) (A : Finset ℕ)
 /-- **k=2 Threshold:** f_2(N) = N + 2 (asymptotically N/2 of the interval {1,...,2N}). -/
 axiom k2_threshold : ∀ N : ℕ, threshold 2 (2 * N) ≤ N + 2
 
-/-!
+/-
 ## Part IV: The k=3 Case
 
 The main content of Problem #865.
@@ -130,7 +130,7 @@ axiom k3_optimal_threshold :
     ∀ ε : ℚ, ε > 0 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
     |((threshold 3 N : ℚ) / N) - 5/8| < ε
 
-/-!
+/-
 ## Part V: The General Conjecture
 
 Erdős-Sós conjecture for all k.
@@ -158,7 +158,7 @@ axiom threshold_converges_to_two_thirds :
     ∀ ε : ℚ, ε > 0 → ∃ K : ℕ, ∀ k ≥ K,
     |conjecturedThreshold k 1 - 2/3| < ε
 
-/-!
+/-
 ## Part VI: Choi-Erdős-Szemerédi Result
 
 Proven upper bound for all k ≥ 3.
@@ -177,7 +177,7 @@ Note: The conjecture says f_3(N) ≈ (5/8)N < (2/3)N, so CES is weaker. -/
 theorem ces_weaker_than_conjecture :
     (5 : ℚ) / 8 < 2 / 3 := by norm_num
 
-/-!
+/-
 ## Part VII: Why 5/8?
 
 The geometric reasoning behind the threshold.
@@ -195,7 +195,7 @@ axiom lower_bound_cross_sums (N : ℕ) (hN : N ≥ 8) :
               a ≤ N / 4 ∧ b ≥ N / 2 ∧
               N / 2 < a + b ∧ a + b < N
 
-/-!
+/-
 ## Part VIII: Related Problems
 
 Connections to other Erdős problems.
@@ -216,7 +216,7 @@ axiom max_sum_free_size (N : ℕ) : ∃ A : Finset ℕ,
 k-colored without monochromatic x + y = z. Known: S(1)=1, S(2)=4, S(3)=13, S(4)=44. -/
 axiom schurNumber (k : ℕ) : ℕ
 
-/-!
+/-
 ## Part IX: Main Results
 
 Summary of Erdős Problem #865.
