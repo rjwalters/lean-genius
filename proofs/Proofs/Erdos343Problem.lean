@@ -32,7 +32,7 @@ open Nat Finset BigOperators
 
 namespace Erdos343
 
-/-!
+/-
 ## Part 1: Multisets and Density
 
 A multiset A ⊆ ℕ has positive lower density if |A ∩ {1,...,N}| ≫ N.
@@ -52,7 +52,7 @@ def hasDensity (A : Set ℕ) (α : ℝ) : Prop :=
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
     |((countingFunction A N : ℝ) / N) - α| < ε
 
-/-!
+/-
 ## Part 2: Sumsets and Subcompleteness
 
 The sumset P(A) consists of all finite subset sums of A.
@@ -79,7 +79,7 @@ def containsInfiniteAP (S : Set ℕ) : Prop :=
 def isSubcomplete (A : Set ℕ) : Prop :=
   containsInfiniteAP (sumsetInfinite A)
 
-/-!
+/-
 ## Part 3: Folkman's Results (1966)
 -/
 
@@ -95,13 +95,11 @@ axiom folkman_counterexample :
     (∃ c > 0, ∀ N : ℕ, (countingFunction A N : ℝ) ≥ c * N^(1 - ε)) ∧
     ¬isSubcomplete A
 
-/-- This shows the threshold is at linear density -/
-theorem folkman_threshold_significance :
-    -- Superlinear always works, sublinear can fail
-    -- The question: what about exactly linear?
-    True := trivial
+/-- This shows the threshold is at linear density:
+    superlinear always works, sublinear can fail.
+    The question: what about exactly linear? -/
 
-/-!
+/-
 ## Part 4: Szemerédi-Vu Theorem (2006)
 -/
 
@@ -114,7 +112,7 @@ theorem erdos_343_solved :
     ∀ A : Set ℕ, hasPositiveLowerDensity A → isSubcomplete A :=
   szemeredi_vu_2006
 
-/-!
+/-
 ## Part 5: Why This Is Sharp
 -/
 
@@ -125,13 +123,11 @@ theorem linear_threshold_is_sharp :
       ¬isSubcomplete A :=
   folkman_counterexample
 
-/-- Combined: linear is necessary and sufficient (up to lower order terms) -/
-theorem linear_density_characterization :
-    -- hasPositiveLowerDensity A → isSubcomplete A (Szemerédi-Vu)
-    -- For any ε > 0, there exists A with density ~N^{1-ε} that is not subcomplete (Folkman)
-    True := trivial
+/-- Combined: linear density is necessary and sufficient (up to lower order terms).
+    hasPositiveLowerDensity A → isSubcomplete A (Szemerédi-Vu).
+    For any ε > 0, there exists A with density ~N^{1-ε} that is not subcomplete (Folkman). -/
 
-/-!
+/-
 ## Part 6: Key Techniques
 -/
 
@@ -151,7 +147,7 @@ axiom egz_theorem :
   -- Among any 2n-1 integers, some n have sum divisible by n
   True
 
-/-!
+/-
 ## Part 7: Related Problems
 -/
 
@@ -165,7 +161,7 @@ axiom folkman_original_context :
   -- Folkman studied representations of integers as sums from fixed sequences
   True
 
-/-!
+/-
 ## Part 8: Summary
 -/
 
