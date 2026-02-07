@@ -26,7 +26,7 @@ open Set Finset Nat Real
 
 namespace Erdos30
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A set A is a **Sidon set** (B₂ sequence) if all pairwise sums a + b
     with a ≤ b are distinct. Equivalently, a + b = c + d implies {a,b} = {c,d}. -/
@@ -69,7 +69,7 @@ theorem sidon_iff_distinct_sums (A : Finset ℕ) :
     · -- a = d, b = c, combined with a ≤ b and c ≤ d means a = c and b = d
       constructor <;> omega
 
-/-! ## The Sidon Number h(N) -/
+/- ## The Sidon Number h(N) -/
 
 /-- h(N) = maximum size of a Sidon set in {1,...,N}. -/
 noncomputable def sidonNumber (N : ℕ) : ℕ :=
@@ -83,7 +83,7 @@ theorem sidon_exists (N : ℕ) : ∃ A : Finset ℕ, ↑A ⊆ Finset.range (N + 
   · exact Finset.empty_subset _
   · intro a b c d ha; exact absurd ha (Finset.not_mem_empty a)
 
-/-! ## The Erdős-Turán Conjecture -/
+/- ## The Erdős-Turán Conjecture -/
 
 /-- **Erdős Problem #30** (OPEN):
     For every ε > 0, h(N) = N^{1/2} + O_ε(N^ε).
@@ -99,7 +99,7 @@ def Erdos30Conjecture : Prop :=
 def StrongerConjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, |(sidonNumber N : ℝ) - Real.sqrt N| ≤ C
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /-- **Erdős-Turán (1941)**: h(N) ≤ N^{1/2} + N^{1/4} + 1.
     The original upper bound. -/
@@ -122,7 +122,7 @@ axiom carter_hunter_obryant_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
       (sidonNumber N : ℝ) ≤ Real.sqrt N + 0.98183 * N^(1/4 : ℝ) + C
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /-- **Singer (1938)**: h(N) ≥ (1 - o(1)) N^{1/2}.
     Construction using perfect difference sets from finite fields. -/
@@ -137,7 +137,7 @@ axiom singer_lower_bound :
 axiom explicit_lower_bound :
     ∀ M : ℕ, ∃ N > M, (sidonNumber N : ℝ) ≥ Real.sqrt N - N^(0.525 : ℝ)
 
-/-! ## The Gap -/
+/- ## The Gap -/
 
 /-
 **Current state of knowledge**:
@@ -163,7 +163,7 @@ def RequiredUpperBound (ε : ℝ) : Prop :=
 axiom conjecture_from_small_epsilon :
     (∃ ε : ℝ, 0 < ε ∧ ε < 1/4 ∧ RequiredUpperBound ε) → Erdos30Conjecture
 
-/-! ## Perfect Difference Sets -/
+/- ## Perfect Difference Sets -/
 
 /-- A **perfect difference set** modulo n is a set D ⊆ Z/nZ where every
     non-zero element of Z/nZ appears exactly once as a difference d₁ - d₂. -/
@@ -180,7 +180,7 @@ axiom perfect_difference_gives_sidon (D : Finset ℕ) (n : ℕ) :
 axiom singer_construction (q : ℕ) (hq : Nat.Prime q) :
     ∃ D : Finset ℕ, D.card = q + 1 ∧ IsPerfectDifferenceSet D (q^2 + q + 1)
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- {1, 2, 5, 10} is a Sidon set (sums: 3, 6, 11, 7, 12, 15 - all distinct). -/
 theorem sidon_example_1_2_5_10 : IsSidonSet {1, 2, 5, 10} := by
@@ -201,7 +201,7 @@ axiom sidon_h10 : sidonNumber 10 = 5
 /-- h(100) ≈ 13 (verified computationally). -/
 axiom sidon_h100 : sidonNumber 100 = 13
 
-/-! ## B_h Sets (Generalization) -/
+/- ## B_h Sets (Generalization) -/
 
 /-- A **B_h set** is a set where all h-wise sums are distinct (generalized Sidon).
     B₂ = Sidon set. -/
@@ -219,7 +219,7 @@ def IsBhSet (A : Finset ℕ) (h : ℕ) : Prop :=
     which is tedious but straightforward. -/
 axiom sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2
 
-/-! ## Problem Status -/
+/- ## Problem Status -/
 
 /-- **Erdős Problem #30: OPEN ($1,000 prize)**
 
