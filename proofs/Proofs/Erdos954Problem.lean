@@ -40,26 +40,97 @@ def IsGreedyNext (a : ℕ → ℕ) (k : ℕ) : Prop :=
 def IsRosenSequence (a : ℕ → ℕ) : Prop :=
   a 0 = 0 ∧ a 1 = 1 ∧ StrictMono a ∧ ∀ k ≥ 1, IsGreedyNext a k
 
-/- ## Known Initial Values -/
+/- ## Computable Sequence Construction -/
 
-/-- The first few values of the Rosen sequence (OEIS A390642). -/
-axiom rosen_initial_values :
-    ∃ a : ℕ → ℕ, IsRosenSequence a ∧
-      a 0 = 0 ∧ a 1 = 1 ∧ a 2 = 3 ∧ a 3 = 5 ∧ a 4 = 9 ∧
-      a 5 = 13 ∧ a 6 = 17 ∧ a 7 = 24 ∧ a 8 = 31 ∧ a 9 = 38 ∧ a 10 = 45
+/-- Compute repCount for a list-based sequence. The list stores values
+    in order: xs[0] = a(0), xs[1] = a(1), etc. -/
+def repCountList (xs : List ℕ) (n : ℕ) : ℕ :=
+  let k := xs.length - 1
+  (List.range k).foldl (fun acc j' =>
+    let j := j' + 1
+    acc + (List.range (j + 1)).countP (fun i =>
+      match xs[i]?, xs[j]? with
+      | some ai, some aj => ai + aj ≤ n
+      | _, _ => false)
+  ) 0
 
-/- ## Basic Properties -/
+/-- Find the next greedy element: smallest n > last such that
+    repCount xs n < n. Uses a fuel parameter to ensure termination. -/
+def findNextRosen (xs : List ℕ) (last : ℕ) : ℕ → ℕ
+  | 0 => last + 1
+  | fuel + 1 =>
+    let candidate := last + 1
+    if repCountList xs candidate < candidate then candidate
+    else findNextRosen xs candidate fuel
+
+/-- Build the Rosen sequence as (list, last_element) pair. -/
+def buildRosen : ℕ → List ℕ × ℕ
+  | 0 => ([0], 0)
+  | 1 => ([0, 1], 1)
+  | n + 2 =>
+    let (prev, last) := buildRosen (n + 1)
+    let next := findNextRosen prev last 200
+    (prev ++ [next], next)
+
+/-- Extract the k-th term from the computed Rosen sequence. -/
+def rosenTerm (k : ℕ) : ℕ :=
+  match (buildRosen k).1[k]? with
+  | some v => v
+  | none => 0
+
+/- ## Verified Initial Values -/
+
+-- Verify via computation that our greedy algorithm produces the expected values
+-- (0, 1, 3, 5, 9, 13, 17, 24, 31, 38, 45)
+theorem rosen_term_0 : rosenTerm 0 = 0 := by native_decide
+theorem rosen_term_1 : rosenTerm 1 = 1 := by native_decide
+theorem rosen_term_2 : rosenTerm 2 = 3 := by native_decide
+theorem rosen_term_3 : rosenTerm 3 = 5 := by native_decide
+theorem rosen_term_4 : rosenTerm 4 = 9 := by native_decide
+theorem rosen_term_5 : rosenTerm 5 = 13 := by native_decide
+theorem rosen_term_6 : rosenTerm 6 = 17 := by native_decide
+theorem rosen_term_7 : rosenTerm 7 = 24 := by native_decide
+theorem rosen_term_8 : rosenTerm 8 = 31 := by native_decide
+theorem rosen_term_9 : rosenTerm 9 = 38 := by native_decide
+theorem rosen_term_10 : rosenTerm 10 = 45 := by native_decide
+
+/- ## Basic Properties (proved from definitions) -/
 
 /-- By construction, R(n) < n at each new element of the sequence. -/
-axiom repcount_below_at_elements (a : ℕ → ℕ) (h : IsRosenSequence a) (k : ℕ) (hk : 1 ≤ k) :
-    repCount a k (a (k + 1)) < a (k + 1)
+theorem repcount_below_at_elements (a : ℕ → ℕ) (h : IsRosenSequence a) (k : ℕ) (hk : 1 ≤ k) :
+    repCount a k (a (k + 1)) < a (k + 1) :=
+  (h.2.2.2 k hk).1
 
 /-- By construction, R(x) ≥ x for all x between consecutive elements. -/
-axiom repcount_above_between (a : ℕ → ℕ) (h : IsRosenSequence a) (k : ℕ) (hk : 1 ≤ k)
+theorem repcount_above_between (a : ℕ → ℕ) (h : IsRosenSequence a) (k : ℕ) (hk : 1 ≤ k)
     (m : ℕ) (hm1 : a k < m) (hm2 : m < a (k + 1)) :
-    repCount a k m ≥ m
+    repCount a k m ≥ m :=
+  (h.2.2.2 k hk).2 m hm1 hm2
 
-/- ## The Main Conjecture -/
+/-- The Rosen sequence is strictly monotone by definition. -/
+theorem rosen_strictMono (a : ℕ → ℕ) (h : IsRosenSequence a) : StrictMono a :=
+  h.2.2.1
+
+/-- The sequence elements grow: a(k) ≥ k for a Rosen sequence. -/
+theorem rosen_growth (a : ℕ → ℕ) (h : IsRosenSequence a) (k : ℕ) :
+    a k ≥ k := by
+  induction k with
+  | zero => simp [h.1]
+  | succ n ih =>
+    have hlt : a n < a (n + 1) := h.2.2.1 (Nat.lt_succ_of_le le_rfl)
+    omega
+
+/-- For a Rosen sequence, the representation count satisfies R(m) ≥ m
+    for every m strictly between a(k) and a(k+1). -/
+theorem repcount_lower_bound_pre_element (a : ℕ → ℕ) (h : IsRosenSequence a) (k : ℕ)
+    (hk : 1 ≤ k) (hgap : a k + 1 < a (k + 1)) :
+    repCount a k (a (k + 1) - 1) ≥ a (k + 1) - 1 := by
+  have hgreedy := h.2.2.2 k hk
+  apply hgreedy.2
+  · omega
+  · omega
+
+/- ## The Main Conjecture (OPEN) -/
 
 /-- The full representation count over the infinite sequence. -/
 def fullRepCount (a : ℕ → ℕ) (x : ℕ) : ℕ :=
@@ -86,10 +157,9 @@ def IsB2Sequence (a : ℕ → ℕ) (k : ℕ) : Prop :=
   ∀ i₁ j₁ i₂ j₂, i₁ ≤ j₁ → j₁ ≤ k → i₂ ≤ j₂ → j₂ ≤ k →
     a i₁ + a j₁ = a i₂ + a j₂ → (i₁ = i₂ ∧ j₁ = j₂)
 
-/-- The Rosen sequence is a relaxation of B₂: instead of requiring
-    all sums distinct, it ensures the representation count grows
-    roughly linearly. A B₂ sequence has R(x) ~ √x, while
-    Rosen's has R(x) ~ x. -/
+/-- The Rosen sequence is a relaxation of B₂: it allows repeated sums
+    to achieve higher density. This is an open structural claim about
+    any sequence satisfying the greedy property. -/
 axiom rosen_not_b2 (a : ℕ → ℕ) (h : IsRosenSequence a) :
     ∃ k, ¬IsB2Sequence a k
 
@@ -100,3 +170,18 @@ axiom rosen_not_b2 (a : ℕ → ℕ) (h : IsRosenSequence a) :
 axiom erdos_turan_context :
     ∀ a : ℕ → ℕ, (∀ k, IsB2Sequence a k) →
     ∀ B, ∃ n, fullRepCount a n > B
+
+/- ## Representation Count Monotonicity -/
+
+/-- Adding more elements to the sequence can only increase the rep count.
+    If we extend the sequence from k to k+1 elements, any pair counted
+    in repCount a k n is still counted in repCount a (k+1) n, plus
+    new pairs involving a(k+1). -/
+theorem repCount_mono_k (a : ℕ → ℕ) (k n : ℕ) :
+    repCount a k n ≤ repCount a (k + 1) n := by
+  unfold repCount
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro x hx
+    simp only [Finset.mem_Icc] at hx ⊢
+    omega
+  · intros; exact Nat.zero_le _
