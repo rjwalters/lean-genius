@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs
 
 Source: https://erdosproblems.com/110
@@ -28,7 +28,7 @@ namespace Erdos110
 
 open Cardinal Set
 
-/-! ## Part I: Basic Graph Theory
+/- ## Part I: Basic Graph Theory
 
 Chromatic numbers and graph colorings.
 -/
@@ -49,7 +49,7 @@ def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ∞ :=
   ⨅ k : ℕ, if IsKColorable G k then (k : ℕ∞) else ⊤
 
-/-! ## Part II: Subgraphs and Induced Subgraphs
+/- ## Part II: Subgraphs and Induced Subgraphs
 
 For studying finite subgraphs of infinite graphs.
 -/
@@ -68,7 +68,7 @@ noncomputable def subgraphChromaticNumber (G : SimpleGraph V) (S : Set V) : ℕ�
 def HasFiniteNChromaticSubgraph (G : SimpleGraph V) (n : ℕ) (bound : ℕ) : Prop :=
   ∃ S : Finset V, S.card ≤ bound ∧ subgraphChromaticNumber G S ≥ n
 
-/-! ## Part III: Cardinals and Infinite Chromatic Numbers
+/- ## Part III: Cardinals and Infinite Chromatic Numbers
 
 Using Mathlib's cardinal arithmetic.
 -/
@@ -96,7 +96,7 @@ def HasChromaticNumber (G : SimpleGraph V) (κ : Cardinal) : Prop :=
   HasChromaticNumberAtLeast G κ ∧
   (κ.toNat > 0 → IsKColorable G κ.toNat)
 
-/-! ## Part IV: de Bruijn-Erdős Theorem
+/- ## Part IV: de Bruijn-Erdős Theorem
 
 Foundation: infinite chromatic number implies finite n-chromatic subgraphs exist.
 -/
@@ -114,7 +114,7 @@ axiom de_bruijn_erdos_compactness (G : SimpleGraph V)
     (h : ∀ S : Finset V, ∃ k : ℕ, k > 0 ∧ IsKColorable (inducedSubgraph G S) k) :
     ∃ k : ℕ, k > 0 ∧ IsKColorable G k
 
-/-! ## Part V: The Erdős-Hajnal-Szemerédi Conjecture
+/- ## Part V: The Erdős-Hajnal-Szemerédi Conjecture
 
 The conjecture that was disproved.
 -/
@@ -138,7 +138,7 @@ axiom conjecture_fails_aleph0 :
       HasChromaticNumberAtLeast G aleph0 ∧
       ¬∃ (F : ℕ → ℕ) (N₀ : ℕ), ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)
 
-/-! ## Part VI: Shelah's Consistency Result (2005)
+/- ## Part VI: Shelah's Consistency Result (2005)
 
 Shelah showed the negative answer is consistent with ZFC.
 -/
@@ -152,7 +152,7 @@ axiom shelah_consistency :
       HasChromaticNumber G aleph1 ∧
       ¬∃ (F : ℕ → ℕ) (N₀ : ℕ), ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)
 
-/-! ## Part VII: Lambie-Hanson's ZFC Disproof (2020)
+/- ## Part VII: Lambie-Hanson's ZFC Disproof (2020)
 
 The definitive resolution: the conjecture is FALSE in ZFC.
 -/
@@ -177,7 +177,7 @@ theorem erdos_110_disproved : ¬ErdosHajnalSzemerediConjecture := by
   obtain ⟨n, hn, hNotBound⟩ := hBad F N₀
   exact hNotBound (hF n hn)
 
-/-! ## Part VIII: Erdős's Growth Rate Expectations
+/- ## Part VIII: Erdős's Growth Rate Expectations
 
 Erdős expected F would need to grow extremely fast.
 -/
@@ -196,7 +196,7 @@ theorem erdos_growth_expectation_moot : ¬∃ F : ℕ → ℕ,
   obtain ⟨n, hn, hNotBound⟩ := hBad F N₀
   exact hNotBound (hN₀ n hn)
 
-/-! ## Part IX: Connection to Compactness
+/- ## Part IX: Connection to Compactness
 
 Why compactness doesn't help here.
 -/
@@ -205,7 +205,7 @@ Why compactness doesn't help here.
 axiom graph_compactness (G : SimpleGraph V) :
     (∀ S : Finset V, IsKColorable (inducedSubgraph G S) k) → IsKColorable G k
 
-/-! ## Part X: Properties of the Counterexample
+/- ## Part X: Properties of the Counterexample
 
 What we know about Lambie-Hanson's graph.
 -/
@@ -233,7 +233,7 @@ theorem lambie_hanson_graph_exists :
   · intro n
     exact de_bruijn_erdos G (hχ.1) n
 
-/-! ## Part XI: Summary
+/- ## Part XI: Summary
 
 Erdős Problem #110 is DISPROVED.
 -/
