@@ -34,8 +34,7 @@ namespace Erdos528
 
 open Filter Real
 
-/-!
-## Part 1: Self-Avoiding Walks in ℤ^k
+/- ## Part 1: Self-Avoiding Walks in ℤ^k
 
 A self-avoiding walk (SAW) is a sequence of lattice points where consecutive
 points are neighbors and no point is visited twice.
@@ -67,8 +66,7 @@ def isSelfAvoiding (k n : ℕ) (w : Walk k n) : Prop :=
 def isSAW (k n : ℕ) (w : Walk k n) : Prop :=
   startsAtOrigin k n w ∧ isConnected k n w ∧ isSelfAvoiding k n w
 
-/-!
-## Part 2: Counting SAWs
+/- ## Part 2: Counting SAWs
 
 f(n,k) is the number of n-step SAWs in ℤ^k.
 -/
@@ -85,8 +83,7 @@ axiom f_zero (k : ℕ) (hk : k ≥ 1) : sawCount 0 k = 1
 /-- Basic property: f(1, k) = 2k (first step goes in one of 2k directions) -/
 axiom f_one (k : ℕ) (hk : k ≥ 1) : sawCount 1 k = 2 * k
 
-/-!
-## Part 3: Submultiplicativity and Limit Existence
+/- ## Part 3: Submultiplicativity and Limit Existence
 
 The key insight: sawCount is submultiplicative, so lim f(n,k)^{1/n} exists.
 -/
@@ -107,8 +104,7 @@ noncomputable def connectiveConstant (k : ℕ) : ℝ :=
 
 notation "μ" => connectiveConstant
 
-/-!
-## Part 4: Trivial Bounds
+/- ## Part 4: Trivial Bounds
 
 k ≤ C_k ≤ 2k - 1
 -/
@@ -126,8 +122,7 @@ theorem trivial_bounds (k : ℕ) (hk : k ≥ 1) :
     (k : ℝ) ≤ μ k ∧ μ k ≤ 2 * k - 1 :=
   ⟨connective_lower_bound k hk, connective_upper_bound k hk⟩
 
-/-!
-## Part 5: Kesten's Asymptotic (1963)
+/- ## Part 5: Kesten's Asymptotic (1963)
 
 For large k, C_k = 2k - 1 - 1/(2k) + O(1/k²)
 -/
@@ -143,8 +138,7 @@ axiom kesten_asymptotic (k : ℕ) (hk : k ≥ 2) :
 axiom kesten_first_order (k : ℕ) (hk : k ≥ 2) :
     |μ k - (2 * k - 1)| ≤ 1 / k
 
-/-!
-## Part 6: Two-Dimensional Case
+/- ## Part 6: Two-Dimensional Case
 
 The connective constant for ℤ² is known numerically to high precision.
 -/
@@ -166,8 +160,7 @@ axiom jsg_computation :
 theorem two_d_bounds : 2.62 ≤ μ 2 ∧ μ 2 ≤ 2.696 :=
   ⟨conway_guttmann_lower, alm_upper⟩
 
-/-!
-## Part 7: Higher Dimensions
+/- ## Part 7: Higher Dimensions
 
 Exact values are unknown, but good bounds exist.
 -/
@@ -183,8 +176,7 @@ axiom large_k_limit :
 axiom normalized_limit :
     Tendsto (fun k => μ k / (2 * k - 1)) atTop (nhds 1)
 
-/-!
-## Part 8: Honeycomb Lattice (Related)
+/- ## Part 8: Honeycomb Lattice (Related)
 
 For the honeycomb lattice, the exact connective constant is known!
 -/
@@ -205,8 +197,7 @@ axiom honeycomb_exact :
     ∃ (μ_hex : ℝ), μ_hex = Real.sqrt (2 + Real.sqrt 2) ∧
       μ_hex > 0 ∧ μ_hex < 2
 
-/-!
-## Part 9: Conjectures
+/- ## Part 9: Conjectures
 
 Several open conjectures about the connective constant.
 -/
@@ -224,8 +215,7 @@ def irrationality_conjecture : Prop :=
 axiom mu2_irrationality_open_status :
     ¬(∀ k ≥ 2, Irrational (μ k)) ∨ (∀ k ≥ 2, Irrational (μ k))
 
-/-!
-## Part 10: SAW Enumeration
+/- ## Part 10: SAW Enumeration
 
 Exact counts for small n in 2D.
 -/
@@ -243,8 +233,7 @@ axiom saw_counts_2d :
 axiom ratio_convergence :
     Tendsto (fun n => (sawCount (n + 1) 2 : ℝ) / sawCount n 2) atTop (nhds (μ 2))
 
-/-!
-## Part 11: Applications
+/- ## Part 11: Applications
 
 SAWs model polymers and have applications in chemistry and physics.
 -/
@@ -262,8 +251,7 @@ axiom gamma_2d_conjecture_value :
       ∃ (A : ℝ), A > 0 ∧
         Tendsto (fun n => (sawCount n 2 : ℝ) / (A * (μ 2)^n * n^(γ - 1))) atTop (nhds 1)
 
-/-!
-## Part 12: Summary
+/- ## Part 12: Summary
 
 Erdős Problem #528 is PARTIALLY SOLVED.
 -/
