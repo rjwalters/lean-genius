@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 46: Monochromatic Unit Fraction Representations
 
 Does every finite colouring of the integers have a monochromatic solution to
@@ -18,7 +18,7 @@ import Mathlib.Tactic
 
 open Finset
 
-/-! ## Unit fraction representations -/
+/- ## Unit fraction representations -/
 
 /-- A finite set `S` of naturals (each ≥ 2) is a unit fraction representation
 of `1` if `∑_{n ∈ S} 1/n = 1` as rationals. -/
@@ -29,7 +29,7 @@ def IsUnitFractionRepr (S : Finset ℕ) : Prop :=
 def IsRatFractionRepr (S : Finset ℕ) (q : ℚ) : Prop :=
     (∀ n ∈ S, 2 ≤ n) ∧ S.sum (fun n => (1 : ℚ) / n) = q
 
-/-! ## Colourings -/
+/- ## Colourings -/
 
 /-- A finite colouring of `ℕ` using `r` colours. -/
 def FiniteColouring (r : ℕ) : Type :=
@@ -39,7 +39,7 @@ def FiniteColouring (r : ℕ) : Type :=
 def IsMonochromatic (c : FiniteColouring r) (S : Finset ℕ) : Prop :=
     ∃ col : Fin r, ∀ n ∈ S, c n = col
 
-/-! ## Main theorem (Croot) -/
+/- ## Main theorem (Croot) -/
 
 /-- Erdős Problem 46 (proved by Croot): Every finite colouring of ℕ has a
 monochromatic set `S ⊆ {n | 2 ≤ n}` with `∑_{n ∈ S} 1/n = 1`. -/
@@ -53,7 +53,7 @@ def ErdosProblem46_infinitely_many : Prop :=
       ∃ S : Finset ℕ, IsUnitFractionRepr S ∧ IsMonochromatic c S ∧
         ∀ n ∈ S, N < n
 
-/-! ## Generalization to arbitrary rationals -/
+/- ## Generalization to arbitrary rationals -/
 
 /-- Erdős–Graham generalization: every finite colouring of ℕ has a monochromatic
 representation of any positive rational `a/b`. -/
@@ -65,7 +65,7 @@ def ErdosGraham_rational : Prop :=
 axiom rational_from_infinite :
     ErdosProblem46_infinitely_many → ErdosGraham_rational
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- The empty set is not a unit fraction representation (sum is 0 ≠ 1). -/
 theorem not_unitFractionRepr_empty : ¬IsUnitFractionRepr ∅ := by
