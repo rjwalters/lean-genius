@@ -1,5 +1,5 @@
-/-!
-# Erdős Problem #81: Clique Partitions of Chordal Graphs
+/-
+Erdős Problem #81: Clique Partitions of Chordal Graphs
 
 Source: https://erdosproblems.com/81
 Status: OPEN
@@ -43,8 +43,7 @@ open Nat Finset SimpleGraph
 
 namespace Erdos81
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
@@ -95,8 +94,7 @@ def cliquePartitionNumber (G : SimpleGraph V) : ℕ :=
   Nat.find (⟨Fintype.card V * Fintype.card V, by simp⟩ :
     ∃ k, ∃ P : CliquePartition G, P.cliques.card ≤ k) -- simplified axiomatization
 
-/-!
-## Part II: Split Graphs
+/- ## Part II: Split Graphs
 -/
 
 /--
@@ -117,8 +115,7 @@ Every split graph is chordal (has no induced C_k for k ≥ 4).
 -/
 axiom split_is_chordal (G : SimpleGraph V) (h : IsSplitGraph G) : IsChordal G
 
-/-!
-## Part III: The Extremal Construction
+/- ## Part III: The Extremal Construction
 -/
 
 /--
@@ -146,8 +143,7 @@ theorem lower_bound (n : ℕ) (hn : n ≥ 3) :
   refine ⟨V, hV, G, ?_, hCard, hBound⟩
   exact @split_is_chordal V hV (Classical.decEq V) G hSplit
 
-/-!
-## Part IV: Known Upper Bounds
+/- ## Part IV: Known Upper Bounds
 -/
 
 /--
@@ -166,8 +162,7 @@ at most 3n²/16 + O(n) cliques.
 axiom chen_erdos_ordman_split (G : SimpleGraph V) (hSplit : IsSplitGraph G) :
     cliquePartitionNumber G ≤ 3 * (Fintype.card V)^2 / 16 + (Fintype.card V)
 
-/-!
-## Part V: The Main Conjecture
+/- ## Part V: The Main Conjecture
 -/
 
 /--
@@ -180,8 +175,7 @@ def erdos_81_conjecture : Prop :=
     @IsChordal V hV _ G →
     @cliquePartitionNumber V hV _ G ≤ (Fintype.card V)^2 / 6 + Fintype.card V
 
-/-!
-## Part VI: Gap Analysis
+/- ## Part VI: Gap Analysis
 -/
 
 /--
@@ -194,8 +188,7 @@ The multiplicative gap is about 1.5×.
 theorem gap_analysis :
     (1 : ℚ) / 4 > 1 / 6 := by norm_num
 
-/-!
-## Part VII: Perfect Elimination Ordering
+/- ## Part VII: Perfect Elimination Ordering
 -/
 
 /--
@@ -225,8 +218,7 @@ A graph is chordal if and only if it has a perfect elimination ordering.
 axiom chordal_iff_peo (G : SimpleGraph V) :
     IsChordal G ↔ HasPerfectEliminationOrdering G
 
-/-!
-## Part VIII: Computational Aspects
+/- ## Part VIII: Computational Aspects
 -/
 
 /--
@@ -250,8 +242,7 @@ axiom optimal_partition_open :
       @IsChordal V hV _ G →
       ∃ P : @CliquePartition V hV _ G, P.cliques.card = @cliquePartitionNumber V hV _ G
 
-/-!
-## Part IX: Related Problems
+/- ## Part IX: Related Problems
 -/
 
 /--
@@ -274,8 +265,7 @@ clique partition number ≥ intersection number
 axiom partition_geq_intersection (G : SimpleGraph V) :
     cliquePartitionNumber G ≥ intersectionNumber G
 
-/-!
-## Part X: Summary
+/- ## Part X: Summary
 -/
 
 /--
