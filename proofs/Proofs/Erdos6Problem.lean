@@ -29,7 +29,7 @@ open Nat Set
 
 namespace Erdos6
 
-/-! ## Prime Gap Definition -/
+/- ## Prime Gap Definition -/
 
 /-- The n-th prime number (0-indexed: p_0 = 2, p_1 = 3, p_2 = 5, ...) -/
 noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
@@ -40,7 +40,7 @@ noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 /-- Alternative notation: d_n for the n-th prime gap -/
 notation "d_" n => primeGap n
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The set of primes is infinite. -/
 theorem primes_infinite : (setOf Nat.Prime).Infinite := Nat.infinite_setOf_prime
@@ -65,7 +65,7 @@ theorem primeGap_one : primeGap 1 = 2 := by
   unfold primeGap nthPrime
   simp [Nat.nth_prime_one_eq_three, Nat.nth_prime_two_eq_five]
 
-/-! ## Monotone Sequences -/
+/- ## Monotone Sequences -/
 
 /-- A sequence of m consecutive prime gaps starting at n is strictly increasing -/
 def HasIncreasingGaps (n m : ℕ) : Prop :=
@@ -83,7 +83,7 @@ def InfinitelyManyIncreasing (m : ℕ) : Prop :=
 def InfinitelyManyDecreasing (m : ℕ) : Prop :=
   ∀ N : ℕ, ∃ n > N, HasDecreasingGaps n m
 
-/-! ## The Main Conjecture (Original Statement) -/
+/- ## The Main Conjecture (Original Statement) -/
 
 /--
 **Erdős Problem 6: Monotone Prime Gap Triples**
@@ -94,7 +94,7 @@ This is the special case m = 2 of the general increasing gaps problem.
 -/
 def erdos_6_conjecture : Prop := InfinitelyManyIncreasing 2
 
-/-! ## Main Theorem (Banks-Freiberg-Turnage-Butterbaugh 2015) -/
+/- ## Main Theorem (Banks-Freiberg-Turnage-Butterbaugh 2015) -/
 
 /--
 **Banks-Freiberg-Turnage-Butterbaugh Theorem (2015)**
@@ -113,7 +113,7 @@ axiom banks_freiberg_turnage_butterbaugh (m : ℕ) (hm : m ≥ 1) :
 axiom banks_freiberg_turnage_butterbaugh_decreasing (m : ℕ) (hm : m ≥ 1) :
     InfinitelyManyDecreasing m
 
-/-! ## Resolution of Erdős Problem 6 -/
+/- ## Resolution of Erdős Problem 6 -/
 
 /-- Erdős Problem 6 is SOLVED: the conjecture is TRUE. -/
 theorem erdos_6_solved : erdos_6_conjecture :=
@@ -122,7 +122,7 @@ theorem erdos_6_solved : erdos_6_conjecture :=
 /-- The problem is settled in the affirmative. -/
 theorem erdos_6_affirmative : InfinitelyManyIncreasing 2 := erdos_6_solved
 
-/-! ## Maynard-Tao Machinery -/
+/- ## Maynard-Tao Machinery -/
 
 /--
 **Key Ingredient: Bounded Gaps Between Primes**
@@ -146,7 +146,7 @@ bounded gaps revolution.
 axiom zhang_bounded_gaps : ∃ H : ℕ, ∀ N : ℕ, ∃ p, p > N ∧ Nat.Prime p ∧
     ∃ q, Nat.Prime q ∧ p < q ∧ q - p ≤ H
 
-/-! ## Generalizations -/
+/- ## Generalizations -/
 
 /-- There are arbitrarily long increasing runs of prime gaps. -/
 theorem arbitrarily_long_increasing_runs :
@@ -158,7 +158,7 @@ theorem arbitrarily_long_decreasing_runs :
     ∀ m : ℕ, m ≥ 1 → InfinitelyManyDecreasing m :=
   fun m hm => banks_freiberg_turnage_butterbaugh_decreasing m hm
 
-/-! ## Related Concepts -/
+/- ## Related Concepts -/
 
 /-- The prime gap function is not eventually monotone in either direction.
     That is, both increasing and decreasing patterns occur infinitely often. -/
@@ -174,7 +174,7 @@ axiom average_prime_gap (n : ℕ) (hn : n ≥ 2) :
     c₁ * Real.log n ≤ (primeGap n : ℝ) + (primeGap (n+1) : ℝ) + (primeGap (n+2) : ℝ) ∧
     (primeGap n : ℝ) + (primeGap (n+1) : ℝ) + (primeGap (n+2) : ℝ) ≤ c₂ * Real.log n
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED (Affirmative)**
 
