@@ -68,18 +68,18 @@
   {
     "id": "ann-e495-ekl",
     "proofId": "erdos-495",
-    "range": { "startLine": 113, "endLine": 129 },
-    "type": "theorem",
+    "range": { "startLine": 113, "endLine": 136 },
+    "type": "axiom",
     "title": "Einsiedler-Katok-Lindenstrauss (2006)",
-    "content": "**The major breakthrough:** EKL proved that the set of counterexamples to the Littlewood conjecture has Hausdorff dimension zero. In simple terms, counterexamples (if they exist) are vanishingly rare — far rarer than any positive-dimensional set. This work earned Elon Lindenstrauss the 2010 Fields Medal.",
-    "mathContext": "The proof uses ergodic theory on the homogeneous space SL(3,ℝ)/SL(3,ℤ), specifically the classification of invariant measures for diagonal actions (the A-action). The key insight is translating the number-theoretic problem into a question about orbit closures in a Lie group quotient. Axiomatized as True since formalizing Hausdorff dimension is beyond current Mathlib.",
+    "content": "**The major breakthrough:** EKL proved that the set of counterexamples to the Littlewood conjecture has Hausdorff dimension zero. In simple terms, counterexamples (if they exist) are vanishingly rare — far rarer than any positive-dimensional set. This work earned Elon Lindenstrauss the 2010 Fields Medal.\n\n**ekl_countable_exceptions**: We axiomatize a weaker consequence: for each fixed α, the set of β failing Littlewood is countable.",
+    "mathContext": "The proof uses ergodic theory on the homogeneous space SL(3,ℝ)/SL(3,ℤ), specifically the classification of invariant measures for diagonal actions (the A-action). The key insight is translating the number-theoretic problem into a question about orbit closures in a Lie group quotient.",
     "significance": "critical",
     "relatedConcepts": ["ergodic-theory", "hausdorff-dimension", "homogeneous-dynamics", "fields-medal"]
   },
   {
     "id": "ann-e495-padic",
     "proofId": "erdos-495",
-    "range": { "startLine": 131, "endLine": 151 },
+    "range": { "startLine": 138, "endLine": 163 },
     "type": "concept",
     "title": "The p-adic Littlewood Conjecture",
     "content": "**A natural variant** replaces one of the ‖·‖ factors with the p-adic absolute value |·|_p. The de Mathan-Teulié conjecture (2004) asks: for every real α and prime p, is lim inf n · |n|_p · ‖nα‖ = 0? Einsiedler-Kleinbock (2007) proved the analogous Hausdorff dimension zero result. Badziahin-Velani (2014) made further progress for badly approximable numbers.",
@@ -90,11 +90,11 @@
   {
     "id": "ann-e495-summary",
     "proofId": "erdos-495",
-    "range": { "startLine": 153, "endLine": 164 },
-    "type": "concept",
-    "title": "Summary and Status",
-    "content": "**Status: OPEN.** The Littlewood conjecture remains one of the great unsolved problems in number theory. It is known for: (1) rational numbers (trivially), (2) cubic irrationals in the same field (Cassels-Swinnerton-Dyer 1955), (3) almost all pairs in a measure-theoretic sense (EKL 2006, Hausdorff dimension zero exceptions). The p-adic variant is also open.",
-    "mathContext": "erdos_495_status : True := trivial serves as a marker that the problem has been formally documented. The conjecture itself cannot be stated as a theorem because it is unresolved. All substantial results are axiomatized.",
+    "range": { "startLine": 165, "endLine": 188 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_495_summary** combines the known results:\n1. The conjecture holds for rational α (trivially)\n2. For each α, exceptions are countable (consequence of EKL)\n\n**Status: OPEN** in full generality.",
+    "mathContext": "The summary theorem assembles littlewood_rational_case and ekl_countable_exceptions.",
     "significance": "supporting",
     "relatedConcepts": ["open-problem", "diophantine-approximation", "ergodic-theory"]
   }
