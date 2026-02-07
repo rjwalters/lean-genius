@@ -111,16 +111,16 @@
     "id": "rudin-shapiro",
     "proofId": "erdos-525",
     "type": "definition",
-    "range": { "startLine": 143, "endLine": 151 },
+    "range": { "startLine": 145, "endLine": 150 },
     "title": "Rudin-Shapiro Polynomials",
-    "content": "Special Littlewood polynomials defined by a recurrence. They have flat modulus - |p(z)| ≤ √(2n) on the unit circle.",
+    "content": "Special Littlewood polynomials of degree 2^n - 1 satisfying a flat bound: |p(z)| ≤ √(2^(n+1)) on the unit circle.",
     "significance": "supporting"
   },
   {
     "id": "mahler-measure",
     "proofId": "erdos-525",
     "type": "definition",
-    "range": { "startLine": 165, "endLine": 168 },
+    "range": { "startLine": 167, "endLine": 170 },
     "title": "Mahler Measure",
     "content": "M(p) = exp(∫ log|p(e^{2πit})| dt) - the geometric mean of |p| on the unit circle. Related to m(p) and connects to Lehmer's problem.",
     "significance": "supporting"
@@ -129,7 +129,7 @@
     "id": "lehmer-question",
     "proofId": "erdos-525",
     "type": "concept",
-    "range": { "startLine": 175, "endLine": 177 },
+    "range": { "startLine": 177, "endLine": 179 },
     "title": "Lehmer's Problem",
     "content": "Is there a Littlewood polynomial with M(p) < 1? This is related to Lehmer's conjecture on polynomial heights.",
     "significance": "supporting"
@@ -138,7 +138,7 @@
     "id": "main-summary",
     "proofId": "erdos-525",
     "type": "theorem",
-    "range": { "startLine": 202, "endLine": 220 },
+    "range": { "startLine": 204, "endLine": 225 },
     "title": "Complete Solution",
     "content": "Summary theorem: Littlewood's conjecture is true (Kashin), the correct exponent is -1/2 (Konyagin), and the exact limiting distribution is e^{-ελ} (Cook-Nguyen).",
     "significance": "critical"
