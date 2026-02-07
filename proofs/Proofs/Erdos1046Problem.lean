@@ -39,7 +39,7 @@ open Complex Polynomial
 
 namespace Erdos1046
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Monic Polynomial over ℂ:**
@@ -75,7 +75,7 @@ The closed disc of radius r centered at c.
 def closedDisc (c : ℂ) (r : ℝ) : Set ℂ :=
   {z : ℂ | Complex.abs (z - c) ≤ r}
 
-/-! ## Part II: Roots and Centroid -/
+/- ## Part II: Roots and Centroid -/
 
 /--
 **Roots of a Polynomial:**
@@ -98,7 +98,7 @@ For a monic polynomial xⁿ + aₙ₋₁xⁿ⁻¹ + ..., the sum of roots equals
 axiom vieta_root_sum (f : Polynomial ℂ) (hf : f.Monic) (hdeg : f.natDegree > 0) :
   f.roots.sum = -f.coeff (f.natDegree - 1)
 
-/-! ## Part III: Connectivity Characterization -/
+/- ## Part III: Connectivity Characterization -/
 
 /--
 **Critical Points:**
@@ -114,7 +114,7 @@ E = {z : |f(z)| < 1} is connected ⟺ E contains all critical points of f.
 axiom connectivity_characterization (f : Polynomial ℂ) (hf : f.Monic) (hdeg : f.natDegree > 0) :
   IsConnected (sublevelSet f) ↔ criticalPoints f ⊆ sublevelSet f
 
-/-! ## Part IV: The Erdős-Herzog-Piranian Question -/
+/- ## Part IV: The Erdős-Herzog-Piranian Question -/
 
 /--
 **Erdős-Herzog-Piranian Question (1958):**
@@ -123,7 +123,7 @@ If E is connected, is E contained in a disc of radius 2?
 def EHPQuestion (f : Polynomial ℂ) : Prop :=
   IsConnected (sublevelSet f) → ∃ c : ℂ, sublevelSet f ⊆ openDisc c 2
 
-/-! ## Part V: Pommerenke's Theorem (1959) -/
+/- ## Part V: Pommerenke's Theorem (1959) -/
 
 /--
 **Pommerenke's Theorem:**
@@ -143,7 +143,7 @@ theorem explicit_center (f : Polynomial ℂ) (hf : f.Monic) (hdeg : f.natDegree 
     sublevelSet f ⊆ closedDisc (rootCentroid f hdeg) 2 :=
   pommerenke_theorem f hf hdeg hConn
 
-/-! ## Part VI: The Width Counterexample -/
+/- ## Part VI: The Width Counterexample -/
 
 /--
 **Width of a Set:**
@@ -175,7 +175,7 @@ Follows from Pommerenke's counterexample since √3 · 2^{1/3} > 2.
 -/
 axiom width_conjecture_false : ¬EHPWidthConjecture
 
-/-! ## Part VII: The Diameter -/
+/- ## Part VII: The Diameter -/
 
 /--
 **Diameter of a Set:**
@@ -192,7 +192,7 @@ axiom pommerenke_diameter_bound (f : Polynomial ℂ) (hf : f.Monic) (hdeg : f.na
     (hConn : IsConnected (sublevelSet f)) :
     diameter (sublevelSet f) ≤ 2
 
-/-! ## Part VIII: Related Concepts -/
+/- ## Part VIII: Related Concepts -/
 
 /--
 **Lemniscate:**
@@ -216,7 +216,7 @@ For f(z) = z² - c, the lemniscate {|f(z)| = 1} is called the
 def bernoulliLemniscate : Set ℂ :=
   lemniscate (X^2 - C 1) 1 (by norm_num)
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #1046: SOLVED**
