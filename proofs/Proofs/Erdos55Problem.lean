@@ -30,7 +30,7 @@ open Finset BigOperators
 
 namespace Erdos55
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- An r-coloring of a set A assigns each element one of r colors. -/
 def Coloring (A : Set ℕ) (r : ℕ) := A → Fin r
@@ -55,7 +55,7 @@ def IsRamseyComplete (A : Set ℕ) (r : ℕ) : Prop :=
 noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   Set.ncard (A ∩ Set.Icc 1 N)
 
-/-! ## Growth Rate Bounds -/
+/- ## Growth Rate Bounds -/
 
 /-- A set has growth rate at most f if |A ∩ [1,N]| ≤ f(N) for large N. -/
 def HasGrowthAtMost (A : Set ℕ) (f : ℕ → ℝ) : Prop :=
@@ -65,7 +65,7 @@ def HasGrowthAtMost (A : Set ℕ) (f : ℕ → ℝ) : Prop :=
 def HasGrowthAtLeast (A : Set ℕ) (f : ℕ → ℝ) : Prop :=
   ∃ N₀ : ℕ, ∀ N ≥ N₀, f N ≤ (countingFunction A N : ℝ)
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Burr-Erdős Lower Bound (1985)**:
@@ -93,7 +93,7 @@ axiom burr_erdos_upper_bound :
 axiom powers_ramsey_complete (r k : ℕ) (hr : 1 ≤ r) (hk : 1 ≤ k) :
     IsRamseyComplete { n | ∃ m : ℕ, n = m^k } r
 
-/-! ## The Solution: Conlon-Fox-Pham (2021) -/
+/- ## The Solution: Conlon-Fox-Pham (2021) -/
 
 /--
 **Conlon-Fox-Pham Upper Bound (2021)**:
@@ -141,7 +141,7 @@ theorem erdos_55_solution :
     exact cfp_upper_bound r hr
   · exact cfp_lower_bound
 
-/-! ## Corollaries -/
+/- ## Corollaries -/
 
 /-- For r = 2, the optimal growth rate is Θ((log N)²). -/
 theorem optimal_growth_r2 :
@@ -171,7 +171,7 @@ theorem optimal_growth_r2 :
     calc (countingFunction A N : ℝ) ≤ 2 * c * (Real.log N)^2 := hN₀ N hN
       _ = c * 2 * (Real.log N)^2 := by ring
 
-/-! ## Historical Notes
+/- ## Historical Notes
 
 The problem asked for "non-trivial bounds" on the growth rate of Ramsey
 r-complete sets for r > 2. The Burr-Erdős paper (1985) established the
