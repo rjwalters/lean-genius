@@ -20,7 +20,7 @@ Historical Context:
 Key insight: This is about the arithmetic structure of sumsets of dense sequences.
 The threshold at linear density is sharp.
 
-Tags: sumsets, arithmetic-progressions, density, subcompleteness, additive-combinatorics
+Reference: Erdős-Graham [ErGr80, p.54], Folkman [Fo66], Szemerédi-Vu [SzVu06]
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -32,10 +32,10 @@ open Nat Finset BigOperators
 
 namespace Erdos343
 
-/-!
+/-
 ## Part 1: Multisets and Density
 
-A multiset A ⊆ ℕ has positive lower density if |A ∩ {1,...,N}| ≫ N.
+A set A ⊆ ℕ has positive lower density if |A ∩ {1,...,N}| ≫ N.
 This means the counting function grows at least linearly.
 -/
 
@@ -52,7 +52,7 @@ def hasDensity (A : Set ℕ) (α : ℝ) : Prop :=
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
     |((countingFunction A N : ℝ) / N) - α| < ε
 
-/-!
+/-
 ## Part 2: Sumsets and Subcompleteness
 
 The sumset P(A) consists of all finite subset sums of A.
@@ -79,33 +79,37 @@ def containsInfiniteAP (S : Set ℕ) : Prop :=
 def isSubcomplete (A : Set ℕ) : Prop :=
   containsInfiniteAP (sumsetInfinite A)
 
-/-!
+/-
 ## Part 3: Folkman's Results (1966)
+
+Folkman established both directions around the linear density threshold.
 -/
 
-/-- Folkman (1966): Superlinear density implies subcompleteness -/
+/-- Folkman (1966): Superlinear density implies subcompleteness.
+    If |A ∩ {1,...,N}| ≫ N^{1+ε} for some ε > 0, then A is subcomplete. -/
 axiom folkman_superlinear :
   ∀ ε > 0, ∀ A : Set ℕ,
     (∃ c > 0, ∀ N : ℕ, (countingFunction A N : ℝ) ≥ c * N^(1 + ε)) →
     isSubcomplete A
 
-/-- Folkman (1966): Sublinear density does NOT imply subcompleteness -/
+/-- Folkman (1966): Sublinear density does NOT imply subcompleteness.
+    For any ε > 0, there exists a multiset with density ~N^{1-ε} that is not subcomplete.
+    This shows the linear threshold is critical: anything below linear can fail. -/
 axiom folkman_counterexample :
   ∀ ε > 0, ∃ A : Set ℕ,
     (∃ c > 0, ∀ N : ℕ, (countingFunction A N : ℝ) ≥ c * N^(1 - ε)) ∧
     ¬isSubcomplete A
 
-/-- This shows the threshold is at linear density -/
-theorem folkman_threshold_significance :
-    -- Superlinear always works, sublinear can fail
-    -- The question: what about exactly linear?
-    True := trivial
-
-/-!
+/-
 ## Part 4: Szemerédi-Vu Theorem (2006)
+
+The main result resolving Erdős Problem #343: linear density suffices.
+The proof uses deep results from additive combinatorics including
+Freiman-type structure theorems and sumset estimates.
 -/
 
-/-- Szemerédi-Vu (2006): Linear density suffices for subcompleteness -/
+/-- Szemerédi-Vu (2006): Linear density suffices for subcompleteness.
+    This is the main theorem answering Problem #343 in the affirmative. -/
 axiom szemeredi_vu_2006 :
   ∀ A : Set ℕ, hasPositiveLowerDensity A → isSubcomplete A
 
@@ -114,59 +118,26 @@ theorem erdos_343_solved :
     ∀ A : Set ℕ, hasPositiveLowerDensity A → isSubcomplete A :=
   szemeredi_vu_2006
 
-/-!
-## Part 5: Why This Is Sharp
+/-
+## Part 5: Sharpness of the Linear Threshold
+
+Combining Folkman's counterexample with Szemerédi-Vu shows that
+linear density is exactly the critical boundary.
 -/
 
-/-- Folkman's counterexample shows the linear threshold is optimal -/
+/-- Folkman's counterexample shows the linear threshold is optimal:
+    for any ε > 0, density N^{1-ε} does not guarantee subcompleteness. -/
 theorem linear_threshold_is_sharp :
     ∀ ε > 0, ∃ A : Set ℕ,
       (∃ c > 0, ∀ N : ℕ, (countingFunction A N : ℝ) ≥ c * N^(1 - ε)) ∧
       ¬isSubcomplete A :=
   folkman_counterexample
 
-/-- Combined: linear is necessary and sufficient (up to lower order terms) -/
-theorem linear_density_characterization :
-    -- hasPositiveLowerDensity A → isSubcomplete A (Szemerédi-Vu)
-    -- For any ε > 0, there exists A with density ~N^{1-ε} that is not subcomplete (Folkman)
-    True := trivial
+/-
+## Part 6: Summary
 
-/-!
-## Part 6: Key Techniques
--/
-
-/-- The proof uses a powerful result on sumsets in ℤ -/
-axiom szemeredi_vu_sumsets_in_Z :
-  -- Long arithmetic progressions in sumsets: if A + ... + A (k times) is large enough,
-  -- it contains long arithmetic progressions
-  True
-
-/-- Connection to Freiman's theorem and additive combinatorics -/
-axiom freiman_structure_theorem :
-  -- Sets with small doubling have structure
-  True
-
-/-- The Erdős-Ginzburg-Ziv theorem is relevant -/
-axiom egz_theorem :
-  -- Among any 2n-1 integers, some n have sum divisible by n
-  True
-
-/-!
-## Part 7: Related Problems
--/
-
-/-- Related: Erdős-Graham conjecture on sumsets of reciprocals -/
-axiom erdos_graham_related :
-  -- If 1/a₁ + ... + 1/aₖ = 1 with distinct aᵢ, then...
-  True
-
-/-- Related: Folkman's original motivation -/
-axiom folkman_original_context :
-  -- Folkman studied representations of integers as sums from fixed sequences
-  True
-
-/-!
-## Part 8: Summary
+Erdős Problem #343 is SOLVED.
+Linear density is the exact threshold for subcompleteness.
 -/
 
 /-- **Erdős Problem #343: SOLVED**
@@ -179,14 +150,9 @@ ANSWER: YES (Szemerédi-Vu 2006)
 SHARPNESS: Folkman showed this threshold is optimal - for any ε > 0,
 there exist multisets with density ~N^{1-ε} that are NOT subcomplete.
 
-The linear density threshold is the critical boundary.
--/
+The linear density threshold is the critical boundary. -/
 theorem erdos_343_answer :
     ∀ A : Set ℕ, hasPositiveLowerDensity A → isSubcomplete A :=
   szemeredi_vu_2006
-
-/-- Problem status -/
-def erdos_343_status : String :=
-  "SOLVED - Linear density suffices (Szemerédi-Vu 2006), threshold is sharp (Folkman 1966)"
 
 end Erdos343
