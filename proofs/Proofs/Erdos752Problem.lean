@@ -37,8 +37,7 @@ namespace Erdos752
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
-## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 -/
 
 /-- The minimum degree of a simple graph -/
@@ -57,8 +56,7 @@ noncomputable def cycleLengths (G : SimpleGraph V) : Set ℕ :=
 noncomputable def numCycleLengths (G : SimpleGraph V) : ℕ :=
   (cycleLengths G).ncard
 
-/-!
-## Part 2: The Erdős-Faudree-Schelp Conjecture
+/- ## Part 2: The Erdős-Faudree-Schelp Conjecture
 -/
 
 /-- The conjecture: girth > 2s and min degree k implies ≫ k^s cycle lengths -/
@@ -77,8 +75,7 @@ axiom erdos_faudree_schelp_s2 : ∃ c : ℝ, c > 0 ∧
     GirthGreaterThan G 4 →
     (numCycleLengths G : ℝ) ≥ c * (k : ℝ) ^ 2
 
-/-!
-## Part 3: The Sudakov-Verstraëte Theorem (Stronger Version)
+/- ## Part 3: The Sudakov-Verstraëte Theorem (Stronger Version)
 -/
 
 /-- Average degree of a graph -/
@@ -125,8 +122,7 @@ theorem erdos_752_solved : ErdosFaudreeSchelpConjecture := by
     _ ≥ c * (k : ℝ) ^ s - 1 := Nat.sub_one_lt_floor (c * (k : ℝ) ^ s)
     _ ≥ c / 2 * (k : ℝ) ^ s := by nlinarith [hc_pos, pow_nonneg (Nat.cast_nonneg k) s]
 
-/-!
-## Part 4: Why Girth Matters
+/- ## Part 4: Why Girth Matters
 -/
 
 /-- Moore bound: a graph with min degree d and girth > 2s has many vertices -/
@@ -141,8 +137,7 @@ def IsMooreGraph (G : SimpleGraph V) [DecidableRel G.Adj] (d g : ℕ) : Prop :=
   GirthGreaterThan G (g - 1) ∧
   ¬GirthGreaterThan G g
 
-/-!
-## Part 5: The Girth and Cycle Structure
+/- ## Part 5: The Girth and Cycle Structure
 -/
 
 /-- Girth > 2s means the shortest cycle has length ≥ 2s + 1 -/
@@ -166,8 +161,7 @@ axiom consecutive_lengths_theorem :
     cycleLengths G ≠ ∅ →
     ∃ (a b : ℕ), a < b ∧ ∀ n, a ≤ n → n ≤ b → Even n → n ∈ cycleLengths G
 
-/-!
-## Part 6: Extremal Connections
+/- ## Part 6: Extremal Connections
 -/
 
 /-- Zarankiewicz-type bounds relate to cycle lengths -/
@@ -177,8 +171,7 @@ axiom zarankiewicz_connection :
     GirthGreaterThan G (2 * s) →
     G.edgeFinset.card ≤ (Fintype.card V : ℕ) ^ (1 + 1 / (s : ℝ))
 
-/-!
-## Part 7: Extensions and Generalizations
+/- ## Part 7: Extensions and Generalizations
 -/
 
 /-- The chromatic number version: proved by Sudakov-Verstraëte -/
@@ -204,8 +197,7 @@ def SudakovVerstrateConjecture : Prop :=
     G.chromaticNumber ≥ k + 2 →
     ∃ (start : ℕ), ∀ i, i < k → start + i ∈ cycleLengths G
 
-/-!
-## Part 8: Quantitative Bounds
+/- ## Part 8: Quantitative Bounds
 -/
 
 /-- The constant in Sudakov-Verstraëte is computable -/
@@ -224,8 +216,7 @@ axiom improved_bound_s3 : ∀ (V : Type*) [Fintype V] [DecidableEq V]
   avgDegree G ≥ k → GirthGreaterThan G 6 →
   numCycleLengths G ≥ k^3 / 100
 
-/-!
-## Part 9: Summary
+/- ## Part 9: Summary
 -/
 
 /-- Main theorem: Erdős Problem #752 is solved -/
