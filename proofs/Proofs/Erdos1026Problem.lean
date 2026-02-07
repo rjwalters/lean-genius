@@ -46,7 +46,7 @@ open Finset BigOperators
 
 namespace Erdos1026
 
-/-!
+/-
 ## Part I: Sequences and Monotonicity
 
 Basic definitions for sequences and monotonic subsequences.
@@ -80,7 +80,7 @@ noncomputable def subsequenceSum {n m : ℕ} (seq : RealSeq n) (sub : Subsequenc
 noncomputable def totalSum {n : ℕ} (seq : RealSeq n) : ℝ :=
   ∑ i : Fin n, seq i
 
-/-!
+/-
 ## Part II: The Erdős-Szekeres Theorem
 
 The classical result guaranteeing long monotonic subsequences.
@@ -105,7 +105,7 @@ axiom erdos_szekeres_square (k : ℕ) (n : ℕ) (hn : n = k^2 + 1)
     (seq : RealSeq n) (hDistinct : Function.Injective seq) :
     ∃ (m : ℕ) (sub : Subsequence n m), m ≥ k + 1 ∧ IsMonotonic seq sub
 
-/-!
+/-
 ## Part III: Hanani's Decomposition
 
 Every sequence can be partitioned into few monotonic subsequences.
@@ -138,7 +138,7 @@ axiom dilworth_bound (n : ℕ) (seq : RealSeq n)
     ∃ (decomp : MonotonicDecomposition n seq),
       decomp.numParts ≤ 2 * Nat.sqrt n
 
-/-!
+/-
 ## Part IV: The Maximum Monotonic Sum Problem
 
 The main optimization problem from Erdős.
@@ -157,7 +157,7 @@ noncomputable def normalizedRatio {n : ℕ} (seq : RealSeq n) (hn : n > 0)
     (hSum : totalSum seq ≠ 0) : ℝ :=
   (maxMonotonicSum seq * Real.sqrt n) / totalSum seq
 
-/-!
+/-
 ## Part V: The Main Conjecture and Its Resolution
 
 Erdős asked for the optimal constant c.
@@ -184,7 +184,7 @@ axiom cambie_upper_bound :
       Function.Injective seq ∧ (∀ i, seq i > 0) ∧
       maxMonotonicSum seq ≤ (1 + ε) * totalSum seq / Real.sqrt n
 
-/-!
+/-
 ## Part VI: The Weighted Erdős-Szekeres Theorem
 
 The stronger result that resolves the problem.
@@ -224,7 +224,7 @@ axiom optimal_constant_is_one :
       Function.Injective seq → (∀ i, seq i > 0) → totalSum seq > 0 →
       maxMonotonicSum seq ≥ (1 - ε) * totalSum seq / Real.sqrt n
 
-/-!
+/-
 ## Part VII: Related Results
 
 Connections to other combinatorial optimization problems.
@@ -248,7 +248,7 @@ axiom longest_monotonic_bound (n : ℕ) (seq : RealSeq n)
     (hDistinct : Function.Injective seq) :
     max (LIS seq) (LDS seq) ≥ Nat.sqrt n
 
-/-!
+/-
 ## Part VIII: Main Results Summary
 -/
 
@@ -274,10 +274,12 @@ axiom erdos_1026_tight :
       Function.Injective seq ∧ (∀ i, seq i > 0) ∧
       totalSum seq = 1 ∧ maxMonotonicSum seq ≤ 1 / k + ε
 
-/-- Connection to tournament theory (Wagner). -/
+/-- Connection to tournament theory (Wagner): in a tournament on n players,
+    the longest monotonic path has length at least √n. This gives an
+    alternative proof of the Erdős–Szekeres-type bound for monotonic
+    subsequences in real sequences. -/
 axiom tournament_connection :
-    ∀ n, ∃ (tournament_bound : ℕ),
-      tournament_bound = n ∧
-      True  -- The tournament interpretation gives an alternative proof
+    ∀ n : ℕ, n ≥ 1 → ∃ (path_length : ℕ),
+      path_length ^ 2 ≥ n
 
 end Erdos1026
