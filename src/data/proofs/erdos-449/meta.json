@@ -14,7 +14,7 @@
     "sorries": 0,
     "erdosNumber": 449,
     "erdosUrl": "https://erdosproblems.com/449",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "disproved",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
       { "theorem": "Nat.divisors", "description": "Set of divisors of a natural number", "module": "Mathlib.Data.Nat.Divisors" },
@@ -48,50 +48,50 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 46,
-      "endLine": 75,
+      "endLine": 72,
       "summary": "Defines τ(n), close divisor pairs, r(n), and τ⁺(n) functions"
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
-      "startLine": 76,
-      "endLine": 93,
+      "startLine": 74,
+      "endLine": 88,
       "summary": "Formal statement of the (false) conjecture using natural density"
     },
     {
       "id": "disproof",
       "title": "The Disproof",
-      "startLine": 94,
-      "endLine": 113,
+      "startLine": 90,
+      "endLine": 106,
       "summary": "Statement that the conjecture is false with quantified counterexamples"
     },
     {
       "id": "key-inequality",
       "title": "The Key Inequality",
-      "startLine": 114,
-      "endLine": 138,
+      "startLine": 108,
+      "endLine": 129,
       "summary": "Cauchy-Schwarz inequality for divisors and connection to Problem 448"
     },
     {
       "id": "examples",
       "title": "Examples and Small Values",
-      "startLine": 139,
-      "endLine": 161,
-      "summary": "Concrete calculations including n=12 and highly composite numbers"
+      "startLine": 131,
+      "endLine": 142,
+      "summary": "Concrete example: n=12 with τ(12)=6, r(12)=5"
     },
     {
       "id": "related-results",
       "title": "Related Results",
-      "startLine": 162,
-      "endLine": 182,
-      "summary": "Divisor distribution and Hall-Tenenbaum reference"
+      "startLine": 144,
+      "endLine": 158,
+      "summary": "Ford's derivation connecting Problem 448 to the disproof"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 183,
-      "endLine": 221,
-      "summary": "Main theorem statements and key insight"
+      "startLine": 160,
+      "endLine": 176,
+      "summary": "Main theorem combining the negative answer and quantitative bound"
     }
   ],
   "conclusion": {

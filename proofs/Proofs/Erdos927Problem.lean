@@ -236,26 +236,13 @@ Has cliques of sizes 1, 2, 3, ..., n.
 So g(n) ≥ n for any n (from K_n alone... but we define g as max distinct sizes).
 Actually K_n has n distinct clique sizes: {1, 2, ..., n}.
 -/
-theorem complete_graph_cliques (n : ℕ) (hn : n ≥ 1) :
-    -- K_n has n distinct clique sizes
-    True := trivial
+axiom complete_graph_cliques (n : ℕ) (hn : n ≥ 1) :
+    -- K_n has cliques of sizes 1, 2, ..., n
+    g n ≥ n
 
-/--
-**Empty graph:**
-Has only cliques of size 1.
-So this gives g ≥ 1.
--/
-theorem empty_graph_clique : True := trivial
-
-/--
-**For small n:**
-g(1) = 1 (only size 1)
-g(2) = 2 (sizes 1 and 2)
-g(3) = 3 (sizes 1, 2, 3)
-g(4) = 4 (can achieve all sizes)
-...
--/
-example : True := trivial
+axiom empty_graph_one_clique_size :
+    -- The empty graph has only cliques of size 1
+    g 1 ≥ 1
 
 /-
 ## Part X: Summary
@@ -288,11 +275,5 @@ theorem erdos_927_summary :
     -- Conjecture is false
     ¬ErdosConjecture := by
   exact ⟨spencer_theorem, conjecture_disproved⟩
-
-/--
-**Problem status:**
-Erdős Problem #927 is SOLVED.
--/
-theorem erdos_927_status : True := trivial
 
 end Erdos927

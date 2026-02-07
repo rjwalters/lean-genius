@@ -36,44 +36,44 @@
     {
       "id": "divisors",
       "title": "Part I: Divisors in an Interval",
-      "startLine": 31,
-      "endLine": 45,
+      "startLine": 36,
+      "endLine": 48,
       "summary": "Defines HasDivisorIn and countWithDivisor."
     },
     {
       "id": "density",
       "title": "Part II: The Density Condition",
-      "startLine": 47,
-      "endLine": 54,
+      "startLine": 50,
+      "endLine": 57,
       "summary": "Defines DensityBound using rational ε approximation."
     },
     {
       "id": "for-all",
       "title": "Part III: The Problem (For All x)",
-      "startLine": 56,
-      "endLine": 66,
+      "startLine": 59,
+      "endLine": 71,
       "summary": "ErdosProblem450_ForAll: density bound holds for all starting points x."
     },
     {
       "id": "existential",
       "title": "Part IV: The Problem (Existential x)",
-      "startLine": 68,
-      "endLine": 78,
+      "startLine": 73,
+      "endLine": 84,
       "summary": "ErdosProblem450_Exists: density bound holds for some x."
     },
     {
       "id": "known-results",
       "title": "Part V: Known Results",
-      "startLine": 80,
-      "endLine": 114,
-      "summary": "Cambie's observations on failure of 'for all x' version and the small-ε regime. Ford's divisor distribution."
+      "startLine": 86,
+      "endLine": 125,
+      "summary": "Cambie's observations and Ford's divisor distribution results."
     },
     {
       "id": "summary",
       "title": "Part VI: Summary",
-      "startLine": 116,
-      "endLine": 127,
-      "summary": "Status: open. Depends on quantifier over x. Cambie showed failures in some regimes."
+      "startLine": 127,
+      "endLine": 143,
+      "summary": "Summary theorem combining Cambie's failure result with small-ε bounds."
     }
   ],
   "conclusion": {

@@ -74,7 +74,7 @@
       "id": "dist-int",
       "title": "Part I: Distance to Nearest Integer",
       "startLine": 39,
-      "endLine": 57,
+      "endLine": 56,
       "summary": "Defines distInt x = |x - round(x)| and axiomatizes non-negativity and the bound distInt x ≤ 1/2."
     },
     {
@@ -102,22 +102,22 @@
       "id": "ekl-theorem",
       "title": "Part V: The EKL Theorem",
       "startLine": 113,
-      "endLine": 129,
-      "summary": "Einsiedler–Katok–Lindenstrauss (2006): counterexamples have Hausdorff dimension zero."
+      "endLine": 136,
+      "summary": "Einsiedler–Katok–Lindenstrauss (2006): counterexamples are countable for each fixed α."
     },
     {
       "id": "padic",
       "title": "Part VI: The p-adic Littlewood Conjecture",
-      "startLine": 131,
-      "endLine": 151,
+      "startLine": 138,
+      "endLine": 163,
       "summary": "Defines the p-adic Littlewood conjecture (de Mathan–Teulié 2004) and Badziahin–Velani (2014) partial result."
     },
     {
       "id": "summary",
       "title": "Part VII: Summary",
-      "startLine": 153,
-      "endLine": 164,
-      "summary": "Status summary: the Littlewood conjecture remains open in full generality."
+      "startLine": 165,
+      "endLine": 188,
+      "summary": "Summary theorem combining rational case and EKL countable exceptions."
     }
   ],
   "conclusion": {

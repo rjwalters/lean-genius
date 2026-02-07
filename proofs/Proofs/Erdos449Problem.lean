@@ -43,9 +43,7 @@ open Finset Nat ArithmeticFunction
 
 namespace Erdos449
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Divisor count function τ(n):**
@@ -73,9 +71,7 @@ Divisors d with d² ≤ n.
 def tauPlus (n : ℕ) : ℕ :=
   (n.divisors.filter (fun d => d * d ≤ n)).card
 
-/-!
-## Part II: The Erdős Conjecture
--/
+/- ## Part II: The Erdős Conjecture -/
 
 /--
 **Erdős Conjecture 449:**
@@ -91,9 +87,7 @@ def ErdosConjecture449 : Prop :=
       (fun N => (Finset.filter (· ∈ exceptions) (Finset.range N)).card / N)
       Filter.atTop (nhds 0)
 
-/-!
-## Part III: The Disproof
--/
+/- ## Part III: The Disproof -/
 
 /--
 **Erdős Conjecture 449 is FALSE:**
@@ -111,9 +105,7 @@ axiom erdos_449_disproof :
 -/
 axiom erdos_449_false : ¬ ErdosConjecture449
 
-/-!
-## Part IV: The Key Inequality
--/
+/- ## Part IV: The Key Inequality -/
 
 /--
 **Cauchy-Schwarz inequality for divisors:**
@@ -136,9 +128,7 @@ axiom problem_448_consequence :
       ((Finset.range N).filter (fun n =>
         n > 0 ∧ (tau n : ℝ)^2 / tauPlus n ≥ (K + 1) * tau n)).card ≥ δ * N
 
-/-!
-## Part V: Examples and Small Values
--/
+/- ## Part V: Examples and Small Values -/
 
 /--
 **Example: n = 12**
@@ -151,50 +141,23 @@ axiom example_12 :
     -- Close pairs include (2,3), (3,4), etc.
     r 12 = 5
 
-/--
-**Highly composite numbers:**
-Numbers with many divisors tend to have many close pairs.
--/
-axiom highly_composite_property :
-    -- For highly composite numbers, r(n)/τ(n) can be arbitrarily large
-    True
+/- ## Part VI: Related Results -/
 
-/-!
-## Part VI: Related Results
--/
+/-- **Ford's derivation from Problem 448:**
+The disproof of Problem 449 follows from the Cauchy-Schwarz inequality
+applied to divisor pairs together with the result from Problem 448
+that τ⁺(n) can be much smaller than τ(n) on a positive density set.
 
-/--
-**Divisor distribution:**
-The distribution of divisors of n is related to the distribution
-of log d for d | n.
--/
-axiom divisor_distribution :
-    -- Divisors cluster in ratio intervals
-    True
+Specifically: r(n) + τ(n) ≥ τ(n)²/τ⁺(n), so when τ(n)/τ⁺(n) ≫ 1,
+we get r(n) ≫ τ(n). -/
+axiom ford_derivation :
+    ∀ K : ℝ, K > 0 →
+    ∃ δ : ℝ, δ > 0 ∧
+    ∀ N : ℕ, N > 0 →
+      ((Finset.range N).filter (fun n =>
+        n > 0 ∧ (r n : ℝ) ≥ K * tau n)).card ≥ δ * N
 
-/--
-**Hall-Tenenbaum result:**
-The book "Divisors" by Hall and Tenenbaum contains related results
-about divisor pair statistics (Section 4.6).
--/
-axiom hall_tenenbaum_reference :
-    True
-
-/-!
-## Part VII: Summary
--/
-
-/--
-**Erdős Problem #449: DISPROVED**
-
-CONJECTURE: r(n) < ε·τ(n) for almost all n, for any ε > 0.
-ANSWER: FALSE
-
-For any K > 0, a positive density set of n has r(n) > K·τ(n).
-
-The proof uses Cauchy-Schwarz and the solution to Problem 448.
--/
-theorem erdos_449 : True := trivial
+/- ## Part VII: Summary -/
 
 /--
 **Summary of the disproof:**
@@ -209,13 +172,5 @@ theorem erdos_449_summary :
         ((Finset.range N).filter (fun n =>
           n > 0 ∧ (r n : ℝ) > K * tau n)).card ≥ δ * N) := by
   exact ⟨erdos_449_false, erdos_449_disproof⟩
-
-/--
-**The key insight:**
-Close divisor pairs are NOT rare - they can dominate the divisor count.
--/
-theorem key_insight :
-    -- The ratio r(n)/τ(n) can be unbounded for a positive density set
-    True := trivial
 
 end Erdos449

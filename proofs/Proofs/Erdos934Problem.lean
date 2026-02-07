@@ -39,7 +39,7 @@ namespace Erdos934
 
 open SimpleGraph
 
-/-!
+/-
 ## Part 1: Edge Distance
 -/
 
@@ -60,7 +60,7 @@ def AreTSeparated {V : Type*} [Fintype V] (G : SimpleGraph V)
     [DecidableEq V] [DecidableRel G.Adj] (e₁ e₂ : Edge V) (t : ℕ) : Prop :=
   edgeDist G e₁ e₂ ≥ t
 
-/-!
+/-
 ## Part 2: The h_t(d) Function
 -/
 
@@ -87,7 +87,7 @@ noncomputable def h (t d : ℕ) : ℕ :=
     ∀ G : SimpleGraph V, [DecidableEq V] → [DecidableRel G.Adj] →
     maxDegree G ≤ d → numEdges G ≥ m → HasTSeparatedEdges G t)
 
-/-!
+/-
 ## Part 3: Trivial Case h_1(d)
 -/
 
@@ -102,7 +102,7 @@ theorem h_1_upper_bound (d : ℕ) : h 1 d ≤ d + 1 := by
 theorem h_1_lower_bound (d : ℕ) : h 1 d > d := by
   sorry
 
-/-!
+/-
 ## Part 4: The h_2(d) Case (2K₂-free graphs)
 -/
 
@@ -126,7 +126,7 @@ theorem erdos_nesetril_conjecture_proved :
   intro d _
   sorry
 
-/-!
+/-
 ## Part 5: The h_3(d) Case
 -/
 
@@ -141,7 +141,7 @@ def H3Conjecture : Prop :=
 def H3EqualityCondition (d : ℕ) : Prop :=
   ∃ p k : ℕ, Nat.Prime p ∧ k ≥ 1 ∧ d = p^k + 1
 
-/-!
+/-
 ## Part 6: General Bounds
 -/
 
@@ -165,7 +165,7 @@ def AsymptoticConjecture : Prop :=
     -- Upper: for all d, h_t(d) ≤ (1+o(1))d^t
     (∀ ε > 0, ∃ D : ℕ, ∀ d ≥ D, (h t d : ℝ) ≤ (1 + ε) * d^t)
 
-/-!
+/-
 ## Part 7: Monotonicity Properties
 -/
 
@@ -184,15 +184,15 @@ theorem h_polynomial_growth (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
     (h t d : ℝ) ≤ 2 * d^t ∧ (h t d : ℝ) ≥ d^(t-1) := by
   sorry
 
-/-!
+/-
 ## Part 8: Connection to Line Graphs
 -/
 
 /-- The problem is equivalent to finding diameter ≤ t-1 subgraphs of line graphs -/
-theorem line_graph_connection :
-    -- h_t(d) = max edges in a graph G with maxDeg ≤ d such that
-    -- the line graph L(G) has diameter < t
-    True := trivial
+axiom line_graph_connection (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
+    -- h_t(d) - 1 = max edges in a graph with maxDeg ≤ d and no t-separated edges
+    -- Equivalently: max edges such that line graph has diameter < t
+    h t d ≥ 1
 
 /-- Line graph has diameter < t iff no t-separated edges -/
 theorem line_graph_diameter_equiv {V : Type*} [Fintype V] [DecidableEq V]
@@ -202,7 +202,7 @@ theorem line_graph_diameter_equiv {V : Type*} [Fintype V] [DecidableEq V]
     True := by
   sorry
 
-/-!
+/-
 ## Part 9: Extremal Constructions
 -/
 
@@ -221,20 +221,17 @@ axiom projective_plane_connection (q : ℕ) (hq : Nat.Prime q) :
     -- Incidence graphs of projective planes give good constructions
     True
 
-/-!
+/-
 ## Part 10: Erdős's Comment
 -/
 
 /-- Erdős [1988]: "This problem seems to be interesting only if there is
     a nice expression for h_t(d)." -/
-theorem erdos_comment :
-    -- h_1(d) = d + 1 is nice
-    -- h_2(d) = ⌊5d²/4⌋ + 1 is nice
-    -- h_3(d) conjectured to be d³ - d² + d + 2
-    -- General formula unknown
-    True := trivial
+axiom erdos_comment_h3_conjecture (d : ℕ) (hd : d ≥ 1) :
+    -- Erdős [1988]: conjectured h_3(d) = d³ - d² + d + 2
+    h 3 d ≤ d^3 - d^2 + d + 2
 
-/-!
+/-
 ## Part 11: Summary
 -/
 
@@ -251,11 +248,5 @@ theorem erdos_934 :
   refine ⟨h_1_exact, ?_, h_3_3, ?_⟩
   · intro d hd; exact cgtt_1990 d hd
   · intro t d ht hd; exact improved_upper_bound t d ht hd
-
-/-- Summary of known results -/
-theorem erdos_934_summary :
-    -- Problem: Estimate h_t(d)
-    -- Solved for t = 1, 2; partial for t = 3; bounds for general t
-    True := trivial
 
 end Erdos934

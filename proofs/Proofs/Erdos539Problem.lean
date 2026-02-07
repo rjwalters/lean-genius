@@ -138,19 +138,17 @@ def ImprovedBounds : Prop :=
 ## Part V: Examples
 -/
 
-/-- For A = {1, 2, ..., n}, the quotient set has size about n. -/
-theorem consecutive_quotient_set_large (n : ℕ) (hn : n ≥ 1) :
-    -- {1, 2, ..., n} gives quotient set of size Θ(n)
-    True := by trivial
+/-- For A = {1, 2, ..., n}, the quotient set has size at least n. -/
+axiom consecutive_quotient_set_large (n : ℕ) (hn : n ≥ 1) :
+    gcdQuotientSize (Finset.Icc 1 n) ≥ n
 
 /-- For A = {a, 2a, ..., na}, the quotient set is smaller. -/
 def arithmeticProgression (a n : ℕ) : Finset ℕ :=
   (Finset.range n).image (fun i => a * (i + 1))
 
-/-- AP gives quotient set of size about n. -/
-theorem ap_quotient_set (a n : ℕ) (ha : a > 0) (hn : n ≥ 1) :
-    -- Quotient set is {1, 2, ..., n} essentially
-    True := by trivial
+/-- AP gives quotient set of size at most n². -/
+axiom ap_quotient_set (a n : ℕ) (ha : a > 0) (hn : n ≥ 1) :
+    gcdQuotientSize (arithmeticProgression a n) ≤ n * n
 
 /-- Geometric progressions {a^0, a^1, ..., a^{n-1}} give smaller quotient sets. -/
 def geometricProgression (a n : ℕ) : Finset ℕ :=

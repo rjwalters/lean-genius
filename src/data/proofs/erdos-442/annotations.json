@@ -110,10 +110,10 @@
   {
     "id": "ann-442-key-insight",
     "proofId": "erdos-442",
-    "range": { "startLine": 174, "endLine": 186 },
-    "type": "concept",
+    "range": { "startLine": 172, "endLine": 185 },
+    "type": "axiom",
     "title": "Why the Counterexample Works",
-    "content": "**Structure defeats density**: Tao's set has elements sharing prime factors in a controlled way.\n\nThis makes:\n- **Reciprocal sum large**: Many elements contribute 1/n\n- **LCM sum bounded**: Shared factors make lcm(a,b) large, so 1/lcm(a,b) stays small\n\nThe construction uses **smooth numbers** (numbers with only small prime factors) arranged to maximize LCMs while maintaining density.",
+    "content": "**Structure defeats density**: Tao's set has elements sharing prime factors in a controlled way.\n\nThis makes:\n- **Reciprocal sum large**: Many elements contribute 1/n\n- **LCM sum bounded**: Shared factors make lcm(a,b) large, so 1/lcm(a,b) stays small\n\nThe construction uses **smooth numbers** (numbers with only small prime factors) arranged to maximize LCMs while maintaining density.\n\n**structure_vs_density** (axiom): Formalizes the existence of such a set.",
     "mathContext": "For coprime a,b: lcm(a,b) = a·b. For non-coprime: lcm(a,b) < a·b. Tao's elements share enough factors to keep LCMs close to products, preventing the normalized sum from growing.",
     "significance": "key",
     "relatedConcepts": ["smooth numbers", "prime factorization", "structure"]
@@ -121,7 +121,7 @@
   {
     "id": "ann-442-lcm-gcd",
     "proofId": "erdos-442",
-    "range": { "startLine": 190, "endLine": 207 },
+    "range": { "startLine": 187, "endLine": 206 },
     "type": "theorem",
     "title": "LCM-GCD Identity",
     "content": "**lcm_gcd_identity**: lcm(a,b) · gcd(a,b) = a · b.\n\nThis fundamental identity connects LCM and GCD. It follows from unique factorization: for each prime p, max(vₚ(a), vₚ(b)) + min(vₚ(a), vₚ(b)) = vₚ(a) + vₚ(b).\n\n**lcm_coprime**: For coprime a,b, lcm(a,b) = a·b (since gcd = 1).\n\n**one_div_lcm**: 1/lcm(a,b) = gcd(a,b)/(a·b), connecting reciprocal LCM to GCD.",
@@ -132,7 +132,7 @@
   {
     "id": "ann-442-examples",
     "proofId": "erdos-442",
-    "range": { "startLine": 211, "endLine": 218 },
+    "range": { "startLine": 208, "endLine": 217 },
     "type": "theorem",
     "title": "Verified Examples",
     "content": "We verify LCM computations:\n- **lcm(6, 10) = 30**: 6 = 2·3, 10 = 2·5, so lcm = 2·3·5 = 30\n- **gcd(6, 10) = 2**: The shared factor\n- **lcm(3, 5) = 15**: Coprime case, lcm = product\n\nThese are checked by `native_decide`, which computes the values.",
@@ -142,7 +142,7 @@
   {
     "id": "ann-442-summary",
     "proofId": "erdos-442",
-    "range": { "startLine": 222, "endLine": 243 },
+    "range": { "startLine": 219, "endLine": 242 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_442_summary** combines the main results:\n1. ¬ Erdos442Conjecture — the conjecture is false\n2. ∃ A with bounded normalizedLcmSum — Tao's counterexample exists\n\nThe proof uses `tao_counterexample` and extracts the bounded set from `tao_construction`.",
@@ -153,7 +153,7 @@
   {
     "id": "ann-442-final-notes",
     "proofId": "erdos-442",
-    "range": { "startLine": 247, "endLine": 266 },
+    "range": { "startLine": 244, "endLine": 263 },
     "type": "concept",
     "title": "Historical Significance",
     "content": "This formalization captures a 44-year-old problem from Erdős-Graham (1980), resolved by Terence Tao in July 2024.\n\n**Key takeaways**:\n1. The threshold exp(C√(log log x)·log log log x) is exact\n2. Structure (controlled prime factorizations) can defeat density\n3. The construction uses sophisticated smooth number techniques\n\nThe arXiv paper (2407.04226) contains the full details.",

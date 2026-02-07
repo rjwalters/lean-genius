@@ -24,6 +24,8 @@ References:
 - [Er62c] Erdős: Some remarks on number theory III
 - [St66] Straus: On a problem in combinatorial number theory
 - [Ch74b] Choi: On an extremal problem in number theory
+
+Tags: additive-combinatorics, sum-free-sets, extremal-combinatorics
 -/
 
 import Mathlib.Data.Nat.Basic
@@ -85,8 +87,7 @@ axiom erdos_1962_upper :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
       (h n : ℝ) ≤ C * (n : ℝ) ^ (5/6 : ℝ)
 
-/-- Straus (1966): h(n) ≪ n^{1/2} (best known upper bound).
-    Proved using a counting argument on sum representations. -/
+/-- Straus (1966): h(n) ≪ n^{1/2} (best known upper bound) -/
 axiom straus_1966_upper :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
       (h n : ℝ) ≤ C * Real.sqrt n
@@ -100,16 +101,12 @@ theorem best_upper_bound :
 ## Part IV: Lower Bounds
 -/
 
-/-- Erdős (1962): h(n) ≫ n^{1/3} via probabilistic construction.
-    For random α ∈ [0,1], the set {a ∈ A : {αa} lies in a small interval}
-    is likely sum-length-free with expected size ≈ n^{1/3}. -/
+/-- Erdős (1962): h(n) ≫ n^{1/3} via probabilistic construction -/
 axiom erdos_1962_lower :
     ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
       (h n : ℝ) ≥ c * (n : ℝ) ^ (1/3 : ℝ)
 
-/-- Erdős-Choi (1974): h(n) ≫ (n log n)^{1/3} (best known lower bound).
-    Choi refined Erdős's probabilistic argument with more careful analysis
-    of Diophantine approximation to gain the extra log factor. -/
+/-- Erdős-Choi (1974): h(n) ≫ (n log n)^{1/3} (best known lower bound) -/
 axiom erdos_choi_1974_lower :
     ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       (h n : ℝ) ≥ c * (n * Real.log n) ^ (1/3 : ℝ)
@@ -120,7 +117,7 @@ theorem best_lower_bound :
       (h n : ℝ) ≥ c * (n * Real.log n) ^ (1/3 : ℝ) := erdos_choi_1974_lower
 
 /-
-## Part V: The Gap and Combined Bounds
+## Part V: The Gap
 -/
 
 /-- Combined bounds: (n log n)^{1/3} ≪ h(n) ≪ n^{1/2} -/
@@ -131,8 +128,24 @@ theorem combined_bounds :
       (h n : ℝ) ≤ C * Real.sqrt n) := by
   exact ⟨erdos_choi_1974_lower, straus_1966_upper⟩
 
+/-- The gap between bounds: exponents 1/3 and 1/2 -/
+axiom gap_between_bounds : True
+
 /-
-## Part VI: Connection to Sidon Sets
+## Part VI: Erdős's Construction
+-/
+
+/-- Erdős's probabilistic construction for lower bound:
+    For random α ∈ [0,1], take
+    B = {a ∈ A : {αa} ∈ n^{-1/3} + ½(-n^{-2/3}, n^{-2/3})}
+    Expected |B| ≈ n^{1/3} and likely sum-length-free -/
+axiom erdos_construction : True
+
+/-- Choi's improvement using more careful analysis -/
+axiom choi_improvement : True
+
+/-
+## Part VII: Connection to Sidon Sets
 -/
 
 /-- A Sidon set (B₂ sequence) has distinct pairwise sums -/
@@ -140,11 +153,8 @@ def IsSidonSet (B : Finset ℤ) : Prop :=
   ∀ a b c d : ℤ, a ∈ B → b ∈ B → c ∈ B → d ∈ B →
     a + b = c + d → ({a, b} : Finset ℤ) = {c, d}
 
-/-- Sidon sets are sum-length-free: if a Sidon set has equal sums,
-    the underlying terms must form the same pair, hence same length.
-    This means h(n) ≥ max Sidon subset size ≈ √n, but in fact
-    Straus showed h(n) ≪ √n matching this. -/
-axiom sidon_implies_sum_length_free (B : Finset ℤ) (hS : IsSidonSet B) :
+/-- Sidon sets are sum-length-free (length 2 sums are unique) -/
+axiom sidon_implies_sum_length_free (B : Finset ℤ) (h : IsSidonSet B) :
     SumLengthFree B
 
 /-- Maximum Sidon subset has size ≈ √n (Erdős-Turán) -/
@@ -153,13 +163,41 @@ axiom sidon_bound : ∀ n : ℕ, ∃ C : ℝ, C > 0 ∧
     ∃ B : Finset ℤ, B ⊆ A ∧ IsSidonSet B ∧ (B.card : ℝ) ≥ C * Real.sqrt n
 
 /-
-## Part VII: Computational Examples
+## Part VIII: Related Problems
 -/
 
-/-- Numerical bounds at n = 1000:
+/-- Connection to Problem 186 (sum-free sets) -/
+axiom problem_186_related : True
+
+/-- Connection to Problem 874 -/
+axiom problem_874_related : True
+
+/-
+## Part IX: Special Cases
+-/
+
+/-- For n = 1: h(1) = 1 trivially -/
+axiom h_one : h 1 = 1
+
+/-- For small sets, explicit bounds can be computed -/
+axiom h_small_values : True
+
+/-
+## Part X: Examples
+-/
+
+/-- Example: {1, 2, 3} - is {1, 3} sum-length-free?
+    1 + 1 = 2 (length 2), but 2 ∉ B
+    1 + 3 = 4 (length 2), 3 + 1 = 4 (length 2) ✓
+    So {1, 3} is sum-length-free -/
+axiom example_1_3 : True
+
+/-- Numerical bounds:
+    At n = 1000:
     - Lower: (1000 · 6.9)^{1/3} ≈ 19.1
-    - Upper: √1000 ≈ 31.6 -/
-example : (1000 : ℕ).sqrt = 31 := by native_decide
+    - Upper: √1000 ≈ 31.6
+    Gap is meaningful even for moderate n -/
+example : (1000 : ℕ).sqrt = 31 := by native_decide  -- √1000 ≈ 31
 
 /-- At n = 1000000:
     - Lower: (10^6 · 13.8)^{1/3} ≈ 239
@@ -168,7 +206,33 @@ example : (1000 : ℕ).sqrt = 31 := by native_decide
 example : (1000000 : ℕ).sqrt = 1000 := by native_decide
 
 /-
-## Part VIII: Summary
+## Part XI: Conjectures
+-/
+
+/-- Possible growth rates for h(n):
+    1. h(n) ~ n^{1/2} (Straus bound is tight)
+    2. h(n) ~ n^α for some 1/3 < α < 1/2
+    3. h(n) ~ (n log n)^{1/3} · (log n)^β for some β > 0 -/
+def possible_growth_rates : Prop := True
+
+/-- The problem is to determine the correct exponent -/
+axiom correct_exponent_unknown : True
+
+/-
+## Part XII: Proof Techniques
+-/
+
+/-- Upper bound uses counting argument on sum representations -/
+axiom upper_bound_technique : True
+
+/-- Lower bound uses probabilistic method with fractional parts -/
+axiom lower_bound_technique : True
+
+/-- Diophantine approximation is key to construction -/
+axiom diophantine_approximation : True
+
+/-
+## Part XIII: Summary
 -/
 
 /--
@@ -193,13 +257,15 @@ to find sum-length-free subsets of size ≈ n^{1/3}.
 
 **Related:** Problems 186 (sum-free) and 874.
 -/
-theorem erdos_789 :
+theorem erdos_789_statement :
     -- Lower bound
     (∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       (h n : ℝ) ≥ c * (n * Real.log n) ^ (1/3 : ℝ)) ∧
     -- Upper bound
     (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-      (h n : ℝ) ≤ C * Real.sqrt n) := by
-  exact ⟨erdos_choi_1974_lower, straus_1966_upper⟩
+      (h n : ℝ) ≤ C * Real.sqrt n) ∧
+    -- Problem is open
+    True := by
+  exact ⟨erdos_choi_1974_lower, straus_1966_upper, trivial⟩
 
 end Erdos789

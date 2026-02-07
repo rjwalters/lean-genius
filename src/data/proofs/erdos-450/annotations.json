@@ -1,56 +1,92 @@
 [
   {
+    "id": "erdos-450-header",
+    "proofId": "erdos-450",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 27 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #450 from Erdős-Graham (1980, p.89) asks about the density of integers with a divisor in (n, 2n) within short intervals.\n\nCambie showed the 'for all x' version fails in certain regimes using Ford's divisor distribution work. The problem remains OPEN.",
+    "significance": "critical",
+    "relatedConcepts": ["divisor distribution", "short intervals", "density"]
+  },
+  {
     "id": "erdos-450-divisor",
     "proofId": "erdos-450",
     "type": "definition",
-    "range": { "startLine": 35, "endLine": 45 },
+    "range": { "startLine": 38, "endLine": 48 },
     "title": "Divisors in (n, 2n)",
-    "content": "HasDivisorIn m n: m has a divisor d with n < d < 2n. countWithDivisor: counts such integers in a short interval.",
-    "significance": "essential"
+    "content": "**HasDivisorIn m n**: m has a divisor d with n < d < 2n.\n\n**countWithDivisor x y n**: counts integers in (x, x+y) having such a divisor.\n\nThese are the core objects of study - we want to bound the count relative to y.",
+    "significance": "key",
+    "relatedConcepts": ["divisibility", "counting", "interval"]
   },
   {
     "id": "erdos-450-density",
     "proofId": "erdos-450",
     "type": "definition",
-    "range": { "startLine": 51, "endLine": 54 },
+    "range": { "startLine": 52, "endLine": 57 },
     "title": "Density Bound",
-    "content": "DensityBound: the count of integers with a divisor in (n,2n) within (x,x+y) is at most ε·y, using rational ε.",
-    "significance": "essential"
+    "content": "**DensityBound**: the count of integers with a divisor in (n,2n) within (x,x+y) is at most ε·y, using rational ε (εNum/εDen) to stay in ℕ.",
+    "significance": "key",
+    "relatedConcepts": ["density", "rational approximation"]
   },
   {
     "id": "erdos-450-forall",
     "proofId": "erdos-450",
-    "type": "conjecture",
-    "range": { "startLine": 60, "endLine": 66 },
+    "type": "definition",
+    "range": { "startLine": 61, "endLine": 71 },
     "title": "For All x Version",
-    "content": "ErdosProblem450_ForAll: find y so the density bound holds for ALL x. Cambie showed this fails in certain regimes.",
-    "significance": "essential"
+    "content": "**ErdosProblem450_ForAll**: Given ε > 0 and n, find y such that the density bound holds for ALL x. Cambie showed this version fails in certain parameter ranges.",
+    "significance": "critical",
+    "relatedConcepts": ["universal quantifier", "interval length"]
+  },
+  {
+    "id": "erdos-450-exists",
+    "proofId": "erdos-450",
+    "type": "definition",
+    "range": { "startLine": 75, "endLine": 84 },
+    "title": "Existential x Version",
+    "content": "**ErdosProblem450_Exists**: Given ε > 0 and n, find y such that the density bound holds for SOME x. This weaker version remains open.",
+    "significance": "key",
+    "relatedConcepts": ["existential quantifier", "open problem"]
   },
   {
     "id": "erdos-450-cambie",
     "proofId": "erdos-450",
-    "type": "result",
-    "range": { "startLine": 84, "endLine": 90 },
+    "type": "axiom",
+    "range": { "startLine": 88, "endLine": 100 },
     "title": "Cambie's No-y Result",
-    "content": "For ε·(log n)^δ·(log log n)^{3/2} → ∞ with δ ≈ 0.086, no finite y works for the 'for all x' version. Uses Ford's work.",
-    "significance": "essential"
+    "content": "**cambie_no_y_for_all**: For certain ε and n, no finite y works for the 'for all x' version. This uses Ford's work on divisor distribution.\n\nThe logarithmic condition involves ε·(log n)^δ·(log log n)^{3/2} with δ ≈ 0.086.",
+    "significance": "critical",
+    "relatedConcepts": ["Cambie", "Ford", "divisor anatomy"]
   },
   {
     "id": "erdos-450-small-eps",
     "proofId": "erdos-450",
-    "type": "result",
-    "range": { "startLine": 96, "endLine": 103 },
+    "type": "axiom",
+    "range": { "startLine": 102, "endLine": 114 },
     "title": "Small ε Regime",
-    "content": "For ε ≪ 1/n, y(ε,n) ∼ 2n. Intervals of length > 2n always contain multiples of elements in (n, 2n).",
-    "significance": "essential"
+    "content": "**cambie_small_epsilon**: For y ≥ 2n+1, every interval of length y contains at least one multiple of some d in (n, 2n). So y(ε,n) ∼ 2n for very small ε.",
+    "significance": "key",
+    "relatedConcepts": ["multiples", "interval length threshold"]
+  },
+  {
+    "id": "erdos-450-ford",
+    "proofId": "erdos-450",
+    "type": "axiom",
+    "range": { "startLine": 116, "endLine": 125 },
+    "title": "Ford's Divisor Distribution",
+    "content": "**ford_divisor_distribution**: For all n ≥ 2, every interval of length 4n contains integers with a divisor in (n, 2n). A consequence of Ford's foundational work on the anatomy of integers.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ford", "divisor distribution", "anatomy of integers"]
   },
   {
     "id": "erdos-450-summary",
     "proofId": "erdos-450",
-    "type": "context",
-    "range": { "startLine": 120, "endLine": 127 },
-    "title": "Summary",
-    "content": "The problem remains open. The quantifier on x matters crucially. Cambie and Ford's results give partial answers.",
-    "significance": "supporting"
+    "type": "theorem",
+    "range": { "startLine": 129, "endLine": 143 },
+    "title": "Summary Theorem",
+    "content": "**erdos_450_summary** combines:\n1. The 'for all x' version can fail (Cambie)\n2. Every long interval has integers with divisors in (n, 2n)\n\nThe problem remains OPEN for the existential version.",
+    "significance": "critical",
+    "relatedConcepts": ["summary", "open problem"]
   }
 ]

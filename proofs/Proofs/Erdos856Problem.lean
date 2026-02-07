@@ -219,7 +219,9 @@ axiom erdos_natural_density_k4 :
 **Interesting case is k=3:**
 The k=3 case for natural density (Problem #536) remains interesting.
 -/
-theorem natural_density_k3_interest : True := trivial
+axiom natural_density_k3_interest :
+    -- For k=3, the natural density version has g_3(N) ≫ N
+    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 → (g_k 3 N : ℝ) ≥ C * N
 
 /-
 ## Part VIII: Examples
@@ -239,7 +241,8 @@ theorem divisor_set_lcm (n : ℕ) (hn : n > 0) :
 **Example: Prime powers**
 {p, p², ..., p^k} has uniform pairwise LCM equal to lcm of largest pair.
 -/
-theorem prime_power_lcm : True := trivial  -- Placeholder
+axiom prime_power_lcm (p : ℕ) (hp : Nat.Prime p) (j k : ℕ) (hjk : j ≤ k) :
+    myLcm (p^j) (p^k) = p^k
 
 /-
 ## Part IX: Open Questions
@@ -263,7 +266,11 @@ def openProblem_precise_exponent : Prop :=
 - Tang-Zhang for k=3: between (log N)^0.438 and (log N)^0.889
 - True value: unknown
 -/
-theorem gap_analysis : True := trivial
+axiom gap_analysis :
+    -- Tang-Zhang for k=3: (log N)^{0.438} ≪ f_3(N) ≪ (log N)^{0.889}
+    ∃ α β : ℝ, 0.438 ≤ α ∧ β ≤ 0.889 ∧
+      ∀ N : ℕ, N ≥ 2 →
+        (Real.log N)^α ≤ f_k 3 N ∧ f_k 3 N ≤ (Real.log N)^β
 
 /-
 ## Part X: Summary

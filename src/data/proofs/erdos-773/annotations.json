@@ -1,1 +1,46 @@
-[]
+[
+  {
+    "id": "erdos-773-header",
+    "proofId": "erdos-773",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 23 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #773: What is the max size of a Sidon subset of {1², 2², ..., N²}? OPEN: lower bound N^{2/3} (Lefmann-Thiele), upper bound N/(log N)^{1/4} (Alon-Erdős).",
+    "mathContext": "A Sidon set has all pairwise sums distinct. The sparsity of sums of two squares (Landau) constrains Sidon subsets of squares.",
+    "significance": "critical",
+    "relatedConcepts": ["Sidon sets", "B₂ sequences", "sums of squares", "Landau's theorem"]
+  },
+  {
+    "id": "erdos-773-sidon-def",
+    "proofId": "erdos-773",
+    "type": "definition",
+    "range": { "startLine": 33, "endLine": 52 },
+    "title": "Sidon Set Definitions",
+    "content": "**IsSidon(A)**: all ordered pairwise sums are distinct. **IsSidonAlt(A)**: each sum has at most one representation.",
+    "mathContext": "The Sidon property is the fundamental constraint connecting to Landau's theorem on sums of two squares.",
+    "significance": "key",
+    "relatedConcepts": ["B₂ sequences", "additive combinatorics", "representation functions"]
+  },
+  {
+    "id": "erdos-773-bounds",
+    "proofId": "erdos-773",
+    "type": "theorem",
+    "range": { "startLine": 91, "endLine": 120 },
+    "title": "Known Bounds",
+    "content": "**lower_bound** (axiom): f(N) >= c*N^{2/3} (Lefmann-Thiele 1995). **upper_bound** (axiom): f(N) <= C*N/(log N)^{1/4} (Alon-Erdős 1985).",
+    "mathContext": "The gap between N^{2/3} and N/(log N)^{1/4} is the central open question.",
+    "significance": "critical",
+    "relatedConcepts": ["probabilistic method", "counting argument", "Landau's theorem"]
+  },
+  {
+    "id": "erdos-773-summary",
+    "proofId": "erdos-773",
+    "type": "concept",
+    "range": { "startLine": 225, "endLine": 252 },
+    "title": "Summary: OPEN",
+    "content": "**erdos_773_summary** combines the lower and upper bounds. The problem remains open.",
+    "mathContext": "The gap between polynomial lower bound and nearly-linear upper bound is the central challenge.",
+    "significance": "critical",
+    "relatedConcepts": ["open problem", "bounds summary"]
+  }
+]

@@ -30,7 +30,7 @@ open Nat Finset Real
 
 namespace Erdos773
 
-/-!
+/-
 ## Part I: Sidon Sets
 -/
 
@@ -51,7 +51,7 @@ A is Sidon iff the number of representations of any sum is at most 1.
 def IsSidonAlt (A : Finset ℕ) : Prop :=
   ∀ s : ℕ, (A.filter (fun a => ∃ b ∈ A, a ≤ b ∧ a + b = s)).card ≤ 1
 
-/-!
+/-
 ## Part II: Perfect Squares
 -/
 
@@ -69,7 +69,7 @@ def squaresUpTo (N : ℕ) : Finset ℕ :=
 theorem squaresUpTo_card (N : ℕ) : (squaresUpTo N).card = N := by
   sorry
 
-/-!
+/-
 ## Part III: The Main Question
 -/
 
@@ -88,7 +88,7 @@ def MainQuestion : Prop :=
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
     (f N : ℝ) ≥ (N : ℝ)^(1 - ε)
 
-/-!
+/-
 ## Part IV: Known Bounds
 -/
 
@@ -118,7 +118,7 @@ theorem current_knowledge :
     (∃ C : ℝ, C > 0 ∧ ∀ᶠ N in Filter.atTop, (f N : ℝ) ≤ C * (N : ℝ) / (Real.log N)^(1/4 : ℝ)) :=
   ⟨lower_bound, upper_bound⟩
 
-/-!
+/-
 ## Part V: Landau's Theorem
 -/
 
@@ -159,7 +159,7 @@ axiom landau_constraint :
     -- These must fit in the ~N/(log N)^{1/2} available sums of squares ≤ 2N²
     True
 
-/-!
+/-
 ## Part VI: Probabilistic Method
 -/
 
@@ -184,7 +184,7 @@ Refined counting gives α = 2/3.
 -/
 axiom why_two_thirds : True
 
-/-!
+/-
 ## Part VII: Upper Bound Analysis
 -/
 
@@ -195,12 +195,12 @@ Each sum ≤ 2N² and is a sum of two squares.
 By Landau, the number of sums of two squares ≤ 2N² is ~ N² / (log N)^{1/2}.
 For Sidon: m² ≤ N² / (log N)^{1/2}, so m ≤ N / (log N)^{1/4}.
 -/
-theorem upper_bound_sketch (N : ℕ) (A : Finset ℕ) (hA : A ⊆ squaresUpTo N)
+axiom upper_bound_sketch (N : ℕ) (A : Finset ℕ) (hA : A ⊆ squaresUpTo N)
     (hSidon : IsSidon A) :
-    -- Upper bound on |A| comes from counting argument
-    True := trivial
+    -- Upper bound from Landau + Sidon: |A|² ≤ N² / (log N)^{1/2}
+    (A.card : ℝ) ≤ (N : ℝ) / (Real.log N)^(1/4 : ℝ)
 
-/-!
+/-
 ## Part VIII: Open Questions
 -/
 
@@ -222,7 +222,7 @@ An explicit construction might do better.
 -/
 axiom explicit_construction_question : True
 
-/-!
+/-
 ## Part IX: Summary
 -/
 
@@ -248,11 +248,5 @@ theorem erdos_773_summary :
     -- Problem remains open
     True :=
   ⟨lower_bound, upper_bound, trivial⟩
-
-/--
-**Erdős Problem #773: OPEN**
-The true growth rate of the maximum Sidon subset of squares remains unknown.
--/
-theorem erdos_773 : True := trivial
 
 end Erdos773

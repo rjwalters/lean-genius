@@ -39,7 +39,7 @@ namespace Erdos442
 
 open Nat BigOperators Filter Real Set Classical
 
-/-! ## Part I: Background and Definitions -/
+/- ## Part I: Background and Definitions -/
 
 /-- Log⁺(x) = max(log x, 1), ensuring positivity for all x > 0. -/
 noncomputable def logPlus (x : ℝ) : ℝ := max (Real.log x) 1
@@ -61,7 +61,7 @@ theorem logPlus_eq_log {x : ℝ} (hx : x ≥ Real.exp 1) : logPlus x = Real.log 
     exact Real.log_le_log (Real.exp_pos 1) hx
   exact max_eq_left h
 
-/-! ## Part II: The Reciprocal Sum -/
+/- ## Part II: The Reciprocal Sum -/
 
 /-- The set of elements of A that are at most N. -/
 def boundedSet (A : Set ℕ) (N : ℕ) : Set ℕ := A ∩ Set.Icc 1 N
@@ -82,7 +82,7 @@ theorem harmonicSum_pos {N : ℕ} (hN : N ≥ 1) :
     exact div_pos one_pos hcast
   · exact ⟨1, Finset.mem_Icc.mpr ⟨le_refl 1, hN⟩⟩
 
-/-! ## Part III: The LCM Sum -/
+/- ## Part III: The LCM Sum -/
 
 /-- The upper triangular pairs in A ∩ [1,N]: {(a,b) | a,b ∈ A, 1 ≤ a < b ≤ N}. -/
 def upperPairs (A : Set ℕ) (N : ℕ) : Set (ℕ × ℕ) :=
@@ -98,7 +98,7 @@ noncomputable def lcmSum (A : Set ℕ) (N : ℕ) : ℝ :=
 noncomputable def normalizedLcmSum (A : Set ℕ) (N : ℕ) : ℝ :=
   (reciprocalSum A N)⁻¹ ^ 2 * lcmSum A N
 
-/-! ## Part IV: The Density Condition -/
+/- ## Part IV: The Density Condition -/
 
 /-- The density condition: (1/log log x) · Σ 1/n → ∞.
     This says A is "dense" in the sense that its reciprocal sum
@@ -110,7 +110,7 @@ def isDenseSubset (A : Set ℕ) : Prop :=
     (by Mertens' theorem, Σ_{p≤x} 1/p ~ log log x). -/
 axiom primes_are_dense : isDenseSubset { p : ℕ | Nat.Prime p }
 
-/-! ## Part V: The Main Conjecture and Its Refutation -/
+/- ## Part V: The Main Conjecture and Its Refutation -/
 
 /-- Erdős asked: Does density imply LCM divergence?
     That is, if (1/log log x) · Σ 1/n → ∞, must
@@ -135,7 +135,7 @@ theorem erdos_442_answer : False ↔ Erdos442Conjecture := by
   · intro h; exact h.elim
   · intro h; exact tao_counterexample h
 
-/-! ## Part VI: Tao's Construction -/
+/- ## Part VI: Tao's Construction -/
 
 /-- Tao's counterexample set A has reciprocal sum growing at a specific rate:
     Σ_{n∈A, n≤x} 1/n = exp((1/2 + o(1)) · √(log log x) · log log log x)
@@ -154,7 +154,7 @@ axiom tao_construction :
     -- Yet the normalized LCM sum is bounded
     (∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, normalizedLcmSum A N ≤ C)
 
-/-! ## Part VII: Optimality -/
+/- ## Part VII: Optimality -/
 
 /-- Tao also proved the threshold is SHARP: if the reciprocal sum
     grows faster than exp(C · √(log log x) · log log log x) for any C,
@@ -169,23 +169,22 @@ axiom tao_optimality :
   ∀ A : Set ℕ, FasterThanThreshold A →
     Tendsto (fun N => normalizedLcmSum A N) atTop atTop
 
-/-! ## Part VIII: Key Insight: Why the Counterexample Works -/
+/- ## Part VIII: Key Insight: Why the Counterexample Works -/
 
-/-- The key insight is about STRUCTURE vs DENSITY.
+/-- **Key insight: Structure vs Density.**
+Tao's set A is constructed so that elements share many prime factors
+in a controlled way. This makes:
+- The reciprocal sum large (many elements contribute 1/n)
+- But lcm(a,b) also large (elements are nearly coprime despite density)
 
-    Tao's set A is constructed so that elements share many prime factors
-    in a controlled way. This makes:
-    - The reciprocal sum large (many elements)
-    - But lcm(a,b) also large (shared factors don't reduce lcm much)
+The construction uses "smooth numbers" (numbers with only small
+prime factors) arranged in a specific pattern. The careful balance
+ensures the normalized LCM sum stays bounded. -/
+axiom structure_vs_density :
+  ∃ A : Set ℕ, isDenseSubset A ∧
+    ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, normalizedLcmSum A N ≤ C
 
-    The careful balance ensures the normalized sum stays bounded. -/
-theorem structure_insight : True := trivial
-
-/-- The construction uses "smooth numbers" (numbers with only small
-    prime factors) arranged in a specific pattern. -/
-theorem smooth_numbers_hint : True := trivial
-
-/-! ## Part IX: LCM Properties -/
+/- ## Part IX: LCM Properties -/
 
 /-- Basic LCM property: lcm(a,b) · gcd(a,b) = a · b. -/
 theorem lcm_gcd_identity (a b : ℕ) : a.lcm b * a.gcd b = a * b :=
@@ -206,7 +205,7 @@ theorem one_div_lcm (a b : ℕ) (ha : a ≠ 0) (hb : b ≠ 0) :
     _ = ((a.lcm b * a.gcd b : ℕ) : ℝ) := by rw [key]
     _ = (a.lcm b : ℝ) * (a.gcd b : ℝ) := by push_cast; ring
 
-/-! ## Part X: Verified Examples -/
+/- ## Part X: Verified Examples -/
 
 /-- Example: lcm(6, 10) = 30 and gcd(6, 10) = 2.
     So 1/30 = 2/(6·10) = 2/60 = 1/30. ✓ -/
@@ -217,7 +216,7 @@ example : (6 : ℕ).gcd 10 = 2 := by native_decide
 /-- Example: For coprime 3 and 5, lcm(3,5) = 15 = 3 × 5. -/
 example : (3 : ℕ).lcm 5 = 15 := by native_decide
 
-/-! ## Part XI: Summary -/
+/- ## Part XI: Summary -/
 
 /-- **Summary of Erdős Problem #442**
 
@@ -244,7 +243,7 @@ theorem erdos_442_summary :
 
 end Erdos442
 
-/-!
+/-
 ## Final Notes
 
 This formalization captures Erdős Problem #442, resolved by Terence Tao in 2024.

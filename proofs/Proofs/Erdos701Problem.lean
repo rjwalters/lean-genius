@@ -227,7 +227,12 @@ Chvátal's conjecture generalizes this to hereditary families.
 For uniform families (all sets have size k), EKR says the maximum
 intersecting family has size C(n-1, k-1), achieved by a star.
 -/
-theorem ekr_connection : True := trivial
+axiom ekr_connection {n k : ℕ} (hn : n ≥ 2 * k) :
+    -- Erdős-Ko-Rado for k-subsets of Fin n: max intersecting family has size C(n-1, k-1)
+    ∀ (F : Finset (Finset (Fin n))),
+      (∀ A ∈ F, A.card = k) →
+      (∀ A B, A ∈ F → B ∈ F → (A ∩ B).Nonempty) →
+      F.card ≤ (n - 1).choose (k - 1)
 
 /--
 **Uniform Families:**
@@ -265,14 +270,20 @@ theorem uniform_not_hereditary {α : Type*} [Fintype α] [DecidableEq α]
 F = 2^[n] is hereditary. The star at x has size 2^(n-1).
 Any intersecting family has size ≤ 2^(n-1) (classical result).
 -/
-theorem boolean_lattice_chvatal : True := trivial
+axiom boolean_lattice_chvatal (n : ℕ) (hn : n ≥ 1) :
+    -- The power set 2^[n] is hereditary and Chvátal's conjecture holds:
+    -- max intersecting family has size 2^(n-1), achieved by a star
+    ChvatalConjecture (Set.univ : Set (Set (Fin n)))
 
 /--
 **Example: Fano plane**
 The Fano plane matroid's independent sets form a hereditary family
 where Chvátal's conjecture holds.
 -/
-theorem fano_plane_chvatal : True := trivial
+axiom fano_plane_chvatal :
+    -- The Fano plane's independent sets form a hereditary family
+    -- where Chvátal's conjecture holds
+    ∃ (F : Set (Set (Fin 7))), IsHereditary F ∧ ChvatalConjecture F
 
 /-
 ## Part VIII: Summary
