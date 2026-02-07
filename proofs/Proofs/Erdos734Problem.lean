@@ -35,7 +35,7 @@ open Finset BigOperators
 
 namespace Erdos734
 
-/-!
+/-
 ## Part I: Pairwise Balanced Block Designs
 -/
 
@@ -77,7 +77,7 @@ or the single block doesn't cover everything.
 def isNontrivial {n : ℕ} (D : PBD n) : Prop :=
   D.blocks.card > 1 ∨ ∃ B ∈ D.blocks, B ≠ Finset.univ
 
-/-!
+/-
 ## Part II: Block Size Frequencies
 -/
 
@@ -95,7 +95,7 @@ The set of sizes that appear in the design.
 def blockSizesPresent {n : ℕ} (D : PBD n) : Finset ℕ :=
   D.blocks.image Finset.card
 
-/-!
+/-
 ## Part III: de Bruijn-Erdős Theorem
 -/
 
@@ -117,7 +117,7 @@ with more blocks, some size must have ≫ √n blocks.
 axiom some_size_frequent (n : ℕ) (hn : n ≥ 4) (D : PBD n) (hnt : isNontrivial D) :
   ∃ t : ℕ, 2 ≤ t ∧ t ≤ n ∧ blocksOfSize D t ≥ 1
 
-/-!
+/-
 ## Part IV: The Erdős Question
 -/
 
@@ -137,7 +137,7 @@ def erdos734Question : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
     ∃ D : PBD n, isNontrivial D ∧ hasSquareRootBound D C
 
-/-!
+/-
 ## Part V: Known Constructions
 -/
 
@@ -163,7 +163,7 @@ axiom affine_plane_exists (q : ℕ) (hq : Nat.Prime q) :
   ∃ D : PBD (q^2), isNontrivial D ∧
     D.blocks.card = q^2 + q
 
-/-!
+/-
 ## Part VI: Pair Counting
 -/
 
@@ -175,7 +175,7 @@ Each block of size k covers C(k,2) = k(k-1)/2 pairs.
 axiom pair_count {n : ℕ} (hn : n ≥ 2) (D : PBD n) :
     ∑ B ∈ D.blocks, B.card * (B.card - 1) / 2 = n * (n - 1) / 2
 
-/-!
+/-
 ## Part VII: Partial Results
 -/
 
@@ -188,7 +188,7 @@ axiom near_uniform_designs_exist :
   ∃ n : ℕ, n ≥ 10 ∧ ∃ D : PBD n, isNontrivial D ∧
     (blockSizesPresent D).card ≤ 3
 
-/-!
+/-
 ## Part VIII: Summary
 
 **Erdős Problem #734: OPEN**
