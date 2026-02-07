@@ -41,7 +41,7 @@ open Set Filter BigOperators Nat Real
 
 namespace Erdos26
 
-/-! ## Natural Density -/
+/- ## Natural Density -/
 
 open Classical in
 /-- The partial density of a set S up to n: |S ∩ [1,n]| / n -/
@@ -56,7 +56,7 @@ def HasNaturalDensity (S : Set ℕ) (d : ℝ) : Prop :=
 noncomputable def lowerDensity (S : Set ℕ) : ℝ :=
   liminf (partialDensity S) atTop
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A sequence A is "thick" if the sum of reciprocals diverges: Σ(1/A(i)) = ∞.
     Equivalently, the reciprocal sequence is not summable. -/
@@ -77,7 +77,7 @@ def IsBehrend {ι : Type*} (A : ι → ℕ) : Prop :=
 def IsWeaklyBehrend {ι : Type*} (A : ι → ℕ) (ε : ℝ) : Prop :=
   1 - ε ≤ lowerDensity (MultiplesOf A)
 
-/-! ## Basic Properties of Thick Sequences -/
+/- ## Basic Properties of Thick Sequences -/
 
 /-- Any finite sequence is not thick (finite sum converges). -/
 theorem not_isThick_of_finite {ι : Type*} [Finite ι] (A : ι → ℕ) : ¬IsThick A := by
@@ -92,7 +92,7 @@ axiom not_isThick_geometric {r : ℕ} (hr : r > 1) : ¬IsThick fun n : ℕ => r 
 axiom isThick_const {ι : Type*} [Infinite ι] (r : ℕ) (hr : r > 0) :
     IsThick fun _ : ι => r
 
-/-! ## The Davenport-Erdős Theorem -/
+/- ## The Davenport-Erdős Theorem -/
 
 /-- Davenport-Erdős (1951): Every Behrend sequence has divergent reciprocal sum.
     This is a key structural result about the relationship between density
@@ -105,7 +105,7 @@ theorem not_behrend_of_not_thick {ι : Type*} (A : ι → ℕ)
     (hpos : ∀ i, A i > 0) (h : ¬IsThick A) : ¬IsBehrend A :=
   fun hB => h (davenport_erdos_behrend_thick A hpos hB)
 
-/-! ## The Erdős Conjecture (Problem 26) -/
+/- ## The Erdős Conjecture (Problem 26) -/
 
 /-- The Erdős-Tenenbaum conjecture (Problem 26):
     For any thick sequence A, does there exist k ≥ 1 such that
@@ -116,7 +116,7 @@ theorem not_behrend_of_not_thick {ι : Type*} (A : ι → ℕ)
 def Erdos26Conjecture : Prop :=
   ∀ A : ℕ → ℕ, StrictMono A → IsThick A → ∃ k : ℕ, k ≥ 1 ∧ IsBehrend (A · + k)
 
-/-! ## The Ruzsa Counterexample -/
+/- ## The Ruzsa Counterexample -/
 
 /-- Ruzsa's counterexample: There exists a strictly increasing sequence A
     such that for all k, the shifted sequence A + k is NOT Behrend.
@@ -140,7 +140,7 @@ theorem erdos_26_disproved : ¬Erdos26Conjecture := by
   obtain ⟨k, _, hB⟩ := hconj A hmono hthick
   exact hno_behrend k hB
 
-/-! ## Tenenbaum's Weaker Variant (OPEN) -/
+/- ## Tenenbaum's Weaker Variant (OPEN) -/
 
 /-- Tenenbaum's weaker variant:
     For every ε > 0, does there exist k such that at least (1 - ε) density
@@ -152,7 +152,7 @@ def TenenbaumVariant : Prop :=
   ∀ A : ℕ → ℕ, StrictMono A → IsThick A →
     ∀ ε > (0 : ℝ), ∃ k : ℕ, IsWeaklyBehrend (A · + k) ε
 
-/-! ## Supporting Lemmas -/
+/- ## Supporting Lemmas -/
 
 /-- If 1 ∈ range A, then MultiplesOf A = ℕ (everything is a multiple of 1). -/
 theorem multiplesOf_eq_univ {ι : Type*} (A : ι → ℕ) (h : 1 ∈ range A) :
@@ -177,7 +177,7 @@ axiom isWeaklyBehrend_of_ge_one {ι : Type*} (A : ι → ℕ) {ε : ℝ} (hε : 
 axiom not_isWeaklyBehrend_of_neg {ι : Type*} (A : ι → ℕ) {ε : ℝ} (hε : ε < 0) :
     ¬IsWeaklyBehrend A ε
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: DISPROVED**
 
