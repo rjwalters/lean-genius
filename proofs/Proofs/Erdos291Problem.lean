@@ -649,19 +649,11 @@ theorem part2_trivially_true : question_part2 := by
 ## Part XVIII: Summary
 -/
 
-/--
-**Summary of Known Results:**
--/
+/-- Summary: Part 2 (gcd > 1 infinitely often) is proved.
+    Part 1 (gcd = 1 infinitely often) remains OPEN. -/
 theorem erdos_291_summary :
-    -- Part 2: Trivially YES (Steinerberger)
-    question_part2 ∧
-    -- Part 1: OPEN (heuristically YES)
-    True ∧
-    -- Wu-Yan: Conditional on Schanuel, density of gcd > 1 is 1
-    True := by
-  constructor
-  · exact part2_trivially_true
-  · exact ⟨trivial, trivial⟩
+    question_part2 :=
+  part2_trivially_true
 
 /--
 **Erdős Problem #291: OPEN**
