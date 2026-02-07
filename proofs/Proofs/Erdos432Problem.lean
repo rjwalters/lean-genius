@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #432: Pairwise Coprime Sumsets
 
 **Source:** [erdosproblems.com/432](https://erdosproblems.com/432)
@@ -29,7 +29,7 @@ import Mathlib.Tactic
 
 namespace Erdos432
 
-/-! ## Part I: Sumsets -/
+/- ## Part I: Sumsets -/
 
 /--
 The sumset A + B = {a + b : a ∈ A, b ∈ B} for subsets of ℕ.
@@ -43,7 +43,7 @@ The restricted sumset up to n: elements of A + B that are ≤ n.
 def sumsetUpTo (A B : Set ℕ) (n : ℕ) : Set ℕ :=
   { m | m ≤ n ∧ m ∈ sumset A B }
 
-/-! ## Part II: Pairwise Coprimality -/
+/- ## Part II: Pairwise Coprimality -/
 
 /--
 A set S ⊆ ℕ is pairwise coprime if gcd(x, y) = 1 for all
@@ -58,7 +58,7 @@ The sumset A + B has pairwise coprime elements.
 def SumsetPairwiseCoprime (A B : Set ℕ) : Prop :=
   IsPairwiseCoprime (sumset A B)
 
-/-! ## Part III: Counting Functions -/
+/- ## Part III: Counting Functions -/
 
 /--
 The counting function: number of elements of S in {1, …, n}.
@@ -72,7 +72,7 @@ A set is infinite if its counting function is unbounded.
 def IsInfiniteSet (S : Set ℕ) : Prop :=
   ∀ C : ℕ, ∃ N : ℕ, countingFn S N ≥ C
 
-/-! ## Part IV: The Problem -/
+/- ## Part IV: The Problem -/
 
 /--
 **Erdős Problem #432 (Straus, Erdős–Graham 1980, p.85):**
@@ -97,7 +97,7 @@ def ErdosProblem432 : Prop :=
       SumsetPairwiseCoprime A B →
       ∀ n : ℕ, countingFn (sumset A B) n ≤ f n
 
-/-! ## Part V: Basic Observations -/
+/- ## Part V: Basic Observations -/
 
 /--
 If A + B is pairwise coprime, each prime p divides at most one
@@ -129,7 +129,7 @@ axiom ostmann_connection :
   -- Ostmann's problem is the companion to #432
   True
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /--
 **Summary:**
@@ -138,6 +138,4 @@ its elements are pairwise coprime. The pairwise coprime constraint
 means each prime divides at most one element, severely limiting
 density. Tao noted it "looks difficult." OPEN.
 -/
-theorem erdos_432_status : True := trivial
-
 end Erdos432
