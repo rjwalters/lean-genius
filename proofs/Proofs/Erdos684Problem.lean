@@ -29,13 +29,20 @@ Question: What are the bounds on f(n)?
 Adapted from formal-conjectures (Apache 2.0 License)
 -/
 
-import Mathlib
+import Mathlib.Data.Nat.Choose.Factorization
+import Mathlib.Data.Nat.Choose.Dvd
+import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.Order.Ring.Lemmas
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Order.Filter.AtTopBot
 
 open Nat BigOperators Finset
 
 namespace Erdos684
 
-/-!
+/-
 # Part 1: Smooth and Rough Parts of Binomial Coefficients
 
 Decompose C(n,k) into parts based on prime factor ranges.
@@ -50,11 +57,16 @@ noncomputable def smoothPart (k m : ℕ) : ℕ :=
 noncomputable def roughPart (k m : ℕ) : ℕ :=
   m / smoothPart k m
 
--- Decomposition theorem
+-- The smooth part divides the original number
+-- Each p^(factorization p) divides m for prime p, and distinct prime powers are coprime
+theorem smoothPart_dvd (k m : ℕ) : smoothPart k m ∣ m := by
+  sorry
+
+-- Decomposition: m = smoothPart * roughPart (follows from smoothPart_dvd)
 theorem smooth_rough_decomposition (k m : ℕ) (hm : m > 0) :
     m = smoothPart k m * roughPart k m := by
   simp only [roughPart]
-  sorry  -- Requires showing smooth divides m
+  exact (Nat.mul_div_cancel' (smoothPart_dvd k m)).symm
 
 -- For binomial coefficient, decompose by factor range
 noncomputable def binomialSmoothPart (n k : ℕ) : ℕ :=
@@ -63,15 +75,16 @@ noncomputable def binomialSmoothPart (n k : ℕ) : ℕ :=
 noncomputable def binomialRoughPart (n k : ℕ) : ℕ :=
   roughPart k (Nat.choose n k)
 
-/-!
+/-
 # Part 2: The Function f(n)
 
 f(n) is the smallest k such that the smooth part exceeds n².
 -/
 
 -- f(n) = min {k : smoothPart(C(n,k)) > n²}
+-- Defined as Inf of the set; equals 0 if the set is empty
 noncomputable def f (n : ℕ) : ℕ :=
-  Nat.find ⟨n, by sorry⟩  -- Existence needs proof
+  sInf {k : ℕ | binomialSmoothPart n k > n^2}
 
 -- Property of f: at k = f(n), smooth part > n²
 axiom f_property (n : ℕ) (hn : n ≥ 2) :
@@ -81,7 +94,7 @@ axiom f_property (n : ℕ) (hn : n ≥ 2) :
 axiom below_f_small (n k : ℕ) (hn : n ≥ 2) (hk : k < f n) :
     binomialSmoothPart n k ≤ n^2
 
-/-!
+/-
 # Part 3: Mahler's Classical Result
 
 The smooth part is bounded by n^{1+ε} for large n.
@@ -97,7 +110,7 @@ theorem f_tendsto_infty_weak : ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, f n > C :=
   intro C
   sorry  -- Follows from Mahler
 
-/-!
+/-
 # Part 4: Modern Bounds
 
 Recent results by Tang & ChatGPT on explicit bounds for f(n).
@@ -117,7 +130,7 @@ axiom rh_conditional_bound : ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
     -- Assuming RH
     (f n : ℝ) ≤ n^(rh_exponent + ε)
 
-/-!
+/-
 # Part 5: Heuristic Conjectures
 
 The heuristic suggests f(n) ~ 2 log n for most n.
@@ -133,7 +146,7 @@ axiom heuristic_conjecture : ∀ ε : ℝ, ε > 0 →
     ∃ S : Set ℕ, (∀ N, (↑(Finset.filter (· ∈ S) (Finset.range N)).card / N : ℝ) > 1 - ε) ∧
     (∀ n ∈ S, |((f n : ℝ) - heuristic_bound n) / heuristic_bound n| < ε)
 
-/-!
+/-
 # Part 6: Structure of Smooth Part
 
 The smooth part is determined by primes in [2, k] dividing C(n,k).
@@ -143,16 +156,17 @@ The smooth part is determined by primes in [2, k] dividing C(n,k).
 -- v_p(C(n,k)) = (carries in base-p addition of k + (n-k)) / (p-1)
 -- Actually: v_p(C(n,k)) = number of carries when adding k + (n-k) in base p
 
--- Legendre's formula for factorial
-noncomputable def legendreExponent (n p : ℕ) (hp : p.Prime) : ℕ :=
-  ∑ i ∈ Finset.range n, n / p^(i + 1)
+-- Legendre's formula: v_p(n!) = Σ ⌊n/p^i⌋ for i ≥ 1
+noncomputable def legendreExponent (n p : ℕ) : ℕ :=
+  ∑ i ∈ Finset.range (Nat.log p n + 1), n / p^(i + 1)
 
--- Kummer's theorem
+-- Kummer's theorem: v_p(C(n,k)) = number of carries when adding k + (n-k) in base p
+-- Equivalently: v_p(C(n,k)) = v_p(n!) - v_p(k!) - v_p((n-k)!)
 axiom kummer_theorem (n k p : ℕ) (hp : p.Prime) (hk : k ≤ n) :
     (Nat.choose n k).factorization p =
-    (legendreExponent n p hp - legendreExponent k p hp - legendreExponent (n - k) p hp)
+    legendreExponent n p - legendreExponent k p - legendreExponent (n - k) p
 
-/-!
+/-
 # Part 7: Special Cases
 
 Examine f(n) for small n and special values.
@@ -167,7 +181,7 @@ theorem prime_binomial_structure (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : 1 ≤ 
     p ∣ Nat.choose p k := by
   exact Nat.Prime.dvd_choose hp hk.1 hk.2
 
-/-!
+/-
 # Part 8: The Generalized Problem
 
 Bounds on f(n, k) for the smallest k such that smooth part exceeds n².
@@ -175,31 +189,29 @@ Bounds on f(n, k) for the smallest k such that smooth part exceeds n².
 
 -- Generalized: f(n, j) = smallest k ≥ j such that smooth part > n²
 noncomputable def fGeneral (n j : ℕ) : ℕ :=
-  Nat.find ⟨n, by sorry⟩  -- Needs existence proof
+  sInf {k : ℕ | k ≥ j ∧ binomialSmoothPart n k > n^2}
 
 -- Connection to original: f(n) = fGeneral(n, 0)
+-- With sInf definitions, {k | binomialSmoothPart n k > n^2} = {k | k ≥ 0 ∧ ...}
 theorem f_is_fGeneral_0 (n : ℕ) : f n = fGeneral n 0 := by
-  sorry  -- Definition equivalence
+  simp only [f, fGeneral]
+  congr 1
+  ext k
+  simp [Nat.zero_le]
 
-/-!
+/-
 # Part 9: OEIS Sequence
 
 The sequence f(n) is recorded in OEIS A392019.
 -/
 
 -- OEIS A392019: values of f(n)
--- First few terms would need computation
 
-def oeis_reference : String := "A392019"
-
-/-!
+/-
 # Part 10: Problem Status
 
 The problem remains OPEN. Best known bounds leave a large gap.
 -/
-
--- The problem is open
-def erdos_684_status : String := "OPEN"
 
 -- Main formal statement
 theorem erdos_684_statement :
@@ -215,7 +227,7 @@ theorem erdos_684_statement :
 -- Upper: f(n) ≤ n^{30/43 + o(1)}
 -- Heuristic: f(n) ~ 2 log n
 
-/-!
+/-
 # Summary
 
 **Problem:** Find bounds on f(n) = min k such that k-smooth part of C(n,k) > n².
