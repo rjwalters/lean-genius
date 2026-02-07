@@ -393,7 +393,14 @@ theorem erdos_436_summary :
 but m = 3 exhibits a parity dichotomy (finite for k=3, ∞ for even k,
 unknown for odd k ≥ 5), and m ≥ 4 is always infinite (Graham).
 -/
-theorem erdos_436 : True := trivial
+theorem erdos_436_partially_solved :
+    -- Q1 SOLVED: Λ(k,2) finite for all k
+    (∀ k : ℕ, k ≥ 2 → LambdaFinite k 2) ∧
+    -- Λ(k,m) = ∞ for m ≥ 4
+    (∀ k m : ℕ, k ≥ 2 → m ≥ 4 → ¬LambdaFinite k m) ∧
+    -- Λ(k,3) = ∞ for even k
+    (∀ k : ℕ, k ≥ 2 → 2 ∣ k → ¬LambdaFinite k 3) :=
+  erdos_436_summary
 
 /-- The parity dichotomy: for even k, m=3 is infinite. -/
 theorem even_k_m3_infinite (k : ℕ) (hk : k ≥ 2) (heven : Even k) :
