@@ -20,7 +20,7 @@ import Mathlib
 
 open Nat Finset Set Filter
 
-/-! ## Core Definition -/
+/- ## Core Definition -/
 
 /-- The divisibility-free property: no a | (b+c) for distinct a < b,c in A -/
 def IsDivisibilityFree (A : Set ℕ) : Prop :=
@@ -32,7 +32,7 @@ def IsDivisibilityFree (A : Set ℕ) : Prop :=
 noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   Set.ncard (A ∩ Set.Icc 1 N)
 
-/-! ## Basic Examples -/
+/- ## Basic Examples -/
 
 /-- Powers of 2 -/
 def powersOfTwo : Set ℕ := {n | ∃ k : ℕ, n = 2^k ∧ k ≥ 1}
@@ -187,7 +187,7 @@ theorem primeSquares3mod4_divisibility_free : IsDivisibilityFree primeSquares3mo
   -- Since p ∤ (q² + r²), we have p² ∤ (q² + r²)
   exact sq_not_dvd_of_not_dvd hp hndiv
 
-/-! ## Density Results -/
+/- ## Density Results -/
 
 /-- A set has density 0 if |A ∩ {1,...,N}| / N → 0 -/
 def HasDensityZero (A : Set ℕ) : Prop :=
@@ -197,7 +197,7 @@ def HasDensityZero (A : Set ℕ) : Prop :=
 axiom erdos_sarkozy_density_zero :
   ∀ A : Set ℕ, A.Infinite → IsDivisibilityFree A → HasDensityZero A
 
-/-! ## Question 1: Can we achieve √N density? -/
+/- ## Question 1: Can we achieve √N density? -/
 
 /-- The liminf of |A ∩ {1,...,N}| / √N -/
 def sqrtLiminfDensity (A : Set ℕ) : Prop :=
@@ -214,7 +214,7 @@ axiom elsholtz_planitzer_construction :
     ∀ᶠ N in atTop, (countingFunction A N : ℝ) ≥
       Real.sqrt N / (Real.sqrt (Real.log N) * (Real.log (Real.log N))^2)
 
-/-! ## Question 2: Sparse infinitely often? -/
+/- ## Question 2: Sparse infinitely often? -/
 
 /-- Question 2: Is there c > 0 with |A| < N^(1-c) infinitely often? -/
 def Erdos12Question2 : Prop :=
@@ -222,7 +222,7 @@ def Erdos12Question2 : Prop :=
     ∃ c : ℝ, c > 0 ∧ ∀ M : ℕ, ∃ N > M,
       (countingFunction A N : ℝ) < N^(1 - c)
 
-/-! ## Question 3: Convergent reciprocal sum? -/
+/- ## Question 3: Convergent reciprocal sum? -/
 
 /-- The sum of reciprocals of elements in A -/
 noncomputable def reciprocalSum (A : Set ℕ) : ℝ :=
@@ -233,7 +233,7 @@ def Erdos12Question3 : Prop :=
   ∀ A : Set ℕ, A.Infinite → IsDivisibilityFree A →
     Summable (fun n : A => (1 : ℝ) / n)
 
-/-! ## Coprime Case -/
+/- ## Coprime Case -/
 
 /-- A set is pairwise coprime -/
 def IsPairwiseCoprime (A : Set ℕ) : Prop :=
@@ -245,7 +245,7 @@ axiom coprime_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ᶠ N in atTop,
       (countingFunction A N : ℝ) ≤ C * N^(2/3 : ℝ) / Real.log N
 
-/-! ## Properties of primeSquares3mod4 -/
+/- ## Properties of primeSquares3mod4 -/
 
 /-- There are infinitely many primes ≡ 3 (mod 4) (Dirichlet's theorem) -/
 axiom infinitely_many_primes_3mod4 :
@@ -278,7 +278,7 @@ axiom primeSquares3mod4_liminf_pos :
   (0 : ℝ) < Filter.atTop.liminf
     (fun N => (countingFunction primeSquares3mod4 N : ℝ) * Real.log N / Real.sqrt N)
 
-/-! ## Main Problem Statement -/
+/- ## Main Problem Statement -/
 
 /-- Erdős Problem #12: All three questions (OPEN) -/
 def Erdos12Problem : Prop :=
