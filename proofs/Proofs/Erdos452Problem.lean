@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #452: Largest Interval with ω(n) > log log n
 
 Source: https://erdosproblems.com/452
@@ -31,7 +31,7 @@ namespace Erdos452
 
 open Nat ArithmeticFunction Real
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 The number of distinct prime factors ω(n).
@@ -55,7 +55,7 @@ def validInterval (x : ℕ) (a b : ℕ) : Prop :=
 /-- The length of an interval -/
 def intervalLength (a b : ℕ) : ℕ := b - a + 1
 
-/-!
+/-
 ## Part 2: Hardy-Ramanujan and Erdős-Kac
 
 The normal order of ω(n) is log log n.
@@ -71,7 +71,7 @@ axiom erdos_1937_density :
     ∀ ε > 0, ∃ N : ℕ, ∀ x ≥ N,
       |(({n ∈ Finset.Icc 1 x | satisfiesCondition n}.card : ℝ) / x - 1/2)| < ε
 
-/-!
+/-
 ## Part 3: Lower Bound via Chinese Remainder Theorem
 
 The CRT gives a construction of valid intervals.
@@ -87,7 +87,7 @@ axiom crt_lower_bound (x : ℕ) (hx : x ≥ 3) :
 axiom crt_construction_idea :
     ∀ k : ℕ, ∃ P : ℕ, ∀ n, P ∣ n → omega n ≥ k
 
-/-!
+/-
 ## Part 4: The Main Question
 
 What is the maximum length of such an interval?
@@ -105,7 +105,7 @@ axiom conjecture_polynomial_length (k : ℕ) :
     ∃ x₀ : ℕ, ∀ x ≥ x₀, ∃ a b : ℕ,
       validInterval x a b ∧ (intervalLength a b : ℝ) ≥ (Real.log x)^k
 
-/-!
+/-
 ## Part 5: Upper Bounds
 
 What limits the length of valid intervals?
@@ -124,7 +124,7 @@ axiom no_large_primes_in_valid (x : ℕ) (hx : x ≥ 16) (a b : ℕ)
     (hvalid : validInterval x a b) :
     ∀ p, p.Prime → a ≤ p → p ≤ b → False
 
-/-!
+/-
 ## Part 6: Primorial Connection
 
 The primorial n# has many prime factors.
@@ -142,7 +142,7 @@ axiom omega_primorial (n : ℕ) :
 axiom omega_primorial_divisible (n k : ℕ) (h : primorial n ∣ k) :
     omega (primorial n) ≤ omega k
 
-/-!
+/-
 ## Part 7: Small Examples
 -/
 
@@ -162,7 +162,7 @@ example : omega 30 = 3 := by native_decide
 /-- ω(210) = 4 (primes 2, 3, 5, 7) -/
 example : omega 210 = 4 := by native_decide
 
-/-!
+/-
 ## Part 8: Consecutive Integers with Many Prime Factors
 -/
 
@@ -170,7 +170,7 @@ example : omega 210 = 4 := by native_decide
 axiom consecutive_many_factors (k L : ℕ) :
     ∃ a : ℕ, ∀ i < L, omega (a + i) ≥ k
 
-/-!
+/-
 ## Part 9: Related Problems
 -/
 
@@ -191,7 +191,7 @@ noncomputable def radical (n : ℕ) : ℕ := n.primeFactors.prod id
 axiom omega_eq_omega_radical (n : ℕ) (hn : n ≠ 0) :
     omega n = omega (radical n)
 
-/-!
+/-
 ## Part 10: Current State of Knowledge
 
 The problem remains open.
@@ -202,7 +202,7 @@ axiom known_lower_bound (x : ℕ) (hx : x ≥ 3) :
     ∃ a b : ℕ, validInterval x a b ∧
       (intervalLength a b : ℝ) ≥ Real.log x / (Real.log (Real.log x))^2
 
-/-!
+/-
 ## Part 11: Summary
 
 Erdős Problem #452 is OPEN.
