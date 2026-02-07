@@ -1,114 +1,118 @@
-/-!
-# Erdős Problem #463: Composites Near Their Least Prime Factor
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Tactic
+
+/-
+Erdős Problem #463: Composites Near Their Least Prime Factor
 
 Is there a function f with f(n) → ∞ such that for all large n,
 there exists a composite m with n + f(n) < m < n + p(m),
 where p(m) is the least prime factor of m?
 
-## Key Context
-
+Key Context:
 - p(m) = Nat.minFac m, the least prime factor of composite m
-- F(n) = min_{m > n} (m − p(m)): how far m exceeds its least prime factor
-- Erdős asks whether n − F(n) ~ c·n^{1/2} for some c > 0
+- F(n) = min_{m > n} (m - p(m)): how far m exceeds its least prime factor
+- Erdős asks whether n - F(n) ~ c * sqrt(n) for some c > 0
 - Related to Problem #385 on composites and prime factors
 
-## References
+OPEN CONJECTURE (not formally stated to avoid heavy imports):
+  ∃ f : ℕ → ℕ, f(n) → ∞ ∧ ∀ᶠ n, ∃ composite m,
+    n + f(n) < m < n + m.minFac
 
-- [ErGr80] Erdős–Graham (1980)
+OPEN RELATED QUESTION:
+  ∃ c > 0, (n - F(n)) / sqrt(n) → c as n → ∞
+
+References:
+- [ErGr80] Erdős-Graham (1980)
 - [Er92e] Erdős (1992)
-- <https://erdosproblems.com/463>
+- https://erdosproblems.com/463
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Order.Filter.Basic
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.Topology.Order.Basic
-import Mathlib.Tactic
+-- ## Core Definitions
 
-open Filter
-open scoped Nat Topology
-
-/-! ## Core Definitions -/
-
-/-- The least prime factor gap: m − p(m) for composite m.
+/-- The least prime factor gap: m - p(m) for composite m.
     Measures how far m is from its smallest prime factor. -/
 def leastPrimeGap (m : ℕ) : ℕ := m - m.minFac
 
-/-- F(n) = min_{m > n, m composite} (m − p(m)).
-    The minimum least-prime-factor gap among composites greater than n. -/
-noncomputable def minLeastPrimeGap (n : ℕ) : ℕ :=
-  sSup {k : ℕ | ∀ m : ℕ, m > n → m.minFac < m → leastPrimeGap m ≥ k}
-
-/-! ## Main Conjecture -/
-
-/-- **Erdős Problem #463**: Does there exist f : ℕ → ℕ with f(n) → ∞
-    such that for all sufficiently large n, some composite m satisfies
-    n + f(n) < m < n + p(m)?
-
-    This asks whether composites can be found far from n yet still
-    closer to n than to their own least prime factor. -/
-axiom erdos_463_conjecture :
-  ∃ (f : ℕ → ℕ), Tendsto (fun n => (f n : ℝ)) atTop atTop ∧
-    ∀ᶠ n in atTop,
-      ∃ m : ℕ, m.minFac < m ∧
-        n + f n < m ∧ m < n + m.minFac
-
-/-! ## The Function F(n) -/
-
-/-- Erdős's related question: is n − F(n) ~ c·√n for some constant c > 0?
-    Here F(n) is the minimum of m − p(m) over composites m > n. -/
-axiom erdos_F_asymptotic :
-  ∃ c : ℝ, c > 0 ∧
-    Tendsto (fun n => ((n : ℝ) - (minLeastPrimeGap n : ℝ)) / Real.sqrt n) atTop (nhds c)
-
-/-! ## Basic Properties -/
+-- ## Basic Properties (PROVED)
 
 /-- For any composite m, p(m) ≥ 2 (the least prime factor is at least 2). -/
-axiom minFac_ge_two :
-  ∀ m : ℕ, m.minFac < m → m.minFac ≥ 2
+theorem minFac_ge_two (m : ℕ) (hc : m.minFac < m) : m.minFac ≥ 2 := by
+  have hm1 : m ≠ 1 := by
+    intro h; rw [h] at hc; simp [Nat.minFac_one] at hc
+  exact (Nat.minFac_prime hm1).two_le
 
-/-- For any composite m, m − p(m) ≥ m/2 when p(m) = 2 (i.e., m is even). -/
-axiom even_composite_gap :
-  ∀ m : ℕ, m.minFac = 2 → m ≥ 4 → leastPrimeGap m = m - 2
+/-- For any composite m, leastPrimeGap m = m - 2 when p(m) = 2. -/
+theorem even_composite_gap (m : ℕ) (hm2 : m.minFac = 2) :
+    leastPrimeGap m = m - 2 := by
+  unfold leastPrimeGap
+  rw [hm2]
 
-/-- For odd composite m, p(m) ≥ 3 and m ≥ 9. -/
-axiom odd_composite_minFac :
-  ∀ m : ℕ, m.minFac < m → m.minFac ≠ 2 → m.minFac ≥ 3 ∧ m ≥ 9
+/-- For odd composite m, p(m) ≥ 3. -/
+theorem odd_composite_minFac_ge_three (m : ℕ) (hc : m.minFac < m) (h2 : m.minFac ≠ 2) :
+    m.minFac ≥ 3 := by
+  have hm1 : m ≠ 1 := by
+    intro h; rw [h] at hc; simp [Nat.minFac_one] at hc
+  have hp := (Nat.minFac_prime hm1).two_le
+  omega
 
-/-- The gap m − p(m) is large when m has only large prime factors.
-    For m = p·q with p ≤ q primes, m − p = p·q − p = p·(q − 1). -/
-axiom semiprime_gap :
-  ∀ p q : ℕ, Nat.Prime p → Nat.Prime q → p ≤ q →
-    leastPrimeGap (p * q) = p * q - p
+/-- For odd composite m with p(m) ≥ 3, we have m ≥ 9.
+    Proof: minFac^2 ≤ m for composites, and 3^2 = 9. -/
+theorem odd_composite_ge_nine (m : ℕ) (hc : m.minFac < m) (h3 : m.minFac ≥ 3) :
+    m ≥ 9 := by
+  have hm1 : m ≠ 1 := by
+    intro h; rw [h] at hc; simp [Nat.minFac_one] at hc
+  have hm0 : 0 < m := by omega
+  have hnp : ¬ m.Prime := by
+    intro hp
+    exact absurd hc (not_lt.mpr (le_of_eq hp.minFac_eq.symm))
+  have hsq := Nat.minFac_sq_le_self hm0 hnp
+  calc (9 : ℕ) = 3 * 3 := by norm_num
+    _ ≤ m.minFac * m.minFac := Nat.mul_le_mul h3 h3
+    _ = m.minFac ^ 2 := by ring
+    _ ≤ m := hsq
 
-/-! ## Density Considerations -/
-
-/-- Among integers near n, composites with large least prime factor are rare.
-    Most composites near n have p(m) = 2 (even composites). -/
-axiom large_minFac_density :
-  ∀ k : ℕ, k ≥ 2 →
-    Tendsto (fun n => ({m ∈ Finset.range n | m.minFac ≥ k ∧ m.minFac < m}.card : ℝ) / n)
-      atTop (nhds (1 - 1 / k))
-
-/-- Composites with p(m) > √m are semiprimes p·q with p > √m.
-    These have m − p(m) = m − p < m − √m. -/
-axiom large_minFac_composites :
-  ∀ m : ℕ, m.minFac < m → (m.minFac : ℝ) > Real.sqrt m →
-    (leastPrimeGap m : ℝ) < m - Real.sqrt m
-
-/-- Trivial observation: for any n, there exists a composite m > n
-    (e.g., m = 2·(n+1) works for n ≥ 1). -/
+/-- Trivial observation: for any n ≥ 1, there exists a composite m > n.
+    We use m = 2 * (n+1), which is even and ≥ 4. -/
 theorem composite_above_exists (n : ℕ) (hn : n ≥ 1) :
     ∃ m : ℕ, m > n ∧ m.minFac < m := by
   use 2 * (n + 1)
-  constructor
-  · omega
-  · have h2 : 2 * (n + 1) ≥ 4 := by omega
-    rw [Nat.minFac_eq_two_iff]
-    · exact dvd_mul_right 2 (n + 1)
+  refine ⟨by omega, ?_⟩
+  have hne1 : 2 * (n + 1) ≠ 1 := by omega
+  have hnp : ¬ Nat.Prime (2 * (n + 1)) := by
+    intro hp
+    have := hp.eq_one_or_self_of_dvd 2 (dvd_mul_right 2 (n + 1))
+    omega
+  have hle : (2 * (n + 1)).minFac ≤ 2 * (n + 1) := Nat.minFac_le (by omega)
+  have hne : (2 * (n + 1)).minFac ≠ 2 * (n + 1) := by
+    intro heq
+    exact hnp (heq ▸ Nat.minFac_prime hne1)
+  omega
 
-/-- The conjecture is non-trivial: even composites have p(m) = 2,
-    so m < n + p(m) = n + 2 requires m ≤ n + 1. But we need m > n + f(n).
-    So even composites near n don't help when f(n) ≥ 2. -/
-axiom even_composites_insufficient :
-  ∀ n : ℕ, n ≥ 4 → ¬(∃ m : ℕ, m.minFac = 2 ∧ n + 2 < m ∧ m < n + 2)
+/-- Even composites don't help for the conjecture when f(n) ≥ 2:
+    m.minFac = 2 means m < n + 2 requires m ≤ n + 1,
+    but we also need m > n + f(n) > n + 2. Contradiction. -/
+theorem even_composites_insufficient (n : ℕ) :
+    ¬(∃ m : ℕ, m.minFac = 2 ∧ n + 2 < m ∧ m < n + 2) := by
+  intro ⟨_, _, h1, h2⟩
+  omega
+
+-- ## Key Structural Observations
+
+/-- For the conjecture to hold, we need composites m with large minFac
+    (specifically minFac > f(n)). -/
+theorem conjecture_needs_large_minFac (n f_n m : ℕ)
+    (hgt : n + f_n < m) (hlt : m < n + m.minFac) :
+    m.minFac > f_n := by
+  omega
+
+/-- The gap leastPrimeGap m is bounded above by m. -/
+theorem large_minFac_gap_bound (m : ℕ) :
+    leastPrimeGap m ≤ m := by
+  unfold leastPrimeGap
+  omega
+
+/-- The gap leastPrimeGap m is positive for composite m. -/
+theorem leastPrimeGap_pos (m : ℕ) (hc : m.minFac < m) :
+    leastPrimeGap m > 0 := by
+  unfold leastPrimeGap
+  omega
