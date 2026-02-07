@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #365: Consecutive Powerful Numbers
 
 Source: https://erdosproblems.com/365
@@ -37,7 +37,7 @@ import Mathlib.Data.Real.Basic
 
 namespace Erdos365
 
-/-! ## Part I: Powerful Numbers -/
+/- ## Part I: Powerful Numbers -/
 
 /-- **Powerful number:**
 A positive integer n is powerful if p² | n for every prime p | n.
@@ -56,7 +56,7 @@ axiom square_is_powerful (k : ℕ) (hk : k ≥ 1) : IsPowerful (k^2)
 /-- Every perfect cube is powerful. -/
 axiom cube_is_powerful (k : ℕ) (hk : k ≥ 1) : IsPowerful (k^3)
 
-/-! ## Part II: Consecutive Powerful Numbers -/
+/- ## Part II: Consecutive Powerful Numbers -/
 
 /-- **Consecutive powerful pair:**
 Both n and n+1 are powerful. -/
@@ -76,7 +76,7 @@ theorem example_8_9 : IsConsecutivePowerfulPair 8 := by
     · intro p hp hdiv
       interval_cases p <;> simp_all [Nat.Prime] <;> decide
 
-/-! ## Part III: The Pell Equation Connection -/
+/- ## Part III: The Pell Equation Connection -/
 
 /-- **Pell equation:**
 x² - Dy² = 1 for non-square D > 0. -/
@@ -98,7 +98,7 @@ axiom infinitely_many_pell : ∃ f : ℕ → ℕ × ℕ,
     (∀ k, IsPellSolution (f k).1 (f k).2 8) ∧
     (∀ k₁ k₂, k₁ < k₂ → (f k₁).2 < (f k₂).2)
 
-/-! ## Part IV: Question 1 - Must One Be a Square? -/
+/- ## Part IV: Question 1 - Must One Be a Square? -/
 
 /-- **Question 1:**
 Must either n or n+1 be a perfect square for consecutive powerful (n, n+1)? -/
@@ -124,7 +124,7 @@ example : 12167 = 23^3 := by native_decide
 /-- **Verification: 12168 = 2³ · 3² · 13²** -/
 example : 12168 = 2^3 * 3^2 * 13^2 := by native_decide
 
-/-! ## Part V: Walker's Infinite Family -/
+/- ## Part V: Walker's Infinite Family -/
 
 /-- **Walker's Pell-like equation:**
 7³x² = 3³y² + 1 has infinitely many solutions.
@@ -145,7 +145,7 @@ axiom walker_gives_nonsquare :
       (¬∃ k : ℕ, n = k^2) ∧
       (¬∃ k : ℕ, n + 1 = k^2)
 
-/-! ## Part VI: Question 2 - Counting -/
+/- ## Part VI: Question 2 - Counting -/
 
 /-- **Counting function:**
 P(x) = |{n ≤ x : both n and n+1 are powerful}| -/
@@ -162,7 +162,7 @@ def Question2 : Prop :=
       ∀ x : ℕ, x ≥ 2 →
         (countingFunction x : ℝ) ≤ K * (Real.log x)^C
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /-- **Summary of Erdős Problem #365:**
 
