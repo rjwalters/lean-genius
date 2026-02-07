@@ -37,7 +37,7 @@ open Finset BigOperators
 
 namespace Erdos34
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -62,7 +62,7 @@ noncomputable def consecutiveSumSet (n : ℕ) (π : Perm n) : Finset ℕ :=
 noncomputable def S (n : ℕ) (π : Perm n) : ℕ :=
   (consecutiveSumSet n π).card
 
-/-!
+/-
 ## Maximum and Minimum over All Permutations
 -/
 
@@ -74,7 +74,7 @@ noncomputable def f (n : ℕ) : ℕ :=
 noncomputable def g (n : ℕ) : ℕ :=
   Finset.inf' Finset.univ (Finset.univ_nonempty) (S n)
 
-/-!
+/-
 ## The Disproved Conjecture
 
 Erdős conjectured that S(π) = o(n²) for all permutations.
@@ -98,7 +98,7 @@ Erdős's conjecture is FALSE. There exist permutations with S(π) ≥ cn² for c
 -/
 axiom erdos_34_disproved : ¬ErdosConjecture
 
-/-!
+/-
 ## Known Results
 -/
 
@@ -140,7 +140,7 @@ axiom random_permutation_limit :
     ∃ c : ℝ, c = (1 + Real.exp (-2)) / 4 ∧
     True  -- Formal probability statement would require measure theory
 
-/-!
+/-
 ## The Identity Permutation
 
 The identity permutation ι has S(ι) = o(n²), which motivated Erdős's conjecture.
@@ -161,7 +161,7 @@ axiom identity_is_little_o :
     ∀ ε : ℝ, ε > 0 →
       ∃ N : ℕ, ∀ n > N, (S n (identityPerm n) : ℝ) < ε * n^2
 
-/-!
+/-
 ## Minimum Bounds
 -/
 
@@ -182,7 +182,7 @@ def MinimumConjecture : Prop :=
     ∀ ε : ℝ, ε > 0 →
       ∃ N : ℕ, ∀ n > N, (g n : ℝ) ≥ n^(2 - ε)
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -199,7 +199,7 @@ theorem consecutiveSum_pos (n : ℕ) (hn : n ≥ 1) (π : Perm n)
     consecutiveSum n π u v ≥ 1 := by
   sorry
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #34** asked whether S(π) = o(n²) for all permutations π.
