@@ -60,7 +60,7 @@ open Set Finset BigOperators Filter
 
 namespace Erdos37
 
-/-!
+/-
 ## Schnirelmann Density
 
 The Schnirelmann density is a fundamental concept in additive number theory.
@@ -93,7 +93,7 @@ theorem schnirelmannDensity_mem_Icc (A : Set ℕ) :
       · bound;
     exact ciInf_le_of_le ⟨ 0, Set.forall_mem_range.2 fun _ => div_nonneg ( Nat.cast_nonneg _ ) ( Nat.cast_nonneg _ ) ⟩ ⟨ 1, by norm_num ⟩ ( h_le_one _ )
 
-/-!
+/-
 ## Sumsets
 
 The sumset A + B consists of all sums a + b where a ∈ A and b ∈ B.
@@ -105,7 +105,7 @@ def sumset (A B : Set ℕ) : Set ℕ :=
 
 notation:65 A " +ₛ " B => sumset A B
 
-/-!
+/-
 ## Essential Components
 
 A set A is an essential component if adding it to any set B with
@@ -121,7 +121,7 @@ def IsEssentialComponent (A : Set ℕ) : Prop :=
   ∀ B : Set ℕ, 0 < schnirelmannDensity B → schnirelmannDensity B < 1 →
     schnirelmannDensity (A +ₛ B) > schnirelmannDensity B
 
-/-!
+/-
 ## Lacunary Sets
 
 A lacunary set has elements that grow exponentially fast.
@@ -157,7 +157,7 @@ theorem powersOfTwo_lacunary : IsLacunarySet powersOfTwo := by
     · rintro ⟨k, hk⟩; exact ⟨k, hk.symm⟩
     · rintro ⟨k, hk⟩; exact ⟨k, hk.symm⟩
 
-/-!
+/-
 ## Growth Bounds
 
 Essential components must grow at least as fast as (log N)^{1+c}.
@@ -247,7 +247,7 @@ theorem lacunary_counting_bound (A : Set ℕ) (hA : IsLacunarySet A) :
   refine' ⟨ C' + 1, by linarith, _ ⟩;
   filter_upwards [ h_counting_function, Filter.eventually_gt_atTop 2 ] with N hN₁ hN₂ using le_trans hN₁ <| by nlinarith [ show 1 ≤ Real.log N from by rw [ Real.le_log_iff_exp_le ( by positivity ) ] ; exact Real.exp_one_lt_d9.le.trans <| by norm_num; linarith [ show ( N :ℝ ) ≥ 3 by exact_mod_cast hN₂ ] ] ;
 
-/-!
+/-
 ## Main Results
 -/
 
@@ -304,7 +304,7 @@ theorem erdos_37_answer : ¬Erdos37Question := by
   intro ⟨A, hLac, hEss⟩
   exact erdos_37_disproved A hLac hEss
 
-/-!
+/-
 ## The 2^m · 3^n Question (OPEN)
 
 Ruzsa (1999) asked whether the set {2^m · 3^n : m, n ∈ ℕ} is an
@@ -327,7 +327,7 @@ axiom smooth23_counting :
     This remains OPEN as of the latest update. -/
 def RuzsaOpenQuestion : Prop := IsEssentialComponent smoothNumbers23
 
-/-!
+/-
 ## Classical Results on Schnirelmann Density
 -/
 
@@ -349,7 +349,7 @@ axiom mann_theorem :
     ∀ A B : Set ℕ,
       schnirelmannDensity (A +ₛ B) ≥ min 1 (schnirelmannDensity A + schnirelmannDensity B)
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #37** asked whether lacunary sets can be essential components.
