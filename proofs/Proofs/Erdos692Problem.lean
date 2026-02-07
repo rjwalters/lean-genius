@@ -40,7 +40,7 @@ open Nat Real Filter Finset
 
 namespace Erdos692
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 The divisor density function and its properties.
@@ -78,7 +78,7 @@ We define this as a noncomputable real using limit superior.
 noncomputable def delta1 (n m : ℕ) : ℝ :=
   Filter.limsup (fun N => (countWithOneDivisor N n m : ℝ) / N) Filter.atTop
 
-/-!
+/-
 ## Part II: Erdős's Upper Bound
 
 The original quantitative result.
@@ -93,7 +93,7 @@ This shows the density is small for large n.
 axiom erdos_delta1_bound (n m : ℕ) (hn : n ≥ 2) :
     ∃ c : ℝ, c > 0 ∧ delta1 n m ≤ 1 / (Real.log n) ^ c
 
-/-!
+/-
 ## Part III: Ford's Sharper Bounds
 
 Kevin Ford (2008) improved Erdős's bounds.
@@ -110,7 +110,7 @@ axiom ford_2008_bounds (n m : ℕ) (hn : n ≥ 2) (hm : m > n) :
     ∃ (bound : ℝ), bound > 0 ∧ delta1 n m ≤ bound
     -- Ford gives explicit formulas depending on the ratio m/n
 
-/-!
+/-
 ## Part IV: Unimodularity (The Original Question)
 
 Erdős asked whether δ₁(n,m) is unimodal in m.
@@ -133,7 +133,7 @@ For fixed n, is the function m ↦ δ₁(n,m) unimodal for m > n + 1?
 def erdosUnimodalityQuestion (n : ℕ) : Prop :=
   IsUnimodal (fun m => delta1 n m) (n + 1)
 
-/-!
+/-
 ## Part V: Cambie's Counterexample (2025)
 
 Cambie disproved unimodularity with explicit examples.
@@ -174,7 +174,7 @@ Cambie verified unimodality fails for n = 2 as well.
 -/
 axiom cambie_n2_not_unimodal : ¬ erdosUnimodalityQuestion 2
 
-/-!
+/-
 ## Part VI: Superpolynomial Local Maxima
 
 Cambie's stronger result on the complexity of δ₁(n,m).
@@ -212,13 +212,13 @@ is wildly oscillatory.
 axiom cambie_superpolynomial_maxima (n : ℕ) (hn : n ≥ 2) :
     SuperpolynomialGrowth (fun M => countLocalMaxima (fun m => delta1 n m) n M)
 
-/-!
+/-
 ## Part VII: Related Results
 
 Connections to other problems in divisor theory.
 -/
 
-/-!
+/-
 **Connection to Erdős Problem #446:**
 Problem 446 concerns the distribution of divisors and is related to 692.
 -/
@@ -232,7 +232,7 @@ Ford studied this extensively, which provides context for δ₁.
 def fordDistribution (x y z : ℕ) : ℕ :=
   ((range x).filter (fun n => ∃ d ∈ n.divisors, y < d ∧ d < z)).card
 
-/-!
+/-
 ## Part VIII: Physical Interpretation
 
 Understanding why unimodularity fails.
@@ -249,7 +249,7 @@ As m increases:
 These competing effects create oscillations, not a simple peak.
 -/
 
-/-!
+/-
 ## Part IX: Main Results
 
 Summary of Erdős Problem #692.
