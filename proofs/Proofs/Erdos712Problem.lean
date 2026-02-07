@@ -35,10 +35,8 @@ namespace Erdos712
 
 open Finset
 
-/-!
+/-
 ## Part I: r-Uniform Hypergraphs
-
-An r-uniform hypergraph has edges that are exactly r-element subsets.
 -/
 
 /-- An r-uniform hypergraph on vertex set V -/
@@ -64,10 +62,8 @@ def isCliqueFree {V : Type*} [DecidableEq V] {r : ℕ}
     (H : Hypergraph V r) (k : ℕ) : Prop :=
   ∀ (S : Finset V), S.card = k → ¬formsClique H S
 
-/-!
+/-
 ## Part II: Hypergraph Turán Numbers
-
-ex_r(n, K_k^r) is the maximum edges in a K_k^r-free r-uniform hypergraph on n vertices.
 -/
 
 /-- The hypergraph Turán number ex_r(n, K_k^r) -/
@@ -85,10 +81,8 @@ def turanNumberDef (n r k : ℕ) : Prop :=
 axiom turan_upper_trivial (n r k : ℕ) (hr : r ≤ n) :
     turanNumber n r k ≤ Nat.choose n r
 
-/-!
+/-
 ## Part III: The Turán Density
-
-The key quantity: lim_{n→∞} ex_r(n, K_k^r) / C(n, r).
 -/
 
 /-- The Turán density π_r(K_k^r) -/
@@ -105,10 +99,8 @@ axiom turan_density_exists (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
 axiom turan_density_bounds (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
   0 ≤ turanDensity r k ∧ turanDensity r k ≤ 1
 
-/-!
+/-
 ## Part IV: Classical Turán Theorem (r = 2)
-
-For graphs, Turán completely solved the problem in 1941.
 -/
 
 /-- Turán's theorem: The density for graphs avoiding K_k -/
@@ -125,10 +117,8 @@ the maximum number of edges among K_k-free graphs on n vertices. -/
 axiom turan_graph_extremal (n k : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
     turanNumber n 2 k = Nat.choose n 2 - Nat.choose n 2 * 1 / (k - 1)
 
-/-!
+/-
 ## Part V: The Case r = 3, k = 4 (Turán's Conjecture)
-
-The simplest open case: what is ex_3(n, K_4^3)?
 -/
 
 /-- Turán's conjecture for K_4^3: the density is 5/9 -/
@@ -154,10 +144,8 @@ axiom K43_lower_bound :
 axiom K43_upper_bound_razborov :
   turanDensity 3 4 ≤ 0.5616  -- Approximately
 
-/-!
+/-
 ## Part VI: Known Bounds and Results
-
-Various bounds are known for hypergraph Turán densities.
 -/
 
 /-- The density is positive when k > r -/
@@ -176,10 +164,8 @@ axiom kruskal_katona_upper (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
 axiom flag_algebras_upper (r k : ℕ) (hr : r ≥ 2) (hk : k > r) :
   ∃ upper : ℝ, turanDensity r k ≤ upper ∧ upper < 1 - 1 / (k : ℝ)
 
-/-!
+/-
 ## Part VII: The General Problem Statement
-
-Erdős asked for the density for ANY k > r > 2.
 -/
 
 /-- **Erdős Problem #712:** Determine the Turán density π_r(K_k^r)
@@ -214,10 +200,8 @@ theorem erdos_712 (r k : ℕ) (hr : r > 2) (hk : k > r) :
         _ < 1 := by linarith
   · exact erdos_712_open r k hr hk
 
-/-!
+/-
 ## Part VIII: Related Conjectures
-
-Several conjectures about hypergraph Turán densities.
 -/
 
 /-- **Extremal Structure Conjecture:**
@@ -233,10 +217,8 @@ of a balanced 5-partition. -/
 axiom mubayi_K53_conjecture :
   turanDensity 3 5 = 3 / 4
 
-/-!
+/-
 ## Part IX: Computational Approaches
-
-Flag algebras and other computational methods give bounds.
 -/
 
 /-- Flag algebra method (Razborov, 2007) -/
@@ -250,10 +232,8 @@ axiom computed_bounds :
   -- K_5^3
   (0.75 : ℝ) ≤ turanDensity 3 5 ∧ turanDensity 3 5 ≤ 0.769
 
-/-!
+/-
 ## Part X: Connections to Other Problems
-
-The hypergraph Turán problem connects to many areas.
 -/
 
 /-- **Connection to Ramsey Theory:**
@@ -270,7 +250,7 @@ with prescribed intersection properties. -/
 axiom coding_connection (r k n : ℕ) (hr : r ≥ 2) (hk : k > r) :
     turanNumber n r k ≤ Nat.choose n r
 
-/-!
+/-
 ## Part XI: Summary
 -/
 
