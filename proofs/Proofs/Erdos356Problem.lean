@@ -33,7 +33,7 @@ open Nat Finset List
 
 namespace Erdos356
 
-/-! ## Part I: Consecutive Sums -/
+/- ## Part I: Consecutive Sums -/
 
 /--
 **Consecutive Subsum:**
@@ -59,7 +59,7 @@ The number of distinct consecutive subsums in a sequence.
 def distinctConsecutiveSums (seq : List ℕ) : ℕ :=
   (consecutiveSums seq).card
 
-/-! ## Part II: The Trivial Sequence -/
+/- ## Part II: The Trivial Sequence -/
 
 /--
 **Trivial Sequence {1, 2, ..., n}:**
@@ -90,7 +90,7 @@ axiom trivial_collision_structure :
     ∀ n : ℕ, n ≥ 2 →
       distinctConsecutiveSums (trivialSequence n) < n * n
 
-/-! ## Part III: Strictly Increasing Sequences -/
+/- ## Part III: Strictly Increasing Sequences -/
 
 /--
 **Strictly Increasing Sequence:**
@@ -113,7 +113,7 @@ A valid sequence for the problem is strictly increasing with all elements ≤ n.
 def isValidSequence (seq : List ℕ) (n : ℕ) : Prop :=
   isStrictlyIncreasing seq ∧ boundedBy seq n
 
-/-! ## Part IV: The Main Conjecture -/
+/- ## Part IV: The Main Conjecture -/
 
 /--
 **Erdős-Graham Conjecture (Original):**
@@ -136,7 +136,7 @@ Reference: Beker, "On a problem of Erdős and Graham about consecutive sums" (20
 -/
 axiom beker_theorem : erdosGrahamConjecture
 
-/-! ## Part V: The Permutation Variant -/
+/- ## Part V: The Permutation Variant -/
 
 /--
 **Permutation of {1, ..., n}:**
@@ -167,7 +167,7 @@ Reference: Konieczny, "On consecutive sums in permutations" (2015)
 -/
 axiom konieczny_theorem : permutationConjecture
 
-/-! ## Part VI: Construction Insights -/
+/- ## Part VI: Construction Insights -/
 
 /--
 **The construction principle:**
@@ -182,7 +182,7 @@ that plague arithmetic progressions.
 axiom beker_construction_yields_quadratic :
     ∃ c : ℚ, c > 0 ∧ c < 1 ∧ erdosGrahamConjecture
 
-/-! ## Part VII: Related Problems -/
+/- ## Part VII: Related Problems -/
 
 /--
 **Connection to Erdős #34 (Permutations):**
@@ -208,7 +208,7 @@ def erdos357Question : Prop :=
           ∀ i : ℕ, i < (c * n).num.toNat →
             start + i ∈ consecutiveSums seq
 
-/-! ## Part VIII: Upper and Lower Bounds -/
+/- ## Part VIII: Upper and Lower Bounds -/
 
 /--
 **Upper bound on consecutive sums:**
@@ -230,7 +230,7 @@ axiom lower_bound_exists :
         ∃ seq : List ℕ, isValidSequence seq n ∧
           (distinctConsecutiveSums seq : ℚ) ≥ c * n^2
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #356 Summary:**
