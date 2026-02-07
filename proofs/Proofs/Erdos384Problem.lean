@@ -27,7 +27,7 @@ namespace Erdos384
 
 open Nat
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Setting up the key predicates for the problem.
@@ -56,7 +56,7 @@ theorem minPrimeDivisor_dvd (n : ℕ) (hn : n > 1) :
 def hasSmallPrimeDivisor (n bound : ℕ) : Prop :=
   ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ p < bound
 
-/-!
+/-
 ## Part 2: The Unique Exception
 
 The only exception to the theorem is C(7,3) = 35 = 5 × 7.
@@ -88,7 +88,7 @@ theorem choose_7_3_no_small_prime : ¬hasSmallPrimeDivisor (Nat.choose 7 3) 4 :=
 def isException (n k : ℕ) : Prop :=
   (n = 7 ∧ k = 3) ∨ (n = 7 ∧ k = 4)
 
-/-!
+/-
 ## Part 3: The Main Theorem (Ecklund 1969)
 
 For 1 < k < n-1, the binomial coefficient C(n,k) has a prime divisor < n/2,
@@ -108,7 +108,7 @@ theorem ecklund_no_exception (n k : ℕ) (hk_lower : 1 < k) (hk_upper : k < n - 
   | inl h => exact h
   | inr h => exact absurd h hne
 
-/-!
+/-
 ## Part 4: Stronger Conjectures
 
 Ecklund and others proposed stronger bounds.
@@ -132,7 +132,7 @@ def selfridgeConjecture : Prop :=
   ∀ n k : ℕ, 1 < k → k < n - 1 → (n : ℚ) > (17125 : ℚ) / 1000 * k →
     hasSmallPrimeDivisor (Nat.choose n k) (n / k + 1)
 
-/-!
+/-
 ## Part 5: Kummer's Theorem Connection
 
 Kummer's theorem relates prime divisors of C(n,k) to base-p representations.
@@ -150,7 +150,7 @@ axiom kummer_theorem (n k p : ℕ) (hp : p.Prime) :
 axiom large_prime_not_divisor (n k p : ℕ) (hp : p.Prime) (hpn : p > n)
     (hk : k ≤ n) : ¬(p ∣ Nat.choose n k)
 
-/-!
+/-
 ## Part 6: Edge Cases
 
 What happens at the boundaries k = 1 and k = n-1?
@@ -174,7 +174,7 @@ theorem choose_n_nminus1 (n : ℕ) (hn : n > 0) : Nat.choose n (n-1) = n := by
   rw [Nat.choose_symm_diff]
   simp [Nat.choose_one_right]
 
-/-!
+/-
 ## Part 7: Small Cases Verification
 
 Verify the theorem for small values of n.
@@ -212,7 +212,7 @@ example : hasSmallPrimeDivisor (Nat.choose 6 3) 4 := by
   · native_decide
   · norm_num
 
-/-!
+/-
 ## Part 8: Primorial Connection
 
 The primorial n# (product of primes ≤ n) appears in related results.
@@ -225,7 +225,7 @@ noncomputable def primorial' (n : ℕ) : ℕ := primorial n
 axiom central_binomial_primes (n : ℕ) (hn : n ≥ 1) :
     ∃ p : ℕ, p.Prime ∧ p ∣ Nat.choose (2*n) n ∧ n < p ∧ p ≤ 2*n
 
-/-!
+/-
 ## Part 9: Asymptotic Behavior
 
 As n grows, C(n,k) has increasingly many small prime divisors.
@@ -239,7 +239,7 @@ axiom many_prime_divisors (n : ℕ) (hn : n ≥ 2) :
 axiom intersection_property :
     True  -- Related combinatorial structure
 
-/-!
+/-
 ## Part 10: Related Problems
 
 Connection to other Erdős problems.
@@ -257,25 +257,21 @@ axiom problem_1095_relation :
 axiom guy_problems_connection :
     True  -- References to Guy's collection
 
-/-!
+/-
 ## Part 11: Applications
 
 Where this result is used.
 -/
 
-/-- Application to Catalan numbers: C_n = C(2n,n)/(n+1) -/
-axiom catalan_application :
-    True  -- Prime divisors of Catalan numbers
+/-- Application to Catalan numbers: C_n = C(2n,n)/(n+1) has a prime divisor ≤ n. -/
+axiom catalan_application (n : ℕ) (hn : n ≥ 2) :
+    hasSmallPrimeDivisor (Nat.choose (2 * n) n) (n + 1)
 
-/-- Application to Pascal's triangle modular patterns -/
-axiom pascal_modular :
-    True  -- Lucas' theorem connections
+/-- Application to Pascal's triangle: entries in Pascal's triangle have small prime factors. -/
+axiom pascal_modular (n k : ℕ) (hk : 1 < k) (hk' : k < n) :
+    hasSmallPrimeDivisor (Nat.choose n k) n
 
-/-- Application to combinatorial number theory -/
-axiom combinatorial_application :
-    True  -- Various uses in proofs
-
-/-!
+/-
 ## Part 12: Summary
 
 Erdős Problem #384 status: SOLVED by Ecklund (1969).
@@ -286,7 +282,9 @@ theorem erdos_384_main (n k : ℕ) (hk_lower : 1 < k) (hk_upper : k < n - 1) :
     hasSmallPrimeDivisor (Nat.choose n k) (n / 2 + 1) ∨ isException n k :=
   ecklund_1969 n k hk_lower hk_upper
 
-/-- Erdős Problem #384: SOLVED -/
-theorem erdos_384 : True := trivial
+/-- Erdős Problem #384: The main statement (Ecklund 1969). -/
+def erdos_384_solved : Prop :=
+  ∀ n k : ℕ, 1 < k → k < n - 1 →
+    hasSmallPrimeDivisor (Nat.choose n k) (n / 2 + 1) ∨ isException n k
 
 end Erdos384
