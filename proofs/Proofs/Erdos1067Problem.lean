@@ -33,9 +33,7 @@ open Cardinal SimpleGraph
 
 namespace Erdos1067
 
-/-!
-## Part I: Basic Graph Definitions
--/
+/- ## Part I: Basic Graph Definitions -/
 
 /--
 **Chromatic Number:**
@@ -52,9 +50,7 @@ A graph has chromatic number ℵ₁ (aleph-one).
 def hasAleph1ChromaticNumber (G : SimpleGraph V) : Prop :=
   chromaticNumber G = Cardinal.aleph 1
 
-/-!
-## Part II: Infinite Connectivity
--/
+/- ## Part II: Infinite Connectivity -/
 
 /--
 **Path in Graph:**
@@ -97,9 +93,7 @@ A graph where any two vertices are connected by infinitely many pairwise disjoin
 def InfinitelyConnected (G : SimpleGraph V) : Prop :=
   ∀ u v : V, u ≠ v → InfinitelyManyDisjointPaths G u v
 
-/-!
-## Part III: Edge Connectivity Variant
--/
+/- ## Part III: Edge Connectivity Variant -/
 
 /--
 **Infinitely Edge-Connected:**
@@ -109,9 +103,7 @@ def InfinitelyEdgeConnected (G : SimpleGraph V) : Prop :=
   ∀ E : Set (Sym2 V), E.Finite → ∃ u v : V, u ≠ v ∧
     (G.deleteEdges E).Connected
 
-/-!
-## Part IV: Subgraph Relations
--/
+/- ## Part IV: Subgraph Relations -/
 
 /--
 **Subgraph:**
@@ -129,9 +121,7 @@ def ErdosHajnalQuestion (G : SimpleGraph V) : Prop :=
   ∃ H : SimpleGraph V, IsSubgraph H G ∧
     InfinitelyConnected H ∧ hasAleph1ChromaticNumber H
 
-/-!
-## Part V: The Main Results - Counterexamples
--/
+/- ## Part V: The Main Results - Counterexamples -/
 
 /--
 **Komjáth's Consistency Result (2013):**
@@ -174,9 +164,7 @@ axiom thomassen_edge_counterexample_2017 :
       ∀ H : SimpleGraph V, IsSubgraph H G →
         InfinitelyEdgeConnected H → ¬hasAleph1ChromaticNumber H
 
-/-!
-## Part VI: The Variant with ℵ₁ Vertices
--/
+/- ## Part VI: The Variant with ℵ₁ Vertices -/
 
 /--
 **ℵ₁ Vertices:**
@@ -196,9 +184,7 @@ axiom komjath_aleph1_vertex_counterexample_consistent :
       ¬∃ H : SimpleGraph V, IsSubgraph H G ∧
         InfinitelyConnected H ∧ hasAleph1ChromaticNumber H
 
-/-!
-## Part VII: Key Observations
--/
+/- ## Part VII: Key Observations -/
 
 /-- **Soukup's construction principle:**
 One can build a graph from "ladder" structures of trees where
@@ -210,8 +196,7 @@ axiom soukup_construction_principle :
       ∀ H : SimpleGraph V, IsSubgraph H G →
         InfinitelyConnected H → ¬hasAleph1ChromaticNumber H
 
-/-!
-## Part IX: Summary
+/- ## Part IX: Summary
 
 **Erdős Problem #1067: DISPROVED**
 
