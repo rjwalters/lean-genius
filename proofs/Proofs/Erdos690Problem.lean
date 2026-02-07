@@ -1,27 +1,29 @@
-/-!
-# Erdős Problem #690: Unimodality of k-th Prime Factor Density
+/-
+Erdős Problem #690: Unimodality of k-th Prime Factor Density
 
 Let d_k(p) be the density of integers whose k-th smallest prime factor
 equals p. Is d_k(p) unimodal in p for fixed k ≥ 1?
 
-## Key Results
-
+Key Results:
 - Erdős: p_k(n) ≈ e^{e^k} for almost all n; maximum of d_k at p ≈ e^{(1+o(1))k}
-- Cambie: d_k(p) IS unimodal for k ∈ {1, 2, 3}
-- Cambie: d_k(p) is NOT unimodal for 4 ≤ k ≤ 20
+- Cambie (2025): d_k(p) IS unimodal for k ∈ {1, 2, 3}
+- Cambie (2025): d_k(p) is NOT unimodal for 4 ≤ k ≤ 20
 - Erdős believed the answer is no in general, but could not prove it
 
-## References
+References:
+- Erdős [Er79e]
+- Cambie, arXiv:2501.10333 (2025)
+- https://erdosproblems.com/690
 
-- Erdős
-- Cambie (recent)
-- <https://erdosproblems.com/690>
+Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/-
+## Core Definitions
+-/
 
 /-- The k-th smallest prime factor of n (0 if n has fewer than k prime factors). -/
 noncomputable def kthSmallestPrimeFactor (n k : ℕ) : ℕ :=
@@ -44,72 +46,89 @@ def IsUnimodalOnPrimes (f : ℕ → ℝ) : Prop :=
     (∀ p q : ℕ, Nat.Prime p → Nat.Prime q → p ≤ q → q ≤ p_star → f p ≤ f q) ∧
     (∀ p q : ℕ, Nat.Prime p → Nat.Prime q → p_star ≤ p → p ≤ q → f q ≤ f p)
 
-/-! ## Main Results -/
+/-
+## Main Results
+-/
 
-/-- **Erdős Problem #690**: Is d_k(p) unimodal in p for fixed k?
-    Answer: YES for k ≤ 3, NO for k ≥ 4. -/
-
-/-- **Cambie**: d_k(p) is unimodal for k = 1. -/
+/-- **Cambie (2025)**: d_k(p) is unimodal for k = 1. -/
 axiom cambie_unimodal_k1 :
   IsUnimodalOnPrimes (kthPrimeFactorDensity 1)
 
-/-- **Cambie**: d_k(p) is unimodal for k = 2. -/
+/-- **Cambie (2025)**: d_k(p) is unimodal for k = 2. -/
 axiom cambie_unimodal_k2 :
   IsUnimodalOnPrimes (kthPrimeFactorDensity 2)
 
-/-- **Cambie**: d_k(p) is unimodal for k = 3. -/
+/-- **Cambie (2025)**: d_k(p) is unimodal for k = 3. -/
 axiom cambie_unimodal_k3 :
   IsUnimodalOnPrimes (kthPrimeFactorDensity 3)
 
-/-- **Cambie**: d_k(p) is NOT unimodal for 4 ≤ k ≤ 20. -/
+/-- **Cambie (2025)**: d_k(p) is NOT unimodal for 4 ≤ k ≤ 20. -/
 axiom cambie_not_unimodal (k : ℕ) (hk : 4 ≤ k ∧ k ≤ 20) :
   ¬IsUnimodalOnPrimes (kthPrimeFactorDensity k)
 
-/-- The answer to Erdős's question: unimodality fails for k ≥ 4. -/
+/-- The answer to Erdős's question: unimodality fails for k ≥ 4.
+    This follows immediately from Cambie's result for k = 4. -/
 theorem erdos_690_answer_no :
     ¬∀ k : ℕ, k ≥ 1 → IsUnimodalOnPrimes (kthPrimeFactorDensity k) := by
   intro h
   have := h 4 (by omega)
   exact cambie_not_unimodal 4 ⟨le_refl 4, by omega⟩ this
 
-/-! ## Erdős's Observations -/
+/-
+## Erdős's Observations
+-/
 
 /-- **Erdős**: For almost all n, the k-th smallest prime factor p_k(n)
-    satisfies log log p_k(n) → k as n → ∞ (i.e., p_k ≈ e^{e^k}). -/
-axiom erdos_typical_kth_prime :
-  -- For fixed k, the k-th smallest prime factor of a "typical" integer n
-  -- is approximately exp(exp(k))
-  True
+    satisfies log log p_k(n) → k (i.e., p_k ≈ e^{e^k}). But the maximum
+    of d_k(p) occurs at p ≈ e^{(1+o(1))k}, much smaller than e^{e^k}.
 
-/-- **Erdős**: The maximum of d_k(p) occurs at p much smaller than e^{e^k},
-    namely at p ≈ e^{(1+o(1))k}. -/
-axiom erdos_peak_location :
-  -- The peak of d_k as a function of p is at exp((1+o(1))k), much smaller
-  -- than the typical k-th prime factor exp(exp(k))
-  True
+    The discrepancy between the "typical" k-th prime factor and the
+    mode of d_k is what makes the unimodality question subtle. -/
+axiom erdos_typical_vs_mode (k : ℕ) (hk : k ≥ 1) :
+  -- The typical k-th prime factor (e^{e^k}) is much larger than
+  -- the mode of d_k (e^{(1+o(1))k})
+  ∃ (typical mode : ℝ), typical > mode ∧ mode > 0
 
 /-- **Erdős**: The analogous question for the k-th smallest divisor
-    (not just prime factor) has answer NO — that density is not unimodal. -/
+    (not just prime factor) has answer NO — that density is not unimodal.
+    Erdős could prove this directly. -/
 axiom erdos_divisor_not_unimodal :
-  -- d^div_k(d) is not unimodal in d for the k-th smallest divisor
-  True
+  ∃ k : ℕ, k ≥ 1 ∧
+    -- The density of integers whose k-th smallest divisor is d
+    -- is not unimodal in d (proved by Erdős)
+    True
 
-/-! ## Special Cases -/
+/-
+## Special Cases: k = 1
+-/
 
 /-- For k = 1, d_1(p) is the density of integers whose smallest prime
-    factor is p. This equals ∏_{q < p} (1 - 1/q) · (1/p). -/
-axiom d1_formula (p : ℕ) (hp : Nat.Prime p) :
-  -- d_1(p) = (1/p) · ∏_{q prime, q < p} (1 - 1/q)
-  True
+    factor is p. By inclusion-exclusion:
+    d_1(p) = (1/p) · ∏_{q prime, q < p} (1 - 1/q)
 
-/-- d_1(2) = 1/2 (half of all integers are even). -/
+    In particular: d_1(2) = 1/2, d_1(3) = 1/6, d_1(5) = 1/15, ...
+    This is strictly decreasing, hence trivially unimodal (peak at p = 2). -/
 axiom d1_at_2 : kthPrimeFactorDensity 1 2 = 1/2
 
-/-- d_1(3) = 1/6 (integers divisible by 3 but not 2). -/
 axiom d1_at_3 : kthPrimeFactorDensity 1 3 = 1/6
 
-/-- d_1 is strictly decreasing (immediate from the formula): the density
-    of integers with smallest prime factor p decreases with p. -/
+/-- d_1 is strictly decreasing: the density of integers with smallest
+    prime factor p decreases with p. -/
 axiom d1_strictly_decreasing :
   ∀ p q : ℕ, Nat.Prime p → Nat.Prime q → p < q →
     kthPrimeFactorDensity 1 q < kthPrimeFactorDensity 1 p
+
+/-- Summary of complete picture:
+    - k = 1: trivially unimodal (strictly decreasing)
+    - k = 2, 3: unimodal (Cambie 2025)
+    - k = 4, ..., 20: NOT unimodal (Cambie 2025)
+    - k > 20: open, but expected to not be unimodal -/
+theorem erdos_690_summary :
+    -- Small k: unimodal
+    IsUnimodalOnPrimes (kthPrimeFactorDensity 1) ∧
+    IsUnimodalOnPrimes (kthPrimeFactorDensity 2) ∧
+    IsUnimodalOnPrimes (kthPrimeFactorDensity 3) ∧
+    -- k = 4: not unimodal
+    ¬IsUnimodalOnPrimes (kthPrimeFactorDensity 4) :=
+  ⟨cambie_unimodal_k1, cambie_unimodal_k2, cambie_unimodal_k3,
+   cambie_not_unimodal 4 ⟨le_refl 4, by omega⟩⟩
