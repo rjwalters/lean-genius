@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #368: Largest Prime Factor of n(n+1)
 
 Source: https://erdosproblems.com/368
@@ -39,8 +39,7 @@ open Nat Real
 
 namespace Erdos368
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /--
@@ -69,8 +68,7 @@ lemma product_ge_two (n : ℕ) (hn : n ≥ 1) : n * (n + 1) ≥ 2 := by
   calc n * (n + 1) ≥ 1 * 2 := by nlinarith
     _ = 2 := by ring
 
-/-!
-## Part II: Coprimality of Consecutive Integers
+/- ## Part II: Coprimality of Consecutive Integers
 -/
 
 /--
@@ -93,8 +91,7 @@ Thus F(n) = max(gpf(n), gpf(n+1)).
 axiom F_eq_max (n : ℕ) (hn : n ≥ 1) :
     F n = max (gpf n) (gpf (n + 1))
 
-/-!
-## Part III: Pólya's Theorem (1918)
+/- ## Part III: Pólya's Theorem (1918)
 -/
 
 /--
@@ -115,8 +112,7 @@ theorem F_unbounded : ∀ M : ℕ, ∃ n : ℕ, F n > M := by
   use N
   exact hN N (le_refl N)
 
-/-!
-## Part IV: Mahler's Lower Bound (1935)
+/- ## Part IV: Mahler's Lower Bound (1935)
 -/
 
 /--
@@ -138,8 +134,7 @@ axiom mahler_improves_polya :
     (∃ c : ℝ, c > 0 ∧ ∃ N : ℕ, ∀ n ≥ N, (F n : ℝ) ≥ c * Real.log (Real.log n)) →
     (∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, F n > M)
 
-/-!
-## Part V: Schinzel's Upper Bound (1967)
+/- ## Part V: Schinzel's Upper Bound (1967)
 -/
 
 /--
@@ -169,8 +164,7 @@ axiom infinitely_many_smooth_products :
       isSmooth B (n * (n + 1)) ∧
       (B : ℝ) ≤ (n : ℝ) ^ (1 / Real.log (Real.log (Real.log n)))
 
-/-!
-## Part VI: Erdős's Conjectures
+/- ## Part VI: Erdős's Conjectures
 -/
 
 /--
@@ -194,8 +188,7 @@ def erdos_upper_conjecture : Prop :=
       ∀ M : ℕ, ∃ n > M,
         (F n : ℝ) < (Real.log n) ^ (2 + ε)
 
-/-!
-## Part VII: Pasten's Theorem (2024)
+/- ## Part VII: Pasten's Theorem (2024)
 -/
 
 /--
@@ -218,8 +211,7 @@ axiom pasten_improves_mahler :
     (∃ c' : ℝ, c' > 0 ∧ ∃ N' : ℕ,
       ∀ n ≥ N', (F n : ℝ) ≥ c' * Real.log (Real.log n))
 
-/-!
-## Part VIII: Concrete Examples
+/- ## Part VIII: Concrete Examples
 -/
 
 /--
@@ -273,8 +265,7 @@ theorem F_small_values :
     F 5 = 5 ∧ F 6 = 7 ∧ F 7 = 7 ∧ F 8 = 3 := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> native_decide
 
-/-!
-## Part IX: n² + 1 Variant
+/- ## Part IX: n² + 1 Variant
 -/
 
 /--
@@ -294,8 +285,7 @@ axiom pasten_squared_plus_one :
       ∀ n ≥ N, (P_squared_plus_one n : ℝ) ≥
         c * (Real.log (Real.log n))^2 / Real.log (Real.log (Real.log n))
 
-/-!
-## Part X: Connection to ABC Conjecture
+/- ## Part X: Connection to ABC Conjecture
 -/
 
 /--
@@ -321,8 +311,7 @@ axiom abc_implies_strong_bound :
     (∀ ε : ℝ, ε > 0 → ∃ c : ℝ, c > 0 ∧ ∃ N : ℕ,
       ∀ n ≥ N, (F n : ℝ) ≥ c * (Real.log n) ^ (1 - ε))
 
-/-!
-## Part XI: Main Results Summary
+/- ## Part XI: Main Results Summary
 -/
 
 /--
