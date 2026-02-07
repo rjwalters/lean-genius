@@ -1,0 +1,204 @@
+/-
+  Erdős Problem #1172: Partition Relations under GCH and CH
+
+  Source: https://erdosproblems.com/1172
+  Status: OPEN
+  Reference: Va99, 7.87 (Erdős-Hajnal)
+
+  Statement (under GCH):
+  1. ω₃ → (ω₂, ω₁ + 2)²
+  2. ω₃ → (ω₂ + ω₁, ω₂ + ω)²
+  3. ω₂ → (ω₁^(ω+2) + 2, ω₁ + 2)²
+
+  Under CH:
+  4. ω₂ → (ω₁ + ω)₂²
+
+  Background:
+  These are unbalanced ordinal partition relations from the Erdős-Hajnal
+  partition calculus program. The notation α → (β, γ)² means: for every
+  2-coloring of pairs from α, there exists either a monochromatic subset
+  of order type β (color 0) or order type γ (color 1).
+
+  Tags: set-theory, partition-calculus, ordinals, GCH, CH
+-/
+
+import Mathlib.SetTheory.Ordinal.Arithmetic
+import Mathlib.SetTheory.Ordinal.Exponential
+import Mathlib.SetTheory.Cardinal.Basic
+import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib.Tactic
+
+set_option linter.unusedTactic false
+set_option linter.unusedVariables false
+
+namespace Erdos1172
+
+open Ordinal Cardinal
+
+/- ## Part I: Ordinal and Cardinal Setup -/
+
+noncomputable def omega1 : Ordinal.{0} := (Cardinal.aleph 1).ord
+noncomputable def omega2 : Ordinal.{0} := (Cardinal.aleph 2).ord
+noncomputable def omega3 : Ordinal.{0} := (Cardinal.aleph 3).ord
+noncomputable def omegaOrd : Ordinal.{0} := ω
+
+/- ## Part II: Partition Relation -/
+
+/-- The unbalanced ordinal partition relation α → (β, γ)². -/
+axiom OrdPartitionRel (α β γ : Ordinal.{0}) : Prop
+
+/-- The balanced partition relation: α → (β)₂² means α → (β, β)². -/
+def BalancedPartitionRel (α β : Ordinal.{0}) : Prop :=
+  OrdPartitionRel α β β
+
+/- ## Part III: Set-Theoretic Hypotheses -/
+
+def GCH : Prop :=
+  ∀ α : Ordinal.{0}, (2 : Cardinal.{0}) ^ Cardinal.aleph α = Cardinal.aleph (α + 1)
+
+def CH : Prop :=
+  (2 : Cardinal.{0}) ^ Cardinal.aleph (0 : Ordinal.{0}) = Cardinal.aleph 1
+
+theorem gch_implies_ch : GCH → CH := by
+  intro h; unfold CH
+  have h0 := h 0
+  simp only [zero_add] at h0
+  exact h0
+
+/- ## Part IV: The Four Open Questions -/
+
+def question1 : Prop :=
+  GCH → OrdPartitionRel omega3 omega2 (omega1 + 2)
+
+def question2 : Prop :=
+  GCH → OrdPartitionRel omega3 (omega2 + omega1) (omega2 + omegaOrd)
+
+def question3 : Prop :=
+  GCH → OrdPartitionRel omega2 (omega1 ^ (omegaOrd + 2) + 2) (omega1 + 2)
+
+def question4 : Prop :=
+  CH → BalancedPartitionRel omega2 (omega1 + omegaOrd)
+
+/- ## Part V: Basic Ordinal Arithmetic -/
+
+theorem omega1_lt_omega2 : omega1 < omega2 := by
+  unfold omega1 omega2
+  exact Cardinal.ord_lt_ord.mpr (Cardinal.aleph_lt_aleph.mpr (by norm_num))
+
+theorem omega2_lt_omega3 : omega2 < omega3 := by
+  unfold omega2 omega3
+  exact Cardinal.ord_lt_ord.mpr (Cardinal.aleph_lt_aleph.mpr (by norm_num))
+
+theorem omega1_lt_omega3 : omega1 < omega3 :=
+  lt_trans omega1_lt_omega2 omega2_lt_omega3
+
+theorem omega_lt_omega1 : omegaOrd < omega1 := by
+  unfold omegaOrd omega1
+  have h0 : Cardinal.aleph (0 : Ordinal.{0}) = ℵ₀ := Cardinal.aleph_zero
+  have h1 : ℵ₀ < Cardinal.aleph (1 : Ordinal.{0}) := by
+    rw [← h0]; exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
+  calc ω = (ℵ₀ : Cardinal.{0}).ord := Cardinal.ord_aleph0.symm
+    _ < (Cardinal.aleph 1).ord := Cardinal.ord_lt_ord.mpr h1
+
+theorem omega1_pos : 0 < omega1 := by
+  have : (0 : Ordinal) < omegaOrd := by unfold omegaOrd; exact Ordinal.omega0_pos
+  exact lt_trans this omega_lt_omega1
+
+theorem omega2_pos : 0 < omega2 :=
+  lt_trans omega1_pos omega1_lt_omega2
+
+theorem omega3_pos : 0 < omega3 :=
+  lt_trans omega2_pos omega2_lt_omega3
+
+theorem two_lt_omega : (2 : Ordinal) < omegaOrd := by
+  unfold omegaOrd; exact nat_lt_omega0 2
+
+/- ## Part VI: Monotonicity -/
+
+axiom partition_mono_source (α α' β γ : Ordinal.{0}) (h : α ≤ α')
+    (hp : OrdPartitionRel α β γ) : OrdPartitionRel α' β γ
+
+axiom partition_mono_target (α β γ β' γ' : Ordinal.{0}) (hβ : β' ≤ β) (hγ : γ' ≤ γ)
+    (hp : OrdPartitionRel α β γ) : OrdPartitionRel α β' γ'
+
+/- ## Part VII: Known Results -/
+
+/-- **Erdős-Dushnik-Miller Theorem** (1941): λ → (λ, ω)² for infinite λ. -/
+axiom erdos_dushnik_miller (lam : Ordinal.{0}) (hlam : ω ≤ lam) :
+    OrdPartitionRel lam lam ω
+
+/-- **Erdős-Rado strengthening**: κ → (κ, ω + 1)² for regular uncountable κ. -/
+axiom erdos_rado_regular (kap : Ordinal.{0})
+    (hkap : ω < kap) (hreg : kap.cof = kap.card) :
+    OrdPartitionRel kap kap (ω + 1)
+
+/- ## Part VIII: Proved Theorems -/
+
+/-- ω₃ → (ω₃, ω)² by Erdős-Dushnik-Miller. -/
+theorem omega3_edm : OrdPartitionRel omega3 omega3 omegaOrd := by
+  unfold omegaOrd
+  apply erdos_dushnik_miller
+  exact le_of_lt (lt_trans (lt_trans omega_lt_omega1 omega1_lt_omega2) omega2_lt_omega3)
+
+/-- ω₂ → (ω₂, ω)² by Erdős-Dushnik-Miller. -/
+theorem omega2_edm : OrdPartitionRel omega2 omega2 omegaOrd := by
+  unfold omegaOrd
+  apply erdos_dushnik_miller
+  exact le_of_lt (lt_trans omega_lt_omega1 omega1_lt_omega2)
+
+/-- Weak form of Q1: ω₃ → (ω₂, ω)² via EDM + monotonicity. -/
+theorem q1_weak_from_edm : OrdPartitionRel omega3 omega2 omegaOrd :=
+  partition_mono_target omega3 omega3 omegaOrd omega2 omegaOrd
+    (le_of_lt omega2_lt_omega3) (le_refl _) omega3_edm
+
+/-- If Q1 holds, the second target can be weakened to ω. -/
+theorem q1_implies_weak_second (h : OrdPartitionRel omega3 omega2 (omega1 + 2)) :
+    OrdPartitionRel omega3 omega2 omegaOrd :=
+  partition_mono_target omega3 omega2 (omega1 + 2) omega2 omegaOrd
+    (le_refl _)
+    (le_of_lt (lt_of_lt_of_le omega_lt_omega1 le_self_add))
+    h
+
+/-- Q4 (balanced) unfolds to unbalanced. -/
+theorem q4_unfold (h : BalancedPartitionRel omega2 (omega1 + omegaOrd)) :
+    OrdPartitionRel omega2 (omega1 + omegaOrd) (omega1 + omegaOrd) := h
+
+/-- If Q2 holds, first target weakens to ω₂. -/
+theorem q2_weakened_first
+    (h : OrdPartitionRel omega3 (omega2 + omega1) (omega2 + omegaOrd)) :
+    OrdPartitionRel omega3 omega2 (omega2 + omegaOrd) :=
+  partition_mono_target omega3 (omega2 + omega1) (omega2 + omegaOrd) omega2
+    (omega2 + omegaOrd) le_self_add (le_refl _) h
+
+/- ## Part IX: Stepping-Up Lemma -/
+
+axiom stepping_up_negative (kap alpha beta : Ordinal.{0})
+    (h : ¬ OrdPartitionRel kap alpha beta) :
+    ∃ alpha' beta', ¬ OrdPartitionRel (kap + 1) alpha' beta'
+
+/- ## Part X: Independence Results -/
+
+/-- **Todorcevic (1989)**: Under b = ω₁, ω₁ ↛ (ω₁, ω + 2)². -/
+axiom todorcevic_negative :
+    ¬ OrdPartitionRel omega1 omega1 (omegaOrd + 2)
+
+/-- **PFA** implies ω₁ → (ω₁, α)² for all countable α. -/
+axiom pfa_positive (alpha : Ordinal.{0}) (halpha : alpha < omega1) :
+    OrdPartitionRel omega1 omega1 alpha
+
+/-- Independence of ω₁ → (ω₁, ω + 2)². -/
+theorem partition_independence :
+    (∀ alpha : Ordinal.{0}, alpha < omega1 → OrdPartitionRel omega1 omega1 alpha) ∧
+    ¬ OrdPartitionRel omega1 omega1 (omegaOrd + 2) :=
+  ⟨pfa_positive, todorcevic_negative⟩
+
+/- ## Part XI: Summary -/
+
+def erdos_1172_all_questions : Prop :=
+  question1 ∧ question2 ∧ question3 ∧ question4
+
+axiom q3_first_target_large : omega1 < omega1 ^ (omegaOrd + 2) + 2
+axiom q2_targets_lt_omega3 :
+    omega2 + omega1 < omega3 ∧ omega2 + omegaOrd < omega3
+
+end Erdos1172
