@@ -319,6 +319,5 @@ Steiner systems are named after Jakob Steiner, though Thomas Kirkman
 studied them first. The existence problem was a major open question in
 combinatorics for over a century until Keevash's breakthrough in 2014.
 -/
-theorem historical_note : True := trivial
 
 end Erdos722
