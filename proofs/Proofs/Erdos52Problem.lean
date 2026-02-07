@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #52: The Sum-Product Conjecture
 
 For a finite set of integers A, is it true that for every ε > 0,
@@ -19,7 +19,7 @@ import Mathlib.Data.Finset.Image
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Sumset and Product Set
 -/
 
@@ -35,7 +35,7 @@ def productset (A : Finset ℤ) : Finset ℤ :=
 noncomputable def sumProductMax (A : Finset ℤ) : ℕ :=
   max (sumset A).card (productset A).card
 
-/-!
+/-
 ## Section II: The Sum-Product Conjecture
 -/
 
@@ -51,7 +51,7 @@ def ErdosProblem52 : Prop :=
       ∀ A : Finset ℤ, A.card ≥ 2 →
         (sumProductMax A : ℝ) ≥ C * (A.card : ℝ) ^ (2 - ε)
 
-/-!
+/-
 ## Section III: The Erdős–Szemerédi Theorem
 -/
 
@@ -63,7 +63,7 @@ axiom erdos_szemeredi_theorem :
     ∀ A : Finset ℤ, A.card ≥ 2 →
       (sumProductMax A : ℝ) ≥ (A.card : ℝ) ^ (1 + c)
 
-/-!
+/-
 ## Section IV: Current Best Bound
 -/
 
@@ -76,7 +76,7 @@ axiom bloom_bound :
     ∃ N₀ : ℕ, ∀ A : Finset ℤ, A.card ≥ N₀ →
       (sumProductMax A : ℝ) ≥ (A.card : ℝ) ^ (1270 / 951 - ε)
 
-/-!
+/-
 ## Section V: Trivial Bounds
 -/
 
@@ -97,7 +97,7 @@ axiom sumset_card_le (A : Finset ℤ) :
 axiom productset_card_le (A : Finset ℤ) :
     (productset A).card ≤ A.card * A.card
 
-/-!
+/-
 ## Section VI: Higher-Fold Generalizations
 -/
 
@@ -121,7 +121,7 @@ def GeneralizedSumProduct (m : ℕ) : Prop :=
         (max (mfoldSumset A m).card (mfoldProductset A m).card : ℝ) ≥
           C * (A.card : ℝ) ^ ((m : ℝ) - ε)
 
-/-!
+/-
 ## Section VII: Connection to Problem 53
 -/
 
