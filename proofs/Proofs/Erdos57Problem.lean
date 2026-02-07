@@ -28,7 +28,7 @@ namespace Erdos57
 
 variable {V : Type*}
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of all cycle lengths in a graph using Mathlib's Walk.IsCycle. -/
 def cycleLengths (G : SimpleGraph V) : Set ℕ :=
@@ -38,7 +38,7 @@ def cycleLengths (G : SimpleGraph V) : Set ℕ :=
 def oddCycleLengths (G : SimpleGraph V) : Set ℕ :=
   { n ∈ cycleLengths G | Odd n }
 
-/-! ## Chromatic Number -/
+/- ## Chromatic Number -/
 
 /-- A graph is k-colorable if it admits a proper k-coloring. -/
 def IsColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
@@ -48,13 +48,13 @@ def IsColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
 def HasInfiniteChromaticNumber (G : SimpleGraph V) : Prop :=
   ∀ k : ℕ, ¬IsColorable G k
 
-/-! ## The Harmonic Sum -/
+/- ## The Harmonic Sum -/
 
 /-- The sum ∑ 1/aᵢ where aᵢ are the odd cycle lengths. -/
 noncomputable def oddCycleHarmonicSum (G : SimpleGraph V) : ENNReal :=
   ∑' n : (oddCycleLengths G), (1 : ENNReal) / n.val
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Erdős-Hajnal Conjecture (1966) - SOLVED by Liu-Montgomery (2020)**:
@@ -118,7 +118,7 @@ theorem infinite_odd_cycle_lengths (G : SimpleGraph V)
   -- But h_sum says the harmonic sum = ⊤, contradiction
   exact h_ne_top h_sum
 
-/-! ## Related Questions (OPEN) -/
+/- ## Related Questions (OPEN) -/
 
 /-- Upper density of a set of natural numbers. -/
 noncomputable def upperDensity (S : Set ℕ) : ℝ :=
@@ -140,7 +140,7 @@ def HalfDensityConjecture : Prop :=
   ∀ (V : Type*) (G : SimpleGraph V),
     HasInfiniteChromaticNumber G → 1/2 ≤ upperDensity (oddCycleLengths G)
 
-/-! ## Bipartite Characterization -/
+/- ## Bipartite Characterization -/
 
 /-- A graph is bipartite iff it has no odd cycles. -/
 theorem bipartite_iff_no_odd_cycles (G : SimpleGraph V) :
@@ -152,7 +152,7 @@ theorem colorable_two_no_odd_cycles (G : SimpleGraph V)
     (h : IsColorable G 2) : oddCycleLengths G = ∅ := by
   sorry
 
-/-! ## Historical Notes
+/- ## Historical Notes
 
 The Liu-Montgomery proof uses sophisticated techniques from extremal
 combinatorics. The connection between chromatic number and odd cycles
