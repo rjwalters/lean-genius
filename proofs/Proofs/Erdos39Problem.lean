@@ -29,7 +29,7 @@ open Set Filter Asymptotics Real Nat
 
 namespace Erdos39
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A set A is a **Sidon set** (B₂ sequence) if all pairwise sums a + b
     with a ≤ b are distinct. -/
@@ -41,7 +41,7 @@ def IsSidonSet (A : Set ℕ) : Prop :=
 noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   (A ∩ Set.Icc 1 N).ncard
 
-/-! ## The Erdős Conjecture -/
+/- ## The Erdős Conjecture -/
 
 /-- **Erdős Problem #39** (OPEN):
     Does there exist an infinite Sidon set A such that for all ε > 0,
@@ -54,7 +54,7 @@ def Erdos39Conjecture : Prop :=
     ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ N ≥ N₀,
       (countingFunction A N : ℝ) ≥ C * (N : ℝ)^((1:ℝ)/2 - ε)
 
-/-! ## Known Upper Bounds -/
+/- ## Known Upper Bounds -/
 
 /-- **Erdős's Upper Bound**: For any infinite Sidon set A,
     liminf A(N)/√N = 0.
@@ -71,7 +71,7 @@ theorem no_sqrt_growth (A : Set ℕ) (hInf : A.Infinite) (hSidon : IsSidonSet A)
     ∀ c : ℝ, c > 0 → ∃ᶠ N in atTop, (countingFunction A N : ℝ) < c * Real.sqrt N := by
   sorry  -- Follows from liminf = 0
 
-/-! ## Known Lower Bounds (Constructions) -/
+/- ## Known Lower Bounds (Constructions) -/
 
 /-- **Greedy Construction**: The greedy algorithm produces an infinite
     Sidon set with A(N) ≫ N^{1/3}.
@@ -108,7 +108,7 @@ theorem ruzsa_exponent_value : Real.sqrt 2 - 1 > 0.41 := by
          _ = 1.41 := Real.sqrt_sq h1
   linarith
 
-/-! ## The Gap -/
+/- ## The Gap -/
 
 /--
 **Current state of knowledge for Erdős Problem #39:**
@@ -131,7 +131,7 @@ theorem erdos39_gap : Real.sqrt 2 - 1 < (1:ℝ)/2 := by
          _ = 1.5 := Real.sqrt_sq h2
   linarith
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- **Erdős-Rényi Construction**: For any ε > 0, there exists a set A with
     A(N) ≫ N^{1/2-ε} AND all representation numbers bounded.
@@ -146,7 +146,7 @@ axiom erdos_renyi_construction :
     ∃ B : ℝ, B > 0 ∧ ∀ n : ℕ,
       (({(a, b) : ℕ × ℕ | a ∈ A ∧ b ∈ A ∧ a + b = n}).ncard : ℝ) ≤ B
 
-/-! ## Problem Status -/
+/- ## Problem Status -/
 
 /-- **Erdős Problem #39: OPEN ($500 prize)**
 
@@ -173,7 +173,7 @@ References:
 theorem erdos_39_open : Erdos39Conjecture ∨ ¬Erdos39Conjecture := by
   exact Classical.em Erdos39Conjecture
 
-/-! ## Verified Facts -/
+/- ## Verified Facts -/
 
 /-- Singletons are Sidon sets. -/
 theorem sidon_singleton (n : ℕ) : IsSidonSet {n} := by
