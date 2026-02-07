@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #970: Jacobsthal's Function
 
 Source: https://erdosproblems.com/970
@@ -37,9 +37,7 @@ open Real Nat
 
 namespace Erdos970
 
-/-!
-## Part 1: Basic Definitions
--/
+/- ## Part 1: Basic Definitions -/
 
 /-- The number of distinct prime factors of n (omega function) -/
 def omega (n : ℕ) : ℕ := n.primeFactors.card
@@ -55,13 +53,11 @@ def consecutiveInterval (a m : ℕ) : Finset ℕ :=
 def hasCoprimeElement (n a m : ℕ) : Prop :=
   ∃ x ∈ consecutiveInterval a m, Nat.Coprime x n
 
-/-!
-## Part 2: Jacobsthal's Function
+/- ## Part 2: Jacobsthal's Function
 
 The function h(k) is axiomatized since computing it requires deep number-theoretic
 arguments about coprimality in intervals. Its existence follows from the fact that
-among any n+1 consecutive integers, at least one is coprime to n.
--/
+among any n+1 consecutive integers, at least one is coprime to n. -/
 
 /-- Jacobsthal's function h(k): the maximum over all n with at most k prime factors
     of the minimal m such that any m consecutive integers contain one coprime to n.
@@ -78,17 +74,13 @@ axiom h_spec : ∀ k : ℕ, k ≥ 1 →
 axiom h_minimal : ∀ k : ℕ, k ≥ 1 →
     ∀ m < h k, ∃ n : ℕ, hasAtMostKPrimes n k ∧ ∃ a : ℕ, ¬hasCoprimeElement n a m
 
-/-!
-## Part 3: Jacobsthal's Conjecture (the main question)
--/
+/- ## Part 3: Jacobsthal's Conjecture (the main question) -/
 
 /-- Jacobsthal's Conjecture: h(k) ≪ k² -/
 def jacobsthalConjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ k : ℕ, k ≥ 1 → (h k : ℝ) ≤ C * k^2
 
-/-!
-## Part 4: Known Upper Bounds
--/
+/- ## Part 4: Known Upper Bounds -/
 
 /-- Iwaniec's Theorem (1978): h(k) ≪ (k log k)²
     This is the best known upper bound, proved using sieve methods. -/
@@ -107,9 +99,7 @@ theorem iwaniec_bound_form :
   ring_nf at this ⊢
   exact this
 
-/-!
-## Part 5: Known Lower Bounds
--/
+/- ## Part 5: Known Lower Bounds -/
 
 /-- Rankin-type lower bound: h(k) ≥ ck log k for large k -/
 axiom rankin_lower_bound :
@@ -124,9 +114,7 @@ axiom fgkmt_lower_bound :
     (h k : ℝ) ≥ c * k * (Real.log k) * (Real.log (Real.log (Real.log k))) /
                     (Real.log (Real.log k))^2
 
-/-!
-## Part 6: Known Small Values
--/
+/- ## Part 6: Known Small Values -/
 
 /-- h(1) = 2: any 2 consecutive integers contain one odd number -/
 axiom h_one : h 1 = 2
@@ -150,9 +138,7 @@ axiom jacobsthal_extremal_at_primorial :
     ∀ n : ℕ, hasAtMostKPrimes n k →
       ∃ m, hasCoprimeElement n 0 m ∧ m ≤ h k
 
-/-!
-## Part 7: The conjecture h(k) ≪ k² is OPEN
--/
+/- ## Part 7: The conjecture h(k) ≪ k² is OPEN -/
 
 /-- The conjecture is consistent with known small values:
     h(1)=2 ≤ 1, h(2)=4 ≤ 4, h(3)=6 ≤ 9, h(4)=10 ≤ 16, h(5)=14 ≤ 25 -/
