@@ -19,7 +19,9 @@
     "sorries": 0,
     "erdosNumber": 923,
     "erdosUrl": "https://erdosproblems.com/923",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0"
   },
   "overview": {
     "historicalContext": "Jan Mycielski stunned graph theorists in 1955 by constructing triangle-free graphs with arbitrarily high chromatic number. The Mycielski construction M_k satisfies χ(M_k) = k while being completely triangle-free. This shattered the intuition that high chromatic number requires dense local structure like triangles.\n\nErdős posed Problem #923 in 1969 [Er69b]: if a graph has VERY high chromatic number, must it contain a triangle-free subgraph with moderately high chromatic number? This asks whether chromatic complexity must 'spread' beyond just the triangles.\n\nVojtěch Rödl proved YES in a one-page paper in Proc. Amer. Math. Soc. (1977). The proof uses Ramsey-theoretic ideas: partition edges of the high-chromatic graph into classes, and use Ramsey bounds to find a triangle-free piece with high chromatic number. The threshold f(k) is necessarily a tower of 2s, reflecting deep connections to Ramsey numbers.",

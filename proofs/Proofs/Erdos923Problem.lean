@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #923: Triangle-Free Subgraphs with High Chromatic Number
 
 Source: https://erdosproblems.com/923
@@ -42,7 +42,7 @@ open Nat SimpleGraph
 
 namespace Erdos923
 
-/-! ## Part I: Graph Colorings and Chromatic Number -/
+/- ## Part I: Graph Colorings and Chromatic Number -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -68,7 +68,7 @@ G has chromatic number at least k.
 def HasChromaticNumberAtLeast (G : SimpleGraph V) (k : ℕ) : Prop :=
   chromaticNumber G ≥ k
 
-/-! ## Part II: Triangle-Free Graphs -/
+/- ## Part II: Triangle-Free Graphs -/
 
 /--
 **Triangle:**
@@ -95,7 +95,7 @@ theorem emptyGraph_triangleFree : IsTriangleFree (⊥ : SimpleGraph V) := by
   intros a b c _ _ _
   simp [SimpleGraph.bot_adj]
 
-/-! ## Part III: Subgraphs -/
+/- ## Part III: Subgraphs -/
 
 /--
 **Spanning Subgraph:**
@@ -119,7 +119,7 @@ axiom subgraph_chromatic_le (H G : SimpleGraph V)
     (hsub : IsSpanningSubgraph H G) :
     chromaticNumber H ≤ chromaticNumber G
 
-/-! ## Part IV: Mycielski's Construction (Context) -/
+/- ## Part IV: Mycielski's Construction (Context) -/
 
 /--
 **Mycielski Graphs:**
@@ -131,7 +131,7 @@ axiom mycielski_triangle_free_high_chromatic :
     ∃ G : SimpleGraph W,
       IsTriangleFree G ∧ HasChromaticNumberAtLeast G k
 
-/-! ## Part V: The Main Problem -/
+/- ## Part V: The Main Problem -/
 
 /--
 **Rödl's Theorem (1977):**
@@ -162,7 +162,7 @@ theorem erdos_923_true :
         HasChromaticNumberAtLeast H k :=
   rodl_1977
 
-/-! ## Part VI: Tower Function Bounds -/
+/- ## Part VI: Tower Function Bounds -/
 
 /--
 **Tower Function:**
@@ -197,7 +197,7 @@ axiom rodl_bound :
         IsTriangleFree H ∧
         HasChromaticNumberAtLeast H k
 
-/-! ## Part VII: Generalizations -/
+/- ## Part VII: Generalizations -/
 
 /--
 **H-Free Version (Problem #108):**
@@ -225,7 +225,7 @@ axiom rodl_general_bipartite :
     (∃ c : Hgraph.Coloring (Fin 2), True) →
     HFreeSubgraphProblem H Hgraph
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #923: Summary**
