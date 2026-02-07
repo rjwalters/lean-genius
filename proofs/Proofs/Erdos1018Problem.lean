@@ -20,7 +20,7 @@ open SimpleGraph
 
 namespace Erdos1018
 
-/-!
+/-
 ## Graph Basics
 
 We work with simple graphs on finite vertex sets.
@@ -35,7 +35,7 @@ def edgeCount (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
 /-- The number of vertices. -/
 def vertexCount : ℕ := Fintype.card V
 
-/-!
+/-
 ## Dense Graphs
 
 A graph is (1+ε)-dense if it has at least n^(1+ε) edges.
@@ -45,7 +45,7 @@ A graph is (1+ε)-dense if it has at least n^(1+ε) edges.
 def isDense (G : SimpleGraph V) [DecidableRel G.Adj] (ε : ℝ) : Prop :=
   (edgeCount G : ℝ) ≥ (Fintype.card V : ℝ) ^ (1 + ε)
 
-/-!
+/-
 ## Planar Graphs
 
 A graph is planar if it can be embedded in the plane without edge crossings.
@@ -60,7 +60,7 @@ def isPlanar (G : SimpleGraph V) : Prop :=
 /-- A graph is non-planar if it's not planar. -/
 def isNonPlanar (G : SimpleGraph V) : Prop := ¬isPlanar G
 
-/-!
+/-
 ## Complete Graphs K₅ and K₃,₃
 
 The two minimal non-planar graphs (Kuratowski obstructions).
@@ -87,7 +87,7 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
 /-- K₃,₃ is non-planar. -/
 axiom K33_nonplanar : isNonPlanar (completeBipartite 3 3)
 
-/-!
+/-
 ## Graph Subdivisions
 
 A subdivision of H is obtained by replacing edges with paths.
@@ -102,7 +102,7 @@ axiom kuratowski_theorem (G : SimpleGraph V) :
     isNonPlanar G ↔ containsSubdivision G (completeGraph 5) ∨
                      containsSubdivision G (completeBipartite 3 3)
 
-/-!
+/-
 ## Induced Subgraphs
 
 A subgraph on a vertex subset.
@@ -118,7 +118,7 @@ def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
 def hasSmallNonPlanarSubgraph (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ S : Finset V, S.card ≤ k ∧ isNonPlanar (inducedSubgraph G S)
 
-/-!
+/-
 ## The Main Question
 
 Does there exist C_ε such that dense graphs have small non-planar subgraphs?
@@ -134,7 +134,7 @@ def existsBoundingConstant (ε : ℝ) : Prop :=
 /-- The main question: Does C_ε exist for all ε > 0? -/
 def erdos_1018_question : Prop := ∀ ε : ℝ, existsBoundingConstant ε
 
-/-!
+/-
 ## Kostochka-Pyber Theorem (1988)
 
 The affirmative answer: dense graphs contain small K₅ subdivisions.
@@ -165,7 +165,7 @@ theorem erdos_1018_solved : erdos_1018_question := by
   · -- K₅ subdivision implies non-planarity
     sorry
 
-/-!
+/-
 ## The Constant C_ε Grows as ε → 0
 
 Erdős noted that C_ε → ∞ as ε → 0.
@@ -183,7 +183,7 @@ theorem sparse_hides_nonplanarity :
           isDense G ε → hasSmallNonPlanarSubgraph G C) → C ≥ M := by
   sorry
 
-/-!
+/-
 ## Connection to Extremal Graph Theory
 
 The edge density n^(1+ε) is super-linear, which forces rich structure.
@@ -202,7 +202,7 @@ theorem superlinear_forces_nonplanar (ε : ℝ) (hε : ε > 0) :
         isDense G ε → isNonPlanar G := by
   sorry
 
-/-!
+/-
 ## Quantitative Bounds
 
 The actual bound on C_ε from Kostochka-Pyber is explicit.
@@ -219,7 +219,7 @@ axiom kostochka_pyber_explicit (ε : ℝ) (hε : ε > 0) :
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       isDense G ε → hasSmallK5Subdivision G (explicitBound ε)
 
-/-!
+/-
 ## Related Problems
 
 This connects to Turán-type problems and topological graph theory.
@@ -234,7 +234,7 @@ theorem dense_exceeds_turan (ε : ℝ) (hε : ε > 0) :
     ∃ N : ℕ, ∀ n ≥ N, (n : ℝ) ^ (1 + ε) > turanK5Subdivision n := by
   sorry
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #1018 on non-planar subgraphs in dense graphs.
