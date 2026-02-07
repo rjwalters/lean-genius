@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #42 — Sidon Sets with Disjoint Difference Sets
 
 A Sidon set (B₂ set) is a set A where all pairwise sums a + b (a ≤ b)
@@ -21,7 +21,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-/-! ## Sidon Set Definitions -/
+/- ## Sidon Set Definitions -/
 
 /-- A finite set is Sidon (B₂) if all pairwise sums are distinct,
     equivalently all nonzero differences are distinct -/
@@ -39,7 +39,7 @@ def IsMaximalSidon (A : Finset ℕ) (N : ℕ) : Prop :=
   IsSidonSet A ∧ InInterval A N ∧
   ∀ x : ℕ, 1 ≤ x → x ≤ N → x ∉ A → ¬IsSidonSet (A ∪ {x})
 
-/-! ## Difference Sets -/
+/- ## Difference Sets -/
 
 /-- The difference set A − A = {a₁ − a₂ : a₁, a₂ ∈ A} (as integers) -/
 def diffSet (A : Finset ℕ) : Finset ℤ :=
@@ -49,7 +49,7 @@ def diffSet (A : Finset ℕ) : Finset ℤ :=
 def DisjointDiffs (A B : Finset ℕ) : Prop :=
   ∀ d : ℤ, d ∈ diffSet A → d ∈ diffSet B → d = 0
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- A Sidon set in {1,...,N} has size at most ~√N -/
 axiom sidon_size_bound (A : Finset ℕ) (N : ℕ) (hn : 1 ≤ N)
@@ -63,7 +63,7 @@ axiom zero_in_diffSet (A : Finset ℕ) (hne : A.Nonempty) :
 /-- {1, 2, 4} is a maximal Sidon set in {1,...,4} -/
 axiom example_maximal_sidon : IsMaximalSidon {1, 2, 4} 4
 
-/-! ## Partial Results -/
+/- ## Partial Results -/
 
 /-- M = 2 case: Sedov proved that for large N, every maximal Sidon set
     has a 2-element Sidon set with disjoint differences -/
@@ -80,7 +80,7 @@ axiom sedov_M3 :
       ∃ B : Finset ℕ, IsSidonSet B ∧ InInterval B N ∧
         B.card = 3 ∧ DisjointDiffs A B
 
-/-! ## The Erdős Problem -/
+/- ## The Erdős Problem -/
 
 /-- Erdős Problem 42: For every M ≥ 1 and N sufficiently large,
     every maximal Sidon set A ⊆ {1,...,N} has a companion Sidon set
