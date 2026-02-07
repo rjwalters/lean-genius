@@ -29,7 +29,7 @@ open MeasureTheory Set Filter Real
 
 namespace Erdos1001
 
-/-!
+/-
 ## The Approximation Set
 
 For given parameters N, A, c, we define the set of α ∈ (0,1)
@@ -48,7 +48,7 @@ def approximationSet (N : ℕ) (A c : ℝ) : Set ℝ :=
 noncomputable def S (N : ℕ) (A c : ℝ) : ℝ :=
   (volume (approximationSet N A c)).toReal
 
-/-!
+/-
 ## Basic Properties
 
 The measure S(N, A, c) satisfies natural bounds and monotonicity.
@@ -66,7 +66,7 @@ axiom S_mono_A (N : ℕ) (A₁ A₂ c : ℝ) (h : A₁ ≤ A₂) :
 axiom S_mono_c (N : ℕ) (A c₁ c₂ : ℝ) (h : c₁ ≤ c₂) :
     S N A c₁ ≤ S N A c₂
 
-/-!
+/-
 ## The Limit Function
 
 The main result is that S(N, A, c) converges as N → ∞.
@@ -80,7 +80,7 @@ noncomputable def f (A c : ℝ) : ℝ :=
 def limitExists (A c : ℝ) : Prop :=
   ∃ L : ℝ, Tendsto (fun N => S N A c) atTop (nhds L)
 
-/-!
+/-
 ## Erdős-Szüsz-Turán Result (1958)
 
 In the regime 0 < A < c/(1+c²), the limit equals f(A,c).
@@ -102,7 +102,7 @@ theorem est_explicit_formula (A c : ℝ) (hA : 0 < A) (hc : c > 1)
     Tendsto (fun N => S N A c) atTop (nhds (12 * A * log c / π^2)) := by
   exact erdos_szusz_turan A c hA hc hregime
 
-/-!
+/-
 ## Boundedness Away from 0 and 1
 
 EST also proved that when min(A,c) > 10, S stays bounded away from extremes.
@@ -112,7 +112,7 @@ EST also proved that when min(A,c) > 10, S stays bounded away from extremes.
 axiom est_boundedness (A c : ℝ) (hA : A > 10) (hc : c > 10) :
     ∃ ε : ℝ, ε > 0 ∧ ∀ N : ℕ, N ≥ 1 → ε < S N A c ∧ S N A c < 1 - ε
 
-/-!
+/-
 ## Kesten-Sós Result (1966)
 
 Kesten and Sós proved that the limit always exists (for valid A, c),
@@ -135,7 +135,7 @@ theorem limit_convergence (A c : ℝ) (hA : A > 0) (hc : c > 1) :
   simp only [limitValue, hA, hc, and_self, dif_pos]
   exact Classical.choose_spec (kesten_sos A c hA hc)
 
-/-!
+/-
 ## Alternative Proofs
 
 Boca (2008) and Xiong-Zaharescu (2006) provided independent,
@@ -153,7 +153,7 @@ def xiong_zaharescu_method : Prop :=
 axiom boca_theorem : boca_method
 axiom xiong_zaharescu_theorem : xiong_zaharescu_method
 
-/-!
+/-
 ## Connection to Farey Fractions
 
 The problem relates to the distribution of Farey fractions.
@@ -173,7 +173,7 @@ theorem est_pi_squared_explanation :
   simp [f]
   ring
 
-/-!
+/-
 ## Summary
 
 **Status**: SOLVED
