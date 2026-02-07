@@ -57,52 +57,52 @@
   "sections": [
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
+      "title": "Part I: Basic Definitions",
       "summary": "Point2D, dist, UnitDistancePointSet, unitDistanceEdge, IsIndependentSet, independenceNumber",
       "startLine": 34,
-      "endLine": 65
+      "endLine": 61
     },
     {
       "id": "function-g",
-      "title": "The Function g(n)",
+      "title": "Part II: The Function g(n)",
       "summary": "g axiom: guaranteed independent set size",
-      "startLine": 67,
-      "endLine": 77
+      "startLine": 63,
+      "endLine": 69
     },
     {
       "id": "lower-bounds",
-      "title": "Lower Bounds",
+      "title": "Part III: Lower Bounds",
       "summary": "Pollack n/4, Csizmadia 9n/35, Swanepoel 8n/31, comparison theorem",
-      "startLine": 79,
-      "endLine": 104
+      "startLine": 71,
+      "endLine": 92
     },
     {
       "id": "upper-bounds",
-      "title": "Upper Bounds",
+      "title": "Part IV: Upper Bounds",
       "summary": "Chung-Graham-Pach 6n/19, Pach-Tóth 5n/16, comparison theorem",
-      "startLine": 106,
-      "endLine": 125
+      "startLine": 94,
+      "endLine": 109
     },
     {
       "id": "current-bounds",
-      "title": "Current Best Bounds",
+      "title": "Part V: Current Best Bounds",
       "summary": "current_best_bounds, bound_gap, current_knowledge axiom",
-      "startLine": 127,
-      "endLine": 145
+      "startLine": 111,
+      "endLine": 125
     },
     {
       "id": "higher-dimensions",
-      "title": "Higher Dimensions",
+      "title": "Part VI: Higher Dimensions",
       "summary": "g_d axiom, higher dimension question and upper bound",
-      "startLine": 147,
-      "endLine": 166
+      "startLine": 127,
+      "endLine": 142
     },
     {
       "id": "summary",
-      "title": "Summary",
+      "title": "Part VII: Summary",
       "summary": "erdos_1066_summary theorem combining all proved arithmetic results",
-      "startLine": 168,
-      "endLine": 185
+      "startLine": 144,
+      "endLine": 159
     }
   ],
   "conclusion": {

@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #1066: Independence Number of Unit Distance Graphs
 
 Source: https://erdosproblems.com/1066
@@ -31,11 +31,7 @@ open Real
 
 namespace Erdos1066
 
-/-!
-## Part I: Basic Definitions
-
-Unit distance graphs and independent sets.
--/
+/- ## Part I: Basic Definitions -/
 
 /-- A point in ℝ². -/
 abbrev Point2D := EuclideanSpace ℝ (Fin 2)
@@ -64,11 +60,7 @@ def IsIndependentSet (P : UnitDistancePointSet) (S : Finset (Fin n)) : Prop :=
 noncomputable def independenceNumber (P : UnitDistancePointSet) : ℕ :=
   Nat.find (⟨n, fun S _ => S.card ≤ n⟩ : ∃ k, ∀ S : Finset (Fin n), IsIndependentSet P S → S.card ≤ k)
 
-/-!
-## Part II: The Function g(n)
-
-The guaranteed independent set size.
--/
+/- ## Part II: The Function g(n) -/
 
 /-- g(n): The maximum k such that every unit distance point set on n points
     has an independent set of size at least k. Axiomatized since defining
@@ -76,11 +68,7 @@ The guaranteed independent set size.
     machinery. -/
 axiom g (n : ℕ) : ℕ
 
-/-!
-## Part III: Lower Bounds
-
-Results showing g(n) is at least some value.
--/
+/- ## Part III: Lower Bounds -/
 
 /-- **Four Colour Theorem Implication (Pollack 1985):**
     Since unit distance graphs with minimum distance 1 are planar,
@@ -103,11 +91,7 @@ theorem lower_bounds_comparison :
     (1 : ℚ) / 4 < 9 / 35 ∧ 9 / 35 < 8 / 31 := by
   constructor <;> norm_num
 
-/-!
-## Part IV: Upper Bounds
-
-Constructions showing g(n) is at most some value.
--/
+/- ## Part IV: Upper Bounds -/
 
 /-- **Chung-Graham and Pach Construction:**
     g(n) ≤ (6/19)n ≈ 0.316n -/
@@ -124,11 +108,7 @@ theorem upper_bounds_comparison :
     (5 : ℚ) / 16 < 6 / 19 ∧ 6 / 19 < 1 / 3 := by
   constructor <;> norm_num
 
-/-!
-## Part V: Current Best Bounds
-
-Summary of the state of the art.
--/
+/- ## Part V: Current Best Bounds -/
 
 /-- (8/31) < (5/16): the lower bound is strictly below the upper bound. -/
 theorem current_best_bounds :
@@ -144,11 +124,7 @@ axiom current_knowledge :
     ∀ n : ℕ, n ≥ 1 →
     (8 : ℚ) / 31 * n ≤ g n ∧ (g n : ℚ) ≤ (5 : ℚ) / 16 * n
 
-/-!
-## Part VI: Higher Dimensions
-
-Erdős's generalization to ℝ^d.
--/
+/- ## Part VI: Higher Dimensions -/
 
 /-- g_d(n): For n points in ℝ^d with minimum distance 1, the minimum number
     of points that always have pairwise distance > 1. Axiomatized since
@@ -165,9 +141,7 @@ axiom higher_dimension_upper_bound :
     ∀ d : ℕ, d ≥ 1 → ∃ C : ℝ, C > 0 ∧
     ∀ n : ℕ, n ≥ 1 → (g_d d n : ℝ) ≤ C * n / d
 
-/-!
-## Part VII: Summary
--/
+/- ## Part VII: Summary -/
 
 /-- **Summary of Erdős Problem #1066:**
     Combines the verified arithmetic facts:
