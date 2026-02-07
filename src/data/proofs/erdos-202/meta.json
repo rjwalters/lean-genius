@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Endre Szemerédi",
     "sourceUrl": "https://erdosproblems.com/202",
     "date": "1968",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos202Problem.lean",
     "tags": [
       "erdos",
@@ -15,8 +15,8 @@
       "covering-systems",
       "combinatorics"
     ],
-    "badge": "wip",
-    "sorries": 14,
+    "badge": "axiom",
+    "sorries": 7,
     "erdosNumber": 202,
     "erdosUrl": "https://erdosproblems.com/202",
     "erdosProblemStatus": "open",
@@ -68,51 +68,58 @@
     {
       "id": "congruence-classes",
       "title": "Congruence Classes",
-      "summary": "Structure for residue classes and membership predicate",
-      "startLine": 37,
-      "endLine": 51
+      "summary": "CongruenceClass structure, contains, AreDisjoint",
+      "startLine": 70,
+      "endLine": 84
     },
     {
       "id": "disjoint-systems",
       "title": "Disjoint Systems",
-      "summary": "Finite sets of pairwise disjoint congruence classes",
-      "startLine": 53,
-      "endLine": 70
+      "summary": "DisjointSystem structure, moduli, boundedBy, size",
+      "startLine": 86,
+      "endLine": 103
     },
     {
       "id": "f-function",
       "title": "The Function f(N)",
-      "summary": "Maximum size of a disjoint system with moduli ≤ N",
-      "startLine": 72,
-      "endLine": 80
+      "summary": "f(N) definition, f_mono (proved by Aristotle), basic bounds",
+      "startLine": 105,
+      "endLine": 152
+    },
+    {
+      "id": "basic-bounds",
+      "title": "Basic Bounds",
+      "summary": "f_le_N (Aristotle), f_lower_trivial (Aristotle), density arguments",
+      "startLine": 153,
+      "endLine": 336
     },
     {
       "id": "l-function",
       "title": "The L Function",
-      "summary": "L(N) = exp(√(log N · log log N)) and its growth properties",
-      "startLine": 92,
-      "endLine": 111
+      "summary": "L(N) definition, L_mono (Aristotle), L_subpolynomial (Aristotle)",
+      "startLine": 337,
+      "endLine": 397
     },
     {
       "id": "erdos-stein",
-      "title": "Erdős-Stein Conjecture",
-      "summary": "f(N) = o(N), proved by Erdős-Szemerédi 1968",
-      "startLine": 113,
-      "endLine": 127
+      "title": "Erdős-Stein and Szemerédi",
+      "summary": "erdos_stein_conjecture, erdos_szemeredi_upper (Aristotle)",
+      "startLine": 414,
+      "endLine": 546
     },
     {
       "id": "modern-bounds",
-      "title": "Modern Bounds",
-      "summary": "Current best: N/L(N)^{1+o(1)} < f(N) < N/L(N)^{√3/2+o(1)}",
-      "startLine": 129,
-      "endLine": 162
+      "title": "Modern Bounds (BFV)",
+      "summary": "upper_bound_BFV, lower_bound_BFV (Aristotle), ExactAsymptoticConjecture",
+      "startLine": 548,
+      "endLine": 760
     },
     {
       "id": "examples",
-      "title": "Examples and Density",
-      "summary": "Concrete examples and density constraints",
-      "startLine": 164,
-      "endLine": 178
+      "title": "Historical Bounds and Examples",
+      "summary": "Croot bounds, example_N6, coveringDensity",
+      "startLine": 763,
+      "endLine": 798
     }
   ],
   "conclusion": {
