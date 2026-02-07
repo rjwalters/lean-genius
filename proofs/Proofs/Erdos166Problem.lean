@@ -33,9 +33,7 @@ open Finset
 
 namespace Erdos166
 
-/-!
-## Part I: Ramsey Number Definitions
--/
+/- ## Part I: Ramsey Number Definitions -/
 
 /--
 **Ramsey Number R(s,t):**
@@ -52,9 +50,7 @@ noncomputable def RamseyNumber (s t : ℕ) : ℕ :=
 /-- Notation: R(s,t) for Ramsey numbers. -/
 notation "R(" s "," t ")" => RamseyNumber s t
 
-/-!
-## Part II: Basic Properties
--/
+/- ## Part II: Basic Properties -/
 
 /--
 **Symmetry of Ramsey Numbers:**
@@ -125,9 +121,7 @@ theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by
         fun x hx => by linarith [show x.card ≤ b by
           exact le_trans (Finset.card_le_univ _) (by simpa)]⟩
 
-/-!
-## Part III: Known Exact Values
--/
+/- ## Part III: Known Exact Values -/
 
 /--
 **R(3,3) = 6:**
@@ -159,9 +153,7 @@ axiom ramsey_3_k_bounds (k : ℕ) (hk : k ≥ 3) :
     c₁ * k^2 / Real.log k ≤ R(3, k) ∧
     (R(3, k) : ℝ) ≤ c₂ * k^2 / Real.log k
 
-/-!
-## Part IV: Historical Lower Bounds for R(4,k)
--/
+/- ## Part IV: Historical Lower Bounds for R(4,k) -/
 
 /--
 **Spencer (1977):**
@@ -175,9 +167,7 @@ axiom spencer_lower_bound :
     (R(4, k) : ℝ) ≥ c * (k * Real.log k)^(5/2 : ℝ)
 
 
-/-!
-## Part V: Upper Bound (Ajtai-Komlós-Szemerédi)
--/
+/- ## Part V: Upper Bound (Ajtai-Komlós-Szemerédi) -/
 
 /--
 **Ajtai-Komlós-Szemerédi (1980):**
@@ -191,9 +181,7 @@ axiom aks_upper_bound :
     (R(4, k) : ℝ) ≤ C * k^3 / (Real.log k)^2
 
 
-/-!
-## Part VI: The Solution (Mattheus-Verstraete 2023)
--/
+/- ## Part VI: The Solution (Mattheus-Verstraete 2023) -/
 
 /--
 **Mattheus-Verstraete (2023):**
@@ -207,9 +195,7 @@ axiom mattheus_verstraete :
     (R(4, k) : ℝ) ≥ c * k^3 / (Real.log k)^4
 
 
-/-!
-## Part VII: Erdős's Conjecture (SOLVED)
--/
+/- ## Part VII: Erdős's Conjecture (SOLVED) -/
 
 /--
 **Erdős Problem #166 Statement:**
@@ -245,9 +231,7 @@ theorem current_bounds :
   obtain ⟨C, hC, hC_bound⟩ := aks_upper_bound
   exact ⟨c, C, hc, hC, fun k hk => ⟨hc_bound k hk, hC_bound k hk⟩⟩
 
-/-!
-## Part VIII: Summary
--/
+/- ## Part VIII: Summary -/
 
 /--
 **Summary of Erdős Problem #166:**
