@@ -25,57 +25,65 @@
   },
   {
     "id": "ann-4",
-    "range": { "startLine": 115, "endLine": 121 },
+    "range": { "startLine": 105, "endLine": 119 },
+    "type": "definition",
+    "title": "Lambda(k,m) Axiomatized",
+    "content": "The Λ(k,m) function is axiomatized with two properties: lambda_is_bound (it bounds r(k,m,p) for large primes) and lambda_is_minimal (no smaller value suffices). This avoids sorry in the definition.",
+    "significance": "essential"
+  },
+  {
+    "id": "ann-5",
+    "range": { "startLine": 125, "endLine": 131 },
     "type": "theorem",
     "title": "Λ(2,2) = 9",
     "content": "The first pair of consecutive quadratic residues is always ≤ 9. Elegant proof: 9=3² is always QR. If 10 isn't QR, then since 10=2·5 and product of two non-QRs is QR, one of 2,5 must be QR, giving pair {1,2} or {4,5}.",
     "significance": "essential"
   },
   {
-    "id": "ann-5",
-    "range": { "startLine": 157, "endLine": 165 },
+    "id": "ann-6",
+    "range": { "startLine": 167, "endLine": 175 },
     "type": "theorem",
     "title": "Hildebrand's Theorem (1991)",
     "content": "Λ(k,2) is finite for ALL k ≥ 2. This resolves Question 1 completely. The proof uses sophisticated character sum estimates and the large sieve inequality from analytic number theory.",
     "significance": "essential"
   },
   {
-    "id": "ann-6",
-    "range": { "startLine": 184, "endLine": 191 },
+    "id": "ann-7",
+    "range": { "startLine": 194, "endLine": 201 },
     "type": "theorem",
     "title": "Λ(k,3) = ∞ for Even k",
     "content": "For even k, no uniform bound exists for 3 consecutive kth power residues. This creates a parity dichotomy: m=3 case is finite for k=3 but infinite for even k, with odd k ≥ 5 unknown.",
     "significance": "essential"
   },
   {
-    "id": "ann-7",
-    "range": { "startLine": 211, "endLine": 219 },
+    "id": "ann-8",
+    "range": { "startLine": 221, "endLine": 229 },
     "type": "theorem",
     "title": "Graham's Theorem (1964)",
     "content": "Λ(k,m) = ∞ for ALL k ≥ 2 and m ≥ 4. No matter how large the prime, there's no universal bound for finding 4+ consecutive kth power residues. This makes m ≤ 3 the only interesting cases.",
     "significance": "essential"
   },
   {
-    "id": "ann-8",
-    "range": { "startLine": 127, "endLine": 151 },
+    "id": "ann-9",
+    "range": { "startLine": 137, "endLine": 161 },
     "type": "insight",
     "title": "Known Exact Values",
     "content": "Machine computations found: Λ(2,2)=9, Λ(3,2)=77, Λ(4,2)=1224, Λ(5,2)=7888, Λ(6,2)=202124, Λ(7,2)=1649375. These grow rapidly - ratio between consecutive values is irregular but increasing.",
     "significance": "important"
   },
   {
-    "id": "ann-9",
-    "range": { "startLine": 198, "endLine": 199 },
+    "id": "ann-10",
+    "range": { "startLine": 208, "endLine": 209 },
     "type": "conjecture",
     "title": "Question 2: OPEN",
     "content": "Is Λ(k,3) finite for all ODD k ≥ 5? Only Λ(3,3)=23532 is known to be finite. Values like Λ(5,3), Λ(7,3) are completely unknown - we don't even know if they're finite!",
     "significance": "important"
   },
   {
-    "id": "ann-10",
-    "range": { "startLine": 302, "endLine": 320 },
+    "id": "ann-11",
+    "range": { "startLine": 317, "endLine": 339 },
     "type": "summary",
-    "title": "Main Result: erdos_436",
+    "title": "Main Result: erdos_436_partially_solved",
     "content": "PARTIALLY SOLVED: Q1 (Λ(k,2) finite) resolved by Hildebrand. Q2 (Λ(k,3) for odd k) OPEN for k ≥ 5. Q3 (growth rate) partially known. The m=3 parity dichotomy is the key remaining mystery.",
     "significance": "essential"
   }

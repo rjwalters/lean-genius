@@ -28,7 +28,7 @@
       "AreConsecutiveKthResidues: m consecutive residues",
       "minConsecKthResidues: r(k,m,p) function",
       "LambdaFinite: Finiteness of Λ(k,m)",
-      "Lambda: The Λ(k,m) value",
+      "Lambda: The Λ(k,m) value (axiomatized)",
       "hildebrand_theorem: Λ(k,2) finite for all k",
       "graham_theorem: Λ(k,m) = ∞ for m ≥ 4",
       "lambda_even_3_infinite: Λ(k,3) = ∞ for even k",
@@ -42,7 +42,7 @@
   "overview": {
     "historicalContext": "D.H. Lehmer and Emma Lehmer initiated this problem in 1962 with their paper 'On runs of residues'. They showed Λ(2,2)=9 with an elegant argument. Extensive computations in the 1960s by Dunton, Bierstedt, Mills, Brillhart, and Selfridge found exact values through k=7. Hildebrand's 1991 theorem using character sums and the large sieve resolved Question 1. Graham (1964) proved the m≥4 case is always infinite.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nFor prime p and k, m ≥ 2, let r(k,m,p) = min{r : r,...,r+m-1 are kth power residues mod p}.\nDefine Λ(k,m) = lim sup_{p→∞} r(k,m,p).\n\n**Questions:**\n1. Is Λ(k,2) finite for all k? [SOLVED: YES - Hildebrand 1991]\n2. Is Λ(k,3) finite for all odd k? [OPEN]\n3. What is the growth rate of Λ(k,m)? [PARTIAL]",
-    "proofStrategy": "The formalization defines kth power residues and consecutive runs. The Λ(k,m) function captures lim sup behavior. Hildebrand's theorem, Graham's theorem, and the Lehmer-Lehmer parity result for m=3 are axiomatized. Exact computed values are recorded.",
+    "proofStrategy": "The formalization defines kth power residues and consecutive runs. The Λ(k,m) function captures lim sup behavior via axiomatized Lambda with bound and minimality properties. Hildebrand's theorem, Graham's theorem, and the Lehmer-Lehmer parity result for m=3 are axiomatized. Exact computed values are recorded.",
     "keyInsights": [
       "**Λ(2,2)=9:** Elegant proof using 9=3² always QR and 10=2·5 structure",
       "**Hildebrand 1991:** Λ(k,2) finite for all k using analytic methods",
@@ -71,57 +71,57 @@
       "id": "lambda-function",
       "title": "The Λ(k,m) Function",
       "startLine": 89,
-      "endLine": 109,
-      "summary": "LambdaFinite, Lambda definitions"
+      "endLine": 119,
+      "summary": "LambdaFinite, Lambda axiom with bound and minimality"
     },
     {
       "id": "known-values",
       "title": "Known Exact Values",
-      "startLine": 111,
-      "endLine": 151,
+      "startLine": 121,
+      "endLine": 161,
       "summary": "Λ(2,2)=9 through Λ(7,2)=1649375"
     },
     {
       "id": "hildebrand",
       "title": "Hildebrand's Theorem",
-      "startLine": 153,
-      "endLine": 171,
+      "startLine": 163,
+      "endLine": 181,
       "summary": "Λ(k,2) finite for all k (1991)"
     },
     {
       "id": "m3-case",
       "title": "The m = 3 Case",
-      "startLine": 173,
-      "endLine": 205,
+      "startLine": 183,
+      "endLine": 215,
       "summary": "Λ(3,3)=23532, parity dichotomy, open question"
     },
     {
       "id": "graham",
       "title": "Graham's Theorem",
-      "startLine": 207,
-      "endLine": 230,
+      "startLine": 217,
+      "endLine": 240,
       "summary": "Λ(k,m) = ∞ for m ≥ 4"
     },
     {
       "id": "quadratic",
       "title": "Quadratic Residue Case",
-      "startLine": 232,
-      "endLine": 254,
+      "startLine": 242,
+      "endLine": 264,
       "summary": "Elegant proof of Λ(2,2) ≤ 9"
     },
     {
       "id": "growth",
       "title": "Growth Rate Questions",
-      "startLine": 256,
-      "endLine": 280,
-      "summary": "Super-polynomial growth conjectured"
+      "startLine": 266,
+      "endLine": 295,
+      "summary": "Super-polynomial growth, increasing ratios"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 282,
-      "endLine": 331,
-      "summary": "Main theorems and historical note"
+      "startLine": 297,
+      "endLine": 341,
+      "summary": "Main theorems and partially solved status"
     }
   ],
   "conclusion": {
