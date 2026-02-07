@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #571: Rational Turán Exponents for Bipartite Graphs
 
 **Source:** [erdosproblems.com/571](https://erdosproblems.com/571)
@@ -32,7 +32,7 @@ import Mathlib
 
 namespace Erdos571
 
-/-! ## Part I: Graph Definitions -/
+/- ## Part I: Graph Definitions -/
 
 /-- A simple graph on vertex type V -/
 structure Graph (V : Type*) where
@@ -60,7 +60,7 @@ def ContainsCopy {V W : Type*} (G : Graph V) (H : Graph W) : Prop :=
 def IsFree {V W : Type*} (H : Graph W) (G : Graph V) : Prop :=
   ¬ContainsCopy G H
 
-/-! ## Part II: Extremal Numbers and Asymptotic Notation -/
+/- ## Part II: Extremal Numbers and Asymptotic Notation -/
 
 /-- Asymptotic equivalence: f ≍ g means c₁g ≤ f ≤ c₂g for constants c₁, c₂ > 0 -/
 def AsymptoticEquiv (f g : ℕ → ℝ) : Prop :=
@@ -71,7 +71,7 @@ def AsymptoticEquiv (f g : ℕ → ℝ) : Prop :=
 def IsBigO (f g : ℕ → ℝ) : Prop :=
   ∃ (c : ℝ) (N₀ : ℕ), c > 0 ∧ ∀ n ≥ N₀, |f n| ≤ c * |g n|
 
-/-! ## Part III: Turán Exponents -/
+/- ## Part III: Turán Exponents -/
 
 /--
 A rational number α ∈ [1,2) is a Turán exponent if there exists a
@@ -87,7 +87,7 @@ def IsTuranExponent (α : ℚ) : Prop :=
       -- ex represents the extremal number for G
       AsymptoticEquiv ex (fun n => (n : ℝ) ^ (α : ℝ))
 
-/-! ## Part IV: The Conjecture -/
+/- ## Part IV: The Conjecture -/
 
 /--
 **Erdős Problem #571 (OPEN):**
@@ -97,7 +97,7 @@ single bipartite graph G with ex(n;G) ≍ n^α.
 def erdos_571_conjecture : Prop :=
   ∀ α : ℚ, 1 ≤ α → α < 2 → IsTuranExponent α
 
-/-! ## Part V: Known Turán Exponents -/
+/- ## Part V: Known Turán Exponents -/
 
 /--
 **Conlon-Janzer-Lee (2021):** The rationals 3/2 - 1/(2s) for s ≥ 2
@@ -143,7 +143,7 @@ Turán exponents. This covers a dense set near 2, showing exponents
 axiom conlon_janzer_near_two :
   ∀ a b : ℕ, a ≥ 2 → b ≥ (a-1)^2 → IsTuranExponent (2 - (a : ℚ)/(b : ℚ))
 
-/-! ## Part VI: Bukh-Conlon Finite Family Result -/
+/- ## Part VI: Bukh-Conlon Finite Family Result -/
 
 /--
 **Bukh-Conlon (2018):** Every rational α ∈ [1,2) is achievable for a
@@ -157,7 +157,7 @@ axiom bukh_conlon_families :
     ∃ (k : ℕ) (exF : ℕ → ℝ),
       AsymptoticEquiv exF (fun n => (n : ℝ) ^ (α : ℝ))
 
-/-! ## Part VII: Classical Upper Bounds -/
+/- ## Part VII: Classical Upper Bounds -/
 
 /--
 **Kővári-Sós-Turán (1954):** For the complete bipartite graph K_{s,t}
@@ -181,7 +181,7 @@ axiom bondy_simonovits_upper :
       ∃ (ex : ℕ → ℝ),
         IsBigO ex (fun n => (n : ℝ)^(2 - 1/(k : ℝ)))
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Summary of Erdős Problem #571:**
