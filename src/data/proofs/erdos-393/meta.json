@@ -18,7 +18,7 @@
       "density-results"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 0,
     "erdosNumber": 393,
     "erdosUrl": "https://erdosproblems.com/393",
     "erdosProblemStatus": "solved",
@@ -81,63 +81,56 @@
       "title": "The f(n) Function",
       "summary": "Definition of f(n) as minimal span",
       "startLine": 67,
-      "endLine": 78
+      "endLine": 77
     },
     {
       "id": "consecutive-case",
       "title": "The f(n) = 1 Case",
       "summary": "When n! = k(k+1) for consecutive integers",
-      "startLine": 80,
-      "endLine": 102
+      "startLine": 79,
+      "endLine": 97
     },
     {
       "id": "counting-function",
       "title": "The Counting Function F_m(N)",
       "summary": "Counting n ≤ N with f(n) = m",
-      "startLine": 104,
-      "endLine": 121
+      "startLine": 99,
+      "endLine": 116
     },
     {
       "id": "abc-conditional",
       "title": "f(n) → ∞ Conditional on ABC",
       "summary": "Luca's result assuming ABC conjecture",
-      "startLine": 123,
-      "endLine": 145
+      "startLine": 118,
+      "endLine": 134
     },
     {
       "id": "bounds",
       "title": "Lower Bounds on f(n)",
       "summary": "Basic bounds on the f(n) function",
-      "startLine": 147,
-      "endLine": 163
+      "startLine": 136,
+      "endLine": 149
     },
     {
       "id": "diophantine",
       "title": "Connection to Diophantine Equations",
       "summary": "P(x) = n! and Brocard's problem",
-      "startLine": 165,
-      "endLine": 183
-    },
-    {
-      "id": "small-values",
-      "title": "Small Values",
-      "summary": "Known values of f(n) for small n",
-      "startLine": 185,
-      "endLine": 198
+      "startLine": 151,
+      "endLine": 165
     },
     {
       "id": "density",
       "title": "Density Results",
       "summary": "Density zero and sparse values theorems",
-      "startLine": 200,
-      "endLine": 214
+      "startLine": 167,
+      "endLine": 178
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Complete status of Problem #393",
-      "startLine": 216,
-      "endLine": 237
+      "startLine": 180,
+      "endLine": 194
     }
   ],
   "conclusion": {
