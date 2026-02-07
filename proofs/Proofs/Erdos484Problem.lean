@@ -31,7 +31,7 @@ import Mathlib.Data.Finset.Basic
 
 namespace Erdos484
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **k-coloring of {1,...,N}:**
@@ -62,7 +62,7 @@ monochromatic sums.
 def monochromaticSums {N k : ℕ} (χ : Coloring N k) : Set ℕ :=
   {s | isMonochromaticSum χ s}
 
-/-! ## Part II: Roth's Conjecture (Proved) -/
+/- ## Part II: Roth's Conjecture (Proved) -/
 
 /--
 **Roth's Conjecture:**
@@ -81,7 +81,7 @@ Proved by Erdős, Sárközy, and Sós in 1989.
 -/
 axiom roth_conjecture_true : roth_conjecture
 
-/-! ## Part III: The Erdős-Sárközy-Sós Theorem -/
+/- ## Part III: The Erdős-Sárközy-Sós Theorem -/
 
 /--
 **Main Theorem (ESS89):**
@@ -117,7 +117,7 @@ As k increases, the error term approaches N but stays sub-linear.
 axiom exponent_sublinear :
     ∀ k : ℕ, k ≥ 1 → (1 : ℝ) - 1 / 2^(k + 1) < 1
 
-/-! ## Part IV: The Two-Coloring Case -/
+/- ## Part IV: The Two-Coloring Case -/
 
 /--
 **Theorem for k = 2:**
@@ -156,7 +156,7 @@ axiom optimal_construction_exists :
       -- No power of 2 is a monochromatic sum
       (∀ m : ℕ, 2^m ≤ 2 * N → ¬isMonochromaticSum χ (2^m))
 
-/-! ## Part V: Key Proof Ideas -/
+/- ## Part V: Key Proof Ideas -/
 
 /--
 **Sumset structure:**
@@ -197,7 +197,7 @@ axiom fourier_representation_count :
           (Finset.range (2 * N))).card ≤
         Nat.ceil ((N : ℝ) ^ (1 - 1 / 2^(k + 1)))
 
-/-! ## Part VI: Consequences -/
+/- ## Part VI: Consequences -/
 
 /--
 **Positive density of sums:**
@@ -223,7 +223,7 @@ axiom constant_half_minus_epsilon :
         (Finset.filter (fun s => s % 2 = 0 ∧ isMonochromaticSum χ s)
           (Finset.range (2 * N))).card ≥ ((1 : ℝ)/2 - ε) * N
 
-/-! ## Part VII: Extensions and Related Results -/
+/- ## Part VII: Extensions and Related Results -/
 
 /--
 **Ben Green's Problem 25:**
@@ -264,7 +264,7 @@ axiom hindman_theorem :
           ∀ F : Finset ℕ, ↑F ⊆ S → F.Nonempty →
             χ (F.sum id) = c
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Summary of Erdős Problem #484:**
