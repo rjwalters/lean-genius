@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #336: Additive Bases and Exact Order
 
 Source: https://erdosproblems.com/336
@@ -32,7 +32,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 namespace Erdos336
 
-/-! ## Part 1: Basic Definitions -/
+/- ## Part 1: Basic Definitions -/
 
 /-- A set A is a basis of order r if every sufficiently large integer
     can be represented as a sum of at most r elements from A. -/
@@ -54,7 +54,7 @@ def HasOrderAndExactOrder (A : Set ℕ) (r k : ℕ) : Prop :=
 noncomputable def h (r : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ A : Set ℕ, HasOrderAndExactOrder A r k }
 
-/-! ## Part 2: The Limit Question -/
+/- ## Part 2: The Limit Question -/
 
 /-- The main question: find lim_{r→∞} h(r)/r². -/
 def LimitExists : Prop :=
@@ -64,7 +64,7 @@ def LimitExists : Prop :=
 noncomputable def limitValue : ℝ :=
   if h : LimitExists then Classical.choose h else 0
 
-/-! ## Part 3: Known Bounds -/
+/- ## Part 3: Known Bounds -/
 
 /-- Erdős-Graham (1980) original lower bound: lim ≥ 1/4. -/
 axiom erdos_graham_lower_1980 :
@@ -88,7 +88,7 @@ theorem current_bounds :
     (∀ ε > 0, ∃ R : ℕ, ∀ r ≥ R, ((h r : ℕ) : ℝ) / (r^2 : ℝ) ≤ 1/2 + ε) :=
   ⟨grekos_lower_1988, nash_upper_1993⟩
 
-/-! ## Part 4: Specific Values -/
+/- ## Part 4: Specific Values -/
 
 /-- h(2) = 4 (Erdős-Graham 1980). -/
 axiom h_2 : h 2 = 4
@@ -109,7 +109,7 @@ example : (h 3 : ℚ) / (3^2 : ℚ) = 7/9 := by
   simp [h_3]
   norm_num
 
-/-! ## Part 5: Order vs Exact Order Can Differ -/
+/- ## Part 5: Order vs Exact Order Can Differ -/
 
 /-- Erdős-Graham example: A = ∪_{k≥0}(2^{2k}, 2^{2k+1}] has order 2 but exact order 3. -/
 def erdosGrahamExample : Set ℕ :=
@@ -129,7 +129,7 @@ theorem order_exact_order_differ : ∃ A : Set ℕ, ∃ r k : ℕ, r ≠ k ∧
   · norm_num
   · exact ⟨example_order_2, example_exact_order_3⟩
 
-/-! ## Part 6: Characterization of Exact Order Existence
+/- ## Part 6: Characterization of Exact Order Existence
 
 Erdős-Graham showed: A has an exact order iff consecutive differences are coprime.
 -/
@@ -145,7 +145,7 @@ axiom erdos_graham_characterization (A : Set ℕ) (a : ℕ → ℕ)
     (∃ k, HasExactOrder A k) ↔
     ∀ d > 1, ∃ k, ¬(d ∣ consecutiveDiffs a k)
 
-/-! ## Part 7: Plagne's Refinement
+/- ## Part 7: Plagne's Refinement
 
 Plagne (2004) improved bounds on lower-order terms of h(r),
 giving tighter estimates for the growth of h(r) beyond the leading r² term.
@@ -157,7 +157,7 @@ axiom plagne_lower_order_2004 :
     ∃ c C : ℝ, c > 0 ∧ ∀ r : ℕ, r ≥ 4 →
       ((h r : ℕ) : ℝ) ≥ (r^2 : ℝ) / 3 + c * r - C
 
-/-! ## Part 8: Main Results -/
+/- ## Part 8: Main Results -/
 
 /-- Erdős Problem #336: Main statement combining bounds and known values. -/
 theorem erdos_336_main :
