@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #255: Discrepancy of Sequences in [0,1]
 
 Source: https://erdosproblems.com/255
@@ -35,7 +35,7 @@ open Set Nat Real
 
 namespace Erdos255
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- An infinite sequence z : ℕ → ℝ with all values in [0,1]. -/
 def IsSequenceInUnitInterval (z : ℕ → ℝ) : Prop :=
@@ -58,7 +58,7 @@ noncomputable def discrepancy (z : ℕ → ℝ) (a b : ℝ) (N : ℕ) : ℝ :=
 noncomputable def absDiscrepancy (z : ℕ → ℝ) (a b : ℝ) (N : ℕ) : ℝ :=
   |discrepancy z a b N|
 
-/-! ## Part II: The Main Question -/
+/- ## Part II: The Main Question -/
 
 /-- **Unbounded Discrepancy:** limsup_{N→∞} |D_N(I)| = ∞. -/
 def hasUnboundedDiscrepancy (z : ℕ → ℝ) (a b : ℝ) : Prop :=
@@ -71,7 +71,7 @@ def erdosQuestion : Prop :=
   ∀ z : ℕ → ℝ, IsSequenceInUnitInterval z →
     ∃ a b : ℝ, 0 ≤ a ∧ a < b ∧ b ≤ 1 ∧ hasUnboundedDiscrepancy z a b
 
-/-! ## Part III: Schmidt's Theorem (1968) -/
+/- ## Part III: Schmidt's Theorem (1968) -/
 
 /-- **Schmidt's Theorem (1968):**
     The answer to Erdős's question is YES. For any infinite sequence in [0,1],
@@ -94,7 +94,7 @@ theorem no_uniformly_bounded_discrepancy :
   specialize hM N
   linarith
 
-/-! ## Part IV: Schmidt's Strengthening (1972) -/
+/- ## Part IV: Schmidt's Strengthening (1972) -/
 
 /-- **Schmidt's Strengthening (1972):**
     For all but countably many x ∈ [0,1], the interval [0,x]
@@ -102,7 +102,7 @@ theorem no_uniformly_bounded_discrepancy :
 axiom schmidt_theorem_1972 (z : ℕ → ℝ) (hz : IsSequenceInUnitInterval z) :
     {x : ℝ | x ∈ Set.Icc 0 1 ∧ ¬hasUnboundedDiscrepancy z 0 x}.Countable
 
-/-! ## Part V: Tijdeman-Wagner Theorem (1980) -/
+/- ## Part V: Tijdeman-Wagner Theorem (1980) -/
 
 /-- **Logarithmic Discrepancy Lower Bound:**
     |D_N([0,x))| ≫ log N for some subsequence of N. -/
@@ -115,7 +115,7 @@ def hasLogarithmicDiscrepancy (z : ℕ → ℝ) (x : ℝ) : Prop :=
 axiom tijdeman_wagner_theorem (z : ℕ → ℝ) (hz : IsSequenceInUnitInterval z) :
     ∀ᵐ x ∂MeasureTheory.volume, x ∈ Set.Icc (0:ℝ) 1 → hasLogarithmicDiscrepancy z x
 
-/-! ## Part VI: Optimality -/
+/- ## Part VI: Optimality -/
 
 /-- **Van der Corput Sequence:**
     There exist sequences where |D_N([0,x))| = O(log N) for all x.
@@ -125,7 +125,7 @@ axiom van_der_corput_sequence_exists :
       ∀ x : ℝ, x ∈ Set.Icc 0 1 →
         ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 → absDiscrepancy z 0 x N ≤ C * Real.log N
 
-/-! ## Part VII: Connections -/
+/- ## Part VII: Connections -/
 
 /-- **Uniform distribution:** A sequence is uniformly distributed mod 1
     iff D_N([0,x))/N → 0 for all x. But D_N itself must still be unbounded! -/
@@ -137,7 +137,7 @@ def isUniformlyDistributed (z : ℕ → ℝ) : Prop :=
 axiom weyl_theorem (α : ℝ) :
     isUniformlyDistributed (fun n => (n : ℝ) * α - ⌊(n : ℝ) * α⌋) ↔ Irrational α
 
-/-! ## Part VIII: Star Discrepancy -/
+/- ## Part VIII: Star Discrepancy -/
 
 /-- **Star Discrepancy D*_N:** The supremum of |D_N([0,x))| over all x ∈ [0,1]. -/
 noncomputable def starDiscrepancy (z : ℕ → ℝ) (N : ℕ) : ℝ :=
@@ -147,7 +147,7 @@ noncomputable def starDiscrepancy (z : ℕ → ℝ) (N : ℕ) : ℝ :=
 axiom star_discrepancy_unbounded (z : ℕ → ℝ) (hz : IsSequenceInUnitInterval z) :
     ∀ M : ℝ, ∃ N : ℕ, starDiscrepancy z N > M
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /-- **Summary of Erdős Problem #255:**
 
