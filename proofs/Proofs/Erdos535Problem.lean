@@ -40,7 +40,7 @@ open Nat Real Finset
 
 namespace Erdos535
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -63,19 +63,19 @@ def IsSubsetOfInterval (A : Finset ℕ) (N : ℕ) : Prop :=
 noncomputable def f (r N : ℕ) : ℕ :=
   sSup {A.card | A : Finset ℕ, IsSubsetOfInterval A N ∧ HasNoRGCDSubset A r}
 
-/-!
+/-
 ## Part 2: Trivial Bounds
 -/
 
 /-- Trivial upper bound: f_r(N) ≤ N -/
 axiom trivial_upper_bound (r N : ℕ) (hr : r ≥ 3) : f r N ≤ N
 
-/-!
+/-
 For r = 2, we would need gcd(a,b) ≠ gcd(a,b) for all a ≠ b, which is impossible.
 So r ≥ 3 is the interesting case.
 -/
 
-/-!
+/-
 ## Part 3: Erdős's Original Upper Bound (1964)
 -/
 
@@ -85,12 +85,12 @@ axiom erdos_1964_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ ε > 0, ∃ N₀ : ℕ,
       ∀ N ≥ N₀, (f r N : ℝ) ≤ C * N ^ ((3:ℝ)/4 + ε)
 
-/-!
+/-
 The exponent 3/4 was the first non-trivial upper bound, showing f_r(N) grows
 slower than linearly. But the bound was later improved by Abbott and Hanson.
 -/
 
-/-!
+/-
 ## Part 4: Abbott-Hanson Upper Bound (1970)
 -/
 
@@ -104,12 +104,12 @@ axiom abbott_hanson_upper_bound :
 theorem exponent_improvement :
     (3:ℝ)/4 > (1:ℝ)/2 := by norm_num
 
-/-!
+/-
 The Abbott-Hanson bound remains the best known upper bound. No improvement
 beyond N^{1/2+o(1)} has been achieved.
 -/
 
-/-!
+/-
 ## Part 5: Erdős's Lower Bound (1964)
 -/
 
@@ -118,14 +118,14 @@ axiom erdos_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ, ∀ N ≥ N₀,
     (f 3 N : ℝ) > N ^ (c / Real.log (Real.log N))
 
-/-!
+/-
 The lower bound N^{c/log log N} grows very slowly (quasi-polynomial): slower
 than N^ε for any ε > 0, but faster than any poly-log function.
 
 For larger r, similar lower bounds are expected but are less studied.
 -/
 
-/-!
+/-
 ## Part 6: The Gap Between Bounds
 
 The gap between upper and lower bounds is enormous:
@@ -139,12 +139,12 @@ def ErdosConjecture : Prop :=
     ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ N₀ : ℕ,
       ∀ N ≥ N₀, (f r N : ℝ) ≤ C * N ^ (c / Real.log (Real.log N))
 
-/-!
+/-
 If the conjecture holds, f_r(N) ≈ N^{c/log log N} would be tight, closing the
 gap dramatically from polynomial down to quasi-polynomial.
 -/
 
-/-!
+/-
 ## Part 7: Connection to Sunflower Problem
 
 A stronger sunflower conjecture would imply Erdős's conjecture for this problem.
@@ -154,14 +154,13 @@ size > (k-1)!·r^k contains an r-sunflower. Removing the k! factor would suffice
 See Problem #20 (Sunflower Conjecture) and Problem #536 (related GCD questions).
 -/
 
-/-- The stronger sunflower conjecture that would resolve this problem -/
-def StrongerSunflowerConjecture : Prop :=
-  -- For integers with exactly k prime factors,
-  -- the maximum set avoiding r-gcd-sunflowers is ≤ c_r^k
-  -- (instead of c_r^k · k! from Erdős-Rado)
-  True
+/-- The stronger sunflower conjecture that would resolve this problem.
+    For any r ≥ 3, there exists c_r such that any family of k-element sets
+    of size > c_r^k contains an r-sunflower. The Erdős-Rado bound has
+    an additional k! factor that this conjecture removes. -/
+axiom StrongerSunflowerConjecture : Prop
 
-/-!
+/-
 ## Part 8: Small Cases and Examples
 
 For r = 3 and small N, we can compute f_3(N) exactly:
@@ -172,7 +171,7 @@ The set {1} ∪ {primes ≤ N} avoids 3-gcd-subsets (no three primes share
 pairwise gcd > 1), but |A| ≈ N/log N is worse than the lower bound.
 -/
 
-/-!
+/-
 ## Part 9: Proof Techniques
 
 Three main methods have been used:
@@ -190,7 +189,7 @@ The additive-multiplicative dichotomy (GCD is multiplicative but counting is
 additive) is a fundamental barrier making the problem difficult.
 -/
 
-/-!
+/-
 ## Part 10: Summary
 -/
 
