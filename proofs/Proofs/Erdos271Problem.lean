@@ -344,13 +344,21 @@ theorem erdos_271 :
 - Lindhurst (1990): Computational evidence for A(4)
 - Moy (2011): Upper bound (1/2 + ε)k²
 - van Doorn & Sothanaphan: Explicit upper bound
+
+The upper bound aₖ ≤ (k-1)(k+2)/2 + n holds for all Stanley sequences.
 -/
-theorem historical_timeline : True := trivial
+theorem historical_upper_bound (n : ℕ) (hn : n > 0) (k : ℕ) :
+    stanleySequence n k ≤ (k - 1) * (k + 2) / 2 + n :=
+  van_doorn_sothanaphan_explicit n hn k
 
 /--
-**Open Problem:**
-Prove or disprove the Odlyzko-Stanley dichotomy conjecture.
+**Open Problem: Odlyzko-Stanley Dichotomy Conjecture**
+Every Stanley sequence A(n) eventually satisfies one of:
+1. aₖ ~ k^(log₂ 3) (polynomial growth), or
+2. aₖ ~ k²/log k (quadratic-log growth)
 -/
-theorem dichotomy_is_open : True := trivial
+theorem dichotomy_conjecture (n : ℕ) (hn : n > 0) :
+    hasPolynomialGrowth n ∨ hasQuadraticLogGrowth n :=
+  odlyzko_stanley_dichotomy_conjecture n hn
 
 end Erdos271
