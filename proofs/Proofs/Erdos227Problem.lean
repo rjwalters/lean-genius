@@ -235,7 +235,6 @@ theorem erdos_227_summary :
   · exact achievable_limits_characterization
   · exact clunie_positive_coeffs
 
-/-- The answer to Erdős Problem #227: SOLVED (DISPROVED) -/
-theorem erdos_227_answer : True := trivial
+/-- Erdős Problem #227: SOLVED (DISPROVED). -/
 
 end Erdos227
