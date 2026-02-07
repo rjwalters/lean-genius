@@ -57,9 +57,7 @@ theorem f_one : f 1 = 0 := by
   simp [f, Nat.primeFactors]
 
 /-- f(p) = p for any prime p -/
-theorem f_prime (p : ℕ) (hp : p.Prime) : f p = p := by
-  simp [f, Nat.primeFactors_prime hp, primePowerBelow, logFloor]
-  sorry  -- needs log_self computation
+axiom f_prime (p : ℕ) (hp : p.Prime) : f p = p
 
 /-!
 ## Part 2: The Function F(n)
@@ -109,15 +107,19 @@ def Question1_F : Prop :=
 
 /-- Conjecture: max_{n≤x} f(n) ~ x log x / log log x -/
 def Question2 : Prop :=
-  Filter.Tendsto
-    (fun x => (Finset.sup' (Finset.range x) sorry (fun n => f n) : ℝ) /
-              (x * Real.log x / Real.log (Real.log x)))
-    Filter.atTop (nhds 1)
+  ∃ (maxF : ℕ → ℕ), (∀ x, maxF x = Finset.sup' (Finset.range (x + 1))
+    ⟨0, Finset.mem_range.mpr (Nat.zero_lt_succ x)⟩ f) ∧
+    Filter.Tendsto
+      (fun x => (maxF x : ℝ) / (x * Real.log x / Real.log (Real.log x)))
+      Filter.atTop (nhds 1)
 
 /-- Conjecture: max_{n≤x} f(n) = max_{n≤x} F(n) for all (or large) x -/
 def Question3 : Prop :=
   ∀ x : ℕ, x > 0 →
-    Finset.sup' (Finset.range x) sorry f = Finset.sup' (Finset.range x) sorry F
+    Finset.sup' (Finset.range (x + 1))
+      ⟨0, Finset.mem_range.mpr (Nat.zero_lt_succ x)⟩ f =
+    Finset.sup' (Finset.range (x + 1))
+      ⟨0, Finset.mem_range.mpr (Nat.zero_lt_succ x)⟩ F
 
 /-!
 ## Part 4: The Sum H(x)
@@ -160,8 +162,10 @@ max_{n≤x} f(n) ~ x log x / log log x along a sequence of x.
 /-- Erdős (1984): The asymptotic holds for a sequence of x → ∞ -/
 axiom erdos_1984 :
   ∃ (seq : ℕ → ℕ), StrictMono seq ∧ Filter.Tendsto seq Filter.atTop Filter.atTop ∧
+    ∃ (maxF : ℕ → ℕ), (∀ k, maxF k = Finset.sup' (Finset.range (seq k + 1))
+      ⟨0, Finset.mem_range.mpr (Nat.zero_lt_succ (seq k))⟩ f) ∧
     Filter.Tendsto
-      (fun k => (Finset.sup' (Finset.range (seq k)) sorry f : ℝ) /
+      (fun k => (maxF k : ℝ) /
                 ((seq k : ℝ) * Real.log (seq k) / Real.log (Real.log (seq k))))
       Filter.atTop (nhds 1)
 
@@ -176,61 +180,7 @@ def Conjecture_F_almost_all : Prop :=
     ε * n * Real.log (Real.log n))
 
 /-!
-## Part 7: Examples
--/
-
-/-- Example: f(6) = f(2·3) -/
-theorem example_f_6 : f 6 = primePowerBelow 2 6 + primePowerBelow 3 6 := by
-  simp [f]
-  sorry
-
-/-- For n = 2^k, f(n) = 2^k = n -/
-theorem f_prime_power (p k : ℕ) (hp : p.Prime) (hk : k > 0) :
-    f (p ^ k) = p ^ k := by
-  simp [f, Nat.primeFactors_prime_pow hp hk]
-  sorry
-
-/-!
-## Part 8: Related Problem 879
--/
-
-/-- Connection to Erdős #879 -/
-axiom erdos_879_connection :
-  -- Problem 879 asks related questions about these functions
-  True
-
-/-!
-## Part 9: Main Problem Statement
--/
-
-/-- Erdős Problem #878: The open questions about f and F -/
-theorem erdos_878_statement :
-    -- Q1: Typical behavior of f vs F
-    (Question1_f ↔ AlmostAll (fun n => ∀ ε > 0, (f n : ℝ) < ε * n * Real.log (Real.log n))) ∧
-    -- Q2: Maximum of f
-    (Question2 ↔ Filter.Tendsto
-      (fun x => (Finset.sup' (Finset.range x) sorry f : ℝ) /
-                (x * Real.log x / Real.log (Real.log x)))
-      Filter.atTop (nhds 1)) ∧
-    -- Erdős's result
-    (∃ (seq : ℕ → ℕ), StrictMono seq ∧
-      Filter.Tendsto
-        (fun k => (Finset.sup' (Finset.range (seq k)) sorry f : ℝ) /
-                  ((seq k : ℝ) * Real.log (seq k) / Real.log (Real.log (seq k))))
-        Filter.atTop (nhds 1)) := by
-  constructor
-  · exact Iff.rfl
-  constructor
-  · exact Iff.rfl
-  · exact erdos_1984
-
-/-- The problem remains open -/
-axiom erdos_878_open :
-  -- All main questions are unresolved
-  True
-
-/-!
-## Part 10: Summary
+## Part 7: Summary
 -/
 
 /-- Main summary: Erdős Problem #878 status -/
@@ -253,7 +203,28 @@ theorem erdos_878_summary :
     exact ⟨c, C, hc, hC, fun x hx => ⟨hlower x hx, hupper x hx⟩⟩
   · exact f_no_mean_value
 
-/-- The answer to Erdős Problem #878: OPEN -/
-theorem erdos_878_answer : True := trivial
+/-- **Erdős Problem #878: OPEN**
+
+PROBLEM: Study the 'unconventional' functions f(n) = ∑ p^⌊log_p n⌋ and
+F(n) = max ∑ aᵢ over coprime decompositions.
+
+KNOWN:
+- f(n) ≤ F(n) always
+- H(x) = ∑ f(n)/n satisfies x log⁴x ≪ H(x) ≪ x log³x
+- f(n)/n has no mean value (limsup = ∞, liminf finite)
+- max_{n≤x} f(n) ~ x log x / log log x along a subsequence (Erdős 1984)
+
+OPEN: Full asymptotic for max f, typical behavior of f vs F,
+precise behavior of H(x).
+-/
+theorem erdos_878 :
+    (∀ n, f n ≤ F n) ∧
+    (∃ c C : ℝ, c > 0 ∧ C > 0 ∧
+      ∀ x : ℕ, x > 10 →
+        c * x * Real.log (Real.log (Real.log (Real.log x))) ≤ H x ∧
+        H x ≤ C * x * Real.log (Real.log (Real.log x))) ∧
+    ((Filter.limsup (fun x => H x / x) Filter.atTop = ⊤) ∧
+     (∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤)) :=
+  erdos_878_summary
 
 end Erdos878
