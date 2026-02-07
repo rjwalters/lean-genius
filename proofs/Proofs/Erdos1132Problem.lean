@@ -1,5 +1,5 @@
-/-!
-# Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions
+/-
+Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions
 
 Source: https://erdosproblems.com/1132
 Status: OPEN
@@ -36,7 +36,7 @@ open Real MeasureTheory Finset
 
 namespace Erdos1132
 
-/-! ## Part I: Lagrange Basis Polynomials
+/- ## Part I: Lagrange Basis Polynomials
 
 The fundamental building blocks of polynomial interpolation.
 -/
@@ -66,7 +66,7 @@ axiom lagrangeBasis_other (nodes : Fin n → ℝ) (k j : Fin n)
     (hdistinct : ∀ i₁ i₂, i₁ ≠ i₂ → nodes i₁ ≠ nodes i₂) (hkj : k ≠ j) :
     lagrangeBasis nodes k (nodes j) = 0
 
-/-! ## Part II: The Lebesgue Function
+/- ## Part II: The Lebesgue Function
 
 The sum of absolute values of Lagrange basis polynomials.
 -/
@@ -92,7 +92,7 @@ axiom lebesgueFunction_ge_one (nodes : Fin n → ℝ) (x : ℝ)
     (hn : n ≥ 1) :
     lebesgueFunction nodes x ≥ 1
 
-/-! ## Part III: Growth of Lebesgue Constants
+/- ## Part III: Growth of Lebesgue Constants
 
 The Lebesgue constant grows logarithmically in the number of nodes.
 -/
@@ -123,7 +123,7 @@ This is asymptotically optimal. -/
 axiom chebyshev_lebesgue_constant (n : ℕ) (hn : n ≥ 2) :
     |lebesgueConstant (chebyshevNodes n) - (2 / Real.pi) * Real.log n| ≤ 2
 
-/-! ## Part IV: The Main Questions
+/- ## Part IV: The Main Questions
 
 Erdős's questions about Lebesgue functions for infinite sequences.
 -/
@@ -159,7 +159,7 @@ def almostEverywhereGrowth (seq : InfiniteNodeSequence) : Prop :=
     Filter.limsup (fun n => lebesgueFunctionN seq n x / Real.log n)
       Filter.atTop ≥ 2 / Real.pi
 
-/-! ## Part V: Partial Results
+/- ## Part V: Partial Results
 
 Known results that provide partial answers.
 -/
@@ -189,7 +189,7 @@ the maximum, not about fixed points x. -/
 axiom erdos_max_theorem (seq : InfiniteNodeSequence) (n : ℕ) (hn : n ≥ 2) :
     ∃ x ∈ Set.Icc (-1 : ℝ) 1, lebesgueFunctionN seq n x > (2 / Real.pi) * Real.log n - 10
 
-/-! ## Part VI: Special Cases
+/- ## Part VI: Special Cases
 
 Equidistant nodes demonstrate how node placement affects Lebesgue constants.
 -/
@@ -206,7 +206,7 @@ noncomputable def equidistantNodes (n : ℕ) : Fin n → ℝ :=
 axiom equidistant_exponential_growth (n : ℕ) (hn : n ≥ 10) :
     lebesgueConstant (equidistantNodes n) ≥ 2 ^ (n / 4 : ℕ)
 
-/-! ## Part VII: Summary
+/- ## Part VII: Summary
 
 **Erdős Problem #1132: OPEN**
 
