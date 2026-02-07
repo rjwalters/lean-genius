@@ -2,46 +2,46 @@
   {
     "id": "erdos-483-ann-1",
     "proofId": "erdos-483",
-    "range": { "startLine": 27, "endLine": 42 },
+    "range": { "startLine": 28, "endLine": 57 },
     "type": "definition",
-    "title": "Colorings and Schur Numbers",
-    "content": "A k-Coloring assigns colors from Fin k to elements of {1,...,N}. HasMonochromaticSum detects monochromatic a+b=c triples. schurNumber k is axiomatized as the threshold for forced monochromatic sums.",
-    "significance": "The Schur number is the central object. Axiomatization avoids the need for a constructive minimum, while HasMonochromaticSum captures the combinatorial condition."
+    "title": "Schur Property and Schur Number",
+    "content": "SchurProp N k says every k-coloring of {1,...,N} has a monochromatic Schur triple. schurNumber k is defined via Nat.find as the minimal such N, building on the finiteness result from SchursTheorem.",
+    "significance": "The Schur number is now a proper definition (not an axiom), with proved minimality and specification theorems."
   },
   {
     "id": "erdos-483-ann-2",
     "proofId": "erdos-483",
-    "range": { "startLine": 46, "endLine": 59 },
+    "range": { "startLine": 78, "endLine": 105 },
     "type": "result",
-    "title": "Exact Schur Numbers for k ≤ 5",
-    "content": "f(1)=2, f(2)=5, f(3)=14, f(4)=45, f(5)=161 are all known. The value f(5)=161 was determined computationally by Fredricksen and Sweet (1986). No exact values beyond k=5 are known.",
-    "significance": "The growth rate f(1), f(2), ..., f(5) is roughly 2, 5, 14, 45, 161 — each roughly 3× the previous, suggesting exponential growth around 3^k."
+    "title": "S(1) = 2 (Proved)",
+    "content": "S(1) = 2 is fully proved: any 1-coloring of {1,2} has 1+1=2 (upper bound), and {1} alone has no Schur triple (lower bound). Combined via Nat.find characterization.",
+    "significance": "First exact Schur number, proved computationally rather than axiomatized."
   },
   {
     "id": "erdos-483-ann-3",
     "proofId": "erdos-483",
-    "range": { "startLine": 63, "endLine": 67 },
+    "range": { "startLine": 107, "endLine": 131 },
     "type": "result",
-    "title": "Exponential Lower Bound",
-    "content": "f(k) ≥ 380^{k/5} - O(1) by Ageron et al., showing Schur numbers grow at least exponentially with base ≈ 380^{1/5} ≈ 3.27.",
-    "significance": "The exponential lower bound confirms that f(k) cannot grow polynomially. The question is whether the growth is exactly exponential or faster."
+    "title": "S(2) = 5 (Proved)",
+    "content": "S(2) = 5 is fully proved by reusing the exhaustive case analysis from SchursTheorem (upper bound) and the sum-free partition {1,4},{2,3} (lower bound).",
+    "significance": "The first non-trivial Schur number, proved via Ramsey-theoretic case analysis."
   },
   {
     "id": "erdos-483-ann-4",
     "proofId": "erdos-483",
-    "range": { "startLine": 69, "endLine": 73 },
+    "range": { "startLine": 133, "endLine": 167 },
     "type": "result",
-    "title": "Factorial Upper Bound (Whitehead 1973)",
-    "content": "f(k) ≤ ⌊(e - 1/24)k!⌋ - 1, so f(k) = O(k!). This follows from a probabilistic/counting argument. The gap between exponential and factorial is enormous.",
-    "significance": "Closing this gap — from O(k!) to O(c^k) — is the content of Problem #483."
+    "title": "Structural Properties",
+    "content": "Proved: Schur numbers are positive (S(k) ≥ 1 for k ≥ 1) and non-decreasing (S(k₁) ≤ S(k₂) when k₁ ≤ k₂). Monotonicity uses color embedding: any k₁-coloring extends to a k₂-coloring.",
+    "significance": "Structural theorems about the Schur number sequence, proved from the Nat.find definition."
   },
   {
     "id": "erdos-483-ann-5",
     "proofId": "erdos-483",
-    "range": { "startLine": 77, "endLine": 81 },
+    "range": { "startLine": 169, "endLine": 199 },
     "type": "conjecture",
-    "title": "Exponential Bound Conjecture",
-    "content": "Erdős asked whether f(k) < c^k for some constant c. This would mean Schur numbers grow at most exponentially, matching the exponential lower bound up to the base.",
-    "significance": "If true, Schur numbers would be Θ(c^k) for some c, giving a complete asymptotic picture. This connects to similar questions for Ramsey numbers."
+    "title": "Known Values, Bounds, and the Conjecture",
+    "content": "S(3)=14, S(4)=45, S(5)=161 axiomatized (too large for computation). Exponential lower bound and factorial upper bound stated. Erdős #483 asks if f(k) < c^k for some c.",
+    "significance": "The gap between exponential lower bound and factorial upper bound is the core open question."
   }
 ]
