@@ -24,7 +24,7 @@ open scoped Finset
 
 namespace Erdos56
 
-/-!
+/-
 ## Definitions
 
 We formalize the notion of "k-weakly divisible" sets and the key quantities
@@ -74,7 +74,7 @@ This is Erdős's conjectured optimal set: take all multiples of p₁, p₂, ...,
 noncomputable def FirstPrimesMultiples (N k : ℕ) : Finset ℕ :=
   (Finset.Icc 1 N).filter fun i => ∃ j < k, (j.nth Nat.Prime ∣ i)
 
-/-!
+/-
 ## The Main Result
 
 Erdős conjectured that FirstPrimesMultiples is always optimal. This was
@@ -102,7 +102,7 @@ axiom erdos_56_disproved :
     ∀ N : ℕ, N ≥ (k - 1).nth Nat.Prime →
     MaxWeaklyDivisible N k = (FirstPrimesMultiples N k).card)
 
-/-!
+/-
 ## Verified Examples
 
 We verify some basic cases to build intuition.
