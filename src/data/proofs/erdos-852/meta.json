@@ -18,42 +18,57 @@
   "overview": {
     "historicalContext": "Erdős posed this question about the structure of consecutive prime gaps in 1985. The problem asks for the growth rate of h(x), the maximal length of a run of distinct consecutive prime gaps below x. Brun's sieve establishes that h(x) → ∞, but the precise growth rate remains unknown.",
     "problemStatement": "Let dₙ = pₙ₊₁ − pₙ. Define h(x) as the maximal k such that some consecutive run dₙ, dₙ₊₁, …, dₙ₊ₖ₋₁ with pₙ < x has all distinct values. Is h(x) > (log x)^c for some c > 0? Is h(x) = o(log x)?",
-    "proofStrategy": "We axiomatize the prime sequence, prime gaps, and the notion of distinct-gap runs. The function h(x) is defined with witness and optimality properties. Brun's divergence result and the two open conjectures are stated.",
+    "proofStrategy": "We axiomatize the prime sequence and prime gaps, proving positivity from strict monotonicity. Distinct-gap runs are defined and shown to be downward-closed. The function h(x) is axiomatized with witness and optimality. Brun's divergence is stated both elementarily and as a Filter.Tendsto result. The Erdős conjectures use Real.log and Asymptotics.IsLittleO for rigorous formalization.",
     "keyInsights": [
       "Prime gaps dₙ = pₙ₊₁ − pₙ encode the local distribution of primes",
       "Brun's sieve ensures h(x) → ∞: long runs of distinct gaps exist",
-      "The lower bound conjecture (log x)^c suggests polynomial-in-log growth",
-      "The upper bound o(log x) would place h(x) strictly below logarithmic scale"
+      "The lower bound conjecture (log x)^c is formalized with Real.log and real exponentiation",
+      "The upper bound h(x) = o(log x) is formalized using Asymptotics.IsLittleO",
+      "Pigeonhole principle gives h(x) ≤ x: at most x distinct positive values below x"
     ]
   },
   "sections": [
     {
       "id": "primes-gaps",
       "title": "Prime Sequence and Gaps",
-      "startLine": 17,
-      "endLine": 33,
-      "summary": "Defines the n-th prime, prime gaps dₙ = pₙ₊₁ − pₙ, and their basic properties."
+      "startLine": 26,
+      "endLine": 55,
+      "summary": "Axiomatizes nthPrime with primality and strict monotonicity. Defines prime gaps and proves positivity, monotonicity, and nthPrime ≥ 2."
     },
     {
       "id": "distinct-runs",
       "title": "Distinct Gap Runs",
-      "startLine": 35,
-      "endLine": 51,
-      "summary": "Defines runs of distinct consecutive gaps and the function h(x) with witness and optimality."
+      "startLine": 57,
+      "endLine": 80,
+      "summary": "Defines IsDistinctRun and proves basic properties: empty/single runs are distinct, and distinct runs are downward-closed."
     },
     {
-      "id": "known-results",
-      "title": "Known Results",
-      "startLine": 53,
-      "endLine": 60,
-      "summary": "Records Brun's sieve divergence result and initial gap values."
+      "id": "h-function",
+      "title": "Maximal Distinct Run Length h(x)",
+      "startLine": 82,
+      "endLine": 111,
+      "summary": "Axiomatizes h(x) with witness and optimality. Proves h(x) ≥ 1 for x ≥ 3 and monotonicity."
+    },
+    {
+      "id": "brun-sieve",
+      "title": "Brun's Sieve Result",
+      "startLine": 113,
+      "endLine": 127,
+      "summary": "Brun's sieve divergence: h(x) → ∞. Proved in filter form as Tendsto atTop atTop."
     },
     {
       "id": "conjectures",
-      "title": "The Erdős Conjectures",
-      "startLine": 62,
-      "endLine": 82,
-      "summary": "States the lower bound (log x)^c and upper bound o(log x) conjectures."
+      "title": "Erdős Conjectures (OPEN)",
+      "startLine": 129,
+      "endLine": 155,
+      "summary": "Lower bound (log x)^c with Real.log, upper bound o(log x) with IsLittleO, and derived consequences."
+    },
+    {
+      "id": "pigeonhole",
+      "title": "Pigeonhole Upper Bound",
+      "startLine": 157,
+      "endLine": 170,
+      "summary": "h(x) ≤ x by pigeonhole: k distinct positive values bounded by M implies k ≤ M."
     }
   ],
   "conclusion": {
