@@ -1,52 +1,102 @@
 {
   "slug": "erdos-1155",
   "title": "Erdős #1155",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "SURVEYED",
+  "status": "surveyed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "Begin with K_n. Repeatedly remove a uniformly random triangle (all 3 edges) until triangle-free. Let f(n) = remaining edges. Is E[f(n)] ≍ n^{3/2} and f(n) ≪ n^{3/2} a.s.?",
+    "plain": "Triangle Removal Process: Start with complete graph K_n, repeatedly remove random triangles until triangle-free. How many edges remain?",
+    "whyMatters": [
+      "Fundamental question about random graph processes",
+      "Connects to Turán-type extremal graph theory",
+      "BFL 2015 result is a major advance in probabilistic combinatorics"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Grable (1997): P(f(n) > n^{7/4+ε}) → 0 for all ε > 0",
+      "BFL (2015): f(n) = n^{3/2+o(1)} a.s."
+    ],
+    "open": [
+      "Exact asymptotic: E[f(n)] ≍ n^{3/2} (constant-factor bounds)"
+    ],
+    "goal": "Formalize the problem statement and known asymptotic bounds in Lean 4"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T16:46:42.683Z",
+    "phase": "SURVEYED",
+    "since": "2026-02-07T01:50:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Formalized problem statement and known results",
+    "blockers": [
+      "Full probabilistic formalization requires extensive measure theory on graph process spaces"
+    ],
+    "nextAction": "Submit to Aristotle for trivial sorry resolution",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1155 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "progressSummary": "SURVEYED: Created Lean formalization with axiomatized triangle removal function, known results (Grable 1997, BFL 2015), conjecture statement, and 3 proved theorems. Docker build succeeds.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1155Problem.lean - Full formalization (~160 lines)",
+      "theorem bfl_implies_grable (proved from axioms)",
+      "theorem conjecture_gives_theta (proved from axioms)",
+      "theorem bfl_exponent_characterization (proved from axioms)"
+    ],
+    "insights": [
+      "Problem is fundamentally probabilistic - full formalization requires measure theory on graph process spaces",
+      "BFL 2015 resolves the a.s. part up to sub-polynomial factors",
+      "What remains open is constant-factor bounds: c₁·n^{3/2} ≤ E[f(n)] ≤ c₂·n^{3/2}",
+      "Mantel's theorem gives trivial upper bound f(n) ≤ n²/4",
+      "The exponent 3/2 is tight by BFL, the open question is about the constant"
+    ],
+    "mathlibGaps": [
+      "No random graph process formalization in Mathlib",
+      "No Mantel/Turán theorem in Mathlib"
+    ],
+    "nextSteps": [
+      "Submit to Aristotle for sorry resolution (graph theory sorries)"
+    ],
+    "markdown": "# Erdős #1155 - Knowledge Base\n\n## Problem Statement\n\nTriangle Removal Process on K_n: repeatedly remove random triangles until triangle-free.\nIs E[f(n)] ≍ n^{3/2}?\n\n## Status\n\n**Erdős Database Status**: OPEN (partially resolved by BFL 2015)\n\n## Key Results\n\n- **Grable (1997)**: f(n) ≤ n^{7/4+ε} whp\n- **BFL (2015)**: f(n) = n^{3/2+o(1)} a.s.\n- **Open**: Constant-factor Θ(n^{3/2}) bound\n\n## Lean Formalization\n\nCreated `Erdos1155Problem.lean` with:\n- 3 proved theorems (from axioms)\n- 4 sorries (graph theory basics)\n- 6 axioms (probabilistic results + Mantel)\n\n---\n\n*Updated by researcher-1 on 2026-02-07*\n"
   },
-  "approaches": [],
-  "tags": [
-    "erdos"
+  "approaches": [
+    {
+      "name": "Axiomatize probabilistic process, state results",
+      "status": "completed",
+      "description": "Abstract f(n) as axiom, state known bounds as axioms, prove derived results"
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "erdos",
+    "probabilistic-combinatorics",
+    "random-graphs",
+    "triangle-free",
+    "asymptotic-analysis"
+  ],
+  "relatedProofs": [
+    "Erdos553Problem.lean",
+    "Erdos1034Problem.lean",
+    "Erdos802Problem.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Grable (1997): The triangle-free process",
+      "Bohman, Frieze, Lubetzky (2015): Triangle removal process"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1155"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Order.Filter.AtTopBot.Basic"
+    ]
   },
   "started": "2026-01-15T16:46:42.684Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 4
 }
