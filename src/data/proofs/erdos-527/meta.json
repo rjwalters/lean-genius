@@ -84,87 +84,52 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Part 1: Basic Definitions",
-      "startLine": 33,
-      "endLine": 59,
-      "summary": "Defines unitCircle, littleO_sqrt, divergentSquares, SignChoice, randomPowerSeries, and convergesAt."
+      "title": "Definitions",
+      "startLine": 37,
+      "endLine": 56,
+      "summary": "Core definitions: unitCircle, littleO_sqrt, divergentSquares, randomPowerSeries, convergesAt."
     },
     {
       "id": "probability",
-      "title": "Part 2: The Probabilistic Setup",
-      "startLine": 61,
-      "endLine": 75,
-      "summary": "Axiomatizes signMeasure (product measure on {±1}^ℕ) and defines almostAllSigns as probability-1 events."
+      "title": "Probabilistic Framework",
+      "startLine": 58,
+      "endLine": 65,
+      "summary": "signMeasure axiom and almostAllSigns definition for probability-1 events."
     },
     {
       "id": "divergence",
-      "title": "Part 3: Known Results on Divergence",
-      "startLine": 77,
-      "endLine": 91,
-      "summary": "Classical divergence: divergence_typical and the sharp dvoretzky_erdos_1959 threshold."
+      "title": "Classical Divergence Results",
+      "startLine": 67,
+      "endLine": 81,
+      "summary": "divergence_typical and dvoretzky_erdos_1959: classical results showing divergence is generic."
     },
     {
       "id": "main-result",
-      "title": "Part 4: The Main Result (Michelen-Sawhney 2025)",
-      "startLine": 93,
-      "endLine": 111,
-      "summary": "convergenceSet definition and the two main axioms: nonempty a.s. and Hausdorff dimension 1 a.s."
+      "title": "The Main Result (Michelen-Sawhney 2025)",
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "convergenceSet, michelen_sawhney_2025 (nonempty a.s.), hausdorff_dimension_one (dimH=1 a.s.)."
     },
     {
-      "id": "boundary",
-      "title": "Part 5: Boundary of Conditions",
-      "startLine": 113,
-      "endLine": 130,
-      "summary": "Boundary behavior when |aₙ| = Θ(1/√n), stronger decay conditions, and monotonicity."
-    },
-    {
-      "id": "hausdorff",
-      "title": "Part 6: Hausdorff Dimension",
-      "startLine": 132,
-      "endLine": 155,
-      "summary": "Properties of the convergence set: uncountable yet measure zero, with hausdorffDim wrapper."
+      "id": "properties",
+      "title": "Properties of the Convergence Set",
+      "startLine": 101,
+      "endLine": 112,
+      "summary": "The convergence set is uncountable but has measure zero — a fractal phenomenon."
     },
     {
       "id": "examples",
-      "title": "Part 7: Examples",
-      "startLine": 157,
-      "endLine": 177,
-      "summary": "Concrete sequences: aₙ = 1/(√n log n) satisfies conditions; boundary and summable counterexamples."
-    },
-    {
-      "id": "rademacher",
-      "title": "Part 8: Connection to Rademacher Series",
-      "startLine": 178,
-      "endLine": 194,
-      "summary": "Connections to Rademacher functions, Khintchine inequality, random trigonometric polynomials."
-    },
-    {
-      "id": "proof-techniques",
-      "title": "Part 9: Proof Techniques",
-      "startLine": 196,
-      "endLine": 212,
-      "summary": "Methods of Michelen-Sawhney: oscillation analysis, metric entropy, martingale methods."
-    },
-    {
-      "id": "related",
-      "title": "Part 10: Related Problems",
-      "startLine": 214,
-      "endLine": 230,
-      "summary": "Related work: Salem-Zygmund, Kahane random series, modern developments."
-    },
-    {
-      "id": "applications",
-      "title": "Part 11: Applications",
-      "startLine": 232,
-      "endLine": 248,
-      "summary": "Applications to lacunary series, analytic continuation, and Fourier analysis."
+      "title": "Examples",
+      "startLine": 114,
+      "endLine": 131,
+      "summary": "Concrete examples: aₙ=1/(√n log n) satisfies conditions; boundary and summable counterexamples."
     },
     {
       "id": "summary",
-      "title": "Part 12: Summary",
-      "startLine": 250,
-      "endLine": 271,
-      "summary": "Main theorems erdos_527_main and erdos_527_strong proved from axioms. SOLVED."
+      "title": "Summary",
+      "startLine": 133,
+      "endLine": 162,
+      "summary": "erdos_527_main, erdos_527_strong, and erdos_527_summary combining main results. SOLVED."
     }
   ],
   "conclusion": {
