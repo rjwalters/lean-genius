@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #596: Graph Coloring Dichotomy for Forbidden Subgraphs
 
 For which pairs (G₁, G₂) of graphs is it true that:
@@ -22,7 +22,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Part I: Graph Coloring Dichotomy
 -/
 
@@ -51,7 +51,7 @@ def HasDichotomy (isForbiddenFree : GraphProperty) (containsTarget : GraphProper
   FiniteRamseyProperty isForbiddenFree containsTarget ∧
   CountableColoringProperty isForbiddenFree containsTarget
 
-/-!
+/-
 ## Part II: Known Examples
 -/
 
@@ -76,7 +76,7 @@ axiom nesetril_rodl_c4_c6 : FiniteRamseyProperty IsC4Free ContainsC6
     (hence admits a countable coloring avoiding monochromatic C₆). -/
 axiom erdos_hajnal_c4_trees : CountableColoringProperty IsC4Free ContainsC6
 
-/-!
+/-
 ## Part III: The Known Dichotomy Pair
 -/
 
@@ -84,7 +84,7 @@ axiom erdos_hajnal_c4_trees : CountableColoringProperty IsC4Free ContainsC6
 theorem c4_c6_dichotomy : HasDichotomy IsC4Free ContainsC6 :=
   ⟨nesetril_rodl_c4_c6, erdos_hajnal_c4_trees⟩
 
-/-!
+/-
 ## Part IV: The Main Conjecture
 -/
 
@@ -98,7 +98,7 @@ def ErdosProblem596 : Prop :=
 /-- The problem is open: no complete characterization is known. -/
 axiom erdos_596 : ErdosProblem596
 
-/-!
+/-
 ## Part V: Related Problem (K₄, K₃)
 -/
 
@@ -117,7 +117,7 @@ def ContainsK3 : GraphProperty := fun G =>
     This is a specific instance related to Problem #596. -/
 axiom erdos_595_k4_k3 : HasDichotomy IsK4Free ContainsK3
 
-/-!
+/-
 ## Part VI: Properties
 -/
 
@@ -126,7 +126,7 @@ axiom erdos_595_k4_k3 : HasDichotomy IsK4Free ContainsK3
 theorem dichotomy_pairs_exist : ∃ (p q : GraphProperty), HasDichotomy p q :=
   ⟨IsC4Free, ContainsC6, c4_c6_dichotomy⟩
 
-/-!
+/-
 ## Part VII: Summary
 
 - The pair (C₄, C₆) satisfies the dichotomy (proved from axioms).
@@ -134,10 +134,13 @@ theorem dichotomy_pairs_exist : ∃ (p q : GraphProperty), HasDichotomy p q :=
 - The related problem for (K₄, K₃) is also open.
 -/
 
-/-- The statement unfolds to the existence of a characterization. -/
-theorem erdos_596_statement : ErdosProblem596 ↔ ErdosProblem596 := by simp
-
-/-- The problem remains OPEN. -/
-theorem erdos_596_status : True := trivial
+/-- Summary of Erdős Problem #596:
+    - The pair (C₄, C₆) satisfies the dichotomy (proved from axioms)
+    - A complete characterization of all dichotomy pairs remains OPEN
+    - The related problem for (K₄, K₃) is also open -/
+theorem erdos_596_summary :
+    HasDichotomy IsC4Free ContainsC6 ∧
+    (∃ (p q : GraphProperty), HasDichotomy p q) :=
+  ⟨c4_c6_dichotomy, ⟨IsC4Free, ContainsC6, c4_c6_dichotomy⟩⟩
 
 end Erdos596
