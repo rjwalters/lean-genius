@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #760: Cochromatic Number of Subgraphs
 
 Source: https://erdosproblems.com/760
@@ -40,7 +40,7 @@ namespace Erdos760
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Chromatic and cochromatic numbers of graphs.
@@ -102,7 +102,7 @@ Note: ζ(G) ≤ χ(G) always (proper colorings are cochromatic).
 -/
 axiom cochromaticNumber (G : SimpleGraph V) : ℕ
 
-/-!
+/-
 ## Part II: Basic Properties
 
 Relationships between chromatic and cochromatic numbers.
@@ -136,7 +136,7 @@ axiom complete_graph_tight_bound :
     chromaticNumber H = m →
     cochromaticNumber H ≤ m / Nat.log 2 m + 1
 
-/-!
+/-
 ## Part III: The Erdős-Gimbel Partial Result
 
 The weaker bound proved before AKS.
@@ -162,7 +162,7 @@ The bound √(m / log m) is weaker than m / log m.
 axiom erdos_gimbel_weaker (m : ℕ) (hm : m ≥ 16) :
     Real.sqrt (m / Real.log m) < m / Real.log m
 
-/-!
+/-
 ## Part IV: The Alon-Krivelevich-Sudakov Theorem
 
 The full solution to Problem 760.
@@ -195,7 +195,7 @@ theorem erdos_760_solved :
     (cochromaticNumber H : ℚ) ≥ c * m / Real.log m :=
   aks_theorem
 
-/-!
+/-
 ## Part V: Proof Technique
 
 How the AKS result was proved.
@@ -214,7 +214,7 @@ axiom ramsey_for_cochromatic :
     ∀ (G : SimpleGraph (Fin n)),
     ∃ S : Finset (Fin n), S.card ≥ k ∧ IsHomogeneous G S
 
-/-!
+/-
 ## Part VI: Related Results
 -/
 
@@ -229,7 +229,7 @@ axiom ramsey_number_bound :
     ∀ (G : SimpleGraph (Fin n)),
     ∃ S : Finset (Fin n), S.card ≥ k ∧ IsHomogeneous G S
 
-/-!
+/-
 ## Part VII: Main Results Summary
 
 Complete summary of Erdős Problem #760.
