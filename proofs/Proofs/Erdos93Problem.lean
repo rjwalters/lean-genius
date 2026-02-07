@@ -29,7 +29,7 @@ open Finset Real
 
 namespace Erdos93
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Points, distances, and counting distinct distances.
@@ -50,7 +50,7 @@ noncomputable def distinctDistances (S : Finset Point) : Finset ℝ :=
 noncomputable def numDistinctDistances (S : Finset Point) : ℕ :=
   (distinctDistances S).card
 
-/-!
+/-
 ## Part II: Convex Position
 
 A set of points is in convex position if no point lies
@@ -64,7 +64,7 @@ requires substantial geometric infrastructure.
 -/
 axiom InConvexPosition (S : Finset Point) : Prop
 
-/-!
+/-
 ## Part III: Altman's Theorem (1963)
 -/
 
@@ -87,7 +87,7 @@ axiom regular_polygon_exact (n : ℕ) (hn : n ≥ 3) :
   ∃ S : Finset Point, S.card = n ∧ InConvexPosition S ∧
     numDistinctDistances S = n / 2
 
-/-!
+/-
 ## Part IV: Stronger Variant (OPEN — Problem #982)
 
 Does some vertex see ⌊n/2⌋ distinct distances?
@@ -110,7 +110,7 @@ def StrongerVariant : Prop :=
   ∀ S : Finset Point, InConvexPosition S → S.card ≥ 3 →
     ∃ p ∈ S, numDistancesFrom p S ≥ S.card / 2
 
-/-!
+/-
 ## Part V: Fishburn's Conjecture
 -/
 
@@ -130,7 +130,7 @@ def FishburnConjecture : Prop :=
 axiom fishburn_implies_stronger :
   FishburnConjecture → StrongerVariant
 
-/-!
+/-
 ## Part VI: Summary
 -/
 
