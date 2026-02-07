@@ -39,7 +39,7 @@
   {
     "id": "ann-e1133-related",
     "proofId": "erdos-1133",
-    "range": { "startLine": 129, "endLine": 137 },
+    "range": { "startLine": 117, "endLine": 137 },
     "type": "axiom",
     "title": "Erdős's Related Result (Known)",
     "content": "**erdos_related_result:** For any C > 0, there exists epsilon > 0 such that for large n and m = floor((1+epsilon)n) sample points, there EXISTS a polynomial P of degree n with |P(x_i)| <= 1 for all i, yet max |P(x)| > C.\n\nThis is WEAKER: it asks for existence of P, not choice of y_i.",
@@ -48,7 +48,7 @@
   {
     "id": "ann-e1133-lagrange",
     "proofId": "erdos-1133",
-    "range": { "startLine": 148, "endLine": 162 },
+    "range": { "startLine": 139, "endLine": 162 },
     "type": "axiom",
     "title": "Lagrange Interpolation",
     "content": "**lagrange_interpolation:** Given n distinct points, there is a unique polynomial of degree < n passing through all.\n\n**lagrange_divergence:** There exist continuous functions for which Lagrange interpolation on uniformly spaced nodes diverges (Runge's phenomenon).",
@@ -57,7 +57,7 @@
   {
     "id": "ann-e1133-chebyshev",
     "proofId": "erdos-1133",
-    "range": { "startLine": 172, "endLine": 183 },
+    "range": { "startLine": 164, "endLine": 183 },
     "type": "axiom",
     "title": "Chebyshev Nodes and Optimality",
     "content": "**chebyshevNodes n k:** x_k = cos(pi(2k+1)/(2n)), the optimal nodes for polynomial interpolation.\n\n**chebyshev_optimal:** If P has degree n and |P(x_k)| <= 1 at all Chebyshev nodes, then max |P| <= 1. These nodes minimize the Lebesgue constant.",
@@ -66,7 +66,7 @@
   {
     "id": "ann-e1133-summary",
     "proofId": "erdos-1133",
-    "range": { "startLine": 194, "endLine": 218 },
+    "range": { "startLine": 185, "endLine": 218 },
     "type": "theorem",
     "title": "Summary and Main Results",
     "content": "**exact_interpolation_case:** For epsilon = 0 (exact interpolation), Lagrange gives the unique polynomial of degree < n through all n points. Proved from lagrange_interpolation axiom.\n\n**erdos_1133_summary:** Wraps exact_interpolation_case as the main proved result. The conjecture ErdosConjecture1133 remains OPEN.",
