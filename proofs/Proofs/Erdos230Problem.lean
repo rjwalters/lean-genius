@@ -291,6 +291,5 @@ Erdős and Newman conjectured (1+c)√n in 1957/1961.
 The problem appeared as Problem 4.31 in Halberstam (1974).
 Kahane's 1980 disproof via ultraflat polynomials was surprising.
 -/
-theorem erdos_230_status : True := trivial
 
 end Erdos230
