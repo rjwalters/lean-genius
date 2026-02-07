@@ -1,5 +1,5 @@
-/-!
-# Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors
+/-
+Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors
 
 Source: https://erdosproblems.com/824
 Status: OPEN (the strong form h(x) > x^{2-o(1)} is unresolved)
@@ -40,8 +40,7 @@ open Nat Finset BigOperators Filter
 
 namespace Erdos824
 
-/-!
-## Part I: The Sum of Divisors Function
+/- ## Part I: The Sum of Divisors Function
 -/
 
 /--
@@ -81,8 +80,7 @@ theorem sigma_one : sigma 1 = 1 := by
   unfold sigma
   simp [Nat.divisors_one]
 
-/-!
-## Part II: Coprime σ-Equal Pairs
+/- ## Part II: Coprime σ-Equal Pairs
 -/
 
 /--
@@ -115,8 +113,7 @@ def hCount (x : ℕ) : ℕ :=
     1 ≤ p.1 ∧ p.1 < p.2 ∧ p.2 < x ∧ Nat.Coprime p.1 p.2 ∧ sigma p.1 = sigma p.2)
     (Finset.product (Finset.range x) (Finset.range x))).card
 
-/-!
-## Part III: Known Results
+/- ## Part III: Known Results
 -/
 
 /--
@@ -141,8 +138,7 @@ This follows from the Pollack-Pomerance 2016 result.
 axiom h_superlinear :
   ∀ C : ℕ, ∃ X : ℕ, ∀ x : ℕ, x > X → h x > C * x
 
-/-!
-## Part IV: The Main Conjecture
+/- ## Part IV: The Main Conjecture
 -/
 
 /--
@@ -165,8 +161,7 @@ theorem h_upper_bound (x : ℕ) : h x ≤ x ^ 2 := by
   refine le_trans (Finset.card_filter_le _ _) ?_
   simpa using by nlinarith
 
-/-!
-## Part V: Why Coprimality Matters
+/- ## Part V: Why Coprimality Matters
 -/
 
 /--
@@ -181,8 +176,7 @@ But σ(28) = σ(30) = ? might give non-coprime pairs.
 theorem example_coprime_pair : sigma 14 = sigma 15 := by
   native_decide
 
-/-!
-## Part VI: Related Variants
+/- ## Part VI: Related Variants
 -/
 
 /--
@@ -210,8 +204,7 @@ def WeisenbergCondition (a b : ℕ) : Prop :=
   ¬∃ u v : ℕ, u ∣ a ∧ v ∣ b ∧ u < a ∧ v < b ∧ u > 0 ∧ v > 0 ∧
     sigma u = sigma v ∧ Nat.Coprime u (a / u) ∧ Nat.Coprime v (b / v)
 
-/-!
-## Part VII: Connection to Other Erdős Problems
+/- ## Part VII: Connection to Other Erdős Problems
 -/
 
 /--
@@ -222,8 +215,7 @@ The distribution of σ values connects to this.
 def IsUntouchable (n : ℕ) : Prop :=
   ∀ m : ℕ, sigma m ≠ m + n
 
-/-!
-## Part VIII: Summary
+/- ## Part VIII: Summary
 -/
 
 /--
