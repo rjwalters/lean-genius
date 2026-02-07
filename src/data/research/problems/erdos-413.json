@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 1104-line formalization with 122 proved theorems, 0 sorries, 6 axioms (all genuinely open). Includes omega coprime multiplicativity, subadditivity, strong predecessor characterization, barrier offset bounds, squarefree equivalence, phi/sigma non-barrier proofs, and verified barrier hierarchy F >> ω >> Ω.",
+    "progressSummary": "COMPLETED: Corrected barrier list to match OEIS A005236 (previous version had wrong barriers/non-barriers/counts). Now has 57 verified ω-barriers from OEIS up to 360, correct non-barriers (7,11,13,15,16), Ω-barriers (0-4,6), F-barriers (0-8,10). Structural theorems: predecessor characterization, spacing constraints, φ/σ no-barriers, ω≤Ω, squarefree ω=Ω, orbit dynamics. 6 axioms (all genuinely open).",
     "builtItems": [
       "IsBarrier definition and real-valued variant",
       "omega, bigOmega, expProd computable definitions",
