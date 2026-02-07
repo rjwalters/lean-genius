@@ -30,7 +30,7 @@ open Nat Finset
 
 namespace Erdos423
 
-/-! ## Part I: The Sequence Definition -/
+/- ## Part I: The Sequence Definition -/
 
 /-- The Erdős-Hofstadter sequence: a₁ = 1, a₂ = 2, and for k ≥ 3,
     aₖ is the least integer > a_{k-1} that equals the sum of at least
@@ -44,7 +44,7 @@ axiom consSeq_one : consSeq 1 = 2
 /-- The sequence is strictly increasing. -/
 axiom consSeq_strictMono : StrictMono consSeq
 
-/-! ## Part II: Consecutive Sum Property -/
+/- ## Part II: Consecutive Sum Property -/
 
 /-- The sum of consecutive terms a_i + a_{i+1} + ... + a_j. -/
 noncomputable def consecutiveSum (i j : ℕ) : ℕ :=
@@ -65,7 +65,7 @@ axiom consSeq_minimal (k : ℕ) (hk : k ≥ 2) (m : ℕ)
     (hm₁ : consSeq (k - 1) < m) (hm₂ : m < consSeq k) :
     ¬IsConsecutiveSum m k
 
-/-! ## Part III: Known Initial Values -/
+/- ## Part III: Known Initial Values -/
 
 /-- The first several terms of the sequence (OEIS A005243). -/
 axiom consSeq_values :
@@ -78,7 +78,7 @@ axiom verify_three : consecutiveSum 0 1 = 3
 /-- Verification: 5 = 2 + 3 (consecutive sum a₂ + a₃). -/
 axiom verify_five : consecutiveSum 1 2 = 5
 
-/-! ## Part IV: Growth Properties -/
+/- ## Part IV: Growth Properties -/
 
 /-- The sequence grows at least linearly: a(n) ≥ n + 1. -/
 axiom consSeq_lower_bound (n : ℕ) : consSeq n ≥ n + 1
@@ -91,7 +91,7 @@ axiom excess_nondecreasing :
 axiom excess_unbounded :
     Filter.Tendsto (fun n => (consSeq n : ℤ) - (n : ℤ)) Filter.atTop Filter.atTop
 
-/-! ## Part V: Missing Numbers -/
+/- ## Part V: Missing Numbers -/
 
 /-- The set of positive integers that appear in the sequence. -/
 def seqRange : Set ℕ := {m | ∃ n, consSeq n = m}
@@ -105,7 +105,7 @@ axiom infinitely_many_missing : Set.Infinite missingNumbers
 /-- 4 is the first missing number (not a consecutive sum at the right moment). -/
 axiom four_is_missing : 4 ∈ missingNumbers
 
-/-! ## Part VI: The Main Question -/
+/- ## Part VI: The Main Question -/
 
 /--
 **Erdős Problem #423 (OPEN):**
@@ -126,7 +126,7 @@ def ErdosQuestion423_density : Prop :=
       (fun N => ((Finset.range (N + 1)).filter (· ∈ seqRange)).card / (N + 1 : ℝ))
       Filter.atTop (nhds d)
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #423: Summary**
@@ -147,8 +147,5 @@ theorem erdos_423_known :
     (∀ m n, m ≤ n → consSeq m - m ≤ consSeq n - n) ∧
     Set.Infinite missingNumbers := by
   exact ⟨excess_nondecreasing, infinitely_many_missing⟩
-
-/-- The problem remains OPEN. -/
-theorem erdos_423_status : True := trivial
 
 end Erdos423
