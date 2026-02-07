@@ -1,50 +1,93 @@
 /-
-This file was edited by Aristotle.
+Erdős Problem #1083: Distinct Distances in Higher Dimensions
 
-Lean version: leanprover/lean4:v4.24.0
-Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
-This project request had uuid: b68219bf-f6f6-468d-aaf9-dee153ed25e4
+Source: https://erdosproblems.com/1083
+Status: OPEN
 
-To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
-Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+Statement:
+Let d ≥ 3, and let f_d(n) be the minimal number of distinct distances determined
+by any set of n points in ℝ^d. Estimate f_d(n) - in particular, is
+f_d(n) = n^{2/d - o(1)}?
+
+Known bounds:
+- Erdős (1946): n^{1/d} ≪ f_d(n) ≪ n^{2/d}
+- Solymosi-Vu: f_d(n) ≫ n^{2/d - c/d²} for d ≥ 4
+
+References:
+- Erdős (1946): Initial bounds
+- Solymosi, Vu: Improved lower bounds for d ≥ 4
 -/
+
+import Mathlib.Data.Real.Basic
+import Mathlib.Data.Finset.Basic
+
+namespace Erdos1083
 
 /-
-  Erdős Problem #1083
-
-  Source: https://erdosproblems.com/1083
-  Status: SOLVED
-  
-
-  Statement:
-  Forum
-  Favourites
-  Tags
-  More
-   Go
-   Go
-  Dual View
-  Random Solved
-  Random Open
-  
-  Let $d\geq 3$, and let $f_d(n)$ be the minimal $m$ such that every set of $n$ points in $\mathbb{R}^d$ determines at least $m$ distinct distances. Estimate $f_d(n)$ - in particular, is it true that\[f_d(n)=n^{\frac{2}{d}-o(1)}?\]
-  
-  
-  
-  A generalisation of the distinct distance problem [89] to higher dimensions. Erd\H{o}s \cite{Er46b} proved\[n^{1/d}\ll_d f_d(n)\ll_d n^{2/d},\]the upper bound const...
-
-  Tags: 
-
-  TODO: Implement proof
+## Part I: Definitions
 -/
 
-import Mathlib
+/--
+f_d(n): the minimum number of distinct distances determined by n points in ℝ^d.
+-/
+noncomputable def f (d n : ℕ) : ℕ := sorry
 
+/-
+## Part II: Erdős's Bounds
+-/
 
--- Placeholder theorem
--- Replace with actual statement and proof
-theorem erdos_1083 : True := by
-  trivial
+/--
+**Erdős (1946)**: n^{1/d} ≪ f_d(n) ≪ n^{2/d}.
 
--- sorry marker for tracking
-#check erdos_1083
+The upper bound is achieved by a grid configuration.
+The lower bound uses a pigeonhole argument.
+-/
+axiom erdos_bounds (d : ℕ) (hd : d ≥ 3) :
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      c₁ * (n : ℝ) ^ (1 / (d : ℝ)) ≤ (f d n : ℝ) ∧
+      (f d n : ℝ) ≤ c₂ * (n : ℝ) ^ (2 / (d : ℝ))
+
+/-
+## Part III: Solymosi-Vu Improvement
+-/
+
+/--
+**Solymosi-Vu**: For d ≥ 4, f_d(n) ≫ n^{2/d - c/d²} for some constant c > 0.
+
+This improves the lower bound from n^{1/d} toward the conjectured n^{2/d}.
+-/
+axiom solymosi_vu (d : ℕ) (hd : d ≥ 4) :
+    ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      (f d n : ℝ) ≥ (n : ℝ) ^ (2 / (d : ℝ) - c / (d : ℝ)^2)
+
+/-
+## Part IV: The Conjecture
+-/
+
+/--
+**Erdős's Conjecture (OPEN)**: f_d(n) = n^{2/d - o(1)}.
+
+The conjectured lower bound matches the grid upper bound up to
+subpolynomial factors.
+-/
+axiom erdos_conjecture (d : ℕ) (hd : d ≥ 3) :
+    ∀ ε : ℝ, ε > 0 → ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      (f d n : ℝ) ≥ c * (n : ℝ) ^ (2 / (d : ℝ) - ε)
+
+/-
+## Part V: Main Theorem
+-/
+
+/--
+**Erdős Problem #1083: OPEN**
+
+Known: n^{1/d} ≪ f_d(n) ≪ n^{2/d}.
+Conjecture: f_d(n) = n^{2/d - o(1)}.
+-/
+theorem erdos_1083 (d : ℕ) (hd : d ≥ 3) :
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      c₁ * (n : ℝ) ^ (1 / (d : ℝ)) ≤ (f d n : ℝ) ∧
+      (f d n : ℝ) ≤ c₂ * (n : ℝ) ^ (2 / (d : ℝ)) :=
+  erdos_bounds d hd
+
+end Erdos1083

@@ -1,146 +1,86 @@
 [
   {
-    "id": "ann-650-valid",
+    "id": "ann-650-1",
     "proofId": "erdos-650",
-    "range": { "startLine": 33, "endLine": 35 },
-    "type": "definition",
-    "title": "ValidSet",
-    "content": "A ⊆ {1,...,N} with all elements positive.",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erd\u0151s Problem #650: Divisibility Representation in Intervals. Status: OPEN",
     "significance": "critical"
   },
   {
-    "id": "ann-650-interval",
+    "id": "ann-650-2",
     "proofId": "erdos-650",
-    "range": { "startLine": 37, "endLine": 39 },
+    "range": {
+      "startLine": 28,
+      "endLine": 34
+    },
     "type": "definition",
-    "title": "Interval",
-    "content": "[x, x + 2N) of length 2N.",
-    "significance": "critical"
+    "title": "Countdivisible",
+    "content": "Given A \u2286 {1,...,N} and an interval [a, a+2N), count how many integers in this interval are divisible by some element of A. ((Finset.Icc a (a + 2 * N)).filter (fun x => \u2203 d \u2208 A, d \u2223 x)).card",
+    "significance": "key"
   },
   {
-    "id": "ann-650-covering",
+    "id": "ann-650-3",
     "proofId": "erdos-650",
-    "range": { "startLine": 46, "endLine": 54 },
+    "range": {
+      "startLine": 36,
+      "endLine": 40
+    },
     "type": "definition",
-    "title": "Covering",
-    "content": "Distinct b₁,...,bᵣ with distinct witnesses a₁,...,aᵣ ∈ A where aᵢ | bᵢ.",
-    "significance": "critical"
+    "title": "Mincoverage",
+    "content": "f(A, N) = the minimum count over all intervals of length 2N. sInf {k : \u2115 | \u2203 a : \u2115, a \u2265 1 \u2227 countDivisible A N a = k}",
+    "significance": "key"
   },
   {
-    "id": "ann-650-mincov",
+    "id": "ann-650-4",
     "proofId": "erdos-650",
-    "range": { "startLine": 60, "endLine": 69 },
+    "range": {
+      "startLine": 42,
+      "endLine": 47
+    },
     "type": "definition",
-    "title": "minCovering",
-    "content": "Minimum covering size for A in interval at x.",
-    "significance": "critical"
+    "title": "F",
+    "content": "f(m) = the minimum of minCoverage over all A \u2286 {1,...,N} with |A| = m. sInf {k : \u2115 | \u2203 A : Finset \u2115, A \u2286 Finset.range (N + 1) \u2227 A.card = m \u2227 minCoverage A N = k}",
+    "significance": "key"
   },
   {
-    "id": "ann-650-f",
+    "id": "ann-650-5",
     "proofId": "erdos-650",
-    "range": { "startLine": 73, "endLine": 79 },
-    "type": "definition",
-    "title": "f(m)",
-    "content": "Minimum guaranteed covering over all valid m-sets.",
-    "significance": "critical"
+    "range": {
+      "startLine": 53,
+      "endLine": 62
+    },
+    "type": "axiom",
+    "title": "Erdos Saranyi Lower Bound",
+    "content": "**Erd\u0151s-Sar\u00e1nyi Lower Bound**: f(m) \u226b \u221am.  There exists a constant c > 0 such that for all sufficiently large m and N, every A \u2286 {1,...,N} with |A| = m covers at least c\u221am integers in every interval of length 2N. \u2203 c : \u211d, c > 0 \u2227 \u2200 m N : \u2115, m \u2265 1 \u2192 N \u2265 m \u2192 (f m N : \u211d) \u2265 c * Real.sqrt m",
+    "significance": "core"
   },
   {
-    "id": "ann-650-lower",
+    "id": "ann-650-6",
     "proofId": "erdos-650",
-    "range": { "startLine": 89, "endLine": 92 },
+    "range": {
+      "startLine": 68,
+      "endLine": 75
+    },
+    "type": "axiom",
+    "title": "Erdos Upper Bound Conjecture",
+    "content": "**Erd\u0151s's Conjecture (OPEN)**: f(m) \u226a \u221am.  If true, combined with the lower bound this would give f(m) \u224d \u221am. \u2203 C : \u211d, C > 0 \u2227 \u2200 m : \u2115, m \u2265 1 \u2192 \u2203 N : \u2115, N \u2265 m \u2227 (f m N : \u211d) \u2264 C * Real.sqrt m",
+    "significance": "core"
+  },
+  {
+    "id": "ann-650-7",
+    "proofId": "erdos-650",
+    "range": {
+      "startLine": 81,
+      "endLine": 90
+    },
     "type": "theorem",
-    "title": "Erdős-Sarányi Lower",
-    "content": "f(m) ≥ c√m for some c > 0 (1959).",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-650-pigeonhole",
-    "proofId": "erdos-650",
-    "range": { "startLine": 99, "endLine": 103 },
-    "type": "theorem",
-    "title": "Pigeonhole Argument",
-    "content": "Lower bound proof technique.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-650-upper",
-    "proofId": "erdos-650",
-    "range": { "startLine": 107, "endLine": 109 },
-    "type": "definition",
-    "title": "Upper Bound Conjecture",
-    "content": "f(m) ≤ C√m for some C. OPEN.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-650-tight",
-    "proofId": "erdos-650",
-    "range": { "startLine": 114, "endLine": 118 },
-    "type": "theorem",
-    "title": "Tight Bound",
-    "content": "If conjecture true, f(m) ~ √m.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-650-f1",
-    "proofId": "erdos-650",
-    "range": { "startLine": 122, "endLine": 124 },
-    "type": "theorem",
-    "title": "f(1) = 1",
-    "content": "One element covers at least 1 multiple.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-650-multiples",
-    "proofId": "erdos-650",
-    "range": { "startLine": 137, "endLine": 139 },
-    "type": "definition",
-    "title": "multiplesInInterval",
-    "content": "Count of multiples of a in [x, x+2N).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-650-greedy",
-    "proofId": "erdos-650",
-    "range": { "startLine": 157, "endLine": 159 },
-    "type": "definition",
-    "title": "Greedy Covering",
-    "content": "Pick largest uncovered, use smallest witness.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-650-random",
-    "proofId": "erdos-650",
-    "range": { "startLine": 168, "endLine": 171 },
-    "type": "definition",
-    "title": "Random Expectation",
-    "content": "Expected covering for random m-subset.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-650-extremal",
-    "proofId": "erdos-650",
-    "range": { "startLine": 180, "endLine": 182 },
-    "type": "definition",
-    "title": "IsExtremal",
-    "content": "Sets achieving minimum f(m).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-650-ratio",
-    "proofId": "erdos-650",
-    "range": { "startLine": 225, "endLine": 226 },
-    "type": "definition",
-    "title": "Ratio",
-    "content": "f(m)/√m: key asymptotic quantity.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-650-limit",
-    "proofId": "erdos-650",
-    "range": { "startLine": 238, "endLine": 240 },
-    "type": "definition",
-    "title": "Limit Exists",
-    "content": "Does lim f(m)/√m exist? OPEN.",
-    "significance": "key"
+    "title": "Erdos 650",
+    "content": "The known result: f(m) \u226b \u221am (Erd\u0151s-Sar\u00e1nyi). The open question: is f(m) \u224d \u221am? \u2203 c : \u211d, c > 0 \u2227 \u2200 m N : \u2115, m \u2265 1 \u2192 N \u2265 m \u2192 (f m N : \u211d) \u2265 c * Real.sqrt m := erdos_saranyi_lower_bound",
+    "significance": "core"
   }
 ]

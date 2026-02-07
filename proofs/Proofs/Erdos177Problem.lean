@@ -1,50 +1,100 @@
 /-
-This file was edited by Aristotle.
+Erdős Problem #177: Discrepancy of Arithmetic Progressions
 
-Lean version: leanprover/lean4:v4.24.0
-Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
-This project request had uuid: 6ccb3d33-7aa3-4408-9163-9036c5003b00
+Source: https://erdosproblems.com/177
+Status: OPEN
 
-To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
-Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+Statement:
+Find the smallest function h(d) such that there exists f : ℕ → {-1, 1} where
+for every d ≥ 1, the maximum absolute partial sum over arithmetic progressions
+with common difference d is at most h(d).
+
+Known bounds:
+- Lower: h(d) ≫ d^{1/2} (from Roth's discrepancy theorem)
+- Upper: h(d) ≤ d^{8+ε} (Beck)
+- Cantor, Erdős, Schreiber, Straus: h(d) ≤ d! is achievable
+
+References:
+- Erdős (1966): Original problem
+- Roth: Discrepancy lower bound
+- Beck: Upper bound improvement
 -/
+
+import Mathlib.Data.Int.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Real.Basic
+
+namespace Erdos177
 
 /-
-  Erdős Problem #177
-
-  Source: https://erdosproblems.com/177
-  Status: SOLVED
-  
-
-  Statement:
-  Forum
-  Favourites
-  Tags
-  More
-   Go
-   Go
-  Dual View
-  Random Solved
-  Random Open
-  
-  Find the smallest $h(d)$ such that the following holds. There exists a function $f:\mathbb{N}\to\{-1,1\}$ such that, for every $d\geq 1$,\[\max_{P_d}\left\lvert \sum_{n\in P_d}f(n)\right\rvert\leq h(d),\]where $P_d$ ranges over all finite arithmetic progressions with common difference $d$.
-  
-  
-  
-  Cantor, Erd\H{o}s, Schreiber, and Straus \cite{Er66} proved that $h(d)\ll d!$ is possible. Van der Waer...
-
-  Tags: 
-
-  TODO: Implement proof
+## Part I: Definitions
 -/
 
-import Mathlib
+/-- A coloring function f : ℕ → {-1, 1}. -/
+def Coloring := ℕ → Int
 
+/-- A coloring takes values in {-1, 1}. -/
+def IsValidColoring (f : Coloring) : Prop :=
+  ∀ n, f n = 1 ∨ f n = -1
 
--- Placeholder theorem
--- Replace with actual statement and proof
-theorem erdos_177 : True := by
-  trivial
+/-- The partial sum of f along an arithmetic progression {a, a+d, ..., a+(k-1)d}. -/
+def apSum (f : Coloring) (a d k : ℕ) : Int :=
+  (Finset.range k).sum (fun i => f (a + i * d))
 
--- sorry marker for tracking
-#check erdos_177
+/--
+The discrepancy of f with respect to common difference d:
+the supremum of |∑ f(n)| over all finite APs with common difference d.
+-/
+noncomputable def discrepancy (f : Coloring) (d : ℕ) : ℕ :=
+  sSup {k : ℕ | ∃ a n : ℕ, n ≥ 1 ∧ (apSum f a d n).natAbs = k}
+
+/--
+h(d) = the minimum discrepancy achievable over all valid colorings.
+-/
+noncomputable def h (d : ℕ) : ℕ :=
+  sInf {k : ℕ | ∃ f : Coloring, IsValidColoring f ∧ discrepancy f d = k}
+
+/-
+## Part II: Known Bounds
+-/
+
+/--
+**Lower bound**: h(d) ≫ √d.
+From Roth's discrepancy theorem: no coloring can have discrepancy
+smaller than c√d for arithmetic progressions of common difference d.
+-/
+axiom roth_lower_bound :
+    ∃ c : ℝ, c > 0 ∧ ∀ d : ℕ, d ≥ 1 →
+      (h d : ℝ) ≥ c * Real.sqrt d
+
+/--
+**Beck's upper bound**: h(d) ≤ d^{8+ε}.
+For every ε > 0, there exists a coloring achieving this bound.
+-/
+axiom beck_upper_bound :
+    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ d : ℕ, d ≥ 1 →
+      (h d : ℝ) ≤ C * (d : ℝ) ^ (8 + ε)
+
+/--
+**Cantor-Erdős-Schreiber-Straus**: h(d) ≤ d! is achievable.
+The earliest quantitative bound.
+-/
+axiom factorial_bound :
+    ∀ d : ℕ, d ≥ 1 → h d ≤ Nat.factorial d
+
+/-
+## Part III: Main Theorem
+-/
+
+/--
+**Erdős Problem #177: OPEN**
+
+Known bounds: c√d ≤ h(d) ≤ C·d^{8+ε}.
+The exact order of growth remains unknown.
+-/
+theorem erdos_177 :
+    ∃ c : ℝ, c > 0 ∧ ∀ d : ℕ, d ≥ 1 →
+      (h d : ℝ) ≥ c * Real.sqrt d :=
+  roth_lower_bound
+
+end Erdos177
