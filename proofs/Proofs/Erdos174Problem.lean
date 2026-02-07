@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #174: Euclidean Ramsey Sets
 
 Source: https://erdosproblems.com/174
@@ -43,7 +43,7 @@ import Mathlib.LinearAlgebra.AffineSpace.Combination
 
 namespace Erdos174
 
-/-! ## Part I: Basic Setup -/
+/- ## Part I: Basic Setup -/
 
 /-- A finite configuration in ℝⁿ. -/
 def FiniteConfig (n : ℕ) := Finset (EuclideanSpace ℝ (Fin n))
@@ -55,7 +55,7 @@ def IsCongruentCopy {n d : ℕ} (A : FiniteConfig n) (B : Finset (EuclideanSpace
     (∀ x y : EuclideanSpace ℝ (Fin n), dist (f x) (f y) = dist x y) ∧
     B = A.image f
 
-/-! ## Part II: Euclidean Ramsey Property -/
+/- ## Part II: Euclidean Ramsey Property -/
 
 /-- A k-coloring of ℝᵈ. -/
 def Coloring (d k : ℕ) := EuclideanSpace ℝ (Fin d) → Fin k
@@ -76,7 +76,7 @@ def IsRamsey {n : ℕ} (A : FiniteConfig n) : Prop :=
         ∃ B : Finset (EuclideanSpace ℝ (Fin d)),
           IsCongruentCopy A B ∧ IsMonochromatic B χ
 
-/-! ## Part III: Spherical Sets -/
+/- ## Part III: Spherical Sets -/
 
 /-- A set lies on the surface of a sphere. -/
 def IsSpherical {n : ℕ} (A : FiniteConfig n) : Prop :=
@@ -90,7 +90,7 @@ construct a coloring that prevents any monochromatic copy. -/
 axiom ramsey_implies_spherical {n : ℕ} (A : FiniteConfig n) :
     IsRamsey A → IsSpherical A
 
-/-! ## Part IV: Open Conjectures -/
+/- ## Part IV: Open Conjectures -/
 
 /-- **Graham's Conjecture:** Every spherical set is Ramsey.
 This would give a complete characterization: Ramsey ⟺ Spherical. -/
@@ -112,7 +112,7 @@ A set is Ramsey if and only if it is subtransitive. -/
 def lrw_conjecture : Prop :=
   ∀ (n : ℕ) (A : FiniteConfig n), IsRamsey A ↔ IsSubtransitive A
 
-/-! ## Part V: Known Ramsey Sets -/
+/- ## Part V: Known Ramsey Sets -/
 
 /-- A rectangle: vertices of a k-dimensional box. -/
 def IsRectangle {n : ℕ} (A : FiniteConfig n) : Prop :=
@@ -158,7 +158,7 @@ Uses permutation group methods and symmetry arguments. -/
 axiom regular_polygon_is_ramsey {n : ℕ} (A : FiniteConfig n) (m : ℕ) :
     IsRegularPolygon A m → IsRamsey A
 
-/-! ## Part VI: Examples -/
+/- ## Part VI: Examples -/
 
 /-- The simplest Ramsey set: two points. -/
 def twoPoints : FiniteConfig 1 :=
@@ -185,7 +185,7 @@ def square : FiniteConfig 2 :=
 /-- Squares are Ramsey (special case of rectangle). -/
 axiom square_ramsey : IsRamsey square
 
-/-! ## Part VII: Non-Ramsey Sets -/
+/- ## Part VII: Non-Ramsey Sets -/
 
 /-- A necessary condition: non-spherical sets are not Ramsey. -/
 theorem not_spherical_not_ramsey {n : ℕ} (A : FiniteConfig n) :
@@ -204,7 +204,7 @@ axiom collinear_not_spherical : ¬IsSpherical collinearFour
 theorem collinear_not_ramsey : ¬IsRamsey collinearFour := by
   exact not_spherical_not_ramsey collinearFour collinear_not_spherical
 
-/-! ## Part VIII: The Characterization Problem -/
+/- ## Part VIII: The Characterization Problem -/
 
 /-- The main open question: find a characterization of Ramsey sets.
 There exists some property P that characterizes Ramsey sets
@@ -219,7 +219,7 @@ theorem characterization_exists : erdos_174_question := by
   intro n A
   rfl
 
-/-! ## Part IX: Summary
+/- ## Part IX: Summary
 
 **Erdős Problem #174: OPEN**
 
