@@ -29,18 +29,18 @@
       "capSet2_card_le_4: |S| ≤ 4 for cap sets in dimension 2"
     ],
     "open": [
-      "f₃(3) = 9, f₃(4) = 20 (axioms - need enumeration)"
+      "f₃(4) = 20 (axiom - 2^81 subsets too large for native_decide)"
     ],
-    "goal": "All tractable sorries eliminated. 7 axioms remain (deep results). f3_is_little_o now proved from DHJ."
+    "goal": "All tractable sorries eliminated. 6 axioms remain (deep results). f3_3 = 9 now proved via native_decide. f3_is_little_o proved from DHJ."
   },
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-02-06T16:30:00Z",
-    "iteration": 7,
-    "focus": "Proved f3_is_little_o from density_hales_jewett_k3 axiom (eliminated 1 axiom)",
+    "iteration": 8,
+    "focus": "Updated knowledge: f3_3 axiom→theorem verified, 6 axioms remain (not 7)",
     "activeApproach": "Derive little-o from DHJ via cap set density bound",
     "blockers": [],
-    "nextAction": "Problem is essentially complete. Remaining 7 axioms are deep results.",
+    "nextAction": "Problem is complete. 6 axioms remain (all deep results not in Mathlib).",
     "attemptCounts": {
       "total": 7,
       "currentApproach": 1,
@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: f3_is_little_o now PROVED from density_hales_jewett_k3 (was axiom). New bridge lemma isCapSet_implies_isCapSetCombinatorial connects collinear and combinatorial line definitions. 0 sorries, 7 axioms (all deep results not in Mathlib).",
+    "progressSummary": "COMPLETE: 0 sorries, 6 axioms. f3_3=9 PROVED via native_decide (was axiom). f3_is_little_o PROVED from density_hales_jewett_k3. Bridge lemma isCapSet_implies_isCapSetCombinatorial. Binary cube cap set of size 8 and explicit cap set of size 9 in dim 3.",
     "builtItems": [
       "f3_0: f₃(0) = 1",
       "f3_1: f₃(1) = 2",
@@ -72,7 +72,11 @@
       "isCapSet_implies_isCapSetCombinatorial: bridge lemma (cap set → no combinatorial lines)",
       "capSet_density_lt: DHJ contrapositive gives density bound for cap sets",
       "f3_eventually_le: eventual bound on f₃(n) from density bound",
-      "f3_is_little_o: PROVED (was axiom) from density_hales_jewett_k3"
+      "f3_is_little_o: PROVED (was axiom) from density_hales_jewett_k3",
+      "binaryCube3: binary cube {0,1}^3 cap set of size 8",
+      "capSet9: explicit cap set of size 9 in AG(3,3)",
+      "ag33_line_or_small: every 10+ point subset of AG(3,3) has a collinear triple (native_decide)",
+      "f3_3: f₃(3) = 9 (PROVED via native_decide, was axiom)"
     ],
     "insights": [
       "f3_2 lower bound: construct explicit cap set {(0,0),(0,1),(1,0),(1,2)} and verify no three are collinear",
@@ -83,15 +87,17 @@
       "Mathlib.Data.Fin.VecNotation provides ![...] notation for points",
       "Combinatorial line points satisfy OnLine: p(0)+p(2)=2*p(1) coordinatewise in ZMod 3",
       "Nat.sSup_mem gives: sSup of bounded nonempty ℕ set is achieved by some element",
-      "isLittleO_iff + filter_upwards pattern for proving asymptotic bounds"
+      "isLittleO_iff + filter_upwards pattern for proving asymptotic bounds",
+      "native_decide handles AG(3,3) = 2^27 subsets for f3_3 proof (was considered too large but works)",
+      "f3_4 in AG(4,3) would require 2^81 subsets - completely infeasible for native_decide"
     ],
     "mathlibGaps": [
       "Density Hales-Jewett not in Mathlib (only combinatorial version)"
     ],
     "nextSteps": [
-      "Problem is essentially complete for formalization purposes",
-      "Remaining 7 axioms are deep results not tractable for Lean formalization",
-      "Could attempt f3_3 = 9 via similar native_decide approach (3^27 subsets - likely too large)"
+      "Problem is complete for formalization purposes",
+      "Remaining 6 axioms are deep results not tractable for Lean formalization",
+      "f3_4 = 20 requires checking 2^81 subsets - computationally infeasible for native_decide"
     ],
     "markdown": "# Erdős #185: Cap Sets in {0,1,2}^n - Knowledge\n\n## Problem\nLet f₃(n) be the maximal size of a subset of {0,1,2}^n which contains no three\npoints on a line. Is it true that f₃(n) = o(3^n)?\n\n**Answer**: YES — follows from the density Hales-Jewett theorem.\n\n## Key Results\n\n### Proved Theorems (0 sorries, 8 axioms for deep results)\n\n**Core definitions:**\n1. `TernaryHypercube`: {0,1,2}^n\n2. `OnLine`: collinearity predicate (x+z=2y mod 3)\n3. `IsCapSet`: no three collinear points\n4. `f3`: maximum cap set size function\n\n**Small cases:**\n5. `f3_0`: f₃(0) = 1\n6. `f3_1`: f₃(1) = 2\n7. `f3_2`: f₃(2) = 4 (FULLY PROVED)\n\n**f₃(2) = 4 infrastructure:**\n8. `capSet4`: explicit cap set {(0,0),(0,1),(1,0),(1,2)}\n9. `capSet4_is_cap`: line-free verification\n10. `capSet4_card`: |capSet4| = 4\n11. `f3_2_ge`: f₃(2) ≥ 4 (lower bound)\n12. `hasCollinearTriple`: decidable collinearity check\n13. `five_or_more_has_line_bool`: computational verification (native_decide)\n14. `five_or_more_contains_line`: any 5+ points contain a line (THEOREM)\n15. `capSet2_card_le_4`: |S| ≤ 4 for cap sets in dim 2 (fully proved)\n\n**General bounds:**\n16. `f3_le_three_pow`: f₃(n) ≤ 3^n\n17. `f3_ge_one`: f₃(n) ≥ 1\n18. `f3_ge_two`: f₃(n) ≥ 2 for n ≥ 1\n\n**Main result:**\n19. `f3_density_tends_to_zero`: f₃(n)/3^n → 0\n20. `erdos_185`: f₃(n) = o(3^n)\n21. `erdos_185_answer`: ε-δ formulation\n\n### Iteration 6 Progress (2026-02-05, researcher-1)\n- **Converted `five_or_more_contains_line_axiom` to theorem**\n- Strategy: defined `hasCollinearTriple` Bool function, proved `five_or_more_has_line_bool` via `native_decide` over all 512 subsets\n- Bridged computation to logic via `Finset.all_iff_forall` and `Finset.any_eq_true`\n- `capSet2_card_le_4` now fully proved (0 sorries)\n- `f3_2` now fully proved (0 sorries)\n- Reduced axiom count from 9 to 8\n- Total: 1 axiom eliminated, 1 sorry eliminated\n\n## Axiom Inventory (7 axioms)\n1. `f3_geq_R3` - f₃(n) ≥ R₃(3^n) (embedding theorem)\n2. `moser_lower_bound` - f₃(n) ≫ 3^n/√n (Moser's construction)\n3. `density_hales_jewett_k3` - DHJ for k=3 (Furstenberg-Katznelson 1991)\n4. `meshulam_upper_bound` - f₃(n) ≤ 3^n/n (Meshulam 1995)\n5. `ellenberg_gijswijt_2016` - f₃(n) ≤ c^n, c < 3 (polynomial method)\n6. `f3_3` - f₃(3) = 9 (finite computation, large)\n7. `f3_4` - f₃(4) = 20 (finite computation, very large)\n\n**Eliminated axiom:** `f3_is_little_o` now PROVED from `density_hales_jewett_k3`\n\n## Assessment\nThis problem is well-formalized. All tractable sorries and axioms have been eliminated.\nThe remaining 7 axioms are deep mathematical results beyond Mathlib.\n"
   },
@@ -143,7 +149,7 @@
     ]
   },
   "started": "2026-01-27T22:18:02.333Z",
-  "lastUpdate": "2026-02-06T16:30:00Z",
+  "lastUpdate": "2026-02-06T23:45:00Z",
   "significance": 7,
   "tractability": 7,
   "knowledgeScore": 3
