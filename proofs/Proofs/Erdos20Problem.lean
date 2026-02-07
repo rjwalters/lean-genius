@@ -31,7 +31,7 @@ namespace Erdos20
 
 variable {α : Type*} [DecidableEq α]
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A family of sets is n-uniform if all sets have exactly n elements. -/
 def IsUniform (F : Finset (Finset α)) (n : ℕ) : Prop :=
@@ -52,18 +52,18 @@ def IsSunflower (petals : Finset (Finset α)) (k : ℕ) : Prop :=
 def ContainsSunflower (F : Finset (Finset α)) (k : ℕ) : Prop :=
   ∃ petals : Finset (Finset α), petals ⊆ F ∧ IsSunflower petals k
 
-/-! ## The Sunflower Number f(n,k) -/
+/- ## The Sunflower Number f(n,k) -/
 
 /-- f(n,k) = minimum m such that every n-uniform family of size m contains k-sunflower.
-    This is axiomatized because computing it requires checking all possible families. -/
-noncomputable def sunflowerNumber (n k : ℕ) : ℕ := sorry
+    Axiomatized because computing it requires checking all possible families. -/
+axiom sunflowerNumber (n k : ℕ) : ℕ
 
 /-- f(n,k) is well-defined and finite (Erdős-Rado Lemma). -/
 axiom sunflower_number_finite (n k : ℕ) (hk : k ≥ 2) :
     ∃ m : ℕ, ∀ (α : Type*) [DecidableEq α] (F : Finset (Finset α)),
       IsUniform F n → F.card ≥ m → ContainsSunflower F k
 
-/-! ## The Sunflower Lemma (Erdős-Rado 1960) -/
+/- ## The Sunflower Lemma (Erdős-Rado 1960) -/
 
 /-- **Erdős-Rado Sunflower Lemma (1960)**:
     f(n,k) ≤ (k-1)^n · n!
@@ -76,7 +76,7 @@ axiom erdos_rado_sunflower_lemma (n k : ℕ) (hk : k ≥ 2) :
 /-- The Erdős-Rado bound explicitly. -/
 def erdosRadoBound (n k : ℕ) : ℕ := (k - 1)^n * n.factorial
 
-/-! ## The Conjecture -/
+/- ## The Conjecture -/
 
 /-- **The Sunflower Conjecture** (Erdős-Rado, OPEN):
     For each k ≥ 3, there exists c_k > 0 such that f(n,k) < c_k^n.
@@ -90,7 +90,7 @@ def SunflowerConjecture : Prop :=
 def SunflowerConjectureK3 : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, (sunflowerNumber n 3 : ℝ) < c^n
 
-/-! ## Progress on the Conjecture -/
+/- ## Progress on the Conjecture -/
 
 /-- **Kostochka (1997)**: f(n,k) = o(n!) · (k-1)^n.
     First improvement over Erdős-Rado. Won $100 consolation prize. -/
@@ -110,7 +110,7 @@ axiom rao_bound (k : ℕ) (hk : k ≥ 2) :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       (sunflowerNumber n k : ℝ) ≤ (C * k * Real.log n)^n
 
-/-! ## The Gap -/
+/- ## The Gap -/
 
 /-- **The remaining gap**: Current best is (Ck log n)^n.
     Conjecture asks for c_k^n (no log factor).
@@ -130,7 +130,7 @@ theorem gap_description :
     obtain ⟨c, hc, hbound⟩ := h k hk
     exact ⟨c, hc, fun n => le_of_lt (hbound n)⟩
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- For k=2: f(n,2) = n+1 (easy: any n+2 sets of size n have two overlapping). -/
 axiom sunflower_k2 (n : ℕ) : sunflowerNumber n 2 = n + 1
@@ -142,7 +142,7 @@ axiom sunflower_n2_k3 : sunflowerNumber 2 3 = 6
 axiom sunflower_lower_bound (n k : ℕ) (hk : k ≥ 2) :
     sunflowerNumber n k ≥ (k - 1)^n
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- Example sunflower with k=3: {1,2,3}, {1,4,5}, {1,6,7} with core {1}. -/
 example : IsSunflower ({{1,2,3}, {1,4,5}, {1,6,7}} : Finset (Finset ℕ)) 3 := by
@@ -164,7 +164,7 @@ example : IsSunflower ({{1,2}, {3,4}, {5,6}} : Finset (Finset ℕ)) 3 := by
     rcases hS₁ with rfl | rfl | rfl <;> rcases hS₂ with rfl | rfl | rfl <;>
       first | contradiction | decide
 
-/-! ## Applications -/
+/- ## Applications -/
 
 /-- **Matrix multiplication**: Sunflower bounds relate to matrix multiplication
     exponent lower bounds. -/
@@ -173,7 +173,7 @@ example : IsSunflower ({{1,2}, {3,4}, {5,6}} : Finset (Finset ℕ)) 3 := by
 
 /-- **Circuit complexity**: Connections to ACC circuit lower bounds. -/
 
-/-! ## Problem Status -/
+/- ## Problem Status -/
 
 /-- **Erdős Problem #20: OPEN ($1,000 prize)**
 
