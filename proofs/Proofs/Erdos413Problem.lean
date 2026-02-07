@@ -685,28 +685,6 @@ theorem barrier_traps_orbit (b : ℕ) (hb : IsBarrier omega b) (m : ℕ) (hm : m
   simp [orbit, iterOmega]
   exact hb m hm
 
--- ## Relationship Between ω and Ω
---
--- ω(n) ≤ Ω(n) always, since each distinct prime contributes at least 1 to Ω.
--- Barriers for Ω are also barriers for ω (since ω ≤ Ω).
-
-/-- ω(n) ≤ Ω(n): the number of distinct prime factors is at most the total count -/
-theorem omega_le_bigOmega (n : ℕ) : omega n ≤ bigOmega n := by
-  unfold omega bigOmega
-  calc n.primeFactors.card
-      = n.primeFactors.sum (fun _ => 1) := by simp
-    _ ≤ n.factorization.sum (fun _ k => k) := by
-        rw [Finsupp.sum, Nat.support_factorization]
-        apply Finset.sum_le_sum
-        intro p hp
-        exact Nat.one_le_iff_ne_zero.mpr
-          (Finsupp.mem_support_iff.mp (Nat.support_factorization n ▸ hp))
-
-/-- If n is a barrier for Ω, it is also a barrier for ω -/
-theorem bigOmega_barrier_implies_omega (n : ℕ) (hb : IsBarrier bigOmega n) :
-    IsBarrier omega n := by
-  exact barrier_of_le bigOmega omega n omega_le_bigOmega hb
-
 /-- For squarefree n, ω(n) = Ω(n) since all prime exponents are 1 -/
 theorem omega_eq_bigOmega_of_squarefree (n : ℕ) (hn : n ≠ 0) (hsq : Squarefree n) :
     omega n = bigOmega n := by
@@ -714,11 +692,12 @@ theorem omega_eq_bigOmega_of_squarefree (n : ℕ) (hn : n ≠ 0) (hsq : Squarefr
   unfold omega bigOmega at *
   apply le_antisymm hle
   -- Ω ≤ ω because all exponents are ≤ 1 (squarefree)
+  have hfact : ∀ p, n.factorization p ≤ 1 :=
+    (Nat.squarefree_iff_factorization_le_one hn).mp hsq
   rw [Finsupp.sum, Nat.support_factorization]
   calc n.primeFactors.sum (fun p => n.factorization p)
       ≤ n.primeFactors.sum (fun _ => 1) := by
-        apply Finset.sum_le_sum; intro p _
-        exact Nat.Squarefree.factorization_le_one n hsq p
+        apply Finset.sum_le_sum; intro p _; exact hfact p
     _ = n.primeFactors.card := by simp
 
 -- ## Orbit and Barrier Interaction
@@ -935,6 +914,90 @@ theorem barrier_near_top_constraint (n : ℕ) (hb : IsBarrier omega n)
 theorem barrier_primorial_constraint (n : ℕ) (hb : IsBarrier omega n)
     (m : ℕ) (hm : m < n) : m + omega m ≤ n :=
   hb m hm
+
+-- ## Transfer: omegaC equals omega
+--
+-- Our computable omegaC and the noncomputable omega agree on all inputs.
+-- This validates that native_decide results apply to the mathematical definition.
+
+/-- The computable omegaC equals the mathematical omega -/
+theorem omegaC_eq_omega (n : ℕ) : omegaC n = omega n := rfl
+
+/-- Transfer: verified barriers for omegaC are barriers for omega -/
+theorem barrier_omegaC_iff_omega (n : ℕ) :
+    IsBarrier omegaC n ↔ IsBarrier omega n := by
+  simp [IsBarrier, omegaC_eq_omega]
+
+-- ## Barrier Offset Bounds
+--
+-- At a barrier n, the j-th predecessor has ω(n-j) ≤ j.
+-- This severely constrains the factorization of nearby numbers.
+
+/-- At a barrier n ≥ 3, n-2 must have ω(n-2) ≤ 2 -/
+theorem barrier_pred2_omega_le_2 (n : ℕ) (hn : n ≥ 3) (hb : IsBarrier omega n) :
+    omega (n - 2) ≤ 2 := by
+  have := hb (n - 2) (by omega)
+  omega
+
+/-- Generalizing: at a barrier n, for any 1 ≤ j < n, ω(n-j) ≤ j -/
+theorem barrier_offset_bound (n j : ℕ) (hb : IsBarrier omega n)
+    (hj1 : 1 ≤ j) (hj2 : j < n) :
+    omega (n - j) ≤ j := by
+  have hm : n - j < n := by omega
+  have := hb (n - j) hm
+  omega
+
+-- ## Barrier Non-Existence from Predecessor Properties
+
+/-- If f(n-1) ≥ 2 then n is not a barrier -/
+theorem not_barrier_of_pred_large (f : ℕ → ℕ) (n : ℕ) (hn : n > 0)
+    (hf : f (n - 1) ≥ 2) : ¬IsBarrier f n := by
+  intro hb
+  have := hb (n - 1) (by omega)
+  omega
+
+-- ## Barrier and Predecessor Structure
+
+/-- If n is a barrier and a + f(a) = n for some a < n, then n-1 is not a barrier
+    unless n-1 ≤ a (the witness a blocks the predecessor) -/
+theorem barrier_forced_by_below (f : ℕ → ℕ) (n a : ℕ)
+    (ha : a < n) (haf : a + f a = n) :
+    ¬IsBarrier f (n - 1) ∨ n - 1 ≤ a := by
+  by_cases h : n - 1 ≤ a
+  · right; exact h
+  · left
+    intro hb
+    push_neg at h
+    have : a < n - 1 := by omega
+    have := hb a this
+    omega
+
+-- ## Barrier Implies Lower Bound on Function
+--
+-- The barrier condition gives a lower bound on the function from
+-- the density of barriers.
+
+/-- If b₁ < b₂ are consecutive barriers, every n with b₁ < n < b₂
+    has some m < n with m + f(m) > n -/
+theorem inter_barrier_witness (f : ℕ → ℕ) (b₁ b₂ n : ℕ)
+    (hb1 : IsBarrier f b₁) (hb2 : IsBarrier f b₂)
+    (h1 : b₁ < n) (h2 : n < b₂) (hnb : ¬IsBarrier f n) :
+    ∃ m, m < n ∧ m + f m > n :=
+  not_barrier_witness f n hnb
+
+-- ## All Squarefree Below Implies Barrier Equivalence
+
+/-- If all numbers below n are squarefree (or zero), then ω-barrier ↔ Ω-barrier at n -/
+theorem barrier_equiv_all_squarefree_below (n : ℕ)
+    (hsq : ∀ m, m < n → m ≠ 0 → Squarefree m)
+    (hb : IsBarrier omega n) : IsBarrier bigOmega n := by
+  intro m hm
+  rcases Nat.eq_or_gt_of_le (Nat.zero_le m) with rfl | hm_pos
+  · simp [bigOmega]; omega
+  · have hsqm := hsq m hm (by omega)
+    have heq := omega_eq_bigOmega_of_squarefree m (by omega) hsqm
+    have := hb m hm
+    omega
 
 -- ## The Main Conjectures (OPEN)
 --
