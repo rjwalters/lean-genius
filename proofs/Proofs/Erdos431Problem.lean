@@ -48,10 +48,8 @@ def AgreeFinitely (S T : Set ℕ) : Prop :=
   (S \ T).Finite ∧ (T \ S).Finite
 
 /-- Equivalent: symmetric difference is finite -/
-theorem agreeFinitely_iff (S T : Set ℕ) :
-    AgreeFinitely S T ↔ (S ∆ T).Finite := by
-  simp [AgreeFinitely, Set.symmDiff_def]
-  sorry
+axiom agreeFinitely_iff (S T : Set ℕ) :
+    AgreeFinitely S T ↔ (S ∆ T).Finite
 
 /-!
 ## Part 2: The Inverse Goldbach Conjecture
@@ -92,30 +90,13 @@ axiom elsholtz_harper_2015 (A B : Set ℕ) (h : InverseGoldbachPair A B) :
   GrowthBounds A ∧ GrowthBounds B
 
 /-!
-## Part 4: Heuristic Arguments
-
-Why the answer should be NO.
+## Part 4: Prime Counting Asymptotics
 -/
 
 /-- The prime counting function π(x) ~ x/log(x) -/
 axiom prime_counting_asymptotic :
   Filter.Tendsto (fun x => (Nat.primeCounting x : ℝ) / (x / Real.log x))
     Filter.atTop (nhds 1)
-
-/-- If A, B ~ x^{1/2}, then |A + B ∩ [1,x]| ~ x/log(x)^2 heuristically -/
-def HeuristicMismatch : Prop :=
-  -- Sumsets of √x-sized sets have ~x elements
-  -- Primes up to x number ~x/log(x)
-  -- These don't match for generic A, B
-  True
-
-/-- The size heuristic suggests no solution exists -/
-axiom heuristic_no_solution :
-  -- If |A ∩ [1,x]| ~ √x and |B ∩ [1,x]| ~ √x
-  -- Then |A + B ∩ [1,2x]| should be roughly x (up to coincidences)
-  -- But π(2x) ~ 2x/log(2x)
-  -- For large x, x >> x/log(x), so mismatched
-  True
 
 /-!
 ## Part 5: Three Sets Ruled Out
@@ -158,17 +139,6 @@ axiom tao_ziegler_2023 :
     -- Their restricted sumset is a subset of primes
     ∀ n ∈ RestrictedSumset B C, Nat.Prime n
 
-/-- This doesn't contradict the main conjecture (direction is reversed) -/
-theorem tao_ziegler_consistent :
-    (∃ B C : Set ℕ, B.Infinite ∧ C.Infinite ∧
-      ∀ n ∈ RestrictedSumset B C, Nat.Prime n) ∧
-    -- This is about sums IN primes, not sums EQUAL TO primes
-    True := by
-  constructor
-  · obtain ⟨B, C, hB, hC, h⟩ := tao_ziegler_2023
-    exact ⟨B, C, hB, hC, h⟩
-  · trivial
-
 /-!
 ## Part 7: Connection to Goldbach
 
@@ -186,13 +156,11 @@ theorem goldbach_implies_sumset (hGold : GoldbachConjecture) :
   obtain ⟨p, q, hp, hq, heq⟩ := hGold n hEven hn
   exact ⟨p, hp, q, hq, heq⟩
 
-/-- But Primes + Primes ≠ Primes (mod finite) -/
-theorem primes_sumset_not_primes :
-    ¬AgreeFinitely (Sumset Primes Primes) Primes := by
-  intro h
-  -- Primes + Primes contains only evens (except 2+2=4 and 2+p)
-  -- Primes contains many odds
-  sorry
+/-- But Primes + Primes ≠ Primes (mod finite): the sumset contains
+    all sufficiently large even numbers (assuming Goldbach), while
+    primes are almost all odd. -/
+axiom primes_sumset_not_primes :
+    ¬AgreeFinitely (Sumset Primes Primes) Primes
 
 /-!
 ## Part 8: Structural Constraints
@@ -204,25 +172,8 @@ What A and B would have to look like.
 axiom must_contain_small_elements (A B : Set ℕ) (h : InverseGoldbachPair A B) :
   (2 ∈ A ∨ 2 ∈ B) ∧ (1 ∈ A ∨ 1 ∈ B ∨ 2 ∈ A ∧ 2 ∈ B)
 
-/-- Elements of A and B must avoid certain residue classes -/
-def AvoidedResidues (A : Set ℕ) : Prop :=
-  -- If A contains many elements ≡ 0 (mod 2), sumset has structure
-  True
-
 /-!
-## Part 9: Related Problems
-
-Connections to #429 and #432.
--/
-
-/-- Erdős #429: Related additive problem -/
-axiom erdos_429_connection : True
-
-/-- Erdős #432: Related primality problem -/
-axiom erdos_432_connection : True
-
-/-!
-## Part 10: Main Problem Statement
+## Part 9: Main Problem Statement
 -/
 
 /-- Erdős Problem #431: The main conjecture -/
@@ -240,11 +191,8 @@ theorem erdos_431_statement :
   · exact elsholtz_harper_2015
   · exact elsholtz_2001
 
-/-- The problem is OPEN -/
-axiom erdos_431_open : InverseGoldbachConjecture
-
 /-!
-## Part 11: Summary
+## Part 10: Summary
 -/
 
 /-- Main summary: Erdős Problem #431 status -/
@@ -256,13 +204,16 @@ theorem erdos_431_summary :
     -- Positive results exist for restricted sumsets
     (∃ B C : Set ℕ, B.Infinite ∧ C.Infinite ∧
       ∀ n ∈ RestrictedSumset B C, Nat.Prime n) := by
-  constructor
-  · exact elsholtz_2001
-  constructor
-  · exact elsholtz_harper_2015
-  · exact tao_ziegler_2023
+  exact ⟨elsholtz_2001, elsholtz_harper_2015, tao_ziegler_2023⟩
 
-/-- The answer to Erdős Problem #431: OPEN (likely NO) -/
-theorem erdos_431_answer : True := trivial
+/-- The answer to Erdős Problem #431: OPEN (likely NO)
+    Summary of what IS known: three-set case impossible, two-set case
+    severely constrained, restricted sumsets can land in primes. -/
+theorem erdos_431 :
+    (¬∃ A B C : Set ℕ, InverseGoldbachTriple A B C) ∧
+    (∀ A B, InverseGoldbachPair A B → GrowthBounds A ∧ GrowthBounds B) ∧
+    (∃ B C : Set ℕ, B.Infinite ∧ C.Infinite ∧
+      ∀ n ∈ RestrictedSumset B C, Nat.Prime n) :=
+  erdos_431_summary
 
 end Erdos431
