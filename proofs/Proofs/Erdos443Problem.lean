@@ -1,5 +1,5 @@
-/-!
-  Erdős Problem #443: Common Products k(m-k) and l(n-l)
+/-
+Erdős Problem #443: Common Products k(m-k) and l(n-l)
 
   Source: https://erdosproblems.com/443
   Status: SOLVED (Hegyvári 2025, Cambie unpublished)
@@ -34,8 +34,7 @@ import Mathlib.Algebra.Order.Ring.Lemmas
 
 namespace Erdos443
 
-/-!
-## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 
 The set of products k(m-k) for 1 ≤ k ≤ m/2.
 -/
@@ -59,8 +58,7 @@ def commonProducts (m n : ℕ) : Finset ℕ :=
 def commonProductCount (m n : ℕ) : ℕ :=
   (commonProducts m n).card
 
-/-!
-## Part 2: Elementary Properties
+/- ## Part 2: Elementary Properties
 
 Basic facts about the product k(m-k).
 -/
@@ -85,8 +83,7 @@ axiom product_max_bound (m k : ℕ) (hk : k ≤ m) :
 axiom product_symmetric (m k : ℕ) (hk : k ≤ m) :
     productValue m k = productValue m (m - k)
 
-/-!
-## Part 3: Size of A_m
+/- ## Part 3: Size of A_m
 
 The set A_m has approximately m/2 elements.
 -/
@@ -99,8 +96,7 @@ axiom productSet_card_le (m : ℕ) :
 axiom productSet_nonempty (m : ℕ) (hm : 2 ≤ m) :
     (productSet m).Nonempty
 
-/-!
-## Part 4: The Diophantine Equation
+/- ## Part 4: The Diophantine Equation
 
 Finding common products means solving k(m-k) = l(n-l).
 -/
@@ -118,8 +114,7 @@ axiom product_as_squares (m n k l : ℤ) :
     k * (m - k) = l * (n - l) ↔
     m^2 - (2*k - m)^2 = n^2 - (2*l - n)^2
 
-/-!
-## Part 5: Main Results - Hegyvári (2025)
+/- ## Part 5: Main Results - Hegyvári (2025)
 
 The key bounds on |A_m ∩ B_n|.
 -/
@@ -144,8 +139,7 @@ theorem intersection_unbounded :
   obtain ⟨m, n, _, _, h⟩ := arbitrarily_large_intersection s 0
   exact ⟨m, n, le_of_eq h.symm⟩
 
-/-!
-## Part 6: Special Cases and Examples
+/- ## Part 6: Special Cases and Examples
 -/
 
 /-- For m = n, the intersection equals A_m itself -/
@@ -166,8 +160,7 @@ axiom A4_elements : productSet 4 ⊆ {3, 4}
 /-- A_6 = {5, 8, 9} (from k=1,2,3) -/
 axiom A6_elements : productSet 6 ⊆ {5, 8, 9}
 
-/-!
-## Part 7: Relation to Quadratic Residues
+/- ## Part 7: Relation to Quadratic Residues
 
 k(m-k) is related to squares and quadratic residues.
 -/
@@ -180,8 +173,7 @@ axiom product_difference_of_squares (m k : ℤ) (hm : Even m) :
 axiom product_set_squares_relation (m : ℕ) :
     ∀ x ∈ productSet m, ∃ d : ℤ, x = (m * m / 4 : ℤ) - d^2 ∨ 4*x = m*m - 4*d^2
 
-/-!
-## Part 8: Connection to Sums of Arithmetic Progressions
+/- ## Part 8: Connection to Sums of Arithmetic Progressions
 
 k(m-k) = 1 + 2 + ... + (m-1) with specific terms removed.
 -/
@@ -193,8 +185,7 @@ def triangularNumber (m : ℕ) : ℕ := m * (m - 1) / 2
 axiom product_partition_interpretation (m k : ℕ) (hk : 1 ≤ k) (hk' : k ≤ m - 1) :
     productValue m k = (Finset.range k).sum id
 
-/-!
-## Part 9: Growth Rate Analysis
+/- ## Part 9: Growth Rate Analysis
 
 The bound m^{O(1/log log m)} grows very slowly.
 -/
@@ -208,8 +199,7 @@ axiom subpolynomial_growth :
     ∀ ε > 0, ∃ M : ℕ, ∀ m ≥ M, ∀ n ≤ m,
       (commonProductCount m n : ℝ) ≤ (m : ℝ) ^ ε
 
-/-!
-## Part 10: The Proof Technique
+/- ## Part 10: The Proof Technique
 
 Hegyvári's approach uses divisibility and sieve methods.
 -/
@@ -219,8 +209,7 @@ axiom divisibility_constraint (m n k l : ℕ) :
     sameProduct m n k l → (k ∣ l * n ∨ n - l ∣ m - k)
 
 
-/-!
-## Part 11: Comparison with Related Problems
+/- ## Part 11: Comparison with Related Problems
 
 Similar problems about common values.
 -/
@@ -233,8 +222,7 @@ def binomialSet (m : ℕ) : Finset ℕ :=
 axiom different_from_binomial :
     ∃ m n : ℕ, (productSet m ∩ binomialSet n).card ≠ commonProductCount m m
 
-/-!
-## Part 12: Summary
+/- ## Part 12: Summary
 
 Erdős Problem #443 is SOLVED.
 -/
