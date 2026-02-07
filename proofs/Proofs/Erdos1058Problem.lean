@@ -325,8 +325,9 @@ theorem erdos_1058_status :
 /--
 **Problem solved:**
 Erdős Problem #1058 was completely solved by Luca in 2001.
+The only solutions are n ∈ {1, 2, 3, 4, 5}.
 -/
-theorem erdos_1058_solved : True := trivial
+theorem erdos_1058_solved : erdos_stewart_conjecture := erdos_stewart_conjecture_true
 
 /--
 **The five solutions:**
