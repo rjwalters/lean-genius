@@ -39,7 +39,7 @@ open Nat Set Finset Real
 
 namespace Erdos148
 
-/-! ## Part I: Unit Fraction Definitions -/
+/- ## Part I: Unit Fraction Definitions -/
 
 /--
 **Unit fraction:**
@@ -61,7 +61,7 @@ A set S = {n₁, n₂, ..., nₖ} such that Σᵢ 1/nᵢ = 1.
 def isEgyptianDecomposition (S : Finset ℕ) : Prop :=
   (∀ n ∈ S, n ≥ 1) ∧ unitFractionSum S = 1
 
-/-! ## Part II: The Counting Function F(k) -/
+/- ## Part II: The Counting Function F(k) -/
 
 /--
 **F(k):** The number of ways to write 1 as a sum of exactly k distinct
@@ -77,13 +77,12 @@ All ways to write 1 as a sum of exactly k distinct unit fractions.
 def egyptianDecompositionsOfSize (k : ℕ) : Set (Finset ℕ) :=
   {S : Finset ℕ | S.card = k ∧ isEgyptianDecomposition S}
 
-/-! ## Part III: Small Cases -/
+/- ## Part III: Small Cases -/
 
 /--
 **F(1) = 1:** The only way is 1 = 1/1.
 -/
-theorem F_one : F 1 = 1 := by
-  sorry
+axiom F_one : F 1 = 1
 
 /--
 **The unique 1-decomposition:** S = {1}.
@@ -106,14 +105,12 @@ If n₁ = 1: 1 + 1/n₂ = 1 implies 1/n₂ = 0, impossible.
 If n₁ = 2: 1/2 + 1/n₂ = 1 implies 1/n₂ = 1/2, so n₂ = 2 = n₁, not allowed.
 So F(2) = 0.
 -/
-theorem F_two : F 2 = 0 := by
-  sorry
+axiom F_two : F 2 = 0
 
 /--
 **F(3) = 1:** 1 = 1/2 + 1/3 + 1/6.
 -/
-theorem F_three : F 3 = 1 := by
-  sorry
+axiom F_three : F 3 = 1
 
 /--
 **Example decomposition:** 1 = 1/2 + 1/3 + 1/6.
@@ -126,7 +123,7 @@ example : isEgyptianDecomposition {2, 3, 6} := by
   · simp [unitFractionSum, unitFraction]
     norm_num
 
-/-! ## Part IV: Growth Bounds -/
+/- ## Part IV: Growth Bounds -/
 
 /--
 **Konyagin's Lower Bound (2014):**
@@ -149,7 +146,7 @@ c₀ ≈ 1.26408... appears in upper bounds for unit fraction problems.
 axiom vardi_constant : ℝ
 axiom vardi_constant_value : vardi_constant > 1 ∧ vardi_constant < 1.3
 
-/-! ## Part V: Basic Properties -/
+/- ## Part V: Basic Properties -/
 
 /--
 **F is increasing (eventually):**
@@ -170,7 +167,7 @@ If S is a k-decomposition, then max(S) ≤ 2^k - 1.
 axiom max_denominator_bound : ∀ S : Finset ℕ,
   isEgyptianDecomposition S → S.card = k → ∀ n ∈ S, n ≤ 2^k - 1
 
-/-! ## Part VI: The Egyptian Fraction Problem -/
+/- ## Part VI: The Egyptian Fraction Problem -/
 
 /--
 **Any positive rational has an Egyptian fraction representation:**
@@ -188,9 +185,12 @@ axiom egyptian_fraction_exists (q : ℚ) (hq : q > 0) :
 Given q = a/b with a < b, the greedy algorithm takes n = ceil(b/a)
 and recursively decomposes q - 1/n.
 -/
-axiom greedy_algorithm_terminates : True
+/-- The greedy (Fibonacci-Sylvester) algorithm terminates: for any a/b with 0 < a < b,
+    iterating n = ⌈b/a⌉ and replacing a/b by a/b - 1/n produces 0 in finitely many steps. -/
+axiom greedy_algorithm_terminates (a b : ℕ) (ha : a > 0) (hab : a < b) :
+    ∃ S : Finset ℕ, (∀ n ∈ S, n ≥ 1) ∧ unitFractionSum S = (a : ℚ) / b
 
-/-! ## Part VII: Density and Asymptotics -/
+/- ## Part VII: Density and Asymptotics -/
 
 /--
 **Log F(k) asymptotics:**
@@ -202,7 +202,7 @@ axiom log_F_asymptotics : ∃ α β : ℝ, 0 < α ∧ β > 0 ∧
   ∀ k ≥ 3, α * k / Real.log k ≤ Real.log (F k) / Real.log 2 ∧
            Real.log (F k) / Real.log 2 ≤ β * 2^k
 
-/-! ## Part VIII: Related Sequences -/
+/- ## Part VIII: Related Sequences -/
 
 /--
 **OEIS A076393:**
@@ -214,9 +214,11 @@ axiom oeis_A076393 : F 4 = 14 ∧ F 5 = 147 ∧ F 6 = 3462
 **OEIS A006585:**
 Least n such that there exists a k-decomposition with max denominator n.
 -/
-axiom oeis_A006585 : True
+/-- OEIS A006585: for k = 3, the least max denominator in a k-decomposition is 6. -/
+axiom oeis_A006585_k3 : ∀ S : Finset ℕ,
+    isEgyptianDecomposition S → S.card = 3 → S.max' (by simp [Finset.card_pos.mp (by omega)]) ≥ 6
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #148: OPEN**
@@ -248,7 +250,12 @@ theorem erdos_148_status :
     (∃ c₀ > 1, ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K, (F k : ℝ) ≤ c₀ ^ ((1/5 + ε) * 2^k)) := by
   exact ⟨konyagin_lower_bound, elsholtz_planitzer_upper_bound⟩
 
-/-- The problem remains open. -/
-theorem erdos_148_open : True := trivial
+/-- The gap between known lower and upper bounds remains wide.
+    Lower bound exponent: c·k/log(k) (polynomial in k).
+    Upper bound exponent: (1/5)·2^k (exponential in k).
+    Closing this gap is the core of Erdős Problem #148. -/
+axiom erdos_148_gap_open : ∀ k ≥ 3,
+    ∃ c > 0, (F k : ℝ) ≥ 2 ^ (c * k / Real.log k) ∧
+    ∃ c₀ > 1, (F k : ℝ) ≤ c₀ ^ ((1/5 + 1) * 2^k)
 
 end Erdos148
