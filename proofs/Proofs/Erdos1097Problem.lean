@@ -55,13 +55,12 @@ noncomputable def numCommonDiff (A : Finset ℤ) : ℕ :=
 
 /- ## Proven Infrastructure Lemmas -/
 
-/-- The set of common differences is a subset of the difference set A - A. -/
+/-- D(A) is a subset of the difference set A - A. -/
 theorem commonDiffFinset_subset (A : Finset ℤ) :
     commonDiffFinset A ⊆ A - A :=
   filter_subset _ _
 
-/-- Trivial upper bound: |D(A)| ≤ |A - A| ≤ |A|². This is the naive
-quadratic bound that the conjecture seeks to improve to n^{3/2}. -/
+/-- Upper bound: |D(A)| ≤ |A|². -/
 theorem numCommonDiff_le_card_sq (A : Finset ℤ) :
     numCommonDiff A ≤ A.card * A.card := by
   unfold numCommonDiff commonDiffFinset
@@ -71,8 +70,7 @@ theorem numCommonDiff_le_card_sq (A : Finset ℤ) :
         rw [sub_def]
         exact le_trans card_image_le (le_of_eq (card_product A A))
 
-/-- Zero is always a common difference for nonempty sets: every element
-forms the trivial 3-AP (a, a, a) with d = 0. -/
+/-- Zero is always a common difference for nonempty sets. -/
 theorem zero_mem_commonDiffFinset {A : Finset ℤ} (hA : A.Nonempty) :
     (0 : ℤ) ∈ commonDiffFinset A := by
   unfold commonDiffFinset
@@ -82,7 +80,7 @@ theorem zero_mem_commonDiffFinset {A : Finset ℤ} (hA : A.Nonempty) :
   · exact zero_mem_sub.mpr hA
   · exact ⟨a, ha, by ring_nf; exact ha, by ring_nf; exact ha⟩
 
-/-- For nonempty sets, there is at least one common difference. -/
+/-- Nonempty sets have at least one common difference. -/
 theorem numCommonDiff_pos {A : Finset ℤ} (hA : A.Nonempty) :
     0 < numCommonDiff A := by
   unfold numCommonDiff
@@ -93,7 +91,7 @@ theorem commonDiffFinset_empty : commonDiffFinset (∅ : Finset ℤ) = ∅ := by
   unfold commonDiffFinset
   simp [Finset.sub_def]
 
-/-- Monotonicity: larger sets have (weakly) more common differences. -/
+/-- Monotonicity: A ⊆ B → D(A) ⊆ D(B). -/
 theorem commonDiffFinset_mono {A B : Finset ℤ} (h : A ⊆ B) :
     commonDiffFinset A ⊆ commonDiffFinset B := by
   intro d hd
@@ -104,8 +102,7 @@ theorem commonDiffFinset_mono {A B : Finset ℤ} (h : A ⊆ B) :
   · obtain ⟨a, ha, had, ha2d⟩ := hd.2
     exact ⟨a, h ha, h had, h ha2d⟩
 
-/-- Symmetry: if d is a common difference, so is -d.
-    Because a, a+d, a+2d ∈ A implies (a+2d), (a+2d)+(-d), (a+2d)+2(-d) ∈ A. -/
+/-- Symmetry: d ∈ D(A) → -d ∈ D(A). -/
 theorem neg_mem_commonDiffFinset {A : Finset ℤ} {d : ℤ}
     (hd : d ∈ commonDiffFinset A) : -d ∈ commonDiffFinset A := by
   unfold commonDiffFinset at hd ⊢
@@ -116,14 +113,13 @@ theorem neg_mem_commonDiffFinset {A : Finset ℤ} {d : ℤ}
     exact ⟨a, ha, a + 2 * d, ha2d, by ring⟩
   · exact ⟨a + 2 * d, ha2d, by ring_nf; exact had, by ring_nf; exact ha⟩
 
-/-- Tighter upper bound through the difference set: |D(A)| ≤ |A - A|.
-The common differences form a subset of the difference set. -/
+/-- Tighter bound: |D(A)| ≤ |A - A|. -/
 theorem numCommonDiff_le_card_sub (A : Finset ℤ) :
     numCommonDiff A ≤ (A - A).card := by
   unfold numCommonDiff
   exact card_filter_le _ _
 
-/-- For a singleton {a}, the only common difference is 0. -/
+/-- For a singleton {a}, D({a}) = {0}. -/
 theorem commonDiffFinset_singleton (a : ℤ) :
     commonDiffFinset ({a} : Finset ℤ) = {0} := by
   ext d
@@ -140,65 +136,8 @@ theorem commonDiffFinset_singleton (a : ℤ) :
     rw [hd]
     exact zero_mem_commonDiffFinset ⟨a, Finset.mem_singleton_self a⟩
 
-/-- Translation invariance: the set of common differences is unchanged
-when every element of A is shifted by a constant c. -/
-theorem commonDiffFinset_translate (A : Finset ℤ) (c : ℤ) :
-    commonDiffFinset (A.image (· + c)) = commonDiffFinset A := by
-  ext d
-  simp only [commonDiffFinset, mem_filter]
-  constructor
-  · -- D(A+c) ⊆ D(A): un-translate witnesses
-    intro ⟨hmem, a', ha', had', ha2d'⟩
-    simp only [Finset.mem_image] at ha' had' ha2d'
-    obtain ⟨a, ha, rfl⟩ := ha'
-    obtain ⟨b, hb, hbd⟩ := had'
-    obtain ⟨e, he, hed⟩ := ha2d'
-    have hbeq : b = a + d := by linarith
-    have heeq : e = a + 2 * d := by linarith
-    constructor
-    · rw [Finset.mem_sub]
-      exact ⟨a, ha, a + 2 * d, heeq ▸ he, by ring⟩
-    · exact ⟨a, ha, hbeq ▸ hb, heeq ▸ he⟩
-  · -- D(A) ⊆ D(A+c): translate witnesses
-    intro ⟨hmem, a, ha, had, ha2d⟩
-    constructor
-    · rw [Finset.mem_sub] at hmem ⊢
-      obtain ⟨x, hx, y, hy, hxy⟩ := hmem
-      exact ⟨x + c, Finset.mem_image_of_mem _ hx, y + c, Finset.mem_image_of_mem _ hy,
-             by linarith⟩
-    · exact ⟨a + c, Finset.mem_image_of_mem _ ha,
-             by rw [show a + c + d = (a + d) + c from by ring]; exact Finset.mem_image_of_mem _ had,
-             by rw [show a + c + 2 * d = (a + 2 * d) + c from by ring]; exact Finset.mem_image_of_mem _ ha2d⟩
-
-/-- The Set-level common differences are symmetric: d ∈ D(A) ↔ -d ∈ D(A). -/
-theorem commonDifferences_neg_iff (A : Set ℤ) (d : ℤ) :
-    d ∈ commonDifferences A ↔ -d ∈ commonDifferences A := by
-  constructor
-  · intro ⟨a, ha, had, ha2d⟩
-    exact ⟨a + 2 * d, ha2d, by ring_nf; exact had, by ring_nf; exact ha⟩
-  · intro ⟨a, ha, had, ha2d⟩
-    exact ⟨a + 2 * (-d), ha2d, by ring_nf; exact had, by ring_nf; exact ha⟩
-
-/-- Any element of commonDiffFinset is also in the Set-level commonDifferences. -/
-theorem commonDiffFinset_mem_commonDifferences (A : Finset ℤ) (d : ℤ)
-    (hd : d ∈ commonDiffFinset A) : d ∈ commonDifferences (↑A : Set ℤ) := by
-  unfold commonDiffFinset at hd
-  rw [mem_filter] at hd
-  obtain ⟨_, a, ha, had, ha2d⟩ := hd
-  exact ⟨a, ha, had, ha2d⟩
-
-/-- Monotonicity for numCommonDiff: larger sets have at least as many
-common differences. -/
-theorem numCommonDiff_mono {A B : Finset ℤ} (h : A ⊆ B) :
-    numCommonDiff A ≤ numCommonDiff B := by
-  unfold numCommonDiff
-  exact card_le_card (commonDiffFinset_mono h)
-
-/- ## Structural Theorems -/
-
-/-- For a two-element set {a, b} with a ≠ b, the only common difference is 0.
-This is because the only 3-AP in a two-point set is the trivial one.
-For d = b-a, we'd need 2b-a ∈ {a,b}, giving b = a (contradiction). -/
+/-- For a two-element set {a, b} with a ≠ b, D({a,b}) = {0}.
+The only 3-AP in a two-point set is the trivial one. -/
 theorem commonDiffFinset_pair {a b : ℤ} (hab : a ≠ b) :
     commonDiffFinset ({a, b} : Finset ℤ) = {0} := by
   ext d
@@ -215,100 +154,141 @@ theorem commonDiffFinset_pair {a b : ℤ} (hab : a ≠ b) :
     rw [hd]
     exact zero_mem_commonDiffFinset ⟨a, Finset.mem_insert_self a _⟩
 
-/-- An arithmetic progression {a, a+d, a+2d} has d as a common difference
-at the Set level. -/
-theorem ap_three_has_diff (A : Set ℤ) (a d : ℤ)
-    (ha : a ∈ A) (had : a + d ∈ A) (ha2d : a + 2 * d ∈ A) :
-    d ∈ commonDifferences A :=
-  ⟨a, ha, had, ha2d⟩
+/-- Monotonicity for counts: A ⊆ B → |D(A)| ≤ |D(B)|. -/
+theorem numCommonDiff_mono {A B : Finset ℤ} (h : A ⊆ B) :
+    numCommonDiff A ≤ numCommonDiff B := by
+  unfold numCommonDiff
+  exact card_le_card (commonDiffFinset_mono h)
 
-/-- If A ⊆ B at the Set level, then D(A) ⊆ D(B). -/
-theorem commonDifferences_mono {A B : Set ℤ} (h : A ⊆ B) :
-    commonDifferences A ⊆ commonDifferences B := by
-  intro d ⟨a, ha, had, ha2d⟩
-  exact ⟨a, h ha, h had, h ha2d⟩
-
-/-- Involution property: negating all common differences gives back
-the same set. This follows from the symmetry theorem. -/
-theorem commonDiffFinset_neg_image (A : Finset ℤ) :
-    (commonDiffFinset A).image (· * (-1)) ⊆ commonDiffFinset A := by
-  intro d hd
-  rw [Finset.mem_image] at hd
-  obtain ⟨e, he, rfl⟩ := hd
-  have : -e ∈ commonDiffFinset A := neg_mem_commonDiffFinset he
-  convert this using 1
-  ring
-
-/- ## Minimum Set Size for Non-Trivial Differences -/
-
-/-- A non-zero common difference d ≠ 0 requires three distinct elements:
-    a, a+d, a+2d are all distinct when d ≠ 0. -/
-theorem three_distinct_of_nonzero_diff {A : Set ℤ} {a d : ℤ}
-    (hAP : IsThreeAP A a d) (hd : d ≠ 0) :
-    a ≠ a + d ∧ a + d ≠ a + 2 * d ∧ a ≠ a + 2 * d := by
+/-- Set-level symmetry: d ∈ D(A) ↔ -d ∈ D(A). -/
+theorem commonDifferences_neg_iff (A : Set ℤ) (d : ℤ) :
+    d ∈ commonDifferences A ↔ -d ∈ commonDifferences A := by
   constructor
-  · intro h; linarith
-  · constructor
-    · intro h; linarith
-    · intro h; linarith
+  · intro ⟨a, ha, had, ha2d⟩
+    exact ⟨a + 2 * d, ha2d, by ring_nf; exact had, by ring_nf; exact ha⟩
+  · intro ⟨a, ha, had, ha2d⟩
+    exact ⟨a + 2 * (-d), ha2d, by ring_nf; exact had, by ring_nf; exact ha⟩
 
-/-- If d ≠ 0 is a common difference of A, then |A| ≥ 3.
-This is tight: {0,1,2} has d=1 and |A|=3. -/
-theorem card_ge_three_of_nonzero_diff {A : Finset ℤ} {d : ℤ}
-    (hd : d ∈ commonDiffFinset A) (hne : d ≠ 0) : 3 ≤ A.card := by
+/-- Finset membership lifts to Set-level membership. -/
+theorem commonDiffFinset_mem_commonDifferences (A : Finset ℤ) (d : ℤ)
+    (hd : d ∈ commonDiffFinset A) : d ∈ commonDifferences (↑A : Set ℤ) := by
   unfold commonDiffFinset at hd
   rw [mem_filter] at hd
   obtain ⟨_, a, ha, had, ha2d⟩ := hd
-  have h1 : a ≠ a + d := by intro h; linarith
-  have h2 : a + d ≠ a + 2 * d := by intro h; linarith
-  have h3 : a ≠ a + 2 * d := by intro h; linarith
-  have hcard : ({a, a + d, a + 2 * d} : Finset ℤ).card = 3 := by
-    rw [card_insert_of_not_mem, card_insert_of_not_mem, card_singleton]
-    · simp [h2]
-    · simp [h1, h3]
-  calc 3 = ({a, a + d, a + 2 * d} : Finset ℤ).card := hcard.symm
-    _ ≤ A.card := card_le_card (by
-        intro x hx
-        simp only [mem_insert, mem_singleton] at hx
-        rcases hx with rfl | rfl | rfl
-        · exact ha
-        · exact had
-        · exact ha2d)
+  exact ⟨a, ha, had, ha2d⟩
 
-/- ## Computable Small-Case Verification -/
+/- ## Structural Invariance Theorems -/
 
-section ComputableVerification
-attribute [-instance] Classical.propDecidable
+/-- Translation invariance: D(A + c) = D(A). The common differences
+are unchanged when every element of A is shifted by a constant. -/
+theorem commonDiffFinset_translate (A : Finset ℤ) (c : ℤ) :
+    commonDiffFinset (A.image (· + c)) = commonDiffFinset A := by
+  ext d
+  simp only [commonDiffFinset, mem_filter]
+  constructor
+  · intro ⟨hmem, a', ha', had', ha2d'⟩
+    simp only [Finset.mem_image] at ha' had' ha2d'
+    obtain ⟨a, ha, rfl⟩ := ha'
+    obtain ⟨b, hb, hbd⟩ := had'
+    obtain ⟨e, he, hed⟩ := ha2d'
+    have hbeq : b = a + d := by linarith
+    have heeq : e = a + 2 * d := by linarith
+    constructor
+    · rw [Finset.mem_sub]
+      exact ⟨a, ha, a + 2 * d, heeq ▸ he, by ring⟩
+    · exact ⟨a, ha, hbeq ▸ hb, heeq ▸ he⟩
+  · intro ⟨hmem, a, ha, had, ha2d⟩
+    constructor
+    · rw [Finset.mem_sub] at hmem ⊢
+      obtain ⟨x, hx, y, hy, hxy⟩ := hmem
+      exact ⟨x + c, Finset.mem_image_of_mem _ hx, y + c,
+             Finset.mem_image_of_mem _ hy, by linarith⟩
+    · exact ⟨a + c, Finset.mem_image_of_mem _ ha,
+             by rw [show a + c + d = (a + d) + c from by ring]
+                exact Finset.mem_image_of_mem _ had,
+             by rw [show a + c + 2 * d = (a + 2 * d) + c from by ring]
+                exact Finset.mem_image_of_mem _ ha2d⟩
 
--- Computable version matching commonDiffFinset for decide proofs
-private def cdf (A : Finset ℤ) : Finset ℤ :=
-  (A - A).filter fun d => ∃ a ∈ A, a + d ∈ A ∧ a + 2 * d ∈ A
+/-- Dilation by c maps common differences covariantly:
+if d ∈ D(A) then c*d ∈ D(c·A). -/
+theorem commonDiffFinset_smul_mem {A : Finset ℤ} {c d : ℤ}
+    (hd : d ∈ commonDiffFinset A) :
+    c * d ∈ commonDiffFinset (A.image (· * c)) := by
+  unfold commonDiffFinset at hd ⊢
+  rw [mem_filter] at hd ⊢
+  obtain ⟨hmem, a, ha, had, ha2d⟩ := hd
+  constructor
+  · rw [Finset.mem_sub] at hmem ⊢
+    obtain ⟨x, hx, y, hy, hxy⟩ := hmem
+    exact ⟨x * c, Finset.mem_image_of_mem _ hx, y * c,
+           Finset.mem_image_of_mem _ hy, by nlinarith⟩
+  · exact ⟨a * c, Finset.mem_image_of_mem _ ha,
+           by rw [show a * c + c * d = (a + d) * c from by ring]
+              exact Finset.mem_image_of_mem _ had,
+           by rw [show a * c + 2 * (c * d) = (a + 2 * d) * c from by ring]
+              exact Finset.mem_image_of_mem _ ha2d⟩
 
-/-- Verified: D(∅) = ∅. -/
-theorem cdf_empty_eq : cdf (∅ : Finset ℤ) = ∅ := by decide
+/-- D(A) is closed under negation: the image of D(A) under negation
+equals D(A). This means D(A) is always symmetric around 0. -/
+theorem commonDiffFinset_neg_closure (A : Finset ℤ) :
+    (commonDiffFinset A).image (· * (-1)) = commonDiffFinset A := by
+  ext d
+  simp only [Finset.mem_image]
+  constructor
+  · intro ⟨e, he, hed⟩
+    have : d = -e := by linarith
+    rw [this]
+    exact neg_mem_commonDiffFinset he
+  · intro hd
+    exact ⟨-d, neg_mem_commonDiffFinset hd, by ring⟩
 
-/-- Verified: D({0}) = {0}. -/
-theorem cdf_singleton_zero : cdf ({0} : Finset ℤ) = {0} := by decide
+/-- Symmetry as an iff: d ∈ D(A) ↔ -d ∈ D(A). -/
+theorem mem_commonDiffFinset_neg_iff {A : Finset ℤ} {d : ℤ} :
+    d ∈ commonDiffFinset A ↔ -d ∈ commonDiffFinset A :=
+  ⟨neg_mem_commonDiffFinset, fun h => by rw [show d = -(-d) from by ring]; exact neg_mem_commonDiffFinset h⟩
 
-/-- Verified: D({5}) = {0}. -/
-theorem cdf_singleton_five : cdf ({5} : Finset ℤ) = {0} := by decide
+/-- Direct witness: if a, a+d, a+2d ∈ A, then d ∈ D(A). -/
+theorem mem_commonDiffFinset_of_threeAP {A : Finset ℤ} {a d : ℤ}
+    (ha : a ∈ A) (had : a + d ∈ A) (ha2d : a + 2 * d ∈ A) :
+    d ∈ commonDiffFinset A := by
+  unfold commonDiffFinset
+  rw [mem_filter]
+  constructor
+  · rw [Finset.mem_sub]
+    exact ⟨a + 2 * d, ha2d, a, ha, by ring⟩
+  · exact ⟨a, ha, had, ha2d⟩
 
-/-- Verified: D({1,4}) = {0} — no non-trivial 3-AP in a 2-element set. -/
-theorem cdf_pair_14 : cdf ({1, 4} : Finset ℤ) = {0} := by decide
-
-/-- Verified: D({0,1,2}) = {-1, 0, 1} — the interval [0,2] has
-3 common differences: d=0 (trivial), d=1 (AP 0,1,2), d=-1 (AP 2,1,0). -/
-theorem cdf_012 : cdf ({0, 1, 2} : Finset ℤ) = {-1, 0, 1} := by decide
-
-/-- Verified: D({0,1,2,3}) = {-1, 0, 1} — interval [0,3] still has
-only 3 common differences since max d is ⌊(n-1)/2⌋ = 1. -/
-theorem cdf_0123 : cdf ({0, 1, 2, 3} : Finset ℤ) = {-1, 0, 1} := by decide
-
-/-- Verified: D({0,1,2,3,4}) = {-2,-1,0,1,2} — interval [0,4] gains
-d=±2 via the AP (0,2,4). |D| = 5 for n = 5. -/
-theorem cdf_01234 : cdf ({0, 1, 2, 3, 4} : Finset ℤ) = {-2, -1, 0, 1, 2} := by decide
-
-end ComputableVerification
+/-- For three consecutive integers {a, a+1, a+2}, D = {-1, 0, 1}. -/
+theorem commonDiffFinset_three_consec (a : ℤ) :
+    commonDiffFinset ({a, a + 1, a + 2} : Finset ℤ) = {-1, 0, 1} := by
+  ext d
+  simp only [commonDiffFinset, mem_filter, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · intro ⟨_, b, hb, hbd, hb2d⟩
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hb hbd hb2d
+    rcases hb with rfl | rfl | rfl <;>
+    rcases hbd with h1 | h1 | h1 <;>
+    rcases hb2d with h2 | h2 | h2 <;>
+    omega
+  · intro hd
+    rcases hd with rfl | rfl | rfl
+    · -- d = -1
+      constructor
+      · rw [Finset.mem_sub]
+        exact ⟨a, by simp, a + 1, by simp, by ring⟩
+      · exact ⟨a + 2, by simp, by ring_nf; right; left; ring,
+               by ring_nf; left; ring⟩
+    · -- d = 0
+      constructor
+      · exact zero_mem_sub.mpr ⟨a, by simp⟩
+      · exact ⟨a, by simp, by ring_nf; left; ring,
+               by ring_nf; left; ring⟩
+    · -- d = 1
+      constructor
+      · rw [Finset.mem_sub]
+        exact ⟨a + 1, by simp, a, by simp, by ring⟩
+      · exact ⟨a, by simp, by ring_nf; right; left; ring,
+               by ring_nf; right; right; ring⟩
 
 /- ## Main Conjecture -/
 
