@@ -24,11 +24,7 @@ open Nat
 
 namespace Erdos203
 
-/-!
-# Part 1: Basic Definitions
-
-Define the candidate numbers 2^k * 3^l * m + 1.
--/
+/- Part 1: Basic Definitions -/
 
 -- The family of numbers: 2^k * 3^l * m + 1
 def candidateNumber (m k l : ℕ) : ℕ := 2^k * 3^l * m + 1
@@ -40,11 +36,7 @@ def AvoidsPrimes (m : ℕ) : Prop :=
 -- The set of numbers avoiding primes
 def AvoidingSet : Set ℕ := {m | AvoidsPrimes m}
 
-/-!
-# Part 2: The Main Conjecture
-
-Erdős asked whether AvoidingSet is nonempty.
--/
+/- Part 2: The Main Conjecture -/
 
 -- The conjecture: there exists such an m
 def ErdosConjecture203 : Prop :=
@@ -60,11 +52,7 @@ theorem conjecture_equiv :
   · intro ⟨m, hcop, hprime⟩
     exact ⟨m, hcop, hprime⟩
 
-/-!
-# Part 3: Sierpinski Numbers
-
-The classical Sierpinski problem: find odd m such that 2^k * m + 1 is never prime.
--/
+/- Part 3: Sierpinski Numbers -/
 
 -- Sierpinski numbers: odd m where no 2^k * m + 1 is prime
 def IsSierpinskiNumber (m : ℕ) : Prop :=
@@ -76,22 +64,18 @@ def SierpinskiSet : Set ℕ := {m | IsSierpinskiNumber m}
 -- The smallest known Sierpinski number (Selfridge 1962)
 def selfridge_sierpinski : ℕ := 78557
 
--- Selfridge's result: 78557 is Sierpinski
+-- Selfridge's result: 78557 is Sierpinski (established via covering system)
 axiom selfridge_sierpinski_is_sierpinski : IsSierpinskiNumber selfridge_sierpinski
 
--- Sierpinski numbers exist
-axiom sierpinski_exists : SierpinskiSet.Nonempty
+-- Sierpinski numbers exist (consequence of the above)
+theorem sierpinski_exists : SierpinskiSet.Nonempty :=
+  ⟨selfridge_sierpinski, selfridge_sierpinski_is_sierpinski⟩
 
--- Connection: if m is Sierpinski and coprime to 3, it might work for 203
--- But we also need 3^l factor, which complicates things
+-- Connection: Sierpinski condition is necessary but not sufficient for Problem 203
 theorem sierpinski_necessary_not_sufficient (m : ℕ) (h : IsSierpinskiNumber m) :
     ∀ k, ¬ (2^k * m + 1).Prime := h.2
 
-/-!
-# Part 4: Covering Systems
-
-Covering systems are used to prove Sierpinski-type results.
--/
+/- Part 4: Covering Systems -/
 
 -- A covering system: set of congruences covering all integers
 def IsCoveringSystem (S : Finset (ℕ × ℕ)) : Prop :=
@@ -107,39 +91,13 @@ def PrimeCovering (S : Finset (ℕ × ℕ)) (P : ℕ × ℕ → ℕ) : Prop :=
 axiom covering_implies_sierpinski :
   ∀ S P, PrimeCovering S P → ∃ m, IsSierpinskiNumber m
 
-/-!
-# Part 5: The Extended Problem
-
-For Problem 203, we need coverings that work with both 2 and 3.
--/
-
--- Extended candidate: 2^k * 3^l * m + 1
-def IsExtendedAvoiding (m : ℕ) : Prop :=
-  m.Coprime 6 ∧ ∀ k l, ¬ (2^k * 3^l * m + 1).Prime
-
--- The challenge: covering systems for products of prime powers
--- This is more complex than the single-base case
+/- Part 5: The Extended Problem -/
 
 -- For the extended problem, we'd need primes dividing 2^a * 3^b - 1
--- for appropriate a, b combinations
 def ExtendedDivisibility (p : ℕ) (a b : ℕ) : Prop :=
   p.Prime ∧ p ∣ (2^a * 3^b - 1)
 
--- The order of 2 modulo p
-noncomputable def ord2 (p : ℕ) (hp : p.Prime) (hp2 : ¬ p ∣ 2) : ℕ :=
-  Nat.find (Nat.exists_pow_eq_one_of_coprime (Nat.Coprime.pow_right 1
-    (Nat.coprime_comm.mp (Nat.Prime.coprime_iff_not_dvd hp).mpr hp2)) hp)
-
--- The order of 3 modulo p
-noncomputable def ord3 (p : ℕ) (hp : p.Prime) (hp3 : ¬ p ∣ 3) : ℕ :=
-  Nat.find (Nat.exists_pow_eq_one_of_coprime (Nat.Coprime.pow_right 1
-    (Nat.coprime_comm.mp (Nat.Prime.coprime_iff_not_dvd hp).mpr hp3)) hp)
-
-/-!
-# Part 6: Small Cases and Constraints
-
-The coprimality condition (m, 6) = 1 means m is not divisible by 2 or 3.
--/
+/- Part 6: Small Cases and Constraints -/
 
 -- m must be coprime to 6
 theorem coprime_6_equiv (m : ℕ) :
@@ -157,31 +115,122 @@ theorem coprime_6_equiv (m : ℕ) :
 -- k = l = 0 case: we need m + 1 to not be prime
 theorem base_case (m : ℕ) (h : AvoidsPrimes m) : ¬ (m + 1).Prime := by
   have := h.2 0 0
-  simp only [candidateNumber, pow_zero, one_mul] at this
+  simp [candidateNumber] at this
   exact this
+
+-- candidateNumber is always positive
+theorem candidate_pos (m k l : ℕ) : 0 < candidateNumber m k l := by
+  unfold candidateNumber; omega
+
+-- candidateNumber simplification lemmas
+theorem candidate_base (m : ℕ) : candidateNumber m 0 0 = m + 1 := by
+  simp [candidateNumber]
+
+theorem candidate_k1 (m : ℕ) : candidateNumber m 1 0 = 2 * m + 1 := by
+  simp [candidateNumber]
+
+theorem candidate_l1 (m : ℕ) : candidateNumber m 0 1 = 3 * m + 1 := by
+  simp [candidateNumber]
 
 -- Small examples that don't work
 -- m = 1: 1 + 1 = 2 is prime
 theorem one_fails : ¬ AvoidsPrimes 1 := by
   intro ⟨_, h⟩
-  have := h 0 0
-  simp only [candidateNumber, pow_zero, one_mul] at this
-  exact this Nat.prime_two
+  have := h 0 0; simp only [candidateNumber] at this; norm_num at this
 
--- m = 5: 5 + 1 = 6 not prime, but 2*5 + 1 = 11 is prime
+-- m = 5: 2*5 + 1 = 11 is prime
 theorem five_fails : ¬ AvoidsPrimes 5 := by
   intro ⟨_, h⟩
-  have := h 1 0
-  simp only [candidateNumber, pow_zero, one_mul, pow_one] at this
-  have : (2 * 5 + 1 : ℕ) = 11 := by norm_num
-  rw [this] at this
-  exact this (by decide : Nat.Prime 11)
+  have := h 1 0; simp only [candidateNumber] at this; norm_num at this
 
-/-!
-# Part 7: Generalized Problems
+-- m = 7: 4*7+1 = 29 is prime
+theorem seven_fails : ¬ AvoidsPrimes 7 := by
+  intro ⟨_, h⟩
+  have := h 2 0; simp only [candidateNumber] at this; norm_num at this
 
-Erdős-Graham also asked about more general forms.
--/
+-- m = 11: 2*11+1 = 23 is prime
+theorem eleven_fails : ¬ AvoidsPrimes 11 := by
+  intro ⟨_, h⟩
+  have := h 1 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 13: 4*13+1 = 53 is prime
+theorem thirteen_fails : ¬ AvoidsPrimes 13 := by
+  intro ⟨_, h⟩
+  have := h 2 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 17: 8*17+1 = 137 is prime
+theorem seventeen_fails : ¬ AvoidsPrimes 17 := by
+  intro ⟨_, h⟩
+  have := h 3 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 19: 4*3*19+1 = 229 is prime
+theorem nineteen_fails : ¬ AvoidsPrimes 19 := by
+  intro ⟨_, h⟩
+  have := h 2 1; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 23: 2*23+1 = 47 is prime
+theorem twentythree_fails : ¬ AvoidsPrimes 23 := by
+  intro ⟨_, h⟩
+  have := h 1 0; simp only [candidateNumber] at this; norm_num at this
+
+-- Structural: if m is avoiding primes, then m+1, 2m+1, 3m+1 are all composite
+theorem avoiding_implies_composites (m : ℕ) (h : AvoidsPrimes m) :
+    ¬ (m + 1).Prime ∧ ¬ (2 * m + 1).Prime ∧ ¬ (3 * m + 1).Prime := by
+  refine ⟨?_, ?_, ?_⟩
+  · exact base_case m h
+  · have := h.2 1 0; simp [candidateNumber] at this; exact this
+  · have := h.2 0 1; simp [candidateNumber] at this; exact this
+
+/- Part 7: Relationship between Sierpinski and Problem 203 -/
+
+-- If m avoids primes, then m is Sierpinski-like for base 2 (l=0 slice)
+theorem avoiding_implies_sierpinski_like (m : ℕ) (h : AvoidsPrimes m) :
+    ∀ k, ¬ (2^k * m + 1).Prime := by
+  intro k
+  have := h.2 k 0
+  simp [candidateNumber] at this
+  simpa using this
+
+-- Similarly for base 3 (k=0 slice)
+theorem avoiding_implies_base3_like (m : ℕ) (h : AvoidsPrimes m) :
+    ∀ l, ¬ (3^l * m + 1).Prime := by
+  intro l
+  have := h.2 0 l
+  simp [candidateNumber] at this
+  simpa using this
+
+-- If m is coprime to 6 and positive, then m is odd
+theorem coprime6_implies_odd (m : ℕ) (hm : m.Coprime 6) : Odd m := by
+  rw [Nat.odd_iff]
+  have h2 : m.Coprime 2 := Nat.Coprime.coprime_dvd_right (by norm_num : 2 ∣ 6) hm
+  have hmod : m % 2 ≠ 0 := by
+    intro heq
+    have hdvd : 2 ∣ m := Nat.dvd_of_mod_eq_zero heq
+    have hgcd : 2 ∣ m.gcd 2 := Nat.dvd_gcd hdvd (dvd_refl 2)
+    have : m.gcd 2 = 1 := h2
+    omega
+  omega
+
+-- Any AvoidsPrimes m is a Sierpinski number
+theorem avoiding_is_sierpinski (m : ℕ) (hm : AvoidsPrimes m) :
+    IsSierpinskiNumber m :=
+  ⟨coprime6_implies_odd m hm.1, avoiding_implies_sierpinski_like m hm⟩
+
+-- Problem 203 is strictly harder than the Sierpinski problem
+theorem problem203_stronger_than_sierpinski (m : ℕ) (h : AvoidsPrimes m) :
+    IsSierpinskiNumber m := avoiding_is_sierpinski m h
+
+/- Part 8: Candidate growth -/
+
+-- Candidates grow: candidateNumber m k l ≥ m + 1
+theorem candidate_ge_succ (m k l : ℕ) : m + 1 ≤ candidateNumber m k l := by
+  unfold candidateNumber
+  have h2k : 1 ≤ 2 ^ k := Nat.one_le_pow k 2 (by omega)
+  have h3l : 1 ≤ 3 ^ l := Nat.one_le_pow l 3 (by omega)
+  have hprod : 1 * 1 ≤ 2 ^ k * 3 ^ l := Nat.mul_le_mul h2k h3l
+  nlinarith
+
+/- Part 9: Generalized Problems -/
 
 -- General form: p₁^{k₁} * ... * p_r^{k_r} * m + 1
 def IsGeneralizedAvoiding (primes : List ℕ) (m : ℕ) : Prop :=
@@ -189,32 +238,18 @@ def IsGeneralizedAvoiding (primes : List ℕ) (m : ℕ) : Prop :=
   ∀ exps : List ℕ, exps.length = primes.length →
     ¬ ((List.zipWith (·^·) primes exps).foldl (·*·) 1 * m + 1).Prime
 
--- Variant: q₁ * ... * q_r * m + 1 where q_i ≡ 1 (mod 4)
-def IsQuadraticResidue (q : ℕ) : Prop := q.Prime ∧ q % 4 = 1
-
-def QuadraticProductAvoiding (qs : List ℕ) (m : ℕ) : Prop :=
-  (∀ q ∈ qs, IsQuadraticResidue q) ∧
-  m.Coprime (qs.foldl (·*·) 1) ∧
-  ¬ (qs.foldl (·*·) 1 * m + 1).Prime
-
-/-!
-# Part 8: Problem Status
+/- Part 10: Problem Status
 
 The problem remains OPEN. No such m has been found or proven to not exist.
+The difficulty lies in the two-dimensional nature: covering ALL pairs (k,l)
+simultaneously requires a 2D covering system, which is much harder than
+the classical 1D Sierpinski covering systems.
 -/
-
--- The problem is open
-def erdos_203_status : String := "OPEN"
 
 -- The main formal statement
 theorem erdos_203_statement :
     ErdosConjecture203 ↔
     ∃ m, m.Coprime 6 ∧ ∀ k l, ¬ (2^k * 3^l * m + 1).Prime := by
   exact conjecture_equiv
-
--- Summary of what's known
--- - Sierpinski numbers exist (using covering systems)
--- - No m satisfying Problem 203 has been found
--- - The problem is likely very difficult due to two-dimensional nature
 
 end Erdos203
