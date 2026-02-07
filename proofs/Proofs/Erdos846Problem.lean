@@ -1,5 +1,5 @@
-/-!
-# Erdős Problem #846 — Non-Trilinear Subsets of the Plane
+/-
+Erdős Problem #846 — Non-Trilinear Subsets of the Plane
 
 Let A ⊂ ℝ² be an infinite set such that for some ε > 0, every finite
 subset B ⊆ A of size n contains at least εn points with no three collinear.
@@ -15,10 +15,11 @@ Reference: https://erdosproblems.com/846
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Finite
 import Mathlib.Tactic
 
-/-! ## Collinearity and Non-Trilinear Sets -/
+open Set Finset
+
+-- ## Collinearity and Non-Trilinear Sets
 
 /-- Three points in ℝ² are collinear if one is an affine combination of the others.
     We use a simplified characterization via the cross product being zero. -/
@@ -30,7 +31,7 @@ def NonTrilinear (S : Set (Fin 2 → ℝ)) : Prop :=
   ∀ p ∈ S, ∀ q ∈ S, ∀ r ∈ S,
     p ≠ q → q ≠ r → p ≠ r → ¬AreCollinear p q r
 
-/-! ## The ε-Non-Trilinear Property -/
+-- ## The ε-Non-Trilinear Property
 
 /-- A set A is ε-non-trilinear if every finite subset B of A contains
     a non-trilinear subset C of size at least ε|B| -/
@@ -46,41 +47,153 @@ def IsWeaklyNonTrilinear (A : Set (Fin 2 → ℝ)) : Prop :=
     (∀ i, NonTrilinear (S i)) ∧
     A ⊆ ⋃ i, S i
 
-/-! ## Basic Observations -/
+-- ## Basic Properties of Non-Trilinear Sets
 
-/-- Any non-trilinear set is ε-non-trilinear with ε = 1 -/
-axiom nonTrilinear_is_eps_one (A : Set (Fin 2 → ℝ)) (h : NonTrilinear A) :
-  IsEpsNonTrilinear A 1
+/-- NonTrilinear is monotone: subsets of non-trilinear sets are non-trilinear -/
+theorem nonTrilinear_mono {S T : Set (Fin 2 → ℝ)} (hST : S ⊆ T)
+    (hT : NonTrilinear T) : NonTrilinear S :=
+  fun p hp q hq r hr hpq hqr hpr =>
+    hT p (hST hp) q (hST hq) r (hST hr) hpq hqr hpr
 
-/-- A weakly non-trilinear set (finite union of k non-trilinear sets)
-    is ε-non-trilinear with ε = 1/k -/
-axiom weaklyNonTrilinear_is_eps (A : Set (Fin 2 → ℝ)) (k : ℕ) (hk : 0 < k)
-    (S : Fin k → Set (Fin 2 → ℝ))
-    (hS : ∀ i, NonTrilinear (S i))
-    (hA : A ⊆ ⋃ i, S i) :
-  IsEpsNonTrilinear A (1 / k)
+/-- The empty set is non-trilinear -/
+theorem nonTrilinear_empty : NonTrilinear (∅ : Set (Fin 2 → ℝ)) :=
+  fun _ hp => absurd hp (Set.not_mem_empty _)
 
-/-- The converse direction: every weakly non-trilinear set has
-    the ε-non-trilinear property for some ε > 0 -/
-axiom weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
+/-- A singleton set is non-trilinear -/
+theorem nonTrilinear_singleton (p : Fin 2 → ℝ) :
+    NonTrilinear ({p} : Set (Fin 2 → ℝ)) :=
+  fun a ha b hb _ _ hqr _ =>
+    hqr (by rw [Set.mem_singleton_iff.mp ha, Set.mem_singleton_iff.mp hb])
+
+-- ## Properties of Collinearity
+
+/-- Collinearity is symmetric in the first two arguments -/
+theorem areCollinear_symm12 {p q r : Fin 2 → ℝ} (h : AreCollinear p q r) :
+    AreCollinear q p r := by
+  unfold AreCollinear at *; linarith
+
+-- ## Proved: Non-trilinear implies ε-non-trilinear with ε = 1
+
+/-- Any non-trilinear set is ε-non-trilinear with ε = 1.
+    Proof: Take C = B. Since B ⊆ A and A is non-trilinear, B is also
+    non-trilinear by monotonicity. And |C| = |B| = 1 · |B|. -/
+theorem nonTrilinear_is_eps_one (A : Set (Fin 2 → ℝ)) (h : NonTrilinear A) :
+    IsEpsNonTrilinear A 1 := by
+  intro B hB
+  refine ⟨B, le_refl _, ?_, nonTrilinear_mono hB h⟩
+  simp
+
+-- ## ε-non-trilinear monotonicity in ε
+
+/-- If A is ε-non-trilinear and ε' ≤ ε, then A is ε'-non-trilinear -/
+theorem isEpsNonTrilinear_mono {A : Set (Fin 2 → ℝ)} {ε ε' : ℝ}
+    (hε : IsEpsNonTrilinear A ε) (hle : ε' ≤ ε) :
+    IsEpsNonTrilinear A ε' := by
+  intro B hB
+  obtain ⟨C, hCB, hcard, hNT⟩ := hε B hB
+  refine ⟨C, hCB, ?_, hNT⟩
+  calc ε' * ↑B.card ≤ ε * ↑B.card := by
+        apply mul_le_mul_of_nonneg_right hle (Nat.cast_nonneg _)
+    _ ≤ ↑C.card := hcard
+
+-- ## Auxiliary pigeonhole lemma
+
+/-- Finitary pigeonhole principle: if we map a finite set B into Fin k,
+    some fiber has cardinality at least B.card / k (in the sense that
+    B.card ≤ k * fiber_size). -/
+theorem finset_pigeonhole_exists {α : Type*} [DecidableEq α] (B : Finset α)
+    (k : ℕ) (hk : 0 < k) (f : α → Fin k) :
+    ∃ i : Fin k, B.card ≤ k * (B.filter (fun x => f x = i)).card := by
+  by_contra hall
+  push_neg at hall
+  have hsum : ∑ i : Fin k, (B.filter (fun x => f x = i)).card = B.card := by
+    rw [← Finset.card_biUnion]
+    · congr 1; ext x; simp [Finset.mem_biUnion, Finset.mem_filter]
+      exact ⟨fun hx => ⟨f x, hx, rfl⟩, fun ⟨_, hx, _⟩ => hx⟩
+    · intro i _ j _ hij x
+      simp [Finset.mem_filter]
+      intro _ hi hj; exact absurd (hi ▸ hj) fun h => hij (Fin.ext h)
+  have hlt : ∑ i : Fin k, k * (B.filter (fun x => f x = i)).card < k * B.card := by
+    apply Finset.sum_lt_sum
+    · intro i _; exact le_of_lt (hall i)
+    · exact ⟨⟨0, hk⟩, Finset.mem_univ _, hall ⟨0, hk⟩⟩
+  rw [← Finset.mul_sum] at hlt
+  omega
+
+-- ## Easy direction: weakly non-trilinear → ε-non-trilinear
+
+/-- The easy direction of the Erdős–Nešetřil–Rödl problem:
+    Every weakly non-trilinear set has the ε-non-trilinear property for some ε > 0.
+
+    Proof: If A ⊆ ⋃ᵢ₌₁ᵏ Sᵢ with each Sᵢ non-trilinear, then for any
+    finite B ⊆ A of size n, by pigeonhole some B ∩ Sᵢ has at least n/k elements.
+    That intersection is non-trilinear (subset of Sᵢ), giving ε = 1/k. -/
+theorem weaklyNonTrilinear_implies_eps (A : Set (Fin 2 → ℝ))
     (h : IsWeaklyNonTrilinear A) :
-  ∃ ε : ℝ, ε > 0 ∧ IsEpsNonTrilinear A ε
+    ∃ ε : ℝ, ε > 0 ∧ IsEpsNonTrilinear A ε := by
+  obtain ⟨k, S, hS, hA⟩ := h
+  by_cases hk : k = 0
+  · -- If k = 0, then A ⊆ ⋃ (i : Fin 0), S i = ∅
+    subst hk
+    refine ⟨1, one_pos, fun B hB => ?_⟩
+    have hBe : B = ∅ := by
+      ext x; constructor
+      · intro hx
+        exact absurd (hA (hB (Finset.mem_coe.mpr hx))) (by simp [Set.iUnion_of_empty])
+      · exact fun hx => absurd hx (Finset.not_mem_empty _)
+    exact ⟨∅, by simp, by simp [hBe], nonTrilinear_empty⟩
+  · -- If k > 0, apply pigeonhole to get ε = 1/k
+    have hkpos : 0 < k := Nat.pos_of_ne_zero hk
+    have hkR : (0 : ℝ) < k := Nat.cast_pos.mpr hkpos
+    refine ⟨1 / k, div_pos one_pos hkR, ?_⟩
+    intro B hB
+    -- Assign each point of B to some Sᵢ containing it
+    have hmem : ∀ x ∈ B, ∃ i : Fin k, x ∈ S i := fun x hx =>
+      Set.mem_iUnion.mp (hA (hB (Finset.mem_coe.mpr hx)))
+    classical
+    -- Total assignment function (arbitrary outside B)
+    let assign : (Fin 2 → ℝ) → Fin k :=
+      fun x => if h : x ∈ B then (hmem x h).choose else ⟨0, hkpos⟩
+    have hassign : ∀ x ∈ B, x ∈ S (assign x) := by
+      intro x hx; simp only [assign, dif_pos hx]; exact (hmem x hx).choose_spec
+    -- By pigeonhole, some partition class has ≥ |B|/k elements
+    obtain ⟨i, hi⟩ := finset_pigeonhole_exists B k hkpos assign
+    -- The fiber assigned to index i
+    let C := B.filter (fun x => assign x = i)
+    -- C ⊆ B
+    have hCsub : (↑C : Set (Fin 2 → ℝ)) ⊆ ↑B := by
+      intro x hx; exact Finset.mem_coe.mpr (Finset.mem_of_mem_filter x (Finset.mem_coe.mp hx))
+    -- C ⊆ S i
+    have hCinS : (↑C : Set (Fin 2 → ℝ)) ⊆ S i := by
+      intro x hx
+      have hxf := Finset.mem_coe.mp hx
+      have hxB := Finset.mem_of_mem_filter x hxf
+      have hxa := (Finset.mem_filter.mp hxf).2
+      rw [← hxa]; exact hassign x hxB
+    refine ⟨C, hCsub, ?_, nonTrilinear_mono hCinS (hS i)⟩
+    -- Show (1/k) * |B| ≤ |C|
+    rw [div_mul_eq_mul_div, one_mul]
+    rw [le_div_iff hkR]
+    exact_mod_cast hi
 
-/-! ## The Erdős–Nešetřil–Rödl Problem -/
+-- ## The Erdős–Nešetřil–Rödl Conjecture (OPEN)
 
 /-- Erdős Problem 846 (Erdős–Nešetřil–Rödl): Is every infinite ε-non-trilinear
     subset of ℝ² weakly non-trilinear (a finite union of sets with no three
-    collinear)? Open since [Er92b]. -/
-axiom ErdosProblem846 :
-  ∀ A : Set (Fin 2 → ℝ), A.Infinite →
-    ∀ ε : ℝ, ε > 0 → IsEpsNonTrilinear A ε →
-      IsWeaklyNonTrilinear A
+    collinear)?
 
-/-- Contrapositive formulation: if an infinite set A is NOT a finite union
-    of non-trilinear sets, then for every ε > 0 there exists a finite
-    subset B of A where every subset of size ≥ ε|B| contains three
-    collinear points -/
-axiom ErdosProblem846_contrapositive :
-  ∀ A : Set (Fin 2 → ℝ), A.Infinite →
-    ¬IsWeaklyNonTrilinear A →
-      ∀ ε : ℝ, ε > 0 → ¬IsEpsNonTrilinear A ε
+    This is an OPEN problem. The converse (weakly non-trilinear → ε-non-trilinear)
+    is proved above as weaklyNonTrilinear_implies_eps. -/
+theorem ErdosProblem846 :
+    ∀ A : Set (Fin 2 → ℝ), A.Infinite →
+      ∀ ε : ℝ, ε > 0 → IsEpsNonTrilinear A ε →
+        IsWeaklyNonTrilinear A := by
+  sorry -- OPEN problem
+
+/-- Contrapositive formulation: equivalent to the main conjecture by pure logic -/
+theorem ErdosProblem846_contrapositive :
+    ∀ A : Set (Fin 2 → ℝ), A.Infinite →
+      ¬IsWeaklyNonTrilinear A →
+        ∀ ε : ℝ, ε > 0 → ¬IsEpsNonTrilinear A ε := by
+  intro A hA hnotW ε hε heps
+  exact hnotW (ErdosProblem846 A hA ε hε heps)
