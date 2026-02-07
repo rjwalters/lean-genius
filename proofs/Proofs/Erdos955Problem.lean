@@ -35,7 +35,7 @@ open Nat Finset Real Filter
 
 namespace Erdos955
 
-/-!
+/-
 ## Part I: The Sum of Proper Divisors Function
 -/
 
@@ -56,7 +56,7 @@ noncomputable def s_alt (n : ℕ) : ℕ :=
 /-- **The two definitions agree.** -/
 axiom s_eq_s_alt (n : ℕ) (hn : n > 0) : s n = s_alt n
 
-/-!
+/-
 ## Part II: Perfect, Deficient, and Abundant Numbers
 -/
 
@@ -73,7 +73,7 @@ def IsAbundant (n : ℕ) : Prop := s n > n
 axiom six_perfect : IsPerfect 6
 axiom twentyeight_perfect : IsPerfect 28
 
-/-!
+/-
 ## Part III: Natural Density
 -/
 
@@ -92,7 +92,7 @@ def HasZeroDensity (A : Set ℕ) : Prop := HasDensity A 0
 def HasPositiveDensity (A : Set ℕ) : Prop :=
   ∃ d : ℝ, d > 0 ∧ HasDensity A d
 
-/-!
+/-
 ## Part IV: The Preimage s⁻¹(A)
 -/
 
@@ -100,7 +100,7 @@ def HasPositiveDensity (A : Set ℕ) : Prop :=
 def preimage_s (A : Set ℕ) : Set ℕ :=
   { n : ℕ | s n ∈ A }
 
-/-!
+/-
 ## Part V: The EGPS Conjecture
 -/
 
@@ -110,7 +110,7 @@ This is the main conjecture, still OPEN in general. -/
 def EGPSConjecture : Prop :=
   ∀ A : Set ℕ, HasZeroDensity A → HasZeroDensity (preimage_s A)
 
-/-!
+/-
 ## Part VI: Contrasting Behaviors
 -/
 
@@ -134,7 +134,7 @@ def IsUntouchable (k : ℕ) : Prop :=
 axiom two_untouchable : IsUntouchable 2
 axiom five_untouchable : IsUntouchable 5
 
-/-!
+/-
 ## Part VII: Partial Results
 -/
 
@@ -160,7 +160,7 @@ axiom troupe_two_squares :
   let S := { n : ℕ | IsSumOfTwoSquares n }
   HasZeroDensity (preimage_s S)
 
-/-!
+/-
 ## Part VIII: The PPT Bound
 -/
 
@@ -178,7 +178,7 @@ theorem sparse_sets_work (A : Set ℕ)
     HasZeroDensity (preimage_s A) :=
   ppt_bound A hA
 
-/-!
+/-
 ## Part IX: Growth Bound on s(n)
 -/
 
@@ -188,7 +188,7 @@ If A grows like x^α with α < 1/2, the argument applies. -/
 axiom s_bound (n : ℕ) (hn : n > 0) :
   (s n : ℝ) ≤ n * (2 + Real.log (Real.log n))
 
-/-!
+/-
 ## Part X: Summary
 -/
 
