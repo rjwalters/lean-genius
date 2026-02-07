@@ -42,7 +42,7 @@ namespace Erdos44
 -- Import Sidon definition from Erdős 340
 open Erdos340
 
-/-! ## Part 1: Concrete Example - {1, 2, 4, 8, 13} is Sidon -/
+/- ## Part 1: Concrete Example - {1, 2, 4, 8, 13} is Sidon -/
 
 /-- Helper: verify a + b = c + d implies (a,b) = (c,d) for specific values. -/
 lemma sidon_check_pair {a b c d : ℕ}
@@ -85,7 +85,7 @@ theorem example_achieves_bound : ({1, 2, 4, 8, 13} : Finset ℕ).card ≥ Nat.sq
   simp only [example_sidon_card]
   native_decide
 
-/-! ## Part 2: Upper Bound - Sidon sets have ≤ 2√N elements -/
+/- ## Part 2: Upper Bound - Sidon sets have ≤ 2√N elements -/
 
 /-- Any Sidon subset of {1,...,N} has at most √(2N) + 1 elements.
 
@@ -170,7 +170,7 @@ theorem maxSidonSubsetCard_icc_bound (N : ℕ) (hN : 1 ≤ N) (A : Finset ℕ)
               _ > 1 := by norm_num
           linarith
 
-/-! ## Part 3: Lower Bound - Existence of Sidon sets -/
+/- ## Part 3: Lower Bound - Existence of Sidon sets -/
 
 /-- Powers of 2 form a Sidon set: {2^0, 2^1, 2^2, ...} = {1, 2, 4, 8, ...}
 
@@ -207,7 +207,7 @@ This uses the Singer construction from finite projective planes (Singer 1938).
 axiom sidon_set_lower_bound_exists (N : ℕ) (hN : 1 ≤ N) :
     ∃ A : Finset ℕ, A ⊆ Icc 1 N ∧ IsSidon A ∧ Nat.sqrt N / 2 ≤ A.card
 
-/-! ## Part 4: Main Conjecture (OPEN) -/
+/- ## Part 4: Main Conjecture (OPEN) -/
 
 /-- **OPEN CONJECTURE**: Any Sidon set can be extended to achieve near-optimal density.
 
