@@ -38,7 +38,7 @@ open Finset Real
 
 namespace Erdos866
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- The interval {1, 2, ..., 2N}. -/
 def Interval (N : ℕ) : Finset ℕ :=
@@ -64,7 +64,7 @@ noncomputable def g (k N : ℕ) : ℕ :=
     sorry
   ⟩ : ∃ m, PairwiseSumCondition k N m)
 
-/-! ## Part II: The Case k = 3 -/
+/- ## Part II: The Case k = 3 -/
 
 /-- **Theorem (Choi-Erdős-Szemerédi):** g₃(N) = 2 for all N ≥ 1.
 
@@ -80,7 +80,7 @@ theorem g3_lower_bound (N : ℕ) (hN : N ≥ 1) : g 3 N ≥ 2 := by
   -- (since two odds sum to even)
   sorry
 
-/-! ## Part III: The Case k = 4 -/
+/- ## Part III: The Case k = 4 -/
 
 /-- **Theorem (Choi-Erdős-Szemerédi):** g₄(N) is bounded by a constant.
 
@@ -94,7 +94,7 @@ axiom g4_bounded :
 axiom g4_vanDoorn :
     ∀ N : ℕ, N ≥ 1 → g 4 N ≤ 2032
 
-/-! ## Part IV: The Case k = 5 -/
+/- ## Part IV: The Case k = 5 -/
 
 /-- **Theorem (Choi-Erdős-Szemerédi):** g₅(N) ≍ log N.
 
@@ -114,7 +114,7 @@ theorem g5_lower_bound_construction :
   obtain ⟨c₁, c₂, hc1, hc2, N₀, hasym⟩ := g5_asymptotic
   exact ⟨c₁, hc1, N₀, fun N hN => (hasym N hN).1⟩
 
-/-! ## Part V: The Case k = 6 -/
+/- ## Part V: The Case k = 6 -/
 
 /-- **Theorem (Choi-Erdős-Szemerédi):** g₆(N) ≍ N^{1/2}.
 
@@ -125,7 +125,7 @@ axiom g6_asymptotic :
       ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
         c₁ * (N : ℝ).sqrt ≤ g 6 N ∧ (g 6 N : ℝ) ≤ c₂ * (N : ℝ).sqrt
 
-/-! ## Part VI: General Upper Bound -/
+/- ## Part VI: General Upper Bound -/
 
 /-- **Theorem (Choi-Erdős-Szemerédi):** General upper bound.
 
@@ -149,7 +149,7 @@ theorem upperExponent_increasing (k : ℕ) (hk : k ≥ 1) :
   ring_nf
   sorry
 
-/-! ## Part VII: General Lower Bound -/
+/- ## Part VII: General Lower Bound -/
 
 /-- **Theorem (Choi-Erdős-Szemerédi):** For large k, g_k is nearly linear.
 
@@ -171,7 +171,7 @@ theorem threshold_approaches_N :
   obtain ⟨k₀, hk₀⟩ := general_lower_bound (1 - c) hε
   exact ⟨k₀, hk₀⟩
 
-/-! ## Part VIII: The Odd Numbers Construction -/
+/- ## Part VIII: The Odd Numbers Construction -/
 
 /-- The set of odd numbers in {1,...,2N}. -/
 def oddNumbers (N : ℕ) : Finset ℕ :=
@@ -194,7 +194,7 @@ theorem oddNumbers_no_triple (N : ℕ) :
 theorem g3_ge_1 (N : ℕ) (hN : N ≥ 1) : g 3 N ≥ 1 := by
   sorry
 
-/-! ## Part IX: Summary Table -/
+/- ## Part IX: Summary Table -/
 
 /-- **Summary of Known Bounds for g_k(N)**
 
@@ -214,7 +214,7 @@ theorem summary_g5 : ∃ c₁ c₂ > 0, ∃ N₀, ∀ N ≥ N₀,
 theorem summary_g6 : ∃ c₁ c₂ > 0, ∃ N₀, ∀ N ≥ N₀,
     c₁ * (N : ℝ).sqrt ≤ g 6 N ∧ (g 6 N : ℝ) ≤ c₂ * (N : ℝ).sqrt := g6_asymptotic
 
-/-! ## Part X: Open Problems -/
+/- ## Part X: Open Problems -/
 
 /-- **Open Problem 1:** Determine g₄(N) exactly.
 
@@ -222,32 +222,26 @@ theorem summary_g6 : ∃ c₁ c₂ > 0, ∃ N₀, ∀ N ≥ N₀,
 def openProblem_g4_exact : Prop :=
   ∃ c : ℕ, ∀ N : ℕ, N ≥ 1 → g 4 N = c
 
-/-- **Open Problem 2:** Determine constants in g₅(N) ≍ log N.
-
-    What are the optimal c₁, c₂ with c₁ log N ≤ g₅(N) ≤ c₂ log N? -/
+/-- **Open Problem 2:** Determine optimal constants in g₅(N) ≍ log N. -/
 def openProblem_g5_constants : Prop :=
-  -- Find optimal constants
-  True
+  ∃ c : ℝ, c > 0 ∧ ∀ N₀ : ℕ, ∃ N ≥ N₀,
+    |(g 5 N : ℝ) - c * N.log| ≤ 1
 
 /-- **Open Problem 3:** Close the gap for large k.
-
-    Upper: g_k(N) ≪ N^{1-2^{-k}}
-    Lower: g_k(N) ≫ N^{1-ε} for any ε > 0 (large k)
-
-    These don't match - can we close the gap? -/
+    Upper: g_k(N) ≪ N^{1-2^{-k}}, Lower: g_k(N) > N^{1-ε} (large k). -/
 def openProblem_large_k_gap : Prop :=
-  -- Find matching bounds for general k
-  True
+  ∀ k : ℕ, k ≥ 3 → ∃ α : ℝ,
+    (∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
+      |(g k N : ℝ) / (N : ℝ) ^ α - 1| < ε)
 
-/-- **Open Problem 4:** Structural characterization.
+/-- **Open Problem 4:** Structural characterization of extremal sets. -/
+def openProblem_extremal_structure (k N : ℕ) : Prop :=
+  ∀ A : Finset ℕ, A ⊆ Interval N → A.card = N + g k N - 1 →
+    ¬∃ b : Fin k → ℤ, HasAllPairwiseSums A b →
+      ∃ S : Finset ℕ, S.card = N ∧ S ⊆ A ∧
+        ∀ x ∈ S, x % 2 = 1
 
-    For which sets A is the pairwise sums condition avoided?
-    What structure do extremal sets have? -/
-def openProblem_extremal_structure : Prop :=
-  -- Characterize extremal sets
-  True
-
-/-! ## Part XI: The Main Summary -/
+/- ## Part XI: The Main Summary -/
 
 /--
 **Summary of Erdős Problem #866**
