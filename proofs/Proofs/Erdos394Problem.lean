@@ -35,9 +35,7 @@ open Nat Real Finset BigOperators
 
 namespace Erdos394
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Product of k Consecutive Integers:**
@@ -65,9 +63,7 @@ n divides the product of k consecutive integers starting at m.
 def divides_consecutive (n m k : ℕ) : Prop :=
   n ∣ consecutiveProduct m k
 
-/-!
-## Part II: Basic Properties of t_k
--/
+/- ## Part II: Basic Properties of t_k -/
 
 /--
 **t_k is Well-Defined:**
@@ -93,9 +89,7 @@ theorem primes_large_t2 :
     ∀ p : ℕ, p.Prime → t 2 p = p - 1 :=
   t2_of_prime
 
-/-!
-## Part III: The Sum Σ t₂(n)
--/
+/- ## Part III: The Sum Σ t₂(n) -/
 
 /--
 **The Sum Function:**
@@ -122,9 +116,7 @@ axiom trivial_lower_bound :
 def erdos_original_conjecture : Prop :=
   ∀ ε > 0, ∀ᶠ x in Filter.atTop, (S 2 x : ℝ) < ε * x^2
 
-/-!
-## Part IV: Erdős-Hall Theorem (1978)
--/
+/- ## Part IV: Erdős-Hall Theorem (1978) -/
 
 /--
 **Erdős-Hall Upper Bound (1978):**
@@ -141,9 +133,7 @@ axiom erdos_hall_upper_bound :
 Follows from erdos_hall_upper_bound since (log log log x)/(log log x) → 0. -/
 axiom erdos_conjecture_proved : erdos_original_conjecture
 
-/-!
-## Part V: The Erdős-Hall Conjecture
--/
+/- ## Part V: The Erdős-Hall Conjecture -/
 
 /--
 **Erdős-Hall Conjecture:**
@@ -164,9 +154,7 @@ theorem threshold_log_2 :
       (S 2 x : ℝ) ≥ C * x^2 / Real.log x := by
   exact trivial_lower_bound
 
-/-!
-## Part VI: The Hierarchy Question
--/
+/- ## Part VI: The Hierarchy Question -/
 
 /--
 **Question 2: The Hierarchy Conjecture**
@@ -179,9 +167,7 @@ def hierarchy_conjecture : Prop :=
     ∀ ε > 0, ∀ᶠ x in Filter.atTop,
       (S (k+1) x : ℝ) < ε * (S k x : ℝ)
 
-/-!
-## Part VII: Special Cases (Factorials)
--/
+/- ## Part VII: Special Cases (Factorials) -/
 
 /--
 **t_{n-1}(n!) = 2:**
@@ -212,9 +198,7 @@ Does t_{n-3}(n!) have any special structure?
 axiom factorial_t_n_minus_3_bound (n : ℕ) (hn : n ≥ 4) :
     t (n - 3) n.factorial ≤ n^2
 
-/-!
-## Part VIII: The Selfridge Result
--/
+/- ## Part VIII: The Selfridge Result -/
 
 /--
 **The Strict Decrease Property:**
@@ -231,9 +215,7 @@ The strict decrease property holds for n = 10.
 -/
 axiom selfridge_n_10 : strict_decrease_property 10
 
-/-!
-## Part IX: Why This is Interesting
--/
+/- ## Part IX: Why This is Interesting -/
 
 /--
 **Connection to Divisibility:**
@@ -260,9 +242,7 @@ since smooth numbers appear more frequently in short intervals.
 axiom smooth_t_bound (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 1) :
     ∃ m : ℕ, m ≤ n ∧ n ∣ consecutiveProduct m k
 
-/-!
-## Part X: Summary
--/
+/- ## Part X: Summary -/
 
 /--
 **Summary of Results:**
