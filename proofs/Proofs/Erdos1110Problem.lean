@@ -128,8 +128,8 @@ theorem infinitely_many_non_rep (p q : ℕ) (hp : p > q) (hq : q ≥ 2)
     (hcop : Nat.Coprime p q) (hne : ¬((p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3))) :
     Set.Infinite (NonRepresentable p q) := by
   have h := erdos_lewin_theorem p q hp hq hcop
-  rw [h] at hne
-  sorry
+  intro hfin
+  exact hne (h.mp hfin)
 
 /-
 ## Part IV: Yu-Chen Results (2022)
