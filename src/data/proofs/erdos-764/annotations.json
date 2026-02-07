@@ -11,7 +11,7 @@
   {
     "id": "ann-764-convolutions",
     "proofId": "erdos-764",
-    "range": { "startLine": 35, "endLine": 63 },
+    "range": { "startLine": 35, "endLine": 62 },
     "type": "definition",
     "title": "Convolution Definitions",
     "content": "**conv2 A n:** 2-fold convolution counting #{(a,b) ∈ A² : a + b = n}.\n\n**conv3 A n:** 3-fold convolution counting #{(a,b,c) ∈ A³ : a + b + c = n}.\n\n**convH h A n (axiom):** General h-fold convolution, axiomatized because the definition requires dependent types.\n\n**sumConv2, sumConv3:** Cumulative sums ∑_{n≤N} conv(A, n), the quantities whose growth rate is studied.",
@@ -20,7 +20,7 @@
   {
     "id": "ann-764-error-hierarchy",
     "proofId": "erdos-764",
-    "range": { "startLine": 71, "endLine": 82 },
+    "range": { "startLine": 69, "endLine": 80 },
     "type": "definition",
     "title": "Error Bound Hierarchy",
     "content": "**IsLinearBounded f c:** f(N) = cN + O(1), bounded error. This is what Erdős asked about.\n\n**IsLinearLittleO f c α:** f(N) = cN + o(N^α), error grows slower than N^α.\n\n**IsLinearVaughan f c:** f(N) = cN + o(N^{1/4}/(log N)^{1/2}), the precise bound Vaughan proved impossible.\n\nThe hierarchy: IsLinearBounded ⟹ IsLinearVaughan ⟹ IsLinearLittleO (for α = 1/4).",
@@ -29,7 +29,7 @@
   {
     "id": "ann-764-erdos-fuchs",
     "proofId": "erdos-764",
-    "range": { "startLine": 91, "endLine": 105 },
+    "range": { "startLine": 87, "endLine": 102 },
     "type": "axiom",
     "title": "Erdős-Fuchs Theorem (2-fold case)",
     "content": "**erdos_fuchs_theorem (axiom):** No set A has ∑ 1_A * 1_A = cN + o(N^{1/4}/(log N)^{1/2}). The foundational 1956 result.\n\n**erdos_fuchs_corollary (axiom):** No set A has ∑ 1_A * 1_A = cN + O(1). Since bounded error implies the weaker bound, this follows.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-764-vaughan",
     "proofId": "erdos-764",
-    "range": { "startLine": 113, "endLine": 135 },
+    "range": { "startLine": 109, "endLine": 131 },
     "type": "axiom",
     "title": "Vaughan's Theorem (3-fold and h-fold)",
     "content": "**vaughan_3fold_theorem (axiom):** No set A has ∑ 1_A * 1_A * 1_A = cN + o(N^{1/4}/(log N)^{1/2}). The strong form.\n\n**vaughan_corollary (axiom):** No set A has ∑ 1_A * 1_A * 1_A = cN + O(1). The direct answer to Problem #764: NO.\n\n**vaughan_hfold_theorem (axiom):** Applies to any h-fold convolution with h ≥ 2. Completely general.",
@@ -47,7 +47,7 @@
   {
     "id": "ann-764-oscillation",
     "proofId": "erdos-764",
-    "range": { "startLine": 144, "endLine": 156 },
+    "range": { "startLine": 139, "endLine": 151 },
     "type": "axiom",
     "title": "Error Oscillation",
     "content": "**ErrorOscillates f c:** The error f(N) - cN is infinitely often above N^{1/4} and infinitely often below -N^{1/4}. It cannot stay bounded on one side.\n\n**error_oscillation (axiom):** For any infinite set A, the 3-fold convolution error must oscillate by at least N^{1/4} infinitely often.",
@@ -56,7 +56,7 @@
   {
     "id": "ann-764-squares",
     "proofId": "erdos-764",
-    "range": { "startLine": 162, "endLine": 168 },
+    "range": { "startLine": 155, "endLine": 161 },
     "type": "theorem",
     "title": "Squares Example",
     "content": "**squares_not_linear (proved):** Even for A = {0, 1, 4, 9, 16, ...} (perfect squares), the 3-fold sum cannot be cN + O(1).\n\nProved directly from vaughan_corollary. Waring's problem studies the same convolution but without requiring linear growth.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-764-refinement",
     "proofId": "erdos-764",
-    "range": { "startLine": 176, "endLine": 189 },
+    "range": { "startLine": 168, "endLine": 181 },
     "type": "axiom",
     "title": "Montgomery-Vaughan Refinement and Tightness",
     "content": "**montgomery_vaughan_refinement (axiom):** Even o(N^{1/4}) is impossible (removing the log factor from Erdős-Fuchs).\n\n**quarter_exponent_tight (axiom):** There exist sets where the error is O(N^{α}) for any α > 1/4. The 1/4 exponent is essentially best possible — it cannot be improved.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-764-summary",
     "proofId": "erdos-764",
-    "range": { "startLine": 206, "endLine": 216 },
+    "range": { "startLine": 196, "endLine": 208 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_764_summary (proved from axioms):**\n\nCombines three impossibility results:\n1. 3-fold sum cannot be cN + O(1) (vaughan_corollary)\n2. Cannot even be cN + o(N^{1/4}/(log N)^{1/2}) (vaughan_3fold_theorem)\n3. Generalizes to h-fold for all h ≥ 2 (vaughan_hfold_theorem)\n\nProved by: `⟨vaughan_corollary, vaughan_3fold_theorem, vaughan_hfold_theorem⟩`",

@@ -1,101 +1,79 @@
 [
   {
-    "id": "erdos-404-header",
+    "id": "ann-e404-header",
     "proofId": "erdos-404",
-    "type": "context",
-    "range": { "startLine": 1, "endLine": 22 },
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #404: For which (a, p) is f(a, p) finite, where f(a, p) = sup{k : p^k | some factorial sum starting at a}? Lin proved f(2, 2) ≤ 254. OPEN.",
-    "mathContext": "From Erdős-Graham [ErGr80]. Lin (1976) provided the main quantitative bound. Connects p-adic analysis with factorial combinatorics. Related to Problem #403.",
-    "significance": "essential",
-    "relatedConcepts": ["p-adic valuation", "factorials", "divisibility", "supremum"]
+    "content": "**Erdős Problem #404: Prime Power Divisibility of Factorial Sums**\n\nFor which (a, p) is f(a, p) finite, where f(a, p) = sup{k : p^k | some factorial sum starting at a}?\n\n**Known:** Lin (1976) proved f(2, 2) ≤ 254 — the only concrete upper bound.\n\n**Status:** OPEN. Both the main question and the secondary question about mₖ → ∞ remain unresolved.",
+    "mathContext": "From Erdős-Graham [ErGr80]. The problem connects p-adic analysis with factorial combinatorics. Related to Problem #403.",
+    "significance": "critical",
+    "relatedConcepts": ["p-adic valuation", "Factorials", "Divisibility", "Supremum"]
   },
   {
-    "id": "erdos-404-definitions",
+    "id": "ann-e404-definitions",
     "proofId": "erdos-404",
+    "range": { "startLine": 38, "endLine": 61 },
     "type": "definition",
-    "range": { "startLine": 36, "endLine": 60 },
     "title": "Core Definitions",
-    "content": "StrictIncSeq(a): structure for a = a₁ < a₂ < ··· < aₙ. factorialSum(s): Σ (s.seq i)!. dividesByPrimePower(a, k, p): ∃ s, p^k | factorialSum s. divisiblePowers(a, p): set of achievable k. f(a, p) = sSup(divisiblePowers a p).",
-    "mathContext": "StrictIncSeq is a structure with length, seq, starts_at_a, strictly_increasing. f uses sSup over ℕ∞.",
-    "significance": "essential",
-    "relatedConcepts": ["StrictMono", "Finset.sum", "sSup", "ℕ∞"]
+    "content": "**StrictIncSeq a:** A strictly increasing sequence starting at a, with length, seq, starts_at_a, and strictly_increasing fields.\n\n**factorialSum s:** ∑ (s.seq i)! over the sequence.\n\n**dividesByPrimePower a k p:** ∃ s, p^k | factorialSum s.\n\n**divisiblePowers a p:** The set {k | dividesByPrimePower a k p}.\n\n**f a p:** sSup of divisiblePowers, giving the maximum achievable k (in ℕ∞).",
+    "mathContext": "Using ℕ∞ for f allows f(a,p) = ⊤ when arbitrarily high powers are achievable. The StrictIncSeq structure ensures the sequence is properly ordered.",
+    "significance": "critical",
+    "relatedConcepts": ["StrictMono", "Finset.sum", "sSup", "WithTop"]
   },
   {
-    "id": "erdos-404-conjecture",
+    "id": "ann-e404-questions",
     "proofId": "erdos-404",
-    "type": "conjecture",
-    "range": { "startLine": 61, "endLine": 74 },
-    "title": "Main Questions (OPEN)",
-    "content": "secondaryQuestion: ∃ p prime, ∃ StrictMono seq, Tendsto (fun k => v_p(Σ_{i≤k} (seq i)!)) atTop atTop. erdos404Conjecture: ∀ a ≥ 1, ∀ p prime, f(a,p) < ⊤. Both OPEN.",
-    "mathContext": "erdos404Conjecture uses Filter.atTop. secondaryQuestion asks about unbounded p-adic valuation of partial sums.",
-    "significance": "essential",
-    "relatedConcepts": ["Filter.Tendsto", "Filter.atTop", "WithTop", "open problem"]
-  },
-  {
-    "id": "erdos-404-lin",
-    "proofId": "erdos-404",
-    "type": "result",
-    "range": { "startLine": 75, "endLine": 83 },
-    "title": "Lin's Bound",
-    "content": "lin_bound (axiom): f 2 2 ≤ 254. lin_bound_meaning (axiom): ∀ s : StrictIncSeq 2, ¬(2^255 | factorialSum s). The only concrete upper bound known for any (a, p) pair.",
-    "mathContext": "Lin (1976) proved this computationally. Means 2^255 never divides any sum of factorials starting at 2.",
-    "significance": "essential",
-    "relatedConcepts": ["Lin", "upper bound", "f(2,2)"]
-  },
-  {
-    "id": "erdos-404-padic",
-    "proofId": "erdos-404",
+    "range": { "startLine": 63, "endLine": 73 },
     "type": "definition",
-    "range": { "startLine": 84, "endLine": 97 },
+    "title": "Main Questions (OPEN)",
+    "content": "**secondaryQuestion:** ∃ p prime, ∃ StrictMono seq, Tendsto (v_p(Σ_{i≤k} (seq i)!)) atTop atTop. Asks whether partial factorial sums can have unbounded p-adic valuation.\n\n**erdos404Conjecture:** ∀ a ≥ 1, ∀ p prime, f(a,p) < ⊤. Asks whether f is always finite.",
+    "mathContext": "Both questions remain open. The secondary question uses Filter.Tendsto to formalize the 'mₖ → ∞' condition.",
+    "significance": "critical",
+    "relatedConcepts": ["Filter.Tendsto", "Filter.atTop", "Open problem"]
+  },
+  {
+    "id": "ann-e404-lin",
+    "proofId": "erdos-404",
+    "range": { "startLine": 75, "endLine": 82 },
+    "type": "axiom",
+    "title": "Lin's Bound (1976)",
+    "content": "**lin_bound:** f 2 2 ≤ 254. The only concrete upper bound known for any (a, p) pair.\n\n**lin_bound_meaning:** ∀ s : StrictIncSeq 2, ¬(2^255 | factorialSum s). No sum of factorials starting at 2 is divisible by 2^255.",
+    "mathContext": "Lin (1976) proved this computationally. Combined with the example 2³ | 2!+3!, we know 3 ≤ f(2,2) ≤ 254.",
+    "significance": "critical",
+    "relatedConcepts": ["Lin", "Upper bound", "f(2,2)"]
+  },
+  {
+    "id": "ann-e404-padic",
+    "proofId": "erdos-404",
+    "range": { "startLine": 84, "endLine": 96 },
+    "type": "axiom",
     "title": "p-adic Analysis",
-    "content": "legendreSum(n, p) = Σ_{i≥1} ⌊n/p^i⌋. legendre_formula (axiom): padicValNat p n! = legendreSum n p. padic_val_factorial_asymp (axiom): v_p(n!)/n → 1/(p-1).",
-    "mathContext": "Legendre's formula gives exact p-adic valuation of factorials. The asymptotic formula governs growth rate.",
-    "significance": "essential",
-    "relatedConcepts": ["Legendre's formula", "padicValNat", "Tendsto", "nhds"]
+    "content": "**legendreSum n p:** Computes ∑_{i≥1} ⌊n/p^i⌋ — the exact p-adic valuation of n!.\n\n**legendre_formula:** padicValNat p n! = legendreSum n p (Legendre's formula).\n\n**padic_val_factorial_asymp:** v_p(n!)/n → 1/(p-1) as n → ∞. This governs the growth rate of factorial valuations.",
+    "mathContext": "Legendre's formula is fundamental to understanding factorial divisibility. The asymptotic v_p(n!) ≈ n/(p-1) means factorial valuations grow linearly.",
+    "significance": "key",
+    "relatedConcepts": ["Legendre's formula", "padicValNat", "Asymptotic growth"]
   },
   {
-    "id": "erdos-404-structure",
+    "id": "ann-e404-structure",
     "proofId": "erdos-404",
-    "type": "result",
-    "range": { "startLine": 98, "endLine": 107 },
-    "title": "Structure of Factorial Sums",
-    "content": "factorial_sum_mod (axiom): a₁! + a₂! ≡ a₁! [MOD a₂!] for a₁ < a₂. factorial_sum_factored (axiom): a₁! + a₂! = a₁!(1 + a₂!/a₁!) for a₁ ≤ a₂.",
-    "mathContext": "The larger factorial dominates modularly. Factorization extracts common factor for p-adic analysis.",
-    "significance": "supporting",
-    "relatedConcepts": ["modular arithmetic", "factorial", "factorization"]
+    "range": { "startLine": 98, "endLine": 118 },
+    "type": "axiom",
+    "title": "Structure and Examples",
+    "content": "**factorial_sum_mod:** a₁! + a₂! ≡ a₁! (mod a₂!) for a₁ < a₂. The larger factorial dominates modularly.\n\n**factorial_sum_factored:** a₁! + a₂! = a₁!(1 + a₂!/a₁!) for a₁ ≤ a₂. Extracting the common factor reveals the p-adic structure.\n\n**Examples (proved by native_decide):**\n- 2³ | 2! + 3! = 8, so f(2,2) ≥ 3\n- 3 | 1! + 2! = 3",
+    "mathContext": "The factorization is the key structural insight: the p-adic valuation of the sum is v_p(a₁!) + v_p(1 + a₂!/a₁!), and the second term controls the 'extra' divisibility.",
+    "significance": "key",
+    "relatedConcepts": ["Modular arithmetic", "Factorial ratio", "native_decide"]
   },
   {
-    "id": "erdos-404-examples",
+    "id": "ann-e404-summary",
     "proofId": "erdos-404",
-    "type": "result",
-    "range": { "startLine": 108, "endLine": 117 },
-    "title": "Concrete Examples",
-    "content": "2^3 | 2! + 3! (proved by native_decide): 2 + 6 = 8 = 2³, so f(2,2) ≥ 3. 3 | 1! + 2! (proved by native_decide): 1 + 2 = 3.",
-    "mathContext": "Both proved computationally via native_decide. These give lower bounds on f(a, p).",
-    "significance": "supporting",
-    "relatedConcepts": ["native_decide", "concrete computation", "lower bounds"]
-  },
-  {
-    "id": "erdos-404-connections",
-    "proofId": "erdos-404",
-    "type": "context",
-    "range": { "startLine": 118, "endLine": 125 },
-    "title": "Connections",
-    "content": "Related to Erdős Problem #403 on factorial arithmetic. Connects to Legendre's formula and p-adic number theory more broadly.",
-    "mathContext": "Placeholder axioms recording mathematical connections.",
-    "significance": "supporting",
-    "relatedConcepts": ["Problem #403", "p-adic number theory"]
-  },
-  {
-    "id": "erdos-404-summary",
-    "proofId": "erdos-404",
-    "type": "result",
-    "range": { "startLine": 126, "endLine": 152 },
-    "title": "Summary: OPEN",
-    "content": "erdos_404_summary (proved): (erdos404Conjecture ↔ ∀ a ≥ 1, ∀ p prime, f a p < ⊤) ∧ True. Proved from Iff.rfl and trivial. Problem remains OPEN.",
-    "mathContext": "erdos_404_summary := ⟨Iff.rfl, trivial⟩.",
-    "significance": "essential",
-    "relatedConcepts": ["open problem", "summary", "factorial sums"]
+    "range": { "startLine": 120, "endLine": 133 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_404_summary:** Proved conjunction of Lin's bounds:\n1. f 2 2 ≤ 254 (from lin_bound)\n2. ∀ s, ¬(2^255 | factorialSum s) (from lin_bound_meaning)\n\nThe problem remains OPEN for general (a, p).",
+    "mathContext": "The summary packages both formulations of Lin's result. The gap 3 ≤ f(2,2) ≤ 254 remains wide.",
+    "significance": "critical",
+    "relatedConcepts": ["State of knowledge", "Open problem", "Proved conjunction"]
   }
 ]

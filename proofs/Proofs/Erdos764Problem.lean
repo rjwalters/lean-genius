@@ -26,8 +26,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 namespace Erdos764
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 
 Characteristic functions and convolutions.
 -/
@@ -62,8 +61,7 @@ def sumConv2 (A : Set ℕ) (N : ℕ) : ℕ :=
 def sumConv3 (A : Set ℕ) (N : ℕ) : ℕ :=
   Finset.sum (Finset.range (N + 1)) (conv3 A)
 
-/-!
-## Part II: The Linear Growth Property
+/- ## Part II: The Linear Growth Property
 
 What does cN + O(1) mean for convolution sums?
 -/
@@ -81,8 +79,7 @@ def IsLinearVaughan (f : ℕ → ℕ) (c : ℝ) : Prop :=
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, N ≥ 2 →
     |((f N) : ℝ) - c * N| < ε * (N : ℝ)^(1/4 : ℝ) / Real.sqrt (Real.log N)
 
-/-!
-## Part III: Erdős-Fuchs Theorem (Problem #763, for context)
+/- ## Part III: Erdős-Fuchs Theorem (Problem #763, for context)
 
 The 2-fold case was solved first. Erdős and Fuchs (1956) proved that
 no set A can have ∑ 1_A * 1_A = cN + o(N^{1/4} / (log N)^{1/2}).
@@ -104,8 +101,7 @@ Since O(1) ⊂ o(N^{1/4} / (log N)^{1/2}), bounded error is also impossible.
 axiom erdos_fuchs_corollary (A : Set ℕ) (c : ℝ) (hc : c > 0) :
   ¬ IsLinearBounded (sumConv2 A) c
 
-/-!
-## Part IV: Vaughan's Theorem (Problem #764)
+/- ## Part IV: Vaughan's Theorem (Problem #764)
 
 Generalization to 3-fold and h-fold convolutions.
 -/
@@ -134,8 +130,7 @@ Vaughan's theorem applies to any h ≥ 2. The convolution sum
 axiom vaughan_hfold_theorem (h : ℕ) (hh : h ≥ 2) (A : Set ℕ) (c : ℝ) (hc : c > 0) :
   ¬ IsLinearBounded (fun N => Finset.sum (Finset.range (N + 1)) (convH h A)) c
 
-/-!
-## Part V: The Error Lower Bound
+/- ## Part V: The Error Lower Bound
 
 The error term must oscillate. It cannot stay bounded,
 and in fact must be both large positive and large negative infinitely often.
@@ -155,9 +150,7 @@ axiom error_oscillation (A : Set ℕ) (c : ℝ) (hc : c > 0)
     (hA : Set.Infinite A) :
   ErrorOscillates (sumConv3 A) c
 
-/-!
-## Part VI: Examples and Special Cases
--/
+/- ## Part VI: Examples and Special Cases -/
 
 /-- Square numbers: A = {0, 1, 4, 9, 16, ...}. -/
 def Squares : Set ℕ := { n | ∃ k, n = k^2 }
@@ -167,8 +160,7 @@ theorem squares_not_linear (c : ℝ) (hc : c > 0) :
     ¬ IsLinearBounded (sumConv3 Squares) c :=
   vaughan_corollary Squares c hc
 
-/-!
-## Part VII: Montgomery-Vaughan Refinement
+/- ## Part VII: Montgomery-Vaughan Refinement
 
 Montgomery and Vaughan (1990) refined the Erdős-Fuchs result.
 -/
@@ -188,9 +180,7 @@ The 1/4 exponent is essentially best possible.
 axiom quarter_exponent_tight : ∃ A : Set ℕ, ∃ c : ℝ, c > 0 ∧
   ∀ α > (1/4 : ℝ), IsLinearLittleO (sumConv2 A) c α
 
-/-!
-## Part VIII: Summary
--/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #764: Summary**

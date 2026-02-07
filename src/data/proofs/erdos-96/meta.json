@@ -1,47 +1,53 @@
 {
   "id": "erdos-96",
-  "title": "Unit Distances in Convex Polygons",
+  "title": "Erdős Problem #96: Unit Distances in Convex Polygons",
   "slug": "erdos-96",
   "description": "In a convex n-gon, are there only O(n) pairs at unit distance? Conjectured by Erdős-Moser. Best upper: n log n (Aggarwal 2015), lower: 2n-7 (Edelsbrunner-Hajnal 1991). OPEN.",
   "meta": {
     "author": "Erdős-Moser (conjecture), Füredi (1990), Aggarwal (2015)",
     "sourceUrl": "https://erdosproblems.com/96",
     "date": "2015",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos96Problem.lean",
     "tags": ["erdos", "discrete-geometry", "unit-distances", "convex-polygons", "open-problem"],
-    "badge": "mathlib",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 96,
     "erdosUrl": "https://erdosproblems.com/96",
     "erdosProblemStatus": "open",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       { "theorem": "EuclideanSpace", "description": "2D Euclidean space for points", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
       { "theorem": "convexHull", "description": "Convex hull for position definition", "module": "Mathlib.Analysis.Convex.Hull" },
-      { "theorem": "Finset", "description": "Finite sets of points", "module": "Mathlib.Data.Finset.Basic" },
       { "theorem": "dist", "description": "Distance function", "module": "Mathlib.Topology.MetricSpace.Basic" }
     ],
     "originalContributions": [
-      "Lean formalization of unit distance pairs",
-      "Convex position and convex polygon definitions",
-      "Erdős-Moser and Erdős-Fishburn conjectures",
-      "Füredi and Aggarwal upper bounds axiomatized",
-      "Edelsbrunner-Hajnal lower bound construction",
-      "Related sum conjecture formalization"
+      "Point: ℝ² via EuclideanSpace",
+      "IsUnitDistance, unitDistancePairs, unitDistanceCount",
+      "inConvexPosition via convexHull exclusion",
+      "IsConvexPolygon: ≥ 3 points in convex position",
+      "ErdosMoserConjecture: O(n) unit distances (OPEN)",
+      "ErdosFishburnConjecture: at most 2n (stronger, OPEN)",
+      "furedi_bound axiom: O(n log n)",
+      "aggarwal_bound axiom: n log₂n + 4n (current best)",
+      "edelsbrunner_hajnal_construction axiom: 2n - 7 lower bound",
+      "lower_bound theorem: proved from construction",
+      "equidistantCount, ErdosSumConjecture",
+      "sum_lower_bound axiom: ∑g(x) close to 4n",
+      "erdos_96_summary: proved conjunction of bounds"
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős and Moser conjectured that a convex n-gon has O(n) unit distance pairs. Despite progress from O(n log n) bounds, the conjecture remains open. The gap between the O(n log n) upper bound and the 2n-7 lower bound is the main challenge.",
-    "problemStatement": "If n points in ℝ² form a convex polygon, prove there are O(n) pairs at distance 1 apart.",
-    "proofStrategy": "The formalization defines unit distance pairs, convex position, and the main conjectures. Known bounds are axiomatized: Füredi's O(n log n), Aggarwal's improvement, and the Edelsbrunner-Hajnal lower bound.",
+    "historicalContext": "Erdős and Moser conjectured that a convex n-gon has O(n) unit distance pairs. Despite progress from O(n log n) bounds (Füredi 1990, Aggarwal 2015), the conjecture remains open. The Edelsbrunner-Hajnal (1991) lower bound of 2n - 7 suggests the Erdős-Fishburn conjecture of exactly 2n may be tight.",
+    "problemStatement": "If n points in ℝ² form a convex polygon, prove there are O(n) pairs at distance 1 apart. OPEN.",
+    "proofStrategy": "The formalization defines unit distance pairs and convex position using Mathlib's EuclideanSpace and convexHull. Known bounds are axiomatized: Füredi's O(n log n), Aggarwal's improvement, and the Edelsbrunner-Hajnal construction. The lower_bound theorem is proved from the construction axiom. The summary theorem combines upper and lower bounds.",
     "keyInsights": [
       "Convexity should restrict unit distances to O(n), but proving this is hard",
-      "Best upper bound O(n log n) still has a log factor gap",
-      "Lower bound 2n-7 suggests the true answer might be exactly 2n",
-      "Earlier conjecture of 5n/3 was disproved",
-      "Connection to Problem #97 (general equidistant pairs)"
+      "Best upper bound O(n log n) still has a log factor gap from the conjectured O(n)",
+      "Lower bound 2n - 7 suggests the true answer might be exactly 2n (Erdős-Fishburn)",
+      "The log factor comes from recursive counting — removing it requires new techniques",
+      "Related sum conjecture ∑g(x) < 4n connects to Problem #97"
     ]
   },
   "sections": [
@@ -49,48 +55,55 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 45,
-      "endLine": 79,
-      "summary": "Point type, distance, unit distance pairs"
+      "endLine": 62,
+      "summary": "Point type, distance, unit distance pairs and count"
     },
     {
       "id": "convex-position",
       "title": "Convex Position",
-      "startLine": 81,
-      "endLine": 106,
-      "summary": "Convex position and convex polygon definitions"
+      "startLine": 64,
+      "endLine": 73,
+      "summary": "inConvexPosition and IsConvexPolygon definitions"
     },
     {
       "id": "conjectures",
-      "title": "The Erdős-Moser Conjecture",
-      "startLine": 108,
-      "endLine": 126,
-      "summary": "Main conjecture and Erdős-Fishburn stronger form"
+      "title": "The Conjectures",
+      "startLine": 75,
+      "endLine": 85,
+      "summary": "Erdős-Moser O(n) and Erdős-Fishburn 2n conjectures"
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
-      "startLine": 128,
-      "endLine": 154,
-      "summary": "Füredi's O(n log n), Aggarwal's improvement"
+      "startLine": 87,
+      "endLine": 97,
+      "summary": "Füredi O(n log n) and Aggarwal n log₂n + 4n"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Construction",
-      "startLine": 156,
-      "endLine": 185,
-      "summary": "Edelsbrunner-Hajnal 2n-7 construction"
+      "startLine": 99,
+      "endLine": 113,
+      "summary": "Edelsbrunner-Hajnal 2n-7 construction and proved lower_bound"
+    },
+    {
+      "id": "related",
+      "title": "Related Conjectures",
+      "startLine": 115,
+      "endLine": 132,
+      "summary": "Equidistant count, sum conjecture, and sum lower bound"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 289,
-      "endLine": 339,
-      "summary": "Main results and the gap between bounds"
+      "startLine": 134,
+      "endLine": 148,
+      "summary": "Proved conjunction of Füredi upper bound and lower bound"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #96 remains OPEN. The conjecture that a convex n-gon has O(n) unit distance pairs is unproved. Best known: upper O(n log n), lower 2n-7. The log factor is the barrier.",
-    "implications": "This problem tests whether convexity can reduce the unit distance problem from the general O(n^{4/3}) bound to linear. It connects discrete geometry with convex combinatorics.",
+    "summary": "Erdős Problem #96 remains OPEN. The conjecture that a convex n-gon has O(n) unit distance pairs is unproved. Best known: upper O(n log n), lower 2n-7. The log factor is the main barrier.",
+    "implications": "This problem tests whether convexity can reduce the unit distance problem from the general O(n^{4/3}) bound to linear.",
     "openQuestions": [
       "Prove the O(n) upper bound (main conjecture)",
       "Prove the exact bound of 2n (Erdős-Fishburn)",

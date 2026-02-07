@@ -7,7 +7,7 @@
     "author": "Duffin-Schaeffer (1941), Erdős (partial), Koukoulopoulos-Maynard (2020)",
     "sourceUrl": "https://erdosproblems.com/999",
     "date": "2020",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos999Problem.lean",
     "tags": [
       "erdos",
@@ -22,17 +22,43 @@
     "erdosNumber": 999,
     "erdosUrl": "https://erdosproblems.com/999",
     "erdosProblemStatus": "solved",
-    "dateAdded": "2026-01-22"
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Nat.totient", "description": "Euler's totient function", "module": "Mathlib.NumberTheory.ArithmeticFunction" },
+      { "theorem": "MeasureTheory.volume", "description": "Lebesgue measure for almost-all formulation", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic" }
+    ],
+    "originalContributions": [
+      "eulerPhi: wrapper for Nat.totient",
+      "IsApproximable: coprime rational approximation within f(q)/q",
+      "IsInfinitelyApproximable: approximable for infinitely many q",
+      "DuffinSchaefferSum: partial sums of φ(q)·f(q)/q",
+      "SeriesDiverges/SeriesConverges: divergence/convergence conditions",
+      "AlmostAll: measure-theoretic 'almost all' on [0,1]",
+      "DuffinSchaefferConjecture: the full equivalence statement",
+      "easy_direction axiom: approximable → divergence (Borel-Cantelli)",
+      "hard_direction axiom: divergence → approximable (the actual conjecture)",
+      "ErdosCondition: f(q)·q bounded special case",
+      "erdos_bounded_case axiom: Erdős's partial result",
+      "koukoulopoulos_maynard_2020 axiom: the full conjecture (2020)",
+      "duffin_schaeffer_theorem: named version from the axiom",
+      "convergence_case axiom: convergence implies almost none",
+      "zero_one_law axiom: dichotomy for approximability",
+      "continued_fraction_case axiom: f(q)=1 gives almost all",
+      "khintchine_theorem axiom: monotone case (1924)",
+      "LimsupSet: the set of infinitely approximable reals",
+      "erdos_999_summary: proved conjunction of main results"
+    ]
   },
   "overview": {
     "historicalContext": "The Duffin-Schaeffer conjecture (1941) was one of the most famous open problems in metric number theory for nearly 80 years. It generalizes Khintchine's theorem (1924) to non-monotone approximation functions. Erdős proved the special case where f(q)·q is bounded. The easy direction (approximability implies divergence) follows from Borel-Cantelli. The hard direction was finally proved by Dimitris Koukoulopoulos and James Maynard in 2020, published in the Annals of Mathematics.",
     "problemStatement": "For any function f: ℕ → ℕ, the following are equivalent: (1) For almost all α ∈ [0,1], there exist infinitely many coprime pairs (p,q) with |α - p/q| < f(q)/q; (2) The series ∑_{q≥1} φ(q)·f(q)/q diverges. Here φ is Euler's totient function.",
-    "proofStrategy": "The formalization defines approximability, the Duffin-Schaeffer sum, and the divergence/convergence conditions. It axiomatizes Koukoulopoulos-Maynard 2020 as the main theorem, includes Erdős's partial result for bounded f·q, states the zero-one law, and connects to Khintchine's theorem for monotone functions. The proof uses sophisticated graph-theoretic arguments on the GCD graph.",
+    "proofStrategy": "The formalization defines approximability, the Duffin-Schaeffer sum, and the divergence/convergence conditions. It axiomatizes both directions of the equivalence separately (easy via Borel-Cantelli, hard via Koukoulopoulos-Maynard 2020), includes Erdős's partial result for bounded f·q, states the zero-one law, the convergence case, continued fractions, and connects to Khintchine's theorem for monotone functions. The summary theorem proves the conjunction of the main results.",
     "keyInsights": [
       "The coprimality condition (p,q)=1 is essential - without it, the equivalence fails",
       "The φ(q) factor counts reduced fractions with denominator q",
       "Easy direction: Borel-Cantelli shows approximability implies divergence",
-      "Hard direction: Required 79 years and graph-theoretic innovations",
+      "Hard direction: Required 79 years and graph-theoretic innovations by Koukoulopoulos-Maynard",
       "Zero-one law: Either almost all or almost no reals are infinitely approximable",
       "Generalizes Khintchine (1924) to non-monotone approximation functions"
     ]
@@ -42,64 +68,64 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 45,
-      "endLine": 62,
+      "endLine": 56,
       "summary": "Euler's totient, approximability, and infinite approximability."
     },
     {
       "id": "divergence-condition",
       "title": "The Divergence Condition",
-      "startLine": 64,
-      "endLine": 78,
-      "summary": "The Duffin-Schaeffer sum and divergence/convergence."
+      "startLine": 58,
+      "endLine": 70,
+      "summary": "The Duffin-Schaeffer sum and divergence/convergence conditions."
     },
     {
       "id": "measure-theory",
       "title": "Measure-Theoretic Formulation",
-      "startLine": 80,
-      "endLine": 94,
+      "startLine": 72,
+      "endLine": 84,
       "summary": "Almost all, almost none, and the measure-theoretic setup."
     },
     {
       "id": "main-conjecture",
       "title": "The Duffin-Schaeffer Conjecture",
-      "startLine": 96,
-      "endLine": 110,
-      "summary": "The conjecture statement and both directions."
+      "startLine": 86,
+      "endLine": 99,
+      "summary": "The conjecture statement, easy direction, and hard direction."
     },
     {
       "id": "erdos-partial",
       "title": "Erdős's Partial Result",
-      "startLine": 112,
-      "endLine": 122,
+      "startLine": 101,
+      "endLine": 109,
       "summary": "Erdős proved the case when f(q)·q is bounded."
     },
     {
       "id": "koukoulopoulos-maynard",
       "title": "Koukoulopoulos-Maynard Theorem (2020)",
-      "startLine": 124,
-      "endLine": 137,
+      "startLine": 111,
+      "endLine": 119,
       "summary": "The full conjecture proved after 79 years."
     },
     {
       "id": "consequences",
-      "title": "Consequences and Special Cases",
-      "startLine": 139,
-      "endLine": 164,
-      "summary": "Zero-one law, convergence case, continued fractions."
+      "title": "Consequences",
+      "startLine": 121,
+      "endLine": 136,
+      "summary": "Convergence case, zero-one law, continued fractions."
     },
     {
       "id": "khintchine",
       "title": "Khintchine's Theorem",
-      "startLine": 166,
-      "endLine": 181,
-      "summary": "The 1924 result for monotone functions."
+      "startLine": 138,
+      "endLine": 148,
+      "summary": "The 1924 result for monotone functions and the limsup set."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 237,
-      "endLine": 265,
-      "summary": "Complete summary and main theorem statements."
+      "startLine": 150,
+      "endLine": 166,
+      "summary": "Proved conjunction of main results."
     }
   ],
   "conclusion": {

@@ -4,11 +4,13 @@
   "slug": "erdos-180",
   "description": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erdős-Stone. Folklore counterexample for infinite families. OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős-Simonovits [ErSi82]",
     "sourceUrl": "https://erdosproblems.com/180",
-    "status": "formalized",
+    "date": "1982",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos180Problem.lean",
     "tags": [
+      "erdos",
       "graph-theory",
       "extremal-graph-theory",
       "turan-number",
@@ -18,73 +20,90 @@
     "sorries": 0,
     "erdosNumber": 180,
     "erdosUrl": "https://erdosproblems.com/180",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Simple graph type", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "Finset.inf'", "description": "Minimum over nonempty finset", "module": "Mathlib.Data.Finset.Basic" }
+    ],
+    "originalContributions": [
+      "turanNumber: sSup of edge counts in H-free graphs",
+      "ExSingle, ExFamily: type aliases for extremal functions ℕ → ℕ",
+      "HasDomination: some member has ex(n;G) = O(ex(n;F))",
+      "ErdosConjecture180: every finite family has domination",
+      "erdos_stone_domination axiom: non-bipartite families have domination",
+      "BipartiteCase: existence of family without domination",
+      "folklore_counterexample_infinite axiom: infinite family counterexample",
+      "family_le_members axiom: ex(n;F) ≤ min ex(n;G)",
+      "erdos_180_summary: proved conjunction of Erdős-Stone and counterexample"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #180, posed by Erdős and Simonovits [ErSi82], asks whether the Turán number of a finite graph family is always dominated by a single member. For non-bipartite families, the Erdős-Stone theorem resolves this. A folklore counterexample (star + matching) exists for infinite families.",
+    "historicalContext": "Erdős Problem #180, posed by Erdős and Simonovits [ErSi82], asks whether the Turán number of a finite graph family is always dominated by a single member. For non-bipartite families, the Erdős-Stone theorem resolves this: the member with smallest chromatic number determines the asymptotics. A folklore counterexample (star + matching) exists for infinite families, showing finiteness is essential.",
     "problemStatement": "For a finite family F of graphs, let ex(n;F) be the maximum edges in an n-vertex F-free graph. Does there always exist G in F such that ex(n;G) = O(ex(n;F))? OPEN.",
-    "proofStrategy": "The formalization defines ExFamily, ExSingle, HasDomination, and the main conjecture ErdosConjecture180. The non-bipartite case is axiomatized via Erdős-Stone. The bipartite case and folklore counterexample for infinite families are formalized.",
+    "proofStrategy": "The formalization defines ExFamily, ExSingle, HasDomination, and the main conjecture ErdosConjecture180. The non-bipartite case is axiomatized via Erdős-Stone. The folklore counterexample for infinite families demonstrates that finiteness is essential. The summary theorem proves the conjunction of these known results.",
     "keyInsights": [
       "The domination property asks if a single forbidden graph controls the family's extremal function",
-      "Non-bipartite case resolved by Erdős-Stone: chromatic number determines asymptotics",
+      "Non-bipartite case resolved by Erdős-Stone: chromatic number determines asymptotics up to o(n²)",
       "The bipartite case is nontrivial due to unknown Zarankiewicz-type bounds",
       "Folklore counterexample for infinite families: star + matching",
-      "Connected to Turán-type extremal graph theory"
+      "Finiteness of the family F is essential to the conjecture"
     ]
   },
   "sections": [
     {
       "id": "turan-numbers",
-      "title": "Part I: Turán Numbers",
-      "startLine": 23,
+      "title": "Turán Numbers",
+      "startLine": 30,
       "endLine": 43,
-      "summary": "Defines turanNumber via sSup, ExSingle, ExFamily type aliases."
+      "summary": "turanNumber via sSup, ExSingle, ExFamily type aliases"
     },
     {
       "id": "domination",
-      "title": "Part II: The Domination Property",
+      "title": "The Domination Property",
       "startLine": 45,
-      "endLine": 52,
-      "summary": "Defines HasDomination: some member's Turán number is O(family's Turán number)."
+      "endLine": 51,
+      "summary": "HasDomination: some member has ex(n;G) = O(ex(n;F))"
     },
     {
       "id": "conjecture",
-      "title": "Part III: The Main Conjecture",
-      "startLine": 54,
-      "endLine": 67,
-      "summary": "Defines ErdosConjecture180: every finite family has domination. Axiom erdos_180."
+      "title": "The Main Conjecture",
+      "startLine": 53,
+      "endLine": 62,
+      "summary": "ErdosConjecture180: every finite family has domination (OPEN)"
     },
     {
       "id": "erdos-stone",
-      "title": "Part IV: Non-Bipartite Case (Erdős-Stone)",
-      "startLine": 69,
-      "endLine": 79,
-      "summary": "Axiom erdos_stone_domination: non-bipartite families have the domination property."
+      "title": "Non-Bipartite Case (Erdős-Stone)",
+      "startLine": 64,
+      "endLine": 74,
+      "summary": "Domination holds for non-bipartite families"
     },
     {
       "id": "bipartite",
-      "title": "Part V: Bipartite Case Difficulty",
-      "startLine": 81,
-      "endLine": 98,
-      "summary": "Defines BipartiteCase. Axiom folklore_counterexample_infinite for infinite families."
+      "title": "Bipartite Case Difficulty",
+      "startLine": 76,
+      "endLine": 92,
+      "summary": "BipartiteCase definition, folklore counterexample for infinite families"
     },
     {
       "id": "properties",
-      "title": "Part VI: Properties",
-      "startLine": 100,
-      "endLine": 111,
-      "summary": "Axioms: family_le_members (family ≤ min of members), monotonicity."
+      "title": "Properties",
+      "startLine": 94,
+      "endLine": 100,
+      "summary": "family_le_members: ex(n;F) ≤ min ex(n;G)"
     },
     {
       "id": "summary",
-      "title": "Part VII: Summary",
-      "startLine": 113,
-      "endLine": 129,
-      "summary": "Proved: erdos_180_statement (simp), erdos_180_status (trivial). OPEN."
+      "title": "Summary",
+      "startLine": 102,
+      "endLine": 116,
+      "summary": "Proved conjunction of Erdős-Stone domination and counterexample"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #180 asks whether a single forbidden graph always dominates the Turán number of a finite graph family. Resolved for non-bipartite families, but open in general.",
+    "summary": "Erdős Problem #180 asks whether a single forbidden graph always dominates the Turán number of a finite graph family. Resolved for non-bipartite families via Erdős-Stone, but open in general. The folklore counterexample shows finiteness is essential.",
     "implications": "Resolution would clarify the structure of extremal functions for forbidden graph families, connecting to the Zarankiewicz problem and bipartite Turán theory.",
     "openQuestions": [
       "Does domination hold for all finite families?",
