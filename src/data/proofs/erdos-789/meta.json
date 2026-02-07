@@ -79,65 +79,58 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "SumRep and SumLengthFree property",
-      "startLine": 41,
-      "endLine": 60
+      "summary": "SumRep structure, SumLengthFree property",
+      "startLine": 39,
+      "endLine": 58
     },
     {
       "id": "h-function",
       "title": "The Function h(n)",
-      "summary": "Definition and existence axioms",
-      "startLine": 62,
-      "endLine": 79
+      "summary": "Definition and existence axioms for h(n)",
+      "startLine": 60,
+      "endLine": 77
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Erdős n^{5/6}, Straus √n",
-      "startLine": 81,
-      "endLine": 98
+      "summary": "Erdős n^{5/6}, Straus √n (best known)",
+      "startLine": 79,
+      "endLine": 97
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Erdős n^{1/3}, Choi (n log n)^{1/3}",
-      "startLine": 100,
-      "endLine": 117
+      "summary": "Erdős n^{1/3}, Choi (n log n)^{1/3} (best known)",
+      "startLine": 99,
+      "endLine": 120
     },
     {
       "id": "gap",
-      "title": "The Gap",
-      "summary": "Combined bounds and gap analysis",
-      "startLine": 119,
+      "title": "The Gap and Combined Bounds",
+      "summary": "Combined bounds theorem: (n log n)^{1/3} ≪ h(n) ≪ √n",
+      "startLine": 122,
       "endLine": 132
-    },
-    {
-      "id": "construction",
-      "title": "Erdős's Construction",
-      "summary": "Probabilistic method with fractional parts",
-      "startLine": 134,
-      "endLine": 145
     },
     {
       "id": "sidon",
       "title": "Connection to Sidon Sets",
-      "summary": "Sidon implies sum-length-free",
-      "startLine": 147,
-      "endLine": 163
+      "summary": "IsSidonSet definition, Sidon implies sum-length-free",
+      "startLine": 134,
+      "endLine": 153
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "summary": "Computational bounds",
-      "startLine": 185,
-      "endLine": 206
+      "title": "Computational Examples",
+      "summary": "√1000 and √10^6 via native_decide",
+      "startLine": 155,
+      "endLine": 168
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem and status",
-      "startLine": 234,
-      "endLine": 272
+      "summary": "Main theorem combining bounds, problem OPEN",
+      "startLine": 170,
+      "endLine": 205
     }
   ],
   "conclusion": {
