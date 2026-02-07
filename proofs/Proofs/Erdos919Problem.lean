@@ -22,13 +22,17 @@ graph on ω₁² with χ(G) = ℵ₁ where every strictly smaller subgraph has �
 Adapted from erdosproblems.com (Apache 2.0 License)
 -/
 
-import Mathlib
+import Mathlib.SetTheory.Ordinal.Arithmetic
+import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib.SetTheory.Cardinal.Cofinality
+import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Order.InitialSeg
 
 open Cardinal Ordinal Set
 
 namespace Erdos919
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 We work with graphs on ordinal products and their chromatic numbers.
@@ -37,8 +41,8 @@ We work with graphs on ordinal products and their chromatic numbers.
 /-- The ordinal ω₁ (first uncountable ordinal) -/
 def omega1 : Ordinal := Ordinal.omega1
 
-/-- The ordinal ω₂ (second uncountable ordinal) -/
-def omega2 : Ordinal := Ordinal.omega.succ.succ
+/-- The ordinal ω₂ (second uncountable ordinal) = initial ordinal of ℵ₂ -/
+def omega2 : Ordinal := (Cardinal.aleph 2).ord
 
 /-- The ordinal product ω₁² = ω₁ × ω₁ with lexicographic ordering -/
 def omega1Squared : Type* := ω₁.toType × ω₁.toType
@@ -52,7 +56,7 @@ structure GraphOn (V : Type*) where
   symm : ∀ x y, adj x y → adj y x
   loopless : ∀ x, ¬adj x x
 
-/-!
+/-
 # Part 2: Chromatic Number
 
 The chromatic number χ(G) is the minimum number of colors needed to color
@@ -71,15 +75,16 @@ noncomputable def chromaticNumber {V : Type*} (G : GraphOn V) : Cardinal :=
 def IsColorable {V : Type*} (G : GraphOn V) (k : Cardinal) : Prop :=
   ∃ c : V → k.toType, IsProperColoring G k c
 
-/-!
+/-
 # Part 3: Order Type and Subgraphs
 
 We need to talk about subgraphs whose vertex sets have smaller order type.
 -/
 
-/-- The order type of a subset of an ordinal product -/
+/-- The order type of a subset of a well-ordered type -/
 noncomputable def orderTypeOfSubset {α : Type*} [LinearOrder α] [IsWellOrder α (· < ·)]
-    (S : Set α) : Ordinal := sorry
+    (S : Set α) : Ordinal :=
+  Ordinal.type (Subrel (· < ·) S)
 
 /-- Induced subgraph on a vertex subset -/
 def inducedSubgraph {V : Type*} (G : GraphOn V) (S : Set V) : GraphOn S where
@@ -87,7 +92,7 @@ def inducedSubgraph {V : Type*} (G : GraphOn V) (S : Set V) : GraphOn S where
   symm := fun x y h => G.symm x.val y.val h
   loopless := fun x => G.loopless x.val
 
-/-!
+/-
 # Part 4: The Erdős-Hajnal Construction
 
 Erdős and Hajnal constructed a graph on ω₁² showing Babai's theorem doesn't
@@ -106,7 +111,7 @@ axiom erdosHajnal_subgraph (S : Set omega1Squared)
     (hS : orderTypeOfSubset S < omega1 * omega1) :
   chromaticNumber (inducedSubgraph erdosHajnalGraph S) ≤ ℵ₀
 
-/-!
+/-
 # Part 5: The Main Questions
 
 The problem asks about analogous constructions at higher cardinals.
@@ -128,7 +133,7 @@ def Question2 : Prop :=
     ∀ S : Set omega2Squared, orderTypeOfSubset S < omega2 * omega2 →
       chromaticNumber (inducedSubgraph G S) ≤ ℵ₀
 
-/-!
+/-
 # Part 6: Known Partial Results
 
 There are some constructions that partially address these questions.
@@ -140,13 +145,11 @@ axiom partialConstruction : ∃ G : GraphOn omega2Squared,
   ∀ S : Set omega2Squared, orderTypeOfSubset S < omega2 * omega2 →
     chromaticNumber (inducedSubgraph G S) ≤ ℵ₁
 
-/-- This doesn't fully answer Question1 since we need ≤ ℵ₀, not ≤ ℵ₁ -/
-theorem partial_not_answer1 : ¬(partialConstruction → Question1) := by
-  intro h
-  -- The partial construction gives ℵ₁ bound, but Question1 needs ℵ₀
-  sorry
+/-- The partial construction gives a weaker bound (≤ ℵ₁ instead of ≤ ℵ₀)
+    so it does not directly answer Question1. The gap between ℵ₀ and ℵ₁ is
+    precisely what makes Question1 open. -/
 
-/-!
+/-
 # Part 7: Generalization to Higher Cardinals
 
 The questions can be generalized to arbitrary cardinals.
@@ -169,7 +172,7 @@ theorem question1_is_general : Question1 ↔ GeneralQuestion ℵ₂ ℵ₂ ℵ�
 theorem erdosHajnal_is_general : GeneralQuestion ℵ₁ ℵ₁ ℵ₀ := by
   sorry
 
-/-!
+/-
 # Part 8: Connection to Babai's Theorem
 
 Babai's theorem concerns graphs on well-ordered sets.
@@ -187,22 +190,21 @@ theorem babai_fails_omega1 : ¬(∀ G : GraphOn omega1Squared,
       chromaticNumber (inducedSubgraph G S) ≤ ℵ₀) →
     chromaticNumber G ≤ ℵ₀) := by
   intro h
-  have := h erdosHajnalGraph erdosHajnal_subgraph
-  have hchi := erdosHajnal_chromatic
-  -- ℵ₁ ≤ ℵ₀ is false
-  sorry
+  have hle := h erdosHajnalGraph erdosHajnal_subgraph
+  rw [erdosHajnal_chromatic] at hle
+  -- ℵ₁ ≤ ℵ₀ contradicts ℵ₀ < ℵ₁
+  exact absurd hle (not_le.mpr (Cardinal.aleph0_lt_aleph 1))
 
-/-!
+/-
 # Part 9: Problem Status
 
 Both questions remain open.
 -/
 
-/-- The problem is open -/
-def erdos_919_status : String := "OPEN"
-
-/-- Main formal statements -/
+/-- Main formal statement: Question 1 (stronger version) -/
 def ErdosProblem919Part1 : Prop := Question1
+
+/-- Main formal statement: Question 2 (weaker version) -/
 def ErdosProblem919Part2 : Prop := Question2
 
 /-- Summary of what we know -/
@@ -221,23 +223,19 @@ theorem summary :
   · exact ⟨erdosHajnalGraph, erdosHajnal_chromatic, erdosHajnal_subgraph⟩
   · exact partialConstruction
 
-/-!
+/-
 # Part 10: Formal Problem Statement
 
 The precise statement of Erdős Problem #919.
 -/
 
-/-- Main theorem: The questions are well-posed and relate to E-H construction -/
-theorem erdos_919_main :
-    -- Question1 generalizes E-H to ω₂² with ℵ₂ chromatic number
-    (Question1 → ∃ G : GraphOn omega2Squared, chromaticNumber G = ℵ₂) ∧
-    -- Question2 asks about intermediate case
-    (Question2 → ∃ G : GraphOn omega2Squared, chromaticNumber G = ℵ₁) ∧
-    -- Neither is trivially true
-    (¬(Question1 ∧ Question2) ∨ True) := by
-  refine ⟨?_, ?_, ?_⟩
-  · intro ⟨G, hchi, _⟩; exact ⟨G, hchi⟩
-  · intro ⟨G, hchi, _⟩; exact ⟨G, hchi⟩
-  · right; trivial
+/-- The questions imply existence of graphs with high chromatic number -/
+theorem question1_implies_exists :
+    Question1 → ∃ G : GraphOn omega2Squared, chromaticNumber G = ℵ₂ :=
+  fun ⟨G, hchi, _⟩ => ⟨G, hchi⟩
+
+theorem question2_implies_exists :
+    Question2 → ∃ G : GraphOn omega2Squared, chromaticNumber G = ℵ₁ :=
+  fun ⟨G, hchi, _⟩ => ⟨G, hchi⟩
 
 end Erdos919
