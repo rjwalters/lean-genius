@@ -31,6 +31,7 @@
       "asymptotic_threshold: proved corollary with explicit constant",
       "erdos_1078_summary combining all four main results"
     ],
+    "mathlib_version": "4.15.0",
     "dateAdded": "2026-01-19"
   },
   "overview": {
@@ -50,56 +51,56 @@
       "id": "definitions",
       "title": "Part I: Basic Definitions",
       "startLine": 30,
-      "endLine": 63,
+      "endLine": 61,
       "summary": "RPartiteGraph structure, minDegree, ContainsKr."
     },
     {
       "id": "bes-conjecture",
       "title": "Part II: The BES Conjecture",
-      "startLine": 65,
-      "endLine": 86,
+      "startLine": 63,
+      "endLine": 82,
       "summary": "BESConjecture definition and threshold_tight axiom."
     },
     {
       "id": "haxell",
       "title": "Part III: Haxell's Theorem (2001)",
-      "startLine": 88,
-      "endLine": 113,
+      "startLine": 84,
+      "endLine": 107,
       "summary": "haxell_theorem axiom and asymptotic_threshold proved corollary."
     },
     {
       "id": "sharp-threshold",
       "title": "Part IV: Sharp Threshold (Haxell-Szabó 2006)",
-      "startLine": 115,
-      "endLine": 143,
+      "startLine": 109,
+      "endLine": 135,
       "summary": "sharpThreshold formula, haxell_szabo_theorem, threshold_sharp."
     },
     {
       "id": "special-cases",
       "title": "Part V: Special Cases",
-      "startLine": 145,
-      "endLine": 173,
+      "startLine": 137,
+      "endLine": 163,
       "summary": "Computed thresholds for r = 2, 3, 4."
     },
     {
       "id": "comparison",
       "title": "Part VI: Comparison with BES Threshold",
-      "startLine": 175,
-      "endLine": 187,
+      "startLine": 165,
+      "endLine": 175,
       "summary": "asymptotic_agreement: sharp threshold ≈ (r-3/2)n."
     },
     {
       "id": "transversals",
       "title": "Part VII: Connection to Transversals",
-      "startLine": 189,
-      "endLine": 210,
+      "startLine": 177,
+      "endLine": 196,
       "summary": "IsIndependentTransversal definition and extremal_construction."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
-      "startLine": 212,
-      "endLine": 230,
+      "startLine": 198,
+      "endLine": 214,
       "summary": "erdos_1078_summary combining haxell_theorem, threshold_tight, haxell_szabo_theorem, threshold_sharp."
     }
   ],
