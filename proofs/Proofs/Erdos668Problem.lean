@@ -32,270 +32,158 @@ import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Geometry.Euclidean.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Set.Finite.Lattice
+import Mathlib.Topology.MetricSpace.Isometry
 
 open Set Metric Finset
 
 namespace Erdos668
 
-/-
-## Part I: Unit Distances in the Plane
-
-The plane R^2 with Euclidean distance.
--/
-
 /-- The plane as a type -/
 abbrev Plane := EuclideanSpace ℝ (Fin 2)
 
-/--
-**Unit Distance Pair:**
-Two points are at unit distance if their Euclidean distance is exactly 1.
--/
+/-- Two points are at unit distance if their Euclidean distance is exactly 1. -/
 def isUnitPair (p q : Plane) : Prop := dist p q = 1
 
-/--
-**Unit Distance Graph:**
-Given a finite set of points, the unit distance graph has edges between
-all pairs at distance 1.
--/
-def unitDistanceEdges (S : Finset Plane) : Set (Plane × Plane) :=
-  {pq : Plane × Plane | pq.1 ∈ S ∧ pq.2 ∈ S ∧ pq.1 ≠ pq.2 ∧ isUnitPair pq.1 pq.2}
+/-- The set of ordered unit distance pairs in a point set. -/
+def unitDistancePairs (S : Finset Plane) : Set (Plane × Plane) :=
+  {pq | pq.1 ∈ S ∧ pq.2 ∈ S ∧ pq.1 ≠ pq.2 ∧ isUnitPair pq.1 pq.2}
 
-/-
-## Part II: Counting Unit Distances
-
-u(n) = maximum number of unit distances among n points.
--/
-
-/--
-**Unit Distance Count:**
-The number of unit distance pairs in a point set.
-(Counting unordered pairs)
--/
+/-- The number of unit distance pairs in a point set (counting unordered pairs).
+    Uses Set.ncard to avoid decidability issues with dist on real plane. -/
 noncomputable def unitDistanceCount (S : Finset Plane) : ℕ :=
-  ((S ×ˢ S).filter fun (p, q) => p ≠ q ∧ isUnitPair p q).card / 2
+  Set.ncard (unitDistancePairs S) / 2
 
-/--
-**Maximum Unit Distances:**
-u(n) is the maximum number of unit distances achievable by n points.
--/
+/-- u(n) is the maximum number of unit distances achievable by n points. -/
 noncomputable def u (n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ S : Finset Plane, S.card = n ∧ unitDistanceCount S = k}
 
-/-
-## Part III: Extremal Configurations
-
-A configuration achieving u(n).
--/
-
-/--
-**Extremal Configuration:**
-A point set S with |S| = n that achieves u(n) unit distances.
--/
+/-- A point set S is extremal if it achieves u(|S|) unit distances. -/
 def isExtremal (S : Finset Plane) : Prop :=
   unitDistanceCount S = u S.card
 
-/--
-**The Set of n-Point Extremal Configurations:**
--/
+/-- The set of n-point extremal configurations. -/
 def extremalConfigs (n : ℕ) : Set (Finset Plane) :=
   {S : Finset Plane | S.card = n ∧ isExtremal S}
 
-/-
-## Part IV: Congruence
-
-Two point sets are congruent if one can be mapped to the other by a rigid motion.
--/
-
-/--
-**Rigid Motion (Isometry):**
-An isometry of the plane that preserves distances.
--/
-def isRigidMotion (f : Plane → Plane) : Prop :=
-  ∀ p q : Plane, dist (f p) (f q) = dist p q
-
-/--
-**Congruent Point Sets:**
-Two finite sets are congruent if there's a bijective isometry between them.
--/
+/-- Two finite point sets are congruent if some isometry maps one onto the other. -/
 def areCongruent (S T : Finset Plane) : Prop :=
-  ∃ f : Plane → Plane, isRigidMotion f ∧
-    (∀ p ∈ S, f p ∈ T) ∧ (∀ q ∈ T, ∃ p ∈ S, f p = q)
+  ∃ φ : Plane ≃ᵢ Plane, (∀ p ∈ S, φ p ∈ T) ∧ (∀ q ∈ T, ∃ p ∈ S, φ p = q)
 
-/--
-Congruence is an equivalence relation (reflexivity).
--/
+/-- Congruence is reflexive. -/
 theorem congruent_refl (S : Finset Plane) : areCongruent S S := by
-  use id
-  constructor
-  · intro p q; simp
-  · constructor <;> intro p hp <;> exact ⟨p, hp, rfl⟩
+  refine ⟨IsometryEquiv.refl Plane, fun p hp => ?_, fun q hq => ⟨q, hq, ?_⟩⟩
+  · simpa using hp
+  · simp
 
-/--
-Congruence is symmetric.
--/
-axiom congruent_symm (S T : Finset Plane) : areCongruent S T → areCongruent T S
+/-- Congruence is symmetric. -/
+theorem congruent_symm {S T : Finset Plane} (h : areCongruent S T) :
+    areCongruent T S := by
+  obtain ⟨φ, hST, hTS⟩ := h
+  refine ⟨φ.symm, fun q hq => ?_, fun p hp => ?_⟩
+  · obtain ⟨p, hp, hpq⟩ := hTS q hq
+    rw [← hpq, IsometryEquiv.symm_apply_apply]
+    exact hp
+  · exact ⟨φ p, hST p hp, φ.symm_apply_apply p⟩
 
-/--
-Congruence is transitive.
--/
-axiom congruent_trans (S T U : Finset Plane) :
-    areCongruent S T → areCongruent T U → areCongruent S U
+/-- Congruence is transitive. -/
+theorem congruent_trans {S T U : Finset Plane}
+    (h₁ : areCongruent S T) (h₂ : areCongruent T U) : areCongruent S U := by
+  obtain ⟨φ, hST, hTS⟩ := h₁
+  obtain ⟨ψ, hTU, hUT⟩ := h₂
+  refine ⟨φ.trans ψ, fun p hp => ?_, fun u hu => ?_⟩
+  · simp only [IsometryEquiv.trans_apply]
+    exact hTU (φ p) (hST p hp)
+  · obtain ⟨t, ht, htu⟩ := hUT u hu
+    obtain ⟨s, hs, hst⟩ := hTS t ht
+    exact ⟨s, hs, by simp [IsometryEquiv.trans_apply, hst, htu]⟩
 
-/-
-## Part V: The Counting Function f(n)
+/-- An isometry maps unit pairs to unit pairs. -/
+theorem isUnitPair_of_isometry (φ : Plane ≃ᵢ Plane) {p q : Plane}
+    (h : isUnitPair p q) : isUnitPair (φ p) (φ q) := by
+  unfold isUnitPair at *
+  rw [φ.dist_eq]
+  exact h
 
-f(n) = number of incongruent extremal configurations.
--/
+/-- Congruence preserves unit distance count. -/
+theorem congruent_unitDistanceCount {S T : Finset Plane}
+    (h : areCongruent S T) (hcard : S.card = T.card) :
+    unitDistanceCount S = unitDistanceCount T := by
+  sorry
 
-/--
-**Incongruent Extremal Configurations:**
-The quotient of extremalConfigs(n) by congruence.
--/
+/-- Congruence preserves extremality. -/
+theorem congruent_preserves_extremal {S T : Finset Plane}
+    (h : areCongruent S T) (hcard : S.card = T.card)
+    (hS : isExtremal S) : isExtremal T := by
+  unfold isExtremal at *
+  rw [← hcard, ← congruent_unitDistanceCount h hcard]
+  exact hS
+
+/-- The congruence setoid on finite point sets. -/
+noncomputable def congruenceSetoid : Setoid (Finset Plane) where
+  r := areCongruent
+  iseqv := {
+    refl := congruent_refl
+    symm := congruent_symm
+    trans := congruent_trans
+  }
+
+/-- f(n) is the number of congruence classes of n-point extremal configurations. -/
 noncomputable def f (n : ℕ) : ℕ :=
-  sorry -- This requires defining equivalence classes, which is complex
+  Set.ncard (Quotient.mk congruenceSetoid '' extremalConfigs n)
 
-/--
-**Alternative Definition:**
-f(n) is the cardinality of a maximal set of pairwise non-congruent extremals.
--/
-def f_alt (n : ℕ) : ℕ :=
-  sorry -- Would need witness of actual configurations
-
-/-
-## Part VI: Known Results
-
-The case n = 4 is fully understood.
--/
-
-/--
-**The n=4 Extremal Configuration:**
-Two equilateral triangles sharing an edge (a "double triangle" or rhombus).
-
-This configuration has 4 vertices and 5 unit distances:
-- The shared edge (1)
-- Two sides of each triangle (4 total)
--/
+/-- f(4) = 1: The unique extremal 4-point configuration is two equilateral
+    triangles sharing an edge. -/
 axiom f_four : f 4 = 1
 
-/--
-**Characterization of the n=4 case:**
-The unique extremal configuration consists of two equilateral triangles
-joined along one edge, forming a rhombus with 60° angles.
--/
-axiom four_config_unique :
-  ∀ S T : Finset Plane,
+/-- Any two 4-point extremal configurations are congruent. -/
+axiom four_config_unique (S T : Finset Plane) :
     S.card = 4 → T.card = 4 → isExtremal S → isExtremal T → areCongruent S T
 
-/--
-**u(4) = 5:**
-Four points in the plane can have at most 5 unit distances.
--/
+/-- u(4) = 5: Four points in the plane can have at most 5 unit distances. -/
 axiom u_four : u 4 = 5
 
-/-
-## Part VII: Computational Evidence
-
-For n = 5 to 21, computational evidence suggests f(n) = 1.
--/
-
-/--
-**Computational Conjecture:**
-For 5 <= n <= 21, there appears to be a unique extremal configuration
-(up to graph isomorphism at least).
-
-Note: Full congruence wasn't checked, only combinatorial structure.
--/
+/-- For 5 <= n <= 21, computational evidence shows f(n) >= 1. -/
 axiom computational_evidence :
-  ∀ n : ℕ, 5 ≤ n → n ≤ 21 → f n ≥ 1  -- At least one exists
+  ∀ n : ℕ, 5 ≤ n → n ≤ 21 → f n ≥ 1
 
-/-
-## Part VIII: The Open Questions
-
-The two main questions of Erdos Problem #668.
--/
-
-/--
-**Question 1: Does f(n) → ∞?**
-
-As n grows, do we get more and more incongruent extremal configurations?
--/
+/-- Question 1: Does f(n) tend to infinity as n tends to infinity? -/
 def question_one : Prop :=
   ∀ M : ℕ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → f n ≥ M
 
-/--
-**Question 2: Is f(n) > 1 for n > 3?**
-
-Is the extremal configuration always non-unique for n ≥ 4?
-
-Note: f(4) = 1 already shows this is FALSE as stated.
-The actual question might be whether f(n) > 1 for large enough n.
--/
+/-- Question 2 (original): Is f(n) > 1 for all n > 3?
+    Note: f(4) = 1, so this is false as stated. -/
 def question_two : Prop :=
   ∀ n : ℕ, n > 3 → f n > 1
 
-/--
-**Modified Question 2:**
-Is f(n) > 1 for all sufficiently large n?
--/
+/-- Question 2 (modified): Is f(n) > 1 for all sufficiently large n? -/
 def question_two_modified : Prop :=
   ∃ N : ℕ, ∀ n : ℕ, n ≥ N → f n > 1
 
-/--
-**Erdos Problem #668:**
-The main open problems about extremal unit distance configurations.
--/
-axiom erdos_668_open : True  -- Placeholder: both questions remain open
+/-- Question 2 is false as originally stated (since f(4) = 1). -/
+theorem question_two_false : ¬ question_two := by
+  intro h
+  have h4 := h 4 (by omega)
+  have := f_four
+  omega
 
-/-
-## Part IX: Relationship to Problem #90
+/-- For any n >= 1, at least one n-point extremal configuration exists. -/
+axiom extremalConfigs_nonempty (n : ℕ) (hn : n ≥ 1) : (extremalConfigs n).Nonempty
 
-Problem #90 asks for u(n) itself.
--/
-
-/--
-**Connection to Problem #90:**
-This problem (668) studies the MULTIPLICITY of extremal configurations,
-while Problem #90 asks for the VALUE u(n).
-
-The two are related:
-- Understanding u(n) helps identify extremal configurations
-- Multiple extremals with different combinatorial structure is interesting
--/
-axiom problem_90_connection :
-  ∀ n : ℕ, n ≥ 1 → (extremalConfigs n).Nonempty
-
-/--
-**Lower Bound for u(n):**
-u(n) >= n - 1 (achievable by n points on a line at unit spacing,
-though this isn't always extremal).
--/
+/-- u(n) >= n - 1 for n >= 2. -/
 axiom u_lower_bound (n : ℕ) (hn : n ≥ 2) : u n ≥ n - 1
 
-/--
-**Upper Bound for u(n):**
-u(n) < c * n^(4/3) for some constant c (Erdos's result).
--/
-axiom u_upper_bound : ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 → (u n : ℝ) < c * n^(4/3 : ℝ)
+/-- u(n) < c * n^(4/3) for some constant c > 0 (Spencer-Szemeredi-Trotter). -/
+axiom u_upper_bound : ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 → (u n : ℝ) < c * n ^ (4/3 : ℝ)
 
-/-
-## Part X: Summary
--/
-
-/--
-**Summary of Erdos Problem #668:**
-
-1. The problem asks about the multiplicity of extremal unit distance configs
-2. f(4) = 1 is known (unique double-triangle configuration)
-3. Computational evidence suggests f(n) = 1 for 5 <= n <= 21
-4. Question: Does f(n) -> infinity? Is f(n) > 1 for large n?
-5. Both questions remain OPEN
-
-This problem probes the uniqueness vs diversity of extremal geometric structures.
--/
+/-- Summary: f(4) = 1 and the 4-point extremal configuration is unique. -/
 theorem erdos_668_summary :
     f 4 = 1 ∧
-    (∀ S : Finset Plane, S.card = 4 → isExtremal S →
-      ∀ T : Finset Plane, T.card = 4 → isExtremal T → areCongruent S T) := by
-  exact ⟨f_four, four_config_unique⟩
+    (∀ S T : Finset Plane, S.card = 4 → T.card = 4 → isExtremal S → isExtremal T →
+      areCongruent S T) :=
+  ⟨f_four, four_config_unique⟩
+
+/-- f(n) >= 1 for all n >= 1 (at least one extremal configuration exists). -/
+theorem f_pos (n : ℕ) (hn : n ≥ 1) : f n ≥ 1 := by
+  sorry
 
 end Erdos668
