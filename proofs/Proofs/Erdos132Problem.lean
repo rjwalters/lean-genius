@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #132: Distance Multiplicities in Planar Point Sets
 
 **Source:** [erdosproblems.com/132](https://erdosproblems.com/132)
@@ -37,7 +37,7 @@ open Finset
 
 namespace Erdos132
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- Point in the plane ℝ² -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
@@ -53,7 +53,7 @@ theorem dist_symm (p q : Point) : dist p q = dist q p := by
 /-- Distance is non-negative -/
 theorem dist_nonneg (p q : Point) : dist p q ≥ 0 := norm_nonneg _
 
-/-! ## Part II: Distance Multiplicity -/
+/- ## Part II: Distance Multiplicity -/
 
 /--
 The set of unordered pairs {p, q} with p ≠ q at distance d.
@@ -65,7 +65,7 @@ def pairsAtDistance (A : Finset Point) (d : ℝ) : Finset (Finset Point) :=
 def multiplicity (A : Finset Point) (d : ℝ) : ℕ :=
   (pairsAtDistance A d).card
 
-/-! ## Part III: Rare Distances -/
+/- ## Part III: Rare Distances -/
 
 /--
 A distance d is "rare" in A if it occurs at least once but
@@ -100,7 +100,7 @@ def erdos132_strong_conjecture (countRare : Finset Point → ℕ) : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, ∀ A : Finset Point, A.card = n →
     (countRare A : ℝ) ≥ (n : ℝ) ^ (1 - ε)
 
-/-! ## Part IV: The Hopf-Pannwitz Theorem -/
+/- ## Part IV: The Hopf-Pannwitz Theorem -/
 
 /--
 **Hopf-Pannwitz Theorem (1934):**
@@ -113,7 +113,7 @@ axiom hopf_pannwitz :
   ∀ A : Finset Point, A.card ≥ 2 →
     ∃ d : ℝ, d > 0 ∧ multiplicity A d ≥ 1 ∧ multiplicity A d ≤ A.card
 
-/-! ## Part V: Counterexample for n = 4 -/
+/- ## Part V: Counterexample for n = 4 -/
 
 /--
 **n = 4 Counterexample:**
@@ -127,7 +127,7 @@ axiom counterexample_n4 :
   ∃ A : Finset Point, A.card = 4 ∧
     ¬∃ d₁ d₂ : ℝ, d₁ ≠ d₂ ∧ isRareDistance A d₁ ∧ isRareDistance A d₂
 
-/-! ## Part VI: Positive Results -/
+/- ## Part VI: Positive Results -/
 
 /--
 **Erdős-Fishburn (1995):** For n = 5, two rare distances always exist.
@@ -143,7 +143,7 @@ axiom erdos_fishburn_6 :
   ∀ A : Finset Point, A.card = 6 →
     ∃ d₁ d₂ : ℝ, d₁ ≠ d₂ ∧ isRareDistance A d₁ ∧ isRareDistance A d₂
 
-/-! ## Part VII: Convex Position -/
+/- ## Part VII: Convex Position -/
 
 /--
 A point set is in convex position if no point lies in the
@@ -161,7 +161,7 @@ axiom clemen_dumitrescu_liu_convex (A : Finset Point) (hA : A.card ≥ 5)
     (hconv : inConvexPosition A) :
   ∃ d₁ d₂ : ℝ, d₁ ≠ d₂ ∧ isRareDistance A d₁ ∧ isRareDistance A d₂
 
-/-! ## Part VIII: Related Bounds -/
+/- ## Part VIII: Related Bounds -/
 
 /--
 **Unit Distance Bound (Spencer-Szemerédi-Trotter):**
@@ -183,7 +183,7 @@ axiom guth_katz_distinct_distances :
     ∃ D : Finset ℝ, (∀ d ∈ D, d > 0 ∧ multiplicity A d ≥ 1) ∧
       (D.card : ℝ) ≥ c * (A.card : ℝ) / Real.log (A.card : ℝ)
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Summary of Erdős Problem #132:**
