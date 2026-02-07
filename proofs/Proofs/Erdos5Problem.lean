@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #5: Limit Points of Normalized Prime Gaps
 
 Let p_n denote the n-th prime. Define the normalized gap ratio
@@ -25,7 +25,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The n-th prime number (1-indexed: nthPrime 1 = 2, nthPrime 2 = 3, ...).
     Axiomatized to avoid computability issues. -/
@@ -47,7 +47,7 @@ def IsLimitPointOfGaps (C : ℝ) : Prop :=
   ∀ ε : ℝ, 0 < ε → ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧
     |normalizedGap n - C| < ε
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- 0 ∈ S: Goldston–Pintz–Yıldırım (2009) proved
     lim inf (p_{n+1} - p_n) / log(p_n) = 0. -/
@@ -71,7 +71,7 @@ axiom merikoski_density (T : ℝ) (hT : 0 < T) :
   ∃ (pts : Finset ℝ), ↑pts.card ≥ T / 3 ∧
     ∀ c ∈ pts, 0 ≤ c ∧ c ≤ T ∧ IsLimitPointOfGaps c
 
-/-! ## The Conjecture -/
+/- ## The Conjecture -/
 
 /-- Erdős Problem #5: The set S of limit points of (p_{n+1} - p_n)/log(p_n)
     equals [0, ∞). That is, for every C ≥ 0, C is a limit point of
