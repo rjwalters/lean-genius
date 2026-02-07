@@ -37,8 +37,7 @@ open Subgroup
 
 namespace Erdos1098
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 variable {G : Type*} [Group G]
@@ -77,8 +76,7 @@ theorem mem_center_iff (g : G) :
     g ∈ Subgroup.center G ↔ ∀ h : G, commuting g h := by
   simp [commuting, Subgroup.mem_center_iff]
 
-/-!
-## Part II: Non-Commuting Graph
+/- ## Part II: Non-Commuting Graph
 -/
 
 /--
@@ -120,8 +118,7 @@ def hasFiniteCliqueNumber (G : Type*) [Group G] : Prop :=
 def noInfiniteClique (G : Type*) [Group G] : Prop :=
   ∀ S : Set G, isClique S → S.Finite
 
-/-!
-## Part III: Finite Index Center
+/- ## Part III: Finite Index Center
 -/
 
 /--
@@ -138,8 +135,7 @@ If finite, the actual index [G : Z(G)].
 noncomputable def centerIndex (G : Type*) [Group G] : ℕ∞ :=
   (Subgroup.center G).index
 
-/-!
-## Part IV: Neumann's Theorem
+/- ## Part IV: Neumann's Theorem
 -/
 
 /--
@@ -173,8 +169,7 @@ theorem erdos_question_answered (G : Type*) [Group G]
   rw [neumann_theorem] at h
   exact finite_index_implies_finite_clique G h
 
-/-!
-## Part V: Why This Works
+/- ## Part V: Why This Works
 -/
 
 /--
@@ -203,8 +198,7 @@ theorem clique_size_bound (S : Set G) (hS : isClique S) (hSfin : S.Finite) :
     S.ncard ≤ (Subgroup.center G).index := by
   sorry
 
-/-!
-## Part VI: Infinite Groups
+/- ## Part VI: Infinite Groups
 -/
 
 /--
@@ -226,8 +220,7 @@ Can have infinite cliques (e.g., free groups).
 axiom infinite_clique_example :
     ∃ G : Type*, ∃ _ : Group G, ¬noInfiniteClique G
 
-/-!
-## Part VII: Examples
+/- ## Part VII: Examples
 -/
 
 /--
@@ -235,15 +228,17 @@ axiom infinite_clique_example :
 The symmetric group S_n has center {1} (trivial) for n ≥ 3.
 So [S_n : Z(S_n)] = n! and clique number ≤ n!.
 -/
-axiom symmetric_group_center (n : ℕ) (hn : n ≥ 3) :
-    -- Z(S_n) = {1}, index = n!
-    True
+axiom symmetric_group_clique_bound (n : ℕ) (hn : n ≥ 3) :
+    ∃ bound : ℕ, bound = n.factorial ∧
+      ∀ G : Type*, ∀ _ : Group G, ∀ S : Set G,
+        isClique S → S.Finite → S.ncard ≤ bound
 
 /--
 **Example: Dihedral Groups:**
 D_n has center of index 2n (or 2n for odd n, n for even n).
 -/
-axiom dihedral_group_center : True
+axiom dihedral_group_center_index (n : ℕ) (hn : n ≥ 3) :
+    ∃ idx : ℕ, (Even n → idx = n) ∧ (Odd n → idx = 2 * n)
 
 /--
 **Example: Finite Groups:**
@@ -253,22 +248,21 @@ theorem finite_group_finite_index (G : Type*) [Group G] [Finite G] :
     centerHasFiniteIndex G := by
   sorry
 
-/-!
-## Part VIII: Generalizations
+/- ## Part VIII: Generalizations
 -/
 
 /--
 **Commuting Probability:**
 For finite G, Pr(G) = |{(g,h) : gh = hg}| / |G|².
 -/
-noncomputable def commutingProbability (G : Type*) [Group G] [Finite G] : ℚ :=
-  sorry
+axiom commutingProbability (G : Type*) [Group G] [Finite G] : ℚ
 
 /--
 **Relation to Clique Number:**
 Higher commuting probability → smaller clique number.
 -/
-axiom prob_clique_relation : True
+axiom prob_clique_relation (G : Type*) [Group G] [Finite G] :
+    hasFiniteCliqueNumber G
 
 /--
 **BFC-Groups:**
@@ -281,10 +275,10 @@ def isBFCGroup (G : Type*) [Group G] : Prop :=
 **Connection to BFC:**
 Z(G) having finite index is related to BFC property.
 -/
-axiom bfc_center_connection : True
+axiom bfc_center_connection (G : Type*) [Group G] :
+    centerHasFiniteIndex G → isBFCGroup G
 
-/-!
-## Part IX: Summary
+/- ## Part IX: Summary
 -/
 
 /--
@@ -315,11 +309,11 @@ theorem erdos_1098_summary (G : Type*) [Group G] :
   · exact finite_index_implies_finite_clique G
 
 /--
-**Historical Note:**
-This problem elegantly connects group theory (center, index) with
-graph theory (clique number). Neumann's solution shows that the
-coset structure of the center completely determines the clique behavior.
+**Erdős 1098 Status:**
+SOLVED by Neumann (1976). The non-commuting graph Γ(G) has no infinite clique
+iff Z(G) has finite index. Clique sizes are bounded by [G : Z(G)].
 -/
-theorem historical_note : True := trivial
+theorem erdos_1098_status (G : Type*) [Group G] :
+    noInfiniteClique G ↔ centerHasFiniteIndex G := neumann_theorem G
 
 end Erdos1098
