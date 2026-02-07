@@ -16,9 +16,11 @@ This is a question of Erdos reported in problem B15 of Guy's collection
 Key Results (proved here):
 1. The pair (p, 2p) is a solution for every prime p >= 5,
    giving infinitely many solutions via multiplicativity of sigma.
-2. All axioms from the stub eliminated (5 axioms -> 0 axioms).
+2. All axioms from the stub eliminated (0 axioms, 0 sorries).
 3. S(x) monotone (proved).
 4. 8 solution pairs and 6 A110177 members verified.
+5. Non-solution theorem: if p, q, p+q are all prime, (p,q) is NOT a solution.
+6. Each prime in [5, x/3] contributes a distinct solution to S(x).
 
 References:
 - Erdos (question reported in Guy's collection)
@@ -217,6 +219,52 @@ theorem three_p_in_A110177 (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3
     3 * p ∈ A110177 := by
   refine ⟨p, 2 * p, hp.one_le, by omega, by ring, ?_⟩
   show sigma 1 p + sigma 1 (2 * p) = sigma 1 (3 * p)
+  exact sigma_add_eq_of_prime p hp h2 h3
+
+/-
+## Part VI-b: Non-Solution Families
+
+If p and q are both prime and p + q is also prime (necessarily p + q > 2,
+so one of p, q must be 2), then sigma(p) + sigma(q) = (p+1)+(q+1) = p+q+2
+but sigma(p+q) = p+q+1, so the equation fails by exactly 1.
+
+More generally, if p and q are primes and p + q is prime, (p, q) is NOT a solution.
+-/
+
+/-- If p, q are prime and p + q is prime, then (p, q) is not a solution.
+    The sum σ(p) + σ(q) overshoots σ(p + q) by exactly 1. -/
+theorem not_solution_of_sum_prime (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : (p + q).Prime) :
+    sigma 1 p + sigma 1 q ≠ sigma 1 (p + q) := by
+  rw [sigma_prime' p hp, sigma_prime' q hq, sigma_prime' (p + q) hpq]
+  omega
+
+/-- Corollary: no prime pair (p, q) with p + q prime gives an additive divisor pair. -/
+theorem not_additive_pair_of_sum_prime (p q : ℕ) (hp : p.Prime) (hq : q.Prime)
+    (hpq : (p + q).Prime) :
+    ¬IsAdditiveDivisorPair p q := by
+  intro ⟨_, _, heq⟩
+  exact not_solution_of_sum_prime p q hp hq hpq heq
+
+/-
+## Part VI-c: Lower Bound from Prime Family
+
+The family {(p, 2p) : p prime, p >= 5} gives a lower bound on S(x).
+For each prime 5 ≤ p ≤ x/3, the pair (p, 2p) has a + b = 3p ≤ x,
+contributing one solution to S(x). These are all distinct pairs.
+
+This gives S(x) ≥ |{p prime : 5 ≤ p ≤ x/3}| = π(x/3) - 2.
+-/
+
+/-- Each prime p in [5, x/3] contributes a solution pair (p, 2p) counted by S(x). -/
+theorem prime_solution_counted (p x : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3)
+    (hle : 3 * p ≤ x) :
+    (p, 2 * p) ∈ (Finset.Icc 1 x ×ˢ Finset.Icc 1 x).filter
+      fun (a, b) => a + b ≤ x ∧ sigma 1 a + sigma 1 b = sigma 1 (a + b) := by
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_Icc]
+  refine ⟨⟨⟨hp.one_le, by omega⟩, ⟨by omega, by omega⟩⟩, ⟨by omega, ?_⟩⟩
+  have heq : p + 2 * p = 3 * p := by ring
+  rw [heq]
   exact sigma_add_eq_of_prime p hp h2 h3
 
 /-
