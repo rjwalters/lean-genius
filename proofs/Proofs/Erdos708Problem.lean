@@ -1,5 +1,5 @@
-/-!
-# Erdős Problem #708: Divisibility of Products by Consecutive Integers
+/-
+Erdős Problem #708: Divisibility of Products by Consecutive Integers
 
 Source: https://erdosproblems.com/708
 Status: OPEN
@@ -40,7 +40,7 @@ open BigOperators Finset
 
 namespace Erdos708
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- The product of a finite set of natural numbers. -/
 def setProduct (S : Finset ℕ) : ℕ := S.prod id
@@ -54,7 +54,7 @@ The product of A divides the product of B. -/
 def productDivides (A B : Finset ℕ) : Prop :=
   setProduct A ∣ setProduct B
 
-/-! ## Part II: The Function g(n)
+/- ## Part II: The Function g(n)
 
 g(n) is the minimum size of B needed to guarantee divisibility
 for ANY choice of A with |A| = n and ANY interval of consecutive integers
@@ -86,7 +86,7 @@ noncomputable def g (n : ℕ) : ℕ :=
     Nat.find (g_exists n h)
   else 0
 
-/-! ## Part III: Known Values -/
+/- ## Part III: Known Values -/
 
 /-- **Gallai's result: g(2) = 2**
 For any two numbers a, b ≥ 2, we can find 2 consecutive integers
@@ -96,7 +96,7 @@ axiom g_two : g 2 = 2
 /-- **Erdős-Surányi: g(3) = 4** -/
 axiom g_three : g 3 = 4
 
-/-! ## Part IV: Bounds on g(n) -/
+/- ## Part IV: Bounds on g(n) -/
 
 /-- **Trivial upper bound:**
 g(n) ≤ n² (very rough — the full interval always works). -/
@@ -111,7 +111,7 @@ are primes with 2p₁² > p_ℓ², forcing many elements from any consecutive in
 axiom erdos_suranyi_lower (n : ℕ) (hn : n ≥ 2) :
   (g n : ℝ) ≥ 2 * n - Real.sqrt n * 10
 
-/-! ## Part V: The Conjecture -/
+/- ## Part V: The Conjecture -/
 
 /-- **Erdős's Question (OPEN):**
 Is g(n) ≤ (2 + o(1))n?
@@ -126,7 +126,7 @@ Perhaps g(n) ≤ 2n exactly? -/
 def StrongerConjecture : Prop :=
   ∀ n : ℕ, n ≥ 1 → g n ≤ 2 * n
 
-/-! ## Part VI: Related Variant -/
+/- ## Part VI: Related Variant -/
 
 /-- **Interval length variant:**
 c_n is the smallest constant ≥ 1 such that in any interval [0, c_n · max(A)]
@@ -142,7 +142,7 @@ axiom c_two : c 2 = 1
 /-- c₃ = √2 (need ~41% more length for 3 elements). -/
 axiom c_three : c 3 = Real.sqrt 2
 
-/-! ## Part VII: Examples -/
+/- ## Part VII: Examples -/
 
 /-- **Example: g(2) = 2**
 For A = {6, 10} = {2·3, 2·5}: Product = 60 = 2² · 3 · 5.
@@ -153,7 +153,7 @@ example : setProduct ({6, 10} : Finset ℕ) = 60 := by native_decide
 With 3 elements, we need 4 consecutive integers (in general). -/
 theorem g_three_example : g 3 = 4 := g_three
 
-/-! ## Part VIII: Summary
+/- ## Part VIII: Summary
 
 **Erdős Problem #708: OPEN ($100 prize)**
 
