@@ -29,7 +29,7 @@ open Filter
 
 namespace Erdos315
 
-/-!
+/-
 ## Overview
 
 Sylvester's sequence is one of the most natural ways to write 1 as a sum of
@@ -45,7 +45,7 @@ Erdős and Graham asked: is this the "slowest growing" such sequence, in a speci
 asymptotic sense? The answer is YES.
 -/
 
-/-!
+/-
 ## Part I: Sylvester's Sequence
 -/
 
@@ -96,7 +96,7 @@ theorem sylvester_ge_two (n : ℕ) : sylvester n ≥ 2 := by
   | zero => simp [sylvester]
   | succ n ih => simp [sylvester]; omega
 
-/-!
+/-
 ## Part II: The Egyptian Fraction Property
 -/
 
@@ -123,7 +123,7 @@ axiom sylvester_sum_equals_one :
     Tendsto (fun n => ∑ k ∈ Finset.range n, (1 : ℝ) / sylvester k)
       atTop (nhds 1)
 
-/-!
+/-
 ## Part III: The Vardi Constant
 -/
 
@@ -140,7 +140,7 @@ axiom vardiConstant_is_limit :
     Tendsto (fun n => (sylvester n : ℝ) ^ (1 / 2 ^ n : ℝ))
       atTop (nhds vardiConstant)
 
-/-!
+/-
 ## Part IV: The Main Conjecture
 -/
 
@@ -171,7 +171,7 @@ def erdosGrahamConjecture : Prop :=
     seq.a ≠ sylvester →
     growthRate seq < vardiConstant
 
-/-!
+/-
 ## Part V: The Solution (Kamio 2025, Li-Tang 2025)
 -/
 
@@ -184,7 +184,7 @@ Sylvester's sequence has the largest asymptotic growth rate among all
 Egyptian fraction sequences summing to 1. -/
 theorem erdos_315_solved : erdosGrahamConjecture := kamio_li_tang_2025
 
-/-!
+/-
 ## Part VI: Why Sylvester's Sequence Is Special
 -/
 
@@ -208,20 +208,24 @@ axiom sylvester_ratio_limit :
     Tendsto (fun n => (sylvester (n + 1) : ℝ) / (sylvester n : ℝ)^2)
       atTop (nhds 1)
 
-/-!
+/-
 ## Part VII: Connection to Other Problems
 -/
 
-/-- Related to Erdős-Straus conjecture: 4/n = 1/a + 1/b + 1/c. -/
-def relatedToErdosStraus : Prop := True
+/-- Related to Erdős-Straus conjecture: 4/n = 1/a + 1/b + 1/c for all n ≥ 2. -/
+def relatedToErdosStraus : Prop :=
+  ∀ n : ℕ, n ≥ 2 → ∃ a b c : ℕ, a > 0 ∧ b > 0 ∧ c > 0 ∧
+    (4 : ℚ) / n = 1 / a + 1 / b + 1 / c
 
-/-- Related to odd greedy expansion problem. -/
-def relatedToOddGreedy : Prop := True
+/-- Related to odd greedy expansion: always take the largest odd unit fraction ≤ remainder. -/
+def relatedToOddGreedy : Prop :=
+  ∀ q : ℚ, q > 0 → ∃ S : Finset ℕ, (∀ n ∈ S, n % 2 = 1) ∧
+    S.sum (fun n => (1 : ℚ) / n) = q
 
 /-- OEIS A000058 (Sylvester), A076393 (Vardi constant). -/
 def oeisReferences : List String := ["A000058", "A076393"]
 
-/-!
+/-
 ## Part VIII: Historical Note
 -/
 
@@ -229,9 +233,9 @@ def oeisReferences : List String := ["A000058", "A076393"]
     u_{n+1} = u_n(u_n + 1), but this doesn't satisfy Σ 1/u_n = 1.
     Quanyu Tang identified this error; the correct formulation uses
     Sylvester's sequence with u_1 = 2. -/
-def historicalNote : Prop := True
+def historicalNote : Prop := erdosGrahamConjecture
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #315: SOLVED (YES)**
@@ -248,7 +252,9 @@ For any other increasing sequence (a_n) with Σ 1/a_n = 1:
 Sylvester's sequence grows the fastest among all Egyptian sequences for 1.
 -/
 
-theorem erdos_315 : True := trivial
+/-- Erdős Problem #315: SOLVED. Sylvester's sequence grows fastest among
+    all Egyptian fraction sequences for 1. -/
+theorem erdos_315 : erdosGrahamConjecture := erdos_315_solved
 
 theorem erdos_315_summary :
     -- The conjecture statement
