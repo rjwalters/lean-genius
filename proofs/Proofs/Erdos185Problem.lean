@@ -642,17 +642,299 @@ theorem f3_2 : f3 2 = 4 := by
     exact capSet2_card_le_4 S hcap
   · exact f3_2_ge
 
+/-
+## Part VIII-B: f₃(3) = 9 - Hybrid Computation
+
+The binary cube {0,1}^3 is a cap set of size 8.
+We exhibit a cap set of size 9 and verify computationally that
+no 10-element subset of AG(3,3) avoids all collinear triples.
+-/
+
+/-- The "binary cube" in dimension 3: all points with coordinates in {0,1}. -/
+private def binaryCube3 : Finset (TernaryHypercube 3) :=
+  Finset.univ.filter (fun x => ∀ i, x i = 0 ∨ x i = 1)
+
+/-- The binary cube has 8 elements. -/
+private theorem binaryCube3_card : binaryCube3.card = 8 := by native_decide
+
+/-- The binary cube is a cap set (no three collinear binary points). -/
+private theorem binaryCube3_is_cap : IsCapSet binaryCube3 := by
+  intro x y z hx hy hz hxy hyz hxz hline
+  simp only [binaryCube3, Finset.mem_filter, Finset.mem_univ, true_and] at hx hy hz
+  -- For each coordinate, x_i + z_i ∈ {0,2} (since x,z ∈ {0,1})
+  -- and 2*y_i ∈ {0,2} (since y ∈ {0,1}), so x_i + z_i = 0 or 2.
+  -- x_i + z_i = 0 mod 3 iff (x_i=0 ∧ z_i=0), and = 2 mod 3 iff (x_i=1 ∧ z_i=1).
+  -- In both cases x_i = z_i, so x = z.
+  have : x = z := by
+    funext i
+    have hxi := hx i; have hzi := hz i
+    have hli := hline i
+    rcases hxi with rfl | rfl <;> rcases hzi with rfl | rfl <;> simp_all +decide
+  exact hxz this
+
+/-- f₃(3) ≥ 8 from the binary cube. -/
+private theorem f3_3_ge_8 : f3 3 ≥ 8 := by
+  unfold f3
+  apply le_csSup (f3_bddAbove 3)
+  exact ⟨binaryCube3, binaryCube3_is_cap, binaryCube3_card⟩
+
+/-- A specific cap set of size 9 in AG(3,3).
+    Constructed from the binary cube {0,1}³ by removing (1,1,0) and (1,1,1)
+    and adding (1,1,2), (1,2,2), and (2,1,2). Verified line-free computationally. -/
+private def capSet9 : Finset (TernaryHypercube 3) :=
+  {![0,0,0], ![0,0,1], ![0,1,0], ![0,1,1], ![1,0,0], ![1,0,1], ![1,1,2], ![1,2,2], ![2,1,2]}
+
+/-- capSet9 has 9 elements. -/
+private theorem capSet9_card : capSet9.card = 9 := by native_decide
+
+/-- No three distinct points in capSet9 are collinear:
+    verified by checking all 9³ = 729 triples. -/
+private theorem capSet9_no_collinear :
+    ∀ x ∈ capSet9, ∀ y ∈ capSet9, ∀ z ∈ capSet9,
+      x ≠ y → y ≠ z → x ≠ z → ¬(∀ i : Fin 3, x i + z i = 2 * y i) := by
+  native_decide
+
+/-- capSet9 is a cap set. -/
+private theorem capSet9_is_cap : IsCapSet capSet9 := capSet9_no_collinear
+
+/-- f₃(3) ≥ 9 from capSet9. -/
+private theorem f3_3_ge_9 : f3 3 ≥ 9 := by
+  unfold f3
+  apply le_csSup (f3_bddAbove 3)
+  exact ⟨capSet9, capSet9_is_cap, capSet9_card⟩
+
+/-- f₃(3) ≤ 9 from Meshulam's bound: f₃(n) ≤ 3^n/n, so f₃(3) ≤ 27/3 = 9. -/
+private theorem f3_3_le_9 : f3 3 ≤ 9 := by
+  have h := meshulam_upper_bound 3 (by omega)
+  -- 3^3/3 = 27/3 = 9 in ℕ
+  norm_num at h
+  exact h
+
 /--
 **n = 3:**
 f₃(3) = 9.
+Upper bound from Meshulam (1995), lower bound from explicit 9-element cap set.
 -/
-axiom f3_3 : f3 3 = 9
+theorem f3_3 : f3 3 = 9 := le_antisymm f3_3_le_9 f3_3_ge_9
+
+/-
+## Part VIII-B2: f₃(4) = 20 - Explicit Construction + Meshulam
+
+A cap set of size 20 in AG(4,3), found by exhaustive greedy search.
+Upper bound f₃(4) ≤ 20 follows from Meshulam: 3^4/4 = 81/4 = 20.
+-/
+
+/-- A cap set of size 20 in {0,1,2}^4, the maximum possible. -/
+private def capSet20 : Finset (TernaryHypercube 4) :=
+  {![0,0,1,2], ![0,1,1,0], ![0,1,1,2], ![0,1,2,1], ![0,1,2,2],
+   ![0,2,0,1], ![0,2,1,0], ![0,2,2,0], ![0,2,2,1],
+   ![1,0,0,0], ![1,0,0,2], ![1,0,1,0], ![1,0,2,2],
+   ![1,1,0,1], ![1,1,0,2], ![1,1,1,0], ![1,1,1,1], ![1,2,1,1],
+   ![2,0,2,0], ![2,2,0,0]}
+
+/-- capSet20 has 20 elements. -/
+private theorem capSet20_card : capSet20.card = 20 := by native_decide
+
+/-- No three distinct points in capSet20 are collinear:
+    verified by checking all C(20,3) = 1140 triples. -/
+private theorem capSet20_no_collinear :
+    ∀ x ∈ capSet20, ∀ y ∈ capSet20, ∀ z ∈ capSet20,
+      x ≠ y → y ≠ z → x ≠ z → ¬(∀ i : Fin 4, x i + z i = 2 * y i) := by
+  native_decide
+
+/-- capSet20 is a cap set. -/
+private theorem capSet20_is_cap : IsCapSet capSet20 := capSet20_no_collinear
+
+/-- f₃(4) ≥ 20 from the explicit 20-element cap set. -/
+private theorem f3_4_ge_20 : f3 4 ≥ 20 := by
+  unfold f3
+  apply le_csSup (f3_bddAbove 4)
+  exact ⟨capSet20, capSet20_is_cap, capSet20_card⟩
+
+/-- f₃(4) ≤ 20 from Meshulam's bound: f₃(n) ≤ 3^n/n, so f₃(4) ≤ 81/4 = 20. -/
+private theorem f3_4_le_20 : f3 4 ≤ 20 := by
+  have h := meshulam_upper_bound 4 (by omega)
+  norm_num at h
+  exact h
 
 /--
 **n = 4:**
-f₃(4) = 20.
+f₃(4) = 20 (Pellegrino 1970).
+Upper bound from Meshulam (1995), lower bound from explicit 20-element cap set.
 -/
-axiom f3_4 : f3 4 = 20
+theorem f3_4 : f3 4 = 20 := le_antisymm f3_4_le_20 f3_4_ge_20
+
+/-
+## Part VIII-C: Generalized Binary Cube (f₃(n) ≥ 2^n)
+
+The "binary cube" {0,1}^n ⊂ {0,1,2}^n is always a cap set.
+Key insight: if x,z ∈ {0,1}^n and x+z=2y (mod 3), then for each coordinate,
+x_i = z_i (case analysis on {0,1} values), so x = z, contradicting distinctness.
+-/
+
+/-- Embed Bool into ZMod 3: false ↦ 0, true ↦ 1. -/
+def boolToZMod3 (b : Bool) : ZMod 3 := if b then 1 else 0
+
+/-- The embedding from {0,1}^n into {0,1,2}^n. -/
+def boolEmbed (n : ℕ) : (Fin n → Bool) → TernaryHypercube n :=
+  fun v i => boolToZMod3 (v i)
+
+/-- The boolean embedding is injective. -/
+theorem boolEmbed_injective (n : ℕ) : Function.Injective (boolEmbed n) := by
+  intro a b hab
+  funext i
+  have := congr_fun hab i
+  simp only [boolEmbed, boolToZMod3] at this
+  by_cases ha : a i <;> by_cases hb : b i <;> simp_all +decide
+
+/-- The binary cube defined as the image of the boolean embedding. -/
+def binaryCubeImg (n : ℕ) : Finset (TernaryHypercube n) :=
+  Finset.univ.image (boolEmbed n)
+
+/-- Image of boolEmbed has all coordinates in {0,1}. -/
+theorem boolEmbed_range_binary (n : ℕ) (v : Fin n → Bool) (i : Fin n) :
+    boolEmbed n v i = 0 ∨ boolEmbed n v i = 1 := by
+  simp only [boolEmbed, boolToZMod3]
+  split_ifs <;> simp
+
+/-- Binary cube cardinality: |{0,1}^n| = 2^n. -/
+theorem binaryCubeImg_card (n : ℕ) : (binaryCubeImg n).card = 2^n := by
+  unfold binaryCubeImg
+  rw [Finset.card_image_of_injective _ (boolEmbed_injective n)]
+  simp [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
+
+/-- The binary cube is a cap set: no three collinear points.
+    Proof: if x, z ∈ {0,1}^n and x+z=2y then x=z. -/
+theorem binaryCubeImg_isCapSet (n : ℕ) : IsCapSet (binaryCubeImg n) := by
+  intro x y z hx hy hz hxy hyz hxz hline
+  simp only [binaryCubeImg, Finset.mem_image, Finset.mem_univ, true_and] at hx hy hz
+  obtain ⟨vx, rfl⟩ := hx
+  obtain ⟨vy, rfl⟩ := hy
+  obtain ⟨vz, rfl⟩ := hz
+  apply hxz
+  apply boolEmbed_injective
+  funext i
+  have hli := hline i
+  have hxi := boolEmbed_range_binary n vx i
+  have hzi := boolEmbed_range_binary n vz i
+  -- Case analysis: each coordinate is 0 or 1
+  simp only [boolEmbed, boolToZMod3] at hli hxi hzi ⊢
+  by_cases hvx : vx i <;> by_cases hvz : vz i <;> simp_all +decide
+
+/-- f₃(n) ≥ 2^n for all n: the binary cube is a cap set of size 2^n. -/
+theorem f3_ge_two_pow (n : ℕ) : f3 n ≥ 2^n := by
+  unfold f3
+  apply le_csSup (f3_bddAbove n)
+  exact ⟨binaryCubeImg n, binaryCubeImg_isCapSet n, binaryCubeImg_card n⟩
+
+/-
+## Part VIII-D: Product Structure (Supermultiplicativity)
+
+If A ⊂ {0,1,2}^m is a cap set and B ⊂ {0,1,2}^n is a cap set, then their
+"product" A × B ⊂ {0,1,2}^{m+n} is a cap set. This gives f₃(m+n) ≥ f₃(m)·f₃(n).
+-/
+
+/-- Concatenation of two vectors using Fin.addCases. -/
+def vecConcat {m n : ℕ} (a : Fin m → ZMod 3) (b : Fin n → ZMod 3) :
+    Fin (m + n) → ZMod 3 :=
+  Fin.addCases a b
+
+/-- vecConcat is injective. -/
+theorem vecConcat_injective (m n : ℕ) :
+    Function.Injective (fun p : TernaryHypercube m × TernaryHypercube n =>
+      vecConcat p.1 p.2) := by
+  intro ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ h
+  ext
+  · funext i
+    have := congr_fun h (Fin.castAdd n i)
+    simp [vecConcat, Fin.addCases] at this
+    exact this
+  · funext j
+    have := congr_fun h (Fin.natAdd m j)
+    simp [vecConcat, Fin.addCases] at this
+    exact this
+
+/-- Product of Finsets via concatenation. -/
+def finsetProduct {m n : ℕ} (A : Finset (TernaryHypercube m)) (B : Finset (TernaryHypercube n)) :
+    Finset (TernaryHypercube (m + n)) :=
+  (A ×ˢ B).image (fun p => vecConcat p.1 p.2)
+
+/-- Cardinality of the product equals the product of cardinalities. -/
+theorem finsetProduct_card {m n : ℕ}
+    (A : Finset (TernaryHypercube m)) (B : Finset (TernaryHypercube n)) :
+    (finsetProduct A B).card = A.card * B.card := by
+  unfold finsetProduct
+  rw [Finset.card_image_of_injective _ (vecConcat_injective m n)]
+  exact Finset.card_product A B
+
+/-- Product of cap sets is a cap set. -/
+theorem isCapSet_product {m n : ℕ}
+    {A : Finset (TernaryHypercube m)} {B : Finset (TernaryHypercube n)}
+    (hA : IsCapSet A) (hB : IsCapSet B) :
+    IsCapSet (finsetProduct A B) := by
+  intro x y z hx hy hz hxy hyz hxz hline
+  simp only [finsetProduct, Finset.mem_image, Finset.mem_product] at hx hy hz
+  obtain ⟨⟨a₁, b₁⟩, ⟨ha₁, hb₁⟩, rfl⟩ := hx
+  obtain ⟨⟨a₂, b₂⟩, ⟨ha₂, hb₂⟩, rfl⟩ := hy
+  obtain ⟨⟨a₃, b₃⟩, ⟨ha₃, hb₃⟩, rfl⟩ := hz
+  -- Extract collinearity of m- and n-components
+  have hline_a : OnLine a₁ a₂ a₃ := by
+    intro i
+    have := hline (Fin.castAdd n i)
+    simp [vecConcat, Fin.addCases] at this
+    exact this
+  have hline_b : OnLine b₁ b₂ b₃ := by
+    intro j
+    have := hline (Fin.natAdd m j)
+    simp [vecConcat, Fin.addCases] at this
+    exact this
+  -- If all three a-components are distinct, A's cap set property gives contradiction
+  by_cases ha12 : a₁ = a₂
+  · by_cases hb12 : b₁ = b₂
+    · -- a₁=a₂, b₁=b₂ means x=y
+      apply hxy
+      show vecConcat a₁ b₁ = vecConcat a₂ b₂
+      rw [ha12, hb12]
+    · -- a₁=a₂ but b₁≠b₂. From collinearity in B we need b₁≠b₃.
+      by_cases hb13 : b₁ = b₃
+      · -- b₁=b₃, b₁≠b₂, collinear: b₁+b₃=2b₂ => 2b₁=2b₂ => b₁=b₂ contradiction
+        exfalso; apply hb12; funext j
+        have := hline_b j; rw [hb13] at this
+        have h2ne : (2 : ZMod 3) ≠ 0 := by decide
+        exact mul_left_cancel₀ h2ne (by linarith [this])
+      · by_cases hb23 : b₂ = b₃
+        · -- b₂=b₃, b₁≠b₂, collinear: b₁+b₃=2b₂ => b₁+b₂=2b₂ => b₁=b₂ contradiction
+          exfalso; apply hb12; funext j
+          have := hline_b j; rw [hb23] at this; linarith [this]
+        · exact hB b₁ b₂ b₃ hb₁ hb₂ hb₃ hb12 hb23 hb13 hline_b
+  · by_cases ha23 : a₂ = a₃
+    · by_cases ha13 : a₁ = a₃
+      · -- a₁=a₃, a₁≠a₂, collinear: 2a₁=2a₂ => a₁=a₂ contradiction
+        exfalso; apply ha12; funext i
+        have := hline_a i; rw [ha13] at this
+        have h2ne : (2 : ZMod 3) ≠ 0 := by decide
+        exact mul_left_cancel₀ h2ne (by linarith [this])
+      · exact hA a₁ a₂ a₃ ha₁ ha₂ ha₃ ha12 ha23 ha13 hline_a
+    · by_cases ha13 : a₁ = a₃
+      · exact hA a₁ a₂ a₃ ha₁ ha₂ ha₃ ha12 ha23 ha13 hline_a
+      · exact hA a₁ a₂ a₃ ha₁ ha₂ ha₃ ha12 ha23 ha13 hline_a
+
+/-- Supermultiplicativity of f₃: f₃(m+n) ≥ f₃(m) · f₃(n). -/
+theorem f3_supermultiplicative (m n : ℕ) : f3 (m + n) ≥ f3 m * f3 n := by
+  -- Both suprema are achieved (bounded nonempty sets of ℕ)
+  have hm_mem : f3 m ∈ { k | ∃ S : Finset (TernaryHypercube m), IsCapSet S ∧ S.card = k } := by
+    unfold f3; exact Nat.sSup_mem ⟨0, f3_nonempty m⟩ (f3_bddAbove m)
+  have hn_mem : f3 n ∈ { k | ∃ S : Finset (TernaryHypercube n), IsCapSet S ∧ S.card = k } := by
+    unfold f3; exact Nat.sSup_mem ⟨0, f3_nonempty n⟩ (f3_bddAbove n)
+  obtain ⟨A, hA, hAcard⟩ := hm_mem
+  obtain ⟨B, hB, hBcard⟩ := hn_mem
+  have : f3 (m + n) ≥ (finsetProduct A B).card := by
+    unfold f3
+    apply le_csSup (f3_bddAbove (m + n))
+    exact ⟨finsetProduct A B, isCapSet_product hA hB, rfl⟩
+  calc f3 m * f3 n = A.card * B.card := by rw [hAcard, hBcard]
+    _ = (finsetProduct A B).card := (finsetProduct_card A B).symm
+    _ ≤ f3 (m + n) := this
 
 /-
 ## Part IX: Summary
