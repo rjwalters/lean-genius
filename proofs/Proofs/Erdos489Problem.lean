@@ -28,7 +28,7 @@ open Asymptotics Filter
 
 namespace Erdos489
 
-/-!
+/-
 ## Part I: Sparse Sets and B-Free Numbers
 -/
 
@@ -62,7 +62,7 @@ n is B-free (with respect to A) if no element of A divides n.
 def IsBFree (A : Set ℕ) (n : ℕ) : Prop :=
   n ≥ 1 ∧ ∀ a ∈ A, ¬(a ∣ n)
 
-/-!
+/-
 ## Part II: Gaps and Gap Statistics
 -/
 
@@ -94,7 +94,7 @@ The quantity (1/x) Σ_{bᵢ<x} (b_{i+1} - bᵢ)²
 noncomputable def normalizedGapStatistic (B : Set ℕ) (x : ℕ) : ℝ :=
   gapSquaredSum B x / x
 
-/-!
+/-
 ## Part III: The Erdős Question
 -/
 
@@ -115,7 +115,7 @@ If A is sparse (|A ∩ [1,x]| = o(√x)), then the limit exists.
 def ErdosConjecture : Prop :=
   ∀ A : Set ℕ, IsSparse A → LimitExists A
 
-/-!
+/-
 ## Part IV: The Squarefree Case
 -/
 
@@ -149,7 +149,7 @@ axiom squarefree_density :
     Filter.atTop
     (nhds (6 / Real.pi ^ 2))
 
-/-!
+/-
 ## Part V: K-Free Numbers
 -/
 
@@ -166,7 +166,7 @@ def IsKFree (k : ℕ) (n : ℕ) : Prop :=
 -/
 def IsCubefree (n : ℕ) : Prop := IsKFree 3 n
 
-/-!
+/-
 ## Part VI: Summary
 -/
 
