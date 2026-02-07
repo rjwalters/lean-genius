@@ -207,22 +207,11 @@ axiom yang_zhao_improved_lower :
 -/
 
 /--
-**Problem #123: Three Powers:**
-The analog with three coprime bases (p, q, r) instead of two.
+**Related Problems:**
+- Problem #123: The analog with three coprime bases (p, q, r)
+- Problem #845: Additional questions about the {2,3} representation
+- Problem #246: Representations without the non-divisibility constraint
 -/
-axiom problem_123_three_powers : True
-
-/--
-**Problem #845: More on {2,3}:**
-Additional questions about the {2,3} representation.
--/
-axiom problem_845_2_3_case : True
-
-/--
-**Problem #246: Without Non-Divisibility:**
-Representations without the constraint that no term divides another.
--/
-axiom problem_246_no_constraint : True
 
 /-
 ## Part VII: Examples
