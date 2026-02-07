@@ -7,8 +7,20 @@
     "content": "The n-th prime gap dₙ = pₙ₊₁ − pₙ measures the distance between consecutive primes.",
     "significance": "critical",
     "range": {
-      "startLine": 29,
-      "endLine": 30
+      "startLine": 34,
+      "endLine": 35
+    }
+  },
+  {
+    "id": "prime-gap-pos",
+    "proofId": "erdos-852",
+    "type": "theorem",
+    "title": "Prime Gaps Are Positive",
+    "content": "Proved from strict monotonicity of the prime sequence: nthPrime n < nthPrime (n+1) implies dₙ > 0.",
+    "significance": "key",
+    "range": {
+      "startLine": 37,
+      "endLine": 41
     }
   },
   {
@@ -19,8 +31,8 @@
     "content": "A run of k consecutive prime gaps starting at index n is distinct if all k gap values are different from each other.",
     "significance": "critical",
     "range": {
-      "startLine": 37,
-      "endLine": 39
+      "startLine": 59,
+      "endLine": 61
     }
   },
   {
@@ -31,20 +43,32 @@
     "content": "h(x) is the maximum length k such that some run of k consecutive distinct prime gaps occurs among primes below x.",
     "significance": "critical",
     "range": {
-      "startLine": 42,
-      "endLine": 43
+      "startLine": 84,
+      "endLine": 86
+    }
+  },
+  {
+    "id": "h-ge-one",
+    "proofId": "erdos-852",
+    "type": "theorem",
+    "title": "h(x) ≥ 1 for x ≥ 3",
+    "content": "There always exists at least a single-element distinct run starting at nthPrime 0 = 2.",
+    "significance": "key",
+    "range": {
+      "startLine": 99,
+      "endLine": 104
     }
   },
   {
     "id": "brun-divergence",
     "proofId": "erdos-852",
     "type": "theorem",
-    "title": "Brun's Sieve Divergence",
-    "content": "Brun's sieve implies h(x) → ∞ as x → ∞: the maximal length of distinct consecutive gap runs grows without bound.",
+    "title": "Brun's Sieve: h Tends to Infinity",
+    "content": "Brun's sieve implies h(x) → ∞ as x → ∞. Formalized both as ∀ C, ∃ X, ... and as Tendsto atTop atTop.",
     "significance": "critical",
     "range": {
-      "startLine": 55,
-      "endLine": 57
+      "startLine": 115,
+      "endLine": 127
     }
   },
   {
@@ -52,11 +76,11 @@
     "proofId": "erdos-852",
     "type": "concept",
     "title": "Lower Bound Conjecture",
-    "content": "Erdős conjectured h(x) > (log x)^c for some constant c > 0, suggesting polynomial-in-logarithm growth.",
+    "content": "Erdős conjectured h(x) > (log x)^c for some c > 0. Formalized with Real.log and ∀ᶠ in atTop.",
     "significance": "key",
     "range": {
-      "startLine": 64,
-      "endLine": 70
+      "startLine": 131,
+      "endLine": 136
     }
   },
   {
@@ -64,11 +88,35 @@
     "proofId": "erdos-852",
     "type": "concept",
     "title": "Upper Bound Conjecture",
-    "content": "Erdős also asked whether h(x) = o(log x), meaning h(x) grows strictly slower than logarithmically.",
+    "content": "Erdős asked whether h(x) = o(log x). Formalized using Asymptotics.IsLittleO.",
     "significance": "key",
     "range": {
-      "startLine": 72,
-      "endLine": 77
+      "startLine": 138,
+      "endLine": 141
+    }
+  },
+  {
+    "id": "upper-eventually",
+    "proofId": "erdos-852",
+    "type": "theorem",
+    "title": "Upper Bound Consequence",
+    "content": "From IsLittleO: for any ε > 0, eventually ‖h(x)‖ ≤ ε · ‖log x‖.",
+    "significance": "minor",
+    "range": {
+      "startLine": 143,
+      "endLine": 147
+    }
+  },
+  {
+    "id": "pigeonhole",
+    "proofId": "erdos-852",
+    "type": "concept",
+    "title": "Pigeonhole Upper Bound",
+    "content": "k distinct positive values all ≤ M implies k ≤ M, giving h(x) ≤ x as a trivial upper bound.",
+    "significance": "minor",
+    "range": {
+      "startLine": 159,
+      "endLine": 170
     }
   }
 ]
