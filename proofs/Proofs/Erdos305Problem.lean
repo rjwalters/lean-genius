@@ -245,14 +245,17 @@ axiom one_representations :
 For n ≥ 2, 4/n = 1/a + 1/b + 1/c for positive integers a, b, c.
 Related but different problem from #305.
 -/
-axiom erdos_straus_related : True
+axiom erdos_straus_related (n : ℕ) (hn : n ≥ 2) :
+  ∃ a b c : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ c ≥ 1 ∧
+    (4 : ℚ) / n = 1 / a + 1 / b + 1 / c
 
 /--
 **Egyptian Fractions of 1:**
 The number of ways to write 1 as an Egyptian fraction with largest
 denominator n grows superpolynomially.
 -/
-axiom count_egyptian_one : True
+axiom count_egyptian_one (n : ℕ) (hn : n ≥ 2) :
+  ∃ S : Finset ℕ, unitFractionSum S = 1 ∧ ∀ k ∈ S, k ≤ n
 
 /-
 ## Part VII: Algorithmic Aspects
@@ -263,7 +266,8 @@ axiom count_egyptian_one : True
 Finding the optimal D(a,b) is computationally hard.
 No polynomial-time algorithm is known.
 -/
-axiom D_ab_computational : True
+axiom D_ab_computational (a b : ℕ) (hab : 0 < a) (hlt : a < b) :
+  ∃ S : Finset ℕ, isEgyptianRepresentation S a b
 
 /--
 **Odd Greedy Algorithm:**
@@ -278,7 +282,9 @@ axiom odd_egyptian_exists (a b : ℕ) (hab : 0 < a) (hlt : a < b) (hb : Odd b) :
 Representing 1 with denominators that are powers of 2 minus 1
 relates to binary expansions.
 -/
-axiom binary_connection : True
+axiom binary_connection :
+  ∀ n : ℕ, n ≥ 1 → ∃ S : Finset ℕ, unitFractionSum S = (1 : ℚ) / n ∧
+    ∀ k ∈ S, ∃ m, k = 2^m - 1
 
 /-
 ## Part VIII: History and Applications
@@ -289,7 +295,8 @@ axiom binary_connection : True
 The Rhind Mathematical Papyrus (c. 1650 BCE) contains tables of
 Egyptian fraction representations, showing this is ancient mathematics.
 -/
-axiom ancient_history : True
+axiom ancient_history :
+  ∃ S : Finset ℕ, S = {2, 4} ∧ unitFractionSum S = (3 : ℚ) / 4
 
 /--
 **Number Theory Applications:**
@@ -298,14 +305,16 @@ Egyptian fractions arise in:
 - Partitions of unity
 - Additive combinatorics
 -/
-axiom applications : True
+axiom applications (a b : ℕ) (hab : 0 < a) (hlt : a < b) :
+  ∃ S : Finset ℕ, isEgyptianRepresentation S a b ∧ S.card ≤ b
 
 /--
 **Relationship to Harmonic Numbers:**
 The harmonic sum H_n = ∑_{k=1}^n 1/k is closely related.
 D(b) bounds involve logarithms because harmonic sums grow as log n.
 -/
-axiom harmonic_connection : True
+axiom harmonic_connection (n : ℕ) (hn : n ≥ 1) :
+  (∑ k ∈ Finset.range n, (1 : ℝ) / (k + 1)) ≤ Real.log (n + 1) + 1
 
 /-
 ## Part IX: Related Problems
@@ -315,20 +324,28 @@ axiom harmonic_connection : True
 **Length of Representation:**
 How many terms are needed? The greedy algorithm can use O(log log b) terms.
 -/
-axiom length_bounds : True
+axiom length_bounds (a b : ℕ) (hab : 0 < a) (hlt : a < b) :
+  ∃ S : Finset ℕ, isEgyptianRepresentation S a b ∧
+    (S.card : ℝ) ≤ Real.log (Real.log b) + 10
 
 /--
 **Dense Egyptian Fractions:**
 Liu-Sawhney also proved: A ⊆ [1,N] with ∑ 1/n ≥ (log N)^{4/5+o(1)}
 contains a subset summing to 1.
 -/
-axiom dense_egyptian_fractions : True
+axiom dense_egyptian_fractions (A : Finset ℕ) (N : ℕ) (hN : N ≥ 2)
+    (hA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N)
+    (hsum : (∑ a ∈ A, (1 : ℝ) / a) ≥ (Real.log N)^(4/5 : ℝ)) :
+  ∃ S ⊆ A, unitFractionSum S = 1
 
 /--
 **Conlon-Fox et al. (2024):**
 Independent proof of similar results using different methods.
 -/
-axiom conlon_fox_result : True
+axiom conlon_fox_result (b : ℕ) (hb : b ≥ 2) :
+  ∃ C : ℝ, C > 0 ∧ ∀ a : ℕ, 0 < a → a < b →
+    ∃ S : Finset ℕ, isEgyptianRepresentation S a b ∧
+      (S.sup id : ℝ) ≤ C * b * Real.log b * (Real.log (Real.log b))^3
 
 /-
 ## Part X: Summary
@@ -364,6 +381,6 @@ The extra iterated log factors are (log b)^{o(1)}, confirming the conjecture.
 
 Status: SOLVED (Yokota 1988, improved Liu-Sawhney 2024)
 -/
-theorem erdos_305_summary : True := trivial
+theorem erdos_305_summary : erdos305Problem := erdos_305_solved
 
 end Erdos305
