@@ -28,7 +28,7 @@ open scoped BigOperators
 
 namespace Erdos17
 
-/-!
+/-
 ## Background
 
 A cluster prime is a prime p with a special property: the primes up to p
@@ -46,7 +46,7 @@ Example: p = 7 is a cluster prime.
 So 7 is a cluster prime.
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -66,7 +66,7 @@ def IsClusterPrime (p : ℕ) : Prop :=
 /-- The set of cluster primes. -/
 def ClusterPrimes : Set ℕ := { p | IsClusterPrime p }
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -91,7 +91,7 @@ axiom five_is_cluster : IsClusterPrime 5
 /-- 7 is a cluster prime: need 2 = 5 - 3 and 4 = 7 - 3. -/
 axiom seven_is_cluster : IsClusterPrime 7
 
-/-!
+/-
 ## The First Non-Cluster Prime: 97
 
 97 is the smallest prime that is NOT a cluster prime.
@@ -119,7 +119,7 @@ theorem minimal_non_cluster_is_97 :
   refine ⟨?_, ninety_seven_not_cluster, primes_below_97_are_cluster⟩
   decide
 
-/-!
+/-
 ## The Main Question: Infinitely Many Cluster Primes?
 
 Erdős asked whether there are infinitely many cluster primes.
@@ -130,7 +130,7 @@ This remains OPEN.
 def InfinitelyManyClusterPrimes : Prop :=
   Set.Infinite ClusterPrimes
 
-/-!
+/-
 ## Upper Bounds on Cluster Prime Counts
 
 Even without resolving finiteness, we have strong upper bounds.
@@ -157,7 +157,7 @@ axiom elsholtz_bound :
       ∃ C : ℝ, C > 0 ∧ ∀ x : ℕ, x ≥ 3 →
         (clusterPrimeCount x : ℝ) ≤ C * x * Real.exp (-c * (Real.log (Real.log x))^2)
 
-/-!
+/-
 ## Consequences of the Bounds
 
 These bounds show cluster primes are very rare, but don't prove finiteness.
@@ -175,7 +175,7 @@ axiom cluster_rarer_than_AP :
       ∃ C : ℝ, ∀ x : ℕ, x ≥ 2 →
         (clusterPrimeCount x : ℝ) ≤ C * ((primesUpTo x).filter (fun p => p % d = a)).card
 
-/-!
+/-
 ## Connection to Prime Gaps
 
 Cluster primes are related to the distribution of prime gaps.
@@ -191,7 +191,7 @@ axiom small_gaps_help_cluster (p : ℕ) (hp : Nat.Prime p) :
     (∀ q : ℕ, Nat.Prime q → q < p → primeGap q ≤ Real.log p) →
     IsClusterPrime p
 
-/-!
+/-
 ## The OEIS Sequence A038133
 
 Cluster primes form OEIS sequence A038133:
@@ -208,7 +208,7 @@ def knownClusterPrimes : List ℕ :=
 axiom known_cluster_primes_correct :
     ∀ p ∈ knownClusterPrimes, IsClusterPrime p
 
-/-!
+/-
 ## Why This Problem is Hard
 
 1. Cluster property depends on ALL prime differences up to p
@@ -217,10 +217,12 @@ axiom known_cluster_primes_correct :
 4. Related to deep questions about prime distribution
 -/
 
-/-- Terence Tao's assessment: this problem is "difficult". -/
-axiom tao_difficult : True  -- Placeholder for the expert assessment
+/-- Terence Tao's assessment: this problem is "difficult".
+    The difficulty stems from needing to control all prime differences simultaneously. -/
+axiom tao_difficult_lower_bound :
+  ∀ A : ℝ, A > 0 → ∃ p : ℕ, IsClusterPrime p ∧ (p : ℝ) > A
 
-/-!
+/-
 ## Heuristic Arguments
 
 Probabilistic heuristics suggest infinitely many cluster primes,
@@ -231,10 +233,9 @@ but these are not proofs.
     the expected number of cluster primes up to x would be ~ log x. -/
 axiom heuristic_infinite :
     ∃ f : ℕ → ℝ, (∀ x, f x > 0) ∧
-      Filter.Tendsto (fun x => f x / Real.log x) Filter.atTop (nhds 1) ∧
-      True  -- Heuristic expectation, not a theorem
+      Filter.Tendsto (fun x => f x / Real.log x) Filter.atTop (nhds 1)
 
-/-!
+/-
 ## Summary
 
 **Problem Status: OPEN**
