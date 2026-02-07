@@ -30,9 +30,7 @@ import Mathlib.Data.Real.Basic
 
 namespace Erdos855
 
-/-!
-## Part I: The Prime Counting Function
--/
+/- ## Part I: The Prime Counting Function -/
 
 /--
 **Prime Counting Function:**
@@ -55,9 +53,7 @@ axiom prime_number_theorem (ε : ℝ) (hε : ε > 0) :
     ∃ N₀ : ℕ, ∀ n ≥ N₀, (n : ℝ) > 0 →
       |((primePi n : ℝ) - n / Real.log n) / (n / Real.log n)| < ε
 
-/-!
-## Part II: The Second Hardy-Littlewood Conjecture
--/
+/- ## Part II: The Second Hardy-Littlewood Conjecture -/
 
 /--
 **The Second Hardy-Littlewood Conjecture:**
@@ -70,9 +66,7 @@ def SecondHardyLittlewoodConjecture : Prop :=
   ∃ N₀ : ℕ, ∀ x y : ℕ, x ≥ N₀ → y ≥ N₀ →
     primePi (x + y) ≤ primePi x + primePi y
 
-/-!
-## Part III: The Prime k-Tuples Conjecture
--/
+/- ## Part III: The Prime k-Tuples Conjecture -/
 
 /--
 **Admissible Tuple:**
@@ -92,9 +86,7 @@ def PrimeKTuplesConjecture : Prop :=
   ∀ H : Finset ℕ, IsAdmissibleTuple H →
     ∀ N : ℕ, ∃ n > N, ∀ h ∈ H, (n + h).Prime
 
-/-!
-## Part IV: Hensley-Richards Incompatibility Theorem
--/
+/- ## Part IV: Hensley-Richards Incompatibility Theorem -/
 
 /--
 **Hensley-Richards (1973):**
@@ -130,9 +122,7 @@ axiom dense_admissible_tuples_exist (k : ℕ) (hk : k ≥ 2) :
     ∃ H : Finset ℕ, IsAdmissibleTuple H ∧ H.card > primePi k ∧
       ∀ h ∈ H, h < k
 
-/-!
-## Part V: Unconditional Results
--/
+/- ## Part V: Unconditional Results -/
 
 /--
 **Montgomery-Vaughan Upper Bound:**
@@ -152,9 +142,7 @@ theorem primePi_add_ge (x y : ℕ) :
     primePi (x + y) ≥ primePi x :=
   primePi_monotone (Nat.le_add_right x y)
 
-/-!
-## Part VI: Related Conjectures
--/
+/- ## Part VI: Related Conjectures -/
 
 /--
 **Straus's Modification:**
@@ -179,9 +167,7 @@ def ErdosWeakerConjecture : Prop :=
   ∃ C : ℝ, ∃ N₀ : ℕ, ∀ x y : ℕ, x ≥ N₀ → y ≥ N₀ →
     (primePi (x + y) : ℝ) ≤ primePi x + primePi y + C * y / (Real.log y)^2
 
-/-!
-## Part VII: Main Results
--/
+/- ## Part VII: Main Results -/
 
 /-- **Erdős Problem #855: Summary**
 
