@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #275: Covering Congruences
 
 Source: https://erdosproblems.com/275
@@ -27,7 +27,7 @@ import Mathlib.Data.Finset.Card
 
 namespace Erdos275
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Congruence Class:**
@@ -75,7 +75,7 @@ The set {a, a+1, ..., a+n-1} of n consecutive integers starting at a.
 def ConsecutiveIntegers (a : ℤ) (n : ℕ) : Set ℤ :=
   {x : ℤ | a ≤ x ∧ x < a + n}
 
-/-! ## Part II: The 2^r Bound -/
+/- ## Part II: The 2^r Bound -/
 
 /--
 **Erdős Problem #275 (Main Theorem):**
@@ -97,7 +97,7 @@ axiom crittenden_vanden_eynden (r : ℕ) (residues : Fin r → ℤ) (moduli : Fi
       ∃ i : Fin r, (x : ℤ) ∈ CongruenceClass (residues i) (moduli i)) →
     (∀ x : ℤ, ∃ i : Fin r, x ∈ CongruenceClass (residues i) (moduli i))
 
-/-! ## Part III: Optimality — The 2^r Bound is Tight -/
+/- ## Part III: Optimality — The 2^r Bound is Tight -/
 
 /--
 **The Optimal Example:**
@@ -129,7 +129,7 @@ axiom not_covered_2r_minus_1 (r : ℕ) (hr : r ≥ 1) :
     ∃ a : ℤ, CoversSet C (ConsecutiveIntegers a (2^r - 1)) ∧
     ¬CoversAll C
 
-/-! ## Part IV: Related Definitions -/
+/- ## Part IV: Related Definitions -/
 
 /--
 **Covering System predicate:**
@@ -148,7 +148,7 @@ def IsExactlyCovering (C : CoveringSystem) (k : ℕ) : Prop :=
   ∀ x : ℤ, (Finset.univ.filter (fun i =>
     x ∈ CongruenceClass (C.residues i) (C.moduli i))).card = k
 
-/-! ## Part V: Summary -/
+/- ## Part V: Summary -/
 
 /--
 **Erdős Problem #275: Summary**
