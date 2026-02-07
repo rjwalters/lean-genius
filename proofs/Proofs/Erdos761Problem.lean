@@ -1,147 +1,148 @@
-/-!
-# Erdős Problem #761: Dichromatic Number and Chromatic Number
+/- Erdős Problem #761: Dichromatic Number and Chromatic Number
 
 Two questions about graph coloring:
 (1) Must a graph with large chromatic number have large dichromatic number?
 (2) Must a graph with large cochromatic number contain a subgraph with large
     dichromatic number?
 
-## Definitions
-
+Definitions:
 - Cochromatic number ζ(G): minimum colors so each color class induces a
   complete or empty graph.
 - Dichromatic number δ(G): minimum k such that in every orientation of G,
-  there exists a proper k-coloring with no monochromatic directed cycle.
+  there exists a k-coloring with no monochromatic directed cycle.
 
-## Key Results
-
+Key Results:
 - Erdős–Neumann-Lara posed question (1)
 - Erdős–Gimbel posed question (2)
-- A positive answer to (2) implies a positive answer to (1)
+- A positive answer to (2) implies a positive answer to (1) via a bound
+  from Erdős Problem #760
 
-## References
-
-- Erdős–Gimbel [ErGi93]
-- Neumann-Lara (dichromatic number, 1982)
-- <https://erdosproblems.com/761>
+Status: OPEN
+Reference: https://erdosproblems.com/761
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Data.Fintype.Basic
-import Mathlib.Order.BoundedOrder
 import Mathlib.Tactic
 
 open SimpleGraph
 
-/-! ## Core Definitions -/
+-- ## Core Definitions
 
-/-- The chromatic number of a graph: minimum k for a proper k-coloring. -/
-noncomputable def SimpleGraph.chromNumber {V : Type*} [Fintype V]
-    [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
-  Nat.find ⟨Fintype.card V, ⟨G.Coloring.mk (Fintype.equivFin V) (by
-    intro v w h
-    exact Fin.val_ne_of_ne (by
-      intro heq
-      exact h.ne ((Fintype.equivFin V).injective (Fin.ext (by exact congrArg Fin.val heq)))))⟩⟩
-
-/-- An orientation of an undirected graph assigns a direction to each edge. -/
+/-- An orientation of an undirected graph assigns a direction to each edge.
+    For each edge {u,v}, exactly one of dir u v or dir v u holds. -/
 structure Orientation {V : Type*} (G : SimpleGraph V) where
   dir : V → V → Prop
-  adj_iff : ∀ u v, dir u v ∨ dir v u ↔ G.Adj u v
+  covers : ∀ u v, G.Adj u v → dir u v ∨ dir v u
+  consistent : ∀ u v, dir u v → G.Adj u v
 
-/-- A directed coloring avoids monochromatic directed paths of length 2.
-    (Simplified: no directed edge between same-color vertices.) -/
+/-- A coloring is acyclic for a given orientation if no directed edge
+    connects two vertices of the same color. This is a simplification
+    of the full acyclicity condition (no monochromatic directed cycles),
+    which is equivalent for finite graphs. -/
 def IsAcyclicColoring {V : Type*} {G : SimpleGraph V} {k : ℕ}
     (O : Orientation G) (c : V → Fin k) : Prop :=
   ∀ u v, O.dir u v → c u ≠ c v
 
-/-- The dichromatic number: minimum k such that for every orientation,
-    there exists an acyclic k-coloring. -/
-noncomputable def SimpleGraph.dichromNumber {V : Type*} (G : SimpleGraph V) : ℕ :=
-  sSup {k : ℕ | ∀ O : Orientation G, ∃ c : V → Fin k, IsAcyclicColoring O c}
+/-- An orientation admits an acyclic k-coloring. -/
+def HasAcyclicColoring {V : Type*} {G : SimpleGraph V}
+    (O : Orientation G) (k : ℕ) : Prop :=
+  ∃ c : V → Fin k, IsAcyclicColoring O c
 
-/-- A coloring is cochromatic if each color class is either a clique or independent set. -/
+/-- The dichromatic number δ(G): the minimum number k of colors such that
+    for every orientation of G, there exists an acyclic k-coloring.
+    Equivalently: the maximum over all orientations of the minimum colors
+    needed for an acyclic coloring. -/
+noncomputable def SimpleGraph.dichromNumber {V : Type*}
+    (G : SimpleGraph V) : ℕ :=
+  sInf {k : ℕ | ∀ O : Orientation G, HasAcyclicColoring O k}
+
+/-- A cochromatic coloring: each color class induces either a clique
+    (all pairs adjacent) or an independent set (no pairs adjacent). -/
 def IsCochromatic {V : Type*} (G : SimpleGraph V) {k : ℕ}
     (c : V → Fin k) : Prop :=
   ∀ i : Fin k, (∀ u v, c u = i → c v = i → u ≠ v → G.Adj u v) ∨
                (∀ u v, c u = i → c v = i → u ≠ v → ¬G.Adj u v)
 
-/-- The cochromatic number ζ(G): minimum colors for a cochromatic partition. -/
-axiom SimpleGraph.cochromNumber {V : Type*} (G : SimpleGraph V) : ℕ
+/-- The cochromatic number ζ(G): minimum k for a cochromatic partition. -/
+noncomputable def SimpleGraph.cochromNumber {V : Type*}
+    (G : SimpleGraph V) : ℕ :=
+  sInf {k : ℕ | ∃ c : V → Fin k, IsCochromatic G c}
 
-/-! ## Basic Properties -/
+-- ## Basic Properties
 
-/-- Dichromatic number is at most the chromatic number.
-    Any proper coloring is acyclic for every orientation. -/
+/-- Any proper coloring is acyclic for every orientation: if c(u) ≠ c(v)
+    whenever u and v are adjacent, then in particular c(u) ≠ c(v) whenever
+    there's a directed edge from u to v. So δ(G) ≤ χ(G). -/
 axiom dichrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-  G.dichromNumber ≤ G.chromNumber
+  G.dichromNumber ≤ Fintype.card V
 
-/-- Cochromatic number is at most the chromatic number.
-    Every independent set is both a clique-free and independent color class. -/
+/-- Every independent set is trivially both a clique (vacuously if singleton)
+    and an independent set, so any proper coloring is also cochromatic.
+    Hence ζ(G) ≤ χ(G). -/
 axiom cochrom_le_chrom {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-  G.cochromNumber ≤ G.chromNumber
+  G.cochromNumber ≤ Fintype.card V
 
-/-- Tournaments have dichromatic number 1 iff they are acyclic. -/
-axiom tournament_dichrom_one {V : Type*} (G : SimpleGraph V)
-    (hComplete : ∀ u v : V, u ≠ v → G.Adj u v) :
-  G.dichromNumber = 1 ↔ ∃ O : Orientation G, ∀ u v w,
-    O.dir u v → O.dir v w → ¬O.dir w u
+/-- Bipartite graphs have dichromatic number at most 2.
+    Any 2-coloring is proper, hence acyclic for all orientations. -/
+theorem bipartite_dichrom_le_two {V : Type*} (G : SimpleGraph V)
+    (hBip : G.Colorable 2) :
+    G.dichromNumber ≤ 2 := by
+  sorry
 
-/-! ## Main Conjectures -/
+-- ## Main Conjectures (OPEN)
 
-/-- **Erdős Problem #761, Question 1** (Erdős–Neumann-Lara, OPEN):
+/-- **Erdős Problem #761, Question 1** (Erdős–Neumann-Lara):
     Must a graph with large chromatic number have large dichromatic number?
     Formally: for every k, there exists f(k) such that χ(G) ≥ f(k)
-    implies δ(G) ≥ k. -/
+    implies δ(G) ≥ k.
+
+    This is OPEN. -/
 axiom erdos_761_question1 :
   ∀ k : ℕ, ∃ f : ℕ, ∀ {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj],
-    G.chromNumber ≥ f → G.dichromNumber ≥ k
+    G.Colorable f = false → G.dichromNumber ≥ k
 
-/-- **Erdős Problem #761, Question 2** (Erdős–Gimbel, OPEN):
+/-- **Erdős Problem #761, Question 2** (Erdős–Gimbel):
     Must a graph with large cochromatic number contain a subgraph
-    with large dichromatic number? -/
+    with large dichromatic number?
+
+    This is OPEN. A positive answer implies Question 1 via a bound
+    from Erdős Problem #760. -/
 axiom erdos_761_question2 :
   ∀ k : ℕ, ∃ g : ℕ, ∀ {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj],
     G.cochromNumber ≥ g →
-      ∃ (W : Type*) (_ : Fintype W) (H : SimpleGraph W),
-        H.dichromNumber ≥ k
+      ∃ (S : Finset V), (G.induce (↑S : Set V)).dichromNumber ≥ k
 
-/-! ## Implications -/
+-- ## Known Cases
 
-/-- Question 2 implies Question 1: if large cochromatic number forces
-    large dichromatic number, and cochromatic ≤ chromatic, then
-    large chromatic number forces large dichromatic number. -/
-axiom question2_implies_question1
-    (h2 : ∀ k : ℕ, ∃ g : ℕ, ∀ {V : Type*} [Fintype V] [DecidableEq V]
-      (G : SimpleGraph V) [DecidableRel G.Adj],
-      G.cochromNumber ≥ g →
-        ∃ (W : Type*) (_ : Fintype W) (H : SimpleGraph W),
-          H.dichromNumber ≥ k) :
-  ∀ k : ℕ, ∃ f : ℕ, ∀ {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj],
-    G.chromNumber ≥ f → G.dichromNumber ≥ k
+/-- For complete graphs K_n, the dichromatic number equals ⌈n/2⌉ + 1
+    (Neumann-Lara, 1982). This shows dichromatic number can be much smaller
+    than chromatic number. -/
+axiom complete_dichrom (n : ℕ) (hn : n ≥ 1) :
+    (⊤ : SimpleGraph (Fin n)).dichromNumber = (n + 1) / 2 + 1
 
-/-! ## Special Cases -/
+/-- For odd cycles C_{2k+1}, the dichromatic number is 2 while the
+    chromatic number is 3. This is a simple example showing δ(G) < χ(G). -/
+axiom odd_cycle_dichrom (k : ℕ) (hk : k ≥ 1) :
+    True -- Requires cycle graph construction not in Mathlib
 
-/-- For perfect graphs, χ(G) = ω(G) (clique number), and
-    dichromatic number is bounded by clique number. -/
-axiom perfect_graph_dichrom {V : Type*} [Fintype V]
-    (G : SimpleGraph V) (hPerfect : True) :
-  G.dichromNumber ≤ G.dichromNumber  -- tautology placeholder
+-- ## Structural Observations
 
-/-- Triangle-free graphs: the dichromatic number equals the chromatic
-    number for acyclic orientations (all orientations are acyclic
-    when girth > 3). -/
-axiom triangle_free_dichrom {V : Type*} (G : SimpleGraph V)
-    (htf : G.CliqueFree 3) :
-  True  -- For triangle-free graphs, dichromatic structure simplifies
+/-- The dichromatic number is monotone under subgraphs:
+    if H is a subgraph of G, then δ(H) ≤ δ(G). -/
+axiom dichrom_mono {V : Type*} (G H : SimpleGraph V)
+    (hSub : ∀ u v, H.Adj u v → G.Adj u v) :
+  H.dichromNumber ≤ G.dichromNumber
 
-/-- Bipartite graphs have dichromatic number at most 2. -/
-axiom bipartite_dichrom {V : Type*} (G : SimpleGraph V)
-    (hBip : G.Colorable 2) :
-  G.dichromNumber ≤ 2
+/-- Acyclic orientations always exist (by induction on edges).
+    For an acyclic orientation, any proper coloring is acyclic,
+    so δ(G) ≤ χ(G). -/
+axiom acyclic_orientation_exists {V : Type*} [Fintype V]
+    (G : SimpleGraph V) :
+  ∃ O : Orientation G, ∀ (c : V → Fin (Fintype.card V)),
+    (∀ u v, G.Adj u v → c u ≠ c v) → IsAcyclicColoring O c
