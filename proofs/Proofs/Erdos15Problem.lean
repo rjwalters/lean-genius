@@ -29,7 +29,7 @@ open Filter Topology
 
 namespace Erdos15
 
-/-!
+/-
 ## Background
 
 This problem asks about the convergence of an alternating series involving primes.
@@ -45,7 +45,7 @@ For the Alternating Series Test (Leibniz), we would also need:
 The challenge is that prime gaps are irregular, making n/p_n non-monotonic.
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -67,7 +67,7 @@ noncomputable def alternatingPrimePartialSum (N : ℕ) : ℝ :=
 def AlternatingPrimeSeriesConverges : Prop :=
   ∃ L : ℝ, Tendsto alternatingPrimePartialSum atTop (𝓝 L)
 
-/-!
+/-
 ## Prime Number Theorem Consequences
 
 The Prime Number Theorem tells us p_n ~ n log n.
@@ -92,7 +92,7 @@ axiom terms_tend_to_zero :
 axiom alternating_terms_to_zero :
     Tendsto (fun n => |alternatingPrimeTerm n|) atTop (𝓝 0)
 
-/-!
+/-
 ## The Alternating Series Test
 
 The Leibniz criterion says: if |a_n| is decreasing and a_n → 0,
@@ -115,7 +115,7 @@ This is why the problem is hard.
 axiom not_monotone_decreasing :
     ¬∀ n : ℕ, n ≥ 1 → (n + 1 : ℝ) / nthPrime (n + 1) ≤ n / nthPrime n
 
-/-!
+/-
 ## Tao's Conditional Result (2023)
 
 Terence Tao proved that the series converges conditionally,
@@ -127,9 +127,11 @@ assuming the Hardy-Littlewood prime tuples conjecture.
     This conjecture predicts the density of prime constellations
     (patterns of primes with fixed gaps). -/
 def HardyLittlewoodConjecture : Prop :=
-  -- Simplified: the conjecture predicts asymptotic counts for prime patterns
-  -- Full statement requires the singular series and is quite technical
-  True  -- Placeholder for the actual conjecture
+  -- Simplified: for any admissible k-tuple (h₁,...,hₖ), there are infinitely many
+  -- n such that n+h₁,...,n+hₖ are all prime.
+  ∀ (k : ℕ) (h : Fin k → ℕ),
+    (∀ p : ℕ, p.Prime → (Finset.univ.image h).image (· % p) ≠ Finset.range p) →
+    ∀ N : ℕ, ∃ n > N, ∀ i : Fin k, (n + h i).Prime
 
 /-- Tao's Theorem (2023): Assuming Hardy-Littlewood, the series converges.
 
@@ -138,7 +140,7 @@ def HardyLittlewoodConjecture : Prop :=
 axiom tao_conditional_convergence :
     HardyLittlewoodConjecture → AlternatingPrimeSeriesConverges
 
-/-!
+/-
 ## Related Series (Erdős's Conjectures)
 
 Erdős made several related conjectures about alternating sums
@@ -175,7 +177,7 @@ axiom zhang_bounded_gaps :
     preventing convergence of the alternating series. -/
 axiom erdos_gap_conjecture2_true : ErdosGapConjecture2
 
-/-!
+/-
 ## Why This Problem is Hard
 
 The difficulty stems from the irregular distribution of primes.
@@ -202,7 +204,7 @@ axiom not_finitely_resolvable :
       (∃ L, Tendsto (fun M => ∑ n ∈ Finset.range M, f n) atTop (𝓝 L)) ∧
       ¬(∃ L, Tendsto (fun M => ∑ n ∈ Finset.range M, g n) atTop (𝓝 L))
 
-/-!
+/-
 ## Absolute Convergence
 
 Note that the series does NOT converge absolutely.
@@ -224,7 +226,7 @@ axiom harmonic_log_diverges :
       (fun N : ℕ => ∑ n ∈ Finset.Icc 2 N, 1 / Real.log n)
       atTop (𝓝 L)
 
-/-!
+/-
 ## Numerical Evidence
 
 Computational evidence suggests the partial sums oscillate around a value
@@ -238,7 +240,7 @@ axiom empirical_limit_around_minus_one :
     ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀,
       |alternatingPrimePartialSum N - (-1)| < 1 + ε
 
-/-!
+/-
 ## Summary
 
 **Problem Status: OPEN**
