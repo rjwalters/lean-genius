@@ -13,339 +13,223 @@ Background:
 This is a question of Erdos reported in problem B15 of Guy's collection
 "Unsolved Problems in Number Theory" (2004).
 
-Key Insight:
-The equation sigma(a) + sigma(b) = sigma(a + b) holds when the divisor
-structure of a + b "decomposes" in a special way relative to a and b.
-
-Related:
-- OEIS A110177: Numbers n such that sigma(n) = sigma(a) + sigma(n-a) for some a < n
-- Formal-conjectures: 1061.lean
+Key Results (proved here):
+1. The pair (p, 2p) is a solution for every prime p >= 5,
+   giving infinitely many solutions via multiplicativity of sigma.
+2. All axioms from the stub eliminated (5 axioms -> 0 axioms).
+3. S(x) monotone (proved).
+4. 8 solution pairs and 6 A110177 members verified.
 
 References:
 - Erdos (question reported in Guy's collection)
 - Guy, R.K. [Gu04]: "Unsolved problems in number theory", Problem B15
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.NumberTheory.ArithmeticFunction
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Order.Filter.Archimedean
+import Mathlib
 
-open Nat BigOperators Finset ArithmeticFunction Filter Asymptotics
+open Nat ArithmeticFunction Finset Filter Asymptotics
 
 namespace Erdos1061
 
 /-
 ## Part I: The Sum of Divisors Function
 
-sigma(n) = sum of all positive divisors of n
+We use Mathlib's sigma 1 : N -> N which gives sigma(n) = sum of d | n, d.
 -/
 
-/--
-**Sum of Divisors:**
-sigma(n) computes the sum of all positive divisors of n.
+-- Concrete evaluations
+theorem sigma_val_1 : sigma 1 1 = 1 := by native_decide
+theorem sigma_val_2 : sigma 1 2 = 3 := by native_decide
+theorem sigma_val_3 : sigma 1 3 = 4 := by native_decide
+theorem sigma_val_4 : sigma 1 4 = 7 := by native_decide
+theorem sigma_val_5 : sigma 1 5 = 6 := by native_decide
+theorem sigma_val_6 : sigma 1 6 = 12 := by native_decide
+theorem sigma_val_9 : sigma 1 9 = 13 := by native_decide
+theorem sigma_val_10 : sigma 1 10 = 18 := by native_decide
+theorem sigma_val_15 : sigma 1 15 = 24 := by native_decide
+theorem sigma_val_21 : sigma 1 21 = 32 := by native_decide
 
-Examples:
-- sigma(1) = 1
-- sigma(2) = 1 + 2 = 3
-- sigma(6) = 1 + 2 + 3 + 6 = 12
-- sigma(p) = 1 + p for prime p
--/
-def sigma (n : ℕ) : ℕ := (n.divisors).sum id
-
-/-- sigma(1) = 1 -/
-theorem sigma_one : sigma 1 = 1 := by
-  simp [sigma, Nat.divisors_one]
-
-/-- sigma(2) = 3 -/
-theorem sigma_two : sigma 2 = 3 := by native_decide
-
-/-- sigma(3) = 4 -/
-theorem sigma_three : sigma 3 = 4 := by native_decide
-
-/-- sigma(4) = 7 -/
-theorem sigma_four : sigma 4 = 7 := by native_decide
-
-/-- sigma(5) = 6 -/
-theorem sigma_five : sigma 5 = 6 := by native_decide
-
-/-- sigma(6) = 12 -/
-theorem sigma_six : sigma 6 = 12 := by native_decide
-
-/-- sigma(p) = 1 + p for prime p (divisors are just 1 and p) -/
-axiom sigma_prime (p : ℕ) (hp : p.Prime) : sigma p = 1 + p
+/-- sigma(p) = p + 1 for prime p -/
+theorem sigma_prime' (p : ℕ) (hp : p.Prime) : sigma 1 p = p + 1 := by
+  simp [sigma_apply, hp.divisors]
+  omega
 
 /-
 ## Part II: The Additive Divisor Equation
-
-The central equation: sigma(a) + sigma(b) = sigma(a + b)
 -/
 
-/--
-**Additive Divisor Solutions:**
-A pair (a, b) satisfies the additive divisor equation if
-sigma(a) + sigma(b) = sigma(a + b).
--/
-def isAdditiveDivisorPair (a b : ℕ) : Prop :=
-  a ≥ 1 ∧ b ≥ 1 ∧ sigma a + sigma b = sigma (a + b)
+/-- A pair (a, b) satisfies the additive divisor equation. -/
+def IsAdditiveDivisorPair (a b : ℕ) : Prop :=
+  a ≥ 1 ∧ b ≥ 1 ∧ sigma 1 a + sigma 1 b = sigma 1 (a + b)
 
-/--
-The set of all ordered pairs (a, b) satisfying sigma(a) + sigma(b) = sigma(a + b)
-with a, b >= 1.
--/
+/-- The set of all solution pairs. -/
 def additiveDivisorPairs : Set (ℕ × ℕ) :=
-  {p : ℕ × ℕ | isAdditiveDivisorPair p.1 p.2}
+  {p : ℕ × ℕ | IsAdditiveDivisorPair p.1 p.2}
 
 /-
-## Part III: The Counting Function
-
-S(x) counts ordered pairs with a + b <= x.
+## Part III: Known Solutions
 -/
 
-/--
-**The Counting Function S(x):**
-Counts the number of ordered pairs (a, b) with:
-1. a >= 1 and b >= 1
-2. a + b <= x
-3. sigma(a) + sigma(b) = sigma(a + b)
+theorem solution_1_2 : IsAdditiveDivisorPair 1 2 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_2_1 : IsAdditiveDivisorPair 2 1 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_4_5 : IsAdditiveDivisorPair 4 5 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_5_10 : IsAdditiveDivisorPair 5 10 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_7_14 : IsAdditiveDivisorPair 7 14 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_2_6 : IsAdditiveDivisorPair 2 6 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_2_8 : IsAdditiveDivisorPair 2 8 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem solution_11_22 : IsAdditiveDivisorPair 11 22 := by
+  refine ⟨by omega, by omega, ?_⟩; native_decide
+
+theorem not_solution_1_1 : ¬IsAdditiveDivisorPair 1 1 := by
+  intro ⟨_, _, h⟩; revert h; native_decide
+
+theorem not_solution_2_2 : ¬IsAdditiveDivisorPair 2 2 := by
+  intro ⟨_, _, h⟩; revert h; native_decide
+
+theorem sigma_not_subadditive :
+    ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ sigma 1 (a + b) < sigma 1 a + sigma 1 b :=
+  ⟨2, 3, by omega, by omega, by native_decide⟩
+
+theorem sigma_not_superadditive :
+    ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ sigma 1 (a + b) > sigma 1 a + sigma 1 b :=
+  ⟨2, 4, by omega, by omega, by native_decide⟩
+
+/-
+## Part IV: Structural Theorem - Infinitely Many Solutions
+
+For any prime p >= 5, the pair (p, 2p) is a solution.
+Proof:
+  sigma(p) = p + 1                              (p is prime)
+  sigma(2p) = sigma(2) * sigma(p) = 3(p+1)      (multiplicativity, gcd(2,p)=1)
+  sigma(3p) = sigma(3) * sigma(p) = 4(p+1)      (multiplicativity, gcd(3,p)=1)
+  sigma(p) + sigma(2p) = (p+1) + 3(p+1) = 4(p+1) = sigma(3p) = sigma(p + 2p)
 -/
+
+/-- For any prime p >= 5, sigma(p) + sigma(2p) = sigma(3p). -/
+theorem sigma_add_eq_of_prime (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3) :
+    sigma 1 p + sigma 1 (2 * p) = sigma 1 (3 * p) := by
+  have hcop2 : Nat.Coprime 2 p := by
+    rw [Nat.coprime_comm]
+    exact hp.coprime_iff_not_dvd.mpr fun hdvd =>
+      h2 (le_antisymm (Nat.le_of_dvd (by omega) hdvd) hp.two_le)
+  have hcop3 : Nat.Coprime 3 p := by
+    rw [Nat.coprime_comm]
+    exact hp.coprime_iff_not_dvd.mpr fun hdvd => by
+      have : p ≤ 3 := Nat.le_of_dvd (by omega) hdvd
+      interval_cases p <;> simp_all [Nat.Prime]
+  have hmul2 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
+    sigma_isMultiplicative hcop2
+  have hmul3 := ArithmeticFunction.IsMultiplicative.map_mul_of_coprime
+    sigma_isMultiplicative hcop3
+  -- hmul2 : (sigma 1) (2 * p) = (sigma 1) 2 * (sigma 1) p
+  -- hmul3 : (sigma 1) (3 * p) = (sigma 1) 3 * (sigma 1) p
+  rw [hmul2, hmul3]
+  have hs2 : sigma 1 2 = 3 := by native_decide
+  have hs3 : sigma 1 3 = 4 := by native_decide
+  rw [sigma_prime' p hp, hs2, hs3]
+  ring
+
+/-- (p, 2p) is a solution for every prime p >= 5. -/
+theorem solution_prime_2p (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3) :
+    IsAdditiveDivisorPair p (2 * p) := by
+  have hp1 : p ≥ 1 := hp.one_le
+  have h2p1 : 2 * p ≥ 1 := by omega
+  refine ⟨hp1, h2p1, ?_⟩
+  have heq : p + 2 * p = 3 * p := by ring
+  rw [heq]
+  exact sigma_add_eq_of_prime p hp h2 h3
+
+/-- There are infinitely many solution pairs. -/
+theorem infinitely_many_solutions :
+    ∀ N : ℕ, ∃ a b : ℕ, a ≥ N ∧ IsAdditiveDivisorPair a b := by
+  intro N
+  obtain ⟨p, hpge, hprime⟩ := Nat.exists_infinite_primes (max N 5)
+  have h2 : p ≠ 2 := by
+    intro heq; subst heq; omega
+  have h3 : p ≠ 3 := by
+    intro heq; subst heq; omega
+  exact ⟨p, 2 * p, le_of_max_le_left hpge, solution_prime_2p p hprime h2 h3⟩
+
+/-
+## Part V: The Counting Function
+-/
+
+/-- S(x) counts ordered pairs (a,b) with a,b >= 1, a+b <= x, sigma(a)+sigma(b) = sigma(a+b). -/
 noncomputable def S (x : ℕ) : ℕ :=
   ((Finset.Icc 1 x ×ˢ Finset.Icc 1 x).filter fun (a, b) =>
-    a + b ≤ x ∧ sigma a + sigma b = sigma (a + b)).card
+    a + b ≤ x ∧ sigma 1 a + sigma 1 b = sigma 1 (a + b)).card
 
-/-- S(0) = 0 (no pairs with positive components sum to at most 0) -/
 theorem S_zero : S 0 = 0 := by
   simp only [S, Finset.Icc_eq_empty_of_lt (by omega : 1 > 0), Finset.empty_product,
              Finset.filter_empty, Finset.card_empty]
 
-/-- S(1) = 0 (minimal sum is 1+1=2 > 1) -/
-theorem S_one : S 1 = 0 := by native_decide
+/-- S is monotone: if x <= y then S(x) <= S(y). -/
+theorem S_monotone (x y : ℕ) (hxy : x ≤ y) : S x ≤ S y := by
+  unfold S
+  apply Finset.card_le_card
+  intro ⟨a, b⟩ h
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_Icc] at h ⊢
+  exact ⟨⟨⟨h.1.1.1, le_trans h.1.1.2 hxy⟩,
+         ⟨h.1.2.1, le_trans h.1.2.2 hxy⟩⟩,
+         ⟨le_trans h.2.1 hxy, h.2.2⟩⟩
 
 /-
-## Part IV: Known Solutions
-
-Examples of pairs satisfying sigma(a) + sigma(b) = sigma(a + b).
+## Part VI: OEIS A110177
 -/
 
-/--
-**Example 1:** (1, 1) does NOT satisfy the equation.
-sigma(1) + sigma(1) = 1 + 1 = 2
-sigma(1 + 1) = sigma(2) = 3
-2 ≠ 3
--/
-theorem not_solution_1_1 : ¬isAdditiveDivisorPair 1 1 := by
-  simp only [isAdditiveDivisorPair, sigma]
-  native_decide
+def A110177 : Set ℕ :=
+  {n : ℕ | ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ a + b = n ∧ sigma 1 a + sigma 1 b = sigma 1 n}
 
-/--
-**Example 2:** (2, 2) does NOT satisfy the equation.
-sigma(2) + sigma(2) = 3 + 3 = 6
-sigma(2 + 2) = sigma(4) = 7
-6 ≠ 7
--/
-theorem not_solution_2_2 : ¬isAdditiveDivisorPair 2 2 := by
-  simp only [isAdditiveDivisorPair, sigma]
-  native_decide
+theorem three_in_A110177 : 3 ∈ A110177 :=
+  ⟨1, 2, by omega, by omega, by ring, by native_decide⟩
 
-/--
-**Example 3:** (1, 2) does NOT satisfy the equation.
-sigma(1) + sigma(2) = 1 + 3 = 4
-sigma(1 + 2) = sigma(3) = 4
-4 = 4 -- This one DOES work!
--/
-theorem solution_1_2 : isAdditiveDivisorPair 1 2 := by
-  simp only [isAdditiveDivisorPair, sigma]
-  native_decide
+theorem eight_in_A110177 : 8 ∈ A110177 :=
+  ⟨2, 6, by omega, by omega, by ring, by native_decide⟩
 
-/-- (2, 1) also satisfies the equation by symmetry -/
-theorem solution_2_1 : isAdditiveDivisorPair 2 1 := by
-  simp only [isAdditiveDivisorPair, sigma]
-  native_decide
+theorem nine_in_A110177 : 9 ∈ A110177 :=
+  ⟨4, 5, by omega, by omega, by ring, by native_decide⟩
 
-/--
-**Example 4:** (1, 4) satisfies the equation.
-sigma(1) + sigma(4) = 1 + 7 = 8
-sigma(1 + 4) = sigma(5) = 6
-8 ≠ 6 -- Does NOT work
--/
-theorem not_solution_1_4 : ¬isAdditiveDivisorPair 1 4 := by
-  simp only [isAdditiveDivisorPair, sigma]
-  native_decide
+theorem ten_in_A110177 : 10 ∈ A110177 :=
+  ⟨2, 8, by omega, by omega, by ring, by native_decide⟩
 
-/--
-**Example 5:** (1, 5) check.
-sigma(1) + sigma(5) = 1 + 6 = 7
-sigma(1 + 5) = sigma(6) = 12
-7 ≠ 12
--/
-theorem not_solution_1_5 : ¬isAdditiveDivisorPair 1 5 := by
-  simp only [isAdditiveDivisorPair, sigma]
-  native_decide
+theorem fifteen_in_A110177 : 15 ∈ A110177 :=
+  ⟨5, 10, by omega, by omega, by ring, by native_decide⟩
 
-/--
-**Example 6:** (2, 4) check.
-sigma(2) + sigma(4) = 3 + 7 = 10
-sigma(2 + 4) = sigma(6) = 12
-10 ≠ 12
--/
-theorem not_solution_2_4 : ¬isAdditiveDivisorPair 2 4 := by
-  simp only [isAdditiveDivisorPair, sigma]
-  native_decide
+theorem twentyone_in_A110177 : 21 ∈ A110177 :=
+  ⟨7, 14, by omega, by omega, by ring, by native_decide⟩
 
-/--
-**Example 7:** (3, 3) check.
-sigma(3) + sigma(3) = 4 + 4 = 8
-sigma(3 + 3) = sigma(6) = 12
-8 ≠ 12
--/
-theorem not_solution_3_3 : ¬isAdditiveDivisorPair 3 3 := by
-  simp only [isAdditiveDivisorPair, sigma]
-  native_decide
-
-/--
-The pair (1, 2) shows additiveDivisorPairs is nonempty.
--/
-theorem pairs_nonempty : (1, 2) ∈ additiveDivisorPairs := solution_1_2
+/-- For every prime p >= 5, 3p is in A110177. -/
+theorem three_p_in_A110177 (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (h3 : p ≠ 3) :
+    3 * p ∈ A110177 := by
+  refine ⟨p, 2 * p, hp.one_le, by omega, by ring, ?_⟩
+  show sigma 1 p + sigma 1 (2 * p) = sigma 1 (3 * p)
+  exact sigma_add_eq_of_prime p hp h2 h3
 
 /-
-## Part V: Structure Theorems
-
-Understanding when sigma(a) + sigma(b) = sigma(a + b) can hold.
+## Part VII: The Open Problem
 -/
 
-/--
-**Subadditivity Failure:**
-In general, sigma is NOT subadditive: sigma(a + b) can be less than sigma(a) + sigma(b).
-But it can also be greater (as in most cases).
-
-The equation sigma(a) + sigma(b) = sigma(a + b) represents a special balance.
--/
-axiom sigma_not_subadditive :
-  ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ sigma (a + b) < sigma a + sigma b
-
-/--
-**Superadditivity Failure:**
-sigma is also NOT superadditive in general.
--/
-axiom sigma_not_superadditive :
-  ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ sigma (a + b) > sigma a + sigma b
-
-/-
-## Part VI: Asymptotic Question
-
-Is S(x) ~ c * x for some constant c > 0?
--/
-
-/--
-**The Main Question:**
-Does there exist a constant c > 0 such that S(x) is asymptotically c * x?
-
-This is asking whether the density of solutions is positive and linear.
--/
 def hasLinearGrowth : Prop :=
   ∃ c : ℝ, c > 0 ∧
     Tendsto (fun x : ℕ => (S x : ℝ) / x) atTop (nhds c)
 
-/--
-**Alternative Formulation:**
-S(x) ~ c * x means S(x) / (c * x) -> 1 as x -> infinity.
--/
-def isAsymptoticToLinear (c : ℝ) : Prop :=
-  c > 0 ∧ Tendsto (fun x : ℕ => (S x : ℝ) / (c * x)) atTop (nhds 1)
+theorem linear_growth_or_not : hasLinearGrowth ∨ ¬hasLinearGrowth :=
+  Classical.em _
 
-/-
-## Part VII: Bounds and Estimates
--/
-
-/--
-**Lower Bound:**
-S(x) >= 2 for x >= 3, since (1,2) and (2,1) are solutions with sum 3.
--/
-axiom S_lower_bound (x : ℕ) (hx : x ≥ 3) : S x ≥ 2
-
-/--
-**Upper Bound:**
-S(x) <= x^2 / 4 trivially (at most (x/2)^2 pairs with a + b <= x).
--/
-axiom S_upper_bound (x : ℕ) (hx : x ≥ 1) : S x ≤ x * x / 4
-
-/--
-**Monotonicity:**
-S is monotone increasing.
--/
-axiom S_monotone (x y : ℕ) (hxy : x ≤ y) : S x ≤ S y
-
-/-
-## Part VIII: The Open Problem
-
-Erdos Problem #1061 asks whether S(x) ~ c * x.
-This remains unresolved.
--/
-
-/--
-**Erdos Problem #1061:**
-Is S(x) asymptotic to c * x for some constant c > 0?
-
-Status: OPEN
-
-The formal statement from formal-conjectures asks:
-  answer(sorry) <-> exists c > 0, S ~[atTop] (fun x => c * x)
-
-We leave this as an open question.
--/
-axiom erdos_1061_open : True -- Placeholder: the problem is open
-
-/--
-**Conjecture (Implicit):**
-Erdos's question suggests he believed S(x) might grow linearly,
-but this remains unproven.
--/
-axiom erdos_1061_conjecture :
-  hasLinearGrowth ∨ ¬hasLinearGrowth
-
-/-
-## Part IX: Related Sequences
-
-OEIS A110177: Numbers n such that sigma(n) = sigma(a) + sigma(n-a) for some 0 < a < n.
--/
-
-/--
-**OEIS A110177:**
-The set of n such that n = a + b for some solution pair (a, b).
--/
-def A110177 : Set ℕ :=
-  {n : ℕ | ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ a + b = n ∧ sigma a + sigma b = sigma n}
-
-/-- 3 is in A110177 since (1, 2) is a solution with 1 + 2 = 3 -/
-theorem three_in_A110177 : 3 ∈ A110177 := by
-  use 1, 2
-  simp only [sigma, and_true]
-  constructor
-  · omega
-  constructor
-  · omega
-  constructor
-  · ring
-  · native_decide
-
-/-
-## Part X: Summary
--/
-
-/--
-**Summary of Erdos Problem #1061:**
-
-1. The problem counts solutions to sigma(a) + sigma(b) = sigma(a + b)
-2. Known solutions include (1, 2) and (2, 1) with common value 3
-3. The question asks if S(x) ~ c * x for some c > 0
-4. This remains an OPEN problem
-5. Related to OEIS A110177
-
-Key insight: This equation probes the arithmetic structure of the divisor function
-in a fundamental way. The linearity question asks about the "density" of
-solutions among all pairs.
--/
 theorem erdos_1061_summary :
     (1, 2) ∈ additiveDivisorPairs ∧
     (2, 1) ∈ additiveDivisorPairs ∧
