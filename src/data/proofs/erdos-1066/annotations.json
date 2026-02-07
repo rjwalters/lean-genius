@@ -13,7 +13,7 @@
   {
     "id": "ann-e1066-pointset",
     "proofId": "erdos-1066",
-    "range": { "startLine": 40, "endLine": 65 },
+    "range": { "startLine": 36, "endLine": 61 },
     "type": "definition",
     "title": "Geometric Definitions",
     "content": "**Point2D** = EuclideanSpace ℝ (Fin 2) — a point in ℝ².\n\n**dist(p, q)** = √(‖p - q‖²) — Euclidean distance.\n\n**UnitDistancePointSet** — a structure containing n labeled points with pairwise distance ≥ 1.\n\n**unitDistanceEdge(P, i, j)** — i ≠ j and dist(pᵢ, pⱼ) = 1 exactly.\n\n**IsIndependentSet(P, S)** — no two vertices in S at distance 1.\n\n**independenceNumber(P)** — size of the largest independent set, defined via Nat.find.",
@@ -24,7 +24,7 @@
   {
     "id": "ann-e1066-gn",
     "proofId": "erdos-1066",
-    "range": { "startLine": 67, "endLine": 77 },
+    "range": { "startLine": 63, "endLine": 69 },
     "type": "definition",
     "title": "The Function g(n)",
     "content": "**g(n)** (axiomatized): The maximum k such that EVERY unit distance point set on n points has an independent set of size ≥ k.\n\nThis is the infimum over all configurations — the worst-case guarantee. It is axiomatized because defining the infimum over all geometric configurations in ℝ² requires measure-theoretic machinery beyond Lean's standard library.\n\nThe central question is: what is lim g(n)/n?",
@@ -35,7 +35,7 @@
   {
     "id": "ann-e1066-lowerbounds",
     "proofId": "erdos-1066",
-    "range": { "startLine": 79, "endLine": 104 },
+    "range": { "startLine": 71, "endLine": 92 },
     "type": "axiom",
     "title": "Lower Bounds",
     "content": "**Three progressively stronger lower bounds:**\n\n1. **pollack_lower_bound**: g(n) ≥ n/4 (1985) — from planarity and the Four Colour Theorem\n2. **csizmadia_lower_bound**: g(n) ≥ (9/35)n ≈ 0.257n (1998) — geometric arguments\n3. **swanepoel_lower_bound**: g(n) ≥ (8/31)n ≈ 0.258n (2002) — current best\n\n**lower_bounds_comparison** (PROVED): 1/4 < 9/35 < 8/31, confirming the progression.\n\nAll bounds are axiomatized since the proofs involve geometric reasoning about planar unit distance graphs.",
@@ -46,7 +46,7 @@
   {
     "id": "ann-e1066-upperbounds",
     "proofId": "erdos-1066",
-    "range": { "startLine": 106, "endLine": 125 },
+    "range": { "startLine": 94, "endLine": 109 },
     "type": "axiom",
     "title": "Upper Bounds",
     "content": "**Two upper bounds disproving Erdős's n/3 conjecture:**\n\n1. **chung_graham_pach_upper_bound**: g(n) ≤ (6/19)n ≈ 0.316n — first disproof of n/3\n2. **pach_toth_upper_bound**: g(n) ≤ (5/16)n = 0.3125n (1996) — current best\n\n**upper_bounds_comparison** (PROVED): 5/16 < 6/19 < 1/3, confirming the improvement over Erdős's conjecture.\n\nThe upper bounds are proved by explicit constructions of point configurations where independent sets are small.",
@@ -57,7 +57,7 @@
   {
     "id": "ann-e1066-gap",
     "proofId": "erdos-1066",
-    "range": { "startLine": 127, "endLine": 145 },
+    "range": { "startLine": 111, "endLine": 125 },
     "type": "theorem",
     "title": "Current Best Bounds and Gap",
     "content": "**current_best_bounds** (PROVED): (8/31) < (5/16) — the lower bound is strictly below the upper bound.\n\n**bound_gap** (PROVED): 5/16 - 8/31 = 27/496 ≈ 0.054 — the gap is about 5.4%.\n\n**current_knowledge** (axiom): Combines Swanepoel and Pach-Tóth: (8/31)n ≤ g(n) ≤ (5/16)n for all n ≥ 1.\n\nThe true value of lim g(n)/n lies somewhere in this interval of width 27/496.",
@@ -68,7 +68,7 @@
   {
     "id": "ann-e1066-higherdim",
     "proofId": "erdos-1066",
-    "range": { "startLine": 147, "endLine": 166 },
+    "range": { "startLine": 127, "endLine": 142 },
     "type": "axiom",
     "title": "Higher Dimensional Generalization",
     "content": "**g_d(n)** (axiomatized): For n points in ℝ^d with minimum distance 1, the guaranteed independent set size.\n\n**erdos_higher_dimension_question**: Is g_d(n) ≫ n/d? Erdős asked whether the linear scaling n/d holds with a universal constant.\n\n**higher_dimension_upper_bound**: g_d(n) ≪ n/d is trivial — widely spaced unit simplices (d+1 mutual unit-distance points) give independent sets of size at most n/(d+1).",
@@ -79,7 +79,7 @@
   {
     "id": "ann-e1066-summary",
     "proofId": "erdos-1066",
-    "range": { "startLine": 168, "endLine": 185 },
+    "range": { "startLine": 144, "endLine": 159 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_1066_summary** (PROVED): Combines all verified arithmetic results:\n1. (8/31) < (5/16) — lower bound below upper bound\n2. 5/16 - 8/31 = 27/496 — precise gap\n3. 1/4 < 9/35 < 8/31 — lower bound progression\n4. 5/16 < 6/19 < 1/3 — upper bound progression\n\nProof: ⟨current_best_bounds, bound_gap, lower_bounds_comparison, upper_bounds_comparison⟩\n\nThis captures the full numerical landscape of Problem #1066 with machine-verified arithmetic.",
