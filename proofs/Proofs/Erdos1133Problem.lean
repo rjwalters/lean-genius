@@ -1,5 +1,5 @@
-/-!
-# Erdős Problem #1133: Large Polynomial Interpolation Bound
+/-
+Erdős Problem #1133: Large Polynomial Interpolation Bound
 
 Source: https://erdosproblems.com/1133
 Status: OPEN
@@ -43,7 +43,7 @@ open Polynomial
 
 namespace Erdos1133
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -72,7 +72,7 @@ y₁, ..., yₙ ∈ [-1,1]
 -/
 def TargetValues (n : ℕ) : Type := { f : Fin n → ℝ // ∀ i, -1 ≤ f i ∧ f i ≤ 1 }
 
-/-!
+/-
 ## Part II: Interpolation Conditions
 -/
 
@@ -92,7 +92,7 @@ deg(P) < (1+ε)n
 def HasBoundedDegree (P : Polynomial ℝ) (n : ℕ) (ε : ℝ) : Prop :=
   P.natDegree < Nat.floor ((1 + ε) * n)
 
-/-!
+/-
 ## Part III: The Erdős Conjecture
 -/
 
@@ -114,7 +114,7 @@ def ErdosConjecture1133 : Prop :=
     ApproximatelyInterpolates P x y ε →
     maxNormOnInterval P > C
 
-/-!
+/-
 ## Part IV: Related Result (Known by Erdős)
 -/
 
@@ -136,7 +136,7 @@ axiom erdos_related_result (C : ℝ) (hC : C > 0) :
       (∀ i, |P.eval (x i)| ≤ 1) ∧
       maxNormOnInterval P > C
 
-/-!
+/-
 ## Part V: Connection to Lagrange Interpolation
 -/
 
@@ -161,7 +161,7 @@ axiom lagrange_divergence :
       (∀ i : Fin n, P.eval (-1 + 2 * i / (n - 1)) = f (-1 + 2 * i / (n - 1))) →
       maxNormOnInterval P > M
 
-/-!
+/-
 ## Part VI: The Chebyshev Connection
 -/
 
@@ -182,7 +182,7 @@ axiom chebyshev_optimal :
     (∀ k : Fin (n+1), |P.eval (chebyshevNodes (n+1) k)| ≤ 1) →
     maxNormOnInterval P ≤ 1
 
-/-!
+/-
 ## Part VII: Summary
 -/
 
