@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 0,
     "erdosNumber": 806,
     "erdosUrl": "https://erdosproblems.com/806",
     "erdosProblemStatus": "solved",
@@ -47,24 +47,23 @@
       "sumset_card_bound theorem: |B + B| ≤ |B|²",
       "erdos_newman_lower_bound axiom: Ω((log log n / log n) · √n)",
       "alon_bukh_sudakov_upper_bound axiom: O((log log n / log n) · √n)",
-      "erdos_806 theorem: main result existence",
+      "erdos_806 axiom: main result existence",
       "optimal_basis_size theorem: tight Θ bound",
       "IsSidonSet definition: connection to Sidon sets",
       "trivial_basis theorem: A ∪ {0} always works",
-      "log_factor_is_o_one theorem: (log log n / log n) → 0"
+      "log_factor_is_o_one axiom: (log log n / log n) → 0"
     ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #806** was posed by Erdős and Newman in 1977 as part of their study of additive bases. The question asks: given a \"small\" set A (of size at most √n), can we find an even smaller set B whose sumset B + B covers A?\n\n**Historical Development:**\n- **1977 (Erdős-Newman):** Posed the problem and proved a lower bound. They showed there exist sets A with |A| ≈ √n requiring any covering basis B to have |B| ≥ c · (log log n / log n) · √n.\n- **2009 (Alon-Bukh-Sudakov):** Resolved the problem after 32 years! They proved the matching upper bound, showing that EVERY A of size ≤ √n has a basis B of size O((log log n / log n) · √n).\n\nThe resolution came through connections to discrete Kakeya-type problems, demonstrating unexpected links between additive combinatorics and geometric combinatorics.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $A \\subseteq \\{1, \\ldots, n\\}$ with $|A| \\leq \\sqrt{n}$. Must there exist some $B \\subset \\mathbb{Z}$ with $|B| = o(\\sqrt{n})$ such that $A \\subseteq B + B$?\n\n**Answer: YES**\n\nAlon, Bukh, and Sudakov (2009) proved:\n- For any such $A$, there exists $B$ with $A \\subseteq B + B$ and $|B| \\leq C \\cdot \\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}$\n\nThis matches the Erdős-Newman lower bound up to constants, making the answer tight:\n$$|B|_{\\text{optimal}} = \\Theta\\left(\\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}\\right)$$",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define sumsets via Finset products and the basis predicate IsBasisFor.\n\n2. **Lower Bound (Erdős-Newman 1977):** Axiomatize the existence of \"hard\" sets A that require bases of size Ω((log log n / log n) · √n).\n\n3. **Upper Bound (Alon-Bukh-Sudakov 2009):** Axiomatize the main theorem that every A has a small basis. The proof uses discrete Kakeya ideas and is beyond direct formalization.\n\n4. **Tight Bound:** Combine both to show the optimal size is Θ((log log n / log n) · √n).\n\n5. **Examples and Connections:** Include trivial basis construction and connection to Sidon sets.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define sumsets via Finset products and the basis predicate IsBasisFor.\n\n2. **Lower Bound (Erdős-Newman 1977):** Axiomatize the existence of \"hard\" sets A that require bases of size Ω((log log n / log n) · √n).\n\n3. **Upper Bound (Alon-Bukh-Sudakov 2009):** Axiomatize the main theorem that every A has a small basis. The proof uses discrete Kakeya ideas and is beyond direct formalization.\n\n4. **Tight Bound:** Combine both to show the optimal size is Θ((log log n / log n) · √n).\n\n5. **Examples:** Include trivial basis construction and connection to Sidon sets.",
     "keyInsights": [
       "**Basis Problem:** Given A, find the smallest B such that every element of A is a sum of two elements from B.",
       "**Trivial Bound:** A ∪ {0} always works (a = a + 0), giving |B| = |A| + 1 ≈ √n. The question is whether we can do better.",
       "**Logarithmic Savings:** The answer is YES - we can save a factor of (log n / log log n), getting |B| = o(√n).",
       "**Tight Result:** Both upper and lower bounds are Θ((log log n / log n) · √n), so this is optimal.",
-      "**Kakeya Connection:** The proof uses ideas from discrete Kakeya problems - unexpected geometry in number theory!",
-      "**32-Year Gap:** The problem was open from 1977 to 2009, showing these questions can be deep."
+      "**Kakeya Connection:** The proof uses ideas from discrete Kakeya problems - unexpected geometry in number theory!"
     ]
   },
   "sections": [
@@ -78,65 +77,58 @@
     {
       "id": "interval",
       "title": "The Interval {1, ..., n}",
-      "summary": "Definition of the interval and its cardinality",
+      "summary": "Definition of the interval",
       "startLine": 72,
-      "endLine": 88
+      "endLine": 80
     },
     {
       "id": "lower-bound",
       "title": "Erdős-Newman Lower Bound (1977)",
       "summary": "Axiom for the existence of hard sets requiring large bases",
-      "startLine": 90,
-      "endLine": 107
+      "startLine": 82,
+      "endLine": 99
     },
     {
       "id": "upper-bound",
       "title": "Alon-Bukh-Sudakov Upper Bound (2009)",
       "summary": "The main resolution: every small A has a small basis",
-      "startLine": 109,
-      "endLine": 143
+      "startLine": 101,
+      "endLine": 130
     },
     {
       "id": "tight-bound",
       "title": "The Tight Bound",
       "summary": "Combining bounds to get Θ((log log n / log n) · √n)",
-      "startLine": 145,
-      "endLine": 168
-    },
-    {
-      "id": "intuition",
-      "title": "Intuition and Proof Strategy",
-      "summary": "Kakeya connection and probabilistic method",
-      "startLine": 170,
-      "endLine": 198
+      "startLine": 132,
+      "endLine": 155
     },
     {
       "id": "related",
       "title": "Related Results",
-      "summary": "Connections to Sidon sets and Problem #333",
-      "startLine": 200,
-      "endLine": 225
+      "summary": "Connections to Sidon sets",
+      "startLine": 157,
+      "endLine": 174
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "Trivial basis and arithmetic progressions",
-      "startLine": 227,
-      "endLine": 255
+      "summary": "Trivial basis construction A ∪ {0}",
+      "startLine": 176,
+      "endLine": 196
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation",
-      "summary": "Explanation of o(√n) and the limiting behavior",
-      "startLine": 257,
-      "endLine": 271
+      "summary": "The logarithmic factor tends to zero",
+      "startLine": 198,
+      "endLine": 209
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem and final answer",
-      "startLine": 273,
-      "endLine": 304
+      "summary": "Main result: SOLVED by Alon-Bukh-Sudakov (2009)",
+      "startLine": 211,
+      "endLine": 234
     }
   ],
   "conclusion": {
