@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #40: Representation Function and Dense Sets
 
 For which functions g(N) → ∞ is it true that
@@ -25,7 +25,7 @@ import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The representation count r_A(n): number of ways to write n = a + b
     with a, b ∈ A and a ≤ b. -/
@@ -45,14 +45,14 @@ def IsAdditiveBasis2 (A : Set ℕ) : Prop :=
 def RepUnbounded (A : Set ℕ) : Prop :=
   ∀ M : ℕ, ∃ n : ℕ, repCount A n ≥ M
 
-/-! ## Erdős–Turán Conjecture (Problem #28) -/
+/- ## Erdős–Turán Conjecture (Problem #28) -/
 
 /-- **Erdős–Turán Conjecture** (Problem #28, OPEN):
     Every additive basis of order 2 has unbounded representation function. -/
 axiom erdos_turan_conjecture :
   ∀ A : Set ℕ, IsAdditiveBasis2 A → RepUnbounded A
 
-/-! ## Problem #40: Strengthened Form -/
+/- ## Problem #40: Strengthened Form -/
 
 /-- A set A has density at least N^{1/2}/g(N). -/
 def HasDensity (A : Set ℕ) (g : ℕ → ℝ) : Prop :=
@@ -66,7 +66,7 @@ axiom erdos_40_conjecture :
   ∀ (g : ℕ → ℝ), (∀ M : ℝ, ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ → g N > M) →
     ∀ A : Set ℕ, HasDensity A g → RepUnbounded A
 
-/-! ## Connection to Problem #28 -/
+/- ## Connection to Problem #28 -/
 
 /-- Problem #40 (for any g → ∞) implies Problem #28:
     An additive basis of order 2 has |A ∩ {1,...,N}| >> N^{1/2}
@@ -76,7 +76,7 @@ axiom problem_40_implies_28
       ∀ A : Set ℕ, HasDensity A g → RepUnbounded A) :
   ∀ A : Set ℕ, IsAdditiveBasis2 A → RepUnbounded A
 
-/-! ## Known Partial Results -/
+/- ## Known Partial Results -/
 
 /-- For Sidon sets (r_A(n) ≤ 1 for all n), we have
     |A ∩ {1,...,N}| ≤ (1+o(1))N^{1/2}. So the N^{1/2} threshold
@@ -93,7 +93,7 @@ axiom b2g_density_bound (g : ℕ) :
   ∃ c : ℝ, c > 0 ∧ ∀ A : Set ℕ, (∀ n : ℕ, repCount A n ≤ g) →
     ∀ N : ℕ, N ≥ 1 → (countingFn A N : ℝ) ≤ c * Real.sqrt N
 
-/-! ## Probabilistic Heuristic -/
+/- ## Probabilistic Heuristic -/
 
 /-- Heuristic: a random set A ⊆ {1,...,N} with |A| ~ N^{1/2}/g(N)
     has expected representation count
