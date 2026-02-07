@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #580: The Loebl-Komlós-Sós Conjecture (n/2-n/2-n/2)
 
 Source: https://erdosproblems.com/580
@@ -32,8 +32,7 @@ open SimpleGraph Finset
 
 namespace Erdos580
 
-/-!
-## Part I: Basic Graph Definitions
+/- ## Part I: Basic Graph Definitions
 
 Trees, degrees, and embeddings.
 -/
@@ -60,8 +59,7 @@ The total number of vertices in graph G.
 -/
 noncomputable def numVertices (V : Type*) [Fintype V] : ℕ := Fintype.card V
 
-/-!
-## Part II: Trees
+/- ## Part II: Trees
 
 A tree is a connected acyclic graph.
 -/
@@ -89,8 +87,7 @@ By Cayley's formula, there are k^(k-2) labeled trees on k vertices.
 axiom cayley_formula (k : ℕ) (hk : k ≥ 2) :
     ∃ count : ℕ, count = k ^ (k - 2)  -- Labeled trees
 
-/-!
-## Part III: Tree Embedding
+/- ## Part III: Tree Embedding
 
 A tree T embeds in graph G if T is isomorphic to a subgraph of G.
 -/
@@ -112,8 +109,7 @@ Graph G contains all trees of size at most k if every such tree embeds in G.
 def ContainsAllTreesUpTo (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∀ m : ℕ, m ≤ k → ∀ T : Tree m, TreeEmbeds T G
 
-/-!
-## Part IV: The Loebl-Komlós-Sós Condition
+/- ## Part IV: The Loebl-Komlós-Sós Condition
 
 The degree condition from the conjecture.
 -/
@@ -135,8 +131,7 @@ def satisfiesGeneralizedLKS (G : SimpleGraph V) (k : ℕ) : Prop :=
   let n := numVertices V
   (highDegreeVertices G k).card ≥ n / 2
 
-/-!
-## Part V: The Main Conjecture
+/- ## Part V: The Main Conjecture
 
 The Loebl-Komlós-Sós (n/2-n/2-n/2) conjecture.
 -/
@@ -161,8 +156,7 @@ def KomlosSosConjecture : Prop :=
     @satisfiesGeneralizedLKS V _ _ G k →
     @ContainsAllTreesUpTo V _ _ G k
 
-/-!
-## Part VI: Partial Results
+/- ## Part VI: Partial Results
 
 Asymptotic and near-exact results.
 -/
@@ -200,8 +194,7 @@ theorem erdos_580 : ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V] (G 
     @ContainsAllTreesUpTo V _ _ G (numVertices V / 2) :=
   zhao_theorem
 
-/-!
-## Part VII: Special Cases and Bounds
+/- ## Part VII: Special Cases and Bounds
 -/
 
 /--
@@ -227,8 +220,7 @@ axiom star_case (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) :
         leaves.card = k - 1 ∧
         ∀ v ∈ leaves, G.Adj center v
 
-/-!
-## Part VIII: Tightness Examples
+/- ## Part VIII: Tightness Examples
 -/
 
 /--
@@ -243,8 +235,7 @@ axiom LKS_tightness :
         (highDegreeVertices G (n / 2 - 1)).card = n / 2 - 1 ∧
         ¬TreeEmbeds T G
 
-/-!
-## Part IX: Summary
+/- ## Part IX: Summary
 -/
 
 /--
