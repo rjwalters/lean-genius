@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #1079: Turán Density in Neighborhoods
 
 For r ≥ 4, if G is a graph on n vertices with at least ex(n; K_r) edges,
@@ -24,7 +24,7 @@ open SimpleGraph Finset
 
 namespace Erdos1079
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 The Turán number ex(n, K_r) is the maximum number of edges in a
@@ -60,7 +60,7 @@ noncomputable def neighborhoodEdges {V : Type*} [Fintype V] [DecidableEq V]
   ((G.neighborFinset v).filter (fun u =>
     ((G.neighborFinset v).filter (fun w => G.Adj u w)).card > 0)).card
 
-/-!
+/-
 ## Part 2: Bollobás–Thomason Theorem (1981)
 
 The main result: if G has at least ex(n, K_r) edges and is not
@@ -86,7 +86,7 @@ axiom bollobas_thomason :
           ∃ v ∈ V, (G.degree v : ℝ) ≥ c * n ∧
             neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)
 
-/-!
+/-
 ## Part 3: Bondy's Strengthening (1983)
 
 Bondy showed that when G has strictly more than ex(n, K_r) edges,
@@ -109,7 +109,7 @@ axiom bondy_strengthening :
           (∀ u ∈ V, G.degree u ≤ G.degree v) ∧
           neighborhoodEdges G v ≥ turanNumber (G.degree v) (r - 1)
 
-/-!
+/-
 ## Part 4: Turán's Theorem (Context)
 
 The classical Turán theorem states that ex(n, K_r) is achieved
@@ -126,7 +126,7 @@ axiom turan_theorem :
       G.CliqueFree r →
       numEdges G ≤ turanNumber n r
 
-/-!
+/-
 ## Part 5: Summary
 
 Problem #1079 is SOLVED. The result reveals that Turán-dense
