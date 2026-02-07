@@ -31,7 +31,7 @@ open scoped Topology
 
 namespace Erdos41
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A set A has the B_h property if all h-element subset sums are distinct.
     Also known as: the "n-tuple condition" or "h-fold Sidon property".
@@ -51,7 +51,7 @@ noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
 noncomputable def densityRatio (A : Set ℕ) (N : ℕ) (h : ℕ) : ℝ :=
   (countingFn A N : ℝ) / (N : ℝ) ^ (1 / h : ℝ)
 
-/-! ## The General Conjecture -/
+/- ## The General Conjecture -/
 
 /-- **Erdős's General B_h Conjecture**:
 
@@ -64,7 +64,7 @@ def ErdosBhConjecture (h : ℕ) : Prop :=
   ∀ A : Set ℕ, A.Infinite → IsBhSet A h →
     liminf (fun N => densityRatio A N h) atTop = 0
 
-/-! ## Solved Cases -/
+/- ## Solved Cases -/
 
 /-- **Erdős's Theorem (h=2)**: Sidon sets have density o(N^(1/2)).
 
@@ -92,7 +92,7 @@ theorem solved_even_cases (h : ℕ) (hge : h ≥ 2) (heven : Even h) :
     ErdosBhConjecture h :=
   chen_even_h_theorem h hge heven
 
-/-! ## The Open Case -/
+/- ## The Open Case -/
 
 /-- **Erdős Problem #41 (h=3)**: OPEN ($500 prize)
 
@@ -108,7 +108,7 @@ def Erdos41Conjecture : Prop := ErdosBhConjecture 3
 theorem erdos_41_classical : Erdos41Conjecture ∨ ¬Erdos41Conjecture :=
   Classical.em _
 
-/-! ## Connection to Sidon Sets -/
+/- ## Connection to Sidon Sets -/
 
 /-- A B_2 set is exactly a Sidon set (all pairwise sums distinct). -/
 def IsSidonSet (A : Set ℕ) : Prop := IsBhSet A 2
@@ -118,7 +118,7 @@ theorem sidon_density_bound (A : Set ℕ) (hinf : A.Infinite) (hsidon : IsSidonS
     liminf (fun N => densityRatio A N 2) atTop = 0 :=
   erdos_b2_theorem A hinf hsidon
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- The empty set is vacuously a B_h set for any h. -/
 theorem empty_is_bh (h : ℕ) : IsBhSet ∅ h := by
@@ -149,7 +149,7 @@ axiom powers_of_two_sidon_property :
   ∀ a b c d : ℕ, a ≤ b → c ≤ d →
     2^a + 2^b = 2^c + 2^d → (a = c ∧ b = d) ∨ (a = d ∧ b = c)
 
-/-! ## Summary of Known Results -/
+/- ## Summary of Known Results -/
 
 /-- Summary: What's proven about B_h density bounds.
 
