@@ -46,7 +46,7 @@
   {
     "id": "ann-e528-sawcount",
     "proofId": "erdos-528",
-    "range": { "startLine": 76, "endLine": 80 },
+    "range": { "startLine": 74, "endLine": 78 },
     "type": "definition",
     "title": "SAW Count f(n,k)",
     "content": "`sawCount n k` is the number of $n$-step self-avoiding walks in $\\mathbb{Z}^k$ starting at the origin. Axiomatized because enumerating SAWs in Lean requires decidability of `isSAW`, which involves quantifying over all lattice points visited — an infinite set.",
@@ -57,7 +57,7 @@
   {
     "id": "ann-e528-submult",
     "proofId": "erdos-528",
-    "range": { "startLine": 94, "endLine": 96 },
+    "range": { "startLine": 91, "endLine": 93 },
     "type": "theorem",
     "title": "Submultiplicativity",
     "content": "`submultiplicativity`: $f(m+n, k) \\leq f(m, k) \\cdot f(n, k)$. An $(m+n)$-step SAW can be decomposed into an $m$-step prefix and an $n$-step suffix (translated to start at the origin), but the concatenation of two independent SAWs may self-intersect — hence the inequality.",
@@ -68,7 +68,7 @@
   {
     "id": "ann-e528-limitexists",
     "proofId": "erdos-528",
-    "range": { "startLine": 98, "endLine": 100 },
+    "range": { "startLine": 95, "endLine": 97 },
     "type": "theorem",
     "title": "Hammersley-Morton (1954): Limit Exists",
     "content": "`limit_exists`: $\\exists C > 0$ such that $(f(n,k))^{1/n} \\to C$ as $n \\to \\infty$. This fundamental result follows from submultiplicativity via **Fekete's lemma**: if $\\{a_n\\}$ is submultiplicative ($a_{m+n} \\leq a_m \\cdot a_n$), then $\\lim a_n^{1/n} = \\inf a_n^{1/n}$.",
@@ -79,7 +79,7 @@
   {
     "id": "ann-e528-connective",
     "proofId": "erdos-528",
-    "range": { "startLine": 102, "endLine": 108 },
+    "range": { "startLine": 99, "endLine": 105 },
     "type": "definition",
     "title": "Connective Constant μ_k",
     "content": "`connectiveConstant k` extracts the limit $\\mu_k = \\lim f(n,k)^{1/n}$ using `Classical.choose` on the `limit_exists` axiom. For $k = 0$ (degenerate case), it defaults to 1. The notation `μ` is introduced for readability.",
@@ -90,7 +90,7 @@
   {
     "id": "ann-e528-trivialbounds",
     "proofId": "erdos-528",
-    "range": { "startLine": 124, "endLine": 127 },
+    "range": { "startLine": 120, "endLine": 123 },
     "type": "theorem",
     "title": "Trivial Bounds: k ≤ μ_k ≤ 2k-1",
     "content": "`trivial_bounds` is a **genuine theorem** (not an axiom): $(k : \\mathbb{R}) \\leq \\mu_k \\wedge \\mu_k \\leq 2k - 1$. The proof combines the axiomatized lower and upper bounds via anonymous constructor `⟨⟩`.",
@@ -101,7 +101,7 @@
   {
     "id": "ann-e528-kesten",
     "proofId": "erdos-528",
-    "range": { "startLine": 135, "endLine": 144 },
+    "range": { "startLine": 130, "endLine": 139 },
     "type": "theorem",
     "title": "Kesten's Asymptotic (1963)",
     "content": "`kesten_asymptotic`: $\\mu_k = 2k - 1 - \\frac{1}{2k} + R/k^2$ where $|R| \\leq 1$. The first-order version `kesten_first_order` gives $|\\mu_k - (2k-1)| \\leq 1/k$ for $k \\geq 2$.",
@@ -112,7 +112,7 @@
   {
     "id": "ann-e528-2dbounds",
     "proofId": "erdos-528",
-    "range": { "startLine": 155, "endLine": 167 },
+    "range": { "startLine": 149, "endLine": 161 },
     "type": "theorem",
     "title": "Two-Dimensional Bounds and Computation",
     "content": "Rigorous bounds $2.62 \\leq \\mu_2 \\leq 2.696$ (Conway-Guttmann 1993, Alm 1993) and high-precision computation $|\\mu_2 - 2.6381585303279| < 10^{-12}$ (Jacobsen-Scullard-Guttmann 2016). The `two_d_bounds` theorem is a **genuine proof** combining the two bound axioms.",
@@ -123,7 +123,7 @@
   {
     "id": "ann-e528-largek",
     "proofId": "erdos-528",
-    "range": { "startLine": 178, "endLine": 184 },
+    "range": { "startLine": 171, "endLine": 177 },
     "type": "theorem",
     "title": "Higher-Dimensional Asymptotics",
     "content": "`large_k_limit`: $\\mu_k / k \\to 2$ as $k \\to \\infty$, and `normalized_limit`: $\\mu_k / (2k-1) \\to 1$. These formalize that for high dimensions, the connective constant approaches the trivial upper bound.",
@@ -134,7 +134,7 @@
   {
     "id": "ann-e528-honeycomb",
     "proofId": "erdos-528",
-    "range": { "startLine": 192, "endLine": 206 },
+    "range": { "startLine": 184, "endLine": 198 },
     "type": "theorem",
     "title": "Honeycomb Lattice: Exact Value √(2+√2)",
     "content": "`mu_honeycomb` = $\\sqrt{2 + \\sqrt{2}} \\approx 1.8478$ is the exact connective constant for the honeycomb (hexagonal) lattice. The `honeycomb_exact` axiom asserts this value exists with $0 < \\mu_{\\text{hex}} < 2$.",
@@ -145,7 +145,7 @@
   {
     "id": "ann-e528-conjectures",
     "proofId": "erdos-528",
-    "range": { "startLine": 214, "endLine": 225 },
+    "range": { "startLine": 205, "endLine": 216 },
     "type": "definition",
     "title": "Open Conjectures",
     "content": "`mu2_closed_form_conjecture`: $\\mu_2$ might equal $\\sqrt{(a + b\\sqrt{c})/c}$ for some integers $a, b, c$. `irrationality_conjecture`: $\\mu_k$ is irrational for all $k \\geq 2$. `mu2_irrationality_open_status` formalizes that neither possibility is ruled out.",
@@ -156,7 +156,7 @@
   {
     "id": "ann-e528-counts2d",
     "proofId": "erdos-528",
-    "range": { "startLine": 233, "endLine": 244 },
+    "range": { "startLine": 223, "endLine": 234 },
     "type": "theorem",
     "title": "2D SAW Enumeration and Ratio Convergence",
     "content": "`saw_counts_2d` gives exact SAW counts in 2D: $f(0,2)=1, f(1,2)=4, f(2,2)=12, f(3,2)=36, f(4,2)=100, f(5,2)=284$. The `ratio_convergence` axiom states $f(n+1,2)/f(n,2) \\to \\mu_2$ as $n \\to \\infty$.",
@@ -167,7 +167,7 @@
   {
     "id": "ann-e528-critical",
     "proofId": "erdos-528",
-    "range": { "startLine": 252, "endLine": 263 },
+    "range": { "startLine": 241, "endLine": 252 },
     "type": "theorem",
     "title": "Critical Exponent and 2D Conjecture",
     "content": "`critical_exponent_exists`: $f(n,k) \\sim A \\cdot \\mu_k^n \\cdot n^{\\gamma-1}$ for some $A > 0, \\gamma > 0$. `gamma_2d_conjecture_value`: In 2D, the exponent is conjectured to be $\\gamma = 43/32 = 1.34375$.",
@@ -178,7 +178,7 @@
   {
     "id": "ann-e528-summary",
     "proofId": "erdos-528",
-    "range": { "startLine": 271, "endLine": 284 },
+    "range": { "startLine": 259, "endLine": 271 },
     "type": "theorem",
     "title": "Main Results Summary",
     "content": "`erdos_528_summary` is a **genuine theorem** (not an axiom) combining three results:\n1. $\\forall k \\geq 1$, the limit $C_k$ exists and is positive (Hammersley-Morton)\n2. $\\forall k \\geq 1$, $k \\leq \\mu_k \\leq 2k-1$ (trivial bounds)\n3. $2.62 \\leq \\mu_2 \\leq 2.696$ (rigorous 2D bounds)\n\nThe proof directly applies `limit_exists`, `trivial_bounds`, and `two_d_bounds`.",
