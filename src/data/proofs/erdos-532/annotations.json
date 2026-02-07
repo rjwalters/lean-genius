@@ -145,7 +145,7 @@
   {
     "id": "ann-e532-hales-jewett",
     "proofId": "erdos-532",
-    "range": { "startLine": 267, "endLine": 279 },
+    "range": { "startLine": 253, "endLine": 265 },
     "type": "axiom",
     "title": "Hales-Jewett Connection",
     "content": "Hindman's theorem can also be derived from the **Hales-Jewett theorem**, which guarantees combinatorial lines in high-dimensional cubes under finite colorings. This shows the deep interconnections within Ramsey theory: Hales-Jewett implies Van der Waerden, Hindman, and many other partition regularity results.\n\nAxiomatized because the Hales-Jewett theorem itself is not in Mathlib.",
@@ -156,7 +156,7 @@
   {
     "id": "ann-e532-hindman-numbers",
     "proofId": "erdos-532",
-    "range": { "startLine": 286, "endLine": 308 },
+    "range": { "startLine": 272, "endLine": 294 },
     "type": "definition",
     "title": "Hindman Numbers",
     "content": "**Hindman numbers** HJ(k) give the finite version: the smallest N such that any k-coloring of {1,...,N} has a monochromatic triple {a, b, a+b}. The existence is axiomatized (follows from compactness), and the Hindman number is defined as the least such N via Nat.find. Known: HJ(2) = 5 since any 2-coloring of {1,...,5} must have a monochromatic Schur triple.",
@@ -167,7 +167,7 @@
   {
     "id": "ann-e532-summary",
     "proofId": "erdos-532",
-    "range": { "startLine": 313, "endLine": 340 },
+    "range": { "startLine": 299, "endLine": 326 },
     "type": "theorem",
     "title": "Summary: Problem Solved",
     "content": "The **summary theorem** combines the key results: (1) for any 2-coloring, some color class is an IP set (answering the original question), and (2) for any k-coloring (k ≥ 1), there exists an infinite set A with monochromatic finite sums (the full Hindman theorem). Proved by combining `erdos_532_two_colors` and `hindman_theorem`.",

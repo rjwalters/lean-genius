@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #532: Hindman's Theorem (IP Sets)
 
 Source: https://erdosproblems.com/532
@@ -48,7 +48,7 @@ open Finset BigOperators
 
 namespace Erdos532
 
-/-!
+/-
 ## Part I: Finite Colorings
 -/
 
@@ -65,7 +65,7 @@ A set S ⊆ ℕ is monochromatic under coloring c if all elements have the same 
 def IsMonochromatic {k : ℕ} (c : Coloring k) (S : Set ℕ) : Prop :=
   ∃ color : Fin k, ∀ n ∈ S, c n = color
 
-/-!
+/-
 ## Part II: Finite Subset Sums
 -/
 
@@ -83,7 +83,7 @@ This is the set { Σ_{n ∈ S} n | S ⊆ A, S finite and non-empty }.
 def FiniteSums (A : Set ℕ) : Set ℕ :=
   { n : ℕ | ∃ S : Finset ℕ, S.Nonempty ∧ (↑S : Set ℕ) ⊆ A ∧ finsetSum S = n }
 
-/-!
+/-
 ## Part III: IP Sets
 -/
 
@@ -102,7 +102,7 @@ A set is IP* if it intersects every IP set (the dual notion).
 def IsIPStarSet (S : Set ℕ) : Prop :=
   ∀ T : Set ℕ, IsIPSet T → (S ∩ T).Nonempty
 
-/-!
+/-
 ## Part IV: Hindman's Theorem
 -/
 
@@ -147,7 +147,7 @@ theorem erdos_532_two_colors :
   intro c
   exact hindman_color_class 2 (by norm_num) c
 
-/-!
+/-
 ## Part V: Basic Properties of IP Sets
 -/
 
@@ -199,7 +199,7 @@ theorem finite_sums_add_disjoint {A : Set ℕ} {S T : Finset ℕ}
   · unfold finsetSum
     rw [sum_union hST]
 
-/-!
+/-
 ## Part VI: Ultrafilter Proof (Modern Approach)
 -/
 
@@ -246,22 +246,8 @@ axiom ultrafilter_implies_hindman :
     ∀ c : Coloring k,
       ∃ A : Set ℕ, A.Infinite ∧ IsMonochromatic c (FiniteSums A)
 
-/-!
-## Part VII: Milliken-Taylor Theorem
--/
-
-/--
-**Milliken-Taylor Theorem:**
-A strengthening of Hindman's theorem. For any finite coloring of FS_k
-(k-tuples of sums from an infinite sequence), there exists a monochromatic
-structure.
--/
-axiom milliken_taylor_theorem :
-  ∀ k r : ℕ, k ≥ 1 → r ≥ 1 →
-    True  -- Statement requires more elaborate types
-
-/-!
-## Part VIII: Hales-Jewett Connection
+/-
+## Part VII: Hales-Jewett Connection
 -/
 
 /--
@@ -278,8 +264,8 @@ axiom hales_jewett_implies_hindman :
     ∀ c : Coloring k,
       ∃ A : Set ℕ, A.Infinite ∧ IsMonochromatic c (FiniteSums A)
 
-/-!
-## Part IX: Computational Aspects
+/-
+## Part VIII: Computational Aspects
 -/
 
 /--
@@ -306,8 +292,8 @@ all the same color.
 noncomputable def hindmanNumber (k : ℕ) : ℕ :=
   Nat.find (hindman_finite_exists k)
 
-/-!
-## Part X: Summary
+/-
+## Part IX: Summary
 -/
 
 /--
