@@ -27,7 +27,7 @@ open scoped BigOperators
 
 namespace Erdos16
 
-/-!
+/-
 ## Background
 
 The Romanoff theorem (1934) states that a positive proportion of odd integers
@@ -42,7 +42,7 @@ Examples of exceptional odd integers (OEIS A006285):
 Note: 1 is trivially exceptional (no prime + power of 2 equals 1).
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -61,7 +61,7 @@ def ExceptionalSet : Set ℕ :=
 axiom exceptional_iff (n : ℕ) (hn : Odd n) :
     n ∈ ExceptionalSet ↔ ∀ k : ℕ, k ≥ 1 → 2^k < n → ¬Nat.Prime (n - 2^k)
 
-/-!
+/-
 ## The Romanoff Theorem
 
 Romanoff (1934) proved that a positive density of odd integers are Romanoff.
@@ -89,7 +89,7 @@ axiom romanoff_theorem :
 axiom exceptional_density_less_than_half :
     lowerDensity ExceptionalSet < 1/2
 
-/-!
+/-
 ## Erdős's Covering Congruence Result (1950)
 
 Using covering congruences, Erdős proved that the exceptional set
@@ -114,7 +114,7 @@ axiom erdos_covering_result :
 axiom exceptional_contains_progression :
     ∃ a d : ℕ, d > 0 ∧ ∀ m : ℕ, a + m * d ∈ ExceptionalSet
 
-/-!
+/-
 ## The Conjecture and Its Disproof
 
 Erdős conjectured (calling it "rather silly") that the exceptional set
@@ -144,7 +144,7 @@ axiom exceptional_complex_structure :
       lowerDensity (ExceptionalSet \ { n | ∃ m, n = a + m * d }) > 0 ∨
       ¬(∀ m : ℕ, a + m * d ∈ ExceptionalSet)
 
-/-!
+/-
 ## Known Exceptional Numbers
 
 The first few odd integers not of the form 2^k + p (OEIS A006285):
@@ -169,7 +169,7 @@ axiom exceptional_149 : 149 ∈ ExceptionalSet
 /-- 251 is in the exceptional set. -/
 axiom exceptional_251 : 251 ∈ ExceptionalSet
 
-/-!
+/-
 ## Connection to Covering Congruences
 
 Covering congruences are systems of arithmetic progressions that
@@ -186,7 +186,7 @@ axiom covering_implies_composite :
       ∀ k : ℕ, k ≥ 1 → 2^k < n →
         ∃ p : ℕ, Nat.Prime p ∧ p < 100 ∧ p ∣ (n - 2^k)
 
-/-!
+/-
 ## Density Bounds
 
 More precise bounds on the density of the exceptional set.
@@ -204,7 +204,7 @@ axiom exceptional_positive_density :
 axiom exceptional_density_upper_bound :
     lowerDensity ExceptionalSet < 1/10
 
-/-!
+/-
 ## Related Problems
 
 This problem is part of a family about representations n = 2^k + p.
@@ -227,7 +227,7 @@ def Erdos11Question : Prop :=
     (Finset.filter (fun k => @Decidable.decide (∃ p, Nat.Prime p ∧ n = 2^k + p) (Classical.dec _))
       (Finset.range n)).card ≤ C
 
-/-!
+/-
 ## Why Chen's Result is Significant
 
 Chen's disproof shows that the exceptional set has rich structure
@@ -247,7 +247,7 @@ axiom multiple_progressions :
       (∀ i j, i ≠ j → (progs i).2 ≠ (progs j).2) ∧
       (∀ i, lowerDensity (ExceptionalSet ∩ { n | ∃ m, n = (progs i).1 + m * (progs i).2 }) > 0)
 
-/-!
+/-
 ## Summary
 
 **Problem Status: SOLVED (Disproved)**
