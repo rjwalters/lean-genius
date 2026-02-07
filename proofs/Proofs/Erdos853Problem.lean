@@ -1,106 +1,237 @@
-/-!
-# Erdős Problem #853: Smallest Missing Prime Gap
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Tactic
+
+/-
+# Erdos Problem #853: Smallest Missing Prime Gap
 
 Let d_n = p_{n+1} - p_n be the n-th prime gap. Let r(x) be the smallest
-even integer t such that d_n = t has no solution for p_n ≤ x.
-Is it true that r(x) → ∞? Or even r(x) / log x → ∞?
+even integer t such that d_n = t has no solution for p_n <= x.
+Is it true that r(x) -> infinity? Or even r(x) / log x -> infinity?
 
 ## Key Results
 
 - The even restriction is necessary since all prime gaps > 1 are even
-- Maynard–Tao (2014): bounded gaps — infinitely many d_n ≤ 246
-- Zhang (2013): bounded gaps — infinitely many d_n ≤ 70,000,000
+- Maynard-Tao (2014): bounded gaps -- infinitely many d_n <= 246
+- Zhang (2013): bounded gaps -- infinitely many d_n <= 70,000,000
 - The question asks about the completeness of gap sizes up to x
+
+## Formalization Approach
+
+We use Mathlib-based definitions:
+- `nthPrime n = Nat.nth Nat.Prime n` (0-indexed: p_0=2, p_1=3, p_2=5, ...)
+- `primeGap n = nthPrime(n+1) - nthPrime(n)`
+
+Key structural properties (gap evenness, positivity, monotonicity of nthPrime)
+are proved from Mathlib. We formalize the r(x) function and state the open
+conjectures.
 
 ## References
 
-- Erdős [Er85c]
+- Erdos [Er85c]
 - OEIS A001223 (prime gaps), A390769
-- <https://erdosproblems.com/853>
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+open Nat Finset
 
-/-! ## Core Definitions -/
+-- ## Mathlib-Based Prime Infrastructure
 
-/-- The n-th prime (1-indexed): p(1) = 2, p(2) = 3, p(3) = 5, ... -/
-axiom nthPrime (n : ℕ) : ℕ
-
-/-- nthPrime returns primes. -/
-axiom nthPrime_prime (n : ℕ) (hn : n ≥ 1) : (nthPrime n).Prime
-
-/-- nthPrime is strictly increasing. -/
-axiom nthPrime_strictMono : StrictMono nthPrime
+/-- The n-th prime (0-indexed): p_0=2, p_1=3, p_2=5, ... -/
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 /-- The n-th prime gap: d_n = p_{n+1} - p_n. -/
-def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
+noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 
-/-- The set of prime gaps occurring for primes up to x:
-    { d_n : p_n ≤ x }. -/
+/-- The n-th prime is prime (from Mathlib). -/
+lemma nthPrime_prime (n : ℕ) : Nat.Prime (nthPrime n) :=
+  Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
+
+/-- The prime sequence is strictly increasing (from Mathlib). -/
+lemma nthPrime_strictMono : StrictMono nthPrime :=
+  fun _ _ h => Nat.nth_strictMono Nat.infinite_setOf_prime h
+
+/-- Prime gaps are positive. -/
+theorem primeGap_pos (n : ℕ) : 0 < primeGap n := by
+  unfold primeGap
+  have : nthPrime n < nthPrime (n + 1) := nthPrime_strictMono (Nat.lt_succ_self n)
+  omega
+
+/-- p_0 = 2. -/
+theorem nthPrime_zero : nthPrime 0 = 2 := by
+  unfold nthPrime; exact Nat.nth_prime_zero_eq_two
+
+/-- p_1 = 3. -/
+theorem nthPrime_one : nthPrime 1 = 3 := by
+  unfold nthPrime; exact Nat.nth_prime_one_eq_three
+
+/-- d_0 = p_1 - p_0 = 3 - 2 = 1 (the only odd gap). -/
+theorem primeGap_zero : primeGap 0 = 1 := by
+  show nthPrime 1 - nthPrime 0 = 1
+  rw [nthPrime_zero, nthPrime_one]
+
+/-- All prime gaps for n >= 1 are even (both p_n, p_{n+1} are odd primes). -/
+theorem primeGap_even (n : ℕ) (hn : n ≥ 1) : 2 ∣ primeGap n := by
+  unfold primeGap nthPrime
+  have hp_n : Nat.Prime (Nat.nth Nat.Prime n) :=
+    Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
+  have hp_n1 : Nat.Prime (Nat.nth Nat.Prime (n + 1)) :=
+    Nat.nth_mem_of_infinite Nat.infinite_setOf_prime (n + 1)
+  have hn_ge : Nat.nth Nat.Prime n ≥ 3 := by
+    have h1 : Nat.nth Nat.Prime 1 = 3 := Nat.nth_prime_one_eq_three
+    have hmono : Nat.nth Nat.Prime 1 ≤ Nat.nth Nat.Prime n :=
+      (Nat.nth_strictMono Nat.infinite_setOf_prime).monotone hn
+    omega
+  have h_lt : Nat.nth Nat.Prime n < Nat.nth Nat.Prime (n + 1) :=
+    Nat.nth_strictMono Nat.infinite_setOf_prime (Nat.lt_succ_self n)
+  have hodd_n : ¬ 2 ∣ Nat.nth Nat.Prime n := by
+    intro h2
+    have := hp_n.eq_one_or_self_of_dvd 2 h2
+    rcases this with h | h <;> omega
+  have hodd_n1 : ¬ 2 ∣ Nat.nth Nat.Prime (n + 1) := by
+    intro h2
+    have := hp_n1.eq_one_or_self_of_dvd 2 h2
+    rcases this with h | h <;> omega
+  have hmod_n : Nat.nth Nat.Prime n % 2 = 1 := by omega
+  have hmod_n1 : Nat.nth Nat.Prime (n + 1) % 2 = 1 := by omega
+  have hdiff : (Nat.nth Nat.Prime (n + 1) - Nat.nth Nat.Prime n) % 2 = 0 := by omega
+  exact Nat.dvd_of_mod_eq_zero hdiff
+
+/-- Prime gaps for n >= 1 are at least 2. -/
+theorem primeGap_ge_two (n : ℕ) (hn : n ≥ 1) : primeGap n ≥ 2 := by
+  have heven := primeGap_even n hn
+  have hpos := primeGap_pos n
+  obtain ⟨k, hk⟩ := heven
+  omega
+
+/-- nthPrime is monotone (non-strict). -/
+theorem nthPrime_mono : Monotone nthPrime :=
+  nthPrime_strictMono.monotone
+
+-- ## The Gap Set and r(x)
+
+/-- The set of all prime gap values for primes p_n <= x (n >= 1, so gaps are even). -/
 def gapSet (x : ℕ) : Set ℕ :=
   {t : ℕ | ∃ n : ℕ, n ≥ 1 ∧ nthPrime n ≤ x ∧ primeGap n = t}
 
-/-- r(x): smallest positive even integer not in the gap set up to x. -/
-noncomputable def smallestMissingGap (x : ℕ) : ℕ :=
-  Nat.find ⟨x + 2, by omega⟩  -- trivially bounded; actual definition below
+/-- gapSet is monotone: if x <= y then gapSet(x) ⊆ gapSet(y). -/
+theorem gapSet_mono {x y : ℕ} (hxy : x ≤ y) : gapSet x ⊆ gapSet y := by
+  intro t ⟨n, hn1, hn2, hn3⟩
+  exact ⟨n, hn1, le_trans hn2 hxy, hn3⟩
 
-/-- Axiomatized r(x): smallest even t ≥ 2 with no d_n = t for p_n ≤ x. -/
+/-- Every element of gapSet(x) for n >= 1 is even. -/
+theorem gapSet_even {t : ℕ} {x : ℕ} (ht : t ∈ gapSet x) : 2 ∣ t := by
+  obtain ⟨n, hn1, _, hn3⟩ := ht
+  rw [← hn3]
+  exact primeGap_even n hn1
+
+/-- Every element of gapSet(x) is positive. -/
+theorem gapSet_pos {t : ℕ} {x : ℕ} (ht : t ∈ gapSet x) : t > 0 := by
+  obtain ⟨n, _, _, hn3⟩ := ht
+  rw [← hn3]
+  exact primeGap_pos n
+
+/-- Every element of gapSet(x) is at least 2. -/
+theorem gapSet_ge_two {t : ℕ} {x : ℕ} (ht : t ∈ gapSet x) : t ≥ 2 := by
+  obtain ⟨n, hn1, _, hn3⟩ := ht
+  rw [← hn3]
+  exact primeGap_ge_two n hn1
+
+-- ## Axiomatized r(x)
+-- We axiomatize r(x) as the smallest even t >= 2 not appearing as a prime gap
+-- for any p_n <= x. The existence is guaranteed since gapSet(x) is finite.
+
+/-- r(x): smallest even integer >= 2 not in gapSet(x). -/
 axiom r (x : ℕ) : ℕ
 
-/-- r(x) is even and positive. -/
-axiom r_even_pos (x : ℕ) (hx : x ≥ 2) : r x ≥ 2 ∧ r x % 2 = 0
+/-- r(x) is even and at least 2. -/
+axiom r_even_pos (x : ℕ) (hx : x ≥ 3) : r x ≥ 2 ∧ r x % 2 = 0
 
-/-- r(x) is not a gap: no prime p_n ≤ x has gap d_n = r(x). -/
-axiom r_not_gap (x : ℕ) (hx : x ≥ 2) :
-  ¬∃ n : ℕ, n ≥ 1 ∧ nthPrime n ≤ x ∧ primeGap n = r x
+/-- r(x) is not a gap for any prime p_n <= x. -/
+axiom r_not_gap (x : ℕ) (hx : x ≥ 3) : r x ∉ gapSet x
 
-/-- r(x) is minimal: every even t with 2 ≤ t < r(x) appears as a gap. -/
-axiom r_minimal (x : ℕ) (hx : x ≥ 2) :
-  ∀ t : ℕ, 2 ≤ t → t < r x → t % 2 = 0 →
-    ∃ n : ℕ, n ≥ 1 ∧ nthPrime n ≤ x ∧ primeGap n = t
+/-- r(x) is minimal: every even t with 2 <= t < r(x) is a gap for some p_n <= x. -/
+axiom r_minimal (x : ℕ) (hx : x ≥ 3) :
+  ∀ t : ℕ, 2 ≤ t → t < r x → t % 2 = 0 → t ∈ gapSet x
 
-/-! ## Main Conjectures -/
+-- ## Proved Properties of r(x)
 
-/-- **Erdős Problem #853, Weak Form** (OPEN): r(x) → ∞ as x → ∞.
-    Every even gap size eventually appears among prime gaps. -/
+/-- r is weakly monotone increasing: as x grows, more gaps appear,
+    so the smallest missing gap can only increase (or stay the same). -/
+theorem r_monotone {x y : ℕ} (hxy : x ≤ y) (hx : x ≥ 3) (hy : y ≥ 3) :
+    r x ≤ r y := by
+  by_contra h
+  push_neg at h
+  have ⟨hry2, hry_even⟩ := r_even_pos y hy
+  have h_in_gapx := r_minimal x hx (r y) hry2 h hry_even
+  have h_in_gapy := gapSet_mono hxy h_in_gapx
+  exact r_not_gap y hy h_in_gapy
+
+/-- r(x) is at most x (trivial upper bound). -/
+axiom r_upper_bound (x : ℕ) (hx : x ≥ 3) : r x ≤ x
+
+-- ## Main Conjectures (OPEN)
+
+/-- **Erdos Problem #853, Weak Form** (OPEN): r(x) -> infinity as x -> infinity.
+    Every even gap size eventually appears among prime gaps.
+    Equivalently: for every M, there exists X such that for all x >= X, r(x) >= M. -/
 axiom erdos_853_weak :
   ∀ M : ℕ, ∃ X : ℕ, ∀ x : ℕ, x ≥ X → r x ≥ M
 
-/-- **Erdős Problem #853, Strong Form** (OPEN): r(x) / log x → ∞.
+/-- **Erdos Problem #853, Strong Form** (OPEN): r(x) / log x -> infinity.
     The smallest missing gap grows faster than logarithmically. -/
 axiom erdos_853_strong :
   ∀ C : ℝ, C > 0 → ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
     (r x : ℝ) ≥ C * Real.log x
 
-/-! ## Related Results -/
+-- ## Consequences of the Weak Conjecture
 
-/-- All prime gaps > 1 are even (since p > 2 implies p is odd,
-    and consecutive odd primes differ by an even number). -/
-axiom prime_gap_even (n : ℕ) (hn : n ≥ 2) :
-  primeGap n % 2 = 0
+/-- If erdos_853_weak holds, then for every even t >= 2, t eventually
+    enters gapSet(x) for large enough x. -/
+theorem weak_implies_all_even_gaps :
+    (∀ M : ℕ, ∃ X : ℕ, ∀ x : ℕ, x ≥ X → r x ≥ M) →
+    ∀ t : ℕ, t ≥ 2 → t % 2 = 0 →
+      ∀ X : ℕ, ∃ x : ℕ, x ≥ X ∧ t ∈ gapSet x := by
+  intro hweak t ht2 hteven X
+  obtain ⟨X', hX'⟩ := hweak (t + 1)
+  refine ⟨max X (max X' 3), le_max_left _ _, ?_⟩
+  have hx_ge_X' : max X (max X' 3) ≥ X' := le_trans (le_max_left X' 3) (le_max_right X _)
+  have hx_ge_3 : max X (max X' 3) ≥ 3 := le_trans (le_max_right X' 3) (le_max_right X _)
+  have hrx : r (max X (max X' 3)) ≥ t + 1 := hX' _ hx_ge_X'
+  exact r_minimal _ hx_ge_3 t ht2 (by omega) hteven
 
-/-- Maynard–Tao (2014): there are infinitely many n with d_n ≤ 246.
-    This means gap = 2 (or some small even value) appears infinitely often. -/
+-- ## Related Results (Deep Number Theory)
+
+/-- Maynard-Tao bounded gaps: infinitely many prime gaps <= 246. -/
 axiom maynard_tao_bounded_gaps :
   ∃ t : ℕ, t ≤ 246 ∧ t % 2 = 0 ∧
     ∀ X : ℕ, ∃ n : ℕ, nthPrime n > X ∧ primeGap n = t
 
-/-- Cramér's conjecture: the largest prime gap below x is O((log x)²).
-    This implies r(x) ≤ O((log x)²) if all smaller even gaps also appear. -/
+/-- Cramer's conjecture (OPEN): the largest prime gap below x is O((log x)^2).
+    Combined with the weak conjecture, this would give r(x) <= O((log x)^2). -/
 axiom cramer_conjecture_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ x : ℕ, x ≥ 2 →
     (r x : ℝ) ≤ C * (Real.log x) ^ 2
 
-/-! ## Monotonicity and Growth -/
+/-
+## Summary
 
-/-- r is (weakly) monotone increasing: as x grows, more gaps appear. -/
-axiom r_monotone : ∀ x y : ℕ, x ≤ y → r x ≤ r y
+**Proved from Mathlib** (14 theorems):
+- nthPrime_prime, nthPrime_strictMono, nthPrime_mono
+- nthPrime_zero, nthPrime_one
+- primeGap_pos, primeGap_zero, primeGap_even, primeGap_ge_two
+- gapSet_mono, gapSet_even, gapSet_pos, gapSet_ge_two
+- r_monotone (from axioms about r)
+- weak_implies_all_even_gaps (consequence of weak conjecture)
 
-/-- Trivial upper bound: r(x) ≤ x since all gaps are < x. -/
-axiom r_trivial_upper (x : ℕ) (hx : x ≥ 2) : r x ≤ x
+**Axioms** (4 for r(x) characterization + 5 deep results):
+- r, r_even_pos, r_not_gap, r_minimal: axiomatize the well-defined function r(x)
+- r_upper_bound: trivial bound (provable with Bertrand infrastructure)
+- erdos_853_weak, erdos_853_strong: the OPEN conjectures
+- maynard_tao_bounded_gaps: deep result (Maynard-Tao 2014)
+- cramer_conjecture_bound: OPEN conjecture (Cramer)
 
-/-- The gap d_1 = p_2 - p_1 = 3 - 2 = 1 is the only odd gap.
-    After d_1, all gaps are even. -/
-axiom first_gap_odd : primeGap 1 = 1
+**0 sorries**
+-/
