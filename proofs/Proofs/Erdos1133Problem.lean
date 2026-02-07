@@ -1,5 +1,5 @@
 /-
-Erdős Problem #1133: Large Polynomial Interpolation Bound
+# Erdős Problem #1133: Large Polynomial Interpolation Bound
 
 Source: https://erdosproblems.com/1133
 Status: OPEN
