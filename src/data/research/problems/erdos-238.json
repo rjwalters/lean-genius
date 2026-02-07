@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "VERIFIED",
     "since": "2026-01-12T16:08:36.613Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "All provable results verified",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Fixed Aristotle compat, proved 3 new theorems, fixed Nat.nth import. Remaining axioms are deep analytic number theory.",
+    "builtItems": [
+      "theorem large_gaps_eventually_dominate (from average_gap_grows axiom)",
+      "theorem partial_weaker_than_full (structural implication)",
+      "theorem conjecture_vs_negation (negation is incompatible with conjecture)"
+    ],
+    "insights": [
+      "Fixed Nat.nth syntax: use Nat.nth Nat.Prime n (not n.nth Nat.Prime)",
+      "Import Mathlib.Data.Nat.Prime.Nth required for Nat.nth",
+      "All section doc headers replaced with -- comments for Aristotle compatibility",
+      "large_gaps_common was a True placeholder - replaced with real theorem",
+      "partial_weaker_than_full proved: mainConjecture implies partial result (pick c1=1)",
+      "conjecture_vs_negation proved: mainConjecture and conjectureNegation contradictory",
+      "consecutivePrimes needs noncomputable since it depends on nthPrime",
+      "Remaining axioms require PNT or deep analytic number theory"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "erdos_partial_result requires deep analytic NT",
+      "average_gap_grows follows from PNT (not in Docker Mathlib)",
+      "conjecture_implies_run_growth could be proved with sSup properties"
+    ],
     "markdown": "# Erdős #238 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c_1,c_2>0$. Is it true that, for any sufficiently large $x$, there exist more than $c_1\\log x$ many consecutive primes $\\leq x$ such that the difference between any two is $>c_2$?\n\n\n\nThis is well-known if $c_1$ is sufficiently small.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #237\n- Problem #239\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],
