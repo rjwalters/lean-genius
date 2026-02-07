@@ -1,137 +1,90 @@
 [
   {
-    "id": "ann-195-overview",
+    "id": "ann-e195-header",
     "proofId": "erdos-195",
-    "range": { "startLine": 1, "endLine": 32 },
+    "range": { "startLine": 1, "endLine": 20 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #195:**\n\nWhat is the largest k such that every permutation of ℤ has a k-term monotone arithmetic progression?\n\n**Known Bounds:**\n- k ≤ 4 (Adenwalla 2022)\n- k ≥ 3 (believed)\n\n**Status:** OPEN - the gap between 3 and 4 is unresolved.",
-    "significance": "critical"
+    "content": "**Erdős Problem #195: Monotone Arithmetic Progressions in Permutations**\n\nPosed by Erdős and Graham around 1979-1980, this problem asks: what is the largest k such that every permutation of ℤ must contain a monotone k-term arithmetic progression?\n\n**Known bounds:** 3 ≤ k ≤ 4. Geneson (2019) first proved k ≤ 5 by constructing a permutation avoiding 6-MAPs. Adenwalla (2022) improved this to k ≤ 4. The lower bound k ≥ 3 is believed true but non-trivial.\n\nThe exact value remains **OPEN** — determining whether k = 3 or k = 4 is the central question.",
+    "mathContext": "A monotone arithmetic progression (MAP) in a permutation f is a sequence x₁ < x₂ < ... < xₖ forming an AP such that the positions f⁻¹(xᵢ) are also increasing. This combines arithmetic structure (evenly spaced values) with order structure (increasing positions).",
+    "significance": "critical",
+    "relatedConcepts": ["Permutations of ℤ", "Arithmetic progressions", "Ramsey theory", "Unavoidable patterns"]
   },
   {
-    "id": "ann-195-permutation",
+    "id": "ann-e195-definitions",
     "proofId": "erdos-195",
-    "range": { "startLine": 46, "endLine": 51 },
+    "range": { "startLine": 28, "endLine": 55 },
     "type": "definition",
-    "title": "IsPermutation",
-    "content": "**Permutation of ℤ:**\n\nA bijection f : ℤ → ℤ.\n\nThis represents arranging all integers in a sequence (possibly doubly-infinite).",
-    "significance": "key"
+    "title": "Core Definitions",
+    "content": "**IsPermutation f:** A bijection f : ℤ → ℤ, using Mathlib's Function.Bijective.\n\n**IsAP xs:** An arithmetic progression — a list of length ≥ 2 with constant nonzero common difference d. The requirement d ≠ 0 excludes constant sequences.\n\n**IsMonotoneAP f xs:** An AP that is also monotone in the permutation. Three conditions: (1) xs forms an AP, (2) xs is strictly increasing (Chain'), (3) the pre-images under f are also increasing.\n\n**HasMAP f k / AvoidsMAP f k:** Whether permutation f contains (or avoids) a k-term MAP.",
+    "mathContext": "The definition of IsMonotoneAP uses existential witnesses for positions rather than requiring f to be invertible, avoiding the need to construct an explicit inverse function. The Chain' predicate from Mathlib handles the strict monotonicity of values.",
+    "significance": "critical",
+    "relatedConcepts": ["Function.Bijective", "List.Chain'", "Arithmetic sequences"]
   },
   {
-    "id": "ann-195-ap",
+    "id": "ann-e195-problem",
     "proofId": "erdos-195",
-    "range": { "startLine": 53, "endLine": 59 },
+    "range": { "startLine": 57, "endLine": 64 },
     "type": "definition",
-    "title": "IsArithmeticProgression",
-    "content": "**Arithmetic Progression:**\n\nx₁, x₂, ..., xₖ where consecutive differences are constant: xᵢ₊₁ - xᵢ = d.\n\nExamples: (2, 5, 8), (10, 7, 4, 1), (3, 3, 3)",
-    "significance": "key"
+    "title": "LargestUnavoidableMAP",
+    "content": "**LargestUnavoidableMAP:** The formal characterization of the answer k. It asserts the existence of k such that:\n1. Every permutation has a k-MAP (universality)\n2. Some permutation avoids (k+1)-MAPs (optimality)\n\nThis is the precise formalization of 'largest k such that every permutation has a k-MAP'. The answer satisfies 3 ≤ k ≤ 4 but the exact value is unknown.",
+    "mathContext": "The existential quantifier structure ∃ k captures that we seek a specific number. The two conjuncts correspond to k being both achievable (lower bound) and optimal (upper bound).",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal characterization", "Universal quantification", "Optimality"]
   },
   {
-    "id": "ann-195-map",
+    "id": "ann-e195-upper-bounds",
     "proofId": "erdos-195",
-    "range": { "startLine": 68, "endLine": 78 },
-    "type": "definition",
-    "title": "IsMonotoneAP",
-    "content": "**Monotone Arithmetic Progression (MAP):**\n\nAn AP x₁ < x₂ < ... < xₖ that appears in increasing order in the permutation.\n\nBoth conditions must hold:\n1. Values form an AP\n2. Their positions in the permutation are increasing",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-195-hasmap",
-    "proofId": "erdos-195",
-    "range": { "startLine": 80, "endLine": 92 },
-    "type": "definition",
-    "title": "HasMAP and AvoidsMAP",
-    "content": "**Has/Avoids k-MAP:**\n\nHasMAP f k: The permutation f contains a k-term MAP.\n\nAvoidsMAP f k: The permutation f has no k-term MAP.\n\nThe goal is to find the largest k where no permutation avoids k-MAPs.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-195-kz",
-    "proofId": "erdos-195",
-    "range": { "startLine": 109, "endLine": 114 },
-    "type": "definition",
-    "title": "kZ",
-    "content": "**k(ℤ):**\n\nThe largest k such that every permutation of ℤ has a k-term MAP.\n\nThis is the answer we seek. Currently: 3 ≤ k(ℤ) ≤ 4.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-195-geneson",
-    "proofId": "erdos-195",
-    "range": { "startLine": 120, "endLine": 125 },
+    "range": { "startLine": 66, "endLine": 76 },
     "type": "axiom",
-    "title": "Geneson (2019)",
-    "content": "**Geneson's Upper Bound:**\n\nk ≤ 5: There exists a permutation of ℤ avoiding 6-term MAPs.\n\nThis was the first non-trivial upper bound.",
-    "significance": "key"
+    "title": "Upper Bounds: Geneson and Adenwalla",
+    "content": "**geneson_2019:** There exists a permutation of ℤ avoiding 6-term MAPs (k ≤ 5). Geneson's construction uses a clever interlacing of positive and negative integers in blocks.\n\n**adenwalla_2022:** There exists a permutation of ℤ avoiding 5-term MAPs (k ≤ 4). Adenwalla refined Geneson's approach to break all 5-MAPs.\n\nBoth are axiomatized because the explicit constructions are complex and verification requires detailed combinatorial arguments about block orderings.",
+    "mathContext": "The constructions work by arranging integers in blocks that alternate between positive and negative values. The block sizes and orderings are chosen so that any long AP spanning multiple blocks cannot have all its positions in increasing order.",
+    "significance": "critical",
+    "relatedConcepts": ["Explicit constructions", "Block interlacing", "Avoidance constructions"]
   },
   {
-    "id": "ann-195-adenwalla",
+    "id": "ann-e195-lower-bound",
     "proofId": "erdos-195",
-    "range": { "startLine": 127, "endLine": 132 },
+    "range": { "startLine": 78, "endLine": 83 },
     "type": "axiom",
-    "title": "Adenwalla (2022)",
-    "content": "**Adenwalla's Improvement:**\n\nk ≤ 4: There exists a permutation of ℤ avoiding 5-term MAPs.\n\nThis is the current best upper bound.",
-    "significance": "critical"
+    "title": "Lower Bound: 3-MAPs Are Unavoidable",
+    "content": "**trivial_lower_bound:** Every permutation of ℤ contains a 3-term MAP. This is believed to be true and gives k ≥ 3.\n\nDespite the name 'trivial', this is actually non-trivial to prove formally — it requires a careful pigeonhole argument on infinite permutations. The term 'trivial' refers to 3 being the smallest interesting case (2-MAPs are obviously unavoidable).",
+    "mathContext": "For finite permutations of {1,...,n}, the Erdős-Szekeres theorem guarantees long monotone subsequences, but the AP constraint is more restrictive. For infinite permutations, the argument requires showing that the AP structure cannot be entirely disrupted.",
+    "significance": "key",
+    "relatedConcepts": ["Pigeonhole principle", "Infinite combinatorics", "Erdős-Szekeres theorem"]
   },
   {
-    "id": "ann-195-lower",
+    "id": "ann-e195-gap",
     "proofId": "erdos-195",
-    "range": { "startLine": 145, "endLine": 151 },
-    "type": "axiom",
-    "title": "Lower Bound",
-    "content": "**Lower Bound:**\n\nEvery permutation of ℤ has a 3-term MAP.\n\nThis needs verification - showing all permutations have 3-MAPs is non-trivial.",
-    "significance": "key"
+    "range": { "startLine": 85, "endLine": 91 },
+    "type": "definition",
+    "title": "The Open Question",
+    "content": "**OpenQuestion:** Is k = 3 or k = 4? Formalized as a disjunction:\n- Either every permutation has a 4-MAP (meaning k ≥ 4, so k = 4), or\n- Some permutation avoids 4-MAPs (meaning k < 4, so k = 3).\n\nBy the law of excluded middle, one of these must hold — but which one is the open question. Resolving this would close Erdős Problem #195.",
+    "mathContext": "The formalization uses Prop-level disjunction (∨). In classical logic this is always true, but the mathematical content is determining which disjunct holds. This is a clean separation of the logical structure from the mathematical difficulty.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problems", "Disjunctive formalization", "Classical logic"]
   },
   {
-    "id": "ann-195-gap",
+    "id": "ann-e195-examples",
     "proofId": "erdos-195",
-    "range": { "startLine": 164, "endLine": 176 },
+    "range": { "startLine": 106, "endLine": 121 },
     "type": "theorem",
-    "title": "current_bounds",
-    "content": "**The Open Gap:**\n\n3 ≤ k(ℤ) ≤ 4\n\nIs k = 3 or k = 4?\n\nThis is the core open question of Problem #195.",
-    "significance": "critical"
+    "title": "Concrete Permutation Examples",
+    "content": "**identityPerm / identity_is_perm:** The identity f(n) = n is a permutation, proved via Function.bijective_id. Every AP is trivially monotone under the identity, so this permutation has k-MAPs for all k.\n\n**negationPerm / negation_is_perm:** The negation f(n) = -n is a permutation. Injectivity follows from negation being cancellative; surjectivity from -(-b) = b. Under negation, an increasing AP becomes decreasing in position, so this permutation has different MAP structure than the identity.\n\nThese examples verify that the definitions are instantiatable and non-vacuous.",
+    "mathContext": "The negation permutation proof is constructive: injectivity by simp on the negation, surjectivity by providing -b as the witness. These are the simplest non-trivial permutations and serve as sanity checks for the formalization.",
+    "significance": "key",
+    "relatedConcepts": ["Function.bijective_id", "Constructive witnesses", "Definition validation"]
   },
   {
-    "id": "ann-195-constructions",
+    "id": "ann-e195-summary",
     "proofId": "erdos-195",
-    "range": { "startLine": 182, "endLine": 197 },
-    "type": "axiom",
-    "title": "Construction Ideas",
-    "content": "**Geneson & Adenwalla Constructions:**\n\nBoth use clever interlacing of positive and negative integers.\n\nThe idea: alternate blocks in ways that break long APs from being monotone.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-195-finite",
-    "proofId": "erdos-195",
-    "range": { "startLine": 203, "endLine": 210 },
-    "type": "definition",
-    "title": "FiniteVersion",
-    "content": "**Finite Version (Problem #194):**\n\nFor permutations of {1, ..., n}, similar questions apply.\n\nThe finite case is related but distinct from the infinite case.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-195-es",
-    "proofId": "erdos-195",
-    "range": { "startLine": 221, "endLine": 229 },
-    "type": "axiom",
-    "title": "Erdős-Szekeres Connection",
-    "content": "**Erdős-Szekeres Theorem:**\n\nAny sequence of n² + 1 distinct numbers has a monotone subsequence of length n + 1.\n\nThis guarantees long monotone subsequences, but the AP constraint is much stronger.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-195-identity",
-    "proofId": "erdos-195",
-    "range": { "startLine": 260, "endLine": 267 },
-    "type": "definition",
-    "title": "identityPerm",
-    "content": "**Identity Permutation:**\n\nf(n) = n: Every AP is automatically monotone.\n\nThis trivially has all k-MAPs for any k.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-195-summary",
-    "proofId": "erdos-195",
-    "range": { "startLine": 286, "endLine": 308 },
+    "range": { "startLine": 123, "endLine": 134 },
     "type": "theorem",
-    "title": "erdos_195_summary",
-    "content": "**Complete Summary:**\n\nErdős Problem #195 is **OPEN**.\n\n**QUESTION:** Largest k where every permutation of ℤ has a k-MAP?\n\n**KNOWN:** 3 ≤ k ≤ 4\n\n**GAP:** Is k = 3 or k = 4?\n\n**KEY RESULTS:**\n- Geneson (2019): k ≤ 5\n- Adenwalla (2022): k ≤ 4",
-    "significance": "critical"
+    "title": "Summary Theorem",
+    "content": "**erdos_195_summary:** Combines both bounds into a single proved statement:\n- Upper bound: ∃ f, IsPermutation f ∧ AvoidsMAP f 5 (from adenwalla_2022)\n- Lower bound: ∀ f, IsPermutation f → HasMAP f 3 (from trivial_lower_bound)\n\nThe proof is `exact ⟨adenwalla_2022, trivial_lower_bound⟩`, directly packaging the two axioms. This summary captures the complete state of knowledge: 3 ≤ k ≤ 4, with the exact value OPEN.",
+    "mathContext": "Summary theorems serve as entry points for understanding the formalization. By combining bounds into a conjunction, we make explicit that both directions are established, with only the gap remaining.",
+    "significance": "critical",
+    "relatedConcepts": ["Axiom packaging", "State of knowledge", "Bound combination"]
   }
 ]
