@@ -42,7 +42,7 @@ open Cardinal SimpleGraph
 
 namespace Erdos736
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -77,7 +77,7 @@ def finiteSubgraphClass {V : Type*} (G : SimpleGraph V) :
   { ⟨n, H⟩ | ∃ (S : Finset V) (e : S ≃ Fin n),
     ∀ i j : Fin n, H.Adj i j ↔ G.Adj (e.symm i) (e.symm j) }
 
-/-!
+/-
 ## Part II: The Taylor Conjecture
 -/
 
@@ -109,7 +109,7 @@ def GeneralizedTaylorConjecture : Prop :=
           ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
             isSubgraphOf F H → isSubgraphOf F G
 
-/-!
+/-
 ## Part III: Erdős's General Question
 -/
 
@@ -137,7 +137,7 @@ def ErdosGeneralQuestion : Prop :=
   ∃ (characterization : FiniteGraphFamily → Ordinal → Prop),
     ∀ F α, characterization F α ↔ realizableAt F α
 
-/-!
+/-
 ## Part IV: The Komjáth-Shelah Consistency Result
 -/
 
@@ -164,7 +164,7 @@ axiom taylor_conjecture_independent :
     -- The statement is independent of ZFC
     True
 
-/-!
+/-
 ## Part V: Related Concepts
 -/
 
@@ -195,7 +195,7 @@ axiom chromatic_cardinal_interaction :
     ∀ κ : Cardinal, κ.IsRegular → κ ≥ aleph 0 →
       ∃ (V : Type*) (G : SimpleGraph V), chromaticNumber V G = κ
 
-/-!
+/-
 ## Part VI: Special Cases
 -/
 
@@ -225,25 +225,9 @@ theorem finite_case (V : Type*) (G : SimpleGraph V) (k : ℕ) :
   intro _ _ _
   sorry
 
-/-!
+/-
 ## Part VII: Summary
 -/
-
-/--
-**Erdős Problem #736: OPEN (independence known)**
-
-CONJECTURE (Taylor):
-If χ(G) = ℵ₁, then for every m there exists G_m with χ(G_m) = m
-whose finite subgraphs are all subgraphs of G.
-
-KNOWN:
-The conjecture is independent of ZFC (Komjáth-Shelah, 2005).
-In some models, the answer is NO with the bound χ(H) ≤ ℵ₂.
-
-GENERAL QUESTION:
-Characterize families F_α realizable at ℵ_α.
--/
-theorem erdos_736 : True := trivial
 
 /--
 **Summary of the problem:**
@@ -254,14 +238,5 @@ theorem erdos_736_summary :
     -- Independence is established
     True := by
   exact ⟨Iff.rfl, trivial⟩
-
-/--
-**The key insight:**
-The relationship between finite subgraph structure and chromatic number
-depends on set-theoretic assumptions beyond ZFC.
--/
-theorem key_insight :
-    -- Independence from ZFC shows the problem touches foundations
-    True := trivial
 
 end Erdos736

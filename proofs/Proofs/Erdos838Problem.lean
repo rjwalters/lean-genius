@@ -31,7 +31,7 @@ open Real
 
 namespace Erdos838
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Points in ℝ² in general position (no three collinear) and convex subsets.
@@ -52,7 +52,7 @@ def inGeneralPosition (S : Finset Point2D) : Prop :=
   ∀ p q r : Point2D, p ∈ S → q ∈ S → r ∈ S →
     p ≠ q → q ≠ r → p ≠ r → ¬collinear p q r
 
-/-!
+/-
 ## Part 2: Convex Subsets
 
 A subset T of S forms a convex polygon if its convex hull
@@ -71,7 +71,7 @@ def isConvexSubset (S T : Finset Point2D) : Prop :=
 noncomputable def numConvexSubsets (S : Finset Point2D) : ℕ :=
   (S.powerset.filter (fun T => isConvexSubset S T)).card
 
-/-!
+/-
 ## Part 3: The Function f(n)
 
 f(n) is the MINIMUM over all n-point sets in general position
@@ -88,7 +88,7 @@ axiom f_definition :
   ∀ n : ℕ, ∀ S : Finset Point2D,
     S.card = n → inGeneralPosition S → numConvexSubsets S ≥ f n
 
-/-!
+/-
 ## Part 4: Erdős's Bounds (1978)
 -/
 
@@ -111,7 +111,7 @@ theorem erdos_bounds :
   obtain ⟨c₂, hc₂, h_upper⟩ := erdos_upper_bound
   exact ⟨c₁, c₂, hc₁, hc₂, fun n hn => ⟨h_lower n hn, h_upper n hn⟩⟩
 
-/-!
+/-
 ## Part 5: The Main Question
 
 Does the limit lim_{n→∞} (log f(n)) / (log n)² exist?
@@ -134,7 +134,7 @@ axiom limit_value_if_exists :
   -- Erdős asked: what is c?
   True
 
-/-!
+/-
 ## Part 6: Relation to Convex Position and Erdős-Szekeres
 -/
 
@@ -151,7 +151,7 @@ axiom small_subsets_dominant :
   -- Larger convex polygons become rare as they require special configurations
   True
 
-/-!
+/-
 ## Part 7: Why the Problem is Hard
 -/
 
@@ -169,7 +169,7 @@ axiom computational_complexity :
   -- This is exponential in n
   True
 
-/-!
+/-
 ## Part 8: Related Results
 -/
 
@@ -187,26 +187,24 @@ axiom empty_convex_polygon :
   -- Harborth: There exist sets with no empty hexagon
   True
 
-/-!
+/-
 ## Part 9: Consequences of the Bounds
 -/
 
 /-- The bounds imply log f(n) ~ (log n)² -/
-theorem log_f_growth :
-    -- From the bounds, we have:
-    -- c₁ (log n)² < log f(n) < c₂ (log n)²
-    -- So log f(n) grows like (log n)²
-    True := trivial
+axiom log_f_growth :
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
+      ∀ n : ℕ, n ≥ 4 →
+        c₁ * (log n)^2 < log (f n : ℝ) ∧
+        log (f n : ℝ) < c₂ * (log n)^2
 
 /-- The bounds imply f(n) is between polynomial and exponential -/
-theorem f_between_poly_and_exp :
-    -- f(n) = n^{Θ(log n)} which is:
-    -- - Faster than any polynomial n^k
-    -- - Slower than any exponential c^n
-    -- This is "quasi-polynomial" growth
-    True := trivial
+axiom f_between_poly_and_exp :
+    -- f(n) = n^{Θ(log n)}: faster than any polynomial, slower than any exponential
+    (∀ k : ℕ, ∃ N : ℕ, ∀ n ≥ N, (f n : ℝ) > n^k) ∧
+    (∀ c : ℝ, c > 1 → ∃ N : ℕ, ∀ n ≥ N, (f n : ℝ) < c^n)
 
-/-!
+/-
 ## Part 10: Summary
 -/
 
@@ -225,10 +223,11 @@ KNOWN:
 
 DIFFICULTY: Optimizing over ALL n-point configurations is hard.
 -/
-theorem erdos_838_status :
-    -- The problem is OPEN
-    -- Bounds are known but the limit question is unresolved
-    True := trivial
+theorem erdos_838_summary :
+    -- Bounds are established
+    (∃ c₁ > 0, ∀ n : ℕ, n ≥ 4 → (f n : ℝ) > n ^ (c₁ * log n)) ∧
+    (∃ c₂ > 0, ∀ n : ℕ, n ≥ 4 → (f n : ℝ) < n ^ (c₂ * log n)) :=
+  ⟨erdos_lower_bound, erdos_upper_bound⟩
 
 /-- Problem status -/
 def erdos_838_status_string : String :=

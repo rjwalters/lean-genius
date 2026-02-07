@@ -298,12 +298,4 @@ theorem erdos_876_summary :
     exact hgap
   · trivial
 
-/--
-**Problem Status:**
-The problem is PARTIALLY SOLVED:
-- We know gaps can be made < n^{1+ε} for any ε > 0
-- Whether gaps can be made < n is OPEN
--/
-theorem erdos_876_status : True := trivial
-
 end Erdos876

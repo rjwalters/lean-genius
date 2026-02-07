@@ -42,7 +42,7 @@ open Finset BigOperators
 
 namespace Erdos912
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -81,7 +81,7 @@ The number of distinct values among the exponents kᵢ in n! = ∏ pᵢ^{kᵢ}.
 noncomputable def h (n : ℕ) : ℕ :=
   (exponentMultiset n).card
 
-/-!
+/-
 ## Part II: Known Bounds (Erdős-Selfridge)
 -/
 
@@ -117,7 +117,7 @@ theorem erdos_selfridge_asymptotic :
   exact ⟨c₁, c₂, hc₁, hc₂, max N₁ N₂, fun n hn =>
     ⟨h₁ n (le_of_max_le_left hn), h₂ n (le_of_max_le_right hn)⟩⟩
 
-/-!
+/-
 ## Part III: The Conjecture
 -/
 
@@ -148,7 +148,7 @@ def TaoConjecture : Prop :=
     (fun n => (h n : ℝ) / Real.sqrt (n / Real.log n))
     Filter.atTop (nhds taoConstant)
 
-/-!
+/-
 ## Part IV: Related Properties
 -/
 
@@ -176,7 +176,7 @@ The exponent of 2 is n - (binary digit sum of n).
 axiom exponent_of_two (n : ℕ) :
     exponentInFactorial 2 n = n - (Nat.popcount n)
 
-/-!
+/-
 ## Part V: Small Values
 -/
 
@@ -197,7 +197,7 @@ h(n) for n = 1,2,3,...,20 is: 0,1,1,2,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,...
 axiom h_sequence_prefix :
     h 10 = 3 ∧ h 20 = 4 ∧ h 100 ≥ 7
 
-/-!
+/-
 ## Part VI: Why the Conjecture is Hard
 -/
 
@@ -219,23 +219,9 @@ axiom prime_distribution_connection :
     -- Cramér's model gives heuristic but rigorous proof is hard
     True
 
-/-!
+/-
 ## Part VII: Summary
 -/
-
-/--
-**Erdős Problem #912: OPEN**
-
-KNOWN (Erdős-Selfridge, 1982):
-h(n) ≍ √(n / log n)
-
-CONJECTURE:
-∃ c > 0 such that h(n) ~ c · √(n / log n)
-
-HEURISTIC (Tao):
-c = √(2π) ≈ 2.506...
--/
-theorem erdos_912 : True := trivial
 
 /--
 **State of knowledge:**
