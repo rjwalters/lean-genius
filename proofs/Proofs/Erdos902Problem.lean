@@ -35,7 +35,7 @@ open Finset
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Part I: Tournament Definitions -/
+/- ## Part I: Tournament Definitions -/
 
 /-- A tournament is a complete directed graph (orientation of complete graph). -/
 structure Tournament (V : Type*) [Fintype V] where
@@ -47,7 +47,7 @@ structure Tournament (V : Type*) [Fintype V] where
 /-- Number of vertices in a tournament. -/
 def Tournament.order (T : Tournament V) : ℕ := Fintype.card V
 
-/-! ## Part II: Domination -/
+/- ## Part II: Domination -/
 
 /-- A vertex v dominates a set S if v → s for all s ∈ S. -/
 def dominates (T : Tournament V) (v : V) (S : Finset V) : Prop :=
@@ -61,7 +61,7 @@ def isDominated (T : Tournament V) (S : Finset V) : Prop :=
 def isNDominating (T : Tournament V) (n : ℕ) : Prop :=
   ∀ S : Finset V, S.card = n → isDominated T S
 
-/-! ## Part III: The Function f(n) -/
+/- ## Part III: The Function f(n) -/
 
 /-- Existence of n-dominating tournaments for all n. -/
 axiom exists_n_dominating : ∀ n, ∃ k, ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V)
@@ -78,7 +78,7 @@ axiom f_is_minimum (n : ℕ) :
     (∀ (W : Type) [Fintype W] [DecidableEq W] (S : Tournament W),
       isNDominating S n → Fintype.card W ≥ f n)
 
-/-! ## Part IV: Known Values -/
+/- ## Part IV: Known Values -/
 
 /-- f(1) = 3: The rock-paper-scissors tournament. -/
 axiom f_1 : f 1 = 3
@@ -109,7 +109,7 @@ axiom exists_19_is_3_dominating :
 axiom no_18_is_3_dominating :
     ∀ (T : Tournament (Fin 18)), ¬isNDominating T 3
 
-/-! ## Part V: Lower Bound -/
+/- ## Part V: Lower Bound -/
 
 /-- Szekeres & Szekeres (1965): f(n) ≥ c · n · 2^n for some constant c > 0. -/
 axiom szekeres_lower_bound :
@@ -124,7 +124,7 @@ axiom domination_count_bound (k n : ℕ) (T : Tournament (Fin k)) :
     ∀ v : Fin k, (Finset.univ.filter (fun S : Finset (Fin k) =>
       S.card = n ∧ dominates T v S)).card ≤ Nat.choose (k - 1) n
 
-/-! ## Part VI: Upper Bound -/
+/- ## Part VI: Upper Bound -/
 
 /-- Erdős (1963): f(n) ≤ C · n² · 2^n for some constant C. -/
 axiom erdos_upper_bound :
@@ -135,7 +135,7 @@ axiom probabilistic_upper_bound (n : ℕ) (hn : n ≥ 1) :
     ∃ k : ℕ, k ≤ 4 * n^2 * 2^n ∧
     ∃ (T : Tournament (Fin k)), isNDominating T n
 
-/-! ## Part VII: Asymptotic Behavior -/
+/- ## Part VII: Asymptotic Behavior -/
 
 /-- The main open question: What is f(n) / (n · 2^n) as n → ∞? -/
 def asymptoticRatio (n : ℕ) : ℝ := (f n : ℝ) / (n * 2^n)
@@ -164,7 +164,7 @@ theorem asymptotic_gap :
   · intro n hn
     exact ⟨hc_bound n hn, hC_bound n hn⟩
 
-/-! ## Part VIII: Paley Tournament -/
+/- ## Part VIII: Paley Tournament -/
 
 /-- Paley tournament: edge p → q iff q - p is a quadratic residue (mod prime). -/
 def isPaleyEdge (p : ℕ) [Fact (Nat.Prime p)] (hp : p % 4 = 3) (u v : ZMod p) : Prop :=
@@ -174,7 +174,7 @@ def isPaleyEdge (p : ℕ) [Fact (Nat.Prime p)] (hp : p % 4 = 3) (u v : ZMod p) :
 axiom paley_domination_bound (p : ℕ) [Fact (Nat.Prime p)] (h4 : p % 4 = 3) :
     ∃ (T : Tournament (ZMod p)), isNDominating T ((p - 1) / 2 - 1)
 
-/-! ## Part IX: Quadratic Residues -/
+/- ## Part IX: Quadratic Residues -/
 
 /-- Quadratic residue characterization for Paley construction. -/
 def isQuadraticResidue (p : ℕ) (a : ZMod p) : Prop :=
@@ -184,7 +184,7 @@ def isQuadraticResidue (p : ℕ) (a : ZMod p) : Prop :=
 axiom half_are_residues (p : ℕ) [Fact (Nat.Prime p)] (hp : p > 2) :
     (Finset.univ.filter (isQuadraticResidue p)).card = (p - 1) / 2
 
-/-! ## Part X: Generalizations -/
+/- ## Part X: Generalizations -/
 
 /-- Existence of non-dominating level for any tournament. -/
 axiom exists_non_dominating (T : Tournament V) : ∃ n, ¬isNDominating T (n + 1)
@@ -197,7 +197,7 @@ noncomputable def dominationNumber (T : Tournament V) : ℕ :=
 axiom domination_characterization (T : Tournament V) :
     ∀ n : ℕ, n < dominationNumber T → isNDominating T n
 
-/-! ## Part XI: Probabilistic Method -/
+/- ## Part XI: Probabilistic Method -/
 
 /-- Random tournament: Each edge direction chosen uniformly at random. -/
 def randomTournamentProb (k n : ℕ) : ℝ :=
@@ -212,7 +212,7 @@ axiom random_tournament_works (n : ℕ) (hn : n ≥ 1) :
 axiom probabilistic_existence (n : ℕ) (hn : n ≥ 1) :
     ∃ k : ℕ, ∃ (T : Tournament (Fin k)), isNDominating T n
 
-/-! ## Part XII: Summary -/
+/- ## Part XII: Summary -/
 
 /-- **Erdős Problem #902: OPEN**
 
