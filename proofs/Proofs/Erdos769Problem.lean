@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #769: Cube Dissection into Homothetic Cubes
 
 Let c(n) be the minimal integer such that if k ≥ c(n), then the n-dimensional
@@ -31,7 +31,7 @@ open Real
 
 namespace Erdos769
 
-/-! ## Decomposability Predicate -/
+/- ## Decomposability Predicate -/
 
 /-- The n-dimensional unit cube can be decomposed into exactly k smaller
 homothetic cubes. Cubes have side lengths in (0,1) and total volume 1. -/
@@ -40,7 +40,7 @@ def CanDecomposeCubeIntoKCubes (n k : ℕ) : Prop :=
     (∀ i, 0 < cubes i ∧ cubes i < 1) ∧
     (∑ i : Fin k, (cubes i) ^ n) = 1
 
-/-! ## Cube Dissection Function -/
+/- ## Cube Dissection Function -/
 
 /-- c(n): the minimal k such that for all m ≥ k, the n-dimensional unit cube
 can be decomposed into exactly m homothetic n-dimensional cubes.
@@ -55,7 +55,7 @@ axiom cubeDissectionNumber_spec (n : ℕ) :
 axiom cubeDissectionNumber_minimal (n : ℕ) (hn : n ≥ 2) :
     ∃ k < cubeDissectionNumber n, ¬CanDecomposeCubeIntoKCubes n k
 
-/-! ## The Dimension 2 Case -/
+/- ## The Dimension 2 Case -/
 
 /-- A square cannot be decomposed into 2, 3, 4, or 5 squares. -/
 axiom square_not_2 : ¬CanDecomposeCubeIntoKCubes 2 2
@@ -69,7 +69,7 @@ axiom square_6_achievable : CanDecomposeCubeIntoKCubes 2 6
 /-- c(2) = 6: the exact value in dimension 2. -/
 axiom c_of_2 : cubeDissectionNumber 2 = 6
 
-/-! ## Hadwiger's Lower Bound -/
+/- ## Hadwiger's Lower Bound -/
 
 /-- c(n) ≥ 2^n + 2^{n-1} = 3·2^{n-1} (Hadwiger).
 The first non-trivial lower bound, using geometric packing constraints. -/
@@ -82,7 +82,7 @@ theorem hadwiger_explicit (n : ℕ) (hn : n ≥ 2) :
   have h := hadwiger_lower_bound n hn
   omega
 
-/-! ## Connor-Marmorino Improved Lower Bound (2018) -/
+/- ## Connor-Marmorino Improved Lower Bound (2018) -/
 
 /-- c(n) ≥ 2^{n+1} - 1 for n ≥ 3 (Connor-Marmorino 2018).
 Improves Hadwiger since 2^{n+1} - 1 > 2^n + 2^{n-1}. -/
@@ -94,7 +94,7 @@ theorem connor_vs_hadwiger (n : ℕ) (hn : n ≥ 3) :
     2^(n+1) - 1 > 2^n + 2^(n-1) := by
   omega
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /-- Burgess-Erdős (1974): c(n) ≪ n^{n+1}. -/
 axiom burgess_erdos_upper :
@@ -121,7 +121,7 @@ axiom connor_marmorino_upper_composite (n : ℕ) (hn : n ≥ 2)
     (hnp : ¬(n + 1).Prime) :
     (cubeDissectionNumber n : ℝ) ≤ Real.exp 2 * (n : ℝ)^n
 
-/-! ## Erdős's Conjecture -/
+/- ## Erdős's Conjecture -/
 
 /-- Erdős's Conjecture: if n+1 is prime, then c(n) > n^n.
 Erdős wrote: "I am certain that if n+1 is a prime then c(n) > n^n." -/
@@ -133,7 +133,7 @@ def mainQuestion : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
     (cubeDissectionNumber n : ℝ) ≥ C * (n : ℝ)^n
 
-/-! ## Packing vs Volume -/
+/- ## Packing vs Volume -/
 
 /-- Beyond volume (Σ sideᵢⁿ = 1), cubes must pack geometrically.
 There exist volume-valid configurations that cannot actually be packed. -/
@@ -143,7 +143,7 @@ axiom packing_beyond_volume :
       (∑ i, (sides i)^n) = 1 ∧
       ¬CanDecomposeCubeIntoKCubes n k
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #769 Summary.**
 Combines the key results: c(2) = 6 exactly, Connor-Marmorino lower bound,
