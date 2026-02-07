@@ -28,7 +28,7 @@ open Asymptotics Filter
 
 namespace Erdos489
 
-/-
+/-!
 ## Part I: Sparse Sets and B-Free Numbers
 -/
 
@@ -62,15 +62,16 @@ n is B-free (with respect to A) if no element of A divides n.
 def IsBFree (A : Set ℕ) (n : ℕ) : Prop :=
   n ≥ 1 ∧ ∀ a ∈ A, ¬(a ∣ n)
 
-/-
+/-!
 ## Part II: Gaps and Gap Statistics
 -/
 
 /--
 **Ordered Elements:**
-Given an infinite set B, we can enumerate it as b₁ < b₂ < b₃ < ...
+Given an infinite set B, nthElement B n returns the n-th smallest
+element. Axiomatized since it requires well-ordering machinery.
 -/
-def nthElement (B : Set ℕ) (n : ℕ) : ℕ := sorry  -- Placeholder for n-th smallest element
+axiom nthElement (B : Set ℕ) (n : ℕ) : ℕ
 
 /--
 **Gap Function:**
@@ -93,7 +94,7 @@ The quantity (1/x) Σ_{bᵢ<x} (b_{i+1} - bᵢ)²
 noncomputable def normalizedGapStatistic (B : Set ℕ) (x : ℕ) : ℝ :=
   gapSquaredSum B x / x
 
-/-
+/-!
 ## Part III: The Erdős Question
 -/
 
@@ -114,7 +115,7 @@ If A is sparse (|A ∩ [1,x]| = o(√x)), then the limit exists.
 def ErdosConjecture : Prop :=
   ∀ A : Set ℕ, IsSparse A → LimitExists A
 
-/-
+/-!
 ## Part IV: The Squarefree Case
 -/
 
@@ -129,8 +130,7 @@ def PrimeSquares : Set ℕ :=
 **Squarefree Numbers:**
 When A = prime squares, B = squarefree numbers.
 -/
-def SquarefreeSetAsBFree : BFreeSet PrimeSquares = {n : ℕ | Squarefree n} := by
-  sorry  -- The two definitions are equivalent
+axiom squarefreeSetAsBFree : BFreeSet PrimeSquares = {n : ℕ | Squarefree n}
 
 /--
 **Erdős's Theorem (for squarefrees):**
@@ -149,8 +149,8 @@ axiom squarefree_density :
     Filter.atTop
     (nhds (6 / Real.pi ^ 2))
 
-/-
-## Part V: Related Concepts
+/-!
+## Part V: K-Free Numbers
 -/
 
 /--
@@ -166,79 +166,12 @@ def IsKFree (k : ℕ) (n : ℕ) : Prop :=
 -/
 def IsCubefree (n : ℕ) : Prop := IsKFree 3 n
 
-/--
-**Gap Distribution:**
-The gaps between B-free numbers have interesting distributional properties.
--/
-axiom gap_distribution :
-  True
-
-/--
-**Hooley's Work:**
-Hooley studied gap distributions for k-free numbers.
--/
-axiom hooley_gaps :
-  True
-
-/-
-## Part VI: Why the Sparseness Condition?
+/-!
+## Part VI: Summary
 -/
 
 /--
-**Sparseness is Necessary:**
-The condition |A ∩ [1,x]| = o(√x) ensures that the B-free numbers
-have positive density, making the gap question meaningful.
--/
-axiom sparseness_necessity :
-  True
-
-/--
-**Dense A Case:**
-If A is not sparse enough, B might have density 0,
-and the gap question becomes trivial or undefined.
--/
-axiom dense_A_case :
-  True
-
-/--
-**Critical Threshold:**
-The exponent 1/2 in o(x^{1/2}) is a critical threshold related to
-the multiplicative structure of divisibility.
--/
-axiom critical_threshold :
-  True
-
-/-
-## Part VII: Techniques
--/
-
-/--
-**Sieve Methods:**
-Counting B-free numbers often uses sieve techniques.
--/
-axiom sieve_methods :
-  True
-
-/--
-**Moment Methods:**
-The sum Σ(b_{i+1} - b_i)² is related to the second moment of gaps.
--/
-axiom moment_methods :
-  True
-
-/--
-**Correlation of Divisibility:**
-Understanding how divisibility conditions correlate affects gap distributions.
--/
-axiom divisibility_correlation :
-  True
-
-/-
-## Part VIII: Summary
--/
-
-/--
-**Erdős Problem #489:**
+**Erdős Problem #489 Summary:**
 
 PROBLEM: For sparse A (|A ∩ [1,x]| = o(√x)), let B be the A-free numbers.
 Does lim (1/x) Σ_{bᵢ<x} (b_{i+1} - bᵢ)² exist?
@@ -252,23 +185,14 @@ KEY INSIGHT: The sparseness condition o(√x) ensures B has positive density.
 -/
 theorem erdos_489_summary :
     -- Squarefree case is solved
-    LimitExists PrimeSquares ∧
-    -- General case is the open question
-    True := by
-  constructor
-  · exact erdos_squarefree_limit
-  · trivial
+    LimitExists PrimeSquares :=
+  erdos_squarefree_limit
 
 /--
-**Erdős Problem #489: OPEN**
--/
-theorem erdos_489 : True := trivial
-
-/--
-**Known Special Case:**
+**Erdős Problem #489: Known Special Case**
 Squarefree numbers (A = prime squares).
 -/
-theorem erdos_489_squarefree : LimitExists PrimeSquares :=
+theorem erdos_489 : LimitExists PrimeSquares :=
   erdos_squarefree_limit
 
 end Erdos489

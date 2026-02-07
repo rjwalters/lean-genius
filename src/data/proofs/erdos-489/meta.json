@@ -58,7 +58,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #489**\n\nA question about gaps between numbers avoiding a sparse set of divisors.\n\n**Key History:**\n- Erdős: Proved the limit exists for squarefree numbers (A = prime squares)\n- General sparse case remains open\n\n**Connection:** Related to Problem #208.",
+    "historicalContext": "Erdős posed Problem #489 in 1961, asking whether a natural gap statistic converges for sequences defined by sparse divisibility constraints. The problem generalizes classical questions about squarefree numbers to arbitrary B-free sets.\n\nThe squarefree case (A = {p² : p prime}) was solved by Erdős himself, who proved that the normalized sum of squared gaps between consecutive squarefree numbers converges. The density of squarefree numbers is 6/π² ≈ 0.6079, a classical result connected to the Riemann zeta function.\n\nThe general case remains open: for an arbitrary sparse set A with |A ∩ [1,x]| = o(√x), it is unknown whether the second moment of gaps in the A-free sequence always converges. This connects to sieve theory, gap distributions, and moment methods in analytic number theory.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet A ⊆ ℕ with |A ∩ [1,x]| = o(x^{1/2}). Let B be the A-free numbers (not divisible by any a ∈ A). Does\n\nlim_{x→∞} (1/x) Σ_{b_i<x} (b_{i+1} - b_i)²\n\nexist and is finite?\n\n**Status: OPEN** (in general)\n\nSquarefree case (A = prime squares) is solved by Erdős.",
     "proofStrategy": "**Formalization Approach**\n\n1. **Sparse Sets:** Define IsSparse via o(√x) counting\n\n2. **B-Free Numbers:** BFreeSet, IsBFree definitions\n\n3. **Gap Statistics:** gap, gapSquaredSum, normalizedGapStatistic\n\n4. **Main Question:** LimitExists, ErdosConjecture\n\n5. **Squarefree Case:** PrimeSquares, erdos_squarefree_limit",
     "keyInsights": [
@@ -82,40 +82,40 @@
       "title": "Gaps and Gap Statistics",
       "summary": "nthElement, gap, gapSquaredSum, normalizedGapStatistic",
       "startLine": 65,
-      "endLine": 94
+      "endLine": 95
     },
     {
       "id": "erdos-question",
       "title": "The Erdős Question",
       "summary": "LimitExists, ErdosConjecture",
-      "startLine": 96,
-      "endLine": 115
+      "startLine": 97,
+      "endLine": 116
     },
     {
       "id": "squarefree",
       "title": "The Squarefree Case",
-      "summary": "PrimeSquares, erdos_squarefree_limit, squarefree_density",
-      "startLine": 117,
+      "summary": "PrimeSquares, squarefreeSetAsBFree, erdos_squarefree_limit, squarefree_density",
+      "startLine": 118,
       "endLine": 150
     },
     {
-      "id": "related",
-      "title": "Related Concepts",
-      "summary": "IsKFree, IsCubefree, Hooley's work",
+      "id": "kfree",
+      "title": "K-Free Numbers",
+      "summary": "IsKFree, IsCubefree",
       "startLine": 152,
-      "endLine": 181
+      "endLine": 167
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_489_summary, erdos_489",
-      "startLine": 236,
-      "endLine": 274
+      "startLine": 169,
+      "endLine": 198
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #489 asks whether the normalized sum of squared gaps Σ(b_{i+1}-b_i)²/x converges for B-free numbers when A is sparse. The squarefree case (A = prime squares) was proved by Erdős. The general case remains OPEN.",
-    "implications": "**Number Theory Connections**\n\n1. **Sieve Methods:** Counting B-free numbers uses sieves\n\n2. **Squarefree Numbers:** Density 6/π² and gap distributions\n\n3. **K-Free Numbers:** Generalization to higher powers\n\n4. **Moment Methods:** Second moment of gap distributions\n\n5. **Hooley's Work:** Gap distributions for k-free numbers",
+    "implications": "**Number Theory Connections**\n\n1. **Sieve Methods:** Counting B-free numbers uses sieves\n\n2. **Squarefree Numbers:** Density 6/π² and gap distributions\n\n3. **K-Free Numbers:** Generalization to higher powers\n\n4. **Moment Methods:** Second moment of gap distributions",
     "openQuestions": [
       "Does the limit exist for all sparse A?",
       "What is the limiting value when it exists?",
