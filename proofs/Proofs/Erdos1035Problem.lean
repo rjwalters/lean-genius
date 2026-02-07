@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 1035: Hypercube Subgraphs in Dense Graphs
 
 Is there a constant `c > 0` such that every graph on `2^n` vertices with
@@ -20,7 +20,7 @@ import Mathlib.Tactic
 
 open SimpleGraph Finset
 
-/-! ## Hypercube graph -/
+/- ## Hypercube graph -/
 
 /-- The `n`-dimensional hypercube graph `Q_n` on `Fin (2^n)` vertices, where two
 vertices are adjacent iff their XOR has exactly one bit set. -/
@@ -37,14 +37,14 @@ def hypercubeGraph (n : ℕ) : SimpleGraph (Fin (2 ^ n)) where
     intro v ⟨hne, _⟩
     exact hne rfl
 
-/-! ## Minimum degree -/
+/- ## Minimum degree -/
 
 /-- A simple graph on `Fin N` has minimum degree at least `d` if every vertex
 has at least `d` neighbours. -/
 def HasMinDegree (G : SimpleGraph (Fin N)) [DecidableRel G.Adj] (d : ℕ) : Prop :=
     ∀ v : Fin N, d ≤ (univ.filter (G.Adj v)).card
 
-/-! ## Subgraph containment -/
+/- ## Subgraph containment -/
 
 /-- Graph `H` on `Fin M` is a subgraph of `G` on `Fin N` (via an injective
 vertex map preserving adjacency). -/
@@ -52,7 +52,7 @@ def ContainsAsSubgraph (G : SimpleGraph (Fin N)) (H : SimpleGraph (Fin M)) : Pro
     ∃ f : Fin M → Fin N, Function.Injective f ∧
       ∀ u v : Fin M, H.Adj u v → G.Adj (f u) (f v)
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 1035: There exists `c > 0` such that every graph on `2^n`
 vertices with min degree `> (1-c) * 2^n` contains `Q_n`. -/
@@ -62,7 +62,7 @@ def ErdosProblem1035 : Prop :=
         HasMinDegree G ⌈((1 - c) * (2 ^ n : ℝ))⌉₊ →
           ContainsAsSubgraph G (hypercubeGraph n)
 
-/-! ## Alternative questions -/
+/- ## Alternative questions -/
 
 /-- If the conjecture fails: what is the smallest `m > 2^n` such that
 min degree `> (1-c) * 2^n` on `m` vertices forces `Q_n`? -/
@@ -82,7 +82,7 @@ def ErdosProblem1035_alt2 : Prop :=
           HasMinDegree G (2 ^ n - u n) →
             ContainsAsSubgraph G (hypercubeGraph n)
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- The hypercube `Q_n` is a subgraph of itself. -/
 axiom hypercube_self_subgraph (n : ℕ) :
