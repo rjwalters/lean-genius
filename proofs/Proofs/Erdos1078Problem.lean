@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #1078: Minimum Degree for K_r in r-Partite Graphs
 
 Source: https://erdosproblems.com/1078
@@ -27,9 +27,7 @@ open Nat Real
 
 namespace Erdos1078
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -62,9 +60,7 @@ def ContainsKr (G : RPartiteGraph r n) : Prop :=
     (∀ i : Fin r, f i ∈ G.parts i) ∧
     (∀ i j : Fin r, i ≠ j → G.edges.Adj (f i) (f j))
 
-/-!
-## Part II: The Bollobás-Erdős-Szemerédi Conjecture
--/
+/- ## Part II: The Bollobás-Erdős-Szemerédi Conjecture -/
 
 /--
 **The Original Conjecture:**
@@ -85,9 +81,7 @@ axiom threshold_tight :
         (minDegree G.edges : ℝ) ≥ (r - 3/2 : ℝ) * n - n ∧
         ¬ContainsKr G
 
-/-!
-## Part III: Haxell's Theorem (2001)
--/
+/- ## Part III: Haxell's Theorem (2001) -/
 
 /--
 **Haxell's Theorem (2001):**
@@ -112,9 +106,7 @@ theorem asymptotic_threshold (r : ℕ) (hr : r ≥ 2) :
   · intro n hn G hDeg
     exact haxell_theorem r n hr hn G hDeg
 
-/-!
-## Part IV: Sharp Threshold (Haxell-Szabó 2006)
--/
+/- ## Part IV: Sharp Threshold (Haxell-Szabó 2006) -/
 
 /--
 **The Sharp Threshold Formula:**
@@ -142,9 +134,7 @@ axiom threshold_sharp (r n : ℕ) (hr : r ≥ 2) (hn : n ≥ 1) :
     ∃ G : RPartiteGraph r n,
       minDegree G.edges = sharpThreshold r n ∧ ¬ContainsKr G
 
-/-!
-## Part V: Special Cases
--/
+/- ## Part V: Special Cases -/
 
 /--
 **Case r = 2 (Bipartite):**
@@ -172,9 +162,7 @@ For r=4, s = 2, threshold = 3n - ⌈2n/3⌉.
 example : sharpThreshold 4 3 = 3 * 3 - (2 * 3 + 2) / 3 := by
   simp [sharpThreshold]
 
-/-!
-## Part VI: Comparison with BES Threshold
--/
+/- ## Part VI: Comparison with BES Threshold -/
 
 /--
 **Asymptotic Agreement:**
@@ -186,9 +174,7 @@ axiom asymptotic_agreement (r : ℕ) (hr : r ≥ 2) :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       |(sharpThreshold r n : ℝ) - (r - 3/2 : ℝ) * n| < ε * n
 
-/-!
-## Part VII: Connection to Transversals
--/
+/- ## Part VII: Connection to Transversals -/
 
 /--
 **Independent Transversal:**
@@ -209,9 +195,7 @@ axiom extremal_construction (r n : ℕ) :
       (minDegree G.edges : ℝ) ≥ (r - 3/2 : ℝ) * n - n ∧
       ¬ContainsKr G
 
-/-!
-## Part VIII: Summary
--/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #1078: SOLVED**
