@@ -28,8 +28,7 @@ open Finset Set Filter
 
 namespace Erdos339
 
-/-!
-## Overview
+/- ## Overview
 
 This problem concerns additive bases - sets A ⊆ ℕ such that every large integer
 can be represented as a sum of r elements from A. The question is about
@@ -39,9 +38,7 @@ The key tension: allowing repeated elements gives more flexibility, so
 restricted sums might be much sparser. Surprisingly, they're not!
 -/
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /-- A set A is a basis of order r if every sufficiently large n is the sum
     of r elements from A (with repetition allowed). -/
@@ -58,9 +55,7 @@ def rSums (A : Set ℕ) (r : ℕ) : Set ℕ :=
 def rDistinctSums (A : Set ℕ) (r : ℕ) : Set ℕ :=
   { n | ∃ f : Fin r → ℕ, Function.Injective f ∧ (∀ i, f i ∈ A) ∧ (∑ i, f i) = n }
 
-/-!
-## Part II: Density Definitions
--/
+/- ## Part II: Density Definitions -/
 
 /-- The counting function: |{a ∈ A : a ≤ n}|. -/
 noncomputable def countingFunction (A : Set ℕ) (n : ℕ) : ℕ :=
@@ -82,9 +77,7 @@ def hasPositiveLowerDensity (A : Set ℕ) : Prop :=
 def hasPositiveUpperDensity (A : Set ℕ) : Prop :=
   upperDensity A > 0
 
-/-!
-## Part III: The First Erdős Conjecture
--/
+/- ## Part III: The First Erdős Conjecture -/
 
 /-- **Erdős Conjecture 1**: If A is a basis of order r, then the r distinct
     element sums have positive lower density. -/
@@ -96,9 +89,7 @@ def erdosConjecture1 : Prop :=
 axiom hegyvari_hennecart_plagne_1 :
   erdosConjecture1
 
-/-!
-## Part IV: The Second Erdős Conjecture
--/
+/- ## Part IV: The Second Erdős Conjecture -/
 
 /-- **Erdős-Graham Conjecture 2**: If r-sums have positive upper density, then
     r distinct sums also have positive upper density. -/
@@ -111,9 +102,7 @@ def erdosGrahamConjecture2 : Prop :=
 axiom hegyvari_hennecart_plagne_2 :
   erdosGrahamConjecture2
 
-/-!
-## Part V: Why This Is Surprising
--/
+/- ## Part V: Why This Is Surprising -/
 
 /-- Intuition: When r elements can repeat, there are more r-sums.
     So rDistinctSums ⊆ rSums, and equality can fail badly. -/
@@ -129,9 +118,7 @@ axiom density_preservation :
     ∀ δ > 0, lowerDensity (rSums A r) ≥ δ →
     ∃ δ' > 0, lowerDensity (rDistinctSums A r) ≥ δ'
 
-/-!
-## Part VI: Key Lemmas (Proof Outline)
--/
+/- ## Part VI: Key Lemmas (Proof Outline) -/
 
 /-- Key observation: In any long arithmetic progression of r-sums,
     most can be achieved with distinct elements. -/
@@ -148,9 +135,7 @@ axiom perturbation_argument :
     n ∈ rSums A r →
     ∃ m : ℕ, |m - n| ≤ r^2 ∧ m ∈ rDistinctSums A r
 
-/-!
-## Part VII: Special Cases
--/
+/- ## Part VII: Special Cases -/
 
 /-- For r = 2 (sumsets), this is about A + A vs A +̂ A. -/
 theorem case_r_equals_2 (A : Set ℕ) :
@@ -175,9 +160,7 @@ theorem case_r_equals_2_distinct (A : Set ℕ) :
     · intro i; fin_cases i <;> simp [ha, hb]
     · simp [Fin.sum_univ_two, hsum]
 
-/-!
-## Part VIII: Classical Basis Examples
--/
+/- ## Part VIII: Classical Basis Examples -/
 
 /-- The squares form a basis of order 4 (Lagrange's theorem). -/
 axiom squares_basis_of_order_4 :
@@ -199,9 +182,7 @@ theorem naturals_basis_of_order_1 :
   · intro i; exact Set.mem_univ _
   · simp [Fin.sum_univ_one]
 
-/-!
-## Part IX: Related Problems
--/
+/- ## Part IX: Related Problems -/
 
 /-- Sidon sets: A is Sidon if all pairwise sums a + b (a ≤ b) are distinct.
     These are very sparse but have specific structure. -/
@@ -215,8 +196,7 @@ def IsBhSet (A : Set ℕ) (h : ℕ) : Prop :=
     (∑ i, f i) = (∑ i, g i) →
     Multiset.ofFn f = Multiset.ofFn g
 
-/-!
-## Summary
+/- ## Summary
 
 **Erdős Problem #339: SOLVED (YES)**
 
