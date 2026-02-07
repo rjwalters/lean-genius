@@ -76,18 +76,34 @@ def oddSet (N : ℕ) : Finset ℕ :=
   (Finset.Icc 1 N).filter (fun n => n % 2 = 1)
 
 /-- The odd set is 1-admissible: if a, b are both odd with a < b,
-    then b - a is even. Since b is odd, (b - a) ∤ b.
+    then b - a is even. Since b is odd, (b - a) ∤ b. -/
+theorem oddSet_admissible (N : ℕ) (hN : N ≥ 1) :
+    IsAdmissible (oddSet N) N 1 := by
+  constructor
+  · -- All elements are in {1,...,N}
+    intro x hx
+    simp only [oddSet, mem_filter, mem_Icc] at hx
+    exact hx.1
+  · -- Non-divisibility condition
+    intro a b ha hb hab hd
+    simp only [oddSet, mem_filter, mem_Icc] at ha hb
+    -- Both a and b are odd
+    have ha_odd := ha.2
+    have hb_odd := hb.2
+    -- b - a is even (difference of two odds)
+    intro ⟨k, hk⟩
+    -- If (b - a) | b then b = k * (b - a) for some k
+    have hba_pos : b - a > 0 := by omega
+    -- b - a is even: a % 2 = 1 and b % 2 = 1 means (b - a) % 2 = 0
+    have hba_even : (b - a) % 2 = 0 := by omega
+    -- But b is odd, so b % 2 = 1
+    -- If b = k * (b - a) and (b - a) is even, then b is even: contradiction
+    have : b % 2 = 0 := by omega
+    omega
 
-    Proof sketch: b - a is even (difference of two odds). An even
-    number cannot divide an odd number, so the condition holds. -/
-axiom oddSet_admissible (N : ℕ) (hN : N ≥ 1) :
-    IsAdmissible (oddSet N) N 1
-
-/-- The odd set has size ⌊(N+1)/2⌋.
-
-    When N is odd: {1,3,...,N} has (N+1)/2 elements.
-    When N is even: {1,3,...,N-1} has N/2 elements = (N+1)/2 by integer division. -/
-axiom oddSet_card (N : ℕ) : (oddSet N).card = (N + 1) / 2
+/-- The odd set has size ⌊(N+1)/2⌋. -/
+theorem oddSet_card (N : ℕ) : (oddSet N).card = (N + 1) / 2 := by
+  sorry -- Requires Finset.Icc filter cardinality; leave for Aristotle
 
 /-- For t = 1, the maximum is exactly ⌊(N+1)/2⌋.
 
@@ -175,16 +191,28 @@ axiom f_t1_density :
 Additional properties connecting the non-divisibility condition to
 number-theoretic structure. -/
 
-/-- For any t-admissible set A, no element can be a multiple of
+/-- For any t-admissible set A, no element can be a double of
     another element at distance ≥ t.
 
-    This is an immediate consequence: if b = k·a for some k ≥ 2,
-    then b - a = (k-1)·a divides b = k·a, violating the condition
-    when b - a ≥ t. -/
-axiom no_far_multiples (A : Finset ℕ) (N t : ℕ)
+    If b = 2·a, then b - a = a divides b = 2·a,
+    violating the non-divisibility condition when b - a ≥ t.
+
+    Note: The original axiom claimed this for all k ≥ 2, but that is
+    incorrect. For k = 3: b - a = 2a and (2a) ∤ (3a) when a > 0.
+    The condition is only violated when (k-1) | k, i.e., k = 2. -/
+theorem no_far_doubles (A : Finset ℕ) (N t : ℕ)
     (hA : IsAdmissible A N t) (a b : ℕ) (ha : a ∈ A) (hb : b ∈ A)
-    (hab : a < b) (hd : b - a ≥ t) (k : ℕ) (hk : k ≥ 2) :
-    b ≠ k * a
+    (hab : a < b) (hd : b - a ≥ t) :
+    b ≠ 2 * a := by
+  intro heq
+  have hnd := hA.2 a b ha hb hab hd
+  apply hnd
+  -- b - a = 2*a - a = a, and a | 2*a
+  rw [heq]
+  show 2 * a - a ∣ 2 * a
+  have : 2 * a - a = a := by omega
+  rw [this]
+  exact dvd_mul_left a 2
 
 /- ## Part VIII: Summary -/
 
