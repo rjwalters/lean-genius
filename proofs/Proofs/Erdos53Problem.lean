@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 53: Sums and Products of Distinct Elements
 
 *Reference:* [erdosproblems.com/53](https://www.erdosproblems.com/53)
@@ -19,7 +19,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section 1: Subset sums and products
 
 We define the set of integers representable as a sum of distinct elements
@@ -42,7 +42,7 @@ def subsetProducts (A : Finset ℤ) : Finset ℤ :=
 def sumsOrProducts (A : Finset ℤ) : Finset ℤ :=
   subsetSums A ∪ subsetProducts A
 
-/-!
+/-
 ## Section 2: The Erdős–Szemerédi conjecture (Problem 53)
 
 For every `k`, if `|A|` is large enough, then `|sumsOrProducts A| ≥ |A|^k`.
@@ -56,7 +56,7 @@ def ErdosProblem53 : Prop :=
     ∃ N₀ : ℕ, ∀ A : Finset ℤ, A.card ≥ N₀ →
       (sumsOrProducts A).card ≥ A.card ^ k
 
-/-!
+/-
 ## Section 3: Chang's theorem (2003)
 
 Chang proved the conjecture affirmatively, resolving Problem 53.
@@ -65,7 +65,7 @@ Chang proved the conjecture affirmatively, resolving Problem 53.
 /-- Chang's theorem (2003): Erdős Problem 53 holds. -/
 axiom chang_theorem : ErdosProblem53
 
-/-!
+/-
 ## Section 4: The Erdős–Szemerédi upper bound
 
 Erdős and Szemerédi showed that arbitrarily large sets exist where the count
@@ -80,7 +80,7 @@ axiom erdos_szemeredi_upper_bound :
     ∀ N : ℕ, ∃ A : Finset ℤ, A.card ≥ N ∧
       (sumsOrProducts A).card ≤ A.card ^ (c * (Nat.log 2 A.card + 1))
 
-/-!
+/-
 ## Section 5: Sum-product phenomena connection
 
 This problem is closely related to the Erdős–Szemerédi sum-product conjecture
@@ -105,7 +105,7 @@ def SumProductConjecture : Prop :=
     ∃ N₀ : ℕ, ∀ A : Finset ℤ, A.card ≥ N₀ →
       (sumset A).card + (productset A).card ≥ A.card ^ 2 / (A.card * εNum / εDen + 1)
 
-/-!
+/-
 ## Section 6: Counting distinct-element representations
 
 We can count how many integers have a representation as a sum of distinct
