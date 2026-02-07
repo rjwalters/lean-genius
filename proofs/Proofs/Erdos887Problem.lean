@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #887: Divisors in Short Intervals Near √n
 
 Is there an absolute constant K such that, for every C > 0, if n is
@@ -22,12 +22,7 @@ import Mathlib.Algebra.Order.Field.Basic
 
 namespace Erdos887
 
-/-!
-## Part 1: Basic Definitions
-
-We define the set of divisors, the divisor-counting function τ(n),
-and a mechanism for counting divisors within a real interval.
--/
+/- ## Part 1: Basic Definitions -/
 
 /-- The set of divisors of n as a finite set -/
 def divisors (n : ℕ) : Finset ℕ :=
@@ -44,12 +39,7 @@ def divisorsInInterval (n : ℕ) (a b : ℝ) : Finset ℕ :=
 def countDivisorsInInterval (n : ℕ) (a b : ℝ) : ℕ :=
   (divisorsInInterval n a b).card
 
-/-!
-## Part 2: The Erdős-Rosenfeld Conjecture
-
-The central question: does a universal constant K exist bounding
-the number of divisors any integer can have near its square root?
--/
+/- ## Part 2: The Erdős-Rosenfeld Conjecture -/
 
 /-- The Erdős-Rosenfeld interval (√n, √n + C·n^{1/4}) -/
 def erdosRosenfeldInterval (n : ℕ) (C : ℝ) : Set ℝ :=
@@ -72,12 +62,7 @@ def WeakErdosRosenfeld : Prop :=
   ∀ C : ℝ, C > 0 → ∃ K : ℕ, ∃ N₀ : ℕ,
     ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrt n C ≤ K
 
-/-!
-## Part 3: Erdős-Rosenfeld Lower Bound (1997)
-
-Erdős and Rosenfeld proved that infinitely many n achieve exactly
-4 divisors in the interval, so K ≥ 4 if the conjecture holds.
--/
+/- ## Part 3: Erdős-Rosenfeld Lower Bound (1997) -/
 
 /-- Erdős-Rosenfeld (1997): infinitely many n have exactly 4 divisors
     in (√n, √n + C·n^{1/4}) for C ≥ 1.
@@ -90,12 +75,7 @@ axiom erdos_rosenfeld_four_divisors :
 def FourIsMaximum : Prop :=
   ∀ C : ℝ, C > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrt n C ≤ 4
 
-/-!
-## Part 4: Perfect Square Case — Chan's Theorem (2013)
-
-Tsz Ho Chan resolved the conjecture for perfect squares: they have
-at most 5 divisors in the interval (the extra one being √n itself).
--/
+/- ## Part 4: Perfect Square Case — Chan's Theorem (2013) -/
 
 /-- A natural number is a perfect square -/
 def isPerfectSquare (n : ℕ) : Prop := ∃ k : ℕ, k ^ 2 = n
@@ -116,23 +96,14 @@ theorem perfect_square_has_sqrt_divisor (n : ℕ) (hn : isPerfectSquare n) :
   obtain ⟨k, hk⟩ := hn
   exact ⟨k, ⟨Dvd.intro k (by ring_nf; rw [← hk]), hk⟩⟩
 
-/-!
-## Part 5: General Divisor Bounds
-
-Classical results on the divisor function provide context.
--/
+/- ## Part 5: General Divisor Bounds -/
 
 /-- τ(n) ≪ n^ε for any ε > 0: the divisor function grows
     slower than any positive power of n. -/
 axiom divisor_bound_epsilon :
   ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, ∀ n : ℕ, n ≥ 1 → (tau n : ℝ) ≤ C * (n : ℝ) ^ ε
 
-/-!
-## Part 6: Interval Width Variations
-
-The exponent 1/4 in n^{1/4} is critical. Changing it
-dramatically alters the problem's character.
--/
+/- ## Part 6: Interval Width Variations -/
 
 /-- The symmetric interval case: divisors in (√n - c·n^{1/4}, √n + c·n^{1/4}) -/
 def divisorsSymmetricInterval (n : ℕ) (c : ℝ) : ℕ :=
@@ -156,12 +127,7 @@ axiom bound_for_small_alpha :
   ∀ α : ℝ, 0 < α → α < 1/4 → ∃ N₀ : ℕ,
     ∀ n : ℕ, n ≥ N₀ → divisorsNearSqrtAlpha n 1 α ≤ 2
 
-/-!
-## Part 7: Summary
-
-The Erdős-Rosenfeld Conjecture remains open. We collect the
-known results into a single summary statement.
--/
+/- ## Part 7: Summary -/
 
 /-- Summary of known results for Erdős Problem #887:
     • Infinitely many n achieve exactly 4 divisors (Erdős-Rosenfeld 1997)
