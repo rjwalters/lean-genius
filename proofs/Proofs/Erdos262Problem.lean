@@ -38,7 +38,7 @@ open Nat Real
 
 namespace Erdos262
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Strictly Increasing Sequence:**
@@ -61,7 +61,7 @@ def IsPositiveIntSequence (t : ℕ → ℕ) : Prop :=
 noncomputable def weightedSum (a t : ℕ → ℕ) : ℝ :=
   ∑' n, (1 : ℝ) / ((t n : ℝ) * (a n : ℝ))
 
-/-! ## Part II: Irrationality Sequences -/
+/- ## Part II: Irrationality Sequences -/
 
 /--
 **Irrationality Sequence:**
@@ -81,7 +81,7 @@ def mainQuestion : Prop :=
     ∀ g : ℕ → ℕ, IsIrrationalitySequence g →
       ∀ᶠ n in Filter.atTop, f n ≤ g n
 
-/-! ## Part III: Examples and Non-Examples -/
+/- ## Part III: Examples and Non-Examples -/
 
 /--
 **The Double Exponential Sequence:**
@@ -109,7 +109,7 @@ For example, with t_n = n+1, the series telescopes to a rational sum.
 axiom factorial_not_irrationality :
     ¬IsIrrationalitySequence factorial_seq
 
-/-! ## Part IV: Necessary Growth Condition -/
+/- ## Part IV: Necessary Growth Condition -/
 
 /--
 **Root Growth:**
@@ -137,7 +137,7 @@ For an irrationality sequence, we need roughly a_n ≥ 2^{2^{cn}} for some c > 0
 axiom double_exponential_necessary (a : ℕ → ℕ) (ha : IsIrrationalitySequence a) :
     ∃ c > 0, ∀ᶠ n in Filter.atTop, (a n : ℝ) ≥ Real.rpow 2 (Real.rpow 2 (c * n))
 
-/-! ## Part V: Hančl's General Condition -/
+/- ## Part V: Hančl's General Condition -/
 
 /--
 **Hančl's General Criterion:**
@@ -158,7 +158,7 @@ axiom slower_growth_fails (a : ℕ → ℕ) (ε : ℝ) (hε : ε > 0)
     (ha : ∀ᶠ n in Filter.atTop, (a n : ℝ) ≤ Real.rpow 2 (Real.rpow 2 (n * (1 - ε)))) :
     ¬IsIrrationalitySequence a
 
-/-! ## Part VI: The Spacing Property -/
+/- ## Part VI: The Spacing Property -/
 
 /--
 **The Spacing Property:**
@@ -169,7 +169,7 @@ prevents any choice of t_n from making the sum rational.
 axiom double_exp_ratio (n : ℕ) :
     doubleExp (n + 1) / doubleExp n = 2 ^ (2 ^ n)
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #262: Summary**
