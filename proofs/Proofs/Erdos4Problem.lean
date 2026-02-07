@@ -28,7 +28,7 @@ open Set Nat Real
 
 namespace Erdos4
 
-/-! ## Prime Notation -/
+/- ## Prime Notation -/
 
 /-- The n-th prime number (0-indexed: p₀ = 2, p₁ = 3, p₂ = 5, ...). -/
 noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
@@ -36,7 +36,7 @@ noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 /-- The prime gap: difference between consecutive primes. -/
 noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 
-/-! ## Iterated Logarithms -/
+/- ## Iterated Logarithms -/
 
 /-- Natural logarithm (from Mathlib). -/
 noncomputable def lg (x : ℝ) : ℝ := Real.log x
@@ -50,7 +50,7 @@ noncomputable def lg3 (x : ℝ) : ℝ := lg (lg (lg x))
 /-- Quadruple logarithm: log(log(log(log(x)))). -/
 noncomputable def lg4 (x : ℝ) : ℝ := lg (lg (lg (lg x)))
 
-/-! ## The Erdős Function -/
+/- ## The Erdős Function -/
 
 /--
 The Erdős function for prime gaps:
@@ -68,7 +68,7 @@ Simplified Rankin function (without the quartic log term):
 noncomputable def rankinFunction (n : ℕ) : ℝ :=
   (lg2 n) / (lg3 n) * lg n
 
-/-! ## The Erdős Conjecture (Now Proved) -/
+/- ## The Erdős Conjecture (Now Proved) -/
 
 /--
 **Erdős Problem 4** (SOLVED):
@@ -79,7 +79,7 @@ def erdos_4_conjecture : Prop :=
   ∀ C : ℝ, C > 0 →
     ∀ N : ℕ, ∃ n : ℕ, n > N ∧ (primeGap n : ℝ) > C * erdosFunction n
 
-/-! ## Historical Results -/
+/- ## Historical Results -/
 
 /--
 **Rankin's Theorem** (1938):
@@ -95,7 +95,7 @@ axiom rankin_theorem :
 /-- Rankin's original constant (approximately 1/3 · e^γ where γ is Euler's constant). -/
 noncomputable def rankin_constant : ℝ := (1/3) * Real.exp 0.5772156649
 
-/-! ## The 2016 Breakthrough -/
+/- ## The 2016 Breakthrough -/
 
 /--
 **Maynard's Theorem** (2016):
@@ -115,7 +115,7 @@ axiom ford_green_konyagin_tao_theorem : erdos_4_conjecture
 /-- The problem is solved: both teams proved it. -/
 theorem erdos_4_solved : erdos_4_conjecture := maynard_theorem
 
-/-! ## Improved Bounds (2018) -/
+/- ## Improved Bounds (2018) -/
 
 /--
 **Ford-Green-Konyagin-Maynard-Tao Theorem** (2018):
@@ -131,7 +131,7 @@ axiom fgkmt_improved_bound :
     ∃ C : ℝ, C > 0 ∧
       ∀ N : ℕ, ∃ n : ℕ, n > N ∧ (primeGap n : ℝ) > C * improvedErdosFunction n
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /--
 **Baker-Harman-Pintz Theorem** (2001):
@@ -146,7 +146,7 @@ axiom baker_harman_pintz_upper_bound :
 /-- The BHP exponent. -/
 def bhp_exponent : ℝ := 0.525
 
-/-! ## Cramér's Conjecture -/
+/- ## Cramér's Conjecture -/
 
 /--
 **Cramér's Conjecture** (1936, OPEN):
@@ -165,7 +165,7 @@ lim sup (p_{n+1} - p_n) / (log p_n)² = 2 · e^{-γ} ≈ 1.1229.
 -/
 noncomputable def cramer_granville_constant : ℝ := 2 * Real.exp (-0.5772156649)
 
-/-! ## Simple Properties -/
+/- ## Simple Properties -/
 
 /-- The first prime gap: p₁ - p₀ = 3 - 2 = 1. -/
 axiom gap_0 : primeGap 0 = 1
@@ -177,7 +177,7 @@ axiom prime_gap_pos (n : ℕ) (hn : n ≥ 1) : primeGap n > 0
 axiom average_gap_asymptotic :
     Filter.Tendsto (fun n => (nthPrime n : ℝ) / n / lg n) Filter.atTop (nhds 1)
 
-/-! ## Comparison of Bounds -/
+/- ## Comparison of Bounds -/
 
 /-- The Erdős function grows slower than (log n)^(1+ε) for any ε > 0. -/
 axiom erdos_function_growth (ε : ℝ) (hε : ε > 0) :
@@ -190,7 +190,7 @@ theorem improved_stronger (n : ℕ) (hn : n ≥ 100) :
   -- The improved has lg3 n in denominator vs (lg3 n)^2
   sorry -- Technical inequality
 
-/-! ## Related Conjectures -/
+/- ## Related Conjectures -/
 
 /--
 **Stronger Conjecture** (Erdős, $10,000 for this):
@@ -213,7 +213,7 @@ def firoozbakht_conjecture : Prop :=
   ∀ n : ℕ, n ≥ 1 → (nthPrime (n + 1) : ℝ)^(1 / (n + 1 : ℝ)) <
                     (nthPrime n : ℝ)^(1 / (n : ℝ))
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 
