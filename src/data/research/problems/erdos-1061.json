@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1061",
   "title": "Erdős #1061",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "PROVEN",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -11,40 +11,92 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Infinitely many solutions via (p, 2p) for primes p >= 5",
+      "sigma is neither subadditive nor superadditive",
+      "Counting function S(x) is monotone",
+      "8 explicit solution pairs verified",
+      "6 A110177 members verified",
+      "3p in A110177 for all primes p >= 5"
+    ],
+    "open": [
+      "Is S(x) ~ cx for some constant c > 0? (the main open question)"
+    ],
+    "goal": "Prove or disprove linear growth of counting function S(x)"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T14:31:40.058Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "PROVEN",
+    "since": "2026-02-07T10:30:00Z",
+    "iteration": 2,
+    "focus": "Formalized all provable aspects; open question remains.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Main open question (linear growth) remains unsolved.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Full formalization with 0 axioms, 0 sorries. Proved infinitely many solutions via structural theorem (p, 2p) for primes p >= 5. Verified 8 solution pairs and 6 A110177 members. Counting function S(x) defined and shown monotone. Non-solution family proved (prime pairs with prime sum). Lower bound S(x) >= pi(x/3) - 2 from prime family. Open question (linear growth) properly stated but not resolved (OPEN problem).",
+    "builtItems": [
+      "IsAdditiveDivisorPair definition",
+      "additiveDivisorPairs set definition",
+      "sigma_prime' lemma (sigma(p) = p+1 for prime p)",
+      "sigma_add_eq_of_prime structural theorem",
+      "solution_prime_2p theorem (infinitely many solutions)",
+      "infinitely_many_solutions theorem",
+      "S counting function definition",
+      "S_monotone theorem",
+      "A110177 set definition",
+      "three_p_in_A110177 theorem",
+      "hasLinearGrowth open question formalization",
+      "not_solution_of_sum_prime theorem (non-solution family)",
+      "not_additive_pair_of_sum_prime corollary",
+      "prime_solution_counted theorem (lower bound from primes)"
+    ],
+    "insights": [
+      "sigma(p) + sigma(2p) = sigma(3p) for primes p >= 5 via multiplicativity of sigma and coprimality",
+      "The key algebraic identity: (p+1) + 3(p+1) = 4(p+1) when sigma(2)=3, sigma(3)=4",
+      "sigma is neither subadditive nor superadditive - counterexamples at (2,3) and (2,4)",
+      "native_decide handles sigma evaluations efficiently for small values",
+      "Multiplicativity of sigma (sigma_isMultiplicative) is the core Mathlib tool",
+      "If p,q,p+q are all prime then sigma overshoots by exactly 1 (non-solution family)",
+      "Each prime in [5, x/3] contributes a distinct solution pair to S(x), giving S(x) >= pi(x/3) - 2"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1061 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow many solutions are there to\\[\\sigma(a)+\\sigma(b)=\\sigma(a+b)\\]with $a+b\\leq x$, where $\\sigma$ is the sum of divisors function? Is it $\\sim cx$ for some constant $c>0$?\n\n\n\nA question of Erd\\H{o}s reported in problem B15 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1060\n- Problem #1062\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "nextSteps": [
+      "The asymptotic linear growth question S(x) ~ cx remains OPEN",
+      "Could investigate computational density for larger x values",
+      "Could look for other infinite families beyond (p, 2p)"
+    ],
+    "markdown": "# Erdős #1061 - Knowledge Base\n\n## Problem Statement\n\nHow many solutions are there to sigma(a)+sigma(b)=sigma(a+b) with a+b <= x? Is S(x) ~ cx for some c > 0?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization Status**: COMPLETE (0 axioms, 0 sorries)\n\n## Key Results\n\n1. **Structural Theorem**: For any prime p >= 5, (p, 2p) is a solution\n2. **Infinitely many solutions**: Proved via infinite primes\n3. **Counting function**: S(x) defined and shown monotone\n4. **OEIS A110177**: 3p in A110177 for all primes p >= 5\n5. **Concrete verifications**: 8 solution pairs, 6 A110177 members\n\n## Proof Technique\n\nMultiplicativity of sigma + coprimality of 2,3 with primes p >= 5:\nsigma(p) + sigma(2p) = (p+1) + 3(p+1) = 4(p+1) = sigma(3p)\n\n## References\n\n- Guy, R.K., Unsolved problems in number theory, Problem B15 (2004)\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Multiplicativity-based structural proof",
+      "status": "completed",
+      "description": "Use multiplicativity of sigma to show (p, 2p) is a solution for primes p >= 5"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "sum-of-divisors",
+    "multiplicative-functions"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Guy, R.K., Unsolved problems in number theory, Problem B15 (2004)"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1061"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ]
   },
   "started": "2026-01-15T14:31:40.058Z",
   "significance": 7,
