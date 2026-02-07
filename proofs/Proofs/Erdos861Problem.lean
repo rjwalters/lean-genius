@@ -227,19 +227,6 @@ axiom extend_sidon (S : Finset ℕ) (n : ℕ) :
 -/
 
 /--
-**Erdős Problem #861: SOLVED**
-
-QUESTION 1: A(N)/2^{f(N)} → ∞?
-ANSWER: YES (proved via lower bound 2^{1.16·f(N)})
-
-QUESTION 2: A(N) = 2^{(1+o(1))f(N)}?
-ANSWER: NO (bounds show exponent is strictly between 1.16 and 6.442)
-
-Current state: Best bounds are 2^{1.16·f(N)} ≤ A(N) ≤ 2^{6.442·f(N)}.
--/
-theorem erdos_861 : True := trivial
-
-/--
 **Summary of results:**
 -/
 theorem erdos_861_summary :
@@ -250,17 +237,19 @@ theorem erdos_861_summary :
   exact ⟨cameron_erdos_q1_true, cameron_erdos_q2_false⟩
 
 /--
-**The gap between bounds:**
-The exponent in A(N) ~ 2^{c·f(N)} lies in [1.16, 6.442].
-Determining the exact constant remains open.
+**Erdős Problem #861: SOLVED**
+
+QUESTION 1: A(N)/2^{f(N)} → ∞?
+ANSWER: YES (proved via lower bound 2^{1.16·f(N)})
+
+QUESTION 2: A(N) = 2^{(1+o(1))f(N)}?
+ANSWER: NO (bounds show exponent is strictly between 1.16 and 6.442)
+
+Current state: Best bounds are 2^{1.16·f(N)} ≤ A(N) ≤ 2^{6.442·f(N)}.
 -/
-theorem bounds_gap :
-    ∃ c_lower c_upper : ℝ,
-      c_lower = 1.16 ∧ c_upper = 6.442 ∧
-      c_lower < c_upper ∧
-      -- The true exponent is somewhere in between
-      True := by
-  use 1.16, 6.442
-  norm_num
+theorem erdos_861 :
+    CameronErdosQuestion1 ∧
+    ¬ CameronErdosQuestion2 :=
+  erdos_861_summary
 
 end Erdos861
