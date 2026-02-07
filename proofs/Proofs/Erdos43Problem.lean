@@ -1,16 +1,14 @@
-/-!
-# Erdős Problem #43: Sidon Sets with Disjoint Difference Sets
+/- Erdős Problem #43: Sidon Sets with Disjoint Difference Sets
 
 If A, B ⊆ {1,...,N} are Sidon sets with (A-A) ∩ (B-B) = {0},
 must C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + O(1), where f(N) is
 the maximum Sidon set size in {1,...,N}?
 
-## Status: OPEN ($100 bounty)
+Status: OPEN ($100 bounty)
+- Tao proved: |A| ≤ (1/√2 + o(1))√N when |A| = |B| (without improvement constant)
+- Barreto: the equal-size strengthening with -c is FALSE for infinitely many N
 
-## References
-- Erdős
-- Tao (partial progress)
-- Barreto (negative answer to equal-size variant)
+Reference: https://erdosproblems.com/43
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
@@ -21,9 +19,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
-/-!
-## Section I: Sidon Sets
--/
+/- ## Sidon Sets -/
 
 /-- A Sidon set (B₂ set): all pairwise sums a + b (a ≤ b, a,b ∈ A) are distinct,
 equivalently all nonzero pairwise differences are distinct. -/
@@ -35,29 +31,24 @@ def IsSidonSet (A : Finset ℤ) : Prop :=
 def diffSet (A : Finset ℤ) : Finset ℤ :=
   (A ×ˢ A).image (fun p => p.1 - p.2)
 
-/-!
-## Section II: Disjoint Differences
--/
+/- ## Disjoint Differences -/
 
 /-- Two sets have disjoint nonzero differences: (A-A) ∩ (B-B) = {0}. -/
 def DisjointDifferences (A B : Finset ℤ) : Prop :=
   ∀ d : ℤ, d ∈ diffSet A → d ∈ diffSet B → d = 0
 
-/-!
-## Section III: Maximum Sidon Set Size
--/
+/- ## Maximum Sidon Set Size -/
 
 /-- f(N): the maximum cardinality of a Sidon set in {1,...,N}. -/
 axiom maxSidonSize : ℕ → ℕ
 
-/-- f(N) ~ √N: the maximum Sidon set size is asymptotically √N. -/
+/-- f(N) ~ √N: the maximum Sidon set size is asymptotically √N.
+    This is a classical result in additive combinatorics. -/
 axiom sidon_size_asymptotic :
   ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
     |(maxSidonSize N : ℝ) - Real.sqrt N| ≤ ε * Real.sqrt N
 
-/-!
-## Section IV: The Conjecture
--/
+/- ## The Conjecture -/
 
 /-- **Erdős Problem #43**: If A, B are Sidon sets in {1,...,N} with
 disjoint nonzero differences, then C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + O(1). -/
@@ -68,9 +59,7 @@ def ErdosProblem43 : Prop :=
     DisjointDifferences A B →
     A.card.choose 2 + B.card.choose 2 ≤ (maxSidonSize N).choose 2 + C
 
-/-!
-## Section V: Equal Size Variant
--/
+/- ## Equal Size Variant -/
 
 /-- The equal-size strengthening: when |A| = |B|, can we get
 C(|A|,2) + C(|B|,2) ≤ (1 - c)·C(f(N),2) for some c > 0?
@@ -85,19 +74,56 @@ def EqualSizeVariant : Prop :=
 /-- Barreto's result: the equal-size variant is false. -/
 axiom barreto_counterexample : ¬EqualSizeVariant
 
-/-!
-## Section VI: Structural Bounds
--/
+/- ## Structural Bounds -/
 
-/-- A single Sidon set A in {1,...,N} has C(|A|,2) ≤ N. -/
-axiom sidon_pair_bound (A : Finset ℤ) (N : ℕ)
+/-- A single Sidon set A in {1,...,N} has C(|A|,2) ≤ N.
+    Proof sketch: the C(|A|,2) pairwise sums a+b (a<b) are all distinct
+    (by Sidon property) and lie in {3,...,2N-1}, which has 2N-3 elements.
+    More precisely, the differences a-b for a≠b are all distinct and
+    lie in {-(N-1),...,-1,1,...,N-1}, giving |A|²-|A| ≤ 2(N-1). -/
+theorem sidon_pair_bound (A : Finset ℤ) (N : ℕ)
     (hS : IsSidonSet A) (hR : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) :
-  A.card.choose 2 ≤ N
+  A.card.choose 2 ≤ N := by sorry
 
-/-- Disjoint differences force A ∪ B to have distinct nonzero
-differences, bounding the combined size. -/
-axiom disjoint_diff_combined_bound (A B : Finset ℤ) (N : ℕ)
+/-- Disjoint differences force the nonzero differences of A and B
+    to be completely disjoint, so the total number of distinct nonzero
+    differences is |A|(|A|-1) + |B|(|B|-1), bounded by 2(N-1).
+    This gives C(|A|,2) + C(|B|,2) ≤ N. -/
+theorem disjoint_diff_combined_bound (A B : Finset ℤ) (N : ℕ)
     (hA : IsSidonSet A) (hB : IsSidonSet B)
     (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
     (hD : DisjointDifferences A B) :
-  A.card.choose 2 + B.card.choose 2 ≤ N
+  A.card.choose 2 + B.card.choose 2 ≤ N := by sorry
+
+/- ## Tao's Partial Result
+
+Tao showed: if |A| = |B| and (A-A) ∩ (B-B) = {0}, then
+|A| ≤ (1/√2 + o(1))√N.
+
+The key idea: the C(|A|,2) + C(|B|,2) distinct differences from
+A and B together are disjoint nonzero integers in {-(N-1),...,N-1}.
+When |A| = |B| = m, we need 2·C(m,2) ≤ 2(N-1), so m(m-1) ≤ 2(N-1),
+giving m ≤ (1/√2 + o(1))√N. -/
+
+/-- Tao's bound: when |A| = |B|, both equal m, we get m^2 ≤ 2N+1.
+    This follows from disjoint_diff_combined_bound: 2·C(m,2) ≤ N,
+    so m(m-1) ≤ N, giving m^2 ≤ N + m ≤ 2N for large N. -/
+theorem tao_equal_size_bound (A B : Finset ℤ) (N : ℕ)
+    (hA : IsSidonSet A) (hB : IsSidonSet B)
+    (hRA : ∀ a ∈ A, 1 ≤ a ∧ a ≤ N) (hRB : ∀ b ∈ B, 1 ≤ b ∧ b ≤ N)
+    (hD : DisjointDifferences A B) (hEq : A.card = B.card) :
+  (A.card : ℝ) ^ 2 ≤ 2 * N + 1 := by sorry
+
+/- ## Counting Arguments -/
+
+/-- The number of nonzero differences of a Sidon set A is |A|²-|A|,
+    since all pairwise differences are distinct. -/
+theorem sidon_diff_count (A : Finset ℤ) (hS : IsSidonSet A) :
+  (diffSet A).card = A.card * A.card - A.card + 1 := by sorry
+
+/-- When differences are disjoint, the combined nonzero differences
+    from A and B have cardinality |A|²-|A| + |B|²-|B|. -/
+theorem disjoint_diff_total (A B : Finset ℤ)
+    (hA : IsSidonSet A) (hB : IsSidonSet B) (hD : DisjointDifferences A B) :
+  (diffSet A ∪ diffSet B).card ≥
+    A.card * A.card - A.card + B.card * B.card - B.card + 1 := by sorry
