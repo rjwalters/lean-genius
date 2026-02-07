@@ -16,14 +16,14 @@
       "clique-partition",
       "coloring"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1015,
     "erdosUrl": "https://erdosproblems.com/1015",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "This problem, originally posed by Moon (1966), asks about efficiently partitioning the edges of a 2-colored complete graph using monochromatic cliques. Moon proved f(3) = 4 for n ≥ 8, meaning when partitioning 2-colored Kₙ into monochromatic triangles, at most 4 vertices remain uncovered. Erdős noted f(t) ≪ 4^t by comparison with Ramsey numbers, and asked whether f(t)^{1/t} → 1 or f(t) ≪ t.",
+    "historicalContext": "This problem asks about efficiently partitioning the edges of a 2-colored complete graph using monochromatic cliques. Moon (1966) proved the first case f(3) = 4 for n ≥ 8: when partitioning 2-colored Kₙ into monochromatic triangles, at most 4 vertices remain uncovered.\n\nErdős observed that f(t) ≪ 4^t by comparison with the Ramsey number R(t,t), and asked the more precise questions: does f(t)^{1/t} → 1? Is f(t) ≪ t? Both questions ask whether the leftover grows much slower than the Ramsey bound suggests.\n\nBurr, Erdős, and Spencer (1975) proved an exact formula that settled both questions negatively. For n sufficiently large, f(t) = R(t, t-1) + x(t,n) where 0 ≤ x < t is a modular correction. Since R(t, t-1) grows like 4^t/√t, we get f(t)^{1/t} → 4 and f(t) is exponential in t.",
     "problemStatement": "Let f(t) be minimal such that, in any two-coloring of the edges of Kₙ, the edges can be partitioned into vertex-disjoint monochromatic copies of Kₜ (not necessarily the same color) with at most f(t) vertices remaining. Estimate f(t). Is f(t)^{1/t} → 1? Is f(t) ≪ t?",
     "proofStrategy": "Burr, Erdős, and Spencer (1975) proved an exact formula: for n sufficiently large depending on t, f(t) = R(t, t-1) + x(t,n) where 0 ≤ x(t,n) < t and n + 1 ≡ R(t,t-1) + x (mod t). This shows f(t) ≈ R(t, t-1), which grows like 4^t/√t, answering both questions negatively.",
     "keyInsights": [
