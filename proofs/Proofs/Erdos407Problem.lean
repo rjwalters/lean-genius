@@ -36,7 +36,7 @@ open Nat Finset
 
 namespace Erdos407
 
-/-!
+/-
 ## Part I: S-Units and Powers of 2 and 3
 -/
 
@@ -67,7 +67,7 @@ theorem one_is_23smooth : Is23Smooth 1 := ⟨0, 0, by norm_num⟩
 theorem two_is_23smooth : Is23Smooth 2 := ⟨1, 0, by norm_num⟩
 theorem six_is_23smooth : Is23Smooth 6 := ⟨1, 1, by norm_num⟩
 
-/-!
+/-
 ## Part II: The Representation Count w(n)
 -/
 
@@ -97,7 +97,7 @@ def DistinctReps (n : ℕ) : Set (Finset ℕ) :=
   {s : Finset ℕ | ∃ a b c d : ℕ, IsValidRep n a b c d ∧
     s = {2 ^ a, 3 ^ b, 2 ^ c * 3 ^ d}}
 
-/-!
+/-
 ## Part III: Examples
 -/
 
@@ -134,7 +134,7 @@ theorem five_has_rep2 : IsValidRep 5 1 0 1 0 := by
   unfold IsValidRep
   norm_num
 
-/-!
+/-
 ## Part IV: The Main Results
 -/
 
@@ -169,7 +169,7 @@ axiom bajpai_bennett_2024_all :
 axiom bajpai_bennett_2024_max :
   (DistinctReps 299).ncard = 9
 
-/-!
+/-
 ## Part V: Infinitely Many n with w(n) = 4
 -/
 
@@ -203,7 +203,7 @@ axiom four_reps_equal (a b : ℕ) (ha : a ≥ 2) (hb : b ≥ 2) :
 axiom infinitely_many_with_4_reps :
     Set.Infinite {n : ℕ | (DistinctReps n).ncard = 4}
 
-/-!
+/-
 ## Part VI: Summary
 -/
 
