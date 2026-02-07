@@ -18,7 +18,7 @@ import Mathlib
 
 open Nat Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A number is squarefree if no prime square divides it -/
 def IsSquarefree (n : ℕ) : Prop := Squarefree n
@@ -30,7 +30,7 @@ def IsPowerOfTwo (n : ℕ) : Prop := ∃ k : ℕ, n = 2^k
 def IsSquarefreePlusPow2 (n : ℕ) : Prop :=
   ∃ (s p : ℕ), IsSquarefree s ∧ IsPowerOfTwo p ∧ n = s + p
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- 1 is squarefree -/
 theorem one_squarefree : IsSquarefree 1 := squarefree_one
@@ -45,7 +45,7 @@ theorem two_is_pow2 : IsPowerOfTwo 2 := ⟨1, rfl⟩
 theorem prime_squarefree {p : ℕ} (hp : Nat.Prime p) : IsSquarefree p :=
   hp.squarefree
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- 3 = 1 + 2 (squarefree + power of 2) -/
 theorem three_works : IsSquarefreePlusPow2 3 :=
@@ -63,7 +63,7 @@ theorem seven_works : IsSquarefreePlusPow2 7 :=
 theorem nine_works : IsSquarefreePlusPow2 9 :=
   ⟨1, 8, one_squarefree, ⟨3, rfl⟩, rfl⟩
 
-/-! ## Wieferich Primes -/
+/- ## Wieferich Primes -/
 
 /-- A prime p is a Wieferich prime if 2^(p-1) ≡ 1 (mod p²) -/
 def IsWieferichPrime (p : ℕ) : Prop :=
@@ -77,7 +77,7 @@ axiom known_wieferich_3511 : IsWieferichPrime 3511
 def InfinitelyManyNonWieferich : Prop :=
   ∀ N : ℕ, ∃ p > N, Nat.Prime p ∧ ¬IsWieferichPrime p
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- Erdős Problem #11: Every odd n > 1 is squarefree + power of 2 -/
 def Erdos11Conjecture : Prop :=
@@ -91,13 +91,13 @@ def Erdos11WeakConjecture : Prop :=
 def IsSquarefreePlusTwoPow2 (n : ℕ) : Prop :=
   ∃ (s p q : ℕ), IsSquarefree s ∧ IsPowerOfTwo p ∧ IsPowerOfTwo q ∧ n = s + p + q
 
-/-! ## Connection to Wieferich Primes (Granville-Soundararajan 1998) -/
+/- ## Connection to Wieferich Primes (Granville-Soundararajan 1998) -/
 
 /-- Granville-Soundararajan: Erdős 11 implies infinitely many non-Wieferich primes -/
 axiom granville_soundararajan :
   Erdos11Conjecture → InfinitelyManyNonWieferich
 
-/-! ## Computational Verification -/
+/- ## Computational Verification -/
 
 /-- Hercher (2024): Verified for all odd n up to 2^50 -/
 axiom hercher_verification :
@@ -107,7 +107,7 @@ axiom hercher_verification :
 axiom odlyzko_verification :
   ∀ n : ℕ, Odd n → 1 < n → n < 10^7 → IsSquarefreePlusPow2 n
 
-/-! ## Density Result -/
+/- ## Density Result -/
 
 /-- Erdős proved the conjecture holds for almost all n -/
 axiom erdos_almost_all :
