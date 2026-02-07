@@ -37,8 +37,7 @@ namespace Erdos21
 
 variable {α : Type*} [DecidableEq α]
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /--
@@ -75,8 +74,7 @@ structure CoveringFamily (α : Type*) [DecidableEq α] (n k : ℕ) where
   covers : CoversSmallSets family n
   size : family.card = k
 
-/-!
-## Part II: The Function f(n)
+/- ## Part II: The Function f(n)
 
 f(n) is the minimum k such that a valid (n, k)-covering family exists.
 -/
@@ -95,8 +93,7 @@ axiom f_achievable (n : ℕ) :
 axiom f_minimal (n k : ℕ) :
     (∃ α : Type, ∃ _ : DecidableEq α, Nonempty (CoveringFamily α n k)) → f n ≤ k
 
-/-!
-## Part III: Known Exact Values
+/- ## Part III: Known Exact Values
 
 These values were computed through exhaustive search and construction.
 -/
@@ -123,8 +120,7 @@ axiom f_six_bounds : 13 ≤ f 6 ∧ f 6 ≤ 18
 /-- The known values of f as a list. -/
 def knownValues : List (ℕ × ℕ) := [(1, 1), (2, 3), (3, 6), (4, 9), (5, 13)]
 
-/-!
-## Part IV: The Erdős-Lovász Lower Bound (1975)
+/- ## Part IV: The Erdős-Lovász Lower Bound (1975)
 
 The lower bound (8/3)n - O(1) comes from a counting argument.
 -/
@@ -143,8 +139,7 @@ Follows from (8/3)n - 3 ≥ 2n for n ≥ 9, and small cases are checked directly
 axiom lower_bound_simplified (n : ℕ) (hn : n ≥ 2) :
     f n ≥ 2 * n
 
-/-!
-## Part V: Upper Bounds and Resolution
+/- ## Part V: Upper Bounds and Resolution
 -/
 
 /--
@@ -184,8 +179,7 @@ def ErdosLovaszConjecture : Prop :=
 /-- Kahn's theorem resolves the conjecture. -/
 theorem conjecture_resolved : ErdosLovaszConjecture := kahn_1994_linear_bound
 
-/-!
-## Part VI: Conjectured Exact Bound
+/- ## Part VI: Conjectured Exact Bound
 -/
 
 /--
@@ -198,8 +192,7 @@ def ExactBoundConjecture : Prop :=
   ∃ C : ℕ, ∀ n : ℕ, n ≥ 1 → |Int.ofNat (f n) - 3 * Int.ofNat n| ≤ C
 
 
-/-!
-## Part VII: Projective Plane Constructions
+/- ## Part VII: Projective Plane Constructions
 -/
 
 /--
@@ -228,8 +221,7 @@ axiom erdos_lovasz_construction (n : ℕ) (hn : n ≥ 2)
     ∃ (V : Type) (_ : DecidableEq V) (F : Finset (Finset V)),
       IsIntersecting F ∧ IsUniform F n ∧ CoversSmallSets F n
 
-/-!
-## Part VIII: Properties of Covering Families
+/- ## Part VIII: Properties of Covering Families
 -/
 
 /--
@@ -245,8 +237,7 @@ axiom covering_family_union_size (α : Type*) [DecidableEq α] (n k : ℕ)
     (F : CoveringFamily α n k) (hk : k ≥ 1) :
     (F.family.biUnion id).card ≥ n + k - 1
 
-/-!
-## Part IX: Sunflower Connection
+/- ## Part IX: Sunflower Connection
 -/
 
 /--
@@ -261,8 +252,7 @@ axiom covering_not_always_sunflower :
     ∃ n : ℕ, ∃ α : Type, ∃ _ : DecidableEq α, ∃ F : CoveringFamily α n (f n),
       ¬IsSunflower F.family
 
-/-!
-## Part X: Kahn's Probabilistic Argument
+/- ## Part X: Kahn's Probabilistic Argument
 -/
 
 /--
@@ -274,8 +264,7 @@ axiom kahn_probabilistic_argument (n : ℕ) (hn : n ≥ 2)
     (hprime : Nat.Prime (n - 1) ∨ IsPrimePow (n - 1)) :
     f n ≤ 10 * n  -- Explicit constant (actual constant is smaller)
 
-/-!
-## Part XI: Generalizations
+/- ## Part XI: Generalizations
 -/
 
 /--
@@ -296,8 +285,7 @@ def GeneralizedConjecture (k : ℕ) : Prop :=
   ∃ C : ℕ, ∀ n : ℕ, n ≥ 1 →
     |Int.ofNat (f_general k n) - (k + 2) * Int.ofNat n| ≤ C
 
-/-!
-## Part XII: Summary
+/- ## Part XII: Summary
 
 **Erdős Problem #21: Status SOLVED** ($500 prize)
 
