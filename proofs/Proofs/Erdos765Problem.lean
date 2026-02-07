@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #765: Asymptotic Formula for ex(n; C₄)
 
 Give an asymptotic formula for ex(n; C₄), where ex(n; C₄) is the maximum number
@@ -26,8 +26,7 @@ open SimpleGraph Finset
 
 namespace Erdos765
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /--
@@ -55,8 +54,7 @@ noncomputable def edgeCount {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
   G.edgeFinset.card
 
-/-!
-## Part II: Turán-Type Extremal Function
+/- ## Part II: Turán-Type Extremal Function
 -/
 
 /--
@@ -71,8 +69,7 @@ axiom ex_C4_realized (n : ℕ) :
     ∃ V : Type*, ∃ _ : Fintype V, ∃ G : SimpleGraph V,
       isFourCycleFree G ∧ Fintype.card V = n
 
-/-!
-## Part III: Historical Bounds
+/- ## Part III: Historical Bounds
 -/
 
 /--
@@ -105,8 +102,7 @@ axiom projective_plane_construction (q : ℕ)
     let n := projectivePlaneVertices q
     (ex_C4 n : ℝ) ≥ (1/2 : ℝ) * q * (q + 1)^2
 
-/-!
-## Part IV: The Asymptotic Formula
+/- ## Part IV: The Asymptotic Formula
 -/
 
 /--
@@ -133,8 +129,7 @@ theorem erdos_765 : ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     |asymptotic_ratio n - (1/2 : ℝ)| < ε :=
   asymptotic_formula
 
-/-!
-## Part V: Füredi's Exact Result
+/- ## Part V: Füredi's Exact Result
 -/
 
 /--
@@ -148,8 +143,7 @@ axiom furedi_exact (q : ℕ) (hq : q > 13)
     let n := projectivePlaneVertices q
     ex_C4 n = q * (q + 1)^2 / 2
 
-/-!
-## Part VI: Refined Bounds and Erdős's Conjecture
+/- ## Part VI: Refined Bounds and Erdős's Conjecture
 -/
 
 /--
@@ -179,8 +173,7 @@ axiom ma_yang_disproof :
         (↑S.card : ℝ) ≥ δ * N ∧
         ∀ n ∈ S, (ex_C4 n : ℝ) ≤ (1/2 : ℝ) * (n : ℝ)^(3/2 : ℝ) + (1/4 - c) * n
 
-/-!
-## Part VII: Connection to Number Theory
+/- ## Part VII: Connection to Number Theory
 -/
 
 /--
@@ -193,8 +186,7 @@ def is_B2_sequence (A : Finset ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
     a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)
 
-/-!
-## Part VIII: Examples
+/- ## Part VIII: Examples
 -/
 
 /--
@@ -234,8 +226,7 @@ theorem pg25_example :
   simp [projectivePlaneVertices]
   ring
 
-/-!
-## Part IX: Summary
+/- ## Part IX: Summary
 -/
 
 /--
