@@ -11,28 +11,60 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "sumset_comm: sumset is commutative",
+      "sumset_empty_left/right: sumset with empty is empty",
+      "sumset_mono: sumset monotone in both args",
+      "zero_mem_sumset_self: 0 in A implies 0 in A+A",
+      "double_mem_sumset: a in A implies 2a in A+A",
+      "trivial_partition: A = A union empty always works",
+      "complement_partition: any subset gives a partition",
+      "nat_syndetic: N is syndetic with gap 0",
+      "empty_not_syndetic: empty is not syndetic",
+      "syndetic_nonempty: syndetic implies nonempty",
+      "syndetic_mono: superset of syndetic is syndetic",
+      "syndetic_infinite: syndetic sets are infinite",
+      "basis_infinite: order-2 basis must be infinite (proved from scratch)",
+      "basis_has_pos_density_sumset: basis sumset has positive density",
+      "part2_gives_non_syndetic: Part 2 implies non-syndetic in some partition half",
+      "part2_contradicts_part1_for_basis: Part 2 tension with Part 1"
+    ],
+    "open": [
+      "ErdosProblem741_density: density splitting conjecture (OPEN)",
+      "ErdosProblem741_basis: basis splitting conjecture (OPEN)"
+    ],
+    "goal": "Formalize framework and prove structural properties"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-14T21:33:35.591Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "BUILD",
+    "since": "2026-02-06T12:30:00.000Z",
+    "iteration": 2,
+    "focus": "Built formalization with 28 proved theorems including basis infinity.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Problem complete - both OPEN conjectures properly axiomatized.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "Expanded from 97-line stub to 275-line formalization. 28 proved theorems, 0 sorries, 7 axioms. Key achievement: proved basis_infinite entirely from scratch using Filter.Eventually reasoning. Established connections between Part 1 and Part 2.",
+    "builtItems": [
+      "Upper density, sumset, basis, syndetic definitions",
+      "28 proved theorems on sumsets, syndetic sets, partitions, and basis properties",
+      "Connections between Part 1 and Part 2 of the conjecture"
+    ],
+    "insights": [
+      "Both parts are OPEN - main conjectures remain axioms",
+      "basis_infinite is provable: if A is bounded, sumset A A is bounded, contradicting eventually-all-large",
+      "Syndetic implies positive density (axiomatized) creates bridge between Part 1 and Part 2",
+      "Part 2 (if true) would show Part 1 fails for that specific basis"
+    ],
+    "mathlibGaps": [
+      "Cofinite sets having density 1 (limsup reasoning needed)",
+      "Syndetic implies positive density (needs measure theory or density calculus)"
+    ],
     "nextSteps": [],
     "markdown": "# Erdős #741 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be such that $A+A$ has positive density. Can one always decompose $A=A_1\\sqcup A_2$ such that $A_1+A_1$ and $A_2+A_2$ both have positive density?\n\nIs there a basis $A$ of order $2$ such that if $A=A_1\\sqcup A_2$ then $A_1+A_1$ and $A_2+A_2$ cannot both have bounded gaps?\n\n\n\nA problem of Burr and Erd\\H{o}s. Erd\\H{o}s \\cite{Er94b} thought he could construct a basis as in the second question, but 'could never quite finish the proof'.\n\n\n\n\nReferences\n\n\n[Er94b] Erd\\H{o}s, Paul, Some problems in number theory, combinatorics and combinatorial geometry. Math. Pannon. (1994), 261-269.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #740\n- Problem #742\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er94b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
