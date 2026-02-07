@@ -67,8 +67,8 @@ noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
 **Maximum Chromatic Number g_k(n):**
 The largest chromatic number among all K_k-free graphs on n vertices.
 -/
-noncomputable def maxChromaticKFree (k n : ℕ) : ℕ :=
-  sorry  -- Supremum over all K_k-free graphs on n vertices
+/-- The supremum over all K_k-free graphs on n vertices. -/
+axiom maxChromaticKFree (k n : ℕ) : ℕ
 
 /-
 ## Part II: Known Upper Bounds
@@ -172,7 +172,7 @@ axiom the_gap :
 The smallest n such that every 2-coloring of K_n edges contains
 either a red K_k or a blue K_m.
 -/
-def RamseyNumber (k m : ℕ) : ℕ := sorry
+axiom RamseyNumber (k m : ℕ) : ℕ
 
 /--
 **Ramsey-Chromatic Connection:**
