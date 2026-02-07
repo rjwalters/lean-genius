@@ -7,11 +7,12 @@
     "author": "Mahler (1936 for k=3), Erdős-Chowla (1936 lower bounds)",
     "sourceUrl": "https://erdosproblems.com/322",
     "date": "1936",
+    "dateAdded": "2026-01-19",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos322Problem.lean",
     "tags": ["erdos", "number-theory", "waring", "additive-combinatorics", "hypothesis-k"],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 322,
     "erdosUrl": "https://erdosproblems.com/322",
     "erdosProblemStatus": "open",
@@ -24,20 +25,19 @@
     ],
     "originalContributions": [
       "kthPowers definition: set of k-th powers",
-      "representationCount: r_k(n) counting representations",
+      "representationCount: r_k(n) axiomatized",
       "hypothesisK: Hardy-Littlewood conjecture formalized",
       "hypothesisK_fails: negation as polynomial lower bound",
       "mahler_theorem: r_3(n) ≫ n^{1/12} for infinitely many n",
       "erdos_chowla_bound: r_k(n) ≫ n^{c/log log n}",
       "hypothesisKStar: weaker squared sum bound",
-      "waring_connection: link to Waring's problem"
-    ],
-    "dateAdded": "2026-01-19"
+      "erdos_positive_density_claim: unbounded representations from dense sets"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem connects to the classical theory of Waring's problem and the Hardy-Littlewood circle method. Hardy and Littlewood conjectured Hypothesis K: that r_k(n) = n^{o(1)} for k ≥ 3, meaning representations grow slower than any polynomial.\n\nMahler (1936) sensationally disproved this for cubes, showing r_3(n) ≫ n^{1/12} for infinitely many n. Erdős believed Hypothesis K fails for all k ≥ 4, but this remains open. Independently, Erdős and Chowla proved a weaker bound r_k(n) ≫ n^{c/log log n} for all k ≥ 3.",
+    "historicalContext": "This problem connects to the classical theory of Waring's problem and the Hardy-Littlewood circle method. Hardy and Littlewood conjectured Hypothesis K: that r_k(n) = n^{o(1)} for k ≥ 3, meaning representations grow slower than any polynomial.\n\nMahler (1936) sensationally disproved this for cubes, showing r_3(n) ≫ n^{1/12} for infinitely many n. Erdős believed Hypothesis K fails for all k ≥ 4, but this remains open. Independently, Erdős and Chowla proved a weaker bound r_k(n) ≫ n^{c/log log n} for all k ≥ 3.\n\nThe weaker Hypothesis K* (bounding the sum Σ r_k(n)² ≪ N^{1+ε}) is probably true but unproven and very deep. Erdős and Graham noted it 'would suffice for most applications' of the original Hypothesis K.",
     "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet k ≥ 3 and let r_k(n) be the number of representations of n as a sum of k many k-th powers.\n\n**Question:** Does there exist c > 0 with r_k(n) > n^c for infinitely many n?\n\n**Results:**\n- k = 3: YES, c = 1/12 works (Mahler 1936)\n- k ≥ 4: OPEN (Erdős conjectured YES)\n- Weaker: r_k(n) ≫ n^{c/log log n} for all k ≥ 3 (Erdős-Chowla)",
-    "proofStrategy": "The formalization defines the representation count r_k(n) and formalizes Hypothesis K and its negation. Mahler's theorem is axiomatized for k = 3. The Erdős-Chowla bound gives a weaker lower bound valid for all k. We also formalize Hypothesis K* (squared sum bound) which is probably true but unproven.",
+    "proofStrategy": "The formalization axiomatizes the representation count r_k(n) and formalizes Hypothesis K and its negation. Mahler's theorem is axiomatized for k = 3. The Erdős-Chowla bound gives a weaker lower bound valid for all k. Hypothesis K* (squared sum bound) is defined but its status is unresolved. The positive density claim axiomatizes Erdős's result on unbounded representations from dense subsets.",
     "keyInsights": [
       "**Hypothesis K:** r_k(n) ≤ n^{o(1)} (Hardy-Littlewood conjecture)",
       "**Mahler (1936):** Disproved for cubes with r_3(n) ≫ n^{1/12}",
@@ -51,57 +51,57 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 44,
-      "endLine": 66,
+      "endLine": 61,
       "summary": "k-th powers set and representation count r_k(n)"
     },
     {
       "id": "hypothesis-k",
       "title": "Hypothesis K",
-      "startLine": 68,
-      "endLine": 86,
+      "startLine": 63,
+      "endLine": 80,
       "summary": "Hardy-Littlewood conjecture and its negation"
     },
     {
       "id": "mahler",
       "title": "Mahler's Theorem",
-      "startLine": 88,
-      "endLine": 126,
+      "startLine": 82,
+      "endLine": 100,
       "summary": "Hypothesis K fails for k=3 with c=1/12"
     },
     {
       "id": "k-geq-4",
       "title": "Status for k ≥ 4",
-      "startLine": 128,
-      "endLine": 144,
+      "startLine": 102,
+      "endLine": 111,
       "summary": "Open problem - Erdős conjectured K fails"
     },
     {
       "id": "erdos-chowla",
       "title": "Erdős-Chowla Bound",
-      "startLine": 146,
-      "endLine": 160,
+      "startLine": 113,
+      "endLine": 126,
       "summary": "Weaker lower bound valid for all k ≥ 3"
     },
     {
       "id": "hypothesis-k-star",
       "title": "Hypothesis K*",
-      "startLine": 162,
-      "endLine": 185,
+      "startLine": 128,
+      "endLine": 142,
       "summary": "Weaker conjecture on squared sums"
     },
     {
-      "id": "waring",
-      "title": "Waring's Problem Connection",
-      "startLine": 206,
-      "endLine": 232,
-      "summary": "Relationship to classical Waring problem"
+      "id": "positive-density",
+      "title": "Positive Density Sets",
+      "startLine": 144,
+      "endLine": 157,
+      "summary": "Erdős's claim on unbounded representations from dense sets"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 234,
-      "endLine": 289,
-      "summary": "Main results and historical note"
+      "startLine": 159,
+      "endLine": 191,
+      "summary": "Main results: Mahler k=3, Erdős-Chowla all k≥3"
     }
   ],
   "conclusion": {
