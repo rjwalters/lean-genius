@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #14: Unique Sums and Non-Unique Representation
 
 Let A ⊆ ℕ and B = {n : n is representable in exactly one way as a + b
@@ -27,7 +27,7 @@ import Mathlib.Tactic
 
 open Finset Filter Asymptotics
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of unique sums: n has exactly one representation as a + b
     with a ≤ b and a, b ∈ A. -/
@@ -49,7 +49,7 @@ def uniqueSumsInf (A : Set ℕ) : Set ℕ :=
 noncomputable def nonUniqueSumCountInf (A : Set ℕ) (N : ℕ) : ℕ :=
   (Set.Icc 1 N \ uniqueSumsInf A).ncard
 
-/-! ## Main Conjectures -/
+/- ## Main Conjectures -/
 
 /-- **Erdős Problem #14a** (OPEN): For every A ⊆ ℕ and every ε > 0,
     the non-unique count satisfies |{1,...,N}\B| ≫_ε N^{1/2−ε}. -/
@@ -58,13 +58,13 @@ axiom erdos_14a_conjecture :
     ∃ C : ℝ, C > 0 ∧
       ∀ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≥ C * (N : ℝ) ^ (1/2 - ε)
 
-/-- **Erdős Problem #14b** (OPEN): Is it possible that
-    |{1,...,N}\B| = o(N^{1/2})? -/
+/-- **Erdős Problem #14b** (OPEN): There exists A ⊆ ℕ such that
+    |{1,...,N}\B| = o(N^{1/2}), i.e., non-unique sums grow slower than √N. -/
 axiom erdos_14b_conjecture :
-  -- The question: does there exist A with non-unique count = o(√N)?
-  True  -- Both positive and negative answers are open
+  ∃ A : Set ℕ, ∀ ε : ℝ, ε > 0 →
+    ∀ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≤ ε * (N : ℝ) ^ (1/2 : ℝ)
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Erdős–Sárközy–Szemerédi**: There exists A ⊆ ℕ such that
     |{1,...,N}\B| ≪_ε N^{1/2+ε} for all ε > 0. -/
@@ -87,7 +87,7 @@ axiom erdos_freud_finite :
     ∃ A : Finset ℕ, (∀ a ∈ A, a ∈ Icc 1 N) ∧
       (nonUniqueSumCount A N : ℝ) < 2 ^ (3/2 : ℝ) * (N : ℝ) ^ (1/2 : ℝ)
 
-/-! ## Structural Observations -/
+/- ## Structural Observations -/
 
 /-- If A is a Sidon set (all pairwise sums distinct), then every sum has
     at most one representation: uniqueSums covers all sums of A.
@@ -96,15 +96,7 @@ axiom erdos_freud_finite :
 axiom sidon_set_non_unique (A : Set ℕ) :
   (∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
     a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)) →
-  -- All sums are unique, but many integers are unrepresented
-  True
-
-/-- For random-like sets A with |A ∩ {1,...,N}| ~ c·N^{1/2}, the non-unique
-    count is expected to be ~Θ(N^{1/2}). -/
-axiom random_heuristic :
-  -- Heuristic: if A has ~c√N elements up to N, the sumset has ~N elements
-  -- but collisions (multiple representations) occur at rate ~1
-  True
+  ∀ᶠ N in atTop, (nonUniqueSumCountInf A N : ℝ) ≥ (N : ℝ) / 2
 
 /-- The non-unique count is monotonically non-decreasing in N. -/
 axiom non_unique_monotone (A : Set ℕ) :
