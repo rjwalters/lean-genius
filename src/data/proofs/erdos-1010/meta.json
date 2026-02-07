@@ -17,14 +17,14 @@
       "supersaturation",
       "triangles"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1010,
     "erdosUrl": "https://erdosproblems.com/1010",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "This problem extends the classical Turán theorem (1941), which established that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges. Rademacher proved the first supersaturation result: exceeding this threshold by one edge forces at least ⌊n/2⌋ triangles. Erdős asked in 1962 whether adding t edges over the threshold forces t·⌊n/2⌋ triangles, for all t < ⌊n/2⌋.",
+    "historicalContext": "This problem extends the classical Turán theorem (1941), which established that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges. Rademacher proved the first supersaturation result: exceeding this threshold by one edge forces at least ⌊n/2⌋ triangles. Erdős asked in 1962 whether adding t edges over the threshold forces t·⌊n/2⌋ triangles, for all t < ⌊n/2⌋.\n\nThe conjecture was proved independently by Lovász and Simonovits (1976) and by Nikiforov and Khadzhiivanov (1981). The Lovász-Simonovits proof was particularly influential: it introduced the 'stability method' for extremal graph theory, showing that graphs close to the Turán bound must structurally resemble the Turán graph K_{⌊n/2⌋,⌈n/2⌉}.\n\nThe result is tight: adding t edges to one part of the Turán graph creates exactly t·⌊n/2⌋ new triangles. This precise quantification of the supersaturation phenomenon has become a foundational result in extremal combinatorics.",
     "problemStatement": "Let t < ⌊n/2⌋. Does every graph on n vertices with ⌊n²/4⌋ + t edges contain at least t·⌊n/2⌋ triangles?",
     "proofStrategy": "The problem was solved independently by Lovász-Simonovits (1976) and Nikiforov-Khadzhiivanov (1981). The Lovász-Simonovits proof introduced the influential 'stability method' in extremal graph theory: graphs close to the extremal bound must structurally resemble the extremal example (the Turán graph).",
     "keyInsights": [
@@ -38,15 +38,8 @@
     {
       "id": "turan",
       "title": "Turán Threshold",
-      "summary": "The Turán number ex(n, K₃) = ⌊n²/4⌋",
+      "summary": "The Turán number ex(n, K₃) = ⌊n²/4⌋ and triangle counting",
       "startLine": 45,
-      "endLine": 52
-    },
-    {
-      "id": "counting",
-      "title": "Triangle Counting",
-      "summary": "Definition of triangle count as 3-cliques",
-      "startLine": 54,
       "endLine": 57
     },
     {
@@ -59,16 +52,16 @@
     {
       "id": "main",
       "title": "Main Supersaturation Theorem",
-      "summary": "t extra edges force t·⌊n/2⌋ triangles",
+      "summary": "t extra edges force t·⌊n/2⌋ triangles (Lovász-Simonovits 1976)",
       "startLine": 70,
       "endLine": 82
     },
     {
-      "id": "tightness",
-      "title": "Tightness",
-      "summary": "The bound is achieved by modifying the Turán graph",
-      "startLine": 96,
-      "endLine": 103
+      "id": "corollaries",
+      "title": "Corollaries and Tightness",
+      "summary": "Turán's theorem for K₃ and tightness of the bound",
+      "startLine": 84,
+      "endLine": 107
     }
   ],
   "conclusion": {
