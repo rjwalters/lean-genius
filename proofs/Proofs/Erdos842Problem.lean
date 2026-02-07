@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #842: 3-Colorability of Triangle-Hamiltonian Graphs
 
 Source: https://erdosproblems.com/842
@@ -43,7 +43,7 @@ open SimpleGraph
 
 namespace Erdos842
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /--
 **Triangle Graph:**
@@ -68,7 +68,7 @@ K₃ has chromatic number exactly 3.
 axiom triangle_chromatic_number :
     TriangleGraph.chromaticNumber = 3
 
-/-! ## The Graph Construction -/
+/- ## The Graph Construction -/
 
 /--
 **Vertex type for the construction:**
@@ -125,7 +125,7 @@ def TriangleHamiltonianGraph (n : ℕ) (hn : n > 0) : SimpleGraph (Fin (3 * n)) 
       | inr hham => right; exact Or.symm hham
   loopless := fun v h => h.1 rfl
 
-/-! ## The Main Result -/
+/- ## The Main Result -/
 
 /--
 **A 3-coloring exists:**
@@ -158,7 +158,7 @@ theorem fleischner_stiebitz (n : ℕ) (hn : n > 0) :
   · exact thg_chromatic_number_le_3 n hn
   · exact thg_chromatic_number_ge_3 n hn
 
-/-! ## Coloring Structure -/
+/- ## Coloring Structure -/
 
 /--
 **Divisibility by 3:**
@@ -171,7 +171,7 @@ and return to the start with a different color than vertex 1.
 theorem cycle_length_divisible_by_3 (n : ℕ) : 3 ∣ (3 * n) := by
   exact Nat.dvd_mul_right 3 n
 
-/-! ## Graph Properties -/
+/- ## Graph Properties -/
 
 /--
 **Vertex count:**
@@ -189,7 +189,7 @@ Maximum degree is at most 4 (could be less if triangle and cycle share an edge).
 axiom max_degree_bound (n : ℕ) (hn : n > 0) :
     ∀ v : Fin (3 * n), (TriangleHamiltonianGraph n hn).degree v ≤ 4
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /--
 **Case n = 1:**
@@ -212,7 +212,7 @@ theorem case_n_eq_2 :
     (TriangleHamiltonianGraph 2 (by omega : 2 > 0)).chromaticNumber = 3 := by
   exact fleischner_stiebitz 2 (by omega)
 
-/-! ## Summary
+/- ## Summary
 
 **Erdős Problem #842 - SOLVED (Answer: YES)**
 
