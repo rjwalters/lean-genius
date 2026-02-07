@@ -40,8 +40,7 @@ open Nat SimpleGraph
 
 namespace Erdos426
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /--
@@ -82,8 +81,7 @@ The conceptual definition is clear but the formalization is technically complex.
 axiom CountUniqueSubgraphs (G : SimpleGraph V) [Fintype V]
     [DecidableEq V] [DecidableRel G.Adj] : ℕ
 
-/-!
-## Part II: The Counting Bounds
+/- ## Part II: The Counting Bounds
 -/
 
 /--
@@ -114,8 +112,7 @@ noncomputable def maxUniqueSubgraphs (n : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
     CountUniqueSubgraphs G = k}
 
-/-!
-## Part III: Historical Constructions
+/- ## Part III: Historical Constructions
 -/
 
 /--
@@ -134,8 +131,7 @@ axiom brouwer_1975 (n : ℕ) (hn : n ≥ 10) :
     ∃ C : ℝ, C > 0 ∧
       (maxUniqueSubgraphs n : ℝ) ≥ (2 : ℝ)^(n.choose 2 - C * n) / n.factorial
 
-/-!
-## Part IV: The Main Conjecture and Its Resolution
+/- ## Part IV: The Main Conjecture and Its Resolution
 -/
 
 /--
@@ -148,8 +144,7 @@ def OriginalQuestion : Prop :=
   ∃ c : ℝ, c > 0 ∧
     ∀ n : ℕ, n ≥ 10 → (maxUniqueSubgraphs n : ℝ) ≥ c * nonIsomorphicGraphs n
 
-/-!
-**Spencer's suggestion:**
+/- **Spencer's suggestion:**
 Spencer suggested that the answer might be YES (i.e., one could achieve
 ≫ 2^(n choose 2) / n! unique subgraphs). Erdős offered $100 for such a construction.
 
@@ -158,8 +153,7 @@ Erdős believed Brouwer's construction was essentially best possible.
 He offered $25 for a proof that no better construction exists.
 -/
 
-/-!
-## Part V: Bradač-Christoph Resolution (2024)
+/- ## Part V: Bradač-Christoph Resolution (2024)
 -/
 
 /--
@@ -201,12 +195,10 @@ The answer is NO - unique subgraphs are rare.
 -/
 theorem erdos_426_resolved : ¬OriginalQuestion := original_question_false
 
-/-!
-## Part VI: Understanding the Result
+/- ## Part VI: Understanding the Result
 -/
 
-/-!
-**Why unique subgraphs are rare:**
+/- **Why unique subgraphs are rare:**
 The key insight is that most graphs have many automorphisms or structural
 regularities that create multiple copies of any subgraph.
 
@@ -222,8 +214,7 @@ To have a unique subgraph, we need:
 Bradač-Christoph show that even 2^{(n choose 2)} / n! is unachievable.
 -/
 
-/-!
-## Part VII: Related Concepts
+/- ## Part VII: Related Concepts
 -/
 
 /--
@@ -242,14 +233,12 @@ Almost all graphs are asymmetric (Erdős-Rényi), which relates to uniqueness.
 def IsAsymmetric (G : SimpleGraph V) : Prop :=
   ∀ σ : V → V, HasAutomorphism G σ → σ = id
 
-/-!
-**Almost all graphs are asymmetric (Erdős-Rényi):**
+/- **Almost all graphs are asymmetric (Erdős-Rényi):**
 For any ε > 0, the fraction of graphs on n vertices that are asymmetric
 exceeds 1 - ε for all sufficiently large n.
 -/
 
-/-!
-## Part VIII: Summary
+/- ## Part VIII: Summary
 -/
 
 /--
