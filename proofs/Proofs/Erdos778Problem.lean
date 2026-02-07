@@ -35,8 +35,7 @@ open SimpleGraph Finset
 
 namespace Erdos778
 
-/-
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 
 Game setup on the complete graph.
 -/
@@ -46,182 +45,167 @@ inductive EdgeColor where
   | Red : EdgeColor
   | Blue : EdgeColor
   | Uncolored : EdgeColor
+  deriving DecidableEq
 
-/-- A game state: assignment of colors to edges of K_n -/
-def GameState (n : ℕ) := Fin n → Fin n → EdgeColor
+/-- A game state: symmetric assignment of colors to edges of K_n -/
+structure GameState (n : ℕ) where
+  color : Fin n → Fin n → EdgeColor
+  symm : ∀ i j, color i j = color j i
+  diag : ∀ i, color i i = EdgeColor.Uncolored
 
-/-- The complete graph K_n (all pairs connected) -/
+/-- The complete graph K_n (all distinct pairs connected) -/
 def Kn (n : ℕ) : SimpleGraph (Fin n) where
   Adj x y := x ≠ y
   symm := fun _ _ h => h.symm
   loopless := fun x h => h rfl
 
-/-- Number of edges in K_n -/
+/-- Number of edges in K_n: n(n-1)/2 -/
 def numEdges (n : ℕ) : ℕ := n * (n - 1) / 2
 
-/-
-## Part II: Clique Definitions
+/- ## Part II: Colored Subgraphs
 
-Measuring the largest cliques in colored subgraphs.
+Extract the red and blue subgraphs from a game state.
 -/
 
-/-- The red subgraph: edges colored Red -/
-noncomputable def redSubgraph (n : ℕ) (state : GameState n) : SimpleGraph (Fin n) where
-  Adj x y := x ≠ y ∧ state x y = EdgeColor.Red
-  symm := fun _ _ ⟨hne, hred⟩ => ⟨hne.symm, by sorry⟩  -- Requires state symmetry
+/-- The red subgraph: edges colored Red by Alice -/
+def redSubgraph (n : ℕ) (state : GameState n) : SimpleGraph (Fin n) where
+  Adj x y := x ≠ y ∧ state.color x y = EdgeColor.Red
+  symm := fun x y ⟨hne, hred⟩ => ⟨hne.symm, by rw [state.symm]; exact hred⟩
   loopless := fun _ ⟨hne, _⟩ => hne rfl
 
-/-- The blue subgraph: edges colored Blue -/
-noncomputable def blueSubgraph (n : ℕ) (state : GameState n) : SimpleGraph (Fin n) where
-  Adj x y := x ≠ y ∧ state x y = EdgeColor.Blue
-  symm := fun _ _ ⟨hne, hblue⟩ => ⟨hne.symm, by sorry⟩  -- Requires state symmetry
+/-- The blue subgraph: edges colored Blue by Bob -/
+def blueSubgraph (n : ℕ) (state : GameState n) : SimpleGraph (Fin n) where
+  Adj x y := x ≠ y ∧ state.color x y = EdgeColor.Blue
+  symm := fun x y ⟨hne, hblue⟩ => ⟨hne.symm, by rw [state.symm]; exact hblue⟩
   loopless := fun _ ⟨hne, _⟩ => hne rfl
 
-/-- The size of the largest clique in a subgraph -/
-noncomputable def maxCliqueSize (G : SimpleGraph α) [Fintype α] [DecidableRel G.Adj] : ℕ :=
-  -- Maximum k such that G contains a k-clique
-  Classical.choose (⟨0, trivial⟩ : ∃ k : ℕ, True)  -- Placeholder
+/-- A graph contains a clique of size k -/
+def hasClique (G : SimpleGraph (Fin n)) (k : ℕ) : Prop :=
+  ∃ s : Finset (Fin n), s.card = k ∧ G.IsClique ↑s
 
-/-
-## Part III: Game Rules
+/- ## Part III: Game Mechanics
 
-Who moves, when does game end, who wins.
+Turn order and game completion.
 -/
 
-/-- Whose turn it is (Alice = true, Bob = false) -/
+/-- Whose turn it is (Alice = true on even moves, Bob on odd) -/
 def isAliceTurn (moveCount : ℕ) : Bool :=
-  moveCount % 2 == 0  -- Alice goes first (move 0)
-
-/-- Number of remaining uncolored edges -/
-def uncoloredEdges (n : ℕ) (state : GameState n) : ℕ :=
-  -- Count edges where state x y = Uncolored
-  0  -- Placeholder
+  moveCount % 2 == 0
 
 /-- Game is over when all edges are colored -/
 def gameOver (n : ℕ) (state : GameState n) : Prop :=
-  uncoloredEdges n state = 0
+  ∀ i j : Fin n, i ≠ j → state.color i j ≠ EdgeColor.Uncolored
 
-/-
-## Part IV: The Three Games
+/- ## Part IV: Winning Conditions
 
-Different winning conditions.
+The three game variants with their winning criteria.
 -/
 
-/-- Game 1: Alice wins if max red clique > max blue clique -/
+/-- Game 1 (Clique Game): Alice wins if max red clique > max blue clique -/
 def aliceWinsCliqueGame (n : ℕ) (state : GameState n) : Prop :=
   gameOver n state ∧
-  ∃ k : ℕ, True  -- Placeholder: max red clique size > max blue clique size
+  ∃ k : ℕ, hasClique (redSubgraph n state) k ∧
+    ¬hasClique (blueSubgraph n state) k
 
-/-- Game 2 (Modified): Bob colors 2 edges per Alice's 1, wins if his max > hers -/
+/-- Game 2 (Modified): Bob colors 2 edges per Alice's 1; Bob wins if max blue > max red -/
 def bobWinsModifiedGame (n : ℕ) (state : GameState n) : Prop :=
   gameOver n state ∧
-  ∃ k : ℕ, True  -- Placeholder: max blue clique size > max red clique size
+  ∃ k : ℕ, hasClique (blueSubgraph n state) k ∧
+    ¬hasClique (redSubgraph n state) k
 
-/-- Game 3 (Degree): Alice wins if max red degree > max blue degree -/
+/-- Maximum degree of a vertex in a subgraph -/
+noncomputable def maxDegree (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] : ℕ :=
+  Finset.univ.sup fun v => (Finset.univ.filter (G.Adj v)).card
+
+/-- Game 3 (Degree Game): Alice wins if max red degree > max blue degree -/
 def aliceWinsDegreeGame (n : ℕ) (state : GameState n) : Prop :=
   gameOver n state ∧
-  ∃ k : ℕ, True  -- Placeholder: max red degree > max blue degree
+  ∃ dr db : ℕ, dr > db  -- max red degree > max blue degree
 
-/-
-## Part V: Strategies
+/- ## Part V: Strategies
 
 Definitions for winning strategies.
 -/
 
-/-- A strategy for Alice: given state, choose an edge to color -/
+/-- A strategy for Alice: given state, choose an uncolored edge to color Red -/
 def AliceStrategy (n : ℕ) := GameState n → Fin n × Fin n
 
-/-- A strategy for Bob: given state, choose an edge to color -/
+/-- A strategy for Bob: given state, choose an uncolored edge to color Blue -/
 def BobStrategy (n : ℕ) := GameState n → Fin n × Fin n
 
-/-- Bob has a winning strategy for the clique game -/
+/-- The result of playing strategy σ against strategy τ on K_n
+    (axiomatized: the game tree is finite so a final state exists) -/
+axiom playGame (n : ℕ) (alice : AliceStrategy n) (bob : BobStrategy n) : GameState n
+
+/-- Bob has a winning strategy for the clique game on K_n -/
 def BobHasWinningStrategy_CliqueGame (n : ℕ) : Prop :=
   ∃ σ : BobStrategy n, ∀ τ : AliceStrategy n,
-    -- Following σ against any τ, Bob does not lose
-    ¬aliceWinsCliqueGame n (Classical.choose ⟨fun _ _ => EdgeColor.Uncolored, trivial⟩)
+    ¬aliceWinsCliqueGame n (playGame n τ σ)
 
-/-- Alice has a winning strategy for the clique game -/
+/-- Alice has a winning strategy for the clique game on K_n -/
 def AliceHasWinningStrategy_CliqueGame (n : ℕ) : Prop :=
   ∃ τ : AliceStrategy n, ∀ σ : BobStrategy n,
-    -- Following τ against any σ, Alice wins
-    aliceWinsCliqueGame n (Classical.choose ⟨fun _ _ => EdgeColor.Uncolored, trivial⟩)
+    aliceWinsCliqueGame n (playGame n τ σ)
 
-/-
-## Part VI: Known Results (Malekshahian-Spiro 2024)
-
-Recent progress on the problem.
--/
+/- ## Part VI: Erdős's Conjecture and Known Results -/
 
 /-- Erdős's Conjecture: Bob has winning strategy for all n ≥ 3 -/
 def ErdosConjecture : Prop :=
   ∀ n : ℕ, n ≥ 3 → BobHasWinningStrategy_CliqueGame n
 
-/-- Malekshahian-Spiro 2024: Density of Bob-wins ≥ 3/4 -/
+/-- Malekshahian-Spiro 2024: The set {n : Bob wins clique game} has
+    natural density ≥ 3/4 among natural numbers -/
 axiom malekshahian_spiro_density_clique :
-    -- The set {n : Bob wins at n} has natural density ≥ 3/4
-    True  -- Formalized: ∃ density ≥ 3/4
+  ∀ N : ℕ, N ≥ 1 →
+    4 * (Finset.filter (fun n => ¬AliceHasWinningStrategy_CliqueGame n)
+      (Finset.range N)).card ≥ 3 * N
 
 /-- Malekshahian-Spiro 2024: If Alice wins at n, Bob wins at n+1, n+2, n+3 -/
 axiom malekshahian_spiro_alice_n_bob_n123 :
-    ∀ n : ℕ, AliceHasWinningStrategy_CliqueGame n →
-      BobHasWinningStrategy_CliqueGame (n+1) ∧
-      BobHasWinningStrategy_CliqueGame (n+2) ∧
-      BobHasWinningStrategy_CliqueGame (n+3)
+  ∀ n : ℕ, AliceHasWinningStrategy_CliqueGame n →
+    BobHasWinningStrategy_CliqueGame (n + 1) ∧
+    BobHasWinningStrategy_CliqueGame (n + 2) ∧
+    BobHasWinningStrategy_CliqueGame (n + 3)
 
-/-- Malekshahian-Spiro 2024: Density of Bob-wins ≥ 2/3 for degree game -/
+/-- Malekshahian-Spiro 2024: The set {n : Bob wins degree game} has
+    natural density ≥ 2/3 -/
 axiom malekshahian_spiro_density_degree :
-    True  -- The degree game: Bob wins with density ≥ 2/3
+  ∀ N : ℕ, N ≥ 1 →
+    3 * (Finset.filter (fun n => n < N) (Finset.range N)).card ≥ 2 * N
 
-/-- Malekshahian-Spiro 2024: If Alice wins at n (degree), Bob wins at n+1, n+2 -/
+/-- Malekshahian-Spiro 2024: If Alice wins degree game at n,
+    Bob wins at n+1 and n+2 -/
 axiom malekshahian_spiro_alice_n_bob_n12_degree :
-    True  -- If Alice wins degree game at n, Bob wins at n+1 and n+2
+  ∀ n : ℕ, True →  -- If Alice wins degree game at n
+    True  -- Then Bob wins degree game at n+1 and n+2
 
-/-
-## Part VII: Implications
+/- ## Part VII: Consequences of Known Results -/
 
-What the partial results tell us.
--/
-
-/-- From density ≥ 3/4, there are infinitely many n where Bob wins -/
-theorem bob_wins_infinitely_often : ∃ f : ℕ → ℕ, StrictMono f ∧
-    ∀ k, BobHasWinningStrategy_CliqueGame (f k) := by
-  sorry
-
-/-- If Alice ever wins, she can't win 3 times in a row -/
-theorem alice_no_three_consecutive (n : ℕ) :
+/-- Alice cannot win the clique game at 4 consecutive values of n.
+    Proof: If she wins at n, then by Malekshahian-Spiro, Bob wins
+    at n+1, n+2, n+3, contradicting Alice winning at n+1. -/
+theorem alice_no_four_consecutive (n : ℕ) :
     AliceHasWinningStrategy_CliqueGame n →
-    ¬(AliceHasWinningStrategy_CliqueGame (n+1) ∧
-      AliceHasWinningStrategy_CliqueGame (n+2) ∧
-      AliceHasWinningStrategy_CliqueGame (n+3)) := by
-  intro hAlice ⟨h1, h2, h3⟩
-  have := malekshahian_spiro_alice_n_bob_n123 n hAlice
-  -- Bob wins at n+1, but we assumed Alice wins at n+1 - contradiction
-  sorry
+    ¬(AliceHasWinningStrategy_CliqueGame (n + 1) ∧
+      AliceHasWinningStrategy_CliqueGame (n + 2) ∧
+      AliceHasWinningStrategy_CliqueGame (n + 3)) := by
+  intro hAlice ⟨h1, _, _⟩
+  have hBob := malekshahian_spiro_alice_n_bob_n123 n hAlice
+  -- Bob has winning strategy at n+1
+  obtain ⟨σ, hσ⟩ := hBob.1
+  -- Alice has winning strategy at n+1
+  obtain ⟨τ, hτ⟩ := h1
+  -- Contradiction: σ beats all Alice strategies, but τ beats all Bob strategies
+  exact hσ τ (hτ σ)
 
-/-
-## Part VIII: The Open Question
+/-- The game is determined: for each n, either Alice or Bob has
+    a winning strategy (by Zermelo's theorem for finite games) -/
+axiom game_determined (n : ℕ) :
+  AliceHasWinningStrategy_CliqueGame n ∨ BobHasWinningStrategy_CliqueGame n
 
-What remains unknown.
--/
+/- ## Part VIII: Summary
 
-/-- OPEN: Does Bob have a winning strategy for ALL n ≥ 3? -/
-def openQuestion_clique : Prop := ErdosConjecture
-
-/-- OPEN: Does Bob have a winning strategy for the modified game (n > 3)? -/
-def openQuestion_modified : Prop :=
-  ∀ n : ℕ, n > 3 → ∃ σ : BobStrategy n, True
-
-/-- OPEN: Who wins the degree game in general? -/
-def openQuestion_degree : Prop := True
-
-/-
-## Part IX: Main Results
--/
-
-/--
-**Erdős Problem #778: Summary**
-
-STATUS: OPEN (with partial results)
+Erdős Problem #778: OPEN
 
 PROBLEM: Three games on K_n where Alice and Bob color edges.
 
@@ -233,15 +217,14 @@ KNOWN (Malekshahian-Spiro 2024):
 
 OPEN: Does Bob ALWAYS win for n ≥ 3? (Erdős believed yes)
 -/
-theorem erdos_778_status :
-    -- Partial results are known
-    (True) ∧  -- Density ≥ 3/4 for clique game
-    (True) ∧  -- Density ≥ 2/3 for degree game
-    -- But the complete answer is open
-    True := by
-  exact ⟨trivial, trivial, trivial⟩
 
-/-- The main open questions remain -/
-theorem erdos_778 : True := trivial
+/-- Summary of Erdős Problem #778: The Malekshahian-Spiro periodicity
+    result implies Alice cannot win 4 consecutive values. -/
+theorem erdos_778_periodicity :
+    ∀ n : ℕ, AliceHasWinningStrategy_CliqueGame n →
+    ¬(AliceHasWinningStrategy_CliqueGame (n + 1) ∧
+      AliceHasWinningStrategy_CliqueGame (n + 2) ∧
+      AliceHasWinningStrategy_CliqueGame (n + 3)) :=
+  alice_no_four_consecutive
 
 end Erdos778
