@@ -64,7 +64,8 @@
       "konyagin_schlag_lower_tail axiom",
       "cook_nguyen_lambda constant",
       "cook_nguyen_distribution axiom (e^{-ελ} limit)",
-      "IsRudinShapiro definition",
+      "IsRudinShapiro axiom (Rudin-Shapiro recurrence)",
+      "rudin_shapiro_is_littlewood axiom",
       "rudin_shapiro_bound axiom",
       "AllOnesPolynomial definition",
       "MahlerMeasure definition",
@@ -97,56 +98,56 @@
       "title": "The First Question",
       "summary": "HasSmallValue, has_small_value_iff_min_lt_one, almost_all_small",
       "startLine": 66,
-      "endLine": 82
+      "endLine": 84
     },
     {
       "id": "littlewood-conjecture",
       "title": "Littlewood's Conjecture",
       "summary": "LittlewoodConjecture definition, kashin_theorem axiom",
-      "startLine": 84,
-      "endLine": 95
+      "startLine": 86,
+      "endLine": 97
     },
     {
       "id": "konyagin-bound",
       "title": "Konyagin's Improvement",
       "summary": "konyagin_upper_bound, konyagin_exponent_tight axioms",
-      "startLine": 97,
-      "endLine": 110
+      "startLine": 99,
+      "endLine": 112
     },
     {
       "id": "konyagin-schlag",
       "title": "Konyagin-Schlag Lower Bound",
       "summary": "konyagin_schlag_lower_tail axiom",
-      "startLine": 112,
-      "endLine": 120
+      "startLine": 114,
+      "endLine": 122
     },
     {
       "id": "cook-nguyen",
       "title": "Cook-Nguyen Universal Distribution",
       "summary": "cook_nguyen_lambda, cook_nguyen_distribution axioms",
-      "startLine": 122,
-      "endLine": 137
+      "startLine": 124,
+      "endLine": 139
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Examples",
-      "summary": "IsRudinShapiro, AllOnesPolynomial, rudin_shapiro_bound",
-      "startLine": 139,
-      "endLine": 159
+      "summary": "IsRudinShapiro axiom, rudin_shapiro_is_littlewood, rudin_shapiro_bound, AllOnesPolynomial",
+      "startLine": 141,
+      "endLine": 165
     },
     {
       "id": "connections",
       "title": "Connection to Other Problems",
       "summary": "MahlerMeasure, LehmerQuestion definitions",
-      "startLine": 161,
-      "endLine": 177
+      "startLine": 167,
+      "endLine": 183
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_525_main, erdos_525_answer theorems",
-      "startLine": 179,
-      "endLine": 220
+      "startLine": 185,
+      "endLine": 229
     }
   ],
   "conclusion": {
