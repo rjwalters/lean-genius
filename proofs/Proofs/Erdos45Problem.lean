@@ -39,7 +39,7 @@ open Finset BigOperators
 
 namespace Erdos45
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of proper divisors of n (excluding 1 and n itself). -/
 def properDivisors (n : ℕ) : Finset ℕ :=
@@ -59,7 +59,7 @@ def IsMonochromatic (c : ℕ → Fin k) (S : Finset ℕ) : Prop :=
 noncomputable def reciprocalSum (S : Finset ℕ) : ℚ :=
   ∑ d ∈ S, (1 : ℚ) / d
 
-/-! ## The Main Property -/
+/- ## The Main Property -/
 
 /--
 A number n has the **k-Egyptian property** if for any k-coloring of its
@@ -71,7 +71,7 @@ def HasKEgyptianProperty (n k : ℕ) : Prop :=
       IsMonochromatic c D' ∧
       reciprocalSum D' = 1
 
-/-! ## Croot's Theorem (SOLVED) -/
+/- ## Croot's Theorem (SOLVED) -/
 
 /- Aristotle failed to find a proof. -/
 /--
@@ -102,7 +102,7 @@ The minimal n_k is at least doubly exponential in k.
 axiom sawhney_lower_bound (k : ℕ) (hk : k ≥ 2) :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, HasKEgyptianProperty n k → (n : ℝ) ≥ Real.exp (C^k)
 
-/-! ## Basic Facts -/
+/- ## Basic Facts -/
 
 /-- The reciprocal sum of divisors of n equals σ_{-1}(n). -/
 lemma divisor_reciprocal_sum (n : ℕ) (hn : n > 0) :
@@ -115,7 +115,7 @@ lemma egyptian_fraction_bound (D' : Finset ℕ) (hsum : reciprocalSum D' = 1)
     ∀ d ∈ D', d ≤ D'.prod id := by
   exact fun x hx => Nat.le_of_dvd ( Finset.prod_pos hpos ) ( Finset.dvd_prod_of_mem _ hx )
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -123,7 +123,7 @@ Unexpected axioms were added during verification: ['harmonicSorry559689', 'Erdos
 /-- For k = 2, we can take n = 120 (has rich divisor structure). -/
 axiom case_k_2 : HasKEgyptianProperty 120 2
 
-/-! ## Historical Notes
+/- ## Historical Notes
 
 The problem connects to Egyptian fractions - representing 1 as a sum
 of distinct unit fractions. The coloring condition makes this a
