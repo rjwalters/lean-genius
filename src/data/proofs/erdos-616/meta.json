@@ -20,7 +20,25 @@
     "sorries": 0,
     "erdosNumber": 616,
     "erdosUrl": "https://erdosproblems.com/616",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Nat.Basic", "description": "Natural number basics", "module": "Mathlib.Data.Nat.Basic" },
+      { "theorem": "Set.Basic", "description": "Set operations", "module": "Mathlib.Data.Set.Basic" },
+      { "theorem": "Real", "description": "Real number arithmetic", "module": "Mathlib.Data.Real.Basic" }
+    ],
+    "originalContributions": [
+      "UniformHypergraph structure for r-uniform hypergraphs",
+      "IsCoveringSet and coveringNumber definitions",
+      "inducedSubhypergraph construction",
+      "HasLocalCoveringBound predicate",
+      "ErdosProblem616 formal statement",
+      "eht_lower_bound and eht_upper_bound axioms",
+      "HasKernel definition and tau_one_iff_kernel proof",
+      "erdos_616_summary theorem combining bounds"
+    ]
   },
   "overview": {
     "historicalContext": "This problem originates from Erdős's work on extremal hypergraph theory. The covering number (or transversal number) τ(G) is a fundamental parameter measuring how many vertices are needed to 'hit' every edge. The question asks: how does local structure (small subgraphs all having τ ≤ 1, meaning a common vertex) bound global covering number? Erdős, Hajnal, and Tuza established bounds in their 1991 paper 'Local constraints ensuring small representing sets' in J. Combinatorial Theory Series A. The problem belongs to the classical tradition of inferring global structure from local constraints.",
