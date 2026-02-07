@@ -253,11 +253,19 @@ axiom infinitely_many_primes_3mod4 :
 
 /-- Primes ≡ 3 (mod 4) squared is an infinite set.
 
-    Proof idea: If primeSquares3mod4 = {p² | p prime, p ≡ 3 (mod 4)} is finite,
-    then the underlying set of primes must be finite (squaring is injective on ℕ).
-    But by Dirichlet's theorem (axiomatized), there are infinitely many such primes.
+    Proof: The set is the image of the infinite set of primes ≡ 3 (mod 4)
+    under the injective map p ↦ p². Since squaring is injective on ℕ,
+    the image is infinite.
 -/
-axiom primeSquares3mod4_infinite : Set.Infinite primeSquares3mod4
+theorem primeSquares3mod4_infinite : Set.Infinite primeSquares3mod4 := by
+  have hinf := infinitely_many_primes_3mod4
+  have hsub : (fun p : ℕ => p ^ 2) '' {p : ℕ | Nat.Prime p ∧ p % 4 = 3} ⊆ primeSquares3mod4 := by
+    rintro n ⟨p, ⟨hp, hp3⟩, rfl⟩
+    exact ⟨p, hp, hp3, rfl⟩
+  have hinj : Set.InjOn (fun p : ℕ => p ^ 2) {p : ℕ | Nat.Prime p ∧ p % 4 = 3} := by
+    intro a _ b _ hab
+    exact Nat.pow_left_injective two_ne_zero hab
+  exact (hinf.image hinj).mono hsub
 
 /-- The key example: primeSquares3mod4 is infinite and divisibility-free -/
 theorem primeSquares3mod4_is_good :
