@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1013: Triangle-Free Chromatic Threshold
 
 Let h₃(k) be the smallest n such that there exists a triangle-free graph
@@ -26,7 +26,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A graph is triangle-free if it contains no clique of size 3. -/
 def IsTriangleFree (G : SimpleGraph (Fin n)) : Prop :=
@@ -48,7 +48,7 @@ noncomputable def triangleFreeChromThreshold (k : ℕ) : ℕ :=
   sSup {m : ℕ | ∀ (n : ℕ) (G : SimpleGraph (Fin n)),
     n < m → IsTriangleFree G → HasProperColoring G k}
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős's Conjecture (Asymptotic)**: h₃(k) ~ c·k²·log k for some
     constant c. Combined with known bounds, c ∈ [1/2, 1]. -/
@@ -66,7 +66,7 @@ axiom erdos_1013_ratio_convergence :
               (triangleFreeChromThreshold k : ℝ))
     Filter.atTop (nhds 1)
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Lower bound**: h₃(k) ≥ (1/2 − o(1))·k²·log k.
     No triangle-free graph on fewer vertices can have chromatic number k. -/
@@ -88,7 +88,7 @@ axiom graver_yackel_bound :
     (triangleFreeChromThreshold k : ℝ) ≥
       c * (k : ℝ) ^ 2 * Real.log k / Real.log (Real.log k)
 
-/-! ## Structural Properties -/
+/- ## Structural Properties -/
 
 /-- Monotonicity: h₃ is non-decreasing. Higher chromatic number needs more vertices. -/
 axiom threshold_mono :
