@@ -43,8 +43,7 @@ open Nat Finset Set
 
 namespace Erdos872
 
-/-!
-## Part I: Antichain Definition
+/- ## Part I: Antichain Definition
 
 An antichain under divisibility is a set where no element divides another.
 -/
@@ -76,8 +75,7 @@ theorem antichain_iff_primitive (A : Set ℕ) :
     by_contra hab
     exact h a b ha hb hab hdiv
 
-/-!
-## Part II: The Game Board
+/- ## Part II: The Game Board
 -/
 
 /--
@@ -108,8 +106,7 @@ Axiomatized: the biconditional requires careful set manipulation.
 axiom legal_move_iff (A : Set ℕ) (k : ℕ) (hA : IsDivisibilityAntichain A) :
     IsLegalMove A k ↔ k ∉ A ∧ (∀ a ∈ A, ¬(k ∣ a)) ∧ (∀ a ∈ A, ¬(a ∣ k))
 
-/-!
-## Part III: Game State and Termination
+/- ## Part III: Game State and Termination
 -/
 
 /--
@@ -129,8 +126,7 @@ axiom game_terminates (n : ℕ) (hn : n ≥ 2) :
     A.Finite →
     ∃ B : Set ℕ, A ⊆ B ∧ IsMaximalAntichain B (gameBoard n)
 
-/-!
-## Part IV: Bounds on Game Length
+/- ## Part IV: Bounds on Game Length
 -/
 
 /--
@@ -152,8 +148,7 @@ axiom prime_antichain_bound (n : ℕ) (hn : n ≥ 10) :
     ∃ P : Set ℕ, P ⊆ gameBoard n ∧ IsDivisibilityAntichain P ∧
     (∀ p ∈ P, p.Prime) ∧ P.ncard ≥ n / (4 * Nat.log n + 1)
 
-/-!
-## Part V: Erdős's Questions
+/- ## Part V: Erdős's Questions
 -/
 
 /--
@@ -188,8 +183,7 @@ axiom erdos_872_open_status :
       -- This axiom asserts we cannot currently determine the game's behavior
       gameLastsLinear gameLength ∧ gameLastsNearOptimal gameLength)
 
-/-!
-## Part VI: Related Results
+/- ## Part VI: Related Results
 -/
 
 /--
@@ -208,8 +202,7 @@ axiom biro_horn_wildstrom_bound (n : ℕ) (hn : n ≥ 10) :
     ∃ moves : ℕ, ∀ triangle_free_game_length : ℕ,
       (triangle_free_game_length : ℚ) ≤ (27 : ℚ) / 121 * n ^ 2
 
-/-!
-## Part VII: Special Cases and Examples
+/- ## Part VII: Special Cases and Examples
 -/
 
 /--
@@ -252,8 +245,7 @@ def firstPlayerAdvantage : Prop :=
     and {2,3,5} is maximal with 3 elements. -/
 axiom first_player_advantage_exists : firstPlayerAdvantage
 
-/-!
-## Part VIII: Game-Theoretic Formulation
+/- ## Part VIII: Game-Theoretic Formulation
 -/
 
 /--
@@ -275,8 +267,7 @@ axiom erdos_872_conjecture :
     (∃ c : ℚ, c > 0 ∧ ∀ n ≥ 10, gameValue n ≥ (c * n).floor) ∨
     (∀ ε : ℚ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, gameValue n ≤ (ε * n).ceil)
 
-/-!
-## Part IX: Summary
+/- ## Part IX: Summary
 -/
 
 /--
