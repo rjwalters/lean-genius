@@ -40,7 +40,7 @@ open Nat Set Filter Real
 
 namespace Erdos32
 
-/-!
+/-
 ## Core Definitions
 
 We define additive complements of the primes.
@@ -66,7 +66,7 @@ sufficiently large ones) can be written as p + a. -/
 def IsStrongAdditiveComplement (A : Set ℕ) : Prop :=
   ∀ n : ℕ, n ≥ 2 → ∃ p : ℕ, Nat.Prime p ∧ ∃ a ∈ A, n = p + a
 
-/-!
+/-
 ## Density Conditions
 
 The problem asks about sets with various density bounds.
@@ -92,7 +92,7 @@ def HasLogLogLogDensity (A : Set ℕ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 3 →
     (countingFunction A N : ℝ) ≤ C * Real.log N * Real.log (Real.log N)
 
-/-!
+/-
 ## Known Upper Bounds
 
 Results on how sparse an additive complement can be.
@@ -132,7 +132,7 @@ axiom ruzsa_omega_log (ω : ℕ → ℝ) (hω : Tendsto ω atTop atTop) :
     ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
       (countingFunction A N : ℝ) ≤ C * ω N * Real.log N
 
-/-!
+/-
 ## Ruzsa's Lower Bound
 
 The fundamental lower bound on additive complements.
@@ -167,7 +167,7 @@ theorem no_suboptimal_log_density :
   -- The bound contradicts the liminf condition
   sorry -- Technical proof omitted
 
-/-!
+/-
 ## The Main Open Question
 
 Erdős's $50 question: Can O(log N) be achieved?
@@ -188,7 +188,7 @@ def erdos_fifty_dollar_question : Prop :=
 /-- Erdős believed O(log N) is NOT achievable. -/
 axiom erdos_conjecture_negative : ¬erdos_fifty_dollar_question
 
-/-!
+/-
 ## The Optimal Constant Question
 
 If O(log N) is achievable, what is the optimal constant?
@@ -209,7 +209,7 @@ noncomputable def optimalConstant : ℝ :=
 axiom optimal_constant_lower_bound :
     optimalConstant ≥ lowerBoundConstant
 
-/-!
+/-
 ## Connection to Goldbach
 
 The problem is related to Goldbach's conjecture.
@@ -233,7 +233,7 @@ theorem goldbach_gives_partial_complement :
     rw [this]
     exact hq
 
-/-!
+/-
 ## Summary
 
 The current state of Erdős Problem #32.
