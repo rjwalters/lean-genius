@@ -30,7 +30,7 @@ open Set Filter Nat Finset
 
 namespace Erdos3
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A k-term arithmetic progression starting at a with common difference d -/
 def ArithProg (a d k : ℕ) : Finset ℕ :=
@@ -56,7 +56,7 @@ noncomputable def reciprocalSum (A : Set ℕ) : ℝ :=
 def HasDivergentSum (A : Set ℕ) : Prop :=
   ¬Summable (fun n : A => (1 : ℝ) / n)
 
-/-! ## Roth Function r_k(N) -/
+/- ## Roth Function r_k(N) -/
 
 /-- r_k(N) = maximum size of subset of {1,...,N} avoiding k-term APs -/
 noncomputable def rothNumber (k N : ℕ) : ℕ :=
@@ -68,7 +68,7 @@ noncomputable def rothNumber (k N : ℕ) : ℕ :=
 def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   ((Finset.range (N + 1)).filter (· ∈ A)).card
 
-/-! ## Key Threshold -/
+/- ## Key Threshold -/
 
 /-- The conjecture is equivalent to: r_k(N) = o(N / log N) for all k -/
 def SublogarithmicGrowth (k : ℕ) : Prop :=
@@ -79,7 +79,7 @@ def SublogarithmicGrowth (k : ℕ) : Prop :=
 def Erdos3Conjecture : Prop :=
   ∀ A : Set ℕ, HasDivergentSum A → ContainsArbitrarilyLongAP A
 
-/-! ## Historical Results -/
+/- ## Historical Results -/
 
 /-- **Roth's Theorem (1953)**: Sets with positive density contain 3-term APs.
     First breakthrough: r_3(N) = o(N). -/
@@ -112,7 +112,7 @@ axiom leng_sah_sawhney_bound (k : ℕ) (hk : k ≥ 3) :
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop,
     (rothNumber k N : ℝ) ≤ N / Real.exp ((Real.log (Real.log N))^c)
 
-/-! ## The Gap -/
+/- ## The Gap -/
 
 /-- **The Critical Gap**: Why the conjecture remains open.
     For Erdős' conjecture, we need r_k(N) = o(N / log N).
@@ -133,7 +133,7 @@ theorem required_bound_implies_conjecture :
   -- cannot avoid k-APs because its counting function grows too fast
   sorry
 
-/-! ## Equivalent Formulations -/
+/- ## Equivalent Formulations -/
 
 /-- **Equivalent to Behrend-type bounds**: The conjecture asks whether
     Behrend's construction cannot be improved to achieve N / log N density. -/
@@ -153,7 +153,7 @@ axiom elkin_improvement :
       (A.card : ℝ) ≥ c * N * Real.sqrt (Real.log (Real.log N)) /
         Real.exp (4 * Real.sqrt (2 * Real.log N))
 
-/-! ## Green-Tao Connection -/
+/- ## Green-Tao Connection -/
 
 /-- **Green-Tao Theorem (2008)**: Primes contain arbitrarily long APs.
     Erdős believed solving Problem #3 would lead to this result. -/
@@ -170,7 +170,7 @@ theorem erdos3_implies_green_tao :
   intro hconj
   exact hconj { p : ℕ | Nat.Prime p } euler_prime_sum_diverges
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- 3-term AP: {a, a+d, a+2d} -/
 example : ArithProg 1 2 3 = {1, 3, 5} := by decide
@@ -181,7 +181,7 @@ example : ArithProg 2 3 4 = {2, 5, 8, 11} := by decide
 /-- The set {1, 2, 4, 5, 10, 11, 13, 14} is 3-AP-free (Roth's example) -/
 -- This is a classic construction avoiding 3-term APs
 
-/-! ## Problem Status -/
+/- ## Problem Status -/
 
 /-- **Erdős Problem #3: OPEN ($5,000 prize)**
 
