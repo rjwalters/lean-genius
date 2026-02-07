@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #780: Chromatic Number of Kneser Hypergraphs
 
 Source: https://erdosproblems.com/780
@@ -27,7 +27,7 @@ namespace Erdos780
 
 open Finset
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Hypergraphs, colorings, and matchings.
@@ -53,7 +53,7 @@ def EdgeColoring (n r t : ℕ) := completeHypergraph n r → Fin t
 def colorClass (n r t : ℕ) (c : EdgeColoring n r t) (i : Fin t) : Set (completeHypergraph n r) :=
   {e | c e = i}
 
-/-!
+/-
 ## Part 2: The Kneser Hypergraph
 
 The Kneser hypergraph KG^r(n,k) has r-subsets as vertices,
@@ -72,7 +72,7 @@ structure KneserHypergraph (n r k : ℕ) where
 /-- Chromatic number of the Kneser hypergraph -/
 axiom chromaticNumber (n r k : ℕ) : ℕ
 
-/-!
+/-
 ## Part 3: The Main Theorem (Alon-Frankl-Lovász 1986)
 
 If n ≥ kr + (t-1)(k-1), then any t-coloring has a monochromatic matching of size k.
@@ -93,7 +93,7 @@ axiom kneser_hypergraph_chromatic_number (n r k : ℕ) (hr : r ≥ 1) (hk : k �
     (hn : n ≥ r * k) :
     chromaticNumber n r k = Nat.ceil ((n - r * (k - 1) : ℤ) / (k - 1 : ℤ))
 
-/-!
+/-
 ## Part 4: Tightness Construction
 
 The bound is tight: n = kr - 1 + (t-1)(k-1) admits a t-coloring without k disjoint edges.
@@ -112,7 +112,7 @@ axiom tightness_construction (k r t : ℕ) (hr : r ≥ 1) (hk : k ≥ 2) (ht : t
         (∀ e ∈ edges, c e = i) →
         edges.card < k
 
-/-!
+/-
 ## Part 5: Special Case: Lovász's Theorem (k = 2)
 
 The case k = 2 is Kneser's conjecture, proved by Lovász in 1978
@@ -131,7 +131,7 @@ def KneserGraph (n r : ℕ) := {S : Finset (Fin n) // S.card = r}
 def kneserAdj (n r : ℕ) (S T : KneserGraph n r) : Prop :=
   Disjoint S.val T.val
 
-/-!
+/-
 ## Part 6: Small Cases
 
 Explicit values for small parameters.
@@ -149,7 +149,7 @@ axiom kg_2r_r_chromatic (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r) r 2 =
 /-- KG(2r+1,r) is an odd cycle when r = 1, odd graph when r > 1 -/
 axiom kg_2r_plus_1_r (r : ℕ) (hr : r ≥ 1) : chromaticNumber (2 * r + 1) r 2 = 3
 
-/-!
+/-
 ## Part 7: Connections
 
 The Erdős-Ko-Rado theorem gives the maximum intersecting family of r-subsets,
@@ -164,7 +164,7 @@ axiom erdos_ko_rado (n r : ℕ) (hr : r ≥ 1) (hn : n ≥ 2 * r) :
       (∀ A ∈ S, ∀ B ∈ S, (A ∩ B).Nonempty) ∧
       S.card = Nat.choose (n - 1) (r - 1)
 
-/-!
+/-
 ## Part 8: Summary
 
 Erdős Problem #780 status: SOLVED by Alon-Frankl-Lovász (1986).
