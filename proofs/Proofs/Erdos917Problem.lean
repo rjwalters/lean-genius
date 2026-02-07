@@ -35,7 +35,7 @@ open SimpleGraph Finset
 
 namespace Erdos917
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -59,7 +59,7 @@ def IsKCritical (G : SimpleGraph V) (k : ℕ) : Prop :=
 noncomputable def edgeCount (G : SimpleGraph V) : ℕ :=
   G.edgeFinset.card
 
-/-! ## The Maximum Edge Function f_k(n) -/
+/- ## The Maximum Edge Function f_k(n) -/
 
 /--
 **f_k(n):** The maximum number of edges in a k-critical graph on n vertices.
@@ -74,7 +74,7 @@ axiom f_defined (k n : ℕ) (hk : k ≥ 4) (hn : n ≥ k) :
       Fintype.card V = n ∧
       ∃ G : SimpleGraph V, IsKCritical G k ∧ edgeCount G = f k n
 
-/-! ## Question 1: Quadratic Growth -/
+/- ## Question 1: Quadratic Growth -/
 
 /--
 **Question 1:** Is f_k(n) ≫_k n²?
@@ -95,7 +95,7 @@ axiom toft_1970 (k : ℕ) (hk : k ≥ 4) :
 /-- Question 1 is answered: YES for all k ≥ 4. -/
 theorem question1_answered : ∀ k ≥ 4, Question1 k := fun k hk _ => toft_1970 k hk
 
-/-! ## Question 2: The k = 6 Case -/
+/- ## Question 2: The k = 6 Case -/
 
 /--
 **Question 2:** Is f_6(n) ~ n²/4?
@@ -115,7 +115,7 @@ axiom dirac_construction :
     ∀ n : ℕ, n ≥ 1 →
       f 6 (4*n + 2) ≥ 4*n^2 + 8*n + 3
 
-/-! ## Question 3: The General Asymptotic -/
+/- ## Question 3: The General Asymptotic -/
 
 /--
 **Question 3:** For k ≥ 6, is f_k(n) ~ (1/2)(1 - 1/⌊k/3⌋)n²?
@@ -146,7 +146,7 @@ The conjecture is FALSE for k ≢ 0 (mod 3), but may still be true for k ≡ 0 (
 axiom stiebitz_1987_disproof (k : ℕ) (hk : k ≥ 4) (hmod : k % 3 ≠ 0) :
     ¬Question3 k
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /--
 **Trivial Upper Bound:**
@@ -174,7 +174,7 @@ axiom luo_ma_yang_2023 (k : ℕ) (hk : k ≥ 4) :
     ∀ ε > 0, ∀ᶠ n in Filter.atTop,
       (f k n : ℝ) ≤ (1/2) * (1 - 1/(k-2) - 1/(36*(k-1)^2) + ε) * n^2
 
-/-! ## Summary
+/- ## Summary
 
 **Erdős Problem #917 - PARTIALLY SOLVED**
 
