@@ -25,7 +25,7 @@ open Set Finset Nat Filter
 
 namespace Erdos31
 
-/-! ## Density Definitions -/
+/- ## Density Definitions -/
 
 /-- The counting function |A ∩ {1,...,N}| for a set A ⊆ ℕ. -/
 noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
@@ -45,7 +45,7 @@ noncomputable def upperDensity (A : Set ℕ) : ℝ :=
 /-- A set has upper density 0 if its upper density is 0. -/
 def HasUpperDensityZero (A : Set ℕ) : Prop := upperDensity A = 0
 
-/-! ## Sumsets -/
+/- ## Sumsets -/
 
 /-- The sumset A + B = {a + b : a ∈ A, b ∈ B}. -/
 def Sumset (A B : Set ℕ) : Set ℕ := { n | ∃ a ∈ A, ∃ b ∈ B, n = a + b }
@@ -60,7 +60,7 @@ def CoversCofinite (A B : Set ℕ) : Prop :=
 def CoversAllButFinitely (A B : Set ℕ) : Prop :=
   (Set.univ \ (A +ₛ B) ∩ {n : ℕ | n > 0}).Finite
 
-/-! ## Properties of Sparse Sets -/
+/- ## Properties of Sparse Sets -/
 
 /-- The primes form an infinite set of density 0. -/
 axiom primes_density_zero : HasDensityZero {n : ℕ | n.Prime}
@@ -305,7 +305,7 @@ theorem squares_density_zero : HasDensityZero {n : ℕ | ∃ k : ℕ, n = k^2} :
     apply div_le_div_of_nonneg_right _ hN_pos
     exact_mod_cast squares_count_bound N
 
-/-! ## The Main Theorem -/
+/- ## The Main Theorem -/
 
 /--
 **Erdős Problem #31** (SOLVED - Lorentz 1954):
@@ -319,7 +319,7 @@ def Erdos31Statement : Prop :=
 /-- The Lorentz theorem affirms Erdős Problem #31. -/
 axiom lorentz_theorem : Erdos31Statement
 
-/-! ## Lorentz's Construction
+/- ## Lorentz's Construction
 
 The proof constructs B as follows:
 1. Enumerate A = {a₁ < a₂ < a₃ < ...}
@@ -335,7 +335,7 @@ axiom lorentz_B_bound (A : Set ℕ) (hA : A.Infinite) :
     ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely A B ∧
       ∃ C : ℝ, C > 0 ∧ ∀ N ≥ 1, (countingFn B N : ℝ) ≤ C * N / Real.log N
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- For A = {2^k : k ∈ ℕ}, Lorentz's theorem gives us a sparse B. -/
 example : ∃ B : Set ℕ, HasDensityZero B ∧
@@ -355,7 +355,7 @@ example : ∃ B : Set ℕ, HasDensityZero B ∧
 axiom primes_have_sparse_complement :
     ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely {n : ℕ | n.Prime} B
 
-/-! ## Stronger Results
+/- ## Stronger Results
 
 **Strengthening**: Not only does B exist with density 0, but we can make
 B grow very slowly - Lorentz showed |B ∩ [1,N]| = O(N/log N).
@@ -404,7 +404,7 @@ theorem optimal_B_density_zero (A : Set ℕ) (hA : A.Infinite) :
       intro d ⟨B, hdens, _⟩
       exact density_nonneg B d hdens
 
-/-! ## Related Problems -/
+/- ## Related Problems -/
 
 /-- Erdős also asked: Can B be taken to have at most C·N/log N elements in [1,N]?
     Lorentz proved yes. -/
@@ -416,7 +416,7 @@ def Erdos31Strengthened : Prop :=
 /-- Lorentz proved this strengthened version. -/
 axiom lorentz_strengthened : Erdos31Strengthened
 
-/-! ## Converse Direction -/
+/- ## Converse Direction -/
 
 /-- Question: If A + B covers almost all of ℕ, how dense must A ∪ B be?
     Answer: At least positive density is needed (obvious). -/
@@ -460,7 +460,7 @@ theorem coverage_requires_density (A B : Set ℕ) :
         exact ⟨hn.1, Nat.pos_of_ne_zero hn.2⟩
       exact hinf hcover
 
-/-! ## Connection to Additive Bases -/
+/- ## Connection to Additive Bases -/
 
 /-- A set A is an asymptotic additive basis of order h if
     hA = {a₁ + ... + aₕ : aᵢ ∈ A} covers all sufficiently large n. -/
@@ -540,7 +540,7 @@ theorem infinite_set_augmentable (A : Set ℕ) (hA : A.Infinite) :
   refine ⟨B, hB_dense, ?_⟩
   exact sumset_covers_implies_basis A B hcover
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 
