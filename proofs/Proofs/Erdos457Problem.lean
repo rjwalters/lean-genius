@@ -35,7 +35,7 @@ open Filter Finset
 
 namespace Erdos457
 
-/-! ## Part I: Consecutive Products
+/- ## Part I: Consecutive Products
 
 The product of k consecutive integers starting from n + 1:
 ∏_{i=1}^{k} (n + i) = (n+1)(n+2)···(n+k).
@@ -61,7 +61,7 @@ axiom consecutiveProduct_pos (n k : ℕ) (hk : k ≥ 1) :
 axiom small_primes_divide (n k p : ℕ) (hp : p.Prime) (hpk : p ≤ k) :
     p ∣ consecutiveProduct n k
 
-/-! ## Part II: The Smallest Non-Dividing Prime
+/- ## Part II: The Smallest Non-Dividing Prime
 
 q(n, k) is the least prime that does NOT divide ∏_{i=1}^{k} (n+i).
 This function measures how far the "small prime divisibility" extends
@@ -89,7 +89,7 @@ axiom q_minimal (n k : ℕ) (p : ℕ) (hp : p.Prime) (hpq : p < q n k) :
     This follows from small_primes_divide. -/
 axiom q_lower_trivial (n k : ℕ) (hk : k ≥ 1) : q n k > k
 
-/-! ## Part III: The Main Conjecture (OPEN)
+/- ## Part III: The Main Conjecture (OPEN)
 
 Erdős asks: can we do better than q(n, log n) > log(n)?
 Specifically, is there a fixed ε > 0 such that q(n, log n) ≥ (2+ε) log(n)
@@ -110,7 +110,7 @@ def ErdosConjecture457 : Prop :=
 /-- The conjecture is axiomatized as it remains open. -/
 axiom erdos_457 : ErdosConjecture457
 
-/-! ## Part IV: Equivalent Formulation via q(n, k)
+/- ## Part IV: Equivalent Formulation via q(n, k)
 
 The formulation using q(n, k) is more natural: instead of saying
 "all primes up to X divide the product," we say "the first prime
@@ -127,7 +127,7 @@ axiom erdos_457_q : ErdosConjecture457_q
 /-- The two formulations are equivalent. -/
 axiom conjecture_equivalence : ErdosConjecture457 ↔ ErdosConjecture457_q
 
-/-! ## Part V: Known Construction — The (2 + o(1)) Barrier
+/- ## Part V: Known Construction — The (2 + o(1)) Barrier
 
 Erdős and Pomerance observed that one can achieve q(n, log n) ≥ (2 + o(1)) log(n)
 by a specific construction: take n to be the product of all primes
@@ -153,7 +153,7 @@ axiom two_barrier_significance :
     ∀ ε : ℝ, ε > 0 →
     { n : ℕ | (2 - ε) * Real.log n ≤ (q n ⌊Real.log n⌋₊ : ℝ) }.Infinite
 
-/-! ## Part VI: Upper Bound Sub-Question
+/- ## Part VI: Upper Bound Sub-Question
 
 A separate open question asks for an upper bound on q(n, log n).
 The conjecture is that q(n, log n) < (1 - ε)(log n)² eventually. -/
@@ -169,7 +169,7 @@ def UpperBoundConjecture : Prop :=
 /-- The upper bound conjecture is also axiomatized as open. -/
 axiom erdos_457_upper : UpperBoundConjecture
 
-/-! ## Part VII: Connection to Smooth Numbers
+/- ## Part VII: Connection to Smooth Numbers
 
 The problem is closely related to smooth number theory. A number m
 is y-smooth if all prime factors of m are ≤ y. The consecutive
@@ -186,7 +186,7 @@ axiom consecutive_product_smooth_support (n : ℕ) (hn : n ≥ 2) :
     ∀ p : ℕ, p.Prime → p < q n ⌊Real.log (n : ℝ)⌋₊ →
       p ∣ consecutiveProduct n ⌊Real.log (n : ℝ)⌋₊
 
-/-! ## Part VIII: Relationship to Problem #663
+/- ## Part VIII: Relationship to Problem #663
 
 Erdős Problem #663 is a related question about prime factors of
 consecutive products. The two problems share the underlying theme
@@ -194,7 +194,7 @@ of understanding the prime factorization structure of products
 of consecutive integers. -/
 
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #457: Summary**

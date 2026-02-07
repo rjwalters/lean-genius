@@ -52,7 +52,7 @@ open scoped Topology
 
 namespace Erdos139
 
-/-! ## Arithmetic Progression Free Sets
+/- ## Arithmetic Progression Free Sets
 
 An arithmetic progression of length k is a sequence a, a+d, a+2d, ..., a+(k-1)d
 where d > 0 (non-trivial). A set is k-AP-free if it contains no such sequence.
@@ -65,7 +65,7 @@ def HasAPOfLength (S : Set ℕ) (k : ℕ) : Prop :=
 /-- A set is k-AP-free if it contains no k-term arithmetic progression -/
 def IsKAPFree (S : Set ℕ) (k : ℕ) : Prop := ¬ HasAPOfLength S k
 
-/-! ## The r_k(N) Function
+/- ## The r_k(N) Function
 
 r_k(N) is the maximum size of a k-AP-free subset of {1,...,N}.
 This is the central object in Erdős #139.
@@ -75,7 +75,7 @@ This is the central object in Erdős #139.
 noncomputable def r (k N : ℕ) : ℕ :=
   sSup {m : ℕ | ∃ S : Finset ℕ, S.card = m ∧ ↑S ⊆ Icc 1 N ∧ IsKAPFree (↑S) k}
 
-/-! ## Szemerédi's Theorem: Erdős #139
+/- ## Szemerédi's Theorem: Erdős #139
 
 **Main Result**: For any k ≥ 2, r_k(N) = o(N).
 
@@ -95,7 +95,7 @@ theorem erdos_139 (k : ℕ) (hk : 1 < k) :
     Tendsto (fun N => (r k N / N : ℝ)) atTop (𝓝 0) := by
   sorry
 
-/-! ## Equivalent Formulations -/
+/- ## Equivalent Formulations -/
 
 /-- Density formulation: dense sets contain k-APs -/
 def SzemerediDensity (k : ℕ) : Prop :=
@@ -112,7 +112,7 @@ theorem erdos_139_of_szemeredi (k : ℕ) (hk : 1 < k) (hsz : SzemerediDensity k)
     Tendsto (fun N => (r k N / N : ℝ)) atTop (𝓝 0) := by
   convert @erdos_139 k hk
 
-/-! ## Known Cases
+/- ## Known Cases
 
 The proof status depends on k:
 - k=1,2: Trivial (any nonempty set has 1-AP; any 2-element set has 2-AP)
@@ -146,7 +146,7 @@ theorem trivial_k2 (S : Finset ℕ) (h : S.card ≥ 2) : HasAPOfLength (↑S) 2 
       have : b + (a - b) = a := Nat.add_sub_cancel' (Nat.le_of_lt hlt')
       rw [this]; exact ha
 
-/-! ## Connection to Mathlib's ThreeAPFree
+/- ## Connection to Mathlib's ThreeAPFree
 
 For k=3, Mathlib provides a complete proof of Roth's theorem via the
 corners theorem. We connect our definitions to Mathlib's.
@@ -209,7 +209,7 @@ theorem erdos_139_k3 : Tendsto (fun N => (r 3 N / N : ℝ)) atTop (𝓝 0) := by
 
 -- Follows from roth_theorem
 
-/-! ## Quantitative Bounds (Axioms)
+/- ## Quantitative Bounds (Axioms)
 
 Best known bounds for r_k(N):
 - k=3: r₃(N) ≤ N·exp(-c(log N)^{1/12}) (Kelley-Meka 2023)
@@ -232,7 +232,7 @@ axiom gowers_bound (k : ℕ) (hk : k ≥ 4) :
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop,
     (r k N : ℝ) ≤ N / (Real.log (Real.log N)) ^ c
 
-/-! ## Lower Bounds: Behrend's Construction
+/- ## Lower Bounds: Behrend's Construction
 
 There exist k-AP-free sets of surprisingly large density!
 -/

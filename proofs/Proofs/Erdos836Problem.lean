@@ -38,7 +38,7 @@ import Mathlib.Data.Real.Basic
 
 namespace Erdos836
 
-/-!
+/-
 ## Part I: Hypergraph Definitions
 -/
 
@@ -63,7 +63,7 @@ Any two edges share at least one vertex.
 def IsIntersecting (H : Hypergraph V) : Prop :=
   ∀ e₁ ∈ H.edges, ∀ e₂ ∈ H.edges, (e₁ ∩ e₂).Nonempty
 
-/-!
+/-
 ## Part II: Chromatic Number
 -/
 
@@ -89,7 +89,7 @@ There exists a proper 3-colouring.
 def ChromaticAtMostThree {V : Type*} (H : Hypergraph V) : Prop :=
   ∃ c : V → Fin 3, IsProperColouring H 3 c
 
-/-!
+/-
 ## Part III: Vertex Count Question
 -/
 
@@ -126,7 +126,7 @@ combinatorial arguments beyond Mathlib.
 -/
 axiom question1_false : ¬Question1
 
-/-!
+/-
 ## Part IV: Alon's Counterexample
 -/
 
@@ -165,7 +165,7 @@ exponential vs polynomial growth but requires careful real analysis.
 -/
 axiom exponential_growth : ∃ r₀ : ℕ, ∀ r ≥ r₀, AlonVertexCount r > r^2
 
-/-!
+/-
 ## Part V: Edge Intersection Question
 -/
 
@@ -197,7 +197,7 @@ axiom erdos_lovasz_bound (r : ℕ) (hr : r ≥ 2) :
           ∃ (fin : Fintype (e₁ ∩ e₂ : Set V)),
             (Fintype.card (e₁ ∩ e₂ : Set V) : ℝ) ≥ ErdosLovaszBound r / 2
 
-/-!
+/-
 ## Part VI: The Fano Plane
 -/
 
@@ -215,7 +215,7 @@ def otherExamples : Prop :=
         ∃ (fin : Fintype (e₁ ∩ e₂ : Set V)),
           Fintype.card (e₁ ∩ e₂ : Set V) < r - 1)
 
-/-!
+/-
 ## Part VII: Specific Values
 -/
 
@@ -245,7 +245,7 @@ Compare to O(r²) = O(16).
 example : 2 * 4 - 2 = 6 := by norm_num
 example : Nat.choose 6 3 / 2 = 10 := by native_decide
 
-/-!
+/-
 ## Part VIII: Summary
 -/
 

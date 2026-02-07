@@ -30,7 +30,7 @@ open Nat Filter Set BigOperators Finset
 
 namespace Erdos358
 
-/-! ## Part I: Definitions -/
+/- ## Part I: Definitions -/
 
 /-- An infinite increasing sequence of integers. -/
 structure IntSequence where
@@ -43,7 +43,7 @@ noncomputable def consecutiveSumCount (A : IntSequence) (n : ℤ) : ℕ :=
   Set.ncard {p : ℕ × ℕ | p.1 ≤ p.2 ∧
     (∑ i ∈ Finset.Icc p.1 p.2, A.seq i) = n}
 
-/-! ## Part II: The Natural Numbers Case -/
+/- ## Part II: The Natural Numbers Case -/
 
 /-- The natural numbers sequence: a_n = n+1. -/
 def naturalsSeq : IntSequence where
@@ -69,7 +69,7 @@ theorem consecutive_sum_char (n : ℕ) (hn : n ≥ 3) :
 axiom naturals_count_odd_divisors (n : ℕ) (hn : n ≥ 1) :
     consecutiveSumCount naturalsSeq n = ((Nat.divisors n).filter Odd).card
 
-/-! ## Part III: The Main Conjectures -/
+/- ## Part III: The Main Conjectures -/
 
 /--
 **Erdős Problem #358 (Strong Form)**:
@@ -90,7 +90,7 @@ def Erdos358Weak : Prop :=
 /-- Strong implies weak. -/
 axiom strong_implies_weak : Erdos358Strong → Erdos358Weak
 
-/-! ## Part IV: Known Observations -/
+/- ## Part IV: Known Observations -/
 
 /--
 **Trivial observation (Egami):**
@@ -109,7 +109,7 @@ This is the only obstruction.
 axiom power_of_two_obstruction :
     ∀ k : ℕ, ∀ u v : ℕ, u < v → (∑ i ∈ Finset.Icc (u+1) (v+1), i) ≠ 2^k
 
-/-! ## Part V: The Prime Case -/
+/- ## Part V: The Prime Case -/
 
 /-- The primes sequence (axiomatized since nth is complex). -/
 axiom primesSeq : IntSequence
@@ -122,7 +122,7 @@ When A = primes, the limsup of f(n) is infinite.
 def ErdosMoserConjecture : Prop :=
   ∀ M : ℕ, ∃ n : ℤ, consecutiveSumCount primesSeq n ≥ M
 
-/-! ## Part VI: Weaker Questions
+/- ## Part VI: Weaker Questions
 
 **Erdős-Moser observation:**
 They could not even prove that the upper density of representable integers is positive.
@@ -142,7 +142,7 @@ def PositiveDensityConjecture : Prop :=
 /-- We don't even know if the density is positive. -/
 axiom density_unknown : PositiveDensityConjecture ∨ ¬PositiveDensityConjecture
 
-/-! ## Part VII: Connection to Related Problems
+/- ## Part VII: Connection to Related Problems
 
 **Connection to Problem #356:**
 The finite analogue asks: how many integers up to x can be written as
@@ -153,7 +153,7 @@ In modern additive combinatorics language, the problem asks about
 convex sumsets (sums of arithmetic progressions within the set).
 -/
 
-/-! ## Part VIII: Current Status
+/- ## Part VIII: Current Status
 
 **Erdős Problem #358: OPEN**
 
@@ -172,7 +172,7 @@ backwater of Mathematics but it seems very strange and attractive to me."
 -/
 axiom erdos_358_open : Erdos358Strong ∨ ¬Erdos358Strong
 
-/-! ## Part IX: Summary Theorems -/
+/- ## Part IX: Summary Theorems -/
 
 /-- The problem status. -/
 theorem erdos_358_status :

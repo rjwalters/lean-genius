@@ -37,7 +37,7 @@ namespace Erdos72
 
 open SimpleGraph Finset Filter
 
-/-! ## Part I: Density of Sets of Natural Numbers -/
+/- ## Part I: Density of Sets of Natural Numbers -/
 
 /-- The counting function for a set A up to n. -/
 def countingFunction (A : Set ℕ) (n : ℕ) : ℕ :=
@@ -62,7 +62,7 @@ theorem arithmeticProgression_positive_density (a d : ℕ) (hd : d > 0) :
     ¬hasDensityZero (arithmeticProgression a d) := by
   sorry
 
-/-! ## Part II: Graph Definitions -/
+/- ## Part II: Graph Definitions -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -82,7 +82,7 @@ def cycleLengths (G : SimpleGraph V) : Set ℕ :=
 def containsCycleIn (G : SimpleGraph V) (A : Set ℕ) : Prop :=
   ∃ k ∈ A, k ∈ cycleLengths G
 
-/-! ## Part III: The Unavoidable Cycle Length Property -/
+/- ## Part III: The Unavoidable Cycle Length Property -/
 
 /-- A set A ⊂ ℕ is unavoidable with threshold c if every sufficiently large graph
     with average degree ≥ c contains a cycle whose length is in A. -/
@@ -96,7 +96,7 @@ def isUnavoidable (A : Set ℕ) (c : ℝ) : Prop :=
 def isStronglyUnavoidable (A : Set ℕ) : Prop :=
   ∃ c : ℝ, c > 0 ∧ isUnavoidable A c
 
-/-! ## Part IV: The Main Problem -/
+/- ## Part IV: The Main Problem -/
 
 /-- **Erdős Problem #72 (Affirmative Solution)**
 
@@ -107,7 +107,7 @@ def isStronglyUnavoidable (A : Set ℕ) : Prop :=
 def Erdos72Statement : Prop :=
   ∃ A : Set ℕ, hasDensityZero A ∧ isStronglyUnavoidable A
 
-/-! ## Part V: Known Results (Axiomatized) -/
+/- ## Part V: Known Results (Axiomatized) -/
 
 /-- **Bollobás (1977)**
 
@@ -139,7 +139,7 @@ theorem erdos_72_solved : Erdos72Statement := by
   use powersOfTwo
   exact ⟨powersOfTwo_density_zero, liu_montgomery_powers_of_two⟩
 
-/-! ## Part VI: Erdős's Incorrect Conjecture -/
+/- ## Part VI: Erdős's Incorrect Conjecture -/
 
 /-- Erdős believed that for powers of 2, no constant threshold would work,
     but rather the required average degree would grow with graph size.
@@ -151,7 +151,7 @@ def erdos_incorrect_belief : Prop :=
 theorem erdos_was_wrong : ¬erdos_incorrect_belief :=
   fun h => h liu_montgomery_powers_of_two
 
-/-! ## Part VII: Other Density-0 Sets -/
+/- ## Part VII: Other Density-0 Sets -/
 
 /-- Perfect squares. -/
 def perfectSquares : Set ℕ := {n | ∃ k : ℕ, n = k ^ 2}
@@ -171,7 +171,7 @@ theorem powersOfTwo_all_even (n : ℕ) (hn : n ∈ powersOfTwo) (hn_pos : n > 0)
   | zero => right; rfl
   | succ k => left; exact ⟨2^k, by ring⟩
 
-/-! ## Part VIII: Quantitative Bounds -/
+/- ## Part VIII: Quantitative Bounds -/
 
 /-- The optimal threshold for a set A. -/
 noncomputable def optimalThreshold (A : Set ℕ) : ℝ :=
@@ -184,7 +184,7 @@ axiom liu_montgomery_explicit_bound : optimalThreshold powersOfTwo < 10^6
 def openQuestion_optimal_threshold : Prop :=
   ∃ c : ℝ, optimalThreshold powersOfTwo = c ∧ c < 100
 
-/-! ## Part IX: Generalizations -/
+/- ## Part IX: Generalizations -/
 
 /-- A set A with controlled growth: |A ∩ [1,n]| ≤ f(n) for slow-growing f. -/
 def hasControlledGrowth (A : Set ℕ) (f : ℕ → ℕ) : Prop :=
@@ -199,7 +199,7 @@ axiom liu_montgomery_general (A : Set ℕ)
 
 end Erdos72
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #72 on unavoidable cycle lengths.

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #593: Finite Subhypergraphs of Uncountably Chromatic 3-Uniform Hypergraphs
 
 Characterize those finite 3-uniform hypergraphs which appear as subhypergraphs
@@ -18,7 +18,7 @@ import Mathlib.Data.Set.Finite
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Hypergraph Definitions
 -/
 
@@ -40,7 +40,7 @@ with κ colors. -/
 def ChromaticNumberLE {V : Type*} (H : Hypergraph3 V) (κ : Cardinal) : Prop :=
   ∃ (C : Type*) (_ : #C ≤ κ) (f : V → C), IsProperColoring H C f
 
-/-!
+/-
 ## Section II: Subhypergraph Embedding
 -/
 
@@ -50,7 +50,7 @@ def IsSubhypergraph {V W : Type*} (F : Hypergraph3 V) (H : Hypergraph3 W) : Prop
   ∃ (φ : V → W), Function.Injective φ ∧
     ∀ e ∈ F.edges, e.image φ ∈ H.edges
 
-/-!
+/-
 ## Section III: The Main Problem
 -/
 
@@ -71,7 +71,7 @@ def ErdosProblem593 : Prop :=
   ∃ (P : ∀ n, Hypergraph3 (Fin n) → Prop),
     (∀ n (F : Hypergraph3 (Fin n)), P n F ↔ IsUnavoidable F)
 
-/-!
+/-
 ## Section IV: The Graph Case (Solved)
 -/
 
@@ -96,7 +96,7 @@ axiom graph_case_solved :
         ∀ i j, G.adj i j → H.adj (φ i) (φ j)) ↔
     IsBipartite G
 
-/-!
+/-
 ## Section V: Known Constraints for 3-Uniform Case
 -/
 
@@ -115,7 +115,7 @@ chromatic number 3 and is conjectured to be unavoidable. -/
 axiom k4_3_chromatic_number :
   ∃ (F : Hypergraph3 (Fin 4)), F.edges.Finite ∧ ¬ Is2Colorable F
 
-/-!
+/-
 ## Section VI: Erdős–Galvin–Hajnal
 -/
 

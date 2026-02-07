@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #323 — Sums of k-th Powers Counting Function
 
 Let f_{k,m}(x) denote the count of integers ≤ x that are representable as
@@ -24,7 +24,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Sums of k-th powers -/
+/- ## Sums of k-th powers -/
 
 /-- An integer n is a sum of m nonnegative k-th powers. -/
 def IsSumOfPowers (n k m : ℕ) : Prop :=
@@ -34,7 +34,7 @@ def IsSumOfPowers (n k m : ℕ) : Prop :=
 noncomputable def powerSumCount (k m x : ℕ) : ℕ :=
     (Finset.range (x + 1)).filter (fun n => IsSumOfPowers n k m) |>.card
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- Every nonneg integer is a sum of itself many 1st powers: f_{1,m} grows
     linearly for m large enough. -/
@@ -45,7 +45,7 @@ axiom first_power_count (m x : ℕ) (hm : 1 ≤ m) (hx : m ≤ x) :
 axiom power_sum_count_mono (k m x : ℕ) :
     powerSumCount k m x ≤ powerSumCount k (m + 1) x
 
-/-! ## Landau's theorem for sums of two squares -/
+/- ## Landau's theorem for sums of two squares -/
 
 /-- Landau: f_{2,2}(x) ~ c·x/√(log x). Formally: for every ε > 0,
     for large x, (1-ε)·c·x/√(log x) ≤ f_{2,2}(x) ≤ (1+ε)·c·x/√(log x). -/
@@ -54,7 +54,7 @@ axiom landau_two_squares :
       ∀ ε : ℚ, 0 < ε → ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
         (1 - ε) * c * (x : ℚ) ≤ (powerSumCount 2 2 x : ℚ) * (Nat.log 2 x : ℚ)
 
-/-! ## Main conjectures -/
+/- ## Main conjectures -/
 
 /-- Conjecture 1: f_{k,k}(x) ≫_ε x^{1-ε} for all ε > 0.
     Formally: for every k ≥ 2 and ε > 0, there exist c > 0 and x₀ such that
@@ -75,7 +75,7 @@ def ErdosProblem323_part2 : Prop :=
 /-- Erdős Problem 323: both parts combined. -/
 def ErdosProblem323 : Prop := ErdosProblem323_part1 ∧ ErdosProblem323_part2
 
-/-! ## Open sub-question -/
+/- ## Open sub-question -/
 
 /-- It is unknown whether f_{k,k}(x) = o(x) for k > 2. That is, it is
     open whether the density of sums of k k-th powers is zero. -/

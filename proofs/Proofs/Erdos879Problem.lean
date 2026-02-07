@@ -36,7 +36,7 @@ open Nat Finset BigOperators
 
 namespace Erdos879
 
-/-! ## Part I: Admissible Sets -/
+/- ## Part I: Admissible Sets -/
 
 /--
 **Pairwise Coprime (Admissible):**
@@ -58,7 +58,7 @@ The collection of all admissible subsets of {1, ..., n}.
 def admissibleSetsUpTo (n : ℕ) : Set (Finset ℕ) :=
   {S | S ⊆ Finset.range (n + 1) ∧ IsAdmissible S}
 
-/-! ## Part II: The Functions G(n) and H(n) -/
+/- ## Part II: The Functions G(n) and H(n) -/
 
 /--
 **G(n): Maximum Sum of Admissible Sets**
@@ -88,7 +88,7 @@ H(n) = Σ_{p < n} p + n · π(√n)
 noncomputable def H (n : ℕ) : ℕ :=
   sumOfPrimes n + n * primeCountingFn (Nat.sqrt n)
 
-/-! ## Part III: The Erdős-Van Lint Bounds -/
+/- ## Part III: The Erdős-Van Lint Bounds -/
 
 /--
 **Upper Bound (Erdős-Van Lint):**
@@ -114,7 +114,7 @@ so G(n) is genuinely smaller than H(n) by more than O(n).
 axiom gap_grows :
   ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, ((H n : ℝ) - (G n : ℝ)) / n > M
 
-/-! ## Part IV: Question 1 (Open) -/
+/- ## Part IV: Question 1 (Open) -/
 
 /--
 **Question 1: Tighter Lower Bound?**
@@ -125,7 +125,7 @@ def Question1 : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     (G n : ℝ) > (H n : ℝ) - (n : ℝ)^(1 + ε)
 
-/-! ## Part V: Question 2 (Partially Solved) -/
+/- ## Part V: Question 2 (Partially Solved) -/
 
 /--
 **Number of Distinct Prime Factors:**
@@ -159,7 +159,7 @@ The optimal admissible set contains at least one semiprime
 -/
 axiom question2_k2 : Question2 2
 
-/-! ## Part VI: The Optimal Admissible Set Structure -/
+/- ## Part VI: The Optimal Admissible Set Structure -/
 
 /--
 **Primes are Admissible:**
@@ -173,7 +173,7 @@ theorem primes_admissible (n : ℕ) :
   exact Nat.Prime.coprime_iff_not_dvd ha.2 |>.mpr
     (fun h => hab (hb.2.eq_one_or_self_of_dvd a h |>.resolve_left (by omega)))
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #879: Summary**

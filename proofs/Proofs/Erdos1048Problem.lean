@@ -25,7 +25,7 @@ namespace Erdos1048
 
 open Complex Polynomial Set Metric
 
-/-!
+/-
 ## Part I: Polynomials and Roots
 
 Basic setup for complex polynomials.
@@ -49,7 +49,7 @@ structure BoundedMonicPoly (r : ℝ) where
   bounded : RootsBoundedBy poly r
   nontrivial : poly.degree ≥ 1
 
-/-!
+/-
 ## Part II: Lemniscates
 
 The level sets of polynomial absolute value.
@@ -75,7 +75,7 @@ theorem lemniscate_bounded (f : BoundedMonicPoly r) (c : ℝ) (hc : c > 0) :
     IsBounded (L(f.poly, c)) := by
   sorry
 
-/-!
+/-
 ## Part III: Connected Components
 
 Components of the lemniscate and their diameters.
@@ -93,7 +93,7 @@ noncomputable def diameter (S : Set ℂ) : ℝ :=
 noncomputable def maxComponentDiameter (f : ℂ[X]) (c : ℝ) : ℝ :=
   sSup { diameter (ConnectedComponent (L(f, c)) z) | (z : ℂ) (hz : z ∈ L(f, c)) }
 
-/-!
+/-
 ## Part IV: The Conjecture
 
 What Erdős-Herzog-Piranian asked (1958).
@@ -106,7 +106,7 @@ def EHPConjecture : Prop :=
   ∀ r : ℝ, r < 2 → ∀ f : BoundedMonicPoly r,
     maxComponentDiameter f.poly 1 > 2 - r
 
-/-!
+/-
 ## Part V: Pommerenke's Counterexample (1961)
 
 The conjecture fails for r > 1.
@@ -146,7 +146,7 @@ axiom pommerenke_diameter_vanishes (r : ℝ) (hr : r > 1) :
 theorem EHP_false_for_r_gt_1 : ¬ EHPConjecture := by
   sorry
 
-/-!
+/-
 ## Part VI: Positive Results (Pommerenke)
 
 The conjecture holds in modified forms for r ≤ 1.
@@ -174,7 +174,7 @@ axiom pommerenke_case_large_r (f : BoundedMonicPoly r) (hr1 : φ_minus_1 ≤ r) 
     (0 : ℂ) ∈ unitLemniscate f.poly →
     diameter (ConnectedComponent (unitLemniscate f.poly) 0) > 2 - r^2
 
-/-!
+/-
 ## Part VII: Optimal Examples
 
 Showing the bounds are tight.
@@ -195,7 +195,7 @@ axiom diameter_near_1_for_r_eq_1 :
     ∀ ε > 0, ∃ f : BoundedMonicPoly 1,
       maxComponentDiameter f.poly 1 < 1 + ε
 
-/-!
+/-
 ## Part VIII: Degree and Component Count
 
 Relationship between degree and lemniscate structure.
@@ -211,7 +211,7 @@ theorem exterior_unbounded (f : ℂ[X]) (hf : f ≠ 0) (c : ℝ) (hc : c > Compl
     ¬ IsBounded ({ z : ℂ | Complex.abs (f.eval z) ≥ c }) := by
   sorry
 
-/-!
+/-
 ## Part IX: Potential-Theoretic Viewpoint
 
 Connection to logarithmic capacity.
@@ -228,7 +228,7 @@ axiom lemniscate_capacity (f : BoundedMonicPoly r) (c : ℝ) (hc : c > 0) (n : �
 axiom capacity_diameter_inequality (S : Set ℂ) (hS : IsConnected S) :
     diameter S ≥ 4 * logCapacity S
 
-/-!
+/-
 ## Part X: Summary
 
 The resolution of Erdős Problem #1048.

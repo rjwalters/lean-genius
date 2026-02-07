@@ -43,7 +43,7 @@ open scoped ArithmeticFunction Topology
 
 namespace Erdos975
 
-/-!
+/-
 ## Definitions
 
 We define the divisor sum over polynomial values, which is the core object of study
@@ -67,7 +67,7 @@ of f(1), f(2), ..., f(⌊x⌋).
 noncomputable def divisorSumPoly (f : ℤ[X]) (x : ℝ) : ℝ :=
   ∑ n ∈ Finset.Icc 1 ⌊x⌋₊, (divisorCount (f.eval ↑n).natAbs : ℝ)
 
-/-!
+/-
 ## Known Bounds
 
 Van der Corput (1939) and Erdős (1952) established that for any irreducible
@@ -97,7 +97,7 @@ axiom erdos_upper_bound (f : ℤ[X]) (hf : Irreducible f)
     (hpos : ∀ᶠ n : ℕ in atTop, 1 ≤ f.eval (n : ℤ)) :
     divisorSumPoly f =O[atTop] (fun x => x * Real.log x)
 
-/-!
+/-
 ## Main Conjecture (Open)
 
 The full Erdős Problem #975 asks whether there exists an asymptotic formula
@@ -120,7 +120,7 @@ axiom erdos_975 : ∀ f : ℤ[X], f.natDegree ≠ 0 → Irreducible f →
     (∀ᶠ n : ℕ in atTop, 1 ≤ f.eval (n : ℤ)) →
     ∃ c : ℝ, 0 < c ∧ Tendsto (fun x => divisorSumPoly f x / (x * Real.log x)) atTop (nhds c)
 
-/-!
+/-
 ## Solved Case: Quadratic Polynomials
 
 Hooley (1963) resolved the conjecture for irreducible quadratic polynomials.
@@ -138,7 +138,7 @@ axiom hooley_quadratic (f : ℤ[X]) (hf : Irreducible f) (hdeg : f.natDegree = 2
     (hpos : ∀ᶠ n : ℕ in atTop, 1 ≤ f.eval (n : ℤ)) :
     ∃ c : ℝ, 0 < c ∧ Tendsto (fun x => divisorSumPoly f x / (x * Real.log x)) atTop (nhds c)
 
-/-!
+/-
 ## Famous Example: f(n) = n² + 1
 
 The polynomial n² + 1 is irreducible over ℤ, and its divisor sum has the
@@ -167,7 +167,7 @@ The stronger form: the error term is O(x).
 axiom n2_plus_1_strong :
     (fun x => divisorSumPoly poly_n2_plus_1 x - (3 / π) * x * Real.log x) =O[atTop] id
 
-/-!
+/-
 ## Basic Properties of Divisor Count
 -/
 

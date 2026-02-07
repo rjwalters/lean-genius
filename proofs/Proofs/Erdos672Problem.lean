@@ -30,7 +30,7 @@ open Nat Finset BigOperators
 
 namespace Erdos672
 
-/-!
+/-
 ## Background: Arithmetic Progressions and Perfect Powers
 
 An arithmetic progression (AP) is a sequence n, n+d, n+2d, ..., n+(k-1)d.
@@ -40,7 +40,7 @@ The condition gcd(n,d) = 1 ensures the AP is "primitive" - if gcd(n,d) > 1,
 we could factor it out and reduce to the primitive case.
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -60,7 +60,7 @@ def IsPerfectPower (m l : ℕ) : Prop := ∃ q > 0, m = q ^ l
 /-- Alternative: m is a perfect power if it's a perfect l-th power for some l > 1. -/
 def IsPerfectPowerSome (m : ℕ) : Prop := ∃ l > 1, IsPerfectPower m l
 
-/-!
+/-
 ## The Erdős Conjecture
 
 The conjecture states that for k ≥ 4 and l > 1, no product of k terms
@@ -77,7 +77,7 @@ def erdos_672_conjecture : Prop := ∀ k l : ℕ, k ≥ 4 → l > 1 → Erdos672
 /-- The conjecture remains open in full generality. -/
 axiom erdos_672_open : ¬(erdos_672_conjecture ↔ True) ∧ ¬(erdos_672_conjecture ↔ False)
 
-/-!
+/-
 ## Euler's Result: k = 4, l = 2
 
 Euler proved that the product of 4 terms in arithmetic progression
@@ -95,7 +95,7 @@ theorem euler_four_terms_not_square (n d : ℕ) (hn : n > 0) (hd : d > 0) (hgcd 
     ¬IsPerfectPower (apProduct n d 4) 2 :=
   euler_k4_l2 n d hn hd hgcd
 
-/-!
+/-
 ## Obláth's Results (1951)
 
 Obláth extended Euler's result to several more cases.
@@ -118,7 +118,7 @@ theorem oblath_results :
     Erdos672With 5 2 ∧ Erdos672With 3 3 ∧ Erdos672With 3 4 ∧ Erdos672With 3 5 :=
   ⟨oblath_k5_l2, oblath_k3_l3, oblath_k3_l4, oblath_k3_l5⟩
 
-/-!
+/-
 ## The Consecutive Case: Erdős-Selfridge (1975)
 
 When d = 1 (consecutive integers), the problem becomes:
@@ -142,7 +142,7 @@ axiom erdos_selfridge_1975 :
 axiom erdos_selfridge_implies_d1 (k l : ℕ) (hk : k ≥ 4) (hl : l > 1) :
     ∀ n : ℕ, n > 0 → ¬IsPerfectPower (consecutiveProduct n k) l
 
-/-!
+/-
 ## Small Examples
 
 For small values, we can verify the conjecture computationally.
@@ -160,7 +160,7 @@ axiom example_3579 : ¬IsPerfectPowerSome 945
 /-- Example: 2 × 5 × 8 × 11 = 880 is not a perfect power (d = 3). -/
 axiom example_d3 : ¬IsPerfectPowerSome 880
 
-/-!
+/-
 ## Why gcd(n,d) = 1 is Required
 
 If gcd(n,d) = g > 1, then each term is divisible by g, so the product
@@ -175,7 +175,7 @@ axiom gcd_factorization (n d k : ℕ) (hn : n > 0) (hd : d > 0) :
   let g := n.gcd d
   ∃ m : ℕ, apProduct n d k = g ^ k * m
 
-/-!
+/-
 ## Connection to Diophantine Equations
 
 The question is equivalent to asking about solutions to:
@@ -191,7 +191,7 @@ axiom pairwise_gcd_bound (n d k : ℕ) (hn : n > 0) (hd : d > 0) (hgcd : n.gcd d
     (i j : ℕ) (hi : i < k) (hj : j < k) (hij : i ≠ j) :
   (apTerm n d i).gcd (apTerm n d j) ∣ ((j : ℤ) - i).natAbs * d
 
-/-!
+/-
 ## Known Special Cases Summary
 
 | k | l | Status | Reference |
@@ -214,7 +214,7 @@ theorem known_cases :
     Erdos672With 3 5 :=
   ⟨euler_k4_l2, oblath_k5_l2, oblath_k3_l3, oblath_k3_l4, oblath_k3_l5⟩
 
-/-!
+/-
 ## Heuristic: Why the Conjecture Should Be True
 
 For a product P = n(n+d)...(n+(k-1)d) to be an l-th power q^l:
@@ -229,7 +229,7 @@ is a perfect l-th power is extremely small, heuristically ~ 1/P^(1-1/l).
 /-- Heuristic: Products of k ≥ 4 terms in AP are generically not perfect powers. -/
 axiom heuristic_argument : True
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #672 asks whether products of arithmetic progressions

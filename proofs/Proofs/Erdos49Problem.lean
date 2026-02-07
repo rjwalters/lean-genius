@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 49: Sets with Increasing Euler Totient Values
 
 Let `A = {a₁ < ⋯ < aₜ} ⊆ {1,…,N}` with `φ(a₁) < ⋯ < φ(aₜ)`.
@@ -17,7 +17,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-/-! ## Increasing totient sets -/
+/- ## Increasing totient sets -/
 
 /-- A set `A ⊆ {1,…,N}` has strictly increasing Euler totient values
 if for all `a, b ∈ A` with `a < b`, we have `φ(a) < φ(b)`. -/
@@ -30,13 +30,13 @@ noncomputable def maxIncTotientSize (N : ℕ) : ℕ :=
       ((Finset.Icc 1 N).powerset.filter IsIncreasingTotientSet)
       Finset.card
 
-/-! ## Prime counting function -/
+/- ## Prime counting function -/
 
 /-- The prime counting function `π(N)`: number of primes up to `N`. -/
 noncomputable def primeCounting (N : ℕ) : ℕ :=
     ((Finset.Icc 1 N).filter Nat.Prime).card
 
-/-! ## Primes form an increasing totient set -/
+/- ## Primes form an increasing totient set -/
 
 /-- The set of primes in `{1,…,N}` has strictly increasing totient
 values since `φ(p) = p - 1` for primes. -/
@@ -47,7 +47,7 @@ axiom primes_increasing_totient (N : ℕ) :
 axiom maxIncTotientSize_ge_primeCounting (N : ℕ) :
     primeCounting N ≤ maxIncTotientSize N
 
-/-! ## Tao's theorem (2023) -/
+/- ## Tao's theorem (2023) -/
 
 /-- Tao (2023): For all `ε > 0` and sufficiently large `N`,
 `maxIncTotientSize(N) ≤ (1 + ε) · π(N)`.
@@ -59,7 +59,7 @@ axiom tao_increasing_totient :
       ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
         (maxIncTotientSize N : ℚ) ≤ (1 + ε) * (primeCounting N : ℚ)
 
-/-! ## Main statement -/
+/- ## Main statement -/
 
 /-- Erdős Problem 49 (solved): The maximum size of an increasing totient
 set in `{1,…,N}` is asymptotically `π(N)`. -/
@@ -68,7 +68,7 @@ def ErdosProblem49 : Prop :=
       ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
         (maxIncTotientSize N : ℚ) ≤ (1 + ε) * (primeCounting N : ℚ)
 
-/-! ## Weaker form -/
+/- ## Weaker form -/
 
 /-- The weaker conjecture `|A| = o(N)`: any increasing totient set has
 density zero. This follows from Tao's result since `π(N) = o(N)`. -/
@@ -77,7 +77,7 @@ axiom incTotientSet_density_zero :
       ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
         (maxIncTotientSize N : ℚ) ≤ ε * (N : ℚ)
 
-/-! ## Totient properties -/
+/- ## Totient properties -/
 
 /-- `φ(p) = p - 1` for primes. -/
 axiom totient_prime (p : ℕ) (hp : Nat.Prime p) :

@@ -1,6 +1,6 @@
 import Mathlib
 
-/-!
+/-
 # Erdős Problem 1102: Squarefree Properties P and Q
 
 ## What This Proves
@@ -47,7 +47,7 @@ namespace Erdos1102
 
 open Nat Set Filter Topology
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- Property P: For all n ≥ 1, only finitely many a ∈ A have n + a squarefree.
 
@@ -63,7 +63,7 @@ def HasPropertyP (A : Set ℕ) : Prop :=
 def HasPropertyQ (A : Set ℕ) : Prop :=
   {n : ℕ | ∀ a ∈ A, a < n → Squarefree (n + a)}.Infinite
 
-/-! ## The Squarefree Numbers -/
+/- ## The Squarefree Numbers -/
 
 /-- The set of squarefree natural numbers -/
 def squarefreeSet : Set ℕ := {n | Squarefree n}
@@ -83,14 +83,14 @@ example : ¬Squarefree 4 := by native_decide
 /-- 12 is not squarefree (12 = 4 × 3 = 2² × 3) -/
 example : ¬Squarefree 12 := by native_decide
 
-/-! ## The Magic Constant: 6/π²
+/- ## The Magic Constant: 6/π²
 
 The density of squarefree numbers is 6/π² = 1/ζ(2) ≈ 0.6079... -/
 
 /-- The density of squarefree numbers -/
 noncomputable def squarefreeDensity : ℝ := 6 / Real.pi^2
 
-/-! ## Main Results (van Doorn-Tao 2025) -/
+/- ## Main Results (van Doorn-Tao 2025) -/
 
 /-- **Axiom (van Doorn-Tao 2025):**
     Any sequence with property P has density 0.
@@ -151,7 +151,7 @@ theorem erdos_1102_optimal_density_exists :
   obtain ⟨A, hA_mono, hA_sf, hA_Q, hA_tend⟩ := propertyQ_achievable
   exact ⟨A, hA_mono, hA_Q, hA_tend⟩
 
-/-! ## Special Sequences
+/- ## Special Sequences
 
 Erdős also asked about specific sequences like 2^n ± 1 and n! ± 1. -/
 

@@ -33,7 +33,7 @@ import Mathlib
 
 namespace Erdos735
 
-/-! ## Basic Setup -/
+/- ## Basic Setup -/
 
 /-- A point configuration in the plane -/
 def PointConfig := Finset (EuclideanSpace ℝ (Fin 2))
@@ -52,7 +52,7 @@ def lineSum (P : PointConfig) (w : Weighting P) (L : ConfigLine P) : ℝ :=
   (P.filter (· ∈ L.val)).sum fun p =>
     if h : p ∈ P then w.val ⟨p, h⟩ else 0
 
-/-! ## Magic Configurations -/
+/- ## Magic Configurations -/
 
 /-- A configuration is magic if it admits a weighting with equal line sums -/
 def IsMagic (P : PointConfig) : Prop :=
@@ -62,7 +62,7 @@ def IsMagic (P : PointConfig) : Prop :=
 noncomputable def magicConstant (P : PointConfig) (hMagic : IsMagic P) : ℝ :=
   Classical.choose (Classical.choose_spec hMagic)
 
-/-! ## The Four Magic Classes -/
+/- ## The Four Magic Classes -/
 
 /-- Class 1: All points collinear -/
 def IsCollinear (P : PointConfig) : Prop :=
@@ -113,7 +113,7 @@ theorem incenter_config_is_magic (P : PointConfig) :
     IsIncenterConfig P → IsMagic P := by
   sorry
 
-/-! ## Projective Equivalence -/
+/- ## Projective Equivalence -/
 
 /-- Two configurations are projectively equivalent -/
 def ProjectivelyEquivalent (P Q : PointConfig) : Prop :=
@@ -128,7 +128,7 @@ theorem projective_preserves_magic (P Q : PointConfig)
     IsMagic P ↔ IsMagic Q := by
   sorry
 
-/-! ## The Main Classification -/
+/- ## The Main Classification -/
 
 /-- A configuration belongs to one of the four magic classes -/
 def IsMagicClass (P : PointConfig) : Prop :=
@@ -154,7 +154,7 @@ theorem magic_classification : murty_conjecture := by
     · rw [projective_preserves_magic P Q hPQ]
       exact incenter_config_is_magic Q hInc
 
-/-! ## Key Lemma: Lines Through a Point -/
+/- ## Key Lemma: Lines Through a Point -/
 
 /-- The number of lines through a point in a configuration -/
 noncomputable def linesThrough (P : PointConfig) (p : EuclideanSpace ℝ (Fin 2))
@@ -168,7 +168,7 @@ theorem magic_line_constraint (P : PointConfig) (hMagic : IsMagic P)
     True := by
   trivial
 
-/-! ## The Non-Magic Theorem -/
+/- ## The Non-Magic Theorem -/
 
 /-- Configurations not in the four classes are not magic -/
 theorem not_magic_outside_classes (P : PointConfig) (hP : P.card ≥ 3) :
@@ -177,7 +177,7 @@ theorem not_magic_outside_classes (P : PointConfig) (hP : P.card ≥ 3) :
   have := magic_classification P hP
   exact hNot (this.mp hMagic)
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- Example: Three collinear points are magic -/
 def threeCollinear : PointConfig :=
@@ -207,7 +207,7 @@ def nonMagicExample : PointConfig :=
 theorem non_magic_example_not_magic : ¬IsMagic nonMagicExample := by
   sorry
 
-/-! ## Weighted Incidence Perspective -/
+/- ## Weighted Incidence Perspective -/
 
 /-- The incidence matrix of a configuration -/
 noncomputable def incidenceMatrix (P : PointConfig) :
@@ -222,7 +222,7 @@ theorem magic_iff_positive_solution (P : PointConfig) (hP : P.card ≥ 2) :
         if h : p ∈ P then w ⟨p, h⟩ else 0) = c := by
   sorry -- Restatement of definition
 
-/-! ## Dimension Counting Argument -/
+/- ## Dimension Counting Argument -/
 
 /-- Key insight: The space of valid weightings has constrained dimension -/
 theorem weighting_dimension (P : PointConfig) (hP : P.card = n) :
@@ -230,7 +230,7 @@ theorem weighting_dimension (P : PointConfig) (hP : P.card = n) :
     True := by
   trivial
 
-/-! ## Summary
+/- ## Summary
 
 **Status: SOLVED (Ackerman-Buchin-Knauer-Pinchasi-Rote, 2008)**
 

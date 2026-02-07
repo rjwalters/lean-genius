@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #829: Representations as Sums of Two Cubes
 
 Source: https://erdosproblems.com/829
@@ -35,7 +35,7 @@ open Real BigOperators
 
 namespace Erdos829
 
-/-! ## Part I: Cubes and the Representation Function -/
+/- ## Part I: Cubes and the Representation Function -/
 
 /--
 **Perfect Cube:**
@@ -69,7 +69,7 @@ def orderedCubeRepresentations (n : ℕ) : ℕ :=
   (Finset.filter (fun p : ℕ × ℕ => p.1 ^ 3 + p.2 ^ 3 = n)
     (Finset.product (Finset.range (n + 1)) (Finset.range (n + 1)))).card
 
-/-! ## Part II: The Erdős Question -/
+/- ## Part II: The Erdős Question -/
 
 /--
 **Polynomial Bound on Representations:**
@@ -87,7 +87,7 @@ This is asking whether HasPolylogBound holds.
 -/
 def ErdosQuestion : Prop := HasPolylogBound
 
-/-! ## Part III: Known Lower Bounds -/
+/- ## Part III: Known Lower Bounds -/
 
 /--
 **Mordell's Theorem:**
@@ -125,7 +125,7 @@ axiom stewart_2008 :
     ∀ M : ℕ, ∃ n : ℕ, n ≥ M ∧
       (cubeRepresentations n : ℝ) ≥ c * (Real.log n) ^ (11/13 : ℝ)
 
-/-! ## Part IV: Famous Examples -/
+/- ## Part IV: Famous Examples -/
 
 /--
 **Taxicab Numbers:**
@@ -156,7 +156,7 @@ The smallest number with 3 representations as sum of two cubes.
 -/
 axiom taxicab_3 : cubeRepresentations 87539319 = 3
 
-/-! ## Part V: Theoretical Framework -/
+/- ## Part V: Theoretical Framework -/
 
 /--
 **Density of Sums of Two Cubes:**
@@ -180,7 +180,7 @@ axiom most_not_sum_of_cubes :
     Filter.atTop
     (nhds 1)
 
-/-! ## Part VI: The Gap -/
+/- ## Part VI: The Gap -/
 
 /--
 **Best Known Lower Bound Exponent:**
@@ -188,7 +188,7 @@ Stewart's exponent 11/13 ≈ 0.846 is strictly better than Mahler's 1/4 = 0.25.
 -/
 theorem stewart_improves_mahler : (11 : ℝ) / 13 > (1 : ℝ) / 4 := by norm_num
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #829:**

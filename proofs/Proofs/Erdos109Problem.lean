@@ -44,7 +44,7 @@ open Set Finset Filter BigOperators
 
 namespace Erdos109
 
-/-! ## Density Definitions -/
+/- ## Density Definitions -/
 
 /-- The counting function: number of elements of A in {1,...,N}. -/
 noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
@@ -108,7 +108,7 @@ theorem posLowerDensity_implies_posUpperDensity (A : Set ℕ) :
   calc 0 < lowerDensity A := h
        _ ≤ upperDensity A := lowerDensity_le_upperDensity A
 
-/-! ## Sumset Definition -/
+/- ## Sumset Definition -/
 
 /-- The sumset B + C: all sums b + c with b ∈ B and c ∈ C. -/
 def Sumset (B C : Set ℕ) : Set ℕ :=
@@ -131,7 +131,7 @@ theorem sumset_comm (B C : Set ℕ) : (B +ₛ C) = (C +ₛ B) := by
   · intro ⟨x, hx, y, hy, h⟩
     exact ⟨y, hy, x, hx, by omega⟩
 
-/-! ## The Erdős Sumset Conjecture -/
+/- ## The Erdős Sumset Conjecture -/
 
 /--
 **Erdős Sumset Conjecture** (PROVED by Moreira-Richter-Robertson 2019):
@@ -158,7 +158,7 @@ axiom moreira_richter_robertson : ErdosSumsetConjecture
 /-- The conjecture is resolved. -/
 theorem erdos_109_solved : ErdosSumsetConjecture := moreira_richter_robertson
 
-/-! ## Consequences and Related Results -/
+/- ## Consequences and Related Results -/
 
 /-- A set containing an infinite sumset B + C is necessarily infinite. -/
 theorem sumset_infinite_implies_superset_infinite (A B C : Set ℕ)
@@ -197,7 +197,7 @@ theorem posUpperDensity_infinite (A : Set ℕ) (h : HasPositiveUpperDensity A) :
   obtain ⟨B, C, hB, hC, hsub⟩ := moreira_richter_robertson A h
   exact sumset_infinite_implies_superset_infinite A B C hB hC hsub
 
-/-! ## Strengthenings -/
+/- ## Strengthenings -/
 
 /--
 **Stronger Form** (also proved):
@@ -222,7 +222,7 @@ infinite sumsets B + C rather than finite arithmetic progressions.
 These are complementary results about how density forces additive structure.
 -/
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- The natural numbers have density 1 (the full set has density 1).
     This is a standard fact: lim_{N→∞} |{1,...,N}|/N = 1. -/
@@ -400,7 +400,7 @@ theorem even_sumset_example :
     use kb + kc
     linarith
 
-/-! ## Proof Techniques
+/- ## Proof Techniques
 
 The Moreira-Richter-Robertson proof uses:
 1. Ergodic theory and measure-preserving systems
@@ -412,7 +412,7 @@ The proof is highly non-trivial and represents a major achievement in
 combinatorial ergodic theory.
 -/
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 

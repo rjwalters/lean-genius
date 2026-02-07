@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #216: Empty Convex Polygons
 
 Source: https://erdosproblems.com/216
@@ -46,7 +46,7 @@ open Finset
 
 namespace Erdos216
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -68,7 +68,7 @@ axiom IsConvexKGon (vertices : Finset Point) (k : ℕ) : Prop
 axiom convexKGon_card (vertices : Finset Point) (k : ℕ) :
   IsConvexKGon vertices k → vertices.card = k
 
-/-!
+/-
 ## Part II: Empty Convex Polygons
 -/
 
@@ -85,7 +85,7 @@ axiom emptyConvexKGon_sub (S : PointSet) (vertices : Finset Point) (k : ℕ) :
 def ContainsEmptyKGon (S : PointSet) (k : ℕ) : Prop :=
   ∃ vertices : Finset Point, IsEmptyConvexKGon S vertices k
 
-/-!
+/-
 ## Part III: The Function g(k)
 -/
 
@@ -99,7 +99,7 @@ noncomputable def g (k : ℕ) : Option ℕ :=
 /-- g(k) exists means the function returns some value -/
 def gExists (k : ℕ) : Prop := (g k).isSome
 
-/-!
+/-
 ## Part IV: Known Values
 -/
 
@@ -119,7 +119,7 @@ axiom g_5 : g 5 = some 10
     was determined by Heule and Scheucher using SAT solvers. -/
 axiom g_6 : g 6 = some 30
 
-/-!
+/-
 ## Part V: Horton's Theorem - g(k) Does Not Exist for k ≥ 7
 -/
 
@@ -147,7 +147,7 @@ theorem g_7_not_exists : g 7 = none := by
 /-- For all k ≥ 7, g(k) does not exist -/
 axiom g_ge_7_not_exists : ∀ k : ℕ, k ≥ 7 → g k = none
 
-/-!
+/-
 ## Part VI: Bounds and Growth
 -/
 
@@ -161,7 +161,7 @@ theorem g_exists_le_6 : ∀ k : ℕ, 3 ≤ k → k ≤ 6 → gExists k := by
   unfold gExists
   interval_cases k <;> simp [g_3, g_4, g_5, g_6]
 
-/-!
+/-
 ## Part VII: The Horton Construction
 -/
 
@@ -179,7 +179,7 @@ axiom horton_recursive :
 axiom horton_has_empty_6 :
   ∀ S : PointSet, IsHortonSet S → S.card ≥ 30 → ContainsEmptyKGon S 6
 
-/-!
+/-
 ## Part VIII: Connection to Happy Ending Problem
 -/
 
@@ -202,7 +202,7 @@ def erdos_szekeres_conjecture : Prop :=
 axiom empty_implies_nonempty :
   ∀ k n m : ℕ, g k = some n → happyEnding k = some m → n ≥ m
 
-/-!
+/-
 ## Part IX: Computational Results
 -/
 
@@ -214,7 +214,7 @@ axiom g_6_lower_witness :
 axiom g_6_upper :
   ∀ S : PointSet, S.card ≥ 30 → InGeneralPosition S → ContainsEmptyKGon S 6
 
-/-!
+/-
 ## Part X: Summary
 -/
 

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #372: Descending Largest Prime Factors
 
 **Source:** [erdosproblems.com/372](https://erdosproblems.com/372)
@@ -29,7 +29,7 @@ open Filter
 
 namespace Erdos372
 
-/-! ## Part I: Largest Prime Factor -/
+/- ## Part I: Largest Prime Factor -/
 
 /--
 **Largest Prime Factor:**
@@ -70,7 +70,7 @@ theorem prime_le_largestPrimeFactor {n p : ℕ} (hn : n > 1) (hp : p.Prime) (hdv
   have hmem : p ∈ n.primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hdvd, by omega⟩
   exact Finset.le_max' _ _ hmem
 
-/-! ## Part II: Examples of Largest Prime Factors -/
+/- ## Part II: Examples of Largest Prime Factors -/
 
 /--
 Example: P(6) = 3.
@@ -90,7 +90,7 @@ Example: P(210) = 7.
 -/
 example : P 210 = 7 := by native_decide
 
-/-! ## Part III: The Descending Triplet Property -/
+/- ## Part III: The Descending Triplet Property -/
 
 /--
 **Descending Triple:**
@@ -106,7 +106,7 @@ The set of all n satisfying the descending triplet property.
 def descendingTriples : Set ℕ :=
   {n : ℕ | isDescendingTriple n}
 
-/-! ## Part IV: The Erdős-Pomerance Theorem (Ascending Case) -/
+/- ## Part IV: The Erdős-Pomerance Theorem (Ascending Case) -/
 
 /--
 **Ascending Triple:**
@@ -124,7 +124,7 @@ Axiomatized because the proof uses sieve methods not yet in Mathlib.
 axiom erdos_pomerance_ascending :
     Set.Infinite {n : ℕ | isAscendingTriple n}
 
-/-! ## Part V: Balog's Theorem (2001) -/
+/- ## Part V: Balog's Theorem (2001) -/
 
 /--
 **Balog's Quantitative Result:**
@@ -147,7 +147,7 @@ a divergence argument (c·√x → ∞).
 -/
 axiom balog_descending_infinite : Set.Infinite descendingTriples
 
-/-! ## Part VI: The Density Conjecture -/
+/- ## Part VI: The Density Conjecture -/
 
 /--
 **Balog's Density Conjecture:**
@@ -162,7 +162,7 @@ def balog_density_conjecture : Prop :=
       (Finset.filter (fun n => isDescendingTriple n) (Finset.range (x + 1))).card / x)
       atTop (nhds density)
 
-/-! ## Part VII: Related Properties -/
+/- ## Part VII: Related Properties -/
 
 /--
 **Smooth Numbers:**
@@ -181,7 +181,7 @@ The case k = 3 is solved by Balog; longer chains remain open.
 def longerDescendingChains (k : ℕ) : Prop :=
   k ≥ 3 → Set.Infinite {n : ℕ | ∀ i < k - 1, P (n + i) > P (n + i + 1)}
 
-/-! ## Part VIII: Main Theorem -/
+/- ## Part VIII: Main Theorem -/
 
 /--
 **Main Theorem (Answer to Erdős #372):**
@@ -190,7 +190,7 @@ There are infinitely many n such that P(n) > P(n+1) > P(n+2).
 theorem erdos_372 : Set.Infinite {n : ℕ | P n > P (n + 1) ∧ P (n + 1) > P (n + 2)} :=
   balog_descending_infinite
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #372: SOLVED**

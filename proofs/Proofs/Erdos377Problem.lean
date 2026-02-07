@@ -29,7 +29,7 @@ namespace Erdos377
 open Nat Finset Filter BigOperators
 open scoped Topology
 
-/-! ## The Main Function -/
+/- ## The Main Function -/
 
 /--
 For a natural number n, `sumInvPrimesNotDivCentralBinom n` is the sum of 1/p
@@ -41,7 +41,7 @@ By Kummer's theorem, p divides C(2n,n) iff there's a carry in base-p addition n 
 noncomputable def sumInvPrimesNotDivCentralBinom (n : ℕ) : ℝ :=
   ∑ p ∈ Icc 1 n with p.Prime, if p ∣ n.centralBinom then 0 else (1 : ℝ) / p
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /--
 **Erdős Problem #377 (Open Conjecture)**: Is there an absolute constant C > 0 such that
@@ -60,7 +60,7 @@ theorem erdos_377 : BoundedConjectureHolds ↔
     ∃ C > (0 : ℝ), ∀ (n : ℕ), sumInvPrimesNotDivCentralBinom n ≤ C := by
   rfl
 
-/-! ## Known Results (EGRS 1975) -/
+/- ## Known Results (EGRS 1975) -/
 
 /--
 The constant γ₀ = ∑_{k=2}^∞ log(k)/2^k that appears in the asymptotic behavior.
@@ -109,7 +109,7 @@ This improves the trivial bound from Mertens' theorem which gives c = 1 + o(1).
 axiom egrs_upper_bound : ∃ c < (1 : ℝ),
     ∀ᶠ n in atTop, sumInvPrimesNotDivCentralBinom n ≤ c * (n : ℝ).log.log
 
-/-! ## Understanding the Problem -/
+/- ## Understanding the Problem -/
 
 /--
 By Kummer's theorem, the largest power of prime p dividing C(2n,n) equals
@@ -134,7 +134,7 @@ theorem complementary_sums (n : ℕ) :
     ∑ p ∈ Icc 1 n with p.Prime, (1 : ℝ) / p := by
   sorry -- Straightforward from the definitions
 
-/-! ## Implications -/
+/- ## Implications -/
 
 /--
 A positive answer to Problem #377 would imply that "most" of the prime reciprocal sum

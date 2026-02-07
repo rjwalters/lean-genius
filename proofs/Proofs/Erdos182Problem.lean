@@ -27,7 +27,7 @@ open Finset BigOperators SimpleGraph
 
 namespace Erdos182
 
-/-!
+/-
 ## Core Definitions
 
 Regular subgraphs and the extremal function.
@@ -62,7 +62,7 @@ on n vertices with no k-regular subgraph.
 The placeholder returns n choose 2 (complete graph edges) as a trivial upper bound. -/
 noncomputable def extremalFunction (n _k : ℕ) : ℕ := n.choose 2
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -82,7 +82,7 @@ axiom regular_parity (G : SimpleGraph V) (k : ℕ) (h : IsRegular G k) :
 axiom complete_is_regular (n : ℕ) (hn : 1 ≤ n) :
     IsRegular (⊤ : SimpleGraph (Fin n)) (n - 1)
 
-/-!
+/-
 ## Janzer-Sudakov Theorem (2023)
 
 The main result resolving Erdős's question.
@@ -108,7 +108,7 @@ axiom extremal_upper_bound (k : ℕ) (hk : 3 ≤ k) :
         ¬HasKRegularSubgraph G k →
         (G.edgeFinset.card : ℝ) < C * n * Real.log (Real.log n)
 
-/-!
+/-
 ## Pyber-Rödl-Szemerédi Lower Bound (1995)
 
 The construction showing the Janzer-Sudakov bound is tight.
@@ -132,7 +132,7 @@ axiom extremal_theta (k : ℕ) (hk : 3 ≤ k) :
       c * n * Real.log (Real.log n) ≤ extremalFunction n k ∧
       extremalFunction n k ≤ C * n * Real.log (Real.log n)
 
-/-!
+/-
 ## Special Cases and Variants
 -/
 
@@ -149,7 +149,7 @@ axiom forest_edge_bound (G : SimpleGraph V) [DecidableRel G.Adj] (h : G.IsAcycli
 Every graph with ≥ n/2 edges in each component contains a perfect matching. -/
 axiom k_equals_1_matching : True  -- Placeholder for matching theory
 
-/-!
+/-
 ## Connected Variant
 
 Erdős also asked about connected k-regular subgraphs.
@@ -173,7 +173,7 @@ axiom connected_3_regular_bound :
       (G.edgeFinset.card : ℝ) ≥ C * (n : ℝ)^(5/3 : ℝ) →
       HasConnectedKRegularSubgraph G 3
 
-/-!
+/-
 ## Density and Probabilistic Aspects
 -/
 
@@ -192,7 +192,7 @@ axiom typical_threshold (k : ℕ) (hk : 3 ≤ k) :
       -- For random G(n,m) with m ≥ C·n·log(log n), w.h.p. G has k-regular subgraph
       True  -- Placeholder for probabilistic statement
 
-/-!
+/-
 ## Historical Context
 
 The problem has a rich history connecting extremal graph theory

@@ -31,7 +31,7 @@ namespace Erdos612
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Graph Properties -/
+/- ## Graph Properties -/
 
 /-- The diameter of a connected graph -/
 noncomputable def diameter (G : SimpleGraph V) : ℕ :=
@@ -48,7 +48,7 @@ def IsKFree (G : SimpleGraph V) (r : ℕ) : Prop :=
 /-- Triangle-free is K_3-free -/
 def IsTriangleFree (G : SimpleGraph V) : Prop := IsKFree G 3
 
-/-! ## The Basic Bound -/
+/- ## The Basic Bound -/
 
 /-- The fundamental Erdős-Pach-Pollack-Tuza bound:
     Any connected graph has D ≤ 3n/(d+1) + O(1) -/
@@ -59,7 +59,7 @@ axiom basic_diameter_bound :
     let d := minDegree G
     (diameter G : ℝ) ≤ 3 * n / (d + 1) + C
 
-/-! ## Original Conjecture 1: K_{2r}-free -/
+/- ## Original Conjecture 1: K_{2r}-free -/
 
 /-- The coefficient in the original conjecture for K_{2r}-free graphs -/
 def alpha_2r (r : ℕ) : ℝ :=
@@ -80,7 +80,7 @@ def OriginalConjecture1 (r : ℕ) : Prop :=
     let d := minDegree G
     (diameter G : ℝ) ≤ alpha_2r r * n / d + C
 
-/-! ## Original Conjecture 2: K_{2r+1}-free -/
+/- ## Original Conjecture 2: K_{2r+1}-free -/
 
 /-- The coefficient for K_{2r+1}-free graphs -/
 def alpha_2r1 (r : ℕ) : ℝ :=
@@ -101,7 +101,7 @@ def OriginalConjecture2 (r : ℕ) : Prop :=
     let d := minDegree G
     (diameter G : ℝ) ≤ alpha_2r1 r * n / d + C
 
-/-! ## Counterexamples (Czabarka-Singgih-Székely 2021) -/
+/- ## Counterexamples (Czabarka-Singgih-Székely 2021) -/
 
 /-- The counterexample diameter bound -/
 def counterexample_diameter (r n d : ℕ) : ℝ :=
@@ -122,7 +122,7 @@ theorem original_conjecture1_false (r : ℕ) (hr : r ≥ 2) :
     ¬OriginalConjecture1 r := by
   sorry
 
-/-! ## The Base Case: Triangle-Free (r = 1) -/
+/- ## The Base Case: Triangle-Free (r = 1) -/
 
 /-- For triangle-free graphs (r=1, so K_3-free):
     D ≤ 5n/(2d) + O(1) -/
@@ -138,7 +138,7 @@ axiom triangle_free_diameter :
 theorem conjecture1_base_case : OriginalConjecture1 1 := by
   sorry
 
-/-! ## The Amended Conjecture -/
+/- ## The Amended Conjecture -/
 
 /-- The amended coefficient: (3 - 2/k) for K_{k+1}-free -/
 def amended_alpha (k : ℕ) : ℝ :=
@@ -170,7 +170,7 @@ theorem amended_limit :
     Filter.Tendsto (fun k : ℕ => amended_alpha k) Filter.atTop (nhds 3) := by
   sorry
 
-/-! ## Verified Cases -/
+/- ## Verified Cases -/
 
 /-- k = 3 verified for 3-colorable graphs -/
 axiom amended_k3_colorable :
@@ -192,7 +192,7 @@ axiom amended_k4_colorable :
     let d := minDegree G
     (diameter G : ℝ) ≤ amended_alpha 4 * n / d + C
 
-/-! ## Further Counterexamples -/
+/- ## Further Counterexamples -/
 
 /-- Cambie-Jooken (2025): K_4-free counterexample -/
 axiom cambie_jooken_counterexample :
@@ -202,7 +202,7 @@ axiom cambie_jooken_counterexample :
     ¬(∃ C : ℝ, let n := Fintype.card V; let d := minDegree G;
       (diameter G : ℝ) ≤ amended_alpha 3 * n / d + C)
 
-/-! ## Special Graph Classes -/
+/- ## Special Graph Classes -/
 
 /-- Path graph: D = n-1, d = 1 (extreme case) -/
 theorem path_diameter (n : ℕ) (hn : n ≥ 2) :
@@ -224,7 +224,7 @@ theorem complete_bipartite_diameter (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1) :
     sorry -- diameter = 2
     := by sorry
 
-/-! ## Degree-Diameter Trade-off -/
+/- ## Degree-Diameter Trade-off -/
 
 /-- Higher minimum degree implies smaller diameter (for fixed n) -/
 theorem degree_diameter_tradeoff :
@@ -240,7 +240,7 @@ theorem moore_bound (d D : ℕ) (hd : d ≥ 2) :
     sorry -- n ≤ 1 + d * ((d-1)^D - 1) / (d - 2) for d ≥ 3
     := by sorry
 
-/-! ## Main Problem Status -/
+/- ## Main Problem Status -/
 
 /-- Erdős Problem #612: OPEN (PARTIALLY DISPROVED)
 

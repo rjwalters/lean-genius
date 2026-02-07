@@ -27,7 +27,7 @@ namespace Erdos639
 
 open Finset Function Classical
 
-/-! ## Part I: Complete Graphs and Edge Colorings
+/- ## Part I: Complete Graphs and Edge Colorings
 
 Basic setup for the problem.
 -/
@@ -48,7 +48,7 @@ def EdgeColoring (n : ℕ) := Fin n → Fin n → Bool
 def IsSymmetricColoring {n : ℕ} (c : EdgeColoring n) : Prop :=
   ∀ i j : Fin n, c i j = c j i
 
-/-! ## Part II: Triangles and Monochromatic Structure
+/- ## Part II: Triangles and Monochromatic Structure
 
 Triangles are the central structure.
 -/
@@ -80,7 +80,7 @@ theorem mono_iff_red_or_blue {n : ℕ} (c : EdgeColoring n) (t : Triangle n) :
     IsMonochromatic c t ↔ IsRedTriangle c t ∨ IsBlueTriangle c t := by
   unfold IsMonochromatic IsRedTriangle IsBlueTriangle; aesop
 
-/-! ## Part III: Edges in Monochromatic Triangles
+/- ## Part III: Edges in Monochromatic Triangles
 
 The key property we're measuring.
 -/
@@ -101,7 +101,7 @@ def EdgeNotInMonoTriangle {n : ℕ} (c : EdgeColoring n) (i j : Fin n) : Prop :=
 noncomputable def countEdgesNotInMono {n : ℕ} (c : EdgeColoring n) : ℕ :=
   Nat.card { p : Fin n × Fin n // p.1 < p.2 ∧ EdgeNotInMonoTriangle c p.1 p.2 }
 
-/-! ## Part IV: The Bound n²/4
+/- ## Part IV: The Bound n²/4
 
 The conjectured upper bound.
 -/
@@ -115,7 +115,7 @@ def exactBound (n : ℕ) : ℕ :=
   else if n = 6 then 10
   else n^2 / 4
 
-/-! ## Part V: Small Cases
+/- ## Part V: Small Cases
 
 The behavior differs for small n.
 -/
@@ -138,7 +138,7 @@ axiom case_6 :
 axiom ramsey_3_3 : ∀ c : EdgeColoring 6, IsSymmetricColoring c →
     ∃ t : Triangle 6, IsMonochromatic c t
 
-/-! ## Part VI: The Main Theorem (Keevash-Sudakov)
+/- ## Part VI: The Main Theorem (Keevash-Sudakov)
 
 The complete resolution of Erdős #639.
 -/
@@ -163,7 +163,7 @@ def balancedBipartiteColoring (n : ℕ) : EdgeColoring n :=
 axiom bipartite_achieves_bound (n : ℕ) (hn : n ≥ 7) :
     countEdgesNotInMono (balancedBipartiteColoring n) = n^2 / 4
 
-/-! ## Part VII: Connection to Ramsey Theory
+/- ## Part VII: Connection to Ramsey Theory
 
 This problem is closely related to R(3,3).
 -/
@@ -188,7 +188,7 @@ axiom non_mono_edges_bipartite (n : ℕ) (hn : n ≥ 7)
     -- The edges not in mono triangles can be covered by a bipartite graph
     True
 
-/-! ## Part VIII: Pyber's Covering Result
+/- ## Part VIII: Pyber's Covering Result
 
 A related result on covering edges with mono cliques.
 -/
@@ -211,7 +211,7 @@ axiom erdos_rousseau_schelp_large (ε : ℝ) (hε : ε > 0) :
 axiom keevash_sudakov_complete (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :
     countEdgesNotInMono c ≤ exactBound n
 
-/-! ## Main Problem Status -/
+/- ## Main Problem Status -/
 
 /-- Erdős Problem #639: SOLVED
 

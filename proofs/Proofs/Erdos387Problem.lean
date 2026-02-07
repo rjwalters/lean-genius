@@ -26,7 +26,7 @@ import Mathlib
 
 namespace Erdos387
 
-/-!
+/-
 ## The Schinzel-Erdős Counterexample
 
 Erdős originally conjectured that C(n,k) must always have a divisor in (n-k, n].
@@ -44,7 +44,7 @@ theorem schinzel_counterexample : ∀ i : ℕ, i < 15 → ¬(99215 - i ∣ Nat.c
   intro i hi
   interval_cases i <;> native_decide
 
-/-!
+/-
 ## The Easy Bound
 
 It is straightforward to show that C(n,k) always has a divisor in [n/k, n].
@@ -69,7 +69,7 @@ theorem easy_divisor_bound {n k : ℕ} (hn : 1 ≤ n) (hk : k ≤ n) :
     · cases n <;> cases k <;> simp_all [Nat.add_one_mul_choose_eq]
   · exact Nat.le_of_dvd (by linarith) (Nat.gcd_dvd_right _ _)
 
-/-!
+/-
 ## The Main Open Problem
 
 The central question remains: Does there exist an absolute constant c > 0 such that
@@ -88,7 +88,7 @@ This remains OPEN. We state it as an axiom to enable reasoning about consequence
 axiom erdos_387_conjecture : ∃ c : ℝ, 0 < c ∧
   ∀ n k : ℕ, 1 ≤ k → k < n → ∃ d : ℕ, (d : ℝ) ∈ Set.Ioc (c * n) n ∧ d ∣ Nat.choose n k
 
-/-!
+/-
 ## Related Conjectures
 
 **Schinzel's Conjecture**: For all sufficiently large k that are not prime powers,

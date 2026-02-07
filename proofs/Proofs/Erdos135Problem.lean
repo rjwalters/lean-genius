@@ -45,7 +45,7 @@ open Set Finset Metric Real
 
 namespace Erdos135
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A point in the plane ℝ². -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
@@ -62,7 +62,7 @@ noncomputable def distinctDistances (A : Finset Point) : Finset ℝ :=
 noncomputable def distanceCount (A : Finset Point) : ℕ :=
   (distinctDistances A).card
 
-/-! ## The Four-Point Property -/
+/- ## The Four-Point Property -/
 
 /-- The distances determined by a set of 4 points (all 6 pairwise distances). -/
 noncomputable def fourPointDistances (p₁ p₂ p₃ p₄ : Point) : Finset ℝ :=
@@ -76,7 +76,7 @@ def HasFiveDistanceProperty (A : Finset Point) : Prop :=
     p₁ ≠ p₂ → p₁ ≠ p₃ → p₁ ≠ p₄ → p₂ ≠ p₃ → p₂ ≠ p₄ → p₃ ≠ p₄ →
     (fourPointDistances p₁ p₂ p₃ p₄).card ≥ 5
 
-/-! ## Erdős's Original Conjecture (FALSE) -/
+/- ## Erdős's Original Conjecture (FALSE) -/
 
 /-- Erdős conjectured: If A has the five-distance property, then
     A determines Ω(n²) distinct distances. -/
@@ -87,7 +87,7 @@ def ErdosConjecture135 : Prop :=
 /-- The conjecture is FALSE - Tao disproved it in 2024. -/
 axiom erdos_135_false : ¬ErdosConjecture135
 
-/-! ## Tao's Counterexample (2024) -/
+/- ## Tao's Counterexample (2024) -/
 
 /-- Tao's construction: For sufficiently large n, there exists a set of n points
     with the five-distance property but only O(n²/√(log n)) distinct distances. -/
@@ -104,7 +104,7 @@ axiom tao_counterexample : TaoCounterexample
 /-- Direct consequence: Erdős's conjecture fails. -/
 theorem erdos_135_disproved : ¬ErdosConjecture135 := erdos_135_false
 
-/-! ## Key Lemmas About Distance Configurations -/
+/- ## Key Lemmas About Distance Configurations -/
 
 /-- Four points in general position (no three collinear). -/
 def InGeneralPosition (p₁ p₂ p₃ p₄ : Point) : Prop :=
@@ -163,7 +163,7 @@ axiom tao_avoids_parallelograms :
       p₁ ≠ p₂ → p₁ ≠ p₃ → p₁ ≠ p₄ → p₂ ≠ p₃ → p₂ ≠ p₄ → p₃ ≠ p₄ →
       ¬IsParallelogram p₁ p₂ p₃ p₄
 
-/-! ## Forbidden Four-Point Patterns -/
+/- ## Forbidden Four-Point Patterns -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -202,7 +202,7 @@ theorem parallelogram_forbidden (p₁ p₂ p₃ p₄ : Point) (h : IsParallelogr
   have h3 := parallelogram_few_distances p₁ p₂ p₃ p₄ h ⟨hdist.1, hdist.2.1, hdist.2.2.1⟩
   omega
 
-/-! ## The Algebraic Construction -/
+/- ## The Algebraic Construction -/
 
 /-- Points on a parabola in ℤₚ² (conceptually). -/
 structure ParabolaParams where
@@ -233,7 +233,7 @@ Unexpected axioms were added during verification: ['harmonicSorry556542', 'rando
 /-- The randomized approach works (Tao 2024). -/
 axiom randomized_parabola_works : RandomizedParabolaApproach
 
-/-! ## Comparison with Erdős-Ko-Rado Type Bounds -/
+/- ## Comparison with Erdős-Ko-Rado Type Bounds -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -299,7 +299,7 @@ theorem tao_optimal_up_to_log :
   obtain ⟨C, hC, htao⟩ := tao_counterexample
   exact ⟨c, C, hc, hC, hbound, htao⟩
 
-/-! ## Examples: Configurations with Few Distances -/
+/- ## Examples: Configurations with Few Distances -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -353,7 +353,7 @@ Note: Expected a function because this term is being applied to the argument
 example : ∃ p₁ p₂ p₃ p₄ : Point, (fourPointDistances p₁ p₂ p₃ p₄).card = 6 := by
   sorry
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: DISPROVED**
 

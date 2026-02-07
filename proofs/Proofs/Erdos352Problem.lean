@@ -40,7 +40,7 @@ namespace Erdos352
 
 open MeasureTheory Set
 
-/-! ## Triangle Area in ℝ²
+/- ## Triangle Area in ℝ²
 
 The area of a triangle with vertices p, q, r in ℝ² is given by:
   Area = (1/2)|det([q-p, r-p])| = (1/2)|((q-p)×(r-p))|
@@ -60,7 +60,7 @@ noncomputable def signedTriangleArea (p q r : ℝ × ℝ) : ℝ :=
 /-- The (unsigned) area of a triangle with vertices p, q, r. -/
 noncomputable def triangleArea (p q r : ℝ × ℝ) : ℝ := |signedTriangleArea p q r|
 
-/-! ## Basic Properties of Triangle Area -/
+/- ## Basic Properties of Triangle Area -/
 
 /-- Cross product is antisymmetric. -/
 theorem cross2D_antisymm (u v : ℝ × ℝ) : cross2D u v = -cross2D v u := by
@@ -75,7 +75,7 @@ axiom triangleArea_perm (p q r : ℝ × ℝ) : triangleArea p q r = triangleArea
 axiom triangleArea_collinear (p q r : ℝ × ℝ) (h : ∃ t : ℝ, r = p + t • (q - p)) :
   triangleArea p q r = 0
 
-/-! ## The Main Property
+/- ## The Main Property
 
 A set A ⊆ ℝ² "contains a unit triangle" if there exist three points in A
 forming a triangle of area exactly 1. -/
@@ -87,7 +87,7 @@ def ContainsTriangleOfArea (A : Set (ℝ × ℝ)) (a : ℝ) : Prop :=
 /-- A set contains a unit triangle (area = 1). -/
 def ContainsUnitTriangle (A : Set (ℝ × ℝ)) : Prop := ContainsTriangleOfArea A 1
 
-/-! ## The Main Question -/
+/- ## The Main Question -/
 
 /-- **Erdős Problem #352 (OPEN)**:
 
@@ -105,7 +105,7 @@ def erdos_352_statement : Prop :=
     ∀ A : Set (ℝ × ℝ), MeasurableSet A →
       volume A ≥ ENNReal.ofReal c → ContainsUnitTriangle A
 
-/-! ## The Conjectured Constant
+/- ## The Conjectured Constant
 
 Erdős conjectured c = 4π/√27 ≈ 2.418, witnessed by a circle of radius < 2·3^{-3/4}.
 -/
@@ -133,7 +133,7 @@ def erdos_352_optimal : Prop :=
     volume A ≥ ENNReal.ofReal (erdosConstant - ε) ∧
     ¬ContainsUnitTriangle A
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Erdős (unpublished)**: Sets of infinite measure contain unit triangles.
 Follows from the Lebesgue density theorem. -/
@@ -160,7 +160,7 @@ axiom conjecture_for_compact_convex (A : Set (ℝ × ℝ))
     (hm : volume A ≥ ENNReal.ofReal erdosConstant) :
   ContainsUnitTriangle A
 
-/-! ## The Witness: Critical Circle
+/- ## The Witness: Critical Circle
 
 A circle of radius r = 2·3^{-3/4} has area exactly 4π/√27 but the largest
 inscribed triangle is equilateral with area 3√3/4·r² = √3·3^{-1/2} < 1.
@@ -190,7 +190,7 @@ theorem critical_circle_no_unit_triangle :
   -- Actually, need to be more careful about the strict inequality
   sorry
 
-/-! ## Reduction to Finite Unions
+/- ## Reduction to Finite Unions
 
 Mauldin noted the problem reduces to showing the result for
 unions of finitely many compact convex interiors. -/
@@ -214,7 +214,7 @@ axiom conjecture_for_three_convex (K₁ K₂ K₃ : Set (ℝ × ℝ))
     (hm : volume A ≥ ENNReal.ofReal erdosConstant) :
   ContainsUnitTriangle A
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #352 Summary**:
 

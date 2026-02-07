@@ -36,7 +36,7 @@ open Nat Finset
 
 namespace Erdos367
 
-/-!
+/-
 # Part 1: The 2-Full Part
 
 The 2-full part B₂(n) captures prime powers p² and higher in
@@ -71,7 +71,7 @@ noncomputable def twoFullPartAlt (n : ℕ) : ℕ :=
   ∏ p ∈ n.primeFactors.filter (fun p => n.factorization p ≥ 2),
     p ^ (n.factorization p)
 
-/-!
+/-
 # Part 2: Product over Consecutive Integers
 
 The main object of study: the product of 2-full parts over k
@@ -86,7 +86,7 @@ consecutive integers starting at n.
 noncomputable def productTwoFullParts (n k : ℕ) : ℕ :=
   ∏ m ∈ Finset.Ico n (n + k), twoFullPart m
 
-/-!
+/-
 # Part 3: The Bounds
 
 Two versions of the bound: weak (n^{2+ε}) and strong (n²).
@@ -110,7 +110,7 @@ def strongBound (k : ℕ) : Prop :=
   ∃ C : ℝ, C > 0 ∧
     ∀ n ≥ 1, (productTwoFullParts n k : ℝ) ≤ C * (n : ℝ) ^ 2
 
-/-!
+/-
 # Part 4: The Erdős Conjecture
 
 The main open question: does the weak bound hold for all k?
@@ -126,7 +126,7 @@ That is, for every fixed k, is ∏_{n ≤ m < n+k} B₂(m) ≪ n^{2+o(1)}?
 def erdos_367_conjecture : Prop :=
   ∀ k : ℕ, k ≥ 1 → weakBound k
 
-/-!
+/-
 # Part 5: Known Results — Trivial Cases
 
 For k ≤ 2, the strong bound holds because B₂(n) ≤ n.
@@ -146,7 +146,7 @@ B₂(n) · B₂(n+1) ≤ n · (n+1) < 2n², so strongBound(2) holds.
 -/
 axiom strong_bound_k2 : strongBound 2
 
-/-!
+/-
 # Part 6: Known Results — Failure of Strong Bound
 
 van Doorn showed the strong bound fails for k ≥ 3.
@@ -170,7 +170,7 @@ axiom van_doorn_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, ∃ n ≥ N,
       (productTwoFullParts n 3 : ℝ) ≥ c * (n : ℝ) ^ 2 * Real.log n
 
-/-!
+/-
 # Part 7: Properties of the 2-Full Part
 
 Basic properties of B₂(n) needed for the analysis.
@@ -220,7 +220,7 @@ The 2-full part always divides n.
 -/
 axiom twoFullPart_dvd (n : ℕ) : twoFullPart n ∣ n
 
-/-!
+/-
 # Part 8: Generalization to r-Full Parts
 
 The problem generalizes to r-full parts for r ≥ 3.
@@ -253,7 +253,7 @@ def generalizedConjecture (r k : ℕ) : Prop :=
     ∀ n ≥ 1, (∏ m ∈ Finset.Ico n (n + k), rFullPart r m : ℝ) ≤
       C * (n : ℝ) ^ (r + ε)
 
-/-!
+/-
 # Part 9: Heuristic Analysis
 
 The average behavior of B₂(n) and why the problem is subtle.
@@ -270,7 +270,7 @@ axiom average_twoFullPart_bounded :
     ∃ C : ℝ, C > 0 ∧ ∀ N ≥ 1,
       (∑ n ∈ Finset.Icc 1 N, (twoFullPart n : ℝ)) / N ≤ C
 
-/-!
+/-
 # Part 10: Summary
 -/
 

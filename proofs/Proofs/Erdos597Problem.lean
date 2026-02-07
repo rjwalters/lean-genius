@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #597: Partition Relations for Ordinal Powers
 
 Let G be a graph on at most ℵ₁ vertices containing no K₄ and no K_{ℵ₀,ℵ₀}.
@@ -29,7 +29,7 @@ import Mathlib.Data.Set.Basic
 
 namespace Erdos597
 
-/-! ## Ordinal Notation -/
+/- ## Ordinal Notation -/
 
 /-- The first uncountable ordinal ω₁, axiomatized with the defining property
 that it is uncountable but every smaller ordinal is countable. -/
@@ -55,7 +55,7 @@ axiom omega_1_squared : Ordinal
 /-- ω₁² is defined as ordinal exponentiation. -/
 axiom omega_1_squared_def : omega_1_squared = omega_1 * omega_1
 
-/-! ## Graph Structures -/
+/- ## Graph Structures -/
 
 /-- A simple graph on a type α: a symmetric irreflexive relation on vertices. -/
 structure SimpleGraph' (α : Type*) where
@@ -90,7 +90,7 @@ def isKAleph0Free (α : Type*) (G : SimpleGraph' α) : Prop :=
 def hasAtMostAleph1Vertices (α : Type*) : Prop :=
   Cardinal.mk α ≤ Cardinal.aleph 1
 
-/-! ## Partition Arrow Notation -/
+/- ## Partition Arrow Notation -/
 
 /-- The partition relation α → (β, γ)² for ordinals with a graph target:
 for any 2-coloring of pairs from a set of order type α, either
@@ -101,7 +101,7 @@ This is axiomatized as the full definition requires substantial
 infrastructure for order types and graph embeddings. -/
 axiom partitionArrow (α β : Ordinal) (γ : Type*) : Prop
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- **Erdős Problem #597**: The main conjecture.
 For any graph G with at most ℵ₁ vertices, no K₄, and no K_{ℵ₀,ℵ₀}:
@@ -122,7 +122,7 @@ def finiteCaseConjecture : Prop :=
     isK4Free α G →
     partitionArrow omega_1_squared omega_1_times_omega α
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Erdős-Hajnal Theorem** (positive result):
 ω₁² → (ω₁ω, 3)². For any 2-coloring of pairs from ω₁², there exists
@@ -140,7 +140,7 @@ axiom baumgartnerCounterexample :
       Cardinal.mk β = Cardinal.aleph 0 ∧
       ¬ partitionArrow omega_1_squared omega_1_times_omega (β × β)
 
-/-! ## Why Both Conditions Are Needed
+/- ## Why Both Conditions Are Needed
 
 Erdős originally posed the question with only the K₄-free assumption.
 Baumgartner showed this is insufficient: K_{ℵ₀,ℵ₀} is K₄-free (it is
@@ -153,7 +153,7 @@ The two conditions play complementary roles:
 
 Both are needed for the partition relation to have any hope of holding. -/
 
-/-! ## Partition Calculus Background
+/- ## Partition Calculus Background
 
 The partition arrow notation was introduced by Erdős and Rado.
 The **Erdős-Rado theorem** gives foundational bounds:
@@ -163,14 +163,14 @@ The **Erdős-Rado theorem** gives foundational bounds:
 from smaller ones. **Negative relations** are typically established
 by explicit counterexample colorings, as in Baumgartner's result. -/
 
-/-! ## Set-Theoretic Context
+/- ## Set-Theoretic Context
 
 Some partition relations are sensitive to set-theoretic axioms.
 The role of ℵ₁ is special: many partition relations change behavior
 at this cardinal. Problem #597 may have different answers under
 different assumptions (e.g., CH, Martin's Axiom, or large cardinals). -/
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Summary of known results for Erdős Problem #597.**
 We combine the two established partial results:

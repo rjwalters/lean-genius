@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #82: Regular Induced Subgraphs
 
 **Problem Statement (OPEN)**
@@ -36,7 +36,7 @@ open Nat Filter
 
 namespace Erdos82
 
-/-!
+/-
 # Part 1: Regular Graphs
 
 A graph is k-regular if every vertex has degree exactly k.
@@ -62,7 +62,7 @@ def IsRegularGraph {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   ∃ k : ℕ, IsRegular G k
 
-/-!
+/-
 # Part 2: Induced Subgraphs
 
 An induced subgraph G[S] is determined by a vertex subset S ⊆ V,
@@ -82,7 +82,7 @@ def inducedSubgraph {V : Type*} [Fintype V] [DecidableEq V]
   symm := fun u v h => G.symm h
   loopless := fun u h => G.loopless u.val h
 
-/-!
+/-
 # Part 3: Regular Induced Subgraph Size
 
 The key function F(n) measuring the largest guaranteed regular
@@ -112,7 +112,7 @@ noncomputable def F (n : ℕ) : ℕ :=
   sSup {m : ℕ | ∀ (V : Type) [Fintype V] [DecidableEq V] (_ : Fintype.card V = n)
     (G : SimpleGraph V) [DecidableRel G.Adj], HasRegularInduced G m}
 
-/-!
+/-
 # Part 4: Trivial Lower Bound
 
 Every graph has a regular induced subgraph: any single vertex
@@ -140,7 +140,7 @@ axiom clique_is_regular :
     (∀ (u v : S), u ≠ v → G.Adj u.val v.val) →
     ∃ k, ∀ (v : S), (inducedSubgraph G S).degree v = k
 
-/-!
+/-
 # Part 5: Ramsey-Theoretic Lower Bound
 
 The Ramsey number R(k,k) guarantees that any graph on R(k,k)
@@ -182,7 +182,7 @@ This is the baseline that Problem #82 asks us to improve upon.
 axiom F_ramsey_lower (n : ℕ) (hn : n ≥ 2) :
     F n ≥ Nat.log 2 n / 2
 
-/-!
+/-
 # Part 6: Alon-Krivelevich-Sudakov Upper Bound
 
 The 2007 result providing the best known upper bound for F(n).
@@ -204,7 +204,7 @@ axiom aks_upper_bound :
     ∀ (n : ℕ), n ≥ 2 →
     (F n : ℝ) ≤ C * (n : ℝ) ^ (1/2 : ℝ) * (Real.log n) ^ C'
 
-/-!
+/-
 # Part 7: Small Values and Computations
 
 Exact values of F(n) for small n, and the inverse function G(k).
@@ -241,7 +241,7 @@ axiom F_small_values :
     F 1 = 1 ∧ F 2 = 2 ∧ F 3 = 2 ∧ F 4 = 3 ∧ F 5 = 3 ∧
     F 7 = 4 ∧ F 10 = 4 ∧ F 12 = 5
 
-/-!
+/-
 # Part 8: The Erdős Conjecture
 
 The central question: does F(n) grow strictly faster than log(n)?
@@ -273,7 +273,7 @@ def erdos_82_explicit : Prop :=
   ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
     (F n : ℝ) ≥ C * Real.log n
 
-/-!
+/-
 # Part 9: Related Results and Connections
 
 Context within graph theory and Erdős's other problems.
@@ -317,7 +317,7 @@ axiom random_graph_regular :
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
     (F n : ℝ) ≥ (2 - ε) * Real.log n / Real.log 2
 
-/-!
+/-
 # Part 10: Problem Status and Summary
 -/
 
@@ -328,7 +328,7 @@ theorem erdos_82_bounds_summary :
       ∀ n : ℕ, n ≥ 2 → (F n : ℝ) ≤ C * (n : ℝ) ^ (1/2 : ℝ) * (Real.log n) ^ C') := by
   exact ⟨F_ramsey_lower, aks_upper_bound⟩
 
-/-!
+/-
 # Summary
 
 **Problem:** F(n)/log(n) → ∞ where F(n) = max regular induced subgraph size?

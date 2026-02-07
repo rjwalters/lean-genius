@@ -28,7 +28,7 @@ namespace Erdos956
 
 open Set Metric Finset
 
-/-!
+/-
 ## Part I: Distance Between Sets
 
 The fundamental distance notion.
@@ -57,7 +57,7 @@ theorem setDistance_eq_zero_iff {X : Type*} [PseudoMetricSpace X] (C D : Set X)
     δ C D = 0 ↔ (closure C ∩ closure D).Nonempty := by
   sorry
 
-/-!
+/-
 ## Part II: Convex Sets and Translates
 
 The geometric objects of interest.
@@ -88,7 +88,7 @@ theorem translate_compact (C : CompactConvex) (x : EuclideanSpace ℝ (Fin 2)) :
     IsCompact (C.carrier +ₛ x) := by
   sorry
 
-/-!
+/-
 ## Part III: Disjoint Translates Configuration
 
 The setup for the problem.
@@ -112,7 +112,7 @@ noncomputable def unitDistanceCount (config : DisjointTranslates n) : ℕ :=
     (Finset.univ : Finset (Fin n)).filter (fun j => i < j ∧ HasUnitDistance config i j)
     |>.card > 0)).card
 
-/-!
+/-
 ## Part IV: The Function h(n)
 
 The extremal function.
@@ -129,7 +129,7 @@ theorem h_mono (n m : ℕ) (hnm : n ≤ m) : h n ≤ h m := by
 /-- Trivial lower bound: h(n) ≥ 0. -/
 theorem h_nonneg (n : ℕ) : h n ≥ 0 := Nat.zero_le _
 
-/-!
+/-
 ## Part V: Connection to Unit Distance Problem
 
 h(n) relates to the classical unit distance function.
@@ -156,7 +156,7 @@ axiom f_upper_bound (n : ℕ) (hn : n ≥ 2) :
 axiom f_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 10 → (f n : ℝ) ≥ n^(1 + c / 2)
 
-/-!
+/-
 ## Part VI: Erdős-Pach Upper Bound (1990)
 
 The best known upper bound.
@@ -169,7 +169,7 @@ axiom erdos_pach_upper_bound (n : ℕ) (hn : n ≥ 2) :
 /-- The upper bound exponent is 4/3. -/
 def upper_exponent : ℝ := 4/3
 
-/-!
+/-
 ## Part VII: General Convex Sets (Non-Translates)
 
 A related problem with weaker structure.
@@ -201,7 +201,7 @@ theorem h_le_h_general (n : ℕ) : h n ≤ h_general n := by
 /-- The general exponent is 7/5 > 4/3. -/
 theorem general_exponent_larger : (7 : ℝ)/5 > 4/3 := by norm_num
 
-/-!
+/-
 ## Part VIII: The Conjecture
 
 The main open question.
@@ -220,7 +220,7 @@ theorem conjecture_from_f : (∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 10 → (f
     ErdosPachConjecture := by
   sorry
 
-/-!
+/-
 ## Part IX: Known Constructions
 
 Lower bound examples.
@@ -234,7 +234,7 @@ axiom lattice_construction (n : ℕ) (hn : n ≥ 4) :
 axiom grid_construction (n : ℕ) (hn : n ≥ 10) :
     (h n : ℝ) ≥ n * Real.log n / Real.log (Real.log n)
 
-/-!
+/-
 ## Part X: Connections to Incidence Geometry
 
 The crossing number and incidence bounds.
@@ -250,7 +250,7 @@ axiom upper_bound_uses_incidences :
     -- The proof of h(n) ≪ n^(4/3) uses Szemerédi-Trotter
     True
 
-/-!
+/-
 ## Part XI: Special Cases
 
 Specific convex sets.
@@ -266,7 +266,7 @@ theorem disk_case (n : ℕ) : ∃ C : CompactConvex,
 axiom segment_case (n : ℕ) (hn : n ≥ 2) :
     ∃ config : DisjointTranslates n, unitDistanceCount config ≥ 2 * (n - 1)
 
-/-!
+/-
 ## Part XII: Main Results
 
 Summary of Erdős Problem #956.

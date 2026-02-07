@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #503: Maximum Isosceles Sets in Rⁿ
 
 **Source:** [erdosproblems.com/503](https://erdosproblems.com/503)
@@ -30,7 +30,7 @@ import Mathlib.Tactic
 
 namespace Erdos503
 
-/-! ## Part I: Isosceles Sets -/
+/- ## Part I: Isosceles Sets -/
 
 /--
 A finite set A of points in ℝⁿ (represented abstractly) is isosceles
@@ -47,7 +47,7 @@ The maximum isosceles set size in dimension n.
 -/
 def maxIsoscelesSize (n : ℕ) : ℕ := sorry
 
-/-! ## Part II: Exact Results for Small Dimensions -/
+/- ## Part II: Exact Results for Small Dimensions -/
 
 /--
 **Kelly's Theorem [ErKe47]:**
@@ -62,7 +62,7 @@ The maximum isosceles set in ℝ³ has size 8.
 -/
 axiom croft_R3 : maxIsoscelesSize 3 = 8
 
-/-! ## Part III: General Bounds -/
+/- ## Part III: General Bounds -/
 
 /--
 **Blokhuis Upper Bound [Bl84]:**
@@ -87,7 +87,7 @@ giving a lower bound of C(n+1, 2) + 1.
 axiom weisenberg_improvement :
   ∀ n : ℕ, n ≥ 2 → Nat.choose (n + 1) 2 + 1 ≤ maxIsoscelesSize n
 
-/-! ## Part IV: The Gap -/
+/- ## Part IV: The Gap -/
 
 /--
 **The remaining gap:**
@@ -112,7 +112,7 @@ C(4, 2) + 1 = 7 ≤ 8 ≤ C(5, 2) = 10.
 -/
 example : Nat.choose 4 2 + 1 ≤ 8 ∧ 8 ≤ Nat.choose 5 2 := by norm_num
 
-/-! ## Part V: Summary -/
+/- ## Part V: Summary -/
 
 /--
 **Summary:**

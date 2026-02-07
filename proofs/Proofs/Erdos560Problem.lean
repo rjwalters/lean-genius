@@ -39,7 +39,7 @@ open SimpleGraph
 
 namespace Erdos560
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -75,7 +75,7 @@ Number of edges in K_{n,n} is n^2.
 axiom completeBipartite_edgeCount (n : ℕ) (hn : n > 0) :
     (K[n,n]).edgeFinset.card = n * n
 
-/-!
+/-
 ## Part II: Size Ramsey Numbers
 -/
 
@@ -118,7 +118,7 @@ noncomputable def sizeRamseyNumber (G : SimpleGraph W) : ℕ :=
 
 notation "R̂(" G ")" => sizeRamseyNumber G
 
-/-!
+/-
 ## Part III: Known Bounds
 -/
 
@@ -146,7 +146,7 @@ theorem size_ramsey_bounds (n : ℕ) (hn : n ≥ 6) :
   · exact erdos_rousseau_lower_bound n hn
   · exact upper_bound n (by omega)
 
-/-!
+/-
 ## Part IV: Conlon-Fox-Wigderson Results (2023)
 -/
 
@@ -180,7 +180,7 @@ axiom cfw_conjecture :
     c * (n : ℝ)^3 * (2 : ℝ)^n ≤ (R̂(K[n,n]) : ℝ) ∧
     (R̂(K[n,n]) : ℝ) ≤ C * (n : ℝ)^3 * (2 : ℝ)^n
 
-/-!
+/-
 ## Part V: Basic Properties
 -/
 
@@ -207,7 +207,7 @@ For paths P_n, the size Ramsey number is linear in n.
 axiom size_ramsey_path_linear (n : ℕ) (hn : n ≥ 2) :
     ∃ C : ℝ, C > 0 ∧ (R̂(SimpleGraph.pathGraph n) : ℝ) ≤ C * n
 
-/-!
+/-
 ## Part VI: Related Concepts
 -/
 
@@ -235,7 +235,7 @@ Classical Ramsey number for complete bipartite graphs grows doubly exponentially
 axiom classical_ramsey_bipartite (n : ℕ) (hn : n ≥ 1) :
     ∃ C : ℝ, C > 0 ∧ (R(K[n,n]) : ℝ) ≤ C * (2 : ℝ)^(2^n)
 
-/-!
+/-
 ## Part VII: Gap Between Bounds
 -/
 
@@ -265,7 +265,7 @@ axiom cfw_implies_tight_lower (n : ℕ) (hn : n ≥ 1) :
 axiom thetaNotation {α : Type*} [Preorder α] (f : α → ℝ) : α → ℝ
 notation:50 f " = Θ(" g ")" => f = thetaNotation g
 
-/-!
+/-
 ## Part VIII: Main Results Summary
 -/
 

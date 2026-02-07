@@ -38,7 +38,7 @@ open Finset
 
 namespace Erdos172
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A **coloring** of ℕ with k colors. -/
 def Coloring (k : ℕ) := ℕ → Fin k
@@ -56,7 +56,7 @@ def IsPairwiseMonochromatic {k : ℕ} (c : Coloring k) (A : Finset ℕ) (c₀ : 
   (∀ a ∈ A, ∀ b ∈ A, a ≠ b → c (a + b) = c₀) ∧
   (∀ a ∈ A, ∀ b ∈ A, a ≠ b → c (a * b) = c₀)
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- **Erdős Problem #172** (OPEN): In any finite coloring of ℕ, there exist
     arbitrarily large monochromatic sum-product sets.
@@ -71,7 +71,7 @@ def Erdos172Conjecture : Prop :=
 theorem erdos_172_undecided : Erdos172Conjecture ∨ ¬Erdos172Conjecture :=
   Classical.em Erdos172Conjecture
 
-/-! ## Known Positive Results -/
+/- ## Known Positive Results -/
 
 /-- **Moreira (2017)**: In any finite coloring, there exist x, y such that
     {x, x+y, xy} are all the same color.
@@ -96,7 +96,7 @@ axiom alweiss_2023_rationals :
       ∃ c₀, ∀ S : Finset ℚ, S ⊆ A → S.Nonempty →
         c (S.sum id) = c₀ ∧ c (S.prod id) = c₀
 
-/-! ## Known Negative Results -/
+/- ## Known Negative Results -/
 
 /-- **Hindman (1980)**: The conjecture fails for INFINITE A.
 
@@ -107,7 +107,7 @@ axiom hindman_1980_counterexample :
     ¬∃ c₀, ∀ (S : Finset ℕ), (↑S : Set ℕ) ⊆ A → S.Nonempty →
       c (S.sum id) = c₀ ∧ c (S.prod id) = c₀
 
-/-! ## Simpler Variants -/
+/- ## Simpler Variants -/
 
 /-- The sum-only version (Schur's theorem style): monochromatic sums exist. -/
 def SumMonochromatic {k : ℕ} (c : Coloring k) (A : Finset ℕ) (c₀ : Fin k) : Prop :=
@@ -125,7 +125,7 @@ theorem sum_product_implies_both {k : ℕ} {c : Coloring k} {A : Finset ℕ} {c�
   · intro S hS hne; exact (h S hS hne).1
   · intro S hS hne; exact (h S hS hne).2
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- Any singleton is trivially sum-product monochromatic. -/
 theorem singleton_monochromatic {k : ℕ} (c : Coloring k) (n : ℕ) :

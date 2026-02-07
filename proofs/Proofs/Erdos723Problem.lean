@@ -22,7 +22,7 @@ open Configuration
 
 namespace Erdos723
 
-/-! ## Background on Projective Planes
+/- ## Background on Projective Planes
 
 A finite projective plane of order n has:
 - n² + n + 1 points
@@ -35,7 +35,7 @@ A finite projective plane of order n has:
 The Mathlib type `Configuration.ProjectivePlane P L` captures these axioms.
 -/
 
-/-! ## The Main Conjecture (Open) -/
+/- ## The Main Conjecture (Open) -/
 
 /--
 **Erdős Problem #723** (The Prime Power Conjecture):
@@ -59,7 +59,7 @@ def PrimePowerConjecture : Prop :=
   ∀ {P L : Type*} [Membership P L] [Fintype P] [Fintype L],
     ∀ pp : ProjectivePlane P L, IsPrimePow pp.order
 
-/-! ## Existence for Prime Power Orders (Solved) -/
+/- ## Existence for Prime Power Orders (Solved) -/
 
 /--
 **Classical Result**: Projective planes exist for every prime power order.
@@ -73,7 +73,7 @@ axiom prime_power_planes_exist :
     ∃ (P L : Type*) (_ : Membership P L) (_ : Fintype P) (_ : Fintype L)
       (pp : ProjectivePlane P L), pp.order = n
 
-/-! ## Verified for Small Orders -/
+/- ## Verified for Small Orders -/
 
 /--
 The Prime Power Conjecture has been verified for all orders n ≤ 11.
@@ -86,7 +86,7 @@ axiom verified_up_to_11 :
     ∀ {P L : Type*} [Membership P L] [Fintype P] [Fintype L],
     ∀ pp : ProjectivePlane P L, pp.order ≤ 11 → IsPrimePow pp.order
 
-/-! ## The Bruck-Ryser Theorem -/
+/- ## The Bruck-Ryser Theorem -/
 
 /--
 **Bruck-Ryser Theorem (1949)**: If a projective plane of order n exists,
@@ -103,7 +103,7 @@ axiom bruck_ryser :
     ∀ (n : ℕ) (pp : ProjectivePlane P L), pp.order = n →
     (n % 4 = 1 ∨ n % 4 = 2) → ∃ a b : ℕ, n = a^2 + b^2
 
-/-! ## The Lam Result for Order 10 -/
+/- ## The Lam Result for Order 10 -/
 
 /--
 **Lam's Theorem (1997)**: There is no projective plane of order 10.
@@ -118,7 +118,7 @@ axiom lam_order_10 :
     ¬∃ (P L : Type*) (_ : Membership P L) (_ : Fintype P) (_ : Fintype L)
       (pp : ProjectivePlane P L), pp.order = 10
 
-/-! ## Order 12 Remains Open -/
+/- ## Order 12 Remains Open -/
 
 /--
 It is an open problem whether a projective plane of order 12 exists.
@@ -128,7 +128,7 @@ has been successful for order 12, and no theoretical obstruction is known.
 -/
 axiom order_12_open : True  -- Existence of order 12 plane is open
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- A projective plane of order n has n² + n + 1 points -/
 theorem plane_points (P L : Type*) [Membership P L] [Fintype P] [Fintype L]
@@ -140,7 +140,7 @@ theorem plane_lines (P L : Type*) [Membership P L] [Fintype P] [Fintype L]
     (pp : ProjectivePlane P L) : Fintype.card L = pp.order^2 + pp.order + 1 :=
   pp.card_lines
 
-/-! ## Examples of Small Orders -/
+/- ## Examples of Small Orders -/
 
 /-- Order 1 plane exists (trivial: 3 points, 3 lines) -/
 theorem order_1_is_prime_power : IsPrimePow 1 := by decide
@@ -168,7 +168,7 @@ theorem order_10_not_prime_power : ¬IsPrimePow 10 := by decide
 /-- 12 is not a prime power -/
 theorem order_12_not_prime_power : ¬IsPrimePow 12 := by decide
 
-/-! ## Bruck-Ryser Applications -/
+/- ## Bruck-Ryser Applications -/
 
 /-- 6 ≡ 2 (mod 4) -/
 theorem six_mod_4 : 6 % 4 = 2 := by decide

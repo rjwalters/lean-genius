@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 129: Ramsey Numbers Avoiding Monochromatic Cliques
 
 Let `R(n; k, r)` denote the smallest `N` such that if the edges of `K_N` are
@@ -20,7 +20,7 @@ import Mathlib.Tactic
 
 open Finset
 
-/-! ## Edge coloring and monochromatic clique avoidance -/
+/- ## Edge coloring and monochromatic clique avoidance -/
 
 /-- An `r`-coloring of edges of the complete graph on `Fin N`. -/
 def EdgeColoring (N : ℕ) (r : ℕ) : Type :=
@@ -45,7 +45,7 @@ def HasRamseyAvoid (N n k r : ℕ) : Prop :=
     ∀ coloring : EdgeColoring N r,
       ∃ S : Finset (Fin N), S.card ≥ n ∧ NoMonoClique N r coloring S k
 
-/-! ## Main conjecture: exponential bounds -/
+/- ## Main conjecture: exponential bounds -/
 
 /-- The Erdős–Gyárfás conjecture for general `k`: there exist `C₁, C₂ > 1` such that
 `C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}}` for all sufficiently large `n`. -/
@@ -64,7 +64,7 @@ def ErdosProblem129_k3 (r : ℕ) : Prop :=
     ∃ (C : ℝ), 1 < C ∧ ∀ᶠ n in Filter.atTop,
       ∃ M : ℕ, HasRamseyAvoid M n 3 r ∧ (M : ℝ) < C ^ Real.sqrt n
 
-/-! ## Known results -/
+/- ## Known results -/
 
 /-- Erdős–Gyárfás lower bound for `k = 3`: `R(n;3,r) > C^{√n}` for some `C > 1`.
 That is, for large `n`, no `N < C^{√n}` satisfies `HasRamseyAvoid N n 3 r`. -/
@@ -72,7 +72,7 @@ axiom erdos_gyarfas_lower_bound (r : ℕ) (hr : 2 ≤ r) :
     ∃ (C : ℝ), 1 < C ∧ ∀ᶠ n in Filter.atTop,
       ∀ N : ℕ, (N : ℝ) < C ^ Real.sqrt n → ¬HasRamseyAvoid N n 3 r
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- Monotonicity: if `HasRamseyAvoid N n k r`, then `HasRamseyAvoid M n k r`
 for any `M ≥ N`. More vertices only makes it easier to find a large independent set. -/

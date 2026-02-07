@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #561: Size Ramsey Numbers for Unions of Stars
 
 Source: https://erdosproblems.com/561
@@ -32,7 +32,7 @@ open Nat SimpleGraph Finset
 
 namespace Erdos561
 
-/-!
+/-
 ## Part I: Star Graphs
 -/
 
@@ -52,7 +52,7 @@ def Star.vertexCount (s : Star) : ℕ := s.leaves + 1
 /-- **Example: K_{1,3} (claw graph)** -/
 def claw : Star := ⟨3, by omega⟩
 
-/-!
+/-
 ## Part II: Unions of Stars
 -/
 
@@ -75,7 +75,7 @@ def StarUnion.totalVertices (F : StarUnion) : ℕ :=
 /-- **Example: F = K_{1,2} ∪ K_{1,3}** -/
 def exampleUnion : StarUnion := ⟨[2, 3], by simp⟩
 
-/-!
+/-
 ## Part III: Graph Colorings and Ramsey Theory
 -/
 
@@ -97,7 +97,7 @@ def hasRamseyProperty (V : Type*) (H : SimpleGraph V) (F₁ F₂ : StarUnion) : 
   ∀ c : EdgeColoring V H,
     hasMonochromaticCopy V H F₁ c ∨ hasMonochromaticCopy V H F₂ c
 
-/-!
+/-
 ## Part IV: Size Ramsey Numbers
 -/
 
@@ -113,7 +113,7 @@ axiom sizeRamseyNumber_exists (F₁ F₂ : StarUnion) :
     ∃ V : Type*, ∃ H : SimpleGraph V, [Fintype V] →
       hasRamseyProperty V H F₁ F₂
 
-/-!
+/-
 ## Part V: The Conjectured Formula
 -/
 
@@ -146,7 +146,7 @@ R̂(F₁, F₂) equals the conjectured formula. -/
 def erdosConjecture : Prop :=
   ∀ F₁ F₂ : StarUnion, sizeRamseyNumber F₁ F₂ = conjecturedFormula F₁ F₂
 
-/-!
+/-
 ## Part VI: The Special Case (BEFRS78)
 -/
 
@@ -178,7 +178,7 @@ theorem uniform_case (s t n m : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) (hn : n ≥ 1
   · use m; simp [uniformStarUnion]
   · exact befrs78_theorem _ _ ⟨n, by simp [uniformStarUnion]⟩ ⟨m, by simp [uniformStarUnion]⟩
 
-/-!
+/-
 ## Part VII: Lower and Upper Bounds
 -/
 
@@ -193,7 +193,7 @@ has the Ramsey property, providing an upper bound. -/
 axiom sizeRamsey_upper_bound (F₁ F₂ : StarUnion) :
     ∃ N : ℕ, sizeRamseyNumber F₁ F₂ ≤ N * (N - 1) / 2
 
-/-!
+/-
 ## Part VIII: Connection to Classical Ramsey Numbers
 -/
 
@@ -209,7 +209,7 @@ But size Ramsey numbers can be much smaller than this bound. -/
 axiom size_vs_classical (F₁ F₂ : StarUnion) :
     sizeRamseyNumber F₁ F₂ ≤ classicalRamseyNumber F₁ F₂ * (classicalRamseyNumber F₁ F₂ - 1) / 2
 
-/-!
+/-
 ## Part IX: Summary
 -/
 

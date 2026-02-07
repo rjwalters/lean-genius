@@ -37,7 +37,7 @@ open Nat Int Finset
 
 namespace Erdos204
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -61,7 +61,7 @@ def IsCovered (n : ℕ) (assignment : ResidueAssignment n) (x : ℤ) : Prop :=
 def IsCoveringSystem (n : ℕ) (assignment : ResidueAssignment n) : Prop :=
   ∀ x : ℤ, IsCovered n assignment x
 
-/-!
+/-
 ## Part 2: The Disjointness Condition
 -/
 
@@ -83,7 +83,7 @@ def IsAsDisjointAsPossible (n : ℕ) (assignment : ResidueAssignment n) : Prop :
 def IsDisjointCoveringSystem (n : ℕ) (assignment : ResidueAssignment n) : Prop :=
   IsCoveringSystem n assignment ∧ IsAsDisjointAsPossible n assignment
 
-/-!
+/-
 ## Part 3: The Main Question
 -/
 
@@ -96,7 +96,7 @@ def ExistsDisjointCoveringN : Prop :=
 def ErdosGrahamConjecture : Prop :=
   ¬ExistsDisjointCoveringN
 
-/-!
+/-
 ## Part 4: Density Results
 -/
 
@@ -111,7 +111,7 @@ axiom erdos_graham_belief :
   -- Based on their extensive study of covering systems
   True
 
-/-!
+/-
 ## Part 5: Adenwalla's Theorem (2025)
 -/
 
@@ -130,7 +130,7 @@ theorem every_n_fails :
   have : ExistsDisjointCoveringN := ⟨n, hn, assignment, hcov⟩
   exact adenwalla_2025 this
 
-/-!
+/-
 ## Part 6: Why It Fails
 -/
 
@@ -152,7 +152,7 @@ axiom covering_requires_divisible_pairs :
   -- These pairs have gcd ≠ 1, violating disjointness
   True
 
-/-!
+/-
 ## Part 7: Related Questions
 -/
 
@@ -173,7 +173,7 @@ axiom standard_covering_systems_exist :
   -- e.g., {0 (mod 2), 0 (mod 3), 1 (mod 4), 5 (mod 6), 7 (mod 12)}
   True
 
-/-!
+/-
 ## Part 8: Small Examples
 -/
 
@@ -194,7 +194,7 @@ axiom n12_fails :
   ¬∃ assignment : ResidueAssignment 12,
     IsDisjointCoveringSystem 12 assignment
 
-/-!
+/-
 ## Part 9: Connection to Covering Systems
 -/
 
@@ -215,7 +215,7 @@ axiom hough_theorem :
   -- the sum of reciprocals must be ≥ 1
   True
 
-/-!
+/-
 ## Part 10: Summary
 -/
 

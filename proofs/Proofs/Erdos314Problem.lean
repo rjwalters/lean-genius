@@ -30,7 +30,7 @@ import Mathlib
 
 namespace Erdos314
 
-/-! ## Harmonic Sum Definitions
+/- ## Harmonic Sum Definitions
 
 The partial harmonic sum from n to m, and the definition of m(n) as the
 minimal integer making the sum at least 1.
@@ -49,7 +49,7 @@ lemma partialHarmonicSum_as_difference (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ n)
     partialHarmonicSum n m = harmonicNumber m - harmonicNumber (n - 1) := by
   sorry
 
-/-! ## The Function m(n)
+/- ## The Function m(n)
 
 m(n) is the minimal integer m ≥ n such that the partial harmonic sum reaches 1.
 -/
@@ -69,7 +69,7 @@ axiom m_of_n_minimal : ∀ n : ℕ, n ≥ 1 →
 axiom m_of_n_achieves : ∀ n : ℕ, n ≥ 1 →
   partialHarmonicSum n (m_of_n n) ≥ 1
 
-/-! ## The Error Term ε(n)
+/- ## The Error Term ε(n)
 
 ε(n) measures how much the harmonic sum overshoots 1.
 -/
@@ -89,7 +89,7 @@ theorem epsilon_upper_bound : ∀ n : ℕ, n ≥ 1 → epsilon n ≤ 1 / n := by
   intro n hn
   sorry -- Requires showing 1/m(n) ≤ 1/n
 
-/-! ## Approximation of m(n)
+/- ## Approximation of m(n)
 
 For large n, m(n) ≈ e·n since the harmonic sum grows logarithmically.
 -/
@@ -102,7 +102,7 @@ axiom m_over_n_limit :
 axiom m_of_n_approximation : ∀ n : ℕ, n ≥ 1 →
   |(m_of_n n : ℝ) - Real.exp 1 * n| ≤ 1
 
-/-! ## The Main Question: lim inf n²ε(n) = 0?
+/- ## The Main Question: lim inf n²ε(n) = 0?
 
 Erdős asked whether the lim inf of n²ε(n) equals 0.
 Lim and Steinerberger (2024) proved this is TRUE.
@@ -112,7 +112,7 @@ Lim and Steinerberger (2024) proved this is TRUE.
 def erdos_conjecture : Prop :=
   ∀ δ > 0, ∃ᶠ n in Filter.atTop, (n : ℝ)^2 * epsilon n < δ
 
-/-! ## Lim-Steinerberger Theorem (2024)
+/- ## Lim-Steinerberger Theorem (2024)
 
 The main result: infinitely many n with ε(n)n² small.
 -/
@@ -129,7 +129,7 @@ theorem erdos_conjecture_true : erdos_conjecture := by
   -- The Lim-Steinerberger bound goes to 0, so eventually it's < δ
   sorry
 
-/-! ## Optimal Exponent Conjecture
+/- ## Optimal Exponent Conjecture
 
 Erdős-Graham and Lim-Steinerberger believe the exponent 2 is optimal.
 -/
@@ -142,7 +142,7 @@ axiom optimal_exponent_conjecture : ∀ δ > 0,
 axiom epsilon_lower_bound : ∃ c > 0, ∀ᶠ n in Filter.atTop,
   epsilon n ≥ c / (n : ℝ)^2
 
-/-! ## Connection to Diophantine Approximation
+/- ## Connection to Diophantine Approximation
 
 The problem is related to how well log(m/n) approximates 1 - γ
 where γ is the Euler-Mascheroni constant.
@@ -155,7 +155,7 @@ noncomputable def eulerMascheroni : ℝ := sorry
 axiom epsilon_asymptotic : ∀ n : ℕ, n ≥ 1 →
   |epsilon n - 1 / ((m_of_n n : ℝ) * n)| ≤ C / n^2 where C := 1
 
-/-! ## Summary
+/- ## Summary
 
 Erdős Problem #314 asks about the lim inf of n²ε(n) where
 ε(n) = ∑_{k=n}^{m(n)} 1/k - 1 and m(n) is minimal such that the sum ≥ 1.

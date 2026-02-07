@@ -37,7 +37,7 @@ open Nat
 
 namespace Erdos408
 
-/-!
+/-
 ## Part I: Iterated Totient Function
 
 The central object: iterating Euler's totient until we reach 1.
@@ -67,7 +67,7 @@ theorem iteratedTotient_one (n : ℕ) : φ[1](n) = n.totient := rfl
 theorem iteratedTotient_succ (k n : ℕ) :
     φ[k + 1](n) = (φ[k](n)).totient := rfl
 
-/-!
+/-
 ## Part II: The Iteration Length f(n)
 
 f(n) = min{k : φₖ(n) = 1}
@@ -102,7 +102,7 @@ axiom iterationLength_two : f(2) = 1
 /-- For n > 1: f(n) ≥ 1 -/
 axiom iterationLength_pos (n : ℕ) (hn : n > 1) : f(n) ≥ 1
 
-/-!
+/-
 ## Part III: Pillai's Bounds (1929)
 
 The first quantitative results on f(n).
@@ -142,7 +142,7 @@ theorem pillai_bounds :
   · exact h₁ n (le_of_max_le_left hn)
   · exact h₂ n (le_of_max_le_right hn)
 
-/-!
+/-
 ## Part IV: Shapiro's Multiplicativity (1950)
 
 f(n) is "essentially multiplicative."
@@ -165,7 +165,7 @@ This means f(mn) ≈ f(m) + f(n) for coprime m, n.
 -/
 axiom shapiro_multiplicativity : EssentiallyMultiplicative iterationLength
 
-/-!
+/-
 ## Part V: The Distribution Function Question
 
 Does f(n)/log(n) have a distribution function?
@@ -186,7 +186,7 @@ Does f(n)/log(n) have a distribution function?
 -/
 def question1 : Prop := HasDistributionFunction iterationLength
 
-/-!
+/-
 ## Part VI: The "Almost Always Constant" Question
 
 Is f(n)/log(n) almost always constant?
@@ -207,7 +207,7 @@ Is f(n)/log(n) almost always constant?
 -/
 def question2 : Prop := AlmostAlwaysConstant iterationLength
 
-/-!
+/-
 ## Part VII: Erdős-Granville-Pomerance-Spiro (1990)
 
 Conditional answers to Questions 1 and 2.
@@ -244,7 +244,7 @@ axiom limiting_constant :
       -- c = 1/log(2) and f(n)/log(n) → c for almost all n
       True
 
-/-!
+/-
 ## Part VIII: The Largest Prime Factor Question
 
 What can be said about P(φₖ(n)) when k ≈ log(log(n))?
@@ -288,7 +288,7 @@ axiom prime_factor_conjecture :
       -- S has density 1 and P(φ_{k(n)}(n)) ≤ n^ε for n ∈ S
       True
 
-/-!
+/-
 ## Part IX: Small Examples
 -/
 
@@ -316,7 +316,7 @@ theorem example_f7_step1 : (7 : ℕ).totient = 6 := by native_decide
 axiom small_values :
     f(2) = 1 ∧ f(3) = 2 ∧ f(4) = 2 ∧ f(5) = 3 ∧ f(6) = 2 ∧ f(7) = 3
 
-/-!
+/-
 ## Part X: Related Results
 -/
 
@@ -344,7 +344,7 @@ Since φ(p) = p - 1.
 -/
 axiom f_prime (p : ℕ) (hp : p.Prime) : f(p) = f(p - 1) + 1
 
-/-!
+/-
 ## Part XI: Erdős Problem #408 Summary
 -/
 

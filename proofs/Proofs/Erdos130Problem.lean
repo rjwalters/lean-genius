@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #130 — Integer Distance Graphs with No Collinear/Cocircular Points
 
 Given an infinite set A ⊆ ℝ² with no three points collinear and no four
@@ -22,7 +22,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A point in the plane. -/
 structure Point2 where
@@ -61,7 +61,7 @@ def IsIntegerDist (p q : Point2) : Prop :=
 def IntDistEdge (A : Set Point2) (p q : Point2) : Prop :=
   p ∈ A ∧ q ∈ A ∧ p ≠ q ∧ IsIntegerDist p q
 
-/-! ## Chromatic and Clique Numbers -/
+/- ## Chromatic and Clique Numbers -/
 
 /-- A proper coloring of the integer distance graph using k colors. -/
 def IsProperColoring (A : Set Point2) (k : ℕ) (c : Point2 → Fin k) : Prop :=
@@ -77,7 +77,7 @@ def HasClique (A : Set Point2) (k : ℕ) : Prop :=
     (∀ p ∈ S, p ∈ A) ∧
     ∀ p q : Point2, p ∈ S → q ∈ S → p ≠ q → IsIntegerDist p q
 
-/-! ## Main Questions -/
+/- ## Main Questions -/
 
 /-- **Question 1**: Can the chromatic number be infinite?
     That is, does there exist an infinite general-position set A
@@ -91,7 +91,7 @@ axiom erdos_130_clique_bound :
   ∀ A : Set Point2, A.Infinite → InGeneralPosition A →
     ∃ M : ℕ, ∀ k : ℕ, HasClique A k → k ≤ M
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Anning–Erdős (1945)**: An infinite set with all pairwise
     integer distances must have all points collinear. Therefore
@@ -118,7 +118,7 @@ axiom erdos_anning_diameter_bound :
       p ≠ q → q ≠ r → p ≠ r → ¬AreCollinear p q r) →
     ∃ D : ℕ, S.card ≤ D
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Chromatic vs Clique gap**: Even though the clique number is finite,
     the chromatic number could potentially be infinite — there is no

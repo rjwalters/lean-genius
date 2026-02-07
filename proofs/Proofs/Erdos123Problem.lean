@@ -39,7 +39,7 @@ open scoped Pointwise
 
 namespace Erdos123
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -54,7 +54,7 @@ def IsDComplete (A : Set ℕ) : Prop :=
 /-- The set of numbers of the form 2^k · 3^l for k, l ≥ 0. -/
 def Powers23 : Set ℕ := { n | ∃ k l : ℕ, n = 2^k * 3^l }
 
-/-!
+/-
 ## Basic Properties of Powers23
 -/
 
@@ -83,7 +83,7 @@ theorem pow_two_mem_Powers23 (k : ℕ) : 2^k ∈ Powers23 := ⟨k, 0, by ring⟩
 /-- Powers of 3 are in Powers23. -/
 theorem pow_three_mem_Powers23 (l : ℕ) : 3^l ∈ Powers23 := ⟨0, l, by ring⟩
 
-/-!
+/-
 ## Antichain Properties
 
 Key insight: In Powers23, two elements 2^a · 3^b and 2^c · 3^d satisfy
@@ -146,7 +146,7 @@ theorem Powers23_antichain_pair (k₁ l₁ k₂ l₂ : ℕ)
   rw [Powers23_dvd_iff, Powers23_dvd_iff]
   omega
 
-/-!
+/-
 ## The Key Inductive Step
 
 The proof that {2^k · 3^l} is d-complete uses strong induction:
@@ -194,7 +194,7 @@ theorem odd_sub_largest_pow3_even {n : ℕ} (hn : Odd n) (hn1 : 1 < n) :
   have hpow_not_even : ¬Even (largestPow3 n) := fun h => Nat.not_even_iff_odd.mpr hodd_pow3 h
   tauto
 
-/-!
+/-
 ## Main Theorem Statement
 
 We state and axiomatize the main result. The full inductive proof
@@ -236,7 +236,7 @@ theorem powers_2_3_dComplete : IsDComplete Powers23 := by
   rw [IsDComplete, Filter.eventually_atTop]
   exact ⟨1, fun n hn => powers23_repr n hn⟩
 
-/-!
+/-
 ## The General Conjecture (OPEN)
 
 The full Erdős Problem #123 asks about three pairwise coprime integers.
@@ -263,7 +263,7 @@ axiom erdos_123_conjecture :
   ∀ a b c : ℕ, 1 < a → 1 < b → 1 < c → PairwiseCoprime a b c →
     IsDComplete (PowersABC a b c)
 
-/-!
+/-
 ## Known Special Cases
 -/
 
@@ -281,7 +281,7 @@ theorem powers_2_3_special_case : IsDComplete (PowersABC 2 3 1) := by
   · rintro ⟨k, l, rfl⟩
     exact ⟨k, l, 0, by ring⟩
 
-/-!
+/-
 ## Structural Results about Powers23
 
 These lemmas establish key properties used in the inductive proof.

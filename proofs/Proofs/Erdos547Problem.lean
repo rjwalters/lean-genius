@@ -33,7 +33,7 @@ open SimpleGraph Finset
 
 namespace Erdos547
 
-/-!
+/-
 ## Part I: Edge Colorings and Ramsey Numbers
 
 We formalize the basic definitions needed for Ramsey theory on graphs.
@@ -50,7 +50,7 @@ def HasMonochromaticCopy {V : Type*} (n : ℕ) (G : SimpleGraph V) (c : EdgeColo
   ∃ (f : V ↪ Fin n) (color : Bool),
     ∀ v w : V, G.Adj v w → c (s(f v, f w)) = color
 
-/-!
+/-
 ## Part II: Ramsey's Theorem
 
 Ramsey's theorem guarantees the existence of Ramsey numbers for all finite graphs.
@@ -75,7 +75,7 @@ axiom ramseyNumber_spec {V : Type*} [Fintype V] (G : SimpleGraph V) :
 axiom ramseyNumber_minimal {V : Type*} [Fintype V] (G : SimpleGraph V) (n : ℕ) :
     n < ramseyNumber G → ∃ c : EdgeColoring n, ¬HasMonochromaticCopy n G c
 
-/-!
+/-
 ## Part III: Trees and Their Properties
 
 A tree is a connected acyclic graph. We axiomatize this since Mathlib's
@@ -100,7 +100,7 @@ axiom tree_degree_bounds (T : SimpleGraph V) (hT : IsTree T)
     (hn : Fintype.card V ≥ 2) :
     1 ≤ maxDegree T ∧ maxDegree T ≤ Fintype.card V - 1
 
-/-!
+/-
 ## Part IV: Special Tree Families
 
 We define paths and stars, the two extremes of tree structure.
@@ -134,7 +134,7 @@ axiom path_max_degree (P : SimpleGraph V)
     (hP : IsPath P) (hn : Fintype.card V ≥ 3) :
     maxDegree P = 2
 
-/-!
+/-
 ## Part V: Ramsey Numbers of Specific Trees
 
 Known exact values for paths and stars.
@@ -154,7 +154,7 @@ axiom star_ramsey (S : SimpleGraph V)
     (hS : IsStar S) (hn : Fintype.card V ≥ 2) :
     ramseyNumber S = 2 * Fintype.card V - 2
 
-/-!
+/-
 ## Part VI: Chvátal's Theorem (1977)
 
 The degree-dependent bound, which is tighter for low-degree trees.
@@ -179,7 +179,7 @@ axiom chvatal_tight_for_paths (P : SimpleGraph V)
     (hP : IsPath P) (hn : Fintype.card V ≥ 3) :
     (maxDegree P - 1) * (Fintype.card V - 1) + 1 = Fintype.card V
 
-/-!
+/-
 ## Part VII: The Main Conjecture (Erdős-Burr)
 
 The conjecture R(T) ≤ 2n - 2 for all trees.
@@ -201,7 +201,7 @@ axiom bound_achieved_by_stars (S : SimpleGraph V)
     (hS : IsStar S) (hn : Fintype.card V ≥ 2) :
     ramseyNumber S = 2 * Fintype.card V - 2
 
-/-!
+/-
 ## Part VIII: Comparison of Bounds
 
 When is Chvátal's bound better than 2n - 2?
@@ -213,7 +213,7 @@ When is Chvátal's bound better than 2n - 2?
 axiom chvatal_vs_main (n Δ : ℕ) (hn : n ≥ 2) (hΔ : Δ ≥ 1) :
     (Δ - 1) * (n - 1) + 1 < 2 * n - 2 ↔ Δ = 1 ∨ Δ = 2
 
-/-!
+/-
 ## Part IX: Main Results Summary
 -/
 

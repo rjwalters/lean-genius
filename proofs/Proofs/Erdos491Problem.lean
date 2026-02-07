@@ -32,7 +32,7 @@ namespace Erdos491
 
 open Real
 
-/-! ## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 
 Additive functions and their properties.
 -/
@@ -54,7 +54,7 @@ theorem completely_additive_is_additive (f : ℕ → ℝ) :
 axiom log_is_completely_additive :
   IsCompletelyAdditive (fun n => if n = 0 then 0 else Real.log n)
 
-/-! ## Part II: Bounded Differences Condition
+/- ## Part II: Bounded Differences Condition
 
 The key hypothesis: |f(n+1) - f(n)| < c.
 -/
@@ -67,7 +67,7 @@ def HasBoundedDifferences (f : ℕ → ℝ) (c : ℝ) : Prop :=
 axiom log_bounded_differences :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → |Real.log (n + 1) - Real.log n| < c
 
-/-! ## Part III: Erdős's Earlier Results (1946)
+/- ## Part III: Erdős's Earlier Results (1946)
 
 Weaker conditions that still characterize the logarithm.
 -/
@@ -90,7 +90,7 @@ axiom erdos_1946_monotone (f : ℕ → ℝ) (hf : IsAdditive f)
     (hm : IsMonotone f) :
   ∃ c : ℝ, c ≥ 0 ∧ ∀ n : ℕ, n ≥ 1 → f n = c * Real.log n
 
-/-! ## Part IV: Wirsing's Theorem (1970)
+/- ## Part IV: Wirsing's Theorem (1970)
 
 The full solution to Erdős's problem.
 -/
@@ -109,7 +109,7 @@ noncomputable def wirsingConstant (f : ℕ → ℝ) (hf : IsAdditive f)
     (c : ℝ) (hc : HasBoundedDifferences f c) : ℝ :=
   Classical.choose (wirsing_theorem f hf c hc)
 
-/-! ## Part V: Erdős Problem #491 Statement
+/- ## Part V: Erdős Problem #491 Statement
 
 The main theorem combining all results.
 -/
@@ -127,7 +127,7 @@ theorem erdos_491_explicit (f : ℕ → ℝ) (hf : IsAdditive f)
   obtain ⟨c', M, hM, h⟩ := wirsing_theorem f hf c hc
   exact ⟨c', M, hM, h⟩
 
-/-! ## Part VI: Properties of the Characterization
+/- ## Part VI: Properties of the Characterization
 
 Further consequences of Wirsing's theorem.
 -/
@@ -147,7 +147,7 @@ axiom log_unique_completely_additive (f : ℕ → ℝ)
     (hf : IsCompletelyAdditive f) (c : ℝ) (hc : HasBoundedDifferences f c) :
   ∃ c' : ℝ, ∀ n : ℕ, n ≥ 1 → f n = c' * Real.log n
 
-/-! ## Part VII: Examples and Non-Examples
+/- ## Part VII: Examples and Non-Examples
 -/
 
 /-- The logarithm satisfies the hypothesis: log has bounded consecutive differences
@@ -171,7 +171,7 @@ theorem non_example_bounded_diff :
 axiom non_example_not_log_plus_O1 :
     ¬∃ c' : ℝ, IsLogPlusO1 nonExample c'
 
-/-! ## Part VIII: Connection to Prime Factorization
+/- ## Part VIII: Connection to Prime Factorization
 
 Additive functions are determined by values on primes.
 -/
@@ -189,7 +189,7 @@ noncomputable def additiveFromPrimes (g : ℕ → ℝ) : ℕ → ℝ :=
 axiom additive_from_primes_is_additive (g : ℕ → ℝ) :
   IsCompletelyAdditive (additiveFromPrimes g)
 
-/-! ## Part IX: Rate of Convergence
+/- ## Part IX: Rate of Convergence
 
 How quickly does f(n) approach c'·log(n)?
 -/
@@ -207,7 +207,7 @@ axiom deviation_bounded_not_zero :
     (∃ c', IsLogPlusO1 f c') ∧
     ¬DifferencesTendToZero f
 
-/-! ## Part X: Related Problems
+/- ## Part X: Related Problems
 
 Connections to other additive function problems.
 -/
@@ -224,7 +224,7 @@ axiom multiplicative_analog (g : ℕ → ℝ) :
   Filter.Tendsto (fun n => g (n + 1) - g n) Filter.atTop (nhds 0) →
   ∃ t : ℝ, ∀ n : ℕ, n ≥ 1 → g n = (n : ℝ)^t
 
-/-! ## Part XI: Summary
+/- ## Part XI: Summary
 -/
 
 /-- Main summary: Erdős Problem #491 is solved -/

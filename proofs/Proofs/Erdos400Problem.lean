@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #400: Factorial Divisibility and Sum Excess
 
 For k ≥ 2, let g_k(n) = max { (a₁ + ⋯ + aₖ) - n : a₁!⋯aₖ! ∣ n! }.
@@ -18,7 +18,7 @@ import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Factorial Divisibility Condition
 -/
 
@@ -27,7 +27,7 @@ divisibility condition for n if a₁! · a₂! · ⋯ · aₖ! divides n!. -/
 def FactorialDivides (a : Fin k → ℕ) (n : ℕ) : Prop :=
   (∏ i : Fin k, (a i).factorial) ∣ n.factorial
 
-/-!
+/-
 ## Section II: The Excess Function g_k
 -/
 
@@ -41,7 +41,7 @@ with a₁!⋯aₖ! | n!. Defined as a specification. -/
 noncomputable def gExcess (k n : ℕ) : ℤ :=
   sSup { e : ℤ | ∃ a : Fin k → ℕ, FactorialDivides a n ∧ sumExcess a n = e }
 
-/-!
+/-
 ## Section III: The Conjectures
 -/
 
@@ -68,7 +68,7 @@ def ErdosProblem400b (k : ℕ) : Prop :=
 def ErdosProblem400 : Prop :=
   ∀ k : ℕ, k ≥ 2 → ErdosProblem400a k ∧ ErdosProblem400b k
 
-/-!
+/-
 ## Section IV: Known Upper Bound
 -/
 
@@ -77,7 +77,7 @@ bounded by a constant times log n. -/
 axiom gExcess_upper_bound (k : ℕ) (hk : k ≥ 2) :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → (gExcess k n : ℝ) ≤ C * Real.log n
 
-/-!
+/-
 ## Section V: Basic Properties
 -/
 
@@ -93,7 +93,7 @@ axiom g2_binomial_connection (n : ℕ) :
   gExcess 2 n = sSup { e : ℤ | ∃ a b : ℕ, a.factorial * b.factorial ∣ n.factorial ∧
     (a : ℤ) + b - n = e }
 
-/-!
+/-
 ## Section VI: The k = 2 Case
 -/
 

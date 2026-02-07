@@ -39,7 +39,7 @@ namespace Erdos860
 
 open Nat Filter Asymptotics
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -61,7 +61,7 @@ structure PrimeCovering (m : ℕ) (L : ℕ) (k : ℕ) where
 def AdmitsCovering (m L k : ℕ) : Prop :=
   Nonempty (PrimeCovering m L k)
 
-/-!
+/-
 ## Part II: The Function h(n)
 -/
 
@@ -82,7 +82,7 @@ axiom h_minimal :
     ∀ n : ℕ, h n > 0 →
     ∃ m : ℕ, ¬AdmitsCovering m (h n - 1) (primePi n)
 
-/-!
+/-
 ## Part III: Known Bounds
 -/
 
@@ -108,7 +108,7 @@ axiom erdos_pomerance_upper_bound :
     ∃ C > 0, ∀ᶠ n in atTop,
       (h n : ℝ) ≤ C * n^(3/2 : ℝ) / Real.log n ^ (1/2 : ℝ)
 
-/-!
+/-
 ## Part IV: The Gap Between Bounds
 -/
 
@@ -136,7 +136,7 @@ theorem subquadratic_upper_bound :
     Is h(n) = n · ω(n) for some slowly growing ω? -/
 axiom exact_growth_unknown : True
 
-/-!
+/-
 ## Part V: Connection to Other Problems
 -/
 
@@ -155,7 +155,7 @@ axiom guys_problem_B32 : True
     bounds. -/
 axiom greedy_approach : True
 
-/-!
+/-
 ## Part VI: Reformulation
 -/
 
@@ -170,7 +170,7 @@ axiom bipartite_matching_formulation : True
     |N(S) ∩ (m, m+L]| ≥ |S| where N(S) is the neighbor set. -/
 axiom halls_condition : True
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

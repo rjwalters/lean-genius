@@ -25,7 +25,7 @@ open Finset Nat
 
 namespace Erdos930
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -45,7 +45,7 @@ noncomputable def intervalProduct (a b : ℕ) : ℕ :=
 /-- The length of an interval [a, b] is b - a + 1 when b ≥ a. -/
 def intervalLength (a b : ℕ) : ℕ := b - a + 1
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 The conjecture asks: for every number r of intervals, does there exist
@@ -69,7 +69,7 @@ axiom erdos_930_conjecture :
         (∀ i j : Fin r, i < j → I₂ i < I₁ j) →
           ¬ IsPower (∏ i : Fin r, ∏ m ∈ Icc (I₁ i) (I₂ i), m)
 
-/-!
+/-
 ## Solved Case: r = 1 (Erdős-Selfridge 1975)
 
 The famous theorem that the product of consecutive integers is never
@@ -88,7 +88,7 @@ axiom erdos_selfridge_consecutive_integers :
     ∀ n k, 0 ≤ n → 2 ≤ k →
       ¬ IsPower (∏ m ∈ Icc (n + 1) (n + k), m)
 
-/-!
+/-
 ## Technical Variant: Prime Multiplicity Bound
 
 This is the key technical lemma from the Erdős-Selfridge paper.
@@ -111,7 +111,7 @@ axiom erdos_selfridge_prime_multiplicity :
       ∃ p, k ≤ p ∧ p.Prime ∧
         ¬ (l ∣ Nat.factorization (∏ m ∈ Icc (n + 1) (n + k), m) p)
 
-/-!
+/-
 ## Basic Properties of Perfect Powers
 -/
 
@@ -127,7 +127,7 @@ theorem sq_isPower (n : ℕ) : IsPower (n ^ 2) := ⟨n, 2, by norm_num, rfl⟩
 /-- Any perfect cube is a perfect power. -/
 theorem cube_isPower (n : ℕ) : IsPower (n ^ 3) := ⟨n, 3, by norm_num, rfl⟩
 
-/-!
+/-
 ## Verified Small Examples
 -/
 

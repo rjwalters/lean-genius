@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs
 
 If a graph G on n vertices has no K₅ and at least δn² edges (for any δ > 0),
@@ -19,7 +19,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A simple graph on n vertices, represented by its edge set. -/
 structure SGraph (n : ℕ) where
@@ -50,7 +50,7 @@ noncomputable def edgeCount {n : ℕ} (G : SGraph n) : ℕ :=
   Finset.card (Finset.filter (fun p : Fin n × Fin n => p.1 < p.2 ∧ G.adj p.1 p.2)
     (Finset.univ.product Finset.univ))
 
-/-! ## Known Partial Results -/
+/- ## Known Partial Results -/
 
 /-- Erdős–Hajnal–Simonovits–Sós–Szemerédi: for δ > 1/16, any K₅-free graph
     on n vertices with ≥ δn² edges has a triangle-free subset of ≫ n vertices. -/
@@ -78,7 +78,7 @@ axiom erdos_rogers_counterexample :
     ∀ (S : Finset (Fin n)), IsTriangleFree G S →
       (S.card : ℝ) < C * n
 
-/-! ## The Open Question -/
+/- ## The Open Question -/
 
 /-- Erdős Problem #533: For every δ > 0, any K₅-free graph on n vertices
     with at least δn² edges must contain a triangle-free induced subgraph

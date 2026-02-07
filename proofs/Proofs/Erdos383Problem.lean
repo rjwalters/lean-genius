@@ -31,7 +31,7 @@ open Finset Nat
 
 namespace Erdos383
 
-/-!
+/-
 # Part 1: Prime Factor Definitions
 
 We need to work with the largest prime factor of a number.
@@ -50,7 +50,7 @@ theorem hasLargestPrimeFactor_iff (n p : ℕ) (hn : n > 1) :
     hasLargestPrimeFactor n p ↔ p.Prime ∧ p ∣ n ∧ ∀ q, q.Prime → q ∣ n → q ≤ p := by
   sorry
 
-/-!
+/-
 # Part 2: The Product Definition
 
 The product ∏_{i=0}^k (p² + i) is k+1 consecutive integers starting at p².
@@ -79,7 +79,7 @@ theorem consecutiveSquareProduct_one (p : ℕ) :
   simp [consecutiveSquareProduct]
   ring
 
-/-!
+/-
 # Part 3: The Main Property
 
 We define when a prime p satisfies the Erdős condition for a given k.
@@ -102,7 +102,7 @@ def kGoodPrimes (k : ℕ) : Set ℕ :=
 -- For k = 0: p is 0-good iff p² has p as largest prime factor (always true for prime p)
 axiom zero_good_iff : ∀ p, p.Prime → isKGood p 0
 
-/-!
+/-
 # Part 4: The Erdős Conjecture
 
 The main conjecture asserts that k-good primes are infinite for all k.
@@ -119,7 +119,7 @@ def ErdosConjecture383' : Prop :=
 -- The conjectures are equivalent (when properly formalized)
 axiom conjecture_equiv : ErdosConjecture383 ↔ ErdosConjecture383'
 
-/-!
+/-
 # Part 5: Partial Results
 
 We axiomatize known partial results.
@@ -136,7 +136,7 @@ axiom positive_density_smooth : ∃ c : ℝ, c > 0 ∧
   Filter.Tendsto (fun N => (Finset.filter (fun n => ∀ p ∈ primeDivisors n, p^2 ≤ n)
     (Finset.range N)).card / N) Filter.atTop (nhds c)
 
-/-!
+/-
 # Part 6: Relation to Problem #382
 
 Problem #382 asks about the density of such primes.
@@ -149,7 +149,7 @@ def Problem382Part2 : Prop :=
 -- Problem 383 for k = 1 implies Problem 382 Part 2
 axiom problem383_implies_382 : (kGoodPrimes 1).Infinite → Problem382Part2
 
-/-!
+/-
 # Part 7: Smooth Numbers
 
 The problem relates to smooth numbers (numbers without large prime factors).
@@ -173,7 +173,7 @@ axiom dickman_asymptotic : ∃ ρ : ℝ → ℝ, ρ 1 = 1 ∧ ρ 2 > 0 ∧
   ∀ u ≥ 1, Filter.Tendsto (fun x => (countSmooth x (x^(1/u : ℝ)).toNat : ℝ) / x)
     Filter.atTop (nhds (ρ u))
 
-/-!
+/-
 # Part 8: The Heuristic Argument
 
 The problem is believed to have a positive answer based on probabilistic reasoning.
@@ -188,7 +188,7 @@ The problem is believed to have a positive answer based on probabilistic reasoni
 
 -- The density ρ(2) > 0 suggests infinitely many such p should exist
 
-/-!
+/-
 # Part 9: Problem Status
 
 The problem remains OPEN. The heuristic argument supports a positive answer.
@@ -197,7 +197,7 @@ The problem remains OPEN. The heuristic argument supports a positive answer.
 -- The problem is open
 def erdos_383_status : String := "OPEN"
 
-/-!
+/-
 # Part 10: Formal Statement
 
 The precise formal statement.

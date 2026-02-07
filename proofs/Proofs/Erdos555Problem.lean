@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #555 — Ramsey Numbers of Even Cycles
 
 Determine R(C₂ₙ; k), the minimum m such that every k-coloring of the
@@ -21,7 +21,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-! ## Even Cycles and Colorings -/
+/- ## Even Cycles and Colorings -/
 
 /-- A cycle of length n in a simple graph, represented as a list of
     n distinct vertices where consecutive vertices (and the last-first pair)
@@ -45,7 +45,7 @@ def monochromaticGraph (χ : EdgeColoring m k) (c : Fin k) : SimpleGraph (Fin m)
     exact ⟨hne.symm, by rwa [show χ v u = χ u v from sorry]⟩
   loopless := by intro v ⟨h, _⟩; exact h rfl
 
-/-! ## Ramsey Number for Even Cycles -/
+/- ## Ramsey Number for Even Cycles -/
 
 /-- R(C₂ₙ; k): the minimum m such that every k-coloring of Kₘ
     contains a monochromatic C₂ₙ -/
@@ -55,7 +55,7 @@ noncomputable def ramseyEvenCycle (n k : ℕ) : ℕ :=
       ∀ χ : EdgeColoring m k,
         ∃ c : Fin k, HasCycleOfLength (monochromaticGraph χ c) (2 * n))
 
-/-! ## Erdős Lower Bound -/
+/- ## Erdős Lower Bound -/
 
 /-- Erdős lower bound: R(C₂ₙ; k) ≫ k^{1+1/(2n)} -/
 axiom erdos_lower_bound (n : ℕ) (hn : 1 ≤ n) :
@@ -69,7 +69,7 @@ axiom erdos_upper_bound (n : ℕ) (hn : 2 ≤ n) :
     ∀ k : ℕ, 2 ≤ k →
       (ramseyEvenCycle n k : ℝ) ≤ C * (k : ℝ) ^ (1 + 1 / ((n : ℝ) - 1))
 
-/-! ## C₄ Case: Chung–Graham Bounds -/
+/- ## C₄ Case: Chung–Graham Bounds -/
 
 /-- Chung–Graham lower bound for C₄: R(C₄; k) > k² - k + 1
     when k - 1 is a prime power -/
@@ -81,7 +81,7 @@ axiom chung_graham_lower (k : ℕ) (hk : 2 ≤ k)
 axiom chung_graham_upper (k : ℕ) (hk : 2 ≤ k) :
   ramseyEvenCycle 2 k ≤ k * k + k + 1
 
-/-! ## The Erdős–Graham Problem -/
+/- ## The Erdős–Graham Problem -/
 
 /-- Erdős Problem 555 (Erdős–Graham): Determine the exact value of R(C₂ₙ; k).
     The lower and upper bounds have different exponents (1+1/(2n) vs 1+1/(n-1)),

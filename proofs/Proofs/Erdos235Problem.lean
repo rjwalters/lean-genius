@@ -39,7 +39,7 @@ open scoped Topology
 
 namespace Erdos235
 
-/-!
+/-
 ## Part I: Primorials and Totients
 -/
 
@@ -78,7 +78,7 @@ noncomputable def primorialTotient (k : ℕ) : ℕ :=
 axiom primorial_totient_formula (k : ℕ) :
     primorialTotient k = (Finset.range k).prod (fun i => nthPrime (i + 1) - 1)
 
-/-!
+/-
 ## Part II: Coprime Sequences
 -/
 
@@ -111,7 +111,7 @@ a₁ = 1 for all k ≥ 1
 axiom first_coprime (k : ℕ) (hk : k ≥ 1) :
     (coprimeSequence k).head? = some 1
 
-/-!
+/-
 ## Part III: Gap Distribution
 -/
 
@@ -150,7 +150,7 @@ f_k(c) = (count of gaps ≤ c·avg) / φ(Nₖ)
 noncomputable def gapDistribution (k : ℕ) (c : ℝ) : ℝ :=
   (countSmallGaps k c : ℝ) / (primorialTotient k : ℝ)
 
-/-!
+/-
 ## Part IV: The Erdős Conjecture
 -/
 
@@ -164,7 +164,7 @@ def ErdosConjecture235 : Prop :=
     ∀ c : ℝ, c ≥ 0 →
       Tendsto (fun k => gapDistribution k c) atTop (nhds (f c))
 
-/-!
+/-
 ## Part V: Hooley's Theorem
 -/
 
@@ -198,7 +198,7 @@ theorem erdos_235_proved : ErdosConjecture235 := by
   · exact exponential_cdf_continuous
   · exact hooley_theorem
 
-/-!
+/-
 ## Part VI: Properties of the Distribution
 -/
 
@@ -231,7 +231,7 @@ The mean of the normalized gaps is 1 (by definition of normalization).
 axiom mean_normalized_gap (k : ℕ) :
     (gapSequence k).sum / (primorialTotient k : ℝ) / averageGap k = 1
 
-/-!
+/-
 ## Part VII: Stronger Results
 -/
 
@@ -251,7 +251,7 @@ axiom hooley_error_term :
     ∃ C : ℝ, C > 0 ∧ ∀ k ≥ 2, ∀ c ≥ 0,
       |gapDistribution k c - exponentialCDF c| ≤ C / Real.log k
 
-/-!
+/-
 ## Part VIII: Related Results
 -/
 
@@ -279,7 +279,7 @@ axiom jacobsthal_primorial_bound (k : ℕ) (hk : k ≥ 2) :
 Gaps between coprimes relate to gaps between primes via sieve methods.
 -/
 
-/-!
+/-
 ## Part IX: Mertens' Theorem Connection
 -/
 
@@ -302,7 +302,7 @@ axiom average_gap_asymptotic :
     Tendsto (fun k => averageGap k / (Real.exp eulerGamma * Real.log (nthPrime k)))
       atTop (nhds 1)
 
-/-!
+/-
 ## Part X: Summary
 
 **Erdős Problem #235: SOLVED**

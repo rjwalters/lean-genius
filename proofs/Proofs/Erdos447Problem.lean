@@ -32,7 +32,7 @@ open Finset Nat
 
 namespace Erdos447
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- [n] = {0, 1, ..., n-1} represented as Finset (Fin n) -/
 abbrev GroundSet (n : ℕ) := Finset (Fin n)
@@ -55,7 +55,7 @@ def IsUnionFree' {n : ℕ} (F : Finset (GroundSet n)) : Prop :=
     A ≠ B ∧ A ≠ C ∧ B ≠ C →
     A ∪ B ≠ C ∧ A ∪ C ≠ B ∧ B ∪ C ≠ A
 
-/-! ## Part II: Middle Layer and Sperner Bound -/
+/- ## Part II: Middle Layer and Sperner Bound -/
 
 /-- The collection of all subsets of [n] of size exactly ⌊n/2⌋ -/
 def middleLayer (n : ℕ) : Finset (GroundSet n) :=
@@ -74,7 +74,7 @@ axiom sperner_theorem (n : ℕ) (F : Finset (GroundSet n)) :
     (∀ A B : GroundSet n, A ∈ F → B ∈ F → A ≠ B → ¬(A ⊆ B) ∧ ¬(B ⊆ A)) →
     F.card ≤ middleBinomial n
 
-/-! ## Part III: Asymptotic Notation -/
+/- ## Part III: Asymptotic Notation -/
 
 /-- f(n) = o(g(n)) means f(n)/g(n) → 0 as n → ∞ -/
 def IsLittleO (f g : ℕ → ℕ) : Prop :=
@@ -88,14 +88,14 @@ noncomputable def maxUnionFreeSize (n : ℕ) : ℕ :=
 def AsymptoticUpperBound (f g : ℕ → ℕ) : Prop :=
   ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, (f n : ℝ) ≤ (1 + ε) * g n
 
-/-! ## Part IV: Sárközy-Szemerédi Result (1965) -/
+/- ## Part IV: Sárközy-Szemerédi Result (1965) -/
 
 /-- Sárközy-Szemerédi (unpublished, reported 1965): maxUnionFreeSize(n) = o(2ⁿ).
 This was superseded by Kleitman's stronger result. -/
 axiom sarkozy_szemeredi_bound :
     IsLittleO maxUnionFreeSize (fun n => 2 ^ n)
 
-/-! ## Part V: Kleitman's Theorem (1971) -/
+/- ## Part V: Kleitman's Theorem (1971) -/
 
 /-- Kleitman (1971): maxUnionFreeSize(n) < (1+o(1)) · C(n, ⌊n/2⌋).
 This is optimal because the middle layer achieves this bound.
@@ -104,7 +104,7 @@ Proceedings of the LA Meeting AMS (1971), 153-155. -/
 axiom kleitman_theorem :
     AsymptoticUpperBound maxUnionFreeSize middleBinomial
 
-/-! ## Part VI: Lower Bound -/
+/- ## Part VI: Lower Bound -/
 
 /-- |middleLayer(n)| = C(n, ⌊n/2⌋) -/
 axiom middleLayer_card (n : ℕ) : (middleLayer n).card = middleBinomial n
@@ -112,7 +112,7 @@ axiom middleLayer_card (n : ℕ) : (middleLayer n).card = middleBinomial n
 /-- maxUnionFreeSize(n) ≥ C(n, ⌊n/2⌋), achieved by the middle layer -/
 axiom lower_bound (n : ℕ) : maxUnionFreeSize n ≥ middleBinomial n
 
-/-! ## Part VII: Connection to Problem 487 -/
+/- ## Part VII: Connection to Problem 487 -/
 
 /-- LCM representation: distinct a, b, c ∈ A with lcm(a,b) = c -/
 def lcmRepresentation (A : Set ℕ) : Prop :=
@@ -132,7 +132,7 @@ axiom problem_487_from_447 (A : Set ℕ) (hA : hasPositiveDensity A) :
     ∀ N : ℕ, ∃ a b c : ℕ, a > N ∧ a ∈ A ∧ b ∈ A ∧ c ∈ A ∧
       a ≠ b ∧ a ≠ c ∧ b ≠ c ∧ Nat.lcm a b = c
 
-/-! ## Part VIII: Generalizations -/
+/- ## Part VIII: Generalizations -/
 
 /-- k-union-free: no set is the union of k other distinct sets -/
 def IsKUnionFree {n : ℕ} (F : Finset (GroundSet n)) (k : ℕ) : Prop :=
@@ -146,7 +146,7 @@ def IsStrongUnionFree {n : ℕ} (F : Finset (GroundSet n)) : Prop :=
   ∀ (S : Finset (GroundSet n)), S ⊆ F → S.card ≥ 2 →
     S.sup id ∉ F ∨ S.sup id ∈ S
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #447: Summary**

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #892: Primitive Sequence Domination
 
 Given an increasing integer sequence b₁ < b₂ < ⋯, find necessary and
@@ -21,7 +21,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Primitive Sequences
 -/
 
@@ -34,7 +34,7 @@ def IsPrimitive (a : ℕ → ℕ) : Prop :=
 def IsStrictlyIncreasing (a : ℕ → ℕ) : Prop :=
   ∀ i j : ℕ, i < j → a i < a j
 
-/-!
+/-
 ## Section II: Domination
 -/
 
@@ -43,7 +43,7 @@ aₙ ≤ C · bₙ for all n. -/
 def IsDominatedBy (a b : ℕ → ℕ) : Prop :=
   ∃ C : ℕ, C > 0 ∧ ∀ n : ℕ, a n ≤ C * b n
 
-/-!
+/-
 ## Section III: The Problem
 -/
 
@@ -56,7 +56,7 @@ def ErdosProblem892 (b : ℕ → ℕ) : Prop :=
     ∃ a : ℕ → ℕ, IsStrictlyIncreasing a ∧ IsPrimitive a ∧
       IsDominatedBy a b
 
-/-!
+/-
 ## Section IV: Necessary Conditions
 -/
 
@@ -82,7 +82,7 @@ axiom ess_1967_necessary (b : ℕ → ℕ) :
           if b n < X then (1 : ℝ) / (b n : ℝ) else 0
         ≤ ε * Real.log (X : ℝ) / Real.sqrt (Real.log (Real.log (X : ℝ)))
 
-/-!
+/-
 ## Section V: GCD Condition
 -/
 
@@ -99,7 +99,7 @@ def ErdosProblem892GCDFree : Prop :=
     ∃ a : ℕ → ℕ, IsStrictlyIncreasing a ∧ IsPrimitive a ∧
       IsDominatedBy a b
 
-/-!
+/-
 ## Section VI: Primitive Set Properties
 -/
 

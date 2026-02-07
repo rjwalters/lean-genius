@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #422 — Hofstadter-Type Recursive Sequence
 
 Define f(1) = f(2) = 1 and for n > 2:
@@ -21,7 +21,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- The Erdős–Hofstadter recursive sequence. Defined partially since
     well-definedness for all n is unknown. -/
@@ -36,7 +36,7 @@ noncomputable def hofstadterF : ℕ → ℕ
 def IsWellDefined (n : ℕ) : Prop :=
   ∀ k ≤ n, k ≥ 3 → hofstadterF (k - 1) < k ∧ hofstadterF (k - 2) < k
 
-/-! ## Main Questions -/
+/- ## Main Questions -/
 
 /-- **Well-Definedness**: is f(n) well-defined for all n? -/
 axiom erdos_422_well_defined :
@@ -56,7 +56,7 @@ axiom erdos_422_growth :
     ∃ N₀ : ℕ, ∀ n ≥ N₀,
       (hofstadterF n : ℝ) ≤ (1 + ε) * n
 
-/-! ## Known Values -/
+/- ## Known Values -/
 
 /-- The first few values: f(1) = 1, f(2) = 1, f(3) = 2, f(4) = 3,
     f(5) = 3, f(6) = 4, ... (OEIS A005185). -/
@@ -65,7 +65,7 @@ axiom initial_values :
   hofstadterF 3 = 2 ∧ hofstadterF 4 = 3 ∧
   hofstadterF 5 = 3 ∧ hofstadterF 6 = 4
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Hofstadter Origin**: the sequence was proposed by Hofstadter and
     communicated to Erdős. It appears in Erdős–Graham (1980). -/

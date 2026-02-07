@@ -28,7 +28,7 @@ open Nat Filter Set
 
 namespace Erdos676
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 Define the representation ap² + b where p is prime and b < p.
@@ -48,7 +48,7 @@ def RepresentableSet : Set ℕ := {n | IsRepresentable n}
 -- The set of exceptions (non-representable numbers)
 def ExceptionSet : Set ℕ := {n | ¬ IsRepresentable n}
 
-/-!
+/-
 # Part 2: The Main Conjecture
 
 Erdős asked whether all sufficiently large integers are representable.
@@ -84,7 +84,7 @@ theorem conjecture_equiv : ErdosConjecture676 ↔ ErdosConjecture676' := by
     have := Finset.le_sup this
     omega
 
-/-!
+/-
 # Part 3: Known Results - Density
 
 The sieve methods show almost all integers are representable.
@@ -103,7 +103,7 @@ axiom brun_selberg_bound : ∃ c : ℝ, c > 0 ∧
 axiom density_one : Filter.Tendsto
   (fun x => (x - exceptionCount x : ℝ) / x) atTop (nhds 1)
 
-/-!
+/-
 # Part 4: Small Examples
 
 Verify the definition works for simple cases.
@@ -133,7 +133,7 @@ theorem thirteen_representable : IsRepresentable 13 := by
       · omega
       · ring
 
-/-!
+/-
 # Part 5: Variant Problems
 
 Related questions about representations.
@@ -163,7 +163,7 @@ def SubpolynomialGrowth : Prop :=
   ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
     IsRepresentable n → (minimalCoefficient n : ℝ) < n^ε
 
-/-!
+/-
 # Part 6: Connections to Other Problems
 
 The problem relates to square-free representations and quadratic residues.
@@ -182,7 +182,7 @@ axiom almost_all_covered : ∀ ε > 0, ∃ N : ℕ,
 def ResidueConstraint (n p : ℕ) : Prop :=
   n % p < p  -- trivially true, but captures the residue structure
 
-/-!
+/-
 # Part 7: Problem Status
 
 The problem remains OPEN. Erdős doubted a positive answer.
@@ -211,7 +211,7 @@ theorem erdos_676_statement :
     obtain ⟨a, p, b, hp, ha, hb, heq⟩ := hN n hn
     exact ⟨a, p, b, hp, ha, hb, heq⟩
 
-/-!
+/-
 # Part 8: Summary
 
 **Known:**

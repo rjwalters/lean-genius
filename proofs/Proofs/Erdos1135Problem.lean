@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1135: The Collatz Conjecture
 
 Define f : ℕ → ℕ by f(n) = n/2 if n is even, f(n) = (3n+1)/2 if n is odd.
@@ -19,7 +19,7 @@ Reference: https://erdosproblems.com/1135
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The Collatz function: f(n) = n/2 if even, (3n+1)/2 if odd. -/
 def collatz (n : ℕ) : ℕ :=
@@ -34,7 +34,7 @@ def collatzIter : ℕ → ℕ → ℕ
 def ReachesOne (m : ℕ) : Prop :=
   ∃ k : ℕ, collatzIter k m = 1
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- collatz 1 = 2, and collatz 2 = 1, forming the cycle 1 → 2 → 1. -/
 theorem collatz_one : collatz 1 = 2 := by decide
@@ -44,7 +44,7 @@ theorem collatz_two : collatz 2 = 1 := by decide
 /-- 1 reaches 1 trivially. -/
 theorem one_reaches_one : ReachesOne 1 := ⟨0, rfl⟩
 
-/-! ## Partial Results -/
+/- ## Partial Results -/
 
 /-- Tao (2019): For almost all m, the orbit goes below any function tending to ∞.
     Formally: for every f : ℕ → ℝ with f(n) → ∞, the density of
@@ -61,7 +61,7 @@ axiom krasikov_lagarias (x : ℕ) (hx : 2 ≤ x) :
   (Finset.card ((Finset.range x).filter (fun m => ReachesOne (m + 1))) : ℝ)
   ≥ (x : ℝ) ^ (0.84 : ℝ)
 
-/-! ## The Conjecture -/
+/- ## The Conjecture -/
 
 /-- Erdős Problem #1135 (Collatz Conjecture): Every positive integer
     eventually reaches 1 under iteration of the Collatz function. -/

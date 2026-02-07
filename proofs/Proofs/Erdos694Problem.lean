@@ -28,7 +28,7 @@ namespace Erdos694
 
 open Nat Set
 
-/-! ## The Totient Preimage
+/- ## The Totient Preimage
 
 The preimage φ⁻¹(n) = {m : φ(m) = n} is the set of all integers with totient n.
 -/
@@ -40,7 +40,7 @@ def totientPreimage (n : ℕ) : Set ℕ := {m | Nat.totient m = n}
 This follows from φ(m) ≥ √(m/2) for m > 1. -/
 axiom totientPreimage_finite (n : ℕ) : (totientPreimage n).Finite
 
-/-! ## Largest and Smallest Preimages
+/- ## Largest and Smallest Preimages
 
 For each n in the range of φ, we define the largest and smallest m with φ(m) = n.
 We axiomatize these functions rather than constructing them directly.
@@ -52,7 +52,7 @@ axiom f_max : ℕ → ℕ
 /-- f_min(n) is the smallest m such that φ(m) = n. Returns 0 if no such m exists. -/
 axiom f_min : ℕ → ℕ
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- If n is in the range of φ, then f_max(n) is in the preimage. -/
 axiom f_max_mem (n : ℕ) (h : (totientPreimage n).Nonempty) :
@@ -74,7 +74,7 @@ axiom f_min_is_min (n m : ℕ) (hm : m ∈ totientPreimage n) :
 axiom f_min_le_f_max (n : ℕ) (h : (totientPreimage n).Nonempty) :
     f_min n ≤ f_max n
 
-/-! ## The Main Open Question
+/- ## The Main Open Question
 
 The question asks to investigate the maximum ratio f_max(n)/f_min(n) over n ≤ x.
 -/
@@ -91,7 +91,7 @@ axiom erdos_694_open (x : ℕ) :
       ∀ (m : ℕ), m ≤ x → (totientPreimage m).Nonempty →
         preimageRatio m ≤ preimageRatio n
 
-/-! ## Carmichael's Totient Conjecture
+/- ## Carmichael's Totient Conjecture
 
 Carmichael (1907) conjectured that the equation φ(m) = n never has exactly one solution.
 Equivalently: the ratio f_max(n)/f_min(n) is never exactly 1.
@@ -109,7 +109,7 @@ def CarmichaelConjecture : Prop := ∀ n, ¬ isCarmichaelTotient n
 /-- The negation of Carmichael's conjecture: at least one Carmichael totient exists. -/
 def CarmichaelCounterexample : Prop := ∃ n, isCarmichaelTotient n
 
-/-! ## Erdős's Conditional Result (SOLVED)
+/- ## Erdős's Conditional Result (SOLVED)
 
 Erdős proved: If Carmichael's conjecture is false (i.e., some n has a unique preimage),
 then infinitely many such n must exist.
@@ -127,7 +127,7 @@ the behavior of n under multiplication by certain primes forces more unique prei
 axiom erdos_conditional_infinite :
     CarmichaelCounterexample → carmichaelTotients.Infinite
 
-/-! ## Known Partial Results -/
+/- ## Known Partial Results -/
 
 /-- Ford (1999): Any Carmichael totient must exceed 10^10^10. -/
 axiom ford_lower_bound :
@@ -145,7 +145,7 @@ theorem two_is_totient_value : 2 ∈ totientValues := ⟨3, rfl⟩
 /-- Every even number ≥ 2 is a totient value (axiomatized). -/
 axiom even_totient_values : ∀ n : ℕ, n ≥ 2 → Even n → n ∈ totientValues
 
-/-! ## Examples of Preimage Sizes -/
+/- ## Examples of Preimage Sizes -/
 
 /-- φ(1) = 1 -/
 example : Nat.totient 1 = 1 := rfl
@@ -162,7 +162,7 @@ example : Nat.totient 4 = 2 := rfl
 /-- φ(6) = 2, another preimage of 2. -/
 example : Nat.totient 6 = 2 := rfl
 
-/-! ## Non-Carmichael Verification
+/- ## Non-Carmichael Verification
 
 We verify that small totient values are not Carmichael totients
 (they have multiple preimages).
@@ -188,7 +188,7 @@ theorem two_not_carmichael : ¬ isCarmichaelTotient 2 := by
   have : (3 : ℕ) = 4 := eq3.trans eq4.symm
   norm_num at this
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #694** Summary:
 

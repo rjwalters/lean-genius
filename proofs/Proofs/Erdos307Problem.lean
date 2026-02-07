@@ -37,7 +37,7 @@ namespace Erdos307
 
 open Finset BigOperators
 
-/-! ## Part I: Problem Statement -/
+/- ## Part I: Problem Statement -/
 
 /-- The sum of reciprocals of elements in a finite set.
     For a set S = {a₁, a₂, ..., aₙ}, this computes 1/a₁ + 1/a₂ + ... + 1/aₙ. -/
@@ -57,7 +57,7 @@ def IsSetOfPrimes (S : Finset ℕ) : Prop :=
 def IsPairwiseCoprime (S : Finset ℕ) : Prop :=
   (S : Set ℕ).Pairwise Nat.Coprime
 
-/-! ## Part II: The Open Problem (Prime Version) -/
+/- ## Part II: The Open Problem (Prime Version) -/
 
 /-- **Erdős Problem #307** (Prime Version - OPEN):
 
@@ -72,7 +72,7 @@ def ErdosProblem307 : Prop :=
 /-- The open status is a placeholder. -/
 axiom erdos_307_open : True
 
-/-! ## Part III: The Solved Coprime Version -/
+/- ## Part III: The Solved Coprime Version -/
 
 /-- The relaxed version where P and Q need only be pairwise coprime,
     not necessarily prime. -/
@@ -144,7 +144,7 @@ theorem erdos_307_coprime_solved : ErdosProblem307Coprime := by
   · simp [cambieExample1P]; decide
   · simp [cambieExample1Q]; decide
 
-/-! ## Part IV: The Strengthened Coprime Version (Open) -/
+/- ## Part IV: The Strengthened Coprime Version (Open) -/
 
 /-- The strengthened coprime version: require 1 ∉ P ∪ Q.
     No examples are known! -/
@@ -157,7 +157,7 @@ def ErdosProblem307CoprimeStrengthened : Prop :=
 /-- Status: The strengthened coprime version remains OPEN. -/
 axiom erdos_307_coprime_strengthened_open : True
 
-/-! ## Part V: Constraints on Prime Solutions -/
+/- ## Part V: Constraints on Prime Solutions -/
 
 /-- If P and Q are sets of primes with product 1, then P ∩ Q = ∅.
 
@@ -195,7 +195,7 @@ theorem prime_set_size_lower_bound {P Q : Finset ℕ}
     (P ∪ Q).card ≥ 60 := by
   sorry
 
-/-! ## Part VI: Why the Problem is Hard -/
+/- ## Part VI: Why the Problem is Hard -/
 
 /-- The sum of reciprocals of the first n primes.
     p₁ = 2, p₂ = 3, p₃ = 5, ...
@@ -218,7 +218,7 @@ axiom product_rigidity :
       reciprocalSum Q = (reciprocalSum P)⁻¹ ∧
       (reciprocalSum P)⁻¹ = ∑ q in Q, (q : ℚ)⁻¹
 
-/-! ## Part VII: Related Egyptian Fraction Problems -/
+/- ## Part VII: Related Egyptian Fraction Problems -/
 
 /-- An Egyptian fraction representation of 1.
     1 = 1/a₁ + 1/a₂ + ... + 1/aₙ for distinct positive integers aᵢ. -/
@@ -240,7 +240,7 @@ axiom egyptian_count_growth :
   ∀ n : ℕ, ∃ count : ℕ, count > 0 ∧
     (∀ S : Finset ℕ, S.card = n → IsEgyptianOne S → count ≥ 1)
 
-/-! ## Part VIII: Computational Approaches -/
+/- ## Part VIII: Computational Approaches -/
 
 /-- A brute force search would need to check pairs (P, Q) where
     |P ∪ Q| ≥ 60, making exhaustive search infeasible. -/
@@ -254,7 +254,7 @@ theorem partition_count : searchSpaceSize = 2^60 := rfl
     Even at 10⁹ checks/second, this takes over 36 years. -/
 axiom search_intractable : searchSpaceSize > 10^18
 
-/-! ## Part IX: Why Does 1 Appear in Coprime Examples? -/
+/- ## Part IX: Why Does 1 Appear in Coprime Examples? -/
 
 /-- In Cambie's examples, 1 always appears in one of the sets.
     This is because 1 + 1/n has reciprocal n/(n+1), which is
@@ -273,7 +273,7 @@ theorem pair_with_one (n : ℕ) (hn : n > 0) :
   field_simp
   ring
 
-/-! ## Part X: Alternative Formulations -/
+/- ## Part X: Alternative Formulations -/
 
 /-- Multiplicative form: Find P, Q with
     ∏_{p ∈ P} p · ∏_{q ∈ Q} q = (Σ subsets give 1). -/
@@ -292,7 +292,7 @@ axiom lcd_connection {P Q : Finset ℕ} (hP : IsSetOfPrimes P)
     (∑ S in P.powerset, ∏ p in (P \ S), p) *
     (∑ T in Q.powerset, ∏ q in (Q \ T), q)
 
-/-! ## Part XI: Partial Results -/
+/- ## Part XI: Partial Results -/
 
 /-- No solution with |P| = |Q| = 2 exists among primes.
     If P = {p₁, p₂} and Q = {q₁, q₂}, then
@@ -312,7 +312,7 @@ theorem no_two_three_solution :
       reciprocalProduct P Q = 1 := by
   sorry
 
-/-! ## Part XII: Summary -/
+/- ## Part XII: Summary -/
 
 /-- Summary of Erdős Problem #307:
 
@@ -346,7 +346,7 @@ theorem erdos_307_summary :
 
 end Erdos307
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #307 on prime reciprocal products.

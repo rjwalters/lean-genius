@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #466 — Points in a Circle with Fractional Distance Separation
 
 Let N(X, δ) denote the maximum number of points P₁, …, Pₙ in a disk of
@@ -32,7 +32,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Set Real
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- Distance from a real number to the nearest integer. -/
 noncomputable def fracDist (x : ℝ) : ℝ :=
@@ -52,14 +52,14 @@ pairwise fractional-distance separation ≥ δ. -/
 noncomputable def maxSeparatedPoints (X δ : ℝ) : ℕ :=
   sSup { c.n | c : SeparatedConfig X δ }
 
-/-! ## Main Result (Proved) -/
+/- ## Main Result (Proved) -/
 
 /-- **Erdős Problem #466 (Proved).**
 There exists δ > 0 such that N(X, δ) → ∞ as X → ∞. -/
 axiom erdos_466 :
   ∃ δ : ℝ, 0 < δ ∧ Filter.Tendsto (fun X => maxSeparatedPoints X δ) Filter.atTop Filter.atTop
 
-/-! ## Graham's Bound -/
+/- ## Graham's Bound -/
 
 /-- **Graham.** N(X, 1/10) ≥ (log X)/10 for sufficiently large X.
 This answers Erdős's question in the affirmative. -/
@@ -67,7 +67,7 @@ axiom graham_logarithmic_bound :
   ∀ᶠ (X : ℝ) in Filter.atTop,
     (maxSeparatedPoints X (1/10) : ℝ) ≥ Real.log X / 10
 
-/-! ## Sárközy's Improvement -/
+/- ## Sárközy's Improvement -/
 
 /-- **Sárközy (1976).** For all sufficiently small δ > 0,
 N(X, δ) > X^{1/2 − δ^{1/7}} for all large X.
@@ -78,7 +78,7 @@ axiom sarkozy_polynomial_bound :
     ∀ᶠ (X : ℝ) in Filter.atTop,
       (maxSeparatedPoints X δ : ℝ) > X ^ (1/2 - δ ^ (1/7 : ℝ))
 
-/-! ## Structural Observations -/
+/- ## Structural Observations -/
 
 /-- For any δ > 1/2, we have N(X, δ) = 0 for all X, since the
 fractional distance is always at most 1/2. -/

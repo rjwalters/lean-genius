@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #542: Reciprocal Sums Under LCM Constraints
 
 Let A ⊆ {1, ..., n} be a set such that lcm(a, b) > n for all distinct a, b ∈ A.
@@ -20,7 +20,7 @@ import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-/-! ## LCM Condition and Reciprocal Sum -/
+/- ## LCM Condition and Reciprocal Sum -/
 
 /-- A set A ⊆ {1,...,n} has the pairwise LCM property: lcm(a,b) > n
     for all distinct elements a, b ∈ A. -/
@@ -32,7 +32,7 @@ def PairwiseLCMExceeds (A : Finset ℕ) (n : ℕ) : Prop :=
 noncomputable def reciprocalSum (A : Finset ℕ) : ℚ :=
   A.sum (fun a => (1 : ℚ) / a)
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /-- Erdős Problem 542 (Schinzel-Szekeres 1959): If A ⊆ {1,...,n} has
     lcm(a,b) > n for all distinct a,b ∈ A, then ∑ 1/a ≤ 31/30. -/
@@ -47,7 +47,7 @@ axiom bound_achieved_by_235 :
 /-- {2, 3, 5} satisfies the LCM condition for n = 5. -/
 axiom example_235_valid : PairwiseLCMExceeds {2, 3, 5} 5
 
-/-! ## Chen's Stronger Bound -/
+/- ## Chen's Stronger Bound -/
 
 /-- Chen's bound (1996): for n > 172509, the reciprocal sum is strictly
     less than 1/3 + 1/4 + 1/5 + 1/7 + 1/11. -/
@@ -61,7 +61,7 @@ theorem chen_bound_value :
     (1 : ℚ)/3 + 1/4 + 1/5 + 1/7 + 1/11 = 2927/4620 := by
   norm_num
 
-/-! ## Maximal Sets Conjecture -/
+/- ## Maximal Sets Conjecture -/
 
 /-- Erdős-Schinzel-Szekeres conjecture: the only sets achieving
     reciprocal sum > 1 under the LCM condition are {2,3,5} and {3,4,5,7,11}. -/
@@ -78,7 +78,7 @@ axiom example_34_5_7_11_sum :
 axiom example_34_5_7_11_valid :
     PairwiseLCMExceeds {3, 4, 5, 7, 11} 11
 
-/-! ## Structural Properties -/
+/- ## Structural Properties -/
 
 /-- The LCM condition implies no element divides another (within {1,...,n}). -/
 axiom lcm_condition_no_divisibility (A : Finset ℕ) (n : ℕ)

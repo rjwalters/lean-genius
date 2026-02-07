@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #311: Minimal Deviation of Unit Fraction Sums from 1
 
 Define δ(N) = min { |1 - ∑_{n ∈ A} 1/n| : A ⊆ {1,...,N}, ∑ ≠ 1, ∑ ≤ 1 }
@@ -21,7 +21,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The sum of unit fractions 1/n for n ∈ A. -/
 noncomputable def unitFracSum (A : Finset ℕ) : ℝ :=
@@ -34,7 +34,7 @@ axiom delta (N : ℕ) : ℝ
 /-- δ(N) is positive for N ≥ 1. -/
 axiom delta_pos (N : ℕ) (hN : 1 ≤ N) : 0 < delta N
 
-/-! ## Lower Bound -/
+/- ## Lower Bound -/
 
 /-- δ(N) ≥ e^{-(1+o(1))N}: for every ε > 0, δ(N) ≥ e^{-(1+ε)N} for large N.
     This follows from δ(N) ≥ 1/lcm(1,...,N) and the PNT estimate on lcm. -/
@@ -42,7 +42,7 @@ axiom delta_lower_bound (ε : ℝ) (hε : 0 < ε) :
   ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
     Real.exp (-(1 + ε) * N) ≤ delta N
 
-/-! ## Upper Bound -/
+/- ## Upper Bound -/
 
 /-- Tang's upper bound: δ(N) ≤ exp(-cN/(log N · log log N)³) for some c > 0.
     This is far from the conjectured e^{-cN}. -/
@@ -50,7 +50,7 @@ axiom tang_upper_bound :
   ∃ c : ℝ, 0 < c ∧ ∀ N : ℕ, 10 ≤ N →
     delta N ≤ Real.exp (-(c * N / (Real.log N * Real.log (Real.log N)) ^ 3))
 
-/-! ## The Conjecture -/
+/- ## The Conjecture -/
 
 /-- Erdős Problem #311 (Erdős–Graham 1980): δ(N) = e^{-(c+o(1))N}
     for some constant c ∈ (0,1). -/

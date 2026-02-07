@@ -43,7 +43,7 @@ namespace Erdos833
 
 open Nat Finset
 
-/-!
+/-
 ## Part I: Hypergraph Definitions
 -/
 
@@ -73,7 +73,7 @@ noncomputable def minMaxDegree {V : Type*} [Fintype V] [DecidableEq V]
     (H : UniformHypergraph V) : ℕ :=
   Finset.univ.sup (fun v => vertexDegree H v)
 
-/-!
+/-
 ## Part II: Hypergraph Colorings
 -/
 
@@ -102,7 +102,7 @@ def HasChromaticNumber3 {V : Type*} [Fintype V] [DecidableEq V]
     (H : UniformHypergraph V) : Prop :=
   ¬IsKColorable H 2 ∧ IsKColorable H 3
 
-/-!
+/-
 ## Part III: The Main Question
 
 Erdős asked for the function f(r) = min over all r-uniform, 3-chromatic H
@@ -125,7 +125,7 @@ axiom f_3 : f 3 = 3
 /-- Erdős did not know f(4) -/
 axiom f_4_unknown : True
 
-/-!
+/-
 ## Part IV: The Exponential Question
 
 Does there exist c > 0 such that f(r) ≥ (1+c)^r for all r?
@@ -135,7 +135,7 @@ Does there exist c > 0 such that f(r) ≥ (1+c)^r for all r?
 def ExponentialGrowthConjecture : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ r : ℕ, r ≥ 2 → (f r : ℝ) ≥ (1 + c)^r
 
-/-!
+/-
 ## Part V: Erdős-Lovász Theorem (1975)
 -/
 
@@ -167,7 +167,7 @@ axiom bound_is_exponential (ε : ℝ) (hε : ε > 0) :
     we have f(r) ≥ 2^{r-1}/(4r) ≥ 1.4^r for all r ≥ 2. -/
 axiom erdos_833_solution : ExponentialGrowthConjecture
 
-/-!
+/-
 ## Part VI: Related Results
 -/
 
@@ -188,7 +188,7 @@ axiom edge_lower_bound :
           H.r = r → HasChromaticNumber3 H →
             (H.edges.card : ℝ) ≥ 2^(r - 1) / (4 * r)
 
-/-!
+/-
 ## Part VII: Specific Values
 -/
 
@@ -205,7 +205,7 @@ axiom fano_plane_example :
       ∃ H : UniformHypergraph V, H.r = 3 ∧ HasChromaticNumber3 H ∧
         ∀ v : V, vertexDegree H v = 3
 
-/-!
+/-
 ## Part VIII: Proof Technique
 -/
 
@@ -223,7 +223,7 @@ axiom contrapositive_form (r : ℕ) (hr : r ≥ 2)
     (hrH : H.r = r) :
     (∀ v : V, (vertexDegree H v : ℝ) < 2^(r - 1) / (4 * r)) → IsKColorable H 2
 
-/-!
+/-
 ## Part IX: Summary
 -/
 

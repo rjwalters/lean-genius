@@ -30,7 +30,7 @@ open Complex Set Filter
 
 namespace Erdos229
 
-/-! ## Key Definitions -/
+/- ## Key Definitions -/
 
 /-- A set has **no finite limit point** if its derived set (set of accumulation
     points) is empty. This means the set is discrete - every point is isolated.
@@ -46,7 +46,7 @@ def IsEntireFunction (f : ℂ → ℂ) : Prop := Differentiable ℂ f
 def IsTranscendental (f : ℂ → ℂ) : Prop :=
   IsEntireFunction f ∧ ¬∃ p : Polynomial ℂ, ∀ z, f z = p.eval z
 
-/-! ## The Main Problem -/
+/- ## The Main Problem -/
 
 /--
 **Erdős Problem #229**: Given a sequence of sets (Sₙ) of complex numbers,
@@ -63,7 +63,7 @@ def Erdos229Question : Prop :=
   ∃ f : ℂ → ℂ, IsTranscendental f ∧
     ∀ n ≥ 1, ∃ k : ℕ, ∀ z ∈ S n, iteratedDeriv k f z = 0
 
-/-! ## Key Insight: Why Discrete Sets? -/
+/- ## Key Insight: Why Discrete Sets? -/
 
 /--
 **Why discrete sets matter**: The identity theorem says that if an analytic
@@ -75,7 +75,7 @@ The condition "no finite limit point" ensures exactly this discreteness.
 axiom discrete_condition_necessary :
     ∀ S : Set ℂ, HasNoFiniteLimitPoint S → (S = ∅ ∨ S.Countable)
 
-/-! ## The Main Theorem -/
+/- ## The Main Theorem -/
 
 /--
 **Theorem** (Barth-Schneider, 1972):
@@ -97,7 +97,7 @@ axiom barth_schneider_theorem : Erdos229Question
 /-- The answer to Erdős Problem #229 is YES. -/
 theorem erdos_229_answer : Erdos229Question := barth_schneider_theorem
 
-/-! ## Explicit Formulation -/
+/- ## Explicit Formulation -/
 
 /--
 Equivalent explicit formulation from Barth-Schneider:
@@ -116,7 +116,7 @@ axiom barth_schneider_explicit :
       (∀ k, n k > 0) ∧
       ∀ k, ∀ z ∈ S k, iteratedDeriv (n k) f z = 0
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /--
 **Special case**: For a single discrete set S, we can find an entire function
@@ -133,7 +133,7 @@ axiom derivative_zeros :
     ∀ k : ℕ, ∀ S : Set ℂ, HasNoFiniteLimitPoint S →
     ∃ f : ℂ → ℂ, IsEntireFunction f ∧ ∀ z ∈ S, iteratedDeriv k f z = 0
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /--
 **Related result**: The iterated derivative of an entire function is entire.
@@ -142,7 +142,7 @@ This follows from the fact that holomorphic functions are infinitely differentia
 axiom iterated_deriv_entire :
     ∀ (f : ℂ → ℂ) (n : ℕ), IsEntireFunction f → IsEntireFunction (iteratedDeriv n f)
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /--
 **Summary of Erdős Problem #229**:

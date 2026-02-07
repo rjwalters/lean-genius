@@ -27,7 +27,7 @@ open Finset BigOperators
 
 namespace Erdos107
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A finite set of points in ℝ² is in **general position** if no three
     points are collinear. This is the non-trilinearity condition. -/
@@ -55,7 +55,7 @@ def CardSet (n : ℕ) : Set ℕ :=
     guarantees the existence of a convex n-gon. -/
 noncomputable def f (n : ℕ) : ℕ := sInf (CardSet n)
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /--
 **Theorem (Klein 1931)**: f(4) = 5
@@ -83,7 +83,7 @@ theorem f_three_eq : f 3 = 3 := by
   -- The infimum of {N | any N points contain a triangle} is 3
   sorry -- Requires showing 3 ∈ CardSet 3 and 2 ∉ CardSet 3
 
-/-! ## Main Bounds -/
+/- ## Main Bounds -/
 
 /--
 **Erdős-Szekeres Lower Bound (1960)**:
@@ -123,7 +123,7 @@ axiom hmpt_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 3,
       (f n : ℝ) ≤ 2^(n + C * Real.sqrt (n * Real.log n))
 
-/-! ## Main Conjecture (OPEN) -/
+/- ## Main Conjecture (OPEN) -/
 
 /--
 **Erdős Problem 107 (OPEN)**:
@@ -137,7 +137,7 @@ We state this as a Prop without asserting its truth value.
 def HappyEndingConjecture : Prop :=
   ∀ n ≥ 3, f n = 2^(n - 2) + 1
 
-/-! ## Existence Result -/
+/- ## Existence Result -/
 
 /--
 **Erdős-Szekeres (1935)**: For every n ≥ 3, f(n) is finite.
@@ -151,7 +151,7 @@ theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by
   -- By ersz_upper_bound, this many points suffice
   sorry -- Requires the full Ramsey-theoretic argument
 
-/-! ## Verified Small Values -/
+/- ## Verified Small Values -/
 
 /-- f(3) = 3: Three non-collinear points always form a triangle. -/
 theorem f_3_value : f 3 = 3 := by
@@ -168,7 +168,7 @@ theorem f_4_ub : f 4 ≤ 5 := by
   -- Klein's argument
   sorry
 
-/-! ## Historical Notes
+/- ## Historical Notes
 
 The problem gets its name "Happy Ending" because two mathematicians
 who worked on it, George Szekeres and Esther Klein, ended up getting

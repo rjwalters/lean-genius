@@ -28,7 +28,7 @@ open Asymptotics Filter
 
 namespace Erdos325
 
-/-!
+/-
 ## Core Definitions
 
 We define the predicate for an integer being a sum of three k-th powers,
@@ -44,7 +44,7 @@ which are expressible as sums of three k-th powers. -/
 noncomputable def cardIsSumThreePowerBelow (k x : ℕ) : ℕ :=
   {n ∈ Set.Iic x | IsSumThreePower k n}.ncard
 
-/-!
+/-
 ## Basic Examples
 
 We verify some simple cases of sums of three k-th powers.
@@ -70,7 +70,7 @@ theorem twentynine_isSumThreePower_three : IsSumThreePower 3 29 := by
   use 3, 1, 1
   native_decide
 
-/-!
+/-
 ## The Main Conjecture
 
 The main question asks whether f_{k,3}(x) grows at least as fast as x^{3/k}.
@@ -89,7 +89,7 @@ axiom erdos_325_conjecture : ∀ k : ℕ, 3 ≤ k →
     (fun x : ℕ => (x : ℝ) ^ (3 / k : ℝ)) =O[atTop]
     (fun x : ℕ => (cardIsSumThreePowerBelow k x : ℝ))
 
-/-!
+/-
 ## Variants and Partial Results
 
 Erdős also asked about a weaker form with an epsilon loss, and there
@@ -114,7 +114,7 @@ axiom wooley_three_cubes :
     (fun x : ℕ => (x : ℝ) ^ (0.917 : ℝ)) =O[atTop]
     (fun x : ℕ => (cardIsSumThreePowerBelow 3 x : ℝ))
 
-/-!
+/-
 ## Context: The Two-Term Case
 
 For comparison, the two-term case was solved by Mahler and Erdős in 1938.

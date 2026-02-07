@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #654 — Distinct Distances with No Four Concyclic
 
 Given n points x₁, ..., xₙ ∈ ℝ² with no four points on a circle,
@@ -19,7 +19,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A point configuration in the plane. -/
 def PointConfig (n : ℕ) := Fin n → ℝ × ℝ
@@ -40,7 +40,7 @@ noncomputable def distinctDistances (P : PointConfig n) (i : Fin n) : ℕ :=
 noncomputable def maxDistinctDistances (P : PointConfig n) : ℕ :=
   Finset.univ.sup' ⟨0, Finset.mem_univ 0⟩ (distinctDistances P)
 
-/-! ## Known Lower Bound -/
+/- ## Known Lower Bound -/
 
 /-- Every point has at least (n-1)/3 distinct distances when
     no four are concyclic. -/
@@ -48,7 +48,7 @@ axiom known_lower_bound (n : ℕ) (hn : 4 ≤ n) (P : PointConfig n)
     (hP : NoFourConcyclic P) (i : Fin n) :
     (n - 1) / 3 ≤ distinctDistances P i
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- **Erdős Problem #654**: Under the no-four-concyclic condition,
     some point must determine (1 - o(1))n distinct distances.
@@ -59,7 +59,7 @@ axiom erdos_654_conjecture :
       ∀ P : PointConfig n, NoFourConcyclic P →
         ∃ i : Fin n, (1 - ε) * (n : ℝ) ≤ (distinctDistances P i : ℝ)
 
-/-! ## Erdős–Pach Weaker Variant -/
+/- ## Erdős–Pach Weaker Variant -/
 
 /-- General position: no three points are collinear. -/
 def NoThreeCollinear (P : PointConfig n) : Prop :=
@@ -77,7 +77,7 @@ axiom erdos_pach_weaker :
       ∀ P : PointConfig n, NoThreeCollinear P →
         ∃ i : Fin n, ((1 : ℝ)/3 + c) * n ≤ (distinctDistances P i : ℝ)
 
-/-! ## Context: Erdős Distinct Distances Problem -/
+/- ## Context: Erdős Distinct Distances Problem -/
 
 /-- Without any restriction, the Guth–Katz theorem (2015) gives
     Ω(n/log n) distinct distances in total. Problem #654 asks for

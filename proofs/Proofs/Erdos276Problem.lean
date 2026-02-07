@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #276 — Composite Lucas Sequence Without Common Factor
 
 Does there exist an infinite Lucas sequence a₀, a₁, a₂, ... where
@@ -22,7 +22,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- A Lucas sequence satisfies a_{n+2} = a_{n+1} + a_n. -/
 def IsLucasSequence (a : ℕ → ℕ) : Prop :=
@@ -37,7 +37,7 @@ def IsPrimefree (a : ℕ → ℕ) : Prop :=
 def HasNoUniversalDivisor (a : ℕ → ℕ) : Prop :=
   ∀ d : ℕ, d > 1 → ∃ k, ¬(d ∣ a k)
 
-/-! ## Main Question -/
+/- ## Main Question -/
 
 /-- **Erdős Problem #276**: Does there exist a primefree Lucas sequence
     with no universal divisor? The answer is YES (Graham 1964), but the
@@ -46,7 +46,7 @@ axiom erdos_276_existence :
   ∃ a : ℕ → ℕ,
     IsLucasSequence a ∧ IsPrimefree a ∧ HasNoUniversalDivisor a
 
-/-! ## Graham's Construction -/
+/- ## Graham's Construction -/
 
 /-- **Graham (1964)**: There exist coprime composites a₀, a₁ such that
     the Lucas sequence they generate is primefree. The construction
@@ -62,7 +62,7 @@ axiom coprime_necessary :
   ∀ a : ℕ → ℕ, IsLucasSequence a →
     ∀ d : ℕ, d ∣ a 0 → d ∣ a 1 → ∀ k, d ∣ a k
 
-/-! ## Covering Congruence Mechanism -/
+/- ## Covering Congruence Mechanism -/
 
 /-- **Covering system**: a finite collection of congruence classes
     a_i (mod m_i) that covers all integers. Graham's proof shows
@@ -76,7 +76,7 @@ axiom covering_system_mechanism :
       IsPrimefree a →
       ∀ k, ∃ p ∈ S, p ∣ a k
 
-/-! ## Further Results -/
+/- ## Further Results -/
 
 /-- **Smaller starting values**: Vsemirnov (2004) found a primefree
     Lucas sequence with a₀ = 106276436867, a₁ = 35256392432,

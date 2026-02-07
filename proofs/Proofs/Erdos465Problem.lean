@@ -41,7 +41,7 @@ open Real
 
 namespace Erdos465
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -62,7 +62,7 @@ axiom distToInt_bounds : ∀ x : ℝ, 0 ≤ distToInt x ∧ distToInt x ≤ 1/2
 /-- ‖x‖ = 0 iff x is an integer -/
 axiom distToInt_zero_iff : ∀ x : ℝ, distToInt x = 0 ↔ ∃ n : ℤ, x = n
 
-/-!
+/-
 ## Part 2: Point Configurations in Disks
 -/
 
@@ -82,7 +82,7 @@ def DistancesAvoidIntegers (P : PointConfig n) (δ : ℝ) : Prop :=
 noncomputable def maxPoints (X δ : ℝ) : ℕ :=
   sSup {n : ℕ | ∃ P : PointConfig n, P.radius = X ∧ DistancesAvoidIntegers P δ}
 
-/-!
+/-
 ## Part 3: The First Conjecture (Sublinear Growth)
 -/
 
@@ -108,7 +108,7 @@ theorem first_conjecture_holds : FirstConjecture := by
   -- This follows from log log X → ∞
   sorry
 
-/-!
+/-
 ## Part 4: The Second Conjecture (Square Root Growth)
 -/
 
@@ -138,7 +138,7 @@ theorem second_conjecture_holds : SecondConjecture := by
   -- C·X^{1/2} < X^{1/2+ε} when X > C^{2/ε}
   sorry
 
-/-!
+/-
 ## Part 5: Comparison of Bounds
 -/
 
@@ -158,7 +158,7 @@ axiom konyagin_is_sqrt :
   -- X^{1/2} is much smaller than X / log log X
   True
 
-/-!
+/-
 ## Part 6: Lower Bounds (Problem #466)
 -/
 
@@ -179,7 +179,7 @@ theorem exponent_optimal :
   intro _
   trivial
 
-/-!
+/-
 ## Part 7: Related Techniques
 -/
 
@@ -200,7 +200,7 @@ axiom fourier_approach :
   -- Konyagin used Fourier analysis to get the sharp bound
   True
 
-/-!
+/-
 ## Part 8: Generalizations
 -/
 
@@ -221,7 +221,7 @@ axiom problem_953_connection :
   -- with different constraints
   True
 
-/-!
+/-
 ## Part 9: Why X^{1/2}?
 -/
 
@@ -240,7 +240,7 @@ axiom constraint_is_restrictive :
   -- So we can't have too many points
   True
 
-/-!
+/-
 ## Part 10: Summary
 -/
 

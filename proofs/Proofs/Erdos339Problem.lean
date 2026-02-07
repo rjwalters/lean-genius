@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #339: Additive Bases and Distinct Element Sums
 
 Let A ⊆ ℕ be a basis of order r. This means every sufficiently large integer

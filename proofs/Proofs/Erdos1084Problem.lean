@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1084: Unit Distances Among Separated Points
 
 Let f_d(n) be the maximum number of pairs at distance exactly 1 among
@@ -26,7 +26,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A configuration of n points in ℝ^d where all pairwise distances are ≥ 1. -/
 structure SeparatedConfig (d n : ℕ) where
@@ -44,14 +44,14 @@ noncomputable def unitDistPairs {d n : ℕ} (C : SeparatedConfig d n) : ℕ :=
     points in ℝ^d. -/
 axiom maxUnitDistPairs (d n : ℕ) : ℕ
 
-/-! ## One-Dimensional Case -/
+/- ## One-Dimensional Case -/
 
 /-- f_1(n) = n - 1: on the line, separated points at consecutive
     unit intervals give n-1 unit pairs, and this is optimal. -/
 axiom f1_exact (n : ℕ) (hn : n ≥ 1) :
   maxUnitDistPairs 1 n = n - 1
 
-/-! ## Two-Dimensional Case -/
+/- ## Two-Dimensional Case -/
 
 /-- Erdős's upper bound: f_2(n) < 3n - c√n for some c > 0.
     The leading coefficient 3 comes from the triangular lattice
@@ -76,7 +76,7 @@ axiom triangular_lattice_optimal (n : ℕ) (hn : n ≥ 2) :
 axiom f2_trivial_upper (n : ℕ) (hn : n ≥ 1) :
   maxUnitDistPairs 2 n < 3 * n
 
-/-! ## Three-Dimensional Case -/
+/- ## Three-Dimensional Case -/
 
 /-- Leading coefficient in d=3: f_3(n) ~ 6n.
     Each point in ℝ³ with pairwise distances ≥ 1 has at most 12
@@ -98,7 +98,7 @@ axiom erdos_1084_d3_conjecture :
       6 * (n : ℝ) - c₁ * (n : ℝ) ^ (2/3 : ℝ) ≤ (maxUnitDistPairs 3 n : ℝ) ∧
       (maxUnitDistPairs 3 n : ℝ) ≤ 6 * (n : ℝ) - c₂ * (n : ℝ) ^ (2/3 : ℝ)
 
-/-! ## General Dimension -/
+/- ## General Dimension -/
 
 /-- Lower bound: f_d(n) ≥ (d - o(1)) · n.
     Lattice packings in ℝ^d give configurations where each point

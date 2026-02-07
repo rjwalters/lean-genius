@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #655 — Distinct Distances with Concyclicity Restriction
 
 Given n points in ℝ² such that no circle centered at any point contains
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-/-! ## Point Configurations and Distances -/
+/- ## Point Configurations and Distances -/
 
 /-- A configuration of n points in ℝ² -/
 def PointConfig (n : ℕ) := Fin n → EuclideanSpace ℝ (Fin 2)
@@ -34,7 +34,7 @@ noncomputable def distinctDistances (P : PointConfig n) : Finset ℝ :=
 noncomputable def distinctDistancesFrom (P : PointConfig n) (i : Fin n) : Finset ℝ :=
   (Finset.univ.image (fun j => dist (P i) (P j))).filter (· > 0)
 
-/-! ## The Concyclicity Restriction -/
+/- ## The Concyclicity Restriction -/
 
 /-- No circle centered at any point xᵢ passes through 3 or more other points.
     Equivalently: for each i, at most 2 other points are equidistant from xᵢ. -/
@@ -50,7 +50,7 @@ def NoFourConcyclic (P : PointConfig n) : Prop :=
       dist center (P a) = r ∧ dist center (P b) = r ∧
       dist center (P c) = r ∧ dist center (P d) = r
 
-/-! ## Basic Lower Bound -/
+/- ## Basic Lower Bound -/
 
 /-- Every point determines at least ⌈(n-1)/2⌉ distinct distances
     when no circle centered at it contains 3+ other points -/
@@ -59,7 +59,7 @@ axiom basic_distance_bound (n : ℕ) (hn : 2 ≤ n)
     (hC : NoConcyclicTriple P) (i : Fin n) :
   (n - 1) / 2 ≤ (distinctDistancesFrom P i).card
 
-/-! ## Hunter's Counterexample -/
+/- ## Hunter's Counterexample -/
 
 /-- Zach Hunter showed the conjecture as stated is false:
     n points equally spaced on a circle satisfy NoConcyclicTriple
@@ -70,7 +70,7 @@ axiom hunter_counterexample :
       Function.Injective P ∧ NoConcyclicTriple P ∧
       (distinctDistances P).card ≤ n / 2 + 1
 
-/-! ## The Erdős–Pach Conjecture (Corrected Form) -/
+/- ## The Erdős–Pach Conjecture (Corrected Form) -/
 
 /-- Erdős Problem 655 (Erdős–Pach, corrected): Under the stronger condition
     that no 4 points are concyclic (and no 3 collinear), do the points

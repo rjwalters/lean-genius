@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #557: Multicolor Ramsey Numbers of Trees
 
 Let R(T; k) denote the minimum m such that any k-coloring of the edges
@@ -26,7 +26,7 @@ import Mathlib.Tactic
 
 open SimpleGraph
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A tree on n vertices, modeled as a SimpleGraph on Fin n. -/
 structure Tree (n : ℕ) where
@@ -63,7 +63,7 @@ axiom ramseyTree_minimal {n : ℕ} (T : Tree n) (k : ℕ) (hk : k ≥ 1) :
     ∃ c : EdgeColoring (ramseyTree n T k - 1) k,
       ¬HasMonochromaticCopy c T.graph
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #557** (OPEN): R(T; k) ≤ k·n + C for some absolute
     constant C, for any tree T on n vertices and any k ≥ 1. -/
@@ -71,7 +71,7 @@ axiom erdos_557_conjecture :
   ∃ C : ℕ, ∀ (n : ℕ) (T : Tree n) (k : ℕ), k ≥ 1 →
     ramseyTree n T k ≤ k * n + C
 
-/-! ## Lower Bound: Stars -/
+/- ## Lower Bound: Stars -/
 
 /-- The star graph K_{1,n-1} on n vertices. -/
 def starTree (n : ℕ) (hn : n ≥ 1) : Tree n where
@@ -95,7 +95,7 @@ def starTree (n : ℕ) (hn : n ≥ 1) : Tree n where
 axiom star_ramsey_lower (n k : ℕ) (hn : n ≥ 2) (hk : k ≥ 1) :
   ramseyTree n (starTree n (by omega)) k ≥ k * (n - 1) + 1
 
-/-! ## Known Special Cases -/
+/- ## Known Special Cases -/
 
 /-- For 2 colors (k=2), R(T; 2) ≤ 2n - 2 for any tree T on n vertices.
     This is the tree Ramsey number theorem. -/
@@ -111,7 +111,7 @@ axiom path_two_color (n : ℕ) (hn : n ≥ 2) :
 axiom ramsey_tree_monotone_k {n : ℕ} (T : Tree n) (k : ℕ) (hk : k ≥ 1) :
   ramseyTree n T k ≤ ramseyTree n T (k + 1)
 
-/-! ## Connection to Burr–Erdős -/
+/- ## Connection to Burr–Erdős -/
 
 /-- The Burr–Erdős conjecture (now theorem, Lee 2017): for 2-colorings,
     R(G; 2) ≤ c·n for graphs G of bounded degeneracy. Trees have

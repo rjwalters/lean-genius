@@ -24,7 +24,7 @@ open BigOperators Nat Real
 
 namespace Erdos267
 
-/-!
+/-
 ## Background
 
 The Fibonacci sequence is defined by:
@@ -39,7 +39,7 @@ The Fibonacci numbers grow exponentially with ratio approaching the golden ratio
 This rapid growth ensures that Σ 1/F_n converges absolutely.
 -/
 
-/-!
+/-
 ## Fibonacci Numbers
 
 Mathlib provides `Nat.fib n` which computes F_n.
@@ -70,7 +70,7 @@ theorem fib_ten : Nat.fib 10 = 55 := rfl
 /-- F_12 = 144 -/
 theorem fib_twelve : Nat.fib 12 = 144 := rfl
 
-/-!
+/-
 ## Fibonacci Growth
 
 The Fibonacci sequence grows exponentially. The ratio F_{n+1}/F_n approaches
@@ -93,7 +93,7 @@ theorem goldenRatio_gt_one : goldenRatio > 1 := by
 /-- Fibonacci numbers are positive for n ≥ 1 -/
 theorem fib_pos (n : ℕ) (hn : n ≥ 1) : Nat.fib n > 0 := Nat.fib_pos hn
 
-/-!
+/-
 ## Series Convergence
 
 The series Σ 1/F_n converges because F_n grows exponentially.
@@ -105,7 +105,7 @@ and the geometric series Σ 1/φ^n converges.
 axiom fibonacci_reciprocal_summable :
   Summable (fun n : ℕ => if n = 0 then 0 else (1 : ℝ) / Nat.fib n)
 
-/-!
+/-
 ## Solved Cases
 
 While the main conjecture remains open, specific cases have been proved.
@@ -127,7 +127,7 @@ axiom good_bicknell_hoggatt :
 axiom andre_jeannin :
   Irrational (∑' n : ℕ, if n = 0 then 0 else (1 : ℝ) / Nat.fib n)
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 Erdős asked: if we take a subsequence n_1 < n_2 < ... where the ratio
@@ -167,7 +167,7 @@ def Erdos267Conjecture : Prop :=
 theorem erdos_267_open : Erdos267Conjecture ∨ ¬Erdos267Conjecture :=
   Classical.em Erdos267Conjecture
 
-/-!
+/-
 ## Weaker Variant (OPEN)
 
 Erdős also asked whether it might be sufficient for n_k/k → ∞.
@@ -188,7 +188,7 @@ def Erdos267WeakerVariant : Prop :=
     HasSuperlinearGrowth n →
     Irrational (∑' k : ℕ, (1 : ℝ) / Nat.fib (n k))
 
-/-!
+/-
 ## Numerical Observations
 
 The sum Σ 1/F_n ≈ 3.359885666...
@@ -215,7 +215,7 @@ theorem pow_two_series_first_terms :
   constructor; native_decide
   native_decide
 
-/-!
+/-
 ## Related Problems
 
 This problem connects to a broader theme in Erdős's work on irrationality:

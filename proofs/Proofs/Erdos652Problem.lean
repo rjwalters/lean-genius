@@ -38,7 +38,7 @@ namespace Erdos652
 
 open Finset
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Point sets in ℝ² and distinct distance counts.
@@ -63,7 +63,7 @@ noncomputable def distinctDistances (P : PointSet n) (i : Fin n) : Finset ℝ :=
 noncomputable def R (P : PointSet n) (i : Fin n) : ℕ :=
   (distinctDistances P i).card
 
-/-!
+/-
 ## Part II: Ordering by Distinct Distances
 
 Order points by their R values: R(x₁) ≤ ⋯ ≤ R(xₙ)
@@ -75,7 +75,7 @@ noncomputable def R_k (P : PointSet n) (k : ℕ) : ℕ :=
   -- For simplicity, we define this via sorting
   (Finset.univ.image (R P)).sort (·≤·) |>.getD (k - 1) 0
 
-/-!
+/-
 ## Part III: The αₖ Constants
 
 αₖ = inf{α : ∀ large n, ∃ P with R_k(P) < α√n}
@@ -94,7 +94,7 @@ axiom alpha_k_achievable (k : ℕ) :
     ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
       ∃ P : PointSet n, R_k P k < (alpha_k k + ε) * Real.sqrt n
 
-/-!
+/-
 ## Part IV: Basic Properties
 
 Trivial cases and fundamental bounds.
@@ -114,7 +114,7 @@ axiom min_distinct_distances (n : ℕ) (hn : n ≥ 2) :
     ∃ P : PointSet n, R_k P 1 = 1
   -- Regular polygon achieves this: place all points equidistant from center
 
-/-!
+/-
 ## Part V: Elekes' Disproof
 
 Erdős conjectured R(x₃)/√n → ∞, but Elekes showed this is FALSE.
@@ -130,7 +130,7 @@ theorem alpha_k_finite (k : ℕ) (hk : k ≥ 1) : alpha_k k < ⊤ := by
   -- Follows from Elekes
   exact Real.lt_top (alpha_k k)
 
-/-!
+/-
 ## Part VI: Mathialagan's Breakthrough (2021)
 
 The main positive result: αₖ → ∞ as k → ∞.
@@ -151,7 +151,7 @@ axiom alpha_k_unbounded :
   -- From alpha_k_lower_bound: αₖ ≥ C√k, so αₖ → ∞
   -- This is Mathialagan's main contribution (2021)
 
-/-!
+/-
 ## Part VII: The Answer
 -/
 
@@ -165,7 +165,7 @@ theorem erdos_652_solved :
   · exact alpha_k_unbounded
   · intro k hk; exact alpha_k_finite k hk
 
-/-!
+/-
 ## Part VIII: Computational Examples
 
 Concrete bounds for small k.
@@ -180,7 +180,7 @@ axiom regular_polygon_example (n : ℕ) (hn : n ≥ 3) :
 axiom grid_example (n : ℕ) (hn : n ≥ 4) :
     ∃ P : PointSet n, ∀ k ≤ n / 2, R_k P k ≤ 2 * Real.sqrt n
 
-/-!
+/-
 ## Part IX: Related Problems
 
 Connections to other distinct distance problems.
@@ -198,7 +198,7 @@ axiom R_sum_bound (n : ℕ) (P : PointSet n) :
     (Finset.univ.sum (R P)) ≤ n^2
   -- Each distance counted at most twice
 
-/-!
+/-
 ## Part X: Summary
 -/
 

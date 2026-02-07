@@ -24,7 +24,7 @@ open scoped Topology
 
 namespace Erdos85
 
-/-!
+/-
 ## Background
 
 A **4-cycle** (or C₄) is a cycle on 4 vertices: a-b-c-d-a with exactly
@@ -65,7 +65,7 @@ noncomputable def minDegreeForC4 (n : ℕ) : ℕ :=
   sInf {k : ℕ | ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
     G.minDegree ≥ k → containsC4 (Fin n) G}
 
-/-!
+/-
 ## The Main Question
 
 Erdős asked whether f is eventually monotone: f(n+1) ≥ f(n) for large n.
@@ -88,7 +88,7 @@ The negation: there exist arbitrarily large n where f(n+1) < f(n).
 def Erdos85Negation : Prop :=
   ∀ N : ℕ, ∃ n ≥ N, minDegreeForC4 (n + 1) < minDegreeForC4 n
 
-/-!
+/-
 ## Known Bounds
 
 The asymptotic behavior of f(n) is well-understood.
@@ -122,7 +122,7 @@ In a graph on 4 vertices, minimum degree ≥ 2 guarantees a 4-cycle.
 -/
 axiom minDegreeForC4_base : minDegreeForC4 4 = 2
 
-/-!
+/-
 ## Connection to Ramsey Numbers
 
 The function f(n) is intimately connected to the Ramsey number R(C₄, K_{1,n}).
@@ -153,7 +153,7 @@ def ramseyConnection : Prop :=
     (∀ (G : SimpleGraph (Fin m)) [DecidableRel G.Adj],
       containsC4 (Fin m) G ∨ ∃ v, G.degree v ≥ n)
 
-/-!
+/-
 ## Weaker Conjecture
 
 A weaker version asks whether f is "almost monotone"—it can decrease,
@@ -172,7 +172,7 @@ def WeakerConjecture : Prop :=
   ∃ c : ℕ, ∀ m n : ℕ, m > n → n ≥ 4 →
     minDegreeForC4 m + c > minDegreeForC4 n
 
-/-!
+/-
 ## Historical Notes
 
 This problem explores the extremal theory of even cycles. The 4-cycle (C₄)

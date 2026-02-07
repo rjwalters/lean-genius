@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #706 — Chromatic Number of Multi-Distance Graphs
 
 For a finite set A ⊂ (0,∞) of size r, let G_A be the graph on ℝ²
@@ -18,7 +18,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- A distance set is a finite subset of positive reals. -/
 def IsDistanceSet (A : Finset ℝ) : Prop :=
@@ -28,7 +28,7 @@ def IsDistanceSet (A : Finset ℝ) : Prop :=
     We axiomatize this function. -/
 noncomputable def multiDistChromatic : ℕ → ℕ := fun _ => 0  -- axiomatized below
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Polynomial Bound Conjecture**: L(r) ≤ r^{O(1)}.
     That is, there exist constants C, k such that L(r) ≤ C · r^k
@@ -38,7 +38,7 @@ axiom erdos_706_polynomial_bound :
     ∀ r : ℕ, r ≥ 1 →
       (multiDistChromatic r : ℝ) ≤ C * (r : ℝ) ^ k
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Hadwiger–Nelson Base Case**: L(1) satisfies 5 ≤ L(1) ≤ 7.
     The lower bound is due to de Grey (2018). -/
@@ -55,7 +55,7 @@ axiom erdos_706_monotone :
 axiom erdos_706_lower :
   ∀ r : ℕ, r ≥ 1 → multiDistChromatic r ≥ 5
 
-/-! ## Exponential Upper Bound -/
+/- ## Exponential Upper Bound -/
 
 /-- **Known Exponential Bound**: L(r) grows at most exponentially.
     From the Frankl–Wilson method in higher dimensions, one can
@@ -66,7 +66,7 @@ axiom erdos_706_exponential_upper :
     ∀ r : ℕ, r ≥ 1 →
       (multiDistChromatic r : ℝ) ≤ C ^ (r : ℝ)
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Hadwiger–Nelson Connection**: the r = 1 case is exactly
     the Hadwiger–Nelson problem (Erdős Problem #508). -/

@@ -31,7 +31,7 @@ open Nat Filter Finset
 
 namespace Erdos1054
 
-/-!
+/-
 ## Background: Sum of Smallest Divisors
 
 The divisors of a natural number m can be enumerated in increasing order:
@@ -51,7 +51,7 @@ as the definition involves enumerating divisors in sorted order.
 -/
 axiom IsRepresentable (n : ℕ) : Prop
 
-/-!
+/-
 ## The Function f(n)
 
 We axiomatize f(n) as the minimal m such that n is representable via m.
@@ -76,7 +76,7 @@ When n is not representable, f(n) = 0.
 -/
 axiom f_undefined (n : ℕ) (hn : ¬IsRepresentable n) : f n = 0
 
-/-!
+/-
 ## Undefined Cases
 
 The function f is undefined (returns 0) for n = 2 and n = 5.
@@ -116,7 +116,7 @@ f(5) = 0 because 5 is not representable.
 -/
 theorem f_5_eq_zero : f 5 = 0 := f_undefined 5 not_representable_5
 
-/-!
+/-
 ## Simple Examples
 
 Let's verify some basic cases where f(n) is well-defined.
@@ -163,7 +163,7 @@ For m = 6: divisors sorted are [1, 2, 3, 6], and 1 + 2 + 3 = 6.
 -/
 axiom f_6_eq_six : f 6 = 6
 
-/-!
+/-
 ## The Open Problem
 
 The main questions concern the asymptotic behavior of f(n):
@@ -203,7 +203,7 @@ The main Erdős Problem #1054 asks about the relationship between these question
 The status is OPEN - the "almost all" version remains unresolved.
 -/
 
-/-!
+/-
 ## Tao's Partial Result
 
 Terry Tao disproved the strong unconditional claim that f(n) = o(n).
@@ -217,7 +217,7 @@ There exist infinitely many n with f(n) ≥ c·n for some constant c > 0.
 -/
 axiom tao_disproves_part_i : ¬erdos_1054_part_i
 
-/-!
+/-
 ## Understanding the Problem
 
 The key insight is that small divisors are very constrained:
@@ -235,7 +235,7 @@ If we need m ≈ n to hit n, then f(n) = Θ(n) and the answer is no.
 If we can usually find much smaller m, then f(n) = o(n) might hold.
 -/
 
-/-!
+/-
 ## Examples of Divisor Sums
 
 Let's record the partial sums of divisors for small numbers:
@@ -270,7 +270,7 @@ for representable n, we have f(n) ≤ some polynomial in n.
 axiom f_bounded_above (n : ℕ) (hn : IsRepresentable n) :
     f n ≤ n * n
 
-/-!
+/-
 ## The Two Exceptional Values
 
 Why are exactly 2 and 5 the "missing" values in the range of partial divisor sums?

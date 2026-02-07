@@ -32,7 +32,7 @@ open Finset
 
 namespace Erdos781
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A 2-coloring of {1, ..., n} is a function from Fin n to Bool. -/
 abbrev TwoColoring (n : ℕ) := Fin n → Bool
@@ -77,7 +77,7 @@ def HasMonochromaticWave (n k : ℕ) (c : TwoColoring n) : Prop :=
   ∃ (w : DescendingWaveIn (Finset.univ.image (fun i : Fin n => i.val + 1)) k),
     ∃ color : Bool, ∀ i : Fin k, c ⟨w.seq i - 1, by sorry⟩ = color
 
-/-! ## The Function f(k) -/
+/- ## The Function f(k) -/
 
 /--
 **f(k):** The minimal n such that every 2-coloring of {1,...,n} contains
@@ -96,7 +96,7 @@ axiom f_exists (k : ℕ) (hk : k ≥ 1) :
 axiom f_minimal (k : ℕ) (hk : k ≥ 1) :
     ∀ n < f k, ∃ c : TwoColoring n, ¬HasMonochromaticWave n k c
 
-/-! ## The Original Conjecture (FALSE) -/
+/- ## The Original Conjecture (FALSE) -/
 
 /--
 **Erdős's Conjecture:** f(k) = k² - k + 1 for all k ≥ 1.
@@ -106,7 +106,7 @@ This conjecture is FALSE, as proven by Alon and Spencer.
 def ErdosConjecture781 : Prop :=
   ∀ k ≥ 1, f k = k^2 - k + 1
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /--
 **Brown-Erdős-Freedman (1990) Lower Bound:**
@@ -145,7 +145,7 @@ theorem conjecture_disproved : ¬ErdosConjecture781 := by
   -- For large enough k, c·k³ > k² - k + 1, contradiction
   sorry
 
-/-! ## Specific Values -/
+/- ## Specific Values -/
 
 /-- f(1) = 1: Any coloring of {1} trivially has a 1-term wave. -/
 axiom f_1 : f 1 = 1
@@ -167,7 +167,7 @@ theorem small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7 :=
 theorem conjecture_formula (k : ℕ) : k^2 - k + 1 = k * (k - 1) + 1 := by
   ring
 
-/-! ## Why The Conjecture Fails -/
+/- ## Why The Conjecture Fails -/
 
 /--
 **Key Insight: Alon-Spencer Construction**
@@ -185,7 +185,7 @@ axiom alon_spencer_construction (k : ℕ) (hk : k ≥ 1) :
     ∀ n : ℕ, (n : ℝ) ≤ c * k^3 →
       ∃ coloring : TwoColoring n, ¬HasMonochromaticWave n k coloring
 
-/-! ## Connection to Ascending Waves -/
+/- ## Connection to Ascending Waves -/
 
 /-- An ascending wave: gaps are non-decreasing.
     x₁ < x₂ < ... < xₖ with x_{j+1} - x_j ≤ x_{j+2} - x_{j+1}. -/
@@ -206,7 +206,7 @@ axiom ascending_descending_similar (k : ℕ) (hk : k ≥ 1) :
     c₁ * k^3 ≤ (f k : ℝ) ∧ (f k : ℝ) ≤ c₂ * k^3 ∧
     c₁ * k^3 ≤ (g k : ℝ) ∧ (g k : ℝ) ≤ c₂ * k^3
 
-/-! ## Quasi-Progressions -/
+/- ## Quasi-Progressions -/
 
 /-- A quasi-arithmetic progression: an arithmetic progression with bounded errors.
     Descending waves are related to "quasi-progressions" with specific error bounds. -/
@@ -220,7 +220,7 @@ axiom descending_wave_is_quasi {k : ℕ} (seq : Fin k → ℕ)
     (hinc : StrictlyIncreasing seq) (hwave : IsDescendingWave seq) :
     ∃ d, IsQuasiProgression seq d (seq ⟨0, by sorry⟩)
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /--
 **Erdős Problem #781: Summary**

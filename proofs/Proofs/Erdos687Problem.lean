@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #687 — Covering Congruences and the Jacobsthal Function
 
 Let Y(x) be the maximal y such that there exists a choice of congruence
@@ -31,7 +31,7 @@ import Mathlib.Data.Nat.Prime.Basic
 
 open Finset Filter
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The primorial: product of all primes ≤ x. -/
 noncomputable def primorial (x : ℕ) : ℕ :=
@@ -53,7 +53,7 @@ noncomputable def jacobsthalY (x : ℕ) : ℕ :=
   sSup { y : ℕ | ∃ a : ∀ p : ℕ, p.Prime → p ≤ x → ℕ,
     ∀ n : ℤ, 1 ≤ n → n ≤ y → IsCovered x a n }
 
-/-! ## The Jacobsthal Function -/
+/- ## The Jacobsthal Function -/
 
 /-- The Jacobsthal function g(n): largest gap between consecutive
 integers coprime to n. Equivalently, g(n) = 1 + max length of a
@@ -66,7 +66,7 @@ noncomputable def jacobsthal (n : ℕ) : ℕ :=
 axiom jacobsthalY_eq_jacobsthal (x : ℕ) :
   jacobsthalY x = jacobsthal (primorial x)
 
-/-! ## Main Conjecture ($1,000) -/
+/- ## Main Conjecture ($1,000) -/
 
 /-- **Erdős Problem #687 ($1,000 prize).**
 Is Y(x) = o(x²)? More specifically, is Y(x) ≪ x^{1+o(1)}? -/
@@ -74,7 +74,7 @@ axiom erdos_687_conjecture :
   ∀ ε : ℝ, 0 < ε → ∀ᶠ (x : ℕ) in atTop,
     (jacobsthalY x : ℝ) ≤ (x : ℝ) ^ (1 + ε)
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Iwaniec (1978).** Y(x) ≪ x².
 This is the best known upper bound. -/
@@ -97,7 +97,7 @@ axiom maier_pomerance_conjecture :
   ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧ ∀ᶠ (x : ℕ) in atTop,
     (jacobsthalY x : ℝ) ≤ C * (x : ℝ) * Real.log (x : ℝ) ^ (2 + ε)
 
-/-! ## Structural Properties -/
+/- ## Structural Properties -/
 
 /-- Y(x) is monotone non-decreasing in x: more primes allow
 longer covering intervals. -/

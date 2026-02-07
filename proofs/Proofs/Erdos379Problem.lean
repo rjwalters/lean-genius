@@ -32,7 +32,7 @@ open Nat Filter
 
 namespace Erdos379
 
-/-!
+/-
 ## Part I: Core Definitions
 
 We define S(n) as the largest integer s such that every binomial coefficient
@@ -53,7 +53,7 @@ noncomputable def S (n : ℕ) : ℕ :=
 noncomputable def S' (n : ℕ) : ℕ :=
   sSup {s | ∀ k ∈ Finset.Ico 1 n, ∃ p, p.Prime ∧ p^s ∣ n.choose k}
 
-/-!
+/-
 ## Part II: Basic Properties
 -/
 
@@ -66,7 +66,7 @@ axiom S_ge_one (n : ℕ) (hn : 2 ≤ n) : S n ≥ 1
 axiom S_is_max (n : ℕ) (p : ℕ) (hp : p.Prime) (s : ℕ)
     (hdiv : ∀ k ∈ Finset.Ico 1 n, p ^ s ∣ n.choose k) : s ≤ S n
 
-/-!
+/-
 ## Part III: The Key Construction
 
 The main insight is that n = 3^{2^m} gives arbitrarily large S(n).
@@ -83,7 +83,7 @@ axiom witness_divisibility (m : ℕ) :
 /-- Consequence: S(3^{2^m}) ≥ m. -/
 axiom S_witness_bound (m : ℕ) : S (witnessSeq m) ≥ m
 
-/-!
+/-
 ## Part IV: Concrete Examples
 
 Let's verify some small cases to build intuition.
@@ -109,7 +109,7 @@ theorem example_n9_C93_value : Nat.choose 9 3 = 84 := by native_decide
 
 theorem example_84_not_div_9 : ¬(9 ∣ 84) := by native_decide
 
-/-!
+/-
 ## Part V: The Main Theorem (SOLVED)
 
 The limsup of S(n) is infinity.
@@ -124,7 +124,7 @@ The limsup of S(n) is infinity.
     This was verified in Lean by Cambie, Kovač, and Tao. -/
 axiom erdos_379 : atTop.limsup (fun n => (S n : ℕ∞)) = ⊤
 
-/-!
+/-
 ## Part VI: Comparison with s(n)
 
 There's an important distinction with s(n), where we only require ONE k.
@@ -145,7 +145,7 @@ axiom s_tendsto_infty : Tendsto (fun n => (s n : ℕ∞)) atTop atTop
 axiom s_asymptotic : ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
     ∀ᶠ (n : ℕ) in atTop, c₁ * Real.log n ≤ (s n : ℝ) ∧ (s n : ℝ) ≤ c₂ * Real.log n
 
-/-!
+/-
 ## Part VII: Connection to Lucas' Theorem
 
 The key to proving witness_divisibility is Lucas' theorem for binomial
@@ -167,7 +167,7 @@ axiom base3_structure (m k : ℕ) (hk : 1 ≤ k) (hk' : k < witnessSeq m) :
     ∀ i ∈ positions, (Nat.digits 3 (witnessSeq m))[i]?.getD 0 = 0 ∧
                      (Nat.digits 3 k)[i]?.getD 0 > 0
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #379** asks whether lim sup S(n) = ∞, where S(n) is the

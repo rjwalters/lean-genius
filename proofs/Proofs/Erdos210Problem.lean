@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #210: Ordinary Lines
 
 Source: https://erdosproblems.com/210
@@ -39,7 +39,7 @@ open Finset
 
 namespace Erdos210
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- A point in the Euclidean plane. -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
@@ -61,7 +61,7 @@ def NotAllCollinear (S : PointSet) : Prop :=
   ∃ p q r : Point, p ∈ S ∧ q ∈ S ∧ r ∈ S ∧
     p ≠ q ∧ q ≠ r ∧ p ≠ r ∧ ¬Collinear p q r
 
-/-! ## Part II: Ordinary Lines -/
+/- ## Part II: Ordinary Lines -/
 
 /-- A line through two distinct points. -/
 structure Line where
@@ -81,12 +81,12 @@ def IsOrdinaryLine (S : PointSet) (l : Line) : Prop :=
 /-- Count of ordinary lines in a point set. -/
 axiom OrdinaryLineCount (S : PointSet) : ℕ
 
-/-! ## Part III: The Function f(n) -/
+/- ## Part III: The Function f(n) -/
 
 /-- f(n) = minimum number of ordinary lines over all n-point sets not all collinear. -/
 axiom f (n : ℕ) : ℕ
 
-/-! ## Part IV: Sylvester-Gallai Theorem -/
+/- ## Part IV: Sylvester-Gallai Theorem -/
 
 /-- **Sylvester-Gallai Theorem (1893/1944):**
 Any finite set of points not all collinear determines at least one ordinary line.
@@ -103,7 +103,7 @@ axiom sylvester_gallai :
 /-- f(n) ≥ 1 for n ≥ 3 (immediate consequence of Sylvester-Gallai). -/
 axiom f_ge_one : ∀ n : ℕ, n ≥ 3 → f n ≥ 1
 
-/-! ## Part V: Motzkin's Theorem -/
+/- ## Part V: Motzkin's Theorem -/
 
 /-- **Motzkin's Theorem (1951):** f(n) → ∞ as n → ∞.
 More precisely, f(n) ≥ c·log(n) for some constant c > 0.
@@ -117,7 +117,7 @@ theorem f_tends_to_infinity : ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, f n ≥ M :
   obtain ⟨N, hN⟩ := (motzkin_theorem 3 (by norm_num)).2 M
   exact ⟨N, hN⟩
 
-/-! ## Part VI: Kelly-Moser and Csima-Sawyer Bounds -/
+/- ## Part VI: Kelly-Moser and Csima-Sawyer Bounds -/
 
 /-- **Kelly-Moser Theorem (1958):** f(n) ≥ 3n/7 for all n.
 This is tight for n = 7 (the Fano plane configuration). -/
@@ -129,7 +129,7 @@ Improved on Kelly-Moser for larger n. -/
 axiom csima_sawyer :
   ∀ n : ℕ, n ≥ 8 → 13 * f n ≥ 6 * n
 
-/-! ## Part VII: Green-Tao Theorem (The Resolution) -/
+/- ## Part VII: Green-Tao Theorem (The Resolution) -/
 
 /-- **Green-Tao Theorem (2013):** f(n) ≥ n/2 for sufficiently large even n.
 This resolves the asymptotic behavior of f(n).
@@ -147,7 +147,7 @@ axiom green_tao_even_tight :
   ∀ n : ℕ, Even n → n ≥ 4 →
     ∃ S : PointSet, S.card = n ∧ NotAllCollinear S ∧ OrdinaryLineCount S = n / 2
 
-/-! ## Part VIII: Extremal Configurations -/
+/- ## Part VIII: Extremal Configurations -/
 
 /-- The Böröczky configuration achieves the minimum for even n.
 It consists of n/2 points on a circle and n/2 points "at infinity"
@@ -167,7 +167,7 @@ axiom small_n_values :
   f 6 = 3 ∧
   f 7 = 3
 
-/-! ## Part IX: The Structure Theory -/
+/- ## Part IX: The Structure Theory -/
 
 /-- Sets with few ordinary lines have algebraic structure.
 Green-Tao showed: if a set has fewer than n/2 ordinary lines,
@@ -180,7 +180,7 @@ axiom structure_theorem :
     OrdinaryLineCount S < (1/2 - ε) * S.card →
     LiesOnCubic S
 
-/-! ## Part X: Summary
+/- ## Part X: Summary
 
 **Erdős Problem #210: SOLVED (Green-Tao, 2013)**
 

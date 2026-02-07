@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #142: Asymptotic Formula for r_k(N)
 
 Erdős Problem #142 asks for an asymptotic formula for r_k(N), the size of the
@@ -22,7 +22,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- An arithmetic progression of length k starting at a with common difference d. -/
 def arithProg (a d : ℕ) (k : ℕ) : Finset ℕ :=
@@ -39,7 +39,7 @@ noncomputable def rk (k N : ℕ) : ℕ :=
     ((Finset.powerset (Finset.range N)).filter (fun S => IsAPFree S k))
     Finset.card
 
-/-! ## Szemerédi's Theorem (qualitative) -/
+/- ## Szemerédi's Theorem (qualitative) -/
 
 /-- Szemerédi's theorem: for every k ≥ 3, r_k(N) = o(N).
     That is, r_k(N)/N → 0 as N → ∞. This was proved by Szemerédi in 1975.
@@ -47,14 +47,14 @@ noncomputable def rk (k N : ℕ) : ℕ :=
 axiom szemeredi_theorem (k : ℕ) (hk : 3 ≤ k) :
   ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → (rk k N : ℝ) ≤ ε * N
 
-/-! ## Roth's Theorem (k = 3) -/
+/- ## Roth's Theorem (k = 3) -/
 
 /-- Roth's theorem (1953): r_3(N) = o(N).
     Quantitative improvements: Bourgain, Sanders, Bloom, Kelley–Meka. -/
 axiom roth_theorem :
   ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → (rk 3 N : ℝ) ≤ ε * N
 
-/-! ## Lower Bound: Behrend's Construction -/
+/- ## Lower Bound: Behrend's Construction -/
 
 /-- Behrend (1946): There exists an AP-3-free subset of {1,...,N} of size
     at least N · exp(-C√(log N)) for some constant C > 0. -/
@@ -62,7 +62,7 @@ axiom behrend_lower_bound :
   ∃ C : ℝ, 0 < C ∧ ∀ N : ℕ, 1 ≤ N →
     C * N * Real.exp (-(C * Real.sqrt (Real.log N))) ≤ (rk 3 N : ℝ)
 
-/-! ## Upper Bound: Kelley–Meka (2023) -/
+/- ## Upper Bound: Kelley–Meka (2023) -/
 
 /-- Kelley–Meka (2023): r_3(N) ≤ N · exp(-c(log N)^{1/12}) for some c > 0.
     This is the current best upper bound for 3-term AP-free sets. -/
@@ -70,7 +70,7 @@ axiom kelley_meka_upper_bound :
   ∃ c : ℝ, 0 < c ∧ ∀ N : ℕ, 2 ≤ N →
     (rk 3 N : ℝ) ≤ N * Real.exp (-c * (Real.log N) ^ (1/12 : ℝ))
 
-/-! ## Erdős's $5,000 Question -/
+/- ## Erdős's $5,000 Question -/
 
 /-- Erdős offered $5,000 for proving r_k(N) = o(N / log N).
     For k = 3, this follows from Kelley–Meka (2023), but for general k
@@ -79,7 +79,7 @@ axiom erdos_5000_question (k : ℕ) (hk : 3 ≤ k) :
   ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
     (rk k N : ℝ) ≤ ε * N / Real.log N
 
-/-! ## Main Open Problem -/
+/- ## Main Open Problem -/
 
 /-- Erdős Problem #142: Find an asymptotic formula for r_k(N).
     This is completely open — we do not even know the right order of magnitude
@@ -90,7 +90,7 @@ axiom erdos_142_asymptotic (k : ℕ) (hk : 3 ≤ k) :
     ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
       |((rk k N : ℝ) / f N) - 1| < ε
 
-/-! ## For k = 4: Green–Tao -/
+/- ## For k = 4: Green–Tao -/
 
 /-- Green–Tao (2017): improved upper bound for r_4(N).
     r_4(N) ≤ N / (log N)^{1+c} for some c > 0. -/

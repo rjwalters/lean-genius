@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 472: Ulam Prime Sequences
 
 Given an initial finite sequence of primes `q₁ < ⋯ < qₘ`, extend it so
@@ -17,7 +17,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.List.Basic
 import Mathlib.Tactic
 
-/-! ## Ulam prime extension -/
+/- ## Ulam prime extension -/
 
 /-- Given a list of primes and its last element, a candidate next prime is
 `last + qᵢ - 1` for some `qᵢ` in the list, and must be prime. -/
@@ -41,7 +41,7 @@ def IsUlamPrimeSeq (seed : List ℕ) (f : ℕ → ℕ) : Prop :=
       ∀ p : ℕ, p < f (n + 1) →
         IsCandidateNext (List.ofFn (fun i : Fin (n + 1) => f i)) (f n) p → False)
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 472 (Ulam): There exists a finite seed of primes such
 that the Ulam prime extension produces an infinite sequence. -/
@@ -52,7 +52,7 @@ def ErdosProblem472 : Prop :=
       seed.Chain' (· < ·) ∧
       ∃ f : ℕ → ℕ, IsUlamPrimeSeq seed f
 
-/-! ## Known example -/
+/- ## Known example -/
 
 /-- Starting with `[3, 5]`, the sequence `3, 5, 7, 11, 13, 17, …` is
 conjectured to be an infinite Ulam prime sequence. -/
@@ -61,7 +61,7 @@ def ulamSeed35 : List ℕ := [3, 5]
 /-- The seed `[3, 5]` consists of primes. -/
 axiom ulamSeed35_prime : ∀ p ∈ ulamSeed35, p.Prime
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- In any Ulam prime sequence, consecutive differences are at least 2
 (since all terms are prime and increasing). -/

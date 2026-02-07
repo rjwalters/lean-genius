@@ -28,7 +28,7 @@ namespace Erdos945
 open Filter Real
 open scoped Classical
 
-/-!
+/-
 ## The Divisor Counting Function
 
 τ(n) counts the number of positive divisors of n.
@@ -38,7 +38,7 @@ For example: τ(12) = 6 (divisors: 1, 2, 3, 4, 6, 12).
 /-- The divisor counting function τ(n) = number of positive divisors of n -/
 abbrev τ (n : ℕ) : ℕ := n.divisors.card
 
-/-!
+/-
 ## Concrete Examples
 
 Small examples of τ values:
@@ -61,7 +61,7 @@ theorem tau_6 : τ 6 = 4 := by native_decide
 /-- τ(12) = 6 (highly composite number) -/
 theorem tau_12 : τ 12 = 6 := by native_decide
 
-/-!
+/-
 ## The Function F(x)
 
 F(x) measures the longest run of consecutive integers with pairwise
@@ -73,7 +73,7 @@ a small F(x) means collisions happen quickly.
 noncomputable def F (x : ℝ) : ℕ :=
   sSup {k : ℕ | ∃ (n : ℕ), n + k ≤ x ∧ (Set.Ioc n (n + k)).InjOn τ}
 
-/-!
+/-
 ## The Main Conjecture
 
 The key question is whether F(x) is bounded by a polynomial in log x.
@@ -93,7 +93,7 @@ integers with distinct divisor counts bounded by a polynomial in log x?
 This remains unproven despite significant progress on bounds. -/
 axiom erdos945_conjecture : Erdos945Prop
 
-/-!
+/-
 ## Equivalent Formulation
 
 The conjecture can be restated: there exists C > 0 such that every
@@ -111,7 +111,7 @@ def Erdos945Collision : Prop :=
 /-- The two formulations are equivalent -/
 axiom erdos945_equivalence : Erdos945Prop ↔ Erdos945Collision
 
-/-!
+/-
 ## Known Bounds (Erdős-Mirsky 1952)
 
 Erdős and Mirsky established both lower and upper bounds on F(x).
@@ -136,7 +136,7 @@ axiom erdos_mirsky_upper_bound :
     (fun (n : ℕ) => (F n : ℝ).log) =O[atTop]
     fun (x : ℕ) => (x : ℝ).log.sqrt / (x : ℝ).log.log
 
-/-!
+/-
 ## Improved Upper Bound (Beker)
 
 Beker improved the Erdős-Mirsky upper bound significantly.
@@ -152,7 +152,7 @@ axiom beker_upper_bound :
     (fun (n : ℕ) => (F n : ℝ).log) =O[atTop]
     fun (x : ℕ) => (x : ℝ).log ^ (1/3 + o x)
 
-/-!
+/-
 ## Conditional Result (Cramér's Conjecture)
 
 Under Cramér's conjecture about prime gaps, F(x) ≪ (log x)².

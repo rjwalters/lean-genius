@@ -42,7 +42,7 @@ import Mathlib.Data.Nat.Basic
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
 Unexpected axioms were added during verification: ['Erdos108.erdos_hajnal_rodl_theorem', 'harmonicSorry372952']-/
-/-!
+/-
 # Erdős Problem #108: Chromatic Subgraphs with Large Girth
 
 ## Overview

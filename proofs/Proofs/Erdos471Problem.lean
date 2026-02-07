@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #471: Ulam's Prime Sequence Problem
 
 **Source:** [erdosproblems.com/471](https://erdosproblems.com/471)
@@ -33,7 +33,7 @@ namespace Erdos471
 
 open Finset Set
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Sum of three distinct primes:**
@@ -68,7 +68,7 @@ The union of all Qᵢ.
 def QLim (Q₀ : Set ℕ) : Set ℕ :=
   ⋃ i : ℕ, QSeq Q₀ i
 
-/-! ## Part II: The Question -/
+/- ## Part II: The Question -/
 
 /--
 **Ulam's Question:**
@@ -86,7 +86,7 @@ def StrongerQuestion : Prop :=
   ∃ Q₀ : Set ℕ, Q₀.Finite ∧ (∀ p ∈ Q₀, Nat.Prime p) ∧
     ∀ p : ℕ, Nat.Prime p → p ∈ QLim Q₀
 
-/-! ## Part III: Vinogradov's Theorem -/
+/- ## Part III: Vinogradov's Theorem -/
 
 /--
 **Vinogradov's Three Primes Theorem (1937):**
@@ -120,7 +120,7 @@ axiom vinogradov_smaller_primes :
       q₁ ≠ q₂ ∧ q₂ ≠ q₃ ∧ q₁ ≠ q₃ ∧
       p = q₁ + q₂ + q₃
 
-/-! ## Part IV: The Solution -/
+/- ## Part IV: The Solution -/
 
 /--
 **The key construction (Mrazović-Kovač, Alon):**
@@ -172,7 +172,7 @@ theorem stronger_question_positive : StrongerQuestion := by
     exact hp.1
   · exact all_primes_in_QLim
 
-/-! ## Part V: The Special Case Q = {3, 5, 7, 11} -/
+/- ## Part V: The Special Case Q = {3, 5, 7, 11} -/
 
 /--
 **Ulam's original example:**
@@ -220,7 +220,7 @@ This is a computational question; conjectured to be true.
 axiom ulam_example_contains_all_primes :
   ∀ p : ℕ, Nat.Prime p → p ≥ 3 → p ∈ QLim ulamQ₀
 
-/-! ## Part VI: Properties of the Sequence -/
+/- ## Part VI: Properties of the Sequence -/
 
 /--
 **Qᵢ is monotone:**
@@ -248,7 +248,7 @@ theorem QSeq_primes (Q₀ : Set ℕ) (hQ₀ : ∀ p ∈ Q₀, Nat.Prime p) (i : 
     | inl h => exact ih p h
     | inr h => exact h.1
 
-/-! ## Part VII: Why Vinogradov Works -/
+/- ## Part VII: Why Vinogradov Works -/
 
 /--
 **The key induction step:**
@@ -269,7 +269,7 @@ axiom eventually_all_primes (Q₀ : Set ℕ) (N : ℕ) :
     N ≥ Classical.choose vinogradov_smaller_primes →
     ∀ p : ℕ, Nat.Prime p → ∃ i : ℕ, p ∈ QSeq Q₀ i
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #471: SOLVED**

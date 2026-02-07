@@ -28,7 +28,7 @@ open Finset BigOperators
 
 namespace Erdos304
 
-/-!
+/-
 ## Background: Egyptian Fractions
 
 An Egyptian fraction is a sum of distinct unit fractions:
@@ -40,7 +40,7 @@ The question here is: how many terms are needed?
 This problem studies the minimum number of unit fractions required to represent a/b.
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -67,7 +67,7 @@ axiom smallestCollectionMax : ℕ → ℕ
 axiom smallestCollectionMax_spec (b : ℕ) (hb : 1 < b) :
   ∀ a, 1 ≤ a → a < b → smallestCollection a b ≤ smallestCollectionMax b
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -78,7 +78,7 @@ axiom zero_in_expressible_iff {a b : ℕ} :
 /-- 1/b can always be expressed with 1 term (namely, 1/b itself). -/
 axiom smallestCollection_one_denom (b : ℕ) (hb : 1 < b) : smallestCollection 1 b = 1
 
-/-!
+/-
 ## Example: N(2, 15) = 2
 
 We can express 2/15 = 1/10 + 1/30.
@@ -94,7 +94,7 @@ axiom smallestCollection_two_fifteen : smallestCollection 2 15 = 2
 /-- 2 is in the expressibility set for 2/15. -/
 axiom two_expressible_two_fifteen : 2 ∈ unitFractionExpressible 2 15
 
-/-!
+/-
 ## Bounds on N(b) - The Main Results
 
 Erdős proved in 1950:
@@ -130,7 +130,7 @@ axiom vose_1985_upper_bound :
   ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,
     smallestCollectionMax b * smallestCollectionMax b ≤ C * Nat.log 2 b
 
-/-!
+/-
 ## The Open Question
 
 Is it true that N(b) ≪ log log b?
@@ -149,7 +149,7 @@ def erdos_304_conjecture : Prop :=
 /-- The conjecture remains open - neither proved nor disproved. -/
 axiom erdos_304_open : ¬(erdos_304_conjecture ↔ True) ∧ ¬(erdos_304_conjecture ↔ False)
 
-/-!
+/-
 ## Average Case Behavior
 
 While the maximum N(b) is the main focus, the average case is also studied.
@@ -172,7 +172,7 @@ This shows even the typical case requires log log b unit fractions. -/
 axiom average_lower_bound :
   ∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10, c * Nat.log 2 (Nat.log 2 b) ≤ averageCollection b
 
-/-!
+/-
 ## Special Case: N(b-1, b)
 
 The case a = b-1 is particularly interesting and connects to other problems.
@@ -186,7 +186,7 @@ missing denominator in unit fraction representations of 1. -/
 axiom connection_to_problem_293 :
   ∀ b ≥ 2, almostOneCollection b ≤ smallestCollectionMax b
 
-/-!
+/-
 ## Algorithmic Aspects
 
 The greedy algorithm gives an upper bound, but not the optimal one.
@@ -199,7 +199,7 @@ axiom greedy_upper_bound :
     ∃ s : Finset ℕ, s.card ≤ C * Nat.log 2 b ∧
       (∀ n ∈ s, n > 1) ∧ (a / b : ℚ) = ∑ n ∈ s, (n : ℚ)⁻¹
 
-/-!
+/-
 ## Summary of Known Bounds
 
 Current state (all asymptotic in b):
@@ -219,7 +219,7 @@ theorem bounds_known :
       smallestCollectionMax b * smallestCollectionMax b ≤ C * Nat.log 2 b) :=
   ⟨erdos_1950_lower_bound, vose_1985_upper_bound⟩
 
-/-!
+/-
 ## Historical Context
 
 This problem was posed by Erdős in his 1950 Hungarian paper, which established

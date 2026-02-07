@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #122: Distribution of n + f(n) in Short Intervals
 
 **Source:** [erdosproblems.com/122](https://erdosproblems.com/122)
@@ -34,7 +34,7 @@ open Filter
 
 namespace Erdos122
 
-/-! ## Part I: Number-Theoretic Functions -/
+/- ## Part I: Number-Theoretic Functions -/
 
 /--
 The divisor function d(n): number of positive divisors of n.
@@ -60,7 +60,7 @@ Sum of divisors σ(n): sum of all positive divisors of n.
 def sumOfDivisors (n : ℕ) : ℕ :=
   ((Finset.range (n + 1)).filter (fun d => d > 0 ∧ n % d = 0)).sum id
 
-/-! ## Part II: Counting in Intervals -/
+/- ## Part II: Counting in Intervals -/
 
 /--
 Count of n with n + f(n) in the interval (x, x + F(x)].
@@ -80,7 +80,7 @@ def GrowthDominates (f : ℕ → ℕ) (F : ℕ → ℕ) : Prop :=
       ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
         ((Finset.range N).filter (fun n => (f n : ℚ) ≥ ε * F n)).card < δ * N
 
-/-! ## Part III: The Short Interval Concentration Property -/
+/- ## Part III: The Short Interval Concentration Property -/
 
 /--
 **Short interval concentration property (SICP):**
@@ -97,7 +97,7 @@ def HasSICP (f : ℕ → ℕ) : Prop :=
       ∀ x₀ : ℕ, ∃ x : ℕ, x ≥ x₀ ∧
         countInInterval f F x > C * F x
 
-/-! ## Part IV: Known Results -/
+/- ## Part IV: Known Results -/
 
 /--
 **Erdős–Pomerance–Sárközy Theorem [ErPoSa97]:**
@@ -111,7 +111,7 @@ The distinct prime count function ω has SICP.
 -/
 axiom prime_count_has_SICP : HasSICP distinctPrimeCount
 
-/-! ## Part V: Conjectured Failures -/
+/- ## Part V: Conjectured Failures -/
 
 /--
 **Erdős's conjecture: φ fails SICP.**
@@ -141,7 +141,7 @@ def ErdosProblem122 : Prop :=
   ¬HasSICP eulerTotient ∧
   ¬HasSICP sumOfDivisors
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /--
 **Summary:**

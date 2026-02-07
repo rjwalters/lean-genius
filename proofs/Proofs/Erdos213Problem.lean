@@ -25,7 +25,7 @@ open Set Function EuclideanSpace
 
 namespace Erdos213
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A point in the Euclidean plane ℝ². -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
@@ -64,7 +64,7 @@ def IsIntegerDistanceSetGP (S : Set Point) : Prop :=
 def ExistsIntDistSetGP (n : ℕ) : Prop :=
   ∃ S : Set Point, S.Finite ∧ S.ncard = n ∧ IsIntegerDistanceSetGP S
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Anning-Erdős Theorem (1945)**: There is no infinite set of points in the plane,
@@ -90,7 +90,7 @@ since neither proof nor disproof is known.
 -/
 axiom erdos_213_status_open : True -- Placeholder: question is open
 
-/-! ## Known Constructions -/
+/- ## Known Constructions -/
 
 /--
 **Harborth's Construction**: There exists an integer distance set in general
@@ -119,7 +119,7 @@ axiom exists_six : ExistsIntDistSetGP 6
 
 theorem exists_seven : ExistsIntDistSetGP 7 := kreisel_kurz_seven
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /--
 **Greenfeld-Iliopoulou-Peluse (2024)**: Any integer distance set in general
@@ -140,7 +140,7 @@ axiom abt_conditional_bound :
   -- Bombieri-Lang conjecture implies a uniform bound
   True -- Placeholder for the conditional statement
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- Summary: Known sizes for integer distance sets in general position. -/
 theorem known_constructions :

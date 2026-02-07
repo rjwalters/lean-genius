@@ -30,7 +30,7 @@ open Set Finset Filter
 
 namespace Erdos564
 
-/-!
+/-
 ## Uniform Hypergraphs
 
 A k-uniform hypergraph has edges that are exactly k-element subsets of vertices.
@@ -43,7 +43,7 @@ def UniformHypergraph (k : ℕ) (V : Type*) := {e : Finset V // e.card = k}
 /-- A 2-colouring of hypergraph edges assigns each edge to one of two colours. -/
 def TwoColouring {V : Type*} (edges : Set (Finset V)) := edges → Bool
 
-/-!
+/-
 ## The Hypergraph Ramsey Number R_k(n)
 
 R_k(n) is the minimal m such that any 2-colouring of the complete k-uniform
@@ -70,7 +70,7 @@ axiom R_has_property (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
 axiom R_is_minimal (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
     ∀ m < R k n, ¬HasHypergraphRamseyProperty k m n
 
-/-!
+/-
 ## Known Bounds (Erdős-Hajnal-Rado 1965)
 
 For 3-uniform hypergraphs with 2 colours:
@@ -91,7 +91,7 @@ axiom erdos_hajnal_rado_upper :
 axiom erdos_hajnal_rado_lower :
     ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 → (R 3 n : ℝ) > (2 : ℝ)^(c * (n : ℝ)^2)
 
-/-!
+/-
 ## The Main Conjecture (OPEN - $500 Prize)
 
 Erdős asked whether the lower bound can be improved to doubly exponential:
@@ -114,7 +114,7 @@ def erdos_564_conjecture : Prop :=
 /-- The problem remains open. -/
 axiom erdos_564_is_open : True
 
-/-!
+/-
 ## Tower Functions
 
 The tower function tower(k, n) = 2^{2^{...^n}} with k 2's captures the
@@ -148,7 +148,7 @@ theorem tower_pos (k n : ℕ) (hn : n ≥ 1) : tower k n ≥ 1 := by
     simp only [tower]
     exact Nat.one_le_two_pow
 
-/-!
+/-
 ## Small Values and Examples
 
 For very small cases, we can state known values of R₃(n).
@@ -163,7 +163,7 @@ axiom R3_3_eq_4 : R 3 3 = 4
 /-- R₃(4) is known to be 13. -/
 axiom R3_4_eq_13 : R 3 4 = 13
 
-/-!
+/-
 ## Comparison with Graph Ramsey Numbers
 
 For graphs (k = 2), the Ramsey number R(n) = R₂(n,n) satisfies:
@@ -188,7 +188,7 @@ theorem bounds_summary :
     (∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 → (R 3 n : ℝ) > (2 : ℝ)^(c * (n : ℝ)^2)) := by
   exact ⟨erdos_hajnal_rado_upper, erdos_hajnal_rado_lower⟩
 
-/-!
+/-
 ## The 4-Colour Case
 
 Erdős, Hajnal, Máté, and Rado (1984) proved a doubly exponential lower bound
@@ -205,7 +205,7 @@ axiom four_colour_doubly_exponential :
       -- The 4-colour hypergraph Ramsey number has a doubly exponential lower bound
       True  -- The actual bound statement would involve a 4-colour R function
 
-/-!
+/-
 ## Why the Problem is Hard
 
 The gap between the known bounds is enormous:

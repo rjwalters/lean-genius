@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #295: Egyptian Fractions with Large Denominators
 
 Let N ≥ 1 and let k(N) denote the smallest k such that there exist
@@ -31,7 +31,7 @@ open Filter
 
 namespace Erdos295
 
-/-!
+/-
 ## Egyptian Fractions Background
 
 An Egyptian fraction is a sum of distinct unit fractions (fractions with numerator 1).
@@ -120,7 +120,7 @@ the mathematical statement that k(N) - (e-1)N → +∞.
 def erdos_295_conjecture : Prop :=
   Tendsto (fun N => (k N : ℝ) - (Real.exp 1 - 1) * N) atTop atTop
 
-/-!
+/-
 ## Concrete Examples
 
 For small N, we can verify specific Egyptian fraction decompositions.

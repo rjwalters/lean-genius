@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1051: Irrationality of Reciprocal Product Series
 
 Is it true that if a₁ < a₂ < ⋯ is a strictly increasing sequence of
@@ -18,7 +18,7 @@ import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Growth Condition
 -/
 
@@ -28,7 +28,7 @@ noncomputable def GrowthCondition (a : ℕ → ℤ) : Prop :=
   Filter.liminf (fun n => ((a n : ℝ) ^ ((1 : ℝ) / (2 : ℝ) ^ n)))
     Filter.atTop > 1
 
-/-!
+/-
 ## Section II: The Series
 -/
 
@@ -36,7 +36,7 @@ noncomputable def GrowthCondition (a : ℕ → ℤ) : Prop :=
 noncomputable def erdosSeries (a : ℕ → ℤ) : ℝ :=
   ∑' n : ℕ, (1 : ℝ) / ((a n : ℝ) * (a (n + 1) : ℝ))
 
-/-!
+/-
 ## Section III: The Conjecture
 -/
 
@@ -50,7 +50,7 @@ def ErdosProblem1051 : Prop :=
   ∀ a : ℕ → ℤ, StrictMono a → GrowthCondition a →
     Irrational (erdosSeries a)
 
-/-!
+/-
 ## Section IV: Rapid Growth Case (Solved)
 -/
 
@@ -62,7 +62,7 @@ axiom rapid_growth_irrational (a : ℕ → ℤ) (h_mono : StrictMono a)
       ∀ n : ℕ, (a (n + 1) : ℝ) ≥ C * (a n : ℝ) ^ 2) :
     Irrational (erdosSeries a)
 
-/-!
+/-
 ## Section V: Convergence
 -/
 
@@ -76,7 +76,7 @@ axiom series_positive (a : ℕ → ℤ) (h_mono : StrictMono a)
     (h_pos : ∀ n, a n > 0) (h_growth : GrowthCondition a) :
     erdosSeries a > 0
 
-/-!
+/-
 ## Section VI: Related Series
 -/
 

@@ -34,7 +34,7 @@ namespace Erdos577
 
 open SimpleGraph
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -72,7 +72,7 @@ def DisjointFourCycles (c1 c2 : FourCycle G) : Prop :=
 def PairwiseDisjoint (cycles : Finset (FourCycle G)) : Prop :=
   ∀ c1 ∈ cycles, ∀ c2 ∈ cycles, c1 ≠ c2 → DisjointFourCycles G c1 c2
 
-/-!
+/-
 ## Part II: The Erdős-Faudree Conjecture
 -/
 
@@ -91,7 +91,7 @@ def ErdosFaudreeConjecture : Prop :=
     ∃ cycles : Finset (FourCycle G),
       cycles.card = k ∧ PairwiseDisjoint G cycles
 
-/-!
+/-
 ## Part III: Wang's Theorem (2010)
 -/
 
@@ -106,7 +106,7 @@ axiom wang_theorem : ErdosFaudreeConjecture
 /-- The Erdős-Faudree conjecture is SOLVED. -/
 theorem erdos_faudree_solved : ErdosFaudreeConjecture := wang_theorem
 
-/-!
+/-
 ## Part IV: Special Cases
 -/
 
@@ -138,7 +138,7 @@ axiom degree_bound_sharp :
       (∀ v : V, G.degree v = 2 * k - 1) ∧
       ¬∃ cycles : Finset (FourCycle G), cycles.card = k ∧ PairwiseDisjoint G cycles
 
-/-!
+/-
 ## Part V: Related Results
 -/
 
@@ -162,7 +162,7 @@ axiom elzahar_conjecture : True
     This is analogous to Wang's theorem but for 3-cycles. -/
 axiom corradi_hajnal : True
 
-/-!
+/-
 ## Part VI: Proof Techniques
 -/
 
@@ -182,7 +182,7 @@ axiom wang_proof_technique :
     a polynomial-time algorithm to find the k disjoint 4-cycles. -/
 axiom algorithmic_aspect : True
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

@@ -36,7 +36,7 @@ open GaussianInt
 
 namespace Erdos952
 
-/-!
+/-
 # Part 1: Gaussian Integers and Primes
 
 The Gaussian integers ℤ[i] form a unique factorization domain.
@@ -51,7 +51,7 @@ def IsGaussianPrime (z : GaussianInt) : Prop := Prime z
 -- The set of all Gaussian primes
 def GaussianPrimes : Set GaussianInt := {z | IsGaussianPrime z}
 
-/-!
+/-
 # Part 2: Gaussian Prime Classification
 
 A Gaussian integer π is prime iff:
@@ -74,7 +74,7 @@ def IsSplitPrime (z : GaussianInt) : Prop :=
 axiom gaussian_prime_classification (z : GaussianInt) :
     IsGaussianPrime z ↔ IsNorm2Prime z ∨ IsInertPrime z ∨ IsSplitPrime z
 
-/-!
+/-
 # Part 3: The Moat Problem
 
 Can we walk from 0 to infinity on Gaussian primes with bounded step size?
@@ -96,7 +96,7 @@ def GaussianMoatConjecture : Prop :=
 -- Equivalent to Erdős 952 statement
 def ErdosConjecture952 : Prop := GaussianMoatConjecture
 
-/-!
+/-
 # Part 4: Known Negative Results
 
 Various researchers have shown bounded walks don't exist for small step sizes.
@@ -117,7 +117,7 @@ axiom gethner_et_al : ¬ ∃ x : ℕ → GaussianInt,
 -- Current state: unknown for larger step sizes
 def CurrentBestBound : ℕ := 27
 
-/-!
+/-
 # Part 5: The Moat Width
 
 A "moat" is a region around 0 containing no Gaussian primes beyond a certain norm.
@@ -134,7 +134,7 @@ noncomputable def criticalMoatWidth : ℕ :=
 -- If no walk exists for any k, the conjecture is false
 def StrongNegation : Prop := ∀ k, ¬ CanEscapeMoat k
 
-/-!
+/-
 # Part 6: Density of Gaussian Primes
 
 Gaussian primes have density related to 1/log(norm).
@@ -150,7 +150,7 @@ noncomputable def gaussianPrimeCount (R : ℕ) : ℕ :=
 axiom gaussian_prime_theorem : ∀ ε > 0, ∃ N : ℕ,
   ∀ R ≥ N, |((gaussianPrimeCount R : ℝ) / R^2) - 1 / Real.log R| < ε
 
-/-!
+/-
 # Part 7: Connections to Rational Primes
 
 The problem is related to gaps between primes in arithmetic progressions.
@@ -169,7 +169,7 @@ axiom primes_mod_4_connection :
     ∀ C, ∃ᶠ n in Filter.atTop, ∀ m ∈ Finset.range C,
       ¬ (n + m).Prime ∨ (n + m) % 4 ≠ 1
 
-/-!
+/-
 # Part 8: Tao's Perspective
 
 Terence Tao has indicated this problem appears quite difficult.
@@ -181,7 +181,7 @@ Terence Tao has indicated this problem appears quite difficult.
 def tao_difficulty_assessment : String :=
   "Terence Tao has indicated this problem appears difficult"
 
-/-!
+/-
 # Part 9: Variants
 
 Related problems about walking on various prime sets.
@@ -196,7 +196,7 @@ def EisensteinMoatProblem : Prop :=
 def RationalPrimeMoat : Prop :=
   ∃ C : ℕ, ∃ᶠ n in Filter.atTop, ∃ p q : ℕ, p.Prime ∧ q.Prime ∧ p < n ∧ n < q ∧ q - p ≤ C
 
-/-!
+/-
 # Part 10: Problem Status
 
 The problem remains OPEN despite computational searches.
@@ -219,7 +219,7 @@ theorem erdos_952_statement :
   unfold IsInfiniteGaussianPrimeWalk HasBoundedGaps IsGaussianPrime
   rfl
 
-/-!
+/-
 # Summary
 
 **Problem:** Can we walk from 0 to infinity on Gaussian primes with bounded step size?

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 121: Square-Free Products
 
 Let `F_k(N)` be the maximum size of `A ⊆ {1,…,N}` such that no product
@@ -18,7 +18,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-/-! ## Square-free product sets -/
+/- ## Square-free product sets -/
 
 /-- A number is a perfect square. -/
 def IsSquare (n : ℕ) : Prop :=
@@ -37,7 +37,7 @@ noncomputable def squareFreeMax (k N : ℕ) : ℕ :=
       ((Finset.Icc 1 N).powerset.filter (fun A => IsKSquareFree A k))
       Finset.card
 
-/-! ## Known results for small k -/
+/- ## Known results for small k -/
 
 /-- `F_2(N) = (6/π² + o(1))N`: the squarefree integers have density
 `6/π²` (Erdős–Sós–Sárközy). -/
@@ -60,7 +60,7 @@ axiom f4_density_zero :
       ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
         (squareFreeMax 4 N : ℚ) ≤ ε * (N : ℚ)
 
-/-! ## The conjecture (disproved) -/
+/- ## The conjecture (disproved) -/
 
 /-- Erdős's conjecture (disproved): `F_{2k+1}(N) = (1 - o(1))N` for
 all `k ≥ 1`. This would mean odd-index square-free products allow
@@ -71,7 +71,7 @@ def ErdosProblem121_Conjecture : Prop :=
         ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
           (1 - ε) * (N : ℚ) ≤ (squareFreeMax (2 * k + 1) N : ℚ)
 
-/-! ## Tao's disproof (2024) -/
+/- ## Tao's disproof (2024) -/
 
 /-- Tao (2024): For all `k ≥ 4`, there exists `c_k > 0` such that
 `F_k(N) ≤ (1 - c_k + o(1))N`. This disproves the conjecture for
@@ -84,7 +84,7 @@ axiom tao_disproof (k : ℕ) (hk : 4 ≤ k) :
 /-- The conjecture is false. -/
 axiom erdos121_disproved : ¬ErdosProblem121_Conjecture
 
-/-! ## Monotonicity -/
+/- ## Monotonicity -/
 
 /-- `F_k` is monotone in `N`. -/
 axiom squareFreeMax_mono_N (k M N : ℕ) (h : M ≤ N) :

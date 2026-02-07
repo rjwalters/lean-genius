@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #700: GCD of n with Binomial Coefficients
 
 Erdős and Szekeres study f(n) = min_{1 < k ≤ n/2} gcd(n, C(n,k)).
@@ -23,7 +23,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Prime.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The largest prime factor of n. Returns 0 if n ≤ 1. -/
 noncomputable def largestPrimeFactor (n : ℕ) : ℕ :=
@@ -39,7 +39,7 @@ noncomputable def smallestPrimeFactor (n : ℕ) : ℕ :=
     Axiomatized since the definition requires n ≥ 4 for the range to be nonempty. -/
 axiom fBinom (n : ℕ) : ℕ
 
-/-! ## Basic Bounds -/
+/- ## Basic Bounds -/
 
 /-- f(n) ≤ n/P(n) for all composite n. -/
 axiom f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
@@ -49,7 +49,7 @@ axiom f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
 axiom f_lower_bound (n : ℕ) (hn : 2 ≤ n) :
   smallestPrimeFactor n ≤ fBinom n
 
-/-! ## Known Equalities -/
+/- ## Known Equalities -/
 
 /-- When n = pq is a product of two primes, f(n) = n/P(n) = p. -/
 axiom f_semiprime (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≤ q) :
@@ -58,7 +58,7 @@ axiom f_semiprime (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≤ q) :
 /-- f(30) = 30/5 = 6. -/
 axiom f_30 : fBinom 30 = 6
 
-/-! ## Question 1: Characterization -/
+/- ## Question 1: Characterization -/
 
 /-- Question 1: characterize which composite n satisfy f(n) = n/P(n).
     Known to hold for semiprimes and n = 30. -/
@@ -66,7 +66,7 @@ axiom erdos_700_question1 :
   ∀ n : ℕ, ¬n.Prime → 4 ≤ n →
     (fBinom n = n / largestPrimeFactor n ↔ True)  -- placeholder
 
-/-! ## Question 2: Large Values -/
+/- ## Question 2: Large Values -/
 
 /-- For n = p², f(n) ≥ p = √n. -/
 axiom f_prime_square (p : ℕ) (hp : p.Prime) :
@@ -77,7 +77,7 @@ axiom erdos_700_question2 :
   ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ ¬n.Prime ∧ 4 ≤ n ∧
     (fBinom n : ℝ) > Real.sqrt n
 
-/-! ## Question 3: Upper Bound Conjecture -/
+/- ## Question 3: Upper Bound Conjecture -/
 
 /-- Question 3: Is f(n) ≪_A n/(log n)^A for every A > 0? -/
 axiom erdos_700_question3 (A : ℝ) (hA : 0 < A) :

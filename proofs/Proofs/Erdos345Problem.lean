@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 345: Completeness Thresholds for Power Sequences
 
 Let `A ⊆ ℕ` be a complete sequence, meaning the subset sums `P(A)`
@@ -18,7 +18,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
-/-! ## Subset sums and completeness -/
+/- ## Subset sums and completeness -/
 
 /-- The set of finite subset sums of `A ⊆ ℕ`. -/
 def subsetSums (A : Set ℕ) : Set ℕ :=
@@ -29,7 +29,7 @@ in `P(A)`. -/
 def IsComplete (A : Set ℕ) : Prop :=
     ∃ m : ℕ, ∀ n : ℕ, m ≤ n → n ∈ subsetSums A
 
-/-! ## Completeness threshold -/
+/- ## Completeness threshold -/
 
 /-- The threshold of completeness `T(A)`: the least `m` such that all
 `n ≥ m` are subset sums of `A`. Axiomatised since computing the
@@ -46,7 +46,7 @@ axiom threshold_minimal (A : Set ℕ) (hA : IsComplete A)
     (ht : 0 < threshold A) :
     ∃ n : ℕ, n < threshold A ∧ n ∉ subsetSums A
 
-/-! ## Power sequences -/
+/- ## Power sequences -/
 
 /-- The set of `k`-th powers: `{n^k : n ≥ 1}`. -/
 def powerSeq (k : ℕ) : Set ℕ :=
@@ -56,7 +56,7 @@ def powerSeq (k : ℕ) : Set ℕ :=
 axiom powerSeq_1_complete : IsComplete (powerSeq 1)
 axiom threshold_powerSeq_1 : threshold (powerSeq 1) = 1
 
-/-! ## Known threshold values -/
+/- ## Known threshold values -/
 
 /-- `T(n²) = 128`. -/
 axiom threshold_squares : threshold (powerSeq 2) = 128
@@ -70,14 +70,14 @@ axiom threshold_fourth : threshold (powerSeq 4) = 5134240
 /-- `T(n⁵) = 67898771`. -/
 axiom threshold_fifth : threshold (powerSeq 5) = 67898771
 
-/-! ## Completeness of power sequences -/
+/- ## Completeness of power sequences -/
 
 /-- Power sequences `{n^k}` are complete for all `k ≥ 1`
 (Waring's problem guarantees this). -/
 axiom powerSeq_complete (k : ℕ) (hk : 1 ≤ k) :
     IsComplete (powerSeq k)
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 345: Are there infinitely many `k` with
 `T(n^k) > T(n^{k+1})`? -/
@@ -85,7 +85,7 @@ def ErdosProblem345 : Prop :=
     ∀ K : ℕ, ∃ k : ℕ, K ≤ k ∧
       threshold (powerSeq (k + 1)) < threshold (powerSeq k)
 
-/-! ## Monotonicity observations -/
+/- ## Monotonicity observations -/
 
 /-- The known values suggest `T(n^k)` is rapidly increasing, but the
 conjecture asks whether the sequence ever decreases. -/

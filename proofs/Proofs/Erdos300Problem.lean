@@ -41,7 +41,7 @@ open Nat Real Finset BigOperators
 
 namespace Erdos300
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -75,7 +75,7 @@ noncomputable def A (N : ℕ) : ℕ :=
     ⟨∅, by simp [intervalN, IsUnitSumFree]⟩
     Finset.card
 
-/-!
+/-
 ## Part II: The Erdős-Graham Conjecture (Disproved)
 -/
 
@@ -103,7 +103,7 @@ Axiomatized because the proof requires careful asymptotic analysis.
 -/
 axiom erdos_graham_conjecture_false : ¬erdosGrahamConjecture
 
-/-!
+/-
 ## Part III: The Trivial Lower Bound
 -/
 
@@ -134,7 +134,7 @@ Axiomatized because the detailed subset-sum analysis is non-trivial.
 axiom small_fractions_safe (N : ℕ) :
     IsUnitSumFree (smallUnitFractionSet N)
 
-/-!
+/-
 ## Part IV: Liu-Sawhney Theorem (2024)
 -/
 
@@ -184,7 +184,7 @@ theorem asymptotic_formula :
   filter_upwards [h1, h2] with N hN1 hN2
   exact ⟨hN1, hN2⟩
 
-/-!
+/-
 ## Part V: Connection to Egyptian Fractions
 -/
 
@@ -208,7 +208,7 @@ axiom one_egyptian_representations :
       (∑ n in S₁, (1 : ℚ) / n) = 1 ∧
       (∑ n in S₂, (1 : ℚ) / n) = 1
 
-/-!
+/-
 ## Part VI: Variants and Generalizations
 -/
 
@@ -239,7 +239,7 @@ axiom greedy_achieves_lower_bound :
       ∃ A : Finset ℕ, A ⊆ intervalN N ∧ IsUnitSumFree A ∧
         (A.card : ℝ) ≥ (1 - Real.exp (-1) - ε) * N
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

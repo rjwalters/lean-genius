@@ -41,7 +41,7 @@ open Set Finset BigOperators
 
 namespace Erdos157
 
-/-! ## Sidon Sets -/
+/- ## Sidon Sets -/
 
 /-- A set A is a **Sidon set** (B₂ sequence) if all pairwise sums are distinct.
     Equivalently: a + b = c + d with a ≤ b, c ≤ d implies (a,b) = (c,d). -/
@@ -71,7 +71,7 @@ theorem sidon_iff_sidon_alt (A : Set ℕ) : IsSidon A ↔ IsSidonAlt A := by
       exact Set.finite_iff_bddAbove.mpr ⟨ ⟨ a + b, a + b ⟩, by rintro ⟨ x, y ⟩ ⟨ hx, hy, hxy, h ⟩ ; exact ⟨ by linarith, by linarith ⟩ ⟩
     rw [ Set.ncard_pair ] at h_two_elements <;> aesop
 
-/-! ## Asymptotic Bases -/
+/- ## Asymptotic Bases -/
 
 /-- The k-fold sumset: sums of at most k elements from A. -/
 def SumsetK (A : Set ℕ) (k : ℕ) : Set ℕ :=
@@ -87,7 +87,7 @@ def IsAsymptoticBasis (A : Set ℕ) (k : ℕ) : Prop :=
 def IsExactBasis (A : Set ℕ) (k : ℕ) : Prop :=
   ∀ n : ℕ, n > 0 → n ∈ SumsetK A k
 
-/-! ## The Main Question -/
+/- ## The Main Question -/
 
 /--
 **Erdős Problem #157 (SOLVED)**:
@@ -98,7 +98,7 @@ Pilatte (2023) answered YES.
 def Erdos157Conjecture : Prop :=
   ∃ A : Set ℕ, A.Infinite ∧ IsSidon A ∧ IsAsymptoticBasis A 3
 
-/-! ## Pilatte's Theorem -/
+/- ## Pilatte's Theorem -/
 
 /- Aristotle failed to find a proof. -/
 /--
@@ -108,7 +108,7 @@ There exists an infinite Sidon set that is an asymptotic basis of order 3.
 theorem pilatte_existence : Erdos157Conjecture := by
   sorry
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /- Aristotle failed to find a proof. -/
 /-- No Sidon set can be an asymptotic basis of order 2.
@@ -134,7 +134,7 @@ axiom basis_counting_lower (A : Set ℕ) (k : ℕ) (hk : k ≥ 1) (hBasis : IsAs
     ∃ c : ℝ, c > 0 ∧ ∀ᶠ (N : ℕ) in Filter.atTop,
       c * (N : ℝ)^(1/k : ℝ) ≤ Set.ncard (A ∩ Set.Icc 1 N)
 
-/-! ## Construction Outline
+/- ## Construction Outline
 
 Pilatte's construction uses a probabilistic method combined with careful
 analysis of the Sidon condition and sumset structure.
@@ -148,7 +148,7 @@ References:
 - Erdős-Turán (1941): Original bounds on Sidon sets
 -/
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- The set {1, 2, 4, 8, ...} (powers of 2) is a Sidon set. -/
 theorem powers_of_two_sidon : IsSidon { n | ∃ k : ℕ, n = 2^k } := by

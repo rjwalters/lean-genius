@@ -24,7 +24,7 @@ namespace Erdos643
 open scoped Classical
 open Finset
 
-/-!
+/-
 ## Hypergraph Definitions
 
 A t-uniform hypergraph on vertex set V is a collection of t-element subsets of V.
@@ -40,7 +40,7 @@ def IsUniform (H : Hypergraph V) (t : ℕ) : Prop :=
 /-- The number of edges in a hypergraph -/
 noncomputable def edgeCount (H : Hypergraph V) : ℕ := H.ncard
 
-/-!
+/-
 ## The Crossed Pair Configuration
 
 Four edges A,B,C,D form a "crossed pair" if:
@@ -62,7 +62,7 @@ def IsCrossedPair (A B C D : Finset V) : Prop :=
 def HasCrossedPair (H : Hypergraph V) : Prop :=
   ∃ A B C D : Finset V, A ∈ H ∧ B ∈ H ∧ C ∈ H ∧ D ∈ H ∧ IsCrossedPair A B C D
 
-/-!
+/-
 ## The Extremal Function f(n,t)
 
 f(n,t) is the minimal number of edges that forces a crossed pair.
@@ -83,7 +83,7 @@ noncomputable def f (n t : ℕ) : ℕ :=
     -- The number of t-subsets is finite
     sorry⟩ : ∃ m, ∀ k ≥ m, ¬CrossedPairFreeWithEdges n t k)
 
-/-!
+/-
 ## Case t = 2: Connection to C₄-free Graphs
 
 For ordinary graphs (t=2), a crossed pair is essentially a 4-cycle C₄.
@@ -108,7 +108,7 @@ theorem f_two_asymptotic :
     ∀ n ≥ 1, C₁ * n^(3/2 : ℝ) ≤ f n 2 ∧ (f n 2 : ℝ) ≤ C₂ * n^(3/2 : ℝ) := by
   sorry
 
-/-!
+/-
 ## Case t = 3: Pikhurko-Verstraëte Bound
 
 For 3-uniform hypergraphs, significant progress has been made.
@@ -123,7 +123,7 @@ theorem f_three_lower_bound (n : ℕ) (hn : n ≥ 3) :
     f n 3 ≥ Nat.choose (n - 1) 2 + (n - 1) / 3 := by
   sorry
 
-/-!
+/-
 ## General Bounds
 
 The general theory gives bounds in terms of binomial coefficients.
@@ -138,7 +138,7 @@ theorem f_lower_bound (n t : ℕ) (ht : t ≥ 2) (hn : n ≥ t) :
 axiom f_upper_bound (n t : ℕ) (ht : t ≥ 2) (hn : n ≥ t) :
     (f n t : ℚ) < (7 : ℚ) / 2 * Nat.choose n (t - 1)
 
-/-!
+/-
 ## The Main Conjecture
 
 Erdős conjectured that f(n,t) = (1 + o(1))·C(n,t-1) for t ≥ 3.
@@ -155,7 +155,7 @@ def Erdos643Conjecture : Prop :=
     Filter.atTop
     (nhds 1)
 
-/-!
+/-
 ## Constructions Avoiding Crossed Pairs
 
 To achieve lower bounds, we need constructions of hypergraphs
@@ -180,7 +180,7 @@ theorem sunflower_no_crossed_pair (n t : ℕ) (core : Finset (Fin n))
   -- All edges share the nonempty core, so no two can be disjoint
   sorry
 
-/-!
+/-
 ## Small Cases
 
 We can verify the extremal function for small parameters.
@@ -194,7 +194,7 @@ theorem f_four_two : f 4 2 = 3 := by
 theorem f_five_two : f 5 2 = 5 := by
   sorry
 
-/-!
+/-
 ## Connection to Other Extremal Problems
 
 This problem is related to:
@@ -212,7 +212,7 @@ axiom sunflower_lemma (k r : ℕ) :
         (∀ e ∈ edges, e ∈ H) ∧
         ∀ e₁ ∈ edges, ∀ e₂ ∈ edges, e₁ ≠ e₂ → e₁ ∩ e₂ = core
 
-/-!
+/-
 ## Historical Context
 
 This problem connects to Füredi's work on hypergraph Turán problems

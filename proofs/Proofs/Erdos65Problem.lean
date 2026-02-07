@@ -29,7 +29,7 @@ open scoped BigOperators
 
 namespace Erdos65
 
-/-!
+/-
 ## Background
 
 This problem connects the edge density of a graph to its cycle structure.
@@ -43,7 +43,7 @@ contributing more. Dense graphs (high k) should have more cycle variety.
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -66,7 +66,7 @@ noncomputable def cycleLengthFinset (G : SimpleGraph V) : Finset ℕ :=
   (Finset.range (Fintype.card V + 1)).filter
     (fun k => @Decidable.decide (ContainsCycleLength G k) (Classical.dec _))
 
-/-!
+/-
 ## Edge Density and Cycle Variety
 -/
 
@@ -84,7 +84,7 @@ noncomputable def edgeDensity (G : SimpleGraph V) [DecidableRel G.Adj] : ℚ :=
 noncomputable def cycleLengthReciprocalSum (G : SimpleGraph V) : ℝ :=
   ∑ k ∈ cycleLengthFinset G, (1 : ℝ) / k
 
-/-!
+/-
 ## The Main Questions
 
 Erdős and Hajnal asked two related questions about cycle lengths.
@@ -129,7 +129,7 @@ def Erdos65Question : Prop :=
       H.IsBipartite ∧
       cycleLengthReciprocalSum H ≤ cycleLengthReciprocalSum G
 
-/-!
+/-
 ## Complete Bipartite Graph Properties
 
 Complete bipartite graphs have well-understood cycle structure.
@@ -158,7 +158,7 @@ noncomputable def bipartiteCycleSum (r s : ℕ) : ℝ :=
 axiom bipartiteCycleSum_eq (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
     bipartiteCycleSum r s = (1/2 : ℝ) * ∑ i ∈ Finset.Icc 2 (min r s), (1 : ℝ) / i
 
-/-!
+/-
 ## Lower Bounds on Cycle Variety
 
 Any dense graph must have many cycle lengths, not just because of GKS,
@@ -179,7 +179,7 @@ axiom high_avg_to_min_degree (G : SimpleGraph V) [DecidableRel G.Adj]
     ∃ (S : Finset V), S.Nonempty ∧
       ∀ v ∈ S, d / 2 ≤ ((G.neighborFinset v).filter (· ∈ S)).card
 
-/-!
+/-
 ## The Zarankiewicz Connection
 
 This problem is related to the Kővári-Sós-Turán theorem (Zarankiewicz problem),
@@ -200,7 +200,7 @@ axiom kovari_sos_turan (r s n : ℕ) (hr : r ≥ 2) (hs : s ≥ r) :
     -- Edge bound
     (edgeCount G : ℝ) ≤ (1/2) * (s - 1)^((1:ℝ)/r) * n^(2 - (1:ℝ)/r) + ((r-1:ℝ)/2) * n
 
-/-!
+/-
 ## Special Cases
 -/
 
@@ -225,7 +225,7 @@ axiom triangle_free_larger_sum (G : SimpleGraph V) [DecidableRel G.Adj]
       ContainsCycleLength H 3 →
       cycleLengthReciprocalSum G ≤ cycleLengthReciprocalSum H + 1/3
 
-/-!
+/-
 ## Remarks on the Open Question
 
 Why complete bipartite graphs might minimize the sum:
@@ -261,7 +261,7 @@ theorem odd_cycle_positive_contribution (k : ℕ) (_hk : Odd k) (hk3 : k ≥ 3) 
     exact Nat.cast_pos.mpr this
   positivity
 
-/-!
+/-
 ## Summary
 
 **Problem Status: PARTIALLY SOLVED**

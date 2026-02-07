@@ -20,7 +20,7 @@ open scoped Topology
 
 namespace Erdos326
 
-/-!
+/-
 ## Additive Bases
 
 An additive basis of order k is a set A ⊆ ℕ such that every sufficiently large
@@ -54,7 +54,7 @@ theorem IsAddBasisOfOrder.isAddBasis {A : Set ℕ} {k : ℕ} (h : IsAddBasisOfOr
   obtain ⟨m, _, f, hf, hsum⟩ := hN n hn
   exact ⟨m, f, hf, hsum⟩
 
-/-!
+/-
 ## The Growth Rate Question
 
 For a basis B = {b₁ < b₂ < ···}, the sequence bₖ/k² measures how "sparse" the
@@ -84,7 +84,7 @@ The sequence bₖ/k² has no limit if it doesn't converge to any real number.
 def HasNoGrowthLimit (b : ℕ → ℕ) : Prop :=
   ∀ x : ℝ, ¬ HasGrowthLimit b x
 
-/-!
+/-
 ## Main Theorem (OPEN)
 
 Erdős Problem #326: Let A be an additive basis of order 2. Must there exist
@@ -111,7 +111,7 @@ axiom erdos_326_statement :
       ∃ (b : ℕ → ℕ), StrictMono b ∧ (∀ n, b n ∈ A) ∧
         IsAddBasis (range b) ∧ HasNoGrowthLimit b)
 
-/-!
+/-
 ## Cassels' Result (1957)
 
 Erdős originally asked whether every basis A (with A = B) has the property
@@ -131,7 +131,7 @@ axiom cassels_1957 :
     ∃ (a : ℕ → ℕ) (_ : StrictMono a) (_ : IsAddBasisOfOrder (range a) 2)
       (x : ℝ) (_ : 0 < x), HasGrowthLimit a x
 
-/-!
+/-
 ## Key Observations
 
 1. Any order 2 basis must have density at least O(√n) - there must be at least

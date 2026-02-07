@@ -57,7 +57,7 @@ failed to synthesize
 Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.-/
 namespace Erdos795
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A set has distinct subset products if every subset gives a different product -/
 def HasDistinctSubsetProducts (A : Finset ℕ) : Prop :=
@@ -75,13 +75,13 @@ noncomputable def g (n : ℕ) : ℕ :=
       A ⊆ Finset.range (n + 1) ∧ HasDistinctSubsetProducts A))
     Finset.card
 
-/-! ## The Prime Counting Function -/
+/- ## The Prime Counting Function -/
 
 /-- π(n) counts primes ≤ n -/
 noncomputable def primePi (n : ℕ) : ℕ :=
   (Finset.range (n + 1)).filter Nat.Prime |>.card
 
-/-! ## Erdős's Original Bound -/
+/- ## Erdős's Original Bound -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -107,7 +107,7 @@ theorem erdos_upper_bound (n : ℕ) (hn : n ≥ 2) :
 
 -- [Er66]
 
-/-! ## The Conjectured Bound -/
+/- ## The Conjectured Bound -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -119,7 +119,7 @@ def erdos_795_question : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     (g n : ℝ) ≤ primePi n + primePi (Nat.sqrt n) + ε * n^(1/2 : ℝ) / Real.log n
 
-/-! ## Raghavan's Solution (2025) -/
+/- ## Raghavan's Solution (2025) -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -207,7 +207,7 @@ theorem erdos_795_solved : erdos_795_question := by
 
 -- Consequence of raghavan_upper_bound
 
-/-! ## Natural Constructions -/
+/- ## Natural Constructions -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -289,7 +289,7 @@ theorem lower_bound_with_squares (n : ℕ) (hn : n ≥ 4) :
     g n ≥ primePi n + primePi (Nat.sqrt n) := by
   sorry
 
-/-! ## Why the Bound is Tight -/
+/- ## Why the Bound is Tight -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -329,7 +329,7 @@ theorem structure_of_optimal_sets (n : ℕ) (A : Finset ℕ)
 
 -- Structural analysis in [Ra25]
 
-/-! ## Comparison of Error Terms -/
+/- ## Comparison of Error Terms -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -357,7 +357,7 @@ theorem raghavan_error_is_smaller (n : ℕ) (hn : n ≥ 4) :
 
 -- 5/12 < 1/2 and log factors help
 
-/-! ## Connection to Multiplicative Sidon Sets -/
+/- ## Connection to Multiplicative Sidon Sets -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -413,7 +413,7 @@ theorem distinct_products_not_sidon :
   -- Example: {2, 3, 4} has distinct products but 2·4 = 4·2 relates elements
   sorry
 
-/-! ## Related: Problem #786 -/
+/- ## Related: Problem #786 -/
 
 /-- Problem #786 asks about the growth of g(n) for specific families -/
 def erdos_786_related : Prop :=
@@ -421,7 +421,7 @@ def erdos_786_related : Prop :=
   -- Raghavan's bounds pin it down to π(n) + π(√n) + Θ(π(∛n))
   True
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -488,7 +488,7 @@ theorem g_small_values :
     g 2 = 1 ∧ g 3 = 2 ∧ g 5 = 3 ∧ g 10 ≥ 5 := by
   sorry
 
-/-! ## Summary
+/- ## Summary
 
 **Status: SOLVED (Raghavan, 2025)**
 

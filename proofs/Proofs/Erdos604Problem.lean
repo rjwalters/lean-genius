@@ -81,7 +81,7 @@ import Mathlib
 
 open Finset Real Set
 
-/-! ## Basic Definitions for Planar Point Sets -/
+/- ## Basic Definitions for Planar Point Sets -/
 
 /-- The Euclidean distance between two points in ℝ² -/
 noncomputable def euclideanDist (p q : ℝ × ℝ) : ℝ :=
@@ -115,7 +115,7 @@ noncomputable def maxPinnedDistances (A : Finset (ℝ × ℝ)) : ℕ :=
 noncomputable def maxPinnedDistances (A : Finset (ℝ × ℝ)) : ℕ :=
   A.sup' (by sorry) (fun x => pinnedDistanceCount x A)
 
-/-! ## The Pinned Distance Conjecture -/
+/- ## The Pinned Distance Conjecture -/
 
 /-- Erdős Problem #604: The weak pinned distance conjecture.
     Every n-point set has a point with at least n^(1-ε) distinct distances
@@ -129,7 +129,7 @@ def strongPinnedDistanceConjecture : Prop :=
   ∃ c > 0, ∀ A : Finset (ℝ × ℝ), A.card ≥ 2 →
     ∃ x ∈ A, (pinnedDistanceCount x A : ℝ) ≥ c * (A.card : ℝ) / Real.sqrt (Real.log (A.card : ℝ))
 
-/-! ## Katz-Tardos Bound -/
+/- ## Katz-Tardos Bound -/
 
 /-- The Katz-Tardos exponent: c = (48 - 14e) / (55 - 16e) ≈ 0.864137 -/
 noncomputable def katzTardosExponent : ℝ :=
@@ -155,7 +155,7 @@ theorem katzTardos_bound (A : Finset (ℝ × ℝ)) (hA : A.card ≥ 2) :
     exact Finset.sum_pos ( fun x hx => h_pinned_pos x hx ) ⟨ x, hx.1 ⟩;
   · rw [ div_mul_cancel₀ _ ( by positivity ) ] ; aesop
 
-/-! ## Related Bounds and Variants -/
+/- ## Related Bounds and Variants -/
 
 /-- Basic lower bound: Every point sees at least 1 distinct distance (trivial) -/
 theorem pinnedDistance_pos (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (hx : x ∈ A)
@@ -185,7 +185,7 @@ theorem integerLattice_pinnedDistances (n : ℕ) (hn : n ≥ 2) :
       ∀ x ∈ A, (pinnedDistanceCount x A : ℝ) ≤ (n : ℝ) / Real.sqrt (Real.log (n : ℝ)) := by
   sorry
 
-/-! ## Sum of Pinned Distances -/
+/- ## Sum of Pinned Distances -/
 
 /-- Total pinned distance count summed over all points -/
 noncomputable def totalPinnedDistanceSum (A : Finset (ℝ × ℝ)) : ℕ :=
@@ -196,7 +196,7 @@ def pinnedDistanceSumConjecture : Prop :=
   ∃ c > 0, ∀ A : Finset (ℝ × ℝ), A.card ≥ 2 →
     (totalPinnedDistanceSum A : ℝ) ≥ c * (A.card : ℝ)^2 / Real.sqrt (Real.log (A.card : ℝ))
 
-/-! ## Connection to General Distinct Distances -/
+/- ## Connection to General Distinct Distances -/
 
 /-- The set of all pairwise distinct distances in A -/
 noncomputable def allDistinctDistances (A : Finset (ℝ × ℝ)) : Finset ℝ :=
@@ -213,7 +213,7 @@ theorem pinnedDistances_subset_all (A : Finset (ℝ × ℝ)) (x : ℝ × ℝ) (h
   simp only [mem_image, mem_filter, mem_product]
   exact ⟨(x, y), ⟨⟨hx, hy_mem⟩, hy_ne⟩, hy_dist⟩
 
-/-! ## Main Open Problem Statement -/
+/- ## Main Open Problem Statement -/
 
 /-- Erdős Problem #604: OPEN
     The pinned distance conjecture remains unproven.

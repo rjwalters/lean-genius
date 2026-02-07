@@ -37,7 +37,7 @@ open scoped Topology
 
 namespace Erdos964
 
-/-!
+/-
 ## Part I: The Divisor Function
 -/
 
@@ -70,7 +70,7 @@ theorem tau_multiplicative (m n : ℕ) (h : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n := by
   sorry
 
-/-!
+/-
 ## Part II: Ratios of Consecutive Values
 -/
 
@@ -88,7 +88,7 @@ The set {τ(n+1)/τ(n) : n ≥ 1}.
 noncomputable def ratioSet : Set ℝ :=
   {r : ℝ | ∃ n : ℕ, n ≥ 1 ∧ divisorRatio n = r}
 
-/-!
+/-
 ## Part III: The Erdős Conjecture
 -/
 
@@ -106,7 +106,7 @@ Is {τ(n+1)/τ(n) : n ≥ 1} dense in (0, ∞)?
 def ErdosConjecture964 : Prop :=
   isDenseInPositives ratioSet
 
-/-!
+/-
 ## Part IV: Eberhard's Theorem
 -/
 
@@ -152,7 +152,7 @@ theorem erdos_964_true : ErdosConjecture964 := by
     exact rationals_in_ratio_set p q hp hq
   · exact hdist
 
-/-!
+/-
 ## Part V: Examples and Special Cases
 -/
 
@@ -194,7 +194,7 @@ axiom small_ratios_exist :
 axiom large_ratios_exist :
     ∀ M : ℝ, ∃ n : ℕ, n ≥ 1 ∧ divisorRatio n > M
 
-/-!
+/-
 ## Part VI: Connection to Prime k-Tuple Conjecture
 -/
 
@@ -222,7 +222,7 @@ Eberhard proved the density result without assuming any unproved conjectures.
 axiom eberhard_unconditional :
     ErdosConjecture964
 
-/-!
+/-
 ## Part VII: Stronger Results
 -/
 
@@ -251,7 +251,7 @@ theorem eberhard_strong : AllRationalsAppear := by
 Problem 946 asks related questions about divisor function values.
 -/
 
-/-!
+/-
 ## Part VIII: Statistics of the Ratio
 -/
 
@@ -280,7 +280,7 @@ axiom log_ratio_distribution :
         Filter.atTop
         (nhds (μ (Set.Icc (-1) 1)))
 
-/-!
+/-
 ## Part IX: Summary
 
 **Erdős Problem #964: SOLVED**

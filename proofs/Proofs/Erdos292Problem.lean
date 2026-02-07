@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #292: Egyptian Fractions Summing to 1
 
 Source: https://erdosproblems.com/292
@@ -35,7 +35,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset
 
 namespace Erdos292
 
-/-!
+/-
 ## Part 1: Egyptian Fractions
 -/
 
@@ -60,7 +60,7 @@ def inSetA (n : ℕ) : Prop :=
     (∀ i, m i ≥ 1) ∧
     (Finset.univ.sum (fun i => (1 : ℚ) / (m i))) = 1
 
-/-!
+/-
 ## Part 2: Basic Properties
 -/
 
@@ -70,7 +70,7 @@ axiom six_in_A : 6 ∈ setA
 /-- 12 is in A: 1/2 + 1/3 + 1/12 = 1 or other representations -/
 axiom twelve_in_A : 12 ∈ setA
 
-/-!
+/-
 ## Part 3: Straus's Observation - Closure Under Multiplication
 -/
 
@@ -84,7 +84,7 @@ theorem multiples_in_A (n : ℕ) (hn : n ∈ setA) :
   intro k hk
   exact straus_multiplication_closure n k hn hk
 
-/-!
+/-
 ## Part 4: Prime Powers are Not in A
 -/
 
@@ -109,7 +109,7 @@ theorem primes_not_in_A (p : ℕ) (hp : Nat.Prime p) : p ∉ setA := by
   rw [this]
   exact prime_powers_not_in_A p hp 1 (by norm_num)
 
-/-!
+/-
 ## Part 5: Doubling Property
 -/
 
@@ -117,7 +117,7 @@ theorem primes_not_in_A (p : ℕ) (hp : Nat.Prime p) : p ∉ setA := by
 axiom doubling_in_A :
   ∀ n : ℕ, n > 1 → n ∈ setA → 2 * n ∈ setA
 
-/-!
+/-
 ## Part 6: The Complement Set B
 -/
 
@@ -138,7 +138,7 @@ axiom martin_B_density :
       (Finset.filter (· ∈ setB) (Finset.range ⌊x⌋₊)).card / x ≤
         c₂ * (Real.log (Real.log x)) / (Real.log x)
 
-/-!
+/-
 ## Part 7: Martin's Main Theorem
 -/
 
@@ -154,7 +154,7 @@ axiom martin_main_theorem : hasNaturalDensity setA 1
 /-- Equivalently: B has density 0 -/
 axiom B_has_density_zero : hasNaturalDensity setB 0
 
-/-!
+/-
 ## Part 8: Small Examples Analysis
 -/
 
@@ -170,7 +170,7 @@ axiom small_A_examples :
 /-- 6 = 2 × 3 is the smallest element of A greater than 1 -/
 axiom six_smallest_in_A : ∀ n : ℕ, 1 < n → n < 6 → n ∉ setA
 
-/-!
+/-
 ## Part 9: Connections to Other Problems
 -/
 
@@ -185,7 +185,7 @@ axiom general_egyptian_fraction :
     ∃ S : Finset ℕ, (∀ k ∈ S, k ≥ 1) ∧
       S.sum (fun k => (1 : ℚ) / k) = n / m
 
-/-!
+/-
 ## Part 10: Summary
 -/
 

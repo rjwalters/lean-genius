@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #116 — Measure of Polynomial Sublevel Sets
 
 Let p(z) = ∏(z - zᵢ) for |zᵢ| ≤ 1. Is the 1-dimensional Lebesgue measure
@@ -23,7 +23,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 
-/-! ## Monic Polynomials with Roots in the Unit Disk -/
+/- ## Monic Polynomials with Roots in the Unit Disk -/
 
 /-- A monic polynomial of degree n with all roots in the closed unit disk -/
 structure UnitDiskPoly (n : ℕ) where
@@ -38,7 +38,7 @@ noncomputable def UnitDiskPoly.eval (P : UnitDiskPoly n) (z : ℂ) : ℂ :=
 def UnitDiskPoly.sublevelSet (P : UnitDiskPoly n) : Set ℂ :=
   {z : ℂ | Complex.abs (P.eval z) < 1}
 
-/-! ## The Measure of the Sublevel Set -/
+/- ## The Measure of the Sublevel Set -/
 
 /-- The 1-dimensional Lebesgue measure of the sublevel set,
     viewed as a subset of ℝ² via the identification ℂ ≅ ℝ² -/
@@ -46,7 +46,7 @@ noncomputable def sublevelMeasure (P : UnitDiskPoly n) : ℝ :=
   (MeasureTheory.MeasureSpace.volume (α := ℝ × ℝ)
     {p : ℝ × ℝ | Complex.abs (P.eval ⟨p.1, p.2⟩) < 1}).toReal
 
-/-! ## Pommerenke's Bound -/
+/- ## Pommerenke's Bound -/
 
 /-- Pommerenke's bound: the sublevel measure is at least c/n⁴ -/
 axiom pommerenke_bound :
@@ -54,7 +54,7 @@ axiom pommerenke_bound :
     ∀ (n : ℕ) (hn : 1 ≤ n) (P : UnitDiskPoly n),
       c / (n : ℝ) ^ 4 ≤ sublevelMeasure P
 
-/-! ## Krishnapur–Lundberg–Ramachandran Bounds -/
+/- ## Krishnapur–Lundberg–Ramachandran Bounds -/
 
 /-- KLR lower bound: the sublevel measure is at least c/log n.
     This proves the Erdős–Herzog–Piranian conjecture. -/
@@ -71,14 +71,14 @@ axiom klr_upper_bound :
       ∃ P : UnitDiskPoly n,
         sublevelMeasure P ≤ C / Real.log (Real.log (n : ℝ))
 
-/-! ## Pólya's Upper Bound -/
+/- ## Pólya's Upper Bound -/
 
 /-- Pólya's bound: the sublevel measure is at most π, and equality holds
     only when all roots coincide (p(z) = (z - z₀)ⁿ for some |z₀| ≤ 1) -/
 axiom polya_upper_bound (n : ℕ) (hn : 1 ≤ n) (P : UnitDiskPoly n) :
   sublevelMeasure P ≤ Real.pi
 
-/-! ## The Erdős–Herzog–Piranian Conjecture (PROVED) -/
+/- ## The Erdős–Herzog–Piranian Conjecture (PROVED) -/
 
 /-- Erdős Problem 116 (Erdős–Herzog–Piranian, PROVED):
     The sublevel measure |{|p(z)| < 1}| is at least (log n)^{-O(1)}.

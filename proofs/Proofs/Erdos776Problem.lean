@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #776: Antichains with Set-Size Multiplicity
 
 Let r ≥ 2 and let A₁, ..., Aₘ ⊆ {1, ..., n} form an antichain (no set
@@ -25,7 +25,7 @@ import Mathlib.Tactic
 
 open Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A family of subsets of {1, ..., n}. -/
 def SubsetFamily (n : ℕ) := Finset (Finset (Fin n))
@@ -52,7 +52,7 @@ noncomputable def maxDistinctSizes (n r : ℕ) : ℕ :=
   Finset.sup (Finset.univ.filter (fun (F : SubsetFamily n) =>
     IsAntichain F ∧ HasMultiplicity F r)) numDistinctSizes
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /-- **Erdős–Trotter**: For r = 1 (no multiplicity constraint) and n > 3,
     the maximum number of distinct sizes in an antichain is n − 2. -/
@@ -80,7 +80,7 @@ theorem erdos_trotter_exact (r : ℕ) (hr : r > 1) :
     have hge := h₂ n (le_of_max_le_right hn)
     omega⟩
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #776** (OPEN): Determine the threshold N(r) as a
     function of r such that for all n ≥ N(r) and r ≥ 2, the maximum
@@ -91,7 +91,7 @@ axiom erdos_776_threshold :
       -- N is the smallest such threshold
       ∀ M : ℕ, (∀ n : ℕ, n ≥ M → maxDistinctSizes n r = n - 3) → N ≤ M
 
-/-! ## Structural Observations -/
+/- ## Structural Observations -/
 
 /-- Sperner's theorem: the maximum antichain in 2^{[n]} has size C(n, ⌊n/2⌋). -/
 axiom sperner_theorem (n : ℕ) :

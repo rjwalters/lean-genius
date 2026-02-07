@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 488: Divisibility Density in Multiples of Finite Sets
 
 Let `A` be a finite set of positive integers and
@@ -22,14 +22,14 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Multiples set -/
+/- ## Multiples set -/
 
 /-- `B(A)`: the set of positive integers divisible by some element
 of `A`. -/
 def multiplesSet (A : Finset ℕ) : Set ℕ :=
     { n : ℕ | 1 ≤ n ∧ ∃ a ∈ A, a ∣ n }
 
-/-! ## Counting function -/
+/- ## Counting function -/
 
 /-- Count of elements of `B(A)` in `[1, N]`. -/
 noncomputable def multiplesCount (A : Finset ℕ) (N : ℕ) : ℕ :=
@@ -39,7 +39,7 @@ noncomputable def multiplesCount (A : Finset ℕ) (N : ℕ) : ℕ :=
 noncomputable def multiplesRatio (A : Finset ℕ) (N : ℕ) : ℚ :=
     (multiplesCount A N : ℚ) / (N : ℚ)
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 488: For every finite set `A` of integers ≥ 2, and
 every `m > n ≥ max(A)`, we have
@@ -53,7 +53,7 @@ def ErdosProblem488 : Prop :=
           n < m →
             multiplesRatio A m < 2 * multiplesRatio A n
 
-/-! ## Optimality of constant 2 -/
+/- ## Optimality of constant 2 -/
 
 /-- The constant 2 is optimal: for `A = {a}`, `n = 2a-1`, `m = 2a`,
 the ratio approaches 2 as `a → ∞`. Specifically,
@@ -67,7 +67,7 @@ axiom constant_2_optimal :
         let m := 2 * a
         2 - ε < multiplesRatio A m / multiplesRatio A n
 
-/-! ## Inclusion–exclusion for multiples -/
+/- ## Inclusion–exclusion for multiples -/
 
 /-- For a singleton `A = {a}`, `|B ∩ [1,N]| = ⌊N/a⌋`. -/
 axiom singleton_multiplesCount (a N : ℕ) (ha : 1 ≤ a) :
@@ -81,7 +81,7 @@ axiom multiplesCount_mono (A : Finset ℕ) (M N : ℕ) (h : M ≤ N) :
 axiom multiplesCount_subset (A B : Finset ℕ) (h : A ⊆ B) (N : ℕ) :
     multiplesCount A N ≤ multiplesCount B N
 
-/-! ## Davenport's density -/
+/- ## Davenport's density -/
 
 /-- The asymptotic density of `B(A)` exists and can be computed by
 inclusion–exclusion over the elements of `A`. -/

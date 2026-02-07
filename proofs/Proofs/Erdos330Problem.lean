@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #330: Minimal Bases with Positive Density
 
 Does there exist a minimal asymptotic additive basis A ⊂ ℕ of order h
@@ -20,7 +20,7 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A can represent m using at most h summands (with repetition from A). -/
 def IsRepresentable (A : Set ℕ) (h m : ℕ) : Prop :=
@@ -54,7 +54,7 @@ def IsMinimalBasis (A : Set ℕ) (h : ℕ) : Prop :=
 def unrepresentableWithout (A : Set ℕ) (n h : ℕ) : Set ℕ :=
   {m : ℕ | ¬IsRepresentable (A \ {n}) h m}
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- For a minimal basis, removing any element leaves infinitely many
     integers unrepresentable (by definition of minimality). -/
@@ -71,7 +71,7 @@ axiom minimal_basis_exists (h : ℕ) (hh : 2 ≤ h) :
 axiom minimal_basis_pos_density_exists (h : ℕ) (hh : 2 ≤ h) :
   ∃ A : Set ℕ, IsMinimalBasis A h ∧ HasPosDensity A
 
-/-! ## The Open Question -/
+/- ## The Open Question -/
 
 /-- Erdős Problem #330 (Erdős–Nathanson): Does there exist a minimal
     basis A of order h with positive density such that for every n ∈ A,

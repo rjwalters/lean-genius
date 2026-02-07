@@ -1,6 +1,6 @@
 import Mathlib
 
-/-!
+/-
 # Erdős Problem 946: Equal Divisor Counts at Consecutive Integers
 
 ## What This Proves
@@ -47,7 +47,7 @@ namespace Erdos946
 
 open Nat Filter
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The divisor counting function τ(n) = number of divisors of n.
     We use Mathlib's `Nat.divisors` and count its cardinality. -/
@@ -56,7 +56,7 @@ def tau (n : ℕ) : ℕ := (Nat.divisors n).card
 /-- The set of n where τ(n) = τ(n+1) -/
 def consecutiveEqualDivisors : Set ℕ := {n : ℕ | tau n = tau (n + 1)}
 
-/-! ## Concrete Examples -/
+/- ## Concrete Examples -/
 
 /-- τ(1) = 1 (only divisor is 1) -/
 example : tau 1 = 1 := by native_decide
@@ -85,7 +85,7 @@ example : tau 14 = tau 15 := by native_decide
 /-- Example: τ(21) = τ(22) = 4 -/
 example : tau 21 = tau 22 := by native_decide
 
-/-! ## Main Theorems -/
+/- ## Main Theorems -/
 
 /-- **Axiom (Heath-Brown 1984):**
     There are infinitely many n such that τ(n) = τ(n+1).
@@ -101,7 +101,7 @@ axiom heathBrown_infinitely_many : consecutiveEqualDivisors.Infinite
 theorem erdos_946 : consecutiveEqualDivisors.Infinite :=
   heathBrown_infinitely_many
 
-/-! ## Variants -/
+/- ## Variants -/
 
 /-- **Axiom (Spiro 1981):**
     There are infinitely many n such that τ(n) = τ(n + 5040).
@@ -110,7 +110,7 @@ theorem erdos_946 : consecutiveEqualDivisors.Infinite :=
     5040 = 7! has many divisors. -/
 axiom spiro_5040 : {n : ℕ | tau n = tau (n + 5040)}.Infinite
 
-/-! ## Notes on Bounds
+/- ## Notes on Bounds
 
 The counting function N(x) = |{n ≤ x : τ(n) = τ(n+1)}| satisfies:
 

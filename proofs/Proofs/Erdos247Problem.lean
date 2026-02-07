@@ -31,13 +31,13 @@ import Mathlib.Tactic
 
 namespace Erdos247
 
-/-! ## Part I: The Lacunary Sum -/
+/- ## Part I: The Lacunary Sum -/
 
 /-- The lacunary sum Σ_{k=1}^∞ 1/2^{n_k} for a sequence n : ℕ → ℕ. -/
 noncomputable def lacunarySum (n : ℕ → ℕ) : ℝ :=
   ∑' k, (1 : ℝ) / 2 ^ n k
 
-/-! ## Part II: Growth Conditions -/
+/- ## Part II: Growth Conditions -/
 
 /-- The weak growth condition: for all C > 0, there exists k with n_k > C * k.
     This is equivalent to lim sup n_k/k = ∞. -/
@@ -49,7 +49,7 @@ def HasWeakGrowth (n : ℕ → ℕ) : Prop :=
 def HasStrongGrowth (n : ℕ → ℕ) : Prop :=
   ∀ (t : ℕ), t ≥ 1 → ∀ C : ℕ, ∃ k : ℕ, k > 0 ∧ n k > C * k ^ t
 
-/-! ## Part III: The Main Conjecture (OPEN) -/
+/- ## Part III: The Main Conjecture (OPEN) -/
 
 /-- **Erdős Problem #247** (Open Conjecture)
 
@@ -61,7 +61,7 @@ def erdos_247_conjecture : Prop :=
   ∀ (n : ℕ → ℕ), StrictMono n → HasWeakGrowth n →
     Transcendental ℚ (lacunarySum n)
 
-/-! ## Part IV: Erdős's Partial Result (1975) -/
+/- ## Part IV: Erdős's Partial Result (1975) -/
 
 /-- **Erdős's Theorem (1975)**
 
@@ -78,7 +78,7 @@ axiom erdos_transcendence_strong (n : ℕ → ℕ)
     (hn : StrictMono n) (hg : HasStrongGrowth n) :
     Transcendental ℚ (lacunarySum n)
 
-/-! ## Part V: Examples -/
+/- ## Part V: Examples -/
 
 /-- Factorial is strictly increasing (for k ≥ 1). -/
 theorem factorial_strictMono : StrictMono (fun k => (k + 1).factorial) := by
@@ -108,7 +108,7 @@ theorem pow2_sum_transcendental :
     Transcendental ℚ (lacunarySum (fun k => 2^k)) :=
   erdos_transcendence_strong _ pow2_strictMono pow2_strong_growth
 
-/-! ## Part VI: The Gap Between Conditions -/
+/- ## Part VI: The Gap Between Conditions -/
 
 /-- Example: n_k = k² grows faster than linear but not faster than k². -/
 def squareSeq : ℕ → ℕ := fun k => (k + 1)^2
@@ -123,7 +123,7 @@ theorem square_strictMono : StrictMono squareSeq := by
 /-- The sum Σ 1/2^{k²} - transcendence is OPEN. -/
 noncomputable def square_sum : ℝ := lacunarySum squareSeq
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /-- Summary of known results for Erdős Problem #247. -/
 theorem problem_247_summary :

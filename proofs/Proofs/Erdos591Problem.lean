@@ -26,7 +26,7 @@ open Ordinal
 
 namespace Erdos591
 
-/-!
+/-
 ## Ordinal Ramsey Theory Background
 
 Ramsey theory studies when structure must appear in sufficiently large systems.
@@ -53,7 +53,7 @@ and finite subsets - details beyond our current scope.
 -/
 axiom OrdinalRamseyProperty (α : Ordinal.{0}) (n : ℕ) : Prop
 
-/-!
+/-
 ## Known Results
 
 The following results establish the boundary of what we know:
@@ -88,7 +88,7 @@ Despite ω³, ω⁴, ... all failing, the limit ordinal ω^ω works again!
 axiom chang_omega_omega :
     OrdinalRamseyProperty (ω ^ ω) 3
 
-/-!
+/-
 ## The Solved Problem
 
 The question for α = ω^(ω²) was resolved affirmatively.
@@ -119,7 +119,7 @@ The ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² holds.
 theorem erdos_591 : OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3 :=
   schipperus_darby_omega_omega_squared
 
-/-!
+/-
 ## The Ordinal Hierarchy
 
 To understand the problem, we need to understand the ordinals involved.
@@ -161,7 +161,7 @@ theorem omega_omega_squared_positive : 0 < ω ^ (ω ^ 2) := by
 theorem omega_omega_squared_form : ω ^ (ω ^ 2) = ω ^ (ω * ω) := by
   rw [pow_two]
 
-/-!
+/-
 ## Understanding the Pattern
 
 The Ramsey property α → (α, 3)² exhibits a surprising pattern:

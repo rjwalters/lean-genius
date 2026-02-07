@@ -38,7 +38,7 @@ open Finset Real
 
 namespace Erdos957
 
-/-!
+/-
 ## Part I: Points and Distances in ℝ²
 -/
 
@@ -68,7 +68,7 @@ theorem dist_symm (p q : Point) : dist p q = dist q p := by
 theorem dist_nonneg (p q : Point) : dist p q ≥ 0 :=
   Real.sqrt_nonneg _
 
-/-!
+/-
 ## Part II: Point Sets and Distance Multisets
 -/
 
@@ -106,7 +106,7 @@ dₖ = max{d(p,q) : p, q ∈ A} = diam(A)
 noncomputable def maxDistance (A : Finset Point) : ℝ :=
   (pairwiseDistances A).max' (by sorry) -- Nonempty assumption
 
-/-!
+/-
 ## Part III: The Erdős-Pach Question
 -/
 
@@ -122,7 +122,7 @@ def ErdosPachConjecture : Prop :=
     (distanceFrequency A (minDistance A) : ℝ) *
     (distanceFrequency A (maxDistance A)) ≤ (9/8 + ε) * n^2
 
-/-!
+/-
 ## Part IV: Dumitrescu's Theorem (2019)
 -/
 
@@ -152,7 +152,7 @@ theorem erdos_pach_conjecture_true : ErdosPachConjecture := by
   -- (9/8)n² + C·n ≤ (9/8 + ε)n² for large n
   sorry
 
-/-!
+/-
 ## Part V: Makai's Construction (Tightness)
 -/
 
@@ -179,7 +179,7 @@ theorem constant_tight : ∀ c < (9/8 : ℝ),
   have hUpper := hContra (N + 2) (by omega) A hA
   linarith
 
-/-!
+/-
 ## Part VI: Sum Inequality
 -/
 
@@ -199,7 +199,7 @@ axiom sum_inequality :
 -/
 axiom best_constant_c_open : True
 
-/-!
+/-
 ## Part VII: Convex Hull Variant
 -/
 
@@ -225,7 +225,7 @@ def StrongerConjecture : Prop :=
 theorem stronger_implies_original (h : StrongerConjecture) : ErdosPachConjecture := by
   sorry
 
-/-!
+/-
 ## Part VIII: Regular Polygon Example
 -/
 
@@ -251,7 +251,7 @@ for all distances, not just extremes.
 -/
 axiom regular_polygon_intuition : True
 
-/-!
+/-
 ## Part IX: Related Problems
 -/
 
@@ -273,7 +273,7 @@ How many pairs can achieve the same distance?
 -/
 axiom unit_distance_connection : True
 
-/-!
+/-
 ## Part X: Summary
 -/
 

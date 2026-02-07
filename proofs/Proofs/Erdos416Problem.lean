@@ -31,7 +31,7 @@ open scoped Topology
 
 attribute [local instance] Classical.propDecidable
 
-/-! ## The Counting Function V(x) -/
+/- ## The Counting Function V(x) -/
 
 /--
 **V(x)** counts the number of positive integers n ≤ x that are **totient values**,
@@ -47,7 +47,7 @@ The function V(x) counts how many n ≤ x ARE totient values.
 noncomputable def V (x : ℝ) : ℝ :=
   ((Finset.Icc 1 ⌊x⌋₊).filter (fun n => ∃ m : ℕ, m.totient = n)).card
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- V is nonnegative -/
 theorem V_nonneg (x : ℝ) : 0 ≤ V x := by
@@ -72,7 +72,7 @@ theorem two_is_totient : ∃ m : ℕ, m.totient = 2 := ⟨3, by native_decide⟩
 /-- Small values: 4 is a totient value (φ(5) = 4) -/
 theorem four_is_totient : ∃ m : ℕ, m.totient = 4 := ⟨5, by native_decide⟩
 
-/-! ## Partial Results (Solved) -/
+/- ## Partial Results (Solved) -/
 
 /--
 **Pillai (1929)**: V(x) = o(x)
@@ -116,7 +116,7 @@ axiom Ford_1998 :
       C₃ * x.log.log.log.log)
     V =Θ[atTop] G
 
-/-! ## Main Open Questions -/
+/- ## Main Open Questions -/
 
 /--
 **Erdős Problem #416, Part (i)**: Does V(2x)/V(x) → 2?
@@ -137,7 +137,7 @@ Ford's result gives tight bounds but not an asymptotic.
 def Erdos416_Part_ii : Prop :=
   ∃ f : ℝ → ℝ, Tendsto (fun x => V x / f x) atTop (𝓝 1)
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /--
 **Erdős Problem #416**: Both questions remain OPEN.
@@ -147,7 +147,7 @@ neither the doubling ratio nor an asymptotic formula has been established.
 -/
 def Erdos416Conjecture : Prop := Erdos416_Part_i ∧ Erdos416_Part_ii
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- 3 is NOT a totient value (no m has φ(m) = 3).
     Proof: φ(m) is even for m > 2, and φ(1) = φ(2) = 1. -/

@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #395: Reverse Littlewood-Offord Problem
 
 Source: https://erdosproblems.com/395
@@ -45,7 +45,7 @@ open Complex
 
 namespace Erdos395
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Unit complex vectors and random sign sums.
@@ -67,7 +67,7 @@ def signedSum (z : Fin n → ℂ) (ε : Fin n → ℤ) : ℂ :=
 noncomputable def signedSumAbs (z : Fin n → ℂ) (ε : Fin n → ℤ) : ℝ :=
   Complex.abs (signedSum z ε)
 
-/-!
+/-
 ## Part II: The Probability Question
 
 How many sign choices give |sum| ≤ √2?
@@ -81,7 +81,7 @@ noncomputable def countSmallSums (z : Fin n → ℂ) : ℕ :=
 noncomputable def probSmallSum (z : Fin n → ℂ) : ℝ :=
   (countSmallSums z : ℝ) / (2 : ℝ) ^ n
 
-/-!
+/-
 ## Part III: Erdős's Original Question (FALSE)
 -/
 
@@ -110,7 +110,7 @@ Axiomatized: Carnielli-Carolino (2011) showed the counterexample works. -/
 axiom erdos_original_is_false :
   ∃ n : ℕ, n > 0 ∧ ¬erdos_original_question n
 
-/-!
+/-
 ## Part IV: The Revised Question (TRUE)
 
 With √2 as the threshold, the answer is YES.
@@ -140,7 +140,7 @@ theorem erdos_395_solved (n : ℕ) : erdos_395_question n := by
   obtain ⟨c, hc, hbound⟩ := hjns_2024
   exact ⟨c, hc, fun z hz => hbound n hn z hz⟩
 
-/-!
+/-
 ## Part V: Optimality of 1/n Bound
 -/
 
@@ -155,7 +155,7 @@ axiom extremal_example_tight (n : ℕ) (hn : n ≥ 4) :
   c / n ≤ probSmallSum (extremal_example n) ∧
   probSmallSum (extremal_example n) ≤ C / n
 
-/-!
+/-
 ## Part VI: Summary
 
 **Erdős Problem #395 - SOLVED (HJNS 2024)**

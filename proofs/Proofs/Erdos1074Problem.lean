@@ -32,7 +32,7 @@ open Nat Set
 
 namespace Erdos1074
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The EHS numbers (after Erdős, Hardy, and Subbarao) are those m ≥ 1 such that
 there exists a prime p ≢ 1 (mod m) with p | m! + 1. -/
@@ -45,7 +45,7 @@ whether such primes exist. -/
 def PillaiPrimes : Set ℕ :=
   {p | p.Prime ∧ ∃ m, ¬p ≡ 1 [MOD m] ∧ p ∣ m ! + 1}
 
-/-! ## Chowla's Example: 23 is a Pillai Prime
+/- ## Chowla's Example: 23 is a Pillai Prime
 
 Pillai (1930) raised the question of whether any Pillai primes exist.
 Chowla answered affirmatively by observing that 14! + 1 ≡ 0 (mod 23).
@@ -71,7 +71,7 @@ theorem pillai_23 : 23 ∈ PillaiPrimes := by
   refine ⟨twentyThree_prime, 14, twentyThree_not_cong_one_mod_14, ?_⟩
   exact twentyThree_dvd_factorial_14_plus_one
 
-/-! ## Additional Verified Examples -/
+/- ## Additional Verified Examples -/
 
 /-- 8 is an EHS number. The first EHS number.
 Witnessed by the prime 61: 61 ≢ 1 (mod 8) and 61 | 8! + 1.
@@ -95,7 +95,7 @@ theorem ehs_9 : 9 ∈ EHSNumbers := by
     · native_decide  -- 71 ≢ 1 (mod 9)
     · native_decide  -- 71 | 9! + 1
 
-/-! ## Infinitude Results
+/- ## Infinitude Results
 
 Erdős, Hardy, and Subbarao proved that both sets are infinite.
 These deep results require number-theoretic arguments beyond what
@@ -116,7 +116,7 @@ This follows from the infinitude of EHS numbers combined with
 analysis of which primes can divide m! + 1. -/
 axiom PillaiPrimes_infinite : PillaiPrimes.Infinite
 
-/-! ## Open Problems
+/- ## Open Problems
 
 The main questions of Problem 1074 remain open:
 - Does the natural density of EHS numbers exist?

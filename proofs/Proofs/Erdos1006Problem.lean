@@ -47,7 +47,7 @@ open SimpleGraph
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Graph Girth
 
 The girth of a graph is the length of its shortest cycle.
@@ -61,7 +61,7 @@ def hasGirthAtLeast (G : SimpleGraph V) (g : ℕ) : Prop :=
 def hasGirth (G : SimpleGraph V) (g : ℕ) : Prop :=
   hasGirthAtLeast G g ∧ ∃ (cycle : List V), cycle.length = g ∧ G.IsCycle cycle
 
-/-!
+/-
 ## Directed Graphs and Orientations
 
 An orientation assigns a direction to each edge.
@@ -83,7 +83,7 @@ def Orientation.hasDirectedPath (O : Orientation G) (path : List V) : Prop :=
 def Orientation.isAcyclic (O : Orientation G) : Prop :=
   ∀ (cycle : List V), cycle.length ≥ 3 → cycle.head? = cycle.getLast? → ¬O.hasDirectedPath cycle
 
-/-!
+/-
 ## Robust Acyclicity
 
 The key property: an orientation where reversing any single edge preserves acyclicity.
@@ -101,7 +101,7 @@ def Orientation.isRobustlyAcyclic (O : Orientation G) : Prop :=
 def admitsRobustlyAcyclicOrientation (G : SimpleGraph V) : Prop :=
   ∃ (O : Orientation G), O.isRobustlyAcyclic
 
-/-!
+/-
 ## The Conjecture (Disproved)
 
 Ore's question: Do all high-girth graphs admit robustly acyclic orientations?
@@ -112,7 +112,7 @@ def oresConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     hasGirthAtLeast G 5 → admitsRobustlyAcyclicOrientation G
 
-/-!
+/-
 ## Counterexamples
 -/
 

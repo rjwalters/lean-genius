@@ -22,7 +22,7 @@ open Nat Set Finset BigOperators
 
 namespace Erdos851
 
-/-!
+/-
 ## Core Definitions
 
 We define the set of integers representable as 2^k + n where n has
@@ -40,7 +40,7 @@ def TwoPowAddSet (r : ℕ) : Set ℕ :=
 We axiomatize this to avoid decidability issues. -/
 axiom lowerDensity (S : Set ℕ) : ℝ
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -60,7 +60,7 @@ theorem twoPowAddSet_union_covers (m : ℕ) (hm : 2 ≤ m) :
   refine ⟨(m - 1).primeFactors.card, 0, m - 1, ?_, le_refl _⟩
   omega
 
-/-!
+/-
 ## Romanoff's Theorem (1934)
 
 The set of integers of the form 2^k + p (where p is prime) has positive
@@ -75,7 +75,7 @@ axiom romanoff_theorem : 0 < lowerDensity (TwoPowAddSet 1)
 axiom romanoff_density_value :
     0.08 < lowerDensity (TwoPowAddSet 1) ∧ lowerDensity (TwoPowAddSet 1) < 0.10
 
-/-!
+/-
 ## Main Conjecture (OPEN)
 
 Erdős asked whether by allowing n to have more prime factors, we can
@@ -90,7 +90,7 @@ where n has a bounded number of prime factors. -/
 axiom erdos_851_conjecture :
     ∀ ε : ℝ, ε > 0 → ∃ r : ℕ, 1 - ε ≤ lowerDensity (TwoPowAddSet r)
 
-/-!
+/-
 ## Density Properties
 -/
 
@@ -101,7 +101,7 @@ axiom density_mono (r s : ℕ) (hr : r ≤ s) :
 /-- The limiting density is at most 1. -/
 axiom density_le_one (r : ℕ) : lowerDensity (TwoPowAddSet r) ≤ 1
 
-/-!
+/-
 ## The Key Question
 
 The main open question is whether the limiting density equals 1.
@@ -115,7 +115,7 @@ axiom conjecture_iff_limit_one :
     (∀ ε : ℝ, ε > 0 → ∃ r : ℕ, 1 - ε ≤ lowerDensity (TwoPowAddSet r)) ↔
     (∀ ε : ℝ, ε > 0 → ∃ r₀ : ℕ, ∀ r ≥ r₀, 1 - ε < lowerDensity (TwoPowAddSet r))
 
-/-!
+/-
 ## Related Results
 -/
 
@@ -128,7 +128,7 @@ axiom uncovered_by_primes_positive :
 axiom erdos_odlyzko_bound :
     0.0868 < lowerDensity (TwoPowAddSet 1)
 
-/-!
+/-
 ## Examples
 
 We verify specific integers belong to TwoPowAddSet for various r.
@@ -154,7 +154,7 @@ theorem seventeen_mem : 17 ∈ TwoPowAddSet 0 :=
 axiom twoPow_add_prime_mem (k : ℕ) (p : ℕ) (hp : p.Prime) :
     2^k + p ∈ TwoPowAddSet 1
 
-/-!
+/-
 ## Connection to Covering Congruences
 
 This problem is related to covering congruences. Erdős and others
@@ -171,7 +171,7 @@ axiom covering_problem_open :
     (∀ r : ℕ, ((TwoPowAddSet r)ᶜ : Set ℕ).Nonempty) ∨
     (∃ r : ℕ, ∀ m : ℕ, m ≥ 2 → m ∈ TwoPowAddSet r)
 
-/-!
+/-
 ## Historical Context
 
 Romanoff (1934) initiated the study of representations n = 2^k + p.

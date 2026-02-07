@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #151 — Clique Transversal Number and Triangle-Free Independence
 
 For a graph G, let τ(G) be the clique transversal number: the minimum
@@ -26,7 +26,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Graph properties (axiomatised) -/
+/- ## Graph properties (axiomatised) -/
 
 /-- Number of vertices of a graph. -/
 axiom vertexCount : Type → ℕ
@@ -43,7 +43,7 @@ axiom IsIndependent : Type → Finset ℕ → Prop
 /-- The graph is triangle-free. -/
 axiom IsTriangleFree : Type → Prop
 
-/-! ## Clique transversal number -/
+/- ## Clique transversal number -/
 
 /-- A vertex set T is a clique transversal if it intersects every maximal
     clique of size ≥ 2. -/
@@ -57,7 +57,7 @@ axiom cliqueTransversal : Type → ℕ
 axiom cliqueTransversal_spec (G : Type) :
     ∃ T : Finset ℕ, T.card = cliqueTransversal G ∧ IsCliqueTransversal G T
 
-/-! ## Triangle-free independence number H(n) -/
+/- ## Triangle-free independence number H(n) -/
 
 /-- H(n): max k such that every triangle-free graph on n vertices has
     an independent set of size k. -/
@@ -73,13 +73,13 @@ axiom triangleFreeIndep_spec (n : ℕ) (G : Type)
 axiom triangleFreeIndep_sqrt (n : ℕ) :
     (Nat.sqrt n : ℕ) ≤ triangleFreeIndep n
 
-/-! ## Easy bound -/
+/- ## Easy bound -/
 
 /-- τ(G) ≤ n − √n for every n-vertex graph G. -/
 axiom clique_transversal_easy_bound (G : Type) (n : ℕ) (hv : vertexCount G = n) :
     cliqueTransversal G ≤ n - Nat.sqrt n
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 151 (Erdős–Gallai): τ(G) ≤ n − H(n) for every
     n-vertex graph G. -/

@@ -24,7 +24,7 @@ import Mathlib
 
 namespace Erdos348
 
-/-!
+/-
 ## Complete Sequences
 
 A sequence A of positive integers is complete if every sufficiently large
@@ -46,7 +46,7 @@ def IsStronglyComplete (A : Set ℕ) : Prop :=
 /-- A sequence viewed as a set -/
 def sequenceToSet (a : ℕ → ℕ) : Set ℕ := Set.range a
 
-/-!
+/-
 ## Removing Elements
 
 We need to formalize what it means to remove elements from a sequence.
@@ -60,7 +60,7 @@ noncomputable def removeIndices (a : ℕ → ℕ) (S : Finset ℕ) : Set ℕ :=
 def removeValues (A : Set ℕ) (S : Finset ℕ) : Set ℕ :=
   A \ ↑S
 
-/-!
+/-
 ## The Main Problem Statement
 
 For given m < n, does there exist a complete sequence that:
@@ -82,7 +82,7 @@ def validPairs : Set (ℕ × ℕ) :=
        ∃ a : ℕ → ℕ, Monotone a ∧ IsComplete (sequenceToSet a) ∧
          IsRobust a p.1 ∧ NotRobust a p.2}
 
-/-!
+/-
 ## Known Examples
 
 The powers of 2 show (0, 1) is valid.
@@ -164,7 +164,7 @@ theorem pair_1_2_valid : (1, 2) ∈ validPairs := by
     · exact fib_1_robust
     · exact fib_not_2_robust
 
-/-!
+/-
 ## The Main Conjecture
 
 The question asks to characterize all valid pairs (m, n) with m < n.
@@ -181,7 +181,7 @@ axiom erdos_348_characterization :
 axiom erdos_348_case_2_3 :
   (2, 3) ∈ validPairs ∨ (2, 3) ∉ validPairs
 
-/-!
+/-
 ## Van Doorn's Result
 
 Wouter van Doorn proved that for strongly complete sequences (representing ALL
@@ -197,7 +197,7 @@ axiom vanDoorn_theorem :
   ∀ a : ℕ → ℕ, Monotone a → IsStronglyComplete (sequenceToSet a) →
     ¬IsStronglyRobust a 2
 
-/-!
+/-
 ## Connections to Representation Theory
 
 Complete sequences are related to representation functions and additive bases.
@@ -212,7 +212,7 @@ theorem complete_iff_repr (A : Set ℕ) :
     IsComplete A ↔ ∃ N, ∀ n ≥ N, 0 < representationCount A n := by
   sorry
 
-/-!
+/-
 ## The Gap Property
 
 A key observation is that complete sequences cannot have arbitrarily large gaps.
@@ -226,7 +226,7 @@ axiom complete_bounded_gaps :
   ∀ a : ℕ → ℕ, Monotone a → IsComplete (sequenceToSet a) →
     ∃ N M : ℕ, ∀ n ≥ N, gap a n ≤ M
 
-/-!
+/-
 ## The Main Open Question
 
 The precise characterization of valid pairs remains unknown.

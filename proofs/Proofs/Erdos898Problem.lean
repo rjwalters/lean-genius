@@ -27,7 +27,7 @@ import Mathlib
 
 namespace Erdos898
 
-/-!
+/-
 ## Part I: Points and Triangles in ℝ²
 
 We set up the geometric framework using Mathlib's Euclidean geometry.
@@ -47,7 +47,7 @@ def IsTriangle (A B C : Point) : Prop :=
 def IsInteriorPoint (P A B C : Point) : Prop :=
   sorry -- P is strictly inside the convex hull of {A, B, C}
 
-/-!
+/-
 ## Part II: Perpendicular Feet
 
 The foot of the perpendicular from P to a line segment.
@@ -74,7 +74,7 @@ structure PerpendicularFeet (P A B C : Point) where
   hY : Y = perpendicularFoot P C A
   hZ : Z = perpendicularFoot P A B
 
-/-!
+/-
 ## Part III: The Erdős-Mordell Inequality
 
 The main inequality: PA + PB + PC ≥ 2(PX + PY + PZ)
@@ -99,7 +99,7 @@ axiom erdos_mordell_inequality (A B C P : Point)
     (hT : IsTriangle A B C) (hP : IsInteriorPoint P A B C) :
     ErdosMordellInequality P A B C
 
-/-!
+/-
 ## Part IV: Equality Condition
 
 Equality holds if and only if the triangle is equilateral and P is its center.
@@ -127,7 +127,7 @@ axiom erdos_mordell_equality (A B C P : Point)
     vertexDistanceSum P A B C = 2 * sideDistanceSum P A B C ↔
     IsEquilateral A B C ∧ P = centroid A B C
 
-/-!
+/-
 ## Part V: Alternative Formulations
 
 The inequality can be written in several equivalent ways.
@@ -152,7 +152,7 @@ axiom weighted_erdos_mordell (A B C P : Point)
     let d_c := distToLine P A B
     a * PA + b * PB + c * PC ≥ 2 * (a * d_a + b * d_b + c * d_c)
 
-/-!
+/-
 ## Part VI: Proofs and History
 
 The original proof and subsequent simplifications.
@@ -174,7 +174,7 @@ axiom kazarinoff_proof : ∀ (A B C P : Point),
 axiom bankoff_proof : ∀ (A B C P : Point),
     IsTriangle A B C → IsInteriorPoint P A B C → ErdosMordellInequality P A B C
 
-/-!
+/-
 ## Part VII: Generalizations
 
 The inequality extends to higher dimensions and other settings.
@@ -192,7 +192,7 @@ def ErdosMordellTetrahedron : Prop :=
 axiom erdos_mordell_polygon (n : ℕ) (hn : n ≥ 3) :
     sorry -- Sum of vertex distances ≥ 2 × sum of side distances
 
-/-!
+/-
 ## Part VIII: Related Inequalities
 
 Other classical triangle inequalities in the same family.
@@ -219,7 +219,7 @@ axiom weitzenbock_inequality (A B C : Point) (hT : IsTriangle A B C) :
     let c := dist A B
     a^2 + b^2 + c^2 ≥ 4 * Real.sqrt 3 * sorry -- area
 
-/-!
+/-
 ## Part IX: Main Result
 
 Erdős Problem #898 is SOLVED.

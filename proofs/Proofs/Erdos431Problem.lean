@@ -30,7 +30,7 @@ namespace Erdos431
 
 open Real Nat Set
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 The sumset A + B and the set of primes.
@@ -51,7 +51,7 @@ def AgreeFinitely (S T : Set ℕ) : Prop :=
 axiom agreeFinitely_iff (S T : Set ℕ) :
     AgreeFinitely S T ↔ (S ∆ T).Finite
 
-/-!
+/-
 ## Part 2: The Inverse Goldbach Conjecture
 
 Can A + B = Primes (mod finite)?
@@ -68,7 +68,7 @@ def InverseGoldbachConjecture : Prop :=
 /-- The conjecture is widely believed to be true -/
 axiom inverse_goldbach_conjectured : InverseGoldbachConjecture
 
-/-!
+/-
 ## Part 3: Counting Functions
 
 How A and B must grow if they exist.
@@ -89,7 +89,7 @@ def GrowthBounds (A : Set ℕ) : Prop :=
 axiom elsholtz_harper_2015 (A B : Set ℕ) (h : InverseGoldbachPair A B) :
   GrowthBounds A ∧ GrowthBounds B
 
-/-!
+/-
 ## Part 4: Prime Counting Asymptotics
 -/
 
@@ -98,7 +98,7 @@ axiom prime_counting_asymptotic :
   Filter.Tendsto (fun x => (Nat.primeCounting x : ℝ) / (x / Real.log x))
     Filter.atTop (nhds 1)
 
-/-!
+/-
 ## Part 5: Three Sets Ruled Out
 
 Elsholtz (2001): No A + B + C = Primes (mod finite).
@@ -121,7 +121,7 @@ theorem no_triple_solution :
     ¬∃ A B C : Set ℕ, InverseGoldbachTriple A B C :=
   elsholtz_2001
 
-/-!
+/-
 ## Part 6: Partial Positive Results
 
 Subsets of primes from restricted sumsets.
@@ -139,7 +139,7 @@ axiom tao_ziegler_2023 :
     -- Their restricted sumset is a subset of primes
     ∀ n ∈ RestrictedSumset B C, Nat.Prime n
 
-/-!
+/-
 ## Part 7: Connection to Goldbach
 
 Goldbach: Every even n > 2 is a sum of two primes.
@@ -162,7 +162,7 @@ theorem goldbach_implies_sumset (hGold : GoldbachConjecture) :
 axiom primes_sumset_not_primes :
     ¬AgreeFinitely (Sumset Primes Primes) Primes
 
-/-!
+/-
 ## Part 8: Structural Constraints
 
 What A and B would have to look like.
@@ -172,7 +172,7 @@ What A and B would have to look like.
 axiom must_contain_small_elements (A B : Set ℕ) (h : InverseGoldbachPair A B) :
   (2 ∈ A ∨ 2 ∈ B) ∧ (1 ∈ A ∨ 1 ∈ B ∨ 2 ∈ A ∧ 2 ∈ B)
 
-/-!
+/-
 ## Part 9: Main Problem Statement
 -/
 
@@ -191,7 +191,7 @@ theorem erdos_431_statement :
   · exact elsholtz_harper_2015
   · exact elsholtz_2001
 
-/-!
+/-
 ## Part 10: Summary
 -/
 

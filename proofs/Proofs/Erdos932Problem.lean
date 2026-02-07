@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #932: Smooth Numbers in Prime Gaps
 
 Source: https://erdosproblems.com/932
@@ -41,7 +41,7 @@ open Nat Finset
 
 namespace Erdos932
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **The n-th Prime**
@@ -63,7 +63,7 @@ axiom nthPrime_prime (n : ℕ) : (nthPrime n).Prime
 /-- The sequence of primes is strictly increasing. -/
 axiom nthPrime_strictMono : StrictMono nthPrime
 
-/-! ## Part II: Prime Gap -/
+/- ## Part II: Prime Gap -/
 
 /--
 **Prime Gap**
@@ -80,7 +80,7 @@ theorem primeGap_pos (n : ℕ) : primeGap n > 0 := by
   simp [primeGap]
   exact Nat.sub_pos_of_lt (nthPrime_strictMono (Nat.lt_succ_self n))
 
-/-! ## Part III: Smooth Numbers -/
+/- ## Part III: Smooth Numbers -/
 
 /--
 **Maximum Prime Factor**
@@ -117,7 +117,7 @@ theorem one_isSmooth (B : ℕ) : isSmooth B 1 := by
 axiom prime_power_isSmooth (p k B : ℕ) (hp : p.Prime) (hpB : p ≤ B) (hk : k > 0) :
     isSmooth B (p ^ k)
 
-/-! ## Part IV: Smooth Numbers in Prime Gap -/
+/- ## Part IV: Smooth Numbers in Prime Gap -/
 
 /--
 **The Open Interval Between Consecutive Primes**
@@ -159,7 +159,7 @@ How many numbers in the gap are smooth relative to the gap size.
 -/
 def smoothCount (r : ℕ) : ℕ := (smoothInGap r).card
 
-/-! ## Part V: The Main Conjecture (OPEN) -/
+/- ## Part V: The Main Conjecture (OPEN) -/
 
 /--
 **Erdős Problem #932 (OPEN)**
@@ -181,7 +181,7 @@ theorem erdos_932_alt :
   ext r
   simp [erdos932Condition, smoothCount, smoothInGap, primesGapInterval, primeGap]
 
-/-! ## Part VI: The Density-Zero Result (SOLVED) -/
+/- ## Part VI: The Density-Zero Result (SOLVED) -/
 
 /--
 **Natural Density**
@@ -216,7 +216,7 @@ theorem erdos_932_variants_one_le :
   ext r
   simp [erdos932WeakCondition, smoothCount, smoothInGap, primesGapInterval, primeGap]
 
-/-! ## Part VII: Examples and Analysis -/
+/- ## Part VII: Examples and Analysis -/
 
 /--
 **Example Analysis**
@@ -241,7 +241,7 @@ theorem example_satisfies : erdos932Condition 3 := by
   have := example_r3
   omega
 
-/-! ## Part VIII: Why This Is Hard -/
+/- ## Part VIII: Why This Is Hard -/
 
 /--
 **The Difficulty**
@@ -260,7 +260,7 @@ Large prime gaps tend to have larger B, but they're also rare. The
 interplay between gap size and smooth number distribution is subtle.
 -/
 
-/-! ## Part IX: Connection to Smooth Number Distribution -/
+/- ## Part IX: Connection to Smooth Number Distribution -/
 
 /--
 **Smooth Number Counting Function**
@@ -282,7 +282,7 @@ noncomputable def smoothCountUpTo (x y : ℕ) : ℕ :=
 axiom smoothCountUpTo_mono (x y₁ y₂ : ℕ) (h : y₁ ≤ y₂) :
     smoothCountUpTo x y₁ ≤ smoothCountUpTo x y₂
 
-/-! ## Part X: Summary -/
+/- ## Part X: Summary -/
 
 /--
 **Erdős Problem #932: Summary**

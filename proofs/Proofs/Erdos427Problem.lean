@@ -28,7 +28,7 @@ open Nat Finset Set
 
 namespace Erdos427
 
-/-!
+/-
 ## Background: The nth Prime
 
 We axiomatize the function that enumerates primes.
@@ -57,7 +57,7 @@ axiom nthPrime_values :
     nthPrime 0 = 2 ∧ nthPrime 1 = 3 ∧ nthPrime 2 = 5 ∧
     nthPrime 3 = 7 ∧ nthPrime 4 = 11 ∧ nthPrime 5 = 13
 
-/-!
+/-
 ## The Sum of Consecutive Primes
 
 Given a starting index n and length k, we sum the primes p_n, p_{n+1}, ..., p_{n+k-1}.
@@ -82,7 +82,7 @@ primeSum n 1 = nthPrime n (single term).
 theorem primeSum_one (n : ℕ) : primeSum n 1 = nthPrime n := by
   simp [primeSum]
 
-/-!
+/-
 ## Erdős's Question
 
 The question asks: for any starting point n and any divisor d > 0,
@@ -98,7 +98,7 @@ such that d divides the sum p_n + p_{n+1} + ... + p_{n+k-1}.
 def erdos_427_statement : Prop :=
   ∀ n d : ℕ, d ≠ 0 → ∃ k : ℕ, k ≠ 0 ∧ d ∣ primeSum n k
 
-/-!
+/-
 ## Shiu's Theorem: Strings of Congruent Primes
 
 The key tool for proving Erdős #427 is Shiu's remarkable theorem (2000):
@@ -127,7 +127,7 @@ Reference: Shiu, D. K. L., "Strings of congruent primes", J. London Math. Soc. (
 -/
 axiom shiu_theorem : ShiuTheorem
 
-/-!
+/-
 ## Proof that Shiu Implies Erdős #427
 
 Pilatte's elegant argument:
@@ -169,7 +169,7 @@ For any n and d ≠ 0, there exists k ≠ 0 such that d | primeSum n k.
 -/
 theorem erdos_427 : erdos_427_statement := erdos_427_of_shiu shiu_theorem
 
-/-!
+/-
 ## Examples and Verification
 
 Let's verify the statement for small cases.
@@ -201,7 +201,7 @@ So k = 5 works: 2+3+5+7+11 = 28 = 4×7.
 -/
 axiom example_n0_d7 : 7 ∣ primeSum 0 5  -- 2+3+5+7+11 = 28
 
-/-!
+/-
 ## The Power of Shiu's Theorem
 
 Shiu's theorem is a profound result about the distribution of primes.
@@ -231,7 +231,7 @@ theorem shiu_implies_consecutive (k a q : ℕ) (hk : 1 ≤ k) (hq : 1 ≤ q) (hc
   obtain ⟨m, hm⟩ := H.nonempty
   exact ⟨m, hm⟩
 
-/-!
+/-
 ## Why the Problem is Interesting
 
 Erdős #427 asks about a seemingly simple property of prime sums.
@@ -251,7 +251,7 @@ For any n and nonzero d, there exists a solution to d | primeSum n k.
 theorem erdos_427_has_solution (n d : ℕ) (hd : d ≠ 0) : ∃ k, k ≠ 0 ∧ d ∣ primeSum n k :=
   erdos_427 n d hd
 
-/-!
+/-
 ## Connection to Dirichlet's Theorem
 
 Dirichlet's theorem states that for coprime a and q, the arithmetic
@@ -279,7 +279,7 @@ theorem shiu_for_ones (k q : ℕ) (hk : 1 ≤ k) (hq : 1 ≤ q) :
     { m : ℕ | ∀ i ∈ Finset.Ico m (m + k), nthPrime i ≡ 1 [MOD q] }.Infinite :=
   shiu_theorem k 1 q hk hq (Nat.coprime_one_left q)
 
-/-!
+/-
 ## The Minimal k
 
 For given n and d, what is the smallest k such that d | primeSum n k?

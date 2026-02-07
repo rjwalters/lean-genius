@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 913: Distinct Exponents in n(n+1) Factorizations
 
 *Reference:* [erdosproblems.com/913](https://www.erdosproblems.com/913)
@@ -24,7 +24,7 @@ import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section 1: Distinct exponent property
 
 We define the property that the prime factorization of `n(n+1)` has
@@ -44,7 +44,7 @@ def HasDistinctExponents (n : ℕ) : Prop :=
 def DistinctExponentSet : Set ℕ :=
   { n | HasDistinctExponents n }
 
-/-!
+/-
 ## Section 2: The main conjecture
 
 Erdős Problem 913 asks whether the set of n with distinct exponents is infinite.
@@ -54,7 +54,7 @@ Erdős Problem 913 asks whether the set of n with distinct exponents is infinite
     factorization of n(n+1) has all exponents distinct? -/
 def ErdosProblem913 : Prop := DistinctExponentSet.Infinite
 
-/-!
+/-
 ## Section 3: The 8p²-1 prime hypothesis
 
 A likely sufficient condition: infinitely many primes p with 8p²-1 also prime.
@@ -66,7 +66,7 @@ def PrimePairs8 : Set ℕ := { p | p.Prime ∧ (8 * p ^ 2 - 1).Prime }
 /-- Hypothesis: there are infinitely many primes p with 8p² - 1 prime. -/
 axiom infinite_8p_sq_minus_1_primes : PrimePairs8.Infinite
 
-/-!
+/-
 ## Section 4: Conditional proof
 
 If PrimePairs8 is infinite, then DistinctExponentSet is infinite.
@@ -82,7 +82,7 @@ which are all distinct.
 axiom erdos_913_conditional (h : PrimePairs8.Infinite) :
   DistinctExponentSet.Infinite
 
-/-!
+/-
 ## Section 5: Known examples
 
 Small examples of n with distinct exponents in n(n+1):
@@ -102,7 +102,7 @@ axiom example_n7 : HasDistinctExponents 7
 /-- n = 8 has distinct exponents: 8·9 = 2³·3². -/
 axiom example_n8 : HasDistinctExponents 8
 
-/-!
+/-
 ## Section 6: Connection to Bunyakovsky conjecture
 
 The hypothesis that infinitely many p have 8p² - 1 prime is a special case
@@ -116,7 +116,7 @@ for irreducible polynomials satisfying a fixed-divisor condition.
     This is a weaker form than the full Bunyakovsky conjecture. -/
 def Bunyakovsky8 : Prop := PrimePairs8.Infinite
 
-/-!
+/-
 ## Section 7: Exponent multiplicity structure
 
 The key insight of the conditional proof is that n = 8p² - 1 gives

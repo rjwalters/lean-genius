@@ -37,7 +37,7 @@ open Polynomial Set Metric
 
 namespace Erdos509
 
-/-! ## Part I: Bounded Disc Cover -/
+/- ## Part I: Bounded Disc Cover -/
 
 /--
 **Bounded Disc Cover**
@@ -56,7 +56,7 @@ structure BoundedDiscCover {M : Type*} [MetricSpace M] (S : Set M) (r : ℝ) (ι
 def canBeCovered {M : Type*} [MetricSpace M] (S : Set M) (r : ℝ) : Prop :=
   ∃ ι : Type, Nonempty (BoundedDiscCover S r ι)
 
-/-! ## Part II: Polynomial Sublevel Sets -/
+/- ## Part II: Polynomial Sublevel Sets -/
 
 /--
 **Polynomial Sublevel Set**
@@ -81,7 +81,7 @@ axiom sublevelSet_nonempty (f : Polynomial ℂ) (hf : f.natDegree > 0) :
 axiom sublevelSet_compact (f : Polynomial ℂ) (hf : f.Monic) (hd : f.natDegree > 0) :
     IsCompact (sublevelSet f)
 
-/-! ## Part III: The Main Conjecture -/
+/- ## Part III: The Main Conjecture -/
 
 /--
 **Erdős Problem #509 (OPEN)**
@@ -95,7 +95,7 @@ def erdos509Conjecture : Prop :=
 
 axiom erdos_509 : erdos509Conjecture
 
-/-! ## Part IV: Known Results -/
+/- ## Part IV: Known Results -/
 
 /--
 **Cartan's Theorem (1928)**
@@ -122,7 +122,7 @@ axiom pommerenke_connected : ∀ f : Polynomial ℂ, f.Monic → f.natDegree > 0
     IsConnected (sublevelSet f) →
     canBeCovered (sublevelSet f) 2
 
-/-! ## Part V: Structure of Sublevel Sets -/
+/- ## Part V: Structure of Sublevel Sets -/
 
 /--
 **Components of the Sublevel Set**
@@ -144,7 +144,7 @@ centered at a. This requires radius 1 to cover.
 axiom linear_sublevel_is_disc :
     sublevelSet (X : Polynomial ℂ) = closedBall (0 : ℂ) 1
 
-/-! ## Part VI: Lower Bounds -/
+/- ## Part VI: Lower Bounds -/
 
 /--
 **Lower Bound for Cover**
@@ -156,7 +156,7 @@ the sublevel set has two components around ±1, each requiring radius 1.
 axiom quadratic_sublevel_nonempty :
     (sublevelSet (X^2 - C 1 : Polynomial ℂ)).Nonempty
 
-/-! ## Part VII: Historical Context -/
+/- ## Part VII: Historical Context -/
 
 /--
 **Historical Development**
@@ -170,7 +170,7 @@ The problem appears in Erdős's 1961 paper and was further discussed
 by Halász in 1974. Erdős also posed a higher-dimensional generalization.
 -/
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #509: Summary**

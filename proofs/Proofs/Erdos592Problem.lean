@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #592: Partition Ordinals and Ordinal Ramsey Theory
 
 For which countable ordinals β does ω^β → (ω^β, 3)² hold?
@@ -24,7 +24,7 @@ import Mathlib.SetTheory.Ordinal.Arithmetic
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A countable ordinal: an ordinal with cardinality at most ℵ₀. -/
 def IsCountableOrdinal (β : Ordinal) : Prop :=
@@ -43,7 +43,7 @@ def IsPartitionOrdinal (α : Ordinal) : Prop :=
 def HasPartitionProperty (β : Ordinal) : Prop :=
   IsPartitionOrdinal (Ordinal.omega ^ β)
 
-/-! ## Specker's Results (1957) -/
+/- ## Specker's Results (1957) -/
 
 /-- Specker (1957): ω² → (ω², 3)². The case β = 2 holds. -/
 axiom specker_beta_two : HasPartitionProperty 2
@@ -52,12 +52,12 @@ axiom specker_beta_two : HasPartitionProperty 2
 axiom specker_finite_fail (n : ℕ) (h3 : 3 ≤ n) :
     ¬ HasPartitionProperty (Ordinal.ofNat n)
 
-/-! ## Chang's Theorem (1972) -/
+/- ## Chang's Theorem (1972) -/
 
 /-- Chang (1972): ω^ω → (ω^ω, 3)². The case β = ω holds. -/
 axiom chang_beta_omega : HasPartitionProperty Ordinal.omega
 
-/-! ## Galvin–Larson Necessary Condition (1974) -/
+/- ## Galvin–Larson Necessary Condition (1974) -/
 
 /-- An ordinal is additively indecomposable if it equals ω^γ for some ordinal γ.
     Equivalently, for all δ₁ δ₂ < β, δ₁ + δ₂ < β. -/
@@ -70,7 +70,7 @@ axiom galvin_larson_necessary (β : Ordinal) (hge : 3 ≤ β)
     (hpart : HasPartitionProperty β) :
     IsAdditivelyIndecomposable β
 
-/-! ## Schipperus Classification (2010) -/
+/- ## Schipperus Classification (2010) -/
 
 /-- The Cantor normal form length: the number of indecomposable ordinal
     summands in the Cantor normal form of γ. -/
@@ -88,7 +88,7 @@ axiom schipperus_leq_two (γ : Ordinal) (hlen : cantorNFLength γ ≤ 2) :
 axiom schipperus_geq_four (γ : Ordinal) (hlen : 4 ≤ cantorNFLength γ) :
     ¬ HasPartitionProperty (Ordinal.omega ^ γ)
 
-/-! ## The Open Case -/
+/- ## The Open Case -/
 
 /-- The critical open case: Does the partition property hold when
     β = ω^γ and γ has Cantor NF length exactly 3?
@@ -97,7 +97,7 @@ axiom erdos_592_open_case (γ : Ordinal) (hlen : cantorNFLength γ = 3) :
     HasPartitionProperty (Ordinal.omega ^ γ) ∨
     ¬ HasPartitionProperty (Ordinal.omega ^ γ)
 
-/-! ## Classification Summary -/
+/- ## Classification Summary -/
 
 /-- The known partition ordinals of the form ω^β for countable β:
     - β = 0: trivially true (ω⁰ = 1)

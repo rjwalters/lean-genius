@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #663: Smallest Prime Not Dividing Consecutive Products
 
 For positive integers `n` and `k`, define `q(n,k)` to be the least prime that does
@@ -21,7 +21,7 @@ import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Consecutive Products and Smallest Missing Prime -/
+/- ## Consecutive Products and Smallest Missing Prime -/
 
 /-- The product of k consecutive integers starting from n+1: (n+1)(n+2)···(n+k). -/
 noncomputable def consecutiveProduct (n k : ℕ) : ℕ :=
@@ -43,7 +43,7 @@ axiom smallestMissingPrime_least (n k : ℕ) (hk : 0 < k) (p : ℕ)
     (hp : p.Prime) (hlt : p < smallestMissingPrime n k) :
     p ∣ consecutiveProduct n k
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- Erdős Problem 663: For each fixed k, q(n,k) < (1 + o(1)) log n.
     Formally: limsup of q(n,k) / log(n) as n → ∞ is at most 1. -/
@@ -53,7 +53,7 @@ def ErdosProblem663 : Prop :=
       ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
         (smallestMissingPrime n k : ℝ) < (1 + ε) * Real.log n
 
-/-! ## Weak Bound -/
+/- ## Weak Bound -/
 
 /-- The weak bound: q(n,k) < (1 + o(1)) k · log n follows from the prime
     number theorem. Every prime p ≤ k·log(n) divides some n+i for 1 ≤ i ≤ k
@@ -76,7 +76,7 @@ theorem weak_bound_k1_implies_main :
   obtain ⟨N₀, hN₀⟩ := h ε hε
   exact ⟨N₀, fun n hn => by rw [mul_one] at hN₀; exact hN₀ n hn⟩
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- For k = 1, q(n,1) is the least prime not dividing n+1. -/
 theorem consecutive_product_k1 (n : ℕ) :
@@ -109,7 +109,7 @@ axiom small_prime_divides_product (n k p : ℕ)
 axiom q_gt_k (n k : ℕ) (hk : 1 < k) :
     k < smallestMissingPrime n k
 
-/-! ## Monotonicity Properties -/
+/- ## Monotonicity Properties -/
 
 /-- q(n,k) is non-increasing in k: adding more terms can only help. -/
 axiom q_mono_k (n k₁ k₂ : ℕ) (hk₁ : 0 < k₁) (hle : k₁ ≤ k₂) :

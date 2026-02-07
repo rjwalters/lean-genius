@@ -29,7 +29,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 
 namespace Erdos767
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Graphs, cycles, and chords.
@@ -70,7 +70,7 @@ def HasKChordsIncident {n : ℕ} (G : Graph n) (cycle : List (Fin n)) (k : ℕ) 
 def AvoidsCycleWithKChords {n : ℕ} (G : Graph n) (k : ℕ) : Prop :=
   ∀ cycle : List (Fin n), IsCycle G cycle → ¬HasKChordsIncident G cycle k
 
-/-!
+/-
 ## Part II: The Function g_k(n)
 
 g_k(n) = max edges in n-vertex graph avoiding k-chord-incident cycles.
@@ -88,7 +88,7 @@ axiom g_k_achievable (k n : ℕ) (hn : n ≥ k + 2) :
 axiom g_k_maximal (k n : ℕ) (G : Graph n) :
     AvoidsCycleWithKChords G k → edgeCount G ≤ g_k k n
 
-/-!
+/-
 ## Part III: Known Bounds
 -/
 
@@ -100,7 +100,7 @@ axiom czipszer_upper (k n : ℕ) (hn : n ≥ 1) :
 axiom erdos_lower (k n : ℕ) (hn : n ≥ k + 1) :
     g_k k n ≥ (k + 1) * n - (k + 1)^2
 
-/-!
+/-
 ## Part IV: Special Cases
 -/
 
@@ -116,7 +116,7 @@ axiom erdos_k2 (n : ℕ) (hn : n ≥ 6) :
 axiom erdos_k3 (n : ℕ) (hn : n ≥ 8) :
     g_k 3 n = 4 * n - 16
 
-/-!
+/-
 ## Part V: Jiang's Theorem (2004)
 -/
 
@@ -130,7 +130,7 @@ theorem erdos_767_solved (k : ℕ) :
   intro n hn
   exact jiang_2004 k n hn
 
-/-!
+/-
 ## Part VI: Verification of Formula
 -/
 
@@ -153,7 +153,7 @@ example : ∀ n ≥ 6, (2 + 1) * n - (2 + 1)^2 = 3 * n - 9 := by
 example : ∀ n ≥ 8, (3 + 1) * n - (3 + 1)^2 = 4 * n - 16 := by
   intro n _; ring
 
-/-!
+/-
 ## Part VII: Computational Examples
 -/
 
@@ -169,7 +169,7 @@ example : 4 * 20 - 16 = 64 := by native_decide
 /-- g_5(30) = 6·30 - 36 = 144 -/
 example : 6 * 30 - 36 = 144 := by native_decide
 
-/-!
+/-
 ## Part VIII: Combined Result
 -/
 

@@ -40,7 +40,7 @@ open Finset BigOperators
 
 namespace Erdos867
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 We formalize the notion of consecutive sum-free sets.
@@ -79,7 +79,7 @@ noncomputable def maxDensity (N : ℕ) : ℝ :=
   sSup {(A.toFinset.card : ℝ) / N | A : List ℕ}
   -- Note: This is a simplified definition; full version needs constraints
 
-/-!
+/-
 ## Part II: The Upper Half Example
 
 Taking A = (N/2, N] ∩ ℕ shows density ≥ 1/2 - o(1) is achievable.
@@ -114,7 +114,7 @@ axiom upperHalf_sumFree (N : ℕ) (hN : N ≥ 4) :
   ∀ a b : ℕ, a ∈ upperHalf N → b ∈ upperHalf N → a ≠ b →
     a + b > N
 
-/-!
+/-
 ## Part III: Adenwalla's Upper Bound
 
 The first improvement: |A| ≤ (2/3 + o(1))N.
@@ -142,7 +142,7 @@ axiom adenwalla_upper_bound :
     -- A is consecutive sum-free (simplified)
     A.card ≤ 2 * N / 3 + Nat.log2 N + 1
 
-/-!
+/-
 ## Part IV: Freud's Lower Bound (Disproving the Conjecture)
 
 Freud constructed sets achieving density > 1/2.
@@ -171,7 +171,7 @@ axiom freud_construction :
 theorem nineteen_thirty_sixth_gt_half : (19 : ℚ) / 36 > 1 / 2 := by
   norm_num
 
-/-!
+/-
 ## Part V: Coppersmith-Phillips Bounds (1996)
 
 The current best known bounds.
@@ -209,7 +209,7 @@ theorem best_bounds_fractions :
     (13 : ℚ) / 24 < 2 / 3 - 1 / 512 := by
   norm_num
 
-/-!
+/-
 ## Part VI: Connection to Problem 839 (Infinite Version)
 
 Problem 867 is the finitary analog of Problem 839.
@@ -235,7 +235,7 @@ axiom problem_839_connection :
   ∀ A : Set ℕ, isInfiniteConsecutiveSumFree A →
     ∃ d : ℝ, 0 ≤ d ∧ d ≤ 2/3 -- density bound
 
-/-!
+/-
 ## Part VII: Concrete Examples
 -/
 
@@ -266,7 +266,7 @@ example : ({6, 7, 8, 9, 10} : Finset ℕ) = upperHalf 10 := by
   simp [Finset.mem_Ioc]
   omega
 
-/-!
+/-
 ## Part VIII: Main Results
 -/
 

@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #785: Exact Additive Complements
 
 Source: https://erdosproblems.com/785
@@ -32,7 +32,7 @@ open Nat Set Finset
 
 namespace Erdos785
 
-/-!
+/-
 ## Part I: Sumsets and Additive Complements
 -/
 
@@ -71,7 +71,7 @@ A and B are additive complements if their sumset covers all large integers.
 def IsAdditiveComplement (A B : Set ℕ) : Prop :=
   CoversLargeIntegers A B ∧ A.Infinite ∧ B.Infinite
 
-/-!
+/-
 ## Part II: Exact Additive Complements
 -/
 
@@ -91,7 +91,7 @@ These are "optimally sparse" complement pairs.
 def IsExactAdditiveComplement (A B : Set ℕ) : Prop :=
   IsAdditiveComplement A B ∧ ProductAsymptoticToX A B
 
-/-!
+/-
 ## Part III: The Main Question
 -/
 
@@ -104,7 +104,7 @@ def ErdosDanzerQuestion : Prop :=
     Filter.Tendsto (fun x => (countingFunction A x * countingFunction B x : ℤ) - x)
       Filter.atTop Filter.atTop
 
-/-!
+/-
 ## Part IV: Danzer's Existence Result
 -/
 
@@ -116,7 +116,7 @@ to be impossible while covering all large integers.
 axiom danzer_1964_existence :
     ∃ A B : Set ℕ, IsExactAdditiveComplement A B
 
-/-!
+/-
 ## Part V: Sárközy-Szemerédi Solution
 -/
 
@@ -136,7 +136,7 @@ The Erdős-Danzer question has an affirmative answer.
 theorem erdos_danzer_solved : ErdosDanzerQuestion :=
   sarkozy_szemeredi_1994
 
-/-!
+/-
 ## Part VI: Ruzsa's Refinement
 -/
 
@@ -152,7 +152,7 @@ axiom ruzsa_2017 :
         ∃ᶠ x in Filter.atTop,
           (countingFunction A x * countingFunction B x : ℝ) - x < w x
 
-/-!
+/-
 ## Part VII: Related Concepts
 -/
 
@@ -173,7 +173,7 @@ axiom average_representation :
         (Finset.range (x + 1)).sum (fun n => representationFunction A B n : ℝ) / x)
         Filter.atTop (nhds 1)
 
-/-!
+/-
 ## Part IX: Summary
 -/
 

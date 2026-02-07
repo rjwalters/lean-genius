@@ -43,7 +43,7 @@ namespace Erdos859
 
 open Nat Finset Filter Asymptotics Real
 
-/-! ## Part I: Divisor Sum Sets -/
+/- ## Part I: Divisor Sum Sets -/
 
 /-- DivisorSumSet t is the set of natural numbers n such that t can be
     represented as a sum of distinct divisors of n.
@@ -64,7 +64,7 @@ theorem mem_divisorSumSet_iff (t n : ℕ) :
     n ∈ DivisorSumSet t ↔ ∃ s ⊆ Nat.divisors n, t = ∑ i in s, i := by
   rfl
 
-/-! ## Part II: Natural Density -/
+/- ## Part II: Natural Density -/
 
 /-- The counting function: how many n ≤ N are in DivisorSumSet t? -/
 noncomputable def countingFunction (t N : ℕ) : ℕ :=
@@ -79,7 +79,7 @@ def HasNaturalDensity (S : Set ℕ) (d : ℝ) : Prop :=
 def HasPositiveDensity (S : Set ℕ) : Prop :=
   ∃ d : ℝ, d > 0 ∧ HasNaturalDensity S d
 
-/-! ## Part III: Basic Examples -/
+/- ## Part III: Basic Examples -/
 
 /-- t = 0: The empty sum works for every n, so DivisorSumSet 0 = ℕ.
     Thus d₀ = 1. -/
@@ -112,7 +112,7 @@ theorem mem_divisorSumSet_two (n : ℕ) (hn : n > 0) :
     n ∈ DivisorSumSet 2 ↔ 2 ∣ n := by
   sorry
 
-/-! ## Part IV: Erdős's Bounds (1970) -/
+/- ## Part IV: Erdős's Bounds (1970) -/
 
 /-- **Erdős (1970)**: The density dₜ exists for all t.
 
@@ -140,7 +140,7 @@ axiom erdos_bounds :
       ∀ᶠ t : ℕ in atTop, ∀ dₜ : ℝ, HasNaturalDensity (DivisorSumSet t) dₜ →
         1 / (log t)^c₃ < dₜ ∧ dₜ < 1 / (log t)^c₄
 
-/-! ## Part V: The Open Question -/
+/- ## Part V: The Open Question -/
 
 /-- **Erdős Problem #859** (Open):
 
@@ -157,7 +157,7 @@ def ErdosProblem859 : Prop :=
 /-- The status: OPEN. We don't know if precise asymptotics exist. -/
 axiom erdos_859_open : True  -- Placeholder for open status
 
-/-! ## Part VI: The Divisor Function -/
+/- ## Part VI: The Divisor Function -/
 
 /-- The sum of divisors σ(n) = Σ_{d|n} d. -/
 noncomputable def sigma (n : ℕ) : ℕ :=
@@ -173,7 +173,7 @@ theorem subset_sum_count (n : ℕ) (hn : n > 0) :
     (Nat.divisors n).powerset.card = 2^(tau n) := by
   simp [tau, Finset.card_powerset]
 
-/-! ## Part VII: Multiplicative Structure -/
+/- ## Part VII: Multiplicative Structure -/
 
 /-- If gcd(m, n) = 1, then divisors(mn) = divisors(m) × divisors(n).
     This multiplicative structure helps analyze DivisorSumSet. -/
@@ -188,7 +188,7 @@ theorem primePower_divisors (p : ℕ) (hp : p.Prime) (a : ℕ) :
       intro h; exact Nat.pow_right_injective hp.two_le h⟩ := by
   sorry
 
-/-! ## Part VIII: Density Comparisons -/
+/- ## Part VIII: Density Comparisons -/
 
 /-- For large t, dₜ is small. This is because most n have σ(n) < t,
     so they can't possibly represent t as a subset sum. -/
@@ -205,7 +205,7 @@ theorem density_comparison (t : ℕ) (ht : t > 0) :
         d₂ₜ ≤ dₜ := by
   sorry
 
-/-! ## Part IX: Connection to Practical Numbers -/
+/- ## Part IX: Connection to Practical Numbers -/
 
 /-- A practical number is n such that every k ≤ σ(n) can be represented
     as a sum of distinct divisors of n. -/
@@ -222,7 +222,7 @@ theorem practical_examples :
 axiom practical_density_positive :
     HasPositiveDensity {n : ℕ | IsPractical n}
 
-/-! ## Part X: Subset Sum Problem -/
+/- ## Part X: Subset Sum Problem -/
 
 /-- The subset sum problem: given a set S and target t, does some
     subset of S sum to t? This is NP-complete in general, but
@@ -235,7 +235,7 @@ theorem divisorSumSet_subsetSum (n t : ℕ) (hn : n > 0) :
     n ∈ DivisorSumSet t ↔ SubsetSumExists (Nat.divisors n) t := by
   simp [DivisorSumSet, SubsetSumExists]
 
-/-! ## Part XI: Growth of σ(n) -/
+/- ## Part XI: Growth of σ(n) -/
 
 /-- Average order of σ(n): Σ_{n≤N} σ(n) ~ (π²/12) N². -/
 axiom sigma_average_order :
@@ -247,7 +247,7 @@ axiom sigma_average_order :
 axiom sigma_typical_size :
     ∀ᶠ n : ℕ in atTop, sigma n < n * (log n)^2
 
-/-! ## Part XII: Summary -/
+/- ## Part XII: Summary -/
 
 /-- Summary of Erdős Problem #859:
 
@@ -277,7 +277,7 @@ theorem erdos_859_summary :
 
 end Erdos859
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #859 on the density of divisor sum

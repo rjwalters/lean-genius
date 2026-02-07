@@ -35,7 +35,7 @@ import Mathlib
 
 namespace Erdos244
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- A natural number n is representable as p + ⌊C^k⌋ for a prime p and some k ≥ 0.
     This is the set we want to show has positive density. -/
@@ -69,7 +69,7 @@ theorem representable_nat_iff_real {C : ℕ} (hC : C > 0) (n : ℕ) :
     rw [floor_pow_nat hC] at hn
     exact hn
 
-/-! ## Part II: Density Concepts
+/- ## Part II: Density Concepts
 
 Lower density captures what fraction of integers (asymptotically) belong to a set.
 For a set S ⊆ ℕ, the lower density is:
@@ -94,7 +94,7 @@ noncomputable def upperDensity (S : Set ℕ) : ℝ :=
 def HasPositiveDensity (S : Set ℕ) : Prop :=
   0 < lowerDensity S
 
-/-! ## Part III: Romanoff's Theorem (1934)
+/- ## Part III: Romanoff's Theorem (1934)
 
 Romanoff proved that for any integer C ≥ 2, the set of integers representable
 as p + C^k (prime p, k ≥ 0) has positive lower density.
@@ -137,7 +137,7 @@ theorem representable_set_nonempty (C : ℝ) (hC : C > 1) :
     have hfloor : ⌊(1 : ℝ)⌋₊ = 1 := by norm_num
     rw [hfloor]
 
-/-! ## Part IV: The General Conjecture (Open Problem)
+/- ## Part IV: The General Conjecture (Open Problem)
 
 The full conjecture asks: for ANY real C > 1 (not just integers),
 does the set {p + ⌊C^k⌋ | p prime, k ≥ 0} have positive density?
@@ -171,7 +171,7 @@ axiom ding_almost_all :
     ∃ (N : Set ℝ), MeasureTheory.volume N = 0 ∧
     ∀ C : ℝ, C > 1 → C ∉ N → HasPositiveDensity (RepresentableSet C)
 
-/-! ## Part V: Small Examples -/
+/- ## Part V: Small Examples -/
 
 /-- 3 = 2 + 2^0 is representable for any C ≥ 1. -/
 theorem three_representable (C : ℝ) (hC : C ≥ 1) : IsRepresentable C 3 := by
@@ -197,7 +197,7 @@ theorem ten_representable_C2 : IsRepresentable 2 10 := by
   · exact Nat.prime_two
   · norm_num
 
-/-! ## Part VI: Connection to Erdős #10 -/
+/- ## Part VI: Connection to Erdős #10 -/
 
 /-- When C = 2, this is exactly the Romanoff set from Problem #10.
     The key difference from Problem #10 is:
@@ -212,7 +212,7 @@ theorem density_vs_universality :
     -- the representable set can still have positive density (Problem #244 is true for C=2)
     HasPositiveDensity (RepresentableSet 2) := romanoff_base_2
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /-- Summary of known results:
     1. Integer C ≥ 2: Density is positive (Romanoff 1934) ✓

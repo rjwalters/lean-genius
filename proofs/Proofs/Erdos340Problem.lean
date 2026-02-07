@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #340 — Growth of the Greedy Sidon Sequence
 
 The greedy Sidon sequence (Mian–Chowla sequence) is A = {1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97, ...}:
@@ -22,7 +22,7 @@ import Mathlib.Tactic
 
 open Filter Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A Sidon set (B₂ set): all pairwise sums a + b (a ≤ b, a,b ∈ S) are distinct. -/
 def IsSidonSet (S : Finset ℕ) : Prop :=
@@ -40,7 +40,7 @@ noncomputable def greedySidon : ℕ → ℕ
 noncomputable def greedySidonCount (N : ℕ) : ℕ :=
   (Finset.range N).filter (fun k => greedySidon k ≤ N) |>.card
 
-/-! ## Known Initial Values (OEIS A005282) -/
+/- ## Known Initial Values (OEIS A005282) -/
 
 /-- The first 11 values of the Mian–Chowla sequence. -/
 axiom greedy_sidon_values :
@@ -49,7 +49,7 @@ axiom greedy_sidon_values :
     greedySidon 6 = 31 ∧ greedySidon 7 = 45 ∧ greedySidon 8 = 66 ∧
     greedySidon 9 = 81 ∧ greedySidon 10 = 97
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The greedy Sidon sequence is strictly increasing. -/
 axiom greedy_sidon_strict_mono : StrictMono greedySidon
@@ -58,7 +58,7 @@ axiom greedy_sidon_strict_mono : StrictMono greedySidon
 axiom greedy_sidon_is_sidon (n : ℕ) :
     IsSidonSet (Finset.image greedySidon (Finset.range (n + 1)))
 
-/-! ## Known Lower Bound -/
+/- ## Known Lower Bound -/
 
 /-- Trivial lower bound: |A ∩ [1,N]| ≥ cN^{1/3}.
     A Sidon set in [1,N] has at most ~√N elements (since C(k,2) ≤ N),
@@ -73,7 +73,7 @@ axiom sidon_upper_bound :
     ∃ C > 0, ∀ N : ℕ, 1 ≤ N →
       (greedySidonCount N : ℝ) ≤ Real.sqrt N + C * (N : ℝ) ^ (1/4 : ℝ)
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- **Erdős Problem #340**: The greedy Sidon sequence has nearly
     optimal growth: |A ∩ [1,N]| ≫ N^{1/2 - ε} for all ε > 0.
@@ -83,7 +83,7 @@ axiom erdos_340_conjecture :
     ∀ ε > 0, ∃ c > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
       c * (N : ℝ) ^ ((1 : ℝ)/2 - ε) ≤ (greedySidonCount N : ℝ)
 
-/-! ## Difference Set Question -/
+/- ## Difference Set Question -/
 
 /-- The difference set A - A = {a - b : a, b ∈ A, a > b}. -/
 noncomputable def greedySidonDiffSet : Set ℕ :=
@@ -95,7 +95,7 @@ axiom erdos_340_diff_set_question :
     ∃ δ > 0, ∀ N : ℕ, 1 ≤ N →
       δ * N ≤ ((Finset.range (N + 1)).filter (· ∈ greedySidonDiffSet)).card
 
-/-! ## Connection to Random Sidon Sets -/
+/- ## Connection to Random Sidon Sets -/
 
 /-- A random Sidon set in [1,N] has ~√N elements. The conjecture says
     the greedy construction is nearly as good as random. -/

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #791: Finite Additive 2-Bases
 
 **Source:** [erdosproblems.com/791](https://erdosproblems.com/791)
@@ -33,7 +33,7 @@ open Finset Nat
 
 namespace Erdos791
 
-/-! ## Part I: Finite Additive Bases -/
+/- ## Part I: Finite Additive Bases -/
 
 /--
 **Sumset A + A:**
@@ -57,7 +57,7 @@ The minimum cardinality of a finite additive 2-basis for {0,...,n}.
 noncomputable def g (n : ℕ) : ℕ :=
   sInf {k : ℕ | ∃ A : Finset ℕ, A.card = k ∧ isAdditiveBasis A n}
 
-/-! ## Part II: Basic Properties -/
+/- ## Part II: Basic Properties -/
 
 /--
 0 must be in any 2-basis for {0,...,n}, since 0 ∈ A+A requires 0 = a+b
@@ -94,7 +94,7 @@ g(n) ≥ 1 for all n ≥ 0 (we need at least {0}).
 -/
 axiom g_pos (n : ℕ) : g n ≥ 1
 
-/-! ## Part III: Rohrbach's Bounds (1937) -/
+/- ## Part III: Rohrbach's Bounds (1937) -/
 
 /--
 **Rohrbach Lower Bound (1937):**
@@ -111,7 +111,7 @@ g(n)² ≤ 4n. Explicit constructions using arithmetic progressions achieve this
 axiom rohrbach_upper (n : ℕ) (hn : n ≥ 1) :
     (g n) * (g n) ≤ 4 * n
 
-/-! ## Part IV: Mrose's Disproof (1979) -/
+/- ## Part IV: Mrose's Disproof (1979) -/
 
 /--
 **Mrose's Construction (1979):**
@@ -130,7 +130,7 @@ axiom erdos_conjecture_false :
     ∃ ε : ℚ, ε > 0 ∧ ∀ᶠ n in Filter.atTop,
       (g n : ℚ) * (g n : ℚ) < (4 - 2 * ε) * n
 
-/-! ## Part V: Modern Bounds -/
+/- ## Part V: Modern Bounds -/
 
 /--
 **Yu's Lower Bound (2015):**
@@ -146,7 +146,7 @@ g(n)² ≤ (3.458... + o(1))n, improving Mrose's 3.5.
 axiom kohonen_upper (n : ℕ) (hn : n ≥ 1) :
     100 * (g n) * (g n) ≤ 346 * n + 100 * n
 
-/-! ## Part VI: Small Values -/
+/- ## Part VI: Small Values -/
 
 /--
 g(0) = 1: The set {0} covers {0} since 0 + 0 = 0.
@@ -163,7 +163,7 @@ axiom g_two : g 2 = 2
 /-- g(3) = 3: {0, 1, 2} covers {0, 1, 2, 3, 4}; {0, 1} only covers up to 2. -/
 axiom g_three : g 3 = 3
 
-/-! ## Part VII: Structural Properties -/
+/- ## Part VII: Structural Properties -/
 
 /--
 **Monotonicity (approximate):**
@@ -180,7 +180,7 @@ built by combining bases for the two halves.
 axiom g_subadditive_approx (m n : ℕ) :
     g (m + n) ≤ g m + g n
 
-/-! ## Part VIII: Main Results -/
+/- ## Part VIII: Main Results -/
 
 /--
 **Erdős Problem #791: SOLVED (Disproved)**
@@ -214,7 +214,7 @@ whose proof from Mrose's bound requires real analysis.
 axiom erdos_791_answer : ¬(∀ ε : ℚ, ε > 0 →
     ∀ᶠ n in Filter.atTop, |(g n : ℚ) - 2 * (n : ℚ).sqrt| < ε * (n : ℚ).sqrt)
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Summary of Erdős Problem #791:**

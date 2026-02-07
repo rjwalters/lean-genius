@@ -33,7 +33,7 @@ open Set Function
 
 namespace Erdos215
 
-/-!
+/-
 ## Part I: The Euclidean Plane and Integer Lattice
 
 We work in ℝ² with the standard Euclidean metric.
@@ -60,7 +60,7 @@ theorem integerLattice_iff_isLatticePoint (p : EuclideanSpace ℝ (Fin 2)) :
     · exact ⟨m, hm⟩
     · exact ⟨n, hn⟩
 
-/-!
+/-
 ## Part II: Isometries and Congruent Sets
 
 Two sets are congruent if one is an isometric image of the other.
@@ -85,7 +85,7 @@ theorem isCongruent_refl (S : Set (EuclideanSpace ℝ (Fin 2))) :
 axiom isCongruent_symm {S T : Set (EuclideanSpace ℝ (Fin 2))}
     (h : IsCongruent S T) : IsCongruent T S
 
-/-!
+/-
 ## Part III: The Steinhaus Property
 
 A set S has the Steinhaus property if every congruent copy contains
@@ -100,7 +100,7 @@ def HasSteinhausProperty (S : Set (EuclideanSpace ℝ (Fin 2))) : Prop :=
 noncomputable def latticePointCount (S : Set (EuclideanSpace ℝ (Fin 2))) : ℕ :=
   (S ∩ integerLattice).ncard
 
-/-!
+/-
 ## Part IV: The Jackson-Mauldin Theorem
 
 Jackson and Mauldin (2002) proved that a set with the Steinhaus property exists.
@@ -133,7 +133,7 @@ theorem erdos_215_answer : ∃ S : Set (EuclideanSpace ℝ (Fin 2)),
     ∀ T, IsCongruent S T → ∃! p, p ∈ T ∩ integerLattice :=
   jackson_mauldin_theorem
 
-/-!
+/-
 ## Part V: Properties of Steinhaus Sets
 
 We explore some necessary conditions for Steinhaus sets.
@@ -149,7 +149,7 @@ axiom steinhaus_set_measure_pathological :
     -- S is not "nice" in the measure-theoretic sense
     True -- Placeholder for measure-theoretic statement
 
-/-!
+/-
 ## Part VI: The Constructive Question (Open)
 
 While existence is settled, many questions remain:
@@ -181,7 +181,7 @@ theorem steinhausSelector_unique (S : Set (EuclideanSpace ℝ (Fin 2)))
     p = steinhausSelector S hS T hT :=
   (hS T hT).choose_spec.2 p hp
 
-/-!
+/-
 ## Part VII: Related Problems
 
 Generalizations to higher dimensions and other lattices.

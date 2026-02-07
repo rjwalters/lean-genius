@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #1127: Decomposing ℝⁿ into Sets with Distinct Distances
 
 Source: https://erdosproblems.com/1127
@@ -44,7 +44,7 @@ open scoped Cardinal
 
 namespace Erdos1127
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -81,7 +81,7 @@ def CountableDecomposition {α : Type*} (X : Set α) (P : Set α → Prop) : Pro
     (⋃ i, S i) = X ∧
     (∀ i j : ℕ, i ≠ j → S i ∩ S j = ∅)
 
-/-!
+/-
 ## Part II: The Main Question
 -/
 
@@ -100,7 +100,7 @@ def Erdos1127Question' (n : ℕ) : Prop :=
     (∀ i : ℕ, HasDistinctDistances (S i)) ∧
     (⋃ i, S i) = univ
 
-/-!
+/-
 ## Part III: Connection to the Continuum Hypothesis
 -/
 
@@ -122,7 +122,7 @@ def IsQLinearlyIndependent (S : Set ℝ) : Prop :=
     (∑ i, a i * x i) = 0 →
     ∀ i, a i = 0
 
-/-!
+/-
 ## Part IV: The Erdős-Kakutani Theorem (1943)
 -/
 
@@ -174,7 +174,7 @@ theorem ch_implies_1d : ContinuumHypothesis → Erdos1127Question' 1 := by
       rw [mem_iUnion]
       exact ch_implies_1d_union_cover S hUnion p
 
-/-!
+/-
 ## Part V: Davies' Theorem (1972)
 -/
 
@@ -184,7 +184,7 @@ Assuming CH, ℝ² can be decomposed into countably many sets with distinct dist
 -/
 axiom davies_theorem : ContinuumHypothesis → Erdos1127Question' 2
 
-/-!
+/-
 ## Part VI: Kunen's Theorem (1987)
 -/
 
@@ -195,7 +195,7 @@ for all n.
 -/
 axiom kunen_theorem : ∀ n : ℕ, ContinuumHypothesis → Erdos1127Question' n
 
-/-!
+/-
 ## Part VII: The Necessity of CH
 -/
 
@@ -227,7 +227,7 @@ axiom finite_partition_impossible_without_ch :
         (∀ i, HasDistinctDistances (n := 1) (fun x => ![x] '' (S i))) ∧
         (⋃ i, S i) = univ
 
-/-!
+/-
 ## Part VIII: The Countable vs Finite Distinction
 -/
 
@@ -242,7 +242,7 @@ axiom countable_vs_finite_distinction :
   -- Without CH: even finite fails for the "almost" version
   True
 
-/-!
+/-
 ## Part IX: Related Concepts
 -/
 
@@ -264,7 +264,7 @@ axiom erdos_distinct_distances_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ (S : Finset (Point 2)), S.card ≥ 2 →
     (numDistinctDistances S : ℝ) ≥ c * S.card / Real.sqrt (Real.log S.card)
 
-/-!
+/-
 ## Part X: Summary
 -/
 

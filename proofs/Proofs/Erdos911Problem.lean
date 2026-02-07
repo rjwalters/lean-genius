@@ -22,7 +22,7 @@ import Mathlib
 
 namespace Erdos911
 
-/-!
+/-
 # Part 1: Graph and Ramsey Definitions
 
 We formalize the basic graph theory concepts needed for size Ramsey numbers.
@@ -49,7 +49,7 @@ def isDense {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph' V) [DecidableRel G.adj] (C : ℚ) : Prop :=
   (edgeCount G : ℚ) ≥ C * Fintype.card V
 
-/-!
+/-
 # Part 2: Size Ramsey Numbers
 
 The size Ramsey number is a fundamental concept in Ramsey theory
@@ -76,7 +76,7 @@ axiom sizeRamseyNumber : (∀ V : Type*, SimpleGraph' V) → ℕ
 -- Notation: R̂(G)
 notation "R̂(" G ")" => sizeRamseyNumber G
 
-/-!
+/-
 # Part 3: The Erdős Conjecture
 
 The problem asks about the relationship between edge density and size Ramsey numbers.
@@ -99,7 +99,7 @@ def ErdosConjecture911 : Prop :=
 def polynomialSuperlinear (f : ℚ → ℚ) : Prop :=
   ∃ ε : ℚ, ε > 0 ∧ ∀ x > 1, f x ≥ x ^ (1 + ε)
 
-/-!
+/-
 # Part 4: Known Results on Size Ramsey Numbers
 
 We axiomatize key known results about size Ramsey numbers.
@@ -121,7 +121,7 @@ axiom bounded_degree_linear : ∀ Δ : ℕ, ∃ C : ℕ,
     -- (max degree ≤ Δ) →
     sizeRamseyNumber (fun _ => G) ≤ C * Fintype.card V
 
-/-!
+/-
 # Part 5: Relevant Bounds
 
 The question is whether dense graphs force superlinear size Ramsey numbers.
@@ -141,7 +141,7 @@ theorem dense_many_edges {V : Type*} [Fintype V] [DecidableEq V]
 -- The conjecture asks: can we improve R̂(G) ≥ e(G) to R̂(G) ≥ f(C) · e(G)?
 -- where f(C)/C → ∞
 
-/-!
+/-
 # Part 6: Problem Status and Context
 
 The problem remains OPEN. A positive answer would reveal deep structure
@@ -162,7 +162,7 @@ def densityForcesStructure : Prop :=
 -- Connection to sparse graphs: known that sparse random graphs have near-linear R̂
 axiom sparse_random_linear : ∀ ε > 0, ∃ C : ℕ, C > 0
 
-/-!
+/-
 # Part 7: Related Concepts
 
 Size Ramsey numbers connect to many areas of combinatorics.
@@ -184,7 +184,7 @@ axiom turan_size_ramsey_connection :
   ∀ H : (∀ V : Type*, SimpleGraph' V),
     turanDensity H > 0 → sizeRamseyNumber H ≥ 1
 
-/-!
+/-
 # Part 8: Summary
 
 Erdős Problem #911 asks whether dense graphs necessarily have

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1063: Binomial Coefficient Divisibility
 
 **Source:** [erdosproblems.com/1063](https://erdosproblems.com/1063)
@@ -34,7 +34,7 @@ import Mathlib.Tactic
 
 namespace Erdos1063
 
-/-! ## Part I: Divisibility Condition -/
+/- ## Part I: Divisibility Condition -/
 
 /--
 (n - i) divides C(n, k) for a given n, k, i.
@@ -54,7 +54,7 @@ All but one of {n, n-1, ..., n-k+1} divide C(n, k).
 def AllButOneDivide (n k : ℕ) : Prop :=
   n ≥ 2 * k ∧ divisibilityCount n k ≥ k - 1
 
-/-! ## Part II: The Threshold n_k -/
+/- ## Part II: The Threshold n_k -/
 
 /--
 n_k is the least n ≥ 2k such that all but one of
@@ -64,7 +64,7 @@ def IsThreshold (nk k : ℕ) : Prop :=
   AllButOneDivide nk k ∧
   ∀ m : ℕ, m < nk → m ≥ 2 * k → ¬AllButOneDivide m k
 
-/-! ## Part III: Erdős–Selfridge Result -/
+/- ## Part III: Erdős–Selfridge Result -/
 
 /--
 **Erdős–Selfridge (1983):**
@@ -79,7 +79,7 @@ axiom erdos_selfridge_nondivisibility :
     ∀ n : ℕ, n ≥ 2 * k →
       divisibilityCount n k < k
 
-/-! ## Part IV: Known Small Values -/
+/- ## Part IV: Known Small Values -/
 
 /--
 n_2 = 4: C(4,2) = 6, and 4 | 6 is false but 3 | 6 is true.
@@ -102,7 +102,7 @@ n_5 = 12.
 -/
 axiom threshold_k5 : IsThreshold 12 5
 
-/-! ## Part V: Upper Bounds -/
+/- ## Part V: Upper Bounds -/
 
 /--
 **Monier (1985):** n_k ≤ k! for k ≥ 3.
@@ -130,7 +130,7 @@ def ErdosProblem1063 : Prop :=
     ∀ k : ℕ, k ≥ 2 →
       ∃ nk : ℕ, IsThreshold nk k ∧ nk ≤ k ^ C
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /--
 **Summary of Erdős Problem #1063:**

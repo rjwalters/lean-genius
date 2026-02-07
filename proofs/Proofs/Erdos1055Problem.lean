@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1055: Prime Classification by p+1 Factorization
 
 Classify primes by the factorization structure of p+1:
@@ -26,7 +26,7 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The class of a prime p, defined recursively on the factorization of p+1.
     Class 1: all prime factors of p+1 are in {2, 3}.
@@ -44,7 +44,7 @@ def IsInClass (p : ℕ) (r : ℕ) : Prop :=
 axiom class_one_char (p : ℕ) (hp : p.Prime) :
     primeClass p = 1 ↔ ∀ q ∈ (p + 1).factors, q = 2 ∨ q = 3
 
-/-! ## The Least Prime in Each Class -/
+/- ## The Least Prime in Each Class -/
 
 /-- p_r: the least prime in class r. -/
 axiom leastPrimeInClass (r : ℕ) : ℕ
@@ -58,7 +58,7 @@ axiom leastPrime_minimal (r : ℕ) (hr : r ≥ 1) (q : ℕ)
     (hq : q.Prime) (hc : primeClass q = r) :
     leastPrimeInClass r ≤ q
 
-/-! ## Known Values (OEIS A005113) -/
+/- ## Known Values (OEIS A005113) -/
 
 /-- p_1 = 2: the smallest prime with 3-smooth successor (2+1=3). -/
 axiom p_1 : leastPrimeInClass 1 = 2
@@ -75,20 +75,20 @@ axiom p_4 : leastPrimeInClass 4 = 73
 /-- p_5 = 1021: 1021+1 = 1022 = 2·7·73, and 73 is class 4. -/
 axiom p_5 : leastPrimeInClass 5 = 1021
 
-/-! ## Existence: Each Class is Nonempty -/
+/- ## Existence: Each Class is Nonempty -/
 
 /-- For every r ≥ 1, there exists a prime in class r. -/
 axiom each_class_nonempty (r : ℕ) (hr : r ≥ 1) :
     ∃ p : ℕ, p.Prime ∧ primeClass p = r
 
-/-! ## Conjecture 1: Infinitely Many Primes in Each Class -/
+/- ## Conjecture 1: Infinitely Many Primes in Each Class -/
 
 /-- Erdős Problem #1055 (main): For each r ≥ 1, there are infinitely many
     primes in class r. -/
 axiom infinitely_many_in_each_class (r : ℕ) (hr : r ≥ 1) :
     Set.Infinite {p : ℕ | p.Prime ∧ primeClass p = r}
 
-/-! ## Conjecture 2: Growth of p_r^{1/r} -/
+/- ## Conjecture 2: Growth of p_r^{1/r} -/
 
 /-- The sequence p_r^{1/r} for known values:
     p_1^1 = 2, p_2^{1/2} ≈ 3.61, p_3^{1/3} ≈ 3.33,
@@ -107,7 +107,7 @@ axiom selfridge_bounded_conjecture :
     ∃ M : ℝ, ∀ r : ℕ, r ≥ 1 →
       ((leastPrimeInClass r : ℝ)) ^ ((1 : ℝ) / (r : ℝ)) ≤ M
 
-/-! ## Density Bound -/
+/- ## Density Bound -/
 
 /-- The number of primes ≤ n in class r is at most n^{o(1)}.
     Each class contains a very sparse set of primes. -/
@@ -116,7 +116,7 @@ axiom class_density_bound (r : ℕ) (hr : r ≥ 1) :
       (Finset.card (Finset.filter (fun p => p.Prime ∧ primeClass p = r)
         (Finset.range (n + 1))) : ℝ) ≤ (n : ℝ) ^ ε
 
-/-! ## Contradiction Between Conjectures -/
+/- ## Contradiction Between Conjectures -/
 
 /-- The Erdős and Selfridge conjectures are contradictory:
     if p_r^{1/r} → ∞, it cannot be bounded. -/

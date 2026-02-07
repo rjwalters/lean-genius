@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #187: Arithmetic Progressions in 2-Colorings
 
 Find the optimal function f(d) such that in any 2-coloring of ℤ,
@@ -19,7 +19,7 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Fin.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A 2-coloring of ℕ. -/
 def TwoColoring := ℕ → Fin 2
@@ -42,7 +42,7 @@ axiom maxMonoAPLength_pos (χ : TwoColoring) (d : ℕ) (hd : 0 < d) :
     required to hold for infinitely many d. Axiomatized. -/
 axiom optAPBound (d : ℕ) : ℕ
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- Van der Waerden's theorem implies f(d) → ∞: for any 2-coloring,
     monochromatic APs of arbitrary length exist. In particular,
@@ -65,7 +65,7 @@ axiom erdos_sqrt2_construction :
   ∃ (χ : TwoColoring) (C : ℕ), 0 < C ∧
     ∀ d : ℕ, 0 < d → maxMonoAPLength χ d ≤ C * d
 
-/-! ## The Open Question -/
+/- ## The Open Question -/
 
 /-- Erdős Problem #187: Determine the exact asymptotic behavior of f(d).
     Is f(d) = Θ(log d)? Formalized as asking whether there exist

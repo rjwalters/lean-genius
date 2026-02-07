@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #144: Propinquity of Divisors
 
 Source: https://erdosproblems.com/144
@@ -37,7 +37,7 @@ import Mathlib.Tactic
 
 namespace Erdos144
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- **Natural density of a set:**
     d(A) = lim_{n→∞} |A ∩ {1,...,n}| / n. -/
@@ -63,7 +63,7 @@ def closeDivisorsSet : Set ℕ := {n | hasCloseDivisors n}
 /-- The set with c-close divisors. -/
 def closeDivisorsSetC (c : ℝ) : Set ℕ := {n | hasCloseDivisorsC c n}
 
-/-! ## Part II: The Main Theorem -/
+/- ## Part II: The Main Theorem -/
 
 /-- **Erdős Problem #144 (Basic Version):**
     The density of integers with close divisors equals 1. -/
@@ -84,7 +84,7 @@ axiom maier_tenenbaum_theorem : erdos_144_conjecture
     For any c > 1, the density of c-close divisors equals 1. -/
 axiom maier_tenenbaum_strong : ∀ c : ℝ, erdos_144_strong_conjecture c
 
-/-! ## Part III: The Threshold β = log 3 - 1 -/
+/- ## Part III: The Threshold β = log 3 - 1 -/
 
 /-- **The critical exponent:**
     β* = log 3 - 1 ≈ 0.0986 is the threshold for the refined version. -/
@@ -122,7 +122,7 @@ theorem phase_transition :
     (∀ β < criticalExponent, naturalDensity (refinedCloseDivisorsSet β) 1) :=
   ⟨erdos_hall_theorem, maier_tenenbaum_refined⟩
 
-/-! ## Part IV: Examples -/
+/- ## Part IV: Examples -/
 
 /-- **Prime powers have no close divisors:**
     If n = p^k (prime power), consecutive divisors are p^j and p^{j+1},
@@ -156,7 +156,7 @@ example : hasCloseDivisors 12 := by
   · norm_num
   · norm_num
 
-/-! ## Part V: Summary -/
+/- ## Part V: Summary -/
 
 /-- **Summary of Erdős Problem #144:**
 

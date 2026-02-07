@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 461: Distinct Smooth Components in Short Intervals
 
 Let `sₜ(n)` be the `t`-smooth component of `n`, i.e., the largest divisor
@@ -19,7 +19,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Smooth components -/
+/- ## Smooth components -/
 
 /-- The `t`-smooth component of `n`: the largest divisor of `n` all of
 whose prime factors are strictly less than `t`. -/
@@ -37,13 +37,13 @@ axiom smoothComponent_smooth (t n : ℕ) (p : ℕ) :
 axiom smoothComponent_largest (t n d : ℕ) :
     d ∣ n → (∀ p : ℕ, p.Prime → p ∣ d → p < t) → d ∣ smoothComponent t n
 
-/-! ## Counting distinct smooth components -/
+/- ## Counting distinct smooth components -/
 
 /-- `f(n, t)` counts the distinct values of `sₜ(m)` for `m ∈ {n+1, …, n+t}`. -/
 noncomputable def smoothDistinctCount (n t : ℕ) : ℕ :=
     ((Finset.Icc (n + 1) (n + t)).image (smoothComponent t)).card
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 461: There exists `C > 0` such that `f(n, t) ≥ C · t`
 for all `n` and sufficiently large `t`. -/
@@ -52,7 +52,7 @@ def ErdosProblem461 : Prop :=
       ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t →
         ∀ n : ℕ, C * (t : ℝ) ≤ (smoothDistinctCount n t : ℝ)
 
-/-! ## Known results -/
+/- ## Known results -/
 
 /-- Erdős–Graham: `f(n, t) ≫ t / log t`. -/
 axiom erdos_graham_lower :
@@ -60,7 +60,7 @@ axiom erdos_graham_lower :
       ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t →
         ∀ n : ℕ, C * (t : ℝ) / Real.log (t : ℝ) ≤ (smoothDistinctCount n t : ℝ)
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- The smooth component of 1 is always 1. -/
 axiom smoothComponent_one (t : ℕ) : smoothComponent t 1 = 1

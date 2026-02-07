@@ -27,7 +27,7 @@ open BigOperators
 
 namespace Erdos363
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -68,7 +68,7 @@ def DisjointIntervalCollection.allSizeAtLeast
     (C : DisjointIntervalCollection) (k : ℕ) : Prop :=
   ∀ I ∈ C.intervals, I.size ≥ k
 
-/-!
+/-
 ## Part II: Perfect Squares
 -/
 
@@ -85,7 +85,7 @@ def squareCollections : Set DisjointIntervalCollection :=
   { C : DisjointIntervalCollection |
     C.allSizeAtLeast 4 ∧ isPerfectSquare C.totalProduct }
 
-/-!
+/-
 ## Part III: The Erdős Conjecture
 -/
 
@@ -97,7 +97,7 @@ whose product is a perfect square.
 def erdosConjecture363 : Prop :=
   Set.Finite squareCollections
 
-/-!
+/-
 ## Part IV: Why |Iᵢ| ≥ 4?
 
 Pomerance observed that products of three consecutive integers from
@@ -122,7 +122,7 @@ def pomeranceCounterexample : Prop :=
 
 axiom pomerance_observation : pomeranceCounterexample
 
-/-!
+/-
 ## Part V: Ulas's Theorem (2005)
 -/
 
@@ -138,7 +138,7 @@ axiom ulas_theorem :
         (∀ I ∈ C.intervals, I.size = 4) ∧
         isPerfectSquare C.totalProduct }
 
-/-!
+/-
 ## Part VI: Bauer-Bennett Theorem (2007)
 -/
 
@@ -154,7 +154,7 @@ axiom bauer_bennett_theorem :
         (∀ I ∈ C.intervals, I.size = 4) ∧
         isPerfectSquare C.totalProduct }
 
-/-!
+/-
 ## Part VII: Bennett-Van Luijk Theorem (2012)
 -/
 
@@ -170,7 +170,7 @@ axiom bennett_van_luijk_theorem :
         (∀ I ∈ C.intervals, I.size = 5) ∧
         isPerfectSquare C.totalProduct }
 
-/-!
+/-
 ## Part VIII: The Conjecture is FALSE
 -/
 
@@ -204,7 +204,7 @@ theorem erdosConjecture363_false : ¬erdosConjecture363 := by
   -- A subset of a finite set cannot be infinite
   exact Set.Infinite.not_finite (h_inf.mono h_subset) h_fin
 
-/-!
+/-
 ## Part IX: Main Theorem
 -/
 
@@ -215,7 +215,7 @@ is FALSE.
 -/
 theorem erdos_363 : ¬erdosConjecture363 := erdosConjecture363_false
 
-/-!
+/-
 ## Part X: Ulas's Conjecture
 -/
 
@@ -232,7 +232,7 @@ def ulas_conjecture : Prop :=
         (∀ I ∈ C.intervals, I.size = k) ∧
         isPerfectSquare C.totalProduct }
 
-/-!
+/-
 ## Part XI: Connection to Erdős-Selfridge
 -/
 
@@ -254,7 +254,7 @@ theorem single_block_not_square (I : ConsecutiveInterval) (h : I.size ≥ 2) :
     ¬isPerfectSquare I.product := by
   sorry -- Follows from Erdős-Selfridge
 
-/-!
+/-
 ## Part XII: Summary
 -/
 

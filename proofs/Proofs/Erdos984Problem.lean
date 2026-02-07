@@ -30,7 +30,7 @@ namespace Erdos984
 
 open Nat Real
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Colorings and arithmetic progressions in ℕ.
@@ -51,7 +51,7 @@ def IsMonochromatic (χ : Coloring) (S : Finset ℕ) : Prop :=
 def MonochromaticAP (χ : Coloring) (a d k : ℕ) : Prop :=
   IsMonochromatic χ (ArithProg a d k)
 
-/-!
+/-
 ## Part 2: The Growth Condition
 
 The condition k ≪_ε a^ε means for all ε > 0, k ≤ C_ε · a^ε for some constant C_ε.
@@ -67,7 +67,7 @@ def SatisfiesCondition (χ : Coloring) : Prop :=
     MonochromaticAP χ a d k →
     GrowsSlowerThanAnyPower (fun _ => k)
 
-/-!
+/-
 ## Part 3: Van der Waerden's Theorem Connection
 
 Van der Waerden's theorem guarantees monochromatic APs exist in any finite coloring.
@@ -80,7 +80,7 @@ axiom van_der_waerden_theorem (r k : ℕ) (hr : 2 ≤ r) (hk : 3 ≤ k) :
     ∃ a d : ℕ, 0 < d ∧ a + (k - 1) * d < N ∧
       ∀ i < k, χ ⟨a + i * d, by omega⟩ = χ ⟨a, by omega⟩
 
-/-!
+/-
 ## Part 4: Spencer's 3-Coloring Result
 
 Spencer proved the result holds with 3 colors.
@@ -99,7 +99,7 @@ axiom spencer_1975 :
       MonochromaticAP3 χ a d k →
       GrowsSlowerThanAnyPower (fun _ => k)
 
-/-!
+/-
 ## Part 5: Erdős's Partial Result
 
 Erdős showed k ≪ a^{1-c} for some c > 0.
@@ -116,7 +116,7 @@ def ErdosWeakBound (χ : Coloring) (c C : ℝ) : Prop :=
 axiom erdos_partial_construction :
     ∃ χ : Coloring, ∃ c C : ℝ, ErdosWeakBound χ c C
 
-/-!
+/-
 ## Part 6: Hunter's Complete Solution
 
 Zach Hunter proved the full result with 2 colors.
@@ -126,7 +126,7 @@ Zach Hunter proved the full result with 2 colors.
 axiom hunter_theorem :
     ∃ χ : Coloring, SatisfiesCondition χ
 
-/-!
+/-
 ## Part 7: The Chromatic Number Perspective
 
 How many colors are needed for various bounds?
@@ -156,7 +156,7 @@ theorem one_color_insufficient :
       -- All values are Fin 1, so all equal
       simp [Fin.eq_zero]
 
-/-!
+/-
 ## Part 8: Explicit Bounds
 
 Known bounds on the constants.
@@ -167,7 +167,7 @@ axiom erdos_exponent_bound :
     ∃ c : ℝ, c > 0 ∧ c < 1 ∧
     ∃ χ : Coloring, ErdosWeakBound χ c 1
 
-/-!
+/-
 ## Part 9: Summary
 -/
 

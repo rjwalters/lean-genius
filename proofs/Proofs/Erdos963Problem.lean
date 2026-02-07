@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #963: Dissociated Subsets
 
 Let f(n) be the maximum k such that every n-element subset A ⊆ ℝ contains
@@ -26,7 +26,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A subset B of a finset A is dissociated if all subset sums are distinct.
     Equivalently, if ∑_{b ∈ S} b = ∑_{b ∈ T} b implies S = T for S, T ⊆ B. -/
@@ -39,14 +39,14 @@ noncomputable def maxDissociatedSize (n : ℕ) : ℕ :=
   sSup {k : ℕ | ∀ A : Finset ℝ, A.card = n →
     ∃ B : Finset ℝ, IsDissociatedSubset A B ∧ B.card ≥ k}
 
-/-! ## Subset Sum Counting -/
+/- ## Subset Sum Counting -/
 
 /-- A dissociated set of size k has exactly 2^k distinct subset sums. -/
 axiom dissociated_subset_sum_count :
   ∀ (B : Finset ℝ), (∀ S T : Finset ℝ, S ⊆ B → T ⊆ B → S.sum id = T.sum id → S = T) →
     (Finset.image (fun S => S.sum id) B.powerset).card = 2 ^ B.card
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős's Conjecture**: f(n) ≥ ⌊log₂ n⌋ for all n ≥ 1.
     Every n-element set of reals contains a dissociated subset of size
@@ -54,7 +54,7 @@ axiom dissociated_subset_sum_count :
 axiom erdos_963_conjecture :
   ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 2 n
 
-/-! ## Greedy Lower Bound -/
+/- ## Greedy Lower Bound -/
 
 /-- **Erdős's greedy bound**: f(n) ≥ ⌊log₃ n⌋.
     The greedy algorithm produces a dissociated subset of this size:
@@ -64,7 +64,7 @@ axiom erdos_963_conjecture :
 axiom greedy_lower_bound :
   ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≥ Nat.log 3 n
 
-/-! ## Upper Bound -/
+/- ## Upper Bound -/
 
 /-- **Trivial upper bound**: f(n) ≤ ⌊log₂ n⌋ + 1.
     A dissociated set of size k requires at least 2^k distinct subset sums,
@@ -72,7 +72,7 @@ axiom greedy_lower_bound :
 axiom trivial_upper_bound :
   ∀ n : ℕ, n ≥ 1 → maxDissociatedSize n ≤ Nat.log 2 n + 1
 
-/-! ## Structural Properties -/
+/- ## Structural Properties -/
 
 /-- The empty set is trivially dissociated. -/
 theorem empty_dissociated (A : Finset ℝ) : IsDissociatedSubset A ∅ := by

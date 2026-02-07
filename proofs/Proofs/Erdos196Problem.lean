@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #196: Monotone 4-Term APs in Permutations
 
 Must every permutation of ℕ contain a monotone 4-term arithmetic progression?
@@ -24,7 +24,7 @@ import Mathlib.Tactic
 
 open Function
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A permutation of ℕ is a bijection ℕ → ℕ. -/
 abbrev Perm := ℕ ≃ ℕ
@@ -41,7 +41,7 @@ def IsAP4 (a b c d : ℕ) : Prop :=
 def IsAP5 (a b c d e : ℕ) : Prop :=
   IsAP4 a b c d ∧ d - c = e - d ∧ d < e
 
-/-! ## Monotone APs in Permutations -/
+/- ## Monotone APs in Permutations -/
 
 /-- A permutation contains a monotone 3-term AP. -/
 def HasMonotone3AP (x : Perm) : Prop :=
@@ -59,14 +59,14 @@ def HasMonotone5AP (x : Perm) : Prop :=
     i > j ∧ j > k ∧ k > l ∧ l > m) ∧
     IsAP5 (x i) (x j) (x k) (x l) (x m)
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #196** (OPEN): Every permutation of ℕ contains
     a monotone 4-term arithmetic progression. -/
 axiom erdos_196_conjecture :
   ∀ x : Perm, HasMonotone4AP x
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **DEGS (1977)**: Every permutation of ℕ contains a monotone 3-AP. -/
 axiom degs_3ap_theorem :
@@ -88,7 +88,7 @@ theorem conjecture_implies_3ap (hconj : ∀ x : Perm, HasMonotone4AP x) :
     | inr hdec => right; exact ⟨hdec.1, hdec.2.1⟩
   · unfold IsAP3 IsAP4 at *; omega
 
-/-! ## Common Difference Parity -/
+/- ## Common Difference Parity -/
 
 /-- A 4-AP has odd common difference. -/
 def IsAP4OddCD (a b c d : ℕ) : Prop :=
@@ -123,7 +123,7 @@ axiom conjecture_equiv_even_forced :
       ∃ i j k l : ℕ, (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
         IsAP4EvenCD (x i) (x j) (x k) (x l)
 
-/-! ## Non-Extendability -/
+/- ## Non-Extendability -/
 
 /-- If a permutation avoids monotone 4-APs, every 3-AP is non-extendable:
     the value a + 3d is forbidden at all later monotone indices. -/
@@ -133,7 +133,7 @@ axiom non_extendable_constraint :
       IsAP3 (x i) (x j) (x k) →
       ∀ l : ℕ, l > k → x l ≠ x k + (x j - x i)
 
-/-! ## Erdős–Szekeres Connection -/
+/- ## Erdős–Szekeres Connection -/
 
 /-- **Erdős–Szekeres (1935)**: Every sequence of (r−1)(s−1)+1 distinct
     numbers contains an increasing subsequence of length r or a decreasing

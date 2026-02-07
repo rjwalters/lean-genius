@@ -31,7 +31,7 @@ open Finset BigOperators
 
 namespace Erdos298
 
-/-!
+/-
 ## Background: Unit Fractions and Density
 
 A **unit fraction** is a fraction of the form 1/n for positive integer n.
@@ -47,7 +47,7 @@ A key insight is that 1 = 1/2 + 1/3 + 1/6, so unit fractions can sum to 1.
 Erdős asked: If A is dense enough, must it contain a finite subset summing to 1?
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -73,7 +73,7 @@ def SumsToOne (S : Finset ℕ) : Prop := unitFractionSum S = 1
 def ContainsUnitSumSubset (A : Set ℕ) : Prop :=
   ∃ S : Finset ℕ, (S : Set ℕ) ⊆ A ∧ SumsToOne S
 
-/-!
+/-
 ## Examples: Simple Unit Fraction Sums
 
 These examples show that unit fraction sums equal to 1 do exist.
@@ -88,7 +88,7 @@ axiom example_2_4_5_20 : unitFractionSum {2, 4, 5, 20} = 1
 /-- 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1. -/
 axiom example_3_4_5_6_20 : unitFractionSum {3, 4, 5, 6, 20} = 1
 
-/-!
+/-
 ## The Erdős Conjecture and Bloom's Theorem
 
 Erdős conjectured that positive density suffices to guarantee a unit sum subset.
@@ -118,7 +118,7 @@ theorem bloom_theorem (A : Set ℕ) (hzero : 0 ∉ A) (hdense : HasPosDensity A)
     ContainsUnitSumSubset A :=
   bloom_2021 A hzero hdense
 
-/-!
+/-
 ## Stronger Version: Upper Density Suffices
 
 Bloom actually proved the stronger result that positive UPPER density
@@ -146,7 +146,7 @@ theorem upper_implies_natural :
     erdos_298_upper_density → erdos_298_conjecture := fun h_upper A h_zero h_pos_dens =>
   h_upper A h_zero (pos_dens_implies_pos_upper A h_pos_dens)
 
-/-!
+/-
 ## Properties of Density
 
 Basic properties of the density definitions.
@@ -166,7 +166,7 @@ axiom density_mono (A B : Set ℕ) (h : A ⊆ B) :
 axiom finite_density_zero (A : Set ℕ) (h : A.Finite) :
     upperDensity A = 0
 
-/-!
+/-
 ## Connection to Egyptian Fractions
 
 Egyptian fractions are sums of distinct unit fractions.
@@ -185,7 +185,7 @@ axiom egyptian_fraction_exists (q : ℚ) (hq : q > 0) : HasEgyptianRep q
 /-- In particular, 1 has many Egyptian fraction representations. -/
 axiom one_has_egyptian_rep : HasEgyptianRep 1
 
-/-!
+/-
 ## Quantitative Aspects
 
 Bloom's proof gives some quantitative bounds.
@@ -206,7 +206,7 @@ axiom sparse_counterexample :
     ∀ N : ℕ, ∃ A : Finset ℕ, (∀ a ∈ A, 0 < a) ∧ A.card = N ∧
       ¬∃ S : Finset ℕ, S ⊆ A ∧ SumsToOne S
 
-/-!
+/-
 ## The Formalized Proof
 
 Bloom and Mehta formalized the full proof in Lean 3.
@@ -221,7 +221,7 @@ The formalization is ~10,000 lines of Lean code and covers:
 /-- The existence of a complete Lean 3 formalization. -/
 axiom formalization_exists : True
 
-/-!
+/-
 ## Related Problems
 
 Erdős posed several related problems about unit fractions.
@@ -239,7 +239,7 @@ with denominators from an interval.
 Related to #298 by considering density in intervals. -/
 axiom erdos_47_related : True
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #298 asks whether positive density guarantees a unit sum subset.

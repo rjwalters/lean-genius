@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #540: Zero-Sum Subsets (Erdős-Heilbronn Conjecture)
 
 Is it true that if A ⊆ ℤ/Nℤ has size ≫ √N then there exists some non-empty
@@ -25,7 +25,7 @@ open Finset
 
 namespace Erdos540
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -41,7 +41,7 @@ def IsZeroSumSubset {N : ℕ} (A S : Finset (ZMod N)) : Prop :=
 def HasZeroSumSubset {N : ℕ} (A : Finset (ZMod N)) : Prop :=
   ∃ S : Finset (ZMod N), IsZeroSumSubset A S
 
-/-!
+/-
 ## Part 2: The Erdős-Heilbronn Conjecture
 -/
 
@@ -57,7 +57,7 @@ def ErdosHeilbronnConjecture (c : ℝ) : Prop :=
 def OriginalConjecture : Prop :=
   ∃ c : ℝ, c > 0 ∧ ErdosHeilbronnConjecture c
 
-/-!
+/-
 ## Part 3: Olson's Theorem (1968) — Prime Case
 
 Olson proved the conjecture for prime N with the constant √2.
@@ -77,7 +77,7 @@ def olsonConstant : ℝ := Real.sqrt 2
 
 theorem olson_constant_value : olsonConstant = Real.sqrt 2 := rfl
 
-/-!
+/-
 ## Part 4: Szemerédi's Theorem (1970) — General Case
 
 Szemerédi proved the conjecture for all N, resolving the problem.
@@ -92,7 +92,7 @@ axiom szemeredi_general_case :
 theorem erdos_540_solved : OriginalConjecture :=
   szemeredi_general_case
 
-/-!
+/-
 ## Part 5: Balandraud's Optimal Result (2012) — Primes
 
 Balandraud proved that √(2p) is the exact threshold for primes:
@@ -111,7 +111,7 @@ axiom balandraud_prime_optimal :
       (A.card : ℝ) < Real.sqrt (2 * p) ∧
       ¬HasZeroSumSubset A)
 
-/-!
+/-
 ## Part 6: Hamidoune–Zémor (1996) — Near-Optimal General Bound
 
 For arbitrary N, the asymptotically optimal (1+o(1))√(2N) bound holds.
@@ -127,7 +127,7 @@ axiom hamidoune_zemor_bound :
         (A.card : ℝ) ≥ (1 + ε) * Real.sqrt (2 * N) →
         HasZeroSumSubset A
 
-/-!
+/-
 ## Part 7: The Trivial Case and the Davenport Constant
 -/
 
@@ -151,7 +151,7 @@ axiom davenport_for_cyclic :
       A.card ≥ N →
       HasZeroSumSubset A
 
-/-!
+/-
 ## Part 8: Generalization to Abelian Groups
 -/
 
@@ -165,7 +165,7 @@ axiom general_abelian_case :
         (A.card : ℝ) > c * Real.sqrt (Fintype.card G) →
         ∃ S : Finset G, S ⊆ A ∧ S.Nonempty ∧ S.sum id = 0
 
-/-!
+/-
 ## Part 9: Summary
 -/
 

@@ -36,7 +36,7 @@ namespace Erdos969
 
 open Nat Finset Filter
 
-/-!
+/-
 ## Part 1: Squarefree Integers
 
 A positive integer n is squarefree if no prime p divides n with p² | n.
@@ -61,7 +61,7 @@ example : ¬Squarefree 4 := by decide
 /-- 12 is not squarefree (divisible by 2²) -/
 example : ¬Squarefree 12 := by decide
 
-/-!
+/-
 ## Part 2: The Squarefree Counting Function Q(x)
 
 Q(x) = #{n ≤ x : n is squarefree}
@@ -82,7 +82,7 @@ theorem Q_ten : Q(10) = 7 := by native_decide
 /-- Q(20) = 13 -/
 theorem Q_twenty : Q(20) = 13 := by native_decide
 
-/-!
+/-
 ## Part 3: The Asymptotic Density 6/π²
 
 The density of squarefree integers is exactly 6/π² ≈ 0.6079...
@@ -108,7 +108,7 @@ theorem density_approx : 0.607 < squarefreeDensity ∧ squarefreeDensity < 0.609
     have hpi2 : Real.pi < 3.15 := Real.pi_lt_315
     nlinarith [sq_nonneg Real.pi, sq_nonneg 3.14, sq_nonneg 3.15]
 
-/-!
+/-
 ## Part 4: The Error Term E(x)
 
 The error term is defined as:
@@ -123,7 +123,7 @@ noncomputable def errorTerm (x : ℝ) : ℝ :=
 
 notation "E(" x ")" => errorTerm x
 
-/-!
+/-
 ## Part 5: Known Upper Bounds
 
 Several upper bounds are known for E(x), with progressively better exponents.
@@ -142,7 +142,7 @@ axiom pnt_improvement :
 axiom walfisz_bound :
   ∀ ε > 0, ∃ X : ℝ, ∀ x ≥ X, |E(x)| ≤ x^(1/2 - ε)
 
-/-!
+/-
 ## Part 6: The Lower Bound
 
 Evelyn and Linfoot (1931) proved E(x) ≫ x^(1/4), which is believed
@@ -158,7 +158,7 @@ def errorTermConjecture : Prop :=
   ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∀ᶠ x in atTop,
     c * x^(1/4 : ℝ) ≤ |E(x)| ∧ |E(x)| ≤ C * x^(1/4 : ℝ)
 
-/-!
+/-
 ## Part 7: Connection to the Riemann Hypothesis
 
 The error term is intimately connected to the Riemann Hypothesis.
@@ -182,7 +182,7 @@ theorem liu_exponent : (11 : ℝ) / 35 > 1 / 4 := by norm_num
 /-- Gap between Liu's bound and the conjecture -/
 theorem exponent_gap : (11 : ℝ) / 35 - 1 / 4 = 9 / 140 := by norm_num
 
-/-!
+/-
 ## Part 8: The Möbius Function Connection
 
 The squarefree counting is related to the Möbius function μ(n):
@@ -204,7 +204,7 @@ axiom squarefree_mobius_formula (x : ℝ) (hx : x ≥ 1) :
   (squarefreeCount ⌊x⌋₊ : ℝ) =
     ∑' d : ℕ, if (d : ℝ)^2 ≤ x then (μ d : ℝ) * ⌊x / (d : ℝ)^2⌋ else 0
 
-/-!
+/-
 ## Part 9: Related Error Terms and Zeta Zeros
 
 The error term E(x) is controlled by the zeros of the Riemann zeta function.
@@ -221,7 +221,7 @@ axiom zero_free_improves_error (α : ℝ) (hα : 0 < α ∧ α < 1/2) :
   (∀ s : ℂ, s.re > 1/2 + α → True) →  -- ζ(s) ≠ 0 for Re(s) > 1/2 + α
   ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 1 → |E(x)| ≤ C * x^(1/2 - α + 0.01)
 
-/-!
+/-
 ## Part 10: Summary and Main Theorem
 
 The problem of determining the order of E(x) remains open even under RH.

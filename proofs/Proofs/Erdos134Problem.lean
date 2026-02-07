@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #134: Triangle-Free Graphs with Diameter 2
 
 Source: https://erdosproblems.com/134
@@ -44,7 +44,7 @@ namespace Erdos134
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Part I: Basic Graph Definitions
 -/
 
@@ -98,7 +98,7 @@ The total number of edges in the graph.
 noncomputable def edgeCount (G : SimpleGraph V) : ℕ :=
   G.edgeFinset.card
 
-/-!
+/-
 ## Part II: Graph Extension
 -/
 
@@ -127,7 +127,7 @@ def extendableToDiameter2WithBudget (G : SimpleGraph V) (k : ℕ) : Prop :=
     hasDiameter2 G' ∧
     addedEdges G G' ≤ k
 
-/-!
+/-
 ## Part III: The Main Conjecture
 -/
 
@@ -146,7 +146,7 @@ def erdosGyarfasConjecture : Prop :=
           (maxDegree G : ℝ) < (Fintype.card V : ℝ) ^ ((1 : ℝ) / 2 - ε) →
           extendableToDiameter2WithBudget G ⌊δ * (Fintype.card V : ℝ) ^ 2⌋₊
 
-/-!
+/-
 ## Part IV: Historical Results
 -/
 
@@ -182,7 +182,7 @@ axiom simonovits_counterexample :
             (maxDegree G : ℝ) ≤ C * Real.sqrt n ∧
             ¬ extendableToDiameter2WithBudget G ⌊δ * (n : ℝ) ^ 2⌋₊
 
-/-!
+/-
 ## Part V: Alon's Theorem (Solution)
 -/
 
@@ -212,7 +212,7 @@ the original Erdős-Gyárfás conjecture.
 -/
 axiom alon_implies_conjecture : erdosGyarfasConjecture
 
-/-!
+/-
 ## Part VI: The Role of the Exponent
 
 The exponent 1/2 is critical:
@@ -224,7 +224,7 @@ Triangle-free graphs with max degree constraints relate to Turán's theorem,
 Ramsey theory, and spectral graph theory.
 -/
 
-/-!
+/-
 ## Part VII: Related Concepts
 -/
 
@@ -244,7 +244,7 @@ For connected graphs, diameter 2 ↔ common neighbor property.
 axiom diameter2_equiv (G : SimpleGraph V) (hConn : G.Connected) :
     hasDiameter2 G ↔ commonNeighborProperty G
 
-/-!
+/-
 ## Part VIII: Summary
 
 **Open Refinements:**

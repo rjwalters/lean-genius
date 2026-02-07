@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 332: Difference Sets and Bounded Gaps
 
 Let `A ⊆ ℕ` and define `D(A)` as the set of integers that occur
@@ -20,7 +20,7 @@ import Mathlib.Tactic
 
 open Set
 
-/-! ## Difference set D(A) -/
+/- ## Difference set D(A) -/
 
 /-- The difference set `D(A)`: integers that appear infinitely often
 as `a₁ - a₂` with `a₁, a₂ ∈ A`. -/
@@ -28,7 +28,7 @@ def diffSet (A : Set ℕ) : Set ℤ :=
     { d : ℤ | Set.Infinite
       { p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ (p.1 : ℤ) - (p.2 : ℤ) = d } }
 
-/-! ## Bounded gaps (syndetic sets) -/
+/- ## Bounded gaps (syndetic sets) -/
 
 /-- A set `S ⊆ ℤ` has bounded gaps (is syndetic) if there exists
 `M > 0` such that every interval of length `M` contains an element
@@ -37,7 +37,7 @@ def HasBoundedGaps (S : Set ℤ) : Prop :=
     ∃ M : ℕ, 0 < M ∧
       ∀ z : ℤ, ∃ s ∈ S, z ≤ s ∧ s < z + (M : ℤ)
 
-/-! ## Density conditions -/
+/- ## Density conditions -/
 
 /-- The counting function: `|A ∩ {1,…,N}|`. -/
 noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
@@ -55,7 +55,7 @@ def HasPositiveLowerDensity (A : Set ℕ) : Prop :=
       ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
         δ * (N : ℚ) ≤ (countingFn A N : ℚ)
 
-/-! ## Known results -/
+/- ## Known results -/
 
 /-- Positive upper density implies `D(A)` has bounded gaps. This is
 the known sufficient condition due to Prikry. -/
@@ -75,7 +75,7 @@ axiom diffSet_symm (A : Set ℕ) (d : ℤ) :
 axiom zero_mem_diffSet (A : Set ℕ) (hA : Set.Infinite A) :
     (0 : ℤ) ∈ diffSet A
 
-/-! ## Main problem -/
+/- ## Main problem -/
 
 /-- Erdős Problem 332: What conditions on `A ⊆ ℕ` are sufficient to
 ensure `D(A)` has bounded gaps?
@@ -87,7 +87,7 @@ def ErdosProblem332 : Prop :=
       (∀ A : Set ℕ, P A → HasBoundedGaps (diffSet A)) →
         ∀ A : Set ℕ, HasPositiveUpperDensity A → P A
 
-/-! ## Related questions -/
+/- ## Related questions -/
 
 /-- Does `∑_{d ∈ D(A)} 1/d = ∞` when `A` has positive upper density? -/
 axiom diffSet_harmonic_diverges (A : Set ℕ) :

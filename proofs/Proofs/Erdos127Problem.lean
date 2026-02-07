@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #127: Large Bipartite Subgraphs Beyond Edwards' Bound
 
 Let f(m) be the maximum value such that every graph with m edges
@@ -21,7 +21,7 @@ import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Bipartite Subgraph Size
 -/
 
@@ -33,7 +33,7 @@ axiom maxBipartiteEdges : (V : Type*) → [Fintype V] → [DecidableEq V] →
 noncomputable def edwardsBound (m : ℕ) : ℝ :=
   m / 2 + (Real.sqrt (8 * m + 1) - 1) / 8
 
-/-!
+/-
 ## Section II: The Excess Function
 -/
 
@@ -44,7 +44,7 @@ axiom excessF : ℕ → ℝ
 /-- f(m) is nonneg: the Edwards bound is always achievable (Edwards 1973). -/
 axiom edwards_bound_valid : ∀ m : ℕ, excessF m ≥ 0
 
-/-!
+/-
 ## Section III: Complete Graph Tightness
 -/
 
@@ -53,7 +53,7 @@ is tight: f(C(n,2)) = 0. -/
 axiom complete_graph_tight (n : ℕ) (hn : n ≥ 2) :
   excessF (n.choose 2) = 0
 
-/-!
+/-
 ## Section IV: The Conjecture (Solved)
 -/
 
@@ -72,7 +72,7 @@ axiom alon_lower_bound :
 f(mᵢ) → ∞. -/
 axiom alon_solves_127 : ErdosProblem127
 
-/-!
+/-
 ## Section V: Upper Bound
 -/
 
@@ -87,7 +87,7 @@ def OptimalConstantQuestion : Prop :=
     (∀ C' : ℝ, C' < C →
       ∃ m : ℕ, m ≥ 1 ∧ excessF m > C' * (m : ℝ) ^ (1 / 4 : ℝ))
 
-/-!
+/-
 ## Section VI: Structural Properties
 -/
 

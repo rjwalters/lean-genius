@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #770 — Mutual Coprimality of k^n − 1
 
 Let h(n) be the minimal value such that 2^n − 1, 3^n − 1, ..., h(n)^n − 1
@@ -21,7 +21,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- h(n): the minimal k ≥ 2 such that 2^n−1, 3^n−1, ..., k^n−1
     are mutually coprime (gcd of any two is 1). -/
@@ -33,7 +33,7 @@ def IsMutuallyCoprime (n k : ℕ) : Prop :=
   ∀ a b : ℕ, 2 ≤ a → a < b → b ≤ k →
     Nat.Coprime (a ^ n - 1) (b ^ n - 1)
 
-/-! ## Main Questions -/
+/- ## Main Questions -/
 
 /-- **Question 1**: Does the density of integers n with h(n) = p
     exist for every prime p? -/
@@ -54,7 +54,7 @@ axiom erdos_770_largest_prime :
       (p : ℝ) > (n : ℝ) ^ ε →
       mutualCoprimeBound n = p
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Prime Characterization**: h(n) = n+1 if and only if n+1 is prime.
     When n+1 is prime, the values 2^n−1,...,(n+1)^n−1 are coprime by
@@ -72,7 +72,7 @@ axiom unbounded_odd :
 axiom h_equals_3_infinitely :
   Set.Infinite {n : ℕ | mutualCoprimeBound n = 3}
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Fermat Connection**: gcd(a^n − 1, b^n − 1) = a^{gcd(n,n)} − 1 = a^n − 1
     is related to the factoring of Mersenne-type numbers. When p − 1 | n,
