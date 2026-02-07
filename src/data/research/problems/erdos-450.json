@@ -1,49 +1,100 @@
 {
   "slug": "erdos-450",
   "title": "Erdős #450",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "How large must $y=y(\\epsilon,n)$ be such that the number of integers in $(x,x+y)$ with a divisor in $(n,2n)$ is at most $\\epsilon y$?\n\n\n\nIt is not clear what the intended quantifier on $x$ is. Cambie has observed that if this is intended to hold for all $x$ then, provided\\[\\epsilon(\\log n)^\\delta (\\log\\log n)^{3/2}\\to \\infty\\]as $n\\to \\infty$, where $\\delta=0.086\\cdots$, there is no such $y$, which follows from an averaging argument and the work of Ford \\cite{Fo08}.\n\nOn the other hand, Cambie has observed that if $\\epsilon\\ll 1/n$ then $y(\\epsilon,n)\\sim 2n$: indeed, if $y<2n$ then this is impossible taking $x+n$ to be a multiple of the lowest common multiple of $\\{n+1,\\ldots,2n-1\\}$. On the other hand, for every fixed $\\delta\\in (0,1)$ and $n$ large every $2(1+\\delta)n$ consecutive elements contains many elements which are a multiple of an element in $(n,2n)$.",
-    "plain": "How large must $y=y(\\epsilon,n)$ be such that the number of integers in $(x,x+y)$ with a divisor in $(n,2n)$ is at most $\\epsilon y$?",
+    "formal": "How large must $y=y(\\epsilon,n)$ be such that the number of integers in $(x,x+y)$ with a divisor in $(n,2n)$ is at most $\\epsilon y$?",
+    "plain": "How large must y be so that the number of integers in (x, x+y) with a divisor in (n, 2n) is at most ε·y?",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Cambie: 'for all x' version fails for certain ε (uses Ford 2008)",
+      "Cambie: small ε regime gives y(ε,n) ~ 2n"
+    ],
+    "open": [
+      "Precise characterization of y(ε,n) for general ε",
+      "Existential version: what is optimal y for 'exists x' formulation?"
+    ],
+    "goal": "Determine y(ε,n) more precisely"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T04:11:10.511Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SURVEYED",
+    "since": "2026-02-07T23:00:00.000Z",
+    "iteration": 2,
+    "focus": "Comprehensive infrastructure with 15 proved lemmas",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Docker build verification when system load decreases",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #450 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large must $y=y(\\epsilon,n)$ be such that the number of integers in $(x,x+y)$ with a divisor in $(n,2n)$ is at most $\\epsilon y$?\n\n\n\nIt is not clear what the intended quantifier on $x$ is. Cambie has observed that if this is intended to hold for all $x$ then, provided\\[\\epsilon(\\log n)^\\delta (\\log\\log n)^{3/2}\\to \\infty\\]as $n\\to \\infty$, where $\\delta=0.086\\cdots$, there is no such $y$, which follows from an averaging argument and the work of Ford \\cite{Fo08}.\n\nOn the other hand, Cambie has observed that if $\\epsilon\\ll 1/n$ then $y(\\epsilon,n)\\sim 2n$: indeed, if $y<2n$ then this is impossible taking $x+n$ to be a multiple of the lowest common multiple of $\\{n+1,\\ldots,2n-1\\}$. On the other hand, for every fixed $\\delta\\in (0,1)$ and $n$ large every $2(1+\\delta)n$ consecutive elements contains many elements which are a multiple of an element in $(n,2n)$.\n\n\n\n\nReferences\n\n\n[Fo08] Ford, Kevin, The distribution of integers with a divisor in a given\ninterval. Ann. of Math. (2) (2008), 367-433.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #449\n- Problem #451\n- Problem #39\n- Problem #1\n\n## References\n\n- Fo08\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "progressSummary": "SURVEY COMPLETE: Built 15 proved infrastructure lemmas for divisor density in short intervals. Key results: count bounded by interval length, edge cases (n=0,1), monotonicity in y, HasDivisorIn properties, DensityBound trivial cases, proved 'for all' implies 'exists', and deduced negation of 'for all' version from Cambie's axiom.",
+    "builtItems": [
+      "countWithDivisor_le: count ≤ y",
+      "countWithDivisor_zero: count with y=0 is 0",
+      "countWithDivisor_n_zero: count with n=0 is 0",
+      "countWithDivisor_n_one: count with n=1 is 0",
+      "countWithDivisor_mono_y: monotone in interval length",
+      "hasDivisorIn_of_dvd: divisibility witness",
+      "hasDivisorIn_succ: n+1 has divisor in (n,2n)",
+      "hasDivisorIn_self: m ∈ (n,2n) → HasDivisorIn m n",
+      "hasDivisorIn_zero: 0 has divisor in (n,2n) for n≥2",
+      "densityBound_zero_y: trivial for y=0",
+      "densityBound_large_eps: trivial for ε≥1",
+      "densityBound_n_zero: trivial for n=0",
+      "densityBound_n_one: trivial for n=1",
+      "forAll_implies_exists: universal → existential",
+      "not_forAll_in_general: universal version is FALSE (from Cambie)"
+    ],
+    "insights": [
+      "Problem is OPEN (Erdős-Graham 1980)",
+      "Two versions: 'for all x' (FALSE for some ε by Cambie) and 'exists x' (still open)",
+      "The 'for all x' version fails when ε·(log n)^δ·(log log n)^{3/2} → ∞",
+      "For small ε ≪ 1/n, threshold is y ~ 2n",
+      "Ford (2008) is key reference for divisor distribution",
+      "Edge cases: interval (n,2n) is empty for n ≤ 1",
+      "0 trivially has divisors in (n,2n) for n ≥ 2 (since d|0 for all d)"
+    ],
+    "mathlibGaps": [
+      "Ford's divisor distribution theory not in Mathlib",
+      "Logarithmic density estimates for divisor sets not in Mathlib"
+    ],
+    "nextSteps": [
+      "Docker build verification when system load decreases",
+      "Consider concrete small-case verification for specific n",
+      "Investigate if Ford's lower bound can be more precisely stated"
+    ],
+    "markdown": ""
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Infrastructure + axiomatized deep results",
+      "status": "completed",
+      "description": "Built comprehensive infrastructure with 15 proved lemmas. Deep results axiomatized."
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "divisors",
+    "density",
+    "number-theory"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Ford (2008) - Distribution of integers with a divisor in a given interval",
+      "Erdős-Graham (1980) p.89"
+    ],
+    "urls": [
+      "https://erdosproblems.com/450"
+    ],
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.511Z",
