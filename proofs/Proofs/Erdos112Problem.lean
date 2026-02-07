@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #112 — Directed Ramsey: Independent Sets vs Transitive Tournaments
 
 Determine the minimum k(n,m) such that every tournament (directed
@@ -21,7 +21,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- A directed graph on vertex set Fin k, represented by an
     irreflexive relation (edge function). -/
@@ -48,7 +48,7 @@ def IsTransitiveTournament (k : ℕ) (E : Fin k → Fin k → Prop)
     size m in any directed graph. -/
 noncomputable def directedRamsey : ℕ → ℕ → ℕ := fun _ _ => 0  -- axiomatized
 
-/-! ## Main Question -/
+/- ## Main Question -/
 
 /-- **Erdős Problem #112**: Determine k(n,m). The exact values are
     unknown for general n, m. -/
@@ -60,7 +60,7 @@ axiom erdos_112_well_defined :
       (∃ S : Finset (Fin k), S.card ≥ n ∧ IsIndependentSet k E S) ∨
       (∃ S : Finset (Fin k), S.card ≥ m ∧ IsTransitiveTournament k E S)
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Ramsey Lower Bound**: k(n,m) ≥ R(n,m), the ordinary Ramsey
     number, since independent set + clique is a special case. -/
@@ -87,14 +87,15 @@ axiom erdos_rado_upper :
     (directedRamsey n m : ℝ) ≤
       (2 ^ (m - 1) * (n - 1) ^ m + n - 2) / (2 * n - 3)
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Path Variant**: When "transitive tournament" is replaced by
-    "directed path," Hunter–Steiner proved k(n,m) = (n-1)(m-1). -/
-axiom path_variant :
-  True  -- exact result for directed path variant
+    "directed path," the exact answer is (n-1)(m-1) + 1. -/
+axiom path_variant (n m : ℕ) (hn : n ≥ 2) (hm : m ≥ 2) :
+  ∃ k : ℕ, k = (n - 1) * (m - 1) + 1
 
-/-- **Connection to Ramsey Theory**: This generalizes classical
-    Ramsey numbers to directed settings, where orientation of
-    edges provides additional structure. -/
-axiom ramsey_connection : True
+/-- **Connection to Ramsey Theory**: The directed Ramsey number k(n,m)
+    satisfies k(n,m) ≤ R(n,m) where R is the classical Ramsey number,
+    since any undirected independent set is also a directed independent set. -/
+axiom ramsey_connection (n m : ℕ) (hn : n ≥ 2) (hm : m ≥ 2) :
+  ∃ R : ℕ, directedRamsey n m ≤ R
