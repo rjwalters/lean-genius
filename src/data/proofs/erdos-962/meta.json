@@ -1,10 +1,10 @@
 {
   "id": "erdos-962",
-  "title": "Consecutive Integers with Large Prime Divisors",
+  "title": "Erdős Problem #962: Consecutive Integers with Large Prime Divisors",
   "slug": "erdos-962",
   "description": "Let k(n) be the maximal k such that there exists m ≤ n where each of m+1,...,m+k is divisible by at least one prime > k. Estimate k(n). Known bounds: exp(c√(log n log log n)) ≤ k(n) ≤ (1+o(1))√n.",
   "meta": {
-    "author": "Paul Erdős, Terence Tao, Tang",
+    "author": "Erdős (1965), Tao, Tang",
     "sourceUrl": "https://erdosproblems.com/962",
     "date": "1965",
     "status": "complete",
@@ -21,132 +21,111 @@
     "erdosNumber": 962,
     "erdosUrl": "https://erdosproblems.com/962",
     "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
-        "theorem": "Nat.Basic",
-        "description": "Basic natural number operations",
-        "module": "Mathlib.Data.Nat.Basic"
-      },
-      {
-        "theorem": "Prime.Basic",
-        "description": "Prime number definitions and properties",
+        "theorem": "Nat.Prime",
+        "description": "Prime number definitions",
         "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
-        "theorem": "Factorization.Basic",
-        "description": "Factorization of natural numbers",
+        "theorem": "Nat.factors",
+        "description": "Prime factorization",
         "module": "Mathlib.Data.Nat.Factorization.Basic"
       },
       {
-        "theorem": "Log.Basic",
-        "description": "Logarithm function for asymptotic bounds",
+        "theorem": "Real.log",
+        "description": "Logarithm for asymptotic bounds",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
-        "theorem": "Filter.Basic",
+        "theorem": "Filter.atTop",
         "description": "Filters for eventual properties",
         "module": "Mathlib.Order.Filter.Basic"
       }
     ],
     "originalContributions": [
-      "Definition of largest prime factor (lpf) function",
-      "Formalization of HasLargePrimeFactor predicate",
-      "Definition of IsValidInterval for consecutive integers",
-      "Formalization of the k(n) function via supremum",
-      "Axiomatization of Erdős's original lower bound (1965)",
-      "Axiomatization of Tang's improved lower bound",
-      "Definition of Tang's constant 1/√2",
-      "Axiomatization of Tao's upper bound",
-      "Formalization of Tao's pigeonhole argument sketch",
-      "Definition of Erdős's subpolynomial conjecture",
-      "Formalization of smooth numbers and their connection",
-      "Theorems connecting bounds and conjectures"
-    ],
-    "dateAdded": "2026-01-19"
+      "lpf definition: largest prime factor function",
+      "HasLargePrimeFactor predicate",
+      "IsValidInterval definition for consecutive integers",
+      "k_func definition via supremum",
+      "erdos_lower_bound axiom: Erdős 1965 bound",
+      "tang_lower_bound axiom: improved lower bound",
+      "tao_upper_bound axiom: first non-trivial upper bound",
+      "ErdosConjecture definition: k(n) = o(n^ε)",
+      "IsSmooth definition: smooth numbers",
+      "erdos_962_summary: combining Tang and Tao bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #962: Consecutive Integers with Large Prime Divisors**\n\nErdős posed this problem in 1965 at a symposium on extremal problems in number theory, published in [Er65]. The problem asks about the longest intervals of consecutive integers where each has a 'large' prime factor exceeding the interval length.\n\n**Key Contributions:**\n- **Erdős (1965):** Established the first lower bound k(n) ≫_ε exp((log n)^{1/2-ε}) using sieve methods\n- **Terence Tao:** Provided the first non-trivial upper bound k(n) ≤ (1+o(1))√n via a simple but elegant pigeonhole argument\n- **Quanyu Tang:** Improved the lower bound to k(n) ≥ exp((1/√2-o(1))√(log n · log log n))\n\nThe problem connects to smooth number theory: an integer is k-smooth if all prime factors are ≤ k, so k(n) measures the longest interval of non-smooth integers.",
+    "historicalContext": "Erdős posed Problem #962 in 1965 at a symposium on extremal problems in number theory. He asked for estimates of k(n), the longest interval of consecutive integers below n where each has a prime factor exceeding the interval length. He proved the first lower bound using sieve methods.\n\nTerence Tao provided the first non-trivial upper bound k(n) ≤ (1+o(1))√n via an elegant pigeonhole argument: if k > √n, some prime p ≤ k must divide two numbers in {m+1,...,m+k}, which are too close together. Quanyu Tang significantly improved the lower bound to exp((1/√2-o(1))√(log n · log log n)).\n\nThe gap between bounds remains enormous: the lower bound is subpolynomial while the upper bound is √n. Erdős conjectured k(n) = o(n^ε) for all ε > 0, which remains open. The problem connects to smooth number theory — k(n) equals the longest interval of non-k-smooth integers.",
     "problemStatement": "Let k(n) be the maximal k such that there exists m ≤ n where each of m+1, ..., m+k is divisible by at least one prime greater than k. Estimate k(n).",
-    "proofStrategy": "**Formalization Approach:**\n\n1. **Definitions:** We define the largest prime factor function lpf(n), the predicate HasLargePrimeFactor, and the IsValidInterval property for consecutive integer intervals.\n\n2. **The k(n) Function:** Defined via supremum as the largest k where a valid interval of length k exists with starting point ≤ n.\n\n3. **Axiomatized Results:** The main bounds are axiomatized since they require analytic number theory beyond Mathlib:\n   - Tang's lower bound: k(n) ≥ exp((1/√2-o(1))√(log n · log log n))\n   - Tao's upper bound: k(n) ≤ (1+o(1))√n\n\n4. **Tao's Pigeonhole Argument:** We sketch the key idea - if k > √n, some small prime divides two numbers in the interval, contradiction.\n\n5. **Smooth Number Connection:** We reformulate k(n) in terms of non-smooth number intervals, connecting to established smooth number theory.",
+    "proofStrategy": "We define HasLargePrimeFactor, IsValidInterval, and k_func via supremum. The main bounds are axiomatized: Tang's lower bound and Tao's upper bound. The summary theorem combines both bounds. The smooth number connection is formalized via IsSmooth and not_smooth_iff_large_prime.",
     "keyInsights": [
-      "**Valid Intervals:** k(n) measures the longest interval {m+1,...,m+k} where every integer has a prime factor exceeding k",
-      "**Sieve Methods:** Erdős's lower bound uses sieve techniques to find intervals where small primes 'miss' consecutive integers",
-      "**Pigeonhole Argument:** Tao's upper bound: if k > √n, by pigeonhole some prime p ≤ k divides two numbers in {m+1,...,m+k} at distance ≤ p < k, contradiction",
-      "**Tang's Constant:** The constant 1/√2 ≈ 0.707 in Tang's lower bound arises from optimizing over prime sieves",
-      "**Enormous Gap:** Lower bound is subpolynomial exp(√(log n log log n)), upper bound is polynomial √n - closing this gap is the central open problem",
-      "**Smooth Numbers:** k(n) equals the longest interval of non-k-smooth numbers below n, connecting to well-studied smooth number density"
+      "**Valid Intervals:** k(n) measures the longest interval where every integer has a prime factor exceeding the interval length",
+      "**Pigeonhole Upper Bound:** If k > √n, some prime p ≤ k divides two numbers in the interval — contradiction",
+      "**Tang's Constant:** 1/√2 ≈ 0.707 arises from optimizing over prime sieves",
+      "**Enormous Gap:** Lower bound is subpolynomial, upper bound is √n",
+      "**Smooth Numbers:** k(n) equals the longest interval of non-k-smooth integers below n"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
-      "title": "Part I: Basic Definitions",
+      "title": "Basic Definitions",
+      "summary": "lpf, HasLargePrimeFactor",
       "startLine": 38,
-      "endLine": 61,
-      "summary": "Defines largest prime factor lpf(n) and HasLargePrimeFactor predicate."
+      "endLine": 54
     },
     {
       "id": "k-function",
-      "title": "Part II: The k(n) Function",
-      "startLine": 63,
-      "endLine": 89,
-      "summary": "Defines IsValidInterval and the k_func(n) as supremum of valid interval lengths."
-    },
-    {
-      "id": "basic-properties",
-      "title": "Part III: Basic Properties",
-      "startLine": 91,
-      "endLine": 114,
-      "summary": "Monotonicity, positivity, and small values of k(n)."
+      "title": "The k(n) Function",
+      "summary": "IsValidInterval, k_func, k_bounded, k_monotone, k_pos, k_small_values",
+      "startLine": 56,
+      "endLine": 100
     },
     {
       "id": "erdos-lower",
-      "title": "Part IV: Erdős's Lower Bound",
-      "startLine": 116,
-      "endLine": 135,
-      "summary": "Axiomatizes k(n) ≫_ε exp((log n)^{1/2-ε}) from 1965."
+      "title": "Erdős's Lower Bound",
+      "summary": "erdos_lower_bound axiom",
+      "startLine": 102,
+      "endLine": 114
     },
     {
       "id": "tang-lower",
-      "title": "Part V: Tang's Improved Lower Bound",
-      "startLine": 137,
-      "endLine": 164,
-      "summary": "Axiomatizes k(n) ≥ exp((1/√2-o(1))√(log n log log n))."
+      "title": "Tang's Improved Lower Bound",
+      "summary": "tang_lower_bound axiom, tangConstant",
+      "startLine": 116,
+      "endLine": 135
     },
     {
       "id": "tao-upper",
-      "title": "Part VI: Tao's Upper Bound",
-      "startLine": 166,
-      "endLine": 193,
-      "summary": "Axiomatizes k(n) ≤ (1+o(1))√n with pigeonhole argument sketch."
+      "title": "Tao's Upper Bound",
+      "summary": "tao_upper_bound axiom",
+      "startLine": 137,
+      "endLine": 148
     },
     {
       "id": "conjecture",
-      "title": "Part VII: Erdős's Conjecture",
-      "startLine": 195,
-      "endLine": 224,
-      "summary": "Formalizes conjecture k(n) = o(n^ε) for all ε > 0 (OPEN)."
-    },
-    {
-      "id": "gap",
-      "title": "Part VIII: The Gap Between Bounds",
-      "startLine": 226,
-      "endLine": 255,
-      "summary": "Discusses the enormous gap: subpolynomial vs √n."
+      "title": "Erdős's Conjecture",
+      "summary": "ErdosConjecture definition (OPEN)",
+      "startLine": 150,
+      "endLine": 163
     },
     {
       "id": "smooth",
-      "title": "Part IX: Smooth Numbers Connection",
-      "startLine": 257,
-      "endLine": 288,
-      "summary": "Reformulates k(n) in terms of non-smooth number intervals."
+      "title": "Smooth Numbers Connection",
+      "summary": "IsSmooth, not_smooth_iff_large_prime",
+      "startLine": 165,
+      "endLine": 181
     },
     {
       "id": "summary",
-      "title": "Part X: Summary",
-      "startLine": 290,
-      "endLine": 327,
-      "summary": "Problem solved for bounds, conjecture remains open."
+      "title": "Summary",
+      "summary": "erdos_962_summary, erdos_962",
+      "startLine": 183,
+      "endLine": 224
     }
   ],
   "conclusion": {

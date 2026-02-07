@@ -11,134 +11,69 @@
     "relatedConcepts": ["Largest prime factor", "Smooth numbers", "Sieve methods"]
   },
   {
-    "id": "ann-e962-lpf",
+    "id": "ann-e962-defs",
     "proofId": "erdos-962",
-    "range": { "startLine": 42, "endLine": 47 },
+    "range": { "startLine": 38, "endLine": 54 },
     "type": "definition",
-    "title": "Largest Prime Factor Function",
-    "content": "**lpf(n):** Returns the largest prime dividing n, or 0 if n ≤ 1.\n\n**Examples:**\n- lpf(15) = 5 (factors: 3, 5)\n- lpf(24) = 3 (factors: 2, 3)\n- lpf(p) = p for any prime p\n\n**Implementation:** Uses Mathlib's factorization to find the maximum prime factor.",
-    "mathContext": "The largest prime factor function is fundamental in analytic number theory, especially in studying the distribution of integers with specific divisibility properties.",
+    "title": "Core Definitions",
+    "content": "**lpf(n):** Largest prime factor of n, or 0 if n ≤ 1. Uses Mathlib's factorization.\n\n**HasLargePrimeFactor(n, k):** True if n has at least one prime factor > k. This is the central property for valid intervals.",
+    "mathContext": "The largest prime factor function and its comparison to k are the building blocks. HasLargePrimeFactor n k is equivalent to ¬IsSmooth n k for n > 1.",
     "significance": "critical",
-    "relatedConcepts": ["Prime factorization", "Smooth numbers", "Friable integers"]
-  },
-  {
-    "id": "ann-e962-haslargeprime",
-    "proofId": "erdos-962",
-    "range": { "startLine": 49, "endLine": 61 },
-    "type": "definition",
-    "title": "HasLargePrimeFactor Predicate",
-    "content": "**HasLargePrimeFactor n k:** True if n has at least one prime factor greater than k.\n\n**Definition:**\n```lean\ndef HasLargePrimeFactor (n k : ℕ) : Prop :=\n  ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ p > k\n```\n\nThis is the central property: we seek intervals where ALL integers satisfy this condition.\n\n**Equivalence:** HasLargePrimeFactor n k ↔ lpf n > k (for n > 1)",
-    "mathContext": "This predicate captures when an integer 'escapes' being k-smooth, which is the key property for valid intervals.",
-    "significance": "critical",
-    "relatedConcepts": ["k-smooth numbers", "Prime divisors", "Divisibility"]
-  },
-  {
-    "id": "ann-e962-validinterval",
-    "proofId": "erdos-962",
-    "range": { "startLine": 67, "endLine": 72 },
-    "type": "definition",
-    "title": "Valid Interval Definition",
-    "content": "**IsValidInterval m k:** The interval {m+1, ..., m+k} is 'valid' if every integer in it has a prime factor exceeding k.\n\n**Definition:**\n```lean\ndef IsValidInterval (m k : ℕ) : Prop :=\n  ∀ i : ℕ, 1 ≤ i → i ≤ k → HasLargePrimeFactor (m + i) k\n```\n\nThese are the intervals we count to define k(n).",
-    "mathContext": "Valid intervals represent runs of consecutive integers that all avoid being k-smooth. Finding long such intervals is the central challenge.",
-    "significance": "critical",
-    "relatedConcepts": ["Consecutive integers", "Prime gaps", "Smooth numbers"]
+    "relatedConcepts": ["Prime factorization", "Smooth numbers"]
   },
   {
     "id": "ann-e962-kfunc",
     "proofId": "erdos-962",
-    "range": { "startLine": 74, "endLine": 89 },
+    "range": { "startLine": 56, "endLine": 100 },
     "type": "definition",
-    "title": "The k(n) Function",
-    "content": "**k_func n:** The main object of study.\n\n**Definition:**\n```lean\nnoncomputable def k_func (n : ℕ) : ℕ :=\n  sSup { k : ℕ | ∃ m : ℕ, m ≤ n ∧ IsValidInterval m k }\n```\n\nk(n) = max{k : ∃ m ≤ n such that m+1, ..., m+k all have a prime factor > k}\n\n**Properties:**\n- k(n) ≤ n (bounded)\n- k(n) ≤ k(n+1) (monotone)\n- k(n) ≥ 1 for n ≥ 2",
-    "mathContext": "The function k(n) measures how long intervals of non-smooth consecutive integers can be. Its growth rate is the central question.",
+    "title": "The k(n) Function and Properties",
+    "content": "**IsValidInterval(m, k):** Every integer in {m+1,...,m+k} has a prime factor > k.\n\n**k_func(n):** Defined as sSup{k : ∃ m ≤ n, IsValidInterval m k} — the longest valid interval below n.\n\n**Properties (axiomatized):**\n- k_bounded: k(n) ≤ n\n- k_monotone: k(n) ≤ k(n+1)\n- k_pos: k(n) ≥ 1 for n ≥ 2\n- k_small_values: k(10) ≤ 5, k(100) ≤ 15",
+    "mathContext": "The function k(n) measures how long intervals of non-smooth consecutive integers can be. Its growth rate is the central question of Problem #962.",
     "significance": "critical",
-    "relatedConcepts": ["Supremum", "Integer intervals", "Extremal combinatorics"]
-  },
-  {
-    "id": "ann-e962-basicprops",
-    "proofId": "erdos-962",
-    "range": { "startLine": 91, "endLine": 114 },
-    "type": "theorem",
-    "title": "Basic Properties of k(n)",
-    "content": "**Fundamental properties:**\n\n1. **k_bounded:** k(n) ≤ n for all n\n2. **k_monotone:** k(n) ≤ k(n+1) for all n\n3. **k_pos:** k(n) ≥ 1 for n ≥ 2\n\n**Small values axiom:**\n- k(10) ≤ 5\n- k(100) ≤ 15\n\nThese establish that k(n) is well-defined and grows slowly for small inputs.",
-    "significance": "key",
-    "relatedConcepts": ["Monotonicity", "Function bounds"]
+    "relatedConcepts": ["Supremum", "Extremal combinatorics", "Integer intervals"]
   },
   {
     "id": "ann-e962-erdoslower",
     "proofId": "erdos-962",
-    "range": { "startLine": 116, "endLine": 135 },
+    "range": { "startLine": 102, "endLine": 114 },
     "type": "axiom",
     "title": "Erdős's Original Lower Bound (1965)",
-    "content": "**erdos_lower_bound:**\n\nFor any ε > 0, there exists C > 0 such that eventually:\n```\nk(n) ≥ C · exp((log n)^{1/2 - ε})\n```\n\n**Proof idea:** Erdős used sieve methods to show that for many starting points m, small primes 'miss' long intervals of consecutive integers.\n\nThis was the first non-trivial lower bound, establishing that k(n) grows faster than any polynomial in log n.",
-    "mathContext": "Erdős presented this at a 1965 symposium on extremal problems in number theory [Er65]. The sieve methods he used are fundamental techniques in analytic number theory.",
+    "content": "**erdos_lower_bound:** For any ε > 0, ∃ C > 0 such that eventually k(n) ≥ C·exp((log n)^{1/2-ε}).\n\nErdős used sieve methods to show small primes can 'miss' long intervals. This was the first non-trivial lower bound, establishing k(n) grows faster than any polynomial in log n.",
+    "mathContext": "Erdős presented this at a 1965 symposium on extremal problems in number theory. The sieve approach remains the foundation for all subsequent lower bound improvements.",
     "significance": "critical",
-    "relatedConcepts": ["Sieve methods", "Prime sieves", "Exponential bounds"]
+    "relatedConcepts": ["Sieve methods", "Exponential bounds"]
   },
   {
-    "id": "ann-e962-tanglower",
+    "id": "ann-e962-tang",
     "proofId": "erdos-962",
-    "range": { "startLine": 137, "endLine": 164 },
+    "range": { "startLine": 116, "endLine": 135 },
     "type": "axiom",
     "title": "Tang's Improved Lower Bound",
-    "content": "**tang_lower_bound:**\n\nFor any ε > 0, eventually:\n```\nk(n) ≥ exp((1/√2 - ε) · √(log n · log log n))\n```\n\n**Tang's constant:** 1/√2 ≈ 0.707\n\n**Comparison theorem:** This bound eventually exceeds Erdős's for large n:\n```\n√(log n · log log n) > (log n)^{1/2 - 0.1}\n```\n\nTang's work represents the current state of the art for lower bounds.",
-    "mathContext": "The appearance of 1/√2 comes from optimizing over prime sieves. This bound is subpolynomial: exp(√(log n · log log n)) = o(n^ε) for any ε > 0.",
+    "content": "**tang_lower_bound:** For any ε > 0, eventually k(n) ≥ exp((1/√2-ε)·√(log n · log log n)).\n\n**tangConstant = 1/√2 ≈ 0.707** arises from optimizing over prime sieves.\n\nThis bound is subpolynomial: exp(√(log n · log log n)) = o(n^ε) for any ε > 0. It represents the current state of the art for lower bounds.",
+    "mathContext": "Tang's improvement over Erdős's original bound is significant — the exponent changes from (log n)^{1/2-ε} to √(log n · log log n), which grows much faster.",
     "significance": "critical",
-    "relatedConcepts": ["Subpolynomial growth", "Optimized sieves", "Lower bounds"]
+    "relatedConcepts": ["Optimized sieves", "Subpolynomial growth"]
   },
   {
-    "id": "ann-e962-taoupper",
+    "id": "ann-e962-tao",
     "proofId": "erdos-962",
-    "range": { "startLine": 166, "endLine": 193 },
+    "range": { "startLine": 137, "endLine": 148 },
     "type": "axiom",
     "title": "Tao's Upper Bound",
-    "content": "**tao_upper_bound:**\n\nFor any ε > 0, eventually:\n```\nk(n) ≤ (1 + ε) · √n\n```\n\n**Pigeonhole Argument (tao_pigeonhole):**\nIf k > √n, then among the k primes p ≤ k, consider their residues mod p in {m+1,...,m+k}. By pigeonhole, some prime p ≤ k must divide at least two numbers in the interval. But if both m+i and m+j (i < j ≤ k) are divisible by p, then p | (j-i), so j-i ≥ p. But j-i < k and we need all numbers to have a prime factor > k, contradiction.\n\n**Corollary:** k(n) = O(√n)",
-    "mathContext": "Tao provided this argument in a comment on erdosproblems.com. It was the first non-trivial upper bound and uses only elementary counting.",
+    "content": "**tao_upper_bound:** For any ε > 0, eventually k(n) ≤ (1+ε)·√n.\n\n**Pigeonhole argument:** If k > √n, among primes p ≤ k, by pigeonhole some p divides two numbers in {m+1,...,m+k}. Since those numbers are at distance < k ≤ p·... this contradicts each having a prime factor > k.\n\nTao provided this elegant argument in a comment on erdosproblems.com.",
+    "mathContext": "This was the first non-trivial upper bound and uses only elementary counting. The gap between √n (polynomial) and exp(√(log n · log log n)) (subpolynomial) is enormous.",
     "significance": "critical",
-    "relatedConcepts": ["Pigeonhole principle", "Prime residues", "Upper bounds"]
-  },
-  {
-    "id": "ann-e962-conjecture",
-    "proofId": "erdos-962",
-    "range": { "startLine": 195, "endLine": 224 },
-    "type": "concept",
-    "title": "Erdős's Subpolynomial Conjecture",
-    "content": "**ErdosConjecture:**\n\n```lean\ndef ErdosConjecture : Prop :=\n  ∀ ε > 0, ∀ᶠ n in atTop, (k_func n : ℝ) < n ^ ε\n```\n\nErdős conjectured k(n) = o(n^ε) for all ε > 0, meaning k(n) grows slower than any polynomial.\n\n**Status: OPEN**\n\nTao's bound gives k(n) ≤ O(√n) = O(n^{1/2}), which is still polynomial. The conjecture asks whether k(n) is truly subpolynomial.\n\n**The Gap:** Is k(n) = o(n^{1/2})?",
-    "mathContext": "If the conjecture is true, k(n) would be sandwiched between subpolynomial bounds on both sides, giving a complete asymptotic characterization.",
-    "significance": "critical",
-    "relatedConcepts": ["Subpolynomial growth", "Asymptotic analysis", "Open problems"]
-  },
-  {
-    "id": "ann-e962-gap",
-    "proofId": "erdos-962",
-    "range": { "startLine": 226, "endLine": 255 },
-    "type": "theorem",
-    "title": "The Enormous Bounds Gap",
-    "content": "**bounds_gap:**\n\n```\nexp(0.5·√(log n · log log n)) ≤ k(n) ≤ 2·√n\n```\n\n**Comparison:**\n- Lower bound: exp(√(log n · log log n)) - subpolynomial\n- Upper bound: √n = n^{1/2} - polynomial\n\n**The Question:** Is k(n) closer to the lower bound (subpolynomial) or upper bound (polynomial)?\n\nClosing this gap is the central open problem in this area.",
-    "mathContext": "For n = 10^100: lower bound ≈ 10^7, upper bound ≈ 10^50. The gap is astronomical.",
-    "significance": "key",
-    "relatedConcepts": ["Asymptotic bounds", "Gap problems", "Number theory"]
-  },
-  {
-    "id": "ann-e962-smooth",
-    "proofId": "erdos-962",
-    "range": { "startLine": 257, "endLine": 288 },
-    "type": "definition",
-    "title": "Smooth Numbers Connection",
-    "content": "**IsSmooth n y:** All prime factors of n are ≤ y.\n\n**Definition:**\n```lean\ndef IsSmooth (n y : ℕ) : Prop :=\n  ∀ p : ℕ, p.Prime → p ∣ n → p ≤ y\n```\n\n**Key equivalence:** ¬IsSmooth n k ↔ HasLargePrimeFactor n k\n\n**Reformulation:** k(n) is the longest interval of non-k-smooth numbers below n.\n\nThis connects to the well-studied density of smooth numbers: smooth numbers become rare, so long non-smooth runs are possible.",
-    "mathContext": "Smooth (friable) numbers are fundamental in factoring algorithms, cryptography, and analytic number theory. Their density is Ψ(x,y)/x ≈ ρ(log x / log y) where ρ is the Dickman function.",
-    "significance": "key",
-    "relatedConcepts": ["Smooth numbers", "Friable integers", "Dickman function"]
+    "relatedConcepts": ["Pigeonhole principle", "Elementary bounds"]
   },
   {
     "id": "ann-e962-summary",
     "proofId": "erdos-962",
-    "range": { "startLine": 290, "endLine": 327 },
+    "range": { "startLine": 183, "endLine": 224 },
     "type": "theorem",
-    "title": "Summary and Main Result",
-    "content": "**Erdős Problem #962: BOUNDS ESTABLISHED, CONJECTURE OPEN**\n\n**Definition:** k(n) = max{k : ∃ m ≤ n, each of m+1,...,m+k has prime factor > k}\n\n**Known Bounds:**\n- Lower: exp((1/√2 - o(1))√(log n · log log n)) (Tang)\n- Upper: (1 + o(1))√n (Tao)\n\n**Conjecture (OPEN):** k(n) = o(n^ε) for all ε > 0\n\n**Key Insight:** The problem asks how long intervals can avoid being k-smooth.\n\n**Historical Note:** Erdős posed this in 1965 at a symposium on extremal problems in number theory.",
-    "mathContext": "The problem illustrates the interplay between prime distribution, divisibility, and consecutive integers that characterizes much of Erdős's work in number theory.",
+    "title": "Summary Theorems",
+    "content": "**erdos_962_summary** and **erdos_962:** Combine Tang's lower bound and Tao's upper bound into a single conjunction, proved by ⟨tang_lower_bound, tao_upper_bound⟩.\n\nThe formalization captures the known bounds while the open conjecture ErdosConjecture is defined as a Prop but not asserted as an axiom, reflecting its unsolved status.",
+    "mathContext": "The summary represents the state of knowledge: bounds established, but the exact growth rate of k(n) remains unknown. Closing the gap is one of the outstanding problems in extremal number theory.",
     "significance": "critical",
-    "relatedConcepts": ["Erdős problems", "Prime distribution", "Extremal number theory"]
+    "relatedConcepts": ["Solved bounds", "Open conjecture", "State of the art"]
   }
 ]
