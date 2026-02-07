@@ -39,7 +39,7 @@ open Finset
 
 namespace Erdos1110
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -75,7 +75,7 @@ def IsRepresentable (p q n : ℕ) : Prop :=
 def NonRepresentable (p q : ℕ) : Set ℕ :=
   {n : ℕ | ¬IsRepresentable p q n}
 
-/-!
+/-
 ## Part II: The {2,3} Case (Erdős's "Silly Conjecture")
 -/
 
@@ -94,9 +94,10 @@ For the {2,3} case:
 - If n is odd, let 3^k be the largest power of 3 ≤ n,
   then n - 3^k is even, apply induction
 -/
-theorem inductive_proof_idea :
-    -- The proof uses strong induction on n
-    True := trivial
+/-- The proof uses strong induction on n. All n ≥ 1 are representable
+    as sums of distinct terms 2^a·3^b where no term divides another. -/
+theorem inductive_proof_idea (n : ℕ) (hn : n ≥ 1) : IsRepresentable 3 2 n :=
+  case_2_3_all_representable n hn
 
 /--
 **Key lemma: Representing even numbers with even summands:**
@@ -107,7 +108,7 @@ axiom even_representation :
     ∃ S : Finset ℕ, (∀ s ∈ S, IsPowerForm 3 2 s ∧ Even s) ∧
       NoOneDividesAnother S ∧ S.sum id = n
 
-/-!
+/-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
 
@@ -130,7 +131,7 @@ theorem infinitely_many_non_rep (p q : ℕ) (hp : p > q) (hq : q ≥ 2)
   rw [h] at hne
   sorry
 
-/-!
+/-
 ## Part IV: Yu-Chen Results (2022)
 -/
 
@@ -169,7 +170,7 @@ axiom yu_chen_coprime_infinite (p q : ℕ) :
     (q > 3 ∨ (q = 3 ∧ p ≠ 5) ∨ (q = 2 ∧ p ∉ ({3, 5, 9} : Set ℕ))) →
     Set.Infinite (CoprimeNonRepresentable p q)
 
-/-!
+/-
 ## Part V: Minimum Summand Size
 -/
 
@@ -201,7 +202,7 @@ axiom yang_zhao_improved_lower :
     ∃ N₀ : ℕ, ∀ n ≥ N₀,
       minSummandBound n ≥ c * n / Real.log n
 
-/-!
+/-
 ## Part VI: Related Problems
 -/
 
@@ -223,7 +224,7 @@ Representations without the constraint that no term divides another.
 -/
 axiom problem_246_no_constraint : True
 
-/-!
+/-
 ## Part VII: Examples
 -/
 
@@ -254,7 +255,7 @@ All of 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 are representable.
 axiom small_cases_representable :
   ∀ n ∈ ({1, 2, 3, 4, 5, 6, 7, 8, 9, 10} : Set ℕ), IsRepresentable 3 2 n
 
-/-!
+/-
 ## Part VIII: Summary
 -/
 
@@ -290,9 +291,15 @@ theorem erdos_1110_summary :
   · intro p q hp hq hcop hne
     exact infinitely_many_non_rep p q hp hq hcop hne
 
-/--
-**Problem Status: OPEN (partially resolved)**
--/
-theorem erdos_1110_status : True := trivial
+/-- {2,3} case fully solved: every n ≥ 1 is representable.
+    General case partially open: non-{2,3} coprime pairs have
+    infinitely many non-representable integers. -/
+theorem erdos_1110_status :
+    (∀ n ≥ 1, IsRepresentable 3 2 n) ∧
+    (∀ p q : ℕ, p > q → q ≥ 2 → Nat.Coprime p q →
+      ¬((p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3)) →
+      Set.Infinite (NonRepresentable p q)) :=
+  ⟨case_2_3_all_representable, fun p q hp hq hcop hne =>
+    infinitely_many_non_rep p q hp hq hcop hne⟩
 
 end Erdos1110
