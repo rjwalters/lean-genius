@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #882: Subset Sums Without Divisibility
 
 Source: https://erdosproblems.com/882
@@ -34,7 +34,7 @@ namespace Erdos882
 
 open Finset BigOperators
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 A ⊆ {1,...,n} and its subset sums.
@@ -59,7 +59,7 @@ def DivisibilityFree (S : Finset ℕ) : Prop :=
 def ValidSubset (n : ℕ) (A : Finset ℕ) : Prop :=
   (∀ a ∈ A, 1 ≤ a ∧ a ≤ n) ∧ DivisibilityFree (subsetSums A)
 
-/-!
+/-
 ## Part 2: The Optimization Problem
 
 Find max |A| such that ValidSubset n A holds.
@@ -73,7 +73,7 @@ noncomputable def maxValidSize (n : ℕ) : ℕ :=
     exact ⟨A.card, A, hA, rfl⟩ : ∃ k, ∃ A, ValidSubset n A ∧ A.card = k)
   else 0
 
-/-!
+/-
 ## Part 3: Lower Bounds
 
 Constructions achieving good sizes.
@@ -101,7 +101,7 @@ axiom elrss_1999 (m : ℕ) (hm : m ≥ 2) :
   let n := 2^m
   ValidSubset n (ELRSSConstruction m) ∧ (ELRSSConstruction m).card > Nat.log 2 n - 1
 
-/-!
+/-
 ## Part 4: Upper Bounds
 
 The subset sums being distinct implies constraints.
@@ -137,7 +137,7 @@ axiom upper_bound_refined (n : ℕ) (A : Finset ℕ) (hn : n ≥ 16)
 axiom conjectured_upper_bound (n : ℕ) (A : Finset ℕ) (h : ValidSubset n A) :
   ∃ C : ℕ, A.card ≤ Nat.log 2 n + C
 
-/-!
+/-
 ## Part 5: The Answer
 
 maxValidSize(n) = (1 + o(1)) log₂ n
@@ -155,7 +155,7 @@ theorem upper_bound_max (n : ℕ) (hn : n ≥ 16) :
   intro A hA
   exact upper_bound_refined n A hn hA
 
-/-!
+/-
 ## Part 6: Examples
 -/
 
@@ -168,7 +168,7 @@ axiom example_2_3 (n : ℕ) (hn : n ≥ 3) : ValidSubset n ({2, 3} : Finset ℕ)
   -- subset sums: {2}, {3}, {2,3} give 2, 3, 5
   -- Check: 2 ∤ 3, 3 ∤ 2, 2 ∤ 5, 5 ∤ 2, 3 ∤ 5, 5 ∤ 3 ✓
 
-/-!
+/-
 ## Part 7: Connection to Erdős Problem #1 and #13
 -/
 
@@ -182,7 +182,7 @@ axiom erdos_1_connection :
 axiom sidon_sets_have_distinct_pairwise_sums :
   ∀ A : Finset ℕ, DistinctSubsetSums A → DivisibilityFree (subsetSums A)
 
-/-!
+/-
 ## Part 8: Main Results
 -/
 
