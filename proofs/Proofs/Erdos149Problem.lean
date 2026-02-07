@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #149: Strong Chromatic Index Conjecture
 
   Source: https://erdosproblems.com/149
@@ -28,8 +28,7 @@ namespace Erdos149
 
 open SimpleGraph
 
-/-!
-## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 
 The strong chromatic index measures how many colors are needed to color edges
 so that edges at distance ≤ 2 get different colors.
@@ -57,8 +56,7 @@ noncomputable def strongChromaticIndex (G : SimpleGraph V) : ℕ :=
 
 notation "χ'_s" => strongChromaticIndex
 
-/-!
-## Part 2: The Erdős-Nešetřil Conjecture (1985)
+/- ## Part 2: The Erdős-Nešetřil Conjecture (1985)
 
 The conjectured bound is (5/4)Δ², which would be best possible.
 -/
@@ -83,8 +81,7 @@ axiom c5_blowup_construction (Δ : ℕ) (hΔ : Even Δ) :
       maxDegree G = Δ ∧
       (χ'_s G : ℚ) = (5/4 : ℚ) * Δ^2
 
-/-!
-## Part 3: Upper Bounds - Progress History
+/- ## Part 3: Upper Bounds - Progress History
 
 The conjecture remains open, but bounds have improved steadily.
 -/
@@ -124,8 +121,7 @@ axiom hurley_joannis_kang_2022 :
 theorem current_gap :
     (1.772 : ℚ) - (5/4 : ℚ) = 0.522 := by norm_num
 
-/-!
-## Part 4: Special Graph Classes
+/- ## Part 4: Special Graph Classes
 
 Better bounds are known for restricted graph classes.
 -/
@@ -147,8 +143,7 @@ axiom bipartite_bound :
       -- G is bipartite (axiomatized)
       (χ'_s G : ℝ) ≤ c * (maxDegree G)^2
 
-/-!
-## Part 5: The Clique Number of L(G)²
+/- ## Part 5: The Clique Number of L(G)²
 
 A related but weaker question: is ω(L(G)²) ≤ (5/4)Δ²?
 -/
@@ -170,8 +165,7 @@ axiom sleszynska_nowak_2015 (G : SimpleGraph V) (Δ : ℕ) (hΔ : maxDegree G �
 axiom faron_postle_2019 (G : SimpleGraph V) (Δ : ℕ) (hΔ : maxDegree G ≤ Δ) :
     (ω_L² G : ℚ) ≤ (4/3 : ℚ) * Δ^2
 
-/-!
-## Part 6: Strongly Independent Edge Pairs
+/- ## Part 6: Strongly Independent Edge Pairs
 
 Erdős-Nešetřil also asked an easier problem about pairs of strongly independent edges.
 -/
@@ -188,8 +182,7 @@ axiom chung_gyarfas_tuza_trotter_1990 (G : SimpleGraph V) (Δ : ℕ)
     G.edgeFinset.card ≥ (5 * Δ^2) / 4 →
     ∃ e₁ e₂ : G.edgeSet, StronglyIndependentEdges G e₁ e₂
 
-/-!
-## Part 7: Induced Matchings
+/- ## Part 7: Induced Matchings
 
 Strong edge colorings partition edges into "induced matchings."
 -/
@@ -205,8 +198,7 @@ axiom strong_chromatic_eq_induced_matchings (G : SimpleGraph V) :
       (∀ i, IsInducedMatching G (partition i)) ∧
       (∀ e : G.edgeSet, ∃ i, e ∈ partition i)}
 
-/-!
-## Part 8: Summary
+/- ## Part 8: Summary
 
 Erdős Problem #149 remains OPEN. Best bound is 1.772Δ², conjecture is (5/4)Δ².
 -/
