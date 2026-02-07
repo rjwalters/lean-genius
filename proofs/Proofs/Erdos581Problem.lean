@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #581: Bipartite Subgraphs of Triangle-Free Graphs
 
 Source: https://erdosproblems.com/581
@@ -30,7 +30,7 @@ open SimpleGraph Real
 
 namespace Erdos581
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Graph-theoretic foundations for the problem.
@@ -68,7 +68,7 @@ A subgraph H of G inherits edges from G.
 def IsSubgraph {V : Type*} (H G : SimpleGraph V) : Prop :=
   ∀ v w, H.Adj v w → G.Adj v w
 
-/-!
+/-
 ## Part II: The Function f(m)
 
 Definition of the extremal function.
@@ -93,7 +93,7 @@ Axiomatized as the infimum over all triangle-free graphs with m edges.
 -/
 axiom f (m : ℕ) : ℕ
 
-/-!
+/-
 ## Part III: Trivial Bounds
 
 Every graph has a bipartite subgraph with at least half the edges.
@@ -110,7 +110,7 @@ a 2-coloring achieving m/2 exists.
 axiom half_edges_bipartite (m : ℕ) :
     f m ≥ m / 2
 
-/-!
+/-
 ## Part IV: Alon's Upper Bound
 
 The construction showing f(m) ≤ m/2 + c₂ · m^{4/5}.
@@ -139,7 +139,7 @@ The constant c₂ satisfies the required bound.
 -/
 theorem c₂_positive : c₂ > 0 := (Classical.choose_spec alon_upper_bound).1
 
-/-!
+/-
 ## Part V: Alon's Lower Bound
 
 Every triangle-free graph has a large bipartite subgraph.
@@ -168,7 +168,7 @@ The constant c₁ satisfies the required bound.
 -/
 theorem c₁_positive : c₁ > 0 := (Classical.choose_spec alon_lower_bound).1
 
-/-!
+/-
 ## Part VI: Asymptotic Characterization
 
 The main result: f(m) = m/2 + Θ(m^{4/5}).
@@ -194,7 +194,7 @@ theorem alon_main_theorem :
   obtain ⟨c2, hc2_pos, hc2⟩ := alon_upper_bound
   exact ⟨c1, c2, hc1_pos, hc2_pos, fun m hm => by linarith [hc1 m], fun m hm => by linarith [hc2 m]⟩
 
-/-!
+/-
 ## Part VII: Related Results
 
 Connections to other extremal graph theory problems.
@@ -232,7 +232,7 @@ axiom KST_bound {V : Type*} [Fintype V] [DecidableEq V]
     (edgeCount G : ℝ) ≤ (1/2 : ℝ) * (Fintype.card V : ℝ) ^ (3/2 : ℝ) +
                         (1/4 : ℝ) * (Fintype.card V : ℝ)
 
-/-!
+/-
 ## Part VIII: Main Results
 
 Summary of Erdős Problem #581.
