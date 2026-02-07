@@ -317,7 +317,13 @@ theorem erdos_732_summary :
 /--
 **Problem status:**
 Erdős Problem #732 is PARTIALLY SOLVED.
+Question 2 solved by Alon; Question 1 remains open.
 -/
-theorem erdos_732_status : True := trivial
+theorem erdos_732 :
+    (∃ c : ℝ, c > 0 ∧
+      ∃ N : ℕ, ∀ n ≥ N,
+        (B n : ℝ) ≥ Real.exp (c * Real.sqrt n * Real.log n)) ∧
+    (∀ Xs n, IsBlockCompatible Xs n → PairCountCondition Xs n) :=
+  erdos_732_summary
 
 end Erdos732
