@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #28 — The Erdős–Turán Conjecture on Additive Bases
 
 If A ⊆ ℕ is an additive basis of order 2 (i.e., A + A contains all but
@@ -28,7 +28,7 @@ import Mathlib.Tactic
 open Filter Set
 open scoped Pointwise
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The representation function: number of ways to write n as a + b
     with a, b ∈ A and a ≤ b. -/
@@ -44,7 +44,7 @@ def IsAsymptoticBasis2 (A : Set ℕ) : Prop :=
 def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
   (Finset.Icc 1 N).filter (· ∈ A) |>.card
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- **Erdős–Turán Conjecture (1941)**: If A + A covers all but finitely
     many naturals, then the representation function is unbounded.
@@ -55,7 +55,7 @@ def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
 axiom erdos_turan_conjecture (A : Set ℕ) (h : IsAsymptoticBasis2 A) :
     ∀ B : ℕ, ∃ n : ℕ, B ≤ repFunction A n
 
-/-! ## Stronger Forms -/
+/- ## Stronger Forms -/
 
 /-- Stronger conjecture: lim sup r(n) / log n > 0.
     This would mean r(n) ≥ c log n infinitely often. -/
@@ -69,7 +69,7 @@ axiom erdos_turan_density_version :
     (∃ c > 0, ∀ N : ℕ, 1 ≤ N → (countingFn A N : ℝ) ≥ c * Real.sqrt N) →
     ∀ B : ℕ, ∃ n : ℕ, B ≤ repFunction A n
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- A basis of order 2 must have |A ∩ [1,N]| ≫ √N.
     (Necessary condition from counting.) -/
@@ -83,7 +83,7 @@ axiom sidon_not_basis (A : Set ℕ) :
     (∀ n, repFunction A n ≤ 1) →
     ¬ IsAsymptoticBasis2 A
 
-/-! ## Connection to Problem #40 -/
+/- ## Connection to Problem #40 -/
 
 /-- Problem #40 (also Erdős–Turán): If A is a B₂[g] set
     (r(n) ≤ g for all n), then A cannot be a basis of order 2.
@@ -92,7 +92,7 @@ axiom erdos_40_from_28 (g : ℕ) (A : Set ℕ) :
     (∀ n, repFunction A n ≤ g) →
     ¬ IsAsymptoticBasis2 A
 
-/-! ## Partial Results -/
+/- ## Partial Results -/
 
 /-- Erdős and Fuchs (1956): If A is any set, then
     Σ_{n≤N} r(n) cannot be cN + o(N^{1/4} / (log N)^{1/2}).
