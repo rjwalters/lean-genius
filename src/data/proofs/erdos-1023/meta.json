@@ -7,7 +7,7 @@
     "author": "Erdős-Kleitman, Hunter",
     "sourceUrl": "https://erdosproblems.com/1023",
     "date": "1971",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1023Problem.lean",
     "tags": [
       "combinatorics",
@@ -16,15 +16,15 @@
       "extremal-combinatorics",
       "antichains"
     ],
-    "badge": "pending",
-    "sorries": 10,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1023,
     "erdosUrl": "https://erdosproblems.com/1023",
     "erdosProblemStatus": "solved",
     "relatedProblems": [447]
   },
   "overview": {
-    "historicalContext": "**Union-Free Families**\n\nA family of sets is union-free if no member equals the union of other members. This is a natural extremal problem: how large can such a family be?\n\n**Antichains**: If no set contains another, then certainly no set can be a union of others. So antichains are union-free.\n\n**Sperner's Theorem**: The largest antichain on {1,...,n} is the middle layer - sets of size n/2. This has C(n, n/2) elements.\n\n**Resolution**: Erdős-Kleitman proved F(n) = C(n, n/2), and Hunter observed this follows from Problem 447 on 2-union-free families.",
+    "historicalContext": "Erdős Problem #1023 asks about union-free families: collections of subsets of {1,...,n} where no member equals the union of other members. This is a fundamental question in extremal set theory, connecting to Sperner's theorem and the study of antichains. Erdős posed the question of whether the maximum size F(n) grows asymptotically as c · 2^n / √n for some constant c > 0.\n\nThe key insight is that antichains (families where no set contains another) are automatically union-free, since a union of two or more distinct sets strictly contains each of them. By Sperner's theorem, the largest antichain in the power set of {1,...,n} is the middle layer consisting of all sets of size ⌊n/2⌋, which has C(n, ⌊n/2⌋) elements. This gives the lower bound F(n) ≥ C(n, ⌊n/2⌋).\n\nErdős and Kleitman proved the matching upper bound F(n) ≤ C(n, ⌊n/2⌋), establishing that F(n) = C(n, ⌊n/2⌋) exactly. By Stirling's approximation, C(n, ⌊n/2⌋) ~ √(2/π) · 2^n / √n, confirming the conjectured asymptotic form with c = √(2/π) ≈ 0.798. Hunter later observed that this result also follows from the solution to Erdős Problem #447 on 2-union-free families, since every union-free family is 2-union-free.",
     "problemStatement": "**Problem Statement**\n\nLet F(n) be the maximum size of a family of subsets of {1,...,n} such that no set in the family is the union of other members.\n\nIs there a constant c > 0 such that F(n) ~ c · 2^n / √n?\n\n**Status**: SOLVED\n\n**Answer**: YES. F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n.",
     "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound**: The middle layer (sets of size n/2) is an antichain, hence union-free. Size = C(n, n/2).\n\n2. **Upper Bound (Erdős-Kleitman)**: No union-free family can exceed C(n, n/2).\n\n3. **Asymptotics**: By Stirling, C(n, n/2) ~ √(2/π) · 2^n / √n.\n\n4. **Hunter's Observation**: Problem 447 (2-union-free) has the same answer, and union-free ⊆ 2-union-free.\n\n**Key Insight**: The antichain bound is tight for union-free families.",
     "keyInsights": [
@@ -40,71 +40,71 @@
       "id": "set-families",
       "title": "Set Families on {1,...,n}",
       "summary": "SetFamily, powerSet definitions",
-      "startLine": 23,
-      "endLine": 38
+      "startLine": 60,
+      "endLine": 76
     },
     {
       "id": "union-free",
       "title": "Union-Free Families",
-      "summary": "familyUnion, isUnionOf, isUnionFree",
-      "startLine": 40,
-      "endLine": 64
+      "summary": "familyUnion, isUnionOf, isUnionFree, equivalence proof",
+      "startLine": 77,
+      "endLine": 106
     },
     {
       "id": "extremal",
       "title": "The Extremal Function F(n)",
-      "summary": "unionFreeMax definition",
-      "startLine": 66,
-      "endLine": 79
+      "summary": "unionFreeMax definition and achievability",
+      "startLine": 107,
+      "endLine": 125
     },
     {
       "id": "antichains",
       "title": "Antichains are Union-Free",
-      "summary": "isAntichain, antichain_unionFree",
-      "startLine": 81,
-      "endLine": 93
+      "summary": "isAntichain, antichain_unionFree proof",
+      "startLine": 126,
+      "endLine": 151
     },
     {
       "id": "middle-layer",
       "title": "The Middle Layer",
-      "summary": "layer, middleLayer, middleLayer_antichain",
-      "startLine": 95,
-      "endLine": 124
+      "summary": "layer, middleLayer, middleLayer_antichain, middleLayer_unionFree",
+      "startLine": 152,
+      "endLine": 187
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound: F(n) ≥ C(n, n/2)",
       "summary": "unionFreeMax_ge_middle",
-      "startLine": 126,
-      "endLine": 135
+      "startLine": 188,
+      "endLine": 204
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound: F(n) ≤ C(n, n/2)",
-      "summary": "erdos_kleitman_upper, unionFreeMax_eq_middle",
-      "startLine": 137,
-      "endLine": 152
+      "summary": "erdos_kleitman_upper axiom, unionFreeMax_eq_middle",
+      "startLine": 205,
+      "endLine": 221
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Form",
-      "summary": "centralBinomial, Stirling, asymptoticConstant",
-      "startLine": 154,
-      "endLine": 175
+      "summary": "centralBinomial, stirling_central, asymptoticConstant, unionFreeMax_asymptotic",
+      "startLine": 222,
+      "endLine": 255
     },
     {
       "id": "main-result",
       "title": "The Main Question Answered",
-      "summary": "erdos_1023_question, erdos_1023_solved",
-      "startLine": 177,
-      "endLine": 197
+      "summary": "erdos_1023_question, erdos_1023_solved axiom",
+      "startLine": 256,
+      "endLine": 276
     },
     {
       "id": "problem-447",
       "title": "Connection to Problem 447",
-      "summary": "isTwoUnionFree, hunter_observation",
-      "startLine": 199,
-      "endLine": 238
+      "summary": "isTwoUnionFree, problem_447_solution axiom, hunter_observation",
+      "startLine": 277,
+      "endLine": 331
     }
   ],
   "conclusion": {
