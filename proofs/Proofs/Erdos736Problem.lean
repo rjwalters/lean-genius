@@ -42,9 +42,7 @@ open Cardinal SimpleGraph
 
 namespace Erdos736
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Chromatic number of a simple graph:**
@@ -77,9 +75,7 @@ def finiteSubgraphClass {V : Type*} (G : SimpleGraph V) :
   { ⟨n, H⟩ | ∃ (S : Finset V) (e : S ≃ Fin n),
     ∀ i j : Fin n, H.Adj i j ↔ G.Adj (e.symm i) (e.symm j) }
 
-/-!
-## Part II: The Taylor Conjecture
--/
+/- ## Part II: The Taylor Conjecture -/
 
 /--
 **Walter Taylor's Conjecture:**
@@ -109,9 +105,7 @@ def GeneralizedTaylorConjecture : Prop :=
           ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
             isSubgraphOf F H → isSubgraphOf F G
 
-/-!
-## Part III: Erdős's General Question
--/
+/- ## Part III: Erdős's General Question -/
 
 /--
 **Family of finite graphs:**
@@ -137,9 +131,7 @@ def ErdosGeneralQuestion : Prop :=
   ∃ (characterization : FiniteGraphFamily → Ordinal → Prop),
     ∀ F α, characterization F α ↔ realizableAt F α
 
-/-!
-## Part IV: The Komjáth-Shelah Consistency Result
--/
+/- ## Part IV: The Komjáth-Shelah Consistency Result -/
 
 /--
 **Komjáth-Shelah (2005):**
@@ -164,9 +156,7 @@ axiom taylor_conjecture_independent :
     -- The statement is independent of ZFC
     True
 
-/-!
-## Part V: Related Concepts
--/
+/- ## Part V: Related Concepts -/
 
 /--
 **De Bruijn-Erdős theorem (finite version):**
@@ -195,9 +185,7 @@ axiom chromatic_cardinal_interaction :
     ∀ κ : Cardinal, κ.IsRegular → κ ≥ aleph 0 →
       ∃ (V : Type*) (G : SimpleGraph V), chromaticNumber V G = κ
 
-/-!
-## Part VI: Special Cases
--/
+/- ## Part VI: Special Cases -/
 
 /--
 **Countable chromatic number:**
@@ -225,9 +213,7 @@ theorem finite_case (V : Type*) (G : SimpleGraph V) (k : ℕ) :
   intro _ _ _
   sorry
 
-/-!
-## Part VII: Summary
--/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #736: OPEN (independence known)**

@@ -15,7 +15,7 @@
     "erdosNumber": 736,
     "erdosUrl": "https://erdosproblems.com/736",
     "erdosProblemStatus": "open",
-    "mathlib_version": "v4.x",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       { "theorem": "SimpleGraph", "description": "Simple graphs in combinatorics", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
       { "theorem": "SimpleGraph.Subgraph", "description": "Subgraphs of simple graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
@@ -48,49 +48,49 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 45,
-      "endLine": 79,
+      "endLine": 77,
       "summary": "Chromatic number, finite subgraphs, and subgraph embeddings"
     },
     {
       "id": "taylor-conjecture",
       "title": "The Taylor Conjecture",
-      "startLine": 80,
-      "endLine": 111,
+      "startLine": 78,
+      "endLine": 107,
       "summary": "Walter Taylor's original conjecture and its generalization"
     },
     {
       "id": "general-question",
       "title": "Erdős's General Question",
-      "startLine": 112,
-      "endLine": 139,
+      "startLine": 108,
+      "endLine": 133,
       "summary": "Characterizing realizable families of finite graphs"
     },
     {
       "id": "consistency-result",
       "title": "Komjáth-Shelah Consistency",
-      "startLine": 140,
-      "endLine": 166,
+      "startLine": 134,
+      "endLine": 158,
       "summary": "Independence from ZFC and the ℵ₂ bound"
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
-      "startLine": 167,
-      "endLine": 197,
+      "startLine": 159,
+      "endLine": 187,
       "summary": "De Bruijn-Erdős theorem and chromatic compactness"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 198,
-      "endLine": 227,
+      "startLine": 188,
+      "endLine": 215,
       "summary": "Countable and finite chromatic number cases"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 228,
-      "endLine": 267,
+      "startLine": 216,
+      "endLine": 253,
       "summary": "Main theorem statements and key insight"
     }
   ],
