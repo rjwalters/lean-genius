@@ -46,8 +46,7 @@ open MeasureTheory Set
 
 namespace Erdos908
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 /-- A function f : ℝ → ℝ has measurable differences if for every h > 0,
@@ -64,8 +63,7 @@ def IsAdditive (h : ℝ → ℝ) : Prop :=
 def IsRigid (r : ℝ → ℝ) : Prop :=
   ∀ h : ℝ, ∀ᵐ x ∂volume, r (x + h) = r x
 
-/-!
-## Part II: Properties of Additive Functions
+/- ## Part II: Properties of Additive Functions
 -/
 
 /-- Additive functions map 0 to 0 -/
@@ -94,8 +92,7 @@ axiom discontinuous_additive_exists :
 axiom continuous_additive_characterization :
   ∀ (h : ℝ → ℝ), IsAdditive h → Continuous h → ∃ c : ℝ, ∀ x, h x = c * x
 
-/-!
-## Part III: Properties of Rigid Functions
+/- ## Part III: Properties of Rigid Functions
 -/
 
 /-- If r is rigid and continuous, then r is constant -/
@@ -108,8 +105,7 @@ axiom rigid_continuous_is_constant :
 axiom rigid_has_measurable_differences (r : ℝ → ℝ) (hRigid : IsRigid r) :
     HasMeasurableDifferences r
 
-/-!
-## Part IV: The Decomposition Theorem
+/- ## Part IV: The Decomposition Theorem
 -/
 
 /-- The main decomposition theorem (Laczkovich 1980).
@@ -141,8 +137,7 @@ axiom decomposition_uniqueness :
     (∃ c : ℝ, ∀ x, g₁ x - g₂ x = c * x) ∧
     (∀ᵐ x ∂volume, r₁ x = r₂ x)
 
-/-!
-## Part V: Special Cases
+/- ## Part V: Special Cases
 -/
 
 /-- If f itself is measurable, then h can be taken to be 0 -/
@@ -179,8 +174,7 @@ theorem additive_has_measurable_differences (f : ℝ → ℝ) (hAdd : IsAdditive
   simp_rw [this]
   exact measurable_const
 
-/-!
-## Part VI: Connection to Related Problems
+/- ## Part VI: Connection to Related Problems
 -/
 
 /-- Erdős Problem #907: Related problem about additive functions.
@@ -195,8 +189,7 @@ def erdos_907_related : Prop :=
 /-- The connection: Problem 908 uses additive functions as building blocks -/
 axiom erdos_907_connection : erdos_907_related
 
-/-!
-## Part VII: The de Bruijn Perspective
+/- ## Part VII: The de Bruijn Perspective
 -/
 
 /-- de Bruijn's original formulation (1951): Which classes of functions
@@ -213,8 +206,7 @@ def DifferenceClosed (C : Set (ℝ → ℝ)) : Prop :=
 axiom measurable_difference_closed :
   DifferenceClosed {f : ℝ → ℝ | Measurable f}
 
-/-!
-## Part VIII: Summary
+/- ## Part VIII: Summary
 -/
 
 /--
@@ -237,7 +229,11 @@ HISTORICAL SIGNIFICANCE:
 - Part of the theory of "difference equations" in analysis
 - Connected to the study of additive (Hamel) functions
 -/
-theorem erdos_908_solved : True := trivial
+theorem erdos_908_solved :
+    ∀ (f : ℝ → ℝ), HasMeasurableDifferences f →
+      ∃ (g h r : ℝ → ℝ),
+        (Continuous g) ∧ (IsAdditive h) ∧ (IsRigid r) ∧
+        (∀ x, f x = g x + h x + r x) := laczkovich_decomposition
 
 /-- The de Bruijn-Erdős conjecture is true -/
 theorem de_bruijn_erdos_conjecture :
