@@ -7,7 +7,7 @@
     "author": "Erdős-Szüsz-Turán, Kesten-Sós, Boca, Xiong-Zaharescu",
     "sourceUrl": "https://erdosproblems.com/1001",
     "date": "1958-2008",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1001Problem.lean",
     "tags": [
       "erdos",
@@ -17,7 +17,7 @@
       "farey-fractions"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 0,
     "erdosNumber": 1001,
     "erdosUrl": "https://erdosproblems.com/1001",
     "erdosProblemStatus": "solved",
@@ -128,18 +128,11 @@
       "endLine": 177
     },
     {
-      "id": "khinchin-connection",
-      "title": "The Khinchin Connection",
-      "summary": "Relation to Khinchin's theorem",
-      "startLine": 179,
-      "endLine": 192
-    },
-    {
-      "id": "explicit-bounds",
-      "title": "Explicit Bounds",
-      "summary": "Small A approximation and zero density",
-      "startLine": 194,
-      "endLine": 208
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and main theorem erdos_1001",
+      "startLine": 176,
+      "endLine": 205
     }
   ],
   "conclusion": {

@@ -165,23 +165,14 @@
     "relatedConcepts": ["Basel problem", "ζ(2)"]
   },
   {
-    "id": "ann-1001-khinchin",
-    "proofId": "erdos-1001",
-    "range": { "startLine": 185, "endLine": 192 },
-    "type": "concept",
-    "title": "Khinchin Connection",
-    "content": "**Khinchin's Theorem:**\n\nFor decreasing ψ(q), the set of α with infinitely many |α - p/q| < ψ(q)/q has measure 0 or 1 depending on whether Σψ(q) converges or diverges.\n\nThe EST problem is a \"windowed\" version: restricting denominators to [N, cN] instead of all q.",
-    "mathContext": "Khinchin's theorem is a 0-1 law in metric Diophantine approximation. The EST problem refines this by asking about finite windows of denominators.",
-    "significance": "key",
-    "relatedConcepts": ["Khinchin's theorem", "Metric Diophantine approximation", "0-1 laws"]
-  },
-  {
     "id": "ann-1001-summary",
     "proofId": "erdos-1001",
-    "range": { "startLine": 210, "endLine": 235 },
+    "range": { "startLine": 176, "endLine": 205 },
     "type": "theorem",
-    "title": "Summary",
-    "content": "**Problem #1001 Summary:**\n\n1. **Question:** Does lim S(N, A, c) exist?\n2. **Answer:** YES (Kesten-Sós 1966)\n3. **Explicit Formula:** f(A, c) = 12A log(c)/π² in EST regime\n4. **Key Connection:** π² comes from Farey fraction asymptotics\n5. **Multiple Proofs:** EST (1958), Kesten-Sós (1966), Boca (2008), Xiong-Zaharescu (2006)",
-    "significance": "critical"
+    "title": "Summary: Problem #1001 is SOLVED",
+    "content": "**Problem #1001 Summary:**\n\n1. **Question:** Does lim S(N, A, c) exist?\n2. **Answer:** YES (Kesten-Sós 1966)\n3. **Explicit Formula:** f(A, c) = 12A log(c)/π² in EST regime\n4. **Key Connection:** π² comes from Farey fraction asymptotics\n5. **Multiple Proofs:** EST (1958), Kesten-Sós (1966), Boca (2008), Xiong-Zaharescu (2006)\n\nThe main theorem erdos_1001 states: for all A > 0 and c > 1, the limit exists.",
+    "mathContext": "erdos_1001 : ∀ A c, A > 0 → c > 1 → limitExists A c",
+    "significance": "critical",
+    "relatedConcepts": ["solved problem", "Kesten-Sós", "Farey fractions"]
   }
 ]
