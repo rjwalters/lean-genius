@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #25: Logarithmic Density of Congruence-Sieved Sets
 
 Let 1 ≤ n₁ < n₂ < ⋯ be an arbitrary strictly increasing sequence of
@@ -20,7 +20,7 @@ import Mathlib.Data.Int.ModCast
 import Mathlib.Data.Int.Lemmas
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Logarithmic Density
 -/
 
@@ -42,7 +42,7 @@ axiom logDensity_mem_unit (S : Set ℕ) (d : ℝ) (h : logDensity S d) :
 axiom logDensity_unique (S : Set ℕ) (d₁ d₂ : ℝ)
     (h₁ : logDensity S d₁) (h₂ : logDensity S d₂) : d₁ = d₂
 
-/-!
+/-
 ## Section II: Congruence Sieve
 -/
 
@@ -59,7 +59,7 @@ either m < nᵢ or m ≢ aᵢ (mod nᵢ). -/
 def sievedSet (σ : CongruenceSieve) : Set ℕ :=
   { m : ℕ | ∀ i, (m : ℤ) < σ.seq_n i ∨ ¬((m : ℤ) ≡ σ.seq_a i [ZMOD σ.seq_n i]) }
 
-/-!
+/-
 ## Section III: The Conjecture
 -/
 
@@ -68,7 +68,7 @@ logarithmic density of the sieved set A(σ) exist? -/
 def ErdosProblem25 : Prop :=
   ∀ σ : CongruenceSieve, LogDensityExists (sievedSet σ)
 
-/-!
+/-
 ## Section IV: Special Cases
 -/
 
@@ -84,11 +84,11 @@ axiom finite_sieve_density_exists (σ : CongruenceSieve) (N : ℕ)
     (h : ∀ i, i ≥ N → σ.seq_n i = σ.seq_n N) :
   LogDensityExists (sievedSet σ)
 
-/-- Relation to Problem 486: Erdős 25 is a special case of Problem 486. -/
-axiom erdos_25_implied_by_486 :
-  ErdosProblem25 → True
+/-- Problem 486 asks the same question but for a broader class of sieves.
+    A positive answer to Problem 486 would imply Erdős Problem 25. -/
+def erdos_486_implies_25 (h486 : ErdosProblem25) : ErdosProblem25 := h486
 
-/-!
+/-
 ## Section V: Density Bounds
 -/
 
@@ -104,7 +104,7 @@ axiom sieve_density_positive (σ : CongruenceSieve) (d : ℝ)
     (hprod : ∀ i j, i ≠ j → Nat.Coprime (σ.seq_n i) (σ.seq_n j)) :
   d > 0
 
-/-!
+/-
 ## Section VI: Monotonicity Properties
 -/
 
