@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #43: Sidon Sets with Disjoint Difference Sets
 
 If A, B ⊆ {1,...,N} are Sidon sets with (A-A) ∩ (B-B) = {0},
@@ -21,7 +21,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Sidon Sets
 -/
 
@@ -35,7 +35,7 @@ def IsSidonSet (A : Finset ℤ) : Prop :=
 def diffSet (A : Finset ℤ) : Finset ℤ :=
   (A ×ˢ A).image (fun p => p.1 - p.2)
 
-/-!
+/-
 ## Section II: Disjoint Differences
 -/
 
@@ -43,7 +43,7 @@ def diffSet (A : Finset ℤ) : Finset ℤ :=
 def DisjointDifferences (A B : Finset ℤ) : Prop :=
   ∀ d : ℤ, d ∈ diffSet A → d ∈ diffSet B → d = 0
 
-/-!
+/-
 ## Section III: Maximum Sidon Set Size
 -/
 
@@ -55,7 +55,7 @@ axiom sidon_size_asymptotic :
   ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
     |(maxSidonSize N : ℝ) - Real.sqrt N| ≤ ε * Real.sqrt N
 
-/-!
+/-
 ## Section IV: The Conjecture
 -/
 
@@ -68,7 +68,7 @@ def ErdosProblem43 : Prop :=
     DisjointDifferences A B →
     A.card.choose 2 + B.card.choose 2 ≤ (maxSidonSize N).choose 2 + C
 
-/-!
+/-
 ## Section V: Equal Size Variant
 -/
 
@@ -85,7 +85,7 @@ def EqualSizeVariant : Prop :=
 /-- Barreto's result: the equal-size variant is false. -/
 axiom barreto_counterexample : ¬EqualSizeVariant
 
-/-!
+/-
 ## Section VI: Structural Bounds
 -/
 
