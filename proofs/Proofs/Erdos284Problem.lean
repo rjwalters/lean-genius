@@ -31,7 +31,7 @@ open Nat Finset Real
 
 namespace Erdos284
 
-/-!
+/-
 ## Part I: Egyptian Fraction Representations
 -/
 
@@ -61,7 +61,7 @@ For a finite set of positive integers, the minimum element.
 -/
 def minElement (S : Finset ℕ) (hS : S.Nonempty) : ℕ := S.min' hS
 
-/-!
+/-
 ## Part II: The Function f(k)
 -/
 
@@ -81,7 +81,7 @@ There exist k-term representations of 1 for k ≥ 2.
 axiom f_well_defined (k : ℕ) (hk : k ≥ 2) :
     ∃ S : Finset ℕ, S.card = k ∧ RepresentsOne S
 
-/-!
+/-
 ## Part III: The Upper Bound
 -/
 
@@ -114,7 +114,7 @@ e - 1 ≈ 1.71828 comes from ∫₁^e 1/x dx = ln(e) - ln(1) = 1.
 axiom e_minus_one_constant :
     Real.exp 1 - 1 = ∫ x in (1)..(Real.exp 1), 1 / x
 
-/-!
+/-
 ## Part IV: Croot's Lower Bound (2001)
 -/
 
@@ -144,7 +144,7 @@ axiom f_asymptotic :
     ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
       |(f k : ℝ) - k / (Real.exp 1 - 1)| < ε * k / (Real.exp 1 - 1)
 
-/-!
+/-
 ## Part V: Examples
 -/
 
@@ -155,7 +155,7 @@ Here n₁ = 2, and we expect f(4) ≈ 4/(e-1) ≈ 2.33.
 -/
 axiom example_k4 : RepresentsOne {2, 4, 5, 20}
 
-/-!
+/-
 ## Part VI: Summary
 -/
 
