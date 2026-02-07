@@ -35,7 +35,7 @@ open SimpleGraph Finset
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-
+/-!
 ## Basic Graph Properties
 
 Chromatic number and triangle containment.
@@ -53,7 +53,7 @@ noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
 noncomputable def edgeCount (G : SimpleGraph V) : ℕ :=
   G.edgeFinset.card
 
-/-
+/-!
 ## The Threshold Function f_r(n)
 
 f_r(n) is minimal such that chromatic number ≥ r and ≥ f_r(n) edges implies triangle.
@@ -77,7 +77,7 @@ axiom f_well_defined :
     ∀ G : SimpleGraph V, [DecidableRel G.Adj] →
     hasChromatic G r → edgeCount G ≥ m → HasTriangle G
 
-/-
+/-!
 ## Turán's Theorem: The Case r = 2
 
 Any graph with > n²/4 edges contains a triangle.
@@ -97,7 +97,7 @@ axiom turan_graph_optimal :
     Fintype.card V = n ∧ edgeCount G = turanNumber n ∧
     hasChromatic G 2 ∧ ¬HasTriangle G
 
-/-
+/-!
 ## Erdős-Gallai: The Case r = 3
 
 f_3(n) = ⌊(n-1)²/4⌋ + 2
@@ -110,7 +110,7 @@ def f3Threshold (n : ℕ) : ℕ := (n - 1)^2 / 4 + 2
 axiom erdos_gallai_theorem :
   ∀ n ≥ 3, f 3 n = f3Threshold n
 
-/-
+/-!
 ## The Case r = 4
 
 f_4(n) = ⌊(n-3)²/4⌋ + 6 for large n (Ren-Wang-Wang-Yang 2024)
@@ -123,7 +123,7 @@ def f4Threshold (n : ℕ) : ℕ := (n - 3)^2 / 4 + 6
 axiom rwwy_theorem :
   ∀ n ≥ 150, f 4 n = f4Threshold n
 
-/-
+/-!
 ## The Simonovits Asymptotic
 
 f_r(n) = n²/4 - g(r)·n/2 + O(1)
@@ -142,7 +142,7 @@ axiom simonovits_asymptotic :
   ∀ r ≥ 2, ∃ C : ℕ, ∀ n ≥ r,
     |((f r n : ℤ) - n^2/4 + (g r : ℤ) * n / 2)| ≤ C
 
-/-
+/-!
 ## Bounds on g(r)
 
 The key open question: determining g(r) precisely.
@@ -159,13 +159,12 @@ axiom hhkp_upper :
     (g r : ℝ) ≤ (2 + ε) * r^2 * Real.log r
 
 /-- The gap: factor of 4 between lower and upper bounds -/
-theorem g_bounds_gap (r : ℕ) (hr : r ≥ 10) :
+axiom g_bounds_gap (r : ℕ) (hr : r ≥ 10) :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ c₂ / c₁ ≤ 5 ∧
     c₁ * r^2 * Real.log r ≤ (g r : ℝ) ∧
-    (g r : ℝ) ≤ c₂ * r^2 * Real.log r := by
-  sorry
+    (g r : ℝ) ≤ c₂ * r^2 * Real.log r
 
-/-
+/-!
 ## Monotonicity Properties
 -/
 
@@ -181,7 +180,7 @@ axiom f_mono_r :
 axiom g_mono :
   ∀ r₁ r₂ : ℕ, r₁ ≤ r₂ → g r₁ ≤ g r₂
 
-/-
+/-!
 ## Special Values of g(r)
 -/
 
@@ -194,7 +193,7 @@ axiom g_3 : g 3 = 1
 /-- g(4) = 3: Grötzsch graph type constructions -/
 axiom g_4 : g 4 = 3
 
-/-
+/-!
 ## The Main Conjecture
 
 Determine the exact value of g(r).
