@@ -7,7 +7,7 @@
     "author": "Phelps-Rödl (1986)",
     "sourceUrl": "https://erdosproblems.com/1024",
     "date": "1986",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1024Problem.lean",
     "tags": [
       "graph-theory",
@@ -16,15 +16,15 @@
       "independence-number",
       "steiner-systems"
     ],
-    "badge": "pending",
-    "sorries": 5,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1024,
     "erdosUrl": "https://erdosproblems.com/1024",
     "erdosProblemStatus": "solved",
     "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "**Linear Hypergraphs**\n\nA hypergraph is linear if any two edges share at most one vertex. A 3-uniform linear hypergraph is also called a partial Steiner triple system.\n\n**Independent Sets**: A set of vertices is independent if it contains no complete edge.\n\n**Erdős's Original Bounds**: Erdős proved n^(1/2) ≪ f(n) ≪ n^(2/3), leaving a gap between the exponents 1/2 and 2/3.\n\n**Resolution**: Phelps and Rödl (1986) determined the exact asymptotic: f(n) ≍ (n log n)^(1/2). The log factor closes Erdős's gap.",
+    "historicalContext": "A 3-uniform hypergraph is linear if any two distinct edges share at most one vertex; equivalently, it is a partial Steiner triple system. Erdős asked about the minimum size of an independent set (containing no complete edge) guaranteed in such hypergraphs. Specifically, if f(n) denotes the minimum over all 3-uniform linear hypergraphs on n vertices of the independence number, what is the growth rate of f(n)?\n\nErdős established the initial bounds n^{1/2} ≪ f(n) ≪ n^{2/3}. The lower bound comes from the probabilistic method: include each vertex independently with probability p, then the expected number of vertices minus destroyed edges is pn - mp³, which upon optimization gives the bound. The upper bound uses explicit constructions of dense linear hypergraphs with small independent sets.\n\nPhelps and Rödl (1986) closed the gap by proving f(n) ≍ (n log n)^{1/2}. The logarithmic factor, invisible to the polynomial bounds, arises from a careful analysis of the edge density constraints imposed by linearity. Their result shows that the independence number grows strictly faster than n^{1/2} but slower than any n^{1/2+ε}, with the precise correction being √(log n).",
     "problemStatement": "**Problem Statement**\n\nLet f(n) be such that every 3-uniform linear hypergraph on n vertices contains an independent set of size f(n). Estimate f(n).\n\n**Status**: SOLVED (Phelps-Rödl 1986)\n\n**Answer**: f(n) ≍ (n log n)^(1/2)\n\n**Note**: Erdős's original bounds were n^(1/2) ≪ f(n) ≪ n^(2/3).",
     "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - mp³ (where m = number of edges). Optimize p.\n\n2. **Upper Bound (Construction)**: Build linear hypergraphs with small independence numbers using algebraic or probabilistic constructions.\n\n3. **Key Insight**: The number of edges m in a 3-uniform linear hypergraph is at most n²/6 (Steiner bound). This gives (n log n)^(1/2).\n\n4. **The Log Factor**: Arises from careful analysis of edge distribution.",
     "keyInsights": [
@@ -41,70 +41,70 @@
       "title": "Hypergraphs",
       "summary": "Hypergraph, vertices, isKUniform, is3Uniform",
       "startLine": 23,
-      "endLine": 43
+      "endLine": 44
     },
     {
       "id": "linear",
       "title": "Linear Hypergraphs",
       "summary": "isLinear, is3UniformLinear definitions",
       "startLine": 45,
-      "endLine": 57
+      "endLine": 58
     },
     {
       "id": "independent",
       "title": "Independent Sets",
-      "summary": "isIndependent, independenceNumber",
+      "summary": "isIndependent, independenceNumber, exists_independent",
       "startLine": 59,
-      "endLine": 77
+      "endLine": 78
     },
     {
       "id": "extremal",
       "title": "The Extremal Function f(n)",
-      "summary": "linearHypergraphs3, f definition",
+      "summary": "linearHypergraphs3, f definition, f_spec axiom",
       "startLine": 79,
       "endLine": 96
     },
     {
       "id": "erdos-bounds",
       "title": "Erdős's Bounds",
-      "summary": "erdos_lower_bound, erdos_upper_bound",
-      "startLine": 98,
+      "summary": "erdos_lower_bound, erdos_upper_bound axioms, erdos_bounds theorem",
+      "startLine": 97,
       "endLine": 121
     },
     {
       "id": "phelps-rodl",
       "title": "Phelps-Rödl Theorem (1986)",
-      "summary": "asymptoticBound, phelps_rodl",
-      "startLine": 123,
+      "summary": "asymptoticBound, phelps_rodl_lower/upper axioms, phelps_rodl theorem",
+      "startLine": 122,
       "endLine": 150
     },
     {
       "id": "main-result",
       "title": "The Main Question Answered",
       "summary": "erdos_1024_question, erdos_1024_solved",
-      "startLine": 152,
+      "startLine": 151,
       "endLine": 167
     },
     {
       "id": "steiner",
       "title": "Steiner Triple Systems",
-      "summary": "isSteinerTripleSystem, steiner_existence",
-      "startLine": 169,
-      "endLine": 188
+      "summary": "isSteinerTripleSystem, steiner_existence, sts_densest axiom",
+      "startLine": 168,
+      "endLine": 187
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Lower Bound",
-      "summary": "expectedIndependent, probabilistic_lower",
-      "startLine": 190,
-      "endLine": 204
+      "summary": "expectedIndependent, probabilistic_lower axiom",
+      "startLine": 188,
+      "endLine": 202
     },
     {
       "id": "comparison",
       "title": "Comparison of Bounds",
-      "summary": "bound_comparison, log_factor_refinement",
-      "startLine": 217,
-      "endLine": 234
+      "summary": "bound_comparison, log_factor_refinement axioms",
+      "startLine": 214,
+      "endLine": 230
     }
   ],
   "conclusion": {

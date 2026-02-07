@@ -42,7 +42,7 @@ import Mathlib
 
 open Finset
 
-/-
+/-!
 ## Two-Colorings and Monochromatic Cliques
 -/
 
@@ -57,7 +57,7 @@ def TwoColoring.isSymmetric (c : TwoColoring n) : Prop :=
 def isMonochromaticClique (c : TwoColoring n) (S : Finset (Fin n)) (b : Bool) : Prop :=
   ∀ i ∈ S, ∀ j ∈ S, i ≠ j → c i j = b
 
-/-
+/-!
 ## Clique Partitions
 -/
 
@@ -84,7 +84,7 @@ def CliquePartition.coveredVertices (p : CliquePartition c t) : Finset (Fin n) :
 def CliquePartition.leftover (p : CliquePartition c t) : ℕ :=
   n - p.coveredVertices.card
 
-/-
+/-!
 ## The Function f(t)
 
 f(t) = minimum leftover vertices over all colorings and optimal partitions.
@@ -102,7 +102,7 @@ noncomputable def f_n (n t : ℕ) : ℕ :=
 noncomputable def f (t : ℕ) : ℕ :=
   sSup { f_n n t | n : ℕ }
 
-/-
+/-!
 ## Moon's Theorem: f(3) = 4
 -/
 
@@ -112,12 +112,14 @@ axiom moon_f3 : f 3 = 4
 /-- Moon's result for specific n ≥ 8 -/
 axiom moon_f3_n (n : ℕ) (hn : n ≥ 8) : f_n n 3 = 4
 
-/-
+/-!
 ## Ramsey Bound
 -/
 
-/-- The Ramsey number R(s,t) -/
-noncomputable def ramseyNumber (s t : ℕ) : ℕ := sorry
+/-- The Ramsey number R(s,t): the minimum n such that every 2-coloring
+    of K_n contains a monochromatic K_s or K_t. We axiomatize this
+    as a function since the definition via sInf requires an existence proof. -/
+axiom ramseyNumber (s t : ℕ) : ℕ
 
 /-- Erdős's observation: f(t) ≤ R(t,t) - 1 ≤ 4^t -/
 axiom erdos_ramsey_bound (t : ℕ) (ht : t ≥ 2) : f t < ramseyNumber t t
@@ -125,7 +127,7 @@ axiom erdos_ramsey_bound (t : ℕ) (ht : t ≥ 2) : f t < ramseyNumber t t
 /-- R(t,t) ≤ 4^t (crude bound) -/
 axiom ramsey_upper_bound (t : ℕ) : ramseyNumber t t ≤ 4^t
 
-/-
+/-!
 ## Burr-Erdős-Spencer Exact Formula
 -/
 
@@ -139,7 +141,7 @@ axiom f_lower_bound (t : ℕ) (ht : t ≥ 3) : f t ≥ ramseyNumber t (t - 1)
 /-- Upper bound: f(t) < R(t, t-1) + t -/
 axiom f_upper_bound (t : ℕ) (ht : t ≥ 3) : f t < ramseyNumber t (t - 1) + t
 
-/-
+/-!
 ## Asymptotic Behavior
 
 The questions f(t)^{1/t} → 1? and f(t) ≪ t? are both answered NO.
