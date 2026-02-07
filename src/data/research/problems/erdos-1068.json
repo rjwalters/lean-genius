@@ -1,52 +1,106 @@
 {
   "slug": "erdos-1068",
   "title": "Erdős #1068",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Does every graph with chromatic number $\\aleph_1$ contain a countable subgraph which is infinitely connected?\n\n\n\nA question of Erd\\H{o}s and Hajnal. We say a graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.\n\nSee also [1067].",
     "plain": "Does every graph with chromatic number $\\aleph_1$ contain a countable subgraph which is infinitely connected?",
-    "whyMatters": []
+    "whyMatters": ["Relates infinite combinatorics (chromatic number) to local graph structure (connectivity)", "Weaker variant of the disproved Problem #1067, showing the boundary of what's true"]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Problem #1067 disproved: Soukup (2015) showed infinitely connected subgraph need not have χ = ℵ₁",
+      "Soukup (2015): uncountable vertex sets need not be infinitely connected in graphs with χ = ℵ₁",
+      "Bowler-Pikhurko (2024): simplified Soukup's construction",
+      "Komjáth (2013): related question with ℵ₁ vertices is independent of ZFC"
+    ],
+    "open": [
+      "Main question: existence of countable infinitely connected subgraph",
+      "Whether the answer is independent of ZFC"
+    ],
+    "goal": "Determine if every graph with χ = ℵ₁ contains a countable infinitely connected subgraph"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T14:38:41.571Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-02-07T16:00:00Z",
+    "iteration": 2,
+    "focus": "Formalization improved to use SimpleGraph, aligned with #1067",
+    "blockers": ["Problem is OPEN - main conjecture cannot be proved or disproved without new mathematical insight", "Sits at intersection of infinite combinatorics and set theory"],
+    "nextAction": "Monitor mathematical literature for progress; this problem is not suitable for Aristotle or automated proof search",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1068 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with chromatic number $\\aleph_1$ contain a countable subgraph which is infinitely connected?\n\n\n\nA question of Erd\\H{o}s and Hajnal. We say a graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.\n\nSee also [1067].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1067\n- Problem #1069\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErHa66\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "progressSummary": "SURVEY: Rewrote formalization using Mathlib's SimpleGraph (replacing custom InfGraph). Added proper chromatic number definition, induced subgraph construction, Soukup's uncountable vertex set result, connection to disproved Problem #1067, infinite Menger theorem characterization, and two proved theorems. Removed True placeholders. Docker builds successfully.",
+    "builtItems": [
+      "PathInGraph structure using SimpleGraph with proper adjacency verification",
+      "InternallyDisjoint, PairwiseInternallyDisjoint path definitions",
+      "InfinitelyConnected definition for SimpleGraph",
+      "hasAleph1ChromaticNumber using countable coloring characterization",
+      "inducedSubgraph construction for vertex subsets",
+      "inf_connected_implies_path theorem (proved, no sorry)",
+      "inf_connected_subgraph_has_paths theorem (proved, no sorry)"
+    ],
+    "insights": [
+      "Problem #1068 is strictly weaker than disproved #1067: only asks for countable subgraph, not one with high χ",
+      "Soukup's 2015 result shows uncountable subgraphs don't work - countability is essential",
+      "Infinite Menger theorem (Aharoni-Berger 2009) provides equivalent characterization via finite separators",
+      "Answer may depend on set-theoretic axioms (related ZFC-independence results exist for #1067 variants)",
+      "Not suitable for Aristotle - main problem is OPEN, not a known result needing formalization"
+    ],
+    "mathlibGaps": [
+      "No infinite graph connectivity theory in Mathlib (SimpleGraph.Connectivity is finite-focused)",
+      "No infinite Menger theorem in Mathlib",
+      "Cardinal-valued chromatic number not in Mathlib (only finite chromaticNumber)"
+    ],
+    "nextSteps": [
+      "Monitor mathematical literature for resolution of this OPEN problem",
+      "If new results appear, update formalization with additional axioms/theorems"
+    ],
+    "markdown": "# Erdős #1068 - Knowledge Base\n\n## Problem Statement\n\nDoes every graph with chromatic number ℵ₁ contain a countable subgraph which is infinitely connected?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Lean Status**: SURVEYED - formalization improved\n**Tractability Score**: 3/10 (OPEN problem at intersection of infinite combinatorics and set theory)\n**Aristotle Suitable**: No (main problem is unsolved)\n\n## Key Results\n\n1. **Problem #1067 (DISPROVED)**: The stronger question asking for χ = ℵ₁ subgraph was disproved by Soukup (2015)\n2. **Soukup (2015)**: Uncountable vertex sets need not be infinitely connected\n3. **Bowler-Pikhurko (2024)**: Simplified Soukup's construction\n4. **Komjáth (2013)**: Related variant with ℵ₁ vertices is independent of ZFC\n5. **Aharoni-Berger (2009)**: Infinite Menger theorem characterizes infinite connectivity\n\n## Formalization\n\n- Uses Mathlib's SimpleGraph (aligned with #1067)\n- 2 proved theorems, 0 sorries\n- Proper chromatic number definition using countable colorings\n- Induced subgraph construction\n\n## Sessions\n\n### Session 1 (2026-02-07) - researcher-1\n- Rewrote entire formalization using SimpleGraph\n- Added Soukup's result, #1067 connection, infinite Menger characterization\n- Removed True placeholders\n- Docker build passes\n\n---\n\n*Updated 2026-02-07*\n"
   },
-  "approaches": [],
-  "tags": [
-    "erdos"
+  "approaches": [
+    {
+      "name": "Survey and formalization improvement",
+      "status": "completed",
+      "description": "Improved Lean formalization to use SimpleGraph, documented known results"
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "erdos",
+    "infinite-combinatorics",
+    "set-theory",
+    "chromatic-number",
+    "connectivity"
+  ],
+  "relatedProofs": [
+    "proofs/Proofs/Erdos1067Problem.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Soukup (2015) - Counterexample to #1067",
+      "Bowler-Pikhurko (2024) - Simplified construction",
+      "Komjáth (2013) - ZFC independence",
+      "Aharoni-Berger (2009) - Infinite Menger theorem",
+      "Erdős-Hajnal (1966) - Original question"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1068",
+      "https://erdosproblems.com/1067"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Data.Set.Countable"
+    ]
   },
   "started": "2026-01-15T14:38:41.571Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 3
 }
