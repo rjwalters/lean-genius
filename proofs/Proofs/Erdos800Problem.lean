@@ -44,8 +44,7 @@ open SimpleGraph
 
 namespace Erdos800
 
-/-!
-## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
@@ -72,8 +71,7 @@ This is the key structural property in Erdős Problem #800.
 def noAdjacentHighDegree (G : SimpleGraph V) : Prop :=
   ∀ u v : V, G.Adj u v → ¬(isHighDegree G u ∧ isHighDegree G v)
 
-/-!
-## Part II: Subdivisions
+/- ## Part II: Subdivisions
 -/
 
 /--
@@ -104,8 +102,7 @@ theorem subdivision_implies_no_adjacent_high_degree (G : SimpleGraph V)
   have : vertexDegree G v ≤ 2 := h u (hu3) v huv
   omega
 
-/-!
-## Part III: Ramsey Numbers
+/- ## Part III: Ramsey Numbers
 -/
 
 /--
@@ -161,8 +158,7 @@ A graph G has linear Ramsey number if R(G) = O(n) where n = |V(G)|.
 def hasLinearRamseyNumber (G : SimpleGraph V) (C : ℝ) : Prop :=
   (ramseyNumber G : ℝ) ≤ C * (Fintype.card V : ℝ)
 
-/-!
-## Part IV: The Main Theorem
+/- ## Part IV: The Main Theorem
 -/
 
 /--
@@ -186,8 +182,7 @@ theorem subdivided_graphs_linear_ramsey (G : SimpleGraph V)
   unfold hasLinearRamseyNumber
   exact alon_theorem G (subdivision_implies_no_adjacent_high_degree G h)
 
-/-!
-## Part V: Degeneracy and the Burr-Erdős Conjecture
+/- ## Part V: Degeneracy and the Burr-Erdős Conjecture
 -/
 
 /--
@@ -231,8 +226,7 @@ theorem erdos_800_special_case_of_163 (G : SimpleGraph V)
   unfold hasLinearRamseyNumber
   exact hc_bound V G (no_adjacent_high_degree_is_2_degenerate G h)
 
-/-!
-## Part VI: Summary
+/- ## Part VI: Summary
 -/
 
 /--
