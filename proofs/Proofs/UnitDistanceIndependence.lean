@@ -14,12 +14,13 @@ the independence number α(S) = max |I| where I ⊆ S has no two points at dista
 - Hadwiger-Nelson bounds: 5 ≤ χ(R^2) ≤ 7
 - Basic structural theorems about independence
 
-**Status**: COMPLETE (0 sorries, 2 axioms)
+**Status**: COMPLETE (67 theorems, 0 sorries, 2 axioms)
 Tags: combinatorial-geometry, graph-theory, independence-number, unit-distance
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
+import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Fintype.Basic
@@ -694,6 +695,180 @@ theorem independenceNumber_pos {V : Type*} [Fintype V] [DecidableEq V]
     independenceNumber G > 0 := by
   have h := alpha_ge_one G
   omega
+
+/-
+## Part XIV: Complement Graph and Independence-Clique Duality
+
+The fundamental duality: independent sets in G correspond exactly to
+cliques in the complement graph Gᶜ.
+-/
+
+/-- An independent finset in G is a clique in Gᶜ (as a set).
+    Bridges our `IsIndepFinset` with Mathlib's `SimpleGraph.IsClique`. -/
+theorem indep_iff_compl_isClique {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) (S : Finset V) :
+    IsIndepFinset G S ↔ Gᶜ.IsClique (S : Set V) := by
+  rw [SimpleGraph.isClique_iff]
+  constructor
+  · intro hI u hu v hv huv
+    rw [SimpleGraph.compl_adj]
+    exact ⟨huv, hI u hu v hv huv⟩
+  · intro hC u hu v hv huv hadj
+    have := hC hu hv huv
+    rw [SimpleGraph.compl_adj] at this
+    exact this.2 hadj
+
+/-- A clique in G corresponds to an independent set in Gᶜ. -/
+theorem clique_iff_compl_indep {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) (S : Finset V) :
+    (∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v) ↔ IsIndepFinset Gᶜ S := by
+  constructor
+  · intro hC u hu v hv huv hadj
+    rw [SimpleGraph.compl_adj] at hadj
+    exact hadj.2 (hC u hu v hv huv)
+  · intro hI u hu v hv huv
+    by_contra hnadj
+    exact hI u hu v hv huv ((SimpleGraph.compl_adj G u v).mpr ⟨huv, hnadj⟩)
+
+/-- Complement involution: Gᶜᶜ = G. -/
+theorem compl_compl_eq {V : Type*} (G : SimpleGraph V) : Gᶜᶜ = G := compl_compl G
+
+/-- Independence in G is preserved under double complement. -/
+theorem indep_compl_compl {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) (S : Finset V) :
+    IsIndepFinset G S ↔ IsIndepFinset Gᶜᶜ S := by rw [compl_compl]
+
+/-- The complement of the empty graph is complete on distinct vertices. -/
+theorem compl_bot_adj {V : Type*} [DecidableEq V] (u v : V) (huv : u ≠ v) :
+    (⊥ : SimpleGraph V)ᶜ.Adj u v := by
+  rw [SimpleGraph.compl_adj]; exact ⟨huv, not_false⟩
+
+/-- The complement of a complete graph has no edges. -/
+theorem compl_top_not_adj {V : Type*} (u v : V) :
+    ¬ (⊤ : SimpleGraph V)ᶜ.Adj u v := by
+  intro h
+  have := (SimpleGraph.compl_adj (⊤ : SimpleGraph V) u v).mp h
+  exact this.2 (by simp [this.1])
+
+/-- Independent sets in the complement are cliques in the original graph. -/
+theorem indep_in_compl_is_clique {V : Type*} [DecidableEq V]
+    (G : SimpleGraph V) (S : Finset V) (hS : IsIndepFinset Gᶜ S) :
+    ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v :=
+  (clique_iff_compl_indep G S).mpr hS
+
+/-
+## Part XV: Handshaking Lemma and Edge Counting
+-/
+
+/-- Our `degree` definition agrees with Mathlib's `SimpleGraph.degree`. -/
+theorem degree_eq_mathlib_degree {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    degree G v = G.degree v := by
+  unfold degree; simp [SimpleGraph.degree, SimpleGraph.neighborFinset]
+
+/-- Handshaking lemma: the sum of all degrees equals twice the edge count. -/
+theorem sum_degrees_eq_twice_edges {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    ∑ v : V, degree G v = 2 * G.edgeFinset.card := by
+  simp_rw [degree_eq_mathlib_degree G]; exact G.sum_degrees_eq_twice_card_edges
+
+/-- Edge bound from max degree: 2|E| ≤ |V| * Δ. -/
+theorem edge_count_le_card_mul_maxDeg {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    2 * G.edgeFinset.card ≤ Fintype.card V * maxDegree G := by
+  rw [← sum_degrees_eq_twice_edges]
+  calc ∑ v : V, degree G v
+      ≤ ∑ _v : V, maxDegree G := Finset.sum_le_sum (fun v _ => degree_le_maxDegree G v)
+    _ = Fintype.card V * maxDegree G := by simp [Finset.sum_const, smul_eq_mul]
+
+/-
+## Part XVI: Minimum Degree and Edge Bounds
+-/
+
+/-- Minimum degree: the smallest degree in a finite nonempty graph. -/
+noncomputable def minDegree {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+  Finset.univ.inf' Finset.univ_nonempty (degree G)
+
+/-- Every vertex has degree at least minDegree. -/
+theorem minDegree_le_degree {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (v : V) :
+    minDegree G ≤ degree G v := Finset.inf'_le _ (Finset.mem_univ v)
+
+/-- minDegree ≤ maxDegree. -/
+theorem minDegree_le_maxDegree {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    minDegree G ≤ maxDegree G := by
+  obtain ⟨v⟩ := ‹Nonempty V›
+  exact le_trans (minDegree_le_degree G v) (degree_le_maxDegree G v)
+
+/-- Edge count lower bound: 2|E| ≥ |V| * δ. -/
+theorem twice_edges_ge_card_mul_minDeg {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    2 * G.edgeFinset.card ≥ Fintype.card V * minDegree G := by
+  rw [← sum_degrees_eq_twice_edges]
+  calc ∑ v : V, degree G v
+      ≥ ∑ _v : V, minDegree G := Finset.sum_le_sum (fun v _ => minDegree_le_degree G v)
+    _ = Fintype.card V * minDegree G := by simp [Finset.sum_const, smul_eq_mul]
+
+/-- For regular graphs (all degrees equal to d), edges = n*d/2. -/
+theorem regular_edge_count {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (d : ℕ) (hreg : ∀ v : V, degree G v = d) :
+    2 * G.edgeFinset.card = Fintype.card V * d := by
+  rw [← sum_degrees_eq_twice_edges]; simp_rw [hreg]; simp [Finset.sum_const, smul_eq_mul]
+
+/-- Degree sum in an independent set counts only edges to V\I. -/
+theorem indep_degree_sum_eq_cut_edges {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {I : Finset V} (hI : IsIndepFinset G I) :
+    ∑ v ∈ I, G.degree v =
+    ∑ v ∈ I, ((Finset.univ \ I).filter (G.Adj v)).card := by
+  apply Finset.sum_congr rfl
+  intro v hv
+  rw [SimpleGraph.degree]
+  apply congr_arg Finset.card
+  ext u
+  simp only [SimpleGraph.neighborFinset, Finset.mem_filter, Finset.mem_sdiff,
+    Finset.mem_univ, true_and]
+  constructor
+  · intro hadj
+    exact ⟨fun huI => hI v hv u huI (G.ne_of_adj hadj) hadj, hadj⟩
+  · intro ⟨_, hadj⟩; exact hadj
+
+/-- Degree sum in an independent set is at most |I| * Δ. -/
+theorem indep_degree_sum_le {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] (I : Finset V) :
+    ∑ v ∈ I, degree G v ≤ I.card * maxDegree G := by
+  calc ∑ v ∈ I, degree G v
+      ≤ ∑ _v ∈ I, maxDegree G := Finset.sum_le_sum (fun v _ => degree_le_maxDegree G v)
+    _ = I.card * maxDegree G := by rw [Finset.sum_const, smul_eq_mul]
+
+/-
+## Part XVII: Independence Number of Specific Graph Families
+-/
+
+/-- The empty graph (⊥) on n vertices has independence number n. -/
+theorem alpha_bot {V : Type*} [Fintype V] [DecidableEq V]
+    [DecidableRel (⊥ : SimpleGraph V).Adj] :
+    independenceNumber (⊥ : SimpleGraph V) = Fintype.card V := by
+  apply le_antisymm
+  · exact independenceNumber_le_card (⊥ : SimpleGraph V)
+  · have hS : IsIndepFinset (⊥ : SimpleGraph V) Finset.univ := isIndepFinset_of_bot Finset.univ
+    have := indep_card_le_alpha (⊥ : SimpleGraph V) Finset.univ hS
+    rwa [Finset.card_univ] at this
+
+/-- The complement of ⊥ is complete. -/
+theorem bot_compl_adj_of_ne {V : Type*} [DecidableEq V] (u v : V) (huv : u ≠ v) :
+    (⊥ : SimpleGraph V)ᶜ.Adj u v := compl_bot_adj u v huv
+
+/-- An independent set in ⊥ᶜ has at most 1 element. -/
+theorem indep_compl_bot_card_le_one {V : Type*} [DecidableEq V]
+    (S : Finset V) (hS : IsIndepFinset (⊥ : SimpleGraph V)ᶜ S) :
+    S.card ≤ 1 := by
+  by_contra h; push_neg at h
+  have := Finset.one_lt_card.mp (by omega : 1 < S.card)
+  obtain ⟨a, ha, b, hb, hab⟩ := this
+  exact hS a ha b hb hab (compl_bot_adj a b hab)
 
 /-
 ## Part XII: Summary
