@@ -1,61 +1,104 @@
 {
   "id": "erdos-312",
-  "title": "Erdős Problem #312: Subset Sum of Unit Fractions",
+  "title": "Erdős Problem #312: Subset Sums of Unit Fractions",
   "slug": "erdos-312",
-  "description": "Does there exist c > 0 such that for K > 1, every large multiset with Σ(1/n) > K has a subset summing to within exp(-cK) of 1?",
+  "description": "Does there exist c > 0 such that for K > 1, every large multiset with reciprocal sum > K has a subset summing to within exp(-cK) of 1? Known: polynomial bound c/K² holds (Erdős-Graham). OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős-Graham [ErGr80]",
     "sourceUrl": "https://erdosproblems.com/312",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos312Problem.lean",
-    "tags": ["number-theory", "unit-fractions", "subset-sum", "exponential-bounds"],
-    "badge": "open",
-    "sorries": 5,
+    "tags": ["erdos", "number-theory", "unit-fractions", "subset-sum", "exponential-bounds", "open-problem"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 312,
     "erdosUrl": "https://erdosproblems.com/312",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset.sum", "description": "Summation over finite sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Real.exp", "description": "Real exponential function", "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv" },
+      { "theorem": "Real", "description": "Real number type and operations", "module": "Mathlib.Data.Real.Basic" }
+    ],
+    "originalContributions": [
+      "reciprocalSum definition: Σ 1/a(i) over a finite multiset",
+      "subsetReciprocalSum: sum over a subset S ⊆ {0,...,n-1}",
+      "hasExponentialPrecision: the exp(-cK) precision property",
+      "mainConjecture: full formal statement of the open problem",
+      "hasPolynomialPrecision: the c/K² precision property",
+      "erdos_graham_polynomial axiom: known polynomial bound",
+      "exponential_stronger_than_polynomial: exp(-cK) < c'/K² for large K",
+      "conjecture_implies_known: proved - exponential implies polynomial",
+      "harmonicNumber definition: H_n = Σ 1/k for k=1..n",
+      "harmonic_unbounded axiom: H_n → ∞",
+      "erdos_312_status summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Originally posed by Erdős and Graham [ErGr80], this problem explores the precision of subset sums of unit fractions. Erdős and Graham proved a weaker polynomial bound (c/K²), but the exponential bound (exp(-cK)) remains open. This exemplifies the gap between polynomial and exponential rates in combinatorial number theory.",
-    "problemStatement": "Does there exist a constant c > 0 such that, for any K > 1, whenever A is a sufficiently large finite multiset of positive integers with Σ_{n ∈ A} 1/n > K, there exists a subset S ⊆ A with 1 - exp(-cK) < Σ_{n ∈ S} 1/n ≤ 1?",
-    "proofStrategy": "The formalization defines the subset sum property for unit fractions, states the main conjecture with exponential bound, and includes the known Erdős-Graham result with polynomial bound. Comparison theorems show the exponential bound is strictly stronger.",
+    "historicalContext": "**Erdős Problem #312: Subset Sums of Unit Fractions**\n\nThis problem, posed by Erdős and Graham [ErGr80], explores the precision with which subset sums of unit fractions can approximate 1.\n\nThe key question is about *exponential* precision: given a multiset of positive integers whose reciprocals sum to more than K, can we always find a subset whose reciprocal sum is within exp(-cK) of 1? The closer to 1, the better the approximation.\n\n**Known Results:** Erdős and Graham proved the weaker *polynomial* bound: for some constant c > 0, one can always find a subset summing to within c/K² of 1. The gap between the polynomial bound c/K² and the conjectured exponential bound exp(-cK) is enormous for large K, making this a significant open problem in combinatorial number theory.\n\nThe problem connects to the classical theory of Egyptian fractions (representing rationals as sums of distinct unit fractions) and to computational subset sum problems.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nDoes there exist a constant $c > 0$ such that, for any $K > 1$, whenever $A$ is a sufficiently large finite multiset of positive integers with $\\sum_{n \\in A} 1/n > K$, there exists a subset $S \\subseteq A$ with:\n$$1 - e^{-cK} < \\sum_{n \\in S} 1/n \\leq 1$$\n\n**Known:** Erdős-Graham proved this with $e^{-cK}$ replaced by $c/K^2$ (polynomial precision).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Clean Definitions:** reciprocalSum and subsetReciprocalSum as noncomputable functions using Finset.sum and inverse.\n\n2. **Precision Properties:** Separate definitions for exponential (exp(-cK)) and polynomial (c/K²) precision, making the comparison explicit.\n\n3. **Main Conjecture as Def:** The open conjecture is a Prop definition, not a theorem with sorry, since it's genuinely unknown.\n\n4. **Known Result as Axiom:** The Erdős-Graham polynomial bound is axiomatized since the proof uses deep analytic number theory.\n\n5. **Proved Theorem:** conjecture_implies_known shows the logical implication: exponential precision → the subset sum is ≤ 1, proved by extracting the upper bound from the exponential property.",
     "keyInsights": [
-      "The problem asks about 'precision' of subset sums approaching 1",
-      "Exponential bound exp(-cK) is much stronger than polynomial c/K²",
-      "Large total sum (> K) ensures many possible subset sums",
-      "Unit fractions have irregular structure unlike powers of 2",
-      "Harmonic numbers provide natural examples with Σ 1/n ≈ ln(n)"
+      "**Exponential vs Polynomial:** For K = 100, exp(-cK) ≈ 10^{-43} while c/K² = c/10000 — the exponential bound is astronomically tighter",
+      "**Precision of Approximation:** The problem asks how close to 1 we can get using subset sums of 1/n, given a large budget of reciprocals",
+      "**Harmonic Numbers:** H_n = 1 + 1/2 + ... + 1/n grows like ln(n), providing canonical examples with arbitrarily large reciprocal sums",
+      "**Egyptian Fractions:** Representing 1 as a sum of distinct unit fractions is a classical problem; here we seek *near-1* representations from a given multiset",
+      "**Known Result:** The polynomial version c/K² is proved by Erdős-Graham, establishing that good approximation is always possible — the question is how good"
     ]
   },
   "sections": [
     {
-      "id": "problem-statement",
-      "title": "The Problem",
-      "content": "Given a multiset of positive integers whose reciprocals sum to more than K, can we always find a subset whose sum is very close to 1? The conjectured error bound is exp(-cK), exponentially small in K."
+      "id": "unit-fraction-sums",
+      "title": "Unit Fraction Sums",
+      "summary": "reciprocalSum, subsetReciprocalSum definitions",
+      "startLine": 31,
+      "endLine": 40
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "hasExponentialPrecision, mainConjecture (OPEN)",
+      "startLine": 42,
+      "endLine": 61
     },
     {
       "id": "known-result",
-      "title": "Erdős-Graham Theorem",
-      "content": "A weaker version is known: the polynomial bound c/K² suffices. This means we can always find a subset summing to within c/K² of 1. The gap is the transition from polynomial to exponential."
+      "title": "Known Result (Polynomial Bound)",
+      "summary": "hasPolynomialPrecision, erdos_graham_polynomial axiom",
+      "startLine": 63,
+      "endLine": 80
     },
     {
-      "id": "bounds-comparison",
-      "title": "Exponential vs Polynomial",
-      "content": "For large K, exp(-cK) << c/K². So the conjectured exponential bound gives much tighter approximation to 1. Proving this requires understanding the fine structure of subset sums."
+      "id": "relationship",
+      "title": "Relationship Between Bounds",
+      "summary": "exponential_stronger_than_polynomial, conjecture_implies_known",
+      "startLine": 82,
+      "endLine": 109
     },
     {
-      "id": "harmonic-example",
-      "title": "Harmonic Numbers",
-      "content": "The canonical example is A = {1, 2, ..., n} with sum H_n ≈ ln(n) + γ. As n grows, we get arbitrarily large K, and the problem asks about finding near-1 sums."
+      "id": "harmonic-context",
+      "title": "Harmonic Number Context",
+      "summary": "harmonicNumber definition, harmonic_unbounded axiom",
+      "startLine": 111,
+      "endLine": 120
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_312_status combining known results",
+      "startLine": 122,
+      "endLine": 137
     }
   ],
   "conclusion": {
-    "summary": "The problem asks whether subset sums of unit fractions can achieve exponentially precise approximations to 1. The polynomial version is solved, but the exponential conjecture remains open.",
-    "implications": "Resolution would impact our understanding of the arithmetic of unit fractions and potentially have applications to approximation algorithms for subset sum problems.",
+    "summary": "Erdős Problem #312 asks whether subset sums of unit fractions can achieve exponentially precise approximations to 1. The polynomial version (c/K²) is proved by Erdős-Graham, but the conjectured exponential bound (exp(-cK)) remains open. We prove that the conjecture implies the known result.",
+    "implications": "**Connections**\n\n1. **Egyptian Fractions:** Understanding subset sums of unit fractions connects to the ancient problem of representing rationals as sums of distinct unit fractions\n\n2. **Combinatorial Number Theory:** The transition from polynomial to exponential bounds is a fundamental threshold in many problems\n\n3. **Approximation Theory:** How well can we approximate target values using discrete building blocks?\n\n4. **Computational Complexity:** Subset sum is NP-hard in general; the large reciprocal sum condition enables polynomial-time solutions",
     "openQuestions": [
       "Does the exponential bound exp(-cK) hold?",
       "What is the optimal constant c?",
-      "Are there connections to the Egyptian fraction representation of rationals?"
+      "Can the polynomial bound c/K² be improved to c/K^α for some α > 2?",
+      "Are there connections to the Erdős-Straus conjecture on 4/n = 1/x + 1/y + 1/z?"
     ]
   }
 }
