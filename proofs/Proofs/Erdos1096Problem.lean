@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #1096: Gap Convergence in q-Expansions
 
 Source: https://erdosproblems.com/1096
@@ -36,8 +36,7 @@ open Set Nat Real
 
 namespace Erdos1096
 
-/-!
-## Part I: q-Expansions
+/- ## Part I: q-Expansions
 
 Numbers that can be written as finite sums of powers of q.
 -/
@@ -69,8 +68,7 @@ theorem q_q_representable (q : ℝ) : q ∈ QRepresentable q := by
   use {1}
   simp
 
-/-!
-## Part II: The Ordered Sequence
+/- ## Part II: The Ordered Sequence
 
 The q-representable numbers form a countable set that can be enumerated
 in increasing order: 0 = x₁ < x₂ < x₃ < ⋯
@@ -88,8 +86,7 @@ axiom qSequence_initial (q : ℝ) (hq : 1 < q) (hq2 : q < 2) :
 /-- The gap between consecutive terms: x_{k+1} - x_k -/
 def gap (q : ℝ) (k : ℕ) : ℝ := qSequence q (k + 1) - qSequence q k
 
-/-!
-## Part III: Pisot-Vijayaraghavan Numbers
+/- ## Part III: Pisot-Vijayaraghavan Numbers
 
 Special algebraic integers with important properties.
 An algebraic integer θ > 1 is a Pisot number if all its Galois conjugates
@@ -116,8 +113,7 @@ noncomputable def goldenRatio : ℝ := (1 + Real.sqrt 5) / 2
 
 axiom goldenRatio_is_pisot : IsPisot goldenRatio
 
-/-!
-## Part IV: The Erdős-Joó-Komornik Results (1990)
+/- ## Part IV: The Erdős-Joó-Komornik Results (1990)
 -/
 
 /-- A value q has the gap property if x_{k+1} - x_k → 0 as k → ∞. -/
@@ -133,8 +129,7 @@ axiom pisot_no_gap_property (q : ℝ) (hPisot : IsPisot q) :
 axiom gap_universal_bound (q : ℝ) (hq1 : 1 < q) (hq2 : q ≤ 2) :
     ∀ k : ℕ, gap q k ≤ 1
 
-/-!
-## Part V: The Main Conjecture
+/- ## Part V: The Main Conjecture
 -/
 
 /-- Erdős-Joó Conjecture: the threshold for the gap property
@@ -150,8 +145,7 @@ def ErdosJooConjecture : Prop :=
 theorem conjecture_second_part : ¬HasGapProperty smallestPisot :=
   pisot_no_gap_property smallestPisot smallestPisot_is_pisot
 
-/-!
-## Part VI: Characterization via m-Digit Expansions
+/- ## Part VI: Characterization via m-Digit Expansions
 
 Bugeaud and others characterized Pisot numbers using generalized expansions.
 -/
@@ -178,8 +172,7 @@ axiom bugeaud_characterization (q : ℝ) (hq1 : 1 < q) (hq2 : q ≤ 2) :
 axiom ejs_refinement (q : ℝ) (hq1 : 1 < q) (hq2 : q < goldenRatio) :
     IsPisot q ↔ ∃ δ : ℝ, δ > 0 ∧ ∀ᶠ k in Filter.atTop, gapM q 2 k ≥ δ
 
-/-!
-## Part VII: Density Result
+/- ## Part VII: Density Result
 -/
 
 /-- As q → 1⁺, QRepresentable(q) becomes arbitrarily dense in [0, N].
@@ -189,8 +182,7 @@ axiom density_near_one :
       ∃ q : ℝ, 1 < q ∧ q < 1 + ε ∧
         ∀ x ∈ Set.Icc 0 N, ∃ y ∈ QRepresentable q, |x - y| < ε
 
-/-!
-## Part VIII: Summary
+/- ## Part VIII: Summary
 -/
 
 /-- Main summary combining the known results about gaps and Pisot numbers. -/
