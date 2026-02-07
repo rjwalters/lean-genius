@@ -1,7 +1,7 @@
 {
   "slug": "erdos-269",
   "title": "Erdős #269",
-  "phase": "NEW",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,24 +16,44 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "PROGRESS",
     "since": "2026-01-12T22:30:27.389Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Proved product closure, documented structure",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Submit suitable sorries to Aristotle",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved isPSmooth_mul (product closure), comprehensive formalization with 10+ proved lemmas",
+    "builtItems": [
+      "PROVED isPSmooth_mul: product of P-smooth numbers is P-smooth (via Prime.dvd_mul)",
+      "PROVED one_isPSmooth, prime_isPSmooth",
+      "PROVED partialLcm_zero, partialLcm_one, partialLcm_succ",
+      "PROVED twoThreeSmooth_card (native_decide), twoThreeSmooth_prime",
+      "PROVED erdos_269_equivalent: ¬rational ↔ irrational",
+      "Defined IsPSmooth, smoothSeq (via Nat.nth), partialLcm, lcmSeries",
+      "Formalized p-adic valuation infrastructure",
+      "Formalized distinct LCM series variant"
+    ],
+    "insights": [
+      "Problem OPEN for finite P, SOLVED for infinite P",
+      "Product closure of P-smooth numbers provable from Prime.dvd_mul",
+      "Nat.nth makes smoothSeq non-computable; example values need axioms",
+      "Key difficulty: understanding when L_n stabilizes vs grows",
+      "The distinct-terms variant is known to be irrational (Erdős)",
+      "Not Aristotle-suitable: deep number theory"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Could try proving smoothSeq examples computationally",
+      "Investigate Nat.nth properties in Mathlib for strictMono proof",
+      "Submit partialLcm_isPSmooth to Aristotle"
+    ],
     "markdown": "# Erdős #269 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $P$ be a finite set of primes with $\\lvert P\\rvert \\geq 2$ and let $\\{a_1<a_2<\\cdots\\}=\\{ n\\in \\mathbb{N} : \\textrm{if }p\\mid n\\textrm{ then }p\\in P\\}$. Is the sum\\[\\sum_{n=1}^\\infty \\frac{1}{[a_1,\\ldots,a_n]},\\]where $[a_1,\\ldots,a_n]$ is the lowest common multiple of $a_1,\\ldots,a_n$, irrational?\n\n\n\nIf $P$ is infinite this sum is always irrational (in \\cite{Er88c} Erd\\H{o}s says this is a 'simple exercise').\n\nThis problem was asked by Erd\\H{o}s in a letter to the editor written January 1st 1973 in issue 12 of the Fibonacci Quarterly, 1974, p. 335. In that letter he says that he can prove the sum is irrational if duplicate summands are removed.\n\n\n\n\nReferences\n\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #268\n- Problem #270\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er88c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],

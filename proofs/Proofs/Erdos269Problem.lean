@@ -73,8 +73,15 @@ theorem prime_isPSmooth {P : Set ℕ} {p : ℕ} (hp : p.Prime) (hpP : p ∈ P) :
     rwa [this]
 
 /-- Product of P-smooth numbers is P-smooth. -/
-axiom isPSmooth_mul {P : Set ℕ} {m n : ℕ} (hm : IsPSmooth P m) (hn : IsPSmooth P n) :
-    IsPSmooth P (m * n)
+theorem isPSmooth_mul {P : Set ℕ} {m n : ℕ} (hm : IsPSmooth P m) (hn : IsPSmooth P n) :
+    IsPSmooth P (m * n) := by
+  constructor
+  · exact Nat.mul_pos hm.1 hn.1
+  · intro p hp hdiv
+    -- p | m*n means p | m or p | n (since p is prime)
+    rcases hp.dvd_mul.mp hdiv with h | h
+    · exact hm.2 p hp h
+    · exact hn.2 p hp h
 
 /- ## Part II: The Sequence of P-smooth Numbers -/
 
