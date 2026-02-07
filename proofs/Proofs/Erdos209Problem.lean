@@ -37,7 +37,7 @@ open Set Finset
 
 namespace Erdos209
 
-/-!
+/-
 ## Part I: Lines in the Plane
 
 A line in ℝ² can be defined by a point and direction, or by ax + by + c = 0.
@@ -75,7 +75,7 @@ This is a standard result in linear algebra (solving 2×2 linear systems).
 axiom unique_intersection (l₁ l₂ : Line2D) (hpar : ¬areParallel l₁ l₂) :
     ∃! p : ℝ × ℝ, l₁.contains p ∧ l₂.contains p
 
-/-!
+/-
 ## Part II: Line Arrangements
 
 A line arrangement is a finite set of lines with specific intersection properties.
@@ -101,7 +101,7 @@ No two lines in the arrangement are parallel.
 def NoParallels (A : LineArrangement) : Prop :=
   ∀ l₁ ∈ A, ∀ l₂ ∈ A, l₁ ≠ l₂ → ¬areParallel l₁ l₂
 
-/-!
+/-
 ## Part III: Ordinary Points and Gallai Triangles
 
 The key concepts from Sylvester-Gallai theory.
@@ -140,7 +140,7 @@ The arrangement contains some Gallai triangle.
 def HasGallaiTriangle (A : LineArrangement) : Prop :=
   ∃ l₁ l₂ l₃, IsGallaiTriangle A l₁ l₂ l₃
 
-/-!
+/-
 ## Part IV: The Sylvester-Gallai Theorem
 
 This classical theorem guarantees ordinary points exist.
@@ -175,7 +175,7 @@ axiom at_least_three_ordinary_points (A : LineArrangement) :
     ∃ p₁ p₂ p₃ : ℝ × ℝ, p₁ ≠ p₂ ∧ p₂ ≠ p₃ ∧ p₁ ≠ p₃ ∧
       IsOrdinaryPoint A p₁ ∧ IsOrdinaryPoint A p₂ ∧ IsOrdinaryPoint A p₃
 
-/-!
+/-
 ## Part V: The Erdős Question and Its Disproof
 
 Erdős asked: must these ordinary points form a Gallai triangle?
@@ -221,7 +221,7 @@ axiom escudero_2016 (d : ℕ) (hd : d ≥ 4) :
       NoFourConcurrent A ∧
       ¬HasGallaiTriangle A
 
-/-!
+/-
 ## Part VI: Main Result
 -/
 
@@ -245,7 +245,7 @@ theorem erdos_209 :
   intro d hd
   exact escudero_2016 d hd
 
-/-!
+/-
 ## Part VII: Summary
 -/
 
