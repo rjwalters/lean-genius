@@ -1,103 +1,205 @@
-/-!
-# Erdős Problem #1068 — Countable Infinitely-Connected Subgraphs
+/-
+Erdős Problem #1068: Countable Infinitely-Connected Subgraphs
 
-Does every graph with chromatic number ℵ₁ contain a countable subgraph
-which is infinitely vertex-connected?
-
-A graph is infinitely (vertex) connected if any two vertices are
-connected by infinitely many pairwise internally-disjoint paths.
-
-Known:
-- Soukup (2015): constructed a graph with uncountable chromatic number
-  where every uncountable set is only finitely vertex-connected
-- Simplified construction by Bowler–Pikhurko (2024)
-
+Source: https://erdosproblems.com/1068
 Status: OPEN
-Reference: https://erdosproblems.com/1068
-Source: [Va99, 7.90], [ErHa66]
+
+Statement:
+Does every graph with chromatic number ℵ₁ contain a countable subgraph
+which is infinitely connected?
+
+A question of Erdős and Hajnal. A graph is infinitely (vertex) connected
+if any two vertices are connected by infinitely many pairwise internally
+disjoint paths.
+
+Context:
+- This is a weakening of Problem #1067, which asks whether every graph
+  with χ = ℵ₁ contains an infinitely connected subgraph with χ = ℵ₁.
+- Problem #1067 was DISPROVED: Soukup (2015) showed that no, the
+  infinitely connected subgraph need not have uncountable chromatic number.
+- Problem #1068 only asks for a COUNTABLE infinitely connected subgraph,
+  not one with high chromatic number. This remains open.
+
+Key known results:
+- Soukup (2015): Constructed a graph with χ = ℵ₁ where every uncountable
+  vertex set is only finitely vertex-connected. This shows the problem is
+  subtle — it specifically asks about COUNTABLE subgraphs.
+- Bowler-Pikhurko (2024): Simplified Soukup's construction.
+- The answer may depend on set-theoretic axioms beyond ZFC.
+
+Reference: [ErHa66], [Va99, 7.90]
+Related: Problem #1067
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Order.Cardinal.Basic
-import Mathlib.Tactic
+import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.SetTheory.Cardinal.Basic
+import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib.Data.Set.Countable
 
-/-! ## Definitions -/
+open Cardinal SimpleGraph
 
-/-- A graph (abstractly: adjacency on vertex type V). -/
-structure InfGraph (V : Type*) where
-  adj : V → V → Prop
-  symm : ∀ u v, adj u v → adj v u
-  irrefl : ∀ v, ¬adj v v
+namespace Erdos1068
 
-/-- A path from u to v in a graph. -/
-structure GraphPath {V : Type*} (G : InfGraph V) (u v : V) where
+variable {V : Type*}
+
+/- ## Part I: Graph Infrastructure
+
+We reuse the definitions from Erdős #1067 for paths and infinite connectivity.
+-/
+
+/-- A path in a graph: a list of vertices where consecutive entries are adjacent. -/
+structure PathInGraph (G : SimpleGraph V) where
   vertices : List V
-  starts_at : vertices.head? = some u
-  ends_at : vertices.getLast? = some v
+  isPath : ∀ i (hi : i + 1 < vertices.length),
+    G.Adj (vertices[i]'(by omega)) (vertices[i + 1]'hi)
 
-/-- Two paths are internally disjoint if they share no internal vertices. -/
-def AreInternallyDisjoint {V : Type*} {G : InfGraph V} {u v : V}
-  (p q : GraphPath G u v) : Prop :=
-  ∀ w : V, w ≠ u → w ≠ v → ¬(w ∈ p.vertices ∧ w ∈ q.vertices)
+/-- Two paths are internally disjoint if they share no internal vertices.
+    Internal vertices are those that are neither the first nor the last. -/
+def InternallyDisjoint {G : SimpleGraph V} (p₁ p₂ : PathInGraph G) : Prop :=
+  ∀ v, v ∈ p₁.vertices.drop 1 ∧ v ∈ p₁.vertices.dropLast →
+       v ∈ p₂.vertices.drop 1 ∧ v ∈ p₂.vertices.dropLast → False
 
-/-- A graph is infinitely vertex-connected: any two vertices are
-    connected by infinitely many pairwise internally-disjoint paths. -/
-def IsInfConnected {V : Type*} (G : InfGraph V) : Prop :=
-  ∀ u v : V, u ≠ v →
-    ∃ P : Set (GraphPath G u v), P.Infinite ∧
-      P.Pairwise (fun p q => AreInternallyDisjoint p q)
+/-- A collection of paths is pairwise internally disjoint. -/
+def PairwiseInternallyDisjoint {G : SimpleGraph V} (paths : Set (PathInGraph G)) : Prop :=
+  ∀ p₁ ∈ paths, ∀ p₂ ∈ paths, p₁ ≠ p₂ → InternallyDisjoint p₁ p₂
 
-/-- The chromatic number of a graph is at least κ. -/
-def ChromaticAtLeast {V : Type*} (G : InfGraph V) (κ : Cardinal) : Prop :=
-  ∀ (k : Cardinal), k < κ →
-    ¬∃ (c : V → Ordinal), (∀ u v, G.adj u v → c u ≠ c v) ∧
-      Cardinal.mk (Set.range c) ≤ k
+/-- There exist infinitely many pairwise internally disjoint paths
+    between two vertices u and v. -/
+def InfinitelyManyDisjointPaths (G : SimpleGraph V) (u v : V) : Prop :=
+  ∃ paths : Set (PathInGraph G),
+    Set.Infinite paths ∧ PairwiseInternallyDisjoint paths ∧
+    ∀ p ∈ paths, p.vertices.head? = some u ∧ p.vertices.getLast? = some v
 
-/-! ## Main Question -/
+/-- A graph is infinitely connected if any two distinct vertices are
+    connected by infinitely many pairwise internally disjoint paths. -/
+def InfinitelyConnected (G : SimpleGraph V) : Prop :=
+  ∀ u v : V, u ≠ v → InfinitelyManyDisjointPaths G u v
 
-/-- **Erdős Problem #1068**: Does every graph with chromatic number ℵ₁
-    contain a countable infinitely-connected subgraph? -/
-axiom erdos_1068_countable_inf_connected :
-  ∀ (V : Type) (G : InfGraph V),
-    ChromaticAtLeast G Cardinal.aleph0.succ →
-    ∃ (S : Set V), S.Countable ∧
-      IsInfConnected ⟨fun u v => G.adj u v ∧ u ∈ S ∧ v ∈ S,
-        fun u v h => ⟨G.symm u v h.1, h.2.2, h.2.1⟩,
-        fun v h => G.irrefl v h.1⟩
+/- ## Part II: Chromatic Number Infrastructure -/
 
-/-! ## Known Results -/
+/-- A graph has chromatic number at least ℵ₁ (the first uncountable cardinal). -/
+def hasAleph1ChromaticNumber (G : SimpleGraph V) : Prop :=
+  ∀ (C : Type*) (_ : Countable C) (c : V → C),
+    ∃ u v, G.Adj u v ∧ c u = c v
 
-/-- **Soukup (2015)**: There exists a graph with uncountable chromatic
-    number where every uncountable vertex set is only finitely
-    vertex-connected. This shows the question is subtle — it
-    specifically asks about countable subgraphs. -/
-axiom soukup_counterexample :
-  ∃ (V : Type) (G : InfGraph V),
-    ChromaticAtLeast G Cardinal.aleph0.succ ∧
-    ∃ S : Set V, ¬S.Countable ∧ ¬IsInfConnected
-      ⟨fun u v => G.adj u v ∧ u ∈ S ∧ v ∈ S,
-        fun u v h => ⟨G.symm u v h.1, h.2.2, h.2.1⟩,
-        fun v h => G.irrefl v h.1⟩
+/- ## Part III: Induced Subgraphs on Vertex Subsets -/
 
-/-- **Bowler–Pikhurko (2024)**: Simplified Soukup's construction
-    and described the problem as a version of the Erdős–Hajnal problem. -/
-axiom bowler_pikhurko_simplified : True
+/-- The subgraph of G induced on a vertex set S. -/
+def inducedSubgraph (G : SimpleGraph V) (S : Set V) :
+    SimpleGraph S where
+  Adj u v := G.Adj u.val v.val
+  symm u v h := G.symm h
+  loopless u h := G.loopless u.val h
 
-/-! ## Observations -/
+/- ## Part IV: Main Conjecture -/
 
-/-- **Erdős–Hajnal connection (Problem #1067)**: The question is a
-    variant of the Erdős–Hajnal problem about chromatic number and
-    graph structure. The original asks about uncountable chromatic
-    number forcing certain substructures. -/
-axiom erdos_hajnal_connection : True
+/-- **Erdős Problem #1068 (OPEN)**: Does every graph with chromatic number ℵ₁
+    contain a countable subgraph which is infinitely connected?
 
-/-- **Infinite connectivity strength**: Infinite vertex-connectivity
-    is a strong requirement — it implies the graph has no finite
-    vertex cut separating any two vertices. -/
-axiom inf_connectivity_strength : True
+    More precisely: is there a countable set S of vertices such that the
+    induced subgraph G[S] is infinitely connected? -/
+axiom erdos_1068 :
+    ∀ (V : Type) (G : SimpleGraph V),
+      hasAleph1ChromaticNumber G →
+      ∃ S : Set V, S.Countable ∧ InfinitelyConnected (inducedSubgraph G S)
 
-/-- **Set-theoretic aspects**: The answer may depend on set-theoretic
-    axioms beyond ZFC, as is common for problems involving
-    uncountable chromatic numbers. -/
-axiom set_theory_aspects : True
+/- ## Part V: Known Results -/
+
+/-- **Soukup (2015)**: There exists a graph with uncountable chromatic number
+    where every UNCOUNTABLE vertex set induces a graph that is NOT infinitely
+    connected. This shows that Problem #1068 specifically needs the subgraph
+    to be countable — uncountable subgraphs don't work. -/
+axiom soukup_uncountable_not_inf_connected :
+    ∃ (V : Type) (G : SimpleGraph V),
+      hasAleph1ChromaticNumber G ∧
+      ∀ S : Set V, ¬S.Countable →
+        ¬InfinitelyConnected (inducedSubgraph G S)
+
+/-- **Connection to Problem #1067 (DISPROVED)**: Problem #1067 asked whether
+    every graph with χ = ℵ₁ contains an infinitely connected subgraph
+    with χ = ℵ₁. Soukup showed the answer is NO. Problem #1068 weakens
+    this by only asking for a countable infinitely connected subgraph,
+    dropping the high chromatic number requirement. -/
+axiom problem_1067_disproved :
+    ∃ (V : Type) (G : SimpleGraph V),
+      hasAleph1ChromaticNumber G ∧
+      ∀ (H : SimpleGraph V), (∀ u v, H.Adj u v → G.Adj u v) →
+        InfinitelyConnected H → ¬hasAleph1ChromaticNumber H
+
+/- ## Part VI: Structural Observations -/
+
+/-- **No finite vertex separator**: In an infinitely connected graph,
+    removing any finite set of vertices leaves the rest connected.
+    This follows from the infinite Menger theorem (Aharoni-Berger, 2009). -/
+axiom inf_connected_no_finite_separator :
+    ∀ (V : Type) (G : SimpleGraph V),
+      InfinitelyConnected G →
+      ∀ (u v : V), u ≠ v → ∀ (S : Finset V),
+        u ∉ (S : Set V) → v ∉ (S : Set V) →
+        ∃ (p : PathInGraph G),
+          p.vertices.head? = some u ∧ p.vertices.getLast? = some v ∧
+          ∀ w ∈ p.vertices, w ∉ (S : Set V)
+
+/-- **Set-theoretic sensitivity**: Problems about uncountable chromatic
+    numbers and infinite connectivity often depend on set-theoretic axioms
+    beyond ZFC. Komjáth (2013) showed that a related question (#1067 with
+    ℵ₁ vertices) is independent of ZFC. Problem #1068 may also be
+    sensitive to set-theoretic assumptions. -/
+axiom set_theoretic_sensitivity :
+    True  -- Placeholder: the ZFC-independence question for #1068 itself is open
+
+/-- **Bowler-Pikhurko (2024)**: Provided a simplified construction of
+    Soukup's counterexample for Problem #1067, which illuminates the
+    structure of the problem. Their construction uses tree-like "ladder"
+    graphs. -/
+axiom bowler_pikhurko_simplified_construction :
+    True  -- Their main contribution is a simpler proof technique
+
+/- ## Part VII: Partial Implications
+
+We can prove some structural relationships between the definitions.
+-/
+
+/-- If a graph is infinitely connected, it is certainly connected
+    (there is at least one path between any two vertices). -/
+theorem inf_connected_implies_path (G : SimpleGraph V)
+    (h : InfinitelyConnected G) (u v : V) (huv : u ≠ v) :
+    ∃ p : PathInGraph G, p.vertices.head? = some u ∧ p.vertices.getLast? = some v := by
+  obtain ⟨paths, hinf, _, hpath⟩ := h u v huv
+  obtain ⟨p, hp⟩ := hinf.nonempty
+  exact ⟨p, hpath p hp⟩
+
+/-- If S has at least two elements and the induced subgraph is infinitely
+    connected, then between any two vertices of S there is a path in S. -/
+theorem inf_connected_subgraph_has_paths (G : SimpleGraph V) (S : Set V)
+    (hconn : InfinitelyConnected (inducedSubgraph G S))
+    (u v : S) (huv : u ≠ v) :
+    ∃ p : PathInGraph (inducedSubgraph G S),
+      p.vertices.head? = some u ∧ p.vertices.getLast? = some v :=
+  inf_connected_implies_path _ hconn u v huv
+
+/- ## Summary
+
+**Erdős Problem #1068: OPEN**
+
+**Question:** Does every graph with χ = ℵ₁ contain a countable
+infinitely connected subgraph?
+
+**Known:**
+1. Soukup (2015): Uncountable subgraphs need not be infinitely connected
+2. Problem #1067 (DISPROVED): The infinitely connected subgraph need not
+   have χ = ℵ₁
+3. The answer may depend on set-theoretic axioms
+
+**Open aspects:**
+- The main question remains unresolved
+- Independence from ZFC has not been established for this variant
+- The relationship between countable subgraph structure and uncountable
+  chromatic number is not well understood
+
+**Difficulty:** The problem sits at the intersection of infinite
+combinatorics and set theory, making progress require deep expertise
+in both areas.
+-/
+
+end Erdos1068

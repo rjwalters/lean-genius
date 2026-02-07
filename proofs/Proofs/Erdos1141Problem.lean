@@ -1,0 +1,154 @@
+/-
+Erdős Problem #1141: Coprime-Square Subtraction Primes
+
+Are there infinitely many n such that n - k² is prime for all k
+with gcd(n, k) = 1 and k² < n?
+
+Known results:
+- The known values satisfying this are: 3, 4, 6, 8, 12, 14, 18, 20,
+  24, 30, 32, 38, 42, 48, 54, 60, 62, 68, 72, 80, 84, 90, 98, 108,
+  110, 132, 138, 140, 150, 180, 182, 198, 252, 318, 360, 398, 468,
+  570, 572, 930, 1722 (OEIS A214583)
+- No further terms exist below 10^10
+- ChatGPT-Tang proved the count in [1,N] is O(N^{1/2+o(1)})
+
+Status: OPEN (is the sequence infinite?)
+
+Reference: https://erdosproblems.com/1141
+-/
+
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.GCD.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.Order.LocallyFiniteOrder
+import Mathlib.Tactic
+
+-- ## Core Definition
+
+/-- n satisfies the Erdős-1141 property if for every k with k² < n and
+    gcd(n,k) = 1, the value n - k² is prime.
+    We bound the quantifier by Finset.range n to ensure decidability. -/
+def IsErdos1141Good (n : ℕ) : Prop :=
+  ∀ k ∈ Finset.range n, k ^ 2 < n → Nat.Coprime n k → (n - k ^ 2).Prime
+
+/-- Equivalent unbounded formulation (for mathematical statements). -/
+theorem isErdos1141Good_iff_unbounded (n : ℕ) :
+    IsErdos1141Good n ↔
+    (∀ k : ℕ, k ^ 2 < n → Nat.Coprime n k → (n - k ^ 2).Prime) := by
+  unfold IsErdos1141Good
+  constructor
+  · intro h k hk hcop
+    exact h k (Finset.mem_range.mpr (by omega)) hk hcop
+  · intro h k _ hk hcop
+    exact h k hk hcop
+
+-- ## Computational Verification of Small Examples
+
+/-- n = 3 satisfies the property: only k=1 qualifies, and 3 - 1 = 2 is prime. -/
+theorem good_3 : IsErdos1141Good 3 := by decide
+
+/-- n = 4 satisfies the property. -/
+theorem good_4 : IsErdos1141Good 4 := by decide
+
+/-- n = 6 satisfies the property. -/
+theorem good_6 : IsErdos1141Good 6 := by decide
+
+/-- n = 8 satisfies the property. -/
+theorem good_8 : IsErdos1141Good 8 := by decide
+
+/-- n = 12 satisfies the property. -/
+theorem good_12 : IsErdos1141Good 12 := by decide
+
+/-- n = 14 satisfies the property. -/
+theorem good_14 : IsErdos1141Good 14 := by decide
+
+/-- n = 18 satisfies the property. -/
+theorem good_18 : IsErdos1141Good 18 := by decide
+
+/-- n = 20 satisfies the property. -/
+theorem good_20 : IsErdos1141Good 20 := by decide
+
+-- ## Counterexamples: values that do NOT satisfy the property
+
+/-- n = 5 does not satisfy the property: k=2, gcd(5,2)=1, 5-4=1 not prime. -/
+theorem not_good_5 : ¬ IsErdos1141Good 5 := by decide
+
+/-- n = 7 does not satisfy the property. -/
+theorem not_good_7 : ¬ IsErdos1141Good 7 := by decide
+
+/-- n = 9 does not satisfy the property. -/
+theorem not_good_9 : ¬ IsErdos1141Good 9 := by decide
+
+/-- n = 10 does not satisfy the property. -/
+theorem not_good_10 : ¬ IsErdos1141Good 10 := by decide
+
+/-- n = 16 does not satisfy the property: 16-1=15 not prime. -/
+theorem not_good_16 : ¬ IsErdos1141Good 16 := by decide
+
+-- ## Structural Properties
+
+/-- n = 0 trivially satisfies the property (vacuously true). -/
+theorem good_0 : IsErdos1141Good 0 := by
+  intro k hk; simp [Finset.mem_range] at hk
+
+/-- n = 1 does not satisfy the property: k=0, 0²=0 < 1, gcd(1,0)=1,
+    but 1-0=1 is not prime. -/
+theorem not_good_1 : ¬ IsErdos1141Good 1 := by decide
+
+/-- n = 2 does not satisfy the property: k=1, gcd(2,1)=1, 2-1=1 not prime. -/
+theorem not_good_2 : ¬ IsErdos1141Good 2 := by decide
+
+/-- If n ≥ 2 is good, then n - 1 is prime (taking k = 1, gcd(n,1) = 1). -/
+theorem good_implies_pred_prime (n : ℕ) (hn : 2 ≤ n) (hg : IsErdos1141Good n) :
+    (n - 1).Prime := by
+  rw [isErdos1141Good_iff_unbounded] at hg
+  apply hg
+  · omega
+  · exact Nat.Coprime.symm (Nat.coprime_one_left n)
+
+-- ## The Open Conjecture
+
+/-- Erdős Problem #1141: Are there infinitely many n satisfying the property?
+    OPEN - this is the main unsolved question. -/
+axiom erdos_1141_infinitely_many :
+  ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧ IsErdos1141Good n
+
+-- ## Known Finite Results
+
+/-- The OEIS sequence A214583: known good values up to 1722. -/
+def knownGoodValues : List ℕ :=
+  [3, 4, 6, 8, 12, 14, 18, 20, 24, 30, 32, 38, 42, 48, 54, 60,
+   62, 68, 72, 80, 84, 90, 98, 108, 110, 132, 138, 140, 150, 180,
+   182, 198, 252, 318, 360, 398, 468, 570, 572, 930, 1722]
+
+/-- There are exactly 41 known good values. -/
+theorem knownGoodValues_length : knownGoodValues.length = 41 := by native_decide
+
+-- ## Larger verified examples (using native_decide for speed)
+
+/-- n = 24 satisfies the property. -/
+theorem good_24 : IsErdos1141Good 24 := by native_decide
+
+/-- n = 30 satisfies the property. -/
+theorem good_30 : IsErdos1141Good 30 := by native_decide
+
+/-- n = 60 satisfies the property. -/
+theorem good_60 : IsErdos1141Good 60 := by native_decide
+
+/-- n = 90 satisfies the property. -/
+theorem good_90 : IsErdos1141Good 90 := by native_decide
+
+/-- n = 110 satisfies the property. -/
+theorem good_110 : IsErdos1141Good 110 := by native_decide
+
+/-- n = 198 satisfies the property. -/
+theorem good_198 : IsErdos1141Good 198 := by native_decide
+
+/-- n = 252 satisfies the property. -/
+theorem good_252 : IsErdos1141Good 252 := by native_decide
+
+/-- n = 570 satisfies the property. -/
+theorem good_570 : IsErdos1141Good 570 := by native_decide
+
+/-- The value n = 1722 (largest known) satisfies the property. -/
+theorem good_1722 : IsErdos1141Good 1722 := by native_decide
