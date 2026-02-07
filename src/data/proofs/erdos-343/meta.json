@@ -16,8 +16,34 @@
     "erdosUrl": "https://erdosproblems.com/343",
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
-    "originalContributions": []
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets for counting function",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Range of natural numbers",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation notation for subset sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "countingFunction: counting elements of A up to N",
+      "hasPositiveLowerDensity: positive lower density predicate",
+      "sumsetInfinite: subset sums for infinite sets",
+      "isSubcomplete: sumset contains infinite AP",
+      "folkman_superlinear axiom: superlinear density suffices",
+      "folkman_counterexample axiom: sublinear density can fail",
+      "szemeredi_vu_2006 axiom: linear density suffices",
+      "erdos_343_solved theorem: main result",
+      "linear_threshold_is_sharp theorem: optimality from Folkman"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #343 is a problem of Folkman about subcompleteness of dense multisets. A set A ⊆ ℕ is called subcomplete if its sumset P(A) = {finite subset sums} contains an infinite arithmetic progression.\n\nFolkman (1966) proved that superlinear density (|A ∩ {1,...,N}| ≫ N^{1+ε}) implies subcompleteness. He also showed the opposite direction: for any ε > 0, there exist multisets with density ~N^{1-ε} that are NOT subcomplete. This left open the critical case of linear density.\n\nSzemerédi and Vu (2006) resolved the problem in their influential paper 'Long arithmetic progressions in sumsets: thresholds and bounds', proving that linear density suffices. This completed the characterization: linear density is the sharp threshold.",
@@ -51,42 +77,28 @@
       "id": "folkman-results",
       "title": "Folkman's Results (1966)",
       "startLine": 82,
-      "endLine": 102,
+      "endLine": 101,
       "summary": "States Folkman's theorems: superlinear works, sublinear can fail."
     },
     {
       "id": "szemeredi-vu",
       "title": "Szemerédi-Vu Theorem (2006)",
-      "startLine": 104,
-      "endLine": 115,
+      "startLine": 103,
+      "endLine": 119,
       "summary": "The main result: linear density suffices for subcompleteness."
     },
     {
       "id": "sharpness",
-      "title": "Why This Is Sharp",
-      "startLine": 117,
-      "endLine": 132,
-      "summary": "Combines results to show linear density is the exact threshold."
-    },
-    {
-      "id": "techniques",
-      "title": "Key Techniques",
-      "startLine": 134,
-      "endLine": 152,
-      "summary": "Related results: sumset structure theorems, Freiman, Erdős-Ginzburg-Ziv."
-    },
-    {
-      "id": "related",
-      "title": "Related Problems",
-      "startLine": 154,
-      "endLine": 166,
-      "summary": "Connections to Erdős-Graham conjecture and Folkman's broader research."
+      "title": "Sharpness of the Linear Threshold",
+      "startLine": 121,
+      "endLine": 134,
+      "summary": "Folkman's counterexample shows linear threshold is optimal."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 168,
-      "endLine": 192,
+      "startLine": 136,
+      "endLine": 158,
       "summary": "Complete answer: YES (linear density suffices), threshold is sharp."
     }
   ],
