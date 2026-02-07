@@ -31,7 +31,7 @@ open Set Finset
 
 namespace Erdos2
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- An arithmetic progression: integers congruent to a modulo n. -/
 def ArithmeticProgression (a n : ℕ) : Set ℤ :=
@@ -47,7 +47,7 @@ structure CongruenceClass where
 def CongruenceClass.toSet (c : CongruenceClass) : Set ℤ :=
   { x | x ≡ c.residue [ZMOD c.modulus] }
 
-/-! ## Covering Systems -/
+/- ## Covering Systems -/
 
 /-- A covering system is a finite list of congruence classes that cover all integers.
     In the classical definition, moduli must be distinct, but we separate this as a property. -/
@@ -72,7 +72,7 @@ noncomputable def CoveringSystem.minModulus (cs : CoveringSystem) : ℕ :=
 def CoveringSystem.hasMinModulusAtLeast (cs : CoveringSystem) (m : ℕ) : Prop :=
   ∀ c ∈ cs.classes, m ≤ c.modulus
 
-/-! ## The Erdős Conjecture (Disproved) -/
+/- ## The Erdős Conjecture (Disproved) -/
 
 /--
 **Erdős' Original Conjecture** (DISPROVED):
@@ -83,7 +83,7 @@ Erdős believed this to be true. He described it as "perhaps my favourite proble
 def erdos_original_conjecture : Prop :=
   ∀ N : ℕ, ∃ cs : CoveringSystem, cs.hasMinModulusAtLeast N
 
-/-! ## Main Result: The Answer is NO -/
+/- ## Main Result: The Answer is NO -/
 
 /--
 **Erdős Problem 2** (SOLVED):
@@ -102,7 +102,7 @@ theorem solution_implies_not_conjecture :
   have : N + 1 ≤ c.modulus := hcs c hc
   omega
 
-/-! ## Hough's Theorem (2015) -/
+/- ## Hough's Theorem (2015) -/
 
 /--
 **Hough's Theorem** (2015):
@@ -120,7 +120,7 @@ def hough_N : ℕ := 10^16
 theorem hough_implies_solution : erdos_2_solution :=
   ⟨hough_N, hough_bound⟩
 
-/-! ## Balister et al. Improvement (2022) -/
+/- ## Balister et al. Improvement (2022) -/
 
 /--
 **Balister-Bollobás-Morris-Sahasrabudhe-Tiba Theorem** (2022):
@@ -136,7 +136,7 @@ def balister_N : ℕ := 616000
 /-- The best known upper bound on minimum modulus. -/
 def best_upper_bound : ℕ := 616000
 
-/-! ## Owens' Construction (2014) -/
+/- ## Owens' Construction (2014) -/
 
 /--
 **Owens' Construction** (2014):
@@ -156,7 +156,7 @@ theorem bounds_summary :
     (∀ cs : CoveringSystem, ∃ c ∈ cs.classes, c.modulus ≤ best_upper_bound) :=
   ⟨owens_construction, balister_bound⟩
 
-/-! ## Simple Covering Systems -/
+/- ## Simple Covering Systems -/
 
 /-- A modulus 2 congruence class: even or odd integers. -/
 def mod2_even : CongruenceClass := ⟨0, 2, by norm_num⟩
@@ -186,7 +186,7 @@ theorem trivial_cover_min_modulus : ∃ cs : CoveringSystem, cs.hasMinModulusAtL
   simp only [List.mem_cons, List.mem_nil_iff, or_false] at hc
   rcases hc with rfl | rfl <;> simp [mod2_even, mod2_odd]
 
-/-! ## Properties of Covering Systems -/
+/- ## Properties of Covering Systems -/
 
 /-- In a covering system with distinct moduli, the moduli are all different. -/
 theorem covering_distinct_moduli (cs : CoveringSystem) (hd : cs.hasDistinctModuli) :
@@ -202,7 +202,7 @@ theorem covering_complete (cs : CoveringSystem) :
     ∀ x : ℤ, ∃ c ∈ cs.classes, x ∈ c.toSet :=
   cs.covers
 
-/-! ## Density Argument (Intuition) -/
+/- ## Density Argument (Intuition) -/
 
 /--
 **Key Insight**: The sum of reciprocals of moduli in a covering system
@@ -218,7 +218,7 @@ def CoveringSystem.reciprocalSum (cs : CoveringSystem) : ℚ :=
 /-- The reciprocal sum of a covering system is at least 1. -/
 axiom reciprocal_sum_ge_one (cs : CoveringSystem) : cs.reciprocalSum ≥ 1
 
-/-! ## Related Problems -/
+/- ## Related Problems -/
 
 /--
 **Open Question**: What is the exact maximum possible minimum modulus?
@@ -236,7 +236,7 @@ This remains OPEN.
 def erdos_selfridge_conjecture : Prop :=
   ∀ cs : CoveringSystem, ∃ c ∈ cs.classes, Even c.modulus
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 
