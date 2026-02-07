@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #857: The Weak Sunflower Problem
 
 Source: https://erdosproblems.com/857
@@ -43,7 +43,7 @@ open Finset
 
 namespace Erdos857
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Sunflower (Δ-system):**
@@ -86,7 +86,7 @@ theorem sunflower_petals_disjoint {α : Type*} [DecidableEq α]
   rw [h] at hxcore
   exact hxnotC hxcore
 
-/-! ## Part II: The Sunflower Function m(n, k) -/
+/- ## Part II: The Sunflower Function m(n, k) -/
 
 /--
 **Existence of m(n, k):**
@@ -106,7 +106,7 @@ The minimal m such that any family of m subsets of {1,...,n} contains a k-sunflo
 noncomputable def sunflowerNumber (n k : ℕ) : ℕ :=
   Nat.find (sunflower_number_exists n k)
 
-/-! ## Part III: Classical Sunflower Lemma (Erdős-Ko-Rado) -/
+/- ## Part III: Classical Sunflower Lemma (Erdős-Ko-Rado) -/
 
 /--
 **Erdős-Ko-Rado Sunflower Lemma (1961):**
@@ -141,7 +141,7 @@ theorem bounded_sets_sunflower (n ℓ k : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 1)
         apply Nat.factorial_le
         omega
 
-/-! ## Part IV: Naslund-Sawin Bound (2017) -/
+/- ## Part IV: Naslund-Sawin Bound (2017) -/
 
 /--
 **Naslund-Sawin (2017):**
@@ -168,7 +168,7 @@ axiom cap_set_connection :
         -- This controls the sunflower number
         sunflowerNumber n 3 ≤ capBound * (n + 1)
 
-/-! ## Part V: The Sunflower Conjecture -/
+/- ## Part V: The Sunflower Conjecture -/
 
 /--
 **Sunflower Conjecture (Erdős-Rado, 1960):**
@@ -199,7 +199,7 @@ axiom lower_bound :
     ∀ k : ℕ, k ≥ 3 → ∃ c : ℝ, c > 1 ∧
       ∀ n : ℕ, sunflowerNumber n k ≥ Nat.floor (c ^ n)
 
-/-! ## Part VI: Examples -/
+/- ## Part VI: Examples -/
 
 /--
 **Example: Singleton Sunflower**
@@ -232,7 +232,7 @@ axiom sunflower_free_family_bound :
       family.card = 4 ∧
       ¬ContainsSunflower family 3
 
-/-! ## Part VII: Weak vs Strong Sunflower Problem -/
+/- ## Part VII: Weak vs Strong Sunflower Problem -/
 
 /--
 **Strong Sunflower Problem (Erdős Problem #20):**
@@ -274,7 +274,7 @@ axiom union_formulation_equivalent :
       (∀ A B : Finset α, A ∈ family → B ∈ family → A ≠ B →
         ∀ x, x ∈ A ∩ B ↔ x ∈ core)
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #857: Summary**
