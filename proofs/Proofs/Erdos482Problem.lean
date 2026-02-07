@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #482: Binary Digits of √2 via Recurrence
 
 Source: https://erdosproblems.com/482
@@ -35,8 +35,7 @@ open Real Int
 
 namespace Erdos482
 
-/-!
-## Part 1: The Sequence Definition
+/- ## Part 1: The Sequence Definition
 -/
 
 /-- The Graham-Pollak recurrence: a_{n+1} = ⌊√2(aₙ + 1/2)⌋ -/
@@ -53,8 +52,7 @@ axiom seq_values :
   grahamPollakSeq 3 = 4 ∧
   grahamPollakSeq 4 = 7
 
-/-!
-## Part 2: The Main Theorem
+/- ## Part 2: The Main Theorem
 -/
 
 /-- Graham-Pollak Theorem: a_{2n+1} - 2·a_{2n-1} gives the n-th binary digit of √2.
@@ -65,8 +63,7 @@ axiom graham_pollak_theorem :
   ∀ n : ℕ, n ≥ 1 →
     grahamPollakSeq (2 * n + 1) - 2 * grahamPollakSeq (2 * n - 1) ∈ ({0, 1} : Set ℤ)
 
-/-!
-## Part 3: Properties of the Recurrence
+/- ## Part 3: Properties of the Recurrence
 -/
 
 /-- √2 ≈ 1.41421356...
@@ -80,8 +77,7 @@ axiom growth_rate :
   ∀ n : ℕ, n ≥ 1 →
     |((grahamPollakSeq (n + 1) : ℝ) / grahamPollakSeq n) - Real.sqrt 2| < 1 / n
 
-/-!
-## Part 4: Generalization to √m
+/- ## Part 4: Generalization to √m
 -/
 
 /-- Generalized recurrence for √m -/
@@ -105,8 +101,7 @@ axiom stoll_general :
     ∃ (recurrence : ℕ → ℤ), ∃ (extract : ℕ → ℤ),
       ∀ n : ℕ, extract n ∈ ({0, 1} : Set ℤ)
 
-/-!
-## Part 5: Non-Periodicity
+/- ## Part 5: Non-Periodicity
 -/
 
 /-- Non-periodicity of binary digits of √2.
@@ -119,8 +114,7 @@ axiom sqrt2_nonperiodic :
       f n = grahamPollakSeq (2 * n + 1) - 2 * grahamPollakSeq (2 * n - 1)) →
     ¬∃ (p : ℕ) (start : ℕ), p > 0 ∧ ∀ n ≥ start, f (n + p) = f n
 
-/-!
-## Part 6: Summary
+/- ## Part 6: Summary
 -/
 
 /-- The complete characterization of Erdős Problem #482.
