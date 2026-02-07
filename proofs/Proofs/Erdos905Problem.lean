@@ -38,7 +38,7 @@ open Nat Finset
 
 namespace Erdos905
 
-/-!
+/-
 ## Part I: Graph Definitions
 -/
 
@@ -65,7 +65,7 @@ u and v are adjacent if (u, v) is an edge.
 def Adj {n : ℕ} (G : Graph n) (u v : Fin n) : Prop :=
   (u, v) ∈ G.edges
 
-/-!
+/-
 ## Part II: Triangles
 -/
 
@@ -92,7 +92,7 @@ noncomputable def maxTriangleMultiplicity {n : ℕ} (G : Graph n) : ℕ :=
   Finset.sup (Finset.univ.filter (fun p : Fin n × Fin n =>
     p.1 < p.2 ∧ Adj G p.1 p.2)) (fun p => triangleCountEdge G p.1 p.2)
 
-/-!
+/-
 ## Part III: Turán's Threshold
 -/
 
@@ -116,7 +116,7 @@ Any graph with more than ⌊n²/4⌋ edges contains a triangle.
 axiom turan_theorem (n : ℕ) (hn : n ≥ 1) (G : Graph n) :
   edgeCount G > turanNumber n → ∃ u v w : Fin n, IsTriangle G u v w
 
-/-!
+/-
 ## Part IV: The Main Theorem
 -/
 
@@ -143,8 +143,8 @@ hence maxTriangleMultiplicity ≥ 1.
 axiom main_theorem_alt (n : ℕ) (hn : n ≥ 6) (G : Graph n)
     (hG : AboveTuran G) : maxTriangleMultiplicity G ≥ 1
 
-/-!
-## Part V: The Constant n/6
+/-
+## Part V: Tightness and Turán Theory
 -/
 
 /--
@@ -158,21 +158,10 @@ axiom constant_tight :
       maxTriangleMultiplicity G ≤ (n : ℝ) / 6 + ε * n
 
 /--
-**Lower bound is achieved:**
-The bound n/6 cannot be improved in general.
--/
-axiom lower_bound_tight : True
-
-/-!
-## Part VI: Connection to Turán Theory
--/
-
-/--
 **Turán Graph T(n, 2):**
 The complete bipartite graph K_{⌊n/2⌋, ⌈n/2⌉} is triangle-free.
 -/
 def IsTuranGraph {n : ℕ} (G : Graph n) : Prop :=
-  -- G is complete bipartite with balanced parts
   ∃ S : Finset (Fin n), S.card = n / 2 ∧
     ∀ u v : Fin n, Adj G u v ↔ (u ∈ S ∧ v ∉ S) ∨ (u ∉ S ∧ v ∈ S)
 
@@ -194,26 +183,11 @@ bipartition. They share neighbors in the other part, creating triangles.
 axiom above_turan_creates_triangles (n : ℕ) (hn : n ≥ 3) :
   ∀ G : Graph n, IsTuranGraph G →
     ∀ u v : Fin n, ¬Adj G u v →
-      -- Adding edge {u,v} creates at least one triangle with some vertex w
       ∃ w : Fin n, Adj G u w ∧ Adj G v w
 
-/-!
-## Part VII: Proof Sketch
+/-
+## Part VI: Key Lemma
 -/
-
-/--
-**Edwards' Approach (unpublished):**
-Use a counting argument. Sum over all edges the number of triangles
-containing that edge. This sum counts each triangle three times.
--/
-axiom edwards_approach : True
-
-/--
-**Hadziivanov-Nikiforov Approach:**
-Use double counting and the Kruskal-Katona theorem to bound
-the number of triangles from below.
--/
-axiom hadziivanov_nikiforov_approach : True
 
 /--
 **Key Lemma:**
@@ -226,74 +200,16 @@ axiom triangle_count_lower_bound (n : ℕ) (G : Graph n)
     IsTriangle G uvw.1 uvw.2.1 uvw.2.2)).card
   T ≥ (edgeCount G - turanNumber n) * (n / 6)
 
-/-!
-## Part VIII: Relation to Problem #80
+/-
+## Part VII: Summary
 -/
-
-/--
-**Problem #80:**
-A more general problem about edge-triangle containment thresholds.
-Problem #905 is a special case at the Turán threshold.
--/
-axiom problem_80_connection : True
-
-/--
-**Problem #1034:**
-Asks for a stronger version of this result.
--/
-axiom problem_1034_connection : True
-
-/-!
-## Part IX: Extremal Graphs
--/
-
-/--
-**Extremal graphs:**
-Graphs achieving exactly n/6 triangles per edge are well-characterized.
--/
-axiom extremal_characterization : True
-
-/--
-**Near-Turán graphs:**
-Graphs with n²/4 + O(1) edges have specific structure.
--/
-axiom near_turan_structure : True
-
-/-!
-## Part X: Summary
--/
-
-/--
-**Erdős Problem #905: SOLVED**
-
-**STATEMENT:**
-Every graph with n vertices and > n²/4 edges contains an edge
-in at least n/6 triangles.
-
-**STATUS:** Proved by Edwards (unpublished) and Hadziivanov-Nikiforov (1979).
-
-**KEY IDEAS:**
-- n²/4 is the Turán threshold for triangle-free graphs
-- Above this threshold, triangles are forced to share edges
-- The constant n/6 is tight
-
-**CONNECTIONS:**
-- Generalizes to Problem #80
-- Strengthened in Problem #1034
--/
-theorem erdos_905_statement : True := trivial
 
 /--
 **The Theorem (SOLVED):**
--/
-theorem erdos_905 : BollobasErdosConjecture := bollobas_erdos_theorem
-
-/--
-**Historical Note:**
 This conjecture of Bollobás and Erdős was independently proved by
 Edwards (unpublished work) and Hadziivanov-Nikiforov in 1979 in the
 Comptes Rendus of the Bulgarian Academy of Sciences.
 -/
-theorem historical_note : True := trivial
+theorem erdos_905 : BollobasErdosConjecture := bollobas_erdos_theorem
 
 end Erdos905

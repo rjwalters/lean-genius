@@ -59,49 +59,28 @@
       "title": "Part IV: The Main Theorem",
       "startLine": 119,
       "endLine": 144,
-      "summary": "Defines BollobasErdosConjecture and axiomatizes it as proved (bollobas_erdos_theorem). Alternate formulation via maxTriangleMultiplicity."
+      "summary": "Defines BollobasErdosConjecture and axiomatizes it as proved. Alternate formulation via maxTriangleMultiplicity."
     },
     {
-      "id": "constant",
-      "title": "Part V: The Constant n/6",
+      "id": "tightness-turan",
+      "title": "Part V: Tightness and Turán Theory",
       "startLine": 146,
-      "endLine": 164,
-      "summary": "Axiomatizes tightness: the constant n/6 cannot be improved in general."
+      "endLine": 186,
+      "summary": "Axiomatizes tightness of n/6 constant. Defines IsTuranGraph and axiomatizes triangle-free property and that adding any edge creates triangles."
     },
     {
-      "id": "turan-theory",
-      "title": "Part VI: Connection to Turán Theory",
-      "startLine": 166,
-      "endLine": 199,
-      "summary": "Defines IsTuranGraph (complete bipartite with balanced parts). Axiomatizes triangle-free property and that adding any edge creates triangles."
-    },
-    {
-      "id": "proof-sketch",
-      "title": "Part VII: Proof Sketch",
-      "startLine": 200,
-      "endLine": 228,
-      "summary": "Placeholder axioms for Edwards' counting approach and Hadziivanov-Nikiforov's Kruskal-Katona approach. Triangle count lower bound lemma."
-    },
-    {
-      "id": "related-problems",
-      "title": "Part VIII: Relation to Problem #80",
-      "startLine": 229,
-      "endLine": 244,
-      "summary": "Placeholder connections to Problem #80 (general case) and Problem #1034 (stronger version)."
-    },
-    {
-      "id": "extremal",
-      "title": "Part IX: Extremal Graphs",
-      "startLine": 246,
-      "endLine": 261,
-      "summary": "Placeholder axioms for extremal graph characterization and near-Turán structure."
+      "id": "key-lemma",
+      "title": "Part VI: Key Lemma",
+      "startLine": 188,
+      "endLine": 201,
+      "summary": "Triangle count lower bound: T(G) ≥ (e(G) - n²/4) · n/6."
     },
     {
       "id": "summary",
-      "title": "Part X: Summary",
-      "startLine": 262,
-      "endLine": 300,
-      "summary": "Summary theorem (proved: trivial), erdos_905 := bollobas_erdos_theorem (proved), and historical note."
+      "title": "Part VII: Summary",
+      "startLine": 203,
+      "endLine": 215,
+      "summary": "erdos_905 := bollobas_erdos_theorem. Problem SOLVED."
     }
   ],
   "conclusion": {
