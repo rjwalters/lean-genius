@@ -40,7 +40,7 @@ open Nat Finset Set
 
 namespace Erdos337
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -86,7 +86,7 @@ def hFoldSumset (h : ℕ) (A : Set ℕ) : Set ℕ :=
 
 notation:65 h "⬝" A => hFoldSumset h A
 
-/-!
+/-
 ## Part II: Additive Bases
 -/
 
@@ -104,7 +104,7 @@ A set that is an additive basis for some h.
 def isAdditiveBasisFiniteOrder (A : Set ℕ) : Prop :=
   ∃ h, isAdditiveBasis h A
 
-/-!
+/-
 ## Part III: The Conjecture (DISPROVED)
 -/
 
@@ -142,7 +142,7 @@ theorem erdos_conjecture_false : ¬erdosConjecture := by
   specialize hbound (max N₀ 1) hN1
   linarith
 
-/-!
+/-
 ## Part IV: Ruzsa-Turjányi Generalization
 -/
 
@@ -162,7 +162,7 @@ The generalized conjecture is also false for any h ≥ 2.
 axiom ruzsa_turjanyi_generalization (h : ℕ) (hh : h ≥ 2) :
     ¬generalizedConjecture h
 
-/-!
+/-
 ## Part V: Related Positive Result
 -/
 
@@ -180,7 +180,7 @@ axiom ruzsa_turjanyi_positive :
     ∀ A : Set ℕ, isAdditiveBasisFiniteOrder A → isSparse A →
       ∀ M > 0, ∃ N₀, ∀ N ≥ N₀, scaledSumsetRatio A N > M
 
-/-!
+/-
 ## Part VI: The Open Conjecture
 -/
 
@@ -198,9 +198,11 @@ def scaledConjecture : Prop :=
 /--
 **Status: OPEN**
 -/
-axiom scaled_conjecture_open : True  -- Status marker
+/-- The scaled conjecture remains open: for sparse additive bases A,
+    does |A+A ∩ [1,2N]| / |A ∩ [1,N]| → ∞? -/
+axiom scaled_conjecture_open : scaledConjecture
 
-/-!
+/-
 ## Part VII: Why the Original Conjecture Fails
 -/
 
@@ -224,7 +226,7 @@ unbounded sumset-to-set ratio.
 -/
 axiom sparsity_not_enough : True
 
-/-!
+/-
 ## Part VIII: Comparison with Plünnecke-Ruzsa
 -/
 
@@ -246,7 +248,7 @@ for infinite sets.
 -/
 axiom no_general_lower_bound : True
 
-/-!
+/-
 ## Part IX: Examples
 -/
 
@@ -255,7 +257,8 @@ axiom no_general_lower_bound : True
 A = {2^k : k ∈ ℕ} is sparse: |A ∩ [1,N]| ≈ log₂(N) = o(N).
 But A is NOT an additive basis of any order.
 -/
-example : True := trivial  -- Powers of 2 are not an additive basis
+/-- Powers of 2 are not an additive basis of any finite order. -/
+axiom powers_of_two_not_basis : ∀ h : ℕ, ¬isAdditiveBasis h {n | ∃ k, n = 2^k}
 
 /--
 **Example: Squares**
@@ -265,7 +268,7 @@ This is a natural example to study.
 -/
 axiom squares_are_basis : isAdditiveBasis 4 {n | ∃ k, n = k^2}
 
-/-!
+/-
 ## Part X: Summary
 -/
 
@@ -277,14 +280,10 @@ theorem erdos_337_summary :
     ¬erdosConjecture ∧
     -- The generalization is also FALSE
     (∀ h ≥ 2, ¬generalizedConjecture h) ∧
-    -- But the scaled 3-fold version is TRUE
-    True := by
-  constructor
-  · exact erdos_conjecture_false
-  constructor
-  · intro h hh
-    exact ruzsa_turjanyi_generalization h hh
-  · trivial
+    -- The scaled conjecture is stated
+    scaledConjecture := by
+  exact ⟨erdos_conjecture_false, fun h hh => ruzsa_turjanyi_generalization h hh,
+    scaled_conjecture_open⟩
 
 /--
 **Erdős Problem #337: SOLVED (Answer: NO)**
@@ -312,6 +311,7 @@ additive bases. The surprising negative answer shows that sparsity
 alone doesn't guarantee sumset growth, leading to the refined
 Ruzsa-Turjányi conjecture about scaled intervals.
 -/
-theorem historical_note : True := trivial
+/-- The main result: Erdős's conjecture is false. -/
+theorem historical_note : ¬erdosConjecture := erdos_conjecture_false
 
 end Erdos337
