@@ -21,7 +21,41 @@
     "sorries": 0,
     "erdosNumber": 760,
     "erdosUrl": "https://erdosproblems.com/760",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.degree",
+        "description": "Degree of a vertex in a simple graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by predicates",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Natural number logarithm",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "originalContributions": [
+      "IsIndependentSet, IsClique, IsHomogeneous definitions",
+      "IsProperColoring and chromaticNumber definitions",
+      "IsCochromaticColoring definition",
+      "cochromaticNumber axiom with cochromatic_le_chromatic",
+      "complete_graph_cochromatic and complete_graph_tight_bound axioms",
+      "erdos_gimbel_theorem axiom: ζ(H) ≥ c√(m/log m)",
+      "aks_theorem axiom: ζ(H) ≥ cm/log m (full solution)",
+      "ramsey_for_cochromatic and ramsey_number_bound axioms",
+      "erdos_760 summary theorem combining results"
+    ]
   },
   "overview": {
     "historicalContext": "The cochromatic number ζ(G) is the minimum number of colors needed to color vertices so each color class is either a clique or an independent set (a 'homogeneous' set). Erdős and Gimbel posed this problem in 1993, asking whether graphs with high chromatic number must contain subgraphs with high cochromatic number. They proved a weaker bound √(m / log m). The full bound m / log m was proved by Alon, Krivelevich, and Sudakov in 1997 using Ramsey-theoretic techniques.",
