@@ -160,6 +160,25 @@ theorem besExponent_6_3 : besExponent 3 6 3 = 3 / 2 := by
   unfold besExponent
   norm_num
 
+/-- The BES exponent for the (7,4) case (Glock 2019). -/
+theorem besExponent_7_4 : besExponent 3 7 4 = 5 / 3 := by
+  unfold besExponent
+  norm_num
+
+/-- When the BES conjecture parameter constraint k ≥ (r-t)s + t + 1 holds
+    with t = 2, the lower bound exponent is at most 1. This means the BES
+    conjecture asserts o(n²) growth, which is compatible with the lower bound. -/
+theorem besExponent_le_one_at_bes_threshold (r s : ℕ) (hr : r ≥ 3) (hs : s ≥ 3) :
+    besExponent r ((r - 2) * s + 3) s ≤ 1 := by
+  unfold besExponent
+  rw [div_le_one]
+  · push_cast
+    have hr' : (3 : ℝ) ≤ (r : ℝ) := Nat.ofNat_le_cast.mpr hr
+    have hs' : (3 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs
+    nlinarith
+  · have : (3 : ℝ) ≤ (s : ℝ) := Nat.ofNat_le_cast.mpr hs
+    linarith
+
 /-
 ## Part VII: Proved Theorems
 -/
@@ -208,9 +227,11 @@ theorem erdos_1157_summary :
     (∀ s k : ℕ, s ≥ 3 → k ≥ s + 3 →
       IsLittleO (fun n => (extremalNumber 3 n k s : ℝ)) (fun n => (n : ℝ) ^ 2)) ∧
     IsLittleO (fun n => (extremalNumber 3 n 6 3 : ℝ)) (fun n => (n : ℝ) ^ 2) ∧
-    besExponent 3 6 3 = 3 / 2 := by
+    besExponent 3 6 3 = 3 / 2 ∧
+    besExponent 3 7 4 = 5 / 3 := by
   exact ⟨fun s k hs hk => delcourt_postle_theorem s k hs hk,
          ruzsa_szemeredi_bes,
-         besExponent_6_3⟩
+         besExponent_6_3,
+         besExponent_7_4⟩
 
 end Erdos1157
