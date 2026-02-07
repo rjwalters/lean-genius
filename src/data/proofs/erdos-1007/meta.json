@@ -17,14 +17,14 @@
       "unit-distance",
       "embedding"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1007,
     "erdosUrl": "https://erdosproblems.com/1007",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "The notion of graph dimension was introduced by Erdős, Harary, and Tutte. A graph has dimension d if it can be embedded in ℝᵈ with all edges as unit segments, but not in ℝᵈ⁻¹. Erdős posed this specific question to Soifer in January 1992, asking for the minimum edges in a dimension-4 graph.",
+    "historicalContext": "The notion of graph dimension was introduced by Erdős, Harary, and Tutte. A graph has dimension d if it can be embedded in ℝᵈ with all edges as unit segments, but not in ℝᵈ⁻¹. Erdős posed this specific question to Soifer in January 1992, asking for the minimum edge count among 4-dimensional graphs.\n\nThe dimension ladder for complete graphs is natural: K₂ has dimension 1 (a single edge), K₃ has dimension 2 (equilateral triangle in the plane), K₄ has dimension 3 (regular tetrahedron). But dimension 4 breaks the pattern—the minimum is not K₅ but K_{3,3}, a bipartite graph with only 9 edges.\n\nHouse (2013) proved the minimum is 9 and that K_{3,3} is the unique achiever. Chaffee and Noble (2016) extended this to dimension 5, finding the minimum is 15 edges, achieved by both K₆ and K_{1,3,3}. The uniqueness at dimension 4 does not persist at higher dimensions.",
     "problemStatement": "The dimension of a graph G is the minimal n such that G can be embedded in ℝⁿ with every edge as a unit line segment. What is the smallest number of edges in a graph with dimension 4?",
     "proofStrategy": "House (2013) proved the minimum is 9 edges through careful analysis of unit distance constraints. The key insight is that K_{3,3} requires 4 dimensions because its bipartite structure creates distance constraints that cannot be satisfied in ℝ³. Any graph with fewer than 9 edges can be shown to embed in ℝ³.",
     "keyInsights": [
@@ -39,37 +39,37 @@
     {
       "id": "dimension",
       "title": "Graph Dimension",
-      "summary": "Definition of graph dimension as minimum embedding dimension",
+      "summary": "Unit distance embedding structure and graph dimension definition",
       "startLine": 49,
-      "endLine": 67
+      "endLine": 73
     },
     {
       "id": "bipartite",
       "title": "Complete Bipartite Graphs",
       "summary": "Definition of K_{m,n} and the K_{3,3} structure",
-      "startLine": 69,
-      "endLine": 81
+      "startLine": 75,
+      "endLine": 87
     },
     {
       "id": "known",
       "title": "Known Dimensions",
-      "summary": "Dimension results for complete graphs K₃, K₄",
-      "startLine": 83,
-      "endLine": 94
+      "summary": "Dimension results for K₃, K₄, and K_{3,3}",
+      "startLine": 89,
+      "endLine": 100
     },
     {
       "id": "main",
       "title": "Main Result: 9 Edges Minimum",
-      "summary": "House's theorem that K_{3,3} is the unique minimum",
-      "startLine": 96,
-      "endLine": 115
+      "summary": "House's theorem that K_{3,3} is the unique minimum for dimension 4",
+      "startLine": 102,
+      "endLine": 121
     },
     {
       "id": "extension",
       "title": "Dimension 5 Extension",
-      "summary": "Chaffee-Noble result on dimension 5 minimum",
-      "startLine": 117,
-      "endLine": 131
+      "summary": "Chaffee-Noble result on dimension 5 minimum (15 edges)",
+      "startLine": 123,
+      "endLine": 142
     }
   ],
   "conclusion": {
