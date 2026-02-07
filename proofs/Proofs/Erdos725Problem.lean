@@ -30,8 +30,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 namespace Erdos725
 
-/-!
-## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 
 Latin rectangles and their counting.
 -/
@@ -58,8 +57,7 @@ def factorial (n : ℕ) : ℕ := (Finset.range n).prod (fun i => i + 1)
 /-- Binomial coefficient C(k,2) = k(k-1)/2 -/
 def choose2 (k : ℕ) : ℕ := k * (k - 1) / 2
 
-/-!
-## Part 2: The Erdős-Kaplansky Formula
+/- ## Part 2: The Erdős-Kaplansky Formula
 
 The main asymptotic result for small k.
 -/
@@ -80,8 +78,7 @@ axiom erdos_kaplansky_1946 (ε : ℝ) (hε : ε > 0) (k : ℕ → ℕ)
     ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
       |((L (k n) n : ℕ) : ℝ) / ErdosKaplanskyFormula (k n) n - 1| < δ
 
-/-!
-## Part 3: Yamamoto's Extension
+/- ## Part 3: Yamamoto's Extension
 
 Extending the regime where the formula holds.
 -/
@@ -97,8 +94,7 @@ axiom yamamoto_1951 (k : ℕ → ℕ) (hk : InYamamotoRegime k) :
     ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
       |((L (k n) n : ℕ) : ℝ) / ErdosKaplanskyFormula (k n) n - 1| < δ
 
-/-!
-## Part 4: Permanent Methods
+/- ## Part 4: Permanent Methods
 
 Godsil-McKay approach using permanents.
 -/
@@ -118,8 +114,7 @@ axiom godsil_mckay_bounds (k n : ℕ) (hkn : k ≤ n) :
       c₁ * ErdosKaplanskyFormula k n ≤ L k n ∧
       (L k n : ℝ) ≤ c₂ * ErdosKaplanskyFormula k n
 
-/-!
-## Part 5: Known Exact Values
+/- ## Part 5: Known Exact Values
 
 Small cases where exact formulas are known.
 -/
@@ -140,8 +135,7 @@ axiom L_n_n_upper (n : ℕ) (hn : n ≥ 1) :
 /-- OEIS A001009: Number of k×n Latin rectangles -/
 axiom oeis_A001009 : L 3 4 = 3456
 
-/-!
-## Part 6: The Open Question
+/- ## Part 6: The Open Question
 
 What happens for general k as a function of n?
 -/
@@ -159,8 +153,7 @@ def ExtendedConjecture : Prop :=
     ∀ δ > 0, ∃ N : ℕ, ∀ n ≥ N,
       |((L (k n) n : ℕ) : ℝ) / ErdosKaplanskyFormula (k n) n - 1| < δ
 
-/-!
-## Part 7: Main Results Summary
+/- ## Part 7: Main Results Summary
 -/
 
 /-- Summary of known results for Erdős Problem #725 -/
