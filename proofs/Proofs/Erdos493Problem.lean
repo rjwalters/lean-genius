@@ -1,5 +1,5 @@
-/-!
-# Erdős Problem #493: Product Minus Sum Representation
+/-
+Erdős Problem #493: Product Minus Sum Representation
 
 Does there exist k such that every sufficiently large integer n
 can be written as ∏ aᵢ - ∑ aᵢ for some a₁,...,aₖ ≥ 2?
@@ -16,9 +16,7 @@ Source: [Er61] (attributed to Schinzel)
 import Mathlib.Data.Int.Basic
 import Mathlib.Tactic
 
-/-!
-## Part I: Product Minus Sum Representation
--/
+/- ## Part I: Product Minus Sum Representation -/
 
 namespace Erdos493
 
@@ -32,9 +30,7 @@ def HasProdMinusSumK (n : ℤ) (k : ℕ) : Prop :=
   ∃ (as : Fin k → ℤ), (∀ i, as i ≥ 2) ∧
     n = (∏ i, as i) - (∑ i, as i)
 
-/-!
-## Part II: The Solution (k = 2)
--/
+/- ## Part II: The Solution (k = 2) -/
 
 /-- Key identity: for any integer n, choosing a = 2 and b = n + 2 gives
     2 * (n + 2) - (2 + (n + 2)) = 2n + 4 - n - 4 = n.
@@ -48,9 +44,7 @@ theorem erdos_493_nonneg (n : ℤ) (hn : n ≥ 0) : HasProdMinusSum2 n := by
   · linarith
   · ring
 
-/-!
-## Part III: Negative Integers
--/
+/- ## Part III: Negative Integers -/
 
 /-- For negative integers, we can use a = 2, b = 2 to get 2*2 - (2+2) = 0,
     or use larger values. Specifically, a = 2, b = n + 2 works when n + 2 ≥ 2,
@@ -64,9 +58,7 @@ theorem erdos_493_sufficiently_large :
     ∃ N₀ : ℤ, ∀ n : ℤ, n ≥ N₀ → HasProdMinusSum2 n :=
   ⟨0, fun n hn => erdos_493_nonneg n hn⟩
 
-/-!
-## Part IV: The Main Theorem
--/
+/- ## Part IV: The Main Theorem -/
 
 /-- Erdős Problem #493: There exists k such that every sufficiently large
     integer has a product-minus-sum representation. In fact, k = 2 works. -/
@@ -80,9 +72,7 @@ theorem erdos_493 :
     · simp [Fin.prod_univ_two, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
       ring⟩
 
-/-!
-## Part V: Explicit Examples
--/
+/- ## Part V: Explicit Examples -/
 
 /-- Example: 0 = 2 * 2 - (2 + 2). -/
 example : HasProdMinusSum2 0 := ⟨2, 2, le_refl 2, le_refl 2, by ring⟩
@@ -93,21 +83,11 @@ example : HasProdMinusSum2 1 := ⟨2, 3, le_refl 2, by norm_num, by ring⟩
 /-- Example: 10 = 2 * 12 - (2 + 12). -/
 example : HasProdMinusSum2 10 := ⟨2, 12, le_refl 2, by norm_num, by ring⟩
 
-/-!
-## Part VI: Summary
+/- ## Part VI: Summary
 
 - The product-minus-sum representation exists for k = 2.
 - For any n ≥ 0, take a = 2, b = n + 2.
 - The key identity: 2(n+2) - (2 + (n+2)) = n.
-- Problem SOLVED (affirmative).
--/
-
-/-- The statement is well-defined. -/
-theorem erdos_493_statement :
-    (∃ (k : ℕ), ∃ N₀ : ℤ, ∀ n : ℤ, n ≥ N₀ → HasProdMinusSumK n k) ↔
-    (∃ (k : ℕ), ∃ N₀ : ℤ, ∀ n : ℤ, n ≥ N₀ → HasProdMinusSumK n k) := by simp
-
-/-- The problem is SOLVED. -/
-theorem erdos_493_status : True := trivial
+- Problem SOLVED (affirmative). -/
 
 end Erdos493
