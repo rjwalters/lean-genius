@@ -41,9 +41,7 @@ namespace Erdos475
 
 open Finset
 
-/-!
-## Part I: Valid Orderings
--/
+/- ## Part I: Valid Orderings -/
 
 /-- A partial sum sequence: the cumulative sums of a list. -/
 def partialSums {G : Type*} [AddMonoid G] (l : List G) : List G :=
@@ -61,9 +59,7 @@ def GrahamConjecture (p : ℕ) [Fact (Nat.Prime p)] : Prop :=
   ∀ A : Finset (ZMod p), (∀ a ∈ A, a ≠ 0) →
     ∃ ordering : List (ZMod p), IsValidOrdering A ordering
 
-/-!
-## Part II: Small Cases (Costa-Pellegrini 2020)
--/
+/- ## Part II: Small Cases (Costa-Pellegrini 2020) -/
 
 /--
 **Costa-Pellegrini (2020):**
@@ -81,9 +77,7 @@ theorem small_sets_have_valid_orderings (p : ℕ) [Fact (Nat.Prime p)]
     ∃ ordering : List (ZMod p), IsValidOrdering A ordering :=
   costa_pellegrini_2020 p hp A hA hnonzero
 
-/-!
-## Part III: Large Cases — Near p (Hicks-Ollis-Schmitt 2019)
--/
+/- ## Part III: Large Cases — Near p (Hicks-Ollis-Schmitt 2019) -/
 
 /--
 **Hicks-Ollis-Schmitt (2019):**
@@ -104,9 +98,7 @@ axiom graham_full_set (p : ℕ) [Fact (Nat.Prime p)] :
     let A := (Finset.univ : Finset (ZMod p)).filter (· ≠ 0)
     ∃ ordering : List (ZMod p), IsValidOrdering A ordering
 
-/-!
-## Part IV: Logarithmic Range (Kravitz 2024)
--/
+/- ## Part IV: Logarithmic Range (Kravitz 2024) -/
 
 /--
 **Kravitz (2024):**
@@ -120,8 +112,7 @@ axiom kravitz_2024 (p : ℕ) [Fact (Nat.Prime p)] (hp : p > 2) :
       (∀ a ∈ A, a ≠ 0) →
       ∃ ordering : List (ZMod p), IsValidOrdering A ordering
 
-/-!
-## Part V: Beyond the Rectification Barrier (Bedert-Kravitz 2024)
+/- ## Part V: Beyond the Rectification Barrier (Bedert-Kravitz 2024)
 
 Previous methods hit a "rectification barrier" at log p / log log p.
 Bedert and Kravitz (2024) developed new techniques that go far beyond
@@ -140,8 +131,7 @@ axiom bedert_kravitz_2024 (p : ℕ) [Fact (Nat.Prime p)] (hp : p > 2) :
       (∀ a ∈ A, a ≠ 0) →
       ∃ ordering : List (ZMod p), IsValidOrdering A ordering
 
-/-!
-## Part VI: Connection to Alspach's Conjecture
+/- ## Part VI: Connection to Alspach's Conjecture
 
 Alspach generalized Graham's conjecture to arbitrary finite abelian groups.
 Graham's conjecture is precisely Alspach's conjecture for G = 𝔽ₚ.
@@ -158,8 +148,7 @@ theorem graham_is_alspach_for_prime_field (p : ℕ) [Fact (Nat.Prime p)] :
     GrahamConjecture p ↔ AlspachConjecture (ZMod p) := by
   constructor <;> intro h A hA <;> exact h A hA
 
-/-!
-## Part VII: Constructive vs Existential
+/- ## Part VII: Constructive vs Existential
 
 Some proofs provide explicit constructions of valid orderings,
 while others are purely existential.
@@ -180,8 +169,7 @@ axiom graham_constructive (p : ℕ) [Fact (Nat.Prime p)] :
     let A := (Finset.univ : Finset (ZMod p)).filter (· ≠ 0)
     HasExplicitValidOrdering A
 
-/-!
-## Part VIII: Summary
+/- ## Part VIII: Summary
 
 Graham's conjecture (Erdős Problem #475) has been proven for:
 - Small t (≤ 12): Costa-Pellegrini 2020
