@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #429: Sparse Admissible Sets and Prime Shifts
 
 Source: https://erdosproblems.com/429
@@ -41,7 +41,7 @@ open Nat Set
 
 namespace Erdos429
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- **Residue Class Coverage:**
 A set A covers residue class r mod m if some a ∈ A satisfies a ≡ r (mod m). -/
@@ -78,7 +78,7 @@ theorem admissible_iff_avoided (A : Set ℕ) :
     obtain ⟨r, hr, havoid⟩ := hA p hp
     exact havoid _ (hcov r hr).choose_spec.1 (hcov r hr).choose_spec.2
 
-/-! ## Part II: Prime Shifts and the Conjecture -/
+/- ## Part II: Prime Shifts and the Conjecture -/
 
 /-- **All Primes in Shift:**
 All elements of n + A are prime. -/
@@ -90,7 +90,7 @@ There exists n such that all elements of n + A are prime. -/
 def HasPrimeShift (A : Set ℕ) : Prop :=
   ∃ n : ℕ, AllPrimesInShift A n
 
-/-! ## Part III: Sparsity Conditions -/
+/- ## Part III: Sparsity Conditions -/
 
 /-- **Zero Density:**
 A has density 0 if |A ∩ [1,N]|/N → 0 as N → ∞. -/
@@ -104,7 +104,7 @@ def IsLacunary (A : List ℕ) (hA : A.Sorted (· < ·)) : Prop :=
   ∀ c : ℕ, ∃ N : ℕ, ∀ i, i + 1 < A.length → i ≥ N →
     A.get ⟨i + 1, by omega⟩ > c * A.get ⟨i, by omega⟩
 
-/-! ## Part IV: The Erdős Conjecture and Its Refutation -/
+/- ## Part IV: The Erdős Conjecture and Its Refutation -/
 
 /-- **The Erdős Conjecture (Disproved):**
 If A is sparse enough and admissible, then A has a prime shift. -/
@@ -131,7 +131,7 @@ theorem erdos_429_disproved : ¬ErdosConjecture429 := by
   obtain ⟨A, hdens, hadm, hno⟩ := weisenberg_theorem
   exact hno (hconj A hdens hadm)
 
-/-! ## Part V: Covering Systems -/
+/- ## Part V: Covering Systems -/
 
 /-- **Covering System:**
 A covering system {(aᵢ, mᵢ)} covers all integers if every n ≡ aᵢ (mod mᵢ) for some i.
@@ -145,7 +145,7 @@ If A has a prime shift, then A must be admissible. -/
 axiom admissibility_necessary (A : Set ℕ) (hne : A.Nonempty) :
     HasPrimeShift A → IsAdmissible A
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /-- **Summary of Erdős Problem #429:**
 
