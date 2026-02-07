@@ -47,7 +47,7 @@ open Polynomial Set
 
 namespace Erdos1047
 
-/-!
+/-
 ## Part I: Lemniscate Definitions
 
 A polynomial lemniscate is the sublevel set of the modulus of a polynomial.
@@ -65,7 +65,7 @@ def strictLemniscate (f : ℂ[X]) (c : ℝ) : Set ℂ :=
 def lemniscateBoundary (f : ℂ[X]) (c : ℝ) : Set ℂ :=
   {z : ℂ | ‖f.eval z‖ = c}
 
-/-!
+/-
 ## Part II: Topological Properties
 
 Lemniscates are closed and (for non-constant polynomials) compact.
@@ -82,7 +82,7 @@ axiom lemniscate_isBounded (f : ℂ[X]) (hf : f.natDegree > 0) (c : ℝ) (hc : c
 axiom lemniscate_isCompact (f : ℂ[X]) (hf : f.natDegree > 0) (c : ℝ) (hc : c > 0) :
     IsCompact (lemniscate f c)
 
-/-!
+/-
 ## Part III: Connected Components
 
 For small c, the lemniscate splits into separate components around each root.
@@ -101,7 +101,7 @@ axiom lemniscate_components_count (f : ℂ[X]) (hf : f.Monic) (hd : f.natDegree 
 def componentContaining (S : Set ℂ) (z₀ : ℂ) : Set ℂ :=
   connectedComponentIn S z₀
 
-/-!
+/-
 ## Part IV: Convexity
 
 A set in ℂ is convex if it contains all line segments between its points.
@@ -116,7 +116,7 @@ def IsConvexComplex (S : Set ℂ) : Prop :=
 axiom closedBall_isConvex (center : ℂ) (r : ℝ) :
     IsConvexComplex (Metric.closedBall center r)
 
-/-!
+/-
 ## Part V: The Grunsky Conjecture (Disproved)
 
 Grunsky asked: must all lemniscate components be convex?
@@ -132,7 +132,7 @@ def grunskyConjecture : Prop :=
 /-- Grunsky's conjecture is FALSE - there exist non-convex lemniscate components -/
 axiom grunskyConjecture_false : ¬grunskyConjecture
 
-/-!
+/-
 ## Part VI: Pommerenke's Counterexample (1961)
 
 The first counterexample: f(z) = z^k(z-a) for large k.
@@ -165,7 +165,7 @@ axiom pommerenke_parameter (k : ℕ) (hk : k ≥ 10) :
     ∃ a : ℂ, ∃ z₀ ∈ lemniscate (pommerenkePolynomial k a) 1,
       ¬IsConvexComplex (componentContaining (lemniscate (pommerenkePolynomial k a) 1) z₀)
 
-/-!
+/-
 ## Part VII: Goodman's Counterexample (1966)
 
 A simpler counterexample: f(z) = (z²+1)(z-2)².
@@ -195,7 +195,7 @@ axiom goodman_simple_roots_example :
       ∃ c > 0, ∃ z₀ ∈ lemniscate f c,
         ¬IsConvexComplex (componentContaining (lemniscate f c) z₀)
 
-/-!
+/-
 ## Part VIII: Referee's Example
 
 An anonymous referee of Goodman's paper contributed another example.
@@ -218,7 +218,7 @@ axiom referee_counterexample :
       ¬IsConvexComplex (componentContaining
         (lemniscate refereePolynomial refereeCriticalValue) z₀)
 
-/-!
+/-
 ## Part IX: Positive Results
 
 There are cases where lemniscate components ARE convex.
@@ -229,7 +229,7 @@ axiom single_root_convex (a : ℂ) (k : ℕ) (hk : k ≥ 1) (c : ℝ) (hc : c > 
     let f := (X - C a) ^ k
     IsConvexComplex (lemniscate f c)
 
-/-!
+/-
 ## Part X: Goodman's Open Question
 
 What is the maximum number of non-convex components as a function of degree?
@@ -248,7 +248,7 @@ axiom nonconvex_exists_degree_ge_4 :
 def goodmanOpenQuestion : Prop :=
   ∃ f : ℕ → ℕ, ∀ d, maxNonConvexComponents d = f d
 
-/-!
+/-
 ## Part XI: Main Results
 
 Summary of Erdős Problem #1047.
