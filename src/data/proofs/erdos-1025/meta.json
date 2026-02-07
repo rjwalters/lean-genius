@@ -7,7 +7,7 @@
     "author": "Erdős-Hajnal (1958), Spencer (1972), Conlon-Fox-Sudakov (2016)",
     "sourceUrl": "https://erdosproblems.com/1025",
     "date": "2016",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1025Problem.lean",
     "tags": [
       "combinatorics",
@@ -16,15 +16,15 @@
       "extremal-combinatorics",
       "probabilistic-method"
     ],
-    "badge": "pending",
-    "sorries": 4,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1025,
     "erdosUrl": "https://erdosproblems.com/1025",
     "erdosProblemStatus": "solved",
     "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "**Pair Functions and Independent Sets**\n\nThis problem concerns functions f: {pairs from {1,...,n}} → {1,...,n} with the constraint that f(x,y) ∉ {x, y}. A set X is independent if f(x,y) ∉ X for all pairs x,y ∈ X.\n\n**Historical Development**:\n- 1958: Erdős-Hajnal proved n^(1/3) ≪ g(n) ≪ (n log n)^(1/2)\n- 1972: Spencer improved lower bound to n^(1/2)\n- 2016: Conlon-Fox-Sudakov matched with upper bound n^(1/2)\n\n**Connection to Set Mappings**: This is closely related to Erdős-Hajnal's work on set mappings, where each element maps to a subset not containing itself.",
+    "historicalContext": "Erdős Problem #1025 concerns pair functions: functions f that assign to each unordered pair {x,y} from {1,...,n} an element f(x,y) ∈ {1,...,n} \\ {x,y}. A set X is independent if f(x,y) ∉ X whenever both x and y are in X. The question asks for g(n), the minimum over all valid pair functions of the maximum independent set size.\n\nErdős and Hajnal (1958) established initial bounds n^{1/3} ≪ g(n) ≪ (n log n)^{1/2}, leaving a significant gap. The lower bound used a greedy argument, while the upper bound came from connections to hypergraph coloring. Spencer (1972) improved the lower bound to n^{1/2} using the probabilistic method: randomly including each vertex with probability p ≈ n^{-1/2} and deleting vertices hit by pair images gives an independent set of expected size Ω(n^{1/2}).\n\nThe matching upper bound g(n) = O(n^{1/2}) was proved by Conlon, Fox, and Sudakov (2016), completing the determination g(n) = Θ(n^{1/2}) after 58 years. Their construction used algebraic methods to build pair functions with provably small independent sets. The problem is closely related to Erdős-Hajnal's theory of set mappings, where each element maps to a subset avoiding itself, and free sets are the analogue of independent sets.",
     "problemStatement": "**Problem Statement**\n\nLet f be a function from all pairs {x,y} ⊆ {1,...,n} to {1,...,n} such that f(x,y) ≠ x and f(x,y) ≠ y. A set X ⊆ {1,...,n} is independent if f(x,y) ∉ X whenever x,y ∈ X.\n\nLet g(n) be such that every such function f has an independent set of size at least g(n). Estimate g(n).\n\n**Status**: SOLVED\n\n**Answer**: g(n) = Θ(n^(1/2))",
     "proofStrategy": "**Proof Approach**\n\n1. **Lower Bound (Probabilistic)**: Include each vertex with probability p. Expected independent set size is pn - C(n,2)p³. Optimize p ≈ n^(-1/2) to get Ω(n^(1/2)).\n\n2. **Upper Bound (Construction)**: Conlon-Fox-Sudakov constructed pair functions achieving small independent sets using algebraic methods.\n\n3. **Key Insight**: The constraint f(x,y) ∉ {x,y} limits how much the function can \"spread out\" pairs, but still allows constructions with O(n^(1/2)) maximum independent sets.",
     "keyInsights": [
@@ -41,70 +41,70 @@
       "title": "Pair Functions",
       "summary": "PairFunction, isValidPairFunction definitions",
       "startLine": 24,
-      "endLine": 41
+      "endLine": 42
     },
     {
       "id": "independent-sets",
       "title": "Independent Sets",
       "summary": "isIndependent, empty_independent, singleton_independent",
       "startLine": 43,
-      "endLine": 68
+      "endLine": 69
     },
     {
       "id": "extremal",
       "title": "The Extremal Function g(n)",
-      "summary": "validPairFunctions, maxIndependent, g definition",
+      "summary": "validPairFunctions, maxIndependent, g, g_spec axiom",
       "startLine": 70,
       "endLine": 91
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal Bounds (1958)",
-      "summary": "erdos_hajnal_lower, erdos_hajnal_upper, erdos_hajnal_bounds",
-      "startLine": 93,
+      "summary": "erdos_hajnal_lower, erdos_hajnal_upper axioms, erdos_hajnal_bounds",
+      "startLine": 92,
       "endLine": 117
     },
     {
       "id": "spencer",
       "title": "Spencer's Improvement (1972)",
-      "summary": "spencer_lower, spencer_improves_eh",
-      "startLine": 119,
-      "endLine": 132
+      "summary": "spencer_lower axiom, spencer_improves_eh axiom",
+      "startLine": 118,
+      "endLine": 131
     },
     {
       "id": "cfs",
       "title": "Conlon-Fox-Sudakov (2016)",
-      "summary": "cfs_upper, cfs_improves_eh",
-      "startLine": 134,
-      "endLine": 147
+      "summary": "cfs_upper axiom, cfs_improves_eh axiom",
+      "startLine": 132,
+      "endLine": 145
     },
     {
       "id": "main-result",
-      "title": "The Main Result",
+      "title": "The Main Result and Answer",
       "summary": "g_asymptotic, erdos_1025_question, erdos_1025_solved",
-      "startLine": 149,
-      "endLine": 181
+      "startLine": 146,
+      "endLine": 179
     },
     {
       "id": "set-mappings",
       "title": "Related: Set Mappings",
       "summary": "SetMapping, isFreeSet, pairToSetMapping",
-      "startLine": 183,
-      "endLine": 198
+      "startLine": 180,
+      "endLine": 196
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Approach",
-      "summary": "expectedIndependent, probabilistic_lower_sketch",
-      "startLine": 200,
-      "endLine": 214
+      "summary": "expectedIndependent, probabilistic_lower_sketch axiom",
+      "startLine": 197,
+      "endLine": 212
     },
     {
       "id": "construction",
-      "title": "Upper Bound Construction",
-      "summary": "construction_upper, historical_bounds",
-      "startLine": 216,
-      "endLine": 242
+      "title": "Upper Bound and Historical",
+      "summary": "construction_upper axiom, historical_bounds",
+      "startLine": 213,
+      "endLine": 267
     }
   ],
   "conclusion": {
