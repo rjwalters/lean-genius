@@ -40,7 +40,7 @@ namespace Erdos618
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Triangle-free graphs, diameter, and the h₂ function.
@@ -90,7 +90,7 @@ The number of edges in H that are not in G.
 noncomputable def edgeDiff (G H : SimpleGraph V) : ℕ :=
   (H.edgeFinset \ G.edgeFinset).card
 
-/-!
+/-
 ## Part II: The h₂ Function
 
 h₂(G) = minimum edges to add to achieve diameter 2 while staying triangle-free
@@ -124,7 +124,7 @@ For any triangle-free G, there exists a valid extension.
 axiom h₂_exists (G : SimpleGraph V) (hG : IsTriangleFree G) :
   ∃ H : SimpleGraph V, ValidExtension G H
 
-/-!
+/-
 ## Part III: The Erdős-Gyárfás-Ruszinkó Results
 
 Results from the original 1998 paper.
@@ -157,7 +157,7 @@ h₂(G) ≥ 0 always.
 -/
 theorem h₂_nonneg (G : SimpleGraph V) : h₂ G ≥ 0 := Nat.zero_le _
 
-/-!
+/-
 ## Part IV: Alon's Solution
 
 The affirmative answer to the main question.
@@ -177,7 +177,7 @@ axiom alon_theorem :
     (maxDegree G : ℝ) ≤ n^(1/2 - ε : ℝ) →
     (h₂ G : ℝ) ≤ ε * n^2
 
-/-!
+/-
 ## Part V: Asymptotic Formulation
 
 Expressing the result in asymptotic notation.
@@ -214,7 +214,7 @@ Alon proved the main conjecture.
 -/
 axiom main_conjecture_proved : MainConjecture
 
-/-!
+/-
 ## Part VI: The Threshold
 
 The threshold degree n^{1/2} is sharp.
@@ -244,7 +244,7 @@ Triangle-free graphs have at most n²/4 edges.
 axiom mantel_theorem (G : SimpleGraph V) (hG : IsTriangleFree G) :
   2 * G.edgeFinset.card ≤ (Fintype.card V)^2 / 2
 
-/-!
+/-
 ## Part VII: Summary
 
 **Erdős Problem #618 - SOLVED (Alon)**
