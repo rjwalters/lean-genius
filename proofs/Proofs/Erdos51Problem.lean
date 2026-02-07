@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #51: Totient Preimage Growth
 
 Is there an infinite set A ⊂ ℕ such that every a ∈ A is a totient value
@@ -31,7 +31,7 @@ import Mathlib.Tactic
 open Filter
 open scoped Nat Topology
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of preimages of a under Euler's totient function. -/
 def totientPreimage (a : ℕ) : Set ℕ :=
@@ -50,7 +50,7 @@ noncomputable def smallestTotientPreimage (a : ℕ) : ℕ :=
     · exact ⟨⟨0, by simp [IsTotientValue] at h; omega⟩⟩
   ) : Nonempty {n : ℕ | n.totient = a})
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #51**: Is there an infinite set A ⊂ ℕ of totient values
     such that the smallest preimage grows faster than the value itself?
@@ -63,7 +63,7 @@ axiom erdos_51_conjecture :
     ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ a ∈ A, a ≥ N →
       (smallestTotientPreimage a : ℝ) / (a : ℝ) > C
 
-/-! ## Basic Properties of Totient -/
+/- ## Basic Properties of Totient -/
 
 /-- φ(1) = 1: the trivial totient value. -/
 theorem totient_one : Nat.totient 1 = 1 := by simp
@@ -80,7 +80,7 @@ axiom totient_le :
 axiom totient_even :
   ∀ n : ℕ, n ≥ 3 → Even (Nat.totient n)
 
-/-! ## Preimage Structure -/
+/- ## Preimage Structure -/
 
 /-- Every even number is a totient value: for any even a ≥ 2,
     there exists n with φ(n) = a. In fact, a + 1 works when a + 1 is prime. -/
@@ -98,7 +98,7 @@ axiom erdos_carmichael :
   (∃ a : ℕ, IsTotientValue a ∧ (totientPreimage a).ncard = 1) →
   {a : ℕ | IsTotientValue a ∧ (totientPreimage a).ncard = 1}.Infinite
 
-/-! ## Growth Bounds -/
+/- ## Growth Bounds -/
 
 /-- For prime p, the smallest preimage of p − 1 is at most p.
     So smallestTotientPreimage(p−1) ≤ p, giving ratio ≤ p/(p−1) → 1. -/
