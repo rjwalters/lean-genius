@@ -30,12 +30,12 @@ open Nat Finset
 
 namespace Erdos342
 
-/-! ## Part I: The Ulam Sequence Definition -/
+/- ##Part I: The Ulam Sequence Definition -/
 
 /-- The Ulam sequence U(1,2) as a function ℕ → ℕ.
     a(0) = 1, a(1) = 2, and a(n+1) is the least integer > a(n)
     with a unique representation as a(i) + a(j) for i < j ≤ n. -/
-noncomputable def ulamSeq : ℕ → ℕ := sorry -- Well-defined by construction
+axiom ulamSeq : ℕ → ℕ
 
 /-- Initial values: ulamSeq 0 = 1 and ulamSeq 1 = 2. -/
 axiom ulamSeq_zero : ulamSeq 0 = 1
@@ -44,7 +44,7 @@ axiom ulamSeq_one : ulamSeq 1 = 2
 /-- The Ulam sequence is strictly increasing. -/
 axiom ulamSeq_strictMono : StrictMono ulamSeq
 
-/-! ## Part II: Unique Representation Property -/
+/- ##Part II: Unique Representation Property -/
 
 /-- The number of ways to write m as a(i) + a(j) with i < j
     using terms up to index n. -/
@@ -63,7 +63,7 @@ axiom ulamSeq_minimal (n : ℕ) (hn : n ≥ 1) (m : ℕ)
     (hm₁ : ulamSeq n < m) (hm₂ : m < ulamSeq (n + 1)) :
     representationCount m (n + 1) ≠ 1
 
-/-! ## Part III: Known Initial Values -/
+/- ##Part III: Known Initial Values -/
 
 /-- The first several terms of the Ulam sequence. -/
 axiom ulamSeq_values :
@@ -78,7 +78,7 @@ axiom five_not_ulam : ∀ n, ulamSeq n ≠ 5
 /-- Why 6 is in the sequence: 6 = 2+4, unique representation. -/
 axiom six_is_ulam : ulamSeq 4 = 6
 
-/-! ## Part IV: Twin Pairs -/
+/- ##Part IV: Twin Pairs -/
 
 /-- An Ulam twin pair is a pair (a(n), a(n+1)) with a(n+1) = a(n) + 2. -/
 def IsUlamTwin (n : ℕ) : Prop :=
@@ -94,7 +94,7 @@ axiom twin_examples :
     IsUlamTwin 2 ∧ -- a(2)=3, a(3)=4: difference 1, not twin
     IsUlamTwin 10 -- a(10)=26, a(11)=28: difference 2, IS twin
 
-/-! ## Part V: The Erdős Conjecture -/
+/- ##Part V: The Erdős Conjecture -/
 
 /--
 **Erdős Problem #342 (OPEN):**
@@ -108,7 +108,7 @@ def ErdosConjecture342 : Prop :=
 /-- The conjecture remains open. -/
 axiom erdos_342 : ErdosConjecture342
 
-/-! ## Part VI: Density Questions -/
+/- ##Part VI: Density Questions -/
 
 /-- The counting function: how many Ulam numbers are ≤ x. -/
 noncomputable def ulamCount (x : ℕ) : ℕ :=
@@ -124,7 +124,7 @@ def DensityZero : Prop :=
 /-- The density question is also open. -/
 axiom ulam_density_open : DensityZero ∨ ¬DensityZero
 
-/-! ## Part VII: Growth Rate -/
+/- ##Part VII: Growth Rate -/
 
 /-- The Ulam sequence grows roughly linearly.
     Empirically, a(n) ≈ 13.5 · n for large n. -/
@@ -137,7 +137,7 @@ axiom ulamSeq_growth_constant :
     ∃ C : ℝ, 13 < C ∧ C < 14 ∧
     Filter.Tendsto (fun n => (ulamSeq n : ℝ) / (n : ℝ)) Filter.atTop (nhds C)
 
-/-! ## Part VIII: Additive Structure -/
+/- ##Part VIII: Additive Structure -/
 
 /-- The set of Ulam numbers. -/
 def ulamSet : Set ℕ := {n | ∃ k, ulamSeq k = n}
@@ -153,7 +153,7 @@ axiom ulam_characterization (m : ℕ) (hm : m ≥ 3) :
     m ∈ ulamSet ↔ m ∈ uniqueSumset ∧
     ∀ m' ∈ ulamSet, m' < m → m' ∈ uniqueSumset → m' < m
 
-/-! ## Part IX: Summary -/
+/- ##Part IX: Summary -/
 
 /--
 **Erdős Problem #342: Summary**
@@ -174,7 +174,8 @@ theorem erdos_342_statement :
     ErdosConjecture342 ↔ Set.Infinite {n : ℕ | ulamSeq (n + 1) = ulamSeq n + 2} := by
   simp only [ErdosConjecture342, twinIndices, IsUlamTwin]
 
-/-- The problem remains OPEN. -/
-theorem erdos_342_status : True := trivial
+/-- Erdős Problem #342: OPEN
+    The twin pairs conjecture is equivalent to Set.Infinite twinIndices. -/
+theorem erdos_342_open : ErdosConjecture342 ↔ Set.Infinite twinIndices := Iff.rfl
 
 end Erdos342
