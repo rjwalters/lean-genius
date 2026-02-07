@@ -1,7 +1,7 @@
 {
   "slug": "erdos-810",
   "title": "Erdős #810",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,40 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-15T09:32:29.766Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Enhanced formalization with quality fixes",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Explore connections to Problem 809",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ENHANCED: Fixed quality issues - removed docstring section headers for Aristotle, changed open conjecture from axiom to Prop def, added namespace, fixed edgeFinset import, proved vacuous rainbow theorem, renamed axioms for clarity.",
+    "builtItems": [
+      "EdgeColoringN, CycleFour, isRainbow in namespace Erdos810",
+      "ErdosProblem810 as Prop def (not axiom) in Erdos810Problem.lean",
+      "kovari_sos_turan_C4 axiom (renamed from c4_free_too_sparse)",
+      "dense_graph_has_C4 axiom (renamed from rainbow_requires_many_C4)",
+      "c4_free_vacuously_rainbow theorem (proved) in Erdos810Problem.lean"
+    ],
+    "insights": [
+      "Problem is OPEN - main conjecture should NOT be axiom (was wrongly asserted as true)",
+      "C4-free graphs vacuously satisfy rainbow condition - key structural observation",
+      "Kovari-Sos-Turan gives ex(n;C4) = O(n^{3/2}) so C4-free graphs too sparse for epsilon n^2",
+      "Any positive answer must have many C4s, all rainbow - delicate density/structure balance",
+      "SimpleGraph.edgeFinset requires import Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Using namespace and variable {n} resolves implicit variable scope issues for CycleFour.isRainbow"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Could explore connections to rainbow Ramsey theory",
+      "Could formalize the relationship to Problem 809"
+    ],
     "markdown": "# Erdős #810 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some $\\epsilon>0$ such that, for all sufficiently large $n$, there exists a graph $G$ on $n$ vertices with at least $\\epsilon n^2$ many edges such that the edges can be coloured with $n$ colours so that every $C_4$ receives $4$ distinct colours?\n\n\n\nA problem of Burr, Erd\\H{o}s, Graham, and S\\'{o}s.\n\nSee also [809].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #809\n- Problem #811\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er91\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
@@ -44,7 +60,10 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite"
+    ]
   },
   "started": "2026-01-15T09:32:29.767Z",
   "significance": 7,
