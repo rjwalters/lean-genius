@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #1045: Maximum Product of Distances
 
   Source: https://erdosproblems.com/1045
@@ -33,7 +33,7 @@ namespace Erdos1045
 
 open Complex Real
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- A configuration of n complex points -/
 def Configuration (n : ℕ) := Fin n → ℂ
@@ -50,7 +50,7 @@ noncomputable def Delta (z : Configuration n) : ℝ :=
 noncomputable def DeltaSqrt (z : Configuration n) : ℝ :=
   ∏ i : Fin n, ∏ j : Fin n, if i < j then Complex.abs (z i - z j) else 1
 
-/-! ## Part II: Regular Polygon Configuration -/
+/- ## Part II: Regular Polygon Configuration -/
 
 /-- The n-th roots of unity, scaled to diameter 2 -/
 noncomputable def RegularPolygon (n : ℕ) (hn : n > 0) : Configuration n :=
@@ -69,7 +69,7 @@ axiom delta_regular_odd (n : ℕ) (hn : n ≥ 3) (hodd : Odd n) :
   Delta (RegularPolygon n (by omega)) =
     (Real.cos (Real.pi / (2 * n))) ^ (-(n * (n - 1) : ℤ)) * n ^ n
 
-/-! ## Part III: Erdős-Herzog-Piranian Bound (1958) -/
+/- ## Part III: Erdős-Herzog-Piranian Bound (1958) -/
 
 /-- Polynomial with roots z₁,...,zₙ -/
 noncomputable def polynomialFromRoots (z : Configuration n) : ℂ → ℂ :=
@@ -84,14 +84,14 @@ axiom EHP_1958 (z : Configuration n) (hn : n ≥ 1)
     (hconn : ConnectedSublevelSet (polynomialFromRoots z)) :
   Delta z < n ^ n
 
-/-! ## Part IV: Pommerenke's Upper Bound (1961) -/
+/- ## Part IV: Pommerenke's Upper Bound (1961) -/
 
 /-- Pommerenke (1961): Δ ≤ 2^{O(n)} · n^n for diameter ≤ 2 configurations -/
 axiom pommerenke_1961 :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → ∀ z : Configuration n,
     DiameterAtMost2 z → Delta z ≤ (2 : ℝ) ^ (C * n) * n ^ n
 
-/-! ## Part V: Counterexamples for Even n -/
+/- ## Part V: Counterexamples for Even n -/
 
 /-- Hu-Tang: Counterexample for n = 4 (first to beat the square) -/
 axiom hu_tang_n4 :
@@ -108,7 +108,7 @@ axiom cambie_even_not_optimal (n : ℕ) (hn : n ≥ 4) (heven : Even n) :
   ∃ z : Configuration n, DiameterAtMost2 z ∧
     Delta z > Delta (RegularPolygon n (by omega))
 
-/-! ## Part VI: Lower Bounds for Even n -/
+/- ## Part VI: Lower Bounds for Even n -/
 
 /-- The maximum Δ over all valid configurations -/
 noncomputable def MaxDelta (n : ℕ) : ℝ :=
@@ -129,7 +129,7 @@ axiom cambie_dong_tang_even :
   ∃ C : ℝ, C ≥ 1.269 ∧
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, Even n → MaxDelta n / n ^ n ≥ C - ε
 
-/-! ## Part VII: Odd n and Small Cases -/
+/- ## Part VII: Odd n and Small Cases -/
 
 /-- Conjecture: Regular polygon is optimal for odd n (OPEN) -/
 def RegularPolygonOptimalOdd : Prop :=
@@ -145,7 +145,7 @@ axiom regular_optimal_n3 :
   ∀ z : Configuration 3, DiameterAtMost2 z →
     Delta z ≤ Delta (RegularPolygon 3 (by omega))
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #1045: Summary**
