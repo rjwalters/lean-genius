@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #420: Divisor Function Ratios for Factorials
 
 Source: https://erdosproblems.com/420
@@ -37,7 +37,7 @@ open Nat BigOperators Finset Real
 
 namespace Erdos420
 
-/-!
+/-
 ## Part I: The Divisor Function
 
 τ(n) = number of positive divisors of n.
@@ -68,7 +68,7 @@ theorem tau_prime (p : ℕ) (hp : p.Prime) : tau p = 2 := by
 axiom tau_multiplicative (m n : ℕ) (hmn : Nat.Coprime m n) :
     tau (m * n) = tau m * tau n
 
-/-!
+/-
 ## Part II: Divisor Function of Factorials
 
 τ(n!) grows extremely fast. Understanding its behavior is key.
@@ -89,7 +89,7 @@ axiom tau_factorial_asymptotic :
     ∃ (C : ℝ), C > 0 ∧
       ∀ n : ℕ, n ≥ 3 → (tauFactorial n : ℝ) ≥ 2^(n / (2 * Real.log n))
 
-/-!
+/-
 ## Part III: The F Function
 
 F(f, n) = τ((n + ⌊f(n)⌋)!) / τ(n!)
@@ -109,7 +109,7 @@ F(f, n) ≥ 1 always, since (n + k)! is divisible by n!.
 -/
 axiom F_ge_one (f : ℕ → ℝ) (n : ℕ) (hf : f n ≥ 0) : F f n ≥ 1
 
-/-!
+/-
 ## Part IV: Easy Result - F(√n, n) → ∞
 -/
 
@@ -133,7 +133,7 @@ axiom subhalf_exponent_works :
     ∃ c : ℝ, c > 0 ∧ c < 1/2 ∧
       ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(1/2 - c)) n > M
 
-/-!
+/-
 ## Part V: EGIP96 Results
 
 Key results from Erdős-Graham-Ivić-Pomerance (1996).
@@ -173,7 +173,7 @@ axiom small_f_gives_one_almost_all :
           Filter.Tendsto (fun N => ({n ∈ Finset.range N | n ∈ E}.card : ℝ) / N)
             Filter.atTop (nhds 0)
 
-/-!
+/-
 ## Part VI: Connection to Prime Gaps
 -/
 
@@ -223,7 +223,7 @@ axiom cramer_implies_limit_infinity :
       ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
         F (fun n => g n * (Real.log n)^2) n > M
 
-/-!
+/-
 ## Part VII: Open Questions
 -/
 
@@ -234,7 +234,7 @@ axiom cramer_implies_limit_infinity :
 3. For monotonic f ≤ log n with f → ∞, is F(f, n) everywhere dense in (1, ∞)?
 -/
 
-/-!
+/-
 ## Part VIII: Main Result
 -/
 
@@ -255,7 +255,7 @@ theorem erdos_420 :
     (∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (fun n => (n : ℝ)^(4/9)) n > M) :=
   ⟨sqrt_gives_infinity, four_ninths_gives_infinity⟩
 
-/-!
+/-
 ## Part IX: Legendre's Formula and τ(n!)
 -/
 
@@ -278,7 +278,7 @@ axiom legendre_exponent (n p : ℕ) (hp : p.Prime) :
     ∃ e : ℕ, e = (Finset.range n).filter (fun i => p^(i+1) ≤ n) |>.card ∧
       p^e ∣ n.factorial ∧ ¬(p^(e+1) ∣ n.factorial)
 
-/-!
+/-
 ## Part X: Summary and Historical Notes
 -/
 
