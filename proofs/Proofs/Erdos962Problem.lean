@@ -35,9 +35,7 @@ open Nat Finset Real Filter
 
 namespace Erdos962
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Largest Prime Factor:**
@@ -53,9 +51,7 @@ n has at least one prime factor greater than k.
 def HasLargePrimeFactor (n k : ℕ) : Prop :=
   ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ p > k
 
-/-!
-## Part II: The k(n) Function
--/
+/- ## Part II: The k(n) Function -/
 
 /--
 **Valid Interval:**
@@ -99,9 +95,7 @@ For small n, k(n) is small.
 axiom k_small_values :
   k_func 10 ≤ 5 ∧ k_func 100 ≤ 15
 
-/-!
-## Part III: Erdős's Lower Bound
--/
+/- ## Part III: Erdős's Lower Bound -/
 
 /--
 **Erdős (1965) Lower Bound:**
@@ -113,9 +107,7 @@ axiom erdos_lower_bound (ε : ℝ) (hε : ε > 0) :
   ∃ C : ℝ, C > 0 ∧ ∀ᶠ n in atTop,
     (k_func n : ℝ) ≥ C * Real.exp ((Real.log n) ^ (1/2 - ε))
 
-/-!
-## Part IV: Tang's Improved Lower Bound
--/
+/- ## Part IV: Tang's Improved Lower Bound -/
 
 /--
 **Tang's Lower Bound:**
@@ -134,9 +126,7 @@ The constant 1/√2 ≈ 0.707 appears in the lower bound.
 -/
 noncomputable def tangConstant : ℝ := 1 / Real.sqrt 2
 
-/-!
-## Part V: Tao's Upper Bound
--/
+/- ## Part V: Tao's Upper Bound -/
 
 /--
 **Tao's Upper Bound:**
@@ -147,9 +137,7 @@ This provides the first non-trivial upper bound.
 axiom tao_upper_bound :
   ∀ ε > 0, ∀ᶠ n in atTop, (k_func n : ℝ) ≤ (1 + ε) * Real.sqrt n
 
-/-!
-## Part VI: Erdős's Conjecture
--/
+/- ## Part VI: Erdős's Conjecture -/
 
 /--
 **Erdős's Conjecture:**
@@ -162,9 +150,7 @@ since √n = n^{1/2} and we need o(n^ε) for all ε > 0.
 def ErdosConjecture : Prop :=
   ∀ ε > 0, ∀ᶠ n in atTop, (k_func n : ℝ) < n ^ ε
 
-/-!
-## Part VII: Smooth Numbers Connection
--/
+/- ## Part VII: Smooth Numbers Connection -/
 
 /--
 **Smooth number:**
@@ -180,9 +166,7 @@ n is NOT k-smooth iff n has a prime factor > k.
 axiom not_smooth_iff_large_prime (n k : ℕ) (hn : n > 1) :
     ¬IsSmooth n k ↔ HasLargePrimeFactor n k
 
-/-!
-## Part VIII: Summary
--/
+/- ## Part VIII: Summary -/
 
 /--
 **Erdős Problem #962: SOLVED (bounds established)**
