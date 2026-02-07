@@ -35,8 +35,7 @@ open Finset Set
 
 namespace Erdos651
 
-/-!
-## Part I: Points in General Position
+/- ## Part I: Points in General Position
 -/
 
 variable {k : ℕ}
@@ -53,8 +52,7 @@ def InGeneralPosition (S : Finset (Fin k → ℝ)) : Prop :=
   ∀ T : Finset (Fin k → ℝ), T ⊆ S → T.card = k + 1 →
     AffineIndependent ℝ (fun i : T => (i : Fin k → ℝ))
 
-/-!
-## Part II: Convex Polyhedra
+/- ## Part II: Convex Polyhedra
 -/
 
 /--
@@ -80,8 +78,7 @@ a subset of n points that forms a convex polyhedron.
 def ContainsConvexPolyhedron (S : Finset (Fin k → ℝ)) (n : ℕ) : Prop :=
   ∃ T : Finset (Fin k → ℝ), T ⊆ S ∧ T.card = n ∧ DeterminesConvexPolyhedron T
 
-/-!
-## Part III: The Function f_k(n)
+/- ## Part III: The Function f_k(n)
 -/
 
 /--
@@ -111,8 +108,7 @@ axiom f_k_minimal (k n : ℕ) (hn : n ≥ k + 1) :
       S.card = f_k k n - 1 ∧
       ¬ContainsConvexPolyhedron S n
 
-/-!
-## Part IV: The Erdős-Klein-Szekeres Case (k = 2)
+/- ## Part IV: The Erdős-Klein-Szekeres Case (k = 2)
 -/
 
 /--
@@ -131,8 +127,7 @@ f_2(n) = 2^{n-2} + 1 for all n ≥ 3.
 axiom suk_2017 (n : ℕ) (hn : n ≥ 3) :
     f_k 2 n = 2^(n - 2) + 1
 
-/-!
-## Part V: Monotonicity in Dimension
+/- ## Part V: Monotonicity in Dimension
 -/
 
 /--
@@ -145,8 +140,7 @@ there's "more room" for points to be in convex position.
 axiom f_k_decreasing (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ k + 1) :
     f_k k n > f_k (k + 1) n
 
-/-!
-## Part VI: The Original Conjecture
+/- ## Part VI: The Original Conjecture
 -/
 
 /--
@@ -158,8 +152,7 @@ This would give exponential lower bounds for all dimensions.
 def ErdosConjecture : Prop :=
   ∀ k ≥ 2, ∃ c : ℝ, c > 0 ∧ ∀ n ≥ k + 1, (f_k k n : ℝ) > (1 + c)^n
 
-/-!
-## Part VII: The Disproof
+/- ## Part VII: The Disproof
 -/
 
 /--
@@ -200,8 +193,7 @@ theorem erdos_651_disproved : ¬ErdosConjecture := by
   obtain ⟨c, hc, hBound⟩ := hConj 3 (by norm_num : (3 : ℕ) ≥ 2)
   exact conjecture_false_k3 ⟨c, hc, fun n hn => hBound n (by omega)⟩
 
-/-!
-## Part VIII: Main Results
+/- ## Part VIII: Main Results
 -/
 
 /--
