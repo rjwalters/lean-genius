@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #915: Disjoint Paths in Graphs
 
 Source: https://erdosproblems.com/915
@@ -35,7 +35,7 @@ open SimpleGraph Finset Nat
 
 namespace Erdos915
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -83,7 +83,7 @@ def ContainsMVertexDisjointPair (G : SimpleGraph V) (m : ℕ) : Prop :=
 def ContainsMEdgeDisjointPair (G : SimpleGraph V) (m : ℕ) : Prop :=
   ∃ u v : V, u ≠ v ∧ HasMEdgeDisjointPaths G u v m
 
-/-! ## The Functions k_m(n) and ℓ_m(n) -/
+/- ## The Functions k_m(n) and ℓ_m(n) -/
 
 /--
 **k_m(n):** Minimum edges such that any graph with n vertices and k_m(n) edges
@@ -101,7 +101,7 @@ axiom ell (m n : ℕ) : ℕ
 /-- ℓ_m(n) ≤ k_m(n) since vertex-disjoint implies edge-disjoint. -/
 axiom ell_le_k (m n : ℕ) (hm : m ≥ 2) : ell m n ≤ k m n
 
-/-! ## The Bollobás-Erdős Conjecture -/
+/- ## The Bollobás-Erdős Conjecture -/
 
 /--
 **The Bollobás-Erdős Conjecture (1962):**
@@ -124,7 +124,7 @@ axiom extremal_construction (m n : ℕ) (hm : m ≥ 2) (hn : n ≥ 1) :
       G.edgeFinset.card = 1 + choose m 2 * n ∧
       ¬ContainsMVertexDisjointPair G m
 
-/-! ## Small Cases: Conjecture TRUE for m ≤ 4 -/
+/- ## Small Cases: Conjecture TRUE for m ≤ 4 -/
 
 /-- k_2(n) = n (trivial). -/
 axiom k_2 (n : ℕ) (hn : n ≥ 2) : k 2 n = n
@@ -148,7 +148,7 @@ theorem conjecture_small_m : BollobasErdosConjecture 2 ∧
                               BollobasErdosConjecture 4 :=
   ⟨conjecture_m2, conjecture_m3, conjecture_m4⟩
 
-/-! ## The Disproof for m ≥ 5 -/
+/- ## The Disproof for m ≥ 5 -/
 
 /--
 **Leonard (1973) Counterexample:**
@@ -194,7 +194,7 @@ axiom conjecture_false_m5 : ¬BollobasErdosConjecture 5
     Mader showed k_m(n) exceeds (m/2)n + C for arbitrary C. -/
 axiom conjecture_false_large_m (m : ℕ) (hm : m ≥ 6) : ¬BollobasErdosConjecture m
 
-/-! ## The Edge-Disjoint Case: Fully Solved -/
+/- ## The Edge-Disjoint Case: Fully Solved -/
 
 /--
 **Mader (1973): Complete solution for edge-disjoint paths.**
@@ -212,7 +212,7 @@ def EdgeDisjointConjecture (m : ℕ) : Prop :=
 theorem edge_disjoint_solved (m : ℕ) (hm : m ≥ 2) :
     EdgeDisjointConjecture m := fun _ n hn => mader_edge_disjoint m n hm hn
 
-/-! ## Specific Values for ℓ_m -/
+/- ## Specific Values for ℓ_m -/
 
 /-- Leonard (1972): ℓ_m(n) = k_m(n) for m ≤ 4. -/
 axiom leonard_small_m (m n : ℕ) (hm : 2 ≤ m ∧ m ≤ 4) :
@@ -225,7 +225,7 @@ axiom leonard_ell5_odd (n : ℕ) (hn : n ≥ 1) : ell 5 (2 * n + 1) = 5 * n + 1
 /-- Leonard (1973): ℓ_6(n) = 3n - 2. -/
 axiom leonard_ell6 (n : ℕ) (hn : n ≥ 2) : ell 6 n = 3 * n - 2
 
-/-! ## Mader's Stronger Result -/
+/- ## Mader's Stronger Result -/
 
 /--
 **Mader's Degree Condition:**
@@ -240,7 +240,7 @@ axiom mader_degree_condition (G : SimpleGraph V) (m : ℕ) (hm : m ≥ 2) :
     G.edgeFinset.card > m * (n - 1) / 2 - low_degree_sum / 2 →
     ContainsMEdgeDisjointPair G m
 
-/-! ## 3-Connected Graphs -/
+/- ## 3-Connected Graphs -/
 
 /--
 **Sørensen-Thomassen (1974):**
@@ -257,7 +257,7 @@ axiom three_connected_conjecture (G : SimpleGraph V) (m n : ℕ)
     :
     ContainsMVertexDisjointPair G m
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /--
 **Erdős Problem #915: Summary**

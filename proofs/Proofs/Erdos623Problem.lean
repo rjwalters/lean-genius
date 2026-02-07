@@ -34,7 +34,7 @@ namespace Erdos623
 
 open Cardinal Set
 
-/-! ## Part I: Cardinal Background -/
+/- ## Part I: Cardinal Background -/
 
 /-- ℵ_ω (aleph-omega) is the first singular cardinal.
     It's the supremum of ℵ_0, ℵ_1, ℵ_2, ... but not equal to any of them.
@@ -58,7 +58,7 @@ theorem aleph_n_lt_omega (n : ℕ) : ℵ_ n < aleph_omega := by
   simp [aleph_omega]
   exact Cardinal.aleph_lt_aleph.mpr (Ordinal.nat_lt_omega0 n)
 
-/-! ## Part II: Free Functions -/
+/- ## Part II: Free Functions -/
 
 /-- A function f : Finset X → X is "free" if f(A) ∉ A for all finite A.
     This ensures f always produces an element outside the input set. -/
@@ -73,7 +73,7 @@ theorem exists_free_function (X : Type*) [Infinite X] [Nonempty X] :
   -- This exists because X is infinite and A is finite
   sorry
 
-/-! ## Part III: Independent Sets -/
+/- ## Part III: Independent Sets -/
 
 /-- A set Y ⊆ X is "independent" for f if f(B) ∉ Y for all finite B ⊆ Y.
     The image of f on finite subsets of Y always lands outside Y. -/
@@ -99,7 +99,7 @@ theorem singleton_independent {X : Type*} (f : Finset X → X) (x : X)
     simp at hB ⊢
     sorry
 
-/-! ## Part IV: The Erdős-Hajnal Negative Result -/
+/- ## Part IV: The Erdős-Hajnal Negative Result -/
 
 /-- **Erdős-Hajnal Theorem (1958)**
 
@@ -118,7 +118,7 @@ theorem counterexample_at_aleph_n (n : ℕ) :
       IsFreeFunction f ∧ ∀ Y : Set X, Y.Infinite → ¬IsIndependent f Y := by
   sorry
 
-/-! ## Part V: The Main Problem (OPEN) -/
+/- ## Part V: The Main Problem (OPEN) -/
 
 /-- **Erdős Problem #623 (OPEN)**
 
@@ -145,7 +145,7 @@ theorem erdos_623_dichotomy :
     -- If not all have independent sets, some don't
     sorry
 
-/-! ## Part VI: Potential Undecidability -/
+/- ## Part VI: Potential Undecidability -/
 
 /-- Erdős's 1999 comment suggests this problem might be independent of ZFC.
 
@@ -161,7 +161,7 @@ theorem cofinality_aleph_omega : aleph_omega.ord.cof = ω := by
   simp [aleph_omega]
   exact Cardinal.cof_aleph ω
 
-/-! ## Part VII: Related Concepts -/
+/- ## Part VII: Related Concepts -/
 
 /-- A "chromatic" interpretation: coloring finite sets. -/
 def ChromaticVersion {X : Type*} (f : Finset X → X) : Prop :=
@@ -172,7 +172,7 @@ def RamseyInterpretation (κ : Cardinal) : Prop :=
   ∀ f : Finset (ULift.{1} (Fin κ.toNat)) → ULift.{1} (Fin κ.toNat),
     IsFreeFunction f → ∃ Y : Set _, Y.Infinite ∧ IsIndependent f Y
 
-/-! ## Part VIII: Finite Cases -/
+/- ## Part VIII: Finite Cases -/
 
 /-- For finite X, the problem is trivial (no infinite Y exists). -/
 theorem finite_case_trivial {X : Type*} [Finite X] (f : Finset X → X) :
@@ -189,7 +189,7 @@ theorem countable_case_no (X : Type*) (hX : #X = ℵ₀) :
     exact aleph_n_lt_omega 0
   exact erdos_hajnal_below_aleph_omega X hlt
 
-/-! ## Part IX: The Gap -/
+/- ## Part IX: The Gap -/
 
 /-- Summary of known results:
 
@@ -211,7 +211,7 @@ theorem known_results_summary :
   intro n
   exact counterexample_at_aleph_n n
 
-/-! ## Part X: Strengthenings and Variants -/
+/- ## Part X: Strengthenings and Variants -/
 
 /-- Strengthening: Must Y be uncountable? -/
 def erdos_623_uncountable : Prop :=
@@ -232,7 +232,7 @@ theorem weak_follows_from_strong (h : erdos_623_conjecture) : erdos_623_weak := 
 
 end Erdos623
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #623 on independence for functions

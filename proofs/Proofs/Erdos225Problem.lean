@@ -43,7 +43,7 @@ namespace Erdos225
 
 open MeasureTheory
 
-/-! ## Trigonometric Polynomials -/
+/- ## Trigonometric Polynomials -/
 
 /--
 A trigonometric polynomial of degree n is a function of the form
@@ -55,7 +55,7 @@ def TrigPoly (n : ℕ) := Fin (n + 1) → ℂ
 noncomputable def TrigPoly.eval (p : TrigPoly n) (θ : ℝ) : ℂ :=
   ∑ k : Fin (n + 1), p k * Complex.exp (Complex.I * k * θ)
 
-/-! ## Roots on the Unit Circle -/
+/- ## Roots on the Unit Circle -/
 
 /--
 A complex number lies on the unit circle if ‖z‖ = 1.
@@ -71,7 +71,7 @@ roots of the associated polynomial P(z) = Σ cₖ zᵏ all lying on ‖z‖ = 1.
 def HasUnitCircleRoots (p : TrigPoly n) : Prop :=
   ∀ z : ℂ, (∑ k : Fin (n + 1), p k * z ^ (k : ℕ)) = 0 → OnUnitCircle z
 
-/-! ## Norms -/
+/- ## Norms -/
 
 /--
 The supremum norm (L∞ norm) of a trigonometric polynomial over [0, 2π].
@@ -85,7 +85,7 @@ The L¹ norm of a trigonometric polynomial over [0, 2π].
 noncomputable def TrigPoly.l1Norm (p : TrigPoly n) : ℝ :=
   ∫ θ in Set.Icc 0 (2 * Real.pi), ‖p.eval θ‖
 
-/-! ## The Main Theorem -/
+/- ## The Main Theorem -/
 
 /--
 **Erdős Problem #225**: If a trigonometric polynomial has all roots on the
@@ -107,7 +107,7 @@ theorem erdos_225_main (n : ℕ) (p : TrigPoly n)
   -- TODO: Fix formalization to require polynomial has at least one root
   sorry
 
-/-! ## Optimality -/
+/- ## Optimality -/
 
 /--
 The bound 4 is optimal: there exist trigonometric polynomials with unit
@@ -128,7 +128,7 @@ theorem erdos_225_optimal :
     norm_num [ Erdos225.TrigPoly.eval ];
     exact Or.inl ( by linarith [ Real.pi_gt_three ] )
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- The constant polynomial f(θ) = 1 has L¹ norm 2π ≈ 6.28. -/
 theorem constant_l1_norm : (2 : ℝ) * Real.pi > 4 := by
@@ -140,7 +140,7 @@ theorem constant_l1_norm : (2 : ℝ) * Real.pi > 4 := by
     so ∫|f| = 2π. But this has a root at 0 (as a polynomial in z). -/
 example : (1 : ℝ) ≤ 1 := le_refl 1
 
-/-! ## Equivalent Formulations -/
+/- ## Equivalent Formulations -/
 
 /--
 Alternative statement using the polynomial P(z) = Σ cₖ zᵏ.
@@ -188,7 +188,7 @@ theorem sup_on_circle_eq_trig_sup (p : TrigPoly n) :
       · refine' ⟨ ∑ k : Fin ( n + 1 ), ‖p k‖, Set.forall_mem_range.2 fun z => _ ⟩;
         exact le_trans ( norm_sum_le _ _ ) ( Finset.sum_le_sum fun _ _ => by simp +decide [ z.2.out ] )
 
-/-! ## The Fejér-Riesz Theorem Connection -/
+/- ## The Fejér-Riesz Theorem Connection -/
 
 /--
 A non-negative trigonometric polynomial (one with f(θ) ≥ 0 for all θ)
@@ -198,7 +198,7 @@ This is the Fejér-Riesz theorem.
 axiom fejer_riesz (p : TrigPoly n) (hpos : ∀ θ : ℝ, 0 ≤ (p.eval θ).re) :
     ∃ m : ℕ, ∃ g : TrigPoly m, ∀ θ : ℝ, p.eval θ = (‖g.eval θ‖) ^ 2
 
-/-! ## Relationship to Littlewood's Conjecture -/
+/- ## Relationship to Littlewood's Conjecture -/
 
 /--
 Littlewood's conjecture (now theorem) states that for unimodular polynomials
@@ -214,7 +214,7 @@ axiom littlewood_lower_bound :
       ‖∑ k : Fin n, coeffs k * Complex.exp (Complex.I * k * θ)‖ ≥
     C * Real.log n
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 

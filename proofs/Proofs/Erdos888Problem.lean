@@ -27,7 +27,7 @@ open Finset Set
 
 namespace Erdos888
 
-/-!
+/-
 ## The Core Condition
 
 The key constraint is: for any four elements a ≤ b ≤ c ≤ d in A,
@@ -53,7 +53,7 @@ def requiredCondition (A : Finset ℕ) (n : ℕ) : Prop :=
 def validSets (n : ℕ) : Set (Finset ℕ) :=
   { A | requiredCondition A n }
 
-/-!
+/-
 ## Why the Condition Matters
 
 **Intuition**: The condition ad = bc means (a,b,c,d) forms a geometric-like structure.
@@ -66,7 +66,7 @@ If A has too many elements, we'll find a quadruple violating the condition.
 and 1×6 = 6 = 2×3, so ad = bc. ✓
 -/
 
-/-!
+/-
 ## Maximum Size Function
 
 For each n, we want to find the maximum cardinality of a valid set.
@@ -85,7 +85,7 @@ axiom maxValidSize_spec (n : ℕ) :
   hasValidSetOfSize n (maxValidSize n) ∧
   ∀ k, hasValidSetOfSize n k → k ≤ maxValidSize n
 
-/-!
+/-
 ## The Main Question (OPEN)
 
 The exact formula for maxValidSize(n) is unknown.
@@ -98,7 +98,7 @@ The exact answer is unknown. -/
 axiom erdos_888_exact_formula :
   ∃ f : ℕ → ℕ, ∀ n, maxValidSize n = f n
 
-/-!
+/-
 ## Sárközy's Upper Bound (SOLVED)
 
 Sárközy proved that |A| = o(n), meaning the maximum grows sublinearly.
@@ -117,7 +117,7 @@ axiom sarkozy_upper_bound :
 axiom sarkozy_sublinear : ∀ c : ℕ, c > 0 →
     ∃ N : ℕ, ∀ n ≥ N, c * maxValidSize n < n
 
-/-!
+/-
 ## Prime Lower Bound (SOLVED)
 
 The primes satisfy the condition! If p₁, p₂, p₃, p₄ are distinct primes
@@ -157,7 +157,7 @@ By the Prime Number Theorem, |primesUpTo n| ~ n / log n. -/
 axiom primeCount_asymptotic :
   ∃ c : ℕ, c > 0 ∧ ∀ n ≥ 10, c * (primesUpTo n).card ≥ n / (Nat.log 2 n + 1)
 
-/-!
+/-
 ## Combined Bounds Summary
 
 We know: n / log n ≪ maxValidSize(n) = o(n)
@@ -169,7 +169,7 @@ The gap between these bounds (log n factor) is where the true answer lies.
 theorem valid_sets_exist (n : ℕ) : ∃ A : Finset ℕ, requiredCondition A n :=
   ⟨∅, by constructor; exact Finset.empty_subset _; intro a ha; exact (Finset.notMem_empty a ha).elim⟩
 
-/-!
+/-
 ## Examples and Special Cases
 -/
 
@@ -195,7 +195,7 @@ theorem singleton_valid (n : ℕ) (x : ℕ) (hx : x ∈ Finset.Ioc 0 n) :
 axiom pair_valid (n : ℕ) (x y : ℕ) (hx : x ∈ Finset.Ioc 0 n) (hy : y ∈ Finset.Ioc 0 n) :
     requiredCondition {x, y} n
 
-/-!
+/-
 ## Connection to Problem 121
 
 Problem 888 is related to Erdős Problem #121, which asks about
@@ -206,7 +206,7 @@ similar multiplicative conditions on subsets.
 def related_to_121 : Prop :=
   True  -- Placeholder for the relationship
 
-/-!
+/-
 ## Variants and Generalizations
 -/
 
@@ -222,7 +222,7 @@ def squarefreeCondition (A : Finset ℕ) (n : ℕ) : Prop :=
   (∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,
     squareProductCondition a b c d)
 
-/-!
+/-
 ## Numerical Data
 
 For small n, exact values can be computed:
@@ -239,7 +239,7 @@ axiom maxValidSize_1 : maxValidSize 1 = 1
 /-- For n = 2, maxValidSize is 2. -/
 axiom maxValidSize_2 : maxValidSize 2 = 2
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #888 asks for the maximum size of A ⊆ {1,...,n} with:

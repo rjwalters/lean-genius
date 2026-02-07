@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #505: Borsuk's Conjecture
 
 Erdős Problem #505 concerns Borsuk's conjecture (1933): can every set of
@@ -23,7 +23,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.InnerProductSpace.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A bounded set in ℝⁿ represented as a set of vectors. -/
 def BoundedSet (n : ℕ) := Set (Fin n → ℝ)
@@ -47,14 +47,14 @@ axiom borsukNumber (n : ℕ) : ℕ
 /-- The Borsuk number is always at least n + 1 for n ≥ 1 (trivially). -/
 axiom borsukNumber_pos (n : ℕ) (hn : 1 ≤ n) : 1 ≤ borsukNumber n
 
-/-! ## Borsuk's Conjecture -/
+/- ## Borsuk's Conjecture -/
 
 /-- Borsuk's conjecture (1933): α(n) ≤ n + 1.
     TRUE for n ≤ 3, FALSE for n ≥ 64. -/
 def borsukConjecture (n : ℕ) : Prop :=
   borsukNumber n ≤ n + 1
 
-/-! ## Low-Dimensional Results -/
+/- ## Low-Dimensional Results -/
 
 /-- The conjecture holds for n = 2 (classical). -/
 axiom borsuk_dim2 : borsukConjecture 2
@@ -62,7 +62,7 @@ axiom borsuk_dim2 : borsukConjecture 2
 /-- Eggleston (1955): The conjecture holds for n = 3. -/
 axiom borsuk_dim3 : borsukConjecture 3
 
-/-! ## Kahn–Kalai Counterexample -/
+/- ## Kahn–Kalai Counterexample -/
 
 /-- Kahn–Kalai (1993): Borsuk's conjecture fails for n ≥ 2014.
     They used a cleverly chosen finite subset of {0,1}ⁿ with
@@ -75,7 +75,7 @@ axiom kahn_kalai_counterexample :
 axiom brouwer_jenrich :
   ∀ n : ℕ, 64 ≤ n → ¬borsukConjecture n
 
-/-! ## Bounds on α(n) -/
+/- ## Bounds on α(n) -/
 
 /-- Kahn–Kalai lower bound: α(n) ≥ (1.2)^√n for large n.
     This shows exponential growth in √n, far exceeding n+1. -/
@@ -89,7 +89,7 @@ axiom schramm_upper_bound :
   ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
     (borsukNumber n : ℝ) ≤ (Real.sqrt (3/2) + ε) ^ n
 
-/-! ## Status of Intermediate Dimensions -/
+/- ## Status of Intermediate Dimensions -/
 
 /-- The exact value of α(n) for 4 ≤ n ≤ 63 is unknown.
     Determining whether the conjecture holds in this range is the

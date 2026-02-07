@@ -30,7 +30,7 @@ import Mathlib
 
 open Finset Function Set SimpleGraph
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- An n-edge-coloring of a graph G -/
 def EdgeColoring' (V : Type*) [DecidableEq V] (n : ℕ) :=
@@ -51,7 +51,7 @@ def cycleLength (cycle : List V) : ℕ := cycle.length
 def IsOddCycle {V : Type*} (G : SimpleGraph V) (cycle : List V) : Prop :=
   IsCycle G cycle ∧ Odd cycle.length
 
-/-! ## Monochromatic Structures -/
+/- ## Monochromatic Structures -/
 
 /-- A cycle is monochromatic in color c if all edges have color c -/
 def IsMonochromaticCycle {V : Type*} [DecidableEq V] {n : ℕ}
@@ -69,7 +69,7 @@ def HasMonochromaticOddCycleOfLength {V : Type*} [DecidableEq V] {n : ℕ}
     IsMonochromaticCycle G coloring cycle c ∧
     cycle.length ≤ m
 
-/-! ## The Complete Graph -/
+/- ## The Complete Graph -/
 
 /-- The complete graph on a type -/
 def completeGraph (V : Type*) : SimpleGraph V where
@@ -80,7 +80,7 @@ def completeGraph (V : Type*) : SimpleGraph V where
 /-- K_n is the complete graph on Fin n -/
 abbrev K (n : ℕ) : SimpleGraph (Fin n) := completeGraph (Fin n)
 
-/-! ## The Function f(n) -/
+/- ## The Function f(n) -/
 
 /-- A coloring of K_{2^n+1} with n colors avoids odd cycles of length ≤ m -/
 def AvoidsOddCyclesUpTo (n m : ℕ) (coloring : EdgeColoring' (Fin (2^n + 1)) n) : Prop :=
@@ -102,7 +102,7 @@ def IsErdos609_f (n m : ℕ) : Prop :=
   (∀ m' < m, ∃ coloring : EdgeColoring' (Fin (2^n + 1)) n,
     ¬HasMonochromaticOddCycleOfLength (K (2^n + 1)) coloring m')
 
-/-! ## The 2^n Threshold -/
+/- ## The 2^n Threshold -/
 
 /-- Key fact: K_{2^n} CAN be n-colored with no monochromatic odd cycles at all!
     This uses recursive "doubling" construction. -/
@@ -119,7 +119,7 @@ theorem K_2n_plus_1_forces_odd_cycle (n : ℕ) (hn : n ≥ 1) :
         IsMonochromaticCycle (K (2^n + 1)) coloring cycle c := by
   sorry
 
-/-! ## Avoiding Specific Short Cycles -/
+/- ## Avoiding Specific Short Cycles -/
 
 /-- C_5 (pentagon) can be avoided for large n -/
 theorem can_avoid_C5 : ∃ N : ℕ, ∀ n ≥ N,
@@ -137,7 +137,7 @@ theorem can_avoid_C7 : ∃ N : ℕ, ∀ n ≥ N,
 def chungQuestion : Prop :=
   ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, erdos609_f n ≥ M
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- Day-Johnson (2017): Lower bound f(n) ≥ 2^{c√(log n)} -/
 theorem day_johnson_lower_bound : ∃ c : ℝ, c > 0 ∧
@@ -158,7 +158,7 @@ theorem janzer_yip_upper_bound : ∃ C : ℝ, C > 0 ∧
     ∀ n ≥ 2, (erdos609_f n : ℝ) ≤ C * n^(3/2 : ℝ) * 2^(n/2) := by
   sorry
 
-/-! ## The Gap -/
+/- ## The Gap -/
 
 /-- The gap between lower and upper bounds is exponential!
     Lower: 2^{c√(log n)}
@@ -168,7 +168,7 @@ theorem janzer_yip_upper_bound : ∃ C : ℝ, C > 0 ∧
 def boundsGap (n : ℕ) : ℝ :=
   (n^(3/2 : ℝ) * 2^(n/2)) / 2^(Real.sqrt (Real.log n))
 
-/-! ## Connection to Ramsey Theory -/
+/- ## Connection to Ramsey Theory -/
 
 /-- The Ramsey number R(C_k, C_k, ..., C_k) with r copies -/
 def cycleRamsey (k r : ℕ) : ℕ := by
@@ -181,7 +181,7 @@ theorem odd_cycle_ramsey_exponential (k : ℕ) (hk : Odd k) (hk3 : k ≥ 3) :
         (cycleRamsey k r : ℝ) ≤ C * 2^r := by
   sorry
 
-/-! ## Bipartite-Free Colorings -/
+/- ## Bipartite-Free Colorings -/
 
 /-- A graph is bipartite iff it has no odd cycles -/
 theorem bipartite_iff_no_odd_cycles (V : Type*) [Fintype V] (G : SimpleGraph V) :
@@ -197,7 +197,7 @@ theorem color_class_bipartite {V : Type*} [DecidableEq V] [Fintype V] {n : ℕ}
       ∀ e : Sym2 V, coloring e = c → G.Adj e.out.1 e.out.2 := by
   sorry
 
-/-! ## The Doubling Construction -/
+/- ## The Doubling Construction -/
 
 /-- The key construction: n-coloring of K_{2^n} avoiding odd cycles.
 
@@ -212,7 +212,7 @@ theorem doubling_avoids_odd_cycles (n : ℕ) :
     ∀ m : ℕ, ¬HasMonochromaticOddCycleOfLength (K (2^n)) (doublingConstruction n) m := by
   sorry
 
-/-! ## Main Problem Statement -/
+/- ## Main Problem Statement -/
 
 /-- Erdős Problem #609: OPEN
 

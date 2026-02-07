@@ -28,7 +28,7 @@ namespace Erdos257
 
 open Set BigOperators Nat
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The sum ∑_{n ∈ A} 1/(2^n - 1) for a set A ⊆ ℕ.
     Each term 1/(2^n - 1) appears in Lambert series and has deep
@@ -41,7 +41,7 @@ noncomputable def lambertSum (A : Set ℕ) : ℝ :=
 noncomputable def divisorSum : ℝ :=
   ∑' n : ℕ, (n.divisors.card : ℝ) / (2 ^ n)
 
-/-! ## The Key Identity -/
+/- ## The Key Identity -/
 
 /--
 **Lambert Series Identity** (undergraduate level):
@@ -58,7 +58,7 @@ The rearrangement is justified because all terms are positive.
 axiom lambert_series_identity :
     lambertSum (univ : Set ℕ) = divisorSum
 
-/-! ## Erdős's 1948 Result -/
+/- ## Erdős's 1948 Result -/
 
 /--
 **Erdős (1948)**: The sum ∑_n d(n)/2^n is irrational.
@@ -80,7 +80,7 @@ theorem full_lambert_sum_irrational :
   rw [lambert_series_identity]
   exact erdos_divisor_sum_irrational
 
-/-! ## The Open Problem -/
+/- ## The Open Problem -/
 
 /--
 **Erdős Problem #257** (Open):
@@ -98,7 +98,7 @@ The general case remains open. We state this as a conjecture.
 axiom erdos_257_conjecture :
     ∀ A : Set ℕ, A.Infinite → Irrational (lambertSum A)
 
-/-! ## Concrete Examples -/
+/- ## Concrete Examples -/
 
 /-- The first few terms of the divisor function:
     d(1) = 1, d(2) = 2, d(3) = 2, d(4) = 3, d(5) = 2, d(6) = 4 -/

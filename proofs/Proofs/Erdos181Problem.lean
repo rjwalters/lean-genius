@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #181 — Ramsey Number of the Hypercube
 
 Prove that R(Q_n) ≪ 2^n, where Q_n is the n-dimensional hypercube
@@ -21,7 +21,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The n-dimensional hypercube graph Q_n: vertices are Fin 2^n (representing
     binary strings), edges connect vertices differing in exactly one bit. -/
@@ -36,14 +36,14 @@ noncomputable def ramseyNumber (n : ℕ) : ℕ :=
       ∃ color : Fin 2, ∀ x y : Fin (2 ^ n),
         hypercubeAdj n x y → c (f x) (f y) = color}
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #181 (Burr–Erdős)**: R(Q_n) ≪ 2^n.
     The Ramsey number of the n-cube is at most linear in its vertex count. -/
 axiom erdos_181_conjecture :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (ramseyNumber n : ℝ) ≤ C * 2 ^ n
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Trivial Bound**: R(Q_n) ≤ R(K_{2^n}), which is at most exponential
     in 2^n. Far from the conjectured linear bound. -/
@@ -62,7 +62,7 @@ axiom tikhomirov_2022 :
 axiom lower_bound (n : ℕ) (hn : n ≥ 1) :
   ramseyNumber n ≥ 2 ^ n
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Burr–Erdős Context**: this is part of the broader Burr–Erdős conjecture
     that R(G) ≤ C · |V(G)| for bounded-degree graphs G. The hypercube has

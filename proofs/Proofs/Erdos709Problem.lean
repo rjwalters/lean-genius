@@ -39,7 +39,7 @@ namespace Erdos709
 
 open Finset
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 A finite set A ⊆ [2,∞) of positive integers and intervals of consecutive integers.
@@ -61,7 +61,7 @@ structure Interval where
 def Interval.contains (I : Interval) (x : ℕ) : Prop :=
   I.start ≤ x ∧ x < I.start + I.length
 
-/-!
+/-
 ## Part II: The Covering Property
 
 For set A = {a₁,...,aₙ}, we need distinct x₁,...,xₙ in I with aᵢ | xᵢ.
@@ -78,7 +78,7 @@ structure Covering (A : Finset ℕ) (I : Interval) where
 def HasCovering (A : Finset ℕ) (I : Interval) : Prop :=
   Nonempty (Covering A I)
 
-/-!
+/-
 ## Part III: The Function f(n)
 
 f(n) = minimal k such that any interval of k·max(A) consecutive integers
@@ -100,7 +100,7 @@ axiom f_sufficient (n : ℕ) (hn : n ≥ 1) :
     ∀ I : Interval, I.length ≥ f n * maxElem A →
       HasCovering A I
 
-/-!
+/-
 ## Part IV: Known Bounds (Erdős-Surányi 1959)
 -/
 
@@ -120,7 +120,7 @@ theorem erdos_suranyi_1959 :
     (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≤ C * Real.sqrt n) := by
   exact ⟨lower_bound_log, upper_bound_sqrt⟩
 
-/-!
+/-
 ## Part V: Special Cases
 -/
 
@@ -130,7 +130,7 @@ axiom f_one : f 1 = 1
 /-- For n = 2, any two distinct a, b ≥ 2 can be covered in interval of length O(max·f(2)) -/
 axiom f_two_bound : f 2 ≤ 2
 
-/-!
+/-
 ## Part VI: Properties of f
 -/
 
@@ -140,7 +140,7 @@ axiom f_monotone (m n : ℕ) (hmn : m ≤ n) (hn : n ≥ 1) : f m ≤ f n
 /-- f grows at least logarithmically -/
 axiom f_at_least_log (n : ℕ) (hn : n ≥ 2) : (f n : ℝ) ≥ Real.log n
 
-/-!
+/-
 ## Part VII: Connection to Problem 708
 
 Problem 708 asks: what is the minimal size of a set B ⊆ [1, n]
@@ -165,7 +165,7 @@ axiom g_three : g 3 = 4
 axiom f_g_distinct_objectives :
   ∀ n : ℕ, n ≥ 1 → f n > 0 ∧ g n > 0
 
-/-!
+/-
 ## Part VIII: The Open Problem
 
 The central open question: what is the true growth rate of f(n)?
@@ -199,7 +199,7 @@ axiom problem_709_open_upper_not_tight :
     ¬ ∀ n : ℕ, n ≥ 2 →
       (f n : ℝ) ≥ Real.sqrt n / 2
 
-/-!
+/-
 ## Part IX: Proof Techniques
 
 The known bounds use fundamentally different methods:
@@ -231,7 +231,7 @@ axiom upper_bound_halls_theorem :
     ∀ I : Interval, I.length ≥ (Nat.sqrt n + 1) * maxElem A →
       HasCovering A I
 
-/-!
+/-
 ## Part X: Examples
 -/
 
@@ -253,7 +253,7 @@ example : (100 : ℕ).sqrt = 10 := by native_decide
 /-- At n = 10000: √10000 = 100 -/
 example : (10000 : ℕ).sqrt = 100 := by native_decide
 
-/-!
+/-
 ## Part XI: Summary
 -/
 

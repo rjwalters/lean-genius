@@ -32,7 +32,7 @@ open Filter Real Set Topology
 
 namespace Erdos516
 
-/-!
+/-
 ## Gap Series Definitions
 
 A **gap series** is a power series where many coefficients are zero.
@@ -57,7 +57,7 @@ theorem fabry_implies_fejer (n : ℕ → ℕ) (hn : HasFabryGaps n) :
   -- eventually nₖ > k², so Σ 1/nₖ < Σ 1/k² < ∞
   sorry
 
-/-!
+/-
 ## Entire Functions of Finite Order
 
 An entire function is analytic on all of ℂ.
@@ -73,7 +73,7 @@ def OfFiniteOrder (f : ℂ → ℂ) : Prop :=
 noncomputable def orderOf (f : ℂ → ℂ) : ℝ :=
   sInf { a : ℝ | a ≥ 0 ∧ ∃ c ≥ (0 : ℝ), ∀ z : ℂ, ‖f z‖ ≤ c * rexp (‖z‖ ^ a) }
 
-/-!
+/-
 ## Maximum and Minimum Modulus
 
 For an entire function f, we study its behavior on circles |z| = r.
@@ -91,7 +91,7 @@ noncomputable def minModulus (f : ℂ → ℂ) (r : ℝ) : ℝ :=
 noncomputable def modulusRatio (f : ℂ → ℂ) (r : ℝ) : ℝ :=
   (minModulus f r).log / (maxModulus f r).log
 
-/-!
+/-
 ## The Main Theorems
 
 Fuchs (1963) proved that for Fabry gap series of finite order,
@@ -116,7 +116,7 @@ axiom fuchs_theorem {f : ℂ → ℂ} {n : ℕ → ℕ}
     (hf_order : OfFiniteOrder f) :
     limsup (fun r => modulusRatio f r) atTop = 1
 
-/-!
+/-
 ## Historical Precedents
 
 Earlier results under stronger gap conditions.
@@ -146,7 +146,7 @@ axiom erdos_macintyre_theorem {f : ℂ → ℂ} {n : ℕ → ℕ}
     (hf_order : OfFiniteOrder f) :
     limsup (fun r => modulusRatio f r) atTop = 1
 
-/-!
+/-
 ## Extensions Beyond Finite Order
 
 Kovári (1965) extended the result to entire functions of infinite order
@@ -166,7 +166,7 @@ axiom kovari_theorem {f : ℂ → ℂ} {n : ℕ → ℕ}
     (hf_entire : Differentiable ℂ f) :
     limsup (fun r => modulusRatio f r) atTop = 1
 
-/-!
+/-
 ## The Remaining Open Question
 
 Kovári's condition nₖ > k(log k)^{2+c} is stronger than Fejér gaps (Σ 1/nₖ < ∞).
@@ -204,7 +204,7 @@ axiom macintyre_counterexample (n : ℕ → ℕ)
       Differentiable ℂ f ∧
       Tendsto (fun x : ℝ => f x) atTop (𝓝 0)
 
-/-!
+/-
 ## The Answer to Erdős Problem #516
 
 The original question (for finite order with Fabry gaps) was answered

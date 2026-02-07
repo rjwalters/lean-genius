@@ -33,7 +33,7 @@ namespace Erdos835
 
 open Finset
 
-/-!
+/-
 ## Part I: Johnson Graphs
 -/
 
@@ -53,7 +53,7 @@ def JohnsonGraph (n k : ℕ) : SimpleGraph (kSubsets n k) where
   symm := by intro S T h; simp only [johnsonAdj] at *; rw [inter_comm]; exact h
   loopless := by intro S; simp only [johnsonAdj]; intro h; simp_all
 
-/-!
+/-
 ## Part II: The Coloring Problem
 -/
 
@@ -65,7 +65,7 @@ def ProperColoring (n k c : ℕ) :=
 noncomputable def chromaticNumber (n k : ℕ) : ℕ :=
   Nat.find (⟨2 * k, by sorry⟩ : ∃ c, Nonempty (ProperColoring n k c))
 
-/-!
+/-
 ## Part III: The Erdős-Rosenfeld Property
 -/
 
@@ -79,7 +79,7 @@ def hasErdosRosenfeldProperty (k : ℕ) (χ : kSubsets (2*k) k → Fin (k+1)) : 
 def ErdosRosenfeldQuestion (k : ℕ) : Prop :=
   ∃ χ : kSubsets (2*k) k → Fin (k+1), hasErdosRosenfeldProperty k χ
 
-/-!
+/-
 ## Part IV: Equivalence to Chromatic Number
 -/
 
@@ -92,7 +92,7 @@ axiom erdos_rosenfeld_equivalence :
     ∀ k : ℕ, k > 0 →
     ErdosRosenfeldQuestion k ↔ chromaticNumber (2*k) k = k + 1
 
-/-!
+/-
 ## Part V: Known Results
 -/
 
@@ -122,7 +122,7 @@ axiom k_equals_7_fails : ¬ErdosRosenfeldQuestion 7
 /-- **Case k=8:** χ(J(16,8)) = 15 > 8+1. FAILS. -/
 axiom k_equals_8_fails : ¬ErdosRosenfeldQuestion 8
 
-/-!
+/-
 ## Part VI: Chromatic Number Bounds
 -/
 
@@ -144,7 +144,7 @@ axiom known_chromatic_numbers :
     chromaticNumber 14 7 = 13 ∧
     chromaticNumber 16 8 = 15
 
-/-!
+/-
 ## Part VII: The Answer
 -/
 

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #730: Same Prime Divisors of Central Binomials
 
 Are there infinitely many pairs n < m such that C(2n, n) and C(2m, m)
@@ -23,7 +23,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factors
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The central binomial coefficient C(2n, n). -/
 def centralBinom (n : ℕ) : ℕ := Nat.choose (2 * n) n
@@ -41,13 +41,13 @@ def SamePrimeDivisors (a b : ℕ) : Prop :=
 def CentralBinomPairs : Set (ℕ × ℕ) :=
   {p | p.1 < p.2 ∧ SamePrimeDivisors (centralBinom p.1) (centralBinom p.2)}
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #730** (OPEN): There are infinitely many pairs
     n < m with C(2n,n) and C(2m,m) having the same prime divisor set. -/
 axiom erdos_730_conjecture : Set.Infinite CentralBinomPairs
 
-/-! ## Known Examples -/
+/- ## Known Examples -/
 
 /-- The pair (87, 88): C(174, 87) and C(176, 88) have the same prime
     divisor set. -/
@@ -67,7 +67,7 @@ axiom triple_10003 :
 theorem delta_ne_one : ∃ p ∈ CentralBinomPairs, p.2 ≠ p.1 + 1 := by
   exact ⟨(10003, 10005), triple_10003.2.1, by omega⟩
 
-/-! ## Prime Divisor Structure -/
+/- ## Prime Divisor Structure -/
 
 /-- For prime p ≤ 2n, p | C(2n, n) iff at least one digit of n in
     base p has a carry when doubled (Kummer's theorem). -/
@@ -86,7 +86,7 @@ axiom large_prime_not_dividing (p n : ℕ) (hp : Nat.Prime p) (hgt : p > 2 * n) 
 axiom middle_primes_divide (p n : ℕ) (hp : Nat.Prime p) (h1 : n < p) (h2 : p ≤ 2 * n) :
   p ∣ centralBinom n
 
-/-! ## Spacing Conjecture -/
+/- ## Spacing Conjecture -/
 
 /-- Stronger conjecture: for every k ≥ 1, there exist infinitely many n
     with C(2n, n) and C(2(n+k), n+k) having the same prime divisors. -/
@@ -105,7 +105,7 @@ theorem spacing1_implies_main
   obtain ⟨rfl, rfl⟩ := heq
   exact ⟨by omega, hn⟩
 
-/-! ## Heuristic Argument -/
+/- ## Heuristic Argument -/
 
 /-- Heuristic: the prime divisor set of C(2n, n) is determined by primes
     up to 2n. For consecutive n, n+1, the sets of primes in (n, 2n] and

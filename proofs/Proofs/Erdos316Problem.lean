@@ -24,7 +24,7 @@ import Mathlib
 
 namespace Erdos316
 
-/-!
+/-
 ## Main Result
 
 We prove that Erdős's conjecture is FALSE by exhibiting a concrete counterexample.
@@ -70,7 +70,7 @@ theorem erdos_316 : ¬ ∀ A : Finset ℕ, 0 ∉ A → 1 ∉ A →
     exact this ▸ h B (by simp [hA]) hlt
   decide +kernel
 
-/-!
+/-
 ## Multiset Variant
 
 The conjecture also fails for multisets, with an even simpler counterexample.
@@ -94,7 +94,7 @@ theorem erdos_316_multiset : ∃ A : Multiset ℕ, 0 ∉ A ∧ 1 ∉ A ∧
     exact this ▸ h B (by simp [hBC])
   decide +kernel
 
-/-!
+/-
 ## Generalization (Sándor's Full Result)
 
 Sándor proved that for any n ≥ 2, there exists a set that cannot be partitioned

@@ -43,7 +43,7 @@ open SimpleGraph Finset
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Part I: Trees -/
+/- ## Part I: Trees -/
 
 /-- A tree is a connected acyclic graph. -/
 def IsTree (G : SimpleGraph V) : Prop :=
@@ -85,7 +85,7 @@ def starGraph (k : ℕ) : SimpleGraph (Fin (k + 1)) where
 theorem star_is_tree (k : ℕ) (hk : k ≥ 1) : IsTree (starGraph k) := by
   sorry
 
-/-! ## Part II: Subgraph Containment -/
+/- ## Part II: Subgraph Containment -/
 
 /-- G contains H as a subgraph if there's an injective homomorphism from H to G. -/
 def ContainsSubgraph (G : SimpleGraph V) {W : Type*} [Fintype W] (H : SimpleGraph W) : Prop :=
@@ -95,7 +95,7 @@ def ContainsSubgraph (G : SimpleGraph V) {W : Type*} [Fintype W] (H : SimpleGrap
 def TreeFree (G : SimpleGraph V) {W : Type*} [Fintype W] (T : SimpleGraph W) : Prop :=
   ¬ContainsSubgraph G T
 
-/-! ## Part III: Edge Counting and Average Degree -/
+/- ## Part III: Edge Counting and Average Degree -/
 
 /-- Number of edges in a graph. -/
 noncomputable def edgeCount (G : SimpleGraph V) : ℕ := G.edgeFinset.card
@@ -115,7 +115,7 @@ theorem avg_degree_iff_edges (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) 
     avgDegree G > k - 1 ↔ edgeCount G > (k - 1) * Fintype.card V / 2 := by
   sorry
 
-/-! ## Part IV: The Erdős-Sós Conjecture -/
+/- ## Part IV: The Erdős-Sós Conjecture -/
 
 /-- **Erdős-Sós Conjecture**
 
@@ -140,7 +140,7 @@ def Erdos548Statement : Prop :=
   IsTree T →
   ContainsSubgraph G T
 
-/-! ## Part V: Known Results -/
+/- ## Part V: Known Results -/
 
 /-- **Trivial Bound**
 
@@ -208,7 +208,7 @@ axiom wang_li_liu (n k : ℕ) (hn : n ≥ k + 1)
     (T : SimpleGraph (Fin (k + 1))) (hT : IsTree T) :
     ContainsSubgraph G T
 
-/-! ## Part VI: Extremal Function -/
+/- ## Part VI: Extremal Function -/
 
 /-- The extremal number ex(n, T) is the maximum edges in a T-free graph on n vertices. -/
 noncomputable def extremalNumber (n : ℕ) {W : Type*} [Fintype W] (T : SimpleGraph W) : ℕ :=
@@ -221,7 +221,7 @@ theorem erdos_sos_implies_extremal {W : Type*} [Fintype W] [DecidableEq W]
     ErdosSosConjecture → extremalNumber n T ≤ (k - 1) * n / 2 := by
   sorry
 
-/-! ## Part VII: Special Trees -/
+/- ## Part VII: Special Trees -/
 
 /-- The path P_k achieves the extremal bound. -/
 axiom path_extremal (n k : ℕ) (hn : n ≥ k + 1) (hk : k ≥ 2) :
@@ -234,7 +234,7 @@ theorem star_easier (n k : ℕ) (hn : n ≥ k + 1)
     ContainsSubgraph G (starGraph k) := by
   sorry
 
-/-! ## Part VIII: The Komlós-Sós Bound -/
+/- ## Part VIII: The Komlós-Sós Bound -/
 
 /-- **Komlós-Sós Theorem (announced)**
 
@@ -248,7 +248,7 @@ axiom komlos_sos_large_k :
     ∀ (T : SimpleGraph (Fin (k + 1))), IsTree T →
     ContainsSubgraph G T
 
-/-! ## Part IX: Related Theorems -/
+/- ## Part IX: Related Theorems -/
 
 /-- **Erdős-Gallai Theorem (1959)**
 
@@ -271,7 +271,7 @@ noncomputable def turanPath (n k : ℕ) : ℕ := extremalNumber n (pathGraph k)
 axiom turan_path_formula (n k : ℕ) (hn : n ≥ k - 1) (hk : k ≥ 2) :
     turanPath n k = (k - 2) * (n - 1) / 2
 
-/-! ## Part X: Open Status -/
+/- ## Part X: Open Status -/
 
 /-- The Erdős-Sós conjecture remains open.
 
@@ -285,7 +285,7 @@ theorem erdos_548_status : erdos_548_open := by
 
 end Erdos548
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #548, the Erdős-Sós Conjecture.

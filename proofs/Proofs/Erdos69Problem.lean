@@ -42,7 +42,7 @@ open BigOperators Finset
 
 namespace Erdos69
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The sum of ω(n)/2^n for n ≥ 2 -/
 noncomputable def omegaSum : ℝ := ∑' n : ℕ, ω (n + 2) / 2 ^ (n + 2)
@@ -50,7 +50,7 @@ noncomputable def omegaSum : ℝ := ∑' n : ℕ, ω (n + 2) / 2 ^ (n + 2)
 /-- The equivalent sum over primes: ∑_p 1/(2^p - 1) -/
 noncomputable def primeSum : ℝ := ∑' p : {n : ℕ | n.Prime}, 1 / (2 ^ p.1 - 1 : ℝ)
 
-/-! ## Helper lemmas -/
+/- ## Helper lemmas -/
 
 /-- For any prime p ≥ 2, 2^p > 1 -/
 lemma two_pow_gt_one (p : ℕ) (hp : 2 ≤ p) : (2 : ℝ) ^ p > 1 := by
@@ -88,7 +88,7 @@ lemma geometric_sum_over_multiples (p : ℕ) (hp : 2 ≤ p) :
 lemma omega_eq_card_prime_divisors (n : ℕ) :
     ω n = (n.primeFactors).card := rfl
 
-/-! ## Main identity (Tao's observation) -/
+/- ## Main identity (Tao's observation) -/
 
 /--
 **Tao's Identity**: ∑_{n≥2} ω(n)/2^n = ∑_{p prime} 1/(2^p - 1)
@@ -162,7 +162,7 @@ theorem tao_identity : omegaSum = primeSum := by
     convert geometric_sum_over_multiples p.val p.prop.two_le using 1;
   unfold Erdos69.omegaSum Erdos69.primeSum; aesop;
 
-/-! ## Irrationality (from Problem 257) -/
+/- ## Irrationality (from Problem 257) -/
 
 /- Aristotle failed to find a proof. -/
 /--

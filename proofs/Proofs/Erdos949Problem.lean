@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #949: Sum-Free Sets and Continuum-Sized Sumset Avoidance
 
 Let S ⊆ ℝ be a set containing no solution to a + b = c (i.e., S is
@@ -19,7 +19,7 @@ import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Sum-Free Sets
 -/
 
@@ -28,7 +28,7 @@ Equivalently, (S + S) ∩ S = ∅. -/
 def IsSumFreeSet (S : Set ℝ) : Prop :=
   ∀ a ∈ S, ∀ b ∈ S, a + b ∉ S
 
-/-!
+/-
 ## Section II: Sidon Sets
 -/
 
@@ -38,7 +38,7 @@ def IsSidonReal (S : Set ℝ) : Prop :=
   ∀ a ∈ S, ∀ b ∈ S, ∀ c ∈ S, ∀ d ∈ S,
     a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d
 
-/-!
+/-
 ## Section III: The Sumset
 -/
 
@@ -46,7 +46,7 @@ def IsSidonReal (S : Set ℝ) : Prop :=
 def realSumset (A : Set ℝ) : Set ℝ :=
   {x | ∃ a ∈ A, ∃ b ∈ A, x = a + b}
 
-/-!
+/-
 ## Section IV: The Main Problem
 -/
 
@@ -61,7 +61,7 @@ def ErdosProblem949 : Prop :=
       Cardinal.mk A = Cardinal.continuum ∧
       realSumset A ⊆ Sᶜ
 
-/-!
+/-
 ## Section V: The Sidon Variant (Solved)
 -/
 
@@ -80,7 +80,7 @@ the Sidon property forces a = c or b = c, giving 0 ∈ S or a = 0). -/
 axiom sidon_is_sum_free (S : Set ℝ) (hS : IsSidonReal S) (h0 : (0 : ℝ) ∉ S) :
     IsSumFreeSet S
 
-/-!
+/-
 ## Section VI: Proof Strategy for Sidon Case
 -/
 
@@ -101,7 +101,7 @@ axiom sidon_continuum_case (S : Set ℝ) (hS : IsSidonReal S)
       Cardinal.mk A = Cardinal.continuum ∧
       realSumset A ⊆ Sᶜ
 
-/-!
+/-
 ## Section VII: General Sum-Free Case
 -/
 

@@ -36,7 +36,7 @@ open Nat Set Finset
 
 namespace Erdos847
 
-/-! ## Part I: Arithmetic Progression Definitions -/
+/- ## Part I: Arithmetic Progression Definitions -/
 
 /--
 **Three-term arithmetic progression:**
@@ -59,7 +59,7 @@ def isAPFree' (S : Set ℕ) : Prop :=
 /-- The two definitions are equivalent. -/
 axiom apfree_equiv (S : Set ℕ) : isAPFree S ↔ isAPFree' S
 
-/-! ## Part II: The Erdős-Nešetřil-Rödl Condition -/
+/- ## Part II: The Erdős-Nešetřil-Rödl Condition -/
 
 /--
 **The ENR condition:**
@@ -77,7 +77,7 @@ There exists some ε > 0 satisfying the condition.
 def hasENRProperty (A : Set ℕ) : Prop :=
   ∃ ε > 0, hasENRCondition A ε
 
-/-! ## Part III: Finite Union Characterization -/
+/- ## Part III: Finite Union Characterization -/
 
 /--
 **Union of finitely many AP-free sets:**
@@ -94,7 +94,7 @@ def hasFiniteAPFreePartition (A : Set ℕ) : Prop :=
     (∀ i j, i ≠ j → Disjoint (parts i) (parts j)) ∧
     A = ⋃ i, parts i
 
-/-! ## Part IV: The Conjecture (Disproved) -/
+/- ## Part IV: The Conjecture (Disproved) -/
 
 /--
 **Erdős-Nešetřil-Rödl Conjecture:**
@@ -120,7 +120,7 @@ An explicit (or constructive) example showing the conjecture fails.
 axiom counterexample_exists :
   ∃ A : Set ℕ, A.Infinite ∧ hasENRProperty A ∧ ¬isFiniteAPFreeUnion A
 
-/-! ## Part V: Connection to Szemerédi's Theorem -/
+/- ## Part V: Connection to Szemerédi's Theorem -/
 
 /--
 **Szemerédi's Theorem (1975):**
@@ -142,7 +142,7 @@ axiom apfree_zero_density : ∀ A : Set ℕ, isAPFree A →
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
     ((A ∩ Set.Icc 1 N).ncard : ℝ) / N < ε
 
-/-! ## Part VI: Why the Conjecture Fails -/
+/- ## Part VI: Why the Conjecture Fails -/
 
 /--
 **Key insight:**
@@ -168,7 +168,7 @@ theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (parts : Fin k → Set 
     hasENRCondition A (1 / k) := by
   sorry
 
-/-! ## Part VII: Related Problems -/
+/- ## Part VII: Related Problems -/
 
 /--
 **Problem #774:**
@@ -182,7 +182,7 @@ Adjacent problem in the Erdős collection on AP-free sets.
 -/
 axiom problem_846_related : True
 
-/-! ## Part VIII: Roth's Theorem and Bounds -/
+/- ## Part VIII: Roth's Theorem and Bounds -/
 
 /--
 **Roth's Theorem (1953):**
@@ -202,7 +202,7 @@ axiom kelley_meka_bound : ∃ c > 0, ∀ N : ℕ, ∀ A : Finset ℕ,
   (∀ a ∈ A, a ≤ N) → isAPFree ↑A →
     (A.card : ℝ) ≤ N * Real.exp (-c * Real.log N ^ (1/12 : ℝ))
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #847: DISPROVED**

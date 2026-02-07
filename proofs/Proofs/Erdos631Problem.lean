@@ -25,7 +25,7 @@ namespace Erdos631
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- The chromatic number χ(G) -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
@@ -35,7 +35,7 @@ noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
 def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ f : V → Fin k, ∀ v w : V, G.Adj v w → f v ≠ f w
 
-/-! ## List Coloring Definitions -/
+/- ## List Coloring Definitions -/
 
 /-- A list assignment gives each vertex a set of available colors -/
 def ListAssignment (V : Type*) (C : Type*) := V → Finset C
@@ -56,7 +56,7 @@ def IsKChoosable (G : SimpleGraph V) (k : ℕ) : Prop :=
 noncomputable def listChromaticNumber (G : SimpleGraph V) : ℕ :=
   sorry -- Minimum k such that G is k-choosable
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- χ_L(G) ≥ χ(G) always -/
 theorem list_chromatic_ge_chromatic (G : SimpleGraph V) :
@@ -89,7 +89,7 @@ theorem choosable_implies_colorable (G : SimpleGraph V) (k : ℕ) :
     all_goals simp_all +decide [Fin.ext_iff, IsListColoring]
     exact fun v w hvw => fun h => hf.2 v w hvw <| by aesop
 
-/-! ## Planar Graphs -/
+/- ## Planar Graphs -/
 
 /-- A graph is planar (can be drawn without edge crossings) -/
 def IsPlanar (G : SimpleGraph V) : Prop :=
@@ -107,7 +107,7 @@ axiom planar_edge_bound :
     IsPlanar G → Fintype.card V ≥ 3 →
     G.edgeFinset.card ≤ 3 * Fintype.card V - 6
 
-/-! ## The Four Color Theorem -/
+/- ## The Four Color Theorem -/
 
 /-- Four Color Theorem: Every planar graph has χ ≤ 4 -/
 axiom four_color_theorem :
@@ -119,7 +119,7 @@ axiom five_color_theorem :
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     IsPlanar G → chromaticNumber G ≤ 5
 
-/-! ## The Main Result: Thomassen's Theorem -/
+/- ## The Main Result: Thomassen's Theorem -/
 
 /-- Thomassen (1994): Every planar graph is 5-choosable -/
 axiom thomassen_five_list_theorem :
@@ -142,7 +142,7 @@ axiom thomassen_proof_technique :
     -- with outer face a cycle, 2 colors preassigned on edge
     sorry
 
-/-! ## Sharpness: Voigt's Construction -/
+/- ## Sharpness: Voigt's Construction -/
 
 /-- Voigt (1993): There exists a planar graph with χ_L = 5 -/
 axiom voigt_construction :
@@ -164,7 +164,7 @@ axiom smallest_known_not_4_choosable :
   ∃ (n : ℕ) (G : SimpleGraph (Fin n)),
     n ≤ 63 ∧ IsPlanar G ∧ listChromaticNumber G = 5
 
-/-! ## The List Coloring Conjecture -/
+/- ## The List Coloring Conjecture -/
 
 /-- Open Question: Is every planar graph 4-choosable? -/
 def listColoringConjecture : Prop :=
@@ -184,7 +184,7 @@ theorem chromatic_list_gap :
       IsPlanar G → listChromaticNumber G ≤ 5) := by
   exact ⟨four_color_theorem, thomassen_five_list_theorem⟩
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- Planar bipartite graphs have χ_L ≤ 3 (Alon-Tarsi 1992) -/
 axiom alon_tarsi_theorem :
@@ -211,7 +211,7 @@ axiom planar_girth_5_choosable :
     IsPlanar G → (5 : ℕ∞) ≤ G.girth →
     listChromaticNumber G ≤ 3
 
-/-! ## Thomassen's Proof Structure -/
+/- ## Thomassen's Proof Structure -/
 
 /-- Key: 5-choosability with 2 precolored adjacent vertices -/
 axiom thomassen_key_lemma :
@@ -231,7 +231,7 @@ axiom thomassen_induction :
     -- Step: find chord or degree-2 vertex
     sorry
 
-/-! ## Historical Context -/
+/- ## Historical Context -/
 
 /-- Timeline:
     1979: Erdős-Rubin-Taylor posed the problem
@@ -242,7 +242,7 @@ axiom thomassen_induction :
 axiom historical_timeline :
   True -- Documented above
 
-/-! ## Main Problem Status -/
+/- ## Main Problem Status -/
 
 /-- Erdős Problem #631: SOLVED
 

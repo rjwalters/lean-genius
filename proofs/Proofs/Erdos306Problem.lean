@@ -30,7 +30,7 @@ open Finset
 
 namespace Erdos306
 
-/-!
+/-
 ## Background: Egyptian Fractions
 
 An Egyptian fraction is a sum of distinct unit fractions:
@@ -44,7 +44,7 @@ This problem asks about constrained representations where denominators
 have specific prime factorization structure.
 -/
 
-/-!
+/-
 ## Semiprimes and Related Definitions
 
 A semiprime is a product of exactly two primes (not necessarily distinct).
@@ -71,7 +71,7 @@ Examples: 30 = 2×3×5, 42 = 2×3×7, 66 = 2×3×11, 70 = 2×5×7, ... -/
 def isThreeDistinctPrimeProduct (n : ℕ) : Prop :=
   isProductOfKDistinctPrimes n 3
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 Can every positive rational with squarefree denominator be expressed
@@ -109,7 +109,7 @@ def erdos_306_conjecture : Prop :=
   ∀ q : ℚ, 0 < q → Squarefree q.den →
     ∃ k : ℕ, ∃ repr : EgyptianRepr k, isTwoPrimeRepr repr ∧ repr.sum = q
 
-/-!
+/-
 ## The Butler-Erdős-Graham Result (SOLVED)
 
 For 3 distinct primes, the analogous statement is TRUE when restricted
@@ -137,7 +137,7 @@ theorem three_prime_solved : three_prime_integer_version := by
   obtain ⟨k, hk, repr, hrepr, hsum⟩ := butler_erdos_graham_theorem m hm
   exact ⟨k, repr, hrepr, hsum⟩
 
-/-!
+/-
 ## Examples and Small Cases
 -/
 
@@ -162,7 +162,7 @@ def threePrimeProducts : List ℕ := [30, 42, 66, 70, 78, 102, 105, 110, 114, 13
 /-- Check: 30 = 2 × 3 × 5 is a product of 3 distinct primes. -/
 example : ArithmeticFunction.cardDistinctFactors 30 = 3 := by native_decide
 
-/-!
+/-
 ## Why Squarefree Denominator?
 
 The condition that b is squarefree is natural because:
@@ -180,7 +180,7 @@ on denominators.
 axiom reduce_to_squarefree : ∀ q : ℚ, 0 < q →
   ∃ a b : ℤ, 0 < b ∧ Squarefree b.natAbs ∧ q = a / b
 
-/-!
+/-
 ## The Density of k-Distinct-Prime Products
 
 Products of exactly k distinct primes become sparser as numbers grow.
@@ -201,7 +201,7 @@ The count is roughly n × (log log n)^(k-1) / ((k-1)! × log n). -/
 axiom k_prime_product_density (k : ℕ) (hk : 0 < k) :
   ∃ c > 0, ∀ n ≥ 10, c * n / (Nat.log 2 n) ≤ twoPrimeProductCount n
 
-/-!
+/-
 ## Why 2 Primes is Harder than 3 Primes
 
 With 3 distinct prime factors, there are more denominators to choose from
@@ -220,7 +220,7 @@ axiom erdos_306_open : ¬(erdos_306_conjecture ↔ True) ∧ ¬(erdos_306_conjec
 /-- The 3-prime integer version is solved. -/
 theorem three_prime_status : three_prime_integer_version := three_prime_solved
 
-/-!
+/-
 ## Greedy Algorithm and Egyptian Fractions
 
 The classical greedy algorithm for Egyptian fractions works as follows:
@@ -238,7 +238,7 @@ guarantees on the prime structure of denominators. -/
 axiom greedy_egyptian_exists : ∀ q : ℚ, 0 < q →
   ∃ k : ℕ, ∃ repr : EgyptianRepr k, repr.sum = q
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #306 asks whether every positive rational with squarefree

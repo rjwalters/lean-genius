@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #506: Minimum Number of Circles from n Points
 
 Erdős Problem #506 asks: what is the minimum number of distinct circles
@@ -22,7 +22,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.LinearAlgebra.AffineSpace.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A point in ℝ². -/
 abbrev Point2 := Fin 2 → ℝ
@@ -76,7 +76,7 @@ noncomputable def minCircles (n : ℕ) : ℕ :=
     ⟨0, Finset.mem_image.mpr ⟨0, Finset.mem_univ _, rfl⟩⟩
     id
 
-/-! ## Elliott's Theorem -/
+/- ## Elliott's Theorem -/
 
 /-- Elliott (1967): For n > 393 points in general position (not all
     concyclic, not all collinear), at least C(n-1,2) distinct circles. -/
@@ -84,7 +84,7 @@ axiom elliott_theorem (n : ℕ) (hn : 393 < n) (config : PointConfig n)
     (hconc : ¬AllConcyclic config) (hcol : ¬AllCollinear config) :
   (n - 1) * (n - 2) / 2 ≤ numCircles config
 
-/-! ## Segre's Counterexample -/
+/- ## Segre's Counterexample -/
 
 /-- Segre showed that projecting the 8 vertices of a cube onto a plane
     gives 8 points determining fewer than C(7,2) = 21 circles,
@@ -94,7 +94,7 @@ axiom segre_cube_counterexample :
     ¬AllConcyclic config ∧ ¬AllCollinear config ∧
     numCircles config < 7 * 6 / 2
 
-/-! ## Main Open Question -/
+/- ## Main Open Question -/
 
 /-- Erdős Problem #506: Determine the minimum number of circles for
     small values of n where Elliott's theorem does not apply. -/
@@ -104,7 +104,7 @@ axiom erdos_506_small_n :
       ¬AllConcyclic config → ¬AllCollinear config →
         f n ≤ numCircles config
 
-/-! ## Connection to Sylvester–Gallai -/
+/- ## Connection to Sylvester–Gallai -/
 
 /-- The circle problem is analogous to the Sylvester–Gallai theorem
     for lines: n non-collinear points determine at least n lines.

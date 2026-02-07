@@ -37,7 +37,7 @@ namespace Erdos961
 
 open Nat Finset Filter Real Asymptotics
 
-/-! ## Part I: Smooth Numbers -/
+/- ## Part I: Smooth Numbers -/
 
 /-- A positive integer is k-smooth if all its prime factors are ≤ k.
 
@@ -69,7 +69,7 @@ theorem isSmooth_iff_smoothNumbers (k n : ℕ) (hn : n ≠ 0) :
       have : p ∈ n.primeFactors := Nat.mem_primeFactors.mpr ⟨hp, hdiv⟩
       exact Nat.lt_add_one_iff.mp (h.2 p this)
 
-/-! ## Part II: The Key Property -/
+/- ## Part II: The Key Property -/
 
 /-- The property that among any n consecutive integers starting at m > k,
     at least one is NOT k-smooth (has a prime factor > k). -/
@@ -98,7 +98,7 @@ theorem haslargeprimefactor_iff (k n : ℕ) :
     apply hns
     exact (isSmooth_iff_smoothNumbers k i hne).mp ⟨hne, hsmooth⟩
 
-/-! ## Part III: The Function f(k) -/
+/- ## Part III: The Function f(k) -/
 
 /-- Sylvester-Schur theorem: any k consecutive integers > k contain
     a number with a prime factor > k. -/
@@ -119,7 +119,7 @@ theorem f_spec (k : ℕ) : HasLargePrimeFactor k (f k) :=
 theorem f_min (k n : ℕ) (h : HasLargePrimeFactor k n) : f k ≤ n := by
   exact Nat.find_min' (f_well_defined k) h
 
-/-! ## Part IV: Sylvester-Schur Bound -/
+/- ## Part IV: Sylvester-Schur Bound -/
 
 /-- Sylvester-Schur (1934): f(k) ≤ k.
 
@@ -132,7 +132,7 @@ theorem f_min (k n : ℕ) (h : HasLargePrimeFactor k n) : f k ≤ n := by
 -/
 theorem sylvester_schur_bound (k : ℕ) : f k ≤ k := f_min k k (sylvester_schur k)
 
-/-! ## Part V: Erdős Bound -/
+/- ## Part V: Erdős Bound -/
 
 /-- Erdős (1955): f(k) < 3k/log(k) for sufficiently large k.
 
@@ -146,7 +146,7 @@ axiom erdos_1955_bound :
 theorem f_sublinear : (fun k => (f k : ℝ)) =o[atTop] (fun k => (k : ℝ)) := by
   sorry
 
-/-! ## Part VI: Jutila and Ramachandra-Shorey Bound -/
+/- ## Part VI: Jutila and Ramachandra-Shorey Bound -/
 
 /-- Jutila (1974) and Ramachandra-Shorey (1973) proved a much stronger bound:
 
@@ -158,7 +158,7 @@ axiom jutila_ramachandra_shorey_bound :
     (fun k => (f k : ℝ)) =O[atTop]
       (fun k => log (log (log k)) / log (log k) * (k / log k))
 
-/-! ## Part VII: The Open Conjecture -/
+/- ## Part VII: The Open Conjecture -/
 
 /-- The main open conjecture: f(k) ≪ (log k)^C for some constant C.
 
@@ -172,7 +172,7 @@ def polylog_conjecture : Prop :=
 /-- The conjecture is stated but unresolved. -/
 axiom polylog_conjecture_open : polylog_conjecture ↔ answer(sorry)
 
-/-! ## Part VIII: Small Examples -/
+/- ## Part VIII: Small Examples -/
 
 /-- For k = 2: Any 2 consecutive integers > 2 contain a non-2-smooth number.
 
@@ -187,7 +187,7 @@ theorem example_k2 : f 2 ≤ 2 := sylvester_schur_bound 2
 -/
 theorem example_k3 : f 3 ≤ 3 := sylvester_schur_bound 3
 
-/-! ## Part IX: Connection to Problem #683 -/
+/- ## Part IX: Connection to Problem #683 -/
 
 /-- Problem #683 asks about gaps between smooth numbers.
 
@@ -205,7 +205,7 @@ theorem f_le_smooth_gap_succ (k : ℕ) (hk : k ≥ 1) :
     f k ≤ smooth_gap k + 1 := by
   sorry
 
-/-! ## Part X: Bounds Summary -/
+/- ## Part X: Bounds Summary -/
 
 /-- Summary of known bounds on f(k):
 
@@ -227,7 +227,7 @@ theorem bounds_summary (k : ℕ) (hk : k ≥ 2) :
 
 end Erdos961
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #961 on smooth numbers in consecutive intervals.

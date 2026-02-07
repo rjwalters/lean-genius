@@ -37,7 +37,7 @@ open Nat Finset
 
 namespace Erdos1085
 
-/-!
+/-
 ## Background: The Unit Distance Problem
 
 Given n points in d-dimensional Euclidean space, how many pairs can be at
@@ -48,7 +48,7 @@ for d = 2, where the gap between upper and lower bounds has remained open
 since the 1940s.
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -81,7 +81,7 @@ axiom maxUnitDistances_spec (d n : ℕ) :
 axiom maxUnitDistances_bound (d n : ℕ) (P : PointConfig d n) :
   unitDistanceCount P ≤ maxUnitDistances d n
 
-/-!
+/-
 ## Trivial Bounds
 
 The number of pairs is at most n choose 2 = n(n-1)/2.
@@ -96,7 +96,7 @@ axiom trivial_upper_bound (d n : ℕ) :
 axiom linear_lower_bound (d n : ℕ) (hd : 1 ≤ d) (hn : 2 ≤ n) :
   n - 1 ≤ maxUnitDistances d n
 
-/-!
+/-
 ## Dimension 2: The Classical Unit Distance Problem
 
 This is Problem #90 on erdosproblems.com (and closely related to #1085).
@@ -129,7 +129,7 @@ def erdos_1085_2d_conjecture : Prop :=
 axiom erdos_1085_2d_open :
   ¬(erdos_1085_2d_conjecture ↔ True) ∧ ¬(erdos_1085_2d_conjecture ↔ False)
 
-/-!
+/-
 ## Dimension 3
 
 The 3D case is also challenging with a gap between lower and upper bounds.
@@ -159,7 +159,7 @@ def erdos_1085_3d_open_question : Prop :=
 axiom erdos_1085_3d_open :
   ¬(erdos_1085_3d_open_question ↔ True) ∧ ¬(erdos_1085_3d_open_question ↔ False)
 
-/-!
+/-
 ## Dimension ≥ 4: The High-Dimensional Case
 
 For d ≥ 4, the picture is much cleaner. The answer is essentially
@@ -186,7 +186,7 @@ axiom erdos_stone_upper_d4 (d : ℕ) (hd : 4 ≤ d) :
   ∀ ε : ℕ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N,
     maxUnitDistances d n ≤ ((d / 2 - 1) * n * n / (2 * (d / 2))) + ε * n * n / 100
 
-/-!
+/-
 ## Exact Results for d ≥ 4
 
 For even dimensions ≥ 4, exact formulas are known!
@@ -212,7 +212,7 @@ axiom erdos_pach_1990_odd (d : ℕ) (hd : 5 ≤ d) (hodd : Odd d) :
     (d / 2 - 1) * n * n / (2 * (d / 2)) ≤ maxUnitDistances d n + c₁ * n * Nat.sqrt n ∧
     maxUnitDistances d n ≤ (d / 2 - 1) * n * n / (2 * (d / 2)) + c₂ * n * Nat.sqrt n
 
-/-!
+/-
 ## Examples and Special Values
 -/
 
@@ -229,7 +229,7 @@ axiom example_d2_n5 : maxUnitDistances 2 5 = 7
 /-- f_3(4) = 6: Four points forming a regular tetrahedron with edge 1. -/
 axiom example_d3_n4 : maxUnitDistances 3 4 = 6
 
-/-!
+/-
 ## Connections to Other Problems
 
 The unit distance problem connects to many areas:
@@ -248,7 +248,7 @@ where all circles have radius 1. -/
 axiom incidence_bound :
   ∀ n ≥ 1, maxUnitDistances 2 n ≤ n * n
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #1085 asks for estimates of f_d(n), the maximum unit distances

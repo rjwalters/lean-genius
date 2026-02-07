@@ -27,7 +27,7 @@ namespace Erdos626
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- The chromatic number of a graph -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
@@ -45,7 +45,7 @@ noncomputable def girth (G : SimpleGraph V) : ℕ :=
 def HasGirthGT (G : SimpleGraph V) (m : ℕ) : Prop :=
   girth G = 0 ∨ girth G > m
 
-/-! ## The g_k(n) Function -/
+/- ## The g_k(n) Function -/
 
 /-- g_k(n) = largest m such that there exists an n-vertex graph
     with chromatic number k and girth > m -/
@@ -61,7 +61,7 @@ axiom g_well_defined :
         chromaticNumber G = k ∧
         HasGirthGT G (g k n)
 
-/-! ## Erdős's Constructions -/
+/- ## Erdős's Constructions -/
 
 /-- Erdős showed high-chromatic-number, high-girth graphs exist -/
 axiom erdos_high_girth_high_chromatic :
@@ -74,7 +74,7 @@ theorem g_unbounded (k : ℕ) (hk : k ≥ 4) :
     ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, g k n ≥ M := by
   sorry
 
-/-! ## Upper Bound (Erdős) -/
+/- ## Upper Bound (Erdős) -/
 
 /-- Erdős's upper bound: g_k(n) ≤ (2/log(k-2)) · log n + 1 -/
 axiom erdos_upper_bound :
@@ -91,7 +91,7 @@ noncomputable def upperCoeff (k : ℕ) : ℝ :=
 theorem upper_coeff_k4 : upperCoeff 4 = 2 / Real.log 2 := by
   rfl
 
-/-! ## Lower Bound (Kostochka) -/
+/- ## Lower Bound (Kostochka) -/
 
 /-- Kostochka's lower bound: g_k(n) ≥ (1/(4 log k)) · log n -/
 axiom kostochka_lower_bound :
@@ -108,7 +108,7 @@ noncomputable def lowerCoeff (k : ℕ) : ℝ :=
 theorem lower_coeff_k4 : lowerCoeff 4 = 1 / (4 * Real.log 4) := by
   rfl
 
-/-! ## The Main Question -/
+/- ## The Main Question -/
 
 /-- The ratio g_k(n) / log n -/
 noncomputable def gRatio (k n : ℕ) : ℝ :=
@@ -129,7 +129,7 @@ axiom limit_question_open :
   ∃ k : ℕ, k ≥ 4 ∧ ¬(LimitExists k ∨ ¬LimitExists k)
   -- This is a formal way to say "we don't know"
 
-/-! ## Gap Analysis -/
+/- ## Gap Analysis -/
 
 /-- The gap between upper and lower bounds grows with k -/
 theorem bound_gap (k : ℕ) (hk : k ≥ 4) :
@@ -150,7 +150,7 @@ theorem bound_ratio_limit :
     Filter.Tendsto boundRatio Filter.atTop (nhds 8) := by
   sorry
 
-/-! ## The Dual Problem: h^(m)(n) -/
+/- ## The Dual Problem: h^(m)(n) -/
 
 /-- h^(m)(n) = largest chromatic number for n-vertex graph with girth > m -/
 noncomputable def h (m n : ℕ) : ℕ :=
@@ -169,7 +169,7 @@ axiom h_bounds :
         c₁ * n^((1:ℝ)/(m-1)) ≤ (h m n : ℝ) ∧
         (h m n : ℝ) ≤ c₂ * n^((1:ℝ)/(m-1)) * (Real.log n)^(1 + 1/(m-1))
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- For k = 4, the bounds are tightest -/
 theorem k4_bounds (n : ℕ) (hn : n ≥ 2) :
@@ -189,7 +189,7 @@ axiom erdos_1959_probabilistic_method :
     ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       chromaticNumber G ≥ k ∧ girth G > g
 
-/-! ## Probabilistic Lower Bound -/
+/- ## Probabilistic Lower Bound -/
 
 /-- The probabilistic method gives the lower bound -/
 theorem probabilistic_lower_bound (k : ℕ) (hk : k ≥ 4) :
@@ -201,7 +201,7 @@ theorem probabilistic_lower_bound (k : ℕ) (hk : k ≥ 4) :
           HasGirthGT G ⌊c * Real.log n⌋₊ := by
   sorry
 
-/-! ## Connection to Ramsey Theory -/
+/- ## Connection to Ramsey Theory -/
 
 /-- The off-diagonal Ramsey number -/
 noncomputable def ramseyNumber (s t : ℕ) : ℕ :=
@@ -214,7 +214,7 @@ theorem g_ramsey_connection (k : ℕ) (hk : k ≥ 4) :
         (g k n : ℝ) ≤ C * Real.log (ramseyNumber k n) := by
   sorry
 
-/-! ## Main Problem Status -/
+/- ## Main Problem Status -/
 
 /-- Erdős Problem #626: OPEN
 

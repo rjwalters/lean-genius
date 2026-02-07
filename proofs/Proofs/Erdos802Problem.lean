@@ -38,7 +38,7 @@ open SimpleGraph Real
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Part I: Graph Basics
 -/
 
@@ -56,7 +56,7 @@ def IsCliqueFree (G : SimpleGraph V) (r : ℕ) : Prop :=
 /-- G is triangle-free (K_3-free). -/
 def IsTriangleFree (G : SimpleGraph V) : Prop := IsCliqueFree G 3
 
-/-!
+/-
 ## Part II: Independent Sets
 -/
 
@@ -68,7 +68,7 @@ def IsIndependent (G : SimpleGraph V) (s : Finset V) : Prop :=
 noncomputable def independenceNumber (G : SimpleGraph V) : ℕ :=
   sSup { k : ℕ | ∃ s : Finset V, s.card = k ∧ IsIndependent G s }
 
-/-!
+/-
 ## Part III: The AEKS Conjecture
 -/
 
@@ -83,7 +83,7 @@ def AEKSConjecture (r : ℕ) : Prop :=
 noncomputable def aeksBound (t n : ℝ) : ℝ :=
   if t ≤ 1 then n else (log t / t) * n
 
-/-!
+/-
 ## Part IV: Known Results
 -/
 
@@ -116,7 +116,7 @@ theorem conjecture_true_for_r3 : AEKSConjecture 3 := by
   intro V _ G hKfree havg
   exact hc V G (fun s hs => hKfree s hs) havg
 
-/-!
+/-
 ## Part V: Alon's Result (1996)
 -/
 
@@ -142,7 +142,7 @@ axiom alon_1996 (r : ℕ) (hr : r ≥ 3) :
 axiom locally_chromatic_implies_clique_free (G : SimpleGraph V) (r : ℕ) (hr : r ≥ 3) :
     IsLocallyChromatic G (r - 2) → IsCliqueFree G r
 
-/-!
+/-
 ## Part VI: Ramsey Connection
 -/
 
@@ -162,7 +162,7 @@ axiom triangle_free_independence :
       IsTriangleFree G →
       (independenceNumber G : ℝ) ≥ c * sqrt ((Fintype.card V : ℝ) * log (Fintype.card V))
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

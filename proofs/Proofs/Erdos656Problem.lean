@@ -37,7 +37,7 @@ open Set
 
 namespace Erdos656
 
-/-!
+/-
 ## Part I: Upper Density
 
 The upper density measures the "proportion" of natural numbers in a set,
@@ -69,7 +69,7 @@ axiom lowerDensity_le_upperDensity (A : Set ℕ) : lowerDensity A ≤ upperDensi
 def HasNaturalDensity (A : Set ℕ) : Prop :=
   upperDensity A = lowerDensity A
 
-/-!
+/-
 ## Part II: Sumsets and Shifted Sumsets
 
 The sumset B + B consists of all sums b₁ + b₂ where b₁, b₂ ∈ B.
@@ -95,7 +95,7 @@ axiom sumset_finite_of_finite (B : Set ℕ) (hB : B.Finite) : (sumset B).Finite
 axiom sumset_positive_density (B : Set ℕ) (hB : B.Infinite) :
     HasPositiveUpperDensity (sumset B)
 
-/-!
+/-
 ## Part III: Hindman's Theorem (Background)
 
 Hindman's theorem is a foundational result in Ramsey theory that guarantees
@@ -127,7 +127,7 @@ axiom hindman_theorem (k : ℕ) (hk : k ≥ 1) (c : Coloring k) :
 axiom hindman_sumset (k : ℕ) (hk : k ≥ 1) (c : Coloring k) :
     ∃ B : Set ℕ, B.Infinite ∧ IsMonochromatic c (sumset B)
 
-/-!
+/-
 ## Part IV: The Erdős Conjecture
 
 Erdős asked whether Hindman's theorem has a density analogue:
@@ -155,7 +155,7 @@ def ErdosConjecture656' : Prop :=
     ∃ (B : Set ℕ) (t : ℤ), B.Infinite ∧
       ∀ b₁ b₂ : ℕ, b₁ ∈ B → b₂ ∈ B → ∃ a : ℕ, a ∈ A ∧ (a : ℤ) = b₁ + b₂ + t
 
-/-!
+/-
 ## Part V: The Solution (Kra-Moreira-Richter-Robertson 2024)
 
 The conjecture was proved in 2024 using ergodic-theoretic methods.
@@ -178,7 +178,7 @@ axiom kra_moreira_richter_robertson : ErdosConjecture656
 axiom high_density_no_shift (A : Set ℕ) (h : upperDensity A > 1/2) :
     ∃ B : Set ℕ, B.Infinite ∧ sumset B ⊆ A
 
-/-!
+/-
 ## Part VI: Related Results and Strengthenings
 
 Several related problems and extensions.
@@ -200,7 +200,7 @@ axiom sarkozy_theorem (A : Set ℕ) (h : HasPositiveUpperDensity A) :
 axiom furstenberg_sarkozy (A : Set ℕ) (h : HasPositiveUpperDensity A) :
     ∃ d : ℕ, d > 0 ∧ ∃ a₁ a₂ : ℕ, a₁ ∈ A ∧ a₂ ∈ A ∧ a₁ - a₂ = d^2
 
-/-!
+/-
 ## Part VII: Furstenberg Correspondence
 
 The key tool connecting density to ergodic theory.
@@ -217,7 +217,7 @@ axiom furstenberg_correspondence (A : Set ℕ) (h : HasPositiveUpperDensity A) :
 axiom correspondence_preserves_sumsets (A : Set ℕ) (h : HasPositiveUpperDensity A) :
     ∃ B : Set ℕ, B.Infinite ∧ ∃ t : ℤ, HasShiftedSumsetIn A B t
 
-/-!
+/-
 ## Part VIII: Main Results Summary
 -/
 

@@ -35,7 +35,7 @@ namespace Erdos753
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Part I: List Coloring Definitions
 -/
 
@@ -85,7 +85,7 @@ axiom listChromaticNumber_achieved (G : SimpleGraph V) [DecidableRel G.Adj] :
 axiom listChromaticNumber_minimal (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) :
     IsKChoosable G k → listChromaticNumber G ≤ k
 
-/-!
+/-
 ## Part II: Complement Graph
 -/
 
@@ -116,7 +116,7 @@ theorem complement_complement (G : SimpleGraph V) :
     · simp [hne, G.loopless]
     · simp [h, hne]
 
-/-!
+/-
 ## Part III: The Conjecture
 -/
 
@@ -131,7 +131,7 @@ def ERTConjecture : Prop :=
     ∀ G : SimpleGraph V, ∀ _ : DecidableRel G.Adj, ∀ _ : DecidableRel (complementGraph G).Adj,
     (listChromaticNumber G + listChromaticNumber (complementGraph G) : ℝ) > n ^ (1/2 + c)
 
-/-!
+/-
 ## Part IV: Alon's Counterexample (1992)
 
 The conjecture is FALSE.
@@ -160,7 +160,7 @@ theorem conjecture_false : ¬ERTConjecture := by
   -- For large enough n, (n log n)^{1/2} < n^{1/2 + c}, contradiction
   sorry
 
-/-!
+/-
 ## Part V: Bounds and Relations
 -/
 
@@ -187,7 +187,7 @@ axiom trivial_lower_bound (G : SimpleGraph V) [DecidableRel G.Adj]
 axiom list_chromatic_le_max_degree_plus_one (G : SimpleGraph V) [DecidableRel G.Adj] :
     True  -- Simplified
 
-/-!
+/-
 ## Part VI: Probabilistic Construction
 -/
 
@@ -206,7 +206,7 @@ At probability 1/2, G and G^c have similar structure.
 axiom random_half_symmetry (n : ℕ) (hn : n ≥ 2) :
     True  -- χ_L(G) ≈ χ_L(G^c) for G(n, 1/2)
 
-/-!
+/-
 ## Part VII: Related Results
 -/
 
@@ -235,7 +235,7 @@ axiom list_chromatic_differs_from_chromatic :
     ∃ G : SimpleGraph V, ∃ _ : DecidableRel G.Adj,
     listChromaticNumber G > G.chromaticNumber
 
-/-!
+/-
 ## Part VIII: Choosability Properties
 -/
 
@@ -262,7 +262,7 @@ K_{n,n} has χ_L = 1 + ⌈log₂ n⌉ (Galvin's theorem).
 axiom galvin_theorem (n : ℕ) (hn : n ≥ 1) :
     True  -- χ_L(K_{n,n}) = 1 + ⌈log₂ n⌉
 
-/-!
+/-
 ## Part IX: Summary
 
 **Erdős Problem #753: Status SOLVED/DISPROVED** (Alon 1992)

@@ -24,7 +24,7 @@ import Mathlib.RingTheory.RootsOfUnity.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.GroupTheory.OrderOfElement
 
-/-! ## Primitive Roots -/
+/- ## Primitive Roots -/
 
 /-- A primitive root modulo p is an element whose multiplicative order is p - 1.
     This means it generates the entire multiplicative group (ℤ/pℤ)×. -/
@@ -39,7 +39,7 @@ def isPrimePrimitiveRoot (q : ℕ) (p : ℕ) : Prop :=
 def primesWithPrimePrimitiveRoot : Set ℕ :=
   {p : ℕ | p.Prime ∧ p ≠ 2 ∧ ∃ q, isPrimePrimitiveRoot q p}
 
-/-! ## Basic Properties of Primitive Roots -/
+/- ## Basic Properties of Primitive Roots -/
 
 /-- For any prime p > 2, there exists at least one primitive root modulo p.
     This follows from the fact that (ℤ/pℤ)× is cyclic. -/
@@ -50,7 +50,7 @@ axiom exists_primitive_root (p : ℕ) (hp : p.Prime) (hp2 : p ≠ 2) :
 axiom zmod_units_cyclic (p : ℕ) (hp : p.Prime) :
     IsCyclic (ZMod p)ˣ
 
-/-! ## Small Prime Examples -/
+/- ## Small Prime Examples -/
 
 /-- Example: 2 is a primitive root modulo 3.
     ord_3(2) = 2 = 3 - 1. -/
@@ -84,7 +84,7 @@ theorem primitiveRoot_2_mod_13 : orderOf (2 : ZMod 13) = 12 := by native_decide
     ord_23(5) = 22 = 23 - 1. -/
 theorem primitiveRoot_5_mod_23 : orderOf (5 : ZMod 23) = 22 := by native_decide
 
-/-! ## Verification of Erdős Conjecture for Small Primes -/
+/- ## Verification of Erdős Conjecture for Small Primes -/
 
 /-- For p = 3: q = 2 is a prime primitive root (ord_3(2) = 2). -/
 theorem erdos985_for_3 : ∃ q, q.Prime ∧ q < 3 ∧ orderOf (q : ZMod 3) = 2 :=
@@ -110,7 +110,7 @@ theorem erdos985_for_13 : ∃ q, q.Prime ∧ q < 13 ∧ orderOf (q : ZMod 13) = 
 theorem erdos985_for_23 : ∃ q, q.Prime ∧ q < 23 ∧ orderOf (q : ZMod 23) = 22 :=
   ⟨5, by decide, by norm_num, primitiveRoot_5_mod_23⟩
 
-/-! ## Artin's Conjecture and Related Results -/
+/- ## Artin's Conjecture and Related Results -/
 
 /-- Artin's Conjecture (1927): For any integer a ≠ -1, 0, 1 that is not a
     perfect square, there are infinitely many primes p for which a is a
@@ -128,7 +128,7 @@ axiom heath_brown_theorem :
        orderOf (3 : ZMod p) = p - 1 ∨
        orderOf (5 : ZMod p) = p - 1)}
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- Erdős Problem #985 Conjecture: For every prime p > 2, there exists a
     prime q < p which is a primitive root modulo p.
@@ -171,7 +171,7 @@ theorem erdos_985_iff_all_odd_primes :
     obtain ⟨_, _, q, hq_prime, hq_lt, _, _, hq_ord⟩ := this
     exact ⟨q, hq_prime, hq_lt, hq_ord⟩
 
-/-! ## Density Considerations -/
+/- ## Density Considerations -/
 
 /-- Among the primitive roots modulo p, the proportion that are prime
     is roughly 1/log(p) by the prime number theorem. Since there are
@@ -182,7 +182,7 @@ theorem erdos_985_iff_all_odd_primes :
 axiom heuristic_prime_primitive_roots (p : ℕ) (hp : p.Prime) (hp_large : p > 100) :
     ∃ q, q.Prime ∧ q < p ∧ orderOf (q : ZMod p) = p - 1
 
-/-! ## Connection to Other Problems -/
+/- ## Connection to Other Problems -/
 
 /-- If Artin's conjecture holds for all primes q, then Erdős 985 follows.
     Indeed, by Artin, each prime q < p is a primitive root for infinitely
@@ -197,7 +197,7 @@ theorem artin_implies_erdos_985 :
   -- The actual proof is more subtle and requires quantitative bounds.
   exact erdos_985_conjecture p hp hp2
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- Summary of Erdős Problem #985:
 

@@ -38,7 +38,7 @@ namespace Erdos1111
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -63,7 +63,7 @@ noncomputable def inducedChromaticNumber (G : SimpleGraph V) (S : Finset V) : �
 noncomputable def cliqueNumber (G : SimpleGraph V) : ℕ :=
   sSup {k | G.CliqueFree k → False}
 
-/-!
+/-
 ## Part II: The El Zahar-Erdős Property
 -/
 
@@ -92,7 +92,7 @@ d(t, c) exists (is finite) for all t, c ≥ 1.
 def ElZaharErdosConjecture : Prop :=
   ∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasElZaharErdosProperty t c d
 
-/-!
+/-
 ## Part III: Known Small Cases
 -/
 
@@ -114,7 +114,7 @@ K₄-free graphs with χ ≥ 5 have anticomplete parts with χ ≥ 2.
 -/
 axiom d_4_2 : d_func 4 2 = 5
 
-/-!
+/-
 ## Part IV: Wagon's Upper Bound (1980)
 -/
 
@@ -132,7 +132,7 @@ d(t+1, 2) ≤ d(t, 2) + t.
 axiom wagon_recursive :
   ∀ t : ℕ, t ≥ 2 → d_func (t + 1) 2 ≤ d_func t 2 + t
 
-/-!
+/-
 ## Part V: El Zahar-Erdős Results (1985)
 -/
 
@@ -158,7 +158,7 @@ axiom el_zahar_erdos_c3_bound :
   ∀ t : ℕ, t > 3 →
     d_func t 3 ≤ 2 * Nat.choose (t - 1) 3 + 7 * Nat.choose (t - 1) 2 + t
 
-/-!
+/-
 ## Part VI: Nguyen-Scott-Seymour (2024)
 -/
 
@@ -181,7 +181,7 @@ For all t, c ≥ 1, the NSS property holds for some d.
 axiom nguyen_scott_seymour_2024 :
   ∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasNSSProperty t c d
 
-/-!
+/-
 ## Part VII: Connection to Ramsey Theory
 -/
 
@@ -201,7 +201,7 @@ axiom chi_boundedness_connection :
   -- This problem studies what structure high-χ, low-ω graphs must have
   True
 
-/-!
+/-
 ## Part VIII: Why It's Hard
 -/
 
@@ -221,7 +221,7 @@ axiom cannot_compute :
   -- Noted on erdosproblems.com: cannot be resolved by finite computation
   True
 
-/-!
+/-
 ## Part IX: Summary
 -/
 

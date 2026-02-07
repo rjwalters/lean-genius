@@ -22,7 +22,7 @@ namespace Erdos486
 
 open scoped Classical
 
-/-!
+/-
 ## Logarithmic Density
 
 The logarithmic density of a set A ⊆ ℕ is defined as:
@@ -42,7 +42,7 @@ noncomputable def logSum (A : Set ℕ) (x : ℕ) : ℝ :=
 def HasLogDensity (A : Set ℕ) (d : ℝ) : Prop :=
   Filter.Tendsto (fun x => logSum A x / Real.log x) Filter.atTop (nhds d)
 
-/-!
+/-
 ## The Modular Avoidance Set
 
 Given a family of "forbidden" residue classes Xₙ ⊆ ℤ/nℤ for each n,
@@ -54,7 +54,7 @@ the avoidance set B consists of all m that avoid every forbidden class.
 def avoidanceSet (X : (n : ℕ) → Set (ZMod n)) : Set ℕ :=
   {m : ℕ | ∀ n : ℕ, (m : ZMod n) ∉ X n}
 
-/-!
+/-
 ## Erdős Conjecture #486
 
 The conjecture asks: for ANY choice of forbidden sets Xₙ, must the
@@ -74,7 +74,7 @@ axiom erdos486_conjecture :
     ∀ X : (n : ℕ) → Set (ZMod n),
     ∃ d : ℝ, HasLogDensity (avoidanceSet X) d
 
-/-!
+/-
 ## Special Case: Davenport-Erdős Theorem (1936)
 
 When Xₙ = {0} for all n in some set A, the avoidance set consists of
@@ -95,7 +95,7 @@ Note: This is a known theorem, stated as an axiom pending Mathlib formalization.
 axiom davenport_erdos_theorem :
     ∀ A : Set ℕ, ∃ d : ℝ, HasLogDensity (zeroAvoidanceSet A) d
 
-/-!
+/-
 ## Related Results
 
 Besicovitch (1934) showed that natural density may fail to exist for

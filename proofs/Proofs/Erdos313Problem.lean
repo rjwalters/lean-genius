@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #313 — Primary Pseudoperfect Numbers
 
 Are there infinitely many pairs (m, P) where m ≥ 2 is an integer and
@@ -33,7 +33,7 @@ import Mathlib.Data.Rat.Defs
 
 open Finset BigOperators
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of solutions (m, P) to the Erdős 313 equation:
 m ≥ 2, P is a nonempty finset of distinct primes, and
@@ -48,7 +48,7 @@ set P of distinct primes such that (n, P) is a solution. -/
 def IsPrimaryPseudoperfect (n : ℕ) : Prop :=
   ∃ P : Finset ℕ, (n, P) ∈ erdos313Solutions
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #313 (Open).**
 Are there infinitely many solutions to the equation
@@ -59,7 +59,7 @@ axiom erdos_313_conjecture : erdos313Solutions.Infinite
 axiom primary_pseudoperfect_infinite :
   Set.Infinite { n : ℕ | IsPrimaryPseudoperfect n }
 
-/-! ## Verified Examples -/
+/- ## Verified Examples -/
 
 /-- m = 2, P = {2}: 1/2 = 1 − 1/2. -/
 axiom solution_2 : (2, ({2} : Finset ℕ)) ∈ erdos313Solutions
@@ -77,7 +77,7 @@ axiom solution_1806 : (1806, ({2, 3, 7, 43} : Finset ℕ)) ∈ erdos313Solutions
   1/2 + 1/3 + 1/11 + 1/23 + 1/31 = 1 − 1/47058. -/
 axiom solution_47058 : (47058, ({2, 3, 11, 23, 31} : Finset ℕ)) ∈ erdos313Solutions
 
-/-! ## Structural Properties -/
+/- ## Structural Properties -/
 
 /-- **Product constraint.** In any solution (m, P), the value m must
 equal the product of all primes in P. -/
@@ -94,7 +94,7 @@ axiom uniqueness (m : ℕ) (P₁ P₂ : Finset ℕ)
 axiom at_least_eight :
   8 ≤ Set.encard { n : ℕ | IsPrimaryPseudoperfect n }
 
-/-! ## Connection to Egyptian Fractions -/
+/- ## Connection to Egyptian Fractions -/
 
 /-- The equation ∑ 1/pᵢ = 1 − 1/m can be rewritten as
   1/p₁ + ··· + 1/pₖ + 1/m = 1,

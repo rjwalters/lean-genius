@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #281 — Covering Congruences and Density
 
 Let n₁ < n₂ < ⋯ be an infinite sequence such that for any choice of
@@ -27,7 +27,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Congruence classes and coverage -/
+/- ## Congruence classes and coverage -/
 
 /-- A congruence class assignment: for each index i, choose aᵢ ∈ {0, ..., nᵢ - 1}. -/
 def CongruenceChoice (moduli : ℕ → ℕ) := (i : ℕ) → Fin (moduli i)
@@ -40,7 +40,7 @@ def IsCovered (moduli : ℕ → ℕ) (choice : CongruenceChoice moduli) (i : ℕ
 def IsCoveredByFirst (moduli : ℕ → ℕ) (choice : CongruenceChoice moduli) (k : ℕ) (m : ℤ) : Prop :=
     ∃ i : ℕ, i < k ∧ IsCovered moduli choice i m
 
-/-! ## Counting uncovered integers -/
+/- ## Counting uncovered integers -/
 
 /-- Count of integers in [1, N] not covered by the first k congruence classes. -/
 noncomputable def uncoveredCount (moduli : ℕ → ℕ) (choice : CongruenceChoice moduli)
@@ -53,7 +53,7 @@ noncomputable def uncoveredDensity (moduli : ℕ → ℕ) (choice : CongruenceCh
     (k N : ℕ) (hN : 0 < N) : ℚ :=
     (uncoveredCount moduli choice k N : ℚ) / (N : ℚ)
 
-/-! ## Full covering hypothesis -/
+/- ## Full covering hypothesis -/
 
 /-- The sequence has full covering: for any choice of congruence classes,
     the set of uncovered integers has upper density 0. -/
@@ -70,7 +70,7 @@ def IsStrictlyIncreasing (moduli : ℕ → ℕ) : Prop :=
 def ModuliValid (moduli : ℕ → ℕ) : Prop :=
     ∀ i : ℕ, 2 ≤ moduli i
 
-/-! ## Divergence of reciprocals -/
+/- ## Divergence of reciprocals -/
 
 /-- The hypothesis implies Σ 1/nᵢ = ∞. -/
 axiom full_covering_implies_divergent (moduli : ℕ → ℕ)
@@ -78,7 +78,7 @@ axiom full_covering_implies_divergent (moduli : ℕ → ℕ)
     (hf : HasFullCovering moduli) :
     ∀ M : ℚ, 0 < M → ∃ k : ℕ, M ≤ (Finset.range k).sum (fun i => (1 : ℚ) / (moduli i : ℚ))
 
-/-! ## Pairwise coprime case -/
+/- ## Pairwise coprime case -/
 
 /-- Pairwise coprime moduli. -/
 def PairwiseCoprime (moduli : ℕ → ℕ) : Prop :=
@@ -92,7 +92,7 @@ axiom coprime_divergent_suffices (moduli : ℕ → ℕ)
       (fun i => (1 : ℚ) / (moduli i : ℚ))) :
     HasFullCovering moduli
 
-/-! ## Main theorem (Erdős Problem 281) -/
+/- ## Main theorem (Erdős Problem 281) -/
 
 /-- Erdős Problem 281 (Proved): if the sequence has full covering, then
     for every ε > 0 there exists a finite k such that for any choice of

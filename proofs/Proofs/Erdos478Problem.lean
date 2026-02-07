@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #478: Factorial Residues Modulo Primes
 
 Let p be a prime and A_p = { k! mod p : 1 ≤ k < p }. Is it true that
@@ -24,7 +24,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of factorial residues modulo p: A_p = { k! mod p : 1 ≤ k < p }. -/
 noncomputable def factorialResidueSet (p : ℕ) [hp : Fact (Nat.Prime p)] : Finset (ZMod p) :=
@@ -37,7 +37,7 @@ noncomputable def factorialResidueCount (p : ℕ) [Fact (Nat.Prime p)] : ℕ :=
 /-- The conjectured asymptotic density (1 - 1/e). -/
 noncomputable def conjecturedDensity : ℝ := 1 - Real.exp (-1)
 
-/-! ## Wilson's Theorem Consequences -/
+/- ## Wilson's Theorem Consequences -/
 
 /-- Wilson's theorem: (p-1)! ≡ -1 (mod p) for prime p. -/
 axiom wilson_factorial_residue (p : ℕ) [Fact (Nat.Prime p)] :
@@ -51,7 +51,7 @@ axiom factorial_residues_nonzero (p : ℕ) [Fact (Nat.Prime p)] (hp2 : p > 2) :
 axiom factorial_residue_upper (p : ℕ) [Fact (Nat.Prime p)] (hp : p > 5) :
   factorialResidueCount p ≤ p - 2
 
-/-! ## Ratio Set Identity -/
+/- ## Ratio Set Identity -/
 
 /-- The ratio set A_p / A_p covers all nonzero residues modulo p.
     This is because consecutive factorials have ratio k, so
@@ -66,14 +66,14 @@ axiom ratio_set_full (p : ℕ) [Fact (Nat.Prime p)] :
 axiom factorial_residue_sqrt_lower (p : ℕ) [Fact (Nat.Prime p)] :
   (factorialResidueCount p : ℝ) ^ 2 ≥ (p : ℝ) - 1
 
-/-! ## Improved Lower Bound (GSSV 2024) -/
+/- ## Improved Lower Bound (GSSV 2024) -/
 
 /-- The product set A_p · A_p has near-full size (2024 result). -/
 axiom product_set_near_full (p : ℕ) [Fact (Nat.Prime p)] :
   ∀ ε : ℝ, ε > 0 → ∃ P₀ : ℕ, ∀ q : ℕ, [Fact (Nat.Prime q)] →
     q > P₀ → (factorialResidueCount q : ℝ) ≥ (Real.sqrt 2 - ε) * Real.sqrt q
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #478** (OPEN): |A_p| ~ (1 - 1/e) · p.
     More precisely, |A_p| / p → (1 - 1/e) as p → ∞ through primes. -/
@@ -82,7 +82,7 @@ axiom erdos_478_conjecture :
     p > P₀ →
       |((factorialResidueCount p : ℝ) / (p : ℝ)) - conjecturedDensity| < ε
 
-/-! ## Heuristic Motivation -/
+/- ## Heuristic Motivation -/
 
 /-- The 1 - 1/e heuristic: if factorial residues behaved like random elements
     of Z/pZ, each new k! mod p independently hits a new residue with probability
@@ -98,7 +98,7 @@ axiom factorial_as_multiplicative_walk (p : ℕ) [Fact (Nat.Prime p)] :
   ∀ k : ℕ, k ≥ 1 → k < p →
     ((k + 1).factorial : ZMod p) = ((k + 1 : ℕ) : ZMod p) * (k.factorial : ZMod p)
 
-/-! ## Average Results -/
+/- ## Average Results -/
 
 /-- Klurman–Munsch (2017): On average over primes p ≤ x,
     the factorial residue count is (1 - 1/e + o(1)) · p. -/

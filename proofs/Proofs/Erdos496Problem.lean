@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #496: Oppenheim Conjecture
 
 For irrational α ∈ ℝ and any ε > 0, there exist positive integers x, y, z
@@ -26,7 +26,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Real.Irrational
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The ternary quadratic form Q(x,y,z) = x² + y² − α·z² for real α. -/
 noncomputable def ternaryForm (α : ℝ) (x y z : ℤ) : ℝ :=
@@ -41,7 +41,7 @@ def ApproxZero (α : ℝ) (ε : ℝ) : Prop :=
   ∃ x y z : ℕ, x > 0 ∧ y > 0 ∧ z > 0 ∧
     |ternaryForm α (x : ℤ) (y : ℤ) (z : ℤ)| < ε
 
-/-! ## Main Theorem (Solved) -/
+/- ## Main Theorem (Solved) -/
 
 /-- **Erdős Problem #496 / Oppenheim Conjecture** (SOLVED by Margulis 1987):
     For irrational α > 0 and any ε > 0, there exist positive integers
@@ -50,7 +50,7 @@ axiom margulis_oppenheim :
   ∀ (α : ℝ), Irrational α → α > 0 →
     ∀ ε : ℝ, ε > 0 → ApproxZero α ε
 
-/-! ## Density of Values -/
+/- ## Density of Values -/
 
 /-- The set of values taken by the form is dense in ℝ.
     This is the stronger consequence of Margulis's theorem. -/
@@ -74,7 +74,7 @@ theorem dense_implies_approx_zero
   obtain ⟨x, y, z, hne, hval⟩ := h
   exact ⟨x, y, z, hne, by simp [sub_zero] at hval; exact hval⟩
 
-/-! ## Special Cases and Bounds -/
+/- ## Special Cases and Bounds -/
 
 /-- For α = p/q rational, the form x² + y² − (p/q)z² has a minimum nonzero
     value at integer points: min|Q| ≥ 1/q. No approximation is possible. -/
@@ -95,7 +95,7 @@ axiom davenport_heilbronn_five_variables :
         |(a : ℝ) ^ 2 + (b : ℝ) ^ 2 + (c : ℝ) ^ 2 + (d : ℝ) ^ 2
           - α * (e : ℝ) ^ 2| < ε
 
-/-! ## Connection to Dynamics -/
+/- ## Connection to Dynamics -/
 
 /-- Margulis's proof uses the action of SO(2,1) on SL(3,ℝ)/SL(3,ℤ).
     The key insight: the orbit of a lattice under the stabilizer of Q
@@ -116,7 +116,7 @@ theorem irrational_not_rational (α : ℝ) (hirr : Irrational α) :
   apply hirr
   exact ⟨p, q, hq, heq⟩
 
-/-! ## Quantitative Refinements -/
+/- ## Quantitative Refinements -/
 
 /-- **Eskin–Margulis–Mozes (1998)**: Quantitative Oppenheim.
     The number of integer points (x,y,z) with |Q(x,y,z)| < δ and

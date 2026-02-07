@@ -35,7 +35,7 @@ open Nat
 
 namespace Erdos418
 
-/-!
+/-
 ## Part I: Core Definitions
 
 The cototient of n is n - φ(n), which counts the integers from 1 to n
@@ -64,7 +64,7 @@ def CototientValues : Set ℕ :=
 def NonCototients : Set ℕ :=
   { m | IsNonCototient m }
 
-/-!
+/-
 ## Part II: Basic Properties of Cototient
 -/
 
@@ -91,7 +91,7 @@ example : cototient 6 = 4 := by native_decide
 /-- cototient(9) = 9 - φ(9) = 9 - 6 = 3. -/
 example : cototient 9 = 3 := by native_decide
 
-/-!
+/-
 ## Part III: Small Cototient Values
 
 Let's verify which small numbers are cototient values.
@@ -112,7 +112,7 @@ theorem three_is_cototient : IsCototientValue 3 := ⟨9, by native_decide⟩
 /-- 4 is a cototient value: 4 = cototient(6) or cototient(8). -/
 theorem four_is_cototient : IsCototientValue 4 := ⟨8, by native_decide⟩
 
-/-!
+/-
 ## Part IV: The First Non-Cototient
 
 The smallest non-cototient is 10. No n satisfies n - φ(n) = 10.
@@ -128,7 +128,7 @@ axiom small_non_cototients :
     IsNonCototient 10 ∧ IsNonCototient 26 ∧ IsNonCototient 34 ∧
     IsNonCototient 50 ∧ IsNonCototient 52 ∧ IsNonCototient 58
 
-/-!
+/-
 ## Part V: The Main Theorem (SOLVED)
 
 Browkin and Schinzel proved there are infinitely many non-cototients.
@@ -151,7 +151,7 @@ axiom browkin_schinzel_theorem :
     infinitely many distinct non-cototients. -/
 axiom erdos_418 : NonCototients.Infinite
 
-/-!
+/-
 ## Part VI: Conditional Result on Odd Numbers
 
 Assuming a strengthened Goldbach conjecture (every even n > 6 is the sum
@@ -177,7 +177,7 @@ theorem small_odd_cototients :
   refine ⟨one_is_cototient, three_is_cototient, ?_⟩
   exact ⟨25, by native_decide⟩
 
-/-!
+/-
 ## Part VII: Open Questions
 
 It remains open whether non-cototients have positive density.
@@ -195,7 +195,7 @@ def HasPositiveDensity (S : Set ℕ) : Prop :=
     construction gives a sparse set (2^k · 509203), not positive density. -/
 axiom density_open : True  -- Placeholder for open status
 
-/-!
+/-
 ## Part VIII: Related Function σ(n) - n
 
 A related problem concerns numbers not of the form σ(n) - n (nonaliquots).
@@ -214,7 +214,7 @@ def IsNonAliquot (m : ℕ) : Prop :=
 axiom erdos_nonaliquot_density : ∃ S : Set ℕ, HasPositiveDensity S ∧
     ∀ m ∈ S, IsNonAliquot m
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #418** asks whether there are infinitely many non-cototients

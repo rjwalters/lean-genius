@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #50 — Singularity of the Totient Distribution Function
 
 Schoenberg proved that for every c ∈ [0,1], the natural density of
@@ -31,7 +31,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
 open Filter Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of natural numbers where φ(n)/n < c. -/
 def totientRatioBelow (c : ℝ) : Set ℕ :=
@@ -49,7 +49,7 @@ Schoenberg proved this density exists for all c. -/
 noncomputable def schoenbergF (c : ℝ) : ℝ :=
   naturalDensity (totientRatioBelow c)
 
-/-! ## Schoenberg's Theorem -/
+/- ## Schoenberg's Theorem -/
 
 /-- **Schoenberg's Theorem.** For every c ∈ [0,1], the natural density
 of { n : φ(n)/n < c } exists (i.e., the liminf equals the limsup). -/
@@ -66,7 +66,7 @@ axiom schoenbergF_boundary : schoenbergF 0 = 0 ∧ schoenbergF 1 = 1
 /-- f is continuous. -/
 axiom schoenbergF_continuous : Continuous schoenbergF
 
-/-! ## Erdős's Result: Pure Singularity -/
+/- ## Erdős's Result: Pure Singularity -/
 
 /-- **Erdős's Theorem.** The distribution function f is purely singular:
 it is continuous but f'(x) = 0 for Lebesgue-almost every x ∈ [0,1].
@@ -76,7 +76,7 @@ axiom erdos_purely_singular :
     x ∈ Set.Icc 0 1 →
     HasDerivAt schoenbergF 0 x
 
-/-! ## Main Conjecture ($250) -/
+/- ## Main Conjecture ($250) -/
 
 /-- **Erdős Problem #50 ($250 prize).**
 Is it true that f'(x) does not exist and equal a positive value
@@ -85,7 +85,7 @@ is zero (or does not exist). -/
 axiom erdos_50_conjecture :
   ¬ ∃ x : ℝ, ∃ d : ℝ, 0 < d ∧ HasDerivAt schoenbergF d x
 
-/-! ## Properties of φ(n)/n -/
+/- ## Properties of φ(n)/n -/
 
 /-- φ(n)/n = ∏_{p | n} (1 − 1/p): the ratio depends only on the
 set of prime factors of n. -/

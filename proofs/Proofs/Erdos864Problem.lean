@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #864: Almost-Sidon Sets with One Collision
 
 Let A ⊆ {1, ..., N} be such that at most one integer n has multiple
@@ -24,7 +24,7 @@ import Mathlib.Tactic
 
 open Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The number of ordered representations of n as a + b with a ≤ b, a, b ∈ A. -/
 def sumRepCount (A : Finset ℕ) (n : ℕ) : ℕ :=
@@ -47,7 +47,7 @@ def IsSidon (A : Finset ℕ) : Prop :=
 noncomputable def maxAlmostSidon (N : ℕ) : ℕ :=
   Finset.sup ((Finset.Icc 1 N).powerset.filter (fun A => IsAlmostSidon A)) Finset.card
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #864** (OPEN): The maximum almost-Sidon set in {1,...,N}
     has size (1+o(1)) · (2/√3) · √N. -/
@@ -56,7 +56,7 @@ axiom erdos_864_conjecture :
   -- maxAlmostSidon N ≤ (2/√3 + ε) · √N
   True
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Erdős–Freud (1991)**: Lower bound via reflected Sidon construction.
     Take a Sidon set B ⊆ {1,...,N/3} and form A = B ∪ {N − b : b ∈ B}.
@@ -83,7 +83,7 @@ theorem sidon_is_almost_sidon (A : Finset ℕ) (h : IsSidon A) : IsAlmostSidon A
   unfold IsAlmostSidon IsSidon at *
   omega
 
-/-! ## Difference Version -/
+/- ## Difference Version -/
 
 /-- For the difference analogue (at most one n with multiple a − b
     representations), Erdős–Freud proved |A| ~ √N. -/
@@ -92,7 +92,7 @@ axiom erdos_freud_difference_version :
   -- is asymptotically √N
   True
 
-/-! ## Structural Properties -/
+/- ## Structural Properties -/
 
 /-- The number of ordered pairs (a, b) with a ≤ b in A is C(|A|, 2) + |A|.
     In a Sidon set, all pairwise sums are distinct, using C(|A|,2) + |A|

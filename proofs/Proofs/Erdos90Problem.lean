@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #90 — The Unit Distance Problem
 
 Given n points in the plane ℝ², what is the maximum number u(n) of pairs
@@ -21,7 +21,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-! ## Unit Distance Counting -/
+/- ## Unit Distance Counting -/
 
 /-- Count unordered pairs of distinct points at unit distance -/
 noncomputable def unitDistancePairsCount (points : Finset (EuclideanSpace ℝ (Fin 2))) : ℕ :=
@@ -36,14 +36,14 @@ noncomputable def unitDistanceCounts (n : ℕ) : Set ℕ :=
 noncomputable def maxUnitDistances (n : ℕ) : ℕ :=
   sSup (unitDistanceCounts n)
 
-/-! ## Trivial Bound -/
+/- ## Trivial Bound -/
 
 /-- The set of unit distance counts is bounded above by C(n,2),
     the total number of pairs -/
 axiom unitDistanceCounts_bddAbove (n : ℕ) :
   BddAbove (unitDistanceCounts n)
 
-/-! ## Spencer–Szemerédi–Trotter Upper Bound -/
+/- ## Spencer–Szemerédi–Trotter Upper Bound -/
 
 /-- u(n) = O(n^{4/3}): the best known upper bound on unit distances.
     Proved by Spencer, Szemerédi, and Trotter (1984) using the
@@ -53,7 +53,7 @@ axiom spencer_szemeredi_trotter :
     ∀ n : ℕ, 1 ≤ n →
       (maxUnitDistances n : ℝ) ≤ C * (n : ℝ) ^ ((4 : ℝ) / 3)
 
-/-! ## Lattice Lower Bound -/
+/- ## Lattice Lower Bound -/
 
 /-- There exist n-point configurations with n^{1+c/log log n} unit distances
     for some constant c > 0, achieved by lattice-point constructions -/
@@ -62,7 +62,7 @@ axiom lattice_lower_bound :
     ∀ᶠ n in Filter.atTop,
       (n : ℝ) ^ (1 + c / Real.log (Real.log (n : ℝ))) ≤ (maxUnitDistances n : ℝ)
 
-/-! ## The Erdős Conjecture -/
+/- ## The Erdős Conjecture -/
 
 /-- Erdős Problem 90: u(n) = n^{1+O(1/log log n)}, i.e. the maximum number of
     unit distances among n points in ℝ² is at most n^{1+O(1/log log n)}.
@@ -80,7 +80,7 @@ axiom erdos_90_weak :
     ∀ᶠ n in Filter.atTop,
       (maxUnitDistances n : ℝ) ≤ (n : ℝ) ^ (1 + ε)
 
-/-! ## Valtr's Obstruction -/
+/- ## Valtr's Obstruction -/
 
 /-- Valtr showed that there exists a metric on ℝ² (not Euclidean) where
     n points can have Θ(n^{4/3}) unit distances. This means any improvement

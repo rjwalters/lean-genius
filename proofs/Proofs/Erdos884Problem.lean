@@ -27,7 +27,7 @@ open Nat Finset BigOperators
 
 namespace Erdos884
 
-/-!
+/-
 # Erdős Problem 884: Divisor Gap Sums
 
 *Reference:* [erdosproblems.com/884](https://www.erdosproblems.com/884)
@@ -37,7 +37,7 @@ the sum over all pairs 1/(d_j - d_i) is bounded by an absolute constant times
 (1 + sum over consecutive pairs 1/(d_{i+1} - d_i)).
 -/
 
-/-! ## Divisor Lists -/
+/- ## Divisor Lists -/
 
 /-- The divisors of n as a sorted list. -/
 noncomputable def divisorList (n : ℕ) : List ℕ :=
@@ -57,7 +57,7 @@ axiom divisorList_sorted (n : ℕ) : (divisorList n).Sorted (· < ·)
 axiom mem_divisorList_iff (n d : ℕ) (hn : n > 0) :
     d ∈ divisorList n ↔ d ∣ n ∧ d > 0
 
-/-! ## Divisor Gaps -/
+/- ## Divisor Gaps -/
 
 /-- Consecutive divisor gap: d_{i+1} - d_i. -/
 noncomputable def consecutiveGap (n i : ℕ) : ℕ :=
@@ -75,7 +75,7 @@ axiom consecutiveGap_pos (n i : ℕ) (hn : n > 1) (hi : i + 1 < numDivisors n) :
 axiom generalGap_pos (n i j : ℕ) (hn : n > 1) (hij : i < j) (hj : j < numDivisors n) :
     generalGap n i j > 0
 
-/-! ## The Two Sums -/
+/- ## The Two Sums -/
 
 /-- All-pairs sum: Σ_{0≤i<j<t} 1/(d_j - d_i).
     This sums over all C(τ(n), 2) pairs of divisors. -/
@@ -90,7 +90,7 @@ noncomputable def consecutivePairsSum (n : ℕ) : ℝ :=
   ∑ i ∈ Finset.range (numDivisors n - 1),
     (1 : ℝ) / (consecutiveGap n i)
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- Erdős Problem #884 (OPEN):
     Does there exist an absolute constant C such that for all n ≥ 2,
@@ -102,7 +102,7 @@ def ErdosConjecture884 : Prop :=
 /-- The conjecture is axiomatized as the problem is OPEN. -/
 axiom erdos_884 : ErdosConjecture884
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The all-pairs sum is non-negative. -/
 axiom allPairsSum_nonneg (n : ℕ) : allPairsSum n ≥ 0
@@ -115,7 +115,7 @@ theorem consecutivePairsSum_num_terms (n : ℕ) (hn : n > 0) :
     (Finset.range (numDivisors n - 1)).card = numDivisors n - 1 := by
   simp
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- For n = 6, divisors are [1, 2, 3, 6]. -/
 axiom divisors_6 : divisorList 6 = [1, 2, 3, 6]
@@ -128,7 +128,7 @@ axiom divisors_prime (p : ℕ) (hp : p.Prime) :
 axiom prime_case_equality (p : ℕ) (hp : p.Prime) :
     allPairsSum p = consecutivePairsSum p
 
-/-! ## Structural Lemmas -/
+/- ## Structural Lemmas -/
 
 /-- Any general gap is at least the first consecutive gap involved.
     d_j - d_i ≥ d_{i+1} - d_i since divisors are increasing. -/
@@ -141,7 +141,7 @@ axiom numDivisors_mul_coprime (m n : ℕ) (hm : m > 0) (hn : n > 0)
     (hcop : Nat.Coprime m n) :
     numDivisors (m * n) = numDivisors m * numDivisors n
 
-/-! ## Connections -/
+/- ## Connections -/
 
 /-- The harmonic sum over divisors: σ_{-1}(n) = Σ_{d|n} 1/d. -/
 noncomputable def divisorHarmonicSum (n : ℕ) : ℝ :=

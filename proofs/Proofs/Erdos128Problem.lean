@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #128: Triangle-Free Graphs with Dense Subgraphs
 
 Erdős Problem #128 asks: if every induced subgraph of G on ≥ ⌊n/2⌋ vertices
@@ -22,7 +22,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A simple graph on n vertices. -/
 structure Graph (n : ℕ) where
@@ -55,7 +55,7 @@ def Graph.denseSubgraphs {n : ℕ} (G : Graph n) : Prop :=
   ∀ S : Finset (Fin n), n / 2 ≤ S.card →
     n ^ 2 / 50 < (G.induce S).edgeCount
 
-/-! ## Extremal Examples -/
+/- ## Extremal Examples -/
 
 /-- The blow-up of C₅ (Möbius–Kantor type): partition n vertices into 5 parts
     of size ~n/5, connect parts i and i+1 (mod 5). This is triangle-free
@@ -65,7 +65,7 @@ axiom c5_blowup_triangle_free (n : ℕ) (hn : 10 ≤ n) :
     ∀ S : Finset (Fin n), n / 2 ≤ S.card →
       (G.induce S).edgeCount ≤ n ^ 2 / 50 + n
 
-/-! ## Partial Results -/
+/- ## Partial Results -/
 
 /-- EFRS (Erdős–Faudree–Rousseau–Schelp): the result holds with
     50 replaced by 16. If every subgraph on ≥ n/2 vertices has > n²/16 edges,
@@ -96,7 +96,7 @@ axiom norin_yepremyan_theorem :
     (1 / 5 - c) * (n : ℝ) ^ 2 ≤ (G.edgeCount : ℝ) →
     G.denseSubgraphs → G.hasTriangle
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- Erdős Problem #128: If every induced subgraph on ≥ ⌊n/2⌋ vertices
     has more than n²/50 edges, then G contains a triangle. ($250 prize) -/

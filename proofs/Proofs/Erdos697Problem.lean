@@ -39,7 +39,7 @@ open Real Nat
 
 namespace Erdos697
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -60,7 +60,7 @@ noncomputable def delta (m : ℕ) (α : ℝ) : ℝ :=
   if m ≤ 1 then 0
   else Filter.liminf (fun N => coveredCount m α N / N) Filter.atTop
 
-/-!
+/-
 ## Part 2: The Threshold Question
 -/
 
@@ -78,7 +78,7 @@ theorem hallThreshold_in_range : hallThreshold > 1 := by
   -- 1/log 2 > 1 ⟺ 1 > log 2, which is true since log 2 < 1
   sorry
 
-/-!
+/-
 ## Part 3: Trivial Bounds
 -/
 
@@ -92,7 +92,7 @@ axiom trivial_bound_proof :
   -- which → 0 when α < 1
   True
 
-/-!
+/-
 ## Part 4: Erdős's Claim for α = 1
 -/
 
@@ -103,7 +103,7 @@ axiom erdos_alpha_one :
 /-- Erdős claimed this in [Er79e] but didn't publish a full proof -/
 axiom erdos_claim_source : True
 
-/-!
+/-
 ## Part 5: Hall's Theorem (1992)
 -/
 
@@ -128,7 +128,7 @@ theorem threshold_is_one_over_log_two :
   obtain ⟨hSharp, hBelow, hAbove⟩ := hall_theorem
   exact ⟨hSharp, hallThreshold, rfl, hallThreshold_in_range, hBelow, hAbove⟩
 
-/-!
+/-
 ## Part 6: Why 1/log 2?
 -/
 
@@ -148,7 +148,7 @@ axiom why_one_over_log_two :
   -- the distribution of prime factors in numbers of the form d ≡ 1 (mod m)
   True
 
-/-!
+/-
 ## Part 7: Behavior at Threshold
 -/
 
@@ -163,7 +163,7 @@ axiom at_threshold_open :
   -- This is a more subtle question not addressed in Hall (1992)
   True
 
-/-!
+/-
 ## Part 8: Connection to Problem #696
 -/
 
@@ -174,7 +174,7 @@ axiom related_problem_696 : True
     sufficiently cover integers -/
 axiom shared_theme : True
 
-/-!
+/-
 ## Part 9: Examples
 -/
 
@@ -188,7 +188,7 @@ axiom example_m_2 : ∀ α : ℝ, α > 0 → delta 2 α = 1
     The density depends on how many integers are divisible by such d. -/
 axiom example_m_prime : True
 
-/-!
+/-
 ## Part 10: Historical Context
 -/
 
@@ -202,7 +202,7 @@ axiom unconventional_problems : True
 /-- Hall's 1992 paper resolved this and related questions -/
 axiom hall_1992_paper : True
 
-/-!
+/-
 ## Part 11: Main Results
 -/
 

@@ -33,7 +33,7 @@ namespace Erdos634
 
 open Finset Function
 
-/-!
+/-
 ## Part I: Triangles and Congruence
 
 Basic geometric definitions.
@@ -65,7 +65,7 @@ theorem congruent_trans {T₁ T₂ T₃ : Triangle} :
     Congruent T₁ T₂ → Congruent T₂ T₃ → Congruent T₁ T₃ :=
   fun h₁ h₂ => h₁.trans h₂
 
-/-!
+/-
 ## Part II: Similar Triangles
 
 A weaker notion than congruence.
@@ -80,7 +80,7 @@ theorem congruent_implies_similar {T₁ T₂ : Triangle} :
     Congruent T₁ T₂ → Similar T₁ T₂ := by
   sorry
 
-/-!
+/-
 ## Part III: Triangle Dissection
 
 The central concept of the problem.
@@ -100,7 +100,7 @@ def IsCongruentDissection (T : Triangle) (n : ℕ) (D : Dissection T n) : Prop :
 def IsDissectable (n : ℕ) : Prop :=
   ∃ T : Triangle, ∃ D : Dissection T n, IsCongruentDissection T n D
 
-/-!
+/-
 ## Part IV: Known Positive Results
 
 Values of n that ARE dissectable.
@@ -131,7 +131,7 @@ theorem sum_squares_dissectable (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ 1) :
 theorem twenty_seven_dissectable : IsDissectable 27 := by
   sorry
 
-/-!
+/-
 ## Part V: Beeson's Negative Results
 
 Values of n that are NOT dissectable.
@@ -155,7 +155,7 @@ theorem non_dissectable_form :
   | inl h => exact ⟨1, h⟩
   | inr h => exact ⟨2, h⟩
 
-/-!
+/-
 ## Part VI: The Conjecture
 
 Primes of form 4k + 3 may fail to be dissectable.
@@ -175,7 +175,7 @@ theorem three_dissectable : IsDissectable 3 := by
 def Conjecture_4k3_refined : Prop :=
   ∀ p : ℕ, p.Prime → p ≠ 3 → (∃ k : ℕ, p = 4 * k + 3) → ¬IsDissectable p
 
-/-!
+/-
 ## Part VII: Open Cases
 
 Values whose dissectability is unknown.
@@ -195,7 +195,7 @@ theorem conjecture_implies_19 : Conjecture_4k3_refined → ¬IsDissectable 19 :=
   intro hconj
   apply hconj 19 nineteen_prime (by norm_num) nineteen_form
 
-/-!
+/-
 ## Part VIII: Similar Triangles (Soifer's Result)
 
 A complete answer for the similar case.
@@ -222,7 +222,7 @@ axiom three_not_similar_dissectable : ¬IsSimilarDissectable 3
 /-- 5 is NOT similar-dissectable. -/
 axiom five_not_similar_dissectable : ¬IsSimilarDissectable 5
 
-/-!
+/-
 ## Part IX: Self-Similar Dissections
 
 Dissections where pieces are similar to the original.
@@ -244,7 +244,7 @@ axiom sww_theorem (n : ℕ) :
       (∃ k m : ℕ, k ≥ 1 ∧ m ≥ 1 ∧ n = k^2 + m^2) ∨
       (∃ k : ℕ, k ≥ 1 ∧ n = 3 * k^2)
 
-/-!
+/-
 ## Part X: Recent Progress
 
 Zhang (2025) and other developments.
@@ -262,7 +262,7 @@ def KnownDissectable : Set ℕ :=
         (∃ k : ℕ, n = 6 * k^2) ∨
         (∃ k m : ℕ, n = k^2 + m^2) }
 
-/-!
+/-
 ## Part XI: Main Results
 
 Erdős Problem #634 partial answer.

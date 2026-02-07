@@ -27,7 +27,7 @@ open Nat Set Finset BigOperators
 
 namespace Erdos849
 
-/-!
+/-
 ## Core Definitions
 
 The multiplicity of a value in Pascal's triangle, counting only entries
@@ -51,7 +51,7 @@ noncomputable def binomNMultiplicity (a : ℕ) : ℕ :=
 def HasExactMultiplicity (a t : ℕ) : Prop :=
   binomNMultiplicity a = t
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -69,7 +69,7 @@ axiom one_multiplicity : binomNMultiplicity 1 = 0
 /-- 2 appears exactly once: only as C(2,1). -/
 axiom two_multiplicity : binomNMultiplicity 2 = 1
 
-/-!
+/-
 ## Singmaster's Conjecture
 
 The related conjecture bounds how many times any value can appear.
@@ -85,7 +85,7 @@ axiom singmaster_conjecture : ∃ N : ℕ, ∀ a : ℕ, binomNMultiplicity a ≤
 This is based on extensive computation. -/
 axiom multiplicity_bound_8 : ∀ a : ℕ, binomNMultiplicity a ≤ 8
 
-/-!
+/-
 ## Known Multiplicities
 
 Values with specific multiplicities.
@@ -118,7 +118,7 @@ theorem choose_78_2 : Nat.choose 78 2 = 3003 := by native_decide
 /-- Verification: C(3003,1) = 3003. -/
 theorem choose_3003_1 : Nat.choose 3003 1 = 3003 := by native_decide
 
-/-!
+/-
 ## Main Conjecture (OPEN)
 
 For every t ≥ 1, does there exist a with exactly t occurrences?
@@ -148,7 +148,7 @@ axiom t_equals_5_open :
     (∃ a : ℕ, binomNMultiplicity a = 5) ∨
     (¬∃ a : ℕ, binomNMultiplicity a = 5)
 
-/-!
+/-
 ## Special Values in Pascal's Triangle
 
 Some values appear many times due to special structure.
@@ -161,7 +161,7 @@ axiom multiplicity_6 : binomNMultiplicity 6 = 2
 theorem choose_5_2 : Nat.choose 5 2 = 10 := by native_decide
 theorem choose_10_1 : Nat.choose 10 1 = 10 := by native_decide
 
-/-!
+/-
 ## Asymptotic Results
 
 Upper bounds on how often a value can appear.
@@ -176,7 +176,7 @@ values with multiplicity ≥ 2. -/
 axiom infinitely_many_multiplicity_2 :
     {a : ℕ | binomNMultiplicity a ≥ 2}.Infinite
 
-/-!
+/-
 ## Related Sequences
 
 Connection to OEIS sequences.
@@ -194,7 +194,7 @@ axiom values_with_multiplicity_4 : binomNMultiplicity 6435 = 4
 theorem choose_15_7 : Nat.choose 15 7 = 6435 := by native_decide
 theorem choose_6435_1 : Nat.choose 6435 1 = 6435 := by native_decide
 
-/-!
+/-
 ## Historical Context
 
 The problem connects to several classical questions about Pascal's triangle.

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #126: Distinct Prime Factors of Pairwise Sums
 
 Let f(n) be the maximum value such that for any A ⊆ ℕ with |A| = n,
@@ -27,7 +27,7 @@ import Mathlib.Tactic
 
 open Filter Asymptotics
 
-/-!
+/-
 ## Part I: The Extremal Function
 
 The central object is f(n): the maximum m such that every n-element subset
@@ -47,7 +47,7 @@ def IsMaximalAddFactorsCard (f : ℕ → ℕ) : Prop :=
       m ≤ (∏ p ∈ A.offDiag, ((p.1 + p.2) : ℕ)).primeFactors.card }
     (f n)
 
-/-!
+/-
 ## Part II: The Main Conjecture
 
 Erdős conjectured that f(n) grows strictly faster than log(n).
@@ -68,7 +68,7 @@ def ErdosConjecture126 (f : ℕ → ℕ) : Prop :=
 axiom erdos_126 : ∀ (f : ℕ → ℕ), IsMaximalAddFactorsCard f →
   ErdosConjecture126 f
 
-/-!
+/-
 ## Part III: Known Bounds (Erdős–Turán 1934)
 
 In their first joint paper, prompted by Lázár and Grünwald,
@@ -100,7 +100,7 @@ theorem erdos_turan_bounds (f : ℕ → ℕ) (hf : IsMaximalAddFactorsCard f) :
     ((fun (n : ℕ) => (f n : ℝ)) =O[atTop] fun (n : ℕ) => (n : ℝ) / Real.log n) :=
   ⟨erdos_turan_lower f hf, erdos_turan_upper f hf⟩
 
-/-!
+/-
 ## Part IV: The Little-o Question
 
 A secondary open question: is f(n) = o(n / log(n))?
@@ -116,7 +116,7 @@ Erdős said this has "never been seriously attacked."
 axiom erdos_126_littleo : ∀ (f : ℕ → ℕ), IsMaximalAddFactorsCard f →
   (fun (n : ℕ) => (f n : ℝ)) =o[atTop] fun (n : ℕ) => (n : ℝ) / Real.log n
 
-/-!
+/-
 ## Part V: Trivial Upper Bound Construction
 
 When A = {1, …, n}, all pairwise sums lie in {3, …, 2n − 1}.
@@ -132,7 +132,7 @@ axiom trivial_upper_bound (n : ℕ) :
   ∃ (A : Finset ℕ), A.card = n ∧
     (∏ p ∈ A.offDiag, ((p.1 + p.2) : ℕ)).primeFactors.card ≤ 2 * n
 
-/-!
+/-
 ## Part VI: Monotonicity of f
 
 A basic structural observation: f is monotone non-decreasing,
@@ -145,7 +145,7 @@ since any (n+1)-element set contains an n-element subset.
 axiom f_monotone (f : ℕ → ℕ) (hf : IsMaximalAddFactorsCard f) :
   Monotone f
 
-/-!
+/-
 ## Part VII: Summary
 
 - The extremal function f(n) counts minimum distinct prime factors

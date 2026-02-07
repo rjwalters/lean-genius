@@ -24,7 +24,7 @@ open scoped EuclideanGeometry
 
 namespace Erdos97
 
-/-!
+/-
 ## Background
 
 This problem concerns the equidistance structure of convex polygons.
@@ -79,7 +79,7 @@ of the others. Equivalently, they form the vertices of a convex polygon.
 def isConvexPosition (A : Finset (EuclideanSpace ℝ (Fin 2))) : Prop :=
   ∀ p ∈ A, p ∉ convexHull ℝ (A.erase p : Set (EuclideanSpace ℝ (Fin 2)))
 
-/-!
+/-
 ## The Main Question
 
 Erdős asked whether every convex polygon has a vertex with no 4 vertices
@@ -99,7 +99,7 @@ def Erdos97Question : Prop :=
   ∀ A : Finset (EuclideanSpace ℝ (Fin 2)),
     A.Nonempty → isConvexPosition A → ¬hasKEquidistantProperty 4 A
 
-/-!
+/-
 ## Danzer's Counterexample (k = 3)
 
 Danzer found a convex 9-gon where every vertex has 3 other vertices
@@ -127,7 +127,7 @@ def danzerPoints : Finset (EuclideanSpace ℝ (Fin 2)) :=
   -- See formal-conjectures for the explicit coordinates
   sorry
 
-/-!
+/-
 ## Fishburn-Reeds Result (Unit Distance)
 
 Fishburn and Reeds found a convex 20-gon where every vertex has 3 other
@@ -154,7 +154,7 @@ axiom fishburnReedsMinimal :
   ∀ A : Finset (EuclideanSpace ℝ (Fin 2)),
     A.card < 20 → isConvexPosition A → ¬hasKUnitDistanceProperty 3 A
 
-/-!
+/-
 ## The General k Question
 
 Erdős also asked: is there ANY k for which every convex polygon has a vertex
@@ -173,7 +173,7 @@ def GeneralKConjecture : Prop :=
   ∃ k : ℕ, ∀ A : Finset (EuclideanSpace ℝ (Fin 2)),
     A.Nonempty → isConvexPosition A → ¬hasKEquidistantProperty k A
 
-/-!
+/-
 ## Connection to Problem #96
 
 If the k = 4 conjecture holds, it would give bounds on the unit distance
@@ -192,7 +192,7 @@ theorem kEquidistant_implies_unitDistance_bound (k : ℕ)
       (A.filter fun p => ∃ q ∈ A, dist' p q = 1).card ≤ k * A.card := by
   sorry
 
-/-!
+/-
 ## Non-Convex Case
 
 Without convexity, there is no bound: hypercube graphs can be embedded
@@ -208,7 +208,7 @@ axiom hypercubeEmbedding :
   ∀ d : ℕ, ∃ A : Finset (EuclideanSpace ℝ (Fin 2)),
     A.card = 2^d ∧ hasKUnitDistanceProperty d A
 
-/-!
+/-
 ## Historical Notes
 
 This problem illustrates the surprising richness of convex polygon geometry.

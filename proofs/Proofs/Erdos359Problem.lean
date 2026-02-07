@@ -37,7 +37,7 @@ open Finset Set Filter
 
 namespace Erdos359
 
-/-!
+/-
 ## Part I: Core Definitions
 
 We define the sequence recursively: a₀ = n and a_{j+1} is the smallest
@@ -69,7 +69,7 @@ def IsGoodFor (A : ℕ → ℕ) (n : ℕ) : Prop :=
 /-- The MacMahon sequence is the unique sequence "good for 1". -/
 def IsMacMahonSeq (A : ℕ → ℕ) : Prop := IsGoodFor A 1
 
-/-!
+/-
 ## Part II: Basic Properties
 -/
 
@@ -91,7 +91,7 @@ theorem term_is_achievable (A : ℕ → ℕ) (i k : ℕ) (hik : i ≤ k) :
   · exact hik
   · simp [ConsecutiveSum]
 
-/-!
+/-
 ## Part III: Known Values
 
 The MacMahon sequence (OEIS A002048) begins: 1, 2, 4, 5, 8, 10, 14, 15, ...
@@ -133,7 +133,7 @@ theorem six_is_achievable (A : ℕ → ℕ)
   rw [Finset.sum_Icc_succ_top (by omega : 1 ≤ 2)]
   simp only [Finset.Icc_self, Finset.sum_singleton, h_vals.1, h_vals.2]
 
-/-!
+/-
 ## Part IV: Growth Rate Conjectures (OPEN)
 
 The main questions about growth rate remain open.
@@ -159,7 +159,7 @@ axiom andrews_conjecture :
     ∃ f : ℕ → ℝ, (∀ k, k > 1 → f k = (k : ℝ) * Real.log k / Real.log (Real.log k)) ∧
       Tendsto (fun k => (A k : ℝ) / f k) atTop (nhds 1)
 
-/-!
+/-
 ## Part V: Porubský's Partial Results
 
 Porubský proved some bounds on the growth rate.
@@ -189,7 +189,7 @@ axiom porubsky_density_bound :
       ∀ N : ℕ, ∃ x > N,
         c < (countingFunction A x : ℝ) / primeCounting x
 
-/-!
+/-
 ## Part VI: General Starting Value n
 
 The problem also considers sequences starting with n ≠ 1.
@@ -201,7 +201,7 @@ axiom general_n_superlinear :
     ∀ A : ℕ → ℕ, IsGoodFor A n →
       Tendsto (fun k => (A k : ℝ) / k) atTop atTop
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #359** (OPEN) concerns MacMahon's sequence where each term

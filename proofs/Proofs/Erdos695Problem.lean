@@ -27,7 +27,7 @@ open Filter Finset Real
 
 namespace Erdos695
 
-/-!
+/-
 # Part 1: Prime Chain Definition
 
 A prime chain is a strictly increasing sequence of primes where each
@@ -55,7 +55,7 @@ theorem chain_equiv (p : ℕ → ℕ) (hp : ∀ i, (p i).Prime) :
     have := h i
     omega
 
-/-!
+/-
 # Part 2: Growth Questions
 
 The key questions concern how fast prime chains must grow.
@@ -82,7 +82,7 @@ def Question2 : Prop :=
     ∃ o : ℕ → ℝ, (o =o[atTop] (1 : ℕ → ℝ)) ∧
       ∀ k, (p k : ℝ) ≤ exp ((k + 1) * log (k + 1) ^ (1 + o k))
 
-/-!
+/-
 # Part 3: Known Bounds
 
 We axiomatize what is known about prime chain growth.
@@ -112,7 +112,7 @@ theorem conjecture_implies_question2 :
       (p' : ℝ) ≤ p * (log p) ^ C) → Question2 := by
   sorry
 
-/-!
+/-
 # Part 4: Related Sequences
 
 Prime chains connect to OEIS A061092 and Cunningham chains.
@@ -132,7 +132,7 @@ theorem cunningham_is_prime_chain (p : ℕ → ℕ) (h : IsCunninghamChainFirst 
     (hodd : ∀ i, p i > 2) : StrictMono p ∧ (∀ i, p (i + 1) % p i = 1) := by
   sorry
 
-/-!
+/-
 # Part 5: The Ford-Konyagin-Luca Analysis
 
 FKL (2010) conducted an extensive study of prime chain growth.
@@ -148,7 +148,7 @@ axiom fkl_analysis : ∃ f : ℕ → ℕ,
 axiom exponential_lower_bound : ∃ c : ℝ, c > 1 ∧
   ∀ p : ℕ → ℕ, IsPrimeChain p → ∀ k, (p k : ℝ) ≥ c ^ k
 
-/-!
+/-
 # Part 6: Problem Status
 
 Both questions remain OPEN. The gap between known lower and upper bounds
@@ -167,7 +167,7 @@ def ErdosProblem695Part2 : Prop := Question2
 -- Upper: p_k ≤ exp(exp(O(k))) (greedy algorithm with Linnik)
 -- Conjectured: p_k ≤ exp(k(log k)^{O(1)}) if small_prime_conjecture holds
 
-/-!
+/-
 # Part 7: Formal Statement from formal-conjectures
 
 The following are the precise formal statements.

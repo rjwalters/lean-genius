@@ -26,7 +26,7 @@ namespace Erdos630
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- The chromatic number χ(G) -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
@@ -36,7 +36,7 @@ noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
 def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ f : V → Fin k, ∀ v w : V, G.Adj v w → f v ≠ f w
 
-/-! ## List Coloring -/
+/- ## List Coloring -/
 
 /-- A list assignment gives each vertex a set of available colors -/
 def ListAssignment (V : Type*) (C : Type*) := V → Finset C
@@ -57,7 +57,7 @@ def IsKChoosable (G : SimpleGraph V) (k : ℕ) : Prop :=
 noncomputable def listChromaticNumber (G : SimpleGraph V) : ℕ :=
   sorry -- Minimum k such that G is k-choosable
 
-/-! ## Basic Properties of List Chromatic Number -/
+/- ## Basic Properties of List Chromatic Number -/
 
 /-- χ_L(G) ≥ χ(G) always -/
 theorem list_chromatic_ge_chromatic (G : SimpleGraph V) :
@@ -80,7 +80,7 @@ axiom complete_bipartite_list_chromatic :
       chromaticNumber G = 2 ∧
       listChromaticNumber G > 2
 
-/-! ## Planar Graphs -/
+/- ## Planar Graphs -/
 
 /-- A graph is planar (can be drawn without edge crossings) -/
 def IsPlanar (G : SimpleGraph V) : Prop :=
@@ -102,7 +102,7 @@ axiom thomassen_five_list :
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     IsPlanar G → listChromaticNumber G ≤ 5
 
-/-! ## Bipartite Graphs -/
+/- ## Bipartite Graphs -/
 
 /-- A graph is bipartite iff it has no odd cycles -/
 theorem bipartite_iff_no_odd_cycle (G : SimpleGraph V) :
@@ -120,7 +120,7 @@ theorem bipartite_list_can_exceed_2 :
       G.IsBipartite ∧ listChromaticNumber G > 2 := by
   sorry
 
-/-! ## The Main Result: Alon-Tarsi Theorem -/
+/- ## The Main Result: Alon-Tarsi Theorem -/
 
 /-- Alon-Tarsi (1992): Planar bipartite graphs are 3-choosable -/
 axiom alon_tarsi_theorem :
@@ -137,7 +137,7 @@ theorem planar_bipartite_3_choosable :
   have h := alon_tarsi_theorem V G hplanar hbip
   sorry
 
-/-! ## The Algebraic Method -/
+/- ## The Algebraic Method -/
 
 /-- The Alon-Tarsi proof uses the graph polynomial -/
 noncomputable def graphPolynomial (G : SimpleGraph V) : MvPolynomial V ℤ :=
@@ -156,7 +156,7 @@ axiom alon_tarsi_coefficient :
     IsPlanar G → G.IsBipartite →
     sorry -- The relevant coefficient in graphPolynomial is nonzero
 
-/-! ## Sharpness -/
+/- ## Sharpness -/
 
 /-- The bound 3 is tight: some planar bipartite graphs need 3 -/
 theorem bound_is_tight :
@@ -171,7 +171,7 @@ axiom k24_list_chromatic :
     Fintype.card V = 6 ∧
     listChromaticNumber G = 3
 
-/-! ## Generalizations -/
+/- ## Generalizations -/
 
 /-- For non-planar bipartite graphs, χ_L can be arbitrarily large -/
 theorem nonplanar_bipartite_unbounded :
@@ -188,7 +188,7 @@ axiom complete_bipartite_lower_bound :
         ∀ a b : V, a ∈ A → b ∈ B → G.Adj a b) ∧
       listChromaticNumber G ≥ Nat.clog 2 n + 1
 
-/-! ## Connection to Other Problems -/
+/- ## Connection to Other Problems -/
 
 /-- Planar graphs: χ_L ≤ 5 (tight) -/
 theorem planar_list_chromatic_5 :
@@ -206,7 +206,7 @@ axiom list_coloring_conjecture_open :
   ¬(listColoringConjecture ∨ ¬listColoringConjecture)
   -- Formal way to say "unknown"
 
-/-! ## Outerplanar Graphs -/
+/- ## Outerplanar Graphs -/
 
 /-- A graph is outerplanar if it can be drawn with all vertices on outer face -/
 def IsOuterplanar (G : SimpleGraph V) : Prop :=
@@ -222,7 +222,7 @@ axiom outerplanar_3_choosable :
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     IsOuterplanar G → listChromaticNumber G ≤ 3
 
-/-! ## Main Problem Status -/
+/- ## Main Problem Status -/
 
 /-- Erdős Problem #630: SOLVED
 

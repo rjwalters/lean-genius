@@ -39,7 +39,7 @@ namespace Erdos576
 
 open SimpleGraph Finset
 
-/-!
+/-
 ## Part 1: Hypercube Graph Definition
 
 The k-dimensional hypercube graph Q_k has vertices {0,1}^k (all binary strings
@@ -76,7 +76,7 @@ def hypercubeGraph (k : ℕ) : SimpleGraph (HypercubeVertex k) where
 
 notation "Q(" k ")" => hypercubeGraph k
 
-/-!
+/-
 ## Part 2: Properties of Hypercube Graphs
 
 The hypercube Q_k has exactly 2^k vertices and k·2^(k-1) edges.
@@ -97,7 +97,7 @@ axiom hypercube_degree (k : ℕ) (v : HypercubeVertex k) :
 axiom hypercube_edge_count (k : ℕ) :
     (Q(k)).edgeFinset.card = k * 2^(k-1)
 
-/-!
+/-
 ## Part 3: Turán Numbers and Extremal Graph Theory
 
 The extremal number ex(n; H) is the maximum number of edges in an H-free
@@ -120,7 +120,7 @@ noncomputable def turanNumber (n : ℕ) {W : Type*} [Fintype W] [DecidableEq W]
 
 notation "ex(" n ";" H ")" => turanNumber n H
 
-/-!
+/-
 ## Part 4: Known Bounds for Hypercube Turán Numbers
 
 The main results on ex(n; Q_k) establish asymptotic bounds.
@@ -145,7 +145,7 @@ theorem erdos_simonovits_bounds :
   obtain ⟨C, hC_pos, hC_bound⟩ := erdos_simonovits_upper_bound
   exact ⟨c, C, hc_pos, hC_pos, Filter.Eventually.and hc_bound hC_bound⟩
 
-/-!
+/-
 ## Part 5: Recent Progress - Sudakov-Tomon and Janzer-Sudakov
 
 Modern results have improved the upper bounds for general k.
@@ -171,7 +171,7 @@ theorem janzer_sudakov_k3_exponent :
   unfold janzerSudakovExponent
   norm_num
 
-/-!
+/-
 ## Part 6: The Main Conjecture
 
 Erdős asked whether ex(n; Q_3) ≍ n^(8/5), meaning the upper bound is tight.
@@ -193,7 +193,7 @@ theorem janzer_sudakov_vs_conjecture :
   unfold janzerSudakovExponent
   norm_num
 
-/-!
+/-
 ## Part 7: Related Results
 
 Erdős-Simonovits also studied Q_3 with a missing edge.
@@ -208,7 +208,7 @@ axiom erdos_simonovits_minus_edge :
     c * (n : ℝ)^(3/2 : ℝ) ≤ (ex(n; G) : ℝ) ∧
     (ex(n; G) : ℝ) ≤ C * (n : ℝ)^(3/2 : ℝ)
 
-/-!
+/-
 ## Part 8: General Turán Theory Context
 
 The hypercube Turán problem fits into the broader context of determining
@@ -230,7 +230,7 @@ axiom bipartite_turan_subquadratic {W : Type*} [Fintype W] [DecidableEq W]
       ∀ v w, H.Adj v w → (v ∈ A ∧ w ∈ B) ∨ (v ∈ B ∧ w ∈ A)) :
     ∀ ε > 0, ∀ᶠ n in Filter.atTop, (ex(n; H) : ℝ) ≤ ε * (n : ℝ)^2
 
-/-!
+/-
 ## Part 9: The Kővári-Sós-Turán Theorem
 
 A key tool for bipartite Turán problems.
@@ -247,7 +247,7 @@ axiom hypercube_contains_complete_bipartite (k : ℕ) (hk : k ≥ 2) :
       ∀ i j, (completeBipartiteGraph (Fin 2) (Fin (2^(k-1)))).Adj (Sum.inl i) (Sum.inr j) →
         (Q(k)).Adj (f (Sum.inl i)) (f (Sum.inr j))
 
-/-!
+/-
 ## Part 10: Summary and Main Theorem
 
 The problem of determining ex(n; Q_k) remains one of the major open problems

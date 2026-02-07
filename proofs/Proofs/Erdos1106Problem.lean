@@ -51,7 +51,7 @@ namespace Erdos1106
 
 open Nat Finset Filter Topology
 
-/-! ## Part I: The Partition Function -/
+/- ## Part I: The Partition Function -/
 
 /-- The partition function p(n): the number of ways to write n as a sum
     of positive integers (where order doesn't matter).
@@ -75,7 +75,7 @@ theorem partition_small_values :
     partitionNumber 4 = 5 := by
   constructor <;> native_decide
 
-/-! ## Part II: Product of Partition Numbers -/
+/- ## Part II: Product of Partition Numbers -/
 
 /-- The product ∏_{k=1}^{n} p(k) of partition numbers from 1 to n. -/
 def partitionProduct (n : ℕ) : ℕ :=
@@ -89,7 +89,7 @@ theorem partitionProduct_pos (n : ℕ) : partitionProduct n > 0 := by
   unfold partitionNumber
   exact Fintype.card_pos
 
-/-! ## Part III: Counting Prime Factors -/
+/- ## Part III: Counting Prime Factors -/
 
 /-- F(n) = the number of distinct prime factors of ∏_{k=1}^{n} p(k). -/
 def F (n : ℕ) : ℕ := (partitionProduct n).primeFactors.card
@@ -105,7 +105,7 @@ theorem F_mono : Monotone F := by
   intro m n hmn
   sorry -- Requires showing primeFactors of product grows
 
-/-! ## Part IV: Known Results -/
+/- ## Part IV: Known Results -/
 
 /-- Schinzel-Wirsing (1987): F(n) ≫ log n.
 
@@ -136,7 +136,7 @@ axiom hardy_ramanujan_asymptotic :
 axiom ono_prime_divisibility :
     ∀ p : ℕ, p.Prime → ∃ n : ℕ, n ≥ 1 ∧ p ∣ partitionNumber n
 
-/-! ## Part V: Main Theorems -/
+/- ## Part V: Main Theorems -/
 
 /-- Erdős Problem #1106, Part (1) - PROVED:
 
@@ -168,7 +168,7 @@ axiom erdos_1106_part1 :
 def erdos_1106_conjecture : Prop :=
     ∀ᶠ n in atTop, F n > n
 
-/-! ## Part VI: Small Examples -/
+/- ## Part VI: Small Examples -/
 
 /-- Example computation: p(1) · p(2) · p(3) · p(4) · p(5) = 1·2·3·5·7 = 210.
     Prime factors of 210 = {2, 3, 5, 7}, so F(5) = 4. -/
@@ -191,7 +191,7 @@ theorem F_three : F 3 = 2 := by
 theorem F_four : F 4 = 3 := by
   native_decide
 
-/-! ## Part VII: OEIS Sequences -/
+/- ## Part VII: OEIS Sequences -/
 
 /-- OEIS A194259: a(n) = ∏_{k=1}^{n} p(k), the partition product.
 
@@ -208,7 +208,7 @@ def OEIS_A194260 : ℕ → ℕ := F
 
 end Erdos1106
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #1106 on prime factors of partition products.

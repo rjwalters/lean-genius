@@ -49,7 +49,7 @@ open Set Nat Filter Finset
 
 namespace Erdos168
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A set contains a {n, 2n, 3n} triple. -/
 def ContainsTriple (A : Set ℕ) : Prop :=
@@ -62,7 +62,7 @@ def IsTripleFree (A : Set ℕ) : Prop := ¬ContainsTriple A
 noncomputable def F (N : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsTripleFree ↑A ∧ A.card = k }
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The density F(N)/N is bounded between 0 and 1. -/
 theorem density_bounded (N : ℕ) (hN : N ≥ 1) :
@@ -81,7 +81,7 @@ theorem F_monotone (N : ℕ) : F N ≤ F (N + 1) := by
     · exact ⟨ _, fun k hk => by obtain ⟨ A, hA₁, hA₂, rfl ⟩ := hk; exact Finset.card_le_card hA₁ ⟩;
     · exact ⟨ x, Finset.Subset.trans hx₁ ( Finset.Icc_subset_Icc_right ( Nat.le_succ _ ) ), hx₂, rfl ⟩
 
-/-! ## The Limit Theorem -/
+/- ## The Limit Theorem -/
 
 /-- The 3-smooth numbers: 2^a · 3^b for a, b ≥ 0.
     These are: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ... -/
@@ -108,7 +108,7 @@ axiom limit_less_than_one : limitDensity < 1
 /-- Numerical approximation: the limit is approximately 0.5564... -/
 axiom limit_approximation : |limitDensity - 0.5564| < 0.001
 
-/-! ## Lower Bound Construction -/
+/- ## Lower Bound Construction -/
 
 /-- A simple lower bound: removing multiples of 3 works.
     This gives F(N) ≥ ⌊2N/3⌋. -/
@@ -138,7 +138,7 @@ axiom better_construction (N : ℕ) :
     ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsTripleFree ↑A ∧
     (A.card : ℝ) ≥ 0.55 * N
 
-/-! ## Irrationality Question -/
+/- ## Irrationality Question -/
 
 /-- Erdős's question: Is limitDensity irrational? -/
 def IrrationalityQuestion : Prop := Irrational limitDensity
@@ -147,7 +147,7 @@ def IrrationalityQuestion : Prop := Irrational limitDensity
 theorem irrationality_open : IrrationalityQuestion ∨ ¬IrrationalityQuestion := by
   exact Classical.em IrrationalityQuestion
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- {1, 2} is triple-free (no room for 3n). -/
 example : IsTripleFree {1, 2} := by
@@ -161,7 +161,7 @@ example : ContainsTriple {1, 2, 3} := by
   use 1
   simp [Set.mem_insert_iff]
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 

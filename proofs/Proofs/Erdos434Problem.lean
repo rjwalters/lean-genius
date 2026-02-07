@@ -36,7 +36,7 @@ import Mathlib.Tactic
 
 namespace Erdos434
 
-/-! ## Part I: Representability -/
+/- ## Part I: Representability -/
 
 /-- A natural number n is representable by a set A if it can be written as the
     sum of finitely many elements of A (with repetition allowed).
@@ -75,7 +75,7 @@ theorem add_representable {m n : ℕ} {A : Set ℕ}
     | inr h => exact hSn_sub a h
   · simp [hSm_sum, hSn_sum]
 
-/-! ## Part II: The Set of Non-Representable Integers -/
+/- ## Part II: The Set of Non-Representable Integers -/
 
 /-- The set of integers not representable by A. -/
 def NonRepresentable (A : Set ℕ) : Set ℕ :=
@@ -89,7 +89,7 @@ noncomputable def countNonRepresentable (A : Set ℕ) : ℕ∞ :=
 noncomputable def nCardNonRepresentable (A : Set ℕ) : ℕ :=
   (NonRepresentable A).ncard
 
-/-! ## Part III: The Frobenius Number -/
+/- ## Part III: The Frobenius Number -/
 
 /-- The Frobenius number of A: the largest integer not representable by A.
     Only defined when gcd(A) = 1 (ensuring finitely many non-representables).
@@ -103,7 +103,7 @@ noncomputable def frobeniusNumber (A : Set ℕ) : ℕ :=
 def IsComplete (A : Set ℕ) : Prop :=
   A.Nonempty ∧ Nat.gcd (sSup A) (sInf (A \ {sSup A})) = 1
 
-/-! ## Part IV: The Extremal Problem -/
+/- ## Part IV: The Extremal Problem -/
 
 /-- The "top k" set: {n-k+1, n-k+2, ..., n}. -/
 def topK (n k : ℕ) : Set ℕ :=
@@ -119,7 +119,7 @@ def ExtremalFrobeniusQuestion (n k : ℕ) : Prop :=
   ∀ A : Set ℕ, A ⊆ Set.Icc 1 n → A.ncard = k →
     nCardNonRepresentable A ≤ nCardNonRepresentable (topK n k)
 
-/-! ## Part V: Small Examples -/
+/- ## Part V: Small Examples -/
 
 /-- Example: With A = {2, 3}, non-representables are {1}.
     - 0 = empty sum
@@ -155,7 +155,7 @@ theorem topK_5_2 : topK 5 2 = {4, 5} := by
   simp [topK, Set.Icc]
   omega
 
-/-! ## Part VI: Kiss's Theorem (2002) -/
+/- ## Part VI: Kiss's Theorem (2002) -/
 
 /-- **Kiss (2002)**: The topK set maximizes the count of non-representables.
 
@@ -174,7 +174,7 @@ theorem erdos_434_answer (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ 
       nCardNonRepresentable A ≤ nCardNonRepresentable (topK n k) :=
   kiss_2002 n k hn hk hkn
 
-/-! ## Part VII: Why topK is Optimal -/
+/- ## Part VII: Why topK is Optimal -/
 
 /-- Intuition: Using larger numbers means fewer representations.
 
@@ -190,7 +190,7 @@ theorem larger_numbers_fewer_reps (n : ℕ) (hn : n ≥ 2) :
     nCardNonRepresentable ({1, 2} : Set ℕ) := by
   sorry
 
-/-! ## Part VIII: Connection to Sylvester-Frobenius -/
+/- ## Part VIII: Connection to Sylvester-Frobenius -/
 
 /-- The Sylvester-Frobenius theorem: For coprime a, b, the Frobenius number
     is ab - a - b, and the count of non-representables is (a-1)(b-1)/2. -/
@@ -207,7 +207,7 @@ theorem consecutive_count (n : ℕ) (hn : n ≥ 2) :
     nCardNonRepresentable ({n - 1, n} : Set ℕ) = (n - 2) * (n - 1) / 2 := by
   sorry
 
-/-! ## Part IX: The Greedy Construction -/
+/- ## Part IX: The Greedy Construction -/
 
 /-- The greedy approach: always pick the largest available number.
     This produces topK and maximizes non-representables.
@@ -221,7 +221,7 @@ def greedyConstruct (n k : ℕ) : Set ℕ :=
 /-- The greedy construction equals topK. -/
 theorem greedy_eq_topK (n k : ℕ) : greedyConstruct n k = topK n k := rfl
 
-/-! ## Part X: Bounds on Non-Representables -/
+/- ## Part X: Bounds on Non-Representables -/
 
 /-- Upper bound: With gcd(A) = 1, non-representables are finite.
     The count is bounded by the Frobenius number. -/
@@ -236,7 +236,7 @@ theorem topK_finite (n k : ℕ) (hk : k ≥ 2) (hn : n ≥ k) :
     (NonRepresentable (topK n k)).Finite := by
   sorry
 
-/-! ## Part XI: Comparison with Problem #433 -/
+/- ## Part XI: Comparison with Problem #433 -/
 
 /-- Problem #433 asks about the Frobenius number for A = {n, n+1, ..., n+k-1}.
     Problem #434 asks which k-subset of {1, ..., n} maximizes non-representables.
@@ -252,7 +252,7 @@ def problem433Set (n k : ℕ) : Set ℕ :=
 axiom frobenius_consecutive (n k : ℕ) (hn : n ≥ 2) (hk : k ≥ 2) :
     frobeniusNumber (problem433Set n k) = (n - 1) * (n + k - 1) / k - 1
 
-/-! ## Part XII: Main Result -/
+/- ## Part XII: Main Result -/
 
 /-- The complete answer to Erdős Problem #434:
 
@@ -276,7 +276,7 @@ theorem topK_is_maximum (n k : ℕ) (hn : 1 ≤ n) (hk : 1 ≤ k) (hkn : k ≤ n
 
 end Erdos434
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #434 on the extremal Frobenius problem.

@@ -39,7 +39,7 @@ open SimpleGraph Asymptotics
 
 namespace Erdos713
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -59,7 +59,7 @@ def isGFree (H G : SimpleGraph V) : Prop :=
   ¬∃ (f : V → V), Function.Injective f ∧
     ∀ u v : V, G.Adj u v → H.Adj (f u) (f v)
 
-/-! ## Extremal Numbers -/
+/- ## Extremal Numbers -/
 
 /--
 **Extremal Number ex(n; G):**
@@ -74,7 +74,7 @@ axiom extremalNumber (n : ℕ) (G : SimpleGraph (Fin n)) : ℕ
 axiom extremalNumber_bound (n : ℕ) (G : SimpleGraph (Fin n)) :
   extremalNumber n G ≤ n * (n - 1) / 2
 
-/-! ## Asymptotic Growth -/
+/- ## Asymptotic Growth -/
 
 /--
 **Power-Law Growth:**
@@ -92,7 +92,7 @@ def hasPowerLawOrder (G : ℕ → ℕ) (α : ℝ) : Prop :=
   ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ α ≥ 1 ∧ α < 2 ∧
     ∃ N : ℕ, ∀ n ≥ N, c₁ * (n : ℝ)^α ≤ G n ∧ (G n : ℝ) ≤ c₂ * (n : ℝ)^α
 
-/-! ## The Main Questions -/
+/- ## The Main Questions -/
 
 /--
 **Erdős Problem #713 - Strong Form:**
@@ -121,7 +121,7 @@ def erdos713RationalQuestion : Prop :=
     ∃ α : ℝ, hasPowerLawOrder (fun n => extremalNumber n (G n)) α →
       ∃ q : ℚ, α = q
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /--
 **Kővári-Sós-Turán Theorem (1954):**
@@ -149,7 +149,7 @@ theorem complete_bipartite_exponent (s t : ℕ) (hs : s ≥ 2) (hst : s ≤ t) :
   use 2 - 1/s
   ring
 
-/-! ## Erdős's Original Conjecture (Disproved) -/
+/- ## Erdős's Original Conjecture (Disproved) -/
 
 /--
 **Erdős's Original Conjecture:**
@@ -167,7 +167,7 @@ exponents not of the form 1 + 1/k or 2 - 1/k.
 -/
 axiom erdos_simonovits_counterexample : ¬erdosOriginalConjecture
 
-/-! ## Hypergraph Counterexamples
+/- ## Hypergraph Counterexamples
 
 For k-uniform hypergraphs with k ≥ 5, the analogous power-law statement fails.
 Frankl-Füredi (1987) showed there exist 5-uniform hypergraphs where no clean
@@ -185,7 +185,7 @@ axiom frankl_furedi_hypergraph (k : ℕ) (hk : k ≥ 5) :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
       ∃ N : ℕ, ∀ n ≥ N, c₁ * (n : ℝ)^α ≤ f n ∧ (f n : ℝ) ≤ c₂ * (n : ℝ)^α
 
-/-! ## Summary
+/- ## Summary
 
 **Erdős Problem #713 - OPEN ($500 prize)**
 

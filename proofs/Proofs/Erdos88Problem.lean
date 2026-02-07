@@ -25,7 +25,7 @@ namespace Erdos88
 
 open Finset
 
-/-!
+/-
 ## Part I: Simple Graphs and Basic Definitions
 
 Setting up the graph-theoretic framework.
@@ -43,7 +43,7 @@ noncomputable def edgeCount [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
   G.edgeFinset.card
 
-/-!
+/-
 ## Part II: Cliques and Independent Sets
 
 The structures Ramsey theory constrains.
@@ -65,7 +65,7 @@ noncomputable def cliqueNumber (G : SimpleGraph V) : ℕ∞ :=
 noncomputable def independenceNumber (G : SimpleGraph V) : ℕ∞ :=
   ⨆ (S : Finset V) (h : IsIndependent G S), (S.card : ℕ∞)
 
-/-!
+/-
 ## Part III: Ramsey Graphs
 
 Graphs with bounded clique and independence numbers.
@@ -85,7 +85,7 @@ axiom ramsey_size_bound (ε : ℝ) (hε : ε > 0) :
     ∃ N : ℕ, ∀ (V : Type*) [Fintype V] (G : SimpleGraph V),
       IsEpsilonRamsey G ε → Fintype.card V ≤ N
 
-/-!
+/-
 ## Part IV: Induced Subgraphs
 
 The central objects of the problem.
@@ -107,7 +107,7 @@ def HasInducedWithEdges [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℕ) : Prop :=
   ∃ S : Finset V, inducedEdgeCount G S = m
 
-/-!
+/-
 ## Part V: The Edge Count Range Property
 
 The property that the Erdős-McKay conjecture asserts.
@@ -124,7 +124,7 @@ def EdgeCountRangeProperty [Fintype V] [DecidableEq V]
   let n := Fintype.card V
   AchievesAllEdgeCounts G (Nat.floor (δ * n^2))
 
-/-!
+/-
 ## Part VI: The Erdős-McKay Conjecture
 
 The main statement that was proved.
@@ -152,7 +152,7 @@ def ErdosMcKayWeakBound : Prop :=
 /-- Erdős and McKay proved the weak version. -/
 axiom erdos_mckay_weak : ErdosMcKayWeakBound
 
-/-!
+/-
 ## Part VII: The Erdős-Szemerédi Density Result
 
 Ramsey graphs have many edges.
@@ -170,7 +170,7 @@ axiom erdos_szemeredi_density (ε : ℝ) (hε : ε > 0) :
           let n := Fintype.card V
           c₁ * n^2 ≤ edgeCount G ∧ (edgeCount G : ℝ) ≤ c₂ * n^2
 
-/-!
+/-
 ## Part VIII: Anticoncentration
 
 The key technique in the KSSS proof.
@@ -193,7 +193,7 @@ axiom random_induced_anticoncentration (ε : ℝ) (hε : ε > 0) :
           -- The probability that the random subgraph has exactly m edges is ≤ C/n
           True  -- Placeholder for the precise probabilistic statement
 
-/-!
+/-
 ## Part IX: The KSSS Theorem (2022)
 
 The solution to Erdős Problem #88.
@@ -213,7 +213,7 @@ def ksss_prize : String := "$100 Erdős Prize"
 /-- Key technique: anticoncentration of random induced subgraph edge counts. -/
 def ksss_technique : String := "Anticoncentration"
 
-/-!
+/-
 ## Part X: Implications and Bounds
 
 What we know about the parameter δ.
@@ -238,7 +238,7 @@ axiom ksss_optimality :
         (G : SimpleGraph V) [DecidableRel G.Adj],
         IsEpsilonRamsey G ε ∧ ¬EdgeCountRangeProperty G δ
 
-/-!
+/-
 ## Part XI: Connection to Ramsey Theory
 
 How this relates to Ramsey numbers.
@@ -261,7 +261,7 @@ axiom probabilistic_ramsey (ε : ℝ) (hε : 0 < ε) (hε' : ε < 1) :
         cliqueNumber G < c * Real.log n ∧
         independenceNumber G < c * Real.log n
 
-/-!
+/-
 ## Part XII: Main Result
 
 Erdős Problem #88 is SOLVED.

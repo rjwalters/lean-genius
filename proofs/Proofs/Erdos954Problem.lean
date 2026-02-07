@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #954 — Rosen's Greedy Additive Sequence
 
 Let 0 = a₀ < a₁ < a₂ < ⋯ be defined by a₀ = 0, a₁ = 1, and a_{k+1} is
@@ -21,7 +21,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The representation count: number of pairs (i,j) with
     i ≤ j, j ≥ 1, and a(i) + a(j) ≤ n for a given sequence a. -/
@@ -40,7 +40,7 @@ def IsGreedyNext (a : ℕ → ℕ) (k : ℕ) : Prop :=
 def IsRosenSequence (a : ℕ → ℕ) : Prop :=
   a 0 = 0 ∧ a 1 = 1 ∧ StrictMono a ∧ ∀ k ≥ 1, IsGreedyNext a k
 
-/-! ## Known Initial Values -/
+/- ## Known Initial Values -/
 
 /-- The first few values of the Rosen sequence (OEIS A390642). -/
 axiom rosen_initial_values :
@@ -48,7 +48,7 @@ axiom rosen_initial_values :
       a 0 = 0 ∧ a 1 = 1 ∧ a 2 = 3 ∧ a 3 = 5 ∧ a 4 = 9 ∧
       a 5 = 13 ∧ a 6 = 17 ∧ a 7 = 24 ∧ a 8 = 31 ∧ a 9 = 38 ∧ a 10 = 45
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- By construction, R(n) < n at each new element of the sequence. -/
 axiom repcount_below_at_elements (a : ℕ → ℕ) (h : IsRosenSequence a) (k : ℕ) (hk : 1 ≤ k) :
@@ -59,7 +59,7 @@ axiom repcount_above_between (a : ℕ → ℕ) (h : IsRosenSequence a) (k : ℕ)
     (m : ℕ) (hm1 : a k < m) (hm2 : m < a (k + 1)) :
     repCount a k m ≥ m
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- The full representation count over the infinite sequence. -/
 def fullRepCount (a : ℕ → ℕ) (x : ℕ) : ℕ :=
@@ -79,7 +79,7 @@ axiom erdos_954_strong_conjecture (a : ℕ → ℕ) (h : IsRosenSequence a) :
     ∃ C : ℝ, ∀ x : ℕ, 1 ≤ x →
       |(fullRepCount a x : ℤ) - (x : ℤ)| ≤ C * (x : ℝ) ^ (1/4 : ℝ) * Real.log x
 
-/-! ## Connection to Sidon Sets and B₂ Sequences -/
+/- ## Connection to Sidon Sets and B₂ Sequences -/
 
 /-- A B₂ sequence (Sidon set): all pairwise sums are distinct. -/
 def IsB2Sequence (a : ℕ → ℕ) (k : ℕ) : Prop :=

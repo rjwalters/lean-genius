@@ -1,6 +1,6 @@
 import Mathlib
 
-/-!
+/-
 # Erdős Problem 1064: Comparing φ(n) and φ(n - φ(n))
 
 ## What This Proves
@@ -46,7 +46,7 @@ namespace Erdos1064
 
 open Nat
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The comparison function: φ(n) compared to φ(n - φ(n)) -/
 def phiDiff (n : ℕ) : ℤ := (totient n : ℤ) - (totient (n - totient n) : ℤ)
@@ -60,7 +60,7 @@ def A_less : Set ℕ := {n : ℕ | totient n < totient (n - totient n)}
 /-- The set A₌ where φ(n) = φ(n - φ(n)) -/
 def A_equal : Set ℕ := {n : ℕ | totient n = totient (n - totient n)}
 
-/-! ## Concrete Examples -/
+/- ## Concrete Examples -/
 
 /-- φ(1) = 1 -/
 example : totient 1 = 1 := by native_decide
@@ -77,7 +77,7 @@ example : totient 15 = 8 := by native_decide
 /-- φ(30) = 8 -/
 example : totient 30 = 8 := by native_decide
 
-/-! ## Examples of the Greater Case -/
+/- ## Examples of the Greater Case -/
 
 /-- n = 15: φ(15) = 8, 15 - 8 = 7, φ(7) = 6, so 8 > 6 -/
 example : totient 15 > totient (15 - totient 15) := by native_decide
@@ -85,7 +85,7 @@ example : totient 15 > totient (15 - totient 15) := by native_decide
 /-- n = 10: φ(10) = 4, 10 - 4 = 6, φ(6) = 2, so 4 > 2 -/
 example : totient 10 > totient (10 - totient 10) := by native_decide
 
-/-! ## Examples of the Less Case -/
+/- ## Examples of the Less Case -/
 
 /-- n = 30: φ(30) = 8, 30 - 8 = 22, φ(22) = 10, so 8 < 10 -/
 example : totient 30 < totient (30 - totient 30) := by native_decide
@@ -96,7 +96,7 @@ example : totient 60 < totient (60 - totient 60) := by native_decide
 /-- n = 66: φ(66) = 20, 66 - 20 = 46, φ(46) = 22, so 20 < 22 -/
 example : totient 66 < totient (66 - totient 66) := by native_decide
 
-/-! ## Main Theorems -/
+/- ## Main Theorems -/
 
 /-- **Axiom (Luca-Pomerance 2002):**
     The set A₊ = {n : φ(n) > φ(n - φ(n))} has natural density 1.
@@ -122,7 +122,7 @@ theorem erdos_1064_resolution :
     -- The problem is fully resolved
     A_less.Infinite := glw_infinitely_many
 
-/-! ## The Pattern: 15 · 2^k ∈ A_less
+/- ## The Pattern: 15 · 2^k ∈ A_less
 
 For n = 15 · 2^k, we have φ(n) < φ(n - φ(n)).
 - n = 30: φ(30) = 8, 30 - 8 = 22, φ(22) = 10

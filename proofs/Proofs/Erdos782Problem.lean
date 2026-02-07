@@ -30,7 +30,7 @@ open Set Nat Finset
 
 namespace Erdos782
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 Define the set of perfect squares and arithmetic progressions.
@@ -51,7 +51,7 @@ example : IsSquare 1 := ⟨1, rfl⟩
 example : IsSquare 4 := ⟨2, rfl⟩
 example : IsSquare 9 := ⟨3, rfl⟩
 
-/-!
+/-
 # Part 2: Arithmetic Progressions in Squares
 
 Classical result: squares don't contain 4-term APs.
@@ -76,7 +76,7 @@ axiom squares_contain_3AP : ContainsAP Squares 3
 -- Classical: squares don't contain 4-term APs
 axiom no_4AP_in_squares : ¬ContainsAP Squares 4
 
-/-!
+/-
 # Part 3: Quasi-Progressions
 
 A quasi-progression has bounded gaps: d ≤ gap ≤ d + C.
@@ -102,7 +102,7 @@ def Question1Weak : Prop :=
 -- The weak version is trivially true for each fixed k
 -- The strong version (uniform C) is the real question
 
-/-!
+/-
 # Part 4: Combinatorial Cubes
 
 A k-cube is {a + ∑_{i ∈ I} bᵢ : I ⊆ {1,...,k}}.
@@ -129,7 +129,7 @@ def Question2 : Prop :=
 -- 2-cube example: {a, a+b₁, a+b₂, a+b₁+b₂} all squares
 -- This means finding a, b₁, b₂ with all four being squares
 
-/-!
+/-
 # Part 5: Relationship Between Questions
 
 An affirmative answer to Q1 implies affirmative to Q2.
@@ -144,7 +144,7 @@ theorem no_cubes_implies_no_quasiprog : ¬Question2 → ¬Question1 := by
   intro hq2 hq1
   exact hq2 (question1_implies_question2 hq1)
 
-/-!
+/-
 # Part 6: Solymosi's Conjecture
 
 Solymosi (2007) conjectured that Q2 has a negative answer.
@@ -167,7 +167,7 @@ theorem solymosi_equiv : SolymosiConjecture ↔ SolymosiConjectureAlt := by
   · intro ⟨k, hk⟩ hq2
     exact hk (hq2 k)
 
-/-!
+/-
 # Part 7: Cilleruelo-Granville Conditional Result
 
 Under the Bombieri-Lang conjecture, Q2 has a negative answer.
@@ -187,7 +187,7 @@ theorem conditional_q2_negative (hBL : BombieriLangConjecture) : ¬Question2 := 
   obtain ⟨k, hk⟩ := cilleruelo_granville hBL
   exact hk (hq2 k)
 
-/-!
+/-
 # Part 8: Small Cases
 
 Analyze small cubes in squares.
@@ -206,7 +206,7 @@ def Has2Cube : Prop := ContainsCube Squares 2
 -- Has3Cube would be even harder
 def Has3Cube : Prop := ContainsCube Squares 3
 
-/-!
+/-
 # Part 9: Density Considerations
 
 Squares are sparse: |{n² ≤ x}| = √x.
@@ -223,7 +223,7 @@ noncomputable def numSquaresUpTo (n : ℕ) : ℕ :=
 -- If d is small, interval has ~√(k*d) squares, need k of them
 -- This constrains what's possible
 
-/-!
+/-
 # Part 10: Problem Status
 
 The problem remains OPEN.
@@ -244,7 +244,7 @@ theorem erdos_782_question2 :
 -- Combined problem status
 def ErdosProblem782 : Prop := Question1 ∨ ¬Question1  -- Either answer is open
 
-/-!
+/-
 # Summary
 
 **Problem:** Two questions about structure in perfect squares:

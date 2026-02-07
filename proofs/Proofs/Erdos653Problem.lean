@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #653: Distinct Distance Counts in the Plane
 
 Source: https://erdosproblems.com/653
@@ -35,7 +35,7 @@ open Set Finset Real
 
 namespace Erdos653
 
-/-!
+/-
 ## Part I: Point Configuration
 -/
 
@@ -52,7 +52,7 @@ A finite set of distinct points in the plane.
 -/
 def PointConfig (n : ℕ) := { S : Finset (Fin 2 → ℝ) // S.card = n }
 
-/-!
+/-
 ## Part II: Distinct Distance Count
 -/
 
@@ -70,7 +70,7 @@ The number of distinct distances from xᵢ to other points.
 noncomputable def distinctDistCount (S : Finset (Fin 2 → ℝ)) (p : Fin 2 → ℝ) : ℕ :=
   (distanceSet S p).card
 
-/-!
+/-
 ## Part III: The Function g(n)
 -/
 
@@ -95,7 +95,7 @@ The maximum number of distinct R-values achievable by any n-point configuration.
 noncomputable def g (n : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ S : Finset (Fin 2 → ℝ), S.card = n ∧ numDistinctRValues S = k }
 
-/-!
+/-
 ## Part IV: Known Bounds
 -/
 
@@ -123,7 +123,7 @@ axiom upper_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
     (g n : ℝ) < n - c * (n : ℝ)^(2/3 : ℝ)
 
-/-!
+/-
 ## Part V: The Conjecture
 -/
 
@@ -137,7 +137,7 @@ Equivalently: g(n)/n → 1 as n → ∞.
 def erdos653Conjecture : Prop :=
   ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, (g n : ℝ) ≥ (1 - ε) * n
 
-/-!
+/-
 ## Part VI: Basic Properties
 -/
 
@@ -157,7 +157,7 @@ g is non-decreasing in n.
 -/
 axiom g_mono : ∀ m n : ℕ, m ≤ n → g m ≤ g n
 
-/-!
+/-
 ## Part VII: Special Configurations
 -/
 
@@ -186,7 +186,7 @@ axiom regular_polygon_r_value (n : ℕ) (hn : n ≥ 3) (S : Finset (Fin 2 → �
     (hcard : S.card = n) (hreg : IsRegularPolygon S) :
     ∀ p q ∈ S, distinctDistCount S p = distinctDistCount S q
 
-/-!
+/-
 ## Part VIII: Extremal Configurations
 -/
 
@@ -204,7 +204,7 @@ For each n, there exists a configuration achieving g(n).
 axiom optimal_exists (n : ℕ) (hn : n ≥ 1) :
     ∃ S : Finset (Fin 2 → ℝ), S.card = n ∧ IsOptimalConfig S
 
-/-!
+/-
 ## Part IX: Asymptotic Analysis
 -/
 
@@ -223,7 +223,7 @@ axiom gap_bounds (n : ℕ) (hn : n ≥ 10) :
     c * (n : ℝ)^(2/3 : ℝ) ≤ (n : ℝ) - g n ∧
     (n : ℝ) - g n ≤ (3/10 : ℝ) * n
 
-/-!
+/-
 ## Part X: Connection to Unit Distance Problem
 -/
 
@@ -243,7 +243,7 @@ More distinct distances generally means more diverse R-values.
 noncomputable def totalDistinctDistances (S : Finset (Fin 2 → ℝ)) : ℕ :=
   (Finset.biUnion S (distanceSet S)).card
 
-/-!
+/-
 ## Part XI: Summary
 -/
 

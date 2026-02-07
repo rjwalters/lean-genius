@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1092: Chromatic Decomposition Threshold
 
 Erdős, Hajnal, and Szemerédi defined f_r(n) as the maximum number of edges
@@ -20,7 +20,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A simple graph on n vertices. -/
 structure SGraph (n : ℕ) where
@@ -51,7 +51,7 @@ def CanReduceChromatic {n : ℕ} (G : SGraph n) (k r : ℕ) : Prop :=
       (fun u v ⟨h, hu, hv⟩ => ⟨G.symm u v h, hv, hu⟩)
       (fun v ⟨h, _, _⟩ => G.irrefl v h)).hasColoring r
 
-/-! ## The Function f_r(n) -/
+/- ## The Function f_r(n) -/
 
 /-- f_r(n): the maximum k such that if every m-vertex induced subgraph
     of G can have its chromatic number reduced to ≤ r by removing ≤ k edges,
@@ -64,7 +64,7 @@ noncomputable def fThreshold (r n : ℕ) : ℕ :=
         (fun v ⟨_, _, h⟩ => G.irrefl v h)) k r) →
     G.hasColoring (r + 1) }
 
-/-! ## Erdős–Hajnal–Szemerédi Questions -/
+/- ## Erdős–Hajnal–Szemerédi Questions -/
 
 /-- Question 1: Is f₂(n) ≫ n? That is, does f₂(n)/n → ∞?
     Tang noted that Rödl's 1982 construction gives a negative answer. -/
@@ -77,7 +77,7 @@ axiom erdos_1092_question2 (r : ℕ) (hr : 2 ≤ r) :
   ∀ C : ℝ, ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
     C * (r : ℝ) * n ≤ (fThreshold r n : ℝ)
 
-/-! ## Rödl's Construction -/
+/- ## Rödl's Construction -/
 
 /-- Rödl (1982): Construction showing that f₂(n) does not grow much
     faster than n, providing evidence against Question 1.
@@ -86,14 +86,14 @@ axiom rodl_upper_bound :
   ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 2 ≤ n →
     (fThreshold 2 n : ℝ) ≤ C * n * (Real.log n) ^ 2
 
-/-! ## Trivial Lower Bound -/
+/- ## Trivial Lower Bound -/
 
 /-- f_r(n) ≥ n - 1 trivially: removing all n-1 edges of a tree
     always leaves an independent set (chromatic number 1 ≤ r). -/
 axiom f_trivial_lower (r n : ℕ) (hr : 1 ≤ r) (hn : 2 ≤ n) :
   n - 1 ≤ fThreshold r n
 
-/-! ## Connection to Problem #744 -/
+/- ## Connection to Problem #744 -/
 
 /-- This problem is related to but distinct from Erdős Problem #744,
     which concerns similar chromatic decomposition thresholds. -/

@@ -23,7 +23,7 @@ open Nat Finset
 
 namespace Erdos397
 
-/-! ## Key Definitions -/
+/- ## Key Definitions -/
 
 /-- The central binomial coefficient C(2n, n) = (2n)! / (n!)².
     This counts the number of ways to choose n items from 2n items,
@@ -38,7 +38,7 @@ def CentralBinomSolutions : Set (Finset ℕ × Finset ℕ) :=
 /-- Somani's parameter c(a) = 8a² + 8a + 1 -/
 def somaniC (a : ℕ) : ℕ := 8 * a^2 + 8 * a + 1
 
-/-! ## Main Result -/
+/- ## Main Result -/
 
 /--
 **Erdős Problem #397** (Disproved):
@@ -54,7 +54,7 @@ binomial coefficient manipulation beyond straightforward computation.
 -/
 axiom erdos_397_disproved : CentralBinomSolutions.Infinite
 
-/-! ## Somani's Infinite Family -/
+/- ## Somani's Infinite Family -/
 
 /-- The left-hand side of Somani's identity: {a, 2a+2, c} -/
 def somaniLHS (a : ℕ) : Finset ℕ := {a, 2*a + 2, somaniC a}
@@ -84,7 +84,7 @@ theorem somani_is_solution (a : ℕ) (ha : a ≥ 2) :
     -- Full proof would unfold the Finset products and apply somani_identity
     sorry
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- C(0) = 1 (the central binomial for n=0 is C(0,0) = 1) -/
 theorem C_zero : C 0 = 1 := by rfl

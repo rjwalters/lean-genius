@@ -47,7 +47,7 @@ namespace Erdos370
 
 open Nat Finset BigOperators
 
-/-! ## Greatest Prime Factor -/
+/- ## Greatest Prime Factor -/
 
 /-- The greatest prime factor of n (0 if n ≤ 1).
     We axiomatize this for simplicity since Mathlib's primeFactors API varies. -/
@@ -72,7 +72,7 @@ axiom gpf_prime_pow (p : ℕ) (hp : p.Prime) (k : ℕ) (hk : k ≥ 1) : gpf (p ^
 axiom gpf_mul_le (m n : ℕ) (hm : m > 1) (hn : n > 1) :
     gpf (m * n) ≤ max (gpf m) (gpf n)
 
-/-! ## Smooth Numbers -/
+/- ## Smooth Numbers -/
 
 /-- A number n is B-smooth if all its prime factors are ≤ B. -/
 def IsSmooth (B n : ℕ) : Prop := gpf n ≤ B
@@ -80,7 +80,7 @@ def IsSmooth (B n : ℕ) : Prop := gpf n ≤ B
 /-- A number is √n-smooth if gpf(n) < √n. -/
 def IsSqrtSmooth (n : ℕ) : Prop := (gpf n : ℝ) < Real.sqrt n
 
-/-! ## The Main Question -/
+/- ## The Main Question -/
 
 /--
 **Erdős Problem #370**: Are there infinitely many n such that both n and n+1
@@ -89,7 +89,7 @@ are √-smooth (i.e., their largest prime factors are less than their square roo
 def ConsecutiveSqrtSmooth (n : ℕ) : Prop :=
   IsSqrtSmooth n ∧ IsSqrtSmooth (n + 1)
 
-/-! ## The Solution: n = m² - 1 -/
+/- ## The Solution: n = m² - 1 -/
 
 /--
 Key construction: When m ≥ 3 and both (m-1) and (m+1) have gpf < m,
@@ -108,7 +108,7 @@ theorem steinerberger_succ (m : ℕ) (hm : m ≥ 2) :
   have : m ^ 2 ≥ 4 := by nlinarith
   omega
 
-/-! ## Example: n = 63 -/
+/- ## Example: n = 63 -/
 
 /-- Example: 63 = 8² - 1 works. -/
 example : SteinerbergerConstruction 8 = 63 := by native_decide
@@ -143,7 +143,7 @@ theorem n64_sqrt_smooth : IsSqrtSmooth 64 := by
 theorem example_63 : ConsecutiveSqrtSmooth 63 :=
   ⟨n63_sqrt_smooth, n64_sqrt_smooth⟩
 
-/-! ## More Examples -/
+/- ## More Examples -/
 
 /-- Example: n = 224 = 15² - 1 = 224 = 2⁵ · 7.
     gpf(224) = 7 < √224 ≈ 14.97 ✓
@@ -155,7 +155,7 @@ def ValidSteinerbergerM (m : ℕ) : Prop :=
   m ≥ 3 ∧ gpf (m - 1) < m ∧ gpf (m + 1) < m ∧
   ¬(m - 1).Prime ∧ ¬(m + 1).Prime
 
-/-! ## Main Theorem -/
+/- ## Main Theorem -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -200,7 +200,7 @@ theorem erdos_370 : ∃ f : ℕ → ℕ, Function.Injective f ∧
   -- The Steinerberger construction provides infinitely many examples
   sorry
 
-/-! ## Density Perspective (Pomerance) -/
+/- ## Density Perspective (Pomerance) -/
 
 /--
 **Pomerance's Observation**:
@@ -221,7 +221,7 @@ axiom dickman_density (α : ℝ) (hα : 0 < α ∧ α ≤ 1) :
 
 -- density of {n : gpf(n) ≤ n^α}
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 

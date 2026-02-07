@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #790: Maximum Sum-Free Subsequences
 
 Let l(n) be maximal such that for any A ⊆ ℤ with |A| = n, there exists
@@ -28,7 +28,7 @@ open Nat Finset
 
 namespace Erdos790
 
-/-! ## Sum-Free Sets -/
+/- ## Sum-Free Sets -/
 
 /-- A subset B ⊆ ℤ is sum-free if no element equals a sum of ≥2 distinct
 other elements. Formally: ∀ a ∈ B, a ≠ Σ_{i∈S} aᵢ for any S ⊆ B \ {a}
@@ -44,7 +44,7 @@ def classicalSumFree (B : Finset ℤ) : Prop :=
   ∀ a b c : ℤ, a ∈ B → b ∈ B → c ∈ B → a ≠ b → b ≠ c → a ≠ c →
     a + b ≠ c
 
-/-! ## The Extremal Function l(n) -/
+/- ## The Extremal Function l(n) -/
 
 /-- l(n): The minimum over all n-element sets A ⊆ ℤ of the maximum
 sum-free subset size. Axiomatized since computing this requires
@@ -62,7 +62,7 @@ axiom l_optimal (n : ℕ) :
   ∀ k : ℕ, k > l n → ∃ A : Finset ℤ, A.card = n ∧
     ∀ B : Finset ℤ, B ⊆ A → IsSumFree B → B.card < k
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /-- **Erdős's observation:** l(n) ≥ √(n/2).
 In {1,...,n}, the upper half is nearly sum-free since sums of
@@ -83,7 +83,7 @@ axiom cks_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (l n : ℝ) ≥ c * Real.sqrt (n * Real.log n / Real.log (Real.log n))
 
-/-! ## Upper Bound -/
+/- ## Upper Bound -/
 
 /-- **CKS Upper Bound (1975):**
 l(n) ≤ C n / log n for large n.
@@ -92,7 +92,7 @@ axiom cks_upper_bound :
   ∃ C : ℝ, C > 0 ∧ ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (l n : ℝ) ≤ C * n / Real.log n
 
-/-! ## The Main Questions -/
+/- ## The Main Questions -/
 
 /-- **Question 1:** Does l(n) · n^{-1/2} → ∞? -/
 def question1_limit_infinity : Prop :=
@@ -110,7 +110,7 @@ def question2_sublinear : Prop :=
 l(n) ≤ n/log n, which is o(n^{1-c}) for any c < 1. -/
 axiom question2_answered : question2_sublinear
 
-/-! ## The CKS Conjecture -/
+/- ## The CKS Conjecture -/
 
 /-- **CKS Conjecture (1975, OPEN):** l(n) ≥ n^{1-o(1)}.
 If true, l(n) is nearly linear. Combined with the upper bound n/log n,
@@ -120,7 +120,7 @@ remains wide and unresolved. -/
 def cks_conjecture : Prop :=
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀, (l n : ℝ) ≥ n^(1 - ε)
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Combined CKS bounds:**
 √(n log n / log log n) ≪ l(n) ≪ n / log n.

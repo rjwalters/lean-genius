@@ -35,7 +35,7 @@ open Finset Real
 
 namespace Erdos1082
 
-/-!
+/-
 ## Part I: Points and Distances in ℝ²
 -/
 
@@ -56,7 +56,7 @@ noncomputable def distSq (p q : Point2D) : ℝ :=
 noncomputable def dist' (p q : Point2D) : ℝ :=
   Real.sqrt (distSq p q)
 
-/-!
+/-
 ## Part II: General Position (No Three Collinear)
 -/
 
@@ -68,7 +68,7 @@ def areCollinear (p q r : Point2D) : Prop :=
 def inGeneralPosition (S : Finset Point2D) : Prop :=
   ∀ p ∈ S, ∀ q ∈ S, ∀ r ∈ S, p ≠ q → q ≠ r → p ≠ r → ¬areCollinear p q r
 
-/-!
+/-
 ## Part III: Counting Distinct Distances
 -/
 
@@ -84,7 +84,7 @@ noncomputable def distancesFromPoint (p : Point2D) (S : Finset Point2D) : Finset
 noncomputable def numDistancesFromPoint (p : Point2D) (S : Finset Point2D) : ℕ :=
   (distancesFromPoint p S).card
 
-/-!
+/-
 ## Part IV: Szemerédi's Theorem (n/3 bound)
 -/
 
@@ -105,7 +105,7 @@ axiom szemeredi_no_k_on_line (S : Finset Point2D) (k : ℕ) (hk : k ≥ 3)
          ¬areCollinear p q r) → L.card < k) :
     ∃ p ∈ S, numDistancesFromPoint p S ≥ S.card / k
 
-/-!
+/-
 ## Part V: The Conjectures
 -/
 
@@ -126,7 +126,7 @@ def Conjecture2 : Prop :=
   ∀ S : Finset Point2D, inGeneralPosition S →
     ∃ p ∈ S, numDistancesFromPoint p S ≥ S.card / 2
 
-/-!
+/-
 ## Part VI: Xichuan's Counterexample to Conjecture 2
 -/
 
@@ -153,7 +153,7 @@ theorem conjecture2_false : ¬Conjecture2 := by
   have hBad := hAll p hp
   omega
 
-/-!
+/-
 ## Part VII: The Remaining Open Problem
 -/
 
@@ -175,7 +175,7 @@ theorem erdos_1082_status :
     True := by
   exact ⟨szemeredi_n_over_3, conjecture2_false, trivial⟩
 
-/-!
+/-
 ## Part VIII: Related Results
 -/
 
@@ -207,7 +207,7 @@ axiom szemeredi_no_four_plane :
     -- For no 4 coplanar points, Ω(n) distances
     True
 
-/-!
+/-
 ## Part IX: The Counterexample Structure
 -/
 
@@ -231,7 +231,7 @@ theorem counterexample_gap :
   simp [hCard] at *
   omega
 
-/-!
+/-
 ## Part X: Summary
 -/
 

@@ -33,7 +33,7 @@ open Finset List
 
 namespace Erdos518
 
-/-!
+/-
 ## Part I: Two-Coloring of Complete Graphs
 -/
 
@@ -55,7 +55,7 @@ For the complete graph on Fin n, a two-coloring assigns each pair {i, j} a color
 def TwoColoring (n : ℕ) : Type :=
   ∀ (i j : Fin n), i ≠ j → Color
 
-/-!
+/-
 ## Part II: Paths in Graphs
 -/
 
@@ -82,7 +82,7 @@ Number of edges, which is (number of vertices) - 1.
 def Path.length (p : Path n) : ℕ :=
   p.vertices.length - 1
 
-/-!
+/-
 ## Part III: Monochromatic Paths
 -/
 
@@ -107,7 +107,7 @@ A path with all edges colored Blue.
 def IsBluePath (c : TwoColoring n) (p : Path n) : Prop :=
   IsMonochromaticPath c p Color.Blue
 
-/-!
+/-
 ## Part IV: Path Covers
 -/
 
@@ -134,7 +134,7 @@ All paths in the cover have the same color.
 def IsMonochromaticCover (c : TwoColoring n) (cover : PathCover n) (col : Color) : Prop :=
   ∀ p ∈ cover.paths, IsMonochromaticPath c p col
 
-/-!
+/-
 ## Part V: Classical Results
 -/
 
@@ -164,7 +164,7 @@ axiom erdos_gyarfas_lower_bound :
         IsMonochromaticCover c cover col →
         cover.size ≥ Nat.sqrt n - 1
 
-/-!
+/-
 ## Part VI: The Erdős-Gyárfás Conjecture
 -/
 
@@ -179,7 +179,7 @@ def ErdosGyarfasConjecture : Prop :=
       IsMonochromaticCover c cover col ∧
       cover.size ≤ Nat.sqrt n
 
-/-!
+/-
 ## Part VII: The Solution (Pokrovskiy-Versteegen-Williams 2024)
 -/
 
@@ -206,7 +206,7 @@ theorem main_result (n : ℕ) (hn : n ≥ 1) (c : TwoColoring n) :
       cover.size ≤ Nat.sqrt n :=
   erdos_gyarfas_conjecture_true n hn c
 
-/-!
+/-
 ## Part VIII: Tightness of the Bound
 -/
 
@@ -227,7 +227,7 @@ theorem sqrt_bound_tight :
         cover.size ≥ Nat.sqrt n - 1) := by
   exact ⟨pokrovskiy_versteegen_williams, erdos_gyarfas_lower_bound⟩
 
-/-!
+/-
 ## Part IX: Comparison with Two-Colored Cover
 -/
 
@@ -249,7 +249,7 @@ theorem color_matters :
   · exact gerencser_gyarfas
   · exact pokrovskiy_versteegen_williams
 
-/-!
+/-
 ## Part X: Summary
 -/
 

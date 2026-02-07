@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #388 — Products of Consecutive Integers
 
 Can one classify all solutions of
@@ -35,7 +35,7 @@ import Mathlib.Data.Finset.LocallyFinite
 
 open Finset BigOperators
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- Product of k consecutive integers starting from m+1:
   (m+1)(m+2)···(m+k) = (m+k)! / m! -/
@@ -59,7 +59,7 @@ structure EqualProductSolution where
 def equalProductSolutions : Set EqualProductSolution :=
   Set.univ
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #388 (Open).**
 There are only finitely many solutions to
@@ -68,7 +68,7 @@ with k₁, k₂ > 3 and m₁ + k₁ ≤ m₂. -/
 axiom erdos_388_conjecture :
   ∃ N : ℕ, ∀ (sol : EqualProductSolution), sol.m₂ ≤ N
 
-/-! ## Generalized Version -/
+/- ## Generalized Version -/
 
 /-- A solution to the generalized proportional-products equation:
   a · ∏_{i=1}^{k₁} (m₁+i) = b · ∏_{j=1}^{k₂} (m₂+j)
@@ -89,7 +89,7 @@ has only finitely many solutions. -/
 axiom erdos_388_generalized (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
   ∃ N : ℕ, ∀ (sol : ProportionalProductSolution a b), sol.m₂ ≤ N
 
-/-! ## Related Classical Results -/
+/- ## Related Classical Results -/
 
 /-- **Erdős–Selfridge (1975).** A product of two or more consecutive
 positive integers is never a perfect power.

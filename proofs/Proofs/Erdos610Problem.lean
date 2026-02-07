@@ -29,7 +29,7 @@ open Finset Function SimpleGraph
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Cliques and Maximal Cliques -/
+/- ## Cliques and Maximal Cliques -/
 
 /-- A clique in a graph is a set of pairwise adjacent vertices -/
 def IsClique (G : SimpleGraph V) (S : Finset V) : Prop :=
@@ -43,7 +43,7 @@ def IsMaximalClique (G : SimpleGraph V) (S : Finset V) : Prop :=
 noncomputable def maximalCliques (G : SimpleGraph V) : Finset (Finset V) :=
   Finset.univ.filter fun S => IsMaximalClique G S
 
-/-! ## Clique Transversal -/
+/- ## Clique Transversal -/
 
 /-- A set T is a clique transversal if it intersects every maximal clique -/
 def IsCliqueTransversal (G : SimpleGraph V) (T : Finset V) : Prop :=
@@ -65,7 +65,7 @@ noncomputable def cliqueTransversalNumber (G : SimpleGraph V) : ℕ :=
 /-- Notation: τ(G) for clique transversal number -/
 notation "τ" => cliqueTransversalNumber
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- Every vertex set is a clique transversal -/
 theorem univ_is_transversal (G : SimpleGraph V) :
@@ -89,7 +89,7 @@ theorem tau_empty : τ (⊥ : SimpleGraph V) = Fintype.card V := by
 theorem tau_complete [Nontrivial V] : τ (⊤ : SimpleGraph V) = 1 := by
   sorry
 
-/-! ## The Erdős-Gallai-Tuza Bound -/
+/- ## The Erdős-Gallai-Tuza Bound -/
 
 /-- The known upper bound: τ(G) ≤ n - √(2n) + O(1) -/
 def ErdosGallaiTuzaBound (n : ℕ) : ℝ :=
@@ -100,7 +100,7 @@ theorem erdos_gallai_tuza :
       (τ G : ℝ) ≤ Fintype.card V - Real.sqrt (2 * Fintype.card V) + C := by
   sorry
 
-/-! ## The Main Questions (OPEN) -/
+/- ## The Main Questions (OPEN) -/
 
 /-- Question 1: Can we improve to n - ω(n)√n for ω(n) → ∞? -/
 def Question1_OmegaImprovement : Prop :=
@@ -115,7 +115,7 @@ def Question2_LogImprovement : Prop :=
       let n := Fintype.card V
       (τ G : ℝ) ≤ n - c * Real.sqrt (n * Real.log n)
 
-/-! ## Connection to Independent Sets -/
+/- ## Connection to Independent Sets -/
 
 /-- An independent set has no edges between its vertices -/
 def IsIndependentSet (G : SimpleGraph V) (S : Finset V) : Prop :=
@@ -136,7 +136,7 @@ def IsTriangleFree (G : SimpleGraph V) : Prop :=
 noncomputable def triangleFreeIndependence (n : ℕ) : ℕ :=
   sorry -- The minimum over all triangle-free graphs on n vertices
 
-/-! ## The Erdős-Gallai-Tuza Conjecture -/
+/- ## The Erdős-Gallai-Tuza Conjecture -/
 
 /-- Conjecture: τ(G) ≤ n - f(n) where f is the triangle-free independence function -/
 def ErdosGallaiTuzaConjecture : Prop :=
@@ -154,7 +154,7 @@ theorem conjecture_implies_question2 :
     ErdosGallaiTuzaConjecture → Question2_LogImprovement := by
   sorry
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /-- There exist graphs where τ(G) is close to n - √(2n) -/
 def NearTightConstruction : Prop :=
@@ -167,7 +167,7 @@ def NearTightConstruction : Prop :=
 theorem egt_bound_tight : NearTightConstruction := by
   sorry
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- For bipartite graphs, τ relates to vertex covers -/
 theorem tau_bipartite (G : SimpleGraph V) (hG : G.IsBipartite) :
@@ -184,7 +184,7 @@ theorem tau_perfect (G : SimpleGraph V) (hG : sorry) : -- G is perfect
     sorry -- τ(G) relates to chromatic number
     := by sorry
 
-/-! ## Clique Cover Duality -/
+/- ## Clique Cover Duality -/
 
 /-- A clique cover partitions vertices into cliques -/
 def IsCliqueCover (G : SimpleGraph V) (C : Finset (Finset V)) : Prop :=
@@ -200,7 +200,7 @@ theorem tau_clique_cover_relation (G : SimpleGraph V) :
     τ G ≥ cliqueCoverNumber G := by
   sorry
 
-/-! ## Main Problem Statement -/
+/- ## Main Problem Statement -/
 
 /-- Erdős Problem #610: OPEN
 

@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #446: Density of Integers with Divisors in (n, 2n)
 
 Let δ(n) denote the density of integers divisible by some d ∈ (n, 2n).
@@ -34,7 +34,7 @@ namespace Erdos446
 
 open Real
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- An integer m has a divisor in the open interval (n, 2n)
 if there exists d with n < d < 2n and d | m. -/
@@ -72,7 +72,7 @@ axiom deltaR (n r : ℕ) : ℝ
 axiom delta_decomposition (n : ℕ) :
   ∀ ε > 0, ∃ R : ℕ, delta n - ε < (Finset.range R).sum (fun r => deltaR n (r + 1))
 
-/-! ## The Constant α -/
+/- ## The Constant α -/
 
 /-- The Erdős constant α = 1 - (1 + log log 2) / log 2 ≈ 0.08607.
 This constant governs the decay rate of δ(n). -/
@@ -82,7 +82,7 @@ noncomputable def alpha : ℝ :=
 /-- Numerical bounds: 0.086 < α < 0.087. -/
 axiom alpha_value : 0.086 < alpha ∧ alpha < 0.087
 
-/-! ## Historical Results -/
+/- ## Historical Results -/
 
 /-- **Besicovitch (1934):** liminf δ(n) = 0.
 The density can get arbitrarily small along subsequences. -/
@@ -104,7 +104,7 @@ axiom erdos_1960 :
     (log n : ℝ) ^ (-(alpha + ε)) < delta n ∧
     delta n < (log n : ℝ) ^ (-(alpha - ε))
 
-/-! ## Ford's Resolution (2008) -/
+/- ## Ford's Resolution (2008) -/
 
 /-- **Ford's asymptotic (2008):**
 δ(n) ≍ 1 / ((log n)^α (log log n)^{3/2}).
@@ -128,7 +128,7 @@ in (n, 2n) have density comparable to the total density. -/
 axiom ford_2008_general (r : ℕ) (hr : r ≥ 1) :
   ∃ cᵣ : ℝ, cᵣ > 0 ∧ ∀ n ≥ 10, deltaR n r ≥ cᵣ * delta n
 
-/-! ## Key Examples -/
+/- ## Key Examples -/
 
 /-- **Primes have no divisor in (n, 2n) for large n:**
 If p > 2n is prime, then p has no divisors in (n, 2n),
@@ -140,7 +140,7 @@ theorem prime_no_divisor (p n : ℕ) (hp : Nat.Prime p) (hn : p > 2 * n) :
   | inl h1 => omega
   | inr hp_eq => omega
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Summary of Erdős Problem #446.**
 

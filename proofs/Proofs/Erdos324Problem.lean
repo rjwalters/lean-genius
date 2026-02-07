@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #324: Distinct Polynomial Pair Sums
 
 Does there exist a polynomial f(x) ∈ ℤ[x] such that all the sums
@@ -22,7 +22,7 @@ import Mathlib.Tactic
 
 open Polynomial
 
-/-!
+/-
 ## Section I: Distinct Pair Sums
 -/
 
@@ -39,7 +39,7 @@ are all distinct for a < b nonneg integers. -/
 def HasDistinctPairSums (f : ℤ[X]) : Prop :=
   orderedPairs.InjOn (pairSumFn f)
 
-/-!
+/-
 ## Section II: The Conjecture
 -/
 
@@ -48,7 +48,7 @@ pair sum property? -/
 def ErdosProblem324 : Prop :=
   ∃ f : ℤ[X], HasDistinctPairSums f
 
-/-!
+/-
 ## Section III: The Quintic Conjecture
 -/
 
@@ -61,7 +61,7 @@ def QuinticConjecture : Prop :=
 theorem quintic_implies_324 (h : QuinticConjecture) : ErdosProblem324 :=
   ⟨X ^ 5, h⟩
 
-/-!
+/-
 ## Section IV: Power Generalizations
 -/
 
@@ -86,7 +86,7 @@ axiom cubes_not_distinct : ¬PowerPairSumDistinct 3
 two fourth powers (Euler 1772). -/
 axiom quartics_not_distinct : ¬PowerPairSumDistinct 4
 
-/-!
+/-
 ## Section V: Lower Degree Impossibility
 -/
 
@@ -98,7 +98,7 @@ axiom linear_not_distinct (a b : ℤ) (ha : a ≠ 0) :
 axiom min_degree_for_distinct :
   ∀ f : ℤ[X], HasDistinctPairSums f → f.natDegree ≥ 5
 
-/-!
+/-
 ## Section VI: Counting Pair Sums
 -/
 

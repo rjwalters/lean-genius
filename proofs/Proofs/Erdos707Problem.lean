@@ -37,7 +37,7 @@ namespace Erdos707
 
 open Finset
 
-/-! ## Key Definitions
+/- ## Key Definitions
 
 A **Sidon set** (also called B₂ sequence) is a set where all pairwise sums are distinct.
 A **perfect difference set** mod n is a set where every nonzero residue appears exactly
@@ -67,7 +67,7 @@ def IsPerfectDifferenceSet (B : Finset ℕ) (n : ℕ) : Prop :=
     (Finset.filter (fun p : ℕ × ℕ => p.1 ∈ B ∧ p.2 ∈ B ∧ p.1 ≠ p.2 ∧
       ((p.1 : ℤ) - p.2) % n = r) (B ×ˢ B)).card = 1
 
-/-! ## Main Theorem: The Conjecture is FALSE
+/- ## Main Theorem: The Conjecture is FALSE
 
 Erdős asked if every finite Sidon set can be embedded in a perfect difference set
 mod p² + p + 1 for some prime p. The answer is NO. -/
@@ -90,7 +90,7 @@ def erdos_707_statement : Prop :=
 /-- The statement is false. -/
 axiom erdos_707_statement_false : ¬erdos_707_statement
 
-/-! ## Counterexamples -/
+/- ## Counterexamples -/
 
 /-- The set {1, 2, 4} is a Sidon set. -/
 theorem sidon_124 : IsSidon {1, 2, 4} := by
@@ -131,7 +131,7 @@ axiom counterexample_hall :
   ∀ B : Finset ℕ, ∀ n : ℕ,
     ({1, 3, 9, 10, 13} : Finset ℕ) ⊆ B → ¬IsPerfectDifferenceSet B n
 
-/-! ## Positive Results -/
+/- ## Positive Results -/
 
 /-- **Size bound**: A perfect difference set mod n has size at most √n + 1.
 This is because each of the n-1 nonzero differences must be represented
@@ -157,7 +157,7 @@ Here 7 = 2² + 2 + 1, and B = {0, 1, 3} (or equivalently {1, 2, 4}) works. -/
 axiom example_124_in_7 :
   ∃ B : Finset ℕ, {1, 2, 4} ⊆ B ∧ IsPerfectDifferenceSet B 7
 
-/-! ## Connection to Sidon Set Density
+/- ## Connection to Sidon Set Density
 
 This problem is related to Erdős Problem #329 about the density of Sidon sets.
 If the conjecture were TRUE, it would imply optimal density for Sidon sets. -/
@@ -167,7 +167,7 @@ density of Sidon sets in [1,n] is (1 + o(1))√n.
 Since the conjecture is false, this approach fails. -/
 axiom connection_to_density : Prop
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #707 Summary**:
 

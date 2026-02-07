@@ -25,7 +25,7 @@ open Filter Set Finset
 
 namespace Erdos757
 
-/-!
+/-
 ## Core Definitions
 
 A **Sidon set** is a set where all pairwise sums are distinct. Equivalently,
@@ -41,7 +41,7 @@ def IsSidon (S : Set ℝ) : Prop :=
 /-- The difference set A - A = {a - a' : a, a' ∈ A}. -/
 def differenceSet (A : Set ℝ) : Set ℝ := A - A
 
-/-!
+/-
 ## The Almost-Sidon Condition
 
 A 4-element Sidon set has exactly 13 elements in its difference set:
@@ -62,7 +62,7 @@ def IsAdmissible (c : ℝ) : Prop :=
   ∀ {A : Set ℝ}, A.Finite → AlmostSidon A →
     ∃ S ⊆ A, IsSidon S ∧ c * A.ncard ≤ (S.ncard : ℝ)
 
-/-!
+/-
 ## Main Conjecture
 
 Find the exact value of sup{c : IsAdmissible c}.
@@ -76,7 +76,7 @@ The exact value remains unknown. -/
 axiom erdos_757_conjecture :
     ∃ c : ℝ, c = sSup {x : ℝ | IsAdmissible x} ∧ (1/2 : ℝ) < c ∧ c < 3/5
 
-/-!
+/-
 ## Known Results (Gyárfás-Lehel 1995)
 -/
 
@@ -95,7 +95,7 @@ Sidon subset has size just under 3n/5. -/
 axiom gyarfas_lehel_upper_bound :
     sSup {c : ℝ | IsAdmissible c} < (3/5 : ℝ)
 
-/-!
+/-
 ## Properties of Sidon Sets
 -/
 
@@ -129,7 +129,7 @@ theorem sidon_singleton (x : ℝ) : IsSidon ({x} : Set ℝ) := by
 /-- Pairs are Sidon. -/
 axiom sidon_pair (x y : ℝ) (hxy : x ≠ y) : IsSidon ({x, y} : Set ℝ)
 
-/-!
+/-
 ## Difference Sets
 -/
 
@@ -146,7 +146,7 @@ theorem differenceSet_symmetric (A : Set ℝ) (x : ℝ) :
   · exact ⟨b, hb, a, ha, by linarith⟩
   · exact ⟨b, hb, a, ha, by linarith⟩
 
-/-!
+/-
 ## The Condition |B - B| ≥ 11
 
 This condition is a relaxation of the Sidon property. It says that
@@ -170,7 +170,7 @@ theorem almostSidon_of_sidon (A : Set ℝ) (hA : IsSidon A) : AlmostSidon A := b
   -- A Sidon set of size 4 has |B - B| = 13 ≥ 11
   sorry
 
-/-!
+/-
 ## The Set of Admissible Constants
 -/
 
@@ -205,7 +205,7 @@ axiom admissible_bounded_above :
 theorem admissible_nonempty : {c : ℝ | IsAdmissible c}.Nonempty :=
   ⟨0, zero_admissible⟩
 
-/-!
+/-
 ## Connection to Extremal Combinatorics
 
 This problem is part of a family of questions about the structure of

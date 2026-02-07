@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #346 — Complete Sequences and the Golden Ratio
 
 Let A = {a₁ < a₂ < ⋯} be a sequence such that:
@@ -23,7 +23,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Complete sequences -/
+/- ## Complete sequences -/
 
 /-- Subset sums of a set of natural numbers. -/
 def subsetSums (A : Set ℕ) : Set ℕ :=
@@ -33,7 +33,7 @@ def subsetSums (A : Set ℕ) : Set ℕ :=
 def IsComplete (A : Set ℕ) : Prop :=
     ∃ m : ℕ, ∀ n : ℕ, m ≤ n → n ∈ subsetSums A
 
-/-! ## Strong completeness and fragility -/
+/- ## Strong completeness and fragility -/
 
 /-- A is strongly complete: removing any finite subset preserves completeness. -/
 def IsStronglyComplete (A : Set ℕ) : Prop :=
@@ -43,7 +43,7 @@ def IsStronglyComplete (A : Set ℕ) : Prop :=
 def IsFragile (A : Set ℕ) : Prop :=
     ∀ B : Set ℕ, Set.Infinite B → ¬IsComplete (A \ B)
 
-/-! ## Lacunary sequences -/
+/- ## Lacunary sequences -/
 
 /-- A sequence is lacunary with gap ≥ 1 + ε. -/
 def IsLacunary (a : ℕ → ℕ) (ε : ℚ) : Prop :=
@@ -52,7 +52,7 @@ def IsLacunary (a : ℕ → ℕ) (ε : ℚ) : Prop :=
 /-- The golden ratio φ = (1 + √5)/2 ≈ 1.618. -/
 noncomputable def goldenRatio : ℚ := 1618 / 1000
 
-/-! ## Graham's example -/
+/- ## Graham's example -/
 
 /-- Graham's sequence: a_n = F_n − (−1)^n. -/
 def grahamSeq (n : ℕ) : ℕ :=
@@ -66,14 +66,14 @@ axiom graham_strongly_complete :
 axiom graham_fragile :
     IsFragile { n | ∃ k, n = grahamSeq k ∧ 0 < n }
 
-/-! ## Golden ratio threshold -/
+/- ## Golden ratio threshold -/
 
 /-- If a_{n+1}/a_n > φ for all n, then A is automatically fragile. -/
 axiom golden_ratio_fragile (a : ℕ → ℕ)
     (h : ∀ n : ℕ, goldenRatio * (a n : ℚ) < (a (n + 1) : ℚ)) :
     IsFragile { n | ∃ k, n = a k }
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 346: if A is lacunary, strongly complete, and fragile,
     then lim a_{n+1}/a_n = φ.

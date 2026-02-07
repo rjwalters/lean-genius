@@ -40,7 +40,7 @@ open Cardinal Set SimpleGraph
 
 namespace Erdos594
 
-/-! ## Cardinal Background
+/- ## Cardinal Background
 
 We need uncountable cardinals ℵ₀, ℵ₁, ℵ₂ to state this problem.
 -/
@@ -60,7 +60,7 @@ theorem aleph_strict_mono : aleph0 < aleph1 ∧ aleph1 < aleph2 := by
   · exact Cardinal.aleph_lt_aleph.mpr (by norm_num : (0 : Ordinal) < 1)
   · exact Cardinal.aleph_lt_aleph.mpr (by norm_num : (1 : Ordinal) < 2)
 
-/-! ## Chromatic Number for Infinite Graphs
+/- ## Chromatic Number for Infinite Graphs
 
 The chromatic number χ(G) is the minimum cardinal κ such that
 G can be properly colored with κ colors.
@@ -85,7 +85,7 @@ def chromaticNumberAtLeast (G : SimpleGraph V) (κ : Cardinal) : Prop :=
 def hasLargeChromaticNumber (G : SimpleGraph V) (κ : Cardinal) : Prop :=
   chromaticNumberAtLeast G κ
 
-/-! ## Cycles in Graphs
+/- ## Cycles in Graphs
 
 An odd cycle of length 2k+1 is a cycle with an odd number of vertices.
 -/
@@ -106,7 +106,7 @@ def hasOddCycleOfLength (G : SimpleGraph V) (n : ℕ) : Prop :=
 def containsAllLargeOddCycles (G : SimpleGraph V) : Prop :=
   ∃ N₀ : ℕ, ∀ n : ℕ, Odd n → n ≥ N₀ → hasCycleOfLength G n
 
-/-! ## The Main Statements -/
+/- ## The Main Statements -/
 
 /--
 **Erdős-Hajnal Partial Result:**
@@ -137,7 +137,7 @@ theorem erdos_594 (V : Type*) (G : SimpleGraph V)
     containsAllLargeOddCycles G :=
   erdos_hajnal_shelah V G h
 
-/-! ## Why ℵ₁ is the Right Threshold -/
+/- ## Why ℵ₁ is the Right Threshold -/
 
 /--
 **Countable Chromatic Number Doesn't Suffice:**
@@ -162,7 +162,7 @@ theorem aleph1_is_optimal :
   · exact erdos_hajnal_shelah
   · exact countable_chromatic_insufficient
 
-/-! ## Related Properties -/
+/- ## Related Properties -/
 
 /--
 **Bipartite Subgraphs:**
@@ -188,7 +188,7 @@ axiom triangle_free_odd_cycles (V : Type*) (G : SimpleGraph V) :
     isTriangleFree G → hasLargeChromaticNumber G aleph1 →
     ∀ n : ℕ, Odd n → n ≥ 5 → hasCycleOfLength G n
 
-/-! ## Thomassen's Strengthening (1983)
+/- ## Thomassen's Strengthening (1983)
 
 Problem #737 asked whether cycles must pass through a specific edge.
 Thomassen proved this affirmatively.
@@ -210,7 +210,7 @@ axiom thomassen_1983 (V : Type*) (G : SimpleGraph V) (v w : V) :
     hasLargeChromaticNumber G aleph1 → G.Adj v w →
     ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → hasCycleThroughEdge G v w n
 
-/-! ## Small Cycle Behavior -/
+/- ## Small Cycle Behavior -/
 
 /-- Not every graph with χ ≥ ℵ₁ contains a triangle.
     There exist triangle-free graphs with arbitrary chromatic number. -/
@@ -226,7 +226,7 @@ axiom high_girth_high_chromatic :
       (∀ n, 3 ≤ n → n < g → ¬hasCycleOfLength G n) ∧
       hasLargeChromaticNumber G κ
 
-/-! ## Explicit Bounds -/
+/- ## Explicit Bounds -/
 
 /-- For the Erdős-Hajnal-Shelah theorem, the threshold N₀ depends on
     the structure of the graph, not just its chromatic number. -/
@@ -235,7 +235,7 @@ axiom threshold_depends_on_graph (V : Type*) (G : SimpleGraph V) :
     ∃! N₀ : ℕ, (∀ n : ℕ, Odd n → n ≥ N₀ → hasCycleOfLength G n) ∧
               (∃ n : ℕ, Odd n ∧ n < N₀ ∧ ¬hasCycleOfLength G n)
 
-/-! ## Summary
+/- ## Summary
 
 **Erdős Problem #594: SOLVED**
 

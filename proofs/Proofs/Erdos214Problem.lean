@@ -33,7 +33,7 @@ open Real
 
 namespace Erdos214
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -60,7 +60,7 @@ def ContainsUnitSquare (S : Set Plane) : Prop :=
   ∃ p₁ p₂ p₃ p₄ : Plane, p₁ ∈ S ∧ p₂ ∈ S ∧ p₃ ∈ S ∧ p₄ ∈ S ∧
     IsUnitSquare p₁ p₂ p₃ p₄
 
-/-!
+/-
 ## Part 2: The Main Statement
 -/
 
@@ -74,7 +74,7 @@ axiom juhasz_1979 : Erdos214Statement
 /-- The main theorem: Problem #214 is solved -/
 theorem erdos_214_solved : Erdos214Statement := juhasz_1979
 
-/-!
+/-
 ## Part 3: Stronger Version - Any 4-Point Set
 -/
 
@@ -105,7 +105,7 @@ theorem unit_square_from_stronger :
   -- Apply Juhász's stronger theorem
   sorry
 
-/-!
+/-
 ## Part 4: Limitations for Larger Sets
 -/
 
@@ -122,7 +122,7 @@ def HoldsFor5Points : Prop :=
 /-- The 5-point case is open -/
 axiom five_points_open : True -- Status of HoldsFor5Points is unknown
 
-/-!
+/-
 ## Part 5: Connection to Unit Distance Graphs
 -/
 
@@ -151,7 +151,7 @@ axiom chromatic_number_of_plane :
   -- de Grey (2018) proved χ(ℝ²) ≥ 5
   True
 
-/-!
+/-
 ## Part 6: Proof Techniques
 -/
 
@@ -174,7 +174,7 @@ axiom unit_circle_intersections :
   -- This limits how "sparse" Sᶜ can be locally
   True
 
-/-!
+/-
 ## Part 7: Examples and Constructions
 -/
 
@@ -198,7 +198,7 @@ axiom scaled_lattice_is_unit_free :
 axiom scaled_lattice_complement_has_squares :
   ContainsUnitSquare ScaledLatticeᶜ
 
-/-!
+/-
 ## Part 8: Related Problems
 -/
 
@@ -221,7 +221,7 @@ axiom moser_worm_problem :
   -- of every plane curve of length 1?
   True
 
-/-!
+/-
 ## Part 9: Geometric Intuition
 -/
 
@@ -241,7 +241,7 @@ axiom why_four_points :
   -- So finding a 4-point configuration is always possible
   True
 
-/-!
+/-
 ## Part 10: Summary
 -/
 

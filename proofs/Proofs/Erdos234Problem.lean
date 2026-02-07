@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #234: Density of Normalized Prime Gaps
 
 For every c ≥ 0, the density f(c) of integers n for which
@@ -29,7 +29,7 @@ import Proofs.RiemannHypothesis
 
 open Nat Filter Real Set
 
-/-!
+/-
 ## Section I: Basic Definitions
 -/
 
@@ -43,7 +43,7 @@ noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 noncomputable def normalizedGap (n : ℕ) : ℝ :=
   if n ≤ 1 then 0 else (primeGap n : ℝ) / Real.log n
 
-/-!
+/-
 ## Section II: Counting Functions
 -/
 
@@ -55,7 +55,7 @@ noncomputable def countSmallNormGaps (N : ℕ) (c : ℝ) : ℕ :=
 noncomputable def gapProportion (N : ℕ) (c : ℝ) : ℝ :=
   (countSmallNormGaps N c : ℝ) / N
 
-/-!
+/-
 ## Section III: The Conjecture
 -/
 
@@ -75,7 +75,7 @@ def ErdosProblem234 : Prop :=
   ∃ f : ℝ → ℝ, Continuous f ∧
     ∀ c ≥ 0, Tendsto (fun N => gapProportion N c) atTop (nhds (f c))
 
-/-!
+/-
 ## Section IV: Basic Properties
 -/
 
@@ -120,7 +120,7 @@ axiom density_monotone (c₁ c₂ : ℝ) (hc : c₁ ≤ c₂) :
 axiom density_at_infinity :
     ∀ ε > 0, ∃ c₀ : ℝ, ∀ c ≥ c₀, ∀ᶠ N in atTop, gapProportion N c > 1 - ε
 
-/-!
+/-
 ## Section V: Cramér's Model
 -/
 
@@ -140,7 +140,7 @@ axiom cramer_continuous : Continuous cramerPrediction
 axiom cramer_in_unit_interval (c : ℝ) (hc : c ≥ 0) :
     0 ≤ cramerPrediction c ∧ cramerPrediction c ≤ 1
 
-/-!
+/-
 ## Section VI: Gallagher's Conditional Result
 -/
 
@@ -164,7 +164,7 @@ theorem gallagher_implies_conjecture (hRH : RiemannHypothesis) :
     · intro c hc
       exact gallagher_conditional hRH c hc
 
-/-!
+/-
 ## Section VII: Partial Results on Gap Distribution
 -/
 

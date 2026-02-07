@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1062: Maximum "No Divides Two Others" Sets
 
 Let f(n) be the maximum size of A ⊆ {1,…,n} such that no element
@@ -19,7 +19,7 @@ import Mathlib.Data.Real.Irrational
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: The Divisibility Condition
 -/
 
@@ -30,7 +30,7 @@ def NoDividesTwoOthers (A : Finset ℕ) : Prop :=
   ∀ a b c : ℕ, a ∈ A → b ∈ A → c ∈ A →
     a ∣ b → a ∣ c → a ≠ b → a ≠ c → b ≠ c → False
 
-/-!
+/-
 ## Section II: The Extremal Function
 -/
 
@@ -41,7 +41,7 @@ noncomputable def maxNDTOSize (n : ℕ) : ℕ :=
     ((Finset.Icc 1 n).powerset.filter (fun A => NoDividesTwoOthers A))
     Finset.card
 
-/-!
+/-
 ## Section III: Lower Bound Construction
 -/
 
@@ -51,7 +51,7 @@ multiple in the range. This gives f(n) ≥ ⌈2n/3⌉. -/
 axiom lower_bound_construction (n : ℕ) (hn : n ≥ 3) :
   maxNDTOSize n ≥ (2 * n + 2) / 3
 
-/-!
+/-
 ## Section IV: Lebensold's Bounds
 -/
 
@@ -65,7 +65,7 @@ axiom lebensold_upper_bound :
   ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
     (maxNDTOSize n : ℝ) ≤ 0.6736 * n
 
-/-!
+/-
 ## Section V: The Conjectures
 -/
 
@@ -81,7 +81,7 @@ def ErdosProblem1062 : Prop :=
     Filter.atTop (nhds L) ∧
     Irrational L
 
-/-!
+/-
 ## Section VI: Comparison with Primitive Sets
 -/
 

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 159: Ramsey Numbers for C₄ and Complete Graphs
 
 Determine whether there exists a constant `c > 0` such that
@@ -18,7 +18,7 @@ import Mathlib.Tactic
 
 open SimpleGraph
 
-/-! ## Graph predicates -/
+/- ## Graph predicates -/
 
 /-- A simple graph contains a 4-cycle `C₄` if there exist four distinct
 vertices forming a cycle `a-b-c-d-a`. -/
@@ -33,7 +33,7 @@ def HasClique {V : Type*} (G : SimpleGraph V) (n : ℕ) : Prop :=
     ∃ (S : Finset V), S.card = n ∧
       ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v
 
-/-! ## Ramsey number R(C₄, Kₙ) -/
+/- ## Ramsey number R(C₄, Kₙ) -/
 
 /-- `R(C₄, Kₙ)` is the smallest `N` such that every 2-colouring of `K_N`
 contains either a red `C₄` or a blue `Kₙ`. Equivalently, every graph on
@@ -49,7 +49,7 @@ axiom ramseyC4Kn_spec (n : ℕ) (hn : 1 ≤ n) :
       ∃ (G : SimpleGraph (Fin N)),
         ¬HasC4 G ∧ ¬HasClique Gᶜ n)
 
-/-! ## Known bounds -/
+/- ## Known bounds -/
 
 /-- Szemerédi's upper bound: `R(C₄, Kₙ) ≤ C · n² / (log n)²` for some
 constant `C > 0` and sufficiently large `n`. -/
@@ -65,7 +65,7 @@ axiom spencer_lower :
       ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n →
         c * (n : ℝ) ^ (3/2 : ℝ) / (Real.log n) ^ (3/2 : ℝ) ≤ (ramseyC4Kn n : ℝ)
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 159: Does there exist `c > 0` such that
 `R(C₄, Kₙ) ≤ C · n^{2-c}` for some constant `C` and all large `n`?
@@ -78,7 +78,7 @@ def ErdosProblem159 : Prop :=
         ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n →
           (ramseyC4Kn n : ℝ) ≤ C * (n : ℝ) ^ (2 - c)
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- `R(C₄, Kₙ)` is monotone in `n`: larger complete graphs require at
 least as many vertices. -/

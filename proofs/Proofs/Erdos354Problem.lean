@@ -31,7 +31,7 @@ open Set Finset BigOperators Real
 
 namespace Erdos354
 
-/-!
+/-
 ## Core Definitions
 
 The floor sequence and completeness properties.
@@ -64,7 +64,7 @@ def IsDyadicRational (x : ℝ) : Prop :=
 def HasIrrationalRatio (α β : ℝ) : Prop :=
   Irrational (α / β)
 
-/-!
+/-
 ## Basic Properties
 
 Elementary facts about floor sequences.
@@ -84,7 +84,7 @@ axiom floorSeq_unbounded (α : ℝ) (hα : 1 ≤ α) :
 axiom floorSeq_eventually_increasing (α : ℝ) (hα : 0 < α) :
     ∃ K : ℕ, ∀ k ≥ K, floorSeqTerm α k < floorSeqTerm α (k + 1)
 
-/-!
+/-
 ## Hegyvári's Results (1989)
 
 Key partial solutions from Hegyvári's groundbreaking work.
@@ -107,7 +107,7 @@ This is because the sequences become "too aligned" - they miss certain residue c
 axiom hegyvari_not_complete (α : ℝ) (k : ℕ) (hα : 2 ≤ α) (hk : 1 ≤ k) :
     ¬IsComplete α ((2 : ℝ)^k * α)
 
-/-!
+/-
 ## Van Doorn's Result
 
 Another special case of completeness.
@@ -120,7 +120,7 @@ axiom vanDoorn_complete (α β : ℝ) (hα : 0 < α) (hα2 : α < 2)
     (hβ2 : 2 < β) (hβ3 : β < 3) (hRatio : HasIrrationalRatio α β) :
     IsComplete α β
 
-/-!
+/-
 ## Recent Negative Results (2024-2025)
 
 Extensions of Hegyvári's non-completeness results.
@@ -137,7 +137,7 @@ axiom jiangMa_not_complete (α : ℝ) (hα1 : 1 < α) (hα2 : α < 2) :
 axiom fangHe_not_complete (α : ℝ) (hα1 : 1 < α) (hα2 : α < 2) (k : ℕ) (hk : 10 ≤ k) :
     ¬IsComplete α ((2 : ℝ)^k * α)
 
-/-!
+/-
 ## Main Conjecture (OPEN)
 
 The general question for irrational ratios.
@@ -167,7 +167,7 @@ axiom refined_conjecture (α β : ℝ) (hα : 0 < α) (hβ : 0 < β)
     (hNotPower : ∀ k : ℤ, β ≠ (2 : ℝ)^k * α) :
     IsComplete α β ∨ ¬IsComplete α β  -- Unknown!
 
-/-!
+/-
 ## Representation Properties
 
 Understanding which numbers are representable.
@@ -186,7 +186,7 @@ axiom representable_add_term (α β : ℝ) (n : ℕ) (k : ℕ)
     IsRepresentable α β (n + floorSeqTerm α k) ∨
     IsRepresentable α β (n + floorSeqTerm β k)
 
-/-!
+/-
 ## Measure-Theoretic Results
 
 Hegyvári's density results.
@@ -203,7 +203,7 @@ axiom generic_completeness :
     -- S has full measure in some appropriate sense
     True  -- Placeholder for measure-theoretic statement
 
-/-!
+/-
 ## Connection to Binary Representations
 
 The problem relates to binary expansions.
@@ -216,7 +216,7 @@ axiom floorSeq_one (k : ℕ) : floorSeqTerm 1 k = 2^k
 This follows from the standard fact that every natural number has a binary representation. -/
 axiom binary_complete : IsComplete 1 1
 
-/-!
+/-
 ## The Generalization Question
 
 What about base γ ∈ (1, 2)?
@@ -234,7 +234,7 @@ axiom generalized_conjecture (γ α β : ℝ) (hγ1 : 1 < γ) (hγ2 : γ < 2)
     ¬(∃ N : ℕ, ∀ n ≥ N, ∃ (S T : Finset ℕ),
       n = (∑ s ∈ S, ⌊γ^s * α⌋.toNat) + (∑ t ∈ T, ⌊γ^t * β⌋.toNat))
 
-/-!
+/-
 ## Historical Notes
 
 The problem connects to several areas:

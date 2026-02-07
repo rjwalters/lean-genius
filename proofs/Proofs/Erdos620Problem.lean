@@ -42,7 +42,7 @@ open SimpleGraph Finset
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Part I: Cliques and Forbidden Subgraphs -/
+/- ## Part I: Cliques and Forbidden Subgraphs -/
 
 /-- A triangle (K₃) in a graph. -/
 def HasTriangle (G : SimpleGraph V) : Prop :=
@@ -66,7 +66,7 @@ theorem triangleFree_implies_K4Free (G : SimpleGraph V) (h : TriangleFree G) :
   apply h
   exact ⟨a, b, c, hne.1, hne.2.2.1, hne.2.1, hab, hbc, hac⟩
 
-/-! ## Part II: Induced Subgraphs -/
+/- ## Part II: Induced Subgraphs -/
 
 /-- The induced subgraph on a subset of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Finset V) : SimpleGraph S where
@@ -85,7 +85,7 @@ def InducedTriangleFree (G : SimpleGraph V) (S : Finset V) : Prop :=
 noncomputable def maxTriangleFreeInduced (G : SimpleGraph V) : ℕ :=
   sSup {k : ℕ | ∃ S : Finset V, S.card = k ∧ InducedTriangleFree G S}
 
-/-! ## Part III: The Erdős-Rogers Function -/
+/- ## Part III: The Erdős-Rogers Function -/
 
 /-- **The Erdős-Rogers Function f(n)**
 
@@ -102,7 +102,7 @@ def ErdosRogersProperty (n k : ℕ) : Prop :=
   ∀ (G : SimpleGraph (Fin n)), K4Free G →
     ∃ S : Finset (Fin n), S.card ≥ k ∧ InducedTriangleFree G S
 
-/-! ## Part IV: Main Problem Statement -/
+/- ## Part IV: Main Problem Statement -/
 
 /-- **Erdős Problem #620**
 
@@ -114,7 +114,7 @@ def Erdos620Statement : Prop :=
     (∀ (G : SimpleGraph (Fin n)), K4Free G → maxTriangleFreeInduced G ≥ f n) ∧
     (∃ (G : SimpleGraph (Fin n)), K4Free G ∧ maxTriangleFreeInduced G = f n)
 
-/-! ## Part V: Known Bounds -/
+/- ## Part V: Known Bounds -/
 
 /-- **Trivial Lower Bound**
 
@@ -166,7 +166,7 @@ axiom mubayi_verstraete_upper :
     ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 2,
       (erdosRogers n : ℝ) ≤ C * Real.sqrt n * Real.log n
 
-/-! ## Part VI: Current State of Knowledge -/
+/- ## Part VI: Current State of Knowledge -/
 
 /-- The gap between lower and upper bounds. -/
 theorem current_bounds :
@@ -186,7 +186,7 @@ theorem gap_analysis (n : ℕ) (hn : n ≥ 16) :
   obtain ⟨C, hC, hupper⟩ := mubayi_verstraete_upper
   exact ⟨c, C, hc, hC, hlower n hn, hupper n (by omega)⟩
 
-/-! ## Part VII: Special Cases -/
+/- ## Part VII: Special Cases -/
 
 /-- For very sparse K₄-free graphs (few edges), we can find large independent sets. -/
 theorem sparse_case (n : ℕ) (G : SimpleGraph (Fin n)) [DecidableRel G.Adj]
@@ -203,7 +203,7 @@ def turanGraph3 (n : ℕ) : SimpleGraph (Fin n) where
 theorem turan_is_K4Free (n : ℕ) : K4Free (turanGraph3 n) := by
   sorry
 
-/-! ## Part VIII: Ramsey Connection -/
+/- ## Part VIII: Ramsey Connection -/
 
 /-- The Ramsey number R(3,k) is the minimum n such that every graph on n vertices
     contains either a triangle or an independent set of size k. -/
@@ -223,7 +223,7 @@ theorem erdos_rogers_ramsey_connection (n k : ℕ) (hn : n ≥ ramsey3k k) :
     erdosRogers n ≥ k ∨ ∀ (G : SimpleGraph (Fin n)), K4Free G → HasTriangle G := by
   sorry
 
-/-! ## Part IX: Probabilistic Bounds -/
+/- ## Part IX: Probabilistic Bounds -/
 
 /-- Random K₄-free graphs give upper bounds on f(n).
 
@@ -241,7 +241,7 @@ axiom dependent_random_choice_lower :
       ∀ (G : SimpleGraph (Fin n)), K4Free G →
         (maxTriangleFreeInduced G : ℝ) ≥ c * Real.sqrt n
 
-/-! ## Part X: Generalizations -/
+/- ## Part X: Generalizations -/
 
 /-- The generalized Erdős-Rogers function f_{s,t}(n):
     minimum K_t-free induced subgraph size in K_s-free graphs on n vertices. -/
@@ -261,7 +261,7 @@ axiom ramsey_independent_set (s : ℕ) (hs : s ≥ 3) :
       c * (n : ℝ) ^ (1 / (s - 1 : ℝ)) ≤ generalizedErdosRogers s 2 n ∧
       (generalizedErdosRogers s 2 n : ℝ) ≤ C * (n : ℝ) ^ (1 / (s - 1 : ℝ)) * Real.log n
 
-/-! ## Part XI: Open Status -/
+/- ## Part XI: Open Status -/
 
 /-- The exact value of f(n) remains unknown.
 
@@ -279,7 +279,7 @@ theorem erdos_620_unsolved : erdos_620_open := by
 
 end Erdos620
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #620, the Erdős-Rogers problem.

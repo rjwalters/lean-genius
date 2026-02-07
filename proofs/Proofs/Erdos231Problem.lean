@@ -43,7 +43,7 @@ open List Finset
 
 namespace Erdos231
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Abelian squares, Parikh vectors, and string properties.
@@ -74,7 +74,7 @@ def containsAbelianSquare (w : List α) : Prop :=
 def isAbelianSquareFree (w : List α) : Prop :=
   ¬containsAbelianSquare w
 
-/-!
+/-
 ## Part II: Squarefree vs Abelian-Square-Free
 
 Abelian-square-free is a stronger property.
@@ -102,7 +102,7 @@ theorem abelian_square_free_implies_squarefree (w : List α) :
   apply hASF
   exact ⟨prefix, suffix, x ++ x, heq, x, x, hlen, rfl, rfl⟩
 
-/-!
+/-
 ## Part III: The Alphabet Size Question
 -/
 
@@ -117,7 +117,7 @@ def erdos_231_question (k : ℕ) : Prop :=
   alphabetSize α = k →
   ∀ w : List α, w.length = 2^k - 1 → containsAbelianSquare w
 
-/-!
+/-
 ## Part IV: Thue's Result on Squarefree Strings
 -/
 
@@ -130,7 +130,7 @@ axiom thue_squarefree :
 axiom three_letters_not_enough :
   ∃ n₀ : ℕ, ∀ w : List (Fin 3), w.length ≥ n₀ → containsAbelianSquare w
 
-/-!
+/-
 ## Part V: Keränen's Construction (1992)
 
 The key result: infinite abelian-square-free strings exist over 4 letters.
@@ -154,7 +154,7 @@ def keranenMorphismExists : Prop :=
 /-- Keränen's morphism exists. -/
 axiom keranen_morphism : keranenMorphismExists
 
-/-!
+/-
 ## Part VI: Resolution of Erdős #231
 
 The answer is NO for k ≥ 4.
@@ -169,7 +169,7 @@ axiom erdos_231_disproved_for_k_geq_4 (k : ℕ) (hk : k ≥ 4) :
 axiom erdos_231_disproved :
   ∀ k : ℕ, k ≥ 4 → ¬erdos_231_question k
 
-/-!
+/-
 ## Part VII: What Happens for Small k?
 -/
 
@@ -182,13 +182,13 @@ axiom k_equals_2_abelian_square :
 axiom k_equals_3_contains :
     ∀ w : List (Fin 3), w.length = 7 → containsAbelianSquare w
 
-/-!
+/-
 The threshold is at k = 4 where abelian-square-free strings become possible:
 - For k ≤ 3: all long enough strings contain abelian squares
 - For k ≥ 4: abelian-square-free strings of any length exist
 -/
 
-/-!
+/-
 ## Part VIII: Examples
 -/
 
@@ -212,17 +212,17 @@ def counterexample_k4 : List (Fin 4) :=
     (Note: indices shifted by 1 from the original notation) -/
 axiom counterexample_is_asf : isAbelianSquareFree counterexample_k4
 
-/-!
+/-
 ## Part IX: Connection to Problem #192
 -/
 
-/-!
+/-
 Problem #192 asks about infinite abelian-square-free sequences.
 Keränen's result answers both problems: his infinite abelian-square-free
 sequence resolves #192 and consequently disproves #231 for k ≥ 4.
 -/
 
-/-!
+/-
 ## Part X: Summary
 
 **Erdős Problem #231 - DISPROVED (Keränen 1992)**

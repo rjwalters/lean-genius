@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 327: Sum-Divides-Product Avoidance
 
 Let `A ⊆ {1, ..., N}` have the property that for all distinct `a, b ∈ A`,
@@ -22,7 +22,7 @@ import Mathlib.Tactic
 
 open Finset
 
-/-! ## Sum-divides-product property -/
+/- ## Sum-divides-product property -/
 
 /-- `SumNotDvdProd A` means for all distinct `a, b ∈ A`, `a + b ∤ a * b`. -/
 def SumNotDvdProd (A : Finset ℕ) : Prop :=
@@ -36,7 +36,7 @@ def SumNotDvdTwoProd (A : Finset ℕ) : Prop :=
 noncomputable def maxAvoidSize (N : ℕ) : ℕ :=
     ((Finset.Icc 1 N).powerset.filter SumNotDvdProd).sup Finset.card
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 327: The maximum size of a SumNotDvdProd subset of `{1,...,N}`
 is asymptotically at most `N/2 + o(N)` (no larger than the odd numbers). -/
@@ -44,7 +44,7 @@ def ErdosProblem327 : Prop :=
     ∀ ε : ℝ, 0 < ε → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
       (maxAvoidSize N : ℝ) ≤ (1 / 2 + ε) * N
 
-/-! ## Van Doorn's bound -/
+/- ## Van Doorn's bound -/
 
 /-- Van Doorn's result: if `|A| ≥ (25/28) * N`, then `A` contains `a ≠ b`
 with `a + b ∣ a * b`. -/
@@ -52,7 +52,7 @@ axiom vanDoorn_bound (N : ℕ) (A : Finset ℕ) :
     A ⊆ Finset.Icc 1 N → (25 * N ≤ 28 * A.card) →
       ∃ a ∈ A, ∃ b ∈ A, a ≠ b ∧ a + b ∣ a * b
 
-/-! ## Variant: factor-of-2 condition -/
+/- ## Variant: factor-of-2 condition -/
 
 /-- Variant conjecture: if `a + b ∤ 2ab` for distinct `a, b ∈ A ⊆ {1,...,N}`,
 then `|A| = o(N)`. -/
@@ -61,13 +61,13 @@ def ErdosProblem327_variant : Prop :=
       ∀ A : Finset ℕ, A ⊆ Finset.Icc 1 N → SumNotDvdTwoProd A →
         (A.card : ℝ) ≤ ε * N
 
-/-! ## Unit fraction equivalence -/
+/- ## Unit fraction equivalence -/
 
 /-- `a + b ∣ a * b` iff `1/a + 1/b` is a unit fraction (i.e., `1/c` for some `c`). -/
 axiom sumDvdProd_iff_unitFraction (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
     a + b ∣ a * b ↔ ∃ c : ℕ, 0 < c ∧ (1 : ℚ) / a + (1 : ℚ) / b = (1 : ℚ) / c
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- The empty set trivially satisfies SumNotDvdProd. -/
 theorem sumNotDvdProd_empty : SumNotDvdProd ∅ := by

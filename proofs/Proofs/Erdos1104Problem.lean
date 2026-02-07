@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1104 — Maximum Chromatic Number of Triangle-Free Graphs
 
 Let f(n) be the maximum chromatic number of a triangle-free graph
@@ -20,13 +20,13 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- f(n): the maximum chromatic number of a triangle-free graph
     on n vertices. We axiomatize this function. -/
 noncomputable def triangleFreeMaxChromatic : ℕ → ℕ := fun _ => 0  -- axiomatized
 
-/-! ## Main Bounds -/
+/- ## Main Bounds -/
 
 /-- **Lower Bound (Hefty–Horn–King–Pfender 2025)**: There exists c₁ > 0
     such that f(n) ≥ c₁ √(n/log n) for large n. The construction uses
@@ -54,7 +54,7 @@ axiom erdos_1104_asymptotic :
       c₁ * Real.sqrt (n / Real.log n) ≤ (triangleFreeMaxChromatic n : ℝ) ∧
       (triangleFreeMaxChromatic n : ℝ) ≤ c₂ * Real.sqrt (n / Real.log n)
 
-/-! ## Edge Variant -/
+/- ## Edge Variant -/
 
 /-- **Edge Variant**: g(m) = max χ(G) over triangle-free graphs
     with m edges. Davies–Illingworth showed
@@ -65,7 +65,7 @@ axiom edge_variant :
     ∀ m : ℕ, m ≥ 2 →
       True  -- g(m) = Θ((m/(log m)²)^{1/3})
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Mycielski Construction**: The Mycielski construction produces
     triangle-free graphs with arbitrarily large chromatic number,

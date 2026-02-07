@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #567: Ramsey Size Linearity of Q₃, K₃₃, H₅
 
 Erdős Problem #567 asks whether Q₃ (3-cube), K₃,₃ (complete bipartite),
@@ -21,7 +21,7 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 
-/-! ## Graph Definitions -/
+/- ## Graph Definitions -/
 
 /-- A simple graph on vertex type V. -/
 structure Graph' (V : Type) where
@@ -64,7 +64,7 @@ def H5 : Graph' (Fin 5) where
   symm u v h := by rcases h with h | h | h | h | h | h <;> simp_all [or_comm]
   irrefl v h := by fin_cases v <;> simp_all
 
-/-! ## Ramsey Size -/
+/- ## Ramsey Size -/
 
 /-- The size Ramsey number r̂(G, H): the minimum number of edges in a
     graph F such that every 2-coloring of F's edges contains a
@@ -77,7 +77,7 @@ def IsRamseySizeLinear {V : Type} (G : Graph' V) : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ W : Type, ∀ H : Graph' W, ∀ m : ℕ,
     True → (sizeRamsey G H : ℝ) ≤ C * m
 
-/-! ## Main Questions -/
+/- ## Main Questions -/
 
 /-- Question 1: Is Q₃ Ramsey size linear? -/
 axiom erdos_567_Q3 : IsRamseySizeLinear Q3
@@ -88,7 +88,7 @@ axiom erdos_567_K33 : IsRamseySizeLinear K33
 /-- Question 3: Is H₅ Ramsey size linear? -/
 axiom erdos_567_H5 : IsRamseySizeLinear H5
 
-/-! ## Partial Results -/
+/- ## Partial Results -/
 
 /-- Bradač–Gishboliner–Sudakov: every subdivision of K₄ with ≥ 6 vertices
     is Ramsey size linear. H₅ is such a subdivision. -/

@@ -27,7 +27,7 @@ import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Finset.Card
 import Mathlib.Topology.MetricSpace.Basic
 
-/-!
+/-
 # Erdős Problem 659: Point Configurations with Constrained Distances
 
 This problem asks whether there exist large point sets in ℝ² where:
@@ -167,7 +167,7 @@ axiom latticeAvoidsConfigs :
   ∀ n : ℕ, ∀ T ⊆ moreeOsburnLattice n, T.card = 4 →
     ∀ config : TwoDistanceConfig, ¬ isConfiguration T config
 
-/-!
+/-
 ## Key Properties of the Moree-Osburn Lattice
 
 The lattice {(a, b√2) : a,b ∈ ℤ} has remarkable properties due to the

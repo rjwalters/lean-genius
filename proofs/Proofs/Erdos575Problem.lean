@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #575 — Bipartite Turán Numbers Dominate
 
 Let F be a finite set of finite graphs containing at least one bipartite
@@ -28,7 +28,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 
 open SimpleGraph Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The Turán extremal number ex(n; H): maximum number of edges in an
 n-vertex simple graph containing no subgraph isomorphic to H.
@@ -50,7 +50,7 @@ edges only go between color classes. -/
 def IsBipartiteGraph (n : ℕ) (G : SimpleGraph (Fin n)) : Prop :=
   ∃ f : Fin n → Bool, ∀ v w, G.Adj v w → f v ≠ f w
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #575 (Open, Erdős–Simonovits 1982).**
 For any finite family F of graphs containing at least one bipartite graph,
@@ -65,7 +65,7 @@ axiom erdos_575_conjecture :
   -- (Stated abstractly due to the complexity of graph embeddings.)
   True -- Axiomatized: the formal statement requires graph homomorphism machinery
 
-/-! ## Context: Erdős–Stone–Simonovits -/
+/- ## Context: Erdős–Stone–Simonovits -/
 
 /-- **Erdős–Stone–Simonovits Theorem.**
 For any non-bipartite graph H with chromatic number χ(H) ≥ 3:
@@ -81,7 +81,7 @@ axiom bipartite_subquadratic :
   -- ex(n; K_{s,t}) ≤ c · n^{2-1/s} for the complete bipartite graph K_{s,t}
   True -- Placeholder for Kővári–Sós–Turán
 
-/-! ## Family Extremal Function Properties -/
+/- ## Family Extremal Function Properties -/
 
 /-- ex(n; F) ≤ ex(n; G) for any G ∈ F: excluding more graphs can
 only reduce the extremal function. -/

@@ -34,7 +34,7 @@ namespace Erdos742
 
 open SimpleGraph
 
-/-!
+/-
 ## Part I: Graph Diameter
 -/
 
@@ -56,7 +56,7 @@ def HasDiameter (G : SimpleGraph V) (d : ℕ) : Prop :=
 /-- G has diameter 2: any two vertices are at distance at most 2. -/
 def HasDiameter2 (G : SimpleGraph V) : Prop := HasDiameter G 2
 
-/-!
+/-
 ## Part II: Edge Deletion and Critical Edges
 -/
 
@@ -76,7 +76,7 @@ def IsCriticalEdge (G : SimpleGraph V) (u v : V) : Prop :=
 def AllEdgesCritical (G : SimpleGraph V) : Prop :=
   ∀ u v : V, G.Adj u v → IsCriticalEdge G u v
 
-/-!
+/-
 ## Part III: Minimal Diameter-2 Graphs
 -/
 
@@ -91,7 +91,7 @@ noncomputable def edgeCount (G : SimpleGraph V) : ℕ :=
 /-- The conjectured bound: at most n²/4 edges. -/
 def MurtyPlesnikBound (n : ℕ) : ℕ := n^2 / 4
 
-/-!
+/-
 ## Part IV: The Complete Bipartite Graph (Extremal Example)
 -/
 
@@ -113,7 +113,7 @@ axiom balanced_bipartite_minimal (n : ℕ) (hn : n ≥ 2) :
     ∃ (V : Type*) (_ : Fintype V) (G : SimpleGraph V),
       Fintype.card V = n ∧ IsMinimalDiameter2 G ∧ edgeCount G = n^2 / 4
 
-/-!
+/-
 ## Part V: Füredi's Theorem (1992)
 -/
 
@@ -139,7 +139,7 @@ theorem bound_is_tight :
   use V, hFin, G
   exact ⟨hCard, hMin, hEdges⟩
 
-/-!
+/-
 ## Part VI: Historical Context
 -/
 
@@ -157,7 +157,7 @@ axiom furedi_proof_technique :
     -- The proof is non-trivial and uses the regularity lemma
     True
 
-/-!
+/-
 ## Part VII: Related Concepts
 -/
 
@@ -184,7 +184,7 @@ axiom diameter_d_critical_bounds (d : ℕ) (hd : d ≥ 3) :
     ∃ f : ℕ → ℕ, ∀ (V : Type*) [Fintype V] (G : SimpleGraph V),
       IsDiameterCritical G d → edgeCount G ≤ f (Fintype.card V)
 
-/-!
+/-
 ## Part VIII: Summary
 -/
 

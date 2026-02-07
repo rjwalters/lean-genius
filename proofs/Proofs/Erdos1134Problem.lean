@@ -31,7 +31,7 @@ namespace Erdos1134
 
 open Set Nat Real
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 The set A and its generating operations.
@@ -64,7 +64,7 @@ theorem A_closed_f₂ {x : ℕ} (hx : x ∈ A) : f₂ x ∈ A := InA.step2 hx
 /-- A is closed under f₃ -/
 theorem A_closed_f₃ {x : ℕ} (hx : x ∈ A) : f₃ x ∈ A := InA.step3 hx
 
-/-!
+/-
 ## Part 2: Density Definitions
 
 Lower and upper asymptotic density.
@@ -86,7 +86,7 @@ noncomputable def upperDensity (S : Set ℕ) : ℝ :=
 def HasPositiveLowerDensity (S : Set ℕ) : Prop :=
   lowerDensity S > 0
 
-/-!
+/-
 ## Part 3: The Klarner-Rado General Bound
 
 For sets closed under x ↦ mᵢx + bᵢ with Σ 1/mᵢ^σ = 1.
@@ -107,7 +107,7 @@ axiom klarner_rado_1974 (S : Set ℕ) (ms bs : List ℕ)
 /-- For our problem, 1/2 + 1/3 + 1/6 = 1, so σ = 1 -/
 theorem sum_reciprocals_eq_one : (1/2 : ℝ) + 1/3 + 1/6 = 1 := by norm_num
 
-/-!
+/-
 ## Part 4: The Crampin-Hilton Improvement
 
 The key is that the operations have special structure.
@@ -130,7 +130,7 @@ axiom crampin_hilton_theorem :
       C₁ * (X : ℝ) ^ (τ - ε) ≤ (countingFunction A X : ℝ) ∧
       (countingFunction A X : ℝ) ≤ C₂ * (X : ℝ) ^ (τ + ε)
 
-/-!
+/-
 ## Part 5: The Main Result
 
 A does NOT have positive lower density.
@@ -151,7 +151,7 @@ theorem not_positive_lower_density : ¬HasPositiveLowerDensity A := by
 axiom density_tends_to_zero :
     ∀ ε > 0, ∃ N : ℕ, ∀ X ≥ N, (countingFunction A X : ℝ) / X < ε
 
-/-!
+/-
 ## Part 6: Structure of A
 
 Understanding what elements look like.
@@ -178,7 +178,7 @@ example : 7 ∈ A := by -- f₃(1) = 6·1 + 1 = 7
   rw [← this]
   exact A_closed_f₃ one_in_A
 
-/-!
+/-
 ## Part 7: Why Crampin-Hilton Works
 
 The key insight is the structure of the generating functions.
@@ -191,7 +191,7 @@ def characteristic_equation (s : ℝ) : ℝ :=
 /-- τ is the unique positive root -/
 axiom tau_is_root : characteristic_equation τ = 0
 
-/-!
+/-
 ## Part 9: Open Variants
 
 Klarner's related open problems.
@@ -213,7 +213,7 @@ def A' : Set ℕ := { n | InA' n }
 /-- Open: Does A' have positive density? -/
 def OpenQuestion_A'_density : Prop := HasPositiveLowerDensity A'
 
-/-!
+/-
 ## Part 10: Main Problem Statement
 -/
 

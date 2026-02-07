@@ -31,7 +31,7 @@ import Mathlib
 
 namespace Erdos944
 
-/-!
+/-
 ## Core Definitions
 
 We axiomatize critical graphs since full definitions require extensive
@@ -50,7 +50,7 @@ class IsKVertexCritical (G : Type*) (k : ℕ) : Prop
 A critical edge set is one whose deletion reduces the chromatic number. -/
 class IsErdos944Graph (G : Type*) (k r : ℕ) extends IsKVertexCritical G k : Prop
 
-/-!
+/-
 ## Main Conjecture
 
 Does there exist a k-vertex-critical graph where every critical edge set
@@ -64,7 +64,7 @@ The case k = 4, r = 1 remains OPEN. -/
 axiom erdos_944_conjecture : ∀ k ≥ 4, ∀ r ≥ 1,
     ∃ (G : Type), IsErdos944Graph G k r
 
-/-!
+/-
 ## Dirac's Conjecture (r = 1)
 
 Are there k-vertex-critical graphs without any critical edges?
@@ -75,7 +75,7 @@ graph with no critical edges (every critical edge set has size > 1). -/
 axiom dirac_conjecture : ∀ k ≥ 4,
     ∃ (G : Type), IsErdos944Graph G k 1
 
-/-!
+/-
 ## Solved Cases
 -/
 
@@ -99,7 +99,7 @@ critical edge set has size > r. -/
 axiom martinsson_steiner_2025 (r : ℕ) (hr : 1 ≤ r) :
     ∃ k₀, ∀ k ≥ k₀, ∃ (G : Type), IsErdos944Graph G k r
 
-/-!
+/-
 ## The Open Case: k = 4
 -/
 
@@ -110,7 +110,7 @@ axiom k_equals_4_open :
     (∃ (G : Type), IsErdos944Graph G 4 1) ∨
     (¬∃ (G : Type), IsErdos944Graph G 4 1)
 
-/-!
+/-
 ## Basic Properties of Critical Graphs
 -/
 
@@ -130,7 +130,7 @@ axiom complete_graph_vertex_critical (n : ℕ) (hn : 1 ≤ n) :
 axiom odd_cycle_vertex_critical (n : ℕ) (hn : 1 ≤ n) :
     ∃ (G : Type), IsKVertexCritical G 3
 
-/-!
+/-
 ## Historical Context
 
 Dirac conjectured in 1970 that for every k ≥ 4, there exists a k-vertex-critical

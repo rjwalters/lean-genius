@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1097 — Common Differences in Three-Term Arithmetic Progressions
 
 Let A be a set of n integers. How many distinct d can occur as the
@@ -33,7 +33,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 open Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A three-term AP with base a and common difference d in set A:
 a, a+d, a+2d all belong to A. -/
@@ -53,7 +53,7 @@ noncomputable def commonDiffFinset (A : Finset ℤ) : Finset ℤ :=
 noncomputable def numCommonDiff (A : Finset ℤ) : ℕ :=
   (commonDiffFinset A).card
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #1097 (Open).**
 Is f(n) = O(n^{3/2})? That is, does there exist C such that every
@@ -62,7 +62,7 @@ def erdos_1097_conjecture : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ) (A : Finset ℤ), A.card = n →
     (numCommonDiff A : ℝ) ≤ C * (n : ℝ) ^ ((3 : ℝ) / 2)
 
-/-! ## Upper Bound -/
+/- ## Upper Bound -/
 
 /-- **Katz–Tao (1999).** f(n) ≤ C · n^{11/6} for some absolute constant C.
 This is the best known upper bound on the exponent. -/
@@ -70,7 +70,7 @@ axiom katz_tao_upper :
   ∃ C : ℝ, 0 < C ∧ ∀ (n : ℕ) (A : Finset ℤ), A.card = n →
     (numCommonDiff A : ℝ) ≤ C * (n : ℝ) ^ ((11 : ℝ) / 6)
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /-- **Erdős–Spencer.** Probabilistic construction: there exist n-element
 sets with at least C · n^{3/2} common differences. -/
@@ -98,7 +98,7 @@ axiom alphaevolve_improvement :
     ∃ A : Finset ℤ, A.card = n ∧
       (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c
 
-/-! ## Bourgain's Sums-Differences Equivalence -/
+/- ## Bourgain's Sums-Differences Equivalence -/
 
 /-- Restricted sum: { a + b : (a,b) ∈ G }. -/
 def restrictedSum (G : Finset (ℤ × ℤ)) : Finset ℤ :=
@@ -126,7 +126,7 @@ axiom chan_equivalence :
       ∃ A : Finset ℤ, A.card = n ∧ (numCommonDiff A : ℝ) ≥ (n : ℝ) ^ c) ↔
     ¬BourgainExponent c
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- The current state of knowledge: 1.778 < c* ≤ 11/6 ≈ 1.833. -/
 theorem current_bounds_summary :

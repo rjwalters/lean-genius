@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #118: Partition Ordinals and Higher Cliques
 
 Does α → (α, 3)² imply α → (α, n)² for all finite n ≥ 3?
@@ -21,7 +21,7 @@ import Mathlib.SetTheory.Ordinal.Arithmetic
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The ordinal partition relation: α → (α, k)² means that for any 2-coloring
     of pairs from α, there is either a monochromatic-red set of order type α
@@ -37,7 +37,7 @@ def IsPartitionOrd (α : Ordinal) (k : ℕ) : Prop :=
 def ErdosHajnalConjecture : Prop :=
   ∀ α : Ordinal, IsPartitionOrd α 3 → ∀ n : ℕ, 3 ≤ n → IsPartitionOrd α n
 
-/-! ## The Counterexample -/
+/- ## The Counterexample -/
 
 /-- The specific counterexample ordinal: ω^(ω²). -/
 noncomputable def counterexampleOrd : Ordinal :=
@@ -51,7 +51,7 @@ axiom counter_partition_3 : IsPartitionOrd counterexampleOrd 3
     Larson demonstrated this specific counterexample. -/
 axiom counter_not_partition_5 : ¬ IsPartitionOrd counterexampleOrd 5
 
-/-! ## Disproof -/
+/- ## Disproof -/
 
 /-- The Erdős–Hajnal conjecture is false.
     Proof: ω^(ω²) satisfies α → (α,3)² but not α → (α,5)². -/
@@ -60,7 +60,7 @@ theorem erdos_118_disproved : ¬ ErdosHajnalConjecture := by
   have h5 := h counterexampleOrd counter_partition_3 5 (by norm_num)
   exact counter_not_partition_5 h5
 
-/-! ## Positive Direction: Monotonicity Failure -/
+/- ## Positive Direction: Monotonicity Failure -/
 
 /-- The partition threshold: for a given ordinal α, the largest k such that
     α → (α, k)² holds. -/
@@ -76,7 +76,7 @@ axiom threshold_exact (α : Ordinal) :
     IsPartitionOrd α (partitionThreshold α) ∧
     (partitionThreshold α + 1 > 2 → ¬ IsPartitionOrd α (partitionThreshold α + 1))
 
-/-! ## Known Thresholds -/
+/- ## Known Thresholds -/
 
 /-- For ω^(ω²), the threshold is between 3 and 4 (inclusive).
     We know triangles work but K_5 fails. -/
@@ -84,7 +84,7 @@ axiom omega_omega2_threshold :
     3 ≤ partitionThreshold counterexampleOrd ∧
     partitionThreshold counterexampleOrd ≤ 4
 
-/-! ## Relation to Problem #592 -/
+/- ## Relation to Problem #592 -/
 
 /-- Problem #118 is closely related to Problem #592 (partition ordinals for triangles).
     The disproof shows that being a partition ordinal for triangles does not

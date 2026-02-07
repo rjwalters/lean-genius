@@ -22,7 +22,7 @@
 
 import Mathlib
 
-/-!
+/-
 # Erdős Problem #137: Powerful Products of Consecutive Integers
 
 ## Overview
@@ -50,7 +50,7 @@ namespace Erdos137
 
 open Nat Finset BigOperators
 
-/-! ## Powerful Numbers -/
+/- ## Powerful Numbers -/
 
 /--
 A natural number n is **powerful** if every prime divisor p of n satisfies p² | n.
@@ -95,7 +95,7 @@ theorem squarefree_not_powerful (n : ℕ) (hn : n > 1) (hsf : Squarefree n) :
   have hp_eq_one : p = 1 := Nat.isUnit_iff.mp hunit
   exact hp.ne_one hp_eq_one
 
-/-! ## Products of Consecutive Integers -/
+/- ## Products of Consecutive Integers -/
 
 /-- The product of integers from n+1 to n+k (i.e., k consecutive integers starting after n). -/
 def consecutiveProduct (n k : ℕ) : ℕ :=
@@ -113,7 +113,7 @@ theorem consecutive_coprime (n : ℕ) : Nat.gcd n (n + 1) = 1 := by
   simp only [Nat.coprime_one_right_eq_true, iff_true] at h
   exact h
 
-/-! ## The Erdős-Selfridge Theorem -/
+/- ## The Erdős-Selfridge Theorem -/
 
 /--
 **Erdős-Selfridge Theorem (1975)**:
@@ -141,7 +141,7 @@ theorem consecutive_product_not_cube (n k : ℕ) (hn : n ≥ 1) (hk : k ≥ 2) :
     ∀ m : ℕ, consecutiveProduct n k ≠ m ^ 3 :=
   fun m => erdos_selfridge_theorem n k hn hk m 3 (by norm_num)
 
-/-! ## The Main Conjecture (Open) -/
+/- ## The Main Conjecture (Open) -/
 
 /--
 **Erdős Conjecture on Powerful Products**:
@@ -169,7 +169,7 @@ theorem erdos_137 (n k : ℕ) (hn : n ≥ 1) (hk : k ≥ 3) :
     ¬Powerful (consecutiveProduct n k) :=
   erdos_powerful_conjecture n k hn hk
 
-/-! ## Counterexample for k = 2 -/
+/- ## Counterexample for k = 2 -/
 
 /-- 72 = 8 × 9 = 2³ × 3² is powerful.
     72 = 2³ × 3², and both 2² = 4 | 72 and 3² = 9 | 72. -/
@@ -211,7 +211,7 @@ theorem two_consecutive_can_be_powerful :
     rw [h]
     exact seventy_two_powerful
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: PARTIALLY SOLVED**
 

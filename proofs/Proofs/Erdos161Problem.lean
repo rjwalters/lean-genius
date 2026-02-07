@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #161: Almost Monochromatic Subsets in Hypergraph Colorings
 
 Source: https://erdosproblems.com/161
@@ -36,7 +36,7 @@ import Mathlib
 
 namespace Erdos161
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- The complete t-uniform hypergraph on n vertices: all t-subsets of [n] -/
 def completeHypergraph (n t : ℕ) : Finset (Finset (Fin n)) :=
@@ -57,7 +57,7 @@ def IsBalanced {n t : ℕ} (coloring : HyperedgeColoring n t) (α : ℝ) (m : �
     (colorCount coloring X true : ℝ) ≥ α * X.card.choose t ∧
     (colorCount coloring X false : ℝ) ≥ α * X.card.choose t
 
-/-! ## The Function F^(t)(n, α) -/
+/- ## The Function F^(t)(n, α) -/
 
 /-- F^(t)(n, α) is the largest m such that some 2-coloring is (α, m)-balanced.
     Axiomatized because the existence proof for Nat.find requires nontrivial Ramsey theory. -/
@@ -68,7 +68,7 @@ axiom F_spec (t n : ℕ) (α : ℝ) (hα : 0 ≤ α) (hα2 : α < 1/2) :
   (∃ coloring : HyperedgeColoring n t, IsBalanced coloring α (F t n α)) ∧
   (∀ coloring : HyperedgeColoring n t, ¬IsBalanced coloring α (F t n α + 1))
 
-/-! ## Classical Ramsey Case (α = 0) -/
+/- ## Classical Ramsey Case (α = 0) -/
 
 /-- For α = 0, F^(t)(n, 0) is related to the Ramsey number -/
 def FZero (t n : ℕ) : ℕ := F t n 0
@@ -85,7 +85,7 @@ noncomputable def iterLog (base : ℕ) : ℕ → ℝ
   | 0 => 0
   | n + 1 => if n < base then 1 else 1 + iterLog base (Nat.log base n)
 
-/-! ## Positive α: Lower Bounds -/
+/- ## Positive α: Lower Bounds -/
 
 /-- Erdős-Spencer lower bound: F^(t)(n, α) ≫_α (log n)^{1/(t-1)} for α > 0 -/
 axiom erdos_spencer_lower_bound (t : ℕ) (ht : t ≥ 2) (α : ℝ) (hα : α > 0) :
@@ -99,7 +99,7 @@ axiom upper_bound_near_half (t : ℕ) (ht : t ≥ 2) (α : ℝ) (hα : 0 < α) (
     ∀ n : ℕ, n ≥ 2 →
       (F t n α : ℝ) ≤ c * (Real.log n)^(1/(t - 1 : ℝ))
 
-/-! ## The Jump Question -/
+/- ## The Jump Question -/
 
 /-- Does F^(t)(n, α) have discontinuities (jumps) as α varies? -/
 def HasJumpAt (t n : ℕ) (α₀ : ℝ) : Prop :=
@@ -113,7 +113,7 @@ def erdos_one_jump_belief (t : ℕ) : Prop :=
     HasJumpAt t n 0 ∧
     ∀ α > 0, α < 1/2 → ¬HasJumpAt t n α
 
-/-! ## Main Result: t = 3 (Conlon-Fox-Sudakov) -/
+/- ## Main Result: t = 3 (Conlon-Fox-Sudakov) -/
 
 /-- Conlon-Fox-Sudakov (2011): Upper bound for F^(3)(n, α) -/
 axiom conlon_fox_sudakov_upper (α : ℝ) (hα : α > 0) :
@@ -131,7 +131,7 @@ axiom F3_characterization (α : ℝ) (hα : α > 0) (hα2 : α < 1/2) :
 /-- Main theorem: For t = 3, there is exactly one jump at α = 0 -/
 axiom one_jump_for_t3 : erdos_one_jump_belief 3
 
-/-! ## General t: Partial Results -/
+/- ## General t: Partial Results -/
 
 /-- For all α > 0, a polynomial lower bound in (log n) holds -/
 axiom general_lower_bound (t : ℕ) (ht : t ≥ 2) (α : ℝ) (hα : α > 0) :
@@ -139,7 +139,7 @@ axiom general_lower_bound (t : ℕ) (ht : t ≥ 2) (α : ℝ) (hα : α > 0) :
     ∀ n : ℕ, n ≥ 2 →
       (F t n α : ℝ) ≥ (Real.log n)^c_α
 
-/-! ## The Gap Between α = 0 and α > 0 -/
+/- ## The Gap Between α = 0 and α > 0 -/
 
 /-- At α = 0 (Ramsey case), growth is iterated logarithm -/
 axiom alpha_zero_growth (t : ℕ) (ht : t ≥ 3) :
@@ -154,7 +154,7 @@ theorem alpha_positive_growth (t : ℕ) (ht : t ≥ 3) (α : ℝ) (hα : 0 < α)
       (F t n α : ℝ) ≥ c * (Real.log n)^(1/(t - 1 : ℝ)) :=
   erdos_spencer_lower_bound t (by omega) α hα
 
-/-! ## Summary
+/- ## Summary
 
 **Status: SOLVED for t = 3**
 

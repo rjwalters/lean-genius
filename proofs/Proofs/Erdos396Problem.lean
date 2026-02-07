@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #396 — Descending Factorials Dividing Central Binomial Coefficients
 
 Erdős and Graham asked: For every positive integer k, does there exist n
@@ -24,7 +24,7 @@ import Mathlib.Tactic
 
 open Nat
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The descending factorial: n(n−1)(n−2)⋯(n−k+1) = n! / (n−k)! -/
 -- We use Nat.descFactorial from Mathlib
@@ -32,7 +32,7 @@ open Nat
 /-- The central binomial coefficient C(2n, n) -/
 -- We use Nat.centralBinom from Mathlib
 
-/-! ## Basic Divisibility Results -/
+/- ## Basic Divisibility Results -/
 
 /-- n+1 always divides C(2n, n), giving the Catalan number C(2n,n)/(n+1) -/
 axiom catalan_divisibility (n : ℕ) :
@@ -44,7 +44,7 @@ axiom n_divides_rarely :
     -- S has positive upper density (most n do not divide C(2n,n))
     True
 
-/-! ## Pomerance's Results (2014) -/
+/- ## Pomerance's Results (2014) -/
 
 /-- Pomerance: for any k ≥ 0, infinitely many n satisfy (n−k) | C(2n, n) -/
 axiom pomerance_single_factor (k : ℕ) :
@@ -60,14 +60,14 @@ axiom pomerance_ascending_density (k : ℕ) :
   -- {n : ascFactorial(n+1, k) | C(2n,n)} has asymptotic density 1
   True
 
-/-! ## The Erdős–Graham Conjecture -/
+/- ## The Erdős–Graham Conjecture -/
 
 /-- Erdős Problem 396: For every k, there exists n such that
     n · (n−1) · ⋯ · (n−k) divides C(2n, n) -/
 axiom ErdosProblem396 :
   ∀ k : ℕ, ∃ n : ℕ, descFactorial n (k + 1) ∣ centralBinom n
 
-/-! ## Computational Evidence -/
+/- ## Computational Evidence -/
 
 /-- Small cases: the smallest n for each k (OEIS A375077)
     k=0: n=2 (since 2 | C(4,2) = 6)

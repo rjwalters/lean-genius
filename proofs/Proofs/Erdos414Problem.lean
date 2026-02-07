@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #414: Merging Orbits of h(n) = n + τ(n)
 
 Let h(n) = n + τ(n) where τ(n) is the number of divisors of n.
@@ -23,7 +23,7 @@ import Mathlib.Data.Nat.Divisors
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The function h(n) = n + τ(n), where τ(n) counts divisors. -/
 def h (n : ℕ) : ℕ := n + n.divisors.card
@@ -33,7 +33,7 @@ def hOrbit (n : ℕ) : ℕ → ℕ
   | 0 => n
   | k + 1 => h (hOrbit n k)
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- h(n) > n for all n ≥ 1 since τ(n) ≥ 1. -/
 axiom h_strictly_increasing (n : ℕ) (hn : n ≥ 1) :
@@ -60,7 +60,7 @@ axiom h_two : h 2 = 4
 /-- h(3) = 3 + τ(3) = 3 + 2 = 5. -/
 axiom h_three : h 3 = 5
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #414** (OPEN): For any m, n ≥ 1, the orbits
     of m and n under h eventually merge: there exist i, j such
@@ -75,7 +75,7 @@ axiom single_eventual_orbit :
     ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
       ∃ j : ℕ, hOrbit n k = S j
 
-/-! ## Orbit Examples -/
+/- ## Orbit Examples -/
 
 /-- Orbit of 1: 1 → 2 → 4 → 7 → 9 → 12 → 18 → 24 → 32 → ... -/
 axiom orbit_1_start :
@@ -87,7 +87,7 @@ axiom orbit_1_start :
 axiom orbit_3_merges_with_1 :
   hOrbit 3 2 = hOrbit 1 3  -- both equal 7
 
-/-! ## Growth Rate Analysis -/
+/- ## Growth Rate Analysis -/
 
 /-- On average, τ(n) ~ log n (Dirichlet's theorem on average order).
     So h(n) ≈ n + log n, and after k iterations,

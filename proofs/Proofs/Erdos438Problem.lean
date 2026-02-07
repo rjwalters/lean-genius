@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #438: Square-Free Sumsets
 
   Source: https://erdosproblems.com/438
@@ -33,7 +33,7 @@ open Finset Nat
 
 namespace Erdos438
 
-/-! ## Part 1: Basic Definitions -/
+/- ## Part 1: Basic Definitions -/
 
 /-- A number is a perfect square -/
 def IsSquare (n : ℕ) : Prop := ∃ m : ℕ, n = m * m
@@ -53,7 +53,7 @@ noncomputable def maxSquareFreeDensity (N : ℕ) : ℕ :=
     (Finset.powerset (Finset.range (N + 1))))
     Finset.card
 
-/-! ## Part 2: The Simple mod 3 Construction -/
+/- ## Part 2: The Simple mod 3 Construction -/
 
 /-- Squares are 0 or 1 mod 3 -/
 axiom square_mod_3 (n : ℕ) : IsSquare n → n % 3 = 0 ∨ n % 3 = 1
@@ -73,7 +73,7 @@ axiom mod_3_density :
     let A := (Finset.range (N + 1)).filter (fun n => n % 3 = 1)
     (A.card : ℝ) ≥ (N : ℝ) / 3 - 1
 
-/-! ## Part 3: The Improved mod 32 Construction (Massias) -/
+/- ## Part 3: The Improved mod 32 Construction (Massias) -/
 
 /-- The 11 residue classes mod 32 that give square-free sumsets -/
 def massias_residues : Finset ℕ := {1, 5, 9, 13, 14, 17, 21, 25, 26, 29, 30}
@@ -94,7 +94,7 @@ axiom massias_density (N : ℕ) (hN : N > 0) :
 axiom massias_count_explanation :
   massias_residues.card = 11
 
-/-! ## Part 4: The Upper Bounds -/
+/- ## Part 4: The Upper Bounds -/
 
 /-- Lagarias-Odlyzko-Shearer (1983): Upper bound 0.475N -/
 axiom los_upper_bound :
@@ -108,7 +108,7 @@ axiom kls_theorem :
     A ⊆ Finset.range (N + 1) → IsSquareFreeSumset A →
     (A.card : ℝ) ≤ ((11 : ℝ) / 32 + ε) * N
 
-/-! ## Part 5: Why 11/32? -/
+/- ## Part 5: Why 11/32? -/
 
 /-- Squares mod 32 are: 0, 1, 4, 9, 16, 17, 25 -/
 def squares_mod_32 : Finset ℕ := {0, 1, 4, 9, 16, 17, 25}
@@ -127,7 +127,7 @@ axiom massias_is_maximal :
     (∀ a b : ℕ, a ∈ R → b ∈ R → (a + b) % 32 ∉ squares_mod_32) →
     R.card ≤ 11
 
-/-! ## Part 6: Summary -/
+/- ## Part 6: Summary -/
 
 /-- Erdős Problem #438: SOLVED
 

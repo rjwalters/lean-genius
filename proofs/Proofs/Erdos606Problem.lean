@@ -36,7 +36,7 @@ namespace Erdos606
 
 open Finset
 
-/-! ## Part I: Points and Lines in ℝ² -/
+/- ## Part I: Points and Lines in ℝ² -/
 
 /-- A point in the plane. -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
@@ -61,7 +61,7 @@ def Line.equiv (l₁ l₂ : Line) : Prop :=
 def onLine (x : Point) (l : Line) : Prop :=
   ∃ t : ℝ, x = l.p + t • (l.q - l.p)
 
-/-! ## Part II: Counting Distinct Lines -/
+/- ## Part II: Counting Distinct Lines -/
 
 /-- The set of all pairs of distinct indices. -/
 def distinctPairs (n : ℕ) : Finset (Fin n × Fin n) :=
@@ -80,7 +80,7 @@ noncomputable def numDistinctLines {n : ℕ} (config : PointConfiguration n) : �
 /-- Maximum possible lines from n points (general position). -/
 def maxLines (n : ℕ) : ℕ := n * (n - 1) / 2
 
-/-! ## Part III: Collinearity -/
+/- ## Part III: Collinearity -/
 
 /-- Three points are collinear if they lie on a common line. -/
 def Collinear (p q r : Point) : Prop :=
@@ -105,7 +105,7 @@ theorem general_position_max_lines {n : ℕ} (config : PointConfiguration n)
     (hgen : GeneralPosition config) : numDistinctLines config = maxLines n := by
   sorry
 
-/-! ## Part IV: Sylvester-Gallai Theorem -/
+/- ## Part IV: Sylvester-Gallai Theorem -/
 
 /-- An ordinary line contains exactly 2 points of the configuration. -/
 def IsOrdinaryLine {n : ℕ} (config : PointConfiguration n) (l : Line) : Prop :=
@@ -125,7 +125,7 @@ theorem min_lines_noncollinear {n : ℕ} (hn : n ≥ 3) (config : PointConfigura
     (hnotcol : ¬AllCollinear config) : numDistinctLines config ≥ n := by
   sorry
 
-/-! ## Part V: The Main Problem -/
+/- ## Part V: The Main Problem -/
 
 /-- The set of achievable line counts for n points. -/
 def AchievableLineCounts (n : ℕ) : Set ℕ :=
@@ -142,7 +142,7 @@ def Erdos606Statement : Prop :=
     -- S contains n through maxLines(n) with few exceptions
     (∀ k, n ≤ k → k ≤ maxLines n → k ∈ S ∨ k = maxLines n - 1 ∨ k = maxLines n - 3)
 
-/-! ## Part VI: Known Results -/
+/- ## Part VI: Known Results -/
 
 /-- The value C(n,2) - 1 is NOT achievable for n ≥ 4.
 
@@ -175,7 +175,7 @@ axiom erdos_density_result :
       c * (n : ℝ)^(3/2 : ℝ) ≤ k → k ≤ maxLines n - 4 →
       k ∈ AchievableLineCounts n
 
-/-! ## Part VII: Constructions -/
+/- ## Part VII: Constructions -/
 
 /-- n points on a line give 1 line. -/
 def collinearConfig (n : ℕ) : PointConfiguration n where
@@ -214,7 +214,7 @@ def gridConfig (m : ℕ) : PointConfiguration (m * m) where
 axiom grid_line_count (m : ℕ) (hm : m ≥ 2) :
     ∃ c : ℝ, |((numDistinctLines (gridConfig m) : ℝ) - maxLines (m * m)) + c * m^3| ≤ m^2
 
-/-! ## Part VIII: Beck's Theorem -/
+/- ## Part VIII: Beck's Theorem -/
 
 /-- **Beck's Theorem**
 
@@ -226,7 +226,7 @@ axiom beck_theorem (n : ℕ) (hn : n ≥ 100) (config : PointConfiguration n) :
     (∃ l : Line, (Finset.univ.filter fun i => onLine (config.points i) l).card ≥ n / 100) ∨
     (numDistinctLines config ≥ n * n / 10000)
 
-/-! ## Part IX: Szemerédi-Trotter Bound -/
+/- ## Part IX: Szemerédi-Trotter Bound -/
 
 /-- The number of incidences between n points and m lines is O((nm)^{2/3} + n + m). -/
 axiom szemeredi_trotter_bound (n m : ℕ) :
@@ -243,7 +243,7 @@ theorem many_lines_sparse {n : ℕ} (hn : n ≥ 4) (config : PointConfiguration 
     numDistinctLines config ≥ n * n / (4 * Nat.log2 n + 4) := by
   sorry
 
-/-! ## Part X: Complete Characterization -/
+/- ## Part X: Complete Characterization -/
 
 /-- **Erdős-Salamon Theorem (1988)**
 
@@ -274,7 +274,7 @@ theorem erdos_606_solved : ∃ N : ℕ, ∀ n ≥ N,
 
 end Erdos606
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #606 on distinct lines from n points.

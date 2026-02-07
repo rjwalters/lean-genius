@@ -28,7 +28,7 @@ open Set Nat Filter Finset
 
 namespace Erdos170
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A set A is an **N-perfect ruler** (or N-difference basis) if every
     integer k in {1,...,N} can be expressed as a₁ - a₀ for some a₀, a₁ ∈ A. -/
@@ -39,7 +39,7 @@ def IsPerfectRuler (N : ℕ) (A : Finset ℕ) : Prop :=
 def IsRestrictedPerfectRuler (N : ℕ) (A : Finset ℕ) : Prop :=
   A ⊆ Finset.range (N + 1) ∧ IsPerfectRuler N A
 
-/-! ## The Trivial Ruler -/
+/- ## The Trivial Ruler -/
 
 /-- The trivial ruler {0, 1, ..., N} with all marks. -/
 def trivialRuler (N : ℕ) : Finset ℕ := Finset.range (N + 1)
@@ -58,7 +58,7 @@ theorem trivial_is_perfect (N : ℕ) : IsRestrictedPerfectRuler N (trivialRuler 
       omega
     · omega
 
-/-! ## The Minimum Size Function F(N) -/
+/- ## The Minimum Size Function F(N) -/
 
 /-- F(N) is the minimum cardinality of a restricted N-perfect ruler. -/
 noncomputable def F (N : ℕ) : ℕ :=
@@ -70,7 +70,7 @@ theorem F_nonempty (N : ℕ) :
   use (trivialRuler N).card
   exact ⟨trivialRuler N, trivial_is_perfect N, rfl⟩
 
-/-! ## Basic Bounds -/
+/- ## Basic Bounds -/
 
 /-- Trivial upper bound: F(N) ≤ N + 1. -/
 theorem F_upper_trivial (N : ℕ) : F N ≤ N + 1 := by
@@ -85,7 +85,7 @@ theorem F_upper_trivial (N : ℕ) : F N ≤ N + 1 := by
     Proof: Empty set can't measure 1; singleton a-a=0, can't measure 1. -/
 axiom F_lower_two (N : ℕ) (hN : N ≥ 1) : F N ≥ 2
 
-/-! ## The Limit Theorem -/
+/- ## The Limit Theorem -/
 
 /-- **Erdős-Gál (1948)**: The limit lim_{N→∞} F(N)/√N exists. -/
 axiom erdos_gal_limit_exists :
@@ -104,7 +104,7 @@ axiom wichmann_upper_bound : limitValue ≤ Real.sqrt 3
 theorem limit_in_interval : 1.56 ≤ limitValue ∧ limitValue ≤ Real.sqrt 3 :=
   ⟨leech_lower_bound, wichmann_upper_bound⟩
 
-/-! ## Known Constructions -/
+/- ## Known Constructions -/
 
 /-- **Wichmann Rulers**: Achieve asymptotic density √3.
     For certain N, the ruler {0, 1, 3, 6, ..., (k²+k)/2, ..., N} is optimal. -/
@@ -116,7 +116,7 @@ axiom wichmann_construction :
 axiom redei_renyi_lower :
     ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ Real.sqrt (2 * N) - 1
 
-/-! ## Unrestricted Version -/
+/- ## Unrestricted Version -/
 
 /-- The unrestricted version: A can be any finite subset of ℕ. -/
 def IsUnrestrictedPerfectRuler (N : ℕ) (A : Finset ℕ) : Prop :=
@@ -129,7 +129,7 @@ noncomputable def F' (N : ℕ) : ℕ :=
 /-- Unrestricted rulers can be smaller: F'(N) ≤ F(N). -/
 axiom unrestricted_le_restricted : ∀ N, F' N ≤ F N
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- Example: {0, 1, 3} is a 3-perfect ruler.
     Differences: 1-0=1, 3-0=3, 3-1=2. -/
@@ -140,7 +140,7 @@ axiom example_3_ruler : IsPerfectRuler 3 {0, 1, 3}
 axiom example_30_ruler :
     IsPerfectRuler 30 {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30}
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: PARTIALLY SOLVED**
 

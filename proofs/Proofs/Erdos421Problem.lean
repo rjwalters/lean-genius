@@ -22,7 +22,7 @@ open Set Finset BigOperators Nat Filter
 
 namespace Erdos421
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 Define strictly increasing sequences and density.
@@ -41,7 +41,7 @@ def StartsAtOne (d : ℕ → ℕ) : Prop := 1 ≤ d 0
 def IsValidSequence (d : ℕ → ℕ) : Prop :=
   IsStrictlyIncreasing d ∧ StartsAtOne d
 
-/-!
+/-
 # Part 2: Density of Sequences
 
 Density 1 means the sequence contains "almost all" integers asymptotically.
@@ -63,7 +63,7 @@ def HasDensity (S : Set ℕ) (δ : ℝ) : Prop :=
 -- Density 1 means the sequence has natural density 1
 def HasDensityOne (d : ℕ → ℕ) : Prop := HasDensity (Set.range d) 1
 
-/-!
+/-
 # Part 3: Interval Products
 
 Products of the form ∏_{u ≤ i ≤ v} d_i.
@@ -84,7 +84,7 @@ def ValidPairs : Set (ℕ × ℕ) := {p | p.1 ≤ p.2}
 def productMap (d : ℕ → ℕ) : ℕ × ℕ → ℕ :=
   fun p => intervalProduct d p.1 p.2
 
-/-!
+/-
 # Part 4: Distinctness of Products
 
 All interval products must be distinct.
@@ -110,7 +110,7 @@ theorem distinct_equiv (d : ℕ → ℕ) :
     by_contra hne
     exact h p₁.1 p₁.2 p₂.1 p₂.2 hp₁ hp₂ hne heq
 
-/-!
+/-
 # Part 5: The Main Conjecture
 
 Existence of a density-1 sequence with distinct products.
@@ -127,7 +127,7 @@ theorem erdos_421_statement :
       ValidPairs.InjOn (productMap d) := by
   rfl
 
-/-!
+/-
 # Part 6: Selfridge's Construction
 
 Selfridge showed a sequence exists with density > 1/e - ε.
@@ -148,7 +148,7 @@ theorem selfridge_achieves_one_over_e :
     ∃ δ : ℝ, δ > 1 / Real.exp 1 - ε ∧ HasDensity (Set.range d) δ :=
   selfridge_construction
 
-/-!
+/-
 # Part 7: Upper Bounds and Obstructions
 
 Why can't we easily achieve density 1?
@@ -163,7 +163,7 @@ def numProductsUpToLength (n : ℕ) : ℕ := n * (n + 1) / 2
 -- For products to be distinct, they must fit in the range of possible values
 -- This constrains how dense the sequence can be
 
-/-!
+/-
 # Part 8: Simple Examples
 
 Illustrate the definitions with examples.
@@ -183,7 +183,7 @@ Illustrate the definitions with examples.
 -- Primes might work better (each product is unique by prime factorization)
 -- But primes have density 0, not 1
 
-/-!
+/-
 # Part 9: Related Problem 786
 
 Problem 786 discusses Selfridge's construction in detail.
@@ -192,7 +192,7 @@ Problem 786 discusses Selfridge's construction in detail.
 -- Reference to related problem
 def RelatedProblem786 : Prop := True  -- Selfridge's construction details
 
-/-!
+/-
 # Part 10: Problem Status
 
 The problem remains OPEN.
@@ -208,7 +208,7 @@ def erdos_421_status : String := "OPEN"
 -- OEIS sequences
 -- A389544, A390848 are related
 
-/-!
+/-
 # Summary
 
 **Problem:** Find a strictly increasing sequence d₁ < d₂ < ... starting from 1

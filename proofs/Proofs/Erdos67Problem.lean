@@ -25,7 +25,7 @@ open scoped BigOperators
 
 namespace Erdos67
 
-/-!
+/-
 ## Background
 
 The discrepancy of a sequence f: ℕ → {-1, +1} measures how "unbalanced" it can be
@@ -64,7 +64,7 @@ A function is a **±1 sequence** if it only takes values +1 and -1.
 def isPlusMinusOne (f : ℕ → ℤ) : Prop :=
   ∀ n : ℕ, f n = 1 ∨ f n = -1
 
-/-!
+/-
 ## The Main Theorem (Tao 2015)
 
 Terence Tao proved that NO ±1 sequence has bounded discrepancy.
@@ -95,7 +95,7 @@ theorem noBoundedDiscrepancy :
   have := hBound d m hd hm
   omega
 
-/-!
+/-
 ## The Complex Variant
 
 Tao also proved a more general version where f takes values on the
@@ -126,7 +126,7 @@ axiom erdosDiscrepancyComplex :
   ∀ (f : ℕ → ℂ), mapsToUnitCircle f →
     ∀ C : ℝ, C > 0 → ∃ d m : ℕ, d ≥ 1 ∧ m ≥ 1 ∧ complexDiscrepancy f d m > C
 
-/-!
+/-
 ## Erdős's Stronger Conjecture
 
 Erdős conjectured an even stronger statement: not only is the discrepancy
@@ -150,7 +150,7 @@ def ErdosStrongerConjecture : Prop :=
       ∃ d m : ℕ, d ≥ 1 ∧ m ≥ 1 ∧ m * d ≤ x ∧
         discrepancy f d m > c * Real.log x
 
-/-!
+/-
 ## The Multiplicative Case
 
 Erdős also asked about the special case when f is completely multiplicative
@@ -171,7 +171,7 @@ axiom multiplicativeDiscrepancy :
   ∀ (f : ℕ → ℤ), isPlusMinusOne f → isCompletelyMultiplicative f →
     ∀ C : ℕ, ∃ d m : ℕ, d ≥ 1 ∧ m ≥ 1 ∧ discrepancy f d m > C
 
-/-!
+/-
 ## Historical Notes
 
 The Erdős Discrepancy Problem was posed in the 1930s and remained open for

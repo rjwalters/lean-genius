@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #562 — Hypergraph Ramsey Number Tower Growth
 
 Let R_r(n) denote the r-uniform hypergraph Ramsey number: the minimal m
@@ -24,7 +24,7 @@ import Mathlib.Combinatorics.Ramsey
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Tower Function -/
+/- ## Tower Function -/
 
 /-- The tower function: twr(0, n) = n, twr(k+1, n) = 2^{twr(k, n)}.
     This is the iterated exponential of height k starting from n. -/
@@ -38,7 +38,7 @@ theorem twr_one (n : ℕ) : twr 1 n = 2 ^ n := rfl
 /-- twr(2, n) = 2^{2^n}. -/
 theorem twr_two (n : ℕ) : twr 2 n = 2 ^ (2 ^ n) := rfl
 
-/-! ## Hypergraph Ramsey Numbers -/
+/- ## Hypergraph Ramsey Numbers -/
 
 /-- The r-uniform hypergraph Ramsey number R_r(n): the minimal m such
     that every 2-coloring of the edges of K_m^(r) contains a
@@ -48,7 +48,7 @@ noncomputable def hypergraphRamsey (r n : ℕ) : ℕ :=
     ∃ S : Finset ℕ, S ⊆ Finset.range m ∧ S.card = n ∧
       ∃ c : Fin 2, ∀ e ∈ S.powersetCard r, χ e = c }
 
-/-! ## Classical Graph Ramsey (r = 2) -/
+/- ## Classical Graph Ramsey (r = 2) -/
 
 /-- Erdős–Szekeres lower bound: R(n,n) ≥ 2^{n/2}. -/
 axiom erdos_szekeres_lower (n : ℕ) (hn : 2 ≤ n) :
@@ -63,7 +63,7 @@ theorem graph_ramsey_exponential (n : ℕ) (hn : 2 ≤ n) :
     2 ^ (n / 2) ≤ hypergraphRamsey 2 n ∧ hypergraphRamsey 2 n ≤ 4 ^ n :=
   ⟨erdos_szekeres_lower n hn, erdos_szekeres_upper n hn⟩
 
-/-! ## Erdős–Rado Stepping-Up Upper Bound -/
+/- ## Erdős–Rado Stepping-Up Upper Bound -/
 
 /-- Erdős–Rado stepping-up lemma (1952): bounds R_r in terms of R_{r-1}.
     This gives R_r(n) ≤ twr_{r-1}(c_r · n²). -/
@@ -71,7 +71,7 @@ axiom erdos_rado_stepping_up (r : ℕ) (hr : 3 ≤ r) :
     ∃ c : ℕ, 0 < c ∧ ∀ n : ℕ, 2 ≤ n →
       hypergraphRamsey r n ≤ twr (r - 1) (c * n ^ 2)
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /-- Erdős–Hajnal lower bound for r = 3:
     R_3(n) ≥ twr_2(c · n²) = 2^{2^{cn²}}. -/
@@ -85,7 +85,7 @@ axiom general_lower_bound (r : ℕ) (hr : 3 ≤ r) :
     ∃ c : ℕ, 0 < c ∧ ∀ n : ℕ, 2 ≤ n →
       twr (r - 1) (c * n) ≤ hypergraphRamsey r n
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- **Erdős Problem #562**: log_{r-1} R_r(n) ≍ n for r ≥ 3.
     Equivalently, R_r(n) = twr_{r-1}(Θ(n)).
@@ -97,7 +97,7 @@ axiom erdos_562_conjecture (r : ℕ) (hr : 3 ≤ r) :
       twr (r - 1) (c₁ * n) ≤ hypergraphRamsey r n ∧
       hypergraphRamsey r n ≤ twr (r - 1) (c₂ * n)
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /-- R_3(4) is known: R_3(4) = 13. -/
 axiom r3_4 : hypergraphRamsey 3 4 = 13

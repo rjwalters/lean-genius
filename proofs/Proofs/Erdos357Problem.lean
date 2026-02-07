@@ -37,7 +37,7 @@ namespace Erdos357
 
 open Nat Filter Asymptotics Finset
 
-/-! ## Part I: Consecutive Sums and Distinct Sums Property -/
+/- ## Part I: Consecutive Sums and Distinct Sums Property -/
 
 /-- A finset of indices is ord-connected if it forms a contiguous interval.
     For I ⊆ {0, 1, ..., k-1}, this means I = {u, u+1, ..., v} for some u ≤ v. -/
@@ -56,7 +56,7 @@ def HasDistinctSums' (a : Fin k → ℤ) : Prop :=
   ∀ I J : Finset (Fin k), I.val.toFinset.OrdConnected → J.val.toFinset.OrdConnected →
     (∑ i ∈ I, a i) = (∑ j ∈ J, a j) → I = J
 
-/-! ## Part II: The Function f(n) -/
+/- ## Part II: The Function f(n) -/
 
 /-- A valid sequence for f(n): strictly increasing integers in [1, n] with distinct consecutive sums. -/
 def IsValidSequence (n k : ℕ) (a : Fin k → ℤ) : Prop :=
@@ -80,7 +80,7 @@ theorem f_nonempty (n : ℕ) : {k : ℕ | ∃ a : Fin k → ℤ, IsValidSequence
     simp [Finset.sum_empty]
     sorry
 
-/-! ## Part III: Trivial Bounds -/
+/- ## Part III: Trivial Bounds -/
 
 /-- Trivial upper bound: f(n) ≤ n (can't have more than n distinct values in [1,n]). -/
 theorem f_le_n (n : ℕ) : f n ≤ n := by
@@ -94,7 +94,7 @@ theorem f_ge_one (n : ℕ) (hn : n ≥ 1) : f n ≥ 1 := by
 theorem f_ge_two (n : ℕ) (hn : n ≥ 2) : f n ≥ 2 := by
   sorry
 
-/-! ## Part IV: Counting Consecutive Sums -/
+/- ## Part IV: Counting Consecutive Sums -/
 
 /-- The number of contiguous intervals in {1, ..., k} is k(k+1)/2.
     These are: single elements (k), pairs (k-1), triples (k-2), ..., full sequence (1). -/
@@ -108,7 +108,7 @@ theorem count_contiguous_intervals (k : ℕ) :
 theorem f_le_2n (n : ℕ) : f n ≤ 2 * n := by
   sorry
 
-/-! ## Part V: Weisenberg's Lower Bound -/
+/- ## Part V: Weisenberg's Lower Bound -/
 
 /-- **Weisenberg's Lower Bound**
 
@@ -129,7 +129,7 @@ theorem f_grows_at_least_sqrt :
   · norm_num
   · sorry
 
-/-! ## Part VI: The Main Conjecture -/
+/- ## Part VI: The Main Conjecture -/
 
 /-- **Erdős Problem #357 (Main Conjecture)**
 
@@ -148,7 +148,7 @@ def Erdos357ConjectureAlt : Prop :=
 theorem conjecture_equiv : Erdos357Conjecture ↔ Erdos357ConjectureAlt := by
   sorry
 
-/-! ## Part VII: The Non-Monotone Variant g(n) -/
+/- ## Part VII: The Non-Monotone Variant g(n) -/
 
 /-- g(n) = maximum k for 1 ≤ a₁, ..., aₖ ≤ n (not necessarily increasing)
     with distinct consecutive sums. -/
@@ -171,7 +171,7 @@ theorem g_linear_growth :
       ∀ᶠ n in atTop, C₁ * n ≤ (g n : ℝ) ∧ (g n : ℝ) ≤ C₂ * n := by
   sorry
 
-/-! ## Part VIII: The Weakly Monotone Variant h(n) -/
+/- ## Part VIII: The Weakly Monotone Variant h(n) -/
 
 /-- h(n) = maximum k for 1 ≤ a₁ ≤ a₂ ≤ ... ≤ aₖ ≤ n (weakly increasing)
     with distinct consecutive sums. -/
@@ -189,7 +189,7 @@ theorem h_ge_f (n : ℕ) : h n ≥ f n := by
 def MonotoneConjecture : Prop :=
   (fun n => (h n : ℝ)) =o[atTop] (fun n => (n : ℝ))
 
-/-! ## Part IX: Infinite Sets -/
+/- ## Part IX: Infinite Sets -/
 
 /-- An infinite set with distinct consecutive sums. -/
 def InfiniteDistinctSums (A : ℕ → ℕ) : Prop :=
@@ -208,7 +208,7 @@ def InfiniteDensityZeroConjecture : Prop :=
 def InfiniteSumConvergesConjecture : Prop :=
   ∀ A : ℕ → ℕ, InfiniteDistinctSums A → Summable (fun i => (1 : ℝ) / A i)
 
-/-! ## Part X: Examples -/
+/- ## Part X: Examples -/
 
 /-- The sequence {1} has distinct sums trivially. -/
 example : HasDistinctConsecutiveSums (fun _ => (1 : ℤ)) 1 := by
@@ -229,7 +229,7 @@ theorem example_1_2_4 : HasDistinctConsecutiveSums (![1, 2, 4]) 3 := by
 theorem powers_of_2_distinct : ∀ k, HasDistinctConsecutiveSums (fun i => (2^i : ℤ)) k := by
   sorry
 
-/-! ## Part XI: Connection to B₂ Sequences -/
+/- ## Part XI: Connection to B₂ Sequences -/
 
 /-- A B₂ sequence (Sidon set) has all pairwise sums distinct:
     a_i + a_j = a_k + a_l implies {i,j} = {k,l}. -/
@@ -248,7 +248,7 @@ axiom B2_max_size :
         (∀ i, 1 ≤ a i ∧ a i ≤ n) →
           ∃ k, k ≤ (1 + o n) * Real.sqrt n ∧ ∀ i ≥ k, a i > n
 
-/-! ## Part XII: Related Problems -/
+/- ## Part XII: Related Problems -/
 
 /-- Problem #874: Sequences where all subset sums are distinct.
     Such sequences also have distinct consecutive sums. -/
@@ -268,7 +268,7 @@ def HasDistinctConsecutiveProducts (a : ℕ → ℤ) (k : ℕ) : Prop :=
 
 end Erdos357
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #357 on distinct consecutive sums.

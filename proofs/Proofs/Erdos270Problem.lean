@@ -46,7 +46,7 @@ open Real Nat
 
 namespace Erdos270
 
-/-!
+/-
 ## Part I: The Product-Reciprocal Series
 
 The series involves products (n+1)(n+2)⋯(n+f(n)) in the denominator.
@@ -76,7 +76,7 @@ def seriesTerm (f : ℕ → ℕ) (n : ℕ) : ℝ :=
 noncomputable def productReciprocalSeries (f : ℕ → ℕ) : ℝ :=
   ∑' n, seriesTerm f n
 
-/-!
+/-
 ## Part II: The Limit Condition
 
 The function f must satisfy f(n) → ∞.
@@ -96,7 +96,7 @@ f(n+1) ≥ f(n) for all n.
 def IsNondecreasing (f : ℕ → ℕ) : Prop :=
   ∀ n : ℕ, f n ≤ f (n + 1)
 
-/-!
+/-
 ## Part III: The Original Conjecture (Disproved!)
 
 Erdős and Graham conjectured the sum is always irrational.
@@ -112,7 +112,7 @@ if f(n) is assumed to be nondecreasing."
 def ErdosGrahamConjecture : Prop :=
   ∀ f : ℕ → ℕ, TendsToInfinity f → Irrational (productReciprocalSeries f)
 
-/-!
+/-
 ## Part IV: The Crmarić-Kovač Disproof (2025)
 
 The conjecture is false in the strongest possible sense!
@@ -153,7 +153,7 @@ theorem erdos_270_disproved : ¬ErdosGrahamConjecture := by
   rw [hf_eq] at h_irr
   exact h_irr ⟨1, by norm_num⟩
 
-/-!
+/-
 ## Part V: The Special Case f(n) = n
 
 When f(n) = n, we get the central binomial coefficient sum.
@@ -192,7 +192,7 @@ It involves π, which is transcendental.
 -/
 axiom hansen_transcendental : Transcendental ℚ hansenConstant
 
-/-!
+/-
 ## Part VI: The Non-decreasing Case (Still Open!)
 
 The question becomes much harder for monotonic f.
@@ -220,7 +220,7 @@ axiom nondecreasing_measure_zero :
       productReciprocalSeries f ∈ S) ∧
       MeasureTheory.volume S = 0
 
-/-!
+/-
 ## Part VII: Examples and Bounds
 -/
 
@@ -242,7 +242,7 @@ axiom series_upper_bound (f : ℕ → ℕ) (hf : TendsToInfinity f) :
 axiom series_positive (f : ℕ → ℕ) (hf : TendsToInfinity f) :
     productReciprocalSeries f > 0
 
-/-!
+/-
 ## Part VIII: Summary
 -/
 

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #483: Growth Rate of Schur Numbers
 
 The Schur number f(k) is the minimal N such that every k-coloring of
@@ -22,7 +22,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A k-coloring of {1, ..., N}. -/
 def Coloring (N k : ℕ) := Fin N → Fin k
@@ -41,7 +41,7 @@ axiom schurNumber (k : ℕ) : ℕ
 /-- schurNumber k is positive for k ≥ 1. -/
 axiom schurNumber_pos (k : ℕ) (hk : 1 ≤ k) : 1 ≤ schurNumber k
 
-/-! ## Known Values -/
+/- ## Known Values -/
 
 /-- f(1) = 2: any 1-coloring of {1, 2} has 1 + 1 = 2. -/
 axiom schur_1 : schurNumber 1 = 2
@@ -58,7 +58,7 @@ axiom schur_4 : schurNumber 4 = 45
 /-- f(5) = 161. -/
 axiom schur_5 : schurNumber 5 = 161
 
-/-! ## Bounds -/
+/- ## Bounds -/
 
 /-- Lower bound: f(k) ≥ 380^{k/5} - O(1).
     Simplified: f(k) grows at least exponentially. -/
@@ -72,7 +72,7 @@ axiom schur_upper_bound :
   ∃ C : ℝ, 0 < C ∧ ∀ k : ℕ, 1 ≤ k →
     (schurNumber k : ℝ) ≤ C * (Nat.factorial k : ℝ)
 
-/-! ## The Conjecture -/
+/- ## The Conjecture -/
 
 /-- Erdős Problem #483: Is f(k) < c^k for some constant c > 0?
     That is, are Schur numbers bounded by a simple exponential? -/

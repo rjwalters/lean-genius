@@ -29,7 +29,7 @@ open Nat
 
 namespace Erdos699
 
-/-!
+/-
 ## The Sylvester-Schur Theorem
 
 A classical result: for any 1 ≤ i ≤ n/2, there exists a prime p > i
@@ -47,7 +47,7 @@ This ensures that "large" primes appear as divisors of binomial coefficients.
 axiom sylvester_schur (n i : ℕ) (hi : 1 ≤ i) (hi_half : i ≤ n / 2) :
     ∃ p : ℕ, p.Prime ∧ i < p ∧ p ∣ Nat.choose n i
 
-/-!
+/-
 ## The Main Question (OPEN)
 
 Erdős and Szekeres asked whether a similar result holds for the GCD of
@@ -77,7 +77,7 @@ def erdos_699_statement : Prop :=
 /-- The problem is open - we don't know whether it's true or false. -/
 axiom erdos_699_open : True
 
-/-!
+/-
 ## The Erdős-Szekeres Strengthening (OPEN)
 
 Erdős and Szekeres conjectured the stronger result that p > i (strict inequality)
@@ -98,7 +98,7 @@ def erdos_szekeres_conjecture : Prop :=
     ∀ n i j : ℕ, 1 ≤ i → i < j → j ≤ n / 2 →
       (n, i, j) ∉ E → HasCommonStrictlyLargePrime n i j
 
-/-!
+/-
 ## Concrete Computations
 
 We verify some specific GCD computations to illustrate the problem.
@@ -145,7 +145,7 @@ theorem example_10_2_5 : HasCommonLargePrime 10 2 5 := by
   · omega
   · native_decide
 
-/-!
+/-
 ## The Critical Counterexample to the Strong Form
 
 Erdős and Szekeres noted that gcd(C(28,5), C(28,14)) = 1080 = 2³·3³·5,
@@ -200,7 +200,7 @@ theorem counterexample_28_5_14_strong : ¬HasCommonStrictlyLargePrime 28 5 14 :=
   have h_le : p ≤ 5 := max_prime_1080_is_5 p hp_prime hp_div
   omega
 
-/-!
+/-
 ## Why Sylvester-Schur Doesn't Immediately Help
 
 Sylvester-Schur gives a prime p > i dividing C(n, i), and a prime q > j dividing C(n, j).

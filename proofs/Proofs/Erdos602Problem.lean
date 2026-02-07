@@ -26,7 +26,7 @@ open Set Cardinal
 
 namespace Erdos602
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 Define set families and their properties.
@@ -52,7 +52,7 @@ def IsCountablyInfinite (S : Set U) : Prop :=
 def AllCountablyInfinite (A : SetFamily U I) : Prop :=
   ∀ i, IsCountablyInfinite (A i)
 
-/-!
+/-
 # Part 2: Intersection Conditions
 
 The pairwise intersections must be finite but not exactly 1.
@@ -78,7 +78,7 @@ def HasValidIntersections (A : SetFamily U I) : Prop :=
 def IsErdosFamily (A : SetFamily U I) : Prop :=
   AllCountablyInfinite A ∧ HasValidIntersections A
 
-/-!
+/-
 # Part 3: 2-Colorings
 
 A coloring assigns each element to one of two colors.
@@ -103,7 +103,7 @@ def IsMonochromaticAlt (S : Set U) (coloring : TwoColoring U) : Prop :=
 def HasPropertyB (S : Set U) : Prop :=
   ∃ coloring : TwoColoring U, ¬IsMonochromatic S coloring
 
-/-!
+/-
 # Part 4: Property B for Families
 
 A family has Property B if there's a coloring where no member is monochromatic.
@@ -122,7 +122,7 @@ def ErdosQuestion602 : Prop :=
   ∀ (U : Type*) (I : Type*) (A : SetFamily U I),
     IsErdosFamily A → FamilyHasPropertyB A
 
-/-!
+/-
 # Part 5: The Main Conjecture
 
 Formal statement of Erdős Problem #602.
@@ -145,7 +145,7 @@ theorem conjecture_equiv : ErdosConjecture602 ↔ NoCounterexample := by
     by_contra hnB
     exact h ⟨U, I, A, hA, hnB⟩
 
-/-!
+/-
 # Part 6: Why the Conditions Matter
 
 Explain the role of each condition.
@@ -165,7 +165,7 @@ Explain the role of each condition.
 -- If many pairs share exactly one element, that element's color
 -- forces constraints that can't all be satisfied
 
-/-!
+/-
 # Part 7: Related Property B Results
 
 Classical results about Property B.
@@ -180,7 +180,7 @@ Classical results about Property B.
 -- Komjáth originally posed this problem
 def KomjathProblem : Prop := ErdosQuestion602
 
-/-!
+/-
 # Part 8: Special Cases
 
 Analyze special cases of the family structure.
@@ -202,7 +202,7 @@ theorem disjoint_has_property_b {A : SetFamily U I} (hA : IsDisjointFamily A) :
 def IsAlmostDisjoint (A : SetFamily U I) : Prop :=
   ∀ i j, i ≠ j → (A i ∩ A j).Finite
 
-/-!
+/-
 # Part 9: Obstructions to Property B
 
 What would make a family fail to have Property B?
@@ -233,7 +233,7 @@ theorem counterexample_structure :
     push_neg at hA
     exact hA c
 
-/-!
+/-
 # Part 10: Problem Status
 
 The problem remains OPEN.
@@ -249,7 +249,7 @@ theorem erdos_602_statement :
       IsErdosFamily A → FamilyHasPropertyB A := by
   rfl
 
-/-!
+/-
 # Summary
 
 **Problem:** Given a family of countably infinite sets with pairwise intersections

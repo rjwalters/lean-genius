@@ -26,7 +26,7 @@ namespace Erdos266
 
 open Set Filter BigOperators
 
-/-! ## The Conjecture -/
+/- ## The Conjecture -/
 
 /--
 **Stolarsky's Conjecture**: For any sequence aₙ of positive integers with
@@ -41,7 +41,7 @@ def StolarskyConjecture : Prop :=
     Summable (fun n => (1 : ℝ) / a n) →
     ∃ t : ℕ, 1 ≤ t ∧ Irrational (∑' n, (1 : ℝ) / (a n + t))
 
-/-! ## Main Result -/
+/- ## Main Result -/
 
 /--
 **Kovač-Tao (2024)**: Stolarsky's conjecture is FALSE.
@@ -54,7 +54,7 @@ axiom stolarsky_conjecture_false : ¬StolarskyConjecture
 /-- Erdős Problem #266: The conjecture is disproved -/
 theorem erdos_266 : ¬StolarskyConjecture := stolarsky_conjecture_false
 
-/-! ## The Stronger Result -/
+/- ## The Stronger Result -/
 
 /--
 **Kovač-Tao Stronger Result**: There exists a strictly increasing sequence aₙ
@@ -71,7 +71,7 @@ axiom kovac_tao_all_rationals :
         (∀ n, (t : ℝ) ≠ -(a n : ℝ)) →
         ∃ q : ℚ, ∑' n, (1 : ℝ) / ((a n : ℝ) + t) = q
 
-/-! ## Understanding the Counterexample -/
+/- ## Understanding the Counterexample -/
 
 /--
 The Kovač-Tao counterexample sequence is constructed carefully so that:
@@ -83,7 +83,7 @@ The construction uses deep techniques from the theory of Ahmes series
 with the sequence structure.
 -/
 
-/-! ## Relation to Other Problems -/
+/- ## Relation to Other Problems -/
 
 /--
 This problem is closely related to Erdős #264 (irrationality sequences).
@@ -97,7 +97,7 @@ Kovač-Tao's unified approach resolved both negatively:
 - #266: There exist sequences where NO shift produces irrationality
 -/
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- For illustration, harmonic-like sums ∑ 1/n diverge, so don't apply here -/
 theorem harmonic_diverges : ¬Summable (fun n : ℕ => (1 : ℝ) / (n + 1)) := by

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #749: Dense Sumsets with Bounded Representation
 
 For ε > 0, does there exist A ⊆ ℕ such that the lower density
@@ -26,7 +26,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The representation function r_A(n): the number of ways to write n = a + b
     with a, b ∈ A and a ≤ b. -/
@@ -49,7 +49,7 @@ axiom lowerDensity_bounds (S : Set ℕ) : 0 ≤ lowerDensity S ∧ lowerDensity 
 /-- Lower density ≤ upper density. -/
 axiom lower_le_upper (S : Set ℕ) : lowerDensity S ≤ upperDensity S
 
-/-! ## The Representation Bounded Property -/
+/- ## The Representation Bounded Property -/
 
 /-- A set A has bounded representation function: there exists C such that
     r_A(n) ≤ C for all n. -/
@@ -60,7 +60,7 @@ def HasBoundedRep (A : Set ℕ) : Prop :=
 def HasDenseSumset (A : Set ℕ) (ε : ℝ) : Prop :=
   lowerDensity (sumSet A) ≥ 1 - ε
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- Erdős Problem #749: For every ε > 0, does there exist A ⊆ ℕ
     with HasDenseSumset A ε and HasBoundedRep A?
@@ -71,7 +71,7 @@ axiom erdos_749_conjecture :
     (∀ ε : ℝ, ε > 0 → ∃ A : Set ℕ, HasDenseSumset A ε ∧ HasBoundedRep A) ∨
     (∃ ε : ℝ, ε > 0 ∧ ∀ A : Set ℕ, HasDenseSumset A ε → ¬ HasBoundedRep A)
 
-/-! ## Context: Sidon Sets and Bases -/
+/- ## Context: Sidon Sets and Bases -/
 
 /-- Sidon sets have r(n) ≤ 2 for all n (bounded representation),
     but their sumset has density 0. -/
@@ -86,7 +86,7 @@ axiom sidon_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
     a + b = c + d → a = c ∧ b = d) :
     lowerDensity (sumSet A) = 0
 
-/-! ## Erdős–Turán Conjecture Connection -/
+/- ## Erdős–Turán Conjecture Connection -/
 
 /-- Erdős–Turán conjecture (Problem #28): If A is an additive basis of order 2
     (i.e., every sufficiently large n ∈ A + A), then r(n) is unbounded.
@@ -95,7 +95,7 @@ axiom sidon_density_zero (A : Set ℕ) (hsidon : ∀ a b c d : ℕ,
 axiom erdos_turan_conjecture_28 :
     ∀ A : Set ℕ, lowerDensity (sumSet A) = 1 → ¬ HasBoundedRep A
 
-/-! ## Upper Density Variant -/
+/- ## Upper Density Variant -/
 
 /-- Similar question for upper density: does there exist A with
     upper density of A + A at least 1 - ε and bounded r(n)? -/

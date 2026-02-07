@@ -28,7 +28,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 
 namespace Erdos812
 
-/-!
+/-
 ## Part I: Ramsey Number Definitions
 -/
 
@@ -65,7 +65,7 @@ The classical bounds are:
 axiom ramsey_bounds (n : ℕ) :
     n ≥ 3 → (2 : ℝ) ^ (n / 2 : ℝ) ≤ R n ∧ (R n : ℝ) ≤ (4 : ℝ) ^ n / Real.sqrt n
 
-/-!
+/-
 ## Part II: The Main Questions
 -/
 
@@ -83,7 +83,7 @@ Is R(n+1) - R(n) ≫ n²?
 def quadratic_difference_conjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ n ≥ N, (R (n + 1) - R n : ℝ) ≥ C * n^2
 
-/-!
+/-
 ## Part III: Known Results
 -/
 
@@ -104,7 +104,7 @@ axiom problem_165_bound :
     ∃ f : ℕ → ℝ, (∀ n, f n > 0) ∧ (∀ ε > 0, ∃ N, ∀ n ≥ N, f n ≤ n^ε) ∧
     ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 3, (R (n + 2) - R n : ℝ) ≥ C * n^2 / f n
 
-/-!
+/-
 ## Part IV: Consequences
 -/
 
@@ -117,7 +117,7 @@ axiom ratio_implies_exponential (c : ℝ) (hc : c > 0) :
     (∀ n ≥ 3, (R (n + 1) : ℝ) / R n ≥ 1 + c) →
     ∀ n k : ℕ, 3 ≤ k → k ≤ n → (R n : ℝ) ≥ R k * (1 + c) ^ (n - k)
 
-/-!
+/-
 ## Part V: Computational Verifications
 -/
 
@@ -144,7 +144,7 @@ example : 4 * 2 - 8 = 0 := by norm_num
 example : 4 * 3 - 8 = 4 := by norm_num
 example : 4 * 4 - 8 = 8 := by norm_num
 
-/-!
+/-
 ## Part VI: Summary
 -/
 

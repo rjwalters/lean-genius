@@ -28,7 +28,7 @@ import Mathlib
 
 open Finset Function Set
 
-/-! ## Point Configurations in the Plane -/
+/- ## Point Configurations in the Plane -/
 
 /-- A point in ℝ² -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
@@ -48,7 +48,7 @@ structure Line where
 def Line.contains (l : Line) (p : Point) : Prop :=
   ∃ t : ℝ, p = l.point1 + t • (l.point2 - l.point1)
 
-/-! ## Lines Determined by a Configuration -/
+/- ## Lines Determined by a Configuration -/
 
 /-- Two points determine a line (if distinct) -/
 def lineThroughPair (p q : Point) (h : p ≠ q) : Line :=
@@ -60,7 +60,7 @@ noncomputable def determinedLines {n : ℕ} (config : PointConfig n) : Set Line 
     l = lineThroughPair (config.points i) (config.points j)
       (fun h => (Fin.ext_iff.mp (config.distinct h)) ▸ (i.ne_of_gt (lt_of_le_of_ne (Nat.zero_le _) (fun _ => by simp_all))).elim)}
 
-/-! ## Incidence Counts -/
+/- ## Incidence Counts -/
 
 /-- Count of points on a line -/
 noncomputable def incidenceCount {n : ℕ} (config : PointConfig n) (l : Line) : ℕ :=
@@ -74,7 +74,7 @@ noncomputable def incidenceSignature {n : ℕ} (config : PointConfig n) : Multis
 noncomputable def incidenceSet {n : ℕ} (config : PointConfig n) : Finset ℕ :=
   sorry -- {|ℓ ∩ P| : ℓ is a determined line}
 
-/-! ## The Function F(n) -/
+/- ## The Function F(n) -/
 
 /-- F(n) counts distinct incidence signatures achievable by n points -/
 noncomputable def F (n : ℕ) : ℕ :=
@@ -84,7 +84,7 @@ noncomputable def F (n : ℕ) : ℕ :=
 noncomputable def F_set (n : ℕ) : ℕ :=
   sorry -- Cardinality of {incidenceSet config : config is an n-point configuration}
 
-/-! ## The Conjecture and Solution -/
+/- ## The Conjecture and Solution -/
 
 /-- The Erdős conjecture: F(n) ≤ exp(O(√n)) -/
 def ErdosConjecture607 : Prop :=
@@ -94,7 +94,7 @@ def ErdosConjecture607 : Prop :=
 theorem szemeredi_trotter_607 : ErdosConjecture607 := by
   sorry
 
-/-! ## Upper Bound Analysis -/
+/- ## Upper Bound Analysis -/
 
 /-- Key constraint: every line contains at least 2 points -/
 theorem incidence_at_least_two {n : ℕ} (config : PointConfig n) (l : Line)
@@ -111,7 +111,7 @@ theorem lines_at_most_binomial {n : ℕ} (config : PointConfig n) :
     sorry -- |determinedLines config| ≤ n.choose 2
     := by sorry
 
-/-! ## Lower Bound: Optimality -/
+/- ## Lower Bound: Optimality -/
 
 /-- Erdős claimed exp(c√n) is also a lower bound -/
 def LowerBoundConjecture : Prop :=
@@ -122,7 +122,7 @@ def LowerBoundConjecture : Prop :=
 theorem lower_bound_construction : LowerBoundConjecture := by
   sorry
 
-/-! ## Special Configurations -/
+/- ## Special Configurations -/
 
 /-- All points collinear: A = {n} (single line with all points) -/
 def collinearConfig (n : ℕ) (hn : n ≥ 2) : PointConfig n :=
@@ -148,7 +148,7 @@ theorem grid_signature (m : ℕ) (hm : m ≥ 2) :
     2 ∈ incidenceSet (gridConfig m) ∧ m ∈ incidenceSet (gridConfig m) := by
   sorry
 
-/-! ## Connection to Szemerédi-Trotter Incidence Theorem -/
+/- ## Connection to Szemerédi-Trotter Incidence Theorem -/
 
 /-- The Szemerédi-Trotter incidence bound (background theorem) -/
 axiom szemeredi_trotter_incidence :
@@ -162,7 +162,7 @@ theorem incidence_bound_constrains_signature {n : ℕ} (config : PointConfig n) 
     sorry -- The signature is constrained by ST bound
     := by sorry
 
-/-! ## Counting Partitions -/
+/- ## Counting Partitions -/
 
 /-- A key insight: incidence signatures correspond to integer partitions -/
 -- If lines have incidences k₁, k₂, ..., kₘ, then Σkᵢ(kᵢ-1)/2 = C(n,2)
@@ -179,7 +179,7 @@ theorem partition_count_growth :
       (F n : ℝ) ≤ Real.exp (C * Real.sqrt n) := by
   sorry
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /-- Erdős Problem #607: SOLVED
 

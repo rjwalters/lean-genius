@@ -21,7 +21,7 @@ open Polynomial Finset Filter Set
 
 namespace Erdos351
 
-/-! ## Key Definitions -/
+/- ## Key Definitions -/
 
 /-- The image set {p(n) + 1/n : n ∈ ℕ} for a polynomial p over a semifield.
     Note: p(0) + 1/0 = p(0) + 0 = p(0) is included since 1/0 = 0 in ℕ. -/
@@ -40,7 +40,7 @@ def IsStronglyComplete (A : Set ℚ) : Prop :=
 def HasStronglyCompleteImage (P : ℚ[X]) : Prop :=
   IsStronglyComplete (imageSet P)
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Erdős Problem #351** (Open):
@@ -53,7 +53,7 @@ This remains open. The answer is unknown.
 axiom erdos_351_open :
   True  -- Placeholder: the general problem is open
 
-/-! ## Solved Cases -/
+/- ## Solved Cases -/
 
 /--
 **Graham's Theorem (1963)**: The set {n + 1/n : n ∈ ℕ} is strongly complete.
@@ -72,7 +72,7 @@ squares of distinct integers whose reciprocals sum to 1.
 -/
 axiom graham_alekseyev_quadratic : HasStronglyCompleteImage (X ^ 2)
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The image set for p(x) = x contains n + 1/n for all n ≥ 1 -/
 theorem mem_imageSet_linear (n : ℕ) : (n : ℚ) + 1 / n ∈ imageSet X := by

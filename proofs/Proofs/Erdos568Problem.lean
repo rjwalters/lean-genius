@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #568: Ramsey Size Linearity from Tree and Clique Bounds
 
 A graph G is Ramsey size linear if R̂(G, H) ≪ m for every graph H
@@ -21,7 +21,7 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A simple graph on n vertices. -/
 structure SGraph (n : ℕ) where
@@ -57,7 +57,7 @@ def IsTree {n : ℕ} (T : SGraph n) : Prop :=
 def IsComplete {n : ℕ} (G : SGraph n) : Prop :=
   ∀ i j : Fin n, i ≠ j → G.adj i j
 
-/-! ## Tree and Clique Ramsey Conditions -/
+/- ## Tree and Clique Ramsey Conditions -/
 
 /-- G has linear Ramsey number against all trees: R(G, Tₙ) ≤ C·n. -/
 def LinearTreeRamsey {nG : ℕ} (G : SGraph nG) : Prop :=
@@ -69,7 +69,7 @@ def QuadraticCliqueRamsey {nG : ℕ} (G : SGraph nG) : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ (nH : ℕ) (K : SGraph nH), IsComplete K →
     (ramseyNumber nG nH G K : ℝ) ≤ C * nH ^ 2
 
-/-! ## Size Linearity -/
+/- ## Size Linearity -/
 
 /-- G is Ramsey size linear: R̂(G, H) ≤ C·m for all H with m edges,
     no isolated vertices. -/
@@ -77,7 +77,7 @@ def IsRamseySizeLinear {nG : ℕ} (G : SGraph nG) : Prop :=
   ∃ C : ℝ, 0 < C ∧ ∀ (nH : ℕ) (H : SGraph nH),
     NoIsolated H → (sizeRamseyNumber nG nH G H : ℝ) ≤ C * numEdges H
 
-/-! ## The Conjecture -/
+/- ## The Conjecture -/
 
 /-- Erdős Problem #568 (EFRS 1993): If G has R(G, Tₙ) ≪ n for all trees
     and R(G, Kₙ) ≪ n² for all complete graphs, then G is Ramsey size linear. -/

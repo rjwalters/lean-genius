@@ -25,7 +25,7 @@ open Set Metric
 
 namespace Erdos188
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 Define colorings of the plane and the key constraints.
@@ -63,7 +63,7 @@ def BlueContainsUnitAP (c : PlaneColoring) (k : ℕ) : Prop :=
 def IsValidColoring (c : PlaneColoring) (k : ℕ) : Prop :=
   RedUnitDistanceFree c ∧ ¬ BlueContainsUnitAP c k
 
-/-!
+/-
 # Part 2: The Set s and the Problem
 
 Define the set s of achievable k values.
@@ -79,7 +79,7 @@ def ErdosProblem188 : Prop :=
 -- The minimum achievable k
 noncomputable def minAchievable : ℕ := sInf achievableSet
 
-/-!
+/-
 # Part 3: Known Bounds
 
 Lower bound ≥ 6, upper bound ≤ 10,000,000.
@@ -104,7 +104,7 @@ theorem erdos_188_bounds : ∀ k ∈ achievableSet, 6 ≤ k ∧ ∃ k' ∈ achie
   intro k hk
   exact ⟨lower_bound_6 k hk, upper_bound_exists⟩
 
-/-!
+/-
 # Part 4: Unit Distance Graph
 
 The problem relates to the unit distance graph of ℝ².
@@ -127,7 +127,7 @@ theorem red_is_independent (c : PlaneColoring) (h : RedUnitDistanceFree c) :
   intro z₁ z₂ hr1 hr2 hne ⟨_, hd⟩
   exact h z₁ z₂ hr1 hr2 hne hd
 
-/-!
+/-
 # Part 5: Connection to van der Waerden
 
 Noga Alon's observation about the original problem formulation.
@@ -145,7 +145,7 @@ axiom alon_observation : ¬ ∃ k : ℕ, ∀ c : PlaneColoring,
   RedUnitDistanceFree c →
     ¬ ∃ a d : ℂ, d ≠ 0 ∧ ∀ i : ℕ, i < k → c (a + i • d) = true
 
-/-!
+/-
 # Part 6: Specific Constructions
 
 Known constructions achieving the upper bound.
@@ -160,7 +160,7 @@ theorem large_k_valid : ∃ k : ℕ, ∃ c : PlaneColoring, IsValidColoring c k 
   obtain ⟨k, hk, _⟩ := upper_bound_exists
   exact ⟨k, hk⟩
 
-/-!
+/-
 # Part 7: Problem Status
 
 The exact value of min s remains OPEN.
@@ -185,7 +185,7 @@ theorem erdos_188_statement :
   · intro ⟨k, hk1, hk2⟩
     exact ⟨k, ⟨hk1, hk2⟩⟩
 
-/-!
+/-
 # Part 8: Summary
 
 **Known:**

@@ -25,7 +25,7 @@ open Set Cardinal
 
 namespace Erdos603
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 Define set families, intersection constraints, and colorings.
@@ -55,7 +55,7 @@ def IsMonochromatic {α C : Type*} (S : Set α) (c : α → C) : Prop :=
 def IsValidColoring {α I C : Type*} (A : I → Set α) (c : α → C) : Prop :=
   ∀ i, ¬ IsMonochromatic (A i) c
 
-/-!
+/-
 # Part 2: The Main Question
 
 What is the smallest cardinal C such that a valid coloring always exists?
@@ -77,7 +77,7 @@ def ErdosConjecture603 (C : Cardinal) : Prop :=
 noncomputable def minimalChromatic : Cardinal :=
   sInf {C | ErdosConjecture603 C}
 
-/-!
+/-
 # Part 3: Related Problem - Intersection ≠ 1
 
 Komjáth showed: if |A_i ∩ A_j| ≠ 1 instead, then ℵ₀ colors suffice.
@@ -95,7 +95,7 @@ def IsValidFamilyNot1 {α I : Type*} (A : I → Set α) : Prop :=
 axiom komjath_not1 : ∀ {α I : Type*} (A : I → Set α),
   IsValidFamilyNot1 A → SufficientColors A ℵ₀
 
-/-!
+/-
 # Part 4: Bounds and Special Cases
 
 What bounds do we know for the ≠2 case?
@@ -124,7 +124,7 @@ def CanDoBetterThanAleph0 : Prop :=
 def Aleph0Necessary : Prop :=
   ∀ n : ℕ, ¬ ErdosConjecture603 n
 
-/-!
+/-
 # Part 5: Hypergraph Perspective
 
 This can be viewed as a hypergraph coloring problem.
@@ -145,7 +145,7 @@ noncomputable def weakChromatic {α I : Type*}
     (H : SetFamilyHypergraph α I) : Cardinal :=
   hypergraphChromatic H
 
-/-!
+/-
 # Part 6: Examples and Constructions
 
 Specific families that might require many colors.
@@ -168,7 +168,7 @@ theorem both_constraints {α I : Type*} (A : I → Set α)
   apply komjath_not1
   exact ⟨h, hb.1⟩
 
-/-!
+/-
 # Part 7: Problem Status
 
 The problem remains OPEN. The exact value of the minimal C is unknown.
@@ -195,7 +195,7 @@ theorem erdos_603_statement :
   · intro ⟨C, hC⟩
     exact ⟨C, fun A h => hC A h⟩
 
-/-!
+/-
 # Part 8: Summary
 
 **Known:**

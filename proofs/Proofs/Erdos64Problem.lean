@@ -30,7 +30,7 @@ namespace Erdos64
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- Cyclic successor in Fin k: maps i to (i+1) mod k. -/
 def Fin.succMod {k : ℕ} (hk : 0 < k) (i : Fin k) : Fin k :=
@@ -50,7 +50,7 @@ noncomputable def minDegree [Nonempty V] (G : SimpleGraph V) [DecidableRel G.Adj
 def HasMinDegree (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) : Prop :=
   ∀ v : V, d ≤ (G.neighborFinset v).card
 
-/-! ## Powers of Two -/
+/- ## Powers of Two -/
 
 /-- The set of powers of 2 that are at least 4: {4, 8, 16, 32, ...}. -/
 def PowersOfTwoAtLeast4 : Set ℕ := { n | ∃ k : ℕ, k ≥ 2 ∧ n = 2^k }
@@ -66,7 +66,7 @@ theorem power_two_even (k : ℕ) (hk : k ≥ 2) : Even (2^k) := by
   simp only [hm, Nat.pow_succ]
   exact ⟨2^m, by ring⟩
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /--
 **Erdős Problem 64** (OPEN, $1000 prize):
@@ -78,7 +78,7 @@ def erdos_64_conjecture : Prop :=
     (G : SimpleGraph W) [DecidableRel G.Adj],
     HasMinDegree G 3 → ∃ k : ℕ, k ≥ 2 ∧ ContainsCycleLength G (2^k)
 
-/-! ## Erdős-Gyárfás Conjecture (Disproved) -/
+/- ## Erdős-Gyárfás Conjecture (Disproved) -/
 
 /--
 **Erdős-Gyárfás Conjecture** (DISPROVED by Liu-Montgomery):
@@ -104,7 +104,7 @@ axiom liu_montgomery_threshold :
       (G : SimpleGraph W) [DecidableRel G.Adj],
       HasMinDegree G D → ∃ k : ℕ, k ≥ 2 ∧ ContainsCycleLength G (2^k)
 
-/-! ## Partial Results -/
+/- ## Partial Results -/
 
 /--
 **Liu-Montgomery Stronger Result**:
@@ -130,7 +130,7 @@ theorem range_contains_power_of_two (L : ℕ) (hL : L ≥ 16) :
          _ ≤ 16 := by norm_num
          _ ≤ L := hL
 
-/-! ## Infinite Graph Counterexample -/
+/- ## Infinite Graph Counterexample -/
 
 /-- An infinite graph structure (for stating the counterexample). -/
 structure InfGraph (V : Type*) where
@@ -159,7 +159,7 @@ connected to its parent and two children). This has minimum degree 3 but no cycl
 axiom infinite_3_regular_tree_exists :
     ∃ (W : Type) (G : InfGraph W), G.IsRegular 3 ∧ G.IsTree
 
-/-! ## Degree 3 Case (Open) -/
+/- ## Degree 3 Case (Open) -/
 
 /--
 **Open Problem**: The case of minimum degree exactly 3.
@@ -173,7 +173,7 @@ def degree_3_conjecture : Prop :=
 
 -- Note: degree_3_conjecture and erdos_64_conjecture are semantically identical.
 
-/-! ## Known Cycle Results -/
+/- ## Known Cycle Results -/
 
 /--
 **Dirac's Theorem** (1952):
@@ -196,7 +196,7 @@ axiom bondy_pancyclic (G : SimpleGraph V) [DecidableRel G.Adj]
       (∀ u ∈ A, ∀ v ∈ A, ¬G.Adj u v) ∧ (∀ u ∈ B, ∀ v ∈ B, ¬G.Adj u v)) ∨
     ∀ k : ℕ, 3 ≤ k → k ≤ Fintype.card V → ContainsCycleLength G k
 
-/-! ## Probabilistic Lower Bounds -/
+/- ## Probabilistic Lower Bounds -/
 
 /--
 **Random Graphs**:
@@ -209,7 +209,7 @@ axiom random_graph_cycles :
       ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
         HasMinDegree G 3 ∧ ∀ k : ℕ, k ≥ 2 → k ≤ 10 → ContainsCycleLength G (2^k)
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: OPEN ($1000 prize)**
 

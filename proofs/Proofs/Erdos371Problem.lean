@@ -35,7 +35,7 @@ namespace Erdos371
 
 open Nat Real Filter Finset
 
-/-! ## Part I: Greatest Prime Factor -/
+/- ## Part I: Greatest Prime Factor -/
 
 /-- The greatest prime factor of n, or 0 if n ≤ 1. -/
 noncomputable def P (n : ℕ) : ℕ :=
@@ -64,7 +64,7 @@ theorem P_prime_eq (p : ℕ) (hp : p.Prime) : P p = p := by
 theorem P_le (n : ℕ) : P n ≤ n := by
   sorry
 
-/-! ## Part II: Natural Density -/
+/- ## Part II: Natural Density -/
 
 /-- The counting function for a set of naturals. -/
 def countingFunction (S : Set ℕ) (x : ℕ) : ℕ :=
@@ -87,7 +87,7 @@ def HasLogDensity (S : Set ℕ) (d : ℝ) : Prop :=
   Tendsto (fun x : ℕ => (∑ n ∈ (Finset.range x).filter (· ∈ S), (1 : ℝ) / n) /
     Real.log x) atTop (𝓝 d)
 
-/-! ## Part III: The Main Sets -/
+/- ## Part III: The Main Sets -/
 
 /-- The set of n where P(n) < P(n+1). -/
 def SetPIncreasing : Set ℕ :=
@@ -104,7 +104,7 @@ theorem partition (n : ℕ) (hn : n ≥ 2) :
   · left; exact ⟨hn, h⟩
   · right; exact ⟨hn, not_lt.mp h⟩
 
-/-! ## Part IV: Erdős-Pomerance (1978) -/
+/- ## Part IV: Erdős-Pomerance (1978) -/
 
 /-- **Erdős-Pomerance (1978)**
 
@@ -117,7 +117,7 @@ axiom erdos_pomerance_1978_increasing :
 axiom erdos_pomerance_1978_decreasing :
     HasPositiveUpperDensity SetPDecreasing
 
-/-! ## Part V: Lü-Wang Lower Bound (2025) -/
+/- ## Part V: Lü-Wang Lower Bound (2025) -/
 
 /-- **Lü-Wang (2025)**
 
@@ -132,7 +132,7 @@ axiom lu_wang_2025 :
 axiom lu_wang_2025_complement :
     HasLowerDensity SetPDecreasing 0.2017
 
-/-! ## Part VI: Teräväinen (2018) - Logarithmic Density -/
+/- ## Part VI: Teräväinen (2018) - Logarithmic Density -/
 
 /-- **Teräväinen (2018)**
 
@@ -146,7 +146,7 @@ theorem teravanen_complement :
     HasLogDensity SetPDecreasing (1/2) := by
   sorry
 
-/-! ## Part VII: Tao-Teräväinen (2019) - Almost All Scales -/
+/- ## Part VII: Tao-Teräväinen (2019) - Almost All Scales -/
 
 /-- **Tao-Teräväinen (2019)**
 
@@ -161,7 +161,7 @@ def DensityAtAlmostAllScales (S : Set ℕ) (d : ℝ) : Prop :=
 axiom tao_teravanen_2019 :
     DensityAtAlmostAllScales SetPIncreasing (1/2)
 
-/-! ## Part VIII: Wang (2021) - Conditional Result -/
+/- ## Part VIII: Wang (2021) - Conditional Result -/
 
 /-- The Elliott-Halberstam conjecture for friable integers. -/
 def ElliottHalberstamForFriable : Prop := sorry
@@ -174,7 +174,7 @@ def ElliottHalberstamForFriable : Prop := sorry
 axiom wang_2021 (h : ElliottHalberstamForFriable) :
     HasNaturalDensity SetPIncreasing (1/2)
 
-/-! ## Part IX: The Main Conjecture -/
+/- ## Part IX: The Main Conjecture -/
 
 /-- **Erdős Problem #371 (Main Conjecture)**
 
@@ -193,7 +193,7 @@ theorem erdos_371_from_elliott_halberstam (h : ElliottHalberstamForFriable) :
     Erdos371Conjecture :=
   wang_2021 h
 
-/-! ## Part X: Generalized Form with α -/
+/- ## Part X: Generalized Form with α -/
 
 /-- The set of n where P(n+1) > P(n) · n^α. -/
 def SetPAlpha (α : ℝ) : Set ℕ :=
@@ -211,7 +211,7 @@ def Erdos1979Question (α : ℝ) : Prop :=
 axiom teravanen_generalized (α : ℝ) (hα : 0 ≤ α ∧ α ≤ 1) :
     ∃ d : ℝ, HasLogDensity (SetPAlpha α) d
 
-/-! ## Part XI: The Dickman Function -/
+/- ## Part XI: The Dickman Function -/
 
 /-- The Dickman function ρ(u) satisfies uρ'(u) = -ρ(u-1) for u > 1,
     with ρ(u) = 1 for 0 ≤ u ≤ 1. -/
@@ -231,7 +231,7 @@ theorem theoretical_density_zero :
     theoreticalDensity 0 = 1/2 := by
   sorry
 
-/-! ## Part XII: Small Examples -/
+/- ## Part XII: Small Examples -/
 
 /-- P(2) = 2. -/
 theorem P_2 : P 2 = 2 := by sorry
@@ -260,7 +260,7 @@ theorem four_in_set : 4 ∈ SetPIncreasing := by
 theorem five_in_complement : 5 ∈ SetPDecreasing := by
   sorry
 
-/-! ## Part XIII: Related Problems -/
+/- ## Part XIII: Related Problems -/
 
 /-- Connection to Problem #372: Behavior of P(n)/P(n+1). -/
 def Problem372Related : Prop :=
@@ -270,7 +270,7 @@ def Problem372Related : Prop :=
 def Problem928Related : Prop :=
   ∃ d : ℝ, HasNaturalDensity {n | ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ p ∣ (n + 1)} d
 
-/-! ## Part XIV: OEIS Sequence A070089 -/
+/- ## Part XIV: OEIS Sequence A070089 -/
 
 /-- The sequence of n where P(n) < P(n+1) is A070089 in OEIS.
     First few terms: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, ... -/
@@ -284,7 +284,7 @@ theorem even_often_in_set (n : ℕ) (hn : n ≥ 2) (heven : Even n)
 
 end Erdos371
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #371 on the density of consecutive

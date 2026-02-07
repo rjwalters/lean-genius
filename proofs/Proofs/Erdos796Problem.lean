@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #796: Second-Order Terms for g_k(n)
 
 Source: https://erdosproblems.com/796
@@ -36,7 +36,7 @@ open Nat Real Finset
 
 namespace Erdos796
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -68,7 +68,7 @@ A ⊆ {1,...,n} with bounded representations.
 def IsValidSubset (A : Finset ℕ) (n k : ℕ) : Prop :=
   (∀ a ∈ A, 1 ≤ a ∧ a ≤ n) ∧ IsBoundedRep A k
 
-/-!
+/-
 ## Part II: The g_k(n) Function
 -/
 
@@ -86,7 +86,7 @@ The maximum exists since we're optimizing over a finite set.
 -/
 axiom g_well_defined (k n : ℕ) (hk : k ≥ 2) : g k n ≤ n
 
-/-!
+/-
 ## Part III: Erdős's First-Order Asymptotics
 -/
 
@@ -120,7 +120,7 @@ axiom erdos_1964_main (k r : ℕ) (hk : k ≥ 2) (hr : 2^(r-1) < k ∧ k ≤ 2^r
       |((g k n : ℝ) - (Real.log (Real.log n))^(r-1) / (r-1).factorial *
         n / Real.log n)| < ε * n / Real.log n
 
-/-!
+/-
 ## Part IV: The k = 3 Case
 -/
 
@@ -139,7 +139,7 @@ theorem g3_first_order :
   simp only [pow_one, Nat.factorial_one, Nat.cast_one, div_one] at this
   exact this
 
-/-!
+/-
 ## Part V: Second-Order Terms
 -/
 
@@ -169,7 +169,7 @@ def erdosConjecture796 : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∀ᶠ n in Filter.atTop,
     |E3 n - c * n / (Real.log n)^2| < ε * n / (Real.log n)^2
 
-/-!
+/-
 ## Part VI: The k = 2 Case (Problem #425)
 -/
 
@@ -182,7 +182,7 @@ axiom g2_asymptotic :
     ∀ ε > 0, ∀ᶠ n in Filter.atTop,
       |((g 2 n : ℝ) - n / Real.log n)| < ε * n / Real.log n
 
-/-!
+/-
 ## Part VII: Optimal Sets
 -/
 
@@ -203,7 +203,7 @@ axiom optimal_sets_structure :
       IsNearOptimal3 A n ∧
       (A.filter (fun m => m.factors.length = 2)).card ≥ A.card / 2
 
-/-!
+/-
 ## Part VIII: Multiplicative Structure
 -/
 
@@ -216,7 +216,7 @@ axiom divisor_connection (m k : ℕ) (hk : k ≥ 2) :
     Nat.divisors m |>.card ≤ 2 * k - 1 →
       ∀ A : Finset ℕ, repCount A m < k
 
-/-!
+/-
 ## Part IX: Summary
 
 Erdős Problem #796 is OPEN.

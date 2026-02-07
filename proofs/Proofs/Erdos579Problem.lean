@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #579 — Independent Sets in K₂,₂,₂-Free Dense Graphs
 
 Let δ > 0. If n is sufficiently large and G is a graph on n vertices with
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-/-! ## K₂,₂,₂-Free Graphs -/
+/- ## K₂,₂,₂-Free Graphs -/
 
 /-- The complete tripartite graph K₂,₂,₂: three independent pairs
     with all edges between different pairs.
@@ -41,7 +41,7 @@ def SimpleGraph.ContainsK222 (G : SimpleGraph V) [DecidableEq V] : Prop :=
 def SimpleGraph.IsK222Free (G : SimpleGraph V) [DecidableEq V] : Prop :=
   ¬G.ContainsK222
 
-/-! ## Dense Graphs and Independent Sets -/
+/- ## Dense Graphs and Independent Sets -/
 
 /-- A graph on Fin n has at least δn² edges -/
 def isDense (G : SimpleGraph (Fin n)) [DecidableRel G.Adj] (δ : ℝ) : Prop :=
@@ -56,7 +56,7 @@ noncomputable def SimpleGraph.independenceNumber (G : SimpleGraph (Fin n))
     [DecidableRel G.Adj] : ℕ :=
   Finset.sup (Finset.univ.powerset.filter G.IsIndepSet) Finset.card
 
-/-! ## EHSS Result for δ > 1/8 -/
+/- ## EHSS Result for δ > 1/8 -/
 
 /-- Erdős–Hajnal–Sós–Szemerédi (1983): for δ > 1/8, K₂,₂,₂-free graphs
     with ≥ δn² edges have an independent set of linear size -/
@@ -68,7 +68,7 @@ axiom ehss_result :
           G.IsK222Free → isDense G δ →
             c * (n : ℝ) ≤ (G.independenceNumber : ℝ)
 
-/-! ## The Erdős–Hajnal–Sós–Szemerédi Conjecture -/
+/- ## The Erdős–Hajnal–Sós–Szemerédi Conjecture -/
 
 /-- Erdős Problem 579: For every δ > 0 and n sufficiently large,
     every K₂,₂,₂-free graph on n vertices with at least δn² edges
@@ -81,7 +81,7 @@ axiom ErdosProblem579 :
           G.IsK222Free → isDense G δ →
             c * (n : ℝ) ≤ (G.independenceNumber : ℝ)
 
-/-! ## Connection to Turán Theory -/
+/- ## Connection to Turán Theory -/
 
 /-- The octahedron is K₂,₂,₂. By the Kruskal–Katona theorem,
     the Turán number ex(n; K₂,₂,₂) = (1/8 + o(1))n².

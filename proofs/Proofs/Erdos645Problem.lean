@@ -24,7 +24,7 @@ open Nat
 
 namespace Erdos645
 
-/-!
+/-
 ## Background: Arithmetic Progressions and Colorings
 
 A 3-term arithmetic progression (3-AP) is a triple (x, x+d, x+2d) where d > 0.
@@ -71,7 +71,7 @@ theorem monochromatic_iff (c : ℕ → Bool) (x d : ℕ) :
   · intro ⟨C, h1, h2, h3⟩
     exact ⟨h1.trans h2.symm, h2.trans h3.symm⟩
 
-/-!
+/-
 ## The Erdős Condition: d > x
 
 The key constraint is that the common difference d exceeds the first term x.
@@ -92,7 +92,7 @@ The Erdős condition: first term is positive and difference exceeds first term.
 -/
 def erdosCondition (x d : ℕ) : Prop := 0 < x ∧ x < d
 
-/-!
+/-
 ## Main Statement
 
 **Erdős Problem #645**: For any 2-coloring of ℕ, there exists a monochromatic
@@ -120,7 +120,7 @@ theorem erdos_645_equiv : erdos_645_statement ↔ erdos_645_explicit := by
   · obtain ⟨x, d, hx, hxd, C, h1, h2, h3⟩ := h c
     exact ⟨x, d, ⟨hx, hxd⟩, C, h1, h2, h3⟩
 
-/-!
+/-
 ## Proof Sketch
 
 The proof uses a clever case analysis and pigeonhole argument.
@@ -144,7 +144,7 @@ Every 2-coloring has a monochromatic 3-AP with d > x.
 -/
 axiom erdos_645 : erdos_645_statement
 
-/-!
+/-
 ## Why This Is Interesting
 
 Van der Waerden's theorem says: For any r-coloring of ℕ and any k,
@@ -173,7 +173,7 @@ theorem erdos_645_implies_vdw : erdos_645_statement → vanDerWaerden_2_3 := by
   obtain ⟨x, d, ⟨_, hxd⟩, hm⟩ := h c
   exact ⟨x, d, Nat.lt_of_lt_of_le (Nat.zero_lt_of_lt hxd) (Nat.le_refl d), hm⟩
 
-/-!
+/-
 ## Concrete Examples
 
 Let's verify the statement on specific colorings.
@@ -204,7 +204,7 @@ Here d = 6 > 5 = x ✓
 -/
 axiom example_threshold : erdosCondition 5 6 ∧ isMonochromatic' colorByThreshold 5 6
 
-/-!
+/-
 ## Generalization Questions
 
 Natural generalizations of Erdős #645:
@@ -232,7 +232,7 @@ The original problem is the k = 3 case.
 -/
 axiom erdos_645_is_k3 : erdos_645_generalized 3 ↔ erdos_645_statement
 
-/-!
+/-
 ## The Finite Version
 
 For the finite version, we ask: what is the smallest N such that

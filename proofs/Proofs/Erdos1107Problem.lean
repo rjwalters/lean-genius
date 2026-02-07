@@ -31,7 +31,7 @@ open Nat Filter
 
 namespace Erdos1107
 
-/-!
+/-
 ## Definitions
 
 We define r-powerful (r-full) numbers and what it means for a number to be
@@ -64,7 +64,7 @@ numbers.
 def SumOfRPowerful (r n : ℕ) : Prop :=
   ∃ s : List ℕ, s.length ≤ r + 1 ∧ (∀ x ∈ s, IsFull r x) ∧ s.sum = n
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -93,7 +93,7 @@ theorem isFull_of_le {k m n : ℕ} (hk : m ≤ k) (h : IsFull k n) : IsFull m n 
   have hdiv : p ^ k ∣ n := h p hp
   exact Nat.pow_dvd_of_le_of_pow_dvd hk hdiv
 
-/-!
+/-
 ## Concrete Examples of 2-Powerful (Squareful) Numbers
 -/
 
@@ -109,7 +109,7 @@ theorem isFull_nine : IsFull 2 9 := by native_decide
 /-- 36 = 2² · 3² is 2-powerful. -/
 theorem isFull_thirtySix : IsFull 2 36 := by native_decide
 
-/-!
+/-
 ## Main Theorems
 
 Erdős Problem #1107 has two parts:
@@ -138,7 +138,7 @@ representations of integers by such forms.
 -/
 axiom erdos_1107_squareful : ∀ᶠ n in atTop, SumOfRPowerful 2 n
 
-/-!
+/-
 ## Verified Example
 
 We verify that small numbers can be expressed as sums of squareful numbers.

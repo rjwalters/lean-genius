@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #282: Greedy Algorithm for Egyptian Fractions
 
 Given an infinite set A ⊆ ℕ and rational x ∈ (0,1), the greedy algorithm
@@ -27,7 +27,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- An Egyptian fraction representation of a rational x using denominators
     from a set A: x = Σ_{n ∈ S} 1/n where S ⊆ A is finite with distinct elements. -/
@@ -56,14 +56,14 @@ axiom greedyStep_le (x : ℚ) (A : Set ℕ) (hx : 0 < x) (hx1 : x ≤ 1)
 def GreedyTerminates (x : ℚ) (A : Set ℕ) : Prop :=
   ∃ S : Finset ℕ, IsEgyptianFracRep x S A
 
-/-! ## Fibonacci's Theorem -/
+/- ## Fibonacci's Theorem -/
 
 /-- Fibonacci (1202): The greedy algorithm terminates for all rationals
     x ∈ (0, 1] when A = ℕ \ {0}. -/
 axiom fibonacci_greedy_terminates (x : ℚ) (hx : 0 < x) (hx1 : x ≤ 1) :
     GreedyTerminates x {n : ℕ | n > 0}
 
-/-! ## The Odd Denominator Question (Stein) -/
+/- ## The Odd Denominator Question (Stein) -/
 
 /-- The set of odd positive integers. -/
 def oddPositives : Set ℕ := {n : ℕ | n > 0 ∧ n % 2 = 1}
@@ -80,7 +80,7 @@ axiom stein_odd_greedy_conjecture (x : ℚ) (hx : 0 < x) (hx1 : x ≤ 1)
     (hodd : HasOddDenom x) :
     GreedyTerminates x oddPositives
 
-/-! ## Graham's Representability Results (1964) -/
+/- ## Graham's Representability Results (1964) -/
 
 /-- The set of positive integers ≡ a (mod d). -/
 def congClass (a d : ℕ) : Set ℕ := {n : ℕ | n > 0 ∧ n % d = a % d}
@@ -92,7 +92,7 @@ axiom graham_representability (a d m n : ℕ) (hd : d > 0) (hn : n > 0)
     (hcoprime : Nat.Coprime m n) :
     IsRepresentable ((m : ℚ) / n) (congClass a d) ↔ True -- simplified; actual conditions complex
 
-/-! ## Square Denominators Conjecture -/
+/- ## Square Denominators Conjecture -/
 
 /-- The set of perfect squares. -/
 def perfectSquares : Set ℕ := {n : ℕ | ∃ k : ℕ, k > 0 ∧ n = k * k}
@@ -102,7 +102,7 @@ def perfectSquares : Set ℕ := {n : ℕ | ∃ k : ℕ, k > 0 ∧ n = k * k}
 axiom erdos_graham_squares_conjecture :
     ∃ x : ℚ, 0 < x ∧ x ≤ 1 ∧ ¬ GreedyTerminates x perfectSquares
 
-/-! ## General Framework -/
+/- ## General Framework -/
 
 /-- For the greedy algorithm to have any chance of terminating on A,
     x must be representable using denominators from A. The greedy

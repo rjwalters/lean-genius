@@ -42,7 +42,7 @@ namespace Erdos60
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A copy of C_4 in G is a set of 4 vertices forming a 4-cycle.
     Represented as a 4-tuple (a, b, c, d) where a-b-c-d-a forms a cycle. -/
@@ -59,7 +59,7 @@ def C4Copies (G : SimpleGraph V) : Set (V × V × V × V) :=
 noncomputable def countC4 (G : SimpleGraph V) : ℕ :=
   (C4Copies G).ncard / 8
 
-/-! ## Turán Number for C_4 -/
+/- ## Turán Number for C_4 -/
 
 -- Aristotle skipped at least one sorry in the block below (common reasons: Aristotle does not define data).
 /-- The Turán number ex(n; C_4) - maximum edges in an n-vertex C_4-free graph.
@@ -85,13 +85,13 @@ Unexpected axioms were added during verification: ['harmonicSorry267941', 'Erdos
 /-- Lower bound from incidence geometry (projective planes give equality for some n). -/
 axiom exC4_lower (n : ℕ) : (exC4 n : ℝ) ≥ (1/2) * n^(3/2 : ℝ) - n
 
-/-! ## Supersaturation -/
+/- ## Supersaturation -/
 
 /-- A graph exceeds the Turán number for C_4. -/
 def ExceedsTuranC4 (G : SimpleGraph V) : Prop :=
   G.edgeSet.ncard > exC4 (Fintype.card V)
 
-/-! ## Main Conjecture (OPEN) -/
+/- ## Main Conjecture (OPEN) -/
 
 /--
 **Erdős Problem 60: Supersaturation for C_4** (OPEN)
@@ -106,7 +106,7 @@ def erdos_60_conjecture : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, ∀ (G : SimpleGraph (Fin n)),
     G.edgeSet.ncard > exC4 n → (countC4 G : ℝ) ≥ c * n^(1/2 : ℝ)
 
-/-! ## Partial Results -/
+/- ## Partial Results -/
 
 /-- A projective plane number: n = q² + q + 1 for some q. -/
 def IsProjectivePlaneOrder (n : ℕ) : Prop :=
@@ -129,7 +129,7 @@ axiom he_ma_yang (n : ℕ) (hn : IsEvenProjectivePlaneOrder n)
     (G : SimpleGraph (Fin n)) (hexc : G.edgeSet.ncard > exC4 n) :
     ∃ c : ℝ, c > 0 ∧ (countC4 G : ℝ) ≥ c * n^(1/2 : ℝ)
 
-/-! ## Weaker Results -/
+/- ## Weaker Results -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -146,7 +146,7 @@ def two_copies_conjecture : Prop :=
   ∀ n : ℕ, ∀ (G : SimpleGraph (Fin n)),
     G.edgeSet.ncard > exC4 n → countC4 G ≥ 2
 
-/-! ## Related: General Supersaturation -/
+/- ## Related: General Supersaturation -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -164,7 +164,7 @@ axiom erdos_simonovits_supersaturation :
         (G.edgeSet.ncard : ℝ) ≥ (1 + ε) * exC4 n →
         (countC4 G : ℝ) ≥ δ * n^2
 
-/-! ## Extremal Graphs -/
+/- ## Extremal Graphs -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -175,7 +175,7 @@ axiom polarity_graph_exists (q : ℕ) (hq : Nat.Prime q ∨ q = 1) :
     ∃ (G : SimpleGraph (Fin (q^2 + q + 1))),
       countC4 G = 0 ∧ G.edgeSet.ncard = exC4 (q^2 + q + 1)
 
-/-! ## Corollaries -/
+/- ## Corollaries -/
 
 /-- For projective plane orders with even q, we have a partial result. -/
 theorem partial_result_even_q (q : ℕ) (heven : Even q) :
@@ -361,7 +361,7 @@ theorem conjecture_implies_two_copies :
     rw [ Finset.card_eq_zero.mpr ] <;> norm_num;
     grind
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: OPEN**
 

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #369: Consecutive Smooth Numbers
 
 **Source:** [erdosproblems.com/369](https://erdosproblems.com/369)
@@ -34,7 +34,7 @@ import Mathlib.Tactic
 
 namespace Erdos369
 
-/-! ## Part I: Smooth Numbers -/
+/- ## Part I: Smooth Numbers -/
 
 /--
 A number m is B-smooth if all prime factors of m are ≤ B.
@@ -47,7 +47,7 @@ The largest prime factor of n (0 if n ≤ 1).
 -/
 noncomputable axiom largestPrimeFactor (n : ℕ) : ℕ
 
-/-! ## Part II: Consecutive Smooth Runs -/
+/- ## Part II: Consecutive Smooth Runs -/
 
 /--
 A run of k consecutive integers starting at m, each B-smooth.
@@ -66,7 +66,7 @@ B^(1/ε) ≥ n, i.e., B is at least n^ε.
 def HasConsecutiveSmoothRun (n k B : ℕ) : Prop :=
   ∃ m : ℕ, m ≥ 1 ∧ m + k - 1 ≤ n ∧ ConsecutiveSmoothRun m k B
 
-/-! ## Part III: The Erdős–Graham Conjecture -/
+/- ## Part III: The Erdős–Graham Conjecture -/
 
 /--
 **Erdős Problem #369 (Erdős–Graham, 1980):**
@@ -86,7 +86,7 @@ def ErdosConjecture369 : Prop :=
         ∀ n : ℕ, n ≥ N₀ →
           HasConsecutiveSmoothRun n k (smoothBound n)
 
-/-! ## Part IV: The k = 2 Case -/
+/- ## Part IV: The k = 2 Case -/
 
 /--
 **The k = 2 case:**
@@ -104,7 +104,7 @@ def ErdosConjecture369_k2 : Prop :=
       ∀ n : ℕ, n ≥ N₀ →
         HasConsecutiveSmoothRun n 2 (smoothBound n)
 
-/-! ## Part V: Balog–Wooley Partial Result -/
+/- ## Part V: Balog–Wooley Partial Result -/
 
 /--
 **Balog–Wooley (1998):**
@@ -119,9 +119,9 @@ axiom balog_wooley_infinitely_many :
     ∀ N₀ : ℕ, ∃ n : ℕ, n ≥ N₀ ∧
       IsSmooth n (smoothBound n) ∧ IsSmooth (n + 1) (smoothBound (n + 1))
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
-/-!
+/-
 **Summary:**
 Erdős Problem #369 asks whether consecutive smooth numbers exist
 in {1,…,n} for all large n. Open even for k = 2. Balog–Wooley

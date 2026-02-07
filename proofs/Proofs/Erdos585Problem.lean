@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #585 — Edge-Disjoint Cycles on the Same Vertex Set
 
 What is the maximum number of edges in an n-vertex graph that contains
@@ -18,7 +18,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-! ## Cycles and Edge-Disjointness -/
+/- ## Cycles and Edge-Disjointness -/
 
 /-- A cycle in a simple graph on Fin m, given as an injective sequence of
     vertices with consecutive adjacencies (including wrap-around) -/
@@ -45,7 +45,7 @@ def HasTwoEdgeDisjointCyclesOnSameVertexSet (G : SimpleGraph (Fin m)) : Prop :=
         ({v₁ i, v₁ ⟨(i.val + 1) % k, Nat.mod_lt _ (by omega)⟩} : Finset (Fin m)) ≠
         ({v₂ i, v₂ ⟨(i.val + 1) % k, Nat.mod_lt _ (by omega)⟩} : Finset (Fin m)))
 
-/-! ## The Extremal Function -/
+/- ## The Extremal Function -/
 
 /-- f(n): the maximum number of edges in an n-vertex graph with no two
     edge-disjoint cycles on the same vertex set -/
@@ -54,7 +54,7 @@ noncomputable def maxEdgesNoEdgeDisjointCycles (n : ℕ) : ℕ :=
     (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj)
     (_ : ¬HasTwoEdgeDisjointCyclesOnSameVertexSet G)}
 
-/-! ## Pyber–Rödl–Szemerédi Lower Bound -/
+/- ## Pyber–Rödl–Szemerédi Lower Bound -/
 
 /-- Lower bound: f(n) ≥ c · n log log n for some c > 0.
     Proved by Pyber, Rödl, and Szemerédi (1995). -/
@@ -64,7 +64,7 @@ axiom pyber_rodl_szemeredi :
       c * (n : ℝ) * Real.log (Real.log (n : ℝ)) ≤
         (maxEdgesNoEdgeDisjointCycles n : ℝ)
 
-/-! ## Chakraborti–Janzer–Methuku–Montgomery Upper Bound -/
+/- ## Chakraborti–Janzer–Methuku–Montgomery Upper Bound -/
 
 /-- Upper bound: f(n) ≤ C · n (log n)^c for some constants C, c > 0.
     Proved by Chakraborti, Janzer, Methuku, and Montgomery (2024).
@@ -75,7 +75,7 @@ axiom cjmm_upper_bound :
       (maxEdgesNoEdgeDisjointCycles n : ℝ) ≤
         C₀ * (n : ℝ) * Real.log (n : ℝ) ^ α
 
-/-! ## The Erdős Problem -/
+/- ## The Erdős Problem -/
 
 /-- Erdős Problem 585: Determine f(n), the maximum number of edges in an
     n-vertex graph with no two edge-disjoint cycles on the same vertex set.

@@ -78,7 +78,7 @@ open Finset
 
 namespace Erdos1028
 
-/-!
+/-
 ## Sign Functions
 
 A sign function assigns ±1 to each ordered pair.
@@ -95,7 +95,7 @@ def isValidSign (f : SignFunction n) : Prop :=
 def validSignFunctions (n : ℕ) : Set (SignFunction n) :=
   { f | isValidSign f }
 
-/-!
+/-
 ## Discrepancy
 
 The discrepancy of a subset is the absolute value of the sum of f over pairs.
@@ -113,7 +113,7 @@ def discrepancy (f : SignFunction n) (X : Finset (Fin n)) : ℕ :=
 noncomputable def maxDiscrepancy (f : SignFunction n) : ℕ :=
   sSup { discrepancy f X | X : Finset (Fin n) }
 
-/-!
+/-
 ## The Function H(n)
 
 H(n) = min over valid f of max discrepancy.
@@ -133,7 +133,7 @@ theorem H_spec (n : ℕ) (hn : n ≥ 1) :
   obtain ⟨ f, hf₁, hf₂ ⟩ := h_exists;
   exact ⟨ f, hf₁, le_antisymm ( le_csInf ⟨ Erdos1028.maxDiscrepancy f, ⟨ f, hf₁, rfl ⟩ ⟩ fun g hg => by aesop ) ( csInf_le ⟨ 0, by rintro x ⟨ g, hg₁, rfl ⟩ ; exact Nat.zero_le _ ⟩ ⟨ f, hf₁, rfl ⟩ ) ⟩
 
-/-!
+/-
 ## Erdős's Upper Bound (1963)
 
 Erdős proved H(n) ≪ n^{3/2} using the probabilistic method.
@@ -142,7 +142,7 @@ Erdős proved H(n) ≪ n^{3/2} using the probabilistic method.
 /-- Erdős upper bound: H(n) ≤ C · n^{3/2}. -/
 axiom erdos_upper : ∃ C > 0, ∃ N : ℕ, ∀ n ≥ N,
   (H n : ℝ) ≤ C * (n : ℝ) ^ (3/2 : ℝ)
-/-!
+/-
 ## Erdős-Spencer Improvement (1971)
 
 They proved H(n) ≫ n^{3/2}, matching the upper bound.
@@ -155,7 +155,7 @@ axiom erdos_spencer_lower : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N,
 /-- n ≤ n^{3/2} for n ≥ 2: the cubic-root bound is weaker. -/
 axiom erdos_spencer_improves (n : ℕ) (hn : n ≥ 2) :
     (n : ℝ) ≤ (n : ℝ) ^ (3/2 : ℝ)
-/-!
+/-
 ## The Main Result: H(n) = Θ(n^{3/2})
 
 Combining bounds gives the exact order of magnitude.
@@ -172,7 +172,7 @@ theorem H_asymptotic : ∃ c C : ℝ, c > 0 ∧ C > 0 ∧ ∃ N : ℕ, ∀ n ≥
   · exact hN₁ n (le_of_max_le_left hn)
   · exact hN₂ n (le_of_max_le_right hn)
 
-/-!
+/-
 ## The Main Question Answered
 
 The answer is H(n) = Θ(n^{3/2}).
@@ -189,7 +189,7 @@ theorem erdos_1028_solved : erdos_1028_question := by
   use c, C, hc, hC, fun n => (n : ℝ) ^ (3/2 : ℝ), N
   exact hN
 
-/-!
+/-
 ## Symmetric Functions
 
 Often we consider symmetric f with f(x,y) = f(y,x).
@@ -213,7 +213,7 @@ theorem symmetric_pairSum (f : SignFunction n) (hf : isSymmetric f) (X : Finset 
     exact Finset.sum_congr rfl fun y hy => Finset.sum_congr rfl fun x hx => by aesop;
   unfold Erdos1028.pairSum; simp_all +decide [ two_mul, Finset.sum_ite ] ;
 
-/-!
+/-
 ## Graph Interpretation
 
 f defines a signed complete graph on n vertices.
@@ -228,7 +228,7 @@ theorem discrepancy_as_imbalance (f : SignFunction n) (X : Finset (Fin n)) :
     discrepancy f X = (X.sum (fun x => X.sum (fun y => asSignedGraph f x y))).natAbs := by
   unfold Erdos1028.discrepancy; aesop;
 
-/-!
+/-
 ## Probabilistic Intuition
 
 Random sign functions achieve near-optimal discrepancy.
@@ -243,7 +243,7 @@ theorem expected_discrepancy_bound (n k : ℕ) (hk : k ≤ n) :
     expectedDiscrepancy n k ≤ k := by
   exact Real.sqrt_le_iff.mpr ⟨ by positivity, by cases k <;> norm_num at * ; nlinarith ⟩
 
-/-!
+/-
 ## The Upper Bound Construction
 
 Erdős's upper bound uses probabilistic method.
@@ -254,7 +254,7 @@ axiom random_upper (n : ℕ) (hn : n ≥ 1) :
   ∃ f : SignFunction n, isValidSign f ∧
     (maxDiscrepancy f : ℝ) ≤ 10 * (n : ℝ) ^ (3/2 : ℝ)
 
-/-!
+/-
 ## The Lower Bound Technique
 
 Erdős-Spencer used entropy or counting arguments.
@@ -264,7 +264,7 @@ Erdős-Spencer used entropy or counting arguments.
 axiom large_discrepancy_exists (f : SignFunction n) (hf : isValidSign f) (hn : n ≥ 10) :
     ∃ X : Finset (Fin n), (discrepancy f X : ℝ) ≥ (n : ℝ) ^ (3/2 : ℝ) / 100
 
-/-!
+/-
 ## Special Cases
 
 Small cases and explicit computations.
@@ -276,7 +276,7 @@ axiom H_two : H 2 = 2
 /-- H(3) = 4. -/
 axiom H_three : H 3 = 4
 
-/-!
+/-
 ## Connection to Ramsey Theory
 
 The problem connects to Ramsey-type questions.
@@ -293,7 +293,7 @@ theorem homogeneous_small_discrepancy (f : SignFunction n) (X : Finset (Fin n))
   simp_all +decide [ Finset.sum_ite, Finset.filter_ne ];
   norm_cast
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #1028 on discrepancy of sign functions.

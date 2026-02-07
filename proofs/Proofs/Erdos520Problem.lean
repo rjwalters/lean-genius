@@ -25,7 +25,7 @@ open MeasureTheory ProbabilityTheory Nat Real Filter Set Finset
 
 namespace Erdos520
 
-/-!
+/-
 ## Core Definitions
 
 A Rademacher multiplicative function is a random multiplicative function where:
@@ -56,7 +56,7 @@ structure IsRademacherMultiplicative (f : ℕ → Ω → ℝ) : Prop where
   /-- f vanishes on non-square-free integers. -/
   map_non_squarefree : ∀ n ω, ¬Squarefree n → f n ω = 0
 
-/-!
+/-
 ## The Partial Sum
 
 The partial sum S_N(ω) = ∑_{m ≤ N} f(m, ω) is the key object of study.
@@ -72,7 +72,7 @@ noncomputable def normalizedSum (f : ℕ → Ω → ℝ) (N : ℕ) (ω : Ω) : �
     partialSum f N ω / Real.sqrt (N * Real.log (Real.log N))
   else 0
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 Does the limsup of the normalized sum converge to a universal constant?
@@ -89,7 +89,7 @@ axiom erdos_520_conjecture :
       ∀ (f : ℕ → Ω → ℝ), IsRademacherMultiplicative f →
         ∀ᵐ ω ∂ℙ, limsup (fun N => normalizedSum f N ω) atTop = c
 
-/-!
+/-
 ## Related Results
 
 Several partial results are known about moments and fluctuations.
@@ -123,7 +123,7 @@ axiom harper_moment_bound :
             ∫ ω, |partialSum f N ω|^(2*k) ∂ℙ ≤
               C₂ * N^k * (Real.log (Real.log N))^(k^2 : ℕ)
 
-/-!
+/-
 ## Properties of Rademacher Multiplicative Functions
 -/
 
@@ -140,7 +140,7 @@ axiom rademacher_uncorrelated (f : ℕ → Ω → ℝ) (hf : IsRademacherMultipl
     ∀ n m, n ≠ m → Squarefree n → Squarefree m →
       ∫ ω, f n ω * f m ω ∂ℙ = 0
 
-/-!
+/-
 ## Connection to the Law of the Iterated Logarithm
 
 The normalization √(N log log N) comes from the LIL. For i.i.d. random
@@ -159,7 +159,7 @@ axiom normalized_sum_bounded :
     ∀ (f : ℕ → Ω → ℝ), IsRademacherMultiplicative f →
       ∃ C : ℝ, ∀ᵐ ω ∂ℙ, ∀ᶠ N in atTop, |normalizedSum f N ω| ≤ C
 
-/-!
+/-
 ## The Square-Free Sieve
 
 The structure of square-free integers is crucial for understanding

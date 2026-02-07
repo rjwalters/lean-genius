@@ -26,7 +26,7 @@ open Nat Finset
 
 namespace Erdos744
 
-/-!
+/-
 # Part 1: Basic Graph Definitions
 
 Critical graphs and chromatic numbers.
@@ -67,7 +67,7 @@ def isCritical {V : Type*} (G : SimpleGraph' V) : Prop :=
 def isKCritical {V : Type*} [Fintype V] (G : SimpleGraph' V) (k : ℕ) : Prop :=
   isKChromatic G k ∧ isCritical G
 
-/-!
+/-
 # Part 2: Bipartite Graphs
 
 Definition and characterization of bipartite graphs.
@@ -85,7 +85,7 @@ axiom bipartite_iff_no_odd_cycle {V : Type*} (G : SimpleGraph' V) :
     isBipartite G ↔ ∀ (C : List V), (∀ i, G.Adj (C.get! i) (C.get! ((i + 1) % C.length))) →
       C.length % 2 = 0
 
-/-!
+/-
 # Part 3: Edge Deletion
 
 The bipartition number: minimum edges to delete to make a graph bipartite.
@@ -115,7 +115,7 @@ noncomputable def f (k n : ℕ) : ℕ :=
   else if k = 3 then 1  -- Odd cycles: remove 1 edge
   else (k - 1) * (k - 2) / 2  -- Rödl-Tuza result for large n
 
-/-!
+/-
 # Part 4: Known Results
 
 Historical bounds on f_k(n) prior to the full resolution.
@@ -152,7 +152,7 @@ Lovász generalized Gallai's bound to all k ≥ 4.
 axiom lovasz_upper_bound (k : ℕ) (hk : k ≥ 4) :
     ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (f k n : ℝ) ≤ C * n ^ (1 - 1 / ((k : ℝ) - 2))
 
-/-!
+/-
 # Part 5: The Original Conjecture
 
 What Erdős, Hajnal, and Szemerédi expected (and got wrong).
@@ -176,7 +176,7 @@ def erdosOriginalConjecture : Prop :=
 def erdosLogConjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 2, (f 4 n : ℝ) ≥ C * Real.log n
 
-/-!
+/-
 # Part 6: Rödl-Tuza Theorem (1985)
 
 The stunning disproof of Erdős's conjecture.
@@ -219,7 +219,7 @@ theorem f_5_eventually_6 : ∃ N₀ : ℕ, ∀ n ≥ N₀, f 5 n = 6 := by
   convert this
   norm_num
 
-/-!
+/-
 # Part 7: Why the Conjecture Was False
 
 Understanding the structure of critical graphs that makes f_k bounded.
@@ -246,7 +246,7 @@ theorem complete_graph_edges (k : ℕ) (hk : k ≥ 2) :
     (k - 1) * (k - 2) / 2 = Nat.choose (k - 1) 2 := by
   rw [Nat.choose_two_right]
 
-/-!
+/-
 # Part 8: Consequences
 
 What the disproof tells us about graph structure.
@@ -278,7 +278,7 @@ theorem log_conjecture_false : ¬erdosLogConjecture := by
   -- For large n, C * log(n) > 3 = f_4(n), contradicting the bound
   sorry
 
-/-!
+/-
 # Part 9: The Complete Picture
 
 Summary table and general formula for f_k.
@@ -299,7 +299,7 @@ theorem f_k_formula (k : ℕ) (hk : k ≥ 3) :
   rw [hN n hn]
   rw [Nat.choose_two_right]
 
-/-!
+/-
 # Part 10: Problem Status
 
 Summary and formal status.
@@ -319,7 +319,7 @@ theorem erdos_744_statement :
   · intro k hk
     exact rodl_tuza_theorem k hk
 
-/-!
+/-
 # Summary
 
 **Problem:** Does f_k(n) → ∞ as n → ∞?

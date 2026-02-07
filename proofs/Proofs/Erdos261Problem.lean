@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #261 — Reciprocal Power-of-Two Representations
 
 Erdős asked whether every positive integer n can be represented as
@@ -24,7 +24,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The "weight" function: k / 2^k as a rational number -/
 noncomputable def recipPow2Weight (k : ℕ) : ℚ :=
@@ -44,7 +44,7 @@ def IsRecipPow2Rep (n : ℕ) (S : Finset ℕ) : Prop :=
 def IsRepresentable (n : ℕ) : Prop :=
   ∃ S : Finset ℕ, IsRecipPow2Rep n S
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- Cusick's result: infinitely many n are representable -/
 axiom cusick_infinitely_many :
@@ -60,7 +60,7 @@ axiom borwein_loring_family (m : ℕ) (hm : 1 ≤ m) :
 axiom tengely_ulas_zygadlo (n : ℕ) (hn : 1 ≤ n) (hn' : n ≤ 10000) :
   IsRepresentable n
 
-/-! ## The Erdős Conjectures -/
+/- ## The Erdős Conjectures -/
 
 /-- Erdős Problem 261, Part 1: infinitely many n are representable.
     This is resolved by Cusick's theorem. -/
@@ -72,7 +72,7 @@ theorem ErdosProblem261_infinitely_many :
 axiom ErdosProblem261_all (n : ℕ) (hn : 1 ≤ n) :
   IsRepresentable n
 
-/-! ## Continuum Representations -/
+/- ## Continuum Representations -/
 
 /-- An infinite representation: a sequence a : ℕ → ℕ of distinct positive integers
     whose sum ∑ a(k)/2^{a(k)} converges to a rational x -/

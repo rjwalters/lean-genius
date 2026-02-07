@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #929 — Smooth Numbers in Short Intervals
 
 Let k ≥ 2 and let S(k) be the minimal x such that there exists a positive
@@ -27,7 +27,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Filter
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A natural number n is x-smooth if all its prime factors are ≤ x. -/
 def IsSmooth (n : ℕ) (x : ℕ) : Prop :=
@@ -55,7 +55,7 @@ noncomputable def smoothThreshold (k : ℕ) : ℕ :=
     -- S(k) ≤ k+1 trivially
     sorry⟩ : ∃ x : ℕ, 0 < (smoothBlockSet k x).upperDensity)
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #929 (Open).**
 S(k) ≥ k^{1−o(1)}, meaning for every ε > 0 and all sufficiently
@@ -64,7 +64,7 @@ axiom erdos_929_conjecture :
   ∀ ε : ℝ, 0 < ε → ∀ᶠ (k : ℕ) in atTop,
     (smoothThreshold k : ℝ) ≥ (k : ℝ) ^ (1 - ε)
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Trivial upper bound.** S(k) ≤ k+1.
 Take n ≡ −1 mod (k+1)!, then n+1, …, n+k are all (k+1)-smooth. -/
@@ -87,7 +87,7 @@ axiom fgkmt_upper :
       Real.log (Real.log (Real.log (k : ℝ))) /
       (Real.log (Real.log (k : ℝ)) * Real.log (Real.log (Real.log (Real.log (k : ℝ)))))
 
-/-! ## Structural Observations -/
+/- ## Structural Observations -/
 
 /-- S(k) is monotone non-decreasing in k: requiring more consecutive
 smooth numbers can only increase the threshold. -/

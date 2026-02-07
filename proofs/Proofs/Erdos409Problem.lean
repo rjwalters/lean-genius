@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #409: Totient Iteration to Primes
 
 How many iterations of the map n ↦ φ(n) + 1 are needed before reaching
@@ -30,7 +30,7 @@ import Mathlib.Tactic
 open Filter
 open scoped Nat
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The totient-plus-one map: n ↦ φ(n) + 1. -/
 def totientPlusOne (n : ℕ) : ℕ := n.totient + 1
@@ -44,7 +44,7 @@ def totientIterate (n : ℕ) (k : ℕ) : ℕ :=
 noncomputable def iterationsToFirst (n : ℕ) : ℕ :=
   sSup {k : ℕ | ∀ j : ℕ, j < k → ¬(totientIterate n j).Prime} + 0
 
-/-! ## Termination -/
+/- ## Termination -/
 
 /-- The iteration always terminates: for any n > 0, some iterate is prime.
     This follows because φ(n) < n for n > 1, so φ(n)+1 ≤ n,
@@ -57,7 +57,7 @@ axiom iteration_terminates :
 axiom iterate_decreasing :
   ∀ n : ℕ, n > 1 → ¬n.Prime → totientPlusOne n < n
 
-/-! ## Main Questions -/
+/- ## Main Questions -/
 
 /-- **Part (i)**: Estimate F(n), the iteration count.
     Cambie notes F(n) = o(n) is trivial and F(n) = 1 infinitely often.
@@ -79,7 +79,7 @@ axiom erdos_409_density :
   ∀ p : ℕ, p.Prime →
     ∃ α : ℝ, α ≥ 0 ∧ α ≤ 1 -- density exists in [0,1]
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- F(p) = 0 for primes p: already a prime, no iterations needed. -/
 axiom prime_zero_iterations :
@@ -96,7 +96,7 @@ axiom one_iteration_criterion :
 axiom totient_plus_one_odd :
   ∀ n : ℕ, n ≥ 3 → Odd (totientPlusOne n)
 
-/-! ## Sigma Variant -/
+/- ## Sigma Variant -/
 
 /-- **Sigma variant**: How many iterations of n ↦ σ(n) − 1 are needed?
     Unlike the φ variant, this sequence is non-decreasing for non-primes,
@@ -111,7 +111,7 @@ axiom sigma_growing :
   ∀ n : ℕ, n > 1 → ¬n.Prime →
     n ≤ Nat.divisors n |>.sum id - 1
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /-- φ(2) + 1 = 2: the prime 2 is a fixed point. -/
 theorem two_fixed_point : totientPlusOne 2 = 2 := by

@@ -33,7 +33,7 @@ import Mathlib
 
 open Finset SimpleGraph
 
-/-! ## Basic Graph Definitions -/
+/- ## Basic Graph Definitions -/
 
 /-- The complete graph on vertices {1,...,n} -/
 def completeGraphOn (n : ℕ) : SimpleGraph (Fin n) := ⊤
@@ -49,7 +49,7 @@ def IsIndependentTriple {n : ℕ} (G : GraphOnInterval n) (a b c : Fin n) : Prop
 def IsTriangleFree {n : ℕ} (G : GraphOnInterval n) : Prop :=
   ∀ a b c : Fin n, ¬(G.Adj a b ∧ G.Adj b c ∧ G.Adj a c)
 
-/-! ## Additive Triples -/
+/- ## Additive Triples -/
 
 /-- An additive triple (a, b, a+b) where all three are in {1,...,n} -/
 def IsAdditiveTriple {n : ℕ} (a b c : Fin n) : Prop :=
@@ -59,7 +59,7 @@ def IsAdditiveTriple {n : ℕ} (a b c : Fin n) : Prop :=
 def HasIndependentAdditiveTriple {n : ℕ} (G : GraphOnInterval n) : Prop :=
   ∃ a b c : Fin n, IsAdditiveTriple a b c ∧ IsIndependentTriple G a b c
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- Erdős Problem #895: Every triangle-free graph on {1,...,n} has an
     independent additive triple, for sufficiently large n. -/
@@ -70,7 +70,7 @@ def erdos895Conjecture : Prop :=
 /-- The threshold is n = 18 -/
 def erdos895Threshold : ℕ := 18
 
-/-! ## Barber's Theorem (2015) -/
+/- ## Barber's Theorem (2015) -/
 
 /-- Ben Barber's result: the conjecture holds with threshold 18 -/
 theorem barber_theorem : ∀ n ≥ 18, ∀ G : GraphOnInterval n,
@@ -82,7 +82,7 @@ theorem erdos_895 : erdos895Conjecture := by
   use 18
   exact barber_theorem
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /-- For n = 17, there exists a triangle-free graph with no independent additive triple -/
 theorem counterexample_17 : ∃ G : GraphOnInterval 17,
@@ -95,7 +95,7 @@ theorem threshold_sharp : (∀ n ≥ 18, ∀ G : GraphOnInterval n,
     (∃ G : GraphOnInterval 17, IsTriangleFree G ∧ ¬HasIndependentAdditiveTriple G) := by
   exact ⟨barber_theorem, counterexample_17⟩
 
-/-! ## Connection to Ramsey Theory -/
+/- ## Connection to Ramsey Theory -/
 
 /-- The Ramsey number R(3,3) = 6: any 2-coloring of K₆ has a monochromatic triangle -/
 theorem ramsey_3_3 : ∀ c : Fin 6 → Fin 6 → Fin 2,
@@ -108,7 +108,7 @@ theorem triangleFree_independence_bound {n : ℕ} (G : GraphOnInterval n) (hG : 
     ∃ S : Finset (Fin n), S.card ≥ Nat.sqrt n ∧ ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by
   sorry
 
-/-! ## Connection to Schur Numbers -/
+/- ## Connection to Schur Numbers -/
 
 /-- A set is sum-free if it contains no Schur triple a, b, a+b -/
 def IsSumFree (S : Finset ℕ) : Prop :=
@@ -132,7 +132,7 @@ theorem erdos895_implies_schur_variant {n : ℕ} (hn : n ≥ 18) :
       (⟨a.val + b.val, by sorry⟩ : Fin n) = d) := by
   sorry
 
-/-! ## Hajnal's Generalization (OPEN) -/
+/- ## Hajnal's Generalization (OPEN) -/
 
 /-- A Hindman set: all finite sums of a base set -/
 def hindmanSet (base : Finset ℕ) : Set ℕ :=
@@ -149,7 +149,7 @@ def hajnalConjecture : Prop :=
 theorem hajnal_conjecture_open : hajnalConjecture ↔ hajnalConjecture := by
   rfl
 
-/-! ## Density Considerations -/
+/- ## Density Considerations -/
 
 /-- A triangle-free graph on n vertices has at most n²/4 edges (Mantel) -/
 theorem mantel_theorem {n : ℕ} (G : GraphOnInterval n) (hG : IsTriangleFree G) :
@@ -163,7 +163,7 @@ theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n)
       ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by
   sorry
 
-/-! ## Computational Verification -/
+/- ## Computational Verification -/
 
 /-- The result was verified computationally via SAT solver -/
 theorem erdos895_sat_verified :
@@ -171,7 +171,7 @@ theorem erdos895_sat_verified :
       IsTriangleFree G → HasIndependentAdditiveTriple G := by
   sorry
 
-/-! ## Main Results Summary -/
+/- ## Main Results Summary -/
 
 /-- Erdős Problem #895: SOLVED
     Answer: Yes, for n ≥ 18, every triangle-free graph on {1,...,n}

@@ -18,7 +18,7 @@ import Mathlib
 
 namespace Erdos156
 
-/-!
+/-
 ## Sidon Sets
 
 A Sidon set is a set of positive integers such that all pairwise sums are distinct.
@@ -79,7 +79,7 @@ theorem sidonSet_iff_alt (A : Set ℕ) :
       · exact hS a b c d ha hb hc hd (by intro H; simp [H, h] at heq; linarith) h' heq
     · exact hS a b c d ha hb hc hd h (by intro H; simp [H] at heq hab; linarith) heq
 
-/-!
+/-
 ## Maximal Sidon Sets
 
 A Sidon set A ⊂ {1,...,N} is maximal if adding any element from {1,...,N} \ A
@@ -99,7 +99,7 @@ def IsMaximalSidonSet (A : Set ℕ) (N : ℕ) : Prop :=
 noncomputable def size (A : Set ℕ) : ℕ :=
   if h : A.Finite then h.toFinset.card else 0
 
-/-!
+/-
 ## The Greedy Construction
 
 The greedy algorithm starts with {1} and adds each element that preserves
@@ -129,7 +129,7 @@ theorem greedySidon_is_sidon (N : ℕ) : IsSidonSet (greedySidon N) := by
 theorem greedySidon_maximal (N : ℕ) : IsMaximalSidonSet (greedySidon N) N := by
   sorry -- Proof requires detailed analysis of the greedy construction
 
-/-!
+/-
 ## Known Bounds
 
 Classical results show that Sidon sets in {1,...,N} have size at most √N + O(N^{1/4}).
@@ -146,7 +146,7 @@ axiom greedy_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 1 →
     (size (greedySidon N) : ℝ) ≥ c * Real.sqrt N
 
-/-!
+/-
 ## Ruzsa's Construction
 
 Ruzsa [Ru98b] showed there exist maximal Sidon sets of size much smaller than
@@ -159,7 +159,7 @@ axiom ruzsa_small_maximal :
     (∀ N, IsMaximalSidonSet (f N) N) ∧
     (∀ N ≥ 1, (size (f N) : ℝ) ≤ (N : ℝ)^((1/3 : ℝ) + ε))
 
-/-!
+/-
 ## The Main Conjecture
 
 Problem #156 asks whether maximal Sidon sets of size O(N^{1/3}) exist.
@@ -181,7 +181,7 @@ axiom erdos_156_conjecture :
   (∀ C : ℝ, C > 0 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
     ∀ A : Set ℕ, IsMaximalSidonSet A N → (size A : ℝ) > C * (N : ℝ)^(1/3 : ℝ))
 
-/-!
+/-
 ## The Gap Between Bounds
 
 The current state of knowledge shows a significant gap:
@@ -201,7 +201,7 @@ axiom minMaximalSidon_exponent :
     Filter.Tendsto (fun N => Real.log (minMaximalSidonSize N) / Real.log N)
       Filter.atTop (nhds α)
 
-/-!
+/-
 ## Connection to Additive Combinatorics
 
 Sidon sets are central objects in additive combinatorics. The study of
@@ -223,7 +223,7 @@ theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
 /-- B₂ sets are precisely Sidon sets -/
 def IsB2Set (A : Set ℕ) : Prop := IsSidonSet A
 
-/-!
+/-
 ## The Probabilistic Perspective
 
 Random constructions can inform us about typical sizes of maximal Sidon sets.
@@ -236,7 +236,7 @@ axiom random_sidon_barrier :
     -- A random maximal Sidon set has size roughly N^{1/2}
     True
 
-/-!
+/-
 ## The Main Problem Refined
 
 The exact formulation considers the infimum over all maximal Sidon sets:

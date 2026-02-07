@@ -44,7 +44,7 @@ open scoped Topology
 
 namespace Erdos143
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A set A ⊆ (1, ∞) is "well-separated under integer dilation" if for all
     distinct x, y ∈ A and all positive integers k, we have |kx - y| ≥ 1. -/
@@ -58,7 +58,7 @@ def WellSeparatedSet (A : Set ℝ) : Prop :=
 noncomputable def countingFn (A : Set ℝ) (x : ℝ) : ℕ :=
   (A ∩ Set.Icc 1 x).ncard
 
-/-! ## The Conjectures -/
+/- ## The Conjectures -/
 
 /-- **Conjecture (i)**: The lower density is zero. STATUS: OPEN -/
 def Conjecture_i (A : Set ℝ) : Prop :=
@@ -74,7 +74,7 @@ def Conjecture_iii (A : Set ℝ) : Prop :=
     -- partialSum represents ∑_{x∈A, x<n} 1/x
     partialSum ≤ ε * Real.log n
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Koukoulopoulos-Lamzouri-Lichtman Theorem (2025)**
@@ -99,7 +99,7 @@ theorem erdos_143_partial (A : Set ℝ) (hA : WellSeparatedSet A) :
     Conjecture_iii A :=
   kll_theorem A hA
 
-/-! ## Connection to Primitive Sets -/
+/- ## Connection to Primitive Sets -/
 
 /-- A set of positive integers is primitive if no element divides another. -/
 def IsPrimitiveSet (A : Set ℕ) : Prop :=
@@ -111,7 +111,7 @@ axiom well_separated_integers_primitive (A : Set ℕ) (hA : A.Infinite)
     (hsep : ∀ a ∈ A, ∀ b ∈ A, a ≠ b → ∀ k : ℕ, k ≥ 1 → (1 : ℝ) ≤ |(k : ℝ) * (a : ℝ) - (b : ℝ)|) :
     IsPrimitiveSet A
 
-/-! ## Historical Results -/
+/- ## Historical Results -/
 
 /-- **Erdős (1935)**: For primitive integer sets, ∑ 1/(n log n) converges. -/
 axiom erdos_1935_primitive (A : Set ℕ) (hA : IsPrimitiveSet A) (hinf : A.Infinite) :

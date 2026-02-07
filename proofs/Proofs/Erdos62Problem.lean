@@ -27,7 +27,7 @@ open Set
 
 namespace Erdos62
 
-/-! ## Infinite Graph Theory Setup -/
+/- ## Infinite Graph Theory Setup -/
 
 /-- An infinite simple graph on vertex set V. -/
 structure InfGraph (V : Type*) where
@@ -49,7 +49,7 @@ def IsColorable (G : InfGraph V) (k : ℕ) : Prop :=
 def IsCountablyColorable (G : InfGraph V) : Prop :=
   ∃ f : V → ℕ, IsColoring G ℕ f
 
-/-! ## Chromatic Number Classes -/
+/- ## Chromatic Number Classes -/
 
 /-- A graph has chromatic number exactly k. -/
 def HasChromaticNumber (G : InfGraph V) (k : ℕ) : Prop :=
@@ -63,13 +63,13 @@ def HasChromaticAleph0 (G : InfGraph V) : Prop :=
 def HasChromaticAleph1 (G : InfGraph V) : Prop :=
   ¬IsCountablyColorable G
 
-/-! ## Subgraph Relation -/
+/- ## Subgraph Relation -/
 
 /-- H embeds into G as a subgraph via an injective homomorphism. -/
 def EmbedsInto (H : InfGraph V) (G : InfGraph W) : Prop :=
   ∃ f : V → W, Function.Injective f ∧ ∀ u v, H.Adj u v → G.Adj (f u) (f v)
 
-/-! ## Main Conjecture (OPEN) -/
+/- ## Main Conjecture (OPEN) -/
 
 /--
 **Erdős Problem 62** (OPEN):
@@ -92,7 +92,7 @@ def erdos_62_conjecture_weak : Prop :=
     ∃ (W : Type) (H : InfGraph W),
       HasChromaticAleph0 H ∧ EmbedsInto H G₁ ∧ EmbedsInto H G₂
 
-/-! ## Generalization to Finite Collections -/
+/- ## Generalization to Finite Collections -/
 
 /--
 **Generalized Conjecture** (Erdős 1987):
@@ -106,7 +106,7 @@ def erdos_62_generalized (n : ℕ) : Prop :=
       (HasChromaticNumber H 4 ∨ HasChromaticAleph0 H) ∧
       ∀ i, EmbedsInto H (Gs i)
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- The odd cycle of length 2k+1 (axiomatized). -/
 axiom oddCycle (k : ℕ) (hk : 1 ≤ k) : InfGraph (Fin (2*k + 1))
@@ -140,7 +140,7 @@ theorem odd_cycles_are_common (G₁ : InfGraph V) (G₂ : InfGraph W)
   · exact hN₁ k (by omega) hk
   · exact hN₂ k (by omega) hk
 
-/-! ## Gap Between χ = 3 and χ = 4 -/
+/- ## Gap Between χ = 3 and χ = 4 -/
 
 /--
 The key open question: Can we improve from χ = 3 to χ = 4?
@@ -155,7 +155,7 @@ def chi_gap_problem : Prop :=
       (∀ k ≤ 3, ¬HasChromaticNumber H k) ∧
       EmbedsInto H G₁ ∧ EmbedsInto H G₂
 
-/-! ## Finite Chromatic Number Properties -/
+/- ## Finite Chromatic Number Properties -/
 
 /-- A graph has finite chromatic number. -/
 def HasFiniteChromaticNumber (G : InfGraph V) : Prop :=
@@ -171,7 +171,7 @@ theorem finite_implies_countable (G : InfGraph V) :
   simp only [ne_eq, Fin.val_injective.eq_iff]
   exact this
 
-/-! ## Monotonicity -/
+/- ## Monotonicity -/
 
 /-- If H embeds into G and G is k-colorable, then H is k-colorable. -/
 theorem embed_colorable (H : InfGraph V) (G : InfGraph W) (k : ℕ)
@@ -182,7 +182,7 @@ theorem embed_colorable (H : InfGraph V) (G : InfGraph W) (k : ℕ)
   intro u v hadj
   exact hc (f u) (f v) (hf_edge u v hadj)
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: OPEN**
 

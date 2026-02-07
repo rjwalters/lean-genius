@@ -23,7 +23,7 @@ namespace Erdos830
 open Filter Real
 open scoped Classical
 
-/-!
+/-
 ## Sum of Divisors Function
 
 The sum of divisors function σ(n) sums all positive divisors of n.
@@ -42,7 +42,7 @@ structure IsAmicable (a b : ℕ) : Prop where
   /-- σ(b) = a + b -/
   sum_div_b : sumDivisors b = a + b
 
-/-!
+/-
 ## Classic Example: 220 and 284
 
 The pair (220, 284) is the smallest amicable pair, known since antiquity.
@@ -59,7 +59,7 @@ theorem sigma_284 : sumDivisors 284 = 504 := by native_decide
 /-- 220 and 284 form an amicable pair. -/
 theorem amicable_220_284 : IsAmicable 220 284 := ⟨sigma_220, sigma_284⟩
 
-/-!
+/-
 ## The Counting Function A(x)
 
 A(x) counts the number of amicable pairs (a, b) with 1 ≤ a ≤ b ≤ x.
@@ -71,7 +71,7 @@ noncomputable def A (x : ℝ) : ℝ :=
   Finset.card <| (Finset.Icc 1 ⌊x⌋₊ ×ˢ Finset.Icc 1 ⌊x⌋₊).filter fun (a, b) ↦
     a ≤ b ∧ IsAmicable a b
 
-/-!
+/-
 ## Open Questions
 
 The main questions of Problem #830 remain open:
@@ -99,7 +99,7 @@ axiom erdos830_lower_bound :
     ∃ o : ℝ → ℝ, o =o[atTop] (1 : ℝ → ℝ) ∧
     ∀ᶠ x in atTop, x ^ (1 - o x) < A x
 
-/-!
+/-
 ## Proven Upper Bounds
 
 While the lower bound questions are open, significant progress has
@@ -127,7 +127,7 @@ axiom pomerance_2015_upper_bound :
     ∃ o : ℝ → ℝ, o =o[atTop] (1 : ℝ → ℝ) ∧
     ∀ᶠ x in atTop, A x ≤ x * rexp (- (1/2 + o x) * √(x.log * x.log.log))
 
-/-!
+/-
 ## Additional Amicable Pairs
 
 Beyond (220, 284), other small amicable pairs include:

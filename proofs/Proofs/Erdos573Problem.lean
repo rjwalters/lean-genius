@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #573: Extremal Numbers for {C₃, C₄}-free Graphs
 
 Source: https://erdosproblems.com/573
@@ -42,7 +42,7 @@ open SimpleGraph
 
 namespace Erdos573
 
-/-! ## Part I: Basic Definitions
+/- ## Part I: Basic Definitions
 
 We define the key concepts for extremal graph theory.
 -/
@@ -68,13 +68,13 @@ A graph forbidding both triangles and 4-cycles. -/
 def isC3C4Free {V : Type*} (G : SimpleGraph V) : Prop :=
   isTriangleFree G ∧ isC4Free G
 
-/-! ## Part II: Edge Counting -/
+/- ## Part II: Edge Counting -/
 
 /-- **Edge count** of a simple graph on n vertices. -/
 noncomputable def edgeCount {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ :=
   G.edgeFinset.card
 
-/-! ## Part III: Extremal Function
+/- ## Part III: Extremal Function
 
 The Turán extremal function ex(n; F).
 -/
@@ -92,7 +92,7 @@ axiom exC4 (n : ℕ) : ℕ
 ex(n; {C₃, C₄}) ≤ ex(n; C₄) since forbidding more graphs means fewer edges. -/
 axiom exC3C4_le_exC4 (n : ℕ) : exC3C4 n ≤ exC4 n
 
-/-! ## Part IV: Kővári-Sós-Turán Theorem -/
+/- ## Part IV: Kővári-Sós-Turán Theorem -/
 
 /-- **Kővári-Sós-Turán Theorem (1954):**
 ex(n; C₄) ≤ (1/2)n^(3/2) + (1/4)n
@@ -107,7 +107,7 @@ axiom kovari_sos_turan_asymptotic :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       |(exC4 n : ℝ) - (1/2) * (n : ℝ)^(3/2 : ℝ)| ≤ ε * (n : ℝ)^(3/2 : ℝ)
 
-/-! ## Part V: Erdős-Simonovits Result -/
+/- ## Part V: Erdős-Simonovits Result -/
 
 /-- **Extremal number for {C₄, C₅}:**
 ex(n; {C₄, C₅}) = max edges in n-vertex {C₄, C₅}-free graph. -/
@@ -119,7 +119,7 @@ axiom erdos_simonovits_c4c5 :
     ∃ C : ℝ, ∀ n : ℕ, n ≥ 1 →
       |(exC4C5 n : ℝ) - ((n : ℝ)/2)^(3/2 : ℝ)| ≤ C * (n : ℝ)
 
-/-! ## Part VI: The Conjecture -/
+/- ## Part VI: The Conjecture -/
 
 /-- **Erdős Problem #573 Conjecture:**
 ex(n; {C₃, C₄}) ~ (n/2)^(3/2) as n → ∞.
@@ -130,7 +130,7 @@ def erdos573Conjecture : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     |(exC3C4 n : ℝ) - ((n : ℝ)/2)^(3/2 : ℝ)| ≤ ε * (n : ℝ)^(3/2 : ℝ)
 
-/-! ## Part VII: Known Bounds -/
+/- ## Part VII: Known Bounds -/
 
 /-- **Upper bound (from KST):**
 ex(n; {C₃, C₄}) ≤ ex(n; C₄) ≤ (1/2)n^(3/2) + O(n). -/
@@ -143,7 +143,7 @@ achieve edges close to (1/2)n^(3/2). -/
 axiom exC3C4_lower_bound :
     ∃ c > 0, ∀ n : ℕ, n ≥ 1 → (exC3C4 n : ℝ) ≥ c * (n : ℝ)^(3/2 : ℝ)
 
-/-! ## Part VIII: Special Constructions -/
+/- ## Part VIII: Special Constructions -/
 
 /-- **Polarity graphs:**
 The incidence graph of a projective plane of order q gives a
@@ -159,7 +159,7 @@ axiom projective_plane_construction (q : ℕ) (hq : Nat.Prime q) :
     ∃ n : ℕ, n = 2 * (q^2 + q + 1) ∧
       (exC3C4 n : ℝ) ≥ ((q : ℝ) + 1)^3
 
-/-! ## Part IX: The Asymptotic Gap -/
+/- ## Part IX: The Asymptotic Gap -/
 
 /-- **The asymptotic gap between C₄-free and {C₃,C₄}-free:**
 - ex(n; C₄) ~ (1/2)n^(3/2)
@@ -171,7 +171,7 @@ the leading constant from 1/2 to 1/(2√2). -/
 axiom asymptotic_gap_ratio :
     (1 : ℝ)/2 / ((1 : ℝ)/(2 * Real.sqrt 2)) = Real.sqrt 2
 
-/-! ## Part X: Summary -/
+/- ## Part X: Summary -/
 
 /-- **Erdős Problem #573: OPEN**
 

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #536 — Equal Pairwise LCMs in Dense Sets
 
 Let ε > 0 and N be sufficiently large. If A ⊆ {1,...,N} has |A| ≥ εN,
@@ -22,7 +22,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- Three distinct elements have equal pairwise LCMs. -/
 def HasEqualPairwiseLCM (a b c : ℕ) : Prop :=
@@ -33,7 +33,7 @@ def HasEqualPairwiseLCM (a b c : ℕ) : Prop :=
 def HasLCMTriple (A : Finset ℕ) : Prop :=
   ∃ a b c, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧ HasEqualPairwiseLCM a b c
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #536**: for any ε > 0, if A ⊆ {1,...,N} has |A| ≥ εN
     (for N large enough), then A contains distinct a, b, c with
@@ -45,7 +45,7 @@ axiom erdos_536_conjecture :
         (A.card : ℝ) ≥ ε * N →
           HasLCMTriple A
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Weisenberg Partial Result**: the conjecture holds when ε > 221/225.
     That is, sets of density > 221/225 ≈ 0.982 in {1,...,N} must contain
@@ -74,7 +74,7 @@ axiom weisenberg_construction :
     ∀ N : ℕ, N > 1 → ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧
       ¬HasLCMTriple A ∧ A.card ≥ f N
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **LCM Structure**: [a,b] = [b,c] = [a,c] = L means a, b, c are all
     divisors of L that pairwise have LCM exactly L. Each pair covers all

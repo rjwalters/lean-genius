@@ -40,7 +40,7 @@ open Nat Set Filter
 
 namespace Erdos218
 
-/-! ## Part I: Prime Enumeration and Gaps -/
+/- ## Part I: Prime Enumeration and Gaps -/
 
 /--
 The nth prime number (0-indexed).
@@ -66,7 +66,7 @@ axiom nthPrime_one : nthPrime 1 = 3
 /-- The third prime is 5. -/
 axiom nthPrime_two : nthPrime 2 = 5
 
-/-! ## Part II: Prime Gaps -/
+/- ## Part II: Prime Gaps -/
 
 /--
 **Prime Gap Function**
@@ -99,7 +99,7 @@ axiom primeGap_two : primeGap 2 = 2
 /-- The fourth prime gap is 4 (gap from 7 to 11). -/
 axiom primeGap_three : primeGap 3 = 4
 
-/-! ## Part III: Natural Density -/
+/- ## Part III: Natural Density -/
 
 /--
 **Natural Density**
@@ -125,7 +125,7 @@ noncomputable def lowerDensity (S : Set ℕ) : ℝ :=
 axiom hasDensity_iff_upper_lower (S : Set ℕ) (d : ℝ) :
     HasDensity S d ↔ upperDensity S = d ∧ lowerDensity S = d
 
-/-! ## Part IV: The Sets of Interest -/
+/- ## Part IV: The Sets of Interest -/
 
 /--
 **Gap Increasing Set**
@@ -170,7 +170,7 @@ theorem gapEqualSet_eq_inter :
   · intro ⟨h1, h2⟩
     exact le_antisymm h1 h2
 
-/-! ## Part V: The Conjectures (OPEN) -/
+/- ## Part V: The Conjectures (OPEN) -/
 
 /--
 **Erdős Conjecture 218a (OPEN)**: Gap Increasing Density
@@ -201,7 +201,7 @@ arithmetic progressions of consecutive primes.
 -/
 axiom erdos_218c : gapEqualSet.Infinite
 
-/-! ## Part VI: Connection to Arithmetic Progressions -/
+/- ## Part VI: Connection to Arithmetic Progressions -/
 
 /--
 **Three Consecutive Primes in AP**
@@ -223,7 +223,7 @@ theorem infinitely_many_3ap_from_218c (h : gapEqualSet.Infinite) :
   ext n
   exact (gapEqual_iff_ap n).symm
 
-/-! ## Part VII: Known Examples of Equal Gaps -/
+/- ## Part VII: Known Examples of Equal Gaps -/
 
 /-- n=1: primes 3,5,7 form AP with common difference 2. -/
 axiom example_ap_1 : 1 ∈ gapEqualSet
@@ -234,7 +234,7 @@ def apTriples : Set ℕ := { n | threePrimesInAP n }
 /-- Known arithmetic progressions of 3 consecutive primes include (3,5,7). -/
 axiom ap_357 : 1 ∈ apTriples
 
-/-! ## Part VIII: Connection to Green-Tao -/
+/- ## Part VIII: Connection to Green-Tao -/
 
 /--
 **Green-Tao Theorem (2008)**
@@ -247,7 +247,7 @@ that consecutive primes form APs.
 axiom green_tao (k : ℕ) : ∃ a d : ℕ, d > 0 ∧
     ∀ i < k, (a + i * d).Prime
 
-/-! ## Part IX: Partial Results -/
+/- ## Part IX: Partial Results -/
 
 /--
 **Lower Bound on Upper Density**
@@ -270,7 +270,7 @@ This grows without bound, but locally gaps fluctuate.
 axiom average_gap_growth (n : ℕ) (hn : n > 0) :
     ∃ C : ℝ, ∀ m ≥ n, (primeGap m : ℝ) / Real.log (nthPrime m) ≤ C
 
-/-! ## Part X: Symmetry Argument (Heuristic) -/
+/- ## Part X: Symmetry Argument (Heuristic) -/
 
 /--
 **Why Density 1/2 is Plausible**
@@ -299,7 +299,7 @@ theorem partition : strictlyIncreasing ∪ strictlyDecreasing ∪ gapEqualSet = 
     · push_neg at h'
       right; exact le_antisymm h h'
 
-/-! ## Part XI: Summary -/
+/- ## Part XI: Summary -/
 
 /--
 **Erdős Problem #218: Summary**

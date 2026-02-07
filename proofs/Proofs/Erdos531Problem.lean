@@ -20,7 +20,7 @@ import Mathlib.Order.BoundedOrder.Basic
 
 namespace Erdos531
 
-/-!
+/-
 ## Overview
 
 This problem concerns Folkman's theorem, a fundamental result in Ramsey theory
@@ -61,7 +61,7 @@ def ValidN (k : ℕ) : Set ℕ := {N : ℕ | ExistsMonochromaticSet N k}
 /-- F(k) is the minimum valid N. -/
 noncomputable def F (k : ℕ) : ℕ := sInf (ValidN k)
 
-/-!
+/-
 ## Folkman's Theorem
 
 The existence of F(k) is Folkman's theorem. For any k, F(k) is finite.
@@ -77,7 +77,7 @@ axiom folkman_theorem :
 theorem F_well_defined (k : ℕ) (hk : k ≥ 1) : (ValidN k).Nonempty :=
   folkman_theorem k hk
 
-/-!
+/-
 ## Lower Bounds
 
 ### Erdős-Spencer (1989)
@@ -95,7 +95,7 @@ axiom erdos_spencer_1989 :
 axiom balogh_2017 :
   ∀ k : ℕ, k ≥ 1 → F k ≥ 2^(2^(k-1) / k)
 
-/-!
+/-
 ## Small Cases
 
 For small k, we can compute or bound F(k) directly.
@@ -112,7 +112,7 @@ theorem F_2 : F 2 = 3 := by
 /-- F(3) ≥ 11: Lower bound for 3-element sets. -/
 axiom F_3_lower : F 3 ≥ 11
 
-/-!
+/-
 ## Upper Bounds
 
 The original upper bounds from Folkman's proof are very weak.
@@ -124,7 +124,7 @@ axiom folkman_upper_bound :
   ∃ f : ℕ → ℕ, (∀ k, ExistsMonochromaticSet (f k) k) ∧
     (∀ k, f k ≤ (fun n => Nat.iterate (2^·) n 2) k)
 
-/-!
+/-
 ## Connection to Rado's Theorem
 
 Folkman's theorem follows from Rado's theorem about partition regularity
@@ -145,7 +145,7 @@ axiom folkman_from_rado :
         (∀ a ∈ A, 1 ≤ a ∧ a ≤ N) ∧
         MonochromaticSubsetSums c A
 
-/-!
+/-
 ## The Main Question
 
 The central open question is the precise growth rate of F(k).
@@ -167,7 +167,7 @@ theorem erdos_531_summary (k : ℕ) (hk : k ≥ 1) :
     (ValidN k).Nonempty ∧ F k ≥ 2^(2^(k-1) / k) :=
   ⟨F_well_defined k hk, balogh_2017 k hk⟩
 
-/-!
+/-
 ## Proof Techniques
 
 The lower bound proofs use:

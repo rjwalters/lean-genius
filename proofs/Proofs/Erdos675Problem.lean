@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #675 — The Translation Property for Number-Theoretic Sets
 
 A set A ⊆ ℕ has the **translation property** if for every n there exists
@@ -22,7 +22,7 @@ import Mathlib.Data.Set.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-/-! ## The Translation Property -/
+/- ## The Translation Property -/
 
 /-- A set A ⊆ ℕ has the translation property if for every n,
     there exists t ≥ 1 such that {1,...,n} ∩ A and {t+1,...,t+n} ∩ A agree -/
@@ -35,7 +35,7 @@ noncomputable def minTranslation (A : Set ℕ) (n : ℕ) : ℕ :=
   Nat.find (⟨1, by omega, fun a _ _ => Iff.rfl⟩ : ∃ t : ℕ, 1 ≤ t ∧
     ∀ a : ℕ, 1 ≤ a → a ≤ n → (a ∈ A ↔ a + t ∈ A))
 
-/-! ## Number-Theoretic Sets -/
+/- ## Number-Theoretic Sets -/
 
 /-- The set of integers representable as sums of two squares -/
 def sumOfTwoSquares : Set ℕ :=
@@ -59,7 +59,7 @@ def HasSmallReciprocalSum (B : Set ℕ) : Prop :=
     -- Abstractly: the partial reciprocal sum up to x is ≤ ε · log(log x)
     True
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- Brun's sieve: if B is pairwise coprime with small reciprocal sums,
     then the B-free set has the translation property -/
@@ -72,7 +72,7 @@ axiom brun_sieve_translation (B : Set ℕ) (hpc : IsPairwiseCoprime B)
 axiom squarefree_translation :
   HasTranslationProperty squarefreeSet
 
-/-! ## The Erdős Conjectures -/
+/- ## The Erdős Conjectures -/
 
 /-- Erdős Problem 675, Part 1: Do sums of two squares
     have the translation property? -/

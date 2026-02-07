@@ -22,7 +22,7 @@ import Mathlib.Data.Nat.Totient
 
 namespace Erdos360
 
-/-!
+/-
 ## Overview
 
 This problem concerns the minimum number of classes needed to partition {1,...,n-1}
@@ -51,7 +51,7 @@ def IsValidPartition (n : ℕ) (parts : Finset (Finset ℕ)) : Prop :=
   -- Each part is n-sum-free
   (∀ P ∈ parts, IsNSumFree n P)
 
-/-!
+/-
 ## The Function f(n)
 
 f(n) is the minimum number of parts in a valid partition.
@@ -64,7 +64,7 @@ def ValidPartitionSizes (n : ℕ) : Set ℕ :=
 /-- f(n) is the minimum valid partition size. -/
 noncomputable def f (n : ℕ) : ℕ := sInf (ValidPartitionSizes n)
 
-/-!
+/-
 ## Historical Results
 
 ### Alon-Erdős (1996)
@@ -103,7 +103,7 @@ axiom conlon_fox_pham_2021 :
     c₁ * (n : ℝ)^(1/3 : ℝ) * (n / φn) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) ≤ f n ∧
     (f n : ℝ) ≤ c₂ * (n : ℝ)^(1/3 : ℝ) * (n / φn) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ))
 
-/-!
+/-
 ## Key Observations
 
 ### Why n^{1/3}?
@@ -132,7 +132,7 @@ axiom primorial_totient_ratio :
     let n := (Finset.range k).prod (fun i => Nat.nth Nat.Prime i)
     (n : ℝ) / Nat.totient n ≥ Real.log (Real.log k)
 
-/-!
+/-
 ## Small Cases
 
 For small n, we can compute f(n) directly.
@@ -151,7 +151,7 @@ theorem f_3 : f 3 = 1 := by
 theorem f_4 : f 4 = 2 := by
   sorry -- Partition into {1, 2} and {3}, for example
 
-/-!
+/-
 ## Connection to Subset Sums and Ramsey Theory
 
 This problem is closely related to:

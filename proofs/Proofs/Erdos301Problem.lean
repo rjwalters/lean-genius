@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 301: Egyptian Fraction Avoidance Sets
 
 Let `f(N)` be the maximum size of `A ⊆ {1, ..., N}` with no solution to
@@ -19,7 +19,7 @@ import Mathlib.Tactic
 
 open Finset
 
-/-! ## Egyptian fraction decomposition avoidance -/
+/- ## Egyptian fraction decomposition avoidance -/
 
 /-- `HasEgyptianDecomp A a` means there exist distinct `b₁, ..., bₖ ∈ A` with
 `1/a = 1/b₁ + ⋯ + 1/bₖ`, where all elements are distinct from `a`. -/
@@ -36,7 +36,7 @@ def EgyptFractionFree (A : Finset ℕ) : Prop :=
 noncomputable def maxEgyptFree (N : ℕ) : ℕ :=
     ((Finset.Icc 1 N).powerset.filter EgyptFractionFree).sup Finset.card
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 301: `f(N) = (1/2 + o(1)) * N`. -/
 def ErdosProblem301 : Prop :=
@@ -44,7 +44,7 @@ def ErdosProblem301 : Prop :=
       (1 / 2 - ε) * N ≤ (maxEgyptFree N : ℝ) ∧
       (maxEgyptFree N : ℝ) ≤ (1 / 2 + ε) * N
 
-/-! ## Lower bound -/
+/- ## Lower bound -/
 
 /-- The interval `(N/2, N]` is EgyptFractionFree, giving `f(N) ≥ N/2`. -/
 axiom halfInterval_egyptFree (N : ℕ) :
@@ -54,13 +54,13 @@ axiom halfInterval_egyptFree (N : ℕ) :
 axiom maxEgyptFree_lower (N : ℕ) (hN : 0 < N) :
     N / 2 ≤ maxEgyptFree N
 
-/-! ## Upper bound (van Doorn) -/
+/- ## Upper bound (van Doorn) -/
 
 /-- Van Doorn's upper bound: `f(N) ≤ (25/28 + o(1)) * N`. -/
 axiom vanDoorn_upper (N : ℕ) (hN : 0 < N) :
     (maxEgyptFree N : ℝ) ≤ (25 / 28 + 1) * N
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- The empty set is EgyptFractionFree. -/
 theorem egyptFractionFree_empty : EgyptFractionFree ∅ := by

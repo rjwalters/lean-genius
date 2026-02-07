@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 119: Maximum Modulus of Polynomials on the Unit Circle
 
 For $n \geq 1$, let $z_1, z_2, \ldots, z_n$ be points on the unit circle and define
@@ -28,7 +28,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset
 
 open Filter Finset
 
-/-! ## Polynomial product and maximum modulus -/
+/- ## Polynomial product and maximum modulus -/
 
 /-- The polynomial `p_n(z) = ∏_{i < n} (z - z_i)` where each `z_i` is on the unit circle.
 We use 0-indexing: `p z n` is the product of `(w - z i)` for `i` in `{0, ..., n-1}`. -/
@@ -40,7 +40,7 @@ the polynomial on the unit circle. -/
 noncomputable def maxModulus (z : ℕ → ℂ) (n : ℕ) : ℝ :=
     sSup { ‖unitCirclePoly z n w‖ | (w : ℂ) (_ : ‖w‖ = 1) }
 
-/-! ## Part 1: limsup M_n = ∞ (Solved by Wagner 1980)
+/- ## Part 1: limsup M_n = ∞ (Solved by Wagner 1980)
 
 Wagner proved that there exists `c > 0` with `M_n > (log n)^c` infinitely often,
 which implies `limsup M_n = ∞`.
@@ -53,7 +53,7 @@ axiom erdos119_part1 :
     ∀ (z : ℕ → ℂ), (∀ i : ℕ, ‖z i‖ = 1) →
       atTop.limsup (fun n => (maxModulus z n : EReal)) = ⊤
 
-/-! ## Part 2: M_n > n^c infinitely often (Solved by Beck 1991)
+/- ## Part 2: M_n > n^c infinitely often (Solved by Beck 1991)
 
 Beck proved that there exists `c > 0` such that `max_{n ≤ N} M_n > N^c`.
 This implies that `M_n > n^c` for infinitely many `n`.
@@ -67,7 +67,7 @@ axiom erdos119_part2 :
     ∀ (z : ℕ → ℂ), (∀ i : ℕ, ‖z i‖ = 1) →
       ∃ (c : ℝ), c > 0 ∧ ∀ N : ℕ, ∃ n : ℕ, n ≤ N ∧ maxModulus z n > (N : ℝ) ^ c
 
-/-! ## Part 3: Partial sums grow like n^{1+c} (Open, $100 prize)
+/- ## Part 3: Partial sums grow like n^{1+c} (Open, $100 prize)
 
 This is the strongest version: does there exist `c > 0` such that for all
 sufficiently large `n`, `∑_{k ≤ n} M_k > n^{1+c}`? -/
@@ -79,7 +79,7 @@ def ErdosProblem119 : Prop :=
       ∃ (c : ℝ), c > 0 ∧ ∀ᶠ n in atTop,
         ∑ k ∈ range n, maxModulus z k > (n : ℝ) ^ (1 + c)
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- The polynomial at a single point: `p_1(w) = w - z_0`. -/
 theorem unitCirclePoly_one (z : ℕ → ℂ) (w : ℂ) :

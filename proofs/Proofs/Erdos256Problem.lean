@@ -36,7 +36,7 @@ open scoped BigOperators
 
 namespace Erdos256
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -63,7 +63,7 @@ Equivalently: f(n) is the largest m such that for ALL choices, max ≥ m.
 noncomputable def f (n : ℕ) : ℝ :=
   sInf {maxOnUnitCircle a | a : Fin n → ℕ}
 
-/-!
+/-
 ## Part II: Known Bounds
 -/
 
@@ -102,7 +102,7 @@ log f(n) ≪ n^{1/3} (log n)^{4/3}
 axiom odlyzko_bound (n : ℕ) (hn : n ≥ 2) :
     ∃ C : ℝ, Real.log (f n) ≤ C * (n : ℝ)^(1/3 : ℝ) * (Real.log n)^(4/3 : ℝ)
 
-/-!
+/-
 ## Part III: The Main Question
 -/
 
@@ -115,7 +115,7 @@ This asks: does f(n) grow faster than any polynomial in log n?
 def ErdosQuestion256 : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧ ∀ n ≥ 2, Real.log (f n) ≥ C * n^c
 
-/-!
+/-
 ## Part IV: The Answer
 -/
 
@@ -138,7 +138,7 @@ theorem erdos_256_answer : ¬ErdosQuestion256 := by
   -- For large enough n, n^c > K * (log n)^4, contradiction
   sorry
 
-/-!
+/-
 ## Part V: The Distinct Case
 -/
 
@@ -157,7 +157,7 @@ axiom bourgain_chang_bound (n : ℕ) (hn : n ≥ 3) :
     ∃ C : ℝ, Real.log (fDistinct n) ≤
       C * ((n : ℝ) * Real.log n)^(1/2 : ℝ) * Real.log (Real.log n)
 
-/-!
+/-
 ## Part VI: Connection to Chowla Cosine Problem
 -/
 
@@ -177,7 +177,7 @@ axiom atkinson_chowla_connection (n : ℕ) (M : ℝ) :
     (∀ A : Finset ℤ, A.card = n → chowlaMinimum A < -M) →
     ∃ C : ℝ, Real.log (fDistinct n) ≤ C * M * Real.log n
 
-/-!
+/-
 ## Part VII: Properties of the Product
 -/
 
@@ -199,7 +199,7 @@ axiom primitive_root_lower_bound (a : Fin n → ℕ) (hn : n ≥ 1) :
     ∃ ζ : ℂ, Complex.abs ζ = 1 ∧ ζ^k = 1 ∧ ζ ≠ 1 ∧
       Complex.abs (productPoly a ζ) ≥ 1
 
-/-!
+/-
 ## Part VIII: Summary of Bounds
 -/
 
@@ -224,7 +224,7 @@ axiom bounds_summary (n : ℕ) (hn : n ≥ 2) :
     (1/2 : ℝ) * Real.log n ≤ Real.log (f n) ∧
     ∃ C : ℝ, Real.log (f n) ≤ C * (Real.log n)^4
 
-/-!
+/-
 ## Part IX: Summary
 
 **Erdős Problem #256: SOLVED**

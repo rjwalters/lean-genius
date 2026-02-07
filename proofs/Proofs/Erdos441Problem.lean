@@ -40,7 +40,7 @@ open Nat Real Finset
 
 namespace Erdos441
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -60,7 +60,7 @@ def IsLCMBounded (A : Finset ℕ) (N : ℕ) : Prop :=
 noncomputable def g (N : ℕ) : ℕ :=
   sSup {A.card | A : Finset ℕ, IsLCMBounded A N}
 
-/-!
+/-
 ## Part 2: Erdős' Proposed Construction
 -/
 
@@ -85,7 +85,7 @@ axiom erdos_construction_size :
   ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
     |(ErdosConstruction N).card - Real.sqrt ((9 : ℝ) * N / 8)| ≤ C
 
-/-!
+/-
 ## Part 3: The Main Question
 -/
 
@@ -99,7 +99,7 @@ theorem erdos_question_answer : ¬ErdosQuestion := by
   -- for infinitely many N
   sorry
 
-/-!
+/-
 ## Part 4: Lower Bounds
 -/
 
@@ -117,7 +117,7 @@ theorem construction_gives_lower_bound (N : ℕ) (hN : N ≥ 1) :
   -- The construction is valid, so g(N) ≥ its size
   sorry
 
-/-!
+/-
 ## Part 5: Upper Bounds
 -/
 
@@ -138,7 +138,7 @@ def ChenDaiUpperBound : Prop :=
 /-- Chen and Dai's theorem (2007): Refined upper bound -/
 axiom chen_dai_2007 : ChenDaiUpperBound
 
-/-!
+/-
 ## Part 6: The Construction is Not Optimal
 -/
 
@@ -159,7 +159,7 @@ theorem erdos_question_disproved :
   have := hOpt N hN_ge
   omega
 
-/-!
+/-
 ## Part 7: Why the Construction Fails
 -/
 
@@ -175,7 +175,7 @@ axiom error_term_significance :
   -- This leaves room for the construction to be suboptimal
   True
 
-/-!
+/-
 ## Part 8: Special Cases
 -/
 
@@ -191,7 +191,7 @@ axiom consecutive_integers :
   -- For N = lcm(1, 2, ..., k), the set {1, 2, ..., k} works
   True
 
-/-!
+/-
 ## Part 9: Related Results
 -/
 
@@ -212,7 +212,7 @@ axiom choi_1972 :
   -- Choi studied related questions about LCM constraints
   True
 
-/-!
+/-
 ## Part 10: The Constant 9/8
 -/
 
@@ -238,7 +238,7 @@ theorem constant_value :
   · norm_num
   · norm_num
 
-/-!
+/-
 ## Part 11: Summary
 -/
 

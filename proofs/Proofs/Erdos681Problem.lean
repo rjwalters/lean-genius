@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 681: Large Least Prime Factor in Shifted Composites
 
 For all sufficiently large `n`, does there exist a positive integer `k`
@@ -16,7 +16,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Least prime factor -/
+/- ## Least prime factor -/
 
 /-- The least prime factor of `m`, using `Nat.minFac`. Returns 1 if
 `m ≤ 1`. -/
@@ -31,7 +31,7 @@ def IsLeastPrimeFactor (p m : ℕ) : Prop :=
 axiom composite_has_lpf (m : ℕ) (hm : ¬m.Prime) (hm2 : 2 ≤ m) :
     ∃ p : ℕ, IsLeastPrimeFactor p m
 
-/-! ## The conjecture -/
+/- ## The conjecture -/
 
 /-- Erdős Problem 681: For all sufficiently large `n`, there exists
 `k > 0` such that `n + k` is composite and its least prime factor
@@ -42,7 +42,7 @@ def ErdosProblem681 : Prop :=
         ¬(n + k).Prime ∧ 2 ≤ n + k ∧
         ∀ p : ℕ, IsLeastPrimeFactor p (n + k) → k ^ 2 < p
 
-/-! ## Generalisation -/
+/- ## Generalisation -/
 
 /-- Generalised conjecture: for any fixed `d`, for all large `n`,
 there exists `k > 0` with `n + k` composite and `p(n+k) > k^d`. -/
@@ -56,7 +56,7 @@ def ErdosProblem681General (d : ℕ) : Prop :=
 axiom erdos681_is_general_d2 :
     ErdosProblem681 ↔ ErdosProblem681General 2
 
-/-! ## Basic observations -/
+/- ## Basic observations -/
 
 /-- If `n + k` is prime, it trivially has least prime factor `n + k`
 itself, which is large. The conjecture requires `n + k` composite. -/

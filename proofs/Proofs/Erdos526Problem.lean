@@ -40,7 +40,7 @@ namespace Erdos526
 
 open Real MeasureTheory Filter Topology BigOperators
 
-/-!
+/-
 ## Part I: Basic Setup
 
 The unit circle and random arc placement.
@@ -65,7 +65,7 @@ structure ArcSequence where
   tendsto_zero : Tendsto a atTop (𝓝 0)
   sum_diverges : ¬Summable a
 
-/-!
+/-
 ## Part II: The Coverage Condition
 
 When do random arcs cover the entire circle with probability 1?
@@ -91,7 +91,7 @@ probability space and measure-theoretic machinery.
 -/
 axiom CoversWithProbOne (seq : ArcSequence) : Prop
 
-/-!
+/-
 ## Part III: Shepp's Theorem (1972)
 -/
 
@@ -110,7 +110,7 @@ theorem erdos_526_solved (seq : ArcSequence) :
     CoversWithProbOne seq ↔ SheppCriterion seq.a :=
   shepp_1972 seq
 
-/-!
+/-
 ## Part IV: Special Cases
 
 The critical boundary at a_n = 1/n.
@@ -150,7 +150,7 @@ axiom subCriticalSeq (c : ℝ) (hc : c > 0) (hc1 : c < 1) : ArcSequence
 axiom erdos_subcritical (c : ℝ) (hc : c > 0) (hc1 : c < 1) :
     ¬CoversWithProbOne (subCriticalSeq c hc hc1)
 
-/-!
+/-
 ## Part V: Verification of Shepp's Criterion for Special Cases
 -/
 
@@ -176,7 +176,7 @@ The series Σ n^{-1-c} converges for c > 0, so Shepp's criterion fails.
 axiom shepp_check_subcritical (c : ℝ) (hc : c > 0) (hc1 : c < 1) :
     ¬SheppCriterion (subCriticalSeq c hc hc1).a
 
-/-!
+/-
 ## Part VI: Dvoretzky's Observation
 
 Almost all the circle is covered under the basic conditions.
@@ -193,7 +193,7 @@ axiom dvoretzky_almost_all (seq : ArcSequence) :
     ∃ N : ℕ, ∀ n ≥ N, True
     -- The measure of uncovered set after n arcs is < ε w.p. → 1
 
-/-!
+/-
 ## Part VII: The Poisson Process Connection
 -/
 
@@ -217,7 +217,7 @@ axiom expected_uncovered_relation (seq : ArcSequence) :
     SheppCriterion seq.a →
     CoversWithProbOne seq
 
-/-!
+/-
 ## Part VIII: Computational Examples
 -/
 
@@ -230,7 +230,7 @@ axiom basel_converges : Summable (fun n : ℕ => if n = 0 then (0:ℝ) else 1 / 
 /-- Numerical: 1/1 + 1/2 + ... + 1/5 > 2 -/
 example : (1 + 1/2 + 1/3 + 1/4 + 1/5 : ℚ) > 2 := by native_decide
 
-/-!
+/-
 ## Part IX: Logarithmic Growth and the Critical Boundary
 -/
 
@@ -248,7 +248,7 @@ axiom harmonic_log_growth :
 /-- Euler-Mascheroni constant γ ≈ 0.5772 -/
 axiom euler_mascheroni : ∃ γ : ℝ, 0.57 < γ ∧ γ < 0.58
 
-/-!
+/-
 ## Part X: Summary
 -/
 

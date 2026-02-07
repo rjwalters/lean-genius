@@ -38,7 +38,7 @@ namespace Erdos906
 
 open Complex Topology
 
-/-! ## Key Definitions
+/- ## Key Definitions
 
 We need:
 1. **Entire function**: Differentiable everywhere on ℂ
@@ -71,7 +71,7 @@ axiom iteratedDeriv_one (f : ℂ → ℂ) (hf : Differentiable ℂ f) :
 axiom iteratedDeriv_succ (n : ℕ) (f : ℂ → ℂ) :
   iteratedDeriv (n + 1) f = deriv (iteratedDeriv n f)
 
-/-! ## The Zero Set
+/- ## The Zero Set
 
 For a function f and a sequence of derivative indices, the zero set collects
 all z where some derivative in the sequence vanishes at z. -/
@@ -82,7 +82,7 @@ Given a strictly increasing sequence n : ℕ → ℕ, this is
 def derivativeZeroSet (f : ℂ → ℂ) (n : ℕ → ℕ) : Set ℂ :=
   { z | ∃ k, iteratedDeriv (n k) f z = 0 }
 
-/-! ## The Main Property
+/- ## The Main Property
 
 The property Erdős asks about: for ANY strictly increasing sequence,
 the zero set of the corresponding derivatives is dense. -/
@@ -92,7 +92,7 @@ f^{(n(k))} for varying k are dense in ℂ. -/
 def HasDenseDerivativeZeros (f : ℂ → ℂ) : Prop :=
   ∀ n : ℕ → ℕ, StrictMono n → Dense (derivativeZeroSet f n)
 
-/-! ## Why Polynomials Are Trivial
+/- ## Why Polynomials Are Trivial
 
 For a polynomial of degree d, f^{(n)} = 0 for all n > d.
 Thus derivativeZeroSet f n = ℂ for any sequence eventually exceeding d.
@@ -109,7 +109,7 @@ Axiomatized due to proof complexity with Dense. -/
 axiom polynomial_trivial (p : Polynomial ℂ) :
     HasDenseDerivativeZeros (fun z => p.eval z)
 
-/-! ## The Main Problem -/
+/- ## The Main Problem -/
 
 /-- **Erdős Problem #906 (STATUS UNCLEAR)**:
 
@@ -129,7 +129,7 @@ def erdos_906_statement : Prop :=
     IsTranscendental f ∧
     HasDenseDerivativeZeros f
 
-/-! ## Examples and Non-Examples -/
+/- ## Examples and Non-Examples -/
 
 /-- The exponential function e^z is entire. -/
 axiom exp_is_entire : IsEntire Complex.exp
@@ -148,7 +148,7 @@ All derivatives of e^z equal e^z, which has no zeros.
 Axiomatized due to proof complexity with Set.ext. -/
 axiom exp_no_zeros : derivativeZeroSet Complex.exp id = ∅
 
-/-! ## Related Concepts -/
+/- ## Related Concepts -/
 
 /-- Connection to the Pólya-Erdős conjecture about zeros of derivatives.
 Pólya's shire theorem and Erdős's work on zeros of polynomials
@@ -160,7 +160,7 @@ The Weierstrass factorization theorem gives control over zeros,
 but not the density property for subsequences. -/
 axiom connection_to_weierstrass : Prop
 
-/-! ## Properties of the Zero Set -/
+/- ## Properties of the Zero Set -/
 
 /-- The zero set is always closed (for continuous functions). -/
 axiom zero_set_closed (f : ℂ → ℂ) (n : ℕ → ℕ) (hf : Continuous f) :
@@ -174,7 +174,7 @@ axiom individual_zero_sets_discrete (f : ℂ → ℂ) (k : ℕ) (hf : IsEntire f
     ∀ z ∈ { w | iteratedDeriv k f w = 0 }, ∃ ε > 0,
       ∀ w ∈ Metric.ball z ε, w = z ∨ iteratedDeriv k f w ≠ 0
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #906 Summary**:
 

@@ -27,7 +27,7 @@ namespace Erdos613
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Edge Counts and Binomial Coefficients -/
+/- ## Edge Counts and Binomial Coefficients -/
 
 /-- The critical edge count from the problem -/
 def criticalEdgeCount (n : ℕ) : ℕ :=
@@ -44,7 +44,7 @@ example : criticalEdgeCount 3 = 17 := by native_decide
 /-- For n = 5: critical count = 55 - 10 - 1 = 44 -/
 example : criticalEdgeCount 5 = 44 := by native_decide
 
-/-! ## Graph Decomposition -/
+/- ## Graph Decomposition -/
 
 /-- A graph is bipartite iff it has no odd cycles -/
 def IsBipartite (G : SimpleGraph V) : Prop :=
@@ -69,7 +69,7 @@ def HasDecomposition (G : SimpleGraph V) (n : ℕ) : Prop :=
     IsBipartite H₁ ∧
     HasMaxDegreeLT H₂ n
 
-/-! ## The Original Conjecture -/
+/- ## The Original Conjecture -/
 
 /-- Original Conjecture: Graphs with critical edge count decompose -/
 def OriginalConjecture : Prop :=
@@ -78,7 +78,7 @@ def OriginalConjecture : Prop :=
       G.edgeFinset.card = criticalEdgeCount n →
       HasDecomposition G n
 
-/-! ## The Size Ramsey Number -/
+/- ## The Size Ramsey Number -/
 
 /-- The star graph K_{1,n} (one center with n leaves) -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) :=
@@ -102,7 +102,7 @@ noncomputable def sizeRamseyStarOddCycle (n : ℕ) : ℕ :=
 def conjecturedSizeRamsey (n : ℕ) : ℕ :=
   (2*n + 1).choose 2 - n.choose 2
 
-/-! ## Pikhurko's Disproof -/
+/- ## Pikhurko's Disproof -/
 
 /-- Pikhurko's lower bound: r̂ > n² + 0.577n^{3/2} -/
 axiom pikhurko_lower_bound :
@@ -119,7 +119,7 @@ axiom pikhurko_upper_bound :
 theorem original_conjecture_false : ¬OriginalConjecture := by
   sorry
 
-/-! ## Counterexample at n = 5 -/
+/- ## Counterexample at n = 5 -/
 
 /-- Tao's Lean-verified counterexample at n = 5 -/
 axiom tao_counterexample_n5 :
@@ -138,7 +138,7 @@ theorem smallest_counterexample :
       ¬HasDecomposition G 5) := by
   sorry
 
-/-! ## Faudree's Partial Result -/
+/- ## Faudree's Partial Result -/
 
 /-- Faudree (unpublished): Holds when |V| = 2n + 1 -/
 axiom faudree_partial :
@@ -160,7 +160,7 @@ theorem vertex_count_matters :
   refine ⟨by norm_num, ?_, tao_counterexample_n5⟩
   exact faudree_partial 5 (by norm_num)
 
-/-! ## Asymptotic Analysis -/
+/- ## Asymptotic Analysis -/
 
 /-- The gap between bounds -/
 def boundGap (n : ℕ) : ℝ :=
@@ -181,7 +181,7 @@ theorem conjecture_error :
         |(sizeRamseyStarOddCycle n : ℝ) - conjecturedSizeRamsey n| ≥ c * n^(3/2 : ℝ) := by
   sorry
 
-/-! ## Connection to Ramsey Theory -/
+/- ## Connection to Ramsey Theory -/
 
 /-- Classical Ramsey number R(s,t) -/
 noncomputable def ramseyNumber (s t : ℕ) : ℕ :=
@@ -194,7 +194,7 @@ theorem size_ramsey_generalizes :
       sizeRamseyStarOddCycle s ≤ (ramseyNumber s t).choose 2 := by
   sorry
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- n = 3: critical count = 17, conjecture holds -/
 theorem n3_holds :
@@ -210,7 +210,7 @@ theorem n4_holds :
       HasDecomposition G 4 := by
   sorry
 
-/-! ## Bipartite Component Analysis -/
+/- ## Bipartite Component Analysis -/
 
 /-- In a decomposition, the bipartite part can be made maximal -/
 theorem maximal_bipartite_decomposition :
@@ -224,7 +224,7 @@ theorem maximal_bipartite_decomposition :
           (∀ v w, H₁.Adj v w → H₁'.Adj v w) → H₁ = H₁') := by
   sorry
 
-/-! ## Main Problem Status -/
+/- ## Main Problem Status -/
 
 /-- Erdős Problem #613: DISPROVED
 

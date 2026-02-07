@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 530: Maximum Sidon Subsets of Finite Sets
 
 *Reference:* [erdosproblems.com/530](https://www.erdosproblems.com/530)
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section 1: Sidon set definition
 
 A set `S` is *Sidon* (also called a B₂-set) if all pairwise sums `a + b`
@@ -49,7 +49,7 @@ theorem isSidon_singleton (x : ℤ) : IsSidon {x} := by
   rw [Finset.mem_singleton] at ha hb hc hd
   exact ⟨by rw [ha, hc], by rw [hb, hd]⟩
 
-/-!
+/-
 ## Section 2: Maximum Sidon subset size
 
 For a finite set `A` of size `N`, `maxSidonSize A` is the maximum
@@ -60,7 +60,7 @@ cardinality of a Sidon subset of `A`.
 noncomputable def maxSidonSize (A : Finset ℤ) : ℕ :=
   (A.powerset.filter (fun S => IsSidon S)).sup Finset.card
 
-/-!
+/-
 ## Section 3: Known bounds
 
 The key results on `ℓ(N)`:
@@ -90,7 +90,7 @@ axiom sidon_upper_bound :
   ∀ A : Finset ℤ,
     maxSidonSize A * maxSidonSize A ≤ A.card * A.card
 
-/-!
+/-
 ## Section 4: The main conjecture
 
 Erdős conjectured that `ℓ(N) ~ N^{1/2}`, i.e., the lower and upper
@@ -105,7 +105,7 @@ def ErdosProblem530 : Prop :=
       maxSidonSize A * maxSidonSize A ≥ c₁ * A.card ∧
       maxSidonSize A * maxSidonSize A ≤ c₂ * A.card
 
-/-!
+/-
 ## Section 5: Sidon set partition conjecture
 
 Alon and Erdős conjectured that any set of size N can be partitioned
@@ -126,7 +126,7 @@ axiom alon_erdos_partition_conjecture :
       ∃ parts : Finset (Finset ℤ),
         IsSidonPartition A parts ∧ parts.card * parts.card ≤ c * A.card
 
-/-!
+/-
 ## Section 6: Connection to B₂-sets and additive combinatorics
 
 Sidon sets are also called B₂-sets in the additive combinatorics literature.

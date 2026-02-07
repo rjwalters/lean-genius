@@ -36,7 +36,7 @@ open SimpleGraph Finset
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Part I: Independent Sets -/
+/- ## Part I: Independent Sets -/
 
 /-- An independent set in G is a set of vertices with no edges between them. -/
 def IsIndependentSet (G : SimpleGraph V) (S : Finset V) : Prop :=
@@ -57,7 +57,7 @@ theorem singleton_independent (G : SimpleGraph V) (v : V) : IsIndependentSet G {
   rw [hu, hw]
   exact G.loopless w
 
-/-! ## Part II: The Independence Condition -/
+/- ## Part II: The Independence Condition -/
 
 /-- A graph G satisfies the k-independence condition if every induced subgraph H
     on n vertices has an independent set of size ≥ (n-k)/2. -/
@@ -69,7 +69,7 @@ def satisfiesIndependenceCondition (G : SimpleGraph V) [DecidableRel G.Adj] (k :
 def satisfiesStrictCondition (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
   satisfiesIndependenceCondition G 0
 
-/-! ## Part III: Bipartite Graphs -/
+/- ## Part III: Bipartite Graphs -/
 
 /-- A graph is bipartite if its vertex set can be partitioned into two independent sets. -/
 def IsBipartite (G : SimpleGraph V) : Prop :=
@@ -85,7 +85,7 @@ def hasNoOddCycle (G : SimpleGraph V) : Prop :=
 axiom bipartite_iff_no_odd_cycle (G : SimpleGraph V) :
     IsBipartite G ↔ hasNoOddCycle G
 
-/-! ## Part IV: The Trivial k=0 Case -/
+/- ## Part IV: The Trivial k=0 Case -/
 
 /-- An odd cycle on 2m+1 vertices has independence number exactly m. -/
 axiom odd_cycle_independence (m : ℕ) (hm : m ≥ 1) :
@@ -112,7 +112,7 @@ theorem trivial_case (G : SimpleGraph V) [DecidableRel G.Adj]
     (h : satisfiesStrictCondition G) : IsBipartite G := by
   sorry
 
-/-! ## Part V: Almost Bipartite Structure -/
+/- ## Part V: Almost Bipartite Structure -/
 
 /-- A graph is f(k)-almost-bipartite if removing at most f(k) vertices
     leaves a bipartite graph. -/
@@ -128,7 +128,7 @@ theorem bipartite_deficiency_zero (G : SimpleGraph V) (h : IsBipartite G) :
     bipartiteDeficiency G = 0 := by
   sorry
 
-/-! ## Part VI: Reed's Theorem -/
+/- ## Part VI: Reed's Theorem -/
 
 /-- **Reed's Theorem (1999) - "Mangoes and Blueberries"**
 
@@ -150,7 +150,7 @@ theorem erdos_73_solved (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ)
     ∃ S : Finset V, S.card ≤ reed_bound k ∧ IsBipartite (G.induce (Sᶜ : Set V)) :=
   reed_theorem G k h
 
-/-! ## Part VII: Special Cases -/
+/- ## Part VII: Special Cases -/
 
 /-- For k=0, Reed's bound is 0 (the graph must be bipartite). -/
 axiom reed_bound_zero : reed_bound 0 = 0
@@ -167,7 +167,7 @@ theorem strict_implies_bipartite (G : SimpleGraph V) [DecidableRel G.Adj]
   -- Need to show G.induce Set.univ ≃ G
   sorry
 
-/-! ## Part VIII: Examples -/
+/- ## Part VIII: Examples -/
 
 /-- The complete graph K_3 (triangle) is not bipartite. -/
 def triangleGraph : SimpleGraph (Fin 3) where
@@ -183,7 +183,7 @@ theorem K3_violates_strict : ¬satisfiesStrictCondition triangleGraph := by
 theorem K3_almost_bipartite : isAlmostBipartite triangleGraph 1 := by
   sorry
 
-/-! ## Part IX: Bounds on f(k) -/
+/- ## Part IX: Bounds on f(k) -/
 
 /-- Reed's proof gives some explicit bound, though not optimal. -/
 axiom reed_bound_explicit (k : ℕ) : reed_bound k ≤ 2^k
@@ -195,7 +195,7 @@ def openQuestion_optimal_bound : Prop :=
       satisfiesIndependenceCondition G k → isAlmostBipartite G (g k)) →
     ∀ k, f k ≤ g k
 
-/-! ## Part X: Connection to Chromatic Number -/
+/- ## Part X: Connection to Chromatic Number -/
 
 /-- Bipartite graphs are exactly 2-colorable. -/
 axiom bipartite_iff_two_colorable (G : SimpleGraph V) :
@@ -208,7 +208,7 @@ axiom almost_bipartite_chromatic (G : SimpleGraph V) (k : ℕ)
 
 end Erdos73
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #73 on almost bipartite graphs,

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #374: Factorial Products as Perfect Squares
 
 For m ∈ ℕ, define F(m) as the minimal k ≥ 2 such that there exist
@@ -22,7 +22,7 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A number is a perfect square. -/
 def IsPerfectSquare (n : ℕ) : Prop :=
@@ -51,7 +51,7 @@ axiom bigF_ge_two (m : ℕ) (hm : 2 ≤ m) : 2 ≤ bigF m
 /-- Dₖ = { m : F(m) = k }. -/
 def inDk (k m : ℕ) : Prop := bigF m = k
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- D₂ consists of all perfect squares > 1. -/
 axiom D2_eq_squares (m : ℕ) (hm : 2 ≤ m) :
@@ -68,7 +68,7 @@ axiom Dk_empty_above_6 (k : ℕ) (hk : 7 ≤ k) (m : ℕ) :
 /-- The smallest element of D₆ is 527. -/
 axiom D6_smallest : inDk 6 527 ∧ ∀ m : ℕ, m < 527 → ¬inDk 6 m
 
-/-! ## The Open Question -/
+/- ## The Open Question -/
 
 /-- Erdős Problem #374: Determine the growth rate of |Dₖ ∩ {1,...,n}|
     for 3 ≤ k ≤ 6. -/

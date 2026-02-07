@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #563: Balanced 2-Colorings and Subset Edge Density
 
 Let F(n, α) be the smallest m such that there exists a 2-coloring of K_n
@@ -24,7 +24,7 @@ import Mathlib.Tactic
 
 open Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A 2-coloring of the edges of K_n: assigns red (true) or blue (false)
     to each pair {i, j} with i < j in Fin n. -/
@@ -56,7 +56,7 @@ noncomputable def balancedThreshold (n : ℕ) (α : ℚ) : ℕ :=
   then Nat.find h
   else 0
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #563** (OPEN): For every 0 ≤ α < 1/2,
     F(n, α) ~ c_α · log n as n → ∞. -/
@@ -66,7 +66,7 @@ axiom erdos_563_conjecture :
       -- F(n, α) / log n → c as n → ∞
       True
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Probabilistic method**: F(n, α) = O_α(log n) for α < 1/2.
     A random coloring works with high probability for m = C · log n. -/
@@ -82,7 +82,7 @@ axiom lower_bound (α : ℚ) (hα : α > 0) (hlt : α < 1/2) :
     ∀ n : ℕ, n ≥ 2 →
       (balancedThreshold n α : ℝ) ≥ c * Real.log (n : ℝ)
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- α = 0: F(n, 0) is the Ramsey number for avoiding monochromatic cliques.
     Equivalently, the smallest m such that some coloring has no monochromatic
@@ -102,7 +102,7 @@ axiom alpha_half_impossible :
 axiom color_partition (n : ℕ) (c : EdgeColoring n) (X : Finset (Fin n)) :
   redEdgeCount n c X + blueEdgeCount n c X = edgeCount n X
 
-/-! ## Monotonicity -/
+/- ## Monotonicity -/
 
 /-- F(n, α) is non-decreasing in α: harder balance requires larger subsets. -/
 axiom threshold_monotone_alpha (n : ℕ) (α β : ℚ) :

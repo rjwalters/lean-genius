@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #389 — Divisibility of Consecutive Integer Products
 
 Is it true that for every n ≥ 1 there exists k ≥ 1 such that
@@ -32,7 +32,7 @@ import Mathlib.Data.Finset.LocallyFinite
 
 open Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- Product of k consecutive integers starting at n:
   n · (n+1) · ··· · (n+k−1) -/
@@ -49,7 +49,7 @@ noncomputable def minimalK (n : ℕ) : ℕ :=
   Nat.find (⟨1, by simp [divides_upper_block, consecutiveProd]⟩ :
     ∃ k : ℕ, 1 ≤ k ∧ divides_upper_block n k)
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #389 (Open).**
 For every n ≥ 1, there exists k ≥ 1 such that
@@ -57,7 +57,7 @@ For every n ≥ 1, there exists k ≥ 1 such that
 axiom erdos_389 :
   ∀ n : ℕ, 1 ≤ n → ∃ k : ℕ, 1 ≤ k ∧ divides_upper_block n k
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /-- n = 1, k = 1: trivially 1 ∣ 2. -/
 theorem erdos_389_n1 : divides_upper_block 1 1 := by
@@ -69,7 +69,7 @@ axiom erdos_389_n2 : divides_upper_block 2 5
 /-- n = 3, k = 4: 3·4·5·6 = 360 divides 7·8·9·10 = 5040. -/
 axiom erdos_389_n3 : divides_upper_block 3 4
 
-/-! ## Mehta's Computation -/
+/- ## Mehta's Computation -/
 
 /-- **Bhavik Mehta's computation.**
 The minimal k for n = 4 is 207. This is the smallest k such that
@@ -81,7 +81,7 @@ axiom mehta_n4_minimal :
 axiom mehta_n4_minimality :
   ∀ k : ℕ, 1 ≤ k → k < 207 → ¬ divides_upper_block 4 k
 
-/-! ## Ratio Interpretation -/
+/- ## Ratio Interpretation -/
 
 /-- The ratio of consecutive products equals a product of ratios:
   ∏_{i=0}^{k-1} (n+k+i)/(n+i).

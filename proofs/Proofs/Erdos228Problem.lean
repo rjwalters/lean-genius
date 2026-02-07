@@ -30,7 +30,7 @@ open Complex Polynomial Filter
 
 namespace Erdos228
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A **Littlewood polynomial** has all coefficients in {-1, +1}. -/
 def IsLittlewoodPolynomial (p : Polynomial ℂ) : Prop :=
@@ -44,7 +44,7 @@ def IsFlatOnUnitCircle (p : Polynomial ℂ) (c₁ c₂ : ℝ) : Prop :=
   c₁ > 0 ∧ c₂ > 0 ∧
   ∀ z : ℂ, ‖z‖ = 1 → c₁ * Real.sqrt n ≤ ‖p.eval z‖ ∧ ‖p.eval z‖ ≤ c₂ * Real.sqrt n
 
-/-! ## Littlewood's Problem -/
+/- ## Littlewood's Problem -/
 
 /--
 **Erdős Problem #228** (originally Littlewood's conjecture):
@@ -59,7 +59,7 @@ def Erdos228Question : Prop :=
   ∀ᶠ n in atTop, ∃ p : Polynomial ℂ,
     p.natDegree = n ∧ IsLittlewoodPolynomial p ∧ IsFlatOnUnitCircle p c₁ c₂
 
-/-! ## Why √n is the expected magnitude -/
+/- ## Why √n is the expected magnitude -/
 
 /--
 **Intuition**: For a random Littlewood polynomial with degree n, evaluated
@@ -74,7 +74,7 @@ theorem expected_magnitude_heuristic :
   intro n hn
   exact Real.sqrt_pos.mpr (Nat.cast_pos.mpr hn)
 
-/-! ## The Main Theorem -/
+/- ## The Main Theorem -/
 
 /--
 **Theorem** (Balister-Bollobás-Morris-Sahasrabudhe-Tiba, 2019):
@@ -97,7 +97,7 @@ axiom bbmst_theorem : Erdos228Question
 /-- The answer to Erdős Problem #228 is YES. -/
 theorem erdos_228_answer : Erdos228Question := bbmst_theorem
 
-/-! ## Explicit Formulation -/
+/- ## Explicit Formulation -/
 
 /--
 Equivalent explicit formulation: there exist universal constants c₁, c₂ > 0
@@ -111,7 +111,7 @@ axiom bbmst_explicit :
       (∀ i ≤ n, p.coeff i = 1 ∨ p.coeff i = -1) ∧
       (∀ z : ℂ, ‖z‖ = 1 → c₁ * Real.sqrt n ≤ ‖p.eval z‖ ∧ ‖p.eval z‖ ≤ c₂ * Real.sqrt n)
 
-/-! ## Historical Context -/
+/- ## Historical Context -/
 
 /--
 **Historical note**: The problem has roots going back to Littlewood's 1966
@@ -126,7 +126,7 @@ Key milestones:
 axiom littlewood_original :
     ∃ _statement : Prop, True  -- Historical record placeholder
 
-/-! ## Related Problems -/
+/- ## Related Problems -/
 
 /--
 **Related Problem**: Erdős also asked (Problem 4.31 in Hayman 1974) whether
@@ -141,7 +141,7 @@ def ErdosHaymanQuestion : Prop :=
 /-- The Hayman question is related to, but distinct from, the flatness question. -/
 axiom hayman_question_status : ErdosHaymanQuestion ∨ ¬ErdosHaymanQuestion
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /--
 **Summary of Erdős Problem #228**:

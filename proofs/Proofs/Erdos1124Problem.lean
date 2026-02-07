@@ -38,7 +38,7 @@ namespace Erdos1124
 
 open Set MeasureTheory
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -61,7 +61,7 @@ def disk (r : ℝ) : Set Point :=
 def square (s : ℝ) : Set Point :=
   {p | 0 ≤ p 0 ∧ p 0 ≤ s ∧ 0 ≤ p 1 ∧ p 1 ≤ s}
 
-/-!
+/-
 ## Part II: Equidecomposability
 -/
 
@@ -96,7 +96,7 @@ def IsometryEquidecomposable (A B : Set Point) : Prop :=
     IsDecomposition B (Finset.univ.image piecesB) ∧
     ∀ i : Fin n, IsometryCongruent (piecesA i) (piecesB i)
 
-/-!
+/-
 ## Part III: The Circle-Squaring Problem
 -/
 
@@ -117,7 +117,7 @@ theorem equal_areas : SameArea equalAreaRadius 1 := by
   field_simp
   ring
 
-/-!
+/-
 ## Part IV: Tarski's Original Question
 -/
 
@@ -130,7 +130,7 @@ def TarskiProblem : Prop :=
   ∀ r s : ℝ, r > 0 → s > 0 → SameArea r s →
     IsometryEquidecomposable (disk r) (square s)
 
-/-!
+/-
 ## Part V: Laczkovich's Solution (1990)
 -/
 
@@ -164,7 +164,7 @@ theorem tarski_solved : TarskiProblem := by
   intro r s hr hs hArea
   exact translation_implies_isometry _ _ (laczkovich_theorem r s hr hs hArea)
 
-/-!
+/-
 ## Part VI: Key Features of the Proof
 -/
 
@@ -183,7 +183,7 @@ axiom dubins_hirsch_karush :
       (∀ i, MeasurableSet (piecesA i)) ∧
       (∀ i, TranslationCongruent (piecesA i) (piecesB i))
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

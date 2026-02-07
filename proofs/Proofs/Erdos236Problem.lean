@@ -29,7 +29,7 @@ open Asymptotics Filter
 
 namespace Erdos236
 
-/-! ## Part I: Core Definitions -/
+/- ## Part I: Core Definitions -/
 
 /-- f(n) counts solutions to n = p + 2^k for prime p and k ≥ 0.
 
@@ -43,7 +43,7 @@ namespace Erdos236
 def f (n : ℕ) : ℕ :=
   ((List.range (Nat.log2 n + 1)).filter (fun k => Nat.Prime (n - 2^k))).length
 
-/-! ## Part II: Basic Properties -/
+/- ## Part II: Basic Properties -/
 
 /-- For any n, f(n) is at most log₂(n) + 1 (trivial upper bound). -/
 theorem f_trivial_upper_bound (n : ℕ) :
@@ -72,7 +72,7 @@ axiom f_nine : f 9 = 2
     Verification: 15 - 2 = 13 (prime), 15 - 4 = 11 (prime), 15 - 8 = 7 (prime). -/
 axiom f_fifteen : f 15 = 3
 
-/-! ## Part III: Special Numbers (All-Prime Property) -/
+/- ## Part III: Special Numbers (All-Prime Property) -/
 
 /-- A number n has the "all-prime" property if n - 2^k is prime for ALL
     1 < 2^k < n. These are extremely rare.
@@ -112,7 +112,7 @@ axiom twentyone_all_prime : HasAllPrimeProperty 21
 axiom erdos_guy_all_prime_conjecture :
   {n : ℕ | HasAllPrimeProperty n ∧ n > 1} = {4, 7, 15, 21, 45, 75, 105}
 
-/-! ## Part IV: Main Conjecture and Known Bounds -/
+/- ## Part IV: Main Conjecture and Known Bounds -/
 
 /-- **Erdős Problem #236** (Main Conjecture): f(n) = o(log n)
 
@@ -142,7 +142,7 @@ axiom vaughan_all_prime_sparse :
       N * Real.exp (-c * (Real.log (Real.log (Real.log N)) /
                          Real.log (Real.log N)) * Real.log N)
 
-/-! ## Part V: Relationship to Problem #10 -/
+/- ## Part V: Relationship to Problem #10 -/
 
 /-- Connection: This problem is about counting representations n = p + 2^k,
     while Problem #10 asks if every n has such a representation for some k.
@@ -158,7 +158,7 @@ theorem no_representation_iff_f_zero (n : ℕ) :
     ¬HasRepresentation n ↔ f n = 0 := by
   simp only [HasRepresentation, Nat.not_lt, Nat.le_zero]
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- Main results in this file:
     1. Definition of f(n) = #{k : n - 2^k is prime}

@@ -32,7 +32,7 @@ open Nat Real Filter
 
 namespace Erdos1122
 
-/-!
+/-
 # Erdős Problem 1122: Additive Functions and Monotonicity Defects
 
 *Reference:* [erdosproblems.com/1122](https://www.erdosproblems.com/1122)
@@ -41,7 +41,7 @@ An additive function f: ℕ → ℝ satisfies f(ab) = f(a) + f(b) when gcd(a,b) 
 The conjecture asks whether sparse monotonicity defects force f to be logarithmic.
 -/
 
-/-! ## Additive Functions -/
+/- ## Additive Functions -/
 
 /-- An additive function satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. -/
 def IsAdditive (f : ℕ → ℝ) : Prop :=
@@ -62,7 +62,7 @@ theorem log_completely_additive : IsCompletelyAdditive (fun n => Real.log n) := 
 def valueDeterminedByPrimes (f : ℕ → ℝ) (hf : IsAdditive f) : Prop :=
   ∀ n : ℕ, n ≥ 1 → f n = ∑ p ∈ Nat.primeFactors n, f (p ^ (Nat.factorization n p))
 
-/-! ## The Monotonicity Defect Set -/
+/- ## The Monotonicity Defect Set -/
 
 /-- A = {n ≥ 1 : f(n+1) < f(n)} is the set where f fails to be increasing. -/
 def monotonicityDefectSet (f : ℕ → ℝ) : Set ℕ :=
@@ -90,7 +90,7 @@ theorem empty_defect_means_increasing (f : ℕ → ℝ) (h : hasEmptyDefectSet f
   rw [h] at this
   exact this
 
-/-! ## The Logarithmic Form -/
+/- ## The Logarithmic Form -/
 
 /-- f(n) = c·log(n) for some constant c. -/
 def hasLogarithmicForm (f : ℕ → ℝ) : Prop :=
@@ -110,7 +110,7 @@ theorem logarithmic_is_additive (f : ℕ → ℝ) (hf : hasLogarithmicForm f) : 
   rw [Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]
   ring
 
-/-! ## Erdős's Known Results -/
+/- ## Erdős's Known Results -/
 
 /-- Erdős (1946): If A = ∅ (f strictly increasing), then f = c·log.
     An increasing additive function must be logarithmic. -/
@@ -125,7 +125,7 @@ def incrementsVanish (f : ℕ → ℝ) : Prop :=
 axiom erdos_vanishing_increments (f : ℕ → ℝ) (hf : IsAdditive f)
     (hvanish : incrementsVanish f) : hasLogarithmicForm f
 
-/-! ## Mangerel's Partial Progress (2022) -/
+/- ## Mangerel's Partial Progress (2022) -/
 
 /-- Mangerel's density condition: |A ∩ [1,X]| ≪ X/(log X)^{2+c} for some c > 0. -/
 def satisfiesMangerelDensity (f : ℕ → ℝ) : Prop :=
@@ -143,7 +143,7 @@ axiom mangerel_2022 (f : ℕ → ℝ) (hf : IsAdditive f)
     (hdensity : satisfiesMangerelDensity f) (hbounded : hasBoundedPrimeValues f) :
     hasLogarithmicForm f
 
-/-! ## The Erdős Conjecture -/
+/- ## The Erdős Conjecture -/
 
 /-- Erdős Problem #1122 (OPEN):
     If f is additive and |A ∩ [1,X]| = o(X), then f(n) = c·log(n). -/
@@ -153,7 +153,7 @@ def erdos1122Conjecture : Prop :=
 /-- The conjecture is axiomatized as the problem is OPEN. -/
 axiom erdos_1122 : erdos1122Conjecture
 
-/-! ## Condition Hierarchy -/
+/- ## Condition Hierarchy -/
 
 /-- If A = ∅, then |A ∩ [1,X]| = 0 = o(X). -/
 theorem empty_implies_littleO (f : ℕ → ℝ) (h : hasEmptyDefectSet f) : defectIsLittleO f := by
@@ -178,7 +178,7 @@ def conditionHierarchy : Prop :=
   (∀ f : ℕ → ℝ, hasEmptyDefectSet f → satisfiesMangerelDensity f) ∧
   (∀ f : ℕ → ℝ, satisfiesMangerelDensity f → defectIsLittleO f)
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- log(n) has empty defect set: log is strictly increasing on ℕ⁺. -/
 theorem log_has_empty_defect : hasEmptyDefectSet (fun n => Real.log n) := by
@@ -198,7 +198,7 @@ axiom omega_is_additive : IsAdditive (fun n => (omega n : ℝ))
 /-- ω is not logarithmic: it grows much slower than log. -/
 axiom omega_not_logarithmic : ¬hasLogarithmicForm (fun n => (omega n : ℝ))
 
-/-! ## Summary of Known Results -/
+/- ## Summary of Known Results -/
 
 /-- Consolidation of the three known positive results:
     1. Empty defect → logarithmic (Erdős 1946)

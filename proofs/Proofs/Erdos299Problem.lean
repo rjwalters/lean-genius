@@ -58,7 +58,7 @@ open Filter Asymptotics Finset
 
 namespace Erdos299
 
-/-!
+/-
 ## Part I: Definitions
 
 We define the key concepts: bounded-gap sequences, Egyptian fractions, and density.
@@ -83,7 +83,7 @@ def HasUnitFractionSum (S : Finset ℕ) : Prop :=
 def AvoidsUnitFractionSum (a : ℕ → ℕ) : Prop :=
   ∀ S : Finset ℕ, ∑ i ∈ S, (1 : ℝ) / a i ≠ 1
 
-/-!
+/-
 ## Part II: Upper Density
 
 The upper density of a set measures what fraction of integers it contains "in the limit".
@@ -102,7 +102,7 @@ noncomputable def upperDensity (A : Set ℕ) : ℝ :=
 def HasPositiveUpperDensity (A : Set ℕ) : Prop :=
   upperDensity A > 0
 
-/-!
+/-
 ## Part III: Key Lemma - Bounded Gaps Imply Positive Density
 
 If a strictly increasing sequence has bounded gaps, its range has positive density.
@@ -172,7 +172,7 @@ theorem boundedGaps_implies_positiveDensity (a : ℕ → ℕ) (C : ℕ) (hC : C 
       exact le_trans ( Set.ncard_le_ncard ( show Set.range a ∩ Set.Iic n ⊆ Set.Icc 1 n from fun x hx => ⟨ by obtain ⟨ k, rfl ⟩ := hx.1; exact hpos k, hx.2 ⟩ ) ) ( by simp +decide [ Set.ncard_eq_toFinset_card' ] ) ) ( Nat.cast_nonneg _ ) ⟩ ⟩;
   · exact fun b x hx => le_of_tendsto h_limit ( Filter.eventually_atTop.mpr ⟨ x + a 0 + C, fun N hN => le_trans ( h_dividing N ( by linarith ) ) ( hx N ( by linarith ) ) ⟩ )
 
-/-!
+/-
 ## Part IV: Bloom's Theorem (Problem #298)
 
 This is the key result: positive density sets contain Egyptian fractions.
@@ -191,7 +191,7 @@ Unexpected axioms were added during verification: ['Erdos299.bloom_theorem', 'ha
 axiom bloom_theorem (A : Set ℕ) (h0 : 0 ∉ A) (hdens : HasPositiveUpperDensity A) :
     ∃ S : Finset ℕ, ↑S ⊆ A ∧ HasUnitFractionSum S
 
-/-!
+/-
 ## Part V: The Main Result - Erdős Problem #299
 -/
 
@@ -230,7 +230,7 @@ theorem erdos_299 : ¬∃ (a : ℕ → ℕ),
     ∀ S : Finset ℕ, ∑ i ∈ S, (1 : ℝ) / a i ≠ 1 :=
   erdos_299_no_such_sequence
 
-/-!
+/-
 ## Part VI: The Density Variant
 
 Bloom's result is even stronger: positive density alone suffices.
@@ -247,7 +247,7 @@ theorem erdos_299_density_variant (A : Set ℕ) (h0 : 0 ∉ A) (hdens : HasPosit
     ∃ S : Finset ℕ, ↑S ⊆ A ∧ HasUnitFractionSum S := by
   exact bloom_theorem A h0 hdens
 
-/-!
+/-
 ## Part VII: Concrete Examples
 
 We verify some basic facts about sequences and unit fractions.
@@ -276,7 +276,7 @@ theorem egyptian_2_4_6_12 : HasUnitFractionSum {2, 4, 6, 12} := by
     rcases hn with rfl | rfl | rfl | rfl <;> omega
   · native_decide
 
-/-!
+/-
 ## Part VIII: Why Bounded Gaps Matter
 
 The bounded gap condition is crucial. Without it, sparse sequences CAN avoid unit fractions.

@@ -25,7 +25,7 @@ open scoped Topology
 
 namespace Erdos66
 
-/-!
+/-
 ## Background
 
 The representation function r_A(n) = |{(a,b) ∈ A×A : a + b = n}| counts how many ways
@@ -56,7 +56,7 @@ For finite sets, this counts representations directly.
 noncomputable def sumRep (A : Set ℕ) (n : ℕ) : ℕ :=
   representationFunction A n
 
-/-!
+/-
 ## The Main Question
 
 Erdős Problem #66 asks whether there exists a set A such that
@@ -92,7 +92,7 @@ We state this as a definition (not asserting its truth).
 -/
 def ErdosConjecture66 : Prop := ¬Erdos66Question
 
-/-!
+/-
 ## Partial Results
 
 While the main question is open, several partial results constrain how
@@ -128,7 +128,7 @@ axiom horvath2007 :
     ∀ᶠ n in atTop,
       |((representationFunction A n : ℝ) - Real.log n)| > (1 - ε) * Real.sqrt (Real.log n)
 
-/-!
+/-
 ## Connection to Random Sets
 
 Random sets constructed with the right density DO have the property
@@ -158,7 +158,7 @@ def randomSetHasLimitAlmostEverywhere : Prop :=
     (∀ ε > 0, ∀ᶠ n in atTop, n ∉ E →
       |(representationFunction A n : ℝ) / Real.log n - c| < ε)
 
-/-!
+/-
 ## Erdős's Stronger Conjecture
 
 Erdős suggested an even stronger statement might be true: that the

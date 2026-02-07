@@ -23,7 +23,7 @@ open scoped Topology
 
 namespace Erdos89
 
-/-!
+/-
 ## Background
 
 The **distinct distances problem** is one of Erdős's most famous problems
@@ -61,7 +61,7 @@ This is the extremal function g(n) that Erdős asked about.
 noncomputable def minDistinctDistances (n : ℕ) : ℕ :=
   sInf {numDistinctDistances S | (S : Finset (EuclideanSpace ℝ (Fin 2))) (_ : S.card = n)}
 
-/-!
+/-
 ## The Main Question
 
 Erdős conjectured that g(n) ≫ n/√(log n).
@@ -81,7 +81,7 @@ def Erdos89Conjecture : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
     c * n / Real.sqrt (Real.log n) ≤ minDistinctDistances n
 
-/-!
+/-
 ## Guth-Katz Theorem (2015)
 
 Larry Guth and Nets Hawk Katz proved a slightly weaker bound:
@@ -112,7 +112,7 @@ axiom gridUpperBound :
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
     minDistinctDistances n ≤ c * n / Real.sqrt (Real.log n)
 
-/-!
+/-
 ## Consistency Check
 
 The conjecture implies Guth-Katz. This is because n/√(log n) ≫ n/log n.
@@ -179,7 +179,7 @@ theorem conjecture_implies_guthKatz (h : Erdos89Conjecture) :
           apply scaled_div_log_le_div_sqrt_log hc_pos (by exact Nat.cast_pos.mpr hn_pos) hlog
         _ ≤ minDistinctDistances n := hn
 
-/-!
+/-
 ## Historical Development
 
 - 1946: Erdős poses the problem
@@ -210,7 +210,7 @@ axiom tardos2004 :
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
     c * (n : ℝ)^((4 * Real.exp 1)/(5 * Real.exp 1 - 1) : ℝ) ≤ minDistinctDistances n
 
-/-!
+/-
 ## Related Problems
 
 Erdős also asked about:

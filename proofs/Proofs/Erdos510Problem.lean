@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #510 — Chowla's Cosine Problem
 
 For a finite set A ⊂ ℕ of size N > 0, does there exist an absolute
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- The cosine sum of a finite set A ⊂ ℕ at angle θ. -/
 noncomputable def cosineSum (A : Finset ℕ) (θ : ℝ) : ℝ :=
@@ -30,7 +30,7 @@ noncomputable def cosineSum (A : Finset ℕ) (θ : ℝ) : ℝ :=
 noncomputable def minCosineSum (A : Finset ℕ) : ℝ :=
   iInf (cosineSum A)
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Chowla's Cosine Problem (Erdős Problem #510)**: There exists
     c > 0 such that for every finite A ⊂ ℕ⁺ of size N, there
@@ -40,7 +40,7 @@ axiom erdos_510_chowla :
     ∀ (A : Finset ℕ), (∀ a ∈ A, a > 0) → A.card > 0 →
       ∃ θ : ℝ, cosineSum A θ < -c * Real.sqrt A.card
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Bedert (2025)**: There exists c > 0 such that for all finite
     A ⊂ ℕ⁺ of size N, min_θ ∑ cos(nθ) < −cN^{1/7}. -/
@@ -57,7 +57,7 @@ axiom ruzsa_bound : True
     problem, later improved by Ruzsa. -/
 axiom bourgain_bound : True
 
-/-! ## Optimality -/
+/- ## Optimality -/
 
 /-- **Sidon Set Construction**: For A = B − B where B is a Sidon set
     of size ≈ √N, the set A has size N and the minimum cosine sum
@@ -67,7 +67,7 @@ axiom sidon_optimality :
     (∀ a ∈ A, a > 0) ∧ A.card > 0 ∧
     ∀ θ : ℝ, cosineSum A θ > -(1 + ε) * Real.sqrt A.card
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Connection to Additive Combinatorics**: The cosine problem is
     intimately related to the structure of difference sets and

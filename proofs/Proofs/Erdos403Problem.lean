@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #403: Powers of 2 as Sums of Distinct Factorials
 
 Source: https://erdosproblems.com/403
@@ -31,7 +31,7 @@ open Finset Nat BigOperators
 
 namespace Erdos403
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Sums of distinct factorials and their divisibility properties.
@@ -65,7 +65,7 @@ p^m equals a sum of distinct factorials.
 def IsPrimePowerFactorialSum (p m : ℕ) : Prop :=
   ∃ S : Finset ℕ, S.Nonempty ∧ sumFactorials S = p ^ m
 
-/-!
+/-
 ## Part II: Known Solutions
 
 Explicit solutions to 2^m = Σ aᵢ!
@@ -96,7 +96,7 @@ theorem maximal_solution_elements :
     2 + 6 + 120 = 128 := by
   native_decide
 
-/-!
+/-
 ## Part III: Main Finiteness Result
 
 Lin's Theorem: Only finitely many solutions exist.
@@ -127,7 +127,7 @@ theorem solution_set_finite :
   intro m hm
   exact lin_theorem_finiteness m hm
 
-/-!
+/-
 ## Part IV: Lin's Stronger Result
 
 The 2-adic bound for factorial sums.
@@ -159,7 +159,7 @@ The 2-adic valuation of 2^m is exactly m, so this follows from Lin's bound.
 axiom power_of_two_bound (S : Finset ℕ) (m : ℕ)
     (h2 : 2 ∈ S) (hsum : sumFactorials S = 2 ^ m) : m ≤ 254
 
-/-!
+/-
 ## Part V: Powers of 3
 
 Lin's result for the 3^m equation.
@@ -208,7 +208,7 @@ The equation 3^m = Σ aᵢ! has exactly 5 solutions: m ∈ {0, 1, 2, 3, 6}.
 axiom lin_theorem_powers_of_three :
     ∀ m : ℕ, IsPrimePowerFactorialSum 3 m ↔ m ∈ threeExponentSolutions
 
-/-!
+/-
 ## Part VI: Why Finiteness Holds
 
 Key insight: Factorial growth dominates exponential growth.
@@ -243,7 +243,7 @@ axiom max_element_bound (S : Finset ℕ) (m : ℕ)
     (hS : S.Nonempty)
     (hsum : sumFactorials S = 2 ^ m) : S.sup' hS id ≤ 13
 
-/-!
+/-
 ## Part VII: Connection to Problem 404
 
 The general question about prime power divisibility.
@@ -275,7 +275,7 @@ which is bounded by f(2,2).
 axiom problem_404_generalizes_403 :
     ∀ m : ℕ, IsPowerOfTwoFactorialSum m → m ≤ maxPrimePowerDiv 2 2
 
-/-!
+/-
 ## Part VIII: Computational Verification
 
 Checking small cases exhaustively.
@@ -308,7 +308,7 @@ This is verified as the maximum solution.
 theorem check_m7 : IsPowerOfTwoFactorialSum 7 :=
   ⟨{2, 3, 5}, by simp, solution_m7⟩
 
-/-!
+/-
 ## Part IX: Main Results
 
 Summary of Erdős Problem #403.

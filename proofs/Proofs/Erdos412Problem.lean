@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #412: Iterated Sum of Divisors Convergence
 
   Source: https://erdosproblems.com/412
@@ -37,7 +37,7 @@ namespace Erdos412
 
 open Nat
 
-/-! ## Part I: The Sum of Divisors Function -/
+/- ## Part I: The Sum of Divisors Function -/
 
 /-- The sum of divisors function σ(n) = Σ_{d | n} d.
     For example: σ(6) = 1 + 2 + 3 + 6 = 12.
@@ -59,7 +59,7 @@ example : sigma 12 = 28 := by native_decide
 /-- Example: σ(28) = 56. -/
 example : sigma 28 = 56 := by native_decide
 
-/-! ## Part II: Iterated Sum of Divisors -/
+/- ## Part II: Iterated Sum of Divisors -/
 
 /-- The k-th iterate of the sum of divisors function.
     σ₀(n) = n
@@ -91,7 +91,7 @@ example : iterSigma 4 3 = 15 := by native_decide
 /-- Note: σ₁(2) = 3 and σ₀(3) = 3, so sequences from 2 and 3 merge after 1 step! -/
 theorem merge_2_3 : iterSigma 1 2 = iterSigma 0 3 := by native_decide
 
-/-! ## Part III: The Conjecture -/
+/- ## Part III: The Conjecture -/
 
 /-- Two numbers m and n are σ-equivalent if their iterated sequences eventually meet.
     That is, there exist i, j such that σᵢ(m) = σⱼ(n). -/
@@ -104,7 +104,7 @@ def SigmaEquivalent (m n : ℕ) : Prop :=
 def Erdos412Conjecture : Prop :=
   ∀ m n : ℕ, m ≥ 2 → n ≥ 2 → SigmaEquivalent m n
 
-/-! ## Part IV: Verified Examples -/
+/- ## Part IV: Verified Examples -/
 
 /-- 2 and 3 are σ-equivalent (they merge after 1 and 0 steps respectively). -/
 theorem equiv_2_3 : SigmaEquivalent 2 3 := ⟨1, 0, by native_decide⟩
@@ -118,7 +118,7 @@ theorem equiv_5_6 : SigmaEquivalent 5 6 := ⟨1, 0, by native_decide⟩
 /-- 7 and 8 are σ-equivalent: σ(7) = 8. -/
 theorem equiv_7_8 : SigmaEquivalent 7 8 := ⟨1, 0, by native_decide⟩
 
-/-! ## Part V: The Aliquot Sequence Connection -/
+/- ## Part V: The Aliquot Sequence Connection -/
 
 /-- The aliquot sum s(n) = σ(n) - n is the sum of proper divisors.
     The aliquot sequence n → s(n) → s(s(n)) → ... is related but different.
@@ -135,7 +135,7 @@ example : aliquotSum 6 = 6 := by native_decide
 /-- Example: s(28) = 56 - 28 = 28 (28 is perfect). -/
 example : aliquotSum 28 = 28 := by native_decide
 
-/-! ## Part VI: Growth of Iterated Sigma -/
+/- ## Part VI: Growth of Iterated Sigma -/
 
 /-- For n ≥ 2, σ(n) ≥ n + 1 (since 1 and n are always divisors).
     This means the iterated sequence is non-decreasing for n ≥ 2. -/
@@ -159,7 +159,7 @@ theorem sigma_gt (n : ℕ) (hn : n ≥ 2) : sigma n > n := by
   have h := sigma_ge_succ n hn
   omega
 
-/-! ## Part VII: Related Concepts -/
+/- ## Part VII: Related Concepts -/
 
 /-- A number n is σ-periodic if σₖ(n) = n for some k ≥ 1.
     Perfect numbers (σ(n) = 2n) are related but not σ-periodic. -/
@@ -171,7 +171,7 @@ theorem no_sigma_periodic_step1 (n : ℕ) (hn : n ≥ 2) : iterSigma 1 n > n := 
   simp only [iterSigma, Function.iterate_one]
   exact sigma_gt n hn
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /-- **Summary of Erdős Problem #412**:
 
@@ -191,7 +191,7 @@ theorem erdos_412_summary :
 
 end Erdos412
 
-/-!
+/-
 ## Final Notes
 
 This file formalizes Erdős Problem #412 on iterated sum-of-divisors convergence.

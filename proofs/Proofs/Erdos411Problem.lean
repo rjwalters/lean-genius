@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #411: Iterated Totient Sums and Doubling
 
 Let g(n) = n + φ(n) and define g_k(n) by iterating g. For which n and r
@@ -16,7 +16,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: The Iteration Function
 -/
 
@@ -28,7 +28,7 @@ def iteratedTotientStep : ℕ → ℕ → ℕ
   | 0, n => n
   | k + 1, n => totientStep (iteratedTotientStep k n)
 
-/-!
+/-
 ## Section II: The Doubling Relation
 -/
 
@@ -37,7 +37,7 @@ def DoublingRelation (n r : ℕ) : Prop :=
   ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
     iteratedTotientStep (k + r) n = 2 * iteratedTotientStep k n
 
-/-!
+/-
 ## Section III: The Conjecture
 -/
 
@@ -49,7 +49,7 @@ def ErdosProblem411 : Prop :=
   ∃ S : Set (ℕ × ℕ), (∀ p : ℕ × ℕ, p ∈ S ↔ DoublingRelation p.1 p.2) ∧
     S.Nonempty
 
-/-!
+/-
 ## Section IV: Known Solutions
 -/
 
@@ -72,7 +72,7 @@ axiom cambie_ratio3 : GeneralRatioRelation 738 4 3
 axiom cambie_ratio4_148646 : GeneralRatioRelation 148646 4 4
 axiom cambie_ratio4_4325798 : GeneralRatioRelation 4325798 4 4
 
-/-!
+/-
 ## Section V: Steinerberger's Reduction
 -/
 
@@ -82,7 +82,7 @@ axiom steinerberger_r2_equiv (n : ℕ) :
   DoublingRelation n 2 ↔
     n.totient + (n + n.totient).totient = n
 
-/-!
+/-
 ## Section VI: Structural Properties
 -/
 

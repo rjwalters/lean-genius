@@ -33,7 +33,7 @@ namespace Erdos878
 
 open Real Nat BigOperators
 
-/-!
+/-
 ## Part 1: The Function f(n)
 
 f(n) sums pᵢ^ℓᵢ over prime factors pᵢ of n, where ℓᵢ is the largest integer
@@ -59,7 +59,7 @@ theorem f_one : f 1 = 0 := by
 /-- f(p) = p for any prime p -/
 axiom f_prime (p : ℕ) (hp : p.Prime) : f p = p
 
-/-!
+/-
 ## Part 2: The Function F(n)
 
 F(n) maximizes the sum of pairwise coprime integers ≤ n whose prime factors
@@ -86,7 +86,7 @@ noncomputable def F (n : ℕ) : ℕ :=
 /-- f(n) ≤ F(n) for all n (trivial inequality) -/
 axiom f_le_F (n : ℕ) : f n ≤ F n
 
-/-!
+/-
 ## Part 3: Asymptotic Behavior
 
 The main questions concern the growth of f, F, and related quantities.
@@ -121,7 +121,7 @@ def Question3 : Prop :=
     Finset.sup' (Finset.range (x + 1))
       ⟨0, Finset.mem_range.mpr (Nat.zero_lt_succ x)⟩ F
 
-/-!
+/-
 ## Part 4: The Sum H(x)
 
 H(x) = ∑_{n<x} f(n)/n has unusual behavior - it doesn't have a mean value.
@@ -153,7 +153,7 @@ theorem f_no_mean_value :
     (∃ L : ℝ, Filter.liminf (fun x => H x / x) Filter.atTop = L ∧ L < ⊤) := by
   exact ⟨H_limsup_infinite, H_liminf_finite⟩
 
-/-!
+/-
 ## Part 5: Erdős's 1984 Result
 
 max_{n≤x} f(n) ~ x log x / log log x along a sequence of x.
@@ -169,7 +169,7 @@ axiom erdos_1984 :
                 ((seq k : ℝ) * Real.log (seq k) / Real.log (Real.log (seq k))))
       Filter.atTop (nhds 1)
 
-/-!
+/-
 ## Part 6: Conjecture on F(n) for Almost All n
 -/
 
@@ -179,7 +179,7 @@ def Conjecture_F_almost_all : Prop :=
     |(F n : ℝ) - (1/2 : ℝ) * n * Real.log (Real.log n)| <
     ε * n * Real.log (Real.log n))
 
-/-!
+/-
 ## Part 7: Summary
 -/
 

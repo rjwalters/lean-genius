@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #474: Coloring ℝ² for Uncountable Sets
 
 Source: https://erdosproblems.com/474
@@ -33,7 +33,7 @@ open Cardinal Set
 
 namespace Erdos474
 
-/-! ## Part I: Cardinal Definitions -/
+/- ## Part I: Cardinal Definitions -/
 
 /--
 **The Continuum:**
@@ -53,7 +53,7 @@ noncomputable def aleph1 : Cardinal := Cardinal.aleph 1
 -/
 noncomputable def aleph2 : Cardinal := Cardinal.aleph 2
 
-/-! ## Part II: The Coloring Problem -/
+/- ## Part II: The Coloring Problem -/
 
 /--
 **Three-Coloring of the Plane:**
@@ -77,7 +77,7 @@ distinct a, b ∈ A with χ(a,b) = c.
 def ContainsAllColorPairs {X : Type*} (χ : ThreeColoring (X × X)) (A : Set X) : Prop :=
   ∀ c : Fin 3, ∃ a b : X, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) = c
 
-/-! ## Part III: The Main Conjecture -/
+/- ## Part III: The Main Conjecture -/
 
 /--
 **The Erdős Coloring Property:**
@@ -99,7 +99,7 @@ def PartitionProperty : Prop :=
     ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
     ∃ c : Fin 3, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
 
-/-! ## Part IV: The Two-Color Case (Solved) -/
+/- ## Part IV: The Two-Color Case (Solved) -/
 
 /--
 **Two-Color Theorem (Sierpinski-Kurepa):**
@@ -122,7 +122,7 @@ axiom two_color_partition :
     ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
     ∃ c : Fin 2, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
 
-/-! ## Part V: Under CH (Erdős's Result) -/
+/- ## Part V: Under CH (Erdős's Result) -/
 
 /--
 **The Continuum Hypothesis (CH):**
@@ -140,7 +140,7 @@ axiom erdos_under_ch :
   ∀ χ : ThreeColoring (ℝ × ℝ),
     ∀ A : Set ℝ, IsUncountable A → ContainsAllColorPairs χ A
 
-/-! ## Part VI: Shelah's Consistency Result -/
+/- ## Part VI: Shelah's Consistency Result -/
 
 /--
 **Shelah's Independence Result:**
@@ -165,7 +165,7 @@ axiom shelah_large_c :
   ∃ (M : Type) (_ : Nonempty M),
     Cardinal.mk M > Cardinal.aleph 2
 
-/-! ## Part VII: The Open Question -/
+/- ## Part VII: The Open Question -/
 
 /--
 **Open Problem:**
@@ -198,7 +198,7 @@ def erdos_prize_question : Prop :=
         ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
         ∃ c : Fin 3, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c)
 
-/-! ## Part VIII: Related Results -/
+/- ## Part VIII: Related Results -/
 
 /--
 **Negative Partition Relation:**
@@ -235,7 +235,7 @@ axiom erdos_rado_two_color :
       ∃ A : Set (Fin 2 → ℕ), IsUncountable A ∧
       ∃ c : Fin 2, ∀ a b : Fin 2 → ℕ, a ∈ A → b ∈ A → a ≠ b → χ (a, b) = c
 
-/-! ## Part IX: The Argument Structure -/
+/- ## Part IX: The Argument Structure -/
 
 /--
 **Why CH Helps:**
@@ -264,7 +264,7 @@ axiom large_c_failure :
         ∀ A : Set M, IsUncountable A →
           ∃ c : Fin 3, ∃ a b : M, a ∈ A ∧ b ∈ A ∧ a ≠ b ∧ χ (a, b) ≠ c
 
-/-! ## Part X: Summary -/
+/- ## Part X: Summary -/
 
 /--
 **Erdős Problem #474: Summary**

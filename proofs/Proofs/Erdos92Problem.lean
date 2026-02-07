@@ -24,7 +24,7 @@ open scoped Topology
 
 namespace Erdos92
 
-/-!
+/-
 ## Background
 
 This problem concerns the equidistance structure of point sets in the plane.
@@ -73,7 +73,7 @@ noncomputable def achievableValues (n : ℕ) : Set ℕ :=
 noncomputable def f (n : ℕ) : ℕ :=
   sSup (achievableValues n)
 
-/-!
+/-
 ## The Main Questions
 
 Erdős asked two related questions about the growth of f(n).
@@ -100,7 +100,7 @@ def StrongConjecture : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
     (f n : ℝ) ≤ (n : ℝ)^(c / Real.log (Real.log n))
 
-/-!
+/-
 ## Known Bounds
 -/
 
@@ -181,7 +181,7 @@ axiom latticeLowerBound :
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop,
     (n : ℝ)^(c / Real.log (Real.log n)) ≤ f n
 
-/-!
+/-
 ## Small Values
 
 Fishburn computed exact values for small n.
@@ -197,7 +197,7 @@ axiom f_6_eq_3 : f 6 = 3
 -/
 axiom f_8_eq_4 : f 8 = 4
 
-/-!
+/-
 ## Consequences
 
 The weak conjecture would imply strong bounds on unit distance graphs.
@@ -233,7 +233,7 @@ theorem strong_implies_weak (h : StrongConjecture) : WeakConjecture := by
   calc (f n : ℝ) ≤ (n : ℝ)^(c / Real.log (Real.log n)) := hn
     _ ≤ (n : ℝ)^ε := rpow_le_rpow_of_exponent_le' hn_large hexp
 
-/-!
+/-
 ## Historical Notes
 
 This problem is a "stronger form" of the unit distance conjecture (Problem #90).

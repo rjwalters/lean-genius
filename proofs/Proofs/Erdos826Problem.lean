@@ -32,7 +32,7 @@ open Nat
 
 namespace Erdos826
 
-/-!
+/-
 # Part 1: The Divisor Function
 
 τ(n) = σ₀(n) counts the number of positive divisors of n.
@@ -54,7 +54,7 @@ which equals the number of divisors.
 -/
 noncomputable def tau (n : ℕ) : ℕ := σ 0 n
 
-/-!
+/-
 # Part 2: Growth of the Divisor Function
 
 Known bounds on τ(n).
@@ -84,7 +84,7 @@ axiom max_order_tau :
     ∀ ε > (0 : ℝ), ∃ C : ℝ, ∀ n ≥ 2,
     (σ 0 n : ℝ) ≤ C * (2 : ℝ) ^ ((1 + ε) * Real.log n / Real.log (Real.log n))
 
-/-!
+/-
 # Part 3: The Linear Bound Condition
 
 The core condition of Problem #826.
@@ -113,7 +113,7 @@ These are starting points where divisor growth is well-controlled.
 def goodStartingPoints (C : ℝ) : Set ℕ :=
   { n | linearBoundCondition n C }
 
-/-!
+/-
 # Part 4: The Erdős Conjecture
 
 The formal statement of Problem #826.
@@ -141,7 +141,7 @@ axiom erdos_826_statement :
     erdos_826_conjecture ↔
     ∃ C > (0 : ℝ), { n | ∀ k ≥ 1, σ 0 (n + k) ≤ C * k }.Infinite
 
-/-!
+/-
 # Part 5: Relation to Problem #248
 
 Problem #826 strengthens Erdős Problem #248.
@@ -163,7 +163,7 @@ theorem erdos_826_implies_248 (h : erdos_826_conjecture) : erdos_248_weaker := b
   obtain ⟨C, hC, hInf⟩ := h
   exact ⟨C, hC, hInf⟩
 
-/-!
+/-
 # Part 6: Small Examples and Observations
 
 Understanding when the linear bound can hold.
@@ -190,7 +190,7 @@ def fewDivisorsAt1 (n : ℕ) (C : ℝ) : Prop :=
 axiom prime_satisfies_bound (n : ℕ) (hn : Nat.Prime (n + 1)) :
     (σ 0 (n + 1) : ℝ) = 2
 
-/-!
+/-
 # Part 7: Probabilistic Heuristic
 
 Why one might expect the conjecture to be true.
@@ -214,7 +214,7 @@ should occur infinitely often, but proving this is hard.
 def heuristicCriticalRange (n : ℕ) (C : ℝ) : ℕ :=
   ⌈Real.log n / C⌉₊
 
-/-!
+/-
 # Part 8: Connection to Smooth Numbers
 
 The role of smooth numbers in this problem.
@@ -234,7 +234,7 @@ n+1 consists of numbers with controlled divisor counts.
 def hasControlledDivisors (m : ℕ) (bound : ℝ) : Prop :=
   (σ 0 m : ℝ) ≤ bound
 
-/-!
+/-
 # Part 9: Why Tao Considers This Difficult
 
 The structural challenges.
@@ -263,7 +263,7 @@ challenges are:
    over all shifts that this problem requires.
 -/
 
-/-!
+/-
 # Part 10: Problem Status
 
 Summary and open status.
@@ -286,7 +286,7 @@ theorem erdos_826_main :
       exact ⟨C, hC, hInf⟩
   · exact erdos_826_implies_248
 
-/-!
+/-
 # Summary
 
 **Problem:** Are there infinitely many n such that τ(n+k) ≪ k

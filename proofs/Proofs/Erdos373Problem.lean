@@ -32,7 +32,7 @@ open Nat List Set Filter
 
 namespace Erdos373
 
-/-!
+/-
 ## Part I: Core Definitions
 
 A non-trivial factorial product equation n! = a₁! · a₂! · ... · aₖ!
@@ -63,7 +63,7 @@ def IsNontrivialSolution (n : ℕ) (l : List ℕ) : Prop :=
 def S : Set (ℕ × List ℕ) :=
   { p | IsNontrivialSolution p.1 p.2 }
 
-/-!
+/-
 ## Part II: Known Solutions
 
 Hickerson conjectured that these are ALL the non-trivial solutions.
@@ -85,7 +85,7 @@ theorem solution_10_357 : Nat.factorial 10 = Nat.factorial 3 * Nat.factorial 5 *
 theorem solution_16 : Nat.factorial 16 = Nat.factorial 14 * Nat.factorial 5 * Nat.factorial 2 := by
   native_decide
 
-/-!
+/-
 ## Part III: The Main Conjecture (OPEN)
 
 The main question: does S have only finitely many elements?
@@ -94,7 +94,7 @@ The main question: does S have only finitely many elements?
 /-- **Erdős Problem #373 (OPEN)**: The set of non-trivial solutions is finite. -/
 axiom erdos_373_finiteness : S.Finite
 
-/-!
+/-
 ## Part IV: Conditional Results
 
 Erdős showed the problem reduces to bounds on largest prime factors.
@@ -118,7 +118,7 @@ axiom erdos_reduction_alt :
   Tendsto (fun n => (maxPrimeFactor (n * (n + 1)) : ℝ) / Real.log n) atTop atTop →
     S.Finite
 
-/-!
+/-
 ## Part V: Luca's Theorem (Conditional on ABC)
 
 Florian Luca proved finiteness assuming the ABC conjecture.
@@ -136,7 +136,7 @@ def ABCConjecture : Prop :=
 /-- **Luca's Theorem (2007)**: ABC conjecture implies finiteness of S. -/
 axiom luca_theorem : ABCConjecture → S.Finite
 
-/-!
+/-
 ## Part VI: Hickerson's Conjecture
 
 The complete classification of all solutions.
@@ -155,7 +155,7 @@ axiom hickerson_conjecture :
 axiom hickerson_maximum :
   ∀ p ∈ S, p.1 ≤ 16
 
-/-!
+/-
 ## Part VII: Two-Factor Case (Surányi's Conjecture)
 
 The special case n! = a! · b! with a ≤ b < n - 1.
@@ -174,7 +174,7 @@ axiom suranyi_conjecture :
 axiom computational_verification :
   ∀ t ∈ TwoFactorSolutions, t.1 = 10 ∨ t.1 > 10^3000
 
-/-!
+/-
 ## Part VIII: Bounds on Solutions
 
 Erdős proved that in any solution, a₁ must be close to n.
@@ -193,7 +193,7 @@ axiom bhat_ramachandra_bound :
       a₁ < n - 1 → a₂ ≤ a₁ → 2 ≤ a₂ →
         (a₁ : ℝ) ≥ n - (1 / Real.log 2 + ε) * Real.log (Real.log n)
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #373** asks whether the factorial equation n! = a₁!···aₖ!

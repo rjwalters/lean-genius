@@ -39,7 +39,7 @@ namespace Erdos245
 open scoped Pointwise Topology
 open Filter Set
 
-/-! ## Part I: Counting Functions and Density -/
+/- ## Part I: Counting Functions and Density -/
 
 /-- The counting function: number of elements of A up to N. -/
 noncomputable def countingFunc (A : Set ℕ) (N : ℕ) : ℕ :=
@@ -56,7 +56,7 @@ def HasZeroDensity (A : Set ℕ) : Prop :=
 /-- The sumset A + A = {a + b : a, b ∈ A}. -/
 def sumset (A : Set ℕ) : Set ℕ := A + A
 
-/-! ## Part II: The Growth Ratio -/
+/- ## Part II: The Growth Ratio -/
 
 /-- The growth ratio |A+A| / |A| up to N.
     We use EReal to handle the case when |A ∩ {1,...,N}| = 0. -/
@@ -67,7 +67,7 @@ noncomputable def growthRatio (A : Set ℕ) (N : ℕ) : EReal :=
 noncomputable def asymptoticGrowthRatio (A : Set ℕ) : EReal :=
   Filter.limsup (fun N => growthRatio A N) atTop
 
-/-! ## Part III: The Lower Bound of 2
+/- ## Part III: The Lower Bound of 2
 
 Erdős stated it is "easy to see" that the limsup is at least 2.
 This follows from Mann's theorem (1960) on sumset densities.
@@ -86,7 +86,7 @@ This follows from Mann's theorem (1960) on sumset densities.
 axiom mann_growth_bound (A : Set ℕ) (hA : A.Infinite) (hd : HasZeroDensity A) :
     2 ≤ asymptoticGrowthRatio A
 
-/-! ## Part IV: Freiman's Theorem (Main Result)
+/- ## Part IV: Freiman's Theorem (Main Result)
 
 Freiman proved the sharp bound of 3 in his 1973 monograph
 "Foundations of a structural theory of set addition".
@@ -112,7 +112,7 @@ theorem erdos_245_positive_answer :
     ∀ (A : Set ℕ), A.Infinite → HasZeroDensity A →
     (3 : EReal) ≤ asymptoticGrowthRatio A := fun A hA hd => freiman_growth_theorem A hA hd
 
-/-! ## Part V: Optimality and Examples
+/- ## Part V: Optimality and Examples
 
 The bound 3 is best possible. The key example is geometric progressions.
 -/
@@ -151,7 +151,7 @@ theorem powers_sumset_structure (a b : ℕ) :
   simp only [Set.mem_add, Set.mem_setOf_eq]
   exact ⟨2^a, ⟨a, rfl⟩, 2^b, ⟨b, rfl⟩, rfl⟩
 
-/-! ## Part VI: Connection to Difference Sets
+/- ## Part VI: Connection to Difference Sets
 
 Erdős Problem #899 asks the analogous question for difference sets A - A.
 -/
@@ -166,7 +166,7 @@ def problem_899_statement : Prop :=
     ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, (Nat.card {x : ℤ | x ∈ diffSet A ∧ x.natAbs ≤ N} : ℝ) ≥
                                c * (countingFunc A N)
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /-- Summary of known results for Erdős Problem #245:
 

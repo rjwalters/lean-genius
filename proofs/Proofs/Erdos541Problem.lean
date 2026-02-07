@@ -24,7 +24,7 @@ namespace Erdos541
 open scoped Classical
 open Finset
 
-/-!
+/-
 ## The Setup
 
 We have p residues modulo p, indexed by Fin p. The key property is that
@@ -43,7 +43,7 @@ def HasSomeUniqueZeroSumLength (p : ℕ) (a : Fin p → ZMod p) : Prop :=
 noncomputable def distinctCount (p : ℕ) (a : Fin p → ZMod p) : ℕ :=
   (Set.range a).ncard
 
-/-!
+/-
 ## Main Theorem: Graham's Conjecture
 
 If all nonempty zero-sum subsets have the same cardinality, then the sequence
@@ -67,7 +67,7 @@ theorem graham_conjecture (p : ℕ) [hp : Fact p.Prime] (a : Fin p → ZMod p)
   -- and was resolved by Gao, Hamidoune, and Wang in 2010
   sorry
 
-/-!
+/-
 ## Special Cases and Variants
 -/
 
@@ -82,7 +82,7 @@ This is the most general form of Graham's conjecture. -/
 axiom gao_hamidoune_wang (n : ℕ) (a : Fin n → ZMod n)
     (h : HasSomeUniqueZeroSumLength n a) : distinctCount n a ≤ 2
 
-/-!
+/-
 ## Examples
 
 To build intuition, consider what happens with 1, 2, or 3 distinct values.
@@ -117,7 +117,7 @@ example (p : ℕ) [Fact p.Prime] (c d : ZMod p) (h : c ≠ d) :
     rw [Set.ncard_insert_of_notMem hne (Set.finite_singleton d), Set.ncard_singleton]
   exact le_trans (Set.ncard_le_ncard hsub) hcard
 
-/-!
+/-
 ## The Key Insight
 
 Why does 3 or more distinct values fail? The proof relies on:
@@ -143,7 +143,7 @@ theorem zero_sum_exists (p : ℕ) [hp : Fact p.Prime] (a : Fin p → ZMod p) :
   -- Then Σₖ∈{i+1,...,j} aₖ = sⱼ - sᵢ = 0
   sorry
 
-/-!
+/-
 ## Historical Context
 
 Graham's conjecture arose from the study of zero-sum problems in additive

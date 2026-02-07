@@ -30,7 +30,7 @@ open Set Cardinal Ordinal
 
 namespace Erdos70
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A k-coloring of n-element subsets of a set S. -/
 def Coloring (S : Type*) (n k : ℕ) :=
@@ -40,7 +40,7 @@ def Coloring (S : Type*) (n k : ℕ) :=
 def nSubsets (S : Type*) [DecidableEq S] (n : ℕ) : Set (Finset S) :=
   { t | t.card = n }
 
-/-! ## Homogeneous Sets -/
+/- ## Homogeneous Sets -/
 
 /-- A set H is homogeneous for coloring c with color i if all n-subsets of H get color i. -/
 def IsHomogeneous {S : Type*} [DecidableEq S] (H : Set S) (n : ℕ)
@@ -52,14 +52,14 @@ def FinsetIsHomogeneous {S : Type*} [DecidableEq S] (H : Finset S) (n k : ℕ)
     (c : Coloring S n k) (i : Fin k) : Prop :=
   ∀ (t : Finset S) (ht : t.card = n), t ⊆ H → c ⟨t, ht⟩ = i
 
-/-! ## Order Types -/
+/- ## Order Types -/
 
 /-- A set has order type at least α under some well-ordering (simplified version).
     We use cardinal comparison: H has at least as many elements as α. -/
 def HasOrderTypeAtLeast (S : Type*) (H : Set S) (α : Ordinal) : Prop :=
   α.card ≤ Cardinal.mk H
 
-/-! ## Partition Arrow -/
+/- ## Partition Arrow -/
 
 /--
 The partition arrow κ → (α, m)₂³ (for ordinals α and natural m).
@@ -73,7 +73,7 @@ def PartitionArrow (κ : Cardinal) (α : Ordinal) (m : ℕ) : Prop :=
     (∃ (H : Set S), HasOrderTypeAtLeast S H α ∧ IsHomogeneous H 3 c 0) ∨
     (∃ (H : Finset S), H.card ≥ m ∧ FinsetIsHomogeneous H 3 2 c 1)
 
-/-! ## The Continuum -/
+/- ## The Continuum -/
 
 /-- The cardinality of the continuum. -/
 noncomputable def continuum_card : Cardinal := Cardinal.continuum
@@ -82,7 +82,7 @@ noncomputable def continuum_card : Cardinal := Cardinal.continuum
 theorem continuum_def : continuum_card = 2 ^ Cardinal.aleph0 :=
   Cardinal.two_power_aleph0.symm
 
-/-! ## Countable Ordinals -/
+/- ## Countable Ordinals -/
 
 /-- An ordinal is countable if its cardinality is at most ℵ₀. -/
 def IsCountableOrdinal (α : Ordinal) : Prop := α.card ≤ Cardinal.aleph0
@@ -98,7 +98,7 @@ theorem nat_countable (n : ℕ) : IsCountableOrdinal n := by
   simp only [Ordinal.card_nat]
   exact Cardinal.nat_lt_aleph0 n |>.le
 
-/-! ## Erdős-Rado Theorem -/
+/- ## Erdős-Rado Theorem -/
 
 /--
 **Erdős-Rado Theorem** (partial):
@@ -111,7 +111,7 @@ or there is a homogeneous set of size 4 for color 1.
 axiom erdos_rado_omega_plus_n (n : ℕ) (hn : 2 ≤ n) :
     PartitionArrow continuum_card (Ordinal.omega0 + n) 4
 
-/-! ## Main Conjecture (OPEN) -/
+/- ## Main Conjecture (OPEN) -/
 
 /--
 **Erdős Problem 70** (OPEN):
@@ -124,7 +124,7 @@ def erdos_70_conjecture : Prop :=
   ∀ (β : Ordinal.{0}) (n : ℕ), IsCountableOrdinal β → 2 ≤ n →
     PartitionArrow continuum_card β n
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- The conjecture for β = ω. -/
 def conjecture_omega (n : ℕ) : Prop :=
@@ -138,7 +138,7 @@ def conjecture_omega_squared (n : ℕ) : Prop :=
 def conjecture_omega_tower (n : ℕ) : Prop :=
   PartitionArrow continuum_card (Ordinal.omega0 ^ Ordinal.omega0) n
 
-/-! ## Finite Ramsey Theory -/
+/- ## Finite Ramsey Theory -/
 
 /--
 **Finite Ramsey Theorem** (axiomatized):
@@ -159,7 +159,7 @@ axiom ramsey_3_3 : ∀ (c : Coloring (Fin 6) 3 2),
     ∃ (H : Finset (Fin 6)) (i : Fin 2), H.card ≥ 3 ∧
       FinsetIsHomogeneous H 3 2 c i
 
-/-! ## Negative Results -/
+/- ## Negative Results -/
 
 /--
 **Negative Direction** (if the conjecture is false):
@@ -177,7 +177,7 @@ theorem conjecture_xor_counterexample :
   push_neg
   rfl
 
-/-! ## Monotonicity -/
+/- ## Monotonicity -/
 
 /-- Partition arrows are monotonic in the ordinal parameter. -/
 axiom partition_arrow_mono_ordinal (κ : Cardinal) (α β : Ordinal) (m : ℕ)
@@ -187,7 +187,7 @@ axiom partition_arrow_mono_ordinal (κ : Cardinal) (α β : Ordinal) (m : ℕ)
 axiom partition_arrow_mono_size (κ : Cardinal) (α : Ordinal) (m n : ℕ)
     (hmn : m ≤ n) (h : PartitionArrow κ α n) : PartitionArrow κ α m
 
-/-! ## Related Ordinal Arithmetic -/
+/- ## Related Ordinal Arithmetic -/
 
 /-- ω + n is countable for any n. -/
 theorem omega0_plus_n_countable (n : ℕ) : IsCountableOrdinal (Ordinal.omega0 + n) := by
@@ -199,7 +199,7 @@ theorem omega0_squared_countable : IsCountableOrdinal (Ordinal.omega0 * Ordinal.
   unfold IsCountableOrdinal
   rw [Ordinal.card_mul, Ordinal.card_omega0, Cardinal.aleph0_mul_aleph0]
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: OPEN**
 

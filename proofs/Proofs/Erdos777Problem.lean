@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #777: Comparable Pairs in Families of Sets
 
 Source: https://erdosproblems.com/777
@@ -43,7 +43,7 @@ open Finset Set
 
 namespace Erdos777
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -90,7 +90,7 @@ The actual number of unordered edges is half the ordered count.
 def edgeCount (F : Finset (Finset α)) : ℕ :=
   orderedEdgeCount F / 2
 
-/-!
+/-
 ## Part II: The Base Set {1,...,n}
 -/
 
@@ -111,7 +111,7 @@ Size of the power set is 2^n.
 theorem powerSet_card (n : ℕ) : (powerSetOfBase n).card = 2^n := by
   simp only [powerSetOfBase, baseSet, Finset.card_powerset, Finset.card_range]
 
-/-!
+/-
 ## Part III: Question 1 - Edge Bound
 -/
 
@@ -141,7 +141,7 @@ axiom extremal_construction (n : ℕ) (hn : Even n) :
     F.card = 2^(n/2 + 1) ∧
     edgeCount F = 2^n
 
-/-!
+/-
 ## Part IV: Question 2 - Quadratic Edge Density
 -/
 
@@ -174,7 +174,7 @@ def alonFranklFamily (n : ℕ) : Finset (Finset ℕ) :=
     (S.filter (fun x => x ≥ n/2)).card ≤ 1 ∨
     (S.filter (fun x => x < n/2)).card ≥ n/2 - 1)
 
-/-!
+/-
 ## Part V: Question 3 - Subquadratic Threshold
 -/
 
@@ -207,7 +207,7 @@ axiom alonFrankl_quantitative (k : ℕ) (hk : k ≥ 1) :
     (edgeCount F : ℝ) < (1 - 1 / k) * ((F.card : ℝ) * (F.card - 1)) / 2 +
                         c * (F.card : ℝ)^(2 - c * δ^(k + 1))
 
-/-!
+/-
 ## Part VI: Daykin-Frankl Result
 -/
 
@@ -231,7 +231,7 @@ axiom daykinFrankl :
     ∀ ε > 0, ∃ N, ∀ i ≥ N,
       ((F_seq i).card : ℝ)^(1 / (n_seq i : ℝ)) < 1 + ε
 
-/-!
+/-
 ## Part VII: Chains and Antichains
 -/
 
@@ -269,7 +269,7 @@ axiom sperner_bound (n : ℕ) :
     IsAntichain F →
     F.card ≤ Nat.choose n (n / 2)
 
-/-!
+/-
 ## Part VIII: Examples
 -/
 
@@ -301,7 +301,7 @@ theorem empty_comparable (A : Finset α) : Comparable ∅ A :=
 theorem full_comparable (base A : Finset α) (hA : A ⊆ base) : Comparable A base :=
   Or.inr hA
 
-/-!
+/-
 ## Part IX: Alon-Das-Glebov-Sudakov Result (2015)
 -/
 
@@ -320,7 +320,7 @@ axiom ADGS_theorem :
     (F.card : ℝ) ≤ (2 - ε) * (2 : ℝ)^(n / 2) →
     edgeCount F < 2^n
 
-/-!
+/-
 ## Part X: Main Results Summary
 -/
 

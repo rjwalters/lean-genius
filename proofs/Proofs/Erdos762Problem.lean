@@ -38,7 +38,7 @@ open SimpleGraph
 
 namespace Erdos762
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -63,7 +63,7 @@ The maximum size of a complete subgraph.
 -/
 axiom cliqueNumber (G : SimpleGraph V) : ℕ
 
-/-!
+/-
 ## Part II: Cochromatic Coloring
 
 The cochromatic number generalizes chromatic number by allowing color classes
@@ -98,7 +98,7 @@ The minimum number of colors for a cochromatic coloring.
 -/
 axiom cochromaticNumber (G : SimpleGraph V) : ℕ
 
-/-!
+/-
 ## Part III: Relationship Between χ and ζ
 
 Since proper coloring is a special case of cochromatic coloring
@@ -121,7 +121,7 @@ theorem proper_implies_cochromatic (G : SimpleGraph V) (k : ℕ) (c : V → Fin 
 /-- χ(G) ≥ ζ(G) always holds. -/
 axiom chi_ge_zeta (G : SimpleGraph V) : chromaticNumber G ≥ cochromaticNumber G
 
-/-!
+/-
 ## Part IV: The Erdős-Gimbel-Straight Conjecture
 -/
 
@@ -137,7 +137,7 @@ def egs_conjecture : Prop :=
     cochromaticNumber G ≥ 4 →
     chromaticNumber G ≤ cochromaticNumber G + 2
 
-/-!
+/-
 ## Part V: Steiner's Counterexample (2024)
 -/
 
@@ -168,7 +168,7 @@ theorem egs_conjecture_false : ¬egs_conjecture := by
   rw [hχ, hζ] at hbound
   omega
 
-/-!
+/-
 ## Part VI: The General Theorem of Erdős-Gimbel-Straight
 -/
 
@@ -196,7 +196,7 @@ theorem chi_zeta_gap_bounded :
     have := hf V G hω
     omega⟩
 
-/-!
+/-
 ## Part VII: Known Bounds
 -/
 
@@ -215,7 +215,7 @@ axiom steiner_gap_lower_bound :
     cliqueNumber G = 4 ∧
     chromaticNumber G - cochromaticNumber G ≥ 3
 
-/-!
+/-
 ## Part VIII: Summary
 
 **Problem Status: DISPROVED**

@@ -28,7 +28,7 @@ namespace Erdos786
 open Finset Filter BigOperators
 open scoped Topology
 
-/-! ## The Main Definition -/
+/- ## The Main Definition -/
 
 /--
 A set A is a **multiplicative cardinality set** (or MulCardSet) if whenever
@@ -40,7 +40,7 @@ In other words, equal products from elements of A must have equal numbers of fac
 def IsMulCardSet {α : Type*} [CommMonoid α] (A : Set α) : Prop :=
   ∀ (a b : Finset α), ↑a ⊆ A → ↑b ⊆ A → a.prod id = b.prod id → a.card = b.card
 
-/-! ## Natural Density -/
+/- ## Natural Density -/
 
 /--
 A set A ⊂ ℕ has natural density δ if |A ∩ {1,...,n}| / n → δ as n → ∞.
@@ -48,7 +48,7 @@ A set A ⊂ ℕ has natural density δ if |A ∩ {1,...,n}| / n → δ as n → 
 def HasNaturalDensity (A : Set ℕ) (δ : ℝ) : Prop :=
   Filter.Tendsto (fun n : ℕ => ((A ∩ Set.Icc 1 n).ncard : ℝ) / n) atTop (𝓝 δ)
 
-/-! ## The Open Questions -/
+/- ## The Open Questions -/
 
 /--
 **Erdős Problem #786 (Part I - Open)**: For any ε > 0, does there exist a
@@ -69,7 +69,7 @@ def FiniteConjecture : Prop :=
     Tendsto f atTop (𝓝 0) ∧
     ∀ N, A N ⊆ Set.Icc 1 (N + 1) ∧ (1 - f N) * N ≤ (A N).ncard ∧ IsMulCardSet (A N)
 
-/-! ## Known Examples -/
+/- ## Known Examples -/
 
 /--
 **Example**: The integers ≡ 2 (mod 4) form a multiplicative cardinality set
@@ -83,7 +83,7 @@ axiom mod4_example :
     let A : Set ℕ := {n | n % 4 = 2}
     HasNaturalDensity A (1 / 4) ∧ IsMulCardSet A
 
-/-! ## Selfridge's Construction -/
+/- ## Selfridge's Construction -/
 
 /--
 Consecutive primes: p is a strictly increasing sequence of consecutive primes.
@@ -106,7 +106,7 @@ axiom selfridge_construction :
     ∀ ε > 0, ε ≤ 1 →
       ∃ (A : Set ℕ), HasNaturalDensity A (1 / Real.exp 1 - ε) ∧ IsMulCardSet A
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /--
 **Ruzsa (unpublished)**: The maximum size of a multiplicative cardinality set
@@ -127,7 +127,7 @@ axiom log2_lower_bound :
       let A := {n ∈ Set.Icc 1 N | ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n}
       IsMulCardSet A ∧ (Real.log 2 : ℝ) * N ≤ A.ncard
 
-/-!
+/-
 ## Why These Sets Work
 
 The key insight: in a MulCardSet, factorization patterns are unique.
@@ -141,7 +141,7 @@ of the selected primes. A product of r elements has "exactly r prime signatures"
 in a suitable sense, forcing equal counts.
 -/
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- 2 ≡ 2 (mod 4) -/
 example : (2 : ℕ) % 4 = 2 := by native_decide
@@ -155,7 +155,7 @@ example : (10 : ℕ) % 4 = 2 := by native_decide
 /-- Product example: 2 · 6 = 12 and we'd need 2 factors from the set -/
 example : (2 : ℕ) * 6 = 12 := by native_decide
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #786** Summary:
 

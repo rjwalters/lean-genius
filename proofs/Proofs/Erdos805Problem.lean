@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #805: Graphs with Large Cliques and Independent Sets in All Subgraphs
 
 Source: https://erdosproblems.com/805
@@ -35,7 +35,7 @@ open SimpleGraph
 
 namespace Erdos805
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- A clique in a graph: a set of vertices that are all pairwise adjacent. -/
 def IsClique (G : SimpleGraph ℕ) (S : Finset ℕ) : Prop :=
@@ -45,7 +45,7 @@ def IsClique (G : SimpleGraph ℕ) (S : Finset ℕ) : Prop :=
 def IsIndependentSet (G : SimpleGraph ℕ) (S : Finset ℕ) : Prop :=
   ∀ u v : ℕ, u ∈ S → v ∈ S → u ≠ v → ¬G.Adj u v
 
-/-! ## Part II: The Everywhere Ramsey Property -/
+/- ## Part II: The Everywhere Ramsey Property -/
 
 /-- G has the (g, k) everywhere-Ramsey property if every induced subgraph
     on g vertices contains both a k-clique and a k-independent set. -/
@@ -59,7 +59,7 @@ def ExistsEverywhereRamseyGraph (g : ℕ → ℕ) : Prop :=
   ∀ n : ℕ, n ≥ 16 → ∃ G : SimpleGraph ℕ,
     HasEverywhereRamsey G n (g n) (Nat.log 2 n)
 
-/-! ## Part III: Alon-Sudakov Negative Result (2007) -/
+/- ## Part III: Alon-Sudakov Negative Result (2007) -/
 
 /-- Alon-Sudakov (2007): No such graph exists for g(n) = c(log n)³/(log log n).
 This provides an upper bound on the threshold, ruling out graphs when g(n) is too large. -/
@@ -67,7 +67,7 @@ axiom alon_sudakov_2007 :
   ∃ c > 0, ¬ExistsEverywhereRamseyGraph (fun n =>
     Nat.ceil (c * (Nat.log 2 n)^3 / Nat.log 2 (Nat.log 2 n)))
 
-/-! ## Part IV: Alon-Bucić-Sudakov Positive Result (2021) -/
+/- ## Part IV: Alon-Bucić-Sudakov Positive Result (2021) -/
 
 /-- Alon-Bucić-Sudakov (2021): Such a graph EXISTS for
 g(n) ≤ 2^{2^{(log log n)^{1/2+o(1)}}}. This is much smaller than (log n)³
@@ -76,14 +76,14 @@ axiom alon_bucic_sudakov_2021 :
   ExistsEverywhereRamseyGraph (fun n =>
     2^(2^(Nat.sqrt (Nat.log 2 (Nat.log 2 n)))))
 
-/-! ## Part V: The Conjectured Threshold -/
+/- ## Part V: The Conjectured Threshold -/
 
 /-- Erdős-Hajnal conjectured that g(n) = (log n)³ is too small — no graph
 should exist with the everywhere-Ramsey property at this threshold. -/
 def ErdosHajnalConjecture805 : Prop :=
   ¬ExistsEverywhereRamseyGraph (fun n => (Nat.log 2 n)^3)
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /-- **Erdős Problem #805: PARTIALLY SOLVED**
 

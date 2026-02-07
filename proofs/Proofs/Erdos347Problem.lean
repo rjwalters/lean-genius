@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 347: Complete Sequences with Ratio Tending to 2
 
 Is there a sequence `A = {a₁ ≤ a₂ ≤ ⋯}` of positive integers with
@@ -20,13 +20,13 @@ import Mathlib.Tactic
 
 open Set
 
-/-! ## Subset sums -/
+/- ## Subset sums -/
 
 /-- The set of finite subset sums of a set `A ⊆ ℕ`. -/
 def subsetSums (A : Set ℕ) : Set ℕ :=
     { s | ∃ (S : Finset ℕ), (↑S : Set ℕ) ⊆ A ∧ S.sum id = s }
 
-/-! ## Asymptotic density -/
+/- ## Asymptotic density -/
 
 /-- The counting function `|S ∩ {1,…,N}|`. -/
 noncomputable def countIn (S : Set ℕ) (N : ℕ) : ℕ :=
@@ -38,7 +38,7 @@ def HasDensity (S : Set ℕ) (δ : ℚ) : Prop :=
       ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
         |((countIn S N : ℚ) / (N : ℚ)) - δ| < ε
 
-/-! ## Monotone sequences with ratio limit -/
+/- ## Monotone sequences with ratio limit -/
 
 /-- A sequence `a : ℕ → ℕ` is monotone nondecreasing. -/
 def IsMonotone (a : ℕ → ℕ) : Prop :=
@@ -51,7 +51,7 @@ def HasRatioLimit (a : ℕ → ℕ) (r : ℚ) : Prop :=
         0 < a n →
           |((a (n + 1) : ℚ) / (a n : ℚ)) - r| < ε
 
-/-! ## Cofinite subsequences -/
+/- ## Cofinite subsequences -/
 
 /-- A cofinite subsequence: the range of `a ∘ ι` where `ι` omits only
 finitely many indices. -/
@@ -62,7 +62,7 @@ def IsCofiniteSubseq (a ι : ℕ → ℕ) : Prop :=
 def cofiniteImage (a ι : ℕ → ℕ) : Set ℕ :=
     Set.range (a ∘ ι)
 
-/-! ## Main conjecture (solved) -/
+/- ## Main conjecture (solved) -/
 
 /-- Erdős Problem 347 (solved): There exists a monotone sequence with
 ratio limit 2 such that every cofinite subsequence has subset sums
@@ -77,7 +77,7 @@ def ErdosProblem347 : Prop :=
 /-- The answer to Erdős Problem 347 is affirmative. -/
 axiom erdos347_affirmative : ErdosProblem347
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- The empty subset sum is 0: `0 ∈ P(A)` for any `A`. -/
 axiom zero_mem_subsetSums (A : Set ℕ) :

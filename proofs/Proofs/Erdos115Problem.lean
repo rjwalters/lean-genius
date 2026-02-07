@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #115 — Polynomial Derivatives on Connected Lemniscates
 
 For a polynomial p(z) of degree n, define the lemniscate
@@ -21,7 +21,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Polynomial and Lemniscate Abstractions -/
+/- ## Polynomial and Lemniscate Abstractions -/
 
 /-- Abstract representation of a complex polynomial of degree n -/
 axiom ComplexPoly : ℕ → Type
@@ -40,7 +40,7 @@ axiom maxDerivOnLemniscate : {n : ℕ} → ComplexPoly n → ℝ
 axiom maxDeriv_nonneg (n : ℕ) (p : ComplexPoly n) :
   0 ≤ maxDerivOnLemniscate p
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- Lower bound: the maximum derivative on a connected lemniscate is at least n.
     Equality is achieved by p(z) = zⁿ. -/
@@ -71,7 +71,7 @@ axiom chebyshev_deriv_asymptotic :
     (1 / 2 - ε) * ((n : ℝ) ^ 2) ≤ maxDerivOnLemniscate (chebyshev_poly n) ∧
     maxDerivOnLemniscate (chebyshev_poly n) ≤ (1 / 2 + ε) * ((n : ℝ) ^ 2)
 
-/-! ## The Eremenko–Lempert Theorem -/
+/- ## The Eremenko–Lempert Theorem -/
 
 /-- Erdős Problem 115 (PROVED by Eremenko–Lempert):
     For connected lemniscates, max |p'| ≤ (1/2 + o(1)) · n² -/

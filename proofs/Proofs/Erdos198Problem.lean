@@ -34,7 +34,7 @@ open scoped ENNReal
 
 namespace Erdos198
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A set A ⊆ ℕ is a **Sidon set** if all pairwise sums a + b (a ≤ b) are distinct. -/
 def IsSidonSet (A : Set ℕ) : Prop :=
@@ -54,7 +54,7 @@ def IsInfiniteAP (Y : Set ℕ) : Prop :=
 def IntersectsAllAPs (A : Set ℕ) : Prop :=
   ∀ Y : Set ℕ, IsInfiniteAP Y → (A ∩ Y).Nonempty
 
-/-! ## The Main Result -/
+/- ## The Main Result -/
 
 /--
 **Erdős Problem #198 (SOLVED)**: Must every Sidon set have its complement
@@ -71,7 +71,7 @@ def Erdos198_Question : Prop :=
 /-- The answer to Erdős Problem #198 is FALSE. -/
 axiom erdos_198_answer : ¬Erdos198_Question
 
-/-! ## The Constructions -/
+/- ## The Constructions -/
 
 /-- The factorial construction: A = {n! + n : n ≥ 0}. -/
 def factorialSidon : Set ℕ := {m | ∃ n : ℕ, m = n.factorial + n}
@@ -102,7 +102,7 @@ theorem factorial_counterexample :
     IsSidonSet factorialSidon ∧ IntersectsAllAPs factorialSidon :=
   ⟨factorialSidon_is_sidon, factorialSidon_intersects_all_APs⟩
 
-/-! ## Lacunary Sets -/
+/- ## Lacunary Sets -/
 
 /-- A set is **lacunary** if aₙ₊₁ > 2aₙ for consecutive elements. -/
 def IsLacunary (A : Set ℕ) : Prop :=
@@ -128,7 +128,7 @@ Choose aₙ = some element of Pₙ ∩ ℕ with aₙ > 2aₙ₋₁.
 axiom baumgartner_construction :
     ∃ A : Set ℕ, IsLacunary A ∧ IntersectsAllAPs A
 
-/-! ## First Few Elements -/
+/- ## First Few Elements -/
 
 /-- The first elements of the factorial Sidon set: {1, 2, 4, 9, 28, 125, 726, ...}
 

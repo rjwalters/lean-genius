@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #47: Unit Fractions from Dense Sets
 
 **Source:** [erdosproblems.com/47](https://erdosproblems.com/47)
@@ -33,7 +33,7 @@ open Finset Filter
 
 namespace Erdos47
 
-/-! ## Part I: Unit Fraction Subsets -/
+/- ## Part I: Unit Fraction Subsets -/
 
 /--
 The reciprocal sum of a finite set of positive integers: ∑_{a ∈ A} 1/a.
@@ -55,7 +55,7 @@ with ∑_{n ∈ S} 1/n = 1.
 def ContainsUnitFraction (A : Finset ℕ) : Prop :=
   ∃ S : Finset ℕ, S ⊆ A ∧ S.Nonempty ∧ HasUnitFractionSum S
 
-/-! ## Part II: Dense Subsets of {1, ..., N} -/
+/- ## Part II: Dense Subsets of {1, ..., N} -/
 
 /--
 The interval {1, …, N} as a Finset.
@@ -71,7 +71,7 @@ def IsDenseSubset (A : Finset ℕ) (N : ℕ) (δ : ℚ) : Prop :=
   δ > 0 ∧
   reciprocalSum A > δ * Real.log N
 
-/-! ## Part III: Erdős's Conjecture (Solved) -/
+/- ## Part III: Erdős's Conjecture (Solved) -/
 
 /--
 **Erdős Problem #47 (original formulation):**
@@ -87,7 +87,7 @@ def ErdosConjecture47 : Prop :=
           IsDenseSubset A N δ →
           ContainsUnitFraction A
 
-/-! ## Part IV: Bloom's Theorem -/
+/- ## Part IV: Bloom's Theorem -/
 
 /--
 **Bloom's Theorem [Bl21]:**
@@ -113,7 +113,7 @@ axiom bloom_quantitative :
           Real.log (Real.log N)) * Real.log N →
         ContainsUnitFraction A
 
-/-! ## Part V: Liu–Sawhney Improvement -/
+/- ## Part V: Liu–Sawhney Improvement -/
 
 /--
 **Liu–Sawhney Improvement [LiSa24]:**
@@ -127,7 +127,7 @@ axiom liu_sawhney_improvement :
           reciprocalSum A ≥ (Real.log N : ℚ) ^ ((4 : ℚ) / 5 + ε) →
           ContainsUnitFraction A
 
-/-! ## Part VI: Pomerance's Optimality -/
+/- ## Part VI: Pomerance's Optimality -/
 
 /--
 **Pomerance's construction:**
@@ -141,7 +141,7 @@ axiom pomerance_lower_bound :
       reciprocalSum A ≥ (Real.log (Real.log N) : ℚ) ^ 2 ∧
       ¬ContainsUnitFraction A
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Summary:**

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1117: Maximum Modulus Points on Circles
 
 For an entire function f(z) that is not a monomial, let ν(r) count
@@ -23,7 +23,7 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.Topology.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- An entire function: a function ℂ → ℂ that is holomorphic on all of ℂ. -/
 axiom IsEntire (f : ℂ → ℂ) : Prop
@@ -47,7 +47,7 @@ axiom nu (f : ℂ → ℂ) (r : ℝ) : ℕ
 axiom nu_def (f : ℂ → ℂ) (r : ℝ) (hr : r > 0) :
     nu f r = Nat.card {z : ℂ | Complex.abs z = r ∧ Complex.abs (f z) = maxModulus f r}
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- For a non-monomial entire function, ν(r) is finite for each r > 0. -/
 axiom nu_finite (f : ℂ → ℂ) (hent : IsEntire f) (hnm : ¬ IsMonomial f) (r : ℝ)
@@ -58,7 +58,7 @@ axiom nu_finite (f : ℂ → ℂ) (hent : IsEntire f) (hnm : ¬ IsMonomial f) (r
 axiom nu_ge_one (f : ℂ → ℂ) (hent : IsEntire f) (r : ℝ) (hr : r > 0) :
     nu f r ≥ 1
 
-/-! ## Question 1: lim sup ν(r) = ∞ (SOLVED) -/
+/- ## Question 1: lim sup ν(r) = ∞ (SOLVED) -/
 
 /-- Herzog–Piranian (1968): There exists a non-monomial entire function f
     with lim sup_{r→∞} ν(r) = ∞.
@@ -67,7 +67,7 @@ axiom herzog_piranian (N : ℕ) :
     ∃ f : ℂ → ℂ, IsEntire f ∧ ¬ IsMonomial f ∧
       ∀ R : ℝ, ∃ r : ℝ, r > R ∧ nu f r ≥ N
 
-/-! ## Question 2: lim inf ν(r) = ∞ (OPEN) -/
+/- ## Question 2: lim inf ν(r) = ∞ (OPEN) -/
 
 /-- Erdős Problem #1117 (open part): Does there exist a non-monomial
     entire function f with lim inf_{r→∞} ν(r) = ∞?
@@ -78,7 +78,7 @@ axiom erdos_1117_open :
     (∀ f : ℂ → ℂ, IsEntire f → ¬ IsMonomial f →
       ∃ N : ℕ, ∀ R : ℝ, ∃ r : ℝ, r > R ∧ nu f r < N)
 
-/-! ## Glücksam–Pardo-Simón Approximate Result (2024) -/
+/- ## Glücksam–Pardo-Simón Approximate Result (2024) -/
 
 /-- Glücksam–Pardo-Simón (2024): An "approximate" affirmative answer
     to Question 2. They construct entire functions where the maximum
@@ -91,7 +91,7 @@ axiom glucksam_pardo_simon_approximate :
           ∀ z ∈ S, Complex.abs z = r ∧
             Complex.abs (f z) ≥ (1 - ε) * maxModulus f r
 
-/-! ## Hadamard Three-Circles Context -/
+/- ## Hadamard Three-Circles Context -/
 
 /-- The maximum modulus M(r) is a nondecreasing function of r for
     nonconstant entire functions (by the maximum modulus principle). -/

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #566 — Ramsey Size Linearity for Sparse Graphs
 
 Let G be a graph such that every subgraph on k vertices has at most
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A graph on n vertices represented by its adjacency predicate. -/
 structure Graph (n : ℕ) where
@@ -50,7 +50,7 @@ def NoIsolated {n : ℕ} (H : Graph n) : Prop :=
 noncomputable def sizeRamsey {p q : ℕ} (G : Graph p) (H : Graph q) : ℕ :=
   Nat.find (⟨p * q + 1, trivial⟩ : ∃ m : ℕ, m ≥ 1)  -- axiomatized below
 
-/-! ## Main Question -/
+/- ## Main Question -/
 
 /-- **Erdős Problem #566**: If G is (2k−3)-sparse, is G Ramsey
     size linear? That is, ∃ c > 0 such that r̂(G, H) ≤ c · |E(H)|
@@ -61,7 +61,7 @@ axiom erdos_566_ramsey_size_linear :
       ∀ (q : ℕ) (H : Graph q), NoIsolated H →
         (sizeRamsey G H : ℝ) ≤ c * (edgeCount H : ℝ)
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **EFRS (1993)**: Any graph G with n vertices and at most n+1
     edges is Ramsey size linear. -/
@@ -80,7 +80,7 @@ axiom not_linear_2n_minus_2 :
       ∀ (q : ℕ) (H : Graph q), NoIsolated H →
         (sizeRamsey G H : ℝ) ≤ c * (edgeCount H : ℝ)
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- **Sparsity threshold**: The (2k−3) bound is the boundary
     between graphs that might be Ramsey size linear and those

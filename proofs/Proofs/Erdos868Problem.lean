@@ -35,7 +35,7 @@ namespace Erdos868
 open Nat Filter Set
 open scoped BigOperators Pointwise
 
-/-!
+/-
 ## Additive Bases
 
 An additive basis of order h is a set A such that every sufficiently large
@@ -55,7 +55,7 @@ def IsAdditiveBasis (A : Set ℕ) (h : ℕ) : Prop :=
 /-- Shorthand for additive basis of order 2. -/
 abbrev IsBasisOrder2 (A : Set ℕ) : Prop := IsAdditiveBasis A 2
 
-/-!
+/-
 ## Representation Function
 
 The representation function f(n) = r_{A,h}(n) counts how many ways n can be
@@ -72,7 +72,7 @@ noncomputable def reprCount (A : Set ℕ) (h : ℕ) (n : ℕ) : ℕ :=
 /-- Shorthand for order-2 representation count. -/
 noncomputable abbrev reprCount2 (A : Set ℕ) (n : ℕ) : ℕ := reprCount A 2 n
 
-/-!
+/-
 ## Minimal Bases
 
 A minimal basis is one where removing any element destroys the basis property.
@@ -89,7 +89,7 @@ def IsMinimalBasis (B : Set ℕ) (h : ℕ) : Prop :=
 /-- Shorthand for minimal basis of order 2. -/
 abbrev IsMinimalBasis2 (B : Set ℕ) : Prop := IsMinimalBasis B 2
 
-/-!
+/-
 ## The Main Questions
 
 Erdős and Nathanson posed several related questions about when an additive
@@ -121,7 +121,7 @@ axiom erdos_868_part_ii_open : Prop
 --   (∀ᶠ n in atTop, ε * Real.log n < reprCount2 A n) →
 --   ∃ B ⊆ A, IsMinimalBasis2 B
 
-/-!
+/-
 ## Known Results
 
 Several partial results are known about minimal bases.
@@ -168,7 +168,7 @@ axiom erdos_nathanson_1989 (t : ℕ) :
       (∀ᶠ n in atTop, t ≤ reprCount2 A n) ∧
       ∀ B ⊆ A, IsMinimalBasis2 B → False
 
-/-!
+/-
 ## The Gap
 
 The mystery lies in the gap between:
@@ -186,7 +186,7 @@ axiom growth_hierarchy (A : Set ℕ) (ε : ℝ) (hε : ε > 0) :
     (∀ᶠ (n : ℕ) in atTop, erdosNathansonConstant * Real.log n < reprCount2 A n) →
     (∀ᶠ (n : ℕ) in atTop, ε * Real.log n < reprCount2 A n)
 
-/-!
+/-
 ## Examples
 
 We verify some basic properties of additive bases.
@@ -209,7 +209,7 @@ theorem nat_not_minimal : ¬IsMinimalBasis2 (Set.univ : Set ℕ) := by
   -- ℕ \ {0} is still a basis of order 2
   sorry
 
-/-!
+/-
 ## The Structure of Minimal Bases
 
 Minimal bases have interesting structural properties.
@@ -227,7 +227,7 @@ theorem minimal_basis_essential (B : Set ℕ) (h : ℕ) (hB : IsMinimalBasis B h
   simp only [IsAdditiveBasis, Set.Infinite] at hnotbasis ⊢
   exact hnotbasis
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #868 explores when an additive basis must contain a minimal

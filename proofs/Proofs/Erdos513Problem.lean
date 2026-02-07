@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #513: Maximum Term of a Power Series
 
 For a transcendental entire function f(z) = Σ aₙzⁿ, define:
@@ -23,7 +23,7 @@ import Mathlib.Tactic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Order.LiminfLimsup
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The maximum term μ(r, f) = sup_n |aₙ| · rⁿ for a power series with
     coefficients given by `a : ℕ → ℂ`. Axiomatized. -/
@@ -51,7 +51,7 @@ noncomputable def termModulusRatio (a : ℕ → ℂ) (r : ℝ) : ℝ :=
 def IsTranscendentalEntire (a : ℕ → ℂ) : Prop :=
   (∀ N : ℕ, ∃ n : ℕ, n > N ∧ a n ≠ 0)
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- μ(r) ≤ M(r) always holds, so the ratio is at most 1. -/
 axiom maxTerm_le_maxModulus (a : ℕ → ℂ) (r : ℝ) (hr : 0 ≤ r) :
@@ -72,7 +72,7 @@ axiom clunie_hayman_upper_bound :
     ∀ a : ℕ → ℂ, IsTranscendentalEntire a →
       Filter.liminf (fun r => termModulusRatio a r) Filter.atTop ≤ 2 / Real.pi - c
 
-/-! ## The Open Question -/
+/- ## The Open Question -/
 
 /-- Erdős Problem #513: Determine the exact value of
     sup { liminf_{r→∞} μ(r)/M(r) : f transcendental entire }.

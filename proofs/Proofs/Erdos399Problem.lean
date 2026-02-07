@@ -23,7 +23,7 @@ open Nat
 
 namespace Erdos399
 
-/-! ## The Counterexample -/
+/- ## The Counterexample -/
 
 /-- 10! = 3628800 -/
 theorem factorial_10 : 10! = 3628800 := by native_decide
@@ -43,7 +43,7 @@ theorem barfield_xy_gt_one : 1 < 48 * 36 := by decide
 /-- The condition k > 2 is satisfied: 4 > 2 -/
 theorem barfield_k_gt_two : 2 < 4 := by decide
 
-/-! ## Main Result -/
+/- ## Main Result -/
 
 /--
 **Erdős Problem #399** is DISPROVED:
@@ -60,7 +60,7 @@ theorem erdos_399_disproved :
 /-- Alternative form: 10! = 48^4 - 36^4 -/
 theorem erdos_399_alt : (10! : ℤ) = (48 : ℤ)^4 - (36 : ℤ)^4 := by native_decide
 
-/-! ## Historical Results (Axiomatized) -/
+/- ## Historical Results (Axiomatized) -/
 
 /--
 **Erdős-Obláth Theorem (1937)**: There are no solutions to n! = x^k ± y^k
@@ -90,7 +90,7 @@ This follows from considerations modulo 8.
 axiom cambie {n x y : ℕ} :
     x.Coprime y → 1 < x * y → n! ≠ x^4 + y^4
 
-/-! ## Sum of Two Squares -/
+/- ## Sum of Two Squares -/
 
 /-- Verification: 6! = 720 -/
 theorem factorial_6 : 6! = 720 := by native_decide
@@ -113,7 +113,7 @@ axiom sum_two_squares_unique :
     ∀ {n x y : ℕ}, 1 < x * y → n! = x^2 + y^2 →
     n = 6 ∧ (x = 12 ∧ y = 24 ∨ x = 24 ∧ y = 12)
 
-/-! ## Properties of the Solution -/
+/- ## Properties of the Solution -/
 
 /-- GCD(48, 36) = 12, so they are NOT coprime -/
 theorem barfield_gcd : Nat.gcd 48 36 = 12 := by native_decide

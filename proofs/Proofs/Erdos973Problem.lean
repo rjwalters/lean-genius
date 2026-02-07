@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #973: Power Sums of Complex Numbers (Turán's Problem)
 
   Source: https://erdosproblems.com/973
@@ -33,7 +33,7 @@ open Complex Finset BigOperators
 
 namespace Erdos973
 
-/-! ## Part I: Power Sums of Complex Numbers -/
+/- ## Part I: Power Sums of Complex Numbers -/
 
 /-- A sequence of n complex numbers. -/
 def ComplexSeq (n : ℕ) := Fin n → ℂ
@@ -67,7 +67,7 @@ axiom maxPowerSum (z : ComplexSeq n) : ℝ
 axiom maxPowerSum_spec (z : ComplexSeq n) (hn : n ≥ 2) :
     ∀ k, 2 ≤ k → k ≤ n + 1 → abs (powerSum z k) ≤ maxPowerSum z
 
-/-! ## Part II: The Erdős Question -/
+/- ## Part II: The Erdős Question -/
 
 /-- Erdős's Question: Does there exist C > 1 such that for all n,
     we can find z with first element 1, all |z_i| ≥ 1,
@@ -78,7 +78,7 @@ def ErdosQuestion973 : Prop :=
       ∃ z : ComplexSeq n, HasFirstOne z ∧ AllModulusGeOne z ∧
         maxPowerSum z < C^(-(n : ℤ))
 
-/-! ## Part III: Erdős's Construction (Unit Disk Case) -/
+/- ## Part III: Erdős's Construction (Unit Disk Case) -/
 
 /-- **Erdős's Original Result:**
     Such sequences exist with |z_i| ≤ 1 and C ≈ 1.32. -/
@@ -91,7 +91,7 @@ axiom erdos_unit_disk_construction :
 /-- Erdős's constant is approximately 1.32. -/
 def erdosConstant : ℝ := 1.32
 
-/-! ## Part IV: L. Erdős's Refinement (1992) -/
+/- ## Part IV: L. Erdős's Refinement (1992) -/
 
 /-- The minimum over sequences of the maximum power sum (for unit circle). -/
 noncomputable def M2 (n : ℕ) : ℝ :=
@@ -106,7 +106,7 @@ axiom l_erdos_1992_bounds (n : ℕ) (hn : n ≥ 2) :
 /-- The optimal constant for unit circle sequences. -/
 def unitCircleConstant : ℝ := 1.7455
 
-/-! ## Part V: Turán's Lower Bound -/
+/- ## Part V: Turán's Lower Bound -/
 
 /-- **Turán's Theorem (Tu84b, Theorem 6.1):**
     If all |z_i| ≥ 1, then the maximum power sum is at least (2e)^{-(1+o(1))n}. -/
@@ -121,7 +121,7 @@ noncomputable def turanConstant : ℝ := 2 * Real.exp 1
 /-- 2e is approximately 5.44. -/
 axiom turan_constant_approx : 5.43 < turanConstant ∧ turanConstant < 5.45
 
-/-! ## Part VI: The Answer -/
+/- ## Part VI: The Answer -/
 
 /-- The answer depends on the modulus constraint:
     - |z_i| ≤ 1: YES with C ≈ 1.32
@@ -136,7 +136,7 @@ def AnswerSummary : Prop :=
     ∀ n ≥ N, ∀ z : ComplexSeq n, HasFirstOne z → AllModulusGeOne z →
       maxPowerSum z ≥ (2 * Real.exp 1)^(-(1 + ε) * n))
 
-/-! ## Part VII: Extremal Sequences -/
+/- ## Part VII: Extremal Sequences -/
 
 /-- Roots of unity provide natural candidates for extremal sequences. -/
 def rootsOfUnitySequence (n : ℕ) : ComplexSeq n :=
@@ -154,7 +154,7 @@ theorem roots_on_circle (n : ℕ) :
 axiom roots_power_sum (n k : ℕ) (hn : n > 0) :
     powerSum (rootsOfUnitySequence n) k = if n ∣ k then n else 0
 
-/-! ## Part VIII: Dirichlet Polynomial Connection -/
+/- ## Part VIII: Dirichlet Polynomial Connection -/
 
 /-- A Dirichlet polynomial: ∑ a_n n^{-s}. -/
 structure DirichletPolynomial where
@@ -168,7 +168,7 @@ axiom dirichlet_power_sum_connection :
       powerSum (fun i => (Complex.ofReal (ns i : ℝ)) ^ (Complex.ofReal t * I)) 1 =
       ∑ i : Fin N, (Complex.ofReal (ns i : ℝ)) ^ (Complex.ofReal t * I)
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /-- **Unit disk result (PROVED from axiom):** Erdős showed C ≈ 1.32 works
     when elements have modulus ≤ 1. -/

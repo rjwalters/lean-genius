@@ -32,7 +32,7 @@ open Nat Filter
 
 namespace Erdos242
 
-/-! ## Egyptian Fraction Representation -/
+/- ## Egyptian Fraction Representation -/
 
 /--
 A representation of a/n as a sum of k unit fractions with distinct positive denominators.
@@ -42,7 +42,7 @@ def IsEgyptianFractionRep (a n : ℕ) (k : ℕ) (denoms : Fin k → ℕ) : Prop 
   (∀ i j : Fin k, i < j → denoms i < denoms j) ∧
   (a : ℚ) / n = ∑ i : Fin k, (1 : ℚ) / (denoms i)
 
-/-! ## The Erdős-Straus Conjecture -/
+/- ## The Erdős-Straus Conjecture -/
 
 /--
 **Erdős Problem #242** (Erdős-Straus Conjecture):
@@ -60,7 +60,7 @@ def ErdosStrausConjecture : Prop :=
     1 ≤ x ∧ x < y ∧ y < z ∧
     (4 : ℚ) / n = 1 / x + 1 / y + 1 / z
 
-/-! ## Known Partial Results -/
+/- ## Known Partial Results -/
 
 /--
 **Four fractions trivially suffice**: By the greedy algorithm, any a/n with a < n
@@ -91,7 +91,7 @@ axiom computational_verification :
       1 ≤ x ∧ x < y ∧ y < z ∧
       (4 : ℚ) / n = 1 / x + 1 / y + 1 / z
 
-/-! ## Specific Cases -/
+/- ## Specific Cases -/
 
 /--
 **n ≡ 0 (mod 4)**: Easy case. If n = 4k, then 4/n = 1/k.
@@ -111,7 +111,7 @@ axiom mod_4_equiv_1_case :
       1 ≤ x ∧ x < y ∧ y < z ∧
       (4 : ℚ) / (4 * k + 1) = 1 / x + 1 / y + 1 / z
 
-/-! ## Schinzel's Generalization -/
+/- ## Schinzel's Generalization -/
 
 /--
 **Schinzel's Conjecture**: For any fixed a, the equation
@@ -135,7 +135,7 @@ theorem schinzel_implies_erdos_straus_eventually :
   intro hSchinzel
   exact hSchinzel 4 (by norm_num)
 
-/-! ## Concrete Examples -/
+/- ## Concrete Examples -/
 
 /--
 **Example**: 4/3 = 1/1 + 1/3 + 0? No, we need three distinct denominators.
@@ -158,7 +158,7 @@ Check: 1/2 = 105/210, 1/15 = 14/210, 1/210 = 1/210. Sum = 120/210 = 4/7. ✓
 -/
 theorem example_n_7 : (4 : ℚ) / 7 = 1 / 2 + 1 / 15 + 1 / 210 := by norm_num
 
-/-! ## Current Status -/
+/- ## Current Status -/
 
 /--
 **Summary**: The Erdős-Straus conjecture remains open:
@@ -174,7 +174,7 @@ The problem's difficulty lies in the "distinct" requirement for denominators.
 -/
 axiom erdos_straus_open : ErdosStrausConjecture ∨ ¬ErdosStrausConjecture
 
-/-! ## Summary -/
+/- ## Summary -/
 
 theorem summary_erdos_242 :
     (4 : ℚ) / 3 = 1 / 1 + 1 / 4 + 1 / 12 ∧

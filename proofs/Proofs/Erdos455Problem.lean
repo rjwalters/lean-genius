@@ -25,7 +25,7 @@ namespace Erdos455
 
 open Filter
 
-/-!
+/-
 ## Definitions
 
 We formalize sequences of primes with non-decreasing gaps.
@@ -44,7 +44,7 @@ structure MonotoneGapPrimeSeq where
   allPrime : ∀ n, (seq n).Prime
   nonDecGaps : HasNonDecreasingGaps seq
 
-/-!
+/-
 ## Main Results
 
 The key question is whether such sequences must grow faster than n². Richter proved
@@ -87,7 +87,7 @@ axiom erdos_455_statement : erdos_455_conjecture ↔
     ∀ q : MonotoneGapPrimeSeq,
       Tendsto (fun n : ℕ => (q.seq n : ℝ) / (n : ℝ) ^ 2) atTop atTop
 
-/-!
+/-
 ## Consequences of Richter's Bound
 
 We derive some immediate consequences of Richter's lower bound.
@@ -102,7 +102,7 @@ This follows from the definition of liminf.
 axiom growth_at_least_quadratic (q : MonotoneGapPrimeSeq) :
     ∃ c : ℝ, c > 0 ∧ ∀ᶠ n in atTop, (q.seq n : ℝ) ≥ c * (n : ℝ) ^ 2
 
-/-!
+/-
 ## Structure of Monotone-Gap Prime Sequences
 
 We explore what these sequences look like structurally.
@@ -123,7 +123,7 @@ theorem all_ge_two (q : MonotoneGapPrimeSeq) (n : ℕ) : q.seq n ≥ 2 := by
   have h := q.allPrime n
   exact Nat.Prime.two_le h
 
-/-!
+/-
 ## Why the Condition is Restrictive
 
 The sequence of all consecutive primes (2, 3, 5, 7, 11, 13, ...) does NOT satisfy

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #534: Maximum GCD-Intersecting Sets Containing N
 
 **Source:** [erdosproblems.com/534](https://erdosproblems.com/534)
@@ -32,7 +32,7 @@ open Nat Finset
 
 namespace Erdos534
 
-/-! ## Part 1: Basic Definitions -/
+/- ## Part 1: Basic Definitions -/
 
 /-- The interval {1, ..., N} -/
 def interval (N : ℕ) : Finset ℕ := (Finset.range N).map ⟨(· + 1), fun _ _ h => by omega⟩
@@ -49,7 +49,7 @@ noncomputable def maxGCDIntersecting (N : ℕ) : ℕ :=
   sSup {k : ℕ | ∃ A : Finset ℕ, A ⊆ interval N ∧ ContainsN A N ∧
         IsGCDIntersecting A ∧ A.card = k}
 
-/-! ## Part 2: Simple Constructions -/
+/- ## Part 2: Simple Constructions -/
 
 /-- All multiples of smallest prime factor p -/
 def multiplesOfSmallestPrime (N : ℕ) : Finset ℕ :=
@@ -72,7 +72,7 @@ def evenMultiplesSharing (N : ℕ) : Finset ℕ :=
 axiom even_multiples_intersecting :
   ∀ N : ℕ, N > 1 → IsGCDIntersecting (evenMultiplesSharing N)
 
-/-! ## Part 3: The Original Conjecture (WRONG) -/
+/- ## Part 3: The Original Conjecture (WRONG) -/
 
 /-- Erdős-Graham original conjecture -/
 def OriginalConjecture : Prop :=
@@ -88,7 +88,7 @@ axiom counterexample_exists :
   ∃ N : ℕ, N > 1 ∧
     maxGCDIntersecting N > max (N / N.minFac) (evenMultiplesSharing N).card
 
-/-! ## Part 4: The Correct Characterization -/
+/- ## Part 4: The Correct Characterization -/
 
 /-- The optimal construction family for N = q₁^k₁ ⋯ qᵣ^kᵣ.
     Integers in [1,N] that are multiples of at least one of:
@@ -107,7 +107,7 @@ axiom ahlswede_khachatrian_theorem :
       (∀ p ∈ primes, p.Prime ∧ p ∣ N) ∧
       maxGCDIntersecting N = (optimalFamily N j primes).card
 
-/-! ## Part 5: Special Cases -/
+/- ## Part 5: Special Cases -/
 
 /-- When N is a prime power p^k, the maximum is p^(k-1) -/
 axiom prime_power_case :
@@ -119,7 +119,7 @@ axiom two_times_prime_case :
   ∀ p : ℕ, p.Prime → p > 2 →
     maxGCDIntersecting (2 * p) = 2
 
-/-! ## Part 6: Summary
+/- ## Part 6: Summary
 
 **Erdős Problem #534: SOLVED** (Ahlswede-Khachatrian 1996)
 

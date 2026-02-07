@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1072 — Least n with n! + 1 ≡ 0 (mod p)
 
 For a prime p, let f(p) be the least positive integer n such that
@@ -27,7 +27,7 @@ import Mathlib.Tactic
 
 open Nat Filter
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- f(p): the least positive integer n such that n! + 1 ≡ 0 (mod p).
     By Wilson's theorem, f(p) ≤ p - 1 for all primes p. -/
@@ -40,7 +40,7 @@ noncomputable def leastFactorialWilson (p : ℕ) : ℕ :=
 def isWilsonMaximal (p : ℕ) : Prop :=
   p.Prime ∧ leastFactorialWilson p = p - 1
 
-/-! ## Wilson's Theorem Gives the Upper Bound -/
+/- ## Wilson's Theorem Gives the Upper Bound -/
 
 /-- Wilson's theorem: (p-1)! ≡ -1 (mod p) for prime p.
     This ensures f(p) is well-defined and f(p) ≤ p - 1. -/
@@ -56,7 +56,7 @@ axiom f_le_pred (p : ℕ) (hp : p.Prime) :
 axiom f_pos (p : ℕ) (hp : p.Prime) (h3 : 3 ≤ p) :
     1 ≤ leastFactorialWilson p
 
-/-! ## Question 1: Infinitely Many Maximal Primes -/
+/- ## Question 1: Infinitely Many Maximal Primes -/
 
 /-- Are there infinitely many primes p with f(p) = p - 1?
     These are primes where no factorial smaller than (p-1)!
@@ -64,7 +64,7 @@ axiom f_pos (p : ℕ) (hp : p.Prime) (h3 : 3 ≤ p) :
 axiom erdos_1072a :
     Set.Infinite { p : ℕ | isWilsonMaximal p }
 
-/-! ## Question 2: f(p)/p → 0 for Almost All Primes -/
+/- ## Question 2: f(p)/p → 0 for Almost All Primes -/
 
 /-- For almost all primes, f(p)/p → 0. More precisely:
     there exists a set P of primes with relative density 1
@@ -75,7 +75,7 @@ axiom erdos_1072b :
     (∀ ε > 0, ∃ N : ℕ, ∀ p ∈ S, N ≤ p →
       (leastFactorialWilson p : ℝ) / (p : ℝ) < ε)
 
-/-! ## Hardy–Subbarao Belief -/
+/- ## Hardy–Subbarao Belief -/
 
 /-- Hardy and Subbarao believed that the number of primes p ≤ x
     with f(p) = p - 1 is o(x/log x). That is, such primes have
@@ -85,7 +85,7 @@ axiom hardy_subbarao_belief :
       ((Finset.Icc 2 x).filter (fun p => isWilsonMaximal p)).card ≤
         ε * (x : ℝ) / Real.log x
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- For p = 2: 1! + 1 = 2, so f(2) = 1 = 2 - 1. Maximal. -/
 axiom f_of_2 : leastFactorialWilson 2 = 1
@@ -102,7 +102,7 @@ axiom f_of_5 : leastFactorialWilson 5 = 4
     This is the first prime where f(p) < p - 1. -/
 axiom f_of_7 : leastFactorialWilson 7 = 3
 
-/-! ## Connection to Wilson Primes -/
+/- ## Connection to Wilson Primes -/
 
 /-- A Wilson prime is p with (p-1)! ≡ -1 (mod p²).
     Known Wilson primes: 5, 13, 563. The Erdős–Hardy–Subbarao

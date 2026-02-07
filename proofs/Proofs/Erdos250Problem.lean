@@ -24,7 +24,7 @@ abbrev divisorSum := ArithmeticFunction.sigma
 
 namespace Erdos250
 
-/-!
+/-
 ## Background
 
 The sum of divisors function σ(n) = Σ_{d|n} d counts all divisors of n.
@@ -43,7 +43,7 @@ This is related to the Lambert series identity:
   Σ_{n≥1} σ(n) q^n = Σ_{n≥1} n·q^n / (1 - q^n)
 -/
 
-/-!
+/-
 ## The Divisor Sum Function
 
 Mathlib provides `Nat.divisors` and arithmetic functions through `ArithmeticFunction`.
@@ -68,7 +68,7 @@ theorem sigma_six : divisorSum 1 6 = 12 := by native_decide
 /-- σ(12) = 28 -/
 theorem sigma_twelve : divisorSum 1 12 = 28 := by native_decide
 
-/-!
+/-
 ## Series Convergence
 
 The series Σ σ(n)/2^n converges because σ(n) ≤ n² for all n,
@@ -89,7 +89,7 @@ theorem partialSum_one : partialSum 1 = 1 / 2 := by
     Proof: Each divisor d of n satisfies d ≤ n, and there are at most n divisors. -/
 axiom sigma_le_sq (n : ℕ) (hn : n ≠ 0) : divisorSum 1 n ≤ n ^ 2
 
-/-!
+/-
 ## The Main Result
 
 Nesterenko's theorem (1996) establishes that the series converges to an
@@ -130,7 +130,7 @@ The sum Σ σ(n)/2^n is irrational. -/
 theorem erdos_250 : ∀ x : ℝ, HasSum (fun n : ℕ => (divisorSum 1 n : ℝ) / (2 : ℝ) ^ n) x → Irrational x :=
   nesterenko_irrationality
 
-/-!
+/-
 ## Numerical Approximation
 
 The series converges rapidly. The first few partial sums are:
@@ -150,7 +150,7 @@ theorem sigma_series_has_sum :
     ∃ x : ℝ, HasSum (fun n : ℕ => (divisorSum 1 n : ℝ) / (2 : ℝ) ^ n) x :=
   sigma_series_summable
 
-/-!
+/-
 ## Related Results
 
 Nesterenko's work (1996) established much stronger results:

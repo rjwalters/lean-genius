@@ -36,7 +36,7 @@ namespace Erdos624
 
 variable {α : Type*} [DecidableEq α]
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The image of f restricted to subsets of Y.
     This is {f(A) : A ⊆ Y}. -/
@@ -52,7 +52,7 @@ def IsCoveringFunction (X : Finset α) (f : Finset α → α) (H : ℕ) : Prop :
 noncomputable def coveringNumber (X : Finset α) : ℕ :=
   sInf { H : ℕ | ∃ f : Finset α → α, IsCoveringFunction X f H }
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The number of subsets of Y is 2^|Y|. -/
 theorem card_powerset_eq (Y : Finset α) : Y.powerset.card = 2 ^ Y.card :=
@@ -66,7 +66,7 @@ theorem subsetImage_card_le (f : Finset α → α) (Y : Finset α) :
       ≤ Y.powerset.card := Finset.card_image_le
     _ = 2 ^ Y.card := card_powerset_eq Y
 
-/-! ## Lower Bound: H(n) ≥ log₂(n) -/
+/- ## Lower Bound: H(n) ≥ log₂(n) -/
 
 /-- If f is H-covering for X, then 2^H ≥ |X|.
     This gives H ≥ log₂|X|. -/
@@ -84,7 +84,7 @@ theorem coveringNumber_ge_log (X : Finset α) (hX : X.Nonempty) :
     coveringNumber X ≥ Nat.clog 2 X.card := by
   sorry
 
-/-! ## Upper Bound Construction
+/- ## Upper Bound Construction
 
 For the upper bound, we need to construct a covering function.
 The Erdős-Hajnal construction achieves H < log₂(n) + (3+o(1))log₂log₂(n). -/
@@ -96,7 +96,7 @@ axiom erdos_hajnal_upper_bound :
         IsCoveringFunction X f H ∧
         H < Nat.log 2 n + 3 * Nat.log 2 (Nat.log 2 n) + 10
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- **Erdős Problem #624 (OPEN)**:
     H(n) - log₂(n) → ∞ as n → ∞.
@@ -110,7 +110,7 @@ def MainConjecture : Prop :=
 /-- The conjecture remains open. -/
 axiom erdos_624_open : MainConjecture
 
-/-! ## Weaker Statement (Also Open) -/
+/- ## Weaker Statement (Also Open) -/
 
 /-- Weaker conjecture: For n = 2^k, H(n) ≥ k + 1.
     This is equivalent to saying no function achieves H = k = log₂(n). -/
@@ -121,7 +121,7 @@ def WeakerConjecture : Prop :=
 /-- The weaker statement also remains open! -/
 axiom weaker_conjecture_open : WeakerConjecture
 
-/-! ## Alon's Results -/
+/- ## Alon's Results -/
 
 /-- **Alon's Theorem**: There exists c > 0 such that for any f : 𝒫(X) → X
     with |X| = 2^k, there exists Y ⊆ X with |Y| = k such that
@@ -145,7 +145,7 @@ axiom alon_lower_construction :
         ∀ Y : Finset ℕ, Y ⊆ X → Y.card = k →
           (subsetImage f Y).card > 2^k / 4
 
-/-! ## Summary
+/- ## Summary
 
 **Erdős Problem #624** concerns the covering number H(n): the minimum size
 such that some function f : 𝒫(X) → X has {f(A) : A ⊆ Y} = X for all Y of

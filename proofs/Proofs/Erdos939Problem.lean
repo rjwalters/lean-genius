@@ -29,7 +29,7 @@ namespace Erdos939
 
 open scoped Classical
 
-/-!
+/-
 ## r-Powerful (r-Full) Numbers
 
 A positive integer n is r-powerful (or r-full) if for every prime p dividing n,
@@ -80,7 +80,7 @@ theorem thirtytwo_is_5powerful : IsRPowerful 5 32 := by
   have : p = 2 := by omega
   simp only [this, h32, dvd_refl]
 
-/-!
+/-
 ## Erdős's Main Question
 
 Given r ≥ 4, can we find r-2 coprime r-powerful numbers whose sum is also r-powerful?
@@ -98,7 +98,7 @@ def IsErdos939Sum (r : ℕ) (S : Finset ℕ) : Prop :=
 /-- The set of all valid Erdős-939 sums for a given r -/
 def Erdos939Sums (r : ℕ) := {S : Finset ℕ | IsErdos939Sum r S}
 
-/-!
+/-
 ## The Main Conjectures
 
 The existence question: for r ≥ 4, do valid sums exist?
@@ -122,7 +122,7 @@ def Erdos939Infinite : Prop := ∀ r ≥ 4, (Erdos939Sums r).Infinite
 /-- The infinitude question remains open -/
 axiom erdos939_infinite : Erdos939Infinite
 
-/-!
+/-
 ## 3-Powerful Triples
 
 A related question asks about coprime 3-powerful numbers a, b, c with a + b = c.
@@ -139,7 +139,7 @@ def ThreePowerfulTriples := {abc : ℕ × ℕ × ℕ |
 /-- **Nitaj (1995)**: There are infinitely many coprime 3-powerful triples a+b=c -/
 axiom nitaj_threepowerful_infinite : ThreePowerfulTriples.Infinite
 
-/-!
+/-
 ## Known Examples
 
 Cambie found explicit examples for r = 5, 7, and 8.
@@ -165,7 +165,7 @@ axiom cambie_r7_solution : (Erdos939Sums 7).Nonempty
 /-- Cambie found solutions for r = 8 -/
 axiom cambie_r8_solution : (Erdos939Sums 8).Nonempty
 
-/-!
+/-
 ## Euler's Conjecture and Lander-Parkin Counterexample
 
 Euler conjectured that the sum of k-1 k-th powers is never a k-th power.
@@ -198,7 +198,7 @@ theorem lander_parkin_counterexample : ¬EulerConjecture := by
 theorem lander_parkin_identity :
     27^5 + 84^5 + 110^5 + 133^5 = 144^5 := by native_decide
 
-/-!
+/-
 ## Connection to r-Powerful Numbers
 
 The Lander-Parkin example shows perfect k-th powers (trivially k-powerful)

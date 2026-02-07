@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #289: Unit Fractions from Disjoint Intervals
 
 Is it true that for all sufficiently large k, there exist k disjoint,
@@ -26,7 +26,7 @@ import Mathlib.Tactic
 
 open Finset
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- An interval block [a, b] ⊂ ℕ with a ≤ b. -/
 structure IntervalBlock where
@@ -58,7 +58,7 @@ def ValidDecomposition (k : ℕ) (blocks : Fin k → IntervalBlock) : Prop :=
   (∀ i j : Fin k, i ≠ j → IntervalBlock.NonAdjacent (blocks i) (blocks j)) ∧
   ∑ i : Fin k, (blocks i).recipSum = 1
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #289** (OPEN): For all sufficiently large k, there exists
     a valid decomposition of 1 into k disjoint non-adjacent interval blocks. -/
@@ -66,7 +66,7 @@ axiom erdos_289_conjecture :
   ∃ K : ℕ, ∀ k : ℕ, k ≥ K →
     ∃ blocks : Fin k → IntervalBlock, ValidDecomposition k blocks
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- Every interval block has at least 2 elements. -/
 theorem interval_block_has_two (I : IntervalBlock) :
@@ -85,7 +85,7 @@ theorem nonadj_implies_disjoint (I J : IntervalBlock) :
   | inl h => left; omega
   | inr h => right; omega
 
-/-! ## Hickerson–Montgomery Example -/
+/- ## Hickerson–Montgomery Example -/
 
 /-- The Hickerson–Montgomery example: 5 intervals summing to 2.
     [2,7], [9,10], [17,18], [34,35], [84,85].
@@ -95,7 +95,7 @@ axiom hickerson_montgomery_example :
     (∀ i j : Fin 5, i ≠ j → IntervalBlock.NonAdjacent (blocks i) (blocks j)) ∧
     ∑ i : Fin 5, (blocks i).recipSum = 2
 
-/-! ## Structural Observations -/
+/- ## Structural Observations -/
 
 /-- The harmonic series diverges, so the total available reciprocal sum
     from any tail of ℕ is unbounded. This is necessary for the problem

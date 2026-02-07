@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 638: Ramsey Families and Infinite Cardinals
 
 Let `S` be a family of finite graphs such that for every `n`, there exists
@@ -21,7 +21,7 @@ import Mathlib.Tactic
 
 open SimpleGraph
 
-/-! ## Ramsey property for triangles -/
+/- ## Ramsey property for triangles -/
 
 /-- A colouring of edges yields a monochromatic triangle if there exist
 three mutually adjacent vertices whose edges all receive the same colour. -/
@@ -37,7 +37,7 @@ triangle. -/
 def HasTriangleRamsey {V : Type*} (G : SimpleGraph V) (n : ℕ) : Prop :=
     ∀ c : V → V → Fin n, HasMonoTriangle G c
 
-/-! ## Ramsey families -/
+/- ## Ramsey families -/
 
 /-- A Ramsey family is a collection of finite graphs (indexed by vertex
 count) such that for every `n`, some member has the `n`-colour triangle
@@ -53,7 +53,7 @@ def HasCardinalTriangleRamsey {V : Type*} (G : SimpleGraph V)
     (κ : Type*) : Prop :=
     ∀ c : V → V → κ, HasMonoTriangle G c
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 638: For every Ramsey family `S` and every infinite
 colour type, there exists a graph with the appropriate Ramsey property. -/
@@ -64,7 +64,7 @@ def ErdosProblem638 : Prop :=
           ∃ (V : Type) (G : SimpleGraph V),
             HasCardinalTriangleRamsey G κ
 
-/-! ## Classical Ramsey theorem -/
+/- ## Classical Ramsey theorem -/
 
 /-- The classical Ramsey theorem for triangles: for every `n`, there exists
 `N` such that every `n`-colouring of `K_N` contains a monochromatic
@@ -76,7 +76,7 @@ axiom ramsey_triangle (n : ℕ) (hn : 1 ≤ n) :
 axiom complete_graphs_ramsey :
     IsRamseyFamily (fun m => {⊤ : SimpleGraph (Fin m)})
 
-/-! ## Basic observations -/
+/- ## Basic observations -/
 
 /-- Monotonicity: if `G` has the `n`-colour property and `m ≤ n`, then
 `G` also has the `m`-colour property. -/

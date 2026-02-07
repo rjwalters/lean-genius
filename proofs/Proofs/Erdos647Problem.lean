@@ -25,7 +25,7 @@ namespace Erdos647
 open scoped Classical
 open Finset
 
-/-!
+/-
 ## The Divisor Function τ
 
 τ(n) counts the positive divisors of n. In Mathlib this is `Nat.divisors.card`.
@@ -49,7 +49,7 @@ theorem tau_twelve : tau 12 = 6 := by native_decide
 /-- τ(24) = 8: divisors are 1, 2, 3, 4, 6, 8, 12, 24 -/
 theorem tau_twentyfour : tau 24 = 8 := by native_decide
 
-/-!
+/-
 ## The Main Quantity: m + τ(m)
 
 The problem asks about max_{m < n}(m + τ(m)) compared to n + 2.
@@ -65,7 +65,7 @@ theorem mPlusTau_22 : mPlusTau 22 = 26 := by native_decide
 theorem mPlusTau_23 : mPlusTau 23 = 25 := by native_decide
 theorem mPlusTau_24 : mPlusTau 24 = 32 := by native_decide
 
-/-!
+/-
 ## The Erdős Condition
 
 n satisfies the Erdős condition if max_{m < n}(m + τ(m)) ≤ n + 2
@@ -92,7 +92,7 @@ theorem erdosCondition_iff_finset (n : ℕ) :
     have : m ∈ Finset.range n := Finset.mem_range.mpr hm
     exact le_trans (Finset.le_sup this) h
 
-/-!
+/-
 ## Known Result: n = 24 Satisfies the Condition
 
 This is the largest known n satisfying the Erdős condition.
@@ -112,7 +112,7 @@ theorem twentyfour_satisfies : ErdosCondition 24 := by
   unfold mPlusTau tau
   interval_cases m <;> native_decide
 
-/-!
+/-
 ## Why Most n Fail
 
 For most n, the condition fails because some m < n has m + τ(m) > n + 2.
@@ -145,7 +145,7 @@ theorem seven_fails : ¬ErdosCondition 7 := by
   have : 6 + 4 ≤ 9 := this
   omega
 
-/-!
+/-
 ## The Main Open Question
 
 Is there any n > 24 satisfying the Erdős condition?
@@ -166,7 +166,7 @@ def ErdosSolutions : Set ℕ := {n | ErdosCondition n}
 /-- 24 is a solution -/
 theorem twentyfour_in_solutions : 24 ∈ ErdosSolutions := twentyfour_satisfies
 
-/-!
+/-
 ## Erdős's Asymptotic Conjecture
 
 Erdős suggested that max_{m < n}(m + τ(m) - n) → ∞ as n → ∞.
@@ -187,7 +187,7 @@ theorem asymptotic_implies_finite (h : ErdosAsymptoticConjecture) :
   -- If excess → ∞, then eventually excess > 2, meaning no solutions
   sorry
 
-/-!
+/-
 ## Connection to Highly Composite Numbers
 
 The condition is related to highly composite numbers - numbers with more
@@ -221,7 +221,7 @@ theorem highly_composite_examples :
   · intro m hm; interval_cases m <;> native_decide
   · intro m hm; interval_cases m <;> native_decide
 
-/-!
+/-
 ## Why n = 24 is Special
 
 n = 24 works because:
@@ -245,7 +245,7 @@ We've shown n = 25 and n = 26 fail due to 24 + τ(24) = 32.
 Further values fail due to other highly composite numbers like 36, 48, 60, ... -/
 axiom large_n_fail : ∀ n > 24, ¬ErdosCondition n
 
-/-!
+/-
 ## Related Problems
 
 Problem #679 is a stronger version involving 2^ω(m) where ω is the
@@ -283,7 +283,7 @@ theorem erdos679_implies_647 (n : ℕ) (h : Erdos679Condition n) :
   -- τ(m) ≥ 2^ω(m) follows from multiplicativity
   sorry
 
-/-!
+/-
 ## Historical Context
 
 Erdős posed this problem with characteristically modest optimism and

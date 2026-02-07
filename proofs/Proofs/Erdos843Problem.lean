@@ -40,7 +40,7 @@ open Nat Finset
 
 namespace Erdos843
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -70,7 +70,7 @@ n can be written as a sum of distinct elements from a finset.
 def HasDistinctSumRep (n : ℕ) (available : Set ℕ) : Prop :=
   ∃ S : Finset ℕ, (∀ x ∈ S, x ∈ available) ∧ S.sum id = n
 
-/-!
+/-
 ## Part II: Ramsey r-Completeness
 -/
 
@@ -101,7 +101,7 @@ The original question specifically asks about 2-colorings of squares.
 -/
 def SquaresRamsey2Complete : Prop := IsRamseyComplete Squares 2
 
-/-!
+/-
 ## Part III: The Original Conjecture
 -/
 
@@ -121,7 +121,7 @@ For k ≥ 2, are the k-th powers Ramsey r-complete for all r ≥ 2?
 def GeneralizedQuestion : Prop :=
   ∀ k r : ℕ, k ≥ 2 → r ≥ 2 → IsRamseyComplete (KthPowers k) r
 
-/-!
+/-
 ## Part IV: Historical Results
 -/
 
@@ -161,7 +161,7 @@ theorem kth_powers_ramsey_complete (k r : ℕ) (hk : k ≥ 2) (hr : r ≥ 2) :
   obtain ⟨A, hAsub, hAcomplete⟩ := conlon_fox_pham_2021 k r hk hr
   exact subset_ramsey_complete hAsub hAcomplete
 
-/-!
+/-
 ## Part V: Resolution of Problem 843
 -/
 
@@ -183,7 +183,7 @@ The answer is YES - squares are Ramsey 2-complete.
 -/
 theorem erdos_843_resolved : OriginalQuestion := squares_ramsey_2_complete
 
-/-!
+/-
 ## Part VI: Stronger Results
 -/
 
@@ -216,7 +216,7 @@ axiom burr_erdos_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
       (Finset.filter (· ∈ A) (Finset.range N)).card ≤ C * (Real.log N)^3
 
-/-!
+/-
 ## Part VII: Related Results and Context
 
 **CFP improved the upper bound to (log N)²** — this is optimal up to constants.
@@ -242,7 +242,7 @@ This is related but doesn't directly imply Ramsey completeness.
 axiom lagrange_four_squares :
   ∀ n : ℕ, n ≥ 1 → ∃ a b c d : ℕ, n = a^2 + b^2 + c^2 + d^2
 
-/-!
+/-
 ## Part IX: Summary
 -/
 

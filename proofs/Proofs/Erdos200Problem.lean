@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #200: Longest Arithmetic Progression of Primes
 
 Does the longest arithmetic progression of primes in {1,...,N} have
@@ -24,7 +24,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- An arithmetic progression of length k with first term a and
     common difference d: {a, a+d, a+2d, ..., a+(k-1)d}. -/
@@ -42,7 +42,7 @@ def IsPrimeAP (k N : ℕ) : Prop :=
 noncomputable def longestPrimeAP (N : ℕ) : ℕ :=
   sSup {k : ℕ | IsPrimeAP k N}
 
-/-! ## Upper Bound from PNT -/
+/- ## Upper Bound from PNT -/
 
 /-- The Prime Number Theorem implies: any AP of primes in {1,...,N}
     has length at most (1 + o(1)) · log N.
@@ -56,7 +56,7 @@ axiom prime_ap_upper_pnt :
   ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ →
     (longestPrimeAP N : ℝ) ≤ (1 + ε) * Real.log N
 
-/-! ## Green–Tao Theorem -/
+/- ## Green–Tao Theorem -/
 
 /-- Green–Tao (2008): For every k, there exists a prime AP of length k.
     This means longestPrimeAP N → ∞ as N → ∞. -/
@@ -67,7 +67,7 @@ axiom green_tao :
 axiom longest_prime_ap_unbounded :
   ∀ M : ℕ, ∃ N : ℕ, longestPrimeAP N ≥ M
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #200** (OPEN): The longest prime AP in {1,...,N}
     has length o(log N), i.e., longestPrimeAP(N) / log(N) → 0.
@@ -78,7 +78,7 @@ axiom erdos_200_conjecture :
   ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N > N₀ →
     (longestPrimeAP N : ℝ) < ε * Real.log N
 
-/-! ## Known Bounds and Examples -/
+/- ## Known Bounds and Examples -/
 
 /-- The AP {3, 5, 7} has length 3 — trivial example. -/
 axiom prime_ap_3 : IsPrimeAP 3 7
@@ -94,7 +94,7 @@ axiom green_tao_quantitative :
     ∃ N : ℕ, (N : ℝ) ≤ Real.exp (Real.exp (Real.exp (c * k))) ∧
     IsPrimeAP k N
 
-/-! ## Relationship to Other Conjectures -/
+/- ## Relationship to Other Conjectures -/
 
 /-- If the Hardy–Littlewood k-tuple conjecture holds, then for any k,
     the expected number of prime k-APs with difference d ≤ x is
@@ -109,7 +109,7 @@ axiom hardy_littlewood_prediction :
 axiom hl_suggests_negative :
   True  -- Heuristically, longestPrimeAP(N) / log(N) → c for some c ∈ (0,1]
 
-/-! ## Structural Observations -/
+/- ## Structural Observations -/
 
 /-- In a prime AP {a, a+d, ..., a+(k-1)d}, the common difference d
     must be divisible by all primes ≤ k (to avoid forced composites).

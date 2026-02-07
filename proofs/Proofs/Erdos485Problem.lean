@@ -32,7 +32,7 @@ namespace Erdos485
 
 open Polynomial Finset BigOperators
 
-/-! ## Term Count for Polynomials -/
+/- ## Term Count for Polynomials -/
 
 /--
 The number of non-zero terms (monomials) in a polynomial.
@@ -47,7 +47,7 @@ A polynomial has exactly k non-zero terms.
 def hasTerms {R : Type*} [Semiring R] (p : Polynomial R) (k : ℕ) : Prop :=
   termCount p = k
 
-/-! ## The Function f(k) -/
+/- ## The Function f(k) -/
 
 /--
 f(k) is the minimum number of terms in P(x)² over all polynomials P
@@ -56,7 +56,7 @@ with exactly k non-zero terms.
 noncomputable def f (k : ℕ) : ℕ :=
   sInf {n : ℕ | ∃ p : Polynomial ℚ, hasTerms p k ∧ termCount (p ^ 2) = n}
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- A polynomial with k terms squares to at least 1 term (if k ≥ 1). -/
 theorem f_pos (k : ℕ) (hk : k ≥ 1) : f k ≥ 1 := by
@@ -70,7 +70,7 @@ theorem f_one : f 1 = 1 := by
 theorem f_two : f 2 = 3 := by
   sorry
 
-/-! ## Upper Bounds (Erdős 1949) -/
+/- ## Upper Bounds (Erdős 1949) -/
 
 /--
 **Erdős (1949)**: There exists c > 0 such that f(k) < k^(1-c) for large k.
@@ -80,7 +80,7 @@ theorem erdos_upper_bound :
     ∃ c : ℝ, c > 0 ∧ ∃ K : ℕ, ∀ k ≥ K, (f k : ℝ) < k ^ (1 - c) := by
   sorry
 
-/-! ## The Main Result: f(k) → ∞ -/
+/- ## The Main Result: f(k) → ∞ -/
 
 /--
 **Schinzel (1987)**: f(k) > (log log k) / log 2 for sufficiently large k.
@@ -106,7 +106,7 @@ theorem erdos_485_main : Filter.Tendsto (fun k => f k) Filter.atTop Filter.atTop
   -- Follows from schinzel_zannier_improved
   sorry
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- Example: (1 + x)² = 1 + 2x + x² has 3 terms.
     We verify: (1 + x)² = 1 + 2x + x², support = {0, 1, 2}. -/
@@ -121,7 +121,7 @@ theorem example_trinomial_square :
   -- The polynomial has support {0, 1, 2, 3, 4}
   sorry
 
-/-! ## Related Concepts -/
+/- ## Related Concepts -/
 
 /--
 The general version: g(k, n) = minimum terms in P(x)^n for P with k terms.
@@ -135,7 +135,7 @@ theorem general_divergence (n : ℕ) (hn : n ≥ 1) :
     Filter.Tendsto (fun k => g k n) Filter.atTop Filter.atTop := by
   sorry
 
-/-! ## Sparse Polynomials -/
+/- ## Sparse Polynomials -/
 
 /--
 A polynomial is sparse if it has few terms relative to its degree.
@@ -154,7 +154,7 @@ axiom sparse_product_density :
     isSparse p c → isSparse q c →
     (termCount (p * q) : ℝ) ≥ termCount p + termCount q - 1
 
-/-! ## Lacunary Polynomials -/
+/- ## Lacunary Polynomials -/
 
 /--
 A lacunary polynomial has large gaps between exponents.
@@ -171,7 +171,7 @@ fewer cancellations between cross-terms.
 axiom lacunary_square_terms (p : Polynomial ℚ) (hp : isLacunary p) :
     termCount (p ^ 2) ≥ 2 * termCount p - 1
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 

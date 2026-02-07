@@ -37,7 +37,7 @@ namespace Erdos907
 
 open Topology
 
-/-!
+/-
 ## Part 1: Additive Functions (Cauchy's Functional Equation)
 
 A function φ : ℝ → ℝ is additive if φ(x + y) = φ(x) + φ(y) for all x, y.
@@ -76,7 +76,7 @@ theorem additive_nat_mul (φ : ℝ → ℝ) (h : IsAdditive φ) (n : ℕ) (x : �
 axiom additive_rat_mul (φ : ℝ → ℝ) (h : IsAdditive φ) (q : ℚ) (x : ℝ) :
     φ ((q : ℝ) * x) = (q : ℝ) * φ x
 
-/-!
+/-
 ## Part 2: Continuous Additive Functions are Linear
 
 If an additive function is continuous (or even measurable, or monotone),
@@ -102,7 +102,7 @@ axiom continuous_additive_is_linear (φ : ℝ → ℝ)
 axiom monotone_additive_is_linear (φ : ℝ → ℝ)
     (hadd : IsAdditive φ) (hmono : Monotone φ ∨ Antitone φ) : IsLinear φ
 
-/-!
+/-
 ## Part 3: Discontinuous Additive Functions
 
 There exist discontinuous additive functions (via Axiom of Choice).
@@ -118,7 +118,7 @@ axiom discontinuous_additive_dense (φ : ℝ → ℝ)
     (hadd : IsAdditive φ) (hdiscont : ¬Continuous φ) :
   ∀ (a b : ℝ), ∀ ε > 0, ∃ x : ℝ, |x - a| < ε ∧ |φ x - b| < ε
 
-/-!
+/-
 ## Part 4: The Difference Operator
 
 For h > 0, the difference Δ_h f(x) = f(x+h) - f(x) measures how f changes.
@@ -148,7 +148,7 @@ theorem additive_difference_const (φ : ℝ → ℝ) (hadd : IsAdditive φ) (h :
   rw [hadd x h]
   ring
 
-/-!
+/-
 ## Part 5: De Bruijn's Theorem
 
 The main result: if all differences are continuous, then f = g + φ
@@ -168,7 +168,7 @@ theorem erdos_907 (f : ℝ → ℝ) :
     hasContinuousDifferences f → hasDeBruijnDecomposition f :=
   de_bruijn_theorem f
 
-/-!
+/-
 ## Part 6: Properties of the Decomposition
 
 The decomposition f = g + φ has several nice properties.
@@ -196,7 +196,7 @@ theorem additive_continuous_decomposition (f : ℝ → ℝ)
   obtain ⟨c, hc⟩ := continuous_additive_is_linear f hadd hcont
   exact ⟨c, hc⟩
 
-/-!
+/-
 ## Part 7: Examples
 
 Some examples illustrating the theorem.
@@ -223,7 +223,7 @@ example : hasDeBruijnDecomposition (fun x => x^2) := by
 theorem continuous_satisfies (f : ℝ → ℝ) (hf : Continuous f) :
     hasContinuousDifferences f := continuous_has_continuous_differences f hf
 
-/-!
+/-
 ## Part 8: Connection to Regularity Theory
 
 The theorem fits into a broader pattern: regularity on differences
@@ -240,7 +240,7 @@ axiom measurable_differences_decomposition (f : ℝ → ℝ)
     (hmeas : ∀ h > 0, Measurable (Δ[h] f)) :
   ∃ (g φ : ℝ → ℝ), Measurable g ∧ IsAdditive φ ∧ ∀ x, f x = g x + φ x
 
-/-!
+/-
 ## Part 9: Related Problem
 
 See also Erdős Problem #908 for related questions.
@@ -252,7 +252,7 @@ axiom decomposition_continuous_additive (f : ℝ → ℝ)
   (∃ (g φ : ℝ → ℝ), Continuous g ∧ IsAdditive φ ∧ Continuous φ ∧ ∀ x, f x = g x + φ x) ↔
   Continuous f
 
-/-!
+/-
 ## Part 10: Summary
 
 De Bruijn's theorem completely characterizes functions with continuous

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 685: Prime Divisors of Binomial Coefficients
 
 For `ε > 0` and large `n`, if `n^ε < k ≤ n^{1-ε}`, is the number of
@@ -18,7 +18,7 @@ import Mathlib.Tactic
 
 open Finset Nat
 
-/-! ## Prime divisor count -/
+/- ## Prime divisor count -/
 
 /-- `omega n` is the number of distinct prime divisors of `n`. -/
 noncomputable def omega (n : ℕ) : ℕ :=
@@ -28,7 +28,7 @@ noncomputable def omega (n : ℕ) : ℕ :=
 noncomputable def primeSumInRange (k n : ℕ) : ℝ :=
     ((Finset.Ioo k n).filter Nat.Prime).sum (fun p => (1 : ℝ) / p)
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 685: For `n^ε < k ≤ n^{1-ε}`, the number of distinct prime
 divisors of `C(n,k)` is asymptotically `k · ∑_{k<p<n} 1/p`. -/
@@ -40,7 +40,7 @@ def ErdosProblem685 : Prop :=
             (1 - δ) * k * primeSumInRange k n ≤ (omega (n.choose k) : ℝ) ∧
             (omega (n.choose k) : ℝ) ≤ (1 + δ) * k * primeSumInRange k n
 
-/-! ## Trivial lower bound -/
+/- ## Trivial lower bound -/
 
 /-- Trivial lower bound: `ω(C(n,k)) > log C(n,k) / log n`. -/
 axiom omega_choose_lower (n k : ℕ) (hn : 2 ≤ n) (hk : 0 < k) (hkn : k ≤ n) :
@@ -54,7 +54,7 @@ axiom omega_choose_tight_near_n :
           (omega (n.choose k) : ℝ) ≤
             (1 + ε) * Real.log (n.choose k : ℝ) / Real.log n
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- `ω(1) = 0`: 1 has no prime divisors. -/
 theorem omega_one : omega 1 = 0 := by

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #680: Least Prime Factor Exceeding k² + 1
 
 For a positive integer m, let p(m) denote its least prime factor. Erdős asked:
@@ -24,7 +24,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
-/-! ## Least Prime Factor and the Main Conjecture -/
+/- ## Least Prime Factor and the Main Conjecture -/
 
 /-- Erdős Problem 680 (main): For all sufficiently large n, there exists
     k ≥ 1 such that minFac(n + k) > k² + 1. -/
@@ -36,7 +36,7 @@ def ErdosProblem680 : Prop :=
 def HasLargeLPF (n : ℕ) : Prop :=
   ∃ k : ℕ, 0 < k ∧ (n + k).minFac > k ^ 2 + 1
 
-/-! ## Exponential Variant -/
+/- ## Exponential Variant -/
 
 /-- The stronger exponential variant: it is false that for all sufficiently
     large n, there exists k with minFac(n+k) > e^{(1+ε)√k} + C.
@@ -53,7 +53,7 @@ def ErdosProblem680Variant : Prop :=
 def ErdosProblem680Combined : Prop :=
   ErdosProblem680 ∧ ErdosProblem680Variant
 
-/-! ## Connections to Prime Gap Conjectures -/
+/- ## Connections to Prime Gap Conjectures -/
 
 /-- Cramér's conjecture on prime gaps: the gap after prime p is O((log p)²). -/
 def CramerConjecture : Prop :=
@@ -69,7 +69,7 @@ axiom cramer_implies_large_lpf :
         ∃ k : ℕ, 0 < k ∧
           (n + k).minFac > ⌊Real.exp ((1 - ε) * Real.sqrt k)⌋₊
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The quadratic bound k² + 1 grows slower than the exponential e^{(1+ε)√k}
     for large k, so the main conjecture is weaker than the exponential version. -/
@@ -93,7 +93,7 @@ theorem prime_offset_gives_large_lpf (n k : ℕ) (hk : 0 < k)
   rw [hp.minFac_eq]
   exact hn
 
-/-! ## Granville's Refinement -/
+/- ## Granville's Refinement -/
 
 /-- Granville's constant: 2e^{-γ} where γ is the Euler-Mascheroni constant.
     This is approximately 1.1229. -/

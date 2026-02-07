@@ -24,7 +24,7 @@ open Nat Set
 
 namespace Erdos727
 
-/-!
+/-
 ## Background: Factorials and Divisibility
 
 The central binomial coefficient C(2n, n) = (2n)! / (n!)² has many divisibility
@@ -42,7 +42,7 @@ Basic identity: (2n)! = C(2n,n) * (n!)²
 axiom factorial_2n_eq (n : ℕ) :
     (2 * n)! = centralBinom n * (n !) ^ 2
 
-/-!
+/-
 ## The Main Question
 
 For fixed k ≥ 2, we ask whether there are infinitely many n such that
@@ -63,7 +63,7 @@ The set of n for which ((n+k)!)² | (2n)!
 def divisible_set (k : ℕ) : Set ℕ :=
   { n : ℕ | divides_factorial k n }
 
-/-!
+/-
 ## The Erdős Conjecture (Open for k ≥ 2)
 
 The main conjecture: For every k ≥ 2, the set of n with ((n+k)!)² | (2n)!
@@ -85,7 +85,7 @@ The k = 2 case is specifically still open.
 def erdos_727_k2_open : Prop :=
   (divisible_set 2).Infinite
 
-/-!
+/-
 ## Balakran's Theorem (k = 1 Case, SOLVED)
 
 In 1929, Balakran proved that for k = 1, there are infinitely many n
@@ -107,7 +107,7 @@ The k = 1 case of Erdős #727 is solved by Balakran.
 -/
 theorem erdos_727_k1_solved : (divisible_set 1).Infinite := balakran_theorem
 
-/-!
+/-
 ## Classical Result: Catalan Numbers
 
 A classical fact is that (n+1) divides C(2n, n) for ALL n.
@@ -134,7 +134,7 @@ theorem centralBinom_eq_catalan (n : ℕ) :
   rw [mul_comm]
   exact (Nat.div_mul_cancel h).symm
 
-/-!
+/-
 ## The EGRS Variant (SOLVED)
 
 Erdős, Graham, Ruzsa, and Straus showed a weaker but still interesting result:
@@ -163,7 +163,7 @@ In fact, this holds whenever k < c log n for some constant c > 0.
 -/
 axiom egrs_theorem (k : ℕ) (hk : 2 ≤ k) : (egrs_set k).Infinite
 
-/-!
+/-
 ## Relationship Between the Problems
 
 The EGRS variant is weaker than the main conjecture. If ((n+k)!)² | (2n)!,
@@ -190,7 +190,7 @@ theorem main_conjecture_implies_egrs (k : ℕ) (_hk : 2 ≤ k)
     exact main_implies_egrs k n hn
   · exact h
 
-/-!
+/-
 ## Erdős's Related Result
 
 Erdős (1968) proved a bound: if a! b! | n!, then a + b ≤ n + O(log n).
@@ -208,7 +208,7 @@ axiom erdos_factorial_bound : ∃ C : ℝ, ∀ n a b : ℕ,
     a.factorial * b.factorial ∣ n.factorial →
     (a : ℝ) + b ≤ n + C * Real.log n
 
-/-!
+/-
 ## Numerical Evidence
 
 For the k = 2 case, we need ((n+2)!)² | (2n)!.
@@ -231,7 +231,7 @@ example : ¬ divides_factorial 1 2 := by
   -- (3!)² = 36, (4)! = 24, and 36 ∤ 24
   decide
 
-/-!
+/-
 ## Why This Problem is Interesting
 
 The problem connects several areas:
@@ -253,7 +253,7 @@ def square_difficulty : Prop :=
   (divisible_set 1).Infinite ∧  -- k=1 solved
   ¬∃ proof : Prop, proof = (divisible_set 2).Infinite  -- k=2 has no known proof
 
-/-!
+/-
 ## Summary of Status
 
 | Problem | Status | Reference |

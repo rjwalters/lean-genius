@@ -29,7 +29,7 @@ open Nat Filter Real BigOperators
 
 namespace Erdos233
 
-/-! ## The Prime Gap Function -/
+/- ## The Prime Gap Function -/
 
 /-- The n-th prime number. We use Nat.Prime.nth which gives the n-th prime
     (0-indexed, so nth 0 = 2, nth 1 = 3, etc.) -/
@@ -38,13 +38,13 @@ noncomputable abbrev nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 /-- The n-th prime gap: dₙ = p(n+1) - p(n). -/
 noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 
-/-! ## Sum of Squares of Prime Gaps -/
+/- ## Sum of Squares of Prime Gaps -/
 
 /-- The sum of squares of the first N prime gaps. -/
 noncomputable def sumSquaresGaps (N : ℕ) : ℕ :=
   ∑ n ∈ Finset.range N, (primeGap n) ^ 2
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /--
 **Erdős Problem #233** (Heath-Brown's Conjecture):
@@ -60,7 +60,7 @@ This conjecture implies that prime gaps are "typically" not too large.
 def Erdos233Conjecture : Prop :=
   (fun N => (sumSquaresGaps N : ℝ)) =O[atTop] fun N => N * (Real.log N) ^ 2
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /--
 **Lower Bound** (Prime Number Theorem):
@@ -101,7 +101,7 @@ axiom selberg_conditional_bound :
     RiemannHypothesis →
     selbergSum =O[atTop] fun N => (Real.log N) ^ 4
 
-/-! ## Current Status -/
+/- ## Current Status -/
 
 /--
 **Summary**: The exact asymptotic behavior of the sum of squares of prime gaps
@@ -115,7 +115,7 @@ The gap between the lower bound and the conditional upper bound is (log N)².
 -/
 axiom erdos_233_open : Erdos233Conjecture ∨ ¬Erdos233Conjecture
 
-/-! ## Connection to Cramér's Conjecture -/
+/- ## Connection to Cramér's Conjecture -/
 
 /--
 **Cramér's Conjecture** states that prime gaps satisfy:
@@ -132,14 +132,14 @@ def CramerConjecture : Prop :=
 /-- Cramér's conjecture implies the sum of squares bound. -/
 axiom cramer_implies_bound : CramerConjecture → Erdos233Conjecture
 
-/-! ## Examples and Computations -/
+/- ## Examples and Computations -/
 
 /-- The first few prime gaps: 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, ...
     (axiomatized since nthPrime is noncomputable) -/
 axiom first_prime_gaps :
     primeGap 0 = 1 ∧ primeGap 1 = 2 ∧ primeGap 2 = 2
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /--
 **Summary of Erdős Problem #233**:

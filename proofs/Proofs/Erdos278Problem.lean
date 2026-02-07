@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #278 — Maximum Covering Density of Congruence Systems
 
 Given a finite set of moduli A = {n₁ < n₂ < ⋯ < nᵣ}, choose residues
@@ -24,7 +24,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A congruence system: a finite collection of moduli with chosen residues. -/
 structure CongruenceSystem where
@@ -50,7 +50,7 @@ noncomputable def maxCoverageDensity (moduli : Finset ℕ) (hpos : ∀ n ∈ mod
 noncomputable def minCoverageDensity (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) : ℝ :=
   sInf { d : ℝ | ∃ r : ℕ → ℕ, d = coverageDensity ⟨moduli, r, hpos⟩ }
 
-/-! ## Inclusion-Exclusion Formula -/
+/- ## Inclusion-Exclusion Formula -/
 
 /-- The inclusion-exclusion density when all residues are equal:
     Σ 1/nᵢ - Σ 1/lcm(nᵢ,nⱼ) + ⋯
@@ -60,7 +60,7 @@ noncomputable def inclusionExclusionDensity (moduli : Finset ℕ) : ℝ :=
   -- Simplified: for a single modulus, density is 1/n
   moduli.sum (fun n => (1 : ℝ) / n)
 
-/-! ## Simpson's Theorem (1986) -/
+/- ## Simpson's Theorem (1986) -/
 
 /-- Simpson's theorem: the minimum coverage density is achieved when
     all residues are equal. The minimum is given by the inclusion-exclusion
@@ -75,7 +75,7 @@ axiom equal_residues_minimize (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 
     coverageDensity ⟨moduli, (fun _ => a), hpos⟩ =
     coverageDensity ⟨moduli, (fun _ => 0), hpos⟩
 
-/-! ## Question 1: Maximum Density (OPEN) -/
+/- ## Question 1: Maximum Density (OPEN) -/
 
 /-- The maximum coverage density over all residue choices.
     For coprime moduli, the maximum is Σ 1/nᵢ (≤ 1).
@@ -89,7 +89,7 @@ axiom max_density_coprime_case (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0
 axiom erdos_278_open_question (moduli : Finset ℕ) (hpos : ∀ n ∈ moduli, 0 < n) :
     maxCoverageDensity moduli hpos ≤ 1
 
-/-! ## Basic Bounds -/
+/- ## Basic Bounds -/
 
 /-- The coverage density is between 0 and 1. -/
 axiom density_bounds (sys : CongruenceSystem) :

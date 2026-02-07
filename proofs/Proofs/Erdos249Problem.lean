@@ -30,7 +30,7 @@ import Mathlib.Tactic
 
 namespace Erdos249
 
-/-! ## Part I: The Series Definition -/
+/- ## Part I: The Series Definition -/
 
 /-- The general term of the series: φ(n)/2^n. -/
 noncomputable def termFn (n : ℕ) : ℝ :=
@@ -42,7 +42,7 @@ noncomputable def termFn (n : ℕ) : ℝ :=
 noncomputable def totientPowerSum : ℝ :=
   ∑' n, termFn n
 
-/-! ## Part II: Basic Properties -/
+/- ## Part II: Basic Properties -/
 
 /-- φ(n) ≤ n for all n (basic bound on totient). -/
 theorem totient_le_self (n : ℕ) : Nat.totient n ≤ n :=
@@ -68,7 +68,7 @@ theorem termFn_two : termFn 2 = 1 / 4 := by
   simp [Nat.totient_prime Nat.prime_two]
   ring
 
-/-! ## Part III: Convergence
+/- ## Part III: Convergence
 
 The series converges absolutely since φ(n)/2^n ≤ n/2^n and ∑ n/2^n converges.
 We axiomatize this since the Mathlib API for comparison tests requires
@@ -91,7 +91,7 @@ axiom totientPowerSum_pos : totientPowerSum > 0
     This follows from ∑_{n≥0} φ(n)/2^n ≤ ∑_{n≥0} n/2^n = 2. -/
 axiom totientPowerSum_le_two : totientPowerSum ≤ 2
 
-/-! ## Part IV: The Main Conjecture -/
+/- ## Part IV: The Main Conjecture -/
 
 /-- **Erdős Problem #249** (OPEN)
 
@@ -100,7 +100,7 @@ axiom totientPowerSum_le_two : totientPowerSum ≤ 2
     This is an open problem. No proof of irrationality (or rationality) is known. -/
 def erdos_249 : Prop := Irrational totientPowerSum
 
-/-! ## Part V: Alternative Characterization -/
+/- ## Part V: Alternative Characterization -/
 
 /-- The negation of the conjecture: the sum is rational. -/
 def isRational : Prop := ∃ (r : ℚ), (r : ℝ) = totientPowerSum
@@ -112,7 +112,7 @@ def isRational : Prop := ∃ (r : ℚ), (r : ℝ) = totientPowerSum
 theorem erdos_249_iff_not_rational : erdos_249 ↔ ¬isRational := by
   rfl
 
-/-! ## Part VI: Numerical Information
+/- ## Part VI: Numerical Information
 
 The sum begins:
   φ(1)/2^1 + φ(2)/2^2 + φ(3)/2^3 + φ(4)/2^4 + ...
@@ -128,7 +128,7 @@ theorem partial_sum_2 : termFn 1 + termFn 2 = 3 / 4 := by
   rw [termFn_one, termFn_two]
   ring
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status**: OPEN
 

@@ -19,7 +19,7 @@ import Mathlib
 
 namespace Erdos768
 
-/-!
+/-
 ## The Set A
 
 We define the set A of integers where every prime divisor p has a "witness"
@@ -41,7 +41,7 @@ def setA : Set ℕ := {n | inSetA n}
 def inSetA' (n : ℕ) : Prop :=
   n > 0 ∧ ∀ p ∈ n.primeFactors, ∃ d ∈ n.divisors, d > 1 ∧ d % p = 1
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -74,7 +74,7 @@ theorem product_special_primes_in_setA (ps : List ℕ)
     ps.prod ∈ setA := by
   sorry
 
-/-!
+/-
 ## The Counting Function
 
 Let A(N) = |A ∩ [1,N]|. The question is about the asymptotic behavior of A(N)/N.
@@ -88,7 +88,7 @@ noncomputable def countA (N : ℕ) : ℕ :=
 noncomputable def densityA (N : ℕ) : ℝ :=
   (countA N : ℝ) / N
 
-/-!
+/-
 ## Erdős's Bounds
 
 Erdős proved that the density of A satisfies certain bounds involving
@@ -108,7 +108,7 @@ axiom erdos_768_upper_bound :
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
     densityA N ≤ Real.exp (-(1 - ε) * Real.sqrt (Real.log N * Real.log (Real.log N)))
 
-/-!
+/-
 ## The Main Conjecture
 
 The question asks if there exists c > 0 such that:
@@ -125,7 +125,7 @@ axiom erdos_768_conjecture :
       (fun N => -Real.log (densityA N) / exponentFunc N)
       Filter.atTop (nhds c))
 
-/-!
+/-
 ## Connection to Simple Groups
 
 The set A gives an upper bound for counting integers n ≤ N that are orders
@@ -146,7 +146,7 @@ def isNonCyclicSimpleGroupOrder (n : ℕ) : Prop :=
 axiom nonCyclic_simple_in_setA :
   ∀ n : ℕ, isNonCyclicSimpleGroupOrder n → n ∈ setA
 
-/-!
+/-
 ## Structural Properties
 
 The condition for membership in A is closely related to the structure of 
@@ -164,7 +164,7 @@ theorem squarefree_part_structure (n : ℕ) (p : ℕ)
 axiom smallest_nontrivial_in_setA :
   ∃ n : ℕ, n > 1 ∧ n ∈ setA ∧ ∀ m : ℕ, 1 < m → m < n → m ∉ setA
 
-/-!
+/-
 ## Asymptotic Analysis
 
 The key insight is that for n to be in A, its prime factorization must be
@@ -181,7 +181,7 @@ axiom logLogDensity_scaling :
     (fun N => logLogDensity N / (Real.sqrt (Real.log N) * Real.log (Real.log N)))
     Filter.atTop Filter.atTop
 
-/-!
+/-
 ## Known Values and OEIS
 
 OEIS A001034 lists orders of non-cyclic simple groups.
@@ -204,7 +204,7 @@ theorem six_in_setA : 6 ∈ setA := by
       constructor <;> norm_num
     }
 
-/-!
+/-
 ## Main Open Problem Statement
 -/
 

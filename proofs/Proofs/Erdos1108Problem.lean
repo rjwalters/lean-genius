@@ -34,7 +34,7 @@ namespace Erdos1108
 
 open Nat Finset BigOperators
 
-/-! ## The Set of Factorial Sums
+/- ## The Set of Factorial Sums
 
 A = {Σ_{n∈S} n! : S ⊂ ℕ finite} is the set of all numbers that can be expressed
 as a finite sum of distinct factorials.
@@ -45,7 +45,7 @@ This includes: 0 (empty sum), 1 = 0! = 1!, 2 = 2!, 3 = 1! + 2!, 6 = 3!, etc. -/
 def FactorialSums : Set ℕ :=
   {m : ℕ | ∃ S : Finset ℕ, m = ∑ n ∈ S, n.factorial}
 
-/-! ## Examples of Factorial Sums -/
+/- ## Examples of Factorial Sums -/
 
 /-- 0 is a factorial sum (empty sum). -/
 theorem zero_mem_factorial_sums : 0 ∈ FactorialSums :=
@@ -67,7 +67,7 @@ theorem six_mem_factorial_sums : 6 ∈ FactorialSums :=
 theorem twentyfour_mem_factorial_sums : 24 ∈ FactorialSums :=
   ⟨{4}, by norm_num [Nat.factorial]⟩
 
-/-! ## Powerful Numbers
+/- ## Powerful Numbers
 
 A number n is **powerful** if every prime p dividing n satisfies p² | n.
 Equivalently, in the prime factorization, every exponent is at least 2.
@@ -78,7 +78,7 @@ exponent at least 2. Examples: 1, 4, 8, 9, 16, 25, 27, 32, 36, ... -/
 def IsPowerful (n : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → p ∣ n → p ^ 2 ∣ n
 
-/-! ## Examples of Powerful Numbers -/
+/- ## Examples of Powerful Numbers -/
 
 /-- 1 is powerful (vacuously, no prime divides 1). -/
 theorem one_is_powerful : IsPowerful 1 := by
@@ -91,7 +91,7 @@ axiom four_is_powerful : IsPowerful 4
 /-- 9 = 3² is powerful. Axiomatized for simplicity. -/
 axiom nine_is_powerful : IsPowerful 9
 
-/-! ## Perfect Powers in Factorial Sums -/
+/- ## Perfect Powers in Factorial Sums -/
 
 /-- The set of k-th powers that are also factorial sums. -/
 def KthPowersInFactorialSums (k : ℕ) : Set ℕ :=
@@ -101,7 +101,7 @@ def KthPowersInFactorialSums (k : ℕ) : Set ℕ :=
 def PowerfulFactorialSums : Set ℕ :=
   {a ∈ FactorialSums | IsPowerful a}
 
-/-! ## The Main Open Questions -/
+/- ## The Main Open Questions -/
 
 /-- **Erdős Problem #1108 - Question 1 (OPEN)**:
 For each k ≥ 2, does the set of factorial sums contain only finitely many k-th powers?
@@ -120,7 +120,7 @@ If true, it would significantly constrain the structure of factorial sums. -/
 axiom erdos_1108_powerful_open :
     Prop  -- Unknown whether PowerfulFactorialSums.Finite
 
-/-! ## Known Partial Results -/
+/- ## Known Partial Results -/
 
 /-- **Brindza-Erdős (1991)**: For any fixed r, if n₁! + n₂! + ... + nᵣ! is powerful
 with n₁ ≥ n₂ ≥ ... ≥ nᵣ, then n₁ is bounded by a constant depending only on r.
@@ -137,7 +137,7 @@ squares of the form 1 + n!. -/
 axiom erdos_398_related_open :
     Prop  -- Unknown whether {n : ℕ | ∃ m : ℕ, 1 + n.factorial = m ^ 2}.Finite
 
-/-! ## Mahler's Related Problem
+/- ## Mahler's Related Problem
 
 Mahler asked a similar question about sums of powers of k:
 For k ≥ 5, does A_k = {Σ_{n∈S} k^n : S ⊂ ℕ finite} contain only finitely many squares?
@@ -157,7 +157,7 @@ theorem mahler_example : 1 + 7 + 49 + 343 = 400 := by norm_num
 
 theorem mahler_example_is_square : ∃ m : ℕ, m ^ 2 = 400 := ⟨20, by norm_num⟩
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /-- 1 is both a factorial sum (1 = 0!) and a perfect square (1 = 1²).
 So KthPowersInFactorialSums 2 is nonempty. -/
@@ -171,7 +171,7 @@ theorem one_is_powerful_factorial_sum :
     1 ∈ PowerfulFactorialSums :=
   ⟨one_mem_factorial_sums, one_is_powerful⟩
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #1108 Summary**:
 
