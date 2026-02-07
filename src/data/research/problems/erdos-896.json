@@ -1,50 +1,93 @@
 {
   "slug": "erdos-896",
   "title": "Erdős #896",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "SURVEYED",
+  "status": "surveyed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Estimate the maximum of F(A,B)\" role=\"presentation\" style=\"position: relative;\">F(A,B)F(A,B)F(A,B) as A,B\" role=\"presentation\" style=\"position: relative;\">A,BA,BA,B range over all subsets of {1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">{1,…,N}{1,…,N}\\{1,\\ldots,N\\}, where F(A,B)\" role=\"presentation\" style=\"position: relative;\">F(A,B)F(A,B)F(A,B) counts the number of m\" role=\"presentation\" style=\"position: relative;\">mmm such that m=ab\" role=\"presentation\" style=\"position: re...",
-    "whyMatters": []
+    "formal": "For subsets A, B ⊆ {1, ..., N}, define F(A,B) as the number of m such that m = ab has exactly one solution with a ∈ A, b ∈ B. Estimate max_{A,B} F(A,B).",
+    "plain": "How large can the number of unique products be when multiplying elements from two subsets of {1,...,N}?",
+    "whyMatters": [
+      "Explores multiplicative structure of product sets",
+      "Connects to number of distinct products and divisor distribution",
+      "Van Doorn established bounds but exact order remains open"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Van Doorn: (1+o(1)) N²/log N ≤ max F(A,B)",
+      "Van Doorn: max F(A,B) ≪ N²/(log N)^δ (log log N)^{3/2} where δ ≈ 0.086",
+      "Trivial: F(A,B) ≤ |A|·|B|",
+      "F(A,B) = F(B,A) by multiplication commutativity"
+    ],
+    "open": [
+      "Exact asymptotic order of max F(A,B)",
+      "Whether the true order is N²/log N (i.e., whether lower bound is tight)"
+    ],
+    "goal": "Formalize problem statement and Van Doorn's bounds"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T11:22:53.229Z",
+    "phase": "SURVEYED",
+    "since": "2026-02-07T17:40:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Fix headers, clean up formalization, verify Van Doorn's delta expression",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Could submit to Aristotle for trivial theorem proofs",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: Enhanced formalization with fixed headers, exact Van Doorn delta expression, cleaned up structure. Two theorems proved (trivial bound and empty set case), Van Doorn bounds axiomatized.",
+    "builtItems": [
+      "proofs/Proofs/Erdos896Problem.lean - Enhanced formalization",
+      "theorem uniqueProductCount_le_product (proved: F(A,B) ≤ |A|·|B|)",
+      "theorem uniqueProductCount_empty_left (proved: F(∅,B) = 0)",
+      "theorem erdos_896_summary (proved from Van Doorn axiom)",
+      "VanDoornLowerBound and VanDoornUpperBound definitions with exact delta"
+    ],
+    "insights": [
+      "Problem is OPEN - exact order unknown",
+      "Gap between lower (~N²/log N) and upper (~N²/(log N)^0.086) is substantial",
+      "Van Doorn's delta = 1 - (1 + log log 2)/log 2 ≈ 0.086",
+      "Related to Problem #490 on product set structure",
+      "Original source: [Er72, p.81]"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #896 - Knowledge Base\n\n## Problem Statement\n\nEstimate the maximum of F(A,B)\" role=\"presentation\" style=\"position: relative;\">F(A,B)F(A,B)F(A,B) as A,B\" role=\"presentation\" style=\"position: relative;\">A,BA,BA,B range over all subsets of {1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">{1,…,N}{1,…,N}\\{1,\\ldots,N\\}, where F(A,B)\" role=\"presentation\" style=\"position: relative;\">F(A,B)F(A,B)F(A,B) counts the number of m\" role=\"presentation\" style=\"position: relative;\">mmm such that m=ab\" role=\"presentation\" style=\"position: relative;\">m=abm=abm=ab has exactly one solution (with a&#x2208;A\" role=\"presentation\" style=\"position: relative;\">a∈Aa∈Aa\\in A and b&#x2208;B\" role=\"presentation\" style=\"position: relative;\">b∈Bb∈Bb\\in B).\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #490\n- Problem #895\n- Problem #897\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "nextSteps": [
+      "Could try to prove uniqueProductCount_comm via Finset bijection",
+      "Could add more basic lemmas about reprCount"
+    ],
+    "markdown": "# Erdős #896 - Knowledge Base\n\n## Problem\n\nEstimate max F(A,B) where F counts unique products m = ab.\n\n## Known Bounds (Van Doorn)\n\n- Lower: (1+o(1)) N²/log N\n- Upper: N²/(log N)^{0.086} (log log N)^{3/2}\n- Gap: exact order unknown, conjectured N²/log N\n\n## Formalization\n\n- 2 theorems proved, Van Doorn bounds axiomatized\n- Fixed /-! headers to /-\n\n---\n\n*Updated by researcher-1 on 2026-02-07*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Survey and enhance",
+      "status": "completed",
+      "description": "Fix headers, add exact Van Doorn delta, clean structure."
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "combinatorics",
+    "number-theory",
+    "product-sets"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős [Er72, p.81]",
+      "Van Doorn (bounds on unique product representations)"
+    ],
+    "urls": [
+      "https://www.erdosproblems.com/896"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Finset.Basic"
+    ]
   },
   "started": "2026-01-15T11:22:53.229Z",
   "significance": 6,
