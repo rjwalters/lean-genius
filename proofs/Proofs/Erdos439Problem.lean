@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #439: Monochromatic Solutions to x + y = z²
 
 **Source:** [erdosproblems.com/439](https://erdosproblems.com/439)
@@ -33,7 +33,7 @@ open Finset
 
 namespace Erdos439
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Finite Coloring:**
@@ -62,7 +62,7 @@ integers x ≠ y of the same color with x + y a perfect square.
 def HasMonochromaticSquarePair (c : FiniteColoring k) : Prop :=
   ∃ x y : ℤ, x ≠ y ∧ c x = c y ∧ SumIsSquare x y
 
-/-! ## Part II: The Square Graph -/
+/- ## Part II: The Square Graph -/
 
 /--
 **Square Graph on ℕ:**
@@ -77,7 +77,7 @@ def squareGraph : SimpleGraph ℕ where
     intro m ⟨hne, _⟩
     exact hne rfl
 
-/-! ## Part III: The Erdős-Sárközy-Sós Partial Result (1989) -/
+/- ## Part III: The Erdős-Sárközy-Sós Partial Result (1989) -/
 
 /--
 **ESS 1989: 2 Colors:**
@@ -93,7 +93,7 @@ For 3 colors, there exist x ≠ y with same color and x + y = z².
 axiom ess_three_colors :
     ∀ c : FiniteColoring 3, HasMonochromaticSquarePair c
 
-/-! ## Part IV: The Khalfalah-Szemerédi Theorem (2006)
+/- ## Part IV: The Khalfalah-Szemerédi Theorem (2006)
 
 This is the main result solving Problem #439.
 -/
@@ -108,7 +108,7 @@ This proves the infinite chromatic number of the square graph.
 axiom khalfalah_szemeredi (k : ℕ) (hk : k ≥ 1) :
     ∀ c : FiniteColoring k, HasMonochromaticSquarePair c
 
-/-! ## Part V: Generalization to Polynomials -/
+/- ## Part V: Generalization to Polynomials -/
 
 /--
 **Polynomial Condition:**
@@ -134,7 +134,7 @@ axiom khalfalah_szemeredi_general (k : ℕ) (hk : k ≥ 1)
     (f : ℤ → ℤ) (hpoly : PolyIsEvenSomewhere f) :
     ∀ c : FiniteColoring k, HasMonochromaticPolyPair c f
 
-/-! ## Part VI: k-th Powers -/
+/- ## Part VI: k-th Powers -/
 
 /--
 **k-th Power:**
@@ -166,7 +166,7 @@ since f(z) = z^k satisfies the evenness condition.
 axiom kth_power_result (m k : ℕ) (hm : m ≥ 1) (hk : k ≥ 2) :
     ∀ c : FiniteColoring m, HasMonochromaticKthPowerPair c k
 
-/-! ## Part VII: The Graph Perspective -/
+/- ## Part VII: The Graph Perspective -/
 
 /--
 **k-th Power Graph:**
@@ -191,7 +191,7 @@ theorem square_is_second_power : squareGraph = kthPowerGraph 2 := by
   · exact ⟨hne, by obtain ⟨s, hs⟩ := h; exact ⟨s, by simp [pow_two]; exact hs⟩⟩
   · exact ⟨hne, by obtain ⟨s, hs⟩ := h; exact ⟨s, by simp [pow_two] at hs; exact hs⟩⟩
 
-/-! ## Part VIII: Summary
+/- ## Part VIII: Summary
 
 **Erdős Problem #439: Status SOLVED** (Khalfalah-Szemerédi 2006)
 
