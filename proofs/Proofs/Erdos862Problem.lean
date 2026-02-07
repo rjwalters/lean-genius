@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #862: Maximal Sidon Subsets
 
   Source: https://erdosproblems.com/862
@@ -40,7 +40,7 @@ open Real Set Finset
 
 namespace Erdos862
 
-/-! ## Part I: Sidon Sets - Basic Definitions -/
+/- ## Part I: Sidon Sets - Basic Definitions -/
 
 /-- A set S is a Sidon set (B₂ sequence) if all pairwise sums are distinct -/
 def IsSidonSet (S : Finset ℕ) : Prop :=
@@ -54,7 +54,7 @@ def Interval (N : ℕ) : Finset ℕ := Finset.range (N + 1) \ {0}
 def SidonSubset (N : ℕ) (S : Finset ℕ) : Prop :=
   S ⊆ Interval N ∧ IsSidonSet S
 
-/-! ## Part II: Maximal Sidon Sets -/
+/- ## Part II: Maximal Sidon Sets -/
 
 /-- A Sidon set is maximal if no element can be added while preserving Sidon property -/
 def IsMaximalSidonSet (N : ℕ) (S : Finset ℕ) : Prop :=
@@ -69,7 +69,7 @@ noncomputable def A₁ (N : ℕ) : ℕ :=
 noncomputable def A (N : ℕ) : ℕ :=
   (Finset.powerset (Interval N)).filter (fun S => SidonSubset N S) |>.card
 
-/-! ## Part III: Size of Largest Sidon Set -/
+/- ## Part III: Size of Largest Sidon Set -/
 
 /-- f(N) = size of largest Sidon subset of {1,...,N} -/
 noncomputable def f (N : ℕ) : ℕ :=
@@ -85,7 +85,7 @@ axiom f_asymptotic :
 axiom largest_sidon_size :
   Filter.Tendsto (fun N => (f N : ℝ) / Real.sqrt N) Filter.atTop (nhds 1)
 
-/-! ## Part IV: The Cameron-Erdős Questions -/
+/- ## Part IV: The Cameron-Erdős Questions -/
 
 /-- Question 1: Is A₁(N) < 2^{o(N^{1/2})}? -/
 def CameronErdosQuestion1 : Prop :=
@@ -97,7 +97,7 @@ def CameronErdosQuestion2 : Prop :=
   ∃ c > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
     (A₁ N : ℝ) > 2 ^ (N : ℝ) ^ c
 
-/-! ## Part V: Saxton-Thomason Theorem (2015) -/
+/- ## Part V: Saxton-Thomason Theorem (2015) -/
 
 /-- Saxton-Thomason: Number of Sidon sets is ≥ 2^{(1.16+o(1))N^{1/2}} -/
 axiom saxton_thomason_lower_bound :
@@ -116,7 +116,7 @@ axiom sidon_in_maximal :
   ∀ N : ℕ, ∀ S : Finset ℕ, SidonSubset N S →
     ∃ M : Finset ℕ, IsMaximalSidonSet N M ∧ S ⊆ M
 
-/-! ## Part VI: The Main Result -/
+/- ## Part VI: The Main Result -/
 
 /-- The key counting argument: A₁(N) ≥ A(N) / (subsets per maximal) -/
 axiom counting_argument :
@@ -134,14 +134,14 @@ axiom question2_positive : CameronErdosQuestion2
 /-- The answer to Question 1 is NO: A₁(N) is not < 2^{o(√N)} -/
 axiom question1_negative : ¬CameronErdosQuestion1
 
-/-! ## Part VII: Upper Bound -/
+/- ## Part VII: Upper Bound -/
 
 /-- Upper bound: A₁(N) ≤ 2^{O(N^{1/2})} -/
 axiom upper_bound :
   ∃ C > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
     (A₁ N : ℝ) ≤ 2 ^ (C * Real.sqrt N)
 
-/-! ## Part VIII: B_h Generalizations -/
+/- ## Part VIII: B_h Generalizations -/
 
 /-- B_h sequences generalize Sidon sets -/
 def IsBhSet (h : ℕ) (S : Finset ℕ) : Prop :=
@@ -154,7 +154,7 @@ def IsBhSet (h : ℕ) (S : Finset ℕ) : Prop :=
 axiom sidon_is_b2 :
   ∀ S : Finset ℕ, IsSidonSet S ↔ IsBhSet 2 S
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /-- Erdős Problem #862: Complete Summary
 
