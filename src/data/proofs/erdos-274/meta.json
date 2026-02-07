@@ -62,37 +62,51 @@
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "summary": "ExactCovering structure and hasDistinctIndices predicate",
-      "startLine": 27,
-      "endLine": 41
+      "summary": "ExactCovering structure with proper partition property and hasDistinctIndices predicate",
+      "startLine": 29,
+      "endLine": 43
     },
     {
       "id": "conjecture",
       "title": "Herzog-Schönheim Conjecture",
       "summary": "The main conjecture statement",
-      "startLine": 43,
-      "endLine": 54
+      "startLine": 45,
+      "endLine": 56
     },
     {
       "id": "abelian",
       "title": "Abelian Case (Solved)",
       "summary": "Sun's theorem for finite abelian groups",
-      "startLine": 56,
-      "endLine": 75
+      "startLine": 58,
+      "endLine": 77
     },
     {
       "id": "computational",
       "title": "Computational Verification",
       "summary": "Margolis-Schnabel result for small groups",
-      "startLine": 77,
-      "endLine": 85
+      "startLine": 79,
+      "endLine": 87
     },
     {
       "id": "problem",
       "title": "The Open Problem",
       "summary": "Statement of Erdős Problem #274",
-      "startLine": 87,
-      "endLine": 102
+      "startLine": 89,
+      "endLine": 104
+    },
+    {
+      "id": "index-sum",
+      "title": "Index Sum Lemma",
+      "summary": "Necessary condition: reciprocals of indices sum to 1",
+      "startLine": 106,
+      "endLine": 117
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_274_summary: abelian case proved via Sun's theorem",
+      "startLine": 119,
+      "endLine": 138
     }
   ],
   "conclusion": {
