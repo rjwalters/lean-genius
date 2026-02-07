@@ -78,7 +78,7 @@ open Set Finset Nat Filter
 
 namespace Erdos29
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- The sumset A + B = {a + b : a ∈ A, b ∈ B}. -/
 def Sumset (A B : Set ℕ) : Set ℕ := { n | ∃ a ∈ A, ∃ b ∈ B, n = a + b }
@@ -96,7 +96,7 @@ noncomputable def representationCount (A : Set ℕ) (n : ℕ) : ℕ :=
 noncomputable def orderedRepCount (A : Set ℕ) (n : ℕ) : ℕ :=
   Set.ncard { p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2 ∧ p.1 + p.2 = n }
 
-/-! ## Additive Bases -/
+/- ## Additive Bases -/
 
 /-- A set A is an additive basis of order 2 if A + A = ℕ. -/
 def IsAdditiveBasis (A : Set ℕ) : Prop := Doubling A = Set.univ
@@ -115,7 +115,7 @@ theorem additive_basis_iff (A : Set ℕ) : IsAdditiveBasis A ↔ CoversAll A := 
     simp only [Set.mem_univ, iff_true]
     exact h n
 
-/-! ## The Economical Condition -/
+/- ## The Economical Condition -/
 
 /-- The representation count is o(n^ε) for all ε > 0.
     This means: for all ε > 0, r_A(n) / n^ε → 0 as n → ∞. -/
@@ -142,13 +142,13 @@ theorem economical_equiv (A : Set ℕ) : IsEconomical A ↔ IsEconomical' A := b
 
 -- Standard equivalence of limit definitions
 
-/-! ## Erdős's Original Problem -/
+/- ## Erdős's Original Problem -/
 
 /-- Erdős Problem #29: Does there exist an explicit economical additive basis? -/
 def Erdos29Statement : Prop :=
   ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A
 
-/-! ## The Probabilistic Existence (Erdős) -/
+/- ## The Probabilistic Existence (Erdős) -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -157,7 +157,7 @@ Unexpected axioms were added during verification: ['harmonicSorry429466', 'Erdos
 axiom erdos_probabilistic_existence :
   ∃ A : Set ℕ, IsAdditiveBasis A ∧ IsEconomical A
 
-/-! ## The Explicit Construction (JPSZ 2024) -/
+/- ## The Explicit Construction (JPSZ 2024) -/
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
@@ -182,7 +182,7 @@ axiom JPSZ_is_economical : IsEconomical JPSZ_set
 theorem erdos_29_solved : Erdos29Statement :=
   ⟨JPSZ_set, JPSZ_is_basis, JPSZ_is_economical⟩
 
-/-! ## Properties of the JPSZ Construction -/
+/- ## Properties of the JPSZ Construction -/
 
 /-- The JPSZ set has density 0. -/
 def HasDensityZero (A : Set ℕ) : Prop :=
@@ -202,7 +202,7 @@ axiom JPSZ_representation_bound :
   ∃ C > 0, ∀ n ≥ 2, (representationCount JPSZ_set n : ℝ) ≤
     Real.exp (C * Real.sqrt (Real.log n))
 
-/-! ## Comparison with Other Bases -/
+/- ## Comparison with Other Bases -/
 
 /-- The natural numbers ℕ itself is an additive basis (trivially). -/
 theorem univ_is_basis : IsAdditiveBasis Set.univ := by
@@ -243,7 +243,7 @@ theorem squares_not_basis : ¬IsAdditiveBasis { n : ℕ | ∃ k : ℕ, n = k^2 }
   -- The squares ≤ 3 are 0 and 1, and no combination sums to 3
   subst_vars; have := Nat.le_of_lt_succ ( show ka < 3 by nlinarith only [ hab ] ) ; have := Nat.le_of_lt_succ ( show kb < 3 by nlinarith only [ hab ] ) ; interval_cases ka <;> interval_cases kb <;> trivial;
 
-/-! ## Thin Bases and Sidon Sets -/
+/- ## Thin Bases and Sidon Sets -/
 
 /-- A Sidon set has at most one representation for each sum (r_A(n) ≤ 2). -/
 def IsSidon (A : Set ℕ) : Prop :=
@@ -326,7 +326,7 @@ theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) : ¬IsAdditiveBasis A := 
    - Not as thick as ℕ (which isn't economical)
    - Just right: basis with subpolynomial representations -/
 
-/-! ## Explicit vs Probabilistic -/
+/- ## Explicit vs Probabilistic -/
 
 /-- A set is "explicit" if it's computable/constructive. -/
 class ExplicitSet (A : Set ℕ) where
@@ -342,7 +342,7 @@ axiom JPSZ_explicit : ExplicitSet JPSZ_set
    - Erdős: ∃ A with properties (non-constructive)
    - JPSZ: Here is A explicitly (constructive) -/
 
-/-! ## Historical Context
+/- ## Historical Context
 
 The problem originated in 1932 when Sidon asked Erdős.
 
@@ -355,7 +355,7 @@ Why explicit matters:
 2. Mathematical insight into structure
 3. Resolves 90+ year old open problem completely -/
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /- Aristotle found this block to be false. Here is a proof of the negation:
 
@@ -420,7 +420,7 @@ axiom JPSZ_size_optimal :
   ∃ C > 0, ∀ N ≥ 1, (Set.ncard (JPSZ_set ∩ Set.Icc 1 N) : ℝ) ≤
     C * Real.sqrt N * Real.sqrt (Real.log N)
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 
