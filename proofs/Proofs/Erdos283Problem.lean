@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #283: Egyptian Fractions and Polynomial Values
 
 Source: https://erdosproblems.com/283
@@ -38,7 +38,7 @@ open Polynomial Filter Finset
 
 namespace Erdos283
 
-/-! ## Part I: Egyptian Fractions -/
+/- ## Part I: Egyptian Fractions -/
 
 /-- A finite sequence of distinct positive integers that sum to 1 as unit fractions. -/
 def IsEgyptianDecomposition (s : Finset ℕ) : Prop :=
@@ -60,7 +60,7 @@ theorem egyptian_example_2_4_6_12 : IsEgyptianDecomposition {2, 4, 6, 12} := by
     rcases hn with rfl | rfl | rfl | rfl <;> norm_num
   · native_decide
 
-/-! ## Part II: The Polynomial Condition -/
+/- ## Part II: The Polynomial Condition -/
 
 /-- A polynomial has no universal divisor if there's no d ≥ 2 dividing p(n) for all n ≥ 1. -/
 def HasNoUniversalDivisor (p : ℤ[X]) : Prop :=
@@ -84,7 +84,7 @@ theorem sq_has_no_universal_divisor : HasNoUniversalDivisor (X^2) := by
   have : d = 1 ∨ d = -1 := Int.isUnit_iff.mp hu
   omega
 
-/-! ## Part III: The Main Conjecture -/
+/- ## Part III: The Main Conjecture -/
 
 /-- The Erdős condition: for sufficiently large m, there exists an Egyptian fraction
     decomposition whose polynomial values sum to m. -/
@@ -97,7 +97,7 @@ def ErdosCondition (p : ℤ[X]) : Prop :=
     Does ErdosCondition hold for all polynomials p with positive leading coefficient? -/
 def erdos_283_conjecture : Prop := ∀ p : ℤ[X], ErdosCondition p
 
-/-! ## Part IV: Graham's Theorem (1963) -/
+/- ## Part IV: Graham's Theorem (1963) -/
 
 /-- **Graham's Theorem (1963)**: The Erdős condition holds for p(x) = x.
 
@@ -105,7 +105,7 @@ This means: for all sufficiently large m, there exist distinct positive integers
 n₁ < n₂ < ... < nₖ such that 1/n₁ + ... + 1/nₖ = 1 and n₁ + ... + nₖ = m. -/
 axiom graham_theorem : ErdosCondition X
 
-/-! ## Part V: Alekseyev's Theorem (2019) -/
+/- ## Part V: Alekseyev's Theorem (2019) -/
 
 /-- **Alekseyev's Theorem (2019)**: For all m > 8542, there exist distinct positive
     integers whose reciprocals sum to 1 and whose squares sum to m. -/
@@ -116,7 +116,7 @@ axiom alekseyev_theorem : ∀ m : ℤ, m > 8542 →
 theorem alekseyev_example : (∑ n ∈ ({2, 4, 6, 12} : Finset ℕ), (n : ℤ)^2) = 200 := by
   native_decide
 
-/-! ## Part VI: van Doorn's Extensions (2025) -/
+/- ## Part VI: van Doorn's Extensions (2025) -/
 
 /-- van Doorn proved results for p(x) = x + c for various c. -/
 axiom van_doorn_linear (c : ℤ) :
@@ -130,7 +130,7 @@ axiom van_doorn_quadratic (c : ℤ) :
     ∃ s : Finset ℕ, IsEgyptianDecomposition s ∧
     (∑ n ∈ s, (n : ℤ)^2 + c) = m
 
-/-! ## Part VII: Cassels' Theorem -/
+/- ## Part VII: Cassels' Theorem -/
 
 /-- **Cassels (1960)**: Under the polynomial conditions, every sufficiently large
     integer is a sum of p(nᵢ) with distinct nᵢ (without Egyptian fraction constraint). -/
@@ -139,7 +139,7 @@ axiom cassels_theorem (p : ℤ[X]) :
   ∀ᶠ m : ℤ in atTop, ∃ s : Finset ℕ,
     (∀ n ∈ s, n > 0) ∧ (∑ n ∈ s, p.eval (n : ℤ)) = m
 
-/-! ## Part VIII: Egyptian Fraction Structure -/
+/- ## Part VIII: Egyptian Fraction Structure -/
 
 /-- There are infinitely many Egyptian fraction decompositions summing to 1. -/
 axiom infinitely_many_egyptian_decompositions :
@@ -153,7 +153,7 @@ theorem trivial_egyptian : IsEgyptianDecomposition {1} := by
     omega
   · native_decide
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /-- **Summary of Erdős Problem #283:**
 
