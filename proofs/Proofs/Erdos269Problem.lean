@@ -39,7 +39,7 @@ open Nat BigOperators Finset
 
 namespace Erdos269
 
-/-! ## Part I: P-smooth Numbers -/
+/- ## Part I: P-smooth Numbers -/
 
 /--
 **P-smooth Numbers**
@@ -76,7 +76,7 @@ theorem prime_isPSmooth {P : Set ℕ} {p : ℕ} (hp : p.Prime) (hpP : p ∈ P) :
 axiom isPSmooth_mul {P : Set ℕ} {m n : ℕ} (hm : IsPSmooth P m) (hn : IsPSmooth P n) :
     IsPSmooth P (m * n)
 
-/-! ## Part II: The Sequence of P-smooth Numbers -/
+/- ## Part II: The Sequence of P-smooth Numbers -/
 
 /--
 **The P-smooth Sequence**
@@ -99,7 +99,7 @@ axiom smoothSeq_zero (P : Set ℕ) (hP : P.Nonempty) : smoothSeq P 0 = 1
 /-- Each element is P-smooth. -/
 axiom smoothSeq_isPSmooth (P : Set ℕ) (n : ℕ) : IsPSmooth P (smoothSeq P n)
 
-/-! ## Part III: Partial LCM -/
+/- ## Part III: Partial LCM -/
 
 /--
 **Partial LCM**
@@ -132,7 +132,7 @@ theorem partialLcm_succ (P : Set ℕ) (n : ℕ) :
 /-- L_n is P-smooth (LCM of P-smooth numbers is P-smooth). -/
 axiom partialLcm_isPSmooth (P : Set ℕ) (n : ℕ) : IsPSmooth P (partialLcm P n)
 
-/-! ## Part IV: The Series -/
+/- ## Part IV: The Series -/
 
 /--
 **The LCM Series**
@@ -152,7 +152,7 @@ axiom lcmSeries_summable (P : Set ℕ) (hP : ∃ p ∈ P, p.Prime) :
 axiom lcmSeries_pos (P : Set ℕ) (hP : ∃ p ∈ P, p.Prime) :
     lcmSeries P > 0
 
-/-! ## Part V: The Main Conjecture (OPEN) -/
+/- ## Part V: The Main Conjecture (OPEN) -/
 
 /--
 **Erdős Problem #269 (OPEN)**
@@ -175,7 +175,7 @@ theorem erdos_269_equivalent (P : Finset ℕ) (hPrime : ∀ p ∈ P, p.Prime) (h
     ¬ isSeriesRational (P : Set ℕ) ↔ Irrational (lcmSeries (P : Set ℕ)) := by
   simp [isSeriesRational, irrational_iff_ne_rational]
 
-/-! ## Part VI: The Infinite Case (SOLVED) -/
+/- ## Part VI: The Infinite Case (SOLVED) -/
 
 /--
 **Infinite P Case (Solved)**
@@ -189,7 +189,7 @@ distinct "p-adic contribution levels" for each prime p ∈ P.
 axiom erdos_269_infinite (P : Set ℕ) (hPrime : ∀ p ∈ P, p.Prime) (hInf : P.Infinite) :
     Irrational (lcmSeries P)
 
-/-! ## Part VII: Examples -/
+/- ## Part VII: Examples -/
 
 /-- The set {2, 3} gives the 3-smooth numbers. -/
 def twoThreeSmooth : Set ℕ := {2, 3}
@@ -221,7 +221,7 @@ axiom example_23_lcm_3 : partialLcm twoThreeSmooth 3 = 6
 axiom example_23_lcm_4 : partialLcm twoThreeSmooth 4 = 12
 axiom example_23_lcm_5 : partialLcm twoThreeSmooth 5 = 12
 
-/-! ## Part VIII: Structural Properties -/
+/- ## Part VIII: Structural Properties -/
 
 /--
 **P-adic Valuation**
@@ -244,7 +244,7 @@ axiom lcmPadicVal_jump (P : Set ℕ) (p k n : ℕ) (hp : p.Prime) (hpP : p ∈ P
     (hk : p ^ k = smoothSeq P n) (hn : n > 0) :
     lcmPadicVal p (n + 1) P > lcmPadicVal p n P
 
-/-! ## Part IX: Why It's Hard -/
+/- ## Part IX: Why It's Hard -/
 
 /--
 **The Difficulty**
@@ -263,7 +263,7 @@ axiom partialLcm_eventually_periodic (P : Finset ℕ) (hP : P.card ≥ 2)
     (hPrime : ∀ p ∈ P, p.Prime) :
     ∃ M n₀ : ℕ, M > 0 ∧ ∀ n ≥ n₀, M ∣ partialLcm (P : Set ℕ) n
 
-/-! ## Part X: Known Partial Result -/
+/- ## Part X: Known Partial Result -/
 
 /--
 **Removing Duplicates**
@@ -281,7 +281,7 @@ noncomputable def distinctLcmSeries (P : Set ℕ) : ℝ :=
 axiom erdos_269_distinct (P : Finset ℕ) (hPrime : ∀ p ∈ P, p.Prime) (hCard : P.card ≥ 2) :
     Irrational (distinctLcmSeries (P : Set ℕ))
 
-/-! ## Part XI: Summary -/
+/- ## Part XI: Summary -/
 
 /--
 **Erdős Problem #269: Summary**
@@ -305,13 +305,13 @@ theorem erdos_269_summary :
     (∀ P : Set ℕ, (∀ p ∈ P, p.Prime) → P.Infinite → Irrational (lcmSeries P)) ∧
     -- Distinct case is solved for finite P
     (∀ P : Finset ℕ, (∀ p ∈ P, p.Prime) → P.card ≥ 2 →
-      Irrational (distinctLcmSeries (P : Set ℕ))) ∧
-    -- General finite case is open
-    True := by
-  exact ⟨erdos_269_infinite, erdos_269_distinct, trivial⟩
+      Irrational (distinctLcmSeries (P : Set ℕ))) :=
+  ⟨erdos_269_infinite, erdos_269_distinct⟩
 
-/-- The problem remains OPEN for finite P with duplicates. -/
-theorem erdos_269_open :
-    True := trivial
+/-- The main conjecture (OPEN): for any finite set P of ≥ 2 primes,
+    the LCM series Σ 1/[a₀,...,aₙ₋₁] is irrational. -/
+theorem erdos_269_conjecture (P : Finset ℕ) (hPrime : ∀ p ∈ P, p.Prime)
+    (hCard : P.card ≥ 2) : Irrational (lcmSeries (P : Set ℕ)) :=
+  erdos_269 P hPrime hCard
 
 end Erdos269
