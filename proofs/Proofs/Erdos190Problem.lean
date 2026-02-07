@@ -37,7 +37,7 @@ open Finset
 
 namespace Erdos190
 
-/-! ## Part I: Arithmetic Progressions -/
+/- ## Part I: Arithmetic Progressions -/
 
 /--
 **k-term Arithmetic Progression**
@@ -51,7 +51,7 @@ def isArithmeticProgression (s : Finset ℕ) (k : ℕ) : Prop :=
 def isAPSequence (f : Fin k → ℕ) : Prop :=
   ∃ a d : ℕ, d > 0 ∧ ∀ i : Fin k, f i = a + i.val * d
 
-/-! ## Part II: Colorings -/
+/- ## Part II: Colorings -/
 
 /--
 **Coloring of an Interval**
@@ -80,7 +80,7 @@ def isRainbow {N C : Type*} [DecidableEq C] (χ : N → C) (s : Finset N) : Prop
 def isRainbowAlt {N C : Type*} (χ : N → C) (s : Finset N) : Prop :=
   ∀ x y : N, x ∈ s → y ∈ s → x ≠ y → χ x ≠ χ y
 
-/-! ## Part III: The Canonical Property -/
+/- ## Part III: The Canonical Property -/
 
 /--
 **Canonical Property for Arithmetic Progressions**
@@ -94,7 +94,7 @@ def hasCanonicalAP {N C : Type*} [DecidableEq C] (χ : Fin N → C) (k : ℕ) : 
     (isMonochromatic χ (Finset.image f Finset.univ) ∨
      isRainbow χ (Finset.image f Finset.univ))
 
-/-! ## Part IV: The H(k) Function -/
+/- ## Part IV: The H(k) Function -/
 
 /--
 **H(k): The Canonical Ramsey Number**
@@ -117,7 +117,7 @@ axiom H_spec (k N : ℕ) (hN : N ≥ H k) :
 axiom H_minimal (k N : ℕ) (hN : N < H k) :
     ∃ (C : Type) (_ : DecidableEq C) (χ : Fin N → C), ¬ hasCanonicalAP χ k
 
-/-! ## Part V: Relation to van der Waerden Numbers -/
+/- ## Part V: Relation to van der Waerden Numbers -/
 
 /--
 **Van der Waerden Number W(k)**
@@ -138,7 +138,7 @@ axiom H_le_W (k : ℕ) (hk : k ≥ 3) : H k ≤ W k
 /-- But H(k) is still large. -/
 axiom H_lower_bound (k : ℕ) (hk : k ≥ 3) : H k ≥ k
 
-/-! ## Part VI: Known Asymptotic Results -/
+/- ## Part VI: Known Asymptotic Results -/
 
 /--
 **H(k)^{1/k} → ∞**
@@ -159,7 +159,7 @@ def erdos190Conjecture : Prop :=
 
 axiom erdos_190 : erdos190Conjecture
 
-/-! ## Part VII: Small Cases -/
+/- ## Part VII: Small Cases -/
 
 /-- H(3) is small (exact value depends on careful analysis). -/
 axiom H_3_bound : H 3 ≤ 10
@@ -167,7 +167,7 @@ axiom H_3_bound : H 3 ≤ 10
 /-- H(4) is larger. -/
 axiom H_4_bound : H 4 ≤ 100
 
-/-! ## Part VIII: Connections -/
+/- ## Part VIII: Connections -/
 
 /--
 **Connection to Szemerédi's Theorem**
@@ -186,7 +186,7 @@ In canonical Ramsey theory, we allow "canonical" patterns like
 rainbow colorings. This typically gives smaller numbers.
 -/
 
-/-! ## Part IX: Why This Is Hard -/
+/- ## Part IX: Why This Is Hard -/
 
 /--
 **The Difficulty**
@@ -206,7 +206,7 @@ which competes with the pigeonhole principle that pushes toward
 monochromatic structures.
 -/
 
-/-! ## Part X: Summary -/
+/- ## Part X: Summary -/
 
 /--
 **H(k) is Positive**
@@ -239,11 +239,12 @@ theorem erdos_190_summary :
     (∀ k, H k > 0) ∧
     -- H(k)^{1/k} → ∞
     (∀ M : ℕ, ∃ K, ∀ k ≥ K, (H k : ℝ) ^ (1 / k : ℝ) > M) ∧
-    -- The conjecture is stated
-    True :=
-  ⟨H_pos, H_root_to_infinity, trivial⟩
+    -- H(k) ≤ W(k) for k ≥ 3
+    (∀ k, k ≥ 3 → H k ≤ W k) :=
+  ⟨H_pos, H_root_to_infinity, H_le_W⟩
 
-/-- The problem remains OPEN. -/
-theorem erdos_190_open : True := trivial
+/-- The main conjecture (OPEN): H(k)^{1/k}/k → ∞, i.e., H(k) grows
+    faster than k^k. This follows from erdos_190 axiom. -/
+theorem erdos_190_open_conjecture : erdos190Conjecture := erdos_190
 
 end Erdos190
