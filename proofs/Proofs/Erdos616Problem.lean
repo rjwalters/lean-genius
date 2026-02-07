@@ -39,9 +39,7 @@ import Mathlib.Data.Real.Basic
 
 namespace Erdos616
 
-/-!
-## Part I: Hypergraph Definitions
--/
+/- ## Part I: Hypergraph Definitions -/
 
 /--
 **r-uniform hypergraph:**
@@ -78,9 +76,7 @@ def inducedSubhypergraph {V : Type*} {r : ℕ}
     intro e he
     exact G.uniform e he.1
 
-/-!
-## Part II: The Local Condition
--/
+/- ## Part II: The Local Condition -/
 
 /--
 **Local covering condition:**
@@ -101,9 +97,7 @@ For r-uniform hypergraphs, the relevant threshold is 3r-3 vertices.
 -/
 def localThreshold (r : ℕ) : ℕ := 3 * r - 3
 
-/-!
-## Part III: The Main Question
--/
+/- ## Part III: The Main Question -/
 
 /--
 **Erdős Problem #616:**
@@ -123,9 +117,7 @@ There exists an optimal t(r) that works for all such hypergraphs.
 -/
 axiom optimalCoveringBound (r : ℕ) : ℕ
 
-/-!
-## Part IV: Known Bounds (Erdős-Hajnal-Tuza 1991)
--/
+/- ## Part IV: Known Bounds (Erdős-Hajnal-Tuza 1991) -/
 
 /--
 **Lower Bound:**
@@ -167,9 +159,7 @@ theorem coefficient_bounds :
   unfold lowerCoefficient upperCoefficient
   norm_num
 
-/-!
-## Part V: Special Cases
--/
+/- ## Part V: Special Cases -/
 
 /--
 **r = 3 case:**
@@ -194,9 +184,7 @@ The bounds give:
 The bounds become meaningful for larger r.
 -/
 
-/-!
-## Part VI: Why the Condition 3r-3?
--/
+/- ## Part VI: Why the Condition 3r-3? -/
 
 /--
 **The threshold 3r-3:**
@@ -212,9 +200,7 @@ of edges sharing a common "core", and the local condition τ ≤ 1 enforces
 sunflower-like structure locally.
 -/
 
-/-!
-## Part VII: Equivalent Formulations
--/
+/- ## Part VII: Equivalent Formulations -/
 
 /--
 **Intersection property:**
@@ -241,9 +227,7 @@ theorem tau_one_iff_kernel {V : Type*} [Fintype V] {r : ℕ}
     use v
     exact ⟨Set.mem_singleton v, hv e he⟩
 
-/-!
-## Part VIII: Fractional Relaxation
--/
+/- ## Part VIII: Fractional Relaxation -/
 
 /--
 **Fractional covering number τ*(G):**
@@ -259,9 +243,7 @@ axiom fractionalCoveringNumber : ∀ {V : Type*} [Fintype V] {r : ℕ},
 The gap between them relates to the integrality gap.
 -/
 
-/-!
-## Part IX: Summary
--/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #616: OPEN**
