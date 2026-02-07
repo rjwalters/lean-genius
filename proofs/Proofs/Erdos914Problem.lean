@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #914: Hajnal-Szemerédi Theorem (Vertex-Disjoint Cliques)
 
 Source: https://erdosproblems.com/914
@@ -40,7 +40,7 @@ open SimpleGraph Finset
 
 namespace Erdos914
 
-/-! ## Part I: Graph Basics -/
+/- ## Part I: Graph Basics -/
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -59,7 +59,7 @@ noncomputable def minDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
     simp only [Finset.image_nonempty]
     exact Finset.univ_nonempty)
 
-/-! ## Part II: Cliques and Clique Covers -/
+/- ## Part II: Cliques and Clique Covers -/
 
 /--
 **r-Clique:**
@@ -95,7 +95,7 @@ def HasPerfectKrFactor (G : SimpleGraph V) (r : ℕ) : Prop :=
     AreVertexDisjoint cliques ∧
     (cliques.biUnion id) = Finset.univ
 
-/-! ## Part III: Special Cases -/
+/- ## Part III: Special Cases -/
 
 /--
 **r = 2 Case:**
@@ -116,7 +116,7 @@ axiom corradi_hajnal (G : SimpleGraph V) [DecidableRel G.Adj] (m : ℕ) :
     minDegree G ≥ 2 * m →
     HasMDisjointRCliques G m 3
 
-/-! ## Part IV: Hajnal-Szemerédi Theorem -/
+/- ## Part IV: Hajnal-Szemerédi Theorem -/
 
 /--
 **Hajnal-Szemerédi Theorem (1970):**
@@ -145,7 +145,7 @@ axiom hajnal_szemeredi_factor (G : SimpleGraph V) [DecidableRel G.Adj] (r m : �
     minDegree G ≥ m * (r - 1) →
     HasPerfectKrFactor G r
 
-/-! ## Part V: Tightness -/
+/- ## Part V: Tightness -/
 
 /--
 **Tightness of Minimum Degree:**
@@ -161,7 +161,7 @@ axiom degree_condition_tight (r m : ℕ) :
       minDegree G = m * (r - 1) - 1 ∧
       ¬HasMDisjointRCliques G m r
 
-/-! ## Part VI: Summary
+/- ## Part VI: Summary
 
 **Erdős Problem #914: SOLVED (Hajnal-Szemerédi 1970)**
 
