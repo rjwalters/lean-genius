@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "EXPLORED",
     "since": "2026-01-13T04:11:10.511Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "CRT analysis and structural infrastructure",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Submit structural lemmas to Aristotle for proof search",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEY: Enhanced formalization with CRT analysis. Computed n_k for k=1..20. Fixed docstring headers for Aristotle. Added structural lemmas. OPEN problem - both conjectures remain unresolved.",
+    "builtItems": [
+      "bertrandPrimes definition: computable Finset of primes in (k,2k)",
+      "safeResidues definition: {0, k+1, ..., p-1} for each prime p",
+      "Decidable IsInBertrandRange instance for computability",
+      "at_most_one_div lemma (sorry): uniqueness of divisible factor",
+      "prime_dvd_descendingProduct lemma (sorry): factor characterization",
+      "card_safeResidues lemma (sorry): p-k safe residues",
+      "nk_trivial_lower theorem: n_k > 2k cast to rationals",
+      "adenwalla_crt_idea theorem: minimality applied to prime product",
+      "Fixed docstring headers throughout for Aristotle compatibility"
+    ],
+    "insights": [
+      "CRT reduction: avoiding p in (k,2k) means n mod p not in {1,...,k}, giving p-k safe residues",
+      "Computed values: n_1=3, n_2=6, n_3=9, n_4=20, n_5=13, n_6=21, n_7=21, n_8=22, n_9=65, n_10=220",
+      "n_k drops when k increases past a prime (e.g., n_10=220 to n_11=51) because smallest forbidden prime leaves range",
+      "The hardest cases have the most forbidden primes in (k,2k) - more primes means tighter CRT constraints",
+      "Adenwalla upper bound via CRT: take n = product of primes in (k,2k), then n = 0 (mod p) for each"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove the 3 sorry lemmas (CRT structural results) - good Aristotle candidates",
+      "Submit to Aristotle for overnight proof search on structural lemmas",
+      "The main conjectures remain OPEN - not suitable for automated proving"
+    ],
     "markdown": "# Erdős #451 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEstimate $n_k$, the smallest integer $>2k$ such that $\\prod_{1\\leq i\\leq k}(n_k-i)$ has no prime factor in $(k,2k)$.\n\n\n\nErd\\H{o}s and Graham write 'we can prove $n_k>k^{1+c}$ but no doubt much more is true'.\n\nIn \\cite{Er79d} Erd\\H{o}s writes that probably $n_k<e^{o(k)}$ but $n_k>k^d$ for all constant $d$.\n\nAdenwalla observes that an easy upper bound is $n_k\\leq \\prod_{k<p<2k}p=e^{O(k)}$.\n\n\n\n\nReferences\n\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #450\n- Problem #452\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "approaches": [],
