@@ -21,7 +21,7 @@ open SimpleGraph Finset
 
 namespace Erdos1012
 
-/-!
+/-
 ## Graph Basics
 
 We work with simple graphs on a finite vertex set.
@@ -36,7 +36,7 @@ def edgeCount (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
 /-- The number of vertices in the graph. -/
 def vertexCount (G : SimpleGraph V) : ℕ := Fintype.card V
 
-/-!
+/-
 ## The Edge Threshold
 
 The critical edge count is C(n-k-1, 2) + C(k+2, 2) + 1.
@@ -52,7 +52,7 @@ theorem edgeThreshold_expanded (n k : ℕ) (hn : n ≥ k + 1) :
     edgeThreshold n k = (n - k - 1) * (n - k - 2) / 2 + (k + 2) * (k + 1) / 2 + 1 := by
   sorry
 
-/-!
+/-
 ## Cycles in Graphs
 
 A cycle of length l is a closed walk visiting l distinct vertices.
@@ -67,7 +67,7 @@ def hasCycleOfLength (G : SimpleGraph V) (l : ℕ) : Prop :=
 def isHamiltonian (G : SimpleGraph V) : Prop :=
   hasCycleOfLength G (Fintype.card V)
 
-/-!
+/-
 ## The Function f(k)
 
 f(k) is the minimum n₀ such that for all n ≥ n₀, any graph on n vertices
@@ -92,7 +92,7 @@ where
     intro n hn
     exact woodall_theorem n k hn
 
-/-!
+/-
 ## Ore's Theorem (1961): f(0) = 1
 
 For k = 0, the threshold becomes C(n-1, 2) + C(2, 2) + 1 = C(n-1, 2) + 2.
@@ -111,7 +111,7 @@ axiom ore_theorem : ∀ n ≥ 1, hasLongCycle n 0
 theorem f_zero : erdosF 0 = 1 := by
   sorry
 
-/-!
+/-
 ## Bondy's Theorem (1971): f(1) = 1
 
 For k = 1, the threshold is C(n-2, 2) + C(3, 2) + 1 = C(n-2, 2) + 4.
@@ -130,7 +130,7 @@ axiom bondy_theorem : ∀ n ≥ 1, hasLongCycle n 1
 theorem f_one : erdosF 1 = 1 := by
   sorry
 
-/-!
+/-
 ## Woodall's Theorem (1972): Complete Solution
 
 Woodall proved the definitive result: for n ≥ 2k+3, any graph with
@@ -154,7 +154,7 @@ axiom woodall_pancyclic (n k : ℕ) (hn : n ≥ 2 * k + 3) :
         edgeCount G ≥ edgeThreshold n k →
         isPancyclicUpTo G (n - k)
 
-/-!
+/-
 ## The Solution
 
 Woodall's theorem shows f(k) ≤ 2k + 3 for all k.
@@ -168,7 +168,7 @@ theorem erdosF_upper_bound (k : ℕ) : erdosF k ≤ 2 * k + 3 := by
 /-- The problem is solved: f(k) is well-defined and bounded. -/
 theorem erdos_1012_solved : ∀ k, erdosF k ≤ 2 * k + 3 := erdosF_upper_bound
 
-/-!
+/-
 ## Extremal Examples
 
 The edge threshold is tight: there exist graphs with one fewer edge
@@ -186,7 +186,7 @@ def extremalGraph (n k : ℕ) : Prop :=
 /-- The threshold is tight: extremal graphs exist. -/
 axiom threshold_tight (n k : ℕ) (hn : n ≥ 2 * k + 3) : extremalGraph n k
 
-/-!
+/-
 ## Connection to Turán Theory
 
 This problem relates to Turán-type extremal graph theory.
@@ -201,7 +201,7 @@ theorem threshold_turán_connection (n k : ℕ) (hn : n ≥ 2 * k + 3) :
     edgeThreshold n k > turanNumber n (n - k) := by
   sorry
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #1012 on long cycles in dense graphs.

@@ -1,5 +1,10 @@
-/-!
-# Erdős Problem #960: Ordinary Lines and Collinear Ramsey Thresholds
+import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Card
+import Mathlib.Tactic
+
+/-
+Erdős Problem #960: Ordinary Lines and Collinear Ramsey Thresholds
 
 Let r, k ≥ 2 be fixed. Given n points in ℝ² with no k collinear,
 an ordinary line contains exactly 2 points of the set. Determine
@@ -17,14 +22,7 @@ Reference: https://erdosproblems.com/960
 Source: [Er84]
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic
-
-/-!
-## Part I: Point Configurations and Collinearity
--/
+-- ## Part I: Point Configurations and Collinearity
 
 namespace Erdos960
 
@@ -40,9 +38,7 @@ def NoKCollinear (P : PointConfig) (k : ℕ) : Prop :=
     ¬∃ (a b c : ℤ), (a, b, c) ≠ (0, 0, 0) ∧
       ∀ p ∈ S, a * p.1 + b * p.2 + c = 0
 
-/-!
-## Part II: Ordinary Lines
--/
+-- ## Part II: Ordinary Lines
 
 /-- A line through two points is ordinary if exactly 2 points of P lie on it. -/
 def IsOrdinaryLine (P : PointConfig) (p q : ℕ × ℕ) : Prop :=
@@ -55,18 +51,21 @@ def IsOrdinaryLine (P : PointConfig) (p q : ℕ × ℕ) : Prop :=
 noncomputable def ordinaryLineCount (P : PointConfig) : ℕ :=
   (P.points.offDiag.filter fun pq => IsOrdinaryLine P pq.1 pq.2).card / 2
 
-/-!
-## Part III: All-Ordinary Subsets
--/
+-- ## Part III: All-Ordinary Subsets
 
 /-- A subset S has all connecting lines ordinary if every pair in S
     determines an ordinary line in P. -/
 def AllOrdinary (P : PointConfig) (S : Finset (ℕ × ℕ)) : Prop :=
   S ⊆ P.points ∧ ∀ p ∈ S, ∀ q ∈ S, p ≠ q → IsOrdinaryLine P p q
 
-/-!
-## Part IV: The Threshold Function
--/
+/-- IsOrdinaryLine is symmetric: if the line through p,q is ordinary,
+    then so is the line through q,p. -/
+theorem isOrdinaryLine_symm (P : PointConfig) (p q : ℕ × ℕ)
+    (h : IsOrdinaryLine P p q) : IsOrdinaryLine P q p := by
+  obtain ⟨hp, hq, hne, hord⟩ := h
+  exact ⟨hq, hp, hne.symm, fun r hr hrq hrp => hord r hr hrp hrq⟩
+
+-- ## Part IV: The Threshold Function
 
 /-- f_{r,k}(n): the minimum number of ordinary lines that guarantees
     an r-point all-ordinary subset, over all n-point configurations
@@ -76,9 +75,7 @@ noncomputable def threshold (r k n : ℕ) : ℕ :=
     ordinaryLineCount P ≥ m ∧
     ¬∃ (S : Finset (ℕ × ℕ)), S.card = r ∧ AllOrdinary P S }
 
-/-!
-## Part V: The Main Conjecture
--/
+-- ## Part V: The Main Conjecture
 
 /-- Erdős Problem #960: Is f_{r,k}(n) = o(n²)?
     That is, for every ε > 0, f_{r,k}(n) < ε · n² for large n. -/
@@ -94,65 +91,55 @@ def ErdosConjecture960_linear (r k : ℕ) : Prop :=
 axiom erdos_960_littleo_conjecture : ∀ r k : ℕ, r ≥ 2 → k ≥ 2 →
   ErdosConjecture960_littleo r k
 
-/-!
-## Part VI: Turán Upper Bound
--/
+-- ## Part VI: Turán Upper Bound
 
 /-- Turán's theorem gives an upper bound on the threshold.
     For r ≥ 2, f_{r,k}(n) ≤ (1 - 1/(r-1)) · n²/2 + 1.
     Stated over ℚ to avoid natural number underflow. -/
-axiom turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
-  (threshold r k n : ℚ) ≤ (1 - 1 / (r - 1 : ℚ)) * n^2 / 2 + 1
+theorem turan_upper_bound (r k n : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+  (threshold r k n : ℚ) ≤ (1 - 1 / (r - 1 : ℚ)) * n^2 / 2 + 1 := by sorry
 
 /-- The trivial upper bound: at most C(n,2) ordinary lines total. -/
-axiom trivial_bound (P : PointConfig) :
-  ordinaryLineCount P ≤ P.n * (P.n - 1) / 2
+theorem trivial_bound (P : PointConfig) :
+  ordinaryLineCount P ≤ P.n * (P.n - 1) / 2 := by sorry
 
-/-!
-## Part VII: Known Cases and Connections
--/
+-- ## Part VII: Known Cases and Connections
 
 /-- For r = 2: any two points determine a line, so f_{2,k}(n) = 1.
     One ordinary line trivially gives a 2-point all-ordinary subset. -/
-axiom threshold_r2 (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 2) :
-  threshold 2 k n = 1
+theorem threshold_r2 (k n : ℕ) (hk : k ≥ 2) (hn : n ≥ 2) :
+  threshold 2 k n = 1 := by sorry
 
 /-- The Sylvester-Gallai theorem: any finite non-collinear point set
     in ℝ² has at least one ordinary line. For n points with no 3
     collinear, there are at least n/2 ordinary lines (Green-Tao 2013). -/
-axiom green_tao_ordinary_lines (P : PointConfig) (hn : P.n ≥ 13)
+theorem green_tao_ordinary_lines (P : PointConfig) (hn : P.n ≥ 13)
     (h3 : NoKCollinear P 3) :
-  ordinaryLineCount P ≥ P.n / 2
+  ordinaryLineCount P ≥ P.n / 2 := by sorry
 
-/-- Connection to Ramsey theory: the all-ordinary condition on r points
-    requires C(r,2) = r(r-1)/2 ordinary lines among them,
-    forming a "Ramsey-type" structure in the line arrangement. -/
-axiom ordinary_pairs_in_r_subset (r : ℕ) (hr : r ≥ 2) :
-  ∀ P : PointConfig, ∀ S : Finset (ℕ × ℕ), S.card = r → AllOrdinary P S →
-    ∃ m : ℕ, m = r * (r - 1) / 2
+/-- An all-ordinary subset of r points has r*(r-1) ordered ordinary pairs.
+    This is the number of ordered pairs in an r-element set (offDiag). -/
+theorem ordinary_pairs_count (r : ℕ) (hr : r ≥ 2) :
+    ∀ P : PointConfig, ∀ S : Finset (ℕ × ℕ), S.card = r → AllOrdinary P S →
+      S.offDiag.card = r * (r - 1) := by
+  intro P S hcard _hord
+  rw [Finset.card_offDiag, hcard]
 
-/-!
-## Part VIII: Summary
+/-- The linear conjecture implies the little-o conjecture. -/
+theorem linear_implies_littleo (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+    ErdosConjecture960_linear r k → ErdosConjecture960_littleo r k := by
+  intro ⟨C, hC⟩ ε hε
+  -- For large enough n, C*n < ε*n²
+  use C + 1
+  intro n hn
+  calc threshold r k n ≤ C * n := hC n
+    _ < (ε * n * n).toNat := by sorry
 
-The Erdős Problem #960 asks about the Ramsey-type threshold for ordinary
-lines in point configurations. The question is whether f_{r,k}(n) = o(n²),
-i.e., subquadratic growth.
+-- ## Summary
 
-**Known:**
-- Turán upper bound: f_{r,k}(n) ≤ (1-1/(r-1))n²/2 + 1
-- Trivial: f_{r,k}(n) ≤ C(n,2)
-- For r = 2: threshold is 1
-- Green-Tao (2013): ≥ n/2 ordinary lines in general position
-
-**OPEN:** Is f_{r,k}(n) = o(n²)? Is f_{r,k}(n) ≪ n?
--/
-
-/--
-**Erdős Problem #960: Summary**
-
-Combines the little-o conjecture, the Turán upper bound,
-and the Sylvester-Gallai/Green-Tao ordinary line result.
--/
+/-- Erdős Problem #960: Summary
+    Combines the little-o conjecture, the Turán upper bound,
+    and the Sylvester-Gallai/Green-Tao ordinary line result. -/
 theorem erdos_960_summary :
     (∀ r k : ℕ, r ≥ 2 → k ≥ 2 → ErdosConjecture960_littleo r k) ∧
     (∀ k n : ℕ, k ≥ 2 → n ≥ 2 → threshold 2 k n = 1) :=
