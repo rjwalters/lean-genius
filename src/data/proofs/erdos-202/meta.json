@@ -19,7 +19,39 @@
     "sorries": 14,
     "erdosNumber": 202,
     "erdosUrl": "https://erdosproblems.com/202",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.ModEq",
+        "description": "Modular arithmetic congruence relation",
+        "module": "Mathlib.Data.Int.ModEq"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Real exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized CongruenceClass structure with modular containment",
+      "Defined DisjointSystem and pairwise disjointness property",
+      "Defined f(N) as supremum of disjoint system sizes bounded by N",
+      "Defined L(N) = exp(√(log N · log log N)) with growth properties",
+      "Stated Erdős-Stein conjecture f(N) = o(N) and modern BFV bounds",
+      "Multiple theorems proved by Aristotle including f_mono, f_le_N, L_mono, L_subpolynomial"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Stein conjectured f(N) = o(N), proved by Erdős-Szemerédi in 1968. Subsequent work by Croot (2003), Chen (2005), and de la Bretèche-Ford-Vandehey (2013) refined the bounds. The function L(N) = exp(√(log N · log log N)) plays a central role.",
