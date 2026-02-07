@@ -4,18 +4,12 @@
   "slug": "erdos-1123",
   "description": "Are B₁ = P(ℕ)/I₁ and B₂ = P(ℕ)/I₂ isomorphic, where I₁, I₂ are the density-zero and log-density-zero ideals? Set-theoretically dependent: YES under CH (Just-Krawczyk 1984).",
   "meta": {
-    "author": "Paul Erdős, Stanisław Ulam",
+    "author": "Erdős-Ulam (question), Just-Krawczyk (1984)",
     "sourceUrl": "https://erdosproblems.com/1123",
     "date": "1984",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos1123Problem.lean",
-    "tags": [
-      "erdos",
-      "set-theory",
-      "boolean-algebras",
-      "density",
-      "continuum-hypothesis"
-    ],
+    "tags": ["erdos", "set-theory", "boolean-algebras", "density", "continuum-hypothesis"],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1123,
@@ -25,60 +19,32 @@
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      {
-        "theorem": "Set.symmDiff",
-        "description": "Symmetric difference of sets",
-        "module": "Mathlib.Data.Set.Basic"
-      },
-      {
-        "theorem": "BooleanAlgebra",
-        "description": "Boolean algebra structure",
-        "module": "Mathlib.Order.BooleanAlgebra"
-      },
-      {
-        "theorem": "Quotient",
-        "description": "Quotient type construction",
-        "module": "Mathlib.Data.Set.Basic"
-      }
+      { "theorem": "Set.symmDiff", "description": "Symmetric difference of sets", "module": "Mathlib.Data.Set.Basic" },
+      { "theorem": "BooleanAlgebra", "description": "Boolean algebra structure", "module": "Mathlib.Order.BooleanAlgebra" },
+      { "theorem": "Quotient", "description": "Quotient type construction", "module": "Mathlib.Data.Set.Basic" }
     ],
     "originalContributions": [
-      "naturalDensity definition: |A ∩ {1,...,n}|/n limit",
-      "hasDensityZero definition: density zero condition",
-      "logDensity definition: (1/log n)·Σ_{k∈A, k≤n} 1/k limit",
-      "hasLogDensityZero definition: log-density zero condition",
+      "hasDensityZero: natural density zero via counting in Finset.range",
+      "hasLogDensityZero: logarithmic density zero (simplified)",
       "density_zero_implies_log_density_zero axiom: d(A)=0 ⟹ δ(A)=0",
       "log_density_ideal_strictly_larger axiom: I₁ ⊊ I₂",
-      "B1 definition: P(ℕ)/I₁ quotient Boolean algebra",
-      "B2 definition: P(ℕ)/I₂ quotient Boolean algebra",
-      "B1_is_boolean_algebra and B2_is_boolean_algebra axioms",
-      "erdos_ulam_question definition: isomorphism question",
-      "erdos_ulam_lost_proof axiom: historical note on lost proof",
-      "finite_quotient_different axiom: P(ℕ)/Fin differs from B₁, B₂",
-      "just_krawczyk_theorem_CH axiom: isomorphism under CH (1984)",
-      "just_krawczyk_technique axiom: back-and-forth method",
+      "B1, B2: quotient Boolean algebras P(ℕ)/I₁ and P(ℕ)/I₂",
+      "erdos_ulam_question: isomorphism question as Prop",
+      "just_krawczyk_theorem_CH axiom: isomorphism under CH",
       "independence_from_ZFC axiom: question is ZFC-independent",
-      "I1_properties and I2_properties axioms: ideal properties",
-      "ideal_key_difference axiom: δ=0 but d undefined possible",
-      "continuum_hypothesis axiom: CH statement",
-      "CH_classification axiom: CH enables classification",
-      "without_CH_complexity axiom: non-CH models more complex",
-      "P_omega_mod_fin axiom: finite quotient comparison",
-      "other_quotient_algebras axiom: related algebras",
-      "classification_problem axiom: broader classification",
-      "erdos_ulam_collaboration axiom: 1943-44 Madison visit",
-      "the_lost_proof axiom: proof forgotten and never recovered",
-      "erdos_prize axiom: $100 prize offer"
+      "density_ideals_are_sigma_ideals axiom: subset closure",
+      "finite_quotient_different axiom: finite sets have density zero",
+      "erdos_1123_summary: proved conjunction of density implications"
     ]
   },
   "overview": {
-    "historicalContext": "This problem arose from Erdős's visit to Ulam in Madison, Wisconsin in 1943-44. They believed they had proved non-isomorphism, but the proof was 'lost' and never reconstructed. Erdős wrote: 'The proof is gone and nobody can prove it.' He offered $100 for a resolution. Just and Krawczyk (1984) proved that under the Continuum Hypothesis, the algebras ARE isomorphic - a surprising positive answer to a question posed negatively.",
-    "problemStatement": "Let B₁ be the Boolean algebra P(ℕ)/I₁ where I₁ is the ideal of density-zero sets (d(A) = 0 means |A ∩ {1,...,n}|/n → 0). Let B₂ be P(ℕ)/I₂ where I₂ is the ideal of logarithmic-density-zero sets (δ(A) = 0 means (1/log n)·Σ_{k∈A, k≤n} 1/k → 0). Prove that B₁ and B₂ are not isomorphic as Boolean algebras.",
-    "proofStrategy": "The resolution is set-theoretically dependent. Just and Krawczyk (1984) showed that under the Continuum Hypothesis (CH), both algebras have cardinality ℵ₁ and satisfy similar saturation properties, enabling a back-and-forth construction of an isomorphism. Without CH, the question may have a different answer. The formalization captures the density definitions, the quotient Boolean algebra construction, and the conditional isomorphism result.",
+    "historicalContext": "This problem arose from Erdős's visit to Ulam in Madison (1943-44). They believed they proved non-isomorphism, but the proof was 'lost.' Just and Krawczyk (1984) proved that under CH, the algebras ARE isomorphic — the opposite of what Erdős expected. The answer is set-theoretically dependent.",
+    "problemStatement": "Let B₁ = P(ℕ)/I₁ (mod density-zero sets) and B₂ = P(ℕ)/I₂ (mod log-density-zero sets). Are B₁ and B₂ isomorphic? Under CH: YES (Just-Krawczyk 1984). In ZFC alone: independent.",
+    "proofStrategy": "The formalization defines density-zero and log-density-zero predicates, constructs the quotient Boolean algebras B₁ and B₂ using Lean's Quotient type, and axiomatizes the Just-Krawczyk conditional isomorphism and ZFC independence. The summary theorem proves the conjunction of the density implication and strict containment.",
     "keyInsights": [
       "Natural density 0 implies logarithmic density 0, but not conversely",
       "Both P(ℕ)/I₁ and P(ℕ)/I₂ are Boolean algebras",
-      "Under CH, both algebras have cardinality ℵ₁",
-      "Saturation properties under CH enable back-and-forth isomorphism",
+      "Under CH, both have cardinality ℵ₁ with similar saturation properties",
       "The isomorphism question is independent of ZFC",
       "Erdős-Ulam's lost 'proof' of non-isomorphism was likely erroneous"
     ]
@@ -87,65 +53,44 @@
     {
       "id": "density-definitions",
       "title": "Density Definitions",
-      "startLine": 40,
-      "endLine": 68,
-      "summary": "Natural density, logarithmic density, and their zero conditions"
-    },
-    {
-      "id": "density-relationships",
-      "title": "Relationship Between Densities",
-      "startLine": 70,
-      "endLine": 100,
-      "summary": "Natural density zero implies log-density zero, ideal containment"
+      "startLine": 35,
+      "endLine": 57,
+      "summary": "hasDensityZero, hasLogDensityZero, implication, strict containment"
     },
     {
       "id": "boolean-algebras",
       "title": "The Boolean Algebras",
-      "startLine": 102,
-      "endLine": 133,
-      "summary": "B₁ and B₂ as quotient Boolean algebras"
-    },
-    {
-      "id": "original-question",
-      "title": "Erdős-Ulam's Original Question",
-      "startLine": 135,
-      "endLine": 159,
-      "summary": "The isomorphism question and the lost proof"
+      "startLine": 59,
+      "endLine": 78,
+      "summary": "B1 and B2 as quotient types, erdos_ulam_question"
     },
     {
       "id": "just-krawczyk",
       "title": "Just-Krawczyk's Resolution",
-      "startLine": 161,
-      "endLine": 186,
-      "summary": "Isomorphism under CH, proof technique, independence"
+      "startLine": 80,
+      "endLine": 96,
+      "summary": "Conditional isomorphism under CH, ZFC independence"
     },
     {
-      "id": "ideals",
-      "title": "The Ideals I₁ and I₂",
-      "startLine": 188,
-      "endLine": 213,
-      "summary": "Properties of density-zero ideals and their differences"
-    },
-    {
-      "id": "set-theory",
-      "title": "Set-Theoretic Context",
-      "startLine": 215,
-      "endLine": 237,
-      "summary": "Continuum Hypothesis and classification of quotient algebras"
+      "id": "ideal-properties",
+      "title": "Ideal Properties",
+      "startLine": 98,
+      "endLine": 109,
+      "summary": "σ-ideal closure, finite sets have density zero"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 291,
-      "endLine": 336,
-      "summary": "Complete resolution: set-theoretically dependent, isomorphic under CH"
+      "startLine": 111,
+      "endLine": 127,
+      "summary": "Proved conjunction of density implication and strict containment"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1123 is SET-THEORETICALLY DEPENDENT. The question of whether B₁ = P(ℕ)/(density zero) and B₂ = P(ℕ)/(log-density zero) are isomorphic depends on set-theoretic axioms. Just and Krawczyk (1984) proved that under the Continuum Hypothesis, they ARE isomorphic. This resolved the $100 question, though not in the way Erdős and Ulam originally expected - they believed non-isomorphism held unconditionally.",
-    "implications": "This problem beautifully illustrates the interaction between number theory (density concepts), algebra (Boolean algebras), and set theory (independence results). It shows that even natural-seeming algebraic questions can be undecidable in ZFC. The result contributed to the broader study of quotient Boolean algebras P(ω)/I, which remains an active area of set-theoretic research.",
+    "summary": "Erdős Problem #1123 is SET-THEORETICALLY DEPENDENT. Under CH, B₁ ≅ B₂ (Just-Krawczyk 1984). The question is independent of ZFC. The 'lost' Erdős-Ulam proof of non-isomorphism was likely erroneous.",
+    "implications": "Illustrates the interaction between number theory (density), algebra (Boolean algebras), and set theory (independence). Shows natural algebraic questions can be ZFC-undecidable.",
     "openQuestions": [
-      "What happens without CH - are there models where B₁ ≇ B₂?",
+      "Are there models of ZFC where B₁ ≇ B₂?",
       "Classification of P(ω)/I for other natural ideals",
       "Connections to forcing and cardinal characteristics"
     ]
