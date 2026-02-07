@@ -95,7 +95,7 @@
   {
     "id": "ann-e176-erdos-lower",
     "proofId": "erdos-176",
-    "range": { "startLine": 194, "endLine": 201 },
+    "range": { "startLine": 200, "endLine": 207 },
     "type": "axiom",
     "title": "Erdős Lower Bound (1963)",
     "content": "**erdos_1963_lower_bound:**\n\nFor any c > 0, N(k, ck) > (1 + α_c)^k where α_c is a function of c.\n\n**Behavior of α_c:**\n- α_c → 0 as c → 0 (small discrepancy is easier to avoid)\n- α_c → √2 - 1 ≈ 0.414 as c → 1 (approaching van der Waerden)\n\nThis proves N(k, ℓ) grows **exponentially** in k for any fixed ratio ℓ/k.",
@@ -106,7 +106,7 @@
   {
     "id": "ann-e176-linear-conj",
     "proofId": "erdos-176",
-    "range": { "startLine": 215, "endLine": 221 },
+    "range": { "startLine": 221, "endLine": 227 },
     "type": "definition",
     "title": "Linear Discrepancy Conjecture",
     "content": "**LinearDiscrepancyConjecture:**\n\nFor any c > 0, there exists C > 1 such that N(k, ck) ≤ C^k.\n\nCombined with Erdős's lower bound, this would show N(k, ck) is exactly exponential in k.\n\nThis is the most general of the three main conjectures.",
@@ -116,7 +116,7 @@
   {
     "id": "ann-e176-disc2-conj",
     "proofId": "erdos-176",
-    "range": { "startLine": 223, "endLine": 228 },
+    "range": { "startLine": 229, "endLine": 234 },
     "type": "definition",
     "title": "Discrepancy 2 Conjecture",
     "content": "**Discrepancy2Conjecture:**\n\nIs there C > 1 with N(k, 2) ≤ C^k?\n\nThis is the weakest question (ℓ = 2 is constant, not growing with k), yet Erdős-Graham wrote that 'no decent bound' is known.\n\nA positive answer would be a major breakthrough.",
@@ -126,7 +126,7 @@
   {
     "id": "ann-e176-sqrt-conj",
     "proofId": "erdos-176",
-    "range": { "startLine": 230, "endLine": 236 },
+    "range": { "startLine": 236, "endLine": 242 },
     "type": "definition",
     "title": "Square Root Discrepancy Conjecture",
     "content": "**SqrtDiscrepancyConjecture:**\n\nIs there C > 1 with N(k, √k) ≤ C^k?\n\nThis intermediate case (ℓ = √k grows sublinearly) interpolates between the constant and linear cases.\n\nA positive answer would suggest the linear conjecture might also hold.",
@@ -136,7 +136,7 @@
   {
     "id": "ann-e176-connections",
     "proofId": "erdos-176",
-    "range": { "startLine": 248, "endLine": 261 },
+    "range": { "startLine": 255, "endLine": 273 },
     "type": "concept",
     "title": "Related Problems",
     "content": "**Connections to Other Problems:**\n\n1. **Erdős Discrepancy Problem:** Concerns discrepancy of homogeneous APs. Proved by Tao (2015) using Fourier analysis.\n\n2. **Szemerédi's Theorem:** Density of sets containing APs. Different focus: subsets vs colorings.\n\n3. **Hales-Jewett:** Higher-dimensional generalization of van der Waerden.\n\nAll share the theme of unavoidable arithmetic structure.",
@@ -146,7 +146,7 @@
   {
     "id": "ann-e176-summary",
     "proofId": "erdos-176",
-    "range": { "startLine": 267, "endLine": 299 },
+    "range": { "startLine": 278, "endLine": 311 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_176_summary:**\n\nCaptures the state of knowledge:\n\n1. Spencer gives exact formula for N(k, 1)\n2. N(k, k) = W(k), the van der Waerden number\n3. The main conjectures are precisely stated\n\n**Known:** Exact formula for N(k,1); exponential lower bounds.\n**Open:** Exponential upper bounds for N(k,2), N(k,√k), N(k,ck).",

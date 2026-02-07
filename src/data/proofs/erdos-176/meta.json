@@ -50,7 +50,10 @@
       "erdos_1963_lower_bound axiom: exponential lower bounds",
       "LinearDiscrepancyConjecture: N(k,ck) ≤ C^k?",
       "Discrepancy2Conjecture: N(k,2) ≤ C^k?",
-      "SqrtDiscrepancyConjecture: N(k,√k) ≤ C^k?"
+      "SqrtDiscrepancyConjecture: N(k,√k) ≤ C^k?",
+      "Nk2_grows_superpolynomially axiom: N(k,2) grows faster than any polynomial",
+      "tao_erdos_discrepancy axiom: Erdős discrepancy conjecture (Tao 2015)",
+      "szemeredi_theorem axiom: positive density sets contain arbitrarily long APs"
     ]
   },
   "overview": {
@@ -72,63 +75,63 @@
       "title": "Arithmetic Progressions",
       "summary": "Definition of k-term APs as Finsets",
       "startLine": 43,
-      "endLine": 71
+      "endLine": 72
     },
     {
       "id": "colorings",
       "title": "Colorings and Discrepancy",
       "summary": "±1 colorings and AP discrepancy definitions",
       "startLine": 73,
-      "endLine": 102
+      "endLine": 103
     },
     {
       "id": "nkl-function",
       "title": "The N(k,ℓ) Function",
       "summary": "Definition of N(k,ℓ) and monotonicity",
       "startLine": 104,
-      "endLine": 132
+      "endLine": 133
     },
     {
       "id": "van-der-waerden",
       "title": "Van der Waerden Numbers",
       "summary": "Connection between N(k,k) and W(k)",
       "startLine": 134,
-      "endLine": 154
+      "endLine": 155
     },
     {
       "id": "spencer",
       "title": "Spencer's Theorem",
       "summary": "Exact formula for N(k,1)",
       "startLine": 156,
-      "endLine": 182
+      "endLine": 183
     },
     {
       "id": "erdos-lower",
       "title": "Erdős's Lower Bounds",
-      "summary": "Exponential lower bounds from 1963",
+      "summary": "Exponential lower bounds and alpha_c function",
       "startLine": 184,
-      "endLine": 209
+      "endLine": 215
     },
     {
       "id": "open-questions",
       "title": "Main Open Questions",
       "summary": "Three conjectures about upper bounds",
-      "startLine": 211,
-      "endLine": 242
+      "startLine": 216,
+      "endLine": 250
     },
     {
       "id": "connections",
       "title": "Related Problems",
-      "summary": "Connections to Erdős discrepancy and Szemerédi",
-      "startLine": 244,
-      "endLine": 261
+      "summary": "Connections to Erdős discrepancy and Szemerédi theorems",
+      "startLine": 251,
+      "endLine": 273
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Current state of knowledge",
-      "startLine": 263,
-      "endLine": 299
+      "startLine": 274,
+      "endLine": 311
     }
   ],
   "conclusion": {
