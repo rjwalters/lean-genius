@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #293: Missing Denominators in Egyptian Fraction Decompositions
 
 Let v(k) be the minimal integer not appearing as a denominator in any
@@ -28,7 +28,7 @@ open Finset BigOperators
 
 namespace Erdos293
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A k-term Egyptian fraction decomposition of 1: a set of k distinct
 positive integers whose unit fractions sum to 1. -/
@@ -55,7 +55,7 @@ axiom v_not_in_decomp : ∀ k : ℕ, ¬appearsInDecomp k (v k)
 /-- v(k) is minimal: every smaller positive integer appears in some decomposition. -/
 axiom v_minimal : ∀ k : ℕ, ∀ m : ℕ, 0 < m → m < v k → appearsInDecomp k m
 
-/-! ## The Vardi Constant -/
+/- ## The Vardi Constant -/
 
 /-- The Vardi recurrence: u₁ = 1, uᵢ₊₁ = uᵢ(uᵢ + 1).
 Gives: 1, 2, 6, 42, 1806, ... -/
@@ -78,7 +78,7 @@ noncomputable def vardiConstant : ℝ := 1.26408473530530
 /-- Vardi constant bounds: 1.264 < c₀ < 1.265. -/
 axiom vardiConstant_bounds : vardiConstant > 1.264 ∧ vardiConstant < 1.265
 
-/-! ## Known Lower Bounds -/
+/- ## Known Lower Bounds -/
 
 /-- Bleicher-Erdős lower bound (1975): v(k) ≥ c · k! for some c > 0. -/
 axiom bleicher_erdos_lower_bound :
@@ -90,7 +90,7 @@ axiom vanDoorn_Tang_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k > 0 →
       (v k : ℝ) ≥ Real.exp (c * k^2)
 
-/-! ## Known Upper Bounds -/
+/- ## Known Upper Bounds -/
 
 /-- Elementary upper bound: v(k) ≤ k · c₀^{2^k}. -/
 axiom elementary_upper_bound :
@@ -104,7 +104,7 @@ axiom max_denominator_bound :
       isEgyptianDecomp k s →
       ∀ n ∈ s, n ≤ k * vardiSeq k
 
-/-! ## Conjectures -/
+/- ## Conjectures -/
 
 /-- Erdős's conjecture (weak form): v(k) grows doubly exponentially
 in √k, i.e., v(k) ≥ e^{e^{c√k}} for some c > 0. -/
@@ -118,7 +118,7 @@ def ErdosConjecture293Strong : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k > 0 →
     (v k : ℝ) ≥ Real.exp (Real.exp (c * k))
 
-/-! ## Small Values -/
+/- ## Small Values -/
 
 /-- v(1) = 2: The only 1-term decomposition would need 1/n = 1, but
 we require distinct terms. Actually, n = 1 works, so v(1) = 2. -/
@@ -131,7 +131,7 @@ axiom v_2 : v 2 = 2
 so the first missing denominator is 4. -/
 axiom v_3 : v 3 = 4
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #293 Summary.**
 Current best bounds on v(k): e^{ck²} ≤ v(k) ≤ k · c₀^{2^k}.
