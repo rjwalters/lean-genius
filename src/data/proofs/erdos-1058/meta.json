@@ -16,80 +16,83 @@
       "prime-divisors",
       "diophantine"
     ],
-    "badge": "mathlib",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1058,
     "erdosUrl": "https://erdosproblems.com/1058",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "prime_seq axiom: the n-th prime number",
+      "inPrimeInterval: n ∈ [p_{k-1}, p_k) predicate",
+      "onlyTwoPrimesDivide: restricted factorization condition",
+      "satisfiesCondition: the full Erdős-Stewart condition",
+      "erdos_stewart_conjecture_true: finiteness (Luca 2001)",
+      "luca_theorem: complete classification {1,2,3,4,5}",
+      "Computational verification of n!+1 for n = 1,...,6",
+      "erdos_1058_status: combined finiteness and classification"
+    ]
   },
   "overview": {
-    "historicalContext": "A conjecture of Erdős and Stewart, as reported in Problem A2 of Guy's collection 'Unsolved Problems in Number Theory'. The problem explores the rare phenomenon where n!+1 has very few prime factors, specifically only the next two consecutive primes after the interval containing n. Luca completely solved this in 2001.",
-    "problemStatement": "Let 2 = p₁ < p₂ < ... be the sequence of primes. Are there only finitely many n such that n ∈ [p_{k-1}, p_k) and the only primes dividing n!+1 are p_k and p_{k+1}?",
-    "proofStrategy": "The formalization defines the prime sequence, the interval condition, and the divisibility condition. We state Luca's theorem that n = 1, 2, 3, 4, 5 are the only solutions. The proof verifies these small cases explicitly and discusses the techniques used to eliminate larger values.",
+    "historicalContext": "A conjecture of Erdős and Stewart, appearing as Problem A2 in Guy's 'Unsolved Problems in Number Theory'. The problem explores the rare phenomenon where n!+1 has very few prime factors, specifically only the next two consecutive primes after the interval containing n.\n\nFlorian Luca completely solved this in 2001, published in Mathematics of Computation. His proof combines factorial growth rate arguments with diophantine equation techniques to show that for n ≥ 6, n!+1 necessarily has additional prime factors beyond p_k and p_{k+1}.",
+    "problemStatement": "Let 2 = p₁ < p₂ < ... be the sequence of primes. Are there only finitely many n such that n ∈ [p_{k-1}, p_k) and the only primes dividing n!+1 are p_k and p_{k+1}?\n\n**Answer: YES** (Luca, 2001). The only solutions are n = 1, 2, 3, 4, 5.",
+    "proofStrategy": "The formalization defines the prime sequence, the interval condition, and the divisibility condition. Luca's theorem is axiomatized as the complete classification. We verify the small cases computationally: 1!+1=2, 2!+1=3, 3!+1=7, 4!+1=25=5², 5!+1=121=11², and 6!+1=721=7×103 (which fails the condition).",
     "keyInsights": [
-      "Only n = 1, 2, 3, 4, 5 satisfy the condition",
-      "Factorial growth eventually forces many prime factors",
-      "Wilson's theorem ensures p_k divides (p_k - 1)! + 1",
-      "For n ≥ 6, n!+1 is too large for restricted factorization",
-      "Diophantine methods eliminate all larger cases"
+      "**Complete Classification:** Only n = 1, 2, 3, 4, 5 satisfy the condition",
+      "**Factorial Growth:** n! grows super-exponentially, forcing many prime factors for large n",
+      "**Wilson's Theorem:** (p-1)! ≡ -1 (mod p) ensures p_k | (p_k-1)!+1",
+      "**Diophantine Methods:** Luca used growth bounds and diophantine equations to eliminate n ≥ 6",
+      "**Connection to Brocard:** Related to n!+1 = m², another famous open problem"
     ]
   },
   "sections": [
     {
-      "id": "section-1",
+      "id": "prime-seq",
       "title": "Prime Sequence Definitions",
       "startLine": 32,
-      "endLine": 62,
-      "summary": "Defines the prime sequence p₁ = 2, p₂ = 3, ... and its basic properties."
+      "endLine": 61,
+      "summary": "Axiomatizes the prime sequence and its properties"
     },
     {
-      "id": "section-2",
-      "title": "Problem Statement",
+      "id": "problem-statement",
+      "title": "The Problem Statement",
       "startLine": 63,
-      "endLine": 89,
-      "summary": "Formalizes the interval condition n ∈ [p_{k-1}, p_k) and the divisibility condition."
+      "endLine": 88,
+      "summary": "Formalizes the interval and divisibility conditions"
     },
     {
-      "id": "section-3",
-      "title": "The Conjecture (Proved)",
+      "id": "conjecture",
+      "title": "The Conjecture and Resolution",
       "startLine": 90,
-      "endLine": 106,
-      "summary": "States the Erdős-Stewart conjecture about finiteness and that Luca proved it true."
+      "endLine": 113,
+      "summary": "States the conjecture, Luca's proof, and complete classification"
     },
     {
-      "id": "section-4",
-      "title": "Complete Classification",
-      "startLine": 107,
-      "endLine": 124,
-      "summary": "Luca's theorem: the only solutions are n = 1, 2, 3, 4, 5."
-    },
-    {
-      "id": "section-5",
+      "id": "verification",
       "title": "Verification of Known Cases",
-      "startLine": 125,
-      "endLine": 165,
-      "summary": "Explicit verification: 1!+1=2, 2!+1=3, 3!+1=7, 4!+1=25=5², 5!+1=121=11²."
+      "startLine": 115,
+      "endLine": 135,
+      "summary": "Computational verification of n!+1 for n = 1,...,6"
     },
     {
-      "id": "section-6",
-      "title": "Why the Problem is Hard",
-      "startLine": 166,
-      "endLine": 197,
-      "summary": "Discusses factorial growth, Wilson's theorem, and the difficulty of the problem."
-    },
-    {
-      "id": "section-7",
-      "title": "Luca's Proof Technique",
-      "startLine": 198,
-      "endLine": 229,
-      "summary": "Key techniques: lower bounds, primitive divisors, size bounds, diophantine methods."
-    },
-    {
-      "id": "section-8",
-      "title": "Summary and Status",
-      "startLine": 286,
-      "endLine": 340,
-      "summary": "Complete summary stating the problem was solved by Luca with exactly five solutions."
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 137,
+      "endLine": 177,
+      "summary": "Combined result: finiteness + complete classification"
     }
   ],
   "conclusion": {
