@@ -27,7 +27,7 @@ open scoped BigOperators
 
 namespace Erdos13
 
-/-!
+/-
 ## Background
 
 This problem connects divisibility and additive structure of sets.
@@ -43,7 +43,7 @@ This prevents trivial cases like a = b = c.
 The question is: how large can such a set be?
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -66,7 +66,7 @@ theorem divisibilityFree_iff (A : Finset ℕ) :
   · intro h a b c ha hb hc ⟨hdiv, hab, hac⟩
     exact h a b c ha hb hc hab hac hdiv
 
-/-!
+/-
 ## The Upper Third Construction
 
 The interval (2N/3, N] provides a divisibility-free set.
@@ -99,7 +99,7 @@ axiom upperThird_card (N : ℕ) : (upperThird N).card = N - 2 * N / 3
 axiom upperThird_achieves_bound (N : ℕ) (hN : N ≥ 3) :
     (upperThird N).card ≥ N / 3
 
-/-!
+/-
 ## Bedert's Theorem (2023)
 
 The main result: |A| ≤ N/3 + O(1) for any divisibility-free A ⊆ {1,...,N}.
@@ -125,7 +125,7 @@ axiom upperThird_optimal :
       DivisibilityFree A →
       A.card ≤ (upperThird N).card + C
 
-/-!
+/-
 ## The Generalized Problem (r-sums)
 
 Erdős asked about the generalization to r-element sums.
@@ -178,7 +178,7 @@ theorem erdos_rsum_two : ErdosRSumConjecture 2 := by
   rw [rDivisibilityFree_two] at hfree
   exact hfree
 
-/-!
+/-
 ## Why the Bound is N/3
 
 Intuition for why N/3 is the right answer:
@@ -203,7 +203,7 @@ theorem mem_upperThird_iff (N k : ℕ) :
   · intro ⟨hk, h2⟩
     exact ⟨by omega, h2⟩
 
-/-!
+/-
 ## Connection to Sum-Free Sets
 
 This problem is related to (but distinct from) sum-free sets.
@@ -225,7 +225,7 @@ def SumFree (A : Finset ℕ) : Prop :=
     so a + b > c, hence a + b ≠ c. -/
 axiom upperThird_sumFree (N : ℕ) (hN : N ≥ 1) : SumFree (upperThird N)
 
-/-!
+/-
 ## Summary
 
 **Problem Status: SOLVED**
