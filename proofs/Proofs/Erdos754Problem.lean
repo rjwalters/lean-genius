@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #754: Favorite Distances in Four Dimensions
 
 Let f(n) be maximal such that there exists a set A of n points in ℝ⁴ in which
@@ -27,8 +27,7 @@ open Finset
 
 namespace Erdos754
 
-/-!
-## Overview
+/- ## Overview
 
 This problem asks about "favorite distances" in ℝ⁴: how many points can share
 the same distance from a given point? In high dimensions, the geometry allows
@@ -37,9 +36,7 @@ for many equidistant points, but there are still limits.
 The answer: roughly n/2 points can be equidistant from each point, but not more.
 -/
 
-/-!
-## Part I: Basic Definitions
--/
+/- ## Part I: Basic Definitions -/
 
 /-- A point configuration in d-dimensional Euclidean space. -/
 def PointConfig (d n : ℕ) := Fin n → EuclideanSpace ℝ (Fin d)
@@ -61,9 +58,7 @@ noncomputable def favoriteDistance {d n : ℕ} (A : PointConfig d n) (x : Fin n)
 noncomputable def favoriteCount {d n : ℕ} (A : PointConfig d n) (x : Fin n) : ℕ :=
   ⨆ r : ℝ, (equidistantSet A x r).card
 
-/-!
-## Part II: The Function f(n)
--/
+/- ## Part II: The Function f(n) -/
 
 /-- f_d(n): the maximum k such that every point has at least k equidistant points. -/
 noncomputable def f (d n : ℕ) : ℕ :=
@@ -73,9 +68,7 @@ noncomputable def f (d n : ℕ) : ℕ :=
 noncomputable def minFavoriteCount {d n : ℕ} (A : PointConfig d n) : ℕ :=
   ⨅ x : Fin n, favoriteCount A x
 
-/-!
-## Part III: The Four-Dimensional Case
--/
+/- ## Part III: The Four-Dimensional Case -/
 
 /-- Avis-Erdős-Pach (1988) lower bound: f(n) ≥ n/2 + 2. -/
 axiom avis_erdos_pach_lower_bound (n : ℕ) (hn : n ≥ 4) :
@@ -85,9 +78,7 @@ axiom avis_erdos_pach_lower_bound (n : ℕ) (hn : n ≥ 4) :
 axiom avis_erdos_pach_upper_bound (n : ℕ) (hn : n ≥ 4) :
     ∀ ε > 0, ∃ N : ℕ, ∀ m ≥ N, (f 4 m : ℝ) ≤ (1 + ε) * m / 2
 
-/-!
-## Part IV: Swanepoel's Theorem (2013)
--/
+/- ## Part IV: Swanepoel's Theorem (2013) -/
 
 /-- A distance assignment: for each point, a "favorite" distance. -/
 def DistanceAssignment (n : ℕ) := Fin n → ℝ
@@ -117,17 +108,14 @@ theorem erdos_754_solved (n : ℕ) (hn : n ≥ 4) :
   use C₂
   exact ⟨avis_erdos_pach_lower_bound n hn, hC₂⟩
 
-/-!
-## Part V: Higher Dimensions
--/
+/- ## Part V: Higher Dimensions -/
 
 /-- Swanepoel also proved analogous results for higher dimensions. -/
 axiom swanepoel_higher_dimensions (d : ℕ) (hd : d ≥ 4) :
     ∃ c : ℝ, c > 0 ∧ c < 1 ∧
       ∀ n : ℕ, n ≥ 2 → ∃ C : ℝ, (f d n : ℝ) ≤ c * n + C
 
-/-!
-## Summary
+/- ## Summary
 
 **Erdős Problem #754: SOLVED (YES)**
 
