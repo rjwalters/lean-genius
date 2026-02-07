@@ -1050,4 +1050,81 @@ axiom erdos_413_main :
   (barriers omega).Infinite ∧
   ∃ ε : ℝ, ε > 0 ∧ (barriersReal (fun n => ε * omega n)).Infinite
 
+-- ## Omega Multiplicativity for Coprime Numbers
+--
+-- ω(mn) = ω(m) + ω(n) when gcd(m,n) = 1, because coprime numbers
+-- have disjoint sets of prime factors.
+
+/-- For coprime m, n with m ≠ 0 and n ≠ 0, ω(mn) = ω(m) + ω(n) -/
+theorem omega_mul_coprime (m n : ℕ) (hm : m ≠ 0) (hn : n ≠ 0)
+    (hcop : Nat.Coprime m n) :
+    omega (m * n) = omega m + omega n := by
+  unfold omega
+  rw [Nat.Coprime.primeFactors_mul hcop hm hn]
+  exact Finset.card_union_of_disjoint (Nat.Coprime.disjoint_primeFactors hcop)
+
+/-- ω(pq) = 2 for distinct primes p and q -/
+theorem omega_prime_mul (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) :
+    omega (p * q) = 2 := by
+  rw [omega_mul_coprime p q hp.ne_zero hq.ne_zero ((Nat.coprime_primes hp hq).mpr hne)]
+  rw [omega_prime p hp, omega_prime q hq]
+
+/-- ω(6) = 2, computed via coprime multiplicativity -/
+theorem omega_six : omega 6 = 2 := by
+  have h6 : (6 : ℕ) = 2 * 3 := by omega
+  rw [h6]; exact omega_prime_mul 2 3 Nat.prime_two Nat.prime_three (by omega)
+
+/-- ω(30) = 3 via coprime multiplicativity: 30 = 6 · 5 -/
+theorem omega_thirty : omega 30 = 3 := by
+  have h30 : (30 : ℕ) = 2 * 3 * 5 := by omega
+  rw [h30, omega_mul_coprime (2 * 3) 5 (by omega) (by omega) (by decide)]
+  have h1 : omega (2 * 3) = 2 := omega_prime_mul 2 3 Nat.prime_two Nat.prime_three (by omega)
+  have h2 : omega 5 = 1 := omega_prime 5 (by decide)
+  omega
+
+-- ## ω Subadditivity
+
+/-- ω(mn) ≤ ω(m) + ω(n) for any m, n with mn ≠ 0 -/
+theorem omega_submultiplicative (m n : ℕ) (hmn : m * n ≠ 0) :
+    omega (m * n) ≤ omega m + omega n := by
+  unfold omega
+  have hm : m ≠ 0 := left_ne_zero_of_mul hmn
+  have hn : n ≠ 0 := right_ne_zero_of_mul hmn
+  calc (m * n).primeFactors.card
+      ≤ (m.primeFactors ∪ n.primeFactors).card := by
+        apply Finset.card_le_card
+        intro p hp
+        rw [Nat.mem_primeFactors] at hp
+        rw [Finset.mem_union]
+        have ⟨hp_prime, hp_dvd, _⟩ := hp
+        rcases hp_prime.dvd_mul.mp hp_dvd with hdm | hdn
+        · left; exact Nat.mem_primeFactors.mpr ⟨hp_prime, hdm, hm⟩
+        · right; exact Nat.mem_primeFactors.mpr ⟨hp_prime, hdn, hn⟩
+    _ ≤ m.primeFactors.card + n.primeFactors.card :=
+        Finset.card_union_le _ _
+
+-- ## Barrier Predecessor Must Be Prime Power (Strong Form)
+
+/-- At a barrier n ≥ 3, n-1 is necessarily a prime power.
+    Since n-1 ≥ 2 forces at least one prime factor, and ω(n-1) ≤ 1
+    means exactly one prime factor, giving n-1 = p^k. -/
+theorem barrier_pred_is_prime_power (n : ℕ) (hn : n ≥ 3) (hb : IsBarrier omega n) :
+    ∃ p k, Nat.Prime p ∧ k ≥ 1 ∧ n - 1 = p ^ k := by
+  have hpred := omega_pred_le_one_at_barrier n (by omega) hb
+  have h_ne : n - 1 ≠ 0 := by omega
+  have h_pos : omega (n - 1) ≥ 1 := by
+    rw [omega, Finset.one_le_card]
+    exact ⟨(n - 1).minFac, Nat.mem_primeFactors.mpr
+      ⟨Nat.minFac_prime (by omega), Nat.minFac_dvd _, h_ne⟩⟩
+  have h_eq1 : omega (n - 1) = 1 := by omega
+  rw [omega, Finset.card_eq_one] at h_eq1
+  obtain ⟨p, hp⟩ := h_eq1
+  have hp_mem : p ∈ (n - 1).primeFactors := by rw [hp]; exact Finset.mem_singleton.mpr rfl
+  have hp_prime : p.Prime := Nat.prime_of_mem_primeFactors hp_mem
+  refine ⟨p, (n - 1).factorization p, hp_prime, ?_, ?_⟩
+  · rw [Nat.one_le_iff_ne_zero, Finsupp.mem_support_iff.mp]
+    rw [Nat.support_factorization, hp]; exact Finset.mem_singleton.mpr rfl
+  · rw [← Nat.factorization_prod_pow_eq_self h_ne, Finsupp.prod, Nat.support_factorization, hp]
+    simp
+
 end Erdos413
