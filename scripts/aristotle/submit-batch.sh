@@ -75,7 +75,7 @@ count_active_jobs() {
 SERVER_CAPACITY_LIMIT=3
 
 # Query server for actual active project count
-# Returns JSON: {"active": N, "breakdown": {"QUEUED": N, "IN_PROGRESS": N, "NOT_STARTED": N}}
+# Returns JSON: {"active": N, "breakdown": {...}, "zombies_ignored": N}
 PYTHON_CAPACITY_CHECK='
 import asyncio
 import json
@@ -91,13 +91,21 @@ async def check_capacity():
     active_statuses = {"QUEUED", "IN_PROGRESS", "NOT_STARTED"}
     breakdown = {}
     active = 0
+    zombies = 0
     for p in projects:
         name = p.status.name
         if name in active_statuses:
+            # NOT_STARTED with no file are zombies from failed uploads - skip them
+            if name == "NOT_STARTED" and not getattr(p, "file_name", None):
+                zombies += 1
+                continue
             active += 1
             breakdown[name] = breakdown.get(name, 0) + 1
 
-    print(json.dumps({"active": active, "breakdown": breakdown}))
+    result = {"active": active, "breakdown": breakdown}
+    if zombies > 0:
+        result["zombies_ignored"] = zombies
+    print(json.dumps(result))
 
 asyncio.run(check_capacity())
 '
@@ -125,6 +133,12 @@ check_server_capacity() {
     echo "Server active projects: $SERVER_ACTIVE (limit: $SERVER_CAPACITY_LIMIT)"
     if [[ -n "$breakdown" && "$breakdown" != "" ]]; then
         echo "  Breakdown: $breakdown"
+    fi
+
+    local zombies
+    zombies=$(echo "$output" | jq -r '.zombies_ignored // 0')
+    if [[ "$zombies" -gt 0 ]]; then
+        echo -e "  ${YELLOW}Ignoring $zombies zombie projects (NOT_STARTED with no file)${NC}"
     fi
 
     if [[ "$SERVER_ACTIVE" -ge "$SERVER_CAPACITY_LIMIT" ]]; then
