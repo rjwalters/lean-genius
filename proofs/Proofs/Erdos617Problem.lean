@@ -36,7 +36,7 @@ import Mathlib.Data.Fin.Basic
 
 namespace Erdos617
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Complete graph on n vertices:**
@@ -59,7 +59,7 @@ An assignment of colours {0, ..., r-1} to edges of K_n.
 -/
 def EdgeColouring (n r : ℕ) := Edge n → Fin r
 
-/-! ## Part II: Induced Subgraphs and Colour Coverage -/
+/- ## Part II: Induced Subgraphs and Colour Coverage -/
 
 /--
 **Induced K_k:**
@@ -92,7 +92,7 @@ def missesColour {n r k : ℕ} (c : EdgeColouring n r)
     (S : InducedClique n k) : Prop :=
   coloursUsed c S ≠ Finset.univ
 
-/-! ## Part III: Balanced Colourings -/
+/- ## Part III: Balanced Colourings -/
 
 /--
 **Balanced colouring:**
@@ -108,7 +108,7 @@ There exists an induced K_{r+1} missing at least one colour.
 def IsNotBalanced (n r : ℕ) (c : EdgeColouring n r) : Prop :=
   ∃ S : InducedClique n (r + 1), missesColour c S
 
-/-! ## Part IV: The Erdős-Gyárfás Conjecture -/
+/- ## Part IV: The Erdős-Gyárfás Conjecture -/
 
 /--
 **The Erdős-Gyárfás Conjecture:**
@@ -126,7 +126,7 @@ def ErdosGyarfasEquivalent : Prop :=
   ∀ r : ℕ, r ≥ 3 →
     ¬∃ c : EdgeColouring (r^2 + 1) r, IsBalanced (r^2 + 1) r c
 
-/-! ## Part V: Known Results -/
+/- ## Part V: Known Results -/
 
 /--
 **r = 3: SOLVED (Erdős-Gyárfás 1999)**
@@ -142,7 +142,7 @@ Every 4-colouring of K₁₇ (= K_{4²+1}) has an induced K₅ missing a colour.
 axiom r_4_solved :
     ∀ c : EdgeColouring 17 4, IsNotBalanced 17 4 c
 
-/-! ## Part VI: Counterexamples and Boundaries -/
+/- ## Part VI: Counterexamples and Boundaries -/
 
 /--
 **r = 2 is FALSE:**
@@ -161,7 +161,7 @@ allows balanced colourings to exist.
 axiom r_squared_balanced :
     ∃ r : ℕ, r ≥ 3 ∧ ∃ c : EdgeColouring (r^2) r, IsBalanced (r^2) r c
 
-/-! ## Part VII: Concrete Verification -/
+/- ## Part VII: Concrete Verification -/
 
 /-- 10 = 3² + 1 -/
 example : 3^2 + 1 = 10 := by norm_num
@@ -177,7 +177,7 @@ all these edges with each colour appearing at least once.
 theorem edge_count_clique (r : ℕ) :
     (r + 1) * r / 2 = (r + 1) * r / 2 := rfl
 
-/-! ## Part VIII: Summary
+/- ## Part VIII: Summary
 
 **Erdős Problem #617: OPEN**
 
