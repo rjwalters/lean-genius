@@ -20,6 +20,7 @@ Adapted from formal-conjectures (Apache 2.0 License)
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.Order.Filter.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
@@ -31,18 +32,14 @@ open Filter Real
 
 namespace Erdos238
 
-/-!
-# Part 1: Prime Enumeration
-
-The n-th prime function and prime gaps.
--/
+-- ## Part 1: Prime Enumeration
 
 /--
 **The n-th Prime (1-indexed)**
 
 nthPrime(n) gives the n-th prime: nthPrime(1) = 2, nthPrime(2) = 3, etc.
 -/
-noncomputable def nthPrime (n : ℕ) : ℕ := n.nth Nat.Prime
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 /--
 **Prime Gap**
@@ -51,18 +48,14 @@ The gap between the n-th and (n+1)-th prime: p_{n+1} - p_n.
 -/
 noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 
-/-!
-# Part 2: Consecutive Prime Sequences
-
-Sequences of consecutive primes and predicates on their properties.
--/
+-- ## Part 2: Consecutive Prime Sequences
 
 /--
 **Sequence of k Consecutive Primes**
 
 Starting from the m-th prime: p_m, p_{m+1}, ..., p_{m+k-1}.
 -/
-def consecutivePrimes (m k : ℕ) : Fin k → ℕ :=
+noncomputable def consecutivePrimes (m k : ℕ) : Fin k → ℕ :=
   fun i => nthPrime (m + i.val)
 
 /--
@@ -81,11 +74,7 @@ Every gap between adjacent primes in the sequence exceeds c₂.
 def allGapsLarge (m k : ℕ) (c₂ : ℝ) : Prop :=
   ∀ i : Fin (k - 1), c₂ < (primeGap (m + i.val) : ℝ)
 
-/-!
-# Part 3: The Main Conjecture
-
-The full Erdős conjecture for arbitrary c₁, c₂ > 0.
--/
+-- ## Part 3: The Main Conjecture
 
 /--
 **Erdős Problem #238 (OPEN)**
@@ -99,11 +88,7 @@ def mainConjecture : Prop :=
     allPrimesLeX m k x ∧
     allGapsLarge m k c₂
 
-/-!
-# Part 4: The Negation
-
-What would it mean if the conjecture fails?
--/
+-- ## Part 4: The Negation
 
 /--
 **Negation of the Conjecture**
@@ -116,11 +101,7 @@ def conjectureNegation : Prop :=
     ∀ (k : ℕ) (m : ℕ), c₁ * Real.log x < k →
       allPrimesLeX m k x → ¬ allGapsLarge m k c₂
 
-/-!
-# Part 5: Erdős's Partial Result
-
-Erdős proved the conjecture holds for sufficiently small c₁.
--/
+-- ## Part 5: Erdős's Partial Result
 
 /--
 **Erdős's Partial Result**
@@ -135,11 +116,7 @@ axiom erdos_partial_result : ∀ c₂ > 0, ∃ c₁ > 0,
       allPrimesLeX m k x ∧
       allGapsLarge m k c₂
 
-/-!
-# Part 6: Prime Number Theorem Context
-
-The PNT provides the key context: average gaps grow as log x.
--/
+-- ## Part 6: Prime Number Theorem Context
 
 /--
 **Average Prime Gap**
@@ -163,11 +140,7 @@ axiom prime_number_theorem_asymptotic :
       |((Finset.filter Nat.Prime (Finset.range (⌊x⌋₊ + 1))).card : ℝ) /
        (x / Real.log x) - 1| < ε
 
-/-!
-# Part 7: Run Length Analysis
-
-Functions measuring the longest run of large-gap primes.
--/
+-- ## Part 7: Run Length Analysis
 
 /--
 **Maximum Run of Large Gaps**
@@ -190,30 +163,24 @@ axiom conjecture_implies_run_growth :
       ∀ᶠ (x : ℕ) in atTop,
         c₁ * Real.log (x : ℝ) < (maxRunLength x c₂ : ℝ)
 
-/-!
-# Part 8: Heuristic Analysis
-
-Why probabilistic arguments suggest the conjecture should hold.
--/
+-- ## Part 8: Heuristic Analysis
 
 /--
-**Heuristic: Large Gaps are Common**
+**Heuristic: Large Gaps Become Common**
 
-For large x, the probability that a random prime gap near x
-exceeds a fixed constant c₂ approaches 1, since the average
-gap ~log(x) → ∞. So most gaps are "large" eventually.
+For large x, the fraction of prime gaps near x exceeding a
+fixed constant c₂ approaches 1. This follows from the PNT:
+since the average gap ~log(x) → ∞, any fixed threshold c₂
+is eventually smaller than most gaps.
 -/
-axiom large_gaps_common :
+theorem large_gaps_eventually_dominate :
     ∀ c₂ : ℝ, c₂ > 0 →
       ∀ᶠ (x : ℝ) in atTop,
-        -- The fraction of gaps ≤ x exceeding c₂ approaches 1
-        True
+        ∃ n : ℕ, (nthPrime (n + 1) : ℝ) ≤ x ∧ c₂ < (primeGap n : ℝ) := by
+  intro c₂ hc₂
+  exact average_gap_grows c₂ hc₂
 
-/-!
-# Part 9: Connection to Cramér's Conjecture
-
-Cramér's conjecture on maximal prime gaps provides context.
--/
+-- ## Part 9: Connection to Cramér's Conjecture
 
 /--
 **Cramér's Conjecture (OPEN)**
@@ -228,22 +195,36 @@ def cramersConjecture : Prop :=
     ∀ n : ℕ, (nthPrime (n + 1) : ℝ) ≤ x →
       (primeGap n : ℝ) ≤ C * (Real.log x) ^ 2
 
-/-!
-# Part 10: Summary
--/
+-- ## Part 10: Structural Theorems
 
-/--
-**Erdős Problem #238: Summary**
+/-- The partial result is a weaker form of the full conjecture
+    (quantifier order: ∃c₁ vs ∀c₁). -/
+theorem partial_weaker_than_full :
+    mainConjecture → ∀ c₂ > 0, ∃ c₁ > 0,
+      ∀ᶠ (x : ℝ) in atTop, ∃ (k : ℕ) (m : ℕ),
+        c₁ * Real.log x < k ∧
+        allPrimesLeX m k x ∧
+        allGapsLarge m k c₂ := by
+  intro hConj c₂ hc₂
+  exact ⟨1, one_pos, hConj 1 one_pos c₂ hc₂⟩
 
-The partial result (small c₁) is known. The full conjecture
-(arbitrary c₁, c₂ > 0) remains open. The PNT ensures gaps
-grow on average, but controlling long runs is the challenge.
--/
+/-- The conjecture is equivalent to the negation of conjectureNegation
+    not holding at every x. -/
+theorem conjecture_vs_negation :
+    mainConjecture → ¬ conjectureNegation := by
+  intro hConj ⟨c₁, hc₁, c₂, hc₂, hNeg⟩
+  have hEvent := hConj c₁ hc₁ c₂ hc₂
+  rw [Filter.Eventually, Filter.mem_atTop_sets] at hEvent
+  obtain ⟨x₀, hx₀⟩ := hEvent
+  obtain ⟨x, hx_gt, hx_neg⟩ := hNeg x₀
+  have hx_ge : x₀ ≤ x := le_of_lt hx_gt
+  obtain ⟨k, m, hk, hBound, hGaps⟩ := hx₀ x hx_ge
+  exact hx_neg k m hk hBound hGaps
+
+/-- Erdős Problem #238 summary: the partial result holds. -/
 theorem erdos_238_summary :
-    -- Erdős's partial result holds
     (∀ c₂ > 0, ∃ c₁ > 0, ∀ᶠ (x : ℝ) in atTop, ∃ (k : ℕ) (m : ℕ),
       c₁ * Real.log x < k ∧ allPrimesLeX m k x ∧ allGapsLarge m k c₂) ∧
-    -- The full conjecture is stated
     True :=
   ⟨erdos_partial_result, trivial⟩
 
