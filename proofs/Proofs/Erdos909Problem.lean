@@ -1,25 +1,19 @@
-/-!
-# Erdős Problem #909: Dimension of Product Spaces
+/-
+Erdős Problem #909: Dimension of Product Spaces
 
-**Source:** [erdosproblems.com/909](https://erdosproblems.com/909)
-**Status:** SOLVED (Anderson-Keisler, 1967)
+Source: https://erdosproblems.com/909
+Status: SOLVED (Anderson-Keisler, 1967)
 
-## Statement
-
+Statement:
 Let n ≥ 2. Is there a space S of dimension n such that S² (the product
 S × S) also has dimension n?
 
-## Background
-
+Background:
 - For most 'nice' spaces: dim(X × Y) ≤ dim(X) + dim(Y)
 - For n = 1: The rational points in Hilbert space ℓ²(ℚ) have this property
 - Anderson-Keisler (1967): YES for all n ≥ 1
 
-## Approach
-
-We axiomatize covering dimension (not yet in Mathlib), define dimension
-exactly n, state the product inequality, and formalize the Anderson-Keisler
-theorem resolving the problem.
+Tags: topology, dimension-theory, product-spaces
 -/
 
 import Mathlib.Topology.Basic
@@ -30,7 +24,7 @@ open TopologicalSpace
 
 namespace Erdos909
 
-/-! ## Part I: Covering Dimension -/
+/- ## Part I: Covering Dimension -/
 
 /--
 **Covering Dimension (axiomatized):**
@@ -56,7 +50,7 @@ axiom dimension_product_ineq (X Y : Type*) [TopologicalSpace X] [TopologicalSpac
     (m n : ℕ) (hX : dimLeq X m) (hY : dimLeq Y n) :
     dimLeq (X × Y) (m + n)
 
-/-! ## Part II: The Problem Statement -/
+/- ## Part II: The Problem Statement -/
 
 /--
 **Erdős Problem #909:**
@@ -67,7 +61,7 @@ def erdos909Statement : Prop :=
   ∀ n : ℕ, n ≥ 1 → ∃ (S : Type) (_ : TopologicalSpace S),
     hasDimensionExactly S n ∧ hasDimensionExactly (S × S) n
 
-/-! ## Part III: Known Results for n = 1 -/
+/- ## Part III: Known Results for n = 1 -/
 
 /--
 **Rational points in Hilbert space:**
@@ -79,7 +73,7 @@ axiom rational_hilbert_example :
   ∃ (S : Type) (_ : TopologicalSpace S),
     hasDimensionExactly S 1 ∧ hasDimensionExactly (S × S) 1
 
-/-! ## Part IV: Anderson-Keisler Theorem (1967) -/
+/- ## Part IV: Anderson-Keisler Theorem (1967) -/
 
 /--
 **Anderson-Keisler Theorem (1967):**
@@ -105,7 +99,7 @@ theorem erdos_909 : erdos909Statement := by
   obtain ⟨S, hTop, _, hdim⟩ := anderson_keisler_theorem n hn
   exact ⟨S, hTop, hdim⟩
 
-/-! ## Part V: Supporting Results -/
+/- ## Part V: Supporting Results -/
 
 /-- dim(ℝ^n) = n (standard result) -/
 axiom dimension_euclidean (n : ℕ) : dimLeq (Fin n → ℝ) n
@@ -114,7 +108,7 @@ axiom dimension_euclidean (n : ℕ) : dimLeq (Fin n → ℝ) n
 axiom dimension_subspace (X : Type*) [TopologicalSpace X] (Y : Set X) (n : ℕ)
     (hX : dimLeq X n) : dimLeq Y n
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /--
 **Summary of Erdős Problem #909:**
