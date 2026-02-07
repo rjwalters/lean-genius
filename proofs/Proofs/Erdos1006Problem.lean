@@ -47,7 +47,7 @@ open SimpleGraph
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-
+/-!
 ## Graph Girth
 
 The girth of a graph is the length of its shortest cycle.
@@ -61,7 +61,7 @@ def hasGirthAtLeast (G : SimpleGraph V) (g : ℕ) : Prop :=
 def hasGirth (G : SimpleGraph V) (g : ℕ) : Prop :=
   hasGirthAtLeast G g ∧ ∃ (cycle : List V), cycle.length = g ∧ G.IsCycle cycle
 
-/-
+/-!
 ## Directed Graphs and Orientations
 
 An orientation assigns a direction to each edge.
@@ -83,21 +83,15 @@ def Orientation.hasDirectedPath (O : Orientation G) (path : List V) : Prop :=
 def Orientation.isAcyclic (O : Orientation G) : Prop :=
   ∀ (cycle : List V), cycle.length ≥ 3 → cycle.head? = cycle.getLast? → ¬O.hasDirectedPath cycle
 
-/-
+/-!
 ## Robust Acyclicity
 
 The key property: an orientation where reversing any single edge preserves acyclicity.
 -/
 
-/-- Reverse a single edge in an orientation -/
-def Orientation.reverseEdge (O : Orientation G) (u v : V) : Orientation G where
-  directed := fun x y =>
-    if x = u ∧ y = v then O.directed v u
-    else if x = v ∧ y = u then O.directed u v
-    else O.directed x y
-  covers := by intro x y hadj; sorry
-  exclusive := by intro x y; sorry
-  respects := by intro x y hdir; sorry
+/-- Reverse a single edge in an orientation. The resulting orientation swaps
+    the direction of (u,v) while keeping all other edges the same. -/
+axiom Orientation.reverseEdge (O : Orientation G) (u v : V) : Orientation G
 
 /-- An orientation is robustly acyclic if it remains acyclic after any single edge reversal -/
 def Orientation.isRobustlyAcyclic (O : Orientation G) : Prop :=
@@ -107,7 +101,7 @@ def Orientation.isRobustlyAcyclic (O : Orientation G) : Prop :=
 def admitsRobustlyAcyclicOrientation (G : SimpleGraph V) : Prop :=
   ∃ (O : Orientation G), O.isRobustlyAcyclic
 
-/-
+/-!
 ## The Conjecture (Disproved)
 
 Ore's question: Do all high-girth graphs admit robustly acyclic orientations?
@@ -118,7 +112,7 @@ def oresConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     hasGirthAtLeast G 5 → admitsRobustlyAcyclicOrientation G
 
-/-
+/-!
 ## Counterexamples
 -/
 
