@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #584: Cycle-Connected Subgraphs
 
   Source: https://erdosproblems.com/584
@@ -37,7 +37,7 @@ open Nat Real
 
 namespace Erdos584
 
-/-! ## Part I: Graph Definitions -/
+/- ## Part I: Graph Definitions -/
 
 /-- A simple graph on n vertices. -/
 structure Graph (n : ℕ) where
@@ -56,13 +56,13 @@ noncomputable def Graph.density {n : ℕ} (G : Graph n) : ℝ :=
 def HasDensity {n : ℕ} (G : Graph n) (δ : ℝ) : Prop :=
   (G.edgeCount : ℝ) ≥ δ * n^2
 
-/-! ## Part II: Subgraphs -/
+/- ## Part II: Subgraphs -/
 
 /-- H is a subgraph of G. -/
 def IsSubgraph {n : ℕ} (H G : Graph n) : Prop :=
   H.edges ⊆ G.edges
 
-/-! ## Part III: Cycle Connectivity -/
+/- ## Part III: Cycle Connectivity -/
 
 /-- A path in the graph. -/
 structure Path {n : ℕ} (G : Graph n) where
@@ -93,7 +93,7 @@ def AdjacentEdgesOn4Cycle {n : ℕ} (G : Graph n) : Prop :=
     (e1.1 = e2.1 ∨ e1.1 = e2.2 ∨ e1.2 = e2.1 ∨ e1.2 = e2.2) →
     OnCommonCycle G e1 e2 4
 
-/-! ## Part IV: The Main Conjecture -/
+/- ## Part IV: The Main Conjecture -/
 
 /-- The H₁ property: 6-cycle connected with adjacent edges on 4-cycles. -/
 def HasH1Property {n : ℕ} (H : Graph n) : Prop :=
@@ -123,7 +123,7 @@ def ErdosConjecture584_H2 : Prop :=
 def ErdosConjecture584 : Prop :=
   ErdosConjecture584_H1 ∧ ErdosConjecture584_H2
 
-/-! ## Part V: Known Results -/
+/- ## Part V: Known Results -/
 
 /-- **Duke-Erdős Theorem (1982):**
     H₁ exists for fixed δ when n is sufficiently large.
@@ -151,7 +151,7 @@ axiom fox_sudakov_2008 (n : ℕ) (G : Graph n) (δ : ℝ)
     ∃ H : Graph n, IsSubgraph H G ∧ HasH2Property H ∧
       (H.edgeCount : ℝ) ≥ δ^2 * n^2 / 1000
 
-/-! ## Part VI: The Main Challenge -/
+/- ## Part VI: The Main Challenge -/
 
 /-- The sparse regime: δ = n^{-c} for some c > 0. -/
 def IsSparseRegime (n : ℕ) (δ : ℝ) (c : ℝ) : Prop :=
@@ -169,7 +169,7 @@ def SparseRegimeConjecture : Prop :=
       ∃ H : Graph n, IsSubgraph H G ∧ HasH1Property H ∧
         (H.edgeCount : ℝ) ≥ C * δ^3 * n^2
 
-/-! ## Part VII: Quantitative Bounds -/
+/- ## Part VII: Quantitative Bounds -/
 
 /-- Best known exponent for H₁: δ⁵ from Duke-Erdős-Rödl (1984). -/
 def bestKnownExponentH1 : ℝ := 5
@@ -183,7 +183,7 @@ example : targetExponentH1 < bestKnownExponentH1 := by norm_num
 /-- Best known density threshold for H₂: δ > n^{-1/5} (Fox-Sudakov). -/
 def bestKnownThresholdH2 : ℝ := 1/5
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /-- **Summary of Erdős Problem #584:**
     Formalizes three partial results toward the cycle-connected subgraph conjecture:
