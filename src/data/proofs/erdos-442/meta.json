@@ -21,7 +21,7 @@
     "sorries": 0,
     "erdosNumber": 442,
     "erdosUrl": "https://erdosproblems.com/442",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "disproved",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
@@ -120,28 +120,28 @@
       "id": "key-insight",
       "title": "Why the Counterexample Works",
       "startLine": 172,
-      "endLine": 186,
+      "endLine": 185,
       "summary": "Structure vs density: smooth numbers in careful patterns"
     },
     {
       "id": "lcm-properties",
       "title": "LCM Properties",
-      "startLine": 188,
-      "endLine": 209,
+      "startLine": 187,
+      "endLine": 206,
       "summary": "The fundamental identity lcm(a,b)·gcd(a,b) = a·b"
     },
     {
       "id": "examples",
       "title": "Verified Examples",
-      "startLine": 211,
-      "endLine": 220,
+      "startLine": 208,
+      "endLine": 217,
       "summary": "Computational verification of LCM values"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 222,
-      "endLine": 245,
+      "startLine": 219,
+      "endLine": 243,
       "summary": "Main theorem combining the negative answer and existence"
     }
   ],
