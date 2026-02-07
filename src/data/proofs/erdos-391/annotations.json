@@ -24,7 +24,7 @@
   {
     "id": "ann-e391-upper-bound",
     "proofId": "erdos-391",
-    "range": { "startLine": 77, "endLine": 97 },
+    "range": { "startLine": 75, "endLine": 93 },
     "type": "axiom",
     "title": "Easy Upper Bound: lim sup t(n)/n ≤ 1/e",
     "content": "**The easy direction** of the problem is showing that t(n)/n cannot be much larger than 1/e. The intuition comes from Stirling's formula: if all n factors in n! = a₁ · ... · aₙ were equal to some value a, then aⁿ = n! ≈ (n/e)ⁿ, giving a ≈ n/e. Since the minimum factor a₁ ≤ a (the average), we get a₁ ≤ n/e asymptotically.\n\nMore precisely, if a₁ = t(n), then a₁ⁿ ≤ a₁ · a₂ · ... · aₙ = n! (since all factors are at least a₁), giving t(n) ≤ (n!)^{1/n} ≈ n/e.",
@@ -35,7 +35,7 @@
   {
     "id": "ann-e391-lost-proof",
     "proofId": "erdos-391",
-    "range": { "startLine": 99, "endLine": 110 },
+    "range": { "startLine": 95, "endLine": 104 },
     "type": "concept",
     "title": "The Lost Proof of Erdős-Selfridge-Straus",
     "content": "**One of the most famous lost proofs in mathematics.** Erdős, Selfridge, and Straus claimed to have proved that lim t(n)/n = 1/e (the matching lower bound to the easy upper bound). Ernst Straus was supposed to write up the proof, but he died suddenly in 1983. No notes were ever found, and Erdős and Selfridge could never reconstruct the argument.\n\nErdős himself described the situation: 'we never could reconstruct our proof, so our assertion now can be called only a conjecture.' This anecdote illustrates the importance of writing up proofs promptly — and the value of formal verification systems like Lean that preserve mathematical knowledge permanently.",
@@ -46,7 +46,7 @@
   {
     "id": "ann-e391-acrstuv",
     "proofId": "erdos-391",
-    "range": { "startLine": 112, "endLine": 145 },
+    "range": { "startLine": 106, "endLine": 137 },
     "type": "theorem",
     "title": "The ACRSTUV Theorem: Complete Resolution (2025)",
     "content": "**The main result** of Alexeev, Conway, Rosenfeld, Sutherland, Tao, Uhr, and Ventullo (2025) resolves both of Erdős's questions simultaneously. They proved the precise asymptotic formula: t(n)/n = 1/e - c₀/log(n) + O(1/(log n)^{1+c}), where c₀ ≈ 0.3044 is an explicit constant and c > 0.\n\nThis formula tells us three things at once: (1) the limit exists and equals 1/e (answering Question 1), (2) the approach to 1/e is from below with rate c₀/log(n) (answering Question 2, and showing it holds for ALL large n, not just infinitely many), and (3) the error beyond the second-order term decays as a power of 1/log(n).",
@@ -57,7 +57,7 @@
   {
     "id": "ann-e391-explicit-bounds",
     "proofId": "erdos-391",
-    "range": { "startLine": 147, "endLine": 170 },
+    "range": { "startLine": 139, "endLine": 160 },
     "type": "axiom",
     "title": "Explicit Bounds and the Sharp Threshold 43632",
     "content": "**Beyond asymptotics**, ACRSTUV also proved remarkably precise explicit bounds. The upper bound t(n) ≤ n/e holds for ALL n except the three exceptions n = 1, 2, and 4. The lower bound t(n) ≥ n/3 holds for all n ≥ 43632, and this threshold is sharp: there exists some n < 43632 for which t(n) < n/3.\n\nThese explicit bounds were conjectured by Guy and Selfridge in 1998 and had remained unproved for nearly three decades. The precision of the threshold 43632 is striking — it was found through extensive computation and then proved to be optimal.",
@@ -68,7 +68,7 @@
   {
     "id": "ann-e391-guy-selfridge",
     "proofId": "erdos-391",
-    "range": { "startLine": 189, "endLine": 210 },
+    "range": { "startLine": 177, "endLine": 196 },
     "type": "theorem",
     "title": "Guy-Selfridge Conjectures: Verified",
     "content": "**Guy and Selfridge** formulated two precise conjectures about t(n) in their 1998 paper 'Factoring Factorial n' in the American Mathematical Monthly. Conjecture 1: t(n) ≤ n/e for all n ≠ 1, 2, 4. Conjecture 2: t(n) ≥ n/3 for all n ≥ 43632. Both were proved by ACRSTUV in 2025.\n\nThe formalization defines these as Lean propositions (guySelfridgeConjecture1, guySelfridgeConjecture2) and provides their proofs: Conjecture 1 via the axiom guy_selfridge_1_proved, and Conjecture 2 as a direct consequence of lower_bound_explicit.",
@@ -79,7 +79,7 @@
   {
     "id": "ann-e391-summary",
     "proofId": "erdos-391",
-    "range": { "startLine": 226, "endLine": 263 },
+    "range": { "startLine": 210, "endLine": 247 },
     "type": "theorem",
     "title": "Summary Theorem: All Main Results Combined",
     "content": "**The summary theorem** erdos_391_summary packages all four main results into a single Lean statement: (1) lim t(n)/n = 1/e, (2) the second-order correction t(n)/n ≤ 1/e - c/log(n) for large n, (3) the explicit upper bound t(n) ≤ ⌊n/e⌋ for n ≥ 3, n ≠ 4, and (4) the lower bound t(n) ≥ n/3 for n ≥ 43632.\n\nThis is a proved theorem (not an axiom), constructed from the individual axioms using Lean's refine tactic. It demonstrates that the axioms are coherent and combine to give a comprehensive picture of the problem's resolution.",
