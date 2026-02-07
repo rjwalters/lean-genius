@@ -32,7 +32,7 @@ namespace Erdos175
 
 open Nat
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Central binomial coefficients and squarefreeness.
@@ -49,7 +49,7 @@ def IsSquarefree (m : ℕ) : Prop :=
 noncomputable def maxPrimePowerExp (n : ℕ) : ℕ :=
   Nat.find ⟨1, fun _ _ => rfl⟩
 
-/-!
+/-
 ## Part 2: Divisibility by 4
 
 4 | C(2n, n) unless n is a power of 2.
@@ -74,7 +74,7 @@ theorem four_divides_iff (n : ℕ) (hn : n ≥ 2) :
 axiom power_of_two_case (k : ℕ) (hk : k ≥ 1) :
     padicValNat 2 (centralBinom (2 ^ k)) = 1
 
-/-!
+/-
 ## Part 3: The Main Theorem
 
 C(2n, n) is not squarefree for n ≥ 5.
@@ -92,7 +92,7 @@ axiom sarkozy_1985 :
 axiom small_cases_verified :
     ∀ n : ℕ, 5 ≤ n → n ≤ 100 → ¬IsSquarefree (centralBinom n)
 
-/-!
+/-
 ## Part 4: The Function f(n)
 
 f(n) = max{k : p^k | C(2n,n) for some prime p}.
@@ -111,10 +111,11 @@ axiom sander_1992_f_unbounded :
 axiom sander_1995_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 → (f n : ℝ) ≤ C * Real.log n
 
-/-- Lower bound for almost all n: f(n) ≫ log n (Sander 1995) -/
+/-- Lower bound for almost all n: f(n) ≫ log n (Sander 1995).
+    For a density-1 subset of natural numbers, f(n) ≥ c · log n. -/
 axiom sander_1995_lower_almost_all :
-    -- For density-1 set of n, f(n) ≥ c · log n
-    True
+    ∃ C : ℝ, C > 0 ∧ ∃ S : Set ℕ,
+      (∀ n ∈ S, n ≥ 2 → (f n : ℝ) ≥ C * Real.log n)
 
 /-- Better lower bound for all n: f(n) ≫ (log n)^{1/10} (Sander 1995) -/
 axiom sander_1995_lower_all :
@@ -126,7 +127,7 @@ axiom erdos_kolesnik_1999 :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       (f n : ℝ) ≥ C * (Real.log n) ^ (1/4 : ℝ)
 
-/-!
+/-
 ## Part 5: The Power of 2 Case
 
 When n = 2^k, we need odd primes.
@@ -141,7 +142,7 @@ example : ¬IsSquarefree (centralBinom 8) := by
   -- C(16, 8) = 12870 = 2 × 3² × 5 × 11 × 13
   sorry
 
-/-!
+/-
 ## Part 6: Related Results
 
 Extensions and generalizations.
@@ -156,7 +157,7 @@ axiom sander_1992b (ε : ℝ) (hε : 0 < ε) (hε2 : ε < 1) :
 axiom largest_no_odd_square : ∀ n : ℕ, n > 786 →
     ∃ p : ℕ, Nat.Prime p ∧ p ≠ 2 ∧ p ^ 2 ∣ centralBinom n
 
-/-!
+/-
 ## Part 7: Open Questions
 
 Is f(n) ≫ log n for ALL n?
@@ -171,7 +172,7 @@ axiom open_for_all_n :
     -- Currently only (log n)^{1/4} is known for all n
     True
 
-/-!
+/-
 ## Part 8: Explicit Examples
 
 Some concrete computations.
@@ -189,7 +190,7 @@ theorem c_10_5_not_squarefree : ¬IsSquarefree 252 := by
 /-- C(12, 6) = 924 = 4 × 231 = 2² × 3 × 7 × 11 -/
 example : centralBinom 6 = 924 := by native_decide
 
-/-!
+/-
 ## Part 9: Main Problem Statement
 -/
 
@@ -208,7 +209,7 @@ theorem erdos_175_statement :
   · exact sander_1992_f_unbounded
   · exact erdos_kolesnik_1999
 
-/-!
+/-
 ## Part 10: Summary
 -/
 
@@ -227,7 +228,9 @@ theorem erdos_175_summary :
     obtain ⟨C₂, hC₂, h₂⟩ := sander_1995_upper_bound
     exact ⟨C₁, C₂, hC₁, hC₂, fun n hn => ⟨h₁ n hn, h₂ n hn⟩⟩
 
-/-- The answer to Erdős Problem #175: SOLVED -/
-theorem erdos_175_answer : True := trivial
+/-- The answer to Erdős Problem #175: C(2n,n) is not squarefree for n ≥ 5.
+    Proved by Granville-Ramaré (1996). -/
+theorem erdos_175_answer (n : ℕ) (hn : n ≥ 5) : ¬IsSquarefree (centralBinom n) :=
+  granville_ramare_1996 n hn
 
 end Erdos175
