@@ -25,7 +25,7 @@ namespace Erdos1030
 
 open Finset
 
-/-!
+/-
 ## Part I: Ramsey Numbers
 
 The fundamental definitions of Ramsey theory.
@@ -53,7 +53,7 @@ def HasBlueClique (n : ℕ) (col : EdgeColoring n) (ℓ : ℕ) : Prop :=
 def RamseyProperty (n k ℓ : ℕ) : Prop :=
   ∀ col : EdgeColoring n, HasRedClique n col k ∨ HasBlueClique n col ℓ
 
-/-!
+/-
 ## Part II: The Ramsey Number R(k, ℓ)
 
 R(k, ℓ) is the minimum n such that RamseyProperty holds.
@@ -77,7 +77,7 @@ axiom R_satisfies (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
 axiom R_minimal (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
     ¬RamseyProperty (R k ℓ - 1) k ℓ
 
-/-!
+/-
 ## Part III: Basic Properties of Ramsey Numbers
 
 Fundamental facts about R(k, ℓ).
@@ -105,7 +105,7 @@ axiom R_recursive_bound (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
 axiom R_binomial_bound (k ℓ : ℕ) (hk : k ≥ 2) (hℓ : ℓ ≥ 2) :
     R k ℓ ≤ Nat.choose (k + ℓ - 2) (k - 1)
 
-/-!
+/-
 ## Part IV: Diagonal Ramsey Numbers R(k, k)
 
 The symmetric case is of special interest.
@@ -132,7 +132,7 @@ theorem R_diag_upper (k : ℕ) (hk : k ≥ 2) :
 axiom R_diag_lower (k : ℕ) (hk : k ≥ 2) :
     (R_diag k : ℝ) ≥ 2^((k : ℝ)/2)
 
-/-!
+/-
 ## Part V: The Off-Diagonal Difference
 
 The key quantity R(k+1, k) - R(k, k).
@@ -151,7 +151,7 @@ noncomputable def RamseyDiff (k : ℕ) : ℕ := R_off k - R_diag k
 axiom trivial_diff_bound (k : ℕ) (hk : k ≥ 3) :
     RamseyDiff k ≥ k - 2
 
-/-!
+/-
 ## Part VI: Burr-Erdős-Faudree-Schelp Theorem (1989)
 
 The key improvement on the trivial bound.
@@ -170,7 +170,7 @@ theorem diff_linear_growth (k : ℕ) (hk : k ≥ 3) :
   have h := burr_erdos_faudree_schelp k hk
   exact_mod_cast h
 
-/-!
+/-
 ## Part VII: The Growth Ratio
 
 The ratio R(k+1, k) / R(k, k) that Erdős asked about.
@@ -192,7 +192,7 @@ theorem ratio_decomposition (k : ℕ) (hk : k ≥ 2) (hR : R_diag k > 0) :
 noncomputable def GrowthRatioLimInf : ℝ :=
   Filter.liminf (fun k => GrowthRatio k) Filter.atTop
 
-/-!
+/-
 ## Part VIII: Erdős's Conjecture
 
 The main question: is there c > 0 with lim R(k+1,k)/R(k,k) > 1+c?
@@ -208,7 +208,7 @@ def ErdosSosConjecture : Prop :=
 def WeakerQuestion : Prop :=
   ∃ c : ℝ, c > 1 ∧ ∀ᶠ k in Filter.atTop, (RamseyDiff k : ℝ) > k^c
 
-/-!
+/-
 ## Part IX: Resolution of the Conjecture
 
 The Burr-Erdős-Faudree-Schelp bound resolves this.
@@ -233,7 +233,7 @@ theorem ratio_lower_from_befs (k : ℕ) (hk : k ≥ 3) :
 axiom erdos_sos_solved :
     ∃ c : ℝ, c > 0 ∧ ∀ᶠ k in Filter.atTop, GrowthRatio k > 1 + c
 
-/-!
+/-
 ## Part X: Known Ramsey Numbers
 
 Small cases that are completely determined.
@@ -248,7 +248,7 @@ axiom R_known_values :
 axiom R_3_k_bounds (k : ℕ) (hk : k ≥ 3) :
     (k^2 : ℝ) / (4 * Real.log k) ≤ R 3 k ∧ (R 3 k : ℝ) ≤ k^2 / Real.log k
 
-/-!
+/-
 ## Part XI: Connection to Other Problems
 
 Related Erdős problems on Ramsey theory.
@@ -264,7 +264,7 @@ def Problem1014 : Prop :=
   ∀ j : ℕ, j ≥ 1 → ∃ c : ℝ, c > 0 ∧ ∀ᶠ k in Filter.atTop,
     (R (k+j) k : ℝ) / (R k k : ℝ) > 1 + c
 
-/-!
+/-
 ## Part XII: Main Result
 
 Erdős Problem #1030 is SOLVED.
