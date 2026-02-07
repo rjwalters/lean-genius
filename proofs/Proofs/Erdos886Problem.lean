@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #886: Divisors Near the Square Root (Ruzsa's Conjecture)
 
 Source: https://erdosproblems.com/886
@@ -35,8 +35,7 @@ open Nat Finset Real
 
 namespace Erdos886
 
-/-!
-## Part I: Divisors of n
+/- ## Part I: Divisors of n
 -/
 
 /-- The set of positive divisors of n. -/
@@ -48,8 +47,7 @@ def divisorCount (n : ℕ) : ℕ := (divisorsOf n).card
 /-- Every positive integer has at least one divisor (itself). -/
 axiom divisorCount_pos (n : ℕ) (hn : n ≥ 1) : divisorCount n ≥ 1
 
-/-!
-## Part II: The Interval Near √n
+/- ## Part II: The Interval Near √n
 -/
 
 /-- The interval (√n, √n + n^{1/2-ε}) for small ε > 0.
@@ -66,8 +64,7 @@ axiom intervalWidth_sublinear (ε : ℝ) (hε : ε > 0) :
     ∀ C : ℝ, C > 0 → ∃ N : ℕ, ∀ n ≥ N,
       intervalWidth n ε < C * Real.sqrt n
 
-/-!
-## Part III: Divisors in the Critical Interval
+/- ## Part III: Divisors in the Critical Interval
 -/
 
 /-- The set of divisors of n lying in the interval (a, b). -/
@@ -78,8 +75,7 @@ def divisorsInInterval (n : ℕ) (a b : ℝ) : Finset ℕ :=
 noncomputable def divisorsNearSqrt (n : ℕ) (ε : ℝ) : ℕ :=
   (divisorsInInterval n (Real.sqrt n) (Real.sqrt n + intervalWidth n ε)).card
 
-/-!
-## Part IV: Ruzsa's Conjecture
+/- ## Part IV: Ruzsa's Conjecture
 -/
 
 /-- **Ruzsa's Conjecture (Erdős Problem #886):**
@@ -92,8 +88,7 @@ def ruzsaConjecture : Prop :=
       ∃ N : ℕ, ∀ n ≥ N,
         divisorsNearSqrt n ε ≤ C
 
-/-!
-## Part V: Erdős-Rosenfeld Result
+/- ## Part V: Erdős-Rosenfeld Result
 -/
 
 /-- **Erdős-Rosenfeld Theorem (1997):**
@@ -108,8 +103,7 @@ axiom erdos_rosenfeld :
     ∀ k : ℕ, k ≥ 1 → ∃ n : ℕ, n ≥ k ∧
       (divisorsInInterval n (Real.sqrt n) (Real.sqrt n + (n : ℝ)^(1/4 : ℝ))).card ≥ 4
 
-/-!
-## Part VI: The Factor-Difference Set
+/- ## Part VI: The Factor-Difference Set
 -/
 
 /-- The set {d - d' : d, d' | n, d > d'} of differences between divisors. -/
@@ -122,8 +116,7 @@ def factorDifferenceSet (n : ℕ) : Finset ℤ :=
 axiom factorDifferenceSet_nonempty (n : ℕ) (hn : (divisorsOf n).card ≥ 2) :
     (factorDifferenceSet n).Nonempty
 
-/-!
-## Part VII: Divisor Density Near √n
+/- ## Part VII: Divisor Density Near √n
 -/
 
 /-- The "density" of divisors near √n, measured by count / interval width. -/
@@ -141,8 +134,7 @@ def ruzsaConjectureAlt : Prop :=
 axiom conjecture_equivalence :
     ruzsaConjecture ↔ ruzsaConjectureAlt
 
-/-!
-## Part VIII: Examples
+/- ## Part VIII: Examples
 -/
 
 /-- Numbers with many divisors (like n = 2^k or n = k!) have divisors more
@@ -150,8 +142,7 @@ axiom conjecture_equivalence :
 def isHighlyComposite (n : ℕ) : Prop :=
   ∀ m : ℕ, m < n → divisorCount m < divisorCount n
 
-/-!
-## Part IX: Bounds and Partial Results
+/- ## Part IX: Bounds and Partial Results
 -/
 
 /-- The number of divisors in ANY interval of length L is at most τ(n). -/
@@ -164,8 +155,7 @@ theorem trivial_bound (n : ℕ) (ε : ℝ) (hε : ε > 0) (hn : n ≥ 1) :
 axiom divisor_count_bound (n : ℕ) (hn : n ≥ 1) :
     (divisorCount n : ℝ) ≤ 2 * Real.sqrt n
 
-/-!
-## Part X: Summary
+/- ## Part X: Summary
 -/
 
 /-- **Summary of Erdős Problem #886:**
