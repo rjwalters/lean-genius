@@ -2,7 +2,7 @@
   {
     "id": "ann-909-1",
     "proofId": "erdos-909",
-    "range": { "startLine": 1, "endLine": 31 },
+    "range": { "startLine": 1, "endLine": 25 },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #909: Dimension of Product Spaces**\n\n**Question:** For n ≥ 2, is there a space S of dimension n such that S² = S × S also has dimension n?\n\n**Answer: YES** (Anderson-Keisler 1967)\n\nFor all n ≥ 1, separable metric spaces with this property exist. The formalization axiomatizes covering dimension (not yet in Mathlib) and states the Anderson-Keisler theorem.",
@@ -13,7 +13,7 @@
   {
     "id": "ann-909-2",
     "proofId": "erdos-909",
-    "range": { "startLine": 40, "endLine": 42 },
+    "range": { "startLine": 34, "endLine": 36 },
     "type": "axiom",
     "title": "Covering Dimension",
     "content": "**coveringDimension X n:** Axiomatized predicate asserting that the topological space X has covering dimension ≤ n. In the standard definition, this means every finite open cover of X has a refinement of order at most n+1 (no point lies in more than n+1 sets of the refinement). This is the Lebesgue covering dimension, equivalent to the small and large inductive dimensions for separable metrizable spaces.",
@@ -22,7 +22,7 @@
   {
     "id": "ann-909-3",
     "proofId": "erdos-909",
-    "range": { "startLine": 47, "endLine": 48 },
+    "range": { "startLine": 41, "endLine": 42 },
     "type": "definition",
     "title": "Dimension Exactly n",
     "content": "**hasDimensionExactly X n:** X has dimension exactly n if dimLeq X n holds (dimension at most n) and, when n > 0, dimLeq X (n-1) fails (dimension is not at most n-1). The guard n > 0 avoids the meaningless case of negative dimension. This captures the standard notion dim(X) = n.",
@@ -31,7 +31,7 @@
   {
     "id": "ann-909-4",
     "proofId": "erdos-909",
-    "range": { "startLine": 55, "endLine": 57 },
+    "range": { "startLine": 49, "endLine": 51 },
     "type": "axiom",
     "title": "Product Dimension Inequality",
     "content": "**dimension_product_ineq:** For topological spaces X, Y with dimLeq X m and dimLeq Y n, we have dimLeq (X × Y) (m + n). This is the standard product inequality for covering dimension. For compact metric spaces this is a theorem; here it is axiomatized. The problem asks when this bound can be far from tight — specifically, when dim(S × S) can equal dim(S) instead of 2·dim(S).",
@@ -41,7 +41,7 @@
   {
     "id": "ann-909-5",
     "proofId": "erdos-909",
-    "range": { "startLine": 66, "endLine": 68 },
+    "range": { "startLine": 60, "endLine": 62 },
     "type": "definition",
     "title": "The Problem Statement",
     "content": "**erdos909Statement:** ∀ n ≥ 1, ∃ (S : Type) with TopologicalSpace structure such that hasDimensionExactly S n ∧ hasDimensionExactly (S × S) n. This asks: for every positive integer n, can we find a space of dimension exactly n whose product with itself also has dimension exactly n?",
@@ -50,7 +50,7 @@
   {
     "id": "ann-909-6",
     "proofId": "erdos-909",
-    "range": { "startLine": 78, "endLine": 80 },
+    "range": { "startLine": 72, "endLine": 74 },
     "type": "axiom",
     "title": "Rational Hilbert Space Example",
     "content": "**rational_hilbert_example:** There exists a topological space S with hasDimensionExactly S 1 ∧ hasDimensionExactly (S × S) 1. The witness is the set of points in ℓ² (Hilbert space) with all rational coordinates, denoted ℓ²(ℚ). This countable dense subset of ℓ² has covering dimension 1, and its square also has covering dimension 1. This was the classical n = 1 case, known before the general Anderson-Keisler result.",
@@ -59,7 +59,7 @@
   {
     "id": "ann-909-7",
     "proofId": "erdos-909",
-    "range": { "startLine": 95, "endLine": 97 },
+    "range": { "startLine": 89, "endLine": 91 },
     "type": "axiom",
     "title": "Anderson-Keisler Theorem",
     "content": "**anderson_keisler_theorem:** For every n ≥ 1, there exists a separable metric space (witnessed by MetrizableSpace) S with dim(S) = n and dim(S × S) = n. The construction starts with an n-dimensional space and takes a carefully chosen subset using descriptive set theory techniques, controlling how open covers interact in the product. The resulting spaces are 'pathological' in that their product dimension is strictly less than expected.",
@@ -69,7 +69,7 @@
   {
     "id": "ann-909-8",
     "proofId": "erdos-909",
-    "range": { "startLine": 103, "endLine": 106 },
+    "range": { "startLine": 97, "endLine": 100 },
     "type": "theorem",
     "title": "Main Theorem: erdos_909",
     "content": "**erdos_909 : erdos909Statement:** The proof introduces n ≥ 1, applies anderson_keisler_theorem to obtain S with MetrizableSpace instance and dimension properties, then drops the metrizability witness (which is not required by the problem statement) and packages S with its TopologicalSpace and dimension proofs. This cleanly reduces the problem to the Anderson-Keisler axiom.",
@@ -78,7 +78,7 @@
   {
     "id": "ann-909-9",
     "proofId": "erdos-909",
-    "range": { "startLine": 110, "endLine": 115 },
+    "range": { "startLine": 104, "endLine": 109 },
     "type": "concept",
     "title": "Supporting Results",
     "content": "**dimension_euclidean** and **dimension_subspace** provide standard background facts. The first asserts dim(ℝ^n) = n (the finite product Fin n → ℝ), establishing that Euclidean spaces have the expected dimension. The second states monotonicity: if Y ⊆ X, then dim(Y) ≤ dim(X). These are not directly used in the main proof but provide context for how dimension behaves in general.",
@@ -87,7 +87,7 @@
   {
     "id": "ann-909-10",
     "proofId": "erdos-909",
-    "range": { "startLine": 132, "endLine": 138 },
+    "range": { "startLine": 126, "endLine": 132 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_909_summary:** Packages two key results: (1) erdos909Statement holds (the problem is solved for all n ≥ 1), and (2) an explicit example exists for n = 1 (from rational_hilbert_example). The proof is exact ⟨erdos_909, rational_hilbert_example⟩, combining the main theorem with the classical example.",
