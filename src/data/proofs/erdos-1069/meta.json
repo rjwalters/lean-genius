@@ -4,34 +4,68 @@
   "slug": "erdos-1069",
   "description": "Given n points in ℝ², the number of k-rich lines (containing ≥k points) is O(n²/k³) for k ≤ √n. Proved by Szemerédi-Trotter (1983).",
   "meta": {
-    "author": "Szemerédi-Trotter (1983)",
+    "author": "Szemerédi-Trotter (1983 proof), Erdős-Croft-Purdy (conjecture)",
     "sourceUrl": "https://erdosproblems.com/1069",
     "date": "1983",
-    "status": "axiom",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1069Problem.lean",
     "tags": [
       "erdos",
       "incidence-geometry",
       "szemeredi-trotter",
       "combinatorial-geometry",
-      "k-rich-lines"
+      "k-rich-lines",
+      "solved"
     ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 0,
     "erdosNumber": 1069,
     "erdosUrl": "https://erdosproblems.com/1069",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real",
+        "description": "Real number type",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Point and Line definitions for ℝ²",
+      "pointsOnLine and incidenceCount definitions",
+      "isKRich, kRichLines, numKRichLines definitions",
+      "totalIncidences and incidencePairs definitions",
+      "szTrBound function",
+      "szemeredi_trotter axiom (main incidence bound)",
+      "kRichBound function and kRich_bound axiom",
+      "erdos_1069 theorem",
+      "dyadicLines decomposition",
+      "latticePoints lower bound construction",
+      "dual_kRich_bound axiom (duality)",
+      "erdos_1069_summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem was conjectured by Erdős, Croft, and Purdy and described by Erdős in his 1987 paper 'Some combinatorial and metric problems in geometry'. The result follows from the celebrated Szemerédi-Trotter theorem (1983), which bounds the number of incidences between points and lines in the plane. This theorem is a cornerstone of incidence geometry and has applications throughout combinatorics and computational geometry.",
-    "problemStatement": "Given any n points in ℝ², the number of k-rich lines (lines containing ≥ k of the points) is O(n²/k³), provided k ≤ √n. The exact constant is unknown. For k = √n, lattice points show there can be ≥ (2+o(1))√n many √n-rich lines; Sah (1987) improved this to (3+o(1))√n.",
-    "proofStrategy": "The formalization defines points, lines, and incidences in ℝ². The Szemerédi-Trotter theorem bounds total incidences I(P,L) ≤ O(|P|^(2/3)|L|^(2/3) + |P| + |L|). The k-rich lines bound follows: if m lines each have ≥ k incidences, then mk ≤ I(P,L), giving m ≤ O(n^(2/3)m^(2/3)/k + n/k), which solves to m ≤ O(n²/k³).",
+    "historicalContext": "This problem was conjectured by Erdős, Croft, and Purdy, and described by Erdős in his 1987 paper 'Some combinatorial and metric problems in geometry'. The question asks for the maximum number of k-rich lines (lines containing at least k points) through a set of n points in the plane.\n\nThe result follows from the celebrated Szemerédi-Trotter theorem (1983), which bounds the number of incidences between points and lines in ℝ². This theorem is a cornerstone of incidence geometry: I(P,L) ≤ O(|P|^{2/3}|L|^{2/3} + |P| + |L|). The k-rich lines bound O(n²/k³) is a direct consequence via a counting argument.\n\nThe bound is nearly tight. For k = √n, lattice points on an m × m grid show there can be at least (2+o(1))√n many √n-rich lines. The optimal constant in the bound remains unknown and is an active area of research in combinatorial geometry.",
+    "problemStatement": "**Problem (Erdős-Croft-Purdy, 1987):** Given $n$ points in $\\mathbb{R}^2$, the number of $k$-rich lines (lines containing $\\geq k$ points) is $O(n^2/k^3)$, provided $k \\leq \\sqrt{n}$.\n\n**Answer:** YES (Szemerédi-Trotter, 1983)\n\nThe bound follows from the Szemerédi-Trotter incidence theorem: $I(P,L) \\leq O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$.",
+    "proofStrategy": "The formalization defines points (ℝ × ℝ), lines (ax + by = c), and incidence counts. The Szemerédi-Trotter theorem is axiomatized as the main incidence bound. The k-rich lines bound is derived: if m lines each have ≥ k incidences, then mk ≤ I(P,L), giving m ≤ O(n^{2/3}m^{2/3}/k + n/k), which solves to m ≤ O(n²/k³). The dyadic decomposition technique is formalized as an intermediate step.",
     "keyInsights": [
-      "A k-rich line contributes at least k to the total incidence count",
-      "Szemerédi-Trotter's incidence bound is tight up to constants",
-      "The dyadic decomposition technique partitions lines by incidence count",
-      "Lattice points provide lower bound constructions",
-      "Point-line duality gives equivalent dual formulations"
+      "**Incidence counting:** A k-rich line contributes at least k to the total incidence count, giving a lower bound mk ≤ I(P,L)",
+      "**Szemerédi-Trotter:** The exponent 2/3 in the incidence bound is optimal, as shown by grid constructions",
+      "**Dyadic decomposition:** Partition lines by incidence count into levels [2^i, 2^{i+1}), apply Szemerédi-Trotter to each level, then sum",
+      "**Lattice lower bound:** The m×m integer lattice has ≥ 2m many m-rich lines (horizontal + vertical), showing O(n²/k³) is nearly tight",
+      "**Point-line duality:** The dual statement about k-rich points follows by symmetry"
     ]
   },
   "sections": [
@@ -40,81 +74,67 @@
       "title": "Basic Definitions",
       "summary": "Point, Line, onLine, pointsOnLine, incidenceCount definitions",
       "startLine": 37,
-      "endLine": 63
+      "endLine": 62
     },
     {
       "id": "k-rich-lines",
       "title": "k-Rich Lines",
       "summary": "isKRich, kRichLines, numKRichLines definitions",
-      "startLine": 65,
-      "endLine": 81
+      "startLine": 64,
+      "endLine": 79
     },
     {
       "id": "total-incidences",
       "title": "Total Incidences",
-      "summary": "totalIncidences, incidencePairs, incidences_eq theorem",
-      "startLine": 83,
-      "endLine": 100
+      "summary": "totalIncidences, incidencePairs, incidences_eq axiom",
+      "startLine": 81,
+      "endLine": 97
     },
     {
       "id": "szemeredi-trotter",
       "title": "The Szemerédi-Trotter Theorem",
-      "summary": "szTrBound function, szemeredi_trotter axiom, optimality",
-      "startLine": 102,
-      "endLine": 119
+      "summary": "szTrBound function, szemeredi_trotter axiom, optimality axiom",
+      "startLine": 99,
+      "endLine": 117
     },
     {
       "id": "k-rich-bound",
       "title": "The k-Rich Lines Bound",
-      "summary": "kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069",
-      "startLine": 121,
-      "endLine": 145
+      "summary": "kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem",
+      "startLine": 119,
+      "endLine": 144
     },
     {
       "id": "proof-strategy",
       "title": "The Proof Strategy",
-      "summary": "dyadicLines decomposition, dyadic_bound, dyadic_szTr theorems",
-      "startLine": 147,
+      "summary": "dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms",
+      "startLine": 146,
       "endLine": 167
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bound Constructions",
-      "summary": "latticePoints, lattice_lower_bound, sah_construction",
+      "summary": "latticePoints, lattice_card, lattice_lower_bound axioms",
       "startLine": 169,
-      "endLine": 191
+      "endLine": 185
     },
     {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "case_k2, case_sqrt_n, large_k_bound theorems",
-      "startLine": 193,
-      "endLine": 214
-    },
-    {
-      "id": "duality",
-      "title": "Connection to Point-Line Duality",
-      "summary": "dual_kRich_bound, duality_preserves_incidences",
-      "startLine": 216,
-      "endLine": 230
-    },
-    {
-      "id": "generalizations",
-      "title": "Generalizations",
-      "summary": "higher_dim_incidences, finite_field_version",
-      "startLine": 232,
-      "endLine": 247
+      "id": "special-duality",
+      "title": "Special Cases and Duality",
+      "summary": "large_k_bound, dual_kRich_bound axioms",
+      "startLine": 187,
+      "endLine": 202
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_1069_summary and erdos_1069_answer",
-      "startLine": 249,
-      "endLine": 265
+      "summary": "erdos_1069_summary theorem",
+      "startLine": 204,
+      "endLine": 229
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1069 was solved by the Szemerédi-Trotter theorem (1983). The number of k-rich lines through n points is O(n²/k³) when k ≤ √n. The bound is nearly tight: lattice point constructions give Ω(√n) many √n-rich lines, and Sah improved this lower bound constant.",
+    "summary": "Erdős Problem #1069 was solved by the Szemerédi-Trotter theorem (1983). The number of k-rich lines through n points is O(n²/k³) when k ≤ √n. The bound is nearly tight: lattice point constructions give Ω(√n) many √n-rich lines.",
     "implications": "The Szemerédi-Trotter theorem is fundamental to incidence geometry and has numerous applications in sum-product theory, the Erdős distinct distances problem, and computational geometry algorithms for line arrangement problems.",
     "openQuestions": [
       "What is the optimal constant in the k-rich lines bound?",
