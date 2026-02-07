@@ -35,7 +35,7 @@ open scoped Topology
 
 namespace Erdos33
 
-/-! ## Additive Complements of Squares -/
+/- ## Additive Complements of Squares -/
 
 /-- A set A ⊆ ℕ is an additive complement of the squares if every natural
     number can be written as n² + a for some a ∈ A and n ≥ 0.
@@ -53,7 +53,7 @@ noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
 noncomputable def normalizedDensity (A : Set ℕ) (N : ℕ) : ℝ :=
   (countingFunction A N : ℝ) / Real.sqrt N
 
-/-! ## Existence Results -/
+/- ## Existence Results -/
 
 /-- The set of squares {0, 1, 4, 9, 16, ...} -/
 def squares : Set ℕ := { n | ∃ m : ℕ, n = m^2 }
@@ -68,7 +68,7 @@ axiom erdos_existence_result :
     ∃ c : ℝ, c > 1 ∧
     limsup (fun N => normalizedDensity A N) atTop = c
 
-/-! ## Lower Bounds on liminf -/
+/- ## Lower Bounds on liminf -/
 
 /-- **Moser (1965)**: For any additive complement of squares A,
     liminf |A ∩ {1,...,N}| / √N > 1.06.
@@ -92,7 +92,7 @@ axiom cilleruelo_habsieger_lower_bound (A : Set ℕ)
 /-- The lower bound 4/π is approximately 1.273. -/
 axiom four_over_pi_approx : (4 / π : ℝ) > 1.27
 
-/-! ## Upper Bounds on limsup -/
+/- ## Upper Bounds on limsup -/
 
 /-- The golden ratio φ = (1 + √5) / 2 -/
 noncomputable def goldenRatio : ℝ := (1 + Real.sqrt 5) / 2
@@ -121,7 +121,7 @@ axiom vanDoorn_upper_bound :
 /-- 2φ^(5/2) ≈ 6.66 -/
 axiom vanDoorn_constant_approx : vanDoornConstant < 7
 
-/-! ## The Main Open Questions -/
+/- ## The Main Open Questions -/
 
 /-- **Open Question 1**: What is the exact minimum value of the limsup?
 
@@ -155,7 +155,7 @@ theorem liminf_gt_one_from_bounds (A : Set ℕ)
   have hπ : (4 / π : ℝ) > 1 := four_over_pi_gt_one
   linarith
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: PARTIALLY SOLVED**
 
