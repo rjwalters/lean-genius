@@ -42,7 +42,7 @@ open Finset BigOperators
 
 namespace Erdos861
 
-/-!
+/-
 ## Part I: Sidon Set Definitions
 -/
 
@@ -68,7 +68,7 @@ The equivalence of Sidon definitions.
 -/
 axiom sidon_equiv (S : Finset ℕ) : IsSidon S ↔ IsSidon' S
 
-/-!
+/-
 ## Part II: The Functions f(N) and A(N)
 -/
 
@@ -88,7 +88,7 @@ noncomputable def countSidonSets (N : ℕ) : ℕ :=
   (Finset.filter (fun S => IsSidon S)
     (Finset.powerset (Finset.range (N + 1)))).card
 
-/-!
+/-
 ## Part III: Known Asymptotic for f(N)
 -/
 
@@ -111,7 +111,7 @@ def SidonSizeConjecture : Prop :=
     ∃ C : ℝ, ∀ N : ℕ, N > 0 →
       |(maxSidonSize N : ℝ) - Real.sqrt N| ≤ C * (N : ℝ) ^ ε
 
-/-!
+/-
 ## Part IV: Cameron-Erdős Question 1
 -/
 
@@ -132,7 +132,7 @@ This follows from the lower bound A(N) ≥ 2^{1.16·f(N)}.
 -/
 axiom cameron_erdos_q1_true : CameronErdosQuestion1
 
-/-!
+/-
 ## Part V: Cameron-Erdős Question 2
 -/
 
@@ -154,7 +154,7 @@ not as simply as 2^{(1+o(1))f(N)}.
 -/
 axiom cameron_erdos_q2_false : ¬ CameronErdosQuestion2
 
-/-!
+/-
 ## Part VI: Current Best Bounds
 -/
 
@@ -194,7 +194,7 @@ theorem current_bounds :
   · exact h₁ N (le_of_max_le_left hN)
   · exact h₂ N (le_of_max_le_right hN)
 
-/-!
+/-
 ## Part VII: Basic Properties
 -/
 
@@ -222,22 +222,9 @@ axiom extend_sidon (S : Finset ℕ) (n : ℕ) :
     (∀ a : ℕ, a ∈ S → ∀ c d : ℕ, c ∈ S → d ∈ S → c ≤ d → n + a ≠ c + d) →
     IsSidon (insert n S)
 
-/-!
+/-
 ## Part VIII: Summary
 -/
-
-/--
-**Erdős Problem #861: SOLVED**
-
-QUESTION 1: A(N)/2^{f(N)} → ∞?
-ANSWER: YES (proved via lower bound 2^{1.16·f(N)})
-
-QUESTION 2: A(N) = 2^{(1+o(1))f(N)}?
-ANSWER: NO (bounds show exponent is strictly between 1.16 and 6.442)
-
-Current state: Best bounds are 2^{1.16·f(N)} ≤ A(N) ≤ 2^{6.442·f(N)}.
--/
-theorem erdos_861 : True := trivial
 
 /--
 **Summary of results:**
@@ -257,9 +244,7 @@ Determining the exact constant remains open.
 theorem bounds_gap :
     ∃ c_lower c_upper : ℝ,
       c_lower = 1.16 ∧ c_upper = 6.442 ∧
-      c_lower < c_upper ∧
-      -- The true exponent is somewhere in between
-      True := by
+      c_lower < c_upper := by
   use 1.16, 6.442
   norm_num
 
