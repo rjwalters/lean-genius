@@ -7,7 +7,7 @@
     "author": "Erdős (1963), Erdős-Spencer (1971)",
     "sourceUrl": "https://erdosproblems.com/1028",
     "date": "1971",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1028Problem.lean",
     "tags": [
       "combinatorics",
@@ -16,15 +16,15 @@
       "signed-graphs",
       "probabilistic-method"
     ],
-    "badge": "pending",
-    "sorries": 11,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 1028,
     "erdosUrl": "https://erdosproblems.com/1028",
     "erdosProblemStatus": "solved",
     "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "**Discrepancy Theory**\n\nThis problem asks about the unavoidable imbalance when assigning ±1 to pairs. No matter how cleverly you choose signs, some subset will have large discrepancy.\n\n**Historical Development**:\n- 1963: Erdős proved n/4 ≤ H(n) ≪ n^(3/2)\n- 1971: Erdős-Spencer closed the gap: H(n) ≫ n^(3/2)\n\n**Interpretation**: f defines a signed complete graph. H(n) measures the minimum possible maximum imbalance over all induced subgraphs.",
+    "historicalContext": "Erdős Problem #1028 concerns the discrepancy of sign functions: given a function f mapping pairs from {1,...,n} to {±1}, the discrepancy of a subset X is |∑_{x≠y∈X} f(x,y)|. The function H(n) is the minimum over all sign functions f of the maximum discrepancy over all subsets X. This measures the unavoidable imbalance in signed complete graphs.\n\nErdős (1963) established the upper bound H(n) = O(n^{3/2}) using the probabilistic method: a random sign function achieves maximum discrepancy O(n^{3/2}) with positive probability. For a subset of size k, the expected discrepancy of a random signing is √(k(k-1)) ≈ k, and optimizing over k ≈ √n gives the n^{3/2} bound. Note: the originally proposed lower bound H(n) ≥ n/4 was found to be incorrect (Aristotle verified a counterexample for n=8).\n\nErdős and Spencer (1971) proved the matching lower bound H(n) = Ω(n^{3/2}) using entropy and counting arguments, establishing H(n) = Θ(n^{3/2}). Their proof showed that any sign function must have some subset with discrepancy at least cn^{3/2}, confirming that random signs are essentially optimal. The formalization includes several theorems proved by Aristotle (Harmonic), including the well-definedness of H(n), symmetric pair sum decomposition, and discrepancy bounds.",
     "problemStatement": "**Problem Statement**\n\nLet H(n) = min_f max_{X ⊆ {1,...,n}} |∑_{x≠y∈X} f(x,y)|, where f ranges over all functions f: X² → {-1, 1}.\n\nEstimate H(n).\n\n**Status**: SOLVED\n\n**Answer**: H(n) = Θ(n^(3/2))",
     "proofStrategy": "**Proof Approach**\n\n1. **Upper Bound (Probabilistic)**: Random sign functions have max discrepancy O(n^(3/2)) with high probability.\n\n2. **Lower Bound (Erdős 1963)**: Linear bound n/4 via simple counting.\n\n3. **Improved Lower Bound (Erdős-Spencer 1971)**: Entropy or counting arguments give n^(3/2).\n\n4. **Key Insight**: The n^(3/2) bound arises from the √(pairs in subset of size k) ≈ k for k ≈ √n.",
     "keyInsights": [
@@ -40,71 +40,71 @@
       "id": "sign-functions",
       "title": "Sign Functions",
       "summary": "SignFunction, isValidSign, validSignFunctions",
-      "startLine": 23,
-      "endLine": 38
+      "startLine": 81,
+      "endLine": 96
     },
     {
       "id": "discrepancy",
       "title": "Discrepancy",
       "summary": "pairSum, discrepancy, maxDiscrepancy",
-      "startLine": 40,
-      "endLine": 56
+      "startLine": 98,
+      "endLine": 114
     },
     {
       "id": "h-function",
       "title": "The Function H(n)",
       "summary": "H definition, H_spec",
-      "startLine": 58,
-      "endLine": 71
+      "startLine": 116,
+      "endLine": 134
     },
     {
-      "id": "erdos-bounds",
-      "title": "Erdős's Bounds (1963)",
-      "summary": "erdos_lower, erdos_upper, erdos_bounds",
-      "startLine": 73,
-      "endLine": 100
+      "id": "erdos-upper",
+      "title": "Erdős's Upper Bound (1963)",
+      "summary": "erdos_upper",
+      "startLine": 136,
+      "endLine": 144
     },
     {
       "id": "erdos-spencer",
       "title": "Erdős-Spencer (1971)",
       "summary": "erdos_spencer_lower, erdos_spencer_improves",
-      "startLine": 102,
-      "endLine": 115
+      "startLine": 145,
+      "endLine": 157
     },
     {
       "id": "main-result",
       "title": "The Main Result",
       "summary": "H_asymptotic, erdos_1028_question, erdos_1028_solved",
-      "startLine": 117,
-      "endLine": 149
+      "startLine": 158,
+      "endLine": 190
     },
     {
       "id": "symmetric",
       "title": "Symmetric Functions",
       "summary": "isSymmetric, symmetric_pairSum",
-      "startLine": 151,
-      "endLine": 164
+      "startLine": 192,
+      "endLine": 214
     },
     {
       "id": "graph",
       "title": "Graph Interpretation",
       "summary": "asSignedGraph, discrepancy_as_imbalance",
-      "startLine": 166,
-      "endLine": 179
+      "startLine": 216,
+      "endLine": 229
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Intuition",
       "summary": "expectedDiscrepancy, expected_discrepancy_bound, random_upper",
-      "startLine": 181,
-      "endLine": 205
+      "startLine": 231,
+      "endLine": 255
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound and Special Cases",
       "summary": "large_discrepancy_exists, H_two, H_three, homogeneous_small_discrepancy",
-      "startLine": 207,
-      "endLine": 242
+      "startLine": 257,
+      "endLine": 294
     }
   ],
   "conclusion": {
