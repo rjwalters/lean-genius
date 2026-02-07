@@ -48,8 +48,7 @@ open Nat Real SimpleGraph
 
 namespace Erdos565
 
-/-!
-## Part I: Graph Basics
+/- ## Part I: Graph Basics
 -/
 
 /--
@@ -64,8 +63,7 @@ abbrev Graph (V : Type*) [Fintype V] [DecidableEq V] := SimpleGraph V
 def numVertices {V : Type*} [Fintype V] [DecidableEq V] (_ : Graph V) : ℕ :=
   Fintype.card V
 
-/-!
-## Part II: Induced Subgraphs
+/- ## Part II: Induced Subgraphs
 -/
 
 /--
@@ -88,8 +86,7 @@ def ContainsInducedCopy {V W : Type*} [Fintype V] [Fintype W]
     (H : Graph W) (G : Graph V) : Prop :=
   ∃ f : V ↪ W, ∀ u v : V, G.Adj u v ↔ H.Adj (f u) (f v)
 
-/-!
-## Part III: Edge Colorings
+/- ## Part III: Edge Colorings
 -/
 
 /--
@@ -120,8 +117,7 @@ def HasMonochromaticInducedCopy {V W : Type*} [Fintype V] [Fintype W]
       (∀ u v : V, G.Adj u v → ∃ he : H.Adj (f u) (f v),
         c ⟨⟦(f u, f v)⟧, he⟩ = color)
 
-/-!
-## Part IV: Induced Ramsey Numbers
+/- ## Part IV: Induced Ramsey Numbers
 -/
 
 /--
@@ -142,8 +138,7 @@ vertices with the induced Ramsey property for G.
 noncomputable def inducedRamseyNumber (n : ℕ) (G : Graph (Fin n)) : ℕ :=
   sInf { m : ℕ | ∃ (H : Graph (Fin m)), HasInducedRamseyProperty H G }
 
-/-!
-## Part V: Existence of R*(G)
+/- ## Part V: Existence of R*(G)
 -/
 
 /--
@@ -163,8 +158,7 @@ theorem induced_ramsey_number_finite (n : ℕ) (G : Graph (Fin n)) :
   obtain ⟨m, H, hH⟩ := induced_ramsey_exists n G
   exact ⟨m, H, hH⟩
 
-/-!
-## Part VI: Historical Bounds
+/- ## Part VI: Historical Bounds
 -/
 
 /--
@@ -196,8 +190,7 @@ axiom cfs_bound :
     ∀ G : Graph (Fin n),
       (inducedRamseyNumber n G : ℝ) ≤ 2^(C * n * log n)
 
-/-!
-## Part VII: The Solution - Aragão et al. (2025)
+/- ## Part VII: The Solution - Aragão et al. (2025)
 -/
 
 /--
@@ -223,8 +216,7 @@ theorem erdos_565_solution :
           (inducedRamseyNumber n G : ℝ) ≤ 2^(C * n) :=
   aragao_et_al_theorem
 
-/-!
-## Part VIII: Comparison with Ordinary Ramsey Numbers
+/- ## Part VIII: Comparison with Ordinary Ramsey Numbers
 -/
 
 /--
@@ -251,11 +243,13 @@ theorem induced_ramsey_ge_ordinary (n : ℕ) (G : Graph (Fin n)) :
 /--
 **Gap can be large:**
 There exist graphs where R*(G) is much larger than R(G).
+For example, complete bipartite graphs can exhibit superpolynomial gaps.
 -/
-theorem gap_can_be_large : True := trivial
+axiom gap_can_be_large :
+    ∀ k : ℕ, ∃ n : ℕ, ∃ G : Graph (Fin n),
+      (inducedRamseyNumber n G : ℝ) ≥ k * (ordinaryRamseyNumber n G : ℝ)
 
-/-!
-## Part IX: Lower Bounds
+/- ## Part IX: Lower Bounds
 -/
 
 /--
@@ -278,8 +272,7 @@ theorem bound_essentially_tight :
       (inducedRamseyNumber n G : ℝ) ≥ 2^(c * n)) := by
   exact ⟨aragao_et_al_theorem, exponential_lower_bound⟩
 
-/-!
-## Part X: Summary
+/- ## Part X: Summary
 -/
 
 /--
@@ -303,16 +296,12 @@ YES! Proved by Aragão, Campos, Dahia, Filipe, and Marciano (2025).
 - Exponential bound is tight (matching lower bounds exist)
 -/
 theorem erdos_565_summary :
-    -- Problem is SOLVED
-    True ∧
-    -- By Aragão et al. (2025)
-    True ∧
-    -- Upper bound: 2^{O(n)}
-    True ∧
+    -- Upper bound: 2^{O(n)} (Aragão et al. 2025)
+    (∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → ∀ G : Graph (Fin n),
+      (inducedRamseyNumber n G : ℝ) ≤ 2^(C * n)) ∧
     -- Lower bound exists: 2^{Ω(n)}
-    True ∧
-    -- Bound is tight
-    True := by
-  exact ⟨trivial, trivial, trivial, trivial, trivial⟩
+    (∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → ∃ G : Graph (Fin n),
+      (inducedRamseyNumber n G : ℝ) ≥ 2^(c * n)) :=
+  ⟨aragao_et_al_theorem, exponential_lower_bound⟩
 
 end Erdos565
