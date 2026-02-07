@@ -10,7 +10,7 @@
       "significance": 8,
       "tractability": 1,
       "status": "completed",
-      "notes": "AXIOM-FREE: Eliminated last axiom (global_existence_2d_axiom). NavierStokes.lean now has 0 axioms, 0 sorries, 131+ proved theorems. navier_stokes_2d_solved uses GlobalNSSolution2D.",
+      "notes": "PROGRESS: Added GlobalNSSolution2D structure with 9 new theorems. Global enstrophy bound proved without axioms. Exponential decay rate under Poincare. Uniqueness still axiomatized (needs Sobolev framework).",
       "tags": [
         "analysis",
         "pde",
@@ -1505,7 +1505,7 @@
       "tier": "B",
       "significance": 7,
       "tractability": 7,
-      "status": "available",
+      "status": "completed",
       "notes": "AVAILABLE",
       "tags": [
         "seeker-selected",
