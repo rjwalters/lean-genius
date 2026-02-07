@@ -33,7 +33,7 @@ namespace Erdos922
 
 open SimpleGraph
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 We work with finite simple graphs. Key concepts are independent sets
@@ -67,7 +67,7 @@ noncomputable def chromaticNumber' : ℕ :=
 -- Use Mathlib's chromatic number when available
 notation "χ(" G ")" => chromaticNumber' G
 
-/-!
+/-
 ## Part 2: The Folkman Property
 
 A graph G has the Folkman property with parameter k if every subgraph H
@@ -86,7 +86,7 @@ def hasFolkmanPropertyInduced (k : ℕ) : Prop :=
     (∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬G.Adj u v) ∧
     2 * S.card ≥ W.card - k
 
-/-!
+/-
 ## Part 3: Special Cases
 
 The case k = 0 is trivial and illustrates the key idea.
@@ -107,7 +107,7 @@ theorem bipartite_chromatic_le_two (hbip : G.IsBipartite) :
     χ(G) ≤ 2 := by
   sorry
 
-/-!
+/-
 ## Part 4: Folkman's Theorem
 
 The main result: if G has the Folkman property with parameter k,
@@ -123,7 +123,7 @@ theorem erdos_922 :
     ∀ (k : ℕ), hasFolkmanPropertyInduced G k → χ(G) ≤ k + 2 :=
   folkman_theorem G
 
-/-!
+/-
 ## Part 5: Understanding the Bound
 
 The bound k + 2 is tight: there exist graphs achieving equality.
@@ -143,7 +143,7 @@ theorem folkman_k1 : hasFolkmanPropertyInduced G 1 → χ(G) ≤ 3 := by
   intro h
   exact folkman_theorem G 1 h
 
-/-!
+/-
 ## Part 6: Connection to Independence Ratio
 
 The Folkman property can be restated in terms of independence ratio.
@@ -164,7 +164,7 @@ theorem folkman_implies_ratio_bound (k : ℕ) (hk : hasFolkmanPropertyInduced G 
     have h1 : (S.card : ℚ) / (W.card : ℚ) ≥ 0 := by positivity
     sorry⟩
 
-/-!
+/-
 ## Part 7: Greedy Coloring Connection
 
 The proof uses ideas related to greedy coloring.
@@ -180,7 +180,7 @@ axiom folkman_degree_control (k : ℕ) :
     ∃ (bound : ℕ), bound ≤ k + 1 ∧
       (∀ v : V, G.degree v ≤ bound ∨ α(G) > Fintype.card V / 2 - k / 2)
 
-/-!
+/-
 ## Part 8: The Original Erdős-Hajnal Formulation
 
 Erdős and Hajnal posed this in 1967 and couldn't prove even k = 1.
@@ -198,7 +198,7 @@ def erdosHajnalQuestion (k : ℕ) : Prop :=
 axiom folkman_answers_erdos_hajnal :
   ∀ (k : ℕ), erdosHajnalQuestion k
 
-/-!
+/-
 ## Part 9: Related Results
 
 Connections to other graph coloring results.
@@ -215,7 +215,7 @@ axiom brooks_theorem :
   (¬G.IsComplete ∧ ¬(∃ n, n ≥ 3 ∧ Odd n ∧ G.IsCycle n)) →
     χ(G) ≤ G.maxDegree
 
-/-!
+/-
 ## Part 10: Summary
 
 Folkman's theorem provides a beautiful connection between local structure
@@ -233,8 +233,5 @@ theorem erdos_922_summary :
     -- k = 0 case gives bipartiteness
     (hasFolkmanPropertyZero G → χ(G) ≤ 2) := by
   exact ⟨folkman_theorem G, folkman_bound_tight, folkman_zero_implies_bipartite G⟩
-
-/-- The answer to Erdős Problem #922 is YES -/
-theorem erdos_922_answer : True := trivial
 
 end Erdos922
