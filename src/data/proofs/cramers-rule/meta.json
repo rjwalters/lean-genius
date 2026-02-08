@@ -13,18 +13,92 @@
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Matrix.mulVec_cramer", "description": "A * cramer(A,b) = det(A) • b", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"}
+      {"theorem": "Matrix.mulVec_cramer", "description": "A * cramer(A,b) = det(A) • b", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"},
+      {"theorem": "Matrix.cramer_apply", "description": "cramer(A,b)_i = det(A.updateColumn i b)", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"},
+      {"theorem": "Matrix.cramer_eq_adjugate_mulVec", "description": "cramer(A,b) = adj(A) · b", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"},
+      {"theorem": "Matrix.mul_adjugate", "description": "A * adj(A) = det(A) • I", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"}
     ],
-    "originalContributions": ["General form without invertibility", "Examples for 2x2 and 3x3"],
+    "originalContributions": ["General form without invertibility", "Examples for 2x2 and 3x3", "Linearity properties of the Cramer map", "Transpose formulation"],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 97
   },
   "overview": {
-    "historicalContext": "Published by Gabriel Cramer in 1750, known earlier to Maclaurin (1729) and Chinese mathematicians.",
-    "problemStatement": "**Cramer's Rule**:\n\n$$x_i = \\frac{\\det(A_i)}{\\det(A)}$$\n\nwhere Aᵢ is A with column i replaced by b.",
-    "proofStrategy": "Use the adjugate matrix: A·adj(A) = det(A)·I, then multiply both sides by b.",
-    "keyInsights": ["Elegant but O(n!·n) complexity", "Practical only for small systems", "Uses adjugate matrix"]
+    "historicalContext": "Cramer's Rule is named after Gabriel Cramer (1704-1752), who published it in his 1750 treatise 'Introduction à l'Analyse des Lignes Courbes Algébriques'. However, Colin Maclaurin had independently discovered the rule for 2×2 and 3×3 systems in his 1729 work, published posthumously in 1748. Even earlier, the method appears in Chinese mathematics: Seki Takakazu in Japan (1683) and in the Chinese text 'Jade Mirror of the Four Unknowns' by Zhu Shijie (1303) used equivalent techniques. The rule became a cornerstone of classical linear algebra, though modern computation prefers Gaussian elimination ($O(n^3)$) over Cramer's $O(n! \\cdot n)$ approach. The Mathlib formalization elegantly captures the ring-theoretic generalization: $A \\cdot \\text{cramer}(A, b) = \\det(A) \\cdot b$ works over any commutative ring, not just fields, eliminating the need for invertibility assumptions.",
+    "problemStatement": "**Cramer's Rule (Wiedijk #97)**:\n\n$$x_i = \\frac{\\det(A_i)}{\\det(A)}$$\n\nwhere $A_i$ is $A$ with column $i$ replaced by $b$. More generally, $A \\cdot \\text{cramer}(A, b) = \\det(A) \\cdot b$.",
+    "proofStrategy": "The proof leverages Mathlib's `Matrix.mulVec_cramer` as the core identity. The Cramer map is defined via the adjugate matrix: $\\text{cramer}(A, b) = \\text{adj}(A) \\cdot b$, and the adjugate satisfies $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$. For the invertible case, we multiply both sides by $\\det(A)^{-1}$ using the `Invertible` typeclass. Extensions include the transpose form, linearity properties, and concrete 2×2 examples.",
+    "keyInsights": [
+      "The ring-theoretic form $A \\cdot \\text{cramer}(A, b) = \\det(A) \\cdot b$ works over any commutative ring, not just fields — no invertibility needed",
+      "The Cramer map factors through the adjugate: $\\text{cramer}(A, b) = \\text{adj}(A) \\cdot b$, connecting to the classical adjoint matrix",
+      "The Cramer map $b \\mapsto \\text{cramer}(A, b)$ is $R$-linear, since the determinant is multilinear and only one column varies",
+      "The transpose form replaces rows instead of columns, giving a dual version for row-oriented systems",
+      "Despite its theoretical elegance, Cramer's rule is $O(n! \\cdot n)$ — exponentially worse than Gaussian elimination's $O(n^3)$"
+    ]
   },
-  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 50, "summary": "Overview."}],
-  "conclusion": {"summary": "Cramer's rule is verified using the adjugate matrix formulation."}
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports, module docstring explaining Cramer's Rule, approach, status, Mathlib dependencies, and historical note."
+    },
+    {
+      "id": "cramer-map",
+      "title": "The Cramer Map",
+      "startLine": 52,
+      "endLine": 72,
+      "summary": "Namespace, type variables, and the component formula: cramer(A,b)_i = det(A.updateColumn i b)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Cramer's Rule",
+      "startLine": 74,
+      "endLine": 96,
+      "summary": "Core identity A · cramer(A,b) = det(A) · b and the invertible solution formula."
+    },
+    {
+      "id": "adjugate",
+      "title": "Adjugate Connection",
+      "startLine": 98,
+      "endLine": 111,
+      "summary": "cramer(A,b) = adj(A) · b and the adjugate identity A · adj(A) = det(A) · I."
+    },
+    {
+      "id": "transpose",
+      "title": "Transpose Form",
+      "startLine": 113,
+      "endLine": 120,
+      "summary": "Cramer's rule for Aᵀ: replaces rows instead of columns."
+    },
+    {
+      "id": "linearity",
+      "title": "Linearity Properties",
+      "startLine": 122,
+      "endLine": 139,
+      "summary": "Cramer is R-linear in b: additive, respects scalar multiplication, maps zero to zero."
+    },
+    {
+      "id": "examples",
+      "title": "2×2 System Example",
+      "startLine": 141,
+      "endLine": 152,
+      "summary": "Specialization to 2×2 matrices over a field with det(A) ≠ 0."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 154,
+      "endLine": 161,
+      "summary": "#check statements verifying the Mathlib API surface used in the proof."
+    }
+  ],
+  "conclusion": {
+    "summary": "Cramer's Rule is verified using Mathlib's adjugate matrix formulation. The proof establishes both the general ring-theoretic identity $A \\cdot \\text{cramer}(A, b) = \\det(A) \\cdot b$ (valid over any commutative ring) and the classical solution formula when $\\det(A)$ is invertible. Extensions include the adjugate connection, transpose form, linearity properties, and a concrete 2×2 example.",
+    "implications": "The formalization demonstrates that Cramer's rule is fundamentally a statement about commutative rings, not just fields. The adjugate-based proof shows the deep connection between matrix inversion, cofactor expansion, and determinantal identities. The ring-theoretic perspective has applications in algebraic geometry (working over polynomial rings) and number theory (working over $\\mathbb{Z}$).",
+    "openQuestions": [
+      "Can the formalization be extended to prove computational complexity bounds ($O(n! \\cdot n)$ vs $O(n^3)$ for LU decomposition)?",
+      "Can Cramer's rule be formalized for systems over non-commutative rings using Dieudonné determinants?",
+      "Is there a formalization of the numerical stability analysis comparing Cramer's rule with Gaussian elimination?"
+    ]
+  }
 }
