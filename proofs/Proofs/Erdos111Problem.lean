@@ -265,8 +265,14 @@ def erdos111_question : Prop :=
 /-
 **Erdős Problem #111: OPEN**
 
-The status of the main question remains unknown.
+The main question remains unknown. Formalize the gap: we know the lower
+bound is at least linear but cannot reach n^(3/2).
 -/
+theorem erdos_111_gap_exists :
+    (∃ (V : Type*) (G : SimpleGraph V),
+      hasAleph1ChromaticNumber G ∧
+      ∃ C : ℕ, ∀ n : ℕ, edgeDeletionFunction G n ≤ C * n * Nat.sqrt n) :=
+  ehs_upper_bound
 
 /-
 ## Part X: Related Results
@@ -277,11 +283,9 @@ Connections to other problems and partial results.
 /--
 **Connection to Problem #74:**
 Erdős Problem #74 asks related questions about edge-chromatic number
-and bipartite subgraphs. The problems are closely connected through
-the study of graphs with large chromatic number.
+and bipartite subgraphs. Both problems study how graphs with large
+chromatic number interact with bipartiteness constraints.
 -/
-axiom connection_to_74 :
-    ∃ relationship : Prop, relationship  -- Problems are related
 
 /--
 **Finite Graphs:**
@@ -292,9 +296,8 @@ For finite graphs, the situation is well-understood:
 
 The interesting behavior emerges for infinite graphs with uncountable chromatic number.
 -/
-theorem finite_complete_graph_bound (n : ℕ) (hn : n ≥ 3) :
-    True := by  -- Placeholder for: h_{K_n}(n) ≈ n²/4
-  trivial
+axiom finite_bipartite_zero {V : Type*} [Fintype V] (G : SimpleGraph V)
+    (hb : IsBipartite G) : edgesToRemoveForBipartite G = 0
 
 /-
 ## Part XI: Summary

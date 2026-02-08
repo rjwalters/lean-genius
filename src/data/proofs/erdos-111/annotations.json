@@ -121,40 +121,33 @@
   {
     "id": "ann-e111-main-question",
     "proofId": "erdos-111",
-    "range": { "startLine": 253, "endLine": 271 },
+    "range": { "startLine": 253, "endLine": 275 },
     "type": "concept",
     "title": "The Main Open Question",
-    "content": "**erdos111_question:**\n\nThe central question of Erdős Problem #111:\n\n**Does h_G(n)/n → ∞ for every graph G with chromatic number ℵ₁?**\n\n**Definition:**\n```lean\ndef erdos111_question : Prop :=\n  ∀ (V : Type*) (G : SimpleGraph V),\n    hasAleph1ChromaticNumber G →\n    ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n > M * n\n```\n\n**Known:** h_G(n) ≫ n (at least some positive constant)\n**Unknown:** Does the ratio grow without bound?\n\nThe problem cannot be resolved by finite computation.",
+    "content": "**erdos111_question and erdos_111_gap_exists:**\n\nThe central question of Erdős Problem #111: does $h_G(n)/n \\to \\infty$ for every graph $G$ with chromatic number $\\aleph_1$?\n\nWe know $h_G(n) \\gg n$ (at least some positive constant ratio), but whether the ratio grows without bound is unknown. The theorem `erdos_111_gap_exists` directly derives the existence of subquadratic graphs from the EHS upper bound axiom.",
+    "mathContext": "The problem cannot be resolved by finite computation since it involves graphs with uncountable chromatic number.",
     "significance": "critical",
     "relatedConcepts": ["Limit behavior", "Growth rates", "Open problems"]
   },
   {
-    "id": "ann-e111-connection-74",
+    "id": "ann-e111-related",
     "proofId": "erdos-111",
-    "range": { "startLine": 278, "endLine": 286 },
-    "type": "axiom",
-    "title": "Connection to Problem #74",
-    "content": "**connection_to_74:**\n\nErdős Problem #74 asks related questions about edge-chromatic number and bipartite subgraphs.\n\nThe problems are closely connected through the study of graphs with large chromatic number.\n\n**Axiom:**\n```lean\naxiom connection_to_74 :\n    ∃ relationship : Prop, relationship\n```\n\nBoth problems explore how chromatic properties interact with graph structure.",
+    "range": { "startLine": 277, "endLine": 300 },
+    "type": "concept",
+    "title": "Related Results and Finite Cases",
+    "content": "**Connection to Problem #74 and finite_bipartite_zero:**\n\nErdős Problem #74 asks related questions about edge-chromatic number and bipartite subgraphs. For finite graphs, the situation is well-understood: bipartite graphs need 0 edge deletions (`finite_bipartite_zero`), odd cycles need $O(n)$, and complete graphs need $\\Theta(n^2)$. The interesting behavior emerges for infinite graphs with uncountable chromatic number.",
+    "mathContext": "The axiom `finite_bipartite_zero` formalizes that bipartite graphs require no edge deletions — they are already bipartite. This is the trivial case that contrasts with the deep open question for $\\chi = \\aleph_1$ graphs.",
     "significance": "supporting",
-    "relatedConcepts": ["Problem #74", "Edge-chromatic number", "Related problems"]
-  },
-  {
-    "id": "ann-e111-finite-graphs",
-    "proofId": "erdos-111",
-    "range": { "startLine": 288, "endLine": 299 },
-    "type": "theorem",
-    "title": "Finite Graph Behavior",
-    "content": "**finite_complete_graph_bound:**\n\nFor finite graphs, h_G is well-understood:\n- Bipartite graphs: h_G(n) = 0\n- Odd cycles C_{2k+1}: h_G(n) = O(n)\n- Complete graphs K_n: h_G(n) = Θ(n²)\n\nThe interesting behavior emerges for infinite graphs with uncountable chromatic number.\n\n**Theorem:**\n```lean\ntheorem finite_complete_graph_bound (n : ℕ) (hn : n ≥ 3) :\n    True := by trivial  -- Placeholder\n```",
-    "significance": "supporting",
-    "relatedConcepts": ["Complete graphs", "Max-cut", "Finite combinatorics"]
+    "relatedConcepts": ["Problem #74", "Finite combinatorics", "Bipartite graphs"]
   },
   {
     "id": "ann-e111-summary",
     "proofId": "erdos-111",
-    "range": { "startLine": 313, "endLine": 335 },
+    "range": { "startLine": 315, "endLine": 337 },
     "type": "theorem",
     "title": "Summary Theorem",
-    "content": "**erdos_111_summary:**\n\nCombines all known results about Erdős Problem #111:\n\n1. **Lower bound:** For all χ = ℵ₁ graphs, h_G(n) ≥ cn for some c > 0\n2. **Upper bound:** There exists a χ = ℵ₁ graph with h_G(n) ≤ Cn^(3/2)\n\n**Theorem:**\n```lean\ntheorem erdos_111_summary :\n    (∀ (V : Type*) (G : SimpleGraph V), hasAleph1ChromaticNumber G →\n      ∃ c : ℕ, c > 0 ∧ ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n ≥ c * n) ∧\n    (∃ (V : Type*) (G : SimpleGraph V), hasAleph1ChromaticNumber G ∧\n      ∃ C : ℕ, ∀ n : ℕ, edgeDeletionFunction G n ≤ C * n * Nat.sqrt n)\n```\n\nThe gap between linear and n^(3/2) remains to be closed.",
+    "content": "**erdos_111_summary:**\n\nCombines all known results about Erdős Problem #111 into a single theorem:\n\n1. **Lower bound:** For all $\\chi = \\aleph_1$ graphs, $h_G(n) \\geq cn$ for some $c > 0$\n2. **Upper bound:** There exists a $\\chi = \\aleph_1$ graph with $h_G(n) \\leq Cn^{3/2}$\n\nThe proof derives the lower bound from `h_at_least_linear` and the upper bound from `ehs_upper_bound`. The gap between linear and $n^{3/2}$ remains to be closed.",
+    "mathContext": "This is one of the few theorems in the file with a complete proof — it follows directly from combining the two main axioms.",
     "significance": "key"
   }
 ]
