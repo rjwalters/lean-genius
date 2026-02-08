@@ -247,8 +247,10 @@ axiom tuza_for_k4_free (G : SimpleGraph V) (hK4 : ¬∃ a b c d : V,
     IsTriangle G a b c ∧ IsTriangle G a b d ∧ IsTriangle G a c d ∧ IsTriangle G b c d) :
   triangleCoverNumber G ≤ 2 * maxEdgeDisjointTriangles G
 
-/-- Tuza's conjecture holds for planar graphs. -/
-axiom tuza_for_planar (G : SimpleGraph V) (hPlanar : True) :  -- Planarity predicate omitted
+/-- Tuza's conjecture holds for planar graphs.
+    Planarity is an abstract predicate (Mathlib does not have a general definition). -/
+axiom IsPlanar : SimpleGraph V → Prop
+axiom tuza_for_planar (G : SimpleGraph V) (hPlanar : IsPlanar G) :
   triangleCoverNumber G ≤ 2 * maxEdgeDisjointTriangles G
 
 /- ## Fractional Version -/
