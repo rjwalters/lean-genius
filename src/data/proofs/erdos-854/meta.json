@@ -22,53 +22,63 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem about the gap structure of coprime residues modulo primorials. He initially conjectured that all even integers up to the maximal gap would appear as consecutive differences, but computations by Lacampagne and Selfridge for the primorial 30030 cast doubt on this conjecture.",
+    "historicalContext": "Erdős Problem #854 concerns the combinatorial structure of gaps between integers coprime to primorials $n_k = p_1 p_2 \\cdots p_k$. The coprime residues modulo $n_k$ are precisely the integers that survive the sieve of Eratosthenes with sieving primes $p_1, \\ldots, p_k$ — they form the 'wheel' pattern that repeats modulo $n_k$.\n\nThe Jacobsthal function $g(n)$ measures the maximal gap between consecutive integers coprime to $n$. For primorials, the bound $g(n_k) \\le 2p_k$ follows from a greedy/CRT argument: among any $2p_k$ consecutive integers, at least one must avoid all prime factors $p_1, \\ldots, p_k$. The Jacobsthal function has been extensively studied; Iwaniec (1978) proved $g(n_k) \\ll p_k^2 / \\log p_k$ is achievable for certain $n$, but the primorial case has special structure.\n\nErdős originally conjectured that every even integer from 2 to $g(n_k)$ appears as a gap between consecutive coprime residues of $n_k$ — a completeness conjecture for the gap spectrum. However, Lacampagne and Selfridge computationally verified that this fails for $n_6 = 30030 = 2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 13$: some even values below $g(30030)$ do not appear as gaps. This led to two revised questions: (1) the growth rate of the first missing even gap as $k \\to \\infty$, and (2) whether the number of distinct gap values is proportional to the maximal gap.\n\nThe problem connects to the distribution of primes in short intervals, the structure of Eratosthenes sieves, and the theory of admissible tuples (Hardy-Littlewood prime $k$-tuples conjecture). The gap pattern of coprime residues is deterministic (unlike prime gaps), yet exhibits similar statistical behavior.",
     "problemStatement": "Let nₖ be the k-th primorial and 1 = a₁ < a₂ < ⋯ < a_{φ(nₖ)} = nₖ−1 be the coprime residues. Estimate the smallest even integer not of the form aᵢ₊₁ − aᵢ, and determine if the number of distinct gap values is ≫ max(aᵢ₊₁ − aᵢ).",
-    "proofStrategy": "We axiomatize the primorial function, coprime residue sequences, and the gap structure. Known bounds on maximal gaps via the Jacobsthal function are recorded, along with the Lacampagne–Selfridge counterexample to the original strong conjecture.",
+    "proofStrategy": "The formalization axiomatizes `nthPrime` with primality, monotonicity, and base values, then defines `primorial` recursively. Coprime residues are defined via `Finset.filter` with a sorted list axiomatization for gap computation. The gap structure (gap set, maximal gap, distinct gap count) is axiomatized with key properties: evenness for k ≥ 2, Jacobsthal bound g(nₖ) ≤ 2pₖ, and the Lacampagne-Selfridge counterexample. Both open conjectures are stated as axioms.",
     "keyInsights": [
-      "For k ≥ 2, all gaps between coprime residues of the k-th primorial are even (since all coprime residues are odd)",
-      "The maximal gap is bounded by 2pₖ via the Jacobsthal function",
-      "Lacampagne and Selfridge showed not all even integers up to the max gap appear for nₖ = 30030",
-      "The weaker conjecture asks only for proportionally many distinct gaps"
+      "For $k \\ge 2$, all gaps between coprime residues of $n_k$ are even because $2 | n_k$ forces all coprime residues to be odd. This halves the 'parameter space' for gaps: only even values $2, 4, 6, \\ldots$ can appear, so the maximum possible number of distinct gaps is $g(n_k)/2$.",
+      "The Jacobsthal function bound $g(n_k) \\le 2p_k$ comes from the Chinese Remainder Theorem: among $2p_k$ consecutive integers, each residue class modulo $p_i$ (for $i \\le k$) excludes at most one integer from coprimality, and $2p_k > \\sum_{i=1}^k 1 \\cdot (2p_k/p_i)$ is not tight but a simpler argument works via Bertrand's postulate applied to the sieve.",
+      "The Lacampagne-Selfridge counterexample for $n_6 = 30030$ disproved the 'completeness' conjecture (all even values up to $g(n_k)$ appear as gaps). The revised proportionality conjecture $|\\text{gapSet}| \\ge c \\cdot g(n_k)$ is much weaker: it only asks for a constant fraction, not all values.",
+      "The gap pattern of coprime residues modulo $n_k$ is equivalent to the 'wheel' pattern in wheel sieves — a well-studied computational structure. Each primorial wheel has period $n_k$ and density $\\varphi(n_k)/n_k = \\prod_{i=1}^k (1 - 1/p_i)$, which by Mertens' theorem is $\\sim e^{-\\gamma}/\\log p_k$.",
+      "The first missing gap growth conjecture ($\\text{firstMissingGap}(n_k) \\to \\infty$) is intuitively natural: as $k$ grows, the sieve becomes finer and the coprime residues more 'random', so short gaps should all eventually appear. But proving this requires understanding the local distribution of coprime residues, which connects to the Hardy-Littlewood prime $k$-tuples conjecture."
     ]
   },
   "sections": [
     {
-      "id": "primorial-setup",
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Header describing both parts of the problem, the Lacampagne-Selfridge counterexample, and Mathlib imports (Nat.Basic, Nat.Prime.Basic, Finset, Tactic)."
+    },
+    {
+      "id": "primorial",
       "title": "Primorial and Coprime Residues",
-      "startLine": 18,
-      "endLine": 46,
-      "summary": "Defines primorials, coprime residue sets, and their sorted enumeration."
+      "startLine": 23,
+      "endLine": 45,
+      "summary": "Axiomatizes nthPrime (primality, monotonicity, base values). Defines primorial recursively. Defines coprimeResidues via Finset.filter. Axiomatizes sortedCoprimes as sorted list."
     },
     {
       "id": "gap-structure",
       "title": "Gap Structure",
-      "startLine": 48,
-      "endLine": 66,
-      "summary": "Defines the gap set, maximal gap, and count of distinct gap values for coprime residues."
+      "startLine": 46,
+      "endLine": 64,
+      "summary": "Axiomatizes gapSet (consecutive differences), gaps_even (2 | d for k ≥ 2), maxGap (Jacobsthal function), distinctGapCount (|gapSet|)."
     },
     {
       "id": "known-bounds",
-      "title": "Known Bounds",
-      "startLine": 68,
-      "endLine": 86,
-      "summary": "Records the Jacobsthal function bound on maximal gaps and the Lacampagne–Selfridge counterexample."
+      "title": "Known Bounds and Counterexample",
+      "startLine": 65,
+      "endLine": 82,
+      "summary": "Axiomatizes maxGap_bound (g(nₖ) ≤ 2pₖ), firstMissingGap with evenness and non-membership, and lacampagne_selfridge_counterexample for n₆ = 30030."
     },
     {
       "id": "conjectures",
       "title": "The Erdős Conjectures",
-      "startLine": 88,
-      "endLine": 99,
-      "summary": "States the two main open questions: growth of the first missing gap and proportionality of distinct gap counts."
+      "startLine": 83,
+      "endLine": 96,
+      "summary": "States ErdosProblem854_missing_gap_growth (firstMissingGap → ∞) and ErdosProblem854_many_gaps (distinctGapCount ≥ c · maxGap). Both open."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 854 explores the rich combinatorial structure of gaps between coprime residues of primorials. The original strong conjecture was disproved computationally, but the weaker proportionality conjecture remains open.",
-    "implications": "Understanding these gap patterns connects to Jacobsthal's function, sieve methods, and the distribution of primes in short intervals.",
+    "summary": "This formalization captures Erdős Problem #854 with a clean axiomatization of primorials, coprime residues, gap structure, the Jacobsthal function bound, and the Lacampagne-Selfridge counterexample. The two open conjectures — unbounded growth of the first missing gap and proportionality of distinct gap counts — are stated as axioms. The coprime residue definition via `Finset.filter` provides a computable foundation.",
+    "implications": "Resolution of the proportionality conjecture would quantify the richness of gap patterns in wheel sieves, connecting to the distribution of primes in short intervals. The missing gap growth conjecture would confirm that sieving by more primes makes the gap spectrum more complete, with implications for computational sieve algorithms and admissible tuple theory.",
     "openQuestions": [
-      "How fast does the smallest missing gap grow with k?",
-      "Is the number of distinct gap values truly proportional to the maximal gap?",
-      "What is the limiting distribution of gap sizes for large primorials?"
+      "How fast does the first missing gap grow? Is it polynomial in $p_k$ (e.g., $\\text{firstMissingGap}(n_k) \\ge p_k^c$) or merely unbounded? The growth rate measures how quickly the sieve 'fills in' all short gaps.",
+      "Is the proportionality constant $c$ in $|\\text{gapSet}| \\ge c \\cdot g(n_k)$ absolute, or does it depend on $k$? Since gaps are even, $c \\le 1/2$ is the theoretical maximum.",
+      "Can the Lacampagne-Selfridge counterexample be extended: for which $k$ does the completeness conjecture fail? Is there a threshold $k_0$ beyond which it always fails?",
+      "What is the limiting distribution of gap sizes as $k \\to \\infty$? Do the gaps (normalized by $p_k$) converge to a continuous distribution, analogous to the normalized prime gap distribution?",
+      "Does the formalization of `coprimeResidues` via `Finset.filter` enable computational verification of the conjectures for small $k$ via `native_decide` or `decide`?"
     ]
   }
 }

@@ -1,86 +1,62 @@
 [
   {
-    "id": "primorial-def",
+    "id": "ann-e854-header",
     "proofId": "erdos-854",
-    "type": "definition",
-    "title": "Primorial Function",
-    "content": "The k-th primorial is the product of the first k primes: nₖ = p₁ · p₂ · ⋯ · pₖ.",
-    "significance": "critical",
-    "range": {
-      "startLine": 33,
-      "endLine": 36
-    }
-  },
-  {
-    "id": "coprime-residues",
-    "proofId": "erdos-854",
-    "type": "definition",
-    "title": "Coprime Residues",
-    "content": "The coprime residues of n are the positive integers less than n that share no common factor with n.",
-    "significance": "critical",
-    "range": {
-      "startLine": 38,
-      "endLine": 39
-    }
-  },
-  {
-    "id": "gaps-even",
-    "proofId": "erdos-854",
-    "type": "theorem",
-    "title": "Gaps Are Even",
-    "content": "For k ≥ 2, every gap between consecutive coprime residues of the k-th primorial is even, since all coprime residues are odd.",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Problem Statement and Imports",
+    "content": "Erdős Problem #854 studies the gap structure of integers coprime to primorials $n_k = p_1 \\cdots p_k$. The coprime residues $1 = a_1 < a_2 < \\cdots < a_{\\varphi(n_k)} = n_k - 1$ form a sequence whose consecutive differences $d_i = a_{i+1} - a_i$ encode fundamental information about prime distribution. Erdős originally conjectured that all even integers up to the maximal gap appear as consecutive differences, but computations by Lacampagne and Selfridge for $n_6 = 30030 = 2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 13$ disproved this. The revised questions concern the growth of the first missing gap and whether distinct gap values are proportional to the maximal gap.",
+    "mathContext": "Primorial $n_k = \\prod_{i=1}^k p_i$. Coprime residues: $\\{a : 1 \\le a < n_k, \\gcd(a, n_k) = 1\\}$, $|$coprime residues$| = \\varphi(n_k)$. Gaps $d_i = a_{i+1} - a_i$. Questions: (1) growth of $\\min\\{2m : 2m \\notin \\{d_i\\}\\}$, (2) is $|\\{d_i\\}| \\gg \\max d_i$?",
     "significance": "key",
-    "range": {
-      "startLine": 52,
-      "endLine": 54
-    }
+    "relatedConcepts": ["primorial", "Jacobsthal function", "Euler's totient", "sieve of Eratosthenes", "coprime residues"],
+    "prerequisites": ["prime numbers", "Euler's totient function", "coprimality"]
   },
   {
-    "id": "jacobsthal-bound",
+    "id": "ann-e854-primorial",
     "proofId": "erdos-854",
-    "type": "theorem",
-    "title": "Jacobsthal Function Bound",
-    "content": "The maximal gap between consecutive coprime residues of the k-th primorial is at most 2pₖ, where pₖ is the k-th prime.",
+    "range": { "startLine": 23, "endLine": 45 },
+    "type": "definition",
+    "title": "Primorial, nthPrime, and Coprime Residue Sequences",
+    "content": "`nthPrime k` is axiomatized with primality, strict monotonicity, and base values ($p_1 = 2, p_2 = 3, p_3 = 5$). `primorial k` is defined recursively: $n_0 = 1$, $n_{k+1} = n_k \\cdot p_{k+1}$. The first few primorials are $1, 2, 6, 30, 210, 2310, 30030, \\ldots$ `coprimeResidues n` uses `Finset.range(n).filter` to collect $\\{a : 0 < a < n, \\gcd(a, n) = 1\\}$, with cardinality $\\varphi(n)$. `sortedCoprimes n` is an axiomatized sorted list representation for gap computation. For $n_6 = 30030$, $\\varphi(30030) = 5760$.",
+    "mathContext": "$n_k = \\prod_{i=1}^k p_i$: $n_1 = 2, n_2 = 6, n_3 = 30, n_4 = 210, n_5 = 2310, n_6 = 30030$. $\\varphi(n_k) = \\prod_{i=1}^k (p_i - 1)$. `coprimeResidues n` $= \\{a : 0 < a < n, \\gcd(a,n) = 1\\}$.",
     "significance": "key",
-    "range": {
-      "startLine": 70,
-      "endLine": 72
-    }
+    "relatedConcepts": ["primorial", "Euler's totient", "nthPrime", "StrictMono"],
+    "prerequisites": ["prime numbers", "recursive definition", "Finset.filter"]
   },
   {
-    "id": "lacampagne-selfridge",
+    "id": "ann-e854-gaps",
     "proofId": "erdos-854",
+    "range": { "startLine": 46, "endLine": 64 },
+    "type": "definition",
+    "title": "Gap Structure: Gap Set, Maximal Gap, Distinct Gap Count",
+    "content": "`gapSet n` collects all consecutive differences $d_i = a_{i+1} - a_i$ as a `Finset ℕ`. `gaps_even` axiomatizes that for $k \\ge 2$ (primorial divisible by 2), all gaps are even: since $\\gcd(a, n_k) = 1$ and $2 | n_k$, all coprime residues are odd, so consecutive differences are even. `maxGap n` is the largest gap (the Jacobsthal function $g(n)$), axiomatized with membership and maximality. `distinctGapCount n` counts the number of distinct gap values. The gap structure of primorials is equivalent to the pattern of integers not sieved by the first $k$ primes — the complement of the sieve of Eratosthenes.",
+    "mathContext": "`gapSet n` $= \\{a_{i+1} - a_i : 1 \\le i < \\varphi(n)\\}$. For $k \\ge 2$: $2 | d$ for all $d \\in$ `gapSet`$(n_k)$. `maxGap n` $= \\max$ `gapSet n` $= g(n)$ (Jacobsthal function). `distinctGapCount n` $= |$`gapSet n`$|$.",
+    "significance": "key",
+    "relatedConcepts": ["Jacobsthal function", "sieve of Eratosthenes", "gap distribution", "wheel sieve"],
+    "prerequisites": ["consecutive differences", "Finset.card", "parity"]
+  },
+  {
+    "id": "ann-e854-bounds",
+    "proofId": "erdos-854",
+    "range": { "startLine": 65, "endLine": 82 },
     "type": "insight",
-    "title": "Lacampagne–Selfridge Counterexample",
-    "content": "Computations for the primorial 30030 = 2·3·5·7·11·13 showed that not all even integers up to the maximal gap appear as consecutive differences.",
-    "significance": "critical",
-    "range": {
-      "startLine": 82,
-      "endLine": 84
-    }
-  },
-  {
-    "id": "missing-gap-growth",
-    "proofId": "erdos-854",
-    "type": "concept",
-    "title": "Missing Gap Growth",
-    "content": "Erdős asked to estimate how the smallest missing even gap grows with the primorial index k.",
+    "title": "Known Bounds: Jacobsthal Function and Lacampagne-Selfridge",
+    "content": "`maxGap_bound` axiomatizes the Jacobsthal function bound: $g(n_k) \\le 2p_k$. This follows from the greedy argument: among any $2p_k$ consecutive integers, at least one must be coprime to $n_k$ (since $p_k$ is the largest prime factor, and by CRT the coprime residues modulo $n_k$ are distributed with gaps $\\le 2p_k$). The `firstMissingGap` function gives the smallest even integer not appearing as a gap, axiomatized with evenness and non-membership. `lacampagne_selfridge_counterexample` records the computational discovery: for $n_6 = 30030$, there exists an even $d < g(30030)$ not in the gap set, disproving Erdős's original conjecture that all even values up to $g(n_k)$ appear.",
+    "mathContext": "Jacobsthal: $g(n_k) \\le 2p_k$. For $n_6 = 30030$: $g(30030) \\le 2 \\cdot 13 = 26$. Lacampagne-Selfridge: $\\exists d$ even with $d < g(30030)$ and $d \\notin$ `gapSet`$(30030)$.",
     "significance": "key",
-    "range": {
-      "startLine": 90,
-      "endLine": 92
-    }
+    "relatedConcepts": ["Jacobsthal function", "Lacampagne-Selfridge computation", "Chinese Remainder Theorem", "greedy algorithm"],
+    "prerequisites": ["CRT", "primorial factorization", "computational verification"]
   },
   {
-    "id": "proportional-gaps",
+    "id": "ann-e854-conjectures",
     "proofId": "erdos-854",
+    "range": { "startLine": 83, "endLine": 96 },
     "type": "concept",
-    "title": "Proportional Distinct Gaps",
-    "content": "The weaker conjecture asks whether the number of distinct gap values is at least a constant fraction of the maximal gap.",
-    "significance": "critical",
-    "range": {
-      "startLine": 95,
-      "endLine": 99
-    }
+    "title": "Erdős Conjectures: Missing Gap Growth and Proportional Distinct Gaps",
+    "content": "`ErdosProblem854_missing_gap_growth` asserts that the first missing gap grows unboundedly: $\\forall C, \\exists k: C \\le \\text{firstMissingGap}(n_k)$. As $k$ grows, eventually all small even integers appear as gaps (the sieve becomes fine-grained enough to produce all short gaps). `ErdosProblem854_many_gaps` is the proportionality conjecture: $\\exists c > 0$ such that $|\\text{gapSet}(n_k)| \\ge c \\cdot g(n_k)$ for all $k \\ge 2$. Since the gaps are even, the maximum possible distinct gap count is $g(n_k)/2$, so the conjecture asserts $|\\text{gapSet}| \\ge (c/2) \\cdot (g(n_k)/2) \\cdot 2 = c \\cdot g(n_k)$ — a constant fraction of the theoretical maximum. Both conjectures remain open.",
+    "mathContext": "Part 1: $\\lim_{k \\to \\infty} \\text{firstMissingGap}(n_k) = \\infty$. Part 2: $\\exists c > 0: |$`gapSet`$(n_k)| \\ge c \\cdot g(n_k)$ for $k \\ge 2$. Maximum possible: $|$`gapSet`$| \\le g(n_k)/2$ (all even values from 2 to $g(n_k)$).",
+    "significance": "key",
+    "relatedConcepts": ["gap growth", "proportional representation", "unbounded growth", "asymptotic density of gaps"],
+    "prerequisites": ["Jacobsthal function", "primorial growth", "Filter.atTop"]
   }
 ]
