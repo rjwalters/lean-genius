@@ -4,10 +4,10 @@
 #
 # Usage:
 #   ./scripts/lean/launch.sh start [--enricher N] [--aristotle N] [--researcher N] [--seeker N] [--deployer N]
-#   ./scripts/lean/launch.sh stop [--force]
+#   ./scripts/lean/launch.sh stop [type] [--force]
 #   ./scripts/lean/launch.sh health
 #   ./scripts/lean/launch.sh spawn enricher|aristotle|researcher|seeker|deployer
-#   ./scripts/lean/launch.sh scale enricher|researcher|seeker N
+#   ./scripts/lean/launch.sh scale enricher|aristotle|researcher|seeker|deployer N
 #   ./scripts/lean/launch.sh status
 #   ./scripts/lean/launch.sh daemon [--interval N] [--enricher N] [--researcher N] [...]
 #
@@ -63,10 +63,10 @@ Lean Genius Launch - Mathematical Agent Orchestration
 
 Usage:
   $0 start [options]     Start agents with specified pool sizes
-  $0 stop [--force]      Stop all agents (graceful by default, --force kills immediately)
+  $0 stop [type] [--force]  Stop all agents or a specific type (graceful by default)
   $0 health              Show agent process health and detect stuck agents
   $0 spawn <type>        Spawn one additional agent
-  $0 scale <type> <N>    Scale agent pool to N instances
+  $0 scale <type> <N>    Scale agent pool to N instances (supports scale-down)
   $0 status              Show current status
   $0 daemon [options]    Run continuous monitoring daemon
 
@@ -78,6 +78,7 @@ Start Options:
   --deployer N           Number of Deployers (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
 
 Stop Options:
+  <type>                 Stop only agents of this type (enricher, aristotle, etc.)
   --force                Kill tmux sessions immediately (skip graceful signal files)
 
 Daemon Options:
@@ -102,8 +103,11 @@ Examples:
   $0 spawn researcher                   # Add one Researcher
   $0 spawn seeker                       # Add seeker agent
   $0 scale researcher 4                 # Scale to 4 Researchers
-  $0 stop                               # Graceful stop (signal files)
-  $0 stop --force                       # Force stop (kill sessions)
+  $0 scale enricher 1                   # Scale down to 1 Enricher
+  $0 stop                               # Graceful stop all (signal files)
+  $0 stop enricher                      # Graceful stop Enrichers only
+  $0 stop --force                       # Force stop all (kill sessions)
+  $0 stop enricher --force              # Force stop Enrichers only
   $0 health                             # Check agent health
   $0 daemon                             # Run daemon with defaults
   $0 daemon --interval 30 --researcher 3  # Custom interval and pool
@@ -191,6 +195,144 @@ set_stopped() {
            '.running = false | .stopped_at = $ts' \
            "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
     fi
+}
+
+# Helper: Update daemon state config for a specific agent type
+# This prevents the daemon from respawning agents that were intentionally stopped/scaled down
+update_daemon_config() {
+    local agent_type="$1"
+    local count="$2"
+
+    if [[ -f "$STATE_FILE" ]]; then
+        local tmp
+        tmp=$(mktemp)
+        jq --arg type "$agent_type" --argjson count "$count" \
+           '.config[$type] = $count' \
+           "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
+    fi
+}
+
+# Helper: Get sessions for a specific agent type
+get_sessions_for_type() {
+    local agent_type="$1"
+    local sessions=()
+
+    case "$agent_type" in
+        enricher)
+            for i in 1 2 3 4 5; do
+                if tmux has-session -t "enricher-$i" 2>/dev/null; then
+                    sessions+=("enricher-$i")
+                fi
+            done
+            ;;
+        aristotle)
+            if tmux has-session -t "aristotle-agent" 2>/dev/null; then
+                sessions+=("aristotle-agent")
+            fi
+            ;;
+        researcher)
+            for i in 1 2 3 4 5; do
+                if tmux has-session -t "researcher-$i" 2>/dev/null; then
+                    sessions+=("researcher-$i")
+                fi
+            done
+            ;;
+        seeker)
+            if tmux has-session -t "seeker-agent" 2>/dev/null; then
+                sessions+=("seeker-agent")
+            fi
+            ;;
+        deployer)
+            if tmux has-session -t "deployer" 2>/dev/null; then
+                sessions+=("deployer")
+            fi
+            ;;
+    esac
+
+    if [[ ${#sessions[@]} -gt 0 ]]; then
+        printf '%s\n' "${sessions[@]}"
+    fi
+}
+
+# Helper: Gracefully stop a specific agent session with signal file
+signal_stop_session() {
+    local session="$1"
+    local agent_type
+    agent_type=$(get_agent_type "$session")
+
+    mkdir -p "$SIGNALS_DIR"
+
+    case "$agent_type" in
+        enricher)
+            local agent_num="${session##*-}"
+            touch "$SIGNALS_DIR/stop-enricher-$agent_num"
+            ;;
+        aristotle)
+            touch "$SIGNALS_DIR/stop-aristotle"
+            ;;
+        researcher)
+            local agent_num="${session##*-}"
+            touch "$SIGNALS_DIR/stop-researcher-$agent_num"
+            ;;
+        seeker)
+            touch "$SIGNALS_DIR/stop-seeker"
+            ;;
+        deployer)
+            touch "$SIGNALS_DIR/stop-deployer"
+            ;;
+    esac
+}
+
+# Helper: Wait for sessions to stop, with timeout and force-kill fallback
+# Args: timeout_seconds session1 [session2 ...]
+wait_or_force_kill() {
+    local timeout="$1"
+    shift
+    local sessions=("$@")
+
+    if [[ ${#sessions[@]} -eq 0 ]]; then
+        return 0
+    fi
+
+    local start
+    start=$(date +%s)
+
+    echo -e "${BLUE}Waiting up to ${timeout}s for graceful shutdown...${NC}"
+
+    while true; do
+        local now
+        now=$(date +%s)
+        local elapsed=$((now - start))
+
+        if [[ $elapsed -ge $timeout ]]; then
+            local remaining=0
+            for session in "${sessions[@]}"; do
+                if tmux has-session -t "$session" 2>/dev/null; then
+                    echo -e "${YELLOW}Timeout: force-killing $session${NC}"
+                    tmux kill-session -t "$session" 2>/dev/null || true
+                    remaining=$((remaining + 1))
+                fi
+            done
+            if [[ $remaining -gt 0 ]]; then
+                echo -e "${YELLOW}Force-killed $remaining agent(s) after ${timeout}s timeout${NC}"
+            fi
+            return 0
+        fi
+
+        local still_running=0
+        for session in "${sessions[@]}"; do
+            if tmux has-session -t "$session" 2>/dev/null; then
+                still_running=$((still_running + 1))
+            fi
+        done
+
+        if [[ $still_running -eq 0 ]]; then
+            echo -e "${GREEN}All targeted agents stopped gracefully${NC}"
+            return 0
+        fi
+
+        sleep 2
+    done
 }
 
 # Helper: Check if script exists
@@ -1215,6 +1357,18 @@ cmd_daemon() {
         # 2b. Pool gap detection: spawn missing agents whose sessions vanished
         # (get_all_agent_sessions only returns existing sessions, so if a session
         # exits entirely, the health check above never sees it)
+
+        # Re-read target config from state file each cycle.
+        # This ensures scale-down / stop commands are respected by the daemon
+        # without needing to restart it.
+        if [[ -f "$STATE_FILE" ]]; then
+            enricher=$(jq -r '.config.enricher // 0' "$STATE_FILE" 2>/dev/null || echo "$enricher")
+            aristotle=$(jq -r '.config.aristotle // 0' "$STATE_FILE" 2>/dev/null || echo "$aristotle")
+            researcher=$(jq -r '.config.researcher // 0' "$STATE_FILE" 2>/dev/null || echo "$researcher")
+            seeker=$(jq -r '.config.seeker // 0' "$STATE_FILE" 2>/dev/null || echo "$seeker")
+            deployer=$(jq -r '.config.deployer // 0' "$STATE_FILE" 2>/dev/null || echo "$deployer")
+        fi
+
         local enricher_active=0 researcher_active=0 aristotle_active=0 seeker_active=0 deployer_active=0
         for i in 1 2 3 4 5; do
             tmux has-session -t "enricher-$i" 2>/dev/null && enricher_active=$((enricher_active + 1))
@@ -1309,9 +1463,12 @@ cmd_daemon() {
     done
 }
 
-# Command: stop (graceful by default, --force for immediate kill)
+# Command: stop [type] [--force]
+# If type is provided, only stop agents of that type.
+# If no type is provided, stop all agents.
 cmd_stop() {
     local force=false
+    local agent_type=""
 
     # Parse stop options
     while [[ $# -gt 0 ]]; do
@@ -1320,13 +1477,23 @@ cmd_stop() {
                 force=true
                 shift
                 ;;
+            enricher|aristotle|researcher|seeker|deployer)
+                agent_type="$1"
+                shift
+                ;;
             *)
                 echo -e "${RED}Unknown stop option: $1${NC}" >&2
-                echo "Usage: $0 stop [--force]"
+                echo "Usage: $0 stop [enricher|aristotle|researcher|seeker|deployer] [--force]"
                 exit 1
                 ;;
         esac
     done
+
+    # If a specific agent type is requested, delegate to per-type stop
+    if [[ -n "$agent_type" ]]; then
+        cmd_stop_type "$agent_type" "$force"
+        return
+    fi
 
     if [[ "$force" == "true" ]]; then
         echo -e "${BOLD}Force-Stopping Lean Genius Mathematical Orchestration${NC}"
@@ -1448,6 +1615,77 @@ cmd_stop() {
     fi
 }
 
+# Command: stop <type> - Stop agents of a specific type only
+cmd_stop_type() {
+    local agent_type="$1"
+    local force="${2:-false}"
+
+    # Update daemon state config FIRST to prevent respawn race
+    update_daemon_config "$agent_type" 0
+
+    # Get current sessions for this type
+    local sessions
+    sessions=$(get_sessions_for_type "$agent_type")
+
+    if [[ -z "$sessions" ]]; then
+        echo -e "${GREEN}No ${agent_type} agents currently running${NC}"
+        return 0
+    fi
+
+    local count=0
+    while IFS= read -r s; do
+        [[ -n "$s" ]] && count=$((count + 1))
+    done <<< "$sessions"
+
+    echo -e "${BOLD}Stopping $count ${agent_type} agent(s)${NC}"
+
+    if [[ "$force" == "true" ]]; then
+        # Force stop: kill sessions directly
+        while IFS= read -r session; do
+            [[ -z "$session" ]] && continue
+            echo -e "${BLUE}Killing $session...${NC}"
+            tmux kill-session -t "$session" 2>/dev/null || true
+        done <<< "$sessions"
+        echo -e "${GREEN}${BOLD}All ${agent_type} agents killed${NC}"
+    else
+        # Graceful stop: create signal files, then wait with timeout
+        local session_list=()
+        while IFS= read -r session; do
+            [[ -z "$session" ]] && continue
+            signal_stop_session "$session"
+            session_list+=("$session")
+        done <<< "$sessions"
+        echo -e "${GREEN}Signal files created for ${agent_type} agent(s)${NC}"
+
+        # Also call sub-script graceful-stop API if available
+        case "$agent_type" in
+            enricher)
+                if [[ -x "./scripts/enricher/parallel-enrich.sh" ]]; then
+                    ./scripts/enricher/parallel-enrich.sh --graceful-stop 2>/dev/null || true
+                fi
+                ;;
+            aristotle)
+                if [[ -x "./scripts/aristotle/launch-agent.sh" ]]; then
+                    ./scripts/aristotle/launch-agent.sh --graceful-stop 2>/dev/null || true
+                fi
+                ;;
+            researcher)
+                if [[ -x "./scripts/research/parallel-research.sh" ]]; then
+                    ./scripts/research/parallel-research.sh --graceful-stop 2>/dev/null || true
+                fi
+                ;;
+            seeker)
+                if [[ -x "./scripts/research/launch-seeker.sh" ]]; then
+                    ./scripts/research/launch-seeker.sh --graceful-stop 2>/dev/null || true
+                fi
+                ;;
+        esac
+
+        # Wait up to 60s for graceful shutdown, then force-kill
+        wait_or_force_kill 60 "${session_list[@]}"
+    fi
+}
+
 # Command: spawn
 cmd_spawn() {
     local agent_type="${1:-}"
@@ -1522,6 +1760,39 @@ cmd_spawn() {
     esac
 }
 
+# Helper: Scale down multi-instance agents (enricher, researcher)
+# Stops highest-numbered slots first to reach target count
+scale_down_multi() {
+    local agent_type="$1"
+    local prefix="$2"
+    local current="$3"
+    local target="$4"
+
+    local to_remove=$((current - target))
+    echo -e "${BLUE}Scaling ${agent_type}s from $current to $target (removing $to_remove)...${NC}"
+
+    # Update daemon state FIRST to prevent respawn race
+    update_daemon_config "$agent_type" "$target"
+
+    # Stop highest-numbered slots first
+    local sessions_to_stop=()
+    for i in 5 4 3 2 1; do
+        [[ ${#sessions_to_stop[@]} -ge $to_remove ]] && break
+        if tmux has-session -t "${prefix}-$i" 2>/dev/null; then
+            signal_stop_session "${prefix}-$i"
+            sessions_to_stop+=("${prefix}-$i")
+            echo -e "  Signaling ${prefix}-$i to stop"
+        fi
+    done
+
+    # Wait up to 60s for graceful shutdown, then force-kill
+    if [[ ${#sessions_to_stop[@]} -gt 0 ]]; then
+        wait_or_force_kill 60 "${sessions_to_stop[@]}"
+    fi
+
+    echo -e "${GREEN}✓ Scaled to $target ${agent_type}(s)${NC}"
+}
+
 # Command: scale
 cmd_scale() {
     local agent_type="${1:-}"
@@ -1529,7 +1800,7 @@ cmd_scale() {
 
     if [[ -z "$agent_type" || -z "$count" ]]; then
         echo -e "${RED}Error: Must specify agent type and count${NC}" >&2
-        echo "Usage: $0 scale <enricher|researcher> <count>"
+        echo "Usage: $0 scale <enricher|researcher|aristotle|seeker|deployer> <count>"
         exit 1
     fi
 
@@ -1551,12 +1822,12 @@ cmd_scale() {
             if [[ $count -gt $current ]]; then
                 local to_add=$((count - current))
                 echo -e "${BLUE}Scaling Enrichers from $current to $count (adding $to_add)...${NC}"
+                update_daemon_config "enricher" "$count"
                 ./scripts/enricher/parallel-enrich.sh "$to_add" &
                 sleep 2
                 echo -e "${GREEN}✓ Scaled to $count Enrichers${NC}"
             elif [[ $count -lt $current ]]; then
-                echo -e "${YELLOW}Scale down not implemented - stop agents manually${NC}"
-                echo "Current: $current, Requested: $count"
+                scale_down_multi "enricher" "enricher" "$current" "$count"
             else
                 echo -e "${GREEN}Already at $count Enrichers${NC}"
             fi
@@ -1577,23 +1848,47 @@ cmd_scale() {
             if [[ $count -gt $current ]]; then
                 local to_add=$((count - current))
                 echo -e "${BLUE}Scaling Researchers from $current to $count (adding $to_add)...${NC}"
+                update_daemon_config "researcher" "$count"
                 ./scripts/research/parallel-research.sh "$to_add" &
                 sleep 2
                 echo -e "${GREEN}✓ Scaled to $count Researchers${NC}"
             elif [[ $count -lt $current ]]; then
-                echo -e "${YELLOW}Scale down not implemented - stop agents manually${NC}"
-                echo "Current: $current, Requested: $count"
+                scale_down_multi "researcher" "researcher" "$current" "$count"
             else
                 echo -e "${GREEN}Already at $count Researchers${NC}"
             fi
             ;;
         aristotle|seeker|deployer)
-            echo -e "${YELLOW}$agent_type can only have 0 or 1 instance${NC}"
-            echo "Use 'spawn' or 'stop' to control single-instance agents"
+            if [[ $count -gt 1 ]]; then
+                echo -e "${YELLOW}$agent_type can only have 0 or 1 instance, using 1${NC}"
+                count=1
+            fi
+
+            local current_sessions
+            current_sessions=$(get_sessions_for_type "$agent_type")
+            local current_count=0
+            if [[ -n "$current_sessions" ]]; then
+                current_count=$(echo "$current_sessions" | wc -l | tr -d ' ')
+            fi
+
+            if [[ $count -eq 0 ]]; then
+                if [[ $current_count -eq 0 ]]; then
+                    echo -e "${GREEN}No ${agent_type} agents running${NC}"
+                else
+                    echo -e "${BLUE}Scaling ${agent_type} from $current_count to 0...${NC}"
+                    cmd_stop_type "$agent_type" "false"
+                fi
+            elif [[ $count -eq 1 && $current_count -eq 0 ]]; then
+                echo -e "${BLUE}Scaling ${agent_type} from 0 to 1...${NC}"
+                update_daemon_config "$agent_type" 1
+                cmd_spawn "$agent_type"
+            else
+                echo -e "${GREEN}Already at $count ${agent_type}${NC}"
+            fi
             ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Scalable types: enricher, researcher"
+            echo "Valid types: enricher, researcher, aristotle, seeker, deployer"
             exit 1
             ;;
     esac
