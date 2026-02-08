@@ -1,86 +1,86 @@
 [
   {
-    "id": "translation-property",
+    "id": "ann-e675-header",
     "proofId": "erdos-675",
-    "type": "definition",
-    "title": "Translation Property",
-    "content": "A set A ⊆ ℕ has the translation property if for every n, there exists t ≥ 1 such that for all 1 ≤ a ≤ n: a ∈ A ↔ a+t ∈ A.",
-    "significance": "critical",
-    "range": {
-      "startLine": 26,
-      "endLine": 29
-    }
-  },
-  {
-    "id": "sum-two-squares",
-    "proofId": "erdos-675",
-    "type": "definition",
-    "title": "Sums of Two Squares",
-    "content": "The set of natural numbers representable as a² + b² for non-negative integers a, b.",
-    "significance": "critical",
-    "range": {
-      "startLine": 38,
-      "endLine": 40
-    }
-  },
-  {
-    "id": "b-free-set",
-    "proofId": "erdos-675",
-    "type": "definition",
-    "title": "B-Free Set",
-    "content": "The B-free set consists of positive integers not divisible by any element of B, generalizing squarefree numbers.",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "Problem Statement and Imports",
+    "content": "Erdős Problem #675 asks three related questions about the **translation property** for number-theoretic sets. A set $A \\subseteq \\mathbb{N}$ has this property if for every $n$, there exists $t \\ge 1$ such that $A \\cap \\{1, \\ldots, n\\} = (A - t) \\cap \\{1, \\ldots, n\\}$, i.e., the pattern of $A$ on $\\{1, \\ldots, n\\}$ reappears at some translate. The three questions concern: (1) sums of two squares, (2) integers smooth over a balanced prime partition, and (3) growth rate of minimal translations for squarefree numbers. Mathlib imports cover `Nat.Basic`, `Set.Basic`, `Finset.Basic`, and `Tactic`.",
+    "mathContext": "Translation property: $\\forall n, \\exists t \\ge 1: \\forall a \\in \\{1, \\ldots, n\\}, a \\in A \\iff a + t \\in A$. Three sub-problems: (1) $A = \\{a^2 + b^2\\}$, (2) $A = \\{n : p | n \\Rightarrow p \\in P\\}$ for balanced $P \\cup Q = \\text{Primes}$, (3) growth of $t_n$ for squarefree $A$.",
     "significance": "key",
-    "range": {
-      "startLine": 46,
-      "endLine": 48
-    }
+    "relatedConcepts": ["translation property", "sieve theory", "sums of two squares", "squarefree numbers", "smooth numbers"],
+    "prerequisites": ["elementary number theory", "prime factorization", "set theory"]
   },
   {
-    "id": "brun-sieve",
+    "id": "ann-e675-translation-def",
     "proofId": "erdos-675",
-    "type": "theorem",
-    "title": "Brun's Sieve Result",
-    "content": "If B is pairwise coprime with Σ 1/b = o(log log x), then the B-free set has the translation property.",
-    "significance": "critical",
-    "range": {
-      "startLine": 61,
-      "endLine": 65
-    }
-  },
-  {
-    "id": "squarefree-translation",
-    "proofId": "erdos-675",
-    "type": "theorem",
-    "title": "Squarefree Translation",
-    "content": "Squarefree numbers have the translation property, as a special case of Brun's sieve applied to B = {p² : p prime}.",
+    "range": { "startLine": 25, "endLine": 37 },
+    "type": "definition",
+    "title": "Translation Property and Minimal Translation",
+    "content": "`HasTranslationProperty A` formalizes the property: for every window size $n$, there exists a shift $t \\ge 1$ such that $A$'s membership pattern on $\\{1, \\ldots, n\\}$ is exactly reproduced at $\\{t+1, \\ldots, t+n\\}$. This is weaker than periodicity — it requires the pattern to recur somewhere, not everywhere. `minTranslation A n` is the smallest such $t$ for a given $n$, defined via `Nat.find`. The existence proof uses $t = 1$ with a trivially true predicate (which works only because the Lean definition doesn't require injectivity of the configuration). The growth rate of `minTranslation` as a function of $n$ is the subject of the third sub-problem.",
+    "mathContext": "`HasTranslationProperty A` $\\equiv \\forall n \\ge 1, \\exists t \\ge 1: \\forall a \\in [1, n], a \\in A \\iff a + t \\in A$. `minTranslation A n` $= \\min\\{t \\ge 1 : \\text{pattern recurs at shift } t\\}$. Note: the trivial existence proof uses $t = 1$; this is a proof artifact, not a mathematical claim.",
     "significance": "key",
-    "range": {
-      "startLine": 68,
-      "endLine": 70
-    }
+    "relatedConcepts": ["periodic sets", "recurrence", "Nat.find", "combinatorial patterns"],
+    "prerequisites": ["Set membership", "natural number ordering", "Nat.find"]
   },
   {
-    "id": "two-squares-conjecture",
+    "id": "ann-e675-number-sets",
     "proofId": "erdos-675",
+    "range": { "startLine": 38, "endLine": 61 },
+    "type": "definition",
+    "title": "Number-Theoretic Sets: Sums of Two Squares, Squarefree, B-Free",
+    "content": "`sumOfTwoSquares` is $\\{n : \\exists a, b \\ge 0, a^2 + b^2 = n\\}$. By Fermat's theorem on sums of two squares, $n$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides $n$ to an even power. The density of this set is $\\sim C/\\sqrt{\\log x}$ where $C = \\prod_{p \\equiv 3(4)} (1 - p^{-2})^{-1/2} / \\sqrt{2} \\approx 0.7642...$  (Landau-Ramanujan constant). `squarefreeSet` is $\\{n > 0 : p^2 \\nmid n \\text{ for all primes } p\\}$, with density $6/\\pi^2$. `bFreeSet B` generalizes squarefree to arbitrary forbidden divisor sets. `IsPairwiseCoprime B` requires $\\gcd(b_1, b_2) = 1$ for distinct $b_1, b_2 \\in B$. `HasSmallReciprocalSum B` encodes $\\sum_{b \\in B, b < x} 1/b = o(\\log \\log x)$, though the formalization currently uses a `True` placeholder for the quantitative bound.",
+    "mathContext": "`sumOfTwoSquares` $= \\{a^2 + b^2 : a, b \\in \\mathbb{N}\\}$, density $\\sim C/\\sqrt{\\log x}$ (Landau-Ramanujan). `squarefreeSet` $= \\{n > 0 : \\mu^2(n) = 1\\}$, density $6/\\pi^2$. `bFreeSet B` $= \\{n > 0 : b \\nmid n\\ \\forall b \\in B\\}$. Squarefree $=$ bFreeSet $\\{p^2 : p \\text{ prime}\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat two-square theorem", "Landau-Ramanujan constant", "Möbius function", "B-free numbers", "multiplicative number theory"],
+    "prerequisites": ["prime factorization", "quadratic residues", "asymptotic density"]
+  },
+  {
+    "id": "ann-e675-brun-sieve",
+    "proofId": "erdos-675",
+    "range": { "startLine": 62, "endLine": 73 },
+    "type": "insight",
+    "title": "Brun's Sieve and Squarefree Translation Property",
+    "content": "Brun's sieve (axiomatized as `brun_sieve_translation`) establishes that if $B$ is pairwise coprime with $\\sum_{b \\in B, b < x} 1/b = o(\\log \\log x)$, then the $B$-free set has the translation property. The key idea: by the Chinese Remainder Theorem, the $B$-free numbers modulo $\\text{lcm}(b_1, \\ldots, b_k)$ have a periodic pattern for any finite subset $\\{b_1, \\ldots, b_k\\} \\subseteq B$. The small reciprocal sum condition ensures the 'tail' of $B$ has negligible impact on any finite window, so the periodic pattern from a finite prefix of $B$ suffices. For squarefree numbers, $B = \\{p^2 : p \\text{ prime}\\}$ is pairwise coprime and $\\sum 1/p^2 = \\pi^2/6 - 1 < \\infty$, which is certainly $o(\\log \\log x)$.",
+    "mathContext": "Brun's sieve: $B$ pairwise coprime, $\\sum_{b < x} 1/b = o(\\log \\log x) \\Rightarrow$ `bFreeSet B` has translation property. For squarefree: $B = \\{p^2\\}$, $\\sum 1/p^2 < \\infty$, CRT gives periodicity modulo $\\prod_{p \\le k} p^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Brun's sieve", "Chinese Remainder Theorem", "periodic arithmetic sets", "convergent series"],
+    "prerequisites": ["sieve theory", "CRT", "convergence of series"]
+  },
+  {
+    "id": "ann-e675-two-squares-conj",
+    "proofId": "erdos-675",
+    "range": { "startLine": 75, "endLine": 81 },
     "type": "concept",
-    "title": "Two Squares Conjecture",
-    "content": "Erdős conjectured that sums of two squares have the translation property, despite their density decaying as C/√(log x).",
-    "significance": "critical",
-    "range": {
-      "startLine": 74,
-      "endLine": 76
-    }
+    "title": "Conjecture: Sums of Two Squares Have the Translation Property",
+    "content": "The first and most prominent sub-problem: does $\\{a^2 + b^2 : a, b \\in \\mathbb{N}\\}$ have the translation property? Unlike squarefree numbers, sums of two squares are **not** a $B$-free set for any obvious $B$, so Brun's sieve does not directly apply. The set is defined by a multiplicative condition (Fermat's characterization), but the characterization involves parity of exponents of primes $\\equiv 3 \\pmod{4}$, which makes it qualitatively different from $B$-free sets. The decreasing density $C/\\sqrt{\\log x}$ suggests that the pattern becomes 'sparser' in longer windows, making it harder to find matching translates.",
+    "mathContext": "Conjecture: `HasTranslationProperty sumOfTwoSquares`. Difficulty: sums of two squares are characterized by $v_p(n) \\equiv 0 \\pmod{2}$ for $p \\equiv 3 \\pmod{4}$. Density $\\sim C/\\sqrt{\\log x} \\to 0$ makes pattern recurrence non-obvious.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat two-square theorem", "multiplicative functions", "Landau-Ramanujan theorem", "pattern recurrence"],
+    "prerequisites": ["quadratic residues", "Fermat characterization", "asymptotic density"]
   },
   {
-    "id": "growth-rate",
+    "id": "ann-e675-balanced-partition",
     "proofId": "erdos-675",
-    "type": "concept",
-    "title": "Translation Growth Rate",
-    "content": "For squarefree numbers, Erdős asked whether the minimal translation t_n grows at least as exp(n^c) for some constant c > 0.",
+    "range": { "startLine": 82, "endLine": 97 },
+    "type": "definition",
+    "title": "Balanced Prime Partitions and P-Smooth Numbers",
+    "content": "`IsBalancedPrimePartition P Q` requires $P \\cup Q = \\text{Primes}$, $P \\cap Q = \\emptyset$, and both parts have positive density (both contain $\\gg x/\\log x$ primes $\\le x$). `smoothOver P` is $\\{n > 0 : p | n \\Rightarrow p \\in P\\}$ — integers whose prime factorization uses only primes from $P$. The second sub-problem asks whether there exists a balanced partition such that $P$-smooth numbers have the translation property. The density condition on the partition is formalized abstractly (existence of positive constants) rather than quantitatively. By the prime number theorem, $\\pi(x) \\sim x/\\log x$, so 'balanced' means each part contains a positive proportion of all primes.",
+    "mathContext": "`IsBalancedPrimePartition P Q` $\\equiv P \\cup Q = \\mathbb{P}, P \\cap Q = \\emptyset$, both parts have $\\gg x/\\log x$ primes $\\le x$. `smoothOver P` $= \\{n > 0 : p | n \\Rightarrow p \\in P\\}$. Conjecture: $\\exists$ balanced $P, Q$ with `HasTranslationProperty (smoothOver P)`.",
     "significance": "key",
-    "range": {
-      "startLine": 97,
-      "endLine": 103
-    }
+    "relatedConcepts": ["prime number theorem", "smooth numbers", "Dickman function", "prime partitions"],
+    "prerequisites": ["prime number theorem", "multiplicative structure", "smooth numbers"]
+  },
+  {
+    "id": "ann-e675-growth-rate",
+    "proofId": "erdos-675",
+    "range": { "startLine": 99, "endLine": 106 },
+    "type": "concept",
+    "title": "Growth Rate of Minimal Squarefree Translation",
+    "content": "The third sub-problem asks whether the minimal translation $t_n$ for squarefree numbers grows at least exponentially: $t_n > \\exp(n^c)$ for some $c > 0$. The formalization weakens this to $n^2 \\le t_n$ (super-polynomial growth) for infinitely many $n$. The intuition: the pattern of squarefree numbers on $\\{1, \\ldots, n\\}$ is determined by primes $p \\le \\sqrt{n}$, giving a period of $\\text{lcm}(p^2 : p \\le \\sqrt{n}) = e^{2\\sqrt{n}(1+o(1))}$ (by the prime number theorem). The minimal translation should be comparable to this period, suggesting $t_n \\ge e^{\\Omega(\\sqrt{n})}$, which is much stronger than $e^{n^c}$ for small $c$.",
+    "mathContext": "Conjecture: $\\exists c > 0: t_n(\\text{squarefree}) > e^{n^c}$ for large $n$. Heuristic: period $= \\text{lcm}(p^2 : p \\le \\sqrt{n}) \\sim e^{2\\sqrt{n}}$, so $t_n \\ge e^{\\Omega(\\sqrt{n})}$. Formalized as $n^2 \\le t_n$ infinitely often (weaker than exponential).",
+    "significance": "key",
+    "relatedConcepts": ["lcm growth", "prime number theorem", "Chebyshev function", "superpolynomial growth"],
+    "prerequisites": ["prime number theorem", "lcm estimates", "Nat.find"]
   }
 ]
