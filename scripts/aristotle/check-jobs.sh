@@ -236,8 +236,18 @@ reconcile_server_projects() {
             continue
         fi
 
-        # Only flag NOT_STARTED as zombies (these have no solve job)
+        # Extract problem_id from filename (e.g., Erdos123Problem.lean -> erdos-123)
+        local problem_id="recovered-${pid%%-*}"
+        if [[ -n "${fname:-}" && "$fname" != "null" ]]; then
+            local num
+            num=$(echo "$fname" | sed -n 's/^Erdos\([0-9]*\)Problem\.lean$/\1/p')
+            if [[ -n "$num" ]]; then
+                problem_id="erdos-$num"
+            fi
+        fi
+
         if [[ "$status" == "NOT_STARTED" ]]; then
+            # Flag NOT_STARTED as zombies (these have no solve job)
             echo -e "  ${YELLOW}ZOMBIE:${NC} $pid (NOT_STARTED, file: ${fname:-unknown})"
 
             if [[ "$UPDATE_STATUS" == true ]]; then
@@ -256,6 +266,50 @@ reconcile_server_projects() {
                     }]
                 ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
                 echo -e "    ${GREEN}Added to tracking${NC}"
+            fi
+        elif [[ "$status" == "IN_PROGRESS" || "$status" == "QUEUED" ]]; then
+            # Re-adopt active projects as submitted so the agent monitors them
+            echo -e "  ${CYAN}RE-ADOPT:${NC} $pid ($status, file: ${fname:-unknown}) → submitted"
+
+            if [[ "$UPDATE_STATUS" == true ]]; then
+                local now
+                now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+                local tmp_file
+                tmp_file=$(mktemp)
+                jq --arg pid "$pid" --arg fname "${fname:-unknown}" \
+                   --arg prob "$problem_id" --arg now "$now" --arg sstat "$status" '
+                    .jobs += [{
+                        project_id: $pid,
+                        file: $fname,
+                        problem_id: $prob,
+                        submitted: "unknown",
+                        status: "submitted",
+                        notes: ("Re-adopted " + $sstat + " project during reconciliation at " + $now)
+                    }]
+                ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+                echo -e "    ${GREEN}Re-adopted as submitted${NC}"
+            fi
+        elif [[ "$status" == "COMPLETE" ]]; then
+            # Re-adopt completed projects for integration
+            echo -e "  ${GREEN}RE-ADOPT:${NC} $pid (COMPLETE, file: ${fname:-unknown}) → completed"
+
+            if [[ "$UPDATE_STATUS" == true ]]; then
+                local now
+                now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+                local tmp_file
+                tmp_file=$(mktemp)
+                jq --arg pid "$pid" --arg fname "${fname:-unknown}" \
+                   --arg prob "$problem_id" --arg now "$now" '
+                    .jobs += [{
+                        project_id: $pid,
+                        file: $fname,
+                        problem_id: $prob,
+                        submitted: "unknown",
+                        status: "completed",
+                        notes: ("Re-adopted COMPLETE project during reconciliation at " + $now)
+                    }]
+                ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+                echo -e "    ${GREEN}Re-adopted as completed${NC}"
             fi
         fi
     done
