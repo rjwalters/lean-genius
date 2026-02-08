@@ -136,8 +136,8 @@ This gives an efficient test for practicality.
 axiom stewart_sierpinski_characterization (m : ℕ) (hm : m ≥ 2) :
     IsPractical m ↔
     (2 ∣ m) ∧
-    -- The full characterization requires tracking the prime factorization
-    True  -- Simplified; full statement involves iterating over primes
+    (∀ p : ℕ, p.Prime → p ∣ m → p > 2 →
+      p ≤ 1 + (Nat.divisors (m / p ^ (m.factorization p))).sum id)
 
 /- ## The h(m) Function -/
 
@@ -148,10 +148,10 @@ from those divisors.
 
 For practical m, h(m) ≤ d(m) where d(m) is the number of divisors.
 The question is how small h(m) can be.
-
-Note: This is defined axiomatically since computing the minimum is complex.
 -/
-noncomputable def h (m : ℕ) : ℕ := Classical.choose (⟨(divisors m).card⟩ : ∃ _ : ℕ, True)
+noncomputable def h (m : ℕ) : ℕ :=
+  sInf { s : ℕ | ∃ S : Finset ℕ, S ⊆ divisors m ∧ S.card = s ∧
+    ∀ k, 1 ≤ k → k < m → ∃ T : Finset ℕ, T ⊆ S ∧ T.sum id = k }
 
 /- ## Known Bounds on h(m) -/
 
@@ -285,52 +285,42 @@ axiom known_practical_correct : ∀ m ∈ knownPracticalNumbers, IsPractical m
 
 /- ## Why This Problem is Hard -/
 
-/--
-**Key Difficulty**: Finding the optimal subset of divisors.
-
-Even when m is practical and has many divisors, finding the minimum
-subset that represents all k < m is computationally hard.
-
-The question is whether structure in n! allows h(n!) to be very small.
--/
-theorem problem_difficulty :
-    -- Factorials have many divisors
-    (∀ n, n ≥ 1 → (divisors n.factorial).card ≥ n) →
-    -- But h(n!) might be much smaller
-    -- This is the content of the conjecture
-    True := by
-  intro _; trivial
-
-/- ## Summary
-
-**Problem Status: OPEN**
-
-Erdős Problem #18 asks about the function h(m) for practical numbers:
-the minimum number of divisors needed to represent all k < m.
-
-**Definition**: m is practical if every k < m is a sum of distinct divisors of m.
-
-**Key Question**: Is h(n!) < n^o(1)? (Prize: $250)
-
-**Known Results**:
-- Erdős: h(n!) < n
-- Vose (1985): Infinitely many m with h(m) ≪ √(log m)
-- Stewart-Sierpiński: Complete characterization of practical numbers
-
-**Related Facts**:
-- Practical numbers have density 0
-- Practical Goldbach: every even n is sum of two practical numbers
-- All factorials and primorials are practical
-
-**Why Hard**:
-- Finding minimum representing subsets is computationally difficult
-- Requires understanding fine structure of divisors of n!
-
-References:
-- Srinivasan (1948): Definition
-- Stewart, Sierpiński (1954-55): Characterization
-- Vose (1985): Bounds
-- OEIS A005153
--/
+/-- Factorials have at least n divisors, but h(n!) might be much smaller.
+    The gap between d(n!) and h(n!) is the core of the conjecture. -/
+axiom factorial_divisor_count_lower (n : ℕ) (hn : n ≥ 1) :
+    (divisors n.factorial).card ≥ n
 
 end Erdos18
+
+/-
+  ## Summary
+
+  **Problem Status: OPEN**
+
+  Erdős Problem #18 asks about the function h(m) for practical numbers:
+  the minimum number of divisors needed to represent all k < m.
+
+  **Definition**: m is practical if every k < m is a sum of distinct divisors of m.
+
+  **Key Question**: Is h(n!) < n^o(1)? (Prize: $250)
+
+  **Known Results**:
+  - Erdős: h(n!) < n
+  - Vose (1985): Infinitely many m with h(m) ≪ √(log m)
+  - Stewart-Sierpiński: Complete characterization of practical numbers
+
+  **Related Facts**:
+  - Practical numbers have density 0
+  - Practical Goldbach: every even n is sum of two practical numbers
+  - All factorials and primorials are practical
+
+  **Why Hard**:
+  - Finding minimum representing subsets is computationally difficult
+  - Requires understanding fine structure of divisors of n!
+
+  References:
+  - Srinivasan (1948): Definition
+  - Stewart, Sierpiński (1954-55): Characterization
+  - Vose (1985): Bounds
+  - OEIS A005153
+-/
