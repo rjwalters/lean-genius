@@ -28,6 +28,12 @@ JOBS_FILE="$PROJECT_ROOT/research/aristotle-jobs.json"
 SIGNALS_DIR="$PROJECT_ROOT/.loom/signals"
 BRANCH_NAME="feature/aristotle-integrations"
 
+# Persistent state directory at repo root (survives worktree recreation)
+# When running in a worktree, REPO_ROOT may be set by launch-agent.sh
+REPO_ROOT="${REPO_ROOT:-$PROJECT_ROOT}"
+PERSIST_DIR="$REPO_ROOT/.loom/state"
+PERSIST_JOBS="$PERSIST_DIR/aristotle-jobs.json"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -191,6 +197,23 @@ EOF
     return 0
 }
 
+# Persist jobs file to repo root state directory (survives worktree recreation)
+persist_jobs_file() {
+    if [[ ! -f "$JOBS_FILE" ]]; then
+        return 0
+    fi
+
+    mkdir -p "$PERSIST_DIR"
+
+    # Only persist if the file has actually changed
+    if [[ -f "$PERSIST_JOBS" ]] && diff -q "$JOBS_FILE" "$PERSIST_JOBS" >/dev/null 2>&1; then
+        return 0
+    fi
+
+    cp "$JOBS_FILE" "$PERSIST_JOBS"
+    echo -e "  ${GREEN}Persisted jobs file to $PERSIST_JOBS${NC}"
+}
+
 # Run one cycle of the agent
 run_cycle() {
     local cycle_start=$(date +%s)
@@ -227,6 +250,9 @@ run_cycle() {
 
     echo -e "${GREEN}Cycle complete in ${duration}s${NC}"
     show_status
+
+    # Persist jobs file to survive worktree recreation
+    persist_jobs_file
 }
 
 # Main logic
