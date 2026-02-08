@@ -218,8 +218,7 @@ The formalization is ~10,000 lines of Lean code and covers:
 3. The main theorem and its corollaries
 -/
 
-/-- The existence of a complete Lean 3 formalization. -/
-axiom formalization_exists : True
+/- The existence of a complete Lean 3 formalization. -/
 
 /-
 ## Related Problems
@@ -233,11 +232,10 @@ Erdős posed several related problems about unit fractions.
 Answer: Yes for n ≥ 5 (various authors). -/
 axiom erdos_46_related : ∀ n ≥ 5, ∃ S : Finset ℕ, (∀ a ∈ S, 0 < a ∧ a ≤ n) ∧ SumsToOne S
 
-/-- **Erdős Problem #47**: Bounds on representing 1 as sum of unit fractions
+/- **Erdős Problem #47**: Bounds on representing 1 as sum of unit fractions
 with denominators from an interval.
 
 Related to #298 by considering density in intervals. -/
-axiom erdos_47_related : True
 
 /-
 ## Summary

@@ -214,7 +214,7 @@ theorem erdos_722_solved (r k : ℕ) (hr : r ≥ 1) (hk : k > r) :
 ## Part VI: Keevash's Method
 -/
 
-/--
+/-
 **Randomized Algebraic Construction:**
 Keevash's proof uses a sophisticated combination of:
 1. Random greedy algorithms
@@ -224,14 +224,12 @@ Keevash's proof uses a sophisticated combination of:
 The key innovation was the "randomized algebraic construction" that handles
 the general case.
 -/
-axiom keevash_method_insight : True
 
-/--
+/-
 **Absorbing Method:**
 A key technique: first construct a "robustly spread" partial design,
 then complete it using algebraic absorption.
 -/
-axiom absorbing_method : True
 
 /-
 ## Part VII: Small Examples

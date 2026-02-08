@@ -84,11 +84,10 @@ arbitrarily large ones exist.
 -/
 def Erdos213Question : Prop := ∀ n : ℕ, n ≥ 4 → ExistsIntDistSetGP n
 
-/--
+/-
 The status of Erdős #213 is OPEN. We state this as an axiom placeholder
 since neither proof nor disproof is known.
 -/
-axiom erdos_213_status_open : True -- Placeholder: question is open
 
 /- ## Known Constructions -/
 

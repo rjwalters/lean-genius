@@ -120,11 +120,9 @@ axiom erdos_anning_diameter_bound :
 
 /- ## Observations -/
 
-/-- **Chromatic vs Clique gap**: Even though the clique number is finite,
+/- **Chromatic vs Clique gap**: Even though the clique number is finite,
     the chromatic number could potentially be infinite — there is no
     general relationship forcing χ ≤ f(ω) for geometric distance graphs. -/
-axiom chromatic_clique_gap : True
 
-/-- **Related Problem #213**: Concerns integer distance sets without
+/- **Related Problem #213**: Concerns integer distance sets without
     the cocircularity restriction. -/
-axiom related_problem_213 : True

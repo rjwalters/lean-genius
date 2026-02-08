@@ -194,10 +194,9 @@ axiom sum_inequality :
     (distanceFrequency A (minDistance A) : ℝ) +
     (distanceFrequency A (maxDistance A)) ≤ 3 * n - c * Real.sqrt n
 
-/--
+/-
 **Open: What is the best constant c?**
 -/
-axiom best_constant_c_open : True
 
 /-
 ## Part VII: Convex Hull Variant
@@ -243,35 +242,31 @@ axiom regular_polygon_all_frequent (n : ℕ) (hn : Odd n) (hn3 : n ≥ 3) :
   let A := regularPolygon n hn
   ∀ d ∈ pairwiseDistances A, distanceFrequency A d ≥ n
 
-/--
+/-
 **Intuition:**
 In an odd regular polygon, each distance appears many times
 due to rotational symmetry. This shows f(d) ≥ n is achievable
 for all distances, not just extremes.
 -/
-axiom regular_polygon_intuition : True
 
 /-
 ## Part IX: Related Problems
 -/
 
-/--
+/-
 **Problem #132:**
 Related problem about repeated distances.
 -/
-axiom related_132 : True
 
-/--
+/-
 **Problem #756:**
 Another related problem about distances in point sets.
 -/
-axiom related_756 : True
 
-/--
+/-
 **Connection to unit distance problem:**
 How many pairs can achieve the same distance?
 -/
-axiom unit_distance_connection : True
 
 /-
 ## Part X: Summary

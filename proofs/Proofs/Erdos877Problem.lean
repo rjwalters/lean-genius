@@ -175,13 +175,12 @@ theorem main_question_resolved :
     ∃ c : ℚ, c < 1/2 ∧ ∀ n : ℕ, n ≥ 1 → (f_m n : ℚ) < 2 ^ (c * n) :=
   luczak_schoen_theorem
 
-/--
+/-
 **Corollary: f_m(n) = o(f(n)):**
 Cameron-Erdős also asked if f_m(n) = o(f(n)).
 Since f(n) ≥ 2^{cn} for some c close to 1/2 (the odds alone give ~2^{n/2}),
 and f_m(n) < 2^{c'n} for c' < 1/2, this is also resolved.
 -/
-axiom f_m_little_o_f : True  -- f_m(n) = o(f(n))
 
 /-
 ## Part VI: The BLST Sharp Bounds (2015, 2018)
@@ -222,41 +221,37 @@ axiom C_n_values : ∃ c0 c1 c2 c3 : ℚ,
 ## Part VII: Structure of Maximal Sum-Free Sets
 -/
 
-/--
+/-
 **The three canonical constructions:**
 Most maximal sum-free sets fall into one of three types:
 1. Subsets of odd numbers
 2. Subsets of {n/3+1, ..., n}
 3. Hybrid constructions
 -/
-axiom three_canonical_types : True
 
-/--
+/-
 **Why 1/4?**
 The exponent 1/4 arises because:
 - The odds give ~n/2 elements, but maximal subsets are constrained
 - Only ~n/4 elements can be chosen freely in typical maximal sets
 -/
-axiom why_quarter_exponent : True
 
-/--
+/-
 **Container method:**
 The BLST proof uses the container method: maximal sum-free sets
 are contained in a small number of "containers", each with
 limited freedom for element choices.
 -/
-axiom container_method : True
 
 /-
 ## Part VIII: Relationship to Erdős #748
 -/
 
-/--
+/-
 **Erdős #748: All sum-free sets:**
 Related problem asks about f(n), the count of all sum-free sets.
 Cameron-Erdős conjectured f(n) = Θ(2^{n/2}).
 -/
-axiom erdos_748_connection : True
 
 /--
 **Comparison:**

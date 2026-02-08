@@ -198,37 +198,33 @@ theorem erdos698_answer : erdos698Question := by
 ## Part VII: Implications and Generalizations
 -/
 
-/--
+/-
 **Divisibility Observation:**
 The fact that gcd(C(n,i), C(n,j)) > 1 for all valid pairs
 shows that the middle binomial coefficients share common factors.
 This is related to the arithmetic structure of Pascal's triangle.
 -/
-axiom divisibility_structure : True
 
-/--
+/-
 **Pascal's Triangle Primes:**
 The only primes in Pascal's triangle (besides the edges) are
 the entries C(p, k) where p is prime and 0 < k < p.
 These are all equal to p · (p-1)! / (k! (p-k)!) which is divisible by p.
 -/
-axiom pascal_primes : True
 
-/--
+/-
 **Multinomial Generalization:**
 Bergman actually proved a more general result about
 common divisors of multinomial coefficients.
 -/
-axiom multinomial_generalization : True
 
-/--
+/-
 **Connection to Number Theory:**
 The GCD of binomial coefficients relates to:
 1. p-adic valuations of factorials (Kummer's theorem)
 2. Lucas' theorem on binomial coefficients mod p
 3. Distribution of prime factors in products
 -/
-axiom number_theory_connections : True
 
 /-
 ## Part VIII: Kummer's Theorem Connection

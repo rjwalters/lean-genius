@@ -199,7 +199,7 @@ theorem erdos240_answer : erdos240Question := by
 ## Part VII: Construction Ideas
 -/
 
-/--
+/-
 **Tijdeman's Construction:**
 The infinite set P is constructed so that the primes are
 sufficiently "sparse" - they grow fast enough that consecutive
@@ -209,7 +209,6 @@ Key insight: If P contains all primes up to some bound,
 P-smooth numbers are dense. But if P is sparse (like powers
 of 2, or primes along a fast-growing sequence), gaps grow.
 -/
-axiom tijdeman_construction : True
 
 /--
 **Example: Powers of 2**
@@ -239,20 +238,18 @@ This is another consequence of Pólya-type results.
 axiom stormer_theorem (P : Finset ℕ) (hP : ∀ p ∈ P, Nat.Prime p) :
   ∃ N : ℕ, ∀ n > N, ¬(isPSmooth (↑P : Set ℕ) n ∧ isPSmooth (↑P : Set ℕ) (n + 1))
 
-/--
+/-
 **Connection to ABC Conjecture:**
 Better bounds on gaps would follow from the ABC conjecture.
 The ABC conjecture implies: for coprime a, b, c with a + b = c,
 c < rad(abc)^{1+ε} where rad is the radical (product of distinct primes).
 -/
-axiom abc_connection : True
 
-/--
+/-
 **Smooth numbers in arithmetic progressions:**
 How are P-smooth numbers distributed in arithmetic progressions?
 This is related to Linnik-type problems.
 -/
-axiom smooth_in_progressions : True
 
 /-
 ## Part IX: Summary

@@ -78,12 +78,10 @@ axiom covering_system_mechanism :
 
 /- ## Further Results -/
 
-/-- **Smaller starting values**: Vsemirnov (2004) found a primefree
+/- **Smaller starting values**: Vsemirnov (2004) found a primefree
     Lucas sequence with a₀ = 106276436867, a₁ = 35256392432,
     much smaller than Graham's original starting values. -/
-axiom vsemirnov_small_start : True
 
-/-- **Open Question**: Is every primefree Lucas sequence with coprime
+/- **Open Question**: Is every primefree Lucas sequence with coprime
     initial terms explained by a covering system? Or can such sequences
     exist for fundamentally different reasons? -/
-axiom covering_necessary_open : True

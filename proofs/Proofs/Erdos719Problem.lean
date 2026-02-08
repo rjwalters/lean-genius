@@ -165,7 +165,7 @@ theorem trivial_decomp_exists (n r : ℕ) (H : RUniformHypergraph (Fin n) r) :
 
 -- ## Relationship to Other Problems
 
-/-- The Erdős–Sauer conjecture relates to Turán-type extremal hypergraph
+/- The Erdős–Sauer conjecture relates to Turán-type extremal hypergraph
     theory. The graph case (r=2) connects to Erdős' result on edge-disjoint
     triangle decompositions.
 
@@ -173,4 +173,3 @@ theorem trivial_decomp_exists (n r : ℕ) (H : RUniformHypergraph (Fin n) r) :
     - #718: Lower bounds on Turán numbers for hypergraphs
     - #720: Turán densities for higher uniformity
     - #83: Triangle decomposition problems for dense graphs -/
-axiom related_problems : True

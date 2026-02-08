@@ -49,13 +49,11 @@ axiom bedert_bound :
     ∀ (A : Finset ℕ), (∀ a ∈ A, a > 0) → A.card > 0 →
       ∃ θ : ℝ, cosineSum A θ < -c * (A.card : ℝ) ^ (1 / 7 : ℝ)
 
-/-- **Ruzsa (2004)**: Improved Bourgain's (1986) bound. The minimum
+/- **Ruzsa (2004)**: Improved Bourgain's (1986) bound. The minimum
     cosine sum is at most −exp(O(√(log N))). -/
-axiom ruzsa_bound : True
 
-/-- **Bourgain (1986)**: First non-trivial bound for the cosine
+/- **Bourgain (1986)**: First non-trivial bound for the cosine
     problem, later improved by Ruzsa. -/
-axiom bourgain_bound : True
 
 /- ## Optimality -/
 
@@ -69,16 +67,13 @@ axiom sidon_optimality :
 
 /- ## Observations -/
 
-/-- **Connection to Additive Combinatorics**: The cosine problem is
+/- **Connection to Additive Combinatorics**: The cosine problem is
     intimately related to the structure of difference sets and
     exponential sums in additive number theory. -/
-axiom additive_combinatorics : True
 
-/-- **Green's Problem 81**: This appears as Problem 81 on Ben Green's
+/- **Green's Problem 81**: This appears as Problem 81 on Ben Green's
     list of open problems in additive combinatorics. -/
-axiom greens_list : True
 
-/-- **Polynomial Progress (2025)**: Both Bedert and Jin–Milojević–
+/- **Polynomial Progress (2025)**: Both Bedert and Jin–Milojević–
     Tomon–Zhang independently achieved polynomial bounds,
     representing major progress toward the √N conjecture. -/
-axiom polynomial_progress : True

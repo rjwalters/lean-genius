@@ -179,11 +179,10 @@ def erdos_91_strong_conjecture : Prop :=
       (∀ A ∈ configs, A.card = n ∧ IsOptimal A) ∧
       (∀ A B, A ∈ configs → B ∈ configs → A ≠ B → AreNonSimilar A B)
 
-/--
+/-
 **Status: OPEN**
 The conjecture is not proven.
 -/
-axiom erdos_91_open : True  -- Placeholder for the open status
 
 /-
 ## Part VI: Partial Evidence
@@ -210,12 +209,11 @@ theorem known_cases :
   · exact n4_two_optima
   · exact kovacs_2024_n5_unique
 
-/--
+/-
 **The n = 5 case was mysterious:**
 Erdős attributed the proof to "a colleague from Zagreb" whose letter he lost.
 Kovács (2024) finally published a complete proof.
 -/
-axiom zagreb_mystery_resolved : True
 
 /-
 ## Part VII: Connection to Distinct Distances Problem

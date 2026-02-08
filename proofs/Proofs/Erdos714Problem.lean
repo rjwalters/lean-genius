@@ -204,19 +204,17 @@ axiom projective_plane_construction :
     ∃ (G : SimpleGraph (Fin (q^2 + q + 1))) [DecidableRel G.Adj],
       isKrrFree G 2 ∧ edgeCount G = (q + 1) * (q^2 + q + 1)
 
-/--
+/-
 **Generalized Polygons:**
 For r = 3, constructions use generalized hexagons (girth 12 cages).
 These algebraic constructions give K_{3,3}-free graphs with n^{5/3} edges.
 -/
-axiom generalized_hexagon_construction : True
 
-/--
+/-
 **Norm Graphs (Kollár-Rónyai-Szabó):**
 Algebraic constructions using norms over finite fields give
 improvements for some values of r, but still don't achieve the conjectured bound.
 -/
-axiom norm_graph_construction : True
 
 /-
 ## Part VII: Connection to Other Problems
@@ -232,19 +230,17 @@ theorem k22_equals_c4 :
   intro G _
   constructor <;> intro _ <;> trivial
 
-/--
+/-
 **Problem #147: Related Turán problem**
 Problem #147 asks about degenerate Turán numbers.
 -/
-axiom related_problem_147 : True
 
-/--
+/-
 **Zarankiewicz Problem z(m,n;r,s):**
 The full Zarankiewicz problem asks for the maximum number of 1s
 in an m×n 0-1 matrix with no all-1s r×s submatrix.
 ex(n; K_{r,r}) = z(n,n;r,r)/2 (approximately).
 -/
-axiom zarankiewicz_matrix_formulation : True
 
 /-
 ## Part VIII: Main Results Summary

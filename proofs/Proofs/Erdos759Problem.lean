@@ -263,14 +263,13 @@ axiom high_girth_cochromatic :
 ## Part IX: Connection to Graph Structure
 -/
 
-/--
+/-
 **Why √n / log n?**
 - √n relates to the number of vertices in dense surface graphs
 - log n factor comes from girth considerations
 - High-girth graphs contribute to the lower bound
 - The upper bound uses structural properties of surface embeddings
 -/
-axiom growth_rate_intuition : True
 
 /--
 **Planar Case (n = 0):**

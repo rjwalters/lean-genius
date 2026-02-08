@@ -172,11 +172,10 @@ theorem why_first_one_matters :
     ∀ k : ℕ, powerSum z k = 1 + ∑ i : {j : Fin n | j.val > 0}, (z i)^k := by
   sorry
 
-/--
+/-
 **Cancellation Challenge:**
 The other terms can cancel the 1, but not too much if we choose k wisely.
 -/
-axiom cancellation_bounds : True
 
 /-
 ## Part VI: Special Cases
@@ -196,12 +195,11 @@ def nthRootsOfUnity (n : ℕ) : Fin n → ℂ :=
 axiom roots_of_unity_sum (n : ℕ) (hn : n ≥ 1) (k : ℕ) :
   powerSum (nthRootsOfUnity n) k = if n ∣ k then n else 0
 
-/--
+/-
 **Implication for the Problem:**
 Roots of unity don't satisfy z₁ = 1 in general (unless n-th root = 1).
 The problem is more about arbitrary configurations.
 -/
-axiom roots_of_unity_note : True
 
 /-
 ## Part VII: Related Problem
@@ -215,12 +213,11 @@ def relatedProblem973 : Prop :=
   -- See Problem #973 for related questions
   True
 
-/--
+/-
 **Connection:**
 Both problems explore how power sums of complex numbers behave
 under various constraints.
 -/
-axiom problem_connection : True
 
 /-
 ## Part VIII: The Optimal Constant
@@ -244,11 +241,10 @@ axiom computational_evidence :
   -- Experiments suggest the true optimal c ≈ 0.7
   True
 
-/--
+/-
 **Gap:**
 The gap between c > 1/2 (proved) and c ≈ 0.7 (conjectured) remains.
 -/
-axiom gap_note : True
 
 /-
 ## Part IX: Summary

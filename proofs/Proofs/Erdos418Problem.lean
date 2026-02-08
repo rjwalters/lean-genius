@@ -189,11 +189,10 @@ def HasPositiveDensity (S : Set ℕ) : Prop :=
   ∃ δ > 0, ∀ᶠ n in Filter.atTop,
     (S ∩ Finset.range (n + 1)).toFinite.toFinset.card ≥ δ * n
 
-/-- **Open Question**: Do non-cototients have positive density?
+/- **Open Question**: Do non-cototients have positive density?
 
     This is mentioned as open in the literature. The Browkin-Schinzel
     construction gives a sparse set (2^k · 509203), not positive density. -/
-axiom density_open : True  -- Placeholder for open status
 
 /-
 ## Part VIII: Related Function σ(n) - n

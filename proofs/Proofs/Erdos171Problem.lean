@@ -135,9 +135,8 @@ theorem current_bounds : 5 ≤ chromaticNumberPlane ∧ chromaticNumberPlane ≤
 
 /- ## Related Results -/
 
-/-- The fractional chromatic number of the plane is known exactly: 4.
+/- The fractional chromatic number of the plane is known exactly: 4.
     (It equals the supremum of fractional chromatic numbers of finite unit distance graphs.) -/
-axiom fractional_chromatic : True
 
 -- χ_f(ℝ²) = 4
 

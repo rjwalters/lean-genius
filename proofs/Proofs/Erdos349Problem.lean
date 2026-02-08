@@ -78,13 +78,11 @@ axiom floor_3_2_even_infinitely :
 
 /- ## Observations -/
 
-/-- **Waring-Type Connection**: Completeness of ⌊tα^n⌋ relates to
+/- **Waring-Type Connection**: Completeness of ⌊tα^n⌋ relates to
     representation problems in additive number theory, similar in
     spirit to Waring's problem for exponential bases. -/
-axiom waring_connection : True
 
-/-- **Fibonacci Threshold**: The golden ratio (1+√5)/2 is the
+/- **Fibonacci Threshold**: The golden ratio (1+√5)/2 is the
     growth rate of the Fibonacci sequence, which is known to be
     a complete sequence. The conjecture suggests completeness
     persists for slightly faster growth rates. -/
-axiom fibonacci_threshold : True

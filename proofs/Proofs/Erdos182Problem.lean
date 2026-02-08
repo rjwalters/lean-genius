@@ -145,9 +145,8 @@ axiom k_equals_2_is_forest (G : SimpleGraph V) :
 axiom forest_edge_bound (G : SimpleGraph V) [DecidableRel G.Adj] (h : G.IsAcyclic) :
     G.edgeFinset.card ≤ Fintype.card V - 1
 
-/-- For k = 1, a 1-regular graph is a perfect matching.
+/- For k = 1, a 1-regular graph is a perfect matching.
 Every graph with ≥ n/2 edges in each component contains a perfect matching. -/
-axiom k_equals_1_matching : True  -- Placeholder for matching theory
 
 /-
 ## Connected Variant

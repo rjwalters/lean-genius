@@ -199,7 +199,7 @@ axiom anti_pasch_sts_exist (n : ℕ) (hn : IsAdmissible n) (hn' : n ≥ 7) :
 ## Part VII: Proof Techniques
 -/
 
-/--
+/-
 **Random Construction:**
 The KSSS proof uses a random greedy algorithm:
 1. Order pairs randomly
@@ -208,14 +208,12 @@ The KSSS proof uses a random greedy algorithm:
 
 Key tools: Rödl nibble method, spread measure, concentration inequalities.
 -/
-axiom ksss_random_construction : True
 
-/--
+/-
 **The Spread Measure:**
 A key technical tool measuring how "spread out" a partial STS is,
 ensuring the greedy process maintains the high-girth property.
 -/
-axiom spread_measure_technique : True
 
 /-
 ## Part VIII: Related Problems
@@ -273,10 +271,9 @@ theorem erdos_207_summary :
     · intro hadm
       exact h.mpr ⟨hn, hadm⟩
 
-/--
+/-
 **Problem Status:**
 Solved by Kwan, Sah, Sawhney, and Simkin in 2022.
 -/
-axiom erdos_207_status : True
 
 end Erdos207

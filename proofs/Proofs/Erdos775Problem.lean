@@ -262,12 +262,11 @@ theorem graphs_vs_hypergraphs :
 ## Part X: Related Problems
 -/
 
-/--
+/-
 **Connection to Erdős Problem #927:**
 Problem #927 asks related questions about clique structures in hypergraphs.
 Both problems explore the combinatorial limitations of hypergraph cliques.
 -/
-axiom erdos_927_related : True  -- Placeholder for the connection
 
 /--
 **Summary Theorem:**

@@ -67,14 +67,11 @@ axiom initial_values :
 
 /- ## Observations -/
 
-/-- **Hofstadter Origin**: the sequence was proposed by Hofstadter and
+/- **Hofstadter Origin**: the sequence was proposed by Hofstadter and
     communicated to Erdős. It appears in Erdős–Graham (1980). -/
-axiom hofstadter_origin : True
 
-/-- **Self-Referential Recursion**: f(n) depends on f at points
+/- **Self-Referential Recursion**: f(n) depends on f at points
     determined by earlier values of f itself. This self-referential
     nature makes analysis extremely difficult. -/
-axiom self_referential : True
 
-/-- **Eventually Constant?**: it is open whether f becomes constant. -/
-axiom eventually_constant_open : True
+/- **Eventually Constant?**: it is open whether f becomes constant. -/

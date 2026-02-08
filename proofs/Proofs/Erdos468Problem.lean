@@ -91,5 +91,4 @@ axiom smallest_partial_sum (n : ℕ) (hn : 2 ≤ n) :
 axiom largest_partial_sum (n : ℕ) (hn : 2 ≤ n) :
     (n.divisors.sum id - 1) ∈ partialDivisorSums n
 
-/-- OEIS A167485 relates to the sequence of partial sums of divisors. -/
-axiom oeis_context : True
+/- OEIS A167485 relates to the sequence of partial sums of divisors. -/

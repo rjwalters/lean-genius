@@ -69,8 +69,7 @@ def ErdosProblem307 : Prop :=
   ∃ P Q : Finset ℕ, IsSetOfPrimes P ∧ IsSetOfPrimes Q ∧
     reciprocalProduct P Q = 1
 
-/-- The open status is a placeholder. -/
-axiom erdos_307_open : True
+/- The open status is a placeholder. -/
 
 /- ## Part III: The Solved Coprime Version -/
 
@@ -154,8 +153,7 @@ def ErdosProblem307CoprimeStrengthened : Prop :=
     IsPairwiseCoprime P ∧ IsPairwiseCoprime Q ∧
     reciprocalProduct P Q = 1
 
-/-- Status: The strengthened coprime version remains OPEN. -/
-axiom erdos_307_coprime_strengthened_open : True
+/- Status: The strengthened coprime version remains OPEN. -/
 
 /- ## Part V: Constraints on Prime Solutions -/
 

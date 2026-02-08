@@ -154,8 +154,7 @@ def ErdosProblem859 : Prop :=
     ∃ d : ℕ → ℝ, (∀ t > 0, HasNaturalDensity (DivisorSumSet t) (d t)) ∧
       (fun t : ℕ => d t) ~[atTop] (fun t => c₁ / (log t)^c₂)
 
-/-- The status: OPEN. We don't know if precise asymptotics exist. -/
-axiom erdos_859_open : True  -- Placeholder for open status
+/- The status: OPEN. We don't know if precise asymptotics exist. -/
 
 /- ## Part VI: The Divisor Function -/
 

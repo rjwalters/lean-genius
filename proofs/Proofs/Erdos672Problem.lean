@@ -226,8 +226,7 @@ The probability that a "random" product of k near-coprime factors
 is a perfect l-th power is extremely small, heuristically ~ 1/P^(1-1/l).
 -/
 
-/-- Heuristic: Products of k ≥ 4 terms in AP are generically not perfect powers. -/
-axiom heuristic_argument : True
+/- Heuristic: Products of k ≥ 4 terms in AP are generically not perfect powers. -/
 
 /-
 ## Summary

@@ -201,48 +201,43 @@ theorem erdos_537_disproved : ¬Erdos537Conjecture := by
 ## Part VI: Understanding Ruzsa's Construction
 -/
 
-/--
+/-
 **Why Lacunary?**
 The large gaps (pᵢ₊₁ > 2pᵢ) ensure that if pq | a for a in the set,
 then q/p > 2. This is incompatible with a₂/a₃ < 2.
 -/
-axiom lacunary_explanation : True
 
-/--
+/-
 **The Prime Ratio Argument:**
 If a₁p₁ = a₂p₂ = a₃p₃ and a₂ > a₃ (WLOG), then p₂ < p₃.
 Since p₂p₃ | a₁, the gap property gives p₃/p₂ > 2.
 But p₃/p₂ = a₂/a₃ < 2. Contradiction.
 -/
-axiom prime_ratio_argument : True
 
-/--
+/-
 **Density Estimate:**
 The lacunary squarefree numbers have positive density.
 This uses a counting argument on the number of ways to
 choose primes with the gap property.
 -/
-axiom density_estimate : True
 
 /-
 ## Part VII: Connection to Related Problems
 -/
 
-/--
+/-
 **Connection to Erdős #536:**
 Problem #536 asks a similar question with weaker conditions.
 A positive answer to #537 would imply a positive answer to #536.
 Since #537 is false, this implication gives no information about #536.
 -/
-axiom connection_536 : True
 
-/--
+/-
 **Multiplicative Structure:**
 This problem relates to the multiplicative structure of dense sets.
 Ruzsa's construction shows that density alone doesn't force
 multiplicative coincidences.
 -/
-axiom multiplicative_structure : True
 
 /-
 ## Part VIII: Main Results

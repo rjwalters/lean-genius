@@ -68,15 +68,12 @@ axiom erdos_706_exponential_upper :
 
 /- ## Observations -/
 
-/-- **Hadwiger–Nelson Connection**: the r = 1 case is exactly
+/- **Hadwiger–Nelson Connection**: the r = 1 case is exactly
     the Hadwiger–Nelson problem (Erdős Problem #508). -/
-axiom hadwiger_nelson_connection : True
 
-/-- **Higher-Dimensional Analogue**: Erdős Problem #704 asks
+/- **Higher-Dimensional Analogue**: Erdős Problem #704 asks
     about the chromatic number of unit-distance graphs in ℝⁿ,
     where Frankl–Wilson gives exponential lower bounds. -/
-axiom higher_dim_analogue : True
 
-/-- **Girth Variant**: Erdős Problem #705 asks whether large girth
+/- **Girth Variant**: Erdős Problem #705 asks whether large girth
     forces the chromatic number of unit-distance graphs down to 3. -/
-axiom girth_variant : True

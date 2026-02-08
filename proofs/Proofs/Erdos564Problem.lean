@@ -111,8 +111,7 @@ This would close the gap in tower height between upper and lower bounds.
 def erdos_564_conjecture : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ n : ℕ in atTop, (R 3 n : ℝ) ≥ (2 : ℝ)^((2 : ℝ)^(c * n))
 
-/-- The problem remains open. -/
-axiom erdos_564_is_open : True
+/- The problem remains open. -/
 
 /-
 ## Tower Functions

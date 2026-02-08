@@ -122,8 +122,7 @@ axiom f_2 : f 2 = 2
 /-- Known: f(3) = 3 -/
 axiom f_3 : f 3 = 3
 
-/-- Erdős did not know f(4) -/
-axiom f_4_unknown : True
+/- Erdős did not know f(4) -/
 
 /-
 ## Part IV: The Exponential Question
@@ -209,10 +208,9 @@ axiom fano_plane_example :
 ## Part VIII: Proof Technique
 -/
 
-/-- The proof uses probabilistic methods and the Lovász Local Lemma.
+/- The proof uses probabilistic methods and the Lovász Local Lemma.
     The key insight: if all degrees are small, a random 2-coloring
     works with positive probability, contradicting χ(H) = 3. -/
-axiom lovasz_local_lemma_application : True
 
 /-- Contrapositive: χ(H) = 3 implies some vertex has high degree.
     This is the contrapositive of erdos_lovasz_bound: if all vertices have

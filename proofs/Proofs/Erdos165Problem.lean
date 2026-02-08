@@ -297,7 +297,6 @@ theorem erdos_165 : ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
   · exact hk₁ k (le_of_max_le_left hk)
   · exact hk₂ k (le_of_max_le_right hk)
 
-/-- The prize ($250) was claimed for establishing the asymptotic order. -/
-axiom prize_claimed : True  -- Kim's 1995 result established the order
+/- The prize ($250) was claimed for establishing the asymptotic order. -/
 
 end Erdos165

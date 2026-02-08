@@ -80,6 +80,5 @@ axiom generated_closed :
   ∀ x y, x ∈ generatedSet → y ∈ generatedSet → x ≠ y → x * y ≥ 2 →
     x * y - 1 ∈ generatedSet
 
-/-- **Guy E31**: this problem appears as E31 in Guy's 'Unsolved Problems
+/- **Guy E31**: this problem appears as E31 in Guy's 'Unsolved Problems
     in Number Theory' and as Problem 63 on Green's open problems list. -/
-axiom guy_e31_reference : True

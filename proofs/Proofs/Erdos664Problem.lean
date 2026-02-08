@@ -180,11 +180,9 @@ def ErdosQuestion664_Original : Prop :=
       ∃ B : Finset (Fin n), ∃ k : ℕ,
         IsBlocker A B ∧ HasBoundedIntersection A B k
 
-/-- The original version remains OPEN but is conjectured false. -/
-axiom original_version_open : True
+/- The original version remains OPEN but is conjectured false. -/
 
-/-- Alon conjectures the original is also false. -/
-axiom alon_conjecture_original_false : True
+/- Alon conjectures the original is also false. -/
 
 /-
 ## Part VII: Finite Geometry Interpretation

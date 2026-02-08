@@ -266,7 +266,6 @@ theorem erdos_113_forward (g : ℕ) :
     (fun n => (extremalNumber n g : ℝ)) ≪ (fun n => (n : ℝ).rpow (3/2)) :=
   forward_direction g
 
-/-- The $500 prize was claimed by Janzer for the counterexample. -/
-axiom prize_claimed : True  -- Janzer 2023
+/- The $500 prize was claimed by Janzer for the counterexample. -/
 
 end Erdos113

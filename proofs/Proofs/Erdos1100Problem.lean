@@ -101,10 +101,9 @@ def question1_almost_all_growth : Prop :=
         (fun n => (tauPerp n : ℝ) / (omega n) < M ∧ omega n > 0)
         (Finset.range x)).card / (x : ℝ) < ε
 
-/--
+/-
 **Status of Question 1: OPEN**
 -/
-axiom question1_open : True
 
 /-
 ## Part IV: Question 2 - Upper Bound
@@ -129,10 +128,9 @@ axiom erdos_hall_max_lower_bound :
   ∀ ε > 0, ∃ X : ℕ, ∀ x : ℕ, x ≥ X →
     ∃ n : ℕ, n < x ∧ (tauPerp n : ℝ) > exp ((log (log x))^(2 - ε))
 
-/--
+/-
 **Status of Question 2: OPEN**
 -/
-axiom question2_open : True
 
 /-
 ## Part V: Question 3 - Growth of g(k)
@@ -208,7 +206,7 @@ example : omega 12 = 2 := by native_decide
 ## Part VII: Why This Problem Is Hard
 -/
 
-/--
+/-
 **Structural Insight:**
 The coprime consecutive divisors depend delicately on the factorization of n.
 For n = p₁^a₁ · ... · p_k^a_k:
@@ -218,7 +216,6 @@ For n = p₁^a₁ · ... · p_k^a_k:
 
 The exponential bounds on g(k) show the structure is neither trivial nor chaotic.
 -/
-axiom structural_insight : True
 
 /-
 ## Part VIII: Summary

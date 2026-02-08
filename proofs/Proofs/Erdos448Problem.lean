@@ -275,12 +275,11 @@ axiom problem_446_connection :
       (τ⁺(n) : ℝ) / τ(n) ≤ 1 ∧  -- trivially bounded above by 1
       True  -- connection to #446
 
-/--
+/-
 **Connection to Problem #449:**
 Problem #449 asks about divisors in short intervals [y, 2y).
 The dyadic structure in τ⁺ is related to this setting.
 -/
-axiom problem_449_connection : True  -- placeholder for relationship
 
 /-
 ## Part VIII: Summary

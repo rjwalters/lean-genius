@@ -271,18 +271,16 @@ example : PairCountCondition [3, 3, 3, 3, 3] 6 := by
 ## Part VIII: Related Problems
 -/
 
-/--
+/-
 **Problem #733:**
 A related problem about block designs.
 -/
-axiom problem_733_related : True
 
-/--
+/-
 **Connection to Steiner systems:**
 A Steiner system S(2, k, n) is a PBD where all blocks have size k.
 These are very constrained.
 -/
-axiom steiner_systems_special_case : True
 
 /-
 ## Part IX: Summary

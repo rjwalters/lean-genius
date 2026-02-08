@@ -85,13 +85,11 @@ axiom case_k_2 :
 
 /- ## Observations -/
 
-/-- **The conjecture says forbidding C_{2k−1} is "free"**: since
+/- **The conjecture says forbidding C_{2k−1} is "free"**: since
     ex(n; C_{2k}) already has the conjectured form, additionally
     forbidding C_{2k−1} should not change the asymptotics. -/
-axiom odd_cycle_free_observation : True
 
-/-- **Algebraic constructions**: For k = 2, 3, 5, algebraic
+/- **Algebraic constructions**: For k = 2, 3, 5, algebraic
     constructions (e.g., incidence graphs of projective planes)
     provide C_{2k}-free graphs with ~(n/2)^{1+1/k} edges that
     also happen to avoid C_{2k−1}. -/
-axiom algebraic_constructions : True

@@ -164,12 +164,11 @@ is exponentially bounded away from 2^n.
 -/
 axiom frankl_rodl_1987 : mainQuestion
 
-/--
+/-
 **The Middle Range:**
 When r is a constant fraction of n (not too small, not too close to n/2),
 the forbidden intersection constraint becomes very powerful.
 -/
-axiom middle_range_intuition : True
 
 /-
 ## Part VI: Connection to Chromatic Numbers
@@ -229,12 +228,11 @@ axiom frankl_wilson_theorem :
 ## Part VIII: Related Problem #702
 -/
 
-/--
+/-
 **Problem #702 - The k-uniform case:**
 What is the maximum size of a k-uniform family (all sets have size k)
 avoiding r-intersection?
 -/
-axiom erdos_702_connection : True
 
 /-
 ## Part IX: Summary
