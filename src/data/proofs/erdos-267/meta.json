@@ -35,7 +35,71 @@
       "Weaker variant (n_k/k → ∞) also OPEN"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "summary": "Fibonacci reciprocal sum irrationality conjecture, partially solved cases",
+      "startLine": 1,
+      "endLine": 19
+    },
+    {
+      "id": "fibonacci-background",
+      "title": "Fibonacci Background",
+      "summary": "Fibonacci sequence definition, golden ratio, exponential growth",
+      "startLine": 27,
+      "endLine": 47
+    },
+    {
+      "id": "verified-values",
+      "title": "Verified Fibonacci Values",
+      "summary": "fib_one through fib_twelve verified by rfl, fib_pos for n ≥ 1",
+      "startLine": 49,
+      "endLine": 94
+    },
+    {
+      "id": "convergence",
+      "title": "Series Convergence",
+      "summary": "fibonacci_reciprocal_summable axiom, comparison with geometric series",
+      "startLine": 96,
+      "endLine": 106
+    },
+    {
+      "id": "solved-cases",
+      "title": "Solved Cases",
+      "summary": "good_bicknell_hoggatt (2^n indices), andre_jeannin (full sum) axioms",
+      "startLine": 108,
+      "endLine": 128
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "summary": "HasRatioBoundedBelow, Erdos267Conjecture, erdos_267_open by classical EM",
+      "startLine": 130,
+      "endLine": 168
+    },
+    {
+      "id": "weaker-variant",
+      "title": "Weaker Variant (OPEN)",
+      "summary": "HasSuperlinearGrowth, Erdos267WeakerVariant — n_k/k → ∞ might suffice",
+      "startLine": 170,
+      "endLine": 189
+    },
+    {
+      "id": "numerical",
+      "title": "Numerical Observations",
+      "summary": "pow_two_series_first_terms (verified by native_decide), sum ≈ 3.3598",
+      "startLine": 191,
+      "endLine": 216
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Problems #250 and #259, connections to continued fractions and transcendence",
+      "startLine": 218,
+      "endLine": 233
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #267 is PARTIALLY SOLVED. The specific cases Σ 1/F_{2^n} and Σ 1/F_n are proved irrational, but the general conjecture for arbitrary ratio bound c > 1 remains open. Paradoxically, the strongest result (c=1, all terms) is proved while intermediate cases are open.",
     "implications": "The results connect Fibonacci numbers to transcendence theory and continued fractions. Understanding which subsequences give irrational sums reveals deep structure in the Fibonacci sequence.",
