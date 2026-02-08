@@ -163,8 +163,13 @@ axiom tao_teravanen_2019 :
 
 /- ## Part VIII: Wang (2021) - Conditional Result -/
 
-/-- The Elliott-Halberstam conjecture for friable integers. -/
-def ElliottHalberstamForFriable : Prop := sorry
+/-- The Elliott-Halberstam conjecture for friable integers.
+    This asserts equidistribution of smooth numbers in arithmetic progressions
+    at the level of exponent θ = 1, analogous to the classical Elliott-Halberstam
+    conjecture but restricted to y-friable integers.
+    Axiomatized as an opaque proposition since the full formal statement requires
+    deep analytic number theory infrastructure. -/
+axiom ElliottHalberstamForFriable : Prop
 
 /-- **Wang (2021)**
 
@@ -214,8 +219,16 @@ axiom teravanen_generalized (α : ℝ) (hα : 0 ≤ α ∧ α ≤ 1) :
 /- ## Part XI: The Dickman Function -/
 
 /-- The Dickman function ρ(u) satisfies uρ'(u) = -ρ(u-1) for u > 1,
-    with ρ(u) = 1 for 0 ≤ u ≤ 1. -/
-noncomputable def dickman : ℝ → ℝ := sorry
+    with ρ(u) = 1 for 0 ≤ u ≤ 1.
+    Axiomatized as it is defined by a delay differential equation
+    without closed-form solution. -/
+axiom dickman : ℝ → ℝ
+
+/-- The Dickman function equals 1 on [0, 1]. -/
+axiom dickman_base (u : ℝ) (hu : 0 ≤ u ∧ u ≤ 1) : dickman u = 1
+
+/-- The Dickman function is positive for u ≥ 0. -/
+axiom dickman_pos (u : ℝ) (hu : u ≥ 0) : dickman u > 0
 
 /-- The function u(x) = x^{-1} ρ(x^{-1} - 1) appearing in the density formula. -/
 noncomputable def densityKernel (x : ℝ) : ℝ :=

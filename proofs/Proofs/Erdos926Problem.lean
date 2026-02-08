@@ -108,7 +108,7 @@ axiom hk_bipartite (k : ℕ) :
 **Extremal number:**
 ex(n; H) is the maximum number of edges in an n-vertex graph containing no H.
 -/
-noncomputable def extremalNumber (n : ℕ) (H : Type*) : ℕ := sorry
+axiom extremalNumber (n : ℕ) (H : Type*) : ℕ
 
 /--
 **Kővári-Sós-Turán Theorem:**

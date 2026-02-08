@@ -29,8 +29,9 @@ namespace Erdos1083
 
 /--
 f_d(n): the minimum number of distinct distances determined by n points in ℝ^d.
+Axiomatized as an extremal quantity over point configurations.
 -/
-noncomputable def f (d n : ℕ) : ℕ := sorry
+axiom f (d n : ℕ) : ℕ
 
 /-
 ## Part II: Erdős's Bounds

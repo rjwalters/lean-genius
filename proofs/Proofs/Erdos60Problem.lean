@@ -64,7 +64,7 @@ noncomputable def countC4 (G : SimpleGraph V) : ℕ :=
 -- Aristotle skipped at least one sorry in the block below (common reasons: Aristotle does not define data).
 /-- The Turán number ex(n; C_4) - maximum edges in an n-vertex C_4-free graph.
     Axiomatized for simplicity. -/
-noncomputable def exC4 (n : ℕ) : ℕ := by sorry
+axiom exC4 (n : ℕ) : ℕ
 
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 

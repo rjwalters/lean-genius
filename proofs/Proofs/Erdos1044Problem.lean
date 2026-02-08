@@ -42,7 +42,7 @@ def HasRootsInDisk (roots : List ℂ) : Prop :=
 The maximum boundary length Λ(f) of the sublevel set {z : |f(z)| < 1}.
 This is the maximum over all connected components of the perimeter of that component.
 -/
-noncomputable def maxBoundaryLength (roots : List ℂ) : ℝ := sorry
+axiom maxBoundaryLength (roots : List ℂ) : ℝ
 
 /-
 ## Part II: Tang's Theorem

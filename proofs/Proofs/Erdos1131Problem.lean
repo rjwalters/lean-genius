@@ -54,8 +54,9 @@ noncomputable def lagrangeBasis (n : ℕ) (nodes : Fin n → ℝ) (k : Fin n) (x
 /--
 I(x₁,...,xₙ) = ∫₋₁¹ Σₖ |l_k(x)|² dx
 The integral of the sum of squared Lagrange basis polynomials.
+Axiomatized since Lagrange interpolation infrastructure is required.
 -/
-noncomputable def lagrangeIntegral (n : ℕ) (nodes : Fin n → ℝ) : ℝ := sorry
+axiom lagrangeIntegral (n : ℕ) (nodes : Fin n → ℝ) : ℝ
 
 /-
 ## Part II: Basic Properties

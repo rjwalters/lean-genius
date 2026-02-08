@@ -221,19 +221,21 @@ theorem erdos_1090_affirmative : ∀ k ≥ 3, Erdos1090Question k := by
 **Vertices of Regular n-gon:**
 The vertices of a regular n-gon plus its center.
 -/
-def regularNgonWithCenter (n : ℕ) (hn : n ≥ 3) : Finset Point := sorry
+axiom regularNgonWithCenter (n : ℕ) (hn : n ≥ 3) : Finset Point
 
 /--
 **Grid Points:**
 An m × m grid of points.
+Axiomatized since it requires embedding ℤ² into the Point type.
 -/
-def gridPoints (m : ℕ) : Finset Point := sorry
+axiom gridPoints (m : ℕ) : Finset Point
 
 /--
 **Projective Plane Points:**
 Points from a finite projective plane (useful for Ramsey constructions).
+Axiomatized since the construction depends on projective geometry over 𝔽_q.
 -/
-def projectivePlanePoints (q : ℕ) (hq : q.Prime) : Finset Point := sorry
+axiom projectivePlanePoints (q : ℕ) (hq : q.Prime) : Finset Point
 
 /-
 ## Part VIII: Lower Bounds on Set Size

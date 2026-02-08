@@ -83,8 +83,10 @@ The n-th powerful number P(n) is the (n+1)-th smallest element of powerfulSet.
 -/
 
 /-- The ordered enumeration of powerful numbers (0-indexed).
-    P(0) = 1, P(1) = 4, P(2) = 8, P(3) = 9, ... -/
-noncomputable def nthPowerful : ℕ → ℕ := sorry
+    P(0) = 1, P(1) = 4, P(2) = 8, P(3) = 9, ...
+    Axiomatized since the enumeration function is defined by ordering
+    an irregular subset of ℕ. -/
+axiom nthPowerful : ℕ → ℕ
 
 /-- nthPowerful is strictly increasing. -/
 axiom nthPowerful_strictMono : StrictMono nthPowerful

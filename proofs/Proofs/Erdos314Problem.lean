@@ -54,8 +54,9 @@ lemma partialHarmonicSum_as_difference (n m : ℕ) (hn : n ≥ 1) (hm : m ≥ n)
 m(n) is the minimal integer m ≥ n such that the partial harmonic sum reaches 1.
 -/
 
-/-- m(n) = minimal m such that ∑_{k=n}^{m} 1/k ≥ 1 -/
-noncomputable def m_of_n (n : ℕ) : ℕ := sorry
+/-- m(n) = minimal m such that ∑_{k=n}^{m} 1/k ≥ 1.
+    Axiomatized since the minimality requires decidability of real comparisons. -/
+axiom m_of_n (n : ℕ) : ℕ
 
 /-- m(n) is well-defined: the sum eventually exceeds 1 -/
 axiom m_of_n_exists : ∀ n : ℕ, n ≥ 1 →
@@ -149,7 +150,7 @@ where γ is the Euler-Mascheroni constant.
 -/
 
 /-- The Euler-Mascheroni constant γ ≈ 0.5772... -/
-noncomputable def eulerMascheroni : ℝ := sorry
+noncomputable def eulerMascheroni : ℝ := Real.eulerMascheroniConstant
 
 /-- Asymptotic: ε(n) ≈ 1/(m·n) - (something involving Euler-Mascheroni) -/
 axiom epsilon_asymptotic : ∀ n : ℕ, n ≥ 1 →

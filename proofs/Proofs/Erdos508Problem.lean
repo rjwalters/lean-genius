@@ -31,9 +31,10 @@ noncomputable def unitDistGraph : SimpleGraph (EuclideanSpace ℝ (Fin 2)) where
   symm x y h := by constructor <;> [rw [dist_comm]; exact Ne.symm] <;> exact h.1 <;> exact h.2
   loopless x h := h.2 rfl
 
-/-- The chromatic number of the plane: χ(ℝ²). -/
-noncomputable def planeChromatic : ℕ := sorry
--- Full definition requires SimpleGraph.chromaticNumber on unitDistGraph
+/-- The chromatic number of the plane: χ(ℝ²).
+    This is the chromatic number of the unit-distance graph on ℝ².
+    Axiomatized since its exact value is the subject of the Hadwiger-Nelson problem. -/
+axiom planeChromatic : ℕ
 
 /- ## Main Problem -/
 

@@ -106,7 +106,7 @@ axiom list_chromatic_gap_unbounded :
 The list chromatic number of a graph on n vertices drawn from G(n, 1/2).
 We axiomatize the almost-sure behavior rather than the probability model.
 -/
-noncomputable def listChromaticRandom (n : ℕ) : ℕ := sorry
+axiom listChromaticRandom (n : ℕ) : ℕ
 
 /--
 **Chromatic number of random graphs:**

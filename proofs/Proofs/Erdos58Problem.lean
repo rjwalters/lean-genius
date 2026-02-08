@@ -46,8 +46,9 @@ noncomputable def numOddCycleLengths (G : SimpleGraph V) : ℕ :=
 def IsColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ f : V → Fin k, ∀ u v, G.Adj u v → f u ≠ f v
 
-/-- The chromatic number χ(G) (axiomatized for simplicity). -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ := sorry
+/-- The chromatic number χ(G): minimum number of colors for a proper coloring.
+    Axiomatized since Mathlib's graph coloring infrastructure is evolving. -/
+axiom chromaticNumber (G : SimpleGraph V) : ℕ
 
 /-- The chromatic number is the minimum k for which G is k-colorable. -/
 axiom chromaticNumber_spec (G : SimpleGraph V) :

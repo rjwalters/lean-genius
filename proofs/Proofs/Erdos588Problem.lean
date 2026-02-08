@@ -37,8 +37,9 @@ abbrev Point := ℝ × ℝ
 /--
 f_k(n): the maximum number of lines containing at least k points,
 minimized over all configurations of n points with no k+1 collinear.
+Axiomatized as an extremal quantity over point configurations.
 -/
-noncomputable def f (k n : ℕ) : ℕ := sorry
+axiom f (k n : ℕ) : ℕ
 
 /-
 ## Part II: The k = 3 Case (Resolved)

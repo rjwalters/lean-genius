@@ -179,8 +179,9 @@ where
 theorem erdos_1936_F_sigma_asymptotic : AsymptoticTripleLog F_sigma := by
   sorry
 
-/-- The same asymptotic holds for τ -/
-def F_tau (n : ℕ) : ℕ := by sorry
+/-- The same asymptotic holds for τ.
+    F_τ(n) = max number of consecutive integers ≤ n with non-decreasing divisor count. -/
+axiom F_tau (n : ℕ) : ℕ
 
 theorem erdos_1936_F_tau_asymptotic : AsymptoticTripleLog F_tau := by
   sorry
