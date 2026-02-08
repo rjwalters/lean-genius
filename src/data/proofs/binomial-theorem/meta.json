@@ -7,92 +7,117 @@
     "author": "Al-Karaji, Newton (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_theorem",
     "date": "~1000 (al-Karaji), 1665 (Newton)",
-    "status": "complete",
+    "status": "verified",
     "tags": ["algebra", "combinatorics", "classic", "beginner"],
     "proofRepoPath": "Proofs/BinomialTheorem.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "add_pow", "description": "The binomial theorem expansion", "module": "Mathlib.Data.Nat.Choose.Sum"},
-      {"theorem": "Nat.sum_range_choose", "description": "Sum of binomial coefficients = 2^n", "module": "Mathlib.Data.Nat.Choose.Sum"},
+      {"theorem": "add_pow", "description": "The binomial theorem expansion for commutative semirings", "module": "Mathlib.Data.Nat.Choose.Sum"},
+      {"theorem": "Nat.sum_range_choose", "description": "Sum of binomial coefficients equals 2^n", "module": "Mathlib.Data.Nat.Choose.Sum"},
       {"theorem": "Int.alternating_sum_range_choose", "description": "Alternating sum of binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Sum"},
-      {"theorem": "Nat.choose_succ_succ", "description": "Pascal's identity", "module": "Mathlib.Data.Nat.Choose.Basic"},
-      {"theorem": "Nat.choose_symm", "description": "Symmetry of binomial coefficients", "module": "Mathlib.Data.Nat.Choose.Basic"}
+      {"theorem": "Nat.choose_succ_succ", "description": "Pascal's identity: C(n+1,k+1) = C(n,k) + C(n,k+1)", "module": "Mathlib.Data.Nat.Choose.Basic"},
+      {"theorem": "Nat.choose_symm", "description": "Symmetry: C(n,k) = C(n,n-k)", "module": "Mathlib.Data.Nat.Choose.Basic"},
+      {"theorem": "Nat.choose_zero_right", "description": "C(n,0) = 1", "module": "Mathlib.Data.Nat.Choose.Basic"},
+      {"theorem": "Nat.choose_self", "description": "C(n,n) = 1", "module": "Mathlib.Data.Nat.Choose.Basic"}
     ],
     "originalContributions": [
-      "Wrapper theorem binomial_theorem adjusting add_pow form with ring normalization",
-      "Sum of coefficients corollary (Σ C(n,k) = 2^n) as wrapper",
-      "Alternating sum corollary with explicit n ≥ 1 hypothesis",
-      "Pascal's identity, symmetry, and boundary values as wrapper theorems",
-      "Explicit square and cube expansions proved by ring",
-      "Computational verification examples with native_decide"
+      "Main binomial theorem with explicit summation form via add_pow and ring normalization",
+      "Sum of binomial coefficients equals 2^n via Nat.sum_range_choose",
+      "Alternating sum vanishes for n >= 1, with conditional handling via Int.alternating_sum_range_choose",
+      "Pascal's identity, symmetry, and boundary values as named wrapper theorems",
+      "Explicit expansions for n=2 and n=3 via ring tactic",
+      "Six verified numerical examples with native_decide",
+      "Documentation connecting binomial theorem to Pascal's triangle, combinatorics, and Newton's generalization"
     ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 44
   },
   "overview": {
-    "historicalContext": "The binomial theorem has roots spanning millennia. Indian mathematicians Pingala (2nd century BCE) and Halayudha (10th century) described binomial coefficients in the context of prosody and combinatorics. The Persian mathematician al-Karaji (c. 1000) gave the first known description of the coefficient triangle and stated the binomial expansion for integer exponents. Yang Hui published the triangle in China in 1261, and Blaise Pascal systematized its properties in his 1654 *Traité du triangle arithmétique*, giving it the name 'Pascal's triangle' in the West.\n\nIsaac Newton (1665) made the crucial extension to fractional and negative exponents, expressing (1 + x)^α as a power series for any real α — the 'generalized binomial theorem' that became foundational for analysis. The integer-exponent case, which is what we formalize here, can be proved purely algebraically by induction on n using Pascal's identity C(n+1,k+1) = C(n,k) + C(n,k+1).\n\nThe theorem is Wiedijk #44 on the list of 100 famous formalized theorems. In Mathlib, it is proved as `add_pow` in the generality of commutative semirings, making it applicable to ℕ, ℤ, ℚ, ℝ, ℂ, finite fields, polynomial rings, and any other commutative semiring.",
-    "problemStatement": "**Binomial Theorem (Wiedijk #44)**:\n\nFor $x, y$ in a commutative semiring and $n \\in \\mathbb{N}$:\n$$(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$$",
-    "proofStrategy": "The main theorem `binomial_theorem` rewrites using Mathlib's `add_pow` and normalizes with `ring`. Corollaries are obtained by specialization: setting x = y = 1 gives Σ C(n,k) = 2^n; setting x = 1, y = -1 gives the alternating sum. Pascal's identity, symmetry, and boundary values are direct wrappers of Mathlib lemmas. Square and cube expansions are proved purely by `ring`.",
+    "historicalContext": "The binomial theorem has one of the longest histories in mathematics, with contributions from multiple civilizations. Special cases like $(a + b)^2 = a^2 + 2ab + b^2$ appear in Euclid's *Elements* (c. 300 BCE). The Persian mathematician **al-Karajī** (c. 953--1029) described the general pattern of binomial coefficients and their triangular arrangement, which the Chinese mathematician **Yang Hui** independently published in 1261. In Europe, **Blaise Pascal** systematized the theory of the coefficient triangle in his 1654 *Traité du triangle arithmétique*, establishing the recurrence $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ and connecting it to probability theory.\n\nThe most profound generalization came from **Isaac Newton** in 1665, who extended the theorem to non-integer exponents: $(1 + x)^\\alpha = \\sum_{k=0}^{\\infty} \\binom{\\alpha}{k} x^k$ where $\\binom{\\alpha}{k} = \\alpha(\\alpha-1)\\cdots(\\alpha-k+1)/k!$. Newton's generalized binomial series was a key tool in his development of calculus and the discovery of the power series for functions like $(1 + x)^{1/2}$ and $(1 + x)^{-1}$. The theorem is entry #44 on Wiedijk's list of 100 famous theorems.\n\nThe Lean 4 formalization works in the generality of **commutative semirings** — not just integers or reals — using Mathlib's `add_pow` theorem. This level of generality means the same proof applies to integers, rationals, reals, complex numbers, polynomials, and any other commutative semiring. The file proves the main theorem plus several corollaries: the sum of coefficients equals $2^n$, the alternating sum vanishes for $n \\geq 1$, Pascal's identity, symmetry, boundary values, and explicit expansions for $n = 2$ and $n = 3$.",
+    "problemStatement": "**The Binomial Theorem (Wiedijk #44)**:\n\nFor elements $x, y$ in a commutative semiring $R$ and $n \\in \\mathbb{N}$:\n$$(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$$\n\nwhere $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ is the binomial coefficient.\n\n**Corollaries**: $\\sum \\binom{n}{k} = 2^n$ and $\\sum (-1)^k \\binom{n}{k} = 0$ for $n \\geq 1$.",
+    "proofStrategy": "The main theorem `binomial_theorem` rewrites using Mathlib's `add_pow`, which states $(x + y)^n = \\sum_{k \\in \\text{range}(n+1)} x^k \\cdot y^{n-k} \\cdot \\binom{n}{k}$. The slight difference in term ordering (Mathlib puts the binomial coefficient last) is resolved by `congr 1; ext k; ring`, which normalizes each summand to $\\binom{n}{k} \\cdot x^k \\cdot y^{n-k}$. Corollaries use Mathlib lemmas directly: `Nat.sum_range_choose` for the coefficient sum, `Int.alternating_sum_range_choose` for the alternating sum (with a conditional `if n = 0 then 1 else 0` that requires case analysis), and `Nat.choose_succ_succ`/`Nat.choose_symm`/`Nat.choose_zero_right`/`Nat.choose_self` for structural properties.",
     "keyInsights": [
-      "Each term C(n,k)x^k y^(n-k) counts the ways to choose k factors of x from the n factors (x+y)·(x+y)·...·(x+y), with the remaining n-k factors contributing y",
-      "The proof works in any CommSemiring, not just ℤ or ℝ — this generality is Mathlib's strength, making the theorem applicable to polynomials, formal power series, finite fields, etc.",
-      "Setting x = y = 1 gives the combinatorial identity Σ C(n,k) = 2^n, which counts the total number of subsets of an n-element set",
-      "Pascal's identity C(n+1,k+1) = C(n,k) + C(n,k+1) is the recursive backbone: it defines Pascal's triangle and provides the inductive proof of the binomial theorem",
-      "Newton's extension to non-integer exponents yields the binomial series (1+x)^α = Σ C(α,k)x^k with generalized binomial coefficients, foundational for Taylor expansions"
+      "**Commutative semiring generality**: The theorem is stated for `CommSemiring R`, not just ℤ or ℝ. This means the same proof works for integers, rationals, polynomials, formal power series, and even matrices (when commutative). The `ring` tactic handles the algebraic normalization uniformly across all such structures",
+      "**The combinatorial interpretation drives the proof**: Each term $\\binom{n}{k} x^k y^{n-k}$ counts the ways to choose $k$ of the $n$ factors to contribute $x$ (with the remaining $n-k$ contributing $y$). This counting argument is what Mathlib's `add_pow` formalizes internally",
+      "**Coefficient sum as subset counting**: Setting $x = y = 1$ gives $2^n = \\sum \\binom{n}{k}$, which says the total number of subsets of an $n$-element set is $2^n$. This connection between algebra and combinatorics is one of the most elegant in mathematics",
+      "**The alternating sum requires careful case analysis**: `Int.alternating_sum_range_choose` returns `if n = 0 then 1 else 0`, so the $n \\geq 1$ hypothesis is genuinely needed. For $n = 0$: $\\binom{0}{0} \\cdot (-1)^0 = 1 \\neq 0$",
+      "**Pascal's triangle encodes the full theorem**: Pascal's identity $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ recursively defines all binomial coefficients, and with the boundary values $\\binom{n}{0} = \\binom{n}{n} = 1$, completely determines the expansion coefficients. The symmetry $\\binom{n}{k} = \\binom{n}{n-k}$ reflects the symmetry of the triangle"
     ]
   },
   "sections": [
     {
-      "id": "imports-header",
-      "title": "Imports and Documentation",
+      "id": "imports",
+      "title": "Imports",
       "startLine": 1,
+      "endLine": 4,
+      "summary": "Imports four Mathlib modules: `BigOperators.Ring.Finset` for `∑` notation over finsets, `Nat.Choose.Sum` for `add_pow` and coefficient sum theorems, `Ring.Basic` for ring axioms, and `Tactic` for proof automation."
+    },
+    {
+      "id": "module-docstring",
+      "title": "Module Docstring",
+      "startLine": 6,
+      "endLine": 43,
+      "summary": "Establishes this as Wiedijk #44. States the binomial theorem, describes the Mathlib foundation (`add_pow`), lists dependencies (`Nat.choose`, `sum_range_choose`), and gives historical context: al-Karaji (c. 1000), Yang Hui (1261), Newton (1665)."
+    },
+    {
+      "id": "namespace-open",
+      "title": "Namespace and Opens",
+      "startLine": 45,
       "endLine": 47,
-      "summary": "Imports BigOperators for Σ notation, Nat.Choose.Sum for the main theorem and coefficient sums, Ring.Basic for ring algebra, and Tactic for automation. Documentation describes the theorem, Wiedijk #44, the approach (Mathlib's add_pow), and historical notes (al-Karaji, Yang Hui, Newton)."
+      "summary": "Opens `BinomialTheorem` namespace and brings `Finset` and `BigOperators` into scope for `∑` and `range` notation."
     },
     {
       "id": "main-theorem",
-      "title": "The Binomial Theorem",
+      "title": "The Main Theorem",
       "startLine": 49,
-      "endLine": 65,
-      "summary": "States and proves `binomial_theorem` for CommSemiring: (x+y)^n = Σ_{k ∈ range(n+1)} C(n,k) · x^k · y^(n-k). The proof rewrites with `add_pow`, then uses `congr 1; ext k; ring` to normalize the term order."
+      "endLine": 66,
+      "summary": "Section docstring and main theorem `binomial_theorem`: for `CommSemiring R`, $(x+y)^n = \\sum_{k \\in \\text{range}(n+1)} \\binom{n}{k} \\cdot x^k \\cdot y^{n-k}$. Proof: `rw [add_pow]; congr 1; ext k; ring` normalizes the summand ordering."
     },
     {
-      "id": "corollaries",
-      "title": "Sum and Alternating Sum of Coefficients",
+      "id": "coefficient-sum",
+      "title": "Sum of Binomial Coefficients",
       "startLine": 67,
-      "endLine": 96,
-      "summary": "Two corollaries: `sum_binomial_coefficients` (Σ C(n,k) = 2^n, from Nat.sum_range_choose) and `alternating_sum_binomial` (Σ (-1)^k C(n,k) = 0 for n ≥ 1, from Int.alternating_sum_range_choose with the n=0 case eliminated)."
+      "endLine": 81,
+      "summary": "Proves `sum_binomial_coefficients`: $\\sum_{k=0}^n \\binom{n}{k} = 2^n$ via `Nat.sum_range_choose`. Corresponds to setting $x = y = 1$ in the binomial theorem, counting all subsets of an $n$-element set."
+    },
+    {
+      "id": "alternating-sum",
+      "title": "Alternating Sum of Binomial Coefficients",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "Proves `alternating_sum_binomial`: for $n \\geq 1$, $\\sum (-1)^k \\binom{n}{k} = 0$. Uses `Int.alternating_sum_range_choose` (which returns `if n = 0 then 1 else 0`) and eliminates the $n = 0$ case using the positivity hypothesis."
     },
     {
       "id": "pascal-symmetry",
-      "title": "Pascal's Identity, Symmetry, and Boundaries",
+      "title": "Pascal's Identity, Symmetry, and Boundary Values",
       "startLine": 98,
       "endLine": 131,
-      "summary": "Four wrapper theorems: `pascal_identity` (C(n+1,k+1) = C(n,k) + C(n,k+1)), `binomial_symmetry` (C(n,k) = C(n,n-k) for k ≤ n), `binomial_zero` (C(n,0) = 1), and `binomial_self` (C(n,n) = 1). All directly from Mathlib."
+      "summary": "Four structural theorems: `pascal_identity` ($\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$), `binomial_symmetry` ($\\binom{n}{k} = \\binom{n}{n-k}$), `binomial_zero` ($\\binom{n}{0} = 1$), `binomial_self` ($\\binom{n}{n} = 1$). All one-line wrappers around Mathlib lemmas."
     },
     {
       "id": "special-cases",
-      "title": "Square and Cube Expansions",
+      "title": "Special Cases: Square and Cube",
       "startLine": 132,
-      "endLine": 148,
-      "summary": "Explicit expansions: `binomial_square` ((x+y)² = x² + 2xy + y²) and `binomial_cube` ((x+y)³ = x³ + 3x²y + 3xy² + y³), both proved by `ring` in CommSemiring."
+      "endLine": 149,
+      "summary": "Explicit expansions `binomial_square` ($(x+y)^2 = x^2 + 2xy + y^2$) and `binomial_cube` ($(x+y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$). Both proved by the `ring` tactic alone, demonstrating that small cases can be verified purely algebraically."
     },
     {
-      "id": "examples",
+      "id": "examples-verification",
       "title": "Examples and Verification",
       "startLine": 150,
       "endLine": 177,
-      "summary": "Six computational verifications: (1+1)^4 = 16, C(4,0)+...+C(4,4) = 16, C(5,2) = 10, C(10,5) = 252, Pascal's identity for C(5,3), and symmetry C(6,2) = C(6,4). All by native_decide. Closes with #check commands."
+      "summary": "Six numerical examples verified with `native_decide`: $(1+1)^4 = 16$, explicit coefficient sum for $n = 4$, $\\binom{5}{2} = 10$, $\\binom{10}{5} = 252$, Pascal's identity for $\\binom{5}{3}$, and symmetry $\\binom{6}{2} = \\binom{6}{4}$. Ends with `#check` commands and namespace close."
     }
   ],
   "conclusion": {
-    "summary": "The Binomial Theorem (Wiedijk #44) is formalized for commutative semirings using Mathlib's `add_pow`. Corollaries include the sum of coefficients (2^n), alternating sum (0), Pascal's identity, symmetry, and boundary values. Explicit expansions for n = 2 and n = 3 are proved by ring. The file demonstrates how a single powerful Mathlib lemma yields a rich family of combinatorial identities.",
-    "implications": "The binomial theorem is foundational across mathematics: in combinatorics (counting subsets), probability (binomial distribution), algebra (polynomial identities), and analysis (Newton's generalized binomial series). Its formalization in CommSemiring generality means it applies uniformly to integers, rationals, reals, complex numbers, finite fields, and polynomial rings.",
+    "summary": "This 177-line formalization of the Binomial Theorem (Wiedijk #44) proves the expansion $(x+y)^n = \\sum \\binom{n}{k} x^k y^{n-k}$ for commutative semirings, along with five structural properties (coefficient sum, alternating sum, Pascal's identity, symmetry, boundary values), two explicit expansions (square and cube), and six verified numerical examples. With 0 sorries and full Mathlib integration, it showcases how algebraic generality (CommSemiring) and proof automation (ring, native_decide) enable clean formalizations of classical results.",
+    "implications": "The binomial theorem is foundational to combinatorics (subset counting, inclusion-exclusion), algebra (polynomial identities, formal power series), analysis (Newton's generalized binomial series, Taylor expansions of $(1+x)^\\alpha$), and probability (the binomial distribution $P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}$). The CommSemiring generality means this formalization applies to all these domains simultaneously.",
     "openQuestions": [
-      "Can the generalized binomial theorem for non-integer exponents be formalized using Mathlib's formal power series library?",
-      "How does the q-binomial theorem (quantum binomial theorem) formalize in Lean with non-commutative algebras?",
-      "Can the multinomial theorem (k-variable generalization) be derived from the binomial theorem in Lean?"
+      "Can Newton's generalized binomial theorem for fractional/negative exponents be formalized using Mathlib's formal power series?",
+      "Can the multinomial theorem $(x_1 + \\cdots + x_m)^n = \\sum \\frac{n!}{k_1! \\cdots k_m!} \\prod x_i^{k_i}$ be proved as a generalization?",
+      "Can the binomial theorem be used to derive the binomial distribution and its properties in a probability formalization?",
+      "Is there a clean proof of the Vandermonde identity $\\binom{m+n}{r} = \\sum \\binom{m}{k}\\binom{n}{r-k}$ using this infrastructure?"
     ]
   }
 }
