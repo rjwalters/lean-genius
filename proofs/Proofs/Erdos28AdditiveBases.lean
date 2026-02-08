@@ -42,7 +42,7 @@ namespace Erdos28
 
 open Finset Filter
 
-/-! ## Part I: Representation Function -/
+/- ## Part I: Representation Function -/
 
 /-- The representation function r_A(n): counts pairs (a,b) ∈ A×A with a + b = n.
     We count ordered pairs, so r_A(n) counts each representation {a,b} twice if a ≠ b,
@@ -58,7 +58,7 @@ noncomputable def repFuncUnordered (A : Set ℕ) (n : ℕ) : ℕ :=
 def repFuncFinset (A : Finset ℕ) (n : ℕ) : ℕ :=
   (A.product A).filter (fun p => p.1 + p.2 = n) |>.card
 
-/-! ## Part II: Sumset and Asymptotic Basis -/
+/- ## Part II: Sumset and Asymptotic Basis -/
 
 /-- The sumset A + A = {a + b : a, b ∈ A}. -/
 def sumset (A : Set ℕ) : Set ℕ :=
@@ -106,7 +106,7 @@ theorem isAsymptoticBasis_iff (A : Set ℕ) :
       rw [← Set.notMem_compl_iff, h]
       exact Set.notMem_empty n
 
-/-! ## Part III: Basic Properties -/
+/- ## Part III: Basic Properties -/
 
 /-- The set of pairs summing to n is finite (both components bounded by n). -/
 lemma pairs_summing_finite (A : Set ℕ) (n : ℕ) :
@@ -198,7 +198,7 @@ theorem sidon_repFunc_bounded (A : Set ℕ) (hS : IsSidon A) :
     rw [hS_empty]
     simp only [Set.ncard_empty, Nat.zero_le]
 
-/-! ## Part IV: The Main Conjecture -/
+/- ## Part IV: The Main Conjecture -/
 
 /-- **Erdős-Turán Conjecture** (Weak Form, 1941)
 
@@ -222,7 +222,7 @@ def erdos_turan_strong : Prop :=
     Prize: $500 for proof or disproof. -/
 def erdos_28 : Prop := erdos_turan_weak
 
-/-! ## Part V: Known Partial Results -/
+/- ## Part V: Known Partial Results -/
 
 /-- Grekos et al. (2003): For any asymptotic basis A, r_A(n) ≥ 6 for infinitely many n. -/
 axiom grekos_lower_bound :
@@ -232,7 +232,7 @@ axiom grekos_lower_bound :
 axiom borwein_lower_bound :
   ∀ A : Set ℕ, IsAsymptoticBasis A → ∀ M : ℕ, ∃ n > M, repFunc A n ≥ 8
 
-/-! ## Part VI: Examples -/
+/- ## Part VI: Examples -/
 
 /-- The even numbers {0, 2, 4, 6, ...} form a basis for even numbers. -/
 def evens : Set ℕ := {n | Even n}
@@ -345,7 +345,7 @@ theorem nat_repFunc (n : ℕ) : repFuncUnordered (Set.univ : Set ℕ) n = n / 2 
   rw [Set.ncard_image_of_injective _ hinj]
   rw [Set.ncard_coe_finset, Finset.card_range]
 
-/-! ## Part VII: Connection to Sidon Sets -/
+/- ## Part VII: Connection to Sidon Sets -/
 
 /-- **Known Result (Erdős-Turán)**: Sidon sets have at most √(2N) + 1 elements in {1,...,N}.
     This is proved in Erdos340GreedySidon.lean as sidon_upper_bound_weak. -/

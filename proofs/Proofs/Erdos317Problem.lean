@@ -31,6 +31,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Algebra.GCDMonoid.Finset
+import Mathlib.Tactic.NormNum
 
 open Finset Filter BigOperators
 
@@ -74,33 +75,75 @@ def Question2 : Prop :=
     signedUnitFractionSum n δ ≠ 0 →
       |signedUnitFractionSum n δ| > 1 / (lcm_1_to_n n : ℚ)
 
-/- ## Part IV: Known Results -/
+/- ## Part IV: Known Results — Proved -/
 
-/-- The weak inequality: any nonzero signed sum has |sum| ≥ 1/lcm(1,...,n).
-    This is because the common denominator of the sum divides lcm(1,...,n),
-    so the numerator is a nonzero integer, giving |sum| ≥ 1/lcm. -/
-axiom weak_inequality (n : ℕ) (δ : Fin n → ℤ) (hδ : IsSignFunction n δ)
-    (hne : signedUnitFractionSum n δ ≠ 0) :
-    |signedUnitFractionSum n δ| ≥ 1 / (lcm_1_to_n n : ℚ)
+/-- The counterexample sign function: δ = (0, 1, -1, -1) for Fin 4 -/
+def counterexampleDelta : Fin 4 → ℤ
+  | ⟨0, _⟩ => 0
+  | ⟨1, _⟩ => 1
+  | ⟨2, _⟩ => -1
+  | ⟨3, _⟩ => -1
+  | ⟨n + 4, h⟩ => absurd h (by omega)
+
+/-- counterexampleDelta is a valid sign function -/
+theorem counterexampleDelta_isSign : IsSignFunction 4 counterexampleDelta := by
+  intro ⟨k, hk⟩
+  fin_cases ⟨k, hk⟩ <;> simp [counterexampleDelta] <;> omega
+
+/-- The signed sum of the counterexample equals -1/12 -/
+theorem counterexample_sum_eq :
+    signedUnitFractionSum 4 counterexampleDelta = -1/12 := by
+  simp only [signedUnitFractionSum, Fin.sum_univ_four, counterexampleDelta]
+  norm_num
 
 /-- Question 2 fails for small n: δ = (0, 1, -1, -1) gives
     0 + 1/2 - 1/3 - 1/4 = -1/12, and lcm(1,2,3,4) = 12,
     so |sum| = 1/12 = 1/lcm — equality, not strict inequality. -/
-axiom counterexample_small_n :
+theorem counterexample_small_n :
     ∃ δ : Fin 4 → ℤ, IsSignFunction 4 δ ∧
       signedUnitFractionSum 4 δ ≠ 0 ∧
-      ¬(|signedUnitFractionSum 4 δ| > 1 / (lcm_1_to_n 4 : ℚ))
+      ¬(|signedUnitFractionSum 4 δ| > 1 / (lcm_1_to_n 4 : ℚ)) := by
+  refine ⟨counterexampleDelta, counterexampleDelta_isSign, ?_, ?_⟩
+  · rw [counterexample_sum_eq]; norm_num
+  · rw [counterexample_sum_eq]
+    simp only [lcm_1_to_n]
+    norm_num
 
-/- ## Part V: Kovac–van Doorn Upper Bound -/
+/-- The "all ones" sign function: δ_k = 1 for all k -/
+def allOnesDelta (n : ℕ) : Fin n → ℤ := fun _ => 1
 
-/-- Kovac–van Doorn: For every n, there exists δ with
-    0 < |∑ δ_k/k| < 2^{-n·(log log log n)^{1+o(1)}/log n}.
-    This is much larger than c/2^n but still exponentially small.
-    The gap between this bound and c/2^n is the core difficulty of Q1. -/
-axiom kovac_van_doorn_bound :
-  ∀ n : ℕ, n ≥ 1 →
-    ∃ δ : Fin n → ℤ, IsSignFunction n δ ∧
-      0 < signedSumAbs n δ
+/-- allOnesDelta is a valid sign function -/
+theorem allOnesDelta_isSign (n : ℕ) : IsSignFunction n (allOnesDelta n) := by
+  intro k; right; right; rfl
+
+/-- For n ≥ 1, the all-ones sum equals the n-th harmonic number, which is positive -/
+theorem allOnes_sum_pos (n : ℕ) (hn : n ≥ 1) :
+    signedSumAbs n (allOnesDelta n) > 0 := by
+  simp only [signedSumAbs, signedUnitFractionSum, allOnesDelta]
+  rw [abs_pos]
+  apply ne_of_gt
+  apply Finset.sum_pos
+  · intro i _
+    simp only [Int.cast_one, one_div]
+    positivity
+  · exact Finset.univ_nonempty_iff.mpr ⟨⟨0, hn⟩⟩
+
+/-- For every n ≥ 1, there exists a sign function giving a nonzero signed sum.
+    (Trivially: all δ_k = 1 gives the harmonic number H_n > 0.) -/
+theorem nonzero_signed_sum_exists :
+    ∀ n : ℕ, n ≥ 1 →
+      ∃ δ : Fin n → ℤ, IsSignFunction n δ ∧ 0 < signedSumAbs n δ := by
+  intro n hn
+  exact ⟨allOnesDelta n, allOnesDelta_isSign n, allOnes_sum_pos n hn⟩
+
+/- ## Part V: Weak Inequality -/
+
+/-- Each term δ_k/(k+1) in the signed sum has denominator dividing lcm(1,...,n).
+    When the sum is expressed over this common denominator, a nonzero sum
+    has numerator with absolute value ≥ 1, giving |sum| ≥ 1/lcm(1,...,n). -/
+axiom weak_inequality (n : ℕ) (δ : Fin n → ℤ) (hδ : IsSignFunction n δ)
+    (hne : signedUnitFractionSum n δ ≠ 0) :
+    |signedUnitFractionSum n δ| ≥ 1 / (lcm_1_to_n n : ℚ)
 
 /- ## Part VI: Summary -/
 
@@ -108,14 +151,15 @@ axiom kovac_van_doorn_bound :
     Q1: Can signed unit fraction sums be made exponentially small (< c/2^n)?
     Q2: For large n, is 1/lcm(1,...,n) a strict lower bound?
     Known: Weak inequality ≥ 1/lcm holds; strict inequality fails for small n.
-    Kovac-van Doorn achieved a weaker exponential bound. -/
+    Nonzero signed sums exist for every n ≥ 1 (trivially via harmonic number). -/
 theorem erdos_317_summary :
-    -- The weak inequality and the small-n counterexample are known
     (∀ n δ, IsSignFunction n δ → signedUnitFractionSum n δ ≠ 0 →
       |signedUnitFractionSum n δ| ≥ 1 / (lcm_1_to_n n : ℚ)) ∧
     (∃ δ : Fin 4 → ℤ, IsSignFunction 4 δ ∧
       signedUnitFractionSum 4 δ ≠ 0 ∧
-      ¬(|signedUnitFractionSum 4 δ| > 1 / (lcm_1_to_n 4 : ℚ))) := by
-  exact ⟨weak_inequality, counterexample_small_n⟩
+      ¬(|signedUnitFractionSum 4 δ| > 1 / (lcm_1_to_n 4 : ℚ))) ∧
+    (∀ n : ℕ, n ≥ 1 →
+      ∃ δ : Fin n → ℤ, IsSignFunction n δ ∧ 0 < signedSumAbs n δ) := by
+  exact ⟨weak_inequality, counterexample_small_n, nonzero_signed_sum_exists⟩
 
 end Erdos317

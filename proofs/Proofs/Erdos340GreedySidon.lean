@@ -16,7 +16,7 @@ import Mathlib.Order.Filter.Basic
 import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
-/-!
+/-
 # Erdős Problem #340: Greedy Sidon Sequence Growth
 
 ## Problem Statement
@@ -69,7 +69,7 @@ open scoped Pointwise
 
 namespace Erdos340
 
-/-! ## Part 1: Sidon Set Definition -/
+/- ## Part 1: Sidon Set Definition -/
 
 /-- A finite set A is a Sidon set if all pairwise sums are distinct.
     Equivalently: a + b = c + d with a ≤ b, c ≤ d implies (a,b) = (c,d). -/
@@ -102,7 +102,7 @@ theorem isSidon_pair {a b : ℕ} (h : a < b) : IsSidon ({a, b} : Finset ℕ) := 
   rcases hz with rfl | rfl <;> rcases hw with rfl | rfl <;>
   constructor <;> omega
 
-/-! ## Part 2: Basic Sidon Properties -/
+/- ## Part 2: Basic Sidon Properties -/
 
 /-- Subset of a Sidon set is Sidon. -/
 theorem IsSidon.subset {A B : Finset ℕ} (hA : IsSidon A) (hBA : B ⊆ A) : IsSidon B := by
@@ -160,7 +160,7 @@ theorem IsSidon.diff_injective {A : Finset ℕ} (hA : IsSidon A)
       -- d > a, b > c: we have c < b < a and a < d < c, contradiction
       omega
 
-/-! ### Ordered Pairs and Difference Sets -/
+/- ### Ordered Pairs and Difference Sets -/
 
 /-- The set of ordered pairs (a, b) with a < b from a finset A. -/
 def orderedPairsLt (A : Finset ℕ) : Finset (ℕ × ℕ) :=
@@ -261,7 +261,7 @@ theorem sidon_diff_pos_bounded {A : Finset ℕ} (hne : A.Nonempty)
     have h2 : p.2 ≤ A.max' hne := Finset.le_max' A p.2 hb
     omega
 
-/-! ### Difference Set Approach (Aristotle's proof) -/
+/- ### Difference Set Approach (Aristotle's proof) -/
 
 /-- The set of positive differences between elements of A. -/
 def diffSet (A : Finset ℕ) : Finset ℕ :=
@@ -385,7 +385,7 @@ This tighter bound requires additional counting machinery. -/
 axiom sidon_upper_bound (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
     (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1
 
-/-! ## Part 3: Greedy Sidon Sequence Construction -/
+/- ## Part 3: Greedy Sidon Sequence Construction -/
 
 /-- Check if adding n to A preserves the Sidon property (Prop version). -/
 def CanAddProp (A : Finset ℕ) (n : ℕ) : Prop :=
@@ -418,7 +418,7 @@ noncomputable def greedySidon : ℕ → ℕ := greedySidonSeq
 noncomputable def greedySidonSet (n : ℕ) : Finset ℕ :=
   Finset.image greedySidon (Finset.range (n + 1))
 
-/-! ## Part 4: Computational Verification -/
+/- ## Part 4: Computational Verification -/
 
 -- These would require decidable instances; marking as axioms for now
 axiom greedySidon_0 : greedySidon 0 = 1
@@ -441,7 +441,7 @@ theorem greedySidon_strictMono : StrictMono greedySidon :=
 theorem greedySidonSet_isSidon (n : ℕ) : IsSidon (greedySidonSet n) :=
   greedySidonSeq_isSidon n
 
-/-! ## Part 5: Growth Rate Bounds -/
+/- ## Part 5: Growth Rate Bounds -/
 
 /-- Count of greedy Sidon elements up to N. -/
 noncomputable def greedySidonCount (N : ℕ) : ℕ :=
@@ -505,7 +505,7 @@ axiom erdos_340 (ε : ℝ) (hε : ε > 0) :
     ∃ C : ℝ, C > 0 ∧ ∀ᶠ N : ℕ in atTop,
       (N : ℝ) ^ ((1:ℝ)/2 - ε) ≤ C * (greedySidonCount N : ℝ)
 
-/-! ## Part 6: Difference Set Properties
+/- ## Part 6: Difference Set Properties
 
 The difference set A - A plays a key role in understanding Sidon sets.
 For a Sidon set, each non-zero difference d = a - b (with a, b ∈ A, a ≠ b)
