@@ -2,9 +2,9 @@
   "id": "erdos-1013",
   "title": "Triangle-Free Chromatic Threshold",
   "slug": "erdos-1013",
-  "description": "Let h₃(k) be the smallest n with a triangle-free graph on n vertices of chromatic number k. Find the asymptotic formula. Known: (1/2 − o(1))k² log k ≤ h₃(k) ≤ (1 + o(1))k² log k. Is h₃(k+1)/h₃(k) → 1?",
+  "description": "Let h_3(k) be the smallest n with a triangle-free graph on n vertices of chromatic number k. Find the asymptotic formula. Known: (1/2 - o(1))k^2 log k <= h_3(k) <= (1 + o(1))k^2 log k. Is h_3(k+1)/h_3(k) -> 1?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdos",
     "sourceUrl": "https://erdosproblems.com/1013",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1013Problem.lean",
@@ -19,57 +19,72 @@
     "sorries": 0,
     "erdosNumber": 1013,
     "erdosUrl": "https://erdosproblems.com/1013",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "relatedProofs": ["erdos-920", "erdos-1104"]
   },
   "overview": {
-    "historicalContext": "Mycielski (1955) showed triangle-free graphs of arbitrarily high chromatic number exist. Graver and Yackel (1968) gave the first quantitative lower bound. The asymptotic behavior h₃(k) ~ Θ(k² log k) is known, but the constant factor remains open.",
-    "problemStatement": "Find an asymptotic formula for h₃(k). Is h₃(k+1)/h₃(k) → 1?",
-    "proofStrategy": "We formalize triangle-free graphs, proper colorings, chromatic number, h₃(k), the main conjecture, known bounds, and small cases via Mycielski graphs.",
+    "historicalContext": "The study of triangle-free graphs with high chromatic number began with Zykov (1949) and Mycielski (1955), who independently showed such graphs exist for every chromatic number. Mycielski's elegant inductive construction M_k produces triangle-free graphs with chi(M_k) = k, but |V(M_k)| grows exponentially. The quantitative question -- how many vertices are needed? -- became central. Graver and Yackel (1968) gave the first lower bound h_3(k) >> k^2 log k / log log k using probabilistic deletion. The modern bounds (1/2 - o(1))k^2 log k <= h_3(k) <= (1 + o(1))k^2 log k pin down the growth rate to Theta(k^2 log k), but the leading constant c remains open: it lies in [1/2, 1]. Erdos asked both for the exact asymptotic (determining c) and whether the ratio h_3(k+1)/h_3(k) converges to 1, which would imply the threshold grows smoothly. The problem connects to the Kim-type Ramsey bounds R(3,k) ~ k^2/(4 ln k), as h_3(k) and R(3,k) are closely related via Ramsey-theoretic duality: a triangle-free graph with chi >= k implies R(3,k) <= n. The problem is listed as Erdos Problem #1013 and is related to Problems #920 (K_r-free generalization) and #1104 (dual function f(n)).",
+    "problemStatement": "Find an asymptotic formula for $h_3(k)$, the smallest $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Is $h_3(k+1)/h_3(k) \\to 1$?",
+    "proofStrategy": "We formalize triangle-free graphs via the absence of 3-cliques using Mathlib's SimpleGraph, define proper colorings and chromatic number, and introduce the threshold function h_3(k) as a supremum. The main conjecture (asymptotic formula with limit c), ratio convergence, known upper and lower bounds, the Graver-Yackel historical bound, monotonicity, exact small cases (h_3(1) through h_3(4)), and Mycielski's existence construction are all stated as axioms. The formalization uses Filter.Tendsto for the limit statements.",
     "keyInsights": [
-      "Lower bound (1/2 − o(1))k² log k from probabilistic arguments",
-      "Upper bound (1 + o(1))k² log k from explicit constructions",
-      "The constant factor in the asymptotic is between 1/2 and 1",
-      "Mycielski's construction gives finite h₃(k) for all k",
-      "h₃(3) = 5 (C₅), h₃(4) = 11 (Grötzsch graph)"
+      "The lower bound (1/2 - o(1))k^2 log k comes from probabilistic coloring: random partitions of vertices into k color classes yield proper colorings when the graph has few enough vertices relative to k",
+      "The upper bound (1 + o(1))k^2 log k uses explicit constructions via random triangle-free graphs or algebraic methods over finite fields",
+      "Mycielski's construction proves h_3(k) < infinity but gives exponential bounds (3 * 2^{k-2} - 1), far from the true Theta(k^2 log k) growth",
+      "The connection to Ramsey numbers: R(3,k) ~ k^2/(4 ln k) (Kim 1995, Bohman 2009) is closely related since a K_3-free graph with chi >= k on n vertices gives R(3,k) <= n",
+      "The exact small values h_3(3) = 5 (C_5) and h_3(4) = 11 (Grotzsch graph) are achieved by Mycielski graphs, which are the unique extremal graphs for these cases",
+      "Determining whether c = 1/2 or c = 1 would resolve a subtle question about the efficiency of probabilistic vs constructive methods for triangle-free chromatic number"
     ]
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring stating the problem with known bounds and references, followed by Mathlib imports for SimpleGraph, Clique, real analysis, logarithms, and tactics."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 48,
-      "summary": "Defines triangle-free graphs, proper colorings, chromatic number, and h₃(k)."
+      "startLine": 29,
+      "endLine": 49,
+      "summary": "Defines IsTriangleFree (no 3-clique), HasProperColoring (vertex coloring with adjacency constraint), chromaticNumber (min colors needed), and triangleFreeChromThreshold h_3(k) as the minimum vertices for triangle-free chromatic number >= k.",
+      "mathContext": "$h_3(k) = \\min\\{n : \\exists\\, G$ on $n$ vertices, $\\omega(G) \\leq 2$, $\\chi(G) \\geq k\\}$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "startLine": 50,
-      "endLine": 64,
-      "summary": "Asymptotic formula h₃(k) ~ c·k²·log k and ratio convergence h₃(k+1)/h₃(k) → 1."
+      "startLine": 51,
+      "endLine": 67,
+      "summary": "Two open questions: (1) the asymptotic formula h_3(k) ~ c k^2 log k for some constant c in [1/2, 1], formalized as Filter.Tendsto convergence; (2) ratio convergence h_3(k+1)/h_3(k) -> 1.",
+      "mathContext": "$\\lim_{k\\to\\infty} h_3(k)/(k^2 \\ln k) = c$ and $\\lim_{k\\to\\infty} h_3(k+1)/h_3(k) = 1$."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "startLine": 66,
-      "endLine": 87,
-      "summary": "Lower bound (1/2 − o(1))k² log k, upper bound (1 + o(1))k² log k, and Graver–Yackel (1968)."
+      "startLine": 69,
+      "endLine": 89,
+      "summary": "Three bounds: the modern lower bound (1/2 - o(1))k^2 log k from probabilistic coloring, the upper bound (1 + o(1))k^2 log k from explicit constructions, and the historical Graver-Yackel (1968) bound k^2 log k / log log k.",
+      "mathContext": "$(1/2 - o(1))k^2 \\ln k \\leq h_3(k) \\leq (1 + o(1))k^2 \\ln k$."
     },
     {
       "id": "structural",
-      "title": "Structural Properties",
-      "startLine": 89,
-      "endLine": 119,
-      "summary": "Monotonicity, small cases h₃(1)=1, h₃(2)=2, h₃(3)=5, h₃(4)=11, and Mycielski's construction."
+      "title": "Structural Properties and Small Cases",
+      "startLine": 91,
+      "endLine": 121,
+      "summary": "Monotonicity of h_3, exact values h_3(1)=1, h_3(2)=2, h_3(3)=5 (C_5), h_3(4)=11 (Grotzsch graph), and Mycielski's 1955 construction proving h_3(k) is finite for all k >= 2.",
+      "mathContext": "$h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch), $|V(M_k)| = 3 \\cdot 2^{k-2} - 1$."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #1013 on the triangle-free chromatic threshold h₃(k). The constant in h₃(k) ~ c·k²·log k is known to lie in [1/2, 1] but its exact value remains open.",
-    "implications": "Determining the constant would resolve a fundamental question about the interplay between local structure (triangle-freeness) and global structure (chromatic number).",
+    "summary": "This formalization captures Erdos Problem #1013 on the triangle-free chromatic threshold h_3(k). The growth rate Theta(k^2 log k) is established by matching upper and lower bounds, but the leading constant c in [1/2, 1] and the ratio convergence h_3(k+1)/h_3(k) -> 1 remain open. The small cases via Mycielski graphs and the connection to Ramsey theory are also formalized.",
+    "implications": "Determining the exact asymptotic constant would resolve a fundamental question about the interplay between local structure (triangle-freeness) and global structure (chromatic number). It would also clarify the relationship between probabilistic existence proofs (giving the 1/2 lower bound) and explicit constructions (giving the 1 upper bound), potentially revealing whether constructive methods are optimal.",
     "openQuestions": [
-      "What is the exact asymptotic constant c in h₃(k) ~ c·k² log k?",
-      "Is h₃(k+1)/h₃(k) → 1?",
-      "What about the K_r-free generalization h_r(k)? (Problem #920)"
+      "What is the exact asymptotic constant c in h_3(k) ~ c k^2 log k? Is it 1/2 or 1?",
+      "Is h_3(k+1)/h_3(k) -> 1, and can this be proved independently of the full asymptotic?",
+      "What about the K_r-free generalization h_r(k) for r >= 4? (Erdos Problem #920)",
+      "How does h_3(k) relate to R(3,k) ~ k^2/(4 ln k) quantitatively beyond the trivial h_3(k) >= R(3,k)?",
+      "Can algebraic constructions (e.g., over finite fields) improve on the probabilistic upper bound constant?"
     ]
   }
 }
