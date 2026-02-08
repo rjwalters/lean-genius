@@ -55,7 +55,7 @@
   {
     "id": "ann-e696-h-le-H",
     "proofId": "erdos-696",
-    "range": { "startLine": 91, "endLine": 105 },
+    "range": { "startLine": 91, "endLine": 104 },
     "type": "theorem",
     "title": "h(n) ≤ H(n)",
     "content": "**prime_chain_is_divisor_chain & h_le_H:**\n\nEvery prime chain is automatically a divisor chain (primes are divisors). Therefore:\n\nh(n) ≤ H(n) for all n\n\nThis is a fundamental inequality between the two functions.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-e696-logstar",
     "proofId": "erdos-696",
-    "range": { "startLine": 119, "endLine": 145 },
+    "range": { "startLine": 116, "endLine": 138 },
     "type": "definition",
     "title": "Iterated Logarithm log*(n)",
     "content": "**logStar: The Iterated Logarithm**\n\n```lean\nnoncomputable def logStar : ℕ → ℕ\n  | n => if n ≤ 1 then 0 else 1 + logStar (Nat.log 2 n)\n```\n\n**Growth:** Extremely slow!\n- log*(2) = 1\n- log*(4) = 2\n- log*(16) = 3\n- log*(65536) = 4\n- log*(2^65536) = 5\n\nFor all practical n, log*(n) ≤ 5.\n\n**Erdős's conjecture:** h(n) has normal order log*(n).",
@@ -76,7 +76,7 @@
   {
     "id": "ann-e696-h-infinity",
     "proofId": "erdos-696",
-    "range": { "startLine": 147, "endLine": 156 },
+    "range": { "startLine": 140, "endLine": 149 },
     "type": "axiom",
     "title": "h(n) → ∞ for Almost All n",
     "content": "**h_tends_to_infinity (van Doorn):**\n\nFor any fixed k, almost all n satisfy h(n) ≥ k.\n\nMore precisely: the density of {n ≤ N : h(n) < k} tends to 0 as N → ∞.\n\nThis was proved by van Doorn using Dirichlet's theorem on primes in arithmetic progressions.",
@@ -87,7 +87,7 @@
   {
     "id": "ann-e696-conjectures",
     "proofId": "erdos-696",
-    "range": { "startLine": 158, "endLine": 172 },
+    "range": { "startLine": 151, "endLine": 165 },
     "type": "concept",
     "title": "Erdős's Conjectures",
     "content": "**Two Main Conjectures:**\n\n1. **Normal Order Conjecture:**\n   h(n) ~ log*(n) for almost all n\n   (h(n) is asymptotically equal to log*(n))\n\n2. **Ratio Conjecture (OPEN):**\n   H(n)/h(n) → ∞ for almost all n\n   (Divisor chains can be much longer than prime chains)\n\nThe ratio conjecture remains open and is the main unsolved part of this problem.",
@@ -97,7 +97,7 @@
   {
     "id": "ann-e696-sophie-germain",
     "proofId": "erdos-696",
-    "range": { "startLine": 177, "endLine": 206 },
+    "range": { "startLine": 170, "endLine": 198 },
     "type": "definition",
     "title": "Sophie Germain Primes",
     "content": "**SophieGermainPrime p:**\n\nA prime p such that 2p + 1 is also prime.\n\nExamples: 2, 3, 5, 11, 23, 29, 41, 53, ...\n\n**Connection to Problem:**\nIf p is Sophie Germain, then [p, 2p+1] is a prime chain:\n- 2p + 1 ≡ 1 (mod p) since 2p + 1 - 1 = 2p\n\n**Cunningham Chains:**\nExtensions where p, 2p+1, 4p+3, 8p+7, ... are all prime.",
@@ -108,7 +108,7 @@
   {
     "id": "ann-e696-examples",
     "proofId": "erdos-696",
-    "range": { "startLine": 208, "endLine": 232 },
+    "range": { "startLine": 200, "endLine": 221 },
     "type": "theorem",
     "title": "Concrete Examples",
     "content": "**Examples of h(n):**\n\n- **n = 6 = 2·3:** h(6) ≥ 2\n  Chain [2, 3] works since 3 ≡ 1 (mod 2)\n\n- **n = 30 = 2·3·5:** h(30) = 2\n  Chains [2, 3] or [2, 5] work, but no length-3 chain\n\n- **n = 2310 = 2·3·5·7·11:** h(2310) ≥ 3\n  Chain [2, 3, 7] works:\n  - 3 ≡ 1 (mod 2) ✓\n  - 7 ≡ 1 (mod 3) ✓",
@@ -118,7 +118,7 @@
   {
     "id": "ann-e696-bounds",
     "proofId": "erdos-696",
-    "range": { "startLine": 260, "endLine": 283 },
+    "range": { "startLine": 251, "endLine": 273 },
     "type": "concept",
     "title": "Upper Bounds",
     "content": "**Bounds on h(n) and H(n):**\n\n**h(n) ≤ ω(n):**\nWhere ω(n) = number of distinct prime factors.\nChain elements are distinct primes dividing n.\n\n**H(n) ≤ log₂(n):**\nEach chain element at least doubles the previous (since d' > d and d' ≡ 1 mod d implies d' ≥ d + 1).\n\n**Conjectured:** h(n) ≤ log*(n) + O(1)",
@@ -129,7 +129,7 @@
   {
     "id": "ann-e696-van-doorn",
     "proofId": "erdos-696",
-    "range": { "startLine": 285, "endLine": 306 },
+    "range": { "startLine": 275, "endLine": 296 },
     "type": "axiom",
     "title": "Van Doorn's Proof",
     "content": "**van_doorn_proof:**\n\nProof that h(n) → ∞ for almost all n.\n\n**Key Idea:**\n1. For most n, there exists a small prime p₁ dividing n\n2. By Dirichlet's theorem, primes p ≡ 1 (mod p₁) have positive density\n3. Most n have such a prime p₂ among their factors\n4. Iterate to build longer chains\n\nThe density argument shows {n : h(n) < k} has density 0 for any fixed k.",
@@ -140,7 +140,7 @@
   {
     "id": "ann-e696-summary",
     "proofId": "erdos-696",
-    "range": { "startLine": 308, "endLine": 349 },
+    "range": { "startLine": 298, "endLine": 340 },
     "type": "theorem",
     "title": "Summary",
     "content": "**Erdős Problem #696: Status Summary**\n\n**KNOWN:**\n- h(n) → ∞ for almost all n (van Doorn) ✓\n- h(n) ≤ H(n) always ✓\n\n**CONJECTURED:**\n- Normal order of h(n) is log*(n)\n\n**OPEN:**\n- Is H(n)/h(n) → ∞ for almost all n?\n\n**KEY INSIGHTS:**\n1. The congruence pᵢ₊₁ ≡ 1 (mod pᵢ) reflects multiplicative group structure\n2. The iterated logarithm grows extremely slowly\n3. Composite divisors give more flexibility than primes\n4. Sophie Germain and Cunningham chains are relevant examples",
