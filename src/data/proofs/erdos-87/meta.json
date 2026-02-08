@@ -21,53 +21,70 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős originally conjectured R(G) ≥ R(k) whenever χ(G) = k. This was disproved by Faudree and McKay, who showed the pentagonal wheel W has χ(W) = 4 but R(W) = 17 < R(4) = 18. Erdős then weakened the conjecture to the forms stated here.",
+    "historicalContext": "Erdős Problem #87 probes the fundamental relationship between the chromatic number $\\chi(G)$ and the Ramsey number $R(G)$ of a graph. Erdős originally conjectured $R(G) \\ge R(k)$ whenever $\\chi(G) = k$ — that is, every $k$-chromatic graph is at least as hard to avoid in Ramsey colorings as the complete graph $K_k$. This was motivated by the intuition that high chromatic number forces complex structure that should be difficult to eliminate by 2-coloring edges.\n\nFaudree and McKay disproved the original conjecture with a remarkably tight counterexample: the pentagonal wheel $W = C_5 + K_1$ (a 5-cycle with a universal vertex, 6 vertices total) has $\\chi(W) = 4$ but $R(W,W) = 17$, while $R(4) = R(4,4) = 18$. The shortfall is just 1, showing the original conjecture barely fails. No counterexample with $\\chi(G) > 4$ is known.\n\nErdős then weakened the conjecture to two forms. The weak form allows an exponentially decaying multiplicative factor: $R(G) > (1-\\varepsilon)^k \\cdot R(k)$ for large $k$. Since $(1-\\varepsilon)^k \\to 0$, this permits $R(G)$ to be an exponentially small fraction of $R(k)$. The strong form asks for an absolute constant $c > 0$ (independent of $k$) such that $R(G) > c \\cdot R(k)$ — meaning every $k$-chromatic graph's Ramsey number is at least a fixed proportion of the diagonal Ramsey number.\n\nThe known bounds support the conjecture: the probabilistic method (Erdős 1947) gives $R(G) \\ge C \\cdot 2^{k/2}$ for any $G$ with $\\chi(G) = k$, while the Erdős-Szekeres bound gives $R(k) \\le \\binom{2k-2}{k-1} < 4^k$. Thus $R(G)/R(k) \\ge C \\cdot 2^{k/2}/4^k = C \\cdot 2^{-3k/2}$, which already decays exponentially. The weak conjecture asks whether the decay is at most $(1-\\varepsilon)^k$ for any fixed $\\varepsilon$, which is slower than $2^{-3k/2}$ for $\\varepsilon < 1 - 2^{-3/2} \\approx 0.646$. Recent progress on diagonal Ramsey numbers (Campos, Griffiths, Morris, Sahasrabudhe 2023: $R(k) \\le (4 - \\delta)^k$ for some $\\delta > 0$) tightens the upper bound but does not resolve the conjecture.\n\nThe problem is listed among the most important open problems in Ramsey theory and connects to the broader question of how chromatic structure constrains Ramsey behavior.",
     "problemStatement": "For every ε > 0, is R(G) > (1 − ε)^k · R(k) for all sufficiently large k and every graph G with chromatic number k? The stronger form asks whether there exists an absolute constant c > 0 with R(G) > c · R(k).",
-    "proofStrategy": "The formalization axiomatizes diagonal Ramsey numbers R(k), graph Ramsey numbers R(G), and chromatic numbers χ(G). Both weak and strong conjectures are stated. Known bounds (exponential lower bound from random colourings, upper bound R(k) ≤ 4^k) and the Faudree–McKay counterexample to the original conjecture are recorded as axioms.",
+    "proofStrategy": "The formalization axiomatizes the three key quantities — `diagonalRamsey k` ($R(k)$), `graphRamsey n G` ($R(G)$), and `chromaticNumber G` ($\\chi(G)$) — with positivity and boundedness properties. Both the weak and strong conjectures are stated as `Prop` definitions. The known exponential lower bound from random colorings and the classical $R(k) \\le 4^k$ upper bound are axiomatized. The Faudree-McKay counterexample to the original conjecture is formalized as an existential statement over `SimpleGraph (Fin 6)`. All declarations use `axiom` since the underlying results require deep combinatorial or probabilistic arguments not available in Mathlib.",
     "keyInsights": [
-      "The original conjecture R(G) ≥ R(k) for χ(G) = k is false: the pentagonal wheel gives R(W) = 17 < R(4) = 18",
-      "The weakened conjecture allows a multiplicative factor (1 − ε)^k that shrinks exponentially",
-      "Random colouring arguments give R(G) ≫ 2^{k/2} for χ(G) = k, providing evidence for the conjecture",
-      "The strong form asks for an absolute constant c independent of k"
+      "The original conjecture $R(G) \\ge R(k)$ for $\\chi(G) = k$ is false, but the Faudree-McKay counterexample barely fails ($R(W) = 17$ vs $R(4) = 18$, a shortfall of just 1). No counterexample is known for $\\chi(G) > 4$, leaving open whether the original conjecture holds for large enough chromatic number.",
+      "The weak and strong forms represent fundamentally different statements: $(1-\\varepsilon)^k \\to 0$ exponentially while $c$ is fixed. The strong form would mean that Ramsey numbers of $k$-chromatic graphs stay a bounded fraction of diagonal Ramsey numbers — a deep structural claim that every $k$-chromatic graph is 'nearly as Ramsey-hard' as $K_k$.",
+      "The probabilistic lower bound $R(G) \\ge C \\cdot 2^{k/2}$ combined with the upper bound $R(k) \\le 4^k$ gives $R(G)/R(k) \\ge C \\cdot 2^{-3k/2}$. For the weak conjecture to add content beyond this, we need $(1-\\varepsilon)^k \\gg 2^{-3k/2}$, which holds iff $\\varepsilon < 1 - 2^{-3/2} \\approx 0.646$. So the conjecture is non-trivially stronger than known bounds for moderate $\\varepsilon$.",
+      "The formalization uses `SimpleGraph (Fin k)` for graphs on $k$ vertices with $\\chi(G) = k$, which means the graph has exactly $k$ vertices and is $k$-chromatic (tight: $\\chi(G) = |V(G)|$). These are complete multipartite graphs or close to them, since $\\chi(G) = n$ iff $G$ requires $n$ colors but has only $n$ vertices.",
+      "The Erdős-Szekeres bound $R(k) \\le \\binom{2k-2}{k-1}$ and the probabilistic lower bound $R(k) > 2^{k/2}$ leave an exponential gap. The recent breakthrough by Campos-Griffiths-Morris-Sahasrabudhe (2023) proving $R(k) \\le (4-\\delta)^k$ for some $\\delta > 0$ was the first improvement to the Erdős-Szekeres upper bound in 75 years, but the gap between upper and lower bounds for $R(k)$ remains exponential."
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Header documentation describing both conjecture forms, the Faudree-McKay counterexample, and imports from Mathlib (SimpleGraph.Basic, Fin.Basic, Filter.Basic, Tactic)."
+    },
     {
       "id": "axioms",
       "title": "Axiomatized Ramsey and Chromatic Numbers",
       "startLine": 23,
       "endLine": 48,
-      "summary": "Axioms for the diagonal Ramsey number R(k), graph Ramsey number R(G), and chromatic number χ(G), along with basic positivity and boundedness properties."
+      "summary": "Axioms for diagonalRamsey (R(k) with positivity), graphRamsey (R(G) with positivity), and chromaticNumber (χ(G) with bounds 1 ≤ χ(G) ≤ n). All three are axiomatized functions on ℕ and SimpleGraph (Fin n)."
     },
     {
-      "id": "main-conjecture",
-      "title": "Main Conjecture",
+      "id": "weak-conjecture",
+      "title": "Weak Conjecture: (1-ε)^k Decay",
       "startLine": 50,
+      "endLine": 59,
+      "summary": "ErdosProblem87 states: ∀ ε ∈ (0,1), ∃ k₀, ∀ k ≥ k₀, ∀ G with χ(G) = k: (1-ε)^k · R(k) < R(G). Formalized as a Prop over ℝ-valued inequalities with cast from ℕ."
+    },
+    {
+      "id": "strong-conjecture",
+      "title": "Strong Conjecture: Absolute Constant c",
+      "startLine": 61,
       "endLine": 68,
-      "summary": "The weak form states R(G) > (1 − ε)^k · R(k) for large k, and the strong form posits an absolute constant c > 0 with R(G) > c · R(k)."
+      "summary": "ErdosProblem87_strong states: ∃ c > 0, ∃ k₀, ∀ k ≥ k₀, ∀ G with χ(G) = k: c · R(k) < R(G). Strictly stronger than the weak form since c is independent of k."
     },
     {
       "id": "known-bounds",
-      "title": "Known Bounds",
+      "title": "Known Exponential Bounds",
       "startLine": 70,
       "endLine": 81,
-      "summary": "Exponential lower bound R(G) ≫ 2^{k/2} from random colourings and the classical upper bound R(k) ≤ 4^k."
+      "summary": "graphRamsey_exponential_lower: ∃ C > 0, R(G) ≥ C · 2^{k/2} for χ(G) = k (probabilistic method). diagonalRamsey_upper: R(k) ≤ 4^k (Erdős-Szekeres). Together: R(G)/R(k) ≥ C · 2^{-3k/2}."
     },
     {
       "id": "counterexample",
-      "title": "Counterexample to Original Conjecture",
+      "title": "Faudree-McKay Counterexample",
       "startLine": 83,
-      "endLine": 89,
-      "summary": "The Faudree–McKay result: the pentagonal wheel W satisfies χ(W) = 4, R(W) = 17, while R(4) = 18, disproving R(G) ≥ R(k)."
+      "endLine": 90,
+      "summary": "Existential axiom: ∃ W : SimpleGraph (Fin 6) with χ(W) = 4, R(W) = 17, R(4) = 18. The pentagonal wheel W = C₅ + K₁ disproves R(G) ≥ R(χ(G)) by margin of 1."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures both the weak and strong forms of Erdős Problem 87, records the known exponential lower bound and Ramsey upper bound, and includes the Faudree–McKay counterexample that motivated the weakened conjecture.",
-    "implications": "Resolution would clarify the relationship between chromatic number and Ramsey number, a central question in Ramsey theory. The strong form would imply that graphs with high chromatic number are essentially as hard to avoid in Ramsey colourings as complete graphs.",
+    "summary": "This formalization captures Erdős Problem #87 with axiomatized Ramsey and chromatic numbers, both weak and strong conjecture forms, known exponential bounds, and the Faudree-McKay counterexample that motivated the weakened conjectures. All 90 lines are sorry-free (all deep results are axiomatized rather than left as sorry). The formalization cleanly separates the algebraic structure of the conjectures (ℝ-valued inequalities with casts) from the combinatorial content (axioms encoding known results).",
+    "implications": "Resolution of the weak conjecture would establish that Ramsey numbers of $k$-chromatic graphs cannot decay faster than $(1-\\varepsilon)^k$ relative to diagonal Ramsey numbers — a precise quantification of how chromatic complexity constrains Ramsey behavior. The strong form would be far more powerful: it would mean that $R(G)/R(k)$ is bounded below by an absolute constant, implying every $k$-chromatic graph is essentially as hard as $K_k$ in Ramsey colorings. This would have deep implications for the structure of Ramsey-minimal graphs.",
     "openQuestions": [
-      "Does either the weak or strong form hold?",
-      "What is the optimal decay rate for the multiplicative factor as a function of k?",
-      "Can the Faudree–McKay construction be extended to larger chromatic numbers?"
+      "Does either the weak or strong form hold? The weak form is widely believed; the strong form is more speculative. No counterexample to either is known.",
+      "What is the true growth rate of $R(G)/R(k)$ as $k \\to \\infty$ for the worst-case $k$-chromatic graph $G$? The known bounds give $C \\cdot 2^{-3k/2} \\le R(G)/R(k) \\le 1$, but the gap is enormous.",
+      "Can the Faudree-McKay counterexample be extended: are there $k$-chromatic graphs with $R(G) < R(k)$ for $k > 4$? No such example is known, leaving open whether the original conjecture $R(G) \\ge R(k)$ holds for $k \\ge 5$.",
+      "How does the recent Campos-Griffiths-Morris-Sahasrabudhe improvement $R(k) \\le (4-\\delta)^k$ affect the conjecture? A tighter upper bound on $R(k)$ makes the ratio $R(G)/R(k)$ larger, potentially making the conjecture easier to prove.",
+      "For which graph families is $R(G) \\ge R(\\chi(G))$ known to hold? Results exist for complete bipartite graphs, trees, and cycles, but the general $k$-chromatic case remains open."
     ]
   }
 }

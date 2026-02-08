@@ -1,83 +1,74 @@
 [
   {
-    "id": "erdos-87-header",
+    "id": "ann-e87-header",
     "proofId": "erdos-87",
+    "range": { "startLine": 1, "endLine": 21 },
     "type": "context",
-    "range": { "startLine": 1, "endLine": 14 },
-    "title": "Problem Background",
-    "content": "Erdős Problem 87 asks whether the graph Ramsey number R(G) is close to the diagonal Ramsey number R(k) whenever χ(G) = k. The original conjecture R(G) ≥ R(k) was disproved by Faudree and McKay via the pentagonal wheel.",
-    "significance": "essential"
+    "title": "Problem Statement and Imports",
+    "content": "Erdős Problem #87 asks whether the graph Ramsey number $R(G)$ is close to the diagonal Ramsey number $R(k)$ whenever $\\chi(G) = k$. The original conjecture $R(G) \\ge R(k)$ was disproved by Faudree and McKay: the pentagonal wheel $W$ (the graph $C_5 + K_1$, 6 vertices) has $\\chi(W) = 4$ but $R(W) = 17 < R(4) = 18$. Erdős then weakened the conjecture to two forms: the weak form allows a $(1-\\varepsilon)^k$ multiplicative decay, and the strong form asks for an absolute constant $c$. The formalization uses Mathlib's `SimpleGraph` API on `Fin n` for graph representation.",
+    "mathContext": "Original (FALSE): $\\chi(G) = k \\Rightarrow R(G) \\ge R(k)$. Weak: $\\forall \\varepsilon > 0, \\exists k_0, \\forall k \\ge k_0, \\forall G$ with $\\chi(G) = k: R(G) > (1-\\varepsilon)^k R(k)$. Strong: $\\exists c > 0: R(G) > c \\cdot R(k)$.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "chromatic number", "Ramsey numbers", "pentagonal wheel"],
+    "prerequisites": ["graph coloring", "Ramsey numbers", "SimpleGraph"]
   },
   {
-    "id": "erdos-87-diagonal-ramsey",
+    "id": "ann-e87-axioms",
     "proofId": "erdos-87",
+    "range": { "startLine": 23, "endLine": 48 },
     "type": "definition",
-    "range": { "startLine": 25, "endLine": 30 },
-    "title": "Diagonal Ramsey Number",
-    "content": "The diagonal Ramsey number R(k) is axiomatized as a function ℕ → ℕ representing the minimum N such that every 2-colouring of K_N contains a monochromatic K_k. Positivity for k ≥ 1 is asserted.",
-    "significance": "essential"
+    "title": "Axiomatized Ramsey and Chromatic Numbers",
+    "content": "`diagonalRamsey k` is the diagonal Ramsey number $R(k,k) = R(k)$: the minimum $N$ such that every 2-coloring of $K_N$ contains a monochromatic $K_k$. The Erdős-Szekeres bound gives $R(k) \\le \\binom{2k-2}{k-1} < 4^k$, while the probabilistic method (Erdős 1947) gives $R(k) > 2^{k/2}$. The exact values are known only for $k \\le 4$: $R(1)=1, R(2)=2, R(3)=6, R(4)=18$. `graphRamsey n G` is the graph Ramsey number $R(G, G)$: the minimum $N$ for a monochromatic copy of $G$ in every 2-coloring of $K_N$. `chromaticNumber G` is $\\chi(G)$, axiomatized with bounds $1 \\le \\chi(G) \\le n$.",
+    "mathContext": "$R(k)$: min $N$ s.t. every 2-coloring of $K_N \\supseteq$ monochromatic $K_k$. $2^{k/2} < R(k) \\le \\binom{2k-2}{k-1} < 4^k$ (Erdős-Szekeres). $R(G)$: min $N$ s.t. every 2-coloring of $K_N \\supseteq$ monochromatic $G$. $R(K_k) = R(k)$.",
+    "significance": "key",
+    "relatedConcepts": ["diagonal Ramsey number", "Erdős-Szekeres bound", "probabilistic method", "graph Ramsey number"],
+    "prerequisites": ["Ramsey theory", "binomial coefficients", "probabilistic method"]
   },
   {
-    "id": "erdos-87-graph-ramsey",
+    "id": "ann-e87-weak",
     "proofId": "erdos-87",
-    "type": "definition",
-    "range": { "startLine": 32, "endLine": 37 },
-    "title": "Graph Ramsey Number",
-    "content": "The graph Ramsey number R(G) is axiomatized as the smallest N such that every 2-colouring of K_N contains a monochromatic copy of G. It takes a SimpleGraph on Fin n and returns ℕ.",
-    "significance": "essential"
+    "range": { "startLine": 50, "endLine": 59 },
+    "type": "concept",
+    "title": "Weak Form: $(1-\\varepsilon)^k$ Decay",
+    "content": "`ErdosProblem87` states the weak form: for every $\\varepsilon \\in (0,1)$, there exists $k_0$ such that for all $k \\ge k_0$ and every graph $G$ on $k$ vertices with $\\chi(G) = k$: $R(G) > (1-\\varepsilon)^k \\cdot R(k)$. Since $(1-\\varepsilon)^k \\to 0$ exponentially, this allows $R(G)$ to be an exponentially small fraction of $R(k)$. The conjecture would still be meaningful because $R(G) \\ge 2^{k/2}$ (probabilistic lower bound) while $R(k) \\le 4^k$, so the ratio $R(G)/R(k) \\ge 2^{k/2}/4^k = 2^{-3k/2}$ is already exponentially decaying. The conjecture asks whether the decay is at most $(1-\\varepsilon)^k$ for any fixed $\\varepsilon$.",
+    "mathContext": "Weak form: $\\forall \\varepsilon \\in (0,1), \\exists k_0: \\forall k \\ge k_0, \\forall G$ with $\\chi(G) = k: R(G) > (1-\\varepsilon)^k R(k)$. Note: $(1-\\varepsilon)^k / (2^{k/2}/4^k) = (1-\\varepsilon)^k \\cdot 4^k / 2^{k/2} = ((1-\\varepsilon) \\cdot 2^{3/2})^k \\to \\infty$ for small $\\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": ["exponential decay", "Ramsey ratio", "asymptotic Ramsey theory"],
+    "prerequisites": ["exponential functions", "asymptotic analysis"]
   },
   {
-    "id": "erdos-87-chromatic-number",
+    "id": "ann-e87-strong",
     "proofId": "erdos-87",
-    "type": "definition",
-    "range": { "startLine": 39, "endLine": 48 },
-    "title": "Chromatic Number",
-    "content": "The chromatic number χ(G) is axiomatized as a function from SimpleGraph (Fin n) to ℕ, with bounds: χ(G) ≤ n and χ(G) ≥ 1 for non-empty graphs.",
-    "significance": "essential"
-  },
-  {
-    "id": "erdos-87-weak-conjecture",
-    "proofId": "erdos-87",
-    "type": "conjecture",
-    "range": { "startLine": 52, "endLine": 59 },
-    "title": "Weak Form of Conjecture",
-    "content": "For every ε ∈ (0,1), there exists k₀ such that for all k ≥ k₀ and all G with χ(G) = k, we have R(G) > (1 − ε)^k · R(k).",
-    "significance": "essential"
-  },
-  {
-    "id": "erdos-87-strong-conjecture",
-    "proofId": "erdos-87",
-    "type": "conjecture",
     "range": { "startLine": 61, "endLine": 68 },
-    "title": "Strong Form of Conjecture",
-    "content": "There exists c > 0 and k₀ such that for all k ≥ k₀ and all G with χ(G) = k, we have R(G) > c · R(k). This is stronger because c is independent of k.",
-    "significance": "essential"
+    "type": "concept",
+    "title": "Strong Form: Absolute Constant $c$",
+    "content": "`ErdosProblem87_strong` asks for an absolute constant $c > 0$ (independent of $k$) such that $R(G) > c \\cdot R(k)$ for all large $k$ and all $G$ with $\\chi(G) = k$. This is strictly stronger than the weak form because $(1-\\varepsilon)^k \\to 0$ while $c$ is fixed. The strong form would mean that the Ramsey number of any $k$-chromatic graph is a bounded fraction of the diagonal Ramsey number — every $k$-chromatic graph is 'nearly as hard' as $K_k$ in the Ramsey sense. This would be a deep structural result about the relationship between coloring and Ramsey properties.",
+    "mathContext": "Strong form: $\\exists c > 0, \\exists k_0: \\forall k \\ge k_0, \\forall G$ with $\\chi(G) = k: R(G) > c \\cdot R(k)$. Implies weak form with $\\varepsilon$ s.t. $(1-\\varepsilon)^{k_0} < c$. Much stronger: bounded ratio vs vanishing ratio.",
+    "significance": "key",
+    "relatedConcepts": ["absolute constant", "bounded Ramsey ratio", "k-chromatic graphs"],
+    "prerequisites": ["weak form", "asymptotic comparison"]
   },
   {
-    "id": "erdos-87-exponential-lower",
+    "id": "ann-e87-bounds",
     "proofId": "erdos-87",
-    "type": "result",
-    "range": { "startLine": 72, "endLine": 77 },
-    "title": "Exponential Lower Bound",
-    "content": "A random colouring argument gives R(G) ≫ 2^{k/2} for any graph G with χ(G) = k, providing evidence for the conjecture.",
-    "significance": "supporting"
+    "range": { "startLine": 70, "endLine": 81 },
+    "type": "insight",
+    "title": "Known Bounds: Exponential Lower and Upper Bounds",
+    "content": "`graphRamsey_exponential_lower` axiomatizes that $R(G) \\ge C \\cdot 2^{k/2}$ for some $C > 0$ whenever $\\chi(G) = k$. This follows from the probabilistic method: a random 2-coloring of $K_N$ has expected number of monochromatic copies of $G$ bounded by $\\binom{N}{k} \\cdot 2^{1-\\binom{k}{2}}$, which is $< 1$ for $N \\ll 2^{k/2}$. `diagonalRamsey_upper` gives $R(k) \\le 4^k$ from the Erdős-Szekeres argument ($R(k) \\le \\binom{2k-2}{k-1} \\le 4^{k-1}$). Together: $2^{k/2} \\ll R(G)$ and $R(k) \\le 4^k$, so $R(G)/R(k) \\ge 2^{k/2}/4^k = 2^{-3k/2}$. The conjecture asks whether this ratio decays more slowly.",
+    "mathContext": "Lower: $R(G) \\ge C \\cdot 2^{k/2}$ for $\\chi(G) = k$ (probabilistic method). Upper: $R(k) \\le 4^k$ (Erdős-Szekeres). Ratio: $R(G)/R(k) \\ge C \\cdot 2^{-3k/2}$, which is $\\gg (1-\\varepsilon)^k$ for $\\varepsilon < 1 - 2^{-3/2} \\approx 0.646$.",
+    "significance": "supporting",
+    "relatedConcepts": ["probabilistic method", "Erdős-Szekeres bound", "expected value argument", "first moment method"],
+    "prerequisites": ["probabilistic method", "binomial coefficients", "exponential growth"]
   },
   {
-    "id": "erdos-87-ramsey-upper",
+    "id": "ann-e87-counterexample",
     "proofId": "erdos-87",
-    "type": "result",
-    "range": { "startLine": 79, "endLine": 81 },
-    "title": "Ramsey Upper Bound",
-    "content": "The classical upper bound R(k) ≤ 4^k, used to calibrate what the conjecture demands.",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-87-counterexample",
-    "proofId": "erdos-87",
-    "type": "result",
-    "range": { "startLine": 83, "endLine": 89 },
-    "title": "Faudree–McKay Counterexample",
-    "content": "The pentagonal wheel W on 6 vertices has χ(W) = 4 and R(W) = 17, while R(4) = 18. This disproves the original conjecture R(G) ≥ R(k) and motivates the weakened formulations.",
-    "significance": "essential"
+    "range": { "startLine": 83, "endLine": 90 },
+    "type": "insight",
+    "title": "Faudree-McKay Counterexample: Pentagonal Wheel",
+    "content": "`faudree_mckay_counterexample` records the result that disproved Erdős's original conjecture $R(G) \\ge R(k)$: the pentagonal wheel $W = C_5 + K_1$ (a 5-cycle with a universal vertex, 6 vertices total) has $\\chi(W) = 4$ (the universal vertex shares edges with all others, the 5-cycle needs 3 colors, total 4) but $R(W) = 17 < R(4) = 18$. The shortfall of just 1 (17 vs 18) shows the original conjecture barely fails — motivating the weakened versions. The formalization existentially quantifies over a `SimpleGraph (Fin 6)` satisfying the required properties.",
+    "mathContext": "Faudree-McKay: $W = C_5 + K_1$, $|V(W)| = 6$, $\\chi(W) = 4$, $R(W,W) = 17$, $R(4) = R(4,4) = 18$. So $R(W) < R(\\chi(W))$, contradicting $R(G) \\ge R(\\chi(G))$. Margin: only $18 - 17 = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["pentagonal wheel", "Faudree-McKay result", "graph Ramsey computation", "counterexample"],
+    "prerequisites": ["wheel graph", "chromatic number computation", "small Ramsey numbers"]
   }
 ]
