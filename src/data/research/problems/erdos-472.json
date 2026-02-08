@@ -1,7 +1,7 @@
 {
   "slug": "erdos-472",
   "title": "Erdős #472",
-  "phase": "NEW",
+  "phase": "EXPLORING",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,47 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "EXPLORING",
     "since": "2026-01-13T04:11:10.513Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Proved basic properties, built computable infrastructure",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Explore more seeds and verify longer sequences",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Converted 3 axioms to proved theorems. Built computable step function and verified first 8 terms of {3,5} sequence. Proved structural lemmas on candidate parity.",
+    "builtItems": [
+      "theorem ulamSeed35_prime (was axiom)",
+      "theorem candidate_self_odd (was axiom)",
+      "theorem ulam_seq_gap (was axiom)",
+      "theorem ulam_seq_ge_two",
+      "def ulamNextCandidate - computable step function",
+      "def ulamStep, ulamExtend - sequence extension",
+      "theorem ulam35_first_terms - verified 6 terms by native_decide",
+      "theorem ulam35_extends_8 - verified 8 terms",
+      "theorem candidates_odd_of_odd",
+      "theorem seed_two_gives_even",
+      "theorem odd_candidate_from_odd"
+    ],
+    "insights": [
+      "The {3,5} Ulam sequence contains all primes up to 23 (first 8 terms verified computationally)",
+      "For odd seed elements, all candidates last+q-1 are odd, hence potentially prime",
+      "Seed element 2 gives even candidates from any last>=3, hence useless for generating primes",
+      "Consecutive terms in any Ulam prime sequence differ by >=2 (proved)",
+      "The main conjecture is OPEN - cannot prove infiniteness of any specific sequence"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Submit provable variant to Aristotle for automatic proof search",
+      "Investigate whether {3,5} sequence misses any primes <100",
+      "Explore other seeds computationally",
+      "Formalize connection to twin prime conjecture"
+    ],
     "markdown": "# Erdős #472 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven some initial finite sequence of primes $q_1<\\cdots<q_m$ extend it so that $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ for $n\\geq m$. Is there an initial starting sequence so that the resulting sequence is infinite?\n\n\n\nA problem due to Ulam. For example if we begin with $3,5$ then the sequence continues $3,5,7,11,13,17,\\ldots$. It is possible that this sequence is infinite.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #471\n- Problem #473\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "approaches": [],
