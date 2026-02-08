@@ -10,9 +10,10 @@
     "proofRepoPath": "Proofs/Erdos396Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "binomial coefficients",
-      "divisibility"
+      "number-theory",
+      "binomial-coefficients",
+      "divisibility",
+      "open"
     ],
     "badge": "formalized",
     "sorries": 0,
@@ -21,53 +22,76 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in 1980 about the divisibility of central binomial coefficients by descending factorial products. The connection to Catalan numbers (where n+1 always divides C(2n,n)) motivates the question of how deep divisibility by n and its predecessors can go. Pomerance (2014) made significant progress on related questions.",
-    "problemStatement": "For every positive integer k, does there exist n such that n(n−1)(n−2)⋯(n−k) divides C(2n,n)?",
-    "proofStrategy": "We use Mathlib's descFactorial and centralBinom. The Catalan divisibility is recorded, along with Pomerance's results on single factors and ascending factorials. The main conjecture and an infinitely-many strengthening are stated as axioms.",
+    "historicalContext": "Erdős and Graham posed Problem #396 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory,' asking about the divisibility of central binomial coefficients $\\binom{2n}{n}$ by descending factorial products. The question is motivated by the classical fact that $n+1$ always divides $\\binom{2n}{n}$ (giving the Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$), but $n$ itself rarely divides $\\binom{2n}{n}$. The problem asks how far 'downward' from $n$ one can push simultaneous divisibility.\n\nCarl Pomerance made the most significant progress in 2014. He showed that for any fixed $k$, each individual factor $(n-k)$ divides $\\binom{2n}{n}$ for infinitely many $n$, but the set of such $n$ has upper density less than $1/3$. In contrast, the ascending product $(n+1)(n+2)\\cdots(n+k)$ divides $\\binom{2n}{n}$ with asymptotic density 1 — a striking asymmetry between descending and ascending factorials. The key difficulty lies in the $p$-adic structure: by Kummer's theorem, $\\nu_p(\\binom{2n}{n})$ equals the number of carries when adding $n$ to $n$ in base $p$, and simultaneous divisibility by $n(n-1)\\cdots(n-k)$ places correlated constraints across multiple primes.\n\nThe OEIS sequence A375077 catalogues the smallest witness $n$ for each $k$. The problem remains open: even the existence of a single $n$ for each $k$ is unproved, let alone the natural strengthening that infinitely many witnesses exist.",
+    "problemStatement": "For every positive integer $k$, does there exist $n$ such that $n(n-1)(n-2)\\cdots(n-k) \\mid \\binom{2n}{n}$? Equivalently, does $n^{\\underline{k+1}} \\mid \\binom{2n}{n}$ for some $n$?",
+    "proofStrategy": "The formalization uses Mathlib's `Nat.descFactorial` and `Nat.centralBinom` to express the problem cleanly. The Catalan divisibility $(n+1) \\mid \\binom{2n}{n}$ is axiomatized as the base case. Pomerance's results are captured as three axioms: single-factor divisibility (infinitely many $n$), the $1/3$ density bound, and the density-1 result for ascending factorials. The main conjecture and its infinitely-many strengthening are stated as axioms. A smallest-witness function is axiomatized with a validity property for computational verification.",
     "keyInsights": [
-      "n+1 always divides C(2n,n), yielding Catalan numbers, but n itself rarely divides C(2n,n)",
-      "Pomerance showed each individual factor (n−k) divides C(2n,n) for infinitely many n",
-      "The ascending product ∏(n+i) divides C(2n,n) with density 1, contrasting the descending case",
-      "The OEIS sequence A375077 catalogues smallest witnesses for each k"
+      "**Ascending vs descending asymmetry**: The ascending product $(n+1)\\cdots(n+k)$ divides $\\binom{2n}{n}$ with density 1, but the descending product $n(n-1)\\cdots(n-k)$ divides only rarely. This reflects the different interactions with the denominator $(n!)^2$ in the formula $\\binom{2n}{n} = (2n)!/(n!)^2$.",
+      "**Kummer's theorem is the key tool**: The $p$-adic valuation $\\nu_p(\\binom{2n}{n})$ equals the number of carries when adding $n+n$ in base $p$. Simultaneous divisibility by $n, n-1, \\ldots, n-k$ constrains the base-$p$ digits of $n$ for each prime $p \\leq n$, creating a complex system of correlated conditions.",
+      "Pomerance's density bound of $1/3$ shows that **even single-factor divisibility is rare**: the set $\\{n : (n-k) \\mid \\binom{2n}{n}\\}$ has upper density $< 1/3$, far from the density-1 behavior of the ascending case.",
+      "The **Catalan number connection** provides the starting point: $C_n = \\binom{2n}{n}/(n+1)$ is always an integer, but the sequence $\\binom{2n}{n}/[n(n-1)\\cdots(n-k)]$ need not be, making the divisibility condition genuinely non-trivial.",
+      "The problem sits in the tradition of **Erdős divisibility questions** about binomial coefficients, connecting to the Erdős–Kac theorem, Granville's work on binomial coefficients modulo primes, and the general study of the prime factorization of $\\binom{2n}{n}$."
     ]
   },
   "sections": [
     {
-      "id": "definitions",
+      "id": "header-and-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Documents the problem, known results (Catalan divisibility, Pomerance 2014), and imports Mathlib modules for natural numbers, central binomial coefficients, and factorials."
+    },
+    {
+      "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 21,
-      "endLine": 30,
-      "summary": "Uses Mathlib's descFactorial and centralBinom for the key objects."
+      "startLine": 27,
+      "endLine": 33,
+      "summary": "References Mathlib's `Nat.descFactorial` for descending factorials and `Nat.centralBinom` for central binomial coefficients."
     },
     {
       "id": "basic-divisibility",
       "title": "Basic Divisibility Results",
-      "startLine": 32,
-      "endLine": 41,
-      "summary": "Records that n+1 always divides C(2n,n) and that n rarely does."
+      "startLine": 35,
+      "endLine": 45,
+      "summary": "Axiomatizes Catalan divisibility $(n+1) \\mid \\binom{2n}{n}$ and the rarity of $n \\mid \\binom{2n}{n}$."
     },
     {
-      "id": "pomerance",
-      "title": "Pomerance's Results",
-      "startLine": 43,
-      "endLine": 58,
-      "summary": "Axiomatizes Pomerance's 2014 results on single factor divisibility and ascending factorial density."
+      "id": "pomerance-results",
+      "title": "Pomerance's Results (2014)",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "Three results: single-factor divisibility for infinitely many $n$, upper density $< 1/3$ for single factors, and density 1 for ascending factorials."
     },
     {
-      "id": "conjecture",
+      "id": "main-conjecture",
       "title": "The Erdős–Graham Conjecture",
-      "startLine": 60,
+      "startLine": 63,
+      "endLine": 68,
+      "summary": "States the main open conjecture: $\\forall k, \\exists n: n^{\\underline{k+1}} \\mid \\binom{2n}{n}$."
+    },
+    {
+      "id": "computational-evidence",
+      "title": "Computational Evidence",
+      "startLine": 70,
       "endLine": 79,
-      "summary": "States the main conjecture and its infinitely-many strengthening."
+      "summary": "Axiomatizes a smallest-witness function with validity, referencing OEIS A375077."
+    },
+    {
+      "id": "strengthening",
+      "title": "Infinitely Many Witnesses",
+      "startLine": 81,
+      "endLine": 84,
+      "summary": "States the natural strengthening: for each $k$, infinitely many $n$ satisfy the full descending factorial divisibility."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 396 asks whether descending factorial products can always divide central binomial coefficients. Pomerance's results handle individual factors and ascending products, but the full descending product conjecture remains open.",
-    "implications": "Resolution would deepen understanding of the prime factorization structure of central binomial coefficients, with connections to p-adic valuations and Kummer's theorem.",
+    "summary": "This formalization captures Erdős Problem #396 on descending factorial divisibility of central binomial coefficients. It includes the Catalan base case, Pomerance's 2014 partial results (single-factor, density bounds, ascending contrast), the open conjecture, computational evidence via OEIS, and the infinitely-many strengthening.",
+    "implications": "Resolution would deepen understanding of the $p$-adic structure of central binomial coefficients and the interplay between Kummer's theorem carries and factorial divisibility. The ascending-vs-descending asymmetry highlights fundamental differences in how the numerator and denominator of $\\binom{2n}{n}$ interact with shifted factorial products.",
     "openQuestions": [
-      "For every k, does n(n−1)⋯(n−k) divide C(2n,n) for some n?",
-      "How fast does the smallest witness n(k) grow with k?",
-      "What is the density of n for which the full product divides C(2n,n)?"
+      "For every $k$, does $n^{\\underline{k+1}} \\mid \\binom{2n}{n}$ hold for some $n$?",
+      "How fast does the smallest witness $w(k) = \\min\\{n : n^{\\underline{k+1}} \\mid \\binom{2n}{n}\\}$ grow with $k$?",
+      "What is the density (if it exists) of $\\{n : n^{\\underline{k+1}} \\mid \\binom{2n}{n}\\}$ for fixed $k \\geq 1$?",
+      "Can the Catalan divisibility axiom be proved from Mathlib's existing `Nat.centralBinom` API rather than axiomatized?"
     ]
   }
 }
