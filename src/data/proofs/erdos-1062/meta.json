@@ -21,67 +21,85 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem appears as B24 in Guy's 'Unsolved Problems in Number Theory' (2004). Lebensold (1976) established tight bounds 0.6725n ≤ f(n) ≤ 0.6736n for large n. The basic lower bound f(n) ≥ ⌈2n/3⌉ ≈ 0.667n comes from the interval [m+1, 3m+2].",
-    "problemStatement": "Let f(n) be the maximum size of A ⊆ {1,…,n} such that no element divides two distinct others. How large is f(n)? Is lim f(n)/n irrational?",
-    "proofStrategy": "We define NoDividesTwoOthers (the combinatorial condition) and maxNDTOSize (the extremal function). The lower bound from [m+1, 3m+2] and Lebensold's bounds are axiomatized. ErdosProblem1062 asks whether the limiting density is irrational. Comparison with primitive sets shows the condition is strictly weaker.",
+    "historicalContext": "This problem appears as B24 in Richard Guy's *Unsolved Problems in Number Theory* (3rd ed., 2004) and originates from Erdős's extensive work on divisibility-restricted subsets of $\\{1,\\ldots,n\\}$. Kenneth Lebensold (1976, *Studies in Applied Mathematics*, Vol. 56, pp. 291–294) established the tight bounds $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$, narrowing the asymptotic density to an interval of width $0.0011$. The basic lower bound $f(n) \\geq \\lceil 2n/3 \\rceil$ was observed earlier using the interval $[m+1, 3m+2]$, where ratios stay below 3. The problem connects to Erdős's pioneering work on primitive sets with Besicovitch (1934) — sets where no element divides any other — and to Dilworth's theorem (1950) on antichains in partially ordered sets. The divisibility poset on $\\{1,\\ldots,n\\}$ forms a rich combinatorial structure where the NDTO condition defines a relaxed antichain: allowing one divisibility per element but forbidding two. Lichtman's 2022 proof of the Erdős primitive set conjecture (that primes maximize $\\sum 1/(a \\log a)$ over all primitive sets) renewed interest in divisibility-restricted extremal problems, though Lebensold's bounds for NDTO sets remain unimproved after nearly 50 years.",
+    "problemStatement": "Let $f(n)$ be the maximum size of $A \\subseteq \\{1,\\ldots,n\\}$ such that no element of $A$ divides two distinct other elements of $A$. What is $\\lim_{n \\to \\infty} f(n)/n$? Is this limit irrational?",
+    "proofStrategy": "The formalization defines `NoDividesTwoOthers` as the combinatorial predicate (no element divides two distinct others) and `maxNDTOSize` as the extremal function $f(n)$. The lower bound from the interval $[m+1, 3m+2]$ and Lebensold's refined bounds are axiomatized. The existence of the limiting density is stated, and `ErdosProblem1062` asks whether it is irrational. A comparison with primitive sets (`IsPrimitiveFinset`) shows the NDTO condition is strictly weaker, with a constructive proof for the implication and the $\\{2, 6, 9\\}$ counterexample for strictness.",
     "keyInsights": [
-      "The 'no divides two others' condition allows one divisibility but forbids two",
-      "The interval [m+1, 3m+2] gives f(n) ≥ 2n/3 since ratios stay below 3",
-      "Lebensold's bounds narrow the density to [0.6725, 0.6736]",
-      "Whether the limiting density is rational or irrational remains open"
+      "**Degree-bounded divisibility graph**: The NDTO condition is equivalent to requiring out-degree $\\leq 1$ in the divisibility graph on $A$, while primitive sets require out-degree $= 0$. This graph-theoretic view explains why NDTO allows linear-density sets while primitive sets have density 0",
+      "**Near-optimal simple construction**: The interval $[m+1, 3m+2]$ achieves density $2/3 \\approx 0.667$, already within $0.7\\%$ of Lebensold's optimal lower bound $0.6725$. The difficulty in improving bounds lies in optimizing over the irregular divisibility structure beyond simple intervals",
+      "**Remarkably tight bounds**: Lebensold's bounds $[0.6725, 0.6736]$ constrain the density to an interval of width $0.0011$, yet neither the exact value nor its rationality is known. If $\\lambda = p/q$ is rational, then $q \\geq 92$ is needed to fit within the interval",
+      "**Connection to Fekete's lemma**: The existence of $\\lim f(n)/n$ follows from subadditivity arguments — a recurring theme in extremal combinatorics where densities of forbidden-pattern-free sets are shown to exist via Fekete's lemma, even when computing the exact limit is intractable",
+      "**Primitive set comparison**: Besicovitch (1934) showed primitive sets in $[n]$ have density tending to 0, while NDTO sets achieve density $\\approx 0.67$. The single-divisibility relaxation from primitive to NDTO creates a dramatic jump from sublinear to linear set sizes"
     ]
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Problem Description and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module docstring stating the problem, its open status, and references to Guy (2004) B24 and Lebensold (1976). Imports Mathlib libraries for natural numbers, finite sets, cardinality, reals, irrationality, filters, and tactics."
+    },
+    {
       "id": "divisibility-condition",
-      "title": "The Divisibility Condition",
+      "title": "The NDTO Condition",
       "startLine": 22,
       "endLine": 31,
-      "summary": "Defines NoDividesTwoOthers: no element divides two distinct others."
+      "summary": "Defines `NoDividesTwoOthers`: no element $a \\in A$ divides two distinct elements $b, c \\in A$. Equivalent to out-degree $\\leq 1$ in the divisibility graph on $A$."
     },
     {
       "id": "extremal-function",
       "title": "The Extremal Function",
       "startLine": 33,
       "endLine": 42,
-      "summary": "Defines maxNDTOSize f(n) as the maximum over valid subsets of {1,…,n}."
+      "summary": "Defines `maxNDTOSize n` as $f(n) = \\max\\{|A| : A \\subseteq [n],\\, \\text{NDTO}(A)\\}$ using `Finset.sup` over the power set filtered by NDTO."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound Construction",
       "startLine": 44,
       "endLine": 52,
-      "summary": "The interval [m+1, 3m+2] gives f(n) ≥ ⌈2n/3⌉."
+      "summary": "Axiomatizes $f(n) \\geq \\lceil 2n/3 \\rceil$ via the interval $[m+1, 3m+2]$ where $\\max/\\min < 3$ ensures each element has at most one multiple in the range."
     },
     {
       "id": "lebensold-bounds",
-      "title": "Lebensold's Bounds",
+      "title": "Lebensold's Bounds (1976)",
       "startLine": 54,
       "endLine": 66,
-      "summary": "Lebensold (1976): 0.6725n ≤ f(n) ≤ 0.6736n for large n."
+      "summary": "Axiomatizes Lebensold's bounds: $0.6725n \\leq f(n) \\leq 0.6736n$ for large $n$. The lower bound improves the $2/3$ construction; the upper bound uses divisibility counting arguments."
     },
     {
       "id": "conjectures",
-      "title": "The Conjectures",
+      "title": "Limiting Density and the Irrationality Conjecture",
       "startLine": 68,
       "endLine": 82,
-      "summary": "Limiting density exists in [0.6725, 0.6736]. ErdosProblem1062: is it irrational?"
+      "summary": "Axiomatizes existence of $\\lambda = \\lim f(n)/n \\in [0.6725, 0.6736]$ and states `ErdosProblem1062`: $\\lambda$ is irrational. The limit exists by subadditivity (Fekete's lemma)."
     },
     {
       "id": "primitive-comparison",
       "title": "Comparison with Primitive Sets",
       "startLine": 84,
       "endLine": 105,
-      "summary": "Primitive sets (no divisibility at all) are strictly stronger. Proved with {2, 6, 9} counterexample."
+      "summary": "Defines `IsPrimitiveFinset` (no divisibility at all), proves Primitive $\\implies$ NDTO, and axiomatizes strict separation via the $\\{2, 6, 9\\}$ counterexample where $2 \\mid 6$ violates primitivity but NDTO holds."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 1062 asks whether the maximum density of 'no divides two others' subsets of {1,…,n} converges to an irrational limit. Lebensold's bounds place it near 0.67.",
-    "implications": "Understanding this density connects divisibility-restricted extremal problems to questions about rationality of combinatorial limits.",
+    "summary": "This formalization captures Erdős Problem 1062: the extremal theory of \"no divides two others\" subsets of $\\{1,\\ldots,n\\}$. The NDTO condition, extremal function $f(n)$, constructive lower bound, Lebensold's tight asymptotic bounds, the irrationality conjecture, and the comparison with primitive sets are all encoded. The only fully proved result is the implication Primitive $\\implies$ NDTO; all other bounds and the existence of the limiting density are axiomatized.",
+    "implications": "Resolution of the irrationality question would illuminate a fundamental phenomenon in extremal combinatorics: whether densities of divisibility-restricted sets are governed by rational or irrational constants. The tight bounds $[0.6725, 0.6736]$ suggest the answer might require new techniques combining analytic number theory (to understand the divisibility structure of $[n]$) with combinatorial optimization. The recent progress on primitive sets (Lichtman 2022) may provide methodological inspiration.",
     "openQuestions": [
-      "Is lim f(n)/n irrational?",
-      "What is the exact value of the limiting density?",
-      "Can Lebensold's bounds be sharpened?"
+      "Is $\\lambda = \\lim f(n)/n$ irrational? No rational $p/q$ with small denominator fits within $[0.6725, 0.6736]$.",
+      "Can Lebensold's 1976 bounds be improved with modern computational and analytic techniques? The interval width $0.0011$ has stood for nearly 50 years.",
+      "What is the exact value of $\\lambda$? Is it expressible in terms of known constants (e.g., involving $\\log 2$, $\\log 3$, or other natural logarithms)?",
+      "How does the extremal function behave for the $k$-fold generalization: no element divides $k$ distinct others? The $k=1$ case is primitive sets (density 0), $k=2$ is NDTO (density $\\approx 0.67$) — what happens for $k=3, 4, \\ldots$?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "erdos-1063",
+    "erdos-164",
+    "erdos-168",
+    "erdos-12",
+    "erdos-131",
+    "erdos-793",
+    "erdos-1076"
+  ]
 }
