@@ -1,0 +1,110 @@
+{
+  "slug": "area-of-circle-oq-01",
+  "title": "Circumference Formula via Area Differentiation",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "HasDerivAt (fun r => π * r ^ 2) (2 * π * r) r",
+    "plain": "Prove that the circumference formula C = 2πr can be derived by differentiating the area formula A = πr² with respect to radius.",
+    "whyMatters": [
+      "Formalizes the deep area-circumference duality: dA/dr = C",
+      "Extends Wiedijk #9 (Area of a Circle) with the circumference connection",
+      "Generalizes to higher dimensions: surface area = d(volume)/dr"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "HasDerivAt areaFn (circumferenceFn r) r - area derivative equals circumference",
+      "deriv areaFn r = circumferenceFn r - deriv form of the duality",
+      "Differentiable ℝ areaFn - area function is everywhere differentiable",
+      "(volume (ball 0 r)).toReal = areaFn r - measure theory connection",
+      "Quadratic scaling of disk area under radius scaling",
+      "circumferenceFn r = 2 * π * r - circumference formula",
+      "circumferenceFn 1 = 2 * π - unit circle circumference",
+      "Linear scaling of circumference",
+      "deriv (deriv areaFn) r = 2 * π - second derivative is constant",
+      "Monotonicity of area function for non-negative radii",
+      "areaFn r = 0 ↔ r = 0 - area zero iff radius zero",
+      "area_circumference_duality - deriv areaFn = circumferenceFn"
+    ],
+    "open": [],
+    "goal": "Complete formalization achieved"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-08T07:00:00.000Z",
+    "iteration": 1,
+    "focus": "All theorems proved, 0 sorries.",
+    "blockers": [],
+    "nextAction": "None - problem complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 13 theorems proved with 0 sorries. Formalized circumference C=2πr as derivative of area A=πr², connected to Lebesgue measure via ENNReal.toReal, proved second derivative is 2π, monotonicity, and scaling properties.",
+    "builtItems": [
+      "proofs/Proofs/CircumferenceViaDifferentiation.lean - 13 theorems, 0 sorries",
+      "areaFn: ℝ → ℝ defined as π * r²",
+      "circumferenceFn: ℝ → ℝ defined as 2πr",
+      "area_hasDerivAt: core theorem that dA/dr = C",
+      "measure_disk_eq_areaFn: connects calculus to measure theory",
+      "area_second_deriv: d²A/dr² = 2π (constant)"
+    ],
+    "insights": [
+      "HasDerivAt for π*r² works cleanly via hasDerivAt_pow + const_mul",
+      "NNReal.coe_real_pi converts NNReal.pi to Real.pi",
+      "ENNReal.toReal_mul + ENNReal.toReal_pow + ENNReal.toReal_ofReal chain handles measure→real conversion",
+      "nlinarith with sq_nonneg handles monotonicity of r² when pow_le_pow_left is unavailable",
+      "The area-circumference duality generalizes: in n dimensions, d(V_n)/dr = S_{n-1}"
+    ],
+    "mathlibGaps": [
+      "pow_le_pow_left not available in Mathlib v4.26.0 (renamed or removed)",
+      "ENNReal.toReal_coe and ENNReal.toReal_coe_nnreal not available - use NNReal.coe_real_pi directly"
+    ],
+    "nextSteps": [
+      "Could extend to prove area as integral of circumference: A(r) = ∫₀ʳ 2πρ dρ",
+      "Could generalize to n-dimensional balls: d(V_n)/dr = S_{n-1}",
+      "Submit to Aristotle for potential proof improvements"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Direct calculus with HasDerivAt",
+      "status": "succeeded",
+      "description": "Define areaFn(r) = πr² and circumferenceFn(r) = 2πr, prove HasDerivAt areaFn (circumferenceFn r) r using hasDerivAt_pow and const_mul. Connect to measure theory via ENNReal.toReal."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "geometry",
+    "differentiation",
+    "extension",
+    "complete"
+  ],
+  "relatedProofs": [
+    "area-of-circle"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://www.cs.ru.nl/~freek/100/"
+    ],
+    "mathlib": [
+      "Complex.volume_ball",
+      "hasDerivAt_pow",
+      "HasDerivAt.const_mul",
+      "ENNReal.toReal_mul",
+      "NNReal.coe_real_pi"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.709Z",
+  "lastUpdate": "2026-02-08T07:00:00.000Z",
+  "significance": 6,
+  "tractability": 7
+}
