@@ -188,48 +188,48 @@ theorem h_polynomial_growth (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
 ## Part 8: Connection to Line Graphs
 -/
 
-/-- The problem is equivalent to finding diameter ≤ t-1 subgraphs of line graphs -/
-axiom line_graph_connection (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
-    -- h_t(d) - 1 = max edges in a graph with maxDeg ≤ d and no t-separated edges
-    -- Equivalently: max edges such that line graph has diameter < t
-    h t d ≥ 1
-
-/-- Line graph has diameter < t iff no t-separated edges -/
-theorem line_graph_diameter_equiv {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj] (t : ℕ) :
-    ¬HasTSeparatedEdges G t ↔
-    -- Line graph diameter condition
-    True := by
-  sorry
+/-- Line graph connection: h_t(d) - 1 equals the maximum number of edges in a
+    graph with max degree ≤ d whose line graph has diameter < t. The line graph
+    L(G) has edges of G as vertices, with two vertices adjacent iff the
+    corresponding edges share an endpoint in G. -/
+axiom line_graph_diameter_bound (t d : ℕ) (ht : t ≥ 1) (hd : d ≥ 1) :
+    ∀ V : Type*, ∀ [Fintype V] [DecidableEq V],
+    ∀ G : SimpleGraph V, ∀ [DecidableRel G.Adj],
+    maxDegree G ≤ d → numEdges G < h t d → ¬HasTSeparatedEdges G t
 
 /-
 ## Part 9: Extremal Constructions
 -/
 
-/-- Star graph: d edges, max degree d, no 1-separated edges -/
-def StarGraph (d : ℕ) : Prop :=
-  -- A star with center and d leaves achieves h_1(d) - 1 = d edges
-  True
+/-- Star graph achieves h_1(d) - 1: a star with d edges has max degree d
+    and no pair of edges at distance ≥ 1 (all edges share the center). -/
+axiom star_graph_extremal (d : ℕ) (hd : d ≥ 1) :
+    ∃ V : Type*, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
+    ∃ G : SimpleGraph V, ∃ _ : DecidableRel G.Adj,
+    numEdges G = d ∧ maxDegree G ≤ d ∧ ¬HasTSeparatedEdges G 1
 
-/-- For h_2(d), extremal graphs are known -/
-axiom h_2_extremal_construction (d : ℕ) (heven : Even d) :
-    -- There exists a graph with 5d²/4 edges and no 2K₂
-    True
+/-- For h_2(d) with even d, there exist 2K₂-free graphs achieving 5d²/4 edges -/
+axiom h_2_extremal_construction (d : ℕ) (hd : d ≥ 2) (heven : Even d) :
+    ∃ V : Type*, ∃ _ : Fintype V, ∃ _ : DecidableEq V,
+    ∃ G : SimpleGraph V, ∃ _ : DecidableRel G.Adj,
+    numEdges G = 5 * d^2 / 4 ∧ maxDegree G ≤ d ∧ ¬HasTSeparatedEdges G 2
 
-/-- For h_3, projective plane constructions are relevant -/
-axiom projective_plane_connection (q : ℕ) (hq : Nat.Prime q) :
-    -- Incidence graphs of projective planes give good constructions
-    True
+/-- Projective plane constructions give extremal graphs for h_3.
+    The incidence graph of PG(2,q) gives good lower bounds when q is prime. -/
+axiom projective_plane_h3_bound (q : ℕ) (hq : Nat.Prime q) :
+    h 3 (q + 1) ≥ q^3 + 1
 
 /-
 ## Part 10: Erdős's Comment
 -/
 
 /-- Erdős [1988]: "This problem seems to be interesting only if there is
-    a nice expression for h_t(d)." -/
-axiom erdos_comment_h3_conjecture (d : ℕ) (hd : d ≥ 1) :
-    -- Erdős [1988]: conjectured h_3(d) = d³ - d² + d + 2
-    h 3 d ≤ d^3 - d^2 + d + 2
+    a nice expression for h_t(d)." The t=1 and t=2 cases have clean formulas;
+    t=3 has a conjectured formula. -/
+theorem erdos_nice_formulas :
+    (∀ d : ℕ, d ≥ 1 → h 1 d = d + 1) ∧
+    (∀ d : ℕ, d ≥ 1 → h 2 d = 5 * d^2 / 4 + 1) := by
+  exact ⟨h_1_exact, cgtt_1990⟩
 
 /-
 ## Part 11: Summary
@@ -248,5 +248,14 @@ theorem erdos_934 :
   refine ⟨h_1_exact, ?_, h_3_3, ?_⟩
   · intro d hd; exact cgtt_1990 d hd
   · intro t d ht hd; exact improved_upper_bound t d ht hd
+
+/-- Summary: h_t(d) is solved for t ≤ 2, with h_1(d) = d+1 and
+    h_2(d) = ⌊5d²/4⌋+1. For t = 3 the value h_3(3) = 23 is known.
+    General bounds: h_t(d) ≤ (3/2)d^t + 1 for all t,d ≥ 1. -/
+theorem erdos_934_summary :
+    (∀ d, d ≥ 1 → h 1 d = d + 1) ∧
+    (∀ d, d ≥ 1 → h 2 d = 5 * d^2 / 4 + 1) ∧
+    h 3 3 = 23 := by
+  exact ⟨h_1_exact, cgtt_1990, h_3_3⟩
 
 end Erdos934
