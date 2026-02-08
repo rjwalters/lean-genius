@@ -27,7 +27,7 @@ You are a Lean theorem proving researcher. Run one research iteration on the lea
 
 ```bash
 # Check pool status
-jq -r '.candidates | group_by(.status) | map({status: .[0].status, count: length}) | .[]' research/candidate-pool.json
+jq -r '.candidates | group_by(.status) | map({status: .[0].status, count: length}) | .[]' .lean/state/candidate-pool.json
 ```
 
 ---
@@ -218,7 +218,7 @@ Scout returns gallery proofs, techniques, Mathlib gaps, and recommended approach
 
 ```bash
 # Update pool, release lock
-jq '(.candidates[] | select(.id == "PROBLEM_ID")).status = "STATUS"' research/candidate-pool.json > tmp.json && mv tmp.json research/candidate-pool.json
+jq '(.candidates[] | select(.id == "PROBLEM_ID")).status = "STATUS"' .lean/state/candidate-pool.json > tmp.json && mv tmp.json .lean/state/candidate-pool.json
 rm -rf "research/claims/${PROBLEM_ID}.lock"
 
 # If HARD sorries remain, submit for overnight processing
@@ -247,7 +247,7 @@ When pool is empty, we scout for new knowledge and attempt if promising.
 ### Step 2: Read Context
 
 1. Read `research/problems/<id>/knowledge.md` - full history
-2. Read pool notes: `jq '.candidates[] | select(.id == "<id>")' research/candidate-pool.json`
+2. Read pool notes: `jq '.candidates[] | select(.id == "<id>")' .lean/state/candidate-pool.json`
 3. Understand why it stalled
 
 ### Step 3: Scout for Changes
@@ -472,7 +472,7 @@ When Mathlib lacks something, assess before blocking:
 
 | File | Purpose |
 |------|---------|
-| `research/candidate-pool.json` | Problem registry |
+| `.lean/state/candidate-pool.json` | Problem registry |
 | `research/claims/<id>.lock/` | Atomic locks |
 | `research/problems/<id>/knowledge.md` | Problem history |
 | `proofs/Proofs/*.lean` | Proof files |

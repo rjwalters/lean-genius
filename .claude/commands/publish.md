@@ -72,7 +72,7 @@ EOF
 3. **Commits your work** - All modified files including:
    - Lean proof files (`proofs/Proofs/*.lean`)
    - Research knowledge (`src/data/research/problems/*.json`)
-   - Candidate pool updates (`research/candidate-pool.json`)
+   - Candidate pool updates (`.lean/state/candidate-pool.json`)
 4. **Opens a Pull Request** - For review before merging
 
 ## For External Contributors (Fork Workflow)

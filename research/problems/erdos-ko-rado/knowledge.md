@@ -63,7 +63,7 @@
 **Files Modified**:
 - `proofs/Proofs/ErdosKoRado.lean` (+22 lines: axiom + proof restructure)
 - `research/problems/erdos-ko-rado/knowledge.md` - this file
-- `research/candidate-pool.json` - status: blocked → completed
+- `.lean/state/candidate-pool.json` - status: blocked → completed
 
 ---
 
@@ -91,7 +91,7 @@
 **Files Modified**:
 - `proofs/Proofs/ErdosKoRado.lean` (1 line: added ring_nf)
 - `research/problems/erdos-ko-rado/knowledge.md` - this file
-- `research/candidate-pool.json` - status update
+- `.lean/state/candidate-pool.json` - status update
 
 ---
 
@@ -180,7 +180,7 @@ The bound is achieved by "star families": all k-subsets containing a fixed eleme
 ### Files Modified
 
 - `proofs/Proofs/ErdosKoRado.lean` (new - 240 lines)
-- `research/candidate-pool.json` (status: available → completed)
+- `.lean/state/candidate-pool.json` (status: available → completed)
 - `research/problems/erdos-ko-rado/knowledge.md` (new)
 
 ---

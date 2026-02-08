@@ -942,8 +942,8 @@ get_work_queue_stats() {
     fi
 
     # Research candidates
-    if [[ -f "research/candidate-pool.json" ]]; then
-        candidates=$(jq '[.candidates[] | select(.status == "available")] | length' "research/candidate-pool.json" 2>/dev/null || echo "0")
+    if [[ -f ".lean/state/candidate-pool.json" ]]; then
+        candidates=$(jq '[.candidates[] | select(.status == "available")] | length' ".lean/state/candidate-pool.json" 2>/dev/null || echo "0")
     fi
 
     # Aristotle jobs

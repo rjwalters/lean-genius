@@ -22,7 +22,7 @@ NC='\033[0m' # No Color
 STATE_FILE=".loom/lean-daemon-state.json"
 OLD_STATE_FILE="research/lean-daemon-state.json"
 ARISTOTLE_JOBS="research/aristotle-jobs.json"
-CANDIDATE_POOL="research/candidate-pool.json"
+CANDIDATE_POOL=".lean/state/candidate-pool.json"
 
 # Fall back to old location if new state file doesn't exist
 if [[ ! -f "$STATE_FILE" && -f "$OLD_STATE_FILE" ]]; then

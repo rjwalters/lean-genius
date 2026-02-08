@@ -42,7 +42,7 @@ SESSION_NAME="seeker-agent"
 LOG_FILE="$LOGS_DIR/seeker.log"
 INTERVAL="${SEEKER_INTERVAL:-15}"
 THRESHOLD="${SEEKER_THRESHOLD:-5}"
-CANDIDATE_POOL="$REPO_ROOT/research/candidate-pool.json"
+CANDIDATE_POOL="$REPO_ROOT/.lean/state/candidate-pool.json"
 WORKTREE_PATH="$WORKTREES_DIR/seeker"
 BRANCH_NAME="feature/seeker"
 
@@ -156,7 +156,7 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
 
 2. **Check candidate pool depth**
    \`\`\`bash
-   AVAILABLE=\$(jq '[.candidates[] | select(.status == "available")] | length' research/candidate-pool.json)
+   AVAILABLE=\$(jq '[.candidates[] | select(.status == "available")] | length' .lean/state/candidate-pool.json)
    echo "Available problems: \$AVAILABLE (threshold: $THRESHOLD)"
    \`\`\`
 

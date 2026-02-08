@@ -243,7 +243,7 @@ knowledge_score =
 The `migrate.py` script:
 
 1. Creates the database from `schema.sql`
-2. Imports problems from `research/candidate-pool.json`
+2. Imports problems from `.lean/state/candidate-pool.json`
 3. Imports detailed knowledge from `src/data/research/problems/*.json`
 4. Parses markdown session histories into individual session records
 5. Backs up any existing database to `knowledge.db.bak`

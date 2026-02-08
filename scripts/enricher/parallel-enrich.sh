@@ -282,7 +282,7 @@ launch_agents() {
     clear_stop_signals
 
     # Ensure claim system is initialized
-    mkdir -p "$REPO_ROOT/research/enrichment-claims"
+    mkdir -p "$REPO_ROOT/.lean/state/enrichment-claims"
 
     # Ensure tracker exists
     if [[ ! -f "$REPO_ROOT/src/data/proofs/enrichment-tracker.json" ]]; then

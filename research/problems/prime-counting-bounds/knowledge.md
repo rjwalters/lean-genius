@@ -69,7 +69,7 @@ Found that Mathlib has the infrastructure we need:
 
 ### Files Modified
 - `proofs/Proofs/ChebyshevBounds.lean` (NEW - ~250 lines)
-- `research/candidate-pool.json` (status: skipped → in-progress)
+- `.lean/state/candidate-pool.json` (status: skipped → in-progress)
 - `src/data/research/problems/prime-counting-bounds.json` (updated)
 - `research/problems/prime-counting-bounds/knowledge.md` (NEW)
 

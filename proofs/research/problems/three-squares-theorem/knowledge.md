@@ -111,4 +111,4 @@ All are genuinely OPEN conjectures - not tractable for formalization.
 3. Consider looking at scraped problems with "SOLVED" status (if any) for new tractable targets
 
 ### Files Modified
-- `research/candidate-pool.json` - Status updated for 5 problems
+- `.lean/state/candidate-pool.json` - Status updated for 5 problems

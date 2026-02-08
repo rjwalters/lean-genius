@@ -12,7 +12,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-POOL_FILE="$REPO_ROOT/research/candidate-pool.json"
+POOL_FILE="$REPO_ROOT/.lean/state/candidate-pool.json"
 
 # Colors
 GREEN='\033[0;32m'

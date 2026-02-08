@@ -83,8 +83,8 @@ git fetch origin main
 git rebase origin/main
 
 # For JSON timestamp conflicts - just take main's version
-git checkout --ours research/candidate-pool.json
-git add research/candidate-pool.json
+git checkout --ours .lean/state/candidate-pool.json
+git add .lean/state/candidate-pool.json
 git rebase --continue
 
 # Push the fix
