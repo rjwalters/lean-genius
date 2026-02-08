@@ -19,12 +19,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 JOBS_FILE="$PROJECT_ROOT/research/aristotle-jobs.json"
 FIND_CANDIDATES="$SCRIPT_DIR/find-candidates.sh"
+PREPROCESS="$SCRIPT_DIR/preprocess-for-aristotle.sh"
 
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m'
 
 # Defaults
@@ -151,21 +153,51 @@ check_server_capacity() {
 }
 
 # Submit a single file to Aristotle
-# Returns: 0=success, 1=error, 2=rate-limited (caller should stop submitting)
+# Returns: 0=success, 1=error, 2=rate-limited (caller should stop submitting), 3=rejected by preprocessing
 submit_file() {
     local file="$1"
     local problem_id=$(basename "$file" .lean | sed 's/Problem$//' | tr '[:upper:]' '[:lower:]' | sed 's/erdos/erdos-/')
 
     echo -e "${BLUE}Submitting:${NC} $file"
 
+    # Preprocess the file (convert axioms, fix docstrings, reject unsuitable files)
+    local preprocess_log=""
+    local submit_file="$file"
+    local preprocessed_tmp=""
+
+    if [[ -x "$PREPROCESS" ]]; then
+        local preprocess_output
+        preprocess_output=$("$PREPROCESS" "$file" 2>&1) || {
+            local reject_reason
+            reject_reason=$(echo "$preprocess_output" | grep "^REJECT:" | head -1)
+            echo -e "  ${YELLOW}Skipped (preprocessing):${NC} ${reject_reason:-rejected}"
+            return 3
+        }
+
+        # Last line = temp file path, preceding lines = log
+        preprocessed_tmp=$(echo "$preprocess_output" | tail -1)
+        preprocess_log=$(echo "$preprocess_output" | grep "^PREPROCESS:" | grep -v "^PREPROCESS: Result has\|^PREPROCESS: No changes needed" | sed 's/^PREPROCESS: //' | paste -sd '; ' -)
+
+        if [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]]; then
+            submit_file="$preprocessed_tmp"
+            if [[ -n "$preprocess_log" ]]; then
+                echo -e "  ${CYAN}Preprocessed:${NC} $preprocess_log"
+            fi
+        fi
+    fi
+
     if [[ "$DRY_RUN" == true ]]; then
         echo -e "  ${YELLOW}[DRY RUN]${NC} Would submit $problem_id"
+        [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]] && rm -rf "$(dirname "$preprocessed_tmp")"
         return 0
     fi
 
     # Use aristotlelib to submit (prove-from-file is the new command)
     local output
-    output=$(uvx --from aristotlelib aristotle prove-from-file "$file" --no-wait 2>&1) || {
+    output=$(uvx --from aristotlelib aristotle prove-from-file "$submit_file" --no-wait 2>&1) || {
+        # Clean up temp file
+        [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]] && rm -rf "$(dirname "$preprocessed_tmp")"
+
         # Check for rate limiting (429) - stop batch immediately
         if echo "$output" | grep -qi "429\|rate.limit\|too many\|already have.*projects"; then
             echo -e "  ${YELLOW}Rate limited:${NC} $output"
@@ -175,6 +207,9 @@ submit_file() {
         echo -e "  ${RED}Failed:${NC} $output"
         return 1
     }
+
+    # Clean up temp file after submission
+    [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]] && rm -rf "$(dirname "$preprocessed_tmp")"
 
     # Extract project ID from output
     local project_id=$(echo "$output" | grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
@@ -187,20 +222,26 @@ submit_file() {
 
     echo -e "  ${GREEN}Submitted:${NC} $project_id"
 
-    # Log to jobs file
+    # Log to jobs file (include preprocessing metadata)
     local now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
     local tmp_file=$(mktemp)
+    local preprocessed_flag="false"
+    [[ -n "$preprocess_log" ]] && preprocessed_flag="true"
 
     jq --arg pid "$project_id" \
        --arg file "$file" \
        --arg prob "$problem_id" \
        --arg now "$now" \
+       --argjson preprocessed "$preprocessed_flag" \
+       --arg preprocess_log "${preprocess_log:-}" \
        '.jobs += [{
          project_id: $pid,
          file: $file,
          problem_id: $prob,
          submitted: $now,
          status: "submitted",
+         preprocessed: $preprocessed,
+         preprocessing_log: (if $preprocess_log != "" then $preprocess_log else null end),
          notes: "Batch submission"
        }]' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 
@@ -275,6 +316,7 @@ main() {
     # Submit each candidate
     local submitted=0
     local failed=0
+    local skipped=0
     local rate_limited=false
 
     while IFS= read -r file; do
@@ -289,16 +331,24 @@ main() {
             # Rate limited - stop batch immediately
             rate_limited=true
             break
+        elif [[ $rc -eq 3 ]]; then
+            # Rejected by preprocessing - skip but don't count as failure
+            ((skipped++))
         else
             ((failed++))
         fi
 
         # Delay between submissions to avoid rate limits
-        sleep 3
+        if [[ $rc -eq 0 ]]; then
+            sleep 3
+        fi
     done < <(echo "$candidates" | jq -r '.[].file')
 
     echo ""
     echo -e "${GREEN}Submitted: $submitted${NC}"
+    if [[ "$skipped" -gt 0 ]]; then
+        echo -e "${YELLOW}Skipped (preprocessing): $skipped${NC}"
+    fi
     if [[ "$failed" -gt 0 ]]; then
         echo -e "${RED}Failed: $failed${NC}"
     fi
