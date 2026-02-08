@@ -6,7 +6,7 @@
   "meta": {
     "author": "Pedagogical example",
     "date": "2024",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/Sqrt2.lean",
     "tags": [
       "pedagogical",
@@ -31,33 +31,47 @@
     "dateAdded": "12/27/25"
   },
   "overview": {
-    "historicalContext": "These are pedagogical examples demonstrating fundamental Lean proof techniques. They serve as a starting point for learning formal verification.",
-    "problemStatement": "**Examples proven:**\n\n1. For any integer n: n * n >= 0 (squares are non-negative)\n2. Implication transitivity: (P -> Q) -> (Q -> R) -> (P -> R)",
-    "proofStrategy": "The proofs use basic tactics:\n- `by_cases` for case analysis on whether n >= 0\n- `calc` for step-by-step calculations\n- `ring` for polynomial arithmetic\n- `intro`, `apply`, `exact` for logical reasoning",
+    "historicalContext": "The non-negativity of squares is one of the most elementary properties of ordered rings, known since antiquity and fundamental to Euclid's *Elements* (c. 300 BCE). In modern algebra, the property $n^2 \\geq 0$ characterizes ordered fields and is an axiom in real closed field theory, formalized by Artin and Schreier in the 1920s. Implication transitivity, meanwhile, is a core rule of propositional logic tracing back to the Stoic logicians (3rd century BCE) and later formalized by Frege in his *Begriffsschrift* (1879) as one of the foundational inference rules. Together these results illustrate how even the simplest mathematical facts connect to deep structural properties of number systems and logical frameworks.",
+    "problemStatement": "**Examples proven:**\n\n1. For any integer $n$: $n \\cdot n \\geq 0$ (squares are non-negative)\n2. Implication transitivity: $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$",
+    "proofStrategy": "The proof of $n^2 \\geq 0$ proceeds by case analysis on the sign of $n$. When $n \\geq 0$, the result follows directly from `mul_nonneg`. When $n < 0$, a `calc` block rewrites $n \\cdot n$ as $(-n)(-n)$ via the `ring` tactic and then applies `mul_nonneg` to $-n \\geq 0$. The implication transitivity proof works backward from the goal $R$ using `apply` to reduce it to $Q$ and then to $P$, demonstrating Lean's backward-reasoning style.",
     "keyInsights": [
-      "Case analysis is a fundamental proof technique",
-      "The calc block provides readable step-by-step proofs",
-      "Simple lemmas build foundations for complex proofs"
+      "Case analysis on the sign of an integer reduces $n^2 \\geq 0$ to the simpler fact that a product of non-negatives is non-negative",
+      "The `calc` block provides a chain of equalities and inequalities that mirrors pen-and-paper reasoning, making the proof readable even to non-Lean users",
+      "The `ring` tactic automates polynomial identity verification, here proving $n \\cdot n = (-n) \\cdot (-n)$ without manual expansion",
+      "Backward reasoning via `apply` in the transitivity proof mirrors natural deduction style, reducing the goal step by step until it matches a hypothesis",
+      "These two examples together showcase Lean's two main proof modes: tactic-driven computation (square_nonneg) and logical deduction (imp_trans)"
     ]
   },
   "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Imports Mathlib.Tactic for standard proof tactics and provides a documentation header describing the file's purpose, proof techniques demonstrated, and Mathlib dependencies."
+    },
     {
       "id": "square-nonneg",
       "title": "Squares are Non-negative",
       "startLine": 30,
       "endLine": 40,
-      "summary": "Proof that n * n >= 0 for any integer n."
+      "summary": "Proves $n \\cdot n \\geq 0$ for any integer $n$ using case analysis on the sign of $n$, with a `calc` block handling the negative case by rewriting as $(-n)(-n)$."
     },
     {
       "id": "implication-transitivity",
       "title": "Implication Transitivity",
       "startLine": 42,
-      "endLine": 47,
-      "summary": "Proof that implications compose: (P -> Q) -> (Q -> R) -> (P -> R)."
+      "endLine": 48,
+      "summary": "Proves $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$ using backward reasoning with `intro`, `apply`, and `exact`, demonstrating Lean's natural deduction style."
     }
   ],
   "conclusion": {
-    "summary": "These simple examples demonstrate the building blocks of formal proofs in Lean: case analysis, calculation chains, and logical reasoning.",
-    "implications": "These basic techniques are used throughout more complex proofs in mathematics and computer science."
+    "summary": "These pedagogical examples demonstrate two fundamental modes of formal reasoning in Lean 4: tactic-driven computation for algebraic properties and backward logical deduction for propositional logic. Despite their simplicity, they showcase core techniques — case analysis, calculational proofs, and function application — that recur throughout advanced formalizations.",
+    "implications": "The non-negativity of squares is a building block for ordering properties of integers and reals, underpinning results from the AM-GM inequality to the theory of quadratic forms. Implication transitivity is the logical foundation for proof composition, allowing complex arguments to be built from simpler lemmas. Mastering these basic tactics is essential for formalizing deeper results in Lean.",
+    "openQuestions": [
+      "Can square_nonneg be generalized to arbitrary linearly ordered rings in Lean without additional axioms?",
+      "What is the minimal set of Lean tactics needed to prove all propositional tautologies?",
+      "How do these tactic-based proofs compare in proof-term size to their term-mode equivalents?"
+    ]
   }
 }

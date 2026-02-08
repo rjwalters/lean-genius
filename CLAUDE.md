@@ -28,21 +28,21 @@ This project uses **two distinct AI agent orchestration systems** for different 
 
 | Agent | Purpose | Mode |
 |-------|---------|------|
-| **Erdős Enhancer** | Enhances Erdős problem stubs with Lean formalizations | Autonomous |
+| **Enricher** | Enriches proof gallery entries with deeper annotations and commentary | Autonomous |
 | **Aristotle** | Manages queue of proofs for Aristotle proof search system | Autonomous |
 | **Researcher** | Works on open mathematical problems, proves theorems | Autonomous |
 | **Scout** | Surveys gallery proofs, techniques, and literature for research problems | On-demand |
 | **Seeker** | Selects research problems when candidate pool runs low | Autonomous (15min) |
 | **Deployer** | Merges PRs, syncs data, deploys website to Cloudflare | Autonomous (30min) |
 
-**Invoke via**: `/erdos`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`
+**Invoke via**: `/enricher`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`
 
 **Team orchestration**: `/lean` - Start/stop/scale the full mathematical agent team
 
 ### When to Use Which
 
 - **Writing code, fixing bugs, reviewing PRs** → Use Loom agents (Builder, Judge, etc.)
-- **Formalizing math, proving theorems, enhancing Erdős problems** → Use Lean Genius agents (Erdős, Aristotle, Researcher)
+- **Formalizing math, proving theorems, enriching gallery entries** → Use Lean Genius agents (Enricher, Aristotle, Researcher)
 - **Surveying literature and techniques** → Use Scout (`/scout`)
 - **Selecting research problems** → Use Seeker (`/seeker`)
 - **Deploying the website** → Use Deployer
@@ -57,7 +57,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 ## Quick Start
 
 ```bash
-# Start with defaults (0 erdos, 1 aristotle, 2 researcher, 1 seeker, 1 deployer)
+# Start with defaults (2 enricher, 1 aristotle, 2 researcher, 1 seeker, 1 deployer)
 /lean
 
 # Start with custom pool sizes
@@ -77,7 +77,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | `/lean` | Start daemon with default pool |
 | `/lean status` | Show work queue and agent status |
 | `/lean start [options]` | Start with custom pool sizes |
-| `/lean spawn <type>` | Add one agent (erdos, aristotle, researcher, seeker, deployer) |
+| `/lean spawn <type>` | Add one agent (enricher, aristotle, researcher, seeker, deployer) |
 | `/lean scale <type> <N>` | Scale pool to N agents |
 | `/lean stop` | Graceful shutdown of all agents (creates signal files) |
 | `/lean stop --force` | Force stop all agents (kills tmux sessions immediately) |
@@ -88,7 +88,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 
 | Agent | Default | Max |
 |-------|---------|-----|
-| Erdős Enhancer | 0 | 5 |
+| Enricher | 2 | 5 |
 | Aristotle | 1 | 2 |
 | Researcher | 2 | 5 |
 | Seeker | 1 | 1 |
