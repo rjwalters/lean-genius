@@ -1,0 +1,104 @@
+{
+  "slug": "borsuk-ulam-oq-01",
+  "title": "Borsuk-Ulam: Computational Complexity of Antipodal Pairs",
+  "phase": "EXPLORED",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For any continuous f: S^n → R^n (n ≥ 1), ∃ x ∈ S^n, f(x) = f(-x). The computational complexity of finding such an x (approximately) is PPA-complete.",
+    "plain": "The Borsuk-Ulam theorem guarantees that every continuous map from the n-sphere to n-dimensional Euclidean space identifies some pair of antipodal points. The computational problem of finding an approximate antipodal pair is PPA-complete.",
+    "whyMatters": [
+      "The Borsuk-Ulam theorem is a fundamental result in algebraic topology with wide applications",
+      "It characterizes the complexity class PPA (Polynomial Parity Argument), distinct from PPAD",
+      "Applications include Ham Sandwich theorem, Necklace Splitting, and Kneser's conjecture"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Borsuk-Ulam theorem formalized modulo one axiom (no-odd-map theorem)",
+      "Gadget function construction and oddness property proved",
+      "Main theorem proved by contradiction using gadget",
+      "Special cases n=1, n=2 derived from general theorem"
+    ],
+    "open": [
+      "n=1 case could be proved via IVT without the axiom",
+      "No-odd-map axiom requires covering space theory not in Mathlib",
+      "Computational complexity aspects (PPA-completeness) not formalized"
+    ],
+    "goal": "Prove the no-odd-map lemma for n=1 via IVT, making that case axiom-free"
+  },
+  "currentState": {
+    "phase": "EXPLORED",
+    "since": "2026-02-08T06:39:00.000Z",
+    "iteration": 2,
+    "focus": "Fixed Aristotle compatibility issues (/-! → /-). Explored computational complexity connections.",
+    "blockers": [
+      "No-odd-map theorem requires algebraic topology (covering spaces, fundamental groups) not in Mathlib"
+    ],
+    "nextAction": "Consider proving n=1 case via IVT for an axiom-free special case.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Existing proof is well-structured with 1 axiom. Fixed /-! docstrings for Aristotle compatibility. Build verified in Docker Mathlib v4.26.0.",
+    "builtItems": [
+      "BorsukUlam.lean: Complete Borsuk-Ulam formalization (1 axiom, builds in Docker)"
+    ],
+    "insights": [
+      "The computational complexity of finding approximate antipodal pairs is PPA-complete (not PPAD)",
+      "PPA is characterized by undirected parity arguments; PPAD by directed ones",
+      "Tucker's lemma (discrete Borsuk-Ulam analog) is PPA-complete",
+      "The no-odd-map axiom is the only remaining sorry/axiom - requires covering space theory",
+      "n=1 case could be proved axiom-free using Intermediate Value Theorem",
+      "/-! docstrings cause Aristotle parse errors; fixed to /- in this iteration"
+    ],
+    "mathlibGaps": [
+      "No covering space theory in Mathlib (needed for general no-odd-map proof)",
+      "No fundamental group of projective spaces (needed for n≥2 case)",
+      "No Tucker's lemma or related combinatorial topology"
+    ],
+    "nextSteps": [
+      "Prove n=1 Borsuk-Ulam via IVT (parameterize S¹, show g has opposite signs at antipodal points)",
+      "Add Tucker's lemma (1-D case) as a combinatorial companion",
+      "Formalize PPA/PPAD complexity class definitions as Lean types"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "IVT for n=1",
+      "description": "Prove the 1-dimensional case by parameterizing S¹ as a path and applying IVT to g(t) = f(t) - f(-t)",
+      "status": "proposed",
+      "difficulty": "moderate"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "topology",
+    "algebraic-topology",
+    "covering-spaces",
+    "1-axiom",
+    "builds-in-docker"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [
+      "Borsuk (1933): Drei Sätze über die n-dimensionale euklidische Sphäre",
+      "Filos-Ratsikas, Goldberg (2018): Consensus Halving is PPA-complete",
+      "Deligkas, Fearnley, Hollender, Melissourgos (2019): Computing Exact Solutions of Consensus Halving and the Borsuk-Ulam Theorem"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Topology.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.709Z",
+  "lastUpdate": "2026-02-08T06:39:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}
