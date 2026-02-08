@@ -28,25 +28,39 @@ This project uses **two distinct AI agent orchestration systems** for different 
 
 | Agent | Purpose | Mode |
 |-------|---------|------|
-| **Enricher** | Enriches proof gallery entries with deeper annotations and commentary | Autonomous |
-| **Aristotle** | Manages queue of proofs for Aristotle proof search system | Autonomous |
+| **Enricher** | Enriches existing gallery proofs with deeper annotations, cross-references, and context | Autonomous |
+| **Erdos Enhancer** | Creates new Lean formalizations from Erdos problem stubs (**~complete**, 0 stubs remaining) | Legacy (via Makefile) |
+| **Aristotle** | Manages queue of proofs for Aristotle proof search system (~132 job backlog to reprocess) | Autonomous |
 | **Researcher** | Works on open mathematical problems, proves theorems | Autonomous |
 | **Scout** | Surveys gallery proofs, techniques, and literature for research problems | On-demand |
 | **Seeker** | Selects research problems when candidate pool runs low | Autonomous (15min) |
 | **Deployer** | Merges PRs, syncs data, deploys website to Cloudflare | Autonomous (30min) |
 
+**Managed by `/lean`**: Enricher, Aristotle, Researcher, Seeker, Deployer
+**Managed separately**: Erdos Enhancer (`make enhance`, `scripts/erdos/`)
+
 **Invoke via**: `/enricher`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`
 
 **Team orchestration**: `/lean` - Start/stop/scale the full mathematical agent team
 
+### Two Enrichment Systems
+
+The project has two distinct enrichment systems:
+
+1. **Enricher** (`scripts/enricher/`) - Adds depth to **existing** gallery proofs: annotations, cross-references, mathematical context. This is the active system managed by `/lean`.
+2. **Erdos Enhancer** (`scripts/erdos/`) - Creates **new** Lean formalizations from Erdos problem stubs. This work is essentially complete (0 stubs remaining, gallery at 97.9% quality). Managed via `make enhance`.
+
 ### When to Use Which
 
 - **Writing code, fixing bugs, reviewing PRs** → Use Loom agents (Builder, Judge, etc.)
-- **Formalizing math, proving theorems, enriching gallery entries** → Use Lean Genius agents (Enricher, Aristotle, Researcher)
+- **Enriching existing gallery proofs** → Use Enricher (via `/lean`)
+- **Formalizing math, proving theorems** → Use Researcher (via `/lean`)
+- **Automated proof search** → Use Aristotle (via `/lean`)
 - **Surveying literature and techniques** → Use Scout (`/scout`)
 - **Selecting research problems** → Use Seeker (`/seeker`)
-- **Deploying the website** → Use Deployer
+- **Deploying the website** → Use Deployer (via `/lean`)
 - **Starting the full mathematical team** → Use `/lean`
+- **Creating new Erdos stubs** → `make enhance` (legacy, nearly complete)
 
 ---
 
@@ -60,8 +74,8 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 # Start with defaults (2 enricher, 1 aristotle, 2 researcher, 1 seeker, 1 deployer)
 /lean
 
-# Start with custom pool sizes
-/lean start --researcher 3
+# Research-focused (no enrichers, more researchers)
+/lean start --enricher 0 --researcher 3
 
 # Check status
 /lean status
@@ -354,6 +368,16 @@ cat research/aristotle-jobs.json | jq '[.jobs[] | .status] | group_by(.) | map({
 
 **Lesson**: Only submit files where all definitions are complete AND axioms have been converted to theorem sorries.
 
+## Current Backlog (as of 2026-02-08)
+
+The Aristotle agent was recently fixed. There are **~132 jobs** eligible for resubmission:
+- 89 expired (never integrated)
+- 31 zombie
+- 7 failed
+- 5 build_failed
+
+The Aristotle agent will automatically process this backlog when spawned via `/lean`.
+
 ## Documentation
 
 - `research/SORRY-CLASSIFICATION.md` - Classification guide
@@ -406,10 +430,12 @@ make lint             # Run linter
 ## Agent Launch Commands
 
 ```bash
-make enhance N=3      # Launch 3 parallel enhancer agents (default)
-make enhance N=5      # Launch 5 parallel enhancer agents
+make enhance N=3      # Launch 3 Erdős stub enhancers (legacy - 0 stubs remaining)
+make enhance N=5      # Launch 5 Erdős stub enhancers
 make research N=2     # Launch 2 parallel research agents (default)
 ```
+
+**Note**: `make enhance` launches **Erdos Enhancers** (stub creation), not Enrichers (gallery depth). For enrichers, use `/lean start --enricher 2` or `./scripts/lean/launch.sh start --enricher 2`.
 
 ---
 
@@ -430,7 +456,7 @@ make clean-loom DEEP=1 FORCE=1           # Clean loom artifacts
 
 # Or use scripts directly
 ./.loom/scripts/clean.sh --deep --force  # Loom worktrees/branches
-./scripts/erdos/clean-enhancers.sh --deep --force   # Enhancement agents
+./scripts/erdos/clean-enhancers.sh --deep --force   # Erdős enhancer agents (legacy)
 ./scripts/research/clean-research.sh --deep --force # Research agents
 ```
 
