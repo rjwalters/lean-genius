@@ -1,74 +1,86 @@
 [
   {
-    "id": "distinct-distances",
+    "id": "ann-e655-header",
     "proofId": "erdos-655",
-    "type": "definition",
-    "title": "Distinct Distances",
-    "content": "The number of distinct nonzero pairwise distances in a point configuration. This is the central quantity in Erdős distance problems.",
-    "significance": "critical",
-    "range": {
-      "startLine": 27,
-      "endLine": 30
-    }
-  },
-  {
-    "id": "no-concyclic-triple",
-    "proofId": "erdos-655",
-    "type": "definition",
-    "title": "No Concyclic Triple",
-    "content": "No circle centered at any point xᵢ passes through 3 or more other points: at most 2 points are equidistant from any given point. This is the original formulation's condition.",
-    "significance": "critical",
-    "range": {
-      "startLine": 40,
-      "endLine": 43
-    }
-  },
-  {
-    "id": "no-four-concyclic",
-    "proofId": "erdos-655",
-    "type": "definition",
-    "title": "No Four Concyclic",
-    "content": "No 4 points lie on a common circle. This is the stronger condition believed to be the intended formulation.",
-    "significance": "critical",
-    "range": {
-      "startLine": 46,
-      "endLine": 51
-    }
-  },
-  {
-    "id": "basic-bound",
-    "proofId": "erdos-655",
-    "type": "theorem",
-    "title": "Basic (n-1)/2 Bound",
-    "content": "Under the NoConcyclicTriple condition, every point determines at least ⌈(n-1)/2⌉ distinct distances, by pigeonhole: each distance appears at most twice.",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Problem Statement and Imports",
+    "content": "Erdős Problem #655, posed by Erdős and Pach, asks whether restricting concyclicity in a planar point set forces more distinct distances than the trivial $(n-1)/2$ bound. The formalization imports Mathlib's `EuclideanSpace` (for $\\mathbb{R}^2$), `Finset` (for combinatorial counting), and `Filter.atTop` (for asymptotic statements). The original conjecture was disproved by Zach Hunter, who observed that equally-spaced points on a circle satisfy the original condition but achieve only $\\sim n/2$ distances.",
+    "mathContext": "Does every $n$-point set in $\\mathbb{R}^2$ with the NoConcyclicTriple property determine $\\ge (1+c)n/2$ distinct distances? FALSE as stated (Hunter). Corrected: assume no 4 concyclic.",
     "significance": "key",
-    "range": {
-      "startLine": 55,
-      "endLine": 60
-    }
+    "relatedConcepts": ["Erdős distinct distances problem", "Guth-Katz theorem", "Szemerédi-Trotter theorem", "concyclicity"],
+    "prerequisites": ["Euclidean geometry", "combinatorial geometry", "pigeonhole principle"]
   },
   {
-    "id": "hunter-counter",
+    "id": "ann-e655-pointconfig",
     "proofId": "erdos-655",
+    "range": { "startLine": 23, "endLine": 36 },
+    "type": "definition",
+    "title": "Point Configurations and Distance Functions",
+    "content": "`PointConfig n` is a function `Fin n → EuclideanSpace ℝ (Fin 2)`, representing $n$ labeled points in $\\mathbb{R}^2$. `distinctDistances P` collects all nonzero pairwise distances into a `Finset ℝ` — this is the global distinct distance count $d(P)$. `distinctDistancesFrom P i` collects nonzero distances from point $i$ — this is the local count used in the pigeonhole argument. The distinction between global and local counts is crucial: Hunter's counterexample shows the global count can be $\\sim n/2$ even when each local count is $(n-1)/2$.",
+    "mathContext": "`PointConfig n` $:= \\text{Fin } n \\to \\mathbb{R}^2$. $d(P) = |\\{\\|P_i - P_j\\| : i \\ne j\\}|$ (global). $d_i(P) = |\\{\\|P_i - P_j\\| : j \\ne i\\}|$ (local). The conjecture concerns $d(P)$; the proved bound concerns $d_i(P)$.",
+    "significance": "key",
+    "relatedConcepts": ["distance function", "Finset image", "EuclideanSpace"],
+    "prerequisites": ["metric spaces", "Finset operations"]
+  },
+  {
+    "id": "ann-e655-concyclicity",
+    "proofId": "erdos-655",
+    "range": { "startLine": 37, "endLine": 52 },
+    "type": "definition",
+    "title": "Concyclicity Conditions: NoConcyclicTriple and NoFourConcyclic",
+    "content": "`NoConcyclicTriple P` requires that for each point $P_i$ and each radius $r > 0$, at most 2 other points lie at distance $r$ from $P_i$. This is equivalent to saying no circle centered at $P_i$ passes through 3+ other points. `NoFourConcyclic P` is the stronger condition that no 4 points are concyclic (lie on any common circle, not just one centered at a data point). The key difference: NoConcyclicTriple restricts distance multiplicities from each center, while NoFourConcyclic is a global geometric condition. Hunter's counterexample exploits the gap: equally-spaced points on a circle satisfy NoConcyclicTriple (each center sees each distance at most twice) but violate NoFourConcyclic (all points are concyclic).",
+    "mathContext": "`NoConcyclicTriple P` $\\equiv \\forall i, \\forall r > 0: |\\{j \\ne i : \\|P_i - P_j\\| = r\\}| \\le 2$. `NoFourConcyclic P` $\\equiv \\nexists$ center, $r$ with 4 data points on the circle $C(\\text{center}, r)$. NoConcyclicTriple $\\not\\Rightarrow$ NoFourConcyclic.",
+    "significance": "key",
+    "relatedConcepts": ["concyclic points", "distance multiplicity", "general position", "circle packing"],
+    "prerequisites": ["Euclidean circles", "Finset.card", "combinatorial conditions"]
+  },
+  {
+    "id": "ann-e655-counting-lemma",
+    "proofId": "erdos-655",
+    "range": { "startLine": 53, "endLine": 101 },
+    "type": "proof",
+    "title": "Counting Lemma: $n - 1 \\le 2 \\cdot d_i(P)$",
+    "content": "The core counting lemma `others_card_le_two_mul_distinct` proves $n - 1 \\le 2 \\cdot |\\text{distinctDistancesFrom}(P, i)|$ by a fiber decomposition argument. The $n - 1$ points $j \\ne i$ are partitioned into fibers by their distance from $P_i$: the fiber at radius $r$ is $\\{j \\ne i : \\|P_i - P_j\\| = r\\}$. By NoConcyclicTriple, each fiber has $\\le 2$ elements. Summing over all fibers: $n - 1 = \\sum_r |\\text{fiber}(r)| \\le \\sum_r 2 = 2 \\cdot d_i(P)$. The formalization uses `Finset.card_eq_sum_card_fiberwise` for the partition step and `Finset.sum_le_sum` with the NoConcyclicTriple bound for the inequality. This is one of the few fully-proved results in the Erdős problem formalizations — no `sorry` or `axiom` is used.",
+    "mathContext": "$n - 1 = |\\{j : j \\ne i\\}| = \\sum_{r \\in d_i(P)} |\\{j \\ne i : \\|P_i - P_j\\| = r\\}| \\le \\sum_{r \\in d_i(P)} 2 = 2 \\cdot d_i(P)$. Uses `Finset.card_eq_sum_card_fiberwise` and NoConcyclicTriple bound $|\\text{fiber}(r)| \\le 2$.",
+    "significance": "key",
+    "relatedConcepts": ["fiber decomposition", "pigeonhole principle", "Finset.sum_le_sum", "card_eq_sum_card_fiberwise"],
+    "prerequisites": ["Finset fiber decomposition", "Finset.sum_le_sum", "distance positivity"]
+  },
+  {
+    "id": "ann-e655-basic-bound",
+    "proofId": "erdos-655",
+    "range": { "startLine": 103, "endLine": 111 },
+    "type": "theorem",
+    "title": "Basic Distance Bound: $(n-1)/2 \\le d_i(P)$",
+    "content": "The theorem `basic_distance_bound` derives $(n-1)/2 \\le d_i(P)$ from the counting lemma by dividing both sides by 2 (via `omega`). This is the baseline result that Erdős and Pach sought to improve: every point in a NoConcyclicTriple configuration determines at least $\\lceil(n-1)/2\\rceil$ distinct distances. The proof is complete — fully machine-checked with no `sorry`. The factor of 2 in the denominator comes directly from the NoConcyclicTriple condition: each distance appears at most twice from any center.",
+    "mathContext": "$\\forall i: d_i(P) \\ge (n-1)/2$. Immediate from $n - 1 \\le 2 \\cdot d_i(P)$. This is tight: equally-spaced points on a circle achieve $d_i = (n-1)/2$ for odd $n$.",
+    "significance": "key",
+    "relatedConcepts": ["trivial distance bound", "omega tactic", "integer division"],
+    "prerequisites": ["counting lemma", "natural number division"]
+  },
+  {
+    "id": "ann-e655-hunter",
+    "proofId": "erdos-655",
+    "range": { "startLine": 113, "endLine": 122 },
     "type": "insight",
-    "title": "Hunter's Counterexample",
-    "content": "Equally-spaced points on a circle satisfy NoConcyclicTriple but determine only ~n/2 distinct distances, disproving the original conjecture. This shows the formulation needs strengthening.",
-    "significance": "critical",
-    "range": {
-      "startLine": 64,
-      "endLine": 70
-    }
+    "title": "Hunter's Counterexample: Equally-Spaced Points on a Circle",
+    "content": "Axiomatizes Hunter's counterexample: for any $\\varepsilon > 0$ and sufficiently large $n$, there exist $n$ points satisfying NoConcyclicTriple with at most $n/2 + 1$ global distinct distances. The construction is $n$ equally-spaced points on a circle of radius 1. Each point sees each nonzero distance at most twice (satisfying NoConcyclicTriple), but the global distance set has only $\\lfloor n/2 \\rfloor$ elements (the chords $2\\sin(k\\pi/n)$ for $k = 1, \\ldots, \\lfloor n/2 \\rfloor$). This shows the basic bound $(n-1)/2$ is essentially tight for the global count under NoConcyclicTriple alone, refuting the original $(1+c)n/2$ conjecture.",
+    "mathContext": "Hunter: $\\forall \\varepsilon > 0$, eventually $\\exists P$ with NoConcyclicTriple and $d(P) \\le n/2 + 1$. Construction: $P_k = (\\cos(2\\pi k/n), \\sin(2\\pi k/n))$. Distances: $\\{2\\sin(k\\pi/n) : 1 \\le k \\le \\lfloor n/2 \\rfloor\\}$, giving $\\lfloor n/2 \\rfloor$ values.",
+    "significance": "key",
+    "relatedConcepts": ["counterexample", "regular polygon", "chord lengths", "Filter.atTop"],
+    "prerequisites": ["trigonometry", "regular polygon geometry"]
   },
   {
-    "id": "corrected-conjecture",
+    "id": "ann-e655-corrected",
     "proofId": "erdos-655",
+    "range": { "startLine": 124, "endLine": 134 },
     "type": "concept",
-    "title": "Corrected Erdős–Pach Conjecture",
-    "content": "Under the stronger no-4-concyclic condition, n points should determine ≥ (1+c)n/2 distinct distances for some universal c > 0. This remains open.",
-    "significance": "critical",
-    "range": {
-      "startLine": 74,
-      "endLine": 82
-    }
+    "title": "Corrected Erdős-Pach Conjecture: NoFourConcyclic",
+    "content": "The corrected conjecture `ErdosProblem655_corrected` replaces NoConcyclicTriple with the stronger NoFourConcyclic condition and asserts $(1+c)n/2 \\le d(P)$ for some $c > 0$. This blocks Hunter's counterexample since all points on a circle are trivially concyclic. The conjecture remains open and connects to the broader Erdős distinct distances program. The Guth-Katz theorem (2015) gives $d(P) \\ge \\Omega(n/\\log n)$ for arbitrary point sets, which is much stronger than $(1+c)n/2$ — but Problem #655 asks whether the concyclicity restriction alone, without the full Guth-Katz machinery, gives a clean linear improvement. Recent work by Tao (2024) and others on forbidden 4-point patterns shows that restrictions on concyclicity interact subtly with distance counts.",
+    "mathContext": "`ErdosProblem655_corrected`: $\\forall c > 0, \\exists N$ s.t. $\\forall n \\ge N, \\forall P$ injective with NoFourConcyclic: $d(P) \\ge (1+c)n/2$. Open. Note: Guth-Katz gives $d(P) \\ge cn/\\log n$ unconditionally, which is $\\gg n/2$ for large $n$.",
+    "significance": "key",
+    "relatedConcepts": ["open conjecture", "Guth-Katz theorem", "general position", "Tao forbidden patterns"],
+    "prerequisites": ["EHSS-type results", "Guth-Katz", "Filter.atTop"]
   }
 ]
