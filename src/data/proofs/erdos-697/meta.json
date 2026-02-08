@@ -66,7 +66,92 @@
       "**Erdős 1979:** Claimed α = 1 gives density 0, confirmed by Hall"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-697-density-of-i",
+      "title": "Erdős Problem #697: Density of Integers Divisible by d ≡ 1 (mod m)",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Erdős Problem #697: Density of Integers Divisible by d ≡ 1 (mod m)"
+    },
+    {
+      "id": "part-1-basic-definitions",
+      "title": "Part 1: Basic Definitions",
+      "startLine": 42,
+      "endLine": 62,
+      "summary": "Part 1: Basic Definitions"
+    },
+    {
+      "id": "part-2-the-threshold-question",
+      "title": "Part 2: The Threshold Question",
+      "startLine": 63,
+      "endLine": 80,
+      "summary": "Part 2: The Threshold Question"
+    },
+    {
+      "id": "part-3-trivial-bounds",
+      "title": "Part 3: Trivial Bounds",
+      "startLine": 81,
+      "endLine": 94,
+      "summary": "Part 3: Trivial Bounds"
+    },
+    {
+      "id": "part-4-erd-s-s-claim-for-1",
+      "title": "Part 4: Erdős's Claim for α = 1",
+      "startLine": 95,
+      "endLine": 104,
+      "summary": "Part 4: Erdős's Claim for α = 1"
+    },
+    {
+      "id": "part-5-hall-s-theorem-1992",
+      "title": "Part 5: Hall's Theorem (1992)",
+      "startLine": 105,
+      "endLine": 129,
+      "summary": "Part 5: Hall's Theorem (1992)"
+    },
+    {
+      "id": "part-6-why-1-log-2",
+      "title": "Part 6: Why 1/log 2?",
+      "startLine": 130,
+      "endLine": 148,
+      "summary": "Part 6: Why 1/log 2?"
+    },
+    {
+      "id": "part-7-behavior-at-threshold",
+      "title": "Part 7: Behavior at Threshold",
+      "startLine": 149,
+      "endLine": 163,
+      "summary": "Part 7: Behavior at Threshold"
+    },
+    {
+      "id": "part-8-connection-to-problem-6",
+      "title": "Part 8: Connection to Problem #696",
+      "startLine": 164,
+      "endLine": 172,
+      "summary": "Part 8: Connection to Problem #696"
+    },
+    {
+      "id": "part-9-examples",
+      "title": "Part 9: Examples",
+      "startLine": 173,
+      "endLine": 185,
+      "summary": "Part 9: Examples"
+    },
+    {
+      "id": "part-10-historical-context",
+      "title": "Part 10: Historical Context",
+      "startLine": 186,
+      "endLine": 196,
+      "summary": "Part 10: Historical Context"
+    },
+    {
+      "id": "part-11-main-results",
+      "title": "Part 11: Main Results",
+      "startLine": 197,
+      "endLine": 232,
+      "summary": "Part 11: Main Results"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #697 asks whether a sharp threshold β exists for the density of integers divisible by d ≡ 1 (mod m) with 1 < d < exp(m^α). Hall (1992) proved YES, with β = 1/log 2 ≈ 1.443. For α below this threshold, the density → 0; for α above, the density → 1.",
     "implications": "**Connections**\n\n1. **Multiplicative Number Theory:** Understanding divisibility by constrained divisors\n\n2. **Sieve Methods:** The threshold arises from sieve-theoretic considerations\n\n3. **Problem #696:** Related question about similar divisibility\n\n4. **Density Arguments:** Sharp phase transitions in number-theoretic densities",

@@ -70,7 +70,92 @@
       "**OEIS A375081:** Computed values for small a"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-290-denominator-",
+      "title": "Erdős Problem #290: Denominator Non-Monotonicity in Harmonic Sums",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Erdős Problem #290: Denominator Non-Monotonicity in Harmonic Sums"
+    },
+    {
+      "id": "partial-harmonic-sums",
+      "title": "Partial Harmonic Sums",
+      "startLine": 38,
+      "endLine": 53,
+      "summary": "Partial Harmonic Sums"
+    },
+    {
+      "id": "the-denominator-drop-property",
+      "title": "The Denominator Drop Property",
+      "startLine": 54,
+      "endLine": 73,
+      "summary": "The Denominator Drop Property"
+    },
+    {
+      "id": "the-erd-s-question",
+      "title": "The Erdős Question",
+      "startLine": 74,
+      "endLine": 85,
+      "summary": "The Erdős Question"
+    },
+    {
+      "id": "van-doorn-s-solution-2024",
+      "title": "van Doorn's Solution (2024)",
+      "startLine": 86,
+      "endLine": 114,
+      "summary": "van Doorn's Solution (2024)"
+    },
+    {
+      "id": "the-example",
+      "title": "The Example",
+      "startLine": 115,
+      "endLine": 144,
+      "summary": "The Example"
+    },
+    {
+      "id": "finer-bounds-van-doorn-2024",
+      "title": "Finer Bounds (van Doorn 2024)",
+      "startLine": 145,
+      "endLine": 164,
+      "summary": "Finer Bounds (van Doorn 2024)"
+    },
+    {
+      "id": "connection-to-prime-factorizat",
+      "title": "Connection to Prime Factorization",
+      "startLine": 165,
+      "endLine": 184,
+      "summary": "Connection to Prime Factorization"
+    },
+    {
+      "id": "oeis-sequence-a375081",
+      "title": "OEIS Sequence A375081",
+      "startLine": 185,
+      "endLine": 195,
+      "summary": "OEIS Sequence A375081"
+    },
+    {
+      "id": "generalized-harmonic-sums",
+      "title": "Generalized Harmonic Sums",
+      "startLine": 196,
+      "endLine": 212,
+      "summary": "Generalized Harmonic Sums"
+    },
+    {
+      "id": "asymptotic-analysis",
+      "title": "Asymptotic Analysis",
+      "startLine": 213,
+      "endLine": 229,
+      "summary": "Asymptotic Analysis"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 230,
+      "endLine": 265,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #290 asked whether partial harmonic sums always have a point where adding one more term decreases the denominator. van Doorn (2024) proved YES: for any a ≥ 1, there exists b > a with this property. The growth is essentially linear: b(a) < 4.374a.",
     "implications": "**Number Theory**\n\n1. **Rational Arithmetic:** Reveals structure in harmonic sum denominators\n\n2. **LCM Connection:** Denominators relate to lcm of ranges\n\n3. **Powers of 3:** Key role in the explicit construction\n\n4. **Computational:** OEIS A375081 catalogs values\n\n5. **Generalizations:** van Doorn also considers ∑ 1/n^s",

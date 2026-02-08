@@ -67,7 +67,85 @@
       "**Logarithmic Barrier:** Any blocker has Ω(log n) intersection somewhere"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-664-blocking-set",
+      "title": "Erdős Problem #664: Blocking Sets with Bounded Intersection",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Erdős Problem #664: Blocking Sets with Bounded Intersection"
+    },
+    {
+      "id": "set-families-with-bounded-inte",
+      "title": "Set Families with Bounded Intersection",
+      "startLine": 42,
+      "endLine": 66,
+      "summary": "Set Families with Bounded Intersection"
+    },
+    {
+      "id": "blocking-sets",
+      "title": "Blocking Sets",
+      "startLine": 67,
+      "endLine": 82,
+      "summary": "Blocking Sets"
+    },
+    {
+      "id": "the-erd-s-question",
+      "title": "The Erdős Question",
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "The Erdős Question"
+    },
+    {
+      "id": "alon-s-counterexample",
+      "title": "Alon's Counterexample",
+      "startLine": 100,
+      "endLine": 139,
+      "summary": "Alon's Counterexample"
+    },
+    {
+      "id": "why-the-counterexample-works",
+      "title": "Why the Counterexample Works",
+      "startLine": 140,
+      "endLine": 167,
+      "summary": "Why the Counterexample Works"
+    },
+    {
+      "id": "balanced-block-designs-origina",
+      "title": "Balanced Block Designs (Original Weaker Version)",
+      "startLine": 168,
+      "endLine": 186,
+      "summary": "Balanced Block Designs (Original Weaker Version)"
+    },
+    {
+      "id": "finite-geometry-interpretation",
+      "title": "Finite Geometry Interpretation",
+      "startLine": 187,
+      "endLine": 206,
+      "summary": "Finite Geometry Interpretation"
+    },
+    {
+      "id": "the-constant-2-5",
+      "title": "The Constant 2/5",
+      "startLine": 207,
+      "endLine": 223,
+      "summary": "The Constant 2/5"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "startLine": 224,
+      "endLine": 243,
+      "summary": "Related Problems"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 244,
+      "endLine": 281,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #664 asked whether near-linear set families (|Aᵢ| > c√n, pairwise intersection ≤ 1) always admit blocking sets with O(1) intersection. Alon disproved this using projective plane constructions: for n = q² + q + 1, any blocker must have Ω(log n) intersection with some set. The original balanced block design version remains open.",
     "implications": "**Connections**\n\n1. **Finite Geometry:** Blocking sets in projective planes\n\n2. **Probabilistic Method:** Random subset construction\n\n3. **Hypergraph Theory:** Near-linear hypergraphs\n\n4. **Set Cover:** Transversal and hitting set problems",

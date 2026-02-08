@@ -66,7 +66,85 @@
       "**Sparse Difference Sets:** Both A - A and B - B have density only N^{1/2}"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-331-common-diffe",
+      "title": "Erdős Problem #331: Common Differences in Dense Sets",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Erdős Problem #331: Common Differences in Dense Sets"
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions",
+      "startLine": 37,
+      "endLine": 56,
+      "summary": "Counting Functions"
+    },
+    {
+      "id": "common-differences",
+      "title": "Common Differences",
+      "startLine": 57,
+      "endLine": 73,
+      "summary": "Common Differences"
+    },
+    {
+      "id": "the-original-conjecture",
+      "title": "The Original Conjecture",
+      "startLine": 74,
+      "endLine": 84,
+      "summary": "The Original Conjecture"
+    },
+    {
+      "id": "ruzsa-s-counterexample",
+      "title": "Ruzsa's Counterexample",
+      "startLine": 85,
+      "endLine": 115,
+      "summary": "Ruzsa's Counterexample"
+    },
+    {
+      "id": "the-disproof",
+      "title": "The Disproof",
+      "startLine": 116,
+      "endLine": 142,
+      "summary": "The Disproof"
+    },
+    {
+      "id": "understanding-the-counterexamp",
+      "title": "Understanding the Counterexample",
+      "startLine": 143,
+      "endLine": 162,
+      "summary": "Understanding the Counterexample"
+    },
+    {
+      "id": "ruzsa-s-stronger-variant",
+      "title": "Ruzsa's Stronger Variant",
+      "startLine": 163,
+      "endLine": 179,
+      "summary": "Ruzsa's Stronger Variant"
+    },
+    {
+      "id": "the-difference-set",
+      "title": "The Difference Set",
+      "startLine": 180,
+      "endLine": 199,
+      "summary": "The Difference Set"
+    },
+    {
+      "id": "comparison-with-larger-densiti",
+      "title": "Comparison with Larger Densities",
+      "startLine": 200,
+      "endLine": 214,
+      "summary": "Comparison with Larger Densities"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 215,
+      "endLine": 245,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #331 asked whether sets A, B ⊆ ℕ with density ≫ N^{1/2} must have infinitely many common differences. Ruzsa provided a counterexample using binary representations: A has nonzero digits only in even positions, B in odd positions. The answer is NO.",
     "implications": "**Connections**\n\n1. **Additive Combinatorics:** Shows density alone doesn't guarantee common structure\n\n2. **Binary Representations:** Orthogonal digit positions create independent sets\n\n3. **Threshold Phenomena:** Critical density N^{1/2} separates behaviors\n\n4. **Unique Representation:** The key is unique sums, not just density",

@@ -72,7 +72,85 @@
       "**Related to #276, #278:** Part of Erdős's covering system investigations"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-277-covering-sys",
+      "title": "Erdős Problem #277: Covering Systems and Abundancy",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Erdős Problem #277: Covering Systems and Abundancy"
+    },
+    {
+      "id": "sum-of-divisors",
+      "title": "Sum of Divisors",
+      "startLine": 38,
+      "endLine": 65,
+      "summary": "Sum of Divisors"
+    },
+    {
+      "id": "covering-systems",
+      "title": "Covering Systems",
+      "startLine": 66,
+      "endLine": 96,
+      "summary": "Covering Systems"
+    },
+    {
+      "id": "the-erd-s-question",
+      "title": "The Erdős Question",
+      "startLine": 97,
+      "endLine": 108,
+      "summary": "The Erdős Question"
+    },
+    {
+      "id": "haight-s-theorem-1979",
+      "title": "Haight's Theorem (1979)",
+      "startLine": 109,
+      "endLine": 120,
+      "summary": "Haight's Theorem (1979)"
+    },
+    {
+      "id": "understanding-covering-systems",
+      "title": "Understanding Covering Systems",
+      "startLine": 121,
+      "endLine": 170,
+      "summary": "Understanding Covering Systems"
+    },
+    {
+      "id": "key-properties-of-covering-sys",
+      "title": "Key Properties of Covering Systems",
+      "startLine": 171,
+      "endLine": 189,
+      "summary": "Key Properties of Covering Systems"
+    },
+    {
+      "id": "why-haight-s-result-works",
+      "title": "Why Haight's Result Works",
+      "startLine": 190,
+      "endLine": 212,
+      "summary": "Why Haight's Result Works"
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "startLine": 213,
+      "endLine": 240,
+      "summary": "Related Concepts"
+    },
+    {
+      "id": "connections-to-other-problems",
+      "title": "Connections to Other Problems",
+      "startLine": 241,
+      "endLine": 260,
+      "summary": "Connections to Other Problems"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 261,
+      "endLine": 294,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #277 asked whether highly abundant numbers (large σ(n)/n) can still be \"uncoverable\" - having no covering system with all moduli as divisors. Haight (1979) proved YES: for every abundancy threshold c, such numbers exist. This reveals a fundamental disconnect between divisor count and covering system structure.",
     "implications": "**Number Theory Insights**\n\n1. **Divisor Structure:** The pattern of divisors matters, not just their sum\n\n2. **Covering Systems:** Highly constrained by reciprocal sum and Chinese Remainder Theorem\n\n3. **Superabundant Numbers:** Related to Haight's constructions\n\n4. **Computational:** Finding explicit examples for given c is non-trivial",

@@ -35,7 +35,92 @@
       "Order 12 is smallest open case (Bruck-Ryser doesn't apply)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-723-the-prime-po",
+      "title": "Erdős Problem #723: The Prime Power Conjecture for Projective Planes",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Erdős Problem #723: The Prime Power Conjecture for Projective Planes"
+    },
+    {
+      "id": "background-on-projective-plane",
+      "title": "/- ## Background on Projective Planes",
+      "startLine": 25,
+      "endLine": 37,
+      "summary": "/- ## Background on Projective Planes"
+    },
+    {
+      "id": "the-main-conjecture-open",
+      "title": "/- ## The Main Conjecture (Open) -/",
+      "startLine": 38,
+      "endLine": 39,
+      "summary": "/- ## The Main Conjecture (Open) -/"
+    },
+    {
+      "id": "erd-s-problem-723-the-prime-po",
+      "title": "**Erdős Problem #723** (The Prime Power Conjecture):",
+      "startLine": 40,
+      "endLine": 60,
+      "summary": "**Erdős Problem #723** (The Prime Power Conjecture):"
+    },
+    {
+      "id": "existence-for-prime-power-orde",
+      "title": "/- ## Existence for Prime Power Orders (Solved) -/",
+      "startLine": 61,
+      "endLine": 74,
+      "summary": "/- ## Existence for Prime Power Orders (Solved) -/"
+    },
+    {
+      "id": "verified-for-small-orders",
+      "title": "/- ## Verified for Small Orders -/",
+      "startLine": 75,
+      "endLine": 87,
+      "summary": "/- ## Verified for Small Orders -/"
+    },
+    {
+      "id": "the-bruck-ryser-theorem",
+      "title": "/- ## The Bruck-Ryser Theorem -/",
+      "startLine": 88,
+      "endLine": 104,
+      "summary": "/- ## The Bruck-Ryser Theorem -/"
+    },
+    {
+      "id": "the-lam-result-for-order-10",
+      "title": "/- ## The Lam Result for Order 10 -/",
+      "startLine": 105,
+      "endLine": 119,
+      "summary": "/- ## The Lam Result for Order 10 -/"
+    },
+    {
+      "id": "order-12-remains-open",
+      "title": "/- ## Order 12 Remains Open -/",
+      "startLine": 120,
+      "endLine": 128,
+      "summary": "/- ## Order 12 Remains Open -/"
+    },
+    {
+      "id": "basic-properties",
+      "title": "/- ## Basic Properties -/",
+      "startLine": 129,
+      "endLine": 140,
+      "summary": "/- ## Basic Properties -/"
+    },
+    {
+      "id": "examples-of-small-orders",
+      "title": "/- ## Examples of Small Orders -/",
+      "startLine": 141,
+      "endLine": 168,
+      "summary": "/- ## Examples of Small Orders -/"
+    },
+    {
+      "id": "bruck-ryser-applications",
+      "title": "/- ## Bruck-Ryser Applications -/",
+      "startLine": 169,
+      "endLine": 187,
+      "summary": "/- ## Bruck-Ryser Applications -/"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #723 (Prime Power Conjecture) is OPEN in general. The formalization includes verified proofs that orders 1-5 are prime powers, a complete Bruck-Ryser application ruling out order 6, and records Lam's computational result for order 10. Order 12 remains the smallest unknown case.",
     "implications": "The conjecture connects finite geometry to number theory via the sum-of-squares condition. If a non-prime-power projective plane exists, it would require fundamentally new construction methods beyond finite fields.",

@@ -32,7 +32,71 @@
       "Questions 1 and 2 remain open despite decades of study"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-1100-coprime-con",
+      "title": "Erdős Problem #1100: Coprime Consecutive Divisors",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Erdős Problem #1100: Coprime Consecutive Divisors"
+    },
+    {
+      "id": "divisor-functions",
+      "title": "Divisor Functions",
+      "startLine": 38,
+      "endLine": 58,
+      "summary": "Divisor Functions"
+    },
+    {
+      "id": "coprime-consecutive-divisors",
+      "title": "Coprime Consecutive Divisors",
+      "startLine": 59,
+      "endLine": 85,
+      "summary": "Coprime Consecutive Divisors"
+    },
+    {
+      "id": "question-1-almost-all-growth",
+      "title": "Question 1 - Almost All Growth",
+      "startLine": 86,
+      "endLine": 107,
+      "summary": "Question 1 - Almost All Growth"
+    },
+    {
+      "id": "question-2-upper-bound",
+      "title": "Question 2 - Upper Bound",
+      "startLine": 108,
+      "endLine": 134,
+      "summary": "Question 2 - Upper Bound"
+    },
+    {
+      "id": "question-3-growth-of-g-k",
+      "title": "Question 3 - Growth of g(k)",
+      "startLine": 135,
+      "endLine": 178,
+      "summary": "Question 3 - Growth of g(k)"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 179,
+      "endLine": 204,
+      "summary": "Examples"
+    },
+    {
+      "id": "why-this-problem-is-hard",
+      "title": "Why This Problem Is Hard",
+      "startLine": 205,
+      "endLine": 219,
+      "summary": "Why This Problem Is Hard"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 220,
+      "endLine": 255,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #1100 poses three questions about τ⊥(n), the count of coprime consecutive divisor pairs. While the trivial lower bound τ⊥(n) ≥ ω(n) is established, and partial exponential bounds on g(k) are known from Erdős-Simonovits, the main questions about growth rates remain open.",
     "implications": "Understanding τ⊥(n) would illuminate the fine structure of divisor lattices and how prime factorizations constrain the ordering of divisors.",

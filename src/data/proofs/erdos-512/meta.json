@@ -66,7 +66,92 @@
       "**No Flat Polynomials:** Exponential sums cannot be uniformly small on [0,1]"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-512-littlewood-s",
+      "title": "Erdős Problem #512: Littlewood's Conjecture on Exponential Sums",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Erdős Problem #512: Littlewood's Conjecture on Exponential Sums"
+    },
+    {
+      "id": "exponential-functions",
+      "title": "Exponential Functions",
+      "startLine": 37,
+      "endLine": 60,
+      "summary": "Exponential Functions"
+    },
+    {
+      "id": "exponential-sums",
+      "title": "Exponential Sums",
+      "startLine": 61,
+      "endLine": 85,
+      "summary": "Exponential Sums"
+    },
+    {
+      "id": "the-l-norm",
+      "title": "The L¹ Norm",
+      "startLine": 86,
+      "endLine": 105,
+      "summary": "The L¹ Norm"
+    },
+    {
+      "id": "littlewood-s-conjecture",
+      "title": "Littlewood's Conjecture",
+      "startLine": 106,
+      "endLine": 122,
+      "summary": "Littlewood's Conjecture"
+    },
+    {
+      "id": "the-solution",
+      "title": "The Solution",
+      "startLine": 123,
+      "endLine": 141,
+      "summary": "The Solution"
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness",
+      "startLine": 142,
+      "endLine": 160,
+      "summary": "Sharpness"
+    },
+    {
+      "id": "hardy-s-inequality-connection",
+      "title": "Hardy's Inequality Connection",
+      "startLine": 161,
+      "endLine": 175,
+      "summary": "Hardy's Inequality Connection"
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 176,
+      "endLine": 196,
+      "summary": "Related Results"
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 197,
+      "endLine": 215,
+      "summary": "Generalizations"
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 216,
+      "endLine": 231,
+      "summary": "Applications"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 232,
+      "endLine": 261,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #512 asks whether ∫₀¹ |∑_{n∈A} e(nθ)| dθ ≫ log N for finite sets A with |A| = N. This is Littlewood's conjecture. It was independently proved by Konyagin (1981) and McGehee-Pigno-Smith (1981). The answer is YES, with the log N bound being essentially optimal.",
     "implications": "**Connections**\n\n1. **Harmonic Analysis:** Fundamental bounds on Fourier sums\n\n2. **Hardy's Inequality:** The MPS proof establishes a deep connection\n\n3. **Flat Polynomials:** Related to when |P(z)| can be nearly constant on |z|=1\n\n4. **Number Theory:** Bounds on character sums for prime counting",

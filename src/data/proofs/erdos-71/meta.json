@@ -35,7 +35,78 @@
       "Related: Bondy-Simonovits theorem on cycle lengths"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-71-arithmetic-pr",
+      "title": "Erdős Problem #71: Arithmetic Progressions of Cycle Lengths",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Erdős Problem #71: Arithmetic Progressions of Cycle Lengths"
+    },
+    {
+      "id": "background",
+      "title": "Background",
+      "startLine": 30,
+      "endLine": 47,
+      "summary": "Background"
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 48,
+      "endLine": 75,
+      "summary": "Core Definitions"
+    },
+    {
+      "id": "graph-definitions",
+      "title": "Graph Definitions",
+      "startLine": 76,
+      "endLine": 101,
+      "summary": "Graph Definitions"
+    },
+    {
+      "id": "the-main-theorem-bollob-s-1977",
+      "title": "The Main Theorem (Bollobás 1977)",
+      "startLine": 102,
+      "endLine": 146,
+      "summary": "The Main Theorem (Bollobás 1977)"
+    },
+    {
+      "id": "the-open-question-optimal-cons",
+      "title": "The Open Question: Optimal Constants",
+      "startLine": 147,
+      "endLine": 172,
+      "summary": "The Open Question: Optimal Constants"
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 173,
+      "endLine": 188,
+      "summary": "Related Results"
+    },
+    {
+      "id": "why-even-numbers-matter",
+      "title": "Why Even Numbers Matter",
+      "startLine": 189,
+      "endLine": 232,
+      "summary": "Why Even Numbers Matter"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 233,
+      "endLine": 252,
+      "summary": "Special Cases"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 253,
+      "endLine": 274,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #71 is SOLVED (Bollobás 1977). High average degree forces cycles from any arithmetic progression containing even numbers. The formalization includes two verified corollaries and proves the even condition is necessary via bipartite counterexamples.",
     "implications": "This connects graph density to cycle structure in a precise way. The result is fundamental in extremal graph theory and relates to Turán-type problems about cycles.",
