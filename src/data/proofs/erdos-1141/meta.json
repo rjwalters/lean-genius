@@ -11,6 +11,8 @@
     "tags": [
       "erdos",
       "number-theory",
+      "primes",
+      "computational",
       "open"
     ],
     "badge": "axiom",
@@ -21,28 +23,28 @@
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
-        "theorem": "Basic",
-        "description": "From Mathlib.Data.Nat.Prime.Basic",
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate and basic lemmas",
         "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
-        "theorem": "Basic",
-        "description": "From Mathlib.Data.Nat.GCD.Basic",
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality (gcd = 1) and related lemmas",
         "module": "Mathlib.Data.Nat.GCD.Basic"
       },
       {
-        "theorem": "Basic",
-        "description": "From Mathlib.Data.Finset.Basic",
+        "theorem": "Finset.range",
+        "description": "Finite sets {0, ..., n-1} for bounded quantification",
         "module": "Mathlib.Data.Finset.Basic"
       },
       {
         "theorem": "LocallyFiniteOrder",
-        "description": "From Mathlib.Order.LocallyFiniteOrder",
+        "description": "Finite intervals in ordered types, used for Finset.range decidability",
         "module": "Mathlib.Order.LocallyFiniteOrder"
       },
       {
         "theorem": "Tactic",
-        "description": "From Mathlib.Tactic",
+        "description": "Core tactics including decide, native_decide, omega, simp",
         "module": "Mathlib.Tactic"
       }
     ],
@@ -65,33 +67,83 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1141 concerns coprime-square subtraction primes. This problem remains OPEN.\n\nKnown results include: - The known values satisfying this are: 3, 4, 6, 8, 12, 14, 18, 20, - No further terms exist below 10^10 - ChatGPT-Tang proved the count in [1,N] is O(N^{1/2+o(1)})\n\nThis problem is catalogued at erdosproblems.com/1141.",
-    "problemStatement": "Are there infinitely many n such that n - k² is prime for all k with gcd(n, k) = 1 and k² < n?",
-    "proofStrategy": "The formalization is structured in 155 lines of Lean 4 code. It uses 1 axiom for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "historicalContext": "Erdős Problem #1141 asks whether infinitely many natural numbers n have the property that n - k² is prime for every k coprime to n with k² < n. The problem connects primality testing to quadratic residues and coprimality structure, sitting at the intersection of additive and multiplicative number theory.\n\nThe known good values form OEIS sequence A214583, comprising 41 terms: 3, 4, 6, 8, 12, ..., 930, 1722. Strikingly, all known good values except 3 are even, and many are highly composite numbers (24, 30, 60, 90, 180, 252, 360, 570). This pattern has a natural explanation: highly composite n have small Euler totient ratio φ(n)/n, meaning fewer coprime k values, and hence fewer simultaneous primality conditions to satisfy.\n\nAn exhaustive computational search found no further good values between 1722 and 10^10, suggesting the sequence may be finite. ChatGPT-Tang proved that the counting function satisfies #{n ≤ N : IsGood(n)} = O(N^{1/2+o(1)}), a density bound consistent with finiteness but insufficient to prove it. The sparse distribution and gap beyond 1722 make this one of the more enigmatic Erdős problems — the answer 'finitely many' seems likely but is unproved.",
+    "problemStatement": "**Erdős Problem #1141**:\n\nAre there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\n**Formally**: Does the set $\\{n \\in \\mathbb{N} : \\forall k,\\; \\gcd(n,k) = 1 \\wedge k^2 < n \\Rightarrow (n - k^2) \\text{ is prime}\\}$ have infinitely many elements?",
+    "proofStrategy": "The formalization defines the Erdős-1141 property using bounded quantification over Finset.range for decidability, proves equivalence with the unbounded mathematical formulation, computationally verifies 8 small good values (by `decide`) and 9 larger ones up to 1722 (by `native_decide`), establishes structural results (good n ≥ 2 implies n-1 prime), and states the infinitude conjecture as an axiom. The key structural theorem `good_implies_pred_prime` provides a necessary condition constraining good values.",
     "keyInsights": [
-      "**n satisfies the Erdős-1141 property if for every k with k² < n and**: n satisfies the Erdős-1141 property if for every k with k² < n and",
-      "**Equivalent unbounded formulation (for mathematical statements).**: Equivalent unbounded formulation (for mathematical statements).",
-      "**n = 3 satisfies the property**: n = 3 satisfies the property: only k=1 qualifies, and 3 - 1 = 2 is prime.",
-      "**n = 4 satisfies the property.**: n = 4 satisfies the property.",
-      "**n = 6 satisfies the property.**: n = 6 satisfies the property."
+      "**Highly composite advantage**: Good values cluster among highly composite numbers because these have the fewest coprime residues (low φ(n)/n ratio), minimizing the number of independent primality conditions n - k² must satisfy.",
+      "**Necessary condition: n - 1 prime**: Every good n ≥ 2 must have n - 1 prime (from k = 1). This immediately excludes most n and explains why good values are always one more than a prime.",
+      "**Decidability via Finset.range**: The bounded quantifier formulation makes IsErdos1141Good decidable, enabling Lean's `decide` and `native_decide` tactics to computationally verify or refute the property for specific n — a powerful technique for concrete number theory.",
+      "**The 1722 gap**: No good values exist between 1722 and 10^10 (a ratio of ~6 million). This enormous gap strongly suggests the sequence is finite, but proving this would require showing that the primality constraints become unsatisfiable for all sufficiently large n.",
+      "**Density bound O(N^{1/2+o(1)})**: ChatGPT-Tang's result bounds the counting function, showing good values are very sparse. This is the best theoretical evidence toward finiteness, though it does not rule out infinitely many extremely sparse terms."
     ]
   },
   "sections": [
     {
-      "id": "formalization",
-      "title": "Formalization",
-      "summary": "Complete formalization of Erdős Problem #1141",
+      "id": "header",
+      "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 155
+      "endLine": 18,
+      "summary": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 20,
+      "endLine": 25,
+      "summary": "Imports Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder, and Tactic from Mathlib."
+    },
+    {
+      "id": "core-def",
+      "title": "Core Definition",
+      "startLine": 26,
+      "endLine": 43,
+      "summary": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation."
+    },
+    {
+      "id": "positive-examples",
+      "title": "Positive Examples (decide)",
+      "startLine": 45,
+      "endLine": 69,
+      "summary": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "startLine": 71,
+      "endLine": 86,
+      "summary": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 88,
+      "endLine": 107,
+      "summary": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 109,
+      "endLine": 114,
+      "summary": "Axiomatizes the open problem: for every N, there exists n ≥ N with IsErdos1141Good n (infinitude of good values)."
+    },
+    {
+      "id": "large-examples",
+      "title": "Large Verified Examples (native_decide)",
+      "startLine": 116,
+      "endLine": 155,
+      "summary": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1141 (Coprime-Square Subtraction Primes) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
-    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "summary": "This formalization captures Erdős Problem #1141 in Lean 4, defining the coprime-square-subtraction property with decidable bounded quantification, computationally verifying 17 specific values (8 good, 5 bad by decide; 9 large good by native_decide), proving the structural constraint that good n ≥ 2 requires n-1 prime, and stating the open infinitude conjecture as an axiom.",
+    "implications": "The decidable formulation enables a powerful interplay between proof and computation: structural results like good_implies_pred_prime provide theoretical constraints, while decide/native_decide give computational evidence. The formalization precisely captures the gap between what is known (41 values, density bound, 10^10 search) and what remains open (infinitude).",
     "openQuestions": [
-      "Resolve the conjecture",
-      "Fill in sorry placeholders with complete proofs",
-      "Strengthen connections to other Erdős problems"
+      "Is the sequence of good values finite? The gap from 1722 to 10^10 strongly suggests yes, but no proof exists.",
+      "Can sieve methods or the large sieve inequality be used to prove the sequence is finite by showing the primality constraints become unsatisfiable?",
+      "Is there a characterization of good values in terms of their prime factorization structure beyond 'highly composite'?",
+      "Can the density bound O(N^{1/2+o(1)}) be improved to O(1), which would resolve the problem?"
     ]
   }
 }
