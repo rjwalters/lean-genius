@@ -1,34 +1,74 @@
 [
   {
-    "id": "ann-intro",
+    "id": "ann-imports",
+    "proofId": "sqrt2-examples",
+    "range": {"startLine": 1, "endLine": 1},
+    "type": "context",
+    "title": "Mathlib Tactic Import",
+    "content": "Imports `Mathlib.Tactic`, which provides the standard tactic library for Lean 4 proofs. This single import gives access to `by_cases`, `push_neg`, `calc`, `ring`, and many other commonly used tactics. For pedagogical examples, this is the only dependency needed.",
+    "mathContext": "The Mathlib tactic library extends Lean's built-in tactic framework with automation for arithmetic, algebraic simplification, and case analysis.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib", "tactic framework", "proof automation"],
+    "prerequisites": ["Lean 4 syntax"]
+  },
+  {
+    "id": "ann-doc-header",
     "proofId": "sqrt2-examples",
     "range": {"startLine": 3, "endLine": 28},
-    "type": "concept",
-    "title": "Sqrt2 Examples: Pedagogical Proofs",
-    "content": "**Learning Lean Proof Techniques**:\n\nThis file demonstrates basic proof techniques in Lean 4:\n\n1. **Case analysis** (`by_cases`)\n2. **Calculational proofs** (`calc`)\n3. **Algebraic simplification** (`ring`)\n4. **Function application** (`apply`, `exact`)\n\n**Purpose**: A minimal template for learning Lean proof techniques.\n\n**Dependencies**: Only `Mathlib.Tactic` for standard tactics.\n\nThese examples show how to work with integers, inequalities, and logical implications.",
-    "significance": "minor",
-    "relatedConcepts": ["tactics", "proof techniques", "pedagogical"]
+    "type": "context",
+    "title": "Module Documentation",
+    "content": "A documentation block (`/-! ... -/`) describing the file's purpose, proof techniques demonstrated, and Mathlib dependencies. This structured header follows the Lean documentation convention for module-level comments and serves as a table of contents for the proofs below.",
+    "mathContext": "Documentation headers in Lean use `/-! -/` for module-level documentation that appears in generated docs, as opposed to `/- -/` for regular comments.",
+    "significance": "context",
+    "relatedConcepts": ["Lean documentation", "module structure", "literate programming"],
+    "prerequisites": ["Lean 4 comment syntax"]
   },
   {
     "id": "ann-square-nonneg",
     "proofId": "sqrt2-examples",
-    "range": {"startLine": 33, "endLine": 40},
-    "type": "theorem",
-    "title": "Non-negativity of Squares",
-    "content": "**Theorem**: For any integer $n$, $n^2 \\geq 0$.\n\n```lean\ntheorem square_nonneg (n : ℤ) : 0 ≤ n * n\n```\n\n**Proof Structure**:\n\n1. **Case split** on $n \\geq 0$ vs $n < 0$\n\n2. **Case n ≥ 0**:\n   - Use `mul_nonneg h h`: product of non-negatives is non-negative\n\n3. **Case n < 0**:\n   - Note $-n \\geq 0$ since $n < 0$\n   - Use `calc`: $n \\cdot n = (-n) \\cdot (-n) \\geq 0$\n   - The `ring` tactic proves $n \\cdot n = (-n) \\cdot (-n)$\n\n**Tactics Demonstrated**: `by_cases`, `push_neg`, `calc`, `ring`, `exact`",
-    "mathContext": "n² ≥ 0 for all n ∈ ℤ",
-    "significance": "major",
-    "relatedConcepts": ["by_cases", "calc", "ring", "mul_nonneg"]
+    "range": {"startLine": 30, "endLine": 40},
+    "type": "technique",
+    "title": "Non-negativity of Squares via Case Analysis",
+    "content": "**Theorem**: For any integer $n$, $0 \\leq n \\cdot n$.\n\nThe proof splits into two cases using `by_cases h : 0 ≤ n`:\n\n**Case $n \\geq 0$**: Applies `mul_nonneg h h` directly — the product of two non-negative integers is non-negative.\n\n**Case $n < 0$**: First derives $n \\leq 0$ from the negated hypothesis using `push_neg` and `le_of_lt`. Then computes $0 \\leq -n$ via `neg_nonneg.mpr`. A `calc` block establishes $n \\cdot n = (-n) \\cdot (-n)$ using the `ring` tactic (which automates the identity $n^2 = (-n)^2$), then applies `mul_nonneg` to $-n \\geq 0$.\n\nThis is the standard approach for proving $n^2 \\geq 0$ in an ordered ring: reduce to the non-negative case by considering $|n|$.",
+    "mathContext": "$\\forall n \\in \\mathbb{Z},\\; n^2 \\geq 0$. The proof uses $n^2 = (-n)^2$ and the fact that the product of non-negative elements is non-negative in any ordered ring.",
+    "significance": "key",
+    "relatedConcepts": ["ordered rings", "case analysis", "calc blocks", "ring tactic", "mul_nonneg"],
+    "prerequisites": ["integer arithmetic", "ordered ring axioms", "Lean tactic mode"]
+  },
+  {
+    "id": "ann-calc-block",
+    "proofId": "sqrt2-examples",
+    "range": {"startLine": 39, "endLine": 40},
+    "type": "technique",
+    "title": "Calculational Proof Block",
+    "content": "The `calc` block chains a sequence of relations:\n\n```\nn * n = (-n) * (-n)   -- by ring\n     _ ≥ 0             -- by mul_nonneg h2 h2\n```\n\nThe first step uses `ring` to verify the polynomial identity $n \\cdot n = (-n)\\cdot(-n)$ automatically. The second step applies `mul_nonneg` with the fact that $-n \\geq 0$. The `calc` syntax mirrors textbook chain-of-inequalities reasoning, making the proof structure immediately visible.",
+    "mathContext": "$n \\cdot n = (-n)(-n) \\geq 0$ since $-n \\geq 0$ when $n < 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["calc blocks", "ring tactic", "transitivity of relations"],
+    "prerequisites": ["Lean calc syntax", "ring homomorphism properties"]
   },
   {
     "id": "ann-imp-trans",
     "proofId": "sqrt2-examples",
-    "range": {"startLine": 42, "endLine": 47},
-    "type": "theorem",
-    "title": "Implication Transitivity",
-    "content": "**Theorem**: Implication is transitive.\n\n$$(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$$\n\n```lean\ntheorem imp_trans (P Q R : Prop) :\n    (P → Q) → (Q → R) → (P → R) := by\n  intro hpq hqr hp\n  apply hqr\n  apply hpq\n  exact hp\n```\n\n**Proof Breakdown**:\n\n1. `intro hpq hqr hp`: Introduce hypotheses\n   - `hpq : P → Q`\n   - `hqr : Q → R`\n   - `hp : P`\n\n2. `apply hqr`: To prove `R`, suffices to prove `Q`\n\n3. `apply hpq`: To prove `Q`, suffices to prove `P`\n\n4. `exact hp`: We have `P` as hypothesis\n\n**Key Insight**: Working backwards from goal using `apply`.",
-    "mathContext": "(P → Q) → (Q → R) → (P → R)",
-    "significance": "major",
-    "relatedConcepts": ["intro", "apply", "exact", "implication"]
+    "range": {"startLine": 42, "endLine": 46},
+    "type": "technique",
+    "title": "Implication Transitivity via Backward Reasoning",
+    "content": "**Theorem**: $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$\n\nThe proof introduces three hypotheses: `hpq : P → Q`, `hqr : Q → R`, and `hp : P`. The goal is `R`. Backward reasoning proceeds:\n\n1. `apply hqr` — reduces the goal from $R$ to $Q$ (since $Q \\to R$ is known)\n2. `apply hpq` — reduces the goal from $Q$ to $P$ (since $P \\to Q$ is known)\n3. `exact hp` — closes the goal with the hypothesis $P$\n\nThis is function composition: the proof term is `fun hpq hqr hp => hqr (hpq hp)`. The tactic proof discovers this term by working backward from the goal, which is the standard approach in natural deduction.",
+    "mathContext": "$(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$ is the transitivity of implication, also known as hypothetical syllogism. In the Curry–Howard correspondence, this is function composition: $(B \\to C) \\circ (A \\to B) : A \\to C$.",
+    "significance": "key",
+    "relatedConcepts": ["natural deduction", "Curry-Howard correspondence", "function composition", "backward reasoning"],
+    "prerequisites": ["propositional logic", "Lean tactic mode", "intro/apply/exact tactics"]
+  },
+  {
+    "id": "ann-namespace",
+    "proofId": "sqrt2-examples",
+    "range": {"startLine": 30, "endLine": 48},
+    "type": "context",
+    "title": "Sqrt2 Namespace",
+    "content": "Both theorems are enclosed in `namespace Sqrt2 ... end Sqrt2`, which scopes their names as `Sqrt2.square_nonneg` and `Sqrt2.imp_trans`. Namespaces in Lean 4 prevent name collisions and organize related definitions. Since `square_nonneg` is already in Mathlib (as `sq_nonneg`), the namespace avoids a conflict with the library version.",
+    "mathContext": "Namespaces provide module-level scoping. The Mathlib equivalent of this theorem is `sq_nonneg : ∀ (a : α), 0 ≤ a ^ 2` in `Mathlib.Algebra.Order.Ring.Lemmas`.",
+    "significance": "context",
+    "relatedConcepts": ["Lean namespaces", "name resolution", "Mathlib organization"],
+    "prerequisites": ["Lean 4 module system"]
   }
 ]
