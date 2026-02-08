@@ -127,6 +127,50 @@ run_check() {
     uvx --from aristotlelib python3 -c "$PYTHON_CHECK" "$JOBS_FILE" 2>&1
 }
 
+# Categorize failure based on job outcome text and file content
+categorize_failure() {
+    local pid="$1"
+
+    # Get outcome text from jobs file
+    local outcome
+    outcome=$(jq -r --arg pid "$pid" '.jobs[] | select(.project_id == $pid) | .outcome // ""' "$JOBS_FILE" 2>/dev/null)
+    local file
+    file=$(jq -r --arg pid "$pid" '.jobs[] | select(.project_id == $pid) | .file // ""' "$JOBS_FILE" 2>/dev/null)
+
+    # Pattern match on outcome text
+    case "$outcome" in
+        *"parse"*|*"unexpected token"*|*"syntax"*)
+            echo "parse_error" ;;
+        *"failed to load"*|*"import"*|*"not found"*)
+            echo "load_error" ;;
+        *"def.*sorry"*|*"definition sorry"*)
+            echo "def_sorry" ;;
+        *"placeholder"*|*"True"*)
+            echo "placeholder" ;;
+        *"axiom"*|*"nothing to prove"*)
+            echo "axiom_only" ;;
+        *"OPEN"*|*"conjecture"*|*"open problem"*)
+            echo "open_problem" ;;
+        *"no improvement"*|*"0 theorems"*|*"no progress"*)
+            echo "no_improvement" ;;
+        *)
+            echo "unknown" ;;
+    esac
+}
+
+# Count how many times a file has been submitted
+count_file_submissions() {
+    local pid="$1"
+    local file
+    file=$(jq -r --arg pid "$pid" '.jobs[] | select(.project_id == $pid) | .file // ""' "$JOBS_FILE" 2>/dev/null)
+
+    if [[ -n "$file" ]]; then
+        jq --arg file "$file" '[.jobs[] | select(.file == $file)] | length' "$JOBS_FILE" 2>/dev/null
+    else
+        echo 1
+    fi
+}
+
 # Update jobs.json with new statuses
 update_jobs_file() {
     local results="$1"
@@ -143,13 +187,35 @@ update_jobs_file() {
             *) continue ;;  # Don't update in-progress jobs
         esac
 
-        # Update in jobs file
-        local tmp_file=$(mktemp)
-        jq --arg pid "$pid" --arg status "$new_status" '
-            .jobs |= map(if .project_id == $pid then .status = $status else . end)
-        ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+        # For failed/expired jobs, categorize the failure and count submissions
+        local extra_fields=""
+        if [[ "$new_status" == "failed" || "$new_status" == "expired" ]]; then
+            local category
+            category=$(categorize_failure "$pid")
+            local sub_count
+            sub_count=$(count_file_submissions "$pid")
 
-        echo -e "  Updated $pid -> $new_status"
+            # Update with failure metadata
+            local tmp_file=$(mktemp)
+            jq --arg pid "$pid" --arg status "$new_status" \
+               --arg category "$category" --argjson count "$sub_count" '
+                .jobs |= map(if .project_id == $pid then
+                    .status = $status |
+                    .failure_category = $category |
+                    .submission_count = $count
+                else . end)
+            ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+
+            echo -e "  Updated $pid -> $new_status (category: $category, submissions: $sub_count)"
+        else
+            # Update status only
+            local tmp_file=$(mktemp)
+            jq --arg pid "$pid" --arg status "$new_status" '
+                .jobs |= map(if .project_id == $pid then .status = $status else . end)
+            ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
+
+            echo -e "  Updated $pid -> $new_status"
+        fi
     done
 }
 
