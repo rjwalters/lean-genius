@@ -94,7 +94,7 @@
   {
     "id": "ann-e701-sterboul",
     "proofId": "erdos-701",
-    "range": { "startLine": 172, "endLine": 195 },
+    "range": { "startLine": 176, "endLine": 198 },
     "type": "axiom",
     "title": "Sterboul's Conditions",
     "content": "**SterboulConditions, sterboul_1974:**\n\nChvátal's conjecture holds when:\n1. All maximal sets have equal size\n2. Pairwise intersections have size ≤ 1\n3. At least two maximal sets intersect\n\nThese conditions capture certain 'regular' hereditary families.",
@@ -105,7 +105,7 @@
   {
     "id": "ann-e701-fk",
     "proofId": "erdos-701",
-    "range": { "startLine": 196, "endLine": 205 },
+    "range": { "startLine": 200, "endLine": 208 },
     "type": "axiom",
     "title": "Frankl-Kupavskii 2023",
     "content": "**frankl_kupavskii_2023:**\n\nChvátal's conjecture holds for families with covering number 2.\n\nThe covering number τ(F) is the minimum number of elements hitting all sets. This 2023 result is significant recent progress.",
@@ -116,7 +116,7 @@
   {
     "id": "ann-e701-borg",
     "proofId": "erdos-701",
-    "range": { "startLine": 206, "endLine": 217 },
+    "range": { "startLine": 210, "endLine": 218 },
     "type": "definition",
     "title": "Borg's Weighted Version",
     "content": "**WeightedChvatalConjecture:**\n\nGeneralizes the conjecture to weighted families:\n∑_{A ∈ F'} w(A) ≤ ∑_{A ∈ Star(F,x)} w(A)\n\nBorg (2011) proved this under additional assumptions.",
@@ -126,7 +126,7 @@
   {
     "id": "ann-e701-ekr",
     "proofId": "erdos-701",
-    "range": { "startLine": 218, "endLine": 231 },
+    "range": { "startLine": 221, "endLine": 238 },
     "type": "concept",
     "title": "EKR Connection",
     "content": "**Erdős-Ko-Rado Context:**\n\nEKR bounds intersecting families in uniform hypergraphs:\nmax |F'| = C(n-1, k-1) for k-uniform families on [n].\n\nChvátal's conjecture generalizes this to hereditary families, where uniform families are NOT directly applicable.",
@@ -137,7 +137,7 @@
   {
     "id": "ann-e701-uniform",
     "proofId": "erdos-701",
-    "range": { "startLine": 232, "endLine": 258 },
+    "range": { "startLine": 240, "endLine": 265 },
     "type": "theorem",
     "title": "Uniform Not Hereditary",
     "content": "**uniform_not_hereditary:**\n\nFor k ≥ 2, the family of all k-subsets is NOT hereditary.\n\nProof: A k-set has (k-1)-subsets, which aren't in the k-uniform family.\n\nThis explains why Chvátal's conjecture is distinct from EKR.",
@@ -147,10 +147,10 @@
   {
     "id": "ann-e701-summary",
     "proofId": "erdos-701",
-    "range": { "startLine": 281, "endLine": 308 },
-    "type": "theorem",
-    "title": "Summary Theorem",
-    "content": "**erdos_701_summary:**\n\nCombines the main conjecture statement with partial results.\n\n**Status:** OPEN since 1974.\n\n**Why it's hard:** Need a SINGLE x that works for ALL intersecting subfamilies simultaneously. Local arguments fail.",
+    "range": { "startLine": 291, "endLine": 320 },
+    "type": "axiom",
+    "title": "Summary and Open Status",
+    "content": "**erdos_701_open_status:**\n\nAxiom recording the full conjecture statement.\n\n**Status:** OPEN since 1974.\n\n**Why it's hard:** Need a SINGLE x that works for ALL intersecting subfamilies simultaneously. Local arguments fail.",
     "significance": "critical",
     "relatedConcepts": ["Summary", "Open problems"]
   }
