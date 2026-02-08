@@ -1,0 +1,89 @@
+{
+  "id": "erdos-1140",
+  "title": "Erdős Problem #1140: Primes of the Form n - 2x²",
+  "slug": "erdos-1140",
+  "description": "Do infinitely many n exist such that n - 2x² is prime for all x with 2x² < n? Disproved by Epure-Gica: only finitely many n exist.",
+  "meta": {
+    "author": "Epure, Gica (2010)",
+    "sourceUrl": "https://erdosproblems.com/1140",
+    "date": "2010",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1140Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "quadratic-forms",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1140,
+    "erdosUrl": "https://erdosproblems.com/1140",
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Verified examples for n = 2, 5, 7, 13 using interval_cases + decide",
+      "Verified counterexample n = 4 (not prime)",
+      "Proof that even n > 2 never satisfies the property",
+      "Main disproof via finiteness axiom"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether infinitely many n exist such that n - 2x² is prime for every valid x. Computing small cases reveals the values 2, 5, 7, 13, 31, 61, 181, 199. Epure and Gica (2010) proved that these (with at most one possible exception in the n ≡ 3 mod 4 case) are the only such values, definitively disproving the conjecture.\n\nThe proof splits into cases by residue modulo 4. For n ≡ 1 (mod 4), they show only {5, 13, 61, 181} work. For n ≡ 3 (mod 4), they use a result of Mollin and Williams (1989) to show only {7, 31, 199} work (with at most one exception).",
+    "problemStatement": "**Problem:** Do there exist infinitely many $n$ such that $n - 2x^2$ is prime for all $x$ with $2x^2 < n$?\n\n**Answer:** NO — Only finitely many $n$ exist: $\\{2, 5, 7, 13, 31, 61, 181, 199\\}$ (with at most one additional exception).",
+    "proofStrategy": "The formalization verifies small cases computationally (n = 2, 5, 7, 13 all satisfy the property using interval_cases and decide). The even case is handled by noting n itself must be prime. The Epure-Gica finiteness result is stated as an axiom, and the disproof follows by contradiction: if infinitely many n existed, we could find one above any bound B, contradicting finiteness.",
+    "keyInsights": [
+      "**Modular arithmetic is key:** The proof splits by n mod 4",
+      "**Even n > 2 fail trivially:** n - 2·0² = n must be prime, but n is even",
+      "**Only 8 values work:** {2, 5, 7, 13, 31, 61, 181, 199}",
+      "**Quadratic residues:** The constraint n - 2x² is prime restricts n to specific residue classes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "AllShiftsArePrime predicate and known values",
+      "startLine": 26,
+      "endLine": 39
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "summary": "Computationally verified cases for small n",
+      "startLine": 41,
+      "endLine": 72
+    },
+    {
+      "id": "epure-gica",
+      "title": "Epure-Gica Theorem",
+      "summary": "Finiteness result by residue class",
+      "startLine": 74,
+      "endLine": 96
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Erdős Problem #1140 disproved",
+      "startLine": 98,
+      "endLine": 114
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1140 was disproved by Epure and Gica (2010). Only finitely many n satisfy the property that n - 2x² is prime for all valid x. The complete list is {2, 5, 7, 13, 31, 61, 181, 199} with at most one exception.",
+    "implications": "This result shows that the pattern of 'n - 2x² always prime' is extremely rare and cannot persist to infinity. It connects to the broader theme of how quadratic forms interact with prime distribution.",
+    "openQuestions": [
+      "Does the one possible exception in the n ≡ 3 (mod 4) case actually exist?",
+      "Analogous questions for n - 3x², n - 5x², etc.",
+      "See related Problem #1141 on erdosproblems.com"
+    ]
+  }
+}

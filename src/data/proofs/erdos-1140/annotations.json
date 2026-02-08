@@ -1,0 +1,85 @@
+[
+  {
+    "id": "ann-e1140-header",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1140: Primes of the Form n - 2x²**\n\nAre there infinitely many n where n - 2x² is prime for all valid x?\n\n**Status: DISPROVED** (Epure-Gica, 2010)\n\nOnly 8 values work: {2, 5, 7, 13, 31, 61, 181, 199}.",
+    "mathContext": "The constraint that n - 2x² be prime for ALL x with 2x² < n is extremely restrictive. As n grows, there are more values of x to check, making it increasingly unlikely all shifts are prime.",
+    "significance": "critical",
+    "relatedConcepts": ["prime numbers", "quadratic forms", "modular arithmetic"]
+  },
+  {
+    "id": "ann-e1140-predicate",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 31, "endLine": 33 },
+    "type": "definition",
+    "title": "AllShiftsArePrime",
+    "content": "**AllShiftsArePrime n:** For every x with 2x² < n, the value n - 2x² is prime.\n\nFor example, AllShiftsArePrime 13 means 13, 11, and 5 must all be prime (they are).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1140-n2",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "theorem",
+    "title": "n = 2 Verified",
+    "content": "**Computationally verified:** Only x = 0 applies, and 2 is prime.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1140-n13",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "theorem",
+    "title": "n = 13 Verified",
+    "content": "**Computationally verified:** x ∈ {0, 1, 2} giving 13, 11, 5 — all prime.\n\nLean's `interval_cases` tactic enumerates all valid x values and `decide` checks primality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1140-n4-fails",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "theorem",
+    "title": "n = 4 Fails",
+    "content": "**Verified counterexample:** 4 - 2·0² = 4, which is not prime.\n\nThis shows that not all n satisfy the property.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1140-mod1",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 72, "endLine": 74 },
+    "type": "axiom",
+    "title": "Epure-Gica: n ≡ 1 (mod 4)",
+    "content": "**epure_gica_mod_1:** When n ≡ 1 (mod 4), the only values with AllShiftsArePrime are {5, 13, 61, 181}.\n\nThis is Theorem 4.1 from Epure and Gica (2010).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1140-mod3",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 76, "endLine": 82 },
+    "type": "axiom",
+    "title": "Epure-Gica: n ≡ 3 (mod 4)",
+    "content": "**epure_gica_mod_3:** When n ≡ 3 (mod 4), only {7, 31, 199} work, with at most one exception.\n\nUses results of Mollin-Williams (1989) on class numbers of quadratic fields.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1140-even",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "theorem",
+    "title": "Even Case",
+    "content": "**Verified proof:** Even n > 2 always fail because n - 2·0² = n is even and greater than 2, hence not prime.\n\nThis eliminates half of all natural numbers immediately.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1140-main",
+    "proofId": "erdos-1140",
+    "range": { "startLine": 101, "endLine": 107 },
+    "type": "theorem",
+    "title": "Erdős Problem #1140: DISPROVED",
+    "content": "**erdos_1140:** There do NOT exist infinitely many n with AllShiftsArePrime.\n\nThe proof uses the finiteness axiom: there exists a bound B above which no n satisfies the property. Given any proposed infinite sequence, we find n > B, contradicting finiteness.",
+    "significance": "critical"
+  }
+]
