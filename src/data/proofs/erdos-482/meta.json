@@ -1,18 +1,23 @@
 {
   "id": "erdos-482",
-  "title": "Erdős Problem #482",
+  "title": "Erdős Problem #482: Binary Digits via Recurrence",
   "slug": "erdos-482",
-  "description": "Define a sequence by ... and\\[a_{n+1}=\\lfloor(a_n+1/2)\\rfloor\\]for .... The difference ... is the ...th digit in the binary e...",
+  "description": "The recurrence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋ has the property that a_{2n+1} - 2a_{2n-1} gives the n-th binary digit of √2. Stoll (2005-2006) generalized to √m and other algebraic numbers.",
   "meta": {
-    "author": "Unknown",
+    "author": "Graham & Pollak (1970); Stoll (2005-2006)",
     "sourceUrl": "https://erdosproblems.com/482",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos482Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binary-digits",
+      "algebraic-numbers",
+      "recurrence",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 482,
     "erdosUrl": "https://erdosproblems.com/482",
@@ -21,63 +26,73 @@
   "overview": {
     "historicalContext": "Erdős Problem #482 concerns a remarkable connection between integer sequences and binary expansions. Graham and Pollak discovered that for the sequence a₁ = 1, a_{n+1} = ⌊√2(aₙ + 1/2)⌋, the differences a_{2n+1} - 2a_{2n-1} yield the binary digits of √2. Erdős asked for similar results for √m and other algebraic numbers. Stoll (2005, 2006) provided wide-ranging generalizations of this phenomenon, connecting integer floor sequences to digit expansions of algebraic irrationals, settling the problem in a broader context than originally posed.",
     "problemStatement": "Define a sequence by $a_1=1$ and\\[a_{n+1}=\\lfloor\\sqrt{2}(a_n+1/2)\\rfloor\\]for $n\\geq 1$. The difference $a_{2n+1}-2a_{2n-1}$ is the $n$th digit in the binary expansion of $\\sqrt{2}$.\n\nFind similar results for $\\theta=\\sqrt{m}$, and other algebraic numbers.\n\n\n\nThe result for $\\sqrt{2}$ was obtained by Graham and Pollak \\cite{GrPo70}. The problem statement is open-ended, but presumably Erd\\H{o}s and Graham would have been satisfied with the wide-ranging generalisations of Stoll (\\cite{St05} and \\cite{St06}).\n\n\n\n\nReferences\n\n\n[GrPo70] Graham, R. L. and Pollak, H. O., Note on a nonlinear recurrence related to {$\\surd 2$}. Math. Mag. (1970), 143-145.\n\n[St05] Stoll, Th., On families of nonlinear recurrences related to digits. J. Integer Seq. (2005), Article 05.3.2, 8.\n\n[St06] Stoll, Thomas, On a problem of Erd\\H{o}s and Graham concerning digits. Acta Arith. (2006), 89-100.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "proofStrategy": "The formalization defines the Graham-Pollak recurrence a_{n+1} = ⌊√2(aₙ + 1/2)⌋ and states the main theorem that odd-indexed differences give binary digits. Properties like growth rate (approximately √2 per step) and non-periodicity (from irrationality of √2) are axiomatized. Stoll's generalizations to quadratic irrationals and higher algebraic numbers via Pisot number theory are captured as axioms.",
+    "keyInsights": [
+      "**Floor recurrence encodes digits**: The simple integer recurrence a_{n+1} = ⌊√2(aₙ + 1/2)⌋ hides the binary expansion of √2 in its odd-indexed differences",
+      "**Growth rate √2**: The sequence grows by approximately factor √2 at each step, reflecting the underlying irrational multiplier",
+      "**Non-periodicity**: Since √2 is irrational, its binary expansion is aperiodic, which transfers to the difference sequence",
+      "**Stoll's generalization**: Extended from √2 to all quadratic irrationals √m (square-free m) and certain higher-degree algebraic numbers via Pisot number theory",
+      "**OEIS A004539**: The sequence 1, 2, 3, 4, 7, 10, 14, 20, 29, ... appears in the Online Encyclopedia of Integer Sequences"
+    ]
   },
   "sections": [
     {
       "id": "erd-s-problem-482-binary-digit",
-      "title": "Erdős Problem #482: Binary Digits of √2 via Recurrence",
+      "title": "Problem Statement and References",
       "startLine": 1,
       "endLine": 37,
-      "summary": "Erdős Problem #482: Binary Digits of √2 via Recurrence"
+      "summary": "Header documentation with the problem statement, history from Graham-Pollak to Stoll, and references."
     },
     {
       "id": "part-1-the-sequence-definition",
-      "title": "/- ## Part 1: The Sequence Definition",
+      "title": "The Sequence Definition",
       "startLine": 38,
       "endLine": 54,
-      "summary": "/- ## Part 1: The Sequence Definition"
+      "summary": "Defines the Graham-Pollak recurrence and axiomatizes the first few computed values."
     },
     {
       "id": "part-2-the-main-theorem",
-      "title": "/- ## Part 2: The Main Theorem",
+      "title": "The Main Theorem",
       "startLine": 55,
       "endLine": 65,
-      "summary": "/- ## Part 2: The Main Theorem"
+      "summary": "States that a_{2n+1} - 2a_{2n-1} ∈ {0, 1}, i.e., the differences are binary digits."
     },
     {
       "id": "part-3-properties-of-the-recur",
-      "title": "/- ## Part 3: Properties of the Recurrence",
+      "title": "Properties of the Recurrence",
       "startLine": 66,
       "endLine": 79,
-      "summary": "/- ## Part 3: Properties of the Recurrence"
+      "summary": "Growth rate approximation and bounds on √2."
     },
     {
       "id": "part-4-generalization-to-m",
-      "title": "/- ## Part 4: Generalization to √m",
+      "title": "Generalization to √m",
       "startLine": 80,
       "endLine": 103,
-      "summary": "/- ## Part 4: Generalization to √m"
+      "summary": "Stoll's generalization to square-free m and higher algebraic numbers."
     },
     {
       "id": "part-5-non-periodicity",
-      "title": "/- ## Part 5: Non-Periodicity",
+      "title": "Non-Periodicity",
       "startLine": 104,
       "endLine": 116,
-      "summary": "/- ## Part 5: Non-Periodicity"
+      "summary": "Non-periodicity of the binary digit sequence from irrationality of √2."
     },
     {
       "id": "part-6-summary",
-      "title": "/- ## Part 6: Summary",
+      "title": "Summary",
       "startLine": 117,
       "endLine": 153,
-      "summary": "/- ## Part 6: Summary"
+      "summary": "Combined characterization theorem and final answer statement."
     }
   ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #482 asked to generalize the Graham-Pollak digit-extraction phenomenon beyond √2. Stoll (2005-2006) achieved this, extending to all quadratic irrationals and certain higher algebraic numbers.",
+    "implications": "The connection between simple integer recurrences and digit expansions of irrationals reveals deep structure in the interplay between discrete and continuous mathematics.",
+    "openQuestions": [
+      "Can digit extraction be extended to transcendental numbers like π or e?",
+      "What is the computational complexity of extracting the n-th digit via this recurrence?",
+      "Are there analogous results for non-integer bases?"
+    ]
   }
 }
