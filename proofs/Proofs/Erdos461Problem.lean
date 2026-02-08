@@ -77,9 +77,33 @@ theorem smoothComponent_smooth (t n p : ℕ) (hp : p.Prime)
   have hmem := prime_dvd_list_prod_mem hp _ hall hd
   exact (List.mem_filter.mp hmem).2
 
-/-- `smoothComponent t n` is the largest such divisor. -/
-axiom smoothComponent_largest (t n d : ℕ) :
-    d ∣ n → (∀ p : ℕ, p.Prime → p ∣ d → p < t) → d ∣ smoothComponent t n
+/-- `smoothComponent t n` is nonzero (product of primes, all ≥ 2). -/
+theorem smoothComponent_pos (t n : ℕ) : 0 < smoothComponent t n := by
+  unfold smoothComponent
+  apply List.prod_pos
+  intro x hx
+  exact (Nat.prime_of_mem_factors (List.mem_filter.mp hx).1).pos
+
+/-- No prime `< t` divides the complement part of the factorization. -/
+private lemma no_small_prime_in_complement (t n p : ℕ) (hp : p.Prime)
+    (hpt : p < t) (hd : p ∣ (n.factors.filter (fun x => ¬ decide (x < t))).prod) :
+    False := by
+  have hall : ∀ q ∈ n.factors.filter (fun x => ¬ decide (x < t)), q.Prime := fun q hq =>
+    Nat.prime_of_mem_factors (List.mem_filter.mp hq).1
+  have hmem := prime_dvd_list_prod_mem hp _ hall hd
+  have := (List.mem_filter.mp hmem).2
+  simp at this
+  omega
+
+/-- `smoothComponent t n` is the largest `t`-smooth divisor of `n`.
+    Requires `n ≠ 0` since `smoothComponent t 0 = 1` but any
+    `d` with all primes `< t` divides 0.
+    Proof strategy: n = smoothComponent * complementPart where
+    complementPart has all primes ≥ t. Then d and complementPart
+    are coprime (disjoint prime support), so d ∣ smoothComponent. -/
+theorem smoothComponent_largest (t n d : ℕ) (hn : n ≠ 0) :
+    d ∣ n → (∀ p : ℕ, p.Prime → p ∣ d → p < t) → d ∣ smoothComponent t n := by
+  sorry
 
 /- ## Counting distinct smooth components -/
 
@@ -136,3 +160,13 @@ theorem smoothDistinctCount_zero (n : ℕ) : smoothDistinctCount n 0 = 0 := by
 /-- Smooth component of 0 is 1 (0 has no prime factors). -/
 theorem smoothComponent_zero (t : ℕ) : smoothComponent t 0 = 1 := by
   simp [smoothComponent, Nat.factors_zero]
+
+/-- For a prime `p`, `smoothComponent t p = p` if `p < t`, else `1`. -/
+theorem smoothComponent_prime (t p : ℕ) (hp : p.Prime) :
+    smoothComponent t p = if p < t then p else 1 := by
+  unfold smoothComponent
+  rw [Nat.factors_prime hp]
+  simp only [List.filter_cons, List.filter_nil, List.append_nil]
+  split <;> rename_i h
+  · simp [List.prod_cons]
+  · simp
