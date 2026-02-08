@@ -16,117 +16,81 @@
     "references": [
       "Erdős (1984): original conjecture",
       "Grünbaum: n^{3/2} four-point lines construction",
-      "Solymosi–Stojaković (2013): n^{2−O(1/√log n)} lower bound",
+      "Solymosi–Stojaković: n^{2−O(1/√log n)} lower bound",
       "Szemerédi–Trotter (1983): incidence bound",
-      "Burr–Grünbaum–Sloane: collinear triples without four-point lines",
-      "Füredi–Palásti: independent construction of triple-rich sets",
       "https://erdosproblems.com/101"
     ],
     "leanFile": "Proofs/Erdos101Problem.lean",
+    "proofRepoPath": "Proofs/Erdos101Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/101",
-    "erdosUrl": "https://erdosproblems.com/101",
-    "relatedProofs": ["erdos-102", "erdos-588", "erdos-669"]
+    "erdosUrl": "https://erdosproblems.com/101"
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "startLine": 18,
-      "endLine": 20,
-      "summary": "Imports Mathlib modules for finite set cardinality ($\\text{Finset.card}$), natural number arithmetic, and general tactics."
+      "id": "header-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Module docstring stating Erdős Problem #101 (four-point lines, $100 open problem) and Mathlib imports for finite sets, natural numbers, and tactics."
     },
     {
-      "id": "point-set-definition",
-      "title": "Planar Point Set",
-      "startLine": 25,
-      "endLine": 27,
-      "summary": "Defines $\\texttt{PlanarPointSet}$ as a structure wrapping a nonempty $\\text{Finset}(\\mathbb{R} \\times \\mathbb{R})$, modeling finite point configurations in the plane."
-    },
-    {
-      "id": "collinearity",
-      "title": "Collinearity Definition",
-      "startLine": 30,
-      "endLine": 31,
-      "summary": "Defines three-point collinearity via the vanishing of the $2 \\times 2$ cross-product determinant, equivalent to zero signed area."
-    },
-    {
-      "id": "no-five-collinear",
-      "title": "No Five Collinear Condition",
-      "startLine": 34,
-      "endLine": 40,
-      "summary": "Requires that no five distinct points of $P$ are collinear. This is the critical threshold: allowing five collinear points trivially yields $\\Omega(n^2)$ four-point lines."
-    },
-    {
-      "id": "four-point-count",
-      "title": "Four-Point Line Count",
-      "startLine": 43,
-      "endLine": 47,
-      "summary": "Defines $f_4(P)$ by counting 4-element subsets of $P$ that are collinear (witnessed by anchor points). Under no-five-collinear, this equals the number of 4-rich lines."
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 48,
+      "summary": "Defines PlanarPointSet as a positive-cardinality Finset of ℝ × ℝ, collinearity via the signed area determinant, the NoFiveCollinear condition (at most four points per line), and fourPointLineCount by filtering collinear 4-subsets of the powerset."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture: o(n²)",
-      "startLine": 53,
+      "title": "Main Conjecture",
+      "startLine": 49,
       "endLine": 57,
-      "summary": "The central open problem: $f_4(P) = o(n^2)$ for all no-five-collinear sets. Formalized as $\\forall \\varepsilon > 0,\\, \\exists N_0$ such that $f_4(P) < \\varepsilon n^2$ for large $P$."
+      "summary": "The open conjecture: for any ε > 0 and sufficiently large no-five-collinear point sets P, the four-point line count is less than ε·|P|². Stated as an axiom since the problem is unresolved."
     },
     {
-      "id": "grunbaum-bound",
-      "title": "Grünbaum's Lower Bound",
-      "startLine": 63,
-      "endLine": 67,
-      "summary": "States existence of configurations with $f_4(P) \\geq c \\cdot n^{3/2}$, the first superlinear lower bound that motivated Erdős's original $\\Theta(n^{3/2})$ conjecture."
-    },
-    {
-      "id": "solymosi-stojakovic",
-      "title": "Solymosi–Stojaković Lower Bound",
-      "startLine": 71,
+      "id": "known-lower-bounds",
+      "title": "Known Lower Bounds",
+      "startLine": 59,
       "endLine": 75,
-      "summary": "Nearly-quadratic construction: $f_4(P) \\geq n^{2 - C/\\sqrt{\\log n}}$. Disproved the $\\Theta(n^{3/2})$ conjecture and showed the gap to $n^2$ is sublogarithmic."
+      "summary": "Two lower bound results: Grünbaum's Ω(n^{3/2}) construction and Solymosi–Stojaković's nearly quadratic n^{2−O(1/√log n)} construction that disproved Erdős's original Θ(n^{3/2}) conjecture."
     },
     {
       "id": "trivial-upper",
       "title": "Trivial Upper Bound",
-      "startLine": 79,
+      "startLine": 77,
       "endLine": 81,
-      "summary": "At most $\\binom{n}{2}$ lines through $n$ points, giving $f_4(P) = O(n^2)$. The problem asks whether this trivial bound can be improved."
+      "summary": "The elementary observation that at most C(n,2) lines are determined by n points, giving O(n²) as the trivial upper bound on four-point lines."
     },
     {
-      "id": "collinear-triples",
-      "title": "Collinear Triples Without Four-Point Lines",
-      "startLine": 87,
-      "endLine": 91,
-      "summary": "Burr–Grünbaum–Sloane and Füredi–Palásti constructions achieve $\\Theta(n^2)$ collinear triples with zero four-point lines, demonstrating a threshold phenomenon."
-    },
-    {
-      "id": "szemeredi-trotter",
-      "title": "Szemerédi–Trotter Incidence Bound",
-      "startLine": 96,
+      "id": "related-observations",
+      "title": "Related Observations",
+      "startLine": 83,
       "endLine": 99,
-      "summary": "The tight incidence bound $I(P,L) = O(n^{2/3}m^{2/3} + n + m)$, the fundamental tool for bounding $k$-rich lines in discrete geometry."
+      "summary": "Burr–Grünbaum–Sloane/Füredi–Palásti constructions with Θ(n²) collinear triples but no four-point lines, and the Szemerédi–Trotter incidence theorem as the key tool for bounding collinearity configurations."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős posed Problem #101 in a series of papers from 1984 to 1997, asking whether the number of lines through exactly four points of an $n$-point set (with no five collinear) is $o(n^2)$. Branko Grünbaum had previously constructed point sets achieving $\\Omega(n^{3/2})$ four-point lines using lattice-based configurations, leading Erdős to conjecture the true order was $\\Theta(n^{3/2})$. This conjecture stood for nearly three decades until József Solymosi and Miloš Stojaković (2013) dramatically refuted it by constructing sets with $n^{2-O(1/\\sqrt{\\log n})}$ four-point lines—nearly quadratic growth. Their construction, based on product sets over carefully chosen algebraic curves, showed the true answer lies tantalizingly close to the trivial $O(n^2)$ bound. The problem connects to the Szemerédi–Trotter incidence theorem (1983), which provides the primary upper-bound tool for $k$-rich line problems. Erdős offered $\\$100$ for a resolution, and the problem remains open as of 2025, representing one of the most intriguing gaps in extremal combinatorial geometry.",
-    "problemStatement": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, prove that the number of lines containing exactly four of the points is $o(n^2)$. Formally: $\\forall \\varepsilon > 0,\\, \\exists N_0$ such that $|P| \\geq N_0 \\implies f_4(P) < \\varepsilon |P|^2$.",
-    "proofStrategy": "We formalize the point-set configuration as a nonempty finite subset of $\\mathbb{R}^2$, define collinearity via the signed-area determinant, and express the no-five-collinear condition as a universal quantification over 5-tuples. The four-point line count is defined by filtering the powerset. The main conjecture and all known results (Grünbaum's $\\Omega(n^{3/2})$, Solymosi–Stojaković's near-quadratic bound, the trivial $O(n^2)$ upper bound, Burr–Grünbaum–Sloane configurations, and the Szemerédi–Trotter incidence bound) are stated as axioms, capturing the full landscape of this open problem.",
+    "historicalContext": "Erdős posed this problem across several papers from 1984 to 1997, asking whether the maximum number of lines through exactly four points of an $n$-point planar set (with no five collinear) is $o(n^2)$. He initially conjectured the answer was $\\Theta(n^{3/2})$, based on a construction by Grünbaum that achieves $\\Omega(n^{3/2})$ four-point lines using carefully arranged points on families of lines. This conjecture stood for decades until Solymosi and Stojaković (2013) disproved it with a stunning construction achieving $n^{2 - O(1/\\sqrt{\\log n})}$ four-point lines—nearly quadratic growth. Their approach uses number-theoretic ideas related to sum-product estimates. The gap between this lower bound and the conjectured $o(n^2)$ upper bound remains one of the central open problems in combinatorial geometry, carrying a $\\$100$ Erdős prize. The problem connects deeply to the Szemerédi–Trotter incidence theorem and the broader program of understanding collinearity patterns in finite point sets.",
+    "problemStatement": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, prove that the number of lines containing exactly four of the points is $o(n^2)$.",
+    "proofStrategy": "The formalization defines a `PlanarPointSet` as a positive-cardinality finite subset of $\\mathbb{R}^2$, introduces collinearity via the signed area determinant, and defines `NoFiveCollinear` (at most four points per line). The four-point line count is computed by filtering the powerset for collinear 4-subsets. Since the problem is open, the main conjecture and all known partial results (Grünbaum's lower bound, Solymosi–Stojaković's near-quadratic construction, trivial upper bound, Szemerédi–Trotter) are stated as axioms.",
     "keyInsights": [
-      "**Threshold at five collinear**: The no-five-collinear condition is precisely the right degeneracy constraint—allowing five collinear points trivially permits $\\Omega(n^2)$ four-point lines by concentrating points on a few lines",
-      "**Grünbaum's $\\Omega(n^{3/2})$ construction**: The first superlinear lower bound uses lattice-like point sets with controlled collinearity, which initially suggested $\\Theta(n^{3/2})$ as the answer",
-      "**Solymosi–Stojaković revolution**: Their $n^{2-O(1/\\sqrt{\\log n})}$ construction using product sets and algebraic curves disproved the $\\Theta(n^{3/2})$ conjecture and showed the answer is nearly quadratic—a dramatic paradigm shift",
-      "**Three vs. four collinear threshold**: Burr–Grünbaum–Sloane showed $\\Theta(n^2)$ collinear triples can coexist with zero four-point lines, revealing that the transition from 3 to 4 collinear points is a genuine combinatorial phase boundary",
-      "**Szemerédi–Trotter as the key upper-bound tool**: The incidence bound $I(P,L) = O(n^{2/3}m^{2/3} + n + m)$ implies the number of $k$-rich lines is $O(n^2/k^3 + n/k)$, the primary method for bounding four-point lines from above"
+      "The no-five-collinear condition is the precise threshold: with five points on a line, one can trivially arrange $\\Theta(n)$ points on each of $\\Theta(n)$ lines to get $\\Omega(n^2)$ four-point lines",
+      "Grünbaum's $\\Omega(n^{3/2})$ construction uses grid-like arrangements that balance collinear quadruples against the five-point restriction",
+      "Solymosi–Stojaković's $n^{2 - O(1/\\sqrt{\\log n})}$ construction disproved the $\\Theta(n^{3/2})$ conjecture, showing the true behavior is much closer to quadratic than expected",
+      "The Szemerédi–Trotter incidence theorem ($I(P,L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$) is the primary tool for upper bounds, but direct application gives only $O(n^2)$",
+      "The contrast with collinear triples is instructive: $\\Theta(n^2)$ collinear triples can coexist with zero four-point lines, showing a sharp phase transition from 3-point to 4-point collinearity",
+      "The problem is connected to Erdős Problems #102, #588, and #669, which explore related collinearity extremal questions in different settings"
     ]
   },
   "conclusion": {
-    "summary": "This formalization captures the full landscape of Erdős Problem #101: whether four-point lines from $n$ points (no five collinear) number $o(n^2)$. The Lean file encodes the point-set framework, the central conjecture, both the Grünbaum $\\Omega(n^{3/2})$ and Solymosi–Stojaković $n^{2-o(1)}$ lower bounds, the trivial $O(n^2)$ upper bound, the Burr–Grünbaum–Sloane construction showing independence from triple collinearity, and the Szemerédi–Trotter incidence bound.",
-    "implications": "A resolution would fundamentally advance our understanding of collinearity patterns in discrete geometry. A positive answer ($o(n^2)$) would separate four-point collinearity from the near-quadratic lower bounds, requiring novel techniques beyond incidence geometry. A negative answer ($\\Theta(n^2)$ possible) would mean the Solymosi–Stojaković construction is essentially optimal, with profound consequences for the polynomial partitioning and algebraic methods in combinatorial geometry.",
+    "summary": "This formalization captures Erdős Problem #101, one of the fundamental open problems in combinatorial geometry. The question of whether four-point lines from $n$ points (no five collinear) are $o(n^2)$ remains unresolved despite Solymosi and Stojaković's dramatic improvement of the lower bound to $n^{2 - O(1/\\sqrt{\\log n})}$.",
+    "implications": "A resolution would significantly advance the theory of collinearity patterns in discrete geometry. A positive answer ($o(n^2)$) would confirm a structural limitation on four-point collinearity under the five-point restriction, while a negative answer (constructions achieving $\\Omega(n^2)$) would reveal that the no-five-collinear condition imposes essentially no constraint on four-point lines. Either outcome would likely require new techniques beyond Szemerédi–Trotter incidence bounds, potentially involving algebraic or polynomial method approaches.",
     "openQuestions": [
-      "Is the four-point line count $o(n^2)$ for no-five-collinear planar point sets? (The central question, worth $100)",
-      "Can the Solymosi–Stojaković lower bound $n^{2-O(1/\\sqrt{\\log n})}$ be improved to $\\Omega(n^2/\\text{polylog}(n))$, closing the gap to quadratic?",
-      "Does the polynomial partitioning method of Guth–Katz (used for the distinct distances problem) yield progress on four-point lines?",
-      "What is the answer for higher-dimensional analogues: four-point lines from points in $\\mathbb{R}^d$ with no five collinear?"
+      "Is the four-point line count $o(n^2)$ for no-five-collinear point sets, or can $\\Omega(n^2)$ be achieved?",
+      "Can the Solymosi–Stojaković construction be improved to $\\Omega(n^2 / \\text{polylog}(n))$, or is there a barrier?",
+      "What is the role of algebraic structure—do extremal configurations necessarily lie on low-degree algebraic curves?",
+      "Does the answer change for higher-dimensional point sets (e.g., points in $\\mathbb{R}^3$ with no five coplanar)?"
     ]
   }
 }
