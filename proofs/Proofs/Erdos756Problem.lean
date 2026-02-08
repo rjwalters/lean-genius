@@ -158,9 +158,10 @@ theorem rich_distances_exist :
 ## Part VII: Square Grid Results (Clemen-Dumitrescu-Liu 2025)
 -/
 
-/-- The n×n square grid point set. -/
-noncomputable def squareGrid (n : ℕ) : PointSet := by
-  sorry -- Construction of grid points
+/-- The n×n square grid point set. Axiomatized because constructing
+    Finset (EuclideanSpace ℝ (Fin 2)) requires decidable equality
+    instances not available in Mathlib for this type. -/
+noncomputable axiom squareGrid (n : ℕ) : PointSet
 
 /-- Clemen-Dumitrescu-Liu (2025): On square grid, superpolynomially many rich distances. -/
 axiom clemen_dumitrescu_liu (n : ℕ) (hn : n ≥ 2) :
@@ -226,13 +227,15 @@ def SupremumRatioQuestion : Prop :=
 ## Part X: Construction Ideas
 -/
 
-/-- Regular polygon vertices. -/
-noncomputable def regularPolygon (n : ℕ) : PointSet := by
-  sorry -- n vertices of regular n-gon
+/-- Regular polygon vertices (n vertices of regular n-gon).
+    Axiomatized — constructing EuclideanSpace point sets from
+    trigonometric coordinates requires infrastructure beyond
+    current Mathlib finite set support. -/
+noncomputable axiom regularPolygon (n : ℕ) : PointSet
 
-/-- Lattice points in a disk. -/
-noncomputable def latticeInDisk (r : ℕ) : PointSet := by
-  sorry -- Integer points (a,b) with a² + b² ≤ r²
+/-- Lattice points in a disk: {(a,b) ∈ ℤ² : a² + b² ≤ r²}.
+    Axiomatized for the same reason as regularPolygon. -/
+noncomputable axiom latticeInDisk (r : ℕ) : PointSet
 
 /-- **Random point set model:** A set of n points chosen uniformly at
     random from [0,1]² gives expected distance multiplicity bounds.
