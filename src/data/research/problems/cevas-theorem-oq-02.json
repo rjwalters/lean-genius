@@ -1,0 +1,39 @@
+{
+  "id": "cevas-theorem-oq-02",
+  "title": "Ceva's Theorem: Non-Euclidean Extensions",
+  "sourceProof": "cevas-theorem",
+  "openQuestion": "How does the theorem extend to non-Euclidean geometries?",
+  "status": "completed",
+  "knowledge": {
+    "score": 8,
+    "insights": [
+      "All three geometries (Euclidean, spherical, hyperbolic) satisfy the same algebraic identity: ρ(BD)/ρ(DC) · ρ(CE)/ρ(EA) · ρ(AF)/ρ(FB) = 1 where ρ is id, sin, or sinh respectively",
+      "The generalized framework reduces all versions to: product of positive ratios = 1 iff numerator product = denominator product",
+      "Spherical Ceva uses sin of arc lengths (positive on (0,π)); hyperbolic Ceva uses sinh of distances (positive on (0,∞))",
+      "The trigonometric Ceva (sin of angles) is the Euclidean version but expressed via angle bisections rather than segment ratios",
+      "Flat limits connect all three: sin(x)/x → 1 and sinh(x)/x → 1 as x → 0, derived from derivatives at 0",
+      "HasDerivAt for sinh was built manually from exp derivatives since Real.hasDerivAt_sinh is not in Docker Mathlib v4.26.0",
+      "The unified principle theorem abstracts over any positive ratio function ρ"
+    ],
+    "builtItems": [
+      "GeneralizedCevianConfig structure and generalized_ceva theorem",
+      "TrigCevianConfig + trigonometric_ceva for Euclidean angle form",
+      "SphericalCevianConfig + spherical_ceva for spherical geometry",
+      "HyperbolicCevianConfig + hyperbolic_ceva for hyperbolic geometry",
+      "sinh_pos_of_pos lemma for hyperbolic distances",
+      "ceva_unified_principle abstracting over arbitrary ratio functions",
+      "Specialization theorems for each geometry type",
+      "Special cases: medians in spherical and hyperbolic geometry",
+      "hasDerivAt_sinh: derivative of sinh built from exp",
+      "spherical_flat_limit: sin(x)/x → 1 via derivative at 0",
+      "hyperbolic_flat_limit: sinh(x)/x → 1 via derivative at 0",
+      "flat_limit_connects_geometries: unified flat limit statement"
+    ],
+    "nextSteps": [
+      "Add projective Ceva's theorem (cross-ratio formulation)",
+      "Prove the converse: Euclidean Ceva is recovered from spherical/hyperbolic as curvature → 0 (quantitative convergence, not just pointwise limits)",
+      "Connect to Mathlib's affine geometry for a coordinate-free formulation"
+    ],
+    "progressSummary": "COMPLETED: Full formalization of Ceva's theorem in three geometries (Euclidean trigonometric, spherical, hyperbolic) with unified abstract framework and formal flat limit theorems. All theorems proven (0 sorries). File builds successfully in Docker."
+  }
+}
