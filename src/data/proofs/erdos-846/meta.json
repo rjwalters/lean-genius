@@ -21,53 +21,77 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős, Nešetřil, and Rödl in [Er92b]. It asks whether the density characterization of non-collinearity (every large subset contains proportionally many points in general position) implies a structural characterization (finite union of non-collinear sets). This is analogous to Ramsey-theoretic partition problems.",
+    "historicalContext": "Erdős Problem #846 was posed by Erdős, Nešetřil, and Rödl in [Er92b] (1992). It belongs to the broader theme in combinatorics of understanding when quantitative (density) conditions imply qualitative (structural) conclusions — a paradigm exemplified by Szemerédi's regularity lemma, the Hales-Jewett theorem, and Ramsey theory.\n\nThe problem asks whether a density guarantee for non-collinearity (every large subset has proportionally many points in general position) forces a global structural decomposition (finite union of non-collinear sets). The term 'non-trilinear' refers to the condition that no three points are collinear — the fundamental general position condition in the plane.\n\nThe 'easy direction' (structure $\\Rightarrow$ density) follows from the pigeonhole principle: if $A = S_1 \\cup \\cdots \\cup S_k$ with each $S_i$ non-collinear, then any $n$-element subset $B \\subseteq A$ has some $B \\cap S_i$ with $\\ge n/k$ elements, giving $\\varepsilon = 1/k$. This direction is fully proved in the formalization with a 50+ line tactic proof including a self-contained pigeonhole lemma.\n\nThe 'hard direction' (density $\\Rightarrow$ structure) remains open. The difficulty is that a set could have the $\\varepsilon$-non-trilinear property through complex local arrangements rather than a clean global partition. Proving the conjecture would require showing that any infinite set avoiding the partition structure must eventually produce large subsets with few points in general position — a compactness-type argument that has resisted all approaches since 1992.\n\nRelated problems include Erdős Problem #774 (collinearity in infinite point sets) and #847 (variants with other geometric configurations).",
     "problemStatement": "Let A ⊂ ℝ² be infinite with some ε > 0 such that every finite B ⊆ A has a non-collinear subset of size ≥ ε|B|. Is A a finite union of sets with no three points collinear?",
-    "proofStrategy": "Full rewrite from formal-conjectures. Defines collinearity via the cross product criterion, non-trilinear sets, the ε-non-trilinear property, and weakly non-trilinear sets. States both directions of the basic implication and the main conjecture with its contrapositive.",
+    "proofStrategy": "The formalization defines collinearity via the cross-product criterion, non-trilinear sets, the ε-non-trilinear property (density), and weakly non-trilinear sets (structure). Six properties of non-trilinear sets are fully proved (monotonicity, base cases, ε-monotonicity). A self-contained pigeonhole principle is proved for Finset. The easy direction (structure → density) is fully proved with ε = 1/k. The hard direction (density → structure) is the single sorry, representing the open conjecture.",
     "keyInsights": [
-      "ε-non-trilinear is a density condition: large subsets contain proportionally many points in general position",
-      "Weakly non-trilinear is a structural condition: the set decomposes into finitely many non-collinear parts",
-      "The easy direction (structure → density) follows from the pigeonhole principle with ε = 1/k",
-      "The hard direction (density → structure) is the open problem"
+      "The problem exhibits the density-structure duality central to modern combinatorics: a quantitative condition (every large subset has proportionally many points in general position) should imply a qualitative structural conclusion (finite partition into non-collinear sets). This parallels Szemerédi's theorem (arithmetic density → arithmetic progressions) and the Hales-Jewett theorem.",
+      "The easy direction proof demonstrates a clean application of the pigeonhole principle: if $A \\subseteq S_1 \\cup \\cdots \\cup S_k$ with each $S_i$ non-collinear, then any $n$-element subset has at least $n/k$ points in one $S_i$, giving $\\varepsilon = 1/k$. The formalization includes a self-contained proof of the finitary pigeonhole principle using `Finset.card_biUnion`.",
+      "The collinearity test `AreCollinear p q r` uses the cross product $(q_0-p_0)(r_1-p_1) - (r_0-p_0)(q_1-p_1) = 0$, which equals twice the signed area of triangle $pqr$. This is computationally efficient and avoids division (slope-based tests fail for vertical lines).",
+      "The formalization is notably rich in proved content: 6 structural lemmas, a pigeonhole principle, and the full easy direction are all machine-checked. Only the open conjecture itself uses `sorry`. The contrapositive formulation is derived directly from the main statement.",
+      "The weakly non-trilinear condition uses `Fin n → Set (Fin 2 → ℝ)` for the decomposition — an indexed family of $n$ sets covering $A$. This avoids issues with variable-length lists while keeping the formalization clean. The number of parts $k$ satisfying $\\varepsilon = 1/k$ would give the optimal decomposition size."
     ]
   },
   "sections": [
     {
-      "id": "collinearity",
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Header documentation describing the problem, related problems (#774, #847), and Mathlib imports (InnerProductSpace.Basic, Finset, Tactic)."
+    },
+    {
+      "id": "collinear-def",
       "title": "Collinearity and Non-Trilinear Sets",
-      "startLine": 18,
-      "endLine": 30,
-      "summary": "Defines collinearity via the cross product and non-trilinear sets."
+      "startLine": 22,
+      "endLine": 33,
+      "summary": "Defines AreCollinear (cross product = 0) and NonTrilinear (no 3 distinct collinear points). Uses Fin 2 → ℝ for points."
     },
     {
       "id": "eps-property",
-      "title": "The ε-Non-Trilinear Property",
+      "title": "ε-Non-Trilinear and Weakly Non-Trilinear",
       "startLine": 34,
-      "endLine": 48,
-      "summary": "Defines the density and structural characterizations of non-collinearity."
+      "endLine": 49,
+      "summary": "Defines IsEpsNonTrilinear (density: every finite subset has εn non-collinear points) and IsWeaklyNonTrilinear (structure: finite union of non-collinear sets via Fin n indexed family)."
     },
     {
-      "id": "observations",
-      "title": "Basic Observations",
-      "startLine": 52,
-      "endLine": 68,
-      "summary": "States the easy implication: weakly non-trilinear implies ε-non-trilinear."
+      "id": "basic-properties",
+      "title": "Basic Properties (Fully Proved)",
+      "startLine": 50,
+      "endLine": 98,
+      "summary": "Six proved lemmas: nonTrilinear_mono (monotonicity), nonTrilinear_empty, nonTrilinear_singleton, areCollinear_symm12 (linarith), nonTrilinear_is_eps_one, isEpsNonTrilinear_mono."
     },
     {
-      "id": "main-problem",
-      "title": "The Erdős–Nešetřil–Rödl Problem",
-      "startLine": 72,
-      "endLine": 86,
-      "summary": "States the main conjecture and its contrapositive formulation."
+      "id": "pigeonhole",
+      "title": "Finitary Pigeonhole Principle (Fully Proved)",
+      "startLine": 99,
+      "endLine": 122,
+      "summary": "Self-contained proof: f: B → Fin k implies some fiber has |B|/k elements. Uses card_biUnion for fiber partition and omega for contradiction."
+    },
+    {
+      "id": "easy-direction",
+      "title": "Easy Direction: Structure → Density (Fully Proved)",
+      "startLine": 123,
+      "endLine": 178,
+      "summary": "Major theorem weaklyNonTrilinear_implies_eps: A ⊆ ∪Sᵢ non-collinear ⇒ IsEpsNonTrilinear A (1/k). 50+ line proof using Choose for assignment, pigeonhole for fiber, monotonicity for non-collinearity."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Nešetřil-Rödl Conjecture (Open)",
+      "startLine": 179,
+      "endLine": 200,
+      "summary": "The single sorry: ErdosProblem846 (density → structure for infinite A). Contrapositive derived from it. Would establish full equivalence with the proved easy direction."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 846 asks whether a density condition for non-collinearity (every large subset has proportionally many points in general position) implies a structural decomposition (finite union of non-collinear sets). Open since 1992.",
-    "implications": "Resolution would connect density and structural descriptions of geometric configurations, with implications for discrete geometry and Ramsey theory.",
+    "summary": "This formalization of Erdős Problem #846 is one of the richest in the gallery: it contains a fully-proved pigeonhole principle, six structural lemmas, and the complete easy direction of the conjecture (weakly non-trilinear ⇒ ε-non-trilinear with ε = 1/k). Only the hard direction (the open conjecture) uses sorry. The contrapositive is derived to show logical equivalence between the two directions.",
+    "implications": "Resolution would establish a complete density-structure equivalence for non-collinearity in the plane: a set is weakly non-trilinear if and only if it is ε-non-trilinear for some ε > 0. This would be a discrete geometry analogue of structural results in additive combinatorics (like Szemerédi's theorem connecting density to structure).",
     "openQuestions": [
-      "Does the conjecture hold even for sets on algebraic curves?",
-      "What is the minimum number of non-collinear sets needed in the decomposition as a function of ε?",
-      "Does an analogous result hold in higher dimensions (no four coplanar)?"
+      "Does the conjecture hold: does ε-non-trilinear imply weakly non-trilinear for infinite sets? The key difficulty is showing that failure to decompose into finitely many non-collinear sets forces large subsets with few points in general position.",
+      "What is the minimum number of non-collinear sets needed in the decomposition as a function of ε? If ε = 1/k suffices (from the easy direction), is k = ⌈1/ε⌉ the optimal bound?",
+      "Does the analogous result hold in higher dimensions? Replacing 'no 3 collinear' with 'no 4 coplanar', is the density-structure equivalence still true?",
+      "Does the conjecture hold for sets restricted to algebraic curves? On a line, every set has 3 collinear points, so the question is trivial. On a circle or conic, the structure may be different.",
+      "Can the 'easy direction' proof technique (pigeonhole + monotonicity) be generalized to other hereditary properties beyond non-collinearity?"
     ]
   }
 }

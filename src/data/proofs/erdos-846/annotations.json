@@ -1,74 +1,86 @@
 [
   {
-    "id": "collinear-def",
+    "id": "ann-e846-header",
     "proofId": "erdos-846",
-    "type": "definition",
-    "title": "Collinearity",
-    "content": "Three points p, q, r in ℝ² are collinear if the cross product (q-p)×(r-p) = 0, i.e. (q₀-p₀)(r₁-p₁) = (r₀-p₀)(q₁-p₁).",
-    "significance": "supporting",
-    "range": {
-      "startLine": 23,
-      "endLine": 25
-    }
-  },
-  {
-    "id": "non-trilinear",
-    "proofId": "erdos-846",
-    "type": "definition",
-    "title": "Non-Trilinear Set",
-    "content": "A set is non-trilinear if no three distinct points are collinear. This is the 'general position' condition for points in the plane.",
-    "significance": "critical",
-    "range": {
-      "startLine": 28,
-      "endLine": 30
-    }
-  },
-  {
-    "id": "eps-non-trilinear",
-    "proofId": "erdos-846",
-    "type": "definition",
-    "title": "ε-Non-Trilinear Property",
-    "content": "A set A is ε-non-trilinear if every finite subset B ⊆ A of size n contains a non-collinear subset of size at least εn. This is a density condition.",
-    "significance": "critical",
-    "range": {
-      "startLine": 36,
-      "endLine": 39
-    }
-  },
-  {
-    "id": "weakly-non-trilinear",
-    "proofId": "erdos-846",
-    "type": "definition",
-    "title": "Weakly Non-Trilinear",
-    "content": "A set is weakly non-trilinear if it is a finite union of non-trilinear sets. This is a structural decomposition condition.",
-    "significance": "critical",
-    "range": {
-      "startLine": 43,
-      "endLine": 46
-    }
-  },
-  {
-    "id": "easy-direction",
-    "proofId": "erdos-846",
-    "type": "theorem",
-    "title": "Easy Direction",
-    "content": "A finite union of k non-trilinear sets is ε-non-trilinear with ε = 1/k, by the pigeonhole principle: in any n-element subset, one of the k parts contains ≥ n/k points.",
+    "range": { "startLine": 1, "endLine": 21 },
+    "type": "context",
+    "title": "Problem Statement and Imports",
+    "content": "Erdős Problem #846, posed by Erdős, Nešetřil, and Rödl in [Er92b], asks whether a density condition for non-collinearity in the plane implies a structural decomposition. Specifically: if every $n$-element subset of an infinite set $A \\subset \\mathbb{R}^2$ contains $\\ge \\varepsilon n$ points in general position (no 3 collinear), must $A$ be a finite union of non-collinear sets? The formalization imports `InnerProductSpace.Basic` for $\\mathbb{R}^2$ geometry and `Finset` for combinatorial arguments. This is a Ramsey-theoretic structure problem: it asks when a quantitative (density) condition implies a qualitative (partition) conclusion.",
+    "mathContext": "Given $A \\subset \\mathbb{R}^2$ infinite with $\\exists \\varepsilon > 0: \\forall B \\subseteq A$ finite, $\\exists C \\subseteq B$ non-collinear with $|C| \\ge \\varepsilon|B|$. Must $A = S_1 \\cup \\cdots \\cup S_k$ with each $S_i$ non-collinear?",
     "significance": "key",
-    "range": {
-      "startLine": 56,
-      "endLine": 68
-    }
+    "relatedConcepts": ["Ramsey theory", "Szemerédi regularity", "general position", "collinearity"],
+    "prerequisites": ["combinatorial geometry", "Ramsey theory", "pigeonhole principle"]
   },
   {
-    "id": "main-conjecture",
+    "id": "ann-e846-collinear",
     "proofId": "erdos-846",
+    "range": { "startLine": 22, "endLine": 33 },
+    "type": "definition",
+    "title": "Collinearity and Non-Trilinear Sets",
+    "content": "`AreCollinear p q r` uses the cross-product criterion: $(q_0 - p_0)(r_1 - p_1) = (r_0 - p_0)(q_1 - p_1)$, which equals zero iff $p, q, r$ are collinear (the signed area of triangle $pqr$ vanishes). `NonTrilinear S` requires no three distinct points in $S$ to be collinear — this is the standard 'general position' condition in discrete geometry. The term 'non-trilinear' emphasizes the triple (tri-) collinearity (linear) condition, distinguishing it from other general position notions (e.g., no 4 concyclic).",
+    "mathContext": "`AreCollinear p q r` $\\equiv (q_0 - p_0)(r_1 - p_1) = (r_0 - p_0)(q_1 - p_1)$, equivalent to $\\det\\begin{pmatrix} q-p \\\\ r-p \\end{pmatrix} = 0$. `NonTrilinear S` $\\equiv \\forall p, q, r \\in S$ distinct: $\\neg$`AreCollinear p q r`.",
+    "significance": "key",
+    "relatedConcepts": ["cross product", "signed area", "general position", "affine dependence"],
+    "prerequisites": ["linear algebra", "determinant", "plane geometry"]
+  },
+  {
+    "id": "ann-e846-properties",
+    "proofId": "erdos-846",
+    "range": { "startLine": 34, "endLine": 49 },
+    "type": "definition",
+    "title": "$\\varepsilon$-Non-Trilinear and Weakly Non-Trilinear",
+    "content": "`IsEpsNonTrilinear A ε` is the density condition: every finite $B \\subseteq A$ has a non-collinear subset $C$ with $|C| \\ge \\varepsilon|B|$. `IsWeaklyNonTrilinear A` is the structural condition: $A \\subseteq S_1 \\cup \\cdots \\cup S_k$ for some finite $k$ with each $S_i$ non-collinear. The structural condition is formalized using `Fin n → Set (Fin 2 → ℝ)` indexed families and `⋃ i, S i`. The problem asks whether density implies structure — an instance of the general theme in combinatorics where quantitative conditions force qualitative decompositions (cf. Szemerédi regularity lemma, Hales-Jewett theorem).",
+    "mathContext": "`IsEpsNonTrilinear A ε` $\\equiv \\forall B \\subseteq A$ finite, $\\exists C \\subseteq B$: `NonTrilinear C` $\\land |C| \\ge \\varepsilon|B|$. `IsWeaklyNonTrilinear A` $\\equiv \\exists k, S_1, \\ldots, S_k$: `NonTrilinear` $S_i$ $\\land A \\subseteq \\bigcup S_i$.",
+    "significance": "key",
+    "relatedConcepts": ["density vs structure", "Szemerédi regularity lemma", "Ramsey partition", "Hales-Jewett"],
+    "prerequisites": ["Finset subset", "indexed union", "Fin type"]
+  },
+  {
+    "id": "ann-e846-basic-props",
+    "proofId": "erdos-846",
+    "range": { "startLine": 50, "endLine": 98 },
+    "type": "proof",
+    "title": "Proved Properties: Monotonicity, Base Cases, and $\\varepsilon$-Monotonicity",
+    "content": "Five fully proved lemmas: (1) `nonTrilinear_mono` — subsets of non-trilinear sets are non-trilinear; (2) `nonTrilinear_empty` — $\\emptyset$ is non-trilinear; (3) `nonTrilinear_singleton` — singletons are non-trilinear; (4) `areCollinear_symm12` — collinearity is symmetric in the first two arguments (by `linarith`); (5) `nonTrilinear_is_eps_one` — any non-trilinear set is $1$-non-trilinear (take $C = B$); (6) `isEpsNonTrilinear_mono` — if $A$ is $\\varepsilon$-non-trilinear and $\\varepsilon' \\le \\varepsilon$, then $A$ is $\\varepsilon'$-non-trilinear. These are all complete machine-checked proofs with no axioms.",
+    "mathContext": "Proved: `NonTrilinear` is monotone ($S \\subseteq T \\land$ `NonTrilinear T` $\\Rightarrow$ `NonTrilinear S`), preserved by $\\emptyset$ and singletons. `NonTrilinear A` $\\Rightarrow$ `IsEpsNonTrilinear A 1`. $\\varepsilon' \\le \\varepsilon \\land$ `IsEpsNonTrilinear A ε` $\\Rightarrow$ `IsEpsNonTrilinear A ε'`.",
+    "significance": "key",
+    "relatedConcepts": ["monotonicity", "hereditary property", "linarith tactic", "base cases"],
+    "prerequisites": ["Set.subset", "Finset.card", "mul_le_mul"]
+  },
+  {
+    "id": "ann-e846-pigeonhole",
+    "proofId": "erdos-846",
+    "range": { "startLine": 99, "endLine": 122 },
+    "type": "proof",
+    "title": "Finitary Pigeonhole Principle (Fully Proved)",
+    "content": "A self-contained proof of the finitary pigeonhole principle: if $B$ is a finite set and $f : B \\to \\text{Fin}(k)$, then some fiber $f^{-1}(i)$ has $|f^{-1}(i)| \\ge |B|/k$, formalized as $|B| \\le k \\cdot |f^{-1}(i)|$. The proof is by contradiction: if all fibers are smaller, then $\\sum_i k \\cdot |f^{-1}(i)| < k \\cdot |B|$, but the left side equals $k \\cdot \\sum_i |f^{-1}(i)| = k \\cdot |B|$ (since fibers partition $B$), giving a contradiction via `omega`. The partition step uses `Finset.card_biUnion` with disjointness from the function property.",
+    "mathContext": "Pigeonhole: $f: B \\to \\text{Fin}(k), k > 0 \\Rightarrow \\exists i: |B| \\le k \\cdot |B \\cap f^{-1}(i)|$. Proved via $|B| = \\sum_i |f^{-1}(i)|$ and contradiction if all $k|f^{-1}(i)| < |B|$.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "fiber decomposition", "Finset.card_biUnion", "omega tactic"],
+    "prerequisites": ["Finset.filter", "Finset.sum", "Fin type", "card_biUnion"]
+  },
+  {
+    "id": "ann-e846-easy-direction",
+    "proofId": "erdos-846",
+    "range": { "startLine": 123, "endLine": 178 },
+    "type": "proof",
+    "title": "Easy Direction: Weakly Non-Trilinear $\\Rightarrow$ $\\varepsilon$-Non-Trilinear (Fully Proved)",
+    "content": "The major result `weaklyNonTrilinear_implies_eps` proves the easy direction: if $A \\subseteq S_1 \\cup \\cdots \\cup S_k$ with each $S_i$ non-collinear, then $A$ is $(1/k)$-non-trilinear. The proof constructs an assignment function mapping each point $x \\in B$ to some $S_i$ containing it (using `Choose`), then applies the pigeonhole lemma to find a fiber of size $\\ge |B|/k$. This fiber is a subset of some $S_i$ (hence non-collinear by monotonicity), giving $\\varepsilon = 1/k$. The $k = 0$ case is handled separately (if $A \\subseteq \\emptyset$, then $A$ is trivially $1$-non-trilinear). This is a substantial fully-proved theorem — 50+ lines of tactic proof.",
+    "mathContext": "Proved: `IsWeaklyNonTrilinear A` $\\Rightarrow \\exists \\varepsilon > 0$: `IsEpsNonTrilinear A ε`. Specifically, $A \\subseteq \\bigcup_{i=1}^k S_i$ with `NonTrilinear` $S_i$ $\\Rightarrow$ `IsEpsNonTrilinear A (1/k)`. Uses pigeonhole: $\\exists i, |B \\cap S_i| \\ge |B|/k$.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "Choose axiom", "partition refinement", "classical logic"],
+    "prerequisites": ["pigeonhole lemma", "NonTrilinear monotonicity", "div_pos", "cast inequalities"]
+  },
+  {
+    "id": "ann-e846-conjecture",
+    "proofId": "erdos-846",
+    "range": { "startLine": 179, "endLine": 200 },
     "type": "concept",
-    "title": "Erdős–Nešetřil–Rödl Conjecture",
-    "content": "Every infinite ε-non-trilinear set in ℝ² is weakly non-trilinear: density of points in general position implies a finite structural decomposition. Open since [Er92b].",
-    "significance": "critical",
-    "range": {
-      "startLine": 72,
-      "endLine": 78
-    }
+    "title": "The Erdős-Nešetřil-Rödl Conjecture and Contrapositive",
+    "content": "The main conjecture `ErdosProblem846` states the hard direction: $\\varepsilon$-non-trilinear $\\Rightarrow$ weakly non-trilinear (for infinite $A$). This is the only `sorry` in the file. The contrapositive `ErdosProblem846_contrapositive` is derived from it: if $A$ is not weakly non-trilinear, then $A$ is not $\\varepsilon$-non-trilinear for any $\\varepsilon > 0$. Together with the proved easy direction, the conjecture would establish a complete equivalence: for infinite $A \\subset \\mathbb{R}^2$, $A$ is weakly non-trilinear $\\iff A$ is $\\varepsilon$-non-trilinear for some $\\varepsilon > 0$.",
+    "mathContext": "OPEN: $A$ infinite, $\\varepsilon > 0$, `IsEpsNonTrilinear A ε` $\\Rightarrow$ `IsWeaklyNonTrilinear A`. Contrapositive: $\\neg$`IsWeaklyNonTrilinear A` $\\Rightarrow \\forall \\varepsilon > 0: \\neg$`IsEpsNonTrilinear A ε`. Combined with easy direction: weakly non-trilinear $\\iff \\exists \\varepsilon > 0$: $\\varepsilon$-non-trilinear.",
+    "significance": "key",
+    "relatedConcepts": ["density-structure equivalence", "contrapositive", "open conjecture", "Szemerédi-type partition"],
+    "prerequisites": ["easy direction theorem", "logical equivalence"]
   }
 ]
