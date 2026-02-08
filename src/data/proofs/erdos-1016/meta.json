@@ -2,9 +2,9 @@
   "id": "erdos-1016",
   "title": "Pancyclic Excess Edges",
   "slug": "erdos-1016",
-  "description": "Let h(n) be the minimum excess edges beyond n for an n-vertex pancyclic graph (containing all cycle lengths 3 to n). Estimate h(n): is h(n) ≥ log₂ n + log* n − O(1)? Known: log₂(n−1) − 1 ≤ h(n) ≤ log₂ n + log* n + O(1).",
+  "description": "Let h(n) be the minimum excess edges beyond n for an n-vertex pancyclic graph (containing all cycle lengths 3 to n). Estimate h(n): is h(n) >= log_2 n + log* n - O(1)? Known: log_2(n-1) - 1 <= h(n) <= log_2 n + log* n + O(1).",
   "meta": {
-    "author": "Erdős, Bondy",
+    "author": "Erdos, Bondy",
     "sourceUrl": "https://erdosproblems.com/1016",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1016Problem.lean",
@@ -13,7 +13,8 @@
       "graph theory",
       "pancyclic graphs",
       "cycles",
-      "extremal graph theory"
+      "extremal graph theory",
+      "Hamiltonian graphs"
     ],
     "badge": "formalized",
     "sorries": 0,
@@ -22,54 +23,90 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Bondy conjectured bounds on h(n) in 1971 but without published proofs. Griffin (2013) gave the first proof of the lower bound log₂(n−1) − 1 ≤ h(n). George, Khodkar, and Wallis (2016) proved the upper bound h(n) ≤ log₂ n + log* n + O(1). Erdős believed the upper bound is correct but could not prove h(n) − log₂ n → ∞.",
-    "problemStatement": "Estimate h(n), the minimum excess edges for pancyclic n-vertex graphs. Is h(n) ≥ log₂ n + log* n − O(1)?",
-    "proofStrategy": "We formalize pancyclic graphs, the excess function h(n), the iterated logarithm, the main conjecture, and known upper/lower bounds.",
+    "historicalContext": "The study of pancyclic graphs began with J.A. Bondy's 1971 paper 'Pancyclic graphs I', where he proved that any graph with $n$ vertices and at least $n^2/4$ edges is either pancyclic or bipartite. Bondy also conjectured the precise edge threshold for pancyclicity, including the bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n)$ (lower) and $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ (upper), but did not publish proofs. The lower bound was first rigorously proved by Griffin in 2013 using a doubling argument: each extra edge beyond a Hamiltonian cycle can at most double the range of achievable cycle lengths. George, Khodkar, and Wallis (2016) proved the upper bound via hierarchical constructions, confirming Bondy's prediction. The gap between bounds is only $\\log^* n + O(1)$ — one of the tightest gaps in extremal graph theory. Erdos believed the upper bound gives the truth but could not prove even the weaker statement $h(n) - \\log_2 n \\to \\infty$, calling this 'embarrassing'. The iterated logarithm $\\log^* n$, which for all practical purposes is at most 5, appears naturally in the recursive construction.",
+    "problemStatement": "Estimate $h(n)$, the minimum number of excess edges (beyond $n$) for a pancyclic graph on $n$ vertices. Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$?",
+    "proofStrategy": "We formalize pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n)$, and the iterated logarithm $\\log^*$ in Lean 4. The main conjecture, the weaker divergence question, known bounds (Bondy/Griffin lower, George-Khodkar-Wallis upper), structural properties (monotonicity, Bondy's quadratic threshold), and small cases are stated as axioms.",
     "keyInsights": [
-      "A pancyclic graph contains cycles of all lengths 3 through n",
-      "Bondy's lower bound: h(n) ≥ log₂(n−1) − 1 (Griffin 2013)",
-      "Upper bound: h(n) ≤ log₂ n + log* n + O(1) (George–Khodkar–Wallis 2016)",
-      "The gap is only log* n + O(1) — extremely tight",
-      "Erdős could not prove even h(n) − log₂ n → ∞"
+      "**The doubling argument gives the lower bound**: each edge beyond a Hamiltonian cycle at most doubles the range of achievable cycle lengths, so $2^{h(n)} \\geq n - 2$, giving $h(n) \\geq \\lfloor\\log_2(n-2)\\rfloor$",
+      "**The iterated logarithm $\\log^*$ appears naturally**: the hierarchical upper bound construction adds edges in $\\log_2 n$ stages for major cycle-length doubling, plus $\\log^* n$ correction stages for the boundary effects at each level of the tower",
+      "**The gap is $\\log^* n + O(1)$ — practically constant**: since $\\log^* n \\leq 5$ for any conceivable $n$, the bounds differ by at most about 6 for all practical graph sizes, yet closing even this tiny gap is open",
+      "**Even $h(n) - \\log_2 n \\to \\infty$ is open**: Erdos could not prove the correction term diverges, despite believing it should be $\\sim \\log^* n$. This makes the problem unusual — the answer is nearly determined yet the proof seems out of reach",
+      "**Bondy's quadratic threshold is far from tight**: the classic result that $n^2/4$ edges suffice for pancyclicity or bipartiteness gives a threshold of $\\Theta(n^2)$, vastly exceeding the true threshold of $n + O(\\log n)$"
     ]
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Core Definitions",
-      "startLine": 26,
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module documentation for Erdos Problem #1016 on pancyclic excess edges, listing key results by Bondy, Griffin, and George-Khodkar-Wallis. Imports Mathlib's SimpleGraph, Nat.Log, Real, and Tactic modules."
+    },
+    {
+      "id": "pancyclic-definition",
+      "title": "Pancyclic Graph Definition",
+      "startLine": 29,
+      "endLine": 34,
+      "summary": "Defines `IsPancyclic`: a graph on $n$ vertices containing cycles of every length $k$ for $3 \\leq k \\leq n$. This is the central structural property whose edge cost the problem studies."
+    },
+    {
+      "id": "excess-function",
+      "title": "Excess Function h(n) and Iterated Logarithm",
+      "startLine": 36,
       "endLine": 48,
-      "summary": "Defines pancyclic graphs, the excess function h(n), and the iterated logarithm log*(n)."
+      "summary": "Defines `pancyclicExcess` $h(n) = \\min\\{|E(G)| - n\\}$ over pancyclic $G$ on $n$ vertices, and `iteratedLog` $\\log^* n$ as the number of $\\log_2$ applications to reach $\\leq 1$. These are the two key quantities in the problem's bounds."
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture",
+      "id": "main-conjecture",
+      "title": "Main Conjecture and Weaker Question",
       "startLine": 50,
-      "endLine": 62,
-      "summary": "Erdős's conjecture h(n) ≥ log₂ n + log* n − O(1) and the weaker open question h(n) − log₂ n → ∞."
+      "endLine": 63,
+      "summary": "States Erdos's conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker open question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$. The weaker question asks whether the correction to the logarithmic term diverges."
     },
     {
-      "id": "bounds",
-      "title": "Known Bounds",
-      "startLine": 64,
+      "id": "lower-bound",
+      "title": "Bondy's Lower Bound (Griffin 2013)",
+      "startLine": 65,
+      "endLine": 71,
+      "summary": "The lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument: each extra edge at most doubles achievable cycle lengths, so $2^h \\geq n - 2$."
+    },
+    {
+      "id": "upper-bound",
+      "title": "George-Khodkar-Wallis Upper Bound (2016)",
+      "startLine": 73,
       "endLine": 78,
-      "summary": "Bondy's lower bound (Griffin 2013) and George–Khodkar–Wallis upper bound (2016)."
+      "summary": "The upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ via explicit hierarchical construction: $\\log_2 n$ doubling stages plus $\\log^* n$ correction stages."
     },
     {
-      "id": "structural",
+      "id": "structural-properties",
       "title": "Structural Properties",
       "startLine": 80,
-      "endLine": 109,
-      "summary": "Hamiltonian edge count, Bondy's quadratic threshold, monotonicity, small cases h(3)=0 and h(4)=1."
+      "endLine": 96,
+      "summary": "Hamiltonian baseline ($h(n) \\geq 0$), Bondy's quadratic threshold ($n^2/4$ edges suffice for pancyclicity or bipartiteness), and monotonicity of pancyclicity under edge addition."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 97,
+      "endLine": 105,
+      "summary": "Computed values: $h(3) = 0$ ($K_3$), $h(4) = 1$ ($C_4$ plus diagonal). OEIS A105206 gives further terms."
+    },
+    {
+      "id": "bounds-gap",
+      "title": "Bounds Gap",
+      "startLine": 107,
+      "endLine": 111,
+      "summary": "The gap between upper and lower bounds is at most $\\log^* n + O(1)$, making this one of the tightest known gaps for an open extremal graph theory problem."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #1016 on the minimum excess edges for pancyclic graphs. The gap between known bounds is only log* n + O(1), making this one of the tightest open problems in extremal graph theory.",
-    "implications": "Resolving the precise value of h(n) would determine the exact edge threshold for pancyclicity, a fundamental structural property of graphs.",
+    "summary": "This formalization captures Erdos Problem #1016 on the minimum excess edges for pancyclic graphs. The bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ leave a gap of only $\\log^* n + O(1)$, which is at most about 6 for any practical $n$. The Lean formalization encodes the definitions, both conjectures, the known bounds, structural properties, and small cases.",
+    "implications": "Resolving whether $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$ would determine the exact edge threshold for pancyclicity. The problem is notable for the extreme tightness of known bounds combined with the apparent difficulty of closing the gap. A proof of even $h(n) - \\log_2 n \\to \\infty$ would require new techniques for lower-bounding the edge count of pancyclic graphs beyond simple doubling arguments.",
     "openQuestions": [
-      "Is h(n) ≥ log₂ n + log* n − O(1)?",
-      "Does h(n) − log₂ n → ∞?",
-      "What is the exact value of h(n) for small n?"
+      "Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$? (Main conjecture)",
+      "Does $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$? (Weaker question Erdos could not prove)",
+      "What is the exact value of $h(n)$ for small $n$ up to, say, $n = 100$?",
+      "Is there a non-hierarchical construction achieving $h(n) \\leq \\lfloor\\log_2 n\\rfloor + O(1)$, eliminating the $\\log^* n$ term?"
     ]
   }
 }
