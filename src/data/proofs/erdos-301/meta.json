@@ -8,7 +8,13 @@
     "sourceUrl": "https://erdosproblems.com/301",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos301Problem.lean",
-    "tags": ["number-theory", "unit-fractions", "extremal-combinatorics", "egyptian-fractions"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "extremal-combinatorics",
+      "egyptian-fractions"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 301,
@@ -27,11 +33,41 @@
     ]
   },
   "sections": [
-    { "id": "avoidance", "title": "Egyptian Fraction Avoidance", "startLine": 22, "endLine": 37, "summary": "Defines HasEgyptianDecomp, EgyptFractionFree, and maxEgyptFree." },
-    { "id": "conjecture", "title": "Main Conjecture", "startLine": 39, "endLine": 45, "summary": "States ErdosProblem301: f(N) = (1/2+o(1))N." },
-    { "id": "lower", "title": "Lower Bound", "startLine": 47, "endLine": 55, "summary": "Half-interval (N/2, N] is EgyptFractionFree, giving f(N) ≥ N/2." },
-    { "id": "upper", "title": "Upper Bound (van Doorn)", "startLine": 57, "endLine": 61, "summary": "Van Doorn's bound f(N) ≤ (25/28+o(1))N." },
-    { "id": "basic", "title": "Basic Properties", "startLine": 63, "endLine": 78, "summary": "Proves empty and subset properties. States singleton axiom." }
+    {
+      "id": "avoidance",
+      "title": "Egyptian Fraction Avoidance",
+      "startLine": 22,
+      "endLine": 37,
+      "summary": "Defines HasEgyptianDecomp, EgyptFractionFree, and maxEgyptFree."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 39,
+      "endLine": 45,
+      "summary": "States ErdosProblem301: f(N) = (1/2+o(1))N."
+    },
+    {
+      "id": "lower",
+      "title": "Lower Bound",
+      "startLine": 47,
+      "endLine": 55,
+      "summary": "Half-interval (N/2, N] is EgyptFractionFree, giving f(N) ≥ N/2."
+    },
+    {
+      "id": "upper",
+      "title": "Upper Bound (van Doorn)",
+      "startLine": 57,
+      "endLine": 61,
+      "summary": "Van Doorn's bound f(N) ≤ (25/28+o(1))N."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 63,
+      "endLine": 78,
+      "summary": "Proves empty and subset properties. States singleton axiom."
+    }
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 301 on Egyptian fraction avoidance sets, with lower bound N/2, upper bound 25/28·N, and the conjecture f(N) ~ N/2. 0 sorries.",
