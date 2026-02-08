@@ -667,9 +667,13 @@ private theorem binaryCube3_is_cap : IsCapSet binaryCube3 := by
   -- In both cases x_i = z_i, so x = z.
   have : x = z := by
     funext i
-    have hxi := hx i; have hzi := hz i
+    have hxi := hx i; have hzi := hz i; have hyi := hy i
     have hli := hline i
-    rcases hxi with rfl | rfl <;> rcases hzi with rfl | rfl <;> simp_all +decide
+    -- x i, y i, z i ∈ {0, 1}, and x i + z i = 2 * y i in ZMod 3
+    -- Case analysis: if x i = z i we're done, otherwise derive contradiction
+    have key : ∀ (a b c : ZMod 3), (a = 0 ∨ a = 1) → (b = 0 ∨ b = 1) →
+        (c = 0 ∨ c = 1) → a + c = 2 * b → a = c := by decide
+    exact key (x i) (y i) (z i) hxi hyi hzi hli
   exact hxz this
 
 /-- f₃(3) ≥ 8 from the binary cube. -/
@@ -695,7 +699,9 @@ private theorem capSet9_no_collinear :
   native_decide
 
 /-- capSet9 is a cap set. -/
-private theorem capSet9_is_cap : IsCapSet capSet9 := capSet9_no_collinear
+private theorem capSet9_is_cap : IsCapSet capSet9 := by
+  intro x y z hx hy hz hxy hyz hxz hline
+  exact capSet9_no_collinear x hx y hy z hz hxy hyz hxz hline
 
 /-- f₃(3) ≥ 9 from capSet9. -/
 private theorem f3_3_ge_9 : f3 3 ≥ 9 := by
@@ -743,7 +749,9 @@ private theorem capSet20_no_collinear :
   native_decide
 
 /-- capSet20 is a cap set. -/
-private theorem capSet20_is_cap : IsCapSet capSet20 := capSet20_no_collinear
+private theorem capSet20_is_cap : IsCapSet capSet20 := by
+  intro x y z hx hy hz hxy hyz hxz hline
+  exact capSet20_no_collinear x hx y hy z hz hxy hyz hxz hline
 
 /-- f₃(4) ≥ 20 from the explicit 20-element cap set. -/
 private theorem f3_4_ge_20 : f3 4 ≥ 20 := by
@@ -801,7 +809,7 @@ theorem boolEmbed_range_binary (n : ℕ) (v : Fin n → Bool) (i : Fin n) :
 theorem binaryCubeImg_card (n : ℕ) : (binaryCubeImg n).card = 2^n := by
   unfold binaryCubeImg
   rw [Finset.card_image_of_injective _ (boolEmbed_injective n)]
-  simp [Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
+  simp [Fintype.card_bool, Fintype.card_fin]
 
 /-- The binary cube is a cap set: no three collinear points.
     Proof: if x, z ∈ {0,1}^n and x+z=2y then x=z. -/
@@ -811,15 +819,16 @@ theorem binaryCubeImg_isCapSet (n : ℕ) : IsCapSet (binaryCubeImg n) := by
   obtain ⟨vx, rfl⟩ := hx
   obtain ⟨vy, rfl⟩ := hy
   obtain ⟨vz, rfl⟩ := hz
-  apply hxz
-  apply boolEmbed_injective
-  funext i
-  have hli := hline i
-  have hxi := boolEmbed_range_binary n vx i
-  have hzi := boolEmbed_range_binary n vz i
-  -- Case analysis: each coordinate is 0 or 1
-  simp only [boolEmbed, boolToZMod3] at hli hxi hzi ⊢
-  by_cases hvx : vx i <;> by_cases hvz : vz i <;> simp_all +decide
+  have heq : boolEmbed n vx = boolEmbed n vz := by
+    funext i
+    have hli := hline i
+    have hxi := boolEmbed_range_binary n vx i
+    have hyi := boolEmbed_range_binary n vy i
+    have hzi := boolEmbed_range_binary n vz i
+    have key : ∀ (a b c : ZMod 3), (a = 0 ∨ a = 1) → (b = 0 ∨ b = 1) →
+        (c = 0 ∨ c = 1) → a + c = 2 * b → a = c := by decide
+    exact key _ _ _ hxi hyi hzi hli
+  exact hxz heq
 
 /-- f₃(n) ≥ 2^n for all n: the binary cube is a cap set of size 2^n. -/
 theorem f3_ge_two_pow (n : ℕ) : f3 n ≥ 2^n := by
@@ -844,7 +853,8 @@ theorem vecConcat_injective (m n : ℕ) :
     Function.Injective (fun p : TernaryHypercube m × TernaryHypercube n =>
       vecConcat p.1 p.2) := by
   intro ⟨a₁, b₁⟩ ⟨a₂, b₂⟩ h
-  ext
+  simp only [Prod.mk.injEq]
+  constructor
   · funext i
     have := congr_fun h (Fin.castAdd n i)
     simp [vecConcat, Fin.addCases] at this
@@ -889,34 +899,37 @@ theorem isCapSet_product {m n : ℕ}
     simp [vecConcat, Fin.addCases] at this
     exact this
   -- If all three a-components are distinct, A's cap set property gives contradiction
+  -- Key lemma: in ZMod 3, OnLine x y z with x = z implies x = y
+  have onLine_eq13 : ∀ {k : ℕ} (a b : TernaryHypercube k),
+      OnLine a b a → a = b := by
+    intro k a b hol; funext i; have := hol i
+    have : ∀ (p q : ZMod 3), p + p = 2 * q → p = q := by decide
+    exact this _ _ (hol i)
+  -- Key lemma: in ZMod 3, OnLine x y z with y = z implies x = y
+  have onLine_eq23 : ∀ {k : ℕ} (a b : TernaryHypercube k),
+      OnLine a b b → a = b := by
+    intro k a b hol; funext i
+    have : ∀ (p q : ZMod 3), p + q = 2 * q → p = q := by decide
+    exact this _ _ (hol i)
+  -- Main case split on which components coincide
   by_cases ha12 : a₁ = a₂
   · by_cases hb12 : b₁ = b₂
-    · -- a₁=a₂, b₁=b₂ means x=y
-      apply hxy
-      show vecConcat a₁ b₁ = vecConcat a₂ b₂
-      rw [ha12, hb12]
-    · -- a₁=a₂ but b₁≠b₂. From collinearity in B we need b₁≠b₃.
-      by_cases hb13 : b₁ = b₃
-      · -- b₁=b₃, b₁≠b₂, collinear: b₁+b₃=2b₂ => 2b₁=2b₂ => b₁=b₂ contradiction
-        exfalso; apply hb12; funext j
-        have := hline_b j; rw [hb13] at this
-        have h2ne : (2 : ZMod 3) ≠ 0 := by decide
-        exact mul_left_cancel₀ h2ne (by linarith [this])
+    · exact hxy (by show vecConcat a₁ b₁ = vecConcat a₂ b₂; rw [ha12, hb12])
+    · by_cases hb13 : b₁ = b₃
+      · -- b₁ = b₃, OnLine b₁ b₂ b₃ → OnLine b₃ b₂ b₃ → b₃ = b₂ → b₁ = b₂
+        exact hb12 (hb13.trans (by rw [hb13] at hline_b; exact onLine_eq13 b₃ b₂ hline_b))
       · by_cases hb23 : b₂ = b₃
-        · -- b₂=b₃, b₁≠b₂, collinear: b₁+b₃=2b₂ => b₁+b₂=2b₂ => b₁=b₂ contradiction
-          exfalso; apply hb12; funext j
-          have := hline_b j; rw [hb23] at this; linarith [this]
+        · -- b₂ = b₃, OnLine b₁ b₂ b₃ → OnLine b₁ b₃ b₃ → b₁ = b₃ → b₁ = b₂
+          have : b₁ = b₃ := by rw [hb23] at hline_b; exact onLine_eq23 b₁ b₃ hline_b
+          exact hb12 (this.trans hb23.symm)
         · exact hB b₁ b₂ b₃ hb₁ hb₂ hb₃ hb12 hb23 hb13 hline_b
   · by_cases ha23 : a₂ = a₃
+    · -- a₂ = a₃, OnLine a₁ a₂ a₃ → OnLine a₁ a₃ a₃ → a₁ = a₃ → a₁ = a₂
+      have : a₁ = a₃ := by rw [ha23] at hline_a; exact onLine_eq23 a₁ a₃ hline_a
+      exact ha12 (this.trans ha23.symm)
     · by_cases ha13 : a₁ = a₃
-      · -- a₁=a₃, a₁≠a₂, collinear: 2a₁=2a₂ => a₁=a₂ contradiction
-        exfalso; apply ha12; funext i
-        have := hline_a i; rw [ha13] at this
-        have h2ne : (2 : ZMod 3) ≠ 0 := by decide
-        exact mul_left_cancel₀ h2ne (by linarith [this])
-      · exact hA a₁ a₂ a₃ ha₁ ha₂ ha₃ ha12 ha23 ha13 hline_a
-    · by_cases ha13 : a₁ = a₃
-      · exact hA a₁ a₂ a₃ ha₁ ha₂ ha₃ ha12 ha23 ha13 hline_a
+      · -- a₁ = a₃, OnLine a₁ a₂ a₃ → OnLine a₃ a₂ a₃ → a₃ = a₂ → a₁ = a₂
+        exact ha12 (ha13.trans (by rw [ha13] at hline_a; exact onLine_eq13 a₃ a₂ hline_a))
       · exact hA a₁ a₂ a₃ ha₁ ha₂ ha₃ ha12 ha23 ha13 hline_a
 
 /-- Supermultiplicativity of f₃: f₃(m+n) ≥ f₃(m) · f₃(n). -/
