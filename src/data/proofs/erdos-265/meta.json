@@ -8,7 +8,12 @@
     "sourceUrl": "https://erdosproblems.com/265",
     "status": "axiom",
     "proofRepoPath": "Proofs/Erdos265Problem.lean",
-    "tags": ["number-theory", "irrationality", "sequences"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "sequences"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 265,
@@ -21,8 +26,16 @@
       }
     ],
     "mathlibDependencies": [
-      {"theorem": "Filter.Tendsto", "description": "Tendsto for filter limits", "module": "Mathlib.Order.Filter.Basic"},
-      {"theorem": "tsum", "description": "Infinite summation over ℕ", "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"}
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Tendsto for filter limits",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite summation over ℕ",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
     ],
     "originalContributions": [
       "Formal definitions of valid sequences with dual rational sum constraints",
@@ -44,15 +57,69 @@
     ]
   },
   "sections": [
-    {"id": "header-imports", "title": "Header and Imports", "startLine": 1, "endLine": 20, "summary": "Module documentation describing the problem, Cantor's example, Erdős's conjectures, Kovač-Tao result, and the remaining open question. Imports Mathlib."},
-    {"id": "valid-sequences", "title": "Sequences with Rational Sums", "startLine": 22, "endLine": 46, "summary": "Core definitions: positive integer sequences, strict monotonicity, reciprocal sum ∑ 1/aₙ, shifted reciprocal sum ∑ 1/(aₙ-1), and the combined rationality predicate hasBothRationalSums."},
-    {"id": "cantor-example", "title": "Cantor's Example", "startLine": 48, "endLine": 70, "summary": "Defines Cantor's sequence (triangular numbers n(n+1)/2), proves strict monotonicity, and states rationality of both sums as axioms."},
-    {"id": "growth-rates", "title": "Growth Rate Measures", "startLine": 72, "endLine": 89, "summary": "Three growth measures: singleExpGrowth (aₙ^(1/n)), doubleExpGrowth (aₙ^(1/2ⁿ)), and genExpGrowth (aₙ^(1/βⁿ)) for parameterized β > 1."},
-    {"id": "erdos-conjectures", "title": "Erdős's Conjectures", "startLine": 91, "endLine": 109, "summary": "Two conjectures: (1) aₙ^(1/n) → ∞ is achievable (proved by Kovač-Tao), (2) aₙ^(1/2ⁿ) → 1 is necessary (still open)."},
-    {"id": "kovac-tao", "title": "Kovač-Tao Result and Open Question", "startLine": 111, "endLine": 131, "summary": "Kovač-Tao theorem: ∃ β > 1 with aₙ^(1/βⁿ) → ∞ achievable. The remaining open question: can β = 2 work?"},
-    {"id": "irrationality", "title": "Irrationality Threshold", "startLine": 133, "endLine": 144, "summary": "Folklore result: if aₙ^(1/2ⁿ) → c > 1, then ∑ 1/aₙ is irrational. This explains why β = 2 might be the natural barrier."},
-    {"id": "valid-set-poly", "title": "Valid Set and Polynomial Examples", "startLine": 146, "endLine": 172, "summary": "Defines the set of valid sequences and states that higher-degree polynomial families (e.g., n³+6n²+5n with shift 12) can satisfy the constraint."},
-    {"id": "main-open", "title": "Main Open Problem", "startLine": 174, "endLine": 205, "summary": "The formal statement of Erdős #265 as a disjunction: either ∃ valid sequence with limsup aₙ^(1/2ⁿ) > 1, or all valid sequences have limsup ≤ 1."}
+    {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module documentation describing the problem, Cantor's example, Erdős's conjectures, Kovač-Tao result, and the remaining open question. Imports Mathlib."
+    },
+    {
+      "id": "valid-sequences",
+      "title": "Sequences with Rational Sums",
+      "startLine": 22,
+      "endLine": 46,
+      "summary": "Core definitions: positive integer sequences, strict monotonicity, reciprocal sum ∑ 1/aₙ, shifted reciprocal sum ∑ 1/(aₙ-1), and the combined rationality predicate hasBothRationalSums."
+    },
+    {
+      "id": "cantor-example",
+      "title": "Cantor's Example",
+      "startLine": 48,
+      "endLine": 70,
+      "summary": "Defines Cantor's sequence (triangular numbers n(n+1)/2), proves strict monotonicity, and states rationality of both sums as axioms."
+    },
+    {
+      "id": "growth-rates",
+      "title": "Growth Rate Measures",
+      "startLine": 72,
+      "endLine": 89,
+      "summary": "Three growth measures: singleExpGrowth (aₙ^(1/n)), doubleExpGrowth (aₙ^(1/2ⁿ)), and genExpGrowth (aₙ^(1/βⁿ)) for parameterized β > 1."
+    },
+    {
+      "id": "erdos-conjectures",
+      "title": "Erdős's Conjectures",
+      "startLine": 91,
+      "endLine": 109,
+      "summary": "Two conjectures: (1) aₙ^(1/n) → ∞ is achievable (proved by Kovač-Tao), (2) aₙ^(1/2ⁿ) → 1 is necessary (still open)."
+    },
+    {
+      "id": "kovac-tao",
+      "title": "Kovač-Tao Result and Open Question",
+      "startLine": 111,
+      "endLine": 131,
+      "summary": "Kovač-Tao theorem: ∃ β > 1 with aₙ^(1/βⁿ) → ∞ achievable. The remaining open question: can β = 2 work?"
+    },
+    {
+      "id": "irrationality",
+      "title": "Irrationality Threshold",
+      "startLine": 133,
+      "endLine": 144,
+      "summary": "Folklore result: if aₙ^(1/2ⁿ) → c > 1, then ∑ 1/aₙ is irrational. This explains why β = 2 might be the natural barrier."
+    },
+    {
+      "id": "valid-set-poly",
+      "title": "Valid Set and Polynomial Examples",
+      "startLine": 146,
+      "endLine": 172,
+      "summary": "Defines the set of valid sequences and states that higher-degree polynomial families (e.g., n³+6n²+5n with shift 12) can satisfy the constraint."
+    },
+    {
+      "id": "main-open",
+      "title": "Main Open Problem",
+      "startLine": 174,
+      "endLine": 205,
+      "summary": "The formal statement of Erdős #265 as a disjunction: either ∃ valid sequence with limsup aₙ^(1/2ⁿ) > 1, or all valid sequences have limsup ≤ 1."
+    }
   ],
   "conclusion": {
     "summary": "Erdős Problem #265 concerns the maximum growth rate of sequences with two rational reciprocal sums. Cantor's triangular numbers give polynomial growth. Kovač and Tao (2024) achieved doubly exponential growth for some β > 1, confirming Erdős's first conjecture. The question of whether β = 2 is achievable remains the key open problem, formalized as a disjunction in Lean.",

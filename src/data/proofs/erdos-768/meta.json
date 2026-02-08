@@ -8,13 +8,22 @@
     "sourceUrl": "https://erdosproblems.com/768",
     "status": "axiom",
     "proofRepoPath": "Proofs/Erdos768Problem.lean",
-    "tags": ["number-theory", "divisibility", "asymptotics", "group-theory"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "asymptotics",
+      "group-theory"
+    ],
     "badge": "axiom",
     "sorries": 3,
     "erdosNumber": 768,
     "erdosUrl": "https://erdosproblems.com/768",
     "erdosProblemStatus": "open",
-    "oeis": ["A001034", "A352287"],
+    "oeis": [
+      "A001034",
+      "A352287"
+    ],
     "references": [
       {
         "key": "Er",
@@ -22,10 +31,26 @@
       }
     ],
     "mathlibDependencies": [
-      {"theorem": "Nat.primeFactors", "description": "Set of distinct prime factors", "module": "Mathlib.Data.Nat.PrimeFin"},
-      {"theorem": "Nat.divisors", "description": "Finset of divisors of a natural number", "module": "Mathlib.NumberTheory.Divisors"},
-      {"theorem": "IsSimpleGroup", "description": "Predicate for simple groups", "module": "Mathlib.GroupTheory.SpecificGroups.Basic"},
-      {"theorem": "Real.sqrt", "description": "Real square root function", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"}
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of distinct prime factors",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Nat.divisors",
+        "description": "Finset of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "IsSimpleGroup",
+        "description": "Predicate for simple groups",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
     ],
     "originalContributions": [
       "Formal definition of the witness divisor property and set A",
@@ -50,15 +75,69 @@
     ]
   },
   "sections": [
-    {"id": "header-imports", "title": "Header and Imports", "startLine": 1, "endLine": 20, "summary": "Module docstring describing set A, Erdős's bounds, connection to simple group orders. Imports Mathlib."},
-    {"id": "set-a-definition", "title": "The Set A", "startLine": 22, "endLine": 42, "summary": "Defines hasWitnessDivisor, inSetA, setA, and the alternative definition inSetA' using primeFactors and divisors."},
-    {"id": "basic-properties", "title": "Basic Membership Properties", "startLine": 44, "endLine": 75, "summary": "Proves 1 ∈ A (vacuously), prime powers ∉ A (partial, with sorry), and states a criterion for products of special primes."},
-    {"id": "counting-density", "title": "Counting Function and Density", "startLine": 77, "endLine": 100, "summary": "Defines countA via Finset.filter, densityA as the ratio, and exponentFunc = √(log N)·log log N."},
-    {"id": "erdos-bounds", "title": "Erdős's Density Bounds", "startLine": 102, "endLine": 127, "summary": "States Erdős's lower bound (density ≥ exp(-c·f(N))) and upper bound (density ≤ exp(-(1+o(1))√(log N·log log N))) as axioms. Main conjecture as a disjunction."},
-    {"id": "simple-groups", "title": "Connection to Simple Groups", "startLine": 128, "endLine": 147, "summary": "Defines isSimpleGroupOrder and isNonCyclicSimpleGroupOrder using Mathlib's IsSimpleGroup and IsCyclic. States that non-cyclic simple group orders are in A."},
-    {"id": "structural-properties", "title": "Structural Properties", "startLine": 149, "endLine": 165, "summary": "Squarefree part structure theorem (sorry) and existence of smallest non-trivial element of A."},
-    {"id": "asymptotic-analysis", "title": "Asymptotic Analysis and OEIS", "startLine": 167, "endLine": 205, "summary": "Log-log density definition, scaling axiom, small elements from OEIS A352287, and proof that 6 ∈ A via interval_cases."},
-    {"id": "main-problem", "title": "Main Open Problem", "startLine": 207, "endLine": 231, "summary": "Formal statement: there exist c₁ ≤ c₂ bounding the density between exp(-c₂·f(N)) and exp(-c₁·f(N)) for all N ≥ 10."}
+    {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module docstring describing set A, Erdős's bounds, connection to simple group orders. Imports Mathlib."
+    },
+    {
+      "id": "set-a-definition",
+      "title": "The Set A",
+      "startLine": 22,
+      "endLine": 42,
+      "summary": "Defines hasWitnessDivisor, inSetA, setA, and the alternative definition inSetA' using primeFactors and divisors."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Membership Properties",
+      "startLine": 44,
+      "endLine": 75,
+      "summary": "Proves 1 ∈ A (vacuously), prime powers ∉ A (partial, with sorry), and states a criterion for products of special primes."
+    },
+    {
+      "id": "counting-density",
+      "title": "Counting Function and Density",
+      "startLine": 77,
+      "endLine": 100,
+      "summary": "Defines countA via Finset.filter, densityA as the ratio, and exponentFunc = √(log N)·log log N."
+    },
+    {
+      "id": "erdos-bounds",
+      "title": "Erdős's Density Bounds",
+      "startLine": 102,
+      "endLine": 127,
+      "summary": "States Erdős's lower bound (density ≥ exp(-c·f(N))) and upper bound (density ≤ exp(-(1+o(1))√(log N·log log N))) as axioms. Main conjecture as a disjunction."
+    },
+    {
+      "id": "simple-groups",
+      "title": "Connection to Simple Groups",
+      "startLine": 128,
+      "endLine": 147,
+      "summary": "Defines isSimpleGroupOrder and isNonCyclicSimpleGroupOrder using Mathlib's IsSimpleGroup and IsCyclic. States that non-cyclic simple group orders are in A."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 149,
+      "endLine": 165,
+      "summary": "Squarefree part structure theorem (sorry) and existence of smallest non-trivial element of A."
+    },
+    {
+      "id": "asymptotic-analysis",
+      "title": "Asymptotic Analysis and OEIS",
+      "startLine": 167,
+      "endLine": 205,
+      "summary": "Log-log density definition, scaling axiom, small elements from OEIS A352287, and proof that 6 ∈ A via interval_cases."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Open Problem",
+      "startLine": 207,
+      "endLine": 231,
+      "summary": "Formal statement: there exist c₁ ≤ c₂ bounding the density between exp(-c₂·f(N)) and exp(-c₁·f(N)) for all N ≥ 10."
+    }
   ],
   "conclusion": {
     "summary": "This formalization introduces the witness divisor set A, proves basic membership (1 ∈ A, 6 ∈ A, prime powers ∉ A), connects to simple group orders via Sylow theory, and states Erdős's two-sided density bounds. The 231-line file formalizes the main conjecture as whether the ratio -log(density)/f(N) converges, with 3 sorries remaining in structural proofs.",

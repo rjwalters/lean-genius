@@ -8,7 +8,13 @@
     "sourceUrl": "https://erdosproblems.com/677",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos677Problem.lean",
-    "tags": ["number-theory", "lcm", "consecutive-integers", "prime-factors"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "lcm",
+      "consecutive-integers",
+      "prime-factors"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 677,
@@ -27,11 +33,41 @@
     ]
   },
   "sections": [
-    { "id": "lcm", "title": "LCM of Consecutive Integers", "startLine": 30, "endLine": 35, "summary": "Defines lcmInterval n k as the fold of Nat.lcm over range k." },
-    { "id": "conjecture", "title": "Main Conjecture", "startLine": 37, "endLine": 41, "summary": "ErdosProblem677: M(m,k) ≠ M(n,k) for all m ≥ n+k." },
-    { "id": "examples", "title": "Known Examples", "startLine": 43, "endLine": 48, "summary": "The two known cross-parameter equalities: M(4,3) = M(13,2) and M(3,4) = M(19,2)." },
-    { "id": "strong", "title": "Stronger Conjecture and Thue–Siegel", "startLine": 50, "endLine": 72, "summary": "Stronger prime-factor conjecture and Thue–Siegel finiteness theorem." },
-    { "id": "basic", "title": "Basic Properties", "startLine": 74, "endLine": 97, "summary": "Proves lcmInterval_zero/one, consecutiveProduct_zero/one. States divisibility and positivity." }
+    {
+      "id": "lcm",
+      "title": "LCM of Consecutive Integers",
+      "startLine": 30,
+      "endLine": 35,
+      "summary": "Defines lcmInterval n k as the fold of Nat.lcm over range k."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 37,
+      "endLine": 41,
+      "summary": "ErdosProblem677: M(m,k) ≠ M(n,k) for all m ≥ n+k."
+    },
+    {
+      "id": "examples",
+      "title": "Known Examples",
+      "startLine": 43,
+      "endLine": 48,
+      "summary": "The two known cross-parameter equalities: M(4,3) = M(13,2) and M(3,4) = M(19,2)."
+    },
+    {
+      "id": "strong",
+      "title": "Stronger Conjecture and Thue–Siegel",
+      "startLine": 50,
+      "endLine": 72,
+      "summary": "Stronger prime-factor conjecture and Thue–Siegel finiteness theorem."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 74,
+      "endLine": 97,
+      "summary": "Proves lcmInterval_zero/one, consecutiveProduct_zero/one. States divisibility and positivity."
+    }
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 677 on distinctness of LCM of consecutive integers, the stronger prime-factor conjecture, and Thue–Siegel finiteness. 0 sorries.",

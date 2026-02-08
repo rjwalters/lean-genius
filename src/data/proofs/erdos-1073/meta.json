@@ -8,7 +8,14 @@
     "sourceUrl": "https://erdosproblems.com/1073",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1073Problem.lean",
-    "tags": ["number-theory", "factorial", "composites", "divisibility", "wilson-theorem"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "factorial",
+      "composites",
+      "divisibility",
+      "wilson-theorem"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 1073,
@@ -27,11 +34,41 @@
     ]
   },
   "sections": [
-    { "id": "divisibility", "title": "Factorial Divisibility", "startLine": 21, "endLine": 33, "summary": "Defines DividesFactorialPlusOne, compositeFactorialSet, and factorialCompositeCount." },
-    { "id": "conjecture", "title": "Main Conjecture", "startLine": 35, "endLine": 42, "summary": "States ErdosProblem1073: A(x) ≤ x^ε for every ε > 0 and large x." },
-    { "id": "wilson", "title": "Wilson's Theorem Connection", "startLine": 44, "endLine": 52, "summary": "Wilson's theorem and its consequence for primes." },
-    { "id": "composites", "title": "Known Composites", "startLine": 54, "endLine": 64, "summary": "Proves 25 | 4!+1. States 121, 169 as axioms." },
-    { "id": "basic", "title": "Basic Properties", "startLine": 66, "endLine": 80, "summary": "Proves 1 divides all n!+1, divisibility transitivity, and states monotonicity." }
+    {
+      "id": "divisibility",
+      "title": "Factorial Divisibility",
+      "startLine": 21,
+      "endLine": 33,
+      "summary": "Defines DividesFactorialPlusOne, compositeFactorialSet, and factorialCompositeCount."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 35,
+      "endLine": 42,
+      "summary": "States ErdosProblem1073: A(x) ≤ x^ε for every ε > 0 and large x."
+    },
+    {
+      "id": "wilson",
+      "title": "Wilson's Theorem Connection",
+      "startLine": 44,
+      "endLine": 52,
+      "summary": "Wilson's theorem and its consequence for primes."
+    },
+    {
+      "id": "composites",
+      "title": "Known Composites",
+      "startLine": 54,
+      "endLine": 64,
+      "summary": "Proves 25 | 4!+1. States 121, 169 as axioms."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 66,
+      "endLine": 80,
+      "summary": "Proves 1 divides all n!+1, divisibility transitivity, and states monotonicity."
+    }
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 1073 on composites dividing factorial plus one, Wilson's theorem connection, known examples, and the subpolynomial growth conjecture. 0 sorries.",
