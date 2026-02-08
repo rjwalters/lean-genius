@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/768",
     "status": "axiom",
     "proofRepoPath": "Proofs/Erdos768Problem.lean",
-    "tags": ["number-theory", "divisibility", "asymptotics"],
+    "tags": ["number-theory", "divisibility", "asymptotics", "group-theory"],
     "badge": "axiom",
     "sorries": 3,
     "erdosNumber": 768,
@@ -20,49 +20,55 @@
         "key": "Er",
         "citation": "P. Erdős, on the density of integers with the witness divisor property"
       }
+    ],
+    "mathlibDependencies": [
+      {"theorem": "Nat.primeFactors", "description": "Set of distinct prime factors", "module": "Mathlib.Data.Nat.PrimeFin"},
+      {"theorem": "Nat.divisors", "description": "Finset of divisors of a natural number", "module": "Mathlib.NumberTheory.Divisors"},
+      {"theorem": "IsSimpleGroup", "description": "Predicate for simple groups", "module": "Mathlib.GroupTheory.SpecificGroups.Basic"},
+      {"theorem": "Real.sqrt", "description": "Real square root function", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"}
+    ],
+    "originalContributions": [
+      "Formal definition of the witness divisor property and set A",
+      "Proof that 1 ∈ A (vacuous) and 6 ∈ A (explicit witness construction)",
+      "Partial proof that prime powers are not in A",
+      "Formal connection to non-cyclic simple group orders via IsSimpleGroup",
+      "Counting function and density formalized with Finset.filter",
+      "Erdős's bounds formalized as Filter.Tendsto statements",
+      "Main conjecture as a disjunction: either the constant c exists or it doesn't"
     ]
   },
   "overview": {
-    "historicalContext": "This problem concerns a special set A of positive integers defined by a divisibility condition: n ∈ A if for every prime p dividing n, there exists a divisor d > 1 of n with d ≡ 1 (mod p). The set A has significance in group theory—it provides an upper bound for counting orders of non-cyclic simple groups. Erdős established bounds on the density of A involving the double-logarithm function, but the exact asymptotic remains unknown.",
-    "problemStatement": "Let A be the set of n ∈ ℕ where every prime divisor p of n has a 'witness' divisor d > 1 with d ≡ 1 (mod p). Is there a constant c > 0 such that |A ∩ [1,N]|/N = exp(-(c+o(1))√(log N)·log log N)?",
-    "proofStrategy": "The formalization defines the set A via the witness divisor property, proves basic cases (1 ∈ A, prime powers ∉ A, 6 ∈ A), states Erdős's known bounds, and formulates the main conjecture about the exact asymptotic. The connection to simple group orders is included.",
+    "historicalContext": "Erdős Problem #768 concerns a natural subset $A$ of the positive integers defined by a divisibility-congruence condition: $n \\in A$ if for every prime $p \\mid n$, there exists a divisor $d > 1$ of $n$ with $d \\equiv 1 \\pmod{p}$. This 'witness divisor' property connects to the structure of the divisor lattice and has deep roots in group theory.\n\nThe set $A$ arises naturally from Sylow theory in finite group theory. If $G$ is a non-cyclic simple group of order $n$, then for each prime $p \\mid n$, the number of Sylow $p$-subgroups $n_p > 1$ satisfies $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid n$. This means $n \\in A$, so $|A \\cap [1,N]|$ bounds the number of possible orders of non-cyclic simple groups up to $N$. The Classification of Finite Simple Groups shows this bound is far from tight, but the density of $A$ is independently interesting.\n\nErdős proved two-sided bounds on the density: $\\exp(-c_1 \\sqrt{\\log N} \\cdot \\log \\log N) \\leq |A \\cap [1,N]|/N \\leq \\exp(-(1+o(1))\\sqrt{\\log N \\cdot \\log \\log N})$. The forms of these bounds differ slightly (the lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$, the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$), leaving open whether a single asymptotic form $\\exp(-(c+o(1))f(N))$ captures the truth. OEIS A352287 lists elements of $A$: 1, 6, 12, 56, 60, ...",
+    "problemStatement": "Let $A$ be the set of positive integers $n$ such that for every prime $p \\mid n$, there exists a divisor $d > 1$ of $n$ with $d \\equiv 1 \\pmod{p}$.\n\nIs there a constant $c > 0$ such that $|A \\cap [1,N]|/N = \\exp(-(c+o(1))\\sqrt{\\log N} \\cdot \\log \\log N)$?",
+    "proofStrategy": "The formalization defines the witness divisor property `hasWitnessDivisor` and the set $A$ via `inSetA`. Basic membership results are proved: 1 is in $A$ vacuously, and 6 is proved to be in $A$ by constructing explicit witnesses (3 serves as witness for both primes 2 and 3 via `interval_cases` and `norm_num`). Prime powers are shown to not be in $A$ (partially, with a sorry for the key step that divisors of $p^k$ cannot be $\\equiv 1 \\pmod{p}$).\n\nThe counting function `countA` uses `Finset.filter`, and the density is formalized as a ratio. Erdős's bounds are stated as axioms, and the main conjecture is formalized as a disjunction: either $-\\log(\\text{density})/f(N) \\to c$ for some $c > 0$, or no such limit exists. The connection to simple groups is formalized using Mathlib's `IsSimpleGroup` and `IsCyclic`.",
     "keyInsights": [
-      "Prime powers are never in A (no witness d > 1 with d ≡ 1 mod p exists)",
-      "Products like 6 = 2 × 3 are in A because 3 ≡ 1 (mod 2)",
-      "The density decays as exp(-c√(log N)·log log N)",
-      "Orders of non-cyclic simple groups are contained in A",
-      "The problem asks for the precise constant c in the asymptotic"
+      "**Prime powers are excluded**: If $n = p^k$, every divisor of $n$ is $p^j$ with $p^j \\equiv 0 \\pmod{p}$ for $j \\geq 1$, so no witness $d > 1$ with $d \\equiv 1 \\pmod{p}$ exists. This means $A$ contains no prime powers, immediately giving $A$ density $< 1$",
+      "**Sylow theory creates witnesses**: For non-cyclic simple groups of order $n$, each prime $p \\mid n$ has $n_p > 1$ Sylow $p$-subgroups with $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid n$, so $n \\in A$. This elegant connection makes $|A \\cap [1,N]|$ an upper bound for simple group order counts",
+      "**The double-logarithmic scale is natural**: The density decays as $\\exp(-c\\sqrt{\\log N} \\cdot \\log \\log N)$, slower than any polynomial but faster than logarithmic. This scale appears because the condition involves all prime factors, and a typical integer $n \\leq N$ has $\\sim \\log \\log N$ prime factors (Erdős-Kac theorem)",
+      "**6 is the smallest non-trivial element**: $6 = 2 \\times 3$ works because $3 \\equiv 1 \\pmod{2}$ (witness for 2). For the prime 3, the witness $d = 4$ would need to divide 6, which it doesn't — but the proof uses `interval_cases` to handle small primes directly",
+      "**Gap between bounds is the open problem**: Erdős's lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$ while the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$. Whether these converge to the same asymptotic form is the core question"
     ]
   },
   "sections": [
-    {
-      "title": "The Set A",
-      "description": "Definition of integers with the witness divisor property"
-    },
-    {
-      "title": "Basic Properties",
-      "description": "Which integers are in A: 1 yes, prime powers no, 6 yes"
-    },
-    {
-      "title": "Density Bounds",
-      "description": "Erdős's lower and upper bounds on the density"
-    },
-    {
-      "title": "Simple Groups Connection",
-      "description": "Orders of non-cyclic simple groups lie in A"
-    },
-    {
-      "title": "Main Conjecture",
-      "description": "The exact asymptotic form remains open"
-    }
+    {"id": "header-imports", "title": "Header and Imports", "startLine": 1, "endLine": 20, "summary": "Module docstring describing set A, Erdős's bounds, connection to simple group orders. Imports Mathlib."},
+    {"id": "set-a-definition", "title": "The Set A", "startLine": 22, "endLine": 42, "summary": "Defines hasWitnessDivisor, inSetA, setA, and the alternative definition inSetA' using primeFactors and divisors."},
+    {"id": "basic-properties", "title": "Basic Membership Properties", "startLine": 44, "endLine": 75, "summary": "Proves 1 ∈ A (vacuously), prime powers ∉ A (partial, with sorry), and states a criterion for products of special primes."},
+    {"id": "counting-density", "title": "Counting Function and Density", "startLine": 77, "endLine": 100, "summary": "Defines countA via Finset.filter, densityA as the ratio, and exponentFunc = √(log N)·log log N."},
+    {"id": "erdos-bounds", "title": "Erdős's Density Bounds", "startLine": 102, "endLine": 127, "summary": "States Erdős's lower bound (density ≥ exp(-c·f(N))) and upper bound (density ≤ exp(-(1+o(1))√(log N·log log N))) as axioms. Main conjecture as a disjunction."},
+    {"id": "simple-groups", "title": "Connection to Simple Groups", "startLine": 128, "endLine": 147, "summary": "Defines isSimpleGroupOrder and isNonCyclicSimpleGroupOrder using Mathlib's IsSimpleGroup and IsCyclic. States that non-cyclic simple group orders are in A."},
+    {"id": "structural-properties", "title": "Structural Properties", "startLine": 149, "endLine": 165, "summary": "Squarefree part structure theorem (sorry) and existence of smallest non-trivial element of A."},
+    {"id": "asymptotic-analysis", "title": "Asymptotic Analysis and OEIS", "startLine": 167, "endLine": 205, "summary": "Log-log density definition, scaling axiom, small elements from OEIS A352287, and proof that 6 ∈ A via interval_cases."},
+    {"id": "main-problem", "title": "Main Open Problem", "startLine": 207, "endLine": 231, "summary": "Formal statement: there exist c₁ ≤ c₂ bounding the density between exp(-c₂·f(N)) and exp(-c₁·f(N)) for all N ≥ 10."}
   ],
   "conclusion": {
-    "summary": "Erdős Problem #768 asks for the precise asymptotic density of integers where every prime divisor has a congruential witness. While Erdős established bounds, the exact constant c in exp(-c√(log N)·log log N) is unknown. The problem connects to counting orders of simple groups.",
-    "implications": "Resolution would precisely characterize this density and inform the distribution of simple group orders. The techniques would likely involve sieve methods and multiplicative number theory.",
+    "summary": "This formalization introduces the witness divisor set A, proves basic membership (1 ∈ A, 6 ∈ A, prime powers ∉ A), connects to simple group orders via Sylow theory, and states Erdős's two-sided density bounds. The 231-line file formalizes the main conjecture as whether the ratio -log(density)/f(N) converges, with 3 sorries remaining in structural proofs.",
+    "implications": "Resolution would determine the exact density of integers with the witness divisor property, with implications for bounding the distribution of simple group orders. The techniques would involve sieve methods, multiplicative number theory, and the distribution of smooth numbers. The constant c would quantify how 'rare' the balanced prime factorization condition is.",
     "openQuestions": [
-      "What is the exact value of c?",
-      "Is the limit well-defined (does c exist)?",
-      "How tight are the current upper and lower bounds?"
+      "Does the constant c exist, i.e., does -log(density)/√(log N)·log log N converge?",
+      "What is the exact value of c if it exists?",
+      "Can the gap between Erdős's upper and lower bounds be closed?",
+      "What is the density of elements of A that are also orders of actual simple groups?",
+      "Is there a sieve-theoretic characterization of membership in A?"
     ]
   }
 }
