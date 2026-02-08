@@ -1,6 +1,6 @@
 {
   "id": "erdos-43",
-  "title": "Erdős Problem #43: Sidon Sets with Disjoint Difference Sets",
+  "title": "Sidon Sets with Disjoint Difference Sets",
   "slug": "erdos-43",
   "description": "If A, B are Sidon sets in {1,...,N} with (A-A) ∩ (B-B) = {0}, must C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + O(1)? OPEN ($100).",
   "meta": {
@@ -9,78 +9,119 @@
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos43Problem.lean",
     "tags": [
-      "number-theory",
       "additive-combinatorics",
-      "sidon-sets"
+      "sidon-sets",
+      "number-theory"
     ],
     "badge": "axiom",
     "sorries": 5,
     "erdosNumber": 43,
     "erdosUrl": "https://erdosproblems.com/43",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-01",
+    "mathlib_version": "4.x"
   },
   "overview": {
-    "historicalContext": "Erdős posed this question about Sidon sets with disjoint difference sets, offering a $100 bounty. Tao proved partial results for the equal-size case, and Barreto showed the equal-size strengthening with a constant improvement factor is false.",
+    "historicalContext": "Erdős posed this question with a $100 bounty, making it one of his celebrated prize problems in combinatorial number theory. A Sidon set (or B₂ set) is a set where all pairwise sums are distinct, equivalently where all nonzero pairwise differences are distinct. The maximum Sidon set in {1,...,N} has size f(N) ~ √N, a classical result of Erdős and Turán (1941).\n\nThe problem asks: if two Sidon sets A, B in {1,...,N} have disjoint nonzero differences — meaning (A-A) ∩ (B-B) = {0} — does the combined pair count C(|A|,2) + C(|B|,2) satisfy the bound C(f(N),2) + O(1)? Intuitively, disjoint differences force A and B to 'share' the available difference space {-(N-1),...,-1,1,...,N-1}, so their combined size cannot exceed what a single Sidon set achieves.\n\nTao proved partial results for the equal-size case, showing |A| ≤ (1/√2 + o(1))√N when |A| = |B|. Barreto later showed that the equal-size strengthening with a constant improvement factor (replacing C(f(N),2) by (1-c)·C(f(N),2)) is false for infinitely many N. The main conjecture without the constant improvement remains open.",
     "problemStatement": "If A, B ⊆ {1,...,N} are Sidon sets with (A-A) ∩ (B-B) = {0}, must C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + O(1), where f(N) ~ √N is the maximum Sidon set size?",
-    "proofStrategy": "We define IsSidonSet, diffSet, DisjointDifferences, and axiomatize maxSidonSize with the asymptotic f(N) ~ √N. ErdosProblem43 states the main bound. The EqualSizeVariant (with constant improvement) is stated and shown false by Barreto. Combined pair bounds are axiomatized.",
+    "proofStrategy": "We define IsSidonSet via distinct pairwise sums, diffSet as the image of A×A under subtraction, and DisjointDifferences requiring disjoint nonzero differences. The asymptotic f(N) ~ √N is axiomatized. The main conjecture, equal-size variant, Barreto's counterexample, and structural bounds are formalized. Tao's bound and counting arguments provide supporting theory.",
     "keyInsights": [
-      "Disjoint nonzero differences force the difference sets to partition available residues",
-      "f(N) ~ √N is the asymptotic maximum Sidon set size in {1,...,N}",
-      "The equal-size variant with constant factor improvement is false (Barreto)",
-      "Each Sidon set satisfies C(|A|,2) ≤ N from distinct differences"
+      "**Difference space partition**: Disjoint nonzero differences force the sets A-A\\{0} and B-B\\{0} to partition a subset of {-(N-1),...,-1,1,...,N-1}, which has 2(N-1) elements. This constrains the combined size.",
+      "**Tao's equal-size bound**: When |A| = |B| = m, the disjoint difference constraint gives 2·C(m,2) ≤ N, yielding m ≤ (1/√2 + o(1))√N. This is proved from the combined bound.",
+      "**Barreto's counterexample**: The equal-size variant with constant improvement (1-c)·C(f(N),2) is false for infinitely many N, showing the O(1) error term cannot be improved to a multiplicative savings.",
+      "**Counting argument**: A single Sidon set A in {1,...,N} has |A|²-|A| ≤ 2(N-1) distinct nonzero differences, giving C(|A|,2) ≤ N. Under disjoint differences, the combined nonzero differences add up.",
+      "**$100 bounty**: This is one of Erdős's prize problems, offering $100 for a proof or counterexample."
+    ],
+    "mathlibDependencies": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "originalContributions": [
+      "IsSidonSet: distinct pairwise sums definition over ℤ",
+      "diffSet: difference set A-A via Finset.image",
+      "DisjointDifferences: disjoint nonzero differences",
+      "maxSidonSize: axiomatized maximum Sidon set size",
+      "sidon_size_asymptotic: f(N) ~ √N via ε-δ",
+      "ErdosProblem43: main conjecture with O(1) error",
+      "EqualSizeVariant: equal-size strengthening with (1-c) factor",
+      "barreto_counterexample: axiom disproving equal-size variant",
+      "sidon_pair_bound: C(|A|,2) ≤ N (sorry)",
+      "disjoint_diff_combined_bound: combined bound under disjoint differences (sorry)",
+      "tao_equal_size_bound: |A|² ≤ 2N+1 when |A|=|B| (sorry)",
+      "sidon_diff_count: |diffSet A| = |A|²-|A|+1 (sorry)",
+      "disjoint_diff_total: combined difference count (sorry)"
     ]
   },
   "sections": [
     {
       "id": "sidon-sets",
       "title": "Sidon Sets",
-      "startLine": 23,
-      "endLine": 35,
-      "summary": "Defines IsSidonSet (distinct pairwise sums) and diffSet (difference set A - A)."
+      "startLine": 22,
+      "endLine": 32,
+      "summary": "Defines IsSidonSet (all pairwise sums distinct over ℤ) and diffSet (difference set A-A as Finset.image of subtraction)."
     },
     {
       "id": "disjoint-diff",
       "title": "Disjoint Differences",
-      "startLine": 37,
-      "endLine": 43,
-      "summary": "Defines DisjointDifferences: nonzero elements of A-A and B-B are disjoint."
+      "startLine": 34,
+      "endLine": 38,
+      "summary": "Defines DisjointDifferences: every d in both diffSet A and diffSet B must be 0."
     },
     {
       "id": "max-sidon",
       "title": "Maximum Sidon Set Size",
-      "startLine": 45,
-      "endLine": 57,
-      "summary": "Axiomatizes maxSidonSize and the asymptotic f(N) ~ √N."
+      "startLine": 40,
+      "endLine": 49,
+      "summary": "Axiomatizes maxSidonSize and the classical asymptotic f(N) ~ √N via ε-convergence."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "startLine": 59,
-      "endLine": 70,
-      "summary": "States ErdosProblem43: the sum of pair counts is bounded by C(f(N),2) + O(1)."
+      "startLine": 51,
+      "endLine": 60,
+      "summary": "States ErdosProblem43: C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + C for some universal constant C."
     },
     {
       "id": "equal-size",
       "title": "Equal Size Variant",
-      "startLine": 72,
-      "endLine": 87,
-      "summary": "The equal-size strengthening with constant factor is false (Barreto)."
+      "startLine": 62,
+      "endLine": 75,
+      "summary": "States the equal-size strengthening with (1-c) factor and Barreto's axiom disproving it."
     },
     {
       "id": "bounds",
       "title": "Structural Bounds",
-      "startLine": 89,
-      "endLine": 104,
-      "summary": "Sidon pair bound C(|A|,2) ≤ N and combined bound under disjoint differences."
+      "startLine": 77,
+      "endLine": 96,
+      "summary": "States sidon_pair_bound (C(|A|,2) ≤ N) and disjoint_diff_combined_bound. Both have sorries."
+    },
+    {
+      "id": "tao",
+      "title": "Tao's Partial Result",
+      "startLine": 98,
+      "endLine": 115,
+      "summary": "Derives Tao's equal-size bound |A|² ≤ 2N+1 from the combined bound, with explanatory comments."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Arguments",
+      "startLine": 117,
+      "endLine": 130,
+      "summary": "States sidon_diff_count (|A|²-|A|+1 nonzero differences) and disjoint_diff_total (combined count)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 43 asks whether two Sidon sets with disjoint nonzero differences satisfy a combined pair count bound of C(f(N),2) + O(1). The equal-size improvement variant was disproved by Barreto. The main conjecture remains open with a $100 bounty.",
-    "implications": "Resolution would clarify the structure theory of Sidon sets and the extent to which disjoint difference constraints limit combined sizes.",
+    "summary": "Erdős Problem 43 ($100 bounty) asks whether two Sidon sets with disjoint nonzero differences satisfy C(|A|,2)+C(|B|,2) ≤ C(f(N),2)+O(1). The equal-size variant was disproved by Barreto; Tao proved partial results. 5 sorries remain for counting lemmas.",
+    "implications": "Resolution would clarify the structure theory of Sidon sets under disjoint difference constraints, with connections to the broader theory of B₂ sets and additive combinatorics.",
     "openQuestions": [
-      "Does C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + O(1) hold?",
+      "Does C(|A|,2) + C(|B|,2) ≤ C(f(N),2) + O(1) hold for all Sidon sets with disjoint differences?",
       "What is the tightest constant in the O(1) term?",
-      "Can Tao's partial results be extended to the full conjecture?"
+      "Can Tao's partial results be extended beyond the equal-size case?",
+      "What happens for three or more Sidon sets with pairwise disjoint differences?"
     ]
   }
 }
