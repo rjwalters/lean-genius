@@ -2,7 +2,7 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 # Formula for the Number of Combinations
 
 ## What This Proves
@@ -52,7 +52,7 @@ This gives n! / (k! × (n-k)!).
 
 namespace CombinationsFormula
 
-/-! ## The Main Theorem -/
+/- ## The Main Theorem -/
 
 /-- **Formula for Number of Combinations (Wiedijk #58)**
 
@@ -71,7 +71,7 @@ theorem factorial_product_divides (n k : ℕ) (h : k ≤ n) :
     k.factorial * (n - k).factorial ∣ n.factorial :=
   Nat.factorial_mul_factorial_dvd_factorial h
 
-/-! ## Properties of Binomial Coefficients -/
+/- ## Properties of Binomial Coefficients -/
 
 /-- **Symmetry**: C(n,k) = C(n, n-k)
 
@@ -98,7 +98,7 @@ There are n ways to choose one element from n elements. -/
 theorem choose_one_right (n : ℕ) : Nat.choose n 1 = n :=
   Nat.choose_one_right n
 
-/-! ## Pascal's Triangle Relationship -/
+/- ## Pascal's Triangle Relationship -/
 
 /-- **Pascal's Identity**: C(n+1, k+1) = C(n, k) + C(n, k+1)
 
@@ -108,7 +108,7 @@ theorem pascal_identity (n k : ℕ) :
     Nat.choose (n + 1) (k + 1) = Nat.choose n k + Nat.choose n (k + 1) :=
   Nat.choose_succ_succ n k
 
-/-! ## The Factorial Interpretation
+/- ## The Factorial Interpretation
 
 The formula n! / (k!(n-k)!) arises from the relationship between
 permutations and combinations:
@@ -127,7 +127,7 @@ theorem choose_eq_desc_factorial_div (n k : ℕ) :
     Nat.choose n k = Nat.descFactorial n k / k.factorial :=
   Nat.choose_eq_descFactorial_div_factorial n k
 
-/-! ## Verification Examples -/
+/- ## Verification Examples -/
 
 /-- C(5, 2) = 10 -/
 example : Nat.choose 5 2 = 10 := by native_decide
@@ -150,7 +150,7 @@ example : Nat.choose 7 2 = Nat.choose 7 5 := by native_decide
 /-- Pascal's identity example: C(5, 3) = C(4, 2) + C(4, 3) -/
 example : Nat.choose 5 3 = Nat.choose 4 2 + Nat.choose 4 3 := by native_decide
 
-/-! ## Connection to Subset Counting
+/- ## Connection to Subset Counting
 
 C(n,k) also counts the number of k-element subsets of an n-element set.
 This combinatorial interpretation is fundamental to probability theory
@@ -161,7 +161,7 @@ theorem card_subsets_of_size (s : Finset α) (k : ℕ) :
     (Finset.powersetCard k s).card = Nat.choose s.card k :=
   Finset.card_powersetCard k s
 
-/-! ## Part VII: Generalized Binomial Coefficients
+/- ## Part VII: Generalized Binomial Coefficients
 
 The standard binomial coefficient C(n,k) requires n ∈ ℕ. The generalized binomial
 coefficient extends this to any real (or complex) argument α:

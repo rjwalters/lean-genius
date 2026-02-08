@@ -9,7 +9,7 @@ import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
 
-/-!
+/-
 # Irrationality of nth Roots of Non-Perfect Powers
 
 ## What This Proves
@@ -45,12 +45,12 @@ works uniformly for all roots.
 
 namespace NthRootIrrational
 
-/-! ## The nth Root Function -/
+/- ## The nth Root Function -/
 
 /-- The real nth root of m: m^(1/n) -/
 noncomputable def nthRoot (n : ℕ) (m : ℕ) : ℝ := (m : ℝ) ^ (1/(n : ℝ))
 
-/-! ## Power Identity -/
+/- ## Power Identity -/
 
 /-- Key property: (m^(1/n))^n = m, for n ≥ 1 and m ≥ 0.
     This is the fundamental identity that connects the nth root back
@@ -62,7 +62,7 @@ theorem nthRoot_pow (n m : ℕ) (hn : 0 < n) :
   rw [← Real.rpow_mul (by positivity : (0 : ℝ) ≤ m)]
   simp [Nat.pos_iff_ne_zero.mp hn]
 
-/-! ## Not-an-Integer Lemma -/
+/- ## Not-an-Integer Lemma -/
 
 /-- If m is not a perfect nth power, then m^(1/n) is not an integer.
     Contrapositive: if m^(1/n) = k for some integer k, then k^n = m,
@@ -77,7 +77,7 @@ theorem nthRoot_not_int (n m : ℕ) (hn : 0 < n)
   rw [hk] at h1
   exact_mod_cast h1
 
-/-! ## The General Theorem -/
+/- ## The General Theorem -/
 
 /-- **General Irrationality of nth Roots**
 
@@ -97,7 +97,7 @@ theorem irrational_nthRoot (n m : ℕ) (hn : 1 < n)
   · exact nthRoot_not_int n m (by omega) hm
   · omega
 
-/-! ## Not-a-Perfect-Power Lemmas
+/- ## Not-a-Perfect-Power Lemmas
 
    We prove specific instances using bounds and case analysis.
    For odd powers: k ≤ 0 ⟹ k^n ≤ 0, contradicting k^n = m > 0.
@@ -247,7 +247,7 @@ theorem two_not_perfect_fifth : ¬ ∃ (k : ℤ), k ^ 5 = 2 := by
   have : k = 1 := by omega
   rw [this] at hk; norm_num at hk
 
-/-! ## Concrete Corollaries: Square Roots -/
+/- ## Concrete Corollaries: Square Roots -/
 
 /-- √2 is irrational (2 is not a perfect square) -/
 theorem irrational_sqrt2 : Irrational (nthRoot 2 2) :=
@@ -261,7 +261,7 @@ theorem irrational_sqrt3 : Irrational (nthRoot 2 3) :=
 theorem irrational_sqrt5 : Irrational (nthRoot 2 5) :=
   irrational_nthRoot 2 5 (by norm_num) five_not_perfect_sq
 
-/-! ## Concrete Corollaries: Cube Roots -/
+/- ## Concrete Corollaries: Cube Roots -/
 
 /-- ∛2 is irrational -/
 theorem irrational_cbrt2 : Irrational (nthRoot 3 2) :=
@@ -275,7 +275,7 @@ theorem irrational_cbrt3 : Irrational (nthRoot 3 3) :=
 theorem irrational_cbrt5 : Irrational (nthRoot 3 5) :=
   irrational_nthRoot 3 5 (by norm_num) five_not_perfect_cube
 
-/-! ## Concrete Corollaries: Fourth Roots -/
+/- ## Concrete Corollaries: Fourth Roots -/
 
 /-- ⁴√2 is irrational -/
 theorem irrational_fourthrt2 : Irrational (nthRoot 4 2) :=
@@ -285,13 +285,13 @@ theorem irrational_fourthrt2 : Irrational (nthRoot 4 2) :=
 theorem irrational_fourthrt3 : Irrational (nthRoot 4 3) :=
   irrational_nthRoot 4 3 (by norm_num) three_not_perfect_fourth
 
-/-! ## Fifth Roots -/
+/- ## Fifth Roots -/
 
 /-- ⁵√2 is irrational -/
 theorem irrational_fifthrt2 : Irrational (nthRoot 5 2) :=
   irrational_nthRoot 5 2 (by norm_num) two_not_perfect_fifth
 
-/-! ## The Characterization -/
+/- ## The Characterization -/
 
 /-- For n ≥ 1, if m = k^n for some natural k, then m^(1/n) = k (rational).
     This is the converse direction, showing the characterization is tight. -/
