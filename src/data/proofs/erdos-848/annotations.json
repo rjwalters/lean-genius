@@ -1,47 +1,79 @@
 [
   {
-    "id": "erdos-848-ann-1",
+    "id": "erdos-848-header",
     "proofId": "erdos-848",
-    "range": { "startLine": 23, "endLine": 37 },
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 15 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem 848 asks for the maximum size of A ⊆ {1,...,N} such that ab + 1 is never squarefree for all a, b ∈ A. Solved by Sawhney: the answer is ⌊N/25⌋ for large N.",
+    "mathContext": "The problem sits at the intersection of extremal combinatorics and multiplicative number theory. The non-squarefreeness constraint ab + 1 ≡ 0 (mod p²) for some prime p forces elements of A into specific residue classes. The extremal sets are arithmetic progressions mod 25, arising from 5² | ab + 1 when a ≡ b ≡ 7 or 18 (mod 25).",
+    "significance": "essential",
+    "relatedConcepts": ["extremal-combinatorics", "squarefree", "multiplicative-number-theory"]
+  },
+  {
+    "id": "erdos-848-squarefree",
+    "proofId": "erdos-848",
     "type": "definition",
-    "title": "Squarefree and Product Definitions",
-    "content": "IsSquarefree(n) holds when no prime squared divides n. HasNonSqfreeProductProp(A) requires ab + 1 to be non-squarefree for all a, b ∈ A. maxNonSqfreeSet(N) is the maximum cardinality of such a set in {1,...,N}.",
-    "significance": "These definitions capture the extremal problem: maximizing a set subject to a multiplicative non-squarefreeness constraint."
+    "range": { "startLine": 23, "endLine": 25 },
+    "title": "Squarefree Definition",
+    "content": "**`IsSquarefree n`** holds when no prime squared divides n. Equivalently, in the prime factorization n = Π p^{aₚ}, all exponents aₚ are 0 or 1.",
+    "mathContext": "The density of squarefree numbers is 6/π² ≈ 0.608. Most numbers are squarefree, so requiring ab + 1 to be non-squarefree is a non-trivial constraint.",
+    "significance": "essential",
+    "relatedConcepts": ["squarefree-density", "prime-factorization"]
   },
   {
-    "id": "erdos-848-ann-2",
+    "id": "erdos-848-property",
     "proofId": "erdos-848",
-    "range": { "startLine": 43, "endLine": 49 },
-    "type": "result",
-    "title": "Mod 25 Construction",
-    "content": "The set {n ≡ 7 (mod 25)} satisfies the property: for a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 49 + 1 = 50 ≡ 0 (mod 25), so 5² | ab + 1. Similarly for {n ≡ 18 (mod 25)}. This gives |A| ≈ N/25.",
-    "significance": "This construction provides the lower bound and is conjectured (now proved for large N) to be optimal."
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 34 },
+    "title": "Non-Squarefree Product Property",
+    "content": "**`HasNonSqfreeProductProp A`** requires that for ALL pairs a, b ∈ A (including a = b), the product ab + 1 is not squarefree. **`maxNonSqfreeSet N`** is the maximum cardinality of such a set in {1,...,N}.",
+    "mathContext": "The 'including a = b' part means a² + 1 must also be non-squarefree for every a ∈ A. Since a² + 1 ≡ 0 (mod p²) has 2 solutions mod p² for p ≡ 1 (mod 4) and 0 for p ≡ 3 (mod 4), this constrains A to specific residue classes.",
+    "significance": "essential",
+    "relatedConcepts": ["extremal-sets", "quadratic-residues"]
   },
   {
-    "id": "erdos-848-ann-3",
+    "id": "erdos-848-mod25",
     "proofId": "erdos-848",
-    "range": { "startLine": 53, "endLine": 55 },
     "type": "result",
+    "range": { "startLine": 41, "endLine": 49 },
+    "title": "Mod 25 Construction (Lower Bound)",
+    "content": "The set {n ≡ 7 (mod 25)} satisfies the property: for a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 49 + 1 = 50 ≡ 0 (mod 25), so 5² | ab + 1. This gives |A| ≈ N/25.",
+    "mathContext": "The residue 7 mod 25 satisfies 7² + 1 = 50 = 2 · 25, so 25 | a² + 1 for all a ≡ 7 (mod 25). Similarly 18² + 1 = 325 = 13 · 25. The symmetry 7 + 18 = 25 reflects the two square roots of -1 mod 25.",
+    "significance": "essential",
+    "relatedConcepts": ["construction", "modular-arithmetic", "lower-bound"]
+  },
+  {
+    "id": "erdos-848-vanDoorn",
+    "proofId": "erdos-848",
+    "type": "result",
+    "range": { "startLine": 51, "endLine": 55 },
     "title": "Van Doorn's Upper Bound",
-    "content": "Van Doorn showed |A|/N ≤ 2 Σ_{p ≡ 1 (4)} 1/p² ≈ 0.108 using the fact that a² + 1 ≡ 0 (mod p²) has 2 solutions for p ≡ 1 (mod 4) and 0 solutions for p ≡ 3 (mod 4). Weisenberg refined this to ≈ 0.105.",
-    "significance": "This was the first nontrivial upper bound, showing the density cannot exceed ≈ 10.8%, far above the optimal 1/25 = 4%."
+    "content": "Van Doorn showed |A|/N ≤ 2·Σ_{p≡1(4)} 1/p² ≈ 0.108. The formalization encodes this as maxNonSqfreeSet(N) · 1000 ≤ 108 · N + C.",
+    "mathContext": "The factor 2 comes from a² + 1 ≡ 0 (mod p²) having 2 solutions for primes p ≡ 1 (mod 4). The sum Σ 1/p² converges rapidly: 1/5² + 1/13² + 1/17² + ··· ≈ 0.054, giving the bound ~0.108.",
+    "significance": "supporting",
+    "relatedConcepts": ["upper-bound", "prime-sums", "sieve-methods"]
   },
   {
-    "id": "erdos-848-ann-4",
+    "id": "erdos-848-sawhney",
     "proofId": "erdos-848",
-    "range": { "startLine": 61, "endLine": 63 },
     "type": "result",
-    "title": "Sawhney's Solution",
-    "content": "Sawhney proved that for all sufficiently large N, maxNonSqfreeSet(N) = ⌊N/25⌋. Any extremal set must be contained in {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}.",
-    "significance": "This completely resolves the problem for large N, confirming the Erdős–Sárközy conjecture. The structural result shows the extremal sets are essentially unique."
+    "range": { "startLine": 59, "endLine": 63 },
+    "title": "Sawhney's Exact Solution",
+    "content": "**Sawhney's theorem**: For all sufficiently large N, maxNonSqfreeSet(N) = ⌊N/25⌋. The extremal construction is tight.",
+    "mathContext": "This closes the gap between the N/25 lower bound and the 0.108N upper bound. The proof uses modern tools from additive combinatorics and the structure of multiplicative characters modulo prime squares.",
+    "significance": "essential",
+    "relatedConcepts": ["exact-solution", "additive-combinatorics"]
   },
   {
-    "id": "erdos-848-ann-5",
+    "id": "erdos-848-structure",
     "proofId": "erdos-848",
-    "range": { "startLine": 67, "endLine": 72 },
     "type": "result",
-    "title": "Structural Characterization",
-    "content": "Any extremal set of size N/25 in {1,...,N} for large N must consist entirely of elements ≡ 7 (mod 25) or entirely of elements ≡ 18 (mod 25). No mixing of residue classes is possible.",
-    "significance": "The uniqueness of extremal sets (up to the 7 ↔ 18 symmetry) is a strong structural result beyond just determining the maximum size."
+    "range": { "startLine": 65, "endLine": 71 },
+    "title": "Structural Characterization of Extremal Sets",
+    "content": "Any extremal set of size N/25 for large N must consist entirely of elements ≡ 7 (mod 25) or entirely of elements ≡ 18 (mod 25). No mixing of residue classes is possible.",
+    "mathContext": "This uniqueness result (up to the 7 ↔ 18 symmetry) is stronger than just determining the maximum size. It says the extremal configuration is rigid: any set achieving the maximum must be one of exactly two arithmetic progressions.",
+    "significance": "essential",
+    "relatedConcepts": ["uniqueness", "stability", "extremal-graph-theory"]
   }
 ]

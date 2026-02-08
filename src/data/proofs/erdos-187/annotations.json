@@ -1,47 +1,68 @@
 [
   {
-    "id": "erdos-187-ann-1",
+    "id": "erdos-187-header",
     "proofId": "erdos-187",
-    "range": { "startLine": 24, "endLine": 43 },
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 16 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem 187 asks for the optimal function f(d) such that every 2-colouring of ℤ contains a monochromatic arithmetic progression of length f(d) with difference d, for infinitely many d. Status: open.",
+    "mathContext": "This refines van der Waerden's theorem by fixing the common difference d and asking how long the guaranteed monochromatic AP can be. The answer lies between Ω(1) (trivial) and O(log d) (Beck), but the exact asymptotics remain unknown.",
+    "significance": "essential",
+    "relatedConcepts": ["van-der-waerden", "arithmetic-progressions", "ramsey-theory"]
+  },
+  {
+    "id": "erdos-187-definitions",
+    "proofId": "erdos-187",
     "type": "definition",
-    "title": "Colorings and AP Definitions",
-    "content": "TwoColoring assigns each natural number a color in Fin 2. IsMonoAP(χ, a, d, k) checks that {a, a+d, ..., a+(k-1)d} is monochromatic under χ. maxMonoAPLength(χ, d) is the maximum length of a mono AP with difference d. optAPBound(d) is the optimal function f(d).",
-    "significance": "These definitions set up the framework for studying how colorings interact with arithmetic progressions of prescribed common difference."
+    "range": { "startLine": 24, "endLine": 43 },
+    "title": "Colorings and Monochromatic APs",
+    "content": "**`TwoColoring`** = ℕ → Fin 2. **`IsMonoAP χ a d k`** checks that {a, a+d, ..., a+(k-1)d} is monochromatic under χ. **`maxMonoAPLength χ d`** and **`optAPBound d`** are the per-colouring and optimal bounds.",
+    "mathContext": "The function f(d) = inf_χ sup{k : ∃ a, IsMonoAP χ a d k} captures the worst-case guarantee over all 2-colourings. Van der Waerden guarantees f(d) → ∞; the question is the rate.",
+    "significance": "essential",
+    "relatedConcepts": ["two-colouring", "arithmetic-progression", "extremal"]
   },
   {
-    "id": "erdos-187-ann-2",
+    "id": "erdos-187-vdw",
     "proofId": "erdos-187",
-    "range": { "startLine": 50, "endLine": 51 },
     "type": "result",
-    "title": "Van der Waerden Growth",
-    "content": "Van der Waerden's theorem guarantees that f(d) → ∞: for every k, there exists d such that any 2-coloring contains a monochromatic AP of length k with difference d.",
-    "significance": "This establishes the baseline: f(d) is unbounded. The question is how fast it grows."
+    "range": { "startLine": 49, "endLine": 51 },
+    "title": "Van der Waerden's Theorem Implication",
+    "content": "Van der Waerden's theorem guarantees f(d) → ∞: for every k, there exists d with f(d) ≥ k. This is the starting point — the question is how fast f grows.",
+    "mathContext": "Van der Waerden's bounds are famously weak (tower-type in k), but for the function f(d) with d varying, the growth could be much more moderate. The current state suggests f(d) = Θ(log d).",
+    "significance": "essential",
+    "relatedConcepts": ["van-der-waerden", "growth-rate", "tower-bounds"]
   },
   {
-    "id": "erdos-187-ann-3",
+    "id": "erdos-187-beck",
     "proofId": "erdos-187",
-    "range": { "startLine": 56, "endLine": 59 },
     "type": "result",
+    "range": { "startLine": 53, "endLine": 59 },
     "title": "Beck's Upper Bound (1980)",
-    "content": "Beck showed f(d) ≤ (1+o(1))log₂ d by constructing a 2-coloring that avoids long monochromatic APs of any given difference. This is the best known upper bound.",
-    "significance": "Beck's bound suggests that f(d) grows only logarithmically, but no matching lower bound is known."
+    "content": "**Beck (1980)**: f(d) ≤ (1+o(1)) log₂ d. He constructed a 2-colouring that limits monochromatic AP length with any difference d to O(log d). Formalized as: ∃ C, D₀, ∀ d ≥ D₀, f(d) ≤ C · (log₂ d + 1).",
+    "mathContext": "Beck's construction uses discrepancy theory: he builds a colouring with low 'discrepancy' along all APs simultaneously. The logarithmic bound is believed to be tight, but proving a matching lower bound remains open.",
+    "significance": "essential",
+    "relatedConcepts": ["beck", "discrepancy-theory", "upper-bound"]
   },
   {
-    "id": "erdos-187-ann-4",
+    "id": "erdos-187-sqrt2",
     "proofId": "erdos-187",
-    "range": { "startLine": 64, "endLine": 66 },
     "type": "result",
-    "title": "Erdős's √2-Coloring Construction",
-    "content": "Erdős observed that coloring n by whether {√2·n} < 1/2 yields a 2-coloring where the longest monochromatic AP with difference d has length O(d). This uses the equidistribution of {√2·n·d}.",
-    "significance": "This construction predates Beck's and provides a natural Diophantine connection, though it gives a weaker bound."
+    "range": { "startLine": 61, "endLine": 66 },
+    "title": "Erdős's √2-Colouring Construction",
+    "content": "Erdős observed that colouring n by ⌊√2·n⌋ mod 2 yields a 2-colouring where the longest monochromatic AP with difference d has length O(d). This is weaker than Beck's O(log d) but historically earlier.",
+    "mathContext": "The construction exploits equidistribution of {√2 · n · d} modulo 1 (Weyl's theorem). For irrational α, the sequence ⌊αn⌋ mod 2 has limited monochromatic runs in any AP. The bound O(d) rather than O(log d) comes from the specific irrationality measure of √2.",
+    "significance": "supporting",
+    "relatedConcepts": ["equidistribution", "weyl", "irrational-colouring"]
   },
   {
-    "id": "erdos-187-ann-5",
+    "id": "erdos-187-conjecture",
     "proofId": "erdos-187",
-    "range": { "startLine": 74, "endLine": 79 },
     "type": "conjecture",
-    "title": "Optimal Bound Conjecture",
-    "content": "Erdős asked whether f(d) = Θ(log d). The formalization asserts the existence of constants c, C such that c·log₂ d ≤ f(d) ≤ C·log₂ d for all large d.",
-    "significance": "If true, this would completely characterize the asymptotic behavior of monochromatic AP lengths in 2-colorings, confirming Beck's bound is tight."
+    "range": { "startLine": 70, "endLine": 78 },
+    "title": "Optimal Bound Conjecture: f(d) = Θ(log d)",
+    "content": "**Erdős Problem 187**: Is f(d) = Θ(log d)? The formalization asserts ∃ c, C > 0 and D₀ such that c · log₂ d ≤ f(d) ≤ C · log₂ d for all d ≥ D₀.",
+    "mathContext": "The upper bound O(log d) is known (Beck). The open challenge is the lower bound: proving that every 2-colouring must contain monochromatic APs of length Ω(log d) for infinitely many differences d. No non-trivial lower bound on f(d) is known beyond f(d) → ∞.",
+    "significance": "essential",
+    "relatedConcepts": ["theta-notation", "open-problem", "lower-bound-gap"]
   }
 ]
