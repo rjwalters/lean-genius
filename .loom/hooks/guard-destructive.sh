@@ -38,11 +38,8 @@ if echo "$COMMAND" | grep -qE 'git\s+clean\s+.*-[a-zA-Z]*f'; then
   exit 2
 fi
 
-# git branch -D (force delete)
-if echo "$COMMAND" | grep -qE 'git\s+branch\s+.*-[a-zA-Z]*D'; then
-  echo "BLOCKED: git branch -D force-deletes branches. Use 'git branch -d' for safe delete." >&2
-  exit 2
-fi
+# git branch -D is allowed — branches are recoverable via reflog, and squash merges
+# make 'git branch -d' unusable for merged feature branches.
 
 # git checkout . or git checkout -- . (discard all changes)
 # Match bare "." but not "./path" (which restores a single file, safe)
