@@ -25,6 +25,8 @@ LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOG_FILE="$LOGS_DIR/$SESSION_NAME.log"
 ROLE_FILE="$REPO_ROOT/.lean/roles/aristotle-agent.md"
+PERSIST_DIR="$REPO_ROOT/.loom/state"
+PERSIST_JOBS="$PERSIST_DIR/aristotle-jobs.json"
 
 # Defaults
 TARGET_ACTIVE="${ARISTOTLE_TARGET:-3}"
@@ -69,9 +71,39 @@ is_running() {
     tmux has-session -t "$SESSION_NAME" 2>/dev/null
 }
 
+# Salvage aristotle-jobs.json before worktree destruction
+salvage_jobs_file() {
+    local worktree_jobs="$WORKTREE_PATH/research/aristotle-jobs.json"
+    if [[ -f "$worktree_jobs" ]]; then
+        mkdir -p "$PERSIST_DIR"
+        cp "$worktree_jobs" "$PERSIST_JOBS"
+        print_info "Salvaged aristotle-jobs.json to persistent state"
+    fi
+}
+
+# Restore aristotle-jobs.json into new worktree from persistent state
+restore_jobs_file() {
+    local worktree_jobs="$WORKTREE_PATH/research/aristotle-jobs.json"
+    if [[ -f "$PERSIST_JOBS" ]] && [[ -f "$worktree_jobs" ]]; then
+        # Only restore if persisted copy is newer (has more data)
+        local persist_jobs_count worktree_jobs_count
+        persist_jobs_count=$(jq '.jobs | length' "$PERSIST_JOBS" 2>/dev/null || echo 0)
+        worktree_jobs_count=$(jq '.jobs | length' "$worktree_jobs" 2>/dev/null || echo 0)
+        if [[ "$persist_jobs_count" -ge "$worktree_jobs_count" ]]; then
+            cp "$PERSIST_JOBS" "$worktree_jobs"
+            print_info "Restored aristotle-jobs.json from persistent state ($persist_jobs_count jobs)"
+        fi
+    elif [[ -f "$PERSIST_JOBS" ]]; then
+        mkdir -p "$(dirname "$worktree_jobs")"
+        cp "$PERSIST_JOBS" "$worktree_jobs"
+        print_info "Restored aristotle-jobs.json from persistent state"
+    fi
+}
+
 # Create worktree
 create_worktree() {
     if [[ -d "$WORKTREE_PATH" ]]; then
+        salvage_jobs_file
         print_info "Removing existing worktree..."
         git worktree remove "$WORKTREE_PATH" --force 2>/dev/null || rm -rf "$WORKTREE_PATH"
     fi
@@ -86,6 +118,9 @@ create_worktree() {
         rm -rf "$WORKTREE_PATH/proofs/.lake"
         ln -s "$REPO_ROOT/proofs/.lake" "$WORKTREE_PATH/proofs/.lake"
     fi
+
+    # Restore jobs file after worktree creation
+    restore_jobs_file
 }
 
 # Show status
