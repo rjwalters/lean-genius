@@ -22,95 +22,86 @@
     "erdosNumber": 1155,
     "erdosUrl": "https://erdosproblems.com/1155",
     "erdosProblemStatus": "open",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "Basic",
-        "description": "From Mathlib.Combinatorics.SimpleGraph.Basic",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
-      },
-      {
-        "theorem": "Clique",
-        "description": "From Mathlib.Combinatorics.SimpleGraph.Clique",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
-      },
-      {
-        "theorem": "Basic",
-        "description": "From Mathlib.Data.Finset.Basic",
-        "module": "Mathlib.Data.Finset.Basic"
-      },
-      {
-        "theorem": "Card",
-        "description": "From Mathlib.Data.Finset.Card",
-        "module": "Mathlib.Data.Finset.Card"
-      },
-      {
-        "theorem": "Basic",
-        "description": "From Mathlib.Data.Nat.Basic",
-        "module": "Mathlib.Data.Nat.Basic"
-      },
-      {
-        "theorem": "Basic",
-        "description": "From Mathlib.Data.Real.Basic",
-        "module": "Mathlib.Data.Real.Basic"
-      },
-      {
-        "theorem": "Basic",
-        "description": "From Mathlib.Order.Filter.AtTopBot.Basic",
-        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
-      },
-      {
-        "theorem": "Real",
-        "description": "From Mathlib.Analysis.SpecialFunctions.Pow.Real",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
-      }
-    ],
-    "originalContributions": [
-      "that",
-      "triangleRemovalEdges",
-      "triangleRemovalEdges_nonneg",
-      "triangleRemovalEdges_le_complete",
-      "grable_upper_bound",
-      "bfl_upper_bound",
-      "bfl_lower_bound",
-      "erdos_1155_conjecture",
-      "bfl_implies_grable",
-      "conjecture_gives_theta",
-      "bfl_exponent_characterization",
-      "IsTriangle",
-      "IsTriangleFree",
-      "triangleFree_iff_cliqueFree3",
-      "complete_has_triangles"
-    ]
-  },
-  "overview": {
-    "historicalContext": "Erdős Problem #1155 concerns triangle removal process. This problem remains OPEN.\n\nKnown results include: - Grable (1997): For every ε > 0, P(f(n) > n^{7/4 + ε}) → 0. - Bohman, Frieze, Lubetzky (2015): f(n) = n^{3/2 + o(1)} almost surely.\n\nThis problem is catalogued at erdosproblems.com/1155.",
-    "problemStatement": "Is it true that E[f(n)] ≍ n^{3/2} and f(n) ≪ n^{3/2} almost surely?",
-    "proofStrategy": "The formalization is structured in 185 lines of Lean 4 code. It uses 7 axioms for results that require external references or deep mathematical arguments beyond Mathlib. There are 3 sorry placeholders for structural results that can be filled in with additional work. The main conjecture is stated as an axiom since it is an open problem.",
-    "keyInsights": [
-      "**`triangleRemovalEdges n` is the (expected) number of remaining edges after**: `triangleRemovalEdges n` is the (expected) number of remaining edges after",
-      "**The triangle removal process leaves a non-negative number of edges.**: The triangle removal process leaves a non-negative number of edges.",
-      "**The triangle removal process on K_n starts with C(n,2) edges and can only**: The triangle removal process on K_n starts with C(n,2) edges and can only",
-      "****Grable (1997)****: **Grable (1997)**: For every ε > 0, the number of remaining edges",
-      "****Bohman-Frieze-Lubetzky (2015)****: **Bohman-Frieze-Lubetzky (2015)**: f(n) = n^{3/2 + o(1)} almost surely."
+    "references": [
+      "Erdős: original problem",
+      "Grable (1997): f(n) ≤ n^{7/4+o(1)} via differential equations method",
+      "Bohman-Frieze-Lubetzky (2015): f(n) = n^{3/2+o(1)} almost surely",
+      "Mantel (1907): triangle-free graphs have at most ⌊n²/4⌋ edges",
+      "Turán (1941): generalization of Mantel to K_r-free graphs",
+      "https://erdosproblems.com/1155"
     ]
   },
   "sections": [
     {
-      "id": "formalization",
-      "title": "Formalization",
-      "summary": "Complete formalization of Erdős Problem #1155",
+      "id": "header-imports",
+      "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 185
+      "endLine": 38,
+      "summary": "Problem documentation describing the triangle removal process on K_n and imports from Mathlib for graphs, filters, and real-valued powers."
+    },
+    {
+      "id": "process-axioms",
+      "title": "Process Axiomatization",
+      "startLine": 40,
+      "endLine": 61,
+      "summary": "Axiomatizes f(n) = triangleRemovalEdges as ℕ → ℝ with basic bounds: f(n) ≥ 0 and f(n) ≤ n(n-1)/2."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results: Grable and BFL Bounds",
+      "startLine": 63,
+      "endLine": 85,
+      "summary": "Grable (1997): f(n) ≤ n^{7/4+ε} eventually. Bohman-Frieze-Lubetzky (2015): n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε} eventually, pinning the exponent to 3/2."
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős Conjecture",
+      "startLine": 87,
+      "endLine": 100,
+      "summary": "The open conjecture: ∃ c₁,c₂ > 0 such that c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} for large n. Stronger than BFL's sub-polynomial precision."
+    },
+    {
+      "id": "derived-results",
+      "title": "Derived Theorems",
+      "startLine": 102,
+      "endLine": 143,
+      "summary": "Three proved theorems: BFL implies Grable (via exponent arithmetic), the conjecture implies Θ(n^{3/2}), and BFL exponent characterization combining upper and lower bounds."
+    },
+    {
+      "id": "graph-basics",
+      "title": "Graph-Theoretic Foundations",
+      "startLine": 145,
+      "endLine": 163,
+      "summary": "Defines IsTriangle, IsTriangleFree', proves equivalence with CliqueFree 3, and shows K_n has triangles for n ≥ 3. Two sorry placeholders."
+    },
+    {
+      "id": "mantel",
+      "title": "Mantel's Theorem and Trivial Bound",
+      "startLine": 165,
+      "endLine": 185,
+      "summary": "Axiomatizes Mantel's theorem (triangle-free ⇒ ≤ n²/4 edges) and derives the trivial upper bound f(n) ≤ n²/4. One sorry in connecting real-valued f(n) to integer counts."
     }
   ],
+  "overview": {
+    "historicalContext": "The triangle removal process was introduced as a natural random graph process: begin with the complete graph $K_n$, repeatedly select a triangle uniformly at random and delete all three of its edges, and continue until no triangles remain. The question of how many edges survive — formalized as $f(n)$ — connects to fundamental problems in probabilistic combinatorics and extremal graph theory. The first non-trivial bound was obtained by Grable (1997), who used the differential equations method to show $f(n) \\leq n^{7/4+o(1)}$. The differential equations method, pioneered by Wormald in the 1990s, approximates discrete random processes by continuous ODEs and shows concentration around the deterministic trajectory. The breakthrough came from Bohman, Frieze, and Lubetzky (2015), who proved $f(n) = n^{3/2+o(1)}$ almost surely by refining the tracking of the evolving graph's structure. Their analysis required controlling not just edge and triangle counts but the full neighborhood profile. Erdős's original conjecture asks for the stronger statement $\\mathbb{E}[f(n)] \\asymp n^{3/2}$ — that is, $f(n) = \\Theta(n^{3/2})$ without sub-polynomial corrections. This remains open: the BFL result allows factors like $\\sqrt{\\log n}$ hidden in the $o(1)$ exponent.",
+    "problemStatement": "Begin with the complete graph $K_n$. Repeatedly select a uniformly random triangle and delete all its edges until the graph is triangle-free. Let $f(n)$ denote the number of remaining edges. Is it true that $\\mathbb{E}[f(n)] \\asymp n^{3/2}$ and $f(n) \\ll n^{3/2}$ almost surely?",
+    "proofStrategy": "The formalization axiomatizes $f(n)$ as a function $\\mathbb{N} \\to \\mathbb{R}$ with basic bounds ($0 \\leq f(n) \\leq \\binom{n}{2}$), since fully formalizing the random process would require extensive measure theory. The key results — Grable's $n^{7/4+\\varepsilon}$ bound and both BFL bounds ($n^{3/2 \\pm \\varepsilon}$) — are stated as axioms using `∀ᶠ ... in atTop`. Three theorems are proved: BFL implies Grable (by exponent arithmetic), the conjecture implies $\\Theta(n^{3/2})$ (by definition), and BFL characterizes the exponent (combining upper and lower bounds). Mantel's theorem provides the trivial $n^2/4$ bound. Graph-theoretic foundations (triangles, triangle-freeness, complete graphs) are connected to Mathlib's API.",
+    "keyInsights": [
+      "The triangle removal process exhibits a phase transition: it runs for Θ(n^{3/2}) steps before the graph becomes triangle-free, because each step removes 3 edges from the ~n²/2 total, and the triangle density controls the rate",
+      "Grable's differential equations method (1997) tracks the ODE approximation of the triangle count t(i) as a function of step i, yielding the first bound f(n) ≤ n^{7/4+o(1)} — a factor n^{1/4} above the truth",
+      "BFL (2015) achieved the tight exponent 3/2 by tracking the entire codegree distribution, not just aggregate statistics, using a sophisticated martingale concentration argument",
+      "The gap between n^{3/2+o(1)} (BFL) and Θ(n^{3/2}) (conjecture) is significant: the o(1) in the exponent could hide logarithmic factors, and determining whether such corrections exist requires understanding the final phase of the process when few triangles remain",
+      "The formalization demonstrates how Filter.Eventually (∀ᶠ in atTop) elegantly captures asymptotic statements in Lean 4, avoiding explicit N₀ bookkeeping"
+    ]
+  },
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1155 (Triangle Removal Process) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
-    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "summary": "This formalization captures the triangle removal process problem (Erdős #1155) in Lean 4, axiomatizing the key function f(n) and the two main results: Grable's bound f(n) ≤ n^{7/4+o(1)} and BFL's tight exponent characterization f(n) = n^{3/2+o(1)}. Three derived theorems are proved, including the implication chain BFL ⇒ Grable and the exponent sandwich. The remaining open conjecture — whether f(n) = Θ(n^{3/2}) without sub-polynomial corrections — is stated as a Prop.",
+    "implications": "Resolving the conjecture would determine whether logarithmic corrections appear in the triangle removal process, with implications for understanding random greedy algorithms more broadly. The differential equations method and martingale techniques used in the proofs have become standard tools in probabilistic combinatorics, applicable to random hypergraph processes, random constraint satisfaction, and the analysis of randomized algorithms.",
     "openQuestions": [
-      "Resolve the conjecture",
-      "Fill in sorry placeholders with complete proofs",
-      "Strengthen connections to other Erdős problems"
+      "Does f(n) = Θ(n^{3/2}) hold exactly, or are there logarithmic corrections like f(n) ~ c·n^{3/2}·(log n)^α for some α ≠ 0?",
+      "What is the limiting distribution of f(n)/n^{3/2} — does it converge in distribution, and if so, to what?",
+      "How does the process behave for K_r-removal (removing all edges of a random K_r instead of K_3)? The exponent should change with r",
+      "Can the sorry placeholders (triangleFree_iff_cliqueFree3, complete_has_triangles, trivial_upper_bound) be filled using Mathlib's current API?"
     ]
   }
 }
