@@ -69,7 +69,92 @@
       "**Almost Sure:** Convergence with probability 1"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-523-maximum-of-r",
+      "title": "Erdős Problem #523: Maximum of Random Polynomials on Unit Circle",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Erdős Problem #523: Maximum of Random Polynomials on Unit Circle"
+    },
+    {
+      "id": "random-polynomials",
+      "title": "Random Polynomials",
+      "startLine": 38,
+      "endLine": 60,
+      "summary": "Random Polynomials"
+    },
+    {
+      "id": "the-scaling-function",
+      "title": "The Scaling Function",
+      "startLine": 61,
+      "endLine": 72,
+      "summary": "The Scaling Function"
+    },
+    {
+      "id": "salem-zygmund-result",
+      "title": "Salem-Zygmund Result",
+      "startLine": 73,
+      "endLine": 88,
+      "summary": "Salem-Zygmund Result"
+    },
+    {
+      "id": "the-erd-s-question",
+      "title": "The Erdős Question",
+      "startLine": 89,
+      "endLine": 100,
+      "summary": "The Erdős Question"
+    },
+    {
+      "id": "hal-sz-s-theorem",
+      "title": "Halász's Theorem",
+      "startLine": 101,
+      "endLine": 122,
+      "summary": "Halász's Theorem"
+    },
+    {
+      "id": "probabilistic-framework",
+      "title": "Probabilistic Framework",
+      "startLine": 123,
+      "endLine": 143,
+      "summary": "Probabilistic Framework"
+    },
+    {
+      "id": "properties-of-random-polynomia",
+      "title": "Properties of Random Polynomials",
+      "startLine": 144,
+      "endLine": 165,
+      "summary": "Properties of Random Polynomials"
+    },
+    {
+      "id": "littlewood-polynomials",
+      "title": "Littlewood Polynomials",
+      "startLine": 166,
+      "endLine": 184,
+      "summary": "Littlewood Polynomials"
+    },
+    {
+      "id": "upper-and-lower-bounds",
+      "title": "Upper and Lower Bounds",
+      "startLine": 185,
+      "endLine": 204,
+      "summary": "Upper and Lower Bounds"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "startLine": 205,
+      "endLine": 223,
+      "summary": "Related Problems"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 224,
+      "endLine": 255,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #523 asks whether random ±1 polynomials have maximum modulus (C + o(1))√(n log n) on the unit circle, almost surely. Salem-Zygmund established the order of magnitude, and Halász proved the exact asymptotic with C = 1.",
     "implications": "**Connections**\n\n1. **Littlewood Polynomials:** Typical behavior of ±1 polynomials\n\n2. **Random Fourier Series:** Kahane's theory\n\n3. **Concentration of Measure:** Maximum behavior\n\n4. **Mahler Measure:** Geometric mean on circle",

@@ -69,7 +69,99 @@
       "**Pósa to Korshunov:** Constant improved to 1/2"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-746-hamiltonicit",
+      "title": "Erdős Problem #746: Hamiltonicity of Random Graphs",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Erdős Problem #746: Hamiltonicity of Random Graphs"
+    },
+    {
+      "id": "random-graph-model",
+      "title": "Random Graph Model",
+      "startLine": 39,
+      "endLine": 61,
+      "summary": "Random Graph Model"
+    },
+    {
+      "id": "hamiltonicity",
+      "title": "Hamiltonicity",
+      "startLine": 62,
+      "endLine": 81,
+      "summary": "Hamiltonicity"
+    },
+    {
+      "id": "perfect-matchings",
+      "title": "Perfect Matchings",
+      "startLine": 82,
+      "endLine": 95,
+      "summary": "Perfect Matchings"
+    },
+    {
+      "id": "erd-s-r-nyi-result-on-matching",
+      "title": "Erdős-Rényi Result on Matchings",
+      "startLine": 96,
+      "endLine": 106,
+      "summary": "Erdős-Rényi Result on Matchings"
+    },
+    {
+      "id": "the-erd-s-question",
+      "title": "The Erdős Question",
+      "startLine": 107,
+      "endLine": 117,
+      "summary": "The Erdős Question"
+    },
+    {
+      "id": "p-sa-s-result",
+      "title": "Pósa's Result",
+      "startLine": 118,
+      "endLine": 132,
+      "summary": "Pósa's Result"
+    },
+    {
+      "id": "korshunov-s-improvement",
+      "title": "Korshunov's Improvement",
+      "startLine": 133,
+      "endLine": 151,
+      "summary": "Korshunov's Improvement"
+    },
+    {
+      "id": "koml-s-szemer-di-precise-resul",
+      "title": "Komlós-Szemerédi Precise Result",
+      "startLine": 152,
+      "endLine": 179,
+      "summary": "Komlós-Szemerédi Precise Result"
+    },
+    {
+      "id": "the-answer",
+      "title": "The Answer",
+      "startLine": 180,
+      "endLine": 194,
+      "summary": "The Answer"
+    },
+    {
+      "id": "connection-to-connectivity",
+      "title": "Connection to Connectivity",
+      "startLine": 195,
+      "endLine": 217,
+      "summary": "Connection to Connectivity"
+    },
+    {
+      "id": "related-properties",
+      "title": "Related Properties",
+      "startLine": 218,
+      "endLine": 230,
+      "summary": "Related Properties"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 231,
+      "endLine": 262,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #746 asks whether random graphs with ≥ (1/2+ε)n log n edges are almost surely Hamiltonian. The answer is YES. Korshunov established the sharp threshold, and Komlós-Szemerédi proved the limiting probability is e^{-e^{-2c}} at threshold.",
     "implications": "**Connections**\n\n1. **Connectivity:** Same threshold (1/2)n log n\n\n2. **Perfect Matching:** Erdős-Rényi's original result\n\n3. **Phase Transition:** Sharp threshold behavior\n\n4. **Dirac's Theorem:** Minimum degree connection",

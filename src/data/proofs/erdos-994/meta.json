@@ -61,7 +61,78 @@
       "**Intervals Work:** Equidistribution always holds for intervals"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-994-khintchine-s",
+      "title": "Erdős Problem #994: Khintchine's Equidistribution Conjecture",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Erdős Problem #994: Khintchine's Equidistribution Conjecture"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 61,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "counting-hits-in-e",
+      "title": "Counting Hits in E",
+      "startLine": 62,
+      "endLine": 77,
+      "summary": "Counting Hits in E"
+    },
+    {
+      "id": "weyl-s-theorem-what-is-true",
+      "title": "Weyl's Theorem (What IS True)",
+      "startLine": 78,
+      "endLine": 97,
+      "summary": "Weyl's Theorem (What IS True)"
+    },
+    {
+      "id": "khintchine-s-conjecture-what-w",
+      "title": "Khintchine's Conjecture (What Was Conjectured)",
+      "startLine": 98,
+      "endLine": 114,
+      "summary": "Khintchine's Conjecture (What Was Conjectured)"
+    },
+    {
+      "id": "the-key-difference",
+      "title": "The Key Difference",
+      "startLine": 115,
+      "endLine": 133,
+      "summary": "The Key Difference"
+    },
+    {
+      "id": "marstrand-s-disproof",
+      "title": "Marstrand's Disproof",
+      "startLine": 134,
+      "endLine": 153,
+      "summary": "Marstrand's Disproof"
+    },
+    {
+      "id": "what-goes-wrong",
+      "title": "What Goes Wrong",
+      "startLine": 154,
+      "endLine": 170,
+      "summary": "What Goes Wrong"
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 171,
+      "endLine": 191,
+      "summary": "Related Results"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 192,
+      "endLine": 222,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #994 asks whether Khintchine's equidistribution conjecture is true: for a.e. α, does {kα} equidistribute in ALL measurable E? Marstrand (1970) showed this is FALSE. While Weyl's theorem says for any fixed E, a.e. α works, you cannot exchange quantifiers to get a single exceptional set for all E.",
     "implications": "**Connections**\n\n1. **Weyl's Theorem:** The true statement — equidistribution for fixed sets\n\n2. **Discrepancy Theory:** Measures deviation from equidistribution\n\n3. **Continued Fractions:** Marstrand's construction uses CF expansion of α\n\n4. **Measure Theory:** Uncountably many E causes the failure",

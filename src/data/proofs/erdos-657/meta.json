@@ -70,7 +70,99 @@
       "**High Dimension:** In ℝ^k with 2^k ≥ n, only n-1 distances needed"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-657-isosceles-fr",
+      "title": "Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Erdős Problem #657: Isosceles-Free Point Sets and Distinct Distances"
+    },
+    {
+      "id": "basic-definitions-for-point-se",
+      "title": "Basic Definitions for Point Sets",
+      "startLine": 37,
+      "endLine": 70,
+      "summary": "Basic Definitions for Point Sets"
+    },
+    {
+      "id": "isosceles-free-sets",
+      "title": "Isosceles-Free Sets",
+      "startLine": 71,
+      "endLine": 109,
+      "summary": "Isosceles-Free Sets"
+    },
+    {
+      "id": "distinct-distances-in-a-point-",
+      "title": "Distinct Distances in a Point Set",
+      "startLine": 110,
+      "endLine": 126,
+      "summary": "Distinct Distances in a Point Set"
+    },
+    {
+      "id": "the-erd-s-davies-question",
+      "title": "The Erdős-Davies Question",
+      "startLine": 127,
+      "endLine": 148,
+      "summary": "The Erdős-Davies Question"
+    },
+    {
+      "id": "dumitrescu-s-bounds-2008",
+      "title": "Dumitrescu's Bounds (2008)",
+      "startLine": 149,
+      "endLine": 168,
+      "summary": "Dumitrescu's Bounds (2008)"
+    },
+    {
+      "id": "recent-progress-kelley-meka-bl",
+      "title": "Recent Progress (Kelley-Meka, Bloom-Sisask 2023)",
+      "startLine": 169,
+      "endLine": 185,
+      "summary": "Recent Progress (Kelley-Meka, Bloom-Sisask 2023)"
+    },
+    {
+      "id": "connection-to-3-ap-free-sets",
+      "title": "Connection to 3-AP Free Sets",
+      "startLine": 186,
+      "endLine": 213,
+      "summary": "Connection to 3-AP Free Sets"
+    },
+    {
+      "id": "straus-s-high-dimensional-cons",
+      "title": "Straus's High-Dimensional Construction",
+      "startLine": 214,
+      "endLine": 236,
+      "summary": "Straus's High-Dimensional Construction"
+    },
+    {
+      "id": "known-examples",
+      "title": "Known Examples",
+      "startLine": 237,
+      "endLine": 256,
+      "summary": "Known Examples"
+    },
+    {
+      "id": "the-gap-between-upper-and-lowe",
+      "title": "The Gap Between Upper and Lower Bounds",
+      "startLine": 257,
+      "endLine": 276,
+      "summary": "The Gap Between Upper and Lower Bounds"
+    },
+    {
+      "id": "partial-answer",
+      "title": "Partial Answer",
+      "startLine": 277,
+      "endLine": 295,
+      "summary": "Partial Answer"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 296,
+      "endLine": 326,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #657 asks whether isosceles-free point sets in ℝ² must determine at least f(n)·n distinct distances for some f(n) → ∞. The answer is YES: Dumitrescu proved f(n) ≥ (log n)^c. Recent work using 3-AP bounds (Kelley-Meka, Bloom-Sisask) improves this to 2^{c(log n)^{1/9}}. The exact growth rate remains open.",
     "implications": "**Connections**\n\n1. **Roth's Theorem:** Progress on 3-AP-free sets directly improves bounds\n\n2. **Distinct Distances:** Related to Erdős's distinct distances problem (#135)\n\n3. **Combinatorial Geometry:** Structural constraints forcing distance diversity\n\n4. **High Dimensions:** Straus's construction shows dimension matters",

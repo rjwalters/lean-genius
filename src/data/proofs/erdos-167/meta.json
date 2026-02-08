@@ -35,7 +35,57 @@
       "Proven for special classes: K₄-free, planar, random graphs"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-167-tuza-s-conje",
+      "title": "Erdős Problem #167: Tuza's Conjecture on Triangle Covering",
+      "startLine": 20,
+      "endLine": 53,
+      "summary": "Erdős Problem #167: Tuza's Conjecture on Triangle Covering"
+    },
+    {
+      "id": "core-definitions",
+      "title": "/- ## Core Definitions -/",
+      "startLine": 54,
+      "endLine": 85,
+      "summary": "/- ## Core Definitions -/"
+    },
+    {
+      "id": "tuza-s-conjecture",
+      "title": "/- ## Tuza's Conjecture -/",
+      "startLine": 86,
+      "endLine": 94,
+      "summary": "/- ## Tuza's Conjecture -/"
+    },
+    {
+      "id": "trivial-bound",
+      "title": "/- ## Trivial Bound -/",
+      "startLine": 95,
+      "endLine": 175,
+      "summary": "/- ## Trivial Bound -/"
+    },
+    {
+      "id": "known-results",
+      "title": "/- ## Known Results -/",
+      "startLine": 176,
+      "endLine": 253,
+      "summary": "/- ## Known Results -/"
+    },
+    {
+      "id": "fractional-version",
+      "title": "/- ## Fractional Version -/",
+      "startLine": 254,
+      "endLine": 265,
+      "summary": "/- ## Fractional Version -/"
+    },
+    {
+      "id": "summary",
+      "title": "/- ## Summary",
+      "startLine": 266,
+      "endLine": 289,
+      "summary": "/- ## Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #167 (Tuza's Conjecture) is PARTIALLY SOLVED. This formalization includes three Aristotle-verified theorems: the trivial 3ν bound and tightness examples K₄ and K₅. The conjecture τ ≤ 2ν remains open for general graphs.",
     "implications": "Tuza's conjecture connects triangle packing (combinatorial optimization) with covering (vertex/edge cover theory). The fractional version being true suggests the integral conjecture may hold with better rounding techniques.",

@@ -35,7 +35,92 @@
       "E contains infinitely many 'independent' progressions with positive density"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-16-odd-integers-",
+      "title": "Erdős Problem #16: Odd Integers Not of the Form 2^k + p",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Erdős Problem #16: Odd Integers Not of the Form 2^k + p"
+    },
+    {
+      "id": "background",
+      "title": "Background",
+      "startLine": 30,
+      "endLine": 44,
+      "summary": "Background"
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 45,
+      "endLine": 63,
+      "summary": "Core Definitions"
+    },
+    {
+      "id": "the-romanoff-theorem",
+      "title": "The Romanoff Theorem",
+      "startLine": 64,
+      "endLine": 91,
+      "summary": "The Romanoff Theorem"
+    },
+    {
+      "id": "erd-s-s-covering-congruence-re",
+      "title": "Erdős's Covering Congruence Result (1950)",
+      "startLine": 92,
+      "endLine": 116,
+      "summary": "Erdős's Covering Congruence Result (1950)"
+    },
+    {
+      "id": "the-conjecture-and-its-disproo",
+      "title": "The Conjecture and Its Disproof",
+      "startLine": 117,
+      "endLine": 146,
+      "summary": "The Conjecture and Its Disproof"
+    },
+    {
+      "id": "known-exceptional-numbers",
+      "title": "Known Exceptional Numbers",
+      "startLine": 147,
+      "endLine": 171,
+      "summary": "Known Exceptional Numbers"
+    },
+    {
+      "id": "connection-to-covering-congrue",
+      "title": "Connection to Covering Congruences",
+      "startLine": 172,
+      "endLine": 188,
+      "summary": "Connection to Covering Congruences"
+    },
+    {
+      "id": "density-bounds",
+      "title": "Density Bounds",
+      "startLine": 189,
+      "endLine": 206,
+      "summary": "Density Bounds"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "startLine": 207,
+      "endLine": 229,
+      "summary": "Related Problems"
+    },
+    {
+      "id": "why-chen-s-result-is-significa",
+      "title": "Why Chen's Result is Significant",
+      "startLine": 230,
+      "endLine": 249,
+      "summary": "Why Chen's Result is Significant"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 250,
+      "endLine": 277,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #16 is DISPROVED (Chen 2023). The exceptional set of odd integers not representable as 2^k + p has more complex structure than Erdős conjectured. It's not just an arithmetic progression plus negligible noise - it contains multiple independent parts with positive density.",
     "implications": "The result shows that covering congruence constructions produce richer structure than expected. The exceptional set may have fractal-like or quasi-random properties. This connects to deep questions about prime distribution.",

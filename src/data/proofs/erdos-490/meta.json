@@ -68,7 +68,78 @@
       "**Related:** Problems #425 (sums) and #896 (general products)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-490-distinct-pro",
+      "title": "Erdős Problem #490: Distinct Products of Two Sets",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Erdős Problem #490: Distinct Products of Two Sets"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 38,
+      "endLine": 62,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "the-erd-s-question",
+      "title": "The Erdős Question",
+      "startLine": 63,
+      "endLine": 85,
+      "summary": "The Erdős Question"
+    },
+    {
+      "id": "szemer-di-s-theorem-1976",
+      "title": "Szemerédi's Theorem (1976)",
+      "startLine": 86,
+      "endLine": 101,
+      "summary": "Szemerédi's Theorem (1976)"
+    },
+    {
+      "id": "the-optimal-example",
+      "title": "The Optimal Example",
+      "startLine": 102,
+      "endLine": 133,
+      "summary": "The Optimal Example"
+    },
+    {
+      "id": "the-limit-question-open",
+      "title": "The Limit Question (Open)",
+      "startLine": 134,
+      "endLine": 154,
+      "summary": "The Limit Question (Open)"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 155,
+      "endLine": 177,
+      "summary": "Special Cases"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "startLine": 178,
+      "endLine": 202,
+      "summary": "Related Problems"
+    },
+    {
+      "id": "bounds-history",
+      "title": "Bounds History",
+      "startLine": 203,
+      "endLine": 227,
+      "summary": "Bounds History"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 228,
+      "endLine": 277,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #490 asked whether sets A, B with distinct products satisfy |A||B| ≪ N²/log N. Szemerédi (1976) proved YES. The optimal example uses A = [1, N/2] and B = primes in (N/2, N], achieving |A||B| ~ N²/(2 log N). The limit question remains open.",
     "implications": "**Combinatorial Number Theory**\n\n1. **Product-Set Structure:** Reveals constraints on multiplicative Sidon-type sets\n\n2. **Prime Distribution:** Optimal construction exploits prime number theorem\n\n3. **Multiplicative Energy:** Low energy characterizes distinct products\n\n4. **Related to Sumsets:** Analogous questions for addition (Problem #425)",

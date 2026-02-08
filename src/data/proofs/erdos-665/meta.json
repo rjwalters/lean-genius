@@ -19,12 +19,69 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #665 from erdosproblems.com.",
+    "historicalContext": "Erdős Problem #665, posed by Erdős and Larson, concerns pairwise balanced designs (PBDs) with nearly equal block sizes. A PBD for {1,...,n} is a collection of sets where every pair of elements appears in exactly one block, with block sizes between 2 and n-1. The question asks whether block sizes can all exceed √n - C for some absolute constant C. Erdős and Larson proved block sizes satisfy |Aᵢ| > √n - h(n) where h(n) ≪ n^{1/2-c}. The answer may be negative: Shrikhande and Singhi showed it is 'no' conditional on the prime power conjecture for projective planes. The problem is closely tied to understanding prime gaps in number theory, as near-square primes play a key role in projective plane constructions.",
     "problemStatement": "Is there some constant $c$ such that for every $n$ there are $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ such that $\\lvert A_i\\rvert >n^{1/2}-c$ for all $i$, and $\\lvert A_i\\cap A_j\\rvert \\leq 1$ for all $i\\neq j$, and every pair $1\\leq x<y\\leq n$ has $\\{x,y\\}\\subseteq A_i$ for some $i$?\n\n\n\nA problem of Erd\\H{o}s and Larson \\cite{ErLa82}.\n\nShrikhande and Singhi \\cite{ShSi85} have proved that the answer is no conditional on the conjecture that the order of every projective plane is a prime power (see [723]), by proving that every pairwise balanced design on $n$ points in which each block is of size $\\geq n^{1/2}-c$ can be embedded in a projective plane of order $n+i$ for some $i\\leq c+2$, if $n$ is sufficiently large.\n\nErd\\H{o}s asks if this is false for constant, for which functions $h(n)$ will the condition $\\lvert A_i\\rvert \\geq n^{1/2}-h(n)$ make the conjecture true?\n\n\n\n\nReferences\n\n\n[ErLa82] Erd\\H{o}s, P. and Larson, J., On pairwise balanced block designs with the sizes of blocks as uniform as possible. Annals of Discrete Mathematics (1982), 129-134.\n\n[ShSi85] S. S. Shrikhande and N. M. Singhi, On a problem of Erd\\H{o}s and Larson. Combinatorica (1985), 351-358.",
     "proofStrategy": "TODO: Document proof strategy",
     "keyInsights": []
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-665-pairwise-bal",
+      "title": "Erdős Problem #665: Pairwise Balanced Designs with Large Blocks",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Erdős Problem #665: Pairwise Balanced Designs with Large Blocks"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 34,
+      "endLine": 54,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "the-main-question",
+      "title": "The Main Question",
+      "startLine": 55,
+      "endLine": 80,
+      "summary": "The Main Question"
+    },
+    {
+      "id": "known-upper-bounds-on-h-n",
+      "title": "Known Upper Bounds on h(n)",
+      "startLine": 81,
+      "endLine": 93,
+      "summary": "Known Upper Bounds on h(n)"
+    },
+    {
+      "id": "connection-to-projective-plane",
+      "title": "Connection to Projective Planes",
+      "startLine": 94,
+      "endLine": 122,
+      "summary": "Connection to Projective Planes"
+    },
+    {
+      "id": "connection-to-prime-gaps",
+      "title": "Connection to Prime Gaps",
+      "startLine": 123,
+      "endLine": 147,
+      "summary": "Connection to Prime Gaps"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 148,
+      "endLine": 167,
+      "summary": "Special Cases"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 168,
+      "endLine": 195,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "TODO: Add proof summary",
     "implications": "",

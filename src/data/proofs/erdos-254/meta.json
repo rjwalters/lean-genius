@@ -19,12 +19,76 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #254 from erdosproblems.com.",
+    "historicalContext": "Erdős Problem #254 concerns subset sum representations of integers. Given a set A ⊆ ℕ satisfying (1) |A ∩ [1,2x]| - |A ∩ [1,x]| → ∞ (slow but unbounded growth) and (2) Σ_{n∈A} ||θn|| = ∞ for every θ ∈ (0,1), Erdős conjectured that every sufficiently large integer is a sum of distinct elements of A. Cassels (1960) proved a related result under stronger hypotheses, replacing condition (1) with logarithmic growth and condition (2) with a square-summability condition. The problem in its original form remains open, connecting additive number theory with Diophantine approximation.",
     "problemStatement": "Let $A\\subseteq \\mathbb{N}$ be such that\\[\\lvert A\\cap [1,2x]\\rvert -\\lvert A\\cap [1,x]\\rvert \\to \\infty\\textrm{ as }x\\to \\infty\\]and\\[\\sum_{n\\in A} \\{ \\theta n\\}=\\infty\\]for every $\\theta\\in (0,1)$, where $\\{x\\}$ is the distance of $x$ from the nearest integer. Then every sufficiently large integer is the sum of distinct elements of $A$.\n\n\n\nCassels \\cite{Ca60} proved this under the alternative hypotheses\\[\\lim \\frac{\\lvert A\\cap [1,2x]\\rvert -\\lvert A\\cap [1,x]\\rvert}{\\log\\log x}=\\infty\\]and\\[\\sum_{n\\in A} \\{ \\theta n\\}^2=\\infty\\]for every $\\theta\\in (0,1)$.\n\n\n\n\nReferences\n\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.",
     "proofStrategy": "TODO: Document proof strategy",
     "keyInsights": []
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-254-sumset-repre",
+      "title": "Erdős Problem #254: Sumset Representation from Growth and Irrationality Conditions",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Erdős Problem #254: Sumset Representation from Growth and Irrationality Conditions"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 37,
+      "endLine": 54,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "the-growth-condition",
+      "title": "The Growth Condition",
+      "startLine": 55,
+      "endLine": 66,
+      "summary": "The Growth Condition"
+    },
+    {
+      "id": "the-irrationality-condition",
+      "title": "The Irrationality Condition",
+      "startLine": 67,
+      "endLine": 82,
+      "summary": "The Irrationality Condition"
+    },
+    {
+      "id": "subset-sum-representation",
+      "title": "Subset Sum Representation",
+      "startLine": 83,
+      "endLine": 94,
+      "summary": "Subset Sum Representation"
+    },
+    {
+      "id": "the-conjecture",
+      "title": "The Conjecture",
+      "startLine": 95,
+      "endLine": 109,
+      "summary": "The Conjecture"
+    },
+    {
+      "id": "cassels-s-theorem-1960",
+      "title": "Cassels's Theorem (1960)",
+      "startLine": 110,
+      "endLine": 138,
+      "summary": "Cassels's Theorem (1960)"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 139,
+      "endLine": 157,
+      "summary": "Examples"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 158,
+      "endLine": 185,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "TODO: Add proof summary",
     "implications": "",

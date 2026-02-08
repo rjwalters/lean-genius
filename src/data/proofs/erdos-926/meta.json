@@ -33,7 +33,85 @@
       "Dependent random choice is the key technique for the upper bound"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-926-tur-n-number",
+      "title": "Erdős Problem #926: Turán Number of the Graph H_k",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Erdős Problem #926: Turán Number of the Graph H_k"
+    },
+    {
+      "id": "the-graph-h-k",
+      "title": "The Graph H_k",
+      "startLine": 36,
+      "endLine": 74,
+      "summary": "The Graph H_k"
+    },
+    {
+      "id": "properties-of-h-k",
+      "title": "Properties of H_k",
+      "startLine": 75,
+      "endLine": 102,
+      "summary": "Properties of H_k"
+    },
+    {
+      "id": "extremal-numbers",
+      "title": "Extremal Numbers",
+      "startLine": 103,
+      "endLine": 129,
+      "summary": "Extremal Numbers"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "startLine": 130,
+      "endLine": 144,
+      "summary": "Lower Bound"
+    },
+    {
+      "id": "f-redi-s-theorem-1991",
+      "title": "Füredi's Theorem (1991)",
+      "startLine": 145,
+      "endLine": 157,
+      "summary": "Füredi's Theorem (1991)"
+    },
+    {
+      "id": "alon-krivelevich-sudakov-impro",
+      "title": "Alon-Krivelevich-Sudakov Improvement (2003)",
+      "startLine": 158,
+      "endLine": 178,
+      "summary": "Alon-Krivelevich-Sudakov Improvement (2003)"
+    },
+    {
+      "id": "connection-to-degeneracy",
+      "title": "Connection to Degeneracy",
+      "startLine": 179,
+      "endLine": 199,
+      "summary": "Connection to Degeneracy"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "startLine": 200,
+      "endLine": 218,
+      "summary": "Related Problems"
+    },
+    {
+      "id": "probabilistic-method-connectio",
+      "title": "Probabilistic Method Connection",
+      "startLine": 219,
+      "endLine": 242,
+      "summary": "Probabilistic Method Connection"
+    },
+    {
+      "id": "main-results-summary",
+      "title": "Main Results Summary",
+      "startLine": 243,
+      "endLine": 274,
+      "summary": "Main Results Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #926 is SOLVED. The answer is YES: ex(n; H_k) ≪_k n^(3/2) for all k ≥ 4. The tight bound is Θ_k(n^(3/2)), with the lower bound from C_4 containment and the upper bound from Alon-Krivelevich-Sudakov.",
     "implications": "This confirms the expected behavior for 2-degenerate graphs and connects to the broader 2-degenerate conjecture (Problem 146). The techniques developed, particularly dependent random choice, have become fundamental in extremal combinatorics.",
