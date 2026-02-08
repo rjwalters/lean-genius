@@ -82,6 +82,14 @@ axiom extremal_set_triangle_free (n : ℕ) :
     a ≠ b → b ≠ c → a ≠ c →
     ¬(Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c)
 
+/--
+Odd cycles in coprime graphs correspond to coprime chains.
+A cycle a₁ - a₂ - ... - aₖ - a₁ means each consecutive pair is coprime.
+-/
+def isCoprimeCycle (cycle : List ℕ) : Prop :=
+  cycle.length ≥ 3 ∧
+  (∀ i : Fin cycle.length, Nat.Coprime (cycle.get i) (cycle.get ⟨(i.val + 1) % cycle.length, by omega⟩))
+
 /- ## Part III: Erdős-Sárkőzy Theorem on Odd Cycles -/
 
 /--
@@ -94,8 +102,8 @@ axiom erdos_sarkozy_odd_cycles (n : ℕ) (A : Finset ℕ) (hn : n ≥ 1)
     (hsize : A.card > threshold n) :
     ∃ c : ℚ, c > 0 ∧
     ∀ k : ℕ, k ≥ 3 → k % 2 = 1 → k ≤ c * n →
-    -- G(A) contains a cycle of length k
-    True
+    ∃ cycle : List ℕ, cycle.length = k ∧ isCoprimeCycle cycle ∧
+      ∀ x ∈ cycle, x ∈ A
 
 /- ## Part IV: Question 1 - All Short Odd Cycles -/
 
@@ -109,15 +117,17 @@ def erdos_883_question_1 (n : ℕ) (A : Finset ℕ) : Prop :=
   A ⊆ Finset.range (n + 1) →
   A.card > threshold n →
   ∀ k : ℕ, k ≥ 3 → k % 2 = 1 → k ≤ n / 3 + 1 →
-  -- G(A) contains a cycle of length k
-  True
+  ∃ cycle : List ℕ, cycle.length = k ∧ isCoprimeCycle cycle ∧
+    ∀ x ∈ cycle, x ∈ A
 
 /--
-Question 1 remains open.
-Erdős-Sárkőzy proved a weaker version with some constant c < 1/3.
+Question 1 remains open: the specific constant 1/3 has not been proved.
+Erdős-Sárkőzy proved the weaker version with some constant c < 1/3.
+The conjecture is that the answer is YES.
 -/
-axiom question_1_open : ∃ n : ℕ, ∃ A : Finset ℕ,
-    ¬(erdos_883_question_1 n A) ∨ erdos_883_question_1 n A
+axiom question_1_conjecture :
+    ∀ n : ℕ, n ≥ 100 → ∀ A : Finset ℕ,
+    erdos_883_question_1 n A
 
 /- ## Part V: Sárkőzy's Theorem on Complete Tripartite Subgraphs -/
 
@@ -176,7 +186,10 @@ theorem erdos_883_partial :
     ∀ n ≥ 1, ∀ A : Finset ℕ,
     A ⊆ Finset.range (n + 1) →
     A.card > threshold n →
-    ∃ c : ℚ, c > 0 ∧ True := by
+    ∃ c : ℚ, c > 0 ∧
+    ∀ k : ℕ, k ≥ 3 → k % 2 = 1 → k ≤ c * n →
+    ∃ cycle : List ℕ, cycle.length = k ∧ isCoprimeCycle cycle ∧
+      ∀ x ∈ cycle, x ∈ A := by
   intro n hn A hA hsize
   exact erdos_sarkozy_odd_cycles n A hn hA hsize
 
@@ -195,21 +208,15 @@ theorem erdos_883 :
 /- ## Part VII: Properties of the Coprime Graph -/
 
 /--
-The coprime graph has high chromatic number for large sets.
+The coprime graph on sets above the threshold has chromatic number ≥ 3.
+This is because it contains odd cycles, and bipartite graphs have chromatic number ≤ 2.
 -/
-axiom coprime_graph_chromatic (n : ℕ) (A : Finset ℕ) (hn : n ≥ 1)
+axiom coprime_graph_chromatic (n : ℕ) (A : Finset ℕ) (hn : n ≥ 10)
     (hA : A ⊆ Finset.range (n + 1))
     (hsize : A.card > threshold n) :
-    -- Chromatic number is unbounded
-    True
-
-/--
-Odd cycles in coprime graphs correspond to coprime chains.
-A cycle a₁ - a₂ - ... - aₖ - a₁ means each consecutive pair is coprime.
--/
-def isCoprimeCycle (cycle : List ℕ) : Prop :=
-  cycle.length ≥ 3 ∧
-  (∀ i : Fin cycle.length, Nat.Coprime (cycle.get i) (cycle.get ⟨(i.val + 1) % cycle.length, by omega⟩))
+    ∃ a b c : ℕ, a ∈ A ∧ b ∈ A ∧ c ∈ A ∧
+      a ≠ b ∧ b ≠ c ∧ a ≠ c ∧
+      Nat.Coprime a b ∧ Nat.Coprime b c ∧ Nat.Coprime a c
 
 /--
 Small odd cycles always exist above threshold.
