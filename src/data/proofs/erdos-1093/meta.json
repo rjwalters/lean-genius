@@ -4,7 +4,7 @@
   "slug": "erdos-1093",
   "description": "For n ≥ 2k with C(n,k) having no prime factor ≤ k, the deficiency counts k-smooth terms among n, n-1, ..., n-k+1. Are there infinitely many with deficiency 1? Only finitely many with deficiency > 1? OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős–Lacampagne–Selfridge",
     "sourceUrl": "https://erdosproblems.com/1093",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1093Problem.lean",
@@ -18,70 +18,89 @@
     "sorries": 0,
     "erdosNumber": 1093,
     "erdosUrl": "https://erdosproblems.com/1093",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "references": [
+      "Erdős, Lacampagne & Selfridge (1988), 'Selfridge's conjecture on binomial coefficients'",
+      "Erdős, Lacampagne & Selfridge (1993), 'Estimates of the least prime factor of a binomial coefficient'",
+      "West Coast Number Theory Conference (1986), problem presentation",
+      "Kummer (1852), theorem on prime factorization of binomial coefficients",
+      "Dickman (1930), distribution of smooth numbers",
+      "OEIS: related sequences on smooth numbers in consecutive ranges",
+      "https://erdosproblems.com/1093"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős, Lacampagne, and Selfridge (1988, 1993) studied the deficiency of binomial coefficients, measuring how many falling factorial terms are smooth. The problem was also presented at the 1986 West Coast Number Theory conference.",
-    "problemStatement": "For n ≥ 2k, if C(n,k) has no prime factor ≤ k, the deficiency counts k-smooth values among n, n-1, ..., n-k+1. (i) Are there infinitely many with deficiency 1? (ii) Are there only finitely many with deficiency > 1?",
-    "proofStrategy": "We define IsKSmooth, NoSmallPrimeFactors, and deficiency as a Finset cardinality. ErdosProblem1093i (infinitely many deficiency-1) and ErdosProblem1093ii (finitely many deficiency > 1) are stated. Known examples (C(7,3), C(13,4), C(284,28)) and the ELS upper bound n ≪ 2^k·√k are axiomatized. Proved: large_factor_no_contribution.",
+    "historicalContext": "Erdős, Lacampagne, and Selfridge developed this problem across two papers (1988, 1993) and first presented it at the 1986 West Coast Number Theory conference. The question arose from their broader investigation into the prime factorization of binomial coefficients, specifically when $\\binom{n}{k}$ has no 'small' prime factors (all primes dividing it exceed $k$). Under this condition, the falling factorial $n(n-1)\\cdots(n-k+1)$ has a delicate balance: the small prime factors must cancel exactly with $k!$, and the 'deficiency' measures excess smoothness. The ELS upper bound $n \\ll 2^k \\sqrt{k}$ (1993) constrains the search space but leaves both parts of the conjecture open. The problem connects to Dickman's function ($\\Psi(x, y)$ counting $y$-smooth numbers up to $x$), Kummer's theorem (1852) on carries in base-$p$ addition characterizing $v_p(\\binom{n}{k})$, and the broader Erdős program on arithmetic properties of binomial coefficients. The record deficiency of 9 for $\\binom{284}{28}$ has stood since the original investigation, and computational searches have found at least 58 deficiency-1 examples for $n \\leq 10^5$.",
+    "problemStatement": "For $n \\geq 2k$, if $\\binom{n}{k}$ has no prime factor $\\leq k$, the deficiency $d(n,k) = |\\{0 \\leq i < k : n - i \\text{ is } k\\text{-smooth}\\}|$. (i) Is $\\{(n,k) : d(n,k) = 1\\}$ infinite? (ii) Is $\\{(n,k) : d(n,k) > 1\\}$ finite?",
+    "proofStrategy": "The formalization defines `IsKSmooth` (all prime factors $\\leq k$), `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$), and `deficiency` as a `Finset.filter` cardinality. Both parts of the conjecture are stated as `Prop`s using `Set.Infinite` and `Set.Finite`. Known examples, the ELS bound, and a computational census ($\\geq 58$ examples) are axiomatized. One theorem is fully proved: large prime factors exclude terms from the deficiency count.",
     "keyInsights": [
-      "Deficiency measures how many terms in the falling factorial n(n-1)···(n-k+1) are k-smooth",
-      "C(7,3) = 35 and C(13,4) = 715 are examples with deficiency 1",
-      "C(284,28) has the highest known deficiency of 9",
-      "The ELS upper bound n ≪ 2^k·√k constrains where deficiency can be positive"
+      "The deficiency measures 'excess smoothness' in the falling factorial: terms $n - i$ that are $k$-smooth contribute to $d(n,k)$, and these smooth terms are the ones whose prime factors cancel with $k!$ in $\\binom{n}{k} = \\prod(n-i)/k!$",
+      "The NoSmallPrimeFactors condition is equivalent to zero carries in base-$p$ addition of $k$ and $n-k$ for all primes $p \\leq k$ (by Kummer's theorem), a highly restrictive arithmetic condition on the pair $(n, k)$",
+      "The ELS bound $n \\leq C \\cdot 2^k \\sqrt{k}$ means that for fixed $k$, only finitely many $n$ have positive deficiency—but since $2^k$ grows exponentially, the total number of pairs across all $k$ could still be infinite",
+      "The record $d(284, 28) = 9$ shows remarkably high smooth number concentration in a short interval: 9 of 28 consecutive integers near 284 have all prime factors $\\leq 28$, roughly matching Dickman-function predictions",
+      "Smooth numbers ($B$-smooth) play a central role in computational number theory: the quadratic sieve and number field sieve both depend on finding $B$-smooth values, making the distribution theory behind this problem algorithmically significant",
+      "Part (ii) is strictly stronger than Part (i): if both are true, deficiency-1 examples occur infinitely often but high deficiency ($\\geq 2$) is a finite phenomenon concentrated among small parameters"
     ]
   },
   "sections": [
+    {
+      "id": "header-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Docstring citing Erdős–Lacampagne–Selfridge (1988, 1993). Imports Nat.Prime.Basic, Nat.Choose.Basic, Nat.Factorization.Basic, Finset.Card, Real.Sqrt, and Tactic."
+    },
     {
       "id": "smooth-numbers",
       "title": "Smooth Numbers",
       "startLine": 22,
       "endLine": 28,
-      "summary": "Defines IsKSmooth: m is k-smooth if all prime factors of m are ≤ k."
+      "summary": "Defines `IsKSmooth k m`: all prime factors of $m$ are $\\leq k$. The fundamental smoothness predicate used throughout."
     },
     {
       "id": "deficiency",
-      "title": "Deficiency",
+      "title": "Deficiency Definition",
       "startLine": 30,
       "endLine": 41,
-      "summary": "Defines NoSmallPrimeFactors and deficiency as count of k-smooth terms in the falling factorial."
+      "summary": "Defines `NoSmallPrimeFactors` (no prime $\\leq k$ divides $\\binom{n}{k}$) and `deficiency` (count of $k$-smooth terms in the falling factorial via `Finset.filter`)."
     },
     {
       "id": "conjectures",
-      "title": "The Conjectures",
+      "title": "The Two Conjectures",
       "startLine": 43,
       "endLine": 63,
-      "summary": "States ErdosProblem1093i (infinitely many deficiency-1) and ErdosProblem1093ii (finitely many deficiency > 1)."
+      "summary": "Part (i): $\\text{Set.Infinite}$ for deficiency-1 pairs. Part (ii): $\\text{Set.Finite}$ for deficiency $> 1$ pairs. Combined as `ErdosProblem1093`."
     },
     {
       "id": "examples",
       "title": "Known Examples",
       "startLine": 65,
       "endLine": 77,
-      "summary": "Specific deficiency values: C(7,3) and C(13,4) have deficiency 1; C(284,28) has deficiency 9."
+      "summary": "Computed values: $d(7,3) = 1$, $d(13,4) = 1$, and $d(284,28) = 9$ (the record)."
     },
     {
       "id": "upper-bound",
-      "title": "Upper Bound",
+      "title": "ELS Upper Bound and Census",
       "startLine": 79,
       "endLine": 93,
-      "summary": "ELS (1993) upper bound: if deficiency ≥ 1 then n ≪ 2^k·√k. At least 58 examples known."
+      "summary": "ELS (1993) bound $n \\leq C \\cdot 2^k \\sqrt{k}$ for positive deficiency. At least 58 deficiency-1 examples known for $n \\leq 10^5$."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 95,
       "endLine": 107,
-      "summary": "Proved: if n-i has a prime factor > k, it is not k-smooth and does not contribute to deficiency."
+      "summary": "Proved theorem: if $n - i$ has a prime factor $> k$, it is not $k$-smooth and does not contribute to deficiency. Uses `omega` tactic."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 1093 asks about the distribution of deficiency values for binomial coefficients. Part (i) conjectures infinitely many deficiency-1 cases; part (ii) conjectures finitely many with deficiency > 1. Both remain open.",
-    "implications": "Resolution would deepen understanding of prime factorization patterns in binomial coefficients and the distribution of smooth numbers in short intervals.",
+    "summary": "This formalization captures Erdős Problem #1093, an open problem about the distribution of smooth numbers within falling factorial terms of binomial coefficients. The deficiency function $d(n,k)$ counts $k$-smooth terms among $n, n-1, \\ldots, n-k+1$ when $\\binom{n}{k}$ has no small prime factors. Part (i) conjectures infinitely many deficiency-1 cases; Part (ii) conjectures finitely many with deficiency $> 1$. The formalization includes 107 lines of Lean 4 with the ELS upper bound, 58+ computational examples, and one fully proved structural lemma.",
+    "implications": "Resolution would illuminate the interaction between smooth number distribution (Dickman's function) and the arithmetic structure of binomial coefficients. A proof of Part (ii) would establish that high concentrations of smooth numbers in short intervals, under the NoSmallPrimeFactors constraint, are a finite phenomenon—providing a surprising rigidity result in multiplicative number theory.",
     "openQuestions": [
       "Are there infinitely many binomial coefficients with deficiency 1?",
-      "Is C(284,28) with deficiency 9 the maximum?",
-      "Can the ELS upper bound n ≪ 2^k·√k be improved?"
+      "Is $d(284, 28) = 9$ the maximum possible deficiency, or do higher values exist?",
+      "Can the ELS upper bound $n \\ll 2^k \\sqrt{k}$ be improved to polynomial in $k$, which would resolve Part (ii)?",
+      "What is the connection between deficiency and the distribution of primes in short intervals (the Selberg sieve perspective)?"
     ]
   }
 }
