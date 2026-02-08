@@ -2,68 +2,99 @@
   "id": "erdos-935",
   "title": "Erdős Problem #935: Powerful Part of Consecutive Products",
   "slug": "erdos-935",
-  "description": "Three questions about Q₂(n(n+1)⋯(n+ℓ)), the powerful part of consecutive products: upper bound n^{2+ε}, divergent lim sup, and vanishing ratio.",
+  "description": "Three questions about Q₂(n(n+1)···(n+ℓ)), the powerful part of consecutive products: upper bound n^{2+ε}, divergent lim sup, and vanishing ratio.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/935",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos935Problem.lean",
-    "tags": ["number theory", "powerful numbers", "consecutive products"],
+    "tags": ["number-theory", "powerful-numbers", "consecutive-products"],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 935,
     "erdosUrl": "https://erdosproblems.com/935",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat",
+        "description": "Natural number arithmetic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for product computation",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational number arithmetic for bounds",
+        "module": "Mathlib.Data.Rat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatised powerfulPart (Q₂) with properties: Q₂(1)=1, divisibility, powerful, multiplicativity",
+      "Defined consecutiveProduct n(n+1)···(n+ℓ) using Finset.range",
+      "Defined Q2consec as the powerful part of consecutive products",
+      "Stated Mahler's lower bound: lim sup Q₂/n² ≥ 1",
+      "Stated Part 1: Q₂ < n^{2+ε} for large n (upper bound conjecture)",
+      "Stated Part 2: lim sup Q₂/n² = ∞ for ℓ ≥ 2 (divergence conjecture)",
+      "Stated Part 3: Q₂/n^{ℓ+1} → 0 for ℓ ≥ 2 (vanishing ratio conjecture)",
+      "Combined all three parts in ErdosProblem935"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős asked about the growth of the powerful part Q₂(n(n+1)⋯(n+ℓ)), the product of prime powers p^{kₚ} with kₚ ≥ 2 in the factorisation. Mahler proved lim sup Q₂/n² ≥ 1. All three questions remain open. Erdős remarked the problem 'seems very difficult to prove.'",
-    "problemStatement": "For ℓ ≥ 1: (1) Is Q₂(n(n+1)⋯(n+ℓ)) < n^{2+ε} for large n? (2) For ℓ ≥ 2, is lim sup Q₂/n² = ∞? (3) Does Q₂/n^{ℓ+1} → 0?",
-    "proofStrategy": "The formalization axiomatises the powerful part Q₂ with its basic properties (divisibility, powerful, multiplicative). Consecutive products and their powerful parts are defined. Mahler's lower bound and all three conjectures are stated.",
+    "historicalContext": "Erdős studied the powerful part of integers — the product of all prime power factors p^k with k ≥ 2 — as a measure of how 'square-full' a number is. For a single integer n, Q₂(n) captures the contribution of repeated prime factors. When applied to products of consecutive integers n(n+1)···(n+ℓ), the powerful part reflects the distribution of large prime powers across nearby integers.\n\nMahler proved the fundamental lower bound: for every ℓ ≥ 1, there are infinitely many n with Q₂(n(n+1)···(n+ℓ)) ≥ n². This shows that the powerful part can be as large as n², at least infinitely often. Erdős then asked three progressively finer questions about the growth rate.\n\nErdős remarked that the problems 'seem very difficult to prove,' placing them among his harder conjectures in multiplicative number theory. The interplay between consecutive integers and prime factorization is subtle: while consecutive integers are coprime in pairs, products of several consecutive integers can accumulate large prime powers through coincidences in the prime factorization structure.",
+    "problemStatement": "For ℓ ≥ 1: (1) Is Q₂(n(n+1)···(n+ℓ)) < n^{2+ε} for large n? (2) For ℓ ≥ 2, is lim sup Q₂/n² = ∞? (3) Does Q₂/n^{ℓ+1} → 0?",
+    "proofStrategy": "The formalization axiomatises the powerful part Q₂ with its basic properties (Q₂(1)=1, divisibility, powerful, multiplicativity). Consecutive products are defined via Finset.range. Mahler's lower bound and all three conjectures are stated, then combined in ErdosProblem935.",
     "keyInsights": [
-      "Q₂(n) extracts the 'square-full' part of the prime factorisation",
-      "Mahler proved lim sup Q₂(n(n+1)⋯(n+ℓ))/n² ≥ 1",
-      "Part 1 asks for the upper bound n^{2+ε}, just above the Mahler threshold",
-      "Parts 2 and 3 ask whether ℓ ≥ 2 consecutive factors push Q₂ beyond n² but not as far as n^{ℓ+1}"
+      "**Powerful Part Q₂**: Extracts the 'square-full' component of the prime factorization — the product of all p^k with k ≥ 2",
+      "**Mahler's Threshold**: lim sup Q₂(n···(n+ℓ))/n² ≥ 1 establishes n² as the natural scale for the powerful part",
+      "**Three-Level Structure**: Part 1 (upper bound n^{2+ε}) → Part 2 (lim sup diverges for ℓ ≥ 2) → Part 3 (ratio vanishes against n^{ℓ+1}) forms a coherent picture of Q₂'s growth",
+      "**Consecutive Integer Structure**: Products of consecutive integers are coprime in pairs, but their powerful parts interact through shared prime power divisors",
+      "**Multiplicativity**: Q₂(ab) = Q₂(a)·Q₂(b) for coprime a,b — this is the key algebraic property enabling analysis"
     ]
   },
   "sections": [
     {
       "id": "powerful-part",
       "title": "Powerful Part",
-      "startLine": 22,
-      "endLine": 44,
-      "summary": "Axiomatisation of Q₂(n) with divisibility, powerful property, and multiplicativity."
+      "startLine": 29,
+      "endLine": 48,
+      "summary": "Axiomatises powerfulPart with four properties: Q₂(1)=1, Q₂(n)|n, Q₂(n) is powerful, Q₂ is multiplicative on coprimes."
     },
     {
       "id": "consecutive-products",
       "title": "Consecutive Products",
-      "startLine": 46,
-      "endLine": 53,
-      "summary": "Product n(n+1)⋯(n+ℓ) and its powerful part Q₂."
+      "startLine": 50,
+      "endLine": 58,
+      "summary": "Defines consecutiveProduct n(n+1)···(n+ℓ) via Finset.range and Q2consec as its powerful part."
     },
     {
       "id": "mahler",
       "title": "Mahler's Result",
-      "startLine": 55,
-      "endLine": 62,
-      "summary": "Mahler's lower bound: lim sup Q₂(⋯)/n² ≥ 1."
+      "startLine": 60,
+      "endLine": 67,
+      "summary": "Mahler's lower bound: for every ℓ ≥ 1, lim sup Q₂(···)/n² ≥ 1 — infinitely many n achieve Q₂ ≥ n²."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
-      "startLine": 64,
-      "endLine": 89,
-      "summary": "Three open questions: n^{2+ε} upper bound, divergent lim sup for ℓ ≥ 2, and vanishing Q₂/n^{ℓ+1}."
+      "startLine": 69,
+      "endLine": 93,
+      "summary": "Three open questions formalized: Part 1 (n^{2+ε} upper bound), Part 2 (divergent lim sup for ℓ ≥ 2), Part 3 (vanishing Q₂/n^{ℓ+1}). Combined in ErdosProblem935."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures all three parts of Erdős Problem 935 about the powerful part of consecutive products, along with Mahler's known lower bound.",
-    "implications": "These questions probe the distribution of large prime powers in consecutive products and the interplay between multiplicative number theory and Diophantine approximation.",
+    "summary": "The formalization captures all three parts of Erdős Problem 935 about the powerful part of consecutive products, along with Mahler's known lower bound. All three parts remain open.",
+    "implications": "These questions probe the distribution of large prime powers in consecutive products and the interplay between multiplicative number theory and Diophantine approximation. A resolution would illuminate how 'square-full' factors distribute across nearby integers.",
     "openQuestions": [
-      "Is Q₂(n(n+1)⋯(n+ℓ)) < n^{2+ε} for all large n?",
+      "Is Q₂(n(n+1)···(n+ℓ)) < n^{2+ε} for all large n?",
       "Is lim sup Q₂/n² = ∞ when ℓ ≥ 2?",
       "Does Q₂/n^{ℓ+1} → 0 when ℓ ≥ 2?",
-      "What about the generalisation to Q_r for r > 2?"
+      "What about the generalisation to Q_r for r-powerful parts (r > 2)?",
+      "Can sieve methods or the abc conjecture make progress on Part 1?"
     ]
   }
 }
