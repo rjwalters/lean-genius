@@ -134,8 +134,8 @@ A random 3-uniform hypergraph on 3n vertices with m edges
 contains n vertex-disjoint edges.
 -/
 def ShamirProperty (n m : ℕ) : Prop :=
-  -- In the probability model, a.s. has n disjoint edges
-  True  -- Placeholder for probabilistic statement
+  -- Every 3-uniform hypergraph on 3n vertices with m edges has n disjoint edges
+  ∀ (H : Hypergraph (Fin (3 * n)) 3), H.edges.card = m → HasDisjointEdges H n
 
 /--
 **Shamir's Question:**
@@ -207,7 +207,8 @@ The main obstruction below the threshold is the existence of isolated vertices.
 -/
 axiom isolated_vertices_obstruction :
   ∀ ε > 0, AlmostSurely (fun n =>
-    True)  -- Placeholder: vertices with degree 0 exist w.h.p.
+    ∃ v : Fin (3 * n), ∀ (e : Finset (Fin (3 * n))), e.card = 3 → v ∉ e)
+  -- Below threshold, isolated vertices (in no hyperedge) exist w.h.p.
 
 /-
 ## Part VII: Above the Threshold
@@ -276,6 +277,23 @@ when does G(n, p) contain a given subgraph?
 ## Part X: Summary
 -/
 
+/-- Erdős Problem #747: SOLVED
+    The threshold for perfect matchings in random 3-uniform hypergraphs exists
+    and equals n log n (Johansson-Kahn-Vu 2008, Kahn 2023). -/
+axiom erdos_747 : ShamirQuestion
+  -- Follows from below_threshold_fails and above_threshold_succeeds
+
+/--
+**The Answer:**
+The threshold for perfect matchings in random 3-uniform hypergraphs is n log n.
+-/
+theorem erdos_747_answer :
+    Filter.Tendsto
+      (fun n : ℕ => (shamirThreshold n : ℝ) / (n * Real.log n))
+      Filter.atTop
+      (nhds 1) :=
+  kahn_precise_threshold
+
 /--
 **Complete Solution to Erdős Problem #747 (Shamir's Problem):**
 
@@ -304,35 +322,9 @@ theorem erdos_747_summary :
         c * n * Real.log n ≤ shamirThreshold n ∧
         shamirThreshold n ≤ C * n * Real.log n) ∧
     -- Precise asymptotic is ~ n log n
-    True := by
-  constructor
-  · -- Threshold exists
-    unfold ShamirQuestion
-    use shamirThreshold
-    unfold IsThreshold AlmostSurely
-    constructor <;> intro ε hε <;> use 1 <;> intros <;> trivial
-  constructor
-  · exact johansson_kahn_vu
-  · trivial
-
-/--
-**Erdős Problem #747: SOLVED**
--/
-theorem erdos_747 : ShamirQuestion := by
-  unfold ShamirQuestion
-  use shamirThreshold
-  unfold IsThreshold AlmostSurely
-  constructor <;> intro ε hε <;> use 1 <;> intros <;> trivial
-
-/--
-**The Answer:**
-The threshold for perfect matchings in random 3-uniform hypergraphs is n log n.
--/
-theorem erdos_747_answer :
     Filter.Tendsto
       (fun n : ℕ => (shamirThreshold n : ℝ) / (n * Real.log n))
-      Filter.atTop
-      (nhds 1) :=
-  kahn_precise_threshold
+      Filter.atTop (nhds 1) :=
+  ⟨erdos_747, johansson_kahn_vu, kahn_precise_threshold⟩
 
 end Erdos747
