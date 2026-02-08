@@ -5,7 +5,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Topology.MetricSpace.Basic
 
-/-!
+/-
 # Borsuk-Ulam Theorem
 
 ## What This Proves
@@ -83,7 +83,7 @@ def HasAntipodalPair (f : SphereFun n) : Prop :=
 -- PART 3: The Gadget Function
 -- ============================================================
 
-/-!
+/-
 KEY CONSTRUCTION: The "gadget" function.
 
 Given f: Sⁿ → Rⁿ, define g: Sⁿ → Rⁿ by:
@@ -108,7 +108,7 @@ theorem gadget_odd (f : SphereFun n) (x : EuclideanSpace ℝ (Fin (n + 1))) :
 -- PART 4: No Odd Map Theorem
 -- ============================================================
 
-/-!
+/-
 KEY LEMMA: There is no continuous odd map from Sⁿ to Sⁿ⁻¹ (for n ≥ 1).
 
 This is the deep topological result underlying Borsuk-Ulam. The classical proof uses:
@@ -159,7 +159,7 @@ theorem no_odd_map_to_lower_sphere (hn : n ≥ 1) :
 -- PART 5: The Borsuk-Ulam Theorem
 -- ============================================================
 
-/-!
+/-
 MAIN THEOREM: For any continuous f: Sⁿ → Rⁿ, there exists x ∈ Sⁿ
 such that f(x) = f(-x).
 
@@ -217,7 +217,7 @@ theorem borsuk_ulam (hn : n ≥ 1) (f : SphereFun n) :
 -- PART 6: Special Cases
 -- ============================================================
 
-/-!
+/-
 ### Special Cases
 
 **n = 1**: Every continuous f: S¹ → ℝ has f(x) = f(-x) for some x.
@@ -239,7 +239,7 @@ theorem borsuk_ulam_dim_2 (f : SphereFun 2) : HasAntipodalPair 2 f :=
 -- PART 7: Applications
 -- ============================================================
 
-/-!
+/-
 ### The Ham Sandwich Theorem
 
 Given n measurable sets in Rⁿ, there exists a single hyperplane
