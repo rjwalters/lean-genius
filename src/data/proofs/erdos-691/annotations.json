@@ -1,74 +1,86 @@
 [
   {
-    "id": "multiples-set",
+    "id": "ann-e691-header",
     "proofId": "erdos-691",
-    "type": "definition",
-    "title": "Set of Multiples",
-    "content": "M_A = {n ≥ 1 : a | n for some a ∈ A} — the set of all positive integers divisible by at least one element of A.",
-    "significance": "critical",
-    "range": {
-      "startLine": 23,
-      "endLine": 25
-    }
-  },
-  {
-    "id": "behrend-sequence",
-    "proofId": "erdos-691",
-    "type": "definition",
-    "title": "Behrend Sequence",
-    "content": "A is a Behrend sequence if its set of multiples M_A has asymptotic density 1, meaning almost all positive integers are divisible by some element of A.",
-    "significance": "critical",
-    "range": {
-      "startLine": 34,
-      "endLine": 36
-    }
-  },
-  {
-    "id": "coprime-criterion",
-    "proofId": "erdos-691",
-    "type": "theorem",
-    "title": "Coprime Behrend Criterion",
-    "content": "For pairwise coprime sets A (excluding 1): A is Behrend if and only if Σ 1/a diverges.",
-    "significance": "critical",
-    "range": {
-      "startLine": 54,
-      "endLine": 56
-    }
-  },
-  {
-    "id": "primes-behrend",
-    "proofId": "erdos-691",
-    "type": "theorem",
-    "title": "Primes Are Behrend",
-    "content": "The set of all primes is a Behrend sequence, since Σ 1/p diverges and primes are pairwise coprime.",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "context",
+    "title": "Problem Statement, Imports, and Namespace",
+    "content": "Erdős Problem #691 asks for a necessary and sufficient condition for a set $A \\subseteq \\mathbb{N}$ to be a **Behrend sequence** — one whose set of multiples $M_A = \\{n : a | n \\text{ for some } a \\in A\\}$ has asymptotic density 1. The problem connects multiplicative number theory (divisibility structure) with additive number theory (counting and density). Known partial results: for pairwise coprime $A$, Behrend $\\iff \\sum 1/a = \\infty$; for lacunary block sequences, Tenenbaum (1996) found the sharp threshold $\\beta_0 = \\log 2$. Imports include `Data.Real.Basic` for density computations and `Order.Filter.AtTopBot` for limsup/liminf.",
+    "mathContext": "Behrend sequence: $A$ with $d(M_A) = 1$. Known: coprime $A \\Rightarrow$ Behrend $\\iff \\sum 1/a = \\infty$. Block sequences: Behrend $\\iff \\beta < \\log 2$ (Tenenbaum 1996). General criterion: OPEN.",
     "significance": "key",
-    "range": {
-      "startLine": 59,
-      "endLine": 61
-    }
+    "relatedConcepts": ["Behrend sequences", "density of multiples", "multiplicative number theory", "Tenenbaum's theorem"],
+    "prerequisites": ["asymptotic density", "divisibility", "Filter.Tendsto"]
   },
   {
-    "id": "tenenbaum-threshold",
+    "id": "ann-e691-density",
     "proofId": "erdos-691",
+    "range": { "startLine": 28, "endLine": 50 },
+    "type": "definition",
+    "title": "Density Infrastructure: Counting Function, Upper/Lower Density, Asymptotic Density",
+    "content": "Defines the counting function $\\pi_S(n) = |S \\cap [0, n]|$ via `Finset.range` and `filter`. Upper density is $\\overline{d}(S) = \\limsup_{n \\to \\infty} \\pi_S(n)/n$ and lower density is $\\underline{d}(S) = \\liminf_{n \\to \\infty} \\pi_S(n)/n$, using Mathlib's `limsup`/`liminf` with `Filter.atTop`. A set has asymptotic density $d$ when $\\pi_S(n)/n \\to d$, formalized via `Filter.Tendsto`. `HasDensityOne` is the special case $d = 1$. This infrastructure is reusable for other density problems (e.g., Erdős-Kac, Davenport-Erdős).",
+    "mathContext": "$\\pi_S(n) = |S \\cap \\{0, \\ldots, n\\}|$. $\\overline{d}(S) = \\limsup \\pi_S(n)/n$, $\\underline{d}(S) = \\liminf \\pi_S(n)/n$. `HasDensity S d` $\\equiv \\pi_S(n)/n \\to d$. `HasDensityOne S` $\\equiv$ `HasDensity S 1`.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic density", "natural density", "limsup", "liminf", "Filter.Tendsto"],
+    "prerequisites": ["real analysis", "limits", "Filter.atTop"]
+  },
+  {
+    "id": "ann-e691-multiples",
+    "proofId": "erdos-691",
+    "range": { "startLine": 51, "endLine": 59 },
+    "type": "definition",
+    "title": "Set of Multiples and Behrend Property",
+    "content": "`multiplesOf A` is $M_A = \\{n > 0 : \\exists a \\in A, a | n\\}$ — all positive integers divisible by at least one element of $A$. `IsBehrend A` asserts $d(M_A) = 1$, meaning 'almost all' positive integers have a divisor in $A$. The Davenport-Erdős theorem (1936/1951) shows that $M_A$ always has a natural density when $A$ is infinite, so the question is whether this density equals 1.",
+    "mathContext": "`multiplesOf A` $= \\{n > 0 : \\exists a \\in A, a | n\\}$. `IsBehrend A` $\\equiv d(M_A) = 1$. Davenport-Erdős: $d(M_A)$ exists for any $A$.",
+    "significance": "key",
+    "relatedConcepts": ["Davenport-Erdős theorem", "divisor sets", "multiplicative structure"],
+    "prerequisites": ["divisibility", "density"]
+  },
+  {
+    "id": "ann-e691-structural",
+    "proofId": "erdos-691",
+    "range": { "startLine": 60, "endLine": 122 },
+    "type": "proof",
+    "title": "Structural Lemmas for Multiples (Fully Proved)",
+    "content": "Six fully machine-checked lemmas establishing basic properties of $M_A$: (1) `mem_multiplesOf` — membership characterization by `rfl`; (2) `multiplesOf_mono` — $A \\subseteq B \\Rightarrow M_A \\subseteq M_B$; (3) `multiplesOf_empty` — $M_\\emptyset = \\emptyset$; (4) `self_mem_multiplesOf` — $a \\in A, a > 0 \\Rightarrow a \\in M_A$; (5) `mul_mem_multiplesOf` — $a \\in A, k > 0 \\Rightarrow ka \\in M_A$; (6) `multiplesOf_mul_closed` — $M_A$ is closed under positive multiples; (7) `multiplesOf_union` — $M_{A \\cup B} = M_A \\cup M_B$; (8) `countingFunction_mono` and `countingFunction_le` — monotonicity and boundedness of counting functions. These are notable as complete Lean proofs requiring no axioms.",
+    "mathContext": "Proved: $A \\subseteq B \\Rightarrow M_A \\subseteq M_B$. $M_\\emptyset = \\emptyset$. $a \\in A \\Rightarrow a \\in M_A$. $n \\in M_A, k > 0 \\Rightarrow kn \\in M_A$. $M_{A \\cup B} = M_A \\cup M_B$. $\\pi_A(n) \\le \\pi_B(n)$ if $A \\subseteq B$. $\\pi_S(n) \\le n + 1$.",
+    "significance": "key",
+    "relatedConcepts": ["set monotonicity", "closure properties", "counting function", "Finset.card_le_card"],
+    "prerequisites": ["Set operations", "Finset.filter", "divisibility transitivity"]
+  },
+  {
+    "id": "ann-e691-coprime",
+    "proofId": "erdos-691",
+    "range": { "startLine": 123, "endLine": 143 },
     "type": "insight",
-    "title": "Tenenbaum's Threshold",
-    "content": "For lacunary block sequences with geometric ratio and ηₖ = k^{−β}: the sequence is Behrend iff β < log 2 ≈ 0.693.",
+    "title": "Pairwise Coprime Characterization and Primes",
+    "content": "`IsPairwiseCoprime A` requires all elements $> 1$ and pairwise coprimality. `HasDivergentReciprocalSum A` formalizes $\\sum 1/a = \\infty$ via: for every $C > 0$, there exists a finite $S \\subseteq A$ with $\\sum_{a \\in S} 1/a \\ge C$. The axiom `coprime_behrend_iff` states the classical result: for pairwise coprime $A$, Behrend $\\iff \\sum 1/a = \\infty$. The forward direction uses inclusion-exclusion with Möbius function (coprimality makes cross terms vanish). The reverse uses that convergent $\\sum 1/a$ leaves a positive proportion uncovered. As a corollary, the primes form a Behrend sequence since $\\sum 1/p = \\infty$ (Euler) and primes are pairwise coprime.",
+    "mathContext": "Coprime criterion: $A$ pairwise coprime $\\Rightarrow$ (`IsBehrend A` $\\iff \\sum 1/a = \\infty$). Forward: $d(M_A) = 1 - \\prod_{a \\in A}(1 - 1/a)$, product diverges to 0 $\\iff \\sum 1/a = \\infty$. Primes: $\\sum 1/p = \\infty$ (Euler, Mertens).",
     "significance": "key",
-    "range": {
-      "startLine": 80,
-      "endLine": 84
-    }
+    "relatedConcepts": ["Euler's theorem on primes", "Mertens' theorems", "inclusion-exclusion", "Möbius function", "infinite products"],
+    "prerequisites": ["coprimality", "divergent series", "inclusion-exclusion principle"]
   },
   {
-    "id": "general-characterization",
+    "id": "ann-e691-block",
     "proofId": "erdos-691",
+    "range": { "startLine": 144, "endLine": 178 },
+    "type": "insight",
+    "title": "Block Sequences and Tenenbaum's $\\log 2$ Threshold",
+    "content": "`IsLacunaryBounded` defines sequences with bounded ratios $C_1 \\le n_{i+1}/n_i \\le C_2$ (lacunary with geometric growth). `IsBlockSequence A n η` defines $A = \\bigcup_k (n_k, (1+\\eta_k)n_k]$ — intervals ('blocks') centered at the $n_k$ with relative widths $\\eta_k$. If $\\sum \\eta_k < \\infty$, the blocks are too thin to cover density 1, axiomatized as `convergent_eta_not_behrend`. Tenenbaum's theorem gives the sharp threshold for power-law widths $\\eta_k = (k+1)^{-\\beta}$: Behrend $\\iff \\beta < \\log 2 \\approx 0.693$. The critical exponent $\\log 2$ arises from the interplay between the geometric growth of $n_k$ and the polynomial decay of block widths — it is the unique $\\beta_0$ where the 'covered proportion' transitions from 1 to less than 1.",
+    "mathContext": "Block sequence: $A = \\bigcup_k (n_k, (1+\\eta_k)n_k]$ with $C_1 \\le n_{k+1}/n_k \\le C_2$. $\\sum \\eta_k < \\infty \\Rightarrow \\neg$Behrend. Tenenbaum (1996): $\\eta_k = (k+1)^{-\\beta}$, Behrend $\\iff \\beta < \\log 2$.",
+    "significance": "key",
+    "relatedConcepts": ["lacunary sequences", "block sequences", "phase transition", "Tenenbaum's theorem", "critical exponent"],
+    "prerequisites": ["geometric sequences", "series convergence", "Real.log"]
+  },
+  {
+    "id": "ann-e691-open",
+    "proofId": "erdos-691",
+    "range": { "startLine": 180, "endLine": 197 },
     "type": "concept",
-    "title": "General Characterization",
-    "content": "The main open problem: find a necessary and sufficient condition P(A) such that A is Behrend iff P(A) holds, generalizing the coprime criterion.",
-    "significance": "critical",
-    "range": {
-      "startLine": 88,
-      "endLine": 95
-    }
+    "title": "The Open Problem: General Behrend Characterization",
+    "content": "The main open problem `erdos_691_general_characterization` asks for a predicate $P$ on sets such that $A$ is Behrend $\\iff P(A)$, with the coprime criterion as a special case. The formalization existentially quantifies over $P : \\text{Set } \\mathbb{N} \\to \\text{Prop}$ and requires consistency with the coprime characterization. The challenge is that beyond pairwise coprime sets, the divisibility structure introduces dependencies (e.g., $\\{4, 6\\}$ share factor 2), making inclusion-exclusion arguments require careful handling of GCD structure. Any general criterion must subsume both the coprime case (reciprocal sum divergence) and the block sequence case (Tenenbaum's threshold).",
+    "mathContext": "Open: $\\exists P: \\text{Set } \\mathbb{N} \\to \\text{Prop}$ with `IsBehrend A` $\\iff P(A)$ and $P(A) \\iff \\sum 1/a = \\infty$ when $A$ is coprime. Must handle GCD structure for non-coprime $A$.",
+    "significance": "key",
+    "relatedConcepts": ["characterization theorem", "GCD structure", "multiplicative independence", "Erdős density conjectures"],
+    "prerequisites": ["coprime criterion", "Tenenbaum's theorem", "abstract characterization"]
   }
 ]
