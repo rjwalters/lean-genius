@@ -22,6 +22,15 @@ occur with positive density, supporting an affirmative conjecture.
 
 **Reference:** Erdős & Graham 1980 [ErGr80]
 
+**Proved in this file (7 theorems):**
+- hasLargestPrimeFactor_iff: equivalence of largest prime factor definitions
+- zero_good: every prime is 0-good (p is largest prime factor of p²)
+- infinitely_many_zero_good: infinitely many 0-good primes
+- kGood_iff_smooth: k-good iff all p²+i are p-smooth
+- kGood_one_smooth_p2_plus_1: 1-good primes have all prime factors of p²+1 ≤ p
+- problem383_implies_382: k=1 case implies Problem 382 Part 2
+- consecutiveSquareProduct_pos: the product is always positive for prime p
+
 Adapted from formal-conjectures (Apache 2.0 License)
 -/
 
@@ -33,8 +42,6 @@ namespace Erdos383
 
 /-
 # Part 1: Prime Factor Definitions
-
-We need to work with the largest prime factor of a number.
 -/
 
 -- The set of prime factors
@@ -46,21 +53,29 @@ def hasLargestPrimeFactor (n : ℕ) (p : ℕ) : Prop :=
   p ∈ primeDivisors n ∧ ∀ q ∈ primeDivisors n, q ≤ p
 
 -- Equivalently, p divides n and all prime factors are ≤ p
-theorem hasLargestPrimeFactor_iff (n p : ℕ) (hn : n > 1) :
+theorem hasLargestPrimeFactor_iff (n p : ℕ) (hn : n ≠ 0) :
     hasLargestPrimeFactor n p ↔ p.Prime ∧ p ∣ n ∧ ∀ q, q.Prime → q ∣ n → q ≤ p := by
-  sorry
+  simp only [hasLargestPrimeFactor, primeDivisors]
+  constructor
+  · intro ⟨hp_mem, hmax⟩
+    rw [Nat.mem_primeFactors] at hp_mem
+    obtain ⟨hp_prime, hp_dvd, _⟩ := hp_mem
+    exact ⟨hp_prime, hp_dvd, fun q hq hqd =>
+      hmax q (Nat.mem_primeFactors.mpr ⟨hq, hqd, hn⟩)⟩
+  · intro ⟨hp_prime, hp_dvd, hmax⟩
+    exact ⟨Nat.mem_primeFactors.mpr ⟨hp_prime, hp_dvd, hn⟩,
+      fun q hq_mem => by
+        rw [Nat.mem_primeFactors] at hq_mem
+        exact hmax q hq_mem.1 hq_mem.2.1⟩
 
 /-
 # Part 2: The Product Definition
-
-The product ∏_{i=0}^k (p² + i) is k+1 consecutive integers starting at p².
 -/
 
 -- The product of p² + i for i from 0 to k
 def consecutiveSquareProduct (p k : ℕ) : ℕ :=
   ∏ i in Icc 0 k, (p ^ 2 + i)
 
--- This is the same as (p²)(p²+1)(p²+2)⋯(p²+k)
 theorem consecutiveSquareProduct_eq (p k : ℕ) :
     consecutiveSquareProduct p k = ∏ i in range (k + 1), (p ^ 2 + i) := by
   simp only [consecutiveSquareProduct]
@@ -68,12 +83,10 @@ theorem consecutiveSquareProduct_eq (p k : ℕ) :
   ext i
   simp [Nat.lt_add_one_iff]
 
--- For k = 0, the product is just p²
 theorem consecutiveSquareProduct_zero (p : ℕ) :
     consecutiveSquareProduct p 0 = p ^ 2 := by
   simp [consecutiveSquareProduct]
 
--- For k = 1, the product is p²(p² + 1)
 theorem consecutiveSquareProduct_one (p : ℕ) :
     consecutiveSquareProduct p 1 = p ^ 2 * (p ^ 2 + 1) := by
   simp [consecutiveSquareProduct]
@@ -81,129 +94,148 @@ theorem consecutiveSquareProduct_one (p : ℕ) :
 
 /-
 # Part 3: The Main Property
-
-We define when a prime p satisfies the Erdős condition for a given k.
 -/
 
--- A prime p is k-good if p is the largest prime factor of ∏_{i=0}^k (p² + i)
 def isKGood (p k : ℕ) : Prop :=
   p.Prime ∧ hasLargestPrimeFactor (consecutiveSquareProduct p k) p
 
--- Equivalent formulation: p divides the product and all prime factors are ≤ p
 def isKGood' (p k : ℕ) : Prop :=
   p.Prime ∧
   p ∣ consecutiveSquareProduct p k ∧
   ∀ q, q.Prime → q ∣ consecutiveSquareProduct p k → q ≤ p
 
--- The set of k-good primes
 def kGoodPrimes (k : ℕ) : Set ℕ :=
   {p | isKGood p k}
 
--- For k = 0: p is 0-good iff p² has p as largest prime factor (always true for prime p)
-axiom zero_good_iff : ∀ p, p.Prime → isKGood p 0
+lemma consecutiveSquareProduct_pos {p k : ℕ} (hp : p.Prime) :
+    0 < consecutiveSquareProduct p k := by
+  rw [consecutiveSquareProduct_eq]
+  apply Finset.prod_pos
+  intro i _
+  omega
+
+lemma consecutiveSquareProduct_ne_zero {p k : ℕ} (hp : p.Prime) :
+    consecutiveSquareProduct p k ≠ 0 := by
+  exact Nat.not_eq_zero_of_lt (consecutiveSquareProduct_pos hp)
+
+-- For k = 0: p is 0-good since p² has p as its only prime factor
+theorem zero_good (p : ℕ) (hp : p.Prime) : isKGood p 0 := by
+  refine ⟨hp, ?_⟩
+  rw [consecutiveSquareProduct_zero]
+  simp only [hasLargestPrimeFactor, primeDivisors]
+  refine ⟨Nat.mem_primeFactors.mpr ⟨hp, dvd_pow_self p 2, by positivity⟩,
+    fun q hq => ?_⟩
+  rw [Nat.mem_primeFactors] at hq
+  exact le_of_dvd (Nat.Prime.pos hp) (hq.1.dvd_of_dvd_pow hq.2.1)
 
 /-
 # Part 4: The Erdős Conjecture
-
-The main conjecture asserts that k-good primes are infinite for all k.
 -/
 
--- The main conjecture
 def ErdosConjecture383 : Prop :=
   ∀ k : ℕ, (kGoodPrimes k).Infinite
 
--- Equivalent formulation with Nat.maxPrimeFac
 def ErdosConjecture383' : Prop :=
   ∀ k : ℕ, {p : ℕ | p.Prime ∧ Nat.maxPrimeFac (consecutiveSquareProduct p k) = p}.Infinite
 
--- The conjectures are equivalent (when properly formalized)
 axiom conjecture_equiv : ErdosConjecture383 ↔ ErdosConjecture383'
 
 /-
 # Part 5: Partial Results
-
-We axiomatize known partial results.
 -/
 
--- For k = 0, every prime is 0-good
-theorem all_primes_zero_good : ∀ p, p.Prime → isKGood p 0 := zero_good_iff
+theorem all_primes_zero_good : ∀ p, p.Prime → isKGood p 0 := zero_good
 
--- Hence there are infinitely many 0-good primes
-axiom infinitely_many_zero_good : (kGoodPrimes 0).Infinite
+theorem infinitely_many_zero_good : (kGoodPrimes 0).Infinite := by
+  apply Set.Infinite.mono (s := {p | p.Prime})
+  · intro p hp; exact zero_good p hp
+  · exact Nat.infinite_setOf_prime
 
--- Heuristic: the probability that n has no prime factor > √n is positive
 axiom positive_density_smooth : ∃ c : ℝ, c > 0 ∧
   Filter.Tendsto (fun N => (Finset.filter (fun n => ∀ p ∈ primeDivisors n, p^2 ≤ n)
     (Finset.range N)).card / N) Filter.atTop (nhds c)
 
 /-
 # Part 6: Relation to Problem #382
-
-Problem #382 asks about the density of such primes.
 -/
 
--- Problem 382 Part 2: infinitely many primes p where p is largest factor of p² + 1
+-- Problem 382 Part 2: infinitely many primes p where all prime factors of p²+1 are ≤ p
 def Problem382Part2 : Prop :=
-  {p : ℕ | p.Prime ∧ hasLargestPrimeFactor (p^2 + 1) p}.Infinite
+  {p : ℕ | p.Prime ∧ ∀ q, q.Prime → q ∣ (p^2 + 1) → q ≤ p}.Infinite
 
--- Problem 383 for k = 1 implies Problem 382 Part 2
-axiom problem383_implies_382 : (kGoodPrimes 1).Infinite → Problem382Part2
+-- If p is 1-good, then all prime factors of p²+1 are ≤ p
+theorem kGood_one_smooth_p2_plus_1 (p : ℕ) (hp : isKGood p 1) :
+    ∀ q, q.Prime → q ∣ (p^2 + 1) → q ≤ p := by
+  intro q hq hqd
+  obtain ⟨hp_prime, _, hmax⟩ := hp
+  apply hmax
+  simp only [primeDivisors]
+  rw [Nat.mem_primeFactors]
+  refine ⟨hq, ?_, consecutiveSquareProduct_ne_zero hp_prime⟩
+  rw [consecutiveSquareProduct_one]
+  exact dvd_mul_of_dvd_right hqd _
+
+theorem problem383_implies_382 (h : (kGoodPrimes 1).Infinite) : Problem382Part2 := by
+  apply Set.Infinite.mono h
+  intro p hp
+  simp only [kGoodPrimes, Set.mem_setOf_eq] at hp
+  exact ⟨hp.1, kGood_one_smooth_p2_plus_1 p hp⟩
 
 /-
 # Part 7: Smooth Numbers
-
-The problem relates to smooth numbers (numbers without large prime factors).
 -/
 
--- A number is y-smooth if all prime factors are ≤ y
 def isSmooth (n y : ℕ) : Prop :=
   ∀ p ∈ primeDivisors n, p ≤ y
 
--- The k-good condition is: all p² + i are p-smooth for i ≤ k
-axiom kGood_iff_smooth : ∀ p k, p.Prime →
-    (isKGood p k ↔ p.Prime ∧ ∀ i ≤ k, isSmooth (p^2 + i) p)
+-- The k-good condition is equivalent to: all p² + i are p-smooth for i ≤ k
+theorem kGood_iff_smooth (p k : ℕ) (hp : p.Prime) :
+    isKGood p k ↔ p.Prime ∧ ∀ i ≤ k, isSmooth (p^2 + i) p := by
+  constructor
+  · -- Forward: k-good implies all factors are p-smooth
+    intro ⟨_, hp_mem, hmax⟩
+    refine ⟨hp, fun i hi q hq => ?_⟩
+    apply hmax
+    simp only [primeDivisors] at hq ⊢
+    rw [Nat.mem_primeFactors] at hq ⊢
+    obtain ⟨hq_prime, hq_dvd, _⟩ := hq
+    refine ⟨hq_prime, ?_, consecutiveSquareProduct_ne_zero hp⟩
+    rw [consecutiveSquareProduct_eq]
+    exact dvd_trans hq_dvd (Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (by omega)))
+  · -- Backward: all factors p-smooth implies k-good
+    intro ⟨_, hsmooth⟩
+    refine ⟨hp, ?_⟩
+    simp only [hasLargestPrimeFactor, primeDivisors]
+    refine ⟨?_, fun q hq => ?_⟩
+    · rw [Nat.mem_primeFactors]
+      refine ⟨hp, ?_, consecutiveSquareProduct_ne_zero hp⟩
+      rw [consecutiveSquareProduct_eq]
+      apply dvd_trans (dvd_pow_self p 2)
+      have : p ^ 2 + 0 = p ^ 2 := by ring
+      rw [← this]
+      exact Finset.dvd_prod_of_mem _ (Finset.mem_range.mpr (Nat.zero_lt_succ k))
+    · rw [Nat.mem_primeFactors] at hq
+      obtain ⟨hq_prime, hq_dvd, _⟩ := hq
+      rw [consecutiveSquareProduct_eq] at hq_dvd
+      rw [Prime.dvd_prod_iff hq_prime.prime] at hq_dvd
+      obtain ⟨i, hi, hq_dvd_i⟩ := hq_dvd
+      have hi' : i ≤ k := by simp [Finset.mem_range] at hi; omega
+      exact hsmooth i hi' q (Nat.mem_primeFactors.mpr
+        ⟨hq_prime, hq_dvd_i, by positivity⟩)
 
--- Counting y-smooth numbers up to x: Ψ(x, y)
 noncomputable def countSmooth (x y : ℕ) : ℕ :=
   (Finset.filter (fun n => isSmooth n y) (Finset.Icc 1 x)).card
 
--- Dickman's function describes the density of y-smooth numbers
--- Ψ(x, x^{1/u}) ~ x * ρ(u) where ρ is the Dickman function
 axiom dickman_asymptotic : ∃ ρ : ℝ → ℝ, ρ 1 = 1 ∧ ρ 2 > 0 ∧
   ∀ u ≥ 1, Filter.Tendsto (fun x => (countSmooth x (x^(1/u : ℝ)).toNat : ℝ) / x)
     Filter.atTop (nhds (ρ u))
 
 /-
-# Part 8: The Heuristic Argument
-
-The problem is believed to have a positive answer based on probabilistic reasoning.
+# Part 8-10: Status and Formal Statement
 -/
 
--- The heuristic: for u = 2, ρ(2) = 1 - log(2) ≈ 0.307
--- This means about 30.7% of numbers n have no prime factor > √n
-
--- For p² + i with p prime and i small:
--- We need p² + i to be p-smooth
--- Since p ≈ √(p²+i), this is asking for (p²+i)-smoothness at level √(p²+i)
-
--- The density ρ(2) > 0 suggests infinitely many such p should exist
-
-/-
-# Part 9: Problem Status
-
-The problem remains OPEN. The heuristic argument supports a positive answer.
--/
-
--- The problem is open
 def erdos_383_status : String := "OPEN"
 
-/-
-# Part 10: Formal Statement
-
-The precise formal statement.
--/
-
--- The formal statement using Nat.maxPrimeFac
 theorem erdos_383_statement :
     ErdosConjecture383' ↔
     ∀ k, {p : ℕ | p.Prime ∧ Nat.maxPrimeFac (∏ i ∈ Icc 0 k, (p ^ 2 + i)) = p}.Infinite := by
