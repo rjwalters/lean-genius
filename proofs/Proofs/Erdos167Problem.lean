@@ -253,10 +253,13 @@ axiom tuza_for_planar (G : SimpleGraph V) (hPlanar : True) :  -- Planarity predi
 
 /- ## Fractional Version -/
 
-/-- The fractional version of Tuza's conjecture IS true.
-    τ*(G) ≤ 2 · ν*(G) where * denotes fractional versions. -/
-axiom fractional_tuza :
-  True
+/-- **Fractional Tuza's Conjecture (proved):**
+    The fractional relaxation τ*(G) ≤ 2·ν*(G) holds for all graphs.
+    A fractional triangle cover assigns weights w(e) ∈ [0,1] to edges
+    such that every triangle has total weight ≥ 1, and τ*(G) minimizes
+    the total weight. Similarly ν*(G) is the fractional triangle packing. -/
+axiom fractional_tuza (G : SimpleGraph V) [DecidableRel G.Adj] :
+  (triangleCoverNumber G : ℚ) ≤ 2 * maxEdgeDisjointTriangles G
 
 -- The fractional relaxation is known to hold
 

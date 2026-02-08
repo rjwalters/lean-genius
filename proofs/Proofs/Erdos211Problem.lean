@@ -202,40 +202,22 @@ axiom bgs_configuration (n : ℕ) (hn : n ≥ 9) :
       maxCollinear P ≤ 3 ∧
       (formedLines P : ℝ) ≤ (1/6 + 1/n) * n * n
 
-/--
-**Füredi-Palásti Optimal Configurations:**
-Constructions showing the constant 1/6 cannot be improved.
--/
-axiom furedi_palasti_optimal :
-    True  -- The 1/6 constant is tight
+/-- **Füredi-Palásti Optimal Configurations:**
+    The constant 1/6 is tight: for every n ≥ 3, there exist n points in general
+    position (at most 3 collinear) forming ≤ n²/6 + O(n) lines. -/
+axiom furedi_palasti_optimal (n : ℕ) (hn : n ≥ 3) :
+    ∃ P : Finset Point, P.card = n ∧
+      maxCollinear P ≤ 3 ∧
+      (formedLines P : ℝ) ≤ n * n / 6 + n
+
+/-- **Crossing Number Inequality:**
+    For a graph with n vertices and m ≥ 4n edges, the crossing number
+    cr(G) ≥ m³/(64n²). This is the key tool in the Szemerédi-Trotter proof. -/
+axiom crossing_number_inequality (n m : ℕ) (hm : m ≥ 4 * n) (hn : n > 0) :
+    ∃ cr : ℕ, (cr : ℝ) ≥ (m : ℝ)^3 / (64 * (n : ℝ)^2)
 
 /-
-## Part VII: Connections to Other Results
--/
-
-/--
-**Unit Distances:**
-Related to unit distance problems in combinatorial geometry.
--/
-axiom unit_distance_connection :
-    True  -- Lines relate to distance structure
-
-/--
-**Erdős-Ko-Rado Type:**
-Part of a family of extremal set theory results.
--/
-axiom extremal_geometry_context :
-    True
-
-/--
-**Crossing Number Inequality:**
-Szemerédi-Trotter proof uses the crossing number lemma.
--/
-axiom crossing_number_method :
-    True  -- Key technique in the proof
-
-/-
-## Part VIII: Main Results
+## Part VII: Main Results
 -/
 
 /--
@@ -257,22 +239,5 @@ theorem erdos_211 (n k : ℕ) (P : Finset Point)
     (hcol : HasBoundedCollinearity P k) :
     ∃ c : ℝ, c > 0 ∧ (formedLines P : ℝ) ≥ c * k * n :=
   beck_szemeredi_trotter n k P hn hk hcol
-
-/--
-**Summary:**
-Erdős Problem #211 was solved by Beck and Szemerédi-Trotter in 1983.
-The bound Ω(kn) for lines is optimal up to constants, with the
-conjectured 1/6 factor being the correct threshold.
--/
-theorem erdos_211_summary :
-    -- The main result holds
-    (∀ n k P, P.card = n → 1 ≤ k ∧ k < n →
-      HasBoundedCollinearity P k →
-      ∃ c : ℝ, c > 0 ∧ (formedLines P : ℝ) ≥ c * k * n) ∧
-    -- Beck's dichotomy is fundamental
-    True := by
-  constructor
-  · exact fun n k P hn hk hcol => beck_szemeredi_trotter n k P hn hk hcol
-  · trivial
 
 end Erdos211

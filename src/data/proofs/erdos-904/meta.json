@@ -17,7 +17,7 @@
       "turan",
       "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 904,
     "erdosUrl": "https://erdosproblems.com/904",
@@ -66,17 +66,24 @@
     },
     {
       "id": "sharpness",
-      "title": "Sharpness and Examples",
-      "summary": "Why the threshold and constant are optimal",
+      "title": "Sharpness and Extremality",
+      "summary": "Why the threshold n²/4 and constant 3/2 are optimal",
       "startLine": 142,
       "endLine": 161
     },
     {
-      "id": "related-problems",
-      "title": "Related Problems",
-      "summary": "Connections to Mantel's theorem, Kruskal-Katona, and supersaturation",
-      "startLine": 213,
-      "endLine": 237
+      "id": "stronger-results",
+      "title": "Stronger Results",
+      "summary": "Degree sum tightness and supersaturation",
+      "startLine": 162,
+      "endLine": 186
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "The main theorem applied to dense graphs",
+      "startLine": 187,
+      "endLine": 199
     }
   ],
   "conclusion": {

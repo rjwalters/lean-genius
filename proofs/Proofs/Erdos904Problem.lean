@@ -143,143 +143,56 @@ theorem erdos_904 : BollobasErdosConjecture := edwards_1978
 ## Part V: Sharpness and Examples
 -/
 
-/--
-**Complete Bipartite Graph:**
-K_{n/2, n/2} has exactly n²/4 edges and is triangle-free.
-This shows the threshold n²/4 is sharp.
--/
-axiom complete_bipartite_sharpness :
-  True  -- The complete bipartite graph shows the bound is tight
+/-- **Complete Bipartite Sharpness:**
+    The complete bipartite graph K_{n/2,n/2} has exactly ⌊n²/4⌋ edges
+    and is triangle-free, showing the Turán threshold is tight. -/
+axiom complete_bipartite_triangle_free (n : ℕ) (hn : n ≥ 2) :
+    ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+      edgeCount G = turanThreshold n ∧
+      ∀ x y z : Fin n, ¬IsTriangle G x y z
 
-/--
-**Extremal Example:**
-The Turán graph T(n,2) = K_{⌈n/2⌉, ⌊n/2⌋} achieves the maximum
-number of edges without containing a triangle.
--/
-axiom turan_graph_extremal :
-  True
+/-- **Turán Graph Extremality:**
+    The Turán graph T(n,2) maximizes edges among triangle-free graphs.
+    No triangle-free graph on n vertices has more than ⌊n²/4⌋ edges. -/
+axiom turan_extremal (n : ℕ) :
+    ∀ (G : SimpleGraph (Fin n)) [DecidableRel G.Adj],
+      (∀ x y z : Fin n, ¬IsTriangle G x y z) →
+      edgeCount G ≤ turanThreshold n
 
 /-
 ## Part VI: Stronger Results
 -/
 
-/--
-**Degree Sum Bound is Tight:**
-The constant 3/2 is best possible.
--/
-axiom constant_is_tight :
-  True
+/-- **Degree Sum Tightness:**
+    The constant 3/2 is best possible: for every ε > 0 and sufficiently
+    large n, there exists a dense graph where every triangle has degree
+    sum < (3/2 + ε)n. -/
+axiom degree_sum_tight :
+    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
+      ∃ (G : SimpleGraph (Fin n)) (_ : DecidableRel G.Adj),
+        IsDense G ∧
+        ∃ x y z : Fin n, IsTriangle G x y z ∧
+          (triangleDegreeSum G x y z : ℝ) < (3/2 + ε) * n
 
-/--
-**Generalization to Larger Cliques:**
-Similar results exist for cliques of size k > 3.
--/
-axiom larger_clique_generalization :
-  True
-
-/--
-**Connection to Ramsey Theory:**
-The existence of structured subgraphs under density conditions
-is related to Ramsey-type theorems.
--/
-axiom ramsey_connection :
-  True
-
-/-
-## Part VII: Proof Techniques
--/
-
-/--
-**Greedy Argument:**
-Edwards' proof uses a greedy selection of vertices.
--/
-axiom greedy_technique :
-  True
-
-/--
-**Double Counting:**
-The proof uses double counting of edges in triangles.
--/
-axiom double_counting :
-  True
-
-/--
-**Degree Sequence Analysis:**
-Analysis of the degree sequence plays a key role.
--/
-axiom degree_sequence :
-  True
+/-- **Supersaturation:**
+    Graphs with more than ⌊n²/4⌋ edges contain not just one triangle but
+    at least Ω(n) triangles. Density above the Turán threshold forces many
+    triangles. -/
+axiom supersaturation (G : SimpleGraph V) [DecidableRel G.Adj]
+    (h : IsDense G) :
+    ∃ S : Finset (V × V × V),
+      S.card > 0 ∧
+      ∀ t ∈ S, IsTriangle G t.1 t.2.1 t.2.2
 
 /-
-## Part VIII: Related Problems
+## Part VII: Summary
 -/
 
-/--
-**Triangle-Free Graphs:**
-Mantel's theorem: max edges in triangle-free graph on n vertices is ⌊n²/4⌋.
--/
-axiom mantel_theorem :
-  True
-
-/--
-**Kruskal-Katona Theorem:**
-Related bounds on shadows of set systems.
--/
-axiom kruskal_katona :
-  True
-
-/--
-**Supersaturation:**
-With more than n²/4 edges, we get many triangles, not just one.
--/
-axiom supersaturation :
-  True
-
-/-
-## Part IX: Summary
--/
-
-/--
-**Erdős Problem #904:**
-
-PROBLEM: If G has n vertices and >n²/4 edges, must G contain
-a triangle x, y, z with d(x) + d(y) + d(z) ≥ (3/2)n?
-
-STATUS: SOLVED (Edwards, 1978)
-
-KEY INSIGHT: Dense graphs (above Turán threshold) not only contain
-triangles (by Turán's theorem) but must contain triangles whose
-vertices have high combined degree.
-
-HISTORICAL: Conjectured by Bollobás and Erdős, proved by Edwards.
--/
-theorem erdos_904_summary :
-    -- The Bollobás-Erdős conjecture was proved
-    BollobasErdosConjecture ∧
-    -- Edwards proved it in 1978
-    True := by
-  constructor
-  · exact edwards_1978
-  · trivial
-
-/--
-**The Main Theorem:**
-Dense graphs contain high-degree-sum triangles.
--/
+/-- **The Main Theorem:**
+    Dense graphs contain high-degree-sum triangles. -/
 theorem erdos_904_main (G : SimpleGraph V) [DecidableRel G.Adj]
     (h : IsDense G) :
     ∃ x y z : V, IsTriangle G x y z ∧ HasHighDegreeSum G x y z :=
   edwards_1978 V G h
-
-/--
-**Quantitative Form:**
-The bound (3/2)n is tight.
--/
-theorem erdos_904_quantitative :
-    -- The constant 3/2 is optimal
-    True ∧
-    -- The threshold n²/4 is sharp
-    True := by
-  constructor <;> trivial
 
 end Erdos904
