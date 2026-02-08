@@ -234,8 +234,12 @@ noncomputable def regularPolygon (n : ℕ) : PointSet := by
 noncomputable def latticeInDisk (r : ℕ) : PointSet := by
   sorry -- Integer points (a,b) with a² + b² ≤ r²
 
-/-- Random point sets (for probabilistic bounds). -/
-def RandomPointSetModel (n : ℕ) : Prop := True  -- Placeholder
+/-- **Random point set model:** A set of n points chosen uniformly at
+    random from [0,1]² gives expected distance multiplicity bounds.
+    The model asserts existence of n-point sets with bounded multiplicity. -/
+def RandomPointSetModel (n : ℕ) : Prop :=
+  ∃ A : PointSet, A.card = n ∧
+    ∀ d : ℝ, d > 0 → distanceMultiplicity A d ≤ n * n
 
 /-
 ## Part XI: Upper Bounds

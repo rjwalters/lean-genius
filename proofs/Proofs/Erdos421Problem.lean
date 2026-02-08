@@ -189,8 +189,16 @@ Illustrate the definitions with examples.
 Problem 786 discusses Selfridge's construction in detail.
 -/
 
--- Reference to related problem
-def RelatedProblem786 : Prop := True  -- Selfridge's construction details
+/-- **Related: Erdős Problem #786.** Selfridge's construction of covering
+    systems with large minimum modulus relates to the density of primes
+    in arithmetic progressions and sieving arguments. A covering system
+    with minimum modulus m₀ is a finite collection of arithmetic
+    progressions whose moduli are all ≥ m₀ that cover every integer. -/
+def RelatedProblem786 : Prop :=
+  ∀ m₀ : ℕ, m₀ > 1 →
+    ∃ (k : ℕ) (residues moduli : Fin k → ℕ),
+      (∀ i, moduli i ≥ m₀) ∧
+      (∀ n : ℤ, ∃ i, n % (moduli i : ℤ) = residues i)
 
 /-
 # Part 10: Problem Status

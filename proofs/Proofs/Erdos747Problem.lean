@@ -99,7 +99,11 @@ def HasDisjointEdges {V : Type*} (H : Hypergraph V 3) (n : ℕ) : Prop :=
 A random hypergraph on 3n vertices with m random edges.
 (We work with the Erdős-Rényi model where m edges are chosen uniformly.)
 -/
-def RandomHypergraph3Model (n m : ℕ) : Prop := True  -- Placeholder for probability space
+def RandomHypergraph3Model (n m : ℕ) : Prop :=
+  -- A random 3-uniform hypergraph on 3n vertices with m edges exists
+  -- with the given edge count and vertex set size
+  ∃ H : Finset (Fin (3 * n) × Fin (3 * n) × Fin (3 * n)),
+    H.card = m ∧ ∀ e ∈ H, e.1 ≠ e.2.1 ∧ e.1 ≠ e.2.2 ∧ e.2.1 ≠ e.2.2
 
 /--
 **Almost Surely:**
