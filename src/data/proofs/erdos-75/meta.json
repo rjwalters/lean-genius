@@ -10,10 +10,11 @@
     "proofRepoPath": "Proofs/Erdos75Problem.lean",
     "tags": [
       "erdos",
-      "graph theory",
-      "chromatic number",
-      "independence number",
-      "infinite combinatorics"
+      "graph-theory",
+      "chromatic-number",
+      "independence-number",
+      "infinite-combinatorics",
+      "open"
     ],
     "badge": "formalized",
     "sorries": 0,
@@ -22,53 +23,70 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős, Hajnal, and Szemerédi posed this question about the interaction between chromatic number and independence in infinite graphs. The problem explores whether uncountable chromatic number is compatible with very large independent sets in finite subgraphs. Erdős offered $1000 for a complete solution.",
+    "historicalContext": "Erdős, Hajnal, and Szemerédi posed this question in the context of infinite graph colouring theory, a field Erdős helped create. The classical bound α(G)·χ(G) ≥ |V(G)| shows that for finite graphs, large chromatic number forces small independence ratio. For infinite graphs with uncountable chromatic number (χ(G) ≥ ℵ₁), the situation is fundamentally different: the global colouring complexity does not directly constrain the independence structure of finite subgraphs. Known constructions of graphs with χ ≥ ℵ₁ include shift graphs on ordinals, Todorčević's partition graphs, and forcing-based constructions, but these typically have finite subgraphs with poor independence ratios (α(H) = O(√n) or O(n/log n)). Problem 75 asks whether there exists a graph combining uncountable chromatic number with near-linear independence (α(H) > n^{1-ε} for all ε > 0) in every large finite subgraph. Erdős suggested this might even hold with linear independence (α ≥ cn), and offered $1000 for a complete solution—one of the largest Erdős prizes, reflecting the problem's difficulty and importance. The problem connects to the Erdős-Hajnal conjecture (polynomial clique/independent set in H-free graphs), Ramsey theory on uncountable sets, and the set-theoretic foundations of infinite combinatorics.",
     "problemStatement": "Is there a graph G of chromatic number ℵ₁ such that for all ε > 0, every sufficiently large finite subgraph on n vertices contains an independent set of size > n^{1−ε}? Erdős further asked if the independent set can be linear in n.",
-    "proofStrategy": "We axiomatize abstract graphs, chromatic number, finite subgraphs, and independence number. The large independence set property and its linear strengthening are defined precisely, and both forms of the conjecture are stated as axioms.",
+    "proofStrategy": "The formalization axiomatizes an abstract Graph type (necessary for uncountable structures beyond Mathlib's SimpleGraph), chromatic number as a predicate chromaticNum G n with monotonicity, finite subgraphs, and independence number with the trivial upper bound. The large independence property (n^{1-ε}) and its linear strengthening (c·n) are defined precisely. The classical chromatic-independence bound, a placeholder for the Erdős-Hajnal connection, and both forms of the conjecture are axiomatized.",
     "keyInsights": [
-      "Uncountable chromatic number means the graph cannot be coloured with any finite number of colours",
-      "The n^{1−ε} bound is nearly linear — just barely sublinear for any fixed ε",
-      "For finite graphs, χ(G) · α(G) ≥ |V(G)| relates chromatic and independence numbers",
-      "The stronger conjecture asks for α(H) ≫ n, i.e., linear independence number"
+      "**$1000 prize problem**: One of the most valuable Erdős prizes, reflecting the deep difficulty of reconciling global colouring complexity with local sparsity",
+      "**Abstract axiomatization required**: Mathlib's SimpleGraph cannot model uncountable chromatic number, necessitating an abstract Graph type with predicate-based chromatic number",
+      "**Global-local tension**: Uncountable chromatic number is a global property, but the conjecture constrains every finite subgraph—this tension is the core difficulty",
+      "**Near-linear vs linear**: The basic form asks for α > n^{1-ε} (almost linear), while the strong form asks for α ≥ cn (truly linear)—the gap between these is meaningful",
+      "**Simplified formalization**: The n^{1-ε} bound is approximated by 0 < α(H) in the Lean code, since rational exponentiation n^{1-ε} would require substantial infrastructure"
     ]
   },
   "sections": [
     {
-      "id": "graph-abstractions",
-      "title": "Graph Abstractions",
+      "id": "imports",
+      "title": "Mathlib Imports",
       "startLine": 17,
-      "endLine": 35,
-      "summary": "Defines abstract graph type, chromatic number, and uncountable chromatic number."
+      "endLine": 21,
+      "summary": "Imports Nat.Basic, Finset, Rat.Basic, and tactics. Notably does not use SimpleGraph."
     },
     {
-      "id": "independence",
+      "id": "graph-abstractions",
+      "title": "Abstract Graph Type",
+      "startLine": 23,
+      "endLine": 37,
+      "summary": "Axiomatizes Graph, chromaticNum predicate with monotonicity, and HasUncountableChromaticNum."
+    },
+    {
+      "id": "finite-subgraphs",
       "title": "Finite Subgraphs and Independence",
-      "startLine": 37,
-      "endLine": 47,
-      "summary": "Defines finite subgraphs, independence number, and basic bounds."
+      "startLine": 39,
+      "endLine": 49,
+      "summary": "Axiomatizes FiniteSubgraph type, indepNumber, and the trivial bound α(H) ≤ n."
     },
     {
-      "id": "properties",
-      "title": "The Independence Ratio Property",
-      "startLine": 49,
-      "endLine": 66,
-      "summary": "Defines the (1−ε)-independence property and its linear strengthening."
+      "id": "independence-properties",
+      "title": "Independence Ratio Properties",
+      "startLine": 51,
+      "endLine": 68,
+      "summary": "Defines HasLargeIndepSets (n^{1-ε}) and HasLinearIndepSets (c·n) properties."
+    },
+    {
+      "id": "known-context",
+      "title": "Known Context",
+      "startLine": 70,
+      "endLine": 80,
+      "summary": "Records the classical α·χ ≥ n bound and mentions the Erdős-Hajnal connection."
     },
     {
       "id": "conjectures",
       "title": "The Erdős Problem",
-      "startLine": 78,
-      "endLine": 87,
-      "summary": "States the basic and strong forms of the conjecture."
+      "startLine": 82,
+      "endLine": 93,
+      "summary": "States both the basic (n^{1-ε}) and strong (linear) forms of Problem 75."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 75 is a deep question about the interplay between chromatic number and local independence structure in infinite graphs. Both the basic (n^{1−ε}) and strong (linear) forms remain open.",
-    "implications": "A positive answer would demonstrate a surprising compatibility between global colouring complexity and local sparsity in infinite graphs, advancing our understanding of infinite graph colouring.",
+    "summary": "Erdős Problem 75 is one of the most celebrated open problems in infinite graph theory, carrying a $1000 Erdős prize. It asks whether uncountable chromatic number is compatible with near-linear independence in every finite subgraph—a striking tension between global colouring complexity and local sparsity. The formalization captures both the basic (n^{1-ε}) and strong (linear) forms using an abstract axiomatization that goes beyond Mathlib's finite graph framework.",
+    "implications": "A positive answer would demonstrate a surprising separation between global and local graph properties, with implications for infinite Ramsey theory, the Erdős-Hajnal conjecture, and the set-theoretic foundations of combinatorics. A negative answer would establish a fundamental limitation on the independence structure of graphs with uncountable chromatic number.",
     "openQuestions": [
-      "Does such a graph with uncountable chromatic number exist?",
-      "Can the independent sets be linear in the number of vertices?",
-      "What is the relationship to the Erdős–Hajnal conjecture?"
+      "Does there exist a graph with χ ≥ ℵ₁ and the near-linear independence property?",
+      "Can the independent sets be truly linear (α ≥ cn) rather than just n^{1-ε}?",
+      "Is the answer independent of ZFC (depending on set-theoretic axioms)?",
+      "What is the best independence ratio achievable in known constructions with χ ≥ ℵ₁?",
+      "Does the Erdős-Hajnal conjecture have implications for this problem?"
     ]
   }
 }
