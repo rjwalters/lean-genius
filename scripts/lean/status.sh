@@ -83,6 +83,15 @@ count_aristotle_jobs() {
     fi
 }
 
+# Helper: Count Aristotle candidates (files eligible for submission)
+count_aristotle_candidates() {
+    if [[ -x "scripts/aristotle/find-candidates.sh" ]]; then
+        timeout 10 ./scripts/aristotle/find-candidates.sh --count 2>/dev/null || echo "0"
+    else
+        echo "0"
+    fi
+}
+
 # Helper: Count available research problems
 count_research_problems() {
     if [[ -f "$CANDIDATE_POOL" ]]; then
@@ -162,11 +171,13 @@ gather_status() {
     # Work queue counts
     local enrichment_count
     local aristotle_jobs
+    local aristotle_candidates
     local research_problems
     local ready_prs
 
     enrichment_count=$(count_enrichment_targets)
     aristotle_jobs=$(count_aristotle_jobs)
+    aristotle_candidates=$(count_aristotle_candidates)
     research_problems=$(count_research_problems)
     ready_prs=$(count_ready_prs)
 
@@ -197,6 +208,7 @@ gather_status() {
   "work_queue": {
     "proofs_needing_enrichment": "$enrichment_count",
     "aristotle_pending": $aristotle_jobs,
+    "aristotle_candidates": $aristotle_candidates,
     "research_available": $research_problems,
     "prs_ready": $ready_prs
   },
@@ -250,6 +262,7 @@ EOF
         echo -e "  ${CYAN}Work Queue:${NC}"
         echo "    Proofs needing enrichment: $enrichment_count"
         echo "    Aristotle jobs pending: $aristotle_jobs"
+        echo "    Aristotle candidates: $aristotle_candidates"
         echo "    Research problems available: $research_problems"
         echo "    PRs ready to merge: $ready_prs"
         echo ""
