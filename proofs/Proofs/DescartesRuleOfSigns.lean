@@ -7,7 +7,7 @@ import Mathlib.Tactic
 import Mathlib.Analysis.Calculus.LocalExtr.Polynomial
 import Mathlib.Analysis.Calculus.LocalExtr.Rolle
 
-/-!
+/-
 # Descartes' Rule of Signs
 
 ## What This Proves
@@ -58,7 +58,7 @@ namespace DescartesRuleOfSigns
 
 open Polynomial
 
-/-! ## Sign Change Definitions
+/- ## Sign Change Definitions
 
 We define the notion of sign changes in a sequence of real numbers.
 A sign change occurs between consecutive non-zero elements when one is
@@ -91,7 +91,7 @@ noncomputable def countSignChanges {n : ℕ} (f : Fin n → ℝ) : ℕ :=
   @Finset.card (Fin n × Fin n) (Finset.univ.filter fun p =>
     @decide (SignChangeBetween f p.1 p.2) (Classical.dec _))
 
-/-! ## Coefficient Sign Changes for Polynomials
+/- ## Coefficient Sign Changes for Polynomials
 
 For a polynomial, we look at sign changes in the coefficient sequence.
 -/
@@ -103,10 +103,10 @@ noncomputable def coeffSequence (p : ℝ[X]) (d : ℕ) : Fin (d + 1) → ℝ :=
 
 /-- The number of sign changes in the coefficients of a polynomial -/
 noncomputable def signChangesInCoeffs (p : ℝ[X]) : ℕ :=
-  if h : p = 0 then 0
+  if _h : p = 0 then 0
   else countSignChanges (coeffSequence p p.natDegree)
 
-/-! ## Positive Roots
+/- ## Positive Roots
 
 We define positive roots and count them with multiplicity.
 -/
@@ -124,7 +124,7 @@ noncomputable def rootMultiplicity' (p : ℝ[X]) (r : ℝ) : ℕ :=
   if p = 0 then 0
   else (p.map (algebraMap ℝ ℝ)).rootMultiplicity r
 
-/-! ## Descartes' Rule of Signs - Main Theorem
+/- ## Descartes' Rule of Signs - Main Theorem
 
 The main theorem states that the number of positive real roots (with multiplicity)
 is at most the number of sign changes in the coefficients, and the difference
@@ -186,7 +186,7 @@ theorem descartes_rule_of_signs (p : ℝ[X]) (hp : p ≠ 0) :
   use m
   omega
 
-/-! ## Negative Roots via Substitution
+/- ## Negative Roots via Substitution
 
 For negative roots, we apply Descartes' rule to p(-x).
 -/
@@ -214,16 +214,12 @@ theorem negative_root_iff_positive_of_negSubst (p : ℝ[X]) (r : ℝ) :
 theorem negSubst_ne_zero (p : ℝ[X]) (hp : p ≠ 0) : negSubst p ≠ 0 := by
   unfold negSubst
   intro h
-  have := Polynomial.comp_eq_zero_iff.mp h
-  cases this with
-  | inl h => exact hp h.1
-  | inr h =>
-    -- -X = 0 is impossible since degree(-X) = 1
-    have : (-X : ℝ[X]) ≠ 0 := by
-      intro h0
-      have : (Polynomial.eval 1 (-X : ℝ[X])) = Polynomial.eval 1 (0 : ℝ[X]) := by rw [h0]
-      simp at this
-    exact this h
+  apply hp
+  have key : p = (p.comp (-X)).comp (-X) := by
+    simp [Polynomial.comp_assoc]
+  rw [h] at key
+  simp at key
+  exact key
 
 /-- The map r ↦ -r sends negative roots of p to positive roots of negSubst p. -/
 theorem neg_root_map_to_pos (p : ℝ[X]) (r : ℝ) (hr : r < 0) (heval : p.eval r = 0) :
@@ -246,7 +242,7 @@ theorem descartes_negative_roots (p : ℝ[X]) (hp : p ≠ 0) :
     Multiset.card (p.roots.filter (· < 0)) ≤ signChangesInCoeffs (negSubst p) :=
   descartes_negative_roots_axiom p hp
 
-/-! ## Sign Change Examples
+/- ## Sign Change Examples
 
 Concrete examples demonstrating sign change counting.
 -/
@@ -276,14 +272,14 @@ theorem x_cubed_minus_x_positive_roots :
     countPositiveRoots (X^3 - X : ℝ[X]) = 1 :=
   x_cubed_minus_x_positive_roots_axiom
 
-/-! ## Special Cases
+/- ## Special Cases
 
 Special cases where the bound is achieved or easily computed.
 -/
 
 /-- For x > 0, if all coefficients are non-negative and at least one is positive,
     then p(x) > 0. -/
-theorem eval_pos_of_nonneg_coeffs (p : ℝ[X]) (hp : p ≠ 0)
+theorem eval_pos_of_nonneg_coeffs (p : ℝ[X]) (_hp : p ≠ 0)
     (hpos : ∀ i, 0 ≤ p.coeff i)
     (hsome : ∃ i, 0 < p.coeff i)
     (x : ℝ) (hx : x > 0) :
@@ -296,11 +292,11 @@ theorem eval_pos_of_nonneg_coeffs (p : ℝ[X]) (hp : p ≠ 0)
     push_neg at h
     have := Polynomial.coeff_eq_zero_of_natDegree_lt h
     linarith
-  apply lt_of_lt_of_le _ (Finset.sum_le_sum_of_subset_of_nonneg
-    (s₁ := {⟨j, by omega⟩}) (s₂ := Finset.univ) (Finset.subset_univ _)
-    (fun i _ _ => mul_nonneg (hpos i.val) (pow_nonneg (le_of_lt hx) i.val)))
-  simp only [Finset.sum_singleton]
-  exact mul_pos hj (pow_pos hx j)
+  have hmem : j ∈ Finset.range (p.natDegree + 1) := Finset.mem_range.mpr (by omega)
+  calc 0 < p.coeff j * x ^ j :=
+        mul_pos hj (pow_pos hx j)
+    _ ≤ ∑ i ∈ Finset.range (p.natDegree + 1), p.coeff i * x ^ i :=
+        Finset.single_le_sum (fun i _ => mul_nonneg (hpos i) (pow_nonneg (le_of_lt hx) i)) hmem
 
 /-- No positive roots if all coefficients are non-negative with at least one positive. -/
 theorem no_positive_roots_if_positive_coeffs (p : ℝ[X]) (hp : p ≠ 0)
@@ -334,7 +330,7 @@ theorem alternating_signs_max_roots (p : ℝ[X]) (hp : p ≠ 0)
     countPositiveRoots p = p.natDegree :=
   alternating_signs_max_roots_axiom p hp halt
 
-/-! ## Connection to Rolle's Theorem
+/- ## Connection to Rolle's Theorem
 
 The proof of Descartes' rule relies on Rolle's theorem from calculus.
 -/
@@ -378,7 +374,7 @@ theorem derivative_reduces_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :
     signChangesInCoeffs (derivative p) = signChangesInCoeffs p :=
   derivative_reduces_sign_changes_axiom p hp
 
-/-! ## Why This Matters
+/- ## Why This Matters
 
 Descartes' Rule of Signs is important because:
 
@@ -398,7 +394,7 @@ Descartes' Rule of Signs is important because:
    properties (coefficients) and analytic properties (roots).
 -/
 
-/-! ## Additional Structural Theorems -/
+/- ## Additional Structural Theorems -/
 
 /-- Sign properties of realSign. -/
 theorem realSign_pos {x : ℝ} (hx : x > 0) : realSign x = 1 := by
@@ -407,8 +403,7 @@ theorem realSign_pos {x : ℝ} (hx : x > 0) : realSign x = 1 := by
 
 theorem realSign_neg {x : ℝ} (hx : x < 0) : realSign x = -1 := by
   unfold realSign
-  simp [not_lt.mpr (le_of_lt (lt_trans hx (lt_irrefl 0 |>.elim.elim))), hx]
-  exact ⟨by linarith, hx⟩
+  simp only [show ¬(x > 0) from by linarith, ↓reduceIte, hx]
 
 theorem realSign_zero : realSign 0 = 0 := by
   unfold realSign
@@ -451,9 +446,10 @@ theorem countPositiveRoots_C (c : ℝ) (hc : c ≠ 0) :
   exfalso
   have := (Polynomial.mem_roots (Polynomial.C_ne_zero.mpr hc)).mp hr
   simp [Polynomial.eval_C] at this
+  exact hc this
 
-/-- The monomial xⁿ has exactly one positive root (at 0 for n > 0, which isn't positive). -/
-theorem countPositiveRoots_X_pow (n : ℕ) (hn : n ≥ 1) :
+/-- The monomial xⁿ has no positive roots (0 is not positive). -/
+theorem countPositiveRoots_X_pow (n : ℕ) (_hn : n ≥ 1) :
     countPositiveRoots (X ^ n : ℝ[X]) = 0 := by
   unfold countPositiveRoots
   have hne : (X : ℝ[X]) ^ n ≠ 0 := pow_ne_zero n (Polynomial.X_ne_zero)
@@ -465,7 +461,9 @@ theorem countPositiveRoots_X_pow (n : ℕ) (hn : n ≥ 1) :
   push_neg at h
   have heval := (Polynomial.mem_roots hne).mp hr
   simp [Polynomial.eval_pow, Polynomial.eval_X] at heval
-  have := pow_eq_zero_iff hn |>.mp heval
+  have hr0 : r = 0 := by
+    rcases heval with ⟨hr0, _⟩
+    exact hr0
   linarith
 
 /-- Rolle's theorem implies derivative has a root between consecutive roots.
@@ -474,10 +472,5 @@ theorem derivative_root_between_roots (p : ℝ[X]) (a b : ℝ) (hab : a < b)
     (ha : p.eval a = 0) (hb : p.eval b = 0) :
     ∃ c, a < c ∧ c < b ∧ (Polynomial.derivative p).eval c = 0 :=
   rolle_polynomial p a b hab ha hb
-
-#check descartes_upper_bound
-#check descartes_parity
-#check descartes_rule_of_signs
-#check descartes_negative_roots
 
 end DescartesRuleOfSigns
