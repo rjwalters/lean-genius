@@ -1,7 +1,7 @@
 {
   "slug": "erdos-846",
   "title": "Erdős #846",
-  "phase": "SURVEYED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,48 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "NEW",
     "since": "2026-01-15T10:25:45.154Z",
-    "iteration": 2,
-    "focus": "Easy direction proved. Main conjecture is OPEN.",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Verify build, submit to Aristotle",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved easy direction (weakly non-trilinear implies eps-non-trilinear) via pigeonhole. Converted all axioms to theorems. Fixed Aristotle compatibility issues. Main conjecture remains OPEN.",
-    "builtItems": [
-      "nonTrilinear_mono: monotonicity of NonTrilinear (proved)",
-      "nonTrilinear_empty: empty set is non-trilinear (proved)",
-      "nonTrilinear_singleton: singleton is non-trilinear (proved)",
-      "areCollinear_symm12: collinearity symmetry (proved)",
-      "nonTrilinear_is_eps_one: non-trilinear implies 1-non-trilinear (proved)",
-      "isEpsNonTrilinear_mono: monotonicity in eps (proved)",
-      "finset_pigeonhole_exists: pigeonhole principle for Finset (proved)",
-      "weaklyNonTrilinear_implies_eps: easy direction with full pigeonhole proof (proved)",
-      "ErdosProblem846: main conjecture (sorry - OPEN)",
-      "ErdosProblem846_contrapositive: contrapositive from main conjecture (proved)"
-    ],
-    "insights": [
-      "OPEN problem: Erdos-Nesetril-Rodl conjecture, no known solution",
-      "Easy direction proved: weakly non-trilinear implies eps-non-trilinear (pigeonhole argument)",
-      "Converse (hard direction) is the open conjecture",
-      "Pigeonhole principle: if A is union of k non-trilinear sets, then eps = 1/k works",
-      "NonTrilinear is monotone under set inclusion",
-      "Contrapositive formulation reduces to main conjecture",
-      "Fixed docstring headers for Aristotle compatibility",
-      "Removed Mathlib.Data.Set.Finite import (renamed in Docker Mathlib v4.26.0)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Verify Docker build when system is less loaded",
-      "Submit to Aristotle for automated proof search on remaining sorries",
-      "Investigate related problems 774 and 847 for shared infrastructure"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #846 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be an infinite set for which there exists some $\\epsilon>0$ such that in any subset of $A$ of size $n$ there are always at least $\\epsilon n$ with no three on a line.\n\nIs it true that $A$ is the union of a finite number of sets where no three are on a line?\n\n\n\nA problem of Erd\\H{o}s, Ne\\v{s}et\\v{r}il, and R\\\"{o}dl.\n\nSee also [774] and [847].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #774\n- Problem #847\n- Problem #845\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

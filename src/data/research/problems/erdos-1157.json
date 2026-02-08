@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1157",
   "title": "Erdős #1157",
-  "phase": "SURVEY",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,51 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
+    "phase": "NEW",
     "since": "2026-01-15T16:46:42.684Z",
-    "iteration": 2,
-    "focus": "Comprehensive survey formalization complete",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Problem is OPEN for r >= 4",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
+      "total": 0,
       "currentApproach": 0,
-      "approachesTried": 1
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Comprehensive formalization of BES conjecture with proved exponent properties and special case connections",
-    "builtItems": [
-      "Axiomatized extremalNumber with monotonicity in k and s",
-      "Defined besExponent and proved positivity",
-      "Formalized BESConjecture with IsLittleO notation",
-      "Proved erdos716_parameter_check: (3-2)*3+2+1 = 6",
-      "Proved erdos1076_beyond_bes: s+2 < (3-2)*s+2+1",
-      "Axiomatized Ruzsa-Szemerédi (6,3) result",
-      "Axiomatized Glock (7,4) result",
-      "Axiomatized Delcourt-Postle full 3-uniform BES theorem",
-      "Proved besExponent_decreasing: monotone in k",
-      "Proved besExponent_zero_at_rs: zero when k = rs",
-      "Proved besExponent_6_3 = 3/2",
-      "Proved besExponent_7_4 = 5/3",
-      "Proved besExponent_le_one_at_bes_threshold",
-      "Proved bes_monotone_in_k for little-o results",
-      "Proved erdos_1157_3uniform_resolved from Delcourt-Postle",
-      "Proved erdos_1157_summary combining all results"
-    ],
-    "insights": [
-      "Problem is OPEN in full generality but resolved for 3-uniform case",
-      "BES conjecture unifies several other Erdős problems (#716, #1076, #1178)",
-      "Delcourt-Postle (2024) resolves the 3-uniform case completely",
-      "The BES exponent at threshold k = (r-t)s+t+1 is at most 1, consistent with o(n^t) conjecture",
-      "Not Aristotle-suitable: results from deep hypergraph theory papers",
-      "Key insight: monotonicity in k means proving the threshold case suffices"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Await resolution of higher uniformity cases (r >= 4)",
-      "Could formalize quantitative bounds for the 3-uniform case"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #1157 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

@@ -11,52 +11,29 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "h(0) = 0 (no elements to color)",
-      "h(N) ≤ 1 for 1 ≤ N ≤ 3 (no 4-APs)",
-      "h(N) ≥ 1 for N ≥ 4",
-      "h is monotone: m ≤ n implies h(m) ≤ h(n)",
-      "h(N) ≤ N (identity coloring works)",
-      "Achievability monotone in n and k"
-    ],
-    "open": [
-      "Determine the true growth rate of h(N)",
-      "Close the gap between polynomial upper and superlog lower bounds"
-    ],
-    "goal": "Estimate h(N) - the minimum colors for 3-diverse 4-AP colorings"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-02-07T19:30:00.000Z",
-    "iteration": 2,
-    "focus": "Improved formalization with proved structural theorems.",
+    "phase": "NEW",
+    "since": "2026-01-12T09:56:05.236Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Consider Aristotle submission for sorry theorems.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Rewrote formalization: 12 theorems (9 proved, 3 sorry), 7 axioms (0 True placeholders). Fixed rainbowMinColors definition, removed True placeholders, corrected lower bound exponent from 1/12 to 1/9, proved monotonicity, trivial bounds, and h≤N.",
-    "builtItems": [
-      "proofs/Proofs/Erdos160Problem.lean"
-    ],
-    "insights": [
-      "h(N) defined axiomatically with existence and minimality properties",
-      "Identity coloring proves h(N) ≤ N for all N",
-      "Key gap: polynomial upper bound vs superlogarithmic lower bound",
-      "Lower bound exponent is 1/9 (Bloom-Sisask improvement), not 1/12"
-    ],
-    "mathlibGaps": [
-      "No 4-term AP definition in Mathlib (only 3-term via ThreeAPFree)",
-      "No generic function-based coloring type (only SimpleGraph.Coloring)"
-    ],
-    "nextSteps": [
-      "Submit to Aristotle for sorry theorems",
-      "Try to prove hunter_improves_leechlattice computationally"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Erdős #160 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(N)$ be the smallest $k$ such that $\\{1,\\ldots,N\\}$ can be coloured with $k$ colours so that every four-term arithmetic progression must contain at least three distinct colours. Estimate $h(N)$.\n\n\n\nInvestigated by Erd\\H{o}s and Freud. This has been discussed on MathOverflow, where LeechLattice shows\\[h(N) \\ll N^{2/3}.\\]In the comments of this site Hunter improves this to\\[h(N) \\ll N^{\\frac{\\log 3}{\\log 22}+o(1)}\\](note $\\frac{\\log 3}{\\log 22}\\approx 0.355$).\n\nThe observation of Zach Hunter in that question coupled with recent progress on the size of subsets without three-term arithmetic progression (see \\cite{BlSi23} which improves slightly on the bounds due to Kelley and Meka \\cite{KeMe23}) imply that\\[h(N) \\gg \\exp(c(\\log N)^{1/9})\\]for some $c>0$.\n\n\n\n\nReferences\n\n\n[BlSi23] T. F. Bloom and O. Sisask, An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353 (2023).\n\n[KeMe23] Kelley, Z. and Meka, R., Strong Bounds for 3-Progressions. arXiv:2302.05537 (2023).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #3\n- Problem #9\n- Problem #159\n- Problem #161\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er89\n- BlSi23\n- KeMe23\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],

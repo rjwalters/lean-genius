@@ -1,106 +1,50 @@
 {
   "slug": "erdos-684",
   "title": "Erdős #684",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "For $0\\leq k\\leq n$ write $\\binom{n}{k} = uv$ where primes dividing $u$ are in $[2,k]$ and primes dividing $v$ are in $(k,n]$. Let $f(n)$ be the smallest $k$ such that $u>n^2$. Give bounds for $f(n)$.",
-    "plain": "Bound the smallest k such that the k-smooth part of C(n,k) exceeds n².",
-    "whyMatters": [
-      "Connects smooth number theory with binomial coefficient structure",
-      "Large gap between proven bounds and heuristic predictions"
-    ]
+    "formal": "For $0\\leq k\\leq n$ write\\[\\binom{n}{k} = uv\\]where the only primes dividing $u$ are in $[2,k]$ and the only primes dividing $v$ are in $(k,n]$.\n\nLet $f(n)$ be the smallest $k$ such that $u>n^2$. Give bounds for $f(n)$.\n\n\n\nA classical theorem of Mahler states that for any $\\epsilon>0$ and integers $k$ and $l$ then, writing\\[(n+1)\\cdots (n+k) = ab\\]where the only primes dividing $a$ are $\\leq l$ and the only primes dividing $b$ are $>l$, we have $a < n^{1+\\epsilon}$ for all sufficiently large (depending on $\\epsilon,k,l$) $n$.\n\nMahler's theorem implies $f(n)\\to \\infty$ as $n\\to \\infty$, but is ineffective, and so gives no bounds on the growth of $f(n)$.\n\nOne can similarly ask for estimates on the smallest integer $f(n,k)$ such that if $m$ is the factor of $\\binom{n}{k}$ containing all primes $\\leq f(n,k)$ then $m > n^2$.",
+    "plain": "For $0\\leq k\\leq n$ write\\[\\binom{n}{k} = uv\\]where the only primes dividing $u$ are in $[2,k]$ and the only primes dividing $v$ are in $(k,n]$.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Mahler: smooth part ≤ n^{1+ε} for large n (ineffective)",
-      "Tang-ChatGPT: f(n) ≤ n^{30/43+o(1)}",
-      "Under RH: f(n) ≤ n^{2/3+o(1)} (conditional)"
-    ],
-    "open": [
-      "Effective lower bounds for f(n)",
-      "Closing the gap between n^{30/43} and heuristic 2 log n"
-    ],
-    "goal": "Formalize the problem and known bounds in Lean 4"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-06T18:00:00.000Z",
-    "iteration": 2,
-    "focus": "Formalization quality improvements",
+    "phase": "NEW",
+    "since": "2026-01-14T19:46:33.194Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Docker build verification when available",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Fixed definition sorries in f and fGeneral (now use sInf). Removed String placeholders. Fixed imports and /-! docstrings. Fixed legendreExponent range. Proved smooth_rough_decomposition from smoothPart_dvd. Proved f_is_fGeneral_0. Reduced sorries from 6 to 3.",
-    "builtItems": [
-      {"name": "smoothPart", "type": "def", "description": "k-smooth part: product of p^v_p(m) for primes p ≤ k"},
-      {"name": "roughPart", "type": "def", "description": "k-rough part: m / smoothPart"},
-      {"name": "binomialSmoothPart", "type": "def", "description": "Smooth part of C(n,k)"},
-      {"name": "binomialRoughPart", "type": "def", "description": "Rough part of C(n,k)"},
-      {"name": "f", "type": "def", "description": "sInf {k | binomialSmoothPart n k > n²} (FIXED from Nat.find sorry)"},
-      {"name": "fGeneral", "type": "def", "description": "sInf {k | k ≥ j ∧ binomialSmoothPart n k > n²} (FIXED)"},
-      {"name": "tang_exponent", "type": "def", "description": "30/43 ≈ 0.698"},
-      {"name": "rh_exponent", "type": "def", "description": "2/3"},
-      {"name": "heuristic_bound", "type": "def", "description": "2 log n"},
-      {"name": "legendreExponent", "type": "def", "description": "Legendre formula (FIXED range)"},
-      {"name": "smoothPart_dvd", "type": "theorem", "description": "smoothPart k m ∣ m (sorry)"},
-      {"name": "smooth_rough_decomposition", "type": "theorem", "description": "m = smoothPart * roughPart (proved from smoothPart_dvd)"},
-      {"name": "f_is_fGeneral_0", "type": "theorem", "description": "f n = fGeneral n 0 (proved)"},
-      {"name": "prime_binomial_structure", "type": "theorem", "description": "p | C(p,k) for 1≤k≤p-1 (proved)"},
-      {"name": "erdos_684_statement", "type": "theorem", "description": "∀ n≥2, ∃ k≤n, smoothPart > n² (sorry for f(n)≤n)"}
-    ],
-    "insights": [
-      "Original f and fGeneral used Nat.find with sorry for existence - definition sorries block everything",
-      "Using sInf avoids existence proof requirement (returns 0 if set empty)",
-      "smoothPart_dvd is the key lemma - once proved, smooth_rough_decomposition follows trivially",
-      "legendreExponent range was wrong (used Finset.range n instead of log-based bound)",
-      "8 axioms are appropriate: deep number theory results not in Mathlib"
-    ],
-    "mathlibGaps": [
-      {"name": "Smooth number decomposition", "description": "No built-in smooth/rough part decomposition for factorizations"},
-      {"name": "Kummer's theorem", "description": "Not formalized in Mathlib"}
-    ],
-    "nextSteps": [
-      "Docker build to verify compilation",
-      "Prove smoothPart_dvd from Mathlib factorization lemmas",
-      "Consider Aristotle submission for smoothPart_dvd and f_tendsto_infty_weak"
-    ],
-    "markdown": "# Erdős #684 - Knowledge Base\n\n## Problem\nSmooth parts of binomial coefficients. Bound f(n) = min k where k-smooth part of C(n,k) > n².\n\n## Key Improvements\n- Fixed definition sorries in f and fGeneral (sInf instead of Nat.find sorry)\n- Proved smooth_rough_decomposition from smoothPart_dvd\n- Proved f_is_fGeneral_0 via simp\n- Fixed legendreExponent range\n- Removed String placeholders, fixed imports and /-!\n\n## Stats\n- 24 declarations, 8 axioms, 3 sorries\n- Original: ~6 sorries including 2 definition sorries"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #684 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $0\\leq k\\leq n$ write\\[\\binom{n}{k} = uv\\]where the only primes dividing $u$ are in $[2,k]$ and the only primes dividing $v$ are in $(k,n]$.\n\nLet $f(n)$ be the smallest $k$ such that $u>n^2$. Give bounds for $f(n)$.\n\n\n\nA classical theorem of Mahler states that for any $\\epsilon>0$ and integers $k$ and $l$ then, writing\\[(n+1)\\cdots (n+k) = ab\\]where the only primes dividing $a$ are $\\leq l$ and the only primes dividing $b$ are $>l$, we have $a < n^{1+\\epsilon}$ for all sufficiently large (depending on $\\epsilon,k,l$) $n$.\n\nMahler's theorem implies $f(n)\\to \\infty$ as $n\\to \\infty$, but is ineffective, and so gives no bounds on the growth of $f(n)$.\n\nOne can similarly ask for estimates on the smallest integer $f(n,k)$ such that if $m$ is the factor of $\\binom{n}{k}$ containing all primes $\\leq f(n,k)$ then $m > n^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #683\n- Problem #685\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
-  "approaches": [
-    {
-      "name": "Formalization quality improvement",
-      "status": "completed",
-      "description": "Fix definition sorries, prove structural lemmas, clean imports"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "number-theory",
-    "smooth-numbers",
-    "binomial-coefficients",
-    "3-sorry",
-    "8-axiom"
+    "erdos"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      {"key": "Er79d", "title": "Erdős problem on smooth parts of binomial coefficients", "authors": ["Erdős"], "year": 1979}
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Data.Nat.Choose.Factorization",
-      "Mathlib.Data.Nat.Choose.Dvd",
-      "Mathlib.Data.Nat.Factorization.Basic"
-    ]
+    "mathlib": []
   },
   "started": "2026-01-14T19:46:33.195Z",
   "significance": 6,

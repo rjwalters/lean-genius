@@ -16,54 +16,25 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "INFRASTRUCTURE",
+    "phase": "NEW",
     "since": "2026-01-14T19:46:33.193Z",
-    "iteration": 2,
-    "focus": "Infrastructure complete. Main conjecture is OPEN.",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Main conjecture is OPEN - no further proof progress possible without new mathematical insights.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 5 axioms eliminated and replaced with 17 proved theorems. Infrastructure includes lpf existence, uniqueness, sqrt bound, minFac connection, and structural analysis of the conjecture.",
-    "builtItems": [
-      "theorem minFac_is_lpf: minFac gives least prime factor (Erdos681Problem.lean)",
-      "theorem composite_has_lpf: composite numbers have lpf (Erdos681Problem.lean)",
-      "theorem prime_lpf_self: primes are their own lpf (Erdos681Problem.lean)",
-      "theorem lpf_le_sqrt: lpf of composite ≤ √m (Erdos681Problem.lean)",
-      "theorem lpf_unique: uniqueness of lpf (Erdos681Problem.lean)",
-      "theorem leastPrimeFactor_eq_minFac: connects def to minFac (Erdos681Problem.lean)",
-      "theorem leastPrimeFactor_is_lpf: def satisfies IsLeastPrimeFactor (Erdos681Problem.lean)",
-      "theorem leastPrimeFactor_prime: lpf of prime = itself (Erdos681Problem.lean)",
-      "theorem lpf_dvd: lpf divides the number (Erdos681Problem.lean)",
-      "theorem lpf_prime: lpf is prime (Erdos681Problem.lean)",
-      "theorem erdos681_is_general_d2: problem 681 ↔ general d=2 (Erdos681Problem.lean)",
-      "theorem prime_offset_gives_large_lpf: prime case analysis (Erdos681Problem.lean)",
-      "theorem composite_constraint: k⁴ < n+k necessary (Erdos681Problem.lean)",
-      "theorem d1_k1_trivial: d=1, k=1 trivial case (Erdos681Problem.lean)",
-      "theorem general_d0_trivial: d=0 case fully proved (Erdos681Problem.lean)",
-      "theorem general_monotone: higher d implies lower d (Erdos681Problem.lean)",
-      "theorem lpf_condition_equiv: connects to problem 680 formulation (Erdos681Problem.lean)"
-    ],
-    "insights": [
-      "All axioms from original file are provable from Mathlib minFac API",
-      "The d=0 generalisation is trivially true (pick k=n, 2n is composite for n≥2)",
-      "Key structural constraint: for composite n+k satisfying conjecture, k⁴ < n+k",
-      "IsLeastPrimeFactor predicate equivalent to minFac comparison (lpf_condition_equiv)",
-      "Problem 681 is definitionally equal to ErdosProblem681General 2",
-      "Higher d cases imply lower d cases (general_monotone)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Main conjecture is OPEN - cannot prove ErdosProblem681 itself",
-      "Consider computational verification for small n",
-      "Connect to smooth number distribution theory for asymptotic arguments"
-    ],
-    "markdown": "# Erdős #681 - Knowledge Base\n\n## Research Completed\n\nAll 5 axioms from the original formalization eliminated. 17 proved theorems now provide\ncomplete infrastructure for the least prime factor framework.\n\n## Key Results\n- IsLeastPrimeFactor predicate fully connected to Nat.minFac\n- d=0 case of generalisation proved (trivially true)\n- Structural constraint: composite case requires k⁴ < n+k\n- Monotonicity: higher d implies lower d\n\n## Status: OPEN (main conjecture)\nThe main conjecture remains open. Our infrastructure provides the framework but\nthe actual existential proof requires deep number-theoretic arguments."
+    "nextSteps": [],
+    "markdown": "# Erdős #681 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?\n\n\n\nRelated to questions of Erd\\H{o}s, Eggleton, and Selfridge. This may be true with $k^2$ replaced by $k^d$ for any $d$.\n\nSee also [680] and [682].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #680\n- Problem #682\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er7d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "approaches": [],
   "tags": [
