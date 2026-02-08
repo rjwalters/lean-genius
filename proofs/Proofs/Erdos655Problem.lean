@@ -52,12 +52,63 @@ def NoFourConcyclic (P : PointConfig n) : Prop :=
 
 /- ## Basic Lower Bound -/
 
-/-- Every point determines at least ⌈(n-1)/2⌉ distinct distances
-    when no circle centered at it contains 3+ other points -/
-axiom basic_distance_bound (n : ℕ) (hn : 2 ≤ n)
+-- Key counting lemma: n-1 ≤ 2 * |distinctDistancesFrom P i|
+-- Proof: each j ≠ i maps to some distance r = dist(P i, P j) > 0,
+-- and each such r has at most 2 preimages (from NoConcyclicTriple).
+-- Therefore |{j ≠ i}| ≤ Σ_{r in distinctDistancesFrom} 2 = 2 * |distinctDistancesFrom|
+lemma others_card_le_two_mul_distinct {n : ℕ} (P : PointConfig n)
+    (hP : Function.Injective P) (hC : NoConcyclicTriple P) (i : Fin n) :
+    n - 1 ≤ 2 * (distinctDistancesFrom P i).card := by
+  have h_others_card : (Finset.univ.erase i).card = n - 1 := by
+    simp [Finset.card_erase_of_mem (Finset.mem_univ i),
+          Finset.card_univ, Fintype.card_fin]
+  rw [← h_others_card]
+  -- Decompose {j ≠ i} by distance fibers
+  have h_fiber : (Finset.univ.erase i).card =
+      ∑ r ∈ distinctDistancesFrom P i,
+        ((Finset.univ.erase i).filter (fun j => dist (P i) (P j) = r)).card := by
+    apply Finset.card_eq_sum_card_fiberwise
+    -- Need: f maps (univ.erase i) into (distinctDistancesFrom P i)
+    intro j hj
+    -- hj : j ∈ ↑(Finset.univ.erase i)
+    have hji : j ≠ i := by
+      rw [Finset.mem_coe] at hj
+      exact Finset.ne_of_mem_erase hj
+    -- Need: dist(P i, P j) ∈ ↑(distinctDistancesFrom P i)
+    rw [Finset.mem_coe]
+    simp only [distinctDistancesFrom, Finset.mem_filter, Finset.mem_image]
+    exact ⟨⟨j, Finset.mem_univ j, rfl⟩, dist_pos.mpr (fun heq => hji (hP heq.symm))⟩
+  rw [h_fiber]
+  -- Bound each fiber by 2, then sum
+  calc ∑ r ∈ distinctDistancesFrom P i,
+        ((Finset.univ.erase i).filter (fun j => dist (P i) (P j) = r)).card
+      ≤ ∑ r ∈ distinctDistancesFrom P i, 2 := by
+        apply Finset.sum_le_sum
+        intro r hr
+        have hr_pos : r > 0 := by
+          simp only [distinctDistancesFrom, Finset.mem_filter] at hr
+          exact hr.2
+        -- The erase-filter is a subset of the univ-filter used in NoConcyclicTriple
+        calc ((Finset.univ.erase i).filter (fun j => dist (P i) (P j) = r)).card
+            ≤ (Finset.univ.filter (fun j => j ≠ i ∧ dist (P i) (P j) = r)).card := by
+              apply Finset.card_le_card
+              intro j hj
+              have hje := (Finset.mem_filter.mp hj)
+              have hne := Finset.ne_of_mem_erase hje.1
+              exact Finset.mem_filter.mpr ⟨Finset.mem_univ j, ⟨hne, hje.2⟩⟩
+          _ ≤ 2 := hC i r hr_pos
+    _ = 2 * (distinctDistancesFrom P i).card := by
+        rw [Finset.sum_const, smul_eq_mul, mul_comm]
+
+/-- Every point determines at least (n-1)/2 distinct distances
+    when no circle centered at it contains 3+ other points.
+    This is a pigeonhole argument: each distance appears ≤ 2 times. -/
+theorem basic_distance_bound (n : ℕ) (_hn : 2 ≤ n)
     (P : PointConfig n) (hP : Function.Injective P)
     (hC : NoConcyclicTriple P) (i : Fin n) :
-  (n - 1) / 2 ≤ (distinctDistancesFrom P i).card
+  (n - 1) / 2 ≤ (distinctDistancesFrom P i).card := by
+  have h := others_card_le_two_mul_distinct P hP hC i
+  omega
 
 /- ## Hunter's Counterexample -/
 
