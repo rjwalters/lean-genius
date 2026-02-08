@@ -22,6 +22,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
 if [[ $# -lt 1 ]]; then
     echo "Usage: $0 <lean-file>" >&2
     exit 1
@@ -63,6 +66,10 @@ fi
 tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-preprocess-XXXXXX")
 tmp_file="$tmp_dir/$(basename "$INPUT_FILE")"
 cp "$INPUT_FILE" "$tmp_file"
+
+# Copy Lean project files so aristotlelib recognizes it as a valid project
+cp "$PROJECT_ROOT/proofs/lakefile.toml" "$tmp_dir/"
+cp "$PROJECT_ROOT/proofs/lean-toolchain" "$tmp_dir/"
 
 changes_made=0
 
