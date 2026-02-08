@@ -22,7 +22,8 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const RESEARCH_DIR = path.join(__dirname, '../../research')
-const POOL_FILE = path.join(RESEARCH_DIR, 'candidate-pool.json')
+const STATE_DIR = path.join(__dirname, '../../.lean/state')
+const POOL_FILE = path.join(STATE_DIR, 'candidate-pool.json')
 const REGISTRY_FILE = path.join(RESEARCH_DIR, 'registry.json')
 const PROBLEMS_DIR = path.join(RESEARCH_DIR, 'problems')
 
