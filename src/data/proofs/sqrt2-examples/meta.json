@@ -21,43 +21,68 @@
         "theorem": "mul_nonneg",
         "description": "Product of non-negative numbers is non-negative",
         "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "neg_nonneg",
+        "description": "Non-negativity of negation: 0 ≤ -a ↔ a ≤ 0",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "le_of_lt",
+        "description": "If a < b then a ≤ b",
+        "module": "Mathlib.Tactic"
       }
     ],
     "originalContributions": [
       "Simple examples showing basic proof techniques",
       "Case analysis with by_cases",
-      "Calculation proofs with calc blocks"
+      "Calculation proofs with calc blocks",
+      "Backward reasoning with apply chains"
     ],
     "dateAdded": "12/27/25"
   },
   "overview": {
-    "historicalContext": "These are pedagogical examples demonstrating fundamental Lean proof techniques. They serve as a starting point for learning formal verification.",
-    "problemStatement": "**Examples proven:**\n\n1. For any integer n: n * n >= 0 (squares are non-negative)\n2. Implication transitivity: (P -> Q) -> (Q -> R) -> (P -> R)",
-    "proofStrategy": "The proofs use basic tactics:\n- `by_cases` for case analysis on whether n >= 0\n- `calc` for step-by-step calculations\n- `ring` for polynomial arithmetic\n- `intro`, `apply`, `exact` for logical reasoning",
+    "historicalContext": "The non-negativity of squares is one of the most fundamental properties in algebra, recognized since antiquity. In Euclid's *Elements* (c. 300 BC), geometric squares always have positive area, reflecting this algebraic truth. The formal statement that $n^2 \\geq 0$ for all integers $n$ underpins ordered field axioms and is essential in proofs of the AM-GM inequality, the Cauchy-Schwarz inequality, and the construction of absolute values.\n\nImplication transitivity (also called hypothetical syllogism) is a rule of inference dating to Aristotle's *Prior Analytics* (c. 350 BC). It states that if $P$ implies $Q$ and $Q$ implies $R$, then $P$ implies $R$. This principle forms the backbone of deductive reasoning and is axiomatized in every formal logical system from propositional calculus to dependent type theory.\n\nTogether, these two examples illustrate the dual nature of formal proof: algebraic reasoning about numbers and logical reasoning about propositions. They serve as an ideal entry point for learning the Lean 4 proof assistant, demonstrating how mathematical intuition translates into machine-checkable arguments.",
+    "problemStatement": "**Examples proven:**\n\n1. For any integer $n$: $n \\cdot n \\geq 0$ (squares are non-negative)\n2. Implication transitivity: $(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$",
+    "proofStrategy": "The proof of square non-negativity uses **case analysis** on the sign of $n$. When $n \\geq 0$, the result follows directly from `mul_nonneg`. When $n < 0$, the key insight is rewriting $n \\cdot n$ as $(-n) \\cdot (-n)$ via the `ring` tactic, reducing to the non-negative case since $-n > 0$. The `calc` block makes this two-step argument explicit and readable.\n\nImplication transitivity is proved by **backward reasoning**: after introducing all hypotheses, `apply hqr` reduces the goal from $R$ to $Q$, and `apply hpq` further reduces it to $P$, which is exactly the hypothesis `hp`. This demonstrates the characteristic Lean pattern of working backwards from the goal.",
     "keyInsights": [
-      "Case analysis is a fundamental proof technique",
-      "The calc block provides readable step-by-step proofs",
-      "Simple lemmas build foundations for complex proofs"
+      "**Case analysis on sign**: The `by_cases h : 0 ≤ n` tactic splits the proof into $n \\geq 0$ and $n < 0$, a pattern that recurs throughout number theory whenever sign matters",
+      "**Algebraic rewriting with ring**: The identity $n \\cdot n = (-n) \\cdot (-n)$ is proved automatically by `ring`, which handles polynomial identities over commutative rings without manual steps",
+      "**Backward reasoning with apply**: In Lean, `apply` works backward from the goal — to prove $R$, it suffices to prove whatever the hypothesis needs. This mirrors how mathematicians often think: 'to show X, it suffices to show Y'",
+      "**The calc block as structured proof**: The `calc` tactic provides a chain of equalities and inequalities that reads like a textbook calculation, making proofs both human-readable and machine-checkable",
+      "**Building blocks for complex proofs**: The non-negativity of squares appears as a lemma in proofs of the Cauchy-Schwarz inequality, the irrationality of $\\sqrt{2}$, and the fundamental theorem of algebra"
     ]
   },
   "sections": [
+    {
+      "id": "imports-and-header",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Imports Mathlib.Tactic for standard proof tactics and provides a module-level docstring describing the pedagogical purpose and proof techniques demonstrated."
+    },
     {
       "id": "square-nonneg",
       "title": "Squares are Non-negative",
       "startLine": 30,
       "endLine": 40,
-      "summary": "Proof that n * n >= 0 for any integer n."
+      "summary": "Proves that n * n ≥ 0 for any integer n using case analysis on the sign of n, with a calc block for the negative case."
     },
     {
       "id": "implication-transitivity",
       "title": "Implication Transitivity",
       "startLine": 42,
-      "endLine": 47,
-      "summary": "Proof that implications compose: (P -> Q) -> (Q -> R) -> (P -> R)."
+      "endLine": 48,
+      "summary": "Proves that implications compose: (P → Q) → (Q → R) → (P → R) using backward reasoning with apply."
     }
   ],
   "conclusion": {
-    "summary": "These simple examples demonstrate the building blocks of formal proofs in Lean: case analysis, calculation chains, and logical reasoning.",
-    "implications": "These basic techniques are used throughout more complex proofs in mathematics and computer science."
+    "summary": "These two proofs demonstrate the fundamental building blocks of formal reasoning in Lean 4: algebraic case analysis for number-theoretic facts and backward logical reasoning for propositional results. Despite their simplicity, both techniques scale to far more complex proofs throughout the Lean Genius gallery.",
+    "implications": "The non-negativity of squares is a cornerstone lemma used in real analysis, number theory, and optimization. Implication transitivity is the formal basis for chaining logical deductions in any proof. Together, they illustrate how Lean's type-theoretic foundation unifies algebraic and logical reasoning within a single framework.",
+    "openQuestions": [
+      "Can the square non-negativity proof be generalized to arbitrary ordered rings in Lean, and does Mathlib already provide this?",
+      "How does the performance of `by_cases` compare to `omega` or `positivity` for proving non-negativity results in Lean 4?",
+      "What is the minimal set of Mathlib imports needed to prove these results — can `Mathlib.Tactic` be replaced with more specific imports?"
+    ]
   }
 }
