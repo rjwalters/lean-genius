@@ -11,29 +11,55 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "sum_free_decidable (LEM)",
+      "odd_is_sum_free (odd numbers are sum-free)",
+      "sidon_empty (empty set is Sidon)",
+      "sidon_singleton (singletons are Sidon)",
+      "sidon_not_implies_sum_free (Sidon does NOT imply sum-free, counterexample {1,2,4})"
+    ],
+    "open": [
+      "General ErdosProblem949 (sum-free case)",
+      "Sidon variant (solved by Dillies/AlphaProof but proof not formalized)"
+    ],
+    "goal": "Remove unsound axiom, prove structural results, formalize definitions"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T12:22:36.005Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "SURVEY",
+    "since": "2026-02-07T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Fixed unsound axiom, proved 5 theorems, correct formalization",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Submit for PR review",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "Removed UNSOUND axiom sidon_is_sum_free, proved 5 theorems (LEM, odd sum-free, Sidon empty/singleton, Sidon≠sum-free counterexample), 0 sorries, 2 axioms for open/solved-externally results",
+    "builtItems": [
+      "IsSumFreeSet definition",
+      "IsSidonReal definition",
+      "realSumset definition",
+      "ErdosProblem949 formal statement",
+      "5 proved theorems with 0 sorries"
+    ],
+    "insights": [
+      "Previous axiom sidon_is_sum_free was UNSOUND: {1,2,4} is Sidon but 1+1=2∈S",
+      "Sidon sets and sum-free sets are INDEPENDENT properties",
+      "Odd numbers form a sum-free set (odd+odd=even, parity argument)",
+      "The Sidon variant was solved by Dillies/AlphaProof but requires cardinal arithmetic to formalize",
+      "General problem remains open - sum-free sets can be much denser than Sidon sets"
+    ],
+    "mathlibGaps": [
+      "Cardinal.continuum API needed for Sidon variant formalization"
+    ],
+    "nextSteps": [
+      "Formalize Dillies/AlphaProof Sidon variant proof (currently axiom)",
+      "Explore density arguments for sum-free sets"
+    ],
     "markdown": "# Erdős #949 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subset \\mathbb{R}$ be a set containing no solutions to $a+b=c$. Must there be a set $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$?\n\n\n\nErd\\H{o}s suggests that if the answer is no one could consider the variant where we assume that $S$ is Sidon (i.e. all $a+b$ with $a,b\\in S$ are distinct, aside from the trivial coincidences).\n\nIn the comments Dillies gives a positive proof of this, found by AlphaProof: in other words, if $S\\subset \\mathbb{R}$ is a Sidon set then there exists $A\\subseteq \\mathbb{R}\\backslash S$ of cardinality continuum such that $A+A\\subseteq \\mathbb{R}\\backslash S$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #948\n- Problem #950\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
