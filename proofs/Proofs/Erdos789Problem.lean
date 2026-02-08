@@ -202,11 +202,17 @@ example : (1000000 : ℕ).sqrt = 1000 := by native_decide
 ## Part XI: Conjectures
 -/
 
-/-- Possible growth rates for h(n):
+/-- **Conjectured growth rates for h(n):**
+    Three plausible scenarios for the true asymptotic behavior:
     1. h(n) ~ n^{1/2} (Straus bound is tight)
     2. h(n) ~ n^α for some 1/3 < α < 1/2
-    3. h(n) ~ (n log n)^{1/3} · (log n)^β for some β > 0 -/
-def possible_growth_rates : Prop := True
+    3. h(n) grows slower than any power of n -/
+def possible_growth_rates : Prop :=
+  (∃ c > 0, ∀ n : ℕ, n ≥ 2 → (h n : ℝ) ≥ c * (n : ℝ)^(1/2 : ℝ)) ∨
+  (∃ α : ℝ, 1/3 < α ∧ α < 1/2 ∧
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
+      ∀ n : ℕ, n ≥ 2 → c₁ * (n : ℝ)^α ≤ (h n : ℝ) ∧ (h n : ℝ) ≤ c₂ * (n : ℝ)^α) ∨
+  (∀ α > 0, ∃ N : ℕ, ∀ n ≥ N, (h n : ℝ) ≤ (n : ℝ)^α)
 
 /- The problem is to determine the correct exponent -/
 

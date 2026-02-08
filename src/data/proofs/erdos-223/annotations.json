@@ -143,15 +143,15 @@
     "id": "ann-223-diameterGraph",
     "proofId": "erdos-223",
     "range": {
-      "startLine": 197,
-      "endLine": 207
+      "startLine": 188,
+      "endLine": 222
     },
     "type": "definition",
-    "title": "Diameter Graph",
-    "content": "The **diameterGraph** is a SimpleGraph where vertices are points and edges connect diameter pairs. Its structure reveals dimensional constraints.",
-    "mathContext": "In 2D, max degree 2 (each point can be in at most 2 diameter pairs). In 3D, still linear structure. In 4D+, much richer.",
+    "title": "Diameter Graph and Dimensional Structure",
+    "content": "The **diameterGraph** is a SimpleGraph where vertices are points and edges connect diameter pairs. Its structure varies by dimension: in 2D, max degree ≤ 2 (linear bound); in 3D, at most 2n-2 edges; in 4D+, Θ(n²) edges from cross-polytope constructions.",
+    "mathContext": "The graph-theoretic view reveals why the dimension transition happens: in low dimensions, geometric constraints limit vertex degrees, while in d ≥ 4, cross-polytope configurations allow quadratic edge density.",
     "significance": "key",
-    "relatedConcepts": ["SimpleGraph", "graph structure", "degree bound"]
+    "relatedConcepts": ["SimpleGraph", "graph structure", "degree bound", "cross-polytope"]
   },
   {
     "id": "ann-223-4d-coefficient",
@@ -171,8 +171,8 @@
     "id": "ann-223-summary",
     "proofId": "erdos-223",
     "range": {
-      "startLine": 255,
-      "endLine": 270
+      "startLine": 260,
+      "endLine": 276
     },
     "type": "theorem",
     "title": "Summary Theorem",
