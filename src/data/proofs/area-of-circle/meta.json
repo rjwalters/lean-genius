@@ -7,28 +7,82 @@
     "author": "Archimedes (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle",
     "date": "~250 BCE",
-    "status": "verified",
+    "status": "complete",
     "tags": ["geometry", "measure-theory", "classic", "beginner"],
     "proofRepoPath": "Proofs/AreaOfCircle.lean",
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Complex.volume_ball", "description": "Volume of open ball in the complex plane", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"},
-      {"theorem": "Complex.volume_closedBall", "description": "Volume of closed ball in the complex plane", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"}
+      {"theorem": "Complex.volume_ball", "description": "Lebesgue measure of open ball in ℂ equals πr²", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"},
+      {"theorem": "Complex.volume_closedBall", "description": "Lebesgue measure of closed ball in ℂ equals πr²", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"},
+      {"theorem": "MeasureTheory.volume", "description": "Lebesgue measure on measurable spaces", "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"},
+      {"theorem": "NNReal.pi", "description": "π as a non-negative real number", "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"}
     ],
-    "originalContributions": ["Complete formalization using Lebesgue measure", "Pedagogical documentation of measure-theoretic approach"],
+    "originalContributions": [
+      "Complete formalization of A = πr² using Lebesgue measure in ℂ ≅ ℝ²",
+      "Proof that open and closed disks have equal area (boundary has measure zero)",
+      "Special cases: unit disk (area π), zero radius (area 0), negative radius (empty)",
+      "Pedagogical documentation connecting to Archimedes' method of exhaustion"
+    ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 9
   },
   "overview": {
-    "historicalContext": "The formula A = πr² was known to ancient civilizations, but Archimedes of Syracuse (c. 287-212 BCE) gave the first rigorous proof using the method of exhaustion—an ancient precursor to integral calculus.",
-    "problemStatement": "**Area of a Circle**:\n\nFor a disk D = {p ∈ ℝ² : |p - center| ≤ r} with radius r ≥ 0:\n$$\\text{Area}(D) = \\pi r^2$$",
-    "proofStrategy": "We use measure theory: the area is the Lebesgue measure of the 2-dimensional disk. Using the complex plane ℂ ≅ ℝ², we apply Mathlib's volume_ball theorem.",
-    "keyInsights": ["Area is formalized as Lebesgue measure in ℝ²", "The complex plane provides an elegant framework", "The formula generalizes to n-dimensional balls using the gamma function"]
+    "historicalContext": "The formula $A = \\pi r^2$ was known empirically to ancient Babylonians and Egyptians (the Rhind Papyrus, c. 1650 BCE, approximates $\\pi \\approx 256/81$). Archimedes of Syracuse (c. 287–212 BCE) gave the first rigorous proof using the **method of exhaustion**: he inscribed and circumscribed regular polygons with increasing numbers of sides, proving that the area of a circle equals that of a right triangle with legs equal to the circumference and radius. This argument anticipated integral calculus by nearly two millennia. In modern mathematics, the area is formalized as the Lebesgue measure of the 2-dimensional disk. The formula is #9 on Freek Wiedijk's list of 100 famous theorems formalized in proof assistants. The Lean 4 proof leverages Mathlib's `Complex.volume_ball`, which computes the volume of balls in $\\mathbb{C} \\cong \\mathbb{R}^2$ using the general $n$-dimensional volume formula involving the gamma function.",
+    "problemStatement": "**Area of a Circle (Wiedijk #9)**:\n\nFor a disk $D = \\{p \\in \\mathbb{R}^2 : |p - \\text{center}| \\leq r\\}$ with radius $r \\geq 0$:\n$$\\text{Area}(D) = \\pi r^2$$",
+    "proofStrategy": "The proof uses measure theory, identifying area with Lebesgue measure in 2 dimensions. By modeling $\\mathbb{R}^2$ as the complex plane $\\mathbb{C}$ (which Mathlib equips with a Lebesgue measure via its real inner product space structure), the main theorem reduces to a direct application of `Complex.volume_ball`. The key insight is that $\\mathbb{C}$ and $\\mathbb{R}^2$ are isomorphic as real inner product spaces, so the Lebesgue measure on $\\mathbb{C}$ agrees with the 2D Lebesgue measure. Special cases (unit disk, zero radius, negative radius, closed vs open) are derived as corollaries.",
+    "keyInsights": [
+      "Area is formalized as Lebesgue measure in $\\mathbb{R}^2$, connecting the ancient geometric concept to modern measure theory — the 'area' of a set is its $\\lambda^2$-measure",
+      "Using $\\mathbb{C} \\cong \\mathbb{R}^2$ as the ambient space gives the cleanest formulation: `Complex.volume_ball` directly yields $\\pi r^2$ without coordinate transformations",
+      "Open and closed disks have the same area because the boundary circle has Lebesgue measure zero — a fundamental property of lower-dimensional manifolds in measure theory",
+      "The general $n$-dimensional ball volume formula $V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2 + 1)$ specializes to $\\pi r^2$ for $n = 2$ via $\\Gamma(2) = 1$",
+      "Archimedes' method of exhaustion — approximating the disk by inscribed/circumscribed polygons — is the historical precursor to the Riemann integral, which in turn is subsumed by the Lebesgue integral used in this formalization"
+    ]
   },
   "sections": [
-    {"id": "header", "title": "Introduction", "startLine": 1, "endLine": 50, "summary": "Overview and historical context."},
-    {"id": "main-theorem", "title": "Main Theorem", "startLine": 52, "endLine": 80, "summary": "The area formula for open and closed disks."}
+    {
+      "id": "header-docs",
+      "title": "Introduction and Historical Context",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports `VolumeOfBalls` and `Tactic`, extensive doc comment covering what is proved ($A = \\pi r^2$), the Wiedijk #9 reference, the mathematical statement, the measure-theoretic approach via $\\mathbb{C} \\cong \\mathbb{R}^2$, proof status, Mathlib dependencies, and historical note on Archimedes."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems: Open and Closed Disk Area",
+      "startLine": 52,
+      "endLine": 84,
+      "summary": "Opens namespace and `MeasureTheory Metric`. Proves `area_of_circle`: volume of open ball in $\\mathbb{C}$ equals $r^2 \\cdot \\pi$ via `Complex.volume_ball`. Proves `area_of_closed_disk`: closed ball has the same measure via `Complex.volume_closedBall`."
+    },
+    {
+      "id": "special-cases",
+      "title": "Properties and Corollaries",
+      "startLine": 86,
+      "endLine": 115,
+      "summary": "Derives special cases: unit disk area is $\\pi$ (both open and closed), zero radius gives area 0 (point has measure zero), negative radius gives area 0 (empty ball). Uses `simp` with `ENNReal.ofReal_one`, `ball_zero`, `closedBall_zero`, and `ball_eq_empty`."
+    },
+    {
+      "id": "significance",
+      "title": "Why This Matters: Applications and Connections",
+      "startLine": 117,
+      "endLine": 136,
+      "summary": "Doc section explaining the significance of $A = \\pi r^2$ across mathematics and science: foundational for geometry, the first polar coordinate integral in calculus, essential in physics (optics, mechanics), probability (Gaussian integral), and engineering."
+    },
+    {
+      "id": "circumference-connection",
+      "title": "Connection to Circumference and Archimedes",
+      "startLine": 138,
+      "endLine": 155,
+      "summary": "Doc section explaining how $A = \\pi r^2$ relates to circumference $C = 2\\pi r$ via integration of annular rings: $dA = 2\\pi\\rho\\, d\\rho$, giving $A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. References Archimedes' conceptualization of the disk as concentric circular strips. Ends with `#check` commands and namespace closing."
+    }
   ],
-  "conclusion": {"summary": "The area of a circle is verified using modern measure theory, connecting ancient geometry to contemporary mathematics."}
+  "conclusion": {
+    "summary": "The area of a circle is verified using modern measure theory in Lean 4, connecting Archimedes' 2300-year-old result to contemporary Lebesgue integration. The proof is a one-liner — `Complex.volume_ball` — demonstrating the power of building on Mathlib's library of formalized mathematics. Both open and closed disk variants are proved, along with special cases for unit disk, zero radius, and negative radius.",
+    "implications": "This formalization demonstrates how measure theory subsumes classical geometry. The same framework that proves $A = \\pi r^2$ extends to higher-dimensional ball volumes ($V_n(r) = \\pi^{n/2} r^n / \\Gamma(n/2+1)$), surface areas, and general Riemannian volume computations. The Wiedijk #9 formalization contributes to the broader project of formalizing the 100 most famous theorems.",
+    "openQuestions": [
+      "Can the formalization be extended to prove the circumference formula C = 2πr via differentiation of the area?",
+      "How does the n-dimensional ball volume formula in Mathlib generalize this result?",
+      "Can the method of exhaustion (Archimedes' original proof) be formalized directly, without measure theory?"
+    ]
+  }
 }
