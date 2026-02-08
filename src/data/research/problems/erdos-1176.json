@@ -1,108 +1,52 @@
 {
   "slug": "erdos-1176",
   "title": "Erdős #1176",
-  "phase": "SURVEYED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Let G be a graph with χ(G) = ℵ₁. Does there exist an edge coloring with ℵ₁ colors such that for any countable vertex coloring, some vertex color class contains all edge colors?",
-    "plain": "For graphs with uncountable chromatic number ℵ₁, can edges be colored with ℵ₁ colors so that every proper vertex coloring with countably many colors has a color class that 'sees' every edge color?",
-    "whyMatters": [
-      "Connects chromatic number theory with edge coloring partition properties",
-      "Explores the boundary between ZFC-provable and independent set-theoretic statements",
-      "Related to infinite partition calculus and Ramsey theory"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Hajnal-Komjáth: Consistency of positive answer with ZFC (forcing model)",
-      "A graph with χ(G) = ℵ₁ is not countably colorable (proved in Lean)"
-    ],
-    "open": [
-      "Whether the statement is provable in ZFC (may be independent)"
-    ],
-    "goal": "Formalize the problem statement and known partial results in Lean 4"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-07T15:39:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T17:01:06.708Z",
     "iteration": 1,
-    "focus": "Formalization of problem statement and structural results",
-    "blockers": [
-      "Problem is OPEN and likely ZFC-independent - cannot prove main statement",
-      "Docker build verification blocked by system overload (30+ containers)"
-    ],
-    "nextAction": "Verify Docker build when system is less loaded; consider Aristotle submission for provable lemmas",
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Formalized problem statement with 9 parts including edge coloring definitions, domination property, structural results, consistency axiom, and variant formulations. Proved not_nat_colorable lemma (modulo API verification).",
-    "builtItems": [
-      "proofs/Proofs/Erdos1176Problem.lean - Full formalization (~220 lines)",
-      "IsProperVertexColoring, IsCardColorable, chromaticNumber definitions",
-      "EdgeColoring, allEdgeColors, edgeColorsSeen definitions",
-      "HasDominationProperty, ErdosProblem1176 formal statement",
-      "not_aleph0_colorable_of_chi_aleph1 theorem",
-      "not_nat_colorable_of_chi_aleph1 theorem",
-      "StrongDominationProperty, DominationViaColorClasses variants",
-      "hajnal_komjath_consistency_witness axiom"
-    ],
-    "insights": [
-      "Problem is OPEN and may be ZFC-independent (Hajnal-Komjáth proved consistency only)",
-      "The problem connects vertex chromatic number (ℵ₁) with edge coloring partition properties",
-      "Formalization avoids Cardinal.toType (not in Docker Mathlib) using existential type quantification",
-      "Cardinal.aleph0_lt_aleph_one is the correct API name (not aleph0_lt_aleph)",
-      "Key structural result: χ(G) = ℵ₁ implies G is not ℕ-colorable (uses mk_nat for cardinality)",
-      "Strong domination (all classes see all colors) strictly stronger than original (some class)"
-    ],
-    "mathlibGaps": [
-      "Cardinal.toType not available in Docker Mathlib v4.26.0",
-      "Cardinal.aleph0_lt_aleph not available (renamed to aleph0_lt_aleph_one)",
-      "Sym2.exists_mem not directly available"
-    ],
-    "nextSteps": [
-      "Verify Docker build when system load drops below 5 containers",
-      "Fix any remaining API issues found during build",
-      "Consider submitting provable lemmas to Aristotle"
-    ],
-    "markdown": "# Erdős #1176 - Knowledge Base\n\n## Problem Statement\n\nLet G be a graph with χ(G) = ℵ₁. Is there an edge coloring with ℵ₁ colors such that for any countable vertex coloring, some vertex color class sees all edge colors?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Tractability**: SURVEY only (ZFC-independent)\n**Aristotle Suitable**: No (OPEN problem)\n\n## Key Results\n\n- **Hajnal-Komjáth**: Proved consistency with ZFC\n- **Lean formalization**: 220+ lines covering statement, structural lemmas, variants\n\n## Tags\n\n- erdos\n- set-theory\n- graph-coloring\n- partition-calculus\n\n## Related Problems\n\n- Problem #919 (chromatic numbers on ordinal products)\n- Problem #83\n- Problem #888\n\n## Sessions\n\n### Session 1 (2026-02-07)\n- Formalized complete problem statement\n- Built edge coloring + domination property infrastructure\n- Proved structural lemmas (not_nat_colorable)\n- Stated Hajnal-Komjáth consistency as axiom\n\n---\n\n*Updated by researcher-1 on 2026-02-07*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1176 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Statement formalization with structural lemmas",
-      "description": "Formalize the problem statement using SimpleGraph and Cardinal, prove basic structural consequences of χ(G) = ℵ₁",
-      "status": "completed",
-      "outcome": "Successfully formalized statement and key structural results"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "set-theory",
-    "graph-coloring",
-    "partition-calculus"
+    "erdos"
   ],
-  "relatedProofs": [
-    "proofs/Proofs/Erdos919Problem.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Hajnal-Komjáth: Consistency of the edge coloring domination property"
-    ],
-    "urls": [
-      "https://www.erdosproblems.com/1176"
-    ],
-    "mathlib": [
-      "Mathlib.SetTheory.Cardinal.Ordinal",
-      "Mathlib.SetTheory.Cardinal.Cofinality",
-      "Mathlib.Combinatorics.SimpleGraph.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T17:01:06.709Z",
   "significance": 7,
-  "tractability": 3
+  "tractability": 6
 }

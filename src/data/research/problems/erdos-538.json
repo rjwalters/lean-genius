@@ -1,7 +1,7 @@
 {
   "slug": "erdos-538",
   "title": "Erdős #538",
-  "phase": "SURVEY",
+  "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,49 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
+    "phase": "NEW",
     "since": "2026-01-13T04:39:49.623Z",
-    "iteration": 2,
-    "focus": "Structural lemmas proved, analytic NT sorries remain",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Need Mertens theorem for main result",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
+      "total": 0,
       "currentApproach": 0,
-      "approachesTried": 1
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Good formalization with 10 proved structural lemmas, 5 sorries requiring analytic NT",
-    "builtItems": [
-      "Defined reprCount and HasBoundedRepr",
-      "Defined reciprocalSum with if-guard for zero",
-      "Proved reprCount_empty, reprCount_le_card",
-      "Proved hasBoundedRepr_empty, hasBoundedRepr_mono, hasBoundedRepr_subset",
-      "Proved reciprocalSum_empty, reciprocalSum_nonneg, reciprocalSum_mono",
-      "Proved reciprocalSum_insert",
-      "Proved r_eq_1_card_bound via Finset.card_le_card",
-      "Proved singleton_hasBoundedRepr",
-      "Formalized ErdosProblem538 with optimal bound characterization",
-      "Structured proof outline for Erdős double counting argument"
-    ],
-    "insights": [
-      "Problem is OPEN - seeks optimal upper bound for reciprocal sums with bounded prime representations",
-      "Erdős bound r·log N / log log N requires Mertens theorem (not in Docker Mathlib)",
-      "Double counting: (Σ 1/a)(Σ 1/p) ≤ r·Σ 1/m gives the key inequality",
-      "The 5 remaining sorries all need real analysis (harmonic sums, prime counting)",
-      "Not Aristotle-suitable: requires Mertens theorem and analytic number theory",
-      "Connections to multiplicative number theory and sieve methods"
-    ],
-    "mathlibGaps": [
-      "Mertens theorem: Σ_{p≤N} 1/p ~ log log N",
-      "Harmonic sum bound: Σ_{n=1}^N 1/n ≤ 1 + log N"
-    ],
-    "nextSteps": [
-      "Submit to Aristotle for harmonic_upper_bound (might be in Mathlib)",
-      "Try proving primes_for_element_bound with Finset.Icc approach",
-      "Check if Mertens theorem was recently added to Mathlib"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Erdős #538 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and suppose that $A\\subseteq\\{1,\\ldots,N\\}$ is such that, for any $m$, there are at most $r$ solutions to $m=pa$ where $p$ is prime and $a\\in A$. Give the best possible upper bound for\\[\\sum_{n\\in A}\\frac{1}{n}.\\]\n\n\n\nErd\\H{o}s observed that\\[\\sum_{n\\in A}\\frac{1}{n}\\sum_{p\\leq N}\\frac{1}{p}\\leq r\\sum_{m\\leq N^2}\\frac{1}{m}\\ll r\\log N,\\]and hence\\[\\sum_{n\\in A}\\frac{1}{n} \\ll r\\frac{\\log N}{\\log\\log N}.\\]See also [536] and [537].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #536\n- Problem #537\n- Problem #539\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er73\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "approaches": [],

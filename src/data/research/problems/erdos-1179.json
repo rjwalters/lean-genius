@@ -1,107 +1,50 @@
 {
   "slug": "erdos-1179",
   "title": "Erdős #1179",
-  "phase": "FORMALIZED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For 0 < ε < 1, let g_ε(N) be the minimal k such that a random k-subset A of an abelian group G of size N satisfies |F_A(g) - 2^k/N| ≤ ε·2^k/N for all g ∈ G with high probability, where F_A(g) = #{S ⊆ A : Σ_{x∈S} x = g}. Is g_ε(N) = (1+o_ε(1))log₂ N?",
-    "plain": "Estimate the minimal random subset size for approximately uniform subset sum representations in abelian groups. The answer is g_ε(N) ~ log₂ N.",
-    "whyMatters": [
-      "Quantifies how quickly random subsets achieve equidistribution of subset sums",
-      "Strengthens Erdős-Rényi spanning results to uniform representation counts",
-      "Connects to character sum methods in additive combinatorics"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Trivial lower bound: g_ε(N) ≥ log₂ N",
-      "Erdős-Rényi (1965): g_ε(N) ≤ (2+o(1))log₂ N + O_ε(1)",
-      "Erdős-Hall (1976): g_ε(N) ≤ (1 + O_ε(log log log N / log log N))log₂ N",
-      "Main asymptotic: g_ε(N) = (1+o_ε(1))log₂ N"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Complete Lean formalization with all known bounds"
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-02-07T20:10:00Z",
+    "phase": "NEW",
+    "since": "2026-01-15T17:01:06.709Z",
     "iteration": 1,
-    "focus": "Lean formalization of problem structure and known results",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Submit to Aristotle for potential proofs of axioms",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full Lean formalization with reprCount definition, ε-uniformity predicate, g_ε function axiomatization, trivial lower bound, Erdős-Rényi and Erdős-Hall upper bounds, main asymptotic result, comparison with Problem #543, and summary theorem. Docker build verified.",
-    "builtItems": [
-      "reprCount definition (subset sum representation count)",
-      "expectedReprCount definition (2^k/N)",
-      "IsEpsUniform predicate (ε-approximate uniformity)",
-      "gEps axiom (minimal k for uniform representations)",
-      "trivial_lower_bound axiom (g_ε(N) ≥ log₂ N)",
-      "erdos_renyi_upper axiom ((2+o(1))log₂ N bound)",
-      "erdos_hall_upper axiom ((1+o(1))log₂ N bound)",
-      "main_asymptotic axiom (g_ε(N)/log₂ N → 1)",
-      "uniform_implies_spanning axiom (uniformity implies spanning)",
-      "erdos_1179_summary theorem (combines lower and upper bounds)"
-    ],
-    "insights": [
-      "Problem is PROVED (answered in the affirmative): g_ε(N) ~ log₂ N",
-      "Closely related to Problem #543 (random spanning sets) but stronger",
-      "#543 asks about spanning (F_A(g) ≥ 1); #1179 asks about uniformity (F_A(g) ≈ 2^k/N)",
-      "Key difference: spanning needs f(N) = log₂ N + Θ(log log N), uniformity needs only g_ε(N) ~ log₂ N",
-      "The extra log log N for spanning is about tail events; uniformity is about average behavior",
-      "Erdős-Hall proof uses character sums (Fourier analysis on finite abelian groups)",
-      "Mathlib.Algebra.Group.Fintype import does NOT exist in Docker Mathlib v4.26.0 - use Mathlib.Data.Fintype.Basic instead"
-    ],
-    "mathlibGaps": [
-      "No Mathlib probability theory for random subsets of finite groups",
-      "No character sum estimates for abelian groups",
-      "Mathlib.Algebra.Group.Fintype renamed/removed in v4.26.0"
-    ],
-    "nextSteps": [
-      "Consider submitting to Aristotle (convert axioms to theorem sorries) for elementary results",
-      "Potential: prove reprCount_empty_zero and reprCount_empty_nonzero manually",
-      "Potential: prove total_reprCount via Finset.card_eq_sum_card_filter_mem"
-    ],
-    "markdown": "# Erdős #1179 - Knowledge Base\n\n## Problem Statement\n\nFor 0 < ε < 1, let g_ε(N) be the minimal k such that a random k-subset of an abelian group of size N has ε-uniform subset sum representations with high probability. Is g_ε(N) = (1+o_ε(1)) log₂ N?\n\n## Status\n\n**Erdős Database Status**: PROVED\n**Formalization Status**: COMPLETE (Lean 4, Docker-verified)\n\n## Key Results\n\n- Trivial lower bound: g_ε(N) ≥ log₂ N\n- Erdős-Rényi (1965): g_ε(N) ≤ (2+o(1)) log₂ N + O_ε(1)\n- Erdős-Hall (1976): g_ε(N) ≤ (1 + O_ε(log log log N / log log N)) log₂ N\n- Main result: g_ε(N) ~ log₂ N\n\n## Files\n\n- `proofs/Proofs/Erdos1179Problem.lean` - Full formalization\n\n## Related Problems\n\n- Problem #543 (random spanning sets in abelian groups)\n\n---\n\n*Formalized by researcher-1 on 2026-02-07*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1179 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Axiom-based formalization with structural definitions",
-      "status": "completed",
-      "description": "Define reprCount, IsEpsUniform, gEps. Axiomatize bounds. Prove summary theorem."
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "additive-combinatorics",
-    "probability",
-    "abelian-groups",
-    "subset-sums"
+    "erdos"
   ],
-  "relatedProofs": [
-    "Erdos543Problem"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Erdős-Rényi: Probabilistic Methods in Group Theory (1965)",
-      "Erdős-Hall (1976)"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1179"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Finset.Powerset",
-      "Mathlib.Data.Fintype.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T17:01:06.709Z",
   "significance": 7,

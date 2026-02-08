@@ -119,28 +119,19 @@
   {
     "id": "crossing-number",
     "proofId": "erdos-211",
-    "range": { "startLine": 230, "endLine": 235 },
-    "type": "insight",
-    "title": "Crossing Number Method",
-    "content": "The Szemerédi-Trotter proof uses the crossing number inequality from graph drawing theory.",
-    "significance": "medium"
+    "range": { "startLine": 213, "endLine": 217 },
+    "type": "axiom",
+    "title": "Crossing Number Inequality",
+    "content": "For a graph with n vertices and m ≥ 4n edges, cr(G) ≥ m³/(64n²). This is the key tool in the Szemerédi-Trotter proof, connecting graph drawing theory to incidence geometry.",
+    "significance": "key"
   },
   {
     "id": "main-theorem",
     "proofId": "erdos-211",
-    "range": { "startLine": 241, "endLine": 259 },
+    "range": { "startLine": 223, "endLine": 241 },
     "type": "theorem",
     "title": "Erdős Problem #211: SOLVED",
     "content": "For n points with at most n-k collinear, there are Ω(kn) lines. Solved by Beck and Szemerédi-Trotter in 1983. Prize: $100 awarded.",
     "significance": "critical"
-  },
-  {
-    "id": "summary",
-    "proofId": "erdos-211",
-    "range": { "startLine": 261, "endLine": 277 },
-    "type": "theorem",
-    "title": "Summary Theorem",
-    "content": "Combines the main result (Ω(kn) lines) with Beck's dichotomy as the fundamental structural insight.",
-    "significance": "high"
   }
 ]

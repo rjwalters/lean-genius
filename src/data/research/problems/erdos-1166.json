@@ -1,95 +1,50 @@
 {
   "slug": "erdos-1166",
   "title": "Erdős #1166",
-  "phase": "FORMALIZED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Given a random walk in Z^2 starting at the origin, let F(k) = {x : f_k(x) = max_y f_k(y)} be the set of most-visited points at step k. Is |union_{k <= n} F(k)| <= (log n)^{O(1)} almost surely?",
-    "plain": "For a random walk in Z^2, the cumulative set of most-visited points through step n grows at most polylogarithmically. Specifically, |union_{k <= n} F(k)| = O((log n)^2) almost surely.",
-    "whyMatters": [
-      "Connects random walk recurrence to spatial structure of maxima",
-      "Builds on Erdos-Taylor theorem on maximum visit counts",
-      "Related to problem #1165 on the size of F(n) itself"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "PROVED: |union_{k <= n} F(k)| << (log n)^2 almost surely",
-      "|F(n)| <= 3 almost surely for large n (related to #1165)",
-      "Erdos-Taylor: T_n / (log n)^2 -> 1/pi almost surely",
-      "Polya recurrence: 2D random walk returns to origin infinitely often"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Complete formalization with all axioms stated and key theorems proven from axioms"
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-02-07T00:00:00Z",
+    "phase": "NEW",
+    "since": "2026-01-15T16:53:51.158Z",
     "iteration": 1,
-    "focus": "Formalized problem statement, definitions, axioms, and key theorems in Lean 4.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Submit to Aristotle for proof search on theorem sorries.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full Lean 4 formalization of Erdos #1166 created. Defines random walk on Z^2, visit counts, most-visited sets, cumulative most-visited sets. States key results: |F(n)| <= 3 a.s., Erdos-Taylor theorem, Polya recurrence, and the main result |union_{k<=n} F(k)| = O((log n)^2). Proof structure documented showing how main theorem follows from the two key ingredients. File builds successfully with Docker (3 expected sorries for non-trivial analysis steps).",
-    "builtItems": [
-      "proofs/Proofs/Erdos1166Problem.lean - Full formalization (~240 lines)"
-    ],
-    "insights": [
-      "Problem is PROVED (marked OPEN in database but actually solved)",
-      "Key proof idea: |F(k)| <= 3 for large k + T_n <= C(log n)^2 -> cumulative set bounded",
-      "Max visit count T_n takes at most O((log n)^2) values, each contributing <= 3 new points",
-      "Related to #1165 which asks about |F(n)| directly",
-      "Erdos-Taylor constant 1/pi governs the precise asymptotic of T_n"
-    ],
-    "mathlibGaps": [
-      "No random walk formalization in Mathlib",
-      "No visit count / local time for discrete processes",
-      "AlmostSurely predicate needs custom axiomatization"
-    ],
-    "nextSteps": [
-      "Consider submitting to Aristotle (convert axioms to theorem sorries first)"
-    ],
-    "markdown": "# Erdos #1166 - Knowledge Base\n\n## Problem Statement\n\nGiven a random walk in Z^2 starting at the origin, the cumulative set of most-visited points through step n grows at most polylogarithmically.\n\n## Status: PROVED\n\nAlmost surely |union_{k<=n} F(k)| = O((log n)^2).\n\n## Lean Formalization\n\n- File: proofs/Proofs/Erdos1166Problem.lean (~240 lines)\n- Builds successfully with Docker\n- 3 expected sorries (non-trivial analysis steps)\n\n## Session 1 (2026-02-07, researcher-1)\n- Created full Lean 4 formalization\n- Docker build passes\n\n---\n*Updated 2026-02-07 by researcher-1*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1166 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Axiomatize-and-structure",
-      "description": "Axiomatize random walk, visit counts, and most-visited sets. State key results as axioms. Prove main theorem structure from axioms.",
-      "status": "completed",
-      "outcome": "Full formalization created with clean proof structure"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "probability",
-    "random-walk",
-    "proved"
+    "erdos"
   ],
-  "relatedProofs": [
-    "Erdos529Problem.lean",
-    "BallotProblem.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Erdos-Revesz: Most-visited points in planar random walk [Va99, 6.78]",
-      "Erdos-Taylor (1960): Maximum visit counts in 2D random walk",
-      "Polya (1921): Recurrence of random walks"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1166"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T16:53:51.158Z",
   "significance": 7,

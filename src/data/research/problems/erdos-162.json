@@ -29,38 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ENHANCED: Rewrote formalization with proper EdgeColouring structure (symmetry+irreflexivity), correct edge counting definition, namespace, derived theorems. Fixed Docker build issues (imports, native_decide). 2 theorem sorries remain.",
-    "builtItems": [
-      "Erdos162 namespace with proper structure",
-      "EdgeColouring structure with symm/irrefl fields",
-      "Correct colourEdgeCount definition using Finset product pairs",
-      "colourEdgeCount_total theorem (sorry) linking to Nat.choose",
-      "IsBalancedOn and IsKBalanced definitions",
-      "balanced_requires_le_half theorem (sorry)",
-      "discrepancyF_spec axiom with characterization",
-      "discrepancy_theta_log derived theorem from axioms",
-      "half_is_extremal proved from monotonicity axiom",
-      "Concrete examples with native_decide"
-    ],
-    "insights": [
-      "Problem is OPEN - asks for F(n,α) ~ c_α log n (sharp asymptotics)",
-      "Θ(log n) bounds known via probabilistic method (lower) and counting/Ramsey (upper)",
-      "The conjecture asks for convergence of ratio F(n,α)/log(n), not just bounded",
-      "α = 1/2 is the extremal case (tightest constraint)",
-      "Related to Erdős #617 (balanced colourings of complete graphs)",
-      "Original Lean file had incorrect edge counting (counted vertices not edges)",
-      "Fixed: EdgeColouring now a structure with symmetry+irreflexivity constraints",
-      "Fixed: colourEdgeCount now properly counts edges via (S × S).filter with i < j",
-      "Mathlib.Data.Rat.Basic not available in Docker Mathlib v4.26.0 - use Mathlib.Tactic",
-      "Nat.choose examples need native_decide (decide OOMs, norm_num fails for large n)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove colourEdgeCount_total (edges partition into red+blue = C(|S|,2))",
-      "Prove balanced_requires_le_half (α > 1/2 makes balance impossible)",
-      "Consider submitting to Aristotle for the two theorem sorries",
-      "Consider formalizing the probabilistic method lower bound argument"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #162 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha>0$ and $n\\geq 1$. Let $F(n,\\alpha)$ be the largest $k$ such that there exists some 2-colouring of the edges of $K_n$ in which any induced subgraph $H$ on at least $k$ vertices contains more than $\\alpha\\binom{\\lvert H\\rvert}{2}$ many edges of each colour.\n\nProve that for every fixed $0\\leq \\alpha \\leq 1/2$, as $n\\to\\infty$,\\[F(n,\\alpha)\\sim c_\\alpha \\log n\\]for some constant $c_\\alpha$.\n\n\n\nIt is easy to show with the probabilistic method that there exist $c_1(\\alpha),c_2(\\alpha)$ such that\\[c_1(\\alpha)\\log n < F(n,\\alpha) < c_2(\\alpha)\\log n.\\]\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #161\n- Problem #163\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],

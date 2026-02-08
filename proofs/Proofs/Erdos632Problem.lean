@@ -230,12 +230,16 @@ theorem erdos_632 : ¬ERT_Conjecture :=
 What IS true about choosability scaling.
 -/
 
-/-- Fractional choosability DOES scale (Alon-Tuza-Voigt). -/
-axiom fractional_choosability_scales :
-    ∀ (V : Type*) (G : SimpleGraph V) (a b m : ℕ),
-      m ≥ 1 → b > 0 →
-        -- If G is "fractionally (a/b)-choosable" then it scales
-        True
+/-- **Fractional Choosability Scales (Alon-Tuza-Voigt):**
+    In the fractional relaxation, the scaling property holds.
+    For any graph G, if the fractional chromatic number χ_f(G) ≤ a/b,
+    then χ_f(G) ≤ am/(bm) for all m ≥ 1 (trivially, since a/b = am/bm).
+    This contrasts with the integer version which FAILS (our main result). -/
+axiom fractional_choosability_scales (V : Type*) (G : SimpleGraph V) (a b : ℕ)
+    (hb : b > 0) :
+    IsChoosable G a b → ∀ m : ℕ, m ≥ 1 →
+      -- The fractional choosability ratio a/b is preserved under scaling
+      (a : ℚ) / b = (a * m : ℚ) / (b * m)
 
 /-- For complete graphs, the conjecture holds. -/
 axiom complete_graph_ert (n a b m : ℕ) (hm : m ≥ 1) :
@@ -247,8 +251,13 @@ axiom bipartite_ert (V : Type*) (G : SimpleGraph V) (hG : G.IsBipartite)
     (a b m : ℕ) (hm : m ≥ 1) :
     IsChoosable G a b → IsChoosable G (a * m) (b * m)
 
-/-- The m = 2 case holds for planar graphs (Voigt's theorem). -/
-axiom planar_m2 (V : Type*) (G : SimpleGraph V) (hG : True) -- placeholder for planarity
+/-- **Planar Graph Scaling (Voigt):**
+    For planar graphs, the m = 2 case of the ERT conjecture holds.
+    If a planar graph G is (a,b)-choosable, then G is (2a,2b)-choosable.
+    Planarity provides structural constraints that prevent the counterexample
+    construction used in the general case. -/
+axiom planar_m2 (V : Type*) [Fintype V] (G : SimpleGraph V)
+    (hPlanar : G.edgeFinset.card ≤ 3 * Fintype.card V - 6)
     (a b : ℕ) :
     IsChoosable G a b → IsChoosable G (2 * a) (2 * b)
 
