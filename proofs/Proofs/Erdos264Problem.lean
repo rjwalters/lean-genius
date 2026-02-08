@@ -60,19 +60,16 @@ axiom powers_of_two_not_irrationality_seq :
 theorem erdos_264_part_i : ¬IsIrrationalitySequence (fun n => 2^n) :=
   powers_of_two_not_irrationality_seq
 
-/--
+/-
 **Open Problem**: Is aₙ = n! an irrationality sequence?
 
 This remains open. The factorial grows faster than 2ⁿ but slower than 2^(2ⁿ),
 so neither the positive nor negative criteria from Kovač-Tao apply directly.
+The Kovač-Tao negative criterion requires liminf(aₙ² · ∑_{k>n} 1/aₖ²) > 0,
+which does NOT hold for n! (the tail sum decays too fast). The positive
+criterion requires a_{n+1}/aₙ → ∞, but for n! we have (n+1)!/n! = n+1
+which grows but not fast enough.
 -/
-axiom factorial_irrationality_seq_open :
-    -- This is stated as an axiom representing the open status
-    -- The actual answer is unknown
-    True
-
-/-- Erdős Problem #264 Part (ii): n! case is OPEN -/
-theorem erdos_264_part_ii_open : True := factorial_irrationality_seq_open
 
 /- ## Known Positive Example -/
 
