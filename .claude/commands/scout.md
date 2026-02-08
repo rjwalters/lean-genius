@@ -33,7 +33,7 @@ The argument is interpreted as:
 
 ```bash
 # Check candidate pool for problem details
-jq --arg id "$ARGUMENTS" '.candidates[] | select(.id == $id)' research/candidate-pool.json
+jq --arg id "$ARGUMENTS" '.candidates[] | select(.id == $id)' .lean/state/candidate-pool.json
 
 # Check for existing research knowledge
 KNOWLEDGE_FILE="research/problems/$ARGUMENTS/knowledge.md"

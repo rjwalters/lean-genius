@@ -137,7 +137,7 @@ SQL
 python3 research/db/sync_pool.py
 
 # Step 4d: Verify the problem appears in the pool
-jq -e ".candidates[] | select(.id == \"$PROBLEM_ID\")" research/candidate-pool.json > /dev/null
+jq -e ".candidates[] | select(.id == \"$PROBLEM_ID\")" .lean/state/candidate-pool.json > /dev/null
 
 # Step 4e: Initialize research workspace
 ./.lean/scripts/research.sh init $(echo $PROBLEM_ID | sed 's/-oq-[0-9]*$//')
@@ -238,7 +238,7 @@ After selecting a problem, follow this **database-first** sequence:
 
 1. **Register in database**: Insert into `research/db/knowledge.db` with status `'available'`
 2. **Regenerate pool JSON**: Run `python3 research/db/sync_pool.py`
-3. **Verify pool entry**: Confirm the problem appears in `research/candidate-pool.json`
+3. **Verify pool entry**: Confirm the problem appears in `.lean/state/candidate-pool.json`
 4. **Create workspace**: `./.lean/scripts/research.sh init [slug]`
 5. **Populate problem.md**: Copy the problem description and context
 6. **Set initial state**: OBSERVE phase

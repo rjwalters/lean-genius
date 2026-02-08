@@ -135,8 +135,8 @@ The daemon monitors these tmux sessions to track agent status.
 |------------|-------------|---------------|
 | Erdős | Stubs needing enhancement | `npx tsx scripts/erdos/find-stubs.ts --stats` |
 | Aristotle | Pending proof search jobs | `jq '.jobs \| map(select(.status=="submitted")) \| length' research/aristotle-jobs.json` |
-| Researcher | Available research problems | `jq '.candidates \| map(select(.status=="available")) \| length' research/candidate-pool.json` |
-| Seeker | Low candidate pool | `jq '.candidates \| map(select(.status=="available")) \| length' research/candidate-pool.json` (triggers when < 5) |
+| Researcher | Available research problems | `jq '.candidates \| map(select(.status=="available")) \| length' .lean/state/candidate-pool.json` |
+| Seeker | Low candidate pool | `jq '.candidates \| map(select(.status=="available")) \| length' .lean/state/candidate-pool.json` (triggers when < 5) |
 | Deployer | PRs ready to merge | `gh pr list --label "loom:pr" --json number \| jq length` |
 
 ## Status Report

@@ -32,7 +32,7 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
-CLAIMS_DIR="$REPO_ROOT/research/enrichment-claims"
+CLAIMS_DIR="$REPO_ROOT/.lean/state/enrichment-claims"
 TRACKER_FILE="$REPO_ROOT/src/data/proofs/enrichment-tracker.json"
 FIND_TARGETS="$REPO_ROOT/scripts/enricher/find-targets.ts"
 COMPLETIONS_DIR="$REPO_ROOT/.loom/signals/completions"

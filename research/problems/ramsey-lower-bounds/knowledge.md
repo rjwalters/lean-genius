@@ -90,7 +90,7 @@ The proof strategy is to define the coloring explicitly and verify by exhaustive
 
 **Files Modified**:
 - `proofs/Proofs/RamseysTheorem.lean` (+140 lines)
-- `research/candidate-pool.json` (status: completed)
+- `.lean/state/candidate-pool.json` (status: completed)
 - `research/problems/ramsey-lower-bounds/knowledge.md` - this file
 
 **Next Steps**:

@@ -59,13 +59,13 @@ Use the `/research` skill in Claude Code, or manually:
 
 1. Check available problems:
    ```bash
-   jq '.candidates[] | select(.status == "available")' research/candidate-pool.json
+   jq '.candidates[] | select(.status == "available")' .lean/state/candidate-pool.json
    ```
 
 2. Work on a problem - update these files:
    - `src/data/research/problems/<id>.json` - structured knowledge
    - `research/problems/<id>/knowledge.md` - session logs (if exists)
-   - `research/candidate-pool.json` - status updates
+   - `.lean/state/candidate-pool.json` - status updates
 
 ### 3. Export Database Changes
 
@@ -98,7 +98,7 @@ gh pr create --title "Research: <topic>" --body "Summary of findings..."
 | File Type | Purpose | Version Controlled |
 |-----------|---------|-------------------|
 | `src/data/research/problems/*.json` | Problem definitions, current knowledge | Yes |
-| `research/candidate-pool.json` | Problem registry and status | Yes |
+| `.lean/state/candidate-pool.json` | Problem registry and status | Yes |
 | `research/db/data/*.sql` | Historical sessions, detailed records | Yes |
 | `research/db/schema.sql` | Database schema | Yes |
 | `research/db/knowledge.db` | Local SQLite database | No (gitignored) |
@@ -153,7 +153,7 @@ Before starting significant work on a problem:
 
 1. Check if someone else is working on it:
    ```bash
-   jq '.candidates[] | select(.id == "problem-id")' research/candidate-pool.json
+   jq '.candidates[] | select(.id == "problem-id")' .lean/state/candidate-pool.json
    ```
 
 2. Consider opening a GitHub issue to announce your work

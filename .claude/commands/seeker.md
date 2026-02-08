@@ -39,7 +39,7 @@ jq -r '
   map({status: .[0].status, count: length}) |
   sort_by(.status) | .[] |
   "  \(.status): \(.count)"
-' research/candidate-pool.json
+' .lean/state/candidate-pool.json
 
 echo ""
 echo "=== Knowledge Scores ==="
@@ -110,7 +110,7 @@ fi
 python3 research/db/sync_pool.py
 
 # Step 4: Verify the problem appears in the pool with status 'available'
-jq -e ".candidates[] | select(.id == \"$PROBLEM_ID\" and .status == \"available\")" research/candidate-pool.json > /dev/null \
+jq -e ".candidates[] | select(.id == \"$PROBLEM_ID\" and .status == \"available\")" .lean/state/candidate-pool.json > /dev/null \
     && echo "Verified: '$PROBLEM_ID' is available in candidate-pool.json" \
     || echo "WARNING: '$PROBLEM_ID' not found as available in candidate-pool.json"
 
@@ -130,7 +130,7 @@ echo "Directory: research/problems/$PROBLEM_ID/"
 
 ```bash
 # Load candidate pool
-cat research/candidate-pool.json | jq '.candidates | length'
+cat .lean/state/candidate-pool.json | jq '.candidates | length'
 echo "problems in candidate pool"
 
 # Load gallery-extracted problems if available
@@ -148,10 +148,10 @@ echo "$ACTIVE_CLAIMS active claims"
 
 ```bash
 # Available problems from candidate pool
-jq -r '.candidates[] | select(.status == "available") | "\(.id)\t\(.name)\t\(.tier)\t\(.significance)\t\(.tractability)"' research/candidate-pool.json
+jq -r '.candidates[] | select(.status == "available") | "\(.id)\t\(.name)\t\(.tier)\t\(.significance)\t\(.tractability)"' .lean/state/candidate-pool.json
 
 # Count available
-AVAILABLE=$(jq '[.candidates[] | select(.status == "available")] | length' research/candidate-pool.json)
+AVAILABLE=$(jq '[.candidates[] | select(.status == "available")] | length' .lean/state/candidate-pool.json)
 echo "Available problems: $AVAILABLE"
 ```
 
@@ -267,7 +267,7 @@ SQL
 python3 research/db/sync_pool.py
 
 # Verify the problem appears in the pool
-jq -e ".candidates[] | select(.id == \"$SELECTED_ID\")" research/candidate-pool.json > /dev/null \
+jq -e ".candidates[] | select(.id == \"$SELECTED_ID\")" .lean/state/candidate-pool.json > /dev/null \
   && echo "Verified: $SELECTED_ID registered in candidate pool" \
   || echo "ERROR: $SELECTED_ID not found in candidate pool after sync"
 
@@ -396,7 +396,7 @@ pool JSON is regenerated via `sync_pool.py`.
 
 ```bash
 # Check pool depth
-AVAILABLE=$(jq '[.candidates[] | select(.status == "available")] | length' research/candidate-pool.json)
+AVAILABLE=$(jq '[.candidates[] | select(.status == "available")] | length' .lean/state/candidate-pool.json)
 THRESHOLD=5
 
 if [ "$AVAILABLE" -lt "$THRESHOLD" ]; then

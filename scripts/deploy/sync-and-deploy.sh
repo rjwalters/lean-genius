@@ -241,7 +241,7 @@ merge_prs() {
                     local resolved=true
                     for conflict_file in $(git diff --name-only --diff-filter=U); do
                         case "$conflict_file" in
-                            research/candidate-pool.json)
+                            .lean/state/candidate-pool.json)
                                 # JSON-aware merge: union candidates by id
                                 print_info "  Merging candidate-pool.json with JSON-aware union..."
                                 # Extract ours and theirs versions
@@ -274,7 +274,7 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
                                 git rm --cached "$conflict_file" 2>/dev/null || git checkout --ours "$conflict_file" 2>/dev/null
                                 git add "$conflict_file" 2>/dev/null || true
                                 ;;
-                            research/stub-claims/completed.json)
+                            .lean/state/stub-claims/completed.json)
                                 # For stub-claims, take ours (main wins)
                                 git checkout --ours "$conflict_file" 2>/dev/null && git add "$conflict_file"
                                 ;;
@@ -357,7 +357,7 @@ from datetime import datetime
 
 listings_file = Path("src/data/research/research-listings.json")
 problems_dir = Path("src/data/research/problems")
-pool_file = Path("research/candidate-pool.json")
+pool_file = Path(".lean/state/candidate-pool.json")
 
 if not listings_file.exists():
     print("  No research-listings.json found")
@@ -607,7 +607,7 @@ commit_changes() {
     fi
 
     # Commit state files that change during sync (registry graduations, pool status)
-    git add research/candidate-pool.json 2>/dev/null || true
+    git add .lean/state/candidate-pool.json 2>/dev/null || true
     git add research/registry.json 2>/dev/null || true
 
     if ! git diff --staged --quiet; then

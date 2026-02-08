@@ -98,7 +98,7 @@ function hasFormalConjecturesSource(erdosNumber: number): { has: boolean; path?:
   return { has: false }
 }
 
-const COMPLETED_FILE = path.join('research/stub-claims', 'completed.json')
+const COMPLETED_FILE = path.join('.lean/state/stub-claims', 'completed.json')
 
 interface CompletedEntry {
   status: string

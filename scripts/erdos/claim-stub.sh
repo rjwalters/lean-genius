@@ -37,7 +37,7 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
-CLAIMS_DIR="$REPO_ROOT/research/stub-claims"
+CLAIMS_DIR="$REPO_ROOT/.lean/state/stub-claims"
 COMPLETED_FILE="$CLAIMS_DIR/completed.json"
 STUBS_SCRIPT="$REPO_ROOT/scripts/erdos/find-stubs.ts"
 HAS_QUALITY_ISSUES="$REPO_ROOT/scripts/erdos/has-quality-issues.sh"

@@ -33,7 +33,7 @@ find_repo_root() {
 
 REPO_ROOT="$(find_repo_root)"
 CLAIMS_DIR="$REPO_ROOT/research/claims"
-POOL_FILE="$REPO_ROOT/research/candidate-pool.json"
+POOL_FILE="$REPO_ROOT/.lean/state/candidate-pool.json"
 
 # Options
 JSON_OUTPUT=false

@@ -27,7 +27,7 @@ PROBLEMS_DIR="$REPO_ROOT/src/data/research/problems"
 KNOWLEDGE_DIR="$REPO_ROOT/research/knowledge"
 TECHNIQUE_INDEX="$KNOWLEDGE_DIR/technique-index.json"
 SYNTHESIS_REPORT="$KNOWLEDGE_DIR/synthesis-report.md"
-CANDIDATE_POOL="$REPO_ROOT/research/candidate-pool.json"
+CANDIDATE_POOL="$REPO_ROOT/.lean/state/candidate-pool.json"
 
 # Colors
 GREEN='\033[0;32m'

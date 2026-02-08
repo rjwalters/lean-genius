@@ -171,7 +171,7 @@ Seeker selects next problem (loop repeats)
 ./scripts/lean/launch.sh health
 
 # Check candidate pool depth
-jq '[.candidates[] | select(.status == "available")] | length' research/candidate-pool.json
+jq '[.candidates[] | select(.status == "available")] | length' .lean/state/candidate-pool.json
 
 # Run knowledge synthesis
 ./scripts/research/synthesize-knowledge.sh
