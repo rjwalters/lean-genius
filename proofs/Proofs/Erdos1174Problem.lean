@@ -200,54 +200,26 @@ axiom nesetril_rodl_context :
 ## Part VI: Shelah's Consistency Results
 -/
 
-/--
-**Shelah's Consistency Result (Finite):**
-It is consistent with ZFC that there exists a graph G satisfying
-the Erdős-Hajnal finite property. This means we cannot disprove
-existence in ZFC alone.
--/
-axiom shelah_consistency_finite :
-  -- Con(ZFC + ∃G : ErdosHajnalFiniteProperty G)
-  True
-
-/--
-**Shelah's Consistency Result (Infinite):**
-It is consistent with ZFC that there exists a graph G satisfying
-the Erdős-Hajnal infinite property.
--/
-axiom shelah_consistency_infinite :
-  -- Con(ZFC + ∃G : ErdosHajnalInfiniteProperty G)
-  True
+/- Shelah's consistency results:
+Shelah showed that it is consistent with ZFC that graphs satisfying
+either the finite property (part a) or the infinite property (part b)
+exist. This means we cannot disprove existence in ZFC alone.
+However, whether such graphs provably exist in ZFC remains open. -/
 
 /-
 ## Part VII: Structural Observations
 -/
 
-/--
-**K₄-free graphs can be triangle-rich:**
-There exist K₄-free graphs with many triangles. For example,
-balanced complete tripartite graphs K_{n,n,n} are K₄-free
-but contain n³ triangles. The Ramsey question asks if
-such triangle-richness can force monochromatic triangles.
--/
-theorem k4free_can_have_triangles :
-    -- The complete tripartite graph K_{1,1,1} = K₃ is K₄-free
-    -- and is itself a triangle
-    True := by
-  trivial
+/- K₄-free graphs can be triangle-rich:
+Balanced complete tripartite graphs K_{n,n,n} are K₄-free
+but contain n³ triangles. The Ramsey question asks whether
+such triangle-richness can force monochromatic triangles
+under countable edge colorings.
 
-/--
-**Relation between parts (a) and (b):**
+Relation between parts (a) and (b):
 Part (b) is a natural infinite generalization of part (a).
-If G witnesses part (b), then any countable subgraph that
-is an infinite clique under some coloring also witnesses
-a monochromatic triangle, giving a connection to part (a).
--/
-theorem parts_related :
-    -- A positive answer to (b) would imply structural results
-    -- about the forcing power of K_{ℵ₁}-free graphs
-    True := by
-  trivial
+A positive answer to (b) would yield structural results about
+the Ramsey-theoretic forcing power of K_{ℵ₁}-free graphs. -/
 
 /-
 ## Part VIII: Open Status and Summary
