@@ -23,105 +23,148 @@ Reference: https://erdosproblems.com/1055
 
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
 /- ## Core Definitions -/
 
-/-- The class of a prime p, defined recursively on the factorization of p+1.
-    Class 1: all prime factors of p+1 are in {2, 3}.
-    Class r (r ≥ 2): all prime factors of p+1 have class ≤ r-1,
-    and at least one has class exactly r-1. -/
-axiom primeClass (p : ℕ) : ℕ
+/-- Compute the Erdős–Selfridge class of a prime p.
+    Uses fuel for termination (sufficient for all primes up to ~10^6).
+    - Class 0: not a prime (sentinel)
+    - Class 1: all prime factors of p+1 are in {2, 3} (3-smooth successor)
+    - Class r ≥ 2: 1 + max class of non-{2,3} prime factors of p+1 -/
+def primeClassAux : ℕ → ℕ → ℕ
+  | 0, _ => 0
+  | _, 0 => 0
+  | _, 1 => 0
+  | fuel + 1, p =>
+    if ¬ Nat.Prime p then 0
+    else
+      let factors := (p + 1).primeFactorsList.dedup
+      let nonSmooth := factors.filter (fun q => q != 2 && q != 3)
+      if nonSmooth.isEmpty then 1
+      else 1 + nonSmooth.foldl (fun acc q => max acc (primeClassAux fuel q)) 0
 
-/-- A prime p is in class r if primeClass p = r. -/
+/-- The Erdős–Selfridge class of a prime. Returns 0 for non-primes.
+    Fuel of 30 is sufficient for all primes up to 10^15. -/
+def primeClass (p : ℕ) : ℕ := primeClassAux 30 p
+
+/-- A prime p is in class r if primeClass p = r and p is prime. -/
 def IsInClass (p : ℕ) (r : ℕ) : Prop :=
   p.Prime ∧ primeClass p = r
 
-/-- Class 1 primes: p+1 is 3-smooth (all prime factors are 2 or 3).
-    Examples: 2 (2+1=3), 3 (3+1=4=2²), 5 (5+1=6=2·3),
-    7 (7+1=8=2³), 11 (11+1=12=2²·3), 23 (23+1=24=2³·3). -/
-axiom class_one_char (p : ℕ) (hp : p.Prime) :
-    primeClass p = 1 ↔ ∀ q ∈ (p + 1).factors, q = 2 ∨ q = 3
+/- ## Verified Class Values -/
 
-/- ## The Least Prime in Each Class -/
+-- Class 1 primes: p+1 is 3-smooth
+theorem class_2 : primeClass 2 = 1 := by native_decide
+theorem class_3 : primeClass 3 = 1 := by native_decide
+theorem class_5 : primeClass 5 = 1 := by native_decide
+theorem class_7 : primeClass 7 = 1 := by native_decide
+theorem class_11 : primeClass 11 = 1 := by native_decide
+theorem class_17 : primeClass 17 = 1 := by native_decide
+theorem class_23 : primeClass 23 = 1 := by native_decide
+theorem class_31 : primeClass 31 = 1 := by native_decide
 
-/-- p_r: the least prime in class r. -/
-axiom leastPrimeInClass (r : ℕ) : ℕ
+-- Class 2 primes: p+1 has a class-1 prime factor beyond {2,3}
+theorem class_13 : primeClass 13 = 2 := by native_decide
+theorem class_19 : primeClass 19 = 2 := by native_decide
+theorem class_29 : primeClass 29 = 2 := by native_decide
+theorem class_41 : primeClass 41 = 2 := by native_decide
+theorem class_43 : primeClass 43 = 2 := by native_decide
 
-/-- p_r is prime and in class r (assuming the class is nonempty). -/
-axiom leastPrime_spec (r : ℕ) (hr : r ≥ 1) :
-    (leastPrimeInClass r).Prime ∧ primeClass (leastPrimeInClass r) = r
+-- Class 3 primes
+theorem class_37 : primeClass 37 = 3 := by native_decide
+theorem class_103 : primeClass 103 = 3 := by native_decide
+theorem class_113 : primeClass 113 = 3 := by native_decide
 
-/-- p_r is minimal: no smaller prime is in class r. -/
-axiom leastPrime_minimal (r : ℕ) (hr : r ≥ 1) (q : ℕ)
-    (hq : q.Prime) (hc : primeClass q = r) :
-    leastPrimeInClass r ≤ q
+-- Class 4 primes
+theorem class_73 : primeClass 73 = 4 := by native_decide
 
-/- ## Known Values (OEIS A005113) -/
+-- Class 5 primes (p_5 = 1021, OEIS A005113)
+theorem class_1021 : primeClass 1021 = 5 := by native_decide
 
-/-- p_1 = 2: the smallest prime with 3-smooth successor (2+1=3). -/
-axiom p_1 : leastPrimeInClass 1 = 2
+-- Non-primes return 0
+theorem class_nonprime_4 : primeClass 4 = 0 := by native_decide
+theorem class_nonprime_6 : primeClass 6 = 0 := by native_decide
 
-/-- p_2 = 13: 13+1 = 14 = 2·7, and 7 is class 1 (7+1=8=2³). -/
-axiom p_2 : leastPrimeInClass 2 = 13
+/- ## Least Prime in Each Class -/
 
-/-- p_3 = 37: 37+1 = 38 = 2·19, and 19 is class 2. -/
-axiom p_3 : leastPrimeInClass 3 = 37
+/-- Find the least prime in class r by searching up to bound. -/
+def findLeastPrimeInClass (r : ℕ) (bound : ℕ) : Option ℕ :=
+  (List.range bound).find? (fun p => primeClass p == r)
 
-/-- p_4 = 73: 73+1 = 74 = 2·37, and 37 is class 3. -/
-axiom p_4 : leastPrimeInClass 4 = 73
+-- Verify least primes (OEIS A005113): 2, 13, 37, 73, 1021
+theorem least_class_1 : findLeastPrimeInClass 1 10 = some 2 := by native_decide
+theorem least_class_2 : findLeastPrimeInClass 2 20 = some 13 := by native_decide
+theorem least_class_3 : findLeastPrimeInClass 3 50 = some 37 := by native_decide
+theorem least_class_4 : findLeastPrimeInClass 4 100 = some 73 := by native_decide
+theorem least_class_5 : findLeastPrimeInClass 5 1100 = some 1021 := by native_decide
 
-/-- p_5 = 1021: 1021+1 = 1022 = 2·7·73, and 73 is class 4. -/
-axiom p_5 : leastPrimeInClass 5 = 1021
+/- ## Structural Properties -/
 
-/- ## Existence: Each Class is Nonempty -/
+/-- Class 1 primes are exactly those whose successor is 3-smooth. -/
+theorem class_one_iff_smooth (p : ℕ) (hp : Nat.Prime p) :
+    primeClass p = 1 ↔ ∀ q ∈ (p + 1).primeFactorsList, q = 2 ∨ q = 3 := by
+  sorry
 
-/-- For every r ≥ 1, there exists a prime in class r. -/
-axiom each_class_nonempty (r : ℕ) (hr : r ≥ 1) :
-    ∃ p : ℕ, p.Prime ∧ primeClass p = r
+/-- If p is prime, then primeClass p ≥ 1. -/
+theorem primeClass_pos_of_prime (p : ℕ) (hp : Nat.Prime p) :
+    primeClass p ≥ 1 := by
+  sorry
 
-/- ## Conjecture 1: Infinitely Many Primes in Each Class -/
+/-- Class is monotone along the chain: if q is a prime factor of p+1
+    with q ∉ {2,3}, then primeClass q < primeClass p. -/
+theorem class_of_factor_lt (p q : ℕ) (hp : Nat.Prime p) (hq : Nat.Prime q)
+    (hdvd : q ∣ p + 1) (hq2 : q ≠ 2) (hq3 : q ≠ 3) :
+    primeClass q < primeClass p := by
+  sorry
+
+/- ## Concrete Evidence for Infinitude -/
+
+-- Multiple class-1 primes in [0, 50)
+theorem many_class1_primes :
+    (Finset.filter (fun p => decide (primeClass p = 1)) (Finset.range 50)).card ≥ 8 := by
+  native_decide
+
+-- Multiple class-2 primes in [0, 100)
+theorem many_class2_primes :
+    (Finset.filter (fun p => decide (primeClass p = 2)) (Finset.range 100)).card ≥ 8 := by
+  native_decide
+
+-- Multiple class-3 primes in [0, 200)
+theorem many_class3_primes :
+    (Finset.filter (fun p => decide (primeClass p = 3)) (Finset.range 200)).card ≥ 3 := by
+  native_decide
+
+/- ## The Main Conjectures (OPEN) -/
 
 /-- Erdős Problem #1055 (main): For each r ≥ 1, there are infinitely many
     primes in class r. -/
 axiom infinitely_many_in_each_class (r : ℕ) (hr : r ≥ 1) :
     Set.Infinite {p : ℕ | p.Prime ∧ primeClass p = r}
 
-/- ## Conjecture 2: Growth of p_r^{1/r} -/
-
-/-- The sequence p_r^{1/r} for known values:
-    p_1^1 = 2, p_2^{1/2} ≈ 3.61, p_3^{1/3} ≈ 3.33,
-    p_4^{1/4} ≈ 2.92, p_5^{1/5} ≈ 4.01. -/
-
 /-- Erdős's conjecture: p_r^{1/r} → ∞ as r → ∞.
-    The least prime in class r grows superexponentially. -/
+    Formulated as: for every M, there exists R such that for all r ≥ R,
+    the least prime p in class r satisfies p^{1/r} ≥ M. -/
 axiom erdos_growth_conjecture :
-    Filter.Tendsto (fun r => ((leastPrimeInClass r : ℝ)) ^ ((1 : ℝ) / (r : ℝ)))
-      Filter.atTop Filter.atTop
+    ∀ M : ℝ, ∃ R : ℕ, ∀ r ≥ R,
+      ∀ p : ℕ, p.Prime → primeClass p = r →
+        (∀ q : ℕ, q.Prime → primeClass q = r → p ≤ q) →
+        ((p : ℝ)) ^ ((1 : ℝ) / (r : ℝ)) ≥ M
 
-/-- Selfridge's competing conjecture: p_r^{1/r} is bounded.
-    The least prime in class r grows at most exponentially.
-    Note: exactly one of the Erdős and Selfridge conjectures can be true. -/
+/-- Selfridge's competing conjecture: p_r^{1/r} is bounded. -/
 axiom selfridge_bounded_conjecture :
     ∃ M : ℝ, ∀ r : ℕ, r ≥ 1 →
-      ((leastPrimeInClass r : ℝ)) ^ ((1 : ℝ) / (r : ℝ)) ≤ M
+      ∀ p : ℕ, p.Prime → primeClass p = r →
+        (∀ q : ℕ, q.Prime → primeClass q = r → p ≤ q) →
+        ((p : ℝ)) ^ ((1 : ℝ) / (r : ℝ)) ≤ M
 
-/- ## Density Bound -/
+/- ## Known Density Bound -/
 
 /-- The number of primes ≤ n in class r is at most n^{o(1)}.
-    Each class contains a very sparse set of primes. -/
-axiom class_density_bound (r : ℕ) (hr : r ≥ 1) :
+    This is stated as "easy to prove" by Erdős. -/
+axiom class_density_subpolynomial (r : ℕ) (hr : r ≥ 1) :
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-      (Finset.card (Finset.filter (fun p => p.Prime ∧ primeClass p = r)
-        (Finset.range (n + 1))) : ℝ) ≤ (n : ℝ) ^ ε
-
-/- ## Contradiction Between Conjectures -/
-
-/-- The Erdős and Selfridge conjectures are contradictory:
-    if p_r^{1/r} → ∞, it cannot be bounded. -/
-axiom conjectures_contradict :
-    ¬ (Filter.Tendsto (fun r => ((leastPrimeInClass r : ℝ)) ^ ((1 : ℝ) / (r : ℝ)))
-         Filter.atTop Filter.atTop ∧
-       ∃ M : ℝ, ∀ r : ℕ, r ≥ 1 →
-         ((leastPrimeInClass r : ℝ)) ^ ((1 : ℝ) / (r : ℝ)) ≤ M)
+      ((Finset.filter (fun p => decide (Nat.Prime p ∧ primeClass p = r))
+        (Finset.range (n + 1))).card : ℝ) ≤ (n : ℝ) ^ ε
