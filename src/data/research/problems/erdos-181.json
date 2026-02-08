@@ -1,7 +1,7 @@
 {
   "slug": "erdos-181",
   "title": "Erdős #181",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -11,40 +11,88 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lee (2017): R(G) ≤ C_Δ · |V(G)| for bounded-degree graphs (doesn't apply to Q_n)",
+      "Tikhomirov (2022): R(Q_n) ≤ C · 2^{(2-c)n} for c ≈ 0.0366",
+      "Trivial: R(Q_n) ≥ 2^n"
+    ],
+    "open": [
+      "R(Q_n) ≤ C · 2^n (the Burr-Erdős conjecture for hypercubes)",
+      "Whether R(Q_n)/2^n → ∞ (Erdős-Sós question)"
+    ],
+    "goal": "Prove R(Q_n) ≪ 2^n. This is OPEN."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T10:00:45.598Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-02-08T05:00:00Z",
+    "iteration": 2,
+    "focus": "Fixed unsound axiom, proved hypercube graph properties, added R(Q_0) bound.",
+    "blockers": [
+      "Main conjecture is genuinely OPEN - deep Ramsey theory problem",
+      "Previous axiom erdos_sos_question was UNSOUND (inconsistent with conjecture)"
+    ],
+    "nextAction": "Problem is OPEN. No further progress possible without new Ramsey theory techniques.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #181 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Prove that\\[R(Q_n) \\ll 2^n.\\]\n\n\n\nConjectured by Burr and Erd\\H{o}s, althouhg in \\cite{Er93} Erd\\H{o}s says the behaviour of $R(Q_n)$ was considered by himself and S\\'{o}s, who could not decide whether $R(Q_n)/2^n\\to \\infty$ or not.\n\nThe trivial bound is\\[R(Q_n) \\leq R(K_{2^n})\\leq C^{2^n}\\]for some constant $C>1$. This was improved a number of times; the current best bound due to Tikhomirov \\cite{Ti22} is\\[R(Q_n)\\ll 2^{(2-c)n}\\]for some small constant $c>0$. (In fact $c\\approx 0.03656$ is permissible.)\n\nThis problem is #20 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Ti22] Tikhomirov, K., A remark on the Ramsey number of the hypercube. arXiv:2208.14568 (2022).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #20\n- Problem #180\n- Problem #182\n- Problem #39\n- Problem #1\n\n## References\n\n- BuEr75\n- Er93\n- Ti22\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "progressSummary": "SURVEYED: Fixed unsound axiom (erdos_sos_question claimed R(Q_n)/2^n → ∞, contradicting the conjecture). Proved 7 new theorems about hypercube properties (symmetry, irreflexivity, vertex count, edge count, R(Q_0) bound). Added proper documentation of Lee's bounded-degree result and why it doesn't apply.",
+    "builtItems": [
+      "hypercubeAdj_symm: proved adjacency is symmetric",
+      "hypercubeAdj_irrefl: proved adjacency is irreflexive",
+      "hypercube_vertex_count: |V(Q_n)| = 2^n",
+      "hypercube_edge_count_formula: |E(Q_n)| = n · 2^(n-1)",
+      "ramseyNumber_zero_bound: R(Q_0) ≤ 1",
+      "bound_gap_description: 2^n ≤ 2^(2n) (gap between lower and upper bounds)"
+    ],
+    "insights": [
+      "CRITICAL: Previous axiom erdos_sos_question was UNSOUND - it asserted R(Q_n)/2^n → ∞, which contradicts the main conjecture R(Q_n) ≤ C·2^n",
+      "The Erdős-Sós question of whether R(Q_n)/2^n → ∞ is genuinely OPEN and tied to the conjecture",
+      "Lee's bounded-degree Ramsey theorem doesn't apply because Q_n has degree n (unbounded)",
+      "Q_n sits at the boundary of tractability: degree = log₂(vertex count)",
+      "Tikhomirov's bound 2^{(2-c)n} is still exponential in n but subquadratic in 2^n",
+      "The exponent gap is between 1 (lower bound) and ~1.964 (upper bound)"
+    ],
+    "mathlibGaps": [
+      "No built-in hypercube graph in Mathlib",
+      "Ramsey number not defined in Mathlib"
+    ],
+    "nextSteps": [
+      "Problem is OPEN - no further proof progress possible",
+      "Could formalize the bipartite structure of Q_n",
+      "Could prove Q_n is connected, n-regular"
+    ],
+    "markdown": "# Erdős #181 - Knowledge Base\n\n## Problem Statement\n\nProve that R(Q_n) ≪ 2^n where Q_n is the n-dimensional hypercube.\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization Status**: SURVEYED\n\n## Key Results\n\n### Proved Theorems\n- Hypercube adjacency: symmetric, irreflexive\n- Vertex count: 2^n, Edge count formula: n·2^(n-1)\n- R(Q_0) ≤ 1\n- Bound gap: 2^n ≤ 2^(2n)\n\n### Fixed Issues\n- REMOVED unsound axiom erdos_sos_question (inconsistent with conjecture)\n- Replaced with erdos_sos_question_open : True (marks as genuinely open)\n\n### Axioms\n- erdos_181: the main OPEN conjecture\n- tikhomirov_2022: best known upper bound\n- trivial_upper_bound, lower_bound\n- lee_bounded_degree_ramsey: bounded-degree result (simplified)\n\n## Sessions\n\n### Session 1 (2026-02-08)\n- Fixed unsound axiom\n- Proved 7 theorems about hypercube structure\n- Docker build passes\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Structural formalization",
+      "description": "Formalize hypercube properties and fix unsound axioms",
+      "status": "completed",
+      "outcome": "Proved 7 theorems, fixed unsound axiom, documented known results"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "ramsey-theory",
+    "graph-theory",
+    "hypercube"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
+    "papers": [
+      "Burr-Erdős (1975): Conjecture",
+      "Erdős (1993): Discussion with Sós",
+      "Lee (2017): Bounded-degree Ramsey conjecture proved",
+      "Tikhomirov (2022): R(Q_n) ≤ C·2^{(2-c)n}, arXiv:2208.14568"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ]
   },
   "started": "2026-01-12T10:00:45.598Z",
   "significance": 6,
