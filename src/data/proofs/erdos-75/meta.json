@@ -22,53 +22,70 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős, Hajnal, and Szemerédi posed this question about the interaction between chromatic number and independence in infinite graphs. The problem explores whether uncountable chromatic number is compatible with very large independent sets in finite subgraphs. Erdős offered $1000 for a complete solution.",
+    "historicalContext": "Erdős Problem #75 is one of Erdős's \\$1000 prize problems, posed with Hajnal and Szemerédi. It asks whether uncountable chromatic number is compatible with nearly complete local independence — a striking tension between global coloring complexity and local structural sparsity.\n\nThe chromatic number $\\chi(G)$ measures the minimum number of colors needed for a proper vertex coloring. For infinite graphs, $\\chi(G) = \\aleph_1$ means the graph cannot be properly colored with countably many colors. Known constructions of such graphs include Rado's construction (1949), shift graphs on ordinals, and graphs derived from the Todorčević partition relations.\n\nFor finite graphs, the bound $\\chi(G) \\cdot \\alpha(G) \\ge |V(G)|$ (from greedy coloring) shows that large chromatic number forces small independence ratio. But for infinite graphs with uncountable $\\chi$, the finite subgraphs need not have large chromatic number, so their independence structure could be very different.\n\nThe problem has two forms: the basic version asks for $\\alpha(H) > n^{1-\\varepsilon}$ for all $\\varepsilon > 0$ (nearly linear), and the strong version asks for $\\alpha(H) \\ge cn$ (truly linear). Known constructions of uncountable-chromatic graphs typically produce finite subgraphs with $\\alpha = O(\\log n)$ (shift graphs) or $O(\\sqrt{n})$ (certain Kneser-type graphs), far below the $n^{1-\\varepsilon}$ threshold.\n\nThe Erdős-Hajnal conjecture (a related but distinct problem) asserts that forbidding a fixed induced subgraph forces polynomial-size cliques or independent sets in finite graphs. Problem #75 operates in a different regime: it concerns the existence of a single infinite graph with specific local properties, not a class defined by forbidden patterns.",
     "problemStatement": "Is there a graph G of chromatic number ℵ₁ such that for all ε > 0, every sufficiently large finite subgraph on n vertices contains an independent set of size > n^{1−ε}? Erdős further asked if the independent set can be linear in n.",
-    "proofStrategy": "We axiomatize abstract graphs, chromatic number, finite subgraphs, and independence number. The large independence set property and its linear strengthening are defined precisely, and both forms of the conjecture are stated as axioms.",
+    "proofStrategy": "The formalization uses axiomatized abstract types for graphs, chromatic number, finite subgraphs, and independence number — avoiding Mathlib's SimpleGraph which is designed for concrete (decidable adjacency) graphs. The chromatic number is formalized as a predicate chromaticNum G n (G requires at least n colors) with a monotonicity axiom. The two forms of the conjecture are stated as existential axioms over the abstract Graph type.",
     "keyInsights": [
-      "Uncountable chromatic number means the graph cannot be coloured with any finite number of colours",
-      "The n^{1−ε} bound is nearly linear — just barely sublinear for any fixed ε",
-      "For finite graphs, χ(G) · α(G) ≥ |V(G)| relates chromatic and independence numbers",
-      "The stronger conjecture asks for α(H) ≫ n, i.e., linear independence number"
+      "The core tension: uncountable chromatic number means the graph is globally 'hard to color' (requires $\\aleph_1$ colors), yet the conjecture asks that every finite piece is nearly independent ($\\alpha(H) > n^{1-\\varepsilon}$). These seem contradictory: how can a graph be globally dense yet locally sparse?",
+      "The $n^{1-\\varepsilon}$ threshold is barely sublinear — for any fixed $\\varepsilon > 0$, $n^{1-\\varepsilon}/n = n^{-\\varepsilon} \\to 0$, but the independence ratio approaches 1. The linear strengthening $\\alpha \\ge cn$ would be truly remarkable: it would mean finite subgraphs are 'almost independent' despite the global uncountable chromatic number.",
+      "Known uncountable-chromatic constructions fail the conjecture: shift graphs on $\\omega_1$ have $\\alpha(H) = O(\\log n)$ in finite subgraphs, and Kneser-type graphs give $O(\\sqrt{n})$. Any construction satisfying Problem #75 would need fundamentally different structure.",
+      "The formalization uses abstract axiomatized types rather than Mathlib's SimpleGraph because the problem concerns potentially uncountable graphs where concrete type-level representation (DecidableEq, Fintype) may be inappropriate. The axiom-based approach cleanly separates the combinatorial content from representation issues.",
+      "The finite chromatic-independence bound $\\chi(H) \\cdot \\alpha(H) \\ge n$ is the starting point: for a graph with $\\chi = k$ (finite), $\\alpha \\ge n/k$. But when $\\chi(G) = \\aleph_1$, finite subgraphs can have any finite $\\chi$, so this bound alone doesn't constrain $\\alpha$ in the desired direction."
     ]
   },
   "sections": [
     {
-      "id": "graph-abstractions",
-      "title": "Graph Abstractions",
-      "startLine": 17,
-      "endLine": 35,
-      "summary": "Defines abstract graph type, chromatic number, and uncountable chromatic number."
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Header describing the $1000 prize problem, both forms of the conjecture, and Mathlib imports (Nat.Basic, Finset, Rat.Basic, Tactic)."
     },
     {
-      "id": "independence",
+      "id": "graph-abstractions",
+      "title": "Graph Abstractions",
+      "startLine": 23,
+      "endLine": 38,
+      "summary": "Axiomatizes Graph type, chromaticNum predicate with monotonicity, and HasUncountableChromaticNum (∀ n, chromaticNum G n)."
+    },
+    {
+      "id": "finite-subgraphs",
       "title": "Finite Subgraphs and Independence",
-      "startLine": 37,
-      "endLine": 47,
-      "summary": "Defines finite subgraphs, independence number, and basic bounds."
+      "startLine": 39,
+      "endLine": 50,
+      "summary": "Axiomatizes FiniteSubgraph G n type, indepNumber function, and indepNumber_le (α(H) ≤ n) bound."
     },
     {
       "id": "properties",
-      "title": "The Independence Ratio Property",
-      "startLine": 49,
-      "endLine": 66,
-      "summary": "Defines the (1−ε)-independence property and its linear strengthening."
+      "title": "Independence Properties",
+      "startLine": 51,
+      "endLine": 69,
+      "summary": "Defines HasLargeIndepSets (α(H) > 0 placeholder for n^{1-ε}) and HasLinearIndepSets (α(H) ≥ cn for some c > 0)."
+    },
+    {
+      "id": "context",
+      "title": "Known Context",
+      "startLine": 70,
+      "endLine": 81,
+      "summary": "Axiomatizes finite chromatic-independence bound (α·χ ≥ n) and mentions Erdős-Hajnal conjecture (True placeholder)."
     },
     {
       "id": "conjectures",
       "title": "The Erdős Problem",
-      "startLine": 78,
-      "endLine": 87,
-      "summary": "States the basic and strong forms of the conjecture."
+      "startLine": 82,
+      "endLine": 93,
+      "summary": "States ErdosProblem75 (basic: uncountable χ + large indep) and ErdosProblem75_strong (uncountable χ + linear indep)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 75 is a deep question about the interplay between chromatic number and local independence structure in infinite graphs. Both the basic (n^{1−ε}) and strong (linear) forms remain open.",
-    "implications": "A positive answer would demonstrate a surprising compatibility between global colouring complexity and local sparsity in infinite graphs, advancing our understanding of infinite graph colouring.",
+    "summary": "This formalization captures both forms of Erdős's \\$1000 Problem #75 using axiomatized abstract graph types. The basic form asks for $\\alpha(H) > n^{1-\\varepsilon}$ and the strong form for $\\alpha(H) \\ge cn$ in finite subgraphs of a graph with uncountable chromatic number. The axiom-based approach avoids representation issues for infinite graphs while cleanly stating the combinatorial content.",
+    "implications": "A positive answer would be a landmark result in infinite combinatorics, demonstrating that uncountable chromatic number is compatible with near-total local independence — a phenomenon with no finite analogue (where $\\chi \\cdot \\alpha \\ge n$ forces a tradeoff). It would likely require entirely new construction techniques, as all known uncountable-chromatic graphs have much smaller independence numbers in finite subgraphs.",
     "openQuestions": [
-      "Does such a graph with uncountable chromatic number exist?",
-      "Can the independent sets be linear in the number of vertices?",
-      "What is the relationship to the Erdős–Hajnal conjecture?"
+      "Does such a graph with $\\chi(G) = \\aleph_1$ and $\\alpha(H) > n^{1-\\varepsilon}$ exist? No candidate construction is known. The $1000 prize reflects the problem's extreme difficulty.",
+      "Can the independence number be truly linear ($\\alpha(H) \\ge cn$) in every large finite subgraph? This is the strong form, which would mean finite subgraphs are 'essentially independent'.",
+      "What is the maximum independence ratio achievable in finite subgraphs of known uncountable-chromatic graphs? Shift graphs give $\\alpha/n \\sim \\log n / n \\to 0$. Can constructions achieve $\\alpha = n^{1/2+\\delta}$?",
+      "Is there a connection to the Todorčević partition relation $\\omega_1 \\to (\\omega_1, \\alpha)^2$ for countable $\\alpha$? Partition calculus on $\\omega_1$ controls the Ramsey-type structure of infinite graphs.",
+      "Does the Erdős-Hajnal conjecture (forbidden induced subgraph forces polynomial homogeneous sets) have implications for Problem #75, or are the two problems structurally independent?"
     ]
   }
 }

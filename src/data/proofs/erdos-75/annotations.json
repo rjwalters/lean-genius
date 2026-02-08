@@ -1,86 +1,74 @@
 [
   {
-    "id": "uncountable-chromatic",
+    "id": "ann-e75-header",
     "proofId": "erdos-75",
-    "type": "definition",
-    "title": "Uncountable Chromatic Number",
-    "content": "A graph has uncountable chromatic number if it requires more than any finite number of colours for a proper vertex colouring.",
-    "significance": "critical",
-    "range": {
-      "startLine": 33,
-      "endLine": 35
-    }
-  },
-  {
-    "id": "finite-subgraph",
-    "proofId": "erdos-75",
-    "type": "definition",
-    "title": "Finite Subgraph",
-    "content": "A finite subgraph of G on n vertices, used to study local properties of the infinite graph.",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Problem Statement and Imports",
+    "content": "Erdős Problem #75 is a \\$1000 prize problem posed by Erdős, Hajnal, and Szemerédi about the interplay between chromatic number and local independence structure in infinite graphs. It asks whether there exists a graph $G$ with uncountable chromatic number ($\\chi(G) \\ge \\aleph_1$) such that every large finite subgraph has 'almost complete' independence — specifically, independence number $> n^{1-\\varepsilon}$ for every $\\varepsilon > 0$. This would demonstrate a striking compatibility: globally, $G$ requires uncountably many colors, yet locally, every finite piece is nearly independent. Mathlib imports cover basic natural number and Finset infrastructure.",
+    "mathContext": "\\$1000 prize: $\\exists G$ with $\\chi(G) \\ge \\aleph_1$ and $\\forall \\varepsilon > 0$, eventually $\\forall H \\subseteq G$ on $n$ vertices: $\\alpha(H) > n^{1-\\varepsilon}$? Stronger: $\\alpha(H) \\ge cn$?",
     "significance": "key",
-    "range": {
-      "startLine": 39,
-      "endLine": 41
-    }
+    "relatedConcepts": ["Erdős-Hajnal conjecture", "infinite chromatic number", "Ramsey theory", "cardinal arithmetic"],
+    "prerequisites": ["graph coloring", "chromatic number", "independence number", "cardinal numbers"]
   },
   {
-    "id": "large-indep-property",
+    "id": "ann-e75-graph-abstractions",
     "proofId": "erdos-75",
+    "range": { "startLine": 23, "endLine": 38 },
     "type": "definition",
-    "title": "Large Independence Property",
-    "content": "A graph has the (1−ε)-independence property if every sufficiently large finite subgraph on n vertices has independence number > n^{1−ε}.",
-    "significance": "critical",
-    "range": {
-      "startLine": 51,
-      "endLine": 59
-    }
-  },
-  {
-    "id": "linear-indep",
-    "proofId": "erdos-75",
-    "type": "definition",
-    "title": "Linear Independence Sets",
-    "content": "The stronger version requires independence number ≫ n, i.e., at least c·n for some constant c > 0.",
+    "title": "Graph Abstractions: Type, Chromatic Number, Uncountable Coloring",
+    "content": "The formalization uses an abstract `Graph : Type` axiom rather than Mathlib's `SimpleGraph`, since the problem concerns possibly uncountable graphs where `SimpleGraph` (defined on a `Type` with decidable adjacency) may not be appropriate. `chromaticNum G n` is a predicate asserting $G$ requires at least $n$ colors, with monotonicity axiom `chromaticNum_mono`. `HasUncountableChromaticNum G` asserts $\\chi(G) \\ge n$ for all $n \\in \\mathbb{N}$, which for infinite cardinals means $\\chi(G) \\ge \\aleph_0$. The full $\\aleph_1$ requirement would need cardinal arithmetic not formalized here.",
+    "mathContext": "`HasUncountableChromaticNum G` $\\equiv \\forall n \\in \\mathbb{N}, \\chi(G) \\ge n$. This captures $\\chi(G) \\ge \\aleph_0$; the full $\\chi(G) = \\aleph_1$ requires ordinal/cardinal formalization. Monotonicity: $m \\le n \\land \\chi(G) \\ge n \\Rightarrow \\chi(G) \\ge m$.",
     "significance": "key",
-    "range": {
-      "startLine": 62,
-      "endLine": 66
-    }
+    "relatedConcepts": ["abstract graph type", "chromatic number", "cardinal arithmetic", "aleph numbers"],
+    "prerequisites": ["graph coloring", "ordinal numbers", "axiom-based types"]
   },
   {
-    "id": "chromatic-independence-bound",
+    "id": "ann-e75-finite-subgraph",
     "proofId": "erdos-75",
-    "type": "theorem",
-    "title": "Chromatic–Independence Bound",
-    "content": "For finite graphs, χ(G) · α(G) ≥ |V(G)|, relating chromatic number to independence number.",
+    "range": { "startLine": 39, "endLine": 50 },
+    "type": "definition",
+    "title": "Finite Subgraphs and Independence Number",
+    "content": "`FiniteSubgraph G n` is an axiomatized type representing subgraphs of $G$ on exactly $n$ vertices. `indepNumber H` gives the independence number $\\alpha(H)$ of a finite subgraph $H$, with the bound `indepNumber_le`: $\\alpha(H) \\le n$. The problem concerns the behavior of $\\alpha(H)$ as $n \\to \\infty$ over all finite subgraphs. For finite graphs, $\\chi(H) \\cdot \\alpha(H) \\ge |V(H)|$ provides a lower bound on $\\alpha$ in terms of $\\chi$, but this only gives $\\alpha(H) \\ge n/\\chi(H)$, which is trivial when $\\chi(H)$ grows with $n$.",
+    "mathContext": "`FiniteSubgraph G n` $= $ type of $n$-vertex subgraphs of $G$. $\\alpha(H) \\le n$ always. For finite $H$: $\\alpha(H) \\ge n/\\chi(H)$. The problem asks whether $\\alpha(H) \\ge n^{1-\\varepsilon}$ uniformly.",
+    "significance": "key",
+    "relatedConcepts": ["induced subgraph", "independence number bound", "greedy coloring"],
+    "prerequisites": ["graph theory", "independence number", "chromatic number"]
+  },
+  {
+    "id": "ann-e75-large-indep",
+    "proofId": "erdos-75",
+    "range": { "startLine": 51, "endLine": 69 },
+    "type": "definition",
+    "title": "Large Independence Property and Linear Strengthening",
+    "content": "`HasLargeIndepSets G` formalizes: for every rational $\\varepsilon \\in (0, 1)$, there exists $N$ such that every finite subgraph on $n \\ge N$ vertices has positive independence number. Note: the current formalization uses the weaker condition $\\alpha(H) > 0$ as a placeholder for $\\alpha(H) > n^{1-\\varepsilon}$ (the full exponent comparison requires real-number arithmetic). `HasLinearIndepSets G` is the stronger property: $\\exists c > 0$ such that $\\alpha(H) \\ge cn$ for all large finite subgraphs. This is strictly stronger than the $n^{1-\\varepsilon}$ version since $cn \\ge n^{1-\\varepsilon}$ for large $n$ and any fixed $\\varepsilon$.",
+    "mathContext": "`HasLargeIndepSets G` (intended): $\\forall \\varepsilon > 0, \\exists N, \\forall n \\ge N, \\forall H \\in \\text{FiniteSubgraph}(G, n): \\alpha(H) > n^{1-\\varepsilon}$. `HasLinearIndepSets G`: $\\exists c > 0, \\exists N, \\forall n \\ge N: \\alpha(H) \\ge cn$. Linear $\\Rightarrow$ $(1-\\varepsilon)$-independence.",
+    "significance": "key",
+    "relatedConcepts": ["sublinear independence", "linear independence number", "Ramsey-type bounds", "polynomial growth"],
+    "prerequisites": ["real exponentiation", "asymptotic analysis"]
+  },
+  {
+    "id": "ann-e75-context",
+    "proofId": "erdos-75",
+    "range": { "startLine": 70, "endLine": 81 },
+    "type": "insight",
+    "title": "Known Context: Finite Chromatic-Independence Bound and Erdős-Hajnal",
+    "content": "The axiom `finite_chromatic_independence` formalizes $\\alpha(H) \\cdot \\chi(H) \\ge |V(H)|$ for finite graphs — a consequence of greedy coloring (the largest color class is an independent set of size $\\ge n/\\chi$). The `erdos_hajnal_related` axiom mentions the Erdős-Hajnal conjecture: for every graph $H$, graphs not containing $H$ as an induced subgraph have $\\alpha$ or $\\omega$ (clique number) at least $n^{\\delta(H)}$ for some $\\delta(H) > 0$. This is related but distinct: Problem #75 concerns infinite graphs with uncountable chromatic number, while Erdős-Hajnal concerns finite forbidden induced subgraph patterns. Both explore when structural restrictions force large homogeneous sets.",
+    "mathContext": "Finite bound: $\\alpha(H) \\cdot \\chi(H) \\ge n$, so $\\alpha(H) \\ge n/\\chi(H)$. Erdős-Hajnal conjecture: $H$-free graphs have $\\alpha$ or $\\omega \\ge n^{\\delta(H)}$. Both relate forbidden structure to independence, but in different settings (infinite vs finite).",
     "significance": "supporting",
-    "range": {
-      "startLine": 70,
-      "endLine": 72
-    }
+    "relatedConcepts": ["Erdős-Hajnal conjecture", "Ramsey numbers", "greedy coloring bound", "induced subgraph"],
+    "prerequisites": ["chromatic number", "Ramsey theory", "induced subgraph"]
   },
   {
-    "id": "basic-conjecture",
+    "id": "ann-e75-conjectures",
     "proofId": "erdos-75",
+    "range": { "startLine": 82, "endLine": 93 },
     "type": "concept",
-    "title": "Basic Conjecture",
-    "content": "There exists a graph with uncountable chromatic number where every large finite subgraph has independence number > n^{1−ε} for all ε > 0.",
-    "significance": "critical",
-    "range": {
-      "startLine": 80,
-      "endLine": 82
-    }
-  },
-  {
-    "id": "strong-conjecture",
-    "proofId": "erdos-75",
-    "type": "concept",
-    "title": "Strong Conjecture",
-    "content": "Erdős's strengthened form: the graph can be chosen so that independence number is linear (≫ n) in every large finite subgraph.",
-    "significance": "critical",
-    "range": {
-      "startLine": 85,
-      "endLine": 87
-    }
+    "title": "Erdős Problem #75: Basic and Strong Conjectures",
+    "content": "The basic conjecture `ErdosProblem75` asserts the existence of a graph with both uncountable chromatic number and the large independence property. The strong form `ErdosProblem75_strong` asks for linear independence: $\\alpha(H) \\ge cn$ for some $c > 0$. The tension is clear: uncountable chromatic number means the graph is globally 'dense' (requires many colors), yet every finite piece should be locally 'sparse' (nearly independent). This is a \\$1000 Erdős prize problem, reflecting its difficulty and importance. Known constructions of graphs with uncountable chromatic number (e.g., Rado's construction, shift graphs) typically have $\\alpha(H) = O(\\log n)$ or $O(\\sqrt{n})$ in finite subgraphs, far below $n^{1-\\varepsilon}$.",
+    "mathContext": "Basic: $\\exists G: \\chi(G) \\ge \\aleph_1 \\land \\forall \\varepsilon > 0$, eventually $\\alpha(H) > n^{1-\\varepsilon}$. Strong: $\\exists G: \\chi(G) \\ge \\aleph_1 \\land \\exists c > 0$, eventually $\\alpha(H) \\ge cn$. Known constructions: shift graphs give $\\alpha \\sim \\log n$, far from $n^{1-\\varepsilon}$.",
+    "significance": "key",
+    "relatedConcepts": ["Rado graph", "shift graph", "obligatory subgraph", "Erdős prize problems"],
+    "prerequisites": ["uncountable chromatic number", "constructive examples", "Ramsey theory"]
   }
 ]
