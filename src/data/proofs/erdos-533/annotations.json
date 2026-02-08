@@ -1,56 +1,167 @@
 [
   {
-    "id": "erdos-533-ann-1",
+    "id": "ann-e533-imports",
     "proofId": "erdos-533",
-    "range": { "startLine": 24, "endLine": 36 },
+    "type": "import",
+    "title": "Mathlib Foundations",
+    "content": "Imports Finset, Nat, Real, and tactic libraries for finite graph definitions and edge counting.",
+    "mathContext": "Graphs on $n$ vertices are modeled using `Fin n` for vertices and `Finset (Fin n)` for vertex subsets. The `Real` import supports the density parameter $\\delta$ and edge count comparisons like $\\delta n^2 \\leq |E(G)|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["finite graphs", "Finset", "real-valued density"],
+    "prerequisites": ["Finset.Basic", "Data.Real.Basic"],
+    "range": {
+      "startLine": 17,
+      "endLine": 20
+    }
+  },
+  {
+    "id": "ann-e533-sgraph",
+    "proofId": "erdos-533",
     "type": "definition",
-    "title": "Graph and Clique Definitions",
-    "content": "SGraph represents a simple graph on n vertices via a symmetric irreflexive adjacency relation. IsClique and HasClique formalize the notion of complete subgraphs, used to state the K₅-freeness condition.",
-    "significance": "These are the core combinatorial objects for the problem. The K_r-freeness condition ¬HasClique G r is the key structural constraint."
+    "title": "Simple Graph Structure",
+    "content": "SGraph n represents a simple graph on n vertices via a symmetric, irreflexive adjacency relation on Fin n.",
+    "mathContext": "The structure `SGraph n` with fields `adj : Fin n → Fin n → Prop`, `symm`, and `irrefl` is a **Prop-valued** simple graph. This differs from Mathlib's `SimpleGraph V` but is self-contained. The `Fin n` vertex type provides the cardinality $n$ used in density conditions like $\\delta n^2$. The adjacency relation being `Prop`-valued (rather than `Bool`) means the graph is non-computable, which suffices for the existential statements in the problem.",
+    "significance": "key",
+    "relatedConcepts": ["simple graphs", "adjacency relation", "Fin type"],
+    "prerequisites": ["Fin", "Prop"],
+    "range": {
+      "startLine": 25,
+      "endLine": 28
+    }
   },
   {
-    "id": "erdos-533-ann-2",
+    "id": "ann-e533-isClique",
     "proofId": "erdos-533",
-    "range": { "startLine": 43, "endLine": 51 },
     "type": "definition",
-    "title": "Triangle-Freeness and Edge Count",
-    "content": "IsTriangleFree G S means no three vertices of S form a triangle in G. edgeCount counts edges as pairs (i,j) with i < j and adj i j. The problem asks for large triangle-free S in dense graphs.",
-    "significance": "The triangle-free condition on subsets (not the whole graph) is the key output requirement. The edge density δn² is the input condition."
+    "title": "Clique Predicate",
+    "content": "IsClique G S means every pair of distinct vertices in S are adjacent in G, i.e., S is a complete subgraph.",
+    "mathContext": "A **clique** of size $r$ in a graph $G$ is a set of $r$ vertices that are pairwise adjacent, i.e., $G[S] \\cong K_r$. The condition $\\neg \\text{HasClique } G \\, 5$ (K₅-freeness) is the central structural constraint: it limits the graph's density via the Turán bound $|E(G)| \\leq (1 - 1/4)n^2/2 = 3n^2/8$.",
+    "significance": "key",
+    "relatedConcepts": ["complete graphs", "Ramsey theory", "clique number"],
+    "prerequisites": ["SGraph", "Finset membership"],
+    "range": {
+      "startLine": 31,
+      "endLine": 32
+    }
   },
   {
-    "id": "erdos-533-ann-3",
+    "id": "ann-e533-hasClique",
     "proofId": "erdos-533",
-    "range": { "startLine": 55, "endLine": 62 },
-    "type": "result",
-    "title": "EHSSS Partial Result for δ > 1/16",
-    "content": "Erdős, Hajnal, Simonovits, Sós, and Szemerédi proved: for δ > 1/16, any K₅-free graph with ≥ δn² edges has a triangle-free subset of size ≫ n. The threshold 1/16 arises from their regularity-based argument.",
-    "significance": "This is the strongest known partial result for K₅-free graphs. Extending to all δ > 0 is the content of Problem #533."
+    "type": "definition",
+    "title": "Clique Existence",
+    "content": "HasClique G k asserts the existence of a k-element clique in G.",
+    "mathContext": "The negation $\\neg \\text{HasClique } G \\, r$ means $G$ is $K_r$-free. By **Turán's theorem**, a $K_r$-free graph on $n$ vertices has at most $(1 - 1/(r-1))n^2/2$ edges. For $r = 5$: at most $3n^2/8$ edges, so the density parameter $\\delta$ is bounded by $3/8$.",
+    "significance": "key",
+    "relatedConcepts": ["Turán's theorem", "clique-free graphs", "extremal graph theory"],
+    "prerequisites": ["IsClique", "Finset.card"],
+    "range": {
+      "startLine": 35,
+      "endLine": 36
+    }
   },
   {
-    "id": "erdos-533-ann-4",
+    "id": "ann-e533-induced",
     "proofId": "erdos-533",
-    "range": { "startLine": 64, "endLine": 70 },
-    "type": "result",
-    "title": "K₄-Free Case",
-    "content": "For K₄-free graphs, the triangle-free subset result holds for all δ > 0. This shows the conjecture is plausible: excluding a smaller clique makes it easier to find triangle-free subsets.",
-    "significance": "The K₄ case confirms the general philosophy. The jump from K₄ to K₅ is where the difficulty lies."
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "The induced subgraph G[S] restricts G's adjacency to vertices in S.",
+    "mathContext": "The problem asks for triangle-free *induced* subgraphs: the restriction $G[S]$ must be triangle-free, meaning no three vertices of $S$ form a triangle even using edges of the original graph $G$. This is stronger than finding a triangle-free *subgraph* (which could delete edges).",
+    "significance": "supporting",
+    "relatedConcepts": ["induced subgraphs", "vertex restriction"],
+    "prerequisites": ["SGraph", "Finset membership"],
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    }
   },
   {
-    "id": "erdos-533-ann-5",
+    "id": "ann-e533-triangleFree",
     "proofId": "erdos-533",
-    "range": { "startLine": 72, "endLine": 79 },
-    "type": "result",
-    "title": "Erdős–Rogers Counterexample for K₇",
-    "content": "There exist K₇-free graphs with ≥ n²/4 edges where every triangle-free subset has o(n) vertices. This construction shows the result fails for sufficiently large excluded clique sizes, making K₅ and K₆ boundary cases.",
-    "significance": "The counterexample proves the statement is false starting at K₇, establishing that K₅ is close to the critical threshold."
+    "type": "definition",
+    "title": "Triangle-Free Subset",
+    "content": "IsTriangleFree G S means no three vertices in S form a triangle in G: there is no triple (a,b,c) ∈ S³ with all three edges present.",
+    "mathContext": "A set $S$ is **triangle-free** in $G$ if the induced subgraph $G[S]$ contains no $K_3$. This is the *output* requirement: we seek a large triangle-free $S$ in a dense $K_5$-free graph. The formalization uses existential negation over all triples, which is equivalent to the induced subgraph having no triangles.",
+    "significance": "critical",
+    "relatedConcepts": ["triangle-free graphs", "Ramsey R(3,k)", "independent sets"],
+    "prerequisites": ["SGraph", "Finset membership"],
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    }
   },
   {
-    "id": "erdos-533-ann-6",
+    "id": "ann-e533-edgeCount",
     "proofId": "erdos-533",
-    "range": { "startLine": 83, "endLine": 91 },
-    "type": "conjecture",
-    "title": "The Full Conjecture",
-    "content": "For every δ > 0, any K₅-free graph on n vertices with ≥ δn² edges contains a triangle-free subset of size ≥ c(δ)·n for some constant c(δ) > 0. This extends the EHSSS result from δ > 1/16 to all positive δ.",
-    "significance": "This is one of the key open problems in extremal graph theory, testing whether Ramsey-type phenomena persist for K₅-free graphs at all densities."
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Counts edges as ordered pairs (i,j) with i < j and G.adj i j, giving exactly |E(G)|.",
+    "mathContext": "The edge count uses `Finset.filter` over all ordered pairs with $i < j$, avoiding double-counting. The `noncomputable` annotation is needed because `G.adj` is `Prop`-valued. The density condition $\\delta n^2 \\leq |E(G)|$ measures how far the graph is from being sparse.",
+    "significance": "supporting",
+    "relatedConcepts": ["edge density", "Finset.filter", "graph density"],
+    "prerequisites": ["SGraph", "Finset.product", "Finset.filter"],
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    }
+  },
+  {
+    "id": "ann-e533-ehsss",
+    "proofId": "erdos-533",
+    "type": "axiom",
+    "title": "EHSSS Result for δ > 1/16",
+    "content": "Erdős, Hajnal, Simonovits, Sós, and Szemerédi proved: for δ > 1/16, any K₅-free graph with ≥ δn² edges has a triangle-free subset of size ≥ (δ/2)n.",
+    "mathContext": "The **EHSSS theorem** uses the **Szemerédi regularity lemma**: partition the vertices into clusters, analyze the bipartite graphs between clusters, and exploit K₅-freeness to find a cluster pair with few triangles. The threshold $\\delta > 1/16$ arises from the regularity lemma's approximation: below this density, the regular pairs may not contain enough structure to extract a large triangle-free set. The linear bound $|S| \\geq (\\delta/2)n$ is optimal up to the constant.",
+    "significance": "critical",
+    "relatedConcepts": ["Szemerédi regularity lemma", "regularity method", "density threshold"],
+    "prerequisites": ["SGraph", "HasClique", "IsTriangleFree", "edgeCount"],
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    }
+  },
+  {
+    "id": "ann-e533-k4free",
+    "proofId": "erdos-533",
+    "type": "axiom",
+    "title": "K₄-Free Case: All δ > 0",
+    "content": "For K₄-free graphs, the triangle-free subset result holds for every δ > 0, not just δ > 1/16.",
+    "mathContext": "When the excluded clique is $K_4$ instead of $K_5$, the Turán density drops to $1/3$, and the graph structure is more constrained. The stronger result for $K_4$-free graphs uses the **Kővári-Sós-Turán theorem** and refined counting arguments. This confirms the general philosophy: smaller excluded cliques yield stronger structural consequences. The problem is whether $K_5$ behaves like $K_4$ (true for all $\\delta$) or like $K_7$ (fails).",
+    "significance": "key",
+    "relatedConcepts": ["Kővári-Sós-Turán", "Turán density", "monotonicity in clique size"],
+    "prerequisites": ["SGraph", "HasClique", "IsTriangleFree"],
+    "range": {
+      "startLine": 65,
+      "endLine": 70
+    }
+  },
+  {
+    "id": "ann-e533-erdos-rogers",
+    "proofId": "erdos-533",
+    "type": "axiom",
+    "title": "Erdős-Rogers Counterexample for K₇",
+    "content": "There exist K₇-free graphs with ≥ n²/4 edges where every triangle-free subset has o(n) vertices, disproving the conjecture for K₇.",
+    "mathContext": "The **Erdős-Rogers construction** (1962) builds $K_7$-free graphs of density $1/4$ where all triangle-free subsets are sublinear. The construction uses iterated Ramsey-type blow-ups: start with a dense graph, replace each vertex by a clique, and iterate. After enough iterations, the graph is $K_7$-free but every large subset contains a triangle. The threshold between \"always works\" ($K_4$) and \"fails\" ($K_7$) makes $K_5$ and $K_6$ the **critical boundary cases**.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős-Rogers construction", "Ramsey blow-ups", "counterexamples"],
+    "prerequisites": ["SGraph", "HasClique", "IsTriangleFree", "edgeCount"],
+    "range": {
+      "startLine": 74,
+      "endLine": 79
+    }
+  },
+  {
+    "id": "ann-e533-conjecture",
+    "proofId": "erdos-533",
+    "type": "axiom",
+    "title": "Erdős Problem 533: Full Conjecture",
+    "content": "For every δ > 0, any K₅-free graph on n vertices with ≥ δn² edges contains a triangle-free subset of size ≥ c(δ)·n.",
+    "mathContext": "The conjecture extends EHSSS from $\\delta > 1/16$ to all $\\delta > 0$. The quantifier structure is $\\forall \\delta > 0, \\exists c > 0, \\forall n, \\forall G$ $K_5$-free with $\\geq \\delta n^2$ edges, $\\exists S$ triangle-free with $|S| \\geq cn$. The constant $c = c(\\delta)$ may depend on $\\delta$. The problem is at the frontier of **extremal graph theory**: it tests whether $K_5$-freeness is strong enough to force structured subgraphs at all densities, or whether there is a phase transition between $K_4$ (always works) and $K_7$ (fails).",
+    "significance": "critical",
+    "relatedConcepts": ["extremal graph theory", "phase transitions", "Ramsey-Turán theory"],
+    "prerequisites": ["SGraph", "HasClique", "IsTriangleFree", "edgeCount"],
+    "range": {
+      "startLine": 86,
+      "endLine": 91
+    }
   }
 ]
