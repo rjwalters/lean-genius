@@ -1,73 +1,87 @@
 {
   "id": "erdos-536",
-  "title": "Erdős Problem #536: Equal Pairwise LCMs in Dense Sets",
+  "title": "Equal Pairwise LCMs in Dense Sets",
   "slug": "erdos-536",
   "description": "If A ⊆ {1,...,N} has |A| ≥ εN, must there be distinct a,b,c ∈ A with [a,b]=[b,c]=[a,c]? Weisenberg: yes for ε > 221/225. Fails for four elements. Open.",
   "meta": {
-    "erdosNumber": 536,
+    "author": "Erdős (1964, 1970, 1973, 1991)",
+    "sourceUrl": "https://erdosproblems.com/536",
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos536Problem.lean",
     "tags": [
-      "erdos",
       "number-theory",
       "lcm",
       "density",
-      "combinatorics",
-      "open"
+      "combinatorics"
     ],
-    "references": [
-      "Erdős (1964, 1970, 1973): original problem",
-      "Erdős, 1991 West Coast Number Theory session",
-      "Weisenberg: ε > 221/225 partial result",
-      "https://erdosproblems.com/536"
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 536,
+    "erdosUrl": "https://erdosproblems.com/536",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-01",
+    "mathlib_version": "4.x"
+  },
+  "overview": {
+    "historicalContext": "Erdős posed versions of this problem from the 1960s through the 1990s, culminating in a discussion at the 1991 West Coast Number Theory session. The question asks whether positive-density subsets of {1,...,N} must contain three distinct elements with equal pairwise LCMs: [a,b] = [b,c] = [a,c]. This means a, b, c are all divisors of a common value L = [a,b], and each pair covers all prime factors of L.\n\nWeisenberg proved the conjecture for density ε > 221/225 ≈ 0.982, an impressively tight partial result. Weisenberg also constructed sets of size ≫ (log log N)^{f(N)} · N / log N (where f(N) → ∞) that avoid the LCM triple property, showing that if a density threshold exists, it cannot be improved beyond O(N/log N) in certain regimes.\n\nErdős showed that the analogous statement for four elements is false: there exist sets of density ≥ 1/2 in {1,...,N} with no four elements having all pairwise LCMs equal. This sharp contrast between triples and quadruples is characteristic of extremal combinatorics problems. The problem is related to Problems #535, #537, #856, and #857 on GCD/LCM patterns in dense sets.",
+    "problemStatement": "For any ε > 0 and N sufficiently large, if A ⊆ {1,...,N} with |A| ≥ εN, must there exist distinct a, b, c ∈ A with [a,b] = [b,c] = [a,c]?",
+    "proofStrategy": "We define HasEqualPairwiseLCM (three elements with equal pairwise LCMs) and HasLCMTriple (a set contains such a triple). The main conjecture erdos_536_conjecture is axiomatized for all ε > 0. Weisenberg's partial result (ε > 221/225), the four-element failure, and the construction lower bound are separately axiomatized. The LCM structure lemma shows that equal pairwise LCMs force all three elements to divide a common value.",
+    "keyInsights": [
+      "**Equal pairwise LCMs force divisibility structure**: If [a,b] = [b,c] = [a,c] = L, then a | L, b | L, c | L, and each pair covers all prime factors of L. The three elements must 'jointly represent' the prime factorization of L.",
+      "**Weisenberg's density threshold**: The conjecture holds for ε > 221/225 ≈ 0.982. This is a remarkable partial result showing that near-full-density sets must contain LCM triples.",
+      "**Four elements fail**: Erdős showed sets of density ≥ 1/2 exist with no four elements having all pairwise LCMs equal. The triple-to-quadruple transition is a sharp combinatorial boundary.",
+      "**Construction lower bound**: Weisenberg's constructions avoiding LCM triples have size ≫ (log log N)^{f(N)} · N / log N, so density-free sets can be surprisingly large.",
+      "**Related to GCD/LCM problems**: Part of a family of Erdős problems (#535, #537, #856, #857) on multiplicative structure in dense integer sets."
     ],
-    "leanFile": "Proofs/Erdos536Problem.lean",
-    "sorries": 0
+    "mathlibDependencies": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "originalContributions": [
+      "HasEqualPairwiseLCM: three distinct elements with equal pairwise LCMs",
+      "HasLCMTriple: set contains an equal-pairwise-LCM triple",
+      "erdos_536_conjecture: density conjecture for all ε > 0",
+      "weisenberg_dense_case: partial result for ε > 221/225",
+      "four_elements_fail: no four-element analogue at density 1/2",
+      "weisenberg_construction: large triple-free sets with f(N) → ∞",
+      "lcm_structure: equal pairwise LCMs imply common divisibility"
+    ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Definitions",
-      "startLine": 22,
-      "endLine": 33,
-      "summary": "HasEqualPairwiseLCM, HasLCMTriple."
+      "startLine": 27,
+      "endLine": 34,
+      "summary": "Defines HasEqualPairwiseLCM (distinct triple with equal pairwise Nat.lcm) and HasLCMTriple (set contains such a triple)."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 35,
-      "endLine": 43,
-      "summary": "Dense subsets of {1,...,N} contain an LCM-equal triple."
+      "startLine": 36,
+      "endLine": 46,
+      "summary": "Axiomatizes erdos_536_conjecture: for any ε > 0, dense subsets of {1,...,N} contain an LCM-equal triple."
     },
     {
-      "id": "known-results",
-      "title": "Known Results",
-      "startLine": 45,
-      "endLine": 74,
-      "summary": "Weisenberg ε > 221/225, four-element failure, construction lower bound."
+      "id": "weisenberg",
+      "title": "Weisenberg's Results",
+      "startLine": 48,
+      "endLine": 75,
+      "summary": "Axiomatizes weisenberg_dense_case (ε > 221/225), four_elements_fail (quadruple analogue false), and weisenberg_construction (large triple-free sets)."
     },
     {
       "id": "observations",
-      "title": "Observations",
-      "startLine": 76,
-      "endLine": 87,
-      "summary": "LCM divisibility structure, related problems."
+      "title": "LCM Structure",
+      "startLine": 77,
+      "endLine": 88,
+      "summary": "Axiomatizes lcm_structure: equal pairwise LCMs force a | L, b | L, c | L. Notes related problems #535, #537, #856, #857."
     }
   ],
-  "overview": {
-    "historicalContext": "Erdős posed this at the 1991 West Coast Number Theory session, building on earlier work from the 1960s–70s. The problem asks whether positive-density subsets of {1,...,N} must contain three elements with equal pairwise LCMs.",
-    "problemStatement": "For any ε > 0 and N sufficiently large, if A ⊆ {1,...,N} with |A| ≥ εN, must there exist distinct a, b, c ∈ A with [a,b] = [b,c] = [a,c]?",
-    "proofStrategy": "We formalize the equal-pairwise-LCM property, state the density conjecture, and record Weisenberg's partial results (both positive and constructive).",
-    "keyInsights": [
-      "Equal pairwise LCMs means a, b, c are divisors of a common L covering all prime factors",
-      "Weisenberg proved the conjecture for ε > 221/225 ≈ 0.982",
-      "The analogous statement for four elements is false (Erdős)",
-      "Constructions avoiding the property can have size ≫ N/log N",
-      "Related to Problems #535, #537, #856, #857 on GCD/LCM patterns"
-    ]
-  },
   "conclusion": {
-    "summary": "Erdős Problem #536 asks whether dense subsets of {1,...,N} must contain three elements with equal pairwise LCMs. Weisenberg proved it for density > 221/225 and showed no four-element analogue holds. The general case remains open.",
-    "implications": "A resolution would illuminate the multiplicative structure of dense integer sets and the distribution of LCM patterns.",
+    "summary": "Erdős Problem 536 asks whether dense subsets of {1,...,N} must contain three elements with equal pairwise LCMs. Weisenberg proved it for density > 221/225 and showed no four-element analogue holds. 0 sorries.",
+    "implications": "Resolution would illuminate the multiplicative structure of dense integer sets and the distribution of LCM patterns, connecting density Ramsey theory to multiplicative number theory.",
     "openQuestions": [
       "Does the conjecture hold for all ε > 0?",
       "What is the threshold density (if any)?",
