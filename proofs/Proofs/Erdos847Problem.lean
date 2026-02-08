@@ -56,8 +56,25 @@ def isAPFree (S : Set ℕ) : Prop :=
 def isAPFree' (S : Set ℕ) : Prop :=
   ∀ x y z : ℕ, x ∈ S → y ∈ S → z ∈ S → x < y → y < z → 2*y ≠ x + z
 
-/-- The two definitions are equivalent. -/
-axiom apfree_equiv (S : Set ℕ) : isAPFree S ↔ isAPFree' S
+/-- Subsets of AP-free sets are AP-free. -/
+theorem isAPFree_subset {S T : Set ℕ} (hT : isAPFree T) (hST : S ⊆ T) : isAPFree S :=
+  fun a d hd ha had hz => hT a d hd (hST ha) (hST had) (hST hz)
+
+/-- The two definitions of AP-free are equivalent. -/
+theorem apfree_equiv (S : Set ℕ) : isAPFree S ↔ isAPFree' S := by
+  unfold isAPFree isAPFree'
+  constructor
+  · -- Forward: no {a, a+d, a+2d} AP → no x < y < z with 2y = x+z
+    intro h x y z hx hy hz hxy hyz heq
+    have hd_pos : y - x > 0 := Nat.sub_pos_of_lt hxy
+    have hy' : x + (y - x) ∈ S := by rwa [Nat.add_sub_cancel' (Nat.le_of_lt hxy)]
+    have hnotS := h x (y - x) hd_pos hx hy'
+    have h2d_eq : x + 2 * (y - x) = z := by omega
+    rw [h2d_eq] at hnotS
+    exact hnotS hz
+  · -- Backward: no x < y < z with 2y = x+z → no {a, a+d, a+2d} AP
+    intro h a d hd ha had hadd
+    exact h a (a + d) (a + 2 * d) ha had hadd (by omega) (by omega) (by omega)
 
 /- ## Part II: The Erdős-Nešetřil-Rödl Condition -/
 
@@ -160,8 +177,13 @@ The counterexample likely uses a construction where:
 **Finite unions are very restrictive:**
 If A = A₁ ∪ ... ∪ Aₖ with each Aᵢ AP-free, then any finite B ⊆ A
 can be covered by k AP-free sets. But the ENR condition is weaker.
+
+Proof sketch: Given B ⊆ A with |B| = n, by pigeonhole there exists
+i such that |B ∩ parts(i)| ≥ n/k. This intersection is AP-free
+(subset of AP-free set) and has the required size.
 -/
-theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (parts : Fin k → Set ℕ)
+theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (hk : k > 0)
+    (parts : Fin k → Set ℕ)
     (hparts : ∀ i, isAPFree (parts i))
     (hunion : A = ⋃ i, parts i) :
     hasENRCondition A (1 / k) := by
