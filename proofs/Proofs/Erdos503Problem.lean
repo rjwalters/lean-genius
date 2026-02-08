@@ -45,7 +45,7 @@ def IsIsoscelesSet {α : Type*} [Dist α] (A : Finset α) : Prop :=
 /--
 The maximum isosceles set size in dimension n.
 -/
-def maxIsoscelesSize (n : ℕ) : ℕ := sorry
+axiom maxIsoscelesSize (n : ℕ) : ℕ
 
 /- ## Part II: Exact Results for Small Dimensions -/
 

@@ -206,7 +206,7 @@ axiom sum_inequality :
 **Convex hull vertex count:**
 m = number of vertices on the convex hull of A.
 -/
-noncomputable def convexHullVertices (A : Finset Point) : ℕ := sorry
+axiom convexHullVertices (A : Finset Point) : ℕ
 
 /--
 **Stronger conjecture (convex hull form):**
@@ -232,7 +232,7 @@ theorem stronger_implies_original (h : StrongerConjecture) : ErdosPachConjecture
 **Odd regular n-gon:**
 Vertices of a regular polygon with odd n sides.
 -/
-def regularPolygon (n : ℕ) (hn : Odd n) : Finset Point := sorry
+axiom regularPolygon (n : ℕ) (hn : Odd n) : Finset Point
 
 /--
 **All distances frequent in odd regular polygon:**

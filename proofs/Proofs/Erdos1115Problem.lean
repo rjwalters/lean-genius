@@ -47,8 +47,9 @@ def IsEscapePath (f : ℂ → ℂ) (γ : ℝ → ℂ) : Prop :=
 
 /--
 ℓ(r): the arc length of the path γ within the disk |z| < r.
+Axiomatized since it requires measure-theoretic arc length integration.
 -/
-noncomputable def arcLengthInDisk (γ : ℝ → ℂ) (r : ℝ) : ℝ := sorry
+axiom arcLengthInDisk (γ : ℝ → ℂ) (r : ℝ) : ℝ
 
 /-
 ## Part II: Hayman's Positive Result

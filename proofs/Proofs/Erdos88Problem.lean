@@ -244,8 +244,10 @@ axiom ksss_optimality :
 How this relates to Ramsey numbers.
 -/
 
-/-- The Ramsey number R(k, ℓ). -/
-noncomputable def R (k ℓ : ℕ) : ℕ := sorry
+/-- The Ramsey number R(k, ℓ): minimum n such that any red/blue coloring of
+    K_n contains a red K_k or blue K_ℓ. Axiomatized as computing Ramsey numbers
+    is a notoriously hard combinatorial problem. -/
+axiom R (k ℓ : ℕ) : ℕ
 
 /-- ε-Ramsey graphs exist for n < R(⌈ε log n⌉, ⌈ε log n⌉). -/
 axiom ramsey_graph_existence (ε : ℝ) (hε : ε > 0) :

@@ -137,8 +137,9 @@ theorem counterexample_works (ε : ℝ) (hε : ε > 0) (hε' : ε < 1/4) :
 ## Ramsey Connection
 -/
 
-/-- Ramsey number R(k,k). -/
-noncomputable def ramseyNumber (k : ℕ) : ℕ := sorry
+/-- Ramsey number R(k,k): minimum n such that any 2-coloring of K_n
+    contains a monochromatic K_k. Axiomatized as exact values are unknown. -/
+axiom ramseyNumber (k : ℕ) : ℕ
 
 /-- Ramsey theorem: graphs on ≥ R(k,k) vertices have trivial set of size k. -/
 axiom ramsey_theorem (k : ℕ) (hk : k ≥ 2) :

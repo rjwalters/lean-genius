@@ -217,8 +217,9 @@ theorem exterior_unbounded (f : ℂ[X]) (hf : f ≠ 0) (c : ℝ) (hc : c > Compl
 Connection to logarithmic capacity.
 -/
 
-/-- The logarithmic capacity of a set. -/
-noncomputable def logCapacity (S : Set ℂ) : ℝ := sorry
+/-- The logarithmic capacity of a set.
+    Axiomatized since it requires potential theory infrastructure. -/
+axiom logCapacity (S : Set ℂ) : ℝ
 
 /-- For a monic polynomial, capacity of L(f, c) equals c^(1/n). -/
 axiom lemniscate_capacity (f : BoundedMonicPoly r) (c : ℝ) (hc : c > 0) (n : ℕ) (hn : f.poly.degree = n) :

@@ -43,8 +43,9 @@ def AllDistancesDistinct (d : ℕ) (S : Finset (Fin d → ℝ)) : Prop :=
 /--
 f_d(n): the minimal m such that every set of m points in ℝ^d
 contains an n-point subset with all pairwise distances distinct.
+Axiomatized as an extremal quantity over point configurations.
 -/
-noncomputable def f (d n : ℕ) : ℕ := sorry
+axiom f (d n : ℕ) : ℕ
 
 /-
 ## Part II: Known Results

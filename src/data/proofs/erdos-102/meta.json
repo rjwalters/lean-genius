@@ -4,74 +4,99 @@
   "slug": "erdos-102",
   "description": "Given n points with cn² lines containing ≥ 4 points, estimate h_c(n) = max collinear. Known: ≤ C√n. Erdős's √n lower conjecture disproved by Hunter. Open.",
   "meta": {
-    "erdosNumber": 102,
+    "author": "Erdős–Purdy",
+    "sourceUrl": "https://erdosproblems.com/102",
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos102Problem.lean",
     "tags": [
-      "erdos",
       "combinatorial-geometry",
       "incidence-geometry",
       "collinearity",
-      "open"
+      "Szemerédi-Trotter"
     ],
-    "references": [
-      "Erdős–Purdy: original problem",
-      "Erdős (1992, 1995, 1997): discussions",
-      "Hunter: counterexample to √n lower bound",
-      "https://erdosproblems.com/102"
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 102,
+    "erdosUrl": "https://erdosproblems.com/102",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root on reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
     ],
-    "leanFile": "Proofs/Erdos102Problem.lean",
-    "sorries": 0
+    "originalContributions": [
+      "Defined PointConfig structure for planar point configurations",
+      "Defined collinear₃ via cross-product criterion",
+      "Defined richLineCount counting lines with ≥ 4 collinear points",
+      "Defined maxCollinear as the supremum of collinear subset sizes",
+      "Stated erdos_102_divergence: h_c(n) → ∞ as the main open problem",
+      "Stated upper bound h_c(n) ≤ C√n",
+      "Axiomatized Hunter's counterexample to √n lower bound",
+      "Stated connection to Problem #101 via 5-collinear implication",
+      "Axiomatized Szemerédi–Trotter incidence bound context",
+      "Stated Erdős–Purdy origin connection"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős and Purdy posed this problem in their foundational survey of combinatorial geometry in the 1970s. The question asks: if a planar point set of size n has 'many' rich lines (at least cn² lines each containing ≥ 4 points), how large must the maximum collinear subset be?\n\nErdős conjectured that h_c(n) ≫ √n, meaning that many rich lines force a large collinear subset of roughly square-root size. This was disproved by Zach Hunter, who constructed lattice-point configurations showing h_c(n) ≪ n^{1/log(1/c)} — much slower growth than √n for small c. Hunter's construction exploits the arithmetic structure of integer lattice points to create many 4-point lines without any single line accumulating too many points.\n\nThe upper bound h_c(n) ≤ C√n follows from the Szemerédi–Trotter incidence theorem (1983), which bounds point-line incidences by O(n^{2/3}m^{2/3} + n + m). This is the main tool constraining how rich lines distribute among points. The fundamental question — whether h_c(n) → ∞ at all for fixed c — remains open and is closely connected to Problem #101 about the count of 4-point lines.",
+    "problemStatement": "Given n points in ℝ² with at least cn² lines containing ≥ 4 points, estimate h_c(n), the maximum collinear count. Is h_c(n) → ∞?",
+    "proofStrategy": "We formalize PointConfig for planar point sets, collinear₃ via the cross-product criterion, richLineCount counting 4-point lines, and maxCollinear as the supremum of collinear subset sizes. The divergence question, upper bound, Hunter's counterexample, and connections to Problem #101 and Szemerédi–Trotter are all axiomatized.",
+    "keyInsights": [
+      "**Upper Bound √n**: h_c(n) ≤ C√n follows from Szemerédi–Trotter incidence bound — the key constraint on how rich lines can be distributed",
+      "**Hunter's Counterexample**: Disproved Erdős's √n lower conjecture using lattice-point configurations with h_c(n) ≪ n^{1/log(1/c)}, showing the truth is far below √n for small c",
+      "**Problem #101 Connection**: If h_c(n) → ∞, then the count of 4-point lines is o(n²) for no-5-collinear configurations — linking Problems #101 and #102",
+      "**Szemerédi–Trotter Foundation**: The incidence bound I(P,L) ≤ C(n^{2/3}m^{2/3}+n+m) is the primary tool constraining rich-line configurations",
+      "**Open Divergence**: Whether h_c(n) → ∞ at all remains the central open question — neither divergence nor bounded examples have been established"
+    ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Definitions",
-      "startLine": 22,
+      "startLine": 23,
       "endLine": 44,
-      "summary": "PointConfig, collinear₃, richLineCount, maxCollinear."
+      "summary": "Defines PointConfig, collinear₃ (cross-product criterion), richLineCount (lines with ≥ 4 collinear points), and maxCollinear."
     },
     {
       "id": "main-problem",
       "title": "Main Problem",
       "startLine": 46,
-      "endLine": 52,
-      "summary": "h_c(n) → ∞: many rich lines force large collinear subsets."
+      "endLine": 54,
+      "summary": "States erdos_102_divergence: h_c(n) → ∞, i.e., many rich lines force arbitrarily large collinear subsets."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 54,
-      "endLine": 74,
-      "summary": "Upper √n bound, Hunter's counterexample, connection to #101."
+      "startLine": 56,
+      "endLine": 86,
+      "summary": "Upper bound h_c(n) ≤ C√n, Hunter's counterexample to √n lower bound, and connection to Problem #101."
     },
     {
       "id": "observations",
       "title": "Observations",
-      "startLine": 76,
-      "endLine": 84,
-      "summary": "Szemerédi–Trotter context, Erdős–Purdy origin."
+      "startLine": 88,
+      "endLine": 104,
+      "summary": "Szemerédi–Trotter incidence bound context and Erdős–Purdy connection (cn² rich lines implies maxCollinear ≥ 4)."
     }
   ],
-  "overview": {
-    "historicalContext": "Erdős and Purdy posed this problem in combinatorial geometry. Erdős conjectured h_c(n) ≫ √n, but Zach Hunter disproved this using lattice point configurations, showing h_c(n) can be much smaller.",
-    "problemStatement": "Given n points in ℝ² with at least cn² lines containing ≥ 4 points, estimate h_c(n), the maximum collinear count. Is h_c(n) → ∞?",
-    "proofStrategy": "We formalize the rich-line counting, maximum collinear number, and state the divergence question. Known upper/lower bounds and Hunter's counterexample are recorded.",
-    "keyInsights": [
-      "h_c(n) ≤ C√n is the known upper bound",
-      "Erdős conjectured h_c(n) ≫ √n, disproved by Hunter",
-      "Hunter's construction uses lattice points: h_c(n) ≪ n^{1/log(1/c)}",
-      "Connected to Problem #101 (four-point lines o(n²))",
-      "Szemerédi–Trotter incidence bound is the key tool"
-    ]
-  },
   "conclusion": {
     "summary": "Erdős Problem #102 asks to estimate h_c(n), the maximum collinear count when cn² rich lines exist. The √n upper bound holds, but the conjectured √n lower bound was disproved by Hunter. Whether h_c(n) → ∞ remains open.",
-    "implications": "A resolution would complement Problem #101 and advance our understanding of collinearity patterns in point configurations.",
+    "implications": "A resolution would complement Problem #101 and advance the Szemerédi–Trotter theory, illuminating the structure of point-line incidences in combinatorial geometry.",
     "openQuestions": [
       "Does h_c(n) → ∞ for fixed c > 0?",
-      "What is the true growth rate of h_c(n)?",
-      "Can Hunter's lattice construction be improved?",
-      "What is the relationship between c and h_c(n)?"
+      "What is the true growth rate of h_c(n) between Hunter's bound and √n?",
+      "Can Hunter's lattice construction be improved or extended?",
+      "What is the precise relationship between c and the growth rate of h_c(n)?",
+      "Can algebraic geometry techniques (e.g., the polynomial method) make progress?"
     ]
   }
 }

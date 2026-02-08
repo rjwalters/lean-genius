@@ -89,9 +89,13 @@ def Path.length (p : Path n) : ℕ :=
 /--
 **Monochromatic path:**
 A path where all edges have the same color.
-Axiomatized for simplicity - the formal definition would use List indexing.
+Checks that each consecutive pair of vertices in the path has color `col`.
 -/
-def IsMonochromaticPath (c : TwoColoring n) (p : Path n) (col : Color) : Prop := sorry
+def IsMonochromaticPath (c : TwoColoring n) (p : Path n) (col : Color) : Prop :=
+  ∀ (i : ℕ) (hi : i + 1 < p.vertices.length),
+    let v := p.vertices[i]
+    let w := p.vertices[i + 1]
+    ∀ (hne : v ≠ w), c v w hne = col
 
 /--
 **Red path:**

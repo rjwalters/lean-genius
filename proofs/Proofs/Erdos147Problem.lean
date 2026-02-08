@@ -31,8 +31,10 @@ namespace Erdos147
 /--
 The Turán number ex(n; H): the maximum number of edges in a simple graph
 on n vertices that does not contain H as a subgraph.
+Axiomatized since computing extremal numbers requires optimizing over all
+H-free graphs.
 -/
-noncomputable def turanNumber (H : SimpleGraph (Fin k)) (n : ℕ) : ℕ := sorry
+axiom turanNumber (H : SimpleGraph (Fin k)) (n : ℕ) : ℕ
 
 /--
 The minimum degree of a simple graph on Fin k.

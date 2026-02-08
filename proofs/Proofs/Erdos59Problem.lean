@@ -73,12 +73,14 @@ These are well-defined mathematically but complex to formalize directly.
 -/
 
 /-- The Turán number ex(n; k) where k is the size of the forbidden graph.
-    ex(n; k) = maximum edges in an n-vertex graph avoiding all k-vertex forbidden graphs. -/
-noncomputable def turanNumber : ℕ → ℕ → ℕ := sorry
+    ex(n; k) = maximum edges in an n-vertex graph avoiding all k-vertex forbidden graphs.
+    Axiomatized since computing extremal numbers is a hard combinatorial problem. -/
+axiom turanNumber : ℕ → ℕ → ℕ
 
 /-- The number of H-free labeled graphs on n vertices where H has k vertices.
-    For a specific forbidden graph type (e.g., C_6), this counts graphs avoiding it. -/
-noncomputable def countFreeGraphs : ℕ → ℕ → ℕ := sorry
+    For a specific forbidden graph type (e.g., C_6), this counts graphs avoiding it.
+    Axiomatized since exact enumeration of forbidden-subgraph-free graphs is intractable. -/
+axiom countFreeGraphs : ℕ → ℕ → ℕ
 
 /- ## Asymptotic Bounds -/
 

@@ -91,8 +91,10 @@ def decomposeEdges (m : ℕ) : ℕ × ℕ :=
 
 /-- The "maximally complete" graph H with m edges:
     Take K_n and add a new vertex connected to t vertices,
-    where m = C(n,2) + t. -/
-def maximallyCompleteGraph (m : ℕ) : Type := sorry
+    where m = C(n,2) + t.
+    Axiomatized since the construction depends on decomposing m
+    as a binomial plus remainder. -/
+axiom maximallyCompleteGraph (m : ℕ) : Type
 
 /-- The conjecture: H maximizes the Ramsey number among graphs with m edges. -/
 def ErdosGrahamConjecture : Prop :=

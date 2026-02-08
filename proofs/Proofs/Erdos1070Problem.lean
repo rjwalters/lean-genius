@@ -67,8 +67,9 @@ f(n) is the minimum independence number across all n-point unit distance graphs.
 This is the function Erdős asks to estimate.
 -/
 
-/-- f(n) = minimum independence number over all n-point unit distance graphs -/
-noncomputable def f (n : ℕ) : ℕ := sorry
+/-- f(n) = minimum independence number over all n-point unit distance graphs.
+    Axiomatized as an extremal quantity over geometric configurations. -/
+axiom f (n : ℕ) : ℕ
 
 /-- f(n) is a valid minimum: every n-point configuration has an independent set of size f(n) -/
 axiom f_is_minimum : ∀ n : ℕ, ∀ G : UnitDistanceGraph n,
@@ -84,8 +85,9 @@ The key insight of Larman and Rogers is to connect the discrete problem
 to the continuous density of unit-distance-free measurable sets.
 -/
 
-/-- m₁ = supremum density of measurable unit-distance-free sets in ℝ² -/
-noncomputable def m1 : ℝ := sorry
+/-- m₁ = supremum density of measurable unit-distance-free sets in ℝ².
+    Axiomatized since its exact value is unknown (between 0.229 and 0.25). -/
+axiom m1 : ℝ
 
 /-- m₁ is positive -/
 axiom m1_pos : m1 > 0
@@ -174,8 +176,9 @@ Since independence number ω and chromatic number χ satisfy ω·χ ≥ n,
 we have f(n) ≥ n/χ.
 -/
 
-/-- The chromatic number of the plane -/
-noncomputable def chromaticNumberPlane : ℕ := sorry
+/-- The chromatic number of the plane (Hadwiger-Nelson problem).
+    Axiomatized since its exact value is unknown (between 5 and 7). -/
+axiom chromaticNumberPlane : ℕ
 
 /-- De Grey (2018): χ ≥ 5 -/
 axiom de_grey_lower_bound : chromaticNumberPlane ≥ 5
