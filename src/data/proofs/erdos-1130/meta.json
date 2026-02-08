@@ -6,68 +6,90 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1130",
+    "date": "1947",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1130Problem.lean",
     "tags": [
       "erdos",
-      "approximation theory",
+      "approximation-theory",
       "interpolation",
-      "analysis"
+      "analysis",
+      "lebesgue-function"
     ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 1130,
     "erdosUrl": "https://erdosproblems.com/1130",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {"theorem": "Real.sqrt", "description": "Square root for Erdős's initial √n bound", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"},
+      {"theorem": "Real.log", "description": "Natural logarithm for the sharp (2/π) log n bound", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"},
+      {"theorem": "Real.pi", "description": "π constant in the optimal coefficient 2/π", "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"}
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem about Lagrange interpolation in 1947. The Lebesgue function Λ(x) = Σ|l_k(x)| measures how much interpolation amplifies errors. Erdős asked whether the functional Υ, the minimum over subintervals of the max Lebesgue function, grows at most logarithmically.",
+    "historicalContext": "Erdős posed this problem in 1947, motivated by understanding the quality of polynomial interpolation. The Lebesgue function Λ(x) = Σ|l_k(x)| measures worst-case error amplification — if f is approximated by its Lagrange interpolant p, then |f(x) - p(x)| ≤ (1 + Λ(x))·E_n(f), where E_n is the best polynomial approximation error. The classical Lebesgue constant Λ_n = max_x Λ(x) grows as (2/π) log n for Chebyshev nodes. Erdős asked about a more refined quantity: Υ = min over subintervals of the max Lebesgue function, effectively measuring the 'best subinterval's worst case.' He initially proved Υ < √n, far from the conjectured O(log n). De Boor and Pinkus (1978) resolved the problem completely, proving Υ ≤ (2/π) log n + O(1) and characterizing the optimal node configurations via an equioscillation property.",
     "problemStatement": "For points x₁,...,xₙ ∈ [-1,1], is Υ(x₁,...,xₙ) = min_i max_{x∈[xᵢ,xᵢ₊₁]} Σ|l_k(x)| at most O(log n)?",
-    "proofStrategy": "Defines Lagrange basis polynomials, the Lebesgue function, and the Υ functional. States Erdős's initial √n bound, the optimal (2/π)log n + O(1) bound, and the de Boor–Pinkus characterization of maximizing nodes.",
+    "proofStrategy": "Defines Lagrange basis polynomials, the Lebesgue function, and the Υ functional. States Erdős's initial √n bound, the optimal (2/π) log n + O(1) bound, and the de Boor–Pinkus characterization of maximizing nodes. All deep results are axiomatized.",
     "keyInsights": [
-      "The Lebesgue function measures the worst-case amplification of interpolation errors",
-      "Erdős first proved Υ < √n, far from the conjectured log n",
-      "The sharp bound (2/π) log n + O(1) matches the classical Lebesgue constant up to the Υ minimization",
-      "De Boor–Pinkus showed optimal nodes equalize the Lebesgue function across subintervals"
+      "The Lebesgue function Λ(x) = Σ|l_k(x)| quantifies interpolation sensitivity: it's the operator norm of the interpolation projection at point x, bounding error amplification by (1 + Λ(x))·E_n(f)",
+      "Erdős's initial bound Υ < √n showed polynomial growth, but the true answer (2/π) log n is dramatically slower — logarithmic vs polynomial",
+      "The sharp constant 2/π matches the Lebesgue constant for Chebyshev nodes, suggesting Υ inherits the same asymptotic behavior as the full Lebesgue constant",
+      "De Boor–Pinkus's equioscillation characterization — optimal nodes equalize max Λ across all subintervals — is analogous to the Chebyshev equioscillation theorem in approximation theory",
+      "The Υ functional is a min-max quantity (minimum over subintervals of the maximum Lebesgue function), making it naturally connected to minimax approximation theory and game-theoretic optimization"
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Introduction and Problem Statement",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module documentation: defines Erdős Problem 1130 on the Υ functional for Lagrange interpolation, summarizes the proved results (√n bound, (2/π) log n + O(1), de Boor–Pinkus characterization), and lists imports."
+    },
+    {
       "id": "lagrange",
       "title": "Lagrange Interpolation Basis",
-      "startLine": 22,
+      "startLine": 25,
       "endLine": 44,
-      "summary": "Defines interpolation nodes, Lagrange basis polynomials, and the Lebesgue function."
+      "summary": "Defines InterpolationNodes structure (n nodes in [-1,1], strictly ordered), lagrangeBasis l_k(x) = ∏_{j≠k} (x - x_j)/(x_k - x_j), and lebesgueFunction Λ(x) = Σ_k |l_k(x)|."
     },
     {
       "id": "upsilon",
       "title": "The Υ Functional",
-      "startLine": 48,
-      "endLine": 64,
-      "summary": "Defines the subinterval decomposition and the Υ functional as a min-max quantity."
+      "startLine": 45,
+      "endLine": 62,
+      "summary": "Defines subintervalEndpoint (x₀ = -1, x₁,...,xₙ, x_{n+1} = 1), maxLebesgueOnInterval (sSup of Λ on each subinterval), and upsilon (sInf over subintervals of the max Lebesgue function)."
     },
     {
-      "id": "bounds",
-      "title": "Bounds on Υ",
-      "startLine": 68,
-      "endLine": 78,
-      "summary": "States Erdős's √n bound and the sharp (2/π) log n + O(1) bound."
+      "id": "sqrt-bound",
+      "title": "Erdős's √n Bound",
+      "startLine": 63,
+      "endLine": 68,
+      "summary": "Axiomatizes Erdős's initial result: Υ < √n for all node configurations with n ≥ 1."
+    },
+    {
+      "id": "log-bound",
+      "title": "Sharp Logarithmic Bound",
+      "startLine": 69,
+      "endLine": 76,
+      "summary": "Axiomatizes the optimal bound: Υ ≤ (2/π) log n + C for some constant C, confirming Erdős's conjecture. Uses Real.pi and Real.log."
     },
     {
       "id": "optimal",
-      "title": "De Boor–Pinkus and Main Result",
-      "startLine": 82,
-      "endLine": 97,
-      "summary": "States the characterization of optimal nodes and the proved conjecture."
+      "title": "De Boor–Pinkus Characterization and Main Result",
+      "startLine": 77,
+      "endLine": 96,
+      "summary": "Axiomatizes de Boor–Pinkus's characterization: optimal nodes equalize maxLebesgueOnInterval across all subintervals. States ErdosProblem1130 as the final O(log n) bound."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 1130 is PROVED: the Υ functional grows as (2/π) log n + O(1). De Boor and Pinkus characterized the nodes maximizing Υ as those equalizing the Lebesgue function across all subintervals.",
-    "implications": "The result has implications for numerical analysis, polynomial approximation theory, and the choice of interpolation nodes.",
+    "summary": "Erdős Problem 1130 is PROVED: the Υ functional grows as (2/π) log n + O(1). The formalization captures the InterpolationNodes structure, Lagrange basis, Lebesgue function, Υ functional, and three deep results (Erdős √n bound, sharp log bound, de Boor–Pinkus equioscillation characterization). All 0 sorries.",
+    "implications": "The result has direct implications for numerical analysis — it governs the choice of interpolation nodes for polynomial approximation, connects to the Runge phenomenon (why equidistant nodes fail), and relates the Lebesgue constant to optimal subinterval behavior. The equioscillation characterization parallels the Chebyshev equioscillation theorem.",
     "openQuestions": [
-      "What is the exact constant in the O(1) term?",
-      "How does the optimal node distribution relate to Chebyshev points asymptotically?",
-      "Are there analogues for multivariate interpolation?"
+      "What is the exact constant in the O(1) term of the sharp bound?",
+      "How does the de Boor–Pinkus optimal node distribution compare asymptotically to Chebyshev nodes?",
+      "Are there analogues of the Υ functional for multivariate polynomial interpolation on higher-dimensional domains?"
     ]
   }
 }

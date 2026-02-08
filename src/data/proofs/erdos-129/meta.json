@@ -19,17 +19,30 @@
     "sorries": 0,
     "erdosNumber": 129,
     "erdosUrl": "https://erdosproblems.com/129",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Basic simple graph definitions and constructions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fin.Basic",
+        "description": "Finite types Fin n for vertex and color indexing",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős and Gyárfás proposed this conjecture about Ramsey-type numbers R(n;k,r) for avoiding monochromatic cliques. They proved the lower bound R(n;3,r) > C^{√n}. The upper bound remains open. Girão noted that the original formulation may be ambiguous. Reference: [Er97b].",
+    "historicalContext": "Paul Erdős and András Gyárfás introduced R(n;k,r) in their 1997 paper 'A variant of the classical Ramsey problem' [Er97b], proposing that the growth rate is precisely exponential in n^{1/(k-1)}. This generalizes the classical Ramsey number R(n) = R(n;2,2) from Ramsey (1930), where the exponent 1/(k-1) reduces to 1 for k=2. Erdős and Gyárfás proved the lower bound R(n;3,r) > C^{√n} using a probabilistic argument — a random 2-coloring of K_N typically has no large monochromatic-clique-free sets when N is subexponential. The upper bound R(n;3,r) < C^{√n} remains open as of 2025. Girão observed that the original formulation of the problem has an ambiguity regarding whether R(n;k,r) requires the n vertices to avoid all monochromatic K_k or just K_k in a single color, leading to different interpretations in the literature.",
     "problemStatement": "Does there exist C > 1 (depending on r) such that R(n;3,r) < C^{√n}? More generally, are there C₁,C₂ > 1 with C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}}?",
-    "proofStrategy": "We define EdgeColoring as functions from ordered pairs to Fin r, AvoidsMono and NoMonoClique for the clique-avoidance property, and HasRamseyAvoid as the universal quantification over colorings. The conjecture is stated parametrically in k and r, with a specialization for k=3.",
+    "proofStrategy": "We define EdgeColoring as functions from ordered pairs (with i < j) to Fin r, avoiding directed-edge redundancy. AvoidsMono checks that no k-subset of a vertex set S is monochromatic in a given color, and NoMonoClique universally quantifies over all r colors. HasRamseyAvoid N n k r is the Ramsey property: every r-coloring of K_N admits an n-vertex set with no monochromatic K_k. The Erdős–Gyárfás conjecture is stated with Filter.atTop for the 'all sufficiently large n' quantifier, and the known lower bound is axiomatized since its proof uses probabilistic methods beyond Lean's current Mathlib.",
     "keyInsights": [
-      "The Erdős–Gyárfás lower bound establishes C^{√n} growth for k=3",
-      "The upper bound conjecture suggests matching exponential behavior",
-      "Girão's observation highlights subtleties in the original formulation",
-      "Monotonicity in N and anti-monotonicity in r are key structural properties"
+      "The exponent 1/(k-1) in R(n;k,r) ~ C^{n^{1/(k-1)}} matches the classical Ramsey number growth rate R(n) ~ C^n for k=2 — the generalized Ramsey problem interpolates between vertex-Ramsey (k=2) and edge-Ramsey (k=3) via the clique size parameter",
+      "The lower bound proof uses the probabilistic method: a random r-coloring of K_N creates monochromatic K_k in any fixed n-set with probability (1/r)^{C(k,2)}, and union-bounding over all n-subsets shows no large clique-free set exists when N < C^{n^{1/(k-1)}}",
+      "The formalization separates the ordered-pair edge representation ({p : Fin N × Fin N // p.1 < p.2}) from the coloring function, making the bijection with undirected edges explicit and avoiding double-counting",
+      "Monotonicity (more vertices help) and anti-monotonicity in colors (more colors make avoidance easier) are structural properties that constrain R(n;k,r) and enable inductive arguments — they are axiomatized here as the proofs require embedding arguments not yet in Mathlib",
+      "Girão's observation about formulation ambiguity is mathematically significant: the 'all colors simultaneously' vs 'exists a color' interpretations give different Ramsey functions, and the correct interpretation affects which bounds are known"
     ]
   },
   "sections": [
@@ -38,37 +51,38 @@
       "title": "Edge Coloring and Clique Avoidance",
       "startLine": 23,
       "endLine": 46,
-      "summary": "Defines EdgeColoring, AvoidsMono, NoMonoClique, and HasRamseyAvoid for r-colored complete graphs."
+      "summary": "Defines EdgeColoring N r as functions from ordered edge pairs (with i < j constraint) to Fin r, avoiding directed-edge redundancy. AvoidsMono checks that no k-subset of a vertex set is monochromatic in a given color via existential witness of a non-matching edge. NoMonoClique universally quantifies over all colors. HasRamseyAvoid combines these into the full Ramsey property: every r-coloring admits an n-vertex set avoiding all monochromatic K_k."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture: Exponential Bounds",
       "startLine": 48,
       "endLine": 65,
-      "summary": "States the Erdős–Gyárfás conjecture for general k and the specialized k=3 upper bound conjecture."
+      "summary": "States the Erdős–Gyárfás conjecture in two forms: the general version ErdosProblem129 asserting C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}} for k ≥ 2, r ≥ 2, and the specialized ErdosProblem129_k3 for k=3 where the exponent simplifies to √n. Both use Filter.atTop for 'eventually for large n' and encode the lower/upper bounds as separate conditions on the witness N."
     },
     {
       "id": "known",
-      "title": "Known Results",
+      "title": "Known Results: Erdős–Gyárfás Lower Bound",
       "startLine": 67,
       "endLine": 73,
-      "summary": "States the Erdős–Gyárfás lower bound R(n;3,r) > C^{√n} as an axiom."
+      "summary": "Axiomatizes the Erdős–Gyárfás lower bound: for r ≥ 2, there exists C > 1 such that for large n, no N < C^{√n} satisfies HasRamseyAvoid N n 3 r. This is the contrapositive form — stated as non-existence below the threshold rather than existence above it — which is more natural for the Lean formalization."
     },
     {
       "id": "basic",
-      "title": "Basic Properties",
+      "title": "Basic Structural Properties",
       "startLine": 75,
       "endLine": 97,
-      "summary": "Monotonicity in N, anti-monotonicity in colors, small-k vacuity, singleton and zero cases."
+      "summary": "Five axiomatized structural properties: (1) monotonicity in N — larger complete graphs make it easier to find clique-free sets; (2) anti-monotonicity in r — more colors make monochromatic cliques harder to form; (3) vacuity for k ≤ 2 — no 2-element set forms a monochromatic K_2 in the avoidance sense; (4) singleton case — any 1-vertex set trivially avoids K_3; (5) n=0 — the empty set satisfies any clique avoidance condition."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 129 on Ramsey numbers R(n;k,r) avoiding monochromatic cliques, including the Erdős–Gyárfás conjecture and the known lower bound. 0 sorries.",
-    "implications": "Resolution would quantify the Ramsey-theoretic threshold for monochromatic clique avoidance, connecting to classical Ramsey theory and probabilistic combinatorics.",
+    "summary": "The formalization captures Erdős Problem 129 on Ramsey numbers R(n;k,r) avoiding monochromatic cliques, encoding the full Erdős–Gyárfás conjecture, the k=3 specialization, the known lower bound, and five structural properties. All 5 axioms encode results whose proofs require probabilistic methods or embedding arguments not currently available in Mathlib. The 0-sorry formalization provides a clean framework for stating and eventually proving these Ramsey-theoretic bounds.",
+    "implications": "Resolution of the upper bound R(n;3,r) < C^{√n} would complete the characterization of the growth rate for anti-Ramsey numbers at clique size 3, establishing a sharp exponential threshold analogous to the Erdős–Szekeres bound for classical Ramsey numbers. The general conjecture would extend this to all clique sizes, potentially unifying probabilistic and algebraic approaches to Ramsey theory.",
     "openQuestions": [
-      "Does R(n;3,r) < C^{√n} hold for some C > 1?",
-      "Is the general conjecture C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}} true?",
-      "What is the correct formulation given Girão's observation?"
+      "Does R(n;3,r) < C^{√n} hold for some C > 1 depending on r?",
+      "Is the general conjecture C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}} true for all k ≥ 2?",
+      "What is the correct interpretation of the problem given Girão's ambiguity observation?",
+      "Can the five axiomatized properties be proved from Mathlib once embedding lemmas are available?"
     ]
   }
 }
