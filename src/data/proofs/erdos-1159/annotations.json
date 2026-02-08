@@ -1,139 +1,174 @@
 [
   {
-    "id": "ann-e1159-header",
+    "id": "erdos-1159-imports",
     "proofId": "erdos-1159",
+    "type": "context",
     "range": {
-      "startLine": 1,
-      "endLine": 32
+      "startLine": 34,
+      "endLine": 38
     },
-    "type": "concept",
-    "title": "Problem Overview",
-    "content": "Header documentation for Erdős Problem #1159, providing mathematical context and problem statement.",
-    "mathContext": "Erdős Problem #1159: Bounded Blocking Sets in Projective Planes\n\nSource: https://erdosproblems.com/1159\nStatus: OPEN\n\nStatement:\nDoes there exist a constant C > 1 such that for any finite projective plane P,\none can find a set of points S where each line ℓ intersects S in at least 1\nbut at most C points?\n\nSuch a set S is called a \"C-bounded blocking set\" — it blocks every line\n(meets it in ≥1 point) while keeping the intersection with any line at most C.\n\nBackground:\nA blocking set in a projecti",
-    "significance": "critical",
+    "title": "Imports and Namespace",
+    "content": "Imports the full Mathlib library and opens the Configuration namespace, which provides ProjectivePlane, pointCount, lineCount, and the order function. The Configuration module formalizes incidence geometry structures where points and lines interact via a Membership instance.",
+    "mathContext": "The formalization uses Mathlib's $\\texttt{Configuration.ProjectivePlane}$ typeclass, which encodes the axioms: any two distinct points determine a unique line, any two distinct lines meet in a unique point, and there exist four points in general position.",
+    "significance": "technical",
     "relatedConcepts": [
-      "Erdős problems",
-      "Number theory"
+      "Configuration.ProjectivePlane",
+      "Membership",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib incidence geometry"
     ]
   },
   {
-    "id": "ann-e1159-IsBlockingSet",
+    "id": "erdos-1159-blocking-set-def",
     "proofId": "erdos-1159",
+    "type": "definition",
     "range": {
-      "startLine": 43,
+      "startLine": 42,
       "endLine": 44
     },
-    "type": "definition",
-    "title": "Isblockingset",
-    "content": "/-- A set of points S is a blocking set if every line contains at least one point of S. -/",
-    "significance": "supporting"
+    "title": "Blocking Set Definition",
+    "content": "Defines IsBlockingSet S as the property that every line contains at least one point of S. This is the fundamental concept in finite geometry: a blocking set blocks every line from being disjoint from S. The definition is generic over any incidence structure.",
+    "mathContext": "$$\\text{IsBlockingSet}(S) \\;:\\Leftrightarrow\\; \\forall\\, \\ell \\in \\mathcal{L},\\; S \\cap \\ell \\neq \\emptyset$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "blocking set",
+      "covering design",
+      "transversal"
+    ],
+    "prerequisites": [
+      "incidence geometry",
+      "set intersection"
+    ]
   },
   {
-    "id": "ann-e1159-blocking_set_mono",
+    "id": "erdos-1159-basic-properties",
     "proofId": "erdos-1159",
+    "type": "result",
     "range": {
-      "startLine": 49,
-      "endLine": 53
-    },
-    "type": "theorem",
-    "title": "Blocking Set Mono",
-    "content": "/-- If S is a blocking set and S ⊆ T, then T is also a blocking set. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1159-empty_not_blocking_set",
-    "proofId": "erdos-1159",
-    "range": {
-      "startLine": 56,
+      "startLine": 48,
       "endLine": 61
     },
-    "type": "theorem",
-    "title": "Empty Not Blocking Set",
-    "content": "/-- The empty set is not a blocking set in any nontrivial configuration. -/",
-    "significance": "key"
+    "title": "Basic Properties of Blocking Sets",
+    "content": "Monotonicity: supersets of blocking sets are blocking. Non-triviality: the empty set is never a blocking set. These establish that blocking sets form an upper set in the power set lattice.",
+    "mathContext": "$S \\subseteq T \\land \\text{IsBlockingSet}(S) \\implies \\text{IsBlockingSet}(T)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone property",
+      "upper set",
+      "trivial blocking sets"
+    ],
+    "prerequisites": [
+      "set inclusion",
+      "basic logic"
+    ]
   },
   {
-    "id": "ann-e1159-pointCount_eq'",
+    "id": "erdos-1159-projective-plane-props",
     "proofId": "erdos-1159",
+    "type": "result",
     "range": {
-      "startLine": 66,
-      "endLine": 69
-    },
-    "type": "theorem",
-    "title": "Pointcount Eq'",
-    "content": "/-- In a projective plane, every line has exactly order + 1 points. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1159-lineCount_eq'",
-    "proofId": "erdos-1159",
-    "range": {
-      "startLine": 72,
-      "endLine": 75
-    },
-    "type": "theorem",
-    "title": "Linecount Eq'",
-    "content": "/-- In a projective plane, every point lies on exactly order + 1 lines. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1159-card_points'",
-    "proofId": "erdos-1159",
-    "range": {
-      "startLine": 78,
-      "endLine": 81
-    },
-    "type": "theorem",
-    "title": "Card Points'",
-    "content": "/-- A projective plane of order n has n² + n + 1 points. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1159-card_lines'",
-    "proofId": "erdos-1159",
-    "range": {
-      "startLine": 84,
+      "startLine": 63,
       "endLine": 87
     },
-    "type": "theorem",
-    "title": "Card Lines'",
-    "content": "/-- A projective plane of order n has n² + n + 1 lines. -/",
-    "significance": "key"
+    "title": "Projective Plane Structure",
+    "content": "Four classical counting results: n+1 points per line, n+1 lines per point, n^2+n+1 total points and lines. Point-line duality is reflected in |P| = |L|.",
+    "mathContext": "Order $n$: $|\\ell| = n+1$, $n+1$ lines per point, $|\\mathcal{P}| = |\\mathcal{L}| = n^2+n+1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "projective plane order",
+      "point-line duality",
+      "Fano plane"
+    ],
+    "prerequisites": [
+      "finite projective planes",
+      "combinatorial counting"
+    ]
   },
   {
-    "id": "ann-e1159-ess_log_blocking_set",
+    "id": "erdos-1159-ess-result",
     "proofId": "erdos-1159",
+    "type": "result",
     "range": {
-      "startLine": 99,
+      "startLine": 89,
       "endLine": 105
     },
-    "type": "axiom",
-    "title": "Ess Log Blocking Set",
-    "content": "axiom ess_log_blocking_set",
-    "significance": "key"
+    "title": "Erdos-Silverman-Stein Theorem (1983)",
+    "content": "Axiomatizes: every plane of order n has a blocking set meeting each line in at most 3(log_2(n)+1) points. The probabilistic proof includes each point with probability c*log(n)/n.",
+    "mathContext": "ESS: $\\exists\\, S$ blocking with $|S \\cap \\ell| \\leq 3(\\log_2 n + 1)$ for all $\\ell$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random blocking sets"
+    ],
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "projective plane structure"
+    ]
   },
   {
-    "id": "ann-e1159-BoundedBlockingSetConjecture",
+    "id": "erdos-1159-conjecture",
     "proofId": "erdos-1159",
+    "type": "conjecture",
     "range": {
-      "startLine": 119,
+      "startLine": 107,
       "endLine": 124
     },
-    "type": "definition",
-    "title": "Boundedblockingsetconjecture",
-    "content": "def BoundedBlockingSetConjecture",
-    "significance": "supporting"
+    "title": "The Bounded Blocking Set Conjecture",
+    "content": "The main open problem: exists absolute C such that every plane has a C-bounded blocking set. ESS gives C(n)=O(log n); the conjecture asks for C(n)=O(1).",
+    "mathContext": "$$\\exists\\, C :\\; \\forall\\text{ planes } \\Pi,\\; \\exists\\, S : \\text{IsBlockingSet}(S) \\land \\forall\\,\\ell,\\; |S \\cap \\ell| \\leq C$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "uniform bound",
+      "derandomization"
+    ],
+    "prerequisites": [
+      "blocking sets",
+      "projective planes",
+      "ESS theorem"
+    ]
   },
   {
-    "id": "ann-e1159-ess_implies_per_order_bound",
+    "id": "erdos-1159-implication",
     "proofId": "erdos-1159",
+    "type": "result",
     "range": {
-      "startLine": 129,
+      "startLine": 126,
       "endLine": 137
     },
-    "type": "theorem",
-    "title": "Ess Implies Per Order Bound",
-    "content": "theorem ess_implies_per_order_bound",
-    "significance": "key"
+    "title": "ESS Implies Per-Order Bound",
+    "content": "Proves ESS implies per-order bounds: for each plane, exists C(n) and a C(n)-bounded blocking set. The open question is uniformity across all n.",
+    "mathContext": "ESS $\\implies$ per-order $C(n) = 3(\\log_2 n + 1)$. Conjecture: $C$ independent of $n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniform vs non-uniform bounds",
+      "quantifier order"
+    ],
+    "prerequisites": [
+      "ESS theorem"
+    ]
+  },
+  {
+    "id": "erdos-1159-related",
+    "proofId": "erdos-1159",
+    "type": "context",
+    "range": {
+      "startLine": 139,
+      "endLine": 145
+    },
+    "title": "Related Problems",
+    "content": "Problem 664 extends this to all pairwise balanced block designs. Projective planes are (n^2+n+1, n+1, 1)-designs; the general case is less regular.",
+    "mathContext": "Projective planes are $(n^2+n+1, n+1, 1)$-designs. Problem 664: bounded blocking in general $(v, k, \\lambda)$-designs.",
+    "significance": "context",
+    "relatedConcepts": [
+      "block designs",
+      "Steiner systems",
+      "Erdos Problem 664"
+    ],
+    "prerequisites": [
+      "combinatorial design theory"
+    ]
   }
 ]
