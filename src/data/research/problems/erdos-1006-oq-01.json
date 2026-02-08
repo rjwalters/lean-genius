@@ -1,0 +1,120 @@
+{
+  "slug": "erdos-1006-oq-01",
+  "title": "Characterize which graphs admit robustly acyclic orientations",
+  "phase": "SURVEY_COMPLETE",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "admitsRobustAcyclicOrientation G ↔ isCoverGraph G",
+    "plain": "A finite graph admits a robustly acyclic orientation if and only if it is a cover graph of some poset (Pretzel-Brightwell characterization).",
+    "whyMatters": [
+      "Connects graph orientation theory to partial order theory",
+      "Cover graph recognition is NP-complete, showing the problem's intrinsic complexity",
+      "Sufficient conditions (bipartite, chi < girth) provide practical criteria"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Empty graphs admit robust orientations",
+      "Bipartite graphs always admit robust orientations (proved in Lean)",
+      "Bipartite orientation by partition is acyclic and robustly acyclic (proved in Lean)",
+      "Cover graph orientation by partial order is well-defined"
+    ],
+    "open": [
+      "Efficient recognition for specific graph classes beyond bipartite",
+      "Tight bounds on minimum chromatic number forcing non-cover-graph at given girth"
+    ],
+    "goal": "Full characterization via cover graph equivalence with sufficient conditions"
+  },
+  "currentState": {
+    "phase": "SURVEY_COMPLETE",
+    "since": "2026-02-08T08:45:00Z",
+    "iteration": 1,
+    "focus": "Formalized key definitions and proved bipartite sufficient condition",
+    "blockers": [],
+    "nextAction": "Try to prove cover_graph_admits_robust without sorry",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created Erdos1006OQ01.lean with full characterization framework. Proved bipartite_admits_robust (key sufficient condition). Axiomatized cover graph characterization and Nesetril-Rodl counterexample. 4 theorems proved, 2 sorries in cover graph section, 3 axioms for deep results.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1006OQ01.lean - Full formalization (262 lines)",
+      "GraphOrientation structure with arc, covers, exclusive, respects fields",
+      "isAcyclic via rank functions (rank u < rank v for all arcs)",
+      "hasDependentArc and isRobustlyAcyclic definitions",
+      "emptyOrientation and empty_graph_robust theorem",
+      "linearOrientation from linear order",
+      "coverOrientation from partial order cover relation",
+      "bipartiteOrientation with full proof of robustness",
+      "bipartite_admits_robust: key sufficient condition (no sorry)"
+    ],
+    "insights": [
+      "Robustly acyclic orientation is equivalent to cover graph of poset (Pretzel-Brightwell 1985)",
+      "Cover graph recognition is NP-complete (Brightwell 1993)",
+      "Sufficient condition: chi(G) < girth(G) (Fisher-Fraughnaugh-Langley-West 1997)",
+      "Every bipartite graph is a cover graph (height-2 poset)",
+      "Dependent arc = reversing it creates directed cycle",
+      "Rank-based acyclicity avoids walk/path infrastructure entirely",
+      "Mathlib Orientation (linear algebra) conflicts with custom GraphOrientation name"
+    ],
+    "mathlibGaps": [
+      "No native graph orientation theory in Mathlib",
+      "No cover graph / Hasse diagram formalization",
+      "No dependent arc / robust orientation concepts"
+    ],
+    "nextSteps": [
+      "Prove cover_graph_admits_robust without sorry (needs order embedding into N)",
+      "Add explicit small graph examples (K3, K4, Grotzsch)",
+      "Connect to Mathlib's SimpleGraph.Coloring for chromatic number condition"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Rank-based acyclicity",
+      "status": "succeeded",
+      "description": "Model acyclicity via rank functions V -> N rather than walks/paths. This avoids complex walk infrastructure and makes proofs about bipartite orientations trivial."
+    },
+    {
+      "name": "Bipartite partition orientation",
+      "status": "succeeded",
+      "description": "Orient all edges from false-side to true-side. Rank function is side -> {0,1}. Robustness follows because no path can return from true-side to false-side."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "erdos",
+    "orientation",
+    "probabilistic-method",
+    "cover-graph",
+    "poset",
+    "bipartite"
+  ],
+  "relatedProofs": [
+    "Erdos1006Problem.lean"
+  ],
+  "references": {
+    "papers": [
+      "Pretzel (1985): On graphs that can be oriented as diagrams of ordered sets",
+      "Fisher-Fraughnaugh-Langley-West (1997): Number of dependent arcs in acyclic orientations",
+      "Nesertil-Rodl (1978): On a probabilistic graph-theoretical method",
+      "Brightwell (1993): Cover graph recognition is NP-complete"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1006"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Order.Cover"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-08T08:45:00Z",
+  "significance": 7,
+  "tractability": 6
+}
