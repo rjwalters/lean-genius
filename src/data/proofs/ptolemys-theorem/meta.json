@@ -20,11 +20,35 @@
     "wiedijkNumber": 95
   },
   "overview": {
-    "historicalContext": "Ptolemy proved this in the Almagest (c. 150 AD) to compute chord tables for astronomy. It was fundamental to trigonometry before modern notation.",
-    "problemStatement": "**Ptolemy's Theorem**:\n\nFor a cyclic quadrilateral ABCD (inscribed in a circle):\n\n$$|AC| \\cdot |BD| = |AB| \\cdot |CD| + |BC| \\cdot |DA|$$\n\nThe product of the diagonals equals the sum of the products of opposite sides.",
-    "proofStrategy": "Use Mathlib's cospherical point framework with angle conditions at the diagonal intersection.",
-    "keyInsights": ["Generalizes Pythagorean theorem (rectangle case)", "Used historically for trigonometric identities", "Characterizes cyclic quadrilaterals"]
+    "historicalContext": "Claudius Ptolemy of Alexandria (c. 100-170 AD) proved this theorem in Book I, Chapter 10 of his astronomical treatise *Almagest* (c. 150 AD), where it was the key tool for computing a table of chords — the ancient equivalent of trigonometric tables. The chord table allowed Ptolemy to compute $\\text{chord}(\\alpha + \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$, which is equivalent to the modern addition formula $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$. The theorem was fundamental to astronomy and navigation for over 1500 years. The elegant complex-number proof — $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$ — was discovered much later and reveals the deep algebraic structure behind the geometric identity. The converse is also true: Ptolemy's equality characterizes cyclic quadrilaterals. The inequality version $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff the points are concyclic.",
+    "problemStatement": "**Ptolemy's Theorem**:\n\nFor a cyclic quadrilateral $ABCD$ (inscribed in a circle):\n\n$$AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$$\n\nThe product of the diagonals equals the sum of the products of opposite sides.",
+    "proofStrategy": "The formalization uses Mathlib's `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical` from the `Geometry.Euclidean.Sphere.Ptolemy` module. The Mathlib formulation uses `Cospherical` (points on a common sphere/circle) and angle conditions $\\angle APC = \\pi$ and $\\angle BPD = \\pi$ to express that $P$ lies on both diagonals. Alternative formulations (symmetric, rearranged) are derived by commutativity. Numerical examples verify the theorem for a rectangle (recovering the Pythagorean theorem), a square, and an isosceles trapezoid.",
+    "keyInsights": [
+      "When the cyclic quadrilateral is a rectangle (sides $a$, $b$, diagonal $d = \\sqrt{a^2+b^2}$), Ptolemy reduces to $a^2 + b^2 = d^2$ — the Pythagorean theorem. So Ptolemy genuinely generalizes Pythagoras to non-rectangular cyclic quadrilaterals.",
+      "Ptolemy's theorem is the geometric incarnation of the algebraic identity $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$ for complex numbers on a circle. Taking absolute values gives the theorem. This reveals that Ptolemy is really about the multiplicative structure of $\\mathbb{C}$.",
+      "The Mathlib formalization uses `Cospherical` (points on a common sphere) rather than 'inscribed in a circle', making the theorem valid in any dimension. Four points on a sphere in $\\mathbb{R}^n$ satisfy Ptolemy's equality at the diagonal intersection point.",
+      "The converse characterizes cyclic quadrilaterals: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ holds if and only if the four points are concyclic. The inequality $AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations (Ptolemy's inequality).",
+      "Historically, Ptolemy used the theorem to derive chord addition formulas: $\\text{chord}(\\alpha \\pm \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$. These are the ancient versions of the sine and cosine addition formulas, which are the foundation of trigonometry."
+    ]
   },
-  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 46, "summary": "Overview and historical context."}],
-  "conclusion": {"summary": "Ptolemy's theorem is verified using Mathlib's Euclidean geometry library for cospherical points."}
+  "sections": [
+    {"id": "header", "title": "Module Header and Imports", "startLine": 1, "endLine": 46, "summary": "Documentation header explaining Ptolemy's Theorem as Wiedijk #95, with historical notes on the Almagest (c. 150 AD), the cospherical approach, and Mathlib dependencies."},
+    {"id": "setup", "title": "Setup and Definitions", "startLine": 48, "endLine": 62, "summary": "Variable declarations for a general Euclidean space (inner product space V, metric space P) and abbreviation Vec2 for the Euclidean plane."},
+    {"id": "main-theorem", "title": "Main Theorem", "startLine": 64, "endLine": 86, "summary": "Ptolemy's theorem: dist(A,B)·dist(C,D) + dist(B,C)·dist(D,A) = dist(A,C)·dist(B,D) for cospherical points with diagonal intersection P."},
+    {"id": "alternative", "title": "Alternative Formulations", "startLine": 88, "endLine": 115, "summary": "Three equivalent formulations: diagonals form (same), symmetric form (diagonals on left), and rearranged form (using commutativity of multiplication)."},
+    {"id": "corollaries", "title": "Corollaries and Special Cases", "startLine": 117, "endLine": 128, "summary": "Diagonal product from sides: AC·BD can be computed from the four side lengths alone."},
+    {"id": "connections", "title": "Connections to Other Theorems", "startLine": 130, "endLine": 161, "summary": "Discussion of connections to Law of Cosines, power of a point, complex number identity, and applications in trigonometry, astronomy, optics, and architecture."},
+    {"id": "examples", "title": "Numerical Examples", "startLine": 163, "endLine": 207, "summary": "Three verified examples: rectangle (recovers Pythagorean theorem for 3-4-5), square (2s² = 2s²), and isosceles trapezoid (sides 5,6 give diagonal product 61)."},
+    {"id": "converse", "title": "Converse and Ptolemy's Inequality", "startLine": 209, "endLine": 231, "summary": "Discussion of the converse (Ptolemy's equality characterizes cyclic quadrilaterals) and Ptolemy's inequality for arbitrary four points."},
+    {"id": "history", "title": "Historical Context: The Almagest", "startLine": 233, "endLine": 268, "summary": "Historical discussion of chord tables, the equivalence to sine/cosine addition formulas, Ptolemy's legacy in astronomy and navigation, and verification of exported theorems."}
+  ],
+  "conclusion": {
+    "summary": "This formalization verifies Ptolemy's Theorem (Wiedijk #95) using Mathlib's cospherical geometry framework. It provides the main theorem, three alternative formulations, a diagonal-product corollary, three numerical examples (including the Pythagorean theorem as a special case), and discusses the converse characterization and Ptolemy's inequality.",
+    "implications": "Ptolemy's theorem bridges ancient and modern mathematics. It yields the trigonometric addition formulas (the foundation of trigonometry), generalizes the Pythagorean theorem, and characterizes cyclic quadrilaterals. The complex-number proof reveals connections to conformal mappings and inversive geometry. Ptolemy's inequality generalizes to higher dimensions and is related to the positive semidefiniteness of the Cayley-Menger determinant.",
+    "openQuestions": [
+      "Can Ptolemy's inequality (AC·BD ≤ AB·CD + AD·BC for arbitrary four points) be formalized, with equality characterized by concyclicity?",
+      "Can the complex-number proof be formalized, showing that Ptolemy's theorem follows from the algebraic identity (z₁-z₃)(z₂-z₄) = (z₁-z₂)(z₃-z₄) + (z₁-z₄)(z₂-z₃) applied to points on a circle?",
+      "Can the derivation of the sine addition formula from Ptolemy's theorem be formalized, showing the historical connection between chord tables and modern trigonometry?"
+    ]
+  }
 }
