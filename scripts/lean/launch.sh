@@ -951,10 +951,16 @@ get_work_queue_stats() {
         aristotle_jobs=$(jq '[.jobs[] | select(.status == "submitted")] | length' "research/aristotle-jobs.json" 2>/dev/null || echo "0")
     fi
 
+    # Aristotle candidates (files with sorries eligible for submission)
+    local aristotle_candidates="0"
+    if [[ -x "scripts/aristotle/find-candidates.sh" ]]; then
+        aristotle_candidates=$(timeout 10 ./scripts/aristotle/find-candidates.sh --count 2>/dev/null || echo "0")
+    fi
+
     # PRs ready to merge
     ready_prs=$(timeout 10 gh pr list --label "loom:pr" --json number 2>/dev/null | jq 'length' 2>/dev/null || echo "0")
 
-    echo "$enrichment_targets $candidates $aristotle_jobs $ready_prs"
+    echo "$enrichment_targets $candidates $aristotle_jobs $aristotle_candidates $ready_prs"
 }
 
 # Helper: Write daemon state to state file
@@ -1269,14 +1275,23 @@ cmd_daemon() {
         # 3. Work queue assessment (with timeout protection)
         local queue_stats
         queue_stats=$(get_work_queue_stats)
-        local enrichment_targets candidates aristotle_jobs ready_prs
-        read -r enrichment_targets candidates aristotle_jobs ready_prs <<< "$queue_stats"
+        local enrichment_targets candidates aristotle_jobs aristotle_candidates ready_prs
+        read -r enrichment_targets candidates aristotle_jobs aristotle_candidates ready_prs <<< "$queue_stats"
 
         # 4. Process completion signals and update session stats
         process_completion_signals
 
+        # 4b. Dynamic Aristotle: spawn when candidates or jobs exist but no agent running
+        if [[ $aristotle_active -eq 0 ]] && [[ "$aristotle_jobs" -gt 0 || "$aristotle_candidates" -gt 0 ]]; then
+            if is_cooldown_elapsed "aristotle-agent"; then
+                daemon_log "INFO" "Auto-spawning Aristotle: $aristotle_jobs pending jobs, $aristotle_candidates candidates"
+                respawn_agent "aristotle-agent"
+                total_respawns=$((total_respawns + 1))
+            fi
+        fi
+
         # 5. Log cycle summary
-        daemon_log "INFO" "Cycle $cycle_count: running=$running_count, idle=$idle_count, completed=$completed_count, stuck=$stuck_count, respawned=$cycle_respawns | queues: enrichment=$enrichment_targets, candidates=$candidates, aristotle=$aristotle_jobs, prs=$ready_prs"
+        daemon_log "INFO" "Cycle $cycle_count: running=$running_count, idle=$idle_count, completed=$completed_count, stuck=$stuck_count, respawned=$cycle_respawns | queues: enrichment=$enrichment_targets, candidates=$candidates, aristotle_jobs=$aristotle_jobs, aristotle_candidates=$aristotle_candidates, prs=$ready_prs"
 
         # 6. Update state file with daemon stats
         update_daemon_state "$cycle_count" "$total_respawns"
