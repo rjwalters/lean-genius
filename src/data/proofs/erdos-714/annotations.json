@@ -109,16 +109,16 @@
   {
     "id": "ann-e714-r4-open",
     "proofId": "erdos-714",
-    "range": { "startLine": 176, "endLine": 183 },
+    "range": { "startLine": 176, "endLine": 184 },
     "type": "axiom",
     "title": "r=4 Case: OPEN",
-    "content": "**r4_open:**\n\nNo construction achieving ex(n; K_{4,4}) >> n^{7/4} is known.\n\nThe best known lower bound is strictly weaker than n^{7/4}.\n\nThis is one of the most famous open problems in extremal combinatorics.",
+    "content": "**best_known_lower_bound_r4:**\n\nNo construction achieving ex(n; K_{4,4}) >> n^{7/4} is known.\n\nThe best known lower bound gives only n^{3/2}, strictly weaker than the conjectured n^{7/4}.\n\nThis is one of the most famous open problems in extremal combinatorics.",
     "significance": "key"
   },
   {
     "id": "ann-e714-projective",
     "proofId": "erdos-714",
-    "range": { "startLine": 196, "endLine": 206 },
+    "range": { "startLine": 189, "endLine": 198 },
     "type": "axiom",
     "title": "Projective Plane Construction",
     "content": "**projective_plane_construction:**\n\nFor r=2, extremal graphs come from incidence graphs of projective planes PG(2,q).\n\nIf q is prime, the incidence graph has:\n- q^2 + q + 1 vertices\n- (q+1)(q^2+q+1) edges\n- No K_{2,2} subgraph",
@@ -129,35 +129,46 @@
   {
     "id": "ann-e714-hexagon",
     "proofId": "erdos-714",
-    "range": { "startLine": 207, "endLine": 213 },
+    "range": { "startLine": 200, "endLine": 209 },
     "type": "axiom",
     "title": "Generalized Hexagons",
-    "content": "**generalized_hexagon_construction:**\n\nFor r=3, constructions use generalized hexagons (girth-12 cages from incidence geometry).\n\nThese algebraic constructions give K_{3,3}-free graphs with n^{5/3} edges.",
+    "content": "**generalized_hexagon_construction:**\n\nFor r=3, constructions use generalized hexagons (girth-12 cages from incidence geometry).\n\nWhen q is a prime power, these give K_{3,3}-free graphs on O(q^3) vertices with O(q^5) edges, matching the n^{5/3} bound.",
     "significance": "key"
+  },
+  {
+    "id": "ann-e714-norm-graph",
+    "proofId": "erdos-714",
+    "range": { "startLine": 211, "endLine": 218 },
+    "type": "axiom",
+    "title": "Norm Graphs (KRS 1996)",
+    "content": "**norm_graph_lower_bound:**\n\nKollar-Ronyai-Szabo (1996) used algebraic constructions via norms over finite fields to give K_{r,r}-free graphs with Omega(n^{2-2/(r+1)}) edges.\n\nFor r >= 4, this is weaker than the conjectured n^{2-1/r}, showing a genuine gap.",
+    "mathContext": "Best known algebraic construction for r >= 4.",
+    "significance": "key",
+    "relatedConcepts": ["Algebraic graph theory", "Finite fields"]
   },
   {
     "id": "ann-e714-c4",
     "proofId": "erdos-714",
-    "range": { "startLine": 225, "endLine": 234 },
-    "type": "theorem",
+    "range": { "startLine": 224, "endLine": 232 },
+    "type": "axiom",
     "title": "K_{2,2} = C_4",
-    "content": "**k22_equals_c4:**\n\nK_{2,2} is exactly the 4-cycle C_4.\n\nSo ex(n; K_{2,2}) = ex(n; C_4), connecting this problem to Problem #768.",
+    "content": "**k22_equals_c4:**\n\nK_{2,2} is exactly the 4-cycle C_4. A graph is K_{2,2}-free iff it contains no complete bipartite K_{2,2}.\n\nSo ex(n; K_{2,2}) = ex(n; C_4), connecting this problem to Problem #768.",
     "mathContext": "Both ask for maximum edges in a graph with no 4-cycle.",
     "significance": "key"
   },
   {
     "id": "ann-e714-matrix",
     "proofId": "erdos-714",
-    "range": { "startLine": 241, "endLine": 248 },
+    "range": { "startLine": 234, "endLine": 243 },
     "type": "axiom",
     "title": "Matrix Formulation",
-    "content": "**zarankiewicz_matrix_formulation:**\n\nThe Zarankiewicz problem z(m,n;r,s) asks for the maximum 1s in an m x n 0-1 matrix with no all-1s r x s submatrix.\n\nex(n; K_{r,r}) = z(n,n;r,r)/2 approximately.",
+    "content": "**zarankiewicz_matrix_connection:**\n\nThe Zarankiewicz problem z(m,n;r,s) asks for the maximum 1s in an m x n 0-1 matrix with no all-1s r x s submatrix.\n\nThe connection: ex(n; K_{r,r}) <= c * n^{2-1/r} + r*n/2, matching the KST bound.",
     "significance": "supporting"
   },
   {
     "id": "ann-e714-summary",
     "proofId": "erdos-714",
-    "range": { "startLine": 253, "endLine": 268 },
+    "range": { "startLine": 249, "endLine": 263 },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_714_summary:**\n\n```lean\ntheorem erdos_714_summary :\n    erdosConjectureLowerBound 2 and\n    erdosConjectureLowerBound 3\n```\n\n1. r=2: SOLVED (exact asymptotics)\n2. r=3: SOLVED (Brown 1966)\n3. r>=4: OPEN",
@@ -166,7 +177,7 @@
   {
     "id": "ann-e714-status",
     "proofId": "erdos-714",
-    "range": { "startLine": 269, "endLine": 288 },
+    "range": { "startLine": 265, "endLine": 285 },
     "type": "theorem",
     "title": "Zarankiewicz Problem Status",
     "content": "**zarankiewicz_status:**\n\nCombines all results:\n1. KST upper bound for all r >= 2\n2. Lower bound matching upper bound for r=2,3\n3. Gap remains for r >= 4\n\nOne of the most famous open problems in extremal combinatorics.",
