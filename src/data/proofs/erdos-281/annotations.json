@@ -1,47 +1,89 @@
 [
   {
+    "id": "erdos-281-header",
+    "proofId": "erdos-281",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 23 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem 281 asks: if a sequence of moduli has the 'full covering' property (any choice of congruence classes covers almost all integers), must there be a uniform finite approximation? Proved affirmatively via Davenport–Erdős and Rogers.",
+    "mathContext": "The problem bridges covering systems (combinatorial number theory) and measure-theoretic uniformity. The key upgrade is from 'pointwise for each choice, density → 0' to 'uniformly in the choice, finitely many classes suffice for density < ε'. This is a compactness/uniformity principle.",
+    "significance": "essential",
+    "relatedConcepts": ["covering-systems", "density", "uniformity"]
+  },
+  {
     "id": "erdos-281-congruence-choice",
     "proofId": "erdos-281",
     "type": "definition",
-    "range": { "startLine": 28, "endLine": 30 },
-    "title": "Congruence Class Assignment",
-    "content": "CongruenceChoice moduli assigns to each index i a residue class aᵢ ∈ {0, ..., nᵢ − 1}. The problem studies how well these classes cover the integers.",
-    "significance": "essential"
+    "range": { "startLine": 35, "endLine": 46 },
+    "title": "Congruence Classes and Coverage",
+    "content": "**`CongruenceChoice moduli`** assigns each index i a residue aᵢ mod nᵢ. **`IsCovered`** checks if m ≡ aᵢ (mod nᵢ). **`IsCoveredByFirst k`** checks coverage by the first k classes.",
+    "mathContext": "A covering system uses congruence classes a₁ (mod n₁), ..., aₖ (mod nₖ) to cover the integers. The question is whether 'almost-covering' (density 0 uncovered) can always be achieved uniformly with finitely many classes.",
+    "significance": "essential",
+    "relatedConcepts": ["congruence-classes", "covering-systems", "CRT"]
+  },
+  {
+    "id": "erdos-281-counting",
+    "proofId": "erdos-281",
+    "type": "definition",
+    "range": { "startLine": 50, "endLine": 59 },
+    "title": "Uncovered Count and Density",
+    "content": "**`uncoveredCount`** counts integers in [1,N] not covered by the first k classes. **`uncoveredDensity`** normalizes by N. These measure how well finite approximations perform.",
+    "significance": "supporting",
+    "relatedConcepts": ["counting", "density", "approximation"]
+  },
+  {
+    "id": "erdos-281-infrastructure",
+    "proofId": "erdos-281",
+    "type": "result",
+    "range": { "startLine": 63, "endLine": 131 },
+    "title": "Proved Infrastructure Lemmas (12 Lemmas)",
+    "content": "Twelve lemmas proved constructively by Lean: coverage monotonicity in k, zero classes cover nothing, uncovered count is antitone, trivial upper bound N, zero-class count = N, density ≤ 1, density ≥ 0, density antitone, plus structural results on strictly increasing and valid moduli.",
+    "mathContext": "These form the verified foundation. Key results: `isCoveredByFirst_mono` (more classes cover more), `uncoveredDensity_antitone` (density decreases with more classes), and `uniform_implies_full` (the easy direction of the equivalence).",
+    "significance": "essential",
+    "relatedConcepts": ["verified-lemmas", "monotonicity", "infrastructure"]
   },
   {
     "id": "erdos-281-full-covering",
     "proofId": "erdos-281",
     "type": "definition",
-    "range": { "startLine": 56, "endLine": 60 },
-    "title": "Full Covering Property",
-    "content": "HasFullCovering means that for every congruence class choice, the uncovered integers have upper density 0. This is the hypothesis of the problem.",
-    "significance": "essential"
+    "range": { "startLine": 133, "endLine": 152 },
+    "title": "Full Covering and Structural Predicates",
+    "content": "**`HasFullCovering`**: for every choice, uncovered density → 0 as N → ∞. Supporting predicates: **`IsStrictlyIncreasing`**, **`ModuliValid`** (all ≥ 2), **`PairwiseCoprime`**.",
+    "mathContext": "Full covering is the hypothesis of the problem. The structural predicates ensure the moduli form a sensible sequence: strictly increasing (no repeated moduli), all at least 2 (non-trivial), with the coprime case as a special case.",
+    "significance": "essential",
+    "relatedConcepts": ["full-covering", "hypothesis", "structural-conditions"]
+  },
+  {
+    "id": "erdos-281-easy-direction",
+    "proofId": "erdos-281",
+    "type": "result",
+    "range": { "startLine": 156, "endLine": 186 },
+    "title": "Easy Direction: Uniform → Full (Proved)",
+    "content": "**`uniform_implies_full`**: If finitely many classes suffice uniformly, then full covering holds. This trivial direction is proved constructively using density antitone in k. The proof uses `uncoveredDensity_antitone` and `max` to handle the quantifier swap.",
+    "mathContext": "The easy direction: if ∀ε, ∃k, ∀choice, density < ε, then certainly ∀choice, ∀ε, ∃k, density < ε. The hard direction (Erdős 281) is the converse: the pointwise condition upgrades to uniform.",
+    "significance": "essential",
+    "relatedConcepts": ["easy-direction", "quantifier-swap", "proved"]
   },
   {
     "id": "erdos-281-divergence",
     "proofId": "erdos-281",
     "type": "result",
-    "range": { "startLine": 70, "endLine": 73 },
-    "title": "Divergent Reciprocals",
-    "content": "Full covering implies Σ 1/nᵢ = ∞. This necessary condition connects to classical results on covering systems.",
-    "significance": "essential"
-  },
-  {
-    "id": "erdos-281-coprime",
-    "proofId": "erdos-281",
-    "type": "result",
-    "range": { "startLine": 79, "endLine": 86 },
-    "title": "Coprime Case",
-    "content": "When moduli are pairwise coprime, divergent reciprocals are sufficient for full covering. This special case is simpler due to CRT independence.",
-    "significance": "supporting"
+    "range": { "startLine": 217, "endLine": 230 },
+    "title": "Divergence and Coprime Results",
+    "content": "Full covering implies Σ 1/nᵢ = ∞ (necessary condition). When moduli are pairwise coprime, divergence is also sufficient (by CRT independence).",
+    "mathContext": "The divergence Σ 1/nᵢ = ∞ is necessary because if the sum converges, a probabilistic argument shows some choice leaves positive density uncovered. The coprime case reduces to independent events via the Chinese Remainder Theorem.",
+    "significance": "essential",
+    "relatedConcepts": ["divergence", "CRT", "probabilistic-argument"]
   },
   {
     "id": "erdos-281-main",
     "proofId": "erdos-281",
-    "type": "conjecture",
-    "range": { "startLine": 91, "endLine": 98 },
-    "title": "Erdős Problem 281 (Proved)",
-    "content": "Full covering implies uniform finite approximation: for every ε > 0, finitely many classes achieve density < ε regardless of the choice. Proved via Davenport–Erdős and Rogers.",
-    "significance": "essential"
+    "type": "result",
+    "range": { "startLine": 233, "endLine": 263 },
+    "title": "Erdős Problem 281 (Proved) and Equivalence",
+    "content": "**Main theorem**: Full covering ↔ uniform finite coverage (for valid strictly increasing moduli). The hard direction uses Davenport–Erdős (lower density = upper density for multiplicative functions) and Rogers' theorem. The equivalence `full_covering_iff_uniform` combines both directions.",
+    "mathContext": "The proof shows that the function 'uncovered density at level k' is uniformly Cauchy over all choices. The Davenport–Erdős theorem provides the regularity needed to upgrade pointwise convergence to uniform convergence — a compactness argument in the space of congruence choices.",
+    "significance": "essential",
+    "relatedConcepts": ["davenport-erdos", "rogers", "equivalence", "compactness"]
   }
 ]
