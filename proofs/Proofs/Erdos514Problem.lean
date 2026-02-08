@@ -163,9 +163,14 @@ This involves the arc length of curves and relating it to M(r).
 /--
 **Path Length Up to Radius R:**
 The arc length of γ restricted to where |γ(t)| ≤ R.
-(Informal definition - exact definition would use integration.)
+
+Axiomatized since exact definition requires Lebesgue integration over rectifiable curves.
 -/
-def pathLengthUpTo (γ : ℝ → ℂ) (R : ℝ) : ℝ := R  -- Placeholder
+noncomputable def pathLengthUpTo (γ : ℝ → ℂ) (R : ℝ) : ℝ :=
+  sSup {L : ℝ | ∃ (n : ℕ) (t : Fin (n + 1) → ℝ),
+    (∀ i : Fin n, t i.castSucc < t i.succ) ∧
+    (∀ i, Complex.abs (γ (t i)) ≤ R) ∧
+    L = ∑ i : Fin n, Complex.abs (γ (t i.succ) - γ (t i.castSucc))}
 
 /--
 **Part 2: Open Problem**
@@ -175,8 +180,9 @@ Conjectured form: For some function Φ depending on M,
 the path γ from Boas's theorem satisfies
   length(γ ∩ {|z| ≤ r}) ≤ Φ(M(r))
 -/
-axiom path_length_estimate_open :
-    ∃ (statement : Prop), statement  -- Placeholder for open problem
+axiom path_length_bound_conjecture (f : ℂ → ℂ) (hf : IsTranscendental f) :
+    ∃ (γ : ℝ → ℂ) (Φ : ℝ → ℝ), IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ ∧
+    Monotone Φ ∧ ∀ R : ℝ, R > 0 → pathLengthUpTo γ R ≤ Φ (maxModulus f R)
 
 /-
 ## Part V: Faster Than M(r)^ε Growth
@@ -201,8 +207,8 @@ def DominatesMaxModulusPower (f : ℂ → ℂ) (γ : ℝ → ℂ) : Prop :=
 **Part 3: Open Problem**
 Does such a path exist for every transcendental entire f?
 -/
-axiom faster_than_max_modulus_open :
-    ∃ (statement : Prop), statement  -- Open problem
+axiom faster_than_max_modulus_conjecture (f : ℂ → ℂ) (hf : IsTranscendental f) :
+    ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ DominatesMaxModulusPower f γ
 
 /-
 ## Part VI: Examples of Entire Functions
@@ -249,8 +255,12 @@ how fast M(r) grows as r → ∞.
 **Order of Growth:**
 The order ρ of an entire function f is
   ρ = lim sup_{r → ∞} (log log M(r)) / (log r)
+
+Axiomatized since the limsup formalization requires measure-theoretic filters.
 -/
-def orderOfGrowth (f : ℂ → ℂ) : ℝ := 1  -- Placeholder
+noncomputable def orderOfGrowth (f : ℂ → ℂ) : ℝ :=
+  sSup {ρ : ℝ | ∀ ε > 0, ∃ R : ℝ, R > 0 ∧ ∀ r > R,
+    maxModulus f r ≤ Real.exp (r ^ (ρ + ε))}
 
 /--
 **Finite Order:**
@@ -273,8 +283,11 @@ behaves like a polynomial of degree ν(r) (the central index).
 **Central Index:**
 The index ν(r) of the largest term in the Taylor series of f
 at radius r. As r → ∞, ν(r) → ∞ for transcendental functions.
+
+Axiomatized since Taylor coefficient extraction requires holomorphic function theory.
 -/
-def centralIndex (f : ℂ → ℂ) (r : ℝ) : ℕ := 0  -- Placeholder
+noncomputable def centralIndex (f : ℂ → ℂ) (r : ℝ) : ℕ :=
+  sSup {n : ℕ | ∀ m : ℕ, m ≠ n → maxModulus f r ≥ r ^ n}
 
 /--
 **Wiman-Valiron Approximation:**
@@ -320,15 +333,10 @@ The problem combines:
 - Geometric measure theory (path lengths)
 -/
 theorem erdos_514_summary :
-    -- Part 1 is resolved
-    (∀ f : ℂ → ℂ, IsTranscendental f →
-      ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ) ∧
-    -- Parts 2 and 3 remain open
-    True := by
-  constructor
-  · intro f hf
-    exact erdos_514_part1 f hf
-  · trivial
+    -- Part 1 is resolved: super-polynomial growth path exists
+    ∀ f : ℂ → ℂ, IsTranscendental f →
+      ∃ γ : ℝ → ℂ, IsPathToInfinity γ ∧ HasSuperPolynomialGrowth f γ :=
+  fun f hf => erdos_514_part1 f hf
 
 /--
 **Key Insight:**

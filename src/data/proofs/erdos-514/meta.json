@@ -55,9 +55,13 @@
       "boas_existence axiom: path with super-polynomial growth exists",
       "erdos_514_part1 theorem: formalizes Boas's result",
       "DominatesMaxModulusPower definition: faster than M(r)^ε growth",
+      "path_length_bound_conjecture: formalized open Part 2 conjecture",
+      "faster_than_max_modulus_conjecture: formalized open Part 3 conjecture",
+      "pathLengthUpTo definition: arc length via polygonal approximation",
+      "orderOfGrowth definition: order via sSup characterization",
       "Examples: exponential and sine functions",
       "Connection to Wiman-Valiron theory",
-      "erdos_514_summary: comprehensive status summary"
+      "erdos_514_summary: Part 1 resolved theorem"
     ]
   },
   "overview": {
@@ -98,51 +102,51 @@
     {
       "id": "path-length",
       "title": "Path Length Estimates",
-      "summary": "pathLengthUpTo, Part 2 open problem",
+      "summary": "pathLengthUpTo, path_length_bound_conjecture (Part 2 open problem)",
       "startLine": 154,
-      "endLine": 180
+      "endLine": 185
     },
     {
       "id": "faster-growth",
       "title": "Faster Than M(r)^ε Growth",
-      "summary": "DominatesMaxModulusPower, Part 3 open problem",
-      "startLine": 181,
-      "endLine": 206
+      "summary": "DominatesMaxModulusPower, faster_than_max_modulus_conjecture (Part 3 open problem)",
+      "startLine": 187,
+      "endLine": 211
     },
     {
       "id": "examples",
       "title": "Examples of Entire Functions",
       "summary": "expFunction, sinFunction, maxModulus_exp",
-      "startLine": 207,
-      "endLine": 240
+      "startLine": 213,
+      "endLine": 245
     },
     {
       "id": "growth-orders",
       "title": "Growth Orders",
       "summary": "orderOfGrowth definition, exp_has_order_one",
-      "startLine": 241,
-      "endLine": 261
+      "startLine": 247,
+      "endLine": 270
     },
     {
       "id": "wiman-valiron",
       "title": "Connection to Wiman-Valiron Theory",
       "summary": "centralIndex, wiman_valiron_intuition",
-      "startLine": 262,
-      "endLine": 287
+      "startLine": 272,
+      "endLine": 299
     },
     {
       "id": "max-modulus-props",
       "title": "Properties of Maximum Modulus",
       "summary": "maxModulus_monotone, maxModulus_ge_origin, maxModulus_tendsto_infinity",
-      "startLine": 288,
-      "endLine": 305
+      "startLine": 301,
+      "endLine": 317
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_514_summary, key_insight",
-      "startLine": 306,
-      "endLine": 348
+      "startLine": 319,
+      "endLine": 355
     }
   ],
   "conclusion": {
