@@ -7,7 +7,7 @@
     "author": "Erdős-Laskar (1985), Fan (1988)",
     "sourceUrl": "https://erdosproblems.com/1033",
     "date": "1985",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1033Problem.lean",
     "tags": [
       "graph-theory",
@@ -16,11 +16,40 @@
       "triangles",
       "turan-theory"
     ],
-    "badge": "pending",
+    "badge": "axiom",
     "sorries": 14,
     "erdosNumber": 1033,
     "erdosUrl": "https://erdosproblems.com/1033",
     "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Adj",
+        "description": "Basic graph adjacency relation and simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Clique definitions for simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.degree",
+        "description": "Vertex degree and degree sum lemma",
+        "module": "Mathlib.Combinatorics.SimpleGraph.DegreeSum"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function on reals for the constant 2(sqrt(3)-1)",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of h(n) as supremum of valid lower bounds",
+      "Triangle structure with degree sum formalization",
+      "Statement of Erdős-Laskar and Fan bounds as axioms",
+      "Formalization of the main conjecture and its asymptotic equivalent"
+    ],
     "relatedProblems": []
   },
   "overview": {
