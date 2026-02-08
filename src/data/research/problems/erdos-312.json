@@ -1,7 +1,7 @@
 {
   "slug": "erdos-312",
   "title": "Erdős #312",
-  "phase": "NEW",
+  "phase": "EXPLORED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -11,40 +11,102 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "28 proved theorems covering structural properties, bound relationships, gap analysis, and harmonic number infrastructure"
+    ],
+    "open": [
+      "Main conjecture: exponential precision bound exp(-cK) remains OPEN"
+    ],
+    "goal": "Complete formalization of known results around the Erdős-Graham subset sum conjecture"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T23:55:09.603Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "EXPLORED",
+    "since": "2026-02-07T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Comprehensive infrastructure and relationship theorems proved",
+    "blockers": [
+      "Main conjecture is OPEN - cannot be proved",
+      "Erdős-Graham polynomial bound [ErGr80] is deep result not in Mathlib (kept as axiom)"
+    ],
+    "nextAction": "Submit to Aristotle to attempt proving erdos_graham_polynomial from Mathlib if possible",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #312 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]\n\n\n\nErd\\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #311\n- Problem #313\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "progressSummary": "PROGRESS: 28 proved theorems, 1 axiom. Comprehensive infrastructure for reciprocal sums (nonneg, monotone, empty/full/singleton, insert/erase, disjoint union, positivity). Full exponential gap analysis (nonneg, lt_one, monotone, tends_to_one). Polynomial gap analysis (pos, antitone, tends_to_zero). Key relationship: exponential bound ⟹ polynomial bound (pointwise and asymptotically). Harmonic number context (unbounded, monotone, H_0=0, H_1=1, canonical example).",
+    "builtItems": [
+      "reciprocalSum_nonneg: 0 ≤ Σ 1/a(i)",
+      "subsetReciprocalSum_nonneg: 0 ≤ Σ_{S} 1/a(i)",
+      "subsetSum_le_totalSum: subset sum ≤ total sum",
+      "subsetReciprocalSum_mono: S ⊆ T ⟹ sum(S) ≤ sum(T)",
+      "subsetReciprocalSum_singleton: sum({i}) = 1/a(i)",
+      "subsetReciprocalSum_disjoint_union: sum(S ∪ T) = sum(S) + sum(T)",
+      "reciprocalSum_pos: positive when entries positive",
+      "subsetReciprocalSum_erase: erase formula",
+      "subsetReciprocalSum_insert: insert formula",
+      "exponential_stronger_than_polynomial: exp(-cK) < c'/K² for large K (analytic proof)",
+      "exponential_implies_polynomial_pointwise: exp precision ⟹ poly precision",
+      "exponentialPrecision_mono_c: monotone in c",
+      "exponential_gap_nonneg: 0 ≤ 1 - exp(-cK)",
+      "exponential_gap_lt_one: 1 - exp(-cK) < 1",
+      "exponential_gap_monotone: monotone in K",
+      "exponential_gap_tends_to_one: 1 - exp(-cK) → 1",
+      "polynomial_gap_pos: c/K² > 0",
+      "polynomial_gap_antitone: c/K² decreasing in K",
+      "polynomial_gap_tends_to_zero: c/K² → 0",
+      "polynomialPrecision_mono_c: monotone in c",
+      "harmonic_unbounded: H_n → ∞",
+      "harmonicNumber_mono: n ≤ m ⟹ H_n ≤ H_m",
+      "canonical_reciprocalSum: {1,...,n} has sum = H_n"
+    ],
+    "insights": [
+      "Main conjecture is OPEN - cannot be proved, only formalized",
+      "Erdős-Graham polynomial bound is a deep result from [ErGr80], correctly kept as axiom",
+      "Exponential bound is strictly stronger than polynomial: proved analytically via tendsto_pow_mul_exp_neg",
+      "The precision gap 1 - exp(-cK) is a well-behaved function: nonneg, monotone, tends to 1",
+      "Canonical example {1,...,n} connects abstract setting to harmonic numbers",
+      "File uses Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero for the key analytic argument"
+    ],
+    "mathlibGaps": [
+      "Erdős-Graham polynomial bound theorem not in Mathlib"
+    ],
+    "nextSteps": [
+      "Consider Aristotle submission for the axiom (unlikely to succeed - deep result)",
+      "Could add: harmonic number H_n ≥ ln(n) bound from Mathlib if available",
+      "Could add: more concrete examples (e.g., {1,2,...,n} satisfies polynomial precision for n large)"
+    ],
+    "markdown": "# Erdős #312 - Knowledge Base\n\n## Problem Statement\n\nDoes there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that $1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1$?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization**: 28 proved theorems + 1 axiom\n\n## Key Results\n\n- Full reciprocal sum infrastructure (nonneg, mono, insert/erase, disjoint union)\n- Exponential vs polynomial bound relationship (analytic proof)\n- Complete gap analysis for both precision types\n- Harmonic number context with canonical example\n\n## References\n\n- ErGr80 (Erdős-Graham polynomial bound)\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Infrastructure-first formalization",
+      "description": "Build comprehensive API for reciprocal sums, then prove relationship theorems between exponential and polynomial precision",
+      "status": "completed"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "analysis",
+    "combinatorics",
+    "unit-fractions"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "ErGr80 - Erdős-Graham: Old and New Problems and Results in Combinatorial Number Theory"
+    ],
+    "urls": [
+      "https://erdosproblems.com/312"
+    ],
+    "mathlib": [
+      "Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero",
+      "Real.tendsto_sum_range_one_div_nat_succ_atTop",
+      "Finset.sum_le_sum_of_subset_of_nonneg",
+      "Finset.sum_le_univ_sum_of_nonneg"
+    ]
   },
   "started": "2026-01-12T23:55:09.603Z",
   "significance": 7,
