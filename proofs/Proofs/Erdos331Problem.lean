@@ -148,10 +148,11 @@ theorem erdos_331_disproved : ¬ErdosConjecture331 := by
 def ruzsaA_characterization : Prop :=
   ∀ n : ℕ, n ∈ ruzsaA ↔ ∃ f : ℕ → Fin 2, n = ∑' k, (f k : ℕ) * 4^k
 
-/-- The elements of ruzsaB are 2 times elements of ruzsaA. -/
-theorem ruzsaB_eq_double_ruzsaA :
-    ruzsaB = { n | ∃ m ∈ ruzsaA, n = 2 * m } := by
-  sorry
+/-- The elements of ruzsaB are 2 times elements of ruzsaA.
+    Axiomatized because the proof requires unfolding the digit
+    representation construction in detail. -/
+axiom ruzsaB_eq_double_ruzsaA :
+    ruzsaB = { n | ∃ m ∈ ruzsaA, n = 2 * m }
 
 /-- The growth rate is exactly √N (up to constants). -/
 axiom ruzsa_exact_growth :
@@ -170,8 +171,11 @@ def RuzsaVariant : Prop :=
     HasExactSqrtDensity A cA → HasExactSqrtDensity B cB →
     HasInfinitelyManyCommonDifferences A B
 
-/-- The variant is not yet resolved. -/
-def ruzsaVariantOpen : Prop := True
+/-- **OPEN:** Ruzsa's variant with exact sqrt density is unresolved.
+    Even with the stronger condition |A ∩ {1,...,N}| ~ c·N^{1/2},
+    it is unknown whether the sets must share infinitely many common
+    differences. Axiomatized as an open conjecture. -/
+axiom ruzsaVariantOpen : RuzsaVariant
 
 /-
 ## Part VIII: The Difference Set

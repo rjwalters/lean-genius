@@ -36,7 +36,71 @@
       "Problem is falsifiable: could be disproved by finite counterexample"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "summary": "Erdős conjecture on triangle-free graphs and bipartite edge deletion, extremal example",
+      "startLine": 1,
+      "endLine": 29
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Graph structure, IsBipartite, ContainsTriangle, IsTriangleFree, HasCycle",
+      "startLine": 38,
+      "endLine": 85
+    },
+    {
+      "id": "edge-deletion",
+      "title": "Edge Deletion and Bipartiteness",
+      "summary": "bipartiteEdgeDeletion axiom, achieved property, bipartite ↔ deletion zero",
+      "startLine": 87,
+      "endLine": 100
+    },
+    {
+      "id": "c5-construction",
+      "title": "Blow-Up of C₅",
+      "summary": "C5 graph, C5BlowUp structure, c5BlowUpGraph, triangle-freeness proofs",
+      "startLine": 102,
+      "endLine": 155
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "ErdosConjecture23: triangle-free on 5n vertices → bipartite with ≤ n² deletions",
+      "startLine": 157,
+      "endLine": 169
+    },
+    {
+      "id": "best-bounds",
+      "title": "Best Known Bounds",
+      "summary": "Balogh-Clemen-Lidický 1.064n² bound, trivial upper bound",
+      "startLine": 171,
+      "endLine": 186
+    },
+    {
+      "id": "generalized-conjecture",
+      "title": "Generalized Conjecture",
+      "summary": "GeneralizedConjecture for odd girth ≥ 2k+1, blow-up of C_{2k+1}",
+      "startLine": 188,
+      "endLine": 221
+    },
+    {
+      "id": "turan-connections",
+      "title": "Turán-Type Connections",
+      "summary": "Kővári-Sós-Turán theorem, Mantel's theorem, odd cycle cover",
+      "startLine": 223,
+      "endLine": 250
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status OPEN, verified theorems, approaches and open questions",
+      "startLine": 252,
+      "endLine": 287
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #23 remains open. The best known bound is 1.064n² (Balogh-Clemen-Lidický 2021), while the conjecture claims n² suffices. The blow-up of C₅ shows n² is necessary, making the conjecture tight if true.",
     "implications": "The problem quantifies the relationship between triangle-freeness and bipartiteness, with applications to graph partitioning and extremal graph theory.",

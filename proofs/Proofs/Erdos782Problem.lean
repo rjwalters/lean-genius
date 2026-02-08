@@ -173,9 +173,13 @@ theorem solymosi_equiv : SolymosiConjecture ↔ SolymosiConjectureAlt := by
 Under the Bombieri-Lang conjecture, Q2 has a negative answer.
 -/
 
--- The Bombieri-Lang conjecture (simplified statement)
--- For varieties of general type over ℚ, rational points are not Zariski dense
-def BombieriLangConjecture : Prop := True  -- Placeholder; actual statement is complex
+/-- **Bombieri-Lang Conjecture (simplified):** For algebraic varieties of
+    general type defined over ℚ, the set of rational points is not
+    Zariski dense. Formalized as: for all d ≥ 2, the rational points on
+    "generic" degree-d hypersurfaces in ℙⁿ are contained in finitely
+    many proper subvarieties. We axiomatize this as an abstract Prop
+    since the full algebraic geometry machinery is beyond Mathlib. -/
+axiom BombieriLangConjecture : Prop
 
 -- Under Bombieri-Lang, squares contain no large cubes
 axiom cilleruelo_granville :

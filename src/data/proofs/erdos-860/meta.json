@@ -19,15 +19,23 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 3,
     "erdosNumber": 860,
     "erdosUrl": "https://erdosproblems.com/860",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      {"theorem": "PrimeCounting", "description": "Prime counting function π(n)", "module": "Mathlib.NumberTheory.PrimeCounting"},
-      {"theorem": "Asymptotics", "description": "Big-O and little-o notation", "module": "Mathlib.Analysis.Asymptotics.Asymptotics"}
+      {
+        "theorem": "PrimeCounting",
+        "description": "Prime counting function π(n)",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Asymptotics",
+        "description": "Big-O and little-o notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
     ],
     "originalContributions": [
       "PrimeCovering: covering assignment structure",
@@ -37,8 +45,16 @@
       "erdos_pomerance_upper_bound: n^(3/2) upper bound"
     ],
     "references": [
-      {"key": "ErPo80", "citation": "Erdős, P. and Pomerance, C., Matching the natural numbers up to n with distinct multiples of another interval, Indigationes Math. (1980), 147-151.", "type": "paper"},
-      {"key": "Gu04", "citation": "Guy, Richard K., Unsolved Problems in Number Theory, 3rd ed. (2004), Problem B32.", "type": "book"}
+      {
+        "key": "ErPo80",
+        "citation": "Erdős, P. and Pomerance, C., Matching the natural numbers up to n with distinct multiples of another interval, Indigationes Math. (1980), 147-151.",
+        "type": "paper"
+      },
+      {
+        "key": "Gu04",
+        "citation": "Guy, Richard K., Unsolved Problems in Number Theory, 3rd ed. (2004), Problem B32.",
+        "type": "book"
+      }
     ]
   },
   "overview": {
@@ -54,13 +70,55 @@
     ]
   },
   "sections": [
-    {"id": "basic-defs", "title": "Basic Definitions", "summary": "PrimeCovering structure and AdmitsCovering", "startLine": 42, "endLine": 62},
-    {"id": "h-function", "title": "The Function h(n)", "summary": "Definition and properties", "startLine": 64, "endLine": 83},
-    {"id": "bounds", "title": "Known Bounds", "summary": "Erdős-Selfridge, Ruzsa, Erdős-Pomerance", "startLine": 85, "endLine": 109},
-    {"id": "gap", "title": "The Gap", "summary": "Distance between bounds", "startLine": 111, "endLine": 137},
-    {"id": "connections", "title": "Connections", "summary": "Related problems and approaches", "startLine": 139, "endLine": 156},
-    {"id": "reformulation", "title": "Reformulation", "summary": "Bipartite matching view", "startLine": 158, "endLine": 171},
-    {"id": "summary", "title": "Summary", "summary": "Main result and open question", "startLine": 173, "endLine": 211}
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "PrimeCovering structure and AdmitsCovering",
+      "startLine": 42,
+      "endLine": 62
+    },
+    {
+      "id": "h-function",
+      "title": "The Function h(n)",
+      "summary": "Definition and properties",
+      "startLine": 64,
+      "endLine": 83
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős-Selfridge, Ruzsa, Erdős-Pomerance",
+      "startLine": 85,
+      "endLine": 109
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "summary": "Distance between bounds",
+      "startLine": 111,
+      "endLine": 137
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "summary": "Related problems and approaches",
+      "startLine": 139,
+      "endLine": 156
+    },
+    {
+      "id": "reformulation",
+      "title": "Reformulation",
+      "summary": "Bipartite matching view",
+      "startLine": 158,
+      "endLine": 171
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main result and open question",
+      "startLine": 173,
+      "endLine": 211
+    }
   ],
   "conclusion": {
     "summary": "Erdős Problem #860 remains OPEN. The function h(n) - the minimum interval length for covering the first π(n) primes with distinct multiples - satisfies (3-o(1))n < h(n) ≪ n^(3/2)/(log n)^(1/2), but the exact asymptotic growth rate is unknown.",

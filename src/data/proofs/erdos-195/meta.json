@@ -9,17 +9,31 @@
     "date": "1979",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos195Problem.lean",
-    "tags": ["erdos", "permutations", "arithmetic-progressions", "ramsey-theory", "open-problem"],
+    "tags": [
+      "erdos",
+      "permutations",
+      "arithmetic-progressions",
+      "ramsey-theory",
+      "open-problem"
+    ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 195,
     "erdosUrl": "https://erdosproblems.com/195",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-22",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "Function.Bijective", "description": "Bijection predicate for permutations", "module": "Mathlib.Data.Nat.Basic" },
-      { "theorem": "List.Chain'", "description": "Chain predicate for monotonicity", "module": "Mathlib.Data.List.Chain" }
+      {
+        "theorem": "Function.Bijective",
+        "description": "Bijection predicate for permutations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "List.Chain'",
+        "description": "Chain predicate for monotonicity",
+        "module": "Mathlib.Data.List.Chain"
+      }
     ],
     "originalContributions": [
       "IsPermutation: bijection ℤ → ℤ",

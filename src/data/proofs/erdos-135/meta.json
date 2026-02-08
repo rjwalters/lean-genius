@@ -23,7 +23,7 @@
     "erdosPrizeValue": "$250"
   },
   "overview": {
-    "historicalContext": "Erdős conjectured that local constraints on 4-point configurations would force global distance diversity. Tao disproved this in 2024 as part of his exploration of erdosproblems.com.",
+    "historicalContext": "Erdős and Gyárfás conjectured that local constraints on 4-point configurations would force global distance diversity: if any 4 points determine at least 5 of the 6 possible distinct distances, the total number of distances should be quadratic. This $250-prize problem remained open for decades until Terence Tao disproved it in September 2024 (arXiv:2409.01343). Tao's counterexample, using randomized algebraic curves over finite fields, was part of his broader exploration of erdosproblems.com, partly as a test case for AI-assisted mathematics. The result shows that local constraints on small point subsets cannot guarantee global distance diversity.",
     "problemStatement": "Let A ⊂ ℝ² be n points such that any 4 points determine at least 5 distinct distances (out of 6 possible). Must A determine ≫ n² total distinct distances?",
     "proofStrategy": "Tao uses randomized algebraic curves over finite fields. Parabolas (ax+by)² ≡ cx+dy+e (mod p) naturally avoid parallelograms. Random affine transformations and probabilistic deletion handle other forbidden 4-point patterns. The result: O(n²/√(log n)) distances with the five-distance property.",
     "keyInsights": [
@@ -34,7 +34,71 @@
       "The construction achieves O(n²/√(log n)) distances - subquadratic but not by much"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "summary": "Erdős conjecture on four-point distance property, Tao's 2024 disproof",
+      "startLine": 9,
+      "endLine": 36
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Points and Distances",
+      "summary": "Point, sqDist, distinctDistances, distanceCount definitions",
+      "startLine": 48,
+      "endLine": 63
+    },
+    {
+      "id": "five-distance-property",
+      "title": "The Five-Distance Property",
+      "summary": "fourPointDistances, HasFiveDistanceProperty — forbids degenerate 4-point configs",
+      "startLine": 65,
+      "endLine": 77
+    },
+    {
+      "id": "conjecture-false",
+      "title": "Erdős's Conjecture (FALSE)",
+      "summary": "ErdosConjecture135 definition, erdos_135_false axiom, erdos_135_disproved theorem",
+      "startLine": 79,
+      "endLine": 105
+    },
+    {
+      "id": "forbidden-patterns",
+      "title": "Forbidden Four-Point Patterns",
+      "summary": "InGeneralPosition, IsParallelogram, IsForbiddenPattern, parallelogram_forbidden",
+      "startLine": 107,
+      "endLine": 204
+    },
+    {
+      "id": "algebraic-construction",
+      "title": "Tao's Algebraic Construction",
+      "summary": "ParabolaParams, RandomizedParabolaApproach, parabolas over finite fields",
+      "startLine": 205,
+      "endLine": 234
+    },
+    {
+      "id": "comparison-bounds",
+      "title": "Comparison with Erdős-Guth-Katz Bounds",
+      "summary": "trivial_distance_bound, guth_katz_lower_bound, tao_optimal_up_to_log",
+      "startLine": 236,
+      "endLine": 300
+    },
+    {
+      "id": "examples",
+      "title": "Example Configurations",
+      "summary": "Square (2 distances), rhombus (3), projected tetrahedron (4), generic (6)",
+      "startLine": 302,
+      "endLine": 354
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem DISPROVED by Tao 2024, key techniques, historical context",
+      "startLine": 356,
+      "endLine": 392
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #135 is DISPROVED. Tao (2024) constructed n-point sets with the five-distance property but only O(n²/√(log n)) distinct distances, disproving the Ω(n²) conjecture.",
     "implications": "Local constraints on 4-tuples don't imply global distance diversity. The √(log n) factor matches Guth-Katz bounds, suggesting this is optimal.",

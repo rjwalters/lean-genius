@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 12,
+    "sorries": 11,
     "erdosNumber": 956,
     "erdosUrl": "https://erdosproblems.com/956",
     "erdosProblemStatus": "open",
@@ -70,7 +70,9 @@
       "Statement of the Erdős-Pach conjecture h(n) > n^(1+c)",
       "Connection to Szemerédi-Trotter incidence bounds"
     ],
-    "relatedProblems": ["erdos-90"]
+    "relatedProblems": [
+      "erdos-90"
+    ]
   },
   "overview": {
     "historicalContext": "**Unit Distances Between Convex Translates**\n\nδ(C, D) = inf{|c - d| : c ∈ C, d ∈ D} is the distance between sets.\n\n**The Problem**: Given n disjoint translates of a compact convex set C, what is the maximum number h(n) of pairs at unit distance?\n\n**Erdős-Pach (1990)**: Proved h(n) ≪ n^(4/3). For general (non-translate) convex sets: O(n^(7/5)).\n\n**Connection**: h(n) ≥ f(n) where f(n) is the classical unit distance function.\n\n**Status**: OPEN - Is h(n) > n^(1+c) for some c > 0?",

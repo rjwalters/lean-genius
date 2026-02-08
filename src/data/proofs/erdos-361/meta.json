@@ -8,9 +8,14 @@
     "sourceUrl": "https://erdosproblems.com/361",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos361Problem.lean",
-    "tags": ["number-theory", "subset-sums", "combinatorics", "asymptotics"],
+    "tags": [
+      "number-theory",
+      "subset-sums",
+      "combinatorics",
+      "asymptotics"
+    ],
     "badge": "formalized",
-    "sorries": 0,
+    "sorries": 3,
     "erdosNumber": 361,
     "erdosUrl": "https://erdosproblems.com/361",
     "erdosProblemStatus": "open"
@@ -27,10 +32,34 @@
     ]
   },
   "sections": [
-    { "id": "definitions", "title": "Definitions", "startLine": 23, "endLine": 38, "summary": "Defines IsSubsetSum, NonRepresenting, and maxNonReprSize as the sup over filtered powerset." },
-    { "id": "conjecture", "title": "Main Conjecture", "startLine": 40, "endLine": 51, "summary": "ErdosProblem361 (irregularity) and MaxNonReprUnbounded (unbounded growth)." },
-    { "id": "asymptotics", "title": "Asymptotic Questions", "startLine": 53, "endLine": 61, "summary": "States bigO bound existence and plausible Θ(√n) growth using Mathlib asymptotics." },
-    { "id": "basic", "title": "Basic Properties", "startLine": 63, "endLine": 83, "summary": "Empty non-representation, subset monotonicity, small-c behavior, and lower bound." }
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 23,
+      "endLine": 38,
+      "summary": "Defines IsSubsetSum, NonRepresenting, and maxNonReprSize as the sup over filtered powerset."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 40,
+      "endLine": 51,
+      "summary": "ErdosProblem361 (irregularity) and MaxNonReprUnbounded (unbounded growth)."
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Questions",
+      "startLine": 53,
+      "endLine": 61,
+      "summary": "States bigO bound existence and plausible Θ(√n) growth using Mathlib asymptotics."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 63,
+      "endLine": 83,
+      "summary": "Empty non-representation, subset monotonicity, small-c behavior, and lower bound."
+    }
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 361 on non-representing subsets with the irregularity conjecture, asymptotic growth questions, and basic structural properties. 0 sorries.",

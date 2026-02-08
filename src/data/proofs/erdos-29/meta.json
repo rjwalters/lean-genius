@@ -34,7 +34,85 @@
       "The representation bound exp(C√(log n)) is subpolynomial for all ε > 0"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "summary": "Sidon's 1932 question to Erdős, JPSZ 2024 explicit construction, 90+ year resolution",
+      "startLine": 47,
+      "endLine": 72
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Sumsets and Representation",
+      "summary": "Sumset, Doubling, representationCount, orderedRepCount definitions",
+      "startLine": 81,
+      "endLine": 97
+    },
+    {
+      "id": "additive-basis",
+      "title": "Additive Basis",
+      "summary": "IsAdditiveBasis, CoversAll, additive_basis_iff equivalence (verified)",
+      "startLine": 99,
+      "endLine": 117
+    },
+    {
+      "id": "economical-condition",
+      "title": "The Economical Condition",
+      "summary": "IsEconomical, IsEconomical' definitions, economical_equiv (verified)",
+      "startLine": 118,
+      "endLine": 149
+    },
+    {
+      "id": "probabilistic-existence",
+      "title": "Erdős's Probabilistic Existence",
+      "summary": "erdos_probabilistic_existence axiom — non-constructive proof",
+      "startLine": 151,
+      "endLine": 158
+    },
+    {
+      "id": "jpsz-construction",
+      "title": "JPSZ Explicit Construction (2024)",
+      "summary": "JPSZ_set, JPSZ_is_basis, JPSZ_is_economical axioms, erdos_29_solved theorem",
+      "startLine": 160,
+      "endLine": 204
+    },
+    {
+      "id": "comparisons",
+      "title": "Comparison with Other Bases",
+      "summary": "univ_is_basis, univ_not_economical (verified), squares_not_basis (verified)",
+      "startLine": 205,
+      "endLine": 244
+    },
+    {
+      "id": "sidon-sets",
+      "title": "Sidon Sets Cannot Be Bases",
+      "summary": "IsSidon, sidon_not_basis (verified) — the 'too thin' constraint",
+      "startLine": 246,
+      "endLine": 323
+    },
+    {
+      "id": "explicit-class",
+      "title": "Explicit vs Probabilistic",
+      "summary": "ExplicitSet class, JPSZ_explicit, historical context of constructivity",
+      "startLine": 329,
+      "endLine": 356
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Size Lower Bounds",
+      "summary": "basis_size_lower_bound (Aristotle counterexample), JPSZ_size_optimal",
+      "startLine": 358,
+      "endLine": 421
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "1932-2024 timeline, JPSZ properties, verified theorems",
+      "startLine": 423,
+      "endLine": 454
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #29 is SOLVED. Jain-Pham-Sawhney-Zakharov (2024) gave the first explicit economical additive basis after 90+ years. The formalization includes verified proofs that ℕ is not economical, squares are not a basis, and Sidon sets cannot be bases.",
     "implications": "Transforms Erdős's probabilistic existence proof into a constructive algorithm. Demonstrates the power of modern combinatorics to resolve long-standing problems explicitly.",
