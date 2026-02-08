@@ -1,362 +1,167 @@
 [
   {
-    "id": "ann-1033-vertexcount",
+    "id": "ann-e1033-header",
     "proofId": "erdos-1033",
-    "range": { "startLine": 36, "endLine": 37 },
-    "type": "definition",
-    "title": "vertexCount",
-    "content": "Number of vertices in the graph.",
-    "significance": "supporting"
+    "range": { "startLine": 1, "endLine": 15 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1033** asks: if a graph on $n$ vertices has more than $n^2/4$ edges (the Turán threshold for triangles), how large must the degree sum of some triangle be? The function $h(n)$ captures the best guaranteed bound. This is an **open problem** with a gap between the known upper bound $2(\\sqrt{3}-1)n \\approx 1.464n$ and lower bound $(21/16)n = 1.3125n$.",
+    "mathContext": "By Turán's theorem, exceeding $n^2/4$ edges forces a triangle. This problem refines the question: not just existence, but structural properties of the forced triangles. The degree sum measures how 'well-connected' the triangle vertices are.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán theory", "extremal graph theory", "triangle degree sums"]
   },
   {
-    "id": "ann-1033-edgecount",
+    "id": "ann-e1033-setup",
     "proofId": "erdos-1033",
-    "range": { "startLine": 39, "endLine": 41 },
+    "range": { "startLine": 28, "endLine": 41 },
     "type": "definition",
-    "title": "edgeCount",
-    "content": "Number of edges in the graph.",
-    "significance": "key"
+    "title": "Graph Setup",
+    "content": "**Basic graph definitions**: `vertexCount` and `edgeCount` formalize the number of vertices and edges. These use Mathlib's `Fintype.card` and `edgeFinset.card`, providing a clean interface for the combinatorial arguments that follow.",
+    "mathContext": "Working with `SimpleGraph V` where `V` is a finite type with decidable equality. The `edgeCount` is noncomputable because it depends on `DecidableRel G.Adj` to enumerate edges.",
+    "significance": "supporting",
+    "relatedConcepts": ["SimpleGraph", "Fintype", "edge counting"]
   },
   {
-    "id": "ann-1033-turan",
+    "id": "ann-e1033-turan",
     "proofId": "erdos-1033",
-    "range": { "startLine": 49, "endLine": 50 },
-    "type": "definition",
-    "title": "turanThreshold",
-    "content": "The Turán threshold n²/4.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1033-aboveturan",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 52, "endLine": 54 },
-    "type": "definition",
-    "title": "isAboveTuran",
-    "content": "Graph has > n²/4 edges.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1033-turanhas",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 56, "endLine": 59 },
+    "range": { "startLine": 43, "endLine": 59 },
     "type": "axiom",
-    "title": "Turán's Theorem",
-    "content": "Above threshold → has triangle.",
-    "significance": "critical"
+    "title": "Turán Threshold and Triangle Existence",
+    "content": "**Turán's theorem** (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$. The `turanThreshold` definition captures this, and `turan_has_triangle` axiomatizes that exceeding it forces a triangle.",
+    "mathContext": "Turán's theorem is stated as an axiom here because the full proof involves the Turán graph $T(n,2)$ (complete bipartite graph $K_{\\lfloor n/2\\rfloor, \\lceil n/2\\rceil}$) and is not yet formalized in this file. Mathlib has partial Turán theory support.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán's theorem", "triangle-free graphs", "extremal graph theory"]
   },
   {
-    "id": "ann-1033-triangle",
+    "id": "ann-e1033-triangle",
     "proofId": "erdos-1033",
-    "range": { "startLine": 67, "endLine": 77 },
+    "range": { "startLine": 61, "endLine": 90 },
     "type": "definition",
-    "title": "Triangle",
-    "content": "Three mutually adjacent vertices.",
-    "significance": "critical"
+    "title": "Triangle Structure and Degree Sums",
+    "content": "**Triangle as a structure**: Rather than using Mathlib's clique API, we define `Triangle G` as a structure with three vertices, distinctness proofs, and adjacency proofs. This makes it easy to access individual vertices and compute their degree sum via `triangleDegreeSum`.",
+    "mathContext": "The `triangleDegreeSum` is the key quantity: for a triangle $(v_1, v_2, v_3)$, it equals $\\deg(v_1) + \\deg(v_2) + \\deg(v_3)$. The problem asks for the minimum over all dense graphs of the maximum triangle degree sum.",
+    "significance": "critical",
+    "relatedConcepts": ["3-clique", "vertex degree", "degree sum"]
   },
   {
-    "id": "ann-1033-vertexdegree",
+    "id": "ann-e1033-hfunction",
     "proofId": "erdos-1033",
-    "range": { "startLine": 79, "endLine": 81 },
+    "range": { "startLine": 92, "endLine": 117 },
     "type": "definition",
-    "title": "vertexDegree",
-    "content": "Degree of a vertex.",
-    "significance": "key"
+    "title": "The Function h(n)",
+    "content": "**Core definition**: $h(n)$ is defined as the supremum of all $k$ such that every graph on $n$ vertices with $> n^2/4$ edges contains a triangle with degree sum $\\geq k$. This is the central object of study — estimating $h(n)$ is the entire problem.",
+    "mathContext": "The definition uses `sSup` (supremum in ℕ) over the set of valid lower bounds. The predicate `isValidLowerBound n k` universally quantifies over all graphs and vertex types, making $h(n)$ a graph-theoretic invariant depending only on $n$.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal function", "Turán-type problems", "minimax"]
   },
   {
-    "id": "ann-1033-tridegsum",
+    "id": "ann-e1033-constant",
     "proofId": "erdos-1033",
-    "range": { "startLine": 83, "endLine": 86 },
+    "range": { "startLine": 119, "endLine": 130 },
     "type": "definition",
-    "title": "triangleDegreeSum",
-    "content": "Sum of degrees of triangle vertices.",
-    "significance": "critical"
+    "title": "The Erdős-Laskar Constant",
+    "content": "**The constant $2(\\sqrt{3}-1) \\approx 1.464$** appears in the conjectured asymptotic value of $h(n)/n$. Erdős and Laskar (1985) showed this is an upper bound by constructing explicit graphs where all triangles have degree sum at most $2(\\sqrt{3}-1)n + o(n)$.",
+    "mathContext": "The constant arises from optimizing the structure of near-bipartite graphs. The extremal construction involves a balanced bipartite graph plus a carefully chosen set of edges within one part, tuned so the constant $2(\\sqrt{3}-1)$ emerges from the optimization.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic constant", "extremal construction"]
   },
   {
-    "id": "ann-1033-triangles",
+    "id": "ann-e1033-upper",
     "proofId": "erdos-1033",
-    "range": { "startLine": 88, "endLine": 90 },
-    "type": "definition",
-    "title": "triangles",
-    "content": "Set of all triangles in G.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1033-hasdense",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 99, "endLine": 101 },
-    "type": "definition",
-    "title": "hasDenseTriangle",
-    "content": "Has triangle with degree sum ≥ k.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1033-validlower",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 103, "endLine": 108 },
-    "type": "definition",
-    "title": "isValidLowerBound",
-    "content": "k is valid lower bound for h(n).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-h",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 110, "endLine": 112 },
-    "type": "definition",
-    "title": "h(n)",
-    "content": "Maximum guaranteed degree sum.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1033-hspec",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 114, "endLine": 117 },
-    "type": "theorem",
-    "title": "h_spec",
-    "content": "h(n) is well-defined.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-elconst",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 125, "endLine": 126 },
-    "type": "definition",
-    "title": "erdosLaskarConstant",
-    "content": "2(√3−1) ≈ 1.464.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1033-elapprox",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 128, "endLine": 130 },
-    "type": "theorem",
-    "title": "erdosLaskar_approx",
-    "content": "Numerical value verification.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1033-elupper",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 138, "endLine": 140 },
+    "range": { "startLine": 132, "endLine": 148 },
     "type": "axiom",
-    "title": "Erdős-Laskar Upper",
-    "content": "h(n) ≤ 2(√3−1)n.",
-    "significance": "critical"
+    "title": "Erdős-Laskar Upper Bound (1985)",
+    "content": "**Upper bound**: $h(n) \\leq 2(\\sqrt{3}-1)n$, proved by Erdős and Laskar in 1985. They constructed a family of graphs on $n$ vertices with $> n^2/4$ edges where every triangle has degree sum $\\leq 2(\\sqrt{3}-1)n + o(n)$. The axiom `upper_bound_tight` formalizes that this bound is essentially achieved.",
+    "mathContext": "The construction starts with the Turán graph $K_{n/2,n/2}$ and adds edges within one partition. By carefully controlling the edge density within the partition, one can ensure all forced triangles have bounded degree sums. The optimization yields the $2(\\sqrt{3}-1)$ constant.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal construction", "Turán graph", "upper bound"]
   },
   {
-    "id": "ann-1033-uppertight",
+    "id": "ann-e1033-lower",
     "proofId": "erdos-1033",
-    "range": { "startLine": 142, "endLine": 148 },
+    "range": { "startLine": 150, "endLine": 166 },
     "type": "axiom",
-    "title": "Upper Bound Tight",
-    "content": "Graphs achieving upper bound exist.",
-    "significance": "key"
+    "title": "Erdős-Laskar Lower Bound",
+    "content": "**Original lower bound**: Erdős and Laskar (1985) proved $h(n) \\geq (1+c)n$ for some constant $c > 0$, showing the trivial bound of $n$ can be beaten. The theorem `lower_beats_n` derives the weaker consequence $h(n) \\geq n$ from this axiom.",
+    "mathContext": "The trivial bound $h(n) \\geq n$ follows because in any triangle, the three vertices are mutually adjacent, so each has degree at least 2, but in a dense graph the average degree exceeds $n/2$.",
+    "significance": "key",
+    "relatedConcepts": ["lower bound", "degree counting"]
   },
   {
-    "id": "ann-1033-ellower",
+    "id": "ann-e1033-fan",
     "proofId": "erdos-1033",
-    "range": { "startLine": 156, "endLine": 158 },
+    "range": { "startLine": 168, "endLine": 190 },
     "type": "axiom",
-    "title": "Erdős-Laskar Lower",
-    "content": "h(n) ≥ (1+c)n for some c > 0.",
-    "significance": "key"
+    "title": "Fan's Improved Lower Bound (1988)",
+    "content": "**Fan's bound**: $h(n) \\geq (21/16)n = 1.3125n$, improving on Erdős-Laskar. The theorem `current_bounds` combines Fan's lower bound with the Erdős-Laskar upper bound to give the current state of knowledge: $(21/16)n \\leq h(n) \\leq 2(\\sqrt{3}-1)n$.",
+    "mathContext": "Fan's proof uses a refined degree-counting argument in triangles of dense graphs. The constant $21/16$ comes from a careful case analysis of the degree distribution. The provable `fan_improves` confirms $21/16 > 1$ via `norm_num`.",
+    "significance": "critical",
+    "relatedConcepts": ["Fan's theorem", "improved bounds", "case analysis"]
   },
   {
-    "id": "ann-1033-lowerbeats",
+    "id": "ann-e1033-gap",
     "proofId": "erdos-1033",
-    "range": { "startLine": 160, "endLine": 166 },
+    "range": { "startLine": 192, "endLine": 208 },
+    "type": "concept",
+    "title": "The Open Gap",
+    "content": "**The gap** between the upper bound $2(\\sqrt{3}-1) \\approx 1.464$ and Fan's lower bound $21/16 = 1.3125$ is about $0.15$. Closing this gap — determining the true asymptotic value of $h(n)/n$ — is the core of Erdős Problem #1033.",
+    "mathContext": "The `boundGap` definition computes $2(\\sqrt{3}-1) - 21/16$ and the theorems establish it lies in $(0.15, 0.16)$. Both are stated with sorry proofs as they require numerical computation with real square roots.",
+    "significance": "key",
+    "relatedConcepts": ["open problem", "bound gap", "asymptotic analysis"]
+  },
+  {
+    "id": "ann-e1033-conjecture",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 210, "endLine": 229 },
+    "type": "concept",
+    "title": "The Main Conjecture",
+    "content": "**The conjecture**: $h(n) \\geq (2(\\sqrt{3}-1) - o(1))n$, meaning the lower bound should match the upper bound asymptotically. If true, then $h(n)/n \\to 2(\\sqrt{3}-1)$ as $n \\to \\infty$. The equivalent `h_asymptotic` formulation states $|h(n)/n - 2(\\sqrt{3}-1)| < \\varepsilon$ for large $n$.",
+    "mathContext": "The `erdos_1033_conjecture` is stated as $\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, h(n) \\geq (c - \\varepsilon)n$ where $c = 2(\\sqrt{3}-1)$. The theorem `conjecture_gives_asymptotic` shows this implies the ratio convergence, combined with the upper bound.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "asymptotic equivalence", "o(1) notation"]
+  },
+  {
+    "id": "ann-e1033-properties",
+    "proofId": "erdos-1033",
+    "range": { "startLine": 231, "endLine": 251 },
     "type": "theorem",
-    "title": "lower_beats_n",
-    "content": "h(n) > n (non-trivial bound).",
-    "significance": "supporting"
+    "title": "Degree Sum Properties",
+    "content": "**Basic properties**: Each vertex in a triangle has degree $\\geq 2$ (it's adjacent to the other two), giving a minimum triangle degree sum of 6. In dense graphs (above Turán threshold), the average degree exceeds $n/2$, so we expect much larger degree sums.",
+    "mathContext": "These are foundational lemmas. The `triangle_min_degree` follows from the adjacency requirements in the triangle structure. The `dense_average_degree` connects the edge count condition to average vertex degree via the handshaking lemma.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimum degree", "handshaking lemma", "average degree"]
   },
   {
-    "id": "ann-1033-fanconst",
+    "id": "ann-e1033-extremal",
     "proofId": "erdos-1033",
-    "range": { "startLine": 174, "endLine": 175 },
-    "type": "definition",
-    "title": "fanConstant",
-    "content": "21/16 = 1.3125.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1033-fanimproves",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 177, "endLine": 179 },
-    "type": "theorem",
-    "title": "fan_improves",
-    "content": "21/16 > 1 (beats trivial).",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1033-fanlower",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 181, "endLine": 183 },
+    "range": { "startLine": 253, "endLine": 287 },
     "type": "axiom",
-    "title": "Fan Lower",
-    "content": "h(n) ≥ (21/16)n.",
-    "significance": "critical"
+    "title": "Maximum and Extremal Graphs",
+    "content": "**Extremal graphs** are those achieving $h(n)$: they have $> n^2/4$ edges but all triangles have degree sum $\\leq h(n)$. The `h_as_min` theorem reformulates $h(n)$ as an infimum over dense graphs, dual to the supremum definition.",
+    "mathContext": "The existence of extremal graphs (`extremal_exists`) is axiomatized. In finite settings, compactness arguments guarantee extremal graphs exist, but formalizing this requires significant work on graph limits or finite optimization.",
+    "significance": "key",
+    "relatedConcepts": ["extremal graph", "minimax duality", "compactness"]
   },
   {
-    "id": "ann-1033-currentbounds",
+    "id": "ann-e1033-turangraph",
     "proofId": "erdos-1033",
-    "range": { "startLine": 185, "endLine": 190 },
+    "range": { "startLine": 289, "endLine": 311 },
     "type": "theorem",
-    "title": "current_bounds",
-    "content": "(21/16)n ≤ h(n) ≤ 2(√3−1)n.",
-    "significance": "critical"
+    "title": "Turán Graph and Threshold Behavior",
+    "content": "**The Turán graph** $K_{n/2,n/2}$ is the densest triangle-free graph. Adding even one edge creates a triangle. The theorem `turan_plus_one` shows that in a graph with exactly $n^2/4 + 1$ edges, some triangle has degree sum $\\geq n$, establishing that $h(n)$ grows linearly.",
+    "mathContext": "The `bipartite_no_triangle` theorem formalizes that balanced complete bipartite graphs are triangle-free. This is the starting point for understanding what happens just above the Turán threshold — the regime where Problem #1033 lives.",
+    "significance": "key",
+    "relatedConcepts": ["Turán graph", "threshold behavior", "bipartite graphs"]
   },
   {
-    "id": "ann-1033-boundgap",
+    "id": "ann-e1033-small",
     "proofId": "erdos-1033",
-    "range": { "startLine": 198, "endLine": 199 },
-    "type": "definition",
-    "title": "boundGap",
-    "content": "Gap between upper and lower bounds.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-gappos",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 201, "endLine": 204 },
+    "range": { "startLine": 313, "endLine": 325 },
     "type": "theorem",
-    "title": "gap_positive",
-    "content": "Gap > 0: problem is open.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1033-gapapprox",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 206, "endLine": 208 },
-    "type": "theorem",
-    "title": "gap_approx",
-    "content": "Gap ≈ 0.15.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1033-conjecture",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 216, "endLine": 219 },
-    "type": "definition",
-    "title": "Main Conjecture",
-    "content": "h(n) ≥ (2(√3−1)−o(1))n.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1033-hasymptotic",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 221, "endLine": 224 },
-    "type": "definition",
-    "title": "h_asymptotic",
-    "content": "h(n)/n → 2(√3−1).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-conjgivesasym",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 226, "endLine": 229 },
-    "type": "theorem",
-    "title": "conjecture_gives_asymptotic",
-    "content": "Conjecture → exact asymptotics.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-trimindeg",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 237, "endLine": 240 },
-    "type": "theorem",
-    "title": "triangle_min_degree",
-    "content": "Each triangle vertex has degree ≥ 2.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1033-trisummin",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 242, "endLine": 245 },
-    "type": "theorem",
-    "title": "triangle_sum_min",
-    "content": "Triangle degree sum ≥ 6.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1033-denseavg",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 247, "endLine": 251 },
-    "type": "theorem",
-    "title": "dense_average_degree",
-    "content": "Dense graphs have high average degree.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-maxtridegs",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 259, "endLine": 262 },
-    "type": "definition",
-    "title": "maxTriangleDegreeSum",
-    "content": "Maximum triangle degree sum in G.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-hasmin",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 264, "endLine": 270 },
-    "type": "theorem",
-    "title": "h_as_min",
-    "content": "h(n) = min over dense graphs.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-isextremal",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 278, "endLine": 282 },
-    "type": "definition",
-    "title": "isExtremal",
-    "content": "Graph achieves h(n).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-extremalexists",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 284, "endLine": 287 },
-    "type": "axiom",
-    "title": "extremal_exists",
-    "content": "Extremal graphs exist.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-bipartitenotri",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 295, "endLine": 302 },
-    "type": "theorem",
-    "title": "bipartite_no_triangle",
-    "content": "Balanced bipartite has no triangles.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-turanplusone",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 304, "endLine": 311 },
-    "type": "theorem",
-    "title": "turan_plus_one",
-    "content": "Adding edge to Turán creates triangle.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1033-hthree",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 319, "endLine": 321 },
-    "type": "theorem",
-    "title": "h(3)",
-    "content": "h(3) = 6.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-1033-hfour",
-    "proofId": "erdos-1033",
-    "range": { "startLine": 323, "endLine": 325 },
-    "type": "theorem",
-    "title": "h(4)",
-    "content": "h(4) = 7.",
-    "significance": "supporting"
+    "title": "Small Cases",
+    "content": "**Explicit values**: $h(3) = 6$ because the only graph on 3 vertices with $> 2$ edges is $K_3$, where each vertex has degree 2, giving sum 6. $h(4) = 7$ requires checking all graphs on 4 vertices with $> 4$ edges.",
+    "mathContext": "These small cases provide concrete checkpoints. For $n=3$, there is essentially one graph above the threshold ($K_3$), making the computation trivial. For $n=4$, the analysis involves several graph structures and is more intricate.",
+    "significance": "supporting",
+    "relatedConcepts": ["small cases", "computational verification"]
   }
 ]
