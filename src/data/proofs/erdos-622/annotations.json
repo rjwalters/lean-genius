@@ -76,19 +76,19 @@
     "proofId": "erdos-622",
     "range": {
       "startLine": 71,
-      "endLine": 72
+      "endLine": 71
     },
     "type": "theorem",
     "title": "Draganić-Keevash-Müyesser (2025)",
-    "content": "This theorem, proved in 2025 by Draganić, Keevash, and Müyesser, confirms the main result: Erdős-Faudree graphs have at least (1/2 + o(1))2^{2n} cycle-spanned subsets. This resolved the long-standing conjecture of Erdős and Faudree.",
+    "content": "This axiom, proved in 2025 by Draganić, Keevash, and Müyesser, confirms the main result: Erdős-Faudree graphs have at least (1/2 + o(1))2^{2n} cycle-spanned subsets. This resolved the long-standing conjecture of Erdős and Faudree.",
     "significance": "core"
   },
   {
     "id": "tightness",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 75,
-      "endLine": 81
+      "startLine": 74,
+      "endLine": 79
     },
     "type": "theorem",
     "title": "Tightness of Bound",
@@ -99,8 +99,8 @@
     "id": "erdos-observation",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 90,
-      "endLine": 96
+      "startLine": 88,
+      "endLine": 93
     },
     "type": "theorem",
     "title": "Erdős's Observation",
@@ -111,8 +111,8 @@
     "id": "half-half",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 99,
-      "endLine": 106
+      "startLine": 96,
+      "endLine": 102
     },
     "type": "insight",
     "title": "Half-Half Symmetry",
@@ -123,8 +123,8 @@
     "id": "complete-bipartite",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 111,
-      "endLine": 117
+      "startLine": 107,
+      "endLine": 113
     },
     "type": "definition",
     "title": "Complete Bipartite K_{n,n}",
@@ -135,8 +135,8 @@
     "id": "knn-few-cycles",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 131,
-      "endLine": 133
+      "startLine": 125,
+      "endLine": 126
     },
     "type": "theorem",
     "title": "K_{n,n} Has Few Cycle-Spanned Sets",
@@ -147,8 +147,8 @@
     "id": "knn-stars",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 138,
-      "endLine": 145
+      "startLine": 131,
+      "endLine": 138
     },
     "type": "definition",
     "title": "K_{n,n} with Stars Counterexample",
@@ -159,8 +159,8 @@
     "id": "paley-graph",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 160,
-      "endLine": 163
+      "startLine": 151,
+      "endLine": 154
     },
     "type": "definition",
     "title": "Paley Graph",
@@ -168,11 +168,23 @@
     "significance": "advanced"
   },
   {
+    "id": "random-regular",
+    "proofId": "erdos-622",
+    "range": {
+      "startLine": 166,
+      "endLine": 171
+    },
+    "type": "theorem",
+    "title": "Random Regular Graph Bound",
+    "content": "Random (n+1)-regular graphs on 2n vertices satisfy the cycle-spanning bound with high probability. This probabilistic result shows the Erdős-Faudree phenomenon is typical rather than exceptional among regular graphs of the right degree.",
+    "significance": "standard"
+  },
+  {
     "id": "hamiltonian-cycle",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 184,
-      "endLine": 185
+      "startLine": 176,
+      "endLine": 177
     },
     "type": "definition",
     "title": "Hamiltonian Cycle",
@@ -183,8 +195,8 @@
     "id": "edge-count",
     "proofId": "erdos-622",
     "range": {
-      "startLine": 201,
-      "endLine": 205
+      "startLine": 192,
+      "endLine": 195
     },
     "type": "theorem",
     "title": "Edge Count",
