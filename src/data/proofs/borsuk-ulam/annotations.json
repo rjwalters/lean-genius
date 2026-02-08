@@ -76,24 +76,6 @@
     ]
   },
   {
-    "id": "ann-fundamental-group",
-    "proofId": "borsuk-ulam",
-    "range": {
-      "startLine": 162,
-      "endLine": 173
-    },
-    "type": "definition",
-    "title": "Fundamental Groups: Detecting Holes",
-    "content": "The **fundamental group** pi_1(X) captures the 'holes' in a space by looking at loops.\n\n**Key values**:\n- pi_1(S^n) = 0 for n >= 2 (simply connected, no holes)\n- pi_1(S^1) = Z (loops can wind around the circle)\n- pi_1(RP^n) = Z_2 for n >= 1 (two-fold symmetry)\n\n**How it's used**:\nA continuous map f: X -> Y induces a homomorphism f*: pi_1(X) -> pi_1(Y). This is **functorial**: the map respects composition.\n\nIf S^n is simply connected but RP^n has pi_1 = Z_2, then the covering map p: S^n -> RP^n can't have a 'right inverse' that respects the group structure. This obstruction is what prevents odd maps.",
-    "mathContext": "$\\pi_1(S^n) = 0$ for $n \\geq 2$, $\\pi_1(\\mathbb{R}P^n) = \\mathbb{Z}_2$",
-    "significance": "key",
-    "relatedConcepts": [
-      "homotopy",
-      "loops",
-      "simply connected"
-    ]
-  },
-  {
     "id": "ann-no-odd-map",
     "proofId": "borsuk-ulam",
     "range": {
