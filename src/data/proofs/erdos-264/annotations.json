@@ -59,9 +59,9 @@
     "proofId": "erdos-264",
     "range": {
       "startLine": 63,
-      "endLine": 75
+      "endLine": 72
     },
-    "type": "theorem",
+    "type": "concept",
     "title": "Factorial Case is OPEN",
     "content": "**Open Problem**: Is aₙ = n! an irrationality sequence? This remains unsolved despite the Kovač-Tao criteria.",
     "mathContext": "The factorial is borderline: its ratio (n+1)!/n! = n+1 grows without bound (so the negative criterion doesn't apply), but grows polynomially (so the positive criterion doesn't apply either). This makes n! genuinely difficult.",
@@ -72,8 +72,8 @@
     "id": "ann-e264-double-exp",
     "proofId": "erdos-264",
     "range": {
-      "startLine": 79,
-      "endLine": 87
+      "startLine": 76,
+      "endLine": 84
     },
     "type": "theorem",
     "title": "2^(2ⁿ) IS an Irrationality Sequence",
@@ -86,8 +86,8 @@
     "id": "ann-e264-negative-criterion",
     "proofId": "erdos-264",
     "range": {
-      "startLine": 91,
-      "endLine": 105
+      "startLine": 88,
+      "endLine": 102
     },
     "type": "theorem",
     "title": "Kovač-Tao Negative Criterion",
@@ -100,8 +100,8 @@
     "id": "ann-e264-positive-criterion",
     "proofId": "erdos-264",
     "range": {
-      "startLine": 107,
-      "endLine": 118
+      "startLine": 104,
+      "endLine": 115
     },
     "type": "theorem",
     "title": "Kovač-Tao Positive Criterion",
@@ -114,8 +114,8 @@
     "id": "ann-e264-growth-discussion",
     "proofId": "erdos-264",
     "range": {
-      "startLine": 120,
-      "endLine": 131
+      "startLine": 117,
+      "endLine": 128
     },
     "type": "concept",
     "title": "Growth Rate Boundary",
@@ -128,8 +128,8 @@
     "id": "ann-e264-power-ratio",
     "proofId": "erdos-264",
     "range": {
-      "startLine": 135,
-      "endLine": 138
+      "startLine": 132,
+      "endLine": 135
     },
     "type": "lemma",
     "title": "Powers of 2 Growth Rate",
@@ -142,8 +142,8 @@
     "id": "ann-e264-double-exp-ratio",
     "proofId": "erdos-264",
     "range": {
-      "startLine": 140,
-      "endLine": 147
+      "startLine": 137,
+      "endLine": 144
     },
     "type": "lemma",
     "title": "Double Exponential Growth Rate",
@@ -156,8 +156,8 @@
     "id": "ann-e264-factorial-ratio",
     "proofId": "erdos-264",
     "range": {
-      "startLine": 149,
-      "endLine": 153
+      "startLine": 146,
+      "endLine": 150
     },
     "type": "lemma",
     "title": "Factorial Growth Rate",
