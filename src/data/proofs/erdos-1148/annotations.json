@@ -1,247 +1,158 @@
 [
   {
-    "id": "ann-e1148-header",
+    "id": "ann-e1148-imports",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 1,
-      "endLine": 22
-    },
+    "range": { "startLine": 24, "endLine": 30 },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "Header documentation for Erdős Problem #1148, providing mathematical context and problem statement.",
-    "mathContext": "Erdős Problem #1148: Representation as x² + y² - z²\n\n**Problem Statement (OPEN)**\n\nCan every sufficiently large integer n be written as n = x² + y² - z²\nwhere max(x², y², z²) ≤ n?\n\nThe constraint max(x², y², z²) ≤ n means x, y, z ≤ ⌊√n⌋.\n\n**Known Results:**\n- The largest known integer not representable in this form is 6563.\n- With the relaxed bound max(x², y², z²) ≤ n + 2√n, the representation\n  always exists (and is \"obvious\").\n\n**Status**: OPEN\n\nReference: [Va99, 1.25] (Vaughan)\nSource: https:",
+    "title": "Mathlib Imports for Quadratic Forms",
+    "content": "Imports Nat.Prime.Basic, Nat.Sqrt (for floor square root used in bounding search space), Finset.Basic, BigOperators, Real and Int basics, and Mathlib.Tactic. The Nat.Sqrt import is particularly important as it provides the ⌊√n⌋ bound on x, y, z values.",
+    "mathContext": "The search space for representations is $\\{(x,y,z) : 0 \\leq x,y,z \\leq \\lfloor\\sqrt{n}\\rfloor\\}$, requiring `Nat.sqrt` for the bound computation. `Finset.Basic` supports the `nonRepresentable` filter set.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.sqrt", "Finset.filter", "Mathlib.Tactic"],
+    "prerequisites": ["Lean 4 basics", "Mathlib library"]
+  },
+  {
+    "id": "ann-e1148-representation",
+    "proofId": "erdos-1148",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "definition",
+    "title": "Representation Structure",
+    "content": "The Representation structure packages a triple (x, y, z) with proof that x² + y² = z² + n (reformulated to avoid subtraction in ℕ) and bounds x² ≤ bound, y² ≤ bound, z² ≤ bound. The equation is stated as x² + y² = z² + n rather than x² + y² - z² = n to avoid natural number subtraction issues.",
+    "mathContext": "A representation of $n$ with bound $b$ is a triple $(x,y,z) \\in \\mathbb{N}^3$ satisfying $x^2 + y^2 = z^2 + n$ and $\\max(x^2, y^2, z^2) \\leq b$. The reformulation avoids truncated subtraction in $\\mathbb{N}$.",
     "significance": "critical",
-    "relatedConcepts": [
-      "Erdős problems",
-      "Number theory"
-    ]
+    "relatedConcepts": ["ternary quadratic form", "bounded representation", "natural number subtraction"],
+    "prerequisites": ["Lean structures", "natural number arithmetic"]
   },
   {
     "id": "ann-e1148-IsRepresentable",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 52,
-      "endLine": 53
-    },
+    "range": { "startLine": 52, "endLine": 53 },
     "type": "definition",
-    "title": "Isrepresentable",
-    "content": "/-- n is representable as x² + y² - z² with max(x², y², z²) ≤ n. -/",
-    "significance": "supporting"
+    "title": "Strict Representability Predicate",
+    "content": "IsRepresentable n specializes the Representation structure with bound = n, capturing the strict form of the problem: n = x² + y² - z² with max(x², y², z²) ≤ n. Uses Nonempty to assert existence without constructing a specific witness.",
+    "mathContext": "$\\text{IsRepresentable}(n) \\iff \\exists x,y,z \\in \\mathbb{N},\\; x^2 + y^2 = z^2 + n \\wedge \\max(x^2, y^2, z^2) \\leq n$. Equivalently, $x, y, z \\leq \\lfloor\\sqrt{n}\\rfloor$.",
+    "significance": "critical",
+    "relatedConcepts": ["Nonempty", "bounded quadratic representation", "strict bound"],
+    "prerequisites": ["Representation structure"]
   },
   {
     "id": "ann-e1148-IsRepresentableWith",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 56,
-      "endLine": 57
-    },
+    "range": { "startLine": 56, "endLine": 57 },
     "type": "definition",
-    "title": "Isrepresentablewith",
-    "content": "/-- n is representable with the relaxed bound max(x², y², z²) ≤ bound. -/",
-    "significance": "supporting"
+    "title": "Relaxed Representability Predicate",
+    "content": "IsRepresentableWith n bound generalizes IsRepresentable by allowing an arbitrary bound parameter. This supports the observation that with bound = n + 2√n, every integer is trivially representable, making the strict bound the essential difficulty.",
+    "mathContext": "With bound $b = n + 2\\sqrt{n}$, every odd $n$ is representable via $n = ((n+1)/2)^2 - ((n-1)/2)^2$ since $((n+1)/2)^2 \\leq n + 2\\sqrt{n}$ for large $n$.",
+    "significance": "key",
+    "relatedConcepts": ["relaxed bound", "parametric representation", "trivial representability"],
+    "prerequisites": ["Representation structure", "IsRepresentable"]
   },
   {
-    "id": "ann-e1148-perfectSquare_representable",
+    "id": "ann-e1148-perfectSquare",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 64,
-      "endLine": 65
-    },
+    "range": { "startLine": 64, "endLine": 65 },
     "type": "theorem",
-    "title": "Perfectsquare Representable",
-    "content": "/-- Any perfect square n = k² is representable: k² = k² + 0² - 0². -/",
-    "significance": "key"
+    "title": "Perfect Squares Are Representable",
+    "content": "Any perfect square k² is representable via the trivial witness (k, 0, 0): k² = k² + 0² - 0². The bound is satisfied since k² ≤ k².",
+    "mathContext": "$k^2 = k^2 + 0^2 - 0^2$ with $\\max(k^2, 0, 0) = k^2 \\leq k^2$ ✓.",
+    "significance": "key",
+    "relatedConcepts": ["perfect square", "trivial representation", "witness construction"],
+    "prerequisites": ["IsRepresentable definition"]
   },
   {
-    "id": "ann-e1148-zero_representable",
+    "id": "ann-e1148-monotonicity",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 68,
-      "endLine": 69
-    },
+    "range": { "startLine": 76, "endLine": 84 },
     "type": "theorem",
-    "title": "Zero Representable",
-    "content": "/-- 0 is representable: 0 = 0² + 0² - 0². -/",
-    "significance": "key"
+    "title": "Monotonicity of Representability",
+    "content": "If n is representable with bound b₁ and b₁ ≤ b₂, then n is representable with bound b₂. The same triple (x,y,z) works since x² ≤ b₁ ≤ b₂. The corollary representable_implies_relaxed specializes this to IsRepresentable → IsRepresentableWith.",
+    "mathContext": "$\\text{IsRepresentableWith}(n, b_1) \\wedge b_1 \\leq b_2 \\Rightarrow \\text{IsRepresentableWith}(n, b_2)$. In particular, $\\text{IsRepresentable}(n) \\Rightarrow \\text{IsRepresentableWith}(n, b)$ for any $b \\geq n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "bound relaxation", "le_trans"],
+    "prerequisites": ["IsRepresentableWith", "natural number ordering"]
   },
   {
-    "id": "ann-e1148-one_representable",
+    "id": "ann-e1148-odd-obstruction",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 72,
-      "endLine": 73
-    },
+    "range": { "startLine": 96, "endLine": 104 },
     "type": "theorem",
-    "title": "One Representable",
-    "content": "/-- 1 is representable: 1 = 1² + 0² - 0². -/",
-    "significance": "key"
+    "title": "Odd Difference-of-Squares Obstruction",
+    "content": "Two key results: (1) For odd n ≥ 3, ((n+1)/2)² > n, so the natural difference-of-squares identity violates the strict bound. (2) The identity ((n+1)/2)² = ((n-1)/2)² + n holds for all odd n. Together these show the naive approach fails — one must find alternative triples with smaller squares.",
+    "mathContext": "For odd $n$: $\\left(\\frac{n+1}{2}\\right)^2 = \\frac{n^2+2n+1}{4} > n$ when $n \\geq 3$. The identity $n = \\left(\\frac{n+1}{2}\\right)^2 - \\left(\\frac{n-1}{2}\\right)^2$ violates $\\max(x^2,y^2,z^2) \\leq n$.",
+    "significance": "critical",
+    "relatedConcepts": ["difference of squares", "bound violation", "omega tactic"],
+    "prerequisites": ["natural number division for odd numbers", "square bounds"]
   },
   {
-    "id": "ann-e1148-representable_mono",
+    "id": "ann-e1148-three-not-representable",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 76,
-      "endLine": 79
-    },
+    "range": { "startLine": 176, "endLine": 181 },
     "type": "theorem",
-    "title": "Representable Mono",
-    "content": "/-- Representability with a tighter bound implies representability with a looser bound. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-representable_implies_relaxed",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 82,
-      "endLine": 84
-    },
-    "type": "theorem",
-    "title": "Representable Implies Relaxed",
-    "content": "/-- The strict version implies the relaxed version. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-odd_diff_squares_exceeds_bound",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 96,
-      "endLine": 98
-    },
-    "type": "theorem",
-    "title": "Odd Diff Squares Exceeds Bound",
-    "content": "theorem odd_diff_squares_exceeds_bound",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-odd_diff_squares_identity",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 102,
-      "endLine": 104
-    },
-    "type": "theorem",
-    "title": "Odd Diff Squares Identity",
-    "content": "theorem odd_diff_squares_identity",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-two_representable",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 113,
-      "endLine": 114
-    },
-    "type": "theorem",
-    "title": "Two Representable",
-    "content": "/-- 2 is representable: 2 = 1² + 1² - 0². -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-four_representable",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 124,
-      "endLine": 125
-    },
-    "type": "theorem",
-    "title": "Four Representable",
-    "content": "/-- 4 is representable: 4 = 2² + 0² - 0². -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-five_representable",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 128,
-      "endLine": 129
-    },
-    "type": "theorem",
-    "title": "Five Representable",
-    "content": "/-- 5 is representable: 5 = 2² + 1² - 0². -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-eight_representable",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 132,
-      "endLine": 133
-    },
-    "type": "theorem",
-    "title": "Eight Representable",
-    "content": "/-- 8 is representable: 8 = 2² + 2² - 0². -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-nine_representable",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 136,
-      "endLine": 137
-    },
-    "type": "theorem",
-    "title": "Nine Representable",
-    "content": "/-- 9 is representable: 9 = 3² + 0² - 0². -/",
-    "significance": "key"
+    "title": "3 Is Not Representable",
+    "content": "Proves ¬IsRepresentable 3 by exhaustive case analysis: with max(x², y², z²) ≤ 3, we need x, y, z ∈ {0, 1} (since 2² = 4 > 3). Maximum of x² + y² is 2, but z² + 3 ≥ 3, so x² + y² = z² + 3 is impossible. Uses interval_cases to enumerate all 8 combinations.",
+    "mathContext": "With $x, y, z \\leq 1$: $\\max(x^2 + y^2) = 2$ but $\\min(z^2 + 3) = 3$, so $x^2 + y^2 = z^2 + 3$ has no solution.",
+    "significance": "critical",
+    "relatedConcepts": ["interval_cases", "exhaustive search", "non-representability"],
+    "prerequisites": ["IsRepresentable definition", "interval_cases tactic"]
   },
   {
     "id": "ann-e1148-checkRepresentable",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 146,
-      "endLine": 152
-    },
+    "range": { "startLine": 146, "endLine": 173 },
     "type": "definition",
-    "title": "Checkrepresentable",
-    "content": "/-- A Boolean check for representability with bound b by exhaustive search. -/",
-    "significance": "supporting"
+    "title": "Decidable Representability Checker",
+    "content": "Defines checkRepresentable as a Boolean brute-force search over all triples (x,y,z) with x,y,z ≤ √b. Proves both soundness (true → IsRepresentableWith) and completeness (IsRepresentableWith → true), making representability decidable.",
+    "mathContext": "The checker iterates over $(x,y,z) \\in \\{0, \\ldots, \\lfloor\\sqrt{b}\\rfloor\\}^3$ testing $x^2 + y^2 = z^2 + n$. Complexity: $O(b^{3/2})$. Soundness + completeness: $\\text{checkRepresentable}(n,b) = \\text{true} \\iff \\text{IsRepresentableWith}(n,b)$.",
+    "significance": "key",
+    "relatedConcepts": ["decidability", "brute-force search", "soundness and completeness", "List.any"],
+    "prerequisites": ["Nat.sqrt", "List.range", "Boolean decidability"]
   },
   {
-    "id": "ann-e1148-checkRepresentable_sound",
+    "id": "ann-e1148-conjecture",
     "proofId": "erdos-1148",
-    "range": {
-      "startLine": 155,
-      "endLine": 161
-    },
-    "type": "theorem",
-    "title": "Checkrepresentable Sound",
-    "content": "/-- Soundness: if checkRepresentable returns true, the number is representable. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-checkRepresentable_complete",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 164,
-      "endLine": 173
-    },
-    "type": "theorem",
-    "title": "Checkrepresentable Complete",
-    "content": "/-- Completeness: if a number is representable, checkRepresentable returns true. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-three_not_representable",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 176,
-      "endLine": 177
-    },
-    "type": "theorem",
-    "title": "Three Not Representable",
-    "content": "/-- 3 is not representable: no x, y, z with x²+y²-z² = 3 and max(x²,y²,z²) ≤ 3. -/",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1148-erdos_1148_conjecture",
-    "proofId": "erdos-1148",
-    "range": {
-      "startLine": 191,
-      "endLine": 192
-    },
+    "range": { "startLine": 191, "endLine": 196 },
     "type": "definition",
-    "title": "Erdos 1148 Conjecture",
-    "content": "def erdos_1148_conjecture",
-    "significance": "critical"
+    "title": "Erdős Problem #1148 Conjecture",
+    "content": "The main conjecture states ∃ N₀, ∀ n ≥ N₀, IsRepresentable n — every sufficiently large integer is representable. Axiomatized since the problem remains open. The largest known non-representable number is 6563, suggesting N₀ ≤ 6564.",
+    "mathContext": "$\\exists N_0,\\; \\forall n \\geq N_0,\\; \\exists x,y,z,\\; x^2 + y^2 = z^2 + n \\wedge \\max(x^2,y^2,z^2) \\leq n$. Computational evidence suggests $N_0 = 6564$.",
+    "significance": "critical",
+    "relatedConcepts": ["open problem", "threshold existence", "computational evidence"],
+    "prerequisites": ["IsRepresentable definition"]
+  },
+  {
+    "id": "ann-e1148-component-bounds",
+    "proofId": "erdos-1148",
+    "range": { "startLine": 205, "endLine": 210 },
+    "type": "theorem",
+    "title": "Component Bounds: x, y, z ≤ √n",
+    "content": "For any representation with bound n, proves x ≤ √n, y ≤ √n, z ≤ √n using Nat.le_sqrt. This formalizes the equivalence between max(x², y², z²) ≤ n and x, y, z ≤ ⌊√n⌋, justifying the search space bound.",
+    "mathContext": "From $x^2 \\leq n$: $x \\leq \\lfloor\\sqrt{n}\\rfloor$ by `Nat.le_sqrt`. The search space has $(\\lfloor\\sqrt{n}\\rfloor + 1)^3 = O(n^{3/2})$ candidate triples.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.le_sqrt", "search space bound", "square root"],
+    "prerequisites": ["Representation structure", "Nat.sqrt"]
+  },
+  {
+    "id": "ann-e1148-sum-two-squares",
+    "proofId": "erdos-1148",
+    "range": { "startLine": 243, "endLine": 251 },
+    "type": "theorem",
+    "title": "Equivalence with Sum of Two Bounded Squares",
+    "content": "Proves the key structural equivalence: IsRepresentable n ↔ ∃ z, z² ≤ n ∧ ∃ x y, x² + y² = n + z² ∧ x² ≤ n ∧ y² ≤ n. This reduces the problem to: for which n can we find z ≤ √n such that n + z² is a sum of two squares? Connects to the Fermat–Euler characterization.",
+    "mathContext": "$n = x^2 + y^2 - z^2 \\iff x^2 + y^2 = n + z^2$. By Fermat–Euler, $m$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides $m$ to even power.",
+    "significance": "critical",
+    "relatedConcepts": ["sum of two squares", "Fermat–Euler theorem", "iff equivalence"],
+    "prerequisites": ["IsRepresentable", "sum of two squares theory"]
+  },
+  {
+    "id": "ann-e1148-density",
+    "proofId": "erdos-1148",
+    "range": { "startLine": 261, "endLine": 267 },
+    "type": "definition",
+    "title": "Non-Representable Set and Finite Exceptions",
+    "content": "Defines nonRepresentable N as the Finset of n ∈ {0,...,N} where checkRepresentable returns false. Proves the conjecture implies the set of non-representable numbers is finite (trivially, since the conjecture provides a threshold N₀ beyond which all are representable).",
+    "mathContext": "If $\\exists N_0$ with all $n \\geq N_0$ representable, then $\\{n : \\neg\\text{IsRepresentable}(n)\\} \\subseteq \\{0, \\ldots, N_0 - 1\\}$ is finite.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.filter", "finite exception set", "computational exploration"],
+    "prerequisites": ["checkRepresentable", "erdos_1148_conjecture"]
   }
 ]
