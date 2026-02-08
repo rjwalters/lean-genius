@@ -2,246 +2,108 @@
   {
     "id": "ann-e1142-header",
     "proofId": "erdos-1142",
-    "range": {
-      "startLine": 1,
-      "endLine": 22
-    },
-    "type": "concept",
-    "title": "Problem Overview",
-    "content": "Header documentation for Erdős Problem #1142, providing mathematical context and problem statement.",
-    "mathContext": "# Erdős Problem #1142 — Primes of the form n − 2^k\n\n**Question**: Are there infinitely many n (or any n > 105) such that\nn − 2^k is prime for all 1 < 2^k < n?\n\n## Status: OPEN\n\n## Known Results\n\n- The only known values are n ∈ {4, 7, 15, 21, 45, 75, 105} (OEIS A039669).\n- Mientka & Weitzenkamp (1969) verified no other n ≤ 2^44 satisfy this.\n- Vaughan (1973) showed the count of such n up to N is extremely sparse.\n- Erdős conjectured the number of 1 < 2^k < n for which n − 2^k is prime\n  is o(log ",
-    "significance": "critical",
-    "relatedConcepts": [
-      "Erdős problems",
-      "Number theory"
-    ]
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "context",
+    "title": "Problem Statement and Known Results",
+    "content": "**Erdős Problem #1142**: Are there infinitely many $n$ (or any $n > 105$) such that $n - 2^k$ is prime for all $1 < 2^k < n$?\n\nThe only known values are $n \\in \\{4, 7, 15, 21, 45, 75, 105\\}$ (OEIS A039669). This is a remarkably short list — only 7 values — and no additional ones have been found despite extensive computation.\n\n**Key results**:\n- **Mientka & Weitzenkamp (1969)**: No other $n \\le 2^{44} \\approx 1.76 \\times 10^{13}$ satisfy the property\n- **Vaughan (1973)**: The count of such $n$ up to $N$ is extremely sparse\n- **Erdős's stronger conjecture**: The number of $k$ with $1 < 2^k < n$ for which $n - 2^k$ is prime is $o(\\log n)$, suggesting the property eventually fails\n\nRelated to Problem #236 (the $o(\\log n)$ conjecture on prime differences with powers of 2).",
+    "mathContext": "$\\{n : \\forall k \\ge 1,\\; 2^k < n \\Rightarrow (n - 2^k) \\text{ prime}\\}= \\{4, 7, 15, 21, 45, 75, 105, \\ldots?\\}$",
+    "significance": "context",
+    "relatedConcepts": ["OEIS A039669", "Romanov's theorem", "covering systems", "powers of 2"]
   },
   {
-    "id": "ann-e1142-powersOfTwoBetween",
+    "id": "ann-e1142-definitions",
     "proofId": "erdos-1142",
-    "range": {
-      "startLine": 33,
-      "endLine": 34
-    },
+    "range": { "startLine": 33, "endLine": 50 },
     "type": "definition",
-    "title": "Powersoftwobetween",
-    "content": "def powersOfTwoBetween",
-    "significance": "supporting"
+    "title": "Core Definitions: Powers of Two and the Property",
+    "content": "Three definitions set up the formalization:\n\n1. **`powersOfTwoBetween n`**: The Finset of powers of 2 strictly between 1 and $n$: $\\{2^k : k \\ge 1, 2^k < n\\} = \\{2, 4, 8, 16, \\ldots\\} \\cap [2, n)$. Implemented by filtering `Finset.range n` for values $\\ge 2$ that are powers of 2 (using `Nat.isPowerOfTwo`).\n\n2. **`SatisfiesErdos1142 n`**: The Prop version — requires `powersOfTwoBetween n` to be nonempty (ensuring $n \\ge 4$) and every $m$ in it to satisfy $(n - m)$.Prime.\n\n3. **`satisfiesErdos1142Bool n`**: A Bool version for efficient computation, checking emptiness and primality on the underlying Multiset.\n\nThe `Decidable` instance is derived automatically, enabling `native_decide` for computational verification.",
+    "mathContext": "`SatisfiesErdos1142 n ↔ (powersOfTwoBetween n).Nonempty ∧ ∀ m ∈ powersOfTwoBetween n, (n - m).Prime`",
+    "significance": "key",
+    "relatedConcepts": ["Finset.filter", "Nat.isPowerOfTwo", "Decidable", "Finset.Nonempty"],
+    "prerequisites": ["ann-e1142-header"]
   },
   {
-    "id": "ann-e1142-SatisfiesErdos1142",
+    "id": "ann-e1142-positive-values",
     "proofId": "erdos-1142",
-    "range": {
-      "startLine": 39,
-      "endLine": 41
-    },
+    "range": { "startLine": 57, "endLine": 80 },
+    "type": "theorem",
+    "title": "All Seven Known Values Verified",
+    "content": "All seven known values of OEIS A039669 are computationally verified:\n\n| $n$ | Powers of 2 in $(1,n)$ | Differences $n - 2^k$ |\n|-----|------------------------|----------------------|\n| 4 | $\\{2\\}$ | 2 |\n| 7 | $\\{2, 4\\}$ | 5, 3 |\n| 15 | $\\{2, 4, 8\\}$ | 13, 11, 7 |\n| 21 | $\\{2, 4, 8, 16\\}$ | 19, 17, 13, 5 |\n| 45 | $\\{2, 4, 8, 16, 32\\}$ | 43, 41, 37, 29, 13 |\n| 75 | $\\{2, 4, 8, 16, 32, 64\\}$ | 73, 71, 67, 59, 43, 11 |\n| 105 | $\\{2, 4, 8, 16, 32, 64\\}$ | 103, 101, 97, 89, 73, 41 |\n\nAs $n$ grows, more powers of 2 must be checked ($\\lfloor \\log_2 n \\rfloor$ constraints). The largest known value $n = 105$ requires 6 simultaneous primality conditions.\n\nAll proved by `native_decide`.",
+    "mathContext": "`SatisfiesErdos1142 n` for $n \\in \\{4, 7, 15, 21, 45, 75, 105\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "simultaneous primality", "OEIS A039669"],
+    "prerequisites": ["ann-e1142-definitions"]
+  },
+  {
+    "id": "ann-e1142-counterexamples",
+    "proofId": "erdos-1142",
+    "range": { "startLine": 85, "endLine": 91 },
+    "type": "theorem",
+    "title": "Counterexamples",
+    "content": "Three non-examples verified by `native_decide`:\n\n- $n = 6$: $6 - 2 = 4$ is not prime (though $6 - 4 = 2$ is)\n- $n = 9$: $9 - 8 = 1$ is not prime\n- $n = 10$: $10 - 2 = 8$ is not prime\n\nThe failure modes illustrate two patterns: subtracting a large power of 2 can leave 1 (never prime), and subtracting a small power from an even number leaves an even composite.",
+    "mathContext": "$\\neg$`SatisfiesErdos1142 n` for $n \\in \\{6, 9, 10\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["negation", "native_decide", "counterexample"],
+    "prerequisites": ["ann-e1142-definitions"]
+  },
+  {
+    "id": "ann-e1142-structural",
+    "proofId": "erdos-1142",
+    "range": { "startLine": 98, "endLine": 116 },
+    "type": "theorem",
+    "title": "Structural Constraints on Good Values",
+    "content": "Four structural theorems constraining which $n$ can satisfy the property:\n\n1. **Odd or 4** (`erdos1142_odd_or_4`): If $n \\ne 4$ satisfies the property, then $n$ is odd. Reason: if $n > 4$ is even, then $2 \\in$ powersOfTwoBetween, and $n - 2$ is even and $> 2$, hence composite. (sorry)\n\n2. **At least 4** (`erdos1142_ge_4`): $n$ must be $\\ge 4$ for the property to hold (need at least one power of 2 in $(1, n)$, namely 2). (sorry)\n\n3. **$n - 2$ prime** (`erdos1142_n_minus_2_prime`): Since $2 \\in$ powersOfTwoBetween for all $n \\ge 4$, the property always requires $n - 2$ to be prime. (sorry)\n\n4. **Odd for $n > 4$** (`erdos1142_mod2`): $n \\% 2 = 1$ when $n > 4$. (sorry)\n\nThese constraints mean good $n > 4$ must be odd with $n - 2$ prime, which already restricts candidates to $\\{p + 2 : p \\text{ prime}, p + 2 \\text{ odd}\\}$.",
+    "mathContext": "$n$ satisfies property $\\Rightarrow n = 4$ or ($n$ odd, $n - 2$ prime, $n \\ge 4$)",
+    "significance": "key",
+    "relatedConcepts": ["parity", "necessary condition", "twin primes"],
+    "prerequisites": ["ann-e1142-definitions"]
+  },
+  {
+    "id": "ann-e1142-logarithmic",
+    "proofId": "erdos-1142",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "theorem",
+    "title": "Logarithmic Growth of Constraints",
+    "content": "The number of powers of 2 in $(1, n)$ equals $\\lfloor \\log_2 n \\rfloor$ for $n \\ge 4$.\n\nThis means the number of **simultaneous primality conditions** grows logarithmically with $n$. For $n \\approx 10^6$, about 20 conditions must hold; for $n \\approx 10^{13}$, about 43.\n\nThe logarithmic growth is slow, but each condition is roughly independent with probability $\\sim 1/\\ln(n)$ by the prime number theorem. Heuristically, the probability that ALL $\\log_2 n$ conditions hold is approximately $(1/\\ln n)^{\\log_2 n} = n^{-\\log_2(\\ln n)/\\ln 2}$, which decreases superpolynomially. This strongly suggests finitely many solutions.\n\nCurrently `sorry` — requires relating `Finset.filter` cardinality to `Nat.log`.",
+    "mathContext": "$|\\{2^k : 1 < 2^k < n\\}| = \\lfloor \\log_2 n \\rfloor$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.log", "prime number theorem", "independence heuristic"],
+    "prerequisites": ["ann-e1142-definitions"]
+  },
+  {
+    "id": "ann-e1142-conjecture",
+    "proofId": "erdos-1142",
+    "range": { "startLine": 142, "endLine": 156 },
     "type": "definition",
-    "title": "Satisfieserdos1142",
-    "content": "def SatisfiesErdos1142",
-    "significance": "critical"
+    "title": "The Conjectures: Infinitude and o(log n)",
+    "content": "Two conjectures are formalized:\n\n1. **Basic conjecture** (`erdos_1142_conjecture`): The set $\\{n : \\text{SatisfiesErdos1142}(n)\\}$ is infinite. Uses `Set.Infinite`.\n\n2. **Stronger conjecture** (`erdos_1142_stronger_conjecture`): For every $\\varepsilon > 0$, eventually the count of $k$ with $n - 2^k$ prime is at most $\\varepsilon \\cdot \\log_2 n$. This says the 'density' of prime differences among powers of 2 tends to zero.\n\nThe stronger conjecture would imply finiteness — contradicting the basic conjecture. Erdős himself seems to have believed the set is finite.\n\nThe Lean formalization of the stronger conjecture is notable: it uses `Finset.range`, `Finset.filter`, and casts to $\\mathbb{R}$ to express the asymptotic density bound.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N : |\\{k : n - 2^k \\text{ prime}\\}| \\le \\varepsilon \\cdot \\log_2 n$",
+    "significance": "key",
+    "relatedConcepts": ["Set.Infinite", "o(log n)", "density of primes", "Problem #236"],
+    "prerequisites": ["ann-e1142-definitions", "ann-e1142-logarithmic"]
   },
   {
-    "id": "ann-e1142-satisfiesErdos1142Bool",
+    "id": "ann-e1142-completeness",
     "proofId": "erdos-1142",
-    "range": {
-      "startLine": 44,
-      "endLine": 46
-    },
-    "type": "definition",
-    "title": "Satisfieserdos1142Bool",
-    "content": "/-- Boolean version for computation. -/",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_value_4",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 57,
-      "endLine": 57
-    },
+    "range": { "startLine": 161, "endLine": 164 },
     "type": "theorem",
-    "title": "Erdos1142 Value 4",
-    "content": "theorem erdos1142_value_4",
-    "significance": "critical"
+    "title": "Completeness up to 105",
+    "content": "**Exhaustive verification**: The set of all $n \\le 105$ satisfying the property is exactly $\\{4, 7, 15, 21, 45, 75, 105\\}$.\n\nThis is proved by `native_decide`, which evaluates `(Finset.range 106).filter SatisfiesErdos1142` and checks equality with the expected set. This confirms the OEIS A039669 sequence is complete up to 105.\n\nCombined with Mientka & Weitzenkamp's computational search up to $2^{44}$, the sequence is known to be complete up to $\\approx 1.76 \\times 10^{13}$.",
+    "mathContext": "$\\{n \\le 105 : \\text{SatisfiesErdos1142}(n)\\} = \\{4, 7, 15, 21, 45, 75, 105\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["exhaustive search", "Finset.filter", "native_decide"],
+    "prerequisites": ["ann-e1142-definitions"]
   },
   {
-    "id": "ann-e1142-erdos1142_value_7",
+    "id": "ann-e1142-implication",
     "proofId": "erdos-1142",
-    "range": {
-      "startLine": 60,
-      "endLine": 60
-    },
+    "range": { "startLine": 171, "endLine": 174 },
     "type": "theorem",
-    "title": "Erdos1142 Value 7",
-    "content": "theorem erdos1142_value_7",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_value_15",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 63,
-      "endLine": 63
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Value 15",
-    "content": "theorem erdos1142_value_15",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_value_21",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 67,
-      "endLine": 67
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Value 21",
-    "content": "theorem erdos1142_value_21",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_value_45",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 71,
-      "endLine": 71
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Value 45",
-    "content": "theorem erdos1142_value_45",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_value_75",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 75,
-      "endLine": 75
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Value 75",
-    "content": "theorem erdos1142_value_75",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_value_105",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 80,
-      "endLine": 80
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Value 105",
-    "content": "theorem erdos1142_value_105",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_not_6",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 85,
-      "endLine": 85
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Not 6",
-    "content": "theorem erdos1142_not_6",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_not_9",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 88,
-      "endLine": 88
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Not 9",
-    "content": "theorem erdos1142_not_9",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_not_10",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 91,
-      "endLine": 91
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Not 10",
-    "content": "theorem erdos1142_not_10",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_odd_or_4",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 98,
-      "endLine": 100
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Odd Or 4",
-    "content": "theorem erdos1142_odd_or_4",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_ge_4",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 104,
-      "endLine": 105
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Ge 4",
-    "content": "theorem erdos1142_ge_4",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_n_minus_2_prime",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 109,
-      "endLine": 111
-    },
-    "type": "theorem",
-    "title": "Erdos1142 N Minus 2 Prime",
-    "content": "theorem erdos1142_n_minus_2_prime",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-erdos1142_mod2",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 114,
-      "endLine": 116
-    },
-    "type": "theorem",
-    "title": "Erdos1142 Mod2",
-    "content": "/-- n must be ≡ 1 (mod 2) for n > 4: the property forces n to be odd. -/",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e1142-powersOfTwoBetween_card",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 131,
-      "endLine": 133
-    },
-    "type": "theorem",
-    "title": "Powersoftwobetween Card",
-    "content": "theorem powersOfTwoBetween_card",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e1142-erdos_1142_conjecture",
-    "proofId": "erdos-1142",
-    "range": {
-      "startLine": 142,
-      "endLine": 143
-    },
-    "type": "definition",
-    "title": "Erdos 1142 Conjecture",
-    "content": "def erdos_1142_conjecture",
-    "significance": "critical"
+    "title": "Stronger Conjecture Implies Finiteness",
+    "content": "If Erdős's stronger conjecture holds (prime differences are $o(\\log n)$), then eventually no $n$ satisfies the full property.\n\n**Proof idea**: The property requires all $\\lfloor \\log_2 n \\rfloor$ differences to be prime. But the stronger conjecture says at most $\\varepsilon \\cdot \\log_2 n$ can be prime for any $\\varepsilon > 0$. Taking $\\varepsilon < 1$, eventually fewer than $\\lfloor \\log_2 n \\rfloor$ differences are prime, so the property fails.\n\nThis connects Problem #1142 to Problem #236: resolving the stronger conjecture would settle the infinitude question (in the negative). Currently `sorry`.",
+    "mathContext": "`erdos_1142_stronger_conjecture → ∃ N, ∀ n ≥ N, ¬SatisfiesErdos1142 n`",
+    "significance": "key",
+    "relatedConcepts": ["conditional result", "o(log n)", "Problem #236"],
+    "prerequisites": ["ann-e1142-conjecture"]
   }
 ]

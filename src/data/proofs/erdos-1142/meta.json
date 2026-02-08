@@ -11,6 +11,8 @@
     "tags": [
       "erdos",
       "number-theory",
+      "primes",
+      "computational",
       "open"
     ],
     "badge": "axiom",
@@ -22,13 +24,23 @@
     "mathlibDependencies": [
       {
         "theorem": "Tactic",
-        "description": "From Mathlib.Tactic",
+        "description": "Core tactics including native_decide, omega, simp, ring_nf",
         "module": "Mathlib.Tactic"
       },
       {
-        "theorem": "Basic",
-        "description": "From Mathlib.Data.Nat.Prime.Basic",
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate and basic properties",
         "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.isPowerOfTwo",
+        "description": "Power-of-two predicate used in powersOfTwoBetween filter",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate used for the conjecture statement",
+        "module": "Mathlib.Order.Filter.Basic"
       }
     ],
     "originalContributions": [
@@ -50,33 +62,83 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1142 concerns primes of the form n − 2^k. This problem remains OPEN.\n\nKnown results include: - The only known values are n ∈ {4, 7, 15, 21, 45, 75, 105} (OEIS A039669). - Mientka & Weitzenkamp (1969) verified no other n ≤ 2^44 satisfy this. - Vaughan (1973) showed the count of such n up to N is extremely sparse. - Erdős conjectured the number of 1 < 2^k < n for which n − 2^k is prime\n\nThis problem is catalogued at erdosproblems.com/1142.",
-    "problemStatement": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
-    "proofStrategy": "The formalization is structured in 175 lines of Lean 4 code. There are 6 sorry placeholders for structural results that can be filled in with additional work. The main conjecture is stated as an axiom since it is an open problem.",
+    "historicalContext": "Erdős Problem #1142 asks whether there exist infinitely many n such that n − 2^k is prime for every power of 2 with 1 < 2^k < n. The only known values are n ∈ {4, 7, 15, 21, 45, 75, 105}, forming OEIS sequence A039669. This strikingly short list — just 7 values — has resisted extension despite massive computational searches.\n\nMientka and Weitzenkamp (1969) verified that no additional values exist up to 2^44 ≈ 1.76 × 10^13, a computational feat for the era. Vaughan (1973) provided theoretical support for sparsity. The problem is closely connected to Erdős Problem #236, which conjectures that the number of k with n − 2^k prime is o(log n) — a stronger statement that would imply the set in Problem #1142 is finite.\n\nThe problem connects to Romanov's theorem (1934), which shows that a positive proportion of odd numbers can be written as p + 2^k (prime plus power of 2). Problem #1142 asks for the much stronger condition that ALL such representations yield primes. The heuristic argument using the prime number theorem suggests the probability decreases superpolynomially: roughly (1/ln n)^{log₂ n}, making infinitely many solutions extremely unlikely. The reference is Va99 §1.7.",
+    "problemStatement": "**Erdős Problem #1142**:\n\nAre there infinitely many $n$ (or any $n > 105$) such that $n - 2^k$ is prime for all $1 < 2^k < n$?\n\n**Formally**: Is the set $\\{n \\in \\mathbb{N} : \\forall k \\ge 1,\\; 2^k < n \\Rightarrow (n - 2^k) \\text{ is prime}\\}$ infinite?\n\nKnown values: $\\{4, 7, 15, 21, 45, 75, 105\\}$. None beyond 105 found up to $2^{44}$.",
+    "proofStrategy": "The formalization defines powersOfTwoBetween as a decidable Finset filter, enabling native_decide for computational verification of all 7 known values and 3 counterexamples. Structural theorems constrain good values (must be odd except 4, n-2 must be prime). The logarithmic growth of constraints is stated. Two conjectures are formalized: the basic infinitude question (using Set.Infinite) and Erdős's stronger o(log n) conjecture. The key conditional theorem shows the stronger conjecture implies finiteness. Six sorry placeholders remain for structural lemmas.",
     "keyInsights": [
-      "**The set of powers of 2 strictly between 1 and n. These are the values 2^k**: The set of powers of 2 strictly between 1 and n. These are the values 2^k",
-      "**An integer n satisfies the Erdős 1142 property if n − 2^k is prime**: An integer n satisfies the Erdős 1142 property if n − 2^k is prime",
-      "**Boolean version for computation.**: Boolean version for computation.",
-      "**Every number satisfying the property is odd, except for 4.**: Every number satisfying the property is odd, except for 4.",
-      "**If n satisfies the property, then n ≥ 4 (there must be at least one power of 2**: If n satisfies the property, then n ≥ 4 (there must be at least one power of 2"
+      "**Superpolynomial decay**: The number of primality conditions grows as ⌊log₂ n⌋, and each condition holds with probability ~1/ln n. The joint probability (1/ln n)^{log₂ n} = n^{−log₂(ln n)/ln 2} decreases faster than any polynomial, making infinitely many solutions heuristically impossible.",
+      "**Only 7 values known, none past 105**: Despite searching up to 2^44 ≈ 10^13, no eighth value has been found. The gap ratio from 105 to 10^13 is ~10^11, strongly suggesting the sequence is finite.",
+      "**Parity constraint**: Good values n > 4 must be odd — if n is even, then n − 2 is even and > 2, hence composite. This immediately halves the search space and explains why 4 is the only even value.",
+      "**Two-level conjecture structure**: The formalization captures both the basic question (infinitely many?) and Erdős's stronger conjecture (prime count is o(log n)). The stronger implies the answer is 'no', connecting #1142 to #236.",
+      "**Decidability enables computation**: The Finset-based definition makes the property decidable, so Lean can verify specific values automatically. The exhaustive completeness theorem for n ≤ 105 demonstrates the power of native_decide for concrete number theory."
     ]
   },
   "sections": [
     {
-      "id": "formalization",
-      "title": "Formalization",
-      "summary": "Complete formalization of Erdős Problem #1142",
+      "id": "header",
+      "title": "Problem Statement",
       "startLine": 1,
-      "endLine": 175
+      "endLine": 22,
+      "summary": "Documentation header stating the problem, known values (OEIS A039669), Mientka & Weitzenkamp's search bound, Vaughan's sparsity result, and connection to Problem #236."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 24,
+      "endLine": 27,
+      "summary": "Imports Mathlib.Tactic and Mathlib.Data.Nat.Prime.Basic; opens Finset namespace."
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions",
+      "startLine": 29,
+      "endLine": 50,
+      "summary": "Defines powersOfTwoBetween (Finset of powers of 2 in (1,n)), SatisfiesErdos1142 (Prop version requiring nonemptiness and primality), satisfiesErdos1142Bool (Bool for computation), and derives Decidable instance."
+    },
+    {
+      "id": "known-values",
+      "title": "Verification of Known Values",
+      "startLine": 52,
+      "endLine": 80,
+      "summary": "Computationally verifies all 7 known good values (4, 7, 15, 21, 45, 75, 105) using native_decide, with comments explaining each case."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Non-Examples",
+      "startLine": 82,
+      "endLine": 91,
+      "summary": "Proves ¬SatisfiesErdos1142 for n = 6, 9, 10 using native_decide."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 93,
+      "endLine": 133,
+      "summary": "Structural constraints: odd_or_4, ge_4, n_minus_2_prime, mod2 (all sorry), mod4 discussion, and powersOfTwoBetween_card = ⌊log₂ n⌋ (sorry)."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Conjectures",
+      "startLine": 135,
+      "endLine": 156,
+      "summary": "Formalizes two conjectures: basic infinitude (Set.Infinite) and stronger o(log n) density conjecture using Finset.filter and Real casting."
+    },
+    {
+      "id": "completeness-implication",
+      "title": "Completeness and Implications",
+      "startLine": 158,
+      "endLine": 175,
+      "summary": "Exhaustive verification that exactly 7 values ≤ 105 satisfy the property (native_decide), and proof that the stronger conjecture implies finiteness (sorry)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1142 (Primes of the form n − 2^k) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
-    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "summary": "This formalization captures Erdős Problem #1142 in Lean 4, verifying all 7 known values and 3 counterexamples computationally, establishing structural constraints on good values, and formalizing both the basic infinitude question and Erdős's stronger o(log n) conjecture. The conditional theorem connecting the two conjectures demonstrates the logical structure of the problem.",
+    "implications": "The formalization highlights the tension between the basic question (infinitely many?) and the stronger conjecture (o(log n) prime count), showing they cannot both hold. The decidable formulation enables Lean to serve as both a proof assistant and a computational verifier for concrete number theory, with native_decide handling exhaustive enumeration up to 105.",
     "openQuestions": [
-      "Resolve the conjecture",
-      "Fill in sorry placeholders with complete proofs",
-      "Strengthen connections to other Erdős problems"
+      "Does the sequence A039669 terminate at 105? The gap to 10^13 strongly suggests yes.",
+      "Can the o(log n) conjecture (Problem #236) be resolved, which would settle #1142 as finite?",
+      "Fill in the 6 sorry placeholders: parity constraints, n ≥ 4, n − 2 prime, and the powersOfTwoBetween cardinality formula",
+      "Is there a covering system argument that proves no n > 105 can satisfy all primality conditions simultaneously?"
     ]
   }
 }
