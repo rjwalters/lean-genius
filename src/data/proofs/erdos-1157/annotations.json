@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1157-header",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1157, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1157: General Extremal Numbers for r-Uniform Hypergraphs\n\nSource: https://erdosproblems.com/1157\nStatus: OPEN (partial results known)\n\nStatement:\nDetermine the extremal number ex_r(n, F) where F is the family of all r-uniform\nhypergraphs with k vertices and s edges.\n\nThe Brown-Erdős-Sós conjecture asserts: for r > t ≥ 2 and s ≥ 3,\n  ex_t(n, F) = o(n^t) whenever k ≥ (r-t)s + t + 1.\n\nKnown Results:\n- Brown-Erdős-Sós (1973): Lower bound ex_r(n, F) ≫ n^{(rs-k)/(s-1)} for k > r, s > 1\n",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1157-extremalNumber",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 42,
+      "endLine": 42
+    },
+    "type": "axiom",
+    "title": "Extremalnumber",
+    "content": "axiom extremalNumber",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-extremalNumber_mono_k",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 46,
+      "endLine": 47
+    },
+    "type": "axiom",
+    "title": "Extremalnumber Mono K",
+    "content": "axiom extremalNumber_mono_k",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-extremalNumber_mono_s",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 51,
+      "endLine": 52
+    },
+    "type": "axiom",
+    "title": "Extremalnumber Mono S",
+    "content": "axiom extremalNumber_mono_s",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-besExponent",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 65,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Besexponent",
+    "content": "noncomputable def besExponent",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1157-besExponent_pos",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 69,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "Besexponent Pos",
+    "content": "/-- The BES lower bound exponent is positive when rs > k and s ≥ 2. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-brown_erdos_sos_lower_bound",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 81,
+      "endLine": 83
+    },
+    "type": "axiom",
+    "title": "Brown Erdos Sos Lower Bound",
+    "content": "axiom brown_erdos_sos_lower_bound",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1157-IsLittleO",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 92,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Islittleo",
+    "content": "/-- Little-o notation for sequences: f(n) = o(g(n)) as n → ∞. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1157-BESConjecture",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 98,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Besconjecture",
+    "content": "def BESConjecture",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1157-erdos716_parameter_check",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 111,
+      "endLine": 111
+    },
+    "type": "theorem",
+    "title": "Erdos716 Parameter Check",
+    "content": "theorem erdos716_parameter_check",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1157-erdos1076_beyond_bes",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 117,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Erdos1076 Beyond Bes",
+    "content": "theorem erdos1076_beyond_bes",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1157-ruzsa_szemeredi_bes",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 126,
+      "endLine": 127
+    },
+    "type": "axiom",
+    "title": "Ruzsa Szemeredi Bes",
+    "content": "axiom ruzsa_szemeredi_bes",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-glock_bes_k4",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 130,
+      "endLine": 131
+    },
+    "type": "axiom",
+    "title": "Glock Bes K4",
+    "content": "/-- **Glock (2019):** The (7,4)-case. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-delcourt_postle_theorem",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 135,
+      "endLine": 136
+    },
+    "type": "axiom",
+    "title": "Delcourt Postle Theorem",
+    "content": "axiom delcourt_postle_theorem",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-besExponent_decreasing",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 143,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "Besexponent Decreasing",
+    "content": "/-- The BES exponent decreases as k increases. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-besExponent_zero_at_rs",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 153,
+      "endLine": 156
+    },
+    "type": "theorem",
+    "title": "Besexponent Zero At Rs",
+    "content": "/-- When k = rs, the BES exponent is 0. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-besExponent_6_3",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 159,
+      "endLine": 161
+    },
+    "type": "theorem",
+    "title": "Besexponent 6 3",
+    "content": "/-- The BES exponent for the (6,3) case is 3/2. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-besExponent_7_4",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 164,
+      "endLine": 166
+    },
+    "type": "theorem",
+    "title": "Besexponent 7 4",
+    "content": "/-- The BES exponent for the (7,4) case (Glock 2019). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-besExponent_le_one_at_bes_thre",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 171,
+      "endLine": 180
+    },
+    "type": "theorem",
+    "title": "Besexponent Le One At Bes Threshold",
+    "content": "theorem besExponent_le_one_at_bes_threshold",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1157-erdos_1157_3uniform_resolved",
+    "proofId": "erdos-1157",
+    "range": {
+      "startLine": 187,
+      "endLine": 189
+    },
+    "type": "theorem",
+    "title": "Erdos 1157 3Uniform Resolved",
+    "content": "/-- The 3-uniform case of the BES conjecture is fully resolved. -/",
+    "significance": "critical"
+  }
+]

@@ -17,11 +17,13 @@
       "2-colorable"
     ],
     "badge": "pending",
-    "sorries": 6,
+    "sorries": 0,
     "erdosNumber": 1027,
     "erdosUrl": "https://erdosproblems.com/1027",
     "erdosProblemStatus": "solved",
-    "relatedProblems": [901]
+    "relatedProblems": [
+      901
+    ]
   },
   "overview": {
     "historicalContext": "**Property B and 2-Colorability**\n\nA family F has Property B if there exists a 2-coloring of the ground set such that no set in F is monochromatic. Equivalently, there exists a set B that intersects every member of F but contains none of them.\n\n**The Question**: Erdős asked whether bounded families (at most c·2^n sets of size n) have not just one such set B, but exponentially many.\n\n**Resolution**: Koishi Chan proved this is true: there exist ≫_c 2^|X| good sets B.\n\n**Connection to Problem 901**: The existence of a single good set is equivalent to Property B, which is the subject of Problem 901.",

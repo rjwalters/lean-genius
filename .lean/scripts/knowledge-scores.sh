@@ -29,7 +29,7 @@ for file in src/data/research/problems/*.json; do
   id=$(basename "$file" .json)
 
   # Get pool status
-  pool_status=$(jq -r --arg id "$id" '.candidates[] | select(.id == $id) | .status // "unknown"' research/candidate-pool.json 2>/dev/null)
+  pool_status=$(jq -r --arg id "$id" '.candidates[] | select(.id == $id) | .status // "unknown"' .lean/state/candidate-pool.json 2>/dev/null)
 
   # Skip if status filter provided and doesn't match
   if [ -n "$STATUS_FILTER" ] && [ "$pool_status" != "$STATUS_FILTER" ]; then

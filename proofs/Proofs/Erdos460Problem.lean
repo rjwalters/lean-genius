@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #460: Greedy Coprime Sieve Reciprocals
 
 Let a₀ = 0, a₁ = 1. Define aₖ as the least integer greater than aₖ₋₁
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: The Greedy Coprime Sieve Sequence
 -/
 
@@ -44,7 +44,7 @@ axiom sieve_greedy (n : ℕ) (hn : n ≥ 2) (k : ℕ) (hk : k ≥ 2) :
     (∀ m, a (k - 1) < m → m < a k →
       ∃ i, i < k ∧ ¬Nat.Coprime (n - m) (n - a i))
 
-/-!
+/-
 ## Section II: The Sequence Terminates Before n
 -/
 
@@ -53,7 +53,7 @@ noncomputable def sieveCount (n : ℕ) : ℕ :=
   Finset.card ((Finset.range n).filter (fun a =>
     ∃ k, greedyCoprimeSieve n k = a ∧ a < n))
 
-/-!
+/-
 ## Section III: The Reciprocal Sum
 -/
 
@@ -64,7 +64,7 @@ noncomputable def sieveReciprocalSum (n : ℕ) : ℝ :=
       (1 : ℝ) / (greedyCoprimeSieve n k : ℝ)
     else 0
 
-/-!
+/-
 ## Section IV: The Conjecture
 -/
 
@@ -78,7 +78,7 @@ def ErdosProblem460 : Prop :=
     ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
       sieveReciprocalSum n > M
 
-/-!
+/-
 ## Section V: Known Bounds
 -/
 
@@ -95,7 +95,7 @@ axiom sieve_conjectured_bound :
       ∀ n : ℕ, n ≥ 2 → ∀ k : ℕ, k ≥ 2 →
         (greedyCoprimeSieve n k : ℝ) ≤ C * (k : ℝ) * Real.log (k : ℝ)
 
-/-!
+/-
 ## Section VI: Least Prime Factor Connection
 -/
 
@@ -118,7 +118,7 @@ axiom filtered_sum_implies_full :
     (∀ M : ℝ, M > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀, leastPrimeFilteredSum n > M) →
     ErdosProblem460
 
-/-!
+/-
 ## Section VII: Restricted Sums
 -/
 

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #889: New Prime Factors in Consecutive Integers
 
 For k ≥ 0 and n ≥ 1, let v(n,k) count the prime factors of n+k that
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: New Prime Factor Count
 -/
 
@@ -31,7 +31,7 @@ noncomputable def newPrimeFactorCount (n k : ℕ) : ℕ :=
   ((n + k).primeFactors.filter (fun p =>
     ∀ i ∈ Finset.range k, ¬ p ∣ n + i)).card
 
-/-!
+/-
 ## Section II: The Maximum v₀
 -/
 
@@ -40,7 +40,7 @@ factors over all shifts k. -/
 noncomputable def v₀ (n : ℕ) : ℕ :=
   ⨆ k ∈ Finset.range (n + 1), newPrimeFactorCount n k
 
-/-!
+/-
 ## Section III: The Conjecture
 -/
 
@@ -51,7 +51,7 @@ the maximum new prime factor count v₀(n) exceeds M. -/
 def ErdosProblem889 : Prop :=
   ∀ M : ℕ, ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ → v₀ n > M
 
-/-!
+/-
 ## Section IV: Known Results
 -/
 
@@ -65,7 +65,7 @@ n ∈ {0, 1, 2, 3, 4, 7, 8, 16}. -/
 axiom v0_exceptions :
     ∀ n : ℕ, v₀ n ≤ 1 ↔ n ∈ ({0, 1, 2, 3, 4, 7, 8, 16} : Finset ℕ)
 
-/-!
+/-
 ## Section V: Generalized Version v_l
 -/
 
@@ -81,7 +81,7 @@ def ErdosProblem889General : Prop :=
 axiom general_implies_base :
     ErdosProblem889General → ErdosProblem889
 
-/-!
+/-
 ## Section VI: Finiteness of v₁(n) = 1
 -/
 
@@ -90,7 +90,7 @@ Erdős and Selfridge could not even prove v₁(n) ≥ 2 for all large n. -/
 axiom v1_eq_1_finiteness_question :
     ∃ bound : ℕ, ∀ n ≥ bound, vShifted 1 n > 1
 
-/-!
+/-
 ## Section VII: Exact Power Variant V(n,k)
 -/
 

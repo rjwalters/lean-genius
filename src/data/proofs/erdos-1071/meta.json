@@ -1,6 +1,6 @@
 {
   "id": "erdos-1071",
-  "title": "Erdős Problem #1071: Maximal Packings of Unit Segments in the Unit Square",
+  "title": "Maximal Packings of Unit Segments in the Unit Square",
   "slug": "erdos-1071",
   "description": "Can finitely many non-intersecting unit segments in [0,1]² be maximal? Yes (Danzer). Can a countably infinite maximal packing exist in some region? Open.",
   "meta": {
@@ -8,61 +8,99 @@
     "sourceUrl": "https://erdosproblems.com/1071",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1071Problem.lean",
-    "tags": ["geometry", "combinatorial geometry", "packing"],
+    "tags": [
+      "erdos",
+      "geometry",
+      "combinatorial-geometry",
+      "packing"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 1071,
     "erdosUrl": "https://erdosproblems.com/1071",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-01",
+    "mathlib_version": "4.x"
   },
   "overview": {
-    "historicalContext": "Erdős and Tóth asked about maximal packings of unit line segments in the unit square. Danzer solved part (a), showing a finite maximal packing exists and earning $10 from Erdős. The question of whether a countably infinite maximal packing exists in some region remains open.",
+    "historicalContext": "Erdős and Tóth posed two questions about maximal packings of unit line segments in the plane. A packing of unit segments is maximal if no additional unit segment can be placed without intersecting an existing one — every potential segment is blocked.\n\nPart (a) asked whether a finite maximal packing exists in the unit square [0,1]². Danzer resolved this affirmatively, constructing an explicit finite set of non-intersecting unit segments in [0,1]² such that no further unit segment fits. Erdős paid him $10 for the solution. The construction relies on carefully placed segments that collectively block every possible orientation and position.\n\nPart (b) remains open: does there exist any region R in ℝ² with a countably infinite maximal packing of disjoint unit segments? Note that the unit square [0,1]² can contain at most finitely many disjoint unit segments (by a compactness argument), so the question requires working in an unbounded or sufficiently large region. A variant allows segments to touch at their endpoints only (endpoint-intersection), asking whether finite maximal packings exist under this relaxed condition. The formalization uses rational-coordinate segments as an abstraction.",
     "problemStatement": "Two questions: (a) Is there a finite maximal set of pairwise non-intersecting unit segments in [0,1]²? (Solved: yes, by Danzer) (b) Is there a region R with a countably infinite maximal set of disjoint unit segments?",
-    "proofStrategy": "We abstract unit segments with rational endpoints, define packings and maximality, and axiomatize Danzer's finite solution. The open countably-infinite question and an endpoint-intersection variant are stated as axioms.",
+    "proofStrategy": "We define UnitSegment with rational endpoints, InUnitSquare, SegmentInSquare, and axiomatize AreDisjoint with symmetry. IsPacking requires all segments in the square and pairwise disjoint. IsMaximalPacking adds the blocking condition. Danzer's result is axiomatized. For part (b), Region is defined as Set (ℚ × ℚ), with IsRegionPacking and IsMaximalRegionPacking. The endpoint-intersection variant uses EndpointDisjoint.",
     "keyInsights": [
-      "Maximality means no additional unit segment fits without intersecting an existing one",
-      "Danzer constructed an explicit finite maximal packing in [0,1]²",
-      "The countably infinite question requires working in a general region, not just [0,1]²",
-      "An endpoint-intersection variant allows segments to touch at their endpoints only"
+      "**Maximality is a blocking condition**: A packing is maximal when every possible new unit segment intersects some existing one. This is a geometric analogue of a maximal independent set.",
+      "**Danzer's finite construction**: Danzer showed a finite set of disjoint unit segments in [0,1]² can block all possible placements, resolving part (a) and earning $10 from Erdős.",
+      "**Infinite packings need larger regions**: The unit square can hold only finitely many disjoint unit segments (compactness), so part (b) requires working in an unbounded region R.",
+      "**Endpoint-intersection variant**: Relaxing the disjointness to allow touching at endpoints changes the problem character — can a finite set still be maximal?",
+      "**Abstraction via rational coordinates**: The formalization uses ℚ × ℚ endpoints and abstracts the unit-length condition, focusing on the combinatorial structure of packings."
+    ],
+    "mathlibDependencies": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Tactic"
+    ],
+    "originalContributions": [
+      "UnitSegment: structure with rational endpoints and unit_length",
+      "InUnitSquare: point in [0,1]² predicate",
+      "SegmentInSquare: both endpoints in unit square",
+      "AreDisjoint: axiomatized interior-disjointness with symmetry",
+      "IsPacking: all in square + pairwise disjoint",
+      "IsMaximalPacking: packing + blocking condition",
+      "IsFinitePacking: packing + finite",
+      "IsCountablyInfinitePacking: packing + countable + infinite",
+      "danzer_finite_maximal: axiom for Danzer's solution",
+      "IsRegionPacking: packing restricted to a region",
+      "IsMaximalRegionPacking: maximal packing in a region",
+      "ErdosProblem1071b: countably infinite maximal packing existence",
+      "ErdosProblem1071_endpoint_variant: endpoint-intersection variant"
     ]
   },
   "sections": [
     {
       "id": "segment-abstractions",
       "title": "Segment Abstractions",
-      "startLine": 17,
-      "endLine": 43,
-      "summary": "Defines unit segments, the unit square, segment containment, and disjointness."
+      "startLine": 24,
+      "endLine": 45,
+      "summary": "Defines UnitSegment (ℚ × ℚ endpoints), InUnitSquare, SegmentInSquare, AreDisjoint (axiom), and disjoint_symm."
     },
     {
       "id": "packing-defs",
       "title": "Packing Definitions",
-      "startLine": 45,
-      "endLine": 63,
-      "summary": "Defines packings, maximal packings, finite packings, and countably infinite packings."
+      "startLine": 47,
+      "endLine": 66,
+      "summary": "Defines IsPacking (in square + pairwise disjoint), IsMaximalPacking (blocking), IsFinitePacking (finite), IsCountablyInfinitePacking (countable + infinite)."
     },
     {
       "id": "danzer",
       "title": "Danzer's Result",
-      "startLine": 65,
-      "endLine": 69,
-      "summary": "Axiomatizes Danzer's solution: a finite maximal packing exists."
+      "startLine": 68,
+      "endLine": 73,
+      "summary": "Axiomatizes danzer_finite_maximal: existence of a finite maximal packing of unit segments in [0,1]²."
     },
     {
-      "id": "open-problems",
-      "title": "The Open Problem and Variants",
-      "startLine": 71,
-      "endLine": 99,
-      "summary": "States the countably-infinite question and the endpoint-intersection variant."
+      "id": "region-packing",
+      "title": "Region Packings",
+      "startLine": 75,
+      "endLine": 95,
+      "summary": "Defines Region, IsRegionPacking, IsMaximalRegionPacking. Axiomatizes ErdosProblem1071b: countably infinite maximal packing in some region."
+    },
+    {
+      "id": "endpoint-variant",
+      "title": "Endpoint-Intersection Variant",
+      "startLine": 97,
+      "endLine": 110,
+      "summary": "Axiomatizes EndpointDisjoint and the endpoint-intersection variant: finite maximal packing allowing endpoint touching."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 1071 explores maximal packings of unit segments. Danzer's finite construction settles part (a), but the countably-infinite question and endpoint variant remain open.",
-    "implications": "Understanding maximal segment packings connects to computational geometry, covering problems, and the geometric structure of packing obstructions.",
+    "summary": "Erdős Problem 1071 explores maximal packings of unit segments. Danzer's finite construction settles part (a) ($10 prize), but the countably-infinite question (part b) and endpoint variant remain open. 0 sorries.",
+    "implications": "Understanding maximal segment packings connects to computational geometry, covering problems, and the geometric structure of packing obstructions in the plane.",
     "openQuestions": [
       "Is there a region with a countably infinite maximal packing of unit segments?",
       "Can a finite maximal packing exist under endpoint-intersection rules?",
-      "What is the minimum size of a finite maximal packing in [0,1]²?"
+      "What is the minimum size of a finite maximal packing in [0,1]²?",
+      "Does Danzer's construction generalize to higher dimensions?"
     ]
   }
 }

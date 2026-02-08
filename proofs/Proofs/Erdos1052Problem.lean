@@ -18,7 +18,7 @@ import Mathlib
 
 namespace Erdos1052
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -31,7 +31,7 @@ proper unitary divisors. -/
 def IsUnitaryPerfect (n : ℕ) : Prop :=
   (properUnitaryDivisors n).sum id = n ∧ 0 < n
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -58,7 +58,7 @@ theorem odd_of_unitaryDivisor_of_odd {n d : ℕ} (hn : Odd n) (hd : d ∣ n)
   have h2_dvd_n : 2 ∣ n := dvd_trans h2_dvd_d hd
   exact hn.not_two_dvd_nat h2_dvd_n
 
-/-!
+/-
 ## Parity Lemmas for Sums of Odd Numbers
 -/
 
@@ -66,7 +66,7 @@ theorem odd_of_unitaryDivisor_of_odd {n d : ℕ} (hn : Odd n) (hd : d ∣ n)
 axiom sum_odd_parity {s : Finset ℕ} (hs : ∀ x ∈ s, Odd x) :
     Odd (s.sum id) ↔ Odd s.card
 
-/-!
+/-
 ## Main Theorem: Unitary Perfect Numbers are Even
 
 Proof approach:
@@ -96,7 +96,7 @@ parity, giving a contradiction.
 -/
 axiom even_of_isUnitaryPerfect (n : ℕ) (hn : IsUnitaryPerfect n) : Even n
 
-/-!
+/-
 ## Verified Examples
 
 These verify specific unitary perfect numbers using the definition.
@@ -128,7 +128,7 @@ Sum: 1 + 2 + 5 + 9 + 10 + 18 + 45 = 90 ✓
 -/
 axiom isUnitaryPerfect_90 : IsUnitaryPerfect 90
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 Are there only finitely many unitary perfect numbers?
@@ -150,7 +150,7 @@ No odd unitary perfect numbers exist (by even_of_isUnitaryPerfect).
 -/
 axiom erdos_1052_conjecture : { n : ℕ | IsUnitaryPerfect n }.Finite
 
-/-!
+/-
 ## Properties of Unitary Divisors
 -/
 
@@ -182,7 +182,7 @@ we need j = 0 (giving d = 1) or j = k (giving d = p^k).
 axiom unitaryDivisors_primePow {p k : ℕ} (hp : p.Prime) (hk : 0 < k) :
     (Finset.Ico 1 (p^k + 1)).filter (fun d => d ∣ p^k ∧ d.Coprime (p^k / d)) = {1, p^k}
 
-/-!
+/-
 ## Multiplicativity of the Unitary Divisor Sum
 
 For coprime m, n: σ*(mn) = σ*(m) · σ*(n)
@@ -196,7 +196,7 @@ via d = d₁ · d₂.
 axiom unitaryDivisorSum_mul_coprime {m n : ℕ} (hm : 0 < m) (hn : 0 < n) (hcop : m.Coprime n) :
     unitaryDivisorSum (m * n) = unitaryDivisorSum m * unitaryDivisorSum n
 
-/-!
+/-
 ## Pairing Argument for Unitary Divisors
 
 A key property: if d is a unitary divisor of n (gcd(d, n/d) = 1),
@@ -213,7 +213,7 @@ theorem unitary_complement {n d : ℕ} (hd : d ∣ n) (hn : 0 < n)
   rw [Nat.div_div_self hd hn_ne]
   exact hcop.symm
 
-/-!
+/-
 ## Further Properties
 
 The pairing d ↔ n/d means:

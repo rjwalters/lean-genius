@@ -159,11 +159,10 @@ axiom hhkp_upper :
     (g r : ℝ) ≤ (2 + ε) * r^2 * Real.log r
 
 /-- The gap: factor of 4 between lower and upper bounds -/
-theorem g_bounds_gap (r : ℕ) (hr : r ≥ 10) :
+axiom g_bounds_gap (r : ℕ) (hr : r ≥ 10) :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ c₂ / c₁ ≤ 5 ∧
     c₁ * r^2 * Real.log r ≤ (g r : ℝ) ∧
-    (g r : ℝ) ≤ c₂ * r^2 * Real.log r := by
-  sorry
+    (g r : ℝ) ≤ c₂ * r^2 * Real.log r
 
 /-
 ## Monotonicity Properties

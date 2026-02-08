@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 462: Least Prime Factor Sums in Short Intervals
 
 Let `p(n)` denote the least prime factor of `n`. There exists `c > 0`
@@ -16,7 +16,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Least prime factor -/
+/- ## Least prime factor -/
 
 /-- The least prime factor of `n` (returns 0 for `n ≤ 1`). -/
 noncomputable def leastPrimeFactor (n : ℕ) : ℕ :=
@@ -35,7 +35,7 @@ axiom leastPrimeFactor_dvd (n : ℕ) (hn : 2 ≤ n) :
 axiom leastPrimeFactor_le (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hpn : p ∣ n) :
     leastPrimeFactor n ≤ p
 
-/-! ## Sums involving least prime factor -/
+/- ## Sums involving least prime factor -/
 
 /-- Sum of `p(n)/n` over composites in `{2, …, x-1}`. -/
 noncomputable def compositeSum (x : ℕ) : ℝ :=
@@ -48,7 +48,7 @@ noncomputable def intervalSum (a b : ℕ) : ℝ :=
     (Finset.Icc a b).sum fun n =>
       (leastPrimeFactor n : ℝ) / (n : ℝ)
 
-/-! ## Known asymptotics -/
+/- ## Known asymptotics -/
 
 /-- There exists `c > 0` such that `∑_{n<x, composite} p(n)/n ~ c·√x/(log x)²`.
 We state a one-sided bound: the sum is `Θ(√x/(log x)²)`. -/
@@ -58,7 +58,7 @@ axiom compositeSum_asymptotic :
         c₁ * (x : ℝ) ^ (1/2 : ℝ) / (Real.log x) ^ 2 ≤ compositeSum x ∧
         compositeSum x ≤ c₂ * (x : ℝ) ^ (1/2 : ℝ) / (Real.log x) ^ 2
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 462: There exists `C > 0` such that the sum
 `∑_{x ≤ n ≤ x + C·√x·(log x)²} p(n)/n` is bounded below by
@@ -69,7 +69,7 @@ def ErdosProblem462 : Prop :=
         ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
           δ ≤ intervalSum x ⌊(x : ℝ) + C * (x : ℝ) ^ (1/2 : ℝ) * (Real.log x) ^ 2⌋₊
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- The least prime factor of a prime is itself. -/
 axiom leastPrimeFactor_prime_self (p : ℕ) (hp : p.Prime) :

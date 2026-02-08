@@ -26,7 +26,7 @@ open Nat Set Finset BigOperators
 
 namespace Erdos885
 
-/-!
+/-
 ## Core Definitions
 
 The factor difference set D(n) captures the possible differences between
@@ -40,7 +40,7 @@ between factor pairs: D(n) = {|a - b| : n = ab}. -/
 def factorDifferenceSet (n : ℕ) : Set ℕ :=
   {d | ∃ a b : ℕ, n = a * b ∧ d = Int.natAbs ((a : ℤ) - b)}
 
-/-!
+/-
 ## Basic Properties
 -/
 
@@ -59,7 +59,7 @@ axiom factorDifferenceSet_one : factorDifferenceSet 1 = {0}
 axiom factorDifferenceSet_prime (p : ℕ) (hp : p.Prime) :
     factorDifferenceSet p = {p - 1}
 
-/-!
+/-
 ## The Main Conjecture
 
 For every k ≥ 1, find k distinct integers whose factor difference sets
@@ -79,7 +79,7 @@ For every k ≥ 1, there exists a k-common set.
 Solved for k ≤ 4, open for k ≥ 5. -/
 axiom erdos_885_conjecture : ∀ k ≥ 1, ∃ Ns : Finset ℕ, IsKCommonSet k Ns
 
-/-!
+/-
 ## Solved Cases
 -/
 
@@ -103,7 +103,7 @@ Bremner used computational search combined with number-theoretic
 techniques to find four integers with ≥ 4 common factor differences. -/
 axiom bremner_k4 : ∃ Ns : Finset ℕ, IsKCommonSet 4 Ns
 
-/-!
+/-
 ## The Open Case: k ≥ 5
 
 The conjecture remains open for all k ≥ 5. The difficulty increases
@@ -118,7 +118,7 @@ axiom open_k5 :
     (∃ Ns : Finset ℕ, IsKCommonSet 5 Ns) ∨
     (¬∃ Ns : Finset ℕ, IsKCommonSet 5 Ns)
 
-/-!
+/-
 ## Computational Observations
 -/
 
@@ -134,7 +134,7 @@ axiom highly_composite_larger_D :
       n.divisors.card < m.divisors.card →
       (factorDifferenceSet n).ncard ≤ (factorDifferenceSet m).ncard
 
-/-!
+/-
 ## Connection to Divisor Structure
 -/
 
@@ -144,7 +144,7 @@ axiom mem_factorDifferenceSet_iff_divisor (n : ℕ) (hn : 0 < n) (d : ℕ) :
     d ∈ factorDifferenceSet n ↔
     ∃ a ∈ n.divisors, d = Int.natAbs ((a : ℤ) - (n / a : ℤ))
 
-/-!
+/-
 ## Examples
 
 We verify that specific elements are in factor difference sets.
@@ -170,7 +170,7 @@ theorem one_mem_D_6 : 1 ∈ factorDifferenceSet 6 :=
 theorem five_mem_D_6 : 5 ∈ factorDifferenceSet 6 :=
   ⟨1, 6, rfl, rfl⟩
 
-/-!
+/-
 ## Intersection Properties
 -/
 
@@ -179,7 +179,7 @@ theorem one_mem_intersection_D6_D12 :
     1 ∈ factorDifferenceSet 6 ∩ factorDifferenceSet 12 :=
   ⟨one_mem_D_6, one_mem_D_12⟩
 
-/-!
+/-
 ## Historical Context
 
 The factor difference set was introduced by Erdős and Rosenfeld in 1997

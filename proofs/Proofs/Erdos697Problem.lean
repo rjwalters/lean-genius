@@ -39,7 +39,7 @@ open Real Nat
 
 namespace Erdos697
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -60,7 +60,7 @@ noncomputable def delta (m : ℕ) (α : ℝ) : ℝ :=
   if m ≤ 1 then 0
   else Filter.liminf (fun N => coveredCount m α N / N) Filter.atTop
 
-/-!
+/-
 ## Part 2: The Threshold Question
 -/
 
@@ -78,7 +78,7 @@ theorem hallThreshold_in_range : hallThreshold > 1 := by
   -- 1/log 2 > 1 ⟺ 1 > log 2, which is true since log 2 < 1
   sorry
 
-/-!
+/-
 ## Part 3: Trivial Bounds
 -/
 
@@ -92,7 +92,7 @@ axiom trivial_bound_proof :
   -- which → 0 when α < 1
   True
 
-/-!
+/-
 ## Part 4: Erdős's Claim for α = 1
 -/
 
@@ -100,10 +100,9 @@ axiom trivial_bound_proof :
 axiom erdos_alpha_one :
   Filter.Tendsto (fun m => delta m 1) Filter.atTop (nhds 0)
 
-/-- Erdős claimed this in [Er79e] but didn't publish a full proof -/
-axiom erdos_claim_source : True
+/- Erdős claimed this in [Er79e] but didn't publish a full proof -/
 
-/-!
+/-
 ## Part 5: Hall's Theorem (1992)
 -/
 
@@ -128,11 +127,11 @@ theorem threshold_is_one_over_log_two :
   obtain ⟨hSharp, hBelow, hAbove⟩ := hall_theorem
   exact ⟨hSharp, hallThreshold, rfl, hallThreshold_in_range, hBelow, hAbove⟩
 
-/-!
+/-
 ## Part 6: Why 1/log 2?
 -/
 
-/-- Intuition: The number of d ≡ 1 (mod m) with d < x is about x/m.
+/- Intuition: The number of d ≡ 1 (mod m) with d < x is about x/m.
     For x = exp(m^α), this is exp(m^α)/m.
 
     For this to "cover" most integers, we need:
@@ -140,7 +139,6 @@ theorem threshold_is_one_over_log_two :
 
     The threshold comes from the sieve-theoretic analysis of when
     enough divisors exist to cover a positive density of integers. -/
-axiom intuition_for_threshold : True
 
 /-- The value 1/log 2 arises from the multiplicative structure of divisors -/
 axiom why_one_over_log_two :
@@ -148,7 +146,7 @@ axiom why_one_over_log_two :
   -- the distribution of prime factors in numbers of the form d ≡ 1 (mod m)
   True
 
-/-!
+/-
 ## Part 7: Behavior at Threshold
 -/
 
@@ -163,18 +161,16 @@ axiom at_threshold_open :
   -- This is a more subtle question not addressed in Hall (1992)
   True
 
-/-!
+/-
 ## Part 8: Connection to Problem #696
 -/
 
-/-- Problem #696 is related (similar divisibility questions) -/
-axiom related_problem_696 : True
+/- Problem #696 is related (similar divisibility questions) -/
 
-/-- The problems share the theme of understanding when divisors d ≡ 1 (mod m)
+/- The problems share the theme of understanding when divisors d ≡ 1 (mod m)
     sufficiently cover integers -/
-axiom shared_theme : True
 
-/-!
+/-
 ## Part 9: Examples
 -/
 
@@ -183,26 +179,22 @@ axiom shared_theme : True
     So δ(2, α) = 1 for all α > 0. -/
 axiom example_m_2 : ∀ α : ℝ, α > 0 → delta 2 α = 1
 
-/-- For m = p (large prime): d ≡ 1 (mod p) means d = 1 + kp.
+/- For m = p (large prime): d ≡ 1 (mod p) means d = 1 + kp.
     The smallest such d > 1 is 1 + p.
     The density depends on how many integers are divisible by such d. -/
-axiom example_m_prime : True
 
-/-!
+/-
 ## Part 10: Historical Context
 -/
 
-/-- The problem appeared in Erdős's 1979 paper in Astérisque -/
-axiom erdos_1979_source : True
+/- The problem appeared in Erdős's 1979 paper in Astérisque -/
 
-/-- "Some unconventional problems in number theory" contained several
+/- "Some unconventional problems in number theory" contained several
     related problems about divisibility and density -/
-axiom unconventional_problems : True
 
-/-- Hall's 1992 paper resolved this and related questions -/
-axiom hall_1992_paper : True
+/- Hall's 1992 paper resolved this and related questions -/
 
-/-!
+/-
 ## Part 11: Main Results
 -/
 

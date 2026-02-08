@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1071 — Maximal Packings of Unit Segments in the Unit Square
 
 Erdős and Tóth asked two questions about unit line segments in [0,1]²:
@@ -21,7 +21,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Segment Abstractions -/
+/- ## Segment Abstractions -/
 
 /-- A unit segment in ℝ², represented by its two endpoints -/
 structure UnitSegment where
@@ -44,7 +44,7 @@ axiom AreDisjoint : UnitSegment → UnitSegment → Prop
 /-- Disjointness is symmetric -/
 axiom disjoint_symm (s t : UnitSegment) : AreDisjoint s t → AreDisjoint t s
 
-/-! ## Packing Definitions -/
+/- ## Packing Definitions -/
 
 /-- A packing: a set of pairwise disjoint unit segments in the unit square -/
 def IsPacking (S : Set UnitSegment) : Prop :=
@@ -65,14 +65,14 @@ def IsFinitePacking (S : Set UnitSegment) : Prop :=
 def IsCountablyInfinitePacking (S : Set UnitSegment) : Prop :=
   IsPacking S ∧ S.Countable ∧ Set.Infinite S
 
-/-! ## Danzer's Result -/
+/- ## Danzer's Result -/
 
 /-- Erdős Problem 1071(a) — SOLVED by Danzer:
     There exists a finite maximal packing of unit segments in [0,1]² -/
 axiom danzer_finite_maximal :
   ∃ S : Set UnitSegment, IsFinitePacking S ∧ IsMaximalPacking S
 
-/-! ## The Open Problem -/
+/- ## The Open Problem -/
 
 /-- A region R in ℝ² (abstracted as a set of rational points) -/
 def Region := Set (ℚ × ℚ)
@@ -94,7 +94,7 @@ axiom ErdosProblem1071b :
   ∃ R : Region, ∃ S : Set UnitSegment,
     IsMaximalRegionPacking R S ∧ S.Countable ∧ Set.Infinite S
 
-/-! ## Endpoint-Intersection Variant -/
+/- ## Endpoint-Intersection Variant -/
 
 /-- Two segments may intersect only at their endpoints -/
 axiom EndpointDisjoint : UnitSegment → UnitSegment → Prop

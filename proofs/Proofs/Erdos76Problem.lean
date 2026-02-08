@@ -26,7 +26,7 @@ namespace Erdos76
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Edge Colorings
 
 A 2-coloring assigns each edge to either Red or Blue.
@@ -46,7 +46,7 @@ def EdgeColoring (V : Type*) [DecidableEq V] :=
 def coloredEdges (c : EdgeColoring V) (col : Color) : Set (V × V) :=
   { p | p.1 ≠ p.2 ∧ c p.1 p.2 (by exact p.1 ≠ p.2 → p.1 ≠ p.2; exact id) = col }
 
-/-!
+/-
 ## Triangles
 
 A triangle is a set of 3 vertices with all pairs connected.
@@ -65,7 +65,7 @@ def Triangle.edges (t : Triangle V) : Finset (V × V) :=
 def isMonochromatic (c : EdgeColoring V) (t : Triangle V) : Prop :=
   ∃ col : Color, ∀ e ∈ t.edges, c e.1 e.2 sorry = col
 
-/-!
+/-
 ## Edge-Disjoint Triangle Packings
 
 Two triangles are edge-disjoint if they share no edges.
@@ -83,7 +83,7 @@ def isPacking (ts : Finset (Triangle V)) : Prop :=
 def monochromaticPacking (c : EdgeColoring V) (ts : Finset (Triangle V)) : Prop :=
   isPacking ts ∧ ∀ t ∈ ts, isMonochromatic c t
 
-/-!
+/-
 ## The Maximum Packing Size
 
 For a given coloring, we want the maximum number of edge-disjoint
@@ -98,7 +98,7 @@ noncomputable def maxPackingSize (c : EdgeColoring V) : ℕ :=
 noncomputable def minMaxPackingSize (n : ℕ) : ℕ :=
   sInf { k | ∀ c : EdgeColoring (Fin n), maxPackingSize c ≥ k }
 
-/-!
+/-
 ## The Extremal Construction
 
 Partition vertices into two halves. Color edges between halves red,
@@ -126,7 +126,7 @@ theorem balanced_diff_half_red (n : ℕ) (u v : Fin n) (h : u ≠ v)
   intro heq
   exact hdiff heq
 
-/-!
+/-
 ## The Erdős-Faudree-Ordman Conjecture
 
 The balanced coloring achieves exactly n²/12 triangles.
@@ -142,7 +142,7 @@ axiom balanced_achieves_bound (n : ℕ) (hn : n ≥ 6) :
   where
     o : ℝ → ℝ := fun _ => 0  -- Placeholder for o(1) notation
 
-/-!
+/-
 ## Gruslys-Letzter Theorem (2020)
 
 The main result: every 2-coloring has at least (1+o(1))n²/12
@@ -162,7 +162,7 @@ axiom extremal_uniqueness (n : ℕ) (hn : n ≥ 6) (c : EdgeColoring (Fin n)) :
   where
     o : ℝ → ℝ := fun _ => 0
 
-/-!
+/-
 ## Triangle Counting vs Packing
 
 The key insight is that packing is harder than counting.
@@ -180,7 +180,7 @@ theorem packing_upper_bound (n : ℕ) :
     ∀ c : EdgeColoring (Fin n), maxPackingSize c ≤ totalEdges n / 3 := by
   sorry
 
-/-!
+/-
 ## The n²/12 Bound Explained
 
 Why n²/12? In the balanced coloring:
@@ -196,7 +196,7 @@ theorem bound_from_cliques (n : ℕ) (hn : n ≥ 4) :
   simp [conjecturedBound]
   ring
 
-/-!
+/-
 ## Related Question: Single-Color Maximum
 
 Erdős also asked: what is the maximum over colors of
@@ -218,7 +218,7 @@ def single_color_conjecture : Prop :=
   ∀ n : ℕ, n ≥ 6 → ∀ col : EdgeColoring (Fin n),
     (maxSingleColorPacking col : ℝ) ≥ c_const * n^2
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #76 on edge-disjoint monochromatic

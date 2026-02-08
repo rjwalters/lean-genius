@@ -6,9 +6,10 @@
   "meta": {
     "author": "Erdős-Sárkőzy (1997), Sárkőzy (1999 solution to Q2)",
     "sourceUrl": "https://erdosproblems.com/883",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos883Problem.lean",
     "tags": [
+      "erdos",
       "graph-theory",
       "number-theory",
       "coprime-graph",
@@ -19,7 +20,37 @@
     "sorries": 0,
     "erdosNumber": 883,
     "erdosUrl": "https://erdosproblems.com/883",
-    "erdosProblemStatus": "partially-solved"
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type for coprime graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for vertex subsets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "coprimeGraph definition: graph where coprime pairs are adjacent",
+      "threshold definition: n/2 + n/3 - n/6 via inclusion-exclusion",
+      "extremalSet: multiples of 2 or 3 (triangle-free extremal example)",
+      "isCoprimeCycle: coprime chain forming a cycle",
+      "hasTripartite: (1,l,l) tripartite subgraph detection",
+      "erdos_sarkozy_odd_cycles axiom: cycles of length cn above threshold",
+      "sarkozy_tripartite axiom: tripartite subgraphs (Q2 solved)",
+      "erdos_883_question_2_solved theorem: Q2 answer is YES",
+      "erdos_883_partial theorem: partial answer to Q1"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #883 studies cycle structure in the coprime graph on subsets of integers. Erdős-Sárkőzy (1997) proved odd cycles of length cn exist above the threshold. Sárkőzy (1999) solved Question 2 on tripartite subgraphs. The threshold floor(n/2) + floor(n/3) - floor(n/6) arises from inclusion-exclusion on multiples of 2 and 3.",

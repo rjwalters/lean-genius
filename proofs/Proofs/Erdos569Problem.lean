@@ -32,7 +32,7 @@ open SimpleGraph
 
 namespace Erdos569
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 We define the key concepts for Ramsey numbers involving odd cycles
@@ -53,7 +53,7 @@ theorem oddCycleLength_is_odd (k : ℕ) : ¬ 2 ∣ OddCycleLength k := by
   unfold OddCycleLength
   omega
 
-/-!
+/-
 ## Part 2: Edge Count and Isolated Vertices
 
 A graph H is specified by its edge count m. We require H to have
@@ -72,7 +72,7 @@ axiom vertex_bound_no_isolated :
     NoIsolatedVertices G →
     Fintype.card V ≤ 2 * G.edgeFinset.card
 
-/-!
+/-
 ## Part 3: The Ramsey Number R(C_{2k+1}, H)
 
 The Ramsey number R(G₁, G₂) is the smallest N such that every
@@ -87,7 +87,7 @@ axiom RamseyNumber (G₁ G₂ : ℕ → Prop) : ℕ
 /-- The Ramsey number for odd cycle C_{2k+1} vs a graph with m edges -/
 axiom R_cycle_graph (k m : ℕ) : ℕ
 
-/-!
+/-
 ## Part 4: The Bondy-Erdős Conjecture (Linear Bound)
 
 The central question: does there exist a constant c_k depending only
@@ -105,7 +105,7 @@ def LinearRamseyBound (k : ℕ) (c : ℕ) : Prop :=
       NoIsolatedVertices H →
       R_cycle_graph k m ≤ c * m
 
-/-!
+/-
 ## Part 5: Known Results
 
 Several partial results are known for small values of k.
@@ -130,7 +130,7 @@ axiom pentagon_ramsey_linear :
   ∀ m : ℕ, m ≥ 1 →
     R_cycle_graph 2 m ≤ 4 * m + 1
 
-/-!
+/-
 ## Part 6: General Upper Bounds
 
 Erdős, Faudree, Rousseau, and Schelp established general bounds.
@@ -149,7 +149,7 @@ axiom conjectured_linear_bound :
   ∀ k : ℕ, k ≥ 1 →
     ∃ c : ℕ, LinearRamseyBound k c
 
-/-!
+/-
 ## Part 7: Lower Bounds
 
 Lower bounds show that some linear dependence on m is necessary.
@@ -166,7 +166,7 @@ axiom constant_lower_bound :
   ∀ k : ℕ, k ≥ 1 →
     ¬ LinearRamseyBound k 1
 
-/-!
+/-
 ## Part 8: Summary
 -/
 

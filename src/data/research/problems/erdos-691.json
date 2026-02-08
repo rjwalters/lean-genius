@@ -1,80 +1,50 @@
 {
   "slug": "erdos-691",
   "title": "Erdős #691",
-  "phase": "SURVEYED",
-  "status": "surveyed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Given $A\\subseteq \\mathbb{N}$ let $M_A=\\{ n \\geq 1 : a\\mid n\\textrm{ for some }a\\in A\\}$ be the set of multiples of $A$. Find a necessary and sufficient condition on $A$ for $M_A$ to have density $1$.",
+    "formal": "Given $A\\subseteq \\mathbb{N}$ let $M_A=\\{ n \\geq 1 : a\\mid n\\textrm{ for some }a\\in A\\}$ be the set of multiples of $A$. Find a necessary and sufficient condition on $A$ for $M_A$ to have density $1$.\n\n\n\nA sequence $A$ for which $M_A$ has density $1$ is called a Behrend sequence.\n\nIf $A$ is a set of prime numbers (or, more generally, a set of pairwise coprime integers without $1$) then a necessary and sufficient condition is that $\\sum_{p\\in A}\\frac{1}{p}=\\infty$.\n\nThe general situation is more complicated. For example suppose $A$ is the union of $(n_k,(1+\\eta_k)n_k)\\cap \\mathbb{Z}$ where $1\\leq n_1<n_2<\\cdots$ is a lacunary sequence. (This construction is sometimes called a block sequence.) If $\\sum \\eta_k<\\infty$ then the density of $M_A$ exists and is $<1$. If $\\eta_k=1/k$, so $\\sum \\eta_k=\\infty$, then the density exists and is $<1$.\n\nErd\\H{o}s writes it 'seems certain' that there is some threshold $\\alpha\\in (0,1)$ such that, if $\\eta_k=k^{-\\beta}$, then the density of $M_A$ is $1$ if $\\beta <\\alpha$ and the density is $<1$ if $\\beta >\\alpha$.\n\nTenenbaum notes in \\cite{Te96} that this is certainly not true as written since if the $n_j$ grow sufficiently quickly then this sequence is never Behrend, for any choice of $\\eta_k$. He then writes 'we understand from subsequent discussions with Erd\\H{o}s that he had actually in mind a two-sided condition on' $n_{j+1}/n_j$.\n\nTenenbaum \\cite{Te96} proves this conjecture: if there are constants $1<C_1<C_2$ such that $C_1<n_{i+1}/n_i<C_2$ for all $i$ and $\\eta_k=k^{-\\beta}$ then $A$ is Behrend if $\\beta<\\log 2$ and not Behrend if $\\beta>\\log 2$.",
     "plain": "Given $A\\subseteq \\mathbb{N}$ let $M_A=\\{ n \\geq 1 : a\\mid n\\textrm{ for some }a\\in A\\}$ be the set of multiples of $A$. Find a necessary and sufficient condition on $A$ for $M_A$ to have density $1$.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Proved 8 structural lemmas about multiplesOf",
-      "Formalized Behrend sequence definition using Mathlib density infrastructure",
-      "Stated Tenenbaum threshold theorem with Real.log 2"
-    ],
-    "open": [
-      "General characterization of Behrend sequences (main problem)",
-      "IsBehrend_mono requires density comparison lemma"
-    ],
-    "goal": "Find necessary and sufficient condition for A to be Behrend"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-07T17:00:00.000Z",
-    "iteration": 2,
-    "focus": "Formalization improved with proper Mathlib density definitions.",
-    "blockers": [
-      "Problem is OPEN",
-      "Deep analytic number theory not in Mathlib"
-    ],
-    "nextAction": "Docker build verification when system load decreases.",
+    "phase": "NEW",
+    "since": "2026-01-14T19:54:27.710Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Rewrote formalization with proper Mathlib density infrastructure. Proved 8 structural lemmas. Fixed headers for Aristotle compatibility.",
-    "builtItems": [
-      "countingFunction, upperDensity, lowerDensity, HasDensity definitions",
-      "multiplesOf, IsBehrend definitions",
-      "8 proved theorems about multiplesOf and countingFunction",
-      "IsLacunaryBounded, IsBlockSequence, tenenbaum_behrend_threshold"
-    ],
-    "insights": [
-      "Replaced axiomitized Q-valued density with standard R-valued Mathlib pattern",
-      "Tenenbaum threshold properly uses Real.log 2",
-      "General Behrend characterization is OPEN",
-      "Coprime case characterization is complete but deep"
-    ],
-    "mathlibGaps": [
-      "No Mathlib formalization of Behrend sequences",
-      "No Mathlib density-of-multiples theory"
-    ],
-    "nextSteps": [
-      "Docker build verification",
-      "Aristotle submission for structural lemma verification"
-    ],
-    "markdown": "# Erdős #691 - Knowledge Base\n\n## Session 1 (2026-02-07)\nRewrote Lean formalization with proper Mathlib density infrastructure.\nProved 8 structural lemmas about multiplesOf.\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #691 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven $A\\subseteq \\mathbb{N}$ let $M_A=\\{ n \\geq 1 : a\\mid n\\textrm{ for some }a\\in A\\}$ be the set of multiples of $A$. Find a necessary and sufficient condition on $A$ for $M_A$ to have density $1$.\n\n\n\nA sequence $A$ for which $M_A$ has density $1$ is called a Behrend sequence.\n\nIf $A$ is a set of prime numbers (or, more generally, a set of pairwise coprime integers without $1$) then a necessary and sufficient condition is that $\\sum_{p\\in A}\\frac{1}{p}=\\infty$.\n\nThe general situation is more complicated. For example suppose $A$ is the union of $(n_k,(1+\\eta_k)n_k)\\cap \\mathbb{Z}$ where $1\\leq n_1<n_2<\\cdots$ is a lacunary sequence. (This construction is sometimes called a block sequence.) If $\\sum \\eta_k<\\infty$ then the density of $M_A$ exists and is $<1$. If $\\eta_k=1/k$, so $\\sum \\eta_k=\\infty$, then the density exists and is $<1$.\n\nErd\\H{o}s writes it 'seems certain' that there is some threshold $\\alpha\\in (0,1)$ such that, if $\\eta_k=k^{-\\beta}$, then the density of $M_A$ is $1$ if $\\beta <\\alpha$ and the density is $<1$ if $\\beta >\\alpha$.\n\nTenenbaum notes in \\cite{Te96} that this is certainly not true as written since if the $n_j$ grow sufficiently quickly then this sequence is never Behrend, for any choice of $\\eta_k$. He then writes 'we understand from subsequent discussions with Erd\\H{o}s that he had actually in mind a two-sided condition on' $n_{j+1}/n_j$.\n\nTenenbaum \\cite{Te96} proves this conjecture: if there are constants $1<C_1<C_2$ such that $C_1<n_{i+1}/n_i<C_2$ for all $i$ and $\\eta_k=k^{-\\beta}$ then $A$ is Behrend if $\\beta<\\log 2$ and not Behrend if $\\beta>\\log 2$.\n\n\n\n\nReferences\n\n\n[Te96] Tenenbaum, G., On block {B}ehrend sequences. Math. Proc. Cambridge Philos. Soc. (1996), 355--367.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #690\n- Problem #692\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Te96\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
-  "approaches": [
-    {
-      "name": "Structural formalization with Mathlib density",
-      "status": "completed",
-      "description": "Replace axiomitized density with proper Mathlib patterns, prove structural lemmas"
-    }
+  "approaches": [],
+  "tags": [
+    "erdos"
   ],
-  "tags": ["erdos", "density", "number-theory", "behrend-sequences"],
-  "relatedProofs": ["Erdos339Problem.lean", "Erdos218Problem.lean"],
+  "relatedProofs": [],
   "references": {
-    "papers": ["Tenenbaum (1996) - On block Behrend sequences"],
-    "urls": ["https://erdosproblems.com/691"],
-    "mathlib": ["Filter.Tendsto", "Filter.limsup", "Filter.liminf", "Finset.card_le_card"]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-14T19:54:27.711Z",
   "significance": 5,

@@ -7,7 +7,7 @@
     "author": "Paul Erdős, Václav Chvátal",
     "sourceUrl": "https://erdosproblems.com/550",
     "date": "1985",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos550Problem.lean",
     "tags": [
       "erdos",
@@ -15,7 +15,7 @@
       "ramsey-theory",
       "trees"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
@@ -87,72 +87,72 @@
     {
       "id": "ramsey",
       "title": "Ramsey Numbers",
-      "summary": "Definition of R(T, G)",
-      "startLine": 75,
-      "endLine": 93
+      "summary": "Definition of R(T, G) and Ramsey property",
+      "startLine": 74,
+      "endLine": 101
     },
     {
       "id": "chvatal",
       "title": "Chvátal's Theorem",
       "summary": "R(T, Kₘ) = (m-1)(n-1) + 1",
-      "startLine": 95,
-      "endLine": 115
+      "startLine": 103,
+      "endLine": 129
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "summary": "The conjectured bound for multipartite G",
-      "startLine": 117,
-      "endLine": 137
+      "startLine": 131,
+      "endLine": 151
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "Complete graphs, bipartite, stars",
-      "startLine": 139,
-      "endLine": 161
+      "startLine": 153,
+      "endLine": 175
     },
     {
       "id": "paths",
       "title": "Path Graphs",
       "summary": "P_n and Gerencsér-Gyárfás",
-      "startLine": 163,
-      "endLine": 180
+      "startLine": 177,
+      "endLine": 196
     },
     {
       "id": "tree-structure",
       "title": "Tree Structure",
       "summary": "Maximum degree and Burr's conjecture",
-      "startLine": 182,
-      "endLine": 203
+      "startLine": 198,
+      "endLine": 218
     },
     {
       "id": "turan",
       "title": "Turán Connections",
       "summary": "Extremal graph theory connections",
-      "startLine": 205,
-      "endLine": 214
+      "startLine": 220,
+      "endLine": 230
     },
     {
       "id": "probabilistic",
       "title": "Probabilistic Bounds",
       "summary": "Lower bounds from random graphs",
-      "startLine": 216,
-      "endLine": 229
+      "startLine": 232,
+      "endLine": 243
     },
     {
       "id": "extremal",
       "title": "Extremal Graphs",
       "summary": "Constructions achieving bounds",
-      "startLine": 231,
-      "endLine": 243
+      "startLine": 245,
+      "endLine": 259
     },
     {
       "id": "asymptotic",
       "title": "Asymptotic Behavior",
       "summary": "R(T_n, Kₘ) ~ (m-1)n",
-      "startLine": 245,
-      "endLine": 258
+      "startLine": 261,
+      "endLine": 276
     }
   ],
   "conclusion": {

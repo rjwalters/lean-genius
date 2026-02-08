@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #78: Constructive Ramsey Lower Bound
 
 Erdős Problem #78 asks for a constructive proof that R(k) > C^k for some
@@ -20,7 +20,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Combinatorics.SimpleGraph.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A simple graph on n vertices. -/
 structure SimpleG (n : ℕ) where
@@ -47,7 +47,7 @@ axiom ramseyNumber_spec (k : ℕ) :
   ∀ G : SimpleG (ramseyNumber k),
     G.hasClique k ∨ G.hasIndepSet k
 
-/-! ## Erdős Probabilistic Bound -/
+/- ## Erdős Probabilistic Bound -/
 
 /-- Erdős (1947): R(k) > k·2^{k/2}/e. This is the classical probabilistic
     lower bound, proved by the first application of the probabilistic method. -/
@@ -60,7 +60,7 @@ axiom erdos_sqrt2_bound :
   ∀ ε : ℝ, 0 < ε → ∃ k₀ : ℕ, ∀ k : ℕ, k₀ ≤ k →
     (Real.sqrt 2 - ε) ^ k ≤ (ramseyNumber k : ℝ)
 
-/-! ## Constructive Results -/
+/- ## Constructive Results -/
 
 /-- An explicit graph construction is a computable function from n to a graph.
     The key requirement is polynomial-time computability. -/
@@ -83,7 +83,7 @@ axiom li_construction :
       ∀ k : ℕ, G.hasClique k ∨ G.hasIndepSet k →
         (k : ℝ) < (Real.log n) ^ C
 
-/-! ## Main Open Problem -/
+/- ## Main Open Problem -/
 
 /-- Erdős Problem #78: Give a constructive proof that R(k) > C^k for some
     C > 1. Equivalently, construct explicit n-vertex graphs with no clique
@@ -94,7 +94,7 @@ axiom erdos_78_constructive :
       ∀ k : ℕ, G.hasClique k ∨ G.hasIndepSet k →
         (k : ℝ) < c * Real.log n
 
-/-! ## Upper Bound on R(k) -/
+/- ## Upper Bound on R(k) -/
 
 /-- Erdős–Szekeres (1935): R(k) ≤ C(2k-2, k-1) < 4^k.
     Recently improved by Campos–Griffiths–Morris–Sahasrabudhe (2023)

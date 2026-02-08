@@ -38,7 +38,7 @@ namespace Erdos1111
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -63,7 +63,7 @@ noncomputable def inducedChromaticNumber (G : SimpleGraph V) (S : Finset V) : �
 noncomputable def cliqueNumber (G : SimpleGraph V) : ℕ :=
   sSup {k | G.CliqueFree k → False}
 
-/-!
+/-
 ## Part II: The El Zahar-Erdős Property
 -/
 
@@ -92,7 +92,7 @@ d(t, c) exists (is finite) for all t, c ≥ 1.
 def ElZaharErdosConjecture : Prop :=
   ∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasElZaharErdosProperty t c d
 
-/-!
+/-
 ## Part III: Known Small Cases
 -/
 
@@ -114,7 +114,7 @@ K₄-free graphs with χ ≥ 5 have anticomplete parts with χ ≥ 2.
 -/
 axiom d_4_2 : d_func 4 2 = 5
 
-/-!
+/-
 ## Part IV: Wagon's Upper Bound (1980)
 -/
 
@@ -132,7 +132,7 @@ d(t+1, 2) ≤ d(t, 2) + t.
 axiom wagon_recursive :
   ∀ t : ℕ, t ≥ 2 → d_func (t + 1) 2 ≤ d_func t 2 + t
 
-/-!
+/-
 ## Part V: El Zahar-Erdős Results (1985)
 -/
 
@@ -158,7 +158,7 @@ axiom el_zahar_erdos_c3_bound :
   ∀ t : ℕ, t > 3 →
     d_func t 3 ≤ 2 * Nat.choose (t - 1) 3 + 7 * Nat.choose (t - 1) 2 + t
 
-/-!
+/-
 ## Part VI: Nguyen-Scott-Seymour (2024)
 -/
 
@@ -181,47 +181,32 @@ For all t, c ≥ 1, the NSS property holds for some d.
 axiom nguyen_scott_seymour_2024 :
   ∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasNSSProperty t c d
 
-/-!
+/-
 ## Part VII: Connection to Ramsey Theory
 -/
 
 /--
 **Ramsey connection:**
-The problem relates to Ramsey-type questions about graph structure.
+The problem relates to Ramsey-type questions. High chromatic number with
+bounded clique number forces rich graph structure, analogous to how
+large Ramsey numbers force monochromatic cliques.
 -/
 axiom ramsey_connection :
-  -- High chromatic number with bounded clique forces structure
-  True
+    ∀ t : ℕ, t ≥ 2 → ∃ d : ℕ, HasElZaharErdosProperty t 2 d
 
 /--
 **χ-boundedness connection:**
 Graphs with ω(G) < t and χ(G) large have special structure.
+The problem asks specifically what anticomplete substructure must appear.
 -/
-axiom chi_boundedness_connection :
-  -- This problem studies what structure high-χ, low-ω graphs must have
-  True
+axiom chi_boundedness :
+    ∀ t c : ℕ, t ≥ 1 → c ≥ 1 →
+    ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
+    G.chromaticNumber ≥ d_func t c → cliqueNumber G < t →
+    ∃ A B : Finset V, IsAnticomplete G A B ∧
+      inducedChromaticNumber G A ≥ c ∧ inducedChromaticNumber G B ≥ c
 
-/-!
-## Part VIII: Why It's Hard
--/
-
-/--
-**Difficulty:**
-The problem asks for EXACT values of d(t, c), not just existence.
--/
-axiom difficulty_exact_values :
-  -- Upper bounds are known, but determining exact d(t, c) is hard
-  True
-
-/--
-**Cannot be computed:**
-For large t, c, determining d(t, c) requires infinite analysis.
--/
-axiom cannot_compute :
-  -- Noted on erdosproblems.com: cannot be resolved by finite computation
-  True
-
-/-!
+/-
 ## Part IX: Summary
 -/
 
@@ -240,33 +225,21 @@ sets A, B with χ(A) ≥ χ(B) ≥ c.
 
 **Open:** Determine exact values of d(t, c) for general t, c.
 -/
-theorem erdos_1111_open :
-    -- Some exact values known
-    (d_func 2 2 = 2 ∧ d_func 3 2 = 4 ∧ d_func 4 2 = 5) →
-    -- Upper bounds exist
-    (∀ t : ℕ, t ≥ 2 → d_func t 2 ≤ Nat.choose t 2 + 1) →
-    -- Problem remains open for general d(t, c)
-    True := by
-  intro _ _
-  trivial
+theorem erdos_1111_known_values :
+    d_func 2 2 = 2 ∧ d_func 3 2 = 4 ∧ d_func 4 2 = 5 :=
+  ⟨d_2_2, d_3_2, d_4_2⟩
 
 /--
-**Summary theorem:**
+**Summary of known bounds:**
+Wagon's bound, El Zahar-Erdős bound, and NSS existence.
 -/
 theorem erdos_1111_summary :
-    -- Small cases
-    True ∧
-    -- Wagon's bound
-    True ∧
-    -- El Zahar-Erdős results
-    True ∧
-    -- NSS strengthening
-    True ∧
-    -- Problem is OPEN
-    True := ⟨trivial, trivial, trivial, trivial, trivial⟩
-
-/-- Problem status -/
-def erdos_1111_status : String :=
-    "OPEN - Exact values of d(t, c) unknown for general t, c"
+    -- Wagon's bound holds for c = 2
+    (∀ t : ℕ, t ≥ 2 → d_func t 2 ≤ Nat.choose t 2 + 1) ∧
+    -- d(3, 3) ≤ 8
+    (d_func 3 3 ≤ 8) ∧
+    -- NSS strengthening exists
+    (∀ t c : ℕ, t ≥ 1 → c ≥ 1 → ∃ d : ℕ, HasNSSProperty t c d) := by
+  exact ⟨wagon_1980, d_3_3_bound, nguyen_scott_seymour_2024⟩
 
 end Erdos1111

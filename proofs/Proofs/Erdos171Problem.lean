@@ -73,7 +73,7 @@ open Set Metric
 
 namespace Erdos171
 
-/-! ## The Unit Distance Graph -/
+/- ## The Unit Distance Graph -/
 
 /-- The unit distance graph on ℝ²: vertices are all points, edges connect
     pairs at distance exactly 1. -/
@@ -82,7 +82,7 @@ def UnitDistanceGraph : SimpleGraph (EuclideanSpace ℝ (Fin 2)) where
   symm _ _ h := by simp [dist_comm]; exact h
   loopless x h := by simp [dist_self] at h
 
-/-! ## Chromatic Number -/
+/- ## Chromatic Number -/
 
 /-- A proper k-coloring of the unit distance graph (restricted to finite sets). -/
 def IsProperColoring (c : EuclideanSpace ℝ (Fin 2) → Fin k) : Prop :=
@@ -94,7 +94,7 @@ def IsProperColoring (c : EuclideanSpace ℝ (Fin 2) → Fin k) : Prop :=
 noncomputable def chromaticNumberPlane : ℕ :=
   sInf { k : ℕ | ∃ c : EuclideanSpace ℝ (Fin 2) → Fin k, IsProperColoring c }
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /-- **Nelson (1950)**: The Moser spindle shows 4 colors are necessary.
     A 7-vertex graph where all edges have unit length and χ = 4. -/
@@ -118,14 +118,14 @@ axiom de_grey_graph :
 theorem de_grey : chromaticNumberPlane ≥ 5 := by
   sorry
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /-- **Isbell (1950)**: χ(ℝ²) ≤ 7.
     Proof: Tile the plane with regular hexagons of diameter slightly less than 1.
     Color each hexagon with one of 7 colors so adjacent hexagons differ. -/
 axiom isbell_upper_bound : chromaticNumberPlane ≤ 7
 
-/-! ## Current State -/
+/- ## Current State -/
 
 /-- The current knowledge: 5 ≤ χ(ℝ²) ≤ 7. -/
 theorem current_bounds : 5 ≤ chromaticNumberPlane ∧ chromaticNumberPlane ≤ 7 := by
@@ -133,11 +133,10 @@ theorem current_bounds : 5 ≤ chromaticNumberPlane ∧ chromaticNumberPlane ≤
   · exact de_grey
   · exact isbell_upper_bound
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
-/-- The fractional chromatic number of the plane is known exactly: 4.
+/- The fractional chromatic number of the plane is known exactly: 4.
     (It equals the supremum of fractional chromatic numbers of finite unit distance graphs.) -/
-axiom fractional_chromatic : True
 
 -- χ_f(ℝ²) = 4
 
@@ -157,7 +156,7 @@ theorem no_4_clique :
   norm_num [ dist_eq_norm, EuclideanSpace.norm_eq ] at *;
   grind
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED** (lower bound improved)
 

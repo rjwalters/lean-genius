@@ -26,7 +26,7 @@ import Mathlib
 
 namespace Erdos715
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A simple graph represented by adjacency -/
 structure SimpleGraph' (V : Type*) where
@@ -44,7 +44,7 @@ def IsRegular {V : Type*} [Fintype V] [DecidableEq V]
     (G : SimpleGraph' V) [DecidableRel G.adj] (r : ℕ) : Prop :=
   ∀ v : V, degree G v = r
 
-/-! ## Subgraphs -/
+/- ## Subgraphs -/
 
 /-- H is a subgraph of G if H's edges are a subset of G's edges -/
 def IsSubgraph {V : Type*} (H G : SimpleGraph' V) : Prop :=
@@ -60,7 +60,7 @@ def inducedSubgraph {V : Type*} (G : SimpleGraph' V) (S : Set V) : SimpleGraph' 
     symm := fun u v h => G.symm u.val v.val h
     loopless := fun v h => G.loopless v.val h }
 
-/-! ## The Main Question -/
+/- ## The Main Question -/
 
 /-- Does every r-regular graph contain a k-regular subgraph? -/
 def HasRegularSubgraph (r k : ℕ) : Prop :=
@@ -68,7 +68,7 @@ def HasRegularSubgraph (r k : ℕ) : Prop :=
     IsRegular G r →
     ∃ (H : SimpleGraph' V) [DecidableRel H.adj], IsSubgraph H G ∧ IsRegular H k
 
-/-! ## The Main Results -/
+/- ## The Main Results -/
 
 /-- Tashkinov (1982): Every 4-regular graph contains a 3-regular subgraph -/
 theorem tashkinov_theorem : HasRegularSubgraph 4 3 := by
@@ -95,7 +95,7 @@ theorem alon_friedland_kalai {V : Type*} [Fintype V] [DecidableEq V]
 theorem five_regular_has_3_regular : HasRegularSubgraph 5 3 := by
   sorry -- Consequence of Alon-Friedland-Kalai
 
-/-! ## Counterexamples for r < 4 -/
+/- ## Counterexamples for r < 4 -/
 
 /-- The complete graph K_4 is 3-regular -/
 def K4 : SimpleGraph' (Fin 4) where
@@ -120,7 +120,7 @@ theorem three_regular_no_proper_3_subgraph :
       IsSubgraph H G → IsRegular H 3 → (∀ u v, H.adj u v ↔ G.adj u v) := by
   sorry -- K_4 is an example
 
-/-! ## Related: The Berge-Sauer Question -/
+/- ## Related: The Berge-Sauer Question -/
 
 /-- The original question by Berge and Sauer -/
 def berge_sauer_question : Prop :=
@@ -130,7 +130,7 @@ def berge_sauer_question : Prop :=
 theorem berge_sauer_answer : berge_sauer_question := by
   exact ⟨4, by norm_num, tashkinov_theorem⟩
 
-/-! ## General Regular Subgraph Problem -/
+/- ## General Regular Subgraph Problem -/
 
 /-- General question: When does r-regular imply k-regular subgraph? -/
 def RegularSubgraphThreshold (k : ℕ) : ℕ :=
@@ -140,7 +140,7 @@ def RegularSubgraphThreshold (k : ℕ) : ℕ :=
 theorem threshold_for_3 : RegularSubgraphThreshold 3 = 4 := by
   sorry -- Tashkinov + counterexamples for r < 4
 
-/-! ## The Petersen Graph Example -/
+/- ## The Petersen Graph Example -/
 
 /-- The Petersen graph is 3-regular -/
 def petersenGraph : SimpleGraph' (Fin 10) where
@@ -173,7 +173,7 @@ theorem petersen_no_proper_3_subgraph :
     (∀ u v, H.adj u v ↔ petersenGraph.adj u v) := by
   sorry -- The Petersen graph is a smallest 3-regular graph without a Hamilton cycle
 
-/-! ## Edge Counting Arguments -/
+/- ## Edge Counting Arguments -/
 
 /-- In an r-regular graph on n vertices, there are rn/2 edges -/
 theorem regular_edge_count {V : Type*} [Fintype V] [DecidableEq V]
@@ -188,7 +188,7 @@ theorem regular_parity {V : Type*} [Fintype V] [DecidableEq V]
     Even (r * Fintype.card V) := by
   sorry -- Follows from edge count being an integer
 
-/-! ## Summary
+/- ## Summary
 
 **Status: SOLVED**
 

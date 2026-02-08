@@ -46,7 +46,7 @@ open Nat SimpleGraph
 
 namespace Erdos163
 
-/-!
+/-
 ## Part 1: Graph Degeneracy
 -/
 
@@ -75,13 +75,11 @@ axiom trees_are_1_degenerate :
   -- (every subtree has a leaf)
   True
 
-/-- Forests (disjoint unions of trees) are 1-degenerate -/
-axiom forests_are_1_degenerate : True
+/- Forests (disjoint unions of trees) are 1-degenerate -/
 
-/-- Planar graphs are 5-degenerate -/
-axiom planar_5_degenerate : True
+/- Planar graphs are 5-degenerate -/
 
-/-!
+/-
 ## Part 2: Ramsey Numbers
 -/
 
@@ -104,7 +102,7 @@ axiom ramsey_clique_exponential :
     (2 : ℕ)^(n/2) ≤ ramseyNumber (completeGraph (Fin n)) ∧
     ramseyNumber (completeGraph (Fin n)) ≤ (4 : ℕ)^n
 
-/-!
+/-
 ## Part 3: The Burr-Erdős Conjecture
 -/
 
@@ -136,7 +134,7 @@ def BurrErdosAverageDegree : Prop :=
 axiom burr_erdos_equivalences :
   BurrErdosConjecture ↔ BurrErdosForests ∧ BurrErdosAverageDegree
 
-/-!
+/-
 ## Part 4: Lee's Theorem (2017)
 -/
 
@@ -164,7 +162,7 @@ axiom lee_chromatic_refinement (d : ℕ) (hd : d ≥ 1) :
       IsDDegenerate H d →
       ramseyNumber H ≤ (2 : ℕ)^(d * (2 : ℕ)^(c * χ)) * Fintype.card W
 
-/-!
+/-
 ## Part 5: The Burr-Erdős Conjecture is SOLVED
 -/
 
@@ -177,7 +175,7 @@ theorem burr_erdos_solved : BurrErdosConjecture := by
 /-- The main result of Problem #163 -/
 theorem erdos_163 : BurrErdosConjecture := burr_erdos_solved
 
-/-!
+/-
 ## Part 6: Conjectured Optimal Bound
 -/
 
@@ -202,7 +200,7 @@ axiom lee_optimal_gap :
   -- The gap is significant!
   True
 
-/-!
+/-
 ## Part 7: Special Cases
 -/
 
@@ -231,7 +229,7 @@ axiom planar_linear_ramsey :
       True →
       ramseyNumber H ≤ C * Fintype.card W
 
-/-!
+/-
 ## Part 8: Proof Techniques
 -/
 
@@ -251,7 +249,7 @@ axiom turan_density_connection :
   -- The proof relates to Turán-type problems
   True
 
-/-!
+/-
 ## Part 9: Historical Context
 -/
 
@@ -271,7 +269,7 @@ axiom problem_800_connection :
   -- Problem #800 asks related Ramsey questions
   True
 
-/-!
+/-
 ## Part 10: Summary
 -/
 

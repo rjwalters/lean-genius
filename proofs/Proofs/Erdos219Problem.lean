@@ -29,7 +29,7 @@ open Set Nat
 
 namespace Erdos219
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- An arithmetic progression starting at a with common difference d and length k. -/
 def arithmeticProg (a d k : ℕ) : Finset ℕ :=
@@ -40,7 +40,7 @@ def arithmeticProg (a d k : ℕ) : Finset ℕ :=
 def IsPrimeAP (S : Finset ℕ) : Prop :=
   (∀ p ∈ S, p.Prime) ∧ ∃ a d k : ℕ, k ≥ 1 ∧ d > 0 ∧ S = arithmeticProg a d k
 
-/-! ## Basic Examples -/
+/- ## Basic Examples -/
 
 /-- 3, 5, 7 are all prime. -/
 theorem primes_3_5_7 : (3 : ℕ).Prime ∧ (5 : ℕ).Prime ∧ (7 : ℕ).Prime := by
@@ -58,7 +58,7 @@ theorem primes_5_11_17_23_29 :
 /-- {5, 11, 17, 23, 29} is a prime AP with difference 6. -/
 axiom is_prime_ap_5_11_17_23_29 : IsPrimeAP {5, 11, 17, 23, 29}
 
-/-! ## The Green-Tao Theorem -/
+/- ## The Green-Tao Theorem -/
 
 /--
 **Erdős Problem #219 (SOLVED)**: Are there arbitrarily long arithmetic
@@ -90,7 +90,7 @@ axiom green_tao_explicit :
 /-- The answer to Erdős Problem #219 is YES. -/
 theorem erdos_219_answer : Erdos219Question := green_tao_theorem
 
-/-! ## Records and Computations -/
+/- ## Records and Computations -/
 
 /-- Known record (as of 2019): The longest known AP of primes has 23 terms.
 
@@ -102,7 +102,7 @@ theorem erdos_219_answer : Erdos219Question := green_tao_theorem
 -/
 axiom record_23_primes : ∃ a d : ℕ, d > 0 ∧ ∀ i < 23, (a + i * d).Prime
 
-/-! ## Related Open Problem -/
+/- ## Related Open Problem -/
 
 /--
 **Open Problem**: Are there arbitrarily long arithmetic progressions
@@ -121,7 +121,7 @@ def ConsecutivePrimeAPQuestion : Prop :=
 /-- The consecutive prime AP question remains OPEN. -/
 axiom consecutive_prime_ap_open : ConsecutivePrimeAPQuestion ∨ ¬ConsecutivePrimeAPQuestion
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /--
 **Summary of Erdős Problem #219**:

@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1171-header",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1171, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1171: Multicolor Partition Relations for ω₁²\n\nIs it true that, for all finite k < ω,\n  ω₁² → (ω₁·ω, 3, ..., 3)²_{k+1}?\n\nThat is, for any (k+1)-coloring of pairs from ω₁², must there exist either\na monochromatic-0 subset of order type ω₁·ω, or a monochromatic triangle\nin some other color?\n\nKnown Results:\n- Hajnal proved ω₁² → (ω₁², k)² under CH (stronger than needed, see #1169)\n- Baumgartner proved, assuming a form of Martin's axiom,\n  that ω₁·ω → (ω₁·ω, 3)² (the k=1 case for the w",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1171-omega1",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 44,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Omega1",
+    "content": "/-- ω₁: the first uncountable ordinal. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1171-omega1Sq",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 47,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Omega1Sq",
+    "content": "/-- ω₁² = ω₁ · ω₁: the source ordinal for our partition relation. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1171-omega1TimesOmega",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 50,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Omega1Timesomega",
+    "content": "/-- ω₁ · ω: the target order type for the primary color. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1171-ordinalPartitionRel2",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 59,
+      "endLine": 59
+    },
+    "type": "axiom",
+    "title": "Ordinalpartitionrel2",
+    "content": "axiom ordinalPartitionRel2",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-ordinalPartitionRelMulti",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 68,
+      "endLine": 68
+    },
+    "type": "axiom",
+    "title": "Ordinalpartitionrelmulti",
+    "content": "axiom ordinalPartitionRelMulti",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-omega_lt_omega1",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 75,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Omega Lt Omega1",
+    "content": "/-- ω < ω₁. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-omega1_pos",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 84,
+      "endLine": 85
+    },
+    "type": "theorem",
+    "title": "Omega1 Pos",
+    "content": "/-- 0 < ω₁. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-omega1TimesOmega_lt_omega1Sq",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 88,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "Omega1Timesomega Lt Omega1Sq",
+    "content": "/-- ω₁ · ω < ω₁². Since ω < ω₁, we have ω₁ · ω < ω₁ · ω₁ = ω₁². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-omega1TimesOmega_isLimit",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 93,
+      "endLine": 93
+    },
+    "type": "axiom",
+    "title": "Omega1Timesomega Islimit",
+    "content": "/-- ω₁ · ω is a limit ordinal. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-omega1_isLimit",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 96,
+      "endLine": 96
+    },
+    "type": "axiom",
+    "title": "Omega1 Islimit",
+    "content": "/-- ω₁ is a limit ordinal. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-erdos_1171_statement",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 108,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Erdos 1171 Statement",
+    "content": "def erdos_1171_statement",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1171-partition_multi_mono_colors",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 117,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "Partition Multi Mono Colors",
+    "content": "axiom partition_multi_mono_colors",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-partition_multi_mono_target",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 122,
+      "endLine": 124
+    },
+    "type": "axiom",
+    "title": "Partition Multi Mono Target",
+    "content": "/-- Monotonicity in ordinal target: weakening the first target. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-partition_multi_mono_source",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 127,
+      "endLine": 129
+    },
+    "type": "axiom",
+    "title": "Partition Multi Mono Source",
+    "content": "/-- Monotonicity in source: a larger source makes the relation easier. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-multi_two_eq",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 133,
+      "endLine": 134
+    },
+    "type": "axiom",
+    "title": "Multi Two Eq",
+    "content": "axiom multi_two_eq",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-CH",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 141,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "Ch",
+    "content": "/-- The Continuum Hypothesis: 2^ℵ₀ = ℵ₁. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1171-hajnal_ch",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 144,
+      "endLine": 145
+    },
+    "type": "axiom",
+    "title": "Hajnal Ch",
+    "content": "/-- Hajnal's theorem (from Problem #1169): Under CH, ω₁² → (ω₁², k)². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-partition2_mono_target",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 148,
+      "endLine": 150
+    },
+    "type": "axiom",
+    "title": "Partition2 Mono Target",
+    "content": "/-- Monotonicity for the 2-color relation: weakening the ordinal target. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1171-partition2_mono_source",
+    "proofId": "erdos-1171",
+    "range": {
+      "startLine": 153,
+      "endLine": 155
+    },
+    "type": "axiom",
+    "title": "Partition2 Mono Source",
+    "content": "/-- Source monotonicity for the 2-color relation. -/",
+    "significance": "key"
+  }
+]

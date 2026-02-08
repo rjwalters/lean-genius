@@ -1,47 +1,89 @@
 [
   {
+    "id": "erdos-54-header",
+    "proofId": "erdos-54",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 17 },
+    "title": "Problem Overview",
+    "content": "Erdős Problem 54 asks for the minimum growth rate of a Ramsey 2-complete set. Solved: the answer is Θ((log N)²), with matching bounds from Burr–Erdős (lower) and Conlon–Fox–Pham (upper).",
+    "mathContext": "A set A ⊆ ℕ is Ramsey 2-complete if for every 2-colouring, one colour class's subset sums represent all large integers. The question is how thin A can be while maintaining this robust representability. The answer (log N)² is remarkably sparse.",
+    "significance": "essential",
+    "relatedConcepts": ["ramsey-theory", "subset-sums", "growth-rate"]
+  },
+  {
+    "id": "erdos-54-monochromatic-sums",
+    "proofId": "erdos-54",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 34 },
+    "title": "Monochromatic Subset Sums",
+    "content": "**`monoSubsetSums A c colour`** is the set of all sums Σ_{s∈S} s where S ⊆ A and every element of S has the given colour. These are the integers representable from one colour class.",
+    "mathContext": "Subset sums from a set of size n can represent up to 2ⁿ different values. The challenge is that after 2-colouring, each class has roughly half the elements, yet must still represent all large integers.",
+    "significance": "essential",
+    "relatedConcepts": ["subset-sums", "representability"]
+  },
+  {
     "id": "erdos-54-ramsey-2-complete",
     "proofId": "erdos-54",
     "type": "definition",
-    "range": { "startLine": 38, "endLine": 42 },
+    "range": { "startLine": 38, "endLine": 44 },
     "title": "Ramsey 2-Complete Set",
-    "content": "IsRamsey2Complete A means for every 2-colouring of A, some colour class has subset sums covering all sufficiently large integers. This is the central robustness property.",
-    "significance": "essential"
+    "content": "**`IsRamsey2Complete A`** means for every 2-colouring c of A, there exists a colour such that all sufficiently large integers are monochromatic subset sums from that colour class.",
+    "mathContext": "This is a strong Ramsey-type condition: no matter how you partition A into two classes, one class must be 'complete' for large integer representation. The minimum density of such sets is the central question.",
+    "significance": "essential",
+    "relatedConcepts": ["ramsey-completeness", "partition-regularity"]
+  },
+  {
+    "id": "erdos-54-counting",
+    "proofId": "erdos-54",
+    "type": "definition",
+    "range": { "startLine": 48, "endLine": 50 },
+    "title": "Counting Function",
+    "content": "**`countingFn A N`** = |A ∩ {1,...,N}|, the number of elements of A up to N. This measures the growth rate of A.",
+    "significance": "supporting",
+    "relatedConcepts": ["counting-function", "density"]
   },
   {
     "id": "erdos-54-lower",
     "proofId": "erdos-54",
     "type": "result",
-    "range": { "startLine": 53, "endLine": 56 },
-    "title": "Burr–Erdős Lower Bound",
-    "content": "Burr and Erdős (1985) proved that no Ramsey 2-complete set can satisfy |A ∩ [1,N]| ≤ c(log N)² for all large N. This gives the lower bound on growth rate.",
-    "significance": "essential"
+    "range": { "startLine": 54, "endLine": 61 },
+    "title": "Burr–Erdős Lower Bound (1985)",
+    "content": "**Lower bound**: No Ramsey 2-complete set satisfies |A ∩ [1,N]| ≤ c(log N)² for all large N. Any Ramsey 2-complete set must grow at least as fast as (log N)².",
+    "mathContext": "The proof constructs a 2-colouring that defeats any set growing slower than (log N)². The key idea uses the binary representation of integers and a colouring based on a digit-extraction function.",
+    "significance": "essential",
+    "relatedConcepts": ["lower-bound", "burr-erdos"]
   },
   {
     "id": "erdos-54-cfp",
     "proofId": "erdos-54",
     "type": "result",
-    "range": { "startLine": 60, "endLine": 64 },
-    "title": "Conlon–Fox–Pham Construction",
-    "content": "Conlon, Fox, and Pham (2021) constructed a Ramsey 2-complete set with |A ∩ [1,N]| ≪ (log N)². This matches the Burr–Erdős lower bound up to constants, solving the problem.",
-    "significance": "essential"
+    "range": { "startLine": 65, "endLine": 71 },
+    "title": "Conlon–Fox–Pham Construction (2021)",
+    "content": "**Upper bound**: There exists a Ramsey 2-complete set with |A ∩ [1,N]| ≪ (log N)². This matches the Burr–Erdős lower bound up to constants, completely solving the problem.",
+    "mathContext": "The construction is probabilistic: a carefully chosen random subset of powers of 2 (with appropriate modifications) achieves Ramsey 2-completeness. This closed a 36-year gap between the bounds.",
+    "significance": "essential",
+    "relatedConcepts": ["upper-bound", "conlon-fox-pham", "probabilistic-method"]
   },
   {
     "id": "erdos-54-main",
     "proofId": "erdos-54",
-    "type": "conjecture",
-    "range": { "startLine": 69, "endLine": 78 },
-    "title": "Erdős Problem 54 (Solved)",
-    "content": "The minimum growth rate of a Ramsey 2-complete set is Θ((log N)²). Both the lower bound (Burr–Erdős) and matching upper bound (Conlon–Fox–Pham) are captured.",
-    "significance": "essential"
+    "type": "result",
+    "range": { "startLine": 75, "endLine": 85 },
+    "title": "Complete Solution: Θ((log N)²)",
+    "content": "**Erdős Problem 54 (solved)**: The minimum growth rate of a Ramsey 2-complete set is Θ((log N)²). The formalization captures both bounds as a conjunction: ∃ c lower bound AND ∃ A with upper bound.",
+    "mathContext": "The Θ-notation means both c₁(log N)² ≤ |A ∩ [1,N]| and |A ∩ [1,N]| ≤ c₂(log N)² for some constants c₁, c₂. This tight characterization is rare in Ramsey theory.",
+    "significance": "essential",
+    "relatedConcepts": ["tight-bounds", "theta-notation", "solved"]
   },
   {
     "id": "erdos-54-earlier",
     "proofId": "erdos-54",
     "type": "result",
-    "range": { "startLine": 83, "endLine": 86 },
-    "title": "Earlier Upper Bound",
-    "content": "Burr and Erdős (1985) gave the initial upper bound (2 log₂ N)³, which was improved by Conlon–Fox–Pham to (log N)².",
-    "significance": "supporting"
+    "range": { "startLine": 89, "endLine": 94 },
+    "title": "Earlier Upper Bound: (2 log₂ N)³",
+    "content": "Burr and Erdős (1985) gave the first upper bound (2 log₂ N)³, a cubic in log N. Conlon–Fox–Pham improved this to quadratic, closing the gap.",
+    "mathContext": "The cubic bound came from a simpler greedy construction. Reducing it to quadratic required new ideas about the structure of subset sums under colourings.",
+    "significance": "supporting",
+    "relatedConcepts": ["historical-progress", "cubic-bound"]
   }
 ]

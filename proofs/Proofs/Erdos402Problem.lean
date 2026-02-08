@@ -32,7 +32,7 @@ namespace Erdos402
 
 open Nat Finset
 
-/-! ## Main Statement -/
+/- ## Main Statement -/
 
 /--
 **Graham's GCD Conjecture (Erdős #402)**:
@@ -45,7 +45,7 @@ theorem erdos_402_graham_conjecture (A : Finset ℕ) (hA : A.Nonempty)
   -- Proved by Balasubramanian and Soundararajan (1996)
   sorry
 
-/-! ## Equivalent Formulation -/
+/- ## Equivalent Formulation -/
 
 /--
 Alternative formulation: The minimum gcd ratio is at most 1/|A|.
@@ -62,7 +62,7 @@ theorem erdos_402_ratio_bound (A : Finset ℕ) (hA : A.Nonempty)
     ∃ a ∈ A, ∃ b ∈ A, (Nat.gcd a b : ℚ) / a ≤ 1 / A.card := by
   sorry
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- For singleton sets, the result is trivial: gcd(a,a) = a ≤ a/1 = a. -/
 theorem erdos_402_singleton (a : ℕ) (_ : a > 0) :
@@ -80,7 +80,7 @@ theorem erdos_402_range (n : ℕ) (hn : n ≥ 1) :
   -- For this formalization, we use sorry for the general case
   sorry
 
-/-! ## The {2, 3, 4, 6} Example -/
+/- ## The {2, 3, 4, 6} Example -/
 
 /-- The special set {2, 3, 4, 6} mentioned by Graham. -/
 def GrahamSpecialSet : Finset ℕ := {2, 3, 4, 6}
@@ -101,7 +101,7 @@ theorem graham_special_example :
   -- gcd(4, 3) = 1, 4/4 = 1
   native_decide
 
-/-! ## Graham's Equality Characterization -/
+/- ## Graham's Equality Characterization -/
 
 /--
 A set A has no common divisor if gcd of all elements is 1.
@@ -134,7 +134,7 @@ theorem erdos_402_equality_cases (A : Finset ℕ) (hA : A.Nonempty)
   -- Proved by Szegedy for large sets
   sorry
 
-/-! ## Key Lemmas -/
+/- ## Key Lemmas -/
 
 /-- For coprime elements, gcd(a,b) = 1 ≤ a/|A| when |A| ≤ a. -/
 theorem gcd_one_suffices (A : Finset ℕ) (a b : ℕ)
@@ -150,7 +150,7 @@ theorem one_in_singleton_set :
   use 1, mem_singleton_self 1, 1, mem_singleton_self 1
   simp [Nat.gcd_self]
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 

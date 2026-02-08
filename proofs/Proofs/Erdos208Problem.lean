@@ -34,7 +34,7 @@ open Set Filter Real Nat Topology Asymptotics
 
 namespace Erdos208
 
-/-! ## Squarefree Numbers -/
+/- ## Squarefree Numbers -/
 
 /-- A natural number is **squarefree** if it is not divisible by any perfect square
     greater than 1. Equivalently, in its prime factorization, each prime appears
@@ -47,7 +47,7 @@ noncomputable def squarefreeSeq : ℕ → ℕ := Nat.nth Squarefree
 /-- The gap between consecutive squarefree numbers. -/
 noncomputable def squarefreeGap (n : ℕ) : ℕ := squarefreeSeq (n + 1) - squarefreeSeq n
 
-/-! ## The Main Conjectures -/
+/- ## The Main Conjectures -/
 
 /--
 **Erdős Problem #208, Question 1** (OPEN):
@@ -73,7 +73,7 @@ def Erdos208_Q2 : Prop :=
     ∀ᶠ n in atTop, (squarefreeGap n : ℝ) ≤
       (1 + c n) * (π^2 / 6) * Real.log (squarefreeSeq n) / Real.log (Real.log (squarefreeSeq n))
 
-/-! ## Known Upper Bounds -/
+/- ## Known Upper Bounds -/
 
 /--
 **Filaseta-Trifonov (1992)**: The gap between consecutive squarefree numbers
@@ -92,7 +92,7 @@ axiom pandey_bound :
     ∃ c > (0 : ℝ), (fun n => (squarefreeGap n : ℝ)) =O[atTop]
       (fun n => (squarefreeSeq n : ℝ)^(1/5 - c))
 
-/-! ## The Optimal Lower Bound -/
+/- ## The Optimal Lower Bound -/
 
 /--
 **Erdős (1951)**: There exist infinitely many n such that
@@ -105,7 +105,7 @@ axiom erdos_lower_bound :
       {n : ℕ | (squarefreeGap n : ℝ) >
         (1 + c n) * (π^2 / 6) * Real.log (squarefreeSeq n) / Real.log (Real.log (squarefreeSeq n))}.Infinite
 
-/-! ## Conditional Result -/
+/- ## Conditional Result -/
 
 /--
 **Granville (1998)**: The ABC conjecture implies Question 1.
@@ -118,7 +118,7 @@ axiom abc_implies_q1 :
     -- Assuming some form of ABC conjecture (stated informally)
     True → Erdos208_Q1
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The first squarefree number is 1.
 
@@ -148,7 +148,7 @@ squarefree converges to 6/π² ≈ 0.6079... as N → ∞. -/
 axiom squarefree_density :
     Tendsto (fun N => ({n : ℕ | n ≤ N ∧ Squarefree n}.ncard : ℝ) / N) atTop (nhds (6 / π^2))
 
-/-! ## Typical Gap Size -/
+/- ## Typical Gap Size -/
 
 /--
 Since the density of squarefree numbers is 6/π², the "average" gap between
@@ -161,7 +161,7 @@ Note: 6/π² ≈ 0.6079... > 0.6
 -/
 axiom average_gap_heuristic : (6 : ℝ) / π^2 > 0.6
 
-/-! ## Small Examples of Gaps -/
+/- ## Small Examples of Gaps -/
 
 /-- Gap of 1: between 1 and 2. -/
 example : (2 : ℕ) - 1 = 1 := rfl
@@ -181,7 +181,7 @@ example : (7 : ℕ) - 6 = 1 := rfl
 /-- Gap of 3: between 7 and 10 (skipping 8 = 2³, 9 = 3²). -/
 example : (10 : ℕ) - 7 = 3 := rfl
 
-/-! ## The Doubling Trick -/
+/- ## The Doubling Trick -/
 
 /--
 A key observation: if n is squarefree and odd, then 2n is also squarefree.

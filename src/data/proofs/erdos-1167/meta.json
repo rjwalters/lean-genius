@@ -1,0 +1,91 @@
+{
+  "id": "erdos-1167",
+  "title": "Erdős Problem #1167: Partition Relations on Cardinals",
+  "slug": "erdos-1167",
+  "description": "For infinite cardinals, does 2^λ → (κ_α + 1)^{r+1}_{α < γ} imply λ → (κ_α)^r_{α < γ}?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1167",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1167Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "graph-theory",
+      "set-theory",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1167,
+    "erdosUrl": "https://erdosproblems.com/1167",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.SetTheory.Cardinal.Basic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "provides",
+      "gives",
+      "RSubset",
+      "Coloring",
+      "IsMonochromatic",
+      "PartitionRelation",
+      "IndexedPartitionRelation",
+      "partition_one_color",
+      "partition_monotone_target",
+      "partition_zero_target",
+      "indexed_partition_monotone_targets",
+      "isMonochromatic_subset",
+      "infinite_card_add_one",
+      "finite_card_add_one",
+      "conjecture_simplifies_infinite_targets"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1167 is a deep question in infinitary combinatorics posed by Erdős, Hajnal, and Rado in their foundational work on partition calculus (1956). It asks whether a partition relation at exponent r+1 on 2^λ implies the corresponding relation at exponent r on λ.\n\nThe partition relation κ → (λ_α)^r_{α < γ} means that for every r-coloring of r-element subsets of κ, there exists a large monochromatic set. This is a fundamental question about the structure of infinite combinatorics.\n\nThis problem is catalogued at erdosproblems.com/1167.",
+    "problemStatement": "For infinite cardinals, does 2^λ → (κ_α + 1)^{r+1}_{α < γ} imply λ → (κ_α)^r_{α < γ}?",
+    "proofStrategy": "The formalization is structured in 291 lines of Lean 4 code. It uses 3 axioms for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**Partition Calculus**: The notation κ → (λ_α)^r_{α < γ} encodes deep Ramsey-theoretic properties of infinite sets",
+      "**Exponent Transfer**: The problem asks whether partition properties transfer between consecutive exponents r and r+1",
+      "**Cardinal Arithmetic**: The +1 in κ_α + 1 is only meaningful for finite cardinals, since κ_α + 1 = κ_α for infinite κ_α",
+      "**Stepping Up Lemma**: Erdős-Hajnal's stepping up lemma provides partial results relating different exponents",
+      "**Foundational Question**: Posed in 1956, this remains one of the fundamental open problems in infinite combinatorics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1167",
+      "startLine": 1,
+      "endLine": 291
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1167 (Partition Relations on Cardinals) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

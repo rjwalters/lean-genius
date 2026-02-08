@@ -66,7 +66,7 @@ enhanced=$(find src/data/proofs/erdos-* -name "annotations.json" -exec sh -c 'te
 echo "Enhanced stubs: $enhanced / 821"
 
 # Research progress
-cat research/candidate-pool.json | jq '[.candidates[] | .status] | group_by(.) | map({status: .[0], count: length})'
+cat .lean/state/candidate-pool.json | jq '[.candidates[] | .status] | group_by(.) | map({status: .[0], count: length})'
 ```
 
 ## Quick Stop (One Command)

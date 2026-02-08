@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #75 — Uncountable Chromatic Number and Large Independent Sets
 
 Erdős, Hajnal, and Szemerédi asked:
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Graph Abstractions -/
+/- ## Graph Abstractions -/
 
 /-- Abstract type for a (possibly infinite) graph -/
 axiom Graph : Type
@@ -36,7 +36,7 @@ axiom chromaticNum_mono (G : Graph) (m n : ℕ) (h : m ≤ n) :
 def HasUncountableChromaticNum (G : Graph) : Prop :=
   ∀ n : ℕ, chromaticNum G n
 
-/-! ## Finite Subgraphs and Independence -/
+/- ## Finite Subgraphs and Independence -/
 
 /-- A finite subgraph of G on exactly n vertices -/
 axiom FiniteSubgraph : Graph → ℕ → Type
@@ -48,7 +48,7 @@ axiom indepNumber : {G : Graph} → {n : ℕ} → FiniteSubgraph G n → ℕ
 axiom indepNumber_le (G : Graph) (n : ℕ) (H : FiniteSubgraph G n) :
   indepNumber H ≤ n
 
-/-! ## The Independence Ratio Property -/
+/- ## The Independence Ratio Property -/
 
 /-- A graph has the (1−ε)-independence property if every sufficiently
     large finite subgraph on n vertices has independence number > n^{1−ε} -/
@@ -67,7 +67,7 @@ def HasLinearIndepSets (G : Graph) : Prop :=
       ∀ H : FiniteSubgraph G n,
         c * (n : ℚ) ≤ (indepNumber H : ℚ)
 
-/-! ## Known Context -/
+/- ## Known Context -/
 
 /-- For finite graphs, large chromatic number forces small independence ratio
     (complement of Ramsey-type bounds) -/
@@ -79,7 +79,7 @@ axiom finite_chromatic_independence (n k : ℕ) (G : Graph) (hk : chromaticNum G
 axiom erdos_hajnal_related :
   True  -- stated for context only
 
-/-! ## The Erdős Problem -/
+/- ## The Erdős Problem -/
 
 /-- Erdős Problem 75 (basic form): There exists a graph with uncountable
     chromatic number and the large independence set property -/

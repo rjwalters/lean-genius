@@ -223,26 +223,23 @@ axiom folkman_vs_ramsey :
 ## Part VIII: Proof Techniques
 -/
 
-/--
+/-
 **The Hales-Jewett Theorem Connection:**
 The Nešetřil-Rödl proof uses the Hales-Jewett theorem and
 product constructions.
 -/
-axiom hales_jewett_method : True
 
-/--
+/-
 **Partite Construction:**
 A key technique is to build Folkman graphs from partite graphs
 where cliques are controlled by the partition structure.
 -/
-axiom partite_construction : True
 
-/--
+/-
 **Shift Graphs:**
 Folkman's original construction used "shift graphs" - graphs where
 vertices are sets and adjacency is determined by containment relations.
 -/
-axiom shift_graph_construction : True
 
 /-
 ## Part IX: Extensions
@@ -259,11 +256,10 @@ def GeneralizedFolkmanNumber (ls : List ℕ) (r : ℕ) : Prop :=
     ∀ χ : EdgeColoring G ls.length,
       ∃ i : Fin ls.length, ContainsClique (MonochromaticSubgraph G χ i) (ls.get i)
 
-/--
+/-
 **Hypergraph Generalization:**
 The result extends to r-uniform hypergraphs as well.
 -/
-axiom hypergraph_folkman : True
 
 /-
 ## Part X: Summary

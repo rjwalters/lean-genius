@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #524: Maximum of Random Sign Polynomials
 
 Erdős Problem #524 (Salem–Zygmund) asks for the correct order of magnitude of
@@ -20,7 +20,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Order.Filter.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- Binary digit function: the k-th digit in the binary expansion of t ∈ (0,1). -/
 noncomputable def binaryDigit (t : ℝ) (k : ℕ) : ℤ :=
@@ -35,7 +35,7 @@ noncomputable def randSignPoly (t : ℝ) (n : ℕ) (x : ℝ) : ℝ :=
 noncomputable def polyMax (t : ℝ) (n : ℕ) : ℝ :=
   sSup { |randSignPoly t n x| | x ∈ Set.Icc (-1 : ℝ) 1 }
 
-/-! ## Known Lower Bound (Erdős) -/
+/- ## Known Lower Bound (Erdős) -/
 
 /-- Erdős (unpublished): For almost all t ∈ (0,1) and every ε > 0,
     M_n(t)/n^{1/2-ε} → ∞ as n → ∞. This means M_n(t) grows at least
@@ -46,7 +46,7 @@ axiom erdos_lower_bound :
       Filter.Tendsto (fun n : ℕ => polyMax t n / (n : ℝ) ^ ((1 : ℝ) / 2 - ε))
         Filter.atTop Filter.atTop
 
-/-! ## Known Upper Bound (Chung) -/
+/- ## Known Upper Bound (Chung) -/
 
 /-- Chung: For almost all t ∈ (0,1), there exist infinitely many n such that
     M_n(t) ≤ C · √(n / log log n) for some absolute constant C. -/
@@ -56,7 +56,7 @@ axiom chung_upper_bound :
       ∀ N : ℕ, ∃ n : ℕ, N ≤ n ∧
         polyMax t n ≤ C * Real.sqrt ((n : ℝ) / Real.log (Real.log n))
 
-/-! ## Classical Comparison: Salem–Zygmund for Trigonometric Polynomials -/
+/- ## Classical Comparison: Salem–Zygmund for Trigonometric Polynomials -/
 
 /-- Salem–Zygmund theorem (for comparison): for random trigonometric polynomials
     with ±1 coefficients, the maximum on [0,2π] is typically Θ(√(n log n)).
@@ -69,7 +69,7 @@ axiom salem_zygmund_trigonometric :
         c₁ * Real.sqrt ((n : ℝ) * Real.log n) ≤ polyMax t n ∧
         polyMax t n ≤ c₂ * Real.sqrt ((n : ℝ) * Real.log n)
 
-/-! ## Main Open Problem -/
+/- ## Main Open Problem -/
 
 /-- Erdős Problem #524: Determine the correct order of magnitude of M_n(t)
     for almost all t ∈ (0,1). The known bounds leave a gap between

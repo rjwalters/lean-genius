@@ -25,7 +25,7 @@ namespace Erdos264
 
 open Set Filter BigOperators
 
-/-! ## Definition of Irrationality Sequence -/
+/- ## Definition of Irrationality Sequence -/
 
 /--
 A sequence a : ℕ → ℕ is an **irrationality sequence** if for every bounded
@@ -45,7 +45,7 @@ def IsIrrationalitySequence (a : ℕ → ℕ) : Prop :=
     (0 : ℕ) ∉ range b →
     Irrational (∑' n, (1 : ℝ) / (a n + b n))
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Kovač-Tao (2024)**: The sequence aₙ = 2ⁿ is NOT an irrationality sequence.
@@ -60,21 +60,18 @@ axiom powers_of_two_not_irrationality_seq :
 theorem erdos_264_part_i : ¬IsIrrationalitySequence (fun n => 2^n) :=
   powers_of_two_not_irrationality_seq
 
-/--
+/-
 **Open Problem**: Is aₙ = n! an irrationality sequence?
 
 This remains open. The factorial grows faster than 2ⁿ but slower than 2^(2ⁿ),
 so neither the positive nor negative criteria from Kovač-Tao apply directly.
+The Kovač-Tao negative criterion requires liminf(aₙ² · ∑_{k>n} 1/aₖ²) > 0,
+which does NOT hold for n! (the tail sum decays too fast). The positive
+criterion requires a_{n+1}/aₙ → ∞, but for n! we have (n+1)!/n! = n+1
+which grows but not fast enough.
 -/
-axiom factorial_irrationality_seq_open :
-    -- This is stated as an axiom representing the open status
-    -- The actual answer is unknown
-    True
 
-/-- Erdős Problem #264 Part (ii): n! case is OPEN -/
-theorem erdos_264_part_ii_open : True := factorial_irrationality_seq_open
-
-/-! ## Known Positive Example -/
+/- ## Known Positive Example -/
 
 /--
 **Known Result**: The sequence aₙ = 2^(2ⁿ) IS an irrationality sequence.
@@ -86,7 +83,7 @@ a_{n+1}/aₙ = 2^(2ⁿ) → ∞, which is the key condition.
 axiom double_exp_is_irrationality_seq :
     IsIrrationalitySequence (fun n => 2^(2^n))
 
-/-! ## Kovač-Tao Criteria -/
+/- ## Kovač-Tao Criteria -/
 
 /--
 **Kovač-Tao Negative Criterion**:
@@ -117,7 +114,7 @@ axiom kovac_tao_positive_criterion {F : ℕ → ℕ}
     ∃ a : ℕ → ℕ, IsIrrationalitySequence a ∧
       Tendsto (fun n => (a n : ℝ) / F n) atTop (nhds 1)
 
-/-! ## Growth Rate Discussion -/
+/- ## Growth Rate Discussion -/
 
 /--
 Erdős originally speculated that irrationality sequences might exist with
@@ -130,7 +127,7 @@ than exponentially. The Kovač-Tao criteria make this precise:
 The boundary is superexponential growth.
 -/
 
-/-! ## Examples and Computations -/
+/- ## Examples and Computations -/
 
 /-- Powers of 2 grow with constant ratio 2 -/
 example : ∀ n, (2 : ℕ)^(n+1) / 2^n = 2 := by

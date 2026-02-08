@@ -1,6 +1,6 @@
 {
   "id": "erdos-98",
-  "title": "Erdős Problem #98: Distinct Distances in General Position",
+  "title": "Distinct Distances in General Position",
   "slug": "erdos-98",
   "description": "Let h(n) = min distinct distances for n points with no 3 collinear and no 4 concyclic. Does h(n)/n → ∞? Known: h(n) < n·exp(c√(log n)). Even h(n) ≥ n is unknown. Open.",
   "meta": {
@@ -8,61 +8,90 @@
     "sourceUrl": "https://erdosproblems.com/98",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos98Problem.lean",
-    "tags": ["combinatorial geometry", "distinct distances"],
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "distinct-distances",
+      "incidence-geometry"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 98,
     "erdosUrl": "https://erdosproblems.com/98",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-01",
+    "mathlib_version": "4.x"
   },
   "overview": {
-    "historicalContext": "Erdős studied distinct distances under general-position conditions starting in the 1970s. Without restrictions, Guth–Katz proved Ω(n/log n) distances. With no 3 collinear and no 4 concyclic, more distances should be forced, but even h(n) ≥ n is not proved.",
+    "historicalContext": "The distinct distances problem is one of Erdős's most famous contributions to combinatorial geometry. In its unrestricted form, Erdős (1946) conjectured that n points in the plane determine at least Ω(n/√(log n)) distinct distances, which was finally proved (up to the √(log n) factor) by Guth and Katz in 2015 using algebraic techniques.\n\nProblem 98 considers the more structured setting where the point configuration is in 'general position': no three points collinear and no four points concyclic. These constraints eliminate lattice-like configurations (which achieve the minimum in the unrestricted problem) and should force more distinct distances. Erdős conjectured that h(n)/n → ∞, where h(n) is the minimum number of distinct distances over all general-position configurations of n points.\n\nRemarkably, even the much weaker bound h(n) ≥ n is unknown. The best upper bounds come from Pach, who showed h(n) < n^{log₂ 3} ≈ n^{1.585}, and the Erdős–Furedi–Pach improvement h(n) < n·exp(c√(log n)), which is much closer to linear. The gap between the Guth–Katz Ω(n/log n) lower bound (which applies without general position) and the conjectured superlinear growth remains wide open.",
     "problemStatement": "For n points in ℝ² with no 3 collinear and no 4 concyclic, does the minimum number of distinct distances h(n) satisfy h(n)/n → ∞?",
-    "proofStrategy": "Defines general-position conditions (no 3 collinear, no 4 concyclic), distinct distances, and h(n). States Pach's n^{log₂3} bound, the EFP n·exp(c√(log n)) bound, the main conjecture h(n)/n → ∞, and the weaker h(n) ≥ n question.",
+    "proofStrategy": "We define PointConfig as Fin n → EuclideanSpace ℝ (Fin 2), then define NoThreeCollinear (no affine line through 3 points), NoFourConcyclic (no circle through 4 points), and InGeneralPosition (injective + both conditions). The function h(n) uses sInf over all general-position configurations. Upper bounds (Pach, EFP) and the main conjecture are axiomatized. The Guth–Katz comparison is stated.",
     "keyInsights": [
-      "General position (no 3 collinear, no 4 concyclic) prevents lattice-like low-distance configurations",
-      "Pach's upper bound h(n) < n^{log₂3} shows h(n) is at most slightly superlinear",
-      "The EFP improvement h(n) < n·exp(c√log n) is much closer to linear",
-      "Even proving h(n) ≥ n (let alone h(n)/n → ∞) remains open"
+      "**General position eliminates extremal configurations**: The √n × √n integer lattice achieves Θ(n/√(log n)) distances but has many collinear and concyclic points. General position prevents such structured configurations.",
+      "**Pach's upper bound**: h(n) < n^{log₂ 3} ≈ n^{1.585} shows that general position does not force quadratically many distances. The construction uses Horton sets and related point configurations.",
+      "**EFP improvement**: The Erdős–Furedi–Pach bound h(n) < n·exp(c√(log n)) is nearly linear, suggesting h(n) grows only slightly faster than n. This is formalized using Real.exp and Real.sqrt.",
+      "**Open even for h(n) ≥ n**: The most basic question — whether general position forces at least n distinct distances — remains unresolved. This would already be a breakthrough.",
+      "**Guth–Katz baseline**: Without general position, the Guth–Katz theorem gives Ω(n/log n) distances. General position should give more, but quantifying the improvement is the open challenge."
+    ],
+    "mathlibDependencies": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "originalContributions": [
+      "PointConfig: n-point configuration in ℝ² via EuclideanSpace",
+      "NoThreeCollinear: no affine line through 3 distinct points",
+      "NoFourConcyclic: no circle through 4 distinct points",
+      "InGeneralPosition: injective + collinearity + concyclicity constraints",
+      "numDistinctDistances: count of positive pairwise distances",
+      "h: minimum distinct distances over general-position configurations",
+      "pach_upper_bound: h(n) < n^{log₂ 3} axiom",
+      "efp_upper_bound: h(n) < n·exp(c√(log n)) axiom",
+      "ErdosProblem98: h(n)/n → ∞ conjecture",
+      "erdos_98_weak: h(n) ≥ n weaker conjecture",
+      "guth_katz_comparison: Ω(n/log n) without general position"
     ]
   },
   "sections": [
     {
       "id": "general-position",
       "title": "General Position Conditions",
-      "startLine": 19,
-      "endLine": 47,
-      "summary": "Defines no-3-collinear, no-4-concyclic, and general-position properties."
+      "startLine": 22,
+      "endLine": 46,
+      "summary": "Defines PointConfig (Fin n → EuclideanSpace), NoThreeCollinear (no affine line through 3 points), NoFourConcyclic (no circle through 4 points), and InGeneralPosition (injective + both)."
     },
     {
       "id": "distances",
       "title": "Distinct Distances and h(n)",
-      "startLine": 51,
-      "endLine": 58,
-      "summary": "Defines the number of distinct distances and the function h(n)."
+      "startLine": 48,
+      "endLine": 59,
+      "summary": "Defines numDistinctDistances (count of positive pairwise distances) and h(n) (sInf over general-position configurations)."
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
-      "startLine": 62,
-      "endLine": 71,
-      "summary": "States Pach's n^{log₂3} bound and the EFP n·exp(c√log n) bound."
+      "startLine": 61,
+      "endLine": 72,
+      "summary": "Axiomatizes Pach's bound h(n) < n^{log₂ 3} (eventually) and the EFP bound h(n) < n·exp(c√(log n)) for some c > 0."
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
-      "startLine": 75,
-      "endLine": 93,
-      "summary": "States h(n)/n → ∞, the weaker h(n) ≥ n, and the Guth–Katz comparison."
+      "startLine": 74,
+      "endLine": 96,
+      "summary": "Axiomatizes ErdosProblem98 (h(n)/n → ∞ via Filter.Tendsto), erdos_98_weak (h(n) ≥ n eventually), and guth_katz_comparison (Ω(n/log n) without general position)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 98 asks whether general-position points determine superlinearly many distances. The gap between the Guth–Katz Ω(n/log n) lower bound and the EFP n·exp(c√log n) upper bound for h(n) remains wide open.",
-    "implications": "Resolution would clarify how algebraic constraints (collinearity, concyclicity) affect the distinct distance problem.",
+    "summary": "Erdős Problem 98 asks whether general-position points (no 3 collinear, no 4 concyclic) determine superlinearly many distances. The formalization captures the general-position conditions, known upper bounds (Pach, EFP), the main conjecture h(n)/n → ∞, and the Guth–Katz comparison. 0 sorries.",
+    "implications": "Resolution would clarify how algebraic constraints (collinearity, concyclicity) affect the distinct distance problem, connecting combinatorial geometry to algebraic geometry techniques.",
     "openQuestions": [
-      "Does h(n)/n → ∞?",
-      "Is h(n) ≥ n for large n?",
-      "Can general position give Ω(n^{1+ε}) distinct distances?"
+      "Does h(n)/n → ∞, or does h(n) grow only linearly?",
+      "Is h(n) ≥ n for large n? Even this weaker bound is unknown.",
+      "Can general position give Ω(n^{1+ε}) distinct distances for some ε > 0?",
+      "Can the Guth–Katz algebraic technique be adapted to exploit general position?"
     ]
   }
 }

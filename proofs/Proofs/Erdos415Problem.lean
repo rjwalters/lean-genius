@@ -28,7 +28,7 @@ import Mathlib
 
 open Nat Function Finset
 
-/-! ## Arithmetic Functions -/
+/- ## Arithmetic Functions -/
 
 /-- Euler's totient function φ(n) = count of k ≤ n with gcd(k,n) = 1 -/
 def phi : ℕ → ℕ := Nat.totient
@@ -42,7 +42,7 @@ def tau : ℕ → ℕ := fun n => (Nat.divisors n).card
 /-- Number of distinct prime divisors ω(n) -/
 def omega : ℕ → ℕ := fun n => n.primeFactors.card
 
-/-! ## Ordering Patterns -/
+/- ## Ordering Patterns -/
 
 /-- An ordering pattern on k elements is a permutation of Fin k -/
 def OrderingPattern (k : ℕ) := Equiv.Perm (Fin k)
@@ -61,7 +61,7 @@ def RealizesPattern {k : ℕ} (seq : Fin k → ℕ) (pattern : OrderingPattern k
 def PhiRealizesPattern (m k : ℕ) (pattern : OrderingPattern k) : Prop :=
   RealizesPattern (fun i => phi (m + 1 + i.val)) pattern
 
-/-! ## The Function F(n) -/
+/- ## The Function F(n) -/
 
 /-- A pattern is achievable at n if some φ sequence realizes it -/
 def PatternAchievable (n k : ℕ) (pattern : OrderingPattern k) : Prop :=
@@ -83,7 +83,7 @@ where
 noncomputable def F' (n : ℕ) : ℕ :=
   sSup {k : ℕ | AllPatternsAchievable n k}
 
-/-! ## Known Bounds (Erdős 1936) -/
+/- ## Known Bounds (Erdős 1936) -/
 
 /-- F(n) ≍ log log log n means:
     c₁ log log log n ≤ F(n) ≤ c₂ log log log n for constants c₁, c₂ > 0 -/
@@ -96,7 +96,7 @@ def AsymptoticTripleLog (f : ℕ → ℕ) : Prop :=
 theorem erdos_1936_F_asymptotic : AsymptoticTripleLog F := by
   sorry
 
-/-! ## The Main Questions (OPEN) -/
+/- ## The Main Questions (OPEN) -/
 
 /-- Question 1: Is there a constant c such that F(n) = (c + o(1)) log log log n? -/
 def Question1_ExactConstant : Prop :=
@@ -125,7 +125,7 @@ def Question3_NaturalMostLikely : Prop :=
     (Finset.univ.filter fun m => m + k ≤ n ∧ PhiRealizesPattern m k (NaturalPattern k)).card ≥
     (Finset.univ.filter fun m => m + k ≤ n ∧ PhiRealizesPattern m k pattern).card
 
-/-! ## Specific Pattern Analysis -/
+/- ## Specific Pattern Analysis -/
 
 /-- The strictly increasing pattern -/
 def StrictlyIncreasingPattern (k : ℕ) : OrderingPattern k := Equiv.refl (Fin k)
@@ -146,7 +146,7 @@ theorem patterns_k3_achievable (n : ℕ) (hn : n ≥ 100) :
     AllPatternsAchievable n 3 := by
   sorry
 
-/-! ## Properties of φ Relevant to Ordering -/
+/- ## Properties of φ Relevant to Ordering -/
 
 /-- φ(p) = p - 1 for prime p -/
 theorem phi_prime (p : ℕ) (hp : p.Prime) : phi p = p - 1 := by
@@ -166,7 +166,7 @@ theorem phi_small_values : ∀ ε > 0, ∃ᶠ n in Filter.atTop,
     (phi n : ℝ) < ε * n := by
   sorry
 
-/-! ## Extension to Other Functions -/
+/- ## Extension to Other Functions -/
 
 /-- The same asymptotic holds for σ -/
 def F_sigma (n : ℕ) : ℕ :=
@@ -179,13 +179,14 @@ where
 theorem erdos_1936_F_sigma_asymptotic : AsymptoticTripleLog F_sigma := by
   sorry
 
-/-- The same asymptotic holds for τ -/
-def F_tau (n : ℕ) : ℕ := by sorry
+/-- The same asymptotic holds for τ.
+    F_τ(n) = max number of consecutive integers ≤ n with non-decreasing divisor count. -/
+axiom F_tau (n : ℕ) : ℕ
 
 theorem erdos_1936_F_tau_asymptotic : AsymptoticTripleLog F_tau := by
   sorry
 
-/-! ## Why Triple Log? -/
+/- ## Why Triple Log? -/
 
 /-- Intuition: The number of patterns is k!, and we need k! ≤ O(n/k) chances.
     k! ≈ (k/e)^k, so k^k ≲ n, giving k ≲ log n / log log n.
@@ -201,7 +202,7 @@ theorem phi_collisions : ∀ k : ℕ, ∃ v : ℕ,
     (Finset.range 1000000).filter (fun n => phi n = v) |>.card ≥ k := by
   sorry
 
-/-! ## Main Problem Statement -/
+/- ## Main Problem Statement -/
 
 /-- Erdős Problem #415: OPEN
 

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #321 — Distinct Subset Sums of Unit Fractions
 
 Let R(N) be the maximum size of a set A ⊆ {1, ..., N} such that all
@@ -21,7 +21,7 @@ import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The set of unit fractions 1/n for n ∈ {1, ..., N}. -/
 def unitFractions (N : ℕ) : Finset ℚ :=
@@ -41,7 +41,7 @@ noncomputable def maxDistinctReciprocal (N : ℕ) : ℕ :=
     (Finset.range (N + 1)).powerset)
     Finset.card
 
-/-! ## Main Question -/
+/- ## Main Question -/
 
 /-- **Erdős Problem #321**: Determine the asymptotic behavior of R(N).
     The current bounds differ by essentially one iterated logarithm. -/
@@ -49,7 +49,7 @@ axiom erdos_321_asymptotics :
   ∃ f : ℕ → ℝ, ∀ N : ℕ, N ≥ 2 →
     (maxDistinctReciprocal N : ℝ) = f N
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ (N/log N) · Π log_i N
     for iterated logs up to level k. -/
@@ -73,19 +73,16 @@ axiom main_term_n_over_log_n :
     c₁ * (N : ℝ) / Real.log N ≤ (maxDistinctReciprocal N : ℝ) ∧
     (maxDistinctReciprocal N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N)
 
-/-! ## Observations -/
+/- ## Observations -/
 
-/-- **Egyptian fraction connection**: The problem relates to
+/- **Egyptian fraction connection**: The problem relates to
     representations of rationals as sums of distinct unit fractions.
     R(N) measures how many denominators from {1,...,N} can be used
     while keeping all partial sums distinguishable. -/
-axiom egyptian_fraction_connection : True
 
-/-- **Greedy construction**: A natural construction takes all n
+/- **Greedy construction**: A natural construction takes all n
     with certain divisibility properties, ensuring subset sums
     separate. The challenge is optimizing the selection criterion. -/
-axiom greedy_construction : True
 
-/-- **OEIS sequences**: Related sequences A384927 and A391592
+/- **OEIS sequences**: Related sequences A384927 and A391592
     track computed values of R(N) for small N. -/
-axiom oeis_sequences : True

@@ -32,7 +32,7 @@ open Nat
 
 namespace Erdos705
 
-/-!
+/-
 # Part 1: Unit Distance Graphs
 
 A unit distance graph in ℝ² has vertices as points in the plane
@@ -66,7 +66,7 @@ def unitDistGraph (V : Set (EuclideanSpace ℝ (Fin 2))) : SimpleGraph V where
     intro p ⟨hne, _⟩
     exact hne rfl
 
-/-!
+/-
 # Part 2: Chromatic Number and Girth
 
 The two key graph parameters in this problem.
@@ -96,7 +96,7 @@ axiom girth' {V : Type*} (G : SimpleGraph V) : ℕ
 def hasGirthAtLeast {V : Type*} (G : SimpleGraph V) (k : ℕ) : Prop :=
   girth' G ≥ k ∨ girth' G = 0
 
-/-!
+/-
 # Part 3: Known 4-Chromatic Constructions
 
 Concrete unit distance graphs with χ = 4 at various girths.
@@ -145,7 +145,7 @@ axiom chilakamarri_family :
     V.card = 47 ∧ girth' (unitDistGraph ↑V) ≥ 4 ∧
     chromaticNumber' (unitDistGraph ↑V) = 4
 
-/-!
+/-
 # Part 4: The Erdős Conjecture
 
 The formal problem statement.
@@ -169,7 +169,7 @@ def erdos_705_negation : Prop :=
     hasGirthAtLeast (unitDistGraph ↑V) k ∧
     chromaticNumber' (unitDistGraph ↑V) ≥ 4
 
-/-!
+/-
 # Part 5: Deriving Consequences
 
 What the known constructions tell us.
@@ -196,7 +196,7 @@ theorem girth_5_chi_4 :
   obtain ⟨V, _, hg, hchi⟩ := wormald_graph_exists
   exact ⟨V, hg, hchi⟩
 
-/-!
+/-
 # Part 6: The Hadwiger-Nelson Connection
 
 The broader context of coloring the plane.
@@ -217,7 +217,7 @@ axiom de_grey_lower_bound :
     ∃ (V : Finset (EuclideanSpace ℝ (Fin 2))),
     chromaticNumber' (unitDistGraph ↑V) ≥ 5
 
-/-!
+/-
 # Part 7: Abstract vs. Geometric Graphs
 
 Why geometry constrains chromatic number.
@@ -237,7 +237,7 @@ axiom erdos_1959_girth_chromatic :
     ∀ g k : ℕ, ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V),
     girth' G ≥ g ∧ chromaticNumber' G ≥ k
 
-/-!
+/-
 # Part 8: Vertex Count Growth
 
 How the size of constructions grows with girth.
@@ -256,7 +256,7 @@ higher-girth examples may be impossible, supporting the conjecture.
 def vertexCountGrowth : List (ℕ × ℕ) :=
   [(3, 7), (4, 47), (5, 6448)]
 
-/-!
+/-
 # Part 9: Related Problems
 
 Connections to other Erdős problems.
@@ -272,7 +272,7 @@ These form a constellation of problems about how geometry
 constrains graph coloring.
 -/
 
-/-!
+/-
 # Part 10: Problem Status
 -/
 
@@ -289,7 +289,7 @@ theorem erdos_705_main :
       girth' (unitDistGraph ↑V) ≥ 5 ∧ chromaticNumber' (unitDistGraph ↑V) = 4) := by
   exact ⟨girth_3_chi_4, girth_4_chi_4, girth_5_chi_4⟩
 
-/-!
+/-
 # Summary
 
 **Problem:** Is there k such that girth(UDG) ≥ k implies χ(UDG) ≤ 3?

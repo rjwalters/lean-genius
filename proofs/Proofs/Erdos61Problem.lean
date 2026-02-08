@@ -25,7 +25,7 @@ open Real
 
 namespace Erdos61
 
-/-!
+/-
 ## Background
 
 The Erdős–Hajnal conjecture connects two fundamental concepts in graph theory:
@@ -40,7 +40,7 @@ Erdős and Hajnal conjectured that FORBIDDING a fixed induced subgraph H should
 give a much better (polynomial) bound.
 -/
 
-/-!
+/-
 ## The Main Definition
 
 For a graph H, we say f(n) is an "Erdős-Hajnal lower bound" if every H-free graph
@@ -61,7 +61,7 @@ def IsErdosHajnalLowerBound {α : Type*} [Fintype α] [DecidableEq α]
   ∀ᶠ n in atTop, ∀ G : SimpleGraph (Fin n),
     (¬∃ g : α ↪ Fin n, H = G.comap g) → G.indepNum ≥ f n ∨ G.cliqueNum ≥ f n
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 The Erdős–Hajnal conjecture asks whether we can always achieve a polynomial
@@ -83,7 +83,7 @@ def ErdosHajnalConjecture : Prop :=
   ∀ {α : Type*} [Fintype α] [DecidableEq α] (H : SimpleGraph α),
     ∃ c : ℝ, c > 0 ∧ IsErdosHajnalLowerBound H (fun n => (n : ℝ) ^ c)
 
-/-!
+/-
 ## Partial Results (PROVED)
 
 While the main conjecture is open, weaker bounds have been established.
@@ -117,7 +117,7 @@ axiom bnss2023 :
   ∀ {α : Type*} [Fintype α] [DecidableEq α] (H : SimpleGraph α),
     ∃ c : ℝ, c > 0 ∧ IsErdosHajnalLowerBound H (fun n => exp (c * sqrt (log n * log (log n))))
 
-/-!
+/-
 ## Comparison of Bounds
 
 To understand the progress, compare the bounds for a graph on n = 10^6 vertices:

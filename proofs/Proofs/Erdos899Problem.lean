@@ -1,6 +1,6 @@
 import Mathlib
 
-/-!
+/-
 # Erdős Problem 899: Growth of Difference Sets
 
 ## What This Proves
@@ -44,7 +44,7 @@ namespace Erdos899
 
 open Set Filter Topology
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The counting function: number of elements of A up to N -/
 noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
@@ -62,7 +62,7 @@ noncomputable def diffCountingFn (A : Set ℕ) (N : ℕ) : ℕ :=
 def HasZeroDensity (A : Set ℕ) : Prop :=
   Tendsto (fun N => (countingFn A N : ℝ) / N) atTop (𝓝 0)
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The difference set always contains 0 (if A is nonempty) -/
 theorem zero_mem_diffSet {A : Set ℕ} (hne : A.Nonempty) : (0 : ℤ) ∈ diffSet A := by
@@ -74,7 +74,7 @@ theorem diff_mem_of_mem {A : Set ℕ} {a b : ℕ} (ha : a ∈ A) (hb : b ∈ A) 
     ((a : ℤ) - (b : ℤ)) ∈ diffSet A :=
   ⟨a, b, ha, hb, rfl⟩
 
-/-! ## Example: Powers of 2
+/- ## Example: Powers of 2
 
 The set of powers of 2 has zero density but its difference set grows fast. -/
 
@@ -108,7 +108,7 @@ example : (2 : ℤ) ∈ diffSet powersOfTwo := by
   · exact ⟨1, rfl⟩
   · ring
 
-/-! ## Main Theorem
+/- ## Main Theorem
 
 The main result requires deep combinatorial arguments from Ruzsa (1978). -/
 
@@ -130,7 +130,7 @@ theorem erdos_899 (A : Set ℕ) (hinf : A.Infinite) (hdens : HasZeroDensity A) :
     Tendsto (fun N => (diffCountingFn A N : ℝ) / countingFn A N) atTop atTop :=
   ruzsa_difference_growth A hinf hdens
 
-/-! ## Connection to Sumsets
+/- ## Connection to Sumsets
 
 The analogous question for sumsets A + A is Problem 245 on erdosproblems.com. -/
 

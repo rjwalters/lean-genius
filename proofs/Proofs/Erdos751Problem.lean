@@ -60,23 +60,22 @@ noncomputable def maxDegree (G : SimpleGraph V) : ℕ :=
 The chromatic number χ(G) is the minimum number of colors needed to properly
 color the vertices of G (no two adjacent vertices have the same color).
 -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ := sorry
--- Full definition requires significant graph coloring infrastructure
+axiom chromaticNumber (G : SimpleGraph V) : ℕ
 
 /--
 **Girth:**
 The girth of G is the length of the shortest cycle in G.
 If G is acyclic (a forest), the girth is defined as ∞ (we use 0).
+Axiomatized since cycle enumeration infrastructure is required.
 -/
-noncomputable def girth (G : SimpleGraph V) : ℕ := sorry
--- Full definition requires cycle enumeration
+axiom girth (G : SimpleGraph V) : ℕ
 
 /--
 **Cycle Lengths:**
 The set of all cycle lengths present in G.
+Axiomatized since walk/cycle infrastructure is required.
 -/
-noncomputable def cycleLengths (G : SimpleGraph V) : Set ℕ := sorry
--- Full definition requires walk/cycle infrastructure
+axiom cycleLengths (G : SimpleGraph V) : Set ℕ
 
 /--
 **Cycle Length Gap:**

@@ -35,7 +35,7 @@ open Set MeasureTheory Filter
 
 namespace Erdos120
 
-/-!
+/-
 # Part 1: Similar Copies
 
 A similar copy of A is the image of A under an affine map x ↦ a·x + b
@@ -68,7 +68,7 @@ E avoids all similar copies of A if no translate-scale of A fits inside E.
 def avoidsSimilarCopies (E A : Set ℝ) : Prop :=
   ¬ containsSimilarCopy E A
 
-/-!
+/-
 # Part 2: Universal Similarity Sets
 
 A set A is "universal" if every positive-measure set must contain a
@@ -95,7 +95,7 @@ def avoidable (A : Set ℝ) : Prop :=
   ∃ E : Set ℝ, MeasurableSet E ∧ volume E > 0 ∧
     avoidsSimilarCopies E A
 
-/-!
+/-
 # Part 3: Steinhaus Theorem (Finite Sets are Universal)
 
 The classical Steinhaus theorem (1920) implies that finite sets
@@ -115,7 +115,7 @@ enough room to embed any pattern.
 axiom steinhaus_finite (A : Set ℝ) (hA : A.Finite) (hne : A.Nonempty) :
     universalSimilaritySet A
 
-/-!
+/-
 # Part 4: Known Avoidable Cases
 
 Two classes of infinite sets are known to be avoidable.
@@ -142,7 +142,7 @@ axiom dense_in_interval_avoidable (A : Set ℝ)
     (hDense : ∃ a b : ℝ, a < b ∧ Dense ((A ∩ Set.Ioo a b) : Set ℝ)) :
     avoidable A
 
-/-!
+/-
 # Part 5: The Erdős Conjecture
 
 The central open problem: every infinite set is avoidable.
@@ -171,7 +171,7 @@ copy inside every positive-measure set.
 def erdos_120_negation : Prop :=
   ∃ A : Set ℝ, A.Infinite ∧ universalSimilaritySet A
 
-/-!
+/-
 # Part 6: The Geometric Sequence Case
 
 The key test case: A = {1, 1/2, 1/4, ...} = {(1/2)^n : n ∈ ℕ}.
@@ -202,7 +202,7 @@ it would be a major breakthrough toward the full conjecture.
 -/
 def erdos_120_geometric : Prop := avoidable geometricSeq
 
-/-!
+/-
 # Part 7: Ratio Invariance
 
 Similar copies preserve ratios between elements, which constrains
@@ -226,7 +226,7 @@ theorem ratio_preserved (A : Set ℝ) (a b : ℝ) (ha : a ≠ 0)
   ring_nf
   rw [mul_div_mul_left _ _ ha]
 
-/-!
+/-
 # Part 8: Measure-Theoretic Tools
 
 Key tools from measure theory that relate to this problem.
@@ -254,7 +254,7 @@ axiom lebesgue_density (E : Set ℝ) (hE : MeasurableSet E) (hpos : volume E > 0
     ∃ x ∈ E, ∀ ε > 0,
     volume (E ∩ Set.Ioo (x - ε) (x + ε)) / volume (Set.Ioo (x - ε) (x + ε)) > 1/2
 
-/-!
+/-
 # Part 9: Connections and Related Problems
 -/
 
@@ -293,7 +293,7 @@ theorem conjecture_equiv :
     rw [← universal_iff_not_avoidable]
     exact fun hUniv => h A hInf hUniv
 
-/-!
+/-
 # Part 10: Summary
 -/
 
@@ -308,7 +308,7 @@ theorem erdos_120_known_results :
     (∀ A : Set ℝ, ¬ Bornology.IsBounded A → avoidable A) := by
   exact ⟨steinhaus_finite, unbounded_avoidable⟩
 
-/-!
+/-
 # Summary
 
 **Problem:** For every infinite A ⊆ ℝ, does there exist E with μ(E) > 0

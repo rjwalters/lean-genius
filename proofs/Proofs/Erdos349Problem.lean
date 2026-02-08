@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #349 — Completeness of Exponential Floor Sequences
 
 For what values of t, α ∈ (0,∞) is the sequence ⌊tα^n⌋ complete?
@@ -19,7 +19,7 @@ import Mathlib.Data.Int.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- A set S ⊂ ℤ is additively complete if all sufficiently large
     integers are sums of distinct elements from S. -/
@@ -34,7 +34,7 @@ def expFloorSeq (t α : ℝ) (n : ℕ) : ℤ := ⌊t * α ^ n⌋
 def IsGoodPair (t α : ℝ) : Prop :=
   IsAdditivelyComplete (Set.range (expFloorSeq t α))
 
-/-! ## Main Question -/
+/- ## Main Question -/
 
 /-- **Erdős Problem #349**: Characterize the pairs (t,α) with
     t > 0, α > 0 for which ⌊tα^n⌋ is a complete sequence. -/
@@ -43,7 +43,7 @@ axiom erdos_349_characterization :
     ∀ t α : ℝ, t > 0 → α > 0 →
       (IsGoodPair t α ↔ (t, α) ∈ S)
 
-/-! ## Golden Ratio Conjecture -/
+/- ## Golden Ratio Conjecture -/
 
 /-- **Golden Ratio Conjecture**: The sequence ⌊tα^n⌋ is complete
     for all t > 0 and 1 < α < (1+√5)/2 ≈ 1.618. -/
@@ -51,7 +51,7 @@ axiom golden_ratio_conjecture :
   ∀ t α : ℝ, t > 0 → 1 < α → α < (1 + Real.sqrt 5) / 2 →
     IsGoodPair t α
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Graham's Disjoint Segments**: For any k, there exists
     t_k ∈ (0,1) such that the set of α making ⌊t_k α^n⌋ complete
@@ -63,7 +63,7 @@ axiom graham_disjoint_segments :
       (∀ i j, i ≠ j → Disjoint (intervals i) (intervals j)) ∧
       (∀ i, ∀ α ∈ intervals i, IsGoodPair t α)
 
-/-! ## Parity of ⌊(3/2)^n⌋ -/
+/- ## Parity of ⌊(3/2)^n⌋ -/
 
 /-- **Odd Infinitely Often?**: Is ⌊(3/2)^n⌋ odd for infinitely
     many n? This basic question remains open and is a fundamental
@@ -76,15 +76,13 @@ axiom floor_3_2_odd_infinitely :
 axiom floor_3_2_even_infinitely :
   Set.Infinite {n : ℕ | Even (⌊(3 / 2 : ℝ) ^ n⌋).toNat}
 
-/-! ## Observations -/
+/- ## Observations -/
 
-/-- **Waring-Type Connection**: Completeness of ⌊tα^n⌋ relates to
+/- **Waring-Type Connection**: Completeness of ⌊tα^n⌋ relates to
     representation problems in additive number theory, similar in
     spirit to Waring's problem for exponential bases. -/
-axiom waring_connection : True
 
-/-- **Fibonacci Threshold**: The golden ratio (1+√5)/2 is the
+/- **Fibonacci Threshold**: The golden ratio (1+√5)/2 is the
     growth rate of the Fibonacci sequence, which is known to be
     a complete sequence. The conjecture suggests completeness
     persists for slightly faster growth rates. -/
-axiom fibonacci_threshold : True

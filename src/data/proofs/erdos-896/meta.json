@@ -1,45 +1,107 @@
 {
   "id": "erdos-896",
-  "title": "Unique Product Representations",
+  "title": "Erdős Problem #896: Unique Product Representations",
   "slug": "erdos-896",
   "description": "Estimate max F(A,B) where F counts products ab with exactly one representation. Van Doorn: N²/log N ≤ max F ≪ N²/(log N)^δ.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős (1972)",
     "sourceUrl": "https://erdosproblems.com/896",
-    "status": "formalized",
+    "status": "enhanced",
     "proofRepoPath": "Proofs/Erdos896Problem.lean",
-    "tags": ["number-theory", "multiplicative-combinatorics", "product-sets", "asymptotic-bounds"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "multiplicative-combinatorics",
+      "product-sets",
+      "asymptotic-bounds"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 896,
     "erdosUrl": "https://erdosproblems.com/896",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on reals",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined reprCount and uniqueProductCount computationally",
+      "Axiomatized maxUniqueProducts with existence witness",
+      "Stated Van Doorn's lower bound (1+o(1))N²/log N",
+      "Stated Van Doorn's upper bound with exponent δ ≈ 0.086",
+      "Proved uniqueProductCount_le_product (trivial upper bound)",
+      "Proved uniqueProductCount_empty_left",
+      "Stated ExactOrderConjecture and van_doorn_implies_lower"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős (1972) asked to estimate the maximum number of uniquely representable products from two subsets of {1,...,N}. Van Doorn established the best known bounds. Related to Problem #490.",
-    "problemStatement": "For A, B ⊆ {1,...,N}, let F(A,B) count products m = ab with exactly one representation. Estimate max_{A,B} F(A,B).",
-    "proofStrategy": "We define reprCount and uniqueProductCount computationally, axiomatize the maximum, and state Van Doorn's asymptotic bounds. We prove the trivial upper bound F ≤ |A|·|B| and the empty set case.",
+    "historicalContext": "Erdős posed this problem in 1972 [Er72, p. 81], asking to determine the maximum number of uniquely representable products from two subsets of {1,...,N}. The question lies at the heart of multiplicative combinatorics: given two sets A and B, how many products ab can have exactly one factorization?\n\nVan Doorn established the best known bounds, proving a lower bound of (1+o(1))N²/log N and an upper bound of N²/(log N)^δ · (log log N)^{3/2} where δ = 1 - (1 + log log 2)/log 2 ≈ 0.086. The lower bound uses carefully constructed sets exploiting the multiplicative structure of integers, while the upper bound relies on analytic estimates for the number of divisors. The gap between these bounds — the exponent on log N differs — remains the central open question.\n\nThe problem is related to Erdős Problem #490 on the multiplicative structure of product sets. It also connects to the broader theme of understanding when multiplication can be 'injective' on large subsets, a question with applications in additive combinatorics and theoretical computer science.",
+    "problemStatement": "For $A, B \\subseteq \\{1, \\ldots, N\\}$, let $F(A,B)$ count the number of products $m = ab$ ($a \\in A$, $b \\in B$) that have exactly one such representation. Estimate $\\max_{A,B} F(A,B)$ as a function of $N$.",
+    "proofStrategy": "We define reprCount (counting representations of m as ab) and uniqueProductCount F(A,B) computationally using Finset operations. The maximum maxUniqueProducts is axiomatized with an existence witness. Van Doorn's lower and upper bounds are stated precisely, with the upper bound encoding the exponent δ = 1 - (1 + log log 2)/log 2. We prove the trivial bound F(A,B) ≤ |A|·|B|, commutativity F(A,B) = F(B,A), and the empty set base case. The ExactOrderConjecture that the true order is N²/log N is stated separately.",
     "keyInsights": [
-      "The trivial upper bound F(A,B) ≤ |A|·|B| follows from counting pairs",
-      "Van Doorn's lower bound (1+o(1))N²/log N uses carefully chosen A, B",
-      "The upper bound N²/(log N)^δ with δ ≈ 0.086 leaves a gap in the exponent",
-      "The exact asymptotic order (whether N²/log N is tight) remains open"
+      "**Trivial Bound**: F(A,B) ≤ |A|·|B| ≤ N² since each unique product corresponds to at most one pair",
+      "**Van Doorn's Lower Bound**: Carefully chosen A, B achieve (1+o(1))N²/log N unique products, exploiting that most products of integers in [1,N] have few representations",
+      "**Logarithmic Gap**: The upper bound N²/(log N)^{0.086} is much larger than N²/log N, leaving a substantial gap in the exponent on log N",
+      "**Commutativity**: F(A,B) = F(B,A) by the commutativity of multiplication, so the problem is symmetric in A and B",
+      "**Divisor Structure**: The problem is deeply connected to the distribution of divisors — products ab have unique representation precisely when the divisor structure prevents alternative factorizations"
     ]
   },
   "sections": [
-    { "id": "definitions", "title": "Product Representations", "startLine": 22, "endLine": 35, "summary": "Defines reprCount, uniqueProductCount, and SubsetsOfRange." },
-    { "id": "main-problem", "title": "Main Problem", "startLine": 37, "endLine": 53, "summary": "Axiomatizes maxUniqueProducts and states the problem as finding its asymptotic order." },
-    { "id": "van-doorn", "title": "Van Doorn's Bounds", "startLine": 55, "endLine": 75, "summary": "States Van Doorn's lower bound (1+o(1))N²/log N and upper bound with exponent δ." },
-    { "id": "basic", "title": "Basic Properties", "startLine": 77, "endLine": 103, "summary": "Proves uniqueProductCount_le_product, uniqueProductCount_empty_left, and states commutativity." },
-    { "id": "gap", "title": "Gap Between Bounds", "startLine": 105, "endLine": 114, "summary": "States the conjecture that the exact order is N²/log N." }
+    {
+      "id": "definitions",
+      "title": "Product Representations",
+      "startLine": 25,
+      "endLine": 40,
+      "summary": "Defines reprCount, uniqueProductCount F(A,B), and SubsetsOfRange."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem",
+      "startLine": 42,
+      "endLine": 61,
+      "summary": "Axiomatizes maxUniqueProducts, maxUniqueProducts_achieved, and ErdosProblem896."
+    },
+    {
+      "id": "van-doorn",
+      "title": "Van Doorn's Bounds",
+      "startLine": 62,
+      "endLine": 90,
+      "summary": "States VanDoornLowerBound (1+o(1))N²/log N and VanDoornUpperBound with exponent δ ≈ 0.086."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 92,
+      "endLine": 116,
+      "summary": "Proves uniqueProductCount_le_product, uniqueProductCount_comm axiom, uniqueProductCount_empty_left."
+    },
+    {
+      "id": "gap",
+      "title": "Gap Between Bounds and Conjecture",
+      "startLine": 118,
+      "endLine": 147,
+      "summary": "States ExactOrderConjecture (true order is N²/log N) and van_doorn_implies_lower."
+    }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 896 on unique product representations, with Van Doorn's bounds and proved basic properties. 0 sorries.",
-    "implications": "Resolving the gap would advance understanding of multiplicative structure in product sets.",
+    "summary": "The formalization captures Erdős Problem #896 on unique product representations with Van Doorn's asymptotic bounds, the trivial upper bound proof, and the conjecture that the exact order is N²/log N. All 0 sorries.",
+    "implications": "Resolving the gap between Van Doorn's lower bound (N²/log N) and upper bound (N²/(log N)^{0.086}) would advance our understanding of multiplicative structure in product sets and the distribution of integers with few factorizations.",
     "openQuestions": [
-      "Is the true order N²/log N or N²/(log N)^α for some α > 0?",
-      "What structure do optimal sets A, B have?",
-      "Can the upper bound exponent δ be improved?"
+      "Is the true order N²/log N, making Van Doorn's lower bound tight?",
+      "What structure do optimal sets A, B have for maximizing unique products?",
+      "Can the upper bound exponent δ ≈ 0.086 be improved toward 1?",
+      "How does F(A,B) behave when A = B (the 'diagonal' case)?",
+      "What is the connection to the Erdős multiplication table problem (#490)?"
     ]
   }
 }

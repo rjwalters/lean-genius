@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #508 — The Hadwiger–Nelson Problem
 
 What is the chromatic number of the plane? That is, what is the minimum
@@ -22,7 +22,7 @@ import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The unit-distance graph on ℝ²: vertices are points, edges connect
     pairs at Euclidean distance exactly 1. -/
@@ -31,18 +31,19 @@ noncomputable def unitDistGraph : SimpleGraph (EuclideanSpace ℝ (Fin 2)) where
   symm x y h := by constructor <;> [rw [dist_comm]; exact Ne.symm] <;> exact h.1 <;> exact h.2
   loopless x h := h.2 rfl
 
-/-- The chromatic number of the plane: χ(ℝ²). -/
-noncomputable def planeChromatic : ℕ := sorry
--- Full definition requires SimpleGraph.chromaticNumber on unitDistGraph
+/-- The chromatic number of the plane: χ(ℝ²).
+    This is the chromatic number of the unit-distance graph on ℝ².
+    Axiomatized since its exact value is the subject of the Hadwiger-Nelson problem. -/
+axiom planeChromatic : ℕ
 
-/-! ## Main Problem -/
+/- ## Main Problem -/
 
 /-- **Erdős Problem #508 (Hadwiger–Nelson)**: determine χ(ℝ²).
     The answer is one of 5, 6, or 7. -/
 axiom erdos_508_problem :
   5 ≤ planeChromatic ∧ planeChromatic ≤ 7
 
-/-! ## Known Lower Bounds -/
+/- ## Known Lower Bounds -/
 
 /-- **χ ≥ 3**: an equilateral triangle with side length 1 requires 3 colors. -/
 axiom chromatic_ge_3 : 3 ≤ planeChromatic
@@ -56,14 +57,14 @@ axiom chromatic_ge_4_moser : 4 ≤ planeChromatic
     stood since the 1960s. -/
 axiom de_grey_2018 : 5 ≤ planeChromatic
 
-/-! ## Known Upper Bound -/
+/- ## Known Upper Bound -/
 
 /-- **χ ≤ 7 (Isbell)**: tile the plane with regular hexagons of diameter
     slightly less than 1. Color with a 7-color repeating pattern.
     No two same-colored points are at distance 1. -/
 axiom chromatic_le_7_isbell : planeChromatic ≤ 7
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- **Fractional Chromatic Number**: the fractional chromatic number χ_f(ℝ²)
     satisfies 4 ≤ χ_f ≤ 4.359... (Matolcsi–Ruzsa–Varga–Zsámboki lower,

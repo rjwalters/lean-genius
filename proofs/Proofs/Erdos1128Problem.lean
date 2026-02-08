@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1128: Monochromatic Cubes in Cardinal Products
 
 **Source:** [erdosproblems.com/1128](https://erdosproblems.com/1128)
@@ -30,7 +30,7 @@ import Mathlib.Data.Set.Basic
 
 namespace Erdos1128
 
-/-! ## Part I: Cardinal Setup -/
+/- ## Part I: Cardinal Setup -/
 
 /--
 **ℵ₁ (aleph-one):** The first uncountable cardinal.
@@ -55,7 +55,7 @@ axiom card_A : Cardinal.mk A = Cardinal.aleph 1
 axiom card_B : Cardinal.mk B = Cardinal.aleph 1
 axiom card_C : Cardinal.mk C = Cardinal.aleph 1
 
-/-! ## Part II: Colorings and Monochromatic Cubes -/
+/- ## Part II: Colorings and Monochromatic Cubes -/
 
 /--
 **2-coloring of a product:**
@@ -80,7 +80,7 @@ A subset S has cardinality ℵ₀ (is countably infinite).
 def hasCardAleph0 {X : Type*} (S : Set X) : Prop :=
   Cardinal.mk S = Cardinal.aleph0
 
-/-! ## Part III: The Erdős-Hajnal Conjecture -/
+/- ## Part III: The Erdős-Hajnal Conjecture -/
 
 /--
 **The Erdős-Hajnal Conjecture (ℵ₁³ → (ℵ₀)³₂):**
@@ -94,7 +94,7 @@ def erdos_hajnal_conjecture : Prop :=
     hasCardAleph0 A₁ ∧ hasCardAleph0 B₁ ∧ hasCardAleph0 C₁ ∧
     isMonochromatic χ A₁ B₁ C₁
 
-/-! ## Part IV: Prikry-Mills Disproof (1978) -/
+/- ## Part IV: Prikry-Mills Disproof (1978) -/
 
 /--
 **Prikry-Mills Disproof (1978):**
@@ -121,7 +121,7 @@ theorem exists_bad_coloring :
   push_neg at h
   exact prikry_mills_disproof h
 
-/-! ## Part V: The Two-Dimensional Analogue -/
+/- ## Part V: The Two-Dimensional Analogue -/
 
 /--
 **Two-dimensional analogue:**
@@ -137,7 +137,7 @@ axiom two_dim_negative :
       ¬(∀ a₁ ∈ A₁, ∀ a₂ ∈ A₁, ∀ b₁ ∈ B₁, ∀ b₂ ∈ B₁,
         χ (a₁, b₁) = χ (a₂, b₂))
 
-/-! ## Part VI: Main Theorem -/
+/- ## Part VI: Main Theorem -/
 
 /--
 **Main Theorem (Answer to Erdős #1128):**
@@ -147,7 +147,7 @@ conjecture on monochromatic cubes in cardinal products is false.
 theorem erdos_1128 : ¬erdos_hajnal_conjecture :=
   prikry_mills_disproof
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #1128: DISPROVED**

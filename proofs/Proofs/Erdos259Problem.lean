@@ -29,7 +29,7 @@ abbrev moebiusFn := ArithmeticFunction.moebius
 
 namespace Erdos259
 
-/-!
+/-
 ## Background
 
 The Möbius function μ(n) is defined as:
@@ -47,7 +47,7 @@ Examples:
 - Not squarefree: 4, 8, 9, 12, 16, 18, 20, ...
 -/
 
-/-!
+/-
 ## The Möbius Function
 
 Mathlib provides the Möbius function as `ArithmeticFunction.moebius`.
@@ -78,7 +78,7 @@ theorem moebius_nine : moebiusFn 9 = 0 := by native_decide
 /-- μ(10) = 1 (10 = 2·5 is product of 2 distinct primes) -/
 theorem moebius_ten : moebiusFn 10 = 1 := by native_decide
 
-/-!
+/-
 ## Squarefree Numbers
 
 Mathlib defines `Squarefree n` as: for all m, m² ∣ n → IsUnit m.
@@ -103,7 +103,7 @@ theorem moebius_sq_indicator (n : ℕ) :
   · have hmz : moebiusFn n = 0 := ArithmeticFunction.moebius_eq_zero_of_not_squarefree h
     simp [hmz]
 
-/-!
+/-
 ## The Series
 
 The series Σ μ(n)² · n / 2^n sums n/2^n over all squarefree n.
@@ -131,7 +131,7 @@ Since |μ(n)²| ≤ 1 and n/2^n → 0 exponentially, the series converges.
 More precisely, Σ n/2^n = 2, so Σ μ(n)² · n/2^n ≤ 2. -/
 axiom series_summable : Summable (fun n : ℕ => (moebiusFn n : ℝ) ^ 2 * n / (2 : ℝ) ^ n)
 
-/-!
+/-
 ## Chen-Ruzsa Theorem (1999)
 
 Chen and Ruzsa proved that:
@@ -166,7 +166,7 @@ theorem erdos_259 :
 theorem erdos_259' : Irrational (∑' n : ℕ, (moebiusFn n : ℝ) ^ 2 * n / (2 : ℝ) ^ n) :=
   chen_ruzsa_irrationality _ series_summable.hasSum
 
-/-!
+/-
 ## Numerical Approximation
 
 The series converges to approximately 1.398...
@@ -186,7 +186,7 @@ Partial sums:
 theorem series_has_sum : ∃ x : ℝ, HasSum (fun n : ℕ => (moebiusFn n : ℝ) ^ 2 * n / (2 : ℝ) ^ n) x :=
   series_summable
 
-/-!
+/-
 ## Stronger Result
 
 Erdős conjectured (1988) and Chen-Ruzsa proved that ANY infinite subseries
@@ -209,7 +209,7 @@ def IsInfiniteSquarefreeSubset (S : Set ℕ) : Prop :=
 axiom chen_ruzsa_strong (S : Set ℕ) [DecidablePred (· ∈ S)] (hS : IsInfiniteSquarefreeSubset S) :
   ∀ x : ℝ, HasSum (fun n : ℕ => if n ∈ S then (n : ℝ) / (2 : ℝ) ^ n else 0) x → Irrational x
 
-/-!
+/-
 ## Density of Squarefree Numbers
 
 The density of squarefree numbers among natural numbers is 6/π².
@@ -231,7 +231,7 @@ axiom squarefree_density :
     Filter.atTop
     (nhds (6 / Real.pi ^ 2))
 
-/-!
+/-
 ## Related Problems
 
 Erdős Problem #250 asks about Σ σ(n)/2^n (sum of divisors function).

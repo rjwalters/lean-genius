@@ -57,7 +57,7 @@ open Finset
 
 namespace Erdos1023
 
-/-!
+/-
 ## Set Families on {1,...,n}
 
 We work with families of subsets of Fin n.
@@ -74,7 +74,7 @@ def powerSet (n : ℕ) : Finset (Finset (Fin n)) :=
 theorem powerSet_card (n : ℕ) : (powerSet n).card = 2^n := by
   simp [powerSet, card_powerset]
 
-/-!
+/-
 ## Union-Free Families
 
 A family is union-free if no set is the union of other members.
@@ -104,7 +104,7 @@ theorem unionFree_equiv (F : SetFamily n) : isUnionFree F ↔ isUnionFree' F := 
     exact H A hA ⟨ G, by aesop_cat ⟩;
   · exact fun A hA => fun ⟨G, hG₁, hG₂, hG₃, hG₄⟩ => H A hA G ( Finset.Subset.trans hG₁ ( Finset.erase_subset _ _ ) ) hG₃ hG₂ hG₄
 
-/-!
+/-
 ## The Extremal Function F(n)
 
 F(n) is the maximum size of a union-free family.
@@ -123,7 +123,7 @@ theorem unionFreeMax_achieved (n : ℕ) :
     exact ( IsCompact.sSup_mem h_finite.isCompact <| Set.nonempty_of_mem <| ⟨ ∅, by unfold Erdos1023.isUnionFree; aesop ⟩ );
   exact h_exists
 
-/-!
+/-
 ## Antichains are Union-Free
 
 An antichain (no set contains another) is union-free.
@@ -149,7 +149,7 @@ theorem antichain_unionFree (F : SetFamily n) : isAntichain F → isUnionFree F 
     exact fun B hB => hF B ( Finset.mem_of_mem_erase ( hG₁ hB ) ) A hA.1 ( hG_subset_A B hB );
   exact absurd ( Finset.one_lt_card.1 hG₂ ) ( by rintro ⟨ B, hB, C, hC, hBC ⟩ ; have := hG_eq_A B hB; have := hG_eq_A C hC; aesop )
 
-/-!
+/-
 ## The Middle Layer
 
 The middle layer C(n, n/2) is an antichain.
@@ -185,7 +185,7 @@ theorem middleLayer_antichain (n : ℕ) : isAntichain (middleLayer n) := by
 theorem middleLayer_unionFree (n : ℕ) : isUnionFree (middleLayer n) :=
   antichain_unionFree _ (middleLayer_antichain n)
 
-/-!
+/-
 ## Lower Bound: F(n) ≥ C(n, n/2)
 
 The middle layer gives a lower bound.
@@ -202,7 +202,7 @@ theorem unionFreeMax_ge_middle (n : ℕ) :
 /- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
 
 Unexpected axioms were added during verification: ['Erdos1023.erdos_kleitman_upper', 'harmonicSorry884330']-/
-/-!
+/-
 ## Upper Bound: F(n) ≤ C(n, n/2)
 
 This is the harder direction, proved by Erdős-Kleitman.
@@ -219,7 +219,7 @@ theorem unionFreeMax_eq_middle (n : ℕ) :
   · exact erdos_kleitman_upper n
   · exact unionFreeMax_ge_middle n
 
-/-!
+/-
 ## Asymptotic Form
 
 C(n, n/2) ~ c · 2^n / √n by Stirling's approximation.
@@ -253,7 +253,7 @@ theorem unionFreeMax_asymptotic :
   · exact ⟨ _, fun k hk => by obtain ⟨ F, hF₁, rfl ⟩ := hk; exact Finset.card_le_univ _ ⟩;
   · simp +decide [ Erdos1023.isUnionOf ]
 
-/-!
+/-
 ## The Main Question Answered
 
 The answer is YES: F(n) ~ c · 2^n / √n.
@@ -274,7 +274,7 @@ Unknown identifier `asymptoticConstant`-/
     requires Stirling's approximation for central binomial coefficients. -/
 axiom erdos_1023_solved : erdos_1023_question
 
-/-!
+/-
 ## Connection to Problem 447
 
 Problem 447 asks about 2-union-free families (forbidding A = B ∪ C only).
@@ -329,7 +329,7 @@ theorem hunter_observation (n : ℕ) :
       _ = Nat.choose n (n / 2) := problem_447_solution n
   · exact unionFreeMax_ge_middle n
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #1023 on union-free families.

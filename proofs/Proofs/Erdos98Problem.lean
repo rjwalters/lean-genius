@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #98 — Distinct Distances in General Position
 
 Let h(n) be the minimum number of distinct distances determined by n points
@@ -19,7 +19,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-! ## General Position Conditions -/
+/- ## General Position Conditions -/
 
 /-- A point configuration in ℝ² -/
 def PointConfig (n : ℕ) := Fin n → EuclideanSpace ℝ (Fin 2)
@@ -45,7 +45,7 @@ def NoFourConcyclic (P : PointConfig n) : Prop :=
 def InGeneralPosition (P : PointConfig n) : Prop :=
   Function.Injective P ∧ NoThreeCollinear P ∧ NoFourConcyclic P
 
-/-! ## Distinct Distances -/
+/- ## Distinct Distances -/
 
 /-- The number of distinct distances in a configuration -/
 noncomputable def numDistinctDistances (P : PointConfig n) : ℕ :=
@@ -58,7 +58,7 @@ noncomputable def h (n : ℕ) : ℕ :=
   sInf {numDistinctDistances P |
     (P : PointConfig n) (_ : InGeneralPosition P)}
 
-/-! ## Known Upper Bounds -/
+/- ## Known Upper Bounds -/
 
 /-- Pach's bound: h(n) < n^{log₂ 3} -/
 axiom pach_upper_bound :
@@ -71,7 +71,7 @@ axiom efp_upper_bound :
     ∀ᶠ n in Filter.atTop,
       (h n : ℝ) < (n : ℝ) * Real.exp (c * Real.sqrt (Real.log (n : ℝ)))
 
-/-! ## The Erdős Conjecture -/
+/- ## The Erdős Conjecture -/
 
 /-- Erdős Problem 98: h(n)/n → ∞, i.e. points in general position
     (no 3 collinear, no 4 concyclic) determine superlinearly many
@@ -83,7 +83,7 @@ axiom ErdosProblem98 :
 axiom erdos_98_weak :
   ∀ᶠ n in Filter.atTop, n ≤ h n
 
-/-! ## Connection to the General Distinct Distances Problem -/
+/- ## Connection to the General Distinct Distances Problem -/
 
 /-- Without the general-position assumption, the Guth–Katz theorem gives
     Ω(n/log n) distinct distances for any n points. General position

@@ -37,7 +37,7 @@ namespace Erdos758
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Part I: Cochromatic Coloring Definitions -/
+/- ## Part I: Cochromatic Coloring Definitions -/
 
 /--
 **Cochromatic coloring:**
@@ -67,7 +67,7 @@ noncomputable def z (n : ℕ) : ℕ :=
   sSup { k | ∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V)
     (G : SimpleGraph V), Fintype.card V = n ∧ cochromaticNumber G = k }
 
-/-! ## Part II: Basic Properties -/
+/- ## Part II: Basic Properties -/
 
 /-- 1 ≤ z(n) ≤ n for all n ≥ 1. -/
 axiom z_bounds (n : ℕ) (hn : n ≥ 1) : 1 ≤ z n ∧ z n ≤ n
@@ -80,7 +80,7 @@ axiom cochromatic_bound (G : SimpleGraph V) :
     cochromaticNumber G ≤ G.chromaticNumber ∧
     cochromaticNumber G ≤ (compl G).chromaticNumber
 
-/-! ## Part III: Known Exact Values -/
+/- ## Part III: Known Exact Values -/
 
 /-- z(1) = 1: A single vertex needs 1 color. -/
 axiom z_1 : z 1 = 1
@@ -140,7 +140,7 @@ axiom z_19 : z 19 = 6
 /-- z(20) is unknown: it equals either 6 or 7. -/
 axiom z_20_unknown : z 20 = 6 ∨ z 20 = 7
 
-/-! ## Part IV: The Complete Sequence of Known Values -/
+/- ## Part IV: The Complete Sequence of Known Values -/
 
 /-- Known values for 1 ≤ n ≤ 19. -/
 def knownValues : Fin 19 → ℕ
@@ -153,7 +153,7 @@ def knownValues : Fin 19 → ℕ
 /-- z(n+1) = knownValues(n) for 0 ≤ n ≤ 18. -/
 axiom known_values_correct (i : Fin 19) : z (i.val + 1) = knownValues i
 
-/-! ## Part V: Asymptotic Behavior -/
+/- ## Part V: Asymptotic Behavior -/
 
 /--
 **Gimbel's Asymptotic Result:**
@@ -168,7 +168,7 @@ axiom gimbel_asymptotic :
 axiom z_sublinear :
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N → (z n : ℝ) ≤ ε * n
 
-/-! ## Part VI: Erdős-Gimbel Bounds -/
+/- ## Part VI: Erdős-Gimbel Bounds -/
 
 /-- 4 ≤ z(12) ≤ 5 was established before Mehta's exact computation. -/
 axiom erdos_gimbel_12 : 4 ≤ z 12 ∧ z 12 ≤ 5
@@ -176,7 +176,7 @@ axiom erdos_gimbel_12 : 4 ≤ z 12 ∧ z 12 ≤ 5
 /-- 5 ≤ z(15) ≤ 6. -/
 axiom erdos_gimbel_15 : 5 ≤ z 15 ∧ z 15 ≤ 6
 
-/-! ## Part VII: Mehta's Proof Method -/
+/- ## Part VII: Mehta's Proof Method -/
 
 /--
 **Mehta's key observation:**
@@ -197,7 +197,7 @@ axiom mehta_verification :
        G.chromaticNumber ≥ 5 ∧ (compl G).chromaticNumber ≥ 5) →
       cochromaticNumber G = 4
 
-/-! ## Part VIII: Connection to Ramsey Theory -/
+/- ## Part VIII: Connection to Ramsey Theory -/
 
 /--
 **Ramsey connection:**
@@ -207,7 +207,7 @@ cliques for cochromatic number to be high.
 axiom ramsey_connection :
     ∀ k n : ℕ, SimpleGraph.ramseyNumber k k ≤ n → z n ≤ k
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Summary of Erdős Problem #758:**

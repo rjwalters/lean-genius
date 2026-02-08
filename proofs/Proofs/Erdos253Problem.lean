@@ -21,7 +21,7 @@ open Set Filter Topology
 
 namespace Erdos253
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The set of all finite subset sums of a set S.
     An element is a subset sum if it equals the sum of some finite subset of S. -/
@@ -45,7 +45,7 @@ def HasAPRepresentationProperty (a : ℕ → ℕ) : Prop :=
 def HasRatioTendingToOne (a : ℕ → ℕ) : Prop :=
   Tendsto (fun n => (a (n + 1) : ℝ) / (a n : ℝ)) atTop (nhds 1)
 
-/-! ## Main Result -/
+/- ## Main Result -/
 
 /--
 **Erdős Problem #253** (Disproved):
@@ -69,7 +69,7 @@ axiom erdos_253_disproved :
     HasRatioTendingToOne a →
     (subsetSums (range a))ᶜ.Finite
 
-/-! ## Supporting Results -/
+/- ## Supporting Results -/
 
 /-- The empty set is always a subset sum (gives 0) -/
 theorem zero_mem_subsetSums (S : Set ℕ) : 0 ∈ subsetSums S := by

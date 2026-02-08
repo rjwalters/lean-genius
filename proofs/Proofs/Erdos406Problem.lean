@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 406: Powers of 2 with Only Digits 0 and 1 in Base 3
 
 Is it true that there are only finitely many powers of 2 whose
@@ -20,7 +20,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.List.Basic
 import Mathlib.Tactic
 
-/-! ## Ternary digit predicates -/
+/- ## Ternary digit predicates -/
 
 /-- A natural number has only digits 0 and 1 in base 3. -/
 def HasOnlyDigits01Base3 (n : ℕ) : Prop :=
@@ -38,19 +38,19 @@ def ternarySparse : Set ℕ :=
 def ternaryDense : Set ℕ :=
     { n | ∃ k : ℕ, n = 2 ^ k ∧ HasOnlyDigits12Base3 n }
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 406: The set of powers of 2 with only ternary digits
 0 and 1 is finite. -/
 def ErdosProblem406 : Prop := ternarySparse.Finite
 
-/-! ## Variant conjecture -/
+/- ## Variant conjecture -/
 
 /-- Variant: `2^15` is the greatest power of 2 with only ternary digits 1 and 2. -/
 def ErdosProblem406_variant : Prop :=
     ∀ k : ℕ, 2 ^ k ∈ ternaryDense → 2 ^ k ≤ 2 ^ 15
 
-/-! ## Known examples -/
+/- ## Known examples -/
 
 /-- `1 = 2^0` has base-3 representation `[1]`, with only digits 0 and 1. -/
 axiom one_in_ternarySparse : (1 : ℕ) ∈ ternarySparse
@@ -61,7 +61,7 @@ axiom four_in_ternarySparse : (4 : ℕ) ∈ ternarySparse
 /-- `256 = 2^8` has base-3 representation `[1, 1, 1, 0, 0, 1]` in base 3. -/
 axiom pow2_8_in_ternarySparse : (256 : ℕ) ∈ ternarySparse
 
-/-! ## Computational evidence -/
+/- ## Computational evidence -/
 
 /-- Saye (2022): For `16 ≤ n ≤ 5.9 × 10²¹`, `2^n` contains all three
 ternary digits {0, 1, 2}. This implies no power of 2 in this range belongs
@@ -70,7 +70,7 @@ axiom saye_computation :
     ∀ n : ℕ, 16 ≤ n → n ≤ 59 * 10 ^ 20 →
       ¬HasOnlyDigits01Base3 (2 ^ n) ∧ ¬HasOnlyDigits12Base3 (2 ^ n)
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- A number with only digits 0 and 1 in base 3 is a sum of distinct
 powers of 3 (i.e., a subset sum of a geometric progression). -/

@@ -128,21 +128,18 @@ theorem combined_bounds :
       (h n : ℝ) ≤ C * Real.sqrt n) := by
   exact ⟨erdos_choi_1974_lower, straus_1966_upper⟩
 
-/-- The gap between bounds: exponents 1/3 and 1/2 -/
-axiom gap_between_bounds : True
+/- The gap between bounds: exponents 1/3 and 1/2 -/
 
 /-
 ## Part VI: Erdős's Construction
 -/
 
-/-- Erdős's probabilistic construction for lower bound:
+/- Erdős's probabilistic construction for lower bound:
     For random α ∈ [0,1], take
     B = {a ∈ A : {αa} ∈ n^{-1/3} + ½(-n^{-2/3}, n^{-2/3})}
     Expected |B| ≈ n^{1/3} and likely sum-length-free -/
-axiom erdos_construction : True
 
-/-- Choi's improvement using more careful analysis -/
-axiom choi_improvement : True
+/- Choi's improvement using more careful analysis -/
 
 /-
 ## Part VII: Connection to Sidon Sets
@@ -166,11 +163,9 @@ axiom sidon_bound : ∀ n : ℕ, ∃ C : ℝ, C > 0 ∧
 ## Part VIII: Related Problems
 -/
 
-/-- Connection to Problem 186 (sum-free sets) -/
-axiom problem_186_related : True
+/- Connection to Problem 186 (sum-free sets) -/
 
-/-- Connection to Problem 874 -/
-axiom problem_874_related : True
+/- Connection to Problem 874 -/
 
 /-
 ## Part IX: Special Cases
@@ -179,18 +174,16 @@ axiom problem_874_related : True
 /-- For n = 1: h(1) = 1 trivially -/
 axiom h_one : h 1 = 1
 
-/-- For small sets, explicit bounds can be computed -/
-axiom h_small_values : True
+/- For small sets, explicit bounds can be computed -/
 
 /-
 ## Part X: Examples
 -/
 
-/-- Example: {1, 2, 3} - is {1, 3} sum-length-free?
+/- Example: {1, 2, 3} - is {1, 3} sum-length-free?
     1 + 1 = 2 (length 2), but 2 ∉ B
     1 + 3 = 4 (length 2), 3 + 1 = 4 (length 2) ✓
     So {1, 3} is sum-length-free -/
-axiom example_1_3 : True
 
 /-- Numerical bounds:
     At n = 1000:
@@ -209,27 +202,29 @@ example : (1000000 : ℕ).sqrt = 1000 := by native_decide
 ## Part XI: Conjectures
 -/
 
-/-- Possible growth rates for h(n):
+/-- **Conjectured growth rates for h(n):**
+    Three plausible scenarios for the true asymptotic behavior:
     1. h(n) ~ n^{1/2} (Straus bound is tight)
     2. h(n) ~ n^α for some 1/3 < α < 1/2
-    3. h(n) ~ (n log n)^{1/3} · (log n)^β for some β > 0 -/
-def possible_growth_rates : Prop := True
+    3. h(n) grows slower than any power of n -/
+def possible_growth_rates : Prop :=
+  (∃ c > 0, ∀ n : ℕ, n ≥ 2 → (h n : ℝ) ≥ c * (n : ℝ)^(1/2 : ℝ)) ∨
+  (∃ α : ℝ, 1/3 < α ∧ α < 1/2 ∧
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
+      ∀ n : ℕ, n ≥ 2 → c₁ * (n : ℝ)^α ≤ (h n : ℝ) ∧ (h n : ℝ) ≤ c₂ * (n : ℝ)^α) ∨
+  (∀ α > 0, ∃ N : ℕ, ∀ n ≥ N, (h n : ℝ) ≤ (n : ℝ)^α)
 
-/-- The problem is to determine the correct exponent -/
-axiom correct_exponent_unknown : True
+/- The problem is to determine the correct exponent -/
 
 /-
 ## Part XII: Proof Techniques
 -/
 
-/-- Upper bound uses counting argument on sum representations -/
-axiom upper_bound_technique : True
+/- Upper bound uses counting argument on sum representations -/
 
-/-- Lower bound uses probabilistic method with fractional parts -/
-axiom lower_bound_technique : True
+/- Lower bound uses probabilistic method with fractional parts -/
 
-/-- Diophantine approximation is key to construction -/
-axiom diophantine_approximation : True
+/- Diophantine approximation is key to construction -/
 
 /-
 ## Part XIII: Summary

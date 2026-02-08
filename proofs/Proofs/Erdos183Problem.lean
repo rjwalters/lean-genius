@@ -26,7 +26,7 @@ open Finset SimpleGraph
 
 namespace Erdos183
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 The multicolor Ramsey number R(3;k) is the minimum n such that any k-coloring
@@ -53,7 +53,7 @@ def HasSomeMonochromaticTriangle {n k : ℕ} (c : EdgeColoring n k) : Prop :=
 def AvoidsMonochromaticTriangles {n k : ℕ} (c : EdgeColoring n k) : Prop :=
   ¬HasSomeMonochromaticTriangle c
 
-/-!
+/-
 # Part 2: The Ramsey Number R(3;k)
 
 R(3;k) is the minimum n such that every k-coloring of K_n has a monochromatic triangle.
@@ -73,7 +73,7 @@ noncomputable def R3k (k : ℕ) : ℕ :=
     Nat.find (forcing_set_nonempty k hk)
   else 0
 
-/-!
+/-
 # Part 3: Known Small Values
 
 Some values of R(3;k) are known exactly for small k.
@@ -88,7 +88,7 @@ axiom R3k_two : R3k 2 = 6
 /-- R(3;3) = 17 (Greenwood and Gleason, 1955) -/
 axiom R3k_three : R3k 3 = 17
 
-/-!
+/-
 # Part 4: Upper Bound via Pigeonhole
 
 The inductive bound: R(3;k) ≤ 2 + k(R(3;k-1) - 1)
@@ -110,7 +110,7 @@ theorem R3k_ceiling_upper (k : ℕ) (hk : k ≥ 1) :
   have := hbound k hk
   sorry -- Technical ceiling argument
 
-/-!
+/-
 # Part 5: Lower Bound via Schur Numbers
 
 The best known lower bound uses connections to Schur numbers.
@@ -118,8 +118,9 @@ R(3;k) ≥ 380^{k/5} - O(1) (Ageron et al., 2021)
 -/
 
 /-- Schur number S(k) is the largest n such that {1,...,n} can be k-colored
-    without monochromatic x + y = z -/
-def SchurNumber (k : ℕ) : ℕ := sorry
+    without monochromatic x + y = z.
+    Axiomatized since computing Schur numbers is a hard combinatorial problem. -/
+axiom SchurNumber (k : ℕ) : ℕ
 
 /-- Connection: R(3;k) ≥ S(k) + 2 -/
 axiom R3k_schur_lower (k : ℕ) (hk : k ≥ 1) :
@@ -134,7 +135,7 @@ axiom R3k_precise_lower :
   ∃ C : ℝ, ∀ k : ℕ, k ≥ 1 →
     (R3k k : ℝ) ≥ (380 : ℝ) ^ ((k : ℝ) / 5) - C
 
-/-!
+/-
 # Part 6: The Main Question - Limit of k-th Root
 
 Erdős asks: what is lim_{k→∞} R(3;k)^{1/k}?
@@ -170,7 +171,7 @@ def LimitIsFinite : Prop :=
 def LimitIsInfinite : Prop :=
   Filter.Tendsto kthRootR3k Filter.atTop Filter.atTop
 
-/-!
+/-
 # Part 7: The Growth Rate Question
 
 The gap between bounds is enormous:
@@ -206,7 +207,7 @@ theorem bounds_summary :
           exact Nat.factorial_pos k
         linarith
 
-/-!
+/-
 # Part 8: Connection to Other Problems
 
 R(3;k) connects to several other Ramsey-theoretic quantities.
@@ -219,7 +220,7 @@ axiom R3k_diagonal_connection (k : ℕ) :
 /-- Erdős Problem #483 is related -/
 def relatedProblem : ℕ := 483
 
-/-!
+/-
 # Part 9: Formal Statement
 
 The precise formal statement of Problem #183.

@@ -19,7 +19,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 6,
     "erdosNumber": 320,
     "erdosUrl": "https://erdosproblems.com/320",
     "erdosProblemStatus": "open",
@@ -72,7 +72,92 @@
       "**Gap Remains:** Upper vs lower bound gap significant"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-320-distinct-sum",
+      "title": "Erdős Problem #320: Distinct Sums of Unit Fractions",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Erdős Problem #320: Distinct Sums of Unit Fractions"
+    },
+    {
+      "id": "part-i-basic-definitions",
+      "title": "/- ## Part I: Basic Definitions",
+      "startLine": 39,
+      "endLine": 61,
+      "summary": "/- ## Part I: Basic Definitions"
+    },
+    {
+      "id": "part-ii-iterated-logarithms",
+      "title": "/- ## Part II: Iterated Logarithms",
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "/- ## Part II: Iterated Logarithms"
+    },
+    {
+      "id": "part-iii-bleicher-erd-s-lower-",
+      "title": "/- ## Part III: Bleicher-Erdős Lower Bound (1975)",
+      "startLine": 83,
+      "endLine": 97,
+      "summary": "/- ## Part III: Bleicher-Erdős Lower Bound (1975)"
+    },
+    {
+      "id": "part-iv-bleicher-erd-s-upper-b",
+      "title": "/- ## Part IV: Bleicher-Erdős Upper Bound (1976)",
+      "startLine": 98,
+      "endLine": 111,
+      "summary": "/- ## Part IV: Bleicher-Erdős Upper Bound (1976)"
+    },
+    {
+      "id": "part-v-bgms-improved-lower-bou",
+      "title": "/- ## Part V: BGMS Improved Lower Bound (2025)",
+      "startLine": 112,
+      "endLine": 132,
+      "summary": "/- ## Part V: BGMS Improved Lower Bound (2025)"
+    },
+    {
+      "id": "part-vi-the-main-problem",
+      "title": "/- ## Part VI: The Main Problem",
+      "startLine": 133,
+      "endLine": 149,
+      "summary": "/- ## Part VI: The Main Problem"
+    },
+    {
+      "id": "part-vii-connection-to-egyptia",
+      "title": "/- ## Part VII: Connection to Egyptian Fractions",
+      "startLine": 150,
+      "endLine": 166,
+      "summary": "/- ## Part VII: Connection to Egyptian Fractions"
+    },
+    {
+      "id": "part-viii-specific-values-and-",
+      "title": "/- ## Part VIII: Specific Values and Bounds",
+      "startLine": 167,
+      "endLine": 187,
+      "summary": "/- ## Part VIII: Specific Values and Bounds"
+    },
+    {
+      "id": "part-ix-oeis-sequence-a072207",
+      "title": "/- ## Part IX: OEIS Sequence A072207",
+      "startLine": 188,
+      "endLine": 204,
+      "summary": "/- ## Part IX: OEIS Sequence A072207"
+    },
+    {
+      "id": "part-x-growth-rate-analysis",
+      "title": "/- ## Part X: Growth Rate Analysis",
+      "startLine": 205,
+      "endLine": 218,
+      "summary": "/- ## Part X: Growth Rate Analysis"
+    },
+    {
+      "id": "part-xi-summary",
+      "title": "/- ## Part XI: Summary",
+      "startLine": 219,
+      "endLine": 248,
+      "summary": "/- ## Part XI: Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #320 asks for the asymptotic behavior of S(N), the count of distinct unit fraction sums from {1,...,N}. Bleicher-Erdős (1975-76) established bounds with iterated logarithms. BGMS (2025) improved the lower bound. The problem remains OPEN - closing the gap between bounds is the main challenge.",
     "implications": "**Connections**\n\n1. **Egyptian Fractions:** S(N) counts representable values\n\n2. **Problem #321:** Related to Egyptian fraction counts\n\n3. **Combinatorics:** Subset sum problems over rationals\n\n4. **OEIS A072207:** Explicit values computed",

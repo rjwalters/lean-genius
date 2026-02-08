@@ -32,7 +32,7 @@ open Finset Nat BigOperators
 
 namespace Erdos942
 
-/-!
+/-
 ## Background: Powerful Numbers
 
 A **powerful number** (also called **squarefull**) is a positive integer m such that
@@ -47,7 +47,7 @@ Equivalently: m is powerful iff m can be written as a²b³ for integers a, b >= 
 **Density**: The powerful numbers up to N have count asymptotic to c*sqrt(N) where c = zeta(3/2)/zeta(3).
 -/
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -72,11 +72,10 @@ axiom squareIntervalSet_spec (n m : ℕ) : m ∈ squareIntervalSet n ↔ n^2 ≤
 /-- h(n) = count of powerful integers in [n², (n+1)²). -/
 axiom h : ℕ → ℕ
 
-/-- h(n) counts exactly the powerful numbers in the interval [n², (n+1)²).
+/- h(n) counts exactly the powerful numbers in the interval [n², (n+1)²).
 This is characterized by the fact that m is counted iff n² <= m < (n+1)² and Powerful m. -/
-axiom h_spec : True
 
-/-!
+/-
 ## Examples of Powerful Numbers
 -/
 
@@ -104,7 +103,7 @@ axiom six_not_powerful : ¬Powerful 6
 /-- 12 = 2² * 3 is NOT powerful (3 appears to first power). -/
 axiom twelve_not_powerful : ¬Powerful 12
 
-/-!
+/-
 ## The Main Conjecture (OPEN)
 
 Erdős asked whether h(n) has magnitude ~ (log n)^c for some constant c.
@@ -118,7 +117,7 @@ axiom erdos_942_conjecture : Prop
 /-- The conjecture remains open. -/
 axiom erdos_942_open : ¬(erdos_942_conjecture ↔ True) ∧ ¬(erdos_942_conjecture ↔ False)
 
-/-!
+/-
 ## Known Result: limsup h(n) = infinity
 
 It is not hard to prove that h(n) is unbounded.
@@ -131,7 +130,7 @@ many powerful numbers. Since powerful numbers have density proportional to sqrt(
 fluctuations give arbitrarily large values of h(n). -/
 axiom h_unbounded : ∀ M : ℕ, ∃ n : ℕ, h n > M
 
-/-!
+/-
 ## Known Result: Density of h(n) = l
 
 The density of integers n with h(n) = l exists for each l.
@@ -157,7 +156,7 @@ axiom density_sum_one : ∀ N : ℕ, ∑ l ∈ Finset.range N, delta l ≤ 1
 /-- The density of n with h(n) = 1 is approximately 0.275. -/
 axiom density_h_eq_1 : (0.27 : ℝ) < delta 1 ∧ delta 1 < (0.28 : ℝ)
 
-/-!
+/-
 ## De Koninck-Luca Lower Bound (2004)
 
 De Koninck and Luca proved a lower bound for h(n) that holds infinitely often.
@@ -170,7 +169,7 @@ We state this in a simplified form: h(n) can be arbitrarily large. -/
 axiom de_koninck_luca_lower :
   ∃ c : ℝ, c > 0 ∧ {n : ℕ | n ≥ 3 ∧ (h n : ℝ) ≥ c}.Infinite
 
-/-!
+/-
 ## Properties of Powerful Numbers
 -/
 
@@ -188,7 +187,7 @@ c = zeta(3/2)/zeta(3) is approximately 2.173. -/
 axiom powerful_count_asymptotic :
   ∃ c : ℝ, c > 2 ∧ c < (2.2 : ℝ)
 
-/-!
+/-
 ## The Square Interval
 
 Properties of the interval [n², (n+1)²).
@@ -204,7 +203,7 @@ axiom next_square (n : ℕ) : (n + 1)^2 = n^2 + 2*n + 1
 axiom squareInterval_contains_endpoints (n : ℕ) :
     n^2 ∈ squareIntervalSet n ∧ n^2 + 2*n ∈ squareIntervalSet n
 
-/-!
+/-
 ## Small Examples
 -/
 
@@ -217,7 +216,7 @@ axiom h_two : h 2 = 2
 /-- h(3) = 1 because [9, 16) = {9, 10, 11, 12, 13, 14, 15} and only 9 is powerful. -/
 axiom h_three : h 3 = 1
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #942 asks about the distribution of powerful numbers in

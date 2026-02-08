@@ -33,7 +33,7 @@ open Set Finset Nat
 
 namespace Erdos141
 
-/-! ## Consecutive Primes -/
+/- ## Consecutive Primes -/
 
 /-- The n-th prime (0-indexed: prime 0 = 2, prime 1 = 3, etc.) -/
 noncomputable def nthPrime (n : ℕ) : ℕ := n.nth Nat.Prime
@@ -46,7 +46,7 @@ def ConsecutivePrimes (p q : ℕ) : Prop :=
 noncomputable def ConsecutivePrimeSequence (n k : ℕ) : List ℕ :=
   (List.range k).map (fun i => nthPrime (n + i))
 
-/-! ## Arithmetic Progressions -/
+/- ## Arithmetic Progressions -/
 
 /-- A list forms an arithmetic progression with common difference d. -/
 def IsArithmeticProgression (L : List ℕ) (d : ℕ) : Prop :=
@@ -56,13 +56,13 @@ def IsArithmeticProgression (L : List ℕ) (d : ℕ) : Prop :=
 def IsAP (L : List ℕ) : Prop :=
   ∃ d, d > 0 ∧ IsArithmeticProgression L d
 
-/-! ## The Main Definitions -/
+/- ## The Main Definitions -/
 
 /-- k consecutive primes in arithmetic progression exist. -/
 def ExistsConsecutivePrimesInAP (k : ℕ) : Prop :=
   ∃ n d, d > 0 ∧ IsArithmeticProgression (ConsecutivePrimeSequence n k) d
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- 2 is the 0-th prime. -/
 theorem nthPrime_0 : nthPrime 0 = 2 := by
@@ -98,7 +98,7 @@ theorem three_five_seven_is_ap : IsArithmeticProgression [3, 5, 7] 2 := by
     Verified by showing primes 1, 2, 3 (which are 3, 5, 7) form an AP with d=2. -/
 axiom exists_3_consecutive_in_ap : ExistsConsecutivePrimesInAP 3
 
-/-! ## The Erdős Conjecture -/
+/- ## The Erdős Conjecture -/
 
 /-- **Erdős Problem #141** (OPEN):
 
@@ -118,7 +118,7 @@ def Erdos141Conjecture : Prop :=
 theorem erdos_141_open : Erdos141Conjecture ∨ ¬Erdos141Conjecture := by
   exact Classical.em Erdos141Conjecture
 
-/-! ## Computational Verification for Small k -/
+/- ## Computational Verification for Small k -/
 
 /-- Verified computationally: for k ≤ 10, such progressions exist.
     - k=3: (3, 5, 7)
@@ -128,7 +128,7 @@ theorem erdos_141_open : Erdos141Conjecture ∨ ¬Erdos141Conjecture := by
 axiom small_cases_verified :
     ∀ k, 3 ≤ k → k ≤ 10 → ExistsConsecutivePrimesInAP k
 
-/-! ## Related Questions -/
+/- ## Related Questions -/
 
 /-- Are there infinitely many AP's of k consecutive primes?
     This is also OPEN, even for k = 3. -/
@@ -139,7 +139,7 @@ def InfinitelyManyConsecutiveAP (k : ℕ) : Prop :=
 theorem infinite_3_open : InfinitelyManyConsecutiveAP 3 ∨ ¬InfinitelyManyConsecutiveAP 3 := by
   exact Classical.em _
 
-/-! ## The k = 11 Question -/
+/- ## The k = 11 Question -/
 
 /-- Specifically: Do 11 consecutive primes in AP exist? This is OPEN. -/
 def Exists11ConsecutivePrimesInAP : Prop := ExistsConsecutivePrimesInAP 11
@@ -147,7 +147,7 @@ def Exists11ConsecutivePrimesInAP : Prop := ExistsConsecutivePrimesInAP 11
 theorem eleven_open : Exists11ConsecutivePrimesInAP ∨ ¬Exists11ConsecutivePrimesInAP := by
   exact Classical.em _
 
-/-! ## Green-Tao (Contrast) -/
+/- ## Green-Tao (Contrast) -/
 
 /-- **Green-Tao Theorem** (2008): The primes contain arbitrarily long AP's.
 

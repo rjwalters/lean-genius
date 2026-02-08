@@ -22,7 +22,7 @@ NC='\033[0m' # No Color
 STATE_FILE=".loom/lean-daemon-state.json"
 OLD_STATE_FILE="research/lean-daemon-state.json"
 ARISTOTLE_JOBS="research/aristotle-jobs.json"
-CANDIDATE_POOL="research/candidate-pool.json"
+CANDIDATE_POOL=".lean/state/candidate-pool.json"
 
 # Fall back to old location if new state file doesn't exist
 if [[ ! -f "$STATE_FILE" && -f "$OLD_STATE_FILE" ]]; then
@@ -65,10 +65,10 @@ get_session_uptime() {
     fi
 }
 
-# Helper: Count stubs needing enhancement
-count_stubs() {
-    if command -v npx &>/dev/null && [[ -f "scripts/erdos/find-stubs.ts" ]]; then
-        npx tsx scripts/erdos/find-stubs.ts --stats 2>/dev/null | grep -oE "Stubs needing enhancement: +[0-9]+" | grep -oE "[0-9]+" || echo "?"
+# Helper: Count proofs needing enrichment
+count_enrichment_targets() {
+    if command -v npx &>/dev/null && [[ -f "scripts/enricher/find-targets.ts" ]]; then
+        npx tsx scripts/enricher/find-targets.ts --stats 2>/dev/null | grep -oE "Entries needing enrichment: +[0-9]+" | grep -oE "[0-9]+" || echo "?"
     else
         echo "?"
     fi
@@ -78,6 +78,15 @@ count_stubs() {
 count_aristotle_jobs() {
     if [[ -f "$ARISTOTLE_JOBS" ]]; then
         jq '[.jobs[] | select(.status == "submitted")] | length' "$ARISTOTLE_JOBS" 2>/dev/null || echo "0"
+    else
+        echo "0"
+    fi
+}
+
+# Helper: Count Aristotle candidates (files eligible for submission)
+count_aristotle_candidates() {
+    if [[ -x "scripts/aristotle/find-candidates.sh" ]]; then
+        timeout 10 ./scripts/aristotle/find-candidates.sh --count 2>/dev/null || echo "0"
     else
         echo "0"
     fi
@@ -124,16 +133,16 @@ gather_status() {
     fi
 
     # Check tmux sessions
-    local erdos_sessions=()
+    local enricher_sessions=()
     local aristotle_status="stopped"
     local researcher_sessions=()
     local seeker_status="stopped"
     local deployer_status="stopped"
 
-    # Erdős enhancers
+    # Enrichers
     for i in 1 2 3 4 5; do
-        if session_exists "erdos-enhancer-$i"; then
-            erdos_sessions+=("erdos-enhancer-$i:$(get_session_uptime "erdos-enhancer-$i")")
+        if session_exists "enricher-$i"; then
+            enricher_sessions+=("enricher-$i:$(get_session_uptime "enricher-$i")")
         fi
     done
 
@@ -160,25 +169,27 @@ gather_status() {
     fi
 
     # Work queue counts
-    local stubs_count
+    local enrichment_count
     local aristotle_jobs
+    local aristotle_candidates
     local research_problems
     local ready_prs
 
-    stubs_count=$(count_stubs)
+    enrichment_count=$(count_enrichment_targets)
     aristotle_jobs=$(count_aristotle_jobs)
+    aristotle_candidates=$(count_aristotle_candidates)
     research_problems=$(count_research_problems)
     ready_prs=$(count_ready_prs)
 
     # Session stats from state file
-    local stubs_enhanced=0
+    local entries_enriched=0
     local proofs_submitted=0
     local problems_selected=0
     local deployments=0
     local research_completed=0
 
     if [[ -f "$STATE_FILE" ]]; then
-        stubs_enhanced=$(jq -r '.session_stats.stubs_enhanced // 0' "$STATE_FILE")
+        entries_enriched=$(jq -r '.session_stats.entries_enriched // 0' "$STATE_FILE")
         proofs_submitted=$(jq -r '.session_stats.proofs_submitted // 0' "$STATE_FILE")
         problems_selected=$(jq -r '.session_stats.problems_selected // 0' "$STATE_FILE")
         deployments=$(jq -r '.session_stats.deployments // 0' "$STATE_FILE")
@@ -195,15 +206,16 @@ gather_status() {
     "started_at": "$started_at"
   },
   "work_queue": {
-    "stubs_needing_enhancement": "$stubs_count",
+    "proofs_needing_enrichment": "$enrichment_count",
     "aristotle_pending": $aristotle_jobs,
+    "aristotle_candidates": $aristotle_candidates,
     "research_available": $research_problems,
     "prs_ready": $ready_prs
   },
   "agents": {
-    "erdos": {
-      "count": ${#erdos_sessions[@]},
-      "sessions": $(printf '%s\n' "${erdos_sessions[@]:-}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+    "enricher": {
+      "count": ${#enricher_sessions[@]},
+      "sessions": $(printf '%s\n' "${enricher_sessions[@]:-}" | jq -R -s -c 'split("\n") | map(select(length > 0))')
     },
     "aristotle": {
       "status": "${aristotle_status%%:*}",
@@ -223,7 +235,7 @@ gather_status() {
     }
   },
   "session_stats": {
-    "stubs_enhanced": $stubs_enhanced,
+    "entries_enriched": $entries_enriched,
     "proofs_submitted": $proofs_submitted,
     "problems_selected": $problems_selected,
     "deployments": $deployments,
@@ -248,10 +260,9 @@ EOF
 
         # Work Queue
         echo -e "  ${CYAN}Work Queue:${NC}"
-        if [[ "$stubs_count" != "0" ]]; then
-            echo "    Stubs needing enhancement: $stubs_count"
-        fi
+        echo "    Proofs needing enrichment: $enrichment_count"
         echo "    Aristotle jobs pending: $aristotle_jobs"
+        echo "    Aristotle candidates: $aristotle_candidates"
         echo "    Research problems available: $research_problems"
         echo "    PRs ready to merge: $ready_prs"
         echo ""
@@ -259,15 +270,17 @@ EOF
         # Agent Pool
         echo -e "  ${CYAN}Agent Pool:${NC}"
 
-        # Erdős (only shown when active, since enhancement campaign is complete)
-        local erdos_count=${#erdos_sessions[@]}
-        if [[ $erdos_count -gt 0 ]]; then
-            echo -e "    ${BOLD}Erdős Enhancers:${NC} ${GREEN}$erdos_count active${NC}"
-            for session in "${erdos_sessions[@]}"; do
+        # Enrichers
+        local enricher_count=${#enricher_sessions[@]}
+        if [[ $enricher_count -gt 0 ]]; then
+            echo -e "    ${BOLD}Enrichers:${NC} ${GREEN}$enricher_count active${NC}"
+            for session in "${enricher_sessions[@]}"; do
                 local name="${session%%:*}"
                 local uptime="${session#*:}"
                 echo "      $name: Running ($uptime)"
             done
+        else
+            echo -e "    ${BOLD}Enrichers:${NC} ${YELLOW}0 active${NC}"
         fi
 
         # Aristotle
@@ -310,7 +323,7 @@ EOF
 
         # Session Stats
         echo -e "  ${CYAN}Session Stats:${NC}"
-        echo "    Stubs enhanced: $stubs_enhanced"
+        echo "    Entries enriched: $entries_enriched"
         echo "    Proofs submitted: $proofs_submitted"
         echo "    Research completed: $research_completed"
         echo "    Problems selected: $problems_selected"

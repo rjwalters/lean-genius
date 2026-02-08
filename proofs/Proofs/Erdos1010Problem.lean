@@ -42,7 +42,7 @@ open SimpleGraph Finset
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Turán Threshold
 
 The Turán number ex(n, K₃) = ⌊n²/4⌋ is the maximum edges in a triangle-free graph.
@@ -56,7 +56,7 @@ def triangleCount (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
   (Finset.univ.filter (fun s : Finset V =>
     s.card = 3 ∧ ∀ x ∈ s, ∀ y ∈ s, x ≠ y → G.Adj x y)).card
 
-/-!
+/-
 ## Rademacher's Theorem (Base Case)
 
 Every graph exceeding the Turán threshold by 1 edge has at least ⌊n/2⌋ triangles.
@@ -67,7 +67,7 @@ axiom rademacher_triangle_count (G : SimpleGraph V) [DecidableRel G.Adj] :
   G.edgeFinset.card = turanThreshold (Fintype.card V) + 1 →
   triangleCount G ≥ Fintype.card V / 2
 
-/-!
+/-
 ## Erdős-Lovász-Simonovits Theorem (Main Result)
 
 For t < ⌊n/2⌋, exceeding the Turán threshold by t edges forces at least
@@ -81,7 +81,7 @@ axiom erdos_1010_supersaturation (G : SimpleGraph V) [DecidableRel G.Adj] (t : �
   G.edgeFinset.card = turanThreshold (Fintype.card V) + t →
   triangleCount G ≥ t * (Fintype.card V / 2)
 
-/-!
+/-
 ## Corollaries and Special Cases
 -/
 

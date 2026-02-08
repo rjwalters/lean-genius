@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "NEW",
     "since": "2026-01-15T12:22:36.006Z",
-    "iteration": 2,
-    "focus": "Fixed definitions and removed false axiom",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Docker-verify and prove finiteness lemma",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,27 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed beurlingPi/beurlingN definitions to use Set.ncard, removed false axiom claiming open problem, added finiteness lemma",
-    "builtItems": [
-      "Fixed beurlingPi to use Set.ncard {n | a n <= x} (was incorrectly using Finset.range)",
-      "Fixed beurlingN to use Set.ncard {y | IsBeurlingInteger a y /\\ 1 <= y /\\ y <= x}",
-      "Removed false axiom erdos_951 : erdos951_conjecture (was claiming OPEN problem solved)",
-      "Added beurlingPi_finite lemma (sorry - needs proof from strictly_increasing + all_gt_one)",
-      "Removed incorrect primePi_two/ten/hundred axioms (not needed for main formalization)",
-      "Cleaned up structure and comments"
-    ],
-    "insights": [
-      "beurlingPi using Finset.range(ceil x + 1) is wrong: index n need not be <= x (e.g. a_0 could be 1000)",
-      "Set.ncard is correct because {n | a n <= x} is finite when a is strictly increasing with all terms > 1",
-      "The problem is OPEN - should not have axiom asserting the conjecture",
-      "separation_implies_distinct is already proved correctly",
-      "Beurlings conjecture (about integers, not primes) is a related but different result"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove beurlingPi_finite from strictly increasing + bounded properties",
-      "Docker-verify the proof when build contention subsides"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #951 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]\n\n\n\nErd\\H{o}s says this question was asked 'during [his] lecture at Queens College [by] one member of the audience (perhaps S. Shapiro)'. Such a sequence of $a_i$ is sometimes called a set of Beurling prime numbers.\n\nBeurling conjectured that if the number of reals in $[1,x]$ of the form $\\prod a_i^{k_i}$ is $x+o(\\log x)$ then the $a_i$ must be the sequence of primes.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #950\n- Problem #952\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

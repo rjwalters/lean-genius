@@ -31,7 +31,7 @@ open Finset Real
 
 namespace Erdos665
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Ground set, pairwise balanced design, and block size properties.
@@ -52,7 +52,7 @@ structure PairwiseBalancedDesign (n : ℕ) where
 def HasLargeBlocks {n : ℕ} (D : PairwiseBalancedDesign n) (k : ℕ) : Prop :=
   ∀ A ∈ D.blocks, A.card ≥ k
 
-/-!
+/-
 ## Part II: The Main Question
 
 The function h(n) measures how close to √n all block sizes can be.
@@ -78,7 +78,7 @@ axiom h_spec (n : ℕ) (hn : n ≥ 10) :
   (∀ ε > 0, ∃ D : PairwiseBalancedDesign n,
     ∀ A ∈ D.blocks, (A.card : ℝ) > Real.sqrt n - h n - ε)
 
-/-!
+/-
 ## Part III: Known Upper Bounds on h(n)
 -/
 
@@ -91,7 +91,7 @@ axiom erdos_larson_bound :
   ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧
     ∀ n : ℕ, n ≥ 10 → h n ≤ C * (n : ℝ)^(1/2 - c)
 
-/-!
+/-
 ## Part IV: Connection to Projective Planes
 -/
 
@@ -120,7 +120,7 @@ axiom prime_power_planes_implies_unbounded :
   (∀ q : ℕ, q ≥ 2 → (∃ p k : ℕ, p.Prime ∧ q = p^k)) →
     ¬ErdosQuestion
 
-/-!
+/-
 ## Part V: Connection to Prime Gaps
 -/
 
@@ -145,7 +145,7 @@ axiom cramers_conjecture :
   ∃ C : ℝ, C > 0 ∧
     ∀ n : ℕ, n ≥ 10 → (largestPrimeGap n : ℝ) ≤ C * (Real.log n)^2
 
-/-!
+/-
 ## Part VI: Special Cases
 -/
 
@@ -165,7 +165,7 @@ axiom near_square_case :
     ∃ D : PairwiseBalancedDesign (q^2 + k),
       ∀ A ∈ D.blocks, A.card ≥ q - 1
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

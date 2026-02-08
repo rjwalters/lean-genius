@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #558: Multicolor Ramsey Numbers for Complete Bipartite Graphs
 
 Source: https://erdosproblems.com/558
@@ -33,7 +33,7 @@ namespace Erdos558
 
 open SimpleGraph
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Complete bipartite graphs and Ramsey numbers.
@@ -70,7 +70,7 @@ axiom ramseyBipartite (G : CompleteBipartite) (k : ℕ) : ℕ
 
 notation "R(" G ";" k ")" => ramseyBipartite G k
 
-/-!
+/-
 ## Part 2: Basic Properties
 
 The Ramsey number is well-defined and has basic properties.
@@ -98,7 +98,7 @@ axiom ramsey_bipartite_mono_k (G : CompleteBipartite) (k₁ k₂ : ℕ)
     (hk : k₁ ≤ k₂) :
   R(G; k₁) ≤ R(G; k₂)
 
-/-!
+/-
 ## Part 3: Chung-Graham Bounds (1975)
 
 General bounds for R(K_{s,t}; k).
@@ -123,7 +123,7 @@ axiom chung_graham_bounds (s t k : ℕ)
 axiom chung_graham_exponent (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) :
     (s * t - 1 : ℝ) / (s + t) ≤ t
 
-/-!
+/-
 ## Part 4: The Case K_{2,2} (Four-Cycle)
 
 R(K_{2,2}; k) = (1+o(1))k².
@@ -146,7 +146,7 @@ axiom ramsey_K22_asymptotic :
 axiom ramsey_K22_lower (k : ℕ) (hk : k ≥ 2) :
   R(C4; k) ≥ k^2 - k + 1
 
-/-!
+/-
 ## Part 5: The Case K_{3,3}
 
 Alon-Rónyai-Szabó (1999): R(K_{3,3}; k) ~ k³.
@@ -169,7 +169,7 @@ axiom ramsey_K33_asymptotic :
 axiom ramsey_K33_lower (k : ℕ) (hk : k ≥ 2) :
   ∃ c : ℝ, c > 0 ∧ (R(K33; k) : ℝ) ≥ c * (k : ℝ)^3
 
-/-!
+/-
 ## Part 6: The General Theorem of Alon-Rónyai-Szabó
 
 If s ≥ (t-1)! + 1, then R(K_{s,t}; k) grows as k^t.
@@ -189,7 +189,7 @@ axiom below_threshold (s t : ℕ)
     (hs : s < criticalS t) (ht : t ≥ 2) :
   ∃ α : ℝ, α > (s * t - 1 : ℝ) / (s + t) ∧ α < t
 
-/-!
+/-
 ## Part 7: Erdős Problem #558 Statement
 
 The problem asks to determine R(K_{s,t}; k) for all s, t.
@@ -208,7 +208,7 @@ theorem erdos_558 (s t k : ℕ) (hs : s ≥ 1) (ht : t ≥ 1) (hk : k ≥ 2) :
   · intro hcrit
     exact alon_ronyai_szabo s t k hcrit ht hk
 
-/-!
+/-
 ## Part 8: Norm Graphs and Lower Bounds
 
 Algebraic constructions give tight lower bounds.
@@ -218,7 +218,7 @@ Algebraic constructions give tight lower bounds.
 axiom norm_graph_lower_bound (s t k : ℕ) (hp : ∃ q, Nat.Prime q ∧ s = q + 1) :
   ∃ q : ℕ, Nat.Prime q ∧ R(K[s, t]; k) ≥ q^2 * k
 
-/-!
+/-
 ## Part 9: Specific Values and Bounds
 -/
 
@@ -232,7 +232,7 @@ axiom ramsey_K24 (k : ℕ) (hk : k ≥ 2) :
   ∃ (c₁ c₂ : ℝ), c₁ > 0 ∧ c₂ > 0 ∧
     c₁ * (k : ℝ)^(7/4 : ℝ) ≤ R(K[2, 4]; k) ∧ (R(K[2, 4]; k) : ℝ) ≤ c₂ * (k : ℝ)^2
 
-/-!
+/-
 ## Part 10: Connection to Extremal Graph Theory
 -/
 
@@ -240,7 +240,7 @@ axiom ramsey_K24 (k : ℕ) (hk : k ≥ 2) :
 axiom turan_lower_bound (s t k : ℕ) (hs : s ≥ 2) (ht : t ≥ 2) :
   (R(K[s, t]; k) : ℝ) ≥ (k : ℝ)^(((s * t - 1 : ℝ)) / (s + t : ℝ))
 
-/-!
+/-
 ## Part 11: Summary
 -/
 

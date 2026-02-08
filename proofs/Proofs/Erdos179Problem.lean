@@ -28,7 +28,7 @@ namespace Erdos179
 
 open Finset
 
-/-!
+/-
 ## Part I: Arithmetic Progressions
 
 A k-term arithmetic progression is a sequence a, a+d, a+2d, ..., a+(k-1)d.
@@ -46,7 +46,7 @@ def ContainsAP (A : Finset ℕ) (k : ℕ) : Prop :=
 noncomputable def countAPs (A : Finset ℕ) (k : ℕ) : ℕ :=
   (A.powerset.filter fun S => ∃ a d, d > 0 ∧ S = arithmeticProgression a d k).card
 
-/-!
+/-
 ## Part II: The Supersaturation Function F_k(N, ℓ)
 
 F_k(N, ℓ) is the threshold: having this many k-APs forces an ℓ-AP.
@@ -67,7 +67,7 @@ noncomputable def F (k N ℓ : ℕ) : ℕ :=
 def SupersaturationProperty (k N ℓ M : ℕ) : Prop :=
   ∀ A : Finset ℕ, A.card = N → countAPs A k ≥ M → ContainsAP A ℓ
 
-/-!
+/-
 ## Part III: Trivial Bounds
 
 Basic observations about F_k(N, ℓ).
@@ -86,7 +86,7 @@ theorem F_upper_trivial (k N ℓ : ℕ) (hk : k ≥ 3) (hℓ : ℓ > k) :
 axiom random_set_APs (k N : ℕ) (p : ℝ) (hp : 0 < p) (hp' : p < 1) :
     sorry -- Expected number of k-APs is Θ(p^k · N²)
 
-/-!
+/-
 ## Part IV: Erdős's Questions
 
 The two specific questions Erdős asked.
@@ -102,7 +102,7 @@ def Question2 : Prop :=
     (fun N => Real.log (F 3 N ℓ) / Real.log N)
     Filter.atTop (nhds 2)
 
-/-!
+/-
 ## Part V: Fox-Pohoata Theorem (2020)
 
 The breakthrough result solving Erdős's questions.
@@ -129,7 +129,7 @@ theorem question2_solved : Question2 := by
   intro ℓ hℓ
   sorry  -- Follows from fox_pohoata_theorem
 
-/-!
+/-
 ## Part VI: Leng-Sah-Sawhney Improvement (2024)
 
 The state-of-the-art bound.
@@ -147,7 +147,7 @@ theorem improvement_significant :
       Real.exp ((Real.log (Real.log N))^c) > (Real.log (Real.log N))^C := by
   sorry
 
-/-!
+/-
 ## Part VII: Connection to Szemerédi's Theorem
 
 The relationship to the famous density theorem.
@@ -167,7 +167,7 @@ def SzemerediImplication : Prop :=
 axiom dense_sets_many_3APs (A : Finset ℕ) (N : ℕ) (hN : A.card = N) :
     (countAPs A 3 : ℝ) ≥ sorry -- Lower bound in terms of density
 
-/-!
+/-
 ## Part VIII: Roth's Theorem Connection
 
 The k = 3 case relates to Roth's theorem.
@@ -189,7 +189,7 @@ theorem AP_free_has_2APs (A : Finset ℕ) (hA : ¬ContainsAP A 3) :
     countAPs A 2 = A.card.choose 2 := by
   sorry  -- Every pair is a 2-AP
 
-/-!
+/-
 ## Part IX: Special Cases
 
 Specific values and asymptotics.
@@ -206,7 +206,7 @@ theorem exponent_is_2 (k ℓ : ℕ) (hk : k ≥ 1) (hℓ : ℓ > k) :
       Filter.atTop (nhds 2) := by
   sorry
 
-/-!
+/-
 ## Part X: Main Results
 
 Erdős Problem #179 is SOLVED.

@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #619: Decreasing Diameter of Triangle-Free Graphs
 
 Source: https://erdosproblems.com/619
@@ -32,7 +32,7 @@ open SimpleGraph
 
 namespace Erdos619
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Triangle-Free Graph:**
@@ -61,7 +61,7 @@ def HasDiameter (G : SimpleGraph V) (r : ℕ) : Prop :=
 def HasDiameterAtMost (G : SimpleGraph V) (r : ℕ) : Prop :=
   diameter G ≤ r
 
-/-! ## Part II: Edge Addition and h_r(G) -/
+/- ## Part II: Edge Addition and h_r(G) -/
 
 /--
 **Edge Addition:**
@@ -96,7 +96,7 @@ noncomputable def h_exact (G : SimpleGraph V) (r : ℕ) : ℕ :=
   sInf { n : ℕ | ∃ E : Finset (Sym2 V), E.card = n ∧
     TriangleFree (addEdges G E) ∧ HasDiameter (addEdges G E) r }
 
-/-! ## Part III: Known Results (Erdős-Gyárfás-Ruszinkó 1998) -/
+/- ## Part III: Known Results (Erdős-Gyárfás-Ruszinkó 1998) -/
 
 /--
 **h₃(G) ≤ n:**
@@ -125,7 +125,7 @@ axiom h5_upper_bound (V : Type*) [Fintype V] (G : SimpleGraph V) :
     G.Connected → TriangleFree G →
     h G 5 ≤ (Fintype.card V - 1) / 2
 
-/-! ## Part IV: The Main Question - h₄(G) (OPEN) -/
+/- ## Part IV: The Main Question - h₄(G) (OPEN) -/
 
 /--
 **The Erdős Question (OPEN):**
@@ -148,7 +148,7 @@ def erdos_619_upper_bound_form : Prop :=
       G.Connected → TriangleFree G →
         (h G 4 : ℚ) < Fintype.card V - ε * Fintype.card V
 
-/-! ## Part V: Without Triangle-Free Constraint -/
+/- ## Part V: Without Triangle-Free Constraint -/
 
 /--
 **Without triangle-free (Alon-Gyárfás-Ruszinkó 2000):**
@@ -160,7 +160,7 @@ axiom without_triangle_free_constraint (V : Type*) [Fintype V] (G : SimpleGraph 
     ∃ E : Finset (Sym2 V), E.card ≤ Fintype.card V / 2 ∧
       HasDiameterAtMost (addEdges G E) 4
 
-/-! ## Part VI: Examples and Special Cases -/
+/- ## Part VI: Examples and Special Cases -/
 
 /--
 **Path graph Pₙ:**
@@ -178,7 +178,7 @@ axiom path_is_triangle_free (n : ℕ) : TriangleFree (pathGraph n)
 axiom path_diameter (n : ℕ) (hn : n ≥ 1) :
     diameter (pathGraph n) = n - 1
 
-/-! ## Part VII: Monotonicity Properties -/
+/- ## Part VII: Monotonicity Properties -/
 
 /--
 **h_r decreases with r:**
@@ -188,7 +188,7 @@ This gives the chain h₃(G) ≥ h₄(G) ≥ h₅(G).
 axiom h_monotone (G : SimpleGraph V) (r : ℕ) :
     h G r ≥ h G (r + 1)
 
-/-! ## Part VIII: Summary
+/- ## Part VIII: Summary
 
 **Erdős Problem #619: OPEN**
 

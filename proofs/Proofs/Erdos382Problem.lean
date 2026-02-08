@@ -41,7 +41,7 @@ open Nat BigOperators Finset Real
 
 namespace Erdos382
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **The Product of an Interval**
@@ -62,7 +62,7 @@ theorem prodInterval_singleton (n : ℕ) (hn : n > 0) :
 axiom prodInterval_factorial (n : ℕ) :
     prodInterval 1 n = n.factorial
 
-/-! ## Part II: Largest Prime Divisor -/
+/- ## Part II: Largest Prime Divisor -/
 
 /--
 **Largest Prime Divisor**
@@ -86,7 +86,7 @@ axiom largestPrimeDivisor_prime (n : ℕ) (hn : n > 1) :
 axiom prime_le_largestPrimeDivisor (n p : ℕ) (hn : n > 1) (hp : p.Prime) (hdiv : p ∣ n) :
     p ≤ largestPrimeDivisor n
 
-/-! ## Part III: Exponent of Prime in Product -/
+/- ## Part III: Exponent of Prime in Product -/
 
 /--
 **P-adic Valuation**
@@ -103,7 +103,7 @@ noncomputable def exponentInProduct (p u v : ℕ) : ℕ :=
 axiom exponentInProduct_sum (p u v : ℕ) (hp : p.Prime) :
     exponentInProduct p u v = ∑ m ∈ Finset.Icc u v, exponent p m
 
-/-! ## Part IV: The Condition -/
+/- ## Part IV: The Condition -/
 
 /--
 **The Erdős-Graham Condition**
@@ -129,7 +129,7 @@ axiom exp_ge_two_needs_square (u v p : ℕ) (hp : p.Prime)
     (hexp : exponent p (prodInterval u v) ≥ 2) :
     ∃ k, p * p ∣ k ∧ u ≤ k ∧ k ≤ v
 
-/-! ## Part V: The Questions -/
+/- ## Part V: The Questions -/
 
 /--
 **Question 1 (OPEN)**: Is v - u = v^o(1)?
@@ -158,7 +158,7 @@ def question2 : Prop :=
 /-- Cambie's heuristic suggests YES for Question 2. -/
 axiom erdos_382_q2_heuristic : question2
 
-/-! ## Part VI: Known Upper Bound -/
+/- ## Part VI: Known Upper Bound -/
 
 /--
 **Ramachandra's Bound**
@@ -172,7 +172,7 @@ axiom ramachandra_bound (ε : ℝ) (hε : ε > 0) :
     ∃ V : ℕ, ∀ u v : ℕ, v ≥ V → satisfiesCondition u v →
       (v - u : ℝ) ≤ (v : ℝ) ^ (1/2 + ε)
 
-/-! ## Part VII: Connection to Cramér's Conjecture -/
+/- ## Part VII: Connection to Cramér's Conjecture -/
 
 /--
 **Cramér's Conjecture**
@@ -190,7 +190,7 @@ def cramersConjecture : Prop :=
 /-- Under Cramér's conjecture, Question 1 is true. -/
 axiom cramer_implies_q1 : cramersConjecture → question1
 
-/-! ## Part VIII: Examples -/
+/- ## Part VIII: Examples -/
 
 /-- Example: [2, 4] has product 24 = 2³ · 3. Largest prime is 3, exp(3) = 1. -/
 example : prodInterval 2 4 = 24 := by
@@ -205,7 +205,7 @@ axiom no_prime_in_upper_half (u v : ℕ) (hu : u > 0) (huv : u ≤ v)
     (hcond : satisfiesCondition u v) :
     ∀ p : ℕ, p.Prime → p > Nat.sqrt v → p ≤ v → False
 
-/-! ## Part IX: The Prime-Free Interval Perspective -/
+/- ## Part IX: The Prime-Free Interval Perspective -/
 
 /--
 **Prime-Free Interval Perspective**
@@ -223,7 +223,7 @@ def noPrimeLargerThanSqrt (u v : ℕ) : Prop :=
 axiom condition_iff_no_large_prime (u v : ℕ) (hu : u > 0) (huv : u ≤ v) :
     satisfiesCondition u v ↔ (u ≤ v ∧ u > 0 ∧ noPrimeLargerThanSqrt u v)
 
-/-! ## Part X: Summary -/
+/- ## Part X: Summary -/
 
 /--
 **Erdős Problem #382: Summary**

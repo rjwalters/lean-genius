@@ -30,7 +30,7 @@ open Nat Finset
 
 namespace Erdos366
 
-/-!
+/-
 ## Background: k-Full Numbers
 
 A natural number n is **k-full** if every prime factor p of n appears
@@ -57,7 +57,7 @@ def IsPowerful (n : ℕ) : Prop := IsKFull 2 n
 /-- 3-full numbers are called **cubeful** numbers. -/
 def IsCubeful (n : ℕ) : Prop := IsKFull 3 n
 
-/-!
+/-
 ## Basic Properties of k-Full Numbers
 -/
 
@@ -75,7 +75,7 @@ axiom zero_not_kfull (k : ℕ) (hk : k ≥ 1) : ¬IsKFull k 0
 axiom prime_pow_kfull (p m k : ℕ) (hp : p.Prime) :
   IsKFull k (p ^ m) ↔ m ≥ k
 
-/-!
+/-
 ## Examples of k-Full Numbers
 -/
 
@@ -94,7 +94,7 @@ axiom twentyseven_is_cubeful : IsCubeful 27
 /-- 36 = 2² × 3² is 2-full (powerful). -/
 axiom thirtysix_is_powerful : IsPowerful 36
 
-/-!
+/-
 ## The Main Question: 2-Full n with 3-Full n+1
 
 Erdős asked whether there exists any n such that:
@@ -112,7 +112,7 @@ def erdos_366_conjecture : Prop :=
 /-- The problem remains open - neither proved nor disproved. -/
 axiom erdos_366_open : ¬(erdos_366_conjecture ↔ True) ∧ ¬(erdos_366_conjecture ↔ False)
 
-/-!
+/-
 ## The Reverse Direction: 3-Full n with 2-Full n+1
 
 The reverse direction has known solutions!
@@ -137,7 +137,7 @@ theorem golomb_pair : 12167 ∈ CubefulPowerfulPairs :=
 /-- Known pairs: (8, 9) and (12167, 12168). -/
 axiom known_pairs : CubefulPowerfulPairs ∩ {n | n < 10^22} = {8, 12167}
 
-/-!
+/-
 ## Weaker Question: Consecutive 3-Full Numbers
 
 Erdős (1976) asked the weaker question: Are there consecutive
@@ -153,7 +153,7 @@ def erdos_366_weaker : Prop := ∃ n > 0, IsCubeful n ∧ IsCubeful (n + 1)
 /-- The weaker question also appears open (no known examples). -/
 axiom erdos_366_weaker_open : ¬(erdos_366_weaker ↔ True) ∧ ¬(erdos_366_weaker ↔ False)
 
-/-!
+/-
 ## Related Question: Infinitely Many Pairs
 
 Are there infinitely many pairs (n, n+1) where n is 3-full and n+1 is 2-full?
@@ -166,7 +166,7 @@ def erdos_366_infinitely_many : Prop := CubefulPowerfulPairs.Infinite
 axiom erdos_366_infinitely_many_open :
   ¬(erdos_366_infinitely_many ↔ True) ∧ ¬(erdos_366_infinitely_many ↔ False)
 
-/-!
+/-
 ## Connection to Powerful Numbers and Pell Equations
 
 Erdős originally asked Mahler about consecutive powerful numbers.
@@ -187,7 +187,7 @@ axiom eight_is_powerful : IsPowerful 8
 theorem eight_nine_powerful : IsPowerful 8 ∧ IsPowerful 9 :=
   ⟨eight_is_powerful, nine_is_powerful⟩
 
-/-!
+/-
 ## Computational Bounds
 
 OEIS A060355 lists 3-full n with 2-full n+1.
@@ -203,7 +203,7 @@ it must be extremely large. -/
 axiom forward_pair_bound :
   ∀ n, n < 10^22 → ¬(IsPowerful n ∧ IsCubeful (n + 1))
 
-/-!
+/-
 ## Structure of k-Full Numbers
 
 k-full numbers have the form ∏ pᵢ^(aᵢ) where all aᵢ ≥ k.
@@ -217,7 +217,7 @@ axiom kfull_structure (k n : ℕ) (hn : n > 1) (hk : IsKFull k n) :
 axiom powerful_form (n : ℕ) (hn : n > 1) (hp : IsPowerful n) :
   ∃ a b : ℕ, n = a^2 * b^3
 
-/-!
+/-
 ## Density of k-Full Numbers
 
 The number of k-full numbers up to x is asymptotic to c_k × x^(1/k).
@@ -248,7 +248,7 @@ axiom cubeful_growth :
     c₁ * (N.log 10) / 3 ≤ cubefulCount N ∧
     cubefulCount N ≤ c₂ * N
 
-/-!
+/-
 ## Why the Problem is Hard
 
 The scarcity of k-full numbers makes finding consecutive pairs difficult.
@@ -265,7 +265,7 @@ This doesn't prove or disprove existence, but suggests they're extremely rare. -
 axiom heuristic_finite_expectation :
   True -- This is just a placeholder for the heuristic discussion
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #366 asks about consecutive integers with prescribed fullness:

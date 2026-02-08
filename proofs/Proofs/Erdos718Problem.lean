@@ -18,7 +18,7 @@ import Mathlib.Data.Real.Basic
 
 namespace Erdos718
 
-/-!
+/-
 ## Overview
 
 This problem concerns forced substructures in dense graphs. A key question
@@ -53,7 +53,7 @@ def IsSubdivisionOfKr (G : SimpleGraph V) (r : ℕ) : Prop :=
 def ContainsSubdivisionOfKr (G : SimpleGraph V) (r : ℕ) : Prop :=
   IsSubdivisionOfKr V G r  -- Simplified for formalization
 
-/-!
+/-
 ## The Conjecture and Its Solution
 
 The Erdős-Hajnal-Mader conjecture asks for a linear bound in r²n.
@@ -67,7 +67,7 @@ def MaderConjecture : Prop :=
         G.edgeFinset.card ≥ (C * r^2 * n : ℝ).toNat →
           ContainsSubdivisionOfKr (Fin n) G r
 
-/-!
+/-
 ## Historical Results
 -/
 
@@ -85,7 +85,7 @@ axiom mader_1967 :
       G.edgeFinset.card ≥ 2^(r * (r - 1) / 2) * n →
         ContainsSubdivisionOfKr (Fin n) G r
 
-/-!
+/-
 ## The Solution (1996)
 
 Proved independently by Komlós-Szemerédi and Bollobás-Thomason.
@@ -97,7 +97,7 @@ axiom komlos_szemeredi_1996 : MaderConjecture
 /-- Bollobás-Thomason (1996): Alternative proof. -/
 axiom bollobas_thomason_1996 : MaderConjecture
 
-/-!
+/-
 ## Specific Bounds
 
 The constant C in the theorem is not explicitly known, but estimates exist.
@@ -112,7 +112,7 @@ def EdgeBoundForKrSubdivision (r : ℕ) : ℕ → ℕ :=
   fun n => (C_const * r^2 * n).toNat
   where C_const : ℝ := 1  -- Placeholder; actual constant from proof
 
-/-!
+/-
 ## Related Results
 
 ### Highly Linked Graphs
@@ -132,7 +132,7 @@ axiom dense_graphs_linked :
         G.edgeFinset.card ≥ (C * k * n : ℝ).toNat →
           IsKLinked (Fin n) G k
 
-/-!
+/-
 ## Minors vs Subdivisions
 
 A subdivision is stronger than a minor: if H is a subdivision in G,
@@ -147,7 +147,7 @@ axiom IsMinorOf (H G : SimpleGraph V) : Prop
 axiom subdivision_implies_minor (G H : SimpleGraph V) :
   IsSubdivisionOfKr V G (Fintype.card V) → IsMinorOf H G
 
-/-!
+/-
 ## Applications
 
 The Komlós-Szemerédi theorem has applications in:
@@ -160,7 +160,7 @@ The Komlós-Szemerédi theorem has applications in:
     One of the most important open problems in graph theory.
     The Komlós-Szemerédi result on subdivisions is related but distinct. -/
 
-/-!
+/-
 ## The Main Theorem
 -/
 

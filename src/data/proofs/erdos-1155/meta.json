@@ -1,0 +1,116 @@
+{
+  "id": "erdos-1155",
+  "title": "Erdős Problem #1155: Triangle Removal Process",
+  "slug": "erdos-1155",
+  "description": "Is it true that E[f(n)] ≍ n^{3/2} and f(n) ≪ n^{3/2} almost surely?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1155",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1155Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "probability",
+      "analysis",
+      "hypergraph",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 1155,
+    "erdosUrl": "https://erdosproblems.com/1155",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Combinatorics.SimpleGraph.Basic",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Clique",
+        "description": "From Mathlib.Combinatorics.SimpleGraph.Clique",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Finset.Basic",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Card",
+        "description": "From Mathlib.Data.Finset.Card",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Basic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Real.Basic",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Order.Filter.AtTopBot.Basic",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "From Mathlib.Analysis.SpecialFunctions.Pow.Real",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "that",
+      "triangleRemovalEdges",
+      "triangleRemovalEdges_nonneg",
+      "triangleRemovalEdges_le_complete",
+      "grable_upper_bound",
+      "bfl_upper_bound",
+      "bfl_lower_bound",
+      "erdos_1155_conjecture",
+      "bfl_implies_grable",
+      "conjecture_gives_theta",
+      "bfl_exponent_characterization",
+      "IsTriangle",
+      "IsTriangleFree",
+      "triangleFree_iff_cliqueFree3",
+      "complete_has_triangles"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1155 concerns triangle removal process. This problem remains OPEN.\n\nKnown results include: - Grable (1997): For every ε > 0, P(f(n) > n^{7/4 + ε}) → 0. - Bohman, Frieze, Lubetzky (2015): f(n) = n^{3/2 + o(1)} almost surely.\n\nThis problem is catalogued at erdosproblems.com/1155.",
+    "problemStatement": "Is it true that E[f(n)] ≍ n^{3/2} and f(n) ≪ n^{3/2} almost surely?",
+    "proofStrategy": "The formalization is structured in 185 lines of Lean 4 code. It uses 7 axioms for results that require external references or deep mathematical arguments beyond Mathlib. There are 3 sorry placeholders for structural results that can be filled in with additional work. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**`triangleRemovalEdges n` is the (expected) number of remaining edges after**: `triangleRemovalEdges n` is the (expected) number of remaining edges after",
+      "**The triangle removal process leaves a non-negative number of edges.**: The triangle removal process leaves a non-negative number of edges.",
+      "**The triangle removal process on K_n starts with C(n,2) edges and can only**: The triangle removal process on K_n starts with C(n,2) edges and can only",
+      "****Grable (1997)****: **Grable (1997)**: For every ε > 0, the number of remaining edges",
+      "****Bohman-Frieze-Lubetzky (2015)****: **Bohman-Frieze-Lubetzky (2015)**: f(n) = n^{3/2 + o(1)} almost surely."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1155",
+      "startLine": 1,
+      "endLine": 185
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1155 (Triangle Removal Process) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

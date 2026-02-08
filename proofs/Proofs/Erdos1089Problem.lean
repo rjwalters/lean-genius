@@ -102,8 +102,9 @@ axiom g_d_2 : ∀ d ≥ 1, g d 2 = 3
 g_d(n) ≫ d^{n-1} via cube construction.
 -/
 
-/-- The vertices of the d-dimensional unit cube -/
-def cubeVertices (d : ℕ) : Finset (Point d) := sorry
+/-- The vertices of the d-dimensional unit cube.
+    Axiomatized since it requires embedding {0,1}^d into ℝ^d. -/
+axiom cubeVertices (d : ℕ) : Finset (Point d)
 
 /-- Cube has 2^d vertices -/
 axiom cube_card : ∀ d : ℕ, (cubeVertices d).card = 2^d

@@ -74,7 +74,7 @@ Mathlib recently added Dirichlet''s theorem on primes in AP, but:
 ### Files Modified
 
 - `proofs/Proofs/ThreeSquares.lean` (new)
-- `research/candidate-pool.json` (status: in-progress → surveyed)
+- `.lean/state/candidate-pool.json` (status: in-progress → surveyed)
 - `research/problems/three-squares-theorem/knowledge.md` (new)
 
 ---', '2026-01-02 19:10:27', 'rjwalters');

@@ -28,7 +28,7 @@ open Filter Topology BigOperators
 
 namespace Erdos243
 
-/-! ## Sylvester's Sequence
+/- ## Sylvester's Sequence
 
 The canonical example satisfying the hypotheses. Defined by:
   s₀ = 2
@@ -51,7 +51,7 @@ theorem sylvester_4 : sylvester 4 = 1807 := by native_decide
 theorem sylvester_strictMono_small : sylvester 0 < sylvester 1 ∧
     sylvester 1 < sylvester 2 ∧ sylvester 2 < sylvester 3 := by native_decide
 
-/-! ## The Erdős Conjecture
+/- ## The Erdős Conjecture
 
 A sequence satisfies the hypotheses if:
 1. It is strictly monotone increasing
@@ -71,7 +71,7 @@ def HasSylvesterGrowth (a : ℕ → ℕ) : Prop :=
 def HasRationalReciprocalSum (a : ℕ → ℕ) : Prop :=
   ∃ q : ℚ, Tendsto (fun N ↦ ∑ n ∈ Finset.range N, (1 : ℝ) / a n) atTop (𝓝 q)
 
-/-! ## Main Conjecture
+/- ## Main Conjecture
 
 Erdős Problem #243: If a strictly increasing sequence of positive integers has
 Sylvester-type growth and rational reciprocal sum, it must eventually be Sylvester.
@@ -98,7 +98,7 @@ axiom erdos_243 (a : ℕ → ℕ)
     (hRational : HasRationalReciprocalSum a) :
     EventuallySylvester a
 
-/-! ## Verification: Sylvester's Sequence Satisfies the Hypotheses
+/- ## Verification: Sylvester's Sequence Satisfies the Hypotheses
 
 We verify that the canonical Sylvester sequence does satisfy all the hypotheses
 (though proving convergence to 1 requires more machinery).

@@ -33,7 +33,7 @@ open Nat Filter Finset
 
 namespace Erdos138
 
-/-! ## Van der Waerden Numbers -/
+/- ## Van der Waerden Numbers -/
 
 /-- A coloring of {1, ..., N} using r colors -/
 def Coloring (N r : ℕ) := Finset.Icc 1 N → Fin r
@@ -66,7 +66,7 @@ noncomputable def vanDerWaerden (r k : ℕ) : ℕ :=
 /-- Standard notation: W(k) = W(2, k) for 2-colorings -/
 noncomputable abbrev W (k : ℕ) : ℕ := vanDerWaerden 2 k
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Berlekamp (1968)**: For prime p, W(p+1) ≥ p · 2^p.
     This gives strong lower bounds at prime values. -/
@@ -84,7 +84,7 @@ axiom gowers_upper_bound (k : ℕ) :
 axiom kozik_shabanov_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 1 → (c * 2^k : ℝ) ≤ W k
 
-/-! ## Small Values -/
+/- ## Small Values -/
 
 /-- W(1) = 1: Any single element is a 1-term AP -/
 theorem W_one : W 1 = 1 := by
@@ -106,7 +106,7 @@ axiom W_five : W 5 = 178
 /-- W(6) = 1132: Computed by Kouril and Paul (2008) -/
 axiom W_six : W 6 = 1132
 
-/-! ## The Main Conjecture (OPEN) -/
+/- ## The Main Conjecture (OPEN) -/
 
 /-- **Erdős Problem #138** (OPEN, $500 prize):
     Does W(k)^{1/k} → ∞ as k → ∞?
@@ -117,7 +117,7 @@ axiom W_six : W 6 = 1132
 def Erdos138Conjecture : Prop :=
   Tendsto (fun k => (W k : ℝ) ^ (1 / (k : ℝ))) atTop atTop
 
-/-! ## Related Questions (Erdős 1980-1981) -/
+/- ## Related Questions (Erdős 1980-1981) -/
 
 /-- Does W(k+1)/W(k) → ∞?
     Asks whether consecutive van der Waerden numbers have unbounded ratio. -/
@@ -134,7 +134,7 @@ def DifferenceDiverges : Prop :=
 def ExponentialDiverges : Prop :=
   Tendsto (fun k => ((W k : ℚ) / (2 ^ k))) atTop atTop
 
-/-! ## Implications -/
+/- ## Implications -/
 
 /-- If the main conjecture holds, then W(k)/2^k → ∞.
     Proof: W(k)^{1/k} → ∞ means for any c, eventually W(k)^{1/k} > c,
@@ -145,7 +145,7 @@ theorem conjecture_implies_exponential :
   -- The proof follows from comparing growth rates
   sorry
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: OPEN ($500 prize)**
 

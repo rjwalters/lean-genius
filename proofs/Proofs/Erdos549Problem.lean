@@ -26,7 +26,7 @@ import Mathlib
 
 open Finset Function Set SimpleGraph
 
-/-! ## Trees and Bipartite Graphs -/
+/- ## Trees and Bipartite Graphs -/
 
 /-- A tree is a connected acyclic graph -/
 def IsTree {V : Type*} (G : SimpleGraph V) : Prop :=
@@ -53,7 +53,7 @@ structure BipartiteTree (k : ℕ) where
   sizeB : partB.card = 2 * k
   bipartite : ∀ u v : V, graph.Adj u v → (u ∈ partA ∧ v ∈ partB) ∨ (u ∈ partB ∧ v ∈ partA)
 
-/-! ## Ramsey Numbers for Graphs -/
+/- ## Ramsey Numbers for Graphs -/
 
 /-- An edge 2-coloring of a graph -/
 def EdgeTwoColoring (V : Type*) := Sym2 V → Bool
@@ -82,7 +82,7 @@ def IsRamseyNumber {W : Type*} (H : SimpleGraph W) (n : ℕ) : Prop :=
     ¬HasMonochromaticCopy (completeGraph (Fin m)) H c true ∧
     ¬HasMonochromaticCopy (completeGraph (Fin m)) H c false)
 
-/-! ## Star Graphs -/
+/- ## Star Graphs -/
 
 /-- The star graph S_n with n leaves (n+1 vertices total) -/
 def starGraph (n : ℕ) : SimpleGraph (Fin (n + 1)) where
@@ -107,14 +107,14 @@ def doubleStar (k : ℕ) : SimpleGraph (Fin (3 * k + 2)) where
 theorem doubleStar_vertices (k : ℕ) : Fintype.card (Fin (3 * k + 2)) = 3 * k + 2 := by
   simp
 
-/-! ## The Original Conjecture -/
+/- ## The Original Conjecture -/
 
 /-- Erdős's original conjecture (now known to be FALSE) -/
 def erdosConjecture549 : Prop :=
   ∀ k ≥ 1, ∀ T : BipartiteTree k,
     @RamseyNumber T.V T.graph = 4 * k - 1
 
-/-! ## The Counterexample -/
+/- ## The Counterexample -/
 
 /-- Norin-Sun-Zhao: The double star violates the conjecture -/
 theorem norin_sun_zhao_counterexample : ∃ k : ℕ, k ≥ 1 ∧
@@ -134,7 +134,7 @@ theorem double_star_asymptotic :
       (RamseyNumber (doubleStar k) : ℝ) ≥ (norinSunZhaoConstant - ε) * k := by
   sorry
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /-- Flag algebra upper bound: R(T) ≤ (4.21526 + o(1))k -/
 def flagAlgebraConstant : ℝ := 4.21526
@@ -148,7 +148,7 @@ theorem flag_algebra_upper_bound : ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
 theorem bounds_gap : flagAlgebraConstant - norinSunZhaoConstant < 0.02 := by
   native_decide
 
-/-! ## Special Cases Where Conjecture Holds -/
+/- ## Special Cases Where Conjecture Holds -/
 
 /-- The path graph P_n -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
@@ -180,7 +180,7 @@ theorem broom_ramsey (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) :
     ∃ k : ℕ, RamseyNumber (broomGraph a b) = 4 * k - 1 := by
   sorry
 
-/-! ## Lower Bound Construction -/
+/- ## Lower Bound Construction -/
 
 /-- The lower bound R(T) ≥ 4k - 1 always holds for bipartite (k, 2k) trees -/
 theorem general_lower_bound (k : ℕ) (hk : k ≥ 1) (T : BipartiteTree k) :
@@ -194,7 +194,7 @@ theorem lower_bound_construction (k : ℕ) (hk : k ≥ 1) (T : BipartiteTree k) 
       ¬HasMonochromaticCopy (completeGraph (Fin (4 * k - 2))) T.graph c false := by
   sorry
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- For any tree T on n vertices, R(T) ≤ 2n - 2 (Chvátal-Harary) -/
 theorem chvatal_harary {V : Type*} [Fintype V] (T : SimpleGraph V) (hT : IsTree T) :
@@ -211,7 +211,7 @@ theorem path_ramsey (n : ℕ) (hn : n ≥ 2) :
     RamseyNumber (pathGraph n) = n := by
   sorry
 
-/-! ## The Burr-Erdős Conjecture -/
+/- ## The Burr-Erdős Conjecture -/
 
 /-- The Burr-Erdős conjecture: R(H) = (χ(H) - 1)(|H| - 1) + 1 for nice H -/
 def burrErdosFormula {V : Type*} [Fintype V] (H : SimpleGraph V) (χ : ℕ) : ℕ :=
@@ -223,7 +223,7 @@ theorem tree_burr_erdos {V : Type*} [Fintype V] (T : SimpleGraph V) (hT : IsTree
   simp [burrErdosFormula]
   ring
 
-/-! ## Main Result -/
+/- ## Main Result -/
 
 /-- Erdős Problem #549: SOLVED (Disproved)
 

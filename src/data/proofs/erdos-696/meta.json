@@ -18,7 +18,7 @@
       "partially-solved"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 9,
     "erdosNumber": 696,
     "erdosUrl": "https://erdosproblems.com/696",
     "erdosProblemStatus": "open",
@@ -77,63 +77,63 @@
       "title": "Basic Properties",
       "summary": "h(n) ≤ H(n), base cases h(1) and h(p)",
       "startLine": 87,
-      "endLine": 117
+      "endLine": 114
     },
     {
       "id": "iterated-log",
       "title": "The Iterated Logarithm",
       "summary": "Definition of log*(n) and its slow growth",
-      "startLine": 119,
-      "endLine": 145
+      "startLine": 116,
+      "endLine": 138
     },
     {
       "id": "conjectures",
       "title": "Erdős's Conjectures",
       "summary": "h(n) → ∞, normal order, ratio H/h conjectures",
-      "startLine": 147,
-      "endLine": 172
+      "startLine": 140,
+      "endLine": 165
     },
     {
       "id": "chains",
       "title": "Why These Chains?",
       "summary": "Multiplicative group connection, Sophie Germain, Cunningham chains",
-      "startLine": 174,
-      "endLine": 206
+      "startLine": 167,
+      "endLine": 198
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "h(6), h(30), h(2310) computed",
-      "startLine": 208,
-      "endLine": 232
+      "startLine": 200,
+      "endLine": 221
     },
     {
       "id": "comparison",
       "title": "Comparison h(n) vs H(n)",
-      "summary": "Why H(n) can be much larger",
-      "startLine": 234,
-      "endLine": 258
+      "summary": "Why H(n) can be much larger, composites give flexibility",
+      "startLine": 223,
+      "endLine": 249
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "summary": "h(n) ≤ ω(n) and H(n) ≤ log₂(n)",
-      "startLine": 260,
-      "endLine": 283
+      "startLine": 251,
+      "endLine": 273
     },
     {
       "id": "van-doorn",
       "title": "The van Doorn Result",
       "summary": "Proof that h(n) → ∞ for almost all n",
-      "startLine": 285,
-      "endLine": 306
+      "startLine": 275,
+      "endLine": 296
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_696_status and summary theorems",
-      "startLine": 308,
-      "endLine": 351
+      "startLine": 298,
+      "endLine": 341
     }
   ],
   "conclusion": {

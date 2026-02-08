@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #114: Lemniscate Length Maximization
 
 For a monic polynomial p(z) ∈ ℂ[z] of degree n, let f(n) be the maximum
@@ -26,7 +26,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Polynomial.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A monic polynomial of degree n over ℂ. -/
 structure MonicPoly (n : ℕ) where
@@ -44,7 +44,7 @@ axiom maxLemniscateLength (n : ℕ) : ℝ
 def znMinus1 (n : ℕ) (hn : n ≥ 1) : MonicPoly n where
   coeffs := fun i => if i.val = 0 then -1 else 0
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /-- Dolzhenko (1961): f(n) ≤ 4πn. -/
 axiom dolzhenko_upper (n : ℕ) (hn : n ≥ 1) :
@@ -59,7 +59,7 @@ axiom fryntov_nazarov_upper :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
     maxLemniscateLength n ≤ 2 * n + C * (n : ℝ) ^ (7/8 : ℝ)
 
-/-! ## Lower Bound from z^n - 1 -/
+/- ## Lower Bound from z^n - 1 -/
 
 /-- The lemniscate of z^n - 1 consists of n arcs connecting the
     n-th roots of unity. Its length is 2n · B(1/(2n), 1/2) / √(2π)
@@ -71,7 +71,7 @@ axiom zn_minus_1_length (n : ℕ) (hn : n ≥ 1) :
 axiom lower_bound_from_extremal (n : ℕ) (hn : n ≥ 1) :
   maxLemniscateLength n ≥ lemniscateLength (znMinus1 n hn)
 
-/-! ## Main Conjecture and Results -/
+/- ## Main Conjecture and Results -/
 
 /-- **Erdős Problem #114** ($250 bounty): z^n - 1 maximizes f(n)
     for all n ≥ 1. -/
@@ -95,7 +95,7 @@ axiom eremenko_hayman_n2 :
   ∀ p : MonicPoly 2,
     lemniscateLength p ≤ lemniscateLength (znMinus1 2 (by omega))
 
-/-! ## Lemniscate Geometry -/
+/- ## Lemniscate Geometry -/
 
 /-- The lemniscate of z^n - 1 has n-fold rotational symmetry,
     passing through all n-th roots of unity. -/

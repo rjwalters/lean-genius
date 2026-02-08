@@ -23,7 +23,7 @@ open Real BigOperators Nat
 
 namespace Erdos68
 
-/-!
+/-
 # Part 1: The Target Sum
 
 The main object of study: Σ_{n≥2} 1/(n!-1)
@@ -49,7 +49,7 @@ theorem summand_pos (n : ℕ) : summand n > 0 := by
   have h : (n + 2).factorial ≥ 2 := Nat.factorial_pos (n + 2) |>.trans_le' (by omega)
   linarith [Nat.cast_pos.mpr (Nat.factorial_pos (n + 2))]
 
-/-!
+/-
 # Part 2: Convergence
 
 The sum converges absolutely.
@@ -66,7 +66,7 @@ axiom factorialSum_summable : Summable summand
 theorem factorialSum_pos : factorialSum > 0 := by
   sorry
 
-/-!
+/-
 # Part 3: Weisenberg's Identity
 
 Σ 1/(n!-1) = Σ_n Σ_k 1/(n!)^k using geometric series.
@@ -89,7 +89,7 @@ theorem inv_factorial_minus_one_eq_geom (n : ℕ) (hn : n ≥ 2) :
 axiom weisenberg_identity :
     factorialSum = ∑' n : ℕ, ∑' k : ℕ, ((1 : ℝ) / (n + 2).factorial) ^ (k + 1)
 
-/-!
+/-
 # Part 4: The Main Conjecture
 
 Is factorialSum irrational?
@@ -105,7 +105,7 @@ def ErdosConjecture68 : Prop := Irrational factorialSum
 /-- Axiom for the open problem. -/
 axiom erdos_68 : ErdosConjecture68
 
-/-!
+/-
 # Part 5: Erdős's Broader Conjecture
 
 Σ 1/(n!+t) should be transcendental for every integer t.
@@ -146,7 +146,7 @@ theorem problem_68_is_special_case :
   congr 1
   ring
 
-/-!
+/-
 # Part 6: Small Value Computations
 
 Numerical approximations.
@@ -176,7 +176,7 @@ theorem fourth_term : summand 3 = 1 / 119 := by
 axiom partial_sum_approx :
     summand 0 + summand 1 + summand 2 + summand 3 > 1.25
 
-/-!
+/-
 # Part 7: Why This Is Hard
 
 Understanding the difficulty of the irrationality proof.
@@ -203,7 +203,7 @@ axiom eRelatedSum_value : eRelatedSum = Real.exp 1 - 2
 axiom perturbation_difference :
     factorialSum - eRelatedSum > 0.04 ∧ factorialSum - eRelatedSum < 0.05
 
-/-!
+/-
 # Part 8: OEIS Connection
 
 The decimal expansion is OEIS A331373.
@@ -212,7 +212,7 @@ The decimal expansion is OEIS A331373.
 /-- The sum starts 1.2517525711... (OEIS A331373). -/
 axiom oeis_a331373 : factorialSum > 1.251 ∧ factorialSum < 1.252
 
-/-!
+/-
 # Part 9: Connections to Transcendence Theory
 
 Broader context of transcendental number theory.
@@ -240,7 +240,7 @@ theorem transcendence_implies_68 :
   intro h
   exact h.irrational
 
-/-!
+/-
 # Part 10: Problem Status
 
 Summary and status.
@@ -253,7 +253,7 @@ def erdos_68_status : String := "OPEN"
 theorem erdos_68_statement : ErdosConjecture68 ↔ Irrational factorialSum := by
   rfl
 
-/-!
+/-
 # Summary
 
 **Problem:** Is Σ_{n≥2} 1/(n!-1) irrational?

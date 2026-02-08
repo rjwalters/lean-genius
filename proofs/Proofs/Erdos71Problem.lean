@@ -27,7 +27,7 @@ open scoped BigOperators
 
 namespace Erdos71
 
-/-!
+/-
 ## Background
 
 This problem connects graph density to the existence of cycles of specific lengths.
@@ -45,7 +45,7 @@ cycle lengths in dense graphs.
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Core Definitions
 -/
 
@@ -73,7 +73,7 @@ theorem first_mem_arithProg (a d : ℕ) : a ∈ ArithProg a d :=
     Proof: The progression contains a + k*d for all k ∈ ℕ, which is unbounded. -/
 axiom arithProg_infinite (a d : ℕ) (hd : d > 0) : Set.Infinite (ArithProg a d)
 
-/-!
+/-
 ## Graph Definitions
 -/
 
@@ -99,7 +99,7 @@ noncomputable def avgDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℚ :=
   if Fintype.card V = 0 then 0
   else 2 * edgeCount G / Fintype.card V
 
-/-!
+/-
 ## The Main Theorem (Bollobás 1977)
 
 For any arithmetic progression P = {a, a+d, a+2d, ...} containing even numbers,
@@ -144,7 +144,7 @@ theorem even_cycles_from_high_degree :
   · -- k ≥ 4
     omega
 
-/-!
+/-
 ## The Open Question: Optimal Constants
 
 The best dependence of c(P) on the progression P = {a, a+d, ...} is unknown.
@@ -170,7 +170,7 @@ def optimalConstantQuestion : Prop :=
     -- f is "optimal" in some sense (this would need precise formulation)
     True
 
-/-!
+/-
 ## Related Results
 -/
 
@@ -186,7 +186,7 @@ axiom avg_to_min_degree (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ) :
     ∃ (S : Finset V), S.Nonempty ∧
       ∀ v ∈ S, d ≤ ((G.neighborFinset v).filter (· ∈ S)).card
 
-/-!
+/-
 ## Why Even Numbers Matter
 
 The condition that P contains even numbers is necessary. Consider:
@@ -230,7 +230,7 @@ axiom even_condition_necessary :
         avgDegree G ≥ c →
         ∃ k ∈ ArithProg a d, ContainsCycleLength G k
 
-/-!
+/-
 ## Special Cases
 -/
 
@@ -250,7 +250,7 @@ theorem multiples_of_four :
     omega
   · omega
 
-/-!
+/-
 ## Summary
 
 **Problem Status: SOLVED**

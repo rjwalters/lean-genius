@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #273: Covering Systems with Prime-Minus-One Moduli
 
 Is there a covering system all of whose moduli are of the form p - 1
@@ -18,7 +18,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Covering Systems
 -/
 
@@ -36,7 +36,7 @@ structure CoveringSystem where
   /-- Every integer is covered by at least one residue class. -/
   covers : ∀ z : ℤ, ∃ i, z % (moduli i : ℤ) = residues i % (moduli i : ℤ)
 
-/-!
+/-
 ## Section II: Prime-Minus-One Moduli
 -/
 
@@ -48,7 +48,7 @@ def IsPrimeMinusOne (k : ℕ) (m : ℕ) : Prop :=
 def AllModuliPrimeMinusOne (k : ℕ) (cs : CoveringSystem) : Prop :=
   ∀ i, IsPrimeMinusOne k (cs.moduli i)
 
-/-!
+/-
 ## Section III: The Main Problem
 -/
 
@@ -60,7 +60,7 @@ the allowed moduli are {4, 6, 10, 12, 16, 18, 22, 28, 30, ...}. -/
 def ErdosProblem273 : Prop :=
   ∃ cs : CoveringSystem, AllModuliPrimeMinusOne 5 cs
 
-/-!
+/-
 ## Section IV: The Selfridge Example (p ≥ 3)
 -/
 
@@ -71,7 +71,7 @@ The moduli are all of the form p - 1 for primes p ≥ 3. -/
 axiom selfridge_example :
   ∃ cs : CoveringSystem, AllModuliPrimeMinusOne 3 cs
 
-/-!
+/-
 ## Section V: Covering System Basics
 -/
 
@@ -91,7 +91,7 @@ must have a modulus ≡ 0 (mod 2). -/
 def IsDistinct (cs : CoveringSystem) : Prop :=
   Function.Injective cs.moduli
 
-/-!
+/-
 ## Section VI: Connection to Other Problems
 -/
 

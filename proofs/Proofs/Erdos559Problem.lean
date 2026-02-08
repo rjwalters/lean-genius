@@ -45,7 +45,7 @@ import Mathlib
 
 namespace Erdos559
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A simple graph with a finite vertex type -/
 structure FiniteGraph (V : Type*) [Fintype V] where
@@ -80,7 +80,7 @@ def IsRamseyFor {V W : Type*} [Fintype V] [Fintype W] [DecidableEq V] [Decidable
       Function.Injective f ∧
       ∃ (c : Bool), ∀ u v, G.adj u v → H.adj (f u) (f v) ∧ color (f u) (f v) = c
 
-/-! ## Size Ramsey Number -/
+/- ## Size Ramsey Number -/
 
 /-- The size Ramsey number R̂(G) is the minimum number of edges m
     such that some graph H with m edges is Ramsey for G. -/
@@ -91,7 +91,7 @@ noncomputable def sizeRamsey {V : Type*} [Fintype V] [DecidableEq V]
       FiniteGraph V), by sorry⟩⟩ :
     ∃ m, ∃ (H : FiniteGraph (Fin m)), IsRamseyFor H G)
 
-/-! ## The Conjecture (Disproved) -/
+/- ## The Conjecture (Disproved) -/
 
 /-- The Beck/Erdős Conjecture: For graphs of bounded degree d,
     R̂(G) = O_d(n) where n = |V(G)|.
@@ -108,7 +108,7 @@ def beck_erdos_conjecture : Prop :=
 theorem beck_erdos_conjecture_false : ¬beck_erdos_conjecture := by
   sorry -- Rödl-Szemerédi (2000)
 
-/-! ## Positive Results (Special Cases) -/
+/- ## Positive Results (Special Cases) -/
 
 /-- A graph is a path if it has n vertices and n-1 edges forming a chain -/
 def IsPath {V : Type*} [Fintype V] [DecidableEq V] (G : FiniteGraph V) : Prop :=
@@ -149,7 +149,7 @@ theorem haxell_kohayakawa_luczak_cycles (n : ℕ) (hn : n ≥ 3) :
       (sizeRamsey G : ℝ) ≤ c * n := by
   sorry -- Haxell-Kohayakawa-Luczak (1995)
 
-/-! ## Counterexamples (d = 3) -/
+/- ## Counterexamples (d = 3) -/
 
 /-- Rödl-Szemerédi (2000): There exist degree-3 graphs with
     R̂(G) ≫ n(log n)^c -/
@@ -170,7 +170,7 @@ theorem tikhomirov_improved_lower_bound :
       (sizeRamsey G : ℝ) ≥ c * N * Real.exp (c * Real.sqrt (Real.log N)) := by
   sorry -- Tikhomirov (2022)
 
-/-! ## Upper Bounds for Degree-3 -/
+/- ## Upper Bounds for Degree-3 -/
 
 /-- Kohayakawa et al.: R̂(G) ≤ n^{5/3+o(1)} for degree-3 graphs -/
 theorem kohayakawa_upper_bound :
@@ -199,7 +199,7 @@ theorem draganic_petrova_best_upper_bound :
       (sizeRamsey G : ℝ) ≤ (N : ℝ)^(3/2 + ε N) := by
   sorry -- Draganić-Petrova (2022)
 
-/-! ## The Open Question -/
+/- ## The Open Question -/
 
 /-- Open: What is the correct growth rate for degree-3 graphs?
 
@@ -217,7 +217,7 @@ def open_degree_3_question : Prop :=
       ∃ (G : FiniteGraph (Fin N)), maxDegree G ≤ 3 ∧
         (sizeRamsey G : ℝ) ≥ f N / 2)
 
-/-! ## Summary
+/- ## Summary
 
 **Status: DISPROVED (for d ≥ 3)**
 

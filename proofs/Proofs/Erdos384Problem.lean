@@ -119,8 +119,7 @@ def ecklundStrongConjecture : Prop :=
   ∀ n k : ℕ, 1 < k → k < n - 1 → n > k^2 →
     hasSmallPrimeDivisor (Nat.choose n k) (n / k + 1)
 
-/-- This stronger conjecture is still open -/
-axiom ecklund_strong_open : True  -- Placeholder; actual status unknown
+/- This stronger conjecture is still open -/
 
 /-- Known partial result: p ≪ n/k^c for some c > 0 -/
 axiom partial_bound_known (n k : ℕ) (hk : 1 < k) (hn : k < n - 1) :

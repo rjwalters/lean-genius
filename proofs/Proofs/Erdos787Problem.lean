@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #787: Sum-Free Subsets (Erdős-Moser Problem)
 
 Source: https://erdosproblems.com/787
@@ -35,7 +35,7 @@ namespace Erdos787
 
 open Finset Real
 
-/-! ## Part 1: Basic Definitions -/
+/- ## Part 1: Basic Definitions -/
 
 /-- A subset B of A is sum-avoiding if no sum of two distinct elements of B lies in A -/
 def IsSumAvoidingIn (A B : Finset ℤ) : Prop :=
@@ -60,7 +60,7 @@ axiom g_spec (n : ℕ) (hn : n ≥ 1) :
   (∀ A : Finset ℤ, A.card = n → HasSumAvoidingSubset A (g n)) ∧
   ¬(∀ A : Finset ℤ, A.card = n → HasSumAvoidingSubset A (g n + 1))
 
-/-! ## Part 2: Trivial Cases -/
+/- ## Part 2: Trivial Cases -/
 
 /-- The empty set is trivially sum-avoiding -/
 theorem empty_is_sum_avoiding (A : Finset ℤ) : IsSumAvoidingIn A ∅ := by
@@ -79,34 +79,34 @@ theorem singleton_is_sum_avoiding (A : Finset ℤ) (a : ℤ) (ha : a ∈ A) :
     rw [hb₁, hb₂] at hne
     exact absurd rfl hne
 
-/-! ## Part 3: Klarner's Lower Bound -/
+/- ## Part 3: Klarner's Lower Bound -/
 
 /-- Klarner's lower bound: g(n) ≫ log n via greedy construction -/
 axiom klarner_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 → (g n : ℝ) ≥ c * Real.log n
 
-/-! ## Part 4: Choi's Upper Bound (1971) -/
+/- ## Part 4: Choi's Upper Bound (1971) -/
 
 /-- Choi's upper bound: g(n) ≪ n^(2/5+o(1)) -/
 axiom choi_1971_upper_bound :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       (g n : ℝ) ≤ (n : ℝ) ^ ((2 : ℝ) / 5 + ε)
 
-/-! ## Part 5: Ruzsa's Upper Bound (2005) -/
+/- ## Part 5: Ruzsa's Upper Bound (2005) -/
 
 /-- Ruzsa's 2005 improvement: g(n) ≪ exp(√(log n)) — the current best upper bound -/
 axiom ruzsa_2005_upper_bound :
     ∃ K : ℝ, K > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       (g n : ℝ) ≤ K * Real.exp (Real.sqrt (Real.log n))
 
-/-! ## Part 6: Sanders' Lower Bound (2021) -/
+/- ## Part 6: Sanders' Lower Bound (2021) -/
 
 /-- Sanders' improved lower bound: (log n)^(1+c) ≪ g(n) for some c > 0 -/
 axiom sanders_2021_lower_bound :
     ∃ c : ℝ, c > 0 ∧ ∃ K : ℝ, K > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       (g n : ℝ) ≥ K * (Real.log n) ^ (1 + c)
 
-/-! ## Part 7: Beker's Lower Bound (2025) -/
+/- ## Part 7: Beker's Lower Bound (2025) -/
 
 /-- The Beker exponent: 1 + 1/68 -/
 noncomputable def bekerExponent : ℝ := 1 + 1 / 68
@@ -116,14 +116,14 @@ axiom beker_2025_lower_bound :
     ∀ ε > 0, ∃ K : ℝ, K > 0 ∧ ∃ N : ℕ, ∀ n ≥ N,
       (g n : ℝ) ≥ K * (Real.log n) ^ (bekerExponent - ε)
 
-/-! ## Part 8: k-Configurations -/
+/- ## Part 8: k-Configurations -/
 
 /-- A k-configuration in a set A: B ⊆ A with |B| = k where all pairwise sums lie in A -/
 def IsKConfiguration (A : Finset ℤ) (k : ℕ) (B : Finset ℤ) : Prop :=
   B ⊆ A ∧ B.card = k ∧
   ∀ b₁ b₂ : ℤ, b₁ ∈ B → b₂ ∈ B → b₁ ≠ b₂ → (b₁ + b₂) ∈ A
 
-/-! ## Part 9: Summary -/
+/- ## Part 9: Summary -/
 
 /-- **Summary of Erdős Problem #787:**
 

@@ -32,7 +32,92 @@
       "The answer to Erdős' specific question is NO"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-441-lcm-bounded-",
+      "title": "Erdős Problem #441: LCM-Bounded Subsets",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Erdős Problem #441: LCM-Bounded Subsets"
+    },
+    {
+      "id": "part-1-basic-definitions",
+      "title": "Part 1: Basic Definitions",
+      "startLine": 43,
+      "endLine": 62,
+      "summary": "Part 1: Basic Definitions"
+    },
+    {
+      "id": "part-2-erd-s-proposed-construc",
+      "title": "Part 2: Erdős' Proposed Construction",
+      "startLine": 63,
+      "endLine": 87,
+      "summary": "Part 2: Erdős' Proposed Construction"
+    },
+    {
+      "id": "part-3-the-main-question",
+      "title": "Part 3: The Main Question",
+      "startLine": 88,
+      "endLine": 101,
+      "summary": "Part 3: The Main Question"
+    },
+    {
+      "id": "part-4-lower-bounds",
+      "title": "Part 4: Lower Bounds",
+      "startLine": 102,
+      "endLine": 119,
+      "summary": "Part 4: Lower Bounds"
+    },
+    {
+      "id": "part-5-upper-bounds",
+      "title": "Part 5: Upper Bounds",
+      "startLine": 120,
+      "endLine": 140,
+      "summary": "Part 5: Upper Bounds"
+    },
+    {
+      "id": "part-6-the-construction-is-not",
+      "title": "Part 6: The Construction is Not Optimal",
+      "startLine": 141,
+      "endLine": 161,
+      "summary": "Part 6: The Construction is Not Optimal"
+    },
+    {
+      "id": "part-7-why-the-construction-fa",
+      "title": "Part 7: Why the Construction Fails",
+      "startLine": 162,
+      "endLine": 177,
+      "summary": "Part 7: Why the Construction Fails"
+    },
+    {
+      "id": "part-8-special-cases",
+      "title": "Part 8: Special Cases",
+      "startLine": 178,
+      "endLine": 193,
+      "summary": "Part 8: Special Cases"
+    },
+    {
+      "id": "part-9-related-results",
+      "title": "Part 9: Related Results",
+      "startLine": 194,
+      "endLine": 214,
+      "summary": "Part 9: Related Results"
+    },
+    {
+      "id": "part-10-the-constant-9-8",
+      "title": "Part 10: The Constant 9/8",
+      "startLine": 215,
+      "endLine": 240,
+      "summary": "Part 10: The Constant 9/8"
+    },
+    {
+      "id": "part-11-summary",
+      "title": "Part 11: Summary",
+      "startLine": 241,
+      "endLine": 280,
+      "summary": "Part 11: Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős' question about whether his construction is optimal has a negative answer. While the asymptotic g(N) ~ (9N/8)^{1/2} established by Chen (1998) shows the construction gives the correct order of magnitude, Chen and Dai (2006) proved that for infinitely many N, the maximum LCM-bounded subset is strictly larger than Erdős' construction.",
     "implications": "The problem illustrates that natural constructions in extremal combinatorics may not be optimal, even when they achieve the correct asymptotic behavior. The gap between the construction and the optimal value, while o(√N), demonstrates subtle structure in the problem.",

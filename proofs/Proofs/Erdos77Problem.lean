@@ -38,7 +38,7 @@ open Filter
 
 namespace Erdos77
 
-/-!
+/-
 ## Ramsey Numbers
 
 R(k) is the minimum n such that every 2-coloring of K_n contains a
@@ -57,7 +57,7 @@ axiom RamseyNumber : ℕ → ℕ
 /-- Ramsey numbers are well-defined and positive for k ≥ 2. -/
 axiom ramseyNumber_pos : ∀ k ≥ 2, RamseyNumber k ≥ 1
 
-/-!
+/-
 ## Small Ramsey Numbers (Known Values)
 -/
 
@@ -83,7 +83,7 @@ axiom ramsey_4 : RamseyNumber 4 = 18
     Even with modern computers, determining R(5) exactly remains open. -/
 axiom ramsey_5_bounds : 43 ≤ RamseyNumber 5 ∧ RamseyNumber 5 ≤ 48
 
-/-!
+/-
 ## Classical Bounds
 
 Erdős proved the following bounds using probabilistic and explicit methods.
@@ -116,7 +116,7 @@ theorem erdos_upper_bound' :
       apply Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 4)
       linarith
 
-/-!
+/-
 ## The Growth Rate Question
 
 The main question is whether lim_{k→∞} R(k)^{1/k} exists, and if so, what is its value.
@@ -144,7 +144,7 @@ theorem erdos_bounds :
     limsup (fun k => ramseyGrowthRate k) atTop ≤ 4 :=
   ⟨liminf_lower_bound, limsup_upper_bound⟩
 
-/-!
+/-
 ## Recent Breakthrough: Upper Bound Improvements (2023-2024)
 
 After ~90 years with no improvement to the upper bound, major progress was made.
@@ -183,7 +183,7 @@ theorem current_best_bounds :
     limsup (fun k => ramseyGrowthRate k) atTop ≤ 3.7993 :=
   ⟨liminf_lower_bound, gnnw_2024_limsup⟩
 
-/-!
+/-
 ## The Open Questions
 -/
 
@@ -215,7 +215,7 @@ theorem erdos_conjecture_consistent :
     linarith
   · norm_num
 
-/-!
+/-
 ## Probabilistic Method Bounds
 
 The probabilistic method gives the best known lower bounds.
@@ -230,7 +230,7 @@ axiom probabilistic_lower_bound_refined :
     ∀ᶠ k in atTop, (RamseyNumber k : ℝ) ≥
       (1 + f k) * k * 2^((k : ℝ)/2) / (Real.exp 1 * Real.sqrt 2)
 
-/-!
+/-
 ## Erdős's "Evil Spirit" Parable
 
 Erdős illustrated the difficulty of computing Ramsey numbers with this story:
@@ -245,7 +245,7 @@ preemptive attack against the aliens."
 This captures how rapidly the computational difficulty grows.
 -/
 
-/-!
+/-
 ## Historical Significance
 
 This problem showcases several important themes:
@@ -263,7 +263,7 @@ This problem showcases several important themes:
    that the limit exists, while acknowledging the difficulty of proving it.
 -/
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #77** asks for lim_{k→∞} R(k)^{1/k}.

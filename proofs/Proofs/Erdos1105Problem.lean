@@ -31,7 +31,7 @@ open Finset BigOperators
 
 namespace Erdos1105
 
-/-!
+/-
 # Part 1: Basic Definitions
 
 Define graphs, edge-colorings, and rainbow subgraphs.
@@ -58,7 +58,7 @@ def EdgeColoring (n : ℕ) (c : ℕ) := (Fin n × Fin n) → Fin c
 noncomputable def numColors (n : ℕ) (coloring : (Fin n × Fin n) → ℕ) : ℕ :=
   (Finset.image coloring (Finset.univ.filter (fun e : Fin n × Fin n => e.1 < e.2))).card
 
-/-!
+/-
 # Part 2: Paths and Cycles
 
 Define the path P_k and cycle C_k on k vertices.
@@ -78,7 +78,7 @@ def numEdgesPath (k : ℕ) : ℕ := k - 1
 -- Number of edges in cycle C_k
 def numEdgesCycle (k : ℕ) : ℕ := k
 
-/-!
+/-
 # Part 3: Rainbow Subgraphs
 
 A subgraph is rainbow if all its edges have distinct colors.
@@ -108,7 +108,7 @@ def AvoidsRainbow (n : ℕ) (coloring : (Fin n × Fin n) → ℕ)
     (k : ℕ) (H : SimpleGraph k) : Prop :=
   ∀ emb : GraphEmbedding n k H, ¬IsRainbow n coloring k H emb
 
-/-!
+/-
 # Part 4: Anti-Ramsey Numbers
 
 AR(n, G) is the max colors in a rainbow-G-free coloring of K_n.
@@ -125,7 +125,7 @@ noncomputable def arCycle (n k : ℕ) : ℕ := antiRamsey n k (CycleGraph k)
 -- AR(n, P_k) for paths
 noncomputable def arPath (n k : ℕ) : ℕ := antiRamsey n k (PathGraph k)
 
-/-!
+/-
 # Part 5: The Cycle Conjecture
 
 Conjecture: AR(n, C_k) = ((k-2)/2 + 1/(k-1)) * n + O(1)
@@ -146,7 +146,7 @@ axiom ar_triangle : ∀ n ≥ 3, arCycle n 3 = n - 1
 -- Coefficient for k=3: (3-2)/2 + 1/(3-1) = 1/2 + 1/2 = 1
 -- So AR(n, C_3) ≈ n, which matches n - 1
 
-/-!
+/-
 # Part 6: The Path Conjecture
 
 Conjecture: AR(n, P_k) = max(C(k-2,2) + 1, C(ℓ-1,2) + (ℓ-1)(n-ℓ+1) + ε)
@@ -181,7 +181,7 @@ axiom simonovits_sos_path : ∃ c : ℕ, ∀ n k : ℕ, n ≥ c * k^2 → k ≥ 
 -- Yuan (2021): announced full proof
 axiom yuan_path_announced : PathConjecture
 
-/-!
+/-
 # Part 7: Lower and Upper Bounds
 
 General bounds on anti-Ramsey numbers.
@@ -200,7 +200,7 @@ theorem ar_upper_bound (n k : ℕ) (H : SimpleGraph k) :
 axiom ar_mono_n : ∀ (n₁ n₂ k : ℕ) (H : SimpleGraph k),
   n₁ ≤ n₂ → antiRamsey n₁ k H ≤ antiRamsey n₂ k H
 
-/-!
+/-
 # Part 8: Connection to Turán Numbers
 
 Anti-Ramsey numbers relate to extremal graph theory.
@@ -218,7 +218,7 @@ axiom ar_turan_lower : ∀ (n k : ℕ) (H : SimpleGraph k),
 
 -- Ramsey vs Anti-Ramsey: different extremal questions about colorings
 
-/-!
+/-
 # Part 9: Special Cases
 
 Known exact values and special cases.
@@ -233,7 +233,7 @@ axiom ar_path_3 : ∀ n ≥ 3, arPath n 3 = 1
 -- AR(n, K_3) = n - 1 (same as cycle)
 axiom ar_k3 : ∀ n ≥ 3, antiRamsey n 3 (CompleteGraph 3) = n - 1
 
-/-!
+/-
 # Part 10: Problem Status
 
 The problem remains OPEN for general cycles and the full path range.
@@ -255,7 +255,7 @@ theorem erdos_1105_path_statement :
     ∀ n k : ℕ, n ≥ k → k ≥ 5 → arPath n k = pathFormula n k := by
   rfl
 
-/-!
+/-
 # Summary
 
 **Problem:** Determine exact formulas for anti-Ramsey numbers AR(n, C_k) and AR(n, P_k).

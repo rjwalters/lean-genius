@@ -38,7 +38,7 @@ open scoped BigOperators
 
 namespace Erdos333
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -89,7 +89,7 @@ This is "exceptionally sparse" - sparser than √N.
 def hasSubsqrtGrowth (B : Set ℕ) : Prop :=
   (fun N => (countingFunction B N : ℝ)) =o[atTop] (fun N => Real.sqrt N)
 
-/-!
+/-
 ## Part II: The Erdős Conjecture
 -/
 
@@ -103,7 +103,7 @@ def ErdosConjecture333 : Prop :=
   ∀ A : Set ℕ, hasZeroDensity A →
     ∃ B : Set ℕ, isCoveredBySumset A B ∧ hasSubsqrtGrowth B
 
-/-!
+/-
 ## Part III: The Negative Answer
 -/
 
@@ -145,7 +145,7 @@ theorem erdos_333_false : ¬ErdosConjecture333 := by
   obtain ⟨B, hcover, hsparse⟩ := h A hA_density
   exact hA_counter B hcover hsparse
 
-/-!
+/-
 ## Part IV: Special Cases Where It IS True
 -/
 
@@ -180,7 +180,7 @@ axiom polynomial_gap_positive (A : Set ℕ) (α : ℝ) (hα : α > 2) :
     hasZeroDensity A → hasPolynomialGaps A α →
     ∃ B : Set ℕ, isCoveredBySumset A B ∧ hasSubsqrtGrowth B
 
-/-!
+/-
 ## Part V: Understanding the Counterexample
 -/
 
@@ -213,7 +213,7 @@ def almostPrimeFree (k : ℕ) : Set ℕ :=
 axiom almost_prime_free_density (k : ℕ) :
     hasZeroDensity (almostPrimeFree k)
 
-/-!
+/-
 ## Part VI: Connections
 -/
 
@@ -246,7 +246,7 @@ axiom sidon_sumset_exact (B : Set ℕ) :
       (countingFunction (sumset B) N : ℝ) ≥
       (countingFunction B (N/2) : ℝ) * ((countingFunction B (N/2) : ℝ) - 1) / 2
 
-/-!
+/-
 ## Part VII: The Erdős-Newman Paper
 
 **Erdős and Newman (1977), "Bases for Sets of Integers":**
@@ -271,7 +271,7 @@ axiom erdos_newman_theorem2 :
         ∀ B : Set ℕ, isCoveredBySumset A B →
           ∃ᶠ N in atTop, (countingFunction B N : ℝ) ≥ c * Real.sqrt N
 
-/-!
+/-
 ## Part VIII: Summary
 
 **Erdős Problem #333: DISPROVED**

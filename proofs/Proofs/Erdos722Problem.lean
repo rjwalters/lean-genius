@@ -46,7 +46,7 @@ open Nat Finset
 
 namespace Erdos722
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -89,7 +89,7 @@ binom(n,k) · binom(k,r)^{-1}
 noncomputable def blockCountAlt (r k n : ℕ) : ℕ :=
   n.choose k / k.choose r
 
-/-!
+/-
 ## Part II: Divisibility Conditions
 -/
 
@@ -125,7 +125,7 @@ theorem divisibility_includes_main (r k n : ℕ) (hr : r ≥ 1) :
   intro hDiv
   exact hDiv 0 (Nat.pos_of_ne_zero (Nat.one_le_iff_ne_zero.mp hr))
 
-/-!
+/-
 ## Part III: Classical Examples
 -/
 
@@ -161,7 +161,7 @@ axiom hanani_1961 :
     (∀ n : ℕ, n ≥ 5 → DivisibilityConditions 2 5 n →
       ∃ S : SteinerSystem 2 5 n, True)
 
-/-!
+/-
 ## Part IV: Wilson's Theorem (1972)
 -/
 
@@ -184,7 +184,7 @@ axiom wilson_quantitative (k : ℕ) (hk : k ≥ 2) :
     ∃ C : ℕ, ∀ n ≥ C * k^2, DivisibilityConditions 2 k n →
       ∃ S : SteinerSystem 2 k n, True
 
-/-!
+/-
 ## Part V: Keevash's Theorem (2014) - General Solution
 -/
 
@@ -210,11 +210,11 @@ theorem erdos_722_solved (r k : ℕ) (hr : r ≥ 1) (hk : k > r) :
       ∃ S : SteinerSystem r k n, True :=
   keevash_theorem r k hr hk
 
-/-!
+/-
 ## Part VI: Keevash's Method
 -/
 
-/--
+/-
 **Randomized Algebraic Construction:**
 Keevash's proof uses a sophisticated combination of:
 1. Random greedy algorithms
@@ -224,16 +224,14 @@ Keevash's proof uses a sophisticated combination of:
 The key innovation was the "randomized algebraic construction" that handles
 the general case.
 -/
-axiom keevash_method_insight : True
 
-/--
+/-
 **Absorbing Method:**
 A key technique: first construct a "robustly spread" partial design,
 then complete it using algebraic absorption.
 -/
-axiom absorbing_method : True
 
-/-!
+/-
 ## Part VII: Small Examples
 -/
 
@@ -262,7 +260,7 @@ theorem s239_divisibility : DivisibilityConditions 2 3 9 := by
   · simp [Nat.choose]; decide
   · simp [Nat.choose]; decide
 
-/-!
+/-
 ## Part VIII: Related Concepts
 -/
 
@@ -289,7 +287,7 @@ def IsCovering (blocks : Finset (Finset (Fin n))) (r : ℕ) : Prop :=
   ∀ S : Finset (Fin n), S.card = r →
     ∃ B ∈ blocks, Covers S B
 
-/-!
+/-
 ## Part IX: Summary
 -/
 

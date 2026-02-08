@@ -36,7 +36,7 @@ open Nat Finset BigOperators
 
 namespace Erdos308
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Unit fractions and their sums.
@@ -66,7 +66,7 @@ noncomputable def H (N : ℕ) : ℚ :=
 theorem H_one : H 1 = 1 := by
   simp [H, Finset.range_one]
 
-/-!
+/-
 ## Part II: Representability
 
 An integer k is representable with denominators from {1,...,N} if there
@@ -101,7 +101,7 @@ where
     -- so there must be integers beyond it
     sorry
 
-/-!
+/-
 ## Part III: Basic Properties
 -/
 
@@ -119,7 +119,7 @@ axiom max_representable_le_floor_H (N k : ℕ) (hN : N ≥ 1) :
 axiom representable_monotone (N M k : ℕ) (hNM : N ≤ M) :
     Representable N k → Representable M k
 
-/-!
+/-
 ## Part IV: The Contiguity Question
 
 Does the set of representable integers always form {0, 1, ..., m} for some m?
@@ -138,7 +138,7 @@ Is RepresentableSet N always contiguous?
 -/
 def question2 (N : ℕ) : Prop := IsContiguous (RepresentableSet N)
 
-/-!
+/-
 ## Part V: Croot's Theorem (1999)
 
 The main result establishing bounds on f(N).
@@ -184,7 +184,7 @@ For sufficiently large N, the representable set IS contiguous.
 axiom question2_yes :
     ∃ N₀ : ℕ, ∀ N ≥ N₀, question2 N
 
-/-!
+/-
 ## Part VI: Small Examples
 -/
 
@@ -211,7 +211,7 @@ axiom f_three : f 3 = 2
 /-- For N = 6: H_6 = 49/20 ≈ 2.45, so ⌊H_6⌋ = 2 -/
 axiom f_six : f 6 = 3  -- Can represent 0, 1, 2 but not 3
 
-/-!
+/-
 ## Part VII: Connection to Egyptian Fractions
 -/
 
@@ -238,7 +238,7 @@ axiom greedy_not_always_optimal :
       -- Greedy with denominators ≤ N fails but k is still representable
       True
 
-/-!
+/-
 ## Part VIII: Asymptotic Behavior
 -/
 
@@ -272,7 +272,7 @@ axiom f_growth_rate :
     -- f(N)/ln(N) → 1
     True
 
-/-!
+/-
 ## Part IX: Summary
 -/
 

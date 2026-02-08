@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #319 — Maximum Irreducible Signed Unit-Fraction Sum
 
 Find the maximum size c(N) of A ⊆ {1,...,N} for which there exists
@@ -23,7 +23,7 @@ import Mathlib.Data.Rat.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A signing function assigns ±1 to each element of a finite set. -/
 def IsSigning (A : Finset ℕ) (δ : ℕ → Int) : Prop :=
@@ -45,7 +45,7 @@ noncomputable def maxIrreducibleSize (N : ℕ) : ℕ :=
   ((Finset.Icc 1 N).powerset.filter (fun A =>
     ∃ δ : ℕ → Int, IsIrreducibleZeroSum A δ)).sup Finset.card
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #319**: determine the asymptotic growth of c(N).
     Conjectured to be Θ(N). The best known lower bound is (1 − 1/e + o(1))N. -/
@@ -54,7 +54,7 @@ axiom erdos_319_conjecture :
     ∃ N₀ : ℕ, ∀ N ≥ N₀,
       (maxIrreducibleSize N : ℝ) ≥ (1 - 1 / Real.exp 1 - ε) * N
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Adenwalla Lower Bound**: c(N) ≥ (1 − 1/e + o(1))N.
     Construction: take B ⊆ [(1/e − o(1))N, N] with Σ_{b ∈ B} 1/b = 1,
@@ -76,7 +76,7 @@ axiom croot_unit_fraction_theorem :
     ∃ S : Finset ℕ, S ⊆ Finset.Icc 1 N ∧
       S.sum (fun n => (1 : ℚ) / n) = k
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Small Example**: A = {1, 2} with δ(1) = 1, δ(2) = −1 gives
     1/1 − 1/2 = 1/2 ≠ 0. Need at least 3 elements for a zero sum. -/
@@ -84,7 +84,6 @@ axiom small_example :
   ∃ A : Finset ℕ, ∃ δ : ℕ → Int,
     A ⊆ Finset.Icc 1 6 ∧ IsIrreducibleZeroSum A δ
 
-/-- **Connection to Unit Fractions**: the problem is closely related to
+/- **Connection to Unit Fractions**: the problem is closely related to
     Egyptian fraction representations and signed unit-fraction decompositions.
     Erdős and Graham (1980) posed this in their monograph on such problems. -/
-axiom unit_fraction_connection : True

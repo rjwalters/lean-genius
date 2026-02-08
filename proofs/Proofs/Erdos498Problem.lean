@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #498 — Complex Littlewood–Offord Problem
 
 Given complex numbers z₁, ..., zₙ with |zᵢ| ≥ 1, and any disc D
@@ -19,7 +19,7 @@ import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A sign vector: each εᵢ ∈ {−1, +1}. -/
 def SignVector (n : ℕ) := Fin n → Int
@@ -42,7 +42,7 @@ noncomputable def signedSumCount {n : ℕ} (z : Fin n → ℂ) (w : ℂ) (r : �
     (fun ε : Fin n → Fin 2 => InDisc w r (signedSum z (fun i => if (ε i) = 0 then 1 else -1)))
     Finset.univ)
 
-/-! ## Main Theorem -/
+/- ## Main Theorem -/
 
 /-- **Kleitman (1965)**: For complex z₁,...,zₙ with |zᵢ| ≥ 1,
     the number of signed sums Σ εᵢzᵢ falling in any unit disc
@@ -52,7 +52,7 @@ axiom kleitman_littlewood_offord (n : ℕ) (hn : n ≥ 1)
   (w : ℂ) :
   signedSumCount z w 1 ≤ Nat.choose n (n / 2)
 
-/-! ## Historical Results -/
+/- ## Historical Results -/
 
 /-- **Erdős (1945)**: For real z₁,...,zₙ with |zᵢ| ≥ 1, at most
     C(n, ⌊n/2⌋) signed sums fall in any interval of length 2.
@@ -74,19 +74,16 @@ axiom erdos_complex_weak (n : ℕ) (hn : n ≥ 1)
   (w : ℂ) :
   ∃ C : ℝ, C > 0 ∧ (signedSumCount z w 1 : ℝ) ≤ C * 2 ^ n / Real.sqrt n
 
-/-! ## Generalizations -/
+/- ## Generalizations -/
 
-/-- **Kleitman (1970)**: The result extends to arbitrary Hilbert
+/- **Kleitman (1970)**: The result extends to arbitrary Hilbert
     spaces: for vectors v₁,...,vₙ in a Hilbert space with
     ‖vᵢ‖ ≥ 1, at most C(n, ⌊n/2⌋) signed sums fall in any
     ball of radius 1. -/
-axiom kleitman_hilbert_space : True
 
-/-- **Sperner connection**: The bound C(n, ⌊n/2⌋) is tight and
+/- **Sperner connection**: The bound C(n, ⌊n/2⌋) is tight and
     equals the size of the largest antichain in the power set
     of {1,...,n}. Kleitman's proof uses antichain arguments. -/
-axiom sperner_connection : True
 
-/-- **Related Problem #395**: Further variants of the
+/- **Related Problem #395**: Further variants of the
     Littlewood–Offord problem. -/
-axiom related_395 : True

@@ -19,7 +19,7 @@ import Mathlib
 
 namespace Erdos265
 
-/-!
+/-
 ## Sequences with Rational Sums
 
 We study sequences where both ∑ 1/aₙ and ∑ 1/(aₙ-1) converge to rationals.
@@ -45,7 +45,7 @@ noncomputable def shiftedReciprocalSum (a : ℕ → ℕ) : ℝ :=
 def hasBothRationalSums (a : ℕ → ℕ) : Prop :=
   (∃ q : ℚ, reciprocalSum a = q) ∧ (∃ q : ℚ, shiftedReciprocalSum a = q)
 
-/-!
+/-
 ## Cantor's Example
 
 Cantor discovered that aₙ = C(n,2) = n(n-1)/2 works.
@@ -69,7 +69,7 @@ axiom cantorSeq_rational_sum :
 axiom cantorSeq_shifted_rational :
   ∃ q : ℚ, shiftedReciprocalSum (fun n => cantorSeq n + 1) = q
 
-/-!
+/-
 ## Growth Rates
 
 The key question is about the growth rate of valid sequences.
@@ -88,7 +88,7 @@ noncomputable def doubleExpGrowth (a : ℕ → ℕ) (n : ℕ) : ℝ :=
 noncomputable def genExpGrowth (a : ℕ → ℕ) (β : ℝ) (n : ℕ) : ℝ :=
   (a n : ℝ) ^ (1 / β^n)
 
-/-!
+/-
 ## Erdős's Conjectures
 
 Erdős made two conjectures about the growth rate:
@@ -108,7 +108,7 @@ axiom erdos_265_doubleExp_necessary :
     hasBothRationalSums a →
     Filter.Tendsto (doubleExpGrowth a) Filter.atTop (nhds 1)
 
-/-!
+/-
 ## Kovač-Tao Result (2024)
 
 Kovač and Tao proved that doubly exponential growth is possible for some β > 1.
@@ -130,7 +130,7 @@ axiom erdos_265_remaining :
     hasBothRationalSums a →
     Filter.Tendsto (doubleExpGrowth a) Filter.atTop (nhds 1))
 
-/-!
+/-
 ## Irrationality Threshold
 
 A folklore result states that sufficiently fast doubly-exponential growth
@@ -143,7 +143,7 @@ axiom irrationality_threshold :
     (∃ c > 1, Filter.Tendsto (doubleExpGrowth a) Filter.atTop (nhds c)) →
     ∀ q : ℚ, reciprocalSum a ≠ q
 
-/-!
+/-
 ## The Valid Set
 
 We can characterize the set of valid sequences by their growth rates.
@@ -158,7 +158,7 @@ noncomputable def maxGrowthRate : ℝ :=
   ⨆ (a : ℕ → ℕ) (_ : a ∈ validSequences), 
     Filter.limsup (fun n => singleExpGrowth a n) Filter.atTop
 
-/-!
+/-
 ## Polynomial Examples
 
 Higher-degree polynomials can work with different shifts.
@@ -171,7 +171,7 @@ axiom polynomial_examples :
     (∃ q : ℚ, ∑' n, (1 : ℝ) / p n = q) ∧
     (∃ q : ℚ, ∑' n, (1 : ℝ) / (p n - k) = q)
 
-/-!
+/-
 ## Main Open Problem Statement
 -/
 

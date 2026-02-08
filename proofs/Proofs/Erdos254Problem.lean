@@ -34,7 +34,7 @@ open Nat Real Set
 
 namespace Erdos254
 
-/-!
+/-
 ## Part I: Basic Definitions
 
 Distance to nearest integer and counting functions.
@@ -52,7 +52,7 @@ noncomputable def fracDist' (x : ℝ) : ℝ :=
 noncomputable def countTo (A : Set ℕ) (x : ℝ) : ℕ :=
   (Finset.range (Nat.floor x + 1)).filter (· ∈ A) |>.card
 
-/-!
+/-
 ## Part II: The Growth Condition
 
 The first hypothesis requires that the number of elements of A
@@ -64,7 +64,7 @@ def HasGrowthCondition (A : Set ℕ) : Prop :=
   ∀ M : ℕ, ∃ x₀ : ℝ, x₀ > 0 ∧
     ∀ x ≥ x₀, countTo A (2 * x) - countTo A x ≥ M
 
-/-!
+/-
 ## Part III: The Irrationality Condition
 
 The second hypothesis ensures that A is "uniformly distributed"
@@ -80,7 +80,7 @@ noncomputable def fracDistSum (A : Set ℕ) (θ : ℝ) : ℝ :=
 def HasIrrationalityCondition (A : Set ℕ) : Prop :=
   ∀ θ : ℝ, 0 < θ → θ < 1 → fracDistSum A θ = ⊤
 
-/-!
+/-
 ## Part IV: Subset Sum Representation
 -/
 
@@ -92,7 +92,7 @@ def IsSubsetSum (A : Set ℕ) (n : ℕ) : Prop :=
 def RepresentsAllLarge (A : Set ℕ) : Prop :=
   ∃ N : ℕ, ∀ n ≥ N, IsSubsetSum A n
 
-/-!
+/-
 ## Part V: The Conjecture
 -/
 
@@ -107,7 +107,7 @@ def ErdosConjecture : Prop :=
     HasIrrationalityCondition A →
     RepresentsAllLarge A
 
-/-!
+/-
 ## Part VI: Cassels's Theorem (1960)
 
 Cassels proved the conjecture under strictly stronger hypotheses.
@@ -136,7 +136,7 @@ axiom cassels_theorem :
     HasStrongIrrationalityCondition A →
     RepresentsAllLarge A
 
-/-!
+/-
 ## Part VII: Examples
 -/
 
@@ -155,7 +155,7 @@ axiom powers_of_2_irrationality :
 axiom powers_of_2_representation :
   RepresentsAllLarge PowersOf2
 
-/-!
+/-
 ## Part VIII: Summary
 -/
 

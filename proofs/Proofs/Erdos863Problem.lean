@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #863 — B₂[r] Sum Sets vs Difference Sets
 
 For r ≥ 2, let A ⊆ {1,...,N} be a maximal-size set where every integer
@@ -22,7 +22,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-! ## B₂[r] Sets -/
+/- ## B₂[r] Sets -/
 
 /-- The number of representations of n as a + b with a ≤ b, a, b ∈ A -/
 noncomputable def sumRepCount (A : Finset ℕ) (n : ℕ) : ℕ :=
@@ -41,13 +41,13 @@ noncomputable def diffRepCount (A : Finset ℕ) (n : ℤ) : ℕ :=
 def IsDiffB2r (A : Finset ℕ) (r : ℕ) : Prop :=
   ∀ n : ℤ, n ≠ 0 → diffRepCount A n ≤ r
 
-/-! ## Containment in {1,...,N} -/
+/- ## Containment in {1,...,N} -/
 
 /-- A ⊆ {1,...,N} -/
 def InRange (A : Finset ℕ) (N : ℕ) : Prop :=
   ∀ a ∈ A, 1 ≤ a ∧ a ≤ N
 
-/-! ## The Constants cᵣ and c'ᵣ -/
+/- ## The Constants cᵣ and c'ᵣ -/
 
 /-- Maximum size of a B₂[r] set in {1,...,N} -/
 noncomputable def maxB2rSize (r N : ℕ) : ℕ :=
@@ -61,7 +61,7 @@ noncomputable def maxDiffB2rSize (r N : ℕ) : ℕ :=
     ((Finset.range (N + 1)).powerset.filter (fun A => IsDiffB2r A r ∧ InRange A N))
     Finset.card
 
-/-! ## Classical Sidon Case (r = 1) -/
+/- ## Classical Sidon Case (r = 1) -/
 
 /-- For r = 1 (Sidon sets), both constants equal 1:
     |A| ~ √N for both sum and difference versions -/
@@ -73,7 +73,7 @@ axiom sidon_classical :
     (1 - ε) * Real.sqrt (N : ℝ) ≤ (maxDiffB2rSize 1 N : ℝ) ∧
     (maxDiffB2rSize 1 N : ℝ) ≤ (1 + ε) * Real.sqrt (N : ℝ))
 
-/-! ## The Erdős Problem -/
+/- ## The Erdős Problem -/
 
 /-- Erdős Problem 863: For r ≥ 2, do the asymptotic constants for
     B₂[r] sets and difference B₂[r] sets differ?

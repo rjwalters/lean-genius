@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #731: Least Non-Divisor of Central Binomial Coefficients
 
 Find a reasonable function f(n) such that for almost all integers n, the
@@ -22,7 +22,7 @@ import Mathlib.Data.Nat.Choose.Central
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The central binomial coefficient C(2n, n). -/
 def centralBinom (n : ℕ) : ℕ := Nat.choose (2 * n) n
@@ -36,7 +36,7 @@ noncomputable def leastNonDivisor (m : ℕ) : ℕ :=
 noncomputable def leastNonDivCentral (n : ℕ) : ℕ :=
   leastNonDivisor (centralBinom n)
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #731** (OPEN): For almost all n, the least m with
     m ∤ C(2n, n) satisfies m = exp((log n)^{1/2 + o(1)}). -/
@@ -45,7 +45,7 @@ axiom erdos_731_conjecture :
   -- from exp((log n)^{1/2}) by more than (log n)^ε is zero.
   True  -- Precise formulation requires asymptotic density and real analysis
 
-/-! ## Divisibility Properties of Central Binomials -/
+/- ## Divisibility Properties of Central Binomials -/
 
 /-- **Kummer's Theorem**: The p-adic valuation of C(m+n, m) equals the
     number of carries when adding m and n in base p. -/
@@ -72,7 +72,7 @@ axiom primorial_asymptotic :
   -- ∏_{p ≤ x} p = e^{x(1+o(1))} as x → ∞
   True
 
-/-! ## Asymptotic Analysis -/
+/- ## Asymptotic Analysis -/
 
 /-- The least non-divisor of C(2n, n) is determined by the smallest
     prime p such that all digits of n in base p are < ⌈p/2⌉. -/
@@ -89,7 +89,7 @@ axiom egrs_typical_behavior :
   -- (log n)^{1/2 - ε} ≤ log(leastNonDivCentral n) ≤ (log n)^{1/2 + ε}
   True
 
-/-! ## Bounds -/
+/- ## Bounds -/
 
 /-- Lower bound: the least non-divisor is at least 2 for n ≥ 1 (since
     2 | C(2n, n) for n ≥ 1). More generally, all primes up to a threshold

@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 7,
     "erdosNumber": 771,
     "erdosUrl": "https://erdosproblems.com/771",
     "erdosProblemStatus": "solved",
@@ -67,7 +67,85 @@
       "**Bertrand's Postulate:** Guarantees small prime not dividing m"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-771-subsets-avoi",
+      "title": "Erdős Problem #771: Subsets Avoiding a Given Sum",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Erdős Problem #771: Subsets Avoiding a Given Sum"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 39,
+      "endLine": 57,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "the-function-f-n",
+      "title": "The Function f(n)",
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "The Function f(n)"
+    },
+    {
+      "id": "the-erd-s-graham-conjecture",
+      "title": "The Erdős-Graham Conjecture",
+      "startLine": 83,
+      "endLine": 102,
+      "summary": "The Erdős-Graham Conjecture"
+    },
+    {
+      "id": "erd-s-graham-lower-bound",
+      "title": "Erdős-Graham Lower Bound",
+      "startLine": 103,
+      "endLine": 132,
+      "summary": "Erdős-Graham Lower Bound"
+    },
+    {
+      "id": "alon-freiman-upper-bound",
+      "title": "Alon-Freiman Upper Bound",
+      "startLine": 133,
+      "endLine": 155,
+      "summary": "Alon-Freiman Upper Bound"
+    },
+    {
+      "id": "the-complete-answer",
+      "title": "The Complete Answer",
+      "startLine": 156,
+      "endLine": 175,
+      "summary": "The Complete Answer"
+    },
+    {
+      "id": "explicit-bounds",
+      "title": "Explicit Bounds",
+      "startLine": 176,
+      "endLine": 190,
+      "summary": "Explicit Bounds"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 191,
+      "endLine": 209,
+      "summary": "Special Cases"
+    },
+    {
+      "id": "connection-to-sum-free-sets",
+      "title": "Connection to Sum-Free Sets",
+      "startLine": 210,
+      "endLine": 228,
+      "summary": "Connection to Sum-Free Sets"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 229,
+      "endLine": 257,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #771 asks whether f(n) = (1/2+o(1))n/log n, where f(n) is the maximum size of a subset of {1,...,n} that can avoid any prescribed sum m. Erdős-Graham proved the lower bound using prime multiples, and Alon-Freiman (1988) proved the matching upper bound using an LCM argument. The conjecture is TRUE.",
     "implications": "**Connections**\n\n1. **Prime Number Theory:** Uses prime density near log n\n\n2. **LCM Estimates:** lcm{1,...,s} ≈ e^s (prime number theorem)\n\n3. **Sum-Free Sets:** Related but different — avoiding specific m vs avoiding all a+b=c\n\n4. **Additive Combinatorics:** Part of broader study of subset sum problems",

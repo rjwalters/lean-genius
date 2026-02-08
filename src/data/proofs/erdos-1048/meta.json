@@ -67,7 +67,9 @@
       "Connection to logarithmic capacity",
       "Optimal examples showing tightness of bounds"
     ],
-    "relatedProblems": ["erdos-1047"]
+    "relatedProblems": [
+      "erdos-1047"
+    ]
   },
   "overview": {
     "historicalContext": "**Polynomial Lemniscates and the EHP Conjecture**\n\nA lemniscate L(f, c) = {z ∈ ℂ : |f(z)| < c} is the sublevel set of a polynomial's absolute value.\n\n**Erdős-Herzog-Piranian (1958)** asked: For monic f with roots in |z| ≤ r (r < 2), must L(f,1) have a component with diameter > 2-r?\n\n**Pommerenke (1961)** showed this is FALSE for r > 1: The polynomial z^n - r^n has n components whose diameters → 0 as n → ∞.\n\nFor r ≤ 1, modified positive results hold with different diameter bounds.",

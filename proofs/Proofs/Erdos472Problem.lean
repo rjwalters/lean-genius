@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 472: Ulam Prime Sequences
 
 Given an initial finite sequence of primes `q₁ < ⋯ < qₘ`, extend it so
@@ -17,7 +17,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.List.Basic
 import Mathlib.Tactic
 
-/-! ## Ulam prime extension -/
+/- ## Ulam prime extension -/
 
 /-- Given a list of primes and its last element, a candidate next prime is
 `last + qᵢ - 1` for some `qᵢ` in the list, and must be prime. -/
@@ -41,7 +41,7 @@ def IsUlamPrimeSeq (seed : List ℕ) (f : ℕ → ℕ) : Prop :=
       ∀ p : ℕ, p < f (n + 1) →
         IsCandidateNext (List.ofFn (fun i : Fin (n + 1) => f i)) (f n) p → False)
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 472 (Ulam): There exists a finite seed of primes such
 that the Ulam prime extension produces an infinite sequence. -/
@@ -49,24 +49,178 @@ def ErdosProblem472 : Prop :=
     ∃ (seed : List ℕ),
       (∀ p ∈ seed, p.Prime) ∧
       seed.length ≥ 2 ∧
-      seed.Chain' (· < ·) ∧
+      List.Sorted (· < ·) seed ∧
       ∃ f : ℕ → ℕ, IsUlamPrimeSeq seed f
 
-/-! ## Known example -/
+/- ## Known example -/
 
 /-- Starting with `[3, 5]`, the sequence `3, 5, 7, 11, 13, 17, …` is
 conjectured to be an infinite Ulam prime sequence. -/
 def ulamSeed35 : List ℕ := [3, 5]
 
 /-- The seed `[3, 5]` consists of primes. -/
-axiom ulamSeed35_prime : ∀ p ∈ ulamSeed35, p.Prime
+theorem ulamSeed35_prime : ∀ p ∈ ulamSeed35, p.Prime := by decide
 
-/-! ## Basic properties -/
+/-- The seed `[3, 5]` is sorted in increasing order. -/
+theorem ulamSeed35_sorted : List.Sorted (· < ·) ulamSeed35 := by decide
+
+/-- The seed `[3, 5]` has at least 2 elements. -/
+theorem ulamSeed35_length : ulamSeed35.length ≥ 2 := by decide
+
+/- ## Basic properties -/
+
+/-- The candidate `f(n) + f(n) - 1 = 2f(n) - 1` is always odd for `f(n) ≥ 2`.
+This means the "self-candidate" (using f(n) itself as qᵢ) always produces an
+odd number, which could be prime. -/
+theorem candidate_self_odd (p : ℕ) (hp : 2 ≤ p) : ¬Even (p + p - 1) := by
+  intro ⟨k, hk⟩
+  omega
+
+/-- In any Ulam prime sequence, all values are at least 2. -/
+theorem ulam_seq_ge_two (seed : List ℕ) (f : ℕ → ℕ) (hf : IsUlamPrimeSeq seed f)
+    (n : ℕ) : 2 ≤ f n :=
+  (hf.2.1 n).two_le
 
 /-- In any Ulam prime sequence, consecutive differences are at least 2
-(since all terms are prime and increasing). -/
-axiom ulam_seq_gap (seed : List ℕ) (f : ℕ → ℕ) (hf : IsUlamPrimeSeq seed f)
-    (n : ℕ) : f n + 2 ≤ f (n + 1) ∨ (f n = 2 ∧ f (n + 1) = 3)
+(since all terms are odd primes after possibly 2, and the sequence is increasing).
+If f(n) ≥ 3 (odd prime) and f(n+1) > f(n) is also prime, then f(n+1) ≥ f(n) + 2. -/
+theorem ulam_seq_gap (seed : List ℕ) (f : ℕ → ℕ) (hf : IsUlamPrimeSeq seed f)
+    (n : ℕ) : f n + 2 ≤ f (n + 1) ∨ (f n = 2 ∧ f (n + 1) = 3) := by
+  have hpn := hf.2.1 n
+  have hpn1 := hf.2.1 (n + 1)
+  have hlt := hf.2.2.1 n
+  by_cases h2 : f n = 2
+  · by_cases h3 : f (n + 1) = 3
+    · right; exact ⟨h2, h3⟩
+    · left
+      have : f (n + 1) ≥ 3 := by omega
+      have hodd : ¬ 2 ∣ f (n + 1) := by
+        intro hdvd
+        have := hpn1.eq_one_or_self_of_dvd 2 hdvd
+        omega
+      omega
+  · left
+    have hge3 : f n ≥ 3 := by
+      have := hpn.two_le; omega
+    have hodd_n : ¬ 2 ∣ f n := by
+      intro hdvd; have := hpn.eq_one_or_self_of_dvd 2 hdvd; omega
+    have hneq : f (n + 1) ≠ f n + 1 := by
+      intro heq
+      have : 2 ∣ f (n + 1) := by
+        rw [heq]; omega
+      have := hpn1.eq_one_or_self_of_dvd 2 this
+      omega
+    omega
 
-/-- The candidate `f(n) + f(n) - 1 = 2f(n) - 1` is always odd for `f(n) ≥ 2`. -/
-axiom candidate_self_odd (p : ℕ) (hp : 2 ≤ p) : ¬Even (p + p - 1)
+/- ## Computable Ulam step function -/
+
+/-- Fold to find minimum of a list of natural numbers. Returns 0 if empty. -/
+def listMin : List ℕ → ℕ
+  | [] => 0
+  | [x] => x
+  | x :: xs => min x (listMin xs)
+
+/-- Compute candidates: for each qᵢ in the sequence, compute last + qᵢ - 1,
+filter for primes, and return the minimum. Returns 0 if no candidate found. -/
+def ulamNextCandidate (seq : List ℕ) : ℕ :=
+  let last := seq.getLast!
+  let candidates := seq.filterMap fun q =>
+    let c := last + q - 1
+    if c > last ∧ Nat.Prime c then some c else none
+  listMin candidates
+
+/-- Extend an Ulam prime sequence by one step. -/
+def ulamStep (seq : List ℕ) : List ℕ :=
+  let next := ulamNextCandidate seq
+  if next = 0 then seq else seq ++ [next]
+
+/-- Extend an Ulam prime sequence by n steps. -/
+def ulamExtend : ℕ → List ℕ → List ℕ
+  | 0, seq => seq
+  | n + 1, seq => ulamExtend n (ulamStep seq)
+
+/- ## Computational verification of the {3, 5} sequence -/
+
+-- The first several terms starting from [3, 5]:
+-- Step 0: [3, 5], last = 5
+--   candidates: 5 + 3 - 1 = 7 (prime), 5 + 5 - 1 = 9 (not prime)
+--   next = 7
+-- Step 1: [3, 5, 7], last = 7
+--   candidates: 7 + 3 - 1 = 9 (not prime), 7 + 5 - 1 = 11 (prime), 7 + 7 - 1 = 13 (prime)
+--   next = 11
+-- Step 2: [3, 5, 7, 11], last = 11
+--   candidates: 11 + 3 - 1 = 13 (prime), 11 + 5 - 1 = 15 (not prime),
+--              11 + 7 - 1 = 17 (prime), 11 + 11 - 1 = 21 (not prime)
+--   next = 13
+-- Step 3: [3, 5, 7, 11, 13], last = 13
+--   candidates: 13 + 3 - 1 = 15 (not), 13 + 5 - 1 = 17 (prime),
+--              13 + 7 - 1 = 19 (prime), 13 + 11 - 1 = 23 (prime), 13 + 13 - 1 = 25 (not)
+--   next = 17
+
+-- Verify individual terms
+theorem ulam35_term2 : ulamNextCandidate [3, 5] = 7 := by native_decide
+theorem ulam35_term3 : ulamNextCandidate [3, 5, 7] = 11 := by native_decide
+theorem ulam35_term4 : ulamNextCandidate [3, 5, 7, 11] = 13 := by native_decide
+theorem ulam35_term5 : ulamNextCandidate [3, 5, 7, 11, 13] = 17 := by native_decide
+
+/-- The sequence starting from [3, 5] produces the first several terms,
+matching the known sequence 3, 5, 7, 11, 13, 17. -/
+theorem ulam35_first_terms :
+    ulamExtend 4 [3, 5] = [3, 5, 7, 11, 13, 17] := by native_decide
+
+/- ## Structural observations -/
+
+/-- If both last and q are odd and q ≥ 1, then the candidate last + q - 1 is odd
+(since odd + odd - 1 = odd). -/
+theorem candidates_odd_of_odd (last q : ℕ)
+    (hlast : ¬Even last) (hq : ¬Even q) (hq_pos : q ≥ 1) :
+    ¬Even (last + q - 1) := by
+  intro ⟨k, hk⟩
+  rcases Nat.even_or_odd last with hlast' | ⟨a, ha⟩
+  · exact absurd hlast' hlast
+  · rcases Nat.even_or_odd q with hq' | ⟨b, hb⟩
+    · exact absurd hq' hq
+    · omega
+
+/-- For p ≥ 3, p + 2 - 1 = p + 1 is even. So the candidate from seed element 2
+is always even (for p ≥ 3), hence never prime (except p = 1 which is impossible). -/
+theorem seed_two_gives_even (p : ℕ) (hp : p ≥ 3) : Even (p + 2 - 1) := by
+  rcases Nat.even_or_odd p with ⟨k, hk⟩ | ⟨k, hk⟩
+  · exact ⟨k + 1, by omega⟩
+  · exact ⟨k + 1, by omega⟩
+
+/-- For odd p and odd q, the candidate p + q - 1 is odd,
+hence potentially prime. This is why odd seeds are preferred. -/
+theorem odd_candidate_from_odd (p q : ℕ) (hp : Odd p) (hq : Odd q) :
+    Odd (p + q - 1) := by
+  obtain ⟨a, ha⟩ := hp
+  obtain ⟨b, hb⟩ := hq
+  refine ⟨a + b, ?_⟩
+  omega
+
+/- ## Further extensions -/
+
+-- Verify more terms of the sequence
+theorem ulam35_term6 : ulamNextCandidate [3, 5, 7, 11, 13, 17] = 19 := by native_decide
+theorem ulam35_term7 : ulamNextCandidate [3, 5, 7, 11, 13, 17, 19] = 23 := by native_decide
+
+/-- The sequence starting from [3, 5] extends to at least 8 terms. -/
+theorem ulam35_extends_8 :
+    ulamExtend 6 [3, 5] = [3, 5, 7, 11, 13, 17, 19, 23] := by native_decide
+
+/-- All terms in the first 8 elements of the {3,5} sequence are prime. -/
+theorem ulam35_all_prime_8 :
+    ∀ p ∈ [3, 5, 7, 11, 13, 17, 19, 23], Nat.Prime p := by decide
+
+/-- All terms in the first 8 elements are strictly increasing. -/
+theorem ulam35_increasing_8 :
+    List.Sorted (· < ·) [3, 5, 7, 11, 13, 17, 19, 23] := by decide
+
+/- ## Growth observation -/
+
+/-- In the {3,5} Ulam sequence, the density of terms among primes suggests
+the sequence might contain all primes ≥ 3. If true, this would immediately
+give infiniteness (since there are infinitely many primes). This remains open. -/
+axiom ulam35_contains_all_odd_primes_conjecture :
+    ∀ p : ℕ, p.Prime → p ≥ 3 →
+      ∃ n : ℕ, ∃ seq, seq = ulamExtend n [3, 5] ∧ p ∈ seq

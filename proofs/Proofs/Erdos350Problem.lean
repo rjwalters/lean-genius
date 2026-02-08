@@ -31,7 +31,7 @@ namespace Erdos350
 
 open Finset BigOperators
 
-/-! ## Dissociated Sets
+/- ## Dissociated Sets
 
 A set A ⊂ ℕ is **dissociated** (or a **Sidon set for sums**) if all its
 subset sums are distinct. That is, for any two distinct subsets X ≠ Y of A,
@@ -47,7 +47,7 @@ def DistinctSubsetSums (A : Finset ℕ) : Prop :=
 def DistinctSubsetSumsSet {M : Type*} [AddCommMonoid M] (A : Set M) : Prop :=
   Set.Pairwise {X : Finset M | ↑X ⊆ A} fun X Y => X.sum id ≠ Y.sum id
 
-/-! ## Examples of Dissociated Sets -/
+/- ## Examples of Dissociated Sets -/
 
 /-- The singleton {1} is trivially dissociated. -/
 theorem singleton_one_dissociated : DistinctSubsetSums {1} := by
@@ -65,7 +65,7 @@ This is the extremal example achieving equality in Ryavec's bound. -/
 axiom powers_of_two_dissociated (k : ℕ) :
     DistinctSubsetSums (Finset.image (fun i => 2^i) (Finset.range (k + 1)))
 
-/-! ## Main Theorems -/
+/- ## Main Theorems -/
 
 /-- **Ryavec's Theorem (Erdős #350)**: If A is a finite dissociated set of positive integers,
 then the sum of reciprocals is strictly less than 2.
@@ -96,7 +96,7 @@ axiom hanson_steele_stenger (A : Finset ℕ) (hpos : ∀ n ∈ A, n > 0)
     (hA : DistinctSubsetSums A) (s : ℝ) (hs : s > 0) :
     ∑ n ∈ A, (1 / n : ℝ)^s < 1 / (1 - 2^(-s))
 
-/-! ## Bounds and Cardinality -/
+/- ## Bounds and Cardinality -/
 
 /-- A dissociated set of positive integers has at most n elements if all
 elements are at most 2^n - 1. This is because there are only 2^n possible
@@ -117,7 +117,7 @@ theorem dissociated_subset (A B : Finset ℕ) (hA : DistinctSubsetSums A) (hBA :
   intro X hX Y hY hne
   apply hA X (subset_trans hX hBA) Y (subset_trans hY hBA) hne
 
-/-! ## Connection to Sidon Sets -/
+/- ## Connection to Sidon Sets -/
 
 /-- A **Sidon set** (or B₂ sequence) is a set where all pairwise sums a+b (a ≤ b)
 are distinct. Dissociated sets are related but different: they require ALL
@@ -133,7 +133,7 @@ def IsSidonSet (A : Finset ℕ) : Prop :=
 axiom dissociated_implies_sidon (A : Finset ℕ) (hA : DistinctSubsetSums A) :
     IsSidonSet A
 
-/-! ## Numerical Examples -/
+/- ## Numerical Examples -/
 
 /-- For the set {1, 2}, the sum of reciprocals is 1 + 1/2 = 3/2 < 2. -/
 theorem sum_reciprocals_one_two : (1 : ℝ) + 1/2 < 2 := by norm_num
@@ -151,7 +151,7 @@ We axiomatize this standard result about geometric series. -/
 axiom geometric_series_bound (k : ℕ) :
     ∑ i ∈ Finset.range (k + 1), (2 : ℝ)^(-(i : ℤ)) = 2 - 2^(-(k : ℤ))
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #350 Summary**:
 

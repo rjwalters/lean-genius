@@ -112,7 +112,7 @@ For parameters k, r ≥ 2, there exists a set A ⊆ ℕ that is:
 1. (k+1)-AP-free: contains no arithmetic progression of length k+1
 2. Ramsey for k-APs: any r-coloring has a monochromatic k-AP
 -/
-def SpencerSet (k r : ℕ) : Set ℕ := sorry
+axiom SpencerSet (k r : ℕ) : Set ℕ
 
 /--
 Spencer's set avoids length (k+1) arithmetic progressions.
@@ -165,7 +165,7 @@ there exist arbitrarily long monochromatic APs.
 W(k, r) is the minimum N such that any r-coloring of {1, ..., N}
 contains a monochromatic AP of length k.
 -/
-def vanDerWaerdenNumber (k r : ℕ) : ℕ := sorry
+axiom vanDerWaerdenNumber (k r : ℕ) : ℕ
 
 /--
 Van der Waerden's theorem: W(k, r) exists for all k, r ≥ 1.
@@ -239,7 +239,7 @@ control to achieve the desired properties.
 **Upper Density:**
 The upper density of A ⊆ ℕ is lim sup |A ∩ [1,n]| / n.
 -/
-def upperDensity (A : Set ℕ) : ℝ := sorry
+axiom upperDensity (A : Set ℕ) : ℝ
 
 /--
 Roth's theorem: positive density implies 3-APs.

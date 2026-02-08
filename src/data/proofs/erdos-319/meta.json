@@ -4,74 +4,104 @@
   "slug": "erdos-319",
   "description": "Find max |A| for A ⊆ {1,...,N} with a signing δ : A → {±1} giving Σ δ(n)/n = 0 irreducibly. Known: |A| ≥ (1−1/e+o(1))N (Adenwalla/Croot). Open.",
   "meta": {
-    "erdosNumber": 319,
+    "author": "Erdős–Graham (1980)",
+    "sourceUrl": "https://erdosproblems.com/319",
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos319Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
       "unit-fractions",
       "combinatorics",
-      "open"
+      "signed-sums"
     ],
-    "references": [
-      "Erdős–Graham (1980): original problem",
-      "Croot (2001): unit fraction sums",
-      "Adenwalla: (1−1/e+o(1))N lower bound",
-      "https://erdosproblems.com/319"
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 319,
+    "erdosUrl": "https://erdosproblems.com/319",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational number arithmetic",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for 1/e constant",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
     ],
-    "leanFile": "Proofs/Erdos319Problem.lean",
-    "sorries": 0
+    "originalContributions": [
+      "Defined IsSigning: δ assigns ±1 to elements of A",
+      "Defined signedSum: Σ_{n ∈ A} δ(n)/n as a rational sum",
+      "Defined IsIrreducibleZeroSum: sum vanishes but no proper subset vanishes",
+      "Defined maxIrreducibleSize c(N) as the supremum over A ⊆ {1,...,N}",
+      "Stated erdos_319_conjecture: c(N) ≥ (1−1/e−ε)N",
+      "Stated Adenwalla lower bound using Croot's unit-fraction theorem",
+      "Stated trivial upper bound c(N) ≤ N",
+      "Axiomatised Croot's unit-fraction theorem for the construction",
+      "Stated small example existence in {1,...,6}"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' It asks for the largest subset A of {1,...,N} that supports an irreducible signed unit-fraction vanishing sum — a signing δ : A → {±1} such that Σ δ(n)/n = 0, but no proper nonempty subset of A satisfies this.\n\nThe 'irreducibility' condition is the key constraint: it means the vanishing is 'tight' — removing any element from A breaks the zero sum. Without this condition, one could trivially achieve |A| = N by combining independent zero sums. The irreducibility requirement captures a notion of minimal dependence among the reciprocals.\n\nAdenwalla achieved the best known lower bound c(N) ≥ (1−1/e+o(1))N using Croot's unit-fraction theorem. The construction takes B ⊆ [(1/e−o(1))N, N] with Σ_{b ∈ B} 1/b = 1 (which exists by Croot's result on short-interval unit-fraction sums), then sets A = B ∪ {1} with δ(1) = +1 and δ(b) = −1 for b ∈ B. This gives Σ δ(n)/n = 1 − 1 = 0 irreducibly. The gap between (1−1/e)N ≈ 0.632N and the trivial upper bound N remains open.",
+    "problemStatement": "Find the maximum c(N) = max |A| for A ⊆ {1,...,N} admitting δ : A → {±1} with Σ δ(n)/n = 0 and Σ_{A'} δ(n)/n ≠ 0 for every non-empty proper subset A'.",
+    "proofStrategy": "We formalize the irreducible zero-sum property via IsSigning, signedSum, and IsIrreducibleZeroSum. The function maxIrreducibleSize c(N) is the supremum. The Adenwalla/Croot lower bound and trivial upper bound N are stated. Croot's unit-fraction theorem is axiomatised as the key tool for the construction.",
+    "keyInsights": [
+      "**Irreducibility Constraint**: The vanishing sum is 'tight' — removing any element breaks it, capturing minimal rational dependence among reciprocals",
+      "**Adenwalla Construction**: Uses B ⊆ [(1/e)N, N] with Σ 1/b = 1, then A = B ∪ {1} with opposite signs, achieving |A| ≈ (1−1/e)N",
+      "**Croot Connection**: The lower bound relies on Croot's (2001) theorem that unit-fraction sums exist with denominators in short intervals — linking Problems #286 and #319",
+      "**Trivial vs Optimal Gap**: The gap between (1−1/e)N ≈ 0.632N and the trivial upper N is the central open question — is c(N) = (1−o(1))N?",
+      "**Egyptian Fraction Heritage**: The problem belongs to the Erdős–Graham program on signed and unsigned unit-fraction decompositions"
+    ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Definitions",
-      "startLine": 22,
-      "endLine": 47,
-      "summary": "IsSigning, signedSum, IsIrreducibleZeroSum, maxIrreducibleSize."
+      "startLine": 26,
+      "endLine": 46,
+      "summary": "Defines IsSigning, signedSum (Σ δ(n)/n), IsIrreducibleZeroSum, and maxIrreducibleSize c(N)."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 49,
-      "endLine": 54,
-      "summary": "c(N) ≥ (1−1/e+o(1))N; determine Θ(c(N))."
+      "startLine": 48,
+      "endLine": 55,
+      "summary": "States c(N) ≥ (1−1/e−ε)N for large N; determine Θ(c(N))."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 56,
-      "endLine": 74,
-      "summary": "Adenwalla lower bound, trivial upper N, Croot unit fraction theorem."
+      "startLine": 57,
+      "endLine": 77,
+      "summary": "Adenwalla lower bound (1−1/e+o(1))N, trivial upper bound N, Croot unit-fraction theorem."
     },
     {
       "id": "observations",
       "title": "Observations",
-      "startLine": 76,
-      "endLine": 87,
-      "summary": "Small examples and connection to Egyptian fractions."
+      "startLine": 79,
+      "endLine": 90,
+      "summary": "Small example of irreducible zero sum in {1,...,6}. Connection to Egyptian fraction theory."
     }
   ],
-  "overview": {
-    "historicalContext": "Erdős and Graham posed this in their 1980 monograph on problems in combinatorial number theory. The problem asks for the largest subset of {1,...,N} that supports an irreducible signed unit-fraction vanishing sum.",
-    "problemStatement": "Find the maximum c(N) = max |A| for A ⊆ {1,...,N} admitting δ : A → {±1} with Σ δ(n)/n = 0 and Σ_{A'} δ(n)/n ≠ 0 for every non-empty proper subset A'.",
-    "proofStrategy": "We formalize the irreducible zero-sum property, define c(N), and state the known Adenwalla/Croot lower bound. The exact asymptotics remain open.",
-    "keyInsights": [
-      "An irreducible zero sum means the vanishing is 'tight' — removing any element breaks it",
-      "Adenwalla achieves (1−1/e+o(1))N using Croot's unit-fraction construction",
-      "The construction uses B ⊆ [(1/e)N, N] with Σ 1/b = 1, then A = B ∪ {1}",
-      "Trivial upper bound is N; the gap between (1−1/e)N and N is open",
-      "Connected to Egyptian fraction theory and Erdős–Graham problems"
-    ]
-  },
   "conclusion": {
-    "summary": "Erdős Problem #319 asks for the maximum size of an irreducible signed unit-fraction vanishing sum from {1,...,N}. The best known lower bound is (1−1/e+o(1))N. The exact asymptotics are open.",
-    "implications": "Understanding irreducible signed sums illuminates the structure of unit-fraction representations and combinatorial number theory.",
+    "summary": "Erdős Problem #319 asks for the maximum size of an irreducible signed unit-fraction vanishing sum from {1,...,N}. The best known lower bound is (1−1/e+o(1))N via Adenwalla's construction using Croot's theorem. The exact asymptotics remain open.",
+    "implications": "Understanding irreducible signed sums illuminates the structure of rational linear dependences among reciprocals and connects to the broader Erdős–Graham program on Egyptian fractions.",
     "openQuestions": [
-      "Is c(N) = (1−o(1))N? Or is there a gap below N?",
-      "What is the exact asymptotic constant?",
-      "Can the Croot/Adenwalla construction be improved?",
-      "What is the minimum |A| for an irreducible zero sum?"
+      "Is c(N) = (1−o(1))N? Or is there a strict gap below N?",
+      "What is the exact asymptotic constant for c(N)?",
+      "Can the Croot/Adenwalla construction be improved beyond (1−1/e)?",
+      "What is the minimum |A| for an irreducible zero sum?",
+      "Does the problem change character for signed sums with target value ≠ 0?"
     ]
   }
 }

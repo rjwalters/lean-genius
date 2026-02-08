@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "NEW",
     "since": "2026-01-13T04:11:10.512Z",
-    "iteration": 2,
-    "focus": "Proved all basic properties about composites and minFac",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,29 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 8 theorems proved about minFac properties of composites. No sorries. Main conjecture documented as OPEN.",
-    "builtItems": [
-      "theorem minFac_ge_two in Erdos463Problem.lean",
-      "theorem even_composite_gap in Erdos463Problem.lean",
-      "theorem odd_composite_minFac_ge_three in Erdos463Problem.lean",
-      "theorem odd_composite_ge_nine in Erdos463Problem.lean",
-      "theorem composite_above_exists in Erdos463Problem.lean",
-      "theorem even_composites_insufficient in Erdos463Problem.lean",
-      "theorem conjecture_needs_large_minFac in Erdos463Problem.lean",
-      "theorem leastPrimeGap_pos in Erdos463Problem.lean"
-    ],
-    "insights": [
-      "Main conjecture is genuinely OPEN - cannot be proved or disproved",
-      "Even composites (minFac=2) never satisfy the conjecture condition for f(n) >= 2",
-      "Conjecture requires composites m with minFac > f(n), i.e. products of large primes",
-      "minFac^2 <= m for composites gives odd_composite_ge_nine via 3^2 = 9",
-      "Nat.minFac_sq_le_self takes (h : 0 < n) (hn : not Prime n) as implicit first arg, explicit 0<n and not prime"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Could add Topology imports to formally state the OPEN conjecture with Filter/Tendsto",
-      "Sieve theory density axioms could be restored with proper imports"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #463 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a function $f$ with $f(n)\\to \\infty$ as $n\\to \\infty$ such that, for all large $n$, there is a composite number $m$ such that\\[n+f(n)<m<n+p(m)?\\](Here $p(m)$ is the least prime factor of $m$.)\n\n\n\nIn \\cite{Er92e} Erd\\H{o}s asks about\\[F(n)=\\min_{m>n}(m-p(m)),\\]and whether $n-F(n)\\sim cn^{1/2}$ for some $c>0$.\n\nSee also [385].\n\n\n\n\nReferences\n\n\n[Er92e] Erd\\H{o}s, P\\'{a}l, Some Unsolved problems in Geometry, Number Theory and Combinatorics. Eureka (1992), 44-48.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #385\n- Problem #462\n- Problem #464\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "approaches": [],

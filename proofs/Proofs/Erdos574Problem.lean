@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #574 — Turán Number for Consecutive Cycle Pairs
 
 For k ≥ 2, is it true that
@@ -21,7 +21,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A simple graph on n vertices. -/
 structure SimpleGraph' (n : ℕ) where
@@ -51,7 +51,7 @@ noncomputable def exConsecutiveCycles (n k : ℕ) : ℕ :=
     (Finset.range 1))
     id
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős–Simonovits Conjecture**: For k ≥ 2,
     ex(n; {C_{2k−1}, C_{2k}}) = (1+o(1)) · (n/2)^{1+1/k}. -/
@@ -60,7 +60,7 @@ axiom erdos_574_conjecture (k : ℕ) (hk : k ≥ 2) :
     (1 - ε) * ((n : ℝ) / 2) ^ (1 + 1 / (k : ℝ)) ≤ (exConsecutiveCycles n k : ℝ) ∧
     (exConsecutiveCycles n k : ℝ) ≤ (1 + ε) * ((n : ℝ) / 2) ^ (1 + 1 / (k : ℝ))
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Even cycle Turán number**: ex(n; C_{2k}) = Θ(n^{1+1/k}).
     The Bondy–Simonovits theorem gives the upper bound.
@@ -83,15 +83,13 @@ axiom case_k_2 :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
     (exConsecutiveCycles n 2 : ℝ) ≤ c * (n : ℝ) ^ ((3 : ℝ) / 2)
 
-/-! ## Observations -/
+/- ## Observations -/
 
-/-- **The conjecture says forbidding C_{2k−1} is "free"**: since
+/- **The conjecture says forbidding C_{2k−1} is "free"**: since
     ex(n; C_{2k}) already has the conjectured form, additionally
     forbidding C_{2k−1} should not change the asymptotics. -/
-axiom odd_cycle_free_observation : True
 
-/-- **Algebraic constructions**: For k = 2, 3, 5, algebraic
+/- **Algebraic constructions**: For k = 2, 3, 5, algebraic
     constructions (e.g., incidence graphs of projective planes)
     provide C_{2k}-free graphs with ~(n/2)^{1+1/k} edges that
     also happen to avoid C_{2k−1}. -/
-axiom algebraic_constructions : True

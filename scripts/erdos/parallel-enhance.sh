@@ -332,9 +332,9 @@ launch_agents() {
     clear_stop_signals
 
     # Ensure claim system is initialized
-    mkdir -p "$REPO_ROOT/research/stub-claims"
-    if [[ ! -f "$REPO_ROOT/research/stub-claims/completed.json" ]]; then
-        echo '{"completed": []}' > "$REPO_ROOT/research/stub-claims/completed.json"
+    mkdir -p "$REPO_ROOT/.lean/state/stub-claims"
+    if [[ ! -f "$REPO_ROOT/.lean/state/stub-claims/completed.json" ]]; then
+        echo '{"completed": []}' > "$REPO_ROOT/.lean/state/stub-claims/completed.json"
     fi
 
     # Ensure we're on main and up to date

@@ -144,27 +144,24 @@ theorem erdos_conjecture_true : ErdosConjecture := by
 ## Part V: Understanding the Proof Strategy
 -/
 
-/--
+/-
 **Why Infinite Sets Suffice:**
 The key insight is that as n → ∞, the number of primes p < n
 grows like n/log(n) by the Prime Number Theorem. If A is infinite,
 eventually many elements of A will have prime complements.
 -/
-axiom infinite_set_insight : True
 
-/--
+/-
 **Prime Number Theorem Connection:**
 π(n) ~ n/log(n) means primes are plentiful enough that
 infinite sets A will intersect {n - p : p prime} infinitely often.
 -/
-axiom pnt_connection : True
 
-/--
+/-
 **Density vs Cardinality:**
 Erdős asked about logarithmic density, but Chen-Ding showed
 that even much sparser sets (just infinite) work.
 -/
-axiom density_not_needed : True
 
 /-
 ## Part VI: Examples and Special Cases
@@ -188,31 +185,28 @@ def primePowers : Set ℕ := {n | ∃ (p k : ℕ), p.Prime ∧ k ≥ 1 ∧ n = p
 axiom prime_powers_unbounded_limsup :
     HasUnboundedLimsup (representationCount primePowers)
 
-/--
+/-
 **Highly Composite Numbers:**
 Even very sparse sequences like highly composite numbers
 satisfy the theorem.
 -/
-axiom highly_composite_example : True
 
 /-
 ## Part VII: Relation to Goldbach-type Problems
 -/
 
-/--
+/-
 **Goldbach Connection:**
 This problem is related to Goldbach's conjecture.
 If A = {2}, then f(n) counts primes p with n - 2 = p,
 i.e., twin primes shifted by 2.
 -/
-axiom goldbach_connection : True
 
-/--
+/-
 **Binary Additive Problems:**
 Problems of the form n = p + a for structured sets A
 are central to additive number theory.
 -/
-axiom binary_additive_context : True
 
 /-
 ## Part VIII: Main Results

@@ -38,7 +38,7 @@ open Finset Real
 
 namespace Erdos957
 
-/-!
+/-
 ## Part I: Points and Distances in ℝ²
 -/
 
@@ -68,7 +68,7 @@ theorem dist_symm (p q : Point) : dist p q = dist q p := by
 theorem dist_nonneg (p q : Point) : dist p q ≥ 0 :=
   Real.sqrt_nonneg _
 
-/-!
+/-
 ## Part II: Point Sets and Distance Multisets
 -/
 
@@ -106,7 +106,7 @@ dₖ = max{d(p,q) : p, q ∈ A} = diam(A)
 noncomputable def maxDistance (A : Finset Point) : ℝ :=
   (pairwiseDistances A).max' (by sorry) -- Nonempty assumption
 
-/-!
+/-
 ## Part III: The Erdős-Pach Question
 -/
 
@@ -122,7 +122,7 @@ def ErdosPachConjecture : Prop :=
     (distanceFrequency A (minDistance A) : ℝ) *
     (distanceFrequency A (maxDistance A)) ≤ (9/8 + ε) * n^2
 
-/-!
+/-
 ## Part IV: Dumitrescu's Theorem (2019)
 -/
 
@@ -152,7 +152,7 @@ theorem erdos_pach_conjecture_true : ErdosPachConjecture := by
   -- (9/8)n² + C·n ≤ (9/8 + ε)n² for large n
   sorry
 
-/-!
+/-
 ## Part V: Makai's Construction (Tightness)
 -/
 
@@ -179,7 +179,7 @@ theorem constant_tight : ∀ c < (9/8 : ℝ),
   have hUpper := hContra (N + 2) (by omega) A hA
   linarith
 
-/-!
+/-
 ## Part VI: Sum Inequality
 -/
 
@@ -194,12 +194,11 @@ axiom sum_inequality :
     (distanceFrequency A (minDistance A) : ℝ) +
     (distanceFrequency A (maxDistance A)) ≤ 3 * n - c * Real.sqrt n
 
-/--
+/-
 **Open: What is the best constant c?**
 -/
-axiom best_constant_c_open : True
 
-/-!
+/-
 ## Part VII: Convex Hull Variant
 -/
 
@@ -207,7 +206,7 @@ axiom best_constant_c_open : True
 **Convex hull vertex count:**
 m = number of vertices on the convex hull of A.
 -/
-noncomputable def convexHullVertices (A : Finset Point) : ℕ := sorry
+axiom convexHullVertices (A : Finset Point) : ℕ
 
 /--
 **Stronger conjecture (convex hull form):**
@@ -225,7 +224,7 @@ def StrongerConjecture : Prop :=
 theorem stronger_implies_original (h : StrongerConjecture) : ErdosPachConjecture := by
   sorry
 
-/-!
+/-
 ## Part VIII: Regular Polygon Example
 -/
 
@@ -233,7 +232,7 @@ theorem stronger_implies_original (h : StrongerConjecture) : ErdosPachConjecture
 **Odd regular n-gon:**
 Vertices of a regular polygon with odd n sides.
 -/
-def regularPolygon (n : ℕ) (hn : Odd n) : Finset Point := sorry
+axiom regularPolygon (n : ℕ) (hn : Odd n) : Finset Point
 
 /--
 **All distances frequent in odd regular polygon:**
@@ -243,37 +242,33 @@ axiom regular_polygon_all_frequent (n : ℕ) (hn : Odd n) (hn3 : n ≥ 3) :
   let A := regularPolygon n hn
   ∀ d ∈ pairwiseDistances A, distanceFrequency A d ≥ n
 
-/--
+/-
 **Intuition:**
 In an odd regular polygon, each distance appears many times
 due to rotational symmetry. This shows f(d) ≥ n is achievable
 for all distances, not just extremes.
 -/
-axiom regular_polygon_intuition : True
 
-/-!
+/-
 ## Part IX: Related Problems
 -/
 
-/--
+/-
 **Problem #132:**
 Related problem about repeated distances.
 -/
-axiom related_132 : True
 
-/--
+/-
 **Problem #756:**
 Another related problem about distances in point sets.
 -/
-axiom related_756 : True
 
-/--
+/-
 **Connection to unit distance problem:**
 How many pairs can achieve the same distance?
 -/
-axiom unit_distance_connection : True
 
-/-!
+/-
 ## Part X: Summary
 -/
 

@@ -29,7 +29,7 @@ namespace Erdos900
 
 open Finset Function
 
-/-!
+/-
 ## Part I: Random Graph Model
 
 The Erdős-Rényi random graph G(n, m).
@@ -51,7 +51,7 @@ def BinomialModel (n : ℕ) (p : ℝ) : Type := Graph n
 /-- Expected number of edges in G(n, p). -/
 def expectedEdges (n : ℕ) (p : ℝ) : ℝ := p * maxEdges n
 
-/-!
+/-
 ## Part II: Paths in Graphs
 
 The central structures we're measuring.
@@ -73,7 +73,7 @@ noncomputable def longestPathLength (G : Graph n) : ℕ :=
 def HasPathOfLength (G : Graph n) (k : ℕ) : Prop :=
   ∃ vs : List (Fin n), IsPath G vs ∧ pathLength vs ≥ k
 
-/-!
+/-
 ## Part III: High Probability Events
 
 Probabilistic framework for random graphs.
@@ -92,7 +92,7 @@ def WhpInSparseRandom (c : ℝ) (P : ∀ n : ℕ, Graph n → Prop) : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     probHasProperty n (Nat.floor (c * n)) (P n) > 1 - ε
 
-/-!
+/-
 ## Part IV: The Giant Component Threshold
 
 The phase transition at c = 1/2.
@@ -114,7 +114,7 @@ axiom supercritical_giant (c : ℝ) (hc : c > 1/2) :
     ∃ α : ℝ, α > 0 ∧ WhpInSparseRandom c fun n G =>
       ∃ (C : Finset (Fin n)), G.IsConnected ∧ C.card ≥ Nat.floor (α * n)
 
-/-!
+/-
 ## Part V: The Path Length Function
 
 The function f(c) guaranteed to exist.
@@ -142,7 +142,7 @@ axiom f_monotone :
 axiom f_range (c : ℝ) (hc : c > 1/2) :
     0 < pathLengthFunction c ∧ pathLengthFunction c < 1
 
-/-!
+/-
 ## Part VI: The Ajtai-Komlós-Szemerédi Theorem
 
 The main result solving Erdős #900.
@@ -164,7 +164,7 @@ theorem large_c_almost_hamiltonian (c : ℝ) (hc : c > 10) :
     pathLengthFunction c > 0.99 := by
   sorry
 
-/-!
+/-
 ## Part VII: Special Cases
 
 Behavior at specific values of c.
@@ -182,7 +182,7 @@ axiom f_at_two :
 axiom f_near_critical (ε : ℝ) (hε : 0 < ε) (hε' : ε < 0.1) :
     pathLengthFunction (1/2 + ε) < ε
 
-/-!
+/-
 ## Part VIII: The Subcritical Regime
 
 Below the threshold, paths are O(log n).
@@ -197,7 +197,7 @@ axiom subcritical_path_length (c : ℝ) (hc : c < 1/2) :
 axiom tree_diameter (n : ℕ) (G : Graph n) (hG : G.IsAcyclic) (hC : G.Connected) :
     longestPathLength G ≤ 2 * Nat.ceil (Real.log n)
 
-/-!
+/-
 ## Part IX: Hamiltonian Paths
 
 The dense regime where paths span the graph.
@@ -221,7 +221,7 @@ axiom hamiltonian_threshold :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
       probHasProperty n (Nat.floor ((Real.log n / 2 + ε) * n)) HasHamiltonianPath > 1 - ε
 
-/-!
+/-
 ## Part X: Proof Techniques
 
 The methods used by AKS.
@@ -244,7 +244,7 @@ axiom rotation_extension :
       (∃ vs' : List (Fin n), IsPath G vs' ∧ pathLength vs' > pathLength vs) ∨
       (∀ u : Fin n, u ∉ vs.toFinset → ¬∃ v ∈ vs.toFinset, G.Adj u v)
 
-/-!
+/-
 ## Part XI: Main Result
 
 Erdős Problem #900 is SOLVED.

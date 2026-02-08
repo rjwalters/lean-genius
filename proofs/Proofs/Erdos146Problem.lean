@@ -37,7 +37,7 @@ open Nat Real
 
 namespace Erdos146
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -67,7 +67,7 @@ Axiomatized since formalizing graph homomorphism freeness requires extensive inf
 axiom turanNumber (V : Type*) [Fintype V] [DecidableEq V]
     (H : SimpleGraph V) (n : ℕ) : ℕ
 
-/-!
+/-
 ## Part II: The Erdős-Simonovits Conjecture
 -/
 
@@ -89,7 +89,7 @@ def ErdosSimonovitsConjecture : Prop :=
     r ≥ 1 → IsBipartite H → IsRDegenerate H r →
       IsAsymptoticallyBounded (turanNumber V H) (2 - 1/r)
 
-/-!
+/-
 ## Part III: Partial Results
 -/
 
@@ -119,7 +119,7 @@ axiom aks_special_case (V : Type*) [Fintype V] [DecidableEq V]
     (hBip : IsBipartite H) (hMaxDeg : MaxDegreeOneSide H r) :
     IsAsymptoticallyBounded (turanNumber V H) (2 - 1/r)
 
-/-!
+/-
 ## Part IV: Comparison of Bounds
 -/
 
@@ -145,7 +145,7 @@ theorem aks_weaker_than_conjecture (r : ℕ) (hr : r ≥ 1) :
   field_simp
   linarith
 
-/-!
+/-
 ## Part V: Examples of r-Degenerate Graphs
 -/
 
@@ -182,7 +182,7 @@ axiom even_cycle_2_degenerate (k : ℕ) (hk : k ≥ 2) :
     ∃ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
       IsRDegenerate G 2 ∧ IsBipartite G
 
-/-!
+/-
 ## Part VI: The r = 2 Case
 -/
 
@@ -207,7 +207,7 @@ axiom c4_turan :
       IsRDegenerate G 2 ∧ IsBipartite G ∧
       IsAsymptoticallyBounded (turanNumber V G) (3/2)
 
-/-!
+/-
 ## Part VII: Summary
 
 **Erdős Problem #146: OPEN**

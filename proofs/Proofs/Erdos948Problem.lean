@@ -28,7 +28,7 @@ open Finset
 
 namespace Erdos948
 
-/-!
+/-
 # Part 1: Finite Subsums
 
 For a sequence a : ℕ → ℕ, the finite subsums are all possible sums
@@ -55,7 +55,7 @@ theorem zero_mem_finite_subsums (a : ℕ → ℕ) : 0 ∈ FiniteSubsums a :=
 theorem term_mem_finite_subsums (a : ℕ → ℕ) (n : ℕ) : a n ∈ FiniteSubsums a :=
   ⟨{n}, by simp [FiniteSubsums]⟩
 
-/-!
+/-
 # Part 2: Colorings
 
 A k-coloring assigns each natural number one of k colors.
@@ -76,7 +76,7 @@ def ContainsAllColors (c : Coloring k) (S : Set ℕ) : Prop :=
 def AvoidsSomeColor (c : Coloring k) (S : Set ℕ) : Prop :=
   ∃ color : Fin k, ∀ n ∈ S, c n ≠ color
 
-/-!
+/-
 # Part 3: Growth Conditions
 
 The problem asks for sequences with controlled growth.
@@ -90,7 +90,7 @@ def BoundedInfinitelyOften (a : ℕ → ℕ) (f : ℕ → ℕ) : Prop :=
 def StrictlyIncreasing (a : ℕ → ℕ) : Prop :=
   ∀ m n, m < n → a m < a n
 
-/-!
+/-
 # Part 4: The Main Conjecture
 
 The problem asks whether there exist f and k with a specific property.
@@ -123,7 +123,7 @@ def ErdosConjecture948 : Prop :=
       BoundedInfinitelyOften a f ∧
       ¬ContainsAllColors c (FiniteSubsums a)
 
-/-!
+/-
 # Part 5: Galvin's Counterexample
 
 Galvin showed that using the dyadic valuation gives a counterexample.
@@ -141,7 +141,7 @@ def galvinColoring : Coloring 2 := fun n =>
 axiom galvin_no_monochromatic :
   ¬∃ a : ℕ → ℕ, StrictlyIncreasing a ∧ IsMonochromatic galvinColoring (FiniteSubsums a)
 
-/-!
+/-
 # Part 6: Hindman's Theorem
 
 Hindman's theorem (1974) is the positive direction: finite colorings
@@ -157,7 +157,7 @@ axiom hindman_theorem : ∀ k : ℕ, k > 0 →
 -- But Hindman doesn't give growth bounds!
 -- The question is whether we can find such a with a_n < f(n) often
 
-/-!
+/-
 # Part 7: Related Concepts
 
 IP sets and FS sets are central to this area.
@@ -179,7 +179,7 @@ def IsIPStar (S : Set ℕ) : Prop :=
 axiom hindman_ip_star : ∀ k : ℕ, k > 0 →
   ∀ c : Coloring k, ∃ color : Fin k, IsIPStar {n | c n = color}
 
-/-!
+/-
 # Part 8: Open Status
 
 The problem remains open. The gap between Hindman (existence without bounds)
@@ -196,7 +196,7 @@ def CountableColorsVersion : Prop :=
     BoundedInfinitelyOften a f ∧
     {c n | n ∈ FiniteSubsums a}.ncard < ⊤
 
-/-!
+/-
 # Part 9: Summary
 
 Erdős Problem #948 asks about the interplay between:

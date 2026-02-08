@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #152: Isolated Elements in Sidon Sumsets
 
 For any M ≥ 1, if A ⊂ ℕ is a sufficiently large finite Sidon set,
@@ -21,7 +21,7 @@ import Mathlib.Tactic
 
 open scoped Pointwise
 
-/-!
+/-
 ## Section I: Sidon Sets and Sumsets
 -/
 
@@ -34,7 +34,7 @@ def IsSidonFinset (A : Finset ℕ) : Prop :=
 /-- The sumset A + A = { a + b : a, b ∈ A }. -/
 def sumsetFinset (A : Finset ℕ) : Finset ℕ := A + A
 
-/-!
+/-
 ## Section II: Isolated Elements
 -/
 
@@ -48,7 +48,7 @@ noncomputable def isolatedCount (A : Finset ℕ) : ℕ :=
   ((sumsetFinset A).filter (fun s =>
     s - 1 ∉ sumsetFinset A ∧ s + 1 ∉ sumsetFinset A)).card
 
-/-!
+/-
 ## Section III: The Conjecture
 -/
 
@@ -59,7 +59,7 @@ def ErdosProblem152 : Prop :=
     IsSidonFinset A → A.card ≥ N₀ →
       isolatedCount A ≥ M
 
-/-!
+/-
 ## Section IV: The Stronger Conjecture
 -/
 
@@ -71,7 +71,7 @@ def ErdosProblem152Strong : Prop :=
     ∀ A : Finset ℕ, IsSidonFinset A →
       (isolatedCount A : ℝ) ≥ c * (A.card : ℝ) ^ 2
 
-/-!
+/-
 ## Section V: Sumset Size for Sidon Sets
 -/
 
@@ -87,7 +87,7 @@ axiom sidon_set_range_lower_bound (A : Finset ℕ) (hS : IsSidonFinset A)
     (hA : A.card = n) :
   ∃ a_max : ℕ, a_max ∈ A ∧ a_max ≥ n * n - n + 1
 
-/-!
+/-
 ## Section VI: Related Results
 -/
 

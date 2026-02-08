@@ -192,7 +192,3 @@ theorem exceeds_turan_has_triangle (G : SimpleGraph V) [DecidableRel G.Adj]
   have := turan_extremal V _ _ G _
   · omega
   · intro T; exact hno T trivial
-
-#check gyori_theorem
-#check erdos_small_c
-#check sauer_counterexample

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #398: The Brocard-Ramanujan Conjecture
 
 Are the only solutions to n! + 1 = m² when n = 4, 5, 7?
@@ -30,7 +30,7 @@ open Nat Set
 
 namespace Erdos398
 
-/-!
+/-
 ## The Brocard-Ramanujan Equation
 
 The equation n! + 1 = m² is remarkably sparse in solutions.
@@ -47,7 +47,7 @@ A Brown number is a pair (n, m) such that n! + 1 = m².
 -/
 def IsBrownNumber (n m : ℕ) : Prop := n ! + 1 = m ^ 2
 
-/-!
+/-
 ## Verified Solutions
 
 We verify the three known Brown numbers by direct computation.
@@ -74,7 +74,7 @@ theorem brown_7_71 : IsBrownNumber 7 71 := by
   unfold IsBrownNumber
   native_decide
 
-/-!
+/-
 ## Small Cases: Non-Solutions
 
 We verify that small values other than 4, 5, 7 don't work.
@@ -112,7 +112,7 @@ theorem factorial_6_plus_1 : (6 : ℕ)! + 1 = 721 := by native_decide
 -/
 theorem factorial_8_plus_1 : (8 : ℕ)! + 1 = 40321 := by native_decide
 
-/-!
+/-
 ## The Open Conjecture
 
 The Brocard-Ramanujan conjecture states that 4, 5, 7 are the ONLY
@@ -163,7 +163,7 @@ This conjecture remains open despite:
 -/
 def brocard_ramanujan_conjecture : Prop := BrocardSet = {4, 5, 7}
 
-/-!
+/-
 ## Conditional Results
 
 Overholt (1993) proved that under a weak form of the ABC conjecture,
@@ -185,7 +185,7 @@ number theory beyond current Mathlib formalization.
 -/
 axiom overholt_finitude (h : WeakABC) : Set.Finite BrocardSet
 
-/-!
+/-
 ## Growth Analysis
 
 Why are solutions so rare? The factorial grows much faster than squares.

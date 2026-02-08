@@ -21,7 +21,7 @@
     "badge": "axiom",
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
-    "sorries": 1,
+    "sorries": 2,
     "erdosNumber": 95,
     "erdosUrl": "https://erdosproblems.com/95",
     "erdosProblemStatus": "solved",
@@ -57,11 +57,60 @@
   },
   "sections": [
     {
-      "id": "placeholder",
-      "title": "Placeholder Theorem",
-      "startLine": 34,
-      "endLine": 35,
-      "summary": "The current proof is a placeholder (erdos_95 : True). Full formalization would require encoding the Guth-Katz polynomial method."
+      "id": "problem-statement",
+      "title": "Problem Statement and Background",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Header documentation with the problem statement, solution by Guth-Katz, and references."
+    },
+    {
+      "id": "point-configs",
+      "title": "Point Configurations and Distances",
+      "startLine": 35,
+      "endLine": 61,
+      "summary": "Defines Point (R²), PointConfig, distanceSet, and multiplicity function."
+    },
+    {
+      "id": "sum-squared",
+      "title": "The Sum of Squared Multiplicities",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "Defines sumSquaredMultiplicities and the counting identity ∑f(uᵢ) = C(n,2)."
+    },
+    {
+      "id": "erdos-conjecture",
+      "title": "Erdős's Conjecture",
+      "startLine": 75,
+      "endLine": 86,
+      "summary": "States the conjecture: ∑f(uᵢ)² ≪_ε n^{3+ε} for all ε > 0."
+    },
+    {
+      "id": "guth-katz",
+      "title": "Guth-Katz Theorem (2015)",
+      "startLine": 87,
+      "endLine": 113,
+      "summary": "Axiomatizes the stronger bound ∑f(uᵢ)² ≪ n³ log n and derives the conjecture from it."
+    },
+    {
+      "id": "polynomial-method",
+      "title": "The Polynomial Method",
+      "startLine": 114,
+      "endLine": 133,
+      "summary": "Commentary on the proof techniques: point-line duality, polynomial partitioning, ruled surfaces, incidence bounds."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 134,
+      "endLine": 148,
+      "summary": "Convex polygon case (Fishburn/Altman) and lattice point extremal examples."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 149,
+      "endLine": 187,
+      "summary": "Combined theorem stating both the conjecture and the Guth-Katz bound, with answer and status strings."
     }
   ],
   "conclusion": {

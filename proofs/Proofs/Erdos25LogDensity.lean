@@ -46,7 +46,7 @@ open Filter Finset Real BigOperators Classical
 
 attribute [local instance] Classical.dec Classical.decPred
 
-/-! ## Part I: Logarithmic Density -/
+/- ## Part I: Logarithmic Density -/
 
 /-- The harmonic sum Σ_{n=1}^{N} 1/n. Uses Mathlib's harmonic function. -/
 noncomputable def harmonicSum (N : ℕ) : ℝ := harmonic N
@@ -108,7 +108,7 @@ or similar Mathlib lemma about limit characterization. -/
 axiom hasLogDensity_iff_eq (A : Set ℕ) (d : ℝ) :
     HasLogDensity A d ↔ upperLogDensity A = d ∧ lowerLogDensity A = d
 
-/-! ## Part II: Residue-Avoiding Sets -/
+/- ## Part II: Residue-Avoiding Sets -/
 
 /-- The set of integers avoiding residue class a_i (mod n_i) for all i where n ≤ n_i.
     A = {n : ∀ i, n < seq_n i ∨ n ≢ seq_a i (mod seq_n i)} -/
@@ -120,7 +120,7 @@ def residueAvoidingSetFinite (moduli : List ℕ) (residues : List ℤ) : Set ℕ
   { x : ℕ | ∀ i : Fin moduli.length,
     (x : ℤ) < moduli[i] ∨ ¬((x : ℤ) ≡ residues[i]! [ZMOD moduli[i]]) }
 
-/-! ## Part III: The Main Conjecture -/
+/- ## Part III: The Main Conjecture -/
 
 /-- **Erdős Problem #25** (Positive Formulation)
 
@@ -152,7 +152,7 @@ theorem erdos_25_dichotomy : erdos_25_positive ↔ ¬erdos_25_negative := by
     by_contra hc
     exact hnneg ⟨seq_n, seq_a, hpos, hmono, hc⟩
 
-/-! ## Part IV: Basic Properties of Log Density -/
+/- ## Part IV: Basic Properties of Log Density -/
 
 /-- The empty set has log density 0. -/
 theorem logDensity_empty : HasLogDensity ∅ 0 := by
@@ -228,7 +228,7 @@ then using limsup monotonicity. -/
 axiom upperLogDensity_mono {A B : Set ℕ} (h : A ⊆ B) :
     upperLogDensity A ≤ upperLogDensity B
 
-/-! ## Part V: Examples -/
+/- ## Part V: Examples -/
 
 /-- **Axiom: Even numbers have log density 1/2**.
 
@@ -253,7 +253,7 @@ Generalizes: avoiding one residue class mod m removes 1/m of the density.
 axiom logDensity_avoid_one_residue (m : ℕ) (hm : 2 ≤ m) :
     HasLogDensity {n : ℕ | n ≠ 0 ∧ ¬(m ∣ n)} ((m - 1 : ℝ) / m)
 
-/-! ## Part VI: Connection to Natural Density -/
+/- ## Part VI: Connection to Natural Density -/
 
 /-- Natural (asymptotic) density: lim_{N→∞} |A ∩ [1,N]| / N. -/
 noncomputable def HasNaturalDensity (A : Set ℕ) (d : ℝ) : Prop :=
@@ -283,7 +283,7 @@ and proving its oscillatory natural density but convergent log density. -/
 axiom exists_logDensity_no_naturalDensity :
     ∃ A : Set ℕ, (∃ d, HasLogDensity A d) ∧ ¬∃ d, HasNaturalDensity A d
 
-/-! ## Part VII: Davenport-Erdős Theorem -/
+/- ## Part VII: Davenport-Erdős Theorem -/
 
 /-- For the set of multiples of a sequence, log density = lower natural density.
     This is a known theorem that motivates the study of log density. -/

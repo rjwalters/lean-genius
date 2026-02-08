@@ -28,7 +28,7 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Data.Real.Basic
 
-/-!
+/-
 ## Prime Omega Function
 
 The function ω(n) counts the number of distinct prime divisors of n.
@@ -57,7 +57,7 @@ theorem omega_six : omega 6 = 2 := by native_decide
 /-- ω(30) = 3: prime divisors are 2, 3, and 5. -/
 theorem omega_thirty : omega 30 = 3 := by native_decide
 
-/-!
+/-
 ## The Erdős Problem
 
 Erdős asked whether there are infinitely many "smooth-tail" integers n
@@ -90,7 +90,7 @@ We state this as an axiom because:
 -/
 axiom erdos_248 : ∃ C : ℝ, C > 0 ∧ (smoothTailIntegers C).Infinite
 
-/-!
+/-
 ## Verified Examples
 
 We can verify small examples using native_decide.
@@ -114,7 +114,7 @@ theorem smooth_tail_n1_k4 : (omega (1 + 4) : ℕ) ≤ 2 * 4 := by native_decide
 
 theorem smooth_tail_n1_k5 : (omega (1 + 5) : ℕ) ≤ 2 * 5 := by native_decide
 
-/-!
+/-
 ## Historical Context
 
 Erdős and Graham wrote about this problem in 1980: "we just know too little

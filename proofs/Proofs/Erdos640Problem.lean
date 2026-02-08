@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #640: Chromatic Number of Odd Cycle Spans
 
 **Source:** [erdosproblems.com/640](https://erdosproblems.com/640)
@@ -39,7 +39,7 @@ open SimpleGraph
 
 namespace Erdos640
 
-/-! ## Part I: Chromatic Number -/
+/- ## Part I: Chromatic Number -/
 
 /--
 A graph G on vertex type V is k-colorable if there exists a proper
@@ -57,7 +57,7 @@ noncomputable def chromaticNumber [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) : ℕ :=
   if h : ∃ k : ℕ, IsKColorable G k then Nat.find h else 0
 
-/-! ## Part II: Odd Cycles -/
+/- ## Part II: Odd Cycles -/
 
 /--
 An odd cycle of length 2m + 1 in G is a closed walk of odd length
@@ -74,7 +74,7 @@ def HasOddCycleWithVertices (G : SimpleGraph V) (S : Finset V) : Prop :=
     (∀ i : Fin S.card, σ i ∈ S) ∧
     (∀ i : Fin S.card, G.Adj (σ i) (σ ⟨(i.val + 1) % S.card, Nat.mod_lt _ (by omega)⟩))
 
-/-! ## Part III: Induced Subgraph Chromatic Number -/
+/- ## Part III: Induced Subgraph Chromatic Number -/
 
 /--
 The induced subgraph of G on a vertex set S.
@@ -92,7 +92,7 @@ We state this as a predicate: the induced subgraph on S has χ ≥ k.
 def InducedChromaticAtLeast (G : SimpleGraph V) (S : Finset V) (k : ℕ) : Prop :=
   ¬IsKColorable (inducedSubgraph G (↑S : Set V)) (k - 1)
 
-/-! ## Part IV: The Erdős–Hajnal Conjecture -/
+/- ## Part IV: The Erdős–Hajnal Conjecture -/
 
 /--
 **Erdős Problem #640 (Erdős–Hajnal):**
@@ -132,7 +132,7 @@ def SteinerPathVariant : Prop :=
 axiom steiner_equivalence :
   ErdosHajnalConjecture640 ↔ SteinerPathVariant
 
-/-! ## Part V: The Trivial Case k = 3 -/
+/- ## Part V: The Trivial Case k = 3 -/
 
 /--
 **Trivial case:** For k = 3, f(3) = 3 works.
@@ -147,7 +147,7 @@ axiom trivial_case_k3 :
       HasOddCycleWithVertices G S ∧
       InducedChromaticAtLeast G S 3
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /--
 **Summary:**

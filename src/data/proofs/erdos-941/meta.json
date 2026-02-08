@@ -60,7 +60,78 @@
       "**Generalization:** r-powerful for r ≥ 3 (#1107)"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-941-sums-of-thre",
+      "title": "Erdős Problem #941: Sums of Three Powerful Numbers",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Erdős Problem #941: Sums of Three Powerful Numbers"
+    },
+    {
+      "id": "powerful-numbers",
+      "title": "Powerful Numbers",
+      "startLine": 38,
+      "endLine": 85,
+      "summary": "Powerful Numbers"
+    },
+    {
+      "id": "examples-of-powerful-numbers",
+      "title": "Examples of Powerful Numbers",
+      "startLine": 86,
+      "endLine": 106,
+      "summary": "Examples of Powerful Numbers"
+    },
+    {
+      "id": "sum-representations",
+      "title": "Sum Representations",
+      "startLine": 107,
+      "endLine": 125,
+      "summary": "Sum Representations"
+    },
+    {
+      "id": "the-erd-s-ivi-question",
+      "title": "The Erdős-Ivić Question",
+      "startLine": 126,
+      "endLine": 142,
+      "summary": "The Erdős-Ivić Question"
+    },
+    {
+      "id": "heath-brown-s-theorem",
+      "title": "Heath-Brown's Theorem",
+      "startLine": 143,
+      "endLine": 158,
+      "summary": "Heath-Brown's Theorem"
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 159,
+      "endLine": 180,
+      "summary": "Small Cases"
+    },
+    {
+      "id": "counting-representations",
+      "title": "Counting Representations",
+      "startLine": 181,
+      "endLine": 198,
+      "summary": "Counting Representations"
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 199,
+      "endLine": 216,
+      "summary": "Generalizations"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 217,
+      "endLine": 241,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #941 asks whether all large integers are the sum of at most three powerful numbers. Heath-Brown (1988) proved the affirmative answer. A powerful number n satisfies p | n → p² | n, equivalently n = a²b³. This resolved a 1986 Oberwolfach problem of Erdős and Ivić.",
     "implications": "**Connections**\n\n1. **Ternary Quadratic Forms:** Heath-Brown's method\n\n2. **Problem #940:** Related variants\n\n3. **Problem #1107:** Generalization to r-powerful\n\n4. **Additive Number Theory:** Waring-type problems",

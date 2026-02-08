@@ -292,15 +292,15 @@
     "proofId": "erdos-18",
     "range": {
       "startLine": 286,
-      "endLine": 302
+      "endLine": 293
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Why This Problem is Hard",
-    "content": "**Key Difficulty**: Finding optimal divisor subsets.\n\n1. **Subset selection is hard**: Finding minimum S contained in divisors(m) covering all k < m is NP-hard in general\n\n2. **Factorial structure**: n! has complex divisibility, not obviously exploitable\n\n3. **Gap between bounds**: Erdos: h(n!) < n, Vose: some m have h(m) = O(sqrt(log m)), but nothing for n! specifically",
+    "content": "**axiom factorial_divisor_count_lower**: (divisors n!).card >= n\n\nFactorials have at least n divisors, but h(n!) might be much smaller.\n\nThe gap between d(n!) and h(n!) is the core of the conjecture.\n\n**Key difficulty**: Finding minimum S contained in divisors(m) covering all k < m is NP-hard in general.",
     "mathContext": "The problem asks whether the special structure of factorials (products of all integers up to n) forces h(n!) to be very small.",
     "significance": "key",
     "relatedConcepts": [
-      "np-hard",
+      "factorial-divisors",
       "subset-sum",
       "structure"
     ]
@@ -309,8 +309,8 @@
     "id": "ann-e18-summary",
     "proofId": "erdos-18",
     "range": {
-      "startLine": 304,
-      "endLine": 336
+      "startLine": 295,
+      "endLine": 327
     },
     "type": "concept",
     "title": "Summary and Status",

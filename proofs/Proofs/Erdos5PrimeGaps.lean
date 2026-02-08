@@ -43,7 +43,7 @@ namespace Erdos5
 
 open Filter Real Topology
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- The nth prime number (0-indexed: p_0 = 2, p_1 = 3, ...). -/
 noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
@@ -57,7 +57,7 @@ noncomputable def normalizedGap (n : ℕ) : ℝ :=
   if n = 0 then 0  -- Avoid log(0)
   else (primeGap n : ℝ) / Real.log n
 
-/-! ## Part II: The Set of Limit Points -/
+/- ## Part II: The Set of Limit Points -/
 
 /-- A value C is a limit point of the normalized gap sequence if there exists
     a subsequence converging to C. -/
@@ -71,7 +71,7 @@ def limitPointSet : Set ℝ := {C | IsLimitPoint C}
 def InfinityIsLimitPoint : Prop :=
   ∃ f : ℕ → ℕ, StrictMono f ∧ Tendsto (normalizedGap ∘ f) atTop atTop
 
-/-! ## Part III: The Main Conjecture -/
+/- ## Part III: The Main Conjecture -/
 
 /-- **Erdős Problem #5** (Main Conjecture)
 
@@ -80,7 +80,7 @@ def InfinityIsLimitPoint : Prop :=
 def erdos_5 : Prop :=
   (∀ C : ℝ, 0 ≤ C → IsLimitPoint C) ∧ InfinityIsLimitPoint
 
-/-! ## Part IV: Known Results -/
+/- ## Part IV: Known Results -/
 
 /-- **Westzynthius (1931)**: Prime gaps can be arbitrarily large.
     Equivalently, ∞ is a limit point of normalized gaps.
@@ -105,7 +105,7 @@ axiom merikoski_density : ∃ density : ℝ, density ≥ 1/3 ∧
   -- Informal: μ(S ∩ [0, M]) / M ≥ density as M → ∞
   True
 
-/-! ## Part V: Basic Properties -/
+/- ## Part V: Basic Properties -/
 
 /-- The first few primes. -/
 theorem nthPrime_zero : nthPrime 0 = 2 := by
@@ -166,7 +166,7 @@ theorem nthPrime_ge (n : ℕ) : nthPrime n ≥ n + 2 := by
     have hlt : nthPrime k < nthPrime (k + 1) := nthPrime_strictMono (Nat.lt_succ_self k)
     omega
 
-/-! ## Part VI: Gap Distribution -/
+/- ## Part VI: Gap Distribution -/
 
 /-- The average gap near n is approximately log(p_n) by the prime number theorem.
     We normalize by log(n) which is asymptotically equivalent. -/
@@ -177,7 +177,7 @@ noncomputable def averageGap (n : ℕ) : ℝ := Real.log (nthPrime n)
 def cramer_conjecture : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (primeGap n : ℝ) ≤ C * (Real.log (nthPrime n))^2
 
-/-! ## Part VII: Connections -/
+/- ## Part VII: Connections -/
 
 /-- Extract a strictly increasing subsequence from a frequently-true predicate. -/
 lemma strictly_increasing_from_frequently {P : ℕ → Prop} (h : ∃ᶠ n in atTop, P n) :

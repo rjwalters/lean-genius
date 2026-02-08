@@ -24,7 +24,7 @@ open scoped Topology ENNReal
 
 namespace Erdos158
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A set A ⊆ ℕ is a **Sidon set** (also called B₂ set) if all pairwise sums
     a + b (with a ≤ b, a, b ∈ A) are distinct.
@@ -50,7 +50,7 @@ noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ := (A ∩ Iio N).ncar
 noncomputable def normalizedCount (A : Set ℕ) (N : ℕ) : ℝ :=
   (countingFn A N : ℝ) * (N : ℝ) ^ (-1/2 : ℝ)
 
-/-! ## B₂[1] = Sidon Sets -/
+/- ## B₂[1] = Sidon Sets -/
 
 /-- A set is B₂[1] if and only if it is a Sidon set.
 
@@ -59,7 +59,7 @@ noncomputable def normalizedCount (A : Set ℕ) (N : ℕ) : ℝ :=
     These are equivalent. -/
 axiom b2_one_iff_sidon {A : Set ℕ} : B2 1 A ↔ IsSidonSet A
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Erdős-Sárközy-Sós (1994)**: For infinite Sidon sets,
@@ -84,7 +84,7 @@ then liminf of f(N) must be zero (since log N → ∞).
 axiom sidon_liminf_zero {A : Set ℕ} (hA : A.Infinite) (hSidon : IsSidonSet A) :
     liminf (normalizedCount A) atTop = 0
 
-/-! ## The Open Problem -/
+/- ## The Open Problem -/
 
 /--
 **Erdős Problem #158 (OPEN)**: For infinite B₂[2] sets, must
@@ -96,7 +96,7 @@ The techniques that work for Sidon sets don't immediately extend.
 def Conjecture_B2_2 : Prop :=
   ∀ A : Set ℕ, A.Infinite → B2 2 A → liminf (normalizedCount A) atTop = 0
 
-/-! ## Implications and Relations -/
+/- ## Implications and Relations -/
 
 /-- The Sidon case is a special case of the conjecture.
     If the B₂[2] conjecture holds, it implies the Sidon result
@@ -111,7 +111,7 @@ theorem sidon_case_true {A : Set ℕ} (hA : A.Infinite) (hSidon : IsSidonSet A) 
     liminf (normalizedCount A) atTop = 0 :=
   sidon_liminf_zero hA hSidon
 
-/-! ## Context: Why √N? -/
+/- ## Context: Why √N? -/
 
 /-- For a Sidon set A ⊆ {1,...,N}, we have |A| ≤ √N + O(N^{1/4}).
 
@@ -124,7 +124,7 @@ theorem sidon_case_true {A : Set ℕ} (hA : A.Infinite) (hSidon : IsSidonSet A) 
 axiom sidon_upper_bound {A : Set ℕ} (hSidon : IsSidonSet A) (N : ℕ) (hN : 0 < N) :
     countingFn A N ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- The set of perfect squares {1, 4, 9, 16, 25, ...} is a Sidon set.
 

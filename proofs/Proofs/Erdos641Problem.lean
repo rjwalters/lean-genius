@@ -31,7 +31,7 @@ namespace Erdos641
 
 open Finset Function
 
-/-!
+/-
 ## Part I: Graphs and Chromatic Number
 
 Basic definitions.
@@ -52,7 +52,7 @@ noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
 def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ c : V → Fin k, IsProperColoring G k c
 
-/-!
+/-
 ## Part II: Cycles and Regular Subgraphs
 
 The structures the conjecture concerns.
@@ -77,7 +77,7 @@ def HasKEdgeDisjointCyclesSameVertices (G : SimpleGraph V) (k : ℕ) (S : Finset
     (∀ i, (cycles i).toFinset = S) ∧
     (∀ i j, i ≠ j → EdgeDisjointCycles G (cycles i) (cycles j))
 
-/-!
+/-
 ## Part III: Regular Subgraphs
 
 The connection to regularity.
@@ -100,7 +100,7 @@ theorem edge_disjoint_cycles_iff_regular [Fintype V] [DecidableEq V]
     HasKEdgeDisjointCyclesSameVertices G k S ↔ HasRegularSubgraph G (2 * k) S := by
   sorry
 
-/-!
+/-
 ## Part IV: The Erdős-Hajnal Conjecture
 
 The statement that was disproved.
@@ -122,7 +122,7 @@ def ErdosHajnalConjectureRegular : Prop :=
       chromaticNumber G ≥ f k →
       ∃ S : Finset V, HasRegularSubgraph G (2 * k) S
 
-/-!
+/-
 ## Part V: The k = 2 Case
 
 The specific case that was disproved.
@@ -138,7 +138,7 @@ def Case_k_2 : Prop :=
 /-- The k = 2 case is FALSE. -/
 axiom case_k_2_false : ¬Case_k_2
 
-/-!
+/-
 ## Part VI: The Janzer-Steiner-Sudakov Counterexample
 
 The construction disproving the conjecture.
@@ -163,7 +163,7 @@ axiom jss_no_4_regular (n : ℕ) (hn : n ≥ 10) :
       chromaticNumber G ≥ jss_chromatic_bound n ∧
       ∀ S : Finset (Fin n), ¬HasRegularSubgraph G 4 S
 
-/-!
+/-
 ## Part VII: The Main Disproof
 
 Erdős Problem #641 is DISPROVED.
@@ -182,7 +182,7 @@ theorem erdos_hajnal_false : ¬ErdosHajnalConjecture := by
 theorem erdos_641 : ¬ErdosHajnalConjecture :=
   erdos_hajnal_false
 
-/-!
+/-
 ## Part VIII: Positive Results
 
 What IS true about chromatic number and substructures.
@@ -208,7 +208,7 @@ axiom kim_bound :
       G.CliqueFree 3 →
       chromaticNumber G ≤ Nat.ceil (c * Real.sqrt (n / Real.log n))
 
-/-!
+/-
 ## Part IX: Related Conjectures
 
 Other problems about χ and substructures.
@@ -229,7 +229,7 @@ def ReedConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
     True  -- χ ≤ (Δ + ω + 1)/2
 
-/-!
+/-
 ## Part X: The Construction Technique
 
 How JSS built their counterexample.
@@ -250,7 +250,7 @@ axiom chromatic_robust_to_edge_removal :
         -- Removing ε fraction of edges decreases χ by at most O(ε · χ)
         True
 
-/-!
+/-
 ## Part XI: Main Result
 
 Erdős Problem #641 is DISPROVED.

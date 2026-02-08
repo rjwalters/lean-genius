@@ -8,54 +8,112 @@
     "sourceUrl": "https://erdosproblems.com/456",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos456Problem.lean",
-    "tags": ["number theory", "primes", "totient function", "Linnik"],
-    "badge": "formalized",
-    "sorries": 0,
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "totient-function",
+      "Linnik"
+    ],
+    "badge": "wip",
+    "sorries": 2,
     "erdosNumber": 456,
     "erdosUrl": "https://erdosproblems.com/456",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate and basic properties",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ],
+    "originalContributions": [
+      "Defined smallestPrimeMod1 pₙ via sInf with Dirichlet existence",
+      "Defined smallestTotientDiv mₙ via sInf over totient divisors",
+      "Stated Dirichlet's theorem on primes in 1 mod n progressions",
+      "Proved properties of pₙ: primality, congruence, minimality",
+      "Proved properties of mₙ: positivity, divisibility, minimality",
+      "Stated mₙ ≤ pₙ (trivial upper bound from φ(pₙ) = pₙ − 1)",
+      "Stated Linnik's bound pₙ ≤ n^L",
+      "Stated Erdős's infinitude result: mₙ < pₙ for infinitely many n",
+      "Stated van Doorn's observation: mₙ ≤ 2n for n = 2^{2k+1}",
+      "Defined AlmostAll in the natural density sense",
+      "Formalized all three conjectures as ErdosProblem456_Part1/2/3",
+      "Stated part2_implies_part1 and part1_implies_infinitely_many (with sorry)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős compared two natural arithmetic functions of n: the smallest prime in the arithmetic progression 1 mod n, and the smallest integer whose totient is divisible by n. While mₙ ≤ pₙ trivially, Erdős conjectured the gap is typically large and explored when equality occurs.",
+    "historicalContext": "Erdős compared two natural arithmetic functions of n: pₙ, the smallest prime ≡ 1 (mod n), and mₙ, the smallest positive integer m with n | φ(m). Both functions are well-defined: pₙ exists by Dirichlet's theorem on primes in arithmetic progressions, and mₙ exists because φ(pₙ) = pₙ − 1 is divisible by n.\n\nThe inequality mₙ ≤ pₙ holds trivially, since pₙ is itself a candidate for mₙ. When n = q − 1 for prime q, we must have mₙ = pₙ = q, showing equality occurs infinitely often. However, Erdős conjectured that strict inequality mₙ < pₙ holds for 'almost all' n in the density sense, and furthermore that the ratio pₙ/mₙ diverges for almost all n.\n\nVan Doorn made the key observation that for n = 2^{2k+1}, we have mₙ ≤ 2n (since φ(2n) = n divides n trivially), while Linnik's theorem gives pₙ ≫ n^L for some constant L > 1. This provides explicit families where mₙ < pₙ. Erdős also proved that mₙ/n → ∞ for almost all n, indicating that mₙ itself grows faster than linearly.",
     "problemStatement": "Three questions: (1) Is mₙ < pₙ for almost all n? (2) Does pₙ/mₙ → ∞ for almost all n? (3) Are there infinitely many primes p such that p−1 is the only n with mₙ = p?",
-    "proofStrategy": "We axiomatize the Euler totient, the functions pₙ and mₙ with their defining properties. Known results (mₙ ≤ pₙ, Linnik's bound, Erdős's infinitude result, van Doorn's observation) are recorded. The three conjectures are stated as axioms.",
+    "proofStrategy": "We define pₙ and mₙ using sInf with their key properties axiomatised. Dirichlet's theorem ensures pₙ exists. Known results (mₙ ≤ pₙ, Linnik's bound, Erdős infinitude, van Doorn observation) are stated. The three conjectures use an AlmostAll predicate defined via natural density. Relationships between parts are stated with sorry proofs.",
     "keyInsights": [
-      "mₙ ≤ pₙ always holds since φ(pₙ) = pₙ − 1 is divisible by n",
-      "Linnik's theorem bounds pₙ polynomially in n",
-      "When n = q−1 for prime q, necessarily mₙ = pₙ = q",
-      "Van Doorn showed mₙ ≤ 2n for n = 2^{2k+1}, giving explicit strict inequality"
+      "**Trivial Inequality**: mₙ ≤ pₙ always holds since φ(pₙ) = pₙ − 1 is divisible by n — pₙ is a candidate for mₙ",
+      "**Linnik's Theorem**: pₙ ≤ n^L for some constant L (best known L ≈ 5.18) bounds the smallest prime in the progression",
+      "**Van Doorn Observation**: For n = 2^{2k+1}, mₙ ≤ 2n gives explicit strict inequality since pₙ grows polynomially",
+      "**Equality Cases**: When n = q−1 for prime q, necessarily mₙ = pₙ = q — Part 3 asks if these are the 'only' such cases",
+      "**Hierarchy of Conjectures**: Part 2 (ratio divergence) implies Part 1 (strict inequality), which implies infinitely many strict cases"
     ]
   },
   "sections": [
     {
       "id": "core-functions",
       "title": "Core Functions",
-      "startLine": 22,
-      "endLine": 54,
-      "summary": "Defines Euler's totient, the smallest prime ≡ 1 (mod n), and the smallest totient-divisor m."
+      "startLine": 33,
+      "endLine": 48,
+      "summary": "Defines smallestPrimeMod1 (pₙ) and smallestTotientDiv (mₙ) via sInf. States Dirichlet existence."
+    },
+    {
+      "id": "pn-properties",
+      "title": "Properties of pₙ",
+      "startLine": 50,
+      "endLine": 69,
+      "summary": "Axiomatises pₙ: primality, congruence pₙ ≡ 1 (mod n), and minimality among such primes."
+    },
+    {
+      "id": "mn-properties",
+      "title": "Properties of mₙ",
+      "startLine": 71,
+      "endLine": 86,
+      "summary": "Axiomatises mₙ: positivity, n | φ(mₙ), and minimality among candidates."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 56,
-      "endLine": 80,
-      "summary": "Records mₙ ≤ pₙ, Linnik's bound, Erdős's infinitude result, and van Doorn's observation."
+      "startLine": 88,
+      "endLine": 118,
+      "summary": "States mₙ ≤ pₙ, Linnik's bound pₙ ≤ n^L, Erdős infinitude result, mₙ/n → ∞, and van Doorn's power-of-two observation."
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "startLine": 120,
+      "endLine": 128,
+      "summary": "Defines AlmostAll via natural density: P holds for all but a density-0 set."
     },
     {
       "id": "conjectures",
       "title": "The Erdős Conjectures",
-      "startLine": 82,
-      "endLine": 104,
-      "summary": "States the three open questions: almost-all strict inequality, ratio divergence, and unique preimage primes."
+      "startLine": 130,
+      "endLine": 167,
+      "summary": "Three open questions: Part 1 (almost-all strict inequality), Part 2 (ratio divergence), Part 3 (unique preimage primes). States Part 2 ⇒ Part 1 ⇒ infinitely many (with sorry)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 456 explores the comparative growth of pₙ and mₙ. While basic inequalities are established, the three main conjectures about their typical behavior remain open.",
-    "implications": "Resolving these questions would illuminate the relationship between primes in arithmetic progressions and the totient function's preimage structure.",
+    "summary": "Erdős Problem 456 explores the comparative growth of pₙ and mₙ through three progressively stronger conjectures. Known results establish mₙ ≤ pₙ, Linnik's polynomial bound, and van Doorn's explicit strict inequality family. All three conjectures remain open.",
+    "implications": "Resolving these questions would illuminate the relationship between Dirichlet primes in arithmetic progressions and the preimage structure of Euler's totient function, connecting analytic number theory to inverse problems in arithmetic.",
     "openQuestions": [
       "Is mₙ < pₙ for almost all n?",
       "Does pₙ/mₙ → ∞ for almost all n?",
-      "Are there infinitely many primes p where p−1 is the unique n with mₙ = p?"
+      "Are there infinitely many primes p where p−1 is the unique n with mₙ = p?",
+      "What is the typical growth rate of pₙ/mₙ?",
+      "Can sieve methods or the Bombieri-Vinogradov theorem make progress on Part 1?"
     ]
   }
 }

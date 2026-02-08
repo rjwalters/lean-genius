@@ -30,7 +30,7 @@ open Set Finset Nat Real
 
 namespace Erdos140
 
-/-! ## 3-term Arithmetic Progressions -/
+/- ## 3-term Arithmetic Progressions -/
 
 /-- A 3-term arithmetic progression: three values a, a+d, a+2d with d ≠ 0. -/
 def IsAP3 (a b c : ℕ) : Prop := 2 * b = a + c ∧ a < b ∧ b < c
@@ -43,7 +43,7 @@ def Is3APFree (A : Set ℕ) : Prop :=
 def Finset3APFree (A : Finset ℕ) : Prop :=
   ∀ a b c : ℕ, a ∈ A → b ∈ A → c ∈ A → ¬IsAP3 a b c
 
-/-! ## The Roth Number r₃(N) -/
+/- ## The Roth Number r₃(N) -/
 
 /-- r₃(N) = maximum size of a 3-AP-free subset of {1,...,N}.
     We define this as the supremum over all 3-AP-free subsets. -/
@@ -76,7 +76,7 @@ theorem r3_achieved (N : ℕ) :
   obtain ⟨A, hAsub, hAP, hcard⟩ := hmem
   exact ⟨A, hAsub, hAP, hcard⟩
 
-/-! ## Historical Upper Bounds -/
+/- ## Historical Upper Bounds -/
 
 /--
 **Roth's Theorem (1953)**: r₃(N) = o(N).
@@ -109,7 +109,7 @@ Breakthrough showing power greater than 1 in the log N exponent.
 axiom bloom_sisask_bound : ∃ c > 0, ∃ C > 0, ∀ N ≥ 3,
     (r3 N : ℝ) ≤ C * N / (Real.log N)^(1 + c)
 
-/-! ## The Kelley-Meka Theorem -/
+/- ## The Kelley-Meka Theorem -/
 
 /--
 **Kelley-Meka Theorem (2023)** - Resolution of Erdős Problem #140:
@@ -126,7 +126,7 @@ axiom kelley_meka : KelleyMekaTheorem
 /-- Erdős Problem #140 is SOLVED. -/
 theorem erdos_140_solved : KelleyMekaTheorem := kelley_meka
 
-/-! ## Consequences and Corollaries -/
+/- ## Consequences and Corollaries -/
 
 /-- Corollary: r₃(N) = o(N / (log N)^C) for all fixed C. -/
 theorem r3_superlogarithmic (C : ℝ) (hC : C > 0) :
@@ -148,7 +148,7 @@ theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto
   -- So (r3 N) * (log N)^C / N ≤ K * (log N)^C / (log N)^(C+1) = K / log N → 0
   sorry
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /-- The Behrend construction gives the best known lower bound:
     r₃(N) ≥ N · exp(-c · √(log N)) for some c > 0. -/
@@ -160,7 +160,7 @@ axiom behrend_lower_bound : ∃ c > 0, ∀ N ≥ 3,
    Lower: Ω(N / exp(c √log N))
    The true order of r₃(N) remains unknown. -/
 
-/-! ## Examples of 3-AP-Free Sets -/
+/- ## Examples of 3-AP-Free Sets -/
 
 /-- The singleton set is trivially 3-AP-free. -/
 example : Finset3APFree {0} := by
@@ -181,7 +181,7 @@ example : Finset3APFree {1, 2, 4, 5, 10, 11, 13, 14} := by
   rcases hc with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
   omega
 
-/-! ## The Greedy 3-AP-Free Sequence -/
+/- ## The Greedy 3-AP-Free Sequence -/
 
 /-- The greedy 3-AP-free sequence A003278:
     Start with 1, then add the smallest integer that doesn't create a 3-AP.
@@ -194,7 +194,7 @@ def greedyAP3Free : ℕ → ℕ
 axiom greedy_is_3APFree : ∀ n : ℕ,
     Finset3APFree (Finset.image greedyAP3Free (Finset.range n))
 
-/-! ## k-term AP Generalization -/
+/- ## k-term AP Generalization -/
 
 /-- A k-term arithmetic progression: k values a, a+d, a+2d, ..., a+(k-1)d with d ≠ 0. -/
 def IsAPk (k : ℕ) (vals : Fin k → ℕ) : Prop :=
@@ -238,7 +238,7 @@ theorem erdos_ap_conjecture_k3 : ∀ C : ℝ, C > 0 → ∃ K > 0, ∀ N ≥ 3,
   rw [← r3_eq_rk_3]
   exact hbound N hN
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 

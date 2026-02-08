@@ -31,7 +31,7 @@ namespace Erdos63
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- Cyclic successor in Fin k: maps i to (i+1) mod k. -/
 def Fin.succMod {k : ℕ} (hk : 0 < k) (i : Fin k) : Fin k :=
@@ -50,7 +50,7 @@ def CycleLengths (G : SimpleGraph V) : Set ℕ :=
 def HasInfiniteChromaticNumber (G : SimpleGraph V) : Prop :=
   ∀ k : ℕ, ¬∃ f : V → Fin k, ∀ u v, G.Adj u v → f u ≠ f v
 
-/-! ## Minimum Degree and Chromatic Number -/
+/- ## Minimum Degree and Chromatic Number -/
 
 /-- The minimum degree of a graph (requires Nonempty). -/
 noncomputable def minDegree [Nonempty V] (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
@@ -62,7 +62,7 @@ def ContainsMinDegreeSubgraph (G : SimpleGraph V) [DecidableRel G.Adj] (d : ℕ)
   ∃ (S : Finset V), S.Nonempty ∧
     ∀ v ∈ S, d ≤ ((G.neighborFinset v).filter (· ∈ S)).card
 
-/-! ## Key Lemmas -/
+/- ## Key Lemmas -/
 
 /--
 **Observation**: High minimum degree implies even cycle lengths.
@@ -81,7 +81,7 @@ axiom bondy_simonovits (G : SimpleGraph V) [Nonempty V] [DecidableRel G.Adj]
     (d : ℕ) (hd : 2 ≤ d) (hmin : minDegree G ≥ d) :
     ∀ k : ℕ, Even k → 4 ≤ k → k ≤ 2 * d → ContainsCycleLength G k
 
-/-! ## de Bruijn-Erdős Theorem -/
+/- ## de Bruijn-Erdős Theorem -/
 
 /-- A graph (possibly infinite) represented as a type with adjacency. -/
 structure InfGraph (V : Type*) where
@@ -114,7 +114,7 @@ axiom de_bruijn_erdos (G : InfGraph V) (hχ : G.HasInfiniteChromaticNumber) :
     ∀ k : ℕ, ∃ (S : Finset V), ∀ f : S → Fin k,
       ∃ u v : S, u ≠ v ∧ G.Adj u.val v.val ∧ f u = f v
 
-/-! ## Liu-Montgomery Theorem -/
+/- ## Liu-Montgomery Theorem -/
 
 /--
 **Liu-Montgomery Theorem** (2020):
@@ -125,7 +125,7 @@ axiom liu_montgomery (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ)
     ∃ (S : Finset V), S.Nonempty ∧
       ∀ v ∈ S, k / 2 < ((G.neighborFinset v).filter (· ∈ S)).card
 
-/-! ## Erdős-Hajnal for Uncountable Chromatic Number -/
+/- ## Erdős-Hajnal for Uncountable Chromatic Number -/
 
 /--
 **Erdős-Hajnal Theorem**:
@@ -142,7 +142,7 @@ axiom complete_bipartite_even_cycles (m : ℕ) (hm : 2 ≤ m) :
     ∀ k : ℕ, Even k → 4 ≤ k → k ≤ 2 * m →
       ∃ (G : SimpleGraph (Fin (2 * m))), ContainsCycleLength G k
 
-/-! ## Main Result -/
+/- ## Main Result -/
 
 /--
 **Powers of 2 Definition**: The set {2^n | n ∈ ℕ}.
@@ -184,7 +184,7 @@ Proof sketch (Liu-Montgomery 2020):
 -/
 axiom erdos_63_theorem (G : InfGraph V) : erdos_63_statement G
 
-/-! ## Corollaries -/
+/- ## Corollaries -/
 
 omit [Fintype V] [DecidableEq V] in
 /--
@@ -206,7 +206,7 @@ axiom penman_uncountable (G : InfGraph V)
     ∀ N : ℕ, ∃ n ≥ N, ∃ (S : Finset V) (H : SimpleGraph S),
       ContainsCycleLength H (2^n)
 
-/-! ## Generalization -/
+/- ## Generalization -/
 
 /--
 **Conjectured Generalization** (Mihók-Erdős):
@@ -227,7 +227,7 @@ theorem squares_strictly_increasing (n : ℕ) : (n + 2)^2 < (n + 3)^2 := by
 def squares_conjecture : Prop :=
   generalized_conjecture (fun n => (n + 2)^2)
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: SOLVED**
 

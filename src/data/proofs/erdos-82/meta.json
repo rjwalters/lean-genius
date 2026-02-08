@@ -8,7 +8,15 @@
     "sourceUrl": "https://erdosproblems.com/82",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos82Problem.lean",
-    "tags": ["graph-theory", "ramsey-theory", "regular-graphs", "extremal-graph-theory", "induced-subgraphs", "open"],
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "regular-graphs",
+      "extremal-graph-theory",
+      "induced-subgraphs",
+      "open"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 82,
@@ -17,10 +25,26 @@
     "dateAdded": "2026-01-19",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "SimpleGraph", "description": "Simple graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "SimpleGraph.Subgraph", "description": "Subgraph operations", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
-      { "theorem": "Nat.log", "description": "Natural number logarithm", "module": "Mathlib.Data.Nat.Log" },
-      { "theorem": "Filter.Tendsto", "description": "Filter-based limits", "module": "Mathlib.Order.Filter.Basic" }
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Subgraph",
+        "description": "Subgraph operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Natural number logarithm",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter-based limits",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
     ],
     "originalContributions": [
       "IsRegular and IsRegularGraph definitions using SimpleGraph.degree",

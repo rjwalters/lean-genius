@@ -34,6 +34,7 @@ dist-ssr
 .lean/research/problems.json
 .lean/research/problems/
 .lean/research/registry.json
+.lean/state/
 leanInk/
 
 # Knuth tour-finder build artifacts
@@ -42,8 +43,9 @@ proofs/data/knuth/tour-finder/Cargo.lock
 proofs/data/knuth/tour-finder/target/
 research/claims/*.json
 research/claims/*.lock
-research/stub-claims/*.lock
-research/stub-claims/erdos-*.json
+research/stub-claims/
+research/enrichment-claims/
+research/candidate-pool.json
 research/db/*.bak
 research/db/knowledge.db
 research/quality-history/

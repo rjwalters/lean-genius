@@ -32,7 +32,7 @@ namespace Erdos392
 open Nat Filter Real Finset
 open scoped BigOperators
 
-/-!
+/-
 ## The Factorization Problem
 
 We want to express n! as a product of as few factors as possible,
@@ -61,7 +61,7 @@ axiom A : ℕ → ℕ → ℕ
 axiom A_spec (n B : ℕ) (hn : n > 0) (hB : B > 0) :
     IsLeast {t | ∃ a : Fin t → ℕ, IsValidFactorization n t B a} (A n B)
 
-/-!
+/-
 ## Main Result: A(n) with bound n²
 
 When the factor bound is n², the optimal factorization length is:
@@ -83,7 +83,7 @@ axiom erdos_392_main :
     (fun n : ℕ => (A n (n ^ 2) : ℝ) - n / 2 + n / (2 * Real.log n))
       =o[atTop] fun n => (n : ℝ) / Real.log n
 
-/-!
+/-
 ## Variant: A(n) with bound n
 
 With the stricter bound aₜ ≤ n, we get a different asymptotic.
@@ -104,7 +104,7 @@ axiom erdos_392_variant :
     (fun n : ℕ => (A n n : ℝ) - n + n / Real.log n)
       =o[atTop] fun n => (n : ℝ) / Real.log n
 
-/-!
+/-
 ## Cambie's Observation
 
 The main result follows from the variant by factor pairing.
@@ -126,7 +126,7 @@ axiom cambie_implication :
     ((fun n : ℕ => (A n (n ^ 2) : ℝ) - n / 2 + n / (2 * Real.log n)) =o[atTop]
       fun n => (n : ℝ) / Real.log n)
 
-/-!
+/-
 ## Stirling's Approximation Connection
 
 The asymptotics are closely related to Stirling's approximation.
@@ -154,7 +154,7 @@ theorem factor_count_lower_bound_intuition (n : ℕ) (hn : n ≥ 2) :
   have hlog : Real.log n ≠ 0 := Real.log_ne_zero_of_pos_of_ne_one hn_pos hn_ne_one
   field_simp
 
-/-!
+/-
 ## Verified Examples
 
 For small n, we can compute or bound A(n, n²) directly.
@@ -177,7 +177,7 @@ axiom A_four : A 4 16 = 2
 /-- For n = 5, 5! = 120 = 5 · 24, but 24 > 25, so we need more factors. -/
 axiom A_five : A 5 25 = 2  -- 120 = 10 · 12 or 8 · 15
 
-/-!
+/-
 ## Asymptotic Behavior
 
 The main term n/2 dominates, with a correction of -n/(2 log n).
@@ -195,7 +195,7 @@ Since log n → ∞, we have (n/(2 log n)) / (n/2) = 1/log n → 0.
 axiom correction_is_lower_order :
     (fun n : ℕ => (n : ℝ) / (2 * Real.log n)) =o[atTop] fun n => (n : ℝ) / 2
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #392 asks about the minimum number of factors needed to

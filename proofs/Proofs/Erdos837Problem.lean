@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #837 — Hypergraph Density Jumps
 
 For k ≥ 2, define A_k ⊆ [0,1] as the set of values α such that there
@@ -20,7 +20,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A k-uniform hypergraph on n vertices, represented by edge count. -/
 structure KUniformHypergraph where
@@ -45,7 +45,7 @@ def IsDensityJump (k : ℕ) (α : ℝ) : Prop :=
 def densityJumpSet (k : ℕ) : Set ℝ :=
   {α : ℝ | 0 ≤ α ∧ α ≤ 1 ∧ IsDensityJump k α}
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Erdős–Stone–Simonovits (graphs)**: For k = 2,
     A_2 = {1 − 1/m : m ≥ 1} = {0, 1/2, 2/3, 3/4, ...}.
@@ -58,7 +58,7 @@ axiom graph_density_jumps :
 axiom turan_densities :
   ∀ m : ℕ, m ≥ 1 → IsDensityJump 2 (1 - 1 / (m : ℝ))
 
-/-! ## Main Question -/
+/- ## Main Question -/
 
 /-- **Erdős Problem #837**: What is A_3? Determine the set of
     density jump values for 3-uniform hypergraphs. -/
@@ -70,20 +70,17 @@ axiom erdos_837_characterize_A3 :
 axiom zero_is_jump_3uniform :
   IsDensityJump 3 0
 
-/-! ## Observations -/
+/- ## Observations -/
 
-/-- **Hypergraph Turán problem**: For k ≥ 3, even the Turán
+/- **Hypergraph Turán problem**: For k ≥ 3, even the Turán
     density π(K_{k+1}^{(k)}) is unknown. The tetrahedron
     conjecture: π(K_4^{(3)}) = 5/9. -/
-axiom turan_hypergraph_open : True
 
-/-- **Frankl–Rödl (1984)**: The Ramsey multiplicity approach
+/- **Frankl–Rödl (1984)**: The Ramsey multiplicity approach
     shows that certain hypergraph densities force denser
     subhypergraphs, but a complete characterization of A_3
     remains far from reach. -/
-axiom frankl_rodl : True
 
-/-- **Razborov flag algebras**: Flag algebra methods can
+/- **Razborov flag algebras**: Flag algebra methods can
     determine some jump values computationally, but the
     general structure of A_3 is unknown. -/
-axiom flag_algebras : True

@@ -36,7 +36,7 @@ import Mathlib
 
 open Nat Filter
 
-/-!
+/-
 ## Ramsey Numbers
 
 The diagonal Ramsey number R(k) and basic properties.
@@ -67,7 +67,7 @@ noncomputable def R (k : ℕ) : ℕ :=
 theorem R_spec (k : ℕ) : ∀ coloring : EdgeColoring (Fin (R k)), HasMonochromaticClique coloring k :=
   Nat.find_spec (ramsey_exists k)
 
-/-!
+/-
 ## Known Bounds
 
 The Erdős-Szekeres bounds and Spencer's improvement.
@@ -90,7 +90,7 @@ axiom spencer_lower_bound :
   ∀ ε > 0, ∃ K : ℕ, ∀ k ≥ K,
     (R k : ℝ) ≥ (Real.sqrt 2 / Real.exp 1 - ε) * k * 2^(k/2 : ℝ)
 
-/-!
+/-
 ## The Conjecture
 
 The central open problem: R(k) grows faster than k · 2^{k/2}.
@@ -121,7 +121,7 @@ theorem conjecture_equiv : erdos1029Conjecture ↔ erdos1029ConjectureAlt := by
     obtain ⟨K, hK⟩ := h M
     exact ⟨K, fun k hk => le_of_lt (hK k hk)⟩
 
-/-!
+/-
 ## Lower Bound is Not Tight
 
 What we know: the ratio is bounded below, but possibly not above.
@@ -138,7 +138,7 @@ def conjectureNegation : Prop :=
 /-- Negation equivalence: the conjecture fails iff the ratio is bounded -/
 axiom negation_equiv : ¬erdos1029Conjecture ↔ conjectureNegation
 
-/-!
+/-
 ## Small Values
 
 Known exact values of Ramsey numbers.
@@ -159,7 +159,7 @@ axiom R_4 : R 4 = 18
 /-- R(5) is between 43 and 48 -/
 axiom R_5_bounds : 43 ≤ R 5 ∧ R 5 ≤ 48
 
-/-!
+/-
 ## Ratio Values for Small k
 
 The ratio for known Ramsey numbers.
@@ -175,7 +175,7 @@ theorem ratio_4 : ramseyRatio 4 = 18 / (4 * 2^(2 : ℝ)) := by
   simp only [ramseyRatio, R_4]
   ring
 
-/-!
+/-
 ## The Prize Problem
 
 Erdős offered $100 for proof, $1000 for disproof.

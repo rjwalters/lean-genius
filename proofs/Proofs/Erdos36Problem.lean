@@ -79,16 +79,13 @@ axiom small_values :
 
 /- ## Observations -/
 
-/-- **Erdős' Original Conjecture**: Erdős initially conjectured c = 1/2,
+/- **Erdős' Original Conjecture**: Erdős initially conjectured c = 1/2,
     but this was disproved. The true value is near 0.38. -/
-axiom erdos_original_conjecture_disproved : True
 
-/-- **Fourier Analytic Approach**: White's method translates the
+/- **Fourier Analytic Approach**: White's method translates the
     combinatorial problem into a convex optimization program
     using elementary Fourier analysis on ℤ. -/
-axiom fourier_approach : True
 
-/-- **Connection to Additive Combinatorics**: The minimum overlap
+/- **Connection to Additive Combinatorics**: The minimum overlap
     problem is a fundamental question about the structure of
     equal partitions and difference sets. -/
-axiom additive_combinatorics_connection : True

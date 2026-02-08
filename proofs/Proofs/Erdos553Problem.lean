@@ -29,7 +29,7 @@ import Mathlib
 
 open Finset Function Set
 
-/-! ## Graph Coloring Basics -/
+/- ## Graph Coloring Basics -/
 
 /-- An edge coloring of a complete graph on n vertices with k colors -/
 def EdgeColoring (n k : ℕ) := Fin n × Fin n → Fin k
@@ -52,7 +52,7 @@ def HasMonochromaticTriangle {n k : ℕ} (c : EdgeColoring n k) (col : Fin k) : 
 def HasMonochromaticClique {n k : ℕ} (c : EdgeColoring n k) (col : Fin k) (m : ℕ) : Prop :=
   ∃ S : Finset (Fin n), S.card = m ∧ IsMonochromaticClique c S col
 
-/-! ## Two-Color Ramsey Number R(3,n) -/
+/- ## Two-Color Ramsey Number R(3,n) -/
 
 /-- R(3,n): smallest m such that any 2-coloring of K_m has either
     a monochromatic triangle in color 0 or a monochromatic K_n in color 1 -/
@@ -70,7 +70,7 @@ def IsR3n (m n : ℕ) : Prop :=
   (∀ m' < m, ∃ c : EdgeColoring m' 2, c.IsSymmetric ∧
     ¬HasMonochromaticTriangle c 0 ∧ ¬HasMonochromaticClique c 1 n)
 
-/-! ## Three-Color Ramsey Number R(3,3,n) -/
+/- ## Three-Color Ramsey Number R(3,3,n) -/
 
 /-- R(3,3,n): smallest m such that any 3-coloring of K_m has either
     a monochromatic triangle in color 0 or 1, or a monochromatic K_n in color 2 -/
@@ -91,7 +91,7 @@ def IsR33n (m n : ℕ) : Prop :=
     ¬HasMonochromaticTriangle c 0 ∧ ¬HasMonochromaticTriangle c 1 ∧
     ¬HasMonochromaticClique c 2 n)
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- Shearer's bound (1983): R(3,n) ≤ C n² / log n for some constant C -/
 theorem shearer_upper_bound : ∃ C : ℝ, C > 0 ∧
@@ -112,7 +112,7 @@ theorem alon_rodl_lower_bound : ∃ c : ℝ, ∃ k : ℕ, c > 0 ∧
     ∀ n ≥ 2, (R_3_3_n n : ℝ) ≥ c * n^3 / (Real.log n)^k := by
   sorry
 
-/-! ## The Main Result -/
+/- ## The Main Result -/
 
 /-- The ratio R(3,3,n) / R(3,n) tends to infinity -/
 def RatioTendsToInfinity : Prop :=
@@ -127,7 +127,7 @@ def RatioTendsToInfinity : Prop :=
 theorem erdos_553_main : RatioTendsToInfinity := by
   sorry
 
-/-! ## Intuition: Why the Third Color Helps -/
+/- ## Intuition: Why the Third Color Helps -/
 
 /-- In a 2-coloring, avoiding a triangle in color 0 means color-0 edges
     form a triangle-free graph, which by Turán has ≤ n²/4 edges.
@@ -144,7 +144,7 @@ theorem two_triangle_free_union (G H : SimpleGraph (Fin n))
     G.edgeFinset.card + H.edgeFinset.card ≤ n^2 / 2 := by
   sorry
 
-/-! ## Connection to Off-Diagonal Ramsey Numbers -/
+/- ## Connection to Off-Diagonal Ramsey Numbers -/
 
 /-- Standard off-diagonal Ramsey number R(s,t) -/
 def R (s t : ℕ) : ℕ :=
@@ -162,7 +162,7 @@ theorem ramsey_3_3 : R 3 3 = 6 := by
 theorem R_3_n_eq : ∀ n, R_3_n n = R 3 n := by
   sorry
 
-/-! ## Asymptotic Notation -/
+/- ## Asymptotic Notation -/
 
 /-- f ≍ g means c₁ g ≤ f ≤ c₂ g for constants c₁, c₂ > 0 -/
 def AsymptoticEquiv (f g : ℕ → ℝ) : Prop :=
@@ -180,7 +180,7 @@ theorem alon_rodl : ∃ k : ℕ,
 theorem shearer : (fun n => (R_3_n n : ℝ)) ≍ (fun n => n^2 / Real.log n) := by
   sorry
 
-/-! ## Generalizations -/
+/- ## Generalizations -/
 
 /-- General multi-color Ramsey number R(k₁, k₂, ..., kᵣ) -/
 def MultiColorRamsey (params : List ℕ) : ℕ := by
@@ -193,7 +193,7 @@ def erdosSosGeneralization : Prop :=
       (MultiColorRamsey (List.replicate s 3 ++ [n]) : ℝ) /
       (MultiColorRamsey (List.replicate r 3 ++ [n]) : ℝ) > M
 
-/-! ## Main Result Summary -/
+/- ## Main Result Summary -/
 
 /-- Erdős Problem #553: SOLVED by Alon-Rödl (2005)
 

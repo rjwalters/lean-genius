@@ -23,7 +23,7 @@ namespace Erdos971
 
 open Filter Finset Real Nat
 
-/-!
+/-
 ## Definitions
 
 We define the least prime in an arithmetic progression, which is the central
@@ -39,7 +39,7 @@ whenever gcd(a,d) = 1: there are infinitely many primes in such progressions.
 noncomputable def leastCongruentPrime (a d : ℕ) : ℕ :=
   sInf {p : ℕ | p.Prime ∧ p ≡ a [MOD d]}
 
-/-!
+/-
 ## The Main Question (Open)
 
 The central question asks whether there exists a constant c > 0 such that
@@ -63,7 +63,7 @@ def mainQuestion : Prop :=
       #{a ∈ Finset.range d | a.Coprime d ∧
         (leastCongruentPrime a d : ℝ) > (1 + c) * d.totient * Real.log d}
 
-/-!
+/-
 ## Partial Results (Erdős 1949)
 
 Erdős proved two significant partial results in his 1949 paper
@@ -108,7 +108,7 @@ axiom erdos_many_small :
       #{a ∈ Finset.range d | a.Coprime d ∧
         (leastCongruentPrime a d : ℝ) < ε * d.totient * Real.log d}
 
-/-!
+/-
 ## Context and Significance
 
 This problem relates to several important themes in analytic number theory:
@@ -129,7 +129,7 @@ having least primes larger than (1+c)·average) occur systematically for
 many residue classes simultaneously.
 -/
 
-/-!
+/-
 ## Computational Example
 
 For small moduli, we can explicitly compute the least primes. For d = 10,

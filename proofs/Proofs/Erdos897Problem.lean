@@ -25,7 +25,7 @@ open Filter Asymptotics
 
 namespace Erdos897
 
-/-!
+/-
 ## Core Definitions
 
 An additive arithmetic function satisfies f(ab) = f(a) + f(b) whenever
@@ -46,7 +46,7 @@ log(p^k). Specifically: limsup_{p prime, k ≥ 1} f(p^k) / log(p^k) = ∞. -/
 def UnboundedOnPrimePowers (f : ℕ → ℝ) : Prop :=
   ∀ M : ℝ, ∃ p k : ℕ, p.Prime ∧ 1 ≤ k ∧ f (p ^ k) > M * Real.log (p ^ k)
 
-/-!
+/-
 ## The Main Conjectures (OPEN)
 
 Erdős asked whether unbounded growth on prime powers implies
@@ -72,7 +72,7 @@ axiom erdos_897_part_ii :
     ∀ f : ℕ → ℝ, IsAdditive f → UnboundedOnPrimePowers f →
       ∀ M : ℝ, ∃ᶠ n in atTop, f (n + 1) / f n > M
 
-/-!
+/-
 ## Wirsing's Theorem (SOLVED)
 
 The converse direction is known: if consecutive differences are
@@ -90,7 +90,7 @@ axiom wirsing_theorem :
       (∃ C : ℝ, ∀ n : ℕ, |f (n + 1) - f n| ≤ C) →
         ∃ c : ℝ, (fun n => f n - c * Real.log n) =O[atTop] (1 : ℕ → ℝ)
 
-/-!
+/-
 ## Restricted Variants (OPEN)
 
 The same questions restricted to functions where f(p^k) has a
@@ -122,7 +122,7 @@ axiom erdos_897_restricted_part_ii :
       UnboundedOnPrimePowers f →
         ∀ M : ℝ, ∃ᶠ n in atTop, f (n + 1) / f n > M
 
-/-!
+/-
 ## Classical Examples of Additive Functions
 -/
 
@@ -144,7 +144,7 @@ axiom bigOmega_completely_additive : IsCompletelyAdditive bigOmega
 /-- log is completely additive (up to the convention that log(1) = 0). -/
 axiom log_completely_additive : IsCompletelyAdditive logN
 
-/-!
+/-
 ## Basic Properties
 -/
 

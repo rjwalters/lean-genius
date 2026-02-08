@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #241: Maximum Size of B₃ Sets
 
 Let f(N) be the maximum size of A ⊆ {1,...,N} such that all
@@ -19,7 +19,7 @@ import Mathlib.Data.Finset.Image
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: B₃ Sets
 -/
 
@@ -38,7 +38,7 @@ def IsB3 (A : Finset ℕ) : Prop :=
     a₁ + b₁ + c₁ = a₂ + b₂ + c₂ →
     a₁ = a₂ ∧ b₁ = b₂ ∧ c₁ = c₂
 
-/-!
+/-
 ## Section II: Maximum B₃ Subset Size
 -/
 
@@ -46,7 +46,7 @@ def IsB3 (A : Finset ℕ) : Prop :=
 noncomputable def maxB3Size (N : ℕ) : ℕ :=
   ((Finset.range N).powerset.filter (fun S => IsB3 S)).sup Finset.card
 
-/-!
+/-
 ## Section III: The Conjecture
 -/
 
@@ -60,7 +60,7 @@ def ErdosProblem241 : Prop :=
       (1 - ε) * (N : ℝ) ^ (1/3 : ℝ) ≤ (maxB3Size N : ℝ) ∧
       (maxB3Size N : ℝ) ≤ (1 + ε) * (N : ℝ) ^ (1/3 : ℝ)
 
-/-!
+/-
 ## Section IV: The Bose–Chowla Lower Bound
 -/
 
@@ -71,7 +71,7 @@ axiom bose_chowla_lower_bound :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       (maxB3Size N : ℝ) ≥ (1 - ε) * (N : ℝ) ^ (1/3 : ℝ)
 
-/-!
+/-
 ## Section V: Green's Upper Bound
 -/
 
@@ -82,7 +82,7 @@ axiom green_upper_bound :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       (maxB3Size N : ℝ) ≤ ((7/2 : ℝ) ^ (1/3 : ℝ) + ε) * (N : ℝ) ^ (1/3 : ℝ)
 
-/-!
+/-
 ## Section VI: Generalized Bₕ Sets
 -/
 
@@ -116,7 +116,7 @@ axiom bose_chowla_general_lower (h : ℕ) (hh : h ≥ 2) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       (maxBhSize h N : ℝ) ≥ (1 - ε) * (N : ℝ) ^ (1 / (h : ℝ))
 
-/-!
+/-
 ## Section VII: Known Small B₃ Sets
 -/
 

@@ -37,7 +37,7 @@ open Nat Finset
 
 namespace Erdos844
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -64,7 +64,7 @@ def oddNonSquarefreeNumbers (N : ℕ) : Finset ℕ :=
 def optimalSet (N : ℕ) : Finset ℕ :=
   evenNumbers N ∪ oddNonSquarefreeNumbers N
 
-/-!
+/-
 ## Part 2: The Optimal Set Has the Property
 -/
 
@@ -101,7 +101,7 @@ axiom even_times_odd_nonsquarefree (a b : ℕ) (ha : 2 ∣ a) (hb : ¬Squarefree
 axiom optimal_set_has_property :
   ∀ N : ℕ, N ≥ 1 → HasNonSquarefreeProducts (optimalSet N)
 
-/-!
+/-
 ## Part 3: Any Maximal Set Must Contain All Non-Squarefree Numbers
 -/
 
@@ -116,7 +116,7 @@ axiom maximal_contains_nonsquarefree :
 axiom nonsquarefree_always_works :
   ∀ n m : ℕ, ¬Squarefree n → m > 0 → ¬Squarefree (n * m)
 
-/-!
+/-
 ## Part 4: Reduction to Squarefree Numbers
 -/
 
@@ -134,7 +134,7 @@ def IsIntersectingFamily (A : Finset ℕ) : Prop :=
   (∀ a ∈ A, Squarefree a) ∧
   (∀ a b : ℕ, a ∈ A → b ∈ A → ∃ p : ℕ, p.Prime ∧ p ∣ a ∧ p ∣ b)
 
-/-!
+/-
 ## Part 5: Chvátal's Result on Intersecting Families
 -/
 
@@ -153,7 +153,7 @@ axiom chvatal_intersecting_families :
 axiom chvatal_achieved_by_evens :
   ∀ N : ℕ, IsIntersectingFamily (evenSquarefreeNumbers N)
 
-/-!
+/-
 ## Part 6: The Main Theorem
 -/
 
@@ -173,7 +173,7 @@ axiom alexeev_mixon_sawin_proof :
 axiom optimal_set_valid :
   ∀ N : ℕ, N ≥ 1 → optimalSet N ⊆ interval N ∧ HasNonSquarefreeProducts (optimalSet N)
 
-/-!
+/-
 ## Part 7: Characterization of the Optimal Set
 -/
 
@@ -193,7 +193,7 @@ axiom optimal_set_size :
 axiom optimal_set_density :
   ∀ N : ℕ, N ≥ 1 → (optimalSet N).card ≤ N
 
-/-!
+/-
 ## Part 8: Examples
 -/
 
@@ -210,7 +210,7 @@ axiom missing_elements_example :
 axiom cannot_add_one :
   Squarefree (1 * 3)
 
-/-!
+/-
 ## Part 9: Summary
 -/
 

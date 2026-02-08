@@ -1,0 +1,211 @@
+[
+  {
+    "id": "ann-e1155-header",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1155, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1155: Triangle Removal Process\n\nSource: https://erdosproblems.com/1155\nStatus: OPEN (partially resolved)\n\nStatement:\nBegin with the complete graph K_n on n vertices. Repeatedly select a uniformly\nrandom triangle and delete all its edges, until the graph becomes triangle-free.\nLet f(n) denote the number of remaining edges.\n\nIs it true that E[f(n)] ≍ n^{3/2} and f(n) ≪ n^{3/2} almost surely?\n\nKnown Results:\n- Grable (1997): For every ε > 0, P(f(n) > n^{7/4 + ε}) → 0.\n- Bohman, Friez",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1155-triangleRemovalEdges",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 53,
+      "endLine": 53
+    },
+    "type": "axiom",
+    "title": "Triangleremovaledges",
+    "content": "axiom triangleRemovalEdges",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-triangleRemovalEdges_nonneg",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 56,
+      "endLine": 56
+    },
+    "type": "axiom",
+    "title": "Triangleremovaledges Nonneg",
+    "content": "/-- The triangle removal process leaves a non-negative number of edges. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-triangleRemovalEdges_le_comple",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "type": "axiom",
+    "title": "Triangleremovaledges Le Complete",
+    "content": "axiom triangleRemovalEdges_le_complete",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-grable_upper_bound",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 68,
+      "endLine": 71
+    },
+    "type": "axiom",
+    "title": "Grable Upper Bound",
+    "content": "axiom grable_upper_bound",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-bfl_upper_bound",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 75,
+      "endLine": 78
+    },
+    "type": "axiom",
+    "title": "Bfl Upper Bound",
+    "content": "axiom bfl_upper_bound",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-bfl_lower_bound",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 82,
+      "endLine": 85
+    },
+    "type": "axiom",
+    "title": "Bfl Lower Bound",
+    "content": "axiom bfl_lower_bound",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-erdos_1155_conjecture",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 96,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Erdos 1155 Conjecture",
+    "content": "def erdos_1155_conjecture",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1155-bfl_implies_grable",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 106,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Bfl Implies Grable",
+    "content": "theorem bfl_implies_grable",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-conjecture_gives_theta",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 124,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "Conjecture Gives Theta",
+    "content": "/-- If the full conjecture holds, f(n) is Θ(n^{3/2}). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-bfl_exponent_characterization",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 135,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "Bfl Exponent Characterization",
+    "content": "theorem bfl_exponent_characterization",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-IsTriangle",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 148,
+      "endLine": 149
+    },
+    "type": "definition",
+    "title": "Istriangle",
+    "content": "/-- A triangle in a graph on vertex set V is a 3-clique. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1155-IsTriangleFree'",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 152,
+      "endLine": 153
+    },
+    "type": "definition",
+    "title": "Istrianglefree'",
+    "content": "/-- A graph is triangle-free if it contains no triangles. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1155-triangleFree_iff_cliqueFree3",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 156,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Trianglefree Iff Cliquefree3",
+    "content": "/-- Triangle-free is equivalent to CliqueFree 3 for simple graphs. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-complete_has_triangles",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 161,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Complete Has Triangles",
+    "content": "/-- The complete graph on n ≥ 3 vertices contains triangles. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-mantel_theorem",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 173,
+      "endLine": 176
+    },
+    "type": "axiom",
+    "title": "Mantel Theorem",
+    "content": "axiom mantel_theorem",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1155-trivial_upper_bound",
+    "proofId": "erdos-1155",
+    "range": {
+      "startLine": 179,
+      "endLine": 181
+    },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "/-- The Mantel bound gives a trivial upper bound: f(n) ≤ n²/4. -/",
+    "significance": "key"
+  }
+]

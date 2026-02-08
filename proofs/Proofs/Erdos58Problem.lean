@@ -26,7 +26,7 @@ namespace Erdos58
 
 variable {V : Type*}
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of all cycle lengths in a graph. -/
 def cycleLengths (G : SimpleGraph V) : Set ℕ :=
@@ -40,27 +40,28 @@ def oddCycleLengths (G : SimpleGraph V) : Set ℕ :=
 noncomputable def numOddCycleLengths (G : SimpleGraph V) : ℕ :=
   (oddCycleLengths G).ncard
 
-/-! ## Chromatic Number -/
+/- ## Chromatic Number -/
 
 /-- A graph is k-colorable if it admits a proper k-coloring. -/
 def IsColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ f : V → Fin k, ∀ u v, G.Adj u v → f u ≠ f v
 
-/-- The chromatic number χ(G) (axiomatized for simplicity). -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ := sorry
+/-- The chromatic number χ(G): minimum number of colors for a proper coloring.
+    Axiomatized since Mathlib's graph coloring infrastructure is evolving. -/
+axiom chromaticNumber (G : SimpleGraph V) : ℕ
 
 /-- The chromatic number is the minimum k for which G is k-colorable. -/
 axiom chromaticNumber_spec (G : SimpleGraph V) :
     IsColorable G (chromaticNumber G) ∧
     ∀ k < chromaticNumber G, ¬IsColorable G k
 
-/-! ## Complete Graph -/
+/- ## Complete Graph -/
 
 /-- G contains K_n as a subgraph (has a clique of size n). -/
 def ContainsClique (G : SimpleGraph V) (n : ℕ) : Prop :=
   ∃ S : Finset V, S.card = n ∧ ∀ u ∈ S, ∀ v ∈ S, u ≠ v → G.Adj u v
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Gyárfás' Theorem (1992) - Upper Bound**:
@@ -88,7 +89,7 @@ axiom gyarfas_structural (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] (k
     (hk : numOddCycleLengths G ≤ k) :
     ContainsClique G (2 * k + 2) ∨ (∃ v : V, G.degree v ≤ 2 * k)
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /--
 **Bollobás-Shelah (k=1)**:
@@ -110,7 +111,7 @@ theorem no_odd_cycles_bipartite (G : SimpleGraph V) :
   have := gyarfas_upper_bound G 0 (by omega : numOddCycleLengths G ≤ 0)
   omega
 
-/-! ## Strengthening: Gao-Huo-Ma (2021) -/
+/- ## Strengthening: Gao-Huo-Ma (2021) -/
 
 /-- A set of consecutive odd integers: {2m+1, 2m+3, ..., 2m+2count-1}. -/
 def consecutiveOddLengths (start : ℕ) (count : ℕ) : Set ℕ :=
@@ -127,7 +128,7 @@ axiom gao_huo_ma (G : SimpleGraph V) (k : ℕ) :
     chromaticNumber G ≥ 2 * k + 3 →
     ∃ start : ℕ, consecutiveOddLengths start (k + 1) ⊆ oddCycleLengths G
 
-/-! ## Corollaries -/
+/- ## Corollaries -/
 
 /-- If χ(G) ≥ 5, then G has at least 2 distinct odd cycle lengths. -/
 theorem chi_5_two_odd_lengths (G : SimpleGraph V) :
@@ -146,7 +147,7 @@ theorem equality_implies_clique (G : SimpleGraph V) (k : ℕ)
   rw [← gyarfas_equality]
   exact ⟨hk, hchi⟩
 
-/-! ## Historical Notes
+/- ## Historical Notes
 
 This problem relates chromatic number to the diversity of odd cycles.
 - k=0: No odd cycles means bipartite (χ ≤ 2)

@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #921: Chromatic Number and Odd Cycle Girth
 
 Source: https://erdosproblems.com/921
@@ -30,7 +30,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 
 namespace Erdos921
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -74,7 +74,7 @@ Graphs with high chromatic number but large odd girth exist.
 axiom f_well_defined (k n : ℕ) :
     k ≥ 4 → n ≥ k → f k n ≥ 1
 
-/-!
+/-
 ## Part II: The Main Conjecture
 -/
 
@@ -98,7 +98,7 @@ The conjecture is true for all k ≥ 4.
 axiom kierstead_szemeredi_trotter (k : ℕ) :
     erdos_gallai_conjecture k
 
-/-!
+/-
 ## Part III: The Case k = 4
 -/
 
@@ -131,7 +131,7 @@ theorem k4_case :
   obtain ⟨C, hC, hup⟩ := erdos_upper_bound
   exact ⟨c, C, hc, hC, fun n hn => ⟨hlow n hn, hup n hn⟩⟩
 
-/-!
+/-
 ## Part IV: General k Case
 -/
 
@@ -151,7 +151,7 @@ axiom general_upper_bound (k : ℕ) :
     k ≥ 4 →
     ∃ C : ℝ, C > 0 ∧ ∀ n ≥ k, (f k n : ℝ) ≤ C * (n : ℝ) ^ (1 / (k - 2 : ℝ))
 
-/-!
+/-
 ## Part V: Summary
 -/
 

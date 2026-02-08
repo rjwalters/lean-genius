@@ -29,7 +29,7 @@ namespace Erdos480
 
 open Set Filter Real
 
-/-!
+/-
 ## The Main Statement
 
 For any sequence in [0,1], infinitely many pairs (m, n) satisfy the
@@ -44,7 +44,7 @@ def IsUnitIntervalSeq (x : ℕ → ℝ) : Prop :=
 def GoodPairs (x : ℕ → ℝ) (C : ℝ) : Set (ℕ × ℕ) :=
   {p | p.1 ≠ 0 ∧ p.2 ≠ 0 ∧ |x (p.1 + p.2) - x p.1| ≤ 1 / (C * p.2)}
 
-/-!
+/-
 ## Fibonacci Numbers and the Optimal Constant
 
 The optimal constant involves a sum over even-indexed Fibonacci numbers.
@@ -57,7 +57,7 @@ noncomputable def chungGrahamConstant : ℝ :=
 /-- The Chung-Graham constant is approximately 2.535. -/
 axiom chungGraham_approx : 2.5 < chungGrahamConstant ∧ chungGrahamConstant < 2.6
 
-/-!
+/-
 ## Newman's Original Conjecture
 
 Newman asked about the bound 1/√5. This is weaker than what Chung-Graham proved.
@@ -72,7 +72,7 @@ This was proved by Chung and Graham (1984).
 axiom newman_conjecture (x : ℕ → ℝ) (hx : IsUnitIntervalSeq x) :
     (GoodPairs x (Real.sqrt 5)).Infinite
 
-/-!
+/-
 ## The Chung-Graham Theorem
 
 Chung and Graham proved a stronger result with the optimal constant.
@@ -97,7 +97,7 @@ axiom chung_graham_optimal :
     IsGreatest {C : ℝ | C > 0 ∧ ∀ x : ℕ → ℝ, IsUnitIntervalSeq x →
       (GoodPairs x C).Infinite} chungGrahamConstant
 
-/-!
+/-
 ## Connection to the Golden Ratio
 
 The golden ratio φ = (1 + √5)/2 appears because:
@@ -126,7 +126,7 @@ theorem sqrt5_eq_goldenRatio : Real.sqrt 5 = 2 * goldenRatio - 1 := by
   unfold goldenRatio
   ring
 
-/-!
+/-
 ## Fibonacci Connection
 
 The Fibonacci sequence appears through Binet's formula:
@@ -148,7 +148,7 @@ theorem golden_conjugate_prod : goldenRatio * binetPsi = -1 := by
   rw [sq_sqrt (by norm_num : (5 : ℝ) ≥ 0)]
   ring
 
-/-!
+/-
 ## Why √5?
 
 Newman's original bound 1/√5 comes from:
@@ -166,7 +166,7 @@ theorem sqrt5_lt_chungGraham : Real.sqrt 5 < chungGrahamConstant := by
   have h2 := chungGraham_approx.1
   linarith
 
-/-!
+/-
 ## Verified Examples
 
 We verify some basic properties about unit interval sequences.
@@ -190,7 +190,7 @@ theorem harmonic_seq_unit_interval :
     rw [div_le_one hpos]
     linarith
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #480 asks about approximation properties of sequences in [0,1].

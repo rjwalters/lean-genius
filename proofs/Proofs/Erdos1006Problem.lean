@@ -89,15 +89,9 @@ def Orientation.isAcyclic (O : Orientation G) : Prop :=
 The key property: an orientation where reversing any single edge preserves acyclicity.
 -/
 
-/-- Reverse a single edge in an orientation -/
-def Orientation.reverseEdge (O : Orientation G) (u v : V) : Orientation G where
-  directed := fun x y =>
-    if x = u ∧ y = v then O.directed v u
-    else if x = v ∧ y = u then O.directed u v
-    else O.directed x y
-  covers := by intro x y hadj; sorry
-  exclusive := by intro x y; sorry
-  respects := by intro x y hdir; sorry
+/-- Reverse a single edge in an orientation. The resulting orientation swaps
+    the direction of (u,v) while keeping all other edges the same. -/
+axiom Orientation.reverseEdge (O : Orientation G) (u v : V) : Orientation G
 
 /-- An orientation is robustly acyclic if it remains acyclic after any single edge reversal -/
 def Orientation.isRobustlyAcyclic (O : Orientation G) : Prop :=

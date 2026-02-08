@@ -43,7 +43,7 @@ open Real
 
 namespace Erdos165
 
-/-!
+/-
 ## Part I: Ramsey Numbers - Basic Definitions
 
 R(m,n) is the minimum N such that any 2-coloring of K_N contains
@@ -71,7 +71,7 @@ axiom ramsey_base_2 (n : ℕ) (hn : n ≥ 1) : ramseyNumber 2 n = n
 axiom ramsey_recurrence (m n : ℕ) (hm : m ≥ 2) (hn : n ≥ 2) :
     ramseyNumber m n ≤ ramseyNumber (m-1) n + ramseyNumber m (n-1)
 
-/-!
+/-
 ## Part II: R(3,k) - The Triangle vs Independent Set Ramsey Number
 
 R(3,k) is the focus of this problem: minimum N such that any graph on N
@@ -94,7 +94,7 @@ axiom R3_characterization (k : ℕ) (hk : k ≥ 1) :
 axiom R3_small_values :
     R3 3 = 6 ∧ R3 4 = 9 ∧ R3 5 = 14 ∧ R3 6 = 18 ∧ R3 7 = 23 ∧ R3 8 = 28 ∧ R3 9 = 36
 
-/-!
+/-
 ## Part III: Upper Bounds
 
 The upper bound comes from analyzing the independence number of triangle-free graphs.
@@ -130,7 +130,7 @@ axiom shearer_independence_lemma :
       ∃ S : Finset (Fin n), S.card ≥ (1 - ε) * Real.sqrt (n * log n) ∧
         ∀ x y, x ∈ S → y ∈ S → x ≠ y → ¬G.Adj x y
 
-/-!
+/-
 ## Part IV: Lower Bounds - The History of Constant c
 
 The challenge: show R(3,k) ≥ c · k² / log k for as large c as possible.
@@ -176,7 +176,7 @@ Title of paper: "Improving R(3,k) in just two bites"
 axiom hhkp_bound :
     ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (1/2 - ε) * k^2 / log k
 
-/-!
+/-
 ## Part V: The Main Asymptotic Result
 
 Combining upper and lower bounds.
@@ -203,7 +203,7 @@ axiom current_best_bounds :
     (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≥ (1/2 - ε) * k^2 / log k) ∧
     (∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (R3 k : ℝ) ≤ (1 + ε) * k^2 / log k)
 
-/-!
+/-
 ## Part VI: The Triangle-Free Process
 
 The probabilistic construction underlying the lower bounds.
@@ -230,7 +230,7 @@ axiom kim_insight :
         ∃ x y, x ∈ S ∧ y ∈ S ∧ x ≠ y ∧ G.Adj x y) ∧
       N ≥ (1/162 : ℝ) * k^2 / log k - 1
 
-/-!
+/-
 ## Part VII: Conjectures and Open Questions
 -/
 
@@ -252,7 +252,7 @@ def pgmConjecture : Prop :=
 /-- The PGM conjecture is now known to be FALSE (since c ≥ 1/3). -/
 axiom pgm_conjecture_false : ¬pgmConjecture
 
-/-!
+/-
 ## Part VIII: Related Problems
 -/
 
@@ -267,7 +267,7 @@ axiom erdos_986_fixed_s (s : ℕ) (hs : s ≥ 3) :
       ∀ k : ℕ, k ≥ s → c₁ * k^(s-1) / (log k)^(s-2) ≤ ramseyNumber s k ∧
                (ramseyNumber s k : ℝ) ≤ c₂ * k^(s-1) / (log k)^(s-2)
 
-/-!
+/-
 ## Part IX: Main Results Summary
 -/
 
@@ -297,7 +297,6 @@ theorem erdos_165 : ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
   · exact hk₁ k (le_of_max_le_left hk)
   · exact hk₂ k (le_of_max_le_right hk)
 
-/-- The prize ($250) was claimed for establishing the asymptotic order. -/
-axiom prize_claimed : True  -- Kim's 1995 result established the order
+/- The prize ($250) was claimed for establishing the asymptotic order. -/
 
 end Erdos165

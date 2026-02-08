@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #544 — Consecutive Ramsey Number Differences
 
 Erdős and Sós asked: show that R(3, k+1) − R(3, k) → ∞ as k → ∞.
@@ -23,7 +23,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Rat.Basic
 import Mathlib.Tactic
 
-/-! ## Ramsey number R(3, k) -/
+/- ## Ramsey number R(3, k) -/
 
 /-- R(3, k): the minimum n such that every 2-colouring of edges of Kₙ
     contains either a red triangle or a blue Kₖ.
@@ -36,7 +36,7 @@ axiom ramsey3_ge_six (k : ℕ) (hk : 3 ≤ k) : 6 ≤ ramsey3 k
 /-- R(3, k) is monotone increasing: R(3, k) ≤ R(3, k+1). -/
 axiom ramsey3_mono (k : ℕ) : ramsey3 k ≤ ramsey3 (k + 1)
 
-/-! ## Known values -/
+/- ## Known values -/
 
 /-- R(3, 3) = 6. -/
 axiom ramsey3_val_3 : ramsey3 3 = 6
@@ -59,7 +59,7 @@ axiom ramsey3_val_8 : ramsey3 8 = 28
 /-- R(3, 9) = 36. -/
 axiom ramsey3_val_9 : ramsey3 9 = 36
 
-/-! ## Asymptotic bounds -/
+/- ## Asymptotic bounds -/
 
 /-- Kim (1995) lower bound: R(3, k) ≥ c · k² / log k for some c > 0. -/
 axiom kim_lower_bound :
@@ -71,7 +71,7 @@ axiom shearer_upper_bound :
     ∃ C : ℚ, 0 < C ∧ ∃ k₀ : ℕ, ∀ k : ℕ, k₀ ≤ k →
       (ramsey3 k : ℚ) ≤ C * ((k : ℚ) ^ 2 / (Nat.log 2 k : ℚ))
 
-/-! ## Main problems -/
+/- ## Main problems -/
 
 /-- The consecutive difference R(3, k+1) − R(3, k). -/
 def ramseyDiff (k : ℕ) : ℕ := ramsey3 (k + 1) - ramsey3 k

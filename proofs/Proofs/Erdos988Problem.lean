@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #988: Discrepancy on the Sphere
 
 If P ⊆ S² is a subset of the unit sphere, define the discrepancy:
@@ -27,7 +27,7 @@ open Filter Set
 
 namespace Erdos988
 
-/-!
+/-
 ## Overview
 
 This problem concerns **discrepancy theory** on the sphere. The discrepancy measures
@@ -43,7 +43,7 @@ or does D(P) necessarily grow with |P|?
 Schmidt proved the answer is YES: discrepancy must grow, for any dimension d ≥ 2.
 -/
 
-/-!
+/-
 ## Part I: The Sphere and Spherical Caps
 -/
 
@@ -68,7 +68,7 @@ noncomputable def SphericalCap.measure (C : SphericalCap d) : ℝ :=
   -- For d = 2: measure = (1 - h) / 2 where h is the height
   (1 - C.height) / 2
 
-/-!
+/-
 ## Part II: Discrepancy
 -/
 
@@ -95,7 +95,7 @@ noncomputable def discrepancy {d : ℕ} (P : SphereConfiguration d) : ℝ :=
 noncomputable def minDiscrepancy (d n : ℕ) : ℝ :=
   ⨅ P : SphereConfiguration d, if P.card = n ∧ IsOnSphere P then discrepancy P else ⊤
 
-/-!
+/-
 ## Part III: Roth's Theorem (for the Square)
 -/
 
@@ -125,7 +125,7 @@ axiom roth_1954 :
       ∀ P : SquareConfiguration, P.card = n →
         rectangleDiscrepancy P ≥ c * (Real.log n)^(1/4 : ℝ)
 
-/-!
+/-
 ## Part IV: Schmidt's Theorem (for the Sphere)
 -/
 
@@ -144,7 +144,7 @@ axiom schmidt_1969 (d : ℕ) (hd : d ≥ 1) :
 axiom min_discrepancy_tends_to_infinity (d : ℕ) (hd : d ≥ 1) :
     Tendsto (minDiscrepancy d) atTop atTop
 
-/-!
+/-
 ## Part V: The Main Result
 -/
 
@@ -168,7 +168,7 @@ theorem erdos_988_sphere :
     Tendsto (minDiscrepancy 2) atTop atTop :=
   erdos_988_solved 2 (by norm_num)
 
-/-!
+/-
 ## Part VI: Bounds and Rates
 -/
 
@@ -196,7 +196,7 @@ theorem discrepancy_bounds :
         discrepancy P ≤ C * (n : ℝ)^(1/2 : ℝ)) :=
   ⟨sphere_discrepancy_lower_bound, sphere_discrepancy_upper_bound⟩
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #988: SOLVED (YES)**

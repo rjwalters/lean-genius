@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #507 — Heilbronn's Triangle Problem
 
 Let α(n) be the smallest value such that every set of n points in
@@ -22,7 +22,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The area of the triangle determined by three points in ℝ². -/
 noncomputable def triangleArea (p q r : ℝ × ℝ) : ℝ :=
@@ -44,7 +44,7 @@ noncomputable def heilbronn (n : ℕ) : ℝ :=
     ∀ p ∈ P, ∀ q ∈ P, ∀ r ∈ P, p ≠ q → q ≠ r → p ≠ r →
       triangleArea p q r ≥ α }
 
-/-! ## Trivial Bounds -/
+/- ## Trivial Bounds -/
 
 /-- Erdős's observation: α(n) ≫ 1/n² from a greedy argument.
     Place points one at a time; each new point avoids O(n²) thin
@@ -58,7 +58,7 @@ axiom lower_bound_trivial :
 axiom upper_bound_trivial :
     ∃ C > 0, ∀ n : ℕ, 3 ≤ n → heilbronn n ≤ C / (n : ℝ)
 
-/-! ## Komlós–Pintz–Szemerédi Lower Bound -/
+/- ## Komlós–Pintz–Szemerédi Lower Bound -/
 
 /-- The KPS (1982) lower bound: α(n) ≫ (log n)/n².
     This improves the trivial 1/n² bound by a logarithmic factor,
@@ -67,7 +67,7 @@ axiom kps_lower_bound :
     ∃ c > 0, ∀ n : ℕ, 2 ≤ n →
       heilbronn n ≥ c * Real.log n / (n : ℝ) ^ 2
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /-- Komlós–Pintz–Szemerédi (1981): α(n) ≪ n^{-8/7}.
     The first improvement over the trivial 1/n bound, using
@@ -84,7 +84,7 @@ axiom cpz_upper_bound :
     ∃ C > 0, ∀ n : ℕ, 3 ≤ n →
       heilbronn n ≤ C / (n : ℝ) ^ (7/6 : ℝ)
 
-/-! ## Main Open Question -/
+/- ## Main Open Question -/
 
 /-- The gap between (log n)/n² and 1/n^{7/6} is enormous.
     The true exponent β such that α(n) = n^{-β+o(1)} is unknown.
@@ -94,7 +94,7 @@ axiom heilbronn_exponent_range :
       heilbronn n ≤ (n : ℝ) ^ (-(7:ℝ)/6 + ε) ∧
       heilbronn n ≥ (n : ℝ) ^ (-(2:ℝ) - ε)
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /-- In higher dimensions d ≥ 3, the analogous problem asks for
     the minimum volume simplex. Less is known; the gap is wider. -/

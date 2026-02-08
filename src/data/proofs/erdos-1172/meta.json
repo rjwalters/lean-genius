@@ -1,0 +1,171 @@
+{
+  "id": "erdos-1172",
+  "title": "Erdős Problem #1172: Partition Relations under GCH and CH",
+  "slug": "erdos-1172",
+  "description": "Do the partition relations ω₃ → (ω₂, ω₁ + 2)² and related ordinal relations hold under GCH?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1172",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1172Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "graph-theory",
+      "set-theory",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1172,
+    "erdosUrl": "https://erdosproblems.com/1172",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Arithmetic",
+        "description": "From Mathlib.SetTheory.Ordinal.Arithmetic",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Exponential",
+        "description": "From Mathlib.SetTheory.Ordinal.Exponential",
+        "module": "Mathlib.SetTheory.Ordinal.Exponential"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.SetTheory.Cardinal.Basic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "omega1",
+      "omega2",
+      "omega3",
+      "omegaOrd",
+      "OrdPartitionRel",
+      "BalancedPartitionRel",
+      "GCH",
+      "CH",
+      "gch_implies_ch",
+      "question1",
+      "question2",
+      "question3",
+      "question4",
+      "omega1_lt_omega2",
+      "omega2_lt_omega3"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1172, posed by Erdős and Hajnal, concerns unbalanced ordinal partition relations under the Generalized Continuum Hypothesis (GCH) and Continuum Hypothesis (CH). These are fundamental questions in infinitary Ramsey theory about when colorings of pairs from large ordinals must contain monochromatic subsets of specified order types.\n\nThe four specific relations asked about involve ordinals ω₂ and ω₃, testing the boundaries of what partition calculus can prove under standard set-theoretic axioms.\n\nThis problem is catalogued at erdosproblems.com/1172.",
+    "problemStatement": "Do the partition relations ω₃ → (ω₂, ω₁ + 2)² and related ordinal relations hold under GCH?",
+    "proofStrategy": "The formalization is structured in 205 lines of Lean 4 code. It uses 10 axioms for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**The unbalanced ordinal partition relation α → (β, γ)².**: The unbalanced ordinal partition relation α → (β, γ)².",
+      "**The balanced partition relation**: The balanced partition relation: α → (β)₂² means α → (β, β)².",
+      "****Erdős-Dushnik-Miller Theorem** (1941)**: **Erdős-Dushnik-Miller Theorem** (1941): λ → (λ, ω)² for infinite λ.",
+      "****Erdős-Rado strengthening****: **Erdős-Rado strengthening**: κ → (κ, ω + 1)² for regular uncountable κ.",
+      "**ω₃ → (ω₃, ω)² by Erdős-Dushnik-Miller.**: ω₃ → (ω₃, ω)² by Erdős-Dushnik-Miller."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ordinal-and-cardinal-setup",
+      "title": "Ordinal and Cardinal Setup",
+      "summary": "",
+      "startLine": 38,
+      "endLine": 44
+    },
+    {
+      "id": "partition-relation",
+      "title": "Partition Relation",
+      "summary": "OrdPartitionRel, BalancedPartitionRel",
+      "startLine": 45,
+      "endLine": 53
+    },
+    {
+      "id": "set-theoretic-hypotheses",
+      "title": "Set-Theoretic Hypotheses",
+      "summary": "GCH, CH, gch_implies_ch",
+      "startLine": 54,
+      "endLine": 67
+    },
+    {
+      "id": "the-four-open-questions",
+      "title": "The Four Open Questions",
+      "summary": "question1, question2, question3, question4",
+      "startLine": 68,
+      "endLine": 81
+    },
+    {
+      "id": "basic-ordinal-arithmetic",
+      "title": "Basic Ordinal Arithmetic",
+      "summary": "omega1_lt_omega2, omega2_lt_omega3, omega1_lt_omega3, omega_lt_omega1, omega1_pos, omega2_pos, omega3_pos, two_lt_omega",
+      "startLine": 82,
+      "endLine": 115
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "summary": "partition_mono_source, partition_mono_target",
+      "startLine": 116,
+      "endLine": 123
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "erdos_dushnik_miller, erdos_rado_regular",
+      "startLine": 124,
+      "endLine": 134
+    },
+    {
+      "id": "proved-theorems",
+      "title": "Proved Theorems",
+      "summary": "omega3_edm, omega2_edm, q1_weak_from_edm, q1_implies_weak_second, q4_unfold, q2_weakened_first",
+      "startLine": 135,
+      "endLine": 172
+    },
+    {
+      "id": "stepping-up-lemma",
+      "title": "Stepping-Up Lemma",
+      "summary": "stepping_up_negative",
+      "startLine": 173,
+      "endLine": 178
+    },
+    {
+      "id": "independence-results",
+      "title": "Independence Results",
+      "summary": "todorcevic_negative, pfa_positive, partition_independence",
+      "startLine": 179,
+      "endLine": 194
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1172_all_questions, q3_first_target_large, q2_targets_lt_omega3",
+      "startLine": 195,
+      "endLine": 205
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1172 (Partition Relations under GCH and CH) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

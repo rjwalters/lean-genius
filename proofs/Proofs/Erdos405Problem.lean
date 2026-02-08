@@ -32,7 +32,7 @@ namespace Erdos405
 
 open Nat
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 The Diophantine equation (p-1)! + a^{p-1} = p^k.
@@ -55,7 +55,7 @@ def AllSolutions : Set Solution :=
 def IsSolution (p a k : ℕ) : Prop :=
   Nat.Prime p ∧ p ≥ 3 ∧ (p - 1).factorial + a ^ (p - 1) = p ^ k
 
-/-!
+/-
 ## Part 2: The Three Known Solutions
 
 Yu-Liu (1996) proved these are the ONLY solutions.
@@ -92,7 +92,7 @@ theorem solution_3 : IsSolution 5 1 2 := by
 def CompleteSolutionList : List (ℕ × ℕ × ℕ) :=
   [(3, 1, 1), (3, 5, 3), (5, 1, 2)]
 
-/-!
+/-
 ## Part 3: The Finiteness Results
 -/
 
@@ -111,7 +111,7 @@ axiom yu_liu_1996 :
 axiom exactly_three_solutions :
     { (p, a, k) : ℕ × ℕ × ℕ | IsSolution p a k }.ncard = 3
 
-/-!
+/-
 ## Part 4: Wilson's Theorem Connection
 
 (p-1)! ≡ -1 (mod p) for prime p.
@@ -130,7 +130,7 @@ axiom fermat_little (p a : ℕ) (hp : Nat.Prime p) (ha : ¬p ∣ a) :
 axiom sum_divisible_by_p (p a : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) (ha : ¬p ∣ a) :
     p ∣ (p - 1).factorial + a ^ (p - 1)
 
-/-!
+/-
 ## Part 5: The Exceptional Case p ∣ a
 -/
 
@@ -145,7 +145,7 @@ axiom divisible_case_analysis (p a k : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3)
     (ha : p ∣ a) (heq : (p - 1).factorial + a ^ (p - 1) = p ^ k) :
     k ≤ p - 1
 
-/-!
+/-
 ## Part 6: p-adic Analysis
 
 The p-adic valuation constrains solutions.
@@ -164,7 +164,7 @@ axiom legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
 axiom factorial_padic_zero (p : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) :
     padicValNat p (p - 1).factorial = 0
 
-/-!
+/-
 ## Part 7: Why Only These Solutions?
 
 Analysis of why p ∈ {3, 5} are special.
@@ -200,7 +200,7 @@ theorem p_equals_5_analysis :
   · norm_num at hp
   · exact ⟨ha, hk⟩
 
-/-!
+/-
 ## Part 8: General Perfect Power Question
 
 Erdős-Graham: Is (p-1)! + a^{p-1} rarely a perfect power?
@@ -222,7 +222,7 @@ axiom erdos_graham_conjecture :
     ∀ p : ℕ, Nat.Prime p → p ≥ 7 → ∀ a k : ℕ, k ≥ 2 →
       (p - 1).factorial + a ^ (p - 1) ≠ (p ^ k)
 
-/-!
+/-
 ## Part 9: Main Problem Statement
 -/
 
@@ -237,7 +237,7 @@ theorem erdos_405_statement :
   · exact brindza_erdos_1991
   · exact yu_liu_1996
 
-/-!
+/-
 ## Part 10: Summary
 -/
 

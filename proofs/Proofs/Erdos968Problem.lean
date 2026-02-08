@@ -31,7 +31,7 @@ namespace Erdos968
 open Nat Filter Real
 open scoped BigOperators
 
-/-!
+/-
 ## The Normalized Prime Sequence
 
 The sequence uₙ = pₙ/n where pₙ is the n-th prime.
@@ -46,7 +46,7 @@ By the Prime Number Theorem, pₙ ~ n log n, so u(n) ~ log n.
 noncomputable def u (n : ℕ) : ℝ :=
   (n.nth Nat.Prime : ℝ) / (n + 1)
 
-/-!
+/-
 ## Natural Density
 
 A set S ⊆ ℕ has natural density d if |{k ≤ n : k ∈ S}| / n → d as n → ∞.
@@ -56,7 +56,7 @@ We say S has positive density if this limit exists and is > 0.
 /-- A set has positive natural density (axiomatized for simplicity). -/
 axiom Set.HasPosDensity : Set ℕ → Prop
 
-/-!
+/-
 ## The Main Questions
 
 Erdős asked about the behavior of "increasing" vs "decreasing" steps
@@ -72,7 +72,7 @@ def decreasingSteps : Set ℕ := {n | u n > u (n + 1)}
 /-- The set of n where uₙ = uₙ₊₁ (flat steps) - should be rare. -/
 def flatSteps : Set ℕ := {n | u n = u (n + 1)}
 
-/-!
+/-
 ## Known Results (Erdős-Prachar 1961)
 -/
 
@@ -96,7 +96,7 @@ the normalized prime ratio decreases.
 -/
 axiom erdos_prachar_decreasing_density : Set.HasPosDensity decreasingSteps
 
-/-!
+/-
 ## The Open Question
 
 The main question of Erdős Problem #968.
@@ -115,7 +115,7 @@ for one doesn't immediately give it for the other.
 -/
 axiom erdos_968_open : Prop  -- unknown: Set.HasPosDensity increasingSteps
 
-/-!
+/-
 ## Related Questions: Triples
 
 Erdős also asked about consecutive increasing or decreasing triples.
@@ -139,7 +139,7 @@ n with uₙ > uₙ₊₁ > uₙ₊₂?
 -/
 axiom decreasing_triples_infinite_open : Prop  -- unknown: decreasingTriples.Infinite
 
-/-!
+/-
 ## Prime Number Theorem Connection
 
 The behavior of uₙ = pₙ/n is governed by the Prime Number Theorem.
@@ -154,7 +154,7 @@ This is axiomatized as the full proof requires PNT from Mathlib.
 axiom u_asymptotic_log : ∀ ε > 0, ∀ᶠ n in atTop,
     |u n - Real.log n| < ε * Real.log n
 
-/-!
+/-
 ## Verified Examples
 
 We verify some basic properties about the normalized prime sequence.
@@ -200,7 +200,7 @@ theorem zero_in_decreasing : 0 ∈ decreasingSteps := first_step_decreasing
 /-- 1 is in increasingSteps (since u(1) < u(2)). -/
 theorem one_in_increasing : 1 ∈ increasingSteps := second_step_increasing
 
-/-!
+/-
 ## Why the Asymmetry?
 
 The question of why decreasing steps have been proved to have positive density
@@ -221,7 +221,7 @@ The distribution of prime gaps is irregular, making the density question hard.
 theorem increasing_iff_gap_large (n : ℕ) :
     n ∈ increasingSteps ↔ u n < u (n + 1) := Iff.rfl
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #968 studies the normalized prime sequence uₙ = pₙ/n.

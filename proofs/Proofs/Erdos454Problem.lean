@@ -32,7 +32,7 @@ namespace Erdos454
 
 open Nat Filter
 
-/-! ## Part I: The nth Prime Function -/
+/- ## Part I: The nth Prime Function -/
 
 /-- The k-th prime number (0-indexed: p_0 = 2, p_1 = 3, p_2 = 5, ...). -/
 noncomputable def nthPrime (k : ℕ) : ℕ := k.nth Prime
@@ -56,7 +56,7 @@ theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime := Nat.prime_nth_prime k
 /-- The nth prime sequence is strictly increasing. -/
 theorem nthPrime_strictMono : StrictMono nthPrime := Nat.nth_prime_strictMono
 
-/-! ## Part II: The Function f(n) -/
+/- ## Part II: The Function f(n) -/
 
 /-- The sum of symmetric primes around position n.
 
@@ -82,7 +82,7 @@ noncomputable def f' (n : ℕ) : ℕ :=
 theorem f_eq_f' (n : ℕ) : f n = f' n := by
   sorry
 
-/-! ## Part III: The Deviation from 2p_n -/
+/- ## Part III: The Deviation from 2p_n -/
 
 /-- The deviation of f(n) from twice the n-th prime.
 
@@ -98,7 +98,7 @@ noncomputable def deviationENat (n : ℕ) : ℕ∞ :=
     ((f n : ℤ) - 2 * (nthPrime n : ℤ)).toNat
   else 0
 
-/-! ## Part IV: Understanding Symmetric Prime Sums -/
+/- ## Part IV: Understanding Symmetric Prime Sums -/
 
 /-- For i = 0: p_n + p_n = 2p_n, so this term contributes deviation 0. -/
 theorem symmetric_sum_at_zero (n : ℕ) (hn : n > 0) :
@@ -117,7 +117,7 @@ theorem asymmetric_behavior (n i : ℕ) (hi : 0 < i) (hin : i < n) :
   · exact nthPrime_strictMono (by omega)
   · exact nthPrime_strictMono (by omega)
 
-/-! ## Part V: Pomerance's Lower Bound -/
+/- ## Part V: Pomerance's Lower Bound -/
 
 /-- **Pomerance (1979)**: The limsup of deviations is at least 2.
 
@@ -136,7 +136,7 @@ theorem infinitely_many_deviation_ge_2 :
     {n : ℕ | deviationENat n ≥ 2}.Infinite := by
   sorry
 
-/-! ## Part VI: The Main Conjecture -/
+/- ## Part VI: The Main Conjecture -/
 
 /-- **Erdős Problem #454 (Main Conjecture)**
 
@@ -156,7 +156,7 @@ theorem conjecture_iff_not_negation :
     Erdos454Conjecture ↔ ¬Erdos454Negation := by
   sorry
 
-/-! ## Part VII: Heuristic Analysis -/
+/- ## Part VII: Heuristic Analysis -/
 
 /-- Heuristic: If prime gaps grow like log p, then p_{n+i} ≈ p_n + i * log(p_n).
     This gives p_{n+i} + p_{n-i} ≈ 2p_n for all i (gaps cancel).
@@ -173,7 +173,7 @@ theorem gap_deviation_connection :
     (∀ n, deviation n ≤ 0) → ¬∃ G : ℕ, G > 0 ∧ ∀ k, nthPrime (k + 1) - nthPrime k < G := by
   sorry
 
-/-! ## Part VIII: Examples -/
+/- ## Part VIII: Examples -/
 
 /-- Example: Computing f(3) = min(p_3 + p_3, p_4 + p_2, p_5 + p_1)
                            = min(5+5, 7+3, 11+3) = min(10, 10, 14) = 10.
@@ -190,7 +190,7 @@ theorem example_twice_p3 : 2 * nthPrime 3 = 10 := by
 theorem example_deviation_3 : deviation 3 = 0 := by
   sorry
 
-/-! ## Part IX: Related Problems -/
+/- ## Part IX: Related Problems -/
 
 /-- Problem #458 is related: it asks about consecutive prime sums.
     Both involve understanding how prime sums deviate from expectations. -/
@@ -202,7 +202,7 @@ def relatedToErdos458 : Prop :=
 axiom prime_number_theorem_asymptotic :
     Tendsto (fun n => (nthPrime n : ℝ) / (n * Real.log n)) atTop (𝓝 1)
 
-/-! ## Part X: What Would Resolve the Conjecture -/
+/- ## Part X: What Would Resolve the Conjecture -/
 
 /-- To prove the conjecture (limsup = ∞), one would need to show:
     For every M, there exists n with f(n) - 2p_n > M.
@@ -218,7 +218,7 @@ def witnessForConjecture (M : ℕ) : Prop :=
 def witnessForNegation (M : ℕ) : Prop :=
   ∀ᶠ n in atTop, f n ≤ 2 * nthPrime n + M
 
-/-! ## Part XI: The Prime Number Graph -/
+/- ## Part XI: The Prime Number Graph -/
 
 /-- Pomerance's paper "The Prime Number Graph" studies the graph
     where vertex n is connected to m if p_n + p_m = p_k for some k.
@@ -241,7 +241,7 @@ def goldbachSymmetric : Prop :=
 
 end Erdos454
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #454 on prime sum deviations.

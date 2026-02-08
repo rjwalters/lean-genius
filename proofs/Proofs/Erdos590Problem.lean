@@ -36,7 +36,7 @@ namespace Erdos590
 
 open Ordinal
 
-/-! ## Part I: Ordinal Ramsey Theory Background -/
+/- ## Part I: Ordinal Ramsey Theory Background -/
 
 /-- The ordinal Ramsey property α → (β, n)²:
     Every 2-coloring of pairs from α contains either a monochromatic
@@ -50,7 +50,7 @@ axiom OrdinalRamseyProperty (α β : Ordinal.{0}) (n : ℕ) : Prop
 /-- Notation for the arrow relation α → (β, n)². -/
 notation:50 α " →ₒ (" β ", " n ")²" => OrdinalRamseyProperty α β n
 
-/-! ## Part II: Specker's Results (1957) -/
+/- ## Part II: Specker's Results (1957) -/
 
 /-- Specker's positive result: ω² → (ω², 3)² holds.
 
@@ -76,7 +76,7 @@ theorem specker_omega_cubed_fails : ¬ (ω ^ 3) →ₒ (ω ^ 3, 3)² :=
 theorem specker_omega_fourth_fails : ¬ (ω ^ 4) →ₒ (ω ^ 4, 3)² :=
   specker_omega_power_n_fails 4 (by norm_num)
 
-/-! ## Part III: Chang's Theorem (1972) -/
+/- ## Part III: Chang's Theorem (1972) -/
 
 /-- **Chang's Theorem (Erdős Problem #590, Prize: $250)**
 
@@ -93,7 +93,7 @@ axiom chang_omega_omega :
 /-- Erdős Problem #590 is solved: the answer is YES. -/
 theorem erdos_590_solved : (ω ^ ω) →ₒ (ω ^ ω, 3)² := chang_omega_omega
 
-/-! ## Part IV: Milner-Larson Extension -/
+/- ## Part IV: Milner-Larson Extension -/
 
 /-- Milner's extension: ω^ω → (ω^ω, m)² holds for ANY finite m.
 
@@ -111,7 +111,7 @@ theorem omega_omega_to_4 : (ω ^ ω) →ₒ (ω ^ ω, 4)² :=
 theorem omega_omega_to_10 : (ω ^ ω) →ₒ (ω ^ ω, 10)² :=
   milner_larson_extension 10 (by norm_num)
 
-/-! ## Part V: The Ordinal Hierarchy -/
+/- ## Part V: The Ordinal Hierarchy -/
 
 /-- ω is the first infinite ordinal, the order type of ℕ. -/
 theorem omega_positive : 0 < ω := Ordinal.omega0_pos
@@ -141,7 +141,7 @@ theorem omega_power_chain (n : ℕ) (hn : n ≥ 1) : ω ^ n < ω ^ ω := by
   · exact Ordinal.one_lt_omega0
   · exact Ordinal.nat_lt_omega0 n
 
-/-! ## Part VI: The Pattern -/
+/- ## Part VI: The Pattern -/
 
 /-- Summary of the Ramsey property α → (α, 3)²:
 
@@ -167,7 +167,7 @@ theorem pattern_summary :
     (ω ^ ω) →ₒ (ω ^ ω, 3)² := by
   exact ⟨specker_omega_squared, specker_omega_cubed_fails, chang_omega_omega⟩
 
-/-! ## Part VII: Connection to Related Problems -/
+/- ## Part VII: Connection to Related Problems -/
 
 /-- Problem #591 asks about the next case: ω^(ω²) → (ω^(ω²), 3)².
     This remains OPEN with a $250 prize. -/
@@ -179,7 +179,7 @@ def problem_591_conjecture : Prop :=
 def problem_592_related : Prop :=
   ∀ α : Ordinal, α.IsLimit → (ω ^ α) →ₒ (ω ^ α, 3)²
 
-/-! ## Part VIII: Ordinal Arithmetic Identities -/
+/- ## Part VIII: Ordinal Arithmetic Identities -/
 
 /-- ω^ω is strictly larger than any ω^n. -/
 theorem omega_omega_dominates (n : ℕ) : ω ^ n < ω ^ ω := by
@@ -199,7 +199,7 @@ theorem omega_omega_squared_form :
 
 end Erdos590
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #590 on ordinal Ramsey theory for ω^ω.

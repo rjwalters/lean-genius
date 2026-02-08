@@ -1,0 +1,85 @@
+{
+  "id": "erdos-1144",
+  "title": "Erdős Problem #1144: Partial Sums of Random Multiplicative Functions",
+  "slug": "erdos-1144",
+  "description": "Let f be a random completely multiplicative function, where for each prime p",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1144",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1144Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "graph-theory",
+      "probability",
+      "analysis",
+      "hypergraph",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 3,
+    "erdosNumber": 1144,
+    "erdosUrl": "https://erdosproblems.com/1144",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Prime.Basic",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsCompletelyMultiplicative",
+      "IsRademacherMultiplicative",
+      "partialSum",
+      "rademacher_one",
+      "rademacher_values_pm1",
+      "rademacher_abs_one",
+      "completely_mult_zero",
+      "erdos_1144_conjecture",
+      "erdos_1144_probabilistic",
+      "atherfold_upper_bound",
+      "partialSum_zero",
+      "atherfold_implies_subpolynomial",
+      "partialSum_trivial_bound",
+      "conjecture_and_atherfold_pinch"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1144 concerns partial sums of random multiplicative functions. This problem remains OPEN.\n\nKnown results include: - **Atherfold (2025)**: Almost surely, ∑_{m ≤ N} f(m) ≪ N^{1/2} (log N)^{1+o(1)}. - #520: Variant with Rademacher multiplicative functions vanishing on non-squarefree integers.\n\nThis problem is catalogued at erdosproblems.com/1144.",
+    "problemStatement": "Let f be a random completely multiplicative function, where for each prime p",
+    "proofStrategy": "The formalization is structured in 158 lines of Lean 4 code. It uses 1 axiom for results that require external references or deep mathematical arguments beyond Mathlib. There are 3 sorry placeholders for structural results that can be filled in with additional work. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**A completely multiplicative function f**: A completely multiplicative function f : ℕ → ℤ satisfies",
+      "**A Rademacher multiplicative function takes values in {-1, 1} on primes**: A Rademacher multiplicative function takes values in {-1, 1} on primes",
+      "**The partial sum ∑_{m=1}^{N} f(m).**: The partial sum ∑_{m=1}^{N} f(m).",
+      "**A Rademacher multiplicative function satisfies f(1) = 1.**: A Rademacher multiplicative function satisfies f(1) = 1.",
+      "**A Rademacher multiplicative function takes values in {-1, 1} on all**: A Rademacher multiplicative function takes values in {-1, 1} on all"
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1144",
+      "startLine": 1,
+      "endLine": 158
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1144 (Partial Sums of Random Multiplicative Functions) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

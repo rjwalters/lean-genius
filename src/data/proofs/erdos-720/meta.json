@@ -63,7 +63,78 @@
       "**Related Problem:** #559 generalizes to bounded-degree graphs"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-720-size-ramsey-",
+      "title": "Erdős Problem #720: Size Ramsey Numbers of Paths and Cycles",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Erdős Problem #720: Size Ramsey Numbers of Paths and Cycles"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 42,
+      "endLine": 74,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "size-ramsey-numbers",
+      "title": "Size Ramsey Numbers",
+      "startLine": 75,
+      "endLine": 104,
+      "summary": "Size Ramsey Numbers"
+    },
+    {
+      "id": "erd-s-s-original-questions",
+      "title": "Erdős's Original Questions",
+      "startLine": 105,
+      "endLine": 128,
+      "summary": "Erdős's Original Questions"
+    },
+    {
+      "id": "beck-s-theorem",
+      "title": "Beck's Theorem",
+      "startLine": 129,
+      "endLine": 153,
+      "summary": "Beck's Theorem"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "startLine": 154,
+      "endLine": 178,
+      "summary": "Lower Bounds"
+    },
+    {
+      "id": "answers-to-erd-s-s-questions",
+      "title": "Answers to Erdős's Questions",
+      "startLine": 179,
+      "endLine": 195,
+      "summary": "Answers to Erdős's Questions"
+    },
+    {
+      "id": "the-surprising-linear-bound",
+      "title": "The Surprising Linear Bound",
+      "startLine": 196,
+      "endLine": 212,
+      "summary": "The Surprising Linear Bound"
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 213,
+      "endLine": 234,
+      "summary": "Related Results"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 235,
+      "endLine": 269,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #720 asks about the asymptotic growth of size Ramsey numbers for paths and cycles. Beck (1983) proved both R̂(Pₙ) and R̂(Cₙ) are linear in n — much stronger than the original conjectures. The answer to 'R̂(Pₙ)/n → ∞?' is NO (it's bounded), while 'R̂(Pₙ)/n² → 0?' and 'R̂(Cₙ) = o(n²)?' are both YES.",
     "implications": "**Connections**\n\n1. **Ramsey Theory:** Size Ramsey extends classical Ramsey to edge counts\n\n2. **Problem #559:** Generalization to bounded-degree graphs\n\n3. **Probabilistic Method:** Beck's proof uses probabilistic techniques\n\n4. **Exact Constants:** Determining the precise constant remains open",

@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #600: Edge-Triangle Containment Thresholds
 
 Source: https://erdosproblems.com/600
@@ -33,7 +33,7 @@ open Nat Finset Filter
 
 namespace Erdos600
 
-/-! ## Part I: Graph Definitions -/
+/- ## Part I: Graph Definitions -/
 
 /-- **Simple Graph:**
 A graph on n vertices represented by its edge set. -/
@@ -53,7 +53,7 @@ def IsTriangle {n : ℕ} (G : Graph n) (u v w : Fin n) : Prop :=
   u ≠ v ∧ v ≠ w ∧ u ≠ w ∧
   (u, v) ∈ G.edges ∧ (v, w) ∈ G.edges ∧ (u, w) ∈ G.edges
 
-/-! ## Part II: Edge-Triangle Containment -/
+/- ## Part II: Edge-Triangle Containment -/
 
 /-- **Triangle Count for an Edge:**
 Number of triangles containing a specific edge {u, v}. -/
@@ -75,7 +75,7 @@ G has at least one edge contained in at least r triangles. -/
 def HasEdgeInRTriangles {n : ℕ} (G : Graph n) (r : ℕ) : Prop :=
   ∃ u v : Fin n, (u, v) ∈ G.edges ∧ triangleCount G u v ≥ r
 
-/-! ## Part III: The e(n,r) Function -/
+/- ## Part III: The e(n,r) Function -/
 
 /-- **The Function e(n,r):**
 Minimal number of edges such that every graph on n vertices with
@@ -89,7 +89,7 @@ The set is non-empty (bounded by n²/2). -/
 axiom e_well_defined (n r : ℕ) (hn : n ≥ 3) (hr : r ≥ 1) :
   e n r ≤ n * (n - 1) / 2
 
-/-! ## Part IV: Ruzsa-Szemerédi Result -/
+/- ## Part IV: Ruzsa-Szemerédi Result -/
 
 /-- **Ruzsa-Szemerédi (1978):**
 e(n, r) = o(n²) for any fixed r.
@@ -98,7 +98,7 @@ The proof uses the triangle removal lemma. -/
 axiom ruzsa_szemeredi (r : ℕ) (hr : r ≥ 2) :
   ∀ ε > 0, ∀ᶠ n in atTop, (e n r : ℝ) < ε * n^2
 
-/-! ## Part V: The Two Open Questions -/
+/- ## Part V: The Two Open Questions -/
 
 /-- **Question 1:**
 Does e(n, r+1) - e(n, r) → ∞ as n → ∞?
@@ -113,7 +113,7 @@ def Question2 : Prop :=
   ∀ r : ℕ, r ≥ 2 →
     ∀ ε > 0, ∀ᶠ n in atTop, |((e n (r + 1) : ℝ) / (e n r : ℝ)) - 1| < ε
 
-/-! ## Part VI: Monotonicity -/
+/- ## Part VI: Monotonicity -/
 
 /-- **Monotonicity in r:**
 e(n, r) ≤ e(n, r+1) for all n, r.
@@ -133,7 +133,7 @@ theorem questions_together (h1 : Question1) (h2 : Question2) :
     (∀ r ≥ 2, ∀ ε > 0, ∀ᶠ n in atTop, |((e n (r + 1) : ℝ) / (e n r : ℝ)) - 1| < ε) :=
   ⟨h1, h2⟩
 
-/-! ## Part VII: Known Bounds -/
+/- ## Part VII: Known Bounds -/
 
 /-- **Turán number bound:**
 e(n, r) ≤ ⌊n²/4⌋ since ex(n, K₃) = ⌊n²/4⌋ and e(n,r) only considers
@@ -153,7 +153,7 @@ The threshold is nearly quadratic from below. -/
 axiom lower_bound (r : ℕ) (hr : r ≥ 2) :
   ∃ c : ℝ, c > 0 ∧ ∀ᶠ n in atTop, (e n r : ℝ) ≥ c * n^(2 - 1 / Real.log (Real.log n))
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /-- **Summary of Erdős Problem #600:**
 

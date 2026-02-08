@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #117 — Covering Groups by Abelian Subgroups
 
 Let h(n) be the minimum number of Abelian subgroups needed to cover
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A group has the n-commuting property if every subset of size > n
     contains two distinct commuting elements. -/
@@ -41,7 +41,7 @@ noncomputable def abelianCoverNumber (n : ℕ) : ℕ :=
       (∀ i, IsAbelianSubgroup G (H i)) ∧
       ∀ g : G, ∃ i, g ∈ H i}
 
-/-! ## Main Problem -/
+/- ## Main Problem -/
 
 /-- **Erdős Problem #117**: estimate h(n). Known: exponential in n. -/
 axiom erdos_117_problem :
@@ -50,7 +50,7 @@ axiom erdos_117_problem :
       c₁ ^ n < (abelianCoverNumber n : ℝ) ∧
       (abelianCoverNumber n : ℝ) < c₂ ^ n
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Pyber (1987)**: h(n) is exponential. There exist c₂ > c₁ > 1 with
     c₁^n < h(n) < c₂^n. The gap between c₁ and c₂ is open. -/
@@ -65,17 +65,15 @@ axiom pyber_1987 :
 axiom isaacs_lower :
   ∃ c : ℝ, c > 1 ∧ ∀ n : ℕ, n > 0 → c ^ n ≤ (abelianCoverNumber n : ℝ)
 
-/-! ## Observations -/
+/- ## Observations -/
 
 /-- **Trivial Case n = 1**: every pair of elements commutes, so G is Abelian.
     Then h(1) = 1. -/
 axiom trivial_case : abelianCoverNumber 1 = 1
 
-/-- **Connection to Ramsey Theory**: the n-commuting property is a Ramsey-type
+/- **Connection to Ramsey Theory**: the n-commuting property is a Ramsey-type
     condition on the group. The covering number h(n) measures how far the group
     is from being globally Abelian. -/
-axiom ramsey_connection : True
 
-/-- **Open**: determine the exact base of the exponential growth. Is there
+/- **Open**: determine the exact base of the exponential growth. Is there
     a single constant c > 1 with h(n) = Θ(c^n)? -/
-axiom exact_base_open : True

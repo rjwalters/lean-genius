@@ -22,7 +22,7 @@ open SimpleGraph
 
 namespace Erdos79
 
-/-!
+/-
 ## Ramsey Numbers
 
 The Ramsey number R(G,H) is the minimum n such that any 2-coloring
@@ -42,7 +42,7 @@ where
     use fun _ => 0
     trivial
 
-/-!
+/-
 ## Graphs with No Isolated Vertices
 
 We consider graphs H where every vertex has degree ≥ 1.
@@ -58,7 +58,7 @@ def noIsolatedVertices (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
 def edgeCount (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
   G.edgeFinset.card
 
-/-!
+/-
 ## Ramsey Size Linearity
 
 A graph G is Ramsey size linear if R(G,H) = O(m) where m = |E(H)|
@@ -75,7 +75,7 @@ def isRamseySizeLinear (G : SimpleGraph ℕ) : Prop :=
 def isRamseySizeSuperlinear (G : SimpleGraph ℕ) : Prop :=
   ¬ isRamseySizeLinear G
 
-/-!
+/-
 ## Subgraphs and the Hereditary Property
 
 The property of being Ramsey size linear is hereditary:
@@ -90,7 +90,7 @@ def isProperSubgraph (H G : SimpleGraph V) : Prop :=
 axiom ramsey_linear_hereditary (G H : SimpleGraph ℕ) :
     isProperSubgraph H G → isRamseySizeLinear G → isRamseySizeLinear H
 
-/-!
+/-
 ## Minimally Non-Ramsey-Size-Linear Graphs
 
 A graph is minimally non-Ramsey-size-linear if it fails the property
@@ -104,7 +104,7 @@ def isMinimallyNonLinear (G : SimpleGraph ℕ) : Prop :=
   isRamseySizeSuperlinear G ∧
   ∀ H : SimpleGraph ℕ, isProperSubgraph H G → isRamseySizeLinear H
 
-/-!
+/-
 ## The Complete Graph K₄
 
 K₄ is the unique known explicit example.
@@ -131,7 +131,7 @@ theorem K4_is_minimal : isMinimallyNonLinear (completeGraph 4) := by
   · intro H hH
     exact K4_subgraphs_linear H hH
 
-/-!
+/-
 ## The Main Question
 
 Erdős, Faudree, Rousseau, and Schelp (1993) asked whether
@@ -146,7 +146,7 @@ def minimalNonLinearGraphs : Set (SimpleGraph ℕ) :=
 def erdos_79_question : Prop :=
   minimalNonLinearGraphs.Infinite
 
-/-!
+/-
 ## Wigderson's Theorem (2024)
 
 Wigderson proved that infinitely many such graphs exist,
@@ -160,7 +160,7 @@ axiom wigderson_theorem : erdos_79_question
 /-- Erdős Problem #79 is SOLVED. -/
 theorem erdos_79_solved : erdos_79_question := wigderson_theorem
 
-/-!
+/-
 ## The Explicit Construction Problem
 
 Despite Wigderson's theorem, only K₄ is explicitly known.
@@ -183,7 +183,7 @@ def explicit_construction_open : Prop :=
   ∃ G : SimpleGraph ℕ, isMinimallyNonLinear G ∧
     G ≠ completeGraph 4  -- Need proper embedding
 
-/-!
+/-
 ## Why K₄ is Special
 
 K₄ has exactly 6 edges and 4 vertices. Its proper subgraphs
@@ -202,7 +202,7 @@ axiom paths_linear (n : ℕ) : isRamseySizeLinear (pathGraph n)
 where
   pathGraph : ℕ → SimpleGraph ℕ := fun _ => ⊥  -- Placeholder
 
-/-!
+/-
 ## Antichain Structure
 
 Minimally non-Ramsey-size-linear graphs form an antichain
@@ -216,7 +216,7 @@ theorem minimal_form_antichain :
     G ≠ H → ¬ isProperSubgraph G H ∧ ¬ isProperSubgraph H G := by
   sorry
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #79 on minimally non-Ramsey-size-linear graphs.

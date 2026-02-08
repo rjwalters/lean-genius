@@ -29,7 +29,7 @@ open Nat Filter
 
 namespace Erdos1101
 
-/-!
+/-
 ## Core Definitions
 
 We define the key objects: the sieved set A, the counting index t,
@@ -51,7 +51,7 @@ This measures how many terms of u have product at most x. -/
 noncomputable def t (u : ℕ → ℕ) (x : ℕ) : ℕ :=
   sSup { k | ∏ i ∈ Finset.range k, u i ≤ x }
 
-/-!
+/-
 ## The "Good Sequence" Predicate
 
 A sequence u is "good" if it satisfies four conditions:
@@ -74,7 +74,7 @@ def IsGood (u : ℕ → ℕ) : Prop :=
     ∀ k, A u k < x →
       (A u (k + 1) : ℝ) - A u k < (1 + ε) * (t u x : ℝ) * (∏' i : ℕ, (1 - 1 / (u i : ℝ)))⁻¹
 
-/-!
+/-
 ## The Conjectures
 
 Erdős conjectured:
@@ -97,7 +97,7 @@ This remains OPEN. -/
 axiom erdos_1101_yes_subexponential :
     ∃ u, IsGood u ∧ (fun n => Real.log (u n : ℝ)) =o[atTop] (fun n => (n : ℝ))
 
-/-!
+/-
 ## Known Results
 
 Erdős proved the existence of SOME good sequence (using primes).
@@ -120,7 +120,7 @@ axiom sieve_lower_bound (u : ℕ → ℕ)
     ∀ᶠ x in atTop, ∃ k, A u k < x ∧
       (A u (k + 1) : ℝ) - A u k > (1 - 1) * (t u x : ℝ) * (∏' i : ℕ, (1 - 1 / (u i : ℝ)))⁻¹
 
-/-!
+/-
 ## Related Problem: Prime Squares
 
 The strong form of Problem #208 asks whether the sequence of prime squares

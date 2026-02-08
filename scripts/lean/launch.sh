@@ -3,13 +3,13 @@
 # Lean Genius Launch - Start/stop/scale the mathematical agent team
 #
 # Usage:
-#   ./scripts/lean/launch.sh start [--erdos N] [--aristotle N] [--researcher N] [--seeker N] [--deployer N]
+#   ./scripts/lean/launch.sh start [--enricher N] [--aristotle N] [--researcher N] [--seeker N] [--deployer N]
 #   ./scripts/lean/launch.sh stop [--force]
 #   ./scripts/lean/launch.sh health
-#   ./scripts/lean/launch.sh spawn erdos|aristotle|researcher|seeker|deployer
-#   ./scripts/lean/launch.sh scale erdos|researcher|seeker N
+#   ./scripts/lean/launch.sh spawn enricher|aristotle|researcher|seeker|deployer
+#   ./scripts/lean/launch.sh scale enricher|researcher|seeker N
 #   ./scripts/lean/launch.sh status
-#   ./scripts/lean/launch.sh daemon [--interval N] [--erdos N] [--researcher N] [...]
+#   ./scripts/lean/launch.sh daemon [--interval N] [--enricher N] [--researcher N] [...]
 #
 
 set -euo pipefail
@@ -42,15 +42,15 @@ STUCK_CPU_THRESHOLD="0.5"
 DEFAULT_DAEMON_INTERVAL=60
 RESPAWN_COOLDOWN_SECONDS=300  # 5 minutes between respawns of same agent
 
-# Default pool sizes (Erdos quality repair campaign resumed 2026-01-27)
-DEFAULT_ERDOS=2
+# Default pool sizes
+DEFAULT_ENRICHER=2
 DEFAULT_ARISTOTLE=1
 DEFAULT_RESEARCHER=2
 DEFAULT_SEEKER=1
 DEFAULT_DEPLOYER=1
 
 # Max pool sizes
-MAX_ERDOS=5
+MAX_ENRICHER=5
 MAX_ARISTOTLE=2
 MAX_RESEARCHER=5
 MAX_SEEKER=1
@@ -71,7 +71,7 @@ Usage:
   $0 daemon [options]    Run continuous monitoring daemon
 
 Start Options:
-  --erdos N              Number of Erdős enhancers (default: $DEFAULT_ERDOS, max: $MAX_ERDOS)
+  --enricher N           Number of Enrichers (default: $DEFAULT_ENRICHER, max: $MAX_ENRICHER)
   --aristotle N          Number of Aristotle agents (default: $DEFAULT_ARISTOTLE, max: $MAX_ARISTOTLE)
   --researcher N         Number of Researchers (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
   --seeker N             Number of Seeker agents (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
@@ -82,14 +82,14 @@ Stop Options:
 
 Daemon Options:
   --interval N           Seconds between health check cycles (default: $DEFAULT_DAEMON_INTERVAL)
-  --erdos N              Initial Erdős enhancer count (default: $DEFAULT_ERDOS, max: $MAX_ERDOS)
+  --enricher N           Initial Enricher count (default: $DEFAULT_ENRICHER, max: $MAX_ENRICHER)
   --aristotle N          Initial Aristotle agent count (default: $DEFAULT_ARISTOTLE, max: $MAX_ARISTOTLE)
   --researcher N         Initial Researcher count (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
   --seeker N             Initial Seeker agent count (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
   --deployer N           Initial Deployer count (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
 
 Agent Types:
-  erdos       Enhances Erdős problem stubs with Lean formalizations
+  enricher    Enriches proof gallery entries with deeper annotations and commentary
   aristotle   Manages proof search queue for Aristotle system
   researcher  Works on open mathematical problems
   seeker      Selects research problems when candidate pool runs low
@@ -98,7 +98,7 @@ Agent Types:
 Examples:
   $0 start                              # Start with defaults
   $0 start --researcher 3               # Custom pool sizes
-  $0 start --erdos 2 --researcher 1     # Include Erdős enhancers
+  $0 start --enricher 2 --researcher 1  # Include Enrichers
   $0 spawn researcher                   # Add one Researcher
   $0 spawn seeker                       # Add seeker agent
   $0 scale researcher 4                 # Scale to 4 Researchers
@@ -123,7 +123,7 @@ migrate_state_file() {
 # Helper: Initialize state file
 # Preserves session_stats and stopped_at from previous state across daemon restarts
 init_state() {
-    local erdos="${1:-$DEFAULT_ERDOS}"
+    local enricher="${1:-$DEFAULT_ENRICHER}"
     local aristotle="${2:-$DEFAULT_ARISTOTLE}"
     local researcher="${3:-$DEFAULT_RESEARCHER}"
     local seeker="${4:-$DEFAULT_SEEKER}"
@@ -143,7 +143,7 @@ init_state() {
     local new_state
     new_state=$(jq -n \
         --arg started_at "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-        --argjson erdos "$erdos" \
+        --argjson enricher "$enricher" \
         --argjson aristotle "$aristotle" \
         --argjson researcher "$researcher" \
         --argjson seeker "$seeker" \
@@ -153,7 +153,7 @@ init_state() {
             started_at: $started_at,
             running: true,
             config: {
-                erdos: $erdos,
+                enricher: $enricher,
                 aristotle: $aristotle,
                 researcher: $researcher,
                 seeker: $seeker,
@@ -163,7 +163,7 @@ init_state() {
             session_stats: (
                 if ($prev_stats | length) > 0 then $prev_stats
                 else {
-                    stubs_enhanced: 0,
+                    entries_enriched: 0,
                     proofs_submitted: 0,
                     proofs_integrated: 0,
                     problems_selected: 0,
@@ -204,7 +204,7 @@ check_script() {
 
 # Command: start
 cmd_start() {
-    local erdos=$DEFAULT_ERDOS
+    local enricher=$DEFAULT_ENRICHER
     local aristotle=$DEFAULT_ARISTOTLE
     local researcher=$DEFAULT_RESEARCHER
     local seeker=$DEFAULT_SEEKER
@@ -213,8 +213,8 @@ cmd_start() {
     # Parse options
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            --erdos)
-                erdos="$2"
+            --enricher)
+                enricher="$2"
                 shift 2
                 ;;
             --aristotle)
@@ -242,9 +242,9 @@ cmd_start() {
     done
 
     # Validate counts
-    if [[ $erdos -gt $MAX_ERDOS ]]; then
-        echo -e "${YELLOW}Warning: Erdős count $erdos exceeds max $MAX_ERDOS, using $MAX_ERDOS${NC}"
-        erdos=$MAX_ERDOS
+    if [[ $enricher -gt $MAX_ENRICHER ]]; then
+        echo -e "${YELLOW}Warning: Enricher count $enricher exceeds max $MAX_ENRICHER, using $MAX_ENRICHER${NC}"
+        enricher=$MAX_ENRICHER
     fi
     if [[ $aristotle -gt $MAX_ARISTOTLE ]]; then
         echo -e "${YELLOW}Warning: Aristotle count $aristotle exceeds max $MAX_ARISTOTLE, using $MAX_ARISTOTLE${NC}"
@@ -266,7 +266,7 @@ cmd_start() {
     echo -e "${BOLD}Starting Lean Genius Mathematical Orchestration${NC}"
     echo ""
     echo -e "Configuration:"
-    echo "  Erdős Enhancers: $erdos"
+    echo "  Enrichers: $enricher"
     echo "  Aristotle Agents: $aristotle"
     echo "  Researchers: $researcher"
     echo "  Seekers: $seeker"
@@ -277,18 +277,18 @@ cmd_start() {
     migrate_state_file
 
     # Initialize state
-    init_state "$erdos" "$aristotle" "$researcher" "$seeker" "$deployer"
+    init_state "$enricher" "$aristotle" "$researcher" "$seeker" "$deployer"
 
     # Start agents
     local started=0
 
-    # Erdős enhancers
-    if [[ $erdos -gt 0 ]]; then
-        echo -e "${BLUE}Starting $erdos Erdős enhancer(s)...${NC}"
-        if check_script "./scripts/erdos/parallel-enhance.sh"; then
-            ./scripts/erdos/parallel-enhance.sh "$erdos" &
+    # Enrichers
+    if [[ $enricher -gt 0 ]]; then
+        echo -e "${BLUE}Starting $enricher Enricher(s)...${NC}"
+        if check_script "./scripts/enricher/parallel-enrich.sh"; then
+            ./scripts/enricher/parallel-enrich.sh "$enricher" &
             sleep 2
-            echo -e "${GREEN}✓ Erdős enhancers launched${NC}"
+            echo -e "${GREEN}✓ Enrichers launched${NC}"
             started=$((started + 1))
         fi
     fi
@@ -353,10 +353,10 @@ cmd_start() {
 # Helper: Get all known agent tmux session names
 get_all_agent_sessions() {
     local sessions=()
-    # Erdős enhancers
+    # Enrichers
     for i in 1 2 3 4 5; do
-        if tmux has-session -t "erdos-enhancer-$i" 2>/dev/null; then
-            sessions+=("erdos-enhancer-$i")
+        if tmux has-session -t "enricher-$i" 2>/dev/null; then
+            sessions+=("enricher-$i")
         fi
     done
     # Aristotle
@@ -800,7 +800,7 @@ daemon_log() {
 get_agent_type() {
     local session="$1"
     case "$session" in
-        erdos-enhancer-*) echo "erdos" ;;
+        enricher-*) echo "enricher" ;;
         aristotle-agent)  echo "aristotle" ;;
         researcher-*)     echo "researcher" ;;
         seeker-agent)     echo "seeker" ;;
@@ -823,13 +823,13 @@ respawn_agent() {
     sleep 1
 
     case "$agent_type" in
-        erdos)
-            # Spawn a specific enhancer slot directly (parallel-enhance.sh refuses
-            # to start if any enhancer is already running, so we inline the logic)
+        enricher)
+            # Spawn a specific enricher slot directly (parallel-enrich.sh refuses
+            # to start if any enricher is already running, so we inline the logic)
             local agent_num="${session##*-}"
-            local worktree_dir=".loom/worktrees/enhancer-$agent_num"
-            local branch="feature/enhancer-$agent_num"
-            local enhancer_id="enhancer-$agent_num"
+            local worktree_dir=".loom/worktrees/enricher-$agent_num"
+            local branch="feature/enricher-$agent_num"
+            local enricher_id="enricher-$agent_num"
             local log_file=".loom/logs/$session.log"
             local prompt_file=".loom/logs/$session-prompt.md"
             local repo_root
@@ -847,23 +847,19 @@ respawn_agent() {
             if [[ -f "$worktree_dir/.gitmodules" ]]; then
                 (cd "$worktree_dir" && git submodule update --init --recursive 2>/dev/null) || true
             fi
-            if [[ -d "proofs/.lake" ]] && [[ -d "$worktree_dir/proofs" ]]; then
-                rm -rf "$worktree_dir/proofs/.lake"
-                ln -s "$repo_root/proofs/.lake" "$worktree_dir/proofs/.lake"
-            fi
 
             # Create tmux session and launch Claude
             tmux new-session -d -s "$session" -c "$repo_root/$worktree_dir"
             sleep 0.3
-            tmux send-keys -t "$session" "export ENHANCER_ID='$enhancer_id'" Enter
+            tmux send-keys -t "$session" "export ENRICHER_ID='$enricher_id'" Enter
             sleep 0.2
             tmux send-keys -t "$session" "export REPO_ROOT='$repo_root'" Enter
             sleep 0.2
-            local prompt="You are $enhancer_id. Read $repo_root/$prompt_file for your instructions, then start the enhancement workflow."
+            local prompt="You are $enricher_id. Read $repo_root/$prompt_file for your instructions, then start the enrichment workflow."
             local wrapper_script="$repo_root/scripts/agents/claude-wrapper.sh"
             tmux send-keys -t "$session" "$wrapper_script --prompt '$prompt' --log '$repo_root/$log_file' --max-retries 5" Enter
             sleep 1
-            daemon_log "INFO" "Erdos enhancer $agent_num respawned (session: $session)"
+            daemon_log "INFO" "Enricher $agent_num respawned (session: $session)"
             ;;
         aristotle)
             if check_script "./scripts/aristotle/launch-agent.sh" 2>/dev/null; then
@@ -935,19 +931,19 @@ is_cooldown_elapsed() {
 
 # Helper: Get work queue stats (with timeout protection)
 get_work_queue_stats() {
-    local stubs="?"
+    local enrichment_targets="?"
     local candidates="0"
     local aristotle_jobs="0"
     local ready_prs="0"
 
-    # Stubs count (with 10s timeout)
-    if command -v npx &>/dev/null && [[ -f "scripts/erdos/find-stubs.ts" ]]; then
-        stubs=$(timeout 10 npx tsx scripts/erdos/find-stubs.ts --stats 2>/dev/null | grep -oE "Stubs needing enhancement: +[0-9]+" | grep -oE "[0-9]+" || echo "?")
+    # Enrichment targets count (with 10s timeout)
+    if command -v npx &>/dev/null && [[ -f "scripts/enricher/find-targets.ts" ]]; then
+        enrichment_targets=$(timeout 10 npx tsx scripts/enricher/find-targets.ts --stats 2>/dev/null | grep -oE "Entries needing enrichment: +[0-9]+" | grep -oE "[0-9]+" || echo "?")
     fi
 
     # Research candidates
-    if [[ -f "research/candidate-pool.json" ]]; then
-        candidates=$(jq '[.candidates[] | select(.status == "available")] | length' "research/candidate-pool.json" 2>/dev/null || echo "0")
+    if [[ -f ".lean/state/candidate-pool.json" ]]; then
+        candidates=$(jq '[.candidates[] | select(.status == "available")] | length' ".lean/state/candidate-pool.json" 2>/dev/null || echo "0")
     fi
 
     # Aristotle jobs
@@ -955,10 +951,16 @@ get_work_queue_stats() {
         aristotle_jobs=$(jq '[.jobs[] | select(.status == "submitted")] | length' "research/aristotle-jobs.json" 2>/dev/null || echo "0")
     fi
 
+    # Aristotle candidates (files with sorries eligible for submission)
+    local aristotle_candidates="0"
+    if [[ -x "scripts/aristotle/find-candidates.sh" ]]; then
+        aristotle_candidates=$(timeout 10 ./scripts/aristotle/find-candidates.sh --count 2>/dev/null || echo "0")
+    fi
+
     # PRs ready to merge
     ready_prs=$(timeout 10 gh pr list --label "loom:pr" --json number 2>/dev/null | jq 'length' 2>/dev/null || echo "0")
 
-    echo "$stubs $candidates $aristotle_jobs $ready_prs"
+    echo "$enrichment_targets $candidates $aristotle_jobs $aristotle_candidates $ready_prs"
 }
 
 # Helper: Write daemon state to state file
@@ -984,7 +986,7 @@ process_completion_signals() {
     # Ensure completions directory exists
     mkdir -p "$COMPLETIONS_DIR/archive"
 
-    local stubs=0
+    local enriched=0
     local proofs=0
     local integrated=0
     local selected=0
@@ -992,14 +994,14 @@ process_completion_signals() {
     local researched=0
 
     # Count signals by type (use find to avoid glob expansion issues)
-    stubs=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'stub-enhanced-*' -type f 2>/dev/null | wc -l | tr -d ' ')
+    enriched=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'enrichment-completed-*' -type f 2>/dev/null | wc -l | tr -d ' ')
     proofs=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'proof-submitted-*' -type f 2>/dev/null | wc -l | tr -d ' ')
     integrated=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'proof-integrated-*' -type f 2>/dev/null | wc -l | tr -d ' ')
     selected=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'problem-selected-*' -type f 2>/dev/null | wc -l | tr -d ' ')
     deploys=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'deployment-*' -type f 2>/dev/null | wc -l | tr -d ' ')
     researched=$(find "$COMPLETIONS_DIR" -maxdepth 1 -name 'research-completed-*' -type f 2>/dev/null | wc -l | tr -d ' ')
 
-    local total=$((stubs + proofs + integrated + selected + deploys + researched))
+    local total=$((enriched + proofs + integrated + selected + deploys + researched))
 
     # Update state file if any completions
     if [[ $total -gt 0 ]]; then
@@ -1007,13 +1009,13 @@ process_completion_signals() {
             local tmp
             tmp=$(mktemp)
             jq \
-                --argjson stubs "$stubs" \
+                --argjson enriched "$enriched" \
                 --argjson proofs "$proofs" \
                 --argjson integrated "$integrated" \
                 --argjson selected "$selected" \
                 --argjson deploys "$deploys" \
                 --argjson researched "$researched" \
-                '.session_stats.stubs_enhanced += $stubs |
+                '.session_stats.entries_enriched += $enriched |
                  .session_stats.proofs_submitted += $proofs |
                  .session_stats.proofs_integrated += $integrated |
                  .session_stats.problems_selected += $selected |
@@ -1022,10 +1024,10 @@ process_completion_signals() {
                 "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
         fi
 
-        daemon_log "INFO" "Stats updated: +$stubs stubs, +$proofs proofs, +$integrated integrated, +$selected selected, +$deploys deploys, +$researched researched"
+        daemon_log "INFO" "Stats updated: +$enriched enriched, +$proofs proofs, +$integrated integrated, +$selected selected, +$deploys deploys, +$researched researched"
 
         # Archive signals (preserve for debugging but don't recount)
-        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'stub-enhanced-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
+        find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'enrichment-completed-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
         find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'proof-submitted-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
         find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'proof-integrated-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
         find "$COMPLETIONS_DIR" -maxdepth 1 -type f -name 'problem-selected-*' -exec mv {} "$COMPLETIONS_DIR/archive/" \; 2>/dev/null || true
@@ -1046,7 +1048,7 @@ daemon_cleanup() {
 # Command: daemon - Continuous monitoring loop
 cmd_daemon() {
     local interval=$DEFAULT_DAEMON_INTERVAL
-    local erdos=$DEFAULT_ERDOS
+    local enricher=$DEFAULT_ENRICHER
     local aristotle=$DEFAULT_ARISTOTLE
     local researcher=$DEFAULT_RESEARCHER
     local seeker=$DEFAULT_SEEKER
@@ -1059,8 +1061,8 @@ cmd_daemon() {
                 interval="$2"
                 shift 2
                 ;;
-            --erdos)
-                erdos="$2"
+            --enricher)
+                enricher="$2"
                 shift 2
                 ;;
             --aristotle)
@@ -1117,10 +1119,10 @@ cmd_daemon() {
     trap 'daemon_log "INFO" "Received SIGINT"; exit 0' INT
 
     daemon_log "INFO" "Starting daemon (PID $$, interval ${interval}s)"
-    daemon_log "INFO" "Pool config: erdos=$erdos, aristotle=$aristotle, researcher=$researcher, seeker=$seeker, deployer=$deployer"
+    daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, seeker=$seeker, deployer=$deployer"
 
     # Start initial agents via cmd_start
-    cmd_start --erdos "$erdos" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer"
+    cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer"
 
     local cycle_count=0
     local total_respawns=0
@@ -1213,25 +1215,25 @@ cmd_daemon() {
         # 2b. Pool gap detection: spawn missing agents whose sessions vanished
         # (get_all_agent_sessions only returns existing sessions, so if a session
         # exits entirely, the health check above never sees it)
-        local erdos_active=0 researcher_active=0 aristotle_active=0 seeker_active=0 deployer_active=0
+        local enricher_active=0 researcher_active=0 aristotle_active=0 seeker_active=0 deployer_active=0
         for i in 1 2 3 4 5; do
-            tmux has-session -t "erdos-enhancer-$i" 2>/dev/null && erdos_active=$((erdos_active + 1))
+            tmux has-session -t "enricher-$i" 2>/dev/null && enricher_active=$((enricher_active + 1))
             tmux has-session -t "researcher-$i" 2>/dev/null && researcher_active=$((researcher_active + 1))
         done
         tmux has-session -t "aristotle-agent" 2>/dev/null && aristotle_active=1
         tmux has-session -t "seeker-agent" 2>/dev/null && seeker_active=1
         tmux has-session -t "deployer" 2>/dev/null && deployer_active=1
 
-        if [[ $erdos_active -lt $erdos ]]; then
-            local missing_erdos=$((erdos - erdos_active))
-            daemon_log "INFO" "Pool gap: erdos has $erdos_active/$erdos, spawning $missing_erdos"
+        if [[ $enricher_active -lt $enricher ]]; then
+            local missing_enricher=$((enricher - enricher_active))
+            daemon_log "INFO" "Pool gap: enricher has $enricher_active/$enricher, spawning $missing_enricher"
             for i in $(seq 1 5); do
-                [[ $missing_erdos -le 0 ]] && break
-                if ! tmux has-session -t "erdos-enhancer-$i" 2>/dev/null; then
-                    if is_cooldown_elapsed "erdos-enhancer-$i"; then
-                        respawn_agent "erdos-enhancer-$i"
+                [[ $missing_enricher -le 0 ]] && break
+                if ! tmux has-session -t "enricher-$i" 2>/dev/null; then
+                    if is_cooldown_elapsed "enricher-$i"; then
+                        respawn_agent "enricher-$i"
                         total_respawns=$((total_respawns + 1))
-                        missing_erdos=$((missing_erdos - 1))
+                        missing_enricher=$((missing_enricher - 1))
                     fi
                 fi
             done
@@ -1273,14 +1275,23 @@ cmd_daemon() {
         # 3. Work queue assessment (with timeout protection)
         local queue_stats
         queue_stats=$(get_work_queue_stats)
-        local stubs candidates aristotle_jobs ready_prs
-        read -r stubs candidates aristotle_jobs ready_prs <<< "$queue_stats"
+        local enrichment_targets candidates aristotle_jobs aristotle_candidates ready_prs
+        read -r enrichment_targets candidates aristotle_jobs aristotle_candidates ready_prs <<< "$queue_stats"
 
         # 4. Process completion signals and update session stats
         process_completion_signals
 
+        # 4b. Dynamic Aristotle: spawn when candidates or jobs exist but no agent running
+        if [[ $aristotle_active -eq 0 ]] && [[ "$aristotle_jobs" -gt 0 || "$aristotle_candidates" -gt 0 ]]; then
+            if is_cooldown_elapsed "aristotle-agent"; then
+                daemon_log "INFO" "Auto-spawning Aristotle: $aristotle_jobs pending jobs, $aristotle_candidates candidates"
+                respawn_agent "aristotle-agent"
+                total_respawns=$((total_respawns + 1))
+            fi
+        fi
+
         # 5. Log cycle summary
-        daemon_log "INFO" "Cycle $cycle_count: running=$running_count, idle=$idle_count, completed=$completed_count, stuck=$stuck_count, respawned=$cycle_respawns | queues: stubs=$stubs, candidates=$candidates, aristotle=$aristotle_jobs, prs=$ready_prs"
+        daemon_log "INFO" "Cycle $cycle_count: running=$running_count, idle=$idle_count, completed=$completed_count, stuck=$stuck_count, respawned=$cycle_respawns | queues: enrichment=$enrichment_targets, candidates=$candidates, aristotle_jobs=$aristotle_jobs, aristotle_candidates=$aristotle_candidates, prs=$ready_prs"
 
         # 6. Update state file with daemon stats
         update_daemon_state "$cycle_count" "$total_respawns"
@@ -1324,9 +1335,9 @@ cmd_stop() {
         local stopped=0
 
         # Force stop: kill tmux sessions directly
-        echo -e "${BLUE}Killing Erdős enhancer sessions...${NC}"
-        if [[ -x "./scripts/erdos/parallel-enhance.sh" ]]; then
-            ./scripts/erdos/parallel-enhance.sh --stop 2>/dev/null || true
+        echo -e "${BLUE}Killing Enricher sessions...${NC}"
+        if [[ -x "./scripts/enricher/parallel-enrich.sh" ]]; then
+            ./scripts/enricher/parallel-enrich.sh --stop 2>/dev/null || true
             stopped=$((stopped + 1))
         fi
 
@@ -1357,7 +1368,7 @@ cmd_stop() {
         # Safety net: kill any remaining agent sessions
         echo -e "${BLUE}Catch-all: cleaning remaining agent sessions...${NC}"
         local remaining_sessions
-        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(erdos-enhancer-|researcher-|aristotle-agent$|seeker-agent$|deployer$)' || true)
+        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(enricher-|researcher-|aristotle-agent$|seeker-agent$|deployer$)' || true)
         if [[ -n "$remaining_sessions" ]]; then
             while IFS= read -r session; do
                 echo -e "  Killing stale session: $session"
@@ -1395,9 +1406,9 @@ cmd_stop() {
         echo -e "${GREEN}Created stop-all signal file${NC}"
 
         # Also signal each agent type through their own mechanisms
-        echo -e "${BLUE}Signaling Erdős enhancers...${NC}"
-        if [[ -x "./scripts/erdos/parallel-enhance.sh" ]]; then
-            ./scripts/erdos/parallel-enhance.sh --graceful-stop 2>/dev/null || true
+        echo -e "${BLUE}Signaling Enrichers...${NC}"
+        if [[ -x "./scripts/enricher/parallel-enrich.sh" ]]; then
+            ./scripts/enricher/parallel-enrich.sh --graceful-stop 2>/dev/null || true
         fi
 
         echo -e "${BLUE}Signaling Aristotle agent...${NC}"
@@ -1442,24 +1453,24 @@ cmd_spawn() {
     local agent_type="${1:-}"
 
     if [[ -z "$agent_type" ]]; then
-        echo -e "${RED}Error: Must specify agent type (erdos, aristotle, researcher, deployer)${NC}" >&2
+        echo -e "${RED}Error: Must specify agent type (enricher, aristotle, researcher, deployer)${NC}" >&2
         exit 1
     fi
 
     case "$agent_type" in
-        erdos)
-            echo -e "${BLUE}Spawning additional Erdős enhancer...${NC}"
+        enricher)
+            echo -e "${BLUE}Spawning additional Enricher...${NC}"
             # Find next available slot
             for i in 1 2 3 4 5; do
-                if ! tmux has-session -t "erdos-enhancer-$i" 2>/dev/null; then
-                    # Spawn single enhancer
-                    ./scripts/erdos/parallel-enhance.sh 1 &
+                if ! tmux has-session -t "enricher-$i" 2>/dev/null; then
+                    # Spawn single enricher
+                    ./scripts/enricher/parallel-enrich.sh 1 &
                     sleep 2
-                    echo -e "${GREEN}✓ Erdős enhancer spawned${NC}"
+                    echo -e "${GREEN}✓ Enricher spawned${NC}"
                     exit 0
                 fi
             done
-            echo -e "${YELLOW}All Erdős slots are full (max: $MAX_ERDOS)${NC}"
+            echo -e "${YELLOW}All Enricher slots are full (max: $MAX_ENRICHER)${NC}"
             ;;
         aristotle)
             echo -e "${BLUE}Spawning Aristotle agent...${NC}"
@@ -1505,7 +1516,7 @@ cmd_spawn() {
             ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: erdos, aristotle, researcher, seeker, deployer"
+            echo "Valid types: enricher, aristotle, researcher, seeker, deployer"
             exit 1
             ;;
     esac
@@ -1518,36 +1529,36 @@ cmd_scale() {
 
     if [[ -z "$agent_type" || -z "$count" ]]; then
         echo -e "${RED}Error: Must specify agent type and count${NC}" >&2
-        echo "Usage: $0 scale <erdos|researcher> <count>"
+        echo "Usage: $0 scale <enricher|researcher> <count>"
         exit 1
     fi
 
     case "$agent_type" in
-        erdos)
-            if [[ $count -gt $MAX_ERDOS ]]; then
-                echo -e "${YELLOW}Count $count exceeds max $MAX_ERDOS, using $MAX_ERDOS${NC}"
-                count=$MAX_ERDOS
+        enricher)
+            if [[ $count -gt $MAX_ENRICHER ]]; then
+                echo -e "${YELLOW}Count $count exceeds max $MAX_ENRICHER, using $MAX_ENRICHER${NC}"
+                count=$MAX_ENRICHER
             fi
 
             # Count current
             local current=0
             for i in 1 2 3 4 5; do
-                if tmux has-session -t "erdos-enhancer-$i" 2>/dev/null; then
+                if tmux has-session -t "enricher-$i" 2>/dev/null; then
                     current=$((current + 1))
                 fi
             done
 
             if [[ $count -gt $current ]]; then
                 local to_add=$((count - current))
-                echo -e "${BLUE}Scaling Erdős enhancers from $current to $count (adding $to_add)...${NC}"
-                ./scripts/erdos/parallel-enhance.sh "$to_add" &
+                echo -e "${BLUE}Scaling Enrichers from $current to $count (adding $to_add)...${NC}"
+                ./scripts/enricher/parallel-enrich.sh "$to_add" &
                 sleep 2
-                echo -e "${GREEN}✓ Scaled to $count Erdős enhancers${NC}"
+                echo -e "${GREEN}✓ Scaled to $count Enrichers${NC}"
             elif [[ $count -lt $current ]]; then
                 echo -e "${YELLOW}Scale down not implemented - stop agents manually${NC}"
                 echo "Current: $current, Requested: $count"
             else
-                echo -e "${GREEN}Already at $count Erdős enhancers${NC}"
+                echo -e "${GREEN}Already at $count Enrichers${NC}"
             fi
             ;;
         researcher)
@@ -1582,7 +1593,7 @@ cmd_scale() {
             ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Scalable types: erdos, researcher"
+            echo "Scalable types: enricher, researcher"
             exit 1
             ;;
     esac

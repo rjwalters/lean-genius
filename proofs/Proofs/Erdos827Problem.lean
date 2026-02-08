@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #827: Distinct Circumradii in General Position
 
 Let n_k be the minimal number such that any n_k points in general position
@@ -18,7 +18,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-/-! ## Points in General Position -/
+/- ## Points in General Position -/
 
 /-- A point in the plane. -/
 abbrev Point := ℝ × ℝ
@@ -33,7 +33,7 @@ def GeneralPosition (S : Finset Point) : Prop :=
     p ≠ q → q ≠ r → p ≠ r →
     (p.1 - r.1) * (q.2 - r.2) ≠ (q.1 - r.1) * (p.2 - r.2)
 
-/-! ## Circumradius -/
+/- ## Circumradius -/
 
 /-- The squared circumradius of three non-collinear points.
     For the circumcircle of triangle pqr, R² = (|pq|²·|qr|²·|rp|²) / (16·Area²). -/
@@ -54,7 +54,7 @@ def AllDistinctCircumradii (S : Finset Point) : Prop :=
     ({p₁, q₁, r₁} : Finset Point) ≠ {p₂, q₂, r₂} →
     circumRadiusSq p₁ q₁ r₁ ≠ circumRadiusSq p₂ q₂ r₂
 
-/-! ## The Minimal Number n_k -/
+/- ## The Minimal Number n_k -/
 
 /-- n_k exists: for each k, there is a threshold such that any set of
     that many points in general position contains a k-subset with all
@@ -77,13 +77,13 @@ axiom minimalNk_sharp (k : ℕ) (hk : 3 ≤ k) :
     ∃ S : Finset Point, GeneralPosition S ∧ S.card = minimalNk k - 1 ∧
       ¬∃ T : Finset Point, T ⊆ S ∧ T.card = k ∧ AllDistinctCircumradii T
 
-/-! ## Main Problem -/
+/- ## Main Problem -/
 
 /-- Erdős Problem 827: Determine n_k. In particular, find the growth rate. -/
 def ErdosProblem827 : Prop :=
   ∀ k : ℕ, 3 ≤ k → NkExists k
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- Martinez-Roldán-Pensado: n_k ≪ k⁹. -/
 def MartinezBound : Prop :=
@@ -97,7 +97,7 @@ noncomputable def erdosClaimedBound (k : ℕ) : ℕ :=
 /-- Martinez and Roldán-Pensado proved the corrected polynomial bound. -/
 axiom martinez_roldan_pensado : MartinezBound
 
-/-! ## Trivial Cases -/
+/- ## Trivial Cases -/
 
 /-- For k = 3, any 3 points in general position form a triangle with
     exactly one circumradius, so n_3 = 3. -/

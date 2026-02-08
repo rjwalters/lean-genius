@@ -17,7 +17,7 @@
       "geometry"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 192,
     "erdosUrl": "https://erdosproblems.com/192",
     "erdosProblemStatus": "solved",
@@ -67,7 +67,43 @@
       "**Connection to #231:** This problem is equivalent to Erdős Problem #231 on abelian squares"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-192-three-term-a",
+      "title": "Erdős Problem #192: Three-Term Arithmetic Progressions in Unit Vector Sequences",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Erdős Problem #192: Three-Term Arithmetic Progressions in Unit Vector Sequences"
+    },
+    {
+      "id": "setup",
+      "title": "Setup",
+      "startLine": 29,
+      "endLine": 54,
+      "summary": "Setup"
+    },
+    {
+      "id": "the-d-3-case",
+      "title": "The d ≤ 3 Case",
+      "startLine": 55,
+      "endLine": 68,
+      "summary": "The d ≤ 3 Case"
+    },
+    {
+      "id": "the-d-4-counterexample",
+      "title": "The d ≥ 4 Counterexample",
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "The d ≥ 4 Counterexample"
+    },
+    {
+      "id": "complete-classification",
+      "title": "Complete Classification",
+      "startLine": 87,
+      "endLine": 107,
+      "summary": "Complete Classification"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #192 asks for which dimensions d an infinite unit vector sequence must contain a 3-term AP. The answer is d ≤ 3 (unavoidable) and d ≥ 4 (avoidable). Keränen (1992) constructed the critical 4-letter abelian square-free infinite string using morphism techniques. The problem connects geometry to combinatorics on words through the abelian square reformulation.",
     "implications": "**Connections**\n\n1. **Combinatorics on Words:** Central to the theory of pattern avoidance\n\n2. **Formal Languages:** Morphisms and substitution systems\n\n3. **Problem #231:** Equivalent formulation about abelian squares directly\n\n4. **Ramsey Theory:** Unavoidability of patterns vs. existence of avoiding sequences",

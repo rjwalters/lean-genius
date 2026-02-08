@@ -107,13 +107,12 @@ Any 9 points in ℝ³ contain an obtuse triple.
 -/
 axiom case_d3 : ErdosObtuseConjecture 3
 
-/--
+/-
 **Why d = 2 is Trivial:**
 In the plane, 5 points must either have 4 in convex position
 (forming an obtuse angle in the quadrilateral) or 3+ collinear
 (where middle points see 180° angles, which are obtuse).
 -/
-axiom d2_explanation : True
 
 /-
 ## Part IV: The Extremal Configuration
@@ -168,12 +167,11 @@ axiom hypercube_angle_classification (d : ℕ) (A B C : EuclideanPoint d)
     (hdist : A ≠ B ∧ B ≠ C ∧ A ≠ C) :
     angle A B C ≤ Real.pi / 2
 
-/--
+/-
 **Orthogonal Directions:**
 The hypercube has 2d orthogonal directions from each vertex.
 This geometric structure prevents obtuse angles.
 -/
-axiom hypercube_orthogonal_structure : True
 
 /-
 ## Part VI: Why More Than 2ᵈ Forces Obtuse
@@ -188,44 +186,39 @@ axiom pigeonhole_orthants (d : ℕ) (P : Finset (EuclideanPoint d))
     (hcard : P.card = 2^d + 1) :
     ∃ (orthant : Finset (EuclideanPoint d)), orthant ⊆ P ∧ orthant.card ≥ 2
 
-/--
+/-
 **Two Points in Same Orthant:**
 If two points are in the same orthant relative to a third,
 they can form obtuse angles more easily.
 -/
-axiom same_orthant_obstruction : True
 
-/--
+/-
 **The Danzer-Grünbaum Argument:**
 Uses a careful analysis of the hypercube structure and
 how additional points must create obtuse configurations.
 -/
-axiom danzer_grunbaum_proof_idea : True
 
 /-
 ## Part VII: Related Results
 -/
 
-/--
+/-
 **Maximum Acute Sets:**
 Sets where all angles are acute have been studied.
 The maximum size is related to spherical codes.
 -/
-axiom acute_sets_bound : True
 
-/--
+/-
 **Spherical Codes:**
 Points on the unit sphere with minimum angle constraints.
 Related to error-correcting codes.
 -/
-axiom spherical_codes_connection : True
 
-/--
+/-
 **Higher Dimensional Geometry:**
 The problem illustrates how geometry behaves differently
 in high dimensions.
 -/
-axiom high_dim_geometry : True
 
 /-
 ## Part VIII: Main Results

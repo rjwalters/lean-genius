@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #848: Squarefree Products and Extremal Sets
 
 Determine the maximum size of A ⊆ {1,...,N} such that ab + 1 is never
@@ -18,7 +18,7 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Nat.Prime.Basic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- n is squarefree if no prime squared divides n. -/
 def IsSquarefree (n : ℕ) : Prop :=
@@ -36,7 +36,7 @@ axiom maxNonSqfreeSet (N : ℕ) : ℕ
 /-- The max size is at most N. -/
 axiom maxNonSqfreeSet_le (N : ℕ) : maxNonSqfreeSet N ≤ N
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- The set {n ∈ {1,...,N} : n ≡ 7 (mod 25)} achieves the property:
     for a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 50 ≡ 0 (mod 25), so 5² | ab + 1. -/
@@ -54,7 +54,7 @@ axiom vanDoorn_upper_bound :
   ∃ C : ℕ, ∀ N : ℕ, 1 ≤ N →
     maxNonSqfreeSet N * 1000 ≤ 108 * N + C
 
-/-! ## The Solution -/
+/- ## The Solution -/
 
 /-- Sawhney's theorem: for sufficiently large N, the maximum is exactly
     ⌊N/25⌋, achieved only by {n ≡ 7 (mod 25)} or {n ≡ 18 (mod 25)}. -/

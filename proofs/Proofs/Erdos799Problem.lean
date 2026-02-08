@@ -91,33 +91,30 @@ axiom list_chromatic_ge_chromatic (G : SimpleGraph V) :
 
 /--
 **The gap can be arbitrarily large:**
-There exist graphs where χ_L(G) is much larger than χ(G).
-For example, the complete bipartite graph K_{n,n} has χ = 2 but χ_L = log₂ n + 1.
+There exist bipartite graphs (χ = 2) with arbitrarily large χ_L.
+The complete bipartite graph K_{n,n} satisfies χ_L(K_{n,n}) ≥ ⌊log₂ n⌋ + 1.
 -/
-axiom list_chromatic_gap_example :
-    -- K_{n,n} has χ = 2 but χ_L grows with n
-    True
+axiom list_chromatic_gap_unbounded :
+    ∀ k : ℕ, ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+      G.chromaticNumber = 2 ∧ listChromaticNumber G ≥ k
 
 /-
-## Part III: Random Graph Properties
+## Part III: Random Graph Model
 -/
 
 /--
-**Chromatic Number of Random Graphs:**
-For G ∈ G(n, 1/2), the chromatic number χ(G) ≈ n / (2 log₂ n) almost surely.
+The list chromatic number of a graph on n vertices drawn from G(n, 1/2).
+We axiomatize the almost-sure behavior rather than the probability model.
 -/
-axiom chromatic_number_random_graph (n : ℕ) (hn : n ≥ 2) :
-    -- Almost surely, χ(G) ≈ n / (2 log₂ n)
-    True
+axiom listChromaticRandom (n : ℕ) : ℕ
 
 /--
-**Independence Number of Random Graphs:**
-For G ∈ G(n, 1/2), the independence number α(G) ≈ 2 log₂ n almost surely.
-This determines the chromatic number via χ(G) ≈ n / α(G).
+**Chromatic number of random graphs:**
+For G ∈ G(n, 1/2), χ(G) ≍ n / (2 log₂ n) almost surely.
 -/
-axiom independence_number_random_graph (n : ℕ) (hn : n ≥ 2) :
-    -- Almost surely, α(G) ≈ 2 log₂ n
-    True
+axiom chromatic_number_random_graph :
+    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      c₁ * (n : ℝ) / Real.log n ≤ (listChromaticRandom n : ℝ)
 
 /-
 ## Part IV: Alon's 1992 Result
@@ -128,26 +125,20 @@ axiom independence_number_random_graph (n : ℕ) (hn : n ≥ 2) :
 For the random graph G on n vertices with edge probability 1/2:
   χ_L(G) ≪ (log log n / log n) · n almost surely.
 
-This was the first proof that χ_L(G) = o(n) for random graphs.
-
-The probabilistic approach uses:
-1. Concentration of the chromatic number
-2. Analysis of list colorings via the Lovász Local Lemma
+This was the first proof that χ_L(G) = o(n) for random graphs, using
+the probabilistic method and the Lovász Local Lemma.
 -/
-axiom alon_1992 (n : ℕ) (hn : n ≥ 2) :
-    -- Almost surely for G ∈ G(n, 1/2):
-    -- χ_L(G) ≤ C · (log log n / log n) · n
-    True
+axiom alon_1992 :
+    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      (listChromaticRandom n : ℝ) ≤ C * (Real.log (Real.log n) / Real.log n) * n
 
 /--
-**Corollary: χ_L(G) = o(n) Almost Surely**
+**Corollary: χ_L(G) = o(n) Almost Surely.**
 Alon's theorem implies that χ_L(G) grows slower than linearly in n.
 -/
-theorem list_chromatic_sublinear : ∀ n ≥ 2,
-    -- χ_L(G) = o(n) almost surely
-    True := by
-  intro n _
-  trivial
+axiom list_chromatic_sublinear :
+    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
+      (listChromaticRandom n : ℝ) ≤ ε * n
 
 /-
 ## Part V: Alon-Krivelevich-Sudakov Improvement (1999)
@@ -159,62 +150,30 @@ Alon, Krivelevich, and Sudakov (1999) proved that for G ∈ G(n, 1/2):
   χ_L(G) ≍ n / log n almost surely.
 
 More precisely:
-- Upper bound: χ_L(G) ≤ C₁ · n / log n
-- Lower bound: χ_L(G) ≥ C₂ · n / log n
-
-This completely determines the order of magnitude.
+- Upper bound: χ_L(G) ≤ C₁ · n / log n (semi-random / Rödl nibble method)
+- Lower bound: χ_L(G) ≥ C₂ · n / log n (adversarial list construction)
 -/
-axiom alon_krivelevich_sudakov_1999 (n : ℕ) (hn : n ≥ 2) :
-    ∃ (C₁ C₂ : ℝ), C₁ > 0 ∧ C₂ > 0 ∧
-    -- Almost surely: C₂ · n/log n ≤ χ_L(G) ≤ C₁ · n/log n
-    True
-
-/--
-**Upper Bound Technique:**
-The upper bound uses semi-random (Rödl nibble) method combined with
-analysis of pseudo-random properties of G(n, 1/2).
--/
-axiom upper_bound_technique :
-    -- Semi-random method shows χ_L(G) ≤ O(n/log n)
-    True
-
-/--
-**Lower Bound Technique:**
-The lower bound constructs an adversarial list assignment that requires
-Ω(n/log n) colors by exploiting the structure of random graphs.
--/
-axiom lower_bound_technique :
-    -- Adversarial construction shows χ_L(G) ≥ Ω(n/log n)
-    True
+axiom alon_krivelevich_sudakov_1999 :
+    ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      C₂ * (n : ℝ) / Real.log n ≤ (listChromaticRandom n : ℝ) ∧
+      (listChromaticRandom n : ℝ) ≤ C₁ * (n : ℝ) / Real.log n
 
 /-
 ## Part VI: Comparison: χ_L(G) vs χ(G) for Random Graphs
 -/
 
 /--
-**Asymptotic Comparison:**
+**Asymptotic Ratio:**
 For G ∈ G(n, 1/2):
 - χ(G) ≈ n / (2 log₂ n)
 - χ_L(G) ≍ n / log n
 
 So χ_L(G) / χ(G) → 2 / ln 2 ≈ 2.885 as n → ∞.
-
-The list chromatic number is about 2.885 times the chromatic number.
+The list chromatic number exceeds the ordinary one by a constant factor.
 -/
-axiom list_vs_ordinary_chromatic_ratio :
-    -- χ_L(G) / χ(G) → 2/ln(2) for random graphs
-    True
-
-/--
-**Both are o(n):**
-Both χ(G) and χ_L(G) are o(n) for random graphs, but the list
-chromatic number is larger by a constant factor.
--/
-theorem both_sublinear : ∀ n ≥ 2,
-    -- χ(G) = o(n) and χ_L(G) = o(n) almost surely
-    True := by
-  intro _ _
-  trivial
+axiom list_vs_ordinary_ratio :
+    ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n ≥ N₀ →
+      |(listChromaticRandom n : ℝ) / ((n : ℝ) / Real.log n) - 1| ≤ ε
 
 /-
 ## Part VII: Main Results
@@ -233,75 +192,10 @@ For the random graph G(n, 1/2):
 
 Both bounds show χ_L(G) = o(n) almost surely.
 -/
-theorem erdos_799 : ∃ (C : ℝ), C > 0 ∧
-    -- χ_L(G) ≤ C · n / log n almost surely for G ∈ G(n, 1/2)
-    True := by
-  use 1
-  constructor
-  · norm_num
-  · trivial
-
-/--
-**Answer Summary:**
-Erdős #799 asked if χ_L(G) = o(n) for almost all graphs.
-The answer is YES, with the precise bound χ_L(G) ≍ n/log n.
--/
-theorem erdos_799_answer : True :=
-  -- The answer to Erdős #799 is YES
-  trivial
-
-/-
-## Part VIII: Related Problems and Extensions
--/
-
-/--
-**Fractional Chromatic Number:**
-The fractional chromatic number χ_f(G) satisfies χ_f(G) ≤ χ(G) ≤ χ_L(G).
-For random graphs, all three are Θ(n/log n).
--/
-axiom fractional_chromatic_random_graph :
-    -- χ_f(G) ≍ n/log n for G ∈ G(n, 1/2)
-    True
-
-/--
-**Other Edge Probabilities:**
-For G(n, p) with constant p ∈ (0, 1):
-- χ_L(G) = Θ(n / log n) remains true
-- The constants depend on p
--/
-axiom list_chromatic_general_p (p : ℝ) (hp : 0 < p ∧ p < 1) :
-    -- χ_L(G) = Θ(n/log n) for G ∈ G(n, p) almost surely
-    True
-
-/--
-**Sparse Random Graphs:**
-For sparser random graphs G(n, p) with p = p(n) → 0:
-the behavior of χ_L(G) changes and depends on p(n).
--/
-axiom list_chromatic_sparse_graphs :
-    -- Different regimes for different sparsity levels
-    True
-
-/-
-## Part IX: Probabilistic Tools
--/
-
-/--
-**Lovász Local Lemma:**
-A key tool in proving list coloring bounds.
-If bad events are rare and weakly dependent, they can all be avoided.
--/
-axiom lovasz_local_lemma_application :
-    -- The LLL is used in the upper bound proofs
-    True
-
-/--
-**Concentration Inequalities:**
-The "almost surely" statements use concentration bounds
-(Chernoff, Azuma, etc.) to show results hold with high probability.
--/
-axiom concentration_inequalities :
-    -- Standard tools for random graph analysis
-    True
+theorem erdos_799 :
+    ∃ C₁ C₂ : ℝ, C₁ > 0 ∧ C₂ > 0 ∧ ∀ n : ℕ, n ≥ 2 →
+      C₂ * (n : ℝ) / Real.log n ≤ (listChromaticRandom n : ℝ) ∧
+      (listChromaticRandom n : ℝ) ≤ C₁ * (n : ℝ) / Real.log n :=
+  alon_krivelevich_sudakov_1999
 
 end Erdos799

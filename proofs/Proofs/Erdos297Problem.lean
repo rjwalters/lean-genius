@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #297: Counting Egyptian Fraction Representations of 1
 
 Source: https://erdosproblems.com/297
@@ -46,7 +46,7 @@ open Nat Finset
 
 namespace Erdos297
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Unit fractions and their sums over finite subsets of natural numbers.
@@ -71,7 +71,7 @@ def subsets (N : ℕ) : Finset (Finset ℕ) :=
 noncomputable def egyptianCount (N : ℕ) : ℕ :=
   ((subsets N).filter (fun A => harmonicSum A = 1 ∧ 0 ∉ A)).card
 
-/-!
+/-
 ## Part 2: Verified Examples
 
 Concrete Egyptian fraction representations proved by computation.
@@ -101,7 +101,7 @@ theorem at_least_three_representations :
     harmonicSum {2, 4, 5, 20} = 1 := by
   exact ⟨singleton_one_is_egyptian, two_three_six_is_egyptian, two_four_five_twenty_is_egyptian⟩
 
-/-!
+/-
 ## Part 3: Basic Bounds
 
 Elementary bounds on the Egyptian count function.
@@ -122,7 +122,7 @@ axiom trivial_lower_bound (N : ℕ) (hN : N ≥ 1) :
     egyptianCount N ≥ 1
 -- {1} ⊆ {1,...,N} and harmonicSum {1} = 1.
 
-/-!
+/-
 ## Part 4: The Central Question
 
 Erdős asked whether the growth is truly subexponential (c < 1) or near-maximal.
@@ -133,7 +133,7 @@ Erdős asked whether the growth is truly subexponential (c < 1) or near-maximal.
 def hasSubexponentialGrowth : Prop :=
   ∃ c : ℝ, c < 1 ∧ ∃ C : ℝ, ∀ N : ℕ, (egyptianCount N : ℝ) ≤ C * 2^(c * N)
 
-/-!
+/-
 ## Part 5: Steinerberger's Upper Bound (March 2024)
 
 The first proof that c < 1, establishing egyptianCount(N) ≤ 2^{0.93N}.
@@ -150,7 +150,7 @@ def steinerbergerConstant : ℝ := 0.93
 axiom steinerberger_upper_bound :
     ∃ N₀ : ℕ, ∀ N ≥ N₀, (egyptianCount N : ℝ) ≤ 2^(steinerbergerConstant * N)
 
-/-!
+/-
 ## Part 6: Liu-Sawhney's Full Asymptotic (April 2024)
 
 The complete answer: both matching upper and lower bounds with constant c ≈ 0.91...
@@ -178,7 +178,7 @@ axiom liuSawhney_asymptotic :
       2^((liuSawhneyConstant - ε) * N) ≤ (egyptianCount N : ℝ) ∧
       (egyptianCount N : ℝ) ≤ 2^((liuSawhneyConstant + ε) * N)
 
-/-!
+/-
 ## Part 7: Conlon et al. (April 2024)
 
 Independent proof of the same asymptotic, plus generalization to arbitrary targets.
@@ -207,7 +207,7 @@ axiom conlon_et_al_general (x : ℚ) (hx : x > 0) :
       2^((c_x - ε) * N) ≤ (egyptianCountTarget N x : ℝ) ∧
       (egyptianCountTarget N x : ℝ) ≤ 2^((c_x + ε) * N)
 
-/-!
+/-
 ## Part 8: The 2017 MathOverflow Precedent
 
 A closely related question about sums ≤ 1 was studied earlier.
@@ -224,7 +224,7 @@ axiom mathoverflow_2017_asymptotic :
       2^((c - ε) * N) ≤ (egyptianCountLeq N : ℝ) ∧
       (egyptianCountLeq N : ℝ) ≤ 2^((c + ε) * N)
 
-/-!
+/-
 ## Part 9: Intuition — Why c < 1?
 
 The constraint Σ 1/n = 1 exactly is very restrictive.
@@ -240,7 +240,7 @@ axiom heuristic_expected_sum_grows :
     ∀ K : ℝ, ∃ N₀ : ℕ, ∀ N ≥ N₀,
       (Finset.range (N + 1)).sum (fun n => if n = 0 then (0 : ℝ) else 1 / (2 * n)) ≥ K
 
-/-!
+/-
 ## Part 10: Main Results
 
 The complete answer to Erdős Problem #297.
@@ -275,7 +275,7 @@ theorem erdos_297_main :
     For finitely many small N, choose C large enough. -/
 axiom erdos_297_answer : hasSubexponentialGrowth
 
-/-!
+/-
 ## Part 11: Summary
 -/
 

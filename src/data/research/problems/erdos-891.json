@@ -1,7 +1,7 @@
 {
   "slug": "erdos-891",
   "title": "Erdős #891",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -11,40 +11,89 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Schinzel: holds with p₁···pₖ₋₁·pₖ₊₁ (larger interval)",
+      "Weisenberg (conditional): fails with p₁···pₖ - 1 (smaller interval)"
+    ],
+    "open": [
+      "Main conjecture for all k ≥ 2",
+      "k = 2 case: every interval of 6 large consecutive integers has Ω ≥ 3"
+    ],
+    "goal": "The main conjecture is OPEN. Verified computationally for k=2, n ∈ [3, 1002]."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T10:57:29.901Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-02-08T04:00:00Z",
+    "iteration": 2,
+    "focus": "Formalized definitions, proved arithmetic function properties, verified k=2 computationally.",
+    "blockers": [
+      "Main conjecture is genuinely OPEN - no known proof technique",
+      "Nat.nth and Nat.primorial not available in Docker Mathlib v4.26.0"
+    ],
+    "nextAction": "Problem is OPEN. No further progress possible without new mathematical ideas.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #891 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $2=p_1<p_2<\\cdots$ be the primes and $k\\geq 2$. Is it true that, for all sufficiently large $n$, there must exist an integer in $[n,n+p_1\\cdots p_k)$ with $>k$ many prime factors?\n\n\n\nSchinzel deduced from P\\'{o}lya's theorem \\cite{Po18} (that the sequence of $k$-smooth integers has unbounded gaps) that this is true with $p_1\\cdots p_k$ replaced by $p_1\\cdots p_{k-1}p_{k+1}$.\n\nThis is unknown even for $k=2$ - that is, is it true that in every interval of $6$ (sufficiently large) consecutive integers there must exist one with at least $3$ prime factors?\n\nWeisenberg has observed that Dickson's conjecture implies the answer is no if we replace $p_1\\cdots p_k$ with $p_1\\cdots p_k-1$. Indeed, let $L_k$ be the lowest common multiple of all integers at most $p_1\\cdots p_k$. By Dickson's conjecture there are infinitely many $n'$ such that $\\frac{L_k}{m}n'+1$ is prime for all $1\\leq m<p_1\\cdots p_k$. It follows that, if $n=L_kn'+1$, then all integers in $[n,n+p_1\\cdots p_k-1)$ have at most $k$ prime factors.\n\n\n\n\nReferences\n\n\n[Po18] P\\'{o}lya, Georg, Zur arithmetischen {U}ntersuchung der {P}olynome. Math. Z. (1918), 143--148.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #890\n- Problem #892\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Po18\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "progressSummary": "SURVEYED: Comprehensive formalization with 20+ proved theorems. Converted axioms to proved theorems where possible (bigOmega properties, primorial values, structural lemmas). Computationally verified k=2 conjecture for n ∈ [3, 1002] via native_decide. Added smooth number connection with proved examples.",
+    "builtItems": [
+      "bigOmega/littleOmega definitions (computable, native_decide compatible)",
+      "bigOmega_prime, littleOmega_prime (general theorems for all primes)",
+      "primorialComp (computable primorial for k ≤ 5, proved by rfl)",
+      "k2_verified_range: ∀ n : Fin 1000, hasThreeFactorsInSix (n+3) = true",
+      "k2_fails_small: conjecture fails for n = 0, 1, 2",
+      "interval_contains_even, interval_contains_mult4 (structural lemmas)",
+      "twelve_is_3smooth, seven_not_3smooth (smooth number examples)",
+      "example_interval_8_14, example_interval_12_18, example_interval_100"
+    ],
+    "insights": [
+      "Nat.nth and Nat.primorial NOT available in Docker Mathlib v4.26.0 - must use computable alternatives",
+      "Nat.factorization_prime renamed to Nat.Prime.factorization in Docker Mathlib",
+      "bigOmega is fully computable via Nat.factorization.sum - native_decide works",
+      "k=2 conjecture fails only for n ∈ {0,1,2} - the interval [0,6) has max Ω = 2 at 4 = 2²",
+      "Starting from n = 3, [3,9) contains 8 = 2³ with Ω = 3",
+      "The primorial appears to be the exact threshold: p₁···pₖ - 1 fails (conditionally), p₁···pₖ₋₁·pₖ₊₁ succeeds",
+      "Every interval of length 6 contains a multiple of 4 (gap between multiples of 4 is 4 < 6)"
+    ],
+    "mathlibGaps": [
+      "Nat.nth not in Docker Mathlib v4.26.0",
+      "Nat.primorial not in Docker Mathlib v4.26.0",
+      "Nat.factors renamed/removed in Docker Mathlib v4.26.0"
+    ],
+    "nextSteps": [
+      "Problem is OPEN - no further proof progress expected",
+      "Could extend k2_verified_range to larger Fin N if needed",
+      "Could add k=3 computational verification (intervals of length 30)"
+    ],
+    "markdown": "# Erdős #891 - Knowledge Base\n\n## Problem Statement\n\nLet 2 = p₁ < p₂ < ⋯ be the primes and k ≥ 2. Is it true that for all sufficiently large n, there exists an integer in [n, n + p₁⋯pₖ) with > k prime factors?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization Status**: SURVEYED - comprehensive formalization with computational verification\n\n## Key Results\n\n### Proved Theorems (no sorry)\n- bigOmega/littleOmega properties (prime values, zero, one)\n- Primorial values for k = 0, 1, 2, 3, 4, 5 (by rfl)\n- k=2 conjecture verified for n ∈ [3, 1002] (native_decide over Fin 1000)\n- Structural: every interval of length 6 contains multiples of 2 and 4\n- Smooth number examples: 12 is 3-smooth, 7 is not\n\n### Axioms (OPEN problems)\n- erdos_891: the main conjecture\n- schinzel_theorem: weaker result with larger interval\n- weisenberg_conditional: sharp threshold result\n- dicksons_conjecture: standard conjecture\n\n## Sessions\n\n### Session 1 (2026-02-08)\n- Rewrote formalization to use computable definitions\n- Removed dependency on Nat.nth and Nat.primorial (not in Docker Mathlib)\n- Proved 20+ theorems, computational verification of k=2 case\n- All builds pass in Docker\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Computational verification",
+      "description": "Verify the conjecture computationally for small n values using native_decide",
+      "status": "completed",
+      "outcome": "k=2 verified for n ∈ [3, 1002], fails only for n ∈ {0, 1, 2}"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "prime-factors",
+    "smooth-numbers"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
+    "papers": [
+      "Pólya 1918: Zur arithmetischen Untersuchung der Polynome"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ]
   },
   "started": "2026-01-15T10:57:29.901Z",
   "significance": 6,

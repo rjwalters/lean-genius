@@ -38,7 +38,7 @@ import Mathlib
 
 namespace Erdos131
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- A set A is non-dividing if no a ∈ A divides the sum of any
     distinct elements from A \ {a}. -/
@@ -61,7 +61,7 @@ def IsNonAveraging (A : Finset ℕ) : Prop :=
   ∀ a ∈ A, ∀ S : Finset ℕ, S ⊆ A.erase a → S.card ≥ 2 →
     (S.sum id : ℚ) / S.card ≠ a
 
-/-! ## Relationship: Non-dividing implies Non-averaging -/
+/- ## Relationship: Non-dividing implies Non-averaging -/
 
 /-- Every non-dividing set is non-averaging -/
 theorem nondividing_implies_nonaveraging (A : Finset ℕ) (hA : A.card ≥ 2)
@@ -76,7 +76,7 @@ theorem nondividing_implies_nonaveraging (A : Finset ℕ) (hA : A.card ≥ 2)
     sorry -- Extract divisibility from the rational equation
   exact hND a ha S hS hCard hdiv
 
-/-! ## The Function F(N) -/
+/- ## The Function F(N) -/
 
 /-- F(N) is the maximum size of a non-dividing subset of {1, ..., N} -/
 noncomputable def F (N : ℕ) : ℕ :=
@@ -88,7 +88,7 @@ theorem F_monotonic : ∀ N M : ℕ, N ≤ M → F N ≤ F M := by
   intro N M hNM
   sorry
 
-/-! ## Upper Bounds -/
+/- ## Upper Bounds -/
 
 /-- ELRSS (1999): F(N) < 3√N + 1 -/
 theorem elrss_upper_bound (N : ℕ) (hN : N ≥ 1) :
@@ -109,7 +109,7 @@ theorem original_question_answered_no :
   -- Follows from Pham-Zakharov: F(N) ≤ N^{1/4+o(1)} < N^{1/2-o(1)} for large N
   sorry
 
-/-! ## Lower Bounds -/
+/- ## Lower Bounds -/
 
 /-- Csaba's construction: F(N) ≫ N^{1/5} -/
 theorem csaba_lower_bound :
@@ -129,7 +129,7 @@ theorem straus_constant_value :
     Real.sqrt (2 / Real.log 2) > 1.6 ∧ Real.sqrt (2 / Real.log 2) < 1.8 := by
   sorry
 
-/-! ## The Open Question -/
+/- ## The Open Question -/
 
 /-- Erdős Problem #131 (OPEN): What is the correct growth rate of F(N)?
 
@@ -151,7 +151,7 @@ theorem erdos_original_conjecture_false :
   -- Straus's bound shows F grows faster than any power of log N
   sorry
 
-/-! ## Small Examples -/
+/- ## Small Examples -/
 
 /-- {1} is trivially non-dividing -/
 theorem singleton_nondividing (n : ℕ) (hn : n ≥ 1) :
@@ -186,7 +186,7 @@ theorem primes_nondividing_example :
   -- Prime a cannot divide sum of other primes (if all > a)
   sorry
 
-/-! ## Connection to Non-Averaging Sets -/
+/- ## Connection to Non-Averaging Sets -/
 
 /-- The non-averaging function g(N) from Problem #186 -/
 noncomputable def g (N : ℕ) : ℕ :=
@@ -205,7 +205,7 @@ theorem pham_zakharov_chain :
   obtain ⟨ε, hε, hbound⟩ := hg N hN
   exact ⟨ε, hε, le_trans (Nat.cast_le.mpr (F_le_g N)) hbound⟩
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: OPEN (original question resolved)**
 

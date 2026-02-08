@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #504: Maximum Angle in Point Sets (Blumenthal's Problem)
 
 Source: https://erdosproblems.com/504
@@ -40,7 +40,7 @@ open Real Set
 
 namespace Erdos504
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /--
 **Angle Between Three Points**
@@ -65,7 +65,7 @@ axiom angle_range (x y z : ℝ × ℝ) : 0 ≤ angle x y z ∧ angle x y z ≤ �
 /-- The angle is symmetric in x and z. -/
 axiom angle_symm (x y z : ℝ × ℝ) : angle x y z = angle z y x
 
-/-! ## Part II: Maximum Angle in a Point Set -/
+/- ## Part II: Maximum Angle in a Point Set -/
 
 /--
 **Maximum Angle in a Finite Set**
@@ -82,7 +82,7 @@ axiom maxAngleInSet_pos (A : Finset (ℝ × ℝ)) (hA : A.card ≥ 3) :
 /-- The maximum angle is at most π. -/
 axiom maxAngleInSet_le_pi (A : Finset (ℝ × ℝ)) : maxAngleInSet A ≤ π
 
-/-! ## Part III: The α_n Function -/
+/- ## Part III: The α_n Function -/
 
 /--
 **The α_n Function**
@@ -102,7 +102,7 @@ axiom alphaN_defined (n : ℕ) (hn : n ≥ 3) : 0 < alphaN n ∧ alphaN n ≤ π
 /-- α_n is monotonically non-increasing. -/
 axiom alphaN_mono (m n : ℕ) (h : m ≤ n) (hn : n ≥ 3) : alphaN n ≤ alphaN m
 
-/-! ## Part IV: Small Cases -/
+/- ## Part IV: Small Cases -/
 
 /-- α_3 = π (any three points form a triangle with max angle ≥ 60°). -/
 axiom alpha_3 : alphaN 3 = π
@@ -110,7 +110,7 @@ axiom alpha_3 : alphaN 3 = π
 /-- α_4 = π (four points always have angle ≥ 90°). -/
 axiom alpha_4 : alphaN 4 = π
 
-/-! ## Part V: Erdős-Szekeres Results (1960) -/
+/- ## Part V: Erdős-Szekeres Results (1960) -/
 
 /--
 **Erdős-Szekeres Theorem (1960)**
@@ -126,7 +126,7 @@ noncomputable def erdosSzekeresFormula (n : ℕ) : ℝ := π * (1 - 1 / n)
 axiom erdos_szekeres (n : ℕ) (hn : n ≥ 2) :
     alphaN (2^n) = erdosSzekeresFormula n
 
-/-! ## Part VI: Sendov's Complete Solution (1993) -/
+/- ## Part VI: Sendov's Complete Solution (1993) -/
 
 /--
 **Sendov's Formula (1993)**
@@ -166,7 +166,7 @@ axiom sendov_lower (n N : ℕ) (hn : n ≥ 3)
     (hLower : 2^(n-1) < N) (hUpper : N ≤ 2^(n-1) + 2^(n-3)) :
     alphaN N = sendovLowerFormula n
 
-/-! ## Part VII: Counterexample to Erdős-Szekeres Conjecture -/
+/- ## Part VII: Counterexample to Erdős-Szekeres Conjecture -/
 
 /--
 **Sendov's Counterexample (1992)**
@@ -181,7 +181,7 @@ axiom erdos_szekeres_conjecture_false :
     ∃ n N : ℕ, n ≥ 3 ∧ 2^(n-1) < N ∧ N ≤ 2^n ∧
     alphaN N ≠ erdosSzekeresFormula n
 
-/-! ## Part VIII: Optimal Configurations -/
+/- ## Part VIII: Optimal Configurations -/
 
 /--
 **Regular Polygon Configuration**
@@ -200,7 +200,7 @@ def regularNGonVertices (n : ℕ) : Finset (ℝ × ℝ) :=
 axiom regularNGon_optimal (k : ℕ) (hk : k ≥ 2) :
     maxAngleInSet (regularNGonVertices (2^k)) = alphaN (2^k)
 
-/-! ## Part IX: Connection to Convex Position -/
+/- ## Part IX: Connection to Convex Position -/
 
 /--
 **Convex vs General Position**
@@ -218,7 +218,7 @@ axiom optimal_is_convex (n : ℕ) (hn : n ≥ 3) :
     ∃ A : Finset (ℝ × ℝ), A.card = n ∧ isConvexPosition A ∧
     maxAngleInSet A = alphaN n
 
-/-! ## Part X: Summary -/
+/- ## Part X: Summary -/
 
 /--
 **Erdős Problem #504: Summary**

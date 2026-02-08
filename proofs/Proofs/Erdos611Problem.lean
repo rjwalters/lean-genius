@@ -29,7 +29,7 @@ namespace Erdos611
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Cliques and Transversals (from #610) -/
+/- ## Cliques and Transversals (from #610) -/
 
 /-- A clique in a graph is a set of pairwise adjacent vertices -/
 def IsClique (G : SimpleGraph V) (S : Finset V) : Prop :=
@@ -53,7 +53,7 @@ noncomputable def cliqueTransversalNumber (G : SimpleGraph V) : ℕ :=
 
 notation "τ" => cliqueTransversalNumber
 
-/-! ## Minimum Clique Size -/
+/- ## Minimum Clique Size -/
 
 /-- The minimum size of a maximal clique in G -/
 noncomputable def minMaximalCliqueSize (G : SimpleGraph V) : ℕ :=
@@ -70,7 +70,7 @@ def AllCliquesLinear (G : SimpleGraph V) (c : ℝ) : Prop :=
   0 < c ∧ c ≤ 1 ∧ ∀ C : Finset V, IsMaximalClique G C →
     (C.card : ℝ) ≥ c * Fintype.card V
 
-/-! ## Question 1: Linear Clique Size -/
+/- ## Question 1: Linear Clique Size -/
 
 /-- Question 1: If all cliques have size ≥ cn, is τ(G) = o(n)? -/
 def Question1_LinearCliques : Prop :=
@@ -90,7 +90,7 @@ def Question1_Alternative : Prop :=
         (_ : AllCliquesLinear G c)})
       Filter.atTop (nhds 0)
 
-/-! ## Question 2: Threshold Function k_c(n) -/
+/- ## Question 2: Threshold Function k_c(n) -/
 
 /-- k_c(n) = minimum k such that if all cliques have size ≥ k, then τ < (1-c)n -/
 noncomputable def k_threshold (c : ℝ) (n : ℕ) : ℕ :=
@@ -111,7 +111,7 @@ def Question2_ThresholdEstimate : Prop :=
       (∀ n, k_threshold c n ≤ g n) ∧
       sorry -- Explicit bounds on f and g
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- Erdős-Gallai-Tuza: If every clique has size ≥ k, then τ ≤ n - √(kn) -/
 axiom erdos_gallai_tuza_large_cliques :
@@ -134,7 +134,7 @@ theorem question1_positive :
         (τ G : ℝ) < Fintype.card V := by
   sorry
 
-/-! ## Lower Bound on k_c(n) -/
+/- ## Lower Bound on k_c(n) -/
 
 /-- Erdős-Gallai-Tuza lower bound: k_c(n) ≥ n^{c'/log log n} -/
 axiom threshold_lower_bound :
@@ -151,7 +151,7 @@ theorem threshold_grows_slowly :
           (k_threshold c n : ℝ) ≤ n ^ ε := by
   sorry
 
-/-! ## The Bollobás-Erdős Threshold -/
+/- ## The Bollobás-Erdős Threshold -/
 
 /-- The critical threshold for τ = 1 -/
 def bollobas_erdos_threshold (n : ℕ) : ℝ :=
@@ -173,7 +173,7 @@ axiom bollobas_erdos_optimal :
         (C.card : ℝ) ≥ n + 3 - 2 * Real.sqrt n - ε) ∧
       τ G ≥ 2
 
-/-! ## Special Cases -/
+/- ## Special Cases -/
 
 /-- Complete graph: one clique of size n, so τ = 1 -/
 theorem complete_graph_tau [Nontrivial V] :
@@ -190,7 +190,7 @@ theorem turan_graph_tau (n r : ℕ) (hr : r ≥ 2) :
     sorry -- τ(T(n,r)) analysis
     := by sorry
 
-/-! ## Probabilistic Lower Bounds -/
+/- ## Probabilistic Lower Bounds -/
 
 /-- Random graphs provide lower bound constructions -/
 axiom random_graph_clique_transversal :
@@ -201,7 +201,7 @@ axiom random_graph_clique_transversal :
         (∀ C : Finset V, IsMaximalClique G C → C.card ≥ n ^ (c / Real.log (Real.log n))) ∧
         (τ G : ℝ) ≥ (1 - c - 0.01) * n
 
-/-! ## Relationship to #610 -/
+/- ## Relationship to #610 -/
 
 /-- #611 refines #610 by considering clique size constraints -/
 theorem refines_610 :
@@ -212,7 +212,7 @@ theorem refines_610 :
       (τ G : ℝ) ≤ Fintype.card V - Real.sqrt (2 * Fintype.card V)) := by
   sorry
 
-/-! ## Main Problem Statement -/
+/- ## Main Problem Statement -/
 
 /-- Erdős Problem #611: OPEN
 

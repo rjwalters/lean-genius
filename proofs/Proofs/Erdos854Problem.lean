@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #854 — Gaps Between Coprime Residues of Primorials
 
 Let nₖ = p₁ · p₂ · ⋯ · pₖ be the k-th primorial. Consider the sequence
@@ -20,7 +20,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-/-! ## Primorial and Coprime Residues -/
+/- ## Primorial and Coprime Residues -/
 
 /-- The k-th prime number (1-indexed: nthPrime 1 = 2, nthPrime 2 = 3, ...) -/
 axiom nthPrime : ℕ → ℕ
@@ -43,7 +43,7 @@ axiom sortedCoprimes_sorted (n : ℕ) : List.Sorted (· < ·) (sortedCoprimes n)
 axiom sortedCoprimes_mem (n : ℕ) (a : ℕ) :
   a ∈ sortedCoprimes n ↔ a ∈ coprimeResidues n
 
-/-! ## Gap Structure -/
+/- ## Gap Structure -/
 
 /-- The set of consecutive gaps between coprime residues of n -/
 axiom gapSet : ℕ → Finset ℕ
@@ -62,7 +62,7 @@ axiom distinctGapCount : ℕ → ℕ
 axiom distinctGapCount_def (n : ℕ) :
   distinctGapCount n = (gapSet n).card
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- Maximal gap for primorial(k) grows like 2pₖ (the Jacobsthal function bound) -/
 axiom maxGap_bound (k : ℕ) (hk : 2 ≤ k) :
@@ -80,7 +80,7 @@ axiom firstMissingGap_missing (k : ℕ) (hk : 2 ≤ k) :
 axiom lacampagne_selfridge_counterexample :
   ∃ d : ℕ, 2 ∣ d ∧ d < maxGap (primorial 6) ∧ d ∉ gapSet (primorial 6)
 
-/-! ## The Erdős Conjectures -/
+/- ## The Erdős Conjectures -/
 
 /-- Erdős Problem 854, Part 1: Estimate the smallest even integer
     not representable as a consecutive gap in coprime residues of primorials -/

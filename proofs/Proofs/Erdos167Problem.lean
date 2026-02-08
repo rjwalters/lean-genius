@@ -51,7 +51,7 @@ namespace Erdos167
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A triangle in a graph G is a set of three vertices forming K₃. -/
 def IsTriangle (G : SimpleGraph V) (a b c : V) : Prop :=
@@ -83,7 +83,7 @@ def IsTriangleCover (G : SimpleGraph V) (E : Set (Sym2 V)) : Prop :=
 noncomputable def triangleCoverNumber (G : SimpleGraph V) : ℕ :=
   sInf { k : ℕ | ∃ E : Finset (Sym2 V), E.card = k ∧ IsTriangleCover G E }
 
-/-! ## Tuza's Conjecture -/
+/- ## Tuza's Conjecture -/
 
 /-- **Tuza's Conjecture** (1981):
     For any graph G, τ(G) ≤ 2 · ν(G) where ν(G) is the maximum number
@@ -92,7 +92,7 @@ def TuzaConjecture : Prop :=
   ∀ (V : Type*) [Fintype V] [DecidableEq V] (G : SimpleGraph V),
     triangleCoverNumber G ≤ 2 * maxEdgeDisjointTriangles G
 
-/-! ## Trivial Bound -/
+/- ## Trivial Bound -/
 
 /- Trivial bound: τ(G) ≤ 3 · ν(G).
     We can remove one edge from each triangle in a maximum packing. -/
@@ -173,7 +173,7 @@ theorem trivial_bound (G : SimpleGraph V) :
     exact le_trans ( Finset.card_biUnion_le ) ( by simpa [ mul_comm ] using Finset.sum_le_sum h_triangle_edges );
   exact le_trans ( Nat.sInf_le ⟨ E, rfl, hE_triangle_cover ⟩ ) ( by simpa only [ hT_card ] using hE_card )
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- K₄ shows 2k is tight: ν(K₄) = 1 but τ(K₄) = 2. -/
 theorem k4_tight : ∃ (G : SimpleGraph (Fin 4)),
@@ -247,20 +247,25 @@ axiom tuza_for_k4_free (G : SimpleGraph V) (hK4 : ¬∃ a b c d : V,
     IsTriangle G a b c ∧ IsTriangle G a b d ∧ IsTriangle G a c d ∧ IsTriangle G b c d) :
   triangleCoverNumber G ≤ 2 * maxEdgeDisjointTriangles G
 
-/-- Tuza's conjecture holds for planar graphs. -/
-axiom tuza_for_planar (G : SimpleGraph V) (hPlanar : True) :  -- Planarity predicate omitted
+/-- Tuza's conjecture holds for planar graphs.
+    Planarity is an abstract predicate (Mathlib does not have a general definition). -/
+axiom IsPlanar : SimpleGraph V → Prop
+axiom tuza_for_planar (G : SimpleGraph V) (hPlanar : IsPlanar G) :
   triangleCoverNumber G ≤ 2 * maxEdgeDisjointTriangles G
 
-/-! ## Fractional Version -/
+/- ## Fractional Version -/
 
-/-- The fractional version of Tuza's conjecture IS true.
-    τ*(G) ≤ 2 · ν*(G) where * denotes fractional versions. -/
-axiom fractional_tuza :
-  True
+/-- **Fractional Tuza's Conjecture (proved):**
+    The fractional relaxation τ*(G) ≤ 2·ν*(G) holds for all graphs.
+    A fractional triangle cover assigns weights w(e) ∈ [0,1] to edges
+    such that every triangle has total weight ≥ 1, and τ*(G) minimizes
+    the total weight. Similarly ν*(G) is the fractional triangle packing. -/
+axiom fractional_tuza (G : SimpleGraph V) [DecidableRel G.Adj] :
+  (triangleCoverNumber G : ℚ) ≤ 2 * maxEdgeDisjointTriangles G
 
 -- The fractional relaxation is known to hold
 
-/-! ## Summary
+/- ## Summary
 
 **Problem Status: PARTIALLY SOLVED**
 

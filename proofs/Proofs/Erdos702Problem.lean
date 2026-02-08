@@ -31,7 +31,7 @@ namespace Erdos702
 
 open Finset Nat
 
-/-!
+/-
 ## Part I: Set Families
 -/
 
@@ -46,7 +46,7 @@ def IsKUniform (F : Finset (Finset ℕ)) (k : ℕ) : Prop :=
 def IsOverGroundSet (F : Finset (Finset ℕ)) (n : ℕ) : Prop :=
   ∀ A ∈ F, A ⊆ groundSet n
 
-/-!
+/-
 ## Part II: Intersection Patterns
 -/
 
@@ -63,7 +63,7 @@ def AvoidsSingletonIntersections (F : Finset (Finset ℕ)) : Prop :=
 def HasSingletonPair (F : Finset (Finset ℕ)) : Prop :=
   ∃ A ∈ F, ∃ B ∈ F, A ≠ B ∧ SingletonIntersection A B
 
-/-!
+/-
 ## Part III: The Extremal Bound
 -/
 
@@ -78,12 +78,11 @@ axiom extremal_construction :
       F.card = Nat.choose (n - 2) (k - 2) ∧
       AvoidsSingletonIntersections F
 
-/-- **Why C(n-2, k-2)?**
+/- **Why C(n-2, k-2)?**
     If all sets contain {x, y}, then any two sets A, B satisfy
     |A ∩ B| ≥ 2 (they share at least x and y), so |A ∩ B| ≠ 1. -/
-axiom why_n_minus_2_choose_k_minus_2 : True
 
-/-!
+/-
 ## Part IV: Frankl's Theorem (1977)
 -/
 
@@ -109,7 +108,7 @@ axiom katona_k4 :
       F.card > Nat.choose (n - 2) 2 →
       HasSingletonPair F
 
-/-!
+/-
 ## Part V: Special Cases
 -/
 
@@ -129,19 +128,17 @@ axiom k3_fails :
       F.card > Nat.choose (n - 2) 1 ∧
       AvoidsSingletonIntersections F
 
-/-!
+/-
 ## Part VI: Proof Technique
 -/
 
-/-- **Frankl's proof approach:**
+/- **Frankl's proof approach:**
     Uses the shifting technique and careful case analysis. -/
-axiom shifting_technique : True
 
-/-- **Connection to Problem #703:**
+/- **Connection to Problem #703:**
     Related problem about intersecting families. -/
-axiom related_to_703 : True
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

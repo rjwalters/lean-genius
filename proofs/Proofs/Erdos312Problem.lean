@@ -23,8 +23,12 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.SpecialFunctions.Log.Deriv
+import Mathlib.Topology.Algebra.Order.LiminfLimsup
+import Mathlib.Order.Filter.Basic
+import Mathlib.Analysis.PSeries
 
-open Finset Real
+open Finset Real Filter
 
 namespace Erdos312
 
@@ -38,6 +42,81 @@ noncomputable def reciprocalSum (n : ℕ) (a : Fin n → ℕ) : ℝ :=
 /-- The reciprocal sum over a subset S ⊆ {0,...,n-1} -/
 noncomputable def subsetReciprocalSum (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n)) : ℝ :=
   ∑ i ∈ S, (a i : ℝ)⁻¹
+
+/-- reciprocalSum is non-negative when elements are natural numbers. -/
+theorem reciprocalSum_nonneg (n : ℕ) (a : Fin n → ℕ) :
+    0 ≤ reciprocalSum n a := by
+  apply Finset.sum_nonneg
+  intro i _
+  exact inv_nonneg.mpr (Nat.cast_nonneg' (a i))
+
+/-- subsetReciprocalSum is non-negative when elements are natural numbers. -/
+theorem subsetReciprocalSum_nonneg (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n)) :
+    0 ≤ subsetReciprocalSum n a S := by
+  apply Finset.sum_nonneg
+  intro i _
+  exact inv_nonneg.mpr (Nat.cast_nonneg' (a i))
+
+/-- The reciprocal sum over a subset is at most the total reciprocal sum. -/
+theorem subsetSum_le_totalSum (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n)) :
+    subsetReciprocalSum n a S ≤ reciprocalSum n a := by
+  apply Finset.sum_le_univ_sum_of_nonneg
+  intro i
+  exact inv_nonneg.mpr (Nat.cast_nonneg' (a i))
+
+/-- The reciprocal sum of the empty subset is 0. -/
+theorem empty_subsetSum_eq_zero (n : ℕ) (a : Fin n → ℕ) :
+    subsetReciprocalSum n a ∅ = 0 := by
+  simp [subsetReciprocalSum]
+
+/-- The full set gives the same as reciprocalSum. -/
+theorem univ_subsetSum_eq_totalSum (n : ℕ) (a : Fin n → ℕ) :
+    subsetReciprocalSum n a Finset.univ = reciprocalSum n a := by
+  simp [subsetReciprocalSum, reciprocalSum]
+
+/-- Subset reciprocal sums are monotone: S ⊆ T implies sum(S) ≤ sum(T). -/
+theorem subsetReciprocalSum_mono (n : ℕ) (a : Fin n → ℕ) (S T : Finset (Fin n))
+    (hST : S ⊆ T) : subsetReciprocalSum n a S ≤ subsetReciprocalSum n a T := by
+  apply Finset.sum_le_sum_of_subset_of_nonneg hST
+  intro i _ _
+  exact inv_nonneg.mpr (Nat.cast_nonneg' (a i))
+
+/-- Subset reciprocal sum over a singleton {i} equals 1/a(i). -/
+theorem subsetReciprocalSum_singleton (n : ℕ) (a : Fin n → ℕ) (i : Fin n) :
+    subsetReciprocalSum n a {i} = (a i : ℝ)⁻¹ := by
+  simp [subsetReciprocalSum]
+
+/-- Additive splitting for disjoint subsets: sum(S ∪ T) = sum(S) + sum(T). -/
+theorem subsetReciprocalSum_disjoint_union (n : ℕ) (a : Fin n → ℕ)
+    (S T : Finset (Fin n)) (hST : Disjoint S T) :
+    subsetReciprocalSum n a (S ∪ T) =
+      subsetReciprocalSum n a S + subsetReciprocalSum n a T := by
+  simp [subsetReciprocalSum, Finset.sum_union hST]
+
+/-- If all elements are positive and the multiset is nonempty, the total sum is positive. -/
+theorem reciprocalSum_pos (n : ℕ) (hn : 0 < n) (a : Fin n → ℕ) (ha : ∀ i, 0 < a i) :
+    0 < reciprocalSum n a := by
+  apply Finset.sum_pos
+  · intro i _
+    exact inv_pos.mpr (Nat.cast_pos.mpr (ha i))
+  · exact Finset.univ_nonempty
+
+/-- Removing an element from the subset decreases the sum by exactly 1/a(i). -/
+theorem subsetReciprocalSum_erase (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n))
+    (i : Fin n) (hi : i ∈ S) :
+    subsetReciprocalSum n a S =
+      subsetReciprocalSum n a (S.erase i) + (a i : ℝ)⁻¹ := by
+  simp only [subsetReciprocalSum]
+  rw [← Finset.add_sum_erase _ _ hi]
+
+/-- Inserting a new element increases the subset sum by 1/a(i). -/
+theorem subsetReciprocalSum_insert (n : ℕ) (a : Fin n → ℕ) (S : Finset (Fin n))
+    (i : Fin n) (hi : i ∉ S) :
+    subsetReciprocalSum n a (insert i S) =
+      subsetReciprocalSum n a S + (a i : ℝ)⁻¹ := by
+  simp only [subsetReciprocalSum]
+  rw [Finset.sum_insert hi]
+  ring
 
 /- ## Part II: The Main Conjecture -/
 
@@ -83,12 +162,46 @@ axiom erdos_graham_polynomial :
 
 /-- For large K, the exponential bound is tighter than the polynomial one:
     exp(-cK) < c'/K² for sufficiently large K.
-    This shows the conjecture is strictly stronger than the known result. -/
-axiom exponential_stronger_than_polynomial :
+    This shows the conjecture is strictly stronger than the known result.
+
+    Proof: K² · exp(-cK) → 0 as K → ∞ (exponentials dominate polynomials),
+    so eventually K² · exp(-cK) < c', giving exp(-cK) < c'/K². -/
+theorem exponential_stronger_than_polynomial :
   ∀ c : ℝ, 0 < c →
     ∀ c' : ℝ, 0 < c' →
       ∃ K₀ : ℝ, ∀ K : ℝ, K > K₀ →
-        Real.exp (-(c * K)) < c' / K^2
+        Real.exp (-(c * K)) < c' / K^2 := by
+  intro c hc c' hc'
+  -- x^2 * exp(-x) → 0 as x → ∞ (Mathlib)
+  have h_tend := Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero 2
+  -- Compose with (fun K => c * K) which tends to atTop for c > 0
+  have h_linear : Tendsto (fun K : ℝ => c * K) atTop atTop :=
+    Tendsto.const_mul_atTop hc tendsto_id
+  have h_comp : Tendsto (fun K : ℝ => (c * K) ^ 2 * Real.exp (-(c * K))) atTop (nhds 0) :=
+    h_tend.comp h_linear
+  -- Use ε = c' * c^2 so that after extracting c^2 we get exp(-cK) < c'/K^2
+  have heps : c' * c ^ 2 > 0 := by positivity
+  rw [Metric.tendsto_atTop] at h_comp
+  obtain ⟨K₁, hK₁⟩ := h_comp (c' * c ^ 2) heps
+  use max K₁ 1
+  intro K hK
+  have hK_ge_K₁ : K ≥ K₁ := le_of_lt (lt_of_le_of_lt (le_max_left _ _) hK)
+  have hK_gt_1 : K > 1 := lt_of_le_of_lt (le_max_right K₁ 1) hK
+  have hK2_pos : K ^ 2 > 0 := by positivity
+  have h_dist := hK₁ K hK_ge_K₁
+  rw [Real.dist_eq, sub_zero] at h_dist
+  have h_nonneg : 0 ≤ (c * K) ^ 2 * Real.exp (-(c * K)) := by positivity
+  rw [abs_of_nonneg h_nonneg] at h_dist
+  -- h_dist : (c * K) ^ 2 * exp(-(c * K)) < c' * c^2
+  -- i.e. c^2 * K^2 * exp(-cK) < c' * c^2
+  -- Dividing by c^2 * K^2 > 0: exp(-cK) < c' / K^2
+  have hcK2_pos : (c * K) ^ 2 > 0 := by positivity
+  calc Real.exp (-(c * K))
+      = (c * K) ^ 2 * Real.exp (-(c * K)) / (c * K) ^ 2 := by
+        field_simp
+      _ < c' * c ^ 2 / (c * K) ^ 2 := by
+        apply div_lt_div_of_pos_right h_dist hcK2_pos
+      _ = c' / K ^ 2 := by ring_nf; field_simp; ring
 
 /-- If the exponential precision conjecture holds, then for large K,
     any multiset satisfying the exponential property also satisfies
@@ -108,16 +221,281 @@ theorem conjecture_implies_known :
       obtain ⟨S, _, hle⟩ := hN₀ n a h
       exact ⟨S, hle⟩⟩⟩
 
+/-- Exponential precision at parameters (c, K) implies polynomial precision
+    at (c', K) whenever exp(-cK) < c'/K².
+    This links the two precision notions pointwise. -/
+theorem exponential_implies_polynomial_pointwise
+    (n : ℕ) (a : Fin n → ℕ) (c c' K : ℝ)
+    (hexp : Real.exp (-(c * K)) < c' / K ^ 2) :
+    hasExponentialPrecision n a c K → hasPolynomialPrecision n a c' K := by
+  intro ⟨S, hlo, hhi⟩
+  refine ⟨S, ?_, hhi⟩
+  calc 1 - c' / K ^ 2
+      < 1 - Real.exp (-(c * K)) := by linarith
+    _ < subsetReciprocalSum n a S := hlo
+
+/-- Monotonicity of exponential precision in the constant c:
+    If c₁ ≤ c₂ and K > 0, exponential precision with c₁ implies c₂. -/
+theorem exponentialPrecision_mono_c (n : ℕ) (a : Fin n → ℕ) (c₁ c₂ K : ℝ)
+    (hc : c₁ ≤ c₂) (hK : 0 < K) :
+    hasExponentialPrecision n a c₂ K → hasExponentialPrecision n a c₁ K := by
+  intro ⟨S, hlo, hhi⟩
+  refine ⟨S, ?_, hhi⟩
+  calc 1 - Real.exp (-(c₁ * K))
+      ≤ 1 - Real.exp (-(c₂ * K)) := by
+        apply sub_le_sub_left
+        apply Real.exp_le_exp_of_le
+        linarith [mul_le_mul_of_nonneg_right hc (le_of_lt hK)]
+    _ < subsetReciprocalSum n a S := hlo
+
+/- ## Part IV.b: Exponential Gap Analysis -/
+
+/-- For c > 0 and K > 0, the exponential gap 1 - exp(-cK) is non-negative.
+    This ensures the precision window (1 - exp(-cK), 1] is well-defined. -/
+theorem exponential_gap_nonneg (c K : ℝ) (hc : 0 < c) (hK : 0 < K) :
+    0 ≤ 1 - Real.exp (-(c * K)) := by
+  rw [sub_nonneg, ← Real.exp_zero]
+  exact Real.exp_le_exp.mpr (by linarith [mul_pos hc hK])
+
+/-- The exponential gap is strictly less than 1, so the interval (1 - exp(-cK), 1]
+    always has positive length. -/
+theorem exponential_gap_lt_one (c K : ℝ) :
+    1 - Real.exp (-(c * K)) < 1 := by
+  linarith [Real.exp_pos (-(c * K))]
+
+/-- The precision gap is monotone in K: larger K gives a wider precision window.
+    For c > 0 and K₁ ≤ K₂, we have 1 - exp(-cK₁) ≤ 1 - exp(-cK₂). -/
+theorem exponential_gap_monotone (c : ℝ) (hc : 0 < c) (K₁ K₂ : ℝ) (hK : K₁ ≤ K₂) :
+    1 - Real.exp (-(c * K₁)) ≤ 1 - Real.exp (-(c * K₂)) := by
+  simp only [sub_le_sub_iff_left]
+  exact Real.exp_le_exp.mpr (by nlinarith)
+
+/-- The precision gap tends to 1 as K → ∞: exp(-cK) → 0 implies 1 - exp(-cK) → 1.
+    In the limit, the conjecture would produce subsets with sum arbitrarily close to 1. -/
+theorem exponential_gap_tends_to_one (c : ℝ) (hc : 0 < c) :
+    Tendsto (fun K : ℝ => 1 - Real.exp (-(c * K))) atTop (nhds 1) := by
+  have h1 : Tendsto (fun K : ℝ => c * K) atTop atTop :=
+    Tendsto.const_mul_atTop hc tendsto_id
+  have h2 : Tendsto (fun K : ℝ => Real.exp (-(c * K))) atTop (nhds 0) :=
+    Real.tendsto_exp_neg_atTop_nhds_zero.comp h1
+  have h3 : (1 : ℝ) = 1 - 0 := by ring
+  rw [h3]
+  exact Tendsto.const_sub h2 1
+
+/- ## Part IV.c: Polynomial Gap Analysis -/
+
+/-- For c > 0 and K > 0, the polynomial gap c/K² is positive. -/
+theorem polynomial_gap_pos (c K : ℝ) (hc : 0 < c) (hK : 0 < K) :
+    0 < c / K ^ 2 := by
+  positivity
+
+/-- The polynomial gap is monotone decreasing in K: larger K gives tighter precision.
+    For c > 0 and K₁ ≤ K₂ with K₁ > 0, we have c/K₂² ≤ c/K₁². -/
+theorem polynomial_gap_antitone (c : ℝ) (hc : 0 < c) (K₁ K₂ : ℝ) (hK₁ : 0 < K₁)
+    (hK : K₁ ≤ K₂) :
+    c / K₂ ^ 2 ≤ c / K₁ ^ 2 := by
+  apply div_le_div_of_nonneg_left (by linarith) (by positivity)
+  exact pow_le_pow_left (le_of_lt hK₁) hK 2
+
+/-- The polynomial gap c/K² tends to 0 as K → ∞. -/
+theorem polynomial_gap_tends_to_zero (c : ℝ) :
+    Tendsto (fun K : ℝ => c / K ^ 2) atTop (nhds 0) := by
+  have h : Tendsto (fun K : ℝ => K ^ 2) atTop atTop :=
+    tendsto_pow_atTop (by norm_num : 1 < 2)
+  have h2 : Tendsto (fun K : ℝ => (K ^ 2)⁻¹) atTop (nhds 0) :=
+    tendsto_inv_atTop_zero.comp h
+  have h3 : (fun K : ℝ => c / K ^ 2) = (fun K => c * (K ^ 2)⁻¹) := by
+    ext K; rw [div_eq_mul_inv]
+  rw [h3, show (0 : ℝ) = c * 0 from by ring]
+  exact Tendsto.const_mul h2 (Or.inr rfl)
+
+/-- Monotonicity of polynomial precision in the constant c:
+    If c₁ ≤ c₂ and K ≠ 0, polynomial precision with c₁ implies c₂. -/
+theorem polynomialPrecision_mono_c (n : ℕ) (a : Fin n → ℕ) (c₁ c₂ K : ℝ)
+    (hc : c₁ ≤ c₂) (hK : K ≠ 0) :
+    hasPolynomialPrecision n a c₁ K → hasPolynomialPrecision n a c₂ K := by
+  intro ⟨S, hlo, hhi⟩
+  refine ⟨S, ?_, hhi⟩
+  calc 1 - c₂ / K ^ 2
+      ≤ 1 - c₁ / K ^ 2 := by
+        apply sub_le_sub_left
+        apply div_le_div_of_nonneg_right hc
+        exact sq_nonneg K
+    _ < subsetReciprocalSum n a S := hlo
+
+/- ## Part IV.d: Taylor Bound Analysis -/
+
+/-- Key inequality: exp(-x) ≤ 1/(1+x) for x ≥ 0.
+    This is the "first-order Taylor" bound for the exponential. -/
+theorem exp_neg_le_inv_one_add (x : ℝ) (hx : 0 ≤ x) :
+    Real.exp (-x) ≤ 1 / (1 + x) := by
+  rw [Real.exp_neg, div_le_div_iff (by positivity : (0 : ℝ) < Real.exp x) (by linarith)]
+  linarith [Real.add_one_le_exp x]
+
+/-- The exponential precision window is at least as large as 1 - 1/(1+cK)
+    for c > 0 and K > 0, giving a concrete rational lower bound on the gap. -/
+theorem exponential_gap_rational_lower_bound (c K : ℝ) (hc : 0 < c) (hK : 0 < K) :
+    1 - 1 / (1 + c * K) ≤ 1 - Real.exp (-(c * K)) := by
+  simp only [sub_le_sub_iff_left]
+  exact exp_neg_le_inv_one_add (c * K) (le_of_lt (mul_pos hc hK))
+
+/-- Simplification: 1 - 1/(1+t) = t/(1+t) for t ≠ -1. -/
+theorem one_sub_inv_one_add (t : ℝ) (ht : t ≠ -1) :
+    1 - 1 / (1 + t) = t / (1 + t) := by
+  have h1t : 1 + t ≠ 0 := by intro h; apply ht; linarith
+  field_simp
+
+/-- Combined: the exponential gap is at least cK/(1+cK). -/
+theorem exponential_gap_concrete_bound (c K : ℝ) (hc : 0 < c) (hK : 0 < K) :
+    c * K / (1 + c * K) ≤ 1 - Real.exp (-(c * K)) := by
+  have hcK_pos : 0 < c * K := mul_pos hc hK
+  rw [← one_sub_inv_one_add (c * K) (by linarith)]
+  exact exponential_gap_rational_lower_bound c K hc hK
+
+/-- The first-order lower bound for exp: exp(-x) ≥ 1 - x for all real x.
+    Combined with the gap definition, this shows the exponential gap
+    is at most cK, giving 1 - exp(-cK) ≤ cK. -/
+theorem exp_neg_ge_one_sub (x : ℝ) : Real.exp (-x) ≥ 1 - x := by
+  linarith [Real.add_one_le_exp (-x)]
+
+/-- The exponential precision gap is at most cK:
+    the window (1 - exp(-cK), 1] has width at most cK. -/
+theorem exponential_gap_le_cK (c K : ℝ) :
+    1 - Real.exp (-(c * K)) ≤ c * K := by
+  linarith [exp_neg_ge_one_sub (c * K)]
+
+/-- The exponential gap is sandwiched: cK/(1+cK) ≤ 1 - exp(-cK) ≤ cK.
+    This gives both upper and lower bounds on the precision window width. -/
+theorem exponential_gap_sandwich (c K : ℝ) (hc : 0 < c) (hK : 0 < K) :
+    c * K / (1 + c * K) ≤ 1 - Real.exp (-(c * K)) ∧
+    1 - Real.exp (-(c * K)) ≤ c * K :=
+  ⟨exponential_gap_concrete_bound c K hc hK, exponential_gap_le_cK c K⟩
+
 /- ## Part V: Harmonic Number Context -/
 
 /-- The n-th harmonic number H_n = 1 + 1/2 + ... + 1/n -/
 noncomputable def harmonicNumber (n : ℕ) : ℝ :=
-  ∑ i in Finset.range n, ((i + 1 : ℕ) : ℝ)⁻¹
+  ∑ i ∈ Finset.range n, ((i + 1 : ℕ) : ℝ)⁻¹
 
 /-- Harmonic numbers grow without bound (well-known):
-    For any K > 0, there exists n with H_n > K -/
-axiom harmonic_unbounded :
-  ∀ K : ℝ, ∃ n : ℕ, harmonicNumber n > K
+    For any K > 0, there exists n with H_n > K.
+
+    Proof: The partial sums 1 + 1/2 + ... + 1/n tend to infinity
+    (Mathlib: Real.tendsto_sum_range_one_div_nat_succ_atTop). -/
+theorem harmonic_unbounded :
+    ∀ K : ℝ, ∃ n : ℕ, harmonicNumber n > K := by
+  intro K
+  -- Mathlib: partial sums of 1/(k+1) tend to infinity
+  have h_tend := Real.tendsto_sum_range_one_div_nat_succ_atTop
+  -- Match our harmonicNumber to the Mathlib form
+  have h_eq : ∀ n : ℕ, (∑ k ∈ Finset.range n, (1 : ℝ) / (↑k + 1)) = harmonicNumber n := by
+    intro n
+    simp only [harmonicNumber, one_div]
+    apply Finset.sum_congr rfl
+    intro i _
+    push_cast
+    ring
+  simp_rw [h_eq] at h_tend
+  rw [tendsto_atTop_atTop] at h_tend
+  obtain ⟨N, hN⟩ := h_tend (K + 1)
+  exact ⟨N, lt_of_lt_of_le (by linarith) (hN N le_rfl)⟩
+
+/-- Harmonic numbers are monotonically non-decreasing:
+    n ≤ m implies H_n ≤ H_m. -/
+theorem harmonicNumber_mono {n m : ℕ} (h : n ≤ m) :
+    harmonicNumber n ≤ harmonicNumber m := by
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · exact Finset.range_mono h
+  · intro i _ _
+    exact inv_nonneg.mpr (Nat.cast_nonneg (i + 1))
+
+/-- H_0 = 0: the harmonic number of 0 is zero. -/
+theorem harmonicNumber_zero : harmonicNumber 0 = 0 := by
+  simp [harmonicNumber]
+
+/-- H_1 = 1: the first harmonic number is 1. -/
+theorem harmonicNumber_one : harmonicNumber 1 = 1 := by
+  simp [harmonicNumber]
+
+/-- Harmonic numbers are non-negative: H_n ≥ 0 for all n. -/
+theorem harmonicNumber_nonneg (n : ℕ) : 0 ≤ harmonicNumber n := by
+  apply Finset.sum_nonneg
+  intro i _
+  exact inv_nonneg.mpr (Nat.cast_nonneg (i + 1))
+
+/-- Harmonic number recurrence: H_{n+1} = H_n + 1/(n+1). -/
+theorem harmonicNumber_succ (n : ℕ) :
+    harmonicNumber (n + 1) = harmonicNumber n + ((n + 1 : ℕ) : ℝ)⁻¹ := by
+  simp only [harmonicNumber, Finset.sum_range_succ]
+
+/-- H_n ≥ 1 for n ≥ 1 (since the first term is 1). -/
+theorem harmonicNumber_ge_one {n : ℕ} (hn : 1 ≤ n) :
+    1 ≤ harmonicNumber n := by
+  calc (1 : ℝ) = harmonicNumber 1 := (harmonicNumber_one).symm
+    _ ≤ harmonicNumber n := harmonicNumber_mono hn
+
+/-- The canonical multiset {1, 2, ..., n} has reciprocal sum equal to H_n. -/
+theorem canonical_reciprocalSum (n : ℕ) :
+    reciprocalSum n (fun i : Fin n => (i : ℕ) + 1) = harmonicNumber n := by
+  simp only [reciprocalSum, harmonicNumber]
+  rw [Fin.sum_univ_eq_sum_range (fun i => ((i + 1 : ℕ) : ℝ)⁻¹) n]
+
+/- ## Part V.b: Existence of Valid Inputs -/
+
+/-- For any K > 0, there exist valid inputs to the Erdős-Graham problem:
+    a finite multiset of positive integers whose reciprocal sum exceeds K.
+    This is the canonical {1, 2, ..., n} family. -/
+theorem valid_inputs_exist (K : ℝ) :
+    ∃ (n : ℕ) (a : Fin n → ℕ),
+      (∀ i, 0 < a i) ∧ reciprocalSum n a > K := by
+  obtain ⟨n, hn⟩ := harmonic_unbounded K
+  refine ⟨n, fun i => (i : ℕ) + 1, fun i => Nat.succ_pos _, ?_⟩
+  rw [canonical_reciprocalSum]
+  exact hn
+
+/- ## Part V.c: Structural Properties -/
+
+/-- Reciprocal sum upper bound: if all elements are ≥ m > 0,
+    then the reciprocal sum is at most n/m. -/
+theorem reciprocalSum_le_of_ge (n : ℕ) (a : Fin n → ℕ) (m : ℕ) (hm : 0 < m)
+    (ha : ∀ i, m ≤ a i) :
+    reciprocalSum n a ≤ n / (m : ℝ) := by
+  simp only [reciprocalSum]
+  calc ∑ i : Fin n, (a i : ℝ)⁻¹
+      ≤ ∑ _i : Fin n, (m : ℝ)⁻¹ := by
+        apply Finset.sum_le_sum
+        intro i _
+        rw [inv_eq_one_div, inv_eq_one_div]
+        exact one_div_le_one_div_of_le (by exact_mod_cast hm) (by exact_mod_cast ha i)
+    _ = ↑n * (↑m)⁻¹ := by simp [Finset.sum_const, Finset.card_univ]
+    _ = ↑n / ↑m := by rw [div_eq_mul_inv]
+
+/-- The trivial subset (empty set) always satisfies the upper bound ≤ 1.
+    The challenge in the Erdős-Graham problem is getting close to 1 from below. -/
+theorem trivial_subset_exists (n : ℕ) (a : Fin n → ℕ) :
+    ∃ S : Finset (Fin n), subsetReciprocalSum n a S ≤ 1 := by
+  exact ⟨∅, by simp [subsetReciprocalSum]⟩
+
+/-- Exponential precision at (c, K) with c > 0, K > 0 implies there exists
+    a subset with strictly positive sum ≤ 1 (the found subset is nontrivial). -/
+theorem exponentialPrecision_subset_nonempty (n : ℕ) (a : Fin n → ℕ) (c K : ℝ)
+    (hc : 0 < c) (hK : 0 < K) :
+    hasExponentialPrecision n a c K →
+    ∃ S : Finset (Fin n), 0 < subsetReciprocalSum n a S ∧ subsetReciprocalSum n a S ≤ 1 := by
+  intro ⟨S, hlo, hhi⟩
+  refine ⟨S, ?_, hhi⟩
+  have h_gap := exponential_gap_nonneg c K hc hK
+  linarith
+
+/-- Polynomial precision at (c, K) with c > 0 and K > 1 also gives a nontrivial subset. -/
+theorem polynomialPrecision_subset_sum_pos (n : ℕ) (a : Fin n → ℕ) (c K : ℝ)
+    (hc : 0 < c) (hK : 1 < K) :
+    hasPolynomialPrecision n a c K →
+    ∃ S : Finset (Fin n), 0 < subsetReciprocalSum n a S ∧ subsetReciprocalSum n a S ≤ 1 := by
+  intro ⟨S, hlo, hhi⟩
+  refine ⟨S, ?_, hhi⟩
+  have : 0 < c / K ^ 2 := by positivity
+  linarith
 
 /- ## Part VI: Summary -/
 

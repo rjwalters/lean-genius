@@ -8,61 +8,81 @@
     "sourceUrl": "https://erdosproblems.com/261",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos261Problem.lean",
-    "tags": ["number theory", "combinatorics", "representations"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "representations",
+      "binary-arithmetic"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 261,
     "erdosUrl": "https://erdosproblems.com/261",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets for computing reciprocal power-of-two sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Rat.Basic",
+        "description": "Rational number arithmetic for exact k/2^k computations",
+        "module": "Mathlib.Data.Rat.Basic"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem about representing n/2^n as sums of distinct terms k/2^k. The question connects to binary digit representations and combinatorial number theory. Cusick first proved that infinitely many n admit such representations, and Borwein–Loring gave an explicit infinite family. Tengely, Ulas, and Zygadło verified the conjecture computationally for all n up to 10000.",
+    "historicalContext": "Paul Erdős posed this problem in the 1970s, asking whether every positive integer n can be represented as n/2^n = Σ_{k∈S} k/2^k for a finite set S of distinct positive integers. Thomas Cusick (1989) proved the first positive result: infinitely many n admit such representations. Peter Borwein and Tamás Loring gave an explicit infinite family: for m ≥ 1, the integer n = 2^{m+1} − m − 2 is representable using the consecutive block {n+1,...,n+m}. Szabolcs Tengely, Maciej Ulas, and Jakub Zygadło computationally verified the conjecture for all n ≤ 10000, providing strong evidence for universality. Erdős also asked a deeper question: does some rational number admit continuum-many (2^{ℵ₀}) distinct infinite representations as Σ a_k/2^{a_k}? Both the universality conjecture (all n) and the continuum question remain open.",
     "problemStatement": "Are there infinitely many (or all) positive integers n such that n/2^n = Σ_{k∈S} k/2^k for some finite set S of distinct positive integers with |S| ≥ 2? Additionally, does some rational admit continuum-many such representations?",
-    "proofStrategy": "We formalize the weight function k/2^k, the notion of a valid representation, and axiomatize known results: Cusick's infinitude theorem, the Borwein–Loring explicit family, and Tengely–Ulas–Zygadło's computational verification. The stronger conjectures (all n, continuum representations) are stated as axioms.",
+    "proofStrategy": "The formalization works over the rationals (ℚ) for exact arithmetic, defining recipPow2Weight(k) = k/2^k and recipPow2Sum as a Finset.sum. IsRecipPow2Rep bundles the three conditions: |S| ≥ 2, all elements positive, and the sum equals n/2^n. Known results (Cusick, Borwein–Loring, Tengely–Ulas–Zygadło) are axiomatized since their proofs involve detailed case analysis or computation. The continuum conjecture uses Set.Icc (0:ℝ) 1 as the index set for uncountably many representations, mapping each real parameter to a distinct sequence.",
     "keyInsights": [
-      "The weight function k/2^k decays exponentially, making finite decompositions non-trivial",
-      "Borwein–Loring's family n = 2^{m+1} − m − 2 uses consecutive blocks {n+1,...,n+m}",
-      "Computational verification covers all n ≤ 10000 but no general proof for all n exists",
-      "The continuum question asks whether the representation space can be uncountably large"
+      "The weight function k/2^k peaks at k=1 (value 1/2) and decays exponentially — the total weight Σ_{k=1}^∞ k/2^k = 2, so any target n/2^n must satisfy n/2^n ≤ 2, which holds for all n ≥ 1 since n/2^n → 0",
+      "Borwein–Loring's construction n = 2^{m+1} − m − 2 uses a telescoping identity: the consecutive block {n+1,...,n+m} sums to n/2^n because each term k/2^k in a consecutive run satisfies a clean recurrence when multiplied by 2",
+      "The |S| ≥ 2 constraint excludes the trivial representation n/2^n = n/2^n (using S = {n}), forcing genuine decompositions — this is a non-triviality condition essential to making the problem interesting",
+      "The continuum conjecture encodes into Lean via an injection from [0,1] ⊂ ℝ into representation space, where each real parameter t determines a distinct infinite sequence — this is stronger than countably many representations since [0,1] is uncountable",
+      "Computational verification up to n = 10000 suggests universality but cannot prove it — the representations become increasingly complex for larger n, and no pattern uniform enough for a general proof has been found"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 23,
-      "endLine": 40,
-      "summary": "Defines the weight function k/2^k, the sum over a finite set, and the notion of a valid reciprocal power-of-two representation."
+      "startLine": 27,
+      "endLine": 45,
+      "summary": "Defines recipPow2Weight(k) = k/2^k as a noncomputable rational function, recipPow2Sum as a Finset.sum of weights, IsRecipPow2Rep bundling |S| ≥ 2 with positivity and sum equality, and IsRepresentable as existential quantification over valid representations."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 42,
-      "endLine": 57,
-      "summary": "Axiomatizes Cusick's infinitude result, the Borwein–Loring explicit family, and Tengely–Ulas–Zygadło's verification for n ≤ 10000."
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "Three axiomatized results: Cusick's infinitude theorem (for any N, some n ≥ N is representable), Borwein–Loring's explicit family (n = 2^{m+1} − m − 2 for m ≥ 1), and Tengely–Ulas–Zygadło's computational verification for all n ≤ 10000."
     },
     {
       "id": "conjectures",
       "title": "The Erdős Conjectures",
-      "startLine": 59,
-      "endLine": 71,
-      "summary": "States the main conjectures: Part 1 (infinitely many, resolved), Part 2 (all n, open)."
+      "startLine": 63,
+      "endLine": 73,
+      "summary": "Part 1 (resolved): infinitely many n are representable — proved as a theorem via Cusick's axiom. Part 2 (open): every n ≥ 1 is representable — axiomatized as the stronger universality conjecture."
     },
     {
       "id": "continuum",
       "title": "Continuum Representations",
-      "startLine": 73,
-      "endLine": 91,
-      "summary": "Formalizes infinite representations and the conjecture that some rational admits continuum-many distinct representations."
+      "startLine": 75,
+      "endLine": 95,
+      "summary": "Defines IsInfiniteRep for infinite sequences of distinct positive integers summing to a rational x. States two open conjectures: Part 3 asks for continuum-many representations (via injection from [0,1] → (ℕ → ℕ)), and the weakened form asks for at least two distinct representations of some rational."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 261 explores the rich structure of reciprocal power-of-two representations. While Cusick's theorem settles the infinitude question, the universality conjecture (all n) and the continuum question remain open.",
-    "implications": "A positive resolution would reveal deep structure in the interaction between binary representations and rational arithmetic, with connections to combinatorial number theory and Diophantine analysis.",
+    "summary": "The formalization captures all three parts of Erdős Problem 261: the resolved infinitude question (Part 1, via Cusick's theorem), the open universality conjecture (Part 2, all n ≥ 1), and the continuum representation question (Part 3). The 0-sorry status reflects that all results are cleanly axiomatized or proved from axioms, with the Lean framework providing exact rational arithmetic for the weight function k/2^k.",
+    "implications": "Resolution of the universality conjecture would establish that the binary-weighted sum representation is a universal property of positive integers, connecting to the theory of complete sequences (every positive rational is representable as a subset sum). The continuum question would reveal whether representation spaces have the cardinality of the continuum, with implications for the combinatorial structure of binary partitions.",
     "openQuestions": [
-      "Does every positive integer n admit a representation n/2^n = Σ k/2^k?",
-      "Does some rational admit continuum-many distinct infinite representations?",
-      "What is the minimal cardinality |S| needed for the representation of n?"
+      "Does every positive integer n ≥ 1 admit a representation n/2^n = Σ k/2^k?",
+      "Does some rational admit continuum-many (2^ℵ₀) distinct infinite representations?",
+      "What is the minimal cardinality |S| needed for the representation of n as a function of n?",
+      "Can the Borwein–Loring family be extended to cover all n, or are there n requiring non-consecutive blocks?"
     ]
   }
 }

@@ -31,7 +31,7 @@ open Nat Finset Set
 
 namespace Erdos470
 
-/-!
+/-
 ## Background: Weird Numbers
 
 A number n is called **abundant** if σ(n) > 2n (sum of divisors exceeds 2n).
@@ -67,7 +67,7 @@ subset of its proper divisors.
 -/
 def IsWeird (n : ℕ) : Prop := IsAbundant n ∧ ¬IsPseudoperfect n
 
-/-!
+/-
 ## The Smallest Weird Number: 70
 
 The smallest weird number is 70. Let's verify the properties:
@@ -98,7 +98,7 @@ axiom no_weird_below_70 (n : ℕ) (hn : n < 70) : ¬IsWeird n
 theorem smallest_weird_is_70 : IsWeird 70 ∧ ∀ n < 70, ¬IsWeird n :=
   ⟨⟨seventy_is_abundant, seventy_not_pseudoperfect⟩, no_weird_below_70⟩
 
-/-!
+/-
 ## The Weird Number Sequence (OEIS A006037)
 
 The sequence of weird numbers begins:
@@ -117,7 +117,7 @@ axiom weird_836 : IsWeird 836
 -/
 axiom weird_4030 : IsWeird 4030
 
-/-!
+/-
 ## Open Question 1: Odd Weird Numbers
 
 Erdős asked whether any odd weird numbers exist. This remains open
@@ -135,7 +135,7 @@ def OddWeird : Set ℕ := { n | IsWeird n ∧ Odd n }
 def erdos_470_part1 : Prop := ∃ n : ℕ, IsWeird n ∧ Odd n
 
 
-/-!
+/-
 ## Computational Bounds on Odd Weird Numbers
 
 Fang (2022) showed there are no odd weird numbers below 10^21.
@@ -159,7 +159,7 @@ Liddy-Riedl result: Any odd weird number has at least 6 prime divisors.
 -/
 axiom liddy_riedl : ∀ n : ℕ, IsWeird n → Odd n → numPrimeDivisors n ≥ 6
 
-/-!
+/-
 ## Primitive Weird Numbers
 
 A weird number is **primitive** if none of its proper divisors is weird.
@@ -185,7 +185,7 @@ theorem seventy_is_primitive_weird : IsPrimitiveWeird 70 := by
   · intro d hd
     exact no_weird_below_70 d (properDivisors_lt 70 d hd)
 
-/-!
+/-
 ## Open Question 2: Infinitely Many Primitive Weird Numbers
 
 The second part of Erdős's question asks whether there are infinitely
@@ -204,7 +204,7 @@ weird numbers?
 def erdos_470_part2 : Prop := PrimitiveWeirdSet.Infinite
 
 
-/-!
+/-
 ## Conditional Result: Prime Gaps
 
 Melfi (2015) proved that there are infinitely many primitive weird numbers
@@ -235,7 +235,7 @@ axiom melfi_conditional :
     (∀ᶠ n in Filter.atTop, (primeGap n : ℝ) < Real.sqrt (nthPrime n) / 10) →
     PrimitiveWeirdSet.Infinite
 
-/-!
+/-
 ## Positive Density of Weird Numbers
 
 Benkoski and Erdős proved that weird numbers have positive asymptotic density.
@@ -253,7 +253,7 @@ Benkoski-Erdős: Weird numbers have positive asymptotic density.
 axiom benkoski_erdos_density : ∃ c > 0,
     ∀ᶠ N in Filter.atTop, (↑((WeirdSet ∩ {n | n ≤ N}).ncard) : ℝ) / N ≥ c
 
-/-!
+/-
 ## Abundancy Index
 
 The abundancy index of n is σ(n)/n. For weird numbers, this is > 2.
@@ -272,7 +272,7 @@ If all weird numbers are even, then abundancy index < 4 for all weird numbers.
 axiom no_odd_weird_implies_bounded_abundancy :
     (∀ n, IsWeird n → Even n) → ∀ n, IsWeird n → abundancyIndex n < 4
 
-/-!
+/-
 ## Examples of Weird Numbers
 
 Let's record some explicit weird numbers from OEIS A006037:
@@ -291,7 +291,7 @@ All known weird numbers are even.
 axiom all_known_weird_even :
     ∀ n ∈ ({70, 836, 4030, 5830, 7192, 7912, 9272} : Set ℕ), Even n
 
-/-!
+/-
 ## Why 70 is Weird: A Detailed Analysis
 
 Divisors of 70: 1, 2, 5, 7, 10, 14, 35, 70
@@ -318,7 +318,7 @@ The proper divisors of 70 are {1, 2, 5, 7, 10, 14, 35}.
 axiom proper_divisors_70 :
     (70 : ℕ).properDivisors = {1, 2, 5, 7, 10, 14, 35}
 
-/-!
+/-
 ## Summary
 
 **Erdős Problem #470**: Both questions remain OPEN.

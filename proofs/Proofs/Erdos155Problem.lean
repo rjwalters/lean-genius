@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #155: Slow Growth of Maximum Sidon Subsets
 
 Let F(N) be the size of the largest Sidon (B₂) subset of {1, ..., N}.
@@ -28,7 +28,7 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A Sidon set (B₂ set): a set of natural numbers where all pairwise sums
     a + b (a ≤ b, a, b ∈ S) are distinct. Equivalently, all pairwise
@@ -49,7 +49,7 @@ axiom maxSidon_optimal (N : ℕ) (S : Finset ℕ)
     (hsidon : IsSidonSet S) (hrange : ∀ x ∈ S, 1 ≤ x ∧ x ≤ N) :
     S.card ≤ maxSidonSize N
 
-/-! ## Monotonicity -/
+/- ## Monotonicity -/
 
 /-- F is monotone nondecreasing: F(N) ≤ F(N+1). -/
 axiom maxSidon_monotone (N : ℕ) : maxSidonSize N ≤ maxSidonSize (N + 1)
@@ -57,7 +57,7 @@ axiom maxSidon_monotone (N : ℕ) : maxSidonSize N ≤ maxSidonSize (N + 1)
 /-- F increases by at most 1 in each step: F(N+1) ≤ F(N) + 1. -/
 axiom maxSidon_step (N : ℕ) : maxSidonSize (N + 1) ≤ maxSidonSize N + 1
 
-/-! ## Asymptotic Bounds -/
+/- ## Asymptotic Bounds -/
 
 /-- Erdős–Turán (1941): F(N) ≤ N^{1/2} + O(N^{1/4}).
     More precisely, F(N) ≤ √N + √(N)^{1/2} + 1 (Lindström 1969). -/
@@ -70,7 +70,7 @@ axiom sidon_lower_asymptotic :
     ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       (maxSidonSize N : ℝ) ≥ (1 - ε) * Real.sqrt (N : ℝ)
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- Erdős Problem #155: For every k ≥ 1, F(N+k) ≤ F(N) + 1
     for all sufficiently large N.
@@ -80,7 +80,7 @@ axiom sidon_lower_asymptotic :
 axiom erdos_155_conjecture (k : ℕ) (hk : k ≥ 1) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ → maxSidonSize (N + k) ≤ maxSidonSize N + 1
 
-/-! ## Stronger Form -/
+/- ## Stronger Form -/
 
 /-- The stronger conjecture: F(N+k) ≤ F(N) + 1 holds even for
     k ≈ ε·√N, i.e., F increases by at most 1 over intervals
@@ -89,7 +89,7 @@ axiom erdos_155_strong (ε : ℝ) (hε : ε > 0) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       maxSidonSize (N + Nat.floor (ε * Real.sqrt (N : ℝ))) ≤ maxSidonSize N + 1
 
-/-! ## Consequences -/
+/- ## Consequences -/
 
 /-- If the conjecture holds, then F(N+1) = F(N) for "most" values of N:
     the set of N where F increases has density 0. -/
@@ -99,7 +99,7 @@ axiom increase_points_sparse :
         (fun N => maxSidonSize (N + 1) > maxSidonSize N)
         (Finset.range M)) : ℝ) ≤ (1 + ε) * Real.sqrt (M : ℝ)
 
-/-! ## Small Values (OEIS A003022) -/
+/- ## Small Values (OEIS A003022) -/
 
 /-- Known small values of F(N):
     F(1)=1, F(2)=2, F(3)=3, F(4)=3, F(5)=3, F(6)=4,

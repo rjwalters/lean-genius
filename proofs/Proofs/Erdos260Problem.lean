@@ -36,7 +36,7 @@ namespace Erdos260
 
 open Filter Topology
 
-/-! ## Part I: Sequence Properties -/
+/- ## Part I: Sequence Properties -/
 
 /-- An increasing sequence of natural numbers. -/
 structure IncreasingSeq where
@@ -56,7 +56,7 @@ def SuperlogarithmicGrowth (a : IncreasingSeq) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ᶠ n in atTop,
     (a.seq n : ℝ) ≥ C * n * Real.sqrt (Real.log n * Real.log (Real.log n))
 
-/-! ## Part II: The Series -/
+/- ## Part II: The Series -/
 
 /-- The n-th term of the series: aₙ / 2^{aₙ}. -/
 noncomputable def seriesTerm (a : IncreasingSeq) (n : ℕ) : ℝ :=
@@ -77,7 +77,7 @@ theorem series_converges (a : IncreasingSeq) :
 noncomputable def seriesSum (a : IncreasingSeq) : ℝ :=
   Classical.choose (series_converges a)
 
-/-! ## Part III: Known Irrationality Results -/
+/- ## Part III: Known Irrationality Results -/
 
 /-- Erdős's theorem: gaps → ∞ implies the sum is irrational.
 
@@ -98,7 +98,7 @@ theorem irrational_of_superlogarithmic (a : IncreasingSeq)
     (h : SuperlogarithmicGrowth a) : Irrational (seriesSum a) := by
   sorry
 
-/-! ## Part IV: Basic Properties -/
+/- ## Part IV: Basic Properties -/
 
 /-- Fast growth is a weaker condition than gaps → ∞. -/
 theorem fastGrowth_of_gapsToInfinity (a : IncreasingSeq) (h : GapsToInfinity a) :
@@ -112,7 +112,7 @@ theorem fastGrowth_of_superlogarithmic (a : IncreasingSeq)
   -- n√(log n · log log n) / n = √(log n · log log n) → ∞
   sorry
 
-/-! ## Part V: Example Sequences -/
+/- ## Part V: Example Sequences -/
 
 /-- The sequence aₙ = n². -/
 def squareSeq : IncreasingSeq where
@@ -151,7 +151,7 @@ theorem squareSeq_gaps : GapsToInfinity squareSeq := by
 theorem squareSeq_irrational : Irrational (seriesSum squareSeq) :=
   irrational_of_gaps_to_infinity squareSeq squareSeq_gaps
 
-/-! ## Part VI: The Main Conjecture -/
+/- ## Part VI: The Main Conjecture -/
 
 /-- The main conjecture: fast growth alone implies irrationality.
 
@@ -178,7 +178,7 @@ def ErdosGrahamCounterexample (a : IncreasingSeq) : Prop :=
 
 end Erdos260
 
-/-! ## Summary
+/- ## Summary
 
 This file formalizes Erdős Problem #260 on the irrationality of series
 of the form ∑ aₙ/2^{aₙ} for sparse increasing sequences.

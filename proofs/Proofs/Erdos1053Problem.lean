@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1053: Growth Rate of k-Perfect Numbers
 
 A number n is k-perfect if σ(n) = k·n, where σ is the sum-of-divisors function.
@@ -27,7 +27,7 @@ import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The sum-of-divisors function σ(n). -/
 axiom sigma (n : ℕ) : ℕ
@@ -44,7 +44,7 @@ def IsKPerfect (n k : ℕ) : Prop :=
 def perfectMultiplicity (n : ℕ) : ℕ :=
   sigma n / n
 
-/-! ## Classical Perfect Numbers (k = 2) -/
+/- ## Classical Perfect Numbers (k = 2) -/
 
 /-- k=1: only n=1 satisfies σ(n) = n. -/
 axiom one_perfect_unique : ∀ n : ℕ, IsKPerfect n 1 → n = 1
@@ -59,7 +59,7 @@ axiom euler_even_perfect (n : ℕ) (hn : n > 0) (heven : n % 2 = 0) :
     IsKPerfect n 2 ↔
     ∃ p : ℕ, p.Prime ∧ (2 ^ p - 1).Prime ∧ n = 2 ^ (p - 1) * (2 ^ p - 1)
 
-/-! ## Multiperfect Numbers (k ≥ 3) -/
+/- ## Multiperfect Numbers (k ≥ 3) -/
 
 /-- k=3 (triperfect): 120, 672, 523776, 459818240, 1476304896, 51001180160. -/
 axiom triperfect_examples :
@@ -72,7 +72,7 @@ axiom largest_known_k :
 
 /-- For each k ≥ 3, only finitely many k-perfect numbers are known. -/
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- Erdős Problem #1053: If n is k-perfect (σ(n) = k·n),
     must k = o(log log n)?
@@ -84,7 +84,7 @@ axiom erdos_1053_conjecture :
       IsKPerfect n k →
       (k : ℝ) < ε * Real.log (Real.log (n : ℝ))
 
-/-! ## Known Upper Bounds -/
+/- ## Known Upper Bounds -/
 
 /-- Gronwall's theorem (1913): lim sup σ(n)/(n · log log n) = e^γ
     where γ is the Euler–Mascheroni constant.
@@ -99,14 +99,14 @@ axiom robin_inequality_conditional (n : ℕ) (hn : n ≥ 5041) :
     -- Assuming RH
     (sigma n : ℝ) < Real.exp 0.5772 * (n : ℝ) * Real.log (Real.log (n : ℝ))
 
-/-! ## Guy's Finiteness Conjecture -/
+/- ## Guy's Finiteness Conjecture -/
 
 /-- Guy's conjecture: For each k ≥ 3, there are only finitely many
     k-perfect numbers. This is stronger than Erdős's question. -/
 axiom guy_finiteness_conjecture (k : ℕ) (hk : k ≥ 3) :
     Set.Finite {n : ℕ | IsKPerfect n k}
 
-/-! ## Relationship to Robin's Criterion -/
+/- ## Relationship to Robin's Criterion -/
 
 /-- If σ(n) = k·n and Robin's inequality holds, then
     k < e^γ · log log n for n ≥ 5041, giving k = O(log log n).

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #153: Gap Variance in Sidon Sumsets
 
 Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that
@@ -18,7 +18,7 @@ import Mathlib.Data.Finset.Sort
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Sidon Sets
 -/
 
@@ -28,7 +28,7 @@ def IsSidon (A : Finset ℕ) : Prop :=
   ∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, ∀ d ∈ A,
     a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d
 
-/-!
+/-
 ## Section II: Sumset and Gap Structure
 -/
 
@@ -47,7 +47,7 @@ noncomputable def gapSquaredSum (A : Finset ℕ) : ℕ :=
   (List.zip sorted sorted.tail).foldl
     (fun acc p => acc + (p.2 - p.1) ^ 2) 0
 
-/-!
+/-
 ## Section III: The Gap Variance
 -/
 
@@ -61,7 +61,7 @@ noncomputable def meanGapSquared (A : Finset ℕ) : ℝ :=
 noncomputable def minMeanGapSquared (n : ℕ) : ℝ :=
   ⨅ (A : Finset ℕ) (_ : A.card = n) (_ : IsSidon A), meanGapSquared A
 
-/-!
+/-
 ## Section IV: The Conjecture
 -/
 
@@ -75,7 +75,7 @@ def ErdosProblem153 : Prop :=
     ∃ N₀ : ℕ, ∀ A : Finset ℕ, IsSidon A → A.card ≥ N₀ →
       meanGapSquared A > M
 
-/-!
+/-
 ## Section V: Sidon Set Sumset Properties
 -/
 
@@ -90,7 +90,7 @@ axiom sidon_sumset_range (A : Finset ℕ) (N : ℕ) (h : IsSidon A)
     (hN : ∀ a ∈ A, a ≤ N) :
     ∀ s ∈ sumset A, s ≤ 2 * N
 
-/-!
+/-
 ## Section VI: Known Bounds
 -/
 
@@ -110,7 +110,7 @@ axiom ess_1994_result :
     ∀ A : Finset ℕ, IsSidon A → A.card ≥ 4 →
       meanGapSquared A ≥ c
 
-/-!
+/-
 ## Section VII: Infinite Sidon Sets
 -/
 

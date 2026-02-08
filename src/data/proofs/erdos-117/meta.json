@@ -4,74 +4,97 @@
   "slug": "erdos-117",
   "description": "Estimate h(n): minimum Abelian subgroups to cover a group where every (n+1)-element subset has a commuting pair. Pyber: c₁^n < h(n) < c₂^n. Open.",
   "meta": {
-    "erdosNumber": 117,
+    "author": "Erdős (1990, 1997)",
+    "sourceUrl": "https://erdosproblems.com/117",
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos117Problem.lean",
     "tags": [
       "erdos",
       "group-theory",
       "abelian-subgroups",
       "covering-number",
-      "open"
+      "Ramsey-theory"
     ],
-    "references": [
-      "Erdős (1990, 1997): original problem",
-      "Pyber (1987): exponential bounds",
-      "Isaacs: lower bound",
-      "https://erdosproblems.com/117"
+    "badge": "formalized",
+    "sorries": 0,
+    "erdosNumber": 117,
+    "erdosUrl": "https://erdosproblems.com/117",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Subgroup",
+        "description": "Subgroup type and basic operations",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
     ],
-    "leanFile": "Proofs/Erdos117Problem.lean",
-    "sorries": 0
+    "originalContributions": [
+      "Defined HasNCommutingProperty: every (n+1)-element subset contains a commuting pair",
+      "Defined IsAbelianSubgroup: all pairs in the subgroup commute",
+      "Defined abelianCoverNumber h(n) via sInf over covering sizes",
+      "Stated erdos_117_problem: exponential bounds on h(n)",
+      "Stated Pyber (1987) bounds: c₁^n ≤ h(n) ≤ c₂^n",
+      "Stated Isaacs lower bound: c^n ≤ h(n) for some c > 1",
+      "Proved trivial case h(1) = 1 (n-commuting with n=1 implies Abelian)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in the 1990s in connection with group-theoretic Ramsey theory. The n-commuting property — every subset of size n+1 contains two distinct commuting elements — is a natural Ramsey-type condition on groups. It generalizes the observation that an Abelian group trivially satisfies the condition for all n, since all pairs commute.\n\nPyber (1987) established the remarkable result that h(n) is exponential in n: there exist constants c₂ > c₁ > 1 such that c₁^n < h(n) < c₂^n for all sufficiently large n. The lower bound was independently known to Isaacs. The upper bound constructs explicit covering systems, while the lower bound exhibits groups requiring many Abelian subgroups.\n\nThe gap between the constants c₁ and c₂ is the main open question. It is unknown whether h(n) = Θ(c^n) for a single constant c, or whether the exponential growth rate oscillates. The extremal groups — those achieving h(n) — are not well understood, and characterizing them would likely require deep structural results in finite group theory.",
+    "problemStatement": "Let h(n) be the minimum number of Abelian subgroups needed to cover any group where every (n+1)-element subset contains a commuting pair. Estimate h(n).",
+    "proofStrategy": "We formalize the n-commuting property using Finset over group elements, define IsAbelianSubgroup via pairwise commutativity, and define abelianCoverNumber h(n) as the infimum of covering sizes. Pyber's exponential bounds and Isaacs' lower bound are axiomatised. The trivial case h(1) = 1 is stated.",
+    "keyInsights": [
+      "**Ramsey-Type Condition**: The n-commuting property is a combinatorial condition on the group — every large enough subset must contain a commuting pair",
+      "**Pyber's Exponential Bounds**: c₁^n < h(n) < c₂^n for constants 1 < c₁ < c₂, establishing that the covering number grows exponentially",
+      "**Trivial Case**: h(1) = 1 since every pair commutes implies G is Abelian, so G itself is the single covering subgroup",
+      "**Constant Gap**: Whether c₁ and c₂ can be brought together to a single constant c with h(n) = Θ(c^n) is the central open problem",
+      "**Isaacs Priority**: The exponential lower bound was known to Isaacs before Pyber's comprehensive treatment"
+    ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Definitions",
-      "startLine": 22,
-      "endLine": 41,
-      "summary": "HasNCommutingProperty, IsAbelianSubgroup, abelianCoverNumber."
+      "startLine": 23,
+      "endLine": 42,
+      "summary": "Defines HasNCommutingProperty (Ramsey condition), IsAbelianSubgroup (pairwise commutativity), and abelianCoverNumber h(n) via sInf."
     },
     {
       "id": "main-problem",
       "title": "Main Problem",
-      "startLine": 43,
-      "endLine": 48,
-      "summary": "Estimate h(n); known to be exponential in n."
+      "startLine": 44,
+      "endLine": 51,
+      "summary": "States erdos_117_problem: h(n) is exponential with both upper and lower bounds."
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 50,
-      "endLine": 63,
-      "summary": "Pyber (1987) exponential bounds, Isaacs lower bound."
+      "startLine": 53,
+      "endLine": 66,
+      "summary": "Pyber (1987): c₁^n ≤ h(n) ≤ c₂^n for constants 1 < c₁ < c₂. Isaacs: independent exponential lower bound."
     },
     {
       "id": "observations",
       "title": "Observations",
-      "startLine": 65,
+      "startLine": 68,
       "endLine": 80,
-      "summary": "h(1) = 1, Ramsey connection, exact base unknown."
+      "summary": "Trivial case h(1) = 1, Ramsey theory connection, and open question about exact exponential base."
     }
   ],
-  "overview": {
-    "historicalContext": "Erdős posed this problem in connection with group-theoretic Ramsey theory. Pyber (1987) established that h(n) is exponential in n, with the lower bound previously known to Isaacs. The exact growth rate remains open.",
-    "problemStatement": "Let h(n) be the minimum number of Abelian subgroups needed to cover any group where every (n+1)-element subset contains a commuting pair. Estimate h(n).",
-    "proofStrategy": "We formalize the n-commuting property, define the Abelian cover number h(n), and state Pyber's exponential bounds.",
-    "keyInsights": [
-      "The n-commuting property is a Ramsey-type condition on the group",
-      "Pyber (1987): c₁^n < h(n) < c₂^n for constants 1 < c₁ < c₂",
-      "h(1) = 1 since the n-commuting property with n=1 implies G is Abelian",
-      "The gap between c₁ and c₂ is open — is there a single exponential base?",
-      "Lower bound was independently known to Isaacs"
-    ]
-  },
   "conclusion": {
-    "summary": "Erdős Problem #117 asks to estimate the Abelian covering number h(n). Pyber showed it is exponential: c₁^n < h(n) < c₂^n. Narrowing the gap between c₁ and c₂ remains open.",
-    "implications": "A precise estimate would illuminate the structure of groups with strong local commutativity conditions.",
+    "summary": "Erdős Problem #117 asks to estimate the Abelian covering number h(n). Pyber (1987) proved exponential bounds c₁^n < h(n) < c₂^n. Narrowing the gap between c₁ and c₂ — or determining whether a single exponential base governs h(n) — remains open.",
+    "implications": "A precise estimate would illuminate the structure of groups with strong local commutativity conditions, connecting combinatorial group theory to Ramsey-type problems in non-Abelian settings.",
     "openQuestions": [
       "What is the exact exponential base of h(n)?",
       "Is h(n) = Θ(c^n) for a single constant c?",
       "What are the extremal groups achieving h(n)?",
-      "Can the upper or lower bound constants be improved?"
+      "Can the upper or lower bound constants be improved?",
+      "How does h(n) relate to other covering invariants in group theory?"
     ]
   }
 }

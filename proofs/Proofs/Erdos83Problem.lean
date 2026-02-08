@@ -236,29 +236,25 @@ axiom erdos83_bound_asymptotic (n : ℕ) (hn : n ≥ 10) :
 ## Part IX: Implications and Generalizations
 -/
 
-/--
+/-
 **Phase Transitions:**
 The structure of optimal t-intersecting families changes at critical values of r.
 -/
-axiom phase_transition_structure : True
 
-/--
+/-
 **Coding Theory Connection:**
 t-intersecting families relate to error-correcting codes with minimum distance.
 -/
-axiom coding_theory_connection : True
 
-/--
+/-
 **Probabilistic Extension:**
 Random k-subsets have specific intersection properties.
 -/
-axiom random_family_properties : True
 
-/--
+/-
 **Multipartite Extension:**
 The theorem extends to families of multipartite sets.
 -/
-axiom multipartite_extension : True
 
 /-
 ## Part X: Summary

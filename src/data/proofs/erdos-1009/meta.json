@@ -21,7 +21,39 @@
     "sorries": 0,
     "erdosNumber": 1009,
     "erdosUrl": "https://erdosproblems.com/1009",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type and basic operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for edges and triangle families",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      }
+    ],
+    "originalContributions": [
+      "Triangle structure: formalized triangle with adjacency proofs",
+      "edgeDisjoint, pairwiseEdgeDisjoint: edge-disjointness for triangle families",
+      "maxEdgeDisjointTriangles: maximum packing size via sSup",
+      "excessEdges: excess above Turán threshold",
+      "gyori_theorem axiom: main theorem with f(c) function",
+      "gyori_bound axiom: f(c) << c² bound",
+      "erdos_small_c axiom: f(c)=0 for c < 1/2",
+      "gyori_odd_n, gyori_even_n: refined parity-dependent bounds",
+      "completeTripartite: explicit K_{a,b,c} construction",
+      "sauer_counterexample axiom: K_{1,m,m} shows f(2) >= 1",
+      "exceeds_turan_has_triangle: corollary of Turán's theorem"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this in 1971, motivated by the Turán problem. The Turán number ex(n, K₃) = ⌊n²/4⌋ is the maximum edges in a triangle-free graph. If we exceed this by k edges, we must have triangles—but can we find nearly k edge-disjoint ones? Erdős initially believed f(c) = 0 for all c, but Sauer's counterexample showed otherwise. Györi's 1988 solution gave the optimal bound f(c) ≪ c².",

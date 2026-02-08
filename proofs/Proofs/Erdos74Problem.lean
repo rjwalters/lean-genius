@@ -26,7 +26,7 @@ open scoped Topology
 
 namespace Erdos74
 
-/-!
+/-
 ## Background
 
 A graph is **bipartite** if its vertices can be 2-colored so no edge connects
@@ -50,7 +50,7 @@ noncomputable def edgeDistToBipartite (V : Type*) (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ (E : Set (Sym2 V)), E.ncard = k ∧
     E ⊆ G.edgeSet ∧ (G.deleteEdges E).IsBipartite}
 
-/-!
+/-
 ## Important Note: edgeDistToBipartite and Infinite Graphs
 
 **Aristotle Discovery (2026-01-14)**: The naive equivalence "G is bipartite iff
@@ -143,7 +143,7 @@ We define this using an abstract predicate to avoid type issues.
 noncomputable def maxEdgeDistToBipartite (V : Type*) (G : SimpleGraph V) (n : ℕ) : ℕ :=
   sSup {edgeDistToBipartite S (G.induce S) | (S : Set V) (_ : S.ncard = n)}
 
-/-!
+/-
 ## The Main Question
 
 Erdős-Hajnal-Szemerédi asked: For any f: ℕ → ℕ with f(n) → ∞, does there exist
@@ -181,7 +181,7 @@ def Erdos74Question : Prop :=
     ∃ (V : Type) (G : SimpleGraph V),
       hasInfiniteChromaticNumber V G ∧ hasAlmostBipartiteSubgraphs V G f
 
-/-!
+/-
 ## Partial Results
 
 Several cases of this problem have been resolved.
@@ -229,7 +229,7 @@ axiom uncountableFails :
     (∃ f : ℕ → ℕ, Tendsto (fun n => (f n : ℝ)) atTop atTop ∧
       hasAlmostBipartiteSubgraphs V G f)
 
-/-!
+/-
 ## Connections and Implications
 
 The problem connects chromatic number (a global coloring property) with
@@ -273,7 +273,7 @@ theorem bipartite_chromaticNumber_le_two (V : Type*) (G : SimpleGraph V)
   -- IsBipartite is defined as Colorable 2
   exact h.chromaticNumber_le
 
-/-!
+/-
 ## Historical Notes
 
 This problem was posed by Erdős, Hajnal, and Szemerédi in 1982. It explores

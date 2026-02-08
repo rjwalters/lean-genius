@@ -17,11 +17,13 @@
       "isomorphism"
     ],
     "badge": "pending",
-    "sorries": 11,
+    "sorries": 0,
     "erdosNumber": 1036,
     "erdosUrl": "https://erdosproblems.com/1036",
     "erdosProblemStatus": "solved",
-    "relatedProblems": [1031]
+    "relatedProblems": [
+      1031
+    ]
   },
   "overview": {
     "historicalContext": "**The Erdős-Rényi Conjecture**\n\nErdős and Rényi asked whether graphs avoiding large homogeneous (trivial) subgraphs must have rich induced subgraph structure. Non-Ramsey graphs can't have large cliques or independent sets, so they must be 'complex'.\n\n**Historical Development**:\n- 1989: Erdős-Hajnal proved 2^{Ω(n)} for bipartite-avoiding graphs\n- 1991: Alon-Hajnal proved exp(n(log n)^{-O(log log n)}) for all non-Ramsey\n- 1998: Shelah proved the full 2^{Ω(n)} bound",

@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ann-e1159-header",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1159, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1159: Bounded Blocking Sets in Projective Planes\n\nSource: https://erdosproblems.com/1159\nStatus: OPEN\n\nStatement:\nDoes there exist a constant C > 1 such that for any finite projective plane P,\none can find a set of points S where each line ℓ intersects S in at least 1\nbut at most C points?\n\nSuch a set S is called a \"C-bounded blocking set\" — it blocks every line\n(meets it in ≥1 point) while keeping the intersection with any line at most C.\n\nBackground:\nA blocking set in a projecti",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1159-IsBlockingSet",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Isblockingset",
+    "content": "/-- A set of points S is a blocking set if every line contains at least one point of S. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1159-blocking_set_mono",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 49,
+      "endLine": 53
+    },
+    "type": "theorem",
+    "title": "Blocking Set Mono",
+    "content": "/-- If S is a blocking set and S ⊆ T, then T is also a blocking set. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1159-empty_not_blocking_set",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "type": "theorem",
+    "title": "Empty Not Blocking Set",
+    "content": "/-- The empty set is not a blocking set in any nontrivial configuration. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1159-pointCount_eq'",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 66,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "Pointcount Eq'",
+    "content": "/-- In a projective plane, every line has exactly order + 1 points. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1159-lineCount_eq'",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 72,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Linecount Eq'",
+    "content": "/-- In a projective plane, every point lies on exactly order + 1 lines. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1159-card_points'",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 78,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Card Points'",
+    "content": "/-- A projective plane of order n has n² + n + 1 points. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1159-card_lines'",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 84,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "Card Lines'",
+    "content": "/-- A projective plane of order n has n² + n + 1 lines. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1159-ess_log_blocking_set",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 99,
+      "endLine": 105
+    },
+    "type": "axiom",
+    "title": "Ess Log Blocking Set",
+    "content": "axiom ess_log_blocking_set",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1159-BoundedBlockingSetConjecture",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 119,
+      "endLine": 124
+    },
+    "type": "definition",
+    "title": "Boundedblockingsetconjecture",
+    "content": "def BoundedBlockingSetConjecture",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1159-ess_implies_per_order_bound",
+    "proofId": "erdos-1159",
+    "range": {
+      "startLine": 129,
+      "endLine": 137
+    },
+    "type": "theorem",
+    "title": "Ess Implies Per Order Bound",
+    "content": "theorem ess_implies_per_order_bound",
+    "significance": "key"
+  }
+]

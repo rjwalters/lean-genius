@@ -34,7 +34,7 @@ import Mathlib
 
 namespace Erdos834
 
-/-! ## Hypergraph Definitions
+/- ## Hypergraph Definitions
 
 A hypergraph consists of vertices and hyperedges (edges containing multiple vertices).
 -/
@@ -56,7 +56,7 @@ noncomputable def degree {V : Type*} [DecidableEq V] (H : Hypergraph V) (v : V) 
 noncomputable def minDegree {V : Type*} [DecidableEq V] (H : Hypergraph V) : ℕ :=
   ⨅ v ∈ (⋃ e ∈ H.edges, (e : Set V)), degree H v
 
-/-! ## Transversal Number τ(H)
+/- ## Transversal Number τ(H)
 
 A transversal (vertex cover) is a set of vertices that intersects every edge.
 The transversal number τ(H) is the minimum size of a transversal.
@@ -70,7 +70,7 @@ def IsTransversal {V : Type*} (H : Hypergraph V) (T : Finset V) : Prop :=
 noncomputable def transversalNumber {V : Type*} [DecidableEq V] (H : Hypergraph V) : ℕ :=
   ⨅ T : Finset V, if IsTransversal H T then T.card else ⊤
 
-/-! ## Transversal-Criticality
+/- ## Transversal-Criticality
 
 A hypergraph is k-transversal-critical if:
 1. τ(H) = k (minimum cover has size k)
@@ -86,7 +86,7 @@ def IsTransversalCritical {V : Type*} [DecidableEq V] (H : Hypergraph V) (k : �
   transversalNumber H = k ∧
   ∀ e ∈ H.edges, transversalNumber (removeEdge H e) < k
 
-/-! ## Chromatic Number χ(H)
+/- ## Chromatic Number χ(H)
 
 A proper k-coloring assigns colors to vertices so no edge is monochromatic.
 The chromatic number χ(H) is the minimum k for which a proper k-coloring exists.
@@ -105,7 +105,7 @@ def IsChromaticCritical {V : Type*} [DecidableEq V] (H : Hypergraph V) (k : ℕ)
   chromaticNumber H = k ∧
   ∀ e ∈ H.edges, chromaticNumber (removeEdge H e) < k
 
-/-! ## Main Question
+/- ## Main Question
 
 The key question: Does there exist a 3-critical 3-uniform hypergraph with
 minimum degree ≥ 7?
@@ -121,7 +121,7 @@ def chromatic_question : Prop :=
   ∃ (V : Type) [Fintype V] [DecidableEq V] (H : Hypergraph V),
     IsUniform H 3 ∧ IsChromaticCritical H 3 ∧ minDegree H ≥ 7
 
-/-! ## Li's Theorem (2025)
+/- ## Li's Theorem (2025)
 
 Li proved that for transversal-critical hypergraphs, the minimum degree is ≤ 6.
 -/
@@ -136,7 +136,7 @@ theorem transversal_answer_no : ¬transversal_question := by
   have hBound := @li_bound V hFin hDec H hUnif hCrit
   omega
 
-/-! ## Lovász's Construction
+/- ## Lovász's Construction
 
 Lovász showed that chromatic-critical hypergraphs with high minimum degree exist.
 -/
@@ -151,7 +151,7 @@ theorem chromatic_answer_yes : chromatic_question := by
   obtain ⟨V, hFin, hDec, H, hUnif, hCrit, hDeg⟩ := lovasz_construction 7
   exact ⟨V, hFin, hDec, H, hUnif, hCrit, hDeg⟩
 
-/-! ## Resolution
+/- ## Resolution
 
 The answer depends on the interpretation of "3-critical".
 -/
@@ -161,7 +161,7 @@ theorem erdos_834_resolution :
     ¬transversal_question ∧ chromatic_question := by
   exact ⟨transversal_answer_no, chromatic_answer_yes⟩
 
-/-! ## Historical Context
+/- ## Historical Context
 
 The transversal interpretation was likely Erdős and Lovász's original intent,
 given their work on vertex covers and matching theory.
@@ -179,7 +179,7 @@ theorem erdos_834_summary :
       IsUniform H 3 ∧ IsChromaticCritical H 3 ∧ minDegree H ≥ d) := by
   exact ⟨fun V _ _ H => li_bound V H, lovasz_construction⟩
 
-/-! ## Summary
+/- ## Summary
 
 **Erdős Problem #834**: Does there exist a 3-critical 3-uniform hypergraph
 with minimum degree ≥ 7?

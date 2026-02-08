@@ -95,7 +95,7 @@ Mathlib's Burnside lemma uses `MulAction G X` where G is a `Group`. However, `ZM
 
 **Files Modified**:
 - `proofs/Proofs/BurnsideCounting.lean` (new file)
-- `research/candidate-pool.json` (status: completed)
+- `.lean/state/candidate-pool.json` (status: completed)
 - `research/problems/burnside-counting/knowledge.md` (this file)
 
 ## Technical Notes

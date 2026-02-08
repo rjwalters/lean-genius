@@ -42,7 +42,7 @@ import Mathlib.Data.Set.Basic
 
 namespace Erdos246
 
-/-!
+/-
 ## Part 1: Basic Definitions
 -/
 
@@ -69,7 +69,7 @@ def isCompleteFrom (S : Set ℕ) (N₀ : ℕ) : Prop :=
     (∀ x ∈ T, x ∈ S) ∧
     T.sum id = n
 
-/-!
+/-
 ## Part 2: The Main Theorem (Birch 1959)
 -/
 
@@ -90,7 +90,7 @@ theorem two_three_complete : isComplete (powerSet 2 3) := by
   · norm_num
   · decide
 
-/-!
+/-
 ## Part 3: Cassels' Generalization
 -/
 
@@ -104,7 +104,7 @@ axiom cassels_implies_birch :
   ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
     isComplete (powerSet a b)
 
-/-!
+/-
 ## Part 4: Davenport's Observation
 -/
 
@@ -122,7 +122,7 @@ axiom davenport_uniform :
   ∃ f : ℕ → ℕ → ℕ, ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
     isComplete (powerSetBoundedL a b (f a b))
 
-/-!
+/-
 ## Part 5: Quantitative Bounds (Hegyvári, Fang-Chen)
 -/
 
@@ -138,7 +138,7 @@ axiom fang_chen_bound :
     ∃ L : ℕ, L ≤ 2^(2^(2^(max a b))) ∧
     isComplete (powerSetBoundedL a b L)
 
-/-!
+/-
 ## Part 6: Yu's Result on Large Summands
 -/
 
@@ -150,7 +150,7 @@ axiom yu_large_summands :
       (∀ x ∈ T, x > n / (Nat.log n + 1)^2) ∧
       T.sum id = n
 
-/-!
+/-
 ## Part 7: Related Complete Sequences
 -/
 
@@ -175,7 +175,7 @@ axiom completeness_criterion :
     (∀ N : ℕ, ∃ T : Finset ℕ, (∀ x ∈ T, x ∈ S ∧ x ≤ N) ∧ T.sum id ≥ N + 1) →
     isComplete S
 
-/-!
+/-
 ## Part 8: Non-Complete Sequences
 -/
 
@@ -193,7 +193,7 @@ axiom non_representable_density :
       (Set.Icc 1 N \ { n | ∃ T : Finset ℕ, (∀ x ∈ T, x ∈ powersOf a) ∧ T.sum id = n }).ncard
         ≥ c * N
 
-/-!
+/-
 ## Part 9: Structure of Power Sets
 -/
 
@@ -214,7 +214,7 @@ axiom reciprocal_sum_bound :
     ∃ c > 0, ∀ N ≥ 2,
       (powerSetUpTo a b N).sum (fun x => (1 : ℝ) / x) ≤ c * Real.log N
 
-/-!
+/-
 ## Part 10: Unique Representations
 -/
 
@@ -229,7 +229,7 @@ axiom sparse_representations :
   ∀ a b : ℕ, a ≥ 2 → b ≥ 2 → Nat.Coprime a b →
     ∃ C : ℕ, ∀ n : ℕ, numRepresentations a b n ≤ C * (Nat.log n + 1)^2
 
-/-!
+/-
 ## Part 11: Algorithmic Aspects
 -/
 
@@ -246,7 +246,7 @@ axiom greedy_eventually_works :
       (∀ x ∈ result, x ∈ powerSet a b) ∧
       result.Nodup
 
-/-!
+/-
 ## Part 12: Summary
 -/
 

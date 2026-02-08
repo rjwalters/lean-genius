@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #743: Tree Packing Conjecture
 
 Let T₂, T₃, ..., Tₙ be a collection of trees such that Tₖ has k vertices.
@@ -34,7 +34,7 @@ open Nat Finset
 
 namespace Erdos743
 
-/-! ## Tree Structures -/
+/- ## Tree Structures -/
 
 /-- A tree on k vertices: connected, acyclic, with k-1 edges.
 Axiomatized as a type since the full graph-theoretic definition
@@ -63,7 +63,7 @@ axiom isPath (k : ℕ) (T : TreeType k) : Prop
 def boundedDegreeCollection (n : ℕ) (tc : TreeCollection n) (Δ : ℕ) : Prop :=
   ∀ k : ℕ, ∀ h : 2 ≤ k ∧ k ≤ n, maxDegree k (tc k h) ≤ Δ
 
-/-! ## Edge Count Verification -/
+/- ## Edge Count Verification -/
 
 /-- Total edges in T₂,...,Tₙ: each Tₖ has k-1 edges. -/
 def totalTreeEdges (n : ℕ) : ℕ := (Finset.range (n - 1)).sum fun i => i + 1
@@ -86,7 +86,7 @@ theorem complete_graph_edges_small :
   unfold completeGraphEdges
   norm_num
 
-/-! ## The Tree Packing Conjecture -/
+/- ## The Tree Packing Conjecture -/
 
 /-- **Tree Packing Conjecture (Gyárfás-Lehel 1978, OPEN):**
 For any collection T₂,...,Tₙ where Tₖ has k vertices, the trees
@@ -94,7 +94,7 @@ can be packed edge-disjointly into Kₙ. -/
 def treePackingConjecture : Prop :=
   ∀ n : ℕ, n ≥ 2 → ∀ tc : TreeCollection n, canPack n tc
 
-/-! ## Gyárfás-Lehel Results (1978) -/
+/- ## Gyárfás-Lehel Results (1978) -/
 
 /-- **Stars case:** If all but at most 2 trees are stars,
 the conjecture holds. -/
@@ -110,7 +110,7 @@ axiom gyarfasLehel_starsPaths (n : ℕ) (hn : n ≥ 2) (tc : TreeCollection n) :
       isStar k (tc k h) ∨ isPath k (tc k h)) →
     canPack n tc
 
-/-! ## Small Cases and Greedy Packing -/
+/- ## Small Cases and Greedy Packing -/
 
 /-- **Fishburn (1983):** The conjecture holds for n ≤ 9,
 verified by exhaustive computation. -/
@@ -125,7 +125,7 @@ axiom bollobas_greedy (n : ℕ) (hn : n ≥ 2) (tc : TreeCollection n) :
       ∀ k : ℕ, ∀ h : 2 ≤ k ∧ k ≤ n, k ≤ m + 1 →
         ∃ packing : TreeCollection n, canPack n packing
 
-/-! ## Bounded Degree Results -/
+/- ## Bounded Degree Results -/
 
 /-- **JKKO Theorem (2019):** For any fixed Δ, the conjecture holds
 for Δ-bounded degree collections when n is large enough.
@@ -143,7 +143,7 @@ axiom allen_sublinearDegree :
           (maxDegree k (tc k h) : ℝ) ≤ c * n / Real.log n) →
         canPack n tc
 
-/-! ## Packing Large Trees (2024) -/
+/- ## Packing Large Trees (2024) -/
 
 /-- **Janzer-Montgomery (2024):** There exists c > 0 such that
 for any tree collection, the largest cn trees can always be packed.
@@ -156,7 +156,7 @@ axiom janzerMontgomery_largeTrees :
           ∀ k : ℕ, ∀ h : 2 ≤ k ∧ k ≤ n, k ≥ n - m →
             ∃ packing : TreeCollection n, canPack n packing
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Summary of Erdős Problem #743.**
 Combines the key verified partial results: small cases,

@@ -106,13 +106,12 @@ axiom ess_log_blocking_set :
 
 -- ## Part V: The Open Problem (Erdős #1159)
 
-/-- **Erdős Problem #1159** (Open):
+/- **Erdős Problem #1159** (Open):
     Does there exist an absolute constant C such that every finite projective
     plane has a C-bounded blocking set?
 
     The ESS result gives O(log n), but the question is whether this can be
     improved to an absolute constant independent of n. -/
-axiom erdos_1159_open : True
 
 /-- The formal statement of Erdős Problem #1159: there exists an absolute
     constant C such that every finite projective plane admits a blocking set
@@ -139,8 +138,7 @@ theorem ess_implies_per_order_bound :
 
 -- ## Part VI: Related Problems
 
-/-- Problem #664 asks the stronger question for all pairwise balanced
+/- Problem #664 asks the stronger question for all pairwise balanced
     block designs, not just projective planes. -/
-axiom erdos_664_stronger : True
 
 end Erdos1159

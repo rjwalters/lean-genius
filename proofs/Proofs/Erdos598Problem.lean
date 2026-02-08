@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #598: Coloring Countable Subsets
 
 Let m be an infinite cardinal and κ = (2^ℵ₀)⁺ (successor of the continuum).
@@ -19,7 +19,7 @@ import Mathlib.Tactic
 
 open Cardinal
 
-/-!
+/-
 ## Section I: Cardinal Setup
 -/
 
@@ -29,14 +29,14 @@ noncomputable def kappa : Cardinal := Order.succ (2 ^ ℵ₀)
 /-- κ is uncountable: κ > ℵ₀. -/
 axiom kappa_gt_aleph0 : kappa > ℵ₀
 
-/-!
+/-
 ## Section II: Countable Subsets
 -/
 
 /-- The type of countable subsets of a type α. -/
 def CountableSubset (α : Type*) := { S : Set α // S.Countable }
 
-/-!
+/-
 ## Section III: The Coloring Property
 -/
 
@@ -52,7 +52,7 @@ def ChromaticCompleteness (α : Type*) (c : CountableSubset α → Set.Iio kappa
     ∀ color : Set.Iio kappa,
       ∃ S : CountableSubset α, S.1 ⊆ X ∧ c S = color
 
-/-!
+/-
 ## Section IV: The Conjecture
 -/
 
@@ -65,7 +65,7 @@ def ErdosProblem598 : Prop :=
       ∃ c : CountableSubset α → Set.Iio kappa,
         ChromaticCompleteness α c
 
-/-!
+/-
 ## Section V: Special Cases
 -/
 
@@ -81,7 +81,7 @@ completeness property. -/
 axiom under_CH_kappa_eq_aleph2 :
   Cardinal.continuum = ℵ₁ → kappa = aleph 2
 
-/-!
+/-
 ## Section VI: Monotonicity
 -/
 

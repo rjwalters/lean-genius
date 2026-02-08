@@ -28,7 +28,7 @@ namespace Erdos628
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Basic Definitions -/
+/- ## Basic Definitions -/
 
 /-- The chromatic number χ(G) -/
 noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
@@ -46,7 +46,7 @@ def IsCliqueFree (G : SimpleGraph V) (k : ℕ) : Prop :=
 def AreDisjoint (G : SimpleGraph V) (S T : Finset V) : Prop :=
   Disjoint S T
 
-/-! ## The (a,b)-Splittability Property -/
+/- ## The (a,b)-Splittability Property -/
 
 /-- A graph is (a,b)-splittable if it contains disjoint subgraphs
     with chromatic numbers ≥ a and ≥ b -/
@@ -63,7 +63,7 @@ def HasDisjointHighChromatic (G : SimpleGraph V) (a b : ℕ) : Prop :=
     chromaticNumber (G.induce S) ≥ a ∧
     chromaticNumber (G.induce T) ≥ b
 
-/-! ## The Tihany Conjecture -/
+/- ## The Tihany Conjecture -/
 
 /-- The Erdős-Lovász Tihany Conjecture -/
 def TihanyConjecture : Prop :=
@@ -84,7 +84,7 @@ def TihanyForPair (a b : ℕ) : Prop :=
     IsCliqueFree G k →
     IsSplittable G a b
 
-/-! ## Special Case: a = b = 3 -/
+/- ## Special Case: a = b = 3 -/
 
 /-- Brown-Jung (1969): The a = b = 3 case is true -/
 axiom brown_jung_theorem :
@@ -108,7 +108,7 @@ axiom brown_jung_odd_cycles :
       (∃ k₁ : ℕ, C₁.card = 2*k₁ + 1 ∧ k₁ ≥ 1) ∧  -- C₁ is odd cycle
       (∃ k₂ : ℕ, C₂.card = 2*k₂ + 1 ∧ k₂ ≥ 1)    -- C₂ is odd cycle
 
-/-! ## Quasi-Line Graphs -/
+/- ## Quasi-Line Graphs -/
 
 /-- A graph is a line graph -/
 def IsLineGraph (G : SimpleGraph V) : Prop :=
@@ -132,7 +132,7 @@ axiom balogh_quasi_line :
       IsCliqueFree G k →
       IsSplittable G a b
 
-/-! ## Independence Number 2 -/
+/- ## Independence Number 2 -/
 
 /-- The independence number α(G) -/
 noncomputable def independenceNumber (G : SimpleGraph V) : ℕ :=
@@ -149,7 +149,7 @@ axiom balogh_alpha_2 :
       IsCliqueFree G k →
       IsSplittable G a b
 
-/-! ## The Critical Graph Condition -/
+/- ## The Critical Graph Condition -/
 
 /-- A graph is k-critical if χ(G) = k but χ(G - v) < k for all v -/
 def IsCritical (G : SimpleGraph V) (k : ℕ) : Prop :=
@@ -167,7 +167,7 @@ theorem critical_min_degree (G : SimpleGraph V) (k : ℕ) (hcrit : IsCritical G 
     ∀ v : V, G.degree v ≥ k - 1 := by
   sorry
 
-/-! ## Relationship to Perfect Graphs -/
+/- ## Relationship to Perfect Graphs -/
 
 /-- A graph is perfect if χ(H) = ω(H) for all induced subgraphs -/
 def IsPerfect (G : SimpleGraph V) : Prop :=
@@ -184,7 +184,7 @@ theorem perfect_tihany_vacuous (G : SimpleGraph V) (hperf : IsPerfect G)
     ¬IsCliqueFree G k := by
   sorry
 
-/-! ## Bounds and Partial Results -/
+/- ## Bounds and Partial Results -/
 
 /-- Weak version: exists subgraph with χ ≥ max(a,b) -/
 theorem weak_splittability (G : SimpleGraph V) (k a b : ℕ)
@@ -201,7 +201,7 @@ theorem tihany_a_eq_2 (b : ℕ) (hb : b ≥ 2) :
 /-- The symmetric case a = b -/
 def TihanySymmetric (a : ℕ) : Prop := TihanyForPair a a
 
-/-! ## Connection to Odd Cycles -/
+/- ## Connection to Odd Cycles -/
 
 /-- Odd cycle has chromatic number 3 -/
 theorem odd_cycle_chi_3 (n : ℕ) (hn : n ≥ 3) (hodd : n % 2 = 1) :
@@ -218,7 +218,7 @@ theorem disjoint_odd_cycles_splittable (G : SimpleGraph V)
     IsSplittable G 3 3 := by
   sorry
 
-/-! ## Main Problem Status -/
+/- ## Main Problem Status -/
 
 /-- Erdős Problem #628: OPEN (Erdős-Lovász Tihany Conjecture)
 

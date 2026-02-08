@@ -43,7 +43,7 @@ open Nat Real BigOperators Finset
 
 namespace Erdos239
 
-/-!
+/-
 ## Part I: Multiplicative Functions
 -/
 
@@ -59,7 +59,7 @@ def IsPlusMinusOne (f : ℕ → ℤ) : Prop :=
 def MultPlusMinusOne : Set (ℕ → ℤ) :=
   {f | IsMultiplicative f ∧ IsPlusMinusOne f}
 
-/-!
+/-
 ## Part II: Mean Values
 -/
 
@@ -75,7 +75,7 @@ noncomputable def meanValue (f : ℕ → ℤ) (N : ℕ) : ℝ :=
 def HasConvergentMean (f : ℕ → ℤ) : Prop :=
   ∃ L : ℝ, ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀, |meanValue f N - L| < ε
 
-/-!
+/-
 ## Part III: Classical Examples
 -/
 
@@ -100,7 +100,7 @@ axiom liouville_pm_one : IsPlusMinusOne liouville
 theorem liouville_in_mult_pm : liouville ∈ MultPlusMinusOne :=
   ⟨liouville_multiplicative, liouville_pm_one⟩
 
-/-!
+/-
 ## Part IV: The Completely Multiplicative Case
 -/
 
@@ -123,7 +123,7 @@ axiom completely_mult_pm_determined (f : ℕ → ℤ)
     (heq : ∀ p : ℕ, p.Prime → f p = g p) :
     ∀ n : ℕ, n ≥ 1 → f n = g n
 
-/-!
+/-
 ## Part V: Wintner's Counterexample for Complex Values
 -/
 
@@ -145,7 +145,7 @@ axiom wintner_renyi_counterexample :
     ¬∃ L : ℂ, ∀ ε > 0, ∃ N₀ : ℕ, ∀ N ≥ N₀,
       Complex.abs ((∑ n in Finset.range N, powerI (n + 1)) / N - L) < ε
 
-/-!
+/-
 ## Part VI: Wirsing's Theorem (1967)
 -/
 
@@ -166,7 +166,7 @@ theorem erdos_239 (f : ℕ → ℤ) (hf : f ∈ MultPlusMinusOne) :
     HasConvergentMean f :=
   wirsing_theorem f hf.1 hf.2
 
-/-!
+/-
 ## Part VII: Halász's Generalization (1968)
 -/
 
@@ -189,7 +189,7 @@ axiom halasz_characterization (f : ℕ → ℤ)
         (∀ p ∈ S, p.Prime) ∧
         (∑ p in S, (1 - f p : ℝ) / p) > B)
 
-/-!
+/-
 ## Part VIII: The Constant Function
 -/
 
@@ -217,7 +217,7 @@ theorem constOne_mean (N : ℕ) (hN : N ≥ 1) : meanValue constOne N = 1 := by
   field_simp
   ring
 
-/-!
+/-
 ## Part IX: The Liouville Function Mean
 -/
 
@@ -238,7 +238,7 @@ theorem liouville_limit_zero :
   simp only [sub_zero] at hconv
   exact hconv ε hε
 
-/-!
+/-
 ## Part X: Connection to Prime Distribution
 -/
 
@@ -257,7 +257,7 @@ axiom rh_equivalence :
     -- RH ↔ meanValue λ N = O(N^{-1/2 + ε}) for all ε > 0
     True  -- Statement simplified
 
-/-!
+/-
 ## Part XI: Summary
 -/
 

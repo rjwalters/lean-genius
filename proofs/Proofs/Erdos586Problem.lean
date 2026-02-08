@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #586: Covering Systems with Antichain Moduli
 
 Source: https://erdosproblems.com/586
@@ -31,7 +31,7 @@ import Mathlib
 
 namespace Erdos586
 
-/-!
+/-
 ## Basic Definitions
 -/
 
@@ -49,7 +49,7 @@ structure CongruenceClass where
 def CongruenceClass.toSet (c : CongruenceClass) : Set ℤ :=
   { x | x % c.modulus = c.residue % c.modulus }
 
-/-!
+/-
 ## Covering Systems
 -/
 
@@ -70,7 +70,7 @@ def covers (S : CoveringSystem) (x : ℤ) : Prop :=
 def IsCovering (S : CoveringSystem) : Prop :=
   ∀ x : ℤ, covers S x
 
-/-!
+/-
 ## Antichain Condition
 -/
 
@@ -85,7 +85,7 @@ def IsAntichain (M : Finset ℕ) : Prop :=
 def HasAntichainModuli (S : CoveringSystem) : Prop :=
   IsAntichain S.moduli
 
-/-!
+/-
 ## The Main Question
 -/
 
@@ -93,7 +93,7 @@ def HasAntichainModuli (S : CoveringSystem) : Prop :=
 def schinzel_question : Prop :=
   ∃ S : CoveringSystem, IsCovering S ∧ HasAntichainModuli S
 
-/-!
+/-
 ## The Main Result
 -/
 
@@ -106,7 +106,7 @@ axiom covering_implies_comparable :
     ∀ S : CoveringSystem, IsCovering S →
     ∃ a ∈ S.moduli, ∃ b ∈ S.moduli, a ≠ b ∧ (a ∣ b ∨ b ∣ a)
 
-/-!
+/-
 ## Density Results
 -/
 
@@ -123,7 +123,7 @@ axiom bbmst_density_bound :
 axiom antichain_not_covering :
     ∀ S : CoveringSystem, HasAntichainModuli S → ¬IsCovering S
 
-/-!
+/-
 ## Generalizations
 -/
 
@@ -139,7 +139,7 @@ def antichain_k_covering_question (k : ℕ) : Prop :=
 axiom no_antichain_k_covering (k : ℕ) (hk : k ≥ 1) :
     ¬antichain_k_covering_question k
 
-/-!
+/-
 ## Summary
 
 **Status: SOLVED (NO)**

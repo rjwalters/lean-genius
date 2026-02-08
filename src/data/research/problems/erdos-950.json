@@ -1,103 +1,50 @@
 {
   "slug": "erdos-950",
   "title": "Erdős #950",
-  "phase": "SURVEYED",
-  "status": "surveyed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Define f(n) = ∑_{p<n} 1/(n-p). Is lim inf f(n) = 1? Is lim sup f(n) = ∞? Is f(n) = o(log log n)?",
-    "plain": "How does the sum of reciprocal distances from n to primes below n behave?",
-    "whyMatters": [
-      "Connects prime distribution near n to analytic behavior of a natural sum",
-      "Average behavior known (de Bruijn-Erdős-Turán) but extremal behavior open",
-      "Links to prime gaps and density of primes in short intervals"
-    ]
+    "formal": "Let\\[f(n) = \\sum_{p<n}\\frac{1}{n-p}.\\]Is it true that\\[\\liminf f(n)=1\\]and\\[\\limsup f(n)=\\infty?\\]Is it true that $f(n)=o(\\log\\log n)$ for all $n$?\n\n\n\nThis function was considered by de Bruijn, Erd\\H{o}s, and Tur\\'{a}n, who showed that\\[\\sum_{n<x}f(n)\\sim \\sum_{n<x}f(n)^2\\sim x.\\]The existence of some $c>0$ such that there are $\\gg n^c/\\log n$ many primes in $[n,n+n^c]$ implies that $\\liminf f(n)>0$.\n\nErd\\H{o}s writes that a 'weaker conjecture which is perhaps not quite inaccessible' is that, for every $\\epsilon>0$, if $x$ is sufficiently large there exists $y<x$ such that\\[\\pi(x)< \\pi(y)+\\epsilon \\pi(x-y).\\](Compare this to [855].) He notes that if\\[\\pi(x)< \\pi(y)+O\\left(\\frac{x-y}{\\log x}\\right)\\]for all $y<x-(\\log x)^C$ for some constant $C>0$ then $f(n)\\ll \\log\\log\\log n$.\n\nThe study of $f(p)$ is even harder, and Erd\\H{o}s could not prove that\\[\\sum_{p<x}f(p)^2\\sim \\pi(x).\\]",
+    "plain": "Let\\[f(n) = \\sum_{p0$ such that there are $\\gg n^c/\\log n$ many primes in $[n,n+n^c]$ implies that $\\liminf f(n)>0$.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "de Bruijn-Erdős-Turán: ∑_{n<x} f(n) ~ x (f averages to 1)",
-      "de Bruijn-Erdős-Turán: ∑_{n<x} f(n)² ~ x",
-      "f(n) ≥ 0 for all n (proved in Lean)",
-      "f(2) = 0 (proved in Lean)",
-      "Dense primes in [n, n+n^c] with c > 0 implies lim inf f(n) > 0"
-    ],
-    "open": [
-      "Q1: Is lim inf f(n) = 1?",
-      "Q2: Is lim sup f(n) = ∞?",
-      "Q3: Is f(n) = o(log log n)?",
-      "∑_{p<x} f(p)² ~ π(x) (sum restricted to prime arguments)"
-    ],
-    "goal": "Formalize all three questions and known results"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-07T17:50:00Z",
+    "phase": "NEW",
+    "since": "2026-01-15T12:22:36.006Z",
     "iteration": 1,
-    "focus": "Fix headers, replace True placeholders, add meaningful axioms",
-    "blockers": [
-      "All three questions are OPEN"
-    ],
-    "nextAction": "Could submit to Aristotle for f_nonneg and f_two proofs",
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Enhanced formalization with fixed headers, replaced True placeholders with meaningful axioms (dense_short_intervals_imply_liminf_pos, f_at_primes_open), removed erdos_950_status string def, cleaned up summary theorem.",
-    "builtItems": [
-      "proofs/Proofs/Erdos950Problem.lean - Enhanced formalization",
-      "lemma f_nonneg (proved)",
-      "lemma f_two (proved)",
-      "lemma f_average_one (proved from axiom)",
-      "theorem erdos_950_summary (proved from axioms)",
-      "Replaced 2 True placeholders with meaningful statements",
-      "Added dense_short_intervals_imply_liminf_pos axiom",
-      "Added f_at_primes_open axiom"
-    ],
-    "insights": [
-      "Problem is OPEN for all three questions",
-      "f(n) averages to 1 but extremal behavior unknown",
-      "Heuristic: ∫₂ⁿ dt/((n-t) log t) ~ 1 explains average",
-      "Connection to prime gaps: dense primes near n inflate f(n)",
-      "Erdős's weaker conjecture would imply f(n) ≪ log log log n",
-      "Related to Problem #855 on prime counting comparisons"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Could try proving f_three via native_decide or explicit computation",
-      "Could formalize the integral heuristic connection to PNT"
-    ],
-    "markdown": "# Erdős #950 - Knowledge Base\n\n## Problem\n\nf(n) = ∑_{p<n} 1/(n-p). Three questions about lim inf, lim sup, and growth rate.\n\n## Known Results\n\n- Average: f(n) averages to 1 (de Bruijn-Erdős-Turán)\n- All three questions OPEN\n\n## Formalization\n\n- 4 proved lemmas/theorems, ~8 meaningful axioms\n- Fixed /-! headers, replaced True placeholders\n\n---\n\n*Updated by researcher-1 on 2026-02-07*\n"
+    "nextSteps": [],
+    "markdown": "# Erdős #950 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[f(n) = \\sum_{p<n}\\frac{1}{n-p}.\\]Is it true that\\[\\liminf f(n)=1\\]and\\[\\limsup f(n)=\\infty?\\]Is it true that $f(n)=o(\\log\\log n)$ for all $n$?\n\n\n\nThis function was considered by de Bruijn, Erd\\H{o}s, and Tur\\'{a}n, who showed that\\[\\sum_{n<x}f(n)\\sim \\sum_{n<x}f(n)^2\\sim x.\\]The existence of some $c>0$ such that there are $\\gg n^c/\\log n$ many primes in $[n,n+n^c]$ implies that $\\liminf f(n)>0$.\n\nErd\\H{o}s writes that a 'weaker conjecture which is perhaps not quite inaccessible' is that, for every $\\epsilon>0$, if $x$ is sufficiently large there exists $y<x$ such that\\[\\pi(x)< \\pi(y)+\\epsilon \\pi(x-y).\\](Compare this to [855].) He notes that if\\[\\pi(x)< \\pi(y)+O\\left(\\frac{x-y}{\\log x}\\right)\\]for all $y<x-(\\log x)^C$ for some constant $C>0$ then $f(n)\\ll \\log\\log\\log n$.\n\nThe study of $f(p)$ is even harder, and Erd\\H{o}s could not prove that\\[\\sum_{p<x}f(p)^2\\sim \\pi(x).\\]\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #855\n- Problem #949\n- Problem #951\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Survey and enhance",
-      "status": "completed",
-      "description": "Fix headers, replace True placeholders, add meaningful mathematical axioms."
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "number-theory",
-    "prime-distribution",
-    "analytic-number-theory"
+    "erdos"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Erdős [Er77c]",
-      "de Bruijn, Erdős, Turán (sum asymptotics)"
-    ],
-    "urls": [
-      "https://www.erdosproblems.com/950"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Topology.Algebra.Order.LiminfLimsup"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T12:22:36.006Z",
   "significance": 6,

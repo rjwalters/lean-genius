@@ -8,7 +8,13 @@
     "sourceUrl": "https://erdosproblems.com/46",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos46Problem.lean",
-    "tags": ["number-theory", "unit-fractions", "ramsey-theory", "colouring"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "ramsey-theory",
+      "colouring"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 46,
@@ -27,11 +33,41 @@
     ]
   },
   "sections": [
-    { "id": "unit-fraction", "title": "Unit Fraction Representations", "startLine": 21, "endLine": 30, "summary": "Defines IsUnitFractionRepr and IsRatFractionRepr for Egyptian fraction sums over Finsets." },
-    { "id": "colourings", "title": "Colourings", "startLine": 32, "endLine": 40, "summary": "Defines FiniteColouring as ℕ → Fin r and IsMonochromatic for uniform colour." },
-    { "id": "main", "title": "Main Theorem", "startLine": 42, "endLine": 54, "summary": "States ErdosProblem46 and the stronger infinitely-many disjoint solutions variant." },
-    { "id": "rational", "title": "Rational Generalization", "startLine": 56, "endLine": 66, "summary": "States Erdős–Graham generalization to arbitrary positive rationals." },
-    { "id": "basic", "title": "Basic Properties", "startLine": 68, "endLine": 91, "summary": "Proves empty set and 1-colouring results. States singleton non-representation and cardinality bound." }
+    {
+      "id": "unit-fraction",
+      "title": "Unit Fraction Representations",
+      "startLine": 21,
+      "endLine": 30,
+      "summary": "Defines IsUnitFractionRepr and IsRatFractionRepr for Egyptian fraction sums over Finsets."
+    },
+    {
+      "id": "colourings",
+      "title": "Colourings",
+      "startLine": 32,
+      "endLine": 40,
+      "summary": "Defines FiniteColouring as ℕ → Fin r and IsMonochromatic for uniform colour."
+    },
+    {
+      "id": "main",
+      "title": "Main Theorem",
+      "startLine": 42,
+      "endLine": 54,
+      "summary": "States ErdosProblem46 and the stronger infinitely-many disjoint solutions variant."
+    },
+    {
+      "id": "rational",
+      "title": "Rational Generalization",
+      "startLine": 56,
+      "endLine": 66,
+      "summary": "States Erdős–Graham generalization to arbitrary positive rationals."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 68,
+      "endLine": 91,
+      "summary": "Proves empty set and 1-colouring results. States singleton non-representation and cardinality bound."
+    }
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 46 on monochromatic unit fraction representations, Croot's infinitely-many result, and the Erdős–Graham rational generalization. 0 sorries.",

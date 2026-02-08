@@ -34,30 +34,19 @@
   {
     "id": "ann-e1111-property",
     "proofId": "erdos-1111",
-    "range": { "startLine": 70, "endLine": 79 },
+    "range": { "startLine": 70, "endLine": 93 },
     "type": "definition",
     "title": "The El Zahar-Erdos Property",
-    "content": "**HasElZaharErdosProperty t c d:**\n\nA graph G has the (t, c, d) property if:\n- chi(G) >= d and omega(G) < t implies\n- There exist anticomplete A, B with chi(A) >= c and chi(B) >= c\n\nThe conjecture asserts this property holds for all t, c >= 1 with some d.",
+    "content": "**HasElZaharErdosProperty t c d:**\n\nA graph G has the (t, c, d) property if:\n- chi(G) >= d and omega(G) < t implies\n- There exist anticomplete A, B with chi(A) >= c and chi(B) >= c\n\n**d_func t c:** The minimal such d.\n\n**ElZaharErdosConjecture:** d(t, c) exists for all t, c >= 1.",
     "mathContext": "This defines when a chromatic threshold d is sufficient to guarantee anticomplete high-chromatic substructures given clique bound t and chromatic target c.",
     "significance": "critical",
-    "relatedConcepts": ["Graph property", "Chromatic threshold"]
-  },
-  {
-    "id": "ann-e1111-d-func",
-    "proofId": "erdos-1111",
-    "range": { "startLine": 81, "endLine": 93 },
-    "type": "definition",
-    "title": "The Function d(t, c)",
-    "content": "**d_func t c = d(t, c):**\n\nThe minimal d such that HasElZaharErdosProperty t c d holds.\n\n**ElZaharErdosConjecture:**\nFor all t, c >= 1, d(t, c) exists (is finite).\n\nDetermining the exact function d(t, c) is the open problem.",
-    "mathContext": "The existence of d(t, c) follows from various results, but computing exact values is hard. Only small cases are known precisely.",
-    "significance": "critical",
-    "relatedConcepts": ["Extremal function", "Minimality"]
+    "relatedConcepts": ["Graph property", "Chromatic threshold", "Extremal function"]
   },
   {
     "id": "ann-e1111-small-cases",
     "proofId": "erdos-1111",
     "range": { "startLine": 95, "endLine": 115 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Known Small Cases",
     "content": "**Exact values:**\n- d(2, 2) = 2: Triangle-free graphs with chi >= 2 work\n- d(3, 2) = 4: K3-free graphs need chi >= 4\n- d(4, 2) = 5: K4-free graphs need chi >= 5\n\nThese are the only exactly determined values of d(t, c).",
     "mathContext": "Small cases can be verified by case analysis. The jump from d(3,2)=4 to d(4,2)=5 shows the function is not simply linear in t.",
@@ -78,24 +67,13 @@
   {
     "id": "ann-e1111-reduction",
     "proofId": "erdos-1111",
-    "range": { "startLine": 139, "endLine": 145 },
+    "range": { "startLine": 139, "endLine": 159 },
     "type": "axiom",
-    "title": "Reduction to t <= c",
-    "content": "**reduction_to_t_le_c:**\n\nEl Zahar and Erdos showed: To prove the conjecture for all t, c, it suffices to prove it when t <= c.\n\nThis reduces the infinite problem to a more tractable family of cases.",
-    "mathContext": "When t > c, one can use the result for (c, c) and deduce the general case. This is a standard reduction technique in extremal combinatorics.",
-    "significance": "key",
-    "relatedConcepts": ["Problem reduction", "Sufficient condition"]
-  },
-  {
-    "id": "ann-e1111-c3-bounds",
-    "proofId": "erdos-1111",
-    "range": { "startLine": 147, "endLine": 159 },
-    "type": "axiom",
-    "title": "Bounds for c = 3",
-    "content": "**d_3_3_bound:** d(3, 3) <= 8\n\n**el_zahar_erdos_c3_bound:**\nFor t > 3: d(t, 3) <= 2*C(t-1, 3) + 7*C(t-1, 2) + t\n\nThe c = 3 case is the next frontier after c = 2.",
+    "title": "El Zahar-Erdos Results (1985)",
+    "content": "**reduction_to_t_le_c:** To prove the conjecture for all t, c, it suffices to prove it when t <= c.\n\n**d_3_3_bound:** d(3, 3) <= 8\n\n**el_zahar_erdos_c3_bound:** For t > 3: d(t, 3) <= 2*C(t-1, 3) + 7*C(t-1, 2) + t\n\nThe c = 3 case is the next frontier after c = 2.",
     "mathContext": "El Zahar and Erdos (1985) established these bounds. The exact value of d(3, 3) is unknown - could be anywhere from 5 to 8.",
     "significance": "key",
-    "relatedConcepts": ["Cubic bound", "Polynomial growth"]
+    "relatedConcepts": ["Problem reduction", "Cubic bound"]
   },
   {
     "id": "ann-e1111-nss",
@@ -109,13 +87,24 @@
     "relatedConcepts": ["Minimum degree", "Structural strengthening", "2024 result"]
   },
   {
+    "id": "ann-e1111-connections",
+    "proofId": "erdos-1111",
+    "range": { "startLine": 184, "endLine": 207 },
+    "type": "axiom",
+    "title": "Connections to Ramsey Theory and chi-Boundedness",
+    "content": "**ramsey_connection:** For all t >= 2, there exists d such that the (t, 2, d) property holds. High chromatic number with bounded clique forces rich structure.\n\n**chi_boundedness:** Graphs with omega(G) < t and chi(G) >= d(t,c) contain anticomplete sets with high chromatic number. This connects to the broader theory of chi-bounded graph classes.",
+    "mathContext": "The problem sits at the intersection of Ramsey theory (forced substructures) and chi-boundedness (relating clique and chromatic numbers).",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "Chi-boundedness", "Graph structure"]
+  },
+  {
     "id": "ann-e1111-summary",
     "proofId": "erdos-1111",
-    "range": { "startLine": 224, "endLine": 272 },
+    "range": { "startLine": 209, "endLine": 245 },
     "type": "theorem",
     "title": "Problem Summary",
-    "content": "**Erdos Problem #1111: OPEN**\n\n**Known:**\n- Exact values: d(2,2)=2, d(3,2)=4, d(4,2)=5\n- Upper bounds: d(t,2) <= C(t,2)+1, d(3,3) <= 8\n- Existence: NSS 2024 proves existence with degree constraint\n\n**Open:** Determine d(t, c) for general t, c.\n\n**Note:** Cannot be resolved by finite computation - requires infinite analysis.",
-    "mathContext": "The problem sits at the intersection of chromatic number theory, Ramsey theory, and chi-boundedness. Progress requires new structural insights.",
+    "content": "**Erdos Problem #1111: OPEN**\n\n**Known:**\n- Exact values: d(2,2)=2, d(3,2)=4, d(4,2)=5 (erdos_1111_known_values)\n- Upper bounds: d(t,2) <= C(t,2)+1, d(3,3) <= 8\n- Existence: NSS 2024 proves existence with degree constraint (erdos_1111_summary)\n\n**Open:** Determine d(t, c) for general t, c.\n\nThe summary theorem combines Wagon's bound, El Zahar-Erdos bound, and NSS existence.",
+    "mathContext": "The problem requires new structural insights to determine exact values. Progress requires infinite analysis, not finite computation.",
     "significance": "critical"
   }
 ]

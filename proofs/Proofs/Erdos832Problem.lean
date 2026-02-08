@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #832: Minimum Edges in Hypergraphs with Given Chromatic Number
 
 Source: https://erdosproblems.com/832
@@ -32,7 +32,7 @@ import Mathlib.Data.Real.Basic
 
 namespace Erdos832
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- **r-Uniform Hypergraph:**
 A collection of edges where each edge has exactly r vertices. -/
@@ -52,7 +52,7 @@ def IsProperColouring {V : Type*} (H : Hypergraph V) (c : V → Fin k) : Prop :=
 def hasChromaticNumberAtLeast (H : Hypergraph V) (k : ℕ) : Prop :=
   ¬∃ c : V → Fin (k - 1), IsProperColouring H c
 
-/-! ## Part II: The Classical Graph Case (r = 2) -/
+/- ## Part II: The Classical Graph Case (r = 2) -/
 
 /-- **Classical result for graphs (r = 2):**
 A graph with chromatic number k has at least C(k, 2) = k(k-1)/2 edges.
@@ -61,7 +61,7 @@ axiom classical_graph_bound (G : SimpleGraph V) [Fintype V] [DecidableEq V] (k :
     (hχ : G.chromaticNumber = k) :
     G.edgeFinset.card ≥ k * (k - 1) / 2
 
-/-! ## Part III: Erdős's Conjecture -/
+/- ## Part III: Erdős's Conjecture -/
 
 /-- **Erdős's conjecture (disproved for r ≥ 4):**
 For r ≥ 3 and k sufficiently large, every r-uniform hypergraph with
@@ -71,7 +71,7 @@ def erdosConjecture (r k : ℕ) : Prop :=
     ∀ H : Hypergraph V, IsUniform H r → hasChromaticNumberAtLeast H k →
       ∃ n : ℕ, n ≥ Nat.choose ((r - 1) * (k - 1) + 1) r
 
-/-! ## Part IV: Counterexamples -/
+/- ## Part IV: Counterexamples -/
 
 /-- **Steiner triple system counterexample (r = 3, k = 3):**
 The Fano plane is a 3-uniform hypergraph on 7 vertices with 7 edges
@@ -93,7 +93,7 @@ axiom alon_disproof :
             IsUniform H r ∧
             hasChromaticNumberAtLeast H k
 
-/-! ## Part V: The Function m(r, k) -/
+/- ## Part V: The Function m(r, k) -/
 
 /-- **m(r, k):** The minimum number of edges in any r-uniform hypergraph
 with chromatic number > k. Axiomatized since computing the minimum
@@ -115,13 +115,13 @@ axiom cherkashin_petrov_limit :
       ∃ c_r : ℝ, c_r > 0 ∧
         Filter.Tendsto (fun k => (m r k : ℝ) / k^r) Filter.atTop (nhds c_r)
 
-/-! ## Part VI: Open Questions -/
+/- ## Part VI: Open Questions -/
 
 /-- **Open problem for r = 3:** Is the conjecture true for r = 3 and large k? -/
 def r3_open_question : Prop :=
   ∃ K : ℕ, ∀ k ≥ K, erdosConjecture 3 k
 
-/-! ## Part VII: Concrete Examples -/
+/- ## Part VII: Concrete Examples -/
 
 /-- The Fano plane bound: C(5,3) = 10, so 7 edges < 10. -/
 example : 7 < Nat.choose 5 3 := by norm_num
@@ -129,7 +129,7 @@ example : 7 < Nat.choose 5 3 := by norm_num
 /-- Alon's factor for r = 4: (7/8)^4 ≈ 0.586. -/
 example : (7/8 : ℝ)^4 < 0.6 := by norm_num
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /-- **Erdős Problem #832: SOLVED (disproved for r ≥ 4)**
 

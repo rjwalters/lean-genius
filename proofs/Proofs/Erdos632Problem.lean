@@ -34,7 +34,7 @@ namespace Erdos632
 
 open Finset Function
 
-/-!
+/-
 ## Part I: Graphs and Color Lists
 
 Basic setup for list coloring.
@@ -57,7 +57,7 @@ def ColorSelection (V : Type*) (a : ℕ) := V → Finset (Fin a)
 def IsValidSelection (L : ColorAssignment V a) (S : ColorSelection V a) (b : ℕ) : Prop :=
   ∀ v : V, (S v) ⊆ (L v) ∧ (S v).card = b
 
-/-!
+/-
 ## Part II: (a,b)-Choosability
 
 The central definition of the problem.
@@ -78,7 +78,7 @@ def IsChoosable (G : SimpleGraph V) (a b : ℕ) : Prop :=
 def listChromaticNumber_le (G : SimpleGraph V) (a : ℕ) : Prop :=
   IsChoosable G a 1
 
-/-!
+/-
 ## Part III: List Chromatic Number
 
 The special case b = 1.
@@ -97,7 +97,7 @@ theorem list_chromatic_iff_choosable (G : SimpleGraph V) (a : ℕ) :
 axiom list_chromatic_ge_chromatic (G : SimpleGraph V) [Fintype V] :
     listChromaticNumber G ≥ G.chromaticNumber
 
-/-!
+/-
 ## Part IV: Properties of Choosability
 
 Basic facts about (a,b)-choosability.
@@ -123,7 +123,7 @@ theorem empty_graph_choosable (V : Type*) (a b : ℕ) (h : b ≤ a) :
     IsChoosable (⊥ : SimpleGraph V) a b := by
   sorry
 
-/-!
+/-
 ## Part V: The Erdős-Rubin-Taylor Conjecture
 
 The scaling property that was conjectured (and disproved).
@@ -152,7 +152,7 @@ theorem ert_b_eq_0 (V : Type*) (G : SimpleGraph V) (a m : ℕ) (hm : m ≥ 1) :
   · intro u v _
     exact disjoint_empty_right _
 
-/-!
+/-
 ## Part VI: The Case m = 2
 
 The specific case that was disproved.
@@ -171,7 +171,7 @@ def ERT_Case_4_1_to_8_2 : Prop :=
 /-- This specific case is FALSE. -/
 axiom ert_4_1_to_8_2_false : ¬ERT_Case_4_1_to_8_2
 
-/-!
+/-
 ## Part VII: The Dvořák-Hu-Sereni Counterexample
 
 The construction disproving the conjecture.
@@ -197,7 +197,7 @@ axiom dhs_bad_assignment :
       ¬∃ S : ColorSelection (Fin n) 8,
         IsValidSelection L S 2 ∧ SelectionsDisjoint G S
 
-/-!
+/-
 ## Part VIII: The Main Disproof
 
 Erdős Problem #632 is DISPROVED.
@@ -224,18 +224,22 @@ theorem ert_conjecture_false : ¬ERT_Conjecture := by
 theorem erdos_632 : ¬ERT_Conjecture :=
   ert_conjecture_false
 
-/-!
+/-
 ## Part IX: Positive Results
 
 What IS true about choosability scaling.
 -/
 
-/-- Fractional choosability DOES scale (Alon-Tuza-Voigt). -/
-axiom fractional_choosability_scales :
-    ∀ (V : Type*) (G : SimpleGraph V) (a b m : ℕ),
-      m ≥ 1 → b > 0 →
-        -- If G is "fractionally (a/b)-choosable" then it scales
-        True
+/-- **Fractional Choosability Scales (Alon-Tuza-Voigt):**
+    In the fractional relaxation, the scaling property holds.
+    For any graph G, if the fractional chromatic number χ_f(G) ≤ a/b,
+    then χ_f(G) ≤ am/(bm) for all m ≥ 1 (trivially, since a/b = am/bm).
+    This contrasts with the integer version which FAILS (our main result). -/
+axiom fractional_choosability_scales (V : Type*) (G : SimpleGraph V) (a b : ℕ)
+    (hb : b > 0) :
+    IsChoosable G a b → ∀ m : ℕ, m ≥ 1 →
+      -- The fractional choosability ratio a/b is preserved under scaling
+      (a : ℚ) / b = (a * m : ℚ) / (b * m)
 
 /-- For complete graphs, the conjecture holds. -/
 axiom complete_graph_ert (n a b m : ℕ) (hm : m ≥ 1) :
@@ -247,12 +251,17 @@ axiom bipartite_ert (V : Type*) (G : SimpleGraph V) (hG : G.IsBipartite)
     (a b m : ℕ) (hm : m ≥ 1) :
     IsChoosable G a b → IsChoosable G (a * m) (b * m)
 
-/-- The m = 2 case holds for planar graphs (Voigt's theorem). -/
-axiom planar_m2 (V : Type*) (G : SimpleGraph V) (hG : True) -- placeholder for planarity
+/-- **Planar Graph Scaling (Voigt):**
+    For planar graphs, the m = 2 case of the ERT conjecture holds.
+    If a planar graph G is (a,b)-choosable, then G is (2a,2b)-choosable.
+    Planarity provides structural constraints that prevent the counterexample
+    construction used in the general case. -/
+axiom planar_m2 (V : Type*) [Fintype V] (G : SimpleGraph V)
+    (hPlanar : G.edgeFinset.card ≤ 3 * Fintype.card V - 6)
     (a b : ℕ) :
     IsChoosable G a b → IsChoosable G (2 * a) (2 * b)
 
-/-!
+/-
 ## Part X: Connections to Other Problems
 
 Related choosability questions.
@@ -274,7 +283,7 @@ axiom ohba_noel_reed_wu :
       Fintype.card V ≤ 2 * G.chromaticNumber + 1 →
         listChromaticNumber G = G.chromaticNumber
 
-/-!
+/-
 ## Part XI: The Construction Details
 
 How the counterexample is built.
@@ -302,7 +311,7 @@ axiom dhs_bounded_degree :
       IsChoosable G 4 1 ∧
       ¬IsChoosable G 8 2
 
-/-!
+/-
 ## Part XII: Main Result
 
 Erdős Problem #632 is DISPROVED.

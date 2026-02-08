@@ -46,7 +46,7 @@ import Mathlib
 
 open Finset
 
-/-!
+/-
 ## Graph Dimension
 
 The dimension of a graph is the minimum Euclidean dimension for unit-distance embedding.
@@ -72,7 +72,7 @@ axiom hasUnitEmbedding_exists (V : Type*) [Fintype V] (adj : V → V → Prop) :
 noncomputable def graphDimension (V : Type*) [Fintype V] (adj : V → V → Prop) : ℕ :=
   Nat.find (hasUnitEmbedding_exists V adj)
 
-/-!
+/-
 ## Complete Bipartite Graphs
 -/
 
@@ -86,7 +86,7 @@ def completeBipartiteAdj (m n : ℕ) : (Fin m ⊕ Fin n) → (Fin m ⊕ Fin n) �
 theorem completeBipartite_edge_count (m n : ℕ) :
     m * n = m * n := rfl
 
-/-!
+/-
 ## Known Dimension Results
 -/
 
@@ -99,7 +99,7 @@ axiom tetrahedron_dimension : graphDimension (Fin 4) (fun i j => i ≠ j) = 3
 /-- K_{3,3} has dimension 4 -/
 axiom k33_dimension : graphDimension (Fin 3 ⊕ Fin 3) (completeBipartiteAdj 3 3) = 4
 
-/-!
+/-
 ## Erdős Problem #1007: Main Result
 -/
 
@@ -120,7 +120,7 @@ axiom k33_unique_minimum : ∀ (V : Type) [Fintype V] [DecidableEq V]
     -- The graph is isomorphic to K_{3,3}
     ∃ (f : V ≃ Fin 3 ⊕ Fin 3), ∀ u v, adj u v ↔ completeBipartiteAdj 3 3 (f u) (f v)
 
-/-!
+/-
 ## Extension to Dimension 5 (Chaffee-Noble 2016)
 -/
 

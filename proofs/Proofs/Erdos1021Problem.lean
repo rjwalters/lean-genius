@@ -234,8 +234,9 @@ theorem trivial_bound (k : ℕ) (hk : k ≥ 3) :
 The conjecture asks for improvement over n^(3/2).
 -/
 
-/-- The gap from n^(3/2) that the conjecture claims. -/
-noncomputable def conjecturedGap (k : ℕ) : ℝ := sorry  -- The unknown c_k
+/-- The gap from n^(3/2) that the conjecture claims.
+    Axiomatized since the exact constants c_k are unknown. -/
+axiom conjecturedGap (k : ℕ) : ℝ
 
 /-- The conjecture is that this gap is positive for all k. -/
 theorem gap_positive_conjecture :

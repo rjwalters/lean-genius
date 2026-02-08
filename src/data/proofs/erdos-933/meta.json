@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 5,
     "erdosNumber": 933,
     "erdosUrl": "https://erdosproblems.com/933",
     "erdosProblemStatus": "solved",
@@ -68,7 +68,78 @@
       "**Mahler Upper:** S-unit equations give n^{1+o(1)}"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-933-smooth-part-",
+      "title": "Erdős Problem #933: Smooth Part of Consecutive Products",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Erdős Problem #933: Smooth Part of Consecutive Products"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 34,
+      "endLine": 60,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "the-erd-s-question",
+      "title": "The Erdős Question",
+      "startLine": 61,
+      "endLine": 68,
+      "summary": "The Erdős Question"
+    },
+    {
+      "id": "mahler-s-upper-bound",
+      "title": "Mahler's Upper Bound",
+      "startLine": 69,
+      "endLine": 83,
+      "summary": "Mahler's Upper Bound"
+    },
+    {
+      "id": "erd-s-s-lower-bound",
+      "title": "Erdős's Lower Bound",
+      "startLine": 84,
+      "endLine": 112,
+      "summary": "Erdős's Lower Bound"
+    },
+    {
+      "id": "steinerberger-s-construction",
+      "title": "Steinerberger's Construction",
+      "startLine": 113,
+      "endLine": 140,
+      "summary": "Steinerberger's Construction"
+    },
+    {
+      "id": "why-the-construction-works",
+      "title": "Why the Construction Works",
+      "startLine": 141,
+      "endLine": 160,
+      "summary": "Why the Construction Works"
+    },
+    {
+      "id": "properties-of-n-n-1",
+      "title": "Properties of n(n+1)",
+      "startLine": 161,
+      "endLine": 180,
+      "summary": "Properties of n(n+1)"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 181,
+      "endLine": 198,
+      "summary": "Examples"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 199,
+      "endLine": 230,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #933 asks whether the {2,3}-smooth part of n(n+1) can exceed n log n infinitely often. The answer is YES, as shown by Steinerberger: taking n = 2^{3^r} gives 2^k · 3^l = n · 3^{r+1}, with ratio 3^{r+1}/log n → ∞.",
     "implications": "**Number Theory Connections**\n\n1. **S-Unit Equations:** Mahler's bound comes from finiteness of solutions\n\n2. **Lifting the Exponent:** Key tool for computing p-adic valuations\n\n3. **Smooth Numbers:** Structure of consecutive products\n\n4. **Explicit Constructions:** Steinerberger's sequence is computable",

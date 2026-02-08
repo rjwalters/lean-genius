@@ -32,13 +32,13 @@ open scoped Topology
 
 namespace Erdos145
 
-/-! ## Infinitude of Squarefree Numbers -/
+/- ## Infinitude of Squarefree Numbers -/
 
 /-- Squarefree numbers are infinite (primes are squarefree, and primes are infinite). -/
 theorem squarefree_infinite : Set.Infinite {n : ℕ | Squarefree n} :=
   Set.Infinite.mono (fun _ hp => hp.squarefree) Nat.infinite_setOf_prime
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The nth squarefree number (0-indexed). -/
 noncomputable def squarefreeSeq (n : ℕ) : ℕ := Nat.nth Squarefree n
@@ -56,14 +56,14 @@ noncomputable def squarefreeGap (n : ℕ) : ℕ :=
 noncomputable def momentSum (α : ℝ) (x : ℝ) : ℝ :=
   (1 / x) * ∑ n ∈ indicesUpTo x, (squarefreeGap n : ℝ) ^ α
 
-/-! ## The Conjectures -/
+/- ## The Conjectures -/
 
 /-- **Full Conjecture**: For any α ≥ 0, the limit exists.
     STATUS: OPEN (without ABC conjecture) -/
 def FullConjecture : Prop :=
   ∀ α ≥ (0 : ℝ), ∃ L : ℝ, Tendsto (momentSum α) atTop (𝓝 L)
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /--
 **Erdős (1951)**: The limit exists for 0 ≤ α ≤ 2.
@@ -108,7 +108,7 @@ axiom granville_1998_conditional (ABC_conjecture : Prop) (hABC : ABC_conjecture)
     {α : ℝ} (hα : 0 ≤ α) :
     ∃ L : ℝ, Tendsto (momentSum α) atTop (𝓝 L)
 
-/-! ## Summary Theorems -/
+/- ## Summary Theorems -/
 
 /-- Best unconditional result: limit exists for α ∈ [0, 3.75]. -/
 theorem current_best {α : ℝ} (hα : α ∈ Icc 0 3.75) :
@@ -119,7 +119,7 @@ theorem current_best {α : ℝ} (hα : α ∈ Icc 0 3.75) :
 theorem conditional_full (ABC : Prop) (hABC : ABC) : FullConjecture :=
   fun _ hα => granville_1998_conditional ABC hABC hα
 
-/-! ## Basic Properties of Squarefree Numbers -/
+/- ## Basic Properties of Squarefree Numbers -/
 
 /-- The squarefree sequence is strictly increasing. -/
 theorem squarefreeSeq_strictMono : StrictMono squarefreeSeq :=
@@ -135,7 +135,7 @@ theorem squarefreeGap_pos (n : ℕ) : 0 < squarefreeGap n := by
   unfold squarefreeGap
   exact Nat.sub_pos_of_lt (squarefreeSeq_lt_succ n)
 
-/-! ## Connection to Gap Distribution -/
+/- ## Connection to Gap Distribution -/
 
 /-- The average gap between squarefree numbers up to x is approximately
     π²/6, since the density of squarefrees is 6/π². -/

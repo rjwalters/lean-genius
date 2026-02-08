@@ -36,7 +36,85 @@
       "k ≥ 4 case remains OPEN"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-140-density-of-3",
+      "title": "Erdős Problem #140: Density of 3-AP-Free Sets",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Erdős Problem #140: Density of 3-AP-Free Sets"
+    },
+    {
+      "id": "3-term-arithmetic-progressions",
+      "title": "/- ## 3-term Arithmetic Progressions -/",
+      "startLine": 33,
+      "endLine": 45,
+      "summary": "/- ## 3-term Arithmetic Progressions -/"
+    },
+    {
+      "id": "the-roth-number-r-n",
+      "title": "/- ## The Roth Number r₃(N) -/",
+      "startLine": 46,
+      "endLine": 78,
+      "summary": "/- ## The Roth Number r₃(N) -/"
+    },
+    {
+      "id": "historical-upper-bounds",
+      "title": "/- ## Historical Upper Bounds -/",
+      "startLine": 79,
+      "endLine": 111,
+      "summary": "/- ## Historical Upper Bounds -/"
+    },
+    {
+      "id": "the-kelley-meka-theorem",
+      "title": "/- ## The Kelley-Meka Theorem -/",
+      "startLine": 112,
+      "endLine": 128,
+      "summary": "/- ## The Kelley-Meka Theorem -/"
+    },
+    {
+      "id": "consequences-and-corollaries",
+      "title": "/- ## Consequences and Corollaries -/",
+      "startLine": 129,
+      "endLine": 150,
+      "summary": "/- ## Consequences and Corollaries -/"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "/- ## Lower Bounds -/",
+      "startLine": 151,
+      "endLine": 162,
+      "summary": "/- ## Lower Bounds -/"
+    },
+    {
+      "id": "examples-of-3-ap-free-sets",
+      "title": "/- ## Examples of 3-AP-Free Sets -/",
+      "startLine": 163,
+      "endLine": 183,
+      "summary": "/- ## Examples of 3-AP-Free Sets -/"
+    },
+    {
+      "id": "the-greedy-3-ap-free-sequence",
+      "title": "/- ## The Greedy 3-AP-Free Sequence -/",
+      "startLine": 184,
+      "endLine": 196,
+      "summary": "/- ## The Greedy 3-AP-Free Sequence -/"
+    },
+    {
+      "id": "k-term-ap-generalization",
+      "title": "/- ## k-term AP Generalization -/",
+      "startLine": 197,
+      "endLine": 240,
+      "summary": "/- ## k-term AP Generalization -/"
+    },
+    {
+      "id": "summary",
+      "title": "/- ## Summary",
+      "startLine": 241,
+      "endLine": 267,
+      "summary": "/- ## Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #140 is SOLVED (Kelley-Meka 2023). The maximum size of a 3-AP-free subset of {1,...,N} satisfies r₃(N) = O(N/(log N)^C) for all C > 0. This 70-year problem from Roth's 1953 breakthrough was resolved with a novel spectral approach.",
     "implications": "The Kelley-Meka theorem is a major breakthrough in additive combinatorics. It essentially determines the order of r₃(N) up to the gap with Behrend's lower bound. The techniques may apply to other Ramsey-type problems.",

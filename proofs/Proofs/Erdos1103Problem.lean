@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 1103: Squarefree Sumsets
 
 Let `A` be an infinite sequence of positive integers such that every element of
@@ -25,7 +25,7 @@ import Mathlib.Tactic
 
 open Finset Filter
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- `SquarefreeSumset A` holds when every element of `A + A` is squarefree,
 i.e., for all `a, b ∈ A`, `a + b` is squarefree. -/
@@ -40,7 +40,7 @@ axiom enumSet : Set ℕ → ℕ → ℕ
 axiom enumSet_spec (A : Set ℕ) (hA : A.Infinite) :
     StrictMono (enumSet A) ∧ Set.range (enumSet A) = A
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 1103: Does every infinite `A ⊆ ℕ` with `SquarefreeSumset A`
 grow at least exponentially? That is, does there exist `C > 1` such that
@@ -50,7 +50,7 @@ def ErdosProblem1103 : Prop :=
       ∃ (C : ℝ), 1 < C ∧ ∀ᶠ j in atTop,
         C ^ (j : ℝ) ≤ (enumSet A j : ℝ)
 
-/-! ## Known bounds -/
+/- ## Known bounds -/
 
 /-- van Doorn–Tao upper bound: there exists an infinite squarefree-sumset
 sequence with `a_j < exp(5j / log j)` for large `j`. -/
@@ -72,7 +72,7 @@ axiom konyagin_finite_bound :
       (∀ a ∈ A, ∀ b ∈ A, Squarefree (a + b)) →
         (A.card : ℝ) ≤ C * (N : ℝ) ^ (11/15 : ℝ)
 
-/-! ## Basic properties -/
+/- ## Basic properties -/
 
 /-- Every singleton set has a squarefree sumset iff `2a` is squarefree. -/
 axiom squarefreeSumset_singleton (a : ℕ) :

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 380: Bad Intervals and Greatest Prime Factors
 
 An interval `[u, v]` is "bad" if the greatest prime factor of `∏{u ≤ m ≤ v} m`
@@ -19,7 +19,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
-/-! ## Greatest prime factor -/
+/- ## Greatest prime factor -/
 
 /-- The greatest prime factor of `n`. Returns 0 for `n ≤ 1`. -/
 axiom greatestPrimeFactor : ℕ → ℕ
@@ -36,7 +36,7 @@ axiom gpf_dvd (n : ℕ) (hn : 2 ≤ n) :
 axiom gpf_largest (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) (hd : p ∣ n) :
     p ≤ greatestPrimeFactor n
 
-/-! ## Bad intervals -/
+/- ## Bad intervals -/
 
 /-- An interval `[u, v]` is bad if the greatest prime factor of the
 product `u * (u+1) * ⋯ * v` occurs with exponent ≥ 2. -/
@@ -50,7 +50,7 @@ with `[u, v]` bad. -/
 def InBadInterval (n : ℕ) : Prop :=
     ∃ (u v : ℕ), u ≤ n ∧ n ≤ v ∧ IsBadInterval u v
 
-/-! ## Counting functions -/
+/- ## Counting functions -/
 
 /-- `B(x)`: count of integers `n ≤ x` in some bad interval. -/
 noncomputable def badCount (x : ℕ) : ℕ :=
@@ -61,7 +61,7 @@ noncomputable def gpfSquareCount (x : ℕ) : ℕ :=
     ((Finset.Icc 2 x).filter
       (fun n => greatestPrimeFactor n ^ 2 ∣ n)).card
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 380: `B(x) ~ #{n ≤ x : P(n)² | n}`.
 Formally: the ratio tends to 1. -/
@@ -71,7 +71,7 @@ def ErdosProblem380 : Prop :=
         0 < gpfSquareCount x ∧
           |(badCount x : ℚ) / (gpfSquareCount x : ℚ) - 1| < ε
 
-/-! ## Known bounds -/
+/- ## Known bounds -/
 
 /-- Erdős–Graham: `B(x) > x^{1-o(1)}`, meaning `B(x)` is large. -/
 axiom erdos_graham_lower :
@@ -87,7 +87,7 @@ axiom gpfSquare_asymptotic :
         ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x →
           (x : ℚ) ^ (1 - ε) ≤ (gpfSquareCount x : ℚ)
 
-/-! ## Bad intervals and primes -/
+/- ## Bad intervals and primes -/
 
 /-- Bad intervals cannot contain primes (since a prime `p` in `[u,v]`
 would make `p` the greatest prime factor, appearing exactly once in

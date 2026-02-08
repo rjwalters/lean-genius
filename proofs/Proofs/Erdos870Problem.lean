@@ -36,7 +36,7 @@ open Real
 
 namespace Erdos870
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -94,7 +94,7 @@ A set A contains a minimal basis if there exists B ⊆ A that is a minimal basis
 def ContainsMinimalBasis (A : AdditiveSet) (k : ℕ) : Prop :=
   ∃ B : AdditiveSet, B ⊆ A ∧ IsMinimalBasis B k
 
-/-!
+/-
 ## Part II: Representation Growth Conditions
 -/
 
@@ -113,7 +113,7 @@ def SatisfiesENCondition (A : AdditiveSet) : Prop :=
   ∃ n₀ : ℕ, ∀ n ≥ n₀,
     (representationCount A 2 n : ℝ) > (Real.log (4/3))⁻¹ * Real.log n
 
-/-!
+/-
 ## Part III: Known Results
 -/
 
@@ -143,7 +143,7 @@ axiom en_condition_from_log_growth (A : AdditiveSet) (c : ℝ) :
     HasLogarithmicGrowth A 2 c →
     SatisfiesENCondition A
 
-/-!
+/-
 ## Part IV: The Main Conjecture
 -/
 
@@ -172,7 +172,7 @@ The conjecture remains unresolved for k ≥ 3.
 axiom conjecture_is_open : ¬∃ (b : Bool),
   (b = true → FullConjecture) ∧ (b = false → ¬FullConjecture)
 
-/-!
+/-
 ## Part V: Partial Results and Special Cases
 -/
 
@@ -215,7 +215,7 @@ def KthPowers (k : ℕ) : AdditiveSet := {n : ℕ | ∃ m : ℕ, n = m^k}
 axiom waring_theorem (k : ℕ) (hk : k ≥ 1) :
     ∃ g : ℕ, IsAdditiveBasis (KthPowers k) g
 
-/-!
+/-
 ## Part VI: Structural Properties
 -/
 
@@ -248,7 +248,7 @@ axiom threshold_phenomenon (A : AdditiveSet) (k : ℕ) (hk : k ≥ 2) :
     (ContainsMinimalBasis A k ∨
      ∃ B : AdditiveSet, B ⊆ A ∧ IsAdditiveBasis B k ∧ ¬∃ c, HasLogarithmicGrowth B k c)
 
-/-!
+/-
 ## Part VII: Connections to Other Problems
 -/
 
@@ -277,7 +277,7 @@ A Sidon set has r₂(n) ≤ 1 for sums of two distinct elements.
 axiom sidon_controlled_reps (A : AdditiveSet) :
     IsSidonSet A → ∀ n : ℕ, representationCount A 2 n ≤ n
 
-/-!
+/-
 ## Part VIII: Summary
 
 **Erdős Problem #870: OPEN**

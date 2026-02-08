@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 588,
     "erdosUrl": "https://erdosproblems.com/588",
     "erdosProblemStatus": "open",
@@ -26,9 +26,21 @@
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      {"theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic"},
-      {"theorem": "Real.log", "description": "Natural logarithm", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"},
-      {"theorem": "Filter.Tendsto", "description": "Limit definition", "module": "Mathlib.Order.Filter.Basic"}
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
     ],
     "originalContributions": [
       "Point, Line: geometric primitives",
@@ -46,9 +58,21 @@
       "szemeredi_trotter: incidence theorem"
     ],
     "references": [
-      {"key": "Ka63", "citation": "Kárteszi, F., Sylvester egy tételéről és Erdős egy sejtéséről, Mat. Lapok (1963)", "type": "paper"},
-      {"key": "Gr76", "citation": "Grünbaum, B., New views on old questions of combinatorial geometry, Colloquio Internazionale (1976)", "type": "paper"},
-      {"key": "SoSt13", "citation": "Solymosi, J. and Stojaković, M., Many collinear k-tuples with no k+1 collinear points, DCG (2013)", "type": "paper"}
+      {
+        "key": "Ka63",
+        "citation": "Kárteszi, F., Sylvester egy tételéről és Erdős egy sejtéséről, Mat. Lapok (1963)",
+        "type": "paper"
+      },
+      {
+        "key": "Gr76",
+        "citation": "Grünbaum, B., New views on old questions of combinatorial geometry, Colloquio Internazionale (1976)",
+        "type": "paper"
+      },
+      {
+        "key": "SoSt13",
+        "citation": "Solymosi, J. and Stojaković, M., Many collinear k-tuples with no k+1 collinear points, DCG (2013)",
+        "type": "paper"
+      }
     ]
   },
   "overview": {
@@ -65,15 +89,69 @@
     ]
   },
   "sections": [
-    {"id": "geometry", "title": "Point Configurations and Lines", "summary": "Point, Line, OnLine, Collinear", "startLine": 43, "endLine": 63},
-    {"id": "general-position", "title": "General Position", "summary": "InKGeneralPosition, In4GeneralPosition", "startLine": 65, "endLine": 79},
-    {"id": "k-rich", "title": "k-Rich Lines", "summary": "IsKRich, kRichLines, f_k", "startLine": 81, "endLine": 114},
-    {"id": "known-results", "title": "Known Results", "summary": "Sylvester, Kárteszi, Grünbaum, Solymosi-Stojaković", "startLine": 116, "endLine": 146},
-    {"id": "conjecture", "title": "The Erdős Conjecture", "summary": "erdos_588_conjecture, limit form", "startLine": 148, "endLine": 168},
-    {"id": "trivial-bounds", "title": "Trivial Bounds", "summary": "Upper O(n²), Lower Ω(n)", "startLine": 170, "endLine": 181},
-    {"id": "k4-case", "title": "Special Case k=4", "summary": "problem_101 connection", "startLine": 183, "endLine": 194},
-    {"id": "connections", "title": "Connections to Incidence Geometry", "summary": "Szemerédi-Trotter theorem", "startLine": 196, "endLine": 211},
-    {"id": "summary", "title": "Summary", "summary": "Status and open nature", "startLine": 213, "endLine": 249}
+    {
+      "id": "geometry",
+      "title": "Point Configurations and Lines",
+      "summary": "Point, Line, OnLine, Collinear",
+      "startLine": 43,
+      "endLine": 63
+    },
+    {
+      "id": "general-position",
+      "title": "General Position",
+      "summary": "InKGeneralPosition, In4GeneralPosition",
+      "startLine": 65,
+      "endLine": 79
+    },
+    {
+      "id": "k-rich",
+      "title": "k-Rich Lines",
+      "summary": "IsKRich, kRichLines, f_k",
+      "startLine": 81,
+      "endLine": 114
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "Sylvester, Kárteszi, Grünbaum, Solymosi-Stojaković",
+      "startLine": 116,
+      "endLine": 146
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "erdos_588_conjecture, limit form",
+      "startLine": 148,
+      "endLine": 168
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "summary": "Upper O(n²), Lower Ω(n)",
+      "startLine": 170,
+      "endLine": 181
+    },
+    {
+      "id": "k4-case",
+      "title": "Special Case k=4",
+      "summary": "problem_101 connection",
+      "startLine": 183,
+      "endLine": 194
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Incidence Geometry",
+      "summary": "Szemerédi-Trotter theorem",
+      "startLine": 196,
+      "endLine": 211
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Status and open nature",
+      "startLine": 213,
+      "endLine": 249
+    }
   ],
   "conclusion": {
     "summary": "Erdős Problem #588 asks whether f_k(n) = o(n²) for k ≥ 4, where f_k(n) counts k-rich lines for n points with no k+1 collinear. The conjecture is OPEN. The best lower bound (Solymosi-Stojaković 2013) is n^{2-o(1)}, tantalizingly close to n² but not quite there. The $100 prize remains unclaimed.",

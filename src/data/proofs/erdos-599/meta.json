@@ -52,8 +52,7 @@
       "ErdosMengerConjecture: formal statement",
       "MengersTheorem: finite case statement",
       "aharoni_berger_theorem: main result axiom",
-      "IsKLinked: k-linkage definition",
-      "vertexConnectivity: connectivity definition"
+      "IsKLinked: k-linkage definition"
     ]
   },
   "overview": {
@@ -68,7 +67,57 @@
       "**28 Years Open:** Conjecture remained open from 1981 to 2009"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Problem statement, history, and references"
+    },
+    {
+      "id": "graph-defs",
+      "title": "Graph Definitions",
+      "startLine": 37,
+      "endLine": 85,
+      "summary": "Graph, independent set, path, disjointness definitions"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Menger Conjecture",
+      "startLine": 87,
+      "endLine": 118,
+      "summary": "Path family, transversal, separator, and the formal conjecture statement"
+    },
+    {
+      "id": "finite-case",
+      "title": "Menger's Theorem (Finite Case)",
+      "startLine": 120,
+      "endLine": 135,
+      "summary": "Classical finite Menger's theorem statement"
+    },
+    {
+      "id": "main-result",
+      "title": "Aharoni-Berger Theorem",
+      "startLine": 137,
+      "endLine": 156,
+      "summary": "The main result: infinite Erdős-Menger conjecture proved"
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations and Related Results",
+      "startLine": 158,
+      "endLine": 210,
+      "summary": "k-linkage, max-flow min-cut, König connection, Ramsey theory"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 212,
+      "endLine": 245,
+      "summary": "Final theorem and problem status"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #599 (the Erdős-Menger Conjecture) asks whether Menger's theorem extends to infinite graphs. Aharoni and Berger proved the answer is YES in 2009, using infinite matroid theory. This resolved a conjecture that had been open for almost 30 years and represents a major advance in infinite combinatorics.",
     "implications": "**Connections**\n\n1. **Menger's Theorem:** Direct generalization to infinite graphs\n\n2. **Max-Flow Min-Cut:** Extends the duality to infinite setting\n\n3. **Infinite Matroid Theory:** Proof technique with broader applications\n\n4. **König's Theorem:** Menger generalizes König for paths",

@@ -4,7 +4,7 @@ import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Lattice
 
-/-!
+/-
 # Erdős Problem 1077: Balanced Subgraphs in Dense Graphs
 
 ## What This Proves
@@ -48,7 +48,7 @@ namespace Erdos1077
 
 open SimpleGraph
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A graph is D-balanced if the ratio of any two vertex degrees is at most D.
     This captures the notion of being "almost regular" up to a factor of D. -/
@@ -71,7 +71,7 @@ def IsBalanced' {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (D : ℕ) : Prop :=
   maxDegree G ≤ D * minDegree G
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- Every 1-balanced graph is regular (all degrees equal) -/
 theorem one_balanced_iff_regular {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
@@ -87,7 +87,7 @@ theorem one_balanced_iff_regular {V : Type*} [Fintype V] [Nonempty V] [Decidable
   · intro h
     simp [h]
 
-/-! ## The Original Question (Erdős-Simonovits 1970)
+/- ## The Original Question (Erdős-Simonovits 1970)
 
 The original question asked: if G has n vertices and at least n^{1+α} edges,
 must G contain a D-balanced subgraph on m > n^{1-α} vertices with at least
@@ -100,7 +100,7 @@ This formulation has issues:
 The correct question is: what is the optimal size m of the guaranteed
 D-balanced subgraph? -/
 
-/-! ## The Resolution (Jiang-Longbrake 2025)
+/- ## The Resolution (Jiang-Longbrake 2025)
 
 The correct answer is m ≈ n^α vertices:
 - Upper bound: Complete bipartite graphs K_{n^α, n^{1-α}} show we can't do better
@@ -141,7 +141,7 @@ theorem erdos_1077_resolution :
     True := by
   trivial
 
-/-! ## Notes on the Problem Statement
+/- ## Notes on the Problem Statement
 
 The erdosproblems.com entry notes significant confusion in the original
 formulation from [ErSi70]. The key clarifications:

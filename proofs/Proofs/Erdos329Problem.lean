@@ -36,7 +36,7 @@ namespace Erdos329
 
 open Set Filter
 
-/-! ## Sidon Sets (B₂ Sequences) -/
+/- ## Sidon Sets (B₂ Sequences) -/
 
 /--
 A set A is a **Sidon set** (or B₂ sequence) if all pairwise sums are distinct.
@@ -48,7 +48,7 @@ def IsSidon (A : Set ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
     a ≤ b → c ≤ d → a + b = c + d → (a = c ∧ b = d)
 
-/-! ## Density Measures -/
+/- ## Density Measures -/
 
 /--
 The partial density of a set A up to N, normalized by √N instead of N.
@@ -64,7 +64,7 @@ This is the quantity whose supremum we seek.
 noncomputable def sidonUpperDensity (A : Set ℕ) : ℝ :=
   limsup (fun N => sqrtPartialDensity A N) atTop
 
-/-! ## Perfect Difference Sets -/
+/- ## Perfect Difference Sets -/
 
 /--
 A set D is a **perfect difference set** of order n if |D| = n + 1 and
@@ -77,7 +77,7 @@ def IsPerfectDifferenceSet (D : Set ℕ) (n : ℕ) : Prop :=
   D.ncard = n + 1 ∧ IsSidon D ∧
   ∀ k : ℤ, k ≠ 0 → ∃! (p : ℕ × ℕ), p.1 ∈ D ∧ p.2 ∈ D ∧ (p.1 : ℤ) - p.2 = k
 
-/-! ## The Main Question -/
+/- ## The Main Question -/
 
 /--
 **Erdős Problem #329** (OPEN): What is the supremum of sidonUpperDensity
@@ -89,7 +89,7 @@ The exact value is unknown.
 noncomputable def maxSidonDensity : ℝ :=
   sSup {d | ∃ A : Set ℕ, IsSidon A ∧ sidonUpperDensity A = d}
 
-/-! ## Known Lower Bounds -/
+/- ## Known Lower Bounds -/
 
 /--
 **Erdős**: There exists a Sidon set with upper density at least 1/2.
@@ -114,7 +114,7 @@ theorem max_density_ge_inv_sqrt2 :
   obtain ⟨A, hA, hd⟩ := kruckeberg_1961
   exact ⟨A, hA, hd.ge⟩
 
-/-! ## Known Upper Bound -/
+/- ## Known Upper Bound -/
 
 /--
 **Erdős-Turán (1941)**: Every Sidon set has upper density at most 1.
@@ -135,7 +135,7 @@ theorem max_density_le_one :
   rw [← hd]
   exact erdos_turan_upper_bound A hSidon
 
-/-! ## Connection to Perfect Difference Sets -/
+/- ## Connection to Perfect Difference Sets -/
 
 /--
 **Conditional Result**: If every finite Sidon set can be embedded in a
@@ -155,7 +155,7 @@ axiom density_one_implies_embedding :
     (∀ A : Finset ℕ, IsSidon ↑A → ∃ D : Set ℕ, ∃ n : ℕ,
       ↑A ⊆ D ∧ IsPerfectDifferenceSet D n)
 
-/-! ## Basic Examples -/
+/- ## Basic Examples -/
 
 /-- The empty set is trivially Sidon. -/
 theorem empty_is_sidon : IsSidon ∅ := by
@@ -172,7 +172,7 @@ theorem singleton_is_sidon (n : ℕ) : IsSidon {n} := by
 /-- The set {1, 2, 5, 10} is a Sidon set (all 6 pairwise sums are distinct). -/
 axiom sidon_example_1_2_5_10 : IsSidon ({1, 2, 5, 10} : Set ℕ)
 
-/-! ## Verified Computations -/
+/- ## Verified Computations -/
 
 /-- 1 + 2 = 3 -/
 example : (1 : ℕ) + 2 = 3 := by native_decide
@@ -192,9 +192,9 @@ example : (2 : ℕ) + 10 = 12 := by native_decide
 /-- 5 + 10 = 15 -/
 example : (5 : ℕ) + 10 = 15 := by native_decide
 
-/-! All 6 sums {3, 6, 7, 11, 12, 15} are distinct, as verified above. -/
+/- All 6 sums {3, 6, 7, 11, 12, 15} are distinct, as verified above. -/
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #329** Summary:
 

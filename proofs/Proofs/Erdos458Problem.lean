@@ -31,7 +31,7 @@ namespace Erdos458
 
 open Nat Finset BigOperators
 
-/-! ## The LCM Function -/
+/- ## The LCM Function -/
 
 /--
 **lcm_upto n** is the least common multiple of {1, 2, ..., n}.
@@ -43,7 +43,7 @@ This is a fundamental arithmetic function with deep connections to:
 -/
 def lcm_upto (n : ℕ) : ℕ := (Finset.Icc 1 n).lcm id
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- lcm_upto 1 = 1 -/
 theorem lcm_upto_one : lcm_upto 1 = 1 := by
@@ -74,7 +74,7 @@ theorem lcm_upto_five : lcm_upto 5 = 60 := by native_decide
 /-- Small values: lcm(1,...,6) = 60 (6 = 2·3, already covered) -/
 theorem lcm_upto_six : lcm_upto 6 = 60 := by native_decide
 
-/-! ## Growth Properties -/
+/- ## Growth Properties -/
 
 /-- lcm_upto is monotone in the divisibility order -/
 theorem lcm_upto_dvd_mono {m n : ℕ} (hmn : m ≤ n) : lcm_upto m ∣ lcm_upto n := by
@@ -90,7 +90,7 @@ axiom lcm_upto_prime_step (p : ℕ) (hp : p.Prime) (n : ℕ) (hn : p ≤ n) (hnp
 axiom lcm_upto_at_prime (p : ℕ) (hp : p.Prime) :
     lcm_upto p = p * lcm_upto (p - 1)
 
-/-! ## The nth Prime -/
+/- ## The nth Prime -/
 
 /-- p_k denotes the k-th prime (0-indexed: p_0 = 2, p_1 = 3, etc.) -/
 noncomputable def nthPrime (k : ℕ) : ℕ := Nat.nth Nat.Prime k
@@ -115,7 +115,7 @@ theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime :=
 theorem nthPrime_strictMono : StrictMono nthPrime := fun _ _ hij =>
   Nat.nth_strictMono Nat.infinite_setOf_prime hij
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /--
 **Erdős Problem #458 (OPEN)**:
@@ -134,7 +134,7 @@ def Erdos458Conjecture : Prop :=
   ∀ k : ℕ, k ≥ 1 →
     lcm_upto (nthPrime (k + 1) - 1) < nthPrime k * lcm_upto (nthPrime k)
 
-/-! ## Why This is Hard -/
+/- ## Why This is Hard -/
 
 /--
 **Obstacle 1**: We need to control primes q with p_k < q² < p_{k+1}.
@@ -157,7 +157,7 @@ axiom legendre_implies_gap_bound :
     LegendreConjecture →
     ∀ k : ℕ, k ≥ 1 → nthPrime (k + 1) - nthPrime k < (nthPrime k).sqrt + 1
 
-/-! ## Verified Small Cases -/
+/- ## Verified Small Cases -/
 
 /-- The conjecture holds for k = 1: lcm(1,2,3,4) < 3 · lcm(1,2,3)
     p_1 = 3, p_2 = 5, lcm(1,2,3,4) = 12 < 3 · 6 = 18 ✓ -/
@@ -167,7 +167,7 @@ theorem erdos458_k1 : lcm_upto 4 < 3 * lcm_upto 3 := by native_decide
     p_2 = 5, p_3 = 7, lcm(1,...,6) = 60 < 5 · 60 = 300 ✓ -/
 theorem erdos458_k2 : lcm_upto 6 < 5 * lcm_upto 5 := by native_decide
 
-/-! ## Asymptotic Perspective -/
+/- ## Asymptotic Perspective -/
 
 /--
 **Chebyshev's Result**: log(lcm_upto n) ~ n as n → ∞

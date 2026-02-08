@@ -40,7 +40,7 @@ open Filter Set Real
 
 attribute [local instance] Classical.dec Classical.decPred
 
-/-! ## Part I: Representation Counting -/
+/- ## Part I: Representation Counting -/
 
 /-- Count of ways to write n as a + b with a ≤ b and a, b ∈ A. -/
 noncomputable def repCount (A : Set ℕ) (n : ℕ) : ℕ :=
@@ -62,7 +62,7 @@ def sumset (A : Set ℕ) : Set ℕ :=
 def nonUniqueSums (A : Set ℕ) : Set ℕ :=
   sumset A \ uniqueSums A
 
-/-! ## Part II: Counting Functions -/
+/- ## Part II: Counting Functions -/
 
 /-- Count of non-unique sums in {1, ..., N}. -/
 noncomputable def nonUniqueCount (A : Set ℕ) (N : ℕ) : ℕ :=
@@ -76,7 +76,7 @@ noncomputable def multiRepCount (A : Set ℕ) (N : ℕ) : ℕ :=
 noncomputable def missingCount (A : Set ℕ) (N : ℕ) : ℕ :=
   Set.ncard ((Set.Icc 1 N) \ sumset A)
 
-/-! ## Part III: Sidon Sets (B₂ Sequences) -/
+/- ## Part III: Sidon Sets (B₂ Sequences) -/
 
 /-- A Sidon set (B₂ sequence): all pairwise sums are distinct.
     Equivalently: a + b = c + d with a ≤ b and c ≤ d implies (a,b) = (c,d). -/
@@ -117,7 +117,7 @@ axiom sidon_size_bound :
   ∀ A : Set ℕ, IsSidon A → ∀ N : ℕ,
     Set.ncard (A ∩ Set.Icc 1 N) ≤ 2 * Nat.sqrt N
 
-/-! ## Part IV: The Main Questions -/
+/- ## Part IV: The Main Questions -/
 
 /-- **Erdős Problem #14a**
 
@@ -142,7 +142,7 @@ def erdos_14b : Prop :=
   ∃ A : Set ℕ,
     Tendsto (fun N => (nonUniqueCount A N : ℝ) / Real.sqrt N) atTop (nhds 0)
 
-/-! ### Relationship Between 14a and 14b
+/- ### Relationship Between 14a and 14b
 
 **Important Formalization Note:**
 
@@ -212,7 +212,7 @@ theorem omega_sqrt_implies_not_little_o :
       _ = C / 2 := by field_simp
   linarith
 
-/-! ## Part V: Known Constructions -/
+/- ## Part V: Known Constructions -/
 
 /-- Erdős's construction: there exists A with U(N) << N^{1/2+ε}. -/
 axiom erdos_upper_construction :
@@ -231,7 +231,7 @@ axiom erdos_freud_finite :
   ∀ N : ℕ, ∃ A : Set ℕ, A ⊆ Set.Icc 1 N ∧
     (nonUniqueCount A N : ℝ) < 2^(3/2 : ℝ) * Real.sqrt N
 
-/-! ## Part VI: Examples -/
+/- ## Part VI: Examples -/
 
 /-- The empty set has no representations. -/
 theorem empty_repCount (n : ℕ) : repCount ∅ n = 0 := by
@@ -299,7 +299,7 @@ theorem consecutive_many_nonunique (n : ℕ) (hn : n ≥ 3) :
            · exact hfin
          _ = 2 := by simp [hne]
 
-/-! ## Part VII: Perfect Sidon Sets -/
+/- ## Part VII: Perfect Sidon Sets -/
 
 /-- A set is a perfect Sidon set up to N if it's Sidon and its sumset
     covers many integers up to 2N. -/

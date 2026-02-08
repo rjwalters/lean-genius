@@ -27,7 +27,7 @@ namespace Erdos627
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-! ## Basic Graph Parameters -/
+/- ## Basic Graph Parameters -/
 
 /-- The clique number ω(G) = size of largest clique -/
 noncomputable def cliqueNumber (G : SimpleGraph V) : ℕ :=
@@ -45,7 +45,7 @@ def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
 def ContainsClique (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ S : Finset V, S.card = k ∧ ∀ v w : V, v ∈ S → w ∈ S → v ≠ w → G.Adj v w
 
-/-! ## The Ratio χ/ω -/
+/- ## The Ratio χ/ω -/
 
 /-- The ratio χ(G)/ω(G) -/
 noncomputable def chiOmegaRatio (G : SimpleGraph V) : ℝ :=
@@ -61,7 +61,7 @@ theorem ratio_ge_one (G : SimpleGraph V) (hω : cliqueNumber G > 0) :
     chiOmegaRatio G ≥ 1 := by
   sorry
 
-/-! ## The Function f(n) -/
+/- ## The Function f(n) -/
 
 /-- f(n) = maximum χ/ω ratio over all n-vertex graphs -/
 noncomputable def f (n : ℕ) : ℝ :=
@@ -75,7 +75,7 @@ theorem f_ge_one (n : ℕ) (hn : n ≥ 1) : f n ≥ 1 := by
 theorem f_monotone : Monotone f := by
   sorry
 
-/-! ## Tutte-Zykov Construction -/
+/- ## Tutte-Zykov Construction -/
 
 /-- Tutte and Zykov: ω = 2 graphs can have arbitrarily large χ -/
 axiom tutte_zykov_construction :
@@ -97,7 +97,7 @@ theorem triangle_free_large_chi :
     fun v w x h => by sorry, -- ω = 2 implies triangle-free
     hχ⟩
 
-/-! ## Erdős's Asymptotic Bounds -/
+/- ## Erdős's Asymptotic Bounds -/
 
 /-- The normalized function -/
 noncomputable def fNormalized (n : ℕ) : ℝ :=
@@ -127,7 +127,7 @@ theorem f_normalized_bounded :
   specialize h n hn
   constructor <;> sorry
 
-/-! ## The Main Question: Limit Existence -/
+/- ## The Main Question: Limit Existence -/
 
 /-- Main Question: Does the limit exist? -/
 def LimitExists : Prop :=
@@ -147,7 +147,7 @@ theorem limit_bounds_numerical :
     limitLowerBound < limitUpperBound := by
   sorry
 
-/-! ## Connection to Perfect Graphs -/
+/- ## Connection to Perfect Graphs -/
 
 /-- A graph is perfect if χ(H) = ω(H) for all induced subgraphs H -/
 def IsPerfect (G : SimpleGraph V) : Prop :=
@@ -167,7 +167,7 @@ axiom strong_perfect_graph_theorem :
         ¬∃ S : Finset V, S.card = k ∧
           (∀ v w : V, v ∈ S → w ∈ S → v ≠ w → (G.Adj v w ↔ sorry))) -- Odd hole/antihole free
 
-/-! ## Ramsey Theory Connection -/
+/- ## Ramsey Theory Connection -/
 
 /-- The Ramsey number R(k,k) -/
 noncomputable def ramseyNumber (k : ℕ) : ℕ :=
@@ -182,7 +182,7 @@ theorem f_ramsey_lower_bound (k : ℕ) (hk : k ≥ 2) :
 axiom ramsey_upper_bound :
   ∀ k : ℕ, k ≥ 2 → ramseyNumber k ≤ 4^k
 
-/-! ## Explicit Constructions -/
+/- ## Explicit Constructions -/
 
 /-- The Mycielski construction: χ increases, ω stays at 2 -/
 noncomputable def mycielskiGraph : ℕ → (Σ V : Type*, SimpleGraph V) :=
@@ -203,7 +203,7 @@ axiom lovasz_kneser :
   ∀ n k : ℕ, n ≥ 2*k →
     chromaticNumber (kneserGraph n k) = n - 2*k + 2
 
-/-! ## Growth Rate Analysis -/
+/- ## Growth Rate Analysis -/
 
 /-- The growth rate of f(n) -/
 theorem f_growth_rate :
@@ -221,7 +221,7 @@ theorem ratio_bounded :
         f n * (Real.log n)^2 / n ≤ c₂ := by
   sorry
 
-/-! ## Main Problem Status -/
+/- ## Main Problem Status -/
 
 /-- Erdős Problem #627: OPEN
 

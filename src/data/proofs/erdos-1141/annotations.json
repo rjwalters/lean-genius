@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1141-header",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1141, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1141: Coprime-Square Subtraction Primes\n\nAre there infinitely many n such that n - k² is prime for all k\nwith gcd(n, k) = 1 and k² < n?\n\nKnown results:\n- The known values satisfying this are: 3, 4, 6, 8, 12, 14, 18, 20,\n  24, 30, 32, 38, 42, 48, 54, 60, 62, 68, 72, 80, 84, 90, 98, 108,\n  110, 132, 138, 140, 150, 180, 182, 198, 252, 318, 360, 398, 468,\n  570, 572, 930, 1722 (OEIS A214583)\n- No further terms exist below 10^10\n- ChatGPT-Tang proved the count in [1,N] is O(N^{1/2+o(1)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1141-IsErdos1141Good",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 31,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "Iserdos1141Good",
+    "content": "def IsErdos1141Good",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1141-isErdos1141Good_iff_unbounded",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 35,
+      "endLine": 43
+    },
+    "type": "theorem",
+    "title": "Iserdos1141Good Iff Unbounded",
+    "content": "/-- Equivalent unbounded formulation (for mathematical statements). -/",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1141-good_3",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 48,
+      "endLine": 48
+    },
+    "type": "theorem",
+    "title": "Good 3",
+    "content": "/-- n = 3 satisfies the property: only k=1 qualifies, and 3 - 1 = 2 is prime. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_4",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 51,
+      "endLine": 51
+    },
+    "type": "theorem",
+    "title": "Good 4",
+    "content": "/-- n = 4 satisfies the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_6",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 54,
+      "endLine": 54
+    },
+    "type": "theorem",
+    "title": "Good 6",
+    "content": "/-- n = 6 satisfies the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_8",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 57,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "Good 8",
+    "content": "/-- n = 8 satisfies the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_12",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 60,
+      "endLine": 60
+    },
+    "type": "theorem",
+    "title": "Good 12",
+    "content": "/-- n = 12 satisfies the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_14",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 63,
+      "endLine": 63
+    },
+    "type": "theorem",
+    "title": "Good 14",
+    "content": "/-- n = 14 satisfies the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_18",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 66,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "Good 18",
+    "content": "/-- n = 18 satisfies the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_20",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 69,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "Good 20",
+    "content": "/-- n = 20 satisfies the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-not_good_5",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 74,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "Not Good 5",
+    "content": "/-- n = 5 does not satisfy the property: k=2, gcd(5,2)=1, 5-4=1 not prime. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-not_good_7",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 77,
+      "endLine": 77
+    },
+    "type": "theorem",
+    "title": "Not Good 7",
+    "content": "/-- n = 7 does not satisfy the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-not_good_9",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 80,
+      "endLine": 80
+    },
+    "type": "theorem",
+    "title": "Not Good 9",
+    "content": "/-- n = 9 does not satisfy the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-not_good_10",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 83,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "Not Good 10",
+    "content": "/-- n = 10 does not satisfy the property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-not_good_16",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 86,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Not Good 16",
+    "content": "/-- n = 16 does not satisfy the property: 16-1=15 not prime. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_0",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 91,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "Good 0",
+    "content": "/-- n = 0 trivially satisfies the property (vacuously true). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-not_good_1",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 96,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "Not Good 1",
+    "content": "theorem not_good_1",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-not_good_2",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 99,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Not Good 2",
+    "content": "/-- n = 2 does not satisfy the property: k=1, gcd(2,1)=1, 2-1=1 not prime. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1141-good_implies_pred_prime",
+    "proofId": "erdos-1141",
+    "range": {
+      "startLine": 102,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "Good Implies Pred Prime",
+    "content": "/-- If n ≥ 2 is good, then n - 1 is prime (taking k = 1, gcd(n,1) = 1). -/",
+    "significance": "key"
+  }
+]

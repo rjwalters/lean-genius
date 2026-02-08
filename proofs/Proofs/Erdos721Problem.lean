@@ -41,7 +41,7 @@ open Real
 
 namespace Erdos721
 
-/-! ## Part I: Van der Waerden Numbers -/
+/- ## Part I: Van der Waerden Numbers -/
 
 /--
 **The off-diagonal van der Waerden number W(3,k):**
@@ -59,7 +59,7 @@ axiom W_ge (k : ℕ) : k ≥ 3 → W k ≥ k
 /-- W(3,k) is monotone increasing: more colors need more numbers. -/
 axiom W_increasing : ∀ k₁ k₂ : ℕ, k₁ ≤ k₂ → W k₁ ≤ W k₂
 
-/-! ## Part II: Known Small Values -/
+/- ## Part II: Known Small Values -/
 
 /--
 **Known exact values:**
@@ -73,7 +73,7 @@ axiom W_known_values :
     W 6 = 32 ∧
     W 7 = 46
 
-/-! ## Part III: Graham's Conjecture (Disproved) -/
+/- ## Part III: Graham's Conjecture (Disproved) -/
 
 /--
 **Graham's conjecture:**
@@ -89,7 +89,7 @@ grows faster than any polynomial in k.
 -/
 axiom graham_conjecture_false : ¬graham_conjecture
 
-/-! ## Part IV: Lower Bounds -/
+/- ## Part IV: Lower Bounds -/
 
 /--
 **Green's lower bound (2022):**
@@ -119,7 +119,7 @@ faster than any polynomial.
 axiom W_superpolynomial :
     ∀ d : ℕ, ∃ N : ℕ, ∀ k ≥ N, (W k : ℝ) > k^(d : ℝ)
 
-/-! ## Part V: Upper Bounds -/
+/- ## Part V: Upper Bounds -/
 
 /--
 **Schoen's upper bound (2021):**
@@ -141,7 +141,7 @@ axiom bloom_sisask_upper_bound :
     ∃ C : ℝ, C > 0 ∧
     ∀ k ≥ 3, (W k : ℝ) ≤ exp (C * (log k)^9)
 
-/-! ## Part VI: Connection to 3-AP Free Sets -/
+/- ## Part VI: Connection to 3-AP Free Sets -/
 
 /--
 **Roth density bound:**
@@ -182,7 +182,7 @@ axiom kelley_meka_density :
       (∀ a d : ℕ, d > 0 → a ∈ S → (a + d) ∈ S → (a + 2 * d) ∉ S) →
       (S.card : ℝ) ≤ n * exp (-c * (log n)^(1/12 : ℝ))
 
-/-! ## Part VII: The Growth Rate Question -/
+/- ## Part VII: The Growth Rate Question -/
 
 /--
 **Open question: Exact growth rate.**
@@ -208,7 +208,7 @@ axiom bounds_gap_width :
       exp (c * (log k)^2 / log (log k)) ≤ W k ∧
       (W k : ℝ) ≤ exp (C * (log k)^9)
 
-/-! ## Part VIII: Related Problems -/
+/- ## Part VIII: Related Problems -/
 
 /--
 **Szemerédi's theorem (1975):**
@@ -230,7 +230,7 @@ but they are far from the believed truth.
 axiom diagonal_growth (k : ℕ) (hk : k ≥ 3) :
     ∃ W_kk : ℕ, W_kk ≥ k -- W(k,k) exists and grows
 
-/-! ## Part IX: Summary -/
+/- ## Part IX: Summary -/
 
 /--
 **Erdős Problem #721 Summary:**

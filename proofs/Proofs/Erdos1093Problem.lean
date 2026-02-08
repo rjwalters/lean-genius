@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1093: Deficiency of Binomial Coefficients
 
 For n ≥ 2k, the deficiency of C(n,k) counts how many of n, n-1, ..., n-k+1
@@ -20,7 +20,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Smooth Numbers
 -/
 
@@ -28,7 +28,7 @@ import Mathlib.Tactic
 def IsKSmooth (k m : ℕ) : Prop :=
   ∀ p : ℕ, p.Prime → p ∣ m → p ≤ k
 
-/-!
+/-
 ## Section II: Deficiency
 -/
 
@@ -41,7 +41,7 @@ def NoSmallPrimeFactors (n k : ℕ) : Prop :=
 noncomputable def deficiency (n k : ℕ) : ℕ :=
   Finset.card (Finset.filter (fun i => IsKSmooth k (n - i)) (Finset.range k))
 
-/-!
+/-
 ## Section III: The Conjectures
 -/
 
@@ -63,7 +63,7 @@ def ErdosProblem1093ii : Prop :=
 def ErdosProblem1093 : Prop :=
   ErdosProblem1093i ∧ ErdosProblem1093ii
 
-/-!
+/-
 ## Section IV: Known Examples
 -/
 
@@ -77,7 +77,7 @@ axiom deficiency_13_4 : deficiency 13 4 = 1
 /-- C(284,28) has the highest known deficiency: 9. -/
 axiom deficiency_284_28 : deficiency 284 28 = 9
 
-/-!
+/-
 ## Section V: Upper Bound
 -/
 
@@ -93,7 +93,7 @@ axiom many_deficiency_one_examples :
     (fun p : ℕ × ℕ => 2 * p.1 ≤ p.2 ∧ deficiency p.2 p.1 = 1)
     (Finset.range 100 ×ˢ Finset.range 100001))
 
-/-!
+/-
 ## Section VI: Structural Properties
 -/
 

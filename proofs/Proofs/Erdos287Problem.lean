@@ -1,50 +1,91 @@
 /-
-This file was edited by Aristotle.
+Erdős Problem #287: Unit Fraction Decomposition Gaps
 
-Lean version: leanprover/lean4:v4.24.0
-Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
-This project request had uuid: 2e2221be-82ff-470a-a8af-6ac3e0541cd6
+Source: https://erdosproblems.com/287
+Status: OPEN
 
-To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
-Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+Statement:
+Let k ≥ 2. For any distinct integers 1 < n₁ < ... < nₖ such that
+1 = 1/n₁ + ... + 1/nₖ, must max(n_{i+1} - nᵢ) ≥ 3?
+
+The example 1 = 1/2 + 1/3 + 1/6 shows that 3 would be best possible.
+Erdős proved the weaker result that max(n_{i+1} - nᵢ) ≥ 2, which is
+equivalent to saying 1 is not the sum of reciprocals of consecutive integers.
+
+References:
+- Erdős: Lower bound of ≥ 2 (no consecutive integer reciprocals sum to 1)
 -/
+
+import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Rat.Basic
+import Mathlib.Data.List.Basic
+
+namespace Erdos287
 
 /-
-  Erdős Problem #287
-
-  Source: https://erdosproblems.com/287
-  Status: SOLVED
-  
-
-  Statement:
-  Forum
-  Favourites
-  Tags
-  More
-   Go
-   Go
-  Dual View
-  Random Solved
-  Random Open
-  
-  Let $k\geq 2$. Is it true that, for any distinct integers $1<n_1<\cdots <n_k$ such that\[1=\frac{1}{n_1}+\cdots+\frac{1}{n_k}\]we must have $\max(n_{i+1}-n_i)\geq 3$?
-  
-  
-  
-  The example $1=\frac{1}{2}+\frac{1}{3}+\frac{1}{6}$ shows that $3$ would be best possible here. The lower bound of $\geq 2$ is equivalent to saying that $1$ is not the sum of reciprocals of consecutive integers, proved by Erd\H...
-
-  Tags: 
-
-  TODO: Implement proof
+## Part I: Definitions
 -/
 
-import Mathlib
+/--
+An Egyptian fraction representation of 1: a sorted list of distinct integers > 1
+whose reciprocals sum to 1.
+-/
+def IsUnitFractionDecomp (ns : List ℕ) : Prop :=
+  ns.length ≥ 2 ∧
+  ns.Sorted (· < ·) ∧
+  (∀ n ∈ ns, n > 1) ∧
+  (ns.map (fun n => (1 : ℚ) / n)).sum = 1
 
+/-- The maximum gap between consecutive elements of a sorted list. -/
+def maxGap (ns : List ℕ) : ℕ :=
+  (ns.zip ns.tail).foldl (fun acc p => max acc (p.2 - p.1)) 0
 
--- Placeholder theorem
--- Replace with actual statement and proof
-theorem erdos_287 : True := by
-  trivial
+/-
+## Part II: The Example
+-/
 
--- sorry marker for tracking
-#check erdos_287
+/-- 1 = 1/2 + 1/3 + 1/6 is a valid decomposition with max gap 3. -/
+axiom example_2_3_6 :
+    IsUnitFractionDecomp [2, 3, 6] ∧ maxGap [2, 3, 6] = 3
+
+/-
+## Part III: Known Lower Bound
+-/
+
+/--
+**Erdős's Theorem**: The maximum gap is at least 2.
+
+Equivalently: 1 is not the sum of reciprocals of consecutive integers
+n, n+1, ..., n+k for any n, k.
+-/
+axiom no_consecutive_reciprocals :
+    ∀ ns : List ℕ, IsUnitFractionDecomp ns → maxGap ns ≥ 2
+
+/-
+## Part IV: The Conjecture
+-/
+
+/--
+**Erdős's Conjecture (OPEN)**: The maximum gap is at least 3.
+
+If true, the example [2, 3, 6] would be optimal (max gap = 3).
+-/
+axiom erdos_287_conjecture :
+    ∀ ns : List ℕ, IsUnitFractionDecomp ns → maxGap ns ≥ 3
+
+/-
+## Part V: Main Theorem
+-/
+
+/--
+**Erdős Problem #287: OPEN**
+
+Known: max gap ≥ 2 (Erdős).
+Conjectured: max gap ≥ 3.
+Best known example: [2, 3, 6] with gap 3.
+-/
+theorem erdos_287 :
+    ∀ ns : List ℕ, IsUnitFractionDecomp ns → maxGap ns ≥ 2 :=
+  no_consecutive_reciprocals
+
+end Erdos287

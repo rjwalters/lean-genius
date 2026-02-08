@@ -247,10 +247,9 @@ def GeneralizedConjecture : Prop :=
           (H.edgeFinset.card : ℝ) ≥ c * (n : ℝ)^aₖ * 2^n →
           HasC2k H k
 
-/--
+/-
 **This generalization remains open:**
 -/
-axiom generalized_conjecture_open : True
 
 /-
 ## Part IX: Related Results

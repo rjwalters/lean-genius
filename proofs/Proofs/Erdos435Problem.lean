@@ -137,11 +137,10 @@ example : ¬IsPrimePower 6 := by
 -/
 axiom frobenius_6 : frobeniusBinomial 6 = 49
 
-/--
+/-
 **n = 10 Example:**
 10 = 2 · 5, so contributions from p=2 and p=5.
 -/
-axiom frobenius_10 : True  -- Computed value from OEIS A389479
 
 /-
 ## Part V: Why Prime Powers are Special
@@ -155,12 +154,11 @@ making the representation problem degenerate.
 axiom prime_power_degenerate (n : ℕ) (hPP : IsPrimePower n) :
     True  -- The formula doesn't apply to prime powers
 
-/--
+/-
 **Lucas' Theorem Connection:**
 The divisibility of binomial coefficients by primes (Lucas' theorem)
 is key to understanding which numbers are representable.
 -/
-axiom lucas_connection : True
 
 /-
 ## Part VI: Structure of Representable Set
@@ -197,17 +195,15 @@ This is the 2-generator case.
 axiom classical_frobenius (a b : ℕ) (ha : a > 0) (hb : b > 0) (hcop : Nat.Coprime a b) :
     True  -- Sylvester-Frobenius formula
 
-/--
+/-
 **Sylvester-Denumerant:**
 The number of representations is related to denumerants (partition counting).
 -/
-axiom sylvester_connection : True
 
-/--
+/-
 **OEIS A389479:**
 The sequence of Frobenius numbers for this problem is catalogued.
 -/
-axiom oeis_sequence : True
 
 /-
 ## Part VIII: Main Results

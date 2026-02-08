@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #341: Dickson's Sum-Free Extension
 
 Given a finite set A = {a₁ < ⋯ < aₖ} of positive integers, extend to an
@@ -24,7 +24,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The set of pairwise sums from a finite set of naturals:
     {aᵢ + aⱼ : aᵢ, aⱼ ∈ S, i ≤ j}. -/
@@ -52,7 +52,7 @@ noncomputable def dicksonDiff (A₀ : Finset ℕ) (n : ℕ) : ℕ :=
 def IsEventuallyPeriodic (f : ℕ → ℕ) (p N : ℕ) : Prop :=
   p ≥ 1 ∧ ∀ n : ℕ, n ≥ N → f (n + p) = f n
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős–Dickson Conjecture**: For every finite starting set A₀,
     the difference sequence d(n) = a_{n+1} − aₙ is eventually periodic. -/
@@ -60,7 +60,7 @@ axiom erdos_341_conjecture :
   ∀ A₀ : Finset ℕ, A₀.Nonempty →
     ∃ p N : ℕ, IsEventuallyPeriodic (dicksonDiff A₀) p N
 
-/-! ## Structural Properties -/
+/- ## Structural Properties -/
 
 /-- The sequence is strictly increasing: a_{n+1} > aₙ. -/
 axiom dickson_strictly_increasing :
@@ -86,7 +86,7 @@ axiom dickson_minimal :
     dicksonSeq A₀ n < m → m < dicksonSeq A₀ (n + 1) →
     IsSumRepresentable (Finset.range (n + 1) |>.image (dicksonSeq A₀)) m
 
-/-! ## Examples -/
+/- ## Examples -/
 
 /-- Starting from {1}: the sequence is 1, 2, 4, 8, 16, ...
     (powers of 2, differences all 2^k − 2^{k-1} = 2^{k-1},

@@ -28,7 +28,7 @@ open Nat Set Finset BigOperators
 
 namespace Erdos376
 
-/-!
+/-
 ## Core Definitions
 
 The central binomial coefficient C(2n,n) and coprimality conditions.
@@ -44,7 +44,7 @@ def Is105Good (n : ℕ) : Prop := n.centralBinom.Coprime 105
 /-- The set of all 105-good integers. -/
 def GoodSet105 : Set ℕ := {n | Is105Good n}
 
-/-!
+/-
 ## Connection to Digit Representations
 
 By Kummer's theorem, C(2n,n) coprime to p requires n to have restricted digits.
@@ -69,7 +69,7 @@ axiom kummer_theorem (m k p : ℕ) (hp : p.Prime) :
 axiom centralBinom_coprime_iff_small_digits (n p : ℕ) (hp : p.Prime) (hp2 : 2 < p) :
     n.centralBinom.Coprime p ↔ HasSmallDigits n p
 
-/-!
+/-
 ## Specific Conditions for 105 = 3 × 5 × 7
 
 For C(2n,n) coprime to 105, n must satisfy digit constraints in three bases.
@@ -95,7 +95,7 @@ axiom coprime_5_digits (n : ℕ) :
 axiom coprime_7_digits (n : ℕ) :
     n.centralBinom.Coprime 7 ↔ ∀ d ∈ n.digits 7, d ≤ 3
 
-/-!
+/-
 ## The EGRS Theorem (1975)
 
 For any TWO odd primes, infinitely many n have C(2n,n) coprime to their product.
@@ -126,7 +126,7 @@ theorem infinitely_coprime_35 : {n : ℕ | n.centralBinom.Coprime 35}.Infinite :
   rw [h35]
   exact egrs_theorem 5 7 Nat.prime_five Nat.prime_seven (by decide) (by decide)
 
-/-!
+/-
 ## Main Conjecture (OPEN)
 
 The question for three primes remains open!
@@ -144,7 +144,7 @@ axiom erdos_376_conjecture :
 axiom erdos_376_positive_answer :
     {n : ℕ | n.centralBinom.Coprime 105}.Infinite
 
-/-!
+/-
 ## Known 105-Good Integers
 
 We verify specific small values of n that are 105-good.
@@ -169,7 +169,7 @@ theorem four_not_good : ¬Is105Good 4 := by
 These are n where C(2n,n) has no factors of 3, 5, or 7. -/
 axiom small_good_values : ({1} : Set ℕ) ⊆ GoodSet105
 
-/-!
+/-
 ## Density Considerations
 
 The set of 105-good integers is expected to be sparse but infinite.
@@ -186,7 +186,7 @@ axiom density_decreases_with_primes :
     ∀ P : Finset ℕ, (∀ p ∈ P, Nat.Prime p ∧ 2 < p) → P.card = k →
     ∃ d : ℝ, d ≥ c^k ∧ d > 0
 
-/-!
+/-
 ## Connection to Digit Sequences
 
 The problem is equivalent to finding n with simultaneously restricted digits
@@ -216,7 +216,7 @@ axiom intersection_question :
     (Base3Good ∩ Base5Good ∩ Base7Good).Infinite ↔
     {n : ℕ | n.centralBinom.Coprime 105}.Infinite
 
-/-!
+/-
 ## Historical Context
 
 The study of prime factors of central binomial coefficients has a rich history.
@@ -231,7 +231,7 @@ axiom infinitely_many_divisible (p : ℕ) (hp : p.Prime) :
 /-- C(2n,n) is always even for n ≥ 1. -/
 axiom centralBinom_even (n : ℕ) (hn : 1 ≤ n) : 2 ∣ n.centralBinom
 
-/-!
+/-
 ## Generalizations
 
 Erdős asked about other products of primes beyond 105.

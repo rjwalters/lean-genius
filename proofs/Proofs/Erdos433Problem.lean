@@ -227,12 +227,11 @@ axiom extremal_set_structure (k n : ℕ) (hk : 2 ≤ k) (hkn : k < n) :
     ∃ A : Finset ℕ, A ⊆ Finset.Icc (n - k + 1) n ∧ A.card = k ∧
       IsCoprime A ∧ G(A) = g k n
 
-/--
+/-
 **Why Large Elements Maximize G(A):**
 If all elements of A are near n, then their linear combinations
 leave more gaps, maximizing the Frobenius number.
 -/
-axiom large_elements_maximize : True
 
 /-
 ## Part VIII: Connection to Classical Frobenius Problem
@@ -257,12 +256,11 @@ theorem schur_bound (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) (hcop : Nat.Coprim
   rw [sylvester_frobenius a b ha hb hcop]
   omega
 
-/--
+/-
 **Frobenius for 3 generators:**
 No closed formula exists for G({a, b, c}), but bounds are known.
 Ramirez Alfonsin showed the problem is NP-hard in general.
 -/
-axiom three_generators_np_hard : True
 
 /-
 ## Part IX: Counting Gaps

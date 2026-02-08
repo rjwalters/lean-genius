@@ -63,7 +63,7 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
-CLAIMS_DIR="$REPO_ROOT/research/stub-claims"
+CLAIMS_DIR="$REPO_ROOT/.lean/state/stub-claims"
 WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
@@ -100,7 +100,7 @@ Options:
   -h, --help   Show this help message
 
 Standard cleanup:
-  - Stale claims (expired TTL in research/stub-claims/)
+  - Stale claims (expired TTL in .lean/state/stub-claims/)
   - Orphaned lock directories
   - Stop signals (.loom/signals/stop-*)
 

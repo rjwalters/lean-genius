@@ -33,14 +33,14 @@ open Set
 
 namespace Erdos212
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A subset S of ℝ² has **rational distances** if all pairwise
     distances between distinct points are rational. -/
 def HasRationalDistances (S : Set (ℝ × ℝ)) : Prop :=
   S.Pairwise fun p₁ p₂ => ∃ q : ℚ, dist p₁ p₂ = q
 
-/-! ## The Erdős-Ulam Problem -/
+/- ## The Erdős-Ulam Problem -/
 
 /--
 **Erdős Problem #212 (OPEN)**: Is there a dense subset of ℝ² such that
@@ -57,7 +57,7 @@ def Erdos212Conjecture : Prop :=
 theorem erdos_212_classical : Erdos212Conjecture ∨ ¬Erdos212Conjecture :=
   Classical.em _
 
-/-! ## Conditional Result: Bombieri-Lang Implies Answer is NO -/
+/- ## Conditional Result: Bombieri-Lang Implies Answer is NO -/
 
 /--
 **The Bombieri-Lang Conjecture** (roughly stated):
@@ -80,7 +80,7 @@ Reference: Shaffaf (2018), Discrete Comput. Geom.
 axiom tao_shaffaf_conditional :
     BombieriLangConjecture → Erdos212Conjecture
 
-/-! ## Unconditional Results -/
+/- ## Unconditional Results -/
 
 /-- A **real algebraic curve** in ℝ² is a set defined by polynomial equations. -/
 def IsRealAlgebraicCurve (C : Set (ℝ × ℝ)) : Prop :=
@@ -112,7 +112,7 @@ axiom solymosi_de_zeeuw :
       ∀ S : Set (ℝ × ℝ), S ⊆ C → HasRationalDistances S →
         S.Finite ∨ (∃ line : Set (ℝ × ℝ), line ⊆ C) ∨ (∃ circle : Set (ℝ × ℝ), circle ⊆ C)
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /--
 **Summary of Erdős Problem #212**:

@@ -6,39 +6,84 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1103",
+    "date": "c. 1970s",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1103Problem.lean",
-    "tags": ["number-theory", "squarefree", "sumsets", "growth-rates"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "sumsets",
+      "growth-rates",
+      "additive-combinatorics"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 1103,
     "erdosUrl": "https://erdosproblems.com/1103",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {"theorem": "Squarefree", "description": "Predicate for squarefree natural numbers", "module": "Mathlib.Data.Nat.Squarefree"},
+      {"theorem": "squarefree_one", "description": "1 is squarefree", "module": "Mathlib.Data.Nat.Squarefree"},
+      {"theorem": "StrictMono", "description": "Strict monotonicity for set enumeration", "module": "Mathlib.Order.Monotone.Basic"}
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős asked how fast an infinite sequence must grow if all pairwise sums are squarefree. He doubted polynomial growth could suffice. van Doorn and Tao (2025) established both upper and lower bounds, showing the growth rate is between polynomial (j^{4/3}) and subexponential (exp(5j/log j)). Konyagin provided finite-set bounds.",
+    "historicalContext": "Erdős posed this problem in the context of understanding how multiplicative constraints (squarefreeness) restrict additive structure (sumsets). A number n is squarefree if no prime square p² divides it — equivalently, its prime factorization has all exponents ≤ 1. The density of squarefree numbers is 6/π² ≈ 0.608, but requiring ALL pairwise sums to be squarefree is extremely restrictive. Van Doorn and Tao (2025) made significant progress, proving a polynomial lower bound a_j > 0.24·j^{4/3} and constructing sequences achieving subexponential growth a_j < exp(5j/log j). Konyagin provided complementary finite-set bounds: |A ∩ [1,N]| ≤ C·N^{11/15}. The central question — whether exponential growth is truly necessary — remains open.",
     "problemStatement": "Let A be an infinite set of positive integers such that a + b is squarefree for all a, b ∈ A. Must A grow at least exponentially?",
-    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, axiomatize an increasing enumeration enumSet, and state the conjecture as exponential lower bound on enumSet. Known bounds by van Doorn–Tao and Konyagin are stated as axioms.",
+    "proofStrategy": "We define SquarefreeSumset as the condition that all pairwise sums are squarefree, axiomatize an increasing enumeration enumSet, and state the conjecture as exponential lower bound on enumSet. Known bounds by van Doorn–Tao and Konyagin are stated as axioms. Basic properties (empty set, subsets, singletons) are proved.",
     "keyInsights": [
-      "The squarefree sumset condition links additive combinatorics to multiplicative number theory",
-      "van Doorn–Tao's polynomial lower bound j^{4/3} falls short of the conjectured exponential growth",
-      "The upper bound exp(5j/log j) shows subexponential growth is achievable",
-      "Konyagin's finite-set bound |A| ≪ N^{11/15} provides complementary information"
+      "The squarefree sumset condition links additive combinatorics to multiplicative number theory: a + b must avoid all p² for every pair, creating a global constraint from local divisibility conditions",
+      "Van Doorn–Tao's polynomial lower bound a_j > 0.24·j^{4/3} rules out slow polynomial growth but leaves a wide gap to the conjectured exponential growth",
+      "The upper bound exp(5j/log j) is subexponential — such sequences exist, so exponential growth is not the only option. The question is whether true exponential growth (C^j for C > 1) is unavoidable",
+      "Konyagin's finite-set bound |A| ≤ C·N^{11/15} connects to sieve methods: the exponent 11/15 comes from bounding the number of integers in [1,N] avoiding squares in their sumset via large sieve techniques",
+      "The formalization axiomatizes enumSet as a strictly monotone surjection onto A — this is the standard way to discuss growth rates of infinite sets in Lean, avoiding constructive issues with well-ordering"
     ]
   },
   "sections": [
-    { "id": "definitions", "title": "Definitions", "startLine": 28, "endLine": 41, "summary": "Defines SquarefreeSumset and axiomatizes enumSet as the increasing enumeration of A." },
-    { "id": "conjecture", "title": "Main Conjecture", "startLine": 43, "endLine": 51, "summary": "ErdosProblem1103: every infinite squarefree-sumset sequence grows at least exponentially." },
-    { "id": "bounds", "title": "Known Bounds", "startLine": 53, "endLine": 73, "summary": "States van Doorn–Tao upper/lower bounds and Konyagin's finite-set bound." },
-    { "id": "basic", "title": "Basic Properties", "startLine": 75, "endLine": 95, "summary": "Singleton characterization, empty set, subset monotonicity, and squarefree_one." }
+    {
+      "id": "header",
+      "title": "Introduction and Known Results",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module documentation: states Erdős Problem 1103 on squarefree sumsets, known results by van Doorn–Tao (upper/lower bounds) and Konyagin (finite case), and reference to erdosproblems.com."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 41,
+      "summary": "Defines SquarefreeSumset A as ∀ a b ∈ A, Squarefree(a+b). Axiomatizes enumSet as a strictly monotone function with range equal to A, providing an increasing enumeration."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 43,
+      "endLine": 51,
+      "summary": "ErdosProblem1103: for every infinite A with SquarefreeSumset, ∃ C > 1 such that eventually C^j ≤ a_j. Uses Filter.atTop for the 'eventually' quantifier."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 53,
+      "endLine": 73,
+      "summary": "Three axiomatized results: (1) van Doorn–Tao upper bound — existence of sequence with a_j < exp(5j/log j), (2) van Doorn–Tao lower bound — a_j > 0.24·j^{4/3} for all squarefree-sumset sequences, (3) Konyagin finite bound — |A ∩ [1,N]| ≤ C·N^{11/15}."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 75,
+      "endLine": 92,
+      "summary": "Four basic results: singleton characterization (SquarefreeSumset {a} ↔ Squarefree(2a)), empty set is trivially squarefree-sumset, subset monotonicity, and 1 is squarefree. Two proved, two axiomatized."
+    }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 1103 on squarefree sumsets with the main conjecture and known bounds by van Doorn–Tao and Konyagin. 0 sorries.",
-    "implications": "Resolving whether exponential growth is necessary would illuminate the interaction between additive structure and multiplicative constraints in number theory.",
+    "summary": "The formalization captures Erdős Problem 1103 on squarefree sumsets with the main conjecture and known bounds by van Doorn–Tao and Konyagin. All 0 sorries — the open conjecture is stated as a definition (Prop), and deep results are axiomatized.",
+    "implications": "Resolving whether exponential growth is necessary would illuminate the fundamental interaction between additive structure and multiplicative constraints in number theory, with connections to sieve methods, the distribution of squarefree numbers, and the geometry of numbers.",
     "openQuestions": [
-      "Is exponential growth necessary for infinite squarefree-sumset sequences?",
-      "Can the polynomial lower bound j^{4/3} be improved toward exponential?",
-      "What is the exact growth rate threshold?"
+      "Is exponential growth necessary for infinite squarefree-sumset sequences, or can subexponential constructions like exp(j/log j) be improved to polynomial?",
+      "Can the polynomial lower bound j^{4/3} be improved toward exponential via refined sieve estimates?",
+      "What is the exact growth threshold — is there a sharp transition between possible and impossible growth rates?"
     ]
   }
 }

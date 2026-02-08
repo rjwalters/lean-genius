@@ -31,7 +31,7 @@ open Finset
 
 namespace Erdos958
 
-/-!
+/-
 ## Part I: Points and Distances
 -/
 
@@ -46,7 +46,7 @@ Using Euclidean distance from Mathlib.
 -/
 noncomputable def dist (p q : Point) : ℝ := ‖p - q‖
 
-/-!
+/-
 ## Part II: Distance Sets and Multiplicities
 -/
 
@@ -71,7 +71,7 @@ The multiset of all multiplicities {f(d₁), f(d₂), ..., f(dₖ)}.
 noncomputable def multiplicityMultiset (A : Finset Point) : Multiset ℕ :=
   (distanceSet A).val.map (multiplicity A)
 
-/-!
+/-
 ## Part III: Special Configurations
 -/
 
@@ -102,7 +102,7 @@ Equidistant points on a line OR circle.
 def isStandardConfig (A : Finset Point) : Prop :=
   ∃ n : ℕ, isEquidistantLine A n ∨ isEquidistantCircle A n
 
-/-!
+/-
 ## Part IV: The Conjectured Characterization
 -/
 
@@ -126,7 +126,7 @@ def OriginalConjecture : Prop :=
   ∀ A : Finset Point, A.card ≥ 3 →
     (hasSpecialPattern A ↔ isStandardConfig A)
 
-/-!
+/-
 ## Part V: The Counterexample
 -/
 
@@ -170,7 +170,7 @@ The original conjecture is disproved.
 -/
 axiom conjecture_disproved : ¬OriginalConjecture
 
-/-!
+/-
 ## Part VI: Summary
 -/
 

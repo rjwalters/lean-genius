@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1084: Unit Distances Among Separated Points
 
 Let f_d(n) be the maximum number of pairs at distance exactly 1 among
@@ -13,6 +13,14 @@ n points in ℝ^d with all pairwise distances ≥ 1. Estimate f_d(n).
   upper bound by Bezdek–Reid 2013)
 - General: (d - o(1))n ≤ f_d(n) ≤ 2^{O(d)} · n
 
+## Proved Theorems
+
+- `unit_distance_1d_triangle`: In ℝ, if two points are both at unit
+  distance from a third, with all pairwise distances ≥ 1, the two
+  points are distance 2 apart (on opposite sides).
+- `unit_distance_1d_degree_at_most_two`: A point in ℝ has at most
+  2 neighbors at unit distance among mutually separated points.
+
 ## References
 
 - Erdős (1946, 1975)
@@ -26,7 +34,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A configuration of n points in ℝ^d where all pairwise distances are ≥ 1. -/
 structure SeparatedConfig (d n : ℕ) where
@@ -44,18 +52,102 @@ noncomputable def unitDistPairs {d n : ℕ} (C : SeparatedConfig d n) : ℕ :=
     points in ℝ^d. -/
 axiom maxUnitDistPairs (d n : ℕ) : ℕ
 
-/-! ## One-Dimensional Case -/
+/- ## One-Dimensional Case: Working in ℝ Directly
 
-/-- f_1(n) = n - 1: on the line, separated points at consecutive
-    unit intervals give n-1 unit pairs, and this is optimal. -/
+For the 1D case, we work with real numbers directly instead of
+EuclideanSpace ℝ (Fin 1), since |x - y| is more natural than
+dist in EuclideanSpace for 1D proofs.
+-/
+
+/-- A separated configuration on the real line. -/
+structure SeparatedConfig1D (n : ℕ) where
+  points : Fin n → ℝ
+  separated : ∀ i j : Fin n, i ≠ j →
+    |points i - points j| ≥ 1
+
+/-- Unit-distance pairs in a 1D configuration. -/
+noncomputable def unitDistPairs1D {n : ℕ} (C : SeparatedConfig1D n) : ℕ :=
+  (Finset.filter
+    (fun p : Fin n × Fin n => p.1 < p.2 ∧ |C.points p.1 - C.points p.2| = 1)
+    Finset.univ).card
+
+/- ### Key 1D Lemma: Unit-Distance Triangle -/
+
+/-- In ℝ, if two points y, z are both at unit distance from x,
+    with all pairwise distances ≥ 1, then y and z are at distance 2
+    (on opposite sides of x). -/
+theorem unit_distance_1d_triangle (x y z : ℝ)
+    (hxy : |x - y| = 1) (hxz : |x - z| = 1)
+    (hyz : |y - z| ≥ 1) : |y - z| = 2 := by
+  have hxy' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxy
+  have hxz' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxz
+  rcases hxy' with hxy' | hxy' <;> rcases hxz' with hxz' | hxz'
+  · have : y = z := by linarith
+    rw [this] at hyz; simp at hyz
+  · have : y - z = -2 := by linarith
+    rw [this]; norm_num
+  · have : y - z = 2 := by linarith
+    rw [this]; norm_num
+  · have : y = z := by linarith
+    rw [this] at hyz; simp at hyz
+
+/-- In ℝ, a point can have at most 2 unit-distance neighbors among
+    mutually separated points. If x has three unit neighbors y, z, w
+    with all pairwise distances ≥ 1, we reach a contradiction.
+
+    Proof: |x-y| = |x-z| = |x-w| = 1 means each of y,z,w is x+1 or x-1.
+    By pigeonhole, two must be equal, contradicting separation ≥ 1. -/
+theorem unit_distance_1d_degree_at_most_two (x y z w : ℝ)
+    (hxy : |x - y| = 1) (hxz : |x - z| = 1) (hxw : |x - w| = 1)
+    (hyz : |y - z| ≥ 1) (hyw : |y - w| ≥ 1) (hzw : |z - w| ≥ 1) :
+    False := by
+  have hxy' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxy
+  have hxz' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxz
+  have hxw' := (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hxw
+  -- Each of y, z, w is x+1 or x-1 (two values, three variables → pigeonhole)
+  rcases hxy' with hxy' | hxy' <;> rcases hxz' with hxz' | hxz' <;>
+    rcases hxw' with hxw' | hxw'
+  -- In each case, two variables are equal, so their separation is 0, not ≥ 1
+  · have heq : y = z := by linarith
+    subst heq; simp at hyz
+  · have heq : y = z := by linarith
+    subst heq; simp at hyz
+  · have heq : y = w := by linarith
+    subst heq; simp at hyw
+  · have heq : z = w := by linarith
+    subst heq; simp at hzw
+  · have heq : z = w := by linarith
+    subst heq; simp at hzw
+  · have heq : y = w := by linarith
+    subst heq; simp at hyw
+  · have heq : y = z := by linarith
+    subst heq; simp at hyz
+  · have heq : y = z := by linarith
+    subst heq; simp at hyz
+
+/- ### 1D Bounds -/
+
+/-- For a 1D separated config, the number of unit-distance pairs
+    is at most n - 1. (Upper bound for f_1(n).)
+
+    Proof sketch: Each point has at most 2 unit neighbors (one on
+    each side). The unit-distance graph is a union of paths, hence
+    a forest with at most n-1 edges. -/
+axiom f1_upper_bound (n : ℕ) (hn : n ≥ 1) (C : SeparatedConfig1D n) :
+  unitDistPairs1D C ≤ n - 1
+
+/-- The consecutive integer configuration achieves n-1 unit pairs.
+    Place points at 0, 1, 2, ..., n-1. -/
+axiom f1_achievable (n : ℕ) (hn : n ≥ 1) :
+  ∃ C : SeparatedConfig1D n, unitDistPairs1D C = n - 1
+
+/-- f_1(n) = n - 1 -/
 axiom f1_exact (n : ℕ) (hn : n ≥ 1) :
   maxUnitDistPairs 1 n = n - 1
 
-/-! ## Two-Dimensional Case -/
+/- ## Two-Dimensional Case -/
 
-/-- Erdős's upper bound: f_2(n) < 3n - c√n for some c > 0.
-    The leading coefficient 3 comes from the triangular lattice
-    where each point has at most 6 unit neighbors. -/
+/-- Erdős's upper bound: f_2(n) < 3n - c√n for some c > 0. -/
 axiom f2_upper_erdos :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
     (maxUnitDistPairs 2 n : ℝ) < 3 * n - c * Real.sqrt n
@@ -65,22 +157,17 @@ axiom f2_upper_erdos :
 axiom harborth_exact (n : ℕ) (hn : n ≥ 2) :
   maxUnitDistPairs 2 n = Nat.floor (3 * (n : ℝ) - Real.sqrt (12 * n - 3))
 
-/-- The triangular lattice achieves the maximum: a hexagonal patch
-    of n points in the triangular lattice with unit spacing
-    realizes f_2(n) unit pairs. -/
+/-- The triangular lattice achieves the maximum. -/
 axiom triangular_lattice_optimal (n : ℕ) (hn : n ≥ 2) :
   ∃ C : SeparatedConfig 2 n, unitDistPairs C = maxUnitDistPairs 2 n
 
-/-- Upper bound: f_2(n) < 3n (each point has ≤ 6 unit neighbors
-    in the plane, giving ≤ 6n/2 = 3n pairs). -/
+/-- Upper bound: f_2(n) < 3n (each point has ≤ 6 unit neighbors). -/
 axiom f2_trivial_upper (n : ℕ) (hn : n ≥ 1) :
   maxUnitDistPairs 2 n < 3 * n
 
-/-! ## Three-Dimensional Case -/
+/- ## Three-Dimensional Case -/
 
-/-- Leading coefficient in d=3: f_3(n) ~ 6n.
-    Each point in ℝ³ with pairwise distances ≥ 1 has at most 12
-    unit neighbors (kissing number), giving ≤ 12n/2 = 6n pairs. -/
+/-- Leading coefficient in d=3: f_3(n) ~ 6n. -/
 axiom f3_leading :
   ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
     |(maxUnitDistPairs 3 n : ℝ) / n - 6| < ε
@@ -90,27 +177,22 @@ axiom bezdek_reid_upper :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 2 →
     (maxUnitDistPairs 3 n : ℝ) < 6 * n - c * (n : ℝ) ^ (2/3 : ℝ)
 
-/-- **Erdős conjecture for d=3**: f_3(n) = 6n - Θ(n^{2/3}).
-    Both upper and lower bounds have the n^{2/3} correction. -/
+/-- Erdős conjecture for d=3: f_3(n) = 6n - Θ(n^{2/3}). -/
 axiom erdos_1084_d3_conjecture :
   ∃ c₁ c₂ : ℝ, 0 < c₂ ∧ c₂ ≤ c₁ ∧
     ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
       6 * (n : ℝ) - c₁ * (n : ℝ) ^ (2/3 : ℝ) ≤ (maxUnitDistPairs 3 n : ℝ) ∧
       (maxUnitDistPairs 3 n : ℝ) ≤ 6 * (n : ℝ) - c₂ * (n : ℝ) ^ (2/3 : ℝ)
 
-/-! ## General Dimension -/
+/- ## General Dimension -/
 
-/-- Lower bound: f_d(n) ≥ (d - o(1)) · n.
-    Lattice packings in ℝ^d give configurations where each point
-    has ≈ 2d unit neighbors. -/
+/-- Lower bound: f_d(n) ≥ (d - o(1)) · n. -/
 axiom fd_lower_general :
   ∀ d : ℕ, d ≥ 1 → ∀ ε : ℝ, ε > 0 →
     ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ →
       (maxUnitDistPairs d n : ℝ) ≥ ((d : ℝ) - ε) * n
 
-/-- Upper bound: f_d(n) ≤ 2^{O(d)} · n.
-    The kissing number in dimension d is 2^{O(d)}, bounding the
-    maximum degree in the unit-distance graph. -/
+/-- Upper bound: f_d(n) ≤ 2^{O(d)} · n. -/
 axiom fd_upper_general :
   ∃ C : ℝ, C > 0 ∧ ∀ d : ℕ, d ≥ 1 → ∀ n : ℕ, n ≥ 1 →
     (maxUnitDistPairs d n : ℝ) ≤ (2 : ℝ) ^ (C * d) * n

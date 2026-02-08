@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #136: The Erdős-Gyárfás Function f(n,4,5)
 
 Source: https://erdosproblems.com/136
@@ -48,7 +48,7 @@ open Finset
 
 namespace Erdos136
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -83,7 +83,7 @@ def hasAtLeast5ColorsInEveryK4 {n k : ℕ} (c : EdgeColoring n k) : Prop :=
   ∀ v : Fin 4 → Fin n, Function.Injective v →
     (colorsInK4 c v ‹_›).card ≥ 5
 
-/-!
+/-
 ## Part II: The Erdős-Gyárfás Function
 -/
 
@@ -94,7 +94,7 @@ axiom f_exists (n : ℕ) : ∃ k : ℕ, ∃ c : EdgeColoring n k,
 noncomputable def f (n : ℕ) : ℕ :=
   Nat.find (f_exists n)
 
-/-!
+/-
 ## Part III: Original Bounds
 -/
 
@@ -118,7 +118,7 @@ A concrete computation by Erdős and Gyárfás.
 -/
 axiom f_9 : f 9 = 8
 
-/-!
+/-
 ## Part IV: The Asymptotic Solution
 -/
 
@@ -145,7 +145,7 @@ def AsymptoticResult : Prop :=
 -/
 axiom asymptotic_holds : AsymptoticResult
 
-/-!
+/-
 ## Part V: Why 5/6?
 -/
 
@@ -165,7 +165,7 @@ K₄ has C(4,2) = 6 edges.
 theorem k4_edges : Nat.choose 4 2 = 6 := by norm_num
 
 
-/-!
+/-
 ## Part VI: Related Values
 -/
 
@@ -185,7 +185,7 @@ Adding vertices can only require more colors.
 axiom f_nondecreasing :
     ∀ m n : ℕ, m ≤ n → f m ≤ f n
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

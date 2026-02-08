@@ -26,7 +26,7 @@ find_repo_root() {
 }
 
 REPO_ROOT="$(find_repo_root)"
-COMPLETED_FILE="$REPO_ROOT/research/stub-claims/completed.json"
+COMPLETED_FILE="$REPO_ROOT/.lean/state/stub-claims/completed.json"
 HAS_QUALITY_ISSUES="$REPO_ROOT/scripts/erdos/has-quality-issues.sh"
 DRY_RUN=false
 

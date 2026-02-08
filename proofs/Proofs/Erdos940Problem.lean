@@ -36,7 +36,7 @@ namespace Erdos940
 
 open Filter Finset
 
-/-! ## Part I: r-Powerful Numbers -/
+/- ## Part I: r-Powerful Numbers -/
 
 /-- A number n is r-powerful (or r-full) if every prime p dividing n
     satisfies p^r | n. For r = 2, these are "squarefull" numbers.
@@ -75,7 +75,7 @@ theorem power_isPowerful (r n : ℕ) (hr : r ≥ 1) (hn : n ≥ 1) :
       exact this
     exact Nat.pow_dvd_pow_of_dvd this r
 
-/-! ## Part II: The Set of Sums -/
+/- ## Part II: The Set of Sums -/
 
 /-- The set of natural numbers that can be expressed as the sum of
     at most k r-powerful numbers. -/
@@ -103,7 +103,7 @@ theorem one_mem_SumsOfPowerful (r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1) :
     exact one_isPowerful r hr
   · simp
 
-/-! ## Part III: Natural Density -/
+/- ## Part III: Natural Density -/
 
 /-- The counting function for a set A up to N. -/
 noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
@@ -116,7 +116,7 @@ def HasDensity (A : Set ℕ) (d : ℝ) : Prop :=
 /-- A set has density 0 if |A ∩ [1,N]| = o(N). -/
 def HasDensityZero (A : Set ℕ) : Prop := HasDensity A 0
 
-/-! ## Part IV: The Main Conjecture (OPEN) -/
+/- ## Part IV: The Main Conjecture (OPEN) -/
 
 /-- **Erdős Conjecture #940 (Main Question)**
 
@@ -141,7 +141,7 @@ theorem conjecture_implies_infinite (h : erdos_940_conjecture) :
   -- If density is 0, the complement must be infinite
   sorry
 
-/-! ## Part V: The Squarefull Case (r = 2) -/
+/- ## Part V: The Squarefull Case (r = 2) -/
 
 /-- **Baker-Brüdern Theorem (1994)**
 
@@ -158,7 +158,7 @@ axiom baker_brudern_theorem : HasDensityZero (SumsOfPowerful 2 2)
 theorem squarefull_case : HasDensityZero (SumsOfPowerful 2 2) :=
   baker_brudern_theorem
 
-/-! ## Part VI: Heath-Brown's Representation Theorem -/
+/- ## Part VI: Heath-Brown's Representation Theorem -/
 
 /-- **Heath-Brown's Theorem (1988)**
 
@@ -179,7 +179,7 @@ theorem heath_brown_complement_finite :
     (SumsOfPowerful 2 3)ᶜ.Finite := by
   sorry
 
-/-! ## Part VII: The Cubefull Case and Three Cubes -/
+/- ## Part VII: The Cubefull Case and Three Cubes -/
 
 /-- **Open Problem: Sums of Three Cubes**
 
@@ -202,7 +202,7 @@ theorem cubes_subset_cubefull :
 /-- The r = 3 case (cubefull) of the main conjecture. -/
 def cubefull_conjecture : Prop := HasDensityZero (DiagonalSums 3)
 
-/-! ## Part VIII: The Large Integer Representation Question -/
+/- ## Part VIII: The Large Integer Representation Question -/
 
 /-- **Open Problem: Universal Representation**
 
@@ -222,7 +222,7 @@ def universal_representation_conjecture : Prop :=
 def squarefull_diagonal_conjecture : Prop :=
   ∀ᶠ n in atTop, n ∈ DiagonalSums 2
 
-/-! ## Part IX: Relationship Between the Questions -/
+/- ## Part IX: Relationship Between the Questions -/
 
 /-- Summary of the problem structure:
 
@@ -246,7 +246,7 @@ theorem status_summary :
     (∀ᶠ n in atTop, n ∈ SumsOfPowerful 2 3) := by
   exact ⟨baker_brudern_theorem, heath_brown_theorem⟩
 
-/-! ## Part X: Examples and Computations -/
+/- ## Part X: Examples and Computations -/
 
 /-- 4 = 2² is squarefull. -/
 example : isPowerful 2 4 := by
@@ -279,7 +279,7 @@ example : isPowerful 2 72 := by
         omega
       <;> omega
 
-/-! ## Part XI: Related Problems -/
+/- ## Part XI: Related Problems -/
 
 /-- Problem #941 is about Heath-Brown's result specifically. -/
 def problem_941_related : Prop :=
@@ -295,7 +295,7 @@ def problem_1107_related (r : ℕ) : Prop :=
 
 end Erdos940
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #940 on sums of r-powerful numbers.

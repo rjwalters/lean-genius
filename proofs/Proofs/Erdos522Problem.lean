@@ -36,7 +36,7 @@ namespace Erdos522
 
 open Polynomial Complex BigOperators Filter
 
-/-!
+/-
 ## Littlewood and Rademacher Polynomials
 
 A **Littlewood polynomial** has coefficients in {-1, 0, 1}.
@@ -58,7 +58,7 @@ def IsStrictRademacher (p : ℂ[X]) (n : ℕ) : Prop :=
   (∀ i > n, p.coeff i = 0) ∧
   p.natDegree = n
 
-/-!
+/-
 ## The Unit Disk and Unit Circle
 
 The unit disk is {z ∈ ℂ : ‖z‖ ≤ 1} and the unit circle is {z : ‖z‖ = 1}.
@@ -71,7 +71,7 @@ def unitDisk : Set ℂ := Metric.closedBall 0 1
 /-- The unit circle: {z : ‖z‖ = 1}. -/
 def unitCircle : Set ℂ := Metric.sphere 0 1
 
-/-!
+/-
 ## Basic Properties of the Unit Circle
 
 We verify that standard complex numbers lie on or inside the unit disk.
@@ -104,7 +104,7 @@ theorem unitCircle_subset_unitDisk : unitCircle ⊆ unitDisk := by
   simp only [unitDisk, Metric.mem_closedBall, dist_zero_right]
   linarith
 
-/-!
+/-
 ## Kac Polynomials
 
 In the full probabilistic treatment, a Kac polynomial is a random polynomial
@@ -133,7 +133,7 @@ proof is straightforward but technically tedious.
 axiom KacPolynomialData.isRademacher {n : ℕ} (data : KacPolynomialData n) :
     IsRademacherPolynomial data.toPolynomial
 
-/-!
+/-
 ## Root Counting Function
 
 For a polynomial p, we want to count roots in the unit disk.
@@ -144,7 +144,7 @@ This requires the fundamental theorem of algebra and is complex to formalize.
 This is axiomatized as it requires splitting fields and careful counting. -/
 axiom rootsInUnitDisk : ℂ[X] → ℕ
 
-/-!
+/-
 ## The Main Results
 -/
 
@@ -186,7 +186,7 @@ the sequence R_n(ω)/(n/2) converges to 1.
 This is strictly stronger than convergence in probability.
 -/
 
-/-!
+/-
 ## Heuristic: Why n/2?
 
 For a polynomial of degree n, there are n roots (counted with multiplicity)
@@ -200,7 +200,7 @@ suggests about half should be inside the unit disk:
 The precise statement requires probability theory.
 -/
 
-/-!
+/-
 ## Extreme Cases
 
 The geometric series polynomial 1 + z + z² + ... + zⁿ = (z^{n+1} - 1)/(z - 1)
@@ -215,7 +215,7 @@ noncomputable def geometricPoly (n : ℕ) : ℂ[X] :=
 axiom geometric_roots_on_circle (n : ℕ) (hn : 0 < n) (z : ℂ) :
   (geometricPoly n).eval z = 0 → z ∈ unitCircle
 
-/-!
+/-
 ## Connection to Other Areas
 -/
 
@@ -238,7 +238,7 @@ Jensen's formula relates: log M(p) = log|a_n| + ∑_{|α_i|>1} log|α_i|
 For Littlewood polynomials, bounds on M(p) are related to the "Lehmer problem".
 -/
 
-/-!
+/-
 ## Verified Examples
 -/
 
@@ -254,7 +254,7 @@ theorem roots_of_z2_plus_1 :
     (X ^ 2 + 1 : ℂ[X]).eval (-Complex.I) = 0 := by
   constructor <;> simp [sq, Complex.I_mul_I]
 
-/-!
+/-
 ## Summary
 
 Erdős Problem #522 asks whether R_n/(n/2) → 1 almost surely, where R_n is the

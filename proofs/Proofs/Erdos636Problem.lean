@@ -31,7 +31,7 @@ namespace Erdos636
 
 open Finset Function
 
-/-!
+/-
 ## Part I: Graphs and Basic Definitions
 
 Setup for the problem.
@@ -55,7 +55,7 @@ def NoLargeHomogeneousSet [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (k : ℕ) : Prop :=
   cliqueNumber G ≤ k ∧ independenceNumber G ≤ k
 
-/-!
+/-
 ## Part II: Induced Subgraphs
 
 The central objects we're counting.
@@ -78,7 +78,7 @@ noncomputable def getSignature [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (S : Finset V) : Signature :=
   (S.card, inducedEdgeCount G S)
 
-/-!
+/-
 ## Part III: Counting Distinct Signatures
 
 The quantity the problem asks about.
@@ -99,7 +99,7 @@ def DifferentSignatures [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] (S₁ S₂ : Finset V) : Prop :=
   getSignature G S₁ ≠ getSignature G S₂
 
-/-!
+/-
 ## Part IV: The Ramsey Condition
 
 Graphs with bounded homogeneous sets.
@@ -117,7 +117,7 @@ def IsRamseyGraph (G : SimpleGraph (Fin n)) (C : ℝ) : Prop :=
   cliqueNumber G ≤ Nat.ceil (C * Real.log n) ∧
   independenceNumber G ≤ Nat.ceil (C * Real.log n)
 
-/-!
+/-
 ## Part V: The Erdős-Faudree-Sós Result
 
 The weaker bound they proved.
@@ -132,7 +132,7 @@ axiom erdos_faudree_sos (C : ℝ) (hC : C > 0) :
 /-- The EFS bound is n^(3/2). -/
 def efs_exponent : ℝ := 3/2
 
-/-!
+/-
 ## Part VI: The Kwan-Sudakov Theorem
 
 The optimal bound.
@@ -150,7 +150,7 @@ def ks_exponent : ℝ := 5/2
 /-- The improvement from EFS to KS. -/
 theorem ks_improves_efs : ks_exponent > efs_exponent := by norm_num
 
-/-!
+/-
 ## Part VII: Optimality
 
 The bound n^(5/2) is best possible.
@@ -175,7 +175,7 @@ theorem theta_bound (C : ℝ) (hC : C > 0) :
   obtain ⟨c₂, hc₂_pos, hc₂⟩ := signature_upper_bound C hC
   exact ⟨c₁, c₂, hc₁_pos, hc₂_pos, fun n hn G hG => ⟨hc₁ n hn G hG, hc₂ n hn G hG⟩⟩
 
-/-!
+/-
 ## Part VIII: Proof Techniques
 
 Key ideas in the Kwan-Sudakov proof.
@@ -202,7 +202,7 @@ theorem edge_count_range [DecidableEq V] [Fintype V]
     inducedEdgeCount G S ≤ S.card * (S.card - 1) / 2 := by
   sorry
 
-/-!
+/-
 ## Part IX: Connections to Ramsey Theory
 
 The role of the homogeneity condition.
@@ -231,7 +231,7 @@ axiom ramsey_forces_complexity :
         -- G must have complex local structure
         True
 
-/-!
+/-
 ## Part X: Related Problems
 
 Other questions about induced subgraphs.
@@ -254,7 +254,7 @@ axiom induced_path_count (n k : ℕ) (G : SimpleGraph (Fin n)) :
     -- The number of induced paths of length k
     True
 
-/-!
+/-
 ## Part XI: Main Result
 
 Erdős Problem #636 is SOLVED.

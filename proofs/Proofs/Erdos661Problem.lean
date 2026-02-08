@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #661 — Bipartite Distinct Distances
 
 Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² such that
@@ -22,7 +22,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
-/-! ## Definition -/
+/- ## Definition -/
 
 /-- A point in ℝ². -/
 def Point2 := ℝ × ℝ
@@ -43,7 +43,7 @@ noncomputable def minBipartiteDist : ℕ → ℕ := fun _ => 0  -- axiomatized
     points in ℝ². -/
 noncomputable def minDistinct2n : ℕ → ℕ := fun _ => 0  -- axiomatized
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #661**: Is F(2n) = o(f(2n))?
     Equivalently, can bipartite arrangements achieve
@@ -53,7 +53,7 @@ axiom erdos_661_bipartite_advantage :
   ∀ ε > 0, ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (minBipartiteDist n : ℝ) ≤ ε * (minDistinct2n n : ℝ)
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Guth–Katz (2015)**: f(2n) ≳ n/log n. The minimum number
     of distinct distances among 2n points is Ω(n/log n). -/
@@ -69,19 +69,16 @@ axiom lattice_upper :
     ∀ n : ℕ, n ≥ 2 →
       (minDistinct2n n : ℝ) ≤ C * n / Real.sqrt (Real.log n)
 
-/-! ## Higher Dimensions -/
+/- ## Higher Dimensions -/
 
-/-- **Lenz Construction (ℝ⁴)**: In ℝ⁴, place x₁,...,xₙ on one
+/- **Lenz Construction (ℝ⁴)**: In ℝ⁴, place x₁,...,xₙ on one
     circle and y₁,...,yₙ on an orthogonal circle. Then
     d(xᵢ,yⱼ) = √2 for all i,j: only one bipartite distance. -/
-axiom lenz_construction : True
 
-/-! ## Observations -/
+/- ## Observations -/
 
-/-- **Connection to Problem #89**: The Erdős distinct distances
+/- **Connection to Problem #89**: The Erdős distinct distances
     problem (general case) is Problem #89. This bipartite variant
     asks whether the bipartite structure provides additional savings. -/
-axiom erdos_89_connection : True
 
-/-- **$50 Reward**: Erdős offered $50 for resolving this problem. -/
-axiom reward : True
+/- **$50 Reward**: Erdős offered $50 for resolving this problem. -/

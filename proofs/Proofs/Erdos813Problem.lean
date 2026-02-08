@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #813: Triangles in Every 7-Vertex Set
 
 Source: https://erdosproblems.com/813
@@ -30,7 +30,7 @@ open Finset
 
 namespace Erdos813
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- A simple graph on n vertices (using Fin n as vertex set). -/
 def GraphOnN (n : ℕ) := SimpleGraph (Fin n)
@@ -48,7 +48,7 @@ def SubsetHasTriangle {n : ℕ} (G : GraphOnN n) (S : Finset (Fin n)) : Prop :=
 def Every7SetHasTriangle {n : ℕ} (G : GraphOnN n) : Prop :=
   ∀ S : Finset (Fin n), S.card = 7 → SubsetHasTriangle G S
 
-/-! ## Part II: Cliques -/
+/- ## Part II: Cliques -/
 
 /-- A clique on k vertices: all pairs are adjacent. -/
 def IsClique {n : ℕ} (G : GraphOnN n) (S : Finset (Fin n)) : Prop :=
@@ -58,7 +58,7 @@ def IsClique {n : ℕ} (G : GraphOnN n) (S : Finset (Fin n)) : Prop :=
 def HasCliqueOfSize {n : ℕ} (G : GraphOnN n) (k : ℕ) : Prop :=
   ∃ S : Finset (Fin n), S.card = k ∧ IsClique G S
 
-/-! ## Part III: The Function h(n) -/
+/- ## Part III: The Function h(n) -/
 
 /-- h(n): minimum clique size guaranteed when every 7-set has a triangle.
 Axiomatized since computing the minimum requires exhaustive search. -/
@@ -68,7 +68,7 @@ axiom h (n : ℕ) : ℕ
 axiom h_spec (n : ℕ) (hn : n ≥ 7) :
   ∀ G : GraphOnN n, Every7SetHasTriangle G → HasCliqueOfSize G (h n)
 
-/-! ## Part IV: Known Bounds -/
+/- ## Part IV: Known Bounds -/
 
 /-- Erdős-Hajnal lower bound: h(n) ≫ n^{1/3}. -/
 axiom erdos_hajnal_lower_bound :
@@ -87,7 +87,7 @@ theorem erdos_hajnal_bounds :
   obtain ⟨c₂, hc₂, hu⟩ := erdos_hajnal_upper_bound
   exact ⟨c₁, hc₁, c₂, hc₂, fun n hn => ⟨hl n hn, hu n hn⟩⟩
 
-/-! ## Part V: Bucić-Sudakov Improvement (2023) -/
+/- ## Part V: Bucić-Sudakov Improvement (2023) -/
 
 /-- Bucić-Sudakov (2023): Improved lower bound h(n) ≫ n^{5/12-o(1)}. -/
 axiom bucic_sudakov_lower_bound :
@@ -100,7 +100,7 @@ theorem five_twelfths_better : (5 : ℝ) / 12 > 1 / 3 := by norm_num
 /-- Gap between known bounds: 1/2 - 5/12 = 1/12. -/
 theorem exponent_gap : (1 : ℝ) / 2 - 5 / 12 = 1 / 12 := by norm_num
 
-/-! ## Part VI: The Main Conjecture -/
+/- ## Part VI: The Main Conjecture -/
 
 /-- Erdős's conjecture: can both bounds be improved?
 Specifically, do c₁, c₂ > 0 exist with n^{1/3+c₁} ≪ h(n) ≪ n^{1/2-c₂}? -/
@@ -109,7 +109,7 @@ def ErdosConjecture813 : Prop :=
     (∀ n ≥ 1, (h n : ℝ) ≥ c₁ * (n : ℝ)^(1/3 + c₁ : ℝ)) ∧
     (∀ n ≥ 1, (h n : ℝ) ≤ c₂ * (n : ℝ)^(1/2 - c₂ : ℝ))
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /-- **Erdős Problem #813: OPEN**
 

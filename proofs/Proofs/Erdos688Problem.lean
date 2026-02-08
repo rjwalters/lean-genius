@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #688: Covering by Large Prime Congruences
 
 Define εₙ as the maximum ε such that for some choice of congruence class
@@ -22,7 +22,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A covering assignment: for each prime p in a range, choose a
     residue class aₚ ∈ {0, ..., p−1}. -/
@@ -49,14 +49,14 @@ noncomputable def coveringExponent (n : ℕ) : ℝ :=
     ∃ assignment : CoveringAssignment (primesInRange n ε),
       CoverInterval n (primesInRange n ε) assignment}
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős's Conjecture**: εₙ = o(1), i.e., εₙ → 0 as n → ∞.
     Even primes close to n suffice to cover [1, n] with one class each. -/
 axiom erdos_688_conjecture :
   Filter.Tendsto (fun n => coveringExponent n) Filter.atTop (nhds 0)
 
-/-! ## Known Bounds -/
+/- ## Known Bounds -/
 
 /-- **Erdős's lower bound**: εₙ ≫ (log log log n) / (log log n).
     The exponent cannot decrease faster than this iterated-log ratio. -/
@@ -71,7 +71,7 @@ axiom erdos_lower_bound :
 axiom covering_exponent_lt_one :
   ∀ n : ℕ, n ≥ 2 → coveringExponent n < 1
 
-/-! ## Structural Properties -/
+/- ## Structural Properties -/
 
 /-- Each prime p covers exactly ⌊n/p⌋ or ⌈n/p⌉ integers in [1,n]
     with a single residue class. -/

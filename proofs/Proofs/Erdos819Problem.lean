@@ -38,7 +38,7 @@ open Finset
 
 namespace Erdos819
 
-/-!
+/-
 ## Part I: Sumsets
 -/
 
@@ -56,7 +56,7 @@ def sumset (A : Finset ℕ) : Finset ℕ :=
 def restrictedSumset (A : Finset ℕ) (N : ℕ) : Finset ℕ :=
   (sumset A).filter (fun x => x ≥ 1 ∧ x ≤ N)
 
-/-!
+/-
 ## Part II: The Function f(N)
 -/
 
@@ -96,7 +96,7 @@ arguments about the space of admissible sets.
 axiom f_exists (N : ℕ) (hN : N ≥ 4) :
     ∃ A : Finset ℕ, IsAdmissible A N ∧ (restrictedSumset A N).card = f N
 
-/-!
+/-
 ## Part III: Trivial Bounds
 -/
 
@@ -114,7 +114,7 @@ but various small sums land in [1,N]).
 -/
 axiom f_ge_sqrt_N (N : ℕ) (hN : N ≥ 1) : f N ≥ Nat.sqrt N
 
-/-!
+/-
 ## Part IV: Erdős-Freud Bounds (1991)
 -/
 
@@ -167,7 +167,7 @@ theorem coefficients_gap : upperCoefficient - lowerCoefficient = 1 / 8 := by
   unfold upperCoefficient lowerCoefficient
   norm_num
 
-/-!
+/-
 ## Part V: Lower Bound Construction
 -/
 
@@ -197,7 +197,7 @@ axiom upper_bound_argument :
       ∀ A : Finset ℕ, IsAdmissible A N →
         (restrictedSumset A N).card ≤ Nat.ceil ((1/2 + ε) * N)
 
-/-!
+/-
 ## Part VI: Connection to Quasi-Sidon Sets
 -/
 
@@ -222,7 +222,7 @@ axiom problem_840_connection :
     ∀ A : Finset ℕ, IsQuasiSidon A k →
       (sumset A).card * (2 * k) ≥ A.card * A.card
 
-/-!
+/-
 ## Part VII: Extremal Examples
 -/
 
@@ -235,7 +235,7 @@ APs have too much additive structure - their sums overlap heavily.
 axiom arithmetic_progression_sumset (k : ℕ) (hk : k ≥ 1) :
     (sumset (Finset.range k)).card = 2 * k - 1
 
-/-!
+/-
 ## Part VIII: The Gap
 -/
 
@@ -252,7 +252,7 @@ theorem gap_is_eighth : boundGap = 1 / 8 := by
   unfold boundGap upperCoefficient lowerCoefficient
   norm_num
 
-/-!
+/-
 ## Part IX: Summary
 -/
 

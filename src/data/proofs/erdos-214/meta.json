@@ -26,13 +26,85 @@
     "problemStatement": "Let S ⊂ ℝ² be such that no two points in S are distance 1 apart. Must the complement of S contain four points which form a unit square?",
     "proofStrategy": "The formalization defines unit-distance-free sets, unit squares, and the main statement. Juhász's theorem is stated as an axiom, along with the stronger version for arbitrary 4-point configurations. The formalization also connects to the unit distance graph and the chromatic number of the plane.",
     "keyInsights": [
-      "Unit-distance-free sets have 'sparse' structure",
-      "Their complements are dense enough to contain small configurations",
-      "The result generalizes to any 4-point configuration, not just unit squares",
-      "The property fails for sufficiently large point sets"
+      "**Unit-distance-free sets** avoid a single distance, creating a 'sparse' structure with dense complement",
+      "**Juhász's stronger result**: complements contain congruent copies of ANY 4-point configuration, not just unit squares",
+      "**Breakdown for large sets**: the property fails for sufficiently large n-point configurations",
+      "**5-point case open**: whether all 5-point configurations appear in the complement remains unknown",
+      "**Connection to chromatic number**: each color class in a χ(ℝ²)-coloring is unit-distance-free; de Grey (2018) proved χ(ℝ²) ≥ 5"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "summary": "Erdős 1983 question on unit-distance-free sets and unit squares, Juhász 1979 solution",
+      "startLine": 1,
+      "endLine": 25
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Plane, dist, IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare",
+      "startLine": 36,
+      "endLine": 61
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Statement and Proof",
+      "summary": "Erdos214Statement, juhasz_1979 axiom, erdos_214_solved theorem",
+      "startLine": 63,
+      "endLine": 75
+    },
+    {
+      "id": "stronger-version",
+      "title": "Stronger Version — Any 4-Point Set",
+      "summary": "PointSet, ContainsCongruentCopy, JuhaszStrongerTheorem, juhasz_stronger axiom",
+      "startLine": 77,
+      "endLine": 106
+    },
+    {
+      "id": "limitations",
+      "title": "Limitations for Larger Sets",
+      "summary": "fails_for_large_sets axiom, HoldsFor5Points open question",
+      "startLine": 108,
+      "endLine": 122
+    },
+    {
+      "id": "unit-distance-graph",
+      "title": "Connection to Unit Distance Graphs",
+      "summary": "UnitDistanceGraph, unit_distance_free_iff_no_edges (verified), chromatic number",
+      "startLine": 124,
+      "endLine": 152
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Proof Techniques",
+      "summary": "Maximal set structure, pigeonhole argument, unit circle intersections",
+      "startLine": 153,
+      "endLine": 174
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Constructions",
+      "summary": "Integer lattice, ScaledLattice, scaled_lattice_is_unit_free",
+      "startLine": 176,
+      "endLine": 198
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Nelson-Hadwiger problem, Erdős unit distance problem, Moser's worm problem",
+      "startLine": 200,
+      "endLine": 241
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem SOLVED, stronger result for 4-point sets, 5-point case open",
+      "startLine": 243,
+      "endLine": 279
+    }
+  ],
   "conclusion": {
     "summary": "Juhász (1979) proved that if S ⊂ ℝ² avoids unit distances, then Sᶜ contains a congruent copy of any 4-point set, hence in particular a unit square. This captures how avoiding a single distance forces geometric richness in the complement.",
     "implications": "The result connects to the chromatic number of the plane and unit distance graphs. It shows that unit-distance-free sets cannot be 'too large' in a geometric sense - their complements must contain diverse configurations.",

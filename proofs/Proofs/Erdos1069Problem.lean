@@ -34,7 +34,7 @@ namespace Erdos1069
 
 open Finset
 
-/-! ## Part 1: Basic Definitions
+/- ## Part 1: Basic Definitions
 
 We define points, lines, and incidences in the plane.
 -/
@@ -61,7 +61,7 @@ def pointsOnLine (P : Finset Point) (l : Line) : Finset Point :=
 def incidenceCount (P : Finset Point) (l : Line) : ℕ :=
   (pointsOnLine P l).card
 
-/-! ## Part 2: k-Rich Lines
+/- ## Part 2: k-Rich Lines
 
 A line is k-rich if it contains at least k points from P.
 -/
@@ -78,7 +78,7 @@ def kRichLines (P : Finset Point) (L : Finset Line) (k : ℕ) : Finset Line :=
 def numKRichLines (P : Finset Point) (L : Finset Line) (k : ℕ) : ℕ :=
   (kRichLines P L k).card
 
-/-! ## Part 3: Total Incidences
+/- ## Part 3: Total Incidences
 
 The total number of point-line incidences is the sum over all lines.
 -/
@@ -96,7 +96,7 @@ def incidencePairs (P : Finset Point) (L : Finset Line) : Finset (Point × Line)
 axiom incidences_eq (P : Finset Point) (L : Finset Line) :
     (incidencePairs P L).card = totalIncidences P L
 
-/-! ## Part 4: The Szemerédi-Trotter Theorem
+/- ## Part 4: The Szemerédi-Trotter Theorem
 
 The main incidence bound: I(P, L) = O(|P|^(2/3)|L|^(2/3) + |P| + |L|).
 -/
@@ -116,7 +116,7 @@ axiom szTr_exponent_optimal :
   ∀ ε > 0, ∃ (P : Finset Point) (L : Finset Line),
     (totalIncidences P L : ℝ) ≥ (P.card : ℝ)^(2/3 - ε) * (L.card : ℝ)^(2/3 - ε)
 
-/-! ## Part 5: The k-Rich Lines Bound
+/- ## Part 5: The k-Rich Lines Bound
 
 From Szemerédi-Trotter, we derive the k-rich lines bound.
 -/
@@ -143,7 +143,7 @@ theorem erdos_1069 (P : Finset Point) (L : Finset Line) (k : ℕ)
   ∃ C : ℝ, C > 0 ∧ (numKRichLines P L k : ℝ) ≤ C * kRichBound P.card k :=
   kRich_bound P L k hk hn
 
-/-! ## Part 6: The Proof Strategy
+/- ## Part 6: The Proof Strategy
 
 The proof from Szemerédi-Trotter to k-rich lines uses a dyadic argument:
 partition lines by incidence count into levels [2^i, 2^{i+1}), apply
@@ -166,7 +166,7 @@ axiom dyadic_szTr (P : Finset Point) (L : Finset Line) (i : ℕ) :
     ∃ C : ℝ, C > 0 ∧
       ((dyadicLines P L i).card : ℝ) ≤ C * ((P.card : ℝ)^2 / (2^i : ℝ)^3 + P.card / 2^i)
 
-/-! ## Part 7: Lower Bound Constructions
+/- ## Part 7: Lower Bound Constructions
 
 Known constructions show the bound is close to tight.
 -/
@@ -184,14 +184,14 @@ axiom lattice_card (m : ℕ) : (latticePoints m).card = m ^ 2
 axiom lattice_lower_bound (m : ℕ) (hm : m ≥ 2) :
   ∃ L : Finset Line, (numKRichLines (latticePoints m) L m : ℝ) ≥ 2 * m - 2
 
-/-! ## Part 8: Special Cases -/
+/- ## Part 8: Special Cases -/
 
 /-- When k > √n, even stronger bounds apply: O(n/k) k-rich lines. -/
 axiom large_k_bound (P : Finset Point) (L : Finset Line) (k : ℕ)
     (hk : (k : ℝ)^2 > P.card) :
   ∃ C : ℝ, C > 0 ∧ (numKRichLines P L k : ℝ) ≤ C * P.card / k
 
-/-! ## Part 9: Point-Line Duality -/
+/- ## Part 9: Point-Line Duality -/
 
 /-- Dual: Given n lines, the number of k-rich points (points lying on
     ≥ k lines) is O(n²/k³) when k ≤ √n. This follows from point-line
@@ -201,7 +201,7 @@ axiom dual_kRich_bound (P : Finset Point) (L : Finset Line) (k : ℕ)
   ∃ C : ℝ, C > 0 ∧ (P.filter (fun p => (L.filter (fun l =>
     decide (l.a * p.1 + l.b * p.2 = l.c))).card ≥ k)).card ≤ C * (L.card : ℝ)^2 / (k : ℝ)^3
 
-/-! ## Part 10: Summary
+/- ## Part 10: Summary
 
 **Erdős Problem #1069: SOLVED**
 

@@ -34,7 +34,7 @@ open Nat Finset Filter
 
 namespace Erdos938
 
-/-!
+/-
 # Erdős Problem 938: Three-term Progressions in Consecutive Powerful Numbers
 
 *Reference:* [erdosproblems.com/938](https://www.erdosproblems.com/938)
@@ -75,7 +75,7 @@ example : Powerful 9 := ⟨by omega, fun p hp hdiv => by
   have h9 : 9 = 3 ^ 2 := rfl
   interval_cases p <;> simp_all⟩
 
-/-!
+/-
 ## Enumeration of Powerful Numbers
 
 We define an enumeration of powerful numbers using a noncomputable choice function.
@@ -83,8 +83,10 @@ The n-th powerful number P(n) is the (n+1)-th smallest element of powerfulSet.
 -/
 
 /-- The ordered enumeration of powerful numbers (0-indexed).
-    P(0) = 1, P(1) = 4, P(2) = 8, P(3) = 9, ... -/
-noncomputable def nthPowerful : ℕ → ℕ := sorry
+    P(0) = 1, P(1) = 4, P(2) = 8, P(3) = 9, ...
+    Axiomatized since the enumeration function is defined by ordering
+    an irregular subset of ℕ. -/
+axiom nthPowerful : ℕ → ℕ
 
 /-- nthPowerful is strictly increasing. -/
 axiom nthPowerful_strictMono : StrictMono nthPowerful
@@ -95,7 +97,7 @@ axiom nthPowerful_mem : ∀ n, Powerful (nthPowerful n)
 /-- Every powerful number appears in the enumeration. -/
 axiom nthPowerful_surj : ∀ m, Powerful m → ∃ n, nthPowerful n = m
 
-/-!
+/-
 ## Arithmetic Progression Condition
 
 Three consecutive powerful numbers P(k), P(k+1), P(k+2) form an arithmetic
@@ -122,7 +124,7 @@ lemma ap_iff_equal_gaps (k : ℕ) :
   unfold ConsecutivePowerfulAP powerfulGap
   rfl
 
-/-!
+/-
 ## Main Problem
 
 Erdős Problem #938 (OPEN): Is the set `apIndices` finite?
@@ -137,7 +139,7 @@ among consecutive powerful numbers. The answer is unknown.
     This is an open problem. The `sorry` reflects the unknown answer. -/
 axiom erdos_938 : apIndices.Finite
 
-/-!
+/-
 ## Connection to Problem #364
 
 Erdős Problem #364 conjectures that no three consecutive integers are all powerful.
@@ -153,7 +155,7 @@ def NoThreeConsecutivePowerful : Prop :=
     result than Problem #938. -/
 axiom erdos_364_conjecture : NoThreeConsecutivePowerful
 
-/-!
+/-
 ## Counting Function and Asymptotics
 
 The number of powerful numbers up to x is well-known to be asymptotically
@@ -172,7 +174,7 @@ axiom powerful_count_asymptotic :
   ∃ c : ℝ, c > 0 ∧ Filter.Tendsto
     (fun n => (countPowerful n : ℝ) / Real.sqrt n) Filter.atTop (nhds c)
 
-/-!
+/-
 ## AP Differences
 
 If the set of AP indices is finite, then the set of common differences

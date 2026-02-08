@@ -23,7 +23,7 @@ namespace Erdos1049
 
 open BigOperators Nat Real
 
-/-!
+/-
 ## Part I: The Divisor Function
 
 τ(n) counts the number of divisors of n.
@@ -60,7 +60,7 @@ theorem tau_pos (n : ℕ) (hn : n ≥ 1) : τ n ≥ 1 := by
 theorem tau_le (n : ℕ) : τ n ≤ n := by
   sorry
 
-/-!
+/-
 ## Part II: The Series
 
 The two forms of the series.
@@ -84,7 +84,7 @@ theorem D_summable (t : ℝ) (ht : t > 1) :
     Summable (fun n : ℕ => if n = 0 then 0 else (τ n : ℝ) / t ^ n) := by
   sorry
 
-/-!
+/-
 ## Part III: The Identity
 
 The key identity S(t) = D(t).
@@ -111,7 +111,7 @@ theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
     ∑' m : ℕ, if m = 0 then 0 else 1 / t ^ (d * m) = 1 / (t ^ d - 1) := by
   sorry
 
-/-!
+/-
 ## Part IV: Erdős's Result for Integers
 
 Irrationality when t is an integer ≥ 2.
@@ -133,7 +133,7 @@ theorem S_at_2_first_terms :
     S_at_2 = 1 + 1/3 + 1/7 + 1/15 + ∑' n : ℕ, if n ≤ 4 then 0 else 1 / (2^n - 1) := by
   sorry
 
-/-!
+/-
 ## Part V: Chowla's Conjecture
 
 The full conjecture for rational t > 1.
@@ -150,7 +150,7 @@ axiom chowla_conjecture_open : ChowlaConjecture ↔ ChowlaConjecture
 theorem chowla_for_integers (t : ℕ) (ht : t ≥ 2) :
     Irrational (S (t : ℝ)) := erdos_integer_irrational t ht
 
-/-!
+/-
 ## Part VI: Special Values
 
 Specific computations and approximations.
@@ -177,7 +177,7 @@ theorem S_tendsto_infinity : Filter.Tendsto S (nhdsWithin 1 (Set.Ioi 1)) Filter.
 theorem S_tendsto_zero : Filter.Tendsto S Filter.atTop (nhds 0) := by
   sorry
 
-/-!
+/-
 ## Part VII: Algebraic Properties
 
 Structure of S(t) for algebraic t.
@@ -196,7 +196,7 @@ theorem transcendental_implies_chowla :
 def AlgebraicIndependenceConjecture : Prop :=
   ∀ t : ℝ, t > 1 → IsAlgebraic ℚ t → True -- Placeholder for full statement
 
-/-!
+/-
 ## Part VIII: Connection to Lambert Series
 
 The series is a Lambert series.
@@ -216,7 +216,7 @@ axiom lambert_arithmetic_property :
     -- Lambert series of arithmetic functions have special properties
     True
 
-/-!
+/-
 ## Part IX: Partial Results
 
 What is known towards Chowla's conjecture.
@@ -237,7 +237,7 @@ theorem S_bounds (t : ℝ) (ht : t > 1) :
     1 / (t - 1) ≤ S t ∧ S t ≤ t / (t - 1)^2 := by
   sorry
 
-/-!
+/-
 ## Part X: Main Results
 
 Summary of Erdős Problem #1049.

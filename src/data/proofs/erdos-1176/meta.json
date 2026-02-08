@@ -1,0 +1,91 @@
+{
+  "id": "erdos-1176",
+  "title": "Erdős Problem #1176: Edge Coloring and Vertex Color Classes",
+  "slug": "erdos-1176",
+  "description": "of the vertices, there exists a vertex colour class containing all edge colours?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1176",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1176Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "set-theory",
+      "geometry",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 1176,
+    "erdosUrl": "https://erdosproblems.com/1176",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cofinality",
+        "description": "From Mathlib.SetTheory.Cardinal.Cofinality",
+        "module": "Mathlib.SetTheory.Cardinal.Cofinality"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Combinatorics.SimpleGraph.Basic",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsProperVertexColoring",
+      "IsCardColorable",
+      "chromaticNumber",
+      "EdgeColoring",
+      "allEdgeColors",
+      "edgeColorsSeen",
+      "HasDominationProperty",
+      "ErdosProblem1176",
+      "aleph0_lt_aleph1",
+      "not_aleph0_colorable_of_chi_aleph1",
+      "not_nat_colorable_of_chi_aleph1",
+      "hajnal_komjath_consistency_witness",
+      "StrongDominationProperty",
+      "strong_implies_domination",
+      "edgeColorClass"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1176 concerns edge coloring and vertex color classes. This problem remains OPEN.\n\nKnown results include: - Hajnal and Komjáth proved the consistency of a positive answer (i.e., it is\n\nThis problem is catalogued at erdosproblems.com/1176.",
+    "problemStatement": "of the vertices, there exists a vertex colour class containing all edge colours?",
+    "proofStrategy": "The formalization is structured in 224 lines of Lean 4 code. It uses 1 axiom for results that require external references or deep mathematical arguments beyond Mathlib. There are 2 sorry placeholders for structural results that can be filled in with additional work. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**A proper vertex coloring**: A proper vertex coloring: adjacent vertices get different colors.",
+      "**A graph is κ-colorable**: A graph is κ-colorable: there exists a proper coloring into a type of",
+      "**The chromatic number of a simple graph as a cardinal**: The chromatic number of a simple graph as a cardinal:",
+      "**An edge coloring assigns a color from C to each pair in Sym2 V.**: An edge coloring assigns a color from C to each pair in Sym2 V.",
+      "**The set of all edge colors actually used on edges of G.**: The set of all edge colors actually used on edges of G."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1176",
+      "startLine": 1,
+      "endLine": 224
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1176 (Edge Coloring and Vertex Color Classes) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

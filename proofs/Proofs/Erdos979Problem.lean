@@ -32,7 +32,7 @@ namespace Erdos979
 
 open Nat Multiset BigOperators
 
-/-! ## The Solution Set
+/- ## The Solution Set
 
 For fixed n and k, the solution set consists of all multisets of k primes
 whose k-th powers sum to n. Each multiset P = {p_1, ..., p_k} satisfies:
@@ -49,7 +49,7 @@ def solutionSet (n k : ℕ) : Set (Multiset ℕ) :=
 /-- f_k(n) counts the number of solutions to n = p_1^k + ... + p_k^k. -/
 noncomputable def f (k n : ℕ) : ℕ∞ := (solutionSet n k).encard
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /-- The empty multiset is the unique solution for n=0 when k=0. -/
 theorem solution_zero_zero : solutionSet 0 0 = {∅} := by
@@ -65,7 +65,7 @@ theorem solution_zero_zero : solutionSet 0 0 = {∅} := by
 Axiomatized due to proof complexity with Multiset.sum_pos. -/
 axiom solution_zero_pos (k : ℕ) (hk : k ≥ 1) : solutionSet 0 k = ∅
 
-/-! ## Example: Sum of Two Squares of Primes
+/- ## Example: Sum of Two Squares of Primes
 
 The case k=2 asks about n = p^2 + q^2 for primes p, q.
 Example: 8 = 2² + 2², so {2, 2} ∈ solutionSet 8 2.
@@ -80,7 +80,7 @@ axiom example_8_eq_2sq_2sq : ({2, 2} : Multiset ℕ) ∈ solutionSet 8 2
 Axiomatized: 25+25=50, 5 is prime. -/
 axiom example_50 : ({5, 5} : Multiset ℕ) ∈ solutionSet 50 2
 
-/-! ## Example: Sum of Three Cubes of Primes
+/- ## Example: Sum of Three Cubes of Primes
 
 The case k=3 asks about n = p³ + q³ + r³ for primes p, q, r.
 Example: 24 = 2³ + 2³ + 2³ = 8 + 8 + 8.
@@ -90,7 +90,7 @@ Example: 24 = 2³ + 2³ + 2³ = 8 + 8 + 8.
 Axiomatized: 8+8+8=24, 2 is prime. -/
 axiom example_24_eq_cubes : ({2, 2, 2} : Multiset ℕ) ∈ solutionSet 24 3
 
-/-! ## The Main Results -/
+/- ## The Main Results -/
 
 /-- **Erdős (1937)**: lim sup f_2(n) = ∞.
 
@@ -113,7 +113,7 @@ This is axiomatized as a Prop since the answer is unknown for k ≥ 4. -/
 axiom erdos_979_general_open :
   Prop  -- Unknown whether ∀ k ≥ 2, Filter.limsup (fun n => f k n) Filter.atTop = ⊤
 
-/-! ## Relationship to Other Problems -/
+/- ## Relationship to Other Problems -/
 
 /-- Connection to Goldbach-type problems: This problem is analogous to asking
 whether every large even number is the sum of two primes (Goldbach), but for
@@ -128,7 +128,7 @@ axiom connection_to_waring : Prop
 such problems in analytic number theory. -/
 axiom hardy_littlewood_method : Prop
 
-/-! ## Properties of the Solution Count -/
+/- ## Properties of the Solution Count -/
 
 /-- If n < 2^k, then there are no solutions (smallest prime is 2).
 Axiomatized due to proof complexity. -/
@@ -146,7 +146,7 @@ theorem smallest_k2 : solutionSet 8 2 ≠ ∅ := by
 theorem solution_8_nonempty : (solutionSet 8 2).Nonempty :=
   ⟨{2, 2}, example_8_eq_2sq_2sq⟩
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #979 Summary**:
 

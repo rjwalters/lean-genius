@@ -69,7 +69,78 @@
       "**Complete Classification:** All interval types [m,∞), (m,∞), ∅, (0,∞) occur"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "erd-s-problem-1118-entire-func",
+      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 37,
+      "endLine": 60,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "the-erd-s-questions",
+      "title": "The Erdős Questions",
+      "startLine": 61,
+      "endLine": 78,
+      "summary": "The Erdős Questions"
+    },
+    {
+      "id": "hayman-s-conjecture-and-growth",
+      "title": "Hayman's Conjecture and Growth Rate",
+      "startLine": 79,
+      "endLine": 105,
+      "summary": "Hayman's Conjecture and Growth Rate"
+    },
+    {
+      "id": "gol-dberg-s-counterexample",
+      "title": "Gol'dberg's Counterexample",
+      "startLine": 106,
+      "endLine": 125,
+      "summary": "Gol'dberg's Counterexample"
+    },
+    {
+      "id": "properties-of-the-maximum-modu",
+      "title": "Properties of the Maximum Modulus",
+      "startLine": 126,
+      "endLine": 143,
+      "summary": "Properties of the Maximum Modulus"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 144,
+      "endLine": 161,
+      "summary": "Examples"
+    },
+    {
+      "id": "measure-theory-aspects",
+      "title": "Measure Theory Aspects",
+      "startLine": 162,
+      "endLine": 192,
+      "summary": "Measure Theory Aspects"
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "startLine": 193,
+      "endLine": 210,
+      "summary": "Connections"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 211,
+      "endLine": 276,
+      "summary": "Summary"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #1118 asked two questions about entire functions with finite-measure superlevel sets. Camera (1977) and Gol'dberg (1979) proved the growth rate criterion ∫ r/(log log M(r)) dr < ∞. Gol'dberg showed the threshold set T can have various shapes, disproving monotonicity to 0.",
     "implications": "**Complex Analysis Connections**\n\n1. **Nevanlinna Theory:** Growth rates connect to order and type\n\n2. **Value Distribution:** How often f is large in modulus\n\n3. **Maximum Modulus:** Central role of M(r) in characterization\n\n4. **Measure Theory:** Lebesgue measure in complex plane",

@@ -24,7 +24,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 
 namespace Erdos587
 
-/-!
+/-
 ## Definitions
 
 We define `MaxNotSqSum N` as the maximum cardinality of a subset A ⊆ {1,...,N}
@@ -44,7 +44,7 @@ behavior of this function.
 noncomputable def MaxNotSqSum (N : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsSquareSumFree A ∧ A.card = k }
 
-/-!
+/-
 ## Main Results
 
 The Nguyen-Vu theorem (2010) establishes that the maximum size of a square-sum-free
@@ -96,7 +96,7 @@ theorem erdos_587_tight_bound : ∃ (c C : ℝ) (k : ℝ), c > 0 ∧ C > 0 ∧ k
   refine ⟨c, C, k, hc_pos, hC_pos, le_of_lt hk_pos, ?_⟩
   exact Filter.Eventually.and hc_bound hC_bound
 
-/-!
+/-
 ## Concrete Examples
 
 We verify the square-sum-free property for small examples to build intuition.

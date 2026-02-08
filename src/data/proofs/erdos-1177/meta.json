@@ -1,0 +1,96 @@
+{
+  "id": "erdos-1177",
+  "title": "Erdős Problem #1177: Chromatic Numbers of Hypergraph Families with Forbidden Subgraphs",
+  "slug": "erdos-1177",
+  "description": "Let G be a finite 3-uniform hypergraph, and let F_G(κ) denote the collection of",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1177",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1177Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "set-theory",
+      "probability",
+      "ramsey-theory",
+      "hypergraph",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1177,
+    "erdosUrl": "https://erdosproblems.com/1177",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Basic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Set.Basic",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Order.Basic",
+        "module": "Mathlib.Order.Basic"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Card",
+      "Card",
+      "Card",
+      "aleph0",
+      "aleph1",
+      "beth2",
+      "Card",
+      "aleph0_lt_aleph1",
+      "aleph1_uncountable",
+      "aleph1_le_beth2",
+      "Hypergraph3",
+      "Hypergraph3",
+      "Hypergraph3",
+      "Hypergraph3",
+      "Hypergraph3"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1177 concerns chromatic numbers of hypergraph families with forbidden subgraphs. This problem remains OPEN.\n\nKnown results include: - [Va99] Verstraëte, \"Turán-type problems\" (1999), Problem 7.94 - Erdős, Galvin, Hajnal (original)\n\nThis problem is catalogued at erdosproblems.com/1177.",
+    "problemStatement": "Let G be a finite 3-uniform hypergraph, and let F_G(κ) denote the collection of",
+    "proofStrategy": "The formalization is structured in 207 lines of Lean 4 code. It uses 18 axioms for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**Abstract type of 3-uniform hypergraphs. We parametrize by a \"size\" cardinal**: Abstract type of 3-uniform hypergraphs. We parametrize by a \"size\" cardinal",
+      "**The cardinality (number of vertices) of a 3-uniform hypergraph.**: The cardinality (number of vertices) of a 3-uniform hypergraph.",
+      "**Whether one 3-uniform hypergraph contains another as a subhypergraph.**: Whether one 3-uniform hypergraph contains another as a subhypergraph.",
+      "**Whether a 3-uniform hypergraph is finite.**: Whether a 3-uniform hypergraph is finite.",
+      "**The chromatic number of a 3-uniform hypergraph.**: The chromatic number of a 3-uniform hypergraph."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1177",
+      "startLine": 1,
+      "endLine": 207
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1177 (Chromatic Numbers of Hypergraph Families with Forbidden Subgraphs) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

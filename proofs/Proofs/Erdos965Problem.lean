@@ -183,12 +183,11 @@ theorem countable_vs_uncountable :
 ## Part VI: Connection to Erdős-Hajnal-Rado
 -/
 
-/--
+/-
 **Erdős-Hajnal-Rado methods:**
 The original proof by Erdős used partition calculus techniques
 developed with Hajnal and Rado in their work on infinite combinatorics.
 -/
-axiom erdos_hajnal_rado_methods : True
 
 /--
 **Partition calculus:**

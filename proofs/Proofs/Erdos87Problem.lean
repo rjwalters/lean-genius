@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 87: Ramsey Numbers and Chromatic Number
 
 For `ε > 0`, is it true that for sufficiently large `k`,
@@ -20,7 +20,7 @@ import Mathlib.Tactic
 
 open SimpleGraph Finset
 
-/-! ## Axiomatized Ramsey and chromatic numbers -/
+/- ## Axiomatized Ramsey and chromatic numbers -/
 
 /-- The diagonal Ramsey number `R(k)` is the minimum `N` such that every
 2-colouring of `K_N` edges contains a monochromatic `K_k`. -/
@@ -47,7 +47,7 @@ axiom chromaticNumber_le (n : ℕ) (G : SimpleGraph (Fin n)) : chromaticNumber G
 axiom chromaticNumber_pos (n : ℕ) (hn : 0 < n) (G : SimpleGraph (Fin n)) :
     0 < chromaticNumber G
 
-/-! ## Main conjecture -/
+/- ## Main conjecture -/
 
 /-- Erdős Problem 87 (weak form): For every `ε > 0`, if `k` is large enough,
 then `R(G) > (1-ε)^k · R(k)` for all `G` with `χ(G) = k`. -/
@@ -67,7 +67,7 @@ def ErdosProblem87_strong : Prop :=
           chromaticNumber G = k →
             c * (diagonalRamsey k : ℝ) < (graphRamsey k G : ℝ)
 
-/-! ## Known bounds -/
+/- ## Known bounds -/
 
 /-- Random colouring bound: `R(G) ≫ 2^{k/2}` for `χ(G) = k`. -/
 axiom graphRamsey_exponential_lower :
@@ -80,7 +80,7 @@ axiom graphRamsey_exponential_lower :
 axiom diagonalRamsey_upper (k : ℕ) :
     (diagonalRamsey k : ℝ) ≤ 4 ^ (k : ℝ)
 
-/-! ## Counterexample to original conjecture -/
+/- ## Counterexample to original conjecture -/
 
 /-- Faudree–McKay: `R(W) = 17` for the pentagonal wheel `W` with `χ(W) = 4`,
 while `R(4) = 18`, disproving `R(G) ≥ R(k)`. -/

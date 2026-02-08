@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem 386: Binomial Coefficients as Products of Consecutive Primes
 
 *Reference:* [erdosproblems.com/386](https://www.erdosproblems.com/386)
@@ -26,7 +26,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section 1: Prime enumeration
 
 We define the enumeration of primes: `nthPrime i` is the `i`-th prime
@@ -47,7 +47,7 @@ axiom nthPrime_prime (i : ℕ) : Nat.Prime (nthPrime i)
 /-- `nthPrime` is strictly increasing. -/
 axiom nthPrime_strictMono : StrictMono nthPrime
 
-/-!
+/-
 ## Section 2: Product of consecutive primes
 
 We define what it means for a number to equal a product of consecutive primes
@@ -63,7 +63,7 @@ noncomputable def consecutivePrimeProd (a b : ℕ) : ℕ :=
 def IsProductOfConsecutivePrimes (m : ℕ) : Prop :=
   ∃ a b : ℕ, a < b ∧ m = consecutivePrimeProd a b
 
-/-!
+/-
 ## Section 3: Known examples
 
 We state known examples where `C(n,k)` equals a product of consecutive primes.
@@ -89,7 +89,7 @@ axiom choose_14_4_consec_primes :
 axiom choose_15_6_consec_primes :
   IsProductOfConsecutivePrimes (Nat.choose 15 6)
 
-/-!
+/-
 ## Section 4: The main conjecture
 
 Erdős Problem 386 asks: for fixed `k ≥ 2`, do there exist infinitely many `n`
@@ -103,7 +103,7 @@ def ErdosProblem386 : Prop :=
     ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ k + 2 ≤ n ∧
       IsProductOfConsecutivePrimes (Nat.choose n k)
 
-/-!
+/-
 ## Section 5: Structural observations
 
 Products of consecutive primes are *squarefree* (each prime appears exactly
@@ -127,7 +127,7 @@ theorem choose_consec_primes_squarefree {n k : ℕ}
   rw [heq]
   exact consecutivePrimeProd_squarefree a b hab
 
-/-!
+/-
 ## Section 6: The k = 2 case
 
 For `k = 2`, we have `C(n, 2) = n(n-1)/2`. This is a product of consecutive
@@ -139,7 +139,7 @@ primes when `n(n-1)/2` is a primorial or primorial quotient.
 axiom erdos_386_k2_examples :
   ∃ n : ℕ, n ≥ 4 ∧ IsProductOfConsecutivePrimes (Nat.choose n 2)
 
-/-!
+/-
 ## Section 7: Connection to Erdős–Graham (1980)
 
 This problem appears in Erdős and Graham's 1980 monograph "Old and New Problems

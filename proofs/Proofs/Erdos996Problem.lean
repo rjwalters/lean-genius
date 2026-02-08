@@ -47,7 +47,7 @@ namespace Erdos996
 
 open MeasureTheory Filter Topology Real
 
-/-! ## Part I: Lacunary Sequences -/
+/- ## Part I: Lacunary Sequences -/
 
 /-- A sequence n : ℕ → ℕ is lacunary if there exists ratio > 1 such that
     n(k+1) / n(k) ≥ ratio for all k. This means the sequence has
@@ -88,7 +88,7 @@ theorem lacunary_strictMono {n : ℕ → ℕ} (hn : IsLacunary n) (h0 : n 0 > 0)
     StrictMono n := by
   sorry
 
-/-! ## Part II: Fourier Series and Partial Sums -/
+/- ## Part II: Fourier Series and Partial Sums -/
 
 /-- The Nth partial sum of the Fourier series of f.
     This is the best L² approximation of f using frequencies -N to N. -/
@@ -106,7 +106,7 @@ axiom parseval_identity (f : ℝ → ℂ) (hf : Integrable (fun x => ‖f x‖^2
     ∫ x in (0 : ℝ)..1, ‖f x‖^2 =
     ∑' n : ℤ, ‖∫ t in (0 : ℝ)..1, f t * Complex.exp (-2 * Real.pi * Complex.I * n * t)‖^2
 
-/-! ## Part III: The Ergodic Average -/
+/- ## Part III: The Ergodic Average -/
 
 /-- The fractional part {x} = x - ⌊x⌋. -/
 noncomputable def frac (x : ℝ) : ℝ := x - ⌊x⌋
@@ -121,7 +121,7 @@ noncomputable def ergodicAverage (f : ℝ → ℂ) (n : ℕ → ℕ) (α : ℝ) 
 noncomputable def spaceAverage (f : ℝ → ℂ) : ℂ :=
   ∫ x in (0 : ℝ)..1, f x
 
-/-! ## Part IV: The Strong Law of Large Numbers -/
+/- ## Part IV: The Strong Law of Large Numbers -/
 
 /-- The strong law holds for (f, n, α) if the ergodic average converges
     to the space average. -/
@@ -133,7 +133,7 @@ def StrongLawHolds (f : ℝ → ℂ) (n : ℕ → ℕ) (α : ℝ) : Prop :=
 def StrongLawHoldsAE (f : ℝ → ℂ) (n : ℕ → ℕ) : Prop :=
   ∀ᵐ α ∂(volume.restrict (Set.Icc (0 : ℝ) 1)), StrongLawHolds f n α
 
-/-! ## Part V: Known Results -/
+/- ## Part V: Known Results -/
 
 /-- **Raikov's Theorem**: For geometric sequences nₖ = aᵏ, the strong law
     holds for all f ∈ L² without any decay condition on Fourier error.
@@ -169,7 +169,7 @@ axiom matsuyama_1966 (c : ℝ) (hc : c > 1/2) (f : ℝ → ℂ) (n : ℕ → ℕ
     (hdecay : ∀ k : ℕ, k ≥ 3 → fourierError f k ≤ 1 / (Real.log (Real.log k))^c) :
     StrongLawHoldsAE f n
 
-/-! ## Part VI: The Open Question -/
+/- ## Part VI: The Open Question -/
 
 /-- **Erdős Problem #996**: Is there a constant C such that if the Fourier
     error decays like 1/(log log log n)^C, the strong law holds?
@@ -181,11 +181,10 @@ def ErdosProblem996 : Prop :=
     (∀ k : ℕ, k ≥ 16 → fourierError f k ≤ 1 / (Real.log (Real.log (Real.log k)))^C) →
     StrongLawHoldsAE f n
 
-/-- The status of Problem #996: OPEN.
+/- The status of Problem #996: OPEN.
     We don't know if log log log decay suffices. -/
-axiom erdos_996_open : True  -- Placeholder indicating open status
 
-/-! ## Part VII: Related Questions -/
+/- ## Part VII: Related Questions -/
 
 /-- Erdős also asked if the strong law holds for nₖ = ⌊aᵏ⌋ for real a > 1.
     This is related but distinct from the Fourier decay question. -/
@@ -199,7 +198,7 @@ def BoundedFunctionQuestion : Prop :=
   ∀ f : ℝ → ℂ, (∃ M : ℝ, ∀ x, ‖f x‖ ≤ M) →
     ∀ n : ℕ → ℕ, IsLacunary n → StrongLawHoldsAE f n
 
-/-! ## Part VIII: The Decay Hierarchy -/
+/- ## Part VIII: The Decay Hierarchy -/
 
 /-- The hierarchy of decay conditions, from strongest to weakest:
     1. No decay needed (Raikov, for geometric sequences)
@@ -230,7 +229,7 @@ noncomputable def logLogLogDecay (c : ℝ) : DecayCondition :=
   , decayRate := fun k => 1 / (Real.log (Real.log (Real.log k)))^c
   , sufficient := false }  -- Unknown!
 
-/-! ## Part IX: Why Lacunary Sequences? -/
+/- ## Part IX: Why Lacunary Sequences? -/
 
 /-- Lacunary sequences have a "quasi-independence" property.
     The sequence {α·nₖ} mod 1 behaves almost like independent random variables.
@@ -249,7 +248,7 @@ theorem consecutive_not_lacunary : ¬IsLacunary (fun k => k + 1) := by
   -- This requires an archimedean argument
   sorry
 
-/-! ## Part X: The Gap Between Results -/
+/- ## Part X: The Gap Between Results -/
 
 /-- The gap between known results and Problem #996:
     - We know log log decay with c > 1/2 suffices (Matsuyama)
@@ -265,7 +264,7 @@ theorem known_gap :
     exact matsuyama_1966 c hc f n hn hdecay
   · trivial
 
-/-! ## Part XI: Connections to Other Areas -/
+/- ## Part XI: Connections to Other Areas -/
 
 /-
 The problem connects to:
@@ -281,7 +280,7 @@ axiom weyl_equidistribution (α : ℝ) (hα : Irrational α) :
     Tendsto (fun N : ℕ => (1 / (N : ℝ)) * (Finset.range N).card)
       atTop (𝓝 1)
 
-/-! ## Part XII: Summary -/
+/- ## Part XII: Summary -/
 
 /-- Summary of Erdős Problem #996:
 
@@ -313,7 +312,7 @@ theorem erdos_996_summary :
 
 end Erdos996
 
-/-!
+/-
 ## Summary
 
 This file formalizes Erdős Problem #996 on the strong law of large numbers

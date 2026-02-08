@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #738: Triangle-Free Graphs with Infinite Chromatic Number
 
 Must every triangle-free graph with infinite chromatic number contain every
@@ -26,7 +26,7 @@ import Mathlib.Tactic
 
 open SimpleGraph
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A simple graph is triangle-free if it contains no 3-clique. -/
 def SimpleGraph.IsTriangleFree {V : Type*} (G : SimpleGraph V) : Prop :=
@@ -52,7 +52,7 @@ def SimpleGraph.HasInducedCopy {V : Type*} {n : ℕ}
   ∃ f : Fin n → V, Function.Injective f ∧
     ∀ i j : Fin n, T.Adj i j ↔ G.Adj (f i) (f j)
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- **Erdős Problem #738 / Gyárfás Conjecture** (OPEN):
     Every triangle-free graph with infinite chromatic number contains
@@ -62,7 +62,7 @@ axiom gyarfas_conjecture :
     G.IsTriangleFree → G.HasInfiniteChrom →
       ∀ (n : ℕ) (T : FiniteTree n), G.HasInducedCopy T.graph
 
-/-! ## Known Partial Results -/
+/- ## Known Partial Results -/
 
 /-- A path on n vertices. -/
 def pathGraph (n : ℕ) : SimpleGraph (Fin n) where
@@ -98,7 +98,7 @@ axiom kierstead_penrice_radius2 :
         -- Trees of radius ≤ 2 (all vertices within distance 2 of center)
         True → G.HasInducedCopy T.graph
 
-/-! ## Structural Observations -/
+/- ## Structural Observations -/
 
 /-- Triangle-free with large chromatic number implies large girth
     neighborhoods: the local structure is tree-like. -/

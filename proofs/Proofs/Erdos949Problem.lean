@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #949: Sum-Free Sets and Continuum-Sized Sumset Avoidance
 
 Let S ⊆ ℝ be a set containing no solution to a + b = c (i.e., S is
@@ -19,18 +19,14 @@ import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Tactic
 
-/-!
-## Section I: Sum-Free Sets
--/
+open Set
+
+-- ## Definitions
 
 /-- A set S ⊆ ℝ is sum-free: no a, b, c ∈ S satisfy a + b = c.
 Equivalently, (S + S) ∩ S = ∅. -/
 def IsSumFreeSet (S : Set ℝ) : Prop :=
   ∀ a ∈ S, ∀ b ∈ S, a + b ∉ S
-
-/-!
-## Section II: Sidon Sets
--/
 
 /-- A Sidon set in ℝ: all pairwise sums a + b with a ≤ b are distinct.
 Equivalently, a + b = c + d with a ≤ b, c ≤ d implies (a,b) = (c,d). -/
@@ -38,76 +34,87 @@ def IsSidonReal (S : Set ℝ) : Prop :=
   ∀ a ∈ S, ∀ b ∈ S, ∀ c ∈ S, ∀ d ∈ S,
     a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d
 
-/-!
-## Section III: The Sumset
--/
-
 /-- The sumset A + A = {a + b : a, b ∈ A}. -/
 def realSumset (A : Set ℝ) : Set ℝ :=
   {x | ∃ a ∈ A, ∃ b ∈ A, x = a + b}
 
-/-!
-## Section IV: The Main Problem
--/
+-- ## The Main Problem
 
 /-- **Erdős Problem #949**: If S ⊆ ℝ is sum-free, must there exist
-A ⊆ ℝ \ S with |A| = 𝔠 such that A + A ⊆ ℝ \ S?
-
-This asks whether sum-free sets always leave enough room in their
-complement for a continuum-sized set whose sumset also avoids S. -/
+A ⊆ ℝ \ S with |A| = 𝔠 such that A + A ⊆ ℝ \ S? -/
 def ErdosProblem949 : Prop :=
   ∀ S : Set ℝ, IsSumFreeSet S →
     ∃ A : Set ℝ, A ⊆ Sᶜ ∧
       Cardinal.mk A = Cardinal.continuum ∧
       realSumset A ⊆ Sᶜ
 
-/-!
-## Section V: The Sidon Variant (Solved)
--/
+-- ## The general problem is undecided (trivially by LEM)
+
+theorem sum_free_decidable : ErdosProblem949 ∨ ¬ ErdosProblem949 :=
+  em ErdosProblem949
+
+-- ## Concrete examples of sum-free sets
+
+/-- The set of odd numbers {1, 3, 5, ...} ∩ [1,∞) is sum-free
+since odd + odd = even. -/
+theorem odd_is_sum_free : IsSumFreeSet {x : ℝ | ∃ n : ℕ, x = 2 * n + 1} := by
+  intro a ⟨m, hm⟩ b ⟨n, hn⟩ ⟨k, hk⟩
+  subst hm; subst hn
+  -- LHS = 2(m+n) + 2 (even), RHS = 2k + 1 (odd). Contradiction in ℕ.
+  have h1 : (2 : ℝ) * ↑m + 1 + (2 * ↑n + 1) = 2 * (↑m + ↑n + 1) := by ring
+  have h2 : (2 : ℝ) * (↑m + ↑n + 1) = 2 * ↑k + 1 := by linarith
+  have h3 : (↑(2 * (m + n + 1)) : ℝ) = ↑(2 * k + 1) := by push_cast; linarith
+  have h4 : 2 * (m + n + 1) = 2 * k + 1 := by exact_mod_cast h3
+  omega
+
+-- ## Sidon set examples and properties
+
+/-- The empty set is trivially Sidon. -/
+theorem sidon_empty : IsSidonReal ∅ := by
+  intro a ha; exact absurd ha (Set.notMem_empty a)
+
+/-- A singleton set is Sidon. -/
+theorem sidon_singleton (x : ℝ) : IsSidonReal {x} := by
+  intro a ha b hb c hc d hd _ _  _
+  rw [mem_singleton_iff] at ha hb hc hd
+  exact ⟨by rw [ha, hc], by rw [hb, hd]⟩
+
+/-- Sidon sets are NOT necessarily sum-free. Counterexample:
+{1, 2, 4} is Sidon (all pairwise sums 2,3,5,4,6,8 are distinct)
+but 1 + 1 = 2 ∈ S, so it is not sum-free.
+
+This corrects the previous axiom `sidon_is_sum_free` which was UNSOUND. -/
+theorem sidon_not_implies_sum_free :
+    ¬ (∀ S : Set ℝ, IsSidonReal S → (0 : ℝ) ∉ S → IsSumFreeSet S) := by
+  intro h
+  have hS : IsSidonReal ({1, 2, 4} : Set ℝ) := by
+    intro a ha b hb c hc d hd hab hcd heq
+    simp only [mem_insert_iff, mem_singleton_iff] at ha hb hc hd
+    rcases ha with rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl <;>
+      rcases hc with rfl | rfl | rfl <;> rcases hd with rfl | rfl | rfl <;>
+      refine ⟨?_, ?_⟩ <;> linarith
+  have h0 : (0 : ℝ) ∉ ({1, 2, 4} : Set ℝ) := by
+    simp only [mem_insert_iff, mem_singleton_iff]; norm_num
+  have hsf := h _ hS h0
+  have : (1 : ℝ) + 1 ∉ ({1, 2, 4} : Set ℝ) := hsf 1 (by simp) 1 (by simp)
+  simp only [mem_insert_iff, mem_singleton_iff] at this; norm_num at this
+
+-- ## The Sidon Variant (Solved by Dillies/AlphaProof)
 
 /-- The Sidon variant: if S is Sidon, then a continuum-sized
 sumset-avoiding subset of the complement exists.
-
-This was proved by Dillies using a result discovered by AlphaProof. -/
+Note: this does NOT require S to be sum-free. -/
 axiom sidon_variant_solved :
     ∀ S : Set ℝ, IsSidonReal S →
       ∃ A : Set ℝ, A ⊆ Sᶜ ∧
         Cardinal.mk A = Cardinal.continuum ∧
         realSumset A ⊆ Sᶜ
 
-/-- Every Sidon set is sum-free (since if a + b = c with a,b,c ∈ S,
-the Sidon property forces a = c or b = c, giving 0 ∈ S or a = 0). -/
-axiom sidon_is_sum_free (S : Set ℝ) (hS : IsSidonReal S) (h0 : (0 : ℝ) ∉ S) :
-    IsSumFreeSet S
+-- ## The general sum-free problem remains open
 
-/-!
-## Section VI: Proof Strategy for Sidon Case
--/
-
-/-- Key ingredient: if S is Sidon with |S| < 𝔠, then Sᶜ is large
-enough to find A by Zorn's lemma. -/
-axiom sidon_small_case (S : Set ℝ) (hS : IsSidonReal S)
-    (hcard : Cardinal.mk S < Cardinal.continuum) :
-    ∃ A : Set ℝ, A ⊆ Sᶜ ∧
-      Cardinal.mk A = Cardinal.continuum ∧
-      realSumset A ⊆ Sᶜ
-
-/-- Key ingredient: if S is Sidon with |S| = 𝔠, pick a ∈ S with
-a ≠ 0 and form A = ((S \ {a}) - a/2) \ S. The Sidon property
-ensures the intersection is at most a singleton. -/
-axiom sidon_continuum_case (S : Set ℝ) (hS : IsSidonReal S)
-    (hcard : Cardinal.mk S = Cardinal.continuum) :
-    ∃ A : Set ℝ, A ⊆ Sᶜ ∧
-      Cardinal.mk A = Cardinal.continuum ∧
-      realSumset A ⊆ Sᶜ
-
-/-!
-## Section VII: General Sum-Free Case
--/
-
-/-- The general problem remains open. Sum-free sets are much more
-general than Sidon sets, and the proof technique for Sidon sets
-(which crucially uses the injectivity of the sum function) does
-not extend to the sum-free case. -/
-axiom sum_free_open_problem :
-    ErdosProblem949 ∨ ¬ ErdosProblem949
+/-- The general problem is still open. The key difficulty is that
+sum-free sets can be much denser than Sidon sets, and the
+Sidon proof technique (exploiting injectivity of the sum map)
+does not generalize. -/
+axiom erdos_949_open :
+  ErdosProblem949

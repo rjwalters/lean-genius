@@ -281,11 +281,10 @@ def greedyRelation (t N : ℕ) : Prop :=
 ## Part IX: Computational Aspects
 -/
 
-/--
+/-
 **Computing t(N) is hard:**
 There's no known efficient algorithm for computing t(N) exactly.
 -/
-axiom t_computation_hard : True
 
 /--
 **Small computed values:**
@@ -315,19 +314,17 @@ theorem erdos_294_summary :
     liuSawhneyLowerBound := by
   exact liu_sawhney_2024
 
-/--
+/-
 **Key insight:**
 The density of "bad" starting points is about log(N)/N,
 so they form a sparse set.
 -/
-axiom key_insight : True
 
-/--
+/-
 **Problem Status:**
 - Upper bound: PROVED (Erdős-Graham 1980)
 - Lower bound: PROVED (Liu-Sawhney 2024)
 - Full asymptotic: SOLVED up to (log log N)^O(1) factors
 -/
-axiom erdos_294_status : True
 
 end Erdos294

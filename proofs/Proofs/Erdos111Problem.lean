@@ -262,12 +262,11 @@ def erdos111_question : Prop :=
     hasAleph1ChromaticNumber G →
     ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n > M * n
 
-/--
+/-
 **Erdős Problem #111: OPEN**
 
 The status of the main question remains unknown.
 -/
-axiom erdos_111_status : True  -- Problem is open; we cannot assert either direction
 
 /-
 ## Part X: Related Results

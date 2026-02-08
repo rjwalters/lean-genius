@@ -159,15 +159,19 @@ The covering number τ(F) is the minimum number of elements needed to
 intersect every set in F.
 -/
 def CoveringNumber {α : Type*} (F : Set (Set α)) : ℕ :=
-  sSup {k : ℕ | ∃ C : Finset α, C.card = k ∧ ∀ A ∈ F, (A ∩ C).Nonempty}
+  sInf {k : ℕ | ∃ C : Finset α, C.card = k ∧ ∀ A ∈ F, A.Nonempty → (↑C ∩ A).Nonempty}
 
 /--
 **Chvátal (1974):**
-Proved the conjecture under a stronger ordering condition (using injections
-rather than subset inclusion).
+Proved the conjecture under a stronger ordering condition: if F is hereditary
+and there exists an injection f : F → F such that f(A) ⊂ A for all non-minimal A,
+then the maximum intersecting subfamily is a star.
 -/
-axiom chvatal_1974_injection_version :
-  True  -- Structural record; details omitted
+axiom chvatal_1974_injection_version {α : Type*} [Fintype α] (F : Set (Set α)) :
+  IsHereditary F →
+  (∃ f : Set α → Set α, (∀ A ∈ F, f A ∈ F) ∧
+    (∀ A ∈ F, A.Nonempty → f A ⊂ A)) →
+  ChvatalConjecture F
 
 /--
 **Sterboul (1974):**
@@ -213,7 +217,6 @@ def WeightedChvatalConjecture {α : Type*} [Fintype α]
     ∃ x : α, ∀ F' : Set (Set α), F' ⊆ F → IsIntersecting F' →
       ∑' A : F', w A ≤ ∑' A : Star F x, w A
 
-axiom borg_2011_partial : True  -- Partial results under assumptions
 
 /-
 ## Part VI: Connection to Erdős-Ko-Rado
@@ -299,9 +302,9 @@ every intersecting subfamily F' has |F'| ≤ |Star(F, x)|.
 **Status:** OPEN
 
 **Known Results:**
-- True under injection-based ordering (Chvátal 1974)
-- True under Sterboul conditions (1974)
-- True for covering number 2 (Frankl-Kupavskii 2023)
+- Holds under injection-based ordering (Chvátal 1974)
+- Holds under Sterboul conditions (1974)
+- Holds for covering number 2 (Frankl-Kupavskii 2023)
 - Weighted version partially resolved (Borg 2011)
 
 **Why It's Hard:**
@@ -309,13 +312,9 @@ The conjecture requires finding a SINGLE element x that works
 for ALL intersecting subfamilies simultaneously. Local arguments
 don't suffice; global structure is needed.
 -/
-theorem erdos_701_summary :
-    -- The conjecture is stated
-    (∀ α [Fintype α], ∀ F : Set (Set α),
+axiom erdos_701_open_status :
+    ∀ α [Fintype α], ∀ F : Set (Set α),
       IsHereditary F → ∃ x : α, ∀ F' : Set (Set α), F' ⊆ F →
-        IsIntersecting F' → F'.ncard ≤ (Star F x).ncard) ∧
-    -- Partial results exist
-    True := by
-  exact ⟨chvatal_conjecture_open, trivial⟩
+        IsIntersecting F' → F'.ncard ≤ (Star F x).ncard
 
 end Erdos701

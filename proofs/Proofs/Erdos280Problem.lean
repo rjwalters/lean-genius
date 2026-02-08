@@ -33,7 +33,7 @@ open Nat Real Finset
 
 namespace Erdos280
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- m avoids all congruence classes a(i) mod n(i) for i < k -/
 def AvoidsAll (m : ℕ) (n a : ℕ → ℕ) (k : ℕ) : Prop :=
@@ -47,7 +47,7 @@ noncomputable def CountAvoiders (N : ℕ) (n a : ℕ → ℕ) (k : ℕ) : ℕ :=
 def SatisfiesGrowthBound (n : ℕ → ℕ) (ε : ℝ) : Prop :=
   ε > 0 ∧ ∀ k : ℕ, k ≥ 2 → (n k : ℝ) > (1 + ε) * k * log k
 
-/-! ## Part II: The Conjecture (DISPROVED) -/
+/- ## Part II: The Conjecture (DISPROVED) -/
 
 /-- The original conjecture (DISPROVED): for any sequence satisfying the
 growth bound with valid residues, the count of avoiders is not o(k).
@@ -61,7 +61,7 @@ def OriginalConjecture : Prop :=
     ∃ c : ℝ, c > 0 ∧ ∀ K : ℕ, ∃ k : ℕ, k ≥ K ∧
       (CountAvoiders (n k) n a k : ℝ) ≥ c * k
 
-/-! ## Part III: Cambie's Counterexample -/
+/- ## Part III: Cambie's Counterexample -/
 
 /-- Cambie's sequence: nₖ = 2^k -/
 def cambie_n (k : ℕ) : ℕ := 2^k
@@ -91,7 +91,7 @@ This directly contradicts the conjecture requiring count ≥ c·k. -/
 axiom cambie_count_is_one (k : ℕ) (hk : k ≥ 1) :
     CountAvoiders (2^k) cambie_n cambie_a k = 1
 
-/-! ## Part IV: Refutation of the Conjecture -/
+/- ## Part IV: Refutation of the Conjecture -/
 
 /-- The original conjecture is FALSE: Cambie's counterexample
 satisfies all hypotheses but has count = 1, not Ω(k) -/
@@ -100,7 +100,7 @@ axiom original_conjecture_false : ¬OriginalConjecture
 /-- Erdős Problem #280 RESOLVED: the conjecture is disproved -/
 theorem erdos_280_disproved : ¬OriginalConjecture := original_conjecture_false
 
-/-! ## Part V: Why the Bound is Best Possible -/
+/- ## Part V: Why the Bound is Best Possible -/
 
 /-- The k-th prime pₖ ~ k log k (Prime Number Theorem).
 If nₖ < k log k were allowed, we could use primes as moduli,
@@ -110,7 +110,7 @@ axiom prime_number_theorem_approx :
       c * k * log k ≤ (Nat.nth Nat.Prime k : ℝ) ∧
       (Nat.nth Nat.Prime k : ℝ) ≤ 2 * k * log k
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /--
 **Erdős Problem #280: Summary**

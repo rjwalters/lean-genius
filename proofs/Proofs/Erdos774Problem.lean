@@ -1,4 +1,4 @@
-/-!
+/-
   Erdős Problem #774: Dissociated and Proportionately Dissociated Sets
 
   Source: https://erdosproblems.com/774
@@ -38,7 +38,7 @@ open Finset Set
 
 namespace Erdos774
 
-/-!
+/-
 ## Part I: Dissociated Sets
 -/
 
@@ -68,7 +68,7 @@ theorem dissociated_iff_unique_sums (A : Finset ℕ) :
   · intro h X Y hX hY hne hsum
     exact hne (h X Y hX hY hsum)
 
-/-!
+/-
 ## Part II: Examples of Dissociated Sets
 -/
 
@@ -94,7 +94,7 @@ def IsLacunary (a : ℕ → ℕ) : Prop :=
 axiom lacunary_is_dissociated (a : ℕ → ℕ) (h : IsLacunary a) (n : ℕ) :
     IsDissociated ((Finset.range n).image a)
 
-/-!
+/-
 ## Part III: Proportionately Dissociated Sets
 -/
 
@@ -121,7 +121,7 @@ theorem dissociated_is_proportionately (A : Set ℕ) :
         exact h X Y (Subset.trans hX hB) (Subset.trans hY hB) hne
       · simp
 
-/-!
+/-
 ## Part IV: Sidon Sets (Harmonic Analysis)
 -/
 
@@ -139,7 +139,7 @@ def IsSidonHarmonic (A : Set ℕ) : Prop :=
 axiom pisier_theorem (A : Set ℕ) :
     IsProportionatelyDissociated A ↔ IsSidonHarmonic A
 
-/-!
+/-
 ## Part V: Sidon Sets (Additive Combinatorics)
 -/
 
@@ -157,7 +157,7 @@ axiom sidon_implies_dissociated (A : Finset ℕ) :
 axiom dissociated_not_implies_sidon :
     ∃ A : Finset ℕ, IsDissociated A ∧ ¬IsSidonAdditive A
 
-/-!
+/-
 ## Part VI: Union Decomposition
 -/
 
@@ -170,7 +170,7 @@ def IsFiniteUnionDissociated (A : Set ℕ) : Prop :=
 axiom finite_union_is_proportionately (A : Set ℕ) :
     IsFiniteUnionDissociated A → IsProportionatelyDissociated A
 
-/-!
+/-
 ## Part VII: The Main Conjecture
 -/
 
@@ -183,7 +183,7 @@ def ErdosConjecture774 : Prop :=
 /-- Alon-Erdős (1985) conjectured the answer is NO. -/
 axiom alon_erdos_conjecture : ¬ErdosConjecture774
 
-/-!
+/-
 ## Part VIII: The Sidon Analogue
 -/
 
@@ -216,7 +216,7 @@ axiom nrs_construction :
     ∃ A : Set ℕ, A.Infinite ∧ IsProportionatelySidon A ∧
       ¬IsFiniteUnionSidon A
 
-/-!
+/-
 ## Part IX: Connections and Implications
 -/
 
@@ -229,7 +229,7 @@ axiom prop_sidon_implies_prop_dissociated (A : Set ℕ) :
 axiom union_sidon_implies_union_dissociated (A : Set ℕ) :
     IsFiniteUnionSidon A → IsFiniteUnionDissociated A
 
-/-!
+/-
 ## Part X: Bounds on Dissociated Subsets
 -/
 
@@ -244,7 +244,7 @@ axiom max_dissociated_log_bound :
       c * Real.log n ≤ maxDissociatedSize n ∧
       maxDissociatedSize n ≤ C * Real.log n
 
-/-!
+/-
 ## Part XI: Summary
 -/
 

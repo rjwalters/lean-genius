@@ -33,13 +33,13 @@ open Nat Set
 
 namespace Erdos828
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- The set of n where φ(n) | n + a. -/
 def totientDivisors (a : ℤ) : Set ℕ :=
   {n : ℕ | (totient n : ℤ) ∣ (n : ℤ) + a}
 
-/-! ## Part II: Special Case a = 0 -/
+/- ## Part II: Special Case a = 0 -/
 
 /-- Characterization: φ(n) | n iff n ≤ 1 or n = 2^a · 3^b for some a > 0. -/
 axiom totient_dvd_self_iff (n : ℕ) :
@@ -48,7 +48,7 @@ axiom totient_dvd_self_iff (n : ℕ) :
 /-- The set {n : φ(n) | n} is infinite (0, 1, 2, 4, 6, 8, 12, 16, ...). -/
 axiom totientDivisors_zero_infinite : (totientDivisors 0).Infinite
 
-/-! ## Part III: Special Case a = -1 (Lehmer's Conjecture) -/
+/- ## Part III: Special Case a = -1 (Lehmer's Conjecture) -/
 
 /--
 Lehmer's Conjecture (1932, OPEN):
@@ -66,7 +66,7 @@ theorem prime_totient_dvd_pred (p : ℕ) (hp : p.Prime) : totient p ∣ p - 1 :=
 /-- There are infinitely many n with φ(n) | n - 1 (namely, all primes). -/
 axiom totientDivisors_neg_one_infinite : (totientDivisors (-1)).Infinite
 
-/-! ## Part IV: The Main Conjecture -/
+/- ## Part IV: The Main Conjecture -/
 
 /--
 **Erdős Problem #828 (OPEN):**
@@ -76,7 +76,7 @@ Attributed to Graham.
 def erdos828Conjecture : Prop :=
   ∀ a : ℤ, (totientDivisors a).Infinite
 
-/-! ## Part V: Structural Properties -/
+/- ## Part V: Structural Properties -/
 
 /-- φ(n) is always even for n > 2. -/
 axiom totient_even (n : ℕ) (hn : n > 2) : 2 ∣ totient n
@@ -89,7 +89,7 @@ theorem totient_prime' (p : ℕ) (hp : p.Prime) : totient p = p - 1 :=
 axiom totient_prime_pow_formula (p k : ℕ) (hp : p.Prime) (hk : k > 0) :
     totient (p^k) = p^(k-1) * (p - 1)
 
-/-! ## Part VI: Summary -/
+/- ## Part VI: Summary -/
 
 /--
 **Erdős Problem #828: Summary**

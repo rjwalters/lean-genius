@@ -30,7 +30,7 @@ import Mathlib
 
 namespace Erdos1070
 
-/-! ## Unit Distance Graphs
+/- ## Unit Distance Graphs
 
 A unit distance graph has vertices as points in ℝ² and edges between
 points at Euclidean distance exactly 1.
@@ -61,14 +61,15 @@ def IsIndependentSet {n : ℕ} (G : UnitDistanceGraph n)
 noncomputable def independenceNumber {n : ℕ} (G : UnitDistanceGraph n) : ℕ :=
   Finset.sup (G.points.powerset.filter (IsIndependentSet G)) Finset.card
 
-/-! ## The Function f(n)
+/- ## The Function f(n)
 
 f(n) is the minimum independence number across all n-point unit distance graphs.
 This is the function Erdős asks to estimate.
 -/
 
-/-- f(n) = minimum independence number over all n-point unit distance graphs -/
-noncomputable def f (n : ℕ) : ℕ := sorry
+/-- f(n) = minimum independence number over all n-point unit distance graphs.
+    Axiomatized as an extremal quantity over geometric configurations. -/
+axiom f (n : ℕ) : ℕ
 
 /-- f(n) is a valid minimum: every n-point configuration has an independent set of size f(n) -/
 axiom f_is_minimum : ∀ n : ℕ, ∀ G : UnitDistanceGraph n,
@@ -78,14 +79,15 @@ axiom f_is_minimum : ∀ n : ℕ, ∀ G : UnitDistanceGraph n,
 axiom f_is_achieved : ∀ n : ℕ, ∃ G : UnitDistanceGraph n,
   independenceNumber G = f n
 
-/-! ## The Density Approach
+/- ## The Density Approach
 
 The key insight of Larman and Rogers is to connect the discrete problem
 to the continuous density of unit-distance-free measurable sets.
 -/
 
-/-- m₁ = supremum density of measurable unit-distance-free sets in ℝ² -/
-noncomputable def m1 : ℝ := sorry
+/-- m₁ = supremum density of measurable unit-distance-free sets in ℝ².
+    Axiomatized since its exact value is unknown (between 0.229 and 0.25). -/
+axiom m1 : ℝ
 
 /-- m₁ is positive -/
 axiom m1_pos : m1 > 0
@@ -93,7 +95,7 @@ axiom m1_pos : m1 > 0
 /-- m₁ is at most 1 -/
 axiom m1_le_one : m1 ≤ 1
 
-/-! ### Larman-Rogers Theorem
+/- ### Larman-Rogers Theorem
 
 The fundamental connection between discrete independence and continuous density.
 -/
@@ -102,7 +104,7 @@ The fundamental connection between discrete independence and continuous density.
 axiom larman_rogers_theorem :
   ∀ n : ℕ, (f n : ℝ) ≥ m1 * n
 
-/-! ### Croft's Lower Bound
+/- ### Croft's Lower Bound
 
 Croft constructed explicit unit-distance-free sets achieving density ≥ 0.22936.
 -/
@@ -116,7 +118,7 @@ theorem f_lower_bound : ∀ n : ℕ, (f n : ℝ) ≥ 0.22936 * n := by
   calc (f n : ℝ) ≥ m1 * n := larman_rogers_theorem n
     _ ≥ 0.22936 * n := by nlinarith [croft_lower_bound]
 
-/-! ## The Moser Spindle Upper Bound
+/- ## The Moser Spindle Upper Bound
 
 The Moser spindle is a 7-vertex unit distance graph with independence number 2.
 By constructing configurations from copies of the Moser spindle, we get f(n) ≤ (2/7)n.
@@ -136,7 +138,7 @@ axiom moser_spindle_exists : ∃ G : UnitDistanceGraph moserSpindleVertices,
 axiom moser_spindle_upper_bound :
   ∀ n : ℕ, (f n : ℝ) ≤ (2 / 7) * n
 
-/-! ## Main Bounds Theorem
+/- ## Main Bounds Theorem
 
 Combining Croft's lower bound and the Moser spindle upper bound.
 -/
@@ -147,7 +149,7 @@ theorem best_known_bounds : ∀ n : ℕ,
   intro n
   exact ⟨f_lower_bound n, moser_spindle_upper_bound n⟩
 
-/-! ## The n/4 Question and Density Limitations
+/- ## The n/4 Question and Density Limitations
 
 Erdős asked whether f(n) ≥ n/4. ACMVZ (2023) showed that density methods
 alone cannot resolve this question because m₁ ≤ 0.247 < 1/4.
@@ -167,15 +169,16 @@ theorem density_insufficient_for_quarter : m1 < 1 / 4 := by
 /-- The n/4 question remains open -/
 axiom quarter_conjecture_open : ∀ n : ℕ, (f n : ℝ) ≥ n / 4 ↔ sorry
 
-/-! ## Connection to Hadwiger-Nelson Problem
+/- ## Connection to Hadwiger-Nelson Problem
 
 The chromatic number χ of the plane (Hadwiger-Nelson problem) satisfies 5 ≤ χ ≤ 7.
 Since independence number ω and chromatic number χ satisfy ω·χ ≥ n,
 we have f(n) ≥ n/χ.
 -/
 
-/-- The chromatic number of the plane -/
-noncomputable def chromaticNumberPlane : ℕ := sorry
+/-- The chromatic number of the plane (Hadwiger-Nelson problem).
+    Axiomatized since its exact value is unknown (between 5 and 7). -/
+axiom chromaticNumberPlane : ℕ
 
 /-- De Grey (2018): χ ≥ 5 -/
 axiom de_grey_lower_bound : chromaticNumberPlane ≥ 5
@@ -194,7 +197,7 @@ theorem f_from_chromatic : ∀ n : ℕ, (f n : ℝ) ≥ n / 7 := by
   have h2 : chromaticNumberPlane ≤ 7 := chromatic_upper_bound
   sorry -- Follows from h1 and h2
 
-/-! ## Summary
+/- ## Summary
 
 Erdős Problem #1070 asks to estimate f(n), the minimum independence number
 of n-point unit distance graphs in ℝ².

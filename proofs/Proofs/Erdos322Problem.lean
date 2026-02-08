@@ -41,7 +41,7 @@ open Nat Finset
 
 namespace Erdos322
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -60,7 +60,7 @@ all k-tuples with bounded entries, which is technically involved.
 -/
 axiom representationCount (k n : ℕ) : ℕ
 
-/-!
+/-
 ## Part II: Hardy-Littlewood Hypothesis K
 -/
 
@@ -79,7 +79,7 @@ There exists c > 0 and infinitely many n with r_k(n) > n^c.
 def hypothesisK_fails (k : ℕ) : Prop :=
   ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, ∃ n ≥ N, (representationCount k n : ℝ) > (n : ℝ)^c
 
-/-!
+/-
 ## Part III: Mahler's Theorem (k = 3)
 -/
 
@@ -99,7 +99,7 @@ Mahler's result implies polynomial growth for infinitely many n.
 -/
 axiom hypothesisK_fails_for_3 : hypothesisK_fails 3
 
-/-!
+/-
 ## Part IV: Status for k ≥ 4
 -/
 
@@ -110,7 +110,7 @@ Erdős believed Hypothesis K fails for all k ≥ 4, but this is unknown.
 def erdos_conjecture_k4 : Prop :=
   ∀ k ≥ 4, hypothesisK_fails k
 
-/-!
+/-
 ## Part V: Erdős-Chowla Lower Bound
 -/
 
@@ -125,7 +125,7 @@ axiom erdos_chowla_bound (k : ℕ) (hk : k ≥ 3) :
     ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, ∃ n ≥ N, n ≥ 3 ∧
       (representationCount k n : ℝ) ≥ (n : ℝ)^(c / Real.log (Real.log n))
 
-/-!
+/-
 ## Part VI: Hypothesis K*
 -/
 
@@ -141,7 +141,7 @@ def hypothesisKStar (k : ℕ) : Prop :=
     ((Finset.range N).sum (fun n => (representationCount k n : ℝ)^2))
       ≤ C * (N : ℝ)^(1 + ε)
 
-/-!
+/-
 ## Part VII: Positive Density Sets
 -/
 
@@ -156,7 +156,7 @@ axiom erdos_positive_density_claim (k : ℕ) (hk : k ≥ 3) (S : Set ℕ)
       ((Finset.range N).filter (fun n => n ∈ S)).card ≥ δ * N) :
     ∀ M : ℕ, ∃ n : ℕ, representationCount k n ≥ M
 
-/-!
+/-
 ## Part VIII: Summary
 -/
 

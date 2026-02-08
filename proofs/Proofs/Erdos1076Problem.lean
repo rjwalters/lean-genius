@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #1076: Extremal Numbers for 3-Uniform Hypergraphs
 
 Source: https://erdosproblems.com/1076
@@ -35,7 +35,7 @@ open Real Filter
 
 namespace Erdos1076
 
-/-! ## Part I: 3-Uniform Hypergraphs -/
+/- ## Part I: 3-Uniform Hypergraphs -/
 
 /-- A 3-uniform hypergraph on n vertices is a collection of 3-element subsets. -/
 structure Hypergraph3 (n : ℕ) where
@@ -53,7 +53,7 @@ def numVertices (H : Hypergraph3 n) : ℕ :=
 def IsInFamilyF (k : ℕ) (H : Hypergraph3 n) : Prop :=
   numVertices H = k ∧ numEdges H = k - 2
 
-/-! ## Part II: The Family F_k -/
+/- ## Part II: The Family F_k -/
 
 /-- The family F_k of all 3-uniform hypergraphs with k vertices and k-2 edges. -/
 def FamilyF (k n : ℕ) : Set (Hypergraph3 n) :=
@@ -77,7 +77,7 @@ theorem family_F6_description :
   intro H
   simp [FamilyF, IsInFamilyF]
 
-/-! ## Part III: Subgraph Containment -/
+/- ## Part III: Subgraph Containment -/
 
 /-- A hypergraph H contains a copy of G as a subgraph. -/
 def ContainsSubgraph (H : Hypergraph3 n) (G : Hypergraph3 m) : Prop :=
@@ -93,7 +93,7 @@ def ContainsSubgraph (H : Hypergraph3 n) (G : Hypergraph3 m) : Prop :=
 def IsFkFree (k : ℕ) (H : Hypergraph3 n) : Prop :=
   ∀ G : Hypergraph3 n, G ∈ FamilyF k n → ¬ContainsSubgraph H G
 
-/-! ## Part IV: Extremal Numbers -/
+/- ## Part IV: Extremal Numbers -/
 
 /-- The extremal number ex₃(n, F_k): max edges in an F_k-free 3-uniform
     hypergraph on n vertices. Axiomatized since the constructive definition
@@ -108,7 +108,7 @@ axiom ex3_achieved (n k : ℕ) (hk : k ≥ 4) :
 axiom ex3_is_max (n k : ℕ) (hk : k ≥ 4) :
   ∀ H : Hypergraph3 n, IsFkFree k H → numEdges H ≤ ex3 n k
 
-/-! ## Part V: Brown-Erdős-Sós Results (1973) -/
+/- ## Part V: Brown-Erdős-Sós Results (1973) -/
 
 /-- Brown-Erdős-Sós (1973): For k = 4, ex₃(n, F_4) ~ n²/6. -/
 axiom brown_erdos_sos_k4 :
@@ -119,7 +119,7 @@ axiom brown_erdos_sos_general (k : ℕ) (hk : k ≥ 4) :
   ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
     ∀ n : ℕ, n ≥ k → c₁ * n^2 ≤ (ex3 n k : ℝ) ∧ (ex3 n k : ℝ) ≤ c₂ * n^2
 
-/-! ## Part VI: Erdős's Supporting Theorem (1974) -/
+/- ## Part VI: Erdős's Supporting Theorem (1974) -/
 
 /-- Erdős (1974): Hypergraphs with > (1/3)C(n,2) edges contain F_5 or F_6 members. -/
 axiom erdos_1974_supporting (n : ℕ) (H : Hypergraph3 n)
@@ -136,7 +136,7 @@ theorem threshold_asymptotic (n : ℕ) (hn : n > 0) :
   simp [thresholdEdges]
   ring
 
-/-! ## Part VII: The Main Conjecture -/
+/- ## Part VII: The Main Conjecture -/
 
 /-- The Brown-Erdős-Sós Conjecture: ex₃(n, F_k) ~ n²/6 for all k ≥ 5. -/
 def BrownErdosSosConjecture : Prop :=
@@ -147,7 +147,7 @@ def BrownErdosSosConjecture' : Prop :=
   ∀ k : ℕ, k ≥ 5 → ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     |(ex3 n k : ℝ) / n^2 - 1/6| < ε
 
-/-! ## Part VIII: The Solution -/
+/- ## Part VIII: The Solution -/
 
 /-- **Bohman-Warnke Theorem (2019):**
     The conjecture is TRUE for all k ≥ 5.
@@ -163,7 +163,7 @@ theorem ex3_asymptotic (k : ℕ) (hk : k ≥ 5) :
     Tendsto (fun n => (ex3 n k : ℝ) / n^2) atTop (nhds (1/6)) :=
   bohman_warnke_theorem k hk
 
-/-! ## Part IX: Upper and Lower Bounds
+/- ## Part IX: Upper and Lower Bounds
 
 The asymptotic ex₃(n, F_k) ~ n²/6 implies both upper and lower bounds.
 These are axiomatized since extracting explicit bounds from filter convergence
@@ -177,7 +177,7 @@ axiom ex3_upper_bound (k : ℕ) (hk : k ≥ 5) :
 axiom ex3_lower_bound (k : ℕ) (hk : k ≥ 5) :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, (ex3 n k : ℝ) ≥ (1/6 - ε) * n^2
 
-/-! ## Part X: Connection to Steiner Triple Systems -/
+/- ## Part X: Connection to Steiner Triple Systems -/
 
 /-- A Steiner triple system of order n: every pair of vertices lies in
     exactly one edge (triple). -/
@@ -199,7 +199,7 @@ axiom extremal_sts_connection (k : ℕ) (hk : k ≥ 5) :
       ∃ H : Hypergraph3 n, IsFkFree k H ∧
         |(numEdges H : ℝ) - n * (n-1) / 6| < ε * n^2
 
-/-! ## Part XI: Exact Results for Special k -/
+/- ## Part XI: Exact Results for Special k -/
 
 /-- For k satisfying divisibility conditions, exact values are known.
     When n ≡ 1 or 3 (mod 6), exact Steiner triple systems exist,
@@ -208,7 +208,7 @@ axiom exact_values_divisibility (k : ℕ) (hk : k ≥ 4)
     (hdiv : ∃ m : ℕ, k = 3*m + 1 ∨ k = 3*m) :
   ∃ f : ℕ → ℕ, ∀ n : ℕ, n ≥ k → ex3 n k = f n
 
-/-! ## Part XII: Summary -/
+/- ## Part XII: Summary -/
 
 /-- **Erdős Problem #1076: SOLVED**
 

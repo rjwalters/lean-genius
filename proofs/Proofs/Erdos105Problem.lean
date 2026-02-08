@@ -1,4 +1,4 @@
-/-!
+/-
 Erdős Problem #105: Rich Lines Avoiding Obstacles
 
 Source: https://erdosproblems.com/105
@@ -42,7 +42,7 @@ open Set Finset
 
 namespace Erdos105
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- A point in the plane ℝ². -/
 abbrev Point := EuclideanSpace ℝ (Fin 2)
@@ -69,7 +69,7 @@ def Line.unblocked (L : Line) (B : Set Point) : Prop :=
 def Line.richAndUnblocked (L : Line) (A B : Set Point) : Prop :=
   L.isRich A ∧ L.unblocked B
 
-/-! ## Part II: The Erdős-Purdy Conjecture -/
+/- ## Part II: The Erdős-Purdy Conjecture -/
 
 /-- A set of points is non-collinear if no single line contains all of them. -/
 def NonCollinear (A : Set Point) : Prop :=
@@ -87,7 +87,7 @@ def ErdosPurdyConjecture : Prop :=
     NonCollinear (A : Set Point) →
     ∃ L : Line, L.richAndUnblocked (A : Set Point) (B : Set Point)
 
-/-! ## Part III: The Disproof -/
+/- ## Part III: The Disproof -/
 
 /--
 **Theorem (Xichuan 2024):**
@@ -115,7 +115,7 @@ theorem erdos_105_disproved : ¬ErdosPurdyConjecture := by
   have ⟨L, hrich, hunblocked⟩ := h A B n hn4 hAcard hBcard hdisj hncoll
   exact hblocked L hrich hunblocked
 
-/-! ## Part IV: Related Results -/
+/- ## Part IV: Related Results -/
 
 /-- **Hickerson's Construction:**
     The conjecture already fails with n-2 obstacles.
@@ -139,7 +139,7 @@ axiom beck_szemeredi_trotter_positive :
       Disjoint A B →
       ∃ L : Line, L.richAndUnblocked (A : Set Point) (B : Set Point)
 
-/-! ## Part V: The Szemerédi-Trotter Theorem -/
+/- ## Part V: The Szemerédi-Trotter Theorem -/
 
 /-- The number of point-line incidences.
     I(P, L) = |{(p, ℓ) : p ∈ P, ℓ ∈ L, p ∈ ℓ}|. -/
@@ -163,7 +163,7 @@ axiom many_rich_lines_exist (A : Finset Point) (hncoll : NonCollinear (A : Set P
     ∃ k : ℕ, k ≥ 1 ∧ ∃ (S : Finset Line), S.card = k ∧
       ∀ L ∈ S, L.isRich (A : Set Point)
 
-/-! ## Part VI: Threshold Function -/
+/- ## Part VI: Threshold Function -/
 
 /-- f(n) = largest number such that for all A with |A| = n non-collinear,
     and all B with |B| ≤ f(n), some rich line of A avoids B.
@@ -178,7 +178,7 @@ axiom threshold_lower_bound :
 axiom threshold_upper_bound :
     ∀ n : ℕ, n ≥ 4 → thresholdFunction n ≤ n - 4
 
-/-! ## Part VII: Open Problems -/
+/- ## Part VII: Open Problems -/
 
 /-- **Open Problem 1:** Does the conjecture hold with n-4 obstacles? -/
 def openProblem_n_minus_4 : Prop :=
@@ -196,7 +196,7 @@ def openProblem_exact_threshold : Prop :=
     ∀ n : ℕ, c₁ * n ≤ (thresholdFunction n : ℝ) ∧
               (thresholdFunction n : ℝ) ≤ c₂ * n
 
-/-! ## Part VIII: Summary -/
+/- ## Part VIII: Summary -/
 
 /--
 **Summary of Erdős Problem #105**
@@ -230,7 +230,7 @@ theorem erdos_105_summary :
       ∃ L : Line, L.richAndUnblocked (A : Set Point) (B : Set Point)) :=
   ⟨erdos_105_disproved, beck_szemeredi_trotter_positive⟩
 
-/-!
+/-
 ## Historical Notes
 
 1971-1995: Erdős and Purdy study point-line incidence problems

@@ -30,7 +30,7 @@ namespace Erdos918
 
 open Cardinal
 
-/-! ## Chromatic Number for Infinite Graphs
+/- ## Chromatic Number for Infinite Graphs
 
 For infinite graphs, the chromatic number is defined as the smallest cardinal κ
 such that the graph can be properly colored with κ colors.
@@ -39,7 +39,7 @@ Mathlib's SimpleGraph.chromaticNumber is defined for finite graphs (returning �
 For infinite graphs, we need a cardinal-valued version, which we axiomatize.
 -/
 
-/-! ## The Main Open Questions
+/- ## The Main Open Questions
 
 We axiomatize these questions as Props since the full formalization requires
 a cardinal-valued chromatic number that is not directly available in Mathlib.
@@ -64,7 +64,7 @@ Here ω denotes the first infinite ordinal.
 -/
 axiom Question2 : Prop
 
-/-! ## The Solved Finite Case -/
+/- ## The Solved Finite Case -/
 
 /--
 **Erdős-Hajnal (1968)**: For every finite k, there exists a graph with ℵ_k vertices
@@ -81,7 +81,7 @@ axiom erdos_hajnal_finite (k : ℕ) :
     ∃ (V : Type) (G : V → V → Prop) (_ : ∀ v, ¬G v v) (_ : ∀ v w, G v w → G w v),
       Cardinal.mk V = aleph k
 
-/-! ## Negative Results
+/- ## Negative Results
 
 The original statement in [Er69b] asked about chromatic number = ℵ₀ (equality)
 rather than ≤ ℵ₀. However, this is trivially impossible.
@@ -95,7 +95,7 @@ This is because any graph contains finite subgraphs with finite chromatic number
 -/
 axiom eq_aleph0_impossible_statement : Prop
 
-/-! ## Background: Aleph Cardinals
+/- ## Background: Aleph Cardinals
 
 The aleph cardinals form a hierarchy of infinite cardinals:
 - ℵ₀ = |ℕ| (countable infinity)
@@ -115,7 +115,7 @@ axiom aleph_1_lt_2 : aleph 1 < aleph 2
 /-- ℵ_ω is the supremum of ℵ_n for finite n (axiomatized). -/
 axiom aleph_omega0_is_sup : aleph Ordinal.omega0 = ⨆ n : ℕ, aleph n
 
-/-! ## Why This Problem is Difficult
+/- ## Why This Problem is Difficult
 
 The jump from finite k to k = 2 (or to ω + 1) is nontrivial because:
 
@@ -131,7 +131,7 @@ number always be "witnessed" by a smaller subgraph? The Erdős-Hajnal result
 shows this fails for certain finite thresholds.
 -/
 
-/-! ## Summary -/
+/- ## Summary -/
 
 /-- **Erdős Problem #918** Summary:
 

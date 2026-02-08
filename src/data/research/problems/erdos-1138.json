@@ -1,41 +1,51 @@
 {
   "slug": "erdos-1138",
   "title": "Erdős #1138",
-  "phase": "SURVEYED",
-  "status": "surveyed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $x/2 < y < x$ and $C > 1$. If $d = \\max_{p_n < x}(p_{n+1} - p_n)$, then is $\\pi(y + Cd) - \\pi(y) \\sim \\frac{Cd}{\\log y}$?",
-    "plain": "Does the count of primes in (y, y+Cd] follow the expected asymptotic when d is the maximal prime gap?",
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": ["Formalized prime counting and maximal prime gap", "Proved basic primeCounting properties"],
-    "open": ["The main conjecture", "Cramér's conjecture"],
-    "goal": "Show primes distribute normally in intervals of length proportional to maximal gap"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-07T17:30:00.000Z",
-    "iteration": 2,
-    "focus": "Initial formalization complete.",
-    "blockers": ["Problem is OPEN", "Even under RH intervals too short for PNT"],
-    "nextAction": "No further progress possible.",
-    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}
+    "phase": "NEW",
+    "since": "2026-01-15T15:52:59.263Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "progressSummary": "Created Lean formalization with prime counting and maximal gap. Proved basic properties.",
-    "builtItems": ["primeCounting", "maxPrimeGap", "erdos_1138 conjecture statement", "5 proved lemmas"],
-    "insights": ["Gap d ~ (log x)^2 far below any proven short interval PNT range", "Doubly hard: gap estimates AND short interval methods"],
-    "mathlibGaps": ["No Mathlib maximal prime gap", "No Mathlib short interval PNT"],
-    "nextSteps": ["No further progress expected"],
-    "markdown": "# Erdős #1138\n\nDeep open problem combining maximal prime gap estimates with short interval PNT.\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1138 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [{"name": "Survey formalization", "status": "completed", "description": "Formalize definitions and state conjecture"}],
-  "tags": ["erdos", "prime-gaps", "analytic-number-theory"],
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
   "relatedProofs": [],
-  "references": {"papers": ["Vaughan (1999)"], "urls": ["https://erdosproblems.com/1138"], "mathlib": ["Nat.Prime"]},
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
   "started": "2026-01-15T15:52:59.263Z",
   "significance": 7,
   "tractability": 6

@@ -28,7 +28,7 @@ open Affine EuclideanGeometry
 
 namespace Erdos189
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- The Euclidean plane ℝ². -/
 abbrev Plane := EuclideanSpace ℝ (Fin 2)
@@ -67,7 +67,7 @@ def Erdos189Statement : Prop :=
   ∀ n > 0, ∀ coloring : FiniteColoring n,
     ∃ color : Fin n, HasRectanglesOfEveryArea coloring color
 
-/-! ## Main Result -/
+/- ## Main Result -/
 
 /--
 **Erdős Problem 189 (DISPROVED)**
@@ -98,7 +98,7 @@ theorem erdos_189_is_false : ¬ Erdos189Statement := by
   -- But Kovač showed no color has rectangles of area 1
   exact hno color h1
 
-/-! ## Related Results -/
+/- ## Related Results -/
 
 /--
 **Graham's Theorem (1980)**: For right-angled triangles, the answer is YES.
@@ -140,7 +140,7 @@ def ParallelogramQuestion : Prop :=
       -- Area A (using cross product formula)
       |det ![a - b, a - d]| = A
 
-/-! ## Historical Notes
+/- ## Historical Notes
 
 The problem was posed by Graham in 1980, who showed the triangle case is true.
 The rectangle case remained open for over 40 years until Kovač's elegant

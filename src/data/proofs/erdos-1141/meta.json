@@ -1,0 +1,97 @@
+{
+  "id": "erdos-1141",
+  "title": "Erdős Problem #1141: Coprime-Square Subtraction Primes",
+  "slug": "erdos-1141",
+  "description": "Are there infinitely many n such that n - k² is prime for all k with gcd(n, k) = 1 and k² < n?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1141",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1141Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1141,
+    "erdosUrl": "https://erdosproblems.com/1141",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Prime.Basic",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.GCD.Basic",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Finset.Basic",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "LocallyFiniteOrder",
+        "description": "From Mathlib.Order.LocallyFiniteOrder",
+        "module": "Mathlib.Order.LocallyFiniteOrder"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "IsErdos1141Good",
+      "isErdos1141Good_iff_unbounded",
+      "good_3",
+      "good_4",
+      "good_6",
+      "good_8",
+      "good_12",
+      "good_14",
+      "good_18",
+      "good_20",
+      "not_good_5",
+      "not_good_7",
+      "not_good_9",
+      "not_good_10",
+      "not_good_16"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1141 concerns coprime-square subtraction primes. This problem remains OPEN.\n\nKnown results include: - The known values satisfying this are: 3, 4, 6, 8, 12, 14, 18, 20, - No further terms exist below 10^10 - ChatGPT-Tang proved the count in [1,N] is O(N^{1/2+o(1)})\n\nThis problem is catalogued at erdosproblems.com/1141.",
+    "problemStatement": "Are there infinitely many n such that n - k² is prime for all k with gcd(n, k) = 1 and k² < n?",
+    "proofStrategy": "The formalization is structured in 155 lines of Lean 4 code. It uses 1 axiom for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**n satisfies the Erdős-1141 property if for every k with k² < n and**: n satisfies the Erdős-1141 property if for every k with k² < n and",
+      "**Equivalent unbounded formulation (for mathematical statements).**: Equivalent unbounded formulation (for mathematical statements).",
+      "**n = 3 satisfies the property**: n = 3 satisfies the property: only k=1 qualifies, and 3 - 1 = 2 is prime.",
+      "**n = 4 satisfies the property.**: n = 4 satisfies the property.",
+      "**n = 6 satisfies the property.**: n = 6 satisfies the property."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1141",
+      "startLine": 1,
+      "endLine": 155
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1141 (Coprime-Square Subtraction Primes) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

@@ -23,7 +23,7 @@ open Nat Finset
 
 namespace Erdos258
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- The divisor function τ(n) counts the number of positive divisors of n.
     For example: τ(1) = 1, τ(6) = 4 (divisors: 1, 2, 3, 6), τ(p) = 2 for prime p. -/
@@ -37,7 +37,7 @@ def productPrefix (a : ℕ → ℕ) (n : ℕ) : ℕ := ∏ i ∈ Icc 1 n, a i
 noncomputable def generalTerm (a : ℕ → ℕ) (n : ℕ) : ℝ :=
   (tau (n + 1) : ℝ) / (productPrefix a n : ℝ)
 
-/-! ## Verified Computations -/
+/- ## Verified Computations -/
 
 /-- τ(1) = 1: The only divisor of 1 is itself. -/
 theorem tau_one : tau 1 = 1 := by native_decide
@@ -56,7 +56,7 @@ theorem tau_twelve : tau 12 = 6 := by native_decide
 theorem tau_prime_five : tau 5 = 2 := by native_decide
 theorem tau_prime_seven : tau 7 = 2 := by native_decide
 
-/-! ## Main Results -/
+/- ## Main Results -/
 
 /--
 **Erdős Problem #258 - Monotone Variant** (SOLVED):
@@ -91,7 +91,7 @@ axiom erdos_258_power :
   ∀ (t : ℕ), t ≥ 2 →
     Irrational (∑' n, (tau (n + 1) : ℝ) / (t : ℝ)^(n + 1))
 
-/-! ## The Open Problem -/
+/- ## The Open Problem -/
 
 /--
 **Erdős Problem #258 - General Case** (OPEN):
@@ -108,7 +108,7 @@ def erdos_258_open_conjecture : Prop :=
     Filter.Tendsto a Filter.atTop Filter.atTop →
     Irrational (∑' n, generalTerm a n)
 
-/-! ## Properties of the Divisor Function -/
+/- ## Properties of the Divisor Function -/
 
 /-- τ(n) ≥ 1 for all positive n (at least the divisor 1).
     We verify this for small values. -/

@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #943 — Representation by Sums of Two Powerful Numbers
 
 A powerful number is n such that if p | n then p² | n. Let A be the
@@ -21,7 +21,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A natural number is powerful if every prime dividing it
     appears with exponent ≥ 2. Equivalently, n = a²b³ for
@@ -39,7 +39,7 @@ noncomputable def powerfulSumRep (n : ℕ) : ℕ :=
     (fun a => IsPowerful a ∧ IsPowerful (n - a) ∧ a ≤ n)
     (Finset.range (n + 1)))
 
-/-! ## Main Question -/
+/- ## Main Question -/
 
 /-- **Erdős Problem #943**: Is r(n) = n^{o(1)}? That is, for every
     ε > 0, is r(n) < n^ε for all sufficiently large n? -/
@@ -47,7 +47,7 @@ axiom erdos_943_subpolynomial :
   ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ n ≥ N₀,
     (powerfulSumRep n : ℝ) ≤ (n : ℝ) ^ ε
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Powerful number density**: The number of powerful numbers
     up to x is asymptotically c·√x where c = ζ(3/2)/ζ(3).
@@ -70,21 +70,18 @@ axiom powerful_structure :
   ∀ n : ℕ, IsPowerful n →
     ∃ a b : ℕ, a ≥ 1 ∧ b ≥ 1 ∧ n = a ^ 2 * b ^ 3
 
-/-! ## Observations -/
+/- ## Observations -/
 
-/-- **Average order**: On average over n ≤ x, the sum
+/- **Average order**: On average over n ≤ x, the sum
     Σ_{n≤x} r(n) ∼ c²x (since there are ~c√x powerful numbers
     up to x). The question is about pointwise bounds. -/
-axiom average_order : True
 
-/-- **Connection to squares**: Perfect squares form a subset of
+/- **Connection to squares**: Perfect squares form a subset of
     powerful numbers. Representations as sums of two squares
     are well-understood (Jacobi's formula), but the powerful
     number case is harder due to the irregular structure. -/
-axiom squares_connection : True
 
-/-- **Diophantine constraints**: For n = a²b³ + c²d³, the
+/- **Diophantine constraints**: For n = a²b³ + c²d³, the
     equation constrains a,b,c,d in ways that should limit
     the number of solutions, but making this rigorous is
     the core difficulty. -/
-axiom diophantine_constraints : True

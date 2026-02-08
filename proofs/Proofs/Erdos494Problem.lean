@@ -33,7 +33,7 @@ open Finset Filter BigOperators
 
 namespace Erdos494
 
-/-!
+/-
 ## Core Definitions
 
 We define the multiset of k-sums for a finite set A ⊂ ℂ.
@@ -60,7 +60,7 @@ def KSumDeterminesSet (k : ℕ) (card : ℕ) : Prop :=
   ∀ A B : Finset ℂ, A.card = card → B.card = card →
     sumMultiset A k = sumMultiset B k → A = B
 
-/-!
+/-
 ## The k = 2 Case (Selfridge-Straus 1958)
 
 For k = 2, uniqueness depends on whether |A| is a power of 2.
@@ -81,7 +81,7 @@ There exist distinct sets A ≠ B with |A| = |B| = 2ˡ having the same 2-sum mul
 axiom selfridge_straus_k2_power2_fails :
     ∀ l : ℕ, l ≥ 1 → ¬KSumDeterminesSet 2 (2^l)
 
-/-!
+/-
 ## The k = 3 and k = 4 Cases (Selfridge-Straus 1958)
 -/
 
@@ -96,7 +96,7 @@ axiom selfridge_straus_k3 :
 axiom selfridge_straus_k4 :
     ∀ card : ℕ, card > 12 → KSumDeterminesSet 4 card
 
-/-!
+/-
 ## The Prime Divisibility Criterion (Selfridge-Straus 1958)
 -/
 
@@ -108,7 +108,7 @@ For example, |A| = 7 and k = 3: 7 is prime > 3, so uniqueness holds.
 axiom selfridge_straus_prime_criterion :
     ∀ k card p : ℕ, Nat.Prime p → k < p → p ∣ card → KSumDeterminesSet k card
 
-/-!
+/-
 ## Counterexamples for Small Sets
 -/
 
@@ -135,7 +135,7 @@ which by the zero-sum condition equal the k-sums of A.
 axiom tao_negation_counterexample :
     ∀ k : ℕ, k > 2 → ¬KSumDeterminesSet k (2 * k)
 
-/-!
+/-
 ## The Main Result (Gordon-Fraenkel-Straus 1962)
 -/
 
@@ -150,7 +150,7 @@ The proof uses polynomial methods and properties of symmetric functions.
 axiom gordon_fraenkel_straus_main :
     ∀ k : ℕ, k > 2 → ∀ᶠ card in atTop, KSumDeterminesSet k card
 
-/-!
+/-
 ## The Product Version (False!)
 
 Erdős also asked about products instead of sums. This version is FALSE.
@@ -170,7 +170,7 @@ axiom steinerberger_product_counterexample :
     ∃ A B : Finset ℂ, A.card = B.card ∧ A.card = 4 ∧
       prodMultiset A 3 = prodMultiset B 3 ∧ A ≠ B
 
-/-!
+/-
 ## Summary Theorem
 
 The main theorem combining the positive results.
@@ -189,7 +189,7 @@ theorem erdos_494_summary :
     (∀ k : ℕ, k > 2 → ∀ᶠ card in atTop, KSumDeterminesSet k card) :=
   ⟨selfridge_straus_k2_not_power2, gordon_fraenkel_straus_main⟩
 
-/-!
+/-
 ## Specific Examples
 
 We can verify the definitions work on concrete examples.
@@ -208,7 +208,7 @@ axiom example_set_card : example_set.card = 3
 This has 3 elements (all C(3,2) = 3 subsets of size 2). -/
 axiom example_2sums : (example_set.powersetCard 2).card = 3
 
-/-!
+/-
 ## The Threshold Function
 
 For each k, there's a minimal N(k) such that uniqueness holds for |A| > N(k).

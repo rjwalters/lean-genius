@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #750 — Almost Bipartite Graphs with Infinite Chromatic Number
 
 For f(m) → ∞, does there exist a graph G with χ(G) = ∞ such that every
@@ -27,7 +27,7 @@ import Mathlib.Tactic
 
 open SimpleGraph
 
-/-! ## Definitions -/
+/- ## Definitions -/
 
 /-- A graph has infinite chromatic number if no finite coloring is proper. -/
 def HasInfiniteChromatic {V : Type*} (G : SimpleGraph V) : Prop :=
@@ -45,7 +45,7 @@ def AlmostBipartite {V : Type*} [DecidableEq V]
   ∀ S : Finset V, S.card ≥ m₀ →
     maxIndSetSize G S ≥ S.card / 2 - f S.card
 
-/-! ## The Main Conjecture -/
+/- ## The Main Conjecture -/
 
 /-- **Erdős Problem #750**: For any f : ℕ → ℕ with f(m) → ∞, there exists
     an infinite-chromatic f-almost-bipartite graph. -/
@@ -55,7 +55,7 @@ axiom erdos_750_conjecture :
     ∃ (V : Type) (_ : DecidableEq V) (G : SimpleGraph V),
       HasInfiniteChromatic G ∧ ∀ m₀ : ℕ, AlmostBipartite G f m₀
 
-/-! ## Known Results -/
+/- ## Known Results -/
 
 /-- **Erdős–Hajnal (1967)**: for c > 1/4 there is an infinite-chromatic
     graph with independent sets ≥ (1/2 − c)m in every m-vertex subgraph. -/
@@ -71,7 +71,7 @@ axiom erdos_hajnal_szemeredi_1982 (ε : ℚ) (hε : ε > 0) :
     HasInfiniteChromatic G ∧
     ∀ S : Finset V, (maxIndSetSize G S : ℚ) ≥ (1/2 - ε) * S.card
 
-/-! ## Open Cases -/
+/- ## Open Cases -/
 
 /-- **Open: Square Root Case** — Is there an infinite-chromatic graph where
     every m-vertex subgraph has an independent set of size ≥ m/2 − √m? -/
@@ -87,7 +87,7 @@ axiom log_case (C : ℕ) :
     ∀ S : Finset V, S.card > 1 →
       maxIndSetSize G S ≥ S.card / 2 - C * Nat.log2 S.card
 
-/-! ## Connections and Observations -/
+/- ## Connections and Observations -/
 
 /-- **Problem #75 Connection**: asks for χ(G) = ℵ₁ with independent sets
     > n^{1−ε}. Stronger than #750; shares the local-vs-global theme. -/

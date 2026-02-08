@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #125: Positive Density of Digit-Restricted Sumsets
 
 Let A = {Σ εₖ3ᵏ : εₖ ∈ {0,1}} (integers with digits 0,1 in base 3)
@@ -21,7 +21,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 ## Section I: Digit-Restricted Sets
 -/
 
@@ -37,7 +37,7 @@ def setA : Set ℕ := digitSet 3
 /-- B = digitSet 4: numbers with only digits 0, 1 in base 4. -/
 def setB : Set ℕ := digitSet 4
 
-/-!
+/-
 ## Section II: The Sumset
 -/
 
@@ -48,7 +48,7 @@ def setC : Set ℕ := { n : ℕ | ∃ a ∈ setA, ∃ b ∈ setB, n = a + b }
 noncomputable def countingC (x : ℕ) : ℕ :=
   (Finset.range (x + 1)).filter (· ∈ setC) |>.card
 
-/-!
+/-
 ## Section III: The Conjecture
 -/
 
@@ -59,7 +59,7 @@ def ErdosProblem125 : Prop :=
     ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ,
       ∀ x : ℕ, x ≥ N₀ → (countingC x : ℝ) / x ≥ δ - ε
 
-/-!
+/-
 ## Section IV: Known Lower Bounds
 -/
 
@@ -73,7 +73,7 @@ axiom hasler_melfi_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∃ N₀ : ℕ,
     ∀ x : ℕ, x ≥ N₀ → (countingC x : ℝ) ≥ c * (x : ℝ) ^ (0.9777 : ℝ)
 
-/-!
+/-
 ## Section V: Upper Density Bound
 -/
 
@@ -83,7 +83,7 @@ axiom upper_density_bound :
   ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ x : ℕ, x ≥ N₀ →
     (countingC x : ℝ) / x ≤ 0.696 + ε
 
-/-!
+/-
 ## Section VI: Generalization to Other Bases
 -/
 

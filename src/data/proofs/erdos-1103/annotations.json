@@ -5,8 +5,11 @@
     "type": "definition",
     "range": { "startLine": 30, "endLine": 33 },
     "title": "Squarefree Sumset",
-    "content": "SquarefreeSumset A requires that a + b is squarefree for all a, b ∈ A.",
-    "significance": "essential"
+    "content": "**SquarefreeSumset A** requires that $a + b$ is squarefree for ALL $a, b \\in A$ (including $a = b$, so $2a$ must also be squarefree).\n\n**Lean**: `∀ a ∈ A, ∀ b ∈ A, Squarefree (a + b)`\n\n**Why this is restrictive**: A number $n$ is squarefree iff no prime square $p^2$ divides $n$. For each prime $p$, the condition $p^2 \\nmid (a + b)$ eliminates roughly a $1/p^2$ fraction of pairs. Requiring this for ALL primes simultaneously is extremely constraining — the set $A$ must avoid a complicated pattern of residue classes modulo $p^2$ for every prime $p$.\n\n**Density perspective**: Squarefree numbers have density $6/\\pi^2 \\approx 0.608$, but the sumset condition is much stronger than just requiring elements to be squarefree.",
+    "mathContext": "∀ a, b ∈ A, Squarefree(a + b)",
+    "significance": "critical",
+    "relatedConcepts": ["Squarefree", "sumset", "additive combinatorics", "sieve theory"],
+    "prerequisites": ["squarefree numbers", "divisibility", "additive number theory"]
   },
   {
     "id": "erdos-1103-enumset",
@@ -14,8 +17,11 @@
     "type": "definition",
     "range": { "startLine": 35, "endLine": 41 },
     "title": "Set Enumeration",
-    "content": "enumSet A j is the j-th smallest element of A, axiomatized as strictly monotone with range A.",
-    "significance": "essential"
+    "content": "**enumSet A j** is the $j$-th smallest element of $A$, axiomatized as a strictly monotone function with $\\text{range}(\\text{enumSet } A) = A$.\n\n**Why axiomatize**: Constructing the $j$-th element of an infinite set in Lean requires well-ordering machinery. Since we only need the *existence* of such an enumeration (which follows from the well-ordering of $\\mathbb{N}$), axiomatization is cleaner. The `enumSet_spec` axiom guarantees both `StrictMono (enumSet A)` and surjectivity onto $A$.\n\n**Growth rate language**: The conjecture asks about the growth rate of $a_j = \\text{enumSet } A \\; j$ as $j \\to \\infty$. StrictMono ensures $a_j < a_{j+1}$, so the sequence is a valid increasing enumeration.",
+    "mathContext": "enumSet A j = j-th element of A (strictly monotone, range = A)",
+    "significance": "critical",
+    "relatedConcepts": ["StrictMono", "Set.range", "well-ordering", "increasing enumeration"],
+    "prerequisites": ["strict monotonicity", "set enumeration", "well-ordering of ℕ"]
   },
   {
     "id": "erdos-1103-conjecture",
@@ -23,8 +29,11 @@
     "type": "conjecture",
     "range": { "startLine": 48, "endLine": 51 },
     "title": "Exponential Growth Conjecture",
-    "content": "ErdosProblem1103: every infinite squarefree-sumset sequence grows at least exponentially (C^j ≤ a_j for some C > 1).",
-    "significance": "essential"
+    "content": "**ErdosProblem1103**: Every infinite squarefree-sumset sequence grows at least exponentially.\n\n**Formal statement**: $\\forall A \\subseteq \\mathbb{N}$, if $A$ is infinite and $\\text{SquarefreeSumset}(A)$, then $\\exists C > 1$ such that $C^j \\leq a_j$ for all sufficiently large $j$.\n\n**Lean**: Uses `∀ᶠ j in atTop` (Mathlib's Filter.atTop) for the 'eventually for large $j$' quantifier, and `C ^ (j : ℝ)` for real-valued exponential comparison.\n\n**Status**: OPEN. The best known lower bound is polynomial ($j^{4/3}$), far from exponential. The best known upper bound is subexponential ($\\exp(5j/\\log j)$), which is slower than any $C^j$ for $C > 1$.",
+    "mathContext": "∃ C > 1, ∀ᶠ j, C^j ≤ a_j",
+    "significance": "critical",
+    "relatedConcepts": ["exponential growth", "Filter.atTop", "growth rates", "open problem"],
+    "prerequisites": ["Filter.atTop (eventually for large j)", "real exponential comparison", "infinite sets"]
   },
   {
     "id": "erdos-1103-vdt-upper",
@@ -32,8 +41,11 @@
     "type": "result",
     "range": { "startLine": 57, "endLine": 60 },
     "title": "van Doorn–Tao Upper Bound",
-    "content": "There exists an infinite squarefree-sumset sequence with a_j < exp(5j/log j).",
-    "significance": "essential"
+    "content": "**Van Doorn–Tao (2025)**: There EXISTS an infinite squarefree-sumset sequence with subexponential growth:\n\n$$a_j < \\exp\\left(\\frac{5j}{\\log j}\\right) \\quad \\text{for large } j$$\n\nThis is subexponential because $5j/\\log j = o(j)$, so $\\exp(5j/\\log j) = o(C^j)$ for any $C > 1$.\n\n**Significance**: If the conjecture (exponential growth is necessary) is TRUE, then this construction must fail to satisfy the squarefree-sumset condition. If the conjecture is FALSE, constructions like this — or even slower-growing ones — might work.\n\n**Axiomatized** because the construction involves deep analytic number theory.",
+    "mathContext": "∃ A with a_j < exp(5j/log j)",
+    "significance": "critical",
+    "relatedConcepts": ["subexponential growth", "construction", "Real.exp", "Real.log"],
+    "prerequisites": ["real exponential and logarithm", "subexponential vs exponential growth"]
   },
   {
     "id": "erdos-1103-vdt-lower",
@@ -41,8 +53,11 @@
     "type": "result",
     "range": { "startLine": 64, "endLine": 65 },
     "title": "van Doorn–Tao Lower Bound",
-    "content": "Any infinite squarefree-sumset sequence satisfies a_j > 0.24·j^{4/3}.",
-    "significance": "essential"
+    "content": "**Van Doorn–Tao (2025)**: ANY infinite squarefree-sumset sequence satisfies:\n\n$$a_j > 0.24 \\cdot j^{4/3} \\quad \\text{for all } j$$\n\nThe exponent $4/3$ means the sequence must grow at least as fast as $j^{4/3}$, which is faster than linear but far slower than exponential.\n\n**Gap**: The lower bound is polynomial ($j^{4/3}$) while the upper bound is subexponential ($\\exp(5j/\\log j)$). Closing this gap — or showing that the true threshold is exponential — is the core of Problem 1103.\n\n**Axiomatized** because the proof uses sieve methods and analytic techniques.",
+    "mathContext": "a_j > 0.24·j^{4/3} for all j",
+    "significance": "critical",
+    "relatedConcepts": ["polynomial lower bound", "sieve methods", "growth rate gap"],
+    "prerequisites": ["polynomial growth bounds", "real power functions"]
   },
   {
     "id": "erdos-1103-konyagin",
@@ -50,7 +65,10 @@
     "type": "result",
     "range": { "startLine": 69, "endLine": 73 },
     "title": "Konyagin Finite Bound",
-    "content": "For A ⊆ {1,...,N} with squarefree sumset, |A| ≤ C·N^{11/15}.",
-    "significance": "supporting"
+    "content": "**Konyagin**: For a FINITE set $A \\subseteq \\{1, \\ldots, N\\}$ with squarefree sumset:\n\n$$|A| \\leq C \\cdot N^{11/15}$$\n\nThe exponent $11/15 \\approx 0.733$ means the set $A$ can contain at most about $N^{0.733}$ elements out of $\\{1, \\ldots, N\\}$. This is a density-type result: as $N \\to \\infty$, the proportion $|A|/N \\to 0$.\n\n**Lean**: Formalized with Finset (finite sets), explicit constant $C > 0$, and conditions $\\forall a \\in A, a \\leq N$ and squarefree pairwise sums.\n\n**Connection to infinite case**: The finite bound implies that squarefree-sumset sequences must be sparse, but doesn't directly give the infinite-sequence growth rate.",
+    "mathContext": "|A ∩ [1,N]| ≤ C·N^{11/15}",
+    "significance": "major",
+    "relatedConcepts": ["finite density", "large sieve", "Finset", "counting bounds"],
+    "prerequisites": ["Finset operations", "density arguments", "real power bounds"]
   }
 ]

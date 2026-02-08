@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #680: Least Prime Factor Exceeding k² + 1
 
 For a positive integer m, let p(m) denote its least prime factor. Erdős asked:
@@ -24,7 +24,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
-/-! ## Least Prime Factor and the Main Conjecture -/
+/- ## Least Prime Factor and the Main Conjecture -/
 
 /-- Erdős Problem 680 (main): For all sufficiently large n, there exists
     k ≥ 1 such that minFac(n + k) > k² + 1. -/
@@ -36,7 +36,7 @@ def ErdosProblem680 : Prop :=
 def HasLargeLPF (n : ℕ) : Prop :=
   ∃ k : ℕ, 0 < k ∧ (n + k).minFac > k ^ 2 + 1
 
-/-! ## Exponential Variant -/
+/- ## Exponential Variant -/
 
 /-- The stronger exponential variant: it is false that for all sufficiently
     large n, there exists k with minFac(n+k) > e^{(1+ε)√k} + C.
@@ -53,7 +53,7 @@ def ErdosProblem680Variant : Prop :=
 def ErdosProblem680Combined : Prop :=
   ErdosProblem680 ∧ ErdosProblem680Variant
 
-/-! ## Connections to Prime Gap Conjectures -/
+/- ## Connections to Prime Gap Conjectures -/
 
 /-- Cramér's conjecture on prime gaps: the gap after prime p is O((log p)²). -/
 def CramerConjecture : Prop :=
@@ -69,7 +69,7 @@ axiom cramer_implies_large_lpf :
         ∃ k : ℕ, 0 < k ∧
           (n + k).minFac > ⌊Real.exp ((1 - ε) * Real.sqrt k)⌋₊
 
-/-! ## Basic Properties -/
+/- ## Basic Properties -/
 
 /-- The quadratic bound k² + 1 grows slower than the exponential e^{(1+ε)√k}
     for large k, so the main conjecture is weaker than the exponential version. -/
@@ -87,13 +87,13 @@ theorem lpf_k1_means_odd (n : ℕ) (h : (n + 1).minFac > 1 ^ 2 + 1) :
 
 /-- When n + k is prime, minFac(n+k) = n+k, which easily exceeds k² + 1
     for large n. -/
-theorem prime_offset_gives_large_lpf (n k : ℕ) (hk : 0 < k)
+theorem prime_offset_gives_large_lpf (n k : ℕ) (_hk : 0 < k)
     (hp : (n + k).Prime) (hn : k ^ 2 + 1 < n + k) :
     (n + k).minFac > k ^ 2 + 1 := by
   rw [hp.minFac_eq]
   exact hn
 
-/-! ## Granville's Refinement -/
+/- ## Granville's Refinement -/
 
 /-- Granville's constant: 2e^{-γ} where γ is the Euler-Mascheroni constant.
     This is approximately 1.1229. -/
@@ -109,9 +109,86 @@ def GranvilleRefinement : Prop :=
       (Nat.find (Nat.exists_infinite_primes (p + 1)) - p : ℝ) ≤
         (granvilleConstant + ε) * (Real.log p) ^ 2
 
+/- ## Proved Reductions -/
+
 /-- The main conjecture follows from the existence of a prime in [n+1, n+k]
-    for some k with k² + 1 < that prime. -/
-axiom problem680_from_prime_distribution :
-    (∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
-      ∃ k : ℕ, 0 < k ∧ (n + k).Prime ∧ k ^ 2 + 1 < n + k) →
-    ErdosProblem680
+    for some k with k² + 1 < that prime. This converts the number-theoretic
+    question to a prime distribution question. -/
+theorem problem680_from_prime_distribution
+    (h : ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
+      ∃ k : ℕ, 0 < k ∧ (n + k).Prime ∧ k ^ 2 + 1 < n + k) :
+    ErdosProblem680 := by
+  obtain ⟨N₀, hN₀⟩ := h
+  exact ⟨N₀, fun n hn => by
+    obtain ⟨k, hk, hprime, hbound⟩ := hN₀ n hn
+    exact ⟨k, hk, prime_offset_gives_large_lpf n k hk hprime hbound⟩⟩
+
+/- ## Structural Lemmas -/
+
+/-- If n + 1 is prime and n ≥ 2, then HasLargeLPF n holds (with k = 1).
+    The successor being prime guarantees minFac(n+1) = n+1 > 2 = 1² + 1. -/
+theorem hasLargeLPF_of_succ_prime (n : ℕ) (hn : 2 ≤ n) (hp : (n + 1).Prime) :
+    HasLargeLPF n := by
+  refine ⟨1, Nat.one_pos, ?_⟩
+  rw [hp.minFac_eq]
+  simp
+  omega
+
+/-- For any prime p with n < p and k = p - n satisfying k² + 1 < p,
+    the HasLargeLPF property holds for n. -/
+theorem hasLargeLPF_from_nearby_prime (n : ℕ) (p : ℕ) (hp : p.Prime)
+    (hn : n < p) (hk : ∃ k : ℕ, 0 < k ∧ n + k = p ∧ k ^ 2 + 1 < p) :
+    HasLargeLPF n := by
+  obtain ⟨k, hk_pos, hkp, hbound⟩ := hk
+  exact ⟨k, hk_pos, by rw [hkp, hp.minFac_eq]; exact hbound⟩
+
+/-- minFac of a prime equals itself. -/
+theorem minFac_prime_self (p : ℕ) (hp : p.Prime) : p.minFac = p :=
+  hp.minFac_eq
+
+/-- If m ≥ 2 and m is not divisible by any prime ≤ b, then minFac m > b.
+    This gives a way to establish lower bounds on minFac by excluding
+    small prime divisors. -/
+theorem minFac_gt_of_no_small_divisor (m : ℕ) (hm : 2 ≤ m) (b : ℕ)
+    (h : ∀ p : ℕ, p.Prime → p ≤ b → ¬(p ∣ m)) :
+    m.minFac > b := by
+  by_contra hle
+  push_neg at hle
+  have hprime := Nat.minFac_prime (by omega : m ≠ 1)
+  exact h m.minFac hprime hle (Nat.minFac_dvd m)
+
+/-- Monotonicity: if HasLargeLPF holds for n with offset k,
+    and n' + k' = n + k for some k' with k' ≤ k, then the LPF
+    bound from the offset is even stronger for n'. -/
+theorem hasLargeLPF_monotone_offset (n k : ℕ) (hk : 0 < k)
+    (h : (n + k).minFac > k ^ 2 + 1) (n' k' : ℕ) (hk' : 0 < k')
+    (heq : n' + k' = n + k) (hle : k' ≤ k) :
+    (n' + k').minFac > k' ^ 2 + 1 := by
+  rw [heq]
+  calc k' ^ 2 + 1 ≤ k ^ 2 + 1 := by nlinarith
+    _ < (n + k).minFac := h
+
+/- ## Computational Verification -/
+
+-- Verify HasLargeLPF for various n values.
+-- For even n, n+1 is odd and often prime, giving k=1 witness.
+-- For n = 2: n+1 = 3 is prime, minFac(3) = 3 > 1² + 1 = 2
+example : HasLargeLPF 2 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 4: n+1 = 5 is prime
+example : HasLargeLPF 4 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 6: n+1 = 7 is prime
+example : HasLargeLPF 6 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 8: n+1 = 9 = 3², minFac(9) = 3 > 2. Yes!
+example : HasLargeLPF 8 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 10: n+1 = 11 is prime
+example : HasLargeLPF 10 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 12: n+1 = 13 is prime
+example : HasLargeLPF 12 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 14: n+1 = 15 = 3·5, minFac(15) = 3 > 2. Yes!
+example : HasLargeLPF 14 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 20: n+1 = 21 = 3·7, minFac(21) = 3 > 2. Yes!
+example : HasLargeLPF 20 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 24: n+1 = 25 = 5², minFac(25) = 5 > 2. Yes!
+example : HasLargeLPF 24 := ⟨1, Nat.one_pos, by native_decide⟩
+-- For n = 100: n+1 = 101 is prime
+example : HasLargeLPF 100 := ⟨1, Nat.one_pos, by native_decide⟩

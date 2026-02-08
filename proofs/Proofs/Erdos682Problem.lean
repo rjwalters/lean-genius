@@ -290,31 +290,27 @@ theorem most_gaps_have_rough :
 ## Part IX: Related Results
 -/
 
-/--
+/-
 **Connection to Problem #680:**
 Problem 680 asks about the maximum gap among p_n ≤ X without rough numbers.
 -/
-axiom problem_680_connection : True
 
-/--
+/-
 **Connection to Problem #681:**
 Problem 681 concerns a similar question with a different gap condition.
 -/
-axiom problem_681_connection : True
 
-/--
+/-
 **Smooth vs Rough Numbers:**
 k-smooth numbers (all prime factors ≤ k) are the complement of k-rough.
 The distribution of smooth numbers is well-understood (de Bruijn).
 -/
-axiom smooth_number_theory : True
 
-/--
+/-
 **Bertrand's Postulate Connection:**
 Bertrand: there exists a prime in (n, 2n).
 This problem asks about composite numbers with large least prime factors.
 -/
-axiom bertrand_connection : True
 
 /-
 ## Part X: Summary

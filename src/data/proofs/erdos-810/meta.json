@@ -1,6 +1,6 @@
 {
   "id": "erdos-810",
-  "title": "Erdős Problem #810: Rainbow C₄ in Edge-Colored Dense Graphs",
+  "title": "Rainbow C₄ in Edge-Colored Dense Graphs",
   "slug": "erdos-810",
   "description": "Does there exist ε > 0 such that for large n, some n-vertex graph with ≥ εn² edges can be n-colored so every C₄ is rainbow (4 distinct colors)? A problem of Burr, Erdős, Graham, and Sós.",
   "meta": {
@@ -8,61 +8,95 @@
     "sourceUrl": "https://erdosproblems.com/810",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos810Problem.lean",
-    "tags": ["graph theory", "Ramsey theory", "edge coloring"],
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "edge-coloring"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 810,
     "erdosUrl": "https://erdosproblems.com/810",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-01",
+    "mathlib_version": "4.x"
   },
   "overview": {
-    "historicalContext": "Burr, Erdős, Graham, and Sós posed this problem about the interaction of density and rainbow structure. A rainbow C₄ has all 4 edges colored distinctly. The challenge is constructing dense graphs where an n-coloring makes every 4-cycle rainbow.",
+    "historicalContext": "Burr, Erdős, Graham, and Sós posed this problem [Er91] about the interaction of density and rainbow structure in edge-colored graphs. A rainbow C₄ is a 4-cycle whose four edges all receive distinct colors. The challenge is constructing dense graphs (with Θ(n²) edges) where an n-coloring makes every 4-cycle rainbow.\n\nThe key tension is that C₄-free graphs trivially satisfy the rainbow condition (no C₄ exists to violate it), but the Kővári-Sós-Turán theorem gives ex(n; C₄) = O(n^{3/2}), so C₄-free graphs are too sparse to achieve εn² edges. Any positive answer must involve graphs containing many C₄'s, with the coloring carefully arranged so that each one is rainbow — all four edges have distinct colors.\n\nThe problem uses n colors for an n-vertex graph, connecting to proper edge coloring questions. See also Problem #809. The formalization at 122 lines uses Mathlib's SimpleGraph infrastructure, defines CycleFour as a structure with four vertices and adjacency proofs, and proves that C₄-free graphs vacuously satisfy the rainbow condition. The Kővári-Sós-Turán bound and its consequence (dense graphs must contain C₄'s) are axiomatized.",
     "problemStatement": "Does there exist ε > 0 such that for sufficiently large n, there is a graph on n vertices with ≥ εn² edges whose edges can be colored with n colors so that every C₄ receives 4 distinct colors?",
-    "proofStrategy": "Defines edge colorings, 4-cycles, rainbow C₄, and the existence property. States the main conjecture and observes that C₄-free graphs (which trivially satisfy the rainbow condition) are too sparse, necessitating dense graphs with controlled C₄ structure.",
+    "proofStrategy": "Within the Erdos810 namespace, we define EdgeColoringN as a function assigning Fin n colors to edges. CycleFour is a structure with four vertices, distinctness proof, and four adjacency proofs. CycleFour.isRainbow checks that the Finset of four edge colors has cardinality 4. HasDenseRainbowC4 combines density and rainbow conditions. ErdosProblem810 uses Filter.atTop for the 'sufficiently large n' quantifier. Kővári-Sós-Turán and dense_graph_has_C4 are axiomatized. c4_free_vacuously_rainbow is proved.",
     "keyInsights": [
-      "C₄-free graphs trivially have all C₄'s rainbow but have only O(n^{3/2}) edges",
-      "The problem requires Θ(n²) edges, so the graph must contain many C₄'s",
-      "Every C₄ must be rainbow: a strong structural condition on the coloring",
-      "The n-color palette matches the number of vertices, connecting to proper colorings"
+      "**Density-rainbow tension**: C₄-free graphs satisfy the rainbow condition vacuously but have only O(n^{3/2}) edges. The problem requires Θ(n²) edges, forcing many C₄'s to exist — all of which must be rainbow.",
+      "**Kővári-Sós-Turán sparsity bound**: ex(n; C₄) = O(n^{3/2}) means any graph with εn² edges must contain C₄'s. This is axiomatized as kovari_sos_turan_C4.",
+      "**n-color palette**: Using n colors for n vertices connects to proper edge coloring and Vizing-type questions. The color space grows with the graph size.",
+      "**Vacuous rainbow proved**: c4_free_vacuously_rainbow is a clean proof that C₄-free graphs satisfy IsRainbowC4Coloring for any coloring.",
+      "**Filter.atTop for asymptotics**: The main conjecture uses Filter.atTop to express 'for all sufficiently large n,' following Mathlib's asymptotic conventions."
+    ],
+    "mathlibDependencies": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ],
+    "originalContributions": [
+      "EdgeColoringN: edge coloring with Fin n colors",
+      "CycleFour: structure with 4 vertices, distinctness, and adjacency",
+      "CycleFour.isRainbow: 4 edge colors form a 4-element Finset",
+      "IsRainbowC4Coloring: all C₄'s are rainbow",
+      "HasDenseRainbowC4: dense graph with rainbow-C₄ n-coloring",
+      "ErdosProblem810: main conjecture via Filter.atTop",
+      "kovari_sos_turan_C4: C₄-free graphs have O(n^{3/2}) edges (axiom)",
+      "dense_graph_has_C4: Ω(n²) edges implies C₄ exists (axiom)",
+      "c4_free_vacuously_rainbow: proved C₄-free satisfies rainbow condition"
     ]
   },
   "sections": [
     {
       "id": "colorings",
       "title": "Edge Colorings and Rainbow Subgraphs",
-      "startLine": 16,
-      "endLine": 48,
-      "summary": "Defines edge colorings, 4-cycles, rainbow C₄, and rainbow-C₄ colorings."
+      "startLine": 34,
+      "endLine": 69,
+      "summary": "Defines EdgeColoringN, CycleFour (structure), CycleFour.isRainbow, and IsRainbowC4Coloring."
     },
     {
       "id": "dense-rainbow",
       "title": "Dense Graphs with Rainbow-C₄ Colorings",
-      "startLine": 52,
-      "endLine": 56,
-      "summary": "Defines the existence of dense graphs with rainbow-C₄ n-colorings."
+      "startLine": 71,
+      "endLine": 77,
+      "summary": "Defines HasDenseRainbowC4: εn² edges + rainbow-C₄ n-coloring."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "startLine": 60,
-      "endLine": 65,
-      "summary": "States the Burr–Erdős–Graham–Sós conjecture."
+      "startLine": 79,
+      "endLine": 89,
+      "summary": "Defines ErdosProblem810 using Filter.atTop: ∃ ε > 0, eventually HasDenseRainbowC4 n ε."
     },
     {
-      "id": "observations",
-      "title": "Trivial Observations",
-      "startLine": 69,
-      "endLine": 86,
-      "summary": "Notes that C₄-free graphs are too sparse and dense graphs must have many C₄'s."
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 91,
+      "endLine": 110,
+      "summary": "Axiomatizes kovari_sos_turan_C4 (O(n^{3/2}) bound) and dense_graph_has_C4 (Ω(n²) implies C₄)."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Observations",
+      "startLine": 112,
+      "endLine": 122,
+      "summary": "Proves c4_free_vacuously_rainbow: C₄-free graphs satisfy the rainbow condition vacuously."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 810 asks for the existence of dense graphs with rainbow-C₄ edge colorings. The tension between density (requiring many C₄'s) and the rainbow condition (requiring distinct colors on each C₄) makes this a challenging combinatorial problem.",
+    "summary": "Erdős Problem 810 asks for dense graphs with rainbow-C₄ edge colorings. The tension between density (requiring many C₄'s) and the rainbow condition is captured with Kővári-Sós-Turán and the vacuous rainbow proof. 0 sorries.",
     "implications": "Resolution would advance understanding of anti-Ramsey theory and the interaction of graph density with rainbow coloring constraints.",
     "openQuestions": [
       "Does such a graph exist for any ε > 0?",
       "What is the maximum ε achievable if the answer is yes?",
-      "What happens with n/2 or n/3 colors instead of n?"
+      "What happens with n/2 or n/3 colors instead of n?",
+      "Can probabilistic methods construct a candidate graph?"
     ]
   }
 }

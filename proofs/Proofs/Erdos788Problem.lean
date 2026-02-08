@@ -41,7 +41,7 @@ open Finset
 
 namespace Erdos788
 
-/-! ## Part I: Basic Definitions -/
+/- ## Part I: Basic Definitions -/
 
 /-- The set (a, b) ∩ ℕ: natural numbers strictly between a and b -/
 def openInterval (a b : ℕ) : Finset ℕ :=
@@ -65,7 +65,7 @@ def isSumFreeWithResp (C B : Finset ℕ) : Prop :=
 axiom sumFree_iff_disjoint (C B : Finset ℕ) :
     isSumFreeWithResp C B ↔ Disjoint (pairwiseSums C) B
 
-/-! ## Part II: The Function f(n) -/
+/- ## Part II: The Function f(n) -/
 
 /-- A pair (B, C) is valid: B ⊂ (2n,4n), C ⊂ (n,2n), C sum-free w.r.t. B -/
 def isValidConfig (n : ℕ) (B C : Finset ℕ) : Prop :=
@@ -78,7 +78,7 @@ C ⊂ (n, 2n) sum-free w.r.t. B with |C| + |B| ≥ f(n). Axiomatized since
 computing this requires deep combinatorial arguments. -/
 axiom f (n : ℕ) : ℕ
 
-/-! ## Part III: Choi's Bound and Conjecture (1971) -/
+/- ## Part III: Choi's Bound and Conjecture (1971) -/
 
 /-- Choi (1971): f(n) ≪ n^{3/4} -/
 axiom choi_upper_bound :
@@ -88,7 +88,7 @@ axiom choi_upper_bound :
 def choiConjecture : Prop :=
   ∀ ε > 0, ∃ n₀ : ℕ, ∀ n ≥ n₀, (f n : ℝ) ≤ (n : ℝ) ^ (1/2 + ε : ℝ)
 
-/-! ## Part IV: Adenwalla's Lower Bound -/
+/- ## Part IV: Adenwalla's Lower Bound -/
 
 /-- Adenwalla: f(n) ≫ n^{1/2}, proved by taking C to be a Sidon set.
 A Sidon set has all pairwise sums distinct, giving control over which
@@ -106,7 +106,7 @@ axiom sidon_sets_exist :
   ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → ∃ S ⊆ lowerInterval n,
     isSidonSet S ∧ (S.card : ℝ) ≥ c * (n : ℝ) ^ (1/2 : ℝ)
 
-/-! ## Part V: Hunter's and BSS Improvements -/
+/- ## Part V: Hunter's and BSS Improvements -/
 
 /-- Hunter: f(n) ≪ n^{2/3+o(1)}, improving Choi's 3/4 exponent -/
 axiom hunter_bound :
@@ -120,7 +120,7 @@ axiom bss_bound :
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
     (f n : ℝ) ≤ C * ((n : ℝ) * Real.log n) ^ (2/3 : ℝ)
 
-/-! ## Part VI: Interval Arithmetic -/
+/- ## Part VI: Interval Arithmetic -/
 
 /-- Sums from (n, 2n) land in (2n, 4n): for c₁, c₂ ∈ (n, 2n) with c₁ ≠ c₂,
 their sum is in (2n, 4n) (or outside the interval). -/
@@ -143,7 +143,7 @@ axiom sums_in_upper_interval : ∀ n : ℕ, n ≥ 1 →
     ∀ c₁ ∈ lowerInterval n, ∀ c₂ ∈ lowerInterval n,
     c₁ ≠ c₂ → c₁ + c₂ ∈ upperInterval n
 
-/-! ## Part VII: Summary -/
+/- ## Part VII: Summary -/
 
 /--
 **Erdős Problem #788: Summary (OPEN)**

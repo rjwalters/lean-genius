@@ -34,7 +34,7 @@ namespace Erdos577
 
 open SimpleGraph
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -72,7 +72,7 @@ def DisjointFourCycles (c1 c2 : FourCycle G) : Prop :=
 def PairwiseDisjoint (cycles : Finset (FourCycle G)) : Prop :=
   ∀ c1 ∈ cycles, ∀ c2 ∈ cycles, c1 ≠ c2 → DisjointFourCycles G c1 c2
 
-/-!
+/-
 ## Part II: The Erdős-Faudree Conjecture
 -/
 
@@ -91,7 +91,7 @@ def ErdosFaudreeConjecture : Prop :=
     ∃ cycles : Finset (FourCycle G),
       cycles.card = k ∧ PairwiseDisjoint G cycles
 
-/-!
+/-
 ## Part III: Wang's Theorem (2010)
 -/
 
@@ -106,7 +106,7 @@ axiom wang_theorem : ErdosFaudreeConjecture
 /-- The Erdős-Faudree conjecture is SOLVED. -/
 theorem erdos_faudree_solved : ErdosFaudreeConjecture := wang_theorem
 
-/-!
+/-
 ## Part IV: Special Cases
 -/
 
@@ -138,31 +138,28 @@ axiom degree_bound_sharp :
       (∀ v : V, G.degree v = 2 * k - 1) ∧
       ¬∃ cycles : Finset (FourCycle G), cycles.card = k ∧ PairwiseDisjoint G cycles
 
-/-!
+/-
 ## Part V: Related Results
 -/
 
-/-- **Connection to Hamiltonian cycles:**
+/- **Connection to Hamiltonian cycles:**
     A graph on n vertices with minimum degree ≥ n/2 is Hamiltonian
     (Dirac's theorem). Wang's result can be seen as a "partition"
     version of this classical theorem. -/
-axiom dirac_connection : True
 
-/-- **El-Zahar's Conjecture (1984):**
+/- **El-Zahar's Conjecture (1984):**
     If G has n₁ + n₂ + ... + nₖ vertices and minimum degree ≥ ⌈nᵢ/2⌉
     for all i, then G contains vertex-disjoint cycles of lengths n₁, ..., nₖ.
 
     Wang's theorem is the special case where all nᵢ = 4. -/
-axiom elzahar_conjecture : True
 
-/-- **Corrádi-Hajnal Theorem:**
+/- **Corrádi-Hajnal Theorem:**
     If G has 3k vertices and minimum degree ≥ 2k,
     then G contains k vertex-disjoint triangles.
 
     This is analogous to Wang's theorem but for 3-cycles. -/
-axiom corradi_hajnal : True
 
-/-!
+/-
 ## Part VI: Proof Techniques
 -/
 
@@ -177,12 +174,11 @@ axiom wang_proof_technique :
     -- 4. Derive contradiction
     True
 
-/-- **Algorithmic aspect:**
+/- **Algorithmic aspect:**
     Wang's proof is constructive in the sense that it provides
     a polynomial-time algorithm to find the k disjoint 4-cycles. -/
-axiom algorithmic_aspect : True
 
-/-!
+/-
 ## Part VII: Summary
 -/
 

@@ -150,14 +150,10 @@ theorem erdos_599 : ErdosMengerConjecture := aharoni_berger_theorem
 ## Part V: Key Techniques
 -/
 
-/-- The Aharoni-Berger proof uses infinite matroid theory. -/
-axiom uses_infinite_matroids : True
-
-/-- Connection to infinite combinatorics and well-quasi-ordering. -/
-axiom well_quasi_order_connection : True
-
-/-- The paper was published in Inventiones Mathematicae (2009). -/
-axiom published_inventiones : True
+/-
+The Aharoni-Berger proof uses infinite matroid theory, connecting infinite
+combinatorics and well-quasi-ordering. Published in Inventiones Mathematicae (2009).
+-/
 
 /-
 ## Part VI: Generalizations
@@ -181,28 +177,16 @@ axiom erdos_menger_implies_linkage :
 
 /-
 ## Part VII: Historical Context
+
+- Menger's theorem dates to 1927
+- Erdős asked about the infinite case in 1981
+- The conjecture remained open for almost 30 years
+- Aharoni-Berger resolved it in 2009
 -/
-
-/-- Menger's theorem dates to 1927. -/
-axiom menger_1927 : True
-
-/-- Erdős asked about the infinite case in 1981. -/
-axiom erdos_1981 : True
-
-/-- The conjecture remained open for almost 30 years. -/
-axiom open_for_decades : True
-
-/-- Aharoni-Berger resolved it in 2009. -/
-axiom resolved_2009 : True
 
 /-
 ## Part VIII: Related Concepts
 -/
-
-/-- Vertex connectivity: min size of separating set. -/
-noncomputable def vertexConnectivity {V : Type*} (G : Graph V) (A B : Set V) : ℕ :=
-  Nat.find ⟨0, fun _ => ⟨∅, fun p hp => False.elim (by trivial)⟩⟩
-  -- Placeholder definition
 
 /-- The max-flow min-cut theorem for vertex version. -/
 axiom maxflow_mincut_vertex {V : Type*} [Fintype V] (G : Graph V) (A B : Set V) :
@@ -213,26 +197,17 @@ axiom maxflow_mincut_vertex {V : Type*} [Fintype V] (G : Graph V) (A B : Set V) 
 
 /-
 ## Part IX: König-Egervary Connection
+
+Matching in bipartite graphs is a special case; König's theorem on
+bipartite matching is generalized by Menger's theorem for paths.
 -/
-
-/-- Matching in bipartite graphs is a special case. -/
-axiom bipartite_matching_connection : True
-
-/-- König's theorem on bipartite matching. -/
-axiom konig_theorem : True
-
-/-- Menger generalizes König for paths. -/
-axiom menger_generalizes_konig : True
 
 /-
 ## Part X: Infinite Ramsey Theory Connection
+
+The Erdős-Menger conjecture connects to infinite Ramsey theory.
+Well-quasi-ordering plays a key role in the proof structure.
 -/
-
-/-- Connection to infinite Ramsey theory. -/
-axiom ramsey_connection : True
-
-/-- Well-quasi-ordering plays a role. -/
-axiom wqo_role : True
 
 /-
 ## Part XI: Summary

@@ -8,22 +8,57 @@
     "sourceUrl": "https://erdosproblems.com/159",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos159Problem.lean",
-    "tags": ["graph theory", "ramsey theory", "extremal graph theory"],
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "extremal-graph-theory"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 159,
     "erdosUrl": "https://erdosproblems.com/159",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type with adjacency relation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for vertex sets",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm function for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined HasC4: 4-cycle containment via four distinct vertices with adjacency cycle",
+      "Defined HasClique: complete subgraph containment via pairwise adjacency",
+      "Axiomatised ramseyC4Kn with full Ramsey threshold specification",
+      "Stated Szemerédi's upper bound R(C₄, Kₙ) ≤ C·n²/(log n)²",
+      "Stated Spencer's lower bound R(C₄, Kₙ) ≥ c·n^{3/2}/(log n)^{3/2}",
+      "Defined ErdosProblem159: existence of power saving c > 0 in exponent",
+      "Proved monotonicity of ramseyC4Kn in n",
+      "Stated trivial lower bound R(C₄, Kₙ) ≥ n"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem asks whether the Ramsey number R(C₄, Kₙ) admits a power saving over the trivial n² bound. Szemerédi established the upper bound n²/(log n)² and Spencer proved the lower bound n^{3/2}/(log n)^{3/2}. The gap between exponents 3/2 and 2 remains open.",
+    "historicalContext": "This problem asks whether the off-diagonal Ramsey number R(C₄, Kₙ) admits a genuine power saving over the trivial n² bound. The Ramsey number R(C₄, Kₙ) is the smallest N such that every graph on N vertices either contains a 4-cycle C₄ or has independence number at least n.\n\nSzemerédi established the upper bound R(C₄, Kₙ) ≤ C·n²/(log n)² using his celebrated regularity lemma. This improves on the trivial n² bound by a (log n)² factor, but falls short of a power saving. Spencer proved the lower bound R(C₄, Kₙ) ≥ c·n^{3/2}/(log n)^{3/2} using probabilistic methods, showing that the exponent is at least 3/2.\n\nThe gap between exponents 3/2 and 2 (modulo logarithmic factors) is a major open problem in Ramsey theory. Erdős asked whether the true exponent is strictly less than 2 — i.e., whether there exists c > 0 such that R(C₄, Kₙ) ≤ C·n^{2-c}. This would be a significant structural result, showing that C₄-free graphs cannot have too small an independence number. The problem connects to extremal graph theory via the Zarankiewicz problem and to algebraic constructions from finite geometry.",
     "problemStatement": "Does there exist c > 0 such that R(C₄, Kₙ) ≤ C · n^{2-c} for some constant C and all sufficiently large n?",
-    "proofStrategy": "The formalization defines C₄ containment and clique containment for simple graphs, axiomatises R(C₄, Kₙ) with its Ramsey threshold property, and states the known upper (Szemerédi) and lower (Spencer) bounds. The conjecture asks for a power saving in the exponent.",
+    "proofStrategy": "The formalization defines C₄ containment (HasC4) and clique containment (HasClique) for simple graphs. The Ramsey number ramseyC4Kn is axiomatised with its threshold specification. Szemerédi's upper and Spencer's lower bounds are stated. The main conjecture asks for a power saving. Monotonicity and a trivial lower bound are also established.",
     "keyInsights": [
-      "R(C₄, Kₙ) asks: every graph on N vertices either contains C₄ or has independence number ≥ n",
-      "Szemerédi's upper bound: R(C₄, Kₙ) ≪ n²/(log n)²",
-      "Spencer's lower bound: R(C₄, Kₙ) ≫ n^{3/2}/(log n)^{3/2}",
-      "The conjecture asks whether the exponent 2 can be reduced to 2-c for some c > 0"
+      "**Ramsey Threshold**: R(C₄, Kₙ) is the threshold N where every graph either contains C₄ or has independence number ≥ n",
+      "**Szemerédi Upper Bound**: R(C₄, Kₙ) ≤ C·n²/(log n)² via the regularity lemma — a logarithmic improvement over n²",
+      "**Spencer Lower Bound**: R(C₄, Kₙ) ≥ c·n^{3/2}/(log n)^{3/2} via probabilistic construction — the exponent gap from 3/2 to 2 is wide open",
+      "**Power Saving Question**: Erdős asks whether the exponent 2 can be reduced to 2-c for some c > 0 — this is stronger than any logarithmic improvement",
+      "**Finite Geometry Connection**: Algebraic constructions (e.g., from generalized quadrangles) provide C₄-free graphs with near-optimal independence numbers, suggesting the lower bound may be closer to truth"
     ]
   },
   "sections": [
@@ -31,45 +66,47 @@
       "id": "graph-predicates",
       "title": "Graph Predicates",
       "startLine": 21,
-      "endLine": 35,
-      "summary": "HasC4 and HasClique: definitions for 4-cycle containment and clique containment in simple graphs."
+      "endLine": 34,
+      "summary": "Defines HasC4 (4-cycle via four distinct vertices a-b-c-d-a with adjacencies) and HasClique (pairwise adjacent vertex set)."
     },
     {
       "id": "ramsey-number",
       "title": "Ramsey Number R(C₄, Kₙ)",
-      "startLine": 37,
-      "endLine": 52,
-      "summary": "Axiomatisation of R(C₄, Kₙ) as the threshold for C₄ vs Kₙ in 2-colourings of complete graphs."
+      "startLine": 36,
+      "endLine": 50,
+      "summary": "Axiomatises ramseyC4Kn as the Ramsey threshold: above it, every graph has C₄ or independence number ≥ n; below, counterexample exists."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 54,
-      "endLine": 69,
+      "startLine": 52,
+      "endLine": 66,
       "summary": "Szemerédi's upper bound n²/(log n)² and Spencer's lower bound n^{3/2}/(log n)^{3/2}."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 71,
-      "endLine": 81,
-      "summary": "Erdős Problem 159: existence of a power saving c > 0 in R(C₄, Kₙ) ≤ C·n^{2-c}."
+      "startLine": 68,
+      "endLine": 79,
+      "summary": "ErdosProblem159: existence of power saving c > 0 with R(C₄, Kₙ) ≤ C·n^{2-c}."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 83,
-      "endLine": 93,
-      "summary": "Monotonicity of R(C₄, Kₙ) in n and the trivial lower bound R(C₄, Kₙ) ≥ n."
+      "startLine": 81,
+      "endLine": 91,
+      "summary": "Monotonicity of ramseyC4Kn in n and trivial lower bound R(C₄, Kₙ) ≥ n."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 159 on power savings in the Ramsey number R(C₄, Kₙ), with Szemerédi's and Spencer's bounds framing the open question.",
-    "implications": "Resolving this would significantly advance understanding of off-diagonal Ramsey numbers and the interplay between cycle-freeness and independence number.",
+    "summary": "The formalization captures Erdős Problem 159 on power savings in R(C₄, Kₙ), with Szemerédi's and Spencer's bounds framing the open question. The exponent gap between 3/2 and 2 remains the central challenge.",
+    "implications": "Resolving this would significantly advance off-diagonal Ramsey theory and connect to the Zarankiewicz problem, C₄-free graph theory, and algebraic constructions from finite geometry.",
     "openQuestions": [
       "Does R(C₄, Kₙ) ≪ n^{2-c} for some c > 0?",
       "What is the correct exponent for R(C₄, Kₙ)?",
-      "Can algebraic constructions (e.g., from finite geometry) improve the lower bound?"
+      "Can algebraic constructions (from finite geometry) improve the lower bound beyond 3/2?",
+      "What is the role of the regularity lemma — can it be replaced by more efficient methods?",
+      "How does the answer change for R(C₂ₖ, Kₙ) with longer even cycles?"
     ]
   }
 }

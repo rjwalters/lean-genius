@@ -17,11 +17,14 @@
       "bipartite-graphs"
     ],
     "badge": "pending",
-    "sorries": 7,
+    "sorries": 5,
     "erdosNumber": 1021,
     "erdosUrl": "https://erdosproblems.com/1021",
     "erdosProblemStatus": "open",
-    "relatedProblems": [572, 926]
+    "relatedProblems": [
+      572,
+      926
+    ]
   },
   "overview": {
     "historicalContext": "**Extremal Graph Theory**\n\nThe extremal number ex(n, H) is the maximum edges an n-vertex graph can have while avoiding H as a subgraph. This is central to Turán-type problems.\n\n**The Bipartite Pair Graph G_k**: G_k has k 'primary' vertices {y₁,...,y_k} and C(k,2) 'pair' vertices {z₁,...,z_{C(k,2)}}. Each pair vertex z_j connects to exactly one pair of primary vertices.\n\n**Known Constraint**: Erdős-Simonovits proved (unpublished) that any improvement c_k must satisfy c_k → 0 as k → ∞.\n\n**Special Case**: When k = 3, G_3 is the 6-cycle C_6. Erdős and Bondy-Simonovits proved ex(n, C_6) ≪ n^(7/6).",

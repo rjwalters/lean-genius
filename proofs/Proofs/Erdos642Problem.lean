@@ -27,7 +27,7 @@ namespace Erdos642
 
 open Finset Function SimpleGraph
 
-/-!
+/-
 ## Part I: Graphs and Cycles
 
 Basic definitions for the problem.
@@ -47,7 +47,7 @@ structure Cycle (G : SimpleGraph V) where
 /-- The length (number of vertices) of a cycle. -/
 def Cycle.len {G : SimpleGraph V} (C : Cycle G) : ℕ := C.vertices.length
 
-/-!
+/-
 ## Part II: Diagonals of a Cycle
 
 A diagonal is an edge between non-adjacent vertices of the cycle.
@@ -70,7 +70,7 @@ noncomputable def diagonalCount {G : SimpleGraph V} [DecidableEq V] [Fintype V]
     [DecidableRel G.Adj] (C : Cycle G) : ℕ :=
   (G.edgeFinset.filter (fun e => IsDiagonal C e)).card
 
-/-!
+/-
 ## Part III: The Cycle-Diagonal Condition
 
 Graphs where every cycle has more vertices than diagonals.
@@ -86,7 +86,7 @@ noncomputable def f (n : ℕ) : ℕ :=
   sSup { m : ℕ | ∃ G : SimpleGraph (Fin n),
     ∃ _ : DecidableRel G.Adj, SatisfiesCycleDiagonalCondition G ∧ G.edgeFinset.card = m }
 
-/-!
+/-
 ## Part IV: Trivial Bounds
 
 Basic observations about the extremal function.
@@ -105,7 +105,7 @@ theorem max_diagonals_in_cycle (k : ℕ) (hk : k ≥ 3) :
     k * (k - 3) / 2 = (k.choose 2) - k := by
   sorry
 
-/-!
+/-
 ## Part V: Chen-Erdős-Staton Bound (1996)
 
 The first non-trivial upper bound.
@@ -118,7 +118,7 @@ axiom chen_erdos_staton (n : ℕ) (hn : n ≥ 10) :
 /-- The CES exponent is 3/2. -/
 def ces_exponent : ℝ := 3/2
 
-/-!
+/-
 ## Part VI: Draganić-Methuku-Munhá Correia-Sudakov Bound (2024)
 
 The improved bound using expander techniques.
@@ -133,7 +133,7 @@ theorem dmms_improves_ces (n : ℕ) (hn : n ≥ 1000) :
     Nat.ceil ((n : ℝ) * (Real.log n)^8) < 2 * Nat.floor ((n : ℝ)^(3/2 : ℝ)) := by
   sorry
 
-/-!
+/-
 ## Part VII: The Open Conjecture
 
 Is f(n) = o(n)?
@@ -153,7 +153,7 @@ theorem conjecture_stronger_than_dmms :
       (f n : ℝ) < n * (Real.log n)^8 := by
   sorry
 
-/-!
+/-
 ## Part VIII: Related Extremal Problems
 
 Connections to other graph problems.
@@ -179,7 +179,7 @@ theorem f_lower_bound (n : ℕ) (hn : n ≥ 10) :
     f n ≥ Nat.floor ((n : ℝ)^(3/2 : ℝ) / 4) := by
   sorry
 
-/-!
+/-
 ## Part IX: Expander Techniques
 
 The key tool in the DMMS improvement.
@@ -204,7 +204,7 @@ axiom expander_cycle_lemma (G : SimpleGraph (Fin n)) (d : ℕ) (λ : ℝ)
     -- G contains a cycle violating the condition
     ¬SatisfiesCycleDiagonalCondition G ∨ G.edgeFinset.card < d * n / 2
 
-/-!
+/-
 ## Part X: Short Cycles vs Long Cycles
 
 Different behavior for short and long cycles.
@@ -224,7 +224,7 @@ theorem critical_length : ∀ k : ℕ, k ≥ 5 → k ≤ k * (k - 3) / 2 := by
   intro k hk
   omega
 
-/-!
+/-
 ## Part XI: Main Results
 
 Summary of Erdős Problem #642.

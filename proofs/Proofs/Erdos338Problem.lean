@@ -40,7 +40,7 @@ open Finset BigOperators
 
 namespace Erdos338
 
-/-!
+/-
 ## Part I: Basic Definitions
 -/
 
@@ -91,7 +91,7 @@ noncomputable def minimalRestrictedOrder (A : Set ℕ)
     (h : HasFiniteRestrictedOrder A) : ℕ :=
   Nat.find (h)
 
-/-!
+/-
 ## Part II: Bateman's Observation
 -/
 
@@ -116,7 +116,7 @@ theorem bateman_observation (h : ℕ) (hh : h ≥ 3) :
     IsBasisOfOrder (batemanSet h) h ∧ ¬HasFiniteRestrictedOrder (batemanSet h) :=
   ⟨bateman_is_basis h hh, bateman_no_restricted_order h hh⟩
 
-/-!
+/-
 ## Part III: Kelly's Results (1957)
 -/
 
@@ -143,7 +143,7 @@ theorem kelly_conjecture_false : ¬kellyConjecture := by
   -- Hennecart constructed a basis of order 2 with restricted order 4
   sorry
 
-/-!
+/-
 ## Part IV: Hennecart's Counterexample (2005)
 -/
 
@@ -166,7 +166,7 @@ theorem hennecart_disproves_kelly : ¬kellyConjecture := by
   have h4 := hennecart_restricted_order_four.2
   exact h4 h3
 
-/-!
+/-
 ## Part V: Classical Examples
 -/
 
@@ -212,7 +212,7 @@ theorem squares_orders_differ :
     ¬HasRestrictedOrder squares 4 :=
   ⟨squares_order_four, pall_theorem⟩
 
-/-!
+/-
 ## Part VI: Hegyvári-Hennecart-Plagne Lower Bound (2007)
 -/
 
@@ -235,7 +235,7 @@ theorem exponential_gap (k : ℕ) (hk : k ≥ 2) :
   push_neg at hlt
   exact hlower t hlt ht
 
-/-!
+/-
 ## Part VII: The Main Open Questions
 -/
 
@@ -273,7 +273,7 @@ def IsRobustBasis (A : Set ℕ) (h : ℕ) : Prop :=
 def OpenQuestion4 : Prop :=
   ∀ A : Set ℕ, ∀ h : ℕ, IsRobustBasis A h → HasFiniteRestrictedOrder A
 
-/-!
+/-
 ## Part VIII: Basic Properties
 -/
 
@@ -317,7 +317,7 @@ theorem restricted_order_monotone (A : Set ℕ) (t : ℕ) :
   obtain ⟨s, hrep, hcard⟩ := hN n hn
   exact ⟨s, hrep, Nat.le_succ_of_le hcard⟩
 
-/-!
+/-
 ## Part IX: Summary
 
 **Erdős Problem #338: Status OPEN**

@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1167-header",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 1,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1167, providing mathematical context and problem statement.",
+    "mathContext": "",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1167-RSubset",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 58,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Rsubset",
+    "content": "def RSubset",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1167-Coloring",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 62,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Coloring",
+    "content": "def Coloring",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1167-IsMonochromatic",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Ismonochromatic",
+    "content": "def IsMonochromatic",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1167-PartitionRelation",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 74,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Partitionrelation",
+    "content": "def PartitionRelation",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1167-IndexedPartitionRelation",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 84,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Indexedpartitionrelation",
+    "content": "def IndexedPartitionRelation",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1167-partition_one_color",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 101,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "Partition One Color",
+    "content": "theorem partition_one_color",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-partition_monotone_target",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 115,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Partition Monotone Target",
+    "content": "theorem partition_monotone_target",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-partition_zero_target",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 125,
+      "endLine": 140
+    },
+    "type": "theorem",
+    "title": "Partition Zero Target",
+    "content": "theorem partition_zero_target",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-indexed_partition_monotone_tar",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 145,
+      "endLine": 152
+    },
+    "type": "theorem",
+    "title": "Indexed Partition Monotone Targets",
+    "content": "theorem indexed_partition_monotone_targets",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-isMonochromatic_subset",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 155,
+      "endLine": 160
+    },
+    "type": "theorem",
+    "title": "Ismonochromatic Subset",
+    "content": "theorem isMonochromatic_subset",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-infinite_card_add_one",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 172,
+      "endLine": 178
+    },
+    "type": "theorem",
+    "title": "Infinite Card Add One",
+    "content": "theorem infinite_card_add_one",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-finite_card_add_one",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 181,
+      "endLine": 184
+    },
+    "type": "theorem",
+    "title": "Finite Card Add One",
+    "content": "theorem finite_card_add_one",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-conjecture_simplifies_infinite",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 189,
+      "endLine": 201
+    },
+    "type": "theorem",
+    "title": "Conjecture Simplifies Infinite Targets",
+    "content": "theorem conjecture_simplifies_infinite_targets",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-two_pow_infinite",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 205,
+      "endLine": 208
+    },
+    "type": "theorem",
+    "title": "Two Pow Infinite",
+    "content": "theorem two_pow_infinite",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-erdos_1167_conjecture",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 228,
+      "endLine": 233
+    },
+    "type": "axiom",
+    "title": "Erdos 1167 Conjecture",
+    "content": "axiom erdos_1167_conjecture",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1167-infinite_ramsey",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 238,
+      "endLine": 239
+    },
+    "type": "axiom",
+    "title": "Infinite Ramsey",
+    "content": "axiom infinite_ramsey",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1167-erdos_rado_theorem",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 243,
+      "endLine": 244
+    },
+    "type": "axiom",
+    "title": "Erdos Rado Theorem",
+    "content": "axiom erdos_rado_theorem",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1167-erdos_1167_r2_case",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 251,
+      "endLine": 256
+    },
+    "type": "theorem",
+    "title": "Erdos 1167 R2 Case",
+    "content": "theorem erdos_1167_r2_case",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1167-erdos_1167_general_case",
+    "proofId": "erdos-1167",
+    "range": {
+      "startLine": 259,
+      "endLine": 264
+    },
+    "type": "theorem",
+    "title": "Erdos 1167 General Case",
+    "content": "theorem erdos_1167_general_case",
+    "significance": "critical"
+  }
+]

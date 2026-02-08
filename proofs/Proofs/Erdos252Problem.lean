@@ -33,7 +33,7 @@ open ArithmeticFunction
 
 namespace Erdos252
 
-/-! ## The Divisor Power Sum
+/- ## The Divisor Power Sum
 
 The main object of study is the infinite series Σ_{n=1}^∞ σ_k(n)/n!
 where σ_k(n) = Σ_{d|n} d^k is the sum of k-th powers of divisors of n.
@@ -47,7 +47,7 @@ Special cases:
 noncomputable def divisorPowerSum (k : ℕ) : ℝ :=
   ∑' n, (sigma k n : ℝ) / (n ! : ℝ)
 
-/-! ## Proved Cases: k = 0, 1, 2, 3, 4
+/- ## Proved Cases: k = 0, 1, 2, 3, 4
 
 These cases have been proved unconditionally by various authors.
 We axiomatize these results as they require transcendence-theory techniques
@@ -83,7 +83,7 @@ theorem erdos_252_le_4 (k : ℕ) (hk : k ≤ 4) : Irrational (divisorPowerSum k)
   · exact erdos_252_k3
   · exact erdos_252_k4
 
-/-! ## The Open Conjecture: k ≥ 5
+/- ## The Open Conjecture: k ≥ 5
 
 For k ≥ 5, the irrationality of Σ σ_k(n)/n! remains open.
 The full conjecture is that these sums are irrational for ALL k ≥ 1.
@@ -100,7 +100,7 @@ def Erdos252Conjecture : Prop :=
 def Erdos252Open : Prop :=
   ∀ k ≥ 5, Irrational (divisorPowerSum k)
 
-/-! ## Conditional Results
+/- ## Conditional Results
 
 The conjecture follows from either of two famous conjectures in number theory:
 1. Schinzel's Hypothesis H (about simultaneous prime values of polynomials)
@@ -136,7 +136,7 @@ def PrimeKTuplesConjecture : Prop :=
 axiom prime_tuples_implies_ge_4 :
     PrimeKTuplesConjecture → ∀ k ≥ 4, Irrational (divisorPowerSum k)
 
-/-! ## Basic Properties of Divisor Sums
+/- ## Basic Properties of Divisor Sums
 
 We verify some basic properties and examples.
 -/
@@ -160,7 +160,7 @@ The divisors of p are {1, p}, so σ_k(p) = 1^k + p^k = 1 + p^k.
 axiom sigma_prime (p : ℕ) (hp : p.Prime) (k : ℕ) :
     sigma k p = 1 + p ^ k
 
-/-! ## Convergence
+/- ## Convergence
 
 The series Σ σ_k(n)/n! converges absolutely because σ_k(n) ≤ n^(k+1)
 and Σ n^(k+1)/n! converges.
@@ -180,7 +180,7 @@ since n^(k+1)/n! → 0 faster than any geometric sequence.
 axiom divisorPowerSum_summable (k : ℕ) :
     Summable (fun n => (sigma k n : ℝ) / (n ! : ℝ))
 
-/-! ## Summary
+/- ## Summary
 
 **Erdős Problem #252** asks whether Σ_{n=1}^∞ σ_k(n)/n! is irrational for all k ≥ 1.
 

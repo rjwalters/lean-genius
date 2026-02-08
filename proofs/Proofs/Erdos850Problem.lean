@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #850: Same Prime Factors for Three Consecutive Shifts
 
 Can there exist distinct positive integers x and y such that x,y have the
@@ -20,13 +20,13 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Tactic
 
-/-! ## Same Prime Factors -/
+/- ## Same Prime Factors -/
 
 /-- Two positive integers share the same set of prime divisors. -/
 def SamePrimeFactors (x y : ℕ) : Prop :=
   x.primeFactors = y.primeFactors
 
-/-! ## Main Conjecture -/
+/- ## Main Conjecture -/
 
 /-- Erdős Problem 850: Do there exist distinct x, y with the same prime
     factors for x,y and x+1,y+1 and x+2,y+2?
@@ -37,7 +37,7 @@ def ErdosProblem850 : Prop :=
     SamePrimeFactors (x + 1) (y + 1) ∧
     SamePrimeFactors (x + 2) (y + 2)
 
-/-! ## Weaker Variant: Two Consecutive Shifts -/
+/- ## Weaker Variant: Two Consecutive Shifts -/
 
 /-- The two-shift version: do there exist distinct x, y with same prime
     factors for both x,y and x+1,y+1? This IS solvable. -/
@@ -59,7 +59,7 @@ def MakowskiExample : ℕ × ℕ := (75, 1215)
 theorem makowski_distinct : MakowskiExample.1 ≠ MakowskiExample.2 := by
   simp [MakowskiExample]
 
-/-! ## Connection to ABC Conjecture -/
+/- ## Connection to ABC Conjecture -/
 
 /-- The radical of a positive integer: the product of its distinct prime factors. -/
 noncomputable def radical (n : ℕ) : ℕ :=
@@ -75,7 +75,7 @@ def StrongABCConjecture : Prop :=
 axiom shorey_tijdeman :
     StrongABCConjecture → ErdosProblem850
 
-/-! ## General k-Shift Version -/
+/- ## General k-Shift Version -/
 
 /-- The generalized k-shift version: do there exist distinct x, y with
     same prime factors for all x+i, y+i where 0 ≤ i ≤ k? -/
@@ -102,7 +102,7 @@ theorem kshift_monotone (k : ℕ) (h : KShiftProblem k) : KShiftProblem (k - 1) 
   apply h
   exact ⟨x, y, hne, fun i hi => hshift i (by omega)⟩
 
-/-! ## Structural Observations -/
+/- ## Structural Observations -/
 
 /-- SamePrimeFactors is reflexive. -/
 theorem samePrimeFactors_refl (n : ℕ) : SamePrimeFactors n n :=

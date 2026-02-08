@@ -1,4 +1,4 @@
-/-!
+/-
 # Erdős Problem #502 — Two-Distance Sets in Euclidean Space
 
 Given n, what is the maximum size f(n) of a set A ⊆ ℝⁿ such that the
@@ -21,7 +21,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-/-! ## Core Definitions -/
+/- ## Core Definitions -/
 
 /-- A two-distance set in ℝⁿ: a finite set where exactly two
     distinct pairwise distances occur. -/
@@ -34,7 +34,7 @@ def IsTwoDistanceSet (n : ℕ) (A : Finset (Fin n → ℝ)) : Prop :=
 noncomputable def maxTwoDistSize (n : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ A : Finset (Fin n → ℝ), A.card = k ∧ IsTwoDistanceSet n A }
 
-/-! ## The Binary Vector Construction -/
+/- ## The Binary Vector Construction -/
 
 /-- Binary vector with exactly two coordinates equal to 1.
     These form a two-distance set of size C(n,2). -/
@@ -48,7 +48,7 @@ axiom binary_two_distances (n : ℕ) (hn : 2 ≤ n)
     dist (binaryTwoVec n i₁ j₁ h₁) (binaryTwoVec n i₂ j₂ h₂) = Real.sqrt 2 ∨
     dist (binaryTwoVec n i₁ j₁ h₁) (binaryTwoVec n i₂ j₂ h₂) = 2
 
-/-! ## Lower Bound -/
+/- ## Lower Bound -/
 
 /-- Basic lower bound: f(n) ≥ C(n, 2) from binary vectors. -/
 axiom lower_bound_basic (n : ℕ) (hn : 2 ≤ n) :
@@ -58,7 +58,7 @@ axiom lower_bound_basic (n : ℕ) (hn : 2 ≤ n) :
 axiom lower_bound_improved (n : ℕ) (hn : 2 ≤ n) :
     (n + 1).choose 2 ≤ maxTwoDistSize n
 
-/-! ## Upper Bound — Bannai–Bannai–Stanton -/
+/- ## Upper Bound — Bannai–Bannai–Stanton -/
 
 /-- Bannai–Bannai–Stanton (1983): f(n) ≤ C(n+2, 2).
     Petrov–Pohoata (2021) gave a simpler proof.
@@ -66,7 +66,7 @@ axiom lower_bound_improved (n : ℕ) (hn : 2 ≤ n) :
 axiom upper_bound_bbs (n : ℕ) :
     maxTwoDistSize n ≤ (n + 2).choose 2
 
-/-! ## Main Result -/
+/- ## Main Result -/
 
 /-- Combined bounds: C(n+1,2) ≤ f(n) ≤ C(n+2,2). -/
 theorem erdos_502_bounds (n : ℕ) (hn : 2 ≤ n) :
@@ -74,7 +74,7 @@ theorem erdos_502_bounds (n : ℕ) (hn : 2 ≤ n) :
     maxTwoDistSize n ≤ (n + 2).choose 2 :=
   ⟨lower_bound_improved n hn, upper_bound_bbs n⟩
 
-/-! ## Small Cases -/
+/- ## Small Cases -/
 
 /-- In ℝ², the maximum two-distance set has size 5 (regular pentagon). -/
 axiom two_dist_dim2 : maxTwoDistSize 2 = 5
@@ -82,7 +82,7 @@ axiom two_dist_dim2 : maxTwoDistSize 2 = 5
 /-- In ℝ³, the maximum two-distance set has size 6. -/
 axiom two_dist_dim3 : maxTwoDistSize 3 = 6
 
-/-! ## Coxeter's Original Question -/
+/- ## Coxeter's Original Question -/
 
 /-- Coxeter asked Erdős whether f(n) is polynomial in n.
     The Bannai–Bannai–Stanton bound confirms f(n) = O(n²). -/

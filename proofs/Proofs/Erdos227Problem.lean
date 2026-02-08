@@ -31,7 +31,7 @@ namespace Erdos227
 
 open Complex Filter Topology
 
-/-!
+/-
 ## Part 1: Basic Definitions
 
 Maximum term and maximum modulus for power series.
@@ -54,7 +54,7 @@ noncomputable def maxModulus (f : EntireFunction) (r : ℝ) : ℝ :=
 noncomputable def termModulusRatio (f : EntireFunction) (r : ℝ) : ℝ :=
   maxTerm f r / maxModulus f r
 
-/-!
+/-
 ## Part 2: The Original Conjecture
 
 Erdős asked: if lim μ(r)/M(r) exists, must it be 0?
@@ -70,7 +70,7 @@ axiom clunie_positive_coeffs (f : EntireFunction) (hpos : ∀ n, (f.coeff n).re 
     (L : ℝ) (hL : Tendsto (termModulusRatio f) atTop (nhds L)) :
     L = 0
 
-/-!
+/-
 ## Part 3: Clunie-Hayman Counterexample
 
 The conjecture is FALSE: the limit can be any λ ∈ [0, 1/2].
@@ -97,7 +97,7 @@ theorem original_conjecture_false : ¬OriginalConjecture := by
   -- But 1/4 ≠ 0, contradiction
   norm_num at hzero
 
-/-!
+/-
 ## Part 4: The Complete Characterization
 
 The set of achievable limits is exactly [0, 1/2].
@@ -123,7 +123,7 @@ theorem achievable_limits_characterization :
     intro ⟨hL0, hL12⟩
     exact clunie_hayman_1964 L hL0 hL12
 
-/-!
+/-
 ## Part 5: Central Index
 
 The maximum term is achieved at specific indices.
@@ -137,7 +137,7 @@ noncomputable def centralIndex (f : EntireFunction) (r : ℝ) : ℕ :=
 axiom central_index_unbounded (f : EntireFunction) :
     Tendsto (centralIndex f) atTop atTop
 
-/-!
+/-
 ## Part 6: Asymptotic Relations
 
 Relation between μ(r), M(r), and the growth of f.
@@ -159,7 +159,7 @@ theorem positive_coeffs_normal (f : EntireFunction)
   -- Follows from Clunie's result
   sorry
 
-/-!
+/-
 ## Part 7: Order and Type
 
 Connection to order of growth.
@@ -177,7 +177,7 @@ noncomputable def typeOfOrder (f : EntireFunction) (ρ : ℝ) : ℝ :=
 axiom order_zero_normal (f : EntireFunction) (h : order f = 0) :
     IsNormal f
 
-/-!
+/-
 ## Part 8: Examples
 
 Specific examples illustrating the theorem.
@@ -196,7 +196,7 @@ axiom pathological_examples_exist :
         -- But has limit λ
         Tendsto (termModulusRatio f) atTop (nhds λ)
 
-/-!
+/-
 ## Part 9: Main Problem Statement
 -/
 
@@ -216,7 +216,7 @@ theorem erdos_227_statement :
   · exact clunie_positive_coeffs
   · exact achievable_limits_characterization
 
-/-!
+/-
 ## Part 10: Summary
 -/
 
