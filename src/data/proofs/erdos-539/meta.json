@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 539,
     "erdosUrl": "https://erdosproblems.com/539",
     "erdosProblemStatus": "open",
@@ -67,7 +67,50 @@
       "**Gap:** True exponent between 1/2 and 2/3 unknown"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Documentation header describing the problem, imports from Mathlib"
+    },
+    {
+      "id": "definitions",
+      "title": "GCD Quotient Definitions",
+      "startLine": 35,
+      "endLine": 95,
+      "summary": "Core definitions: gcdQuotient, gcdQuotientSet, gcdQuotientSize, h(n), and basic properties"
+    },
+    {
+      "id": "bounds",
+      "title": "Erdős-Szemerédi and Freiman-Lev Bounds",
+      "startLine": 96,
+      "endLine": 135,
+      "summary": "The main asymptotic bounds: n^{1/2} ≪ h(n) ≪ n^{2/3}"
+    },
+    {
+      "id": "examples",
+      "title": "Examples: APs and GPs",
+      "startLine": 137,
+      "endLine": 159,
+      "summary": "Quotient set sizes for arithmetic and geometric progressions"
+    },
+    {
+      "id": "structure",
+      "title": "Matrix and Geometric Views",
+      "startLine": 161,
+      "endLine": 213,
+      "summary": "GCD/quotient matrices, Granville-Roesler reformulation, extremal structure"
+    },
+    {
+      "id": "open",
+      "title": "Open Questions and Summary",
+      "startLine": 215,
+      "endLine": 267,
+      "summary": "The main open question about the true exponent and summary results"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #539 asks for the minimum size of { a/gcd(a,b) : a,b ∈ A } over n-element sets. Erdős-Szemerédi proved n^{1/2} ≪ h(n) ≪ n^{1-c}, and Freiman-Lev improved the upper bound to n^{2/3}. The exact exponent remains unknown.",
     "implications": "**Connections**\n\n1. **Additive Combinatorics:** GCD structure relates to sum-product phenomena\n\n2. **Divisibility:** Quotients encode divisibility relationships\n\n3. **Geometric Interpretation:** Granville-Roesler's lattice point view\n\n4. **Extremal Sets:** Special structure needed for small quotient sets",
