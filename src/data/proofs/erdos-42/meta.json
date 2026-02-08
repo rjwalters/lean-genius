@@ -10,9 +10,10 @@
     "proofRepoPath": "Proofs/Erdos42Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "Sidon sets",
-      "additive combinatorics"
+      "number-theory",
+      "sidon-sets",
+      "additive-combinatorics",
+      "difference-sets"
     ],
     "badge": "formalized",
     "sorries": 0,
@@ -21,53 +22,97 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem about the structure of maximal Sidon sets. A Sidon set has all pairwise sums distinct. The question asks whether maximal Sidon sets always leave room for other Sidon sets with completely disjoint non-zero differences. Sedov proved the cases M = 2 and M = 3.",
+    "historicalContext": "Sidon sets (also called B₂ sets) were introduced by Simon Sidon in the 1930s through correspondence with Erdős. A Sidon set is a set of integers where all pairwise sums are distinct. Erdős and Turán (1941) proved the fundamental size bound |A| ≤ √(2N) for Sidon subsets of {1,...,N}. Problem 42 asks about the rigidity of maximal Sidon sets: even though adding any new element to a maximal Sidon set creates a repeated sum, the conjecture asserts that the difference set A−A cannot monopolize all available differences. Sedov proved the cases M = 2 (by pigeonhole counting) and M = 3 (by combining analytic estimates with computational verification). The problem connects to broader questions in additive combinatorics about the structure of B₂ sets, including the Erdős–Turán conjecture on the maximum size of Sidon sets and Ruzsa's constructions of near-optimal Sidon sets.",
     "problemStatement": "For every M ≥ 1 and N sufficiently large, is it true that every maximal Sidon set A ⊆ {1,...,N} admits a companion Sidon set B ⊆ {1,...,N} of size M with (A−A) ∩ (B−B) = {0}?",
-    "proofStrategy": "Full rewrite from formal-conjectures. We define Sidon sets, maximality in {1,...,N}, difference sets, and disjoint-difference properties. Sedov's results for M ≤ 3 are axiomatized. The general conjecture and its constructive version are stated.",
+    "proofStrategy": "The formalization defines Sidon sets via sum-distinctness on Finset ℕ, interval containment, and maximality in the inclusion order. Difference sets are computed as Finset ℤ via biUnion. The key axioms record the classical size bound |A|² ≤ 2N+1, Sedov's results for M ≤ 3, and both the existential and constructive forms of the general conjecture. The constructive version asks for an explicit threshold function f(M) bounding the required N.",
     "keyInsights": [
-      "A Sidon set in {1,...,N} has at most ~√N elements",
-      "Maximality means no element can be added while preserving the Sidon property",
-      "Disjoint differences (A−A) ∩ (B−B) = {0} is a strong structural constraint",
-      "Sedov's computational methods handle M ≤ 3 but the general case requires new ideas"
+      "**Difference occupation**: A Sidon set A with |A| ≈ √N generates |A−A| ≈ N distinct differences out of 2N possible, leaving substantial room in principle for companion sets",
+      "**Maximality vs. maximum**: Maximal Sidon sets (inclusion-maximal) are typically smaller than maximum Sidon sets, which complicates the difference-counting heuristic",
+      "**Pigeonhole for M = 2**: Sedov's proof exploits that N² pairs vastly outnumber the ≈N forbidden differences, guaranteeing a valid pair by counting",
+      "**M = 3 barrier**: The jump from pairs to triples requires avoiding six differences simultaneously while maintaining Sidon within {b₁,b₂,b₃}, making simple counting insufficient",
+      "**Constructive threshold**: Even for proved cases, the dependence of N₀ on M is unknown—polynomial growth would suggest different proof techniques than exponential growth"
     ]
   },
   "sections": [
     {
-      "id": "sidon-defs",
-      "title": "Sidon Set Definitions",
+      "id": "imports",
+      "title": "Mathlib Imports",
       "startLine": 19,
-      "endLine": 38,
-      "summary": "Defines Sidon sets, containment in {1,...,N}, and maximal Sidon sets."
+      "endLine": 22,
+      "summary": "Imports Finset, Nat.Basic, and tactic libraries from Mathlib for finite set operations."
+    },
+    {
+      "id": "sidon-def",
+      "title": "Sidon Set Definition",
+      "startLine": 24,
+      "endLine": 30,
+      "summary": "Defines IsSidonSet via sum-distinctness: if a₁ + b₁ = a₂ + b₂ then {a₁,b₁} = {a₂,b₂}."
+    },
+    {
+      "id": "interval-def",
+      "title": "Interval Containment",
+      "startLine": 32,
+      "endLine": 34,
+      "summary": "Defines InInterval A N requiring all elements of A to lie in {1,...,N}."
+    },
+    {
+      "id": "maximal-sidon",
+      "title": "Maximal Sidon Sets",
+      "startLine": 36,
+      "endLine": 40,
+      "summary": "Defines IsMaximalSidon: a Sidon set in {1,...,N} where no element can be added while preserving Sidon."
     },
     {
       "id": "difference-sets",
-      "title": "Difference Sets",
-      "startLine": 40,
-      "endLine": 48,
-      "summary": "Defines difference sets A−A and the disjoint-differences property."
+      "title": "Difference Set Infrastructure",
+      "startLine": 42,
+      "endLine": 50,
+      "summary": "Defines diffSet via biUnion over pairs and DisjointDiffs requiring (A−A) ∩ (B−B) = {0}."
     },
     {
-      "id": "partial-results",
-      "title": "Partial Results",
-      "startLine": 60,
-      "endLine": 76,
-      "summary": "Axiomatizes Sedov's proofs for M = 2 and M = 3."
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 52,
+      "endLine": 64,
+      "summary": "Records the classical size bound |A|² ≤ 2N+1, the trivial 0 ∈ A−A, and a concrete example {1,2,4}."
+    },
+    {
+      "id": "sedov-M2",
+      "title": "Sedov's M = 2 Result",
+      "startLine": 66,
+      "endLine": 74,
+      "summary": "Axiomatizes Sedov's proof that every maximal Sidon set admits a 2-element companion with disjoint differences."
+    },
+    {
+      "id": "sedov-M3",
+      "title": "Sedov's M = 3 Result",
+      "startLine": 76,
+      "endLine": 81,
+      "summary": "Axiomatizes Sedov's extension to M = 3, combining analytic and computational methods."
     },
     {
       "id": "main-conjecture",
-      "title": "The Erdős Problem",
-      "startLine": 78,
-      "endLine": 96,
-      "summary": "States the general conjecture for all M and its constructive version with explicit bounds."
+      "title": "The General Conjecture",
+      "startLine": 83,
+      "endLine": 93,
+      "summary": "States Erdős Problem 42 in full generality: for every M, sufficiently large N yields companion sets."
+    },
+    {
+      "id": "constructive",
+      "title": "Constructive Version",
+      "startLine": 95,
+      "endLine": 101,
+      "summary": "Strengthens the conjecture by asserting an explicit threshold function f(M) bounding N₀."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 42 asks whether maximal Sidon sets always coexist with other Sidon sets having disjoint difference sets. Sedov's results cover M ≤ 3, but the general conjecture remains open.",
-    "implications": "Resolution would reveal fundamental structure of maximal Sidon sets, with implications for additive combinatorics and the theory of B₂ sets.",
+    "summary": "Erdős Problem 42 probes the rigidity of maximal Sidon sets: despite being saturated in the inclusion order, can their difference sets always coexist with arbitrarily large companion Sidon sets? Sedov's proofs for M ≤ 3 use counting and computation, but the general case demands new structural insights into how maximal Sidon sets distribute their differences across {1,...,N}.",
+    "implications": "Resolution would illuminate the fine structure of B₂ sets in finite intervals, with connections to the Erdős–Turán conjecture on maximum Sidon set sizes, Ruzsa's algebraic constructions, and the broader theory of sumset and difference set geometry in additive combinatorics.",
     "openQuestions": [
-      "Does the conjecture hold for all M ≥ 4?",
-      "What is the growth rate of the threshold N₀(M)?",
-      "Can the companion set B be chosen constructively?"
+      "Does the conjecture hold for M = 4, and can Sedov's computational approach be extended?",
+      "What is the growth rate of the threshold N₀(M)—polynomial or exponential in M?",
+      "Can probabilistic methods (e.g., random greedy Sidon sets) prove the conjecture for all M?",
+      "Is there a density version: for maximal Sidon sets, what fraction of M-element Sidon subsets have disjoint differences?"
     ]
   }
 }
