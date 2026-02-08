@@ -174,7 +174,7 @@ axiom random_construction :
     -- This gives |A| ~ N^{1/3+ε}, but refined analysis gives N^{2/3-o(1)}
     True
 
-/--
+/-
 **Why N^{2/3}?**
 Balancing: want many elements (N^α) but few collisions.
 Collisions occur when a₁² + a₂² = b₁² + b₂².
@@ -182,7 +182,6 @@ With N^α elements, expect N^{2α} sums, but only N/(log N)^{1/2} targets.
 Need N^{2α} ≤ N/(log N)^{1/2}, giving α ≤ 1/2 + o(1).
 Refined counting gives α = 2/3.
 -/
-axiom why_two_thirds : True
 
 /-
 ## Part VII: Upper Bound Analysis
@@ -215,12 +214,11 @@ def trueOrder : Prop :=
     ∀ ε > 0, ∀ᶠ N in Filter.atTop,
       (N : ℝ)^(α - ε) ≤ (f N : ℝ) ∧ (f N : ℝ) ≤ (N : ℝ)^(α + ε)
 
-/--
+/-
 **Can the lower bound be improved?**
 The current N^{2/3} comes from probabilistic existence.
 An explicit construction might do better.
 -/
-axiom explicit_construction_question : True
 
 /-
 ## Part IX: Summary

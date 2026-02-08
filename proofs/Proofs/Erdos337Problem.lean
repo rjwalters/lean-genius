@@ -219,12 +219,11 @@ axiom construction_insight :
     -- the sumset has many collisions, limiting its growth
     True
 
-/--
+/-
 **The Role of Sparsity:**
 Being sparse (o(N) elements) is not enough to guarantee
 unbounded sumset-to-set ratio.
 -/
-axiom sparsity_not_enough : True
 
 /-
 ## Part VIII: Comparison with Plünnecke-Ruzsa
@@ -241,12 +240,11 @@ axiom plunnecke_ruzsa (A : Finset ℕ) (h : ℕ) (hh : h ≥ 1) :
     (hFoldSumset h (A : Set ℕ) ∩ {n | ∃ a ∈ A, ∃ b ∈ A, n ≤ a + b}).ncard
       ≤ A.card ^ h
 
-/--
+/-
 **Lower bounds are harder:**
 There's no general lower bound for |A+A| in terms of |A|
 for infinite sets.
 -/
-axiom no_general_lower_bound : True
 
 /-
 ## Part IX: Examples

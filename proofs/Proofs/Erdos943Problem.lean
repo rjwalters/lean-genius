@@ -72,19 +72,16 @@ axiom powerful_structure :
 
 /- ## Observations -/
 
-/-- **Average order**: On average over n ≤ x, the sum
+/- **Average order**: On average over n ≤ x, the sum
     Σ_{n≤x} r(n) ∼ c²x (since there are ~c√x powerful numbers
     up to x). The question is about pointwise bounds. -/
-axiom average_order : True
 
-/-- **Connection to squares**: Perfect squares form a subset of
+/- **Connection to squares**: Perfect squares form a subset of
     powerful numbers. Representations as sums of two squares
     are well-understood (Jacobi's formula), but the powerful
     number case is harder due to the irregular structure. -/
-axiom squares_connection : True
 
-/-- **Diophantine constraints**: For n = a²b³ + c²d³, the
+/- **Diophantine constraints**: For n = a²b³ + c²d³, the
     equation constrains a,b,c,d in ways that should limit
     the number of solutions, but making this rigorous is
     the core difficulty. -/
-axiom diophantine_constraints : True

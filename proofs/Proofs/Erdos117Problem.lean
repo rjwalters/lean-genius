@@ -71,11 +71,9 @@ axiom isaacs_lower :
     Then h(1) = 1. -/
 axiom trivial_case : abelianCoverNumber 1 = 1
 
-/-- **Connection to Ramsey Theory**: the n-commuting property is a Ramsey-type
+/- **Connection to Ramsey Theory**: the n-commuting property is a Ramsey-type
     condition on the group. The covering number h(n) measures how far the group
     is from being globally Abelian. -/
-axiom ramsey_connection : True
 
-/-- **Open**: determine the exact base of the exponential growth. Is there
+/- **Open**: determine the exact base of the exponential growth. Is there
     a single constant c > 1 with h(n) = Θ(c^n)? -/
-axiom exact_base_open : True

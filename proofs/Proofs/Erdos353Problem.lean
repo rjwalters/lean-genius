@@ -285,12 +285,11 @@ axiom finite_measure_counterexample :
       MeasurableSet A ∧ volume A < ⊤ ∧
       ¬HasTriangleWithArea A 1
 
-/--
+/-
 **Density Argument:**
 The proofs use the fact that infinite measure sets must have positive
 density in many regions, ensuring enough points to form configurations.
 -/
-axiom density_argument : True
 
 /-
 ## Part VIII: Scaling Properties
@@ -321,19 +320,17 @@ theorem all_areas_isosceles (A : Set (EuclideanSpace ℝ (Fin 2)))
 ## Part IX: Connections to Other Problems
 -/
 
-/--
+/-
 **Connection to Erdős Distance Problem:**
 The study of configurations in point sets relates to the Erdős distinct
 distances problem and unit distance problems.
 -/
-axiom erdos_distance_connection : True
 
-/--
+/-
 **Connection to Ramsey Theory:**
 Finding configurations in large sets has Ramsey-theoretic flavor:
 large enough sets must contain desired structures.
 -/
-axiom ramsey_connection : True
 
 /-
 ## Part X: Summary

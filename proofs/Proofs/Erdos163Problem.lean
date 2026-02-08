@@ -75,11 +75,9 @@ axiom trees_are_1_degenerate :
   -- (every subtree has a leaf)
   True
 
-/-- Forests (disjoint unions of trees) are 1-degenerate -/
-axiom forests_are_1_degenerate : True
+/- Forests (disjoint unions of trees) are 1-degenerate -/
 
-/-- Planar graphs are 5-degenerate -/
-axiom planar_5_degenerate : True
+/- Planar graphs are 5-degenerate -/
 
 /-
 ## Part 2: Ramsey Numbers

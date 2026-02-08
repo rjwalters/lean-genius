@@ -76,17 +76,14 @@ axiom erdos_complex_weak (n : ℕ) (hn : n ≥ 1)
 
 /- ## Generalizations -/
 
-/-- **Kleitman (1970)**: The result extends to arbitrary Hilbert
+/- **Kleitman (1970)**: The result extends to arbitrary Hilbert
     spaces: for vectors v₁,...,vₙ in a Hilbert space with
     ‖vᵢ‖ ≥ 1, at most C(n, ⌊n/2⌋) signed sums fall in any
     ball of radius 1. -/
-axiom kleitman_hilbert_space : True
 
-/-- **Sperner connection**: The bound C(n, ⌊n/2⌋) is tight and
+/- **Sperner connection**: The bound C(n, ⌊n/2⌋) is tight and
     equals the size of the largest antichain in the power set
     of {1,...,n}. Kleitman's proof uses antichain arguments. -/
-axiom sperner_connection : True
 
-/-- **Related Problem #395**: Further variants of the
+/- **Related Problem #395**: Further variants of the
     Littlewood–Offord problem. -/
-axiom related_395 : True

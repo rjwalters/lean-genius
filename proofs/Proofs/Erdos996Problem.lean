@@ -181,9 +181,8 @@ def ErdosProblem996 : Prop :=
     (∀ k : ℕ, k ≥ 16 → fourierError f k ≤ 1 / (Real.log (Real.log (Real.log k)))^C) →
     StrongLawHoldsAE f n
 
-/-- The status of Problem #996: OPEN.
+/- The status of Problem #996: OPEN.
     We don't know if log log log decay suffices. -/
-axiom erdos_996_open : True  -- Placeholder indicating open status
 
 /- ## Part VII: Related Questions -/
 

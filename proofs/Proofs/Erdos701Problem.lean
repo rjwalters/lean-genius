@@ -213,7 +213,6 @@ def WeightedChvatalConjecture {α : Type*} [Fintype α]
     ∃ x : α, ∀ F' : Set (Set α), F' ⊆ F → IsIntersecting F' →
       ∑' A : F', w A ≤ ∑' A : Star F x, w A
 
-axiom borg_2011_partial : True  -- Partial results under assumptions
 
 /-
 ## Part VI: Connection to Erdős-Ko-Rado

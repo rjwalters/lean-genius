@@ -144,7 +144,7 @@ axiom apfree_zero_density : ∀ A : Set ℕ, isAPFree A →
 
 /- ## Part VI: Why the Conjecture Fails -/
 
-/--
+/-
 **Key insight:**
 The ENR condition only requires *some* large AP-free subset of each
 finite piece. It doesn't require the pieces to come from a single
@@ -155,7 +155,6 @@ The counterexample likely uses a construction where:
 2. But different subsets require different AP-free decompositions
 3. No single finite collection works for all subsets
 -/
-axiom key_insight : True
 
 /--
 **Finite unions are very restrictive:**
@@ -170,17 +169,15 @@ theorem finite_union_implies_enr (A : Set ℕ) (k : ℕ) (parts : Fin k → Set 
 
 /- ## Part VII: Related Problems -/
 
-/--
+/-
 **Problem #774:**
 Related to structure of sets avoiding APs.
 -/
-axiom problem_774_related : True
 
-/--
+/-
 **Problem #846:**
 Adjacent problem in the Erdős collection on AP-free sets.
 -/
-axiom problem_846_related : True
 
 /- ## Part VIII: Roth's Theorem and Bounds -/
 

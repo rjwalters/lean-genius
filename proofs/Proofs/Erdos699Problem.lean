@@ -74,8 +74,7 @@ def HasCommonStrictlyLargePrime (n i j : ℕ) : Prop :=
 def erdos_699_statement : Prop :=
   ∀ n i j : ℕ, 1 ≤ i → i < j → j ≤ n / 2 → HasCommonLargePrime n i j
 
-/-- The problem is open - we don't know whether it's true or false. -/
-axiom erdos_699_open : True
+/- The problem is open - we don't know whether it's true or false. -/
 
 /-
 ## The Erdős-Szekeres Strengthening (OPEN)

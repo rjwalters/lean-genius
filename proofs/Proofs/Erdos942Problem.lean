@@ -72,9 +72,8 @@ axiom squareIntervalSet_spec (n m : ℕ) : m ∈ squareIntervalSet n ↔ n^2 ≤
 /-- h(n) = count of powerful integers in [n², (n+1)²). -/
 axiom h : ℕ → ℕ
 
-/-- h(n) counts exactly the powerful numbers in the interval [n², (n+1)²).
+/- h(n) counts exactly the powerful numbers in the interval [n², (n+1)²).
 This is characterized by the fact that m is counted iff n² <= m < (n+1)² and Powerful m. -/
-axiom h_spec : True
 
 /-
 ## Examples of Powerful Numbers

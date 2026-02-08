@@ -83,6 +83,5 @@ axiom lcm_structure (a b c L : ℕ) :
   HasEqualPairwiseLCM a b c → a.lcm b = L →
     a ∣ L ∧ b ∣ L ∧ c ∣ L
 
-/-- **Related Problems**: #535, #537, #856, #857 concern similar questions
+/- **Related Problems**: #535, #537, #856, #857 concern similar questions
     about GCD/LCM patterns in dense sets. -/
-axiom related_problems : True

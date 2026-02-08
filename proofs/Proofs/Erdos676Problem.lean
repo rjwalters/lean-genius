@@ -192,7 +192,6 @@ The problem remains OPEN. Erdős doubted a positive answer.
 def erdos_676_status : String := "OPEN"
 
 -- Erdős's skepticism
-axiom erdos_skeptical : True  -- Erdős believed positive answer "rather unlikely"
 
 -- The main statement
 theorem erdos_676_statement :

@@ -71,17 +71,14 @@ axiom lattice_upper :
 
 /- ## Higher Dimensions -/
 
-/-- **Lenz Construction (ℝ⁴)**: In ℝ⁴, place x₁,...,xₙ on one
+/- **Lenz Construction (ℝ⁴)**: In ℝ⁴, place x₁,...,xₙ on one
     circle and y₁,...,yₙ on an orthogonal circle. Then
     d(xᵢ,yⱼ) = √2 for all i,j: only one bipartite distance. -/
-axiom lenz_construction : True
 
 /- ## Observations -/
 
-/-- **Connection to Problem #89**: The Erdős distinct distances
+/- **Connection to Problem #89**: The Erdős distinct distances
     problem (general case) is Problem #89. This bipartite variant
     asks whether the bipartite structure provides additional savings. -/
-axiom erdos_89_connection : True
 
-/-- **$50 Reward**: Erdős offered $50 for resolving this problem. -/
-axiom reward : True
+/- **$50 Reward**: Erdős offered $50 for resolving this problem. -/

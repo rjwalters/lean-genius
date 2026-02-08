@@ -191,53 +191,47 @@ axiom lrw_subharmonic_version :
 ## Part VII: Why This is Surprising
 -/
 
-/--
+/-
 **Key Insight 1: Growth of Entire Functions:**
 Entire functions can grow arbitrarily fast (faster than any polynomial).
 Yet a path can be found where the inverse power is integrable.
 -/
-axiom growth_insight : True
 
-/--
+/-
 **Key Insight 2: Uniformity in λ:**
 The same path works for ALL λ > 0. This is much stronger than
 Huber's result where the path depends on λ.
 -/
-axiom uniformity_insight : True
 
-/--
+/-
 **Key Insight 3: Subharmonic Functions:**
 The proof works for subharmonic functions, which is more general
 than log|f| for entire f. This suggests the result is about
 growth rates rather than complex analysis specifically.
 -/
-axiom subharmonic_insight : True
 
 /-
 ## Part VIII: Construction Ideas
 -/
 
-/--
+/-
 **The Path Construction:**
 The path is constructed to avoid regions where f is small.
 Since f is transcendental, it takes small values, but these
 regions can be avoided by a clever path.
 -/
-axiom path_construction : True
 
-/--
+/-
 **Avoiding Zeros:**
 If f has zeros, the path must avoid them. The density of zeros
 of transcendental functions allows this.
 -/
-axiom avoiding_zeros : True
 
-/--
+/-
 **Growth Along Rays:**
 Entire functions grow rapidly along most rays. The path
 exploits this to keep |f| large (hence |f|^{-λ} small).
 -/
-axiom growth_along_rays : True
 
 /-
 ## Part IX: Summary

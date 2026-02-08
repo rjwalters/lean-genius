@@ -119,8 +119,7 @@ def HoldsFor5Points : Prop :=
   ∀ S : Set Plane, IsUnitDistanceFree S →
     ∀ P : PointSet 5, ContainsCongruentCopy Sᶜ P
 
-/-- The 5-point case is open -/
-axiom five_points_open : True -- Status of HoldsFor5Points is unknown
+/- The 5-point case is open -/
 
 /-
 ## Part 5: Connection to Unit Distance Graphs

@@ -217,14 +217,13 @@ axiom above_threshold_succeeds :
   ∀ ε > 0, AlmostSurely (fun n =>
     ShamirProperty n (Nat.ceil ((1 + ε) * n * Real.log n)))
 
-/--
+/-
 **Probabilistic Method:**
 The proof uses sophisticated probabilistic techniques including:
 1. Second moment method
 2. Nibble method
 3. Regularity-type arguments
 -/
-axiom proof_techniques : True
 
 /-
 ## Part VIII: Comparison with Graphs
@@ -241,37 +240,33 @@ axiom graph_matching_threshold :
       c * n * Real.log n ≤ shamirThreshold n ∧
       shamirThreshold n ≤ C * n * Real.log n
 
-/--
+/-
 **The Surprise:**
 The same threshold n log n works for ALL uniformities r ≥ 2.
 This was not obvious - Erdős expected the hypergraph case to be different.
 -/
-axiom uniformity_independence : True
 
 /-
 ## Part IX: Historical Notes
 -/
 
-/--
+/-
 **Erdős's Comment:**
 "Many of the problems on random hypergraphs can be settled by the same
 methods as used for ordinary graphs and usually one can guess the answer
 almost immediately. Here we have no idea of the answer."
 -/
-axiom erdos_comment : True
 
-/--
+/-
 **Shamir's Original Question (1979):**
 Shamir asked about the r = 3 case specifically.
 -/
-axiom shamir_1979 : True
 
-/--
+/-
 **Connection to Factor Problems:**
 This is related to the general "factor" problem in random graphs:
 when does G(n, p) contain a given subgraph?
 -/
-axiom factor_problems : True
 
 /-
 ## Part X: Summary

@@ -130,45 +130,39 @@ theorem subquadratic_upper_bound :
   intro c hc
   filter_upwards with n using by sorry  -- From erdos_pomerance
 
-/-- **The Open Problem:**
+/- **The Open Problem:**
     The exact growth rate of h(n) is unknown.
     Is h(n) = Θ(n^α) for some 1 < α < 3/2?
     Is h(n) = n · ω(n) for some slowly growing ω? -/
-axiom exact_growth_unknown : True
 
 /-
 ## Part V: Connection to Other Problems
 -/
 
-/-- **Relation to Erdős #375:**
+/- **Relation to Erdős #375:**
     Problem 375 asks a related covering question. -/
-axiom related_to_erdos_375 : True
 
-/-- **Guy's Problem B32:**
+/- **Guy's Problem B32:**
     This problem appears as B32 in Guy's "Unsolved Problems in
     Number Theory". -/
-axiom guys_problem_B32 : True
 
-/-- **Greedy Algorithm:**
+/- **Greedy Algorithm:**
     A natural approach is greedy: for each prime p_i, pick the
     smallest available multiple. Analysis of this algorithm gives
     bounds. -/
-axiom greedy_approach : True
 
 /-
 ## Part VI: Reformulation
 -/
 
-/-- **Equivalent formulation:**
+/- **Equivalent formulation:**
     h(n) is the least L such that for all m, the bipartite graph
     G with vertices {1,...,π(n)} and {m+1,...,m+L} where i ~ j iff
     p_i | j has a perfect matching on the prime side. -/
-axiom bipartite_matching_formulation : True
 
-/-- **Hall's condition:**
+/- **Hall's condition:**
     By Hall's theorem, we need: for all S ⊆ {1,...,π(n)},
     |N(S) ∩ (m, m+L]| ≥ |S| where N(S) is the neighbor set. -/
-axiom halls_condition : True
 
 /-
 ## Part VII: Summary

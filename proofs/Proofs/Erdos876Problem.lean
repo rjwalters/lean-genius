@@ -240,28 +240,25 @@ theorem powers_of_two_sumfree :
   -- 2^n can only be written as sum of distinct 2^k in one way (itself)
   sorry
 
-/--
+/-
 **Powers of 3 that are 1 mod 3:**
 Another classical example of a sum-free set.
 -/
-axiom one_mod_three_example : True
 
 /-
 ## Part VIII: Connection to Sidon Sets
 -/
 
-/--
+/-
 **Sidon Set Connection:**
 Sum-free sets are related to (but different from) Sidon sets
 where all pairwise sums are distinct.
 -/
-axiom sidon_connection : True
 
-/--
+/-
 **B_h Sequences:**
 Sum-free sets are a type of B_h sequence for h = infinity.
 -/
-axiom bh_sequence_connection : True
 
 /-
 ## Part IX: Summary

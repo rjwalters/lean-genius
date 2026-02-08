@@ -243,12 +243,11 @@ For n with many divisors, H(n) >> h(n).
 axiom H_much_larger_example :
   ∃ n : ℕ, H n ≥ 2 * h n
 
-/--
+/-
 **Why composites help:**
 If d | n and d' | n with d' ≡ 1 (mod d), we can include both.
 Composites give more flexibility in finding such pairs.
 -/
-axiom composites_give_flexibility : True
 
 /--
 **Highly composite numbers:**

@@ -115,25 +115,21 @@ theorem erdos_conjecture_proved : ErdosConjecture := by
 ## Part V: The Polynomial Method
 -/
 
-/-- **Point-Line Duality:**
+/- **Point-Line Duality:**
     Distances in 2D correspond to incidences in 3D.
     This transformation is key to the Guth-Katz approach. -/
-axiom point_line_duality : True
 
-/-- **Polynomial Partitioning:**
+/- **Polynomial Partitioning:**
     Partition R³ using algebraic surfaces to control incidences.
     A technique that revolutionized combinatorial geometry. -/
-axiom polynomial_partitioning : True
 
-/-- **Ruled Surface Structure:**
+/- **Ruled Surface Structure:**
     Lines at distance d from a point form a ruled quadric surface.
     Many incidences force lines to lie on common surfaces. -/
-axiom ruled_surface_structure : True
 
-/-- **Incidence Bound:**
+/- **Incidence Bound:**
     n points and n lines in R³ have O(n^{3/2}) incidences
     unless many lines lie on a ruled surface. -/
-axiom incidence_bound_3d : True
 
 /-
 ## Part VI: Special Cases
@@ -147,9 +143,8 @@ axiom convex_polygon_case :
     True →
     ∃ C > 0, (sumSquaredMultiplicities P : ℝ) ≤ C * (P.points.card : ℝ)^3
 
-/-- **Lattice Points:**
+/- **Lattice Points:**
     For √n × √n grid, ∑f(uᵢ)² achieves near-maximum. -/
-axiom lattice_near_extremal : True
 
 /-
 ## Part VII: Summary

@@ -84,7 +84,6 @@ axiom small_example :
   ∃ A : Finset ℕ, ∃ δ : ℕ → Int,
     A ⊆ Finset.Icc 1 6 ∧ IsIrreducibleZeroSum A δ
 
-/-- **Connection to Unit Fractions**: the problem is closely related to
+/- **Connection to Unit Fractions**: the problem is closely related to
     Egyptian fraction representations and signed unit-fraction decompositions.
     Erdős and Graham (1980) posed this in their monograph on such problems. -/
-axiom unit_fraction_connection : True

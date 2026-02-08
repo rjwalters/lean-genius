@@ -196,35 +196,31 @@ def CorrectAsymptotic : Prop :=
 ## Part VII: Proof Ideas
 -/
 
-/--
+/-
 **Moon-Moser construction:**
 To achieve many clique sizes, use a graph that avoids "gaps" in clique sizes.
 -/
-axiom moon_moser_construction : True
 
-/--
+/-
 **Ramsey connection:**
 The upper bound relates to Ramsey numbers - if g(n) > n - k, then there's
 a graph avoiding k consecutive clique sizes.
 -/
-axiom ramsey_connection : True
 
-/--
+/-
 **Spencer's key insight:**
 By carefully constructing graphs, one can avoid the log*(n) loss.
 The construction is probabilistic/explicit.
 -/
-axiom spencer_construction : True
 
 /-
 ## Part VIII: Related Problem
 -/
 
-/--
+/-
 **Problem 775:**
 A related problem about clique numbers and graph structure.
 -/
-axiom problem_775_related : True
 
 /-
 ## Part IX: Examples

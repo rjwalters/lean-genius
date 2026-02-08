@@ -228,7 +228,7 @@ axiom balogh_solymosi_2018 :
   ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
     (g n : ℝ) ≤ (n : ℝ)^((5:ℝ)/6 + ε)
 
-/--
+/-
 **The container method:**
 Balogh and Solymosi used the container method (Saxton-Thomason,
 Balogh-Morris-Samotij) - this was the first application of the
@@ -238,7 +238,6 @@ They showed: a random n-element subset of a large 3D grid, projected
 to 2D, has no 4 collinear points but at most n^(5/6+o(1)) points in
 general position with high probability.
 -/
-axiom container_method_application : True
 
 /--
 **Current best bounds:**

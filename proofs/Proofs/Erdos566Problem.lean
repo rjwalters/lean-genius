@@ -96,6 +96,5 @@ axiom trees_ramsey_size_linear :
       ∀ (q : ℕ) (H : Graph q), NoIsolated H →
         (sizeRamsey G H : ℝ) ≤ c * (edgeCount H : ℝ)
 
-/-- **Implies Problem #567**: A positive answer to #566 would
+/- **Implies Problem #567**: A positive answer to #566 would
     resolve #567 as well. -/
-axiom implies_567 : True

@@ -37,7 +37,7 @@ The Mathlib type `Configuration.ProjectivePlane P L` captures these axioms.
 
 /- ## The Main Conjecture (Open) -/
 
-/--
+/-
 **Erdős Problem #723** (The Prime Power Conjecture):
 
 If there exists a finite projective plane of order n, must n be a prime power?
@@ -49,7 +49,6 @@ been found.
 We state this as an open problem (axiom for True, indicating we don't know
 whether the answer is yes or no).
 -/
-axiom erdos_723_open : True  -- The general conjecture remains open
 
 /--
 The formal statement of the Prime Power Conjecture: every finite projective
@@ -120,13 +119,12 @@ axiom lam_order_10 :
 
 /- ## Order 12 Remains Open -/
 
-/--
+/-
 It is an open problem whether a projective plane of order 12 exists.
 
 Note that 12 ≡ 0 (mod 4), so Bruck-Ryser doesn't apply. No computer search
 has been successful for order 12, and no theoretical obstruction is known.
 -/
-axiom order_12_open : True  -- Existence of order 12 plane is open
 
 /- ## Basic Properties -/
 

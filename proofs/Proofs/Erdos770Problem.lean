@@ -74,10 +74,8 @@ axiom h_equals_3_infinitely :
 
 /- ## Observations -/
 
-/-- **Fermat Connection**: gcd(a^n − 1, b^n − 1) = a^{gcd(n,n)} − 1 = a^n − 1
+/- **Fermat Connection**: gcd(a^n − 1, b^n − 1) = a^{gcd(n,n)} − 1 = a^n − 1
     is related to the factoring of Mersenne-type numbers. When p − 1 | n,
     p divides a^n − 1 for all a coprime to p, creating shared factors. -/
-axiom fermat_connection : True
 
-/-- **OEIS A263647**: The sequence h(n) appears in the OEIS. -/
-axiom oeis_connection : True
+/- **OEIS A263647**: The sequence h(n) appears in the OEIS. -/
