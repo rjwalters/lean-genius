@@ -129,7 +129,7 @@
   {
     "id": "ann-e747-above",
     "proofId": "erdos-747",
-    "range": { "startLine": 212, "endLine": 218 },
+    "range": { "startLine": 217, "endLine": 223 },
     "type": "axiom",
     "title": "Above Threshold",
     "content": "**above_threshold_succeeds:**\n\nIf m > (1+ε) n log n, then almost surely a perfect matching exists.\n\nThe proof is technically challenging, using the nibble method and regularity-type arguments.",
@@ -147,19 +147,19 @@
   {
     "id": "ann-e747-main",
     "proofId": "erdos-747",
-    "range": { "startLine": 319, "endLine": 326 },
-    "type": "theorem",
+    "range": { "startLine": 280, "endLine": 295 },
+    "type": "axiom",
     "title": "Erdős Problem #747: SOLVED",
-    "content": "**erdos_747:**\n\nComplete solution: The threshold for perfect matchings in random 3-uniform hypergraphs is ℓ(n) ~ n log n.\n\nShamir's question is fully answered.",
+    "content": "**erdos_747** (axiom) and **erdos_747_answer** (theorem): The threshold for perfect matchings in random 3-uniform hypergraphs is ℓ(n) ~ n log n. The answer theorem directly applies Kahn's precise asymptotic result.",
     "significance": "critical"
   },
   {
     "id": "ann-e747-summary",
     "proofId": "erdos-747",
-    "range": { "startLine": 280, "endLine": 317 },
+    "range": { "startLine": 297, "endLine": 328 },
     "type": "theorem",
     "title": "Complete Summary",
-    "content": "**erdos_747_summary:**\n\n1. **Threshold exists:** Sharp threshold at ℓ(n) ~ n log n\n2. **Below threshold:** Isolated vertices prevent matching\n3. **Above threshold:** Perfect matching exists a.s.\n4. **Universal:** Same threshold for ALL uniformities r ≥ 2\n5. **Key insight:** Isolated vertices are the only obstruction",
+    "content": "**erdos_747_summary** combines all three key results into a single statement:\n\n1. **Threshold exists:** ShamirQuestion is satisfied\n2. **Order of magnitude:** ℓ(n) ≍ n log n (Johansson-Kahn-Vu)\n3. **Precise asymptotic:** ℓ(n)/n log n → 1 (Kahn)\n\nThe proof assembles these from the individual axioms.",
     "significance": "critical"
   }
 ]
