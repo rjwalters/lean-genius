@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1172-header",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1172, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1172: Partition Relations under GCH and CH\n\n  Source: https://erdosproblems.com/1172\n  Status: OPEN\n  Reference: Va99, 7.87 (Erdős-Hajnal)\n\n  Statement (under GCH):\n  1. ω₃ → (ω₂, ω₁ + 2)²\n  2. ω₃ → (ω₂ + ω₁, ω₂ + ω)²\n  3. ω₂ → (ω₁^(ω+2) + 2, ω₁ + 2)²\n\n  Under CH:\n  4. ω₂ → (ω₁ + ω)₂²\n\n  Background:\n  These are unbalanced ordinal partition relations from the Erdős-Hajnal\n  partition calculus program. The notation α → (β, γ)² means: for every\n  2-coloring of pairs from α, there exi",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1172-omega1",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 40,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Omega1",
+    "content": "noncomputable def omega1",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-omega2",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 41,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Omega2",
+    "content": "noncomputable def omega2",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-omega3",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 42,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Omega3",
+    "content": "noncomputable def omega3",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-omegaOrd",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 43,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Omegaord",
+    "content": "noncomputable def omegaOrd",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-OrdPartitionRel",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 48,
+      "endLine": 48
+    },
+    "type": "axiom",
+    "title": "Ordpartitionrel",
+    "content": "/-- The unbalanced ordinal partition relation α → (β, γ)². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1172-BalancedPartitionRel",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 51,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Balancedpartitionrel",
+    "content": "/-- The balanced partition relation: α → (β)₂² means α → (β, β)². -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-GCH",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 56,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Gch",
+    "content": "def GCH",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-CH",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Ch",
+    "content": "def CH",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-gch_implies_ch",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 62,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "Gch Implies Ch",
+    "content": "theorem gch_implies_ch",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1172-question1",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 70,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Question1",
+    "content": "def question1",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-question2",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 73,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Question2",
+    "content": "def question2",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-question3",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 76,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Question3",
+    "content": "def question3",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-question4",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 79,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Question4",
+    "content": "def question4",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1172-omega1_lt_omega2",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 84,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Omega1 Lt Omega2",
+    "content": "theorem omega1_lt_omega2",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1172-omega2_lt_omega3",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 88,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "Omega2 Lt Omega3",
+    "content": "theorem omega2_lt_omega3",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1172-omega1_lt_omega3",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 92,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "Omega1 Lt Omega3",
+    "content": "theorem omega1_lt_omega3",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1172-omega_lt_omega1",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 95,
+      "endLine": 101
+    },
+    "type": "theorem",
+    "title": "Omega Lt Omega1",
+    "content": "theorem omega_lt_omega1",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1172-omega1_pos",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 103,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Omega1 Pos",
+    "content": "theorem omega1_pos",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1172-omega2_pos",
+    "proofId": "erdos-1172",
+    "range": {
+      "startLine": 107,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "Omega2 Pos",
+    "content": "theorem omega2_pos",
+    "significance": "key"
+  }
+]

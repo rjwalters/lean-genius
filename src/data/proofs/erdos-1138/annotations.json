@@ -1,0 +1,175 @@
+[
+  {
+    "id": "ann-e1138-header",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1138, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1138 — Primes in Short Intervals and Maximal Gaps\n\nLet x/2 < y < x and C > 1. If d = max_{p_n < x}(p_{n+1} - p_n)\nis the maximal prime gap below x, then is it true that\n\n  π(y + Cd) - π(y) ~ Cd / log y?\n\nThis combines two deep problems: determining when the prime counting\nfunction obeys its expected asymptotic in short intervals, and\nunderstanding the size of maximal prime gaps.\n\nThe conjectured size of d is approximately (log x)², which is far\nbelow the interval length h for whic",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1138-primeCounting",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Primecounting",
+    "content": "/-- The prime counting function π(n) = |{p ≤ n : p prime}|. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1138-primesInInterval",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Primesininterval",
+    "content": "/-- Count of primes in the interval (a, b]: π(b) - π(a). -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1138-primeGapBelow",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Primegapbelow",
+    "content": "/-- The set of prime gaps below x: {p_{n+1} - p_n : p_n < x, p_n and p_{n+1} consecutive primes}. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1138-maxPrimeGap",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Maxprimegap",
+    "content": "/-- The maximal prime gap below x. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1138-primeCounting_mono",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 56,
+      "endLine": 60
+    },
+    "type": "theorem",
+    "title": "Primecounting Mono",
+    "content": "/-- π is monotone: if a ≤ b then π(a) ≤ π(b). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1138-primeCounting_zero",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 63,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "Primecounting Zero",
+    "content": "/-- π(0) = 0 (no primes at or below 0). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1138-primeCounting_one",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Primecounting One",
+    "content": "/-- π(1) = 0 (1 is not prime). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1138-primeCounting_two",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Primecounting Two",
+    "content": "/-- π(2) = 1. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1138-primeCounting_le",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 78,
+      "endLine": 80
+    },
+    "type": "theorem",
+    "title": "Primecounting Le",
+    "content": "/-- π(n) ≤ n + 1 (trivial upper bound). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1138-maxPrimeGap_le",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 83,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Maxprimegap Le",
+    "content": "/-- The maximal prime gap below x is at most x (trivial bound). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1138-erdos_1138",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 110,
+      "endLine": 117
+    },
+    "type": "axiom",
+    "title": "Erdos 1138",
+    "content": "axiom erdos_1138",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1138-bertrand_postulate",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 123,
+      "endLine": 124
+    },
+    "type": "axiom",
+    "title": "Bertrand Postulate",
+    "content": "axiom bertrand_postulate",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1138-cramer_conjecture",
+    "proofId": "erdos-1138",
+    "range": {
+      "startLine": 129,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "Cramer Conjecture",
+    "content": "axiom cramer_conjecture",
+    "significance": "key"
+  }
+]

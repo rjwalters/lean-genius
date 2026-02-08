@@ -1,0 +1,174 @@
+{
+  "id": "erdos-1179",
+  "title": "Erdős Problem #1179: Uniform Subset Sum Representations in Abelian Groups",
+  "slug": "erdos-1179",
+  "description": "Question: Estimate g_ε(N). In particular, is g_ε(N) = (1 + o_ε(1)) log₂ N?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1179",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1179Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "probability",
+      "analysis",
+      "additive-combinatorics",
+      "hypergraph",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1179,
+    "erdosUrl": "https://erdosproblems.com/1179",
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Finset.Basic",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Powerset",
+        "description": "From Mathlib.Data.Finset.Powerset",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Card",
+        "description": "From Mathlib.Data.Finset.Card",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Fintype.Basic",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Real.Basic",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Analysis.SpecialFunctions.Log.Basic",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "reprCount",
+      "expectedReprCount",
+      "IsEpsUniform",
+      "total_reprCount",
+      "reprCount_empty_zero",
+      "reprCount_empty_nonzero",
+      "gEps",
+      "gEps_pos",
+      "trivial_lower_bound",
+      "erdos_renyi_upper",
+      "erdos_hall_upper",
+      "main_asymptotic",
+      "uniform_implies_spanning",
+      "gEps_mono",
+      "erdos_1179_summary"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1179 concerns uniform subset sum representations in abelian groups. This problem has been PROVED.\n\nKnown results include: - Trivial lower bound: g_ε(N) ≥ log₂ N (need 2^k ≥ N representations) - Erdős-Rényi (1965): g_ε(N) ≤ (2 + o(1)) log₂ N + O_ε(1) - Erdős-Hall (1976): g_ε(N) ≤ (1 + O_ε(log log log N / log log N)) log₂ N - [ErRe65] Erdős, Rényi: Probabilistic Methods in Group Theory (1965)\n\nThis problem is catalogued at erdosproblems.com/1179.",
+    "problemStatement": "Question: Estimate g_ε(N). In particular, is g_ε(N) = (1 + o_ε(1)) log₂ N?",
+    "proofStrategy": "The formalization is structured in 179 lines of Lean 4 code. It uses 11 axioms for results that require external references or deep mathematical arguments beyond Mathlib.",
+    "keyInsights": [
+      "**Known result**: Trivial lower bound: g_ε(N) ≥ log₂ N (need 2^k ≥ N representations)",
+      "**Known result**: Erdős-Rényi (1965): g_ε(N) ≤ (2 + o(1)) log₂ N + O_ε(1)",
+      "**Known result**: Erdős-Hall (1976): g_ε(N) ≤ (1 + O_ε(log log log N / log log N)) log₂ N",
+      "**Known result**: [ErRe65] Erdős, Rényi: Probabilistic Methods in Group Theory (1965)",
+      "**Known result**: [ErHa76] Erdős, Hall (1976)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "representation-counts",
+      "title": "Representation Counts",
+      "summary": "",
+      "startLine": 47,
+      "endLine": 58
+    },
+    {
+      "id": "uniformity-of-representations",
+      "title": "Uniformity of Representations",
+      "summary": "IsEpsUniform",
+      "startLine": 59,
+      "endLine": 67
+    },
+    {
+      "id": "elementary-properties",
+      "title": "Elementary Properties",
+      "summary": "total_reprCount, reprCount_empty_zero, reprCount_empty_nonzero",
+      "startLine": 68,
+      "endLine": 82
+    },
+    {
+      "id": "the-function-g-n",
+      "title": "The Function g_ε(N)",
+      "summary": "gEps, gEps_pos",
+      "startLine": 83,
+      "endLine": 94
+    },
+    {
+      "id": "trivial-lower-bound",
+      "title": "Trivial Lower Bound",
+      "summary": "trivial_lower_bound",
+      "startLine": 95,
+      "endLine": 106
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "erdos_renyi_upper, erdos_hall_upper",
+      "startLine": 107,
+      "endLine": 128
+    },
+    {
+      "id": "the-main-result",
+      "title": "The Main Result",
+      "summary": "main_asymptotic",
+      "startLine": 129,
+      "endLine": 138
+    },
+    {
+      "id": "comparison-with-problem-543",
+      "title": "Comparison with Problem #543",
+      "summary": "uniform_implies_spanning",
+      "startLine": 139,
+      "endLine": 152
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "summary": "gEps_mono",
+      "startLine": 153,
+      "endLine": 159
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1179_summary",
+      "startLine": 160,
+      "endLine": 179
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1179 (Uniform Subset Sum Representations in Abelian Groups) in Lean 4, including core definitions, key structural results, and the main theorem.",
+    "implications": "The formalization demonstrates how solved problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Find constructive proofs for axiomatized results",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

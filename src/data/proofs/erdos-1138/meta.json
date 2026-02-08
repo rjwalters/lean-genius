@@ -1,0 +1,136 @@
+{
+  "id": "erdos-1138",
+  "title": "Erdős Problem #1138: Primes in Short Intervals and Maximal Gaps",
+  "slug": "erdos-1138",
+  "description": "For x/2 < y < x and C > 1, if d is the maximal prime gap below x, is π(y + Cd) - π(y) ~ Cd / log y?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1138",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1138Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "probability",
+      "analysis",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 1138,
+    "erdosUrl": "https://erdosproblems.com/1138",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Basic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Prime.Basic",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Finset.Basic",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Card",
+        "description": "From Mathlib.Data.Finset.Card",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Real.Basic",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "AtTopBot",
+        "description": "From Mathlib.Order.Filter.AtTopBot",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "primeCounting",
+      "primesInInterval",
+      "primeGapBelow",
+      "maxPrimeGap",
+      "primeCounting_mono",
+      "primeCounting_zero",
+      "primeCounting_one",
+      "primeCounting_two",
+      "primeCounting_le",
+      "maxPrimeGap_le",
+      "erdos_1138",
+      "bertrand_postulate",
+      "cramer_conjecture"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1138 asks about the prime counting function in short intervals near maximal gaps. The problem connects two fundamental aspects of prime distribution: the size of maximal gaps between consecutive primes, and the accuracy of asymptotic estimates for π(x) in short intervals.\n\nThe conjectured maximal gap d ~ (log x)² (Cramér's conjecture) is far below the threshold h > x^{7/12} needed for unconditional short interval prime number theorem, or even h > x^{1/2+ε} under the Riemann Hypothesis. This makes the problem particularly deep.\n\nThis problem is catalogued at erdosproblems.com/1138.",
+    "problemStatement": "For x/2 < y < x and C > 1, if d is the maximal prime gap below x, is π(y + Cd) - π(y) ~ Cd / log y?",
+    "proofStrategy": "The formalization is structured in 135 lines of Lean 4 code. It uses 3 axioms for results that require external references or deep mathematical arguments beyond Mathlib. There is 1 sorry placeholder for structural results that can be filled in with additional work. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**The prime counting function π(n) = |{p ≤ n**: The prime counting function π(n) = |{p ≤ n : p prime}|.",
+      "**Count of primes in the interval (a, b]**: Count of primes in the interval (a, b]: π(b) - π(a).",
+      "**The set of prime gaps below x**: The set of prime gaps below x: {p_{n+1} - p_n : p_n < x, p_n and p_{n+1} consecutive primes}.",
+      "**The maximal prime gap below x.**: The maximal prime gap below x.",
+      "**π is monotone**: π is monotone: if a ≤ b then π(a) ≤ π(b)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "prime-counting-infrastructure",
+      "title": "Prime Counting Infrastructure",
+      "summary": "",
+      "startLine": 31,
+      "endLine": 40
+    },
+    {
+      "id": "maximal-prime-gap",
+      "title": "Maximal Prime Gap",
+      "summary": "primeGapBelow",
+      "startLine": 41,
+      "endLine": 52
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "primeCounting_mono, primeCounting_zero, primeCounting_one, primeCounting_two, primeCounting_le, maxPrimeGap_le",
+      "startLine": 53,
+      "endLine": 89
+    },
+    {
+      "id": "the-erd-s-conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "erdos_1138",
+      "startLine": 90,
+      "endLine": 118
+    },
+    {
+      "id": "related-known-results",
+      "title": "Related Known Results",
+      "summary": "bertrand_postulate, cramer_conjecture",
+      "startLine": 119,
+      "endLine": 135
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1138 (Primes in Short Intervals and Maximal Gaps) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

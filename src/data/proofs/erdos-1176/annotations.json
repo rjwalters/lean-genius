@@ -1,0 +1,235 @@
+[
+  {
+    "id": "ann-e1176-header",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1176, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1176: Edge Coloring and Vertex Color Classes\n\n**Problem Statement (OPEN)**\n\nLet G be a graph with chromatic number ℵ₁. Is it true that there is a colouring\nof the edges with ℵ₁ many colours such that, in any countable (proper) colouring\nof the vertices, there exists a vertex colour class containing all edge colours?\n\nMore precisely: given χ(G) = ℵ₁, can we color edges with ℵ₁ colors so that for\nevery proper ℕ-coloring f of the vertices, there exists some i ∈ ℕ such that\nf⁻¹(i) mee",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1176-IsProperVertexColoring",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 51,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Ispropervertexcoloring",
+    "content": "/-- A proper vertex coloring: adjacent vertices get different colors. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-IsCardColorable",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Iscardcolorable",
+    "content": "def IsCardColorable",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-chromaticNumber",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 62,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Chromaticnumber",
+    "content": "noncomputable def chromaticNumber",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-EdgeColoring",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 74,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Edgecoloring",
+    "content": "def EdgeColoring",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-allEdgeColors",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Alledgecolors",
+    "content": "/-- The set of all edge colors actually used on edges of G. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-edgeColorsSeen",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 91,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Edgecolorsseen",
+    "content": "def edgeColorsSeen",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-HasDominationProperty",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 97,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Hasdominationproperty",
+    "content": "def HasDominationProperty",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-ErdosProblem1176",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 110,
+      "endLine": 115
+    },
+    "type": "definition",
+    "title": "Erdosproblem1176",
+    "content": "/-- The formal statement of Erdős Problem #1176. -/",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1176-aleph0_lt_aleph1",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 124,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Aleph0 Lt Aleph1",
+    "content": "/-- ℵ₀ < ℵ₁ -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1176-not_aleph0_colorable_of_chi_al",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 129,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Not Aleph0 Colorable Of Chi Aleph1",
+    "content": "theorem not_aleph0_colorable_of_chi_aleph1",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1176-not_nat_colorable_of_chi_aleph",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 141,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "Not Nat Colorable Of Chi Aleph1",
+    "content": "/-- A graph with χ(G) = ℵ₁ is not ℕ-colorable. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1176-hajnal_komjath_consistency_wit",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 161,
+      "endLine": 161
+    },
+    "type": "axiom",
+    "title": "Hajnal Komjath Consistency Witness",
+    "content": "axiom hajnal_komjath_consistency_witness",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1176-StrongDominationProperty",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 170,
+      "endLine": 173
+    },
+    "type": "definition",
+    "title": "Strongdominationproperty",
+    "content": "/-- Stronger version: EVERY nonempty vertex class sees all edge colors. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-strong_implies_domination",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 176,
+      "endLine": 181
+    },
+    "type": "theorem",
+    "title": "Strong Implies Domination",
+    "content": "/-- Strong domination implies the original domination property. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1176-edgeColorClass",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 197,
+      "endLine": 199
+    },
+    "type": "definition",
+    "title": "Edgecolorclass",
+    "content": "/-- The edge coloring partitions edges into color classes. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-DominationViaColorClasses",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 203,
+      "endLine": 208
+    },
+    "type": "definition",
+    "title": "Dominationviacolorclasses",
+    "content": "def DominationViaColorClasses",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1176-erdos_1176_from_consistency",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 216,
+      "endLine": 217
+    },
+    "type": "theorem",
+    "title": "Erdos 1176 From Consistency",
+    "content": "theorem erdos_1176_from_consistency",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1176-erdos_1176",
+    "proofId": "erdos-1176",
+    "range": {
+      "startLine": 220,
+      "endLine": 221
+    },
+    "type": "theorem",
+    "title": "Erdos 1176",
+    "content": "/-- The problem remains open in ZFC alone. -/",
+    "significance": "critical"
+  }
+]

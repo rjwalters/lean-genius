@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1166-header",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 1,
+      "endLine": 1
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1166, providing mathematical context and problem statement.",
+    "mathContext": "",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1166-origin",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 38,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Origin",
+    "content": "/-- The origin in Z². -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1166-RandomWalk",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 41,
+      "endLine": 41
+    },
+    "type": "axiom",
+    "title": "Randomwalk",
+    "content": "/-- A random walk trajectory on Z²: a function from step number to position. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-trajectory",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 43,
+      "endLine": 43
+    },
+    "type": "axiom",
+    "title": "Trajectory",
+    "content": "/-- The trajectory of a random walk: position at each step. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-walk_starts_at_origin",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 45,
+      "endLine": 45
+    },
+    "type": "axiom",
+    "title": "Walk Starts At Origin",
+    "content": "/-- Every walk starts at the origin. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-visitCount_nonneg",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 53,
+      "endLine": 54
+    },
+    "type": "theorem",
+    "title": "Visitcount Nonneg",
+    "content": "/-- Visit count is non-negative (trivially, since it's ℕ). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-visitCount_mono",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    },
+    "type": "axiom",
+    "title": "Visitcount Mono",
+    "content": "/-- Visit count is monotone in k: more steps means at least as many visits. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-visitCount_origin",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 61,
+      "endLine": 61
+    },
+    "type": "axiom",
+    "title": "Visitcount Origin",
+    "content": "/-- The origin is visited at step 0. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-maxVisitCount_is_max",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 69,
+      "endLine": 70
+    },
+    "type": "axiom",
+    "title": "Maxvisitcount Is Max",
+    "content": "/-- T_k achieves the maximum over all points. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-maxVisitCount_achieved",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 73,
+      "endLine": 74
+    },
+    "type": "axiom",
+    "title": "Maxvisitcount Achieved",
+    "content": "/-- T_k is achieved by some point. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-maxVisitCount_pos",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 77,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Maxvisitcount Pos",
+    "content": "/-- T_k ≥ 1 for all k ≥ 0 (at least the origin is visited). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-mem_mostVisitedSet",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 92,
+      "endLine": 93
+    },
+    "type": "axiom",
+    "title": "Mem Mostvisitedset",
+    "content": "/-- A point is in F(k) iff it achieves the maximum visit count. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-mostVisitedSet_nonempty",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 96,
+      "endLine": 97
+    },
+    "type": "axiom",
+    "title": "Mostvisitedset Nonempty",
+    "content": "/-- F(k) is nonempty (the maximum is achieved). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-cumulativeMostVisited_contains",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 106,
+      "endLine": 107
+    },
+    "type": "axiom",
+    "title": "Cumulativemostvisited Contains",
+    "content": "/-- The cumulative set contains all F(k) for k ≤ n. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-cumulativeMostVisited_subset",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 110,
+      "endLine": 112
+    },
+    "type": "axiom",
+    "title": "Cumulativemostvisited Subset",
+    "content": "/-- The cumulative set only contains points from some F(k) with k ≤ n. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-cumulativeMostVisited_mono",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 115,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "Cumulativemostvisited Mono",
+    "content": "/-- Monotonicity: the cumulative set grows with n. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-AlmostSurely",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 125,
+      "endLine": 125
+    },
+    "type": "axiom",
+    "title": "Almostsurely",
+    "content": "axiom AlmostSurely",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-almostSurely_mono",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 128,
+      "endLine": 129
+    },
+    "type": "axiom",
+    "title": "Almostsurely Mono",
+    "content": "/-- Almost sure monotonicity: if P implies Q, then a.s. P implies a.s. Q. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-almostSurely_and",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 132,
+      "endLine": 134
+    },
+    "type": "axiom",
+    "title": "Almostsurely And",
+    "content": "/-- Almost sure conjunction. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1166-mostVisited_bounded_eventually",
+    "proofId": "erdos-1166",
+    "range": {
+      "startLine": 141,
+      "endLine": 143
+    },
+    "type": "axiom",
+    "title": "Mostvisited Bounded Eventually",
+    "content": "axiom mostVisited_bounded_eventually",
+    "significance": "key"
+  }
+]

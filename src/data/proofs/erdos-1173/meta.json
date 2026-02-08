@@ -1,0 +1,90 @@
+{
+  "id": "erdos-1173",
+  "title": "Erdős Problem #1173: Free Sets for Set Mappings under GCH",
+  "slug": "erdos-1173",
+  "description": "Does there exist a free set of cardinality ℵ_{ω+1}?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1173",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1173Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "geometry",
+      "analysis",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1173,
+    "erdosUrl": "https://erdosproblems.com/1173",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.SetTheory.Cardinal.Basic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "handles",
+      "aleph_omega",
+      "aleph_omega_succ",
+      "omega_omega_succ",
+      "GCH",
+      "SetMapping",
+      "BoundedImageSize",
+      "AlmostDisjoint",
+      "IsFreeSet",
+      "HasFreeSetOfCard",
+      "erdos_1173",
+      "hajnal_free_set_theorem",
+      "gch_aleph_omega_strong_limit",
+      "overlap_bounded_by_aleph_n",
+      "for"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1173 concerns free sets for set mappings under gch. This problem remains OPEN.\n\nKnown results include: - Erdős and Hajnal, original problem - [Ko25b, Problem 35] - [Va99, 7.88]\n\nThis problem is catalogued at erdosproblems.com/1173.",
+    "problemStatement": "Does there exist a free set of cardinality ℵ_{ω+1}?",
+    "proofStrategy": "The formalization is structured in 168 lines of Lean 4 code. It uses 4 axioms for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**ℵ_ω**: ℵ_ω: the ω-th aleph cardinal (first singular aleph).",
+      "**ℵ_{ω+1}**: ℵ_{ω+1}: the successor of ℵ_ω.",
+      "**The ordinal ω_{ω+1}**: The ordinal ω_{ω+1}: the initial ordinal of cardinality ℵ_{ω+1}.",
+      "**The Generalized Continuum Hypothesis**: The Generalized Continuum Hypothesis: for all ordinals α,",
+      "**A set mapping on an ordinal γ assigns to each α < γ a set of ordinals**: A set mapping on an ordinal γ assigns to each α < γ a set of ordinals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1173",
+      "startLine": 1,
+      "endLine": 168
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1173 (Free Sets for Set Mappings under GCH) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

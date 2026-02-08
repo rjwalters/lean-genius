@@ -1,0 +1,82 @@
+{
+  "id": "erdos-1142",
+  "title": "Erdős Problem #1142: Primes of the form n − 2^k",
+  "slug": "erdos-1142",
+  "description": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1142",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1142Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 6,
+    "erdosNumber": 1142,
+    "erdosUrl": "https://erdosproblems.com/1142",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Prime.Basic",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "powersOfTwoBetween",
+      "SatisfiesErdos1142",
+      "satisfiesErdos1142Bool",
+      "erdos1142_value_4",
+      "erdos1142_value_7",
+      "erdos1142_value_15",
+      "erdos1142_value_21",
+      "erdos1142_value_45",
+      "erdos1142_value_75",
+      "erdos1142_value_105",
+      "erdos1142_not_6",
+      "erdos1142_not_9",
+      "erdos1142_not_10",
+      "erdos1142_odd_or_4",
+      "erdos1142_ge_4"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1142 concerns primes of the form n − 2^k. This problem remains OPEN.\n\nKnown results include: - The only known values are n ∈ {4, 7, 15, 21, 45, 75, 105} (OEIS A039669). - Mientka & Weitzenkamp (1969) verified no other n ≤ 2^44 satisfy this. - Vaughan (1973) showed the count of such n up to N is extremely sparse. - Erdős conjectured the number of 1 < 2^k < n for which n − 2^k is prime\n\nThis problem is catalogued at erdosproblems.com/1142.",
+    "problemStatement": "Are there infinitely many n (or any n > 105) such that n − 2^k is prime for all 1 < 2^k < n?",
+    "proofStrategy": "The formalization is structured in 175 lines of Lean 4 code. There are 6 sorry placeholders for structural results that can be filled in with additional work. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**The set of powers of 2 strictly between 1 and n. These are the values 2^k**: The set of powers of 2 strictly between 1 and n. These are the values 2^k",
+      "**An integer n satisfies the Erdős 1142 property if n − 2^k is prime**: An integer n satisfies the Erdős 1142 property if n − 2^k is prime",
+      "**Boolean version for computation.**: Boolean version for computation.",
+      "**Every number satisfying the property is odd, except for 4.**: Every number satisfying the property is odd, except for 4.",
+      "**If n satisfies the property, then n ≥ 4 (there must be at least one power of 2**: If n satisfies the property, then n ≥ 4 (there must be at least one power of 2"
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1142",
+      "startLine": 1,
+      "endLine": 175
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1142 (Primes of the form n − 2^k) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

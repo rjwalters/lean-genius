@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1161-header",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1161, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1161: Maximizing Permutation Count by Order\n\nLet f_k(n) denote the number of permutations in S_n (the symmetric group on n elements)\nhaving order k. For which values of k is f_k(n) maximized?\n\nSTATUS: SOLVED (Beker [Be25d])\n\nKey results:\n1. max_{k ≥ 1} f_k(n) ~ (n-1)! as n → ∞\n2. For large n, f_k(n) ≥ (n-1)! implies lcm(1,...,n-k) | k\n3. For large n, f_k(n) = (n-1)! iff k is the minimal value with lcm(1,...,n-k) | k\n\nReference: [Va99, 5.72], resolved by Beker [Be25d]",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1161-permCountByOrder",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 29,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "Permcountbyorder",
+    "content": "/-- The number of permutations in S_n having order exactly k. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1161-maxPermCountByOrder",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Maxpermcountbyorder",
+    "content": "/-- The maximum of f_k(n) over all k ≥ 1. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1161-lcmRange",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Lcmrange",
+    "content": "/-- The lcm of all integers from 1 to m, often written [1,...,m]. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_one_pos",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 46,
+      "endLine": 50
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder One Pos",
+    "content": "/-- The identity permutation has order 1 (when n ≥ 1). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-orderOf_perm_dvd_factorial",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 53,
+      "endLine": 56
+    },
+    "type": "theorem",
+    "title": "Orderof Perm Dvd Factorial",
+    "content": "/-- Every permutation has order dividing n!. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-sum_permCountByOrder",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 59,
+      "endLine": 62
+    },
+    "type": "theorem",
+    "title": "Sum Permcountbyorder",
+    "content": "/-- The total count of permutations across all orders equals n!. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_eq_zero_of_no",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 65,
+      "endLine": 72
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder Eq Zero Of Not Dvd",
+    "content": "/-- f_k(n) = 0 when k does not divide n!. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_one_one",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 79,
+      "endLine": 80
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder One One",
+    "content": "/-- In S_1, the only permutation is the identity with order 1. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_two_one",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 83,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder Two One",
+    "content": "/-- In S_2, there is 1 permutation of order 1 (identity) and 1 of order 2 (transposition). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_two_two",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 86,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder Two Two",
+    "content": "theorem permCountByOrder_two_two",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_three_three",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 90,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder Three Three",
+    "content": "/-- In S_3, there are 2 permutations of order 3 (the 3-cycles). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_three_two",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 94,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder Three Two",
+    "content": "/-- In S_3, there are 3 transpositions (order 2). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-beker_characterization",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 105,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "Beker Characterization",
+    "content": "theorem beker_characterization",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-beker_maximizer_achieves",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 115,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "Beker Maximizer Achieves",
+    "content": "theorem beker_maximizer_achieves",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-max_permCount_ge_sub_factorial",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 123,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Max Permcount Ge Sub Factorial",
+    "content": "theorem max_permCount_ge_sub_factorial",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_le_factorial",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 128,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder Le Factorial",
+    "content": "/-- Upper bound: max_k f_k(n) ≤ n! (trivially, since f_k(n) counts a subset of S_n). -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-permCountByOrder_n_eq_subfacto",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 141,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "Permcountbyorder N Eq Subfactorial Pred",
+    "content": "theorem permCountByOrder_n_eq_subfactorial_pred",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-lcmRange_dvd_lcmRange",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 146,
+      "endLine": 152
+    },
+    "type": "theorem",
+    "title": "Lcmrange Dvd Lcmrange",
+    "content": "/-- lcmRange is monotone: m ≤ m' → lcmRange m ∣ lcmRange m'. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1161-dvd_lcmRange",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 155,
+      "endLine": 161
+    },
+    "type": "theorem",
+    "title": "Dvd Lcmrange",
+    "content": "/-- lcmRange includes each factor: for 1 ≤ j ≤ m, j ∣ lcmRange m. -/",
+    "significance": "key"
+  }
+]

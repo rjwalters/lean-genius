@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1142-header",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1142, providing mathematical context and problem statement.",
+    "mathContext": "# Erdős Problem #1142 — Primes of the form n − 2^k\n\n**Question**: Are there infinitely many n (or any n > 105) such that\nn − 2^k is prime for all 1 < 2^k < n?\n\n## Status: OPEN\n\n## Known Results\n\n- The only known values are n ∈ {4, 7, 15, 21, 45, 75, 105} (OEIS A039669).\n- Mientka & Weitzenkamp (1969) verified no other n ≤ 2^44 satisfy this.\n- Vaughan (1973) showed the count of such n up to N is extremely sparse.\n- Erdős conjectured the number of 1 < 2^k < n for which n − 2^k is prime\n  is o(log ",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1142-powersOfTwoBetween",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Powersoftwobetween",
+    "content": "def powersOfTwoBetween",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1142-SatisfiesErdos1142",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Satisfieserdos1142",
+    "content": "def SatisfiesErdos1142",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-satisfiesErdos1142Bool",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Satisfieserdos1142Bool",
+    "content": "/-- Boolean version for computation. -/",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_value_4",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 57,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Value 4",
+    "content": "theorem erdos1142_value_4",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_value_7",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 60,
+      "endLine": 60
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Value 7",
+    "content": "theorem erdos1142_value_7",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_value_15",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 63,
+      "endLine": 63
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Value 15",
+    "content": "theorem erdos1142_value_15",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_value_21",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 67,
+      "endLine": 67
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Value 21",
+    "content": "theorem erdos1142_value_21",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_value_45",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 71,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Value 45",
+    "content": "theorem erdos1142_value_45",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_value_75",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 75,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Value 75",
+    "content": "theorem erdos1142_value_75",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_value_105",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 80,
+      "endLine": 80
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Value 105",
+    "content": "theorem erdos1142_value_105",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_not_6",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 85,
+      "endLine": 85
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Not 6",
+    "content": "theorem erdos1142_not_6",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_not_9",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 88,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Not 9",
+    "content": "theorem erdos1142_not_9",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_not_10",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 91,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Not 10",
+    "content": "theorem erdos1142_not_10",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_odd_or_4",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 98,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Odd Or 4",
+    "content": "theorem erdos1142_odd_or_4",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_ge_4",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 104,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Ge 4",
+    "content": "theorem erdos1142_ge_4",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_n_minus_2_prime",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 109,
+      "endLine": 111
+    },
+    "type": "theorem",
+    "title": "Erdos1142 N Minus 2 Prime",
+    "content": "theorem erdos1142_n_minus_2_prime",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-erdos1142_mod2",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Erdos1142 Mod2",
+    "content": "/-- n must be ≡ 1 (mod 2) for n > 4: the property forces n to be odd. -/",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1142-powersOfTwoBetween_card",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 131,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "Powersoftwobetween Card",
+    "content": "theorem powersOfTwoBetween_card",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1142-erdos_1142_conjecture",
+    "proofId": "erdos-1142",
+    "range": {
+      "startLine": 142,
+      "endLine": 143
+    },
+    "type": "definition",
+    "title": "Erdos 1142 Conjecture",
+    "content": "def erdos_1142_conjecture",
+    "significance": "critical"
+  }
+]

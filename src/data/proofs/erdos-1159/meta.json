@@ -1,0 +1,70 @@
+{
+  "id": "erdos-1159",
+  "title": "Erdős Problem #1159: Bounded Blocking Sets in Projective Planes",
+  "slug": "erdos-1159",
+  "description": "Does there exist a constant C > 1 such that for any finite projective plane P,",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1159",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1159Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "probability",
+      "geometry",
+      "hypergraph",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1159,
+    "erdosUrl": "https://erdosproblems.com/1159",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "IsBlockingSet",
+      "blocking_set_mono",
+      "empty_not_blocking_set",
+      "pointCount_eq",
+      "lineCount_eq",
+      "card_points",
+      "card_lines",
+      "ess_log_blocking_set",
+      "BoundedBlockingSetConjecture",
+      "ess_implies_per_order_bound"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1159 concerns bounded blocking sets in projective planes. This problem remains OPEN.\n\nKnown results include: - Erdős, Silverman, and Stein (1983) proved there exists a blocking set S - The open question is whether O(log n) can be replaced by an absolute - Erdős (1981), original formulation - Erdős, Silverman, and Stein (1983)\n\nThis problem is catalogued at erdosproblems.com/1159.",
+    "problemStatement": "Does there exist a constant C > 1 such that for any finite projective plane P,",
+    "proofStrategy": "The formalization is structured in 145 lines of Lean 4 code. It uses 1 axiom for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**A set of points S is a blocking set if every line contains at least one point of S.**: A set of points S is a blocking set if every line contains at least one point of S.",
+      "**If S is a blocking set and S ⊆ T, then T is also a blocking set.**: If S is a blocking set and S ⊆ T, then T is also a blocking set.",
+      "**The empty set is not a blocking set in any nontrivial configuration.**: The empty set is not a blocking set in any nontrivial configuration.",
+      "**In a projective plane, every line has exactly order + 1 points.**: In a projective plane, every line has exactly order + 1 points.",
+      "**In a projective plane, every point lies on exactly order + 1 lines.**: In a projective plane, every point lies on exactly order + 1 lines."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1159",
+      "startLine": 1,
+      "endLine": 145
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1159 (Bounded Blocking Sets in Projective Planes) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

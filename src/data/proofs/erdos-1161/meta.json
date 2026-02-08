@@ -1,0 +1,73 @@
+{
+  "id": "erdos-1161",
+  "title": "Erdős Problem #1161: Maximizing Permutation Count by Order",
+  "slug": "erdos-1161",
+  "description": "For permutations of [n], which cyclic orders k maximize the count of permutations having order k?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1161",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1161Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "analysis",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 10,
+    "erdosNumber": 1161,
+    "erdosUrl": "https://erdosproblems.com/1161",
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "permCountByOrder",
+      "maxPermCountByOrder",
+      "lcmRange",
+      "permCountByOrder_one_pos",
+      "orderOf_perm_dvd_factorial",
+      "sum_permCountByOrder",
+      "permCountByOrder_eq_zero_of_not_dvd",
+      "permCountByOrder_one_one",
+      "permCountByOrder_two_one",
+      "permCountByOrder_two_two",
+      "permCountByOrder_three_three",
+      "permCountByOrder_three_two",
+      "beker_characterization",
+      "beker_maximizer_achieves",
+      "max_permCount_ge_sub_factorial"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1161 concerns the distribution of permutation orders. For a permutation of [n], let f_k(n) count permutations having order exactly k. The question asks for which values of k the function f_k(n) is maximized, studying the typical order structure of random permutations.\n\nThe answer (PROVED) connects to deep results in analytic combinatorics about the cycle structure of random permutations and the Erdős-Turán law on the distribution of permutation orders.\n\nThis problem is catalogued at erdosproblems.com/1161.",
+    "problemStatement": "For permutations of [n], which cyclic orders k maximize the count of permutations having order k?",
+    "proofStrategy": "The formalization is structured in 164 lines of Lean 4 code. There are 10 sorry placeholders for structural results that can be filled in with additional work.",
+    "keyInsights": [
+      "**The number of permutations in S_n having order exactly k.**: The number of permutations in S_n having order exactly k.",
+      "**The maximum of f_k(n) over all k ≥ 1.**: The maximum of f_k(n) over all k ≥ 1.",
+      "**The lcm of all integers from 1 to m, often written [1,...,m].**: The lcm of all integers from 1 to m, often written [1,...,m].",
+      "**The identity permutation has order 1 (when n ≥ 1).**: The identity permutation has order 1 (when n ≥ 1).",
+      "**Every permutation has order dividing n!.**: Every permutation has order dividing n!."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1161",
+      "startLine": 1,
+      "endLine": 164
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1161 (Maximizing Permutation Count by Order) in Lean 4, including core definitions, key structural results, and the main theorem.",
+    "implications": "The formalization demonstrates how solved problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Find constructive proofs for axiomatized results",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}
