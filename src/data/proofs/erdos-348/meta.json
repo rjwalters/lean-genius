@@ -5,13 +5,19 @@
   "description": "For what values of 0 ≤ m < n is there a complete sequence that remains complete after removing any m elements but becomes incomplete after removing some n elements?",
   "meta": {
     "author": "Erdős",
-    "coauthors": ["Graham"],
+    "coauthors": [
+      "Graham"
+    ],
     "sourceUrl": "https://erdosproblems.com/348",
     "status": "axiom",
     "proofRepoPath": "Proofs/Erdos348Problem.lean",
-    "tags": ["number-theory", "complete-sequences", "additive-combinatorics"],
+    "tags": [
+      "number-theory",
+      "complete-sequences",
+      "additive-combinatorics"
+    ],
     "badge": "axiom",
-    "sorries": 8,
+    "sorries": 7,
     "erdosNumber": 348,
     "erdosUrl": "https://erdosproblems.com/348",
     "erdosProblemStatus": "open",

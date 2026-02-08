@@ -8,9 +8,14 @@
     "sourceUrl": "https://erdosproblems.com/959",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos959Problem.lean",
-    "tags": ["geometry", "distances", "combinatorial-geometry", "frequency"],
+    "tags": [
+      "geometry",
+      "distances",
+      "combinatorial-geometry",
+      "frequency"
+    ],
     "badge": "formalized",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 959,
     "erdosUrl": "https://erdosproblems.com/959",
     "erdosProblemStatus": "open"
@@ -27,11 +32,41 @@
     ]
   },
   "sections": [
-    { "id": "frequency", "title": "Distance Frequency", "startLine": 26, "endLine": 46, "summary": "Defines distFrequency, distinctDistances, maxFrequency, secondFrequency, and frequencyGap." },
-    { "id": "conjecture", "title": "Main Conjecture", "startLine": 48, "endLine": 55, "summary": "States ErdosProblem959: existence of C > 0 with frequency gap ≥ C·n·log n." },
-    { "id": "known", "title": "Known Lower Bound", "startLine": 57, "endLine": 68, "summary": "Clemen–Dumitrescu–Liu axiom: Ω(n log n) lower bound on frequency gap." },
-    { "id": "strong", "title": "Stronger Conjecture", "startLine": 70, "endLine": 76, "summary": "Conjectured n^{1+c/log log n} growth rate." },
-    { "id": "basic", "title": "Basic Properties", "startLine": 78, "endLine": 89, "summary": "Axioms on small sets, frequency ordering, and nonnegativity." }
+    {
+      "id": "frequency",
+      "title": "Distance Frequency",
+      "startLine": 26,
+      "endLine": 46,
+      "summary": "Defines distFrequency, distinctDistances, maxFrequency, secondFrequency, and frequencyGap."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 48,
+      "endLine": 55,
+      "summary": "States ErdosProblem959: existence of C > 0 with frequency gap ≥ C·n·log n."
+    },
+    {
+      "id": "known",
+      "title": "Known Lower Bound",
+      "startLine": 57,
+      "endLine": 68,
+      "summary": "Clemen–Dumitrescu–Liu axiom: Ω(n log n) lower bound on frequency gap."
+    },
+    {
+      "id": "strong",
+      "title": "Stronger Conjecture",
+      "startLine": 70,
+      "endLine": 76,
+      "summary": "Conjectured n^{1+c/log log n} growth rate."
+    },
+    {
+      "id": "basic",
+      "title": "Basic Properties",
+      "startLine": 78,
+      "endLine": 89,
+      "summary": "Axioms on small sets, frequency ordering, and nonnegativity."
+    }
   ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 959 on distance frequency gaps, the Clemen–Dumitrescu–Liu lower bound, and the stronger n^{1+c/log log n} conjecture. 0 sorries.",

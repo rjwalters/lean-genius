@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 11,
+    "sorries": 0,
     "erdosNumber": 1050,
     "erdosUrl": "https://erdosproblems.com/1050",
     "erdosProblemStatus": "solved",
@@ -74,7 +74,10 @@
       "Connection to Problem #1049",
       "Numerical approximation S ≈ 0.287"
     ],
-    "relatedProblems": ["erdos-1049", "erdos-1051"]
+    "relatedProblems": [
+      "erdos-1049",
+      "erdos-1051"
+    ]
   },
   "overview": {
     "historicalContext": "**Borwein's Irrationality Theorem**\n\nErdős proved ∑ 1/(2^n - 1) is irrational (1948) and conjectured ∑ 1/(2^n + t) should be transcendental for integer t ≠ 0.\n\n**Borwein (1991)** proved the more general irrationality result: ∑ 1/(q^n + r) is irrational for integer q ≥ 2 and rational r ≠ 0, r ≠ -q^n.\n\nThe stronger transcendence conjecture remains OPEN.",

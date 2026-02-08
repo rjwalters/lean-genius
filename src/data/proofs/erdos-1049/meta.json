@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "mathlib",
-    "sorries": 14,
+    "sorries": 16,
     "erdosNumber": 1049,
     "erdosUrl": "https://erdosproblems.com/1049",
     "erdosProblemStatus": "open",
@@ -67,7 +67,10 @@
       "Connection to Lambert series",
       "Transcendentality and algebraic independence conjectures"
     ],
-    "relatedProblems": ["erdos-1048", "erdos-1050"]
+    "relatedProblems": [
+      "erdos-1048",
+      "erdos-1050"
+    ]
   },
   "overview": {
     "historicalContext": "**Divisor Sums and Irrationality**\n\nThe series ∑_{n≥1} 1/(t^n - 1) equals ∑_{n≥1} τ(n)/t^n, where τ(n) is the divisor counting function.\n\n**Erdős (1948)** proved this sum is irrational when t is an integer ≥ 2.\n\n**Chowla's Conjecture**: The sum should be irrational for ALL rational t > 1.\n\nThe value S(2) ≈ 1.606695... is called the Erdős-Borwein constant.",

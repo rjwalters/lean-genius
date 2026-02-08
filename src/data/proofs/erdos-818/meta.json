@@ -9,18 +9,40 @@
     "date": "2009",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos818Problem.lean",
-    "tags": ["erdos", "additive-combinatorics", "sum-product", "sumset", "product-set"],
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sum-product",
+      "sumset",
+      "product-set"
+    ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 4,
     "erdosNumber": 818,
     "erdosUrl": "https://erdosproblems.com/818",
     "erdosProblemStatus": "solved",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
-      { "theorem": "Finset", "description": "Finite sets for A", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
-      { "theorem": "Real.log", "description": "Logarithm function", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
-      { "theorem": "Finset.image", "description": "Image of finset under function", "module": "Mathlib.Data.Finset.Basic" }
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for A",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.image",
+        "description": "Image of finset under function",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
     ],
     "originalContributions": [
       "Formal definition of sumset and product set",

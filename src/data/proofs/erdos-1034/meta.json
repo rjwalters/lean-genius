@@ -17,11 +17,14 @@
       "counterexample"
     ],
     "badge": "pending",
-    "sorries": 15,
+    "sorries": 12,
     "erdosNumber": 1034,
     "erdosUrl": "https://erdosproblems.com/1034",
     "erdosProblemStatus": "solved",
-    "relatedProblems": [905, 1033]
+    "relatedProblems": [
+      905,
+      1033
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős-Faudree Conjecture**\n\nErdős and Faudree conjectured that dense graphs (above Turán threshold) must have a triangle with many 'good neighbors' - vertices adjacent to at least two triangle vertices. They guessed > (1/2 - o(1))n such vertices.\n\n**Erdős's Skepticism**: Erdős himself noted 'perhaps this conjecture is a bit too optimistic'.\n\n**Resolution**: Ma and Tang disproved the conjecture by constructing counterexamples where every triangle has at most (2 - √(5/2) + o(1))n ≈ 0.419n good neighbors.",

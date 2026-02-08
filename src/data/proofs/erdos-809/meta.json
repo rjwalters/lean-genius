@@ -9,17 +9,36 @@
     "date": "1991",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos809Problem.lean",
-    "tags": ["erdos", "extremal-graph-theory", "rainbow-colorings", "odd-cycles", "turan", "open-problem"],
+    "tags": [
+      "erdos",
+      "extremal-graph-theory",
+      "rainbow-colorings",
+      "odd-cycles",
+      "turan",
+      "open-problem"
+    ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 809,
     "erdosUrl": "https://erdosproblems.com/809",
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "SimpleGraph", "description": "Simple graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "Finset", "description": "Finite sets for vertices", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" }
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for vertices",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
     ],
     "originalContributions": [
       "Graph, edgeCount, turanThreshold, EdgeColoring definitions",

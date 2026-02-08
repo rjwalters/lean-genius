@@ -17,7 +17,7 @@
       "growth-rates"
     ],
     "badge": "mathlib",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 1030,
     "erdosUrl": "https://erdosproblems.com/1030",
     "erdosProblemStatus": "solved",
@@ -63,7 +63,10 @@
       "Formalization of the growth ratio question",
       "Connection to related Erdős problems #544 and #1014"
     ],
-    "relatedProblems": ["erdos-544", "erdos-1014"]
+    "relatedProblems": [
+      "erdos-544",
+      "erdos-1014"
+    ]
   },
   "overview": {
     "historicalContext": "**Ramsey Number Growth**\n\nRamsey numbers R(k, ℓ) measure the minimum graph size guaranteeing monochromatic cliques. The diagonal numbers R(k, k) grow exponentially, but their exact growth rate is unknown.\n\n**The Question**: Erdős and Sós asked whether the off-diagonal ratio R(k+1, k)/R(k, k) stays bounded away from 1. They couldn't even prove R(k+1, k) - R(k, k) > k^c for c > 1.\n\n**Trivial Bound**: R(k+1, k) - R(k, k) ≥ k - 2.\n\n**The Solution**: Burr-Erdős-Faudree-Schelp (1989) proved R(k+1, k) - R(k, k) ≥ 2k - 5, doubling the trivial bound asymptotically.",
