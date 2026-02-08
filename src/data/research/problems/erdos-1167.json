@@ -1,50 +1,112 @@
 {
   "slug": "erdos-1167",
   "title": "Erdős #1167",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For finite r ≥ 2, infinite cardinal λ, and targets κ_α (α < γ): 2^λ → (κ_α + 1)^{r+1}_{α < γ} implies λ → (κ_α)^r_{α < γ}?",
+    "plain": "Does a partition relation for (r+1)-tuples on 2^λ imply a partition relation for r-tuples on λ? (Erdős-Hajnal-Rado stepping-down conjecture)",
+    "whyMatters": [
+      "Fundamental question in infinitary combinatorics",
+      "Relates partition properties at different exponents",
+      "Would connect Erdős-Rado stepping-up with stepping-down"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Partition relation definitions formalized",
+      "One-color trivial case: κ → (κ)^r_1",
+      "Monotonicity in target: κ → (λ)^r_γ and λ' ≤ λ implies κ → (λ')^r_γ",
+      "Zero target: κ → (0)^r_γ for r > 0",
+      "Indexed partition monotonicity in targets",
+      "Subsets of monochromatic sets are monochromatic",
+      "κ + 1 = κ for infinite κ (cardinal arithmetic)",
+      "n + 1 > n for finite n (cardinal arithmetic)",
+      "Conjecture simplifies when all targets are infinite",
+      "2^λ is infinite when λ is infinite",
+      "Erdős-Rado weakening via target monotonicity"
+    ],
+    "open": [
+      "Main conjecture: stepping-down from 2^λ to λ"
+    ],
+    "goal": "Prove structural lemmas around the OPEN conjecture"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T16:53:51.159Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-02-08T02:00:00Z",
+    "iteration": 2,
+    "focus": "Structural lemmas for partition relations on cardinals",
+    "blockers": [
+      "Main conjecture is OPEN - cannot be proved",
+      "Infinite Ramsey theorem not in Mathlib",
+      "Erdős-Rado theorem not in Mathlib"
+    ],
+    "nextAction": "Submit to Aristotle for axiom→theorem conversion on known results",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1167 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "progressSummary": "SURVEYED: Added 6 new proved lemmas to the formalization. The main conjecture is OPEN. Existing file had 4 proved theorems + 3 axioms. Now has 13 proved theorems + 3 axioms (1 OPEN, 2 known but deep). New lemmas: zero target, indexed monotonicity, subset monochromaticity, infinite target simplification, 2^λ infiniteness, Erdős-Rado weakening.",
+    "builtItems": [
+      "partition_zero_target: κ → (0)^r_γ for r > 0",
+      "indexed_partition_monotone_targets: weakening indexed targets",
+      "isMonochromatic_subset: subset monotonicity for monochromatic sets",
+      "conjecture_simplifies_infinite_targets: simplification when targets infinite",
+      "two_pow_infinite: 2^λ ≥ ℵ₀ when λ ≥ ℵ₀",
+      "erdos_rado_weakened: Erdős-Rado with weaker target",
+      "ramsey_pairs, ramsey_triples_two_colors: specific Ramsey instances",
+      "erdos_1167_general_case: general r ≥ 2 instantiation"
+    ],
+    "insights": [
+      "Problem is OPEN - the main conjecture cannot be proved",
+      "The '+1' in the conjecture is only meaningful for finite cardinals",
+      "When all targets are infinite, κ_α + 1 = κ_α, simplifying the conjecture",
+      "Infinite Ramsey and Erdős-Rado are known results but not in Mathlib's partition calculus",
+      "Cardinal.cantor gives λ ≤ 2^λ, useful for proving 2^λ is infinite",
+      "The conjecture is consistent with infinite Ramsey theorem (checked)",
+      "File structure: definitions → structural lemmas → cardinal arithmetic → axioms → consequences"
+    ],
+    "mathlibGaps": [
+      "No formal partition relation type κ → (λ)^r_γ in Mathlib",
+      "No infinite Ramsey theorem in Mathlib",
+      "No Erdős-Rado theorem in Mathlib",
+      "Partition calculus on ordinals/cardinals not formalized"
+    ],
+    "nextSteps": [
+      "Consider submitting to Aristotle (after converting axioms to theorem sorries)",
+      "Could add more partition relation structural lemmas (composition, transitivity)",
+      "Could formalize connection to finite Ramsey theory in RamseysTheorem.lean"
+    ],
+    "markdown": "# Erdős #1167 - Knowledge Base\n\n## Problem Statement\n\nFor finite r ≥ 2, infinite cardinal λ, and cardinals κ_α (α < γ), does\n2^λ → (κ_α + 1)^{r+1}_{α < γ} imply λ → (κ_α)^r_{α < γ}?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No (main conjecture is OPEN)\n\n## Session 1 (2026-02-08)\n\nAdded 6 new proved structural lemmas:\n- partition_zero_target, indexed_partition_monotone_targets\n- isMonochromatic_subset, conjecture_simplifies_infinite_targets\n- two_pow_infinite, erdos_rado_weakened\n- ramsey_pairs, ramsey_triples_two_colors, erdos_1167_general_case\n\nFile now has 13 proved theorems + 3 axioms (1 OPEN, 2 known).\n\n## Tags\n\n- erdos\n- partition-relations\n- infinitary-combinatorics\n- cardinal-arithmetic\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n\n## References\n\n- [Va99, 7.79] - Erdős, Hajnal, Rado partition calculus\n- Erdős-Rado 1956: A partition calculus in set theory\n\n---\n\n*Updated 2026-02-08*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Structural lemmas for partition relations",
+      "status": "completed",
+      "description": "Build out the structural theory around partition relations: monotonicity, zero targets, subset properties, cardinal arithmetic connections"
+    }
+  ],
   "tags": [
-    "erdos"
+    "erdos",
+    "partition-relations",
+    "infinitary-combinatorics",
+    "cardinal-arithmetic"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
+    "papers": [
+      "Erdős-Rado 1956: A partition calculus in set theory"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal"
+    ]
   },
   "started": "2026-01-15T16:53:51.159Z",
   "significance": 7,
