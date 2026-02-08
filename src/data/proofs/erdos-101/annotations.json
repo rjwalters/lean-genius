@@ -1,56 +1,134 @@
 [
   {
+    "id": "imports-setup",
+    "proofId": "erdos-101",
+    "range": { "startLine": 18, "endLine": 20 },
+    "type": "context",
+    "title": "Imports and Dependencies",
+    "content": "The formalization imports Mathlib's finset cardinality, natural number basics, and general tactic support. These provide the combinatorial infrastructure for reasoning about finite point sets and their subsets.",
+    "mathContext": "We work with $\\text{Finset}(\\mathbb{R} \\times \\mathbb{R})$ and use cardinality $|S|$ for counting.",
+    "significance": "context",
+    "relatedConcepts": ["Finset", "cardinality", "Mathlib tactics"],
+    "prerequisites": ["Lean 4 basics", "Mathlib fundamentals"]
+  },
+  {
+    "id": "planar-point-set",
+    "proofId": "erdos-101",
+    "range": { "startLine": 24, "endLine": 27 },
+    "type": "definition",
+    "title": "Planar Point Set",
+    "content": "A PlanarPointSet is a nonempty finite subset of the Euclidean plane. The nonemptiness condition (size_pos) ensures the set contains at least one point, which is needed for well-definedness of counting arguments.",
+    "mathContext": "$P \\subseteq \\mathbb{R}^2$ with $|P| > 0$, represented as a finset of pairs $(x, y) \\in \\mathbb{R} \\times \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["finite geometry", "point configuration", "discrete geometry"],
+    "prerequisites": ["real coordinate plane", "finite sets"]
+  },
+  {
+    "id": "collinear-def",
+    "proofId": "erdos-101",
+    "range": { "startLine": 29, "endLine": 31 },
+    "type": "definition",
+    "title": "Collinearity via Signed Area",
+    "content": "Three points are collinear if and only if the signed area of the triangle they form vanishes. This is equivalent to the cross product of the displacement vectors being zero, which is the standard determinant test for collinearity in the plane.",
+    "mathContext": "$(q_1 - p_1)(r_2 - p_2) = (r_1 - p_1)(q_2 - p_2)$, i.e., $\\det\\begin{pmatrix} q_1 - p_1 & r_1 - p_1 \\\\ q_2 - p_2 & r_2 - p_2 \\end{pmatrix} = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["signed area", "cross product", "determinant", "affine dependence"],
+    "prerequisites": ["linear algebra", "analytic geometry"]
+  },
+  {
     "id": "no-five-collinear",
     "proofId": "erdos-101",
     "range": { "startLine": 33, "endLine": 40 },
     "type": "definition",
     "title": "No Five Collinear Condition",
-    "content": "The point set has no five collinear points. This is the natural threshold: allowing five collinear points trivially gives Ω(n²) four-point lines.",
-    "significance": "high"
+    "content": "The point set has no five collinear points: for any five distinct points in P, they cannot all lie on a single line. This is the precise threshold condition for Problem #101. If five collinear points were allowed, one could place n points on two lines, immediately getting $\\Omega(n^2)$ four-point lines (by choosing 3 from one line and 1 from the other), making the o(n^2) question trivial. The formalization quantifies over all 5-element subsets and checks that not all pairwise collinearity relations hold simultaneously.",
+    "mathContext": "No five distinct $a, b, c, d, e \\in P$ satisfy $\\text{collinear}(a,b,c) \\wedge \\text{collinear}(a,b,d) \\wedge \\text{collinear}(a,b,e)$ simultaneously.",
+    "significance": "key",
+    "relatedConcepts": ["general position", "collinearity threshold", "Sylvester-Gallai theorem"],
+    "prerequisites": ["combinatorial geometry", "collinearity"]
   },
   {
     "id": "four-point-count",
     "proofId": "erdos-101",
-    "range": { "startLine": 43, "endLine": 48 },
+    "range": { "startLine": 42, "endLine": 47 },
     "type": "definition",
     "title": "Four-Point Line Count",
-    "content": "The number of lines passing through exactly four points of the configuration. This is the quantity Erdős asks to bound.",
-    "significance": "high"
+    "content": "Counts the number of 4-element subsets of P that are collinear (all four points on a common line). The definition filters the powerset of P for subsets of size 4 where there exist two distinct points a, b in the subset such that all four points are collinear with a and b. For no-five-collinear sets, each four-point line contributes exactly one such subset.",
+    "mathContext": "$f_4(P) = |\\{S \\subseteq P : |S| = 4, \\exists\\, a \\neq b \\in S,\\, \\forall p \\in S,\\, \\text{collinear}(a, b, p)\\}|$",
+    "significance": "key",
+    "relatedConcepts": ["k-rich lines", "ordinary lines", "incidence counting"],
+    "prerequisites": ["powerset", "finset filtering", "combinatorial counting"]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-101",
-    "range": { "startLine": 53, "endLine": 58 },
-    "type": "conjecture",
-    "title": "Erdős Problem #101",
-    "content": "The number of four-point lines is o(n²): for any ε > 0, eventually fewer than εn² four-point lines. Worth $100.",
-    "significance": "high"
+    "range": { "startLine": 51, "endLine": 57 },
+    "type": "insight",
+    "title": "Erdos Problem #101: The o(n^2) Conjecture",
+    "content": "The central conjecture: for any $\\varepsilon > 0$, sufficiently large no-five-collinear point sets have fewer than $\\varepsilon n^2$ four-point lines. This is an asymptotic statement using little-o notation, formalized via the epsilon-N_0 definition. Erdos offered $100 for its resolution. The conjecture remains open, with the best known lower bound being nearly quadratic (Solymosi-Stojakovic), leaving open whether the count can truly be subquadratic.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall P$ with $|P| \\geq N_0$ and no five collinear: $f_4(P) < \\varepsilon \\cdot |P|^2$.",
+    "significance": "key",
+    "relatedConcepts": ["little-o notation", "asymptotic analysis", "Erdos prize problems"],
+    "prerequisites": ["asymptotic analysis", "combinatorial geometry"]
   },
   {
     "id": "grunbaum-lower",
     "proofId": "erdos-101",
-    "range": { "startLine": 63, "endLine": 68 },
-    "type": "theorem",
-    "title": "Grünbaum's Lower Bound",
-    "content": "There exist no-five-collinear configurations with ≫ n^{3/2} four-point lines. This was Erdős's original conjecture for the true order of magnitude.",
-    "significance": "medium"
+    "range": { "startLine": 61, "endLine": 67 },
+    "type": "technique",
+    "title": "Grunbaum's Lower Bound Construction",
+    "content": "Grunbaum constructed explicit no-five-collinear point sets achieving $\\gg n^{3/2}$ four-point lines. His construction uses lattice-based configurations and algebraic curves to ensure many collinear quadruples while avoiding five-point collinearities. This was the basis for Erdos's original conjecture that the true order is $\\Theta(n^{3/2})$, which was later disproved by Solymosi and Stojakovic.",
+    "mathContext": "$\\exists c > 0,\\, \\forall N,\\, \\exists P$ with no five collinear, $|P| \\geq N$, and $f_4(P) \\geq c \\cdot |P|^{3/2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lattice point constructions", "algebraic curve configurations", "extremal constructions"],
+    "prerequisites": ["algebraic geometry", "lattice points"]
   },
   {
     "id": "solymosi-stojakovic",
     "proofId": "erdos-101",
-    "range": { "startLine": 71, "endLine": 76 },
-    "type": "theorem",
-    "title": "Solymosi–Stojaković Lower Bound",
-    "content": "Configurations with n^{2−O(1/√(log n))} four-point lines exist, disproving Erdős's Θ(n^{3/2}) conjecture. The growth is nearly quadratic.",
-    "significance": "high"
+    "range": { "startLine": 69, "endLine": 75 },
+    "type": "technique",
+    "title": "Solymosi-Stojakovic: Nearly Quadratic Lower Bound",
+    "content": "Solymosi and Stojakovic dramatically improved Grunbaum's lower bound by constructing point sets with $n^{2 - O(1/\\sqrt{\\log n})}$ four-point lines while maintaining the no-five-collinear condition. This disproved Erdos's original $\\Theta(n^{3/2})$ conjecture and pushed the known lower bound to within a subpolynomial factor of the trivial $O(n^2)$ upper bound. Their construction uses sophisticated combinatorial and probabilistic techniques.",
+    "mathContext": "$\\forall C > 0,\\, \\exists N_0,\\, \\forall n \\geq N_0,\\, \\exists P$ with $|P| = n$, no five collinear, and $f_4(P) \\geq n^{2 - C/\\sqrt{\\log n}}$.",
+    "significance": "key",
+    "relatedConcepts": ["subpolynomial gap", "probabilistic constructions", "extremal combinatorics"],
+    "prerequisites": ["probabilistic method", "asymptotic analysis"]
+  },
+  {
+    "id": "trivial-upper",
+    "proofId": "erdos-101",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "technique",
+    "title": "Trivial Quadratic Upper Bound",
+    "content": "Any n points determine at most $\\binom{n}{2} = n(n-1)/2$ lines, so the number of four-point lines is at most $O(n^2)$. This is the trivial upper bound. The key question is whether an o(n^2) bound holds, i.e., whether the count is asymptotically smaller than any constant fraction of $n^2$.",
+    "mathContext": "$f_4(P) \\leq \\binom{|P|}{2} = \\frac{|P|(|P|-1)}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["line determination", "binomial coefficient", "trivial bounds"],
+    "prerequisites": ["basic combinatorics"]
+  },
+  {
+    "id": "collinear-triples-no-four",
+    "proofId": "erdos-101",
+    "range": { "startLine": 85, "endLine": 91 },
+    "type": "context",
+    "title": "Collinear Triples without Four-Point Lines",
+    "content": "Burr, Grunbaum, and Sloane, and independently Furedi and Palasti, constructed point sets with approximately $n^2/6$ collinear triples but no line containing four or more points. This shows that having many collinear triples does not force four-point lines, highlighting the delicate combinatorial distinction between 3-collinear and 4-collinear configurations.",
+    "mathContext": "$\\exists c > 0,\\, \\forall N,\\, \\exists P$ with $|P| \\geq N$, no five collinear, and $f_4(P) = 0$ (while having $\\sim |P|^2/6$ collinear triples).",
+    "significance": "supporting",
+    "relatedConcepts": ["Burr-Grunbaum-Sloane construction", "Furedi-Palasti", "collinear triples"],
+    "prerequisites": ["extremal set theory", "collinearity"]
   },
   {
     "id": "szemeredi-trotter",
     "proofId": "erdos-101",
-    "range": { "startLine": 91, "endLine": 95 },
-    "type": "note",
-    "title": "Szemerédi–Trotter Incidence Bound",
-    "content": "The number of point-line incidences between n points and m lines is O(n^{2/3}m^{2/3} + n + m). A fundamental tool for bounding collinearity configurations.",
-    "significance": "medium"
+    "range": { "startLine": 93, "endLine": 99 },
+    "type": "technique",
+    "title": "Szemeredi-Trotter Incidence Bound",
+    "content": "The Szemeredi-Trotter theorem (1983) bounds the number of point-line incidences: given n points and m lines in the plane, the number of incidences is $O(n^{2/3}m^{2/3} + n + m)$. This is tight and is one of the most powerful tools in combinatorial geometry. For four-point lines, applying Szemeredi-Trotter to n points and m four-rich lines gives a relationship constraining the count. The theorem was originally proved using a cell decomposition of the plane.",
+    "mathContext": "$I(P, L) \\leq C(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ for some absolute constant $C > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["incidence geometry", "cell decomposition", "crossing number inequality", "k-rich lines"],
+    "prerequisites": ["incidence geometry", "combinatorial geometry", "graph theory"]
   }
 ]
