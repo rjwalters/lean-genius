@@ -1,0 +1,89 @@
+{
+  "id": "erdos-1174",
+  "title": "Erdős Problem #1174: Monochromatic Cliques from Edge Colorings",
+  "slug": "erdos-1174",
+  "description": "with countably many colours contains a monochromatic triangle (K₃)?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1174",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1174Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "set-theory",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1174,
+    "erdosUrl": "https://erdosproblems.com/1174",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Combinatorics.SimpleGraph.Basic",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.SetTheory.Cardinal.Basic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      }
+    ],
+    "originalContributions": [
+      "IsClique",
+      "IsK4Free",
+      "IsCliqueFreeCardinal",
+      "HasMonochromaticTriangle",
+      "ErdosHajnalFiniteProperty",
+      "erdos_1174a",
+      "HasMonochromaticAleph0Clique",
+      "ErdosHajnalInfiniteProperty",
+      "erdos_1174b",
+      "infinite_ramsey_2color",
+      "complete_graph_not_k4free",
+      "partitionProperty",
+      "nesetril_rodl_context",
+      "shelah_consistency_finite",
+      "shelah_consistency_infinite"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1174 concerns monochromatic cliques from edge colorings. This problem remains OPEN.\n\nKnown results include: - This is a problem of Erdős and Hajnal - Shelah showed that a graph possessing either property can consistently exist - The problem asks whether such graphs exist in ZFC outright - We restrict the host graph (no K₄, or no K_{ℵ₁})\n\nThis problem is catalogued at erdosproblems.com/1174.",
+    "problemStatement": "with countably many colours contains a monochromatic triangle (K₃)?",
+    "proofStrategy": "The formalization is structured in 271 lines of Lean 4 code. It uses 5 axioms for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "****Clique in a Graph**: **Clique in a Graph:**",
+      "****Clique-free for Cardinal κ**: **Clique-free for Cardinal κ:**",
+      "****Symmetric Coloring**: **Symmetric Coloring:**",
+      "****Monochromatic Triangle**: **Monochromatic Triangle:**"
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1174",
+      "startLine": 1,
+      "endLine": 271
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1174 (Monochromatic Cliques from Edge Colorings) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

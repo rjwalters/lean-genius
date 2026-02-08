@@ -1,0 +1,199 @@
+[
+  {
+    "id": "ann-e1179-header",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1179, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1179: Uniform Subset Sum Representations in Abelian Groups\n\n  Source: https://erdosproblems.com/1179\n  Status: PROVED (answered in the affirmative)\n\n  Statement:\n  For 0 < ε < 1, let g_ε(N) be the minimal k such that: if G is an abelian\n  group of size N and A ⊆ G is a uniformly random subset of size k, then with\n  probability → 1 as N → ∞, the representation function\n\n    F_A(g) = #{S ⊆ A : ∑_{x ∈ S} x = g}\n\n  satisfies |F_A(g) - 2^k/N| ≤ ε · 2^k/N for all g ∈ G.\n\n  Question: Est",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1179-reprCount",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Reprcount",
+    "content": "noncomputable def reprCount",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1179-expectedReprCount",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 56,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Expectedreprcount",
+    "content": "noncomputable def expectedReprCount",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1179-IsEpsUniform",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 63,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Isepsuniform",
+    "content": "def IsEpsUniform",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1179-total_reprCount",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "type": "axiom",
+    "title": "Total Reprcount",
+    "content": "axiom total_reprCount",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1179-reprCount_empty_zero",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 76,
+      "endLine": 77
+    },
+    "type": "axiom",
+    "title": "Reprcount Empty Zero",
+    "content": "axiom reprCount_empty_zero",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1179-reprCount_empty_nonzero",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 80,
+      "endLine": 81
+    },
+    "type": "axiom",
+    "title": "Reprcount Empty Nonzero",
+    "content": "axiom reprCount_empty_nonzero",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1179-gEps",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 89,
+      "endLine": 89
+    },
+    "type": "axiom",
+    "title": "Geps",
+    "content": "axiom gEps",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1179-gEps_pos",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 92,
+      "endLine": 93
+    },
+    "type": "axiom",
+    "title": "Geps Pos",
+    "content": "axiom gEps_pos",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1179-trivial_lower_bound",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 104,
+      "endLine": 105
+    },
+    "type": "axiom",
+    "title": "Trivial Lower Bound",
+    "content": "axiom trivial_lower_bound",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1179-erdos_renyi_upper",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "type": "axiom",
+    "title": "Erdos Renyi Upper",
+    "content": "axiom erdos_renyi_upper",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1179-erdos_hall_upper",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 124,
+      "endLine": 127
+    },
+    "type": "axiom",
+    "title": "Erdos Hall Upper",
+    "content": "axiom erdos_hall_upper",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1179-main_asymptotic",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 135,
+      "endLine": 137
+    },
+    "type": "axiom",
+    "title": "Main Asymptotic",
+    "content": "axiom main_asymptotic",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1179-uniform_implies_spanning",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 147,
+      "endLine": 151
+    },
+    "type": "axiom",
+    "title": "Uniform Implies Spanning",
+    "content": "axiom uniform_implies_spanning",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1179-gEps_mono",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 156,
+      "endLine": 158
+    },
+    "type": "axiom",
+    "title": "Geps Mono",
+    "content": "axiom gEps_mono",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1179-erdos_1179_summary",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 171,
+      "endLine": 176
+    },
+    "type": "theorem",
+    "title": "Erdos 1179 Summary",
+    "content": "theorem erdos_1179_summary",
+    "significance": "critical"
+  }
+]

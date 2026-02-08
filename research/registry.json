@@ -206,8 +206,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T05:32:39.472Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-07T00:59:53.359Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-08T06:11:43.708Z",
       "completed": "2026-02-07T00:59:53.359Z"
     },
     {
@@ -215,8 +215,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T05:32:39.476Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-07T00:59:53.359Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-08T06:11:43.707Z",
       "completed": "2026-02-07T00:59:53.358Z"
     },
     {
@@ -2722,19 +2722,21 @@
     },
     {
       "slug": "sum-of-kth-powers",
-      "phase": "NEW",
+      "phase": "BREAKTHROUGH",
       "path": "fast",
       "started": "2026-01-27T22:18:02.334Z",
-      "status": "active",
-      "lastUpdate": "2026-01-27T22:18:02.334Z"
+      "status": "graduated",
+      "lastUpdate": "2026-02-08T06:11:43.708Z",
+      "completed": "2026-02-08T06:11:43.708Z"
     },
     {
       "slug": "unit-distance-independence",
-      "phase": "NEW",
+      "phase": "BREAKTHROUGH",
       "path": "fast",
       "started": "2026-01-27T22:18:02.334Z",
-      "status": "active",
-      "lastUpdate": "2026-01-27T22:18:02.334Z"
+      "status": "graduated",
+      "lastUpdate": "2026-02-08T06:11:43.709Z",
+      "completed": "2026-02-08T06:11:43.709Z"
     },
     {
       "slug": "erdos-1139",
@@ -2756,6 +2758,343 @@
       "path": "full",
       "started": "2026-02-08T00:55:03.569Z",
       "status": "active"
+    },
+    {
+      "slug": "arithmetic-series-oq-01",
+      "phase": "BREAKTHROUGH",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.708Z",
+      "status": "graduated",
+      "lastUpdate": "2026-02-08T06:11:43.708Z",
+      "completed": "2026-02-08T06:11:43.708Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "angle-trisection-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "area-of-circle-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "ballot-problem-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "bezout-identity-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "birthday-problem-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "borsuk-ulam-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "brouwer-fixed-point-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "cayley-hamilton-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.709Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.709Z"
+    },
+    {
+      "slug": "cayley-hamilton-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "cevas-theorem-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "cevas-theorem-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "chinese-remainder-constructive-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "combinations-formula-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "denumerability-rationals-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "descartes-rule-of-signs-oq-03",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "divisibility-by-3-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "erdos-1006-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "erdos-101",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "erdos-1012",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "erdos-1012-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "erdos-1023-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "erdos-1054",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "erdos-1054-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "erdos-1082-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "friendship-theorem-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "gcd-algorithm-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "geometric-series-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "harmonic-divergence-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "inclusion-exclusion-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "konigsberg-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "lagrange-four-squares",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "lagrange-four-squares-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "law-of-cosines-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "pythagorean-theorem-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "quadratic-reciprocity-elementary",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "sqrt2-irrational-oq-03",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "stirling-formula-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "wilsons-generalization",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "wilsons-theorem-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "birthday-problem-oq-04",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-08T06:11:43.710Z",
+      "status": "active",
+      "lastUpdate": "2026-02-08T06:11:43.710Z"
     }
   ],
   "config": {

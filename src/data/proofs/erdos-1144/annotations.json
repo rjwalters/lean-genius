@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-e1144-header",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1144, providing mathematical context and problem statement.",
+    "mathContext": "# Erdős Problem #1144 — Partial Sums of Random Multiplicative Functions\n\nLet f be a random completely multiplicative function, where for each prime p\nwe independently choose f(p) ∈ {-1, 1} uniformly at random.\n\n**Conjecture**: With probability 1,\n  limsup_{N → ∞} (∑_{m ≤ N} f(m)) / √N = ∞.\n\n## Status: OPEN\n\n## Key Results\n\n- **Atherfold (2025)**: Almost surely, ∑_{m ≤ N} f(m) ≪ N^{1/2} (log N)^{1+o(1)}.\n  This gives an upper bound on growth but does not resolve whether the limsup is infinite.\n\n#",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1144-IsCompletelyMultiplicative",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Iscompletelymultiplicative",
+    "content": "def IsCompletelyMultiplicative",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1144-IsRademacherMultiplicative",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Isrademachermultiplicative",
+    "content": "def IsRademacherMultiplicative",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1144-partialSum",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Partialsum",
+    "content": "/-- The partial sum ∑_{m=1}^{N} f(m). -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1144-rademacher_one",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "theorem",
+    "title": "Rademacher One",
+    "content": "/-- A Rademacher multiplicative function satisfies f(1) = 1. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1144-rademacher_values_pm1",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    },
+    "type": "theorem",
+    "title": "Rademacher Values Pm1",
+    "content": "theorem rademacher_values_pm1",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1144-rademacher_abs_one",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 59,
+      "endLine": 61
+    },
+    "type": "theorem",
+    "title": "Rademacher Abs One",
+    "content": "/-- |f(n)| = 1 for all positive n, when f is Rademacher multiplicative. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1144-completely_mult_zero",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 67,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Completely Mult Zero",
+    "content": "theorem completely_mult_zero",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1144-erdos_1144_conjecture",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 91,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "Erdos 1144 Conjecture",
+    "content": "def erdos_1144_conjecture",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1144-erdos_1144_probabilistic",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 99,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "Erdos 1144 Probabilistic",
+    "content": "def erdos_1144_probabilistic",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1144-atherfold_upper_bound",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 112,
+      "endLine": 117
+    },
+    "type": "axiom",
+    "title": "Atherfold Upper Bound",
+    "content": "axiom atherfold_upper_bound",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1144-partialSum_zero",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 122,
+      "endLine": 123
+    },
+    "type": "theorem",
+    "title": "Partialsum Zero",
+    "content": "/-- The partial sum at 0 is 0. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1144-atherfold_implies_subpolynomia",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 128,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Atherfold Implies Subpolynomial",
+    "content": "theorem atherfold_implies_subpolynomial",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1144-partialSum_trivial_bound",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 138,
+      "endLine": 140
+    },
+    "type": "theorem",
+    "title": "Partialsum Trivial Bound",
+    "content": "theorem partialSum_trivial_bound",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1144-conjecture_and_atherfold_pinch",
+    "proofId": "erdos-1144",
+    "range": {
+      "startLine": 145,
+      "endLine": 157
+    },
+    "type": "theorem",
+    "title": "Conjecture And Atherfold Pinch",
+    "content": "theorem conjecture_and_atherfold_pinch",
+    "significance": "key"
+  }
+]

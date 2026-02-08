@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1148-header",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1148, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1148: Representation as x² + y² - z²\n\n**Problem Statement (OPEN)**\n\nCan every sufficiently large integer n be written as n = x² + y² - z²\nwhere max(x², y², z²) ≤ n?\n\nThe constraint max(x², y², z²) ≤ n means x, y, z ≤ ⌊√n⌋.\n\n**Known Results:**\n- The largest known integer not representable in this form is 6563.\n- With the relaxed bound max(x², y², z²) ≤ n + 2√n, the representation\n  always exists (and is \"obvious\").\n\n**Status**: OPEN\n\nReference: [Va99, 1.25] (Vaughan)\nSource: https:",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1148-IsRepresentable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 52,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Isrepresentable",
+    "content": "/-- n is representable as x² + y² - z² with max(x², y², z²) ≤ n. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1148-IsRepresentableWith",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 56,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Isrepresentablewith",
+    "content": "/-- n is representable with the relaxed bound max(x², y², z²) ≤ bound. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1148-perfectSquare_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "Perfectsquare Representable",
+    "content": "/-- Any perfect square n = k² is representable: k² = k² + 0² - 0². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-zero_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "Zero Representable",
+    "content": "/-- 0 is representable: 0 = 0² + 0² - 0². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-one_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "type": "theorem",
+    "title": "One Representable",
+    "content": "/-- 1 is representable: 1 = 1² + 0² - 0². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-representable_mono",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Representable Mono",
+    "content": "/-- Representability with a tighter bound implies representability with a looser bound. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-representable_implies_relaxed",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 82,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "Representable Implies Relaxed",
+    "content": "/-- The strict version implies the relaxed version. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-odd_diff_squares_exceeds_bound",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 96,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Odd Diff Squares Exceeds Bound",
+    "content": "theorem odd_diff_squares_exceeds_bound",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-odd_diff_squares_identity",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 102,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "Odd Diff Squares Identity",
+    "content": "theorem odd_diff_squares_identity",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-two_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 113,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Two Representable",
+    "content": "/-- 2 is representable: 2 = 1² + 1² - 0². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-four_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 124,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Four Representable",
+    "content": "/-- 4 is representable: 4 = 2² + 0² - 0². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-five_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 128,
+      "endLine": 129
+    },
+    "type": "theorem",
+    "title": "Five Representable",
+    "content": "/-- 5 is representable: 5 = 2² + 1² - 0². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-eight_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 132,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "Eight Representable",
+    "content": "/-- 8 is representable: 8 = 2² + 2² - 0². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-nine_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 136,
+      "endLine": 137
+    },
+    "type": "theorem",
+    "title": "Nine Representable",
+    "content": "/-- 9 is representable: 9 = 3² + 0² - 0². -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-checkRepresentable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 146,
+      "endLine": 152
+    },
+    "type": "definition",
+    "title": "Checkrepresentable",
+    "content": "/-- A Boolean check for representability with bound b by exhaustive search. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1148-checkRepresentable_sound",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 155,
+      "endLine": 161
+    },
+    "type": "theorem",
+    "title": "Checkrepresentable Sound",
+    "content": "/-- Soundness: if checkRepresentable returns true, the number is representable. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-checkRepresentable_complete",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 164,
+      "endLine": 173
+    },
+    "type": "theorem",
+    "title": "Checkrepresentable Complete",
+    "content": "/-- Completeness: if a number is representable, checkRepresentable returns true. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-three_not_representable",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 176,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Three Not Representable",
+    "content": "/-- 3 is not representable: no x, y, z with x²+y²-z² = 3 and max(x²,y²,z²) ≤ 3. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1148-erdos_1148_conjecture",
+    "proofId": "erdos-1148",
+    "range": {
+      "startLine": 191,
+      "endLine": 192
+    },
+    "type": "definition",
+    "title": "Erdos 1148 Conjecture",
+    "content": "def erdos_1148_conjecture",
+    "significance": "critical"
+  }
+]

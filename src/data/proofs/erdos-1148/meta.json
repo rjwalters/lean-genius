@@ -1,0 +1,108 @@
+{
+  "id": "erdos-1148",
+  "title": "Erdős Problem #1148: Representation as x² + y² - z²",
+  "slug": "erdos-1148",
+  "description": "Can every sufficiently large integer n be written as n = x² + y² - z² where max(x², y², z²) ≤ n?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1148",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1148Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1148,
+    "erdosUrl": "https://erdosproblems.com/1148",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Prime.Basic",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Sqrt",
+        "description": "From Mathlib.Data.Nat.Sqrt",
+        "module": "Mathlib.Data.Nat.Sqrt"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Finset.Basic",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Real.Basic",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Int.Basic",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "IsRepresentable",
+      "IsRepresentableWith",
+      "perfectSquare_representable",
+      "zero_representable",
+      "one_representable",
+      "representable_mono",
+      "representable_implies_relaxed",
+      "odd_diff_squares_exceeds_bound",
+      "odd_diff_squares_identity",
+      "two_representable",
+      "four_representable",
+      "five_representable",
+      "eight_representable",
+      "nine_representable",
+      "checkRepresentable"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1148 concerns representation as x² + y² - z². This problem remains OPEN.\n\nKnown results include: - The largest known integer not representable in this form is 6563. - With the relaxed bound max(x², y², z²) ≤ n + 2√n, the representation\n\nThis problem is catalogued at erdosproblems.com/1148.",
+    "problemStatement": "Can every sufficiently large integer n be written as n = x² + y² - z² where max(x², y², z²) ≤ n?",
+    "proofStrategy": "The formalization is structured in 270 lines of Lean 4 code. It uses 1 axiom for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**A representation of n as x² + y² - z² where all squares are at most bound.**: A representation of n as x² + y² - z² where all squares are at most bound.",
+      "**n is representable as x² + y² - z² with max(x², y², z²) ≤ n.**: n is representable as x² + y² - z² with max(x², y², z²) ≤ n.",
+      "**n is representable with the relaxed bound max(x², y², z²) ≤ bound.**: n is representable with the relaxed bound max(x², y², z²) ≤ bound.",
+      "**Any perfect square n = k² is representable**: Any perfect square n = k² is representable: k² = k² + 0² - 0².",
+      "**0 is representable**: 0 is representable: 0 = 0² + 0² - 0²."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1148",
+      "startLine": 1,
+      "endLine": 270
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1148 (Representation as x² + y² - z²) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

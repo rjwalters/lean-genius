@@ -265,6 +265,6 @@ Summary of what is known:
 The problem connects partition calculus, infinite Ramsey theory,
 and set-theoretic independence.
 -/
-axiom erdos_1174_open : True
+-- Problem remains OPEN in ZFC.
 
 end Erdos1174

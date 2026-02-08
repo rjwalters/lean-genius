@@ -1,0 +1,86 @@
+{
+  "id": "erdos-1175",
+  "title": "Erdős Problem #1175: Triangle-Free Subgraphs with Large Chromatic Number",
+  "slug": "erdos-1175",
+  "description": "Let κ be an uncountable cardinal. Must there exist a cardinal λ such that",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1175",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1175Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "set-theory",
+      "probability",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1175,
+    "erdosUrl": "https://erdosproblems.com/1175",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Combinatorics.SimpleGraph.Basic",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsProperColoring",
+      "IsColorable",
+      "cardinalChromaticNumber",
+      "chromaticNumber_le_iff",
+      "IsTriangleFree",
+      "inducedSubgraphOn",
+      "HasTriangleFreeSubgraphWithChromatic",
+      "erdos1175",
+      "AllTriangleFreeSubgraphsBoundedBy",
+      "shelah_consistency",
+      "shelah_implies_failure_at_aleph1",
+      "mycielski_theorem",
+      "finite_case",
+      "HasGirthAtLeast",
+      "erdos1175_girth_variant"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1175 concerns triangle-free subgraphs with large chromatic number. This problem remains OPEN.\n\nKnown results include: - Shelah showed that a negative answer is consistent if κ = λ = ℵ₁.\n\nThis problem is catalogued at erdosproblems.com/1175.",
+    "problemStatement": "Let κ be an uncountable cardinal. Must there exist a cardinal λ such that",
+    "proofStrategy": "The formalization is structured in 203 lines of Lean 4 code. It uses 6 axioms for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**A proper coloring of a graph G with colors from a type of cardinality k.**: A proper coloring of a graph G with colors from a type of cardinality k.",
+      "**A graph is k-colorable if it admits a proper k-coloring.**: A graph is k-colorable if it admits a proper k-coloring.",
+      "**Cardinal chromatic number**: Cardinal chromatic number: the minimum cardinal k such that G is k-colorable.",
+      "**The chromatic number is at most k iff G is k-colorable.**: The chromatic number is at most k iff G is k-colorable.",
+      "**A graph is triangle-free**: A graph is triangle-free: no three mutually adjacent vertices exist."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1175",
+      "startLine": 1,
+      "endLine": 203
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1175 (Triangle-Free Subgraphs with Large Chromatic Number) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

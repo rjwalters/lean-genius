@@ -1,0 +1,199 @@
+[
+  {
+    "id": "ann-e1173-header",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1173, providing mathematical context and problem statement.",
+    "mathContext": "# Erdős Problem #1173: Free Sets for Set Mappings under GCH\n\nAssuming the generalized continuum hypothesis, let\n  f : ω_{ω+1} → [ω_{ω+1}]^{≤ℵ_ω}\nbe a set mapping such that |f(α) ∩ f(β)| < ℵ_ω for all α ≠ β.\nDoes there exist a free set of cardinality ℵ_{ω+1}?\n\n## Status: OPEN\n\nThis is a problem of Erdős and Hajnal in infinitary combinatorics / set theory.\nA \"free set\" for f means a set S such that α ∉ f(β) for all distinct α, β ∈ S.\n\n## Context\n\nSet mapping problems ask: given a function assignin",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1173-aleph_omega",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 43,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Aleph Omega",
+    "content": "/-- ℵ_ω: the ω-th aleph cardinal (first singular aleph). -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-aleph_omega_succ",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 46,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Aleph Omega Succ",
+    "content": "/-- ℵ_{ω+1}: the successor of ℵ_ω. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-omega_omega_succ",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 50,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Omega Omega Succ",
+    "content": "noncomputable def omega_omega_succ",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-GCH",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 54,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Gch",
+    "content": "def GCH",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-SetMapping",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 63,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Setmapping",
+    "content": "def SetMapping",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-BoundedImageSize",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 67,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Boundedimagesize",
+    "content": "def BoundedImageSize",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-AlmostDisjoint",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 73,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Almostdisjoint",
+    "content": "def AlmostDisjoint",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-IsFreeSet",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 82,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Isfreeset",
+    "content": "def IsFreeSet",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-HasFreeSetOfCard",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 87,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Hasfreesetofcard",
+    "content": "/-- A free set has a given cardinality. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1173-erdos_1173",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 102,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Erdos 1173",
+    "content": "def erdos_1173",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1173-hajnal_free_set_theorem",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 120,
+      "endLine": 124
+    },
+    "type": "axiom",
+    "title": "Hajnal Free Set Theorem",
+    "content": "axiom hajnal_free_set_theorem",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1173-gch_aleph_omega_strong_limit",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 132,
+      "endLine": 133
+    },
+    "type": "axiom",
+    "title": "Gch Aleph Omega Strong Limit",
+    "content": "axiom gch_aleph_omega_strong_limit",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1173-overlap_bounded_by_aleph_n",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 138,
+      "endLine": 143
+    },
+    "type": "axiom",
+    "title": "Overlap Bounded By Aleph N",
+    "content": "axiom overlap_bounded_by_aleph_n",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1173-erdos_hajnal_aleph1",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 152,
+      "endLine": 155
+    },
+    "type": "axiom",
+    "title": "Erdos Hajnal Aleph1",
+    "content": "axiom erdos_hajnal_aleph1",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1173-erdos_1173_weak",
+    "proofId": "erdos-1173",
+    "range": {
+      "startLine": 160,
+      "endLine": 165
+    },
+    "type": "definition",
+    "title": "Erdos 1173 Weak",
+    "content": "def erdos_1173_weak",
+    "significance": "critical"
+  }
+]

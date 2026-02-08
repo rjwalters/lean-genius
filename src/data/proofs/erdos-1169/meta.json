@@ -1,0 +1,96 @@
+{
+  "id": "erdos-1169",
+  "title": "Erdős Problem #1169: Partition Relations for ω₁²",
+  "slug": "erdos-1169",
+  "description": "Does ω₁² → (ω₁², 3)² hold (in ZFC)?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1169",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1169Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "graph-theory",
+      "set-theory",
+      "analysis",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1169,
+    "erdosUrl": "https://erdosproblems.com/1169",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Arithmetic",
+        "description": "From Mathlib.SetTheory.Ordinal.Arithmetic",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.SetTheory.Cardinal.Basic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "ordinalPartitionRel",
+      "negPartitionRel",
+      "omega1",
+      "omega1Sq",
+      "omega1_uncountable",
+      "omega1Sq_card",
+      "erdos_1169_statement",
+      "CH",
+      "hajnal_ch_implies_partition",
+      "erdos_1169_under_ch",
+      "erdos_1169_not_disprovable",
+      "erdos_1169_open_in_zfc",
+      "partition_monotone_clique",
+      "partition_monotone_ordinal",
+      "erdos_1169_implies_pairs"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1169 concerns partition relations for ω₁². This problem remains OPEN.\n\nKnown results include: - Hajnal proved the partition relation holds assuming the Continuum Hypothesis (CH). - The problem is \"not disprovable\" — there exist models of set theory where it holds. - The general ZFC status remains open. - Problem #592: For which countable β does ω^β → (ω^β, 3)² hold?\n\nThis problem is catalogued at erdosproblems.com/1169.",
+    "problemStatement": "Does ω₁² → (ω₁², 3)² hold (in ZFC)?",
+    "proofStrategy": "The formalization is structured in 219 lines of Lean 4 code. It uses 12 axioms for results that require external references or deep mathematical arguments beyond Mathlib. The main conjecture is stated as an axiom since it is an open problem.",
+    "keyInsights": [
+      "**The ordinal partition relation α → (β, k)²**: The ordinal partition relation α → (β, k)²: for any 2-coloring of",
+      "**The negative partition relation α ↛ (β, k)²**: The negative partition relation α ↛ (β, k)²: there exists a 2-coloring",
+      "**ω₁**: ω₁: the first uncountable ordinal.",
+      "**ω₁²**: ω₁²: the ordinal square of ω₁, i.e., ω₁ · ω₁ (ordinal multiplication)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "formalization",
+      "title": "Formalization",
+      "summary": "Complete formalization of Erdős Problem #1169",
+      "startLine": 1,
+      "endLine": 219
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1169 (Partition Relations for ω₁²) in Lean 4, including core definitions, key structural results, and the open conjecture stated as an axiom.",
+    "implications": "The formalization demonstrates how open problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "openQuestions": [
+      "Resolve the conjecture",
+      "Fill in sorry placeholders with complete proofs",
+      "Strengthen connections to other Erdős problems"
+    ]
+  }
+}

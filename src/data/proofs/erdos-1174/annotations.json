@@ -1,0 +1,235 @@
+[
+  {
+    "id": "ann-e1174-header",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1174, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1174: Monochromatic Cliques from Edge Colorings\n\nSource: https://erdosproblems.com/1174\nStatus: OPEN (set-theoretic independence)\nReference: [Va99, 7.91]\n\nStatement:\n(a) Does there exist a graph G with no K₄ such that every edge colouring of G\n    with countably many colours contains a monochromatic triangle (K₃)?\n\n(b) Does there exist a graph G with no K_{ℵ₁} such that every edge colouring of G\n    with countably many colours contains a monochromatic K_{ℵ₀}?\n\nKey Results:\n- This ",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1174-IsClique",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Isclique",
+    "content": "def IsClique",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1174-IsK4Free",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Isk4Free",
+    "content": "def IsK4Free",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1174-IsCliqueFreeCardinal",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 61,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Iscliquefreecardinal",
+    "content": "def IsCliqueFreeCardinal",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1174-HasMonochromaticTriangle",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 81,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "Hasmonochromatictriangle",
+    "content": "def HasMonochromaticTriangle",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1174-ErdosHajnalFiniteProperty",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 94,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Erdoshajnalfiniteproperty",
+    "content": "def ErdosHajnalFiniteProperty",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1174-erdos_1174a",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 104,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "Erdos 1174A",
+    "content": "def erdos_1174a",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1174-HasMonochromaticAleph0Clique",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "Hasmonochromaticaleph0Clique",
+    "content": "def HasMonochromaticAleph0Clique",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1174-ErdosHajnalInfiniteProperty",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 130,
+      "endLine": 133
+    },
+    "type": "definition",
+    "title": "Erdoshajnalinfiniteproperty",
+    "content": "def ErdosHajnalInfiniteProperty",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1174-erdos_1174b",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 140,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "Erdos 1174B",
+    "content": "def erdos_1174b",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1174-infinite_ramsey_2color",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 153,
+      "endLine": 157
+    },
+    "type": "axiom",
+    "title": "Infinite Ramsey 2Color",
+    "content": "axiom infinite_ramsey_2color",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1174-complete_graph_not_k4free",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 165,
+      "endLine": 171
+    },
+    "type": "theorem",
+    "title": "Complete Graph Not K4Free",
+    "content": "theorem complete_graph_not_k4free",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1174-partitionProperty",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 182,
+      "endLine": 187
+    },
+    "type": "definition",
+    "title": "Partitionproperty",
+    "content": "def partitionProperty",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1174-nesetril_rodl_context",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 195,
+      "endLine": 197
+    },
+    "type": "axiom",
+    "title": "Nesetril Rodl Context",
+    "content": "axiom nesetril_rodl_context",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1174-shelah_consistency_finite",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 209,
+      "endLine": 209
+    },
+    "type": "axiom",
+    "title": "Shelah Consistency Finite",
+    "content": "axiom shelah_consistency_finite",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1174-shelah_consistency_infinite",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 218,
+      "endLine": 218
+    },
+    "type": "axiom",
+    "title": "Shelah Consistency Infinite",
+    "content": "axiom shelah_consistency_infinite",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1174-k4free_can_have_triangles",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 233,
+      "endLine": 233
+    },
+    "type": "theorem",
+    "title": "K4Free Can Have Triangles",
+    "content": "theorem k4free_can_have_triangles",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1174-parts_related",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 246,
+      "endLine": 246
+    },
+    "type": "theorem",
+    "title": "Parts Related",
+    "content": "theorem parts_related",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1174-erdos_1174_open",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 268,
+      "endLine": 268
+    },
+    "type": "axiom",
+    "title": "Erdos 1174 Open",
+    "content": "axiom erdos_1174_open",
+    "significance": "critical"
+  }
+]

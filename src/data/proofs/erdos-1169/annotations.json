@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-e1169-header",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1169, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1169: Partition Relations for ω₁²\n\nDoes ω₁² → (ω₁², 3)² hold (in ZFC)?\n\nThat is, for every 2-coloring of pairs from ω₁², must there exist either\na red copy of order type ω₁² or a blue triangle?\n\n## Known Results\n- Hajnal proved the partition relation holds assuming the Continuum Hypothesis (CH).\n- The problem is \"not disprovable\" — there exist models of set theory where it holds.\n- The general ZFC status remains open.\n\n## Context\nThis is a problem of Erdős and Hajnal on ordinal pa",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1169-ordinalPartitionRel",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 49,
+      "endLine": 49
+    },
+    "type": "axiom",
+    "title": "Ordinalpartitionrel",
+    "content": "axiom ordinalPartitionRel",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1169-negPartitionRel",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Negpartitionrel",
+    "content": "def negPartitionRel",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1169-omega1",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 63,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Omega1",
+    "content": "noncomputable def omega1",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1169-omega1Sq",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 66,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Omega1Sq",
+    "content": "/-- ω₁²: the ordinal square of ω₁, i.e., ω₁ · ω₁ (ordinal multiplication). -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1169-omega1_uncountable",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 69,
+      "endLine": 69
+    },
+    "type": "axiom",
+    "title": "Omega1 Uncountable",
+    "content": "/-- ω₁ is uncountable. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1169-omega1Sq_card",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 72,
+      "endLine": 72
+    },
+    "type": "axiom",
+    "title": "Omega1Sq Card",
+    "content": "/-- ω₁² has cardinality ℵ₁. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1169-erdos_1169_statement",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 83,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Erdos 1169 Statement",
+    "content": "def erdos_1169_statement",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1169-CH",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 91,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "Ch",
+    "content": "/-- The Continuum Hypothesis: 2^ℵ₀ = ℵ₁. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1169-hajnal_ch_implies_partition",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 100,
+      "endLine": 101
+    },
+    "type": "axiom",
+    "title": "Hajnal Ch Implies Partition",
+    "content": "axiom hajnal_ch_implies_partition",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1169-erdos_1169_under_ch",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 104,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Erdos 1169 Under Ch",
+    "content": "/-- Under CH, Problem #1169 has a positive answer. -/",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1169-erdos_1169_not_disprovable",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 116,
+      "endLine": 117
+    },
+    "type": "axiom",
+    "title": "Erdos 1169 Not Disprovable",
+    "content": "axiom erdos_1169_not_disprovable",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1169-erdos_1169_open_in_zfc",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 121,
+      "endLine": 122
+    },
+    "type": "axiom",
+    "title": "Erdos 1169 Open In Zfc",
+    "content": "axiom erdos_1169_open_in_zfc",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1169-partition_monotone_clique",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 130,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "Partition Monotone Clique",
+    "content": "axiom partition_monotone_clique",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1169-partition_monotone_ordinal",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 136,
+      "endLine": 138
+    },
+    "type": "axiom",
+    "title": "Partition Monotone Ordinal",
+    "content": "axiom partition_monotone_ordinal",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1169-erdos_1169_implies_pairs",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 142,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "Erdos 1169 Implies Pairs",
+    "content": "theorem erdos_1169_implies_pairs",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1169-connection_to_592",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 153,
+      "endLine": 154
+    },
+    "type": "axiom",
+    "title": "Connection To 592",
+    "content": "axiom connection_to_592",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1169-erdos_1169_stronger_than_118_u",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 162,
+      "endLine": 164
+    },
+    "type": "theorem",
+    "title": "Erdos 1169 Stronger Than 118 Under Ch",
+    "content": "theorem erdos_1169_stronger_than_118_under_ch",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1169-omega1_is_limit",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 171,
+      "endLine": 171
+    },
+    "type": "axiom",
+    "title": "Omega1 Is Limit",
+    "content": "/-- ω₁ is a limit ordinal. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1169-omega_lt_omega1",
+    "proofId": "erdos-1169",
+    "range": {
+      "startLine": 174,
+      "endLine": 174
+    },
+    "type": "axiom",
+    "title": "Omega Lt Omega1",
+    "content": "/-- ω < ω₁: the first uncountable ordinal is strictly larger than ω. -/",
+    "significance": "key"
+  }
+]

@@ -1,0 +1,235 @@
+[
+  {
+    "id": "ann-e1175-header",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documentation for Erdős Problem #1175, providing mathematical context and problem statement.",
+    "mathContext": "Erdős Problem #1175: Triangle-Free Subgraphs with Large Chromatic Number\n\nSource: https://erdosproblems.com/1175\nStatus: OPEN\n\nStatement:\nLet κ be an uncountable cardinal. Must there exist a cardinal λ such that\nevery graph with chromatic number λ contains a triangle-free subgraph with\nchromatic number κ?\n\nKnown Results:\n- Shelah showed that a negative answer is consistent if κ = λ = ℵ₁.\n  That is, it is consistent with ZFC that there exists a graph G with\n  χ(G) = ℵ₁ such that every triangle-fr",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős problems",
+      "Number theory"
+    ]
+  },
+  {
+    "id": "ann-e1175-IsProperColoring",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Ispropercoloring",
+    "content": "/-- A proper coloring of a graph G with colors from a type of cardinality k. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1175-IsColorable",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Iscolorable",
+    "content": "/-- A graph is k-colorable if it admits a proper k-coloring. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1175-cardinalChromaticNumber",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 48,
+      "endLine": 48
+    },
+    "type": "axiom",
+    "title": "Cardinalchromaticnumber",
+    "content": "axiom cardinalChromaticNumber",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1175-chromaticNumber_le_iff",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 51,
+      "endLine": 52
+    },
+    "type": "axiom",
+    "title": "Chromaticnumber Le Iff",
+    "content": "/-- The chromatic number is at most k iff G is k-colorable. -/",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1175-IsTriangleFree",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 61,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Istrianglefree",
+    "content": "/-- A graph is triangle-free: no three mutually adjacent vertices exist. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1175-inducedSubgraphOn",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 65,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Inducedsubgraphon",
+    "content": "/-- The induced subgraph on a vertex subset S. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1175-HasTriangleFreeSubgraphWithChr",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 72,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Hastrianglefreesubgraphwithchromatic",
+    "content": "/-- A graph G has a triangle-free subgraph with chromatic number at least κ. -/",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1175-erdos1175",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 87,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Erdos1175",
+    "content": "def erdos1175",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1175-AllTriangleFreeSubgraphsBounde",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 102,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "Alltrianglefreesubgraphsboundedby",
+    "content": "def AllTriangleFreeSubgraphsBoundedBy",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1175-shelah_consistency",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 110,
+      "endLine": 113
+    },
+    "type": "axiom",
+    "title": "Shelah Consistency",
+    "content": "axiom shelah_consistency",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1175-shelah_implies_failure_at_alep",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 118,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Shelah Implies Failure At Aleph1",
+    "content": "theorem shelah_implies_failure_at_aleph1",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1175-mycielski_theorem",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 140,
+      "endLine": 142
+    },
+    "type": "axiom",
+    "title": "Mycielski Theorem",
+    "content": "axiom mycielski_theorem",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1175-finite_case",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 147,
+      "endLine": 150
+    },
+    "type": "axiom",
+    "title": "Finite Case",
+    "content": "axiom finite_case",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1175-HasGirthAtLeast",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 160,
+      "endLine": 163
+    },
+    "type": "definition",
+    "title": "Hasgirthatleast",
+    "content": "def HasGirthAtLeast",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1175-erdos1175_girth_variant",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 166,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "Erdos1175 Girth Variant",
+    "content": "/-- Stronger variant: replace \"triangle-free\" with \"girth ≥ g\" for any g. -/",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1175-erdos_1959_existence",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 183,
+      "endLine": 185
+    },
+    "type": "axiom",
+    "title": "Erdos 1959 Existence",
+    "content": "axiom erdos_1959_existence",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1175-ErdosProblem1175",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 192,
+      "endLine": 192
+    },
+    "type": "definition",
+    "title": "Erdosproblem1175",
+    "content": "/-- The main open question -/",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1175-erdos1175_summary",
+    "proofId": "erdos-1175",
+    "range": {
+      "startLine": 195,
+      "endLine": 195
+    },
+    "type": "theorem",
+    "title": "Erdos1175 Summary",
+    "content": "/-- Summary of what is known -/",
+    "significance": "critical"
+  }
+]
