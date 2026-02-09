@@ -1,0 +1,85 @@
+{
+  "slug": "combinations-formula-oq-01",
+  "title": "Generalized Binomial Coefficients for Non-Integer Arguments",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "genBinom_nat_eq_choose: genBinom n k = Nat.choose n k for naturals",
+      "genBinom_neg: C(-a, k) = (-1)^k * C(a+k-1, k)",
+      "genBinom_absorption: (k+1) * C(a, k+1) = a * C(a-1, k)",
+      "genBinom_neg_one: C(-1, k) = (-1)^k"
+    ],
+    "open": [],
+    "goal": "Extend binomial coefficients to non-integer arguments - ACHIEVED"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-09T19:50:00Z",
+    "iteration": 1,
+    "focus": "Extended genBinom with consistency theorem, negation formula, absorption identity",
+    "blockers": [],
+    "nextAction": "Merged - no further action needed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Extended CombinationsFormula.lean with generalized binomial coefficients for non-integer arguments. Added: fallingProd representation, consistency theorem (genBinom agrees with Nat.choose), upper negation formula, absorption identity, and concrete examples. Docker-verified: 0 sorries, 0 axioms.",
+    "builtItems": [
+      "fallingProd definition and basic properties",
+      "genBinom_eq_fallingProd_div: genBinom = fallingProd / factorial",
+      "fallingProd_nat: falling product agrees with Nat.descFactorial",
+      "genBinom_nat_eq_choose: CONSISTENCY THEOREM (key result)",
+      "fallingProd_succ_eq_mul: falling product shift identity",
+      "fallingProd_neg: negation identity for falling products",
+      "genBinom_neg: UPPER NEGATION FORMULA",
+      "genBinom_neg_one: C(-1, k) = (-1)^k",
+      "genBinom_neg_nat: C(-n, k) for natural n",
+      "genBinom_absorption: ABSORPTION IDENTITY"
+    ],
+    "insights": [
+      "genBinom defined recursively: genBinom a (k+1) = genBinom a k * (a-k) / (k+1)",
+      "Consistency with Nat.choose proved via fallingProd = descFactorial bridge",
+      "Upper negation via fallingProd_neg: reduces to product commutativity",
+      "Absorption identity via fallingProd_succ_eq_mul",
+      "push_cast critical for cast normalization in ring lemmas",
+      "Nat.cast_sub needed for subtraction cast (omega fails in reals)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Consider extending to complex binomial coefficients",
+      "Prove generalized binomial theorem",
+      "Connect to Catalan numbers (oq-02)"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "generalization"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Nat.descFactorial_succ",
+      "Nat.factorial_dvd_descFactorial",
+      "Nat.choose_eq_descFactorial_div_factorial"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-09T19:50:00Z",
+  "significance": 7,
+  "tractability": 7
+}

@@ -198,7 +198,7 @@ theorem genBinom_zero_pos (k : ℕ) (hk : k ≥ 1) : genBinom 0 k = 0 := by
   | succ n ih =>
     simp only [genBinom]
     rcases n with _ | m
-    · simp; ring
+    · simp
     · have : genBinom 0 (m + 1) = 0 := ih (by omega)
       simp [this]
 
@@ -208,7 +208,7 @@ theorem genBinom_two (α : ℝ) : genBinom α 2 = α * (α - 1) / 2 := by
 
 /-- When α = n (a natural number) and k = 0, genBinom agrees with choose. -/
 theorem genBinom_nat_zero (n : ℕ) : genBinom (n : ℝ) 0 = (Nat.choose n 0 : ℝ) := by
-  simp [genBinom, Nat.choose]
+  simp [genBinom]
 
 /-- Concrete verification: genBinom 5 2 = 10. -/
 example : genBinom 5 2 = (10 : ℝ) := by
@@ -228,6 +228,173 @@ example : genBinom (1/2 : ℝ) 2 = -1/8 := by
 
 /-- Concrete example: C(-1, 3) = -1. -/
 example : genBinom (-1 : ℝ) 3 = -1 := by
+  simp [genBinom]; ring
+
+/-
+## Part VIII: Falling Product Representation
+
+The generalized binomial coefficient can be expressed as a falling product
+divided by factorial:
+  genBinom α k = α(α-1)...(α-k+1) / k!
+
+We define the falling product and prove this equivalence.
+-/
+
+/-- The falling product: α(α-1)(α-2)...(α-k+1).
+    For natural number α = n, this is the descending factorial n!/(n-k)!. -/
+noncomputable def fallingProd (α : ℝ) : ℕ → ℝ
+  | 0 => 1
+  | k + 1 => fallingProd α k * (α - k)
+
+/-- fallingProd α 0 = 1. -/
+@[simp] theorem fallingProd_zero (α : ℝ) : fallingProd α 0 = 1 := rfl
+
+/-- Recursion for fallingProd. -/
+theorem fallingProd_succ (α : ℝ) (k : ℕ) :
+    fallingProd α (k + 1) = fallingProd α k * (α - k) := rfl
+
+/-- genBinom α k = fallingProd α k / k! -/
+theorem genBinom_eq_fallingProd_div (α : ℝ) (k : ℕ) :
+    genBinom α k = fallingProd α k / (k.factorial : ℝ) := by
+  induction k with
+  | zero => simp [genBinom, fallingProd]
+  | succ n ih =>
+    rw [genBinom_succ, ih, fallingProd_succ, Nat.factorial_succ, Nat.cast_mul]
+    have hfact : (n.factorial : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero n)
+    have hn1 : ((n + 1 : ℕ) : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    field_simp
+    push_cast; ring
+
+/-
+## Part IX: Agreement with Natural Number Binomial Coefficients
+
+The crucial consistency theorem: when α is a natural number n,
+genBinom n k = C(n, k). This validates the generalization.
+-/
+
+/-- For natural n, the falling product equals the descending factorial. -/
+theorem fallingProd_nat (n k : ℕ) :
+    fallingProd (n : ℝ) k = (Nat.descFactorial n k : ℝ) := by
+  induction k with
+  | zero => simp [fallingProd, Nat.descFactorial_zero]
+  | succ m ih =>
+    rw [fallingProd_succ, ih, Nat.descFactorial_succ, Nat.cast_mul]
+    -- Goal: ↑(descFactorial n m) * (↑n - ↑m) = ↑(n - m) * ↑(descFactorial n m)
+    by_cases hle : m ≤ n
+    · -- When m ≤ n: ℕ subtraction n - m agrees with ℝ subtraction
+      rw [Nat.cast_sub hle]; ring
+    · -- When m > n: n - m = 0 in ℕ, and descFactorial n m = 0
+      push_neg at hle
+      have h1 : Nat.descFactorial n m = 0 :=
+        Nat.descFactorial_eq_zero_iff_lt.mpr hle
+      simp [h1]
+
+/-- **Consistency Theorem**: genBinom (↑n) k = ↑(Nat.choose n k) for all n, k : ℕ.
+
+    This is the key theorem validating the generalization: when applied to
+    natural numbers, the generalized binomial coefficient agrees with the
+    classical one. -/
+theorem genBinom_nat_eq_choose (n k : ℕ) :
+    genBinom (n : ℝ) k = (Nat.choose n k : ℝ) := by
+  rw [genBinom_eq_fallingProd_div, fallingProd_nat]
+  rw [Nat.choose_eq_descFactorial_div_factorial]
+  rw [Nat.cast_div (Nat.factorial_dvd_descFactorial n k)
+    (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero k))]
+
+/-
+## Part X: Falling Product Identities
+-/
+
+/-- Key identity: fallingProd α (k+1) = α * fallingProd (α-1) k.
+    The falling product of k+1 terms starting from α equals α times
+    the falling product of k terms starting from α-1. -/
+theorem fallingProd_succ_eq_mul (α : ℝ) (k : ℕ) :
+    fallingProd α (k + 1) = α * fallingProd (α - 1) k := by
+  induction k with
+  | zero => simp [fallingProd]
+  | succ n ih =>
+    rw [fallingProd_succ, ih, fallingProd_succ]
+    push_cast; ring
+
+/-
+## Part XI: The Negation Formula
+
+A key identity for generalized binomial coefficients:
+  C(-α, k) = (-1)^k * C(α + k - 1, k)
+
+This "upper negation" formula connects negative arguments to positive ones.
+-/
+
+/-- fallingProd under negation: fallingProd (-α) k = (-1)^k * fallingProd (α + k - 1) k. -/
+theorem fallingProd_neg (α : ℝ) (k : ℕ) :
+    fallingProd (-α) k = (-1) ^ k * fallingProd (α + ↑k - 1) k := by
+  induction k with
+  | zero => simp [fallingProd]
+  | succ n ih =>
+    rw [fallingProd_succ, ih, pow_succ]
+    -- RHS target: (-1) * (-1) ^ n * fallingProd (α + ↑(n + 1) - 1) (n + 1)
+    -- = -(-1)^n * fallingProd (α + n) (n+1)
+    -- Use fallingProd_succ_eq_mul: fallingProd (α + n) (n+1) = (α + n) * fallingProd (α + n - 1) n
+    rw [fallingProd_succ_eq_mul (α + ↑(n + 1) - 1)]
+    -- Now: (-1)^n * fallingProd (α + n - 1) n * (-α - n)
+    --    = -(-1)^n * ((α + n + 1 - 1) * fallingProd (α + n + 1 - 1 - 1) n)
+    --    = -(-1)^n * ((α + n) * fallingProd (α + n - 1) n)
+    push_cast; ring
+
+/-- **Upper Negation Formula**: C(-α, k) = (-1)^k * C(α + k - 1, k).
+
+    This fundamental identity lets us compute C(-α, k) in terms of a
+    positive-argument binomial coefficient. -/
+theorem genBinom_neg (α : ℝ) (k : ℕ) :
+    genBinom (-α) k = (-1) ^ k * genBinom (α + ↑k - 1) k := by
+  rw [genBinom_eq_fallingProd_div, genBinom_eq_fallingProd_div, fallingProd_neg]
+  ring
+
+/-- Special case: C(-1, k) = (-1)^k for all k. -/
+theorem genBinom_neg_one (k : ℕ) : genBinom (-1 : ℝ) k = (-1) ^ k := by
+  rw [genBinom_neg]
+  suffices h : genBinom (↑k : ℝ) k = 1 by
+    simp [h]
+  rw [genBinom_nat_eq_choose, Nat.choose_self, Nat.cast_one]
+
+/-- Special case: C(-n, k) = (-1)^k * C(n+k-1, k) for natural n, when n+k ≥ 1. -/
+theorem genBinom_neg_nat (n k : ℕ) (h : 1 ≤ n + k) :
+    genBinom (-(n : ℝ)) k = (-1) ^ k * (Nat.choose (n + k - 1) k : ℝ) := by
+  rw [genBinom_neg]
+  congr 1
+  -- Show ↑n + ↑k - 1 = ↑(n + k - 1)
+  conv_lhs => rw [show (↑n : ℝ) + ↑k - 1 = ↑(n + k - 1 : ℕ) from by
+    rw [Nat.cast_sub h]; push_cast; ring]
+  exact genBinom_nat_eq_choose (n + k - 1) k
+
+/-
+## Part XII: Additional Identities
+-/
+
+/-- **Absorption Identity**: (k+1) * C(α, k+1) = α * C(α-1, k).
+
+    This identity connects adjacent binomial coefficients and
+    is useful in many combinatorial arguments. -/
+theorem genBinom_absorption (α : ℝ) (k : ℕ) :
+    (k + 1 : ℝ) * genBinom α (k + 1) = α * genBinom (α - 1) k := by
+  rw [genBinom_eq_fallingProd_div, genBinom_eq_fallingProd_div]
+  rw [Nat.factorial_succ, Nat.cast_mul]
+  have hfact : (k.factorial : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero k)
+  have hk1 : ((k + 1 : ℕ) : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  field_simp
+  rw [fallingProd_succ_eq_mul]
+  push_cast; ring
+
+/-- Concrete verification: genBinom (-1/2) 3 = -5/16. -/
+example : genBinom (-1/2 : ℝ) 3 = -5/16 := by
+  simp [genBinom]; ring
+
+/-- Concrete verification: genBinom 4 3 = C(4,3) = 4. -/
+example : genBinom (4 : ℝ) 3 = 4 := by
+  simp [genBinom]; ring
+
+/-- Concrete verification of negation: C(-3, 2) = (-1)^2 * C(4, 2) = 6. -/
+example : genBinom (-3 : ℝ) 2 = 6 := by
   simp [genBinom]; ring
 
 end CombinationsFormula
