@@ -22,74 +22,83 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős, Sárközy, and Sós studied the gap distribution in sumsets of Sidon sets in their 1994 paper 'On Sum Sets of Sidon Sets, I'. A Sidon (B₂) set has all pairwise sums distinct, so |A+A| = n(n+1)/2. When A ⊆ {1,...,N} with |A| ~ √N, the sumset lies in {2,...,2N} with ~n²/2 elements, giving average gap ~4. The conjecture asks whether the variance of these gaps grows without bound.",
-    "problemStatement": "Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that (1/t) · Σᵢ (s_{i+1} - sᵢ)² → ∞ as |A| → ∞?",
-    "proofStrategy": "We define Sidon sets, the sumset A+A, sort it, compute the sum of squared consecutive gaps, and define the mean squared gap. The conjecture ErdosProblem153 states this diverges. Known bounds on sumset size and range are axiomatized, along with the Erdős–Sárközy–Sós lower bound. The infinite Sidon set variant is also stated.",
+    "historicalContext": "Sidon sets originate from Simon Sidon's 1932 question to Erdős about sets of natural numbers whose pairwise sums are all distinct. Erdős and Turán (1941) proved the foundational density bound: a Sidon set in $\\{1,\\ldots,N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, and perfect difference set constructions (Singer 1938, using projective planes over finite fields) show this is essentially tight. Problem 153 was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I', where they initiated a systematic study of the fine structure of sumsets $A+A$ for Sidon sets $A$. While the average gap in such sumsets is bounded ($\\Theta(1)$ for maximal Sidon sets), they conjectured that the second moment — the mean squared gap — must diverge. This question sits at the intersection of additive combinatorics and the statistical theory of gap distributions, connecting to broader phenomena like the pair correlation conjecture for zeros of the Riemann zeta function and the study of level spacing in random matrix theory.",
+    "problemStatement": "Let $A$ be a finite Sidon set and $A+A = \\{s_1 < s_2 < \\cdots < s_t\\}$. Is it true that $\\frac{1}{t} \\sum_{i=1}^{t-1} (s_{i+1} - s_i)^2 \\to \\infty$ as $|A| \\to \\infty$?",
+    "proofStrategy": "The formalization defines Sidon sets as finite subsets of $\\mathbb{N}$ with all pairwise sums distinct, constructs the sumset $A+A$ via Cartesian product image, sorts it into a list for gap computation, and defines the sum of squared gaps using a fold over consecutive pairs. The mean squared gap divides by the number of gaps. The conjecture ErdosProblem153 is stated as: for every $M > 0$ there exists $N_0$ such that all Sidon sets of size $\\ge N_0$ have mean squared gap exceeding $M$. Key structural properties (sumset cardinality $\\ge n(n+1)/2$, range bound, bounded average gap) are axiomatized, along with the Erdős–Sárközy–Sós positive lower bound. The infinite Sidon set variant is also formalized.",
     "keyInsights": [
-      "A Sidon set of size n has |A+A| ≥ n(n+1)/2 distinct pairwise sums",
-      "The average gap in A+A is bounded (Θ(1)), but the variance may grow",
-      "Erdős–Sárközy–Sós (1994) established a positive lower bound on mean squared gap",
-      "The question extends naturally to infinite Sidon sets restricted to intervals"
+      "**Sidon property forces quadratic sumset growth**: A Sidon set of size $n$ has $|A+A| \\ge n(n+1)/2$ — every unordered pair yields a distinct sum, so the sumset is as large as possible given the representation constraint",
+      "**Bounded mean vs unbounded variance**: For a maximal Sidon set $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| \\sim \\sqrt{N}$, the average gap in $A+A$ is $\\Theta(1)$, yet the conjecture predicts the variance diverges — a striking separation between first and second moments",
+      "**Cauchy–Schwarz lower bound**: By Cauchy–Schwarz, $\\sum (s_{i+1}-s_i)^2 \\ge (\\text{range})^2/(t-1)$, so if the range grows faster than $t$, the sum of squared gaps must be large. For Sidon sets both are $\\Theta(N)$, making this bound insufficient",
+      "**Connection to additive energy**: The gap variance is inversely related to the additive energy $E(A+A)$. Proving the gaps are irregular would constrain how 'structured' the sumset can be, with implications for sum-product type estimates",
+      "**Erdős–Sárközy–Sós (1994) established the baseline**: They proved $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets, confirming gaps are not perfectly uniform, but the full divergence remains open after three decades"
     ]
   },
   "sections": [
+    {
+      "id": "imports",
+      "title": "Library Imports",
+      "startLine": 13,
+      "endLine": 19,
+      "summary": "Imports Mathlib libraries for natural numbers, integers, finite sets (cardinality, sorting), real numbers, and tactics needed throughout the formalization."
+    },
     {
       "id": "sidon-sets",
       "title": "Sidon Sets",
       "startLine": 21,
       "endLine": 29,
-      "summary": "Defines IsSidon: all pairwise sums a+b = c+d with a ≤ b, c ≤ d implies (a,b) = (c,d)."
+      "summary": "Defines `IsSidon`: a finite set $A \\subseteq \\mathbb{N}$ where all pairwise sums $a+b$ with $a \\le b$ are distinct. Also known as $B_2$ sets."
     },
     {
       "id": "sumset-gaps",
       "title": "Sumset and Gap Structure",
       "startLine": 31,
       "endLine": 48,
-      "summary": "Defines sumset A+A, sortedSumset as sorted list, and gapSquaredSum computing Σ (s_{i+1} - s_i)²."
+      "summary": "Defines the sumset $A+A$ via Cartesian product image, the sorted sumset as a list $\\{s_1 < \\cdots < s_t\\}$, and `gapSquaredSum` computing $\\sum (s_{i+1} - s_i)^2$ via fold over zipped consecutive pairs."
     },
     {
       "id": "gap-variance",
       "title": "The Gap Variance",
       "startLine": 50,
       "endLine": 62,
-      "summary": "Defines meanGapSquared as (1/t) · Σ (s_{i+1} - s_i)² and minMeanGapSquared over all Sidon sets of size n."
+      "summary": "Defines `meanGapSquared` as $(1/(t-1)) \\cdot \\sum (s_{i+1}-s_i)^2$ and `minMeanGapSquared(n)` as the infimum over all Sidon sets of size $n$, capturing the extremal gap regularity."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 64,
       "endLine": 76,
-      "summary": "States ErdosProblem153: for every M > 0, there exists N₀ such that all Sidon sets of size ≥ N₀ have mean squared gap > M."
+      "summary": "States `ErdosProblem153`: $\\forall M > 0, \\exists N_0$ such that all Sidon sets $A$ with $|A| \\ge N_0$ satisfy $\\bar{G}(A) > M$. The mean squared gap diverges."
     },
     {
       "id": "sumset-properties",
       "title": "Sidon Set Sumset Properties",
       "startLine": 78,
       "endLine": 91,
-      "summary": "Axiomatizes that Sidon sets of size n have sumset of size ≥ n(n+1)/2, and sumset lies in bounded range."
+      "summary": "Axiomatizes two structural properties: (1) $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$, and (2) $A+A \\subseteq \\{2,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
       "startLine": 93,
       "endLine": 111,
-      "summary": "Axiomatizes the bounded average gap and the Erdős–Sárközy–Sós (1994) positive lower bound on mean squared gap."
+      "summary": "Axiomatizes the bounded average gap ($\\bar{g} = O(1)$) and the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets."
     },
     {
       "id": "infinite-sidon",
       "title": "Infinite Sidon Sets",
       "startLine": 113,
       "endLine": 131,
-      "summary": "Defines IsInfiniteSidon and states the analogous question for infinite Sidon sets restricted to {1,...,N}."
+      "summary": "Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 153 asks whether the mean squared gap in sumsets of Sidon sets diverges as the set grows. The average gap is bounded, but the variance is conjectured to be unbounded. The problem remains open.",
-    "implications": "Resolution would illuminate the fine structure of sumsets of Sidon sets, connecting additive combinatorics to variance phenomena in structured sequences.",
+    "summary": "This formalization captures Erdős Problem 153, which asks whether the mean squared gap in the sumset of a Sidon set diverges as the set grows. The average gap is bounded at $\\Theta(1)$, and Erdős–Sárközy–Sós (1994) proved the mean squared gap is at least a positive constant, but full divergence remains open. The Lean file formalizes the core definitions (Sidon sets, sumsets, gap variance), the conjecture, known bounds, and the infinite Sidon set extension.",
+    "implications": "A positive resolution would reveal fundamental irregularity in the additive structure of Sidon sets — even optimally constructed Sidon sets cannot have uniformly spaced sumsets. This would connect to additive energy estimates, sum-product phenomena, and the broader understanding of structured vs pseudorandom behavior in combinatorial number theory.",
     "openQuestions": [
-      "Does (1/t) · Σ (s_{i+1} - s_i)² → ∞ for Sidon sets?",
-      "What is the growth rate of the minimum mean squared gap over Sidon sets of size n?",
-      "Does the analogous statement hold for infinite Sidon sets?"
+      "Does $\\bar{G}_{\\min}(n) \\to \\infty$, and if so, what is the growth rate? Is it $\\Theta(\\log n)$, polynomial, or faster?",
+      "Can the gap distribution of $A+A$ for Sidon sets be compared to that of random subsets of comparable density?",
+      "Does the analogous statement hold for $B_h$ sets ($h \\ge 3$), where $h$-wise sums are distinct?",
+      "For algebraic Sidon sets (from Singer/Bose–Chowla constructions), can the gap variance be computed explicitly?"
     ]
   }
 }
