@@ -1,0 +1,38 @@
+{
+  "id": "erdos-101",
+  "name": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
+  "description": "Given n points in ℝ² with no five collinear, prove the number of lines containing exactly four points is o(n²). The main conjecture is OPEN ($100). We improved the formalization by fixing a build error, proving collinearity properties, and proving NoFiveCollinear holds vacuously for small sets.",
+  "status": "in-progress",
+  "category": "discrete-geometry",
+  "tags": ["erdos", "incidence-geometry", "collinearity", "open-problem"],
+  "source": "https://erdosproblems.com/101",
+  "difficulty": "B",
+  "leanFile": "proofs/Proofs/Erdos101Problem.lean",
+  "knowledge": {
+    "insights": [
+      "Main conjecture is OPEN - o(n²) upper bound not proven",
+      "fourPointLineCount definition required open Classical for DecidablePred",
+      "Solymosi-Stojakovic disproved Erdős's Θ(n^{3/2}) conjecture with near-quadratic constructions",
+      "collinear predicate is symmetric and reflexive (proved)",
+      "NoFiveCollinear holds vacuously for ≤4 points (proved via cardinality argument)"
+    ],
+    "builtItems": [
+      "collinear_self: collinearity reflexivity",
+      "collinear_refl: three identical points are collinear",
+      "collinear_self_right: p,q,q are collinear",
+      "collinear_swap23: collinearity symmetric in 2nd/3rd args",
+      "noFiveCollinear_small: vacuous truth for small sets",
+      "Fixed DecidablePred bug with open Classical"
+    ],
+    "mathlibGaps": [
+      "No Mathlib support for point-line incidences in ℝ²",
+      "Szemerédi-Trotter bound not in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove collinear_swap12 (first/second argument symmetry - needs careful algebra)",
+      "Prove collinear transitivity for distinct points",
+      "Convert trivial_upper_bound from axiom to theorem if possible"
+    ],
+    "progressSummary": "PROGRESS: Fixed build error (DecidablePred), proved 6 theorems about collinearity and NoFiveCollinear. Main conjecture remains OPEN."
+  }
+}

@@ -39,12 +39,57 @@ def NoFiveCollinear (P : PlanarPointSet) : Prop :=
     b ≠ c → b ≠ d → b ≠ e → c ≠ d → c ≠ e → d ≠ e →
     ¬(collinear a b c ∧ collinear a b d ∧ collinear a b e)
 
+open Classical in
 /-- Count of lines through exactly four points of P. -/
 noncomputable def fourPointLineCount (P : PlanarPointSet) : ℕ :=
   (P.points.powerset.filter (fun S =>
     S.card = 4 ∧
     ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
       ∀ p ∈ S, collinear a b p)).card
+
+/- ## Properties of Collinearity -/
+
+/-- Collinearity is reflexive: any point is collinear with itself and any other point. -/
+theorem collinear_self (p q : ℝ × ℝ) : collinear p p q := by
+  unfold collinear; simp
+
+/-- Collinearity holds when all three points are the same. -/
+theorem collinear_refl (p : ℝ × ℝ) : collinear p p p := by
+  unfold collinear; ring
+
+/-- Any point is collinear with two copies of another point. -/
+theorem collinear_self_right (p q : ℝ × ℝ) : collinear p q q := by
+  unfold collinear; ring
+
+/-- Collinearity is symmetric in the second and third arguments. -/
+theorem collinear_swap23 {p q r : ℝ × ℝ} (h : collinear p q r) :
+    collinear p r q := by
+  unfold collinear at *; linarith
+
+/- ## Structural Properties -/
+
+/-- NoFiveCollinear holds vacuously for sets of 4 or fewer points. -/
+theorem noFiveCollinear_small (P : PlanarPointSet) (h : P.points.card ≤ 4) :
+    NoFiveCollinear P := by
+  unfold NoFiveCollinear
+  intro a b c d e ha hb hc hd he hab hac had hae hbc hbd hbe hcd hce hde
+  have h5 : ({a, b, c, d, e} : Finset (ℝ × ℝ)).card = 5 := by
+    rw [Finset.card_insert_of_notMem]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · simp [hde]
+        · simp [hcd, hce]
+      · simp [hbc, hbd, hbe]
+    · simp [hab, hac, had, hae]
+  have hsub : {a, b, c, d, e} ⊆ P.points := by
+    intro x hx
+    simp at hx
+    rcases hx with rfl | rfl | rfl | rfl | rfl <;> assumption
+  have := Finset.card_le_card hsub
+  rw [h5] at this
+  omega
 
 /- ## Main Conjecture -/
 
