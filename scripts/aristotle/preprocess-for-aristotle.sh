@@ -4,7 +4,6 @@
 #
 # Takes a Lean file, creates a preprocessed temp copy with:
 #   - /-! docstrings converted to /- (Aristotle parser compat)
-#   - axiom declarations converted to theorem ... := by sorry
 #
 # Rejects (exit 1):
 #   - Files with definition sorries (unfixable, blocks dependent theorems)
@@ -79,58 +78,6 @@ if [[ "$docstring_count" -gt 0 ]]; then
     sed -i '' 's|/-!|/-|g' "$tmp_file"
     echo "PREPROCESS: Converted $docstring_count /-! docstrings to /-" >&2
     changes_made=$((changes_made + docstring_count))
-fi
-
-# Transform 2: Convert axiom declarations to theorem ... := by sorry
-# Handles multi-line axioms where the type signature spans multiple lines.
-# An axiom block starts with "^axiom " and continues on indented lines.
-axiom_count=$(count_matches "^axiom " "$tmp_file")
-if [[ "$axiom_count" -gt 0 ]]; then
-    awk '
-    BEGIN { in_axiom = 0; buf = "" }
-
-    /^axiom / {
-        # Flush any pending axiom
-        if (in_axiom && buf != "") {
-            print buf " := by sorry"
-            buf = ""
-        }
-        in_axiom = 1
-        sub(/^axiom /, "theorem ")
-        buf = $0
-        next
-    }
-
-    in_axiom && /^[[:space:]]+/ {
-        # Continuation of axiom (indented line)
-        buf = buf "\n" $0
-        next
-    }
-
-    in_axiom {
-        # End of axiom block (hit non-indented line)
-        if (buf != "") {
-            print buf " := by sorry"
-            buf = ""
-        }
-        in_axiom = 0
-        print $0
-        next
-    }
-
-    { print }
-
-    END {
-        # Flush final axiom if file ends with one
-        if (in_axiom && buf != "") {
-            print buf " := by sorry"
-        }
-    }
-    ' "$tmp_file" > "${tmp_file}.awk"
-
-    mv "${tmp_file}.awk" "$tmp_file"
-    echo "PREPROCESS: Converted $axiom_count axiom declarations to theorem sorries" >&2
-    changes_made=$((changes_made + axiom_count))
 fi
 
 # --- Post-preprocessing validation ---

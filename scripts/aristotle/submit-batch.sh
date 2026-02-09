@@ -160,7 +160,7 @@ submit_file() {
 
     echo -e "${BLUE}Submitting:${NC} $file"
 
-    # Preprocess the file (convert axioms, fix docstrings, reject unsuitable files)
+    # Preprocess the file (fix docstrings, reject unsuitable files)
     local preprocess_log=""
     local submit_file="$file"
     local preprocessed_tmp=""
