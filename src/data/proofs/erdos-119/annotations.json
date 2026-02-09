@@ -5,52 +5,82 @@
     "type": "definition",
     "range": { "startLine": 33, "endLine": 36 },
     "title": "Unit Circle Polynomial",
-    "content": "unitCirclePoly z n w = ∏_{i<n} (w - z i), the monic polynomial with roots z_0,...,z_{n-1} on the unit circle.",
-    "significance": "essential"
+    "content": "Defines $p_n(w) = \\prod_{i=0}^{n-1}(w - z_i)$, the monic polynomial of degree $n$ with prescribed roots on the unit circle. Uses `Finset.range n` for 0-indexed iteration and Lean's product notation.",
+    "mathContext": "$p_n(w) = \\prod_{i=0}^{n-1}(w - z_i)$ where $|z_i| = 1$ for all $i$. This is a Blaschke-type product without the normalizing denominators, so it is not bounded on the unit circle — the maximum modulus $M_n$ grows with $n$.",
+    "significance": "critical",
+    "relatedConcepts": ["Blaschke product", "monic polynomial", "roots of unity", "Finset.prod"],
+    "prerequisites": ["complex analysis", "polynomial algebra"]
   },
   {
     "id": "erdos-119-maxmod",
     "proofId": "erdos-119",
     "type": "definition",
     "range": { "startLine": 38, "endLine": 41 },
-    "title": "Maximum Modulus M_n",
-    "content": "maxModulus z n = sup { ‖unitCirclePoly z n w‖ : ‖w‖ = 1 }, the maximum of |p_n| on the unit circle.",
-    "significance": "essential"
+    "title": "Maximum Modulus $M_n$",
+    "content": "Defines $M_n = \\sup\\{\\|p_n(w)\\| : \\|w\\| = 1\\}$, the maximum of $|p_n|$ on the unit circle. Uses `sSup` over a set comprehension restricted to unit-norm elements. By the maximum modulus principle, this equals the maximum of $|p_n|$ on the closed unit disk.",
+    "mathContext": "$M_n = \\max_{|w|=1}|p_n(w)| = \\max_{|w|=1}\\prod_{i=0}^{n-1}|w - z_i|$. Since $p_n$ is a polynomial (hence entire), the maximum modulus principle guarantees this equals $\\max_{|w|\\le 1}|p_n(w)|$.",
+    "significance": "critical",
+    "relatedConcepts": ["maximum modulus principle", "supremum", "operator norm", "Chebyshev norm"],
+    "prerequisites": ["complex analysis", "topology", "supremum"]
   },
   {
     "id": "erdos-119-part1",
     "proofId": "erdos-119",
-    "type": "result",
-    "range": { "startLine": 52, "endLine": 54 },
-    "title": "Part 1: limsup M_n = ∞",
-    "content": "For any unit circle sequence, limsup M_n = ⊤. Solved by Wagner (1980) who showed M_n > (log n)^c infinitely often.",
-    "significance": "essential"
+    "type": "theorem",
+    "range": { "startLine": 43, "endLine": 54 },
+    "title": "Part 1: $\\limsup M_n = \\infty$ (Wagner 1980)",
+    "content": "For any sequence of points on the unit circle, $\\limsup_{n\\to\\infty} M_n = \\infty$. Wagner (1980) proved the stronger result that $M_n > (\\log n)^c$ infinitely often for some $c > 0$. The formalization uses `EReal` (extended reals) and Lean's `Filter.limsup` with `atTop`.",
+    "mathContext": "$\\limsup_{n\\to\\infty} M_n = +\\infty$ in $\\overline{\\mathbb{R}}$. Wagner's proof used Diophantine approximation: if all $z_i$ were well-approximable by roots of unity, the polynomial would have bounded maximum modulus, contradicting known lower bounds from discrepancy theory.",
+    "significance": "critical",
+    "relatedConcepts": ["limsup", "Diophantine approximation", "discrepancy theory", "Filter.limsup"],
+    "prerequisites": ["real analysis", "Diophantine approximation", "filter theory"]
   },
   {
     "id": "erdos-119-part2",
     "proofId": "erdos-119",
-    "type": "result",
-    "range": { "startLine": 66, "endLine": 68 },
-    "title": "Part 2: Polynomial Growth",
-    "content": "There exists c > 0 with max_{n≤N} M_n > N^c. Solved by Beck (1991).",
-    "significance": "essential"
+    "type": "theorem",
+    "range": { "startLine": 56, "endLine": 68 },
+    "title": "Part 2: $M_n > n^c$ Infinitely Often (Beck 1991)",
+    "content": "There exists $c > 0$ such that $\\max_{n \\le N} M_n > N^c$ for all $N$. Beck (1991) proved this using a deep result in geometric discrepancy theory, published in the Annals of Mathematics. This is much stronger than Part 1, upgrading from logarithmic to polynomial growth.",
+    "mathContext": "$\\exists c > 0 : \\forall N \\in \\mathbb{N}, \\exists n \\le N, M_n > N^c$. Beck's proof established a connection between the maximum modulus problem and the discrepancy of point sets on the circle, drawing on methods from harmonic analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["geometric discrepancy", "harmonic analysis", "polynomial growth", "Annals of Mathematics"],
+    "prerequisites": ["discrepancy theory", "harmonic analysis", "complex analysis"]
   },
   {
     "id": "erdos-119-part3",
     "proofId": "erdos-119",
     "type": "conjecture",
-    "range": { "startLine": 77, "endLine": 80 },
-    "title": "Part 3: Partial Sum Growth (Open)",
-    "content": "ErdosProblem119: ∃ c > 0, ∀ᶠ n, ∑_{k<n} M_k > n^{1+c}. Open with $100 prize.",
-    "significance": "essential"
+    "range": { "startLine": 70, "endLine": 80 },
+    "title": "Part 3: Partial Sum Growth (Open, $100 Prize)",
+    "content": "The strongest open conjecture: $\\exists c > 0$ such that $\\sum_{k=0}^{n-1} M_k > n^{1+c}$ for all sufficiently large $n$. This asks for cumulative super-linear growth, which is fundamentally harder than showing individual $M_k$ are large. Uses Lean's `Filter.Eventually` with `atTop` for the \"eventually\" quantifier.",
+    "mathContext": "$\\exists c > 0, \\forall^\\infty n : \\sum_{k=0}^{n-1} M_k > n^{1+c}$. If true, this would imply that the average of $M_k$ for $k \\le n$ is at least $n^c$, far stronger than the mere infinitely-often statement of Part 2.",
+    "significance": "critical",
+    "relatedConcepts": ["Cesaro mean", "partial sums", "Filter.Eventually", "Erdos prize problems"],
+    "prerequisites": ["real analysis", "summation theory"]
+  },
+  {
+    "id": "erdos-119-basic-props",
+    "proofId": "erdos-119",
+    "type": "technique",
+    "range": { "startLine": 82, "endLine": 98 },
+    "title": "Basic Properties",
+    "content": "Establishes foundational facts: the degree-1 polynomial $p_1(w) = w - z_0$ (proved by `simp`), the empty product $p_0(w) = 1$ (proved by `simp`), and the axiom $M_n \\ge 1$ for $n \\ge 1$. The lower bound $M_n \\ge 1$ follows because evaluating $p_n$ at any point $w$ with $|w| = 1$ distant from all roots gives $|p_n(w)| \\ge 1$ by the AM-GM inequality on distances.",
+    "mathContext": "$p_1(w) = w - z_0$, $p_0(w) = 1$, and $M_n \\ge 1$ for $n \\ge 1$. The bound $M_n \\ge 1$ is tight only in the degenerate case $n = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["product formula", "lower bound", "AM-GM inequality"],
+    "prerequisites": ["basic algebra"]
   },
   {
     "id": "erdos-119-implications",
     "proofId": "erdos-119",
-    "type": "result",
-    "range": { "startLine": 100, "endLine": 112 },
-    "title": "Implication Chain",
-    "content": "Part 3 ⟹ Part 2 ⟹ Part 1: cumulative growth implies polynomial growth implies unbounded limsup.",
-    "significance": "supporting"
+    "type": "insight",
+    "range": { "startLine": 100, "endLine": 115 },
+    "title": "Implication Chain: Part 3 implies Part 2 implies Part 1",
+    "content": "The three parts form a strict hierarchy of strength. Part 3 (cumulative growth) implies Part 2 (polynomial growth infinitely often): if $\\sum M_k > n^{1+c}$ eventually, then some $M_k$ must be at least $n^c$ by pigeonhole. Part 2 implies Part 1 (unbounded limsup): polynomial growth infinitely often trivially gives $\\limsup = \\infty$. The converse implications are not known to hold.",
+    "mathContext": "$\\text{Part 3} \\Rightarrow \\text{Part 2} \\Rightarrow \\text{Part 1}$. The first implication uses the pigeonhole principle: if all $M_k \\le n^c$, then $\\sum_{k<n} M_k \\le n^{1+c}$, contradicting Part 3.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "logical implication", "hierarchy of conjectures"],
+    "prerequisites": ["combinatorics", "logic"]
   }
 ]

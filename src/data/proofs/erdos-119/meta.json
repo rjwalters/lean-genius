@@ -6,76 +6,119 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/119",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos119Problem.lean",
     "tags": [
       "erdos",
       "complex-analysis",
       "polynomials",
       "unit-circle",
-      "extremal-problems"
+      "extremal-problems",
+      "discrepancy-theory",
+      "open"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 119,
     "erdosUrl": "https://erdosproblems.com/119",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior along a filter",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range {0, ..., n-1}",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Complex.norm_eq_abs",
+        "description": "Norm on ℂ equals complex absolute value",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually predicate for filter-based limits",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "unitCirclePoly definition: monic polynomial with unit-circle roots",
+      "maxModulus definition: supremum of polynomial norm on the unit circle",
+      "erdos119_part1 axiom: limsup M_n = ∞ (Wagner 1980)",
+      "erdos119_part2 axiom: M_n > N^c infinitely often (Beck 1991)",
+      "ErdosProblem119 definition: open Part 3 conjecture",
+      "unitCirclePoly_one and unitCirclePoly_zero theorems (proved by simp)",
+      "maxModulus_ge_one axiom: M_n ≥ 1 for n ≥ 1",
+      "part2_implies_part1 and part3_implies_part2 implication axioms"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this three-part problem about the maximum modulus of monic polynomials with all roots on the unit circle. Wagner (1980) solved Part 1 showing limsup M_n = ∞ with logarithmic lower bounds. Beck (1991) solved Part 2 establishing polynomial growth M_n > N^c. Part 3, asking whether partial sums grow like n^{1+c}, remains open with a $100 prize.",
-    "problemStatement": "Given z_1,...,z_n on the unit circle, let M_n = max_{|z|=1} |∏(z-z_i)|. Is it true that ∑_{k≤n} M_k > n^{1+c} for some c > 0 and all large n?",
-    "proofStrategy": "We define unitCirclePoly as the finite product ∏_{i<n}(w - z_i) and maxModulus as the supremum of its norm over the unit circle. Parts 1 and 2 (solved) are stated as axioms. Part 3 (open) is stated as ErdosProblem119 using Filter.Eventually. Implication relationships part3 ⟹ part2 ⟹ part1 are stated as axioms.",
+    "historicalContext": "Erdős posed this three-part problem about the maximum modulus of monic polynomials with roots on the unit circle. The problem sits at the intersection of complex analysis, Diophantine approximation, and geometric discrepancy theory.\n\nPart 1 was resolved by Wagner in 1980 in the Bulletin of the London Mathematical Society. Wagner showed that $M_n > (\\log n)^c$ infinitely often for some absolute constant $c > 0$, which implies $\\limsup M_n = \\infty$. His proof used techniques from Diophantine approximation, relating the maximum modulus to how well the arguments of the roots can be approximated by rationals.\n\nPart 2 was solved by Beck in a landmark 1991 paper in the Annals of Mathematics, where he established that $\\max_{n \\le N} M_n > N^c$ for some $c > 0$. Beck's proof introduced deep connections to geometric discrepancy theory, showing that the maximum modulus problem is essentially equivalent to bounding the discrepancy of sequences on the circle. This was a major advance from Wagner's logarithmic bound to a polynomial one.\n\nPart 3, the strongest conjecture, remains open and carries a $100 Erdős prize. It asks whether the partial sums $\\sum_{k \\le n} M_k$ grow super-linearly as $n^{1+c}$, which would quantify the cumulative extremal behavior rather than just the infinitely-often behavior.",
+    "problemStatement": "Given $z_1, \\ldots, z_n$ on the unit circle, let $M_n = \\max_{|z|=1}|\\prod_{i=1}^{n}(z - z_i)|$. Is it true that $\\sum_{k \\le n} M_k > n^{1+c}$ for some $c > 0$ and all large $n$?",
+    "proofStrategy": "The formalization defines `unitCirclePoly` as the finite product $\\prod_{i<n}(w - z_i)$ and `maxModulus` as the supremum of its norm over unit-norm elements. The three parts are formalized with increasing strength: Part 1 uses `Filter.limsup` with `EReal`, Part 2 uses existential quantification over a polynomial exponent, and Part 3 uses `Filter.Eventually` to express the \"for all sufficiently large $n$\" condition. The implication chain Part 3 $\\Rightarrow$ Part 2 $\\Rightarrow$ Part 1 is captured by two axioms. Two basic properties (`unitCirclePoly_one`, `unitCirclePoly_zero`) are proved by `simp`.",
     "keyInsights": [
-      "Part 3 ⟹ Part 2 ⟹ Part 1 forms a chain of increasingly strong conjectures",
-      "Wagner's logarithmic bound (1980) and Beck's polynomial bound (1991) resolved Parts 1-2",
-      "The open Part 3 asks about cumulative growth of M_k, a fundamentally harder question",
-      "The problem connects Diophantine approximation to extremal polynomial theory"
+      "Part 3 $\\Rightarrow$ Part 2 $\\Rightarrow$ Part 1 forms a strict hierarchy: cumulative growth implies infinitely-often polynomial growth implies unbounded limsup",
+      "Wagner's 1980 proof connected maximum modulus to Diophantine approximation of the root arguments, yielding logarithmic lower bounds",
+      "Beck's 1991 breakthrough linked the problem to geometric discrepancy theory, upgrading to polynomial growth and appearing in the Annals of Mathematics",
+      "The open Part 3 asks about cumulative (average) behavior rather than infinitely-often behavior, which is fundamentally harder and resists current techniques",
+      "The maximum modulus $M_n \\ge 1$ always holds for $n \\ge 1$, but the interesting question is how fast $M_n$ must grow with $n$"
     ]
   },
   "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Header",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module docstring describing all three parts of the problem with their resolution status, followed by Mathlib imports for complex analysis, normed spaces, filters, limsup/liminf, and big operators."
+    },
     {
       "id": "definitions",
       "title": "Polynomial Product and Maximum Modulus",
       "startLine": 31,
       "endLine": 41,
-      "summary": "Defines unitCirclePoly as ∏_{i<n}(w - z_i) and maxModulus as the sup of its norm over the unit circle."
+      "summary": "Defines unitCirclePoly as ∏_{i<n}(w - z_i) using Finset.range, and maxModulus as the supremum of the polynomial's norm over unit-norm points."
     },
     {
       "id": "part1",
       "title": "Part 1: limsup M_n = ∞ (Wagner 1980)",
       "startLine": 43,
       "endLine": 54,
-      "summary": "States that limsup M_n = ⊤ in EReal for any unit circle sequence. Solved by Wagner."
+      "summary": "States that limsup M_n = ⊤ in EReal for any unit circle sequence. Solved by Wagner using Diophantine approximation."
     },
     {
       "id": "part2",
       "title": "Part 2: M_n > n^c Infinitely Often (Beck 1991)",
       "startLine": 56,
       "endLine": 68,
-      "summary": "States existence of c > 0 with max_{n≤N} M_n > N^c. Solved by Beck."
+      "summary": "States existence of c > 0 with max_{n≤N} M_n > N^c. Solved by Beck via geometric discrepancy theory."
     },
     {
       "id": "part3",
-      "title": "Part 3: Partial Sum Growth (Open)",
+      "title": "Part 3: Partial Sum Growth (Open, $100 Prize)",
       "startLine": 70,
       "endLine": 80,
-      "summary": "ErdosProblem119: ∃ c > 0 such that ∑_{k<n} M_k > n^{1+c} eventually. Open with $100 prize."
+      "summary": "Defines ErdosProblem119: ∃ c > 0 such that ∑_{k<n} M_k > n^{1+c} eventually. Uses Filter.Eventually with atTop."
     },
     {
       "id": "basic",
       "title": "Basic Properties and Implications",
       "startLine": 82,
-      "endLine": 115,
-      "summary": "Proves unitCirclePoly_one and unitCirclePoly_zero. States M_n ≥ 1, nonnegativity, and the implication chain part3 ⟹ part2 ⟹ part1."
+      "endLine": 116,
+      "summary": "Proves unitCirclePoly_one and unitCirclePoly_zero by simp. States M_n ≥ 1, maxModulus nonnegativity, and the implication chain Part 3 ⟹ Part 2 ⟹ Part 1."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures all three parts of Erdős Problem 119 on maximum modulus of unit-circle polynomials. Parts 1-2 (solved by Wagner and Beck) are stated as axioms. Part 3 remains open. 0 sorries.",
-    "implications": "Resolution of Part 3 would establish a strong quantitative bound on cumulative polynomial extrema, with connections to Diophantine approximation and potential function theory.",
+    "summary": "The formalization captures all three parts of Erdős Problem 119 on maximum modulus of unit-circle polynomials. Parts 1 and 2 (solved by Wagner 1980 and Beck 1991 respectively) are stated as axioms with their full type-theoretic content. Part 3, the open conjecture with a $100 Erdős prize, is defined as a Prop using Filter.Eventually. The logical relationships between the three parts are made explicit.",
+    "implications": "Resolution of Part 3 would establish a strong quantitative bound on the cumulative extremal behavior of polynomials on the unit circle. Beck's work on Part 2 already demonstrated deep connections between this problem and geometric discrepancy theory — a field with applications to numerical integration, quasi-Monte Carlo methods, and uniform distribution modulo 1. The open Part 3 may require new techniques beyond discrepancy, potentially involving energy methods from potential theory or Fourier-analytic approaches to bounding exponential sums.",
     "openQuestions": [
-      "Does ∑_{k≤n} M_k > n^{1+c} hold for some c > 0 and all large n?",
-      "What is the optimal exponent c in Part 2?",
-      "Can Beck's method be extended to address cumulative bounds?"
+      "Does $\\sum_{k \\le n} M_k > n^{1+c}$ hold for some $c > 0$ and all large $n$? (Part 3, $100 prize)",
+      "What is the optimal exponent $c$ in Beck's Part 2 result?",
+      "Can the techniques of Beck and Wagner be unified into a single framework?",
+      "Are there analogues of this problem for polynomials with roots on other curves (ellipses, algebraic curves)?"
     ]
   }
 }
