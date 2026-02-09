@@ -3,54 +3,72 @@
     "id": "erdos-127-edwards",
     "proofId": "erdos-127",
     "type": "definition",
-    "range": { "startLine": 32, "endLine": 34 },
+    "range": { "startLine": 28, "endLine": 34 },
     "title": "Edwards' Bound",
-    "content": "edwardsBound(m) = m/2 + (√(8m+1) - 1)/8. Every graph with m edges has a bipartite subgraph with at least this many edges (Edwards 1973).",
-    "significance": "essential"
+    "content": "Axiomatizes `maxBipartiteEdges` (the maximum number of edges in a bipartite subgraph) and defines `edwardsBound(m) = m/2 + (\\sqrt{8m+1} - 1)/8`. Edwards (1973) proved this is a universal lower bound: every simple graph with $m$ edges contains a bipartite subgraph with at least this many edges.",
+    "mathContext": "$E(m) = \\frac{m}{2} + \\frac{\\sqrt{8m+1} - 1}{8}$. For large $m$, this is approximately $\\frac{m}{2} + \\frac{\\sqrt{2m}}{4}$. The bound improves the trivial $m/2$ guarantee by an additive $\\Theta(\\sqrt{m})$ term.",
+    "significance": "critical",
+    "relatedConcepts": ["Max-Cut", "bipartite subgraph", "Edwards bound", "extremal graph theory"],
+    "prerequisites": ["graph theory", "real analysis"]
   },
   {
     "id": "erdos-127-excess",
     "proofId": "erdos-127",
     "type": "definition",
     "range": { "startLine": 40, "endLine": 45 },
-    "title": "Excess Function f(m)",
-    "content": "excessF(m) measures how much better than Edwards' bound one can guarantee. f(m) ≥ 0 always holds.",
-    "significance": "essential"
+    "title": "Excess Function $f(m)$",
+    "content": "The excess function $f(m)$ measures the gap between the best universal guarantee and Edwards' bound: every $m$-edge graph has a bipartite subgraph with at least $E(m) + f(m)$ edges, and $f(m)$ is the largest such value. Edwards' theorem gives $f(m) \\ge 0$.",
+    "mathContext": "$f(m) = \\max\\{t \\ge 0 : \\text{every graph with } m \\text{ edges has a bipartite subgraph with} \\ge E(m) + t \\text{ edges}\\}$. The function $f$ captures the \"slack\" in Edwards' bound for each value of $m$.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal function", "graph partitioning", "optimization"],
+    "prerequisites": ["extremal graph theory", "optimization"]
   },
   {
     "id": "erdos-127-tight",
     "proofId": "erdos-127",
-    "type": "result",
+    "type": "theorem",
     "range": { "startLine": 51, "endLine": 54 },
     "title": "Tightness at Complete Graphs",
-    "content": "f(C(n,2)) = 0: complete graphs show Edwards' bound is tight at triangular numbers.",
-    "significance": "supporting"
+    "content": "For the complete graph $K_n$ with $m = \\binom{n}{2}$ edges, Edwards' bound is exactly tight: $f(\\binom{n}{2}) = 0$. This means the complete graphs are extremal — they are the hardest inputs for the bipartite subgraph problem at triangular-number edge counts.",
+    "mathContext": "$f\\left(\\binom{n}{2}\\right) = 0$ for all $n \\ge 2$. The maximum bipartite subgraph of $K_n$ has exactly $\\lfloor n^2/4 \\rfloor$ edges (the balanced complete bipartite graph), which matches Edwards' formula at $m = \\binom{n}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["complete graph", "Turan graph", "balanced bipartition"],
+    "prerequisites": ["graph theory", "combinatorics"]
   },
   {
     "id": "erdos-127-conjecture",
     "proofId": "erdos-127",
-    "type": "conjecture",
-    "range": { "startLine": 60, "endLine": 64 },
-    "title": "Erdős Problem 127",
-    "content": "Is there an infinite sequence mᵢ with f(mᵢ) → ∞? Solved affirmatively by Alon (1996).",
-    "significance": "essential"
-  },
-  {
-    "id": "erdos-127-alon-lower",
-    "proofId": "erdos-127",
-    "type": "result",
-    "range": { "startLine": 66, "endLine": 69 },
-    "title": "Alon's Lower Bound",
-    "content": "Alon (1996) proved f(n²/2) ≫ n^{1/2}, establishing that the excess grows at least like √n along the sequence m = n²/2.",
-    "significance": "essential"
+    "type": "insight",
+    "range": { "startLine": 60, "endLine": 73 },
+    "title": "Erdős Problem 127 and Alon's Solution",
+    "content": "The problem asks whether $f(m_i) \\to \\infty$ along some strictly increasing sequence $m_i$. Alon (1996) answered YES by proving $f(n^2/2) \\ge c\\sqrt{n}$: taking $m_i = i^2/2$ gives a divergent subsequence. The formalization uses `StrictMono` and `Filter.Tendsto` to express strict monotonicity and divergence.",
+    "mathContext": "$\\exists (m_i)_{i \\ge 1} \\text{ strictly increasing}: f(m_i) \\to \\infty$. Alon's proof used probabilistic and spectral methods, showing that for $m$ near $n^2/2$ (but not a triangular number), random graphs and eigenvalue bounds give the excess $\\Omega(\\sqrt{n})$.",
+    "significance": "critical",
+    "relatedConcepts": ["probabilistic method", "spectral graph theory", "Filter.Tendsto", "StrictMono"],
+    "prerequisites": ["probabilistic combinatorics", "spectral methods", "filter theory"]
   },
   {
     "id": "erdos-127-alon-upper",
     "proofId": "erdos-127",
-    "type": "result",
-    "range": { "startLine": 79, "endLine": 82 },
-    "title": "Alon's Upper Bound",
-    "content": "f(m) ≪ m^{1/4} for all m. The optimal constant remains unknown.",
-    "significance": "supporting"
+    "type": "theorem",
+    "range": { "startLine": 79, "endLine": 88 },
+    "title": "Upper Bound and Optimal Constant",
+    "content": "Alon also proved $f(m) \\le C \\cdot m^{1/4}$ for some constant $C > 0$ and all $m \\ge 1$. This constrains the excess to grow at most like the fourth root of $m$. The `OptimalConstantQuestion` asks for the smallest such $C$, which remains unknown.",
+    "mathContext": "$f(m) = O(m^{1/4})$. Combined with $f(n^2/2) = \\Omega(n^{1/2}) = \\Omega(m^{1/4})$ at $m = n^2/2$, this shows the exponent $1/4$ in the upper bound is optimal: $\\max_{m' \\le m} f(m') = \\Theta(m^{1/4})$.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic bounds", "optimal constants", "extremal growth rate"],
+    "prerequisites": ["asymptotic analysis", "extremal graph theory"]
+  },
+  {
+    "id": "erdos-127-structural",
+    "proofId": "erdos-127",
+    "type": "context",
+    "range": { "startLine": 94, "endLine": 102 },
+    "title": "Structural Properties",
+    "content": "Two structural properties of $f$: (1) bounded variation — $f(m_2) \\le f(m_1) + (m_2 - m_1)$ for $m_1 \\le m_2$, so $f$ cannot jump by more than the change in edge count; (2) proximity to complete graphs — every $m$ is within $\\sqrt{2m}$ of some $\\binom{n}{2}$ where $f$ vanishes. Together these explain why $f$ oscillates: it peaks between triangular numbers and returns to 0 at each $\\binom{n}{2}$.",
+    "mathContext": "$f(m_2) \\le f(m_1) + (m_2 - m_1)$ and $\\forall m \\ge 1, \\exists n \\ge 2 : |\\binom{n}{2} - m| \\le n$. The oscillatory behavior of $f$ is a consequence of the interplay between these constraints.",
+    "significance": "supporting",
+    "relatedConcepts": ["bounded variation", "triangular numbers", "oscillation"],
+    "prerequisites": ["combinatorics", "number theory"]
   }
 ]
