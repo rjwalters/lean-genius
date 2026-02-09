@@ -1583,4 +1583,297 @@ theorem density_per_prime (p : ℕ) (_ : p.Prime) :
     (p * p - 1) / 2 ≤ p * p := by
   omega
 
+/-
+## Part XX: Improved Lower Bound f(N) ≥ 4
+
+The set {1, 5, 21, 37} witnesses f(N) ≥ 4 for N ≥ 37.
+All pairwise sums: 2, 6, 10, 22, 26, 38, 42, 58, 74 are squarefree.
+-/
+
+-- Squarefree witnesses for new sums
+private theorem squarefree_38 : Squarefree (38 : ℕ) := by
+  rw [show (38 : ℕ) = 2 * 19 from by norm_num]
+  have : Nat.Prime 19 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_58 : Squarefree (58 : ℕ) := by
+  rw [show (58 : ℕ) = 2 * 29 from by norm_num]
+  have : Nat.Prime 29 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_74 : Squarefree (74 : ℕ) := by
+  rw [show (74 : ℕ) = 2 * 37 from by norm_num]
+  have : Nat.Prime 37 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+/--
+**{1, 5, 21, 37} has a squarefree sumset.**
+All 10 pairwise sums (4 self-sums + 6 cross-sums) are squarefree:
+1+1=2, 1+5=6, 1+21=22, 1+37=38, 5+5=10, 5+21=26, 5+37=42, 21+21=42, 21+37=58, 37+37=74.
+-/
+theorem quad_1_5_21_37_squarefree_sumset : hasSquarefreeSumset ({1, 5, 21, 37} : Finset ℕ) := by
+  intro s hs
+  simp only [sumset, Finset.mem_image, Finset.mem_product, Finset.mem_insert,
+    Finset.mem_singleton] at hs
+  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, hab⟩ := hs
+  simp only [isSquarefree]
+  rcases ha with rfl | rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl | rfl <;>
+    simp at hab <;> rw [← hab]
+  -- 1+1=2, 1+5=6, 1+21=22, 1+37=38
+  · exact squarefree_2
+  · exact squarefree_6
+  · exact squarefree_22
+  · exact squarefree_38
+  -- 5+1=6, 5+5=10, 5+21=26, 5+37=42
+  · exact squarefree_6
+  · exact squarefree_10
+  · exact squarefree_26
+  · exact squarefree_42
+  -- 21+1=22, 21+5=26, 21+21=42, 21+37=58
+  · exact squarefree_22
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_58
+  -- 37+1=38, 37+5=42, 37+21=58, 37+37=74
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_74
+
+/--
+**f(N) ≥ 4 for N ≥ 37:**
+The set {1, 5, 21, 37} ⊆ {1,...,N} has squarefree sumset, giving f(N) ≥ 4.
+-/
+theorem f_ge_four (N : ℕ) (hN : N ≥ 37) : f N ≥ 4 := by
+  unfold f
+  have h4 : (4 : ℕ) ∈ {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    simp only [Set.mem_setOf_eq]
+    refine ⟨{1, 5, 21, 37}, ?_, quad_1_5_21_37_squarefree_sumset, ?_⟩
+    · intro x hx
+      simp [Finset.mem_insert, Finset.mem_singleton] at hx
+      simp [Finset.mem_range]
+      rcases hx with rfl | rfl | rfl | rfl <;> omega
+    · simp [Finset.card_insert_of_not_mem, Finset.mem_insert, Finset.mem_singleton]
+      native_decide
+  have hbdd : BddAbove {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    use N + 1
+    intro m hm
+    simp only [Set.mem_setOf_eq] at hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm
+    rw [← hA_card]
+    exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
+  exact le_csSup hbdd h4
+
+/-
+## Part XXI: f(N) ≥ 5
+
+The set {1, 5, 21, 37, 41} witnesses f(N) ≥ 5 for N ≥ 41.
+All 15 pairwise sums are squarefree:
+1+1=2, 1+5=6, 1+21=22, 1+37=38, 1+41=42, 5+5=10, 5+21=26,
+5+37=42, 5+41=46, 21+21=42, 21+37=58, 21+41=62, 37+37=74,
+37+41=78, 41+41=82.
+-/
+
+-- Squarefree witnesses for the new sums from adding 41
+private theorem squarefree_46 : Squarefree (46 : ℕ) := by
+  rw [show (46 : ℕ) = 2 * 23 from by norm_num]
+  have : Nat.Prime 23 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_62 : Squarefree (62 : ℕ) := by
+  rw [show (62 : ℕ) = 2 * 31 from by norm_num]
+  have : Nat.Prime 31 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_78 : Squarefree (78 : ℕ) := by
+  rw [show (78 : ℕ) = 2 * 39 from by norm_num]
+  have h39 : Squarefree (39 : ℕ) := by
+    rw [show (39 : ℕ) = 3 * 13 from by norm_num]
+    have : Nat.Prime 13 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, three_prime.squarefree, this.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h39⟩)
+
+private theorem squarefree_82 : Squarefree (82 : ℕ) := by
+  rw [show (82 : ℕ) = 2 * 41 from by norm_num]
+  have : Nat.Prime 41 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+/--
+**{1, 5, 21, 37, 41} has a squarefree sumset.**
+All 15 pairwise sums are squarefree. This is verified by checking each of the
+25 ordered pairs (a, b) with a, b ∈ {1, 5, 21, 37, 41}.
+-/
+theorem quint_1_5_21_37_41_squarefree_sumset :
+    hasSquarefreeSumset ({1, 5, 21, 37, 41} : Finset ℕ) := by
+  intro s hs
+  simp only [sumset, Finset.mem_image, Finset.mem_product, Finset.mem_insert,
+    Finset.mem_singleton] at hs
+  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, hab⟩ := hs
+  simp only [isSquarefree]
+  rcases ha with rfl | rfl | rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl | rfl | rfl <;>
+    simp at hab <;> rw [← hab]
+  -- Row a=1: 1+1=2, 1+5=6, 1+21=22, 1+37=38, 1+41=42
+  · exact squarefree_2
+  · exact squarefree_6
+  · exact squarefree_22
+  · exact squarefree_38
+  · exact squarefree_42
+  -- Row a=5: 5+1=6, 5+5=10, 5+21=26, 5+37=42, 5+41=46
+  · exact squarefree_6
+  · exact squarefree_10
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_46
+  -- Row a=21: 21+1=22, 21+5=26, 21+21=42, 21+37=58, 21+41=62
+  · exact squarefree_22
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_62
+  -- Row a=37: 37+1=38, 37+5=42, 37+21=58, 37+37=74, 37+41=78
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_74
+  · exact squarefree_78
+  -- Row a=41: 41+1=42, 41+5=46, 41+21=62, 41+37=78, 41+41=82
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_62
+  · exact squarefree_78
+  · exact squarefree_82
+
+/--
+**f(N) ≥ 5 for N ≥ 41:**
+The set {1, 5, 21, 37, 41} ⊆ {1,...,N} has squarefree sumset, giving f(N) ≥ 5.
+-/
+theorem f_ge_five (N : ℕ) (hN : N ≥ 41) : f N ≥ 5 := by
+  unfold f
+  have h5 : (5 : ℕ) ∈ {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    simp only [Set.mem_setOf_eq]
+    refine ⟨{1, 5, 21, 37, 41}, ?_, quint_1_5_21_37_41_squarefree_sumset, ?_⟩
+    · intro x hx
+      simp [Finset.mem_insert, Finset.mem_singleton] at hx
+      simp [Finset.mem_range]
+      rcases hx with rfl | rfl | rfl | rfl | rfl <;> omega
+    · simp [Finset.card_insert_of_not_mem, Finset.mem_insert, Finset.mem_singleton]
+      native_decide
+  have hbdd : BddAbove {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    use N + 1
+    intro m hm
+    simp only [Set.mem_setOf_eq] at hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm
+    rw [← hA_card]
+    exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
+  exact le_csSup hbdd h5
+
+/-
+## Part XXII: General Residue Counting Theorem
+
+For any prime p, the image of A modulo p² has at most (p²-1)/2 elements.
+This generalizes the specific results for p=3 (mod 9, ≤ 4) and p=5 (mod 25, ≤ 12).
+
+The proof uses an injection g(r) = min(r, p²-r) from S (the residue image) into
+{1, ..., (p²-1)/2}. The injectivity follows from the fact that complementary
+residues cannot both appear in S.
+-/
+
+/--
+**General residue counting for squarefree sumsets:**
+For any prime p and any set A with squarefree sumset,
+the residue image of A modulo p² has at most (p*p-1)/2 elements.
+
+This is the unified version of mod_9_residue_image_le_4 (p=3: (9-1)/2=4)
+and mod_25_residue_image_le_12 (p=5: (25-1)/2=12).
+-/
+theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
+    (p : ℕ) (hp : p.Prime) :
+    (A.image (· % (p * p))).card ≤ (p * p - 1) / 2 := by
+  set pp := p * p with hpp_def
+  set S := A.image (· % pp) with hS_def
+  -- Image avoids 0
+  have h0 : (0 : ℕ) ∉ S := residue_image_avoids_zero A h p hp
+  -- Image ⊆ range pp
+  have hbnd : S ⊆ Finset.range pp := by
+    intro r hr
+    simp only [hS_def, Finset.mem_image] at hr
+    obtain ⟨a, _, rfl⟩ := hr
+    simp [Finset.mem_range]; omega
+  -- Image ⊆ {1, ..., pp-1}
+  have hsub : S ⊆ Finset.range pp \ {0} := by
+    intro r hr
+    simp only [Finset.mem_sdiff, Finset.mem_singleton]
+    exact ⟨hbnd hr, fun heq => h0 (heq ▸ hr)⟩
+  -- Complementary pair exclusion: no both r and pp-r in S
+  have hpair : ∀ r : ℕ, r ≥ 1 → r ≤ pp - 1 → r ∈ S → (pp - r) ∉ S := by
+    intro r hr1 hr_le hr_in hc_in
+    simp only [hS_def, Finset.mem_image] at hr_in hc_in
+    obtain ⟨a, ha, ha_r⟩ := hr_in
+    obtain ⟨b, hb, hb_c⟩ := hc_in
+    apply complementary_residue_exclusion A h p hp a b ha hb
+    omega
+  -- pp ≥ 4 since p ≥ 2
+  have hpp_ge : pp ≥ 4 := by
+    have := hp.two_le; nlinarith
+  -- Define g : ℕ → ℕ := fun r => min r (pp - r)
+  -- g is injective on S: if g(r) = g(s) with r ≠ s, then {r,s} = {v, pp-v}
+  -- and both in S → contradiction
+  have g_inj : Set.InjOn (fun r => min r (pp - r)) (S : Set ℕ) := by
+    intro r hr s hs hg
+    simp only [Finset.mem_coe] at hr hs
+    by_contra hne
+    have hr_range := hsub hr
+    have hs_range := hsub hs
+    simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton] at hr_range hs_range
+    have hr_pos : r ≥ 1 := by omega
+    have hs_pos : s ≥ 1 := by omega
+    have hr_le : r ≤ pp - 1 := by omega
+    have hs_le : s ≤ pp - 1 := by omega
+    -- Case analysis on whether r ≤ pp/2 or r > pp/2
+    by_cases hr2 : 2 * r ≤ pp <;> by_cases hs2 : 2 * s ≤ pp
+    · -- Both r, s ≤ pp/2: min = r and min = s, so r = s
+      have : min r (pp - r) = r := Nat.min_eq_left (by omega)
+      have : min s (pp - s) = s := Nat.min_eq_left (by omega)
+      omega
+    · -- r ≤ pp/2, s > pp/2: min(r,pp-r) = r, min(s,pp-s) = pp-s, so r = pp-s
+      have hmin_r : min r (pp - r) = r := Nat.min_eq_left (by omega)
+      have hmin_s : min s (pp - s) = pp - s := Nat.min_eq_right (by omega)
+      have : r = pp - s := by omega
+      -- So s = pp - r, and both r and pp-r are in S
+      exact hpair r hr_pos hr_le hr (by rwa [show pp - r = s from by omega])
+    · -- r > pp/2, s ≤ pp/2: min(r,pp-r) = pp-r, min(s,pp-s) = s, so pp-r = s
+      have hmin_r : min r (pp - r) = pp - r := Nat.min_eq_right (by omega)
+      have hmin_s : min s (pp - s) = s := Nat.min_eq_left (by omega)
+      have : pp - r = s := by omega
+      -- So r = pp - s, and both s and pp-s are in S
+      exact hpair s hs_pos hs_le hs (by rwa [show pp - s = r from by omega])
+    · -- Both > pp/2: min = pp-r and min = pp-s, so pp-r = pp-s, so r = s
+      have : min r (pp - r) = pp - r := Nat.min_eq_right (by omega)
+      have : min s (pp - s) = pp - s := Nat.min_eq_right (by omega)
+      omega
+  -- g maps S into {1, ..., (pp-1)/2} ⊆ range ((pp-1)/2 + 1)
+  have g_range : ∀ r ∈ S, min r (pp - r) ∈ Finset.range ((pp - 1) / 2 + 1) \ {0} := by
+    intro r hr
+    have hr_range := hsub hr
+    simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_singleton] at hr_range ⊢
+    constructor
+    · -- min(r, pp-r) < (pp-1)/2 + 1
+      omega
+    · -- min(r, pp-r) ≠ 0
+      omega
+  -- |S| ≤ |(range ((pp-1)/2 + 1)) \ {0}| = (pp-1)/2
+  have himg_sub : S.image (fun r => min r (pp - r)) ⊆ Finset.range ((pp - 1) / 2 + 1) \ {0} := by
+    intro v hv
+    simp only [Finset.mem_image] at hv
+    obtain ⟨r, hr, rfl⟩ := hv
+    exact g_range r hr
+  have hcard_target : (Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ)).card = (pp - 1) / 2 := by
+    rw [Finset.card_sdiff_of_subset_of_subset (by simp [Finset.singleton_subset_iff, Finset.mem_range]; omega)
+      (Finset.subset_refl _)]
+    simp [Finset.card_range, Finset.card_singleton]
+  calc S.card = (S.image (fun r => min r (pp - r))).card :=
+          (Finset.card_image_of_injOn g_inj).symm
+    _ ≤ (Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ)).card := Finset.card_le_card himg_sub
+    _ = (pp - 1) / 2 := hcard_target
+
 end Erdos1109
