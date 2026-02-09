@@ -1,0 +1,102 @@
+{
+  "slug": "lagrange-four-squares",
+  "title": "Lagrange Four Square Theorem - Jacobi's Formula and Distribution",
+  "phase": "SURVEY_COMPLETE",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "r₄(n) = 8 × σ*(n) where σ*(n) = Σ_{d|n, 4∤d} d",
+    "plain": "Formalize Jacobi's four-square theorem giving the exact count of representations of n as a sum of four integer squares, and derive structural consequences.",
+    "whyMatters": [
+      "Jacobi's formula connects sum-of-squares to divisor sums via modular forms",
+      "Recovers Lagrange's theorem (every n is a sum of 4 squares) as corollary",
+      "Gives exact representation counts for all n, not just existence"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "σ*(n) computed for n=0..10, 12 via native_decide (13 values)",
+      "σ*(n) > 0 for n > 0 (1 is always a non-4-divisible divisor)",
+      "σ*(p) = p+1 for odd primes p",
+      "σ*(n) ≥ n+1 when 4∤n and n>1",
+      "σ*(n) = σ(n) for odd n",
+      "r₄(n) > 0 for n > 0 (recovers Lagrange from Jacobi)",
+      "8 | r₄(n) for all n > 0",
+      "r₄(p) = 8(p+1) for odd primes",
+      "r₄ values for n=1..7 derived from Jacobi",
+      "Ordering decomposition analysis for n=1..5",
+      "Linear growth bounds",
+      "9 computational Jacobi verifications"
+    ],
+    "open": [
+      "Prove Jacobi's formula from theta functions (requires modular forms theory)"
+    ],
+    "goal": "Complete formalization of r₄(n) = 8σ*(n) with extensive derived results"
+  },
+  "currentState": {
+    "phase": "SURVEY_COMPLETE",
+    "since": "2026-02-09T20:00:00Z",
+    "iteration": 1,
+    "focus": "Verified and fixed existing formalization from prior session",
+    "blockers": [
+      "Jacobi formula proof requires modular forms/theta functions not in Mathlib"
+    ],
+    "nextAction": "Submit to Aristotle for potential improvement",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: FourSquareRepresentations.lean with 45 proved theorems, 2 axioms, 0 sorries. Comprehensive formalization of Jacobi's four-square theorem and its consequences. Fixed build error in sigmaStar_pos proof.",
+    "insights": [
+      "Jacobi's formula r₄(n) = 8σ*(n) is the key to exact representation counting",
+      "σ*(n) is fully computable via Nat.divisors + filter, verifiable by native_decide",
+      "The formula recovers Lagrange's theorem as a simple corollary: σ*(n) > 0 implies r₄(n) > 0",
+      "For odd primes, the formula simplifies to r₄(p) = 8(p+1) since divisors are {1,p}",
+      "8 always divides r₄(n) because of the formula structure",
+      "For odd n, σ*(n) = σ(n) since no odd divisor is divisible by 4",
+      "Distribution among orderings: each unordered type contributes (permutations × sign changes)"
+    ],
+    "builtItems": [
+      "FourSquareRepresentations.lean: 45 proved theorems, 2 axioms, 0 sorries",
+      "divisorsNotDiv4: computable definition of divisors not divisible by 4",
+      "sigmaStar: modified divisor sum σ*(n)",
+      "repSet/r₄: representation counting function",
+      "FourSquareRep structure for analyzing orderings",
+      "sigmaStar_odd_prime: key structural result for primes",
+      "sigmaStar_ge_succ: lower bound for non-4-divisible n",
+      "r₄_linear_lower_bound: linear growth rate"
+    ],
+    "mathlibGaps": [
+      "No Mathlib formalization of Jacobi's four-square theorem",
+      "No modular forms / theta function infrastructure in Mathlib",
+      "Nat.sum_four_squares exists but only proves existence, not counting"
+    ],
+    "nextSteps": [
+      "Submit to Aristotle for potential axiom elimination",
+      "Connect to LagrangeFourSquares.lean gallery entry",
+      "Explore if r₄_zero axiom can be proved from the definition"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "sum-of-squares",
+    "classical",
+    "extension"
+  ],
+  "relatedProofs": ["lagrange-four-squares"],
+  "references": {
+    "papers": ["Jacobi 1834 - Fundamenta nova theoriae functionum ellipticarum"],
+    "urls": [],
+    "mathlib": ["Nat.sum_four_squares", "Nat.divisors"]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-09T20:00:00Z",
+  "significance": 7,
+  "tractability": 7
+}
