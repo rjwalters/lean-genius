@@ -5,52 +5,70 @@
     "type": "definition",
     "range": { "startLine": 28, "endLine": 38 },
     "title": "Digit-Restricted Sets",
-    "content": "digitSet b is the set of natural numbers with only digits 0,1 in base b. setA = digitSet 3 and setB = digitSet 4 are the specific sets in the problem.",
-    "significance": "essential"
+    "content": "Defines `digitSet b` as the set of natural numbers whose base-$b$ representation uses only digits 0 and 1. These are equivalently the sums of distinct powers of $b$: elements of `digitSet b` have the form $\\sum_{k} \\varepsilon_k b^k$ with $\\varepsilon_k \\in \\{0,1\\}$. The specific sets $A = $ `digitSet 3` and $B = $ `digitSet 4` are the \"Cantor set integers\" in bases 3 and 4.",
+    "mathContext": "$A = \\{\\sum_{k=0}^{m} \\varepsilon_k 3^k : \\varepsilon_k \\in \\{0,1\\}\\}$ and $B = \\{\\sum_{k=0}^{m} \\varepsilon_k 4^k : \\varepsilon_k \\in \\{0,1\\}\\}$. The set $A$ is the integer part of the standard middle-thirds Cantor set scaled to $[0, \\infty)$; it has counting function $|A \\cap [0,x]| \\sim x^{\\log_3 2}$.",
+    "significance": "critical",
+    "relatedConcepts": ["Cantor set", "digit expansion", "self-similar sets", "Nat.digits"],
+    "prerequisites": ["number theory", "base representations", "fractal geometry"]
   },
   {
     "id": "erdos-125-sumset",
     "proofId": "erdos-125",
     "type": "definition",
     "range": { "startLine": 44, "endLine": 49 },
-    "title": "The Sumset C = A + B",
-    "content": "setC = A + B is the sumset. countingC x = |C ∩ [0, x]| counts elements up to x.",
-    "significance": "essential"
+    "title": "The Sumset $C = A + B$",
+    "content": "Defines `setC` as the Minkowski sum $A + B = \\{a + b : a \\in A, b \\in B\\}$ and the counting function `countingC x` $= |C \\cap [0,x]|$ using `Finset.filter`. The sumset combines the sparse structure of two self-similar sets.",
+    "mathContext": "$C = A + B = \\{a + b : a \\in A, b \\in B\\}$. Since $|A \\cap [0,x]| \\approx x^{\\log_3 2} \\approx x^{0.631}$ and $|B \\cap [0,x]| \\approx x^{\\log_4 2} = x^{0.5}$, a naive heuristic predicts $|C \\cap [0,x]| \\approx x^{0.631 + 0.5} = x^{1.131}$, which exceeds linear growth.",
+    "significance": "critical",
+    "relatedConcepts": ["Minkowski sum", "sumset", "counting function", "additive combinatorics"],
+    "prerequisites": ["additive combinatorics", "asymptotic analysis"]
   },
   {
     "id": "erdos-125-conjecture",
     "proofId": "erdos-125",
     "type": "conjecture",
     "range": { "startLine": 55, "endLine": 60 },
-    "title": "Erdős Problem 125",
-    "content": "Does C = A + B have positive lower density? That is, is lim inf |C ∩ [1,x]|/x > 0?",
-    "significance": "essential"
+    "title": "Erdős Problem 125: Positive Lower Density",
+    "content": "The central conjecture: does $C = A + B$ have positive lower density? Formally, is $\\liminf_{x \\to \\infty} |C \\cap [1,x]|/x > 0$? The formalization uses an $\\varepsilon$-$\\delta$ definition: $\\exists \\delta > 0$ such that for every $\\varepsilon > 0$, eventually $|C \\cap [1,x]|/x \\ge \\delta - \\varepsilon$.",
+    "mathContext": "$\\liminf_{x \\to \\infty} \\frac{|C \\cap [1,x]|}{x} > 0$. The heuristic $\\log_3 2 + \\log_4 2 \\approx 1.131 > 1$ suggests the sumset should be dense, but making this rigorous requires controlling the \"overlap\" between translates of the Cantor sets.",
+    "significance": "critical",
+    "relatedConcepts": ["lower density", "asymptotic density", "liminf", "Erdos open problems"],
+    "prerequisites": ["real analysis", "density theory", "number theory"]
   },
   {
     "id": "erdos-125-lower",
     "proofId": "erdos-125",
-    "type": "result",
+    "type": "theorem",
     "range": { "startLine": 66, "endLine": 74 },
     "title": "Counting Lower Bounds",
-    "content": "Melfi (2001): |C ∩ [1,x]| ≫ x^{0.965}. Hasler–Melfi (2024): improved to x^{0.9777}. Nearly linear growth but not yet linear.",
-    "significance": "essential"
+    "content": "Melfi (2001) proved $|C \\cap [1,x]| \\gg x^{0.965}$, the first strong quantitative result. Hasler and Melfi (2024) improved this to $x^{0.9777}$, bringing the exponent tantalizingly close to 1. Neither bound is sufficient to establish positive density, which requires an exponent of exactly 1.",
+    "mathContext": "$|C \\cap [1,x]| \\ge c \\cdot x^{0.9777}$ for all large $x$ (Hasler-Melfi 2024). The gap between $0.9777$ and $1$ is small but closing it is the key difficulty: it requires showing the sumset has no \"thin\" regions where its density drops below any fixed threshold.",
+    "significance": "key",
+    "relatedConcepts": ["counting function", "polynomial growth", "sublinear gap"],
+    "prerequisites": ["analytic number theory", "asymptotic analysis"]
   },
   {
     "id": "erdos-125-upper",
     "proofId": "erdos-125",
-    "type": "result",
+    "type": "theorem",
     "range": { "startLine": 80, "endLine": 84 },
     "title": "Upper Density Bound",
-    "content": "Hasler–Melfi (2024): the upper density of C is at most ≈ 0.696, so C misses a positive fraction of ℕ.",
-    "significance": "essential"
+    "content": "Hasler and Melfi (2024) proved that the upper density of $C$ is at most approximately 0.696. This means $C$ cannot represent more than about 70% of all natural numbers, even if positive density is achieved. The bound comes from identifying specific arithmetic progressions that $C$ avoids.",
+    "mathContext": "$\\limsup_{x \\to \\infty} \\frac{|C \\cap [1,x]|}{x} \\le 0.696$. The complementary density $1 - 0.696 = 0.304$ represents integers that provably cannot be written as $a + b$ with $a \\in A, b \\in B$.",
+    "significance": "key",
+    "relatedConcepts": ["upper density", "arithmetic progressions", "density gap"],
+    "prerequisites": ["density theory", "modular arithmetic"]
   },
   {
     "id": "erdos-125-general",
     "proofId": "erdos-125",
     "type": "context",
     "range": { "startLine": 90, "endLine": 107 },
-    "title": "Generalization",
-    "content": "For bases n₁ < ⋯ < nₖ with Σ log_{nᵢ}(2) > 1, does the sumset of digit sets have positive density? For bases 3,4 the sum ≈ 1.131 > 1.",
-    "significance": "supporting"
+    "title": "Generalization to Multiple Bases",
+    "content": "For pairwise coprime bases $n_1 < \\cdots < n_k$, the question is whether $\\text{digitSet}(n_1) + \\cdots + \\text{digitSet}(n_k)$ has positive density whenever $\\sum_i \\log_{n_i}(2) > 1$. The log-sum condition is the natural threshold: it ensures the \"combined dimension\" of the digit sets exceeds 1. For bases 3 and 4: $\\log_3 2 + \\log_4 2 \\approx 0.631 + 0.500 = 1.131 > 1$.",
+    "mathContext": "$\\sum_{i=1}^{k} \\frac{\\log 2}{\\log n_i} > 1$ ensures $\\prod |A_i \\cap [0,x]| \\gg x^{1+\\delta}$ for some $\\delta > 0$, which is necessary (but not sufficient) for the sumset to have positive density. This is analogous to the condition for Cantor set arithmetic in fractal geometry.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hausdorff dimension", "sum of dimensions", "coprime bases", "fractal arithmetic"],
+    "prerequisites": ["fractal geometry", "dimension theory"]
   }
 ]

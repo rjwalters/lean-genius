@@ -6,83 +6,122 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/125",
-    "status": "formalized",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos125Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
       "base-representations",
       "density",
-      "additive-combinatorics"
+      "additive-combinatorics",
+      "fractal-geometry",
+      "open"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 125,
     "erdosUrl": "https://erdosproblems.com/125",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.digits",
+        "description": "Base-b digit representation of natural numbers",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter a finite set by a decidable predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "digitSet definition: natural numbers with only 0,1 digits in a given base",
+      "setA (base 3) and setB (base 4) definitions",
+      "setC = A + B sumset and countingC counting function",
+      "ErdosProblem125 definition: positive lower density conjecture",
+      "melfi_lower_bound axiom: x^{0.965} counting bound (2001)",
+      "hasler_melfi_lower_bound axiom: x^{0.9777} counting bound (2024)",
+      "upper_density_bound axiom: upper density ≤ 0.696 (2024)",
+      "GeneralizedDensityQuestion for multiple bases with log-sum condition",
+      "base_3_4_satisfies_condition axiom: log_3(2) + log_4(2) > 1"
+    ]
   },
   "overview": {
-    "historicalContext": "Burr, Erdős, Graham, and Li (1996) posed this question about digit-restricted sets. Melfi (2001) proved the counting function grows as x^{0.965}. Hasler and Melfi (2024) improved this to x^{0.9777} and showed the upper density is at most 0.696. The question of positive lower density remains open.",
-    "problemStatement": "Let A = {n ∈ ℕ : digits of n in base 3 are all 0 or 1} and B = {n ∈ ℕ : digits in base 4 are all 0 or 1}. Does A + B have positive lower density?",
-    "proofStrategy": "We define digitSet b (numbers with only 0,1 digits in base b), setA = digitSet 3, setB = digitSet 4, and setC = A + B. ErdosProblem125 asks if lim inf |C ∩ [1,x]|/x > 0. Melfi's and Hasler–Melfi's bounds are axiomatized. The generalization to multiple bases and the log-sum condition are stated.",
+    "historicalContext": "Burr, Erdős, Graham, and Li posed this problem in their 1996 paper on sumsets of sets defined by digit conditions. The sets $A$ (base-3 Cantor integers) and $B$ (base-4 Cantor integers) are natural discrete analogues of the classical middle-thirds Cantor set. The problem asks whether their sumset $A + B$ has positive lower density in $\\mathbb{N}$, a question that lies at the intersection of additive combinatorics, fractal geometry, and digital number theory.\n\nThe heuristic reason to expect positive density is dimensional: $A$ has Hausdorff dimension $\\log_3 2 \\approx 0.631$ and $B$ has dimension $\\log_4 2 = 0.5$, so their sum of dimensions $\\approx 1.131 > 1$ exceeds the ambient dimension. However, translating this heuristic into a rigorous proof has proven elusive because the Cantor set integers are highly structured (not random), and their sumset can have unexpected gaps.\n\nMelfi (2001) made the first quantitative progress, proving $|C \\cap [1,x]| \\gg x^{0.965}$. Hasler and Melfi (2024) improved this to $x^{0.9777}$ and also showed the upper density is at most $0.696$, so even if $C$ has positive density, it misses about 30% of all integers. The gap between the exponent $0.9777$ and the target $1$ remains the central obstacle.",
+    "problemStatement": "Let $A = \\{n \\in \\mathbb{N} : \\text{digits of } n \\text{ in base 3 are all 0 or 1}\\}$ and $B = \\{n \\in \\mathbb{N} : \\text{digits in base 4 are all 0 or 1}\\}$. Does $A + B$ have positive lower density?",
+    "proofStrategy": "The formalization defines `digitSet b` using Lean's `Nat.digits` to characterize numbers with restricted digits, then builds `setA`, `setB`, and their sumset `setC`. The conjecture `ErdosProblem125` is stated as the existence of a positive $\\delta$ such that $|C \\cap [1,x]|/x \\ge \\delta - \\varepsilon$ eventually. Known bounds from Melfi (2001) and Hasler-Melfi (2024) are axiomatized. The generalization to multiple bases is formalized with the log-sum condition $\\sum \\log_{b_i}(2) > 1$.",
     "keyInsights": [
-      "A and B are 'Cantor set integers' — sparse but structured subsets of ℕ",
-      "The counting function |C ∩ [1,x]| grows nearly linearly (exponent > 0.977)",
-      "Upper density ≤ 0.696 shows C cannot be all of ℕ even if dense",
-      "The condition log₃(2) + log₄(2) > 1 governs the generalization"
+      "The sets $A$ and $B$ are discrete Cantor sets with Hausdorff dimensions $\\log_3 2 \\approx 0.631$ and $\\log_4 2 = 0.5$, whose dimension sum exceeds 1",
+      "The counting function $|C \\cap [1,x]| \\gg x^{0.9777}$ (Hasler-Melfi 2024) grows nearly linearly but proving positive density requires closing the remaining gap to exponent 1",
+      "The upper density bound $\\le 0.696$ shows $C$ necessarily avoids about 30% of all integers, constrained by digit-carrying arithmetic",
+      "The log-sum condition $\\sum \\log_{b_i}(2) > 1$ is the natural dimensional threshold for generalization to multiple bases",
+      "The problem bridges fractal geometry (Cantor set dimension theory), additive combinatorics (sumset density), and digital number theory (base representations)"
     ]
   },
   "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Header",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module docstring describing the problem, its open status, and references. Imports from Mathlib for digit representations, finite sets, real numbers, filters, and tactics."
+    },
     {
       "id": "digit-sets",
       "title": "Digit-Restricted Sets",
       "startLine": 24,
       "endLine": 38,
-      "summary": "Defines digitSet b, setA (base 3), and setB (base 4)."
+      "summary": "Defines digitSet b (numbers with only 0,1 digits in base b), setA = digitSet 3, and setB = digitSet 4."
     },
     {
       "id": "sumset",
       "title": "The Sumset",
       "startLine": 40,
       "endLine": 49,
-      "summary": "Defines setC = A + B and countingC |C ∩ [1,x]|."
+      "summary": "Defines setC = A + B as a Minkowski sum and countingC x = |C ∩ [0,x]| using Finset.filter."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 51,
       "endLine": 60,
-      "summary": "States ErdosProblem125: does C have positive lower density?"
+      "summary": "Defines ErdosProblem125: ∃ δ > 0 such that |C ∩ [1,x]|/x ≥ δ - ε eventually, i.e., positive lower density."
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "startLine": 62,
       "endLine": 74,
-      "summary": "Melfi (2001): ≫ x^{0.965}. Hasler–Melfi (2024): ≫ x^{0.9777}."
+      "summary": "Axiomatizes Melfi's (2001) bound x^{0.965} and Hasler-Melfi's (2024) improvement to x^{0.9777}."
     },
     {
       "id": "upper-density",
       "title": "Upper Density Bound",
       "startLine": 76,
       "endLine": 84,
-      "summary": "Hasler–Melfi (2024): upper density ≤ 0.696."
+      "summary": "Axiomatizes Hasler-Melfi's (2024) result: the upper density of C is at most 0.696."
     },
     {
       "id": "generalization",
       "title": "Generalization to Other Bases",
       "startLine": 86,
       "endLine": 107,
-      "summary": "General question for multiple bases with Σ log_b(2) > 1 condition."
+      "summary": "Defines the general question for multiple bases with the log-sum condition Σ log_{b_i}(2) > 1, and verifies bases 3 and 4 satisfy it."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 125 asks whether the sumset of base-3 and base-4 'Cantor integers' has positive density. The counting function is nearly linear but positive density is unproved.",
-    "implications": "Understanding this would connect digital properties of integers to additive structure, bridging fractal geometry and number theory.",
+    "summary": "Erdős Problem 125 remains OPEN: the counting function for $C = A + B$ grows as $x^{0.9777}$, tantalizingly close to linear, but positive lower density is unproved. The upper density is at most 0.696. The formalization captures the conjecture, all known quantitative bounds, and the natural generalization to multiple bases via the log-sum dimension condition.",
+    "implications": "Resolution of this problem would deepen our understanding of how digital (multiplicative) structure interacts with additive structure. The question is a prototype for problems in fractal arithmetic: when does the sumset of two \"thin\" self-similar subsets of $\\mathbb{N}$ become thick? Positive density would imply that the additive structure of the integers can overwhelm the sparsity of Cantor-like sets when the dimension sum exceeds 1. The techniques involved draw from harmonic analysis, Fourier methods on $\\mathbb{Z}/n\\mathbb{Z}$, and the theory of iterated function systems.",
     "openQuestions": [
-      "Does A + B have positive lower density?",
-      "What is the exact lower density if it exists?",
-      "Does the generalization hold for all pairwise coprime bases satisfying the log condition?"
+      "Does $A + B$ have positive lower density? (the central open question)",
+      "What is the exact lower density of $A + B$ if it exists?",
+      "Does the upper density equal 0.696 or is there room for improvement?",
+      "Does the generalization hold for all tuples of coprime bases satisfying $\\sum \\log_{b_i}(2) > 1$?"
     ]
   }
 }
