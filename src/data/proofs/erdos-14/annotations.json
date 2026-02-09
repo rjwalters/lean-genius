@@ -1,74 +1,211 @@
 [
   {
+    "id": "ann-e14-header",
+    "proofId": "erdos-14",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Problem Overview and References",
+    "content": "Header documenting Erdős Problem #14 on unique representation of sums. Given $A \\subseteq \\mathbb{N}$, let $B$ be the set of integers representable in exactly one way as $a + b$ with $a \\leq b$, $a, b \\in A$. The two-part question asks about the growth rate of $|\\{1, \\ldots, N\\} \\setminus B|$: (a) must it be at least $N^{1/2-\\varepsilon}$? (b) can it be $o(\\sqrt{N})$?",
+    "mathContext": "For $A \\subseteq \\mathbb{N}$, define $B = \\{n : |\\{(a,b) \\in A \\times A : a \\leq b,\\, a+b=n\\}| = 1\\}$. Question (a): $\\forall A,\\, \\forall \\varepsilon > 0,\\, |\\{1,\\ldots,N\\} \\setminus B| \\gg_{\\varepsilon} N^{1/2-\\varepsilon}$? Question (b): $\\exists A$ with $|\\{1,\\ldots,N\\} \\setminus B| = o(N^{1/2})$?",
+    "significance": "critical",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "unique representation",
+      "sumsets",
+      "Sidon sets"
+    ],
+    "prerequisites": [
+      "representation functions",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e14-imports",
+    "proofId": "erdos-14",
+    "range": { "startLine": 23, "endLine": 28 },
+    "type": "context",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib's asymptotic analysis (`Asymptotics`), `Finset.Basic` for finite set operations, and general tactics. Opens `Finset`, `Filter`, and `Asymptotics` namespaces for convenient access to `atTop`, `∀ᶠ`, `∃ᶠ`, and finset operations.",
+    "mathContext": "Uses `Filter.atTop` for $N \\to \\infty$, `∀ᶠ N in atTop` for 'for all sufficiently large $N$', and `∃ᶠ N in atTop` for 'for infinitely many $N$'. These are Lean's clean formalization of asymptotic quantifiers.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Filter.atTop",
+      "Asymptotics",
+      "Finset operations"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "filter library"
+    ]
+  },
+  {
     "id": "erdos-14-ann-unique",
     "proofId": "erdos-14",
-    "range": { "startLine": 28, "endLine": 33 },
+    "range": { "startLine": 30, "endLine": 38 },
     "type": "definition",
-    "title": "Unique Sums",
-    "content": "The set of integers with exactly one ordered representation a+b (a≤b) from A. The central object of the problem.",
-    "significance": "critical"
+    "title": "Unique Sums (Finite Version)",
+    "content": "Defines `uniqueSums A` for a finite set $A$: the set of integers $n$ such that $n = a + b$ with $a \\leq b$, $a, b \\in A$, and this representation is unique (exactly one such pair $(a,b)$). Computed by filtering ordered pairs, taking sums, then filtering for uniqueness via `.card = 1`.",
+    "mathContext": "$\\text{uniqueSums}(A) = \\{n \\in \\mathbb{N} : |\\{(a,b) \\in A \\times A : a \\leq b,\\, a+b=n\\}| = 1\\}$. For a Sidon set $A$, every sum has a unique representation, so $\\text{uniqueSums}(A) = A + A$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "representation function",
+      "Sidon sets",
+      "sumset structure"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.image"
+    ]
   },
   {
     "id": "erdos-14-ann-count",
     "proofId": "erdos-14",
-    "range": { "startLine": 36, "endLine": 38 },
+    "range": { "startLine": 40, "endLine": 50 },
     "type": "definition",
-    "title": "Non-Unique Sum Count",
-    "content": "Count of integers in {1,...,N} not representable in exactly one way. This measures how far the sumset is from perfect unique coverage.",
-    "significance": "critical"
+    "title": "Non-Unique Sum Count (Finite and Infinite)",
+    "content": "Defines the non-unique sum count: the number of integers in $\\{1, \\ldots, N\\}$ not in `uniqueSums A`. The finite version `nonUniqueSumCount` works with `Finset`, while `nonUniqueSumCountInf` uses `Set.ncard` for infinite sets. This is the quantity whose growth rate is the subject of the problem.",
+    "mathContext": "$f_A(N) = |\\{1, \\ldots, N\\} \\setminus B| = |\\{n \\leq N : n \\text{ has } \\neq 1 \\text{ representation as } a+b\\}|$. Integers not in $B$ either have 0 representations (not in the sumset) or $\\geq 2$ representations (non-unique).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "counting functions",
+      "Set.ncard",
+      "set difference"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Set.ncard"
+    ]
   },
   {
     "id": "erdos-14-ann-14a",
     "proofId": "erdos-14",
-    "range": { "startLine": 49, "endLine": 53 },
-    "type": "theorem",
-    "title": "Conjecture 14a: Lower Bound",
-    "content": "For every A and ε > 0, |{1,...,N}\\B| ≫ N^{1/2−ε}. The non-unique count cannot be much smaller than √N.",
-    "significance": "critical"
+    "range": { "startLine": 52, "endLine": 59 },
+    "type": "concept",
+    "title": "Conjecture 14a: Lower Bound $\\gg N^{1/2-\\varepsilon}$",
+    "content": "The first open question: for every $A \\subseteq \\mathbb{N}$ and every $\\varepsilon > 0$, is the non-unique count at least $C_{\\varepsilon} N^{1/2 - \\varepsilon}$ for all sufficiently large $N$? This would mean that no set $A$ can make the unique sums cover almost all of $\\{1, \\ldots, N\\}$ — there must be at least $\\sim \\sqrt{N}$ 'failures'. Formalized using `∀ᶠ N in atTop`.",
+    "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\, \\forall \\varepsilon > 0,\\, \\exists C > 0,\\, \\forall^{\\infty} N,\\, f_A(N) \\geq C N^{1/2 - \\varepsilon}$. The best known lower bound is $f_A(N) \\gg N^{1/3 - \\varepsilon}$ infinitely often (ESS), far from the conjectured $N^{1/2 - \\varepsilon}$ for all large $N$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "lower bounds",
+      "Filter.Eventually",
+      "polynomial growth"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "Filter.atTop"
+    ]
   },
   {
     "id": "erdos-14-ann-14b",
     "proofId": "erdos-14",
-    "range": { "startLine": 56, "endLine": 58 },
-    "type": "theorem",
-    "title": "Conjecture 14b: o(√N) Possible?",
-    "content": "Can the non-unique count be o(√N)? If yes, question (a) would be answered negatively.",
-    "significance": "critical"
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "concept",
+    "title": "Conjecture 14b: Is $o(\\sqrt{N})$ Possible?",
+    "content": "The second open question: does there exist $A \\subseteq \\mathbb{N}$ with $f_A(N) = o(\\sqrt{N})$? A positive answer would contradict (a), since $o(\\sqrt{N})$ is smaller than $N^{1/2-\\varepsilon}$ for any fixed $\\varepsilon$. The ESS construction achieves $O(N^{1/2+\\varepsilon})$ but not $o(\\sqrt{N})$, so this asks whether the extra $N^{\\varepsilon}$ factor can be eliminated.",
+    "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, \\forall \\varepsilon > 0,\\, \\forall^{\\infty} N,\\, f_A(N) \\leq \\varepsilon \\sqrt{N}$. This is equivalent to: $\\exists A$ with $f_A(N) / \\sqrt{N} \\to 0$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "little-o notation",
+      "optimality questions",
+      "Filter.Eventually"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "Filter.atTop"
+    ]
   },
   {
     "id": "erdos-14-ann-ess-upper",
     "proofId": "erdos-14",
-    "range": { "startLine": 62, "endLine": 67 },
+    "range": { "startLine": 67, "endLine": 74 },
     "type": "theorem",
-    "title": "ESS Upper Bound",
-    "content": "Erdős–Sárközy–Szemerédi: there exists A with non-unique count ≪ N^{1/2+ε}. Close to √N from above.",
-    "significance": "key"
+    "title": "ESS Upper Bound: $O(N^{1/2+\\varepsilon})$ Achievable",
+    "content": "Erdős, Sárközy, and Szemerédi showed there exists $A \\subseteq \\mathbb{N}$ with $f_A(N) \\ll_{\\varepsilon} N^{1/2+\\varepsilon}$ for every $\\varepsilon > 0$. This means the non-unique count can be brought very close to $\\sqrt{N}$ — but the extra $N^{\\varepsilon}$ factor cannot be removed by their construction.",
+    "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, \\forall \\varepsilon > 0,\\, \\exists C > 0,\\, \\forall^{\\infty} N,\\, f_A(N) \\leq C N^{1/2 + \\varepsilon}$. The construction uses a probabilistic argument with careful adjustments to reduce collisions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Sárközy-Szemerédi",
+      "probabilistic construction",
+      "upper bounds"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "representation function"
+    ]
   },
   {
     "id": "erdos-14-ann-ess-lower",
     "proofId": "erdos-14",
-    "range": { "startLine": 70, "endLine": 75 },
+    "range": { "startLine": 76, "endLine": 81 },
     "type": "theorem",
-    "title": "ESS Lower Bound",
-    "content": "The same ESS set has non-unique count ≫ N^{1/3−ε} for infinitely many N. The gap 1/3 to 1/2 is open.",
-    "significance": "key"
+    "title": "ESS Lower Bound: $\\Omega(N^{1/3-\\varepsilon})$ Infinitely Often",
+    "content": "The same ESS construction has $f_A(N) \\gg_{\\varepsilon} N^{1/3-\\varepsilon}$ for infinitely many $N$. This is the best known lower bound and uses the `∃ᶠ` (frequently) quantifier in Lean. The gap between the exponents $1/3$ and $1/2$ is the open territory of the problem.",
+    "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, \\forall \\varepsilon > 0,\\, \\exists C > 0,\\, \\exists^{\\infty} N,\\, f_A(N) \\geq C N^{1/3 - \\varepsilon}$. Note the weaker quantifier: this holds for infinitely many $N$ (not eventually all $N$), unlike conjecture (a).",
+    "significance": "key",
+    "relatedConcepts": [
+      "frequently quantifier",
+      "infinitely often bounds",
+      "exponent gap"
+    ],
+    "prerequisites": [
+      "Filter.Frequently",
+      "asymptotic lower bounds"
+    ]
   },
   {
     "id": "erdos-14-ann-ef",
     "proofId": "erdos-14",
-    "range": { "startLine": 78, "endLine": 82 },
+    "range": { "startLine": 83, "endLine": 88 },
     "type": "theorem",
-    "title": "Erdős–Freud Finite Analogue",
-    "content": "For finite A ⊆ {1,...,N}, the non-unique count is < 2^{3/2}·√N. The constant may be optimal.",
-    "significance": "key"
+    "title": "Erdős-Freud Finite Analogue",
+    "content": "For the finite version (restricting $A \\subseteq \\{1, \\ldots, N\\}$), Erdős and Freud showed there exists $A$ with non-unique count less than $2^{3/2} \\sqrt{N} \\approx 2.83 \\sqrt{N}$. The constant $2^{3/2}$ may be optimal. This gives a concrete bound rather than an asymptotic one.",
+    "mathContext": "$\\forall N \\geq 1,\\, \\exists A \\subseteq \\{1, \\ldots, N\\},\\, |\\{1, \\ldots, N\\} \\setminus \\text{uniqueSums}(A)| < 2^{3/2} \\sqrt{N}$. The constant $2^{3/2} = 2\\sqrt{2}$ arises from optimizing the finite construction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Freud",
+      "finite analogues",
+      "explicit constants"
+    ],
+    "prerequisites": [
+      "finite combinatorics",
+      "Finset.Icc"
+    ]
   },
   {
     "id": "erdos-14-ann-sidon",
     "proofId": "erdos-14",
-    "range": { "startLine": 89, "endLine": 94 },
+    "range": { "startLine": 90, "endLine": 99 },
     "type": "theorem",
-    "title": "Sidon Set Structure",
-    "content": "Sidon sets give perfect uniqueness but are too sparse: |A∩{1,...,N}| ≤ √N + O(N^{1/4}), leaving ~N unrepresented integers.",
-    "significance": "supporting"
+    "title": "Sidon Set Analysis",
+    "content": "Sidon sets (sets where all pairwise sums are distinct) give perfect uniqueness — every sum has exactly one representation. But Sidon sets are too sparse: $|A \\cap \\{1, \\ldots, N\\}| \\leq \\sqrt{N} + O(N^{1/4})$. This means the sumset $A + A$ has at most $\\sim N$ elements, missing about half of $\\{1, \\ldots, N\\}$. So Sidon sets solve the uniqueness problem but fail the coverage problem.",
+    "mathContext": "If $A$ is Sidon (i.e., $a+b = c+d,\\, a \\leq b,\\, c \\leq d \\implies a=c \\wedge b=d$), then $\\text{uniqueSums}(A) = A + A$, so $f_A(N) = N - |A + A \\cap [1,N]|$. Since $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$, we get $|A+A| \\leq N + O(N^{3/4})$, hence $f_A(N) \\geq N/2$ eventually.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B₂ sequences",
+      "sumset size bounds"
+    ],
+    "prerequisites": [
+      "Sidon set density bounds",
+      "sumset cardinality"
+    ]
+  },
+  {
+    "id": "ann-e14-monotone",
+    "proofId": "erdos-14",
+    "range": { "startLine": 101, "endLine": 103 },
+    "type": "technique",
+    "title": "Monotonicity of Non-Unique Count",
+    "content": "The non-unique count $f_A(N) = |\\{1, \\ldots, N\\} \\setminus B|$ is monotonically non-decreasing in $N$: adding more integers to the range can only increase the count of non-uniquely represented ones. This simple observation is useful for converting 'infinitely often' bounds to 'eventually' bounds.",
+    "mathContext": "$M \\leq N \\implies f_A(M) \\leq f_A(N)$. This follows because $\\{1, \\ldots, M\\} \\setminus B \\subseteq \\{1, \\ldots, N\\} \\setminus B$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "counting function properties"
+    ],
+    "prerequisites": [
+      "set inclusion",
+      "cardinality monotonicity"
+    ]
   }
 ]

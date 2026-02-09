@@ -21,67 +21,83 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős, Sárközy, and Sós (1994) studied the structure of sumsets A + A when A is a Sidon set. They asked whether large Sidon sets always produce many isolated elements in A + A — elements with no neighbors in the sumset. The stronger form conjectures ≫ |A|² such elements.",
-    "problemStatement": "For any M ≥ 1, if A ⊂ ℕ is a sufficiently large finite Sidon set, do there exist at least M elements a ∈ A + A such that a - 1, a + 1 ∉ A + A?",
-    "proofStrategy": "We define IsSidonFinset (distinct pairwise sums), sumsetFinset (A + A), IsIsolated and isolatedCount. ErdosProblem152 states the weak version (unbounded count). ErdosProblem152Strong states the ≫ |A|² version. Sumset size and range bounds for Sidon sets are axiomatized. The infinite version is also stated.",
+    "historicalContext": "This problem was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I' in the Journal of Number Theory (pp. 329-347). They initiated a systematic study of the additive structure of Sidon sumsets, asking not just about the size of $A + A$ (which is exactly $\\binom{n+1}{2}$ for a Sidon set of size $n$) but about its fine structure — how the elements are distributed within their range.\n\nA Sidon set (also called a $B_2$ sequence) is a set where all pairwise sums are distinct: $a_1 + b_1 = a_2 + b_2$ implies $\\{a_1, b_1\\} = \\{a_2, b_2\\}$. Classical results show that a Sidon subset of $\\{1, \\ldots, N\\}$ has at most $\\sqrt{N} + O(N^{1/4})$ elements, so the sumset $A + A$ contains $\\sim N/2$ elements in an interval of length $\\sim 2N$ — density roughly $1/4$. This means roughly 3/4 of the interval is 'gaps', and the question is how many sumset elements are completely surrounded by these gaps.\n\nThe problem has a weak form (the isolated count grows without bound) and a strong form ($\\gg |A|^2$ isolated elements, meaning a positive fraction of the sumset is isolated). Neither version has been resolved. The pigeonhole principle gives at least one isolated element for $|A| \\geq 5$, but going from one to unboundedly many requires understanding the global distribution of sums, not just local density.",
+    "problemStatement": "For any $M \\geq 1$, if $A \\subset \\mathbb{N}$ is a sufficiently large finite Sidon set, do there exist at least $M$ elements $s \\in A + A$ such that $s - 1, s + 1 \\notin A + A$?",
+    "proofStrategy": "The formalization defines `IsSidonFinset` (distinct pairwise sums via multiset equality), `sumsetFinset` ($A + A$ via pointwise addition), `IsIsolated` (no sumset neighbors), and `isolatedCount`. The weak conjecture `ErdosProblem152` uses a $\\forall M, \\exists N_0$ structure. The strong conjecture `ErdosProblem152Strong` asserts $I(A) \\geq c|A|^2$. Supporting axioms give the exact sumset size ($n(n+1)/2$), the minimum range bound ($\\max A \\geq n^2 - n + 1$), and a pigeonhole existence result. The infinite version `ErdosProblem152Infinite` is also stated.",
     "keyInsights": [
-      "Sidon sets have |A + A| = n(n+1)/2, nearly half of all possible sums",
-      "The sumset fits in an interval of length ≤ 2·max A, creating many gaps",
-      "Isolated elements are those with no sumset neighbors, measuring sparsity",
-      "The conjectured ≫ |A|² count says a positive fraction of the sumset is isolated"
+      "For a Sidon set of size $n$, the sumset $A + A$ has exactly $n(n+1)/2$ elements (all unordered-pair sums distinct) in an interval of length $\\sim 2n^2$. The sumset density is $\\sim 1/4$, meaning the sumset is a sparse subset of its range with many gaps. The conjecture asks about the *fine structure* of these gaps.",
+      "The strong conjecture ($\\gg n^2$ isolated elements) says that a positive fraction of the sumset elements are isolated. Since $|A + A| \\sim n^2/2$, this would mean $\\sim cn^2$ out of $\\sim n^2/2$ elements have no neighbors — a constant fraction. This is a statement about the 'lacunarity' of Sidon sumsets.",
+      "The difficulty lies in controlling the *local* structure of the sumset. Pigeonhole arguments show that gaps exist and are numerous ($\\sim 3n^2/2$ total gaps), but converting gaps into isolated elements requires that gaps are not all clustered together — they must be well-distributed throughout the sumset.",
+      "The problem connects to deeper questions about the additive energy of Sidon sets and the distribution of gaps in sumsets. Random Sidon-like sets would have isolated elements in proportion to $n^2$, suggesting the conjecture is true, but deterministic Sidon sets could potentially have more structured gap patterns.",
+      "The infinite version is related but distinct: for infinite Sidon sets $A \\subset \\mathbb{N}$, the truncations $A \\cap [1,N]$ are finite Sidon sets of growing size ($\\sim \\sqrt{N}$), so the finite conjecture would imply unbounded isolated counts for truncations. However, the infinite version might be provable with weaker methods."
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and References",
+      "startLine": 1,
+      "endLine": 13,
+      "summary": "Documents the problem from Erdős-Sárközy-Sós (1994), J. Number Theory. States both the weak (unbounded) and strong ($\\gg |A|^2$) forms."
+    },
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 15,
+      "endLine": 22,
+      "summary": "Imports Mathlib Sidon set library, pointwise finset operations, and filter basics. Opens `Pointwise` scope."
+    },
     {
       "id": "sidon-sumsets",
       "title": "Sidon Sets and Sumsets",
       "startLine": 24,
       "endLine": 35,
-      "summary": "Defines IsSidonFinset (distinct pairwise sums) and sumsetFinset (A + A)."
+      "summary": "Defines `IsSidonFinset` (distinct pairwise sums) and `sumsetFinset A = A + A`. The Sidon property gives $|A+A| = \\binom{n+1}{2}$."
     },
     {
       "id": "isolated-elements",
       "title": "Isolated Elements",
       "startLine": 37,
       "endLine": 49,
-      "summary": "Defines IsIsolated (no sumset neighbors) and isolatedCount."
+      "summary": "Defines `IsIsolated` ($s \\pm 1 \\notin A+A$) and `isolatedCount` via `Finset.filter`. The central counting function of the problem."
     },
     {
-      "id": "conjecture",
-      "title": "The Conjecture",
+      "id": "weak-conjecture",
+      "title": "Weak Conjecture: Unbounded Isolated Count",
       "startLine": 51,
       "endLine": 60,
-      "summary": "States ErdosProblem152: isolatedCount → ∞ as |A| → ∞ over Sidon sets."
+      "summary": "States `ErdosProblem152`: $\\forall M, \\exists N_0, \\forall$ Sidon $A$ with $|A| \\geq N_0$, $I(A) \\geq M$."
     },
     {
       "id": "strong-conjecture",
-      "title": "The Stronger Conjecture",
+      "title": "Strong Conjecture: $\\gg |A|^2$ Isolated Elements",
       "startLine": 62,
       "endLine": 72,
-      "summary": "ErdosProblem152Strong: isolatedCount ≥ c·|A|² for some c > 0."
+      "summary": "States `ErdosProblem152Strong`: $\\exists c > 0$ with $I(A) \\geq c|A|^2$ for all Sidon $A$. A constant fraction of the sumset is isolated."
     },
     {
-      "id": "sumset-size",
-      "title": "Sumset Size for Sidon Sets",
+      "id": "sumset-bounds",
+      "title": "Sumset Size and Range Bounds",
       "startLine": 74,
       "endLine": 88,
-      "summary": "|A + A| = n(n+1)/2 and Sidon sets need max element ≥ n² - n + 1."
+      "summary": "Axiomatizes $|A+A| = n(n+1)/2$ and $\\max A \\geq n^2 - n + 1$ for Sidon sets of size $n$."
     },
     {
-      "id": "related-results",
-      "title": "Related Results",
+      "id": "related",
+      "title": "Pigeonhole and Infinite Version",
       "startLine": 90,
       "endLine": 109,
-      "summary": "Pigeonhole gap existence and the infinite Sidon set version."
+      "summary": "Pigeonhole: $I(A) \\geq 1$ for $|A| \\geq 5$. Infinite version: does $I(A \\cap [1,N]) \\to \\infty$ for infinite Sidon $A$?"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 152 asks whether large Sidon sets always produce many isolated elements in their sumsets. The weak version (unbounded count) and strong version (≫ |A|²) are both open.",
-    "implications": "Understanding the gap structure of Sidon sumsets connects to additive combinatorics and the inverse sumset problem.",
+    "summary": "This formalization captures Erdős Problem #152 in 109 lines of Lean 4, encoding the isolated element counting problem for Sidon sumsets with both weak (unbounded) and strong ($\\gg |A|^2$) forms, the exact sumset size identity, range bounds, pigeonhole existence, and the infinite version. Zero sorries; structural results axiomatized.",
+    "implications": "Resolution would reveal the fine structure of Sidon sumsets beyond mere counting. The strong form would establish that Sidon sumsets are inherently 'lacunary' — not just sparse on average, but with many isolated points. This connects to the theory of $B_2$ sequences, additive energy bounds, and the broader question of how arithmetic structure (the Sidon property) constrains the distribution of sums.",
     "openQuestions": [
-      "Does isolatedCount → ∞ for large Sidon sets?",
-      "Is isolatedCount ≥ c·|A|² for some absolute constant c?",
-      "Does the analogous result hold for infinite Sidon sets?"
+      "Does $I(A) \\to \\infty$ as $|A| \\to \\infty$ over Sidon sets? This is the weak form, still open.",
+      "Is $I(A) \\geq c|A|^2$ for some absolute $c > 0$? This is the strong form. What is the optimal constant $c$?",
+      "Does the infinite version hold: for infinite Sidon $A \\subset \\mathbb{N}$, does $I(A \\cap [1,N]) \\to \\infty$?",
+      "What is the minimum isolated count among all Sidon sets of size $n$? Computational evidence for small $n$ could guide the conjecture."
     ]
   }
 }
