@@ -2,7 +2,7 @@
   "id": "erdos-116",
   "title": "Erdős Problem #116: Measure of Polynomial Sublevel Sets",
   "slug": "erdos-116",
-  "description": "For a monic polynomial p with all roots in the unit disk, is |{|p(z)|<1}| ≥ n^{-O(1)}? PROVED: Krishnapur–Lundberg–Ramachandran showed |{|p(z)|<1}| ≥ c/log n, and this is tight up to log log factors.",
+  "description": "For a monic polynomial p with all roots in the unit disk, is |{|p(z)|<1}| ≥ n^{-O(1)}? PROVED: Krishnapur-Lundberg-Ramachandran showed |{|p(z)|<1}| ≥ c/log n, and this is tight up to log log factors.",
   "meta": {
     "author": "Erdős, Herzog, Piranian",
     "sourceUrl": "https://erdosproblems.com/116",
@@ -21,60 +21,83 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős, Herzog, and Piranian conjectured that for any monic polynomial of degree n with roots in the closed unit disk, the sublevel set {|p(z)| < 1} has Lebesgue measure at least n^{-O(1)}, or even (log n)^{-O(1)}. Pommerenke first proved c/n⁴, and Krishnapur–Lundberg–Ramachandran achieved the optimal c/log n.",
-    "problemStatement": "Is the 2D Lebesgue measure of {z ∈ ℂ : |p(z)| < 1} at least (log n)^{-O(1)} for every monic degree-n polynomial with roots in the unit disk?",
-    "proofStrategy": "Defines unit disk polynomials, their sublevel sets, and the associated measure. States Pommerenke's n^{-4} bound, the KLR optimal c/log n lower bound, the KLR C/log log n upper bound, and Pólya's absolute π bound.",
+    "historicalContext": "This conjecture was posed by Paul Erdős, Fritz Herzog, and George Piranian in their 1958 paper on metric properties of polynomials. They asked: for a monic polynomial $p(z) = \\prod(z - z_i)$ of degree $n$ with all roots in the closed unit disk $\\overline{\\mathbb{D}}$, how small can the 2D Lebesgue measure of the sublevel set $\\{z \\in \\mathbb{C} : |p(z)| < 1\\}$ be? They conjectured the measure is at least $n^{-O(1)}$, or even $(\\log n)^{-O(1)}$.\n\nThe sublevel set $\\{|p(z)| < 1\\}$ is a polynomial lemniscate — the region where the polynomial is small. Its geometry depends intricately on the root configuration: when roots cluster, the lemniscate concentrates into a single blob of area $\\pi$; when roots spread across the disk, it fragments into many small components whose total area shrinks.\n\nThe first major progress came from Pommerenke, who proved the measure is at least $c/n^4$ using logarithmic potential theory and transfinite diameter estimates. This established the polynomial decay rate but left a large gap.\n\nThe problem was fully resolved by Manjunath Krishnapur, Erik Lundberg, and Koushik Ramachandran, who proved the optimal lower bound $c/\\log n$. Their proof combined probabilistic methods with careful estimates on the polynomial's value distribution. They also showed this is nearly tight by constructing polynomials achieving measure at most $C/\\log\\log n$, leaving only a small gap between $1/\\log n$ and $1/\\log\\log n$.",
+    "problemStatement": "Is the 2D Lebesgue measure of $\\{z \\in \\mathbb{C} : |p(z)| < 1\\}$ at least $(\\log n)^{-O(1)}$ for every monic degree-$n$ polynomial with roots in the unit disk?",
+    "proofStrategy": "The formalization defines the key objects in 99 lines of Lean 4: the `UnitDiskPoly` structure (monic polynomials with roots in $\\overline{\\mathbb{D}}$), the sublevel set $\\{|p(z)| < 1\\}$, and the sublevel measure $\\mu(S_p)$ as 2D Lebesgue measure. Four main bounds are stated as axioms: Pommerenke's $c/n^4$, KLR's lower bound $c/\\log n$ (which proves the conjecture), KLR's upper bound $C/\\log\\log n$ (near-tightness), and Pólya's absolute upper bound $\\pi$. The main result `ErdosProblem116` records the resolution. A final axiom states the existence of minimizers via compactness.",
     "keyInsights": [
-      "The sublevel set {|p(z)| < 1} surrounds each root, and its measure quantifies how 'spread out' the small values are",
-      "Pommerenke's bound c/n⁴ was the first polynomial lower bound",
-      "KLR's c/log n is nearly tight: the matching upper bound is C/log log n",
-      "Pólya showed the maximum measure π is achieved only when all roots coincide"
+      "The sublevel set $\\{|p(z)| < 1\\}$ is a polynomial lemniscate whose geometry encodes the root distribution: clustered roots give large area (up to $\\pi$), while spread-out roots fragment the set and shrink its measure to $\\Theta(1/\\log n)$.",
+      "The resolution proceeded through a dramatic improvement: from Pommerenke's $c/n^4$ (polynomial decay) to KLR's $c/\\log n$ (logarithmic decay), an exponential improvement in the dependence on degree $n$.",
+      "Pólya's classical result provides a sharp upper bound: $\\mu(S_p) \\leq \\pi$ with equality only when all roots coincide, making $S_p$ a round disk. This connects to the isoperimetric properties of lemniscates.",
+      "The remaining gap between the lower bound $c/\\log n$ and the KLR upper bound $C/\\log\\log n$ is a genuinely open problem: it is unknown whether the true minimum is $\\Theta(1/\\log n)$ or $\\Theta(1/\\log\\log n)$ or something in between.",
+      "The `UnitDiskPoly` structure elegantly bundles the roots and their disk containment proofs, avoiding the need to work with the polynomial ring directly and instead treating the polynomial through its root factorization $p(z) = \\prod(z - z_i)$."
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and History",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Documents the Erdős-Herzog-Piranian conjecture, its resolution by KLR, Pommerenke's earlier bound, and the near-matching upper bound. References erdosproblems.com/116."
+    },
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 20,
+      "endLine": 25,
+      "summary": "Imports Mathlib modules for complex circle, Lebesgue measure, logarithm, and complex basics."
+    },
+    {
       "id": "setup",
-      "title": "Monic Polynomials with Roots in the Unit Disk",
-      "startLine": 22,
-      "endLine": 37,
-      "summary": "Defines unit disk polynomials, their evaluation, and sublevel sets."
+      "title": "Unit Disk Polynomials",
+      "startLine": 26,
+      "endLine": 39,
+      "summary": "Defines the `UnitDiskPoly` structure (monic degree-$n$ polynomial with roots in $\\overline{\\mathbb{D}}$), polynomial evaluation via root product, and the sublevel set $\\{|p(z)| < 1\\}$."
     },
     {
       "id": "measure",
       "title": "Sublevel Set Measure",
       "startLine": 41,
-      "endLine": 45,
-      "summary": "Defines the 2D Lebesgue measure of the sublevel set."
+      "endLine": 47,
+      "summary": "Defines `sublevelMeasure` as the 2D Lebesgue measure of the sublevel set, identifying $\\mathbb{C}$ with $\\mathbb{R}^2$ via the standard measure space."
     },
     {
       "id": "pommerenke",
       "title": "Pommerenke's Bound",
       "startLine": 49,
-      "endLine": 53,
-      "summary": "States the first polynomial lower bound c/n⁴."
+      "endLine": 55,
+      "summary": "States the first polynomial lower bound: $\\mu(S_P) \\geq c/n^4$ for all unit disk polynomials. Proved using logarithmic potential theory."
     },
     {
       "id": "klr",
       "title": "KLR Bounds",
       "startLine": 57,
       "endLine": 72,
-      "summary": "States the optimal lower bound c/log n and the near-matching upper bound C/log log n."
+      "summary": "States the optimal KLR lower bound $c/\\log n$ (resolving the conjecture) and the near-tight upper bound $C/\\log\\log n$ from extremal polynomial constructions."
     },
     {
-      "id": "polya-and-conjecture",
-      "title": "Pólya Bound and Main Result",
-      "startLine": 76,
-      "endLine": 97,
-      "summary": "States Pólya's π upper bound and the proved Erdős–Herzog–Piranian conjecture."
+      "id": "polya",
+      "title": "Pólya's Upper Bound",
+      "startLine": 74,
+      "endLine": 79,
+      "summary": "States $\\mu(S_P) \\leq \\pi$ for all unit disk polynomials, with equality iff all roots coincide."
+    },
+    {
+      "id": "resolution",
+      "title": "Problem Resolution and Minimizers",
+      "startLine": 81,
+      "endLine": 99,
+      "summary": "Records `ErdosProblem116` as proved via the KLR lower bound, and states the existence of minimizing polynomials for each degree as an open problem."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 116 is PROVED: the sublevel set measure is Θ(1/log n) up to log log factors. The KLR lower bound c/log n resolves the conjecture, and the KLR upper bound C/log log n shows a small remaining gap.",
-    "implications": "The result connects polynomial geometry to measure theory and has applications in potential theory and complex dynamics.",
+    "summary": "This formalization captures the complete landscape of Erdős Problem #116 in 99 lines of Lean 4: from the `UnitDiskPoly` definition through four major bounds (Pommerenke $c/n^4$, KLR $c/\\log n$, KLR $C/\\log\\log n$, Pólya $\\pi$) to the formal resolution. The problem is PROVED with the optimal $c/\\log n$ lower bound.",
+    "implications": "The resolution connects polynomial geometry to measure theory through the study of lemniscates. The techniques of Krishnapur, Lundberg, and Ramachandran combine probabilistic methods with potential-theoretic estimates, suggesting new approaches to related extremal problems about polynomial level sets. The result also has implications for numerical analysis, where sublevel set sizes affect condition number estimates.",
     "openQuestions": [
-      "Which polynomials minimize the sublevel measure for each degree n?",
-      "Is the exact minimum Θ(1/log n) or Θ(1/log log n)?",
-      "Do analogous results hold for polynomials with roots on the unit circle?"
+      "What is the exact asymptotic minimum of $\\mu(S_P)$ over degree-$n$ unit disk polynomials? The gap between $c/\\log n$ and $C/\\log\\log n$ is open.",
+      "Which root configurations minimize the sublevel set measure for each degree $n$? Are the extremal polynomials related to Fekete points or other classical point configurations?",
+      "Do analogous results hold for polynomials with roots constrained to the unit circle $|z_i| = 1$ rather than the closed disk?",
+      "Can the measure lower bound be strengthened if additional constraints are placed on the root distribution, such as requiring roots to be real or equally spaced?"
     ]
   }
 }
