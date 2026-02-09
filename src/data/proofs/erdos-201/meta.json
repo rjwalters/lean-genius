@@ -21,67 +21,97 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "First investigated by Riddell (1969), this problem connects two natural measures of arithmetic-progression-free subsets. Erdős asked whether the extremal function R_k(N) for {1,…,N} and the guaranteed function G_k(N) for arbitrary N-element integer sets are asymptotically equal for k=3.",
-    "problemStatement": "Let G_k(N) denote the minimum size of a k-AP-free subset guaranteed in any set of N integers, and R_k(N) the maximum size of a k-AP-free subset of {1,…,N}. Is lim_{N→∞} R_3(N)/G_3(N) = 1?",
-    "proofStrategy": "The formalization defines k-term arithmetic progressions, AP-free sets, R_k(N) via powerset filtration, and G_k(N) axiomatically. The conjecture is stated as: for every ε > 0, R_3(N) ≤ (1+ε) G_3(N) for large N.",
+    "historicalContext": "Riddell (1969) first investigated the function $G_k(N)$ — the guaranteed size of a $k$-AP-free subset in any $N$-element integer set. The natural comparison with $R_k(N)$ (the maximum AP-free subset of $\\{1, \\ldots, N\\}$, studied by Roth and later Szemerédi) reveals a subtle gap: $\\{1, \\ldots, N\\}$ is not always the worst case for AP avoidance. Komlós, Sulyok, and Szemerédi (1975) proved the fundamental result that $R_k(N) \\asymp G_k(N)$, showing the two functions have the same order of magnitude. Erdős then asked the sharper question: does the ratio $R_3(N)/G_3(N)$ tend to 1? This connects to the broader program of understanding how the structure of the ambient set affects AP density, a theme central to Szemerédi's theorem (1975) and the subsequent work of Gowers, Green–Tao, and Kelley–Meka on quantitative bounds for $R_3(N)$.",
+    "problemStatement": "Let $G_k(N)$ denote the minimum size of a $k$-AP-free subset guaranteed in any set of $N$ integers, and $R_k(N)$ the maximum size of a $k$-AP-free subset of $\\{1, \\ldots, N\\}$. Is $\\lim_{N \\to \\infty} R_3(N)/G_3(N) = 1$?",
+    "proofStrategy": "The formalization defines $k$-term APs via `Fin k`-indexed arithmetic sequences, AP-free sets, $R_k(N)$ as a computable supremum over the powerset of Icc$\\,1\\,N$, and $G_k(N)$ axiomatically. Structural lemmas (AP transfer, subset inheritance) are proved. The KSS bound, concrete examples ($G_3(5) = 3 < 4 = R_3(5)$), monotonicity properties, and the main conjecture in $\\varepsilon$-$N_0$ form are all formalized.",
     "keyInsights": [
-      "G_k(N) ≤ R_k(N) trivially since {1,…,N} is an N-element set",
-      "Strict inequality: G_3(5) = 3 while R_3(5) = 4",
-      "Komlós–Sulyok–Szemerédi (1975) proved R_k(N) ≪_k G_k(N), establishing the same order of magnitude",
-      "The conjecture asks whether the constant in the KSS bound approaches 1 for k=3"
+      "**Trivial bound with strict gap**: $G_k(N) \\leq R_k(N)$ always, but $G_3(5) = 3 < 4 = R_3(5)$ shows $\\{1, \\ldots, N\\}$ is not the worst case for 3-AP avoidance",
+      "**Komlós–Sulyok–Szemerédi (1975)**: $R_k(N) \\leq C(k) \\cdot G_k(N)$, establishing order-of-magnitude equivalence. The conjecture asks whether $C(3) \\to 1$",
+      "**Connection to Roth/Szemerédi bounds**: $R_3(N) = o(N)$ (Roth 1953) and recent Kelley–Meka improvements give $R_3(N) \\leq N/\\exp(c(\\log N)^{1/12})$, but these bounds on $R_3$ don't directly determine the ratio $R_3/G_3$",
+      "**Proved monotonicity**: $R_k(N)$ is monotone in $N$ (larger interval has more AP-free subsets) and anti-monotone in $k$ ($l$-AP-free implies $k$-AP-free for $k \\leq l$), both verified in Lean",
+      "**$\\varepsilon$-$N_0$ formalization**: The conjecture uses $\\mathbb{Q}$ for the $(1 + \\varepsilon)$ bound, avoiding real analysis while precisely capturing the asymptotic ratio"
     ]
   },
   "sections": [
     {
-      "id": "arithmetic-progressions",
-      "title": "Arithmetic Progressions",
-      "startLine": 24,
-      "endLine": 42,
-      "summary": "Definitions of k-term arithmetic progressions in integer sets and AP-free sets."
+      "id": "imports",
+      "title": "Library Imports",
+      "startLine": 23,
+      "endLine": 26,
+      "summary": "Imports Mathlib for `Finset`, cardinality, $\\mathbb{Z}$-arithmetic, and tactics."
     },
     {
-      "id": "rk-gk",
-      "title": "The Functions G_k and R_k",
-      "startLine": 44,
-      "endLine": 56,
-      "summary": "R_k(N) as the maximum AP-free subset of {1,…,N}; G_k(N) as the guaranteed AP-free subset in arbitrary N-element sets."
+      "id": "ap-definitions",
+      "title": "Arithmetic Progressions and AP-Free Sets",
+      "startLine": 33,
+      "endLine": 39,
+      "summary": "Defines ContainsAPOfLength$(A, k)$ via $\\exists a, d \\neq 0: \\{a, a+d, \\ldots\\} \\subseteq A$ and IsAPFree as its negation."
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Structural Lemmas (Proved)",
+      "startLine": 42,
+      "endLine": 57,
+      "summary": "AP transfer ($k \\leq l$ AP containment), AP-freeness inheritance ($k$-free $\\implies$ $l$-free), and subset closure — all proved in Lean."
+    },
+    {
+      "id": "rk-definition",
+      "title": "$R_k(N)$ Definition",
+      "startLine": 64,
+      "endLine": 67,
+      "summary": "$R_k(N) = \\sup\\{|A| : A \\subseteq \\text{Icc}\\,1\\,N, \\text{IsAPFree}\\,A\\,k\\}$ via powerset filtration."
+    },
+    {
+      "id": "gk-definition",
+      "title": "$G_k(N)$ Definition and Properties",
+      "startLine": 74,
+      "endLine": 83,
+      "summary": "$G_k(N)$ axiomatized with Prop-level characterization gk_prop$(k, N, m)$. Quantification over all $N$-element sets makes this non-computable."
     },
     {
       "id": "basic-bounds",
-      "title": "Basic Bounds",
-      "startLine": 58,
-      "endLine": 72,
-      "summary": "Trivial bound G_k(N) ≤ R_k(N) and concrete examples showing strict inequality."
+      "title": "Basic Bounds and Examples",
+      "startLine": 89,
+      "endLine": 100,
+      "summary": "$G_k(N) \\leq R_k(N)$ (trivial) with strict examples: $G_3(5) = 3 < 4 = R_3(5)$ and $G_3(14) \\leq 7 < 8 = R_3(14)$."
     },
     {
       "id": "kss-bound",
       "title": "Komlós–Sulyok–Szemerédi Bound",
-      "startLine": 74,
-      "endLine": 80,
-      "summary": "R_k(N) and G_k(N) have the same order of magnitude (1975 result)."
+      "startLine": 108,
+      "endLine": 109,
+      "summary": "$\\exists C > 0: R_k(N) \\leq C \\cdot G_k(N)$ for all $N$, establishing $R_k \\asymp G_k$ (1975)."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture",
-      "startLine": 82,
-      "endLine": 91,
-      "summary": "Erdős Problem 201: the ratio R_3(N)/G_3(N) tends to 1."
+      "title": "The Open Conjecture",
+      "startLine": 119,
+      "endLine": 122,
+      "summary": "ErdosProblem201: $\\forall \\varepsilon > 0, \\exists N_0: \\forall N \\geq N_0, R_3(N) \\leq (1 + \\varepsilon) \\cdot G_3(N)$."
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity",
-      "startLine": 93,
-      "endLine": 100,
-      "summary": "R_k is monotone in N and anti-monotone in k."
+      "title": "Monotonicity Properties (Proved)",
+      "startLine": 129,
+      "endLine": 149,
+      "summary": "$R_k$ monotone in $N$ and anti-monotone in $k$, both proved structurally using Icc nesting and AP transfer."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Base Cases",
+      "startLine": 156,
+      "endLine": 197,
+      "summary": "Proved: $G_3(5) < R_3(5)$, empty/singleton AP-freeness, $R_k(N) \\geq 1$, and a summary theorem via `Classical.em`."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 201 on the asymptotic equality of R_3(N) and G_3(N), with the Komlós–Sulyok–Szemerédi bound and concrete examples as supporting results.",
-    "implications": "A positive answer would show that arbitrary N-element integer sets behave like {1,…,N} with respect to 3-AP-free subsets, unifying two fundamental measures in additive combinatorics.",
+    "summary": "Erdős Problem #201 asks whether the ratio $R_3(N)/G_3(N)$ tends to 1 — whether the interval $\\{1, \\ldots, N\\}$ is asymptotically the worst case for 3-AP-free subsets among all $N$-element integer sets. The KSS bound (1975) establishes order-of-magnitude equivalence, and the formalization includes several proved structural results (AP transfer, monotonicity, base cases).",
+    "implications": "A positive answer would unify two fundamental measures in additive combinatorics, showing that the extremal behavior of AP-free sets is asymptotically determined by the simplest ambient set $\\{1, \\ldots, N\\}$. This would have implications for transfer principles in extremal combinatorics.",
     "openQuestions": [
-      "Is lim R_3(N)/G_3(N) = 1?",
-      "What is the precise growth rate of G_k(N) for general k?",
-      "Can the KSS bound constant be made explicit?"
+      "Is $\\lim_{N \\to \\infty} R_3(N)/G_3(N) = 1$?",
+      "What is the best explicit constant $C$ in the KSS bound $R_3(N) \\leq C \\cdot G_3(N)$?",
+      "Does the analogous ratio converge to 1 for $k \\geq 4$?",
+      "Can the Kelley–Meka bounds on $R_3(N)$ be transferred to bounds on $G_3(N)$?"
     ]
   }
 }
