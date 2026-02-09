@@ -1,0 +1,115 @@
+{
+  "slug": "stirling-formula-oq-02",
+  "title": "Stirling Approximation for the Gamma Function",
+  "phase": "PROVING",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Gamma(n+1) ~ sqrt(2*pi*n) * (n/e)^n as n -> infinity, generalizing Stirling's formula from factorials to the Gamma function",
+    "plain": "Extend Stirling's formula n! ~ sqrt(2*pi*n)*(n/e)^n to the Gamma function: Gamma(n+1) ~ sqrt(2*pi*n)*(n/e)^n at integer points, with the continuous extension Gamma(x+1) ~ sqrt(2*pi*x)*(x/e)^x stated.",
+    "whyMatters": [
+      "Generalizes Wiedijk #90 (Stirling's formula) from factorials to the Gamma function",
+      "Gamma function is fundamental in analysis, probability, and physics",
+      "Log-Gamma approximation is essential for entropy calculations and statistical mechanics"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Gamma(n+1) = n! (from Mathlib: Real.Gamma_nat_eq_factorial)",
+      "Gamma(n+1) ~ sqrt(2*pi*n)*(n/e)^n (asymptotic equivalence at integers)",
+      "Gamma(n+1)/stirlingApprox -> 1 (ratio convergence)",
+      "sqrt(2*pi*n)*(n/e)^n <= Gamma(n+1) (lower bound from stirling sequence antitonicity)",
+      "log(sqrt(2*pi*n)) + n*log(n/e) <= log(Gamma(n+1)) (log-Gamma lower bound)",
+      "Gamma(1/2) = sqrt(pi) (via Complex.Gamma_one_half_eq)",
+      "Gamma(1) = 1",
+      "Gamma(n+2) = (n+1)*Gamma(n+1) (recurrence)",
+      "Gamma(n+1) <= n^n (factorial growth bound)",
+      "Relative error -> 0 as n -> infinity"
+    ],
+    "open": [
+      "Continuous Stirling: Gamma(x+1)/[sqrt(2*pi*x)*(x/e)^x] -> 1 as x -> +inf (requires Laplace method)",
+      "Duplication formula at natural numbers (stated with sorry)"
+    ],
+    "goal": "Full Stirling approximation for the Gamma function with bounds and error analysis"
+  },
+  "currentState": {
+    "phase": "PROVING",
+    "since": "2026-02-09T22:00:00.000Z",
+    "iteration": 2,
+    "focus": "Completed integer-point Stirling for Gamma, lower bounds, log-Gamma, and special values.",
+    "blockers": [
+      "Continuous Stirling requires Laplace method (~500 lines of integral analysis)",
+      "Duplication formula needs careful casting between real and complex Gamma"
+    ],
+    "nextAction": "Submit continuous Stirling and duplication sorry to Aristotle for proof search.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Built StirlingFormulaOQ02.lean with 15+ theorems connecting Gamma to Stirling. Core results: Gamma-factorial bridge, asymptotic equivalence, lower bounds, log-Gamma bounds, Gamma(1/2)=sqrt(pi), recurrence, growth bounds, error convergence. Two sorries remain: continuous Stirling (Laplace method) and duplication formula.",
+    "builtItems": [
+      "proofs/Proofs/StirlingFormulaOQ02.lean - 400+ lines, 15+ theorems",
+      "gamma_eq_factorial: Gamma(n+1) = n!",
+      "gamma_isEquivalent_stirling: Gamma(n+1) ~ sqrt(2*pi*n)*(n/e)^n",
+      "gamma_lower_bound: sqrt(2*pi*n)*(n/e)^n <= Gamma(n+1)",
+      "gamma_div_stirling_tendsto_one: ratio convergence",
+      "log_gamma_lower_bound: log-Gamma lower bound",
+      "gamma_one_half: Gamma(1/2) = sqrt(pi)",
+      "gamma_stirling_relative_error_tendsto: error -> 0"
+    ],
+    "insights": [
+      "Real.Gamma_nat_eq_factorial bridges Gamma to factorials cleanly",
+      "Complex.Gamma_ofReal connects real and complex Gamma for deriving Gamma(1/2)=sqrt(pi)",
+      "Stirling antitonicity (stirlingSeq'_antitone) gives lower bounds on Gamma via factorial",
+      "Complex.Gamma_one_half_eq exists but Real version does not in Mathlib v4.26.0",
+      "Must use Complex.ofReal_cpow for casting cpow between real and complex",
+      "le_div_iff renamed to le_div_iff₀ in Mathlib v4.26.0",
+      "Continuous Stirling would need Laplace method - not feasible in single session"
+    ],
+    "mathlibGaps": [
+      "No Real.Gamma_one_half_eq (only Complex version exists)",
+      "No Stirling approximation for real-variable Gamma in Mathlib",
+      "No Legendre duplication formula for Real.Gamma"
+    ],
+    "nextSteps": [
+      "Submit to Aristotle for the two sorry proofs",
+      "Add gallery integration for stirling-formula-oq-02",
+      "Consider building Laplace method infrastructure for continuous Stirling"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Gamma-factorial bridge with Stirling transfer",
+      "status": "succeeded",
+      "description": "Connect Gamma(n+1) = n! (Mathlib) with existing Stirling formula to derive Gamma asymptotics at integer points. Derive bounds, log approximations, and special values."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "asymptotics",
+    "extension",
+    "gamma-function",
+    "stirling"
+  ],
+  "relatedProofs": [
+    "stirling-formula"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Gamma.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup",
+      "Mathlib.Analysis.SpecialFunctions.Stirling"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-09T22:46:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}
