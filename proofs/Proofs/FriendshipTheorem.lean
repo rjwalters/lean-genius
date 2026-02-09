@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 -/
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
+import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Fintype.Card
 import Mathlib.Algebra.BigOperators.Ring.Finset
@@ -126,18 +127,69 @@ lemma friendship_positive_degree (hF : IsFriendshipGraph G) (h : Fintype.card V 
   simp only [degree, Finset.card_pos, Finset.Nonempty]
   exact ⟨w, (G.mem_neighborFinset v w).mpr hw_mem.1⟩
 
-/-- **Axiom: In a friendship graph, the number of vertices is odd.**
+/-- In a friendship graph with universal vertex c, every non-center vertex
+    has exactly two neighbors: c and its unique partner. -/
+lemma friendship_noncentral_degree (hF : IsFriendshipGraph G)
+    (c : V) (hc : IsUniversalVertex G c) (u : V) (hu : u ≠ c) :
+    G.degree u = 2 := by
+  have h1 := hF u c hu
+  rw [Set.ncard_eq_one] at h1
+  obtain ⟨w, hw⟩ := h1
+  have hw_mem : w ∈ G.commonNeighbors u c := hw ▸ Set.mem_singleton w
+  rw [mem_commonNeighbors] at hw_mem
+  have hwu : w ≠ u := fun heq => G.loopless u (heq ▸ hw_mem.1)
+  have hwc : w ≠ c := fun heq => G.loopless c (G.symm (heq ▸ hw_mem.2))
+  have hneighbors : G.neighborFinset u = {c, w} := by
+    ext v
+    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · intro hadj
+      by_cases hvc : v = c
+      · left; exact hvc
+      · right
+        have hcv : G.Adj c v := hc v hvc
+        have : v ∈ G.commonNeighbors u c := mem_commonNeighbors.mpr ⟨hadj, G.symm hcv⟩
+        exact Set.mem_singleton_iff.mp (hw ▸ this)
+    · intro hv
+      rcases hv with rfl | rfl
+      · exact G.symm (hc u hu)
+      · exact hw_mem.1
+  rw [SimpleGraph.degree, hneighbors, Finset.card_pair (Ne.symm hwc)]
 
-    The proof uses counting: for a windmill with n triangles sharing a center,
-    there are 2n + 1 vertices. The friendship property forces this structure,
-    so the number of vertices is always 2n + 1 for some n ≥ 1. -/
-axiom friendship_card_odd_axiom (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3) :
-    Odd (Fintype.card V)
+/-- The degree of a universal vertex equals n - 1. -/
+lemma universal_degree (c : V) (hc : IsUniversalVertex G c) :
+    G.degree c = Fintype.card V - 1 := by
+  rw [SimpleGraph.degree]
+  have hneigh : G.neighborFinset c = Finset.univ.erase c := by
+    ext v
+    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_erase, Finset.mem_univ, and_true]
+    exact ⟨fun hadj hvc => G.loopless c (hvc ▸ hadj), fun hne => hc v hne⟩
+  rw [hneigh, Finset.card_erase_of_mem (Finset.mem_univ c), Finset.card_univ]
 
-/-- In a friendship graph, the number of vertices is odd. -/
+/-- In a friendship graph, the number of vertices is odd.
+
+    Proof: By the handshaking lemma, 2|E| = Σ deg(v). With universal vertex c,
+    deg(c) = n-1 and deg(u) = 2 for u ≠ c, giving 2|E| = 3(n-1).
+    Since gcd(2,3) = 1, we get 2 | (n-1), so n is odd. -/
 lemma friendship_card_odd (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3) :
-    Odd (Fintype.card V) :=
-  friendship_card_odd_axiom G hF h
+    Odd (Fintype.card V) := by
+  obtain ⟨c, hc⟩ := friendship_theorem G hF h
+  have hdeg_c := universal_degree G c hc
+  have hdeg_u : ∀ v : V, v ≠ c → G.degree v = 2 :=
+    fun v hv => friendship_noncentral_degree G hF c hc v hv
+  have hsum : ∑ v : V, G.degree v = 3 * (Fintype.card V - 1) := by
+    rw [← Finset.add_sum_erase _ _ (Finset.mem_univ c), hdeg_c]
+    have : ∀ v ∈ Finset.univ.erase c, G.degree v = 2 :=
+      fun v hv => hdeg_u v (Finset.ne_of_mem_erase hv)
+    rw [Finset.sum_congr rfl this, Finset.sum_const, Finset.card_erase_of_mem (Finset.mem_univ c),
+        Finset.card_univ, smul_eq_mul]
+    omega
+  have hhand := G.sum_degrees_eq_twice_card_edges
+  rw [hsum] at hhand
+  have hdvd : 2 ∣ (Fintype.card V - 1) :=
+    Nat.Coprime.dvd_of_dvd_mul_left _ _ _ (by norm_num) ⟨G.edgeFinset.card, by omega⟩
+  obtain ⟨k, hk⟩ := hdvd
+  exact ⟨k, by omega⟩
 
 /-- **Axiom: A friendship graph is either has a universal vertex or is regular.**
 
