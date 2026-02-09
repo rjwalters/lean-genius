@@ -251,18 +251,30 @@ theorem friendship_theorem (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3)
   -- If regular, the spectral argument gives us a universal vertex
   exact friendship_regular_implies_universal G hF hReg h
 
-/-- **Axiom: Every friendship graph is a windmill.**
-
-    For non-adjacent pairs among non-central vertices, they share only the center c.
-    Since u and v are both adjacent to c (by universality), c is a common neighbor.
-    By the friendship property they have exactly one common neighbor, so it must be c. -/
-axiom friendship_graph_is_windmill_axiom (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3) :
-    IsWindmillGraph G
-
 /-- The friendship theorem implies every friendship graph is a windmill. -/
 theorem friendship_graph_is_windmill (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3) :
-    IsWindmillGraph G :=
-  friendship_graph_is_windmill_axiom G hF h
+    IsWindmillGraph G := by
+  -- Get a universal vertex from the friendship theorem
+  obtain ⟨c, hc⟩ := friendship_theorem G hF h
+  refine ⟨c, hc, ?_⟩
+  -- For non-adjacent u, v (both ≠ c), show commonNeighbors u v = {c}
+  intro u v huc hvc huv hnadj
+  -- c is a common neighbor of u and v (by universality)
+  have hcu : G.Adj c u := hc u huc
+  have hcv : G.Adj c v := hc v hvc
+  have hc_mem : c ∈ G.commonNeighbors u v := by
+    rw [mem_commonNeighbors]
+    exact ⟨G.symm hcu, G.symm hcv⟩
+  -- By the friendship property, there's exactly one common neighbor
+  have h1 := hF u v huv
+  rw [Set.ncard_eq_one] at h1
+  obtain ⟨w, hw⟩ := h1
+  -- Since c ∈ commonNeighbors u v = {w}, we have w = c
+  have : c = w := by
+    have := hw ▸ hc_mem
+    exact Set.mem_singleton_iff.mp this
+  rw [this] at hw
+  exact hw
 
 /-!
 ## Part 5: Examples
