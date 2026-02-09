@@ -1,56 +1,86 @@
 [
   {
+    "id": "graph-defs",
+    "proofId": "erdos-128",
+    "range": { "startLine": 27, "endLine": 47 },
+    "type": "definition",
+    "title": "Graph Structure and Triangles",
+    "content": "Defines the core graph-theoretic primitives: `Graph n` as a symmetric irreflexive adjacency relation on `Fin n`, `edgeCount` via counting ordered pairs with `p.1 < p.2`, `induce` for vertex-induced subgraphs, and `hasTriangle`/`triangleFree` for the presence or absence of three mutually adjacent vertices.",
+    "mathContext": "A simple graph $G = (V, E)$ with $|V| = n$. The edge count is $|E| = |\\{(u,v) : u < v, uv \\in E\\}|$. An induced subgraph $G[S]$ restricts adjacency to $S \\subseteq V$. A triangle is a 3-clique: $\\{u,v,w\\}$ with $uv, vw, uw \\in E$.",
+    "significance": "supporting",
+    "relatedConcepts": ["simple graph", "induced subgraph", "clique", "triangle-free graph"],
+    "prerequisites": ["graph theory basics"]
+  },
+  {
     "id": "dense-subgraphs",
     "proofId": "erdos-128",
-    "range": { "startLine": 48, "endLine": 52 },
+    "range": { "startLine": 53, "endLine": 56 },
     "type": "definition",
     "title": "Dense Subgraphs Condition",
-    "content": "Every induced subgraph on at least ⌊n/2⌋ vertices has more than n²/50 edges. This is a 'local density' condition — it doesn't require the whole graph to be dense, just every large enough subgraph.",
-    "significance": "high"
+    "content": "Every induced subgraph on at least $\\lfloor n/2 \\rfloor$ vertices has more than $n^2/50$ edges. This is a local density condition: it does not require the whole graph to be dense, only that every sufficiently large induced subgraph is. The threshold $n/2$ means we look at \"half the graph or more.\"",
+    "mathContext": "$\\forall S \\subseteq V, |S| \\ge \\lfloor n/2 \\rfloor \\Rightarrow |E(G[S])| > n^2/50$. The critical density $1/50 = 0.02$ arises from the $C_5$ blow-up: a balanced 5-partition gives induced subgraph density approaching $2/5 \\cdot (1/5)^2 = 2/125$ in half-sized subgraphs.",
+    "significance": "critical",
+    "relatedConcepts": ["local density", "Turán density", "induced subgraph density"],
+    "prerequisites": ["extremal graph theory", "Turán theory"]
   },
   {
     "id": "c5-blowup",
     "proofId": "erdos-128",
-    "range": { "startLine": 56, "endLine": 60 },
-    "type": "example",
-    "title": "C₅ Blow-up Extremal Example",
-    "content": "Partition n vertices into 5 equal parts, connect parts i and i+1 (mod 5). This is triangle-free (C₅ has no odd cycle of length 3) with subgraph density approaching n²/50 in half-sized subgraphs, showing 1/50 is optimal.",
-    "significance": "high"
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "insight",
+    "title": "$C_5$ Blow-up Extremal Example",
+    "content": "Partition $n$ vertices into 5 equal parts and connect parts $i$ and $i+1$ (mod 5), forming the blow-up of the 5-cycle $C_5$. This is triangle-free (since $C_5$ has odd girth 5) and achieves subgraph edge density approaching $n^2/50$ in half-sized subgraphs. It shows the constant $1/50$ in the conjecture cannot be improved.",
+    "mathContext": "The $C_5$ blow-up $C_5[n/5]$ has edge density $2/5$ overall and is triangle-free. For $S$ with $|S| \\ge n/2$, by pigeonhole $S$ hits at least 3 of the 5 parts, giving $|E(G[S])| \\approx 2 \\cdot (n/5)^2 \\cdot \\binom{3}{1} / ... \\le n^2/50 + O(n)$.",
+    "significance": "critical",
+    "relatedConcepts": ["blow-up graph", "Petersen graph", "5-cycle", "extremal graph"],
+    "prerequisites": ["graph theory", "extremal combinatorics"]
   },
   {
     "id": "efrs",
     "proofId": "erdos-128",
-    "range": { "startLine": 64, "endLine": 69 },
+    "range": { "startLine": 70, "endLine": 76 },
     "type": "theorem",
-    "title": "EFRS Theorem",
-    "content": "Erdős–Faudree–Rousseau–Schelp proved the conjecture with 50 replaced by 16. If every subgraph on ≥ n/2 vertices has > n²/16 edges, then G contains a triangle.",
-    "significance": "high"
+    "title": "EFRS Theorem: Constant 16",
+    "content": "Erdős, Faudree, Rousseau, and Schelp proved: if every induced subgraph on $\\ge n/2$ vertices has $> n^2/16$ edges, then $G$ contains a triangle. This was the first major partial result, replacing the conjectured $1/50$ with the weaker $1/16$, leaving a factor of approximately 3.",
+    "mathContext": "$\\forall S, |S| \\ge n/2 \\Rightarrow |E(G[S])| > n^2/16 \\implies G \\text{ has a triangle}$. The gap: $1/16 = 0.0625$ vs $1/50 = 0.02$. The proof uses regularity-type arguments and structural analysis of triangle-free graphs.",
+    "significance": "key",
+    "relatedConcepts": ["Szemerédi regularity lemma", "triangle removal lemma"],
+    "prerequisites": ["extremal graph theory", "regularity methods"]
   },
   {
     "id": "razborov",
     "proofId": "erdos-128",
-    "range": { "startLine": 77, "endLine": 82 },
+    "range": { "startLine": 85, "endLine": 90 },
     "type": "theorem",
     "title": "Razborov's Flag Algebra Result",
-    "content": "Razborov improved the constant to 27/1024 ≈ 0.0264 using flag algebra methods. Compare with the target 1/50 = 0.02. The gap is now quite small but closing it remains an open challenge.",
-    "significance": "high"
+    "content": "Razborov improved the constant to $27/1024 \\approx 0.0264$ using his flag algebra framework. This is the best known bound, narrowing the gap to the conjectured $1/50 = 0.02$ significantly. Flag algebras provide a systematic way to derive inequalities about subgraph densities via semidefinite programming.",
+    "mathContext": "$27/1024 \\approx 0.0264$ vs the target $1/50 = 0.02$. The ratio is $27/1024 \\div 1/50 = 1350/1024 \\approx 1.32$, so Razborov's bound is within a factor of $1.32$ of the conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["flag algebras", "semidefinite programming", "graph density inequalities"],
+    "prerequisites": ["flag algebras", "optimization", "extremal graph theory"]
   },
   {
     "id": "norin-yepremyan",
     "proofId": "erdos-128",
-    "range": { "startLine": 84, "endLine": 90 },
+    "range": { "startLine": 92, "endLine": 97 },
     "type": "theorem",
-    "title": "Norin–Yepremyan for Dense Graphs",
-    "content": "For graphs with total edge count ≥ (1/5 − c)n² (close to the Turán density for triangle-free graphs), the conjecture holds. The remaining hard cases are graphs that are globally sparse but locally dense.",
-    "significance": "medium"
+    "title": "Norin-Yepremyan for Dense Graphs",
+    "content": "Norin and Yepremyan proved the conjecture for graphs with total edge count $\\ge (1/5 - c)n^2$ for some small constant $c > 0$. Since the Turán density for triangle-free graphs is $1/4$ (from the Mantel/Turán theorem), graphs with edge density near $1/5$ are close to the triangle-free boundary. The remaining hard cases are globally sparse graphs that are still locally dense.",
+    "mathContext": "$|E(G)| \\ge (1/5 - c)n^2$ and $G$ satisfies the dense subgraphs condition $\\implies G$ has a triangle. The Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$, so $1/5 < 1/4$ means these graphs are well below the triangle-free maximum.",
+    "significance": "key",
+    "relatedConcepts": ["Turán theorem", "Mantel theorem", "graph density", "sparse-dense dichotomy"],
+    "prerequisites": ["Turán theory", "extremal graph theory"]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-128",
-    "range": { "startLine": 94, "endLine": 96 },
+    "range": { "startLine": 101, "endLine": 104 },
     "type": "conjecture",
-    "title": "Main Conjecture ($250)",
-    "content": "If every induced subgraph on ≥ ⌊n/2⌋ vertices has > n²/50 edges, then G contains a triangle. The $250 prize reflects that this is a concrete, falsifiable question — a single counterexample would disprove it.",
-    "significance": "high"
+    "title": "Main Conjecture ($250 Prize)",
+    "content": "The full Erdős Problem 128: if every induced subgraph on $\\ge \\lfloor n/2 \\rfloor$ vertices has $> n^2/50$ edges, then $G$ contains a triangle. This carries a $250 Erdős prize. The conjecture is concrete and falsifiable: a single triangle-free graph satisfying the density condition would disprove it.",
+    "mathContext": "$G.\\text{denseSubgraphs} \\implies G.\\text{hasTriangle}$. The statement is universal over all $n$ and all graphs $G$ on $n$ vertices. The $C_5$ blow-up shows $1/50$ cannot be replaced by any smaller constant.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős prize problems", "local-to-global forcing", "triangle forcing"],
+    "prerequisites": ["extremal graph theory"]
   }
 ]

@@ -4,78 +4,103 @@
   "slug": "erdos-128",
   "description": "If every induced subgraph on ≥ ⌊n/2⌋ vertices has > n²/50 edges, must G contain a triangle? 1/50 is best possible (C₅ blow-up). Partial: EFRS (1/16), Krivelevich (3n/5, 1/25), Razborov (27/1024). Open ($250).",
   "meta": {
-    "erdosNumber": 128,
-    "status": "formalized",
+    "author": "Erdős, Rousseau",
+    "sourceUrl": "https://erdosproblems.com/128",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos128Problem.lean",
     "tags": [
       "erdos",
       "graph-theory",
       "extremal-graph-theory",
       "triangle-free",
+      "flag-algebras",
       "open"
     ],
-    "references": [
-      "Erdős–Rousseau [Er93, p.344]",
-      "Erdős–Faudree–Rousseau–Schelp: 50 → 16",
-      "Krivelevich: n/2 → 3n/5, 50 → 25",
-      "Razborov: flag algebras, 50 → 1024/27",
-      "Norin–Yepremyan: graphs with ≥ (1/5-c)n² edges",
-      "https://erdosproblems.com/128"
-    ],
-    "leanFile": "Proofs/Erdos128Problem.lean",
+    "badge": "axiom",
     "sorries": 0,
-    "sourceUrl": "https://erdosproblems.com/128",
-    "erdosUrl": "https://erdosproblems.com/128"
+    "erdosNumber": 128,
+    "erdosUrl": "https://erdosproblems.com/128",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Graph structure with adj, edgeCount, induce, hasTriangle, triangleFree",
+      "denseSubgraphs predicate: local density condition",
+      "c5_blowup_triangle_free axiom: extremal example",
+      "efrs_theorem axiom: constant 16 result",
+      "krivelevich_theorem axiom: subgraph size 3n/5, constant 25",
+      "razborov_theorem axiom: flag algebra constant 27/1024",
+      "norin_yepremyan_theorem axiom: dense graph case",
+      "erdos_128_conjecture axiom: the full conjecture with constant 1/50"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and Rousseau, appearing in Erdős's 1993 paper [Er93, p.344]. It asks a fundamental question in extremal graph theory: can a local density condition on large induced subgraphs force the existence of a triangle? The constant $1/50$ in the conjecture is motivated by the $C_5$ blow-up — a balanced 5-partition where adjacent parts form a complete bipartite graph. This construction is triangle-free (since $C_5$ has girth 5) and achieves induced subgraph density approaching $n^2/50$ in half-sized subgraphs.\n\nThe first major partial result was by Erdős, Faudree, Rousseau, and Schelp (EFRS), who proved the analogous statement with $1/50$ replaced by $1/16$. Krivelevich improved this by trading a larger subgraph threshold ($3n/5$ instead of $n/2$) for a better constant ($1/25$). The strongest current result is due to Razborov, who used his flag algebra framework to improve the constant to $27/1024 \\approx 0.0264$, bringing it within a factor of $1.32$ of the conjectured $1/50 = 0.02$.\n\nNorin and Yepremyan contributed a complementary result: the conjecture holds for graphs with total edge count $\\ge (1/5 - c)n^2$, reducing the problem to globally sparse but locally dense graphs. The problem carries a $250 Erdős prize.",
+    "problemStatement": "Let $G$ be a graph with $n$ vertices such that every induced subgraph on $\\ge \\lfloor n/2 \\rfloor$ vertices has more than $n^2/50$ edges. Must $G$ contain a triangle?",
+    "proofStrategy": "The formalization builds graph theory from scratch using a custom `Graph n` structure with symmetric irreflexive adjacency on `Fin n`. It defines edge counting, induced subgraphs, triangles, and the `denseSubgraphs` predicate. The $C_5$ blow-up extremal example is axiomatized, showing $1/50$ is tight. Four partial results (EFRS, Krivelevich, Razborov, Norin-Yepremyan) are stated as axioms with their exact quantitative content. The main conjecture `erdos_128_conjecture` states the full claim.",
+    "keyInsights": [
+      "The $C_5$ blow-up is triangle-free and achieves subgraph density $\\approx n^2/50$ in half-sized subgraphs, proving the constant $1/50$ is optimal",
+      "EFRS proved the weaker constant $1/16$; Razborov's flag algebras narrowed it to $27/1024 \\approx 0.0264$, within a factor of $1.32$ of the target $1/50 = 0.02$",
+      "Krivelevich's trade-off — larger subgraph threshold $3n/5$ for better constant $1/25$ — suggests the boundary between the parameters is smooth",
+      "Norin-Yepremyan resolved the case of globally dense graphs, isolating the hard case: sparse graphs with unexpectedly dense large subgraphs",
+      "The problem is a prototype for local-to-global forcing: can local structure (density of all large subgraphs) determine global structure (existence of specific subgraphs)?"
+    ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Header",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module docstring describing the problem, partial results, and prize. Imports from Mathlib for tactics, natural numbers, finite sets, and simple graphs."
+    },
+    {
       "id": "definitions",
-      "title": "Definitions",
-      "startLine": 20,
-      "endLine": 52,
-      "summary": "Graph, edge count, induced subgraph, triangle, dense subgraphs condition."
+      "title": "Graph Definitions",
+      "startLine": 25,
+      "endLine": 56,
+      "summary": "Defines Graph structure, edgeCount, induced subgraphs, hasTriangle, triangleFree, and the denseSubgraphs condition."
     },
     {
       "id": "extremal",
       "title": "Extremal Examples",
-      "startLine": 54,
-      "endLine": 60,
-      "summary": "C₅ blow-up: triangle-free with subgraph density near n²/50."
+      "startLine": 58,
+      "endLine": 66,
+      "summary": "C₅ blow-up: triangle-free with subgraph density near n²/50, showing the constant is tight."
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
-      "startLine": 62,
-      "endLine": 90,
-      "summary": "EFRS, Krivelevich, Razborov, and Norin–Yepremyan theorems."
+      "startLine": 68,
+      "endLine": 97,
+      "summary": "EFRS (constant 16), Krivelevich (3n/5 threshold, constant 25), Razborov (flag algebras, 27/1024), and Norin-Yepremyan (dense graph case)."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 92,
-      "endLine": 96,
-      "summary": "The full conjecture with constant 1/50."
+      "startLine": 99,
+      "endLine": 105,
+      "summary": "The full Erdős Problem 128 conjecture with the optimal constant 1/50 and $250 prize."
     }
   ],
-  "overview": {
-    "historicalContext": "This problem was posed by Erdős and Rousseau, appearing in Erdős's 1993 paper [Er93, p.344]. It asks whether a local density condition on all large subgraphs forces a triangle. The constant 1/50 is motivated by the C₅ blow-up (or Petersen graph blow-up), which is triangle-free and achieves subgraph edge density near n²/50.",
-    "problemStatement": "Let G be a graph with n vertices such that every induced subgraph on ≥ ⌊n/2⌋ vertices has more than n²/50 edges. Must G contain a triangle?",
-    "proofStrategy": "We define graphs, induced subgraphs, the dense subgraphs condition, and state the conjecture. We record the C₅ blow-up extremal example, partial results by EFRS (constant 16), Krivelevich (subgraph size 3n/5), Razborov (flag algebras), and Norin–Yepremyan (high overall edge count).",
-    "keyInsights": [
-      "The C₅ blow-up is triangle-free and achieves subgraph density ≈ n²/50, so the constant is tight",
-      "EFRS proved the result with 50 replaced by 16, leaving a factor ~3 gap",
-      "Razborov's flag algebra method improves the constant to 27/1024 ≈ 0.0264 vs 1/50 = 0.02",
-      "Krivelevich trades subgraph size (3n/5 instead of n/2) for a better constant (25)",
-      "Norin–Yepremyan handle graphs with many total edges, leaving sparse graphs as the hard case"
-    ]
-  },
   "conclusion": {
-    "summary": "Erdős Problem #128 remains open despite significant partial progress. The gap between the best constant achieved (27/1024 by Razborov) and the conjectured 1/50 is narrow, suggesting the problem may be within reach of current flag algebra or regularity methods.",
-    "implications": "Resolution would advance extremal graph theory, connecting local density conditions to global substructure. The C₅ blow-up extremality would establish a precise Turán-type threshold for local-to-global triangle forcing.",
+    "summary": "Erdős Problem 128 remains OPEN despite significant progress. Razborov's flag algebra bound of $27/1024 \\approx 0.0264$ is within a factor of $1.32$ of the conjectured $1/50 = 0.02$. The $C_5$ blow-up proves the constant is tight. Norin-Yepremyan isolate the hard case to globally sparse, locally dense graphs. The problem carries a $250 prize.",
+    "implications": "Resolution would advance our understanding of local-to-global forcing in extremal graph theory: when does density of all large induced subgraphs force specific global substructures? The flag algebra approach of Razborov has been the most successful tool, and closing the remaining gap would demonstrate the power (or limitations) of semidefinite programming methods in combinatorics. The $C_5$ blow-up extremality would establish a precise Turán-type threshold analogous to the classical Mantel theorem but for a local rather than global density condition.",
     "openQuestions": [
-      "Can flag algebras close the gap from 27/1024 to 1/50?",
-      "Is the C₅ blow-up the unique extremal example?",
-      "What happens for K₄ instead of triangles?",
-      "Can the subgraph size threshold n/2 be reduced below 3n/5?"
+      "Can flag algebras or other methods close the gap from $27/1024$ to $1/50$?",
+      "Is the $C_5$ blow-up the unique extremal family, or are there other triangle-free constructions with comparable subgraph density?",
+      "What is the analogous threshold for $K_4$-free graphs instead of triangle-free?",
+      "Can the subgraph size threshold $n/2$ be reduced below $3n/5$ while maintaining a reasonable constant?"
     ]
   }
 }
