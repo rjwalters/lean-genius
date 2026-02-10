@@ -1,6 +1,6 @@
 {
   "id": "erdos-496",
-  "title": "Oppenheim Conjecture",
+  "title": "Erdős Problem #496: Oppenheim Conjecture",
   "slug": "erdos-496",
   "description": "For irrational α > 0 and any ε > 0, there exist positive integers x, y, z with |x² + y² − αz²| < ε. Proved by Margulis (1987) using unipotent dynamics on homogeneous spaces.",
   "meta": {
@@ -15,6 +15,15 @@
       "quadratic forms",
       "homogeneous dynamics"
     ],
+    "references": [
+      "Oppenheim (1929): original conjecture on indefinite quadratic forms",
+      "Meyer (1884): indefinite integral forms in ≥ 5 variables represent zero",
+      "Davenport–Heilbronn (1946): proved Oppenheim for ≥ 5 variables via circle method",
+      "Margulis (1987): full proof for ≥ 3 variables via unipotent dynamics",
+      "Eskin–Margulis–Mozes (1998): quantitative refinement with counting asymptotics",
+      "Dani–Margulis (1989): measure-theoretic approach via Raghunathan's conjecture",
+      "https://erdosproblems.com/496"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 496,
@@ -22,54 +31,90 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Oppenheim (1929) conjectured that indefinite irrational quadratic forms in n ≥ 3 variables take values arbitrarily close to zero at integer points. Davenport–Heilbronn (1946) proved the case n ≥ 5 using the circle method. Margulis (1987) proved the full conjecture for n ≥ 3 using the theory of unipotent flows on homogeneous spaces, a landmark application of ergodic theory to number theory.",
+    "historicalContext": "Oppenheim conjectured in 1929 that any indefinite irrational quadratic form in $n \\geq 3$ variables takes values arbitrarily close to zero at integer points. Meyer (1884) had already shown that indefinite integral (rational) forms in $\\geq 5$ variables represent zero exactly, but the irrational case is fundamentally different. Davenport and Heilbronn (1946) proved the conjecture for $n \\geq 5$ using the Hardy–Littlewood circle method. The cases $n = 3, 4$ resisted analytic approaches for decades. Margulis achieved the breakthrough in 1987 by translating the problem into dynamics on homogeneous spaces: values of the quadratic form at integer points correspond to orbits of $\\mathrm{SO}(2,1)$ on $\\mathrm{SL}(3,\\mathbb{R})/\\mathrm{SL}(3,\\mathbb{Z})$, and Ratner-type results on unipotent flows show these orbits are either closed (rational form) or dense (irrational form). This was one of the results cited for Margulis's 1978 Fields Medal work on dynamics of lattice subgroups. Eskin, Margulis, and Mozes (1998) obtained quantitative refinements, showing the number of integer solutions with $|Q| < \\delta$ and $\\max|x_i| \\leq T$ grows as $c \\cdot \\delta \\cdot T$ for large $T$.",
     "problemStatement": "For irrational α > 0 and any ε > 0, do there exist positive integers x, y, z with |x² + y² − αz²| < ε?",
-    "proofStrategy": "We formalize the ternary quadratic form, the approximation problem, Margulis's theorem, the orbit dichotomy (rational vs. dense), Davenport–Heilbronn for 5 variables, and the Eskin–Margulis–Mozes quantitative refinement.",
+    "proofStrategy": "The formalization defines the ternary quadratic form $Q(x,y,z) = x^2 + y^2 - \\alpha z^2$, indefiniteness, and $\\varepsilon$-approximation. Margulis's theorem is axiomatized. The density result (values dense in $\\mathbb{R}$) is stated as a strengthening. The orbit dichotomy — rational forms bounded away from zero vs. irrational forms with dense values — captures the dynamical mechanism. Davenport–Heilbronn for 5 variables and Eskin–Margulis–Mozes counting are included as context.",
     "keyInsights": [
-      "Irrational indefinite forms in ≥ 3 variables have dense values at integer points",
-      "Rational forms are bounded away from zero — irrationality is essential",
-      "Margulis's proof: SO(2,1) orbits on SL(3,ℝ)/SL(3,ℤ) are closed or dense",
-      "Davenport–Heilbronn: circle method works for ≥ 5 variables",
-      "Eskin–Margulis–Mozes: quantitative counting of small-value integer points"
+      "**Orbit dichotomy**: The $\\mathrm{SO}(2,1)$-orbit of $\\mathrm{SL}(3,\\mathbb{Z})$ in $\\mathrm{SL}(3,\\mathbb{R})/\\mathrm{SL}(3,\\mathbb{Z})$ is closed iff the form is a rational multiple of an integral form, dense otherwise — translating the number-theoretic problem into dynamics",
+      "**Rational vs. irrational**: For rational $\\alpha = p/q$, the form $q(x^2 + y^2 - \\alpha z^2)$ is integral, so values are bounded away from zero. Irrationality is essential, not just a technical condition",
+      "**From approximation to density**: Margulis proved the stronger result that the set $\\{Q(x,y,z) : (x,y,z) \\in \\mathbb{Z}^3\\}$ is dense in $\\mathbb{R}$ for irrational indefinite forms, not merely that zero can be approximated",
+      "**Variable threshold at $n = 3$**: The circle method handles $n \\geq 5$ (Davenport–Heilbronn) but fails for $n = 3, 4$. Margulis's dynamical approach works uniformly for all $n \\geq 3$, revealing the true threshold",
+      "**Quantitative counting**: Eskin–Margulis–Mozes showed the number of integer solutions with $|Q| < \\delta$ and size $\\leq T$ grows as $c \\cdot \\delta \\cdot T$, giving explicit asymptotics for the density of near-zero values"
     ]
   },
   "sections": [
     {
+      "id": "header-and-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring with historical timeline (Oppenheim 1929, Davenport–Heilbronn 1946, Margulis 1987, EMM 1998). Imports `SpecialFunctions.Pow.Real` for $x^2$, `Data.Real.Irrational` for the irrationality predicate."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 24,
+      "startLine": 29,
       "endLine": 42,
-      "summary": "Defines the ternary quadratic form x² + y² − αz², indefiniteness, and ε-approximation of zero."
+      "summary": "Defines `ternaryForm α x y z = x^2 + y^2 - \\alpha z^2$, `IsIndefinite α` ($\\alpha > 0$), and `ApproxZero α ε` ($\\exists x,y,z > 0$ with $|Q(x,y,z)| < \\varepsilon$)."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem (Margulis)",
+      "title": "Main Theorem (Margulis 1987)",
       "startLine": 44,
-      "endLine": 50,
-      "summary": "States the Oppenheim conjecture as proved by Margulis: irrational forms approximate zero arbitrarily well."
+      "endLine": 51,
+      "summary": "Margulis's theorem: $\\text{Irrational}(\\alpha) \\land \\alpha > 0 \\implies \\forall \\varepsilon > 0,\\; \\text{ApproxZero}(\\alpha, \\varepsilon)$. The resolution of the Oppenheim conjecture for $n = 3$."
     },
     {
       "id": "density",
       "title": "Density of Values",
-      "startLine": 52,
-      "endLine": 73,
-      "summary": "The stronger result: values of the form are dense in ℝ. Dense values imply zero-approximation."
+      "startLine": 53,
+      "endLine": 62,
+      "summary": "The stronger result: $\\{Q(x,y,z) : (x,y,z) \\in \\mathbb{Z}^3 \\setminus \\{0\\}\\}$ is dense in $\\mathbb{R}$. For any target $t$ and $\\varepsilon > 0$, there exist integer points with $|Q - t| < \\varepsilon$."
     },
     {
-      "id": "dynamics",
-      "title": "Dynamics and Quantitative Results",
-      "startLine": 75,
-      "endLine": 124,
-      "summary": "Rational forms bounded away from zero, Davenport–Heilbronn for 5 variables, Margulis orbit dichotomy, Eskin–Margulis–Mozes counting."
+      "id": "dense-implies-approx",
+      "title": "Dense Values Implies Approximation",
+      "startLine": 63,
+      "endLine": 75,
+      "summary": "A fully proved theorem: density of values implies zero can be approximated, by specializing the target to $t = 0$."
+    },
+    {
+      "id": "rational-bound",
+      "title": "Rational Forms Bounded Away from Zero",
+      "startLine": 77,
+      "endLine": 86,
+      "summary": "For $\\alpha = p/q$ rational, $\\exists \\delta > 0$ such that $|Q(x,y,z)| \\geq \\delta$ at all nonzero integer points with $Q \\neq 0$. Irrationality is essential."
+    },
+    {
+      "id": "davenport-heilbronn",
+      "title": "Davenport–Heilbronn for Five Variables",
+      "startLine": 88,
+      "endLine": 96,
+      "summary": "The diagonal form $x_1^2 + x_2^2 + x_3^2 + x_4^2 - \\alpha x_5^2$ approximates zero for irrational $\\alpha > 0$. Proved by the circle method (1946)."
+    },
+    {
+      "id": "orbit-dichotomy",
+      "title": "Margulis Orbit Dichotomy",
+      "startLine": 98,
+      "endLine": 117,
+      "summary": "The dynamical heart: either $\\alpha$ is rational (closed orbit, bounded away from zero) or values are dense in $\\mathbb{R}$ (dense orbit). Includes the proved `irrational_not_rational` lemma."
+    },
+    {
+      "id": "quantitative",
+      "title": "Eskin–Margulis–Mozes Counting",
+      "startLine": 119,
+      "endLine": 133,
+      "summary": "Quantitative Oppenheim: for $T$ large, the set of $(x,y,z)$ with $|Q| < \\delta$ and $\\max|\\cdot| \\leq T$ has positive cardinality. The asymptotic is $\\sim c \\cdot \\delta \\cdot T$."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #496 (Oppenheim conjecture), solved by Margulis (1987). Irrational indefinite quadratic forms in ≥ 3 variables take values arbitrarily close to zero at integer points, with values dense in ℝ.",
-    "implications": "Margulis's proof was a landmark in applying ergodic theory and homogeneous dynamics to number theory, inspiring the Eskin–Margulis–Mozes quantitative theory.",
+    "summary": "The formalization captures Erdős Problem #496, the Oppenheim conjecture resolved by Margulis (1987): irrational indefinite ternary quadratic forms take values arbitrarily close to zero — and indeed dense in $\\mathbb{R}$ — at integer points. The orbit dichotomy (rational: closed orbit, irrational: dense orbit) encodes the dynamical mechanism. Historical context includes Davenport–Heilbronn (1946) for $\\geq 5$ variables and the Eskin–Margulis–Mozes (1998) quantitative refinement.",
+    "implications": "Margulis's proof was a landmark in applying ergodic theory and homogeneous dynamics to Diophantine problems. It inspired Ratner's classification of unipotent orbit closures (1991), Eskin–Margulis–Mozes's quantitative theory, and the broader program connecting dynamics on locally symmetric spaces with number-theoretic questions about quadratic forms and lattice points.",
     "openQuestions": [
-      "Optimal quantitative bounds for the counting function in the Eskin–Margulis–Mozes theorem?",
-      "Effective versions: explicit bounds on the size of the smallest ε-approximating triple?",
-      "Higher-degree forms: analogues of the Oppenheim conjecture for cubic and higher-degree forms?"
+      "What are the optimal quantitative bounds for the Eskin–Margulis–Mozes counting function? Is the constant $c$ computable in terms of $\\alpha$?",
+      "Can effective bounds be given for the smallest $(x,y,z)$ achieving $|Q| < \\varepsilon$, as a function of $\\alpha$ and $\\varepsilon$?",
+      "Do analogues of the Oppenheim conjecture hold for higher-degree forms (cubic, quartic)?",
+      "What is the Hausdorff dimension of the set of $\\alpha$ for which $\\min_{\\|(x,y,z)\\| \\leq T} |Q| \\cdot T^{\\beta}$ remains bounded?"
     ]
   }
 }
