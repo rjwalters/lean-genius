@@ -12,83 +12,132 @@
       "erdos",
       "number-theory",
       "prime-factorization",
-      "consecutive-integers"
+      "consecutive-integers",
+      "open"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 931,
     "erdosUrl": "https://erdosproblems.com/931",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "crossReferences": [
+      {
+        "proofId": "erdos-388",
+        "relationship": "Directly related: Problem #388 asks when products of consecutive integers from disjoint blocks can be equal, the stronger condition of product equality vs. prime factor equality"
+      },
+      {
+        "proofId": "erdos-929",
+        "relationship": "Studies smooth numbers in short intervals; smooth blocks of k consecutive integers require all factors bounded, complementary to studying which primes appear"
+      },
+      {
+        "proofId": "erdos-930",
+        "relationship": "Studies whether products of disjoint intervals of consecutive integers can be perfect powers, another structural question about consecutive-integer products"
+      },
+      {
+        "proofId": "erdos-933",
+        "relationship": "Examines the smooth part of products of consecutive integers n(n+1); shares the theme of extracting prime factor structure from consecutive products"
+      },
+      {
+        "proofId": "erdos-928",
+        "relationship": "Studies density of consecutive smooth number pairs; bounded prime factors in consecutive integers is the smoothness analogue of this problem"
+      },
+      {
+        "proofId": "erdos-935",
+        "relationship": "Studies the powerful part of products of consecutive integers, analyzing prime power structure rather than prime support"
+      },
+      {
+        "proofId": "prime-number-theorem",
+        "relationship": "Foundation: the distribution of primes governs how prime factor sets of consecutive products can overlap across distant blocks"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "This problem concerns the prime factorization structure of products of consecutive integers. Erdős expressed doubt about the conjecture, proposing the weaker claim that n₂ > 2(n₁+k₁). AlphaProof found counterexamples to the strong version. Related to Problem 388; discussed in Guy's collection (B35).",
-    "problemStatement": "Let k₁ ≥ k₂ ≥ 3. Are there only finitely many n₂ ≥ n₁+k₁ such that ∏_{i=1}^{k₁}(n₁+i) and ∏_{j=1}^{k₂}(n₂+j) have the same set of prime factors?",
-    "proofStrategy": "We define consecutiveProduct, consecutivePrimeFactors, and SamePrimeFactors. The main conjecture states finiteness. We also state the stronger conjecture (n₂ > 2(n₁+k₁)), axiomatize the AlphaProof counterexample and Tijdeman's example, and state the open question about primes between n₁ and n₂.",
+    "historicalContext": "Erdős posed this problem in 1976 [Er76d], asking about the finiteness of pairs of consecutive-integer blocks whose products share the same set of prime factors. The problem appears in Guy's _Unsolved Problems in Number Theory_ as Problem B35. The question connects to deep themes in multiplicative number theory: the radical $\\text{rad}(n)$ (product of distinct prime factors) of a product $(n+1)\\cdots(n+k) = (n+k)!/n!$ depends on which primes $\\leq n+k$ divide at least one element of the block. Erdős himself doubted the full conjecture and proposed the weaker claim that same-prime-factor pairs must satisfy $n_2 > 2(n_1 + k_1)$ with finitely many exceptions. This stronger conjecture was disproved by a counterexample: $10! = 2^8 \\cdot 3^4 \\cdot 5^2 \\cdot 7$ and $14 \\cdot 15 \\cdot 16 = 2^5 \\cdot 3 \\cdot 5 \\cdot 7$ share prime factors $\\{2,3,5,7\\}$ with $n_2 = 13 \\leq 20 = 2(n_1 + k_1)$. Tijdeman found another example: $19 \\cdot 20 \\cdot 21 \\cdot 22$ and $54 \\cdot 55 \\cdot 56 \\cdot 57$ share the same primes (this one beyond the double gap). The connection to Bertrand's postulate is central: for $n_2 > 2(n_1 + k_1)$, a prime in $(n_1 + k_1, 2(n_1 + k_1)]$ would divide the second block but not the first, reducing the problem to the bounded-gap case. The constraint $k_1, k_2 \\geq 3$ excludes trivial infinite families for small block sizes.",
+    "problemStatement": "Let $k_1 \\geq k_2 \\geq 3$. Are there only finitely many $n_2 \\geq n_1 + k_1$ such that $\\prod_{i=1}^{k_1}(n_1+i)$ and $\\prod_{j=1}^{k_2}(n_2+j)$ have the same set of prime factors?",
+    "proofStrategy": "The formalization defines `consecutiveProduct` via `Finset.Icc` and `Finset.prod`, extracts prime factor sets via `Nat.primeFactors`, and defines `SamePrimeFactors` as equality of these Finsets. The main conjecture uses `Set.Finite` on the solution set. Both the stronger conjecture ($n_2 \\leq 2(n_1+k_1)$) and the prime-between-blocks question are stated as axioms. Two counterexamples (AlphaProof and Tijdeman) are fully verified by `native_decide` and `omega`. Structural properties (positivity, prime factor membership, equivalence relation) are proved. The file uses 0 sorry statements; all deep results are axioms.",
     "keyInsights": [
-      "AlphaProof counterexample: 10! and 14·15·16 share prime factors {2,3,5,7} with n₂ ≤ 2(n₁+k₁)",
-      "Tijdeman's example: 19·20·21·22 and 54·55·56·57 share the same prime factors",
-      "Erdős could not prove a prime must exist between n₁ and n₂ when products share factors",
-      "The stronger conjecture (finiteness for n₂ ≤ 2(n₁+k₁)) has counterexamples but the original remains open"
+      "AlphaProof counterexample: $10!$ and $14 \\cdot 15 \\cdot 16$ share prime factors $\\{2,3,5,7\\}$ with $n_2 \\leq 2(n_1+k_1)$, disproving the stronger conjecture",
+      "Tijdeman's example: $19 \\cdot 20 \\cdot 21 \\cdot 22$ and $54 \\cdot 55 \\cdot 56 \\cdot 57$ share primes but with $n_2 > 2(n_1+k_1)$, so the original finiteness question persists",
+      "Bertrand's postulate reduces the problem: for $n_2 > 2(n_1+k_1)$, a prime in $(n_1+k_1, 2(n_1+k_1)]$ provides a distinguishing factor, so only the bounded-gap case matters",
+      "The constraint $k_1, k_2 \\geq 3$ is essential: for $k = 1$ or $k = 2$, infinitely many pairs trivially share prime factors (e.g., all even consecutive products share the prime 2)",
+      "Erdős could not prove even the subsidiary question: must a prime exist between $n_1$ and $n_2 + k_2$ when the blocks share prime factors?",
+      "The `SamePrimeFactors` relation is an equivalence relation on $(n, k)$ pairs, suggesting a quotient structure that could organize the solution space"
     ]
   },
   "sections": [
     {
-      "id": "product-prime-factors",
-      "title": "Product Prime Factors",
-      "startLine": 26,
-      "endLine": 42,
-      "summary": "Defines consecutiveProduct and consecutivePrimeFactors for a block of consecutive integers starting from n+1."
+      "id": "sec-931-header",
+      "title": "Problem Statement and References",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Documentation block with the problem statement, counterexample descriptions (AlphaProof and Tijdeman), status (OPEN), and references to Er76d and Guy's Problem B35."
     },
     {
-      "id": "same-factors",
-      "title": "Same Prime Factors Property",
-      "startLine": 44,
-      "endLine": 53,
-      "summary": "Defines SamePrimeFactors as equality of consecutive prime factor sets for two blocks."
+      "id": "sec-931-imports",
+      "title": "Imports and Setup",
+      "startLine": 19,
+      "endLine": 28,
+      "summary": "Imports Nat.Basic, Nat.Prime.Basic, Nat.Factorization.Basic, Finset.Basic, Finset.Interval, and Tactic. Opens Nat and Finset namespaces within Erdos931."
     },
     {
-      "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "startLine": 55,
-      "endLine": 67,
-      "summary": "Formalizes Erdős Problem 931: for all k₁ ≥ k₂ ≥ 3, the set of pairs with same prime factors and n₂ ≥ n₁+k₁ is finite."
+      "id": "sec-931-definitions",
+      "title": "Core Definitions",
+      "startLine": 30,
+      "endLine": 48,
+      "summary": "Three foundational definitions: `consecutiveProduct` (∏(n+i) via Finset.Icc), `consecutivePrimeFactors` (prime factor set via Nat.primeFactors), and `SamePrimeFactors` (equality of prime factor sets), plus decidability instance."
     },
     {
-      "id": "stronger-conjecture",
-      "title": "The Stronger Conjecture",
-      "startLine": 69,
-      "endLine": 81,
-      "summary": "States the stronger claim: finiteness even restricted to n₂ ≤ 2(n₁+k₁)."
+      "id": "sec-931-computations",
+      "title": "Verified Small Computations",
+      "startLine": 50,
+      "endLine": 84,
+      "summary": "Concrete product values (10!=3628800, 14·15·16=3360, etc.), base cases (empty product=1, single factor=n+1), positivity, and non-zero properties—all proved by native_decide, simp, or omega."
     },
     {
-      "id": "alphaproof-counterexample",
-      "title": "AlphaProof Counterexample",
-      "startLine": 83,
-      "endLine": 94,
-      "summary": "Axiomatizes that 10! and 14·15·16 share prime factors {2,3,5,7} with n₂ ≤ 2(n₁+k₁)."
+      "id": "sec-931-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 86,
+      "endLine": 102,
+      "summary": "Formalizes ErdosProblem931 (finiteness of same-prime-factor pairs with gap ≥ k₁) and StrongerConjecture (restricted to n₂ ≤ 2(n₁+k₁))."
     },
     {
-      "id": "tijdeman-example",
-      "title": "Tijdeman's Example",
-      "startLine": 96,
-      "endLine": 105,
-      "summary": "Tijdeman found 19·20·21·22 and 54·55·56·57 share the same prime factors."
+      "id": "sec-931-counterexamples",
+      "title": "Verified Counterexamples",
+      "startLine": 104,
+      "endLine": 126,
+      "summary": "AlphaProof counterexample (n₁=0, k₁=10, n₂=13, k₂=3) and Tijdeman's example (n₁=18, k₁=k₂=4, n₂=53), fully verified by native_decide and omega. Establishes that the stronger conjecture is false."
     },
     {
-      "id": "prime-between",
-      "title": "Prime Between n₁ and n₂",
-      "startLine": 107,
-      "endLine": 122,
-      "summary": "Open question: must a prime exist between n₁ and n₂ when their consecutive products share prime factors?"
+      "id": "sec-931-properties",
+      "title": "Properties of Prime Factors",
+      "startLine": 128,
+      "endLine": 170,
+      "summary": "Seven lemmas: prime factors divide the product and are prime, a prime dividing any n+i is in the factor set (via Finset.dvd_prod_of_mem), and SamePrimeFactors is reflexive, symmetric, transitive."
+    },
+    {
+      "id": "sec-931-implication",
+      "title": "Stronger Implies Main",
+      "startLine": 172,
+      "endLine": 179,
+      "summary": "Axiom recording that the stronger conjecture implies the main one, via the Bertrand's postulate argument for the unbounded-gap case."
+    },
+    {
+      "id": "sec-931-prime-between",
+      "title": "Open Question: Prime Between Blocks",
+      "startLine": 181,
+      "endLine": 199,
+      "summary": "Axiom stating the open subsidiary question: must a prime exist between n₁ and n₂+k₂ when blocks share prime factors? Includes the problem status string."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 931 asks about finiteness of pairs of consecutive-integer blocks with identical prime factor sets. The stronger version (n₂ ≤ 2(n₁+k₁)) has counterexamples, but the original finiteness question remains open.",
-    "implications": "Resolution would illuminate the distribution of prime factors across consecutive integers and connect to classical problems about smooth numbers and prime gaps.",
+    "summary": "Erdős Problem #931 asks whether two far-apart blocks of consecutive integers can share the same set of prime factors only finitely often. The formalization defines the core objects (`consecutiveProduct`, `consecutivePrimeFactors`, `SamePrimeFactors`), states the main finiteness conjecture and its stronger variant, and fully verifies two counterexamples to the stronger claim. Seven structural lemmas are proved (including the equivalence relation property), and the Bertrand's postulate reduction and prime-between-blocks question are recorded as axioms. The file uses 0 sorry statements.",
+    "implications": "Resolution would illuminate the multiplicative structure of consecutive integers at a deep level: how far apart can blocks be while sharing the exact same prime support? The connection to Bertrand's postulate and prime gaps means progress could come from improved bounds on prime distribution in structured intervals. The problem also connects to the abc conjecture (which constrains radical sizes in additive relations) and to Grimm's conjecture (which requires distinct prime factors for consecutive composite numbers).",
     "openQuestions": [
-      "Are there only finitely many pairs with same prime factors for fixed k₁ ≥ k₂ ≥ 3?",
-      "Must a prime exist between n₁ and n₂ when their products share prime factors?",
-      "What is the growth rate of the largest n₂ with same factors as a function of n₁?"
+      "Are there only finitely many pairs $(n_1, n_2)$ with same prime factors for fixed $k_1 \\geq k_2 \\geq 3$? The main conjecture remains completely open.",
+      "Must a prime exist between $n_1$ and $n_2 + k_2$ when blocks share prime factors? Even this seemingly weaker consequence is unproved.",
+      "What is the growth rate of the largest $n_2$ with $\\text{SamePrimeFactors}(n_1, k_1, n_2, k_2)$ as a function of $n_1$ and $k$?",
+      "Are there infinitely many counterexamples to the stronger conjecture ($n_2 \\leq 2(n_1+k_1)$), or is the AlphaProof example essentially isolated?",
+      "How does the problem change if we require not just the same prime factor set but the same prime factorization signature (same multiset of exponents)?"
     ]
   }
 }

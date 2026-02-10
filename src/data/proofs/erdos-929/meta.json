@@ -19,57 +19,89 @@
     "sorries": 1,
     "erdosNumber": 929,
     "erdosUrl": "https://erdosproblems.com/929",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "crossReferences": [
+      {
+        "proofId": "erdos-928",
+        "relationship": "Companion problem on density of consecutive smooth numbers with different smoothness parameters α, β"
+      },
+      {
+        "proofId": "erdos-932",
+        "relationship": "Studies smooth numbers within prime gaps, directly related to how smoothness interacts with prime distribution"
+      },
+      {
+        "proofId": "erdos-933",
+        "relationship": "Smooth part of products of consecutive integers; shares the theme of extracting smooth structure from consecutive integers"
+      },
+      {
+        "proofId": "erdos-931",
+        "relationship": "Same prime factors in products of consecutive blocks; studies prime factor distribution across consecutive integers"
+      },
+      {
+        "proofId": "prime-number-theorem",
+        "relationship": "Foundation: π(x) ~ x/ln x governs the density of primes that control smooth number distribution"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1976, asking about the smoothness threshold for blocks of consecutive integers. The problem connects to the distribution of smooth numbers and prime gaps. The breakthrough of Ford, Green, Konyagin, Maynard, and Tao (2018) on large prime gaps yields the best known upper bound.",
-    "problemStatement": "Let S(k) be the minimal x such that n+1,...,n+k are all x-smooth for a positive density set of n. Is S(k) ≥ k^{1−o(1)}?",
-    "proofStrategy": "We formalize x-smoothness, smooth blocks, the threshold function S(k), the main conjecture, and known upper/lower bounds including the FGKMT result.",
+    "historicalContext": "Erdős posed this problem in 1976, asking about the minimal smoothness threshold needed to guarantee that blocks of $k$ consecutive integers are all smooth, for a positive proportion of starting points. The problem sits at the intersection of two major areas: the distribution of smooth numbers (studied via the Dickman function $\\rho(u)$ since Dickman's 1930 paper) and the distribution of prime gaps (culminating in the Ford-Green-Konyagin-Maynard-Tao breakthrough). The trivial bounds $k^{1/2} \\lesssim S(k) \\lesssim k$ were known early on: the lower bound from Rosser's sieve (1950s) and the upper bound from factorial divisibility. The major advance came in 2018 when Ford, Green, Konyagin, Maynard, and Tao proved that prime gaps can be as large as $c \\cdot p \\log p \\cdot \\log_2 p \\cdot \\log_4 p / \\log_3 p$, which translates to a near-linear upper bound on $S(k)$ with iterated logarithmic corrections. Despite this progress, the gap between the lower bound $k^{1/2-o(1)}$ and the conjectured $k^{1-o(1)}$ remains wide. The problem connects to several other Erdős questions (#928, #931, #932, #933) on the multiplicative structure of consecutive integers.",
+    "problemStatement": "Let $S(k)$ be the minimal $x$ such that $\\{n : n+1, \\ldots, n+k \\text{ all } x\\text{-smooth}\\}$ has positive upper density. Is $S(k) \\geq k^{1-o(1)}$?",
+    "proofStrategy": "The formalization defines $x$-smoothness via the universal quantifier over prime factors, smooth blocks as the conjunction over all $k$ consecutive integers, and the threshold $S(k)$ via `Nat.find`. Upper density is formalized using `Filter.limsup` on the `atTop` filter. The main conjecture is stated as an axiom (the problem is OPEN), and known bounds are formalized: the trivial upper bound $S(k) \\leq k+1$, Rosser's sieve lower bound $S(k) > k^{1/2-o(1)}$, and the FGKMT upper bound involving four levels of iterated logarithm. Structural observations (monotonicity, $S(2) = 3$) ground the abstract definitions in concrete behavior.",
     "keyInsights": [
-      "Trivial upper bound: S(k) ≤ k+1 via n ≡ −1 mod (k+1)!",
-      "Rosser's sieve gives S(k) > k^{1/2−o(1)}",
-      "FGKMT (2018): S(k) ≪ k·log³k / (log²k · log⁴k) via prime gap technology",
-      "The conjecture S(k) ≥ k^{1−o(1)} would be a strong smoothness result",
-      "S(k) is monotone non-decreasing in k"
+      "The trivial upper bound $S(k) \\leq k+1$ follows from factorial divisibility: $n \\equiv -1 \\pmod{(k+1)!}$ ensures $i \\mid (n+i)$ for all $i \\leq k$, making each $n+i$ automatically $(k+1)$-smooth",
+      "Rosser's sieve gives $S(k) > k^{1/2-o(1)}$: when $x$ is smaller than $k^{1/2}$, the primes in $(x, k]$ are so numerous that no block of $k$ integers can avoid all of them with positive density",
+      "The FGKMT (2018) breakthrough on large prime gaps translates to $S(k) \\ll k \\cdot \\log_3 k / (\\log_2 k \\cdot \\log_4 k)$, improving the trivial bound by iterated logarithmic factors",
+      "The conjecture $S(k) \\geq k^{1-o(1)}$ asserts near-linearity: finding $k$ consecutive smooth numbers requires a smoothness bound nearly as large as $k$ itself",
+      "The wide gap between the known lower bound ($k^{1/2}$) and conjectured lower bound ($k^{1}$) reflects the fundamental difficulty of sieve methods in proving lower bounds for smooth number problems",
+      "$S(k)$ is monotone non-decreasing, with base case $S(2) = 3$: only 3-smooth numbers (of the form $2^a \\cdot 3^b$) admit consecutive smooth pairs with positive density"
     ]
   },
   "sections": [
     {
-      "id": "definitions",
+      "id": "sec-929-header",
+      "title": "Problem Overview and References",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Documentation block with the problem statement, current status (OPEN), key results (trivial bound, Rosser, FGKMT), and reference to erdosproblems.com. Imports Mathlib.Tactic, Nat.Prime.Basic, and Log.Basic."
+    },
+    {
+      "id": "sec-929-definitions",
       "title": "Core Definitions",
-      "startLine": 24,
-      "endLine": 53,
-      "summary": "Defines IsSmooth, SmoothBlock, smoothBlockSet, upper density, and the threshold function S(k)."
+      "startLine": 28,
+      "endLine": 56,
+      "summary": "Five foundational definitions: IsSmooth (all prime factors ≤ x), SmoothBlock (k consecutive smooth numbers), smoothBlockSet (set of valid starting points), Set.upperDensity (via Filter.limsup), and smoothThreshold S(k) (via Nat.find with trivial witness)."
     },
     {
-      "id": "conjecture",
+      "id": "sec-929-conjecture",
       "title": "Main Conjecture",
-      "startLine": 55,
-      "endLine": 61,
-      "summary": "States the Erdős conjecture: S(k) ≥ k^{1−ε} for all ε > 0 and large k."
+      "startLine": 58,
+      "endLine": 65,
+      "summary": "Erdős's open conjecture formalized as an axiom: S(k) ≥ k^{1−ε} for all ε > 0 and eventually all k, using Filter.Eventually on atTop."
     },
     {
-      "id": "bounds",
+      "id": "sec-929-bounds",
       "title": "Known Bounds",
-      "startLine": 63,
-      "endLine": 84,
-      "summary": "Trivial upper bound S(k) ≤ k+1, Rosser lower bound k^{1/2−o(1)}, and FGKMT upper bound with iterated logarithms."
+      "startLine": 67,
+      "endLine": 88,
+      "summary": "Three key bounds as axioms: trivial upper bound S(k) ≤ k+1, Rosser's sieve lower bound S(k) > k^{1/2−o(1)}, and the FGKMT upper bound with four-level iterated logarithm. The FGKMT bound involves Real.log composed four times."
     },
     {
-      "id": "structural",
+      "id": "sec-929-structural",
       "title": "Structural Observations",
-      "startLine": 86,
-      "endLine": 94,
-      "summary": "Monotonicity of S(k) and the specific value S(2) = 3."
+      "startLine": 90,
+      "endLine": 99,
+      "summary": "Two structural results: monotonicity of S(k) in k, and the base case S(2) = 3 (consecutive 3-smooth numbers have positive density but consecutive 2-smooth numbers do not)."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #929 on the smoothness threshold for consecutive integers, including the main conjecture S(k) ≥ k^{1−o(1)}, known bounds from Rosser's sieve and Ford–Green–Konyagin–Maynard–Tao.",
-    "implications": "The problem connects the distribution of smooth numbers to prime gaps. The FGKMT breakthrough provides the best known upper bound but leaves a significant gap with the conjectured lower bound.",
+    "summary": "Formalizes Erdős Problem #929 on the smoothness threshold for consecutive integers. The central function $S(k)$ captures how smooth numbers must be to form blocks of length $k$ with positive density. Known bounds bracket $S(k)$ between $k^{1/2-o(1)}$ (Rosser's sieve) and $k \\cdot \\log_3 k / (\\log_2 k \\cdot \\log_4 k)$ (FGKMT 2018), with the conjecture that $S(k) \\geq k^{1-o(1)}$. The file uses 1 sorry (in the trivial bound witness) and all major results are stated as axioms since the problem is OPEN.",
+    "implications": "The problem connects the distribution of smooth numbers to prime gap theory, one of the deepest areas of analytic number theory. The FGKMT result shows that progress on prime gaps directly improves bounds on smooth number thresholds. A resolution of this conjecture would have implications for understanding the multiplicative structure of short intervals and could inform algorithms in computational number theory (factoring, cryptography) that rely on smooth number prevalence.",
     "openQuestions": [
-      "Is the true order of S(k) closer to k or k^{1/2}?",
-      "Can the Rosser sieve lower bound be improved beyond k^{1/2}?",
-      "What is the exact value of S(k) for small k?"
+      "Is the true order of $S(k)$ closer to $k$ (as conjectured) or to $k^{1/2}$ (the sieve barrier)? Bridging this exponential gap requires fundamentally new ideas beyond current sieve technology.",
+      "Can the Rosser sieve lower bound $k^{1/2-o(1)}$ be improved beyond the square root barrier? Known sieve methods have a fundamental $k^{1/2}$ limitation for this type of problem.",
+      "What are the exact values of $S(k)$ for small $k$? We know $S(2) = 3$, but $S(3), S(4), \\ldots$ are not precisely determined.",
+      "How does the problem change if positive natural density is required instead of positive upper density? The distinction matters since upper density is strictly weaker.",
+      "What is the connection between $S(k)$ and the Dickman function? The density of smooth numbers up to $N$ with smoothness $N^{1/u}$ is $\\rho(u)$, suggesting $S(k)$ should relate to inverse Dickman computations."
     ]
   }
 }

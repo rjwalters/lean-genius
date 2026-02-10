@@ -2,7 +2,7 @@
   "id": "erdos-949",
   "title": "Erdős Problem #949: Sum-Free Sets and Continuum-Sized Sumset Avoidance",
   "slug": "erdos-949",
-  "description": "If S ⊆ ℝ is sum-free (no a + b = c with a,b,c ∈ S), must there exist A ⊆ ℝ\\S with |A| = 𝔠 and A+A ⊆ ℝ\\S? SOLVED for Sidon sets (Dillies–AlphaProof). General case OPEN.",
+  "description": "If S ⊆ ℝ is sum-free (no a + b = c with a,b,c ∈ S), must there exist A ⊆ ℝ\\S with |A| = 𝔠 and A+A ⊆ ℝ\\S? SOLVED for Sidon sets (Dillies-AlphaProof). General case OPEN.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/949",
@@ -13,83 +13,113 @@
       "set-theory",
       "additive-combinatorics",
       "sum-free-sets",
-      "cardinal-arithmetic"
+      "cardinal-arithmetic",
+      "open"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 949,
     "erdosUrl": "https://erdosproblems.com/949",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "crossReferences": [
+      {
+        "proofId": "erdos-948",
+        "relationship": "Companion problem: Hindman's theorem on monochromatic IP sets and subset sum colorings, sharing the theme of additive structure under combinatorial constraints"
+      },
+      {
+        "proofId": "erdos-795",
+        "relationship": "Studies multiplicative Sidon sets (distinct subset products); the multiplicative analogue of the additive Sidon property central to this problem"
+      },
+      {
+        "proofId": "erdos-950",
+        "relationship": "Adjacent problem studying sum of reciprocal prime gaps; both explore additive structure in different number-theoretic contexts"
+      },
+      {
+        "proofId": "zorns-lemma",
+        "relationship": "Foundation: Zorn's lemma is the key tool in the small-cardinality case of the Sidon variant proof"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős asked whether sum-free subsets of ℝ always leave enough room in their complement for a continuum-sized set whose sumset also avoids S. The Sidon variant was proved by Yael Dillies using a technique discovered by AlphaProof, splitting into cases based on whether |S| < 𝔠 or |S| = 𝔠. The general sum-free case remains open.",
-    "problemStatement": "Let S ⊆ ℝ be sum-free (∀ a,b ∈ S, a+b ∉ S). Must there exist A ⊆ ℝ\\S with |A| = 𝔠 and A+A ⊆ ℝ\\S?",
-    "proofStrategy": "We define IsSumFreeSet, IsSidonReal, and realSumset. ErdosProblem949 states the conjecture using Cardinal.continuum. The solved Sidon variant is axiomatized with its two-case proof strategy (small S uses Zorn's lemma; continuum-sized S uses the shift construction). The general case is left open.",
+    "historicalContext": "Erdős posed this problem asking whether the complement of a sum-free set in $\\mathbb{R}$ always contains a continuum-sized subset whose sumset avoids the original set. The problem lies at the intersection of additive combinatorics and set-theoretic cardinal arithmetic. Sum-free sets have been studied since Schur (1916), who proved that for any $r$-coloring of $\\{1, \\ldots, n\\}$, some color class contains a monochromatic solution to $a + b = c$ when $n$ is large enough. The complement question reverses this perspective: given a set avoiding such solutions, how much additive structure remains outside? The Sidon variant was proved by Yael Dillies using a technique discovered by AlphaProof. The proof splits into two cases based on whether $|S| < \\mathfrak{c}$ or $|S| = \\mathfrak{c}$. In the small case, Zorn's lemma produces a maximal sumset-avoiding subset of $S^c$, and maximality forces continuum cardinality. In the continuum case, the shift construction $A = ((S \\setminus \\{a\\}) - a/2) \\setminus S$ exploits the Sidon property to ensure $|A \\cap S| \\leq 1$. The general sum-free case remains open because sum-free sets can be much denser than Sidon sets ($n/2$ vs. $\\sqrt{n}$ in $[n]$), and the injectivity of the sum map—crucial to the Sidon proof—fails for general sum-free sets. The file also corrects a previous unsound axiom by proving that Sidon sets are NOT necessarily sum-free, with $\\{1, 2, 4\\}$ as counterexample.",
+    "problemStatement": "Let $S \\subseteq \\mathbb{R}$ be sum-free ($\\forall a, b \\in S,\\; a + b \\notin S$). Must there exist $A \\subseteq \\mathbb{R} \\setminus S$ with $|A| = \\mathfrak{c}$ (the cardinality of the continuum) such that $A + A \\subseteq \\mathbb{R} \\setminus S$?",
+    "proofStrategy": "The formalization defines `IsSumFreeSet` (no $a + b \\in S$ for $a, b \\in S$), `IsSidonReal` (distinct ordered sums), and `realSumset` (pairwise sums). The main conjecture `ErdosProblem949` uses `Cardinal.mk` and `Cardinal.continuum`. The Sidon variant is axiomatized as `sidon_variant_solved`. Concrete examples include: odd numbers are sum-free (proved by parity), $\\{1, 2, 4\\}$ is Sidon but not sum-free (proved by case analysis correcting an unsound axiom), and basic Sidon properties (empty set, singletons). The general case is recorded as an axiom. The file uses 0 sorry statements.",
     "keyInsights": [
-      "Sum-free means (S+S) ∩ S = ∅; the question is about the complement's additive structure",
-      "For Sidon sets, the sum function's injectivity is key to the proof",
-      "Small case (|S| < 𝔠): Zorn's lemma yields a maximal A; maximality forces |A| = 𝔠",
-      "Continuum case (|S| = 𝔠): shift construction A = ((S\\{a}) - a/2) \\ S works"
+      "Sum-free means $(S+S) \\cap S = \\emptyset$; the question asks whether the complement $S^c$ inherits enough additive structure for a continuum-sized sumset-avoiding subset",
+      "For Sidon sets, the sum function's injectivity ($a+b = c+d \\implies (a,b) = (c,d)$) is the key property enabling the proof; this fails for general sum-free sets",
+      "Small case ($|S| < \\mathfrak{c}$): Zorn's lemma yields a maximal $A \\subseteq S^c$ with $A + A \\subseteq S^c$; maximality forces $|A| = \\mathfrak{c}$ since otherwise $A \\cup \\{x\\}$ extends $A$ for some $x$",
+      "Continuum case ($|S| = \\mathfrak{c}$): the shift construction $A = ((S \\setminus \\{a\\}) - a/2) \\setminus S$ works because the Sidon property limits $|A \\cap S|$ to at most one element",
+      "Sidon sets are NOT sum-free: $\\{1, 2, 4\\}$ is Sidon but $1 + 1 = 2 \\in S$; this corrects a previous unsound axiom in the formalization",
+      "The density gap between Sidon and sum-free sets ($\\sqrt{n}$ vs. $n/2$ in $[n]$) is the fundamental obstacle to extending the Sidon technique to the general case"
     ]
   },
   "sections": [
     {
-      "id": "sum-free-sets",
-      "title": "Sum-Free Sets",
-      "startLine": 22,
-      "endLine": 29,
-      "summary": "Defines IsSumFreeSet: no a, b ∈ S have a + b ∈ S."
+      "id": "sec-949-header",
+      "title": "Problem Statement and References",
+      "startLine": 1,
+      "endLine": 13,
+      "summary": "Documentation block with the problem statement, status (OPEN general; SOLVED for Sidon), and references to Erdős and Dillies-AlphaProof."
     },
     {
-      "id": "sidon-sets",
-      "title": "Sidon Sets",
-      "startLine": 31,
+      "id": "sec-949-imports",
+      "title": "Imports",
+      "startLine": 15,
+      "endLine": 22,
+      "summary": "Imports Data.Real.Basic, Data.Set.Basic, Set.Finite.Basic, Cardinal.Basic, Cardinal.Continuum, and Tactic. Opens Set namespace."
+    },
+    {
+      "id": "sec-949-definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
       "endLine": 39,
-      "summary": "Defines IsSidonReal: all pairwise sums are distinct."
+      "summary": "Three foundational definitions: `IsSumFreeSet` (no a+b ∈ S for a,b ∈ S), `IsSidonReal` (distinct ordered pairwise sums), and `realSumset` (set of all pairwise sums)."
     },
     {
-      "id": "sumset",
-      "title": "The Sumset",
+      "id": "sec-949-conjecture",
+      "title": "Main Problem and LEM",
       "startLine": 41,
-      "endLine": 47,
-      "summary": "Defines realSumset A + A as the set of all pairwise sums from A."
+      "endLine": 54,
+      "summary": "Defines `ErdosProblem949` using Cardinal.continuum and proves it is decidable by the law of excluded middle (trivially, as a Prop)."
     },
     {
-      "id": "main-problem",
-      "title": "The Main Problem",
-      "startLine": 49,
-      "endLine": 62,
-      "summary": "States ErdosProblem949: sum-free S implies continuum-sized sumset-avoiding A exists in Sᶜ."
+      "id": "sec-949-examples",
+      "title": "Concrete Examples",
+      "startLine": 56,
+      "endLine": 80,
+      "summary": "Proved examples: odd numbers are sum-free (parity argument), empty set is Sidon, singletons are Sidon. These ground the abstract definitions."
     },
     {
-      "id": "sidon-variant",
-      "title": "The Sidon Variant (Solved)",
-      "startLine": 64,
-      "endLine": 81,
-      "summary": "Axiomatizes sidon_variant_solved (Dillies–AlphaProof) and the connection sidon_is_sum_free."
+      "id": "sec-949-correction",
+      "title": "Sidon vs. Sum-Free Correction",
+      "startLine": 82,
+      "endLine": 100,
+      "summary": "Proves `sidon_not_implies_sum_free`: {1,2,4} is Sidon but not sum-free (1+1=2 ∈ S). Corrects a previously unsound axiom. Full case analysis verified."
     },
     {
-      "id": "proof-strategy",
-      "title": "Proof Strategy for Sidon Case",
-      "startLine": 83,
-      "endLine": 102,
-      "summary": "Two cases: small S uses Zorn's lemma; continuum-sized S uses the shift A = ((S\\{a}) - a/2) \\ S."
+      "id": "sec-949-sidon-solved",
+      "title": "Sidon Variant (Solved)",
+      "startLine": 102,
+      "endLine": 111,
+      "summary": "Axiom recording Dillies-AlphaProof solution: for Sidon S, the continuum-sized sumset-avoiding subset exists in S^c. Does NOT require S to be sum-free."
     },
     {
-      "id": "general-case",
-      "title": "General Sum-Free Case",
-      "startLine": 104,
-      "endLine": 113,
-      "summary": "The general problem remains open; the Sidon technique does not extend."
+      "id": "sec-949-general",
+      "title": "General Sum-Free Case (Open)",
+      "startLine": 113,
+      "endLine": 121,
+      "summary": "Axiom recording the full conjecture for arbitrary sum-free sets. Notes that the Sidon technique (injectivity) does not generalize to the denser sum-free setting."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 949 asks whether sum-free sets in ℝ always leave a continuum-sized sumset-avoiding subset in their complement. The Sidon variant is solved (Dillies–AlphaProof). The general case is open.",
-    "implications": "Resolution would connect the additive structure of sum-free sets to set-theoretic cardinal arithmetic, bridging combinatorics and descriptive set theory.",
+    "summary": "Erdős Problem #949 asks whether sum-free subsets of $\\mathbb{R}$ always leave a continuum-sized sumset-avoiding subset in their complement. The Sidon variant is solved (Dillies-AlphaProof) via a cardinality dichotomy: Zorn's lemma for $|S| < \\mathfrak{c}$ and a shift construction for $|S| = \\mathfrak{c}$. The general sum-free case remains open. The formalization includes proved examples (odd numbers, Sidon properties), a corrected axiom (Sidon $\\not\\Rightarrow$ sum-free), and 0 sorry statements.",
+    "implications": "Resolution would connect the additive structure of sum-free sets to set-theoretic cardinal arithmetic, bridging finite additive combinatorics (Schur, Ramsey) with infinite set theory (Zorn, continuum). The gap between the Sidon and sum-free cases highlights a fundamental question: does the injectivity of the sum map (Sidon property) capture all the additive structure needed, or do denser sum-free sets require entirely different techniques? Progress could come from understanding the additive energy of sum-free sets or from descriptive set-theoretic methods.",
     "openQuestions": [
-      "Does the result hold for all sum-free S, not just Sidon sets?",
-      "Can the Zorn's lemma approach be extended beyond the Sidon case?",
-      "What structural property of S (weaker than Sidon) suffices?"
+      "Does the result hold for all sum-free $S \\subseteq \\mathbb{R}$, not just Sidon sets? The density gap ($\\sqrt{n}$ vs. $n/2$ in $[n]$) is the main obstacle.",
+      "Can the Zorn's lemma approach be extended beyond the Sidon case? The maximality argument works for any set, but showing $|A| = \\mathfrak{c}$ requires bounding $|\\bigcup_{a \\in A} (S - a)|$.",
+      "What structural property of $S$ (weaker than Sidon but stronger than sum-free) suffices for the continuum-sized sumset-avoiding subset to exist?",
+      "Is the result independent of ZFC? The use of Zorn's lemma and cardinal arithmetic suggests possible set-theoretic sensitivity.",
+      "Does the analogous result hold in other abelian groups, e.g., $\\mathbb{Z}$, $\\mathbb{Z}/n\\mathbb{Z}$, or $\\mathbb{F}_p^n$?"
     ]
   }
 }

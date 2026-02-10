@@ -5,22 +5,22 @@
     "type": "definition",
     "title": "Distinct Subset Products",
     "range": { "startLine": 62, "endLine": 65 },
-    "content": "Defines `HasDistinctSubsetProducts A`: for all subsets $S, T \\subseteq A$ with $S \\ne T$, we have $\\prod_{a \\in S} a \\ne \\prod_{a \\in T} a$. The product map on the power set of $A$ is injective. This uses `Finset.prod id` for the product of elements. The empty subset gives product 1, singletons give themselves, and larger subsets must also be distinguishable.",
-    "mathContext": "$\\text{HasDistinctSubsetProducts}(A) \\iff \\forall S \\ne T \\subseteq A,\\; \\prod_{a \\in S} a \\ne \\prod_{a \\in T} a$. Equivalently, the map $2^A \\to \\mathbb{N}$ given by $S \\mapsto \\prod_{a \\in S} a$ is injective.",
+    "content": "A set $A$ has distinct subset products if every subset yields a unique product. Formally, for all $S, T \\subseteq A$ with $S \\neq T$, we require $\\prod_{a \\in S} a \\neq \\prod_{a \\in T} a$. The empty subset contributes the product 1 (the empty product). This is the multiplicative analogue of the classical distinct subset sums problem (Erdős Problem #1).",
+    "mathContext": "$\\text{HasDistinctSubsetProducts}(A) \\iff \\forall S, T \\subseteq A,\\; S \\neq T \\implies \\prod_{a \\in S} a \\neq \\prod_{a \\in T} a$",
     "significance": "key",
-    "relatedConcepts": ["subset product", "injective product map", "multiplicative structure", "Finset.prod"],
-    "prerequisites": ["Finset", "Finset.prod", "function injectivity"]
+    "relatedConcepts": ["subset sums", "unique factorization", "B-sequence", "multiplicative Sidon set"],
+    "prerequisites": ["Finset", "product over a finite set", "subset ordering"]
   },
   {
-    "id": "ann-795-distinct-alt",
+    "id": "ann-795-distinct-products-alt",
     "proofId": "erdos-795",
     "type": "definition",
-    "title": "Alternative Characterization",
+    "title": "Injectivity Formulation",
     "range": { "startLine": 67, "endLine": 69 },
-    "content": "Alternative definition `DistinctProducts'` using `Function.Injective` directly on the product map. Maps subsets $S \\subseteq A$ to $\\prod_{a \\in S} a$ and subsets not contained in $A$ to 0. The injectivity of this function is equivalent to `HasDistinctSubsetProducts`.",
-    "mathContext": "$\\text{DistinctProducts}'(A) \\iff$ the map $S \\mapsto \\begin{cases} \\prod_{a \\in S} a & S \\subseteq A \\\\ 0 & \\text{otherwise} \\end{cases}$ is injective.",
+    "content": "An equivalent formulation defines distinct subset products via injectivity of the product map $S \\mapsto \\prod_{a \\in S} a$ on the power set of $A$. This is cleaner for Lean's type system since `Function.Injective` is well-supported in Mathlib.",
+    "mathContext": "$\\phi: \\mathcal{P}(A) \\to \\mathbb{N}, \\quad \\phi(S) = \\prod_{a \\in S} a$ is injective",
     "significance": "supporting",
-    "relatedConcepts": ["Function.Injective", "characteristic function", "product map"],
+    "relatedConcepts": ["Function.Injective", "power set", "product map"],
     "prerequisites": ["Function.Injective", "Finset.prod"]
   },
   {
@@ -29,11 +29,11 @@
     "type": "definition",
     "title": "The Function g(n)",
     "range": { "startLine": 71, "endLine": 76 },
-    "content": "Defines $g(n)$ as the maximum cardinality of a subset $A \\subseteq \\{1, \\ldots, n\\}$ with distinct subset products. Uses `Finset.sup` over the powerset of $\\{0, \\ldots, n\\}$ filtered by the distinct products property. Marked `noncomputable` since the filter involves decidability of `HasDistinctSubsetProducts`, which Lean cannot synthesize automatically.",
-    "mathContext": "$g(n) = \\max\\{|A| : A \\subseteq [n],\\; \\text{all subset products of } A \\text{ are distinct}\\}$. The function $g$ is the central object of Erdős Problem #795.",
+    "content": "The function $g(n)$ is defined as the maximum cardinality of a subset $A \\subseteq \\{1, \\ldots, n\\}$ satisfying the distinct subset products property. This is defined noncomputably via `Finset.sup` over the power set filtered by the distinct products predicate. A set of size $k$ has $2^k$ subsets, so we need $2^{g(n)}$ distinct products in $\\{1, \\ldots, n^{g(n)}\\}$.",
+    "mathContext": "$g(n) = \\max\\{|A| : A \\subseteq \\{1, \\ldots, n\\},\\; \\text{HasDistinctSubsetProducts}(A)\\}$",
     "significance": "key",
-    "relatedConcepts": ["extremal set theory", "Finset.sup", "noncomputable definition", "optimization"],
-    "prerequisites": ["Finset.powerset", "Finset.filter", "HasDistinctSubsetProducts"]
+    "relatedConcepts": ["extremal combinatorics", "Finset.sup", "optimization over finite sets"],
+    "prerequisites": ["Finset.powerset", "Finset.filter", "Finset.sup"]
   },
   {
     "id": "ann-795-prime-pi",
@@ -41,35 +41,35 @@
     "type": "definition",
     "title": "Prime Counting Function",
     "range": { "startLine": 80, "endLine": 82 },
-    "content": "Defines $\\pi(n)$ as the number of primes $\\le n$, computed by filtering `Finset.range (n+1)` by `Nat.Prime`. The prime number theorem gives $\\pi(n) \\sim n/\\log n$, and the relationship between $\\pi$ and $g$ is the central question. The formalization uses Mathlib's `Nat.Prime` predicate.",
-    "mathContext": "$\\pi(n) = |\\{p \\le n : p \\text{ prime}\\}|$. By the Prime Number Theorem, $\\pi(n) \\sim \\frac{n}{\\ln n}$.",
+    "content": "The prime counting function $\\pi(n)$ counts the number of primes $p \\leq n$. By the prime number theorem, $\\pi(n) \\sim n / \\ln n$. This function is central to the problem since primes are the building blocks of sets with distinct subset products: by the fundamental theorem of arithmetic, any set of distinct primes automatically has distinct subset products.",
+    "mathContext": "$\\pi(n) = |\\{p \\leq n : p \\text{ is prime}\\}| \\sim \\frac{n}{\\ln n}$",
     "significance": "key",
-    "relatedConcepts": ["prime number theorem", "Nat.Prime", "Chebyshev bounds", "prime counting"],
+    "relatedConcepts": ["prime number theorem", "Nat.Prime", "Chebyshev bounds", "Mertens' theorems"],
     "prerequisites": ["Nat.Prime", "Finset.filter", "Finset.card"]
   },
   {
     "id": "ann-795-erdos-bound",
     "proofId": "erdos-795",
     "type": "technique",
-    "title": "Erdős's Upper Bound (1966)",
+    "title": "Erdős's 1966 Upper Bound",
     "range": { "startLine": 102, "endLine": 106 },
-    "content": "Erdős (1966) proved $g(n) \\le \\pi(n) + O(\\sqrt{n}/\\log n)$. The key idea: elements of an optimal set $A$ that are not prime contribute at most $O(\\sqrt{n}/\\log n)$ elements, because composite numbers create product collisions more easily. This was the starting point showing $g(n)$ is dominated by the prime count.",
-    "mathContext": "$g(n) \\le \\pi(n) + C \\cdot \\frac{\\sqrt{n}}{\\log n}$ for some absolute constant $C > 0$ and all $n \\ge 2$.",
+    "content": "Erdős proved in 1966 that $g(n) \\leq \\pi(n) + O(\\sqrt{n}/\\ln n)$, establishing that the prime count dominates. His argument uses the fact that non-prime elements in an optimal set must correspond to prime factorizations that don't create collisions, limiting how many composite numbers can participate. The error term $O(\\sqrt{n}/\\ln n) \\approx O(\\pi(\\sqrt{n}))$ by the prime number theorem, hinting at the role of prime squares.",
+    "mathContext": "$g(n) \\leq \\pi(n) + C \\cdot \\frac{\\sqrt{n}}{\\ln n}$ for some absolute constant $C > 0$",
     "significance": "key",
-    "relatedConcepts": ["Erdős 1966", "big-O notation", "prime dominance", "Mat. Lapok"],
-    "prerequisites": ["g definition", "primePi", "Real.log", "asymptotic analysis"]
+    "relatedConcepts": ["big-O notation", "prime number theorem", "asymptotic analysis"],
+    "prerequisites": ["Real.log", "asymptotic notation", "prime number theorem"]
   },
   {
     "id": "ann-795-conjecture",
     "proofId": "erdos-795",
     "type": "insight",
-    "title": "The Main Conjecture",
+    "title": "Erdős's Conjecture",
     "range": { "startLine": 117, "endLine": 120 },
-    "content": "Erdős's main question formalized as a proposition: $g(n) \\le \\pi(n) + \\pi(\\sqrt{n}) + o(\\sqrt{n}/\\log n)$. This refines the 1966 bound by replacing the $O(\\sqrt{n}/\\log n)$ error with $\\pi(\\sqrt{n}) + o(\\sqrt{n}/\\log n)$, asserting that the natural construction (primes $\\le n$ plus squares of primes $\\le \\sqrt{n}$) is essentially optimal. The $o(\\cdot)$ notation is formalized via the $\\varepsilon$-$N$ definition.",
-    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N:\\; g(n) \\le \\pi(n) + \\pi(\\sqrt{n}) + \\varepsilon \\cdot \\frac{\\sqrt{n}}{\\log n}$.",
+    "content": "Erdős asked whether the natural lower bound from primes and their squares is essentially optimal: $g(n) \\leq \\pi(n) + \\pi(\\sqrt{n}) + o(\\sqrt{n}/\\ln n)$. This would show the second-order term is precisely $\\pi(\\sqrt{n})$, not just $O(\\sqrt{n}/\\ln n)$. The conjecture stood open for nearly 60 years, requiring precise control over how composite elements interact in sets with distinct products.",
+    "mathContext": "$g(n) \\stackrel{?}{\\leq} \\pi(n) + \\pi(\\sqrt{n}) + o\\!\\left(\\frac{\\sqrt{n}}{\\ln n}\\right)$",
     "significance": "key",
-    "relatedConcepts": ["little-o notation", "ε-N definition", "asymptotic optimality", "natural construction"],
-    "prerequisites": ["g definition", "primePi", "Nat.sqrt", "asymptotic analysis"]
+    "relatedConcepts": ["little-o notation", "prime number theorem applied to √n", "extremal set theory"],
+    "prerequisites": ["asymptotic notation", "Nat.sqrt", "prime counting function"]
   },
   {
     "id": "ann-795-raghavan-upper",
@@ -77,11 +77,11 @@
     "type": "technique",
     "title": "Raghavan's Upper Bound (2025)",
     "range": { "startLine": 147, "endLine": 151 },
-    "content": "Raghavan (2025) proved $g(n) \\le \\pi(n) + \\pi(\\sqrt{n}) + O(n^{5/12} (\\log n)^{1/2})$. The error term $n^{5/12+o(1)}$ is significantly smaller than $\\sqrt{n}/\\log n$ (since $5/12 < 1/2$), confirming Erdős's conjecture. The proof uses careful counting of how non-prime, non-prime-square elements can coexist while maintaining distinct products.",
-    "mathContext": "$g(n) \\le \\pi(n) + \\pi(\\sqrt{n}) + C \\cdot n^{5/12} \\cdot (\\log n)^{1/2}$ for some $C > 0$. Since $n^{5/12} = o(n^{1/2}/\\log n)$, this implies the conjecture.",
+    "content": "Raghavan's breakthrough establishes $g(n) \\leq \\pi(n) + \\pi(\\sqrt{n}) + O(n^{5/12+o(1)})$. The exponent $5/12$ arises from a delicate sieve argument combined with bounds on multiplicative energy. Since $5/12 < 1/2$, this error term $n^{5/12+o(1)}$ is asymptotically smaller than $\\sqrt{n}/\\ln n$, confirming Erdős's conjecture. The key technique combines additive combinatorics with multiplicative number theory.",
+    "mathContext": "$g(n) \\leq \\pi(n) + \\pi(\\sqrt{n}) + O(n^{5/12 + o(1)})$",
     "significance": "key",
-    "relatedConcepts": ["Raghavan 2025", "error term analysis", "prime power counting", "multiplicative structure"],
-    "prerequisites": ["g definition", "primePi", "Nat.sqrt", "real exponentiation"]
+    "relatedConcepts": ["sieve methods", "multiplicative energy", "additive combinatorics"],
+    "prerequisites": ["Real.rpow", "asymptotic analysis", "sieve theory"]
   },
   {
     "id": "ann-795-raghavan-lower",
@@ -89,11 +89,11 @@
     "type": "technique",
     "title": "Raghavan's Lower Bound (2025)",
     "range": { "startLine": 185, "endLine": 189 },
-    "content": "Raghavan also proved $g(n) \\ge \\pi(n) + \\pi(\\sqrt{n}) + \\pi(\\sqrt[3]{n})/3 - O(1)$. The construction uses primes $\\le n$, squares of primes $\\le \\sqrt{n}$, and approximately a third of cubes of primes $\\le \\sqrt[3]{n}$. This shows the contribution from cube roots is genuine and not just an artifact of the upper bound.",
-    "mathContext": "$g(n) \\ge \\pi(n) + \\pi(n^{1/2}) + \\frac{\\pi(n^{1/3})}{3} - C$ for some absolute constant $C$.",
+    "content": "The complementary lower bound $g(n) \\geq \\pi(n) + \\pi(\\sqrt{n}) + \\pi(\\sqrt[3]{n})/3 - O(1)$ shows the third-order term comes from cubes of primes. If $p \\leq n^{1/3}$, then $p^3 \\leq n$ and $p^3$ can be added to the set of primes and prime squares without creating product collisions, since $p^3$ contributes an exponent of 3 in $p$'s factorization—distinguishable from exponents 0, 1, and 2 already present.",
+    "mathContext": "$g(n) \\geq \\pi(n) + \\pi(\\sqrt{n}) + \\frac{\\pi(\\sqrt[3]{n})}{3} - O(1)$",
     "significance": "key",
-    "relatedConcepts": ["explicit construction", "prime cubes", "lower bound construction", "asymptotic tightness"],
-    "prerequisites": ["g definition", "primePi", "Nat cube root", "prime powers"]
+    "relatedConcepts": ["explicit constructions", "prime powers", "exponent distinguishability"],
+    "prerequisites": ["Nat.Prime", "prime power factorization", "Finset.union"]
   },
   {
     "id": "ann-795-solved",
@@ -101,11 +101,11 @@
     "type": "insight",
     "title": "Conjecture Confirmed",
     "range": { "startLine": 201, "endLine": 206 },
-    "content": "The main theorem: Erdős's conjecture is TRUE. For large $n$, $n^{5/12} = o(\\sqrt{n}/\\log n)$ since $5/12 < 1/2$, so Raghavan's upper bound $\\pi(n) + \\pi(\\sqrt{n}) + O(n^{5/12+o(1)})$ implies $g(n) \\le \\pi(n) + \\pi(\\sqrt{n}) + o(\\sqrt{n}/\\log n)$. The proof unfolds the $\\varepsilon$-$N$ definition and applies the upper bound for sufficiently large $n$.",
-    "mathContext": "$n^{5/12+o(1)} = o(n^{1/2}/\\log n)$ since $5/12 < 1/2$. Therefore Raghavan's bound confirms $g(n) = \\pi(n) + \\pi(n^{1/2}) + \\Theta(\\pi(n^{1/3}))$.",
+    "content": "Combining the upper and lower bounds pins down the asymptotic: $g(n) = \\pi(n) + \\pi(\\sqrt{n}) + \\Theta(\\pi(\\sqrt[3]{n}))$. Erdős's conjecture follows because $n^{5/12} = o(\\sqrt{n}/\\ln n)$ (since $5/12 < 1/2$). This resolves a 60-year-old question, showing the primes-plus-prime-squares construction is optimal up to a lower-order term from prime cubes.",
+    "mathContext": "$n^{5/12} = o\\!\\left(\\frac{\\sqrt{n}}{\\ln n}\\right) \\implies g(n) \\leq \\pi(n) + \\pi(\\sqrt{n}) + o\\!\\left(\\frac{\\sqrt{n}}{\\ln n}\\right)$",
     "significance": "key",
-    "relatedConcepts": ["asymptotic comparison", "problem resolution", "60-year-old conjecture", "Theta notation"],
-    "prerequisites": ["raghavan_upper_bound", "erdos_795_question", "asymptotic analysis"]
+    "relatedConcepts": ["asymptotic equivalence", "little-o comparison", "problem resolution"],
+    "prerequisites": ["Real.log", "asymptotic analysis"]
   },
   {
     "id": "ann-795-primes-distinct",
@@ -113,23 +113,11 @@
     "type": "technique",
     "title": "Primes Have Distinct Products",
     "range": { "startLine": 221, "endLine": 225 },
-    "content": "The primes $\\le n$ form a set with distinct subset products. This follows directly from the Fundamental Theorem of Arithmetic: each positive integer has a unique prime factorization, so different subsets of primes produce different products. This is the base case of the lower bound construction.",
-    "mathContext": "By unique factorization: if $S, T$ are distinct subsets of primes, then $\\prod_{p \\in S} p \\ne \\prod_{p \\in T} p$, since the prime factorizations differ.",
+    "content": "Any set of distinct primes automatically has distinct subset products, as a direct consequence of the fundamental theorem of arithmetic: different subsets of primes produce products with different prime factorizations, hence different values. This gives the baseline $g(n) \\geq \\pi(n)$.",
+    "mathContext": "$S, T \\subseteq P \\text{ (primes)},\\; S \\neq T \\implies \\prod_{p \\in S} p \\neq \\prod_{p \\in T} p$ by unique factorization",
     "significance": "key",
-    "relatedConcepts": ["fundamental theorem of arithmetic", "unique factorization", "prime factorization", "Nat.Prime"],
-    "prerequisites": ["HasDistinctSubsetProducts", "Finset.filter", "unique factorization"]
-  },
-  {
-    "id": "ann-795-lower-primes",
-    "proofId": "erdos-795",
-    "type": "technique",
-    "title": "Lower Bound from Primes",
-    "range": { "startLine": 243, "endLine": 246 },
-    "content": "Since the primes $\\le n$ have distinct subset products and there are $\\pi(n)$ of them, we get $g(n) \\ge \\pi(n)$. This is the simplest lower bound and shows the prime count is the dominant term.",
-    "mathContext": "$g(n) \\ge \\pi(n)$, since $\\{p \\le n : p \\text{ prime}\\}$ has distinct subset products by unique factorization.",
-    "significance": "supporting",
-    "relatedConcepts": ["prime counting", "lower bound", "extremal construction"],
-    "prerequisites": ["primes_have_distinct_products", "g definition", "primePi"]
+    "relatedConcepts": ["fundamental theorem of arithmetic", "unique factorization domain", "Nat.Prime"],
+    "prerequisites": ["unique factorization", "Finset.prod", "Nat.Prime"]
   },
   {
     "id": "ann-795-squares-distinct",
@@ -137,23 +125,11 @@
     "type": "technique",
     "title": "Adding Prime Squares",
     "range": { "startLine": 257, "endLine": 262 },
-    "content": "Adding squares of small primes ($p^2$ for $p \\le \\sqrt{n}$) to the set of primes maintains distinct products. If $p^2$ is in the set alongside $p$, a subset can include $p^2$ (contributing exponent 2), $p$ (exponent 1), both (exponent 3), or neither (exponent 0)—all distinguishable in the factorization. The key is that $p^2 \\ne q$ for any prime $q \\ne p$ in $A$.",
-    "mathContext": "Let $P = \\{p \\le n : p \\text{ prime}\\}$ and $P_2 = \\{p^2 : p \\le \\sqrt{n},\\, p \\text{ prime}\\}$. Then $P \\cup P_2$ has distinct subset products since each prime's exponent in any product is uniquely determined.",
+    "content": "Adding $p^2$ for small primes $p \\leq \\sqrt{n}$ maintains distinct products. Including both $p$ and $p^2$ in the set means the exponent of $p$ in a subset product can be 0, 1, 2, or 3—all distinguishable. The union $P \\cup P^2$ where $P$ is primes $\\leq n$ and $P^2 = \\{p^2 : p \\leq \\sqrt{n}\\}$ has size $\\pi(n) + \\pi(\\sqrt{n})$.",
+    "mathContext": "$P = \\{p \\leq n : p \\text{ prime}\\},\\; P^2 = \\{p^2 : p \\leq \\sqrt{n},\\; p \\text{ prime}\\} \\implies |P \\cup P^2| = \\pi(n) + \\pi(\\sqrt{n})$",
     "significance": "key",
-    "relatedConcepts": ["prime powers", "exponent tracking", "unique factorization extension", "Finset.image"],
-    "prerequisites": ["primes_have_distinct_products", "Nat.sqrt", "Finset.union"]
-  },
-  {
-    "id": "ann-795-lower-squares",
-    "proofId": "erdos-795",
-    "type": "technique",
-    "title": "Lower Bound with Squares",
-    "range": { "startLine": 287, "endLine": 290 },
-    "content": "The natural construction gives $g(n) \\ge \\pi(n) + \\pi(\\sqrt{n})$: take all primes $\\le n$ plus squares of primes $\\le \\sqrt{n}$. The squares contribute $\\pi(\\sqrt{n})$ additional elements. This is the construction Erdős conjectured to be essentially optimal.",
-    "mathContext": "$g(n) \\ge |P| + |P_2| = \\pi(n) + \\pi(\\sqrt{n})$ for $n \\ge 4$.",
-    "significance": "key",
-    "relatedConcepts": ["natural construction", "Erdős's conjecture", "prime square construction"],
-    "prerequisites": ["primes_and_squares_distinct", "g definition", "primePi"]
+    "relatedConcepts": ["prime squares", "exponent tracking", "union of disjoint sets"],
+    "prerequisites": ["Nat.sqrt", "Finset.image", "Finset.union"]
   },
   {
     "id": "ann-795-structure",
@@ -161,35 +137,23 @@
     "type": "insight",
     "title": "Structure of Optimal Sets",
     "range": { "startLine": 317, "endLine": 328 },
-    "content": "Key structural result from Raghavan: any optimal set $A$ (achieving $|A| = g(n)$) decomposes as $A = P \\cup P_2 \\cup R$ where $P$ consists of primes, $P_2$ of prime squares, and the remainder $R$ has $|R| \\le \\pi(\\sqrt[3]{n})/2$. This shows optimal sets cannot deviate far from the natural prime/prime-square construction.",
-    "mathContext": "If $|A| = g(n)$ and $A$ has distinct subset products, then $A = P \\cup P_2 \\cup R$ with $\\forall p \\in P,\\, p$ prime; $\\forall q \\in P_2,\\, q = p^2$ for some prime $p$; and $|R| \\le \\pi(n^{1/3})/2$.",
+    "content": "Raghavan's structural result shows that any optimal set decomposes as $A = P \\cup P^2 \\cup R$ where $P$ is a set of primes, $P^2$ is a set of prime squares, and $|R| \\leq \\pi(n^{1/3})/2$. This explains why the function $g(n)$ is dominated by primes and prime squares: composites with multiple distinct prime factors are wasteful because they use up multiple primes' 'slots' for a single element.",
+    "mathContext": "$A = P \\cup P^2 \\cup R,\\; |R| \\leq \\frac{\\pi(n^{1/3})}{2}$, where all $p \\in P$ are prime and all $q \\in P^2$ satisfy $q = p^2$ for some prime $p$",
     "significance": "key",
-    "relatedConcepts": ["structural decomposition", "optimal set analysis", "prime power dominance"],
-    "prerequisites": ["HasDistinctSubsetProducts", "g definition", "Nat.Prime"]
+    "relatedConcepts": ["structural decomposition", "prime power basis", "extremal set characterization"],
+    "prerequisites": ["Finset decomposition", "Nat.Prime", "prime factorization"]
   },
   {
     "id": "ann-795-error-comparison",
     "proofId": "erdos-795",
     "type": "technique",
     "title": "Error Term Comparison",
-    "range": { "startLine": 343, "endLine": 347 },
-    "content": "Compares Erdős's error term $O(\\sqrt{n}/\\log n)$ with $\\pi(\\sqrt{n})$: they are of the same order since $\\pi(\\sqrt{n}) \\sim \\sqrt{n}/(\\frac{1}{2}\\log n) = 2\\sqrt{n}/\\log n$ by the prime number theorem. This shows Erdős's 1966 bound already captured the right order.",
-    "mathContext": "$\\frac{\\sqrt{n}}{\\log n} \\le C \\cdot \\pi(\\sqrt{n})$ since $\\pi(\\sqrt{n}) \\sim \\frac{2\\sqrt{n}}{\\log n}$.",
+    "range": { "startLine": 343, "endLine": 356 },
+    "content": "The key comparison $n^{5/12} \\leq C \\cdot \\sqrt{n}/\\ln n$ (for large $n$) bridges Erdős's error term and Raghavan's. This is the one theorem Aristotle successfully proved: by choosing $C = n^{5/12} \\ln n / \\sqrt{n} + 1$ and using the fact that $n^{5/12}/n^{1/2} = n^{-1/12} \\to 0$, the bound follows.",
+    "mathContext": "$n^{5/12} = o\\!\\left(\\frac{n^{1/2}}{\\ln n}\\right)$ since $\\frac{n^{5/12}}{n^{1/2}} = n^{-1/12} \\to 0$",
     "significance": "supporting",
-    "relatedConcepts": ["prime number theorem", "asymptotic comparison", "error term analysis"],
-    "prerequisites": ["primePi", "Real.log", "asymptotic equivalence"]
-  },
-  {
-    "id": "ann-795-raghavan-error",
-    "proofId": "erdos-795",
-    "type": "technique",
-    "title": "Raghavan's Error is Smaller (Proved by Aristotle)",
-    "range": { "startLine": 349, "endLine": 356 },
-    "content": "Shows $n^{5/12} \\le C \\cdot \\sqrt{n}/\\log n$ for large $n$, confirming Raghavan's error term is dominated by Erdős's. This was proved by Aristotle's automated proof search. The proof multiplies both sides by $\\log n$, reduces to showing $n^{5/12} \\cdot \\log n \\le C \\cdot n^{1/2}$, then uses `positivity` and `nlinarith` with an explicit witness for $C$.",
-    "mathContext": "$n^{5/12} \\le C \\cdot \\frac{n^{1/2}}{\\log n}$ for $n \\ge 4$, since $5/12 < 1/2$ implies $n^{5/12}/n^{1/2} = n^{-1/12} \\to 0$.",
-    "significance": "key",
-    "relatedConcepts": ["Aristotle proof search", "positivity tactic", "nlinarith", "exponent comparison"],
-    "prerequisites": ["Real.log", "real exponentiation", "le_div_iff₀"]
+    "relatedConcepts": ["asymptotic comparison", "power growth rates", "logarithmic correction"],
+    "prerequisites": ["Real.rpow", "Real.log", "asymptotic analysis"]
   },
   {
     "id": "ann-795-sidon",
@@ -197,10 +161,10 @@
     "type": "definition",
     "title": "Multiplicative Sidon Set",
     "range": { "startLine": 365, "endLine": 386 },
-    "content": "Defines `IsMultiplicativeSidon A`: for all $a, b, c, d \\in A$, if $ab = cd$ then $\\{a, b\\} = \\{c, d\\}$ as multisets. This is a multiplicative analogue of the classical (additive) Sidon set condition ($a + b = c + d \\Rightarrow \\{a,b\\} = \\{c,d\\}$). Multiplicative Sidon is stronger than distinct subset products—it forbids even pairwise product collisions.",
-    "mathContext": "$A$ is multiplicative Sidon iff $\\forall a, b, c, d \\in A:\\; ab = cd \\Rightarrow \\{a, b\\} = \\{c, d\\}$. This is the multiplicative analogue of $B_2$ sets in additive combinatorics.",
+    "content": "A multiplicative Sidon set requires that the only way $ab = cd$ with $a, b, c, d \\in A$ is if $\\{a, b\\} = \\{c, d\\}$. This is strictly stronger than distinct subset products: a Sidon set forbids pairwise product collisions, while distinct products forbids all subset product collisions. The classical (additive) Sidon sets $B_2$ require $a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$.",
+    "mathContext": "$\\text{IsMultiplicativeSidon}(A) \\iff \\forall a,b,c,d \\in A,\\; ab = cd \\implies \\{a,b\\} = \\{c,d\\}$",
     "significance": "supporting",
-    "relatedConcepts": ["Sidon set", "B_2 set", "additive combinatorics", "product-free set"],
+    "relatedConcepts": ["Sidon set", "B_2 set", "additive combinatorics", "sum-free sets"],
     "prerequisites": ["Finset membership", "multiset equality"]
   },
   {
@@ -209,58 +173,46 @@
     "type": "technique",
     "title": "Sidon Implies Distinct Products",
     "range": { "startLine": 388, "endLine": 392 },
-    "content": "Multiplicative Sidon sets automatically have distinct subset products, but the converse fails. If all pairwise products are distinct (Sidon), then certainly all subset products are distinct. The reverse fails because distinct subset products only requires global injectivity of the full product map, not pairwise product uniqueness.",
-    "mathContext": "$\\text{IsMultiplicativeSidon}(A) \\Rightarrow \\text{HasDistinctSubsetProducts}(A)$, but $\\not\\Leftarrow$.",
+    "content": "If $A$ is a multiplicative Sidon set then it has distinct subset products, but the converse fails. The implication holds because distinct products is a global condition on all subsets, while Sidon is a pairwise condition. The converse fails: $\\{2, 3, 4\\}$ has distinct subset products (products are 1, 2, 3, 4, 6, 8, 12, 24) but $2 \\cdot 4 = 4 \\cdot 2$ gives a trivial Sidon violation from repeated elements.",
+    "mathContext": "$\\text{IsMultiplicativeSidon}(A) \\implies \\text{HasDistinctSubsetProducts}(A)$, but $\\not\\Leftarrow$",
     "significance": "supporting",
-    "relatedConcepts": ["implication hierarchy", "strict containment", "set property comparison"],
-    "prerequisites": ["IsMultiplicativeSidon", "HasDistinctSubsetProducts"]
-  },
-  {
-    "id": "ann-795-not-sidon",
-    "proofId": "erdos-795",
-    "type": "technique",
-    "title": "Distinct Products ≠ Sidon",
-    "range": { "startLine": 410, "endLine": 414 },
-    "content": "Witness that distinct subset products is strictly weaker than multiplicative Sidon: the set $\\{2, 3, 4\\}$ has distinct subset products (products: 1, 2, 3, 4, 6, 8, 12, 24 are all distinct) but is not multiplicative Sidon since $2 \\cdot 4 = 4 \\cdot 2$ relates elements in a non-trivial way when considering ordered pairs.",
-    "mathContext": "$A = \\{2, 3, 4\\}$: $\\text{HasDistinctSubsetProducts}(A)$ holds but $\\text{IsMultiplicativeSidon}(A)$ fails.",
-    "significance": "context",
-    "relatedConcepts": ["counterexample", "separation of properties", "concrete witness"],
-    "prerequisites": ["IsMultiplicativeSidon", "HasDistinctSubsetProducts"]
+    "relatedConcepts": ["logical implication between set properties", "counterexample construction"],
+    "prerequisites": ["HasDistinctSubsetProducts", "IsMultiplicativeSidon"]
   },
   {
     "id": "ann-795-example-good",
     "proofId": "erdos-795",
     "type": "context",
-    "title": "Example: {2, 3, 5}",
-    "range": { "startLine": 435, "endLine": 437 },
-    "content": "The set $\\{2, 3, 5\\}$ (three primes) has distinct subset products: the 8 subsets give products $1, 2, 3, 5, 6, 10, 15, 30$, all distinct. This illustrates the primes-only construction and shows $g(5) \\ge 3$.",
-    "mathContext": "Subset products of $\\{2, 3, 5\\}$: $\\emptyset \\mapsto 1$, $\\{2\\} \\mapsto 2$, $\\{3\\} \\mapsto 3$, $\\{5\\} \\mapsto 5$, $\\{2,3\\} \\mapsto 6$, $\\{2,5\\} \\mapsto 10$, $\\{3,5\\} \\mapsto 15$, $\\{2,3,5\\} \\mapsto 30$.",
+    "title": "Example: {2, 3, 5} Has Distinct Products",
+    "range": { "startLine": 436, "endLine": 437 },
+    "content": "The set $\\{2, 3, 5\\}$ illustrates the primes-only construction. Its $2^3 = 8$ subset products are $1, 2, 3, 5, 6, 10, 15, 30$—all distinct by unique factorization. More generally, any set of $k$ distinct primes yields $2^k$ distinct products.",
+    "mathContext": "$\\{2, 3, 5\\}: \\text{products} = \\{1, 2, 3, 5, 6, 10, 15, 30\\}$, all distinct",
     "significance": "context",
-    "relatedConcepts": ["prime construction", "explicit computation", "small cases"],
-    "prerequisites": ["HasDistinctSubsetProducts"]
+    "relatedConcepts": ["unique factorization", "prime sets", "power set enumeration"],
+    "prerequisites": ["Finset.prod", "Nat.Prime"]
   },
   {
     "id": "ann-795-example-bad",
     "proofId": "erdos-795",
     "type": "context",
-    "title": "Counterexample: {2, 3, 6}",
-    "range": { "startLine": 450, "endLine": 452 },
-    "content": "The set $\\{2, 3, 6\\}$ does NOT have distinct products: $\\{6\\}$ and $\\{2, 3\\}$ both give product 6. Including composite numbers that are products of other elements in the set creates collisions. This motivates why primes are the natural building blocks.",
-    "mathContext": "$\\{6\\} \\mapsto 6$ and $\\{2, 3\\} \\mapsto 6$: collision! The element $6 = 2 \\cdot 3$ creates a non-trivial product relation.",
+    "title": "Counterexample: {2, 3, 6} Fails",
+    "range": { "startLine": 451, "endLine": 452 },
+    "content": "The set $\\{2, 3, 6\\}$ fails the distinct products property because $\\{6\\}$ and $\\{2, 3\\}$ both give product 6. This illustrates why composites are dangerous: $6 = 2 \\cdot 3$ means including 6 alongside its prime factors creates an unavoidable collision. Optimal sets avoid such redundancy.",
+    "mathContext": "$\\prod \\{6\\} = 6 = 2 \\cdot 3 = \\prod \\{2, 3\\}$, so $\\{2, 3, 6\\}$ fails distinctness",
     "significance": "context",
-    "relatedConcepts": ["product collision", "composite numbers", "dependence relation"],
-    "prerequisites": ["HasDistinctSubsetProducts"]
+    "relatedConcepts": ["product collision", "composite numbers", "redundant factorizations"],
+    "prerequisites": ["Finset.prod", "Nat.Prime"]
   },
   {
     "id": "ann-795-small-values",
     "proofId": "erdos-795",
     "type": "context",
     "title": "Small Values of g(n)",
-    "range": { "startLine": 486, "endLine": 489 },
-    "content": "Concrete small values: $g(2) = 1$ (only $\\{2\\}$), $g(3) = 2$ ($\\{2, 3\\}$), $g(5) = 3$ ($\\{2, 3, 5\\}$), and $g(10) \\ge 5$ ($\\{2, 3, 5, 7\\}$ plus room for one more). These illustrate that $g(n) \\approx \\pi(n)$ for small $n$.",
-    "mathContext": "$g(2) = 1,\\; g(3) = 2,\\; g(5) = 3,\\; g(10) \\ge 5$.",
+    "range": { "startLine": 487, "endLine": 489 },
+    "content": "Computing small values: $g(2) = 1$ (only $\\{2\\}$), $g(3) = 2$ ($\\{2,3\\}$), $g(5) = 3$ ($\\{2,3,5\\}$), $g(10) \\geq 5$ ($\\{2,3,5,7,4\\}$ or $\\{2,3,4,5,7\\}$—the set of primes $\\leq 10$ is $\\{2,3,5,7\\}$ with 4 elements, and adding $4 = 2^2$ gives a fifth). These match the pattern $g(n) \\approx \\pi(n) + \\pi(\\sqrt{n})$ even for small values.",
+    "mathContext": "$g(2) = 1, \\; g(3) = 2, \\; g(5) = 3, \\; g(10) \\geq 5$",
     "significance": "context",
-    "relatedConcepts": ["small cases", "explicit computation", "prime counting for small n"],
-    "prerequisites": ["g definition", "HasDistinctSubsetProducts"]
+    "relatedConcepts": ["small case verification", "computational number theory"],
+    "prerequisites": ["Finset enumeration", "decidable equality"]
   }
 ]

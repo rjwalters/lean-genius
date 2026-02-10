@@ -2,82 +2,133 @@
   {
     "id": "erdos-929-ann-smooth",
     "proofId": "erdos-929",
-    "range": { "startLine": 30, "endLine": 31 },
+    "range": { "startLine": 32, "endLine": 34 },
     "type": "definition",
-    "title": "IsSmooth",
-    "content": "A natural number n is x-smooth if all its prime factors are ≤ x. This is the central notion in multiplicative number theory.",
-    "significance": "critical"
+    "title": "x-Smooth Numbers",
+    "content": "A natural number $n$ is $x$-smooth (also called $x$-friable) if all its prime factors satisfy $p \\leq x$. Equivalently, $n$ factors completely over the primes up to $x$. The Dickman function $\\rho(u)$ governs the density of $x$-smooth numbers up to $N$ when $x = N^{1/u}$: the proportion is approximately $\\rho(u)$ for large $N$. For example, 1-smooth is just $\\{1\\}$, 2-smooth numbers are powers of 2, and 3-smooth numbers (also called regular numbers) are of the form $2^a \\cdot 3^b$.",
+    "mathContext": "$\\text{IsSmooth}(n, x) \\iff \\forall p \\text{ prime},\\; p \\mid n \\implies p \\leq x$. The count $\\Psi(N, x) = |\\{n \\leq N : n \\text{ is } x\\text{-smooth}\\}| \\sim N \\cdot \\rho(\\log N / \\log x)$.",
+    "significance": "key",
+    "relatedConcepts": ["Dickman function", "friable numbers", "largest prime factor P+(n)", "smooth number distribution"],
+    "prerequisites": ["Nat.Prime", "divisibility", "prime factorization"]
   },
   {
     "id": "erdos-929-ann-block",
     "proofId": "erdos-929",
-    "range": { "startLine": 35, "endLine": 36 },
+    "range": { "startLine": 36, "endLine": 39 },
     "type": "definition",
-    "title": "SmoothBlock",
-    "content": "A block n+1, n+2, …, n+k is x-smooth if every element in the block is x-smooth.",
-    "significance": "critical"
+    "title": "Smooth Block of Consecutive Integers",
+    "content": "A block $n+1, n+2, \\ldots, n+k$ is $x$-smooth if every element in the block is $x$-smooth. Finding blocks of consecutive smooth numbers is related to the distribution of primes: if no prime in $(x, n+k]$ divides any element of the block, all elements factor over primes $\\leq x$. The existence of such blocks for positive density of $n$ is controlled by the smoothness threshold $S(k)$.",
+    "mathContext": "$\\text{SmoothBlock}(n, k, x) \\iff \\forall i \\in \\{1, \\ldots, k\\},\\; \\text{IsSmooth}(n+i, x)$",
+    "significance": "key",
+    "relatedConcepts": ["consecutive integers", "prime gap implications", "smooth number clusters"],
+    "prerequisites": ["IsSmooth", "Finset.range", "universal quantification"]
+  },
+  {
+    "id": "erdos-929-ann-blockset",
+    "proofId": "erdos-929",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Smooth Block Set",
+    "content": "The set $\\{n : \\text{SmoothBlock}(n, k, x)\\}$ collects all starting points $n$ where the next $k$ consecutive integers are all $x$-smooth. The size of this set (measured by upper density) determines whether $x$ is large enough for the threshold $S(k)$.",
+    "mathContext": "$\\text{smoothBlockSet}(k, x) = \\{n \\in \\mathbb{N} : n+1, \\ldots, n+k \\text{ are all } x\\text{-smooth}\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["set comprehension", "density of integer sets", "smooth number distribution"],
+    "prerequisites": ["SmoothBlock", "Set ℕ"]
+  },
+  {
+    "id": "erdos-929-ann-density",
+    "proofId": "erdos-929",
+    "range": { "startLine": 45, "endLine": 49 },
+    "type": "definition",
+    "title": "Upper Density",
+    "content": "The upper density $\\overline{d}(S) = \\limsup_{N \\to \\infty} |S \\cap [N]| / N$ measures the asymptotic 'thickness' of a set $S \\subseteq \\mathbb{N}$. A set has positive upper density if $\\overline{d}(S) > 0$, meaning it contains a definite fraction of all integers. This is weaker than having positive natural density (which requires the limit to exist). The formalization uses Lean's `Filter.limsup` on the `atTop` filter.",
+    "mathContext": "$\\overline{d}(S) = \\limsup_{N \\to \\infty} \\frac{|S \\cap \\{0, \\ldots, N\\}|}{N+1}$",
+    "significance": "key",
+    "relatedConcepts": ["natural density", "Schnirelmann density", "Filter.limsup", "atTop filter"],
+    "prerequisites": ["Filter.limsup", "Finset.filter", "Finset.card", "real division"]
   },
   {
     "id": "erdos-929-ann-threshold",
     "proofId": "erdos-929",
-    "range": { "startLine": 48, "endLine": 51 },
+    "range": { "startLine": 51, "endLine": 56 },
     "type": "definition",
-    "title": "S(k) — Smooth Threshold",
-    "content": "The minimal x such that a positive density set of n produces an x-smooth block of length k. This is the central quantity to estimate.",
-    "significance": "critical"
+    "title": "Smoothness Threshold S(k)",
+    "content": "The function $S(k)$ is defined as the minimal $x$ such that the smooth block set $\\{n : n+1, \\ldots, n+k \\text{ are } x\\text{-smooth}\\}$ has positive upper density. This is the central object of Problem #929. The definition uses `Nat.find` on the existential witness $x = k+1$ (the trivial upper bound). The threshold captures the fundamental tension: making $x$ larger includes more smooth numbers but the goal is to determine the minimal $x$ that suffices.",
+    "mathContext": "$S(k) = \\min\\{x \\in \\mathbb{N} : \\overline{d}(\\{n : n+1, \\ldots, n+k \\text{ all } x\\text{-smooth}\\}) > 0\\}$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.find", "extremal threshold", "smooth number density", "Dickman function"],
+    "prerequisites": ["smoothBlockSet", "Set.upperDensity", "Nat.find"]
   },
   {
     "id": "erdos-929-ann-conjecture",
     "proofId": "erdos-929",
-    "range": { "startLine": 58, "endLine": 60 },
-    "type": "theorem",
-    "title": "Main Conjecture",
-    "content": "S(k) ≥ k^{1−ε} for every ε > 0 and large k. This would mean S(k) is nearly linear in k.",
-    "significance": "critical"
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "insight",
+    "title": "Erdős's Conjecture: S(k) ≥ k^{1-o(1)}",
+    "content": "The main open question: Is $S(k) \\geq k^{1-\\varepsilon}$ for every $\\varepsilon > 0$ and all sufficiently large $k$? This would mean the smoothness threshold is nearly linear—to guarantee a positive density of $n$ with $k$ consecutive smooth numbers, you need a smoothness bound nearly as large as $k$ itself. This is formalized as an axiom since the problem is OPEN. The $\\varepsilon$-$N$ formulation captures the little-$o$ condition: $\\log S(k) / \\log k \\to 1$.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists K,\\; \\forall k \\geq K:\\; S(k) \\geq k^{1-\\varepsilon}$, equivalently $S(k) \\geq k^{1-o(1)}$",
+    "significance": "key",
+    "relatedConcepts": ["little-o notation", "open conjecture", "asymptotic threshold", "axiom in Lean"],
+    "prerequisites": ["smoothThreshold", "Real.rpow", "Filter.Eventually", "atTop"]
   },
   {
     "id": "erdos-929-ann-trivial",
     "proofId": "erdos-929",
-    "range": { "startLine": 65, "endLine": 66 },
-    "type": "theorem",
-    "title": "Trivial Upper Bound",
-    "content": "S(k) ≤ k+1. Take n ≡ −1 mod (k+1)!, then n+i is divisible by i for i = 1,...,k, so all are (k+1)-smooth.",
-    "significance": "key"
+    "range": { "startLine": 69, "endLine": 72 },
+    "type": "technique",
+    "title": "Trivial Upper Bound: S(k) ≤ k+1",
+    "content": "Take $n \\equiv -1 \\pmod{(k+1)!}$, so $n + i \\equiv i - 1 \\pmod{i!}$ for $1 \\leq i \\leq k$. In particular, $i \\mid (n+i)$ for each $i$, and all prime factors of $n+i$ that exceed $k+1$ can be handled since the Chinese Remainder Theorem ensures enough such $n$ exist with positive density. Actually, the simpler argument: for $n = m \\cdot (k+1)! - 1$, we have $i \\mid (n+i)$ since $i \\mid i \\cdot m \\cdot (k+1)!/i$, so each $n+i$ has all prime factors $\\leq k+1$.",
+    "mathContext": "$S(k) \\leq k + 1$. Proof: $n \\equiv -1 \\pmod{(k+1)!} \\implies \\forall i \\in [k],\\; i \\mid (n+i)$, so each $n+i$ is $(k+1)$-smooth.",
+    "significance": "key",
+    "relatedConcepts": ["Chinese Remainder Theorem", "factorial divisibility", "constructive bound"],
+    "prerequisites": ["Nat.factorial", "Nat.dvd", "modular arithmetic"]
   },
   {
     "id": "erdos-929-ann-rosser",
     "proofId": "erdos-929",
-    "range": { "startLine": 70, "endLine": 72 },
-    "type": "theorem",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "technique",
     "title": "Rosser's Sieve Lower Bound",
-    "content": "S(k) > k^{1/2−o(1)}: Rosser's sieve shows the threshold is at least a near-square-root of k.",
-    "significance": "key"
+    "content": "Rosser's sieve (a refinement of the Brun sieve) shows $S(k) > k^{1/2 - \\varepsilon}$ for any $\\varepsilon > 0$ and large $k$. The idea: if $x < k^{1/2 - \\varepsilon}$, then the primes in $(x, k]$ are too numerous for every element $n+1, \\ldots, n+k$ to avoid them all. Sieve methods bound the proportion of integers divisible only by small primes, and when $x$ is too small relative to $k$, the sieve shows no block of length $k$ can be entirely $x$-smooth with positive density. This gives the best known unconditional lower bound.",
+    "mathContext": "$S(k) \\geq k^{1/2 - \\varepsilon}$ for all $\\varepsilon > 0$ and $k \\gg_\\varepsilon 1$. Equivalently $S(k) > k^{1/2 - o(1)}$.",
+    "significance": "key",
+    "relatedConcepts": ["Rosser's sieve", "Brun sieve", "sieve upper bound", "prime avoidance"],
+    "prerequisites": ["sieve methods", "Filter.Eventually", "Real.rpow"]
   },
   {
     "id": "erdos-929-ann-fgkmt",
     "proofId": "erdos-929",
-    "range": { "startLine": 78, "endLine": 82 },
-    "type": "theorem",
-    "title": "FGKMT Upper Bound",
-    "content": "S(k) ≪ k · log³k / (log²k · log⁴k). This uses the Ford–Green–Konyagin–Maynard–Tao breakthrough on large gaps between primes.",
-    "significance": "key"
+    "range": { "startLine": 80, "endLine": 88 },
+    "type": "technique",
+    "title": "Ford-Green-Konyagin-Maynard-Tao Upper Bound",
+    "content": "The groundbreaking 2018 result of Ford, Green, Konyagin, Maynard, and Tao on large gaps between primes implies $S(k) \\ll k \\cdot \\log_3 k / (\\log_2 k \\cdot \\log_4 k)$ where $\\log_j$ denotes the $j$-fold iterated logarithm. Their work showed that prime gaps as large as $c \\cdot \\log p \\cdot \\log_2 p \\cdot \\log_4 p / \\log_3 p$ occur infinitely often, which translates to bounds on how many consecutive integers can simultaneously be smooth. This is the best known upper bound, improving the trivial $S(k) \\leq k+1$ by iterated logarithmic factors.",
+    "mathContext": "$S(k) \\leq C \\cdot k \\cdot \\frac{\\log\\log\\log k}{\\log\\log k \\cdot \\log\\log\\log\\log k}$ for some absolute $C > 0$ and large $k$.",
+    "significance": "key",
+    "relatedConcepts": ["prime gaps", "Ford-Green-Konyagin-Maynard-Tao", "iterated logarithm", "Maynard-Tao sieve"],
+    "prerequisites": ["Real.log", "iterated logarithm", "asymptotic notation"]
   },
   {
     "id": "erdos-929-ann-mono",
     "proofId": "erdos-929",
-    "range": { "startLine": 88, "endLine": 89 },
+    "range": { "startLine": 92, "endLine": 95 },
     "type": "concept",
-    "title": "Monotonicity",
-    "content": "S(k) is non-decreasing: requiring more consecutive smooth numbers can only increase the threshold.",
-    "significance": "supporting"
+    "title": "Monotonicity of S(k)",
+    "content": "If $k_1 \\leq k_2$ then $S(k_1) \\leq S(k_2)$: requiring more consecutive smooth numbers (a longer block) can only increase the smoothness threshold needed. This follows because $\\text{SmoothBlock}(n, k_2, x) \\implies \\text{SmoothBlock}(n, k_1, x)$ (a smooth block of length $k_2$ contains a smooth block of length $k_1$), so the density condition is harder to satisfy for larger $k$.",
+    "mathContext": "$k_1 \\leq k_2 \\implies S(k_1) \\leq S(k_2)$",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone function", "subset density", "extremal threshold monotonicity"],
+    "prerequisites": ["smoothThreshold", "SmoothBlock", "density comparison"]
   },
   {
     "id": "erdos-929-ann-s2",
     "proofId": "erdos-929",
-    "range": { "startLine": 93, "endLine": 93 },
+    "range": { "startLine": 97, "endLine": 99 },
     "type": "insight",
-    "title": "S(2) = 3",
-    "content": "The smallest case: a positive density of n have both n+1 and n+2 being 3-smooth (i.e., of the form 2^a · 3^b).",
-    "significance": "supporting"
+    "title": "Base Case: S(2) = 3",
+    "content": "The smallest non-trivial case: $S(2) = 3$, meaning 3 is the minimal $x$ such that a positive density of $n$ have both $n+1$ and $n+2$ being $x$-smooth. For $x = 3$, we need both $n+1$ and $n+2$ to be 3-smooth (of the form $2^a \\cdot 3^b$). The pairs of consecutive 3-smooth numbers $(2^a 3^b, 2^c 3^d)$ with $|2^a 3^b - 2^c 3^d| = 1$ include (1,2), (2,3), (3,4), (8,9), (80,81), ... (related to Størmer's theorem on consecutive smooth numbers). For $x = 2$, we would need consecutive powers of 2, but the only such pair is (1,2), giving density 0.",
+    "mathContext": "$S(2) = 3$. The set $\\{n : n+1, n+2 \\text{ both } 3\\text{-smooth}\\}$ has positive upper density, but $\\{n : n+1, n+2 \\text{ both } 2\\text{-smooth}\\}$ has density 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["Størmer's theorem", "3-smooth numbers", "consecutive smooth pairs", "Catalan's conjecture"],
+    "prerequisites": ["smoothThreshold", "3-smooth characterization"]
   }
 ]

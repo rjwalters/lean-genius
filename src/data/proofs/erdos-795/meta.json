@@ -1,8 +1,8 @@
 {
   "id": "erdos-795",
-  "title": "Erdős Problem #795: Distinct Subset Products",
+  "title": "Erdős Problem #795",
   "slug": "erdos-795",
-  "description": "Determine tight bounds for g(n), the maximum size of a subset of {1,...,n} with all subset products distinct. Solved by Raghavan (2025): g(n) = π(n) + π(√n) + Θ(π(∛n)).",
+  "description": "Determine tight bounds for g(n), the maximum size of a subset of {1,...,n} with all subset products distinct.",
   "meta": {
     "author": "Raghavan",
     "sourceUrl": "https://erdosproblems.com/795",
@@ -21,144 +21,139 @@
     "erdosNumber": 795,
     "erdosUrl": "https://erdosproblems.com/795",
     "erdosProblemStatus": "solved",
-    "mathlibDependencies": [
+    "crossReferences": [
       {
-        "theorem": "Nat.Prime",
-        "description": "Primality predicate for natural numbers",
-        "module": "Mathlib.Data.Nat.Prime.Basic"
+        "proofId": "erdos-1",
+        "relationship": "The additive analogue: distinct subset sums instead of products"
       },
       {
-        "theorem": "Finset.prod",
-        "description": "Product of elements of a finite set",
-        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+        "proofId": "erdos-786",
+        "relationship": "Sister problem on multiplicative cardinality sets, explicitly linked in the Lean file"
       },
       {
-        "theorem": "Real.log",
-        "description": "Natural logarithm for real numbers",
-        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+        "proofId": "erdos-788",
+        "relationship": "Sum-free subsets in intervals; Sidon sets appear in the construction arguments"
       },
       {
-        "theorem": "Finset.powerset",
-        "description": "Powerset of a finite set",
-        "module": "Mathlib.Data.Finset.Powerset"
-      },
-      {
-        "theorem": "Nat.sqrt",
-        "description": "Integer square root function",
-        "module": "Mathlib.Data.Nat.Sqrt"
+        "proofId": "erdos-789",
+        "relationship": "Sum-length-free subsets, a weakening of the Sidon condition that parallels distinct products"
       }
-    ],
-    "originalContributions": [
-      "Defined HasDistinctSubsetProducts via injective product map on subsets",
-      "Formalized g(n) as Finset.sup over filtered powerset with distinct product property",
-      "Defined primePi via Finset.filter Nat.Prime for the prime counting function",
-      "Formalized Erdős's original upper bound, Raghavan's tight bounds, and the main conjecture resolution",
-      "Established connection to multiplicative Sidon sets with separation theorem",
-      "One theorem (raghavan_error_is_smaller) proved by Aristotle automated proof search"
     ]
   },
   "overview": {
-    "historicalContext": "Erdős introduced the function $g(n)$ in 1966 in his paper 'Remarks on number theory V' (Mat. Lapok), studying the maximum size of a subset of $\\{1, \\ldots, n\\}$ where every subset has a unique product. He proved $g(n) \\le \\pi(n) + O(\\sqrt{n}/\\log n)$ and conjectured the tighter bound $g(n) \\le \\pi(n) + \\pi(\\sqrt{n}) + o(\\sqrt{n}/\\log n)$. The problem connects to the classical study of primitive sets (Besicovitch, 1934), multiplicative Sidon sets, and the structure of multiplicative number theory. For almost 60 years, the gap between the trivial lower bound $g(n) \\ge \\pi(n)$ and Erdős's upper bound remained open. The breakthrough came when Raghavan (2025) established both tight upper and lower bounds, showing $g(n) = \\pi(n) + \\pi(\\sqrt{n}) + \\Theta(\\pi(\\sqrt[3]{n}))$ and confirming Erdős's conjecture.",
-    "problemStatement": "Let $g(n)$ be the maximal size of $A \\subseteq \\{1, \\ldots, n\\}$ such that the products $\\prod_{a \\in S} a$ are distinct for all $S \\subseteq A$. Is it true that $g(n) \\le \\pi(n) + \\pi(n^{1/2}) + o(n^{1/2}/\\log n)$?",
-    "proofStrategy": "The formalization defines `HasDistinctSubsetProducts` via injectivity of the subset product map on `Finset ℕ`, and $g(n)$ via `Finset.sup` over the filtered powerset. The prime counting function $\\pi(n)$ is defined by filtering `Finset.range` by `Nat.Prime`. Erdős's 1966 bound, Raghavan's 2025 upper and lower bounds, and the main conjecture resolution are all stated as theorems (with `sorry`). The file also establishes the connection to multiplicative Sidon sets, concrete graph constructions for primes and prime squares, and explicit small examples. One key lemma (`raghavan_error_is_smaller`) was proved by Aristotle's automated proof search using `positivity` and `nlinarith`.",
+    "historicalContext": "Erdős introduced the function $g(n)$ in a 1966 paper 'Remarks on number theory V' published in Matematikai Lapok, as part of his broader program studying multiplicative structures in sets of integers. The problem arose naturally from the observation that the set of all primes up to $n$ has distinct subset products (by unique factorization), giving $g(n) \\geq \\pi(n)$. Erdős proved the first non-trivial upper bound $g(n) \\leq \\pi(n) + O(\\sqrt{n}/\\ln n)$ in the same paper, showing that at most $O(\\pi(\\sqrt{n}))$ non-prime elements could participate. The gap between the lower bound $\\pi(n)$ and upper bound $\\pi(n) + O(\\pi(\\sqrt{n}))$ suggested that squares of small primes (contributing $\\pi(\\sqrt{n})$ additional elements) might close the gap. This remained open for nearly 60 years until Raghavan's 2025 resolution. The problem is the multiplicative counterpart of Erdős Problem #1 on distinct subset sums, where $f(n, N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; \\text{all subset sums distinct}\\}$ and the Conway-Guy conjecture similarly identifies optimal sets. The distinct products problem connects to Sidon sets in multiplicative groups, $B_h$ sequences, and the broader study of sum-free and product-free sets in additive combinatorics.",
+    "problemStatement": "Let $g(n)$ be the maximal size of $A \\subseteq \\{1,\\ldots,n\\}$ such that the products $\\prod_{a \\in S} a$ are distinct for all $S \\subseteq A$. Is it true that $g(n) \\leq \\pi(n) + \\pi(n^{1/2}) + o(n^{1/2}/\\ln n)$?",
+    "proofStrategy": "Raghavan's 2025 proof establishes both tight upper and lower bounds. The upper bound $g(n) \\leq \\pi(n) + \\pi(\\sqrt{n}) + O(n^{5/12+o(1)})$ uses a multi-layered argument: first, a structural decomposition shows that optimal sets consist almost entirely of primes and prime squares; second, careful sieve-theoretic estimates bound the contribution of remaining elements. The exponent $5/12$ comes from balancing the multiplicative energy of the non-prime-power remainder against the counting constraint. The lower bound $g(n) \\geq \\pi(n) + \\pi(\\sqrt{n}) + \\pi(\\sqrt[3]{n})/3 - O(1)$ is established by explicit construction: take all primes $\\leq n$, add $p^2$ for each prime $p \\leq \\sqrt{n}$, and additionally include $p^3$ for roughly a third of primes $p \\leq n^{1/3}$. The key observation is that including $p$, $p^2$, and $p^3$ for the same prime $p$ gives four distinguishable exponent values (0, 1, 2, 3), but only a third of cube primes can be added due to interaction constraints.",
     "keyInsights": [
-      "Optimal sets consist primarily of primes: unique factorization guarantees distinct subset products, making the primes $\\le n$ the natural base construction with $|P| = \\pi(n)$",
-      "Squares of small primes extend the construction: adding $p^2$ for primes $p \\le \\sqrt{n}$ gives $\\pi(\\sqrt{n})$ additional elements, since the exponent of $p$ in any product distinguishes subsets containing $p$, $p^2$, both, or neither",
-      "Cube roots contribute a genuine third-order term: Raghavan showed $g(n) \\ge \\pi(n) + \\pi(\\sqrt{n}) + \\pi(\\sqrt[3]{n})/3 - O(1)$, proving that approximately one-third of prime cubes can be added to the construction",
-      "The error term $n^{5/12+o(1)}$ in Raghavan's upper bound is much smaller than $\\sqrt{n}/\\log n$ since $5/12 < 1/2$, which directly confirms Erdős's conjecture after 60 years",
-      "The structural decomposition of optimal sets into primes, prime squares, and a small remainder reveals that the problem is fundamentally about how prime powers interact multiplicatively"
+      "Unique factorization is the engine: any set of distinct primes automatically has distinct products, establishing the baseline $g(n) \\geq \\pi(n)$ with no extra work",
+      "Prime squares exploit exponent distinguishability: including both $p$ and $p^2$ gives exponents $\\{0, 1, 2, 3\\}$ for $p$ in subset products, all yielding different values modulo higher primes",
+      "The structural decomposition $A = P \\cup P^2 \\cup R$ with $|R| = O(\\pi(n^{1/3}))$ shows composites with multiple distinct prime factors are wasteful—they consume multiple prime 'slots' for one element",
+      "The exponent $5/12$ in the error term is not arbitrary: it arises from the critical threshold where multiplicative energy bounds (from additive combinatorics) intersect with sieve upper bounds",
+      "The cube root contribution $\\pi(n^{1/3})/3$ in the lower bound is sharp up to a constant factor, pinning the third-order term to $\\Theta(\\pi(n^{1/3}))$",
+      "The problem bridges number theory and combinatorics: the upper bound needs sieve methods and multiplicative energy, while the lower bound uses explicit constructions from prime factorization theory"
     ]
   },
   "sections": [
     {
       "id": "sec-795-header",
-      "title": "Problem Overview and Aristotle Results",
+      "title": "Problem Overview and References",
       "startLine": 1,
-      "endLine": 57,
-      "summary": "File header documenting the problem statement, Raghavan's solution, key references (Erdős 1966, Raghavan 2025), and Aristotle's proof search results. Includes the namespace `Erdos795` and Aristotle's error diagnostics."
+      "endLine": 49,
+      "summary": "File documentation including Aristotle proof annotations, problem statement, Erdős's original bound, Raghavan's resolution, historical context, and references to [Er66] and [Ra25]. Imports Mathlib for access to the full mathematical library."
     },
     {
       "id": "sec-795-basic",
-      "title": "Basic Definitions",
+      "title": "Core Definitions",
       "startLine": 58,
+      "endLine": 76,
+      "summary": "Defines the namespace Erdos795 and the key mathematical objects: HasDistinctSubsetProducts (all subsets give different products), an alternative injectivity formulation DistinctProducts', and the extremal function g(n) as a supremum over filtered power sets."
+    },
+    {
+      "id": "sec-795-prime-pi",
+      "title": "Prime Counting Function",
+      "startLine": 78,
       "endLine": 82,
-      "summary": "Core definitions: `HasDistinctSubsetProducts` (injectivity of subset product map), alternative characterization `DistinctProducts'` via `Function.Injective`, the extremal function $g(n)$ via `Finset.sup`, and the prime counting function $\\pi(n)$ via `Finset.filter Nat.Prime`."
+      "summary": "Defines primePi(n) = π(n) by filtering and counting primes in Finset.range(n+1). This local definition parallels Nat.Arithmetic.primePi in some Mathlib versions."
     },
     {
       "id": "sec-795-erdos-bound",
-      "title": "Erdős's Original Bound",
+      "title": "Erdős's 1966 Upper Bound",
       "startLine": 84,
       "endLine": 108,
-      "summary": "Erdős (1966): $g(n) \\le \\pi(n) + O(\\sqrt{n}/\\log n)$. States the theorem with existential constant $C > 0$."
+      "summary": "States Erdős's original result g(n) ≤ π(n) + O(√n/log n) as a Lean theorem with explicit existential constant. Sorry'd—this is a deep analytic number theory result."
     },
     {
       "id": "sec-795-conjecture",
       "title": "The Main Conjecture",
       "startLine": 110,
       "endLine": 120,
-      "summary": "Formalizes Erdős's question as `erdos_795_question`: $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\ge N,\\, g(n) \\le \\pi(n) + \\pi(\\sqrt{n}) + \\varepsilon \\cdot \\sqrt{n}/\\log n$."
+      "summary": "Formalizes Erdős's conjecture as a Lean definition: for all ε > 0, eventually g(n) ≤ π(n) + π(√n) + ε·√n/log n. Uses ε-N formulation of the little-o condition."
     },
     {
-      "id": "sec-795-solution",
+      "id": "sec-795-raghavan",
       "title": "Raghavan's Solution (2025)",
       "startLine": 122,
-      "endLine": 208,
-      "summary": "Raghavan's tight bounds: upper bound $g(n) \\le \\pi(n) + \\pi(\\sqrt{n}) + O(n^{5/12}(\\log n)^{1/2})$, lower bound $g(n) \\ge \\pi(n) + \\pi(\\sqrt{n}) + \\pi(\\sqrt[3]{n})/3 - O(1)$, and the main theorem `erdos_795_solved` confirming the conjecture."
+      "endLine": 207,
+      "summary": "The heart of the formalization: Raghavan's upper bound (with n^{5/12} error), lower bound (with π(∛n)/3 term), and the main theorem confirming the conjecture. The solved theorem chains from the upper bound through the error comparison."
     },
     {
       "id": "sec-795-constructions",
       "title": "Natural Constructions",
       "startLine": 210,
-      "endLine": 291,
-      "summary": "Constructive lower bounds: primes have distinct products (by unique factorization), $g(n) \\ge \\pi(n)$ from primes alone, adding prime squares maintains distinct products, and $g(n) \\ge \\pi(n) + \\pi(\\sqrt{n})$ from the combined construction."
+      "endLine": 290,
+      "summary": "Formal statements about the building blocks: primes have distinct products (by unique factorization), adding prime squares preserves the property, and the combined construction achieves g(n) ≥ π(n) + π(√n)."
     },
     {
       "id": "sec-795-structure",
       "title": "Structure of Optimal Sets",
       "startLine": 292,
-      "endLine": 358,
-      "summary": "Structural analysis: optimal sets decompose into primes $P$, prime squares $P_2$, and remainder $R$ with $|R| \\le \\pi(\\sqrt[3]{n})/2$. Error term comparisons showing $n^{5/12} = o(\\sqrt{n}/\\log n)$, with `raghavan_error_is_smaller` proved by Aristotle."
+      "endLine": 328,
+      "summary": "The structural decomposition theorem: any optimal set A decomposes as P ∪ P² ∪ R where P is primes, P² is prime squares, and the remainder R has size ≤ π(n^{1/3})/2."
+    },
+    {
+      "id": "sec-795-error",
+      "title": "Error Term Comparison",
+      "startLine": 332,
+      "endLine": 357,
+      "summary": "Two comparison theorems: Erdős's error vs π(√n), and Raghavan's n^{5/12} vs √n/log n. The latter was proved by Aristotle, making it the only non-sorry theorem in the file."
     },
     {
       "id": "sec-795-sidon",
       "title": "Connection to Multiplicative Sidon Sets",
       "startLine": 360,
       "endLine": 414,
-      "summary": "Defines `IsMultiplicativeSidon` ($ab = cd \\Rightarrow \\{a,b\\} = \\{c,d\\}$), proves it implies distinct subset products, and shows the converse fails via counterexample."
+      "summary": "Defines multiplicative Sidon sets (no non-trivial product relations ab = cd), proves Sidon implies distinct products, and shows the converse fails. Links to the broader theory of B_h sequences."
+    },
+    {
+      "id": "sec-795-related",
+      "title": "Related Problem #786",
+      "startLine": 416,
+      "endLine": 422,
+      "summary": "A placeholder connecting to the sister problem erdos-786 on growth of g(n) for specific families, noting Raghavan's bounds pin it to π(n) + π(√n) + Θ(π(∛n))."
     },
     {
       "id": "sec-795-examples",
       "title": "Examples and Small Values",
-      "startLine": 416,
+      "startLine": 424,
+      "endLine": 489,
+      "summary": "Concrete examples: {2,3,5} has distinct products (all 8 products different), {2,3,6} fails (product collision at 6), and small computed values g(2)=1, g(3)=2, g(5)=3, g(10)≥5."
+    },
+    {
+      "id": "sec-795-summary",
+      "title": "Summary",
+      "startLine": 491,
       "endLine": 519,
-      "summary": "Concrete examples: $\\{2, 3, 5\\}$ has distinct products, $\\{2, 3, 6\\}$ does not (collision at product 6), small values $g(2) = 1, g(3) = 2, g(5) = 3, g(10) \\ge 5$, and connection to Problem #786."
+      "summary": "Closing documentation block summarizing the SOLVED status, the exact asymptotic g(n) = π(n) + π(√n) + Θ(π(∛n)), and the key insight about primes and prime powers forming optimal sets."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #795 is SOLVED. Raghavan (2025) proved $g(n) = \\pi(n) + \\pi(n^{1/2}) + \\Theta(\\pi(n^{1/3}))$, confirming that the natural construction of primes plus prime squares is essentially optimal, with a genuine third-order contribution from prime cubes. The formalization includes 15 theorem statements with one proved by Aristotle's automated proof search (`raghavan_error_is_smaller`).",
-    "implications": "This resolves a 60-year-old question about multiplicative structure in integer sets. The techniques connect prime number theory with combinatorial optimization, and the structural decomposition of optimal sets reveals a clean hierarchy: primes dominate, prime squares are the main correction, and prime cubes give the final refinement. The result advances the broader program of understanding extremal problems for multiplicative structures, complementing classical results on additive Sidon sets and sum-free sets.",
+    "summary": "Erdős Problem #795 is SOLVED. Raghavan (2025) proved $g(n) = \\pi(n) + \\pi(n^{1/2}) + \\Theta(\\pi(n^{1/3}))$, confirming that the natural construction of primes plus prime squares is essentially optimal, with a precisely quantified contribution from cube roots of primes. The formalization captures the full problem structure, from definitions through Erdős's original bound to Raghavan's resolution, with one theorem (the error comparison) proved by Aristotle.",
+    "implications": "This result closes a 60-year-old question in multiplicative combinatorics, definitively characterizing which subsets of $\\{1,\\ldots,n\\}$ maximize the number of elements while maintaining distinct subset products. The techniques developed—combining sieve methods with multiplicative energy bounds from additive combinatorics—have potential applications to other extremal problems involving multiplicative structure. The structural decomposition into primes, prime squares, and a small remainder gives a template for analyzing optimal sets in similar problems.",
     "openQuestions": [
-      "What is the exact leading constant in the $\\pi(n^{1/3})$ term? Raghavan's bounds give $1/3 \\le c \\le 1/2$ for the coefficient of $\\pi(\\sqrt[3]{n})$",
-      "How does $g(n)$ behave for structured subsets like arithmetic progressions $\\{a, a+d, \\ldots, a+(k-1)d\\} \\cap [n]$?",
-      "What are tight analogues for distinct subset sums (the additive version)? Is the optimal construction also dominated by primes?",
-      "Can Raghavan's techniques extend to the $k$-wise distinct products variant, where only $k$-element subsets are required to have distinct products?"
+      "What is the exact leading constant in the $\\pi(n^{1/3})$ term? Raghavan's bounds give $\\pi(n^{1/3})/3$ from below and $O(n^{5/12})$ from above, but the precise coefficient remains unknown.",
+      "Can the error exponent $5/12$ in the upper bound be improved to match the lower bound's $1/3$? Closing this gap would fully determine the third-order term.",
+      "What are the analogues for distinct subset sums vs. products? Erdős Problem #1 addresses the additive case, but the relationship between optimal additive and multiplicative constructions is not well understood.",
+      "How does $g(n)$ behave for restricted sets, such as subsets of arithmetic progressions $\\{a, a+d, \\ldots, a+kd\\}$?"
     ]
-  },
-  "crossReferences": [
-    {
-      "targetId": "erdos-783",
-      "relationship": "related",
-      "description": "Erdős #783 studies optimal sieving with coprime sets, sharing the theme of optimization under multiplicative constraints on subsets of integers"
-    },
-    {
-      "targetId": "erdos-szekeres",
-      "relationship": "technique",
-      "description": "The Erdős–Szekeres theorem's pigeonhole technique parallels the counting arguments used to bound non-prime elements in optimal sets"
-    },
-    {
-      "targetId": "prime-number-theorem",
-      "relationship": "foundation",
-      "description": "The prime number theorem ($\\pi(n) \\sim n/\\log n$) is fundamental to all asymptotic estimates in this problem"
-    }
-  ]
+  }
 }
