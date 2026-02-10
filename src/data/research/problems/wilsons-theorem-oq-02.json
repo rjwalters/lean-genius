@@ -1,0 +1,127 @@
+{
+  "slug": "wilsons-theorem-oq-02",
+  "title": "Generalizations of Wilsons Theorem to Non-Prime Moduli",
+  "phase": "IN_PROGRESS",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For n ≥ 3: ∏ x : (ZMod n)ˣ, (x : ZMod n) = -1 ↔ IsCyclic (ZMod n)ˣ. The Gauss-Wilson theorem: product of units mod n equals -1 iff the unit group is cyclic, iff n ∈ {4, p^k, 2p^k} for odd prime p.",
+    "plain": "Prove the Gauss-Wilson theorem abstractly: the product of all units modulo n equals -1 if and only if the unit group (ZMod n)ˣ is cyclic. Build the bridge to the concrete product computation.",
+    "whyMatters": [
+      "Gauss-Wilson theorem is a fundamental generalization of Wilson's theorem",
+      "Connects group structure (cyclicity) to arithmetic (unit products)",
+      "Provides foundation for primitive root theory in Lean"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Product = -1 for primes (via FiniteField.prod_univ_units_id_eq_neg_one)",
+      "-1 ≠ 1 in (ZMod n)ˣ for n ≥ 3",
+      "IsCyclic (ZMod p)ˣ for primes p",
+      "Gauss-Wilson biconditional (modulo 3 sorry lemmas)",
+      "Computational verification for n ≤ 300",
+      "Wilson prime verification for 5 and 13",
+      "No Wilson primes in [14, 100]",
+      "Self-inverse units = {1, -1} in cyclic (ZMod n)ˣ (selfInverse_units_eq_pair)",
+      "(∏ x)² = 1 in any finite commutative group (prod_univ_sq_eq_one)"
+    ],
+    "open": [
+      "Involution product lemma: ∏ G = ∏ {x | x² = 1}",
+      "Cyclic group even order ⟹ product ≠ 1 (generator argument)",
+      "Non-cyclic ⟹ product = 1 (exponent-2 subgroup product)",
+      "Concrete-abstract bridge via ZMod.unitOfCoprime"
+    ],
+    "goal": "Eliminate all sorries: prove the involution lemma, cyclic/non-cyclic product theorems, and concrete-abstract bridge"
+  },
+  "currentState": {
+    "phase": "IN_PROGRESS",
+    "since": "2026-02-10T11:00:00.000Z",
+    "iteration": 2,
+    "focus": "Proved key helper lemmas: selfInverse_units_eq_pair and prod_univ_sq_eq_one. Restructured proof architecture to decompose sorries into clearer, more tractable pieces.",
+    "blockers": [
+      "Need Finset.prod_involution or equivalent for involution product lemma",
+      "Generator argument for cyclic group product requires careful arithmetic"
+    ],
+    "nextAction": "Prove involution product lemma using Finset.prod_bij. Then use generator to show product ≠ 1 in cyclic groups of even order.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved selfInverse_units_eq_pair (in cyclic (ZMod n)ˣ with n ≥ 3, the set {x | x² = 1} = {1, -1}) and prod_univ_sq_eq_one ((∏ x)² = 1 in any finite commutative group, via bijection x ↦ x⁻¹ and Finset.prod_bij). Restructured the proof to reduce main theorems to clear sub-lemmas. 4 sorries remain with documented strategies.",
+    "builtItems": [
+      "selfInverse_units_eq_pair: {x | x²=1} = {1,-1} in cyclic (ZMod n)ˣ (n ≥ 3)",
+      "prod_univ_sq_eq_one: (∏ x)² = 1 in finite commutative group",
+      "card_sq_eq_one_le_two: |{x | x²=1}| ≤ 2 in cyclic group (via IsCyclic.card_pow_eq_one_le)",
+      "Proof architecture: main theorems reduce to involution lemma + generator argument"
+    ],
+    "insights": [
+      "IsCyclic.card_pow_eq_one_le gives |{x | x^n=1}| ≤ n in cyclic groups - key for self-inverse classification",
+      "Finset.eq_of_superset_of_card_le can show set equality from subset + cardinality bounds",
+      "The (∏ x)² = 1 proof uses Finset.prod_bij with the involution x ↦ x⁻¹ and Finset.prod_inv_distrib",
+      "For prod_units_neg_one_of_cyclic: (∏ x)² = 1 and {x | x²=1} = {1,-1} give ∏ x ∈ {1,-1}. Need generator arg to exclude 1.",
+      "Generator approach: in cyclic group of even order m, ∏ = g^(m(m-1)/2) = g^(m/2) = -1",
+      "The concrete-abstract bridge needs Finset.prod_bij connecting coprime naturals < n to (ZMod n)ˣ",
+      "Related problem wilsons-generalization has overlapping work with 1 sorry (unitsProduct_eq_neg_one_iff_cyclic)"
+    ],
+    "mathlibGaps": [
+      "Finset.prod_involution may not exist in Mathlib4 (exists in Mathlib3)",
+      "No ready-made lemma for 'product of all elements in finite abelian group'",
+      "Need careful use of ZMod.unitOfCoprime for the bridge lemma"
+    ],
+    "nextSteps": [
+      "Prove involution product lemma: ∏ G = ∏ {x | x² = 1} using paired cancellation",
+      "Prove generator argument: in cyclic group of even order, product = unique element of order 2",
+      "Prove non-cyclic case: exponent-2 subgroup of order ≥ 4 has product 1",
+      "Prove concrete-abstract bridge using Finset.prod_bij + ZMod.unitOfCoprime",
+      "Consider submitting to Aristotle for bridge lemma (known result, should be provable)"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Involution + self-inverse decomposition",
+      "description": "Decompose ∏ G into ∏ {self-inverse} via involution pairing. In cyclic group, self-inverse = {1, -1}. Product = -1.",
+      "status": "in-progress",
+      "difficulty": "medium"
+    },
+    {
+      "name": "Generator sum approach (alternative for cyclic case)",
+      "description": "In cyclic group of order m with generator g: ∏ G = g^(m(m-1)/2). For even m, this equals g^(m/2) = -1.",
+      "status": "candidate",
+      "difficulty": "hard"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "extension",
+    "group-theory",
+    "cyclic-groups"
+  ],
+  "relatedProofs": [
+    "WilsonsTheorem.lean",
+    "WilsonsTheoremOQ01.lean",
+    "PrimitiveRoots.lean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.NumberTheory.Wilson",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "FiniteField.prod_univ_units_id_eq_neg_one",
+      "IsCyclic.card_pow_eq_one_le",
+      "ZMod.isCyclic_units_iff"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-10T11:00:00.000Z",
+  "significance": 7,
+  "tractability": 7
+}
