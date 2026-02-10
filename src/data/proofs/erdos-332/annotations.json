@@ -3,54 +3,120 @@
     "id": "erdos-332-diffset",
     "proofId": "erdos-332",
     "type": "definition",
-    "range": { "startLine": 26, "endLine": 29 },
+    "range": { "startLine": 25, "endLine": 29 },
     "title": "Difference Set D(A)",
-    "content": "diffSet A is the set of integers d such that the set of pairs (a₁, a₂) with a₁, a₂ ∈ A and a₁ - a₂ = d is infinite. This captures differences that occur infinitely often, not just once.",
-    "significance": "essential"
+    "content": "diffSet A is the set of integers d such that the set of pairs (a₁, a₂) with a₁, a₂ ∈ A and a₁ - a₂ = d is infinite. This captures differences that occur infinitely often, not just once — a crucial distinction that filters out 'accidental' differences from sparse parts of A.",
+    "mathContext": "Define $D(A) = \\{d \\in \\mathbb{Z} : |\\{(a_1, a_2) \\in A^2 : a_1 - a_2 = d\\}| = \\infty\\}$. The Lean encoding uses $\\text{Set.Infinite}\\{(a_1, a_2) : a_1 \\in A \\wedge a_2 \\in A \\wedge a_1 - a_2 = d\\}$. This is stronger than the 'single occurrence' difference set $A - A = \\{a_1 - a_2 : a_1, a_2 \\in A\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["difference-sets", "sumsets", "additive-combinatorics", "syndetic-sets"],
+    "prerequisites": ["set-theory", "integers", "set-infinite"]
   },
   {
     "id": "erdos-332-bounded-gaps",
     "proofId": "erdos-332",
     "type": "definition",
-    "range": { "startLine": 35, "endLine": 38 },
+    "range": { "startLine": 33, "endLine": 38 },
     "title": "Bounded Gaps (Syndeticity)",
-    "content": "HasBoundedGaps S means S is syndetic: there exists M > 0 such that every interval [z, z+M) contains an element of S. This is the structural property the problem asks about.",
-    "significance": "essential"
+    "content": "HasBoundedGaps S means S is syndetic: there exists M > 0 such that every interval [z, z+M) contains an element of S. Equivalently, the gaps between consecutive elements of S are bounded by M. This is the structural property the problem asks about for D(A).",
+    "mathContext": "A set $S \\subseteq \\mathbb{Z}$ is syndetic if $\\exists M > 0$ such that $\\forall z \\in \\mathbb{Z},\\, S \\cap [z, z+M) \\neq \\emptyset$. Equivalently, $\\mathbb{Z} = \\bigcup_{s \\in S} [s - M, s + M]$. Syndeticity lies between 'infinite' and 'positive density' in the hierarchy of largeness notions.",
+    "significance": "key",
+    "relatedConcepts": ["syndetic-sets", "thick-sets", "piecewise-syndetic", "recurrence"],
+    "prerequisites": ["integers", "intervals", "set-theory"]
+  },
+  {
+    "id": "erdos-332-counting",
+    "proofId": "erdos-332",
+    "type": "definition",
+    "range": { "startLine": 42, "endLine": 44 },
+    "title": "Counting Function",
+    "content": "countingFn A N counts |A ∩ {1,...,N}|, the number of elements of A up to N. This is the fundamental tool for measuring the 'size' of a set of integers and defining various density notions.",
+    "mathContext": "The counting function $A(N) = |A \\cap \\{1, \\ldots, N\\}| = |\\{a \\in A : 1 \\leq a \\leq N\\}|$. Upper density: $\\bar{d}(A) = \\limsup_{N \\to \\infty} A(N)/N$. Lower density: $\\underline{d}(A) = \\liminf_{N \\to \\infty} A(N)/N$. Natural density exists when $\\bar{d} = \\underline{d}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["natural-density", "upper-density", "lower-density", "asymptotic-counting"],
+    "prerequisites": ["finset-card", "natural-numbers"]
   },
   {
     "id": "erdos-332-density",
     "proofId": "erdos-332",
     "type": "definition",
-    "range": { "startLine": 47, "endLine": 50 },
-    "title": "Positive Upper Density",
-    "content": "HasPositiveUpperDensity A means there exists δ > 0 such that |A ∩ {1,…,N}| ≥ δN for infinitely many N. This is the known sufficient condition for D(A) to have bounded gaps.",
-    "significance": "essential"
+    "range": { "startLine": 46, "endLine": 56 },
+    "title": "Positive Upper and Lower Density",
+    "content": "HasPositiveUpperDensity: ∃ δ > 0 such that |A ∩ {1,...,N}| ≥ δN for infinitely many N. HasPositiveLowerDensity: ∃ δ > 0 such that |A ∩ {1,...,N}| ≥ δN for all sufficiently large N. Positive upper density is the known sufficient condition for D(A) to be syndetic.",
+    "mathContext": "Positive upper density: $\\bar{d}(A) = \\limsup_{N} A(N)/N > 0$, i.e., $\\exists \\delta > 0,\\, \\forall N_0,\\, \\exists N \\geq N_0,\\, A(N) \\geq \\delta N$. Positive lower density: $\\underline{d}(A) > 0$, i.e., $\\exists \\delta > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, A(N) \\geq \\delta N$. The distinction matters: positive upper density is strictly weaker.",
+    "significance": "key",
+    "relatedConcepts": ["limsup-liminf", "natural-density", "schnirelmann-density"],
+    "prerequisites": ["real-analysis", "counting-function", "sequences"]
   },
   {
     "id": "erdos-332-prikry",
     "proofId": "erdos-332",
     "type": "result",
-    "range": { "startLine": 63, "endLine": 64 },
+    "range": { "startLine": 60, "endLine": 63 },
     "title": "Prikry's Theorem",
-    "content": "Positive upper density implies D(A) has bounded gaps. This is the main known result, establishing a sufficient condition for the problem.",
-    "significance": "essential"
+    "content": "Positive upper density implies D(A) has bounded gaps. This is the main known result, establishing that d̄(A) > 0 ⟹ D(A) is syndetic. The proof uses an ergodic-theoretic or combinatorial counting argument showing that large density forces repeated differences.",
+    "mathContext": "Prikry's theorem: $\\bar{d}(A) > 0 \\implies D(A)$ is syndetic. The key idea: if $\\bar{d}(A) \\geq \\delta$ along a subsequence $N_k$, then for each $N_k$, the set $A \\cap [1, N_k]$ has $\\geq \\delta N_k$ elements, producing $\\geq \\binom{\\delta N_k}{2}$ differences. By pigeonhole, many differences must repeat infinitely often and lie densely in $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["ergodic-theory", "furstenberg-correspondence", "pigeonhole-principle"],
+    "prerequisites": ["positive-upper-density", "bounded-gaps", "difference-set"]
+  },
+  {
+    "id": "erdos-332-diffset-dense",
+    "proofId": "erdos-332",
+    "type": "result",
+    "range": { "startLine": 65, "endLine": 68 },
+    "title": "D(A) Has Positive Density",
+    "content": "When A has positive upper density, D(A) itself (restricted to positive integers) has positive upper density. This strengthens Prikry's theorem: not only is D(A) syndetic, but it captures a positive proportion of all integers.",
+    "mathContext": "Strengthening: $\\bar{d}(A) > 0 \\implies \\bar{d}(D(A) \\cap \\mathbb{N}) > 0$. In fact, by Furstenberg's correspondence principle, $\\bar{d}(A) > 0$ implies $D(A) \\supseteq \\{d : \\mu(T^d B \\cap B) > 0\\}$ for an associated measure-preserving system $(X, \\mu, T)$ and set $B$ with $\\mu(B) = \\bar{d}(A)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["furstenberg-correspondence", "measure-preserving-systems", "recurrence"],
+    "prerequisites": ["positive-upper-density", "difference-set"]
   },
   {
     "id": "erdos-332-symmetry",
     "proofId": "erdos-332",
     "type": "result",
-    "range": { "startLine": 71, "endLine": 72 },
+    "range": { "startLine": 70, "endLine": 72 },
     "title": "Symmetry of D(A)",
-    "content": "D(A) is symmetric: d ∈ D(A) if and only if -d ∈ D(A). This follows from swapping the roles of a₁ and a₂.",
-    "significance": "supporting"
+    "content": "D(A) is symmetric: d ∈ D(A) if and only if -d ∈ D(A). This follows from swapping the roles of a₁ and a₂ in the pair (a₁, a₂) with a₁ - a₂ = d.",
+    "mathContext": "Symmetry: $d \\in D(A) \\iff -d \\in D(A)$. Proof: the map $(a_1, a_2) \\mapsto (a_2, a_1)$ gives a bijection between pairs with difference $d$ and pairs with difference $-d$, preserving infinitude.",
+    "significance": "supporting",
+    "relatedConcepts": ["symmetric-sets", "involutions", "difference-sets"],
+    "prerequisites": ["difference-set", "set-bijection"]
+  },
+  {
+    "id": "erdos-332-zero",
+    "proofId": "erdos-332",
+    "type": "result",
+    "range": { "startLine": 74, "endLine": 76 },
+    "title": "Zero Membership",
+    "content": "0 ∈ D(A) whenever A is infinite. Every element a ∈ A gives a pair (a, a) with difference 0, so infinitely many such pairs exist when A is infinite.",
+    "mathContext": "For infinite $A$: $0 \\in D(A)$. The fibre $\\{(a_1, a_2) : a_1 = a_2 \\in A\\} \\cong A$ is infinite, so the difference $0$ occurs infinitely often. This is the 'trivial' element of $D(A)$.",
+    "significance": "context",
+    "relatedConcepts": ["diagonal", "trivial-differences"],
+    "prerequisites": ["difference-set", "set-infinite"]
   },
   {
     "id": "erdos-332-conjecture",
     "proofId": "erdos-332",
     "type": "conjecture",
-    "range": { "startLine": 85, "endLine": 89 },
+    "range": { "startLine": 85, "endLine": 88 },
     "title": "Erdős Problem 332",
-    "content": "The main open question: characterise the weakest condition P on A ⊆ ℕ such that P(A) implies D(A) has bounded gaps. Positive upper density is known to be sufficient; the problem asks if weaker conditions also work.",
-    "significance": "essential"
+    "content": "The main open question: characterise the weakest condition P on A ⊆ ℕ such that P(A) implies D(A) has bounded gaps. Positive upper density is known to be sufficient (Prikry); the problem asks whether weaker conditions — such as divergence of Σ 1/a — also suffice.",
+    "mathContext": "The open question seeks the weakest $P$ such that $P(A) \\implies D(A)$ is syndetic. The Lean encoding: $\\forall P,\\, (\\forall A,\\, P(A) \\implies \\text{HasBoundedGaps}(D(A))) \\implies (\\forall A,\\, \\bar{d}(A) > 0 \\implies P(A))$. This formalizes that positive upper density should be the weakest such condition.",
+    "significance": "key",
+    "relatedConcepts": ["syndetic-sets", "density-hierarchy", "erdos-problems"],
+    "prerequisites": ["difference-set", "bounded-gaps", "positive-density"]
+  },
+  {
+    "id": "erdos-332-harmonic",
+    "proofId": "erdos-332",
+    "type": "conjecture",
+    "range": { "startLine": 92, "endLine": 97 },
+    "title": "Harmonic Divergence of D(A)",
+    "content": "Does positive upper density of A imply that the harmonic sum Σ_{d ∈ D(A)} 1/d diverges? This is a related strengthening: not only is D(A) syndetic, but it should be 'harmonically large'. The axiom states this as a consequence of positive density.",
+    "mathContext": "Related question: $\\bar{d}(A) > 0 \\implies \\sum_{d \\in D(A) \\cap \\mathbb{N}} \\frac{1}{d} = \\infty$? Since syndetic sets have $\\sum 1/s_n = \\infty$ (gaps bounded implies $s_n = O(n)$), this would follow from Prikry's theorem if D(A) were syndetic among the positive integers.",
+    "significance": "supporting",
+    "relatedConcepts": ["harmonic-series", "divergence", "density-implies-harmonic"],
+    "prerequisites": ["difference-set", "positive-density", "harmonic-sums"]
   }
 ]
