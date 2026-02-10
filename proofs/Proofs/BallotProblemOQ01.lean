@@ -488,11 +488,9 @@ theorem isGoodRotation_iff_prefixSum (l : List ℤ) (i : ℕ) (hi : i < l.length
       omega
     · -- Wrapping: P(i+j-n) + S - P(i) > 0
       push_neg at hij
-      have hsum_val : i + j ≤ (l ++ l).length := by simp; omega
-      rw [List.take_add]
-      rw [List.sum_append]
-      rw [List.take_left]
-      rw [List.drop_left]
+      -- Decompose (l++l).take(i+j) via l.length + (i+j-l.length)
+      have hrw : i + j = l.length + (i + j - l.length) := by omega
+      rw [hrw, List.take_add, List.sum_append, List.take_left, List.drop_left]
       omega
   · intro h j hj hjn
     rw [cyclicRotation_prefixSum l i j (le_of_lt hi) hjn]
@@ -503,10 +501,9 @@ theorem isGoodRotation_iff_prefixSum (l : List ℤ) (i : ℕ) (hi : i < l.length
       rw [List.take_append_of_le_length (by omega)] at hpf
       omega
     · -- Wrapping
-      rw [List.take_add] at hpf
-      rw [List.sum_append] at hpf
-      rw [List.take_left] at hpf
-      rw [List.drop_left] at hpf
+      push_neg at hij
+      have hrw : i + j = l.length + (i + j - l.length) := by omega
+      rw [hrw, List.take_add, List.sum_append, List.take_left, List.drop_left] at hpf
       omega
 
 /-- For the doubled sequence, prefixSum(l++l, i) = prefixSum(l, i) when i ≤ l.length. -/
