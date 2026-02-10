@@ -1,0 +1,130 @@
+{
+  "id": "ballot-problem-oq-01",
+  "title": "Generalized Ballot Problem: k-Fold Dominance",
+  "slug": "ballot-problem-oq-01",
+  "description": "The generalized ballot problem: in an election where candidate A must maintain more than k times the votes of candidate B throughout counting, the probability is (a - kb)/(a + b). Formalized using lattice paths and cyclic rotations.",
+  "meta": {
+    "author": "Bertrand (1887), generalized by Dvoretzky-Motzkin (1947)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Archive/Wiedijk100Theorems/BallotProblem.lean",
+    "date": "1947",
+    "status": "in-progress",
+    "proofRepoPath": "Proofs/BallotProblemOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "probability",
+      "lattice-paths",
+      "cycle-lemma",
+      "generalization",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "Ballot.countedSequence",
+        "description": "Classical ballot sequence definition (k=1 case)",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "List.perm_iff_count",
+        "description": "Permutation characterized by equal counts",
+        "module": "Mathlib.Data.List.Perm"
+      }
+    ],
+    "originalContributions": [
+      "Generalized ballot sequence definition for arbitrary k-fold dominance",
+      "Lattice path model with +1 upsteps and -k downsteps",
+      "Cyclic rotation infrastructure: sum/length/membership preservation",
+      "Prefix sum relation for cyclic rotations (both wrapping and non-wrapping cases)",
+      "Connection to classical ballot problem (k=1 reduction)",
+      "Permutation characterization of ballot sequences"
+    ],
+    "dateAdded": "02/10/26"
+  },
+  "overview": {
+    "historicalContext": "The classical Ballot Problem was posed by Joseph Bertrand in 1887: if candidate A receives p votes and B receives q votes (p > q), the probability that A leads throughout counting is (p-q)/(p+q). This was first proved by Desire Andre using the reflection principle. In 1947, Dvoretzky and Motzkin proved the Cycle Lemma, which gives a more general and elegant proof applicable to the k-fold generalization.",
+    "problemStatement": "**Generalized Ballot Theorem**: In an election where candidate A receives $a$ votes and candidate B receives $b$ votes, with $a > kb$ for a positive integer $k$, the probability that A always has more than $k$ times as many votes as B throughout the counting is:\n\n$$P = \\frac{a - kb}{a + b}$$\n\nWhen $k = 1$, this reduces to the classical formula $P = (p-q)/(p+q)$.",
+    "proofStrategy": "**Lattice Path Model + Cycle Lemma**:\n\n1. Model vote counting as a lattice path: each A-vote is a +1 step, each B-vote is a $-k$ step\n2. The condition 'A has > k times B's votes' equals the path staying strictly above the x-axis\n3. Use the Dvoretzky-Motzkin Cycle Lemma: for a sequence with positive sum $S$ and length $n$, exactly $S$ of the $n$ cyclic rotations have all positive prefix sums\n4. Apply to ballot sequences: $S = a - kb$, $n = a + b$, giving the fraction of good orderings",
+    "keyInsights": [
+      "The cycle lemma unifies the classical ballot problem and its generalizations",
+      "Cyclic rotation preserves the multiset of values, so all rotations are valid ballot sequences",
+      "The prefix sum of a rotation relates to the original via a clean formula with wrapping correction",
+      "The permutation characterization enables finiteness proofs via Mathlib's List.finite_permutations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Generalized Ballot Sequences",
+      "startLine": 52,
+      "endLine": 71,
+      "summary": "Definitions of kCountedSequence (lists with a +1s and b -k values) and kStaysPositive (all prefix sums positive)."
+    },
+    {
+      "id": "algebraic-lemmas",
+      "title": "Core Algebraic Lemmas",
+      "startLine": 73,
+      "endLine": 122,
+      "summary": "Sum and length identities for binary-valued lists: sum = count(1) - k*count(-k), length = count(1) + count(-k)."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 124,
+      "endLine": 177,
+      "summary": "Sum, length, permutation characterization, finiteness, and nonemptiness of kCountedSequence."
+    },
+    {
+      "id": "classical-connection",
+      "title": "Connection to Classical Ballot Problem",
+      "startLine": 184,
+      "endLine": 213,
+      "summary": "When k=1, kCountedSequence equals Mathlib's countedSequence, connecting to the classical result."
+    },
+    {
+      "id": "ballot-theorem",
+      "title": "The Generalized Ballot Theorem",
+      "startLine": 215,
+      "endLine": 257,
+      "summary": "Statement of the counting theorem and probability formula, with verified special cases."
+    },
+    {
+      "id": "cyclic-rotations",
+      "title": "Cyclic Rotation Infrastructure",
+      "startLine": 259,
+      "endLine": 340,
+      "summary": "Definition and properties of cyclic rotations: sum/length preservation, membership, composition."
+    },
+    {
+      "id": "prefix-sums",
+      "title": "Prefix Sum Relations",
+      "startLine": 348,
+      "endLine": 412,
+      "summary": "Key structural lemma relating prefix sums of cyclic rotations to prefix sums of the original sequence."
+    },
+    {
+      "id": "cycle-lemma",
+      "title": "The Cycle Lemma",
+      "startLine": 414,
+      "endLine": 443,
+      "summary": "Statement of the Dvoretzky-Motzkin cycle lemma (1947): for positive-sum sequences, exactly S of n rotations have all positive prefix sums."
+    },
+    {
+      "id": "lattice-paths",
+      "title": "Lattice Path Interpretation",
+      "startLine": 445,
+      "endLine": 475,
+      "summary": "Physical interpretation of ballot sequences as lattice paths with height tracking."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes a comprehensive framework for the generalized ballot problem, building from basic list combinatorics through cyclic rotation theory to the statement of the Dvoretzky-Motzkin cycle lemma. The key infrastructure - including the prefix sum relation for rotations - is complete, providing the foundation needed to prove the cycle lemma and derive the counting formula.",
+    "implications": "**Applications:**\n\n1. **Voting theory**: Probability of sustained dominance in elections\n2. **Queueing theory**: Probability that a queue never empties (k-server variant)\n3. **Random walks**: Paths with asymmetric step sizes staying above a barrier\n4. **Lattice path enumeration**: Counting paths with generalized step constraints",
+    "openQuestions": [
+      "Complete proof of the Dvoretzky-Motzkin cycle lemma in Lean 4",
+      "Multi-candidate ballot problem (more than 2 candidates)",
+      "Continuous-time analogue via Brownian motion",
+      "Weighted voting with non-uniform step sizes"
+    ]
+  }
+}
