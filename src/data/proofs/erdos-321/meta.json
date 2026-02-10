@@ -15,9 +15,9 @@
       "open"
     ],
     "references": [
-      "Erdős & Graham (1980): original problem [ErGr80, p.43]",
-      "Bleicher & Erdős (1975): lower bound [BlEr75]",
-      "Bleicher & Erdős (1976): upper bound [BlEr76b]",
+      "Erdős & Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', p.43",
+      "Bleicher & Erdős (1975): 'Denominators of unit fractions', J. London Math. Soc. (lower bound)",
+      "Bleicher & Erdős (1976): 'Denominators of unit fractions II', Illinois J. Math. (upper bound)",
       "https://erdosproblems.com/321"
     ],
     "leanFile": "Proofs/Erdos321Problem.lean",
@@ -27,54 +27,75 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module docstring stating the Bleicher–Erdős bounds with iterated logarithm notation. Imports Mathlib for $\\mathbb{N}$, $\\mathbb{Q}$ (exact reciprocal sums), $\\mathbb{R}$ (asymptotics with $\\log N$), and tactics."
+    },
+    {
       "id": "definitions",
-      "title": "Definitions",
-      "startLine": 22,
-      "endLine": 41,
-      "summary": "Unit fractions, distinct reciprocal subset sums, R(N) definition."
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 42,
+      "summary": "Three foundational definitions: **unitFractions** $\\{1/n : n \\in [N]\\}$, **HasDistinctReciprocalSums** requiring all $2^{|A|}$ subset sums over $\\mathbb{Q}$ to be distinct, and **maxDistinctReciprocal** $R(N) = \\max|A|$ over valid subsets of $[N]$."
     },
     {
       "id": "main-question",
-      "title": "Main Question",
-      "startLine": 43,
-      "endLine": 47,
-      "summary": "Determine the asymptotic behavior of R(N)."
+      "title": "The Main Asymptotic Question",
+      "startLine": 44,
+      "endLine": 50,
+      "summary": "States the problem: determine $R(N)$ asymptotically. Axiomatizes existence of a function $f$ with $R(N) = f(N)$ for $N \\geq 2$. The precise form of $f$ — whether $R(N) \\sim c \\cdot N/\\log N$ or involves iterated log corrections — is the open question."
     },
     {
-      "id": "known-bounds",
-      "title": "Known Bounds",
-      "startLine": 49,
-      "endLine": 72,
-      "summary": "Bleicher–Erdős lower and upper bounds, main term N/log N."
+      "id": "lower-bound",
+      "title": "Bleicher–Erdős Lower Bound (1975)",
+      "startLine": 52,
+      "endLine": 59,
+      "summary": "Lower bound: $R(N) \\geq (N/\\log N) \\cdot \\prod_{i=3}^k \\log_i N$ via a constructive argument using integers with controlled prime factorizations. Simplified in Lean to $R(N) \\geq N/\\log N$."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Bleicher–Erdős Upper Bound (1976)",
+      "startLine": 61,
+      "endLine": 66,
+      "summary": "Upper bound: $R(N) \\leq (1/\\log 2) \\cdot \\log_r N \\cdot (N/\\log N) \\cdot \\prod_{i=3}^r \\log_i N$, via a counting argument bounding distinct sums by $2^{|A|} \\leq \\text{lcm}(1,\\ldots,N)$. Simplified to $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$."
+    },
+    {
+      "id": "main-term",
+      "title": "Main Term Summary",
+      "startLine": 68,
+      "endLine": 74,
+      "summary": "Combined statement: $c_1 \\cdot N/\\log N \\leq R(N) \\leq c_2 \\cdot (N/\\log N) \\cdot \\log\\log N$. The gap is essentially one iterated logarithm factor — the entire content of the open problem."
     },
     {
       "id": "observations",
-      "title": "Observations",
-      "startLine": 74,
+      "title": "Observations and Connections",
+      "startLine": 76,
       "endLine": 89,
-      "summary": "Egyptian fraction connection, greedy construction, OEIS sequences."
+      "summary": "Three remarks (in comments, not formalized): the **Egyptian fraction** connection (every rational has a unit fraction decomposition), the **greedy construction** strategy for lower bounds, and related **OEIS sequences** A384927, A391592 tracking computed values of $R(N)$."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in 1980 about the maximum size of subsets of {1,...,N} with distinct reciprocal subset sums. Bleicher and Erdős established matching bounds up to iterated logarithmic factors in 1975–1976, but the precise asymptotics remain open.",
-    "problemStatement": "Let R(N) be the maximum |A| for A ⊆ {1,...,N} such that all subset sums Σ_{n∈S} 1/n are distinct for S ⊆ A. Determine R(N) asymptotically. Current bounds: (N/log N)·Π log_i N ≤ R(N) ≤ (1/log 2)·log_r N·(N/log N)·Π log_i N.",
-    "proofStrategy": "We define distinct reciprocal subset sums and R(N), state the known Bleicher–Erdős bounds, and identify the iterated logarithm gap as the open question.",
+    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.43), building on work by Michael Bleicher and Erdős from the mid-1970s. Bleicher and Erdős published matching bounds in two papers: a lower bound in 'Denominators of unit fractions' (J. London Math. Soc., 1975) using a constructive argument based on prime factorization properties, and an upper bound in 'Denominators of unit fractions II' (Illinois J. Math., 1976) using a counting argument comparing $2^{|A|}$ with $\\text{lcm}(1, \\ldots, N)$. The problem sits at the intersection of additive combinatorics, Egyptian fraction theory (dating back to ancient Egypt's Rhind Papyrus, c. 1650 BCE), and the study of harmonic sums. The iterated logarithm gap between the bounds — essentially a single factor of $\\log_r N$ — has resisted closure for 50 years, making it one of the most precisely bounded yet unresolved problems in combinatorial number theory.",
+    "problemStatement": "Let $R(N) = \\max\\{|A| : A \\subseteq \\{1, \\ldots, N\\}, \\text{ all reciprocal subset sums } \\sum_{n \\in S} 1/n \\text{ distinct}\\}$. Determine $R(N)$ asymptotically. Current bounds: $(N/\\log N) \\cdot \\prod \\log_i N \\leq R(N) \\leq (1/\\log 2) \\cdot \\log_r N \\cdot (N/\\log N) \\cdot \\prod \\log_i N$.",
+    "proofStrategy": "We define `HasDistinctReciprocalSums` over $\\mathbb{Q}$ (exact arithmetic) and $R(N)$ via `Finset.sup` over the powerset. The Bleicher–Erdős bounds are axiomatized in simplified form: the lower bound as $R(N) \\geq N/\\log N$ and the upper bound as $R(N) \\leq C \\cdot (N/\\log N) \\cdot \\log\\log N$. The combined $\\Theta(N/\\log N)$ statement captures the main term. Observations on Egyptian fractions and greedy constructions are included as comments.",
     "keyInsights": [
-      "R(N) = Θ(N/log N) up to iterated logarithm factors",
-      "Lower bound: (N/log N) · product of iterated logs (Bleicher–Erdős 1975)",
-      "Upper bound: extra iterated log factor above the lower bound (Bleicher–Erdős 1976)",
-      "The gap is essentially one iterated logarithm factor",
-      "Related to Egyptian fraction representations and OEIS A384927, A391592"
+      "**Main term is $N/\\log N$**: Both bounds agree on this leading factor — the open question is entirely about the slowly-varying iterated logarithm correction, making this one of the most precisely bounded yet unresolved extremal problems",
+      "**Lower bound via prime factorization**: Bleicher–Erdős select integers $n \\leq N$ whose prime factorizations ensure reciprocal subset sums separate, using the unique factorization of $\\text{lcm}(1, \\ldots, N)$ into prime powers",
+      "**Upper bound via counting**: There are $2^{|A|}$ subsets but only $\\text{lcm}(1, \\ldots, N) \\approx e^N$ possible distinct values for $\\sum 1/n$, giving $|A| \\leq \\log_2(\\text{lcm}(1, \\ldots, N)) \\approx N/\\log 2$ — refined with prime number theorem estimates",
+      "**Egyptian fraction roots**: The problem connects to ancient mathematics — the Rhind Papyrus (1650 BCE) contains Egyptian fraction tables, and the question of which denominators can coexist with unique partial sums is a modern formalization of this tradition",
+      "**Gap is exactly one iterated log**: The difference between upper and lower bounds is the factor $\\log_r N$ at the deepest level of iterated logarithm. Closing this gap requires understanding whether the construction or the counting argument is tighter"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #321 asks for the precise asymptotics of R(N), the maximum subset of {1,...,N} with distinct reciprocal sums. The Bleicher–Erdős bounds from the 1970s pin down R(N) to within an iterated logarithm factor of N/log N, but closing this gap remains open.",
-    "implications": "Resolution would advance the theory of Egyptian fractions and unit fraction representations, with connections to additive combinatorics and the structure of harmonic sums.",
+    "summary": "This formalization captures the Bleicher–Erdős framework for $R(N)$: the definition of distinct reciprocal subset sums, the matching bounds $\\Theta(N/\\log N)$ up to iterated log factors, and the connections to Egyptian fractions and extremal combinatorics. The gap between upper and lower bounds — a single iterated logarithm factor — remains one of the most precisely bounded yet unresolved asymptotic questions in number theory.",
+    "implications": "Resolving the precise asymptotics of $R(N)$ would advance the theory of Egyptian fractions, clarify the relationship between prime factorization structure and subset sum distinctness, and potentially yield new techniques for bounding extremal quantities defined via subset sums. The answer would also have algorithmic implications for constructing optimal sets with distinct partial harmonic sums.",
     "openQuestions": [
-      "What is the precise iterated logarithm correction to N/log N?",
-      "Can the lower or upper bound be improved by a full iterated log factor?",
-      "Is R(N) ~ c · N/log N for some constant c?",
-      "What is the optimal greedy construction strategy?"
+      "Is $R(N) \\sim c \\cdot N/\\log N$ for some explicit constant $c$, or do iterated logarithm factors persist in the true asymptotics?",
+      "Can the Bleicher–Erdős lower bound construction be improved by a more sophisticated selection criterion based on smooth numbers or $B$-smooth integers?",
+      "Does the counting argument (upper bound) have slack, or is $\\text{lcm}(1, \\ldots, N)$ the true bottleneck for distinct reciprocal sums?",
+      "What are the exact values of $R(N)$ for moderate $N$ (e.g., $N \\leq 1000$), and do they suggest a specific asymptotic form?"
     ]
   }
 }
