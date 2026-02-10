@@ -12,76 +12,94 @@
       "erdos",
       "number-theory",
       "covering-systems",
-      "primes"
+      "primes",
+      "modular-arithmetic",
+      "open"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 273,
     "erdosUrl": "https://erdosproblems.com/273",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "references": [
+      "Erdős–Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', p.24",
+      "Selfridge: covering system construction using divisors of 360 for p ≥ 3",
+      "Erdős (1950): existence of covering systems with arbitrarily large minimum modulus",
+      "Hough (2015): 'The minimum modulus of a covering system is at most 10^16', Annals of Mathematics",
+      "https://erdosproblems.com/273"
+    ]
   },
   "overview": {
-    "historicalContext": "A covering system is a finite collection of residue classes whose union is all integers. Erdős asked whether one can construct a covering system using only moduli of the form p-1 for primes p ≥ 5. When p ≥ 3 is allowed, Selfridge found such a system using divisors of 360. The restriction to p ≥ 5 excludes modulus 2 (= 3-1), making coverage much harder. From Erdős–Graham (1980), p.24.",
-    "problemStatement": "Is there a covering system all of whose moduli are of the form p - 1 for some primes p ≥ 5?",
-    "proofStrategy": "We define CoveringSystem as a structure with moduli, residues, and a covering property. IsPrimeMinusOne and AllModuliPrimeMinusOne capture the modulus constraint. The main question ErdosProblem273 asks for existence. We axiomatize Selfridge's example for p ≥ 3, the reciprocal sum condition, and structural constraints on p ≥ 5 covering systems.",
+    "historicalContext": "Covering systems — finite collections of residue classes whose union is all integers — were introduced by Paul Erdős in 1950, who proved that for every $N$, there exist covering systems with all moduli exceeding $N$. Problem #273 comes from Erdős and Ronald Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.24), which systematically catalogued open problems in the field. The question connects covering systems to prime number theory: can the moduli be restricted to the specific form $p - 1$ for primes $p \\geq 5$? John Selfridge resolved the easier case $p \\geq 3$ by exploiting the divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$, with the crucial modulus $2 = 3 - 1$ enabling half the integers to be covered immediately. The restriction to $p \\geq 5$ removes this crutch. Bob Hough's landmark 2015 result bounding the minimum modulus of distinct covering systems (published in the Annals of Mathematics) showed that covering systems are more constrained than previously understood, but does not directly resolve this problem.",
+    "problemStatement": "Is there a covering system $\\{a_1 \\pmod{m_1}, \\ldots, a_n \\pmod{m_n}\\}$ such that every modulus $m_i = p_i - 1$ for some prime $p_i \\geq 5$?",
+    "proofStrategy": "We define `CoveringSystem` as a Lean 4 structure with moduli, residues, and a covering property over $\\mathbb{Z}$. The predicates `IsPrimeMinusOne` and `AllModuliPrimeMinusOne` capture the modulus constraint parameterized by a prime lower bound $k$. The main question `ErdosProblem273` is stated as a Prop (existence claim). We axiomatize Selfridge's solution for $p \\geq 3$, the reciprocal sum necessary condition $\\sum 1/m_i \\geq 1$, the distinct covering system definition (connecting to Hough's theorem), and the structural obstacles for $p \\geq 5$ (minimum modulus $\\geq 4$, all moduli even).",
     "keyInsights": [
-      "Selfridge's covering system works when p ≥ 3 is allowed (modulus 2 = 3-1 available)",
-      "For p ≥ 5, the smallest allowed modulus is 4 (= 5-1), excluding modulus 2",
-      "Without modulus 2, covering all even integers requires careful arrangement of larger even moduli",
-      "The sum of reciprocals of allowed moduli must be ≥ 1 for a covering to exist"
+      "**Selfridge's key trick is modulus 2**: When $p \\geq 3$ is allowed, $2 = 3 - 1$ covers half of all integers in one class. Removing this forces all moduli $\\geq 4$, fundamentally changing the combinatorial structure",
+      "**All allowed moduli are even**: Since $p - 1$ is even for every odd prime $p \\geq 5$, every residue class $a \\pmod{m}$ contains both even and odd integers — the parity structure of the covering is non-trivial",
+      "**Reciprocal sum is achievable but tight**: The 'easy primes' $\\{5,7,13,19,37,61,181\\}$ (where $p-1 \\mid 360$) give reciprocal sum $5/9 \\approx 0.556$, far below the threshold of 1. Many additional primes are needed",
+      "**360 is the natural base**: $360 = 2^3 \\cdot 3^2 \\cdot 5$ is highly composite with 24 divisors. Selfridge's construction exploits its rich divisor structure, but for $p \\geq 5$ the LCM of chosen moduli may need to be much larger",
+      "**Connection to Hough's theorem**: Hough (2015) showed distinct covering systems have bounded minimum modulus. Problem #273 asks about a non-distinct variant (repeated moduli allowed) with specific arithmetic constraints on the moduli"
     ]
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Module docstring describing the problem and its OPEN status, with references to Erdős–Graham (1980) and Selfridge. Imports Mathlib for `Nat.Prime`, integer modular arithmetic, `Finset`/`Fintype` for finite index types, and general tactics."
+    },
+    {
       "id": "covering-systems",
-      "title": "Covering Systems",
+      "title": "Covering System Definition",
       "startLine": 21,
       "endLine": 37,
-      "summary": "Defines CoveringSystem as a structure with moduli ≥ 2, residues, and a covering property over ℤ."
+      "summary": "Defines `CoveringSystem` as a structure: $n$ residue classes with moduli $m_i \\geq 2$, residues $a_i \\in \\mathbb{Z}$, and the covering property $\\forall z \\in \\mathbb{Z}, \\exists i: z \\equiv a_i \\pmod{m_i}$. This formalizes the standard definition from Erdős (1950)."
     },
     {
       "id": "prime-minus-one",
-      "title": "Prime-Minus-One Moduli",
+      "title": "Prime-Minus-One Moduli Predicates",
       "startLine": 39,
       "endLine": 49,
-      "summary": "Defines IsPrimeMinusOne and AllModuliPrimeMinusOne: each modulus equals p-1 for some prime p ≥ k."
+      "summary": "Defines `IsPrimeMinusOne k m`: $\\exists p$ prime with $p \\geq k$ and $m = p - 1$. `AllModuliPrimeMinusOne k cs` lifts this to all moduli. For $k = 5$, the allowed moduli are $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\}$."
     },
     {
       "id": "main-problem",
-      "title": "The Main Problem",
+      "title": "The Main Problem Statement",
       "startLine": 51,
       "endLine": 61,
-      "summary": "States ErdosProblem273: existence of a covering system with all moduli of the form p-1, p ≥ 5."
+      "summary": "States `ErdosProblem273` as the existence of a covering system with all moduli of the form $p - 1$ for primes $p \\geq 5$. Defined as a `Prop` (not axiomatized) since the answer is unknown."
     },
     {
       "id": "selfridge-example",
-      "title": "The Selfridge Example (p ≥ 3)",
+      "title": "Selfridge's Example for p >= 3",
       "startLine": 63,
       "endLine": 72,
-      "summary": "Axiomatizes Selfridge's covering system when p ≥ 3 is allowed, using divisors of 360."
+      "summary": "Axiomatizes Selfridge's covering system when $p \\geq 3$ is allowed, using the divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$. The key enabler is modulus $2 = 3 - 1$."
     },
     {
       "id": "covering-basics",
-      "title": "Covering System Basics",
+      "title": "Covering System Invariants",
       "startLine": 74,
       "endLine": 92,
-      "summary": "Defines LCM of moduli, axiomatizes the reciprocal sum necessary condition, and defines distinct covering systems."
+      "summary": "Defines the LCM of moduli (period of the covering), axiomatizes the reciprocal sum necessary condition $\\sum 1/m_i \\geq 1$, and defines distinct covering systems (all moduli different) connecting to Hough's 2015 theorem."
     },
     {
       "id": "connections",
-      "title": "Connection to Other Problems",
+      "title": "Construction Attempts and Obstacles",
       "startLine": 94,
       "endLine": 115,
-      "summary": "Lists easy primes for 360-based constructions and axiomatizes the key obstacle: all moduli ≥ 4 when p ≥ 5."
+      "summary": "Identifies the 'easy primes' $\\{5,7,13,19,37,61,181\\}$ with $p-1 \\mid 360$ (reciprocal sum only $5/9$). Axiomatizes key structural constraints: all moduli $> 2$ and all moduli $\\geq 4$ when $p \\geq 5$, capturing the fundamental difficulty of even-integer coverage."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 273 asks whether covering systems exist with all moduli of the form p-1 for primes p ≥ 5. Selfridge solved the easier p ≥ 3 case. The restriction to p ≥ 5 eliminates modulus 2, making the problem significantly harder and still open.",
-    "implications": "Resolution would deepen understanding of the interplay between covering systems and prime number structure, connecting to problems about distinct covering systems and the Hough theorem.",
+    "summary": "This formalization captures the full structure of Erdős Problem #273: the covering system definition, the prime-minus-one moduli constraint, Selfridge's partial solution for $p \\geq 3$, necessary conditions (reciprocal sums, minimum modulus), and the structural obstacles that make the $p \\geq 5$ case so challenging. The interplay between the arithmetic of primes and the combinatorics of covering is precisely encoded.",
+    "implications": "Resolution would reveal fundamental constraints on how prime number structure interacts with modular covering. A positive answer would require new construction techniques beyond Selfridge's 360-based approach. A negative answer would establish that the $p - 1$ form imposes inescapable density limitations on covering — connecting to Hough's theorem and potentially to the broader study of which sets of moduli can support covering systems.",
     "openQuestions": [
-      "Can a covering system be constructed with moduli from {p-1 : p prime, p ≥ 5}?",
-      "What is the minimum number of residue classes needed if such a covering exists?",
-      "Does the reciprocal sum condition alone obstruct existence for p ≥ 5?"
+      "Can the 'easy primes' construction based on divisors of 360 be extended with additional primes to achieve reciprocal sum $\\geq 1$ while maintaining covering compatibility?",
+      "Is there a computationally verifiable obstruction (beyond the reciprocal sum) that rules out $p \\geq 5$ coverings?",
+      "What is the minimum number of residue classes needed if such a covering exists, and how does it compare to Selfridge's $p \\geq 3$ construction?",
+      "Does Hough's minimum modulus bound have implications for this problem when repeated moduli are allowed?"
     ]
   }
 }

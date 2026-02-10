@@ -1,39 +1,87 @@
 [
   {
+    "id": "erdos-273-imports",
+    "proofId": "erdos-273",
+    "type": "concept",
+    "range": { "startLine": 14, "endLine": 19 },
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib modules for natural number arithmetic, primality testing (`Nat.Prime`), integer arithmetic (for modular residues over $\\mathbb{Z}$), Finset and Fintype (for finite collections of residue classes), and general tactics. The formalization works over $\\mathbb{Z}$ for the covering property since residue classes $a_i \\pmod{m_i}$ naturally partition all integers.",
+    "mathContext": "Covering systems are defined over $\\mathbb{Z}$: each class $\\{z : z \\equiv a_i \\pmod{m_i}\\}$ is a coset of $m_i\\mathbb{Z}$. The moduli $m_i \\geq 2$ and residues $a_i$ are stored as `Fin n → ℕ` and `Fin n → ℤ` respectively.",
+    "significance": "supporting",
+    "relatedConcepts": ["modular arithmetic", "residue classes", "Finset", "Fintype"],
+    "prerequisites": ["Mathlib.Data.Nat.Prime.Basic", "integer modular arithmetic"]
+  },
+  {
     "id": "erdos-273-covering-def",
     "proofId": "erdos-273",
     "type": "definition",
-    "range": { "startLine": 25, "endLine": 49 },
-    "title": "Covering System and Prime-Minus-One Moduli",
-    "content": "CoveringSystem is a structure with moduli ≥ 2, residues, and the property that every integer is covered. IsPrimeMinusOne k m holds when m = p-1 for some prime p ≥ k. AllModuliPrimeMinusOne k cs requires all moduli satisfy this condition.",
-    "significance": "essential"
+    "range": { "startLine": 25, "endLine": 37 },
+    "title": "Covering System Structure",
+    "content": "Defines a covering system as a structure with $n$ residue classes, each specified by a modulus $m_i \\geq 2$ and residue $a_i$, satisfying the covering property: every integer $z$ belongs to at least one class $a_i \\pmod{m_i}$. This is the standard definition from combinatorial number theory, used since Erdős's foundational 1950 paper. The moduli bound $m_i \\geq 2$ excludes the trivial modulus 1.",
+    "mathContext": "A **covering system** is a finite set $\\{a_1 \\pmod{m_1}, \\ldots, a_n \\pmod{m_n}\\}$ with $m_i \\geq 2$ such that $\\mathbb{Z} = \\bigcup_{i=1}^n \\{z : z \\equiv a_i \\pmod{m_i}\\}$. The simplest example is $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$. Erdős (1950) proved that for every $N$, there exist covering systems with all moduli $> N$.",
+    "significance": "critical",
+    "relatedConcepts": ["residue class", "Chinese Remainder Theorem", "Erdős covering conjecture", "Hough's theorem"],
+    "prerequisites": ["modular arithmetic", "Finset", "integer division"]
   },
   {
-    "id": "erdos-273-conjecture",
+    "id": "erdos-273-prime-minus-one",
     "proofId": "erdos-273",
-    "type": "conjecture",
+    "type": "definition",
+    "range": { "startLine": 43, "endLine": 49 },
+    "title": "Prime-Minus-One Moduli Constraint",
+    "content": "Defines `IsPrimeMinusOne k m`: a modulus $m$ equals $p - 1$ for some prime $p \\geq k$. The predicate `AllModuliPrimeMinusOne k cs` requires every modulus in the covering system to satisfy this. For $k = 5$, the allowed moduli are $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, 36, \\ldots\\}$ — these are the totient-like values $p - 1$ for primes $p \\geq 5$.",
+    "mathContext": "$\\text{IsPrimeMinusOne}(k, m) \\iff \\exists p \\text{ prime}: p \\geq k \\land m = p - 1$. The set $\\{p - 1 : p \\text{ prime}, p \\geq 5\\}$ excludes $2 = 3 - 1$ and $1 = 2 - 1$. These values are related to **Euler's totient**: $\\varphi(p) = p - 1$ for prime $p$.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's totient function", "prime gaps", "Dirichlet's theorem", "totient values"],
+    "prerequisites": ["Nat.Prime", "natural number subtraction"]
+  },
+  {
+    "id": "erdos-273-main-problem",
+    "proofId": "erdos-273",
+    "type": "definition",
     "range": { "startLine": 55, "endLine": 61 },
-    "title": "Erdős Problem 273",
-    "content": "Does there exist a covering system with all moduli of the form p-1 for primes p ≥ 5? The allowed moduli are {4, 6, 10, 12, 16, 18, 22, 28, 30, ...}.",
-    "significance": "essential"
+    "title": "Erdős Problem #273: The Main Question",
+    "content": "The central question: does there exist a covering system whose moduli are all of the form $p - 1$ for primes $p \\geq 5$? Defined as a Prop (existence statement) rather than axiomatized, since the answer is unknown. The allowed moduli $\\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\}$ are all even (since $p - 1$ is even for odd primes $p \\geq 5$), which creates a fundamental parity constraint on the covering.",
+    "mathContext": "$\\exists \\, \\text{cs} : \\text{CoveringSystem}, \\; \\forall i, \\; \\exists p \\text{ prime}: p \\geq 5 \\land \\text{cs.moduli}(i) = p - 1$. Since all allowed moduli are even, covering odd integers modulo 2 requires at least two classes with different odd residues modulo their respective moduli.",
+    "significance": "critical",
+    "relatedConcepts": ["covering number", "minimum modulus problem", "even moduli constraint"],
+    "prerequisites": ["CoveringSystem", "AllModuliPrimeMinusOne"]
   },
   {
     "id": "erdos-273-selfridge",
     "proofId": "erdos-273",
-    "type": "result",
+    "type": "theorem",
     "range": { "startLine": 67, "endLine": 72 },
-    "title": "Selfridge's Example (p ≥ 3)",
-    "content": "Selfridge found a covering system when p ≥ 3 is allowed. This uses the divisors of 360 as moduli, with 2 = 3-1 as a key modulus. The existence proof for p ≥ 3 shows the problem is nontrivial.",
-    "significance": "essential"
+    "title": "Selfridge's Covering System (p >= 3)",
+    "content": "Selfridge constructed a covering system when primes $p \\geq 3$ are allowed. The key enabler is modulus $2 = 3 - 1$: with it, one class $0 \\pmod{2}$ or $1 \\pmod{2}$ covers half of all integers immediately. The remaining integers are covered using moduli that are divisors of $360 = 2^3 \\cdot 3^2 \\cdot 5$, all of the form $p - 1$ for appropriate primes. This is axiomatized since the explicit construction is a finite verification.",
+    "mathContext": "$\\exists \\, \\text{cs} : \\text{CoveringSystem}, \\; \\text{AllModuliPrimeMinusOne}(3, \\text{cs})$. The divisors of $360$ include $\\{2, 4, 6, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 45, 60, 72, 90, 120, 180, 360\\}$. Among these, many are of the form $p - 1$: $2 = 3-1$, $4 = 5-1$, $6 = 7-1$, $12 = 13-1$, $18 = 19-1$, $36 = 37-1$, $60 = 61-1$, $180 = 181-1$.",
+    "significance": "key",
+    "relatedConcepts": ["divisors of 360", "smooth numbers", "highly composite numbers", "Selfridge"],
+    "prerequisites": ["CoveringSystem", "AllModuliPrimeMinusOne"]
+  },
+  {
+    "id": "erdos-273-lcm",
+    "proofId": "erdos-273",
+    "type": "definition",
+    "range": { "startLine": 78, "endLine": 80 },
+    "title": "LCM of Covering System Moduli",
+    "content": "The least common multiple of all moduli in a covering system. This is a fundamental invariant: the covering system's behavior is periodic with period equal to the LCM. A covering system with LCM $L$ is determined by its action on $\\{0, 1, \\ldots, L-1\\}$, reducing the infinite covering condition to a finite check.",
+    "mathContext": "$L = \\text{lcm}(m_1, m_2, \\ldots, m_n)$. The covering property $\\forall z \\in \\mathbb{Z}, \\exists i: z \\equiv a_i \\pmod{m_i}$ is equivalent to $\\forall z \\in \\{0, \\ldots, L-1\\}, \\exists i: z \\equiv a_i \\pmod{m_i}$, since each residue class is periodic.",
+    "significance": "supporting",
+    "relatedConcepts": ["least common multiple", "periodicity", "Chinese Remainder Theorem"],
+    "prerequisites": ["Finset.lcm", "CoveringSystem"]
   },
   {
     "id": "erdos-273-reciprocal",
     "proofId": "erdos-273",
-    "type": "result",
+    "type": "theorem",
     "range": { "startLine": 82, "endLine": 86 },
-    "title": "Reciprocal Sum Condition",
-    "content": "In any covering system, the sum of 1/m_i over all moduli must be ≥ 1. This is a necessary condition that constrains which sets of moduli can form covering systems.",
-    "significance": "essential"
+    "title": "Reciprocal Sum Necessary Condition",
+    "content": "A necessary condition for a covering system: the sum of reciprocals of the moduli must be at least 1. This follows from a density argument — each class $a_i \\pmod{m_i}$ covers a fraction $1/m_i$ of all integers, and to cover everything, these fractions must sum to at least 1. For the $p \\geq 5$ problem, this means $\\sum 1/(p_i - 1) \\geq 1$ over the chosen primes, which is achievable but constraining.",
+    "mathContext": "$\\sum_{i=1}^{n} \\frac{1}{m_i} \\geq 1$. Equality holds only for **exact covering systems** (partitions). For the $p \\geq 5$ case, using only $\\{4, 6, 10, 12, \\ldots\\}$: we need $\\frac{1}{4} + \\frac{1}{6} + \\frac{1}{10} + \\cdots \\geq 1$, which is possible with sufficiently many terms (the series $\\sum_{p \\geq 5} \\frac{1}{p-1}$ diverges).",
+    "significance": "key",
+    "relatedConcepts": ["density argument", "exact covering systems", "sum of reciprocals of primes"],
+    "prerequisites": ["CoveringSystem", "rational arithmetic", "Finset.sum"]
   },
   {
     "id": "erdos-273-distinct",
@@ -41,16 +89,34 @@
     "type": "definition",
     "range": { "startLine": 88, "endLine": 92 },
     "title": "Distinct Covering Systems",
-    "content": "IsDistinct requires all moduli to be different. Erdős conjectured (Hough proved 2015) that distinct covering systems must include an even modulus.",
-    "significance": "supporting"
+    "content": "A covering system is distinct if all moduli are different (injective moduli function). Erdős conjectured in 1950 that distinct covering systems with all moduli odd cannot exist. Bob Hough proved in 2015 that the minimum modulus in a distinct covering system is bounded, resolving the Erdős minimum modulus problem — specifically, there exists a constant $c$ such that every distinct covering system has some modulus $\\leq c$.",
+    "mathContext": "$\\text{IsDistinct}(\\text{cs}) \\iff m_i \\neq m_j$ for $i \\neq j$. Hough (2015) proved: $\\exists c > 0$ such that every distinct covering system has $\\min_i m_i \\leq 10^{16}$. This resolved the Erdős minimum modulus conjecture.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hough's theorem", "minimum modulus problem", "Erdős covering conjecture", "distinct moduli"],
+    "prerequisites": ["Function.Injective", "CoveringSystem"]
+  },
+  {
+    "id": "erdos-273-easy-primes",
+    "proofId": "erdos-273",
+    "type": "definition",
+    "range": { "startLine": 98, "endLine": 102 },
+    "title": "Easy Primes for 360-Based Constructions",
+    "content": "The primes $p \\geq 5$ such that $p - 1$ divides $360$: these are $\\{5, 7, 13, 19, 37, 61, 181\\}$. For these primes, $p - 1 \\in \\{4, 6, 12, 18, 36, 60, 180\\}$ are all divisors of $360$. This finite set is the starting point for any construction attempt — but using only these 7 moduli gives reciprocal sum $\\frac{1}{4} + \\frac{1}{6} + \\frac{1}{12} + \\frac{1}{18} + \\frac{1}{36} + \\frac{1}{60} + \\frac{1}{180} = \\frac{5}{9} < 1$, so additional moduli are needed.",
+    "mathContext": "$\\{p \\text{ prime} : p \\geq 5, \\; (p-1) \\mid 360\\} = \\{5, 7, 13, 19, 37, 61, 181\\}$. Their reciprocal sum: $\\sum \\frac{1}{p-1} = \\frac{1}{4} + \\frac{1}{6} + \\frac{1}{12} + \\frac{1}{18} + \\frac{1}{36} + \\frac{1}{60} + \\frac{1}{180} = \\frac{100}{180} = \\frac{5}{9} \\approx 0.556$.",
+    "significance": "key",
+    "relatedConcepts": ["smooth numbers", "divisor structure", "360 factorization", "reciprocal sum threshold"],
+    "prerequisites": ["Nat.Prime", "divisibility", "Finset literal"]
   },
   {
     "id": "erdos-273-obstacles",
     "proofId": "erdos-273",
-    "type": "context",
-    "range": { "startLine": 104, "endLine": 115 },
-    "title": "Key Obstacles for p ≥ 5",
-    "content": "Without modulus 2 (excluded since 3 < 5), all moduli are ≥ 4. This makes covering even integers especially difficult. The allowed primes whose p-1 divides 360 form a finite set {5, 7, 13, 19, 37, 61, 181}.",
-    "significance": "supporting"
+    "type": "theorem",
+    "range": { "startLine": 107, "endLine": 115 },
+    "title": "Key Obstacles: Even Coverage and Minimum Modulus",
+    "content": "Two axiomatized structural results for $p \\geq 5$ covering systems: (1) all moduli exceed 2 (since $2 = 3 - 1$ is excluded), and (2) all moduli are at least 4 (since $p - 1 \\geq 4$ for $p \\geq 5$). The absence of modulus 2 means no single class covers all even (or all odd) integers. All allowed moduli are even ($p - 1$ is even for odd primes $p \\geq 5$), so each class covers integers of both parities — but organizing this to cover everything is the central challenge.",
+    "mathContext": "If $\\text{AllModuliPrimeMinusOne}(5, \\text{cs})$, then $m_i \\geq 4$ for all $i$. Moreover, $2 \\mid m_i$ for all $i$ since $m_i = p_i - 1$ and $p_i$ is odd. The Chinese Remainder Theorem structure modulo the LCM becomes the key tool for verifying coverage.",
+    "significance": "key",
+    "relatedConcepts": ["parity constraints", "Chinese Remainder Theorem", "modular coverage", "minimum modulus"],
+    "prerequisites": ["CoveringSystem", "AllModuliPrimeMinusOne", "prime parity"]
   }
 ]
