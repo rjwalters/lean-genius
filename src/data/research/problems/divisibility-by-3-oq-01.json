@@ -1,0 +1,93 @@
+{
+  "slug": "divisibility-by-3-oq-01",
+  "title": "Formal Divisibility Rules for Various Bases and Moduli",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Formalize comprehensive divisibility rules: general last-k-digits (d|M → d|n ↔ d|(n%M)), power generalizations (2^k, 5^k), truncation for 13, digit-sum rules in various bases, casting out nines/threes, digital root theory, coprime factorization.",
+    "plain": "Build a comprehensive collection of formally verified divisibility rules covering last-digit rules, digit-sum rules in arbitrary bases, truncation methods, casting out nines, digital roots, and coprime factorization rules.",
+    "whyMatters": [
+      "Unifies all last-digit rules under one general theorem",
+      "Demonstrates digit-sum rules work in any base where b ≡ 1 (mod d)",
+      "Formalizes practical mental arithmetic techniques (casting out nines)",
+      "Complete digital root theory with divisibility characterization"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "General last-k-digits: d|M → (d|n ↔ d|(n%M))",
+      "2^k | n ↔ 2^k | (n % 10^k) for all k",
+      "5^k | n ↔ 5^k | (n % 10^k) for all k",
+      "13 | n ↔ 13 | (n/10 + 4*(n%10)) via truncation",
+      "Digit-sum rules for 37, 99, 999, 27, 7 (octal), 3/5/15 (hex)",
+      "Casting out nines/threes for addition and multiplication",
+      "Digital root: dr(n) = 9 ↔ 9|n, 3|n ↔ 3|dr(n)",
+      "Coprime factorization for 6, 12, 15, 18, 36, 45, 60, 90"
+    ],
+    "open": [],
+    "goal": "Complete Lean formalization of comprehensive divisibility rules with 0 sorries"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-10T22:00:00Z",
+    "iteration": 1,
+    "focus": "Complete proof verified via Docker build.",
+    "blockers": [],
+    "nextAction": "None - problem completed.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full axiom-free proof file with 40+ theorems covering last-k-digits, power generalizations, truncation for 13, digit-sum rules in 10+ bases, casting out nines/threes, digital root theory, and coprime factorization. Docker build verified.",
+    "builtItems": [
+      "proofs/Proofs/DivisibilityByThreeOQ01.lean - Complete proof (0 sorries, 0 axioms)",
+      "src/data/proofs/divisibility-by-3-oq-01/ - Gallery integration"
+    ],
+    "insights": [
+      "General last-k-digits theorem unifies all power-of-base divisibility rules",
+      "Mathlib's Nat.modEq_digits_sum provides digit-sum rules for any base-divisor pair",
+      "Truncation for 13 works via 10(q + 4r) = n + 39r and coprimality of 13 and 10",
+      "Digital root characterization requires careful split_ifs handling across Lean versions",
+      "split_ifs variable naming differs between Lean versions - use version-robust tactics"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Modular arithmetic framework",
+      "status": "succeeded",
+      "description": "Three families of rules unified: last-k-digits (d|M), digit-sum (b≡1 mod d), truncation (multiply-and-cancel). All proved from first principles plus Mathlib digits API."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "modular-arithmetic",
+    "extension",
+    "completed",
+    "axiom-free"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3",
+    "divisibility-rules"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Nat.modEq_digits_sum",
+      "IsCoprime.dvd_of_dvd_mul_left",
+      "Nat.Coprime.mul_dvd_of_dvd_of_dvd"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-10T22:00:00Z",
+  "significance": 6,
+  "tractability": 8
+}
