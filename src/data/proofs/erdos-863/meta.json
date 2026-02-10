@@ -14,13 +14,27 @@
       "sidon-sets",
       "number-theory"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 863,
     "erdosUrl": "https://erdosproblems.com/863",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x"
+    "mathlib_version": "4.x",
+    "crossReferences": [
+      {
+        "proofId": "erdos-949",
+        "relationship": "Studies sum-free sets and continuum-sized sumset avoidance; shares the theme of additive structure in sets with restricted representation counts"
+      },
+      {
+        "proofId": "erdos-795",
+        "relationship": "Investigates multiplicative Sidon sets (distinct subset products); the multiplicative analogue of the B₂[1] property central to this problem"
+      },
+      {
+        "proofId": "erdos-913",
+        "relationship": "Studies distinct exponents in n(n+1) factorizations; both problems concern the fine structure of multiplicative properties of structured sets"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Sidon sets (B₂[1] sets) are among the most studied objects in additive combinatorics: a set A where all pairwise sums a+b (a ≤ b) are distinct. The classical result that the maximum Sidon set in {1,...,N} has size ~√N dates to Erdős and Turán (1941). B₂[r] sets generalize this by allowing each integer to have at most r representations as a sum a+b.\n\nErdős posed Problem 863 in conversation with Berend, and independently with Freud, around 1992 [Er92c]. The key question is whether the symmetry between sums and differences, which holds perfectly for r=1, breaks for r ≥ 2. For Sidon sets (r=1), the maximum set sizes for sum-restricted and difference-restricted versions are asymptotically identical: both ~√N, giving c₁ = c'₁ = 1.\n\nErdős conjectured that for r ≥ 2, the difference constant c'ᵣ is strictly less than the sum constant cᵣ. The intuition is that the ordered nature of sums (a+b with a ≤ b) and the unordered nature of differences (a-b for any a,b) create fundamentally different counting behaviors when multiple representations are allowed. Even the existence of the limiting constants cᵣ and c'ᵣ is nontrivial for r ≥ 2.",
@@ -30,7 +44,8 @@
       "**Classical equality at r=1**: For Sidon sets, both sum and difference B₂[1] sets achieve maximum size ~√N, giving c₁ = c'₁ = 1. This classical result is the baseline for the conjecture.",
       "**Structural asymmetry**: Sum representations count pairs (a,b) with a ≤ b and a+b = n, while difference representations count pairs with a-b = n. The ordering constraint in sums versus the sign freedom in differences creates different combinatorial structures.",
       "**Existence of limits**: Even proving that the ratios maxB2rSize(r,N)/√N and maxDiffB2rSize(r,N)/√N converge as N → ∞ is a nontrivial problem for r ≥ 2, requiring careful analysis of extremal set constructions.",
-      "**Direction of inequality**: Erdős specifically conjectured c'ᵣ < cᵣ (not just c'ᵣ ≠ cᵣ), predicting that difference-restricted sets are smaller. The weaker form just asks for inequality in either direction."
+      "**Direction of inequality**: Erdős specifically conjectured c'ᵣ < cᵣ (not just c'ᵣ ≠ cᵣ), predicting that difference-restricted sets are smaller. The weaker form just asks for inequality in either direction.",
+      "**ε-δ formalization of convergence**: The asymptotic constants $c_r$ and $c'_r$ are formalized using the $\\varepsilon$-$\\delta$ definition of limit via Lean's `Filter.atTop`: for all $\\varepsilon > 0$, eventually $|\\text{maxB2rSize}(r, N)/\\sqrt{N} - c_r| < \\varepsilon$. This avoids defining limits directly and uses Mathlib's filter framework."
     ],
     "mathlibDependencies": [
       "Mathlib.Data.Nat.Basic",
@@ -53,32 +68,53 @@
   },
   "sections": [
     {
-      "id": "b2r-sets",
-      "title": "B₂[r] Sets",
-      "startLine": 25,
-      "endLine": 48,
-      "summary": "Defines sumRepCount (ordered sum pairs), IsB2r (at most r sum representations), diffRepCount (difference pairs over ℤ), and IsDiffB2r (at most r nonzero difference representations)."
+      "id": "sec-863-header-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 19,
+      "endLine": 23,
+      "summary": "Imports `Data.Nat.Basic`, `Data.Finset.Basic`, `Data.Finset.Card` for finite set combinatorics, `Order.Filter.Basic` for the $\\forall^\\infty$ (eventually) filter used in asymptotic convergence statements, and `Tactic` for proof automation."
     },
     {
-      "id": "max-sizes",
+      "id": "sec-863-b2r-definitions",
+      "title": "B₂[r] Set Definitions",
+      "startLine": 25,
+      "endLine": 43,
+      "summary": "Four core definitions: `sumRepCount` (ordered sum pairs $a \\leq b$ with $a + b = n$), `IsB2r` (at most $r$ sum representations), `diffRepCount` (difference pairs $a - b = n$ over $\\mathbb{Z}$), and `IsDiffB2r` (at most $r$ nonzero difference representations)."
+    },
+    {
+      "id": "sec-863-inrange",
+      "title": "Containment Predicate",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "Defines `InRange A N` asserting $A \\subseteq \\{1, \\ldots, N\\}$, restricting to the standard finite interval for Sidon-type extremal problems."
+    },
+    {
+      "id": "sec-863-max-sizes",
       "title": "Maximum Set Sizes",
       "startLine": 50,
       "endLine": 62,
-      "summary": "Defines maxB2rSize and maxDiffB2rSize using Finset.sup over powerset filtered by the respective B₂[r] and InRange conditions."
+      "summary": "Defines `maxB2rSize` and `maxDiffB2rSize` as maxima over powerset of $\\{0, \\ldots, N\\}$ filtered by the B₂[$r$] and InRange conditions, using `Finset.sup` with `Finset.card` as the objective."
     },
     {
-      "id": "sidon-case",
-      "title": "Classical Sidon Case",
+      "id": "sec-863-sidon-case",
+      "title": "Classical Sidon Case (r = 1)",
       "startLine": 64,
       "endLine": 74,
-      "summary": "Axiomatizes the r=1 result: both sum and difference B₂[1] set sizes converge to √N, giving c₁ = c'₁ = 1."
+      "summary": "Axiom `sidon_classical` recording that both sum and difference B₂[1] set sizes converge to $\\sqrt{N}$, formalized as $\\varepsilon$-$\\delta$ convergence via `Filter.atTop`. Gives $c_1 = c'_1 = 1$."
     },
     {
-      "id": "main-problem",
-      "title": "The Erdős Problem",
+      "id": "sec-863-main-conjecture",
+      "title": "Main Conjecture: c'ᵣ < cᵣ",
       "startLine": 76,
+      "endLine": 87,
+      "summary": "Axiom `ErdosProblem863`: for all $r \\geq 2$, there exist $c, c' > 0$ with $c' < c$ such that $\\text{maxB2rSize}(r, N)/\\sqrt{N} \\to c$ and $\\text{maxDiffB2rSize}(r, N)/\\sqrt{N} \\to c'$."
+    },
+    {
+      "id": "sec-863-weak-conjecture",
+      "title": "Weak Conjecture: cᵣ ≠ c'ᵣ",
+      "startLine": 89,
       "endLine": 97,
-      "summary": "States the main conjecture (c'ᵣ < cᵣ for r ≥ 2 via ε-δ convergence) and the weaker form (c'ᵣ ≠ cᵣ for some r ≥ 2)."
+      "summary": "Axiom `erdos_863_weak`: there exists $r \\geq 2$ with $c_r \\neq c'_r$. A stepping stone that avoids specifying the direction of the inequality."
     }
   ],
   "conclusion": {
@@ -88,7 +124,8 @@
       "Do the limits cᵣ and c'ᵣ exist for all r ≥ 2?",
       "Is c'ᵣ < cᵣ or c'ᵣ > cᵣ for r = 2?",
       "What are the exact values of c₂ and c'₂?",
-      "How do the constants cᵣ and c'ᵣ grow as r → ∞?"
+      "How do the constants cᵣ and c'ᵣ grow as r → ∞?",
+      "Can computational evidence for small r (e.g., r = 2, 3) and moderate N distinguish cᵣ from c'ᵣ, and if so, which is larger?"
     ]
   }
 }
