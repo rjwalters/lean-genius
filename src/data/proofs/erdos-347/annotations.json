@@ -5,8 +5,23 @@
     "type": "definition",
     "range": { "startLine": 25, "endLine": 27 },
     "title": "Subset Sums P(A)",
-    "content": "subsetSums A is the set of all natural numbers expressible as a sum of a finite subset of A. This is the central object: the problem asks when P(A') has density 1.",
-    "significance": "essential"
+    "content": "subsetSums A is the set of all natural numbers expressible as a sum of a finite subset of A. This is the central object: the problem asks when P(A') has density 1 for every cofinite subsequence A'.",
+    "mathContext": "The subset sum set $P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A,\\, |S| < \\infty\\}$. Equivalently, $P(A) = \\{s \\in \\mathbb{N} : \\exists S \\in \\text{Finset}(\\mathbb{N}),\\, S \\subseteq A,\\, \\sum S = s\\}$. A sequence is called complete if $P(A)$ contains all sufficiently large integers.",
+    "significance": "key",
+    "relatedConcepts": ["complete-sequences", "partition-function", "binary-representations", "knapsack"],
+    "prerequisites": ["finset", "set-theory", "summation"]
+  },
+  {
+    "id": "erdos-347-counting",
+    "proofId": "erdos-347",
+    "type": "definition",
+    "range": { "startLine": 31, "endLine": 33 },
+    "title": "Counting Function",
+    "content": "countIn S N = |S ∩ {1,...,N}|, the number of elements of S up to N. Used to define asymptotic density as the limit of countIn/N.",
+    "mathContext": "The counting function $S(N) = |S \\cap \\{1, \\ldots, N\\}|$. The asymptotic density $d(S) = \\lim_{N \\to \\infty} S(N)/N$ when the limit exists. Density 1 means $S$ contains 'almost all' natural numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["natural-density", "upper-density", "asymptotic-counting"],
+    "prerequisites": ["finset-card", "finset-filter"]
   },
   {
     "id": "erdos-347-density",
@@ -14,43 +29,82 @@
     "type": "definition",
     "range": { "startLine": 35, "endLine": 39 },
     "title": "Asymptotic Density",
-    "content": "HasDensity S δ means |S ∩ {1,…,N}|/N → δ as N → ∞. Density 1 means S contains almost all natural numbers.",
-    "significance": "essential"
+    "content": "HasDensity S δ means |S ∩ {1,...,N}|/N → δ as N → ∞ (ε-δ definition). Density 1 means S contains almost all natural numbers — the set of 'missing' integers has density 0.",
+    "mathContext": "Asymptotic density: $d(S) = \\delta$ if $\\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, |S(N)/N - \\delta| < \\varepsilon$. For the problem, we need $d(P(A')) = 1$ for every cofinite $A' \\subseteq A$, meaning $P(A')$ misses only a density-0 set of integers.",
+    "significance": "key",
+    "relatedConcepts": ["natural-density", "schnirelmann-density", "analytic-number-theory"],
+    "prerequisites": ["real-analysis", "limits", "counting-function"]
+  },
+  {
+    "id": "erdos-347-monotone",
+    "proofId": "erdos-347",
+    "type": "definition",
+    "range": { "startLine": 43, "endLine": 45 },
+    "title": "Monotone Sequence",
+    "content": "IsMonotone a requires a(m) ≤ a(n) whenever m ≤ n. This ensures the sequence is nondecreasing, a natural condition for studying growth rates and subset sums.",
+    "mathContext": "Monotonicity: $m \\leq n \\implies a(m) \\leq a(n)$. Combined with positive values, this ensures the sequence has a well-defined growth rate. The ratio limit $a(n+1)/a(n) \\to r$ requires monotonicity for the ratios to be meaningful.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone-sequences", "growth-rates"],
+    "prerequisites": ["natural-ordering", "sequences"]
   },
   {
     "id": "erdos-347-ratio-limit",
     "proofId": "erdos-347",
     "type": "definition",
-    "range": { "startLine": 48, "endLine": 52 },
+    "range": { "startLine": 47, "endLine": 52 },
     "title": "Ratio Limit",
-    "content": "HasRatioLimit a r means a(n+1)/a(n) → r. The critical value r = 2 relates to powers of 2, the boundary for completeness of binary-like sequences.",
-    "significance": "essential"
+    "content": "HasRatioLimit a r means a(n+1)/a(n) → r as n → ∞. The critical value r = 2 is the boundary: powers of 2 have ratio exactly 2, and they generate all integers via binary representation. Ratio > 2 typically breaks completeness.",
+    "mathContext": "Ratio limit: $\\lim_{n \\to \\infty} a(n+1)/a(n) = r$. For $r = 2$: the sequence $a(n) = 2^n$ has $P(A) = \\mathbb{N}$ (binary representation). For $r > 2$: gaps between consecutive terms grow too fast for completeness. The threshold $r = 2$ is the critical value separating complete from incomplete behavior.",
+    "significance": "key",
+    "relatedConcepts": ["geometric-sequences", "binary-representation", "completeness-threshold"],
+    "prerequisites": ["real-analysis", "limits", "ratios"]
   },
   {
     "id": "erdos-347-cofinite",
     "proofId": "erdos-347",
     "type": "definition",
-    "range": { "startLine": 57, "endLine": 58 },
+    "range": { "startLine": 56, "endLine": 63 },
     "title": "Cofinite Subsequence",
-    "content": "IsCofiniteSubseq a ι means ι is a strictly monotone reindexing that omits only finitely many indices. This captures the robustness requirement: removing finitely many terms.",
-    "significance": "essential"
+    "content": "IsCofiniteSubseq a ι means ι is a strictly monotone reindexing that omits only finitely many indices. This captures robustness: the completeness property must survive the removal of any finite number of terms from the sequence.",
+    "mathContext": "A cofinite subsequence: $\\iota : \\mathbb{N} \\to \\mathbb{N}$ with $\\iota$ strictly monotone and $\\mathbb{N} \\setminus \\text{range}(\\iota)$ finite. The cofinite image is $A' = \\{a(\\iota(n)) : n \\in \\mathbb{N}\\} = A \\setminus \\{a(i_1), \\ldots, a(i_k)\\}$ for finitely many removed indices.",
+    "significance": "key",
+    "relatedConcepts": ["cofinite-sets", "subsequences", "robustness", "filter-theory"],
+    "prerequisites": ["strict-monotonicity", "set-complement", "finiteness"]
   },
   {
     "id": "erdos-347-conjecture",
     "proofId": "erdos-347",
     "type": "conjecture",
-    "range": { "startLine": 69, "endLine": 75 },
+    "range": { "startLine": 67, "endLine": 75 },
     "title": "Erdős Problem 347 (Solved)",
-    "content": "There exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has subset sums of density 1. Solved affirmatively by ebarschkis (Tao–van Doorn ideas).",
-    "significance": "essential"
+    "content": "There exists a monotone sequence with ratio limit 2 such that every cofinite subsequence has subset sums of density 1. Solved affirmatively by ebarschkis (based on Tao–van Doorn ideas). The Lean definition combines all four conditions: monotonicity, ratio limit 2, cofinite robustness, and density 1.",
+    "mathContext": "The conjecture: $\\exists (a_n)_{n \\geq 1}$ monotone with $a_{n+1}/a_n \\to 2$ such that $\\forall$ cofinite $A' \\subseteq \\{a_n\\}$, $d(P(A')) = 1$. The affirmative answer shows that ratio-2 growth is compatible with robust additive completeness, even though removing terms from a complete sequence can destroy completeness in general.",
+    "significance": "key",
+    "relatedConcepts": ["erdos-problems", "complete-sequences", "tao-van-doorn"],
+    "prerequisites": ["subset-sums", "asymptotic-density", "ratio-limit", "cofinite-subsequences"]
   },
   {
     "id": "erdos-347-answer",
     "proofId": "erdos-347",
     "type": "result",
-    "range": { "startLine": 78, "endLine": 79 },
+    "range": { "startLine": 77, "endLine": 78 },
     "title": "Affirmative Answer",
-    "content": "The answer to Erdős Problem 347 is yes. A formal Lean proof confirms the existence of such a sequence.",
-    "significance": "essential"
+    "content": "The answer to Erdős Problem 347 is yes. The proof constructs a sequence by carefully perturbing powers of 2 to maintain density-1 subset sums under all cofinite deletions.",
+    "mathContext": "Theorem (ebarschkis, via Tao–van Doorn): $\\text{ErdosProblem347}$ holds. The construction modifies the sequence $2^n$ by strategic perturbations that preserve the ratio limit while ensuring no finite deletion can reduce the subset sum density below 1.",
+    "significance": "key",
+    "relatedConcepts": ["constructive-proofs", "perturbation-methods"],
+    "prerequisites": ["erdos-problem-347-definition"]
+  },
+  {
+    "id": "erdos-347-basic-props",
+    "proofId": "erdos-347",
+    "type": "result",
+    "range": { "startLine": 82, "endLine": 93 },
+    "title": "Basic Properties of Subset Sums",
+    "content": "Three fundamental properties: (1) 0 ∈ P(A) for any A (empty sum), (2) if s ∈ P(A) and a ∈ A then s + a ∈ P(A) (additive closure), (3) A ⊆ B implies P(A) ⊆ P(B) (monotonicity). These are the building blocks for analyzing completeness.",
+    "mathContext": "Basic properties of $P(A)$: (1) $0 \\in P(A)$ since the empty subset sums to 0. (2) $s \\in P(A) \\wedge a \\in A \\implies s + a \\in P(A)$, since we can extend the witnessing subset by $a$. (3) $A \\subseteq B \\implies P(A) \\subseteq P(B)$, since any subset of $A$ is also a subset of $B$.",
+    "significance": "supporting",
+    "relatedConcepts": ["closure-properties", "monotonicity", "empty-sum"],
+    "prerequisites": ["subset-sums", "finset"]
   }
 ]
