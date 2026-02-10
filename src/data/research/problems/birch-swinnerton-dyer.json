@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "BUILD",
     "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Rational point verification and Hasse bound infrastructure",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,9 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added RationalPoint structure and verified rational points on congruent number curves E5, E6, E7. Proved 2-torsion structure and discriminant positivity. Added Hasse bound infrastructure. All provable content builds successfully.",
+    "builtItems": [
+      "RationalPoint structure (EllipticCurveQ → ℚ × ℚ with curve equation proof)",
+      "point_on_E5: verified (-4, 6) on y²=x³-25x",
+      "point_on_E6: verified (12, 36) on y²=x³-36x",
+      "point_on_E7: verified (25, 120) on y²=x³-49x",
+      "Three non-torsion theorems (y ≠ 0 for each point)",
+      "Torsion point characterization for congruent number curves",
+      "congruentNumberCurve_discriminant_pos (Δ > 0 for n > 0)",
+      "Hasse bound infrastructure (traceOfFrobenius, hasse_bound axiom, consequence theorem)"
+    ],
+    "insights": [
+      "Rational points on congruent number curves can be verified by pure arithmetic (norm_num)",
+      "The 2-torsion points on y²=x³-n²x are exactly (0,0), (n,0), (-n,0) — provable by ring",
+      "Discriminant positivity (Δ = 64n⁶ > 0) implies three real 2-torsion points",
+      "Hasse bound consequence needs linarith not omega (quadratic inequality)"
+    ],
     "mathlibGaps": [
       "Torsion subgroup",
       "Mordell-Weil",
@@ -59,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-01-01T21:55:27.886Z",
+  "lastUpdate": "2026-02-09T00:30:00Z",
   "significance": 10,
   "tractability": 1
 }
