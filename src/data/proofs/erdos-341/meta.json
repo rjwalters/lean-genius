@@ -1,36 +1,37 @@
 {
   "id": "erdos-341",
-  "title": "Dickson's Sum-Free Extension",
+  "title": "Erdős Problem #341: Dickson's Sum-Free Extension",
   "slug": "erdos-341",
-  "description": "Given a finite set A of positive integers, extend by always choosing the smallest integer not expressible as a sum of two previous elements. Is the difference sequence a_{m+1} − aₘ eventually periodic? An old problem of Dickson.",
+  "description": "Given a finite set A of positive integers, extend by always choosing the smallest integer not expressible as a sum of two previous elements. Is the difference sequence a_{m+1} - a_m eventually periodic? An old problem of Dickson.",
   "meta": {
-    "author": "Erdős, Graham, Dickson",
+    "author": "Erdős–Graham–Dickson",
     "sourceUrl": "https://erdosproblems.com/341",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos341Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
+      "number-theory",
       "sequences",
-      "sum-free sets",
-      "periodicity"
+      "sum-free-sets",
+      "periodicity",
+      "open"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "sorries": 2,
     "erdosNumber": 341,
     "erdosUrl": "https://erdosproblems.com/341",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This is an old problem of Dickson, highlighted by Erdős and Graham (1980, p. 53). The extension rule — always pick the smallest non-sum — creates sequences whose difference patterns appear to become periodic, but proving this remains open. Even starting from {1,4,9,16,25}, periodicity takes thousands of terms to emerge.",
+    "historicalContext": "This is an old problem of Dickson from the early 20th century, brought to wider attention by Erdős and Graham in their 1980 monograph (p. 53). The construction is beautifully simple: start with any finite set of positive integers, then repeatedly adjoin the smallest integer not expressible as a sum of two elements already in the set. The resulting sequence always appears to develop eventually periodic differences, but proving this has resisted all attempts. The problem connects greedy algorithms to questions of periodicity in dynamical systems — a theme that appears throughout number theory (Collatz conjecture, continued fractions, digit patterns). Even starting from the first five perfect squares {1,4,9,16,25}, periodicity takes thousands of terms to emerge, making computational verification impractical for all but small starting sets. Ben Green includes this as Problem 7 on his influential open problems list, reflecting its position at the frontier of additive combinatorics. The singleton starting set {1} produces the Mian-Chowla sequence (Problem #340), creating a direct link between the two problems.",
     "problemStatement": "For any finite starting set A, is the sequence of consecutive differences in the Dickson extension eventually periodic?",
-    "proofStrategy": "We formalize pairwise sums, the Dickson extension sequence, the difference sequence, eventual periodicity, and structural properties including strict monotonicity and sum avoidance.",
+    "proofStrategy": "We formalize `pairwiseSums` and `IsSumRepresentable` for the sum-avoidance condition, `dicksonSeq A0` as a recursive noncomputable sequence using `Nat.find`, `dicksonDiff A0` as the consecutive differences, and `IsEventuallyPeriodic` as the target property. The main conjecture universally quantifies over all nonempty finite starting sets. Structural properties (strict monotonicity, sum avoidance, minimality) are axiomatized, along with examples showing slow periodicity and period dependence on initial conditions.",
     "keyInsights": [
-      "Each new term is the smallest integer not a sum of two previous terms",
-      "The difference sequence appears eventually periodic for all tested starting sets",
-      "Even small starting sets (perfect squares) require thousands of terms for periodicity",
-      "Featured as Problem 7 on Ben Green's open problems list",
-      "The eventual period depends on the starting set"
+      "The greedy rule — always pick the smallest non-sum — creates a partition of integers above the maximum into sequence elements and pairwise sums, with the minimality property ensuring no gaps",
+      "The conjecture asserts universal eventual periodicity for ALL finite starting sets, making it analogous in spirit to the Collatz conjecture (simple rule, always reaches periodic behaviour)",
+      "Even small starting sets (perfect squares) require thousands of terms for periodicity to emerge, indicating the transient phase can be much longer than the period itself",
+      "The singleton case {1} gives the Mian-Chowla sequence (Problem #340), showing that greedy Sidon sequences are a special case of Dickson extensions",
+      "If true, the eventual period p and offset N are computable functions of A0, and the asymptotic growth rate a_n/n converges to a rational number"
     ]
   },
   "sections": [
@@ -38,38 +39,46 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 23,
-      "endLine": 49,
-      "summary": "Defines pairwise sums, sum representability, the Dickson extension sequence, difference sequence, and eventual periodicity."
+      "endLine": 53,
+      "summary": "`pairwiseSums`, `IsSumRepresentable`, `dicksonSeq` (greedy extension via `Nat.find`), `dicksonDiff`, and `IsEventuallyPeriodic`."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "startLine": 51,
-      "endLine": 56,
-      "summary": "States the Erdős–Dickson conjecture: for every finite starting set, differences are eventually periodic."
+      "startLine": 55,
+      "endLine": 61,
+      "summary": "Erdos-Dickson conjecture: for every finite nonempty starting set, the difference sequence is eventually periodic."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
-      "startLine": 58,
-      "endLine": 81,
-      "summary": "Strict monotonicity, positive differences, sum avoidance, and minimality of each extension step."
+      "startLine": 63,
+      "endLine": 87,
+      "summary": "Strict monotonicity, positive differences, sum avoidance at each step, and minimality of the greedy choice."
     },
     {
       "id": "examples",
       "title": "Examples and Growth",
-      "startLine": 83,
-      "endLine": 107,
-      "summary": "Singleton starting set, slow periodicity of squares, period dependence on initial set, and linear growth."
+      "startLine": 89,
+      "endLine": 116,
+      "summary": "Singleton example, slow periodicity for squares, period dependence on initial set, and at-least-linear growth."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #341 (Dickson's sum-free extension): extending a finite set by always choosing the smallest non-sum creates sequences with apparently periodic differences, but proving periodicity remains open.",
-    "implications": "A proof would reveal hidden periodicity structure in additive combinatorics, connecting greedy algorithms to automatic sequences.",
+    "summary": "Erdős Problem #341 formalizes Dickson's sum-free extension: extending a finite set by always choosing the smallest non-sum creates sequences with apparently periodic differences, but proving this universal periodicity remains open. The connection to the Mian-Chowla sequence (Problem #340) and the slow emergence of periodicity make this a compelling test case for understanding greedy dynamics in additive combinatorics.",
+    "implications": "**Dynamical Systems**: A proof would establish that the greedy sum-avoidance map on finite subsets of N always enters a periodic orbit in the 'difference space', a strong form of eventual regularity. **Automatic Sequences**: If the difference sequence is eventually periodic, it is an automatic sequence, connecting to Cobham's theorem and the theory of k-regular sequences. **Additive Combinatorics**: Understanding why sum-avoidance forces periodicity would illuminate the fine structure of sumsets and their complements.",
     "openQuestions": [
       "Is the difference sequence always eventually periodic?",
-      "How does the period depend on the starting set?",
-      "What is the growth rate of the period as a function of the starting set?"
+      "How does the eventual period depend on the starting set?",
+      "What is the growth rate of the transient length as a function of the starting set?",
+      "Is there a starting set for which the period is arbitrarily large?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "specialization",
+      "description": "Problem #340 concerns the greedy Sidon (Mian-Chowla) sequence, which is the Dickson extension starting from {1}. Problem #341 generalizes to arbitrary starting sets."
+    }
+  ]
 }
