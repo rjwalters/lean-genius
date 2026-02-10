@@ -14,65 +14,96 @@
       "open"
     ],
     "references": [
-      "EFRS (1993): original question",
-      "Connected to Problem #567: size linearity of Q₃, K₃,₃, H₅",
+      "Erdős, Faudree, Rousseau & Schelp (1993): Ramsey size linear graphs",
+      "Chvátal & Harary (1972): Generalized Ramsey theory for graphs III",
+      "Chvátal, Rödl, Szemerédi & Trotter (1983): The Ramsey number of a graph with bounded maximum degree",
+      "Beck (1983): On size Ramsey number of paths, trees, and circuits I",
       "https://erdosproblems.com/568"
     ],
     "leanFile": "Proofs/Erdos568Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/568",
-    "erdosUrl": "https://erdosproblems.com/568"
+    "erdosUrl": "https://erdosproblems.com/568",
+    "relatedProofs": ["erdos-566", "erdos-567"]
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Definitions",
-      "startLine": 24,
-      "endLine": 58,
-      "summary": "SGraph, numEdges, NoIsolated, ramseyNumber, sizeRamseyNumber, IsTree, IsComplete."
+      "id": "file-header",
+      "title": "Problem Statement and Context",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Module docstring stating Erdős Problem #568: do linear tree Ramsey and quadratic clique Ramsey bounds for $G$ imply Ramsey size linearity? Notes the crude bound $\\hat{r}(G,H) \\le R(G,H) \\cdot |V(H)|$ and connection to Problem #567."
     },
     {
-      "id": "conditions",
+      "id": "imports",
+      "title": "Library Imports",
+      "startLine": 20,
+      "endLine": 22,
+      "summary": "Imports Mathlib foundations: $\\mathbb{N}$ for graph sizes, $\\mathbb{R}$ for bound constants $C$ in $R(G,T_n) \\le Cn$ and $R(G,K_n) \\le Cn^2$."
+    },
+    {
+      "id": "graph-infrastructure",
+      "title": "Graph Infrastructure",
+      "startLine": 26,
+      "endLine": 39,
+      "summary": "Defines $\\text{SGraph}(n)$ with symmetric irreflexive adjacency, edge counting $|E(G)|$, and the no-isolated-vertices condition $\\forall v,\\;\\deg(v) \\ge 1$."
+    },
+    {
+      "id": "ramsey-axioms",
+      "title": "Ramsey Number Axioms",
+      "startLine": 41,
+      "endLine": 50,
+      "summary": "Axiomatizes both the classical Ramsey number $R(G,H) = \\min\\{N : K_N \\to (G,H)\\}$ and the size Ramsey number $\\hat{r}(G,H) = \\min\\{|E(F)| : F \\to (G,H)\\}$."
+    },
+    {
+      "id": "graph-predicates",
+      "title": "Tree and Complete Graph Predicates",
+      "startLine": 52,
+      "endLine": 58,
+      "summary": "Defines trees ($|E| = n-1$, $n \\ge 1$) and complete graphs ($\\forall i \\ne j,\\;\\text{adj}(i,j)$) — the two extremes of graph density that appear in the hypothesis."
+    },
+    {
+      "id": "hypothesis-conditions",
       "title": "Tree and Clique Ramsey Conditions",
       "startLine": 60,
       "endLine": 70,
-      "summary": "LinearTreeRamsey (R(G,T) ≤ Cn) and QuadraticCliqueRamsey (R(G,K) ≤ Cn²)."
+      "summary": "Defines $\\text{LinearTreeRamsey}(G)$: $\\exists C,\\;R(G,T_n) \\le Cn$ and $\\text{QuadraticCliqueRamsey}(G)$: $\\exists C,\\;R(G,K_n) \\le Cn^2$. These are the two hypotheses of the EFRS conjecture."
     },
     {
       "id": "size-linearity",
-      "title": "Size Linearity",
+      "title": "Size Linearity Definition",
       "startLine": 72,
       "endLine": 78,
-      "summary": "IsRamseySizeLinear: R̂(G,H) ≤ C·m for all H with m edges."
+      "summary": "Defines $\\text{IsRamseySizeLinear}(G)$: $\\exists C > 0,\\;\\forall H,\\;\\hat{r}(G,H) \\le C \\cdot |E(H)|$. This is the conclusion of the conjecture."
     },
     {
-      "id": "conjecture",
-      "title": "The Conjecture",
+      "id": "main-conjecture",
+      "title": "The EFRS Conjecture",
       "startLine": 80,
-      "endLine": 87,
-      "summary": "EFRS conjecture: tree + clique bounds imply size linearity."
+      "endLine": 88,
+      "summary": "States the open conjecture: $\\text{LinearTreeRamsey}(G) \\land \\text{QuadraticCliqueRamsey}(G) \\implies \\text{IsRamseySizeLinear}(G)$. Formalized as an axiom since the problem is unresolved."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős, Faudree, Rousseau, and Schelp (1993) introduced the concept of Ramsey size linearity and asked which conditions on the classical Ramsey number guarantee size linearity. This question connects the classical Ramsey number R(G,H) to the size Ramsey number R̂(G,H), which measures the minimum number of edges (rather than vertices) needed.",
-    "problemStatement": "If R(G, Tₙ) = O(n) for all trees Tₙ and R(G, Kₙ) = O(n²) for all complete graphs Kₙ, must G be Ramsey size linear, i.e., R̂(G, H) = O(m) for all H with m edges and no isolated vertices?",
-    "proofStrategy": "We axiomatize the Ramsey number and size Ramsey number, define the hypotheses LinearTreeRamsey and QuadraticCliqueRamsey, define IsRamseySizeLinear, and state the EFRS conjecture as an implication.",
+    "historicalContext": "Problem #568 was posed by Erdős, Faudree, Rousseau, and Schelp in their 1993 paper that introduced the concept of Ramsey size linearity. It asks whether two natural conditions on the classical Ramsey number — linear growth against trees and quadratic growth against cliques — suffice to guarantee size linearity. The motivation comes from the observation that $\\hat{r}(G,H) \\le \\binom{R(G,H)}{2}$ trivially, but this gives quadratic rather than linear bounds. The two hypothesis conditions are deeply rooted in classical Ramsey theory: the Chvátal-Harary theorem (1972) established that $R(T_m, T_n) = m + n - 2$ for trees, while the Chvátal-Rödl-Szemerédi-Trotter theorem (1983) showed that bounded-degree graphs have polynomial Ramsey numbers against cliques. The problem connects to the broader size Ramsey program initiated by Beck's 1983 Fulkerson Prize–winning proof that $\\hat{r}(P_n) = O(n)$. This is a companion to Problems #566 (sparsity-based criterion) and #567 (specific graph cases), together forming a triangle of open questions about characterizing Ramsey size linearity.",
+    "problemStatement": "If $R(G, T_n) = O(n)$ for all trees $T_n$ on $n$ vertices and $R(G, K_n) = O(n^2)$ for all complete graphs $K_n$, must $G$ be **Ramsey size linear**? That is, must there exist $C > 0$ such that $\\hat{r}(G, H) \\le C \\cdot |E(H)|$ for every graph $H$ with no isolated vertices?",
+    "proofStrategy": "The formalization axiomatizes both the classical Ramsey number $R(G,H)$ and the size Ramsey number $\\hat{r}(G,H)$, then defines the two hypothesis conditions (linear tree Ramsey and quadratic clique Ramsey) and the conclusion (Ramsey size linearity). The conjecture is stated as an axiom with the two conditions as hypotheses. This cleanly separates the classical-world assumptions from the size-world conclusion.",
     "keyInsights": [
-      "The size Ramsey number R̂(G,H) is bounded by R(G,H) · |V(H)|, so classical bounds give crude size bounds",
-      "Linear tree Ramsey and quadratic clique Ramsey are natural conditions that many sparse graphs satisfy",
-      "Size linearity is a much stronger property than having bounded classical Ramsey numbers",
-      "The conjecture asks whether classical Ramsey bounds at the right order of magnitude force size linearity",
-      "Connected to Problem #567, which asks about size linearity of specific graphs Q₃, K₃,₃, and H₅"
+      "**Two extremes characterization**: Trees (sparsest connected graphs) and cliques (densest graphs) represent opposite ends of the graph density spectrum; controlling $R(G, \\cdot)$ at both extremes should control it everywhere",
+      "**Classical-to-size bridge**: The conjecture asks whether growth rates of the **classical** $R(G, \\cdot)$ determine the behavior of the **size** variant $\\hat{r}(G, \\cdot)$ — a fundamentally different quantity measuring edge complexity",
+      "**Quadratic gap**: The trivial bound $\\hat{r}(G,H) \\le \\binom{R(G,H)}{2} = O(R(G,H)^2)$ is quadratic, but the conjecture predicts **linear** growth — closing this gap requires understanding the structure of efficient Ramsey host graphs",
+      "**Bounded-degree connection**: The Chvátal-Rödl-Szemerédi-Trotter theorem implies that bounded-degree graphs satisfy $R(G, K_n) = O(n^2)$; combined with tree Ramsey bounds, this means the conjecture would prove size linearity for all bounded-degree graphs satisfying the tree condition",
+      "**Problem cluster**: This forms a triangle with Problems #566 (sparsity criterion) and #567 (specific graphs) — all three ask 'when is $G$ Ramsey size linear?' from different angles"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #568 asks whether two natural conditions on classical Ramsey numbers — linear against trees and quadratic against cliques — suffice to guarantee Ramsey size linearity. This EFRS (1993) question remains open.",
-    "implications": "Resolution would provide a clean criterion for size linearity, simplifying the verification of this property for many graph classes and connecting the classical and size Ramsey theories.",
+    "summary": "This formalization captures the EFRS conjecture (Problem #568) that linear tree Ramsey numbers and quadratic clique Ramsey numbers together imply Ramsey size linearity. The Lean file cleanly separates the classical Ramsey conditions from the size Ramsey conclusion, axiomatizing both Ramsey variants and stating the open implication.",
+    "implications": "A positive resolution would establish that the growth rate of classical Ramsey numbers at two extremes (trees and cliques) fully determines size Ramsey linearity. This would provide a practical sufficient condition for size linearity, since classical Ramsey bounds are often easier to establish than size Ramsey bounds. It would also unify the tree Ramsey theory (Chvátal-Harary) and bounded-degree Ramsey theory (Chvátal-Rödl-Szemerédi-Trotter) with Beck's size Ramsey program.",
     "openQuestions": [
-      "Do the two conditions (linear tree, quadratic clique) imply size linearity?",
-      "Are there other sufficient conditions for Ramsey size linearity?",
-      "Which of the two conditions is more essential for the conclusion?",
-      "Does the converse hold: does size linearity imply linear tree Ramsey?"
+      "Is the quadratic clique condition necessary, or does linear tree Ramsey alone suffice for size linearity?",
+      "Conversely, does size linearity imply either or both of the classical conditions?",
+      "Can the conjecture be proved for bounded-degree graphs, where both classical conditions are known to hold?",
+      "Is there a probabilistic proof strategy, perhaps using the Lovász Local Lemma to construct efficient Ramsey host graphs from classical Ramsey bounds?"
     ]
   }
 }
