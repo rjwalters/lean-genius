@@ -3,10 +3,25 @@
     "id": "erdos-273-covering-def",
     "proofId": "erdos-273",
     "type": "definition",
-    "range": { "startLine": 25, "endLine": 49 },
+    "range": { "startLine": 25, "endLine": 37 },
     "title": "Covering System and Prime-Minus-One Moduli",
     "content": "CoveringSystem is a structure with moduli ≥ 2, residues, and the property that every integer is covered. IsPrimeMinusOne k m holds when m = p-1 for some prime p ≥ k. AllModuliPrimeMinusOne k cs requires all moduli satisfy this condition.",
-    "significance": "essential"
+    "mathContext": "A covering system $\\{a_i \\pmod{m_i}\\}_{i=1}^{k}$ satisfies $\\mathbb{Z} = \\bigcup_{i=1}^{k} \\{n : n \\equiv a_i \\pmod{m_i}\\}$. The Lean structure encodes: moduli $m_i \\geq 2$, residues $a_i$, and the covering axiom $\\forall z \\in \\mathbb{Z},\\, \\exists i,\\, z \\equiv a_i \\pmod{m_i}$.",
+    "significance": "key",
+    "relatedConcepts": ["residue-classes", "chinese-remainder-theorem", "sieve-theory", "modular-arithmetic"],
+    "prerequisites": ["modular-arithmetic", "integers", "finite-structures"]
+  },
+  {
+    "id": "erdos-273-prime-minus-one",
+    "proofId": "erdos-273",
+    "type": "definition",
+    "range": { "startLine": 43, "endLine": 49 },
+    "title": "Prime-Minus-One Constraint",
+    "content": "IsPrimeMinusOne k m asserts m = p - 1 for a prime p ≥ k. For k = 5, the allowed moduli are {4, 6, 10, 12, 16, 18, 22, 28, 30, ...} — each one less than a prime ≥ 5. This excludes modulus 2 = 3 - 1, which is critical for Selfridge's construction.",
+    "mathContext": "Define the modulus constraint: $\\text{IsPrimeMinusOne}(k, m) \\iff \\exists p \\geq k,\\, p \\text{ prime},\\, m = p - 1$. For $k = 5$: the set $\\mathcal{M}_5 = \\{p - 1 : p \\geq 5,\\, p \\text{ prime}\\} = \\{4, 6, 10, 12, 16, 18, 22, 28, 30, \\ldots\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["prime-numbers", "totient-function", "fermat-little-theorem"],
+    "prerequisites": ["prime-numbers", "natural-number-arithmetic"]
   },
   {
     "id": "erdos-273-conjecture",
@@ -14,8 +29,11 @@
     "type": "conjecture",
     "range": { "startLine": 55, "endLine": 61 },
     "title": "Erdős Problem 273",
-    "content": "Does there exist a covering system with all moduli of the form p-1 for primes p ≥ 5? The allowed moduli are {4, 6, 10, 12, 16, 18, 22, 28, 30, ...}.",
-    "significance": "essential"
+    "content": "Does there exist a covering system with all moduli of the form p-1 for primes p ≥ 5? The allowed moduli are {4, 6, 10, 12, 16, 18, 22, 28, 30, ...}. This remains open as of 2025.",
+    "mathContext": "The main question: $\\exists \\{a_i \\pmod{m_i}\\}_{i=1}^{k}$ covering $\\mathbb{Z}$ with each $m_i \\in \\mathcal{M}_5 = \\{p - 1 : p \\geq 5 \\text{ prime}\\}$? Equivalently, can we partition or cover $\\mathbb{Z}/L\\mathbb{Z}$ (where $L = \\text{lcm}(m_1, \\ldots, m_k)$) using only residue classes with these moduli?",
+    "significance": "key",
+    "relatedConcepts": ["covering-systems", "erdos-problems", "open-problems", "number-theory"],
+    "prerequisites": ["covering-systems", "prime-minus-one-moduli", "reciprocal-sums"]
   },
   {
     "id": "erdos-273-selfridge",
@@ -23,8 +41,23 @@
     "type": "result",
     "range": { "startLine": 67, "endLine": 72 },
     "title": "Selfridge's Example (p ≥ 3)",
-    "content": "Selfridge found a covering system when p ≥ 3 is allowed. This uses the divisors of 360 as moduli, with 2 = 3-1 as a key modulus. The existence proof for p ≥ 3 shows the problem is nontrivial.",
-    "significance": "essential"
+    "content": "Selfridge found a covering system when p ≥ 3 is allowed. This uses the divisors of 360 as moduli, with 2 = 3-1 as a key modulus. The existence proof for p ≥ 3 shows the problem is nontrivial — the question is whether modulus 2 is essential.",
+    "mathContext": "Selfridge's construction: $360 = 2^3 \\cdot 3^2 \\cdot 5$. The divisors of 360 that are of the form $p - 1$ for primes $p \\geq 3$ include $2 = 3-1$, $4 = 5-1$, $6 = 7-1$, $12 = 13-1$, $18 = 19-1$, $36 = 37-1$, $60 = 61-1$, $180 = 181-1$. The sum $\\sum 1/m_i \\geq 1$ is achievable with these moduli.",
+    "significance": "key",
+    "relatedConcepts": ["selfridge-construction", "divisors-of-360", "covering-existence"],
+    "prerequisites": ["covering-systems", "prime-factorization", "divisibility"]
+  },
+  {
+    "id": "erdos-273-lcm",
+    "proofId": "erdos-273",
+    "type": "definition",
+    "range": { "startLine": 78, "endLine": 80 },
+    "title": "LCM of Covering System Moduli",
+    "content": "The LCM of all moduli in a covering system determines the period of the covering pattern. For Selfridge's example, LCM = 360. For a p ≥ 5 covering (if it exists), the LCM would need to be highly composite with only prime factors from {2, 3, 5, 7, ...}.",
+    "mathContext": "Define $L(\\text{cs}) = \\text{lcm}(m_1, \\ldots, m_k)$. Every covering system is periodic with period $L$: the covering pattern on $\\{0, 1, \\ldots, L-1\\}$ repeats. This reduces the infinite covering condition to a finite check on $L$ residue classes.",
+    "significance": "supporting",
+    "relatedConcepts": ["least-common-multiple", "highly-composite-numbers", "periodicity"],
+    "prerequisites": ["lcm", "covering-systems"]
   },
   {
     "id": "erdos-273-reciprocal",
@@ -32,8 +65,11 @@
     "type": "result",
     "range": { "startLine": 82, "endLine": 86 },
     "title": "Reciprocal Sum Condition",
-    "content": "In any covering system, the sum of 1/m_i over all moduli must be ≥ 1. This is a necessary condition that constrains which sets of moduli can form covering systems.",
-    "significance": "essential"
+    "content": "In any covering system, the sum of 1/m_i over all moduli (with repetition) must be ≥ 1. This is a necessary condition that constrains which sets of moduli can form covering systems. For p ≥ 5, achieving this requires sufficiently many moduli from the allowed set.",
+    "mathContext": "Necessary condition: $\\sum_{i=1}^{k} \\frac{1}{m_i} \\geq 1$. Proof: each residue class $a_i \\pmod{m_i}$ covers exactly $1/m_i$ of the integers. For the union to cover everything, the sum of densities must be $\\geq 1$. For $\\mathcal{M}_5$, the series $\\sum_{p \\geq 5,\\, p \\text{ prime}} \\frac{1}{p-1}$ diverges, so the condition is not an immediate obstruction.",
+    "significance": "key",
+    "relatedConcepts": ["density-arguments", "prime-reciprocal-sums", "brun-sieve"],
+    "prerequisites": ["covering-systems", "harmonic-series", "prime-number-theory"]
   },
   {
     "id": "erdos-273-distinct",
@@ -41,8 +77,23 @@
     "type": "definition",
     "range": { "startLine": 88, "endLine": 92 },
     "title": "Distinct Covering Systems",
-    "content": "IsDistinct requires all moduli to be different. Erdős conjectured (Hough proved 2015) that distinct covering systems must include an even modulus.",
-    "significance": "supporting"
+    "content": "IsDistinct requires all moduli to be different. Erdős conjectured (Hough proved 2015) that distinct covering systems must include an even modulus. For p ≥ 5, all allowed moduli are even (since p - 1 is even for odd p ≥ 5), so this constraint is automatically satisfied.",
+    "mathContext": "Hough's theorem (2015): every distinct covering system has a modulus divisible by 2. Since all primes $p \\geq 5$ are odd, every $m = p - 1$ is even, so a distinct p ≥ 5 covering system trivially satisfies Hough's condition. The challenge is not parity but covering density.",
+    "significance": "supporting",
+    "relatedConcepts": ["hough-theorem", "distinct-moduli", "minimum-modulus-problem"],
+    "prerequisites": ["covering-systems", "parity", "function-injectivity"]
+  },
+  {
+    "id": "erdos-273-easy-primes",
+    "proofId": "erdos-273",
+    "type": "context",
+    "range": { "startLine": 98, "endLine": 102 },
+    "title": "Easy Primes for 360-Based Constructions",
+    "content": "The set {5, 7, 13, 19, 37, 61, 181} are primes p ≥ 5 with p - 1 | 360. These provide moduli {4, 6, 12, 18, 36, 60, 180} that are mutually compatible (all divide 360), making them natural building blocks for a covering system attempt.",
+    "mathContext": "The 'easy primes' are $\\{p \\geq 5 : p \\text{ prime},\\, (p-1) \\mid 360\\} = \\{5, 7, 13, 19, 37, 61, 181\\}$. Their moduli $\\{4, 6, 12, 18, 36, 60, 180\\}$ have $\\text{lcm} = 180$. The reciprocal sum $\\frac{1}{4} + \\frac{1}{6} + \\frac{1}{12} + \\frac{1}{18} + \\frac{1}{36} + \\frac{1}{60} + \\frac{1}{180} = \\frac{45+30+15+10+5+3+1}{180} = \\frac{109}{180} < 1$, so these alone cannot cover $\\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["smooth-numbers", "divisors-of-360", "reciprocal-sums"],
+    "prerequisites": ["prime-factorization", "divisibility", "lcm"]
   },
   {
     "id": "erdos-273-obstacles",
@@ -50,7 +101,10 @@
     "type": "context",
     "range": { "startLine": 104, "endLine": 115 },
     "title": "Key Obstacles for p ≥ 5",
-    "content": "Without modulus 2 (excluded since 3 < 5), all moduli are ≥ 4. This makes covering even integers especially difficult. The allowed primes whose p-1 divides 360 form a finite set {5, 7, 13, 19, 37, 61, 181}.",
-    "significance": "supporting"
+    "content": "Without modulus 2 (excluded since 3 < 5), all moduli are ≥ 4. This makes covering all integers especially difficult. The minimum modulus being 4 means each residue class covers at most 1/4 of the integers, requiring at least 4 classes — but the interdependency of moduli creates much stronger constraints than simple density.",
+    "mathContext": "Key constraint: $\\forall i,\\, m_i \\geq 4$. In Selfridge's $p \\geq 3$ solution, the class $0 \\pmod{2}$ covers half the integers in one stroke. Without it, covering all even integers requires multiple classes with moduli $\\equiv 0 \\pmod{2}$. The structural obstruction: if $L = \\text{lcm}(m_1,\\ldots,m_k)$, one needs $\\sum_{i} L/m_i \\geq L$, but the overlap pattern among residue classes modulo $L$ is highly constrained.",
+    "significance": "key",
+    "relatedConcepts": ["minimum-modulus-problem", "covering-density", "sieve-methods"],
+    "prerequisites": ["covering-systems", "modular-arithmetic", "density-arguments"]
   }
 ]
