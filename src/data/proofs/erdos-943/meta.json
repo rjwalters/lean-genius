@@ -4,6 +4,9 @@
   "slug": "erdos-943",
   "description": "Let A be the set of powerful numbers. Is the representation function r(n) = |{(a,b) ∈ A²: a+b=n}| subpolynomial, i.e., r(n) = n^{o(1)}? Known: r(n) ≤ c√n trivially. Open.",
   "meta": {
+    "author": "Erdős",
+    "proofRepoPath": "Proofs/Erdos943Problem.lean",
+    "badge": "axiom",
     "erdosNumber": 943,
     "status": "formalized",
     "tags": [
@@ -18,7 +21,6 @@
       "Golomb (1970): a²b³ characterization of powerful numbers",
       "https://erdosproblems.com/943"
     ],
-    "leanFile": "Proofs/Erdos943Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/943",
     "erdosUrl": "https://erdosproblems.com/943",
@@ -69,18 +71,11 @@
   },
   "sections": [
     {
-      "id": "sec-943-header",
-      "title": "Problem Statement and References",
-      "startLine": 1,
-      "endLine": 17,
-      "summary": "Documentation block with the problem statement, status (OPEN), source reference [Er76d], and link to erdosproblems.com."
-    },
-    {
       "id": "sec-943-imports",
-      "title": "Imports",
+      "title": "Imports and Setup",
       "startLine": 19,
       "endLine": 23,
-      "summary": "Imports Mathlib.Data.Nat.Basic, Nat.Prime.Basic, Data.Real.Basic, and Mathlib.Tactic for foundational arithmetic and tactics."
+      "summary": "Imports `Mathlib.Data.Nat.Basic`, `Nat.Prime.Basic`, `Data.Real.Basic`, and `Mathlib.Tactic` for foundational arithmetic, real-valued bounds, and proof tactics."
     },
     {
       "id": "sec-943-definitions",
