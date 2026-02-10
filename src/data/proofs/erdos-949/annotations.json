@@ -50,7 +50,7 @@
   {
     "id": "erdos-949-odd-example",
     "proofId": "erdos-949",
-    "type": "technique",
+    "type": "theorem",
     "range": { "startLine": 58, "endLine": 68 },
     "title": "Odd Numbers Are Sum-Free (Proved)",
     "content": "The set of odd positive reals $\\{2n+1 : n \\in \\mathbb{N}\\}$ is sum-free because odd + odd = even, so the sum never lands in the set. The proof uses `ring` to show $2m + 1 + 2n + 1 = 2(m+n+1)$ (even), then derives a contradiction if this equals $2k + 1$ (odd) via `omega`. This is the simplest concrete example of a sum-free set in the formalization.",
@@ -62,7 +62,7 @@
   {
     "id": "erdos-949-sidon-not-sumfree",
     "proofId": "erdos-949",
-    "type": "technique",
+    "type": "theorem",
     "range": { "startLine": 82, "endLine": 100 },
     "title": "Sidon Does Not Imply Sum-Free (Proved)",
     "content": "The theorem `sidon_not_implies_sum_free` proves that $\\{1, 2, 4\\} \\subseteq \\mathbb{R}$ is Sidon (all 6 pairwise sums $2, 3, 5, 3, 5, 8$ with repetitions but distinct ordered sums) yet not sum-free since $1 + 1 = 2 \\in S$. This corrects a previous unsound axiom `sidon_is_sum_free`. The proof constructs the Sidon verification by case analysis on all element combinations (12 cases) and shows the sum-free property fails by exhibiting the witness $a = b = 1$.",
@@ -87,7 +87,7 @@
     "id": "erdos-949-open",
     "proofId": "erdos-949",
     "type": "insight",
-    "range": { "startLine": 113, "endLine": 121 },
+    "range": { "startLine": 119, "endLine": 121 },
     "title": "General Sum-Free Case Remains Open",
     "content": "The general Problem 949 for arbitrary sum-free sets remains open. The key difficulty: sum-free sets can be much denser than Sidon sets (sum-free subsets of $[n]$ can have $\\sim n/2$ elements, while Sidon subsets have $\\sim \\sqrt{n}$). The Sidon proof exploits the injectivity of the sum map ($a + b = c + d \\implies (a,b) = (c,d)$), which fails for general sum-free sets. The axiom `erdos_949_open` records the full conjecture.",
     "mathContext": "ErdosProblem949 is stated as an axiom: the general case $\\text{IsSumFreeSet}(S) \\implies \\exists A$ with the required properties is OPEN",
