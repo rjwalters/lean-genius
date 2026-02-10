@@ -1,0 +1,95 @@
+{
+  "slug": "geometric-series-oq-02",
+  "title": "Geometric Series for Matrices and Operators",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For T in a complete normed ring with ‖T‖ < 1: ∑' n, T^n = Ring.inverse (1-T)",
+    "plain": "The Neumann series ∑ T^n converges to (1-T)⁻¹ for elements T with ‖T‖ < 1 in any complete normed ring.",
+    "whyMatters": [
+      "Generalizes scalar geometric series to matrices and operators",
+      "Foundation of perturbation theory in functional analysis",
+      "Enables iterative methods in numerical linear algebra"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Summability of ∑ T^n when ‖T‖ < 1 (NormedRing + CompleteSpace)",
+      "Invertibility of (1-T) via Units.oneSub",
+      "Sum formula: ∑ T^n = Ring.inverse(1-T)",
+      "Left inverse: (1-T) * ∑ T^n = 1",
+      "Right inverse: ∑ T^n * (1-T) = 1",
+      "Norm bound: ‖∑ T^n‖ ≤ (1-‖T‖)⁻¹ (with NormOneClass)",
+      "Finite partial sum identities",
+      "Partial sums convergence to Ring.inverse(1-T)",
+      "Perturbation of identity: ‖1-A‖ < 1 implies A invertible",
+      "Inverse formula for perturbations: A⁻¹ = ∑(1-A)^n",
+      "Commutativity: T * ∑ T^n = ∑ T^n * T"
+    ],
+    "open": [],
+    "goal": "Complete Neumann series formalization with gallery integration"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "Proof completed and gallery entry created.",
+    "blockers": [],
+    "nextAction": "None - complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full Neumann series formalization with 12 theorems, 0 sorries. Fixed build errors in previous attempt (∑ k in range → ∑ k ∈ Finset.range, NormOneClass requirement for norm bounds, non-commutative commutativity proof using abel). Gallery entry created with full metadata, annotations, and sections.",
+    "builtItems": [
+      "proofs/Proofs/GeometricSeriesOQ02.lean - 12 theorems, 0 sorries, builds successfully",
+      "src/data/proofs/geometric-series-oq-02/ - Full gallery entry (index.ts, meta.json, annotations.json, tacticStates.json)"
+    ],
+    "insights": [
+      "Units.oneSub constructs the inverse as ∑ T^n definitionally - use simp [Units.oneSub] to unfold",
+      "hasSum_geometric_of_norm_lt_one requires NormedDivisionRing, but summable_geometric_of_norm_lt_one works for NormedRing",
+      "norm_pow_le requires NormOneClass (for n=0 term ‖1‖=1), norm_pow_le' works without it but needs n>0",
+      "In non-commutative rings: linear_combination requires CommSemiring, use abel for additive group manipulations instead",
+      "∑ k in range n syntax deprecated - use ∑ k ∈ Finset.range n",
+      "Ring.mul_inverse_cancel and Ring.inverse_mul_cancel provide left/right inverse identities for IsUnit elements"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Units.oneSub + Ring.inverse bridge",
+      "status": "succeeded",
+      "description": "Used Mathlib's Units.oneSub to construct the unit (1-T), then bridged to Ring.inverse via Ring.inverse_unit. Commutativity proved via left/right inverse identities and abel."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "linear-algebra",
+    "analysis",
+    "generalization",
+    "functional-analysis",
+    "operator-theory"
+  ],
+  "relatedProofs": [
+    "geometric-series"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Algebra.GeomSum"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-09T00:00:00Z",
+  "significance": 7,
+  "tractability": 7
+}
