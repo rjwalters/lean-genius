@@ -2,73 +2,181 @@
   {
     "id": "erdos-738-ann-trianglefree",
     "proofId": "erdos-738",
-    "range": { "startLine": 30, "endLine": 32 },
+    "range": { "startLine": 31, "endLine": 33 },
     "type": "definition",
     "title": "Triangle-Free Graph",
-    "content": "A graph is triangle-free if it contains no 3-clique (K₃). Formalized via CliqueFree 3.",
-    "significance": "critical"
+    "content": "A graph is triangle-free if it contains no 3-clique ($K_3$). Formalized via Mathlib's `CliqueFree 3`, which asserts that no set of 3 mutually adjacent vertices exists. Triangle-freeness is the key structural constraint in the Gyárfás conjecture: forbidding triangles forces the graph's high chromatic number to arise from long-range rather than local interactions.",
+    "mathContext": "$G$ is triangle-free iff $G.\\text{CliqueFree}\\;3$, i.e., there is no injective map $f: \\text{Fin}\\;3 \\to V$ with $G.\\text{Adj}\\;(f\\;i)\\;(f\\;j)$ for all distinct $i, j$.",
+    "significance": "critical",
+    "relatedConcepts": ["clique-free graph", "girth", "Ramsey number", "K₃-free graph"],
+    "prerequisites": ["simple graph", "clique", "graph coloring"]
+  },
+  {
+    "id": "erdos-738-ann-chromatmost",
+    "proofId": "erdos-738",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "Chromatic Number Bound",
+    "content": "A graph has chromatic number at most $k$ if it admits a proper $k$-coloring: a function from vertices to $\\text{Fin}\\;k$ such that adjacent vertices receive distinct colors. This is Mathlib's `G.Coloring (Fin k)` type.",
+    "mathContext": "$\\chi(G) \\leq k$ iff $\\exists$ a proper coloring $c: V \\to \\text{Fin}\\;k$ with $G.\\text{Adj}\\;u\\;v \\Rightarrow c(u) \\neq c(v)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["proper coloring", "chromatic number", "graph homomorphism"],
+    "prerequisites": ["simple graph", "proper coloring", "Fin type"]
   },
   {
     "id": "erdos-738-ann-infchrom",
     "proofId": "erdos-738",
-    "range": { "startLine": 37, "endLine": 39 },
+    "range": { "startLine": 39, "endLine": 41 },
     "type": "definition",
     "title": "Infinite Chromatic Number",
-    "content": "No finite number of colors suffices for a proper coloring. Forces rich combinatorial structure.",
-    "significance": "critical"
+    "content": "A graph has infinite chromatic number when no finite number of colors suffices for a proper coloring. This is the negation of `ChromAtMost k` for every $k$. For finite graphs this is impossible, so infinite chromatic number implies the vertex set is infinite. This forces rich combinatorial structure that the conjecture exploits.",
+    "mathContext": "$\\chi(G) = \\infty$ iff $\\forall k \\in \\mathbb{N},\\; \\neg\\,G.\\text{ChromAtMost}\\;k$, equivalently $\\forall k,\\; \\nexists\\, c: V \\to \\text{Fin}\\;k$ proper.",
+    "significance": "critical",
+    "relatedConcepts": ["chromatic number", "χ-bounded class", "compactness principle", "de Bruijn–Erdős theorem"],
+    "prerequisites": ["proper coloring", "chromatic number", "infinite graph theory"]
+  },
+  {
+    "id": "erdos-738-ann-finitetree",
+    "proofId": "erdos-738",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "definition",
+    "title": "Finite Tree Structure",
+    "content": "Finite trees are modeled as simple graphs on $\\text{Fin}\\;n$. While the full definition of a tree (connected, acyclic, $n-1$ edges) is not enforced here, this structure serves as the target for induced subgraph embeddings. The formalization abstracts over tree properties to focus on the induced containment question.",
+    "mathContext": "A finite tree $T$ on $n$ vertices is represented as a `SimpleGraph (Fin n)`. A tree satisfies $|E(T)| = n - 1$ and is connected and acyclic.",
+    "significance": "supporting",
+    "relatedConcepts": ["tree", "connected graph", "acyclic graph", "forest"],
+    "prerequisites": ["simple graph", "Fin type", "tree characterization"]
   },
   {
     "id": "erdos-738-ann-induced",
     "proofId": "erdos-738",
-    "range": { "startLine": 47, "endLine": 50 },
+    "range": { "startLine": 48, "endLine": 53 },
     "type": "definition",
     "title": "Induced Subgraph Copy",
-    "content": "An injective map from Fin n to V preserving and reflecting adjacency. The strongest notion of containment.",
-    "significance": "critical"
+    "content": "An induced copy of $T$ in $G$ is an injective vertex map that preserves adjacency in both directions: edges of $T$ map to edges of $G$, and non-edges of $T$ map to non-edges of $G$. This is strictly stronger than subgraph containment (which only requires edge preservation) and captures the full local structure of $T$.",
+    "mathContext": "$G$ contains an induced copy of $T$ iff $\\exists f: \\text{Fin}\\;n \\hookrightarrow V$ such that $\\forall i, j,\\; T.\\text{Adj}\\;i\\;j \\iff G.\\text{Adj}\\;(f\\;i)\\;(f\\;j)$.",
+    "significance": "critical",
+    "relatedConcepts": ["graph embedding", "subgraph isomorphism", "induced subgraph", "graph homomorphism"],
+    "prerequisites": ["injective function", "graph adjacency", "graph isomorphism"]
   },
   {
     "id": "erdos-738-ann-conjecture",
     "proofId": "erdos-738",
-    "range": { "startLine": 54, "endLine": 59 },
+    "range": { "startLine": 57, "endLine": 63 },
     "type": "theorem",
     "title": "Gyárfás Conjecture (Main)",
-    "content": "Every triangle-free graph with infinite chromatic number contains every finite tree as an induced subgraph. The central open problem.",
-    "significance": "critical"
+    "content": "The central open conjecture: every triangle-free graph with infinite chromatic number contains every finite tree as an induced subgraph. This is one of the most prominent open problems in structural graph theory. It belongs to the broader program of understanding $\\chi$-bounded classes, initiated by Gyárfás in 1975. The conjecture asserts that forbidding $K_3$ combined with unbounded chromatic number is enough to force all tree patterns to appear induced.",
+    "mathContext": "$\\forall G$ triangle-free with $\\chi(G) = \\infty$, $\\forall n \\in \\mathbb{N}$, $\\forall T$ a tree on $n$ vertices: $G$ contains an induced copy of $T$.",
+    "significance": "critical",
+    "relatedConcepts": ["χ-bounded class", "Gyárfás–Sumner conjecture", "tree containment", "structural graph theory"],
+    "prerequisites": ["triangle-free graph", "chromatic number", "induced subgraph", "tree"]
+  },
+  {
+    "id": "erdos-738-ann-pathgraph",
+    "proofId": "erdos-738",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "definition",
+    "title": "Path Graph Construction",
+    "content": "Constructs the path graph $P_n$ on $n$ vertices, where vertex $i$ is adjacent to vertex $i+1$. The adjacency relation is defined symmetrically: $i \\sim j$ iff $|i - j| = 1$. The `symm` and `loopless` proofs verify this forms a valid simple graph. Paths are the simplest trees and the easiest case of the Gyárfás conjecture.",
+    "mathContext": "The path $P_n$ has vertex set $\\text{Fin}\\;n$ with $\\text{Adj}\\;i\\;j \\iff (i+1 = j) \\lor (j+1 = i)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["path graph", "Hamiltonian path", "induced path", "longest path"],
+    "prerequisites": ["simple graph", "Fin arithmetic", "symmetry proof"]
+  },
+  {
+    "id": "erdos-738-ann-stargraph",
+    "proofId": "erdos-738",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "definition",
+    "title": "Star Graph Construction",
+    "content": "Constructs the star $K_{1,n}$ on $n+1$ vertices: vertex 0 is the center, adjacent to all other vertices, and non-center vertices are mutually non-adjacent. Stars are the simplest trees with high degree and their induced containment follows immediately from the unbounded degree forced by infinite chromatic number.",
+    "mathContext": "The star $K_{1,n}$ has vertex set $\\text{Fin}\\;(n+1)$ with $\\text{Adj}\\;i\\;j \\iff (i = 0 \\land j \\neq 0) \\lor (j = 0 \\land i \\neq 0)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["star graph", "complete bipartite graph", "degree sequence", "K₁,n"],
+    "prerequisites": ["simple graph", "bipartite graph", "vertex degree"]
   },
   {
     "id": "erdos-738-ann-paths",
     "proofId": "erdos-738",
-    "range": { "startLine": 74, "endLine": 78 },
+    "range": { "startLine": 79, "endLine": 84 },
     "type": "theorem",
     "title": "Paths Always Present",
-    "content": "Triangle-free graphs with infinite chromatic number contain arbitrarily long induced paths. Follows from Ramsey arguments.",
-    "significance": "key"
+    "content": "Triangle-free graphs with infinite chromatic number contain arbitrarily long induced paths. This is the simplest non-trivial case of the Gyárfás conjecture and follows from Ramsey-type arguments: any graph with sufficiently large chromatic number contains long paths, and in the triangle-free setting these paths are automatically induced (adding a chord would create a triangle or a shorter cycle).",
+    "mathContext": "$\\forall G$ triangle-free with $\\chi(G) = \\infty$, $\\forall n: G$ contains an induced $P_n$. This uses $\\chi(G) \\geq n \\Rightarrow G$ contains $P_n$ as a subgraph, and triangle-freeness ensures the copy is induced.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "Erdős–Gallai theorem", "induced path", "graph minor"],
+    "prerequisites": ["path graph", "Ramsey argument", "triangle-free graph", "chromatic number"]
   },
   {
     "id": "erdos-738-ann-stars",
     "proofId": "erdos-738",
-    "range": { "startLine": 81, "endLine": 85 },
+    "range": { "startLine": 86, "endLine": 91 },
     "type": "theorem",
     "title": "Stars Always Present",
-    "content": "Stars of every size appear as induced subgraphs, since infinite chromatic number forces unbounded degree.",
-    "significance": "key"
+    "content": "Stars of every size appear as induced subgraphs in triangle-free graphs with infinite chromatic number. Since infinite chromatic number forces unbounded minimum degree (a graph with bounded degree has bounded chromatic number), there exist vertices of arbitrarily large degree. Triangle-freeness ensures the neighbors of such a vertex form an independent set, giving an induced star.",
+    "mathContext": "$\\chi(G) = \\infty \\Rightarrow \\forall d,\\; \\exists v$ with $\\deg(v) \\geq d$. If $G$ is $K_3$-free, the neighborhood $N(v)$ is independent, so $G[\\{v\\} \\cup N(v)]$ contains an induced $K_{1,d}$.",
+    "significance": "key",
+    "relatedConcepts": ["vertex degree", "independent set", "Brooks' theorem", "degeneracy"],
+    "prerequisites": ["degree bound", "independent set", "triangle-free graph"]
   },
   {
     "id": "erdos-738-ann-kp",
     "proofId": "erdos-738",
-    "range": { "startLine": 88, "endLine": 93 },
+    "range": { "startLine": 93, "endLine": 99 },
     "type": "theorem",
     "title": "Kierstead–Penrice: Radius-2 Trees",
-    "content": "The conjecture holds for trees of radius ≤ 2 (all vertices within distance 2 of the center).",
-    "significance": "key"
+    "content": "Kierstead and Penrice (1994) proved that the Gyárfás conjecture holds for all trees of radius at most 2, meaning trees where every vertex is within distance 2 of a central vertex. Their proof exploits the fact that in triangle-free graphs with large chromatic number, one can find large bipartite subgraphs with controlled structure, which can then be used to embed radius-2 trees.",
+    "mathContext": "For any tree $T$ with $\\text{rad}(T) \\leq 2$: if $G$ is $K_3$-free and $\\chi(G) = \\infty$, then $G$ contains an induced copy of $T$. The radius condition means $\\exists c \\in V(T)$ with $\\text{dist}(c, v) \\leq 2$ for all $v$.",
+    "significance": "key",
+    "relatedConcepts": ["tree radius", "eccentricity", "bipartite subgraph", "Ramsey multiplicity"],
+    "prerequisites": ["tree radius", "graph distance", "bipartite graph"]
+  },
+  {
+    "id": "erdos-738-ann-localtree",
+    "proofId": "erdos-738",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "insight",
+    "title": "Local Tree-Like Structure",
+    "content": "A structural observation: in a triangle-free graph with infinite chromatic number, every vertex has a neighbor whose connected component (after removing finitely many vertices) still has infinite chromatic number. This means the graph has a tree-like branching structure at large scales — the local neighborhoods look like trees because short cycles are forbidden, and the chromatic complexity cannot be concentrated in any finite region.",
+    "mathContext": "$\\forall k,\\; \\exists v \\in V$ such that $\\forall w$ with $G.\\text{Adj}\\;v\\;w$, the graph $G$ restricted to appropriate neighborhoods still satisfies $\\chi > k$.",
+    "significance": "key",
+    "relatedConcepts": ["tree-decomposition", "girth", "locally tree-like graph", "expansion"],
+    "prerequisites": ["chromatic number", "neighborhood structure", "triangle-free graph"]
   },
   {
     "id": "erdos-738-ann-finite",
     "proofId": "erdos-738",
-    "range": { "startLine": 106, "endLine": 110 },
+    "range": { "startLine": 111, "endLine": 117 },
     "type": "theorem",
     "title": "Finite Version (χ-Bounded)",
-    "content": "For each tree T, a finite chromatic threshold N(T) should exist such that χ(G) > N forces an induced copy of T in triangle-free G.",
-    "significance": "supporting"
+    "content": "The finite version of the Gyárfás conjecture: for each tree $T$, there exists a threshold $N(T)$ such that every triangle-free graph with $\\chi(G) > N(T)$ contains an induced copy of $T$. This is quantitatively stronger than the infinite version and asks for effective bounds. The existence of such bounds connects to the theory of $\\chi$-bounded graph classes introduced by Gyárfás.",
+    "mathContext": "$\\forall T$ a tree on $n$ vertices, $\\exists N = N(T) \\in \\mathbb{N}$ such that $\\forall G$ triangle-free with $\\chi(G) > N$: $G$ contains an induced copy of $T$.",
+    "significance": "supporting",
+    "relatedConcepts": ["χ-bounded class", "Ramsey number", "effective bounds", "quantitative combinatorics"],
+    "prerequisites": ["chromatic number", "Fintype", "triangle-free graph", "induced subgraph"]
+  },
+  {
+    "id": "erdos-738-ann-scott",
+    "proofId": "erdos-738",
+    "range": { "startLine": 119, "endLine": 124 },
+    "type": "theorem",
+    "title": "Scott's Caterpillar Theorem",
+    "content": "Scott (1997) proved the Gyárfás conjecture for subdivided stars, which includes caterpillars (trees where all vertices are within distance 1 of a central path) and spiders (trees with at most 3 legs). Scott's argument extends the Kierstead–Penrice technique by exploiting the bounded number of branching vertices. Note: the formalization uses path containment as a proxy for caterpillar containment.",
+    "mathContext": "A caterpillar is a tree $T$ such that removing all leaves yields a path. Scott proved: if $G$ is $K_3$-free with $\\chi(G) = \\infty$ and $T$ is a caterpillar, then $G$ contains an induced copy of $T$.",
+    "significance": "key",
+    "relatedConcepts": ["caterpillar graph", "subdivided star", "spider graph", "tree decomposition"],
+    "prerequisites": ["caterpillar tree", "path graph", "triangle-free graph"]
+  },
+  {
+    "id": "erdos-738-ann-reduction",
+    "proofId": "erdos-738",
+    "range": { "startLine": 126, "endLine": 141 },
+    "type": "technique",
+    "title": "Finite-to-Infinite Reduction",
+    "content": "The theorem `finite_implies_infinite_version` shows that the finite χ-bounded version of the conjecture implies the infinite chromatic number version. If for every tree $T$ there exists $N(T)$ such that $\\chi(G) > N$ forces an induced $T$ in triangle-free graphs, then infinite chromatic number (which exceeds every finite bound) certainly forces the same. This reduction connects the quantitative and qualitative forms and is a standard technique in chromatic graph theory, often justified via compactness arguments or the de Bruijn–Erdős theorem.",
+    "mathContext": "If $\\forall T,\\; \\exists N(T)$ such that $\\chi(G) > N(T) \\Rightarrow T \\subseteq_{\\text{ind}} G$ for $K_3$-free $G$, then $\\chi(G) = \\infty \\Rightarrow T \\subseteq_{\\text{ind}} G$ for all $T$, since $\\chi(G) = \\infty$ means $\\chi(G) > N(T)$ for any particular $T$.",
+    "significance": "key",
+    "relatedConcepts": ["compactness argument", "de Bruijn–Erdős theorem", "χ-bounded class", "quantitative-to-qualitative reduction"],
+    "prerequisites": ["compactness principle", "chromatic number", "χ-bounded class"]
   }
 ]
