@@ -132,7 +132,10 @@ The two sums are complementary: they partition the sum over all primes ≤ n.
 theorem complementary_sums (n : ℕ) :
     sumInvPrimesNotDivCentralBinom n + sumInvPrimesDividingCentralBinom n =
     ∑ p ∈ Icc 1 n with p.Prime, (1 : ℝ) / p := by
-  sorry -- Straightforward from the definitions
+  simp only [sumInvPrimesNotDivCentralBinom, sumInvPrimesDividingCentralBinom]
+  rw [← Finset.sum_add_distrib]
+  congr 1; ext p
+  split_ifs <;> simp
 
 /- ## Implications -/
 

@@ -125,16 +125,11 @@ theorem sphere3_nonempty : Sphere3.Nonempty := by
 theorem sphere3_compact : IsCompact Sphere3 :=
   isCompact_sphere 0 1
 
-/-- Helper: finrank of EuclideanSpace ℝ (Fin n) equals n. -/
-private theorem finrank_euclidean (n : ℕ) :
-    Module.finrank ℝ (EuclideanSpace ℝ (Fin n)) = n := by
-  simp [EuclideanSpace.finrank_eq_card, Fintype.card_fin]
-
 /-- Helper: rank of R^4 is greater than 1. -/
 private theorem rank_R4_gt_one : 1 < Module.rank ℝ (EuclideanSpace ℝ (Fin 4)) := by
-  have : 2 ≤ Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) := by
-    rw [finrank_euclidean]; omega
-  exact Module.one_lt_rank_of_two_le_finrank this
+  have : 1 < Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) := by
+    rw [finrank_euclideanSpace_fin]; omega
+  exact Module.one_lt_rank_of_one_lt_finrank this
 
 /-- The 3-sphere is connected. -/
 theorem sphere3_connected : IsConnected Sphere3 := by
@@ -213,17 +208,6 @@ def PoincareConjectureStatement : Prop :=
   ∀ (M : Type) [TopologicalSpace M],
     Closed3Manifold M → SimplyConnectedSpace M → AreHomeomorphic M Sphere3
 
-/-- Alternative formulation using FundamentalGroup: a closed 3-manifold with
-    trivial pi_1 is homeomorphic to S^3. -/
-theorem poincare_of_trivial_pi1 (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) [PathConnectedSpace M]
-    (htriv : ∀ x : M, Subsingleton (FundamentalGroup M x)) :
-    AreHomeomorphic M Sphere3 := by
-  have : SimplyConnectedSpace M := by
-    rw [simply_connected_iff_loops_nullhomotopic]
-    exact ⟨inferInstance, fun x γ => Quotient.exact (Subsingleton.elim ⟦γ⟧ ⟦Path.refl x⟧)⟩
-  exact poincare_conjecture_holds M hM this
-
 /- ===============================================================================
 PART VI: RICCI FLOW AND PERELMAN'S APPROACH
 =============================================================================== -/
@@ -249,7 +233,7 @@ axiom perelman_finite_extinction (M : Type) [TopologicalSpace M]
 inductive ThurstonGeometry where
   | spherical | euclidean | hyperbolic
   | s2xr | h2xr | nil | sol | sl2r
-  deriving DecidableEq, Repr
+  deriving DecidableEq, Fintype, Repr
 
 structure GeometricPiece (M : Type*) [TopologicalSpace M] where
   carrier : Set M
@@ -316,6 +300,24 @@ theorem trivial_pi1_implies_sphere (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) [hsc : SimplyConnectedSpace M] : AreHomeomorphic M Sphere3 :=
   poincare_conjecture_holds M hM hsc
 
+/-- Alternative formulation using FundamentalGroup: a closed 3-manifold with
+    trivial fundamental group at every point is homeomorphic to S³.
+    This bridges Mathlib's FundamentalGroup with the Poincare Conjecture. -/
+theorem poincare_of_trivial_pi1 (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) [PathConnectedSpace M]
+    (htriv : ∀ x : M, Subsingleton (FundamentalGroup M x)) :
+    AreHomeomorphic M Sphere3 := by
+  have : SimplyConnectedSpace M := by
+    rw [simply_connected_iff_loops_nullhomotopic]
+    refine ⟨inferInstance, fun x γ => ?_⟩
+    have hsub : Subsingleton (Quotient (Path.Homotopic.setoid x x)) := htriv x
+    have heq := @Quotient.exact _ (Path.Homotopic.setoid x x) _ _
+                  (Subsingleton.elim (s := hsub)
+                    (@Quotient.mk _ (Path.Homotopic.setoid x x) γ)
+                    (@Quotient.mk _ (Path.Homotopic.setoid x x) (Path.refl x)))
+    exact heq
+  exact poincare_conjecture_holds M hM this
+
 theorem not_sphere_has_nontrivial_pi1 (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) (hnotS3 : ¬ AreHomeomorphic M Sphere3) :
     ¬ SimplyConnectedSpace M := fun hsc => hnotS3 (poincare_conjecture_holds M hM hsc)
@@ -349,9 +351,9 @@ PART XI: GENERALIZED SPHERE PROPERTIES
 
 private theorem rank_gt_one_of_ge_one (n : ℕ) (hn : 1 ≤ n) :
     1 < Module.rank ℝ (EuclideanSpace ℝ (Fin (n + 1))) := by
-  have : 2 ≤ Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 1))) := by
-    rw [finrank_euclidean]; omega
-  exact Module.one_lt_rank_of_two_le_finrank this
+  have : 1 < Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 1))) := by
+    rw [finrank_euclideanSpace_fin]; omega
+  exact Module.one_lt_rank_of_one_lt_finrank this
 
 theorem sphere_n_connected (n : ℕ) (hn : 1 ≤ n) :
     IsConnected (Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) := by

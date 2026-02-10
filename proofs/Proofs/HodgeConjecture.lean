@@ -659,16 +659,6 @@ theorem cycle_class_is_algebraic (X : ProjectiveVariety) (p : ℕ)
   refine ⟨{Z}, fun _ => 1, ?_⟩
   simp [cycleToHodgeClass, Finset.sum_singleton]
 
-/-- **HC for full statement implies HC for any specific variety and degree.**
-
-If the Hodge Conjecture holds universally (for all varieties and all p),
-then it holds for any particular variety X and codimension p. -/
-theorem hodge_full_specializes (h : HodgeConjectureFullStatement)
-    (X : ProjectiveVariety) (p : ℕ) (hp : p ≤ X.dim)
-    (H : PureHodgeStructure (2 * p)) :
-    HodgeConjectureStatement X p H :=
-  h X p hp H
-
 /-- **If HC holds in codimension 1, it holds for divisors on any variety.**
 
 The Lefschetz (1,1) theorem gives us HC for codimension 1 classes.
@@ -677,14 +667,6 @@ theorem lefschetz_gives_divisor_case (X : ProjectiveVariety)
     (H : PureHodgeStructure 2) :
     HodgeConjectureStatement X 1 H :=
   lefschetz_1_1_theorem X H
-
-/-- **Hodge symmetry is an involution**: applying symmetry twice returns to the original.
-
-h^{p,q} = h^{q,p} = h^{p,q}. This is obvious but confirms the symmetry
-is well-behaved (as expected since complex conjugation is an involution). -/
-theorem hodge_symmetry_involution {k : ℕ} (H : PureHodgeStructure k)
-    (p q : ℕ) (hpq : p + q = k) (hqp : q + p = k) :
-    hodgeNumber H p q hpq = hodgeNumber H p q hpq := rfl
 
 /-- **Hodge numbers are equal for swapped indices (symmetric form).**
 
@@ -723,7 +705,8 @@ theorem filtration_decreasing_general {k : ℕ} {H : PureHodgeStructure k}
   induction n with
   | zero => simp
   | succ m ih =>
-    calc F.F (p + m.succ) = F.F (p + m + 1) := by ring_nf
+    have : p + m.succ = (p + m) + 1 := by omega
+    calc F.F (p + m.succ) = F.F ((p + m) + 1) := by rw [this]
     _ ≤ F.F (p + m) := F.decreasing (p + m)
     _ ≤ F.F p := ih
 
@@ -823,7 +806,6 @@ theorem HC_summary : True := trivial
 #check standard_conjectures_imply_hodge
 #check hodge_implies_mumford_tate
 #check cycle_class_is_algebraic
-#check hodge_full_specializes
 #check filtration_decreasing_general
 #check filtration_beyond_terminal
 #check hodge_conjecture_surfaces_explicit

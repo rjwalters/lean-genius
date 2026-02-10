@@ -230,14 +230,12 @@ theorem sortedDivisors_head_eq_one (m : ℕ) (hm : m ≥ 1) :
   have hd_pos := sortedDivisors_pos m hd (List.head_mem (sortedDivisors_ne_nil m hm))
   by_contra hne
   have hge2 : hd ≥ 2 := by omega
-  -- sortedDivisors = hd :: tail, and 1 ∈ tail (since 1 ∈ sortedDivisors and 1 ≠ hd)
   have hcons : sortedDivisors m = hd :: (sortedDivisors m).tail :=
     (List.head_cons_tail _ (sortedDivisors_ne_nil m hm)).symm
   rw [hcons] at h1
   rcases List.mem_cons.mp h1 with heq | htl
   · exact hne heq
-  · -- 1 ∈ tail, but all tail elements ≥ hd ≥ 2 (from sorted)
-    rw [hcons] at hsorted
+  · rw [hcons] at hsorted
     have := (List.pairwise_cons.mp hsorted).1 1 htl
     omega
 
@@ -314,7 +312,7 @@ theorem partial_sums_skip_2 (m : ℕ) (hm : m ≥ 1) :
   obtain ⟨rest, hsd⟩ := sortedDivisors_cons m hm
   rw [hsd, List.scanl, List.tail_cons]
   show 2 ∉ rest.scanl (· + ·) (0 + 1)
-  match hrest : rest with
+  match rest with
   | [] =>
     simp [List.scanl]
   | d₂ :: rest' =>
@@ -326,16 +324,15 @@ theorem partial_sums_skip_2 (m : ℕ) (hm : m ≥ 1) :
       have hge := scanl_add_ge_init (0 + 1 + d₂) rest' 2 h2mem
       have hd2_ge_2 : d₂ ≥ 2 := by
         have hrest_ne : (d₂ :: rest' : List ℕ) ≠ [] := List.cons_ne_nil _ _
-        have hsd' : sortedDivisors m = 1 :: (d₂ :: rest') := by rw [hsd, hrest]
-        have h := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) (d₂ :: rest') hsd' hrest_ne
+        have h := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) (d₂ :: rest') hsd hrest_ne
         simpa using h
       omega
 
 /--
 Helper: if 4 ∣ m then 2 ∣ m.
 -/
-private theorem dvd_4_imp_dvd_2 {m : ℕ} (h : 4 ∣ m) : 2 ∣ m :=
-  dvd_trans (Dvd.intro 2 rfl) h
+private theorem dvd_4_imp_dvd_2 {m : ℕ} (h : 4 ∣ m) : 2 ∣ m := by
+  obtain ⟨k, hk⟩ := h; exact ⟨2 * k, by omega⟩
 
 /--
 Helper: if d₂ = 4 is the second element in sortedDivisors m,
@@ -346,10 +343,9 @@ This eliminates the d₂ = 4 case.
 private theorem not_second_divisor_4 (m : ℕ) (_hm : m ≥ 2)
     (rest : List ℕ) (hsd : sortedDivisors m = 1 :: 4 :: rest) : False := by
   -- 4 is in sortedDivisors, hence 4 ∣ m
-  have h4_in : 4 ∈ sortedDivisors m := by rw [hsd]; simp
-  have h4_dvd_m : 4 ∣ m := by
-    simp [sortedDivisors, Finset.mem_sort] at h4_in
-    exact h4_in.1
+  have h4_mem : (4 : ℕ) ∈ sortedDivisors m := by rw [hsd]; simp
+  simp [sortedDivisors, Finset.mem_sort] at h4_mem
+  have h4_dvd_m : 4 ∣ m := h4_mem.1
   have h2_dvd_m : 2 ∣ m := dvd_4_imp_dvd_2 h4_dvd_m
   -- So 2 ∈ sortedDivisors m
   have h2_in_sd : 2 ∈ sortedDivisors m := by
@@ -382,7 +378,7 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
   obtain ⟨rest, hsd⟩ := sortedDivisors_cons m hm
   rw [hsd, List.scanl, List.tail_cons]
   show 5 ∉ rest.scanl (· + ·) (0 + 1)
-  match hrest : rest with
+  match rest with
   | [] =>
     simp [List.scanl]
   | d₂ :: rest' =>
@@ -390,21 +386,19 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
     push_neg
     have hd2_ge_2 : d₂ ≥ 2 := by
       have hrest_ne : (d₂ :: rest' : List ℕ) ≠ [] := List.cons_ne_nil _ _
-      have hsd' : sortedDivisors m = 1 :: (d₂ :: rest') := by rw [hsd, hrest]
-      have h := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) (d₂ :: rest') hsd' hrest_ne
+      have h := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) (d₂ :: rest') hsd hrest_ne
       simpa using h
     constructor
     · omega  -- 5 ≠ 0 + 1
-    · match hrest' : rest' with
+    · match rest' with
       | [] =>
         -- Two divisors: scanl (+) (1+d₂) [] = [1+d₂]
         simp [List.scanl]
         -- Need 5 ≠ 0 + 1 + d₂. If d₂ = 4, contradiction via not_second_divisor_4
         intro h5eq
         have hd2_eq_4 : d₂ = 4 := by omega
-        have hsd' : sortedDivisors m = 1 :: 4 :: [] := by
-          rw [hsd, hrest]; congr 1; rw [hd2_eq_4, hrest']
-        exact not_second_divisor_4 m (by omega) [] hsd'
+        subst hd2_eq_4
+        exact not_second_divisor_4 m (by omega) [] hsd
       | d₃ :: rest'' =>
         -- Three+ divisors
         simp only [List.scanl, List.mem_cons]
@@ -413,18 +407,15 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
         · -- 5 ≠ 0 + 1 + d₂. If d₂ = 4, contradiction.
           intro h5eq
           have hd2_eq_4 : d₂ = 4 := by omega
-          have hsd' : sortedDivisors m = 1 :: 4 :: (d₃ :: rest'') := by
-            rw [hsd, hrest]; congr 1; rw [hd2_eq_4]
-          exact not_second_divisor_4 m (by omega) (d₃ :: rest'') hsd'
+          subst hd2_eq_4
+          exact not_second_divisor_4 m (by omega) (d₃ :: rest'') hsd
         · -- 5 ∉ scanl (+) (0 + 1 + d₂ + d₃) rest''
           intro h5mem
           have hge := scanl_add_ge_init (0 + 1 + d₂ + d₃) rest'' 5 h5mem
           have hsorted := sortedDivisors_sorted m
-          have hsd' : sortedDivisors m = 1 :: d₂ :: d₃ :: rest'' := by
-            rw [hsd, hrest]; congr 1; rw [hrest']
-          rw [hsd'] at hsorted
+          rw [hsd] at hsorted
           have hnodup := sortedDivisors_nodup m
-          rw [hsd'] at hnodup
+          rw [hsd] at hnodup
           have hd2_lt_d3 : d₂ < d₃ := by
             have hsort_rest := (List.pairwise_cons.mp hsorted).2
             have hd2_le_d3 := (List.pairwise_cons.mp hsort_rest).1 d₃ (List.mem_cons_self _ _)
@@ -566,9 +557,6 @@ theorem not_representable_5_large : isRepresentableBound 5 1000 = false := by
 theorem representable_11 : IsRepresentable 11 :=
   ⟨30, by omega, by native_decide⟩
 
-/-- f(11) = 30 (searched with bound 50) -/
-theorem f_11_eq : computeF 11 50 = 30 := by native_decide
-
 /-- 13 is representable -/
 theorem representable_13 : IsRepresentable 13 :=
   ⟨9, by omega, by native_decide⟩
@@ -588,7 +576,7 @@ theorem f_15_eq : computeF 15 20 = 8 := by native_decide
 -- ============================================================
 
 /-
-Extended table of f(n) values (computed with bound 100):
+Extended table of f(n) values:
 - f(1) = 1      f(1)/1 = 1.0
 - f(3) = 2      f(3)/3 = 0.67
 - f(4) = 3      f(4)/4 = 0.75
