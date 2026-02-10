@@ -39,7 +39,9 @@
       "Complete formalization of the birthday probability formula",
       "Proofs for special cases (n=0, n=1, n=2, n>365)",
       "Full proof of the 23-person threshold using native_decide for large integer arithmetic",
-      "Connection to injective function counting"
+      "Connection to injective function counting",
+      "Expected number of shared birthday pairs via linearity of expectation",
+      "99% threshold proof: 57 people needed (with tight lower bound at 56)"
     ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 93
@@ -96,18 +98,37 @@
       "id": "threshold",
       "title": "The 23-Person Threshold",
       "startLine": 184,
-      "endLine": 212,
-      "summary": "The famous result that P(23) > 1/2."
+      "endLine": 247,
+      "summary": "The famous result that P(23) > 1/2 and P(22) < 1/2."
+    },
+    {
+      "id": "combinatorics",
+      "title": "Relationship to Combinatorics",
+      "startLine": 249,
+      "endLine": 302,
+      "summary": "Connection to counting principles and verification examples."
+    },
+    {
+      "id": "expected-pairs",
+      "title": "Expected Number of Shared Birthday Pairs",
+      "startLine": 304,
+      "endLine": 356,
+      "summary": "By linearity of expectation, E[pairs] = C(n,2)/365. The 28-person threshold for expecting more than 1 pair."
+    },
+    {
+      "id": "99-percent-threshold",
+      "title": "The 99% Threshold",
+      "startLine": 357,
+      "endLine": 402,
+      "summary": "With 57 people, probability exceeds 99%. Tight bound: P(56) < 0.99 < P(57)."
     }
   ],
   "conclusion": {
-    "summary": "The Birthday Problem is formalized using Mathlib's combinatorics. We prove the probability formula, establish boundary cases, and fully prove the 23-person threshold using native_decide for large integer comparisons (53+ digit numbers).",
+    "summary": "The Birthday Problem is fully formalized using Mathlib's combinatorics. We prove the probability formula, establish boundary cases, prove the 23-person threshold (P(23) > 1/2), compute expected shared pairs via linearity of expectation, and prove the 99% threshold at 57 people. All large integer comparisons use native_decide (up to 146-digit numbers).",
     "implications": "The Birthday Problem has practical implications beyond probability theory:\n\n**1. Cryptography**\nBirthday attacks can break hash functions in O(sqrt(n)) rather than O(n) time.\n\n**2. Database systems**\nHash collision probabilities follow the same mathematics.\n\n**3. Statistical sampling**\nUnderstanding coincidences in random samples.\n\n**4. Teaching probability**\nA perfect example of how intuition can mislead.",
     "openQuestions": [
-      "What is the expected number of shared pairs in a group of n people?",
       "How does the problem change with non-uniform birthday distributions?",
-      "What are the implications for hash function security?",
-      "How many people are needed for a 99% probability of a match?"
+      "What are the implications for hash function security?"
     ]
   }
 }
