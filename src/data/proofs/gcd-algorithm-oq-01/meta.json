@@ -1,0 +1,117 @@
+{
+  "id": "gcd-algorithm-oq-01",
+  "title": "Average-Case Complexity of the Euclidean Algorithm",
+  "slug": "gcd-algorithm-oq-01",
+  "description": "Formalizes Lame's theorem on worst-case Euclidean algorithm complexity, proves consecutive Fibonacci numbers achieve the worst case, derives logarithmic and 5-digit bounds, and builds finite average computation infrastructure toward Dixon's theorem.",
+  "meta": {
+    "author": "Gabriel Lame (1844), formalized in Lean 4",
+    "date": "1844",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GCDAlgorithmOQ01.lean",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "complexity",
+      "fibonacci",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_mono",
+        "description": "Fibonacci sequence is monotone",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_pos",
+        "description": "Fibonacci numbers are positive for n >= 1",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "fib_add_two",
+        "description": "Fibonacci recurrence: fib(n+2) = fib(n) + fib(n+1)",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.log",
+        "description": "Natural number logarithm",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "originalContributions": [
+      "Step counting function with termination proof",
+      "Lame's theorem via strong induction on Fibonacci numbers",
+      "Worst-case optimality proof for consecutive Fibonacci pairs",
+      "Logarithmic step bound: steps <= 2*log2(b) + 2",
+      "Classical 5-digit bound: steps <= 5*digits(b)",
+      "Exponential lower bound: fib(2n+1) >= 2^n",
+      "Finite average computation infrastructure"
+    ],
+    "dateAdded": "02/10/26"
+  },
+  "overview": {
+    "historicalContext": "The Euclidean algorithm (c. 300 BCE) is one of the oldest algorithms still in use. Gabriel Lame proved in 1844 that the number of division steps is bounded by 5 times the number of decimal digits of the smaller input. This was one of the first complexity analyses of an algorithm. The average-case complexity was determined by Dixon (1970) using ergodic theory of the Gauss map.",
+    "problemStatement": "**Open Question**: What is the average-case complexity of the Euclidean algorithm?\n\n**Known**: The worst case is O(log(min(a,b))), achieved by consecutive Fibonacci numbers. Dixon's theorem states the average number of steps is (12 ln 2 / pi^2) ln N, approximately 0.8427 ln N.\n\n**This formalization**: Proves the worst-case bounds and builds infrastructure toward the average case.",
+    "proofStrategy": "**Lame's Theorem**: By strong induction on the step count n. If euclideanSteps(a,b) = n with b > 0, then fib(n+1) <= b. The key insight is that at each step, the pair (b, a%b) satisfies b >= fib(n) and a%b >= fib(n-1), using the Fibonacci recurrence fib(n+1) = fib(n) + fib(n-1).\n\n**Worst Case**: Consecutive Fibonacci numbers (fib(n+2), fib(n+1)) take exactly n steps, since fib(n+2) mod fib(n+1) = fib(n) by the Fibonacci recurrence.\n\n**Logarithmic Bound**: From fib(2n+1) >= 2^n and Lame's theorem, we derive steps <= 2*log2(b) + 2.",
+    "keyInsights": [
+      "Fibonacci numbers are the worst-case inputs for the Euclidean algorithm",
+      "Lame's theorem reduces complexity analysis to Fibonacci growth rate",
+      "The 5-digit bound (steps <= 5*digits) follows from fib(5k+2) >= 10^k",
+      "Dixon's average-case result requires ergodic theory not yet in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "step-counting",
+      "title": "Step Counting Function",
+      "startLine": 32,
+      "endLine": 69,
+      "summary": "Definition of euclideanSteps with termination proof and basic properties."
+    },
+    {
+      "id": "lame-theorem",
+      "title": "Lame's Theorem",
+      "startLine": 71,
+      "endLine": 155,
+      "summary": "Core result: fib(steps+1) <= b, proved by strong induction. Includes contrapositive form."
+    },
+    {
+      "id": "worst-case",
+      "title": "Worst Case: Consecutive Fibonacci Numbers",
+      "startLine": 157,
+      "endLine": 200,
+      "summary": "Consecutive Fibonacci pairs achieve exactly n steps, proving the bound is tight."
+    },
+    {
+      "id": "logarithmic-bound",
+      "title": "Logarithmic Bound",
+      "startLine": 202,
+      "endLine": 235,
+      "summary": "steps <= 2*log2(b) + 2, derived from fib(2n+1) >= 2^n."
+    },
+    {
+      "id": "five-digit-bound",
+      "title": "Lame's 5-Digit Bound",
+      "startLine": 237,
+      "endLine": 271,
+      "summary": "steps <= 5*decimalDigits(b) for b < 10^20, using fib(5k+2) >= 10^k."
+    },
+    {
+      "id": "finite-average",
+      "title": "Finite Average Computation",
+      "startLine": 273,
+      "endLine": 295,
+      "summary": "Infrastructure for computing exact averages over bounded inputs."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete treatment of the worst-case complexity of the Euclidean algorithm, from the fundamental Lame bound through tight examples and practical digit-based bounds. All results are fully proved (0 sorries).\n\nThe average-case analysis (Dixon's theorem) remains unformalized due to its dependence on continued fractions, the Gauss map, and ergodic theory.",
+    "implications": "**Algorithm Analysis**: Demonstrates formal verification of classical complexity results.\n\n**Number Theory**: The deep connection between Fibonacci numbers and the Euclidean algorithm exemplifies how number-theoretic structure governs algorithmic behavior.\n\n**Future Work**: Formalizing Dixon's theorem would require developing ergodic theory in Mathlib.",
+    "openQuestions": [
+      "Can Dixon's average-case theorem be formalized once Mathlib has ergodic theory?",
+      "What is the distribution of step counts for random inputs?",
+      "How does the complexity extend to the extended Euclidean algorithm?"
+    ]
+  }
+}

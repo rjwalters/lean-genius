@@ -1,0 +1,117 @@
+{
+  "slug": "gcd-algorithm-oq-01",
+  "title": "Average-Case Complexity of the Euclidean Algorithm",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "The average number of steps in the Euclidean algorithm for inputs up to N is (12 ln 2 / pi^2) ln N (Dixon 1970)",
+    "plain": "What is the average-case complexity of the Euclidean algorithm? Dixon proved it is approximately 0.8427 ln N. We formalize the worst-case analysis (Lame's theorem) and build infrastructure toward the average case.",
+    "whyMatters": [
+      "One of the first algorithm complexity analyses in history (Lame, 1844)",
+      "Connects Fibonacci numbers to computational complexity",
+      "Average-case requires deep tools from ergodic theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "euclideanSteps: step counting function with termination proof",
+      "lame_theorem: fib(steps+1) <= b",
+      "lame_step_bound: contrapositive form",
+      "euclideanSteps_fib: consecutive Fibonacci numbers achieve worst case",
+      "fib_exponential_lower: fib(2n+1) >= 2^n",
+      "euclideanSteps_log_bound: steps <= 2*log2(b) + 2",
+      "lame_five_digit_bound: steps <= 5*digits(b) for b < 10^20",
+      "totalSteps/pairCount: finite average computation infrastructure"
+    ],
+    "open": [
+      "Dixon's theorem: average steps = (12 ln 2 / pi^2) ln N (requires ergodic theory)"
+    ],
+    "goal": "Complete worst-case analysis plus infrastructure toward average-case"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-10T12:00:00.000Z",
+    "iteration": 2,
+    "focus": "Build verification and gallery integration",
+    "blockers": [
+      "Dixon's theorem requires ergodic theory (Gauss map, continued fractions) not in Mathlib"
+    ],
+    "nextAction": "Merged. Dixon's theorem blocked on Mathlib ergodic theory.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full worst-case complexity analysis of the Euclidean algorithm (312 lines, 0 sorries). Fixed 5 build errors from original draft. Docker build verified. Gallery integration created.",
+    "builtItems": [
+      "GCDAlgorithmOQ01.lean (312 lines, 0 sorries)",
+      "euclideanSteps - step counting with termination proof",
+      "lame_pair_bound - core Fibonacci lower bound by strong induction",
+      "lame_theorem - classical form: fib(steps+1) <= b",
+      "euclideanSteps_fib - worst-case optimality for Fibonacci pairs",
+      "fib_exponential_lower - fib(2n+1) >= 2^n",
+      "euclideanSteps_log_bound - O(log b) bound",
+      "lame_five_digit_bound - classical 5-digit bound",
+      "totalSteps/pairCount - finite average infrastructure",
+      "Gallery: src/data/proofs/gcd-algorithm-oq-01/"
+    ],
+    "insights": [
+      "fib_mod_fib requires n >= 2 (not n >= 1) since fib(1) = fib(2) = 1",
+      "fib_lt_fib_succ requires 2 <= n in current Mathlib",
+      "Strong induction with Nat.strongRecOn is essential for Lame's theorem",
+      "omega can't reduce fib expressions - need native_decide for Fibonacci values",
+      "The 5-digit bound uses interval_cases for fib(5k+2) >= 10^k up to k=20",
+      "Dixon's theorem is genuinely blocked: requires ergodic theory not in Mathlib"
+    ],
+    "mathlibGaps": [
+      "Ergodic theory (Gauss map, invariant measure)",
+      "Continued fraction theory",
+      "Measure-theoretic average-case analysis framework"
+    ],
+    "nextSteps": [
+      "Dixon's theorem formalization when Mathlib gains ergodic theory",
+      "Extend to average-case analysis of extended Euclidean algorithm",
+      "Formalize worst-case analysis for polynomial GCD"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Strong induction on step count with Fibonacci bounds",
+      "status": "succeeded",
+      "description": "Lame's theorem via strong induction on euclideanSteps, showing fib(n+1) <= b"
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "algorithms",
+    "complexity",
+    "fibonacci",
+    "completed",
+    "zero-sorry"
+  ],
+  "relatedProofs": [
+    "gcd-algorithm"
+  ],
+  "references": {
+    "papers": [
+      "Lame, G. (1844). Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur",
+      "Dixon, J.D. (1970). The number of steps in the Euclidean algorithm"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Nat.fib_mono",
+      "Nat.fib_pos",
+      "fib_add_two",
+      "fib_lt_fib_succ",
+      "Nat.log"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-10T12:00:00.000Z",
+  "significance": 7,
+  "tractability": 8
+}
