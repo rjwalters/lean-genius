@@ -21,60 +21,77 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős (1976) asked for the extremal number of edges in graphs forbidding two edge-disjoint cycles with the same vertex set. The lower bound Ω(n log log n) was established by Pyber, Rödl, and Szemerédi in 1995. The upper bound was dramatically improved in 2024 by Chakraborti, Janzer, Methuku, and Montgomery to O(n(log n)^C).",
-    "problemStatement": "What is the maximum number of edges f(n) in an n-vertex graph with no two edge-disjoint cycles sharing the same vertex set?",
-    "proofStrategy": "Defines cycles in simple graphs, edge-disjointness on the same vertex set, and the extremal function f(n). States the Pyber–Rödl–Szemerédi lower bound, the CJMM upper bound, and the generalization to k pairwise edge-disjoint cycles.",
+    "historicalContext": "Erdős posed this problem in 1976, asking for the maximum number of edges in a graph on n vertices that contains no two edge-disjoint cycles on the same vertex set. The condition is equivalent to saying that no subset S of vertices supports two distinct Hamiltonian cycles with disjoint edge sets. The problem remained wide open for nearly two decades until Pyber, Rödl, and Szemerédi (1995) established the lower bound f(n) = Ω(n log log n) using an intricate probabilistic and Ramsey-theoretic construction. Their iterated-logarithm growth rate revealed the extremal function to be only barely superlinear. Progress on upper bounds was slower: the first nontrivial bound of O(n√(log n)) was eventually improved dramatically by Chakraborti, Janzer, Methuku, and Montgomery in 2024, who proved f(n) ≤ O(n(log n)^C) using structural graph decomposition and dependent random choice. Their result also generalized to k pairwise edge-disjoint cycles for any fixed k ≥ 2. The remaining gap between log log n and (log n)^C is one of the most tantalizing open problems in extremal graph theory.",
+    "problemStatement": "What is the maximum number of edges $f(n)$ in an $n$-vertex graph with no two edge-disjoint cycles sharing the same vertex set?",
+    "proofStrategy": "The formalization defines cycles in simple graphs via injective vertex sequences with consecutive adjacencies, edge-disjointness on the same vertex set, and the extremal function f(n) as a supremum. It then axiomatizes the Pyber–Rödl–Szemerédi lower bound and the CJMM upper bound using Lean's Filter.atTop for asymptotic statements, and includes the k-cycle generalization.",
     "keyInsights": [
-      "The problem forbids two Hamilton cycles on any subgraph, not just the whole graph",
-      "The lower bound Ω(n log log n) uses probabilistic and Ramsey-theoretic constructions",
-      "The CJMM upper bound O(n(log n)^C) was a major 2024 breakthrough",
-      "The remaining gap between log log n and (log n)^C is the open question"
+      "The forbidden configuration — two edge-disjoint Hamiltonian cycles on some vertex subset — is a global structural condition, unlike classical Turán-type forbidden subgraph problems",
+      "The Pyber–Rödl–Szemerédi lower bound $f(n) = \\Omega(n \\log \\log n)$ uses probabilistic constructions and Ramsey theory, showing the extremal function is barely superlinear",
+      "The CJMM upper bound $f(n) = O(n (\\log n)^C)$ was a 2024 breakthrough using structural decomposition and dependent random choice, dramatically improving the previous $O(n\\sqrt{\\log n})$ bound",
+      "The gap between $\\log \\log n$ and $(\\log n)^C$ is surprisingly hard to close — neither improvement of the construction nor the decomposition method has been sufficient",
+      "The k-cycle generalization shows the polylogarithmic threshold is robust: for any fixed $k \\ge 2$, the same $O(n(\\log n)^C)$ upper bound forces $k$ pairwise edge-disjoint cycles on some vertex set",
+      "The problem connects cycle decomposition theory to extremal graph theory, bridging Hamiltonian graph theory and Turán-type questions"
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Docstring stating the problem with known bounds and references. Imports Mathlib's SimpleGraph, Finset, Filter, and Tactic modules."
+    },
+    {
       "id": "cycles",
       "title": "Cycles and Edge-Disjointness",
-      "startLine": 18,
-      "endLine": 45,
-      "summary": "Defines cycles, edge-disjoint cycles on the same vertex set."
+      "startLine": 21,
+      "endLine": 46,
+      "summary": "Defines a cycle on vertex set S via injective vertex sequences with consecutive adjacencies, and edge-disjoint cycles on the same vertex set as two Hamiltonian cycles on S sharing at least one different edge."
     },
     {
       "id": "extremal",
-      "title": "The Extremal Function",
-      "startLine": 49,
-      "endLine": 53,
-      "summary": "Defines f(n) as the maximum edge count avoiding the forbidden configuration."
+      "title": "The Extremal Function f(n)",
+      "startLine": 48,
+      "endLine": 55,
+      "summary": "Defines f(n) as the supremum of edge counts over n-vertex simple graphs avoiding the forbidden configuration of two edge-disjoint cycles on any common vertex set."
     },
     {
       "id": "lower-bound",
       "title": "Pyber–Rödl–Szemerédi Lower Bound",
       "startLine": 57,
-      "endLine": 63,
-      "summary": "States f(n) ≥ c·n·log log n from the 1995 construction."
+      "endLine": 65,
+      "summary": "Axiomatizes the 1995 result: f(n) ≥ c·n·log log n, stated using Filter.atTop for the asymptotic quantifier."
     },
     {
       "id": "upper-bound",
-      "title": "CJMM Upper Bound",
+      "title": "CJMM Upper Bound (2024)",
       "startLine": 67,
-      "endLine": 74,
-      "summary": "States f(n) ≤ C·n·(log n)^α from Chakraborti et al. (2024)."
+      "endLine": 76,
+      "summary": "Axiomatizes the 2024 breakthrough by Chakraborti, Janzer, Methuku, and Montgomery: f(n) ≤ C·n·(log n)^α for positive constants C, α."
     },
     {
       "id": "main-problem",
-      "title": "The Erdős Problem",
+      "title": "Combined Bounds and the Erdős Problem",
       "startLine": 78,
-      "endLine": 96,
-      "summary": "States the combined bounds and the k-cycle generalization."
+      "endLine": 89,
+      "summary": "States both bounds together as a single axiom capturing the current state of knowledge: Ω(n log log n) ≤ f(n) ≤ O(n(log n)^C)."
+    },
+    {
+      "id": "k-cycles",
+      "title": "k-Cycle Generalization",
+      "startLine": 91,
+      "endLine": 99,
+      "summary": "The CJMM generalization: for any k ≥ 2, graphs exceeding the O(n(log n)^C) threshold must contain k pairwise edge-disjoint cycles on some common vertex set."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 585 asks for the maximum edges in an n-vertex graph with no two edge-disjoint cycles on the same vertex set. The gap between Ω(n log log n) and O(n(log n)^C) remains open despite major progress in 2024.",
-    "implications": "Resolution would advance extremal graph theory and the understanding of cycle decomposition in dense graphs.",
+    "summary": "Formalizes Erdős Problem #585 on the maximum edges in a graph avoiding two edge-disjoint cycles on the same vertex set, along with both known bounds and the k-cycle generalization. The gap between Ω(n log log n) and O(n(log n)^C) remains one of the most intriguing open problems at the intersection of extremal graph theory and cycle decomposition.",
+    "implications": "Closing the gap would advance our understanding of how cycle structure constrains edge density. If f(n) = Θ(n log log n), the lower bound construction captures the true extremal behavior and the CJMM upper bound has room for improvement. If f(n) is closer to n(log n)^C, new constructions avoiding edge-disjoint cycles would be needed. Either resolution would yield new techniques in structural graph theory.",
     "openQuestions": [
-      "Is f(n) = Θ(n log log n) or closer to n(log n)^C?",
-      "Can the CJMM exponent C be reduced to 0 (giving O(n log n))?",
-      "What is the exact threshold for the k-cycle generalization?"
+      "Is f(n) = Θ(n log log n), or is the truth closer to n(log n)^C?",
+      "Can the CJMM exponent α be reduced to 0, giving an O(n log n) upper bound?",
+      "What is the exact asymptotic behavior of the extremal function for k pairwise edge-disjoint cycles as a function of k?",
+      "Can algebraic or geometric constructions improve the Pyber–Rödl–Szemerédi lower bound?"
     ]
   }
 }
