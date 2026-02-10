@@ -22,6 +22,16 @@
     "erdosNumber": 1009,
     "erdosUrl": "https://erdosproblems.com/1009",
     "erdosProblemStatus": "solved",
+    "crossReferences": [
+      {
+        "proofId": "erdos-1008",
+        "relationship": "Studies C₄-free subgraphs with many edges; both problems ask how much forbidden-subgraph-free structure can be extracted from dense graphs"
+      },
+      {
+        "proofId": "erdos-1054",
+        "relationship": "Studies partial sums and Aristotle proofs; shares the theme of exact computation with verified bounds"
+      }
+    ],
     "dateAdded": "2026-01-23",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
@@ -56,58 +66,64 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this in 1971, motivated by the Turán problem. The Turán number ex(n, K₃) = ⌊n²/4⌋ is the maximum edges in a triangle-free graph. If we exceed this by k edges, we must have triangles—but can we find nearly k edge-disjoint ones? Erdős initially believed f(c) = 0 for all c, but Sauer's counterexample showed otherwise. Györi's 1988 solution gave the optimal bound f(c) ≪ c².",
+    "historicalContext": "Erdős posed this problem in 1971 [Er71], motivated by the classical Turán problem. The Turán number $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$ (proved by Turán in 1941) is the maximum edges in a triangle-free graph on $n$ vertices. When a graph exceeds this threshold by $k$ edges, triangles must exist by Turán's theorem. Erdős asked: can we find nearly $k$ edge-disjoint triangles? He originally conjectured $f(c) = 0$ for all $c$ (every excess edge 'belongs to' a unique triangle). Sauer disproved this with $K_{1,m,m}$: it has $2m$ excess edges but only $2m - 1$ edge-disjoint triangles, since the degree-1 vertex is a bottleneck. Erdős himself proved $f(c) = 0$ for $c < 1/2$ using chromatic number arguments. Györi (1988) [Gy88] resolved the problem completely, showing $f(c) \\leq Cc^2$ for an absolute constant $C$. The quadratic growth is essentially optimal. Györi also refined the small-$c$ range: $f(c) = 0$ for $c < 2$ (odd $n$) and $c < 3/2$ (even $n$), reflecting the parity-dependent structure of the Turán graph.",
     "problemStatement": "For every c > 0, does there exist f(c) such that every graph on n vertices with at least ⌊n²/4⌋ + k edges (where k < cn) contains at least k - f(c) edge-disjoint triangles?",
     "proofStrategy": "Györi's proof shows that excess edges beyond Turán bound 'must' form triangles that are nearly disjoint. The key insight is that in dense graphs, the extra edges cannot all concentrate in shared triangles—they must spread out. For small c, the graphs are close enough to the Turán graph that f(c) = 0 works. For larger c, Sauer's complete tripartite construction shows some loss is unavoidable.",
     "keyInsights": [
-      "Turán threshold n²/4 is the maximum for triangle-free graphs",
-      "Each extra edge 'should' contribute to a distinct triangle",
-      "Erdős proved f(c) = 0 for c < 1/2 using chromatic number 3 arguments",
-      "Sauer's K_{1,m,m} construction shows f(2) ≥ 1",
-      "Györi proved f(c) ≪ c², which is essentially optimal",
-      "Refinement: f(c) = 0 for c < 2 (odd n) or c < 3/2 (even n)"
+      "**Turán baseline**: The threshold $\\lfloor n^2/4 \\rfloor$ is the exact boundary between triangle-free and triangle-containing graphs; every excess edge creates triangle structure",
+      "**Triangle packing vs excess edges**: Each excess edge 'should' contribute to a distinct triangle; the function $f(c)$ measures the unavoidable loss in this correspondence",
+      "**Sauer's bottleneck**: $K_{1,m,m}$ shows $f(c) > 0$ is necessary—the single vertex of degree $2m$ must participate in every triangle, creating a packing bottleneck",
+      "**Parity-dependent thresholds**: $f(c) = 0$ extends further for odd $n$ ($c < 2$) than even $n$ ($c < 3/2$) because the unbalanced Turán graph $K_{(n-1)/2,(n+1)/2}$ has different structural properties",
+      "**Gyori's quadratic bound**: $f(c) \\leq Cc^2$ is proved via dependent random choice and Kővári-Sós-Turán; the quadratic growth rate matches the $K_{1,m,m}$ lower bound up to constants"
     ]
   },
   "sections": [
     {
-      "id": "graph-basics",
+      "id": "sec-1009-imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib, opens `Finset` and `SimpleGraph` namespaces, declares variables $V$ with `[Fintype V] [DecidableEq V]`.",
+      "startLine": 33,
+      "endLine": 43
+    },
+    {
+      "id": "sec-1009-graph-basics",
       "title": "Graph Basics",
-      "summary": "Vertex count, edge count, and Turán threshold definitions",
-      "startLine": 37,
+      "summary": "Defines `numVertices G = |V|$, `numEdges G = |E(G)|$, and `turanThreshold n = \\lfloor n^2/4 \\rfloor$, the Turán number $\\text{ex}(n, K_3)$.",
+      "startLine": 45,
       "endLine": 53
     },
     {
-      "id": "triangles",
+      "id": "sec-1009-triangles",
       "title": "Triangles and Edge-Disjointness",
-      "summary": "Triangle structure and disjointness conditions",
+      "summary": "Defines `Triangle G` (structure with adjacency proofs), `Triangle.edges` ($\\{\\{a,b\\},\\{b,c\\},\\{a,c\\}\\}$), `edgeDisjoint`, `pairwiseEdgeDisjoint`, and `maxEdgeDisjointTriangles` ($\\nu_3(G)$ via `sSup`).",
       "startLine": 55,
       "endLine": 85
     },
     {
-      "id": "main-problem",
-      "title": "The Main Problem",
-      "summary": "Györi's theorem on edge-disjoint triangles",
+      "id": "sec-1009-main",
+      "title": "Györi's Main Theorem",
+      "summary": "Defines `excessEdges G = |E(G)| - \\lfloor n^2/4 \\rfloor$ and axiomatizes Györi's result: $\\nu_3(G) \\geq k - f(c)$ when $k < cn$, with $f(c) \\leq Cc^2$.",
       "startLine": 87,
       "endLine": 112
     },
     {
-      "id": "erdos-partial",
-      "title": "Erdős's Partial Result",
-      "summary": "The case f(c) = 0 for small c",
+      "id": "sec-1009-partial",
+      "title": "Erdős's Partial Result and Refinements",
+      "summary": "Axiomatizes $f(c) = 0$ for $c < 1/2$ (Erdős), $c < 2$ for odd $n$, and $c < 3/2$ for even $n$ (Györi). The parity refinements reflect the structure of the Turán graph.",
       "startLine": 114,
       "endLine": 145
     },
     {
-      "id": "sauer",
+      "id": "sec-1009-sauer",
       "title": "Sauer's Counterexample",
-      "summary": "Complete tripartite graph showing f(2) ≥ 1",
+      "summary": "Defines `completeTripartite a b c` on `Fin a ⊕ Fin b ⊕ Fin c`. Axiomatizes Sauer's result: $K_{1,m,m}$ has $2m$ excess edges but $\\nu_3 = 2m - 1$, proving $f(2) \\geq 1$.",
       "startLine": 147,
       "endLine": 172
     },
     {
-      "id": "corollaries",
-      "title": "Corollaries",
-      "summary": "Connection to Turán's theorem",
+      "id": "sec-1009-corollaries",
+      "title": "Turán's Theorem and Corollaries",
+      "summary": "Axiomatizes Turán's theorem ($G$ triangle-free $\\implies |E| \\leq \\lfloor n^2/4 \\rfloor$) and proves `exceeds_turan_has_triangle` by contraposition—the only fully verified theorem in the file.",
       "startLine": 174,
       "endLine": 194
     }
@@ -116,9 +132,11 @@
     "summary": "Györi (1988) proved the conjecture with f(c) ≪ c². This bound is optimal up to constants, as shown by Sauer's construction. The result reveals the structure of dense graphs: excess edges beyond Turán threshold must organize into nearly edge-disjoint triangles.",
     "implications": "This connects Turán-type extremal graph theory with matching/packing problems. Understanding how triangles 'pack' in dense graphs has applications to triangle removal lemmas and regularity methods.",
     "openQuestions": [
-      "What is the exact value of the constant in f(c) ≤ Cc²?",
-      "Can similar results be proved for edge-disjoint K₄ or larger cliques?",
-      "What is the computational complexity of finding the maximum edge-disjoint triangle packing?"
+      "What is the exact optimal constant $C$ in $f(c) \\leq Cc^2$? Hunter's simplified proof may give better constants.",
+      "Can similar results be proved for edge-disjoint copies of $K_4$ or larger cliques beyond the Turán threshold $\\text{ex}(n, K_r)$?",
+      "What is the computational complexity of finding the maximum edge-disjoint triangle packing? The fractional relaxation is polynomial, but the integer version is NP-hard in general.",
+      "Is there a common generalization for edge-disjoint copies of arbitrary graphs $H$ beyond the Turán threshold $\\text{ex}(n, H)$?",
+      "Can the parity-dependent thresholds ($c < 2$ for odd $n$, $c < 3/2$ for even $n$) be unified into a single formula depending on $n \\bmod 2$?"
     ]
   }
 }
