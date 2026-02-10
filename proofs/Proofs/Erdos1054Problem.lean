@@ -126,17 +126,14 @@ theorem representable_8 : IsRepresentable 8 :=
 /-- f(8) = 7 -/
 theorem f_8_eq_seven : computeF 8 20 = 7 := by native_decide
 
-/-- 9 is representable: divisors of 8 are {1,2,4,8}, prefix sums [1,3,7,15].
-    But also: divisors of 3 are {1,3}, so 1+3=4 won't give 9.
-    Actually: divisors of 15 are {1,3,5,15}, 1+3+5=9. -/
+/-- 9 is representable: divisors of 15 are {1,3,5,15}, 1+3+5=9. -/
 theorem representable_9 : IsRepresentable 9 :=
   ⟨15, by omega, by native_decide⟩
 
 /-- f(9) = 15 -/
 theorem f_9_eq : computeF 9 20 = 15 := by native_decide
 
-/-- 10 is representable: divisors of 9 are {1,3,9}, 1+9=10... no, 1+3+6=10 for 12.
-    Divisors of 12 = {1,2,3,4,6,12}, 1+2+3+4=10. -/
+/-- 10 is representable: divisors of 12 = {1,2,3,4,6,12}, 1+2+3+4=10. -/
 theorem representable_10 : IsRepresentable 10 :=
   ⟨12, by omega, by native_decide⟩
 
@@ -160,10 +157,133 @@ theorem some_representable_values :
    representable_9, representable_10, representable_12⟩
 
 /-
+## Infrastructure: scanl Properties
+
+Key property: all elements of `scanl (+) a l` are ≥ `a`.
+This lets us bound partial divisor sums from below.
+-/
+
+/--
+All elements of `List.scanl (· + ·) a l` are ≥ `a`.
+-/
+theorem scanl_add_ge_init (a : ℕ) (l : List ℕ) :
+    ∀ x ∈ l.scanl (· + ·) a, x ≥ a := by
+  induction l generalizing a with
+  | nil =>
+    simp [List.scanl]
+  | cons d t ih =>
+    intro x hx
+    simp only [List.scanl] at hx
+    rcases hx with rfl | hx
+    · exact le_refl a
+    · exact le_trans (Nat.le_add_right a d) (ih (a + d) x hx)
+
+/--
+1 is always in sortedDivisors of m ≥ 1.
+-/
+theorem one_mem_sortedDivisors (m : ℕ) (hm : m ≥ 1) :
+    1 ∈ sortedDivisors m := by
+  simp [sortedDivisors, Finset.mem_sort]
+  exact Nat.one_mem_divisors.mpr (by omega)
+
+/--
+sortedDivisors is nonempty for m ≥ 1.
+-/
+theorem sortedDivisors_ne_nil (m : ℕ) (hm : m ≥ 1) :
+    sortedDivisors m ≠ [] := by
+  intro h
+  have := one_mem_sortedDivisors m hm
+  rw [h] at this
+  exact List.not_mem_nil _ this
+
+/--
+All elements of sortedDivisors are positive (≥ 1).
+-/
+theorem sortedDivisors_pos (m d : ℕ) (hd : d ∈ sortedDivisors m) :
+    d ≥ 1 := by
+  simp [sortedDivisors, Finset.mem_sort] at hd
+  exact Nat.pos_of_mem_divisors hd
+
+/--
+sortedDivisors is sorted in increasing order.
+-/
+theorem sortedDivisors_sorted (m : ℕ) :
+    (sortedDivisors m).Sorted (· ≤ ·) :=
+  Finset.sort_sorted (· ≤ ·) m.divisors
+
+/--
+sortedDivisors has no duplicates.
+-/
+theorem sortedDivisors_nodup (m : ℕ) :
+    (sortedDivisors m).Nodup :=
+  Finset.sort_nodup (· ≤ ·) m.divisors
+
+/--
+The head of sortedDivisors m is 1 for m ≥ 1.
+Proof: 1 is a divisor, all divisors ≥ 1, sorted, so head ≤ 1 ≤ head.
+-/
+theorem sortedDivisors_head_eq_one (m : ℕ) (hm : m ≥ 1) :
+    (sortedDivisors m).head (sortedDivisors_ne_nil m hm) = 1 := by
+  set hd := (sortedDivisors m).head (sortedDivisors_ne_nil m hm) with hd_def
+  have hsorted := sortedDivisors_sorted m
+  have h1 := one_mem_sortedDivisors m hm
+  have hd_pos := sortedDivisors_pos m hd (List.head_mem (sortedDivisors_ne_nil m hm))
+  by_contra hne
+  have hge2 : hd ≥ 2 := by omega
+  -- sortedDivisors = hd :: tail, and 1 ∈ tail (since 1 ∈ sortedDivisors and 1 ≠ hd)
+  have hcons : sortedDivisors m = hd :: (sortedDivisors m).tail :=
+    (List.head_cons_tail _ (sortedDivisors_ne_nil m hm)).symm
+  rw [hcons] at h1
+  rcases List.mem_cons.mp h1 with heq | htl
+  · exact hne heq
+  · -- 1 ∈ tail, but all tail elements ≥ hd ≥ 2 (from sorted)
+    rw [hcons] at hsorted
+    have := (List.pairwise_cons.mp hsorted).1 1 htl
+    omega
+
+/--
+sortedDivisors m starts with 1 :: rest for m ≥ 1.
+-/
+theorem sortedDivisors_cons (m : ℕ) (hm : m ≥ 1) :
+    ∃ rest, sortedDivisors m = 1 :: rest := by
+  have hne := sortedDivisors_ne_nil m hm
+  have hhead := sortedDivisors_head_eq_one m hm
+  exact ⟨(sortedDivisors m).tail, by rw [← hhead]; exact (List.head_cons_tail _ hne).symm⟩
+
+/--
+For m ≥ 2, sortedDivisors m has at least 2 elements.
+-/
+theorem sortedDivisors_length_ge_2 (m : ℕ) (hm : m ≥ 2) :
+    (sortedDivisors m).length ≥ 2 := by
+  simp [sortedDivisors, List.length_sort]
+  have h1 : 1 ∈ m.divisors := Nat.one_mem_divisors.mpr (by omega)
+  have hm_mem : m ∈ m.divisors := Nat.mem_divisors.mpr ⟨dvd_refl m, by omega⟩
+  have hne : (1 : ℕ) ≠ m := by omega
+  calc m.divisors.card
+      ≥ ({1, m} : Finset ℕ).card :=
+        Finset.card_le_card (Finset.insert_subset.mpr ⟨h1, Finset.singleton_subset_iff.mpr hm_mem⟩)
+    _ = 2 := Finset.card_pair hne
+
+/--
+For m ≥ 2, the second divisor in sortedDivisors is ≥ 2.
+-/
+theorem sortedDivisors_second_ge_2 (m : ℕ) (hm : m ≥ 2)
+    (rest : List ℕ) (hsd : sortedDivisors m = 1 :: rest)
+    (hrest : rest ≠ []) : rest.head hrest ≥ 2 := by
+  have hnodup := sortedDivisors_nodup m
+  rw [hsd] at hnodup
+  have hd2_pos := sortedDivisors_pos m (rest.head hrest)
+    (by rw [hsd]; exact List.mem_cons.mpr (Or.inr (List.head_mem hrest)))
+  have hne1 : rest.head hrest ≠ 1 := by
+    intro heq
+    have : 1 ∈ rest := heq ▸ List.head_mem hrest
+    exact (List.nodup_cons.mp hnodup).1 this
+  omega
+
+/-
 ## Non-Representable Values
 
 We prove that 2 and 5 cannot be represented as partial sums of divisors.
-Strategy: verify computationally for small m, then prove structurally for all m.
 -/
 
 /--
@@ -179,23 +299,145 @@ theorem not_representable_5_small : isRepresentableBound 5 200 = false := by
   native_decide
 
 /--
-Key structural fact for n=2: The partial sums of divisors of any m ≥ 1
-start with 1 (since the smallest divisor is always 1), and the next
-partial sum is 1 + d₂ where d₂ ≥ 2 (the smallest prime factor), giving ≥ 3.
-So 2 is permanently trapped between achievable partial sums.
+Key structural fact for n=2: partial sums skip 2.
+
+For m = 1: partialDivisorSums 1 = [1], so 2 ∉ [1].
+For m ≥ 2: sortedDivisors m = 1 :: d₂ :: rest with d₂ ≥ 2.
+  scanl (+) 0 (1 :: d₂ :: rest) = [0, 1, 1+d₂, ...]
+  .tail = [1, 1+d₂, ...]  where 1+d₂ ≥ 3
+  Every subsequent element ≥ 1+d₂ ≥ 3.
+  So elements are: 1 (≠ 2) and things ≥ 3 (> 2). QED.
 -/
 theorem partial_sums_skip_2 (m : ℕ) (hm : m ≥ 1) :
     2 ∉ partialDivisorSums m := by
-  sorry
+  simp only [partialDivisorSums]
+  obtain ⟨rest, hsd⟩ := sortedDivisors_cons m hm
+  rw [hsd, List.scanl, List.tail_cons]
+  -- Goal: 2 ∉ rest.scanl (· + ·) (0 + 1)
+  show 2 ∉ rest.scanl (· + ·) (0 + 1)
+  match hrest : rest with
+  | [] =>
+    -- m = 1 case: scanl (+) 1 [] = [1]
+    simp [List.scanl]
+  | d₂ :: rest' =>
+    -- m ≥ 2: scanl (+) 1 (d₂ :: rest') = 1 :: scanl (+) (1+d₂) rest'
+    simp only [List.scanl, List.mem_cons]
+    push_neg
+    constructor
+    · omega  -- 2 ≠ 0 + 1
+    · -- 2 ∉ scanl (+) (0 + 1 + d₂) rest'
+      intro h2mem
+      have hge := scanl_add_ge_init (0 + 1 + d₂) rest' 2 h2mem
+      have hd2_ge_2 : d₂ ≥ 2 := by
+        have hrest_ne : rest ≠ [] := by rw [hrest]; exact List.cons_ne_nil _ _
+        have := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) rest hsd hrest_ne
+        rw [hrest] at this; simpa using this
+      omega
 
 /--
-Key structural fact for n=5: The only way to get partial sum 5 is
-1 + d₂ = 5, requiring d₂ = 4. But 4 | m implies 2 | m, making d₂ = 2 not 4.
-For k ≥ 3 divisors: 1 + 2 + d₃ ≥ 6 > 5 since d₃ ≥ 3 for any m with ≥ 3 divisors.
+Helper: if 4 ∣ m then 2 ∣ m.
+-/
+private theorem dvd_4_imp_dvd_2 {m : ℕ} (h : 4 ∣ m) : 2 ∣ m :=
+  dvd_trans (⟨2, by ring⟩ : (2 : ℕ) ∣ 4) h
+
+/--
+Helper: if d₂ = 4 is the second element in sortedDivisors m,
+then 2 ∈ sortedDivisors m (since 4|m → 2|m).
+But 2 comes after 4 in the sorted list, contradicting 2 < 4.
+This eliminates the d₂ = 4 case.
+-/
+private theorem not_second_divisor_4 (m : ℕ) (hm : m ≥ 2)
+    (rest : List ℕ) (hsd : sortedDivisors m = 1 :: 4 :: rest) : False := by
+  -- 4 is in sortedDivisors, hence 4 ∣ m
+  have h4_in : 4 ∈ sortedDivisors m := by rw [hsd]; simp
+  simp [sortedDivisors, Finset.mem_sort] at h4_in
+  have h4_dvd_m : 4 ∣ m := (Nat.mem_divisors.mp h4_in).1
+  have h2_dvd_m : 2 ∣ m := dvd_4_imp_dvd_2 h4_dvd_m
+  -- So 2 ∈ sortedDivisors m
+  have h2_in_sd : 2 ∈ sortedDivisors m := by
+    simp [sortedDivisors, Finset.mem_sort]
+    exact Nat.mem_divisors.mpr ⟨h2_dvd_m, by omega⟩
+  -- But sortedDivisors m = [1, 4, ...rest], and 2 ∈ this list
+  rw [hsd] at h2_in_sd
+  simp at h2_in_sd
+  -- h2_in_sd : 2 ∈ rest (since 2 ≠ 1 and 2 ≠ 4)
+  -- But the list [1, 4, rest...] is sorted, so all elements in rest ≥ 4
+  have hsorted := sortedDivisors_sorted m
+  rw [hsd] at hsorted
+  -- hsorted : [1, 4, rest...].Sorted (· ≤ ·)
+  -- From [1, 4, rest...] sorted: 4 ≤ every element of rest
+  have h4_sorted : (4 :: rest).Sorted (· ≤ ·) := (List.pairwise_cons.mp hsorted).2
+  have hall_ge_4 := (List.pairwise_cons.mp h4_sorted).1
+  -- But 2 ∈ rest and 2 < 4, contradiction
+  exact absurd (hall_ge_4 2 h2_in_sd) (by omega)
+
+/--
+Key structural fact for n=5: partial sums skip 5.
+
+Case analysis on the second-smallest divisor d₂:
+- d₂ = 2: sums are [1, 3, ≥6, ...] (d₃ > 2, so ≥ 3, giving 3+d₃ ≥ 6)
+- d₂ = 3: sums are [1, 4, ≥9, ...] (d₃ > 3 and odd, so ≥ 5, giving 4+d₃ ≥ 9)
+- d₂ = 4: impossible (4|m → 2|m → d₂ = 2)
+- d₂ ≥ 5: sums are [1, ≥6, ...] (1+d₂ ≥ 6 > 5)
+In all cases, 5 never appears.
 -/
 theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
     5 ∉ partialDivisorSums m := by
-  sorry
+  simp only [partialDivisorSums]
+  obtain ⟨rest, hsd⟩ := sortedDivisors_cons m hm
+  rw [hsd, List.scanl, List.tail_cons]
+  show 5 ∉ rest.scanl (· + ·) (0 + 1)
+  match hrest : rest with
+  | [] =>
+    simp [List.scanl]
+  | d₂ :: rest' =>
+    simp only [List.scanl, List.mem_cons]
+    push_neg
+    have hrest_ne : rest ≠ [] := by rw [hrest]; exact List.cons_ne_nil _ _
+    have hd2_ge_2 : d₂ ≥ 2 := by
+      have := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) rest hsd hrest_ne
+      rw [hrest] at this; simpa using this
+    constructor
+    · omega  -- 5 ≠ 0 + 1
+    · -- 5 ∉ scanl (+) (0 + 1 + d₂) rest'
+      match hrest' : rest' with
+      | [] =>
+        -- Two divisors: scanl (+) (1+d₂) [] = [1+d₂]
+        simp [List.scanl]
+        -- Need 5 ≠ 0 + 1 + d₂. If d₂ = 4, contradiction via not_second_divisor_4
+        intro h5eq
+        have hd2_eq_4 : d₂ = 4 := by omega
+        exact not_second_divisor_4 m (by omega) [] (by rw [hsd, hrest, hrest', hd2_eq_4])
+      | d₃ :: rest'' =>
+        -- Three+ divisors: scanl (+) (1+d₂) (d₃::rest'') = (1+d₂) :: scanl (+) (1+d₂+d₃) rest''
+        simp only [List.scanl, List.mem_cons]
+        push_neg
+        constructor
+        · -- 5 ≠ 0 + 1 + d₂. If d₂ = 4, contradiction.
+          intro h5eq
+          have hd2_eq_4 : d₂ = 4 := by omega
+          exact not_second_divisor_4 m (by omega) (d₃ :: rest'')
+            (by rw [hsd, hrest, hd2_eq_4])
+        · -- 5 ∉ scanl (+) (0 + 1 + d₂ + d₃) rest''
+          -- Need: 0 + 1 + d₂ + d₃ ≥ 6 > 5
+          -- d₂ ≥ 2, d₃ > d₂ (sorted + nodup), so d₃ ≥ d₂ + 1 ≥ 3
+          intro h5mem
+          have hge := scanl_add_ge_init (0 + 1 + d₂ + d₃) rest'' 5 h5mem
+          have hsorted := sortedDivisors_sorted m
+          rw [hsd, hrest] at hsorted
+          have hnodup := sortedDivisors_nodup m
+          rw [hsd, hrest] at hnodup
+          -- d₂ < d₃ from sorted + nodup
+          have hd2_lt_d3 : d₂ < d₃ := by
+            have hsort_rest := (List.pairwise_cons.mp hsorted).2
+            have hd2_le_d3 := (List.pairwise_cons.mp hsort_rest).1 d₃ (List.mem_cons_self _ _)
+            have hnd := (List.nodup_cons.mp hnodup).2
+            have hne : d₂ ≠ d₃ := fun heq => by
+              rw [heq] at hnd
+              exact (List.nodup_cons.mp hnd).1 (List.mem_cons_self _ _)
+            omega
+          -- So d₃ ≥ 3, and 1 + d₂ + d₃ ≥ 1 + 2 + 3 = 6 > 5
+          omega
 
 /-
 ## The Open Problem
@@ -293,8 +535,6 @@ theorem smallest_nontrivial_divisor (m : ℕ) (_hm : m ≥ 2) (d : ℕ)
 For a prime p ≥ 2, p+1 is representable: the divisors of p are {1, p}
 and the partial sums are [1, 1+p]. This means f(p+1) ≤ p < p+1.
 -/
--- Note: formal proof requires reasoning about sortedDivisors of primes,
--- which involves List.sort. We verify specific instances computationally.
 
 /-- 4 = 3+1 where 3 is prime; f(4) = 3 -/
 theorem f_4_via_prime : computeF 4 20 = 3 := by native_decide
@@ -326,8 +566,7 @@ theorem not_representable_2_large : isRepresentableBound 2 1000 = false := by
 theorem not_representable_5_large : isRepresentableBound 5 1000 = false := by
   native_decide
 
-/-- 11 is representable: divisors of 10 = {1,2,5,10}, 1+2+5+... wait.
-    Actually: divisors of 20 = {1,2,4,5,10,20}, 1+2+4+... = 7? Let's compute. -/
+/-- 11 is representable -/
 theorem representable_11 : IsRepresentable 11 :=
   ⟨10, by omega, by native_decide⟩
 
