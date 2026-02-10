@@ -24,6 +24,7 @@
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-19",
     "mathlib_version": "4.15.0",
+    "relatedProofs": ["erdos-14", "erdos-160", "erdos-175"],
     "mathlibDependencies": [
       {
         "theorem": "Finset.powerset",
@@ -60,7 +61,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #748: The Cameron-Erdős Conjecture**\n\nA foundational question in additive combinatorics about counting sum-free sets.\n\n**Key History:**\n- Cameron-Erdős: Posed the conjecture about the growth rate of f(n)\n- Green (2004): Proved f(n) ≪ 2^{n/2} in Bull. London Math. Soc.\n- Sapozhenko (2003): Proved independently in Dokl. Akad. Nauk\n\n**Mathematical Setting:**\nA set A is sum-free if a = b + c with a,b,c ∈ A has no solutions. The conjecture asks if the number of such subsets of {1,...,n} is essentially 2^{n/2}.",
+    "historicalContext": "Peter Cameron and Paul Erdős conjectured that the number $f(n)$ of sum-free subsets of $\\{1, \\ldots, n\\}$ satisfies $f(n) = 2^{(1+o(1))n/2}$, meaning the trivial lower bound from the upper half construction is essentially tight. The lower bound $f(n) \\ge 2^{\\lfloor n/2 \\rfloor}$ is elementary: any subset of $\\{\\lceil n/2 \\rceil, \\ldots, n\\}$ is sum-free since all pairwise sums exceed $n$. The conjecture was resolved independently by Ben Green (2004, Bull. London Math. Soc.) and Alexander Sapozhenko (2003, Dokl. Akad. Nauk). Green's proof introduced a proto-container argument: he showed that sum-free subsets are 'almost contained' in structured templates — either subsets of the upper half or subsets of odd numbers — and bounded the template count. This structural insight anticipated the Balogh-Morris-Samotij / Saxton-Thomason hypergraph container method (2015), one of the most powerful tools in modern combinatorics. More precisely, $f(n) \\sim c_n \\cdot 2^{n/2}$ where $c_n$ depends on the parity of $n$, reflecting the two dominant sum-free families (upper half for even $n$, odd numbers for odd $n$). The problem connects to Schur numbers in Ramsey theory and to the broader program of counting combinatorial structures avoiding prescribed patterns.",
     "problemStatement": "**Problem Statement (Proved)**\n\nLet f(n) count sum-free subsets of {1,...,n}. Is it true that f(n) = 2^{(1+o(1))n/2}?\n\n**Answer: YES**\n\nGreen and Sapozhenko proved independently:\n1. f(n) ≪ 2^{n/2} (upper bound matches lower)\n2. f(n) ~ c_n · 2^{n/2} where c_n depends on parity of n",
     "proofStrategy": "**Formalization Approach**\n\n1. **Sum-Free Sets:** Define IsSumFree predicate and counting function f(n).\n\n2. **Lower Bound:** Prove upperHalf_sumFree showing any subset of [n/2+1, n] is sum-free, giving f(n) ≥ 2^{n/2}.\n\n3. **Upper Bound:** Axiomatize Green's theorem f(n) ≤ C · 2^{n/2}.\n\n4. **Examples:** Prove empty set, singletons, and odd numbers are sum-free.\n\n5. **The Conjecture:** Define cameronErdosConjecture formally and show it holds.",
     "keyInsights": [
@@ -75,63 +76,63 @@
     {
       "id": "sum-free-definition",
       "title": "Sum-Free Sets",
-      "summary": "IsSumFree definition, IsSumFree' alternative, equivalence theorem",
+      "summary": "Defines `IsSumFree A`: $\\forall a,b,c \\in A,\\; a \\ne b + c$. Alternative `IsSumFree'` and proved equivalence `sumFree_iff`.",
       "startLine": 44,
       "endLine": 70
     },
     {
       "id": "counting",
       "title": "Counting Sum-Free Sets",
-      "summary": "sumFreeSubsets, f(n) counting function",
+      "summary": "Defines `sumFreeSubsets n` (filtered power set of $\\{0,\\ldots,n-1\\}$) and $f(n) = |\\text{sumFreeSubsets}(n)|$ (OEIS A007865).",
       "startLine": 72,
       "endLine": 87
     },
     {
       "id": "lower-bound",
       "title": "Trivial Lower Bound",
-      "summary": "upperHalf_sumFree theorem, trivial_lower_bound axiom",
+      "summary": "Proves `upperHalf_sumFree`: subsets of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ are sum-free (sums exceed $n$). Axiomatizes $f(n) \\ge 2^{n/2}$.",
       "startLine": 89,
       "endLine": 112
     },
     {
       "id": "conjecture",
       "title": "The Cameron-Erdős Conjecture",
-      "summary": "cameronErdosConjecture formal definition",
+      "summary": "Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$.",
       "startLine": 114,
       "endLine": 128
     },
     {
       "id": "solution",
       "title": "The Solution",
-      "summary": "green_upper_bound, sapozhenko_upper_bound, precise_asymptotic axioms",
+      "summary": "Axiomatizes Green's $f(n) \\le C \\cdot 2^{n/2}$, Sapozhenko's independent result, and the precise $f(n) \\sim c_n \\cdot 2^{n/2}$ with parity-dependent constants. Proves `cameron_erdos_proved`.",
       "startLine": 130,
       "endLine": 173
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "empty_sumFree, singleton_sumFree, oddNumbers_sumFree theorems",
+      "summary": "Proves `empty_sumFree` (vacuous), `singleton_sumFree` ($x \\ne 2x$ for $x > 0$), and `oddNumbers_sumFree` (odd + odd = even $\\ne$ odd).",
       "startLine": 175,
       "endLine": 210
     },
     {
       "id": "structure",
       "title": "Structure of Sum-Free Sets",
-      "summary": "structure_theorem, schur_connection axioms",
+      "summary": "Axiomatizes that $f(n) \\le 10(2^{n/2} + 2^{(n+1)/2})$ for $n \\ge 100$ (two dominant types) and the maximum sum-free set size $\\lceil n/2 \\rceil$ (Schur connection).",
       "startLine": 212,
       "endLine": 238
     },
     {
       "id": "oeis",
       "title": "OEIS A007865",
-      "summary": "Small values f(1), f(2), f(3)",
+      "summary": "Axiomatizes small values from OEIS A007865: $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. These match the known sequence and verify the counting function against explicit enumeration.",
       "startLine": 240,
       "endLine": 255
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_748_summary, erdos_748 main theorems",
+      "summary": "Combines all results into `erdos_748_summary`: the conjecture $f(n) = 2^{(1+o(1))n/2}$ is TRUE (Green 2004, Sapozhenko 2003). The main theorem `erdos_748` packages the lower bound, upper bound, and precise asymptotic $f(n) \\sim c_n \\cdot 2^{n/2}$.",
       "startLine": 257,
       "endLine": 292
     }
