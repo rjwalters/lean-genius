@@ -5,8 +5,11 @@
     "range": { "startLine": 1, "endLine": 20 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #1048: Polynomial Lemniscate Diameter**\n\nFor monic f ∈ ℂ[x] with roots in |z| ≤ r where r < 2, must L(f,1) have a component with diameter > 2-r?\n\n**Status**: DISPROVED by Pommerenke (1961) for r > 1.\n\n**Counterexample**: f(z) = z^n - r^n for large n.",
-    "significance": "critical"
+    "content": "**Erdős Problem #1048: Polynomial Lemniscate Diameter**\n\nFor a monic polynomial $f \\in \\mathbb{C}[x]$ with all roots satisfying $|z| \\le r$ where $r < 2$, must the sublevel set $L(f,1) = \\{z : |f(z)| < 1\\}$ contain a connected component with diameter greater than $2 - r$? Pommerenke (1961) showed this is FALSE for $r > 1$ using the counterexample $f(z) = z^n - r^n$, whose lemniscate splits into $n$ components with vanishing diameter as $n \\to \\infty$.",
+    "mathContext": "$L(f, 1) = \\{z \\in \\mathbb{C} : |f(z)| < 1\\}$; question: $\\exists$ component with $\\text{diam} > 2 - r$?",
+    "significance": "critical",
+    "relatedConcepts": ["lemniscates", "polynomial sublevel sets", "Pommerenke's theorem", "logarithmic capacity"],
+    "prerequisites": ["complex polynomials", "connected components", "metric space diameter"]
   },
   {
     "id": "ann-1048-monic",
@@ -14,8 +17,11 @@
     "range": { "startLine": 34, "endLine": 35 },
     "type": "definition",
     "title": "Monic Polynomial",
-    "content": "**IsMonic f**: A polynomial is monic if its leading coefficient is 1.\n\nMonic polynomials have nice asymptotic behavior: |f(z)| ~ |z|^n as |z| → ∞.",
-    "significance": "supporting"
+    "content": "A polynomial is monic if its leading coefficient is 1. For a degree-$n$ monic polynomial, $|f(z)| \\sim |z|^n$ as $|z| \\to \\infty$, which ensures the lemniscate $L(f, c)$ is bounded. The monic condition normalizes the problem, as scaling $f$ by a constant simply rescales the lemniscate level.",
+    "mathContext": "$f(z) = z^n + a_{n-1}z^{n-1} + \\cdots + a_0$, so $\\text{leadingCoeff}(f) = 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["leading coefficient", "polynomial normalization", "asymptotic growth"],
+    "prerequisites": ["polynomial ring", "degree"]
   },
   {
     "id": "ann-1048-roots",
@@ -23,8 +29,11 @@
     "range": { "startLine": 37, "endLine": 39 },
     "type": "definition",
     "title": "Roots",
-    "content": "**roots f**: The set of zeros of polynomial f.\n\nroots f = {z ∈ ℂ : f(z) = 0}",
-    "significance": "supporting"
+    "content": "The zero set of a complex polynomial: $\\text{roots}(f) = \\{z \\in \\mathbb{C} : f(z) = 0\\}$. By the Fundamental Theorem of Algebra, a degree-$n$ polynomial has exactly $n$ roots (counted with multiplicity). The distribution of roots profoundly affects the geometry of the lemniscate.",
+    "mathContext": "$\\text{roots}(f) = f^{-1}(\\{0\\}) = \\{z \\in \\mathbb{C} : f(z) = 0\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Fundamental Theorem of Algebra", "root distribution", "zero set"],
+    "prerequisites": ["polynomial evaluation", "complex zeros"]
   },
   {
     "id": "ann-1048-bounded",
@@ -32,8 +41,11 @@
     "range": { "startLine": 41, "endLine": 43 },
     "type": "definition",
     "title": "Root Bound",
-    "content": "**RootsBoundedBy f r**: All roots satisfy |z| ≤ r.\n\nThis constraint on root location is the key hypothesis.",
-    "significance": "key"
+    "content": "The constraint that all roots lie in the closed disk $\\{z : |z| \\le r\\}$. This is the key hypothesis of the EHP conjecture: the tighter the root containment (smaller $r$), the more the lemniscate should resemble the unit disk $L(z^n, 1) = \\{|z| < 1\\}$, which has diameter 2.",
+    "mathContext": "$\\text{RootsBoundedBy}(f, r) \\iff \\forall z,\\ f(z) = 0 \\Rightarrow |z| \\le r$",
+    "significance": "key",
+    "relatedConcepts": ["disk containment", "Cauchy bound", "root radius"],
+    "prerequisites": ["complex modulus", "roots"]
   },
   {
     "id": "ann-1048-struct",
@@ -41,8 +53,11 @@
     "range": { "startLine": 45, "endLine": 50 },
     "type": "definition",
     "title": "BoundedMonicPoly",
-    "content": "**BoundedMonicPoly r**: A monic polynomial with all roots in |z| ≤ r.\n\nStructure fields:\n- poly: the polynomial\n- monic: leading coeff = 1\n- bounded: all roots in disk of radius r\n- nontrivial: degree ≥ 1",
-    "significance": "critical"
+    "content": "A Lean structure bundling a monic polynomial with root bound $r$ and nontriviality ($\\deg \\ge 1$). This is the type of polynomials appearing in the EHP conjecture, packaging the polynomial, its monicity, root constraint, and nontriviality into a single mathematical object.",
+    "mathContext": "$\\{f \\in \\mathbb{C}[x] : f \\text{ monic}, \\deg(f) \\ge 1, \\text{all roots in } \\overline{D}(0, r)\\}$",
+    "significance": "critical",
+    "relatedConcepts": ["dependent type", "bundled structure", "parameter space"],
+    "prerequisites": ["IsMonic", "RootsBoundedBy", "polynomial degree"]
   },
   {
     "id": "ann-1048-lemniscate",
@@ -50,8 +65,11 @@
     "range": { "startLine": 58, "endLine": 60 },
     "type": "definition",
     "title": "Lemniscate",
-    "content": "**lemniscate f c**: L(f, c) = {z ∈ ℂ : |f(z)| < c}.\n\nThe sublevel set of polynomial absolute value.\n\nClassically called a lemniscate after Bernoulli's work.",
-    "significance": "critical"
+    "content": "The polynomial lemniscate $L(f, c) = \\{z \\in \\mathbb{C} : |f(z)| < c\\}$, a strict sublevel set of the polynomial modulus. The name derives from Bernoulli's lemniscate $|z^2 - 1| = c$ (1694). For a degree-$n$ monic polynomial, the boundary $\\{|f| = c\\}$ is the level curve $\\{\\prod |z - z_i| = c\\}$, an equipotential of the Green's function.",
+    "mathContext": "$L(f, c) = \\{z : |f(z)| < c\\} = \\{z : \\prod_{i=1}^n |z - z_i| < c\\}$ for monic $f$",
+    "significance": "critical",
+    "relatedConcepts": ["sublevel set", "Bernoulli lemniscate", "polynomial modulus", "equipotential curve"],
+    "prerequisites": ["complex polynomial evaluation", "absolute value"]
   },
   {
     "id": "ann-1048-unit-lemn",
@@ -59,8 +77,11 @@
     "range": { "startLine": 65, "endLine": 66 },
     "type": "definition",
     "title": "Unit Lemniscate",
-    "content": "**unitLemniscate f**: L(f, 1) = {z : |f(z)| < 1}.\n\nThe lemniscate at level 1, central to the problem.",
-    "significance": "key"
+    "content": "The unit lemniscate $L(f, 1) = \\{z : |f(z)| < 1\\}$. For $f(z) = z^n$ (all roots at the origin), this is the open unit disk with diameter 2. As roots spread out, the lemniscate deforms and may split into multiple components.",
+    "mathContext": "$L(f, 1) = \\{z : |f(z)| < 1\\}$; for $f = z^n$, this is $\\{|z| < 1\\}$",
+    "significance": "key",
+    "relatedConcepts": ["unit disk", "level 1 sublevel set"],
+    "prerequisites": ["lemniscate definition"]
   },
   {
     "id": "ann-1048-open",
@@ -68,8 +89,11 @@
     "range": { "startLine": 68, "endLine": 71 },
     "type": "theorem",
     "title": "Lemniscates Open",
-    "content": "**lemniscate_isOpen**: L(f, c) is an open set for c > 0.\n\nFollows from continuity of |f(·)|.",
-    "significance": "supporting"
+    "content": "Lemniscates are open subsets of $\\mathbb{C}$, since $z \\mapsto |f(z)|$ is continuous and the preimage of $(-\\infty, c)$ under a continuous function is open.",
+    "mathContext": "$L(f, c) = |f|^{-1}((-\\infty, c))$ is open by continuity",
+    "significance": "supporting",
+    "relatedConcepts": ["continuity", "preimage of open set"],
+    "prerequisites": ["continuous functions", "topology of C"]
   },
   {
     "id": "ann-1048-lemn-bounded",
@@ -77,8 +101,11 @@
     "range": { "startLine": 73, "endLine": 76 },
     "type": "theorem",
     "title": "Lemniscates Bounded",
-    "content": "**lemniscate_bounded**: L(f, c) is bounded for monic f.\n\nSince |f(z)| → ∞ as |z| → ∞ for monic polynomials.",
-    "significance": "supporting"
+    "content": "For monic polynomials, $|f(z)| \\to \\infty$ as $|z| \\to \\infty$, so $L(f, c)$ is bounded. Boundedness ensures finite diameter for all components.",
+    "mathContext": "$f$ monic of degree $n \\Rightarrow L(f, c)$ bounded, since $|f(z)| \\ge |z|^n(1 - o(1))$",
+    "significance": "supporting",
+    "relatedConcepts": ["polynomial growth", "bounded sets", "coercivity"],
+    "prerequisites": ["monic polynomials", "growth at infinity"]
   },
   {
     "id": "ann-1048-component",
@@ -86,8 +113,11 @@
     "range": { "startLine": 84, "endLine": 86 },
     "type": "definition",
     "title": "Connected Component",
-    "content": "**ConnectedComponent S z**: The largest connected subset of S containing z.\n\nDefined as the union of all connected sets through z.",
-    "significance": "key"
+    "content": "The connected component of $z$ in $S$: the maximal connected subset containing $z$. For lemniscates, components correspond to 'lobes' around individual roots or clusters of roots. The number and diameters of these lobes are the central objects of study.",
+    "mathContext": "$C_z(S) = \\bigcup \\{A \\subseteq S : A \\text{ connected}, z \\in A\\}$",
+    "significance": "key",
+    "relatedConcepts": ["path-connectedness", "topological components", "lobes"],
+    "prerequisites": ["connected sets", "union of connected sets"]
   },
   {
     "id": "ann-1048-diameter",
@@ -95,8 +125,11 @@
     "range": { "startLine": 88, "endLine": 90 },
     "type": "definition",
     "title": "Diameter",
-    "content": "**diameter S**: The supremum of distances between points in S.\n\ndiam(S) = sup{|z - w| : z, w ∈ S}",
-    "significance": "key"
+    "content": "The diameter of $S \\subseteq \\mathbb{C}$: the supremum of pairwise distances. For bounded open sets, this equals the diameter of the closure.",
+    "mathContext": "$\\text{diam}(S) = \\sup\\{|z - w| : z, w \\in S\\}$",
+    "significance": "key",
+    "relatedConcepts": ["metric diameter", "geometric extent"],
+    "prerequisites": ["metric spaces", "supremum"]
   },
   {
     "id": "ann-1048-max-diam",
@@ -104,8 +137,11 @@
     "range": { "startLine": 92, "endLine": 94 },
     "type": "definition",
     "title": "Max Component Diameter",
-    "content": "**maxComponentDiameter f c**: Maximum diameter over all components of L(f, c).\n\nThe key quantity in the conjecture.",
-    "significance": "critical"
+    "content": "The maximum diameter over all connected components of the lemniscate. The EHP conjecture asserts this exceeds $2 - r$; Pommerenke showed it can be made arbitrarily small for $r > 1$.",
+    "mathContext": "$\\text{maxCompDiam}(f, c) = \\sup_{z \\in L(f,c)} \\text{diam}(C_z(L(f,c)))$",
+    "significance": "critical",
+    "relatedConcepts": ["extremal diameter", "component structure"],
+    "prerequisites": ["connected components", "diameter"]
   },
   {
     "id": "ann-1048-conjecture",
@@ -113,8 +149,11 @@
     "range": { "startLine": 102, "endLine": 107 },
     "type": "definition",
     "title": "EHP Conjecture",
-    "content": "**EHPConjecture (1958)**: For monic f with roots in |z| ≤ r < 2, some component of L(f,1) has diameter > 2-r.\n\nAsked by Erdős, Herzog, and Piranian.\n\nDisproved by Pommerenke (1961) for r > 1.",
-    "significance": "critical"
+    "content": "The Erdős-Herzog-Piranian conjecture (1958): for any monic polynomial with roots in $|z| \\le r$ ($r < 2$), the unit lemniscate has a component with diameter exceeding $2 - r$. The intuition was that root confinement near the origin forces a large central lobe.",
+    "mathContext": "$\\forall r < 2,\\ \\forall f \\in \\text{BoundedMonic}(r): \\text{maxCompDiam}(f, 1) > 2 - r$",
+    "significance": "critical",
+    "relatedConcepts": ["polynomial lemniscate conjecture", "EHP problem", "extremal polynomial theory"],
+    "prerequisites": ["BoundedMonicPoly", "maxComponentDiameter"]
   },
   {
     "id": "ann-1048-counter",
@@ -122,8 +161,11 @@
     "range": { "startLine": 115, "endLine": 117 },
     "type": "definition",
     "title": "Counterexample",
-    "content": "**pommerenkeCounterexample r n**: f(z) = z^n - r^n.\n\nRoots are the n-th roots of r^n, all at distance r from origin.\n\nFor r > 1, creates n small components.",
-    "significance": "critical"
+    "content": "Pommerenke's counterexample $f(z) = z^n - r^n$. Its roots are $r \\cdot e^{2\\pi ik/n}$ for $k = 0, \\ldots, n-1$: the $n$-th roots of unity scaled by $r$, uniformly distributed on $|z| = r$. For $r > 1$ and large $n$, the lemniscate splits into $n$ small neighborhoods of each root.",
+    "mathContext": "$f(z) = z^n - r^n$, roots: $\\{r \\cdot e^{2\\pi ik/n} : k = 0, \\ldots, n-1\\}$",
+    "significance": "critical",
+    "relatedConcepts": ["roots of unity", "uniform root distribution", "cyclic polynomial"],
+    "prerequisites": ["polynomial definition", "roots of unity"]
   },
   {
     "id": "ann-1048-counter-monic",
@@ -131,8 +173,11 @@
     "range": { "startLine": 119, "endLine": 122 },
     "type": "theorem",
     "title": "Counterexample Monic",
-    "content": "**counterexample_monic**: z^n - r^n is monic.\n\nLeading coefficient is 1.",
-    "significance": "supporting"
+    "content": "The polynomial $z^n - r^n$ is monic since its leading term is $z^n$ with coefficient 1.",
+    "mathContext": "$z^n - r^n = 1 \\cdot z^n + 0 \\cdot z^{n-1} + \\cdots - r^n$",
+    "significance": "supporting",
+    "relatedConcepts": ["monic verification"],
+    "prerequisites": ["polynomial leading coefficient"]
   },
   {
     "id": "ann-1048-counter-roots",
@@ -140,8 +185,11 @@
     "range": { "startLine": 124, "endLine": 128 },
     "type": "theorem",
     "title": "Counterexample Roots",
-    "content": "**counterexample_roots**: Roots of z^n - r^n are r·e^(2πik/n).\n\nThe n-th roots of r^n, evenly distributed on circle |z| = r.",
-    "significance": "key"
+    "content": "The roots of $z^n = r^n$ are $z = r \\cdot e^{2\\pi ik/n}$ for $k = 0, \\ldots, n-1$, uniformly spaced on the circle $|z| = r$ with angular separation $2\\pi/n$. As $n$ increases, roots become densely packed on the circle.",
+    "mathContext": "$z^n = r^n \\iff z = r \\cdot e^{2\\pi ik/n},\\ k = 0, 1, \\ldots, n-1$",
+    "significance": "key",
+    "relatedConcepts": ["roots of unity", "De Moivre's theorem", "circular distribution"],
+    "prerequisites": ["nth roots", "complex exponential"]
   },
   {
     "id": "ann-1048-counter-bounded",
@@ -149,8 +197,11 @@
     "range": { "startLine": 130, "endLine": 133 },
     "type": "theorem",
     "title": "Counterexample Bounded",
-    "content": "**counterexample_bounded**: All roots have |z| = r.\n\nSatisfies the hypothesis of roots bounded by r.",
-    "significance": "supporting"
+    "content": "All roots of $z^n - r^n$ have absolute value exactly $r$, satisfying the root bound. The roots lie on the boundary $|z| = r$, not just inside the disk.",
+    "mathContext": "$|r \\cdot e^{2\\pi ik/n}| = r$ for all $k$",
+    "significance": "supporting",
+    "relatedConcepts": ["modulus of roots of unity"],
+    "prerequisites": ["absolute value of complex exponential"]
   },
   {
     "id": "ann-1048-n-components",
@@ -158,8 +209,11 @@
     "range": { "startLine": 135, "endLine": 138 },
     "type": "axiom",
     "title": "N Components",
-    "content": "**counterexample_n_components**: L(z^n - r^n, 1) has n connected components.\n\nFor r > 1, the lemniscate splits into n separate pieces around each root.",
-    "significance": "key"
+    "content": "For $r > 1$, the lemniscate $L(z^n - r^n, 1)$ has $n$ connected components, one around each root. Since the roots have mutual distance $\\sim 2\\pi r/n$, for large $n$ the condition $\\prod |z - z_k| < 1$ can only hold near individual roots, as the product over distant roots contributes a factor $\\sim (nr^{n-1})$ that is large.",
+    "mathContext": "For $r > 1$: $L(z^n - r^n, 1)$ has $n$ components, each containing one root",
+    "significance": "key",
+    "relatedConcepts": ["lemniscate topology", "component splitting", "root isolation"],
+    "prerequisites": ["product representation", "connected components"]
   },
   {
     "id": "ann-1048-vanish",
@@ -167,8 +221,11 @@
     "range": { "startLine": 140, "endLine": 143 },
     "type": "axiom",
     "title": "Diameters Vanish",
-    "content": "**pommerenke_diameter_vanishes (1961)**: Component diameters → 0 as n → ∞.\n\nFor r > 1, the components shrink to points.\n\nThis disproves the conjecture: 2-r > 0 but max diameter → 0.",
-    "significance": "critical"
+    "content": "**Pommerenke (1961)**: for $r > 1$, the maximum component diameter of $L(z^n - r^n, 1)$ tends to 0 as $n \\to \\infty$. Near a root $z_k$, the product $\\prod_{j \\ne k} |z - z_j| \\approx nr^{n-1}$ grows exponentially in $n$, forcing $|z - z_k| < 1/(nr^{n-1})$ for the product to be less than 1. This shrinks the component diameter to zero.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall n \\ge N: \\text{maxCompDiam}(z^n - r^n, 1) < \\varepsilon$",
+    "significance": "critical",
+    "relatedConcepts": ["vanishing diameter", "asymptotic localization", "product estimate"],
+    "prerequisites": ["lemniscate components", "asymptotic analysis"]
   },
   {
     "id": "ann-1048-false",
@@ -176,8 +233,11 @@
     "range": { "startLine": 145, "endLine": 147 },
     "type": "theorem",
     "title": "Conjecture False",
-    "content": "**EHP_false_for_r_gt_1**: The EHP conjecture is FALSE.\n\nPommerenke's counterexample for r > 1 shows the conjecture fails.",
-    "significance": "critical"
+    "content": "The EHP conjecture is false: for $r > 1$, the counterexample $z^n - r^n$ has maximum component diameter tending to 0, eventually less than $2 - r > 0$, contradicting the conjecture.",
+    "mathContext": "$\\neg \\text{EHPConjecture}$",
+    "significance": "critical",
+    "relatedConcepts": ["disproof by counterexample"],
+    "prerequisites": ["pommerenke_diameter_vanishes", "EHPConjecture"]
   },
   {
     "id": "ann-1048-phi",
@@ -185,8 +245,11 @@
     "range": { "startLine": 155, "endLine": 156 },
     "type": "definition",
     "title": "Golden Ratio",
-    "content": "**φ_minus_1**: (√5 - 1)/2 ≈ 0.618.\n\nThe golden ratio minus 1, a critical threshold in Pommerenke's results.",
-    "significance": "key"
+    "content": "The value $(\\sqrt{5}-1)/2 = 1/\\varphi \\approx 0.618$, the reciprocal of the golden ratio. This emerges as a critical threshold in Pommerenke's positive results: the diameter bound formula changes at $r = (\\sqrt{5}-1)/2$, the unique positive root of $r^2 + r = 1$.",
+    "mathContext": "$\\varphi^{-1} = \\frac{\\sqrt{5}-1}{2} \\approx 0.618$, satisfying $r^2 + r = 1$",
+    "significance": "key",
+    "relatedConcepts": ["golden ratio", "quadratic irrationality", "critical threshold"],
+    "prerequisites": ["square roots", "real analysis"]
   },
   {
     "id": "ann-1048-small-r",
@@ -194,8 +257,11 @@
     "range": { "startLine": 162, "endLine": 165 },
     "type": "axiom",
     "title": "Case r ≤ 1/2",
-    "content": "**pommerenke_case_small_r**: For r ≤ 1/2, the component containing 0 has diameter ≥ 2.\n\nThis is optimal, achieved by f(z) = z^n.",
-    "significance": "key"
+    "content": "For $r \\le 1/2$, the component containing the origin has diameter $\\ge 2$. Roots tightly clustered near the origin ($r \\le 1/2$) keep the lemniscate close to the unit disk. The bound is sharp: $f(z) = z^n$ achieves exactly diameter 2.",
+    "mathContext": "$r \\le 1/2,\\ 0 \\in L(f,1) \\Rightarrow \\text{diam}(C_0) \\ge 2$",
+    "significance": "key",
+    "relatedConcepts": ["unit disk approximation", "sharp bound"],
+    "prerequisites": ["BoundedMonicPoly", "connected component diameter"]
   },
   {
     "id": "ann-1048-medium-r",
@@ -203,8 +269,11 @@
     "range": { "startLine": 167, "endLine": 170 },
     "type": "axiom",
     "title": "Case 1/2 < r ≤ φ-1",
-    "content": "**pommerenke_case_medium_r**: For 1/2 < r ≤ (√5-1)/2, diameter > 1/r.\n\nThe bound transitions at r = 1/2.",
-    "significance": "key"
+    "content": "For $1/2 < r \\le (\\sqrt{5}-1)/2$, the central component has diameter $> 1/r$. The bound transitions at $r = 1/2$; at $r = (\\sqrt{5}-1)/2$ it gives $1/r = \\varphi \\approx 1.618$, matching the third regime.",
+    "mathContext": "$1/2 < r \\le (\\sqrt{5}-1)/2 \\Rightarrow \\text{diam}(C_0) > 1/r$",
+    "significance": "key",
+    "relatedConcepts": ["reciprocal bound", "phase transition"],
+    "prerequisites": ["golden ratio threshold"]
   },
   {
     "id": "ann-1048-large-r",
@@ -212,8 +281,11 @@
     "range": { "startLine": 172, "endLine": 175 },
     "type": "axiom",
     "title": "Case φ-1 ≤ r ≤ 1",
-    "content": "**pommerenke_case_large_r**: For (√5-1)/2 ≤ r ≤ 1, diameter > 2 - r².\n\nThe bound involves r² rather than r.",
-    "significance": "key"
+    "content": "For $(\\sqrt{5}-1)/2 \\le r \\le 1$, the central component has diameter $> 2 - r^2$. At $r = 1$ this gives diameter $> 1$. The three regimes join continuously at the thresholds $r = 1/2$ and $r = (\\sqrt{5}-1)/2$.",
+    "mathContext": "$(\\sqrt{5}-1)/2 \\le r \\le 1 \\Rightarrow \\text{diam}(C_0) > 2 - r^2$",
+    "significance": "key",
+    "relatedConcepts": ["quadratic bound", "bound continuity"],
+    "prerequisites": ["golden ratio threshold"]
   },
   {
     "id": "ann-1048-zn-diam",
@@ -221,8 +293,11 @@
     "range": { "startLine": 183, "endLine": 186 },
     "type": "theorem",
     "title": "z^n Diameter",
-    "content": "**zn_diameter**: diameter(L(z^n, 1)) = 2.\n\nFor f(z) = z^n (all roots at origin), L(f,1) is the unit disk.",
-    "significance": "supporting"
+    "content": "For $f(z) = z^n$, the unit lemniscate is $\\{|z|^n < 1\\} = \\{|z| < 1\\}$: the open unit disk with diameter 2. This extremal case shows the bound diameter $\\ge 2$ for $r \\le 1/2$ is sharp.",
+    "mathContext": "$L(z^n, 1) = \\{|z| < 1\\}$, $\\text{diam} = 2$",
+    "significance": "supporting",
+    "relatedConcepts": ["extremal polynomial", "unit disk", "sharpness"],
+    "prerequisites": ["polynomial evaluation"]
   },
   {
     "id": "ann-1048-sharp",
@@ -230,8 +305,11 @@
     "range": { "startLine": 188, "endLine": 191 },
     "type": "theorem",
     "title": "Bound Sharp",
-    "content": "**diameter_2_sharp**: The diameter ≥ 2 bound for r = 0 is sharp.\n\nCannot improve beyond diameter 2.",
-    "significance": "supporting"
+    "content": "The diameter $\\ge 2$ bound for $r = 0$ is sharp: no larger diameter can be universally guaranteed.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists f \\in \\text{BoundedMonic}(0): \\text{maxCompDiam}(f, 1) < 2 + \\varepsilon$",
+    "significance": "supporting",
+    "relatedConcepts": ["tight bound", "optimality"],
+    "prerequisites": ["zn_diameter"]
   },
   {
     "id": "ann-1048-r-eq-1",
@@ -239,8 +317,11 @@
     "range": { "startLine": 193, "endLine": 196 },
     "type": "axiom",
     "title": "r = 1 Case",
-    "content": "**diameter_near_1_for_r_eq_1**: For r = 1, max diameter < 1 + ε for any ε > 0.\n\nThe diameter bound degrades as r → 1.",
-    "significance": "supporting"
+    "content": "At $r = 1$, examples show the maximum component diameter can be less than $1 + \\varepsilon$ for any $\\varepsilon > 0$, matching the guaranteed lower bound $2 - r^2 = 1$.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists f \\in \\text{BoundedMonic}(1): \\text{maxCompDiam}(f, 1) < 1 + \\varepsilon$",
+    "significance": "supporting",
+    "relatedConcepts": ["boundary behavior", "tightness"],
+    "prerequisites": ["pommerenke_case_large_r"]
   },
   {
     "id": "ann-1048-count-bound",
@@ -248,8 +329,11 @@
     "range": { "startLine": 204, "endLine": 207 },
     "type": "axiom",
     "title": "Component Count",
-    "content": "**component_count_bound**: Degree n polynomial has ≤ n components.\n\nThe topology of lemniscates is controlled by degree.",
-    "significance": "supporting"
+    "content": "A degree-$n$ polynomial's lemniscate has at most $n$ connected components. Pommerenke's counterexample achieves exactly $n$ components.",
+    "mathContext": "$\\deg(f) = n \\Rightarrow L(f, c)$ has $\\le n$ components",
+    "significance": "supporting",
+    "relatedConcepts": ["lemniscate topology", "critical points"],
+    "prerequisites": ["polynomial degree"]
   },
   {
     "id": "ann-1048-exterior",
@@ -257,8 +341,11 @@
     "range": { "startLine": 209, "endLine": 212 },
     "type": "theorem",
     "title": "Exterior Unbounded",
-    "content": "**exterior_unbounded**: The complement of L(f, c) contains unbounded components.\n\nSince |f(z)| → ∞ as |z| → ∞.",
-    "significance": "supporting"
+    "content": "The complement $\\{|f(z)| \\ge c\\}$ contains an unbounded component, since $|f(z)| \\to \\infty$ for monic $f$.",
+    "mathContext": "$f$ monic $\\Rightarrow \\{|f(z)| \\ge c\\}$ has an unbounded component",
+    "significance": "supporting",
+    "relatedConcepts": ["exterior domain", "growth at infinity"],
+    "prerequisites": ["monic polynomial growth"]
   },
   {
     "id": "ann-1048-capacity",
@@ -266,8 +353,11 @@
     "range": { "startLine": 220, "endLine": 221 },
     "type": "definition",
     "title": "Log Capacity",
-    "content": "**logCapacity S**: The logarithmic capacity of set S.\n\nA potential-theoretic quantity measuring 'size' in complex analysis.",
-    "significance": "supporting"
+    "content": "The logarithmic capacity (transfinite diameter) of a compact set $S \\subseteq \\mathbb{C}$, a fundamental quantity in potential theory measuring the 'electrostatic size' of $S$. For connected sets, $\\text{diam}(S) \\ge 4 \\cdot \\text{cap}(S)$.",
+    "mathContext": "$\\text{cap}(S) = \\lim_{n \\to \\infty} \\left(\\max \\prod_{i<j} |z_i - z_j|\\right)^{2/n(n-1)}$",
+    "significance": "supporting",
+    "relatedConcepts": ["transfinite diameter", "Chebyshev constant", "potential theory"],
+    "prerequisites": ["complex analysis", "potential theory"]
   },
   {
     "id": "ann-1048-cap-lemn",
@@ -275,8 +365,11 @@
     "range": { "startLine": 223, "endLine": 225 },
     "type": "axiom",
     "title": "Lemniscate Capacity",
-    "content": "**lemniscate_capacity**: cap(L(f, c)) = c^(1/n) for degree n monic f.\n\nClassical result in potential theory.",
-    "significance": "supporting"
+    "content": "Classical result: the logarithmic capacity of $L(f, c)$ for a degree-$n$ monic polynomial is $c^{1/n}$. This connects the level parameter $c$ directly to the potential-theoretic size of the lemniscate.",
+    "mathContext": "$\\text{cap}(L(f, c)) = c^{1/n}$ for monic $f$ of degree $n$",
+    "significance": "supporting",
+    "relatedConcepts": ["Green's function", "Robin constant"],
+    "prerequisites": ["logarithmic capacity", "monic polynomial"]
   },
   {
     "id": "ann-1048-cap-diam",
@@ -284,8 +377,11 @@
     "range": { "startLine": 227, "endLine": 229 },
     "type": "axiom",
     "title": "Capacity-Diameter",
-    "content": "**capacity_diameter_inequality**: diameter ≥ 4 · capacity for connected sets.\n\nCapacity bounds diameter from below.",
-    "significance": "supporting"
+    "content": "The capacity-diameter inequality: $\\text{diam}(S) \\ge 4 \\cdot \\text{cap}(S)$ for connected compact sets. This provides potential-theoretic lower bounds on component diameter.",
+    "mathContext": "$S$ connected $\\Rightarrow \\text{diam}(S) \\ge 4 \\cdot \\text{cap}(S)$",
+    "significance": "supporting",
+    "relatedConcepts": ["isoperimetric inequality", "geometric function theory"],
+    "prerequisites": ["logarithmic capacity", "connected sets"]
   },
   {
     "id": "ann-1048-main",
@@ -293,8 +389,11 @@
     "range": { "startLine": 237, "endLine": 250 },
     "type": "theorem",
     "title": "Main Result",
-    "content": "**erdos_1048**: Erdős Problem #1048 is DISPROVED.\n\nThe EHP conjecture fails for r > 1.\n\nPommerenke's counterexample z^n - r^n has components with vanishing diameter.",
-    "significance": "critical"
+    "content": "The main formalized result: $\\neg\\text{EHPConjecture}$. The proof uses Pommerenke's counterexample for $r > 1$, while the formalization also records the three positive regimes for $r \\le 1$.",
+    "mathContext": "$\\neg \\text{EHPConjecture}$, resolving Erdős Problem #1048",
+    "significance": "critical",
+    "relatedConcepts": ["problem resolution", "Pommerenke 1961"],
+    "prerequisites": ["EHP_false_for_r_gt_1"]
   },
   {
     "id": "ann-1048-answer",
@@ -302,8 +401,11 @@
     "range": { "startLine": 252, "endLine": 258 },
     "type": "definition",
     "title": "Final Answer",
-    "content": "**erdos_1048_answer**: \"DISPROVED for r > 1 (Pommerenke 1961). Positive results for r ≤ 1.\"\n\n**erdos_1048_status**: \"DISPROVED by Christian Pommerenke (1961)\"",
-    "significance": "critical"
+    "content": "Erdős Problem #1048: DISPROVED for $r > 1$ by Pommerenke (1961). For $r \\le 1$, modified positive results hold with the golden ratio inverse as a critical threshold.",
+    "mathContext": "DISPROVED: $r > 1 \\Rightarrow \\text{maxCompDiam}(z^n - r^n, 1) \\to 0$",
+    "significance": "critical",
+    "relatedConcepts": ["problem status", "Erdős problem resolution"],
+    "prerequisites": ["erdos_1048"]
   },
   {
     "id": "ann-1048-insight",
@@ -311,7 +413,10 @@
     "range": { "startLine": 260, "endLine": 265 },
     "type": "theorem",
     "title": "Pommerenke's Insight",
-    "content": "**pommerenke_insight**: For r > 1, arbitrarily small component diameters are achievable.\n\nGiven any δ > 0, there exists a bounded monic poly with max component diameter < δ.",
-    "significance": "key"
+    "content": "For $r > 1$, arbitrarily small component diameters are achievable: given any $\\delta > 0$, there exists a bounded monic polynomial with maximum component diameter less than $\\delta$. This completely negates the conjecture in the $r > 1$ regime.",
+    "mathContext": "$r > 1 \\Rightarrow \\forall \\delta > 0,\\ \\exists f: \\text{maxCompDiam}(f, 1) < \\delta$",
+    "significance": "key",
+    "relatedConcepts": ["diameter control", "high-degree limiting behavior"],
+    "prerequisites": ["pommerenke_diameter_vanishes"]
   }
 ]
