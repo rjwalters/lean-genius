@@ -6,12 +6,14 @@
   "meta": {
     "erdosNumber": 278,
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos278Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
       "covering-systems",
       "congruences",
       "density",
+      "optimization",
       "open"
     ],
     "references": [
@@ -28,52 +30,66 @@
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 50,
-      "summary": "Define CongruenceSystem, isCovered, coverageDensity, and max/min density."
+      "startLine": 27,
+      "endLine": 55,
+      "summary": "Defines CongruenceSystem (moduli, residue function, positivity), isCovered (existence of covering congruence), systemLCM (period), coverageDensity (proportion of {0,...,L-1} covered), and max/min density over all residue choices."
+    },
+    {
+      "id": "helper-lemmas",
+      "title": "Helper Lemmas",
+      "startLine": 57,
+      "endLine": 89,
+      "summary": "Proves foldl_lcm_pos (LCM preserves positivity), systemLCM_pos (period is positive), and coverage_card_le_lcm (coverage count bounded by period). All fully proved."
+    },
+    {
+      "id": "proved-bounds",
+      "title": "Proved Bounds",
+      "startLine": 90,
+      "endLine": 109,
+      "summary": "Fully proved theorems: density_nonneg (δ ≥ 0), density_le_one (δ ≤ 1), density_bounds (0 ≤ δ ≤ 1). No sorry — pure Lean proofs using cardinality and division bounds."
     },
     {
       "id": "inclusion-exclusion",
       "title": "Inclusion-Exclusion Formula",
-      "startLine": 52,
-      "endLine": 59,
-      "summary": "The density formula for equal-residue systems via inclusion-exclusion."
+      "startLine": 111,
+      "endLine": 117,
+      "summary": "Defines inclusionExclusionDensity as the first-order sum Σ 1/nᵢ, approximating the full alternating inclusion-exclusion formula for equal-residue coverage."
     },
     {
       "id": "simpson",
       "title": "Simpson's Theorem",
-      "startLine": 61,
-      "endLine": 72,
-      "summary": "Simpson (1986): equal residues minimize coverage density."
+      "startLine": 119,
+      "endLine": 131,
+      "summary": "Axiomatizes Simpson's 1986 result: equal residues minimize coverage density (simpson_theorem), and the equal-residue density is translation-invariant (equal_residues_minimize)."
     },
     {
       "id": "open-question",
       "title": "Maximum Density (Open)",
-      "startLine": 74,
-      "endLine": 95,
-      "summary": "Maximum density is determined for coprime moduli but open in general."
+      "startLine": 133,
+      "endLine": 148,
+      "summary": "Axiomatizes the coprime case (max = Σ 1/nᵢ by CRT), the general upper bound (max ≤ 1), and the single modulus case (max = min = 1/n). The general maximum remains open."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Graham posed this in 1980 as a covering system optimization problem. Given fixed moduli, how should one choose residues to maximize or minimize the proportion of integers covered? Simpson (1986) resolved the minimum question: equal residues are optimal. The maximum question remains open.",
+    "historicalContext": "Covering systems and their density properties have been central to combinatorial number theory since Erdős's foundational work in the 1950s. The density optimization question — given fixed moduli, how should residues be chosen to maximize or minimize coverage? — was posed by Erdős and Graham in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.28).\n\nThe minimum density question was settled by Simpson in 1986, who proved that equal residues (all aᵢ = a) minimize coverage. This is intuitive: aligning all residue classes maximizes their overlap, leaving more integers uncovered. The minimum density is then computed exactly by the inclusion-exclusion formula over the lcm lattice of the moduli.\n\nThe maximum density question remains open for non-coprime moduli. For pairwise coprime moduli, the Chinese Remainder Theorem makes residue classes independent, so the maximum is simply Σ 1/nᵢ. But when moduli share common factors, the overlap between classes depends on the relationship between residues modulo the gcd, creating a nontrivial combinatorial optimization problem.\n\nThis problem connects to covering designs, scheduling theory, and the broader study of how arithmetic structure constrains density. The Lean formalization includes fully proved density bounds (0 ≤ δ ≤ 1) alongside the axiomatized deep results.",
     "problemStatement": "Given moduli A = {n₁,...,nᵣ}, what is the maximum density of integers m covered by at least one congruence m ≡ aᵢ (mod nᵢ)? Is the minimum density achieved when all aᵢ are equal?",
-    "proofStrategy": "We formalize congruence systems, coverage density, and state Simpson's theorem for the minimum. The maximum density question is axiomatized as open, with the coprime case resolved.",
+    "proofStrategy": "We formalize congruence systems, coverage density, and state Simpson's theorem for the minimum. The density bounds [0,1] are fully proved. The maximum density question is axiomatized as open, with the coprime case resolved via CRT.",
     "keyInsights": [
-      "Simpson proved minimum density is achieved with all residues equal (1986)",
+      "Simpson proved minimum density is achieved with all residues equal — maximum overlap minimizes coverage (1986)",
       "The minimum density is given by inclusion-exclusion: Σ 1/nᵢ - Σ 1/lcm(nᵢ,nⱼ) + ⋯",
-      "For coprime moduli, the maximum density equals Σ 1/nᵢ by CRT",
-      "For non-coprime moduli, the maximum density is harder: residue choices affect overlaps",
-      "The coverage density is periodic with period lcm(n₁,...,nᵣ)"
+      "For coprime moduli, CRT gives independence: maximum density = Σ 1/nᵢ with zero overlap",
+      "For non-coprime moduli, overlap between a_i (mod n_i) and a_j (mod n_j) is nonempty iff a_i ≡ a_j (mod gcd(n_i,n_j))",
+      "The density bounds 0 ≤ δ ≤ 1 are fully proved in Lean with no sorry"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #278 asks about optimizing coverage density of congruence systems. Simpson (1986) proved the minimum is achieved with equal residues, but the maximum density for arbitrary moduli remains open.",
-    "implications": "A complete solution would characterize the covering efficiency of congruence systems, relevant to covering designs, scheduling problems, and the Chinese Remainder Theorem in non-coprime settings.",
+    "summary": "Erdős Problem #278 asks about optimizing coverage density of congruence systems. Simpson (1986) proved the minimum is achieved with equal residues via a maximum-overlap argument. The Lean formalization fully proves the density bounds [0,1] and axiomatizes Simpson's theorem, the CRT-based coprime maximum, and the open general maximum question.",
+    "implications": "A complete solution would characterize the covering efficiency of congruence systems as a function of the gcd lattice of the moduli. This connects to covering designs, scheduling problems, the Chinese Remainder Theorem in non-coprime settings, and the broader Erdős program on covering systems.",
     "openQuestions": [
-      "What is the maximum coverage density for arbitrary moduli?",
-      "Is there a closed-form or algorithm for the maximum?",
-      "How does non-coprimality of the moduli affect the maximum?",
-      "Can the maximum exceed 1 - Π(1 - 1/nᵢ)?"
+      "What is the maximum coverage density for arbitrary (non-coprime) moduli?",
+      "Is there a closed-form formula or polynomial-time algorithm for δ_max(n₁,...,nᵣ)?",
+      "How does the gcd lattice structure of the moduli determine the maximum?",
+      "Can the maximum exceed 1 - Π(1 - 1/nᵢ) (the probabilistic independence bound)?"
     ]
   }
 }
