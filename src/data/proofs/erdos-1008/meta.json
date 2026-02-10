@@ -24,68 +24,94 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Originally asked by Bollobás and Erdős at the Tihany graph theory colloquium with exponent 3/4. Folkman disproved this using K_{n,n²}: it has n³ edges but every C₄-free subgraph has only O(n²) edges. Erdős revised the conjecture to exponent 2/3 in 1971, noting that 1/2 is trivial. He mentioned Szemerédi proved it but gave no reference.",
+    "historicalContext": "This problem was originally posed by Bollobás and Erdős at the 1966 Tihany graph theory colloquium in Hungary, asking whether every m-edge graph contains a C₄-free subgraph with ≫ m^{3/4} edges. Folkman quickly disproved this using the bipartite graph K_{n,n²}: it has n³ edges but every C₄-free subgraph has only O(n²) = O(m^{2/3}) edges, by the Kővári-Sós-Turán theorem. Erdős revised the conjecture to exponent 2/3 in 1971, noting that the trivial bound m^{1/2} follows easily from Kővári-Sós-Turán. He mentioned that Szemerédi had proved the 2/3 bound but gave no published reference. The problem remained formally open until Conlon, Fox, and Sudakov proved it in their 2014 paper using dependent random choice, a powerful probabilistic technique developed in the 2000s. A simpler proof was later given by Hunter. The result fits into the broader program of understanding Turán-type and Zarankiewicz-type problems: how dense can a graph be while avoiding a fixed forbidden subgraph? The C₄ case is special because C₄ = K_{2,2}, linking cycle-free conditions to bipartite Ramsey theory.",
     "problemStatement": "Does every graph with m edges contain a subgraph with ≫ m^{2/3} edges which contains no C₄ (4-cycle)?",
-    "proofStrategy": "Conlon, Fox, and Sudakov (2014) proved the result using dependent random choice and the Kővári–Sós–Turán theorem. The idea is to carefully select a subgraph that avoids 4-cycles while retaining many edges. A simpler proof was later given by Hunter in the problem's comments.",
+    "proofStrategy": "Conlon, Fox, and Sudakov (2014) proved the result using dependent random choice and the Kővári-Sós-Turán theorem. The idea is to randomly select vertices, consider common neighborhoods, and show the induced subgraph avoids 4-cycles while retaining many edges. The formalization axiomatizes this result along with Folkman's counterexample, the trivial √m bound, and the K_{s,t} generalization.",
     "keyInsights": [
-      "C₄ = K_{2,2}, so C₄-free graphs avoid complete bipartite subgraphs",
-      "The trivial bound m^{1/2} follows from Kővári–Sós–Turán",
-      "Folkman's K_{n,n²} shows m^{3/4} is impossible",
-      "The exponent 2/3 is optimal and achievable",
-      "This generalizes to K_{s,t}-free subgraphs"
+      "**C₄ = K_{2,2}:** The 4-cycle is the smallest complete bipartite graph, making C₄-freeness equivalent to K_{2,2}-freeness and connecting to the Zarankiewicz problem",
+      "**Folkman's Optimality Proof:** K_{n,n²} has m = n³ edges but only O(n²) = O(m^{2/3}) edges in any C₄-free subgraph, proving the exponent 2/3 cannot be improved",
+      "**Dependent Random Choice:** The Conlon-Fox-Sudakov proof selects a random vertex set S, takes common neighborhoods, and uses the probabilistic method to find a large C₄-free subgraph",
+      "**Zarankiewicz Generalization:** The result extends to K_{s,t}-free subgraphs with exponent 1-1/s, where the C₄ case is s=t=2",
+      "**Exponent Landscape:** 1/2 (trivial via Kővári-Sós-Turán) → 2/3 (optimal, Conlon-Fox-Sudakov) → 3/4 (impossible, Folkman)"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Problem Overview",
+      "summary": "Module documentation, imports for SimpleGraph, Finset, and real arithmetic",
+      "startLine": 1,
+      "endLine": 37
+    },
+    {
       "id": "c4-definition",
       "title": "4-Cycles and C₄-Freeness",
-      "summary": "Definition of 4-cycles (C₄) and C₄-free graphs",
+      "summary": "hasC4 (4-cycle detection) and isC4Free predicates; C₄ = K_{2,2}",
       "startLine": 45,
       "endLine": 57
     },
     {
       "id": "subgraph",
       "title": "Subgraphs and Edge Count",
-      "summary": "Definitions for subgraph relation and edge counting",
+      "summary": "Subgraph relation, edge counting, problem formulation",
       "startLine": 59,
       "endLine": 69
     },
     {
       "id": "trivial-bound",
       "title": "Trivial Bound: m^{1/2}",
-      "summary": "The easy bound via Kővári–Sós–Turán theorem",
+      "summary": "The easy Ω(√m) bound via Kővári-Sós-Turán and greedy deletion",
       "startLine": 71,
       "endLine": 86
     },
     {
       "id": "folkman",
       "title": "Folkman's Counterexample",
-      "summary": "K_{n,n²} shows m^{3/4} is impossible",
+      "summary": "K_{n,n²} disproves m^{3/4} and proves optimality of 2/3 exponent",
       "startLine": 88,
       "endLine": 102
     },
     {
       "id": "main-result",
       "title": "Main Result: m^{2/3}",
-      "summary": "Conlon-Fox-Sudakov theorem proving the optimal bound",
+      "summary": "Conlon-Fox-Sudakov theorem: Ω(m^{2/3}) C₄-free edges always exist",
       "startLine": 104,
       "endLine": 122
     },
     {
       "id": "generalization",
       "title": "Generalization to K_{s,t}",
-      "summary": "Extension to avoiding complete bipartite graphs",
+      "summary": "Extension to K_{s,t}-free subgraphs with exponent 1-1/s; Zarankiewicz connection",
       "startLine": 124,
       "endLine": 146
     }
   ],
   "conclusion": {
-    "summary": "Every graph with m edges contains a C₄-free subgraph with Ω(m^{2/3}) edges. The exponent 2/3 is optimal, matching Folkman's lower bound from K_{n,n²}.",
-    "implications": "This result fits into the broader Zarankiewicz problem: understanding the maximum edges in K_{s,t}-free graphs. The technique of finding large forbidden-subgraph-free subgraphs has applications in combinatorics and theoretical computer science.",
+    "summary": "Every graph with m edges contains a C₄-free subgraph with Ω(m^{2/3}) edges, proved by Conlon-Fox-Sudakov (2014) using dependent random choice. The exponent 2/3 is optimal, matching Folkman's upper bound from K_{n,n²}. The result generalizes to K_{s,t}-free subgraphs with exponent 1-1/s, connecting to the classical Zarankiewicz problem.",
+    "implications": "This result exemplifies the power of dependent random choice in extremal combinatorics. It shows that even dense graphs contain large sparse (forbidden-subgraph-free) subgraphs, with tight bounds. The technique has applications in additive combinatorics, theoretical computer science (graph sparsification), and Ramsey theory. The Zarankiewicz-type generalization provides a unified framework for understanding how different forbidden subgraphs control the density of extractable subgraphs.",
     "openQuestions": [
-      "Optimal constants in the Ω(m^{2/3}) bound",
-      "Algorithmic versions: can we efficiently find such subgraphs?",
-      "Extensions to other forbidden subgraphs beyond complete bipartite graphs"
+      "What are the optimal constants in the Ω(m^{2/3}) bound?",
+      "Can such subgraphs be found algorithmically in polynomial time?",
+      "What happens for odd cycle-freeness (C₅, C₇, ...) instead of C₄?",
+      "Can the K_{s,t} generalization be extended to non-bipartite forbidden graphs?",
+      "What is the weighted version: maximize edge-weight sum in a C₄-free subgraph?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Erdős #1009 (edge-disjoint triangles beyond Turán) studies related extremal graph questions about finding structured subgraphs in dense graphs."
+    },
+    {
+      "targetId": "erdos-613",
+      "relationship": "related",
+      "description": "Erdős #613 (graph decomposition and size Ramsey numbers) connects to the problem of partitioning graphs into forbidden-subgraph-free pieces."
+    },
+    {
+      "targetId": "erdos-1006",
+      "relationship": "related",
+      "description": "Erdős #1006 (robust acyclic orientations) uses the probabilistic method in graph theory, sharing the dependent random choice technique."
+    }
+  ]
 }
