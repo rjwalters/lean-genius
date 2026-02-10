@@ -1,6 +1,6 @@
 {
   "id": "erdos-662",
-  "title": "Erdős Problem #662: Distances in Separated Point Sets",
+  "title": "Distances in Separated Point Sets",
   "slug": "erdos-662",
   "description": "For 1-separated points in ℝ², is the number of pairs at distance ≤ t maximized by the triangular lattice? f(1)=6, f(√3)=12, f(3)=18. Erdős–Lovász–Vesztergombi. Open.",
   "meta": {
@@ -11,68 +11,101 @@
       "combinatorial-geometry",
       "distances",
       "lattices",
+      "packing",
       "open"
     ],
     "references": [
-      "Erdős–Lovász–Vesztergombi (1997): original problem",
-      "Thue (1910), Tóth (1940): hexagonal packing optimality",
+      "Erdős, Lovász & Vesztergombi (1997): Problems and results on the grid",
+      "Thue (1910): Über die dichteste Zusammenstellung von kongruenten Kreisen in einer Ebene",
+      "Fejes Tóth (1940): Über einen geometrischen Satz",
+      "Harborth (1974): Lösung zu Problem 664A (contact number formula)",
+      "Swanepoel (2009): Combinatorial distance geometry in normed spaces",
       "https://erdosproblems.com/662"
     ],
     "leanFile": "Proofs/Erdos662Problem.lean",
     "sorries": 4,
     "sourceUrl": "https://erdosproblems.com/662",
-    "erdosUrl": "https://erdosproblems.com/662"
+    "erdosUrl": "https://erdosproblems.com/662",
+    "relatedProofs": ["erdos-660", "erdos-661"]
   },
   "sections": [
     {
-      "id": "definition",
-      "title": "Definition",
+      "id": "file-header",
+      "title": "Problem Statement and Background",
+      "startLine": 1,
+      "endLine": 10,
+      "summary": "Module docstring introducing the Erdős–Lovász–Vesztergombi conjecture (1997): among 1-separated point sets in $\\mathbb{R}^2$, the triangular lattice maximizes the number of pairs at distance $\\le t$."
+    },
+    {
+      "id": "imports",
+      "title": "Library Imports",
+      "startLine": 12,
+      "endLine": 18,
+      "summary": "Imports Mathlib's $\\mathbb{R}$, $\\mathbb{N}$, $\\text{Finset}$, cardinality, and tactics for coordinate geometry and finite combinatorial computations."
+    },
+    {
+      "id": "point-distance",
+      "title": "Points and Distance",
       "startLine": 22,
-      "endLine": 42,
-      "summary": "Point, distance, separation, pairs within distance, triangular lattice count."
+      "endLine": 27,
+      "summary": "Defines $\\text{Point2D} = \\mathbb{R} \\times \\mathbb{R}$ and the squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$, avoiding square roots for cleaner algebraic manipulation."
+    },
+    {
+      "id": "separation-neighbors",
+      "title": "Separation and Neighborhood",
+      "startLine": 29,
+      "endLine": 44,
+      "summary": "Defines 1-separation ($d(p,q) \\ge 1$ for all distinct pairs), the $t$-neighborhood $N_t(p)$, ordered and unordered pair counts. The unordered pair count $\\text{pairs}_t(S)$ is the central quantity in the conjecture."
+    },
+    {
+      "id": "triangular-lattice",
+      "title": "Triangular Lattice Construction",
+      "startLine": 48,
+      "endLine": 55,
+      "summary": "Constructs the triangular lattice $\\Lambda = \\mathbb{Z}(1,0) + \\mathbb{Z}(\\frac{1}{2}, \\frac{\\sqrt{3}}{2})$ and axiomatizes the lattice count function $f(t) = |\\{\\mathbf{v} \\in \\Lambda \\setminus \\{\\mathbf{0}\\} : \\|\\mathbf{v}\\| \\le t\\}|$."
+    },
+    {
+      "id": "lattice-distance",
+      "title": "Lattice Distance Formula and Known Values",
+      "startLine": 59,
+      "endLine": 71,
+      "summary": "Proves the Loeschian quadratic form $d^2 = a^2 + ab + b^2$ for lattice point $(a,b)$ and establishes $f(1) = 6$, $f(\\sqrt{3}) = 12$: the first two coordination shells of the triangular lattice."
+    },
+    {
+      "id": "contact-number",
+      "title": "Contact Number Bounds",
+      "startLine": 75,
+      "endLine": 91,
+      "summary": "Axiomatizes the per-vertex bound $|N_1(p)| \\le 6$ (2D kissing number), derives the ordered bound $6n$, and proves the contact number bound $\\text{pairs}_1(S) \\le 3n$ — the resolved $t = 1$ case of the conjecture."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture",
-      "startLine": 44,
-      "endLine": 50,
-      "summary": "Triangular lattice maximizes pairs at distance ≤ t among 1-separated sets."
-    },
-    {
-      "id": "known-values",
-      "title": "Known Values",
-      "startLine": 52,
-      "endLine": 59,
-      "summary": "Triangular lattice: f(1)=6, f(√3)=12, f(3)=18."
-    },
-    {
-      "id": "observations",
-      "title": "Observations",
-      "startLine": 61,
-      "endLine": 79,
-      "summary": "Hexagonal packing, contact number, problem statement caveat."
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 95,
+      "endLine": 100,
+      "summary": "States the Erdős–Lovász–Vesztergombi conjecture: for all $t \\ge 1$ and sufficiently large $n$, $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ for every 1-separated $S$ with $|S| = n$. Axiomatized as the conjecture remains open."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős, Lovász, and Vesztergombi posed this problem in 1997 about the optimality of the triangular lattice for maximizing short-range distances in separated point sets. It connects to the classical hexagonal packing theorem and contact number problems.",
-    "problemStatement": "For n points in ℝ² with pairwise distance ≥ 1, is the number of pairs at distance ≤ t maximized by the triangular lattice configuration?",
-    "proofStrategy": "We define 1-separated point sets, the pair count function, and the triangular lattice count f(t). We state the optimality conjecture and record known lattice values.",
+    "historicalContext": "Erdős, Lovász, and Vesztergombi posed this problem in their 1997 paper 'Problems and results on the grid,' asking whether the triangular lattice universally maximizes short-range pair interactions among 1-separated point sets. The question extends a classical line of inquiry beginning with Thue's 1910 proof that the hexagonal lattice gives the densest circle packing in the plane, later made rigorous by Fejes Tóth (1940). The t = 1 case reduces to the contact number problem — how many unit-distance pairs can occur in a 1-separated set — which was resolved by Harborth (1974), who showed the exact answer is ⌊3n − √(12n − 3)⌋, achieved by hexagonal configurations. For general t, the problem connects to the Gauss circle problem for the Loeschian quadratic form a² + ab + b² (the norm form of the Eisenstein integers ℤ[ω]), since counting lattice points within distance t is equivalent to counting representations by this form. Despite nearly three decades since its posing, the conjecture remains open for all t > 1.",
+    "problemStatement": "For $n$ points in $\\mathbb{R}^2$ with all pairwise distances $\\ge 1$, is the number of pairs at distance $\\le t$ maximized (for each $t \\ge 1$ and $n$ sufficiently large) by the triangular lattice configuration? That is, does $\\text{pairs}_t(S) \\le n \\cdot f(t)/2$ hold, where $f(t)$ is the coordination number of the triangular lattice at radius $t$?",
+    "proofStrategy": "The formalization defines 1-separated point sets and the pair count function, constructs the triangular lattice with basis vectors $(1, 0)$ and $(1/2, \\sqrt{3}/2)$, and axiomatizes the lattice count function. It establishes the Loeschian distance formula $d^2 = a^2 + ab + b^2$ and known coordination shell values. The t = 1 case is proved via the per-vertex bound of 6 neighbors (2D kissing number), giving the contact number bound 3n.",
     "keyInsights": [
-      "The triangular lattice has f(1)=6, f(√3)=12, f(3)=18 neighbors within distance t",
-      "The conjecture extends hexagonal packing optimality to distance pair counting",
-      "The case t=1 relates to the contact number problem: max unit distances = 3n − O(√n)",
-      "The original problem statement contains a known typo",
-      "Connects to Thue's circle packing theorem in ℝ²"
+      "**Loeschian quadratic form**: Distances in the triangular lattice are governed by $a^2 + ab + b^2$, the norm form of the Eisenstein integers $\\mathbb{Z}[\\omega]$, connecting discrete geometry to algebraic number theory",
+      "**Contact number resolved**: The $t = 1$ case follows from the 2D kissing number (6) via double counting: at most $6n$ ordered pairs, hence $\\le 3n$ unordered pairs, matching Harborth's exact formula $\\lfloor 3n - \\sqrt{12n-3}\\rfloor$",
+      "**Coordination shells**: The triangular lattice has $f(1) = 6$, $f(\\sqrt{3}) = 12$, $f(3) = 18$ — these are the first coordination shells, with shell sizes determined by representations of Loeschian numbers",
+      "**Extends Thue's theorem**: Just as the triangular lattice maximizes packing density, the conjecture asserts it maximizes pair counts — a stronger optimality property for the hexagonal lattice",
+      "**Boundary effects**: The formulation requires $n \\ge N$ because finite lattice patches have fewer pairs per point near the boundary; the conjecture is asymptotic in nature"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #662 asks whether the triangular lattice maximizes the number of pairs at distance ≤ t among 1-separated point sets in ℝ². This extends the classical hexagonal packing optimality to a distance counting problem.",
-    "implications": "Confirming the conjecture would establish the triangular lattice as the universal extremal configuration for short-range pair interactions, with applications to crystallography and optimal packing theory.",
+    "summary": "Formalizes Erdős Problem #662 on the optimality of the triangular lattice for maximizing distance-constrained pair counts in 1-separated planar point sets. The formalization establishes the Loeschian distance formula, known coordination shell values, and proves the contact number bound (3n) for the t = 1 case via the 2D kissing number argument.",
+    "implications": "A positive resolution would establish the triangular lattice as the universal extremal configuration for short-range pair interactions in 2D, extending Thue's packing density result to a counting statement. This has applications in crystallography (optimal coordination), statistical mechanics (hard-disk models), and coding theory (optimal point configurations).",
     "openQuestions": [
-      "Is the triangular lattice the unique maximizer for all t ≥ 1?",
-      "What happens for non-integer multiples of lattice distances?",
-      "Does the analogous result hold in higher dimensions (FCC lattice)?",
-      "Can the contact number case (t=1) be resolved independently?"
+      "Can the conjecture be proved for the second shell t = √3, which requires bounding the number of pairs at distance ≤ √3 by 6n?",
+      "Is the triangular lattice the unique maximizer (up to boundary effects and isometries), or do other configurations achieve the same pair count?",
+      "Does an analogous result hold in ℝ³ for the FCC or HCP lattice?",
+      "Can the Loeschian form connection to Eisenstein integers yield an algebraic proof for specific values of t?"
     ]
   }
 }
