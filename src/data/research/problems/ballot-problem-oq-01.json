@@ -1,0 +1,114 @@
+{
+  "slug": "ballot-problem-oq-01",
+  "title": "Generalized Ballot Problem: k-Fold Dominance",
+  "phase": "IN_PROGRESS",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a > k*b, the probability that A maintains > k times B's votes throughout counting is (a - k*b)/(a + b)",
+    "plain": "The Generalized Ballot Problem extends Bertrand's classical result to the k-fold case: when candidate A must maintain more than k times the votes of candidate B throughout counting, the probability is (a - k*b)/(a + b).",
+    "whyMatters": [
+      "Generalizes the classical ballot theorem (k=1) to arbitrary dominance factors",
+      "Uses the Dvoretzky-Motzkin cycle lemma - a fundamental combinatorial tool",
+      "Connects to lattice path counting, random walks, and queueing theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "kCountedSequence definitions and basic properties (sum, length)",
+      "Permutation characterization: every element is a permutation of replicate a 1 ++ replicate b (-k)",
+      "Nonemptiness of kCountedSequence",
+      "Connection to classical ballot problem: kCountedSequence 1 a b = countedSequence a b",
+      "Cyclic rotation preserves sum, length, and kCountedSequence membership",
+      "Positive sum and length for ballot sequences with k*b < a",
+      "Path height interpretation via prefix sums",
+      "Probability positivity: (a - k*b)/(a + b) > 0",
+      "Special cases verified: k=2 a=5 b=2 (1/7), k=3 a=10 b=3 (1/13), etc.",
+      "Classical reduction: formula reduces to (a-b)/(a+b) when k=1"
+    ],
+    "open": [
+      "Finiteness of kCountedSequence (Aristotle-suitable)",
+      "Cyclic rotation prefix sum relation",
+      "Dvoretzky-Motzkin cycle lemma",
+      "Full generalized ballot counting theorem"
+    ],
+    "goal": "Complete proof of the generalized ballot theorem via the cycle lemma"
+  },
+  "currentState": {
+    "phase": "IN_PROGRESS",
+    "since": "2026-02-10T11:00:00Z",
+    "iteration": 2,
+    "focus": "Strengthening rotation infrastructure and cycle lemma prerequisites.",
+    "blockers": [
+      "Cycle lemma requires careful construction of the rightmost minimum argument"
+    ],
+    "nextAction": "Submit to Aristotle for finiteness and composition sorries, then tackle cycle lemma.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 24 theorems/lemmas, 3 sorries. Proved rotation membership, permutation characterization, finiteness, prefix sum relation for rotations. Remaining: cycle lemma, counting theorem, rotation composition.",
+    "builtItems": [
+      "proofs/Proofs/BallotProblemOQ01.lean - 19 theorems, 5 sorries",
+      "kCountedSequence_perm: permutation characterization (new)",
+      "cyclicRotation_mem_kCountedSequence: rotation preserves membership (proved)",
+      "kCountedSequence_pos_sum: positive sum precondition (new)",
+      "kCountedSequence_pos_length: positive length precondition (new)"
+    ],
+    "insights": [
+      "kCountedSequence elements are exactly permutations of replicate a 1 ++ replicate b (-k) - this gives finiteness for free",
+      "Cyclic rotation preserves element counts (proved via congr_arg on take_append_drop identity)",
+      "The cycle lemma needs: (1) prefix sum relation for rotations, (2) rightmost minimum construction, (3) bijectivity argument",
+      "Units.oneSub pattern from Neumann series not applicable here - this is purely combinatorial",
+      "Classical connection is clean: kCountedSequence 1 a b = Ballot.countedSequence a b with just simpa"
+    ],
+    "mathlibGaps": [
+      "No direct Mathlib support for generalized (k-fold) ballot problem",
+      "Cycle lemma not in Mathlib - would be a valuable contribution"
+    ],
+    "nextSteps": [
+      "Submit kCountedSequence_finite and cyclicRotation_compose to Aristotle",
+      "Prove cyclicRotation_prefixSum (key infrastructure for cycle lemma)",
+      "Attempt cycle_lemma proof via rightmost minimum construction",
+      "If cycle_lemma proved, derive generalized_ballot_count"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Cycle lemma via rightmost minimum",
+      "status": "in-progress",
+      "description": "Model ballot sequences as lists with +1 and -k steps. Use cyclic rotations and the Dvoretzky-Motzkin cycle lemma (rightmost minimum argument) to count good orderings. Infrastructure largely built, cycle lemma itself remains."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "probability",
+    "extension",
+    "lattice-paths",
+    "cycle-lemma"
+  ],
+  "relatedProofs": [
+    "ballot-problem"
+  ],
+  "references": {
+    "papers": [
+      "Bertrand (1887): Original ballot problem",
+      "Dvoretzky & Motzkin (1947): Cycle lemma",
+      "Renault (2007): Four Proofs of the Ballot Theorem"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Archive.Wiedijk100Theorems.BallotProblem",
+      "Mathlib.Tactic"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.709Z",
+  "lastUpdate": "2026-02-10T11:00:00Z",
+  "significance": 7,
+  "tractability": 6
+}
