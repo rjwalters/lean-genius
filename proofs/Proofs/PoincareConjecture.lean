@@ -10,6 +10,8 @@ import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Analysis.Normed.Module.Connected
 import Mathlib.Geometry.Manifold.ContMDiff.Basic
 import Mathlib.MeasureTheory.Measure.Haar.Basic
+import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
+import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Mathlib.Tactic
 
 /-
@@ -33,13 +35,14 @@ then M is homeomorphic to S^3.
 This file does NOT reproduce Perelman's full proof (which requires extensive PDE analysis and
 geometric measure theory). Instead, it provides:
 
-1. A precise formal statement of the conjecture
+1. A precise formal statement of the conjecture using Mathlib's FundamentalGroup
 2. Definitions of key topological concepts (simply connected, closed manifold, S^3)
-3. Axiomatization of Perelman's Ricci flow surgery approach
-4. The main theorem derived from the axioms
-5. Thurston's geometrization with the 8 model geometries
-6. Generalized Poincare Conjecture for all dimensions
-7. Structural consequences and educational context
+3. Bridge between Mathlib's SimplyConnectedSpace and our formalization
+4. Axiomatization of Perelman's Ricci flow surgery approach
+5. The main theorem derived from the axioms
+6. Thurston's geometrization with the 8 model geometries
+7. Generalized Poincare Conjecture for all dimensions
+8. Structural consequences and educational context
 
 ## What Is Proven vs Axiomatized
 
@@ -51,9 +54,10 @@ geometric measure theory). Instead, it provides:
 | S^3 connectedness | PROVED (from Mathlib isConnected_sphere) |
 | S^3 path-connectedness | PROVED (from Mathlib isPathConnected_sphere) |
 | n-sphere properties | PROVED (connected, path-connected, compact, nonempty) |
-| Simply connected condition | DEFINED |
+| Simply connected (Mathlib) | USED (SimplyConnectedSpace from Mathlib) |
+| SimplyConnectedSpace bridge | PROVED (equivalence with loops-contractible) |
+| FundamentalGroup triviality | PROVED (Subsingleton for SimplyConnectedSpace) |
 | Closed manifold structure | DEFINED (using Mathlib) |
-| Fundamental group triviality | DEFINED |
 | Thurston's 8 geometries | DEFINED (inductive type) |
 | 8-geometry count | PROVED (native_decide) |
 | Ricci flow equation | STATED |
@@ -62,9 +66,19 @@ geometric measure theory). Instead, it provides:
 | Geometrization conjecture | AXIOM (Thurston/Perelman) |
 | Perelman W-entropy | AXIOM (monotonicity) |
 | Hamilton positive Ricci | AXIOM |
-| Main theorem | DERIVED from axioms |
+| Main theorem (Mathlib form) | DERIVED from axioms |
 | Generalized Poincare (all dim) | PROVED from per-dimension axioms |
 | Dichotomy, contrapositive | PROVED from main theorem |
+
+## Key Mathlib Integration (Iteration 3)
+
+This file uses Mathlib's proper algebraic topology infrastructure:
+- `FundamentalGroup X x` : The fundamental group pi_1(X, x) as automorphisms in the
+  fundamental groupoid
+- `SimplyConnectedSpace X` : A space whose fundamental groupoid is equivalent to
+  Discrete Unit
+- `simply_connected_iff_loops_nullhomotopic` : SimplyConnectedSpace iff path-connected
+  and all loops are null-homotopic
 
 ## Historical Context
 
@@ -133,26 +147,26 @@ theorem sphere3_pathConnected : IsPathConnected Sphere3 := by
     (by norm_num : (0 : ℝ) ≤ 1)
 
 /- ===============================================================================
-PART II: SIMPLY CONNECTED AND FUNDAMENTAL GROUP
+PART II: SIMPLY CONNECTED SPACES AND FUNDAMENTAL GROUP (MATHLIB)
 =============================================================================== -/
 
-/-- A space is simply connected if it is path-connected and every loop is
-    null-homotopic (can be continuously shrunk to a point). -/
-class SimplyConnected (X : Type*) [TopologicalSpace X] : Prop where
-  pathConnected : PathConnectedSpace X
-  loopsContractible : ∀ (x : X) (γ : Path x x), γ.Homotopic (Path.refl x)
+/-
+We use Mathlib's proper algebraic topology infrastructure:
+- `FundamentalGroup X x` is the automorphism group of x in the fundamental groupoid
+- `SimplyConnectedSpace X` means the fundamental groupoid is equivalent to Discrete Unit
+- These are the standard mathematical definitions, not ad-hoc constructions.
+-/
 
-/-- The fundamental group at a point captures loop equivalence classes -/
-def FundamentalGroupTrivial (X : Type*) [TopologicalSpace X] (x : X) : Prop :=
-  ∀ γ : Path x x, γ.Homotopic (Path.refl x)
+/-- Every loop in a simply connected space is null-homotopic.
+    Extracted from Mathlib's `simply_connected_iff_loops_nullhomotopic`. -/
+theorem loops_nullhomotopic_of_simply_connected (X : Type*) [TopologicalSpace X]
+    [hsc : SimplyConnectedSpace X] (x : X) (γ : Path x x) :
+    γ.Homotopic (Path.refl x) :=
+  (simply_connected_iff_loops_nullhomotopic.mp hsc).2 x γ
 
-/-- A simply connected space has trivial fundamental group at every point -/
-theorem simply_connected_iff_trivial_fundamental_group
-    {X : Type*} [TopologicalSpace X] [PathConnectedSpace X] :
-    SimplyConnected X ↔ ∀ x : X, FundamentalGroupTrivial X x := by
-  constructor
-  · intro ⟨_, h⟩ x; exact h x
-  · intro h; exact ⟨inferInstance, h⟩
+/-- A simply connected space is path-connected (from Mathlib). -/
+theorem pathConnected_of_simply_connected (X : Type*) [TopologicalSpace X]
+    [SimplyConnectedSpace X] : PathConnectedSpace X := inferInstance
 
 /- ===============================================================================
 PART III: CLOSED MANIFOLDS
@@ -192,20 +206,23 @@ theorem homeomorphic_trans {X Y Z : Type*}
 PART V: THE POINCARE CONJECTURE (STATEMENT)
 =============================================================================== -/
 
+/-- The Poincare Conjecture using Mathlib's SimplyConnectedSpace.
+    This is the canonical statement: every simply connected closed 3-manifold
+    is homeomorphic to S^3. -/
 def PoincareConjectureStatement : Prop :=
   ∀ (M : Type) [TopologicalSpace M],
-    Closed3Manifold M → SimplyConnected M → AreHomeomorphic M Sphere3
+    Closed3Manifold M → SimplyConnectedSpace M → AreHomeomorphic M Sphere3
 
-theorem poincare_alt :
-    PoincareConjectureStatement ↔
-    ∀ (M : Type) [TopologicalSpace M] [PathConnectedSpace M],
-      Closed3Manifold M → (∀ x : M, FundamentalGroupTrivial M x) → AreHomeomorphic M Sphere3 := by
-  constructor
-  · intro h M _ _ hclosed htriv
-    exact h M hclosed ⟨inferInstance, htriv⟩
-  · intro h M _ hclosed hsc
-    have : PathConnectedSpace M := hsc.pathConnected
-    exact h M hclosed hsc.loopsContractible
+/-- Alternative formulation using FundamentalGroup: a closed 3-manifold with
+    trivial pi_1 is homeomorphic to S^3. -/
+theorem poincare_of_trivial_pi1 (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) [PathConnectedSpace M]
+    (htriv : ∀ x : M, Subsingleton (FundamentalGroup M x)) :
+    AreHomeomorphic M Sphere3 := by
+  have : SimplyConnectedSpace M := by
+    rw [simply_connected_iff_loops_nullhomotopic]
+    exact ⟨inferInstance, fun x γ => Quotient.exact (Subsingleton.elim ⟦γ⟧ ⟦Path.refl x⟧)⟩
+  exact poincare_conjecture_holds M hM this
 
 /- ===============================================================================
 PART VI: RICCI FLOW AND PERELMAN'S APPROACH
@@ -222,10 +239,10 @@ PART VII: PERELMAN'S AXIOMS AND THURSTON GEOMETRIZATION
 
 axiom perelman_surgery (M : Type) [TopologicalSpace M] (hM : Closed3Manifold M) :
   ∀ _g : RiemannianMetric M, ∃ (M' : Type), ∃ (_ : TopologicalSpace M'),
-    Closed3Manifold M' ∧ (SimplyConnected M → SimplyConnected M')
+    Closed3Manifold M' ∧ (SimplyConnectedSpace M → SimplyConnectedSpace M')
 
 axiom perelman_finite_extinction (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hsc : SimplyConnected M) :
+    (hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M) :
     ∃ T : ℝ, T > 0 ∧ AreHomeomorphic M Sphere3
 
 /-- Thurston's eight model geometries for 3-manifolds. -/
@@ -257,7 +274,7 @@ axiom perelman_entropy_monotone (M : Type*) [TopologicalSpace M]
 
 /-- Hamilton's theorem (1982): Simply connected + positive Ricci → S³. -/
 axiom hamilton_positive_ricci (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hsc : SimplyConnected M)
+    (hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M)
     (_hpositive : ∃ _g : RiemannianMetric M, True) :
     AreHomeomorphic M Sphere3
 
@@ -265,6 +282,8 @@ axiom hamilton_positive_ricci (M : Type) [TopologicalSpace M]
 PART VIII: THE MAIN THEOREM
 =============================================================================== -/
 
+/-- **The Poincare Conjecture** (Perelman, 2003): Every simply connected closed
+    3-manifold is homeomorphic to S³. Derived from the Ricci flow surgery axioms. -/
 theorem poincare_conjecture_holds : PoincareConjectureStatement := by
   intro M _ hM hsc
   obtain ⟨_, _, h⟩ := perelman_finite_extinction M hM hsc
@@ -276,17 +295,17 @@ PART IX: RELATED RESULTS AND DIMENSIONS
 
 axiom generalized_poincare_high_dim (n : ℕ) (hn : n ≥ 5) :
     ∀ (M : Type) [TopologicalSpace M],
-      ClosedManifold n M → SimplyConnected M → ∃ S : Set (EuclideanSpace ℝ (Fin (n+1))),
+      ClosedManifold n M → SimplyConnectedSpace M → ∃ S : Set (EuclideanSpace ℝ (Fin (n+1))),
         S = Metric.sphere 0 1 ∧ AreHomeomorphic M S
 
 axiom poincare_dim_4 :
     ∀ (M : Type) [TopologicalSpace M],
-      ClosedManifold 4 M → SimplyConnected M →
+      ClosedManifold 4 M → SimplyConnectedSpace M →
         AreHomeomorphic M (Metric.sphere (0 : EuclideanSpace ℝ (Fin 5)) 1)
 
 axiom poincare_dim_2 :
     ∀ (M : Type) [TopologicalSpace M],
-      ClosedManifold 2 M → SimplyConnected M →
+      ClosedManifold 2 M → SimplyConnectedSpace M →
         AreHomeomorphic M (Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) 1)
 
 /- ===============================================================================
@@ -294,26 +313,19 @@ PART X: CONSEQUENCES AND APPLICATIONS
 =============================================================================== -/
 
 theorem trivial_pi1_implies_sphere (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hsc : SimplyConnected M) : AreHomeomorphic M Sphere3 :=
+    (hM : Closed3Manifold M) [hsc : SimplyConnectedSpace M] : AreHomeomorphic M Sphere3 :=
   poincare_conjecture_holds M hM hsc
 
 theorem not_sphere_has_nontrivial_pi1 (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) (hnotS3 : ¬ AreHomeomorphic M Sphere3) :
-    ¬ SimplyConnected M := fun hsc => hnotS3 (poincare_conjecture_holds M hM hsc)
+    ¬ SimplyConnectedSpace M := fun hsc => hnotS3 (poincare_conjecture_holds M hM hsc)
 
 theorem poincare_dichotomy (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) :
-    AreHomeomorphic M Sphere3 ∨ ¬ SimplyConnected M := by
-  by_cases hsc : SimplyConnected M
+    AreHomeomorphic M Sphere3 ∨ ¬ SimplyConnectedSpace M := by
+  by_cases hsc : SimplyConnectedSpace M
   · exact Or.inl (poincare_conjecture_holds M hM hsc)
   · exact Or.inr hsc
-
-theorem simply_connected_pathConnected {M : Type} [TopologicalSpace M]
-    (hsc : SimplyConnected M) : PathConnectedSpace M := hsc.pathConnected
-
-theorem simply_connected_loop_contractible {M : Type} [TopologicalSpace M]
-    (hsc : SimplyConnected M) (x : M) (γ : Path x x) :
-    γ.Homotopic (Path.refl x) := hsc.loopsContractible x γ
 
 theorem compact_of_homeomorphic {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     [CompactSpace X] (h : X ≃ₜ Y) : CompactSpace Y :=
@@ -326,7 +338,7 @@ theorem areHomeomorphic_of_homeomorph {X Y : Type*}
     [TopologicalSpace X] [TopologicalSpace Y] (h : X ≃ₜ Y) : AreHomeomorphic X Y := ⟨h⟩
 
 theorem high_dim_sphere (n : ℕ) (hn : n ≥ 5) (M : Type) [TopologicalSpace M]
-    (hM : ClosedManifold n M) (hsc : SimplyConnected M) :
+    (hM : ClosedManifold n M) (hsc : SimplyConnectedSpace M) :
     ∃ S : Set (EuclideanSpace ℝ (Fin (n+1))),
       S = Metric.sphere 0 1 ∧ AreHomeomorphic M S :=
   generalized_poincare_high_dim n hn M hM hsc
@@ -366,7 +378,7 @@ def SphereN (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) := Metric.sphere 
 
 def GeneralizedPoincareStatement (n : ℕ) : Prop :=
   ∀ (M : Type) [TopologicalSpace M],
-    ClosedManifold n M → SimplyConnected M → AreHomeomorphic M (SphereN n)
+    ClosedManifold n M → SimplyConnectedSpace M → AreHomeomorphic M (SphereN n)
 
 theorem poincare_dim3 : GeneralizedPoincareStatement 3 := by
   intro M _ hM hsc; exact poincare_conjecture_holds M hM hsc
@@ -397,14 +409,31 @@ The topological Poincare conjecture has been proven in ALL dimensions:
 - n >= 5: Smale, 1961 (h-cobordism theorem)
 -/
 
+/- ===============================================================================
+PART XIV: FUNDAMENTAL GROUP CHARACTERIZATION
+=============================================================================== -/
+
+/-- For a simply connected space, the fundamental group at any point is trivial.
+    Proof: SimplyConnectedSpace gives Subsingleton on all path homotopy quotients
+    via `simply_connected_iff_paths_homotopic`. FundamentalGroup X x is definitionally
+    the quotient of loops at x by homotopy, so specializing x₀ = x₁ = x suffices. -/
+theorem fundamental_group_trivial_of_sc (X : Type*) [TopologicalSpace X]
+    [hsc : SimplyConnectedSpace X] (x : X) : Subsingleton (FundamentalGroup X x) :=
+  (simply_connected_iff_paths_homotopic.mp hsc).2 x x
+
 #check PoincareConjectureStatement
 #check poincare_conjecture_holds
 #check poincare_all_dimensions
+#check poincare_of_trivial_pi1
+#check fundamental_group_trivial_of_sc
+#check loops_nullhomotopic_of_simply_connected
 #check ThurstonGeometry
 #check thurston_geometrization
 #check thurston_geometry_count
 #check PerelmanWEntropy
 #check perelman_entropy_monotone
 #check hamilton_positive_ricci
+#check @FundamentalGroup
+#check @SimplyConnectedSpace
 
 end PoincareConjecture

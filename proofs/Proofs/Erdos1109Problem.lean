@@ -2507,4 +2507,393 @@ theorem f_ge_eight (N : ℕ) (hN : N ≥ 101) : f N ≥ 8 := by
     exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
   exact le_csSup hbdd h8
 
+-- ============================================================================
+-- Part VII: 9-Element Witness and f(N) >= 9
+-- ============================================================================
+
+-- New squarefree facts for 9-element witness (sums involving 137)
+
+/-- 79 is prime. -/
+private theorem prime_79 : Nat.Prime 79 := by native_decide
+
+/-- 89 is prime. -/
+private theorem prime_89 : Nat.Prime 89 := by native_decide
+
+/-- 137 is prime. -/
+private theorem prime_137 : Nat.Prime 137 := by native_decide
+
+private theorem squarefree_158 : Squarefree (158 : ℕ) := by
+  rw [show (158 : ℕ) = 2 * 79 from by norm_num]
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, prime_79.squarefree⟩)
+
+private theorem squarefree_178 : Squarefree (178 : ℕ) := by
+  rw [show (178 : ℕ) = 2 * 89 from by norm_num]
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, prime_89.squarefree⟩)
+
+private theorem squarefree_210 : Squarefree (210 : ℕ) := by
+  rw [show (210 : ℕ) = 2 * 3 * 5 * 7 from by norm_num]
+  have h7 : Nat.Prime 7 := by native_decide
+  -- 210 = 2 * 105 = 2 * 3 * 35 = 2 * 3 * 5 * 7
+  -- All prime factors are distinct, so 210 is squarefree
+  rw [show (2 * 3 * 5 * 7 : ℕ) = 2 * 105 from by norm_num]
+  refine Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, ?_⟩
+  rw [show (105 : ℕ) = 3 * 35 from by norm_num]
+  refine Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, three_prime.squarefree, ?_⟩
+  rw [show (35 : ℕ) = 5 * 7 from by norm_num]
+  exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, five_prime.squarefree, h7.squarefree⟩
+
+private theorem squarefree_238 : Squarefree (238 : ℕ) := by
+  rw [show (238 : ℕ) = 2 * 119 from by norm_num]
+  have h119 : Squarefree (119 : ℕ) := by
+    rw [show (119 : ℕ) = 7 * 17 from by norm_num]
+    have h7 : Nat.Prime 7 := by native_decide
+    have h17 : Nat.Prime 17 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h7.squarefree, h17.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h119⟩)
+
+private theorem squarefree_274 : Squarefree (274 : ℕ) := by
+  rw [show (274 : ℕ) = 2 * 137 from by norm_num]
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, prime_137.squarefree⟩)
+
+/--
+**{1, 5, 21, 37, 41, 65, 73, 101, 137} has a squarefree sumset.**
+All 81 ordered pair sums are squarefree. This extends the 8-element set
+by adding 137, introducing 9 new distinct sums:
+138=2*3*23, 142=2*71, 158=2*79, 174=2*3*29, 178=2*89, 202=2*101, 210=2*3*5*7, 238=2*7*17, 274=2*137.
+-/
+theorem nona_1_5_21_37_41_65_73_101_137_squarefree_sumset :
+    hasSquarefreeSumset ({1, 5, 21, 37, 41, 65, 73, 101, 137} : Finset ℕ) := by
+  intro s hs
+  simp only [sumset, Finset.mem_image, Finset.mem_product, Finset.mem_insert,
+    Finset.mem_singleton] at hs
+  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, hab⟩ := hs
+  simp only [isSquarefree]
+  rcases ha with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rcases hb with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp at hab <;> rw [← hab]
+  -- Row a=1: 2, 6, 22, 38, 42, 66, 74, 102, 138
+  · exact squarefree_2
+  · exact squarefree_6
+  · exact squarefree_22
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_66
+  · exact squarefree_74
+  · exact squarefree_102
+  · exact squarefree_138
+  -- Row a=5: 6, 10, 26, 42, 46, 70, 78, 106, 142
+  · exact squarefree_6
+  · exact squarefree_10
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_70
+  · exact squarefree_78
+  · exact squarefree_106
+  · exact squarefree_142
+  -- Row a=21: 22, 26, 42, 58, 62, 86, 94, 122, 158
+  · exact squarefree_22
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_62
+  · exact squarefree_86
+  · exact squarefree_94
+  · exact squarefree_122
+  · exact squarefree_158
+  -- Row a=37: 38, 42, 58, 74, 78, 102, 110, 138, 174
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_74
+  · exact squarefree_78
+  · exact squarefree_102
+  · exact squarefree_110
+  · exact squarefree_138
+  · exact squarefree_174
+  -- Row a=41: 42, 46, 62, 78, 82, 106, 114, 142, 178
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_62
+  · exact squarefree_78
+  · exact squarefree_82
+  · exact squarefree_106
+  · exact squarefree_114
+  · exact squarefree_142
+  · exact squarefree_178
+  -- Row a=65: 66, 70, 86, 102, 106, 130, 138, 166, 202
+  · exact squarefree_66
+  · exact squarefree_70
+  · exact squarefree_86
+  · exact squarefree_102
+  · exact squarefree_106
+  · exact squarefree_130
+  · exact squarefree_138
+  · exact squarefree_166
+  · exact squarefree_202
+  -- Row a=73: 74, 78, 94, 110, 114, 138, 146, 174, 210
+  · exact squarefree_74
+  · exact squarefree_78
+  · exact squarefree_94
+  · exact squarefree_110
+  · exact squarefree_114
+  · exact squarefree_138
+  · exact squarefree_146
+  · exact squarefree_174
+  · exact squarefree_210
+  -- Row a=101: 102, 106, 122, 138, 142, 166, 174, 202, 238
+  · exact squarefree_102
+  · exact squarefree_106
+  · exact squarefree_122
+  · exact squarefree_138
+  · exact squarefree_142
+  · exact squarefree_166
+  · exact squarefree_174
+  · exact squarefree_202
+  · exact squarefree_238
+  -- Row a=137: 138, 142, 158, 174, 178, 202, 210, 238, 274
+  · exact squarefree_138
+  · exact squarefree_142
+  · exact squarefree_158
+  · exact squarefree_174
+  · exact squarefree_178
+  · exact squarefree_202
+  · exact squarefree_210
+  · exact squarefree_238
+  · exact squarefree_274
+
+/--
+**f(N) >= 9 for N >= 137:**
+The set {1, 5, 21, 37, 41, 65, 73, 101, 137} has squarefree sumset, giving f(N) >= 9.
+-/
+theorem f_ge_nine (N : ℕ) (hN : N ≥ 137) : f N ≥ 9 := by
+  unfold f
+  have h9 : (9 : ℕ) ∈ {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    simp only [Set.mem_setOf_eq]
+    refine ⟨{1, 5, 21, 37, 41, 65, 73, 101, 137}, ?_, nona_1_5_21_37_41_65_73_101_137_squarefree_sumset, ?_⟩
+    · intro x hx
+      simp [Finset.mem_insert, Finset.mem_singleton] at hx
+      simp [Finset.mem_range]
+      rcases hx with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> omega
+    · native_decide
+  have hbdd : BddAbove {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    use N + 1
+    intro m hm
+    simp only [Set.mem_setOf_eq] at hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm
+    rw [← hA_card]
+    exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
+  exact le_csSup hbdd h9
+
+-- ============================================================================
+-- Part VIII: 10-Element Witness and f(N) >= 10
+-- ============================================================================
+
+-- New squarefree facts for 10-element witness (sums involving 165)
+
+private theorem squarefree_170 : Squarefree (170 : ℕ) := by
+  rw [show (170 : ℕ) = 2 * 85 from by norm_num]
+  have h85 : Squarefree (85 : ℕ) := by
+    rw [show (85 : ℕ) = 5 * 17 from by norm_num]
+    have h17 : Nat.Prime 17 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, five_prime.squarefree, h17.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h85⟩)
+
+private theorem squarefree_186 : Squarefree (186 : ℕ) := by
+  rw [show (186 : ℕ) = 2 * 93 from by norm_num]
+  have h93 : Squarefree (93 : ℕ) := by
+    rw [show (93 : ℕ) = 3 * 31 from by norm_num]
+    have h31 : Nat.Prime 31 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, three_prime.squarefree, h31.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h93⟩)
+
+private theorem squarefree_206 : Squarefree (206 : ℕ) := by
+  rw [show (206 : ℕ) = 2 * 103 from by norm_num]
+  have h103 : Nat.Prime 103 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h103.squarefree⟩)
+
+private theorem squarefree_230 : Squarefree (230 : ℕ) := by
+  rw [show (230 : ℕ) = 2 * 115 from by norm_num]
+  have h115 : Squarefree (115 : ℕ) := by
+    rw [show (115 : ℕ) = 5 * 23 from by norm_num]
+    have h23 : Nat.Prime 23 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, five_prime.squarefree, h23.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h115⟩)
+
+private theorem squarefree_266 : Squarefree (266 : ℕ) := by
+  rw [show (266 : ℕ) = 2 * 133 from by norm_num]
+  have h133 : Squarefree (133 : ℕ) := by
+    rw [show (133 : ℕ) = 7 * 19 from by norm_num]
+    have h7 : Nat.Prime 7 := by native_decide
+    have h19 : Nat.Prime 19 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h7.squarefree, h19.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h133⟩)
+
+private theorem squarefree_302 : Squarefree (302 : ℕ) := by
+  rw [show (302 : ℕ) = 2 * 151 from by norm_num]
+  have h151 : Nat.Prime 151 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h151.squarefree⟩)
+
+private theorem squarefree_330 : Squarefree (330 : ℕ) := by
+  rw [show (330 : ℕ) = 2 * 165 from by norm_num]
+  have h165 : Squarefree (165 : ℕ) := by
+    rw [show (165 : ℕ) = 3 * 55 from by norm_num]
+    have h55 : Squarefree (55 : ℕ) := by
+      rw [show (55 : ℕ) = 5 * 11 from by norm_num]
+      have h11 : Nat.Prime 11 := by native_decide
+      exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, five_prime.squarefree, h11.squarefree⟩
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, three_prime.squarefree, h55⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h165⟩)
+
+/--
+**{1, 5, 21, 37, 41, 65, 73, 101, 137, 165} has a squarefree sumset.**
+All 100 ordered pair sums are squarefree. This extends the 9-element set
+by adding 165, introducing 10 new distinct sums:
+166=2*83, 170=2*5*17, 186=2*3*31, 202=2*101, 206=2*103,
+230=2*5*23, 238=2*7*17, 266=2*7*19, 302=2*151, 330=2*3*5*11.
+-/
+theorem deca_1_5_21_37_41_65_73_101_137_165_squarefree_sumset :
+    hasSquarefreeSumset ({1, 5, 21, 37, 41, 65, 73, 101, 137, 165} : Finset ℕ) := by
+  intro s hs
+  simp only [sumset, Finset.mem_image, Finset.mem_product, Finset.mem_insert,
+    Finset.mem_singleton] at hs
+  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, hab⟩ := hs
+  simp only [isSquarefree]
+  rcases ha with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rcases hb with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp at hab <;> rw [← hab]
+  -- Row a=1: 2, 6, 22, 38, 42, 66, 74, 102, 138, 166
+  · exact squarefree_2
+  · exact squarefree_6
+  · exact squarefree_22
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_66
+  · exact squarefree_74
+  · exact squarefree_102
+  · exact squarefree_138
+  · exact squarefree_166
+  -- Row a=5: 6, 10, 26, 42, 46, 70, 78, 106, 142, 170
+  · exact squarefree_6
+  · exact squarefree_10
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_70
+  · exact squarefree_78
+  · exact squarefree_106
+  · exact squarefree_142
+  · exact squarefree_170
+  -- Row a=21: 22, 26, 42, 58, 62, 86, 94, 122, 158, 186
+  · exact squarefree_22
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_62
+  · exact squarefree_86
+  · exact squarefree_94
+  · exact squarefree_122
+  · exact squarefree_158
+  · exact squarefree_186
+  -- Row a=37: 38, 42, 58, 74, 78, 102, 110, 138, 174, 202
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_74
+  · exact squarefree_78
+  · exact squarefree_102
+  · exact squarefree_110
+  · exact squarefree_138
+  · exact squarefree_174
+  · exact squarefree_202
+  -- Row a=41: 42, 46, 62, 78, 82, 106, 114, 142, 178, 206
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_62
+  · exact squarefree_78
+  · exact squarefree_82
+  · exact squarefree_106
+  · exact squarefree_114
+  · exact squarefree_142
+  · exact squarefree_178
+  · exact squarefree_206
+  -- Row a=65: 66, 70, 86, 102, 106, 130, 138, 166, 202, 230
+  · exact squarefree_66
+  · exact squarefree_70
+  · exact squarefree_86
+  · exact squarefree_102
+  · exact squarefree_106
+  · exact squarefree_130
+  · exact squarefree_138
+  · exact squarefree_166
+  · exact squarefree_202
+  · exact squarefree_230
+  -- Row a=73: 74, 78, 94, 110, 114, 138, 146, 174, 210, 238
+  · exact squarefree_74
+  · exact squarefree_78
+  · exact squarefree_94
+  · exact squarefree_110
+  · exact squarefree_114
+  · exact squarefree_138
+  · exact squarefree_146
+  · exact squarefree_174
+  · exact squarefree_210
+  · exact squarefree_238
+  -- Row a=101: 102, 106, 122, 138, 142, 166, 174, 202, 238, 266
+  · exact squarefree_102
+  · exact squarefree_106
+  · exact squarefree_122
+  · exact squarefree_138
+  · exact squarefree_142
+  · exact squarefree_166
+  · exact squarefree_174
+  · exact squarefree_202
+  · exact squarefree_238
+  · exact squarefree_266
+  -- Row a=137: 138, 142, 158, 174, 178, 202, 210, 238, 274, 302
+  · exact squarefree_138
+  · exact squarefree_142
+  · exact squarefree_158
+  · exact squarefree_174
+  · exact squarefree_178
+  · exact squarefree_202
+  · exact squarefree_210
+  · exact squarefree_238
+  · exact squarefree_274
+  · exact squarefree_302
+  -- Row a=165: 166, 170, 186, 202, 206, 230, 238, 266, 302, 330
+  · exact squarefree_166
+  · exact squarefree_170
+  · exact squarefree_186
+  · exact squarefree_202
+  · exact squarefree_206
+  · exact squarefree_230
+  · exact squarefree_238
+  · exact squarefree_266
+  · exact squarefree_302
+  · exact squarefree_330
+
+/--
+**f(N) >= 10 for N >= 165:**
+The set {1, 5, 21, 37, 41, 65, 73, 101, 137, 165} has squarefree sumset, giving f(N) >= 10.
+-/
+theorem f_ge_ten (N : ℕ) (hN : N ≥ 165) : f N ≥ 10 := by
+  unfold f
+  have h10 : (10 : ℕ) ∈ {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    simp only [Set.mem_setOf_eq]
+    refine ⟨{1, 5, 21, 37, 41, 65, 73, 101, 137, 165}, ?_, deca_1_5_21_37_41_65_73_101_137_165_squarefree_sumset, ?_⟩
+    · intro x hx
+      simp [Finset.mem_insert, Finset.mem_singleton] at hx
+      simp [Finset.mem_range]
+      rcases hx with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> omega
+    · native_decide
+  have hbdd : BddAbove {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    use N + 1
+    intro m hm
+    simp only [Set.mem_setOf_eq] at hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm
+    rw [← hA_card]
+    exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
+  exact le_csSup hbdd h10
+
 end Erdos1109
