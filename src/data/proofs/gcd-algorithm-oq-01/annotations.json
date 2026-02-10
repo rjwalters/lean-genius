@@ -1,86 +1,110 @@
 [
   {
-    "lineStart": 37,
-    "lineEnd": 41,
+    "id": "ann-gcd-oq01-step-count",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 37, "endLine": 41 },
     "type": "definition",
+    "title": "Euclidean Step Counting Function",
     "content": "The step counting function for the Euclidean algorithm. Returns the number of division steps before reaching remainder 0. The termination proof uses the fact that a % b < b.",
-    "importance": "high"
+    "significance": "key"
   },
   {
-    "lineStart": 60,
-    "lineEnd": 65,
-    "type": "technique",
-    "content": "Unfolding lemmas for euclideanSteps: the zero case and the positive case. These are essential for reasoning about the step count in proofs.",
-    "importance": "medium"
-  },
-  {
-    "lineStart": 79,
-    "lineEnd": 81,
-    "type": "theorem",
-    "content": "The core Lame bound, proved by strong induction on the step count n. The key invariant: if euclideanSteps(a,b) = n then fib(n+1) <= b, and for n >= 2, fib(n) <= a % b. This captures how the Fibonacci sequence provides the tightest lower bound on inputs requiring n steps.",
-    "importance": "high"
-  },
-  {
-    "lineStart": 145,
-    "lineEnd": 147,
-    "type": "theorem",
-    "content": "Lame's Theorem in its classical form: fib(steps+1) <= b when b > 0. This is the fundamental result connecting Euclidean algorithm complexity to Fibonacci numbers.",
-    "importance": "high"
-  },
-  {
-    "lineStart": 150,
-    "lineEnd": 155,
-    "type": "theorem",
-    "content": "Contrapositive of Lame's theorem: if b < fib(k+2), then the algorithm takes at most k steps. This form is more convenient for deriving upper bounds on step count.",
-    "importance": "high"
-  },
-  {
-    "lineStart": 162,
-    "lineEnd": 165,
+    "id": "ann-gcd-oq01-unfolding",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 60, "endLine": 65 },
     "type": "lemma",
+    "title": "Unfolding Lemmas for euclideanSteps",
+    "content": "Unfolding lemmas for euclideanSteps: the zero case and the positive case. These are essential for reasoning about the step count in proofs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-gcd-oq01-lame-bound",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "theorem",
+    "title": "Core Lamé Bound via Strong Induction",
+    "content": "The core Lamé bound, proved by strong induction on the step count n. The key invariant: if euclideanSteps(a,b) = n then fib(n+1) <= b, and for n >= 2, fib(n) <= a % b. This captures how the Fibonacci sequence provides the tightest lower bound on inputs requiring n steps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-gcd-oq01-lame-classical",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "theorem",
+    "title": "Lamé's Theorem (Classical Form)",
+    "content": "Lamé's Theorem in its classical form: fib(steps+1) <= b when b > 0. This is the fundamental result connecting Euclidean algorithm complexity to Fibonacci numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-gcd-oq01-contrapositive",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 150, "endLine": 155 },
+    "type": "theorem",
+    "title": "Contrapositive of Lamé's Theorem",
+    "content": "Contrapositive of Lamé's theorem: if b < fib(k+2), then the algorithm takes at most k steps. This form is more convenient for deriving upper bounds on step count.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-gcd-oq01-fib-mod",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 162, "endLine": 165 },
+    "type": "lemma",
+    "title": "Fibonacci Mod Recurrence",
     "content": "F(n+2) mod F(n+1) = F(n) for n >= 2. This follows from the Fibonacci recurrence: fib(n+2) = fib(n) + fib(n+1), and since fib(n) < fib(n+1), the mod operation just returns fib(n).",
-    "importance": "medium"
+    "significance": "supporting"
   },
   {
-    "lineStart": 175,
-    "lineEnd": 192,
+    "id": "ann-gcd-oq01-worst-case",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 175, "endLine": 192 },
     "type": "theorem",
-    "content": "Worst-case optimality: consecutive Fibonacci numbers (fib(n+2), fib(n+1)) require exactly n steps in the Euclidean algorithm. Combined with Lame's theorem, this shows Fibonacci pairs are the unique worst case (up to the bound).",
-    "importance": "high"
+    "title": "Fibonacci Worst-Case Optimality",
+    "content": "Worst-case optimality: consecutive Fibonacci numbers (fib(n+2), fib(n+1)) require exactly n steps in the Euclidean algorithm. Combined with Lamé's theorem, this shows Fibonacci pairs are the unique worst case (up to the bound).",
+    "significance": "critical"
   },
   {
-    "lineStart": 209,
-    "lineEnd": 225,
+    "id": "ann-gcd-oq01-exp-bound",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 209, "endLine": 225 },
     "type": "theorem",
+    "title": "Exponential Fibonacci Lower Bound",
     "content": "Exponential lower bound for odd-indexed Fibonacci numbers: fib(2n+1) >= 2^n. This bridges the gap between Fibonacci growth and powers of 2, enabling the logarithmic step bound.",
-    "importance": "medium"
+    "significance": "supporting"
   },
   {
-    "lineStart": 227,
-    "lineEnd": 235,
+    "id": "ann-gcd-oq01-log-bound",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 227, "endLine": 235 },
     "type": "theorem",
-    "content": "Logarithmic step bound: euclideanSteps(a,b) <= 2*log2(b) + 2. Derived by combining Lame's theorem with the exponential Fibonacci lower bound. This confirms the O(log b) worst-case complexity.",
-    "importance": "high"
+    "title": "Logarithmic Step Bound",
+    "content": "Logarithmic step bound: euclideanSteps(a,b) <= 2*log2(b) + 2. Derived by combining Lamé's theorem with the exponential Fibonacci lower bound. This confirms the O(log b) worst-case complexity.",
+    "significance": "critical"
   },
   {
-    "lineStart": 255,
-    "lineEnd": 267,
+    "id": "ann-gcd-oq01-5digit",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 255, "endLine": 267 },
     "type": "theorem",
-    "content": "Lame's classical 5-digit bound: the number of steps is at most 5 times the number of decimal digits of b (for b < 10^20). Uses fib(5k+2) >= 10^k, verified by interval_cases and native_decide for k <= 20.",
-    "importance": "high"
+    "title": "Lamé's Classical 5-Digit Bound",
+    "content": "Lamé's classical 5-digit bound: the number of steps is at most 5 times the number of decimal digits of b (for b < 10^20). Uses fib(5k+2) >= 10^k, verified by interval_cases and native_decide for k <= 20.",
+    "significance": "key"
   },
   {
-    "lineStart": 281,
-    "lineEnd": 295,
+    "id": "ann-gcd-oq01-avg-infra",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 281, "endLine": 295 },
     "type": "definition",
+    "title": "Average Step Count Infrastructure",
     "content": "Infrastructure for computing finite averages: totalSteps(N) sums euclideanSteps over all pairs (a,b) with 1 <= b <= a <= N. This enables numerical verification of Dixon's asymptotic formula for small N.",
-    "importance": "medium"
+    "significance": "supporting"
   },
   {
-    "lineStart": 297,
-    "lineEnd": 314,
-    "type": "context",
+    "id": "ann-gcd-oq01-dixon",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": { "startLine": 297, "endLine": 314 },
+    "type": "concept",
+    "title": "Dixon's Theorem (Asymptotic Average)",
     "content": "Dixon's theorem (1970): the average number of steps in the Euclidean algorithm for inputs up to N is (12 ln 2 / pi^2) ln N, approximately 0.8427 ln N. This requires continued fractions, the Gauss map T(x) = {1/x}, and ergodic theory, none of which are currently available in Mathlib v4.26.0.",
-    "importance": "high"
+    "significance": "key"
   }
 ]
