@@ -1,8 +1,8 @@
 {
   "id": "erdos-467",
-  "title": "Dual Covering by Prime Residue Classes",
+  "title": "Erdős Problem #467: Dual Covering by Prime Residue Classes",
   "slug": "erdos-467",
-  "description": "For large x, can we choose residue classes for primes ≤ x and partition them into A ⊔ B so every n < x is covered by both A and B? Related to covering congruences.",
+  "description": "For large $x$, can we choose residue classes $a_p$ for each prime $p \\leq x$ and partition the primes into $A \\sqcup B$ so that every $n < x$ is covered by both $A$ and $B$ independently? An open problem in covering congruences from Erdős–Graham (1980).",
   "meta": {
     "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/467",
@@ -10,27 +10,45 @@
     "proofRepoPath": "Proofs/Erdos467Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "covering congruences",
-      "prime residues",
-      "partitions"
+      "number-theory",
+      "covering-congruences",
+      "prime-residues",
+      "partitions",
+      "modular-arithmetic",
+      "combinatorial-number-theory",
+      "chinese-remainder-theorem"
     ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 467,
     "erdosUrl": "https://erdosproblems.com/467",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "originalContributions": [
+      "Dependent-type definition of ResidueAssignment restricting to primes ≤ x",
+      "Boolean-classifier PrimePartition structure with existential non-emptiness witnesses",
+      "Separate CoveredByA/CoveredByB definitions enabling independent coverage analysis",
+      "18 fully proved theorems covering modular arithmetic, zero-assignment analysis, and partition properties",
+      "Axiomatized CRT for distinct primes (provable via ZMod.chineseRemainder)",
+      "Axiomatized Mertens-type estimate connecting uncovered probability to ∏(1−1/p)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this in [ErGr80, p. 93], asking for a dual covering system where two complementary sets of primes each cover all residues. The original quantifiers are ambiguous, making precise interpretation subtle. The problem connects to covering congruences and the Chinese Remainder Theorem.",
-    "problemStatement": "For all sufficiently large x, do there exist residue classes a_p (p ≤ x) and a partition {p ≤ x} = A ⊔ B such that every n < x is covered by some p ∈ A and some q ∈ B?",
-    "proofStrategy": "We formalize residue assignments, prime partitions, single and dual coverage. We include Mertens-based coverage estimates, CRT independence, uncovered probability analysis, and balanced partition constraints.",
+    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph (p.93), asking whether the redundancy in prime residue classes — captured by the divergence of $\\sum 1/p$ — is sufficient to split primes into two halves that each independently cover everything. The original quantifier structure is subtle: 'for sufficiently large $x$' means $\\exists X,\\, \\forall x \\geq X$. The problem connects covering congruences (a classical Erdős theme) to the Chinese Remainder Theorem and Mertens' product estimates.",
+    "problemStatement": "For all sufficiently large $x$, do there exist residue classes $a_p$ ($p \\leq x$ prime) and a partition $\\{p \\leq x\\} = A \\sqcup B$ such that every $n < x$ is covered by some $p \\in A$ and some $q \\in B$?",
+    "proofStrategy": "The formalization defines `ResidueAssignment` as a dependent function type over primes $\\leq x$, and `PrimePartition` as a Boolean classifier with non-emptiness witnesses. Single and dual coverage are defined separately (`CoveredByA`, `CoveredByB`, `IsDualCovering`). The file proves 18 theorems: seven basic modular arithmetic facts, a complete analysis of the zero assignment ($a_p = 0$ for all $p$), six structural properties of dual coverings (including the key `dual_covering_double_hit` lemma), and three periodicity results. The CRT for distinct primes and Mertens' third theorem are axiomatized.",
     "keyInsights": [
-      "Single coverage is easy: every n < x has a prime factor ≤ x",
-      "Dual coverage requires splitting primes so both halves cover everything",
-      "Small primes cover the largest fractions (1/p) and must be shared",
-      "CRT gives independence: coverage by coprime moduli is multiplicative",
-      "Mertens: ∏(1−1/p) ≈ c/log x, so each half needs enough primes"
+      "Single coverage is easy: every $n \\geq 2$ has a prime factor $\\leq n$, proved via `Nat.minFac`",
+      "Dual coverage is hard: splitting primes so both halves independently cover everything requires careful allocation of small primes",
+      "The zero assignment $a_p = 0$ reduces coverage to divisibility: $p$ covers $n$ iff $p \\mid n$, fully proved in the formalization",
+      "CRT gives independence: for distinct primes $p, q$, coverage events by $p$ and $q$ are independent — the probability of avoiding both is $(1 - 1/p)(1 - 1/q)$",
+      "Mertens' third theorem: $\\prod_{p \\leq x}(1 - 1/p) \\sim e^{-\\gamma}/\\log x$, so each half of a partition needs enough primes for its product to be small",
+      "The `dual_covering_double_hit` lemma shows every $n < x$ must be hit by $\\geq 2$ primes (one from each side of the partition)"
     ]
   },
   "sections": [
@@ -38,38 +56,61 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 22,
-      "endLine": 48,
-      "summary": "Defines residue assignments, prime partitions, coverage by A and B, and dual covering."
+      "endLine": 56,
+      "summary": "Defines `ResidueAssignment x` as a dependent function $(p : \\mathbb{N}) \\to p.\\text{Prime} \\to p \\leq x \\to \\mathbb{N}$. `PrimePartition x` uses a Boolean classifier `inA` with existential non-emptiness witnesses for both sides. `CoveredByA`/`CoveredByB` check coverage by the respective partition half. `IsDualCovering` requires every $n < x$ to be covered by both halves."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "startLine": 50,
-      "endLine": 56,
-      "summary": "States the main conjecture: dual covering exists for sufficiently large x."
+      "startLine": 62,
+      "endLine": 68,
+      "summary": "States `erdos_467_conjecture` as an axiom: $\\exists X,\\, \\forall x \\geq X,\\, \\exists$ residue assignment and partition achieving dual coverage. The quantifier structure $\\exists X, \\forall x \\geq X$ carefully captures 'for sufficiently large $x$'."
     },
     {
-      "id": "observations",
-      "title": "Basic Observations",
-      "startLine": 58,
-      "endLine": 84,
-      "summary": "Coverage estimates, single-set covering, partition difficulty, small prime efficiency."
+      "id": "residue-basics",
+      "title": "Residue Class Properties",
+      "startLine": 74,
+      "endLine": 98,
+      "summary": "Seven fully proved properties: $n \\bmod p < p$ (`residue_lt_prime`), $n \\bmod p = 0 \\iff p \\mid n$ (`zero_class_iff_dvd`), $n \\bmod 2 \\in \\{0,1\\}$ (`even_or_odd`), residue class density (`coverage_density`), every $n \\geq 2$ has a prime factor (`has_prime_factor`), prime factors are $\\leq n$ (`prime_factor_le`), and for $n < x$ prime factors are $\\leq x$ (`prime_factor_le_x`)."
     },
     {
-      "id": "counting",
-      "title": "Counting Arguments",
-      "startLine": 86,
-      "endLine": 108,
-      "summary": "CRT independence, uncovered probability via Mertens, and balanced partition constraints."
+      "id": "zero-assignment",
+      "title": "Zero Assignment Analysis",
+      "startLine": 110,
+      "endLine": 138,
+      "summary": "Complete analysis of $a_p = 0$ for all $p$: `zero_covered_by_all` ($n = 0$ covered by every prime), `one_not_covered_by_zero` ($n = 1$ never covered), `zero_covers_ge2` (every $n \\geq 2$ covered via smallest prime factor), and `zero_assign_cover_iff` (coverage iff divisibility). All fully proved."
+    },
+    {
+      "id": "partition-properties",
+      "title": "Partition and Dual Covering Properties",
+      "startLine": 144,
+      "endLine": 190,
+      "summary": "Six fully proved structural results: `dual_implies_A_covers`/`dual_implies_B_covers` (projections), `dual_covering_double_hit` (every $n < x$ hit by $\\geq 2$ primes from different sides), `partition_uses_two_primes` ($\\geq 2$ primes required), `partition_has_distinct_labels` ($A \\neq B$), `partition_needs_prime` ($x \\geq 2$ necessary)."
+    },
+    {
+      "id": "periodicity",
+      "title": "Residue Class Periodicity",
+      "startLine": 196,
+      "endLine": 209,
+      "summary": "Three proved results establishing periodicity: $(n + p) \\bmod p = n \\bmod p$ (`residue_class_periodic`), $a < p \\implies a \\bmod p = a$ (`residue_class_in_range`), and $n \\bmod p < p$ (`num_residue_classes`). These show each residue class covers exactly fraction $1/p$."
+    },
+    {
+      "id": "crt-mertens",
+      "title": "CRT and Mertens Estimates",
+      "startLine": 215,
+      "endLine": 229,
+      "summary": "Two axiomatized deep results: `crt_for_primes` (CRT for distinct primes, provable via `ZMod.chineseRemainder`) and `mertens_product` (Mertens' third theorem $\\prod(1-1/p) \\sim e^{-\\gamma}/\\log x$). CRT establishes independence of coverage events; Mertens bounds the uncovered probability."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #467: dual covering by prime residue classes. The challenge is partitioning primes ≤ x into two sets each capable of covering all residues. Small prime allocation and CRT independence are key structural elements.",
-    "implications": "A resolution would advance the theory of covering systems, connecting combinatorial number theory to probabilistic prime distribution.",
+    "summary": "Erdős Problem 467 asks whether prime residue classes can be partitioned into two sets that each independently cover all integers below $x$. The formalization is unusually thorough: 18 fully proved theorems establish modular arithmetic foundations, completely analyze the zero assignment, and prove key structural properties of dual coverings. Only the main conjecture, CRT, and Mertens' estimate are axiomatized.",
+    "implications": "Resolution would advance covering system theory and connect combinatorial number theory to probabilistic prime distribution. The `dual_covering_double_hit` lemma shows the problem is fundamentally about creating redundancy in prime coverage — a connection to the Lovász Local Lemma approach in covering congruence problems.",
     "openQuestions": [
-      "Does a dual covering exist for all sufficiently large x?",
-      "What is the optimal partition of small primes for dual coverage?",
-      "How does the minimum x₀ depend on the partition structure?"
+      "Does a dual covering exist for all sufficiently large $x$?",
+      "What is the optimal partition of small primes (2, 3, 5, 7, ...) for dual coverage?",
+      "How does the minimum threshold $x_0$ depend on the partition structure?",
+      "Can the Lovász Local Lemma or probabilistic methods establish the conjecture?",
+      "What is the connection to Hough's theorem on minimum modulus covering systems?"
     ]
   }
 }
