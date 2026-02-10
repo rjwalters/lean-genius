@@ -6,7 +6,10 @@
     "type": "definition",
     "title": "Interval Product",
     "content": "The product of all integers in an interval [a, b). When this product is ≡ 1 (mod p), the interval is 'multiplicatively trivial' modulo p.",
-    "significance": "medium"
+    "significance": "key",
+    "mathContext": "The **interval product** $\\prod_{i=a}^{b-1} i = b!/a!$ (when $a \\ge 1$) is a ratio of factorials. In $\\mathbb{Z}/p\\mathbb{Z}$, this becomes $b! \\cdot (a!)^{-1} \\pmod{p}$, where inverses exist by Fermat's little theorem. The condition $\\prod_{i=a}^{b-1} i \\equiv 1 \\pmod{p}$ means $b! \\equiv a! \\pmod{p}$, connecting the problem to the distribution of factorial residues modulo primes.",
+    "relatedConcepts": ["factorial ratio", "Wilson's theorem", "multiplicative group mod p", "Fermat's little theorem"],
+    "prerequisites": ["modular arithmetic", "factorial function", "multiplicative inverses mod p"]
   },
   {
     "id": "has-solution",
@@ -15,7 +18,10 @@
     "type": "definition",
     "title": "Solution for k Intervals",
     "content": "A solution for k: a prime p and k+1 strictly increasing boundary points defining k consecutive intervals, all with product ≡ 1 (mod p).",
-    "significance": "high"
+    "significance": "critical",
+    "mathContext": "A **solution** for $k$ consists of a prime $p$ and boundary points $0 < a_0 < a_1 < \\cdots < a_k < p$ such that $\\prod_{i=a_{j-1}}^{a_j - 1} i \\equiv 1 \\pmod{p}$ for each $j = 1, \\ldots, k$. Equivalently, $a_0! \\equiv a_1! \\equiv \\cdots \\equiv a_k! \\pmod{p}$—all factorial values at the boundary points are congruent. This reformulation via factorials connects to the Noll–Simmons generalization.",
+    "relatedConcepts": ["factorial congruences", "partition of integer intervals", "consecutive product equality"],
+    "prerequisites": ["interval product definition", "modular congruence"]
   },
   {
     "id": "erdos-k2",
@@ -24,7 +30,10 @@
     "type": "theorem",
     "title": "Erdős k=2 Example (1979)",
     "content": "3·4 = 12 ≡ 1 (mod 11) and 5·6·7 = 210 ≡ 1 (mod 11). Two consecutive intervals with product 1 modulo 11. Verified computationally.",
-    "significance": "medium"
+    "significance": "key",
+    "mathContext": "Erdős's original example (1979): with $p = 11$, $[3, 5) = \\{3, 4\\}$ has product $12 \\equiv 1 \\pmod{11}$, and $[5, 8) = \\{5, 6, 7\\}$ has product $210 \\equiv 1 \\pmod{11}$. In factorial terms: $2! = 2$, $4! = 24 \\equiv 2 \\pmod{11}$, $7! = 5040 \\equiv 2 \\pmod{11}$, so $2! \\equiv 4! \\equiv 7! \\pmod{11}$. The prime $p = 11$ is the smallest prime admitting a $k = 2$ solution.",
+    "relatedConcepts": ["factorial residues mod 11", "smallest prime for k=2", "computational verification"],
+    "prerequisites": ["interval product definition", "modular arithmetic"]
   },
   {
     "id": "makowski-k3",
@@ -33,7 +42,10 @@
     "type": "theorem",
     "title": "Makowski k=3 Example (1983)",
     "content": "With p=17: 2·3·4·5 ≡ 6·7·8·9·10·11 ≡ 12·13·14·15 ≡ 1 (mod 17). Three consecutive intervals. Verified computationally.",
-    "significance": "high"
+    "significance": "key",
+    "mathContext": "Makowski (1983) found the first $k = 3$ solution: with $p = 17$, three consecutive intervals have products $\\equiv 1 \\pmod{17}$. In detail: $\\prod_{i=2}^{5} i = 120 \\equiv 1 \\pmod{17}$, $\\prod_{i=6}^{11} i = 332640 \\equiv 1 \\pmod{17}$, $\\prod_{i=12}^{15} i = 32760 \\equiv 1 \\pmod{17}$. The factorial reformulation: $1! \\equiv 5! \\equiv 11! \\equiv 15! \\pmod{17}$, giving four factorial values that agree modulo 17.",
+    "relatedConcepts": ["factorial residues mod 17", "solution for k=3", "Makowski's construction"],
+    "prerequisites": ["k=2 example", "interval product verification"]
   },
   {
     "id": "main-conjecture",
@@ -42,7 +54,10 @@
     "type": "conjecture",
     "title": "Main Conjecture: All k ≥ 2",
     "content": "For every k ≥ 2, there exists a prime p and k consecutive intervals with all products ≡ 1 (mod p). This is the core open question.",
-    "significance": "high"
+    "significance": "critical",
+    "mathContext": "**Main Conjecture**: $\\forall k \\ge 2, \\exists p$ prime and $a_0 < a_1 < \\cdots < a_k$ such that $\\prod_{i=a_{j-1}}^{a_j-1} i \\equiv 1 \\pmod{p}$ for all $j$. Equivalently: for every $k \\ge 2$, there exists a prime $p$ with at least $k+1$ values in $\\{0, 1, \\ldots, p-1\\}$ whose factorials are congruent modulo $p$. The difficulty grows with $k$: more congruences must be simultaneously satisfied, requiring larger primes and more delicate constructions.",
+    "relatedConcepts": ["simultaneous congruences", "factorial residue distribution", "existence problems in number theory"],
+    "prerequisites": ["solution definition", "known examples for k=2,3"]
   },
   {
     "id": "wilson-connection",
@@ -51,7 +66,10 @@
     "type": "theorem",
     "title": "Wilson's Theorem Constraint",
     "content": "(p-1)! ≡ -1 (mod p). If intervals partition {1,...,p-1} and each has product 1, then 1^k = 1 ≠ -1, so the intervals cannot cover all of {1,...,p-1}.",
-    "significance": "medium"
+    "significance": "key",
+    "mathContext": "**Wilson's theorem**: $(p-1)! \\equiv -1 \\pmod{p}$. This provides a key constraint: if $k$ intervals with products $\\equiv 1 \\pmod{p}$ partitioned all of $\\{1, 2, \\ldots, p-1\\}$, the total product would be $(p-1)! \\equiv 1^k = 1$, contradicting Wilson's theorem ($-1 \\ne 1$ for $p > 2$). Therefore the intervals **cannot** cover all of $\\{1, \\ldots, p-1\\}$, and the boundary points must leave gaps. This limits the solution structure.",
+    "relatedConcepts": ["Wilson's theorem", "multiplicative constraints", "partition obstructions"],
+    "prerequisites": ["Wilson's theorem", "modular product of intervals"]
   },
   {
     "id": "noll-simmons",
@@ -60,6 +78,9 @@
     "type": "conjecture",
     "title": "Noll–Simmons Factorial Generalization",
     "content": "For arbitrarily large k, do there exist q₁ < ... < qₖ < p with q₁! ≡ ... ≡ qₖ! (mod p)? This is equivalent to the interval product question via factorial ratios.",
-    "significance": "high"
+    "significance": "critical",
+    "mathContext": "The **Noll–Simmons conjecture** reformulates the problem: for every $k$, does there exist a prime $p$ and $q_1 < q_2 < \\cdots < q_k < p$ with $q_1! \\equiv q_2! \\equiv \\cdots \\equiv q_k! \\pmod{p}$? The equivalence is: $\\prod_{i=a}^{b-1} i \\equiv 1 \\pmod{p}$ iff $a! \\equiv b! \\pmod{p}$. This shifts the focus to the **factorial residue function** $n \\mapsto n! \\pmod{p}$, which is a highly irregular function on $\\{0, 1, \\ldots, p-1\\}$. The conjecture asks whether collisions in this function become arbitrarily frequent as $p$ grows.",
+    "relatedConcepts": ["factorial residues mod p", "collision counting", "pigeonhole principle", "OEIS A060427"],
+    "prerequisites": ["factorial-interval equivalence", "main conjecture"]
   }
 ]
