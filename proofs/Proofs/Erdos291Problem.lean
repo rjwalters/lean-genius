@@ -189,13 +189,6 @@ Note: This is a heuristic argument, not a theorem.
 ## Part VII: Conditional Results
 -/
 
-/--
-**Schanuel's Conjecture:**
-If α₁, ..., αₙ are complex numbers linearly independent over ℚ,
-then the transcendence degree of ℚ(α₁,...,αₙ,e^α₁,...,e^αₙ) over ℚ is ≥ n.
--/
-axiom schanuelConjecture : Prop
-
 /-
 **Wu-Yan Theorem (2022):**
 Assuming Schanuel's conjecture (which implies that 1/log(p) are
@@ -204,6 +197,9 @@ Assuming Schanuel's conjecture (which implies that 1/log(p) are
 
 This uses the fact that for "most" n, at least one prime p has
 leading digit p-1 in base p, making p | gcd(a_n, L_n).
+
+Note: Schanuel's conjecture is not formalized here as it requires
+complex analysis infrastructure not available in Mathlib.
 -/
 
 /-
