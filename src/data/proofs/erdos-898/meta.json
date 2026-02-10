@@ -2,7 +2,7 @@
   "id": "erdos-898",
   "title": "Erdős Problem #898: The Erdős-Mordell Inequality",
   "slug": "erdos-898",
-  "description": "For an interior point P of triangle ABC, if X, Y, Z are the feet of perpendiculars from P to the sides, then PA + PB + PC ≥ 2(PX + PY + PZ). Equality holds iff the triangle is equilateral and P is its center.",
+  "description": "For an interior point $P$ of triangle $ABC$, if $X, Y, Z$ are the feet of perpendiculars from $P$ to the sides, then $PA + PB + PC \\ge 2(PX + PY + PZ)$. Equality iff equilateral with $P$ at center.",
   "meta": {
     "author": "Erdős (1935), Mordell (1937)",
     "sourceUrl": "https://erdosproblems.com/898",
@@ -21,126 +21,142 @@
     "erdosNumber": 898,
     "erdosUrl": "https://erdosproblems.com/898",
     "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
-        "description": "Euclidean space ℝⁿ",
+        "description": "Euclidean space ℝⁿ with inner product and norm",
         "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
       },
       {
         "theorem": "Collinear",
-        "description": "Collinearity of points",
+        "description": "Collinearity predicate for affine point sets",
         "module": "Mathlib.LinearAlgebra.AffineSpace.Independent"
       },
       {
         "theorem": "norm",
-        "description": "Euclidean norm for distances",
+        "description": "Euclidean norm for distance computation",
         "module": "Mathlib.Analysis.Normed.Group.Basic"
       }
     ],
-    "references": [
-      {
-        "key": "Mordell1937",
-        "citation": "Mordell, L.J. (1937). On geometric problems of Erdős and Oppenheim. Mathematical Gazette, 21, 216-219.",
-        "type": "paper"
-      },
-      {
-        "key": "Barrow1937",
-        "citation": "Barrow, D.F. (1937). A simple proof of the Erdős-Mordell inequality. American Mathematical Monthly, 44, 252-254.",
-        "type": "paper"
-      },
-      {
-        "key": "Wikipedia",
-        "citation": "Wikipedia: Erdős-Mordell inequality",
-        "url": "https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Mordell_inequality",
-        "type": "reference"
-      }
-    ],
     "originalContributions": [
-      "Formal definition of perpendicular feet in Euclidean geometry",
-      "Statement of the Erdős-Mordell inequality",
-      "Characterization of equality case (equilateral triangle)",
-      "Historical axioms for multiple proof approaches",
-      "Generalizations to higher dimensions and polygons"
+      "Defined Point as EuclideanSpace ℝ (Fin 2) and IsTriangle via non-collinearity",
+      "Defined perpendicularFoot (orthogonal projection) and PerpendicularFeet structure (pedal triangle)",
+      "Stated ErdosMordellInequality and axiomatized the theorem with equality condition",
+      "Axiomatized four independent proofs (Mordell, Barrow, Kazarinoff, Bankoff)",
+      "Stated weighted Erdős-Mordell inequality with side-length weights",
+      "Formalized generalizations to tetrahedra and regular n-gons",
+      "Axiomatized Viviani's theorem and Weitzenbock inequality as related results"
     ]
   },
   "overview": {
-    "historicalContext": "The Erdős-Mordell inequality is one of the most elegant results in plane geometry. Erdős proposed the problem in 1935 in the American Mathematical Monthly. Louis Mordell and David Barrow independently proved it in 1937. Since then, many alternative proofs have been discovered, including those by Kazarinoff (1957) and Bankoff (1958).",
-    "problemStatement": "If P is an interior point of triangle ABC, and X, Y, Z are the feet of the perpendiculars from P to sides BC, CA, AB respectively, then:\n\nPA + PB + PC ≥ 2(PX + PY + PZ)\n\nIn other words, the sum of distances from P to the vertices is at least twice the sum of distances from P to the sides.",
-    "proofStrategy": "The formalization:\n\n1. Defines points in the Euclidean plane ℝ²\n2. Defines perpendicular feet and distances to lines\n3. States the main inequality as ErdosMordellInequality\n4. Axiomatizes the theorem (multiple proof approaches noted)\n5. States the equality condition (equilateral + center)\n6. Explores generalizations to polygons and higher dimensions",
+    "historicalContext": "Erdos proposed this inequality in 1935 in the American Mathematical Monthly (Problem 3740). Louis Mordell proved it in 1937 in the Mathematical Gazette using trigonometric identities and AM-GM. David Barrow independently gave a more elementary proof in the same year in the American Mathematical Monthly. Since then, many alternative proofs have appeared: Kazarinoff (1957) used the law of cosines, Bankoff (1958) gave a particularly elegant simplification, and Avez (1993) found a proof using only the triangle inequality. The result is now considered one of the most beautiful inequalities in plane geometry, appearing in Bottema's 'Geometric Inequalities' (1969) and Mitrinovic's 'Recent Advances in Geometric Inequalities' (1989). The constant 2 is optimal, attained for equilateral triangles with $P$ at the center.",
+    "problemStatement": "If $P$ is an interior point of triangle $ABC$, and $X, Y, Z$ are the feet of the perpendiculars from $P$ to sides $BC, CA, AB$ respectively, then:\n$$PA + PB + PC \\ge 2(PX + PY + PZ)$$\nEquality holds if and only if $ABC$ is equilateral and $P$ is its center.",
+    "proofStrategy": "The formalization defines points in $\\mathbb{R}^2$ via `EuclideanSpace`, triangles via non-collinearity, perpendicular feet via orthogonal projection (with `sorry`), and the inequality as a `Prop`. The theorem is axiomatized (not proved from scratch) with the equality condition. Four independent proof approaches are documented as separate axioms. Generalizations to tetrahedra and regular $n$-gons are stated. Related inequalities (Viviani, Weitzenbock) provide context within the family of triangle inequalities.",
     "keyInsights": [
-      "The constant 2 in the inequality is optimal",
-      "Equality holds if and only if the triangle is equilateral and P is its center (which equals centroid, incenter, and circumcenter for equilateral triangles)",
-      "The inequality extends to regular n-gons and to simplices in higher dimensions",
-      "Multiple elegant proofs exist: trigonometric, law of cosines, elementary geometry"
+      "The constant 2 in $PA + PB + PC \\ge 2(PX + PY + PZ)$ is sharp: equality holds iff $ABC$ is equilateral and $P$ is its center, where all triangle centers (centroid, incenter, circumcenter, orthocenter) coincide",
+      "Viviani's theorem ($PX + PY + PZ = h$ for equilateral triangles) provides the key connection: combined with Erdos-Mordell, it gives $PA + PB + PC \\ge 2h$ for any interior point",
+      "The inequality has a stronger weighted form: $a \\cdot PA + b \\cdot PB + c \\cdot PC \\ge 2(a \\cdot PX + b \\cdot PY + c \\cdot PZ)$ where $a, b, c$ are side lengths",
+      "Multiple elegant proofs exist: trigonometric (Mordell), elementary (Barrow), law of cosines (Kazarinoff), and simplified (Bankoff), reflecting the depth of the result",
+      "The inequality generalizes to tetrahedra in $\\mathbb{R}^3$ and to regular $n$-gons, suggesting a deeper principle about convex bodies and their duals"
     ]
   },
   "sections": [
     {
-      "id": "points-triangles",
-      "title": "Points and Triangles",
-      "summary": "Setting up points in ℝ² and triangle definitions",
+      "id": "sec-898-header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "File header with problem statement, history (Erdos 1935, Mordell 1937), status (SOLVED). Imports all of Mathlib. Declares `Erdos898` namespace."
+    },
+    {
+      "id": "sec-898-points",
+      "title": "Points and Triangles in $\\mathbb{R}^2$",
       "startLine": 30,
-      "endLine": 48
+      "endLine": 48,
+      "summary": "Defines `Point` as `EuclideanSpace ℝ (Fin 2)`, `dist` as Euclidean norm, `IsTriangle` via non-collinearity, and `IsInteriorPoint` (sorry) for convex hull interior."
     },
     {
-      "id": "perpendicular-feet",
+      "id": "sec-898-perp",
       "title": "Perpendicular Feet",
-      "summary": "Orthogonal projections onto line segments",
       "startLine": 50,
-      "endLine": 75
+      "endLine": 75,
+      "summary": "Defines `perpendicularFoot` (orthogonal projection, sorry), `distToLine` (perpendicular distance), and `PerpendicularFeet` structure with feet $X, Y, Z$ on sides $BC, CA, AB$."
     },
     {
-      "id": "main-inequality",
-      "title": "The Erdős-Mordell Inequality",
-      "summary": "The main result: PA + PB + PC ≥ 2(PX + PY + PZ)",
+      "id": "sec-898-inequality",
+      "title": "The Erdos-Mordell Inequality",
       "startLine": 77,
-      "endLine": 100
+      "endLine": 100,
+      "summary": "Defines `vertexDistanceSum` ($PA + PB + PC$), `sideDistanceSum` ($PX + PY + PZ$), `ErdosMordellInequality` ($\\ge 2 \\times$), and axiomatizes the theorem."
     },
     {
-      "id": "equality",
+      "id": "sec-898-equality",
       "title": "Equality Condition",
-      "summary": "Equality iff equilateral with P at center",
       "startLine": 102,
-      "endLine": 128
+      "endLine": 128,
+      "summary": "Defines `IsEquilateral`, `centroid`, `incenter` (sorry). Axiomatizes center coincidence for equilateral and the biconditional equality condition."
     },
     {
-      "id": "proofs",
+      "id": "sec-898-alt",
+      "title": "Alternative Formulations",
+      "startLine": 130,
+      "endLine": 153,
+      "summary": "Defines `ErdosMordellAlt` (scalar form) and axiomatizes the weighted Erdos-Mordell inequality with side-length weights."
+    },
+    {
+      "id": "sec-898-proofs",
       "title": "Proofs and History",
-      "summary": "Multiple proof approaches over the decades",
       "startLine": 155,
-      "endLine": 175
+      "endLine": 175,
+      "summary": "Axiomatizes four independent proofs: Mordell (1937, trigonometric), Barrow (1937, elementary), Kazarinoff (1957, law of cosines), Bankoff (1958, elegant)."
     },
     {
-      "id": "generalizations",
+      "id": "sec-898-general",
       "title": "Generalizations",
-      "summary": "Extensions to polygons and higher dimensions",
       "startLine": 177,
-      "endLine": 193
+      "endLine": 193,
+      "summary": "States `ErdosMordellTetrahedron` (3D generalization, sorry) and `erdos_mordell_polygon` (regular $n$-gons, sorry)."
     },
     {
-      "id": "related",
+      "id": "sec-898-related",
       "title": "Related Inequalities",
-      "summary": "Triangle inequality, Viviani, Weitzenböck",
       "startLine": 195,
-      "endLine": 220
+      "endLine": 220,
+      "summary": "States triangle inequality (sorry), Viviani's theorem (equilateral constant sum), and Weitzenbock inequality ($a^2 + b^2 + c^2 \\ge 4\\sqrt{3}S$)."
     },
     {
-      "id": "main-result",
+      "id": "sec-898-main",
       "title": "Main Result",
-      "summary": "Erdős Problem #898 is SOLVED",
       "startLine": 222,
-      "endLine": 250
+      "endLine": 252,
+      "summary": "States `erdos_898` (main theorem via axiom), records problem year (1935) and solution year (1937). Erdos Problem #898 is SOLVED."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #898 asks whether PA + PB + PC ≥ 2(PX + PY + PZ) for an interior point P of a triangle. This is the famous Erdős-Mordell inequality, proved by Mordell in 1937. Equality holds exactly when the triangle is equilateral and P is its center.",
-    "implications": "The Erdős-Mordell inequality is a cornerstone of geometric inequalities, with connections to:\n\n1. Triangle geometry and centers\n2. Optimization on convex sets\n3. Generalizations to higher-dimensional simplices\n4. The theory of geometric inequalities",
+    "summary": "Erdos Problem #898 is SOLVED. The Erdos-Mordell inequality $PA + PB + PC \\ge 2(PX + PY + PZ)$ holds for any interior point $P$ of a triangle, with equality iff the triangle is equilateral and $P$ is its center. The formalization captures the main theorem, equality condition, weighted generalization, four proof approaches, extensions to higher dimensions, and connections to Viviani and Weitzenbock. The file has 8 sorries (definition-level: IsInteriorPoint, perpendicularFoot, incenter, ErdosMordellTetrahedron, erdos_mordell_polygon, triangle_inequality, viviani_theorem, weitzenbock_inequality).",
+    "implications": "The Erdos-Mordell inequality is a cornerstone of geometric inequalities. It connects triangle geometry (pedal triangles, triangle centers) to optimization on convex sets. The weighted generalization and higher-dimensional extensions suggest deep structural principles about distances in convex bodies. The multiplicity of proofs (trigonometric, algebraic, elementary) reflects the result's centrality.",
     "openQuestions": [
-      "Optimal constants for non-regular polygons",
-      "Sharp bounds for arbitrary convex bodies",
-      "Computational aspects of finding equality cases"
+      "What are the optimal constants for the Erdos-Mordell inequality on non-regular polygons?",
+      "Can the inequality be extended to arbitrary convex bodies with sharp bounds?",
+      "What is the analog for curved surfaces (e.g., geodesic triangles on surfaces of constant curvature)?",
+      "Can the weighted inequality be further strengthened with optimal weight functions?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "The Erdos-Szekeres theorem is another foundational result in combinatorial geometry, sharing the theme of geometric structure and extremal properties of point configurations"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "Both are landmark results in geometry/topology with multiple proof approaches and rich history, demonstrating different facets of geometric reasoning"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "technique",
+      "description": "Ramsey-type arguments appear in generalizations of the Erdos-Mordell inequality to higher dimensions and in extremal geometry more broadly"
+    }
+  ]
 }
