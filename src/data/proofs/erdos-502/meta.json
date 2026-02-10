@@ -4,16 +4,16 @@
   "slug": "erdos-502",
   "description": "What is the maximum size f(n) of a set A ⊆ ℝⁿ with exactly two distinct pairwise distances? Bannai–Bannai–Stanton proved f(n) ≤ C(n+2,2); a projection construction gives f(n) ≥ C(n+1,2). Status: SOLVED.",
   "meta": {
-    "erdosNumber": 502,
+    "author": "Erdős, Coxeter",
+    "sourceUrl": "https://erdosproblems.com/502",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos502Problem.lean",
     "tags": [
       "erdos",
       "geometry",
       "distances",
-      "combinatorial-geometry",
-      "polynomial-method",
-      "solved"
+      "combinatorial geometry",
+      "polynomial method"
     ],
     "references": [
       "Erdős (1961): original problem, posed by Coxeter",

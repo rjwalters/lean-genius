@@ -10,79 +10,109 @@
     "proofRepoPath": "Proofs/Erdos538Problem.lean",
     "tags": [
       "erdos",
-      "number-theory",
-      "prime-factors",
-      "reciprocal-sums",
-      "multiplicative-number-theory"
+      "number theory",
+      "prime factors",
+      "reciprocal sums",
+      "multiplicative number theory"
     ],
-    "badge": "axiom",
+    "badge": "formalized",
     "sorries": 5,
     "erdosNumber": 538,
     "erdosUrl": "https://erdosproblems.com/538",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős (1973) studied sets A ⊆ {1,...,N} with a bounded number of representations m = p·a where p is prime. He proved the reciprocal sum is ≪ r·log N / log log N, but the optimal bound is unknown. This is related to Problems 536 and 537 on multiplicative representations.",
-    "problemStatement": "Let r ≥ 2 and A ⊆ {1,...,N} such that for any m, at most r solutions exist to m = p·a with p prime and a ∈ A. Give the best possible upper bound for Σ_{n ∈ A} 1/n.",
-    "proofStrategy": "We define reprCount and HasBoundedRepr to capture the representation constraint. ErdosProblem538 seeks the optimal bound function f(r,N). Erdős's bound r·log N / log log N is axiomatized, along with trivial bounds and connections to multiplicative structure.",
+    "historicalContext": "Erdős posed this problem in 1973, studying the interplay between multiplicative constraints and additive density. Given a set $A \\subseteq \\{1, \\ldots, N\\}$ where each integer $m$ has at most $r$ representations as $m = p \\cdot a$ with $p$ prime and $a \\in A$, how large can the reciprocal sum $\\sum_{n \\in A} 1/n$ be? Erdős proved the bound $O(r \\cdot \\log N / \\log\\log N)$ using a double counting argument combined with Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log\\log N$). The idea is elegant: multiplying the reciprocal sum by the prime reciprocal sum produces terms $1/(pa)$ that are controlled by the representation constraint. The harmonic sum $\\sum_{m \\leq N} 1/m \\sim \\log N$ then closes the argument. Whether this bound is optimal remains open. The problem is related to Problems 536 and 537 on multiplicative representations, and connects to the broader study of multiplicative energy in additive combinatorics. The case $r = 1$ (each integer has at most one prime factorization involving an element of $A$) forces $A$ to be 'multiplicatively thin', strengthening the bound to $O(\\log N / \\log\\log N)$.",
+    "problemStatement": "Let $r \\geq 2$ and $A \\subseteq \\{1, \\ldots, N\\}$ such that for any $m$, at most $r$ solutions exist to $m = p \\cdot a$ with $p$ prime and $a \\in A$. Give the best possible upper bound for $\\sum_{n \\in A} 1/n$.",
+    "proofStrategy": "The formalization defines reprCount (counting representations $m = pa$) and HasBoundedRepr (the $r$-bounded constraint), then defines the reciprocal sum and proves basic properties (monotonicity, non-negativity). The main problem is stated as finding the optimal bound function. Erdős's bound $O(r \\cdot \\log N / \\log\\log N)$ is stated as a theorem with sorry (requires Mertens' theorem). The double counting framework and multiplicative energy connection are formalized. Several base cases (empty set, singletons, $r = 1$) are fully proved.",
     "keyInsights": [
-      "reprCount counts representations m = p·a with p prime, a ∈ A",
-      "Erdős proved Σ 1/n ≪ r · log N / log log N by a counting argument",
-      "For r = 1, the bound strengthens to log N / log log N",
-      "The problem connects to multiplicative energy between A and the primes"
+      "Erdős's double counting: $(\\sum_{a \\in A} 1/a) \\cdot (\\sum_{p \\leq N} 1/p) \\leq r \\cdot \\sum_{m \\leq N} 1/m$, giving the bound via Mertens' theorem",
+      "The representation constraint $\\text{reprCount}(A, m) \\leq r$ bounds the 'multiplicative overlap' between $A$ and the primes",
+      "For $r = 1$, the bound strengthens to $O(\\log N / \\log\\log N)$ as $A$ must be multiplicatively thin",
+      "The multiplicative energy $|\\{(a_1, a_2) : q_1 a_1 = q_2 a_2, q_i \\text{ prime}\\}| \\leq r^2 |A|$ provides an alternative counting approach",
+      "The file contains 7 proved theorems (basic properties, monotonicity, special cases) alongside 5 sorries (the deep bounds requiring analytic number theory)"
     ]
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module documentation describing Problem 538 and Erdős's bound, with Mathlib imports for primality, finite sets, real numbers, and tactics."
+    },
+    {
       "id": "representation-count",
       "title": "Representation Count",
-      "startLine": 21,
-      "endLine": 32,
-      "summary": "Defines reprCount and HasBoundedRepr: at most r representations m = p·a."
+      "startLine": 24,
+      "endLine": 41,
+      "summary": "Defines primeReprSet, reprCount (counting m = pa representations), and HasBoundedRepr (at most r representations for all m)."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties of reprCount",
+      "startLine": 43,
+      "endLine": 79,
+      "summary": "Proved: reprCount of empty set is 0, reprCount ≤ |A|, HasBoundedRepr is monotone in r and hereditary under subsets."
     },
     {
       "id": "reciprocal-sum",
-      "title": "The Reciprocal Sum",
-      "startLine": 34,
-      "endLine": 40,
-      "summary": "Defines reciprocalSum: Σ_{n ∈ A} 1/n."
+      "title": "Reciprocal Sum",
+      "startLine": 81,
+      "endLine": 115,
+      "summary": "Defines reciprocalSum (Σ 1/n) and proves: empty sum = 0, non-negativity, monotonicity under subsets, insertion identity."
     },
     {
-      "id": "main-problem",
-      "title": "The Problem",
-      "startLine": 42,
-      "endLine": 60,
-      "summary": "States ErdosProblem538: find the optimal upper bound f(r,N) for the reciprocal sum."
+      "id": "problem-statement",
+      "title": "Problem Statement",
+      "startLine": 117,
+      "endLine": 135,
+      "summary": "Defines ErdosProblem538 as finding the optimal bound f(r,N) for the reciprocal sum under the representation constraint."
     },
     {
       "id": "erdos-bound",
       "title": "Erdős Upper Bound",
-      "startLine": 62,
-      "endLine": 72,
-      "summary": "Axiomatizes Erdős's bound: Σ 1/n ≪ r · log N / log log N."
+      "startLine": 137,
+      "endLine": 156,
+      "summary": "Theorem (sorry): Σ 1/n ≤ C·r·log N / log log N via double counting with Mertens' theorem."
     },
     {
-      "id": "trivial-bounds",
-      "title": "Trivial Bounds",
-      "startLine": 74,
-      "endLine": 88,
-      "summary": "Harmonic upper bound (unconstrained) and the r = 1 case."
+      "id": "trivial-bound",
+      "title": "Harmonic Upper Bound",
+      "startLine": 158,
+      "endLine": 167,
+      "summary": "Theorem (sorry): without the constraint, Σ 1/n ≤ 1 + log N (harmonic sum bound)."
     },
     {
-      "id": "multiplicative-connections",
-      "title": "Connections to Multiplicative Structure",
-      "startLine": 90,
-      "endLine": 109,
-      "summary": "Counting argument relating prime factors to the bound, and multiplicative energy connection."
+      "id": "double-counting",
+      "title": "Double Counting Framework",
+      "startLine": 169,
+      "endLine": 192,
+      "summary": "Theorems (sorry): primes_for_element_bound (|{p : pa ≤ N}| ≤ N/a) and sum_reprCount_bound (Σ reprCount ≤ |A|·N)."
+    },
+    {
+      "id": "multiplicative-energy",
+      "title": "Multiplicative Energy Bound",
+      "startLine": 194,
+      "endLine": 207,
+      "summary": "Theorem (sorry): multiplicative energy of A with primes is at most r²|A| under the representation constraint."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 209,
+      "endLine": 228,
+      "summary": "Proved: r = 1 cardinality bound (|A| ≤ N) and singleton 1-bounded representations."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 538 asks for the optimal reciprocal sum bound for sets with bounded prime representations. Erdős proved ≪ r · log N / log log N, but whether this is tight remains open.",
-    "implications": "The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density in sets of integers.",
+    "summary": "The formalization captures Erdős Problem 538 with the representation constraint (at most r ways to write m = pa with p prime, a ∈ A), Erdős's double counting bound O(r·log N / log log N), and the multiplicative energy connection. Seven theorems are fully proved (basic properties, special cases); five require sorry (deep bounds involving Mertens' theorem and prime counting).",
+    "implications": "The optimal bound would reveal the precise trade-off between multiplicative structure constraints and additive density. The double counting technique via Mertens' theorem exemplifies how prime distribution results (analytic number theory) yield combinatorial bounds (additive combinatorics). The multiplicative energy perspective connects to modern tools like the Balog-Szemerédi-Gowers theorem.",
     "openQuestions": [
-      "Is r · log N / log log N the optimal bound?",
-      "Can the bound be improved for specific values of r?",
-      "What is the extremal structure of sets achieving the maximum reciprocal sum?"
+      "Is $r \\cdot \\log N / \\log\\log N$ the optimal bound, or can it be improved?",
+      "Can the bound be improved for specific values of $r$ (e.g., $r = 2$)?",
+      "What is the extremal structure of sets achieving the maximum reciprocal sum?",
+      "How does the problem change if the representation constraint uses all divisors, not just prime divisors?"
     ]
   }
 }
