@@ -1,0 +1,41 @@
+{
+  "id": "erdos-1023-oq-01",
+  "name": "Union-Free Families with Additional Constraints (k-union-free, intersection-free)",
+  "description": "Extensions of Erdős #1023: formalize k-union-free families, intersection-free families, complement duality, and their hierarchy relationships.",
+  "status": "completed",
+  "category": "extremal-combinatorics",
+  "tags": ["set-families", "antichains", "union-free", "intersection-free", "complement-duality"],
+  "difficulty": "medium",
+  "relatedProofs": ["erdos-1023"],
+  "leanFile": "proofs/Proofs/Erdos1023OQ01Problem.lean",
+  "knowledge": {
+    "insights": [
+      "Antichains are k-union-free for all k >= 2 (same proof idea as union-free case)",
+      "Antichains are intersection-free (dual argument using inf' instead of sup)",
+      "k-union-free hierarchy: union-free implies k-union-free for all k >= 2",
+      "Complement families preserve antichain property (complement reverses inclusion)",
+      "setComplement is an involution and injective on Finset (Fin n)",
+      "Middle layer is simultaneously k-union-free and k-intersection-free for all k >= 2"
+    ],
+    "builtItems": [
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: unionFree_implies_kUnionFree",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: antichain_kUnionFree",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: antichain_interFree",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: interFree_implies_kInterFree",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: antichain_kInterFree",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: setComplement_involutive",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: setComplement_injective",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: setComplement_antitone",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: complementFamily_card",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: complementFamily_involutive",
+      "proofs/Proofs/Erdos1023OQ01Problem.lean: complementFamily_antichain"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Full De Morgan duality: union-free F ↔ complement is intersection-free",
+      "Maximum k-union-free family size = C(n, n/2) for k >= 2",
+      "Maximum intersection-free family size = C(n, n/2)"
+    ],
+    "progressSummary": "COMPLETED: Erdos1023OQ01Problem.lean with 16 proved theorems, 0 sorries, 0 axioms. Covers k-union-free families, intersection-free families, complement duality."
+  }
+}

@@ -409,11 +409,108 @@ theorem goodRotation_prefixSum_injective (l : List ℤ) (i₁ i₂ : ℕ)
   · rfl
   · exact absurd heq.symm (ne_of_lt (goodRotation_prefixSum_strictMono l i₂ i₁ hi₂ hi₁ hgt hg₂))
 
+/-- No good rotation can have index strictly before the rightmost minimum. -/
+theorem goodRotation_ge_rightmostMinPos (l : List ℤ) (i : ℕ)
+    (hi : i < l.length) (hS : 0 < l.sum) (hg : isGoodRotation l i) :
+    rightmostMinPos l ≤ i := by
+  by_contra h; push_neg at h
+  -- i < rightmostMinPos, and both i and rightmostMinPos are good rotations
+  have hm_lt : rightmostMinPos l < l.length := rightmostMinPos_lt l hS
+  have hm_good := goodRotation_at_rightmostMin l (by omega) hS
+  -- By strict monotonicity: prefixSum i < prefixSum rightmostMinPos = minPrefixSum
+  have hsm := goodRotation_prefixSum_strictMono l i (rightmostMinPos l) hi hm_lt h hg
+  rw [prefixSum_rightmostMinPos] at hsm
+  -- But prefixSum i ≥ minPrefixSum by definition
+  linarith [minPrefixSum_le l i (le_of_lt hi)]
+
+/-- Good rotation prefix sums are bounded: minPrefixSum ≤ P(i) -/
+theorem goodRotation_prefixSum_ge_min (l : List ℤ) (i : ℕ)
+    (hi : i < l.length) :
+    minPrefixSum l ≤ prefixSum l i :=
+  minPrefixSum_le l i (le_of_lt hi)
+
+/-- Good rotation prefix sums are bounded above: P(i) < minPrefixSum + sum.
+    Key insight: the wrapping part of a good rotation passes through
+    prefix sums including minPrefixSum, and these must all be > 0. -/
+theorem goodRotation_prefixSum_lt_sum (l : List ℤ) (i : ℕ)
+    (hi : i < l.length) (hS : 0 < l.sum) (hg : isGoodRotation l i) :
+    prefixSum l i < minPrefixSum l + l.sum := by
+  -- The rotation at i has: at step (n - i + rightmostMinPos l), the partial sum
+  -- equals l.sum - prefixSum l i + minPrefixSum l. This must be > 0.
+  set m := rightmostMinPos l
+  have hm_le := goodRotation_ge_rightmostMinPos l i hi hS hg
+  have hm_lt : m < l.length := rightmostMinPos_lt l hS
+  -- Consider the wrapping: rotation at i, step j = l.length - i + m
+  -- This is in the range (0, l.length] since m ≤ i < l.length
+  -- Wait, l.length - i + m: if i > m, this is l.length - (i - m)
+  -- If i = m, this is l.length
+  -- The rotation partial sum at step j = l.length is l.sum > 0 (the full sum).
+  -- For a step in the wrapping part (after position l.length - i), the rotation
+  -- includes elements from the beginning of l.
+  -- At the wrap point that corresponds to the minimum: we pass through
+  -- position (l.length - i + m) in the rotation, where the partial sum is:
+  -- S - P(i) + P(m) = S - P(i) + minPrefixSum
+  -- For the rotation to be good, this must be > 0.
+  have hj := l.length - i + m
+  have hj_pos : 0 < l.length - i + m := by omega
+  have hj_le : l.length - i + m ≤ l.length := by omega
+  have hgood := hg (l.length - i + m) hj_pos hj_le
+  rw [cyclicRotation_prefixSum l i (l.length - i + m) (le_of_lt hi) hj_le] at hgood
+  simp only [show i + (l.length - i + m) = l.length + m from by omega] at hgood
+  simp only [show ¬(l.length + m ≤ l.length) from by omega, ↓reduceIte] at hgood
+  simp only [show l.length + m - l.length = m from by omega] at hgood
+  rw [prefixSum_rightmostMinPos] at hgood
+  rw [prefixSum_length] at hgood
+  linarith
+
+/-- Cardinality upper bound: at most sum good rotations. -/
+theorem goodRotations_card_le {l : List ℤ} (hS : 0 < l.sum) :
+    (goodRotations l).card ≤ l.sum.toNat := by
+  -- The map prefixSum gives an injection from goodRotations to
+  -- Finset.Ico (minPrefixSum l) (minPrefixSum l + l.sum), which has size l.sum.toNat
+  apply Finset.card_le_card_of_injOn (fun i => (prefixSum l i - minPrefixSum l).toNat)
+    (fun i hi => ?_) (fun i₁ hi₁ i₂ hi₂ heq => ?_)
+  · -- Image is in Finset.range l.sum.toNat
+    rw [goodRotations, Finset.mem_filter] at hi
+    have hi_lt := Finset.mem_range.mp hi.1
+    have hge := goodRotation_prefixSum_ge_min l i hi_lt
+    have hlt := goodRotation_prefixSum_lt_sum l i hi_lt hS hi.2
+    simp only [Finset.mem_range]
+    omega
+  · -- Injectivity
+    rw [goodRotations, Finset.mem_filter] at hi₁ hi₂
+    have h1_lt := Finset.mem_range.mp hi₁.1
+    have h2_lt := Finset.mem_range.mp hi₂.1
+    have hge1 := goodRotation_prefixSum_ge_min l i₁ h1_lt
+    have hge2 := goodRotation_prefixSum_ge_min l i₂ h2_lt
+    have : prefixSum l i₁ = prefixSum l i₂ := by omega
+    exact goodRotation_prefixSum_injective l i₁ i₂ h1_lt h2_lt hi₁.2 hi₂.2 this
+
+/-- Rightmost occurrence of a prefix sum level. -/
+noncomputable def rightmostAtLevel (l : List ℤ) (v : ℤ) : ℕ :=
+  ((Finset.range l.length).filter (fun i => prefixSum l i = v)).max'
+    (by sorry) -- existence of level (part of surjectivity)
+
+/-- Lower bound via level surjectivity: at least sum good rotations.
+    For each integer level v in [minPrefixSum, minPrefixSum + sum),
+    the rightmost position achieving that level is a good rotation. -/
+theorem goodRotations_card_ge {k a b : ℕ} {l : List ℤ}
+    (hl : l ∈ kCountedSequence k a b) (hab : k * b < a) :
+    (a - k * b : ℕ) ≤ (goodRotations l).card := by
+  sorry -- Level crossing surjectivity argument
+
 /-- **The Cycle Lemma (Dvoretzky-Motzkin, 1947) for ballot sequences.** -/
 theorem cycle_lemma {k a b : ℕ} {l : List ℤ} (hl : l ∈ kCountedSequence k a b)
     (hab : k * b < a) :
     (goodRotations l).card = a - k * b := by
-  sorry -- Counting argument: combine injectivity with level crossing surjectivity
+  apply le_antisymm
+  · -- Upper bound: at most a - kb good rotations
+    have hS : 0 < l.sum := kCountedSequence_pos_sum hl hab
+    have hle := goodRotations_card_le hS
+    have hsum : l.sum = (a : ℤ) - k * b := kCountedSequence_sum hl
+    omega
+  · -- Lower bound: at least a - kb good rotations
+    exact goodRotations_card_ge hl hab
 
 /-- Verification examples -/
 example : (goodRotations [1, 1, -1]).card = 1 := by native_decide

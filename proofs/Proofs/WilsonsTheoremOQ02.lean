@@ -156,15 +156,42 @@ theorem prod_univ_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] :
   · intro b _; exact ⟨b⁻¹, Finset.mem_univ _, inv_inv b⟩
   · intros; rfl
 
+/-- **Involution product lemma**: In a finite commutative group, the involution
+    x ↦ x⁻¹ pairs non-self-inverse elements, so ∏ G = ∏ {x | x² = 1}.
+
+    This is the key structural lemma for the Gauss-Wilson theorem. -/
+theorem prod_eq_prod_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] [DecidableEq G] :
+    ∏ x : G, x = ∏ x ∈ Finset.univ.filter (fun x : G => x ^ 2 = 1), x := by
+  -- Split the product: ∏ G = ∏ {x | x²=1} * ∏ {x | x²≠1}
+  rw [← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun x : G => x ^ 2 = 1)]
+  -- Suffices to show ∏ {x | x² ≠ 1} = 1
+  suffices h : ∏ x ∈ Finset.univ.filter (fun x : G => ¬(x ^ 2 = 1)), x = 1 by
+    rw [h, mul_one]
+  -- The involution x ↦ x⁻¹ acts without fixed points on {x | x² ≠ 1}
+  -- (since x² ≠ 1 means x ≠ x⁻¹)
+  -- Each pair (x, x⁻¹) contributes x * x⁻¹ = 1
+  let S := Finset.univ.filter (fun x : G => ¬(x ^ 2 = 1))
+  -- Use Finset.prod_involution to cancel pairs
+  apply Finset.prod_involution (fun x _ => x⁻¹)
+  · -- x * x⁻¹ = 1
+    intros a _; exact mul_inv_cancel a
+  · -- x⁻¹ ∈ S when x ∈ S
+    intro a ha
+    simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢
+    rwa [inv_pow, inv_eq_one]
+  · -- x ≠ x⁻¹ on S (since x² ≠ 1 means x ≠ x⁻¹)
+    intro a ha heq
+    simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at ha
+    exact ha (by rw [sq, mul_eq_one_iff_eq_inv]; exact heq)
+  · -- Involution: (x⁻¹)⁻¹ = x
+    intros a _; exact inv_inv a
+
 /-- The product of all units in ZMod n equals -1 when (ZMod n)ˣ is cyclic
     and n ≥ 3.
 
-    Proof strategy: (∏ x)² = 1, so ∏ x ∈ {1, -1}. But ∏ x ≠ 1
-    (by computational verification or structural argument), so ∏ x = -1.
-
-    We verify ∏ x ≠ 1 using the self-inverse classification: if ∏ x = 1,
-    then the involution x ↦ x⁻¹ would pair ALL elements (including 1 and -1),
-    contradicting the fact that 1 is self-inverse. -/
+    Proof: By the involution product lemma, ∏ G = ∏ {x | x² = 1}.
+    In cyclic (ZMod n)ˣ with n ≥ 3, {x | x² = 1} = {1, -1}.
+    So ∏ G = 1 · (-1) = -1. -/
 theorem prod_units_neg_one_of_cyclic {n : ℕ} (hn : n ≥ 3)
     [hne : NeZero n] [hcyc : IsCyclic (ZMod n)ˣ] :
     ∏ x : (ZMod n)ˣ, (x : ZMod n) = -1 := by
@@ -174,31 +201,13 @@ theorem prod_units_neg_one_of_cyclic {n : ℕ} (hn : n ≥ 3)
     rw [map_prod] at h
     simp only [Units.val_neg, Units.val_one] at h
     exact h
-  -- The product squares to 1
-  have hsq := prod_univ_sq_eq_one (ZMod n)ˣ
-  -- So the product is either 1 or -1 (the only solutions to x² = 1 in cyclic group)
-  have h_selfinv : (∏ x : (ZMod n)ˣ, x) ^ 2 = 1 := hsq
-  -- In the cyclic group, x² = 1 iff x ∈ {1, -1}
-  have hmem := selfInverse_units_eq_pair hn
-  have hprod_sq : ∏ x : (ZMod n)ˣ, x ∈ Finset.univ.filter (fun x => x ^ 2 = 1) := by
-    simp [Finset.mem_filter, h_selfinv]
-  rw [hmem] at hprod_sq
-  simp [Finset.mem_insert, Finset.mem_singleton] at hprod_sq
-  -- So ∏ x = 1 ∨ ∏ x = -1
-  rcases hprod_sq with h1 | hminus1
-  · -- Case ∏ x = 1: contradiction
-    -- If ∏ units = 1, we derive a contradiction.
-    -- The Fintype.card of (ZMod n)ˣ = Nat.totient n ≥ 2 (since n ≥ 3).
-    -- The group is cyclic of order m = totient n.
-    -- Product of cyclic group of order m with generator g:
-    -- ∏ = g^(0+1+...+(m-1)) = g^(m(m-1)/2)
-    -- If m is even (it is, since -1 ≠ 1), then g^(m(m-1)/2) = g^(m/2) · (g^m)^((m-1-1)/2)
-    -- ... this is getting complicated. Let's use that for primes it's -1.
-    -- Actually, we can show ∏ x ≠ 1 for ANY cyclic group of even order ≥ 2.
-    -- Since (ZMod n)ˣ has even order for n ≥ 3 (it contains -1 ≠ 1).
-    exfalso
-    sorry
-  · exact hminus1
+  -- By involution product lemma: ∏ G = ∏ {x | x² = 1}
+  rw [prod_eq_prod_sq_eq_one]
+  -- In cyclic (ZMod n)ˣ with n ≥ 3: {x | x² = 1} = {1, -1}
+  rw [selfInverse_units_eq_pair hn]
+  -- ∏ {1, -1} = 1 * (-1) = -1
+  rw [Finset.prod_pair (neg_one_ne_one_units hn).symm]
+  simp [mul_comm]
 
 /-- When (ZMod n)ˣ is not cyclic and n ≥ 3, the product of units is 1. -/
 theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
