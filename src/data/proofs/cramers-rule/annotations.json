@@ -118,5 +118,17 @@
     "significance": "supporting",
     "relatedConcepts": ["Field", "inv_mul_cancel", "Fin 2", "2x2 determinant"],
     "prerequisites": ["cramers_rule", "Field", "Matrix.det"]
+  },
+  {
+    "id": "cr-checks",
+    "proofId": "cramers-rule",
+    "type": "concept",
+    "range": { "startLine": 156, "endLine": 159 },
+    "title": "Verification of Core Mathlib Lemmas",
+    "content": "Uses `#check` to verify that the four core Mathlib lemmas (`mulVec_cramer`, `cramer_apply`, `cramer_eq_adjugate_mulVec`, `mul_adjugate`) exist and have the expected types. This serves as documentation and a guard against Mathlib API changes.",
+    "mathContext": "The four checked identities form a complete picture: $\\text{cramer}(A,b)_i = \\det(A_i)$ (component), $A \\cdot \\text{cramer}(A,b) = \\det(A) \\cdot b$ (main), $\\text{cramer}(A,b) = \\text{adj}(A) \\cdot b$ (adjugate), and $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ (fundamental).",
+    "significance": "supporting",
+    "relatedConcepts": ["#check command", "Mathlib API stability", "type verification"],
+    "prerequisites": ["Lean 4 #check command"]
   }
 ]
