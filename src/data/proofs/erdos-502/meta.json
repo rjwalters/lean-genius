@@ -6,6 +6,7 @@
   "meta": {
     "erdosNumber": 502,
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos502Problem.lean",
     "tags": [
       "erdos",
       "geometry",
@@ -16,65 +17,97 @@
     ],
     "references": [
       "Erdős (1961): original problem, posed by Coxeter",
-      "Bannai–Bannai–Stanton (1983): upper bound C(n+2,2)",
-      "Petrov–Pohoata (2021): simpler proof of BBS bound",
+      "Kelly (1947): early two-distance results in the plane",
+      "Bannai–Bannai–Stanton (1983): upper bound C(n+2,2) via polynomial method",
+      "Blokhuis (1984): simplified BBS proof using linear algebra",
+      "Petrov–Pohoata (2021): simpler proof via Croot–Lev–Pach polynomial method",
       "https://erdosproblems.com/502"
     ],
     "leanFile": "Proofs/Erdos502Problem.lean",
     "sorries": 0,
+    "badge": "formalized",
     "sourceUrl": "https://erdosproblems.com/502",
-    "erdosUrl": "https://erdosproblems.com/502"
+    "erdosUrl": "https://erdosproblems.com/502",
+    "erdosProblemStatus": "solved"
   },
   "sections": [
     {
+      "id": "header-and-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module docstring stating the problem, its solved status, and references. Imports `Analysis.InnerProductSpace.Basic` for the metric structure on $\\mathbb{R}^n$, `Combinatorics.Choose.Basic` for binomial coefficients, and `Data.Finset.Card` for finite set cardinalities."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 38,
-      "summary": "Define IsTwoDistanceSet and the maximum size function maxTwoDistSize."
+      "startLine": 24,
+      "endLine": 36,
+      "summary": "Defines `IsTwoDistanceSet n A` requiring exactly two distinct positive distances $d_1 \\neq d_2$ among all pairs in $A \\subseteq \\mathbb{R}^n$, and `maxTwoDistSize n = \\sup\\{|A| : A \\text{ is a two-distance set in } \\mathbb{R}^n\\}$."
     },
     {
       "id": "binary-construction",
       "title": "The Binary Vector Construction",
-      "startLine": 40,
-      "endLine": 52,
-      "summary": "Binary vectors with exactly two 1-coordinates form a two-distance set."
+      "startLine": 37,
+      "endLine": 50,
+      "summary": "Constructs `binaryTwoVec n i j` — indicator vectors $e_i + e_j \\in \\{0,1\\}^n$ — forming a two-distance set with distances $\\sqrt{2}$ (one shared coordinate) and $2$ (disjoint supports), giving $\\binom{n}{2}$ points."
     },
     {
-      "id": "bounds",
-      "title": "Lower and Upper Bounds",
-      "startLine": 54,
-      "endLine": 70,
-      "summary": "Lower bound C(n+1,2) from projections, upper bound C(n+2,2) from BBS."
+      "id": "lower-bound",
+      "title": "Lower Bounds",
+      "startLine": 51,
+      "endLine": 60,
+      "summary": "Basic lower bound $f(n) \\geq \\binom{n}{2}$ from binary vectors, improved to $f(n) \\geq \\binom{n+1}{2}$ via projection into a suitable $(n-1)$-dimensional affine subspace."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound — Bannai–Bannai–Stanton",
+      "startLine": 61,
+      "endLine": 68,
+      "summary": "The BBS theorem: $f(n) \\leq \\binom{n+2}{2}$. The proof associates to each point a polynomial vanishing on the other distance, bounding the dimension of the resulting polynomial space by $\\binom{n+2}{2}$."
     },
     {
       "id": "main-result",
-      "title": "Main Result and Small Cases",
-      "startLine": 72,
-      "endLine": 95,
-      "summary": "Combined sandwich bound and exact values for dimensions 2 and 3."
+      "title": "Main Combined Bounds",
+      "startLine": 69,
+      "endLine": 76,
+      "summary": "The sandwich theorem: $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$, establishing $f(n) = \\Theta(n^2)$ with an additive gap of at most $n+1$."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 77,
+      "endLine": 84,
+      "summary": "Exact values: $f(2) = 5$ (vertices of a regular pentagon) and $f(3) = 6$. These match the lower bound $\\binom{3}{2} = 3$ and $\\binom{4}{2} = 6$ respectively, with the planar case being exceptional."
+    },
+    {
+      "id": "coxeter-question",
+      "title": "Coxeter's Original Question and Historical Context",
+      "startLine": 85,
+      "endLine": 98,
+      "summary": "Coxeter's question — is $f(n)$ polynomial? — answered affirmatively by BBS. Erdős's original weaker bound $f(n) \\leq n!$ (exponential) is stated as a historical record of the pre-BBS state of knowledge."
     }
   ],
   "overview": {
-    "historicalContext": "Coxeter asked Erdős for the maximum size of a two-distance set in ℝⁿ. Erdős initially believed f(n) ≤ n^O(1) but found an error in his proof, leaving only the weaker exponential bound. The polynomial bound was eventually established by Bannai, Bannai, and Stanton in 1983 using the polynomial method. Petrov and Pohoata gave a simpler proof in 2021.",
+    "historicalContext": "H.S.M. Coxeter posed this problem to Erdős around 1961, asking whether the maximum size of a two-distance set in $\\mathbb{R}^n$ is polynomial in $n$. Erdős initially believed he could prove $f(n) \\leq n^{O(1)}$ but discovered an error, leaving only exponential bounds. The question remained open until Bannai, Bannai, and Stanton (1983) proved $f(n) \\leq \\binom{n+2}{2}$ using the polynomial method: for a two-distance set with distances $d_1, d_2$, the polynomials $p_a(x) = (\\|x-a\\|^2 - d_1^2)(\\|x-a\\|^2 - d_2^2)$ are linearly independent in a space of dimension $\\binom{n+2}{2}$, yielding the bound. Blokhuis (1984) simplified the argument using linear algebra over the Gram matrix. In 2021, Petrov and Pohoata gave an even simpler proof leveraging the Croot–Lev–Pach polynomial method from additive combinatorics. For the lower bound, the binary vector construction $\\{e_i + e_j : i < j\\}$ gives $\\binom{n}{2}$ points; a clever projection into $\\mathbb{R}^n$ from $\\mathbb{R}^{n+1}$ improves this to $\\binom{n+1}{2}$. The exact value $f(n)$ is known only for small $n$: Kelly (1947) showed $f(2) = 5$ (regular pentagon), and $f(3) = 6$ is classical.",
     "problemStatement": "Given n, find the maximum cardinality f(n) of a finite set A ⊆ ℝⁿ such that the set of pairwise distances {|x-y| : x ≠ y ∈ A} has exactly two elements.",
-    "proofStrategy": "We formalize the two-distance set definition, the binary vector construction giving C(n+1,2), and the Bannai–Bannai–Stanton upper bound C(n+2,2). The gap between C(n+1,2) and C(n+2,2) remains open for general n.",
+    "proofStrategy": "The formalization defines the two-distance set property, constructs binary vectors as witnesses for the lower bound, and states the Bannai–Bannai–Stanton upper bound. The main theorem combines both into the sandwich $\\binom{n+1}{2} \\leq f(n) \\leq \\binom{n+2}{2}$. Small cases $f(2) = 5$ and $f(3) = 6$ are axiomatized. Coxeter's polynomial growth question is resolved as a direct corollary of BBS.",
     "keyInsights": [
-      "Binary vectors with exactly two 1-coordinates give a two-distance set with distances √2 and 2",
-      "A suitable projection improves the lower bound from C(n,2) to C(n+1,2)",
-      "The Bannai–Bannai–Stanton proof uses the polynomial/Gram matrix method",
-      "The exact value is known for small dimensions: f(2) = 5, f(3) = 6",
-      "The gap between C(n+1,2) and C(n+2,2) is open for general n"
+      "**Binary vector construction**: Vectors $e_i + e_j \\in \\{0,1\\}^n$ give distances $\\sqrt{2}$ (shared coordinate) or $2$ (disjoint), yielding $\\binom{n}{2}$ points; projection improves this to $\\binom{n+1}{2}$",
+      "**Polynomial method for upper bound**: For distances $d_1, d_2$, the polynomials $p_a(x) = (\\|x-a\\|^2 - d_1^2)(\\|x-a\\|^2 - d_2^2)$ are linearly independent in $\\mathbb{R}[x_1,\\ldots,x_n]_{\\leq 2}$, whose dimension is $\\binom{n+2}{2}$",
+      "**Tight quadratic growth**: The gap $\\binom{n+2}{2} - \\binom{n+1}{2} = n+1$ is small, so $f(n) = \\frac{n^2}{2} + O(n)$ — the answer is known up to a linear correction",
+      "**Exceptional small cases**: $f(2) = 5$ (regular pentagon, beating $\\binom{3}{2} = 3$) shows the lower bound is not always tight; by $n = 3$, $f(3) = 6 = \\binom{4}{2}$ matches the lower bound exactly",
+      "**Evolution of proof techniques**: From Erdős's failed polynomial attempt (1961) through BBS's Gram matrix method (1983) to Petrov–Pohoata's Croot–Lev–Pach approach (2021) — each generation simplified the argument using new algebraic tools"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #502 asks for the maximum two-distance set in ℝⁿ. The answer is Θ(n²): the Bannai–Bannai–Stanton upper bound C(n+2,2) and the projection lower bound C(n+1,2) sandwich f(n) quadratically in n. The problem is considered solved.",
-    "implications": "The result confirms that two-distance sets grow quadratically, answering Coxeter's original question. The polynomial method used in the proof has become a fundamental tool in discrete geometry and combinatorics.",
+    "summary": "Erdős Problem #502 asks for the maximum two-distance set in $\\mathbb{R}^n$. The answer is $\\Theta(n^2)$: the Bannai–Bannai–Stanton upper bound $\\binom{n+2}{2}$ and the projection lower bound $\\binom{n+1}{2}$ sandwich $f(n)$ with an additive gap of $n+1$. The formalization captures both bounds, the binary vector construction, exact small-case values, and the historical resolution of Coxeter's polynomial growth question.",
+    "implications": "The polynomial method, first applied here by Bannai–Bannai–Stanton, became one of the most powerful tools in combinatorial geometry. Its descendant, the Croot–Lev–Pach method (2016), resolved the cap set problem and led to Petrov–Pohoata's simplified proof. The two-distance problem is a prototype for the general $k$-distance problem, where the polynomial method gives $f_k(n) \\leq \\binom{n+k}{k}$.",
     "openQuestions": [
-      "What is the exact value of f(n) for all n?",
-      "Is f(n) = C(n+1,2) for all sufficiently large n?",
-      "What is the structure of extremal two-distance sets?",
-      "How does the answer change for k-distance sets with k ≥ 3?"
+      "Is $f(n) = \\binom{n+1}{2}$ for all sufficiently large $n$? This would close the linear gap between upper and lower bounds",
+      "What is the structure of extremal two-distance sets? Are they related to strongly regular graphs or spherical designs?",
+      "For $k$-distance sets ($k \\geq 3$), the gap between lower and upper bounds widens — can it be narrowed?",
+      "Does the answer change for two-distance sets on the sphere $S^{n-1}$ versus all of $\\mathbb{R}^n$?"
     ]
   }
 }
