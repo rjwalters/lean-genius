@@ -178,67 +178,12 @@ theorem unionFreeMax_ge_middle (n : ℕ) :
   exact ⟨middleLayer n, middleLayer_unionFree n, middleLayer_card n⟩
 
 /-
-## Upper Bound: F(n) ≤ C(n, n/2)
-
-This is the harder direction, proved by Erdős-Kleitman.
-This is a deep combinatorial result requiring the Kruskal-Katona theorem
-or related methods, beyond what is currently in Mathlib.
--/
-
-/-- Erdős-Kleitman: F(n) ≤ C(n, n/2). -/
-axiom erdos_kleitman_upper (n : ℕ) :
-  unionFreeMax n ≤ Nat.choose n (n / 2)
-
-/-- Combining bounds: F(n) = C(n, n/2). -/
-theorem unionFreeMax_eq_middle (n : ℕ) :
-    unionFreeMax n = Nat.choose n (n / 2) :=
-  le_antisymm (erdos_kleitman_upper n) (unionFreeMax_ge_middle n)
-
-/-
-## Asymptotic Form
-
-C(n, n/2) ~ c · 2^n / √n by Stirling's approximation.
--/
-
-/-- The central binomial coefficient C(n, n/2). -/
-def centralBinomial (n : ℕ) : ℕ := Nat.choose n (n / 2)
-
-/-- Stirling's approximation for central binomials.
-    This is a well-known asymptotic result but requires substantial
-    real analysis infrastructure to prove formally. -/
-axiom stirling_central (n : ℕ) (hn : n > 0) :
-  ∃ c : ℝ, c > 0 ∧ |((centralBinomial n : ℝ) - c * 2^n / Real.sqrt n)| ≤ 2^n / n
-
-/-- The asymptotic constant (abstractly defined). -/
-axiom asymptoticConstant : ℝ
-axiom asymptoticConstant_pos : asymptoticConstant > 0
-
-/-- F(n) ~ c · 2^n / √n where c is the asymptotic constant.
-    This follows from unionFreeMax_eq_middle and Stirling's approximation. -/
-axiom unionFreeMax_asymptotic :
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |(unionFreeMax n : ℝ) - asymptoticConstant * 2^n / Real.sqrt n| ≤
-        ε * 2^n / Real.sqrt n
-
-/-
-## The Main Question Answered
-
-The answer is YES: F(n) ~ c · 2^n / √n.
--/
-
-/-- The main question: Is F(n) ~ c · 2^n / √n for some c > 0? -/
-def erdos_1023_question : Prop :=
-  ∃ c : ℝ, c > 0 ∧
-    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-      |(unionFreeMax n : ℝ) / (2^n / Real.sqrt n) - c| < ε
-
-/-- The answer is YES. -/
-axiom erdos_1023_solved : erdos_1023_question
-
-/-
-## Connection to Problem 447
+## Connection to Problem 447: 2-Union-Free Families
 
 Problem 447 asks about 2-union-free families (forbidding A = B ∪ C only).
+The key insight (Hunter's observation) is that union-free implies 2-union-free,
+so the upper bound for union-free families follows from Problem 447.
+This eliminates the need for a separate Erdős-Kleitman axiom.
 -/
 
 /-- A set is the union of exactly two other sets. -/
@@ -294,6 +239,14 @@ theorem twoUnionFreeMax_ge (n : ℕ) :
 axiom problem_447_solution :
   ∀ n : ℕ, twoUnionFreeMax n = Nat.choose n (n / 2)
 
+/-
+## Upper Bound and Exact Value: F(n) = C(n, n/2)
+
+Hunter's observation: since union-free ⊂ 2-union-free, the Problem 447
+upper bound applies. Combined with the middle layer lower bound, F(n) = C(n, n/2).
+This eliminates the need for the separate Erdős-Kleitman axiom.
+-/
+
 /-- Hunter's observation: Problem 1023 follows from Problem 447. -/
 theorem hunter_observation (n : ℕ) :
     unionFreeMax n = Nat.choose n (n / 2) :=
@@ -301,6 +254,75 @@ theorem hunter_observation (n : ℕ) :
     (calc unionFreeMax n ≤ twoUnionFreeMax n := twoUnionFreeMax_ge n
       _ = Nat.choose n (n / 2) := problem_447_solution n)
     (unionFreeMax_ge_middle n)
+
+/-- Combining bounds: F(n) = C(n, n/2). -/
+theorem unionFreeMax_eq_middle (n : ℕ) :
+    unionFreeMax n = Nat.choose n (n / 2) :=
+  hunter_observation n
+
+/-
+## Asymptotic Form
+
+C(n, n/2) ~ c · 2^n / √n by Stirling's approximation.
+-/
+
+/-- The central binomial coefficient C(n, n/2). -/
+def centralBinomial (n : ℕ) : ℕ := Nat.choose n (n / 2)
+
+/-- Stirling's approximation for central binomials.
+    C(n, ⌊n/2⌋) ~ √(2/π) · 2^n / √n.
+    This is a well-known asymptotic result but requires substantial
+    real analysis infrastructure to prove formally. -/
+axiom stirling_central (n : ℕ) (hn : n > 0) :
+  ∃ c : ℝ, c > 0 ∧ |((centralBinomial n : ℝ) - c * 2^n / Real.sqrt n)| ≤ 2^n / n
+
+/-- The asymptotic constant √(2/π) (abstractly defined). -/
+axiom asymptoticConstant : ℝ
+axiom asymptoticConstant_pos : asymptoticConstant > 0
+
+/-- F(n) ~ c · 2^n / √n where c is the asymptotic constant.
+    This follows from unionFreeMax_eq_middle and Stirling's approximation. -/
+axiom unionFreeMax_asymptotic :
+    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
+      |(unionFreeMax n : ℝ) - asymptoticConstant * 2^n / Real.sqrt n| ≤
+        ε * 2^n / Real.sqrt n
+
+/-
+## The Main Question Answered
+
+The answer is YES: F(n) ~ c · 2^n / √n.
+We prove erdos_1023_solved from unionFreeMax_asymptotic, eliminating one axiom.
+-/
+
+/-- The main question: Is F(n) ~ c · 2^n / √n for some c > 0? -/
+def erdos_1023_question : Prop :=
+  ∃ c : ℝ, c > 0 ∧
+    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
+      |(unionFreeMax n : ℝ) / (2^n / Real.sqrt n) - c| < ε
+
+/-- The answer is YES. Proved from unionFreeMax_asymptotic. -/
+theorem erdos_1023_solved : erdos_1023_question := by
+  refine ⟨asymptoticConstant, asymptoticConstant_pos, fun ε hε => ?_⟩
+  obtain ⟨N, hN⟩ := unionFreeMax_asymptotic ε hε
+  refine ⟨max N 1, fun n hn => ?_⟩
+  have hnN : n ≥ N := le_of_max_le_left hn
+  have hn1 : n ≥ 1 := le_of_max_le_right hn
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (Nat.one_le_iff_ne_zero.mp hn1)
+  have hsqrt_pos : Real.sqrt n > 0 := Real.sqrt_pos_of_pos hn_pos
+  have hpow_pos : (2 : ℝ) ^ n > 0 := pow_pos (by norm_num : (0:ℝ) < 2) n
+  have hdenom_pos : (2 : ℝ) ^ n / Real.sqrt n > 0 := div_pos hpow_pos hsqrt_pos
+  have hasym := hN n hnN
+  -- |x / d - c| < ε  ←  |x - c * d| ≤ ε * d  when d > 0
+  rw [abs_sub_lt_iff]
+  have key : (unionFreeMax n : ℝ) / (2 ^ n / Real.sqrt ↑n) - asymptoticConstant =
+      ((unionFreeMax n : ℝ) - asymptoticConstant * 2 ^ n / Real.sqrt ↑n) / (2 ^ n / Real.sqrt ↑n) := by
+    field_simp
+  rw [key]
+  constructor
+  · rw [neg_lt, neg_div, div_lt_iff hdenom_pos]
+    linarith [abs_le.mp hasym]
+  · rw [div_lt_iff hdenom_pos]
+    linarith [abs_le.mp hasym]
 
 /-
 ## Summary
@@ -313,7 +335,7 @@ This file formalizes Erdős Problem #1023 on union-free families.
 
 **The Answer**: YES. F(n) = C(n, n/2) ~ √(2/π) · 2^n / √n.
 
-**Key Results Proved**:
+**Key Results Proved** (0 sorries):
 - Union-free equivalence (two definitions)
 - Antichains are union-free
 - Middle layer card = C(n, n/2)
@@ -321,16 +343,19 @@ This file formalizes Erdős Problem #1023 on union-free families.
 - Lower bound: F(n) ≥ C(n, n/2)
 - Union-free implies 2-union-free
 - 2-union-free max ≥ union-free max
-- F(n) = C(n, n/2) (via axiom for upper bound)
+- F(n) = C(n, n/2) (via Hunter's observation + Problem 447)
 - Hunter's observation (1023 follows from 447)
+- erdos_1023_solved (main question, proved from asymptotic axiom)
 
-**Axioms Used** (deep results not in Mathlib):
-- erdos_kleitman_upper: F(n) ≤ C(n, n/2)
+**Axioms Used** (5 deep results not in Mathlib):
 - stirling_central: Stirling's approximation for central binomials
-- asymptoticConstant / asymptoticConstant_pos: The asymptotic constant
+- asymptoticConstant / asymptoticConstant_pos: The asymptotic constant √(2/π)
 - unionFreeMax_asymptotic: Asymptotic form of F(n)
 - problem_447_solution: 2-union-free max = C(n, n/2)
-- erdos_1023_solved: The main question answered
+
+**Axioms Eliminated** (compared to previous version):
+- erdos_kleitman_upper: Redundant with problem_447_solution via Hunter's observation
+- erdos_1023_solved: Now a theorem, proved from unionFreeMax_asymptotic
 
 **Related Topics**:
 - Sperner's theorem and antichains
