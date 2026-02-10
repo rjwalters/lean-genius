@@ -18,21 +18,7 @@
     "sorries": 0,
     "erdosNumber": 913,
     "erdosUrl": "https://erdosproblems.com/913",
-    "erdosProblemStatus": "open",
-    "crossReferences": [
-      {
-        "proofId": "erdos-933",
-        "relationship": "Smooth part of n(n+1): both problems study the prime factorization structure of products of consecutive integers"
-      },
-      {
-        "proofId": "erdos-931",
-        "relationship": "Same prime factor sets in consecutive products; related multiplicative structure of consecutive blocks"
-      },
-      {
-        "proofId": "erdos-928",
-        "relationship": "Consecutive smooth numbers; shares the theme of prime factor constraints on consecutive integers"
-      }
-    ]
+    "erdosProblemStatus": "open"
   },
   "overview": {
     "historicalContext": "This problem appears in Erdős's 1982 collection [Er82c, p.28], part of his extensive study of the multiplicative structure of products of consecutive integers. The question connects to a deep theme in number theory: understanding the exponent structure of $n(n+1)$. Since $\\gcd(n, n+1) = 1$, the prime factorizations of $n$ and $n+1$ are completely independent, and the exponents in $n(n+1)$ are the disjoint union of exponents from each factor. The conditional approach via $n = 8p^2 - 1$ was identified as a natural path, producing the clean exponent pattern $\\{1, 2, 3\\}$. This connects to the Bunyakovsky conjecture (1857) and the more quantitative Bateman-Horn conjecture (1962) on prime values of polynomials. The problem illustrates a common theme in Erdős's work: reducing a seemingly difficult number-theoretic question to a (conjecturally true but currently unproven) statement about prime values of a specific polynomial.",
@@ -115,5 +101,22 @@
       "Can the exponent pattern {1, 2, 3} be replaced by {1, 2, 3, 4} or longer sequences? This would require finding n(n+1) with 4+ distinct primes all having different exponents.",
       "What fraction of Mersenne primes (if infinitely many exist) yield examples via the n = 2^k - 1 construction?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-933",
+      "relationship": "related",
+      "description": "Smooth part of n(n+1): both problems study the prime factorization structure of products of consecutive integers"
+    },
+    {
+      "targetId": "erdos-931",
+      "relationship": "related",
+      "description": "Same prime factor sets in consecutive products; related multiplicative structure of consecutive blocks"
+    },
+    {
+      "targetId": "erdos-928",
+      "relationship": "related",
+      "description": "Consecutive smooth numbers; shares the theme of prime factor constraints on consecutive integers"
+    }
+  ]
 }
