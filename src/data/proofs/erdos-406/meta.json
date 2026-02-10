@@ -2,7 +2,7 @@
   "id": "erdos-406",
   "title": "Erdős Problem #406: Powers of 2 with Only Digits 0 and 1 in Base 3",
   "slug": "erdos-406",
-  "description": "Are there only finitely many powers of 2 whose base-3 representation uses only digits 0 and 1? Known: 1, 4, 256. Saye verified no new examples for 2^n with n ≤ 5.9×10²¹.",
+  "description": "Are there only finitely many powers of 2 whose base-3 representation uses only digits 0 and 1? Known examples: $1 = 2^0$, $4 = 2^2$, $256 = 2^8$. These are numbers simultaneously equal to a power of 2 and a sum of distinct powers of 3. Saye (2022) verified no new examples for $2^n$ with $n \\leq 5.9 \\times 10^{21}$.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/406",
@@ -10,26 +10,53 @@
     "proofRepoPath": "Proofs/Erdos406Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "base representations",
-      "powers of 2",
-      "digit problems"
+      "number-theory",
+      "base-representations",
+      "powers-of-2",
+      "digit-problems",
+      "S-unit-equations"
     ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 406,
     "erdosUrl": "https://erdosproblems.com/406",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.digits",
+        "description": "Base-b digit representation of natural numbers (little-endian list)",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "List.Basic",
+        "description": "Basic list operations for digit list manipulation",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized digit predicates HasOnlyDigits01Base3 and HasOnlyDigits12Base3 via Nat.digits",
+      "Defined ternarySparse and ternaryDense sets capturing the two conjecture variants",
+      "Recorded all three known examples: 1 = 2^0, 4 = 2^2, 256 = 2^8",
+      "Axiomatized Saye's (2022) massive computational verification up to 5.9 × 10²¹",
+      "Connected {0,1}-digit numbers to sums of distinct powers of 3 (Cantor set integers)",
+      "Formalized the variant conjecture on digits {1,2} with 2^15 as the largest"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem asks about the intersection of powers of 2 and numbers expressible with only digits 0 and 1 in base 3 (sums of distinct powers of 3). Only three examples are known: 1, 4, and 256. The problem connects multiplication (powers of 2) with additive structure (base-3 representations) and is notoriously difficult.",
-    "problemStatement": "Is the set {2^k : all base-3 digits of 2^k are 0 or 1} finite? A variant asks whether 2^15 is the largest power of 2 with only digits 1 and 2 in base 3.",
-    "proofStrategy": "The formalization defines digit predicates HasOnlyDigits01Base3 and HasOnlyDigits12Base3 via Nat.digits, constructs the relevant sets, states finiteness as the main conjecture, and records the three known examples, the variant conjecture, and Saye's massive computational verification.",
+    "historicalContext": "This problem asks about the intersection of powers of 2 and numbers expressible with only digits 0 and 1 in base 3 (sums of distinct powers of 3). Only three examples are known: $1$, $4$, and $256$. The problem connects multiplication (powers of 2) with additive structure (base-3 representations) and is notoriously difficult, sitting at the frontier of S-unit equations and multiplicative independence. Saye (2022) provided overwhelming computational evidence by checking all $2^n$ for $n \\leq 5.9 \\times 10^{21}$.",
+    "problemStatement": "Is the set $\\{2^k : \\text{all base-3 digits of } 2^k \\text{ are } 0 \\text{ or } 1\\}$ finite? A variant asks whether $2^{15}$ is the largest power of 2 with only digits 1 and 2 in base 3.",
+    "proofStrategy": "The formalization defines digit predicates `HasOnlyDigits01Base3` and `HasOnlyDigits12Base3` via `Nat.digits`, constructs the sets `ternarySparse` and `ternaryDense`, states finiteness as the main conjecture (`ErdosProblem406`), records the three known examples and the variant, and axiomatizes Saye's computational verification. The connection to sums of distinct powers of 3 is made explicit.",
     "keyInsights": [
-      "Only three powers of 2 are known to have only digits 0 and 1 in base 3: 1, 4, 256",
-      "Numbers with only ternary digits 0 and 1 are exactly sums of distinct powers of 3",
-      "Saye (2022) checked all 2^n for n up to 5.9×10²¹ — none have this property for n ≥ 16",
-      "The variant with digits 1 and 2 conjectures that 2^15 = 32768 is the largest"
+      "Only three powers of 2 are known to have only digits 0 and 1 in base 3: $1 = 2^0$, $4 = 2^2 = 1 + 3$, $256 = 2^8 = 1 + 3 + 9 + 243$",
+      "Numbers with only ternary digits $\\{0, 1\\}$ are exactly sums of distinct powers of 3, connecting the problem to S-unit equations and additive combinatorics",
+      "Saye (2022) checked all $2^n$ for $n \\leq 5.9 \\times 10^{21}$ — none have this property for $n \\geq 9$, providing overwhelming computational evidence",
+      "The variant with digits $\\{1, 2\\}$ conjectures that $2^{15} = 32768$ is the largest",
+      "The problem is intimately connected to the ABC conjecture and multiplicative independence of 2 and 3"
     ]
   },
   "sections": [
@@ -38,51 +65,52 @@
       "title": "Ternary Digit Predicates",
       "startLine": 23,
       "endLine": 39,
-      "summary": "Definitions of HasOnlyDigits01Base3, HasOnlyDigits12Base3, and the corresponding sets ternarySparse and ternaryDense."
+      "summary": "Definitions of `HasOnlyDigits01Base3` (digits $\\subseteq \\{0,1\\}$), `HasOnlyDigits12Base3` (digits $\\subseteq \\{1,2\\}$), and the corresponding sets `ternarySparse` and `ternaryDense` of powers of 2 satisfying these constraints."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 41,
       "endLine": 45,
-      "summary": "Erdős Problem 406: the set ternarySparse is finite."
+      "summary": "Erdős Problem #406: `ternarySparse.Finite` — the set of powers of 2 with only ternary digits $\\{0,1\\}$ is finite."
     },
     {
       "id": "variant",
       "title": "Variant Conjecture",
       "startLine": 47,
       "endLine": 51,
-      "summary": "2^15 is the greatest power of 2 with only ternary digits 1 and 2."
+      "summary": "$2^{15} = 32768$ is the greatest power of 2 with only ternary digits $\\{1, 2\\}$."
     },
     {
       "id": "known-examples",
       "title": "Known Examples",
       "startLine": 53,
       "endLine": 62,
-      "summary": "The three known elements of ternarySparse: 1 = 2^0, 4 = 2^2, 256 = 2^8."
+      "summary": "The three known elements of ternarySparse: $1 = 2^0 = 3^0$, $4 = 2^2 = 3^0 + 3^1$, $256 = 2^8 = 3^0 + 3^1 + 3^2 + 3^5$."
     },
     {
       "id": "computational-evidence",
       "title": "Computational Evidence",
       "startLine": 64,
       "endLine": 71,
-      "summary": "Saye's 2022 computation: for 16 ≤ n ≤ 5.9×10²¹, 2^n uses all three ternary digits."
+      "summary": "Saye's 2022 computation: for $16 \\leq n \\leq 5.9 \\times 10^{21}$, $2^n$ uses all three ternary digits, ruling out membership in both ternarySparse and ternaryDense."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 73,
       "endLine": 83,
-      "summary": "Numbers with ternary digits 0,1 are sums of distinct powers of 3; 0 trivially has this property."
+      "summary": "Numbers with ternary digits $\\{0,1\\}$ are sums of distinct powers of 3; zero trivially satisfies the predicate (vacuously, since `Nat.digits 3 0 = []`)."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures the open Erdős Problem 406 on finiteness of powers of 2 with restricted ternary digits, recording the three known examples, the digit-1-2 variant, and massive computational evidence from Saye (2022).",
-    "implications": "Resolution would illuminate the multiplicative-additive independence of powers of 2 and powers of 3, a deep question in number theory related to the abc conjecture and S-unit equations.",
+    "summary": "The formalization captures the open Erdős Problem #406 on finiteness of powers of 2 with restricted ternary digits, recording the three known examples ($1, 4, 256$), the digit-$\\{1,2\\}$ variant (largest: $2^{15}$), and Saye's massive computational verification up to $5.9 \\times 10^{21}$.",
+    "implications": "Resolution would illuminate the multiplicative-additive independence of powers of 2 and powers of 3, a deep question in number theory related to the ABC conjecture, S-unit equations, and the distribution of digits in exponential sequences.",
     "openQuestions": [
-      "Is {2^k with ternary digits ⊆ {0,1}} finite?",
-      "Is 2^15 the largest power of 2 with ternary digits ⊆ {1,2}?",
-      "Can methods from transcendence theory or p-adic analysis resolve the problem?"
+      "Is $\\{2^k : \\text{digits}_3(2^k) \\subseteq \\{0,1\\}\\}$ finite?",
+      "Is $2^{15}$ the largest power of 2 with ternary digits $\\subseteq \\{1,2\\}$?",
+      "Can methods from transcendence theory (Baker, Ridout) or the ABC conjecture resolve the problem?",
+      "What is the distribution of the ternary digit 0 in $2^n$ as $n \\to \\infty$?"
     ]
   }
 }
