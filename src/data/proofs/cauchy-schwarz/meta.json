@@ -13,18 +13,101 @@
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "abs_real_inner_le_norm", "description": "Cauchy-Schwarz for real inner products", "module": "Mathlib.Analysis.InnerProductSpace.Basic"}
+      { "theorem": "abs_real_inner_le_norm", "description": "Cauchy-Schwarz for real inner products", "module": "Mathlib.Analysis.InnerProductSpace.Basic" },
+      { "theorem": "EuclideanSpace.inner_eq_star_dotProduct", "description": "Inner product equals dot product in Euclidean space", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
+      { "theorem": "sq_nonneg", "description": "Non-negativity of squares", "module": "Mathlib.Algebra.Order.Ring.Lemmas" }
     ],
-    "originalContributions": ["Inner product form", "Finite sum form", "Equality characterization"],
+    "originalContributions": [
+      "Inner product form via abs_real_inner_le_norm",
+      "Squared form via sq_le_sq' and real_inner_self_eq_norm_sq",
+      "Two-variable algebraic proof via Lagrange identity",
+      "Two-variable equality characterization via sq_eq_zero_iff",
+      "Finite sum form via EuclideanSpace embedding",
+      "Equality iff linear dependence via norm_inner_eq_norm_iff",
+      "Triangle inequality derived from Cauchy-Schwarz",
+      "Correlation coefficient bound as application"
+    ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 78
   },
   "overview": {
-    "historicalContext": "Named after Cauchy (1821) and Schwarz (1888), also discovered by Bunyakovsky (1859).",
-    "problemStatement": "**Cauchy-Schwarz Inequality**:\n\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor sequences: $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$",
-    "proofStrategy": "Follows from (a₁b₂ - a₂b₁)² ≥ 0 and generalizes via quadratic non-negativity.",
-    "keyInsights": ["Equality iff vectors are linearly dependent", "Foundation for functional analysis", "Used in quantum mechanics"]
+    "historicalContext": "**Origins and Multiple Discoverers**\n\nThe Cauchy-Schwarz inequality has been independently discovered at least three times. **Augustin-Louis Cauchy** first proved the discrete (finite sum) version in his 1821 *Cours d'Analyse*, establishing $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ for real sequences. **Viktor Bunyakovsky** extended this to integrals in 1859, proving $\\left(\\int fg\\right)^2 \\leq \\int f^2 \\int g^2$. **Hermann Amandus Schwarz** independently proved the integral version in 1888 for the specific context of Fourier analysis.\n\n**Modern Significance**\n\nThe inequality is arguably the single most important inequality in mathematics. It underpins the triangle inequality in normed spaces, the definition of angle between vectors, the Pearson correlation coefficient in statistics, the Heisenberg uncertainty principle in quantum mechanics, and concentration inequalities in probability theory. It appears as #78 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.\n\n**The Quadratic Argument**\n\nThe standard modern proof considers $0 \\leq \\|u - tv\\|^2 = \\|u\\|^2 - 2t\\langle u,v\\rangle + t^2\\|v\\|^2$ as a quadratic in $t$, whose non-negative discriminant yields $\\langle u,v\\rangle^2 \\leq \\|u\\|^2\\|v\\|^2$. The elementary two-variable proof uses the **Lagrange identity**: $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2 \\geq 0$.",
+    "problemStatement": "**Cauchy-Schwarz Inequality**\n\nFor vectors $u, v$ in a real inner product space:\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor sequences $a, b : \\text{Fin}\\,n \\to \\mathbb{R}$:\n$$(\\sum_i a_i b_i)^2 \\leq (\\sum_i a_i^2)(\\sum_i b_i^2)$$\n\nEquality holds if and only if $u$ and $v$ are linearly dependent.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Abstract form:** Apply Mathlib's `abs_real_inner_le_norm` for $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$.\n2. **Squared form:** Derive $\\langle u,v\\rangle^2 \\leq \\langle u,u\\rangle\\langle v,v\\rangle$ via `sq_le_sq'` and `real_inner_self_eq_norm_sq`.\n3. **Two-variable case:** Direct algebraic proof using the Lagrange identity $(a_1b_2-a_2b_1)^2 \\geq 0$ via `sq_nonneg` and `nlinarith`.\n4. **Finite sum form:** Embed sequences into `EuclideanSpace \\mathbb{R} (\\text{Fin}\\,n)` and apply the squared inner product form.\n5. **Equality:** Characterize equality as linear dependence using `norm_inner_eq_norm_iff`.\n6. **Applications:** Derive triangle inequality and correlation bound as corollaries.",
+    "keyInsights": [
+      "**Lagrange Identity:** The two-variable proof reveals that the 'gap' $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2$ is a perfect square, making non-negativity trivial.",
+      "**Euclidean Space Bridge:** The finite sum form is derived by embedding sequences into `EuclideanSpace`, using `inner_eq_star_dotProduct` to connect abstract inner products with concrete sums $\\sum a_i b_i$.",
+      "**Equality = Linear Dependence:** The geometric content: $|\\langle u,v\\rangle| = \\|u\\|\\|v\\|$ iff $u = cv$ for some scalar $c$, i.e., the vectors point in the same or opposite directions.",
+      "**Triangle Inequality Derivation:** Cauchy-Schwarz immediately implies $\\|u+v\\| \\leq \\|u\\|+\\|v\\|$ by expanding $\\|u+v\\|^2$ and bounding the cross term $\\langle u,v\\rangle \\leq \\|u\\|\\|v\\|$.",
+      "**Correlation Bound:** Dividing both sides by $\\|u\\|\\|v\\|$ gives $|\\rho| \\leq 1$, the fundamental bound on the Pearson correlation coefficient in statistics."
+    ]
   },
-  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 47, "summary": "Overview."}],
-  "conclusion": {"summary": "Cauchy-Schwarz is verified in both inner product and finite sum forms."}
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "summary": "Imports `InnerProductSpace.Basic`, `InnerProductSpace.PiL2` (for `EuclideanSpace`), `BigOperators.Ring.Finset` (for $\\sum$), and general tactics.",
+      "startLine": 1,
+      "endLine": 49
+    },
+    {
+      "id": "inner-product-form",
+      "title": "Inner Product Form",
+      "summary": "States and proves $|\\langle u,v\\rangle_{\\mathbb{R}}| \\leq \\|u\\|\\|v\\|$ via `abs_real_inner_le_norm`. Also derives the squared form $\\langle u,v\\rangle^2 \\leq \\langle u,u\\rangle\\langle v,v\\rangle$.",
+      "startLine": 51,
+      "endLine": 79
+    },
+    {
+      "id": "two-variable",
+      "title": "Two-Variable Algebraic Form",
+      "summary": "Elementary proof of $(a_1b_1+a_2b_2)^2 \\leq (a_1^2+a_2^2)(b_1^2+b_2^2)$ using the Lagrange identity $(a_1b_2-a_2b_1)^2 \\geq 0$, plus the equality characterization $a_1b_2 = a_2b_1$.",
+      "startLine": 81,
+      "endLine": 114
+    },
+    {
+      "id": "finite-sum",
+      "title": "Finite Sum Form",
+      "summary": "Proves $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ by embedding into `EuclideanSpace $\\mathbb{R}$ (Fin $n$)` and the non-squared form via `Real.sqrt_le_sqrt`.",
+      "startLine": 116,
+      "endLine": 157
+    },
+    {
+      "id": "equality",
+      "title": "Equality Characterization",
+      "summary": "Proves $|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c: u = cv$ for nonzero vectors, using `norm_inner_eq_norm_iff` and `inner_smul_left`.",
+      "startLine": 159,
+      "endLine": 179
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "summary": "Numerical verifications: strict inequality $(196 < 200)$ for non-proportional vectors, equality $(100 = 100)$ for proportional vectors $(1,2)$ and $(2,4)$, and $\\mathbb{R}^2$ specialization.",
+      "startLine": 181,
+      "endLine": 196
+    },
+    {
+      "id": "triangle",
+      "title": "Application: Triangle Inequality",
+      "summary": "Derives $\\|u+v\\|^2 \\leq (\\|u\\|+\\|v\\|)^2$ from Cauchy-Schwarz via `norm_add_sq_real` expansion and $\\langle u,v\\rangle \\leq |\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$.",
+      "startLine": 198,
+      "endLine": 212
+    },
+    {
+      "id": "correlation",
+      "title": "Application: Correlation Bound",
+      "summary": "Proves $|\\langle u,v\\rangle|/(\\|u\\|\\|v\\|) \\leq 1$ for nonzero vectors via `div_le_one`, giving the mathematical foundation for $|\\rho| \\leq 1$.",
+      "startLine": 214,
+      "endLine": 231
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization presents the Cauchy-Schwarz inequality in three forms: abstract inner product ($|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$), elementary two-variable (via the Lagrange identity), and finite sum (via EuclideanSpace embedding). It includes complete equality characterization (linear dependence) and two applications: the triangle inequality and the correlation coefficient bound. All proofs are complete with zero sorries.",
+    "implications": "**Implications and Connections**\n\n1. **Foundation for Normed Spaces:** The triangle inequality, derived here as a corollary, is the key axiom for normed vector spaces and metric spaces.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a consequence of Cauchy-Schwarz applied to wave functions in $L^2$.\n\n3. **Statistics:** The bound $|\\rho| \\leq 1$ on the Pearson correlation coefficient, proved here, is fundamental to regression analysis and hypothesis testing.\n\n4. **Functional Analysis:** Cauchy-Schwarz ensures that inner product spaces are normed spaces, enabling the Hilbert space theory underlying modern analysis.\n\n5. **Machine Learning:** Cosine similarity $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ is well-defined precisely because Cauchy-Schwarz guarantees $|\\cos\\theta| \\leq 1$.",
+    "openQuestions": [
+      "Can the formalization be extended to complex inner product spaces using `inner_mul_le_norm_mul_norm`?",
+      "Can the integral form (Bunyakovsky-Schwarz) be formalized using Mathlib's measure theory?",
+      "Can Hölder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for $p=q=2$?",
+      "Can the equality condition be strengthened to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$?"
+    ]
+  }
 }
