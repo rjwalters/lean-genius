@@ -2121,4 +2121,117 @@ theorem combined_residue_bound (A : Finset ℕ) (h : hasSquarefreeSumset A)
     _ ≤ ((pp - 1) / 2) * ((qq - 1) / 2) :=
         Nat.mul_le_mul (general_residue_image_le A h p hp) (general_residue_image_le A h q hq)
 
+/-
+## Combined Modular Constraints via Chinese Remainder Theorem
+
+The constraints from different primes combine because the moduli p² are
+pairwise coprime for distinct primes p. By CRT:
+- lcm(4, 9) = 36 since gcd(4, 9) = 1
+- lcm(4, 9, 25) = 900 since 4, 9, 25 are pairwise coprime
+
+For a set A with squarefree sumset:
+- Mod 4: exactly 1 class used (either all ≡ 1 or all ≡ 3)
+- Mod 9: at most 4 classes used (one from each complementary pair)
+- Mod 25: at most 12 classes used
+
+By CRT, mod 36 = lcm(4, 9): at most 1 × 4 = 4 classes out of 36.
+By CRT, mod 900 = lcm(4, 9, 25): at most 1 × 4 × 12 = 48 classes out of 900.
+
+This gives density ≤ 4/36 ≈ 11.1% (mod 36) and ≤ 48/900 ≈ 5.3% (mod 900).
+-/
+
+/--
+**Combined constraint mod 36:**
+The residue image of A modulo 36 has at most 4 elements.
+
+Since 4 and 9 are coprime, each element's residue mod 36 is determined by
+its residues mod 4 and mod 9. The mod 4 image has ≤ 1 element and the
+mod 9 image has ≤ 4 elements, so the mod 36 image has ≤ 1 × 4 = 4 elements.
+-/
+theorem mod_36_residue_image_le_4 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
+    (A.image (· % 36)).card ≤ 4 := by
+  have hbnd : A.image (· % 36) ⊆ Finset.range 36 := by
+    intro r hr
+    simp only [Finset.mem_image] at hr
+    obtain ⟨a, _, rfl⟩ := hr
+    simp [Finset.mem_range]; omega
+  have crt_inj : Set.InjOn (fun r => (r % 4, r % 9)) ({r : ℕ | r < 36} : Set ℕ) := by
+    intro r hr s hs hrs
+    simp only [Set.mem_setOf_eq] at hr hs
+    simp only [Prod.mk.injEq] at hrs
+    omega
+  have phi_inj : Set.InjOn (fun r => (r % 4, r % 9)) ((A.image (· % 36)) : Set ℕ) := by
+    intro r hr s hs hrs
+    simp only [Finset.mem_coe, Finset.mem_image] at hr hs
+    have hr36 := hbnd (by simp [Finset.mem_image]; exact hr)
+    have hs36 := hbnd (by simp [Finset.mem_image]; exact hs)
+    simp only [Finset.mem_range] at hr36 hs36
+    exact crt_inj (by simp [Set.mem_setOf_eq]; exact hr36)
+      (by simp [Set.mem_setOf_eq]; exact hs36) hrs
+  have h_into_product : (A.image (· % 36)).image (fun r => (r % 4, r % 9)) ⊆
+      (A.image (· % 4)) ×ˢ (A.image (· % 9)) := by
+    intro p hp
+    simp only [Finset.mem_image, Finset.mem_product] at hp ⊢
+    obtain ⟨r, ⟨a, ha, rfl⟩, rfl⟩ := hp
+    exact ⟨⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩⟩
+  have h4 := mod_4_residue_image_small A h
+  have h9 := mod_9_residue_image_le_4 A h
+  calc (A.image (· % 36)).card
+      = ((A.image (· % 36)).image (fun r => (r % 4, r % 9))).card :=
+          (Finset.card_image_of_injOn phi_inj).symm
+    _ ≤ ((A.image (· % 4)) ×ˢ (A.image (· % 9))).card :=
+          Finset.card_le_card h_into_product
+    _ = (A.image (· % 4)).card * (A.image (· % 9)).card :=
+          Finset.card_product _ _
+    _ ≤ 1 * 4 := Nat.mul_le_mul h4 h9
+    _ = 4 := by ring
+
+/--
+**Combined constraint mod 900:**
+The residue image of A modulo 900 has at most 48 elements.
+
+Since 4, 9, and 25 are pairwise coprime with lcm = 900, each element's residue
+mod 900 is determined by its residues mod 4, mod 9, and mod 25.
+-/
+theorem mod_900_residue_image_le_48 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
+    (A.image (· % 900)).card ≤ 48 := by
+  have hbnd : A.image (· % 900) ⊆ Finset.range 900 := by
+    intro r hr
+    simp only [Finset.mem_image] at hr
+    obtain ⟨a, _, rfl⟩ := hr
+    simp [Finset.mem_range]; omega
+  have crt_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25)) ({r : ℕ | r < 900} : Set ℕ) := by
+    intro r hr s hs hrs
+    simp only [Set.mem_setOf_eq] at hr hs
+    simp only [Prod.mk.injEq] at hrs
+    obtain ⟨h4, h9, h25⟩ := hrs
+    omega
+  have phi_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25)) ((A.image (· % 900)) : Set ℕ) := by
+    intro r hr s hs hrs
+    simp only [Finset.mem_coe, Finset.mem_image] at hr hs
+    have hr900 := hbnd (by simp [Finset.mem_image]; exact hr)
+    have hs900 := hbnd (by simp [Finset.mem_image]; exact hs)
+    simp only [Finset.mem_range] at hr900 hs900
+    exact crt_inj (by simp [Set.mem_setOf_eq]; exact hr900)
+      (by simp [Set.mem_setOf_eq]; exact hs900) hrs
+  have h_into_product : (A.image (· % 900)).image (fun r => (r % 4, r % 9, r % 25)) ⊆
+      (A.image (· % 4)) ×ˢ ((A.image (· % 9)) ×ˢ (A.image (· % 25))) := by
+    intro p hp
+    simp only [Finset.mem_image, Finset.mem_product] at hp ⊢
+    obtain ⟨r, ⟨a, ha, rfl⟩, rfl⟩ := hp
+    exact ⟨⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩⟩
+  have h4 := mod_4_residue_image_small A h
+  have h9 := mod_9_residue_image_le_4 A h
+  have h25 := mod_25_residue_image_le_12 A h
+  calc (A.image (· % 900)).card
+      = ((A.image (· % 900)).image (fun r => (r % 4, r % 9, r % 25))).card :=
+          (Finset.card_image_of_injOn phi_inj).symm
+    _ ≤ ((A.image (· % 4)) ×ˢ ((A.image (· % 9)) ×ˢ (A.image (· % 25)))).card :=
+          Finset.card_le_card h_into_product
+    _ = (A.image (· % 4)).card * ((A.image (· % 9)).card * (A.image (· % 25)).card) :=
+          by simp [Finset.card_product]
+    _ ≤ 1 * (4 * 12) := Nat.mul_le_mul h4 (Nat.mul_le_mul h9 h25)
+    _ = 48 := by ring
+
+
 end Erdos1109
