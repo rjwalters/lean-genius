@@ -1,56 +1,86 @@
 [
   {
-    "id": "erdos-462-header",
+    "id": "erdos-462-imports",
     "proofId": "erdos-462",
-    "type": "context",
-    "range": { "startLine": 1, "endLine": 13 },
-    "title": "Problem Background",
-    "content": "Erdős Problem 462 asks about the distribution of ∑ p(n)/n in short intervals of length √x·(log x)². From Erdős–Graham (1980), p. 92.",
-    "significance": "essential"
+    "type": "concept",
+    "range": { "startLine": 15, "endLine": 18 },
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib for `Nat.Prime.Basic` (primality testing and `Nat.minFac`), `Data.Real.Basic` (for real-valued sums $p(n)/n$), and tactics. The formalization uses `Nat.minFac` as the computational basis for the least prime factor.",
+    "mathContext": "The sum $\\sum_{n < x} p(n)/n$ involves real-valued terms, requiring `Data.Real.Basic`. The function `Nat.minFac` computes the smallest factor $> 1$ of $n$, which equals the least prime factor for $n \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.minFac", "Nat.Prime", "real-valued sums"],
+    "prerequisites": ["Mathlib.Data.Nat.Prime.Basic", "Mathlib.Data.Real.Basic"]
   },
   {
     "id": "erdos-462-lpf",
     "proofId": "erdos-462",
     "type": "definition",
-    "range": { "startLine": 21, "endLine": 36 },
+    "range": { "startLine": 22, "endLine": 24 },
     "title": "Least Prime Factor",
-    "content": "leastPrimeFactor(n) returns 0 for n ≤ 1 and Nat.minFac otherwise. Axioms assert primality, divisibility, and minimality among prime divisors.",
-    "significance": "essential"
+    "content": "Defines $p(n)$ as `Nat.minFac n` for $n \\geq 2$ and $0$ for $n \\leq 1$. Three axioms encode the key properties: $p(n)$ is prime (for $n \\geq 2$), divides $n$, and is minimal among prime divisors. Made `noncomputable` because `minFac` involves a search.",
+    "mathContext": "For $n \\geq 2$: $p(n) = \\min\\{q : q \\mid n, q \\text{ prime}\\}$. Key bounds: $p(n) \\geq 2$ always, $p(n) = n$ iff $n$ is prime, $p(n) \\leq \\sqrt{n}$ for composite $n$. The average order of $p(n)$ over composites drives the Erdős–Graham asymptotic.",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.minFac", "smallest prime factor", "sieve of Eratosthenes"],
+    "prerequisites": ["Nat.Prime", "Nat.dvd"]
+  },
+  {
+    "id": "erdos-462-lpf-properties",
+    "proofId": "erdos-462",
+    "type": "theorem",
+    "range": { "startLine": 27, "endLine": 36 },
+    "title": "Least Prime Factor Properties",
+    "content": "Three axiomatized properties: (1) $p(n)$ is prime for $n \\geq 2$, (2) $p(n) \\mid n$ for $n \\geq 2$, (3) $p(n) \\leq q$ for any prime $q \\mid n$. Together these uniquely characterize $p(n)$ as the smallest prime divisor.",
+    "mathContext": "The properties $p(n) \\mid n$, $p(n)$ prime, and $p(n) \\leq q$ for all prime $q \\mid n$ uniquely determine $p(n)$. For the Fundamental Theorem of Arithmetic, $p(n)$ is the first prime in the factorization of $n$.",
+    "significance": "key",
+    "relatedConcepts": ["prime divisors", "unique characterization", "minimality"],
+    "prerequisites": ["leastPrimeFactor", "Nat.Prime"]
   },
   {
     "id": "erdos-462-sums",
     "proofId": "erdos-462",
     "type": "definition",
-    "range": { "startLine": 40, "endLine": 49 },
+    "range": { "startLine": 41, "endLine": 49 },
     "title": "Sum Definitions",
-    "content": "compositeSum(x) sums p(n)/n over composites in {2,…,x−1}. intervalSum(a,b) sums p(n)/n over {a,…,b}.",
-    "significance": "essential"
+    "content": "Two sum functions: `compositeSum(x)` computes $\\sum_{2 \\leq n < x, n \\text{ composite}} p(n)/n$ (filtering out primes), and `intervalSum(a, b)` computes $\\sum_{a \\leq n \\leq b} p(n)/n$ over all integers (including primes). The composite sum excludes primes because $p(n) = n$ for primes, giving terms $p(n)/n = 1$ that dominate and obscure the interesting behavior.",
+    "mathContext": "$$\\text{compositeSum}(x) = \\sum_{\\substack{2 \\leq n < x \\\\ n \\text{ composite}}} \\frac{p(n)}{n}, \\qquad \\text{intervalSum}(a,b) = \\sum_{a \\leq n \\leq b} \\frac{p(n)}{n}$$ For composites, $p(n)/n \\leq 1/\\sqrt{n}$ since $p(n) \\leq \\sqrt{n}$, so the sum converges slowly.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset.sum", "filtering composites", "weighted sums"],
+    "prerequisites": ["leastPrimeFactor", "Finset.Icc"]
   },
   {
     "id": "erdos-462-asymptotic",
     "proofId": "erdos-462",
-    "type": "result",
-    "range": { "startLine": 53, "endLine": 59 },
-    "title": "Known Asymptotic",
-    "content": "The composite sum satisfies compositeSum(x) = Θ(√x/(log x)²), giving the natural interval scale for the conjecture.",
-    "significance": "essential"
+    "type": "theorem",
+    "range": { "startLine": 55, "endLine": 59 },
+    "title": "Known Asymptotic: Θ(√x/(log x)²)",
+    "content": "The global composite sum satisfies $\\text{compositeSum}(x) = \\Theta(\\sqrt{x}/(\\log x)^2)$: there exist constants $0 < c_1 \\leq c_2$ such that $c_1 \\sqrt{x}/(\\log x)^2 \\leq \\text{compositeSum}(x) \\leq c_2 \\sqrt{x}/(\\log x)^2$ for all large $x$. This establishes the natural scale for the problem.",
+    "mathContext": "The asymptotic $\\sum_{n < x, \\text{composite}} p(n)/n \\sim c \\sqrt{x}/(\\log x)^2$ follows from sieve estimates: composites $n$ with $p(n) \\approx t$ contribute $\\sim t/n$ each, and there are $\\sim x/(t \\log t)$ such $n$ by Brun's sieve, giving $\\sum_t 1/\\log t \\sim \\sqrt{x}/(\\log x)^2$ after integration.",
+    "significance": "critical",
+    "relatedConcepts": ["sieve methods", "Brun's sieve", "asymptotic analysis", "smooth numbers"],
+    "prerequisites": ["compositeSum", "Real.log"]
   },
   {
     "id": "erdos-462-conjecture",
     "proofId": "erdos-462",
-    "type": "conjecture",
-    "range": { "startLine": 63, "endLine": 70 },
-    "title": "Main Conjecture",
-    "content": "There exist C, δ > 0 such that intervalSum(x, x + C·√x·(log x)²) ≥ δ for all large x. This asks whether the sum is equidistributed on its natural scale.",
-    "significance": "essential"
+    "type": "definition",
+    "range": { "startLine": 66, "endLine": 70 },
+    "title": "Main Conjecture (Problem #462)",
+    "content": "Defines `ErdosProblem462`: there exist $C, \\delta > 0$ such that $\\text{intervalSum}(x, x + C\\sqrt{x}(\\log x)^2) \\geq \\delta$ for all large $x$. This asks whether the least-prime-factor sum is equidistributed on its natural scale $\\sqrt{x}(\\log x)^2$ — i.e., every interval of this length contributes at least a bounded amount.",
+    "mathContext": "**Open conjecture**: $\\exists C, \\delta > 0, \\forall x \\geq x_0: \\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} p(n)/n \\geq \\delta$. The interval length $C\\sqrt{x}(\\log x)^2$ is chosen so that the global sum over $[1, x]$ is $\\Theta(\\sqrt{x}/(\\log x)^2)$, and the interval covers a $1/x \\cdot C\\sqrt{x}(\\log x)^2 = C(\\log x)^2/\\sqrt{x}$ fraction of $[1,x]$.",
+    "significance": "critical",
+    "relatedConcepts": ["equidistribution", "short interval results", "prime distribution"],
+    "prerequisites": ["intervalSum", "compositeSum_asymptotic"]
   },
   {
-    "id": "erdos-462-basic",
+    "id": "erdos-462-basic-properties",
     "proofId": "erdos-462",
-    "type": "result",
-    "range": { "startLine": 72, "endLine": 84 },
-    "title": "Basic Properties",
-    "content": "The least prime factor of a prime is itself, is always ≥ 2, and for composites is at most √n.",
-    "significance": "supporting"
+    "type": "theorem",
+    "range": { "startLine": 75, "endLine": 84 },
+    "title": "Basic Properties of Least Prime Factor",
+    "content": "Three supplementary axioms: (1) $p(q) = q$ for primes $q$ (the least prime factor of a prime is itself), (2) $p(n) \\geq 2$ for $n \\geq 2$ (the smallest prime is 2), (3) $p(n) \\leq \\sqrt{n}$ for composite $n$ (a composite must have a factor $\\leq \\sqrt{n}$). Property (3) bounds individual terms $p(n)/n \\leq 1/\\sqrt{n}$ for composites.",
+    "mathContext": "For composite $n$: $p(n) \\leq \\sqrt{n}$ because if all prime factors exceeded $\\sqrt{n}$, the product of any two would exceed $n$. This gives $p(n)/n \\leq n^{-1/2}$, so $\\sum_{\\text{composite}} p(n)/n \\leq \\sum n^{-1/2} \\sim 2\\sqrt{x}$, consistent with the sharper $\\Theta(\\sqrt{x}/(\\log x)^2)$ bound.",
+    "significance": "key",
+    "relatedConcepts": ["prime self-identification", "square root bound", "composite characterization"],
+    "prerequisites": ["leastPrimeFactor", "Nat.Prime"]
   }
 ]
