@@ -3,7 +3,7 @@
     "id": "ann-intro",
     "proofId": "derangements",
     "type": "definition",
-    "range": {"startLine": 5, "endLine": 57},
+    "range": {"startLine": 1, "endLine": 57},
     "title": "Derangements Formula: Wiedijk #88",
     "content": "**Derangements (Fixed-Point-Free Permutations)**:\n\nA derangement is a permutation with **no fixed points** — every element moves.\n\n**Formula**:\n$$D_n = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$\n\n**Recurrence**: $D_n = (n-1)(D_{n-1} + D_{n-2})$\n\n**Hat-Check Problem**: If $n$ people check hats and receive them randomly, $D_n$ is the number of ways **no one gets their own hat**.\n\n**Limit**: As $n \\to \\infty$, $P(\\text{derangement}) \\to 1/e \\approx 36.79\\%$",
     "mathContext": "Derangements are the combinatorial objects underlying the 'problème des rencontres' (coincidence problem). The formula $D_n = n! \\sum (-1)^k/k!$ is the truncation of the Taylor series $e^{-1} = \\sum (-1)^k/k!$, explaining the rapid convergence $D_n/n! \\to 1/e$.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-inclusion-exclusion",
     "proofId": "derangements",
-    "type": "context",
+    "type": "concept",
     "range": {"startLine": 203, "endLine": 220},
     "title": "Inclusion-Exclusion Derivation",
     "content": "**Derivation of the formula via inclusion-exclusion**:\n\nLet $A_i = \\{\\text{permutations fixing element } i\\}$. Then:\n$$D_n = n! - |\\bigcup A_i| = \\sum_{k=0}^{n} (-1)^k \\binom{n}{k}(n-k)!$$\n\nSince $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ (fix $k$ elements, permute the rest) and there are $\\binom{n}{k}$ ways to choose which $k$ elements are fixed:\n$$D_n = \\sum_{k=0}^{n} (-1)^k \\frac{n!}{k!} = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$",

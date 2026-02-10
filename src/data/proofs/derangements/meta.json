@@ -40,49 +40,49 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 53,
-      "summary": "Imports, docstring with formula, approach, status, Mathlib dependencies, and historical note about Montmort and Euler."
+      "summary": "Imports `Combinatorics.Derangements.Finite` and `.Basic`. Docstring with $D_n = n! \\sum (-1)^k/k!$, approach, Mathlib dependencies, and historical note on Montmort (1708) and Euler (1751)."
     },
     {
       "id": "core-definition",
       "title": "Core Definition",
       "startLine": 55,
       "endLine": 75,
-      "summary": "Formal characterization: f ∈ derangements α ↔ ∀ x, f x ≠ x, equivalently fixedPoints f = ∅."
+      "summary": "Formal characterization: $f \\in \\text{derangements}(\\alpha) \\iff \\forall x, f(x) \\neq x$, equivalently `fixedPoints f = ∅`. Connects to `Equiv.Perm` and `Function.fixedPoints`."
     },
     {
       "id": "recurrence",
       "title": "Base Cases and Recurrence",
       "startLine": 77,
       "endLine": 99,
-      "summary": "D(0) = 1, D(1) = 0, and the recurrence D(n+2) = (n+1)(D(n) + D(n+1))."
+      "summary": "$D_0 = 1$, $D_1 = 0$, and the recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$ via `numDerangements_add_two`. Combinatorial proof by case analysis on element 1's image."
     },
     {
       "id": "closed-form",
       "title": "Closed-Form Formula",
       "startLine": 101,
       "endLine": 121,
-      "summary": "The sum formula D(n) = Σ(-1)^k × (k+1)^{n-k} and cardinality results bridging abstract/computational."
+      "summary": "The sum formula $D_n = \\sum_{k=0}^n (-1)^k (k+1)^{\\overline{n-k}}$ via `numDerangements_sum` and cardinality results bridging `derangements α` with `numDerangements`."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 128,
       "endLine": 160,
-      "summary": "D(2)=1 through D(6)=265 verified by native_decide, with hat-check probability table."
+      "summary": "$D_2=1$ through $D_6=265$ verified by `native_decide`. Hat-check probability table showing $D_n/n!$ oscillating toward $1/e \\approx 0.3679$."
     },
     {
       "id": "properties",
       "title": "Algebraic Properties",
       "startLine": 162,
       "endLine": 201,
-      "summary": "Identity is not a derangement; derangements not closed under composition; subfactorial table."
+      "summary": "Identity $\\notin$ derangements (for nonempty types). Derangements not closed under composition: $(0\\,1)^2 = \\text{id}$. Subfactorial $!n$ notation and value table."
     },
     {
       "id": "inclusion-exclusion",
       "title": "Inclusion-Exclusion Derivation",
       "startLine": 203,
       "endLine": 220,
-      "summary": "Pedagogical derivation of the formula from the sieve formula on fixed-point sets."
+      "summary": "Derivation of $D_n = n! \\sum (-1)^k/k!$ via inclusion-exclusion on fixed-point sets $A_i$, using $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$."
     },
     {
       "id": "verification",
