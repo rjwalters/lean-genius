@@ -1,8 +1,8 @@
 {
   "id": "erdos-467",
-  "title": "Dual Covering by Prime Residue Classes",
+  "title": "Erdős Problem #467: Dual Covering by Prime Residue Classes",
   "slug": "erdos-467",
-  "description": "For large x, can we choose residue classes for primes ≤ x and partition them into A ⊔ B so every n < x is covered by both A and B? Related to covering congruences.",
+  "description": "For large x, can we choose residue classes for primes ≤ x and partition them into A ⊔ B so every n < x is covered by both A and B? Related to covering congruences and the Erdős–Graham framework.",
   "meta": {
     "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/467",
@@ -10,66 +10,112 @@
     "proofRepoPath": "Proofs/Erdos467Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "covering congruences",
-      "prime residues",
-      "partitions"
+      "number-theory",
+      "covering-congruences",
+      "prime-residues",
+      "partitions",
+      "open"
     ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 467,
     "erdosUrl": "https://erdosproblems.com/467",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "references": [
+      "Erdős & Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Enseign. Math. Monograph 28, p. 93",
+      "Mertens (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, pp. 46–62",
+      "Halberstam & Roth (1966): 'Sequences', Oxford University Press — covering congruence framework",
+      "Erdős (1950): 'On integers of the form 2^k + p and some related problems', Summa Brasil. Math. 2, pp. 113–123",
+      "Filaseta, Ford, Konyagin, Pomerance & Yu (2007): 'Sieving by large integers and covering systems of congruences', J. Amer. Math. Soc. 20, pp. 495–517",
+      "https://erdosproblems.com/467"
+    ],
+    "relatedProofs": ["erdos-273", "erdos-278"]
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this in [ErGr80, p. 93], asking for a dual covering system where two complementary sets of primes each cover all residues. The original quantifiers are ambiguous, making precise interpretation subtle. The problem connects to covering congruences and the Chinese Remainder Theorem.",
-    "problemStatement": "For all sufficiently large x, do there exist residue classes a_p (p ≤ x) and a partition {p ≤ x} = A ⊔ B such that every n < x is covered by some p ∈ A and some q ∈ B?",
-    "proofStrategy": "We formalize residue assignments, prime partitions, single and dual coverage. We include Mertens-based coverage estimates, CRT independence, uncovered probability analysis, and balanced partition constraints.",
+    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 93), within their systematic study of covering congruence systems. The problem builds on Erdős's foundational 1950 work showing that certain integers of the form $2^k + p$ relate to covering systems, and connects to the broader Erdős–Selfridge conjecture on covering systems with distinct moduli. The original formulation has notoriously ambiguous quantifiers — it is unclear whether the residue assignment is fixed or depends on $x$, and whether the partition adapts to the assignment. The Chinese Remainder Theorem provides the key independence tool: for distinct primes, residue class memberships are independent events. Franz Mertens' 1874 third theorem ($\\prod_{p \\leq x}(1-1/p) \\sim e^{-\\gamma}/\\log x$) quantifies the total prime coverage capacity. The problem asks whether this capacity, growing as $\\log\\log x$, can be split into two halves each sufficient for complete coverage — a question at the interface of combinatorial number theory, sieve theory, and probabilistic arguments.",
+    "problemStatement": "For all sufficiently large $x$, do there exist residue classes $a_p$ for each prime $p \\leq x$ and a partition $\\{p \\leq x : p \\text{ prime}\\} = A \\sqcup B$ (both non-empty) such that every $n < x$ satisfies $n \\equiv a_p \\pmod{p}$ for some $p \\in A$ and $n \\equiv a_q \\pmod{q}$ for some $q \\in B$?",
+    "proofStrategy": "We formalize the core objects — residue assignments as dependent functions, prime partitions as Boolean classifiers with non-emptiness witnesses, and dual coverage as a universal-existential proposition. We prove basic properties of residue classes (periodicity, density $1/p$, single coverage by smallest prime factor), analyze the zero assignment (covers all $n \\geq 2$ but not $n = 1$), derive structural constraints on dual coverings (each half covers independently, double-hit property, $x \\geq 2$ requirement), and axiomatize the CRT and Mertens' estimate as the analytical backbone.",
     "keyInsights": [
-      "Single coverage is easy: every n < x has a prime factor ≤ x",
-      "Dual coverage requires splitting primes so both halves cover everything",
-      "Small primes cover the largest fractions (1/p) and must be shared",
-      "CRT gives independence: coverage by coprime moduli is multiplicative",
-      "Mertens: ∏(1−1/p) ≈ c/log x, so each half needs enough primes"
+      "**Single coverage is trivial, dual is hard**: Every $n \\geq 2$ has a prime factor $\\leq n$, so one set of all primes trivially covers $[2, x)$. The challenge is splitting primes into two halves each achieving full coverage independently",
+      "**CRT independence makes coverage multiplicative**: For distinct primes, the probability a random integer avoids all residue classes in a set $S$ is $\\prod_{p \\in S}(1 - 1/p)$, turning the coverage problem into a product estimate",
+      "**Mertens' theorem bounds the budget**: $\\prod_{p \\leq x}(1 - 1/p) \\sim e^{-\\gamma}/\\log x \\to 0$, but splitting this product into two parts requires each sub-product to also vanish — feasible only if both halves capture enough of $\\sum 1/p \\sim \\log\\log x$",
+      "**Small primes dominate the allocation**: Prime 2 covers half the integers, 3 covers a third, etc. Assigning $p = 2$ to one side forces the other to cover all even integers from odd primes alone — a severe constraint showing small primes must be shared carefully",
+      "**Ambiguous quantifiers create multiple problems**: The original [ErGr80] formulation is unclear on whether $\\alpha$ is universal or existential. The strongest reading (fixed $\\alpha$ works for all partitions) is likely false; the weakest (both $\\alpha$ and partition depend on $x$) is the formalized version"
     ]
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Core Definitions",
-      "startLine": 22,
-      "endLine": 48,
-      "summary": "Defines residue assignments, prime partitions, coverage by A and B, and dual covering."
+      "id": "header-imports",
+      "title": "Header, Docstring, and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring referencing [ErGr80, p. 93] with the full problem statement and OPEN status. Imports `Mathlib.Data.Nat.Prime.Basic` for primality and `Mathlib.Tactic` for proof automation."
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture",
-      "startLine": 50,
+      "id": "core-definitions",
+      "title": "Core Definitions: Assignment, Partition, Coverage",
+      "startLine": 29,
       "endLine": 56,
-      "summary": "States the main conjecture: dual covering exists for sufficiently large x."
+      "summary": "Four definitions: `ResidueAssignment` ($\\alpha : \\{p \\leq x\\} \\to \\mathbb{N}$), `PrimePartition` ($A \\sqcup B$ with non-emptiness), `CoveredByA`/`CoveredByB` ($n \\equiv a_p \\pmod{p}$ for some $p$ in the respective set), and `IsDualCovering` (conjunction of both coverages for all $n < x$)."
     },
     {
-      "id": "observations",
-      "title": "Basic Observations",
+      "id": "main-conjecture",
+      "title": "The Main Conjecture (OPEN)",
       "startLine": 58,
-      "endLine": 84,
-      "summary": "Coverage estimates, single-set covering, partition difficulty, small prime efficiency."
+      "endLine": 68,
+      "summary": "Erdős Problem #467 axiomatized: $\\exists X, \\forall x \\geq X, \\exists \\alpha, \\exists A \\sqcup B: \\text{IsDualCovering}(x, \\alpha, A \\sqcup B)$. The existential threshold $X$ allows finitely many exceptions."
     },
     {
-      "id": "counting",
-      "title": "Counting Arguments",
-      "startLine": 86,
-      "endLine": 108,
-      "summary": "CRT independence, uncovered probability via Mertens, and balanced partition constraints."
+      "id": "basic-residue-properties",
+      "title": "Basic Properties of Residue Classes",
+      "startLine": 70,
+      "endLine": 104,
+      "summary": "Six proved lemmas: $n \\bmod p < p$, zero class $\\iff$ divisibility, even-or-odd dichotomy, periodicity ($n + kp \\equiv n$), existence of prime factors for $n \\geq 2$, and prime factor bounded by $x$ for $n < x$."
+    },
+    {
+      "id": "zero-covering",
+      "title": "Covering by Zero Residue Classes",
+      "startLine": 106,
+      "endLine": 138,
+      "summary": "Analysis of the zero assignment $\\alpha \\equiv 0$: covers $n = 0$ trivially, fails at $n = 1$ (no prime divides 1), covers all $n \\geq 2$ via smallest prime factor. The `zeroAssignment` definition and its characterization $p \\mid n \\iff$ covered."
+    },
+    {
+      "id": "partition-constraints",
+      "title": "Partition and Dual Covering Constraints",
+      "startLine": 140,
+      "endLine": 190,
+      "summary": "Structural theorems: dual covering implies each half covers independently, the **double hit** property ($\\exists p \\in A, q \\in B$ covering $n$), partition uses $\\geq 2$ primes, distinct labels exist, and $x \\geq 2$ is necessary."
+    },
+    {
+      "id": "residue-class-theory",
+      "title": "Residue Class Periodicity and Counting",
+      "startLine": 192,
+      "endLine": 209,
+      "summary": "Three lemmas: periodicity $(n + p) \\bmod p = n \\bmod p$, identity $a \\bmod p = a$ for $a < p$, and the count $n \\bmod p < p$ establishing exactly $p$ residue classes mod $p$."
+    },
+    {
+      "id": "crt-mertens",
+      "title": "CRT and Mertens Axioms",
+      "startLine": 211,
+      "endLine": 229,
+      "summary": "Two axiomatized results: the **Chinese Remainder Theorem** for distinct primes ($\\exists n: n \\equiv a \\pmod{p} \\wedge n \\equiv b \\pmod{q}$) and **Mertens' third theorem** ($\\prod_{p \\leq x}(1 - 1/p) \\sim e^{-\\gamma}/\\log x$)."
+    },
+    {
+      "id": "summary",
+      "title": "Problem Summary",
+      "startLine": 231,
+      "endLine": 242,
+      "summary": "Records OPEN status and restates the fundamental observation: every $n \\geq 2$ has a prime factor, making single coverage trivial. The theorem `coverage_exceeds_target` confirms single-set sufficiency."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #467: dual covering by prime residue classes. The challenge is partitioning primes ≤ x into two sets each capable of covering all residues. Small prime allocation and CRT independence are key structural elements.",
-    "implications": "A resolution would advance the theory of covering systems, connecting combinatorial number theory to probabilistic prime distribution.",
+    "summary": "This formalization captures the full structure of Erdős Problem #467: the dual covering requirement, the interplay between residue assignments and prime partitions, structural constraints derived from the partition, and the analytical tools (CRT independence, Mertens' product estimate) that govern coverage capacity. The 242-line file proves all elementary properties while axiomatizing the deep results (CRT, Mertens) and the main conjecture itself.",
+    "implications": "A resolution would advance the theory of covering congruence systems, clarifying whether the prime coverage capacity ($\\sum 1/p \\sim \\log\\log x$) can be halved while maintaining completeness. This connects to sieve theory (Brun, Selberg), the Erdős–Selfridge conjecture on odd covering systems, and the general question of how efficiently prime moduli can tile the integers.",
     "openQuestions": [
-      "Does a dual covering exist for all sufficiently large x?",
-      "What is the optimal partition of small primes for dual coverage?",
-      "How does the minimum x₀ depend on the partition structure?"
+      "Does a dual covering exist for all sufficiently large $x$, or are there infinitely many $x$ where no partition works?",
+      "What is the role of the residue assignment: does the zero assignment plus careful partition suffice, or are non-trivial assignments essential?",
+      "How does the minimum threshold $X$ depend on the partition structure — is $X$ polynomial or exponential in the number of primes?",
+      "Can the problem be generalized to $k$-fold coverings ($k \\geq 3$), and how does the feasibility threshold scale with $k$?"
     ]
   }
 }
