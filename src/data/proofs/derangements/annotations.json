@@ -2,14 +2,14 @@
   {
     "id": "ann-intro",
     "proofId": "derangements",
-    "type": "definition",
-    "range": {"startLine": 1, "endLine": 57},
-    "title": "Derangements Formula: Wiedijk #88",
-    "content": "**Derangements (Fixed-Point-Free Permutations)**:\n\nA derangement is a permutation with **no fixed points** — every element moves.\n\n**Formula**:\n$$D_n = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$\n\n**Recurrence**: $D_n = (n-1)(D_{n-1} + D_{n-2})$\n\n**Hat-Check Problem**: If $n$ people check hats and receive them randomly, $D_n$ is the number of ways **no one gets their own hat**.\n\n**Limit**: As $n \\to \\infty$, $P(\\text{derangement}) \\to 1/e \\approx 36.79\\%$",
-    "mathContext": "Derangements are the combinatorial objects underlying the 'problème des rencontres' (coincidence problem). The formula $D_n = n! \\sum (-1)^k/k!$ is the truncation of the Taylor series $e^{-1} = \\sum (-1)^k/k!$, explaining the rapid convergence $D_n/n! \\to 1/e$.",
-    "significance": "key",
-    "relatedConcepts": ["Permutations", "Fixed points", "Inclusion-exclusion", "Taylor series for $e^{-1}$"],
-    "prerequisites": ["Equiv.Perm", "Combinatorics.Derangements.Basic"]
+    "type": "concept",
+    "range": {"startLine": 1, "endLine": 3},
+    "title": "Library Imports",
+    "content": "Imports `Mathlib.Combinatorics.Derangements.Finite` (counting formulas: `numDerangements_sum`, `numDerangements_add_two`, `card_derangements_eq_numDerangements`) and `.Basic` (definition: `mem_derangements_iff_fixedPoints_eq_empty`).",
+    "mathContext": "The `Derangements.Finite` module provides the computational backbone: the recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$, the closed-form sum $D_n = \\sum_{k=0}^n (-1)^k (k+1)^{\\overline{n-k}}$, and the bridge `card_derangements_eq_numDerangements` connecting the set-theoretic definition to the counting function. The `.Basic` module defines `derangements` as a subset of `Equiv.Perm`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Equiv.Perm", "numDerangements", "derangements set"],
+    "prerequisites": ["Lean 4 import system", "Mathlib combinatorics library"]
   },
   {
     "id": "ann-definition",
@@ -17,10 +17,10 @@
     "type": "theorem",
     "range": {"startLine": 67, "endLine": 75},
     "title": "Formal Definition of Derangements",
-    "content": "**mem_derangements_iff**: $f \\in \\text{derangements}(\\alpha) \\iff \\forall x,\\, f(x) \\neq x$\n\n**derangement_iff_no_fixed_points**: Equivalently, the set of fixed points is empty.\n\n```lean\ntheorem derangement_iff_no_fixed_points (f : Equiv.Perm α) :\n    f ∈ derangements α ↔ Function.fixedPoints f = ∅\n```\n\nFor $\\{1,2,3\\}$: the two derangements are the 3-cycles $(123)$ and $(132)$, giving $D_3 = 2$.",
-    "mathContext": "The definition via `Function.fixedPoints f = ∅` connects to the lattice-theoretic view: derangements are the complement of the union $\\bigcup_i A_i$ where $A_i$ is the set of permutations fixing element $i$.",
+    "content": "Two equivalent characterizations: (1) $f \\in \\text{derangements}(\\alpha) \\iff \\forall x,\\, f(x) \\neq x$ and (2) $f \\in \\text{derangements}(\\alpha) \\iff \\text{fixedPoints}(f) = \\emptyset$.",
+    "mathContext": "The definition via `Function.fixedPoints f = \\emptyset` connects to the lattice-theoretic view: derangements are the complement of $\\bigcup_i A_i$ where $A_i = \\{\\sigma \\in S_n : \\sigma(i) = i\\}$. The first characterization is definitional (`Iff.rfl`); the second uses `mem_derangements_iff_fixedPoints_eq_empty` from Mathlib. For $\\{1,2,3\\}$: the two derangements are the 3-cycles $(123)$ and $(132)$, giving $D_3 = 2$.",
     "significance": "key",
-    "relatedConcepts": ["Equiv.Perm", "Function.fixedPoints", "derangements set"],
+    "relatedConcepts": ["Equiv.Perm", "Function.fixedPoints", "derangements set", "3-cycles"],
     "prerequisites": ["Equiv.Perm definition", "Function.fixedPoints"]
   },
   {
@@ -29,11 +29,11 @@
     "type": "theorem",
     "range": {"startLine": 82, "endLine": 99},
     "title": "Base Cases and Recurrence Relation",
-    "content": "**Base Cases**: $D_0 = 1$ (empty permutation), $D_1 = 0$ (singleton must fix itself).\n\n**Recurrence**: $D_{n+2} = (n+1)(D_n + D_{n+1})$\n\n**Combinatorial proof**: Consider element 1 in a derangement of $\\{1, \\ldots, n+2\\}$. It maps to some position $k$ ($n+1$ choices). Either:\n- $k$ maps back to 1 (a 'matched pair'), reducing to a derangement of the remaining $n$ elements: contributes $D_n$\n- $k$ maps elsewhere, reducing to a derangement of $n+1$ elements (with $k$ playing the role of 1): contributes $D_{n+1}$",
-    "mathContext": "The recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$ is analogous to the factorial recurrence $n! = n \\cdot (n-1)!$ but with a branching structure. It enables efficient computation: $D_n$ can be computed in $O(n)$ time, unlike the $O(n^2)$ naive sum formula.",
+    "content": "$D_0 = 1$ (empty permutation), $D_1 = 0$ (singleton must fix itself), and the recurrence $D_{n+2} = (n+1)(D_n + D_{n+1})$.",
+    "mathContext": "The recurrence has a natural combinatorial proof: consider element 1 in a derangement of $\\{1, \\ldots, n+2\\}$. It maps to some position $k$ ($n+1$ choices). If $k$ maps back to 1 (a 'matched pair'), the remaining $n$ elements form a derangement ($D_n$). If $k$ maps elsewhere, we have a derangement of $n+1$ elements with $k$ playing element 1's role ($D_{n+1}$). Total: $(n+1)(D_n + D_{n+1})$. This recurrence enables $O(n)$ computation, unlike the $O(n^2)$ naive sum formula.",
     "significance": "key",
-    "relatedConcepts": ["numDerangements_add_two", "Recurrence relations", "Two-case recursion"],
-    "prerequisites": ["numDerangements definition", "Natural number induction"]
+    "relatedConcepts": ["numDerangements_add_two", "recurrence relations", "two-case recursion"],
+    "prerequisites": ["numDerangements definition", "natural number induction"]
   },
   {
     "id": "ann-formula",
@@ -41,10 +41,10 @@
     "type": "theorem",
     "range": {"startLine": 111, "endLine": 113},
     "title": "Closed-Form Sum Formula",
-    "content": "**numDerangements_formula**: The closed-form formula:\n$$D_n = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$\n\nIn Mathlib, this is expressed using ascending factorials:\n$$D_n = \\sum_{k=0}^{n} (-1)^k \\cdot (k+1)^{\\overline{n-k}}$$\n\nwhere $(k+1)^{\\overline{n-k}} = (k+1)(k+2) \\cdots n = n!/k!$.\n\nThe formula comes from inclusion-exclusion on fixed-point sets.",
-    "mathContext": "The sum $\\sum_{k=0}^n (-1)^k/k!$ is the $(n+1)$-st partial sum of the Taylor series for $e^{-1}$. By the alternating series estimation theorem, $|D_n/n! - 1/e| < 1/(n+1)!$, so $D_n$ is the nearest integer to $n!/e$ for $n \\ge 1$.",
-    "significance": "key",
-    "relatedConcepts": ["numDerangements_sum", "ascFactorial", "Alternating series", "Inclusion-exclusion"],
+    "content": "The derangement formula: $D_n = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$. In Mathlib's formulation using ascending factorials: $D_n = \\sum_{k=0}^{n} (-1)^k \\cdot (k+1)^{\\overline{n-k}}$ where $(k+1)^{\\overline{n-k}} = n!/k!$.",
+    "mathContext": "The sum $\\sum_{k=0}^n (-1)^k/k!$ is the $(n+1)$-st partial sum of the Taylor series for $e^{-1} = \\sum_{k=0}^\\infty (-1)^k/k!$. By the alternating series estimation theorem, $|D_n/n! - 1/e| < 1/(n+1)!$, so $D_n$ is the nearest integer to $n!/e$ for $n \\ge 1$. This provides the beautiful formula $D_n = \\lfloor n!/e + 1/2 \\rfloor$. The formula comes from inclusion-exclusion on fixed-point sets $A_i$.",
+    "significance": "critical",
+    "relatedConcepts": ["numDerangements_sum", "ascFactorial", "alternating series", "inclusion-exclusion"],
     "prerequisites": ["Finset.sum", "Int.cast", "ascFactorial"]
   },
   {
@@ -53,10 +53,10 @@
     "type": "theorem",
     "range": {"startLine": 119, "endLine": 126},
     "title": "Cardinality Results",
-    "content": "**card_derangements_eq**: The cardinality of the derangement set equals `numDerangements`:\n$$|\\text{derangements}(\\alpha)| = D_{|\\alpha|}$$\n\n**card_derangements_fin**: Specialization for $\\text{Fin}\\, n$:\n$$|\\text{derangements}(\\text{Fin}\\, n)| = D_n$$\n\nThis bridges the abstract set-theoretic definition (`derangements α`) with the computational function (`numDerangements n`).",
-    "mathContext": "The equality between the cardinality of the abstract set and the recursively-defined function is the key verification step. It ensures that Mathlib's `numDerangements` correctly counts the combinatorial objects.",
+    "content": "$|\\text{derangements}(\\alpha)| = D_{|\\alpha|}$ and the specialization $|\\text{derangements}(\\text{Fin}\\, n)| = D_n$.",
+    "mathContext": "These bridge the abstract set-theoretic definition (`derangements \\alpha` as a subset of `Equiv.Perm \\alpha`) with the recursively-defined counting function (`numDerangements n`). The `Fin n` specialization uses `Fintype.card_fin : |\\text{Fin}\\,n| = n`. This verification ensures Mathlib's `numDerangements` correctly counts the combinatorial objects.",
     "significance": "supporting",
-    "relatedConcepts": ["Fintype.card", "card_derangements_eq_numDerangements"],
+    "relatedConcepts": ["Fintype.card", "card_derangements_eq_numDerangements", "Fin n"],
     "prerequisites": ["Fintype", "DecidableEq", "card_derangements_eq_numDerangements"]
   },
   {
@@ -64,24 +64,36 @@
     "proofId": "derangements",
     "type": "theorem",
     "range": {"startLine": 131, "endLine": 143},
-    "title": "Concrete Values",
-    "content": "**Verified via `native_decide`**:\n\n| $n$ | $D_n$ | $n!$ | $D_n/n!$ |\n|-----|-------|------|----------|\n| 2 | 1 | 2 | 0.500 |\n| 3 | 2 | 6 | 0.333 |\n| 4 | 9 | 24 | 0.375 |\n| 5 | 44 | 120 | 0.367 |\n| 6 | 265 | 720 | 0.368 |\n\nThe ratio $D_n/n!$ oscillates around $1/e \\approx 0.3679$ and converges rapidly.",
-    "mathContext": "The oscillation around $1/e$ reflects the alternating signs in the sum: even partial sums overshoot, odd partial sums undershoot. By $n = 5$, the ratio is already within 0.3% of $1/e$.",
+    "title": "Concrete Values via native_decide",
+    "content": "$D_2 = 1$, $D_3 = 2$, $D_4 = 9$, $D_5 = 44$, $D_6 = 265$, all verified by `native_decide` — Lean compiles the computation to native code for efficient verification.",
+    "mathContext": "The ratio $D_n/n!$ oscillates around $1/e \\approx 0.3679$: even partial sums of $\\sum (-1)^k/k!$ overshoot $1/e$, odd partial sums undershoot. The convergence is rapid: $D_5/5! = 44/120 \\approx 0.3667$ is already within 0.3% of $1/e$. The `native_decide` tactic compiles the `numDerangements` function to native code and evaluates it, providing a constructive proof.",
     "significance": "supporting",
-    "relatedConcepts": ["native_decide", "Hat-check problem", "Convergence to $1/e$"],
+    "relatedConcepts": ["native_decide", "hat-check problem", "convergence to $1/e$"],
     "prerequisites": ["numDerangements computation"]
+  },
+  {
+    "id": "ann-hat-check",
+    "proofId": "derangements",
+    "type": "concept",
+    "range": {"startLine": 145, "endLine": 160},
+    "title": "Hat-Check Problem and Convergence",
+    "content": "The classic formulation: $n$ people check hats, which are returned randomly. The probability no one gets their own hat is $D_n/n! \\to 1/e \\approx 0.3679$ as $n \\to \\infty$.",
+    "mathContext": "This is one of the most celebrated results in combinatorial probability. The probability $P_n = D_n/n! = \\sum_{k=0}^n (-1)^k/k!$ converges to $e^{-1}$ exponentially fast — by $n = 10$, the probability matches $1/e$ to 6 decimal places. The result is a 'universal' probability: it does not depend on $n$ for large $n$. Montmort asked this question in 1708 in the context of card games ('jeu de treize'). The Poisson approximation explains why: the indicators $\\mathbf{1}_{\\sigma(i) = i}$ are nearly independent, and the number of fixed points converges to $\\text{Poisson}(1)$.",
+    "significance": "key",
+    "relatedConcepts": ["probability of derangement", "convergence to $1/e$", "Poisson distribution", "problème des rencontres"],
+    "prerequisites": ["derangement counting", "ratio $D_n/n!$"]
   },
   {
     "id": "ann-properties",
     "proofId": "derangements",
     "type": "theorem",
     "range": {"startLine": 165, "endLine": 183},
-    "title": "Algebraic Properties",
-    "content": "**one_not_mem_derangements**: The identity permutation is never a derangement (for nonempty types), since $\\text{id}(x) = x$ for all $x$.\n\n**derangement_mul_self_not_always_derangement**: A derangement composed with itself need not be a derangement. Example: the transposition $(0\\ 1)$ on $\\text{Fin}\\, 2$ is a derangement, but $(0\\ 1)^2 = \\text{id}$ is not.\n\nThis shows the derangement set is **not** closed under composition — it's not a subgroup of $S_n$.",
-    "mathContext": "The failure of closure under composition distinguishes derangements from subgroups like the alternating group $A_n$. The derangement set forms a 'conjugacy-closed' subset (conjugates of derangements are derangements) but not a subgroup.",
-    "significance": "supporting",
-    "relatedConcepts": ["Group composition", "Transpositions", "Equiv.swap", "Subgroup closure"],
-    "prerequisites": ["Equiv.Perm multiplication", "derangements definition"]
+    "title": "Algebraic Properties: Not a Subgroup",
+    "content": "The identity is not a derangement (for nonempty types). Derangements are not closed under composition: the transposition $(0\\,1)$ on Fin 2 is a derangement, but $(0\\,1)^2 = \\text{id}$ is not.",
+    "mathContext": "The failure of closure under composition distinguishes derangements from subgroups like the alternating group $A_n$. The derangement set is **conjugacy-closed** ($\\tau \\sigma \\tau^{-1}$ is a derangement whenever $\\sigma$ is), but not closed under products or inverses. The proof uses `Equiv.swap 0 1` as a concrete counterexample: it has no fixed points on $\\text{Fin}\\,2$, but squaring it yields the identity. The `fin_cases` tactic exhaustively checks both elements.",
+    "significance": "key",
+    "relatedConcepts": ["group composition", "transpositions", "Equiv.swap", "conjugacy classes"],
+    "prerequisites": ["Equiv.Perm multiplication", "derangements definition", "Equiv.swap"]
   },
   {
     "id": "ann-inclusion-exclusion",
@@ -89,10 +101,22 @@
     "type": "concept",
     "range": {"startLine": 203, "endLine": 220},
     "title": "Inclusion-Exclusion Derivation",
-    "content": "**Derivation of the formula via inclusion-exclusion**:\n\nLet $A_i = \\{\\text{permutations fixing element } i\\}$. Then:\n$$D_n = n! - |\\bigcup A_i| = \\sum_{k=0}^{n} (-1)^k \\binom{n}{k}(n-k)!$$\n\nSince $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ (fix $k$ elements, permute the rest) and there are $\\binom{n}{k}$ ways to choose which $k$ elements are fixed:\n$$D_n = \\sum_{k=0}^{n} (-1)^k \\frac{n!}{k!} = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$",
-    "mathContext": "The inclusion-exclusion derivation is a textbook application of the sieve formula. The key simplification is that the intersection $|A_{i_1} \\cap \\cdots \\cap A_{i_k}|$ depends only on $k$ (not on which elements are fixed), making the Bonferroni sum collapse to a single alternating series.",
+    "content": "Derives $D_n = n! \\sum_{k=0}^n (-1)^k/k!$ via inclusion-exclusion on fixed-point sets $A_i = \\{\\sigma \\in S_n : \\sigma(i) = i\\}$, using $|A_{i_1} \\cap \\cdots \\cap A_{i_k}| = (n-k)!$ and $\\binom{n}{k}$ choices.",
+    "mathContext": "The key simplification is that $|A_{i_1} \\cap \\cdots \\cap A_{i_k}|$ depends only on $k$ (not on which elements are fixed), making the Bonferroni sum collapse: $D_n = \\sum_{k=0}^n (-1)^k \\binom{n}{k}(n-k)! = \\sum_{k=0}^n (-1)^k n!/k! = n! \\sum_{k=0}^n (-1)^k/k!$. This is the canonical example used to introduce inclusion-exclusion in combinatorics courses. The sieve argument generalizes to count permutations with exactly $j$ fixed points via the formula $\\binom{n}{j} D_{n-j}$.",
     "significance": "key",
-    "relatedConcepts": ["Inclusion-exclusion principle", "Bonferroni inequalities", "Sieve methods"],
-    "prerequisites": ["Inclusion-exclusion formula", "Binomial coefficients"]
+    "relatedConcepts": ["inclusion-exclusion principle", "Bonferroni inequalities", "sieve methods"],
+    "prerequisites": ["inclusion-exclusion formula", "binomial coefficients"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "derangements",
+    "type": "concept",
+    "range": {"startLine": 222, "endLine": 226},
+    "title": "Verification Checks",
+    "content": "Uses `#check` to verify the core API surface: `numDerangements`, `derangements_recurrence`, `numDerangements_formula`, `card_derangements_eq`.",
+    "mathContext": "The `#check` command in Lean 4 displays type signatures without proving anything, serving as documentation and a compilation guard. The four checked terms form the complete interface: the counting function, the recurrence, the closed-form, and the cardinality bridge.",
+    "significance": "supporting",
+    "relatedConcepts": ["#check", "compilation guard", "API surface"],
+    "prerequisites": ["numDerangements", "derangements_recurrence"]
   }
 ]
