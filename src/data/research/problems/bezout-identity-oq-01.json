@@ -1,0 +1,96 @@
+{
+  "slug": "bezout-identity-oq-01",
+  "title": "Extended Euclidean Algorithm as Computable Function",
+  "phase": "FORMALIZED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "def extGcd : ℕ → ℕ → ℤ × ℤ × ℕ; theorem extGcd_correct (a b : ℕ) : let r := extGcd a b; (a : ℤ) * r.1 + (b : ℤ) * r.2.1 = ↑(Nat.gcd a b)",
+    "plain": "Can the extended Euclidean algorithm itself be formalized as a computable function with a correctness proof? We define extGcd returning Bézout coefficients (x, y) and gcd g, and prove a*x + b*y = g = gcd(a,b).",
+    "whyMatters": [
+      "Demonstrates computability of the extended Euclidean algorithm in Lean 4",
+      "Provides verified Bézout coefficients beyond what Mathlib's gcdA/gcdB expose",
+      "Foundation for verified modular arithmetic and cryptographic algorithms"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "extGcd function: computable extended Euclidean algorithm via well-founded recursion",
+      "extGcd_gcd: third component equals Nat.gcd (by strong induction)",
+      "extGcd_bezout: Bézout correctness a*x + b*y = g (by strong induction + linear_combination)",
+      "extGcd_correct: combined correctness a*x + b*y = gcd(a,b)",
+      "bezout_via_extGcd: existential Bézout statement from computable witness",
+      "extGcd_gcd_pos: gcd output positive when a > 0 or b > 0",
+      "extGcd_gcd_dvd_left/right: gcd divides both inputs",
+      "Computational verification for (12,8), (35,15), (17,5), (252,198) via native_decide"
+    ],
+    "open": [],
+    "goal": "Complete formalization of extended Euclidean algorithm with full correctness proof"
+  },
+  "currentState": {
+    "phase": "FORMALIZED",
+    "since": "2026-02-10T07:40:00Z",
+    "iteration": 1,
+    "focus": "Fixed compilation errors in prior draft, proved all theorems without sorry",
+    "blockers": [],
+    "nextAction": "None - proof is complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Fully computable extGcd function with correctness proof. 0 sorries, 0 axioms. Key insight: use projection-based let binding (not destructuring) for definitional reduction, and linear_combination tactic for the nonlinear Bézout step.",
+    "builtItems": [
+      "extGcd: computable extended Euclidean algorithm (ℕ → ℕ → ℤ × ℤ × ℕ)",
+      "extGcdX, extGcdY, extGcdG: projection helpers",
+      "extGcd_zero, extGcd_succ: unfolding lemmas",
+      "extGcd_gcd: gcd correctness (strong induction)",
+      "extGcd_bezout: Bézout correctness (strong induction + linear_combination)",
+      "extGcd_correct: combined correctness",
+      "bezout_via_extGcd: existential Bézout from computable witness",
+      "extGcd_gcd_pos, extGcd_gcd_dvd_left, extGcd_gcd_dvd_right: properties"
+    ],
+    "insights": [
+      "Destructuring let (let (x', y', g) := ...) prevents rfl and simp from reducing - use let r := ... with r.1, r.2.1, r.2.2 instead",
+      "Nat.div_add_mod gives (b+1) * (a/(b+1)) + a%(b+1) = a with multiplication in (b+1)*q order, need linarith or mul_comm to match q*(b+1) form",
+      "linear_combination tactic essential for closing nonlinear Bézout step: linear_combination hrec + hdiv * y'",
+      "zify tactic useful for lifting Nat.div_add_mod to integer arithmetic"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Well-founded recursion with projection-based let binding",
+      "status": "completed",
+      "description": "Define extGcd by pattern match on b with well-founded recursion, using let r := ... with projections. Prove by Nat.strongRecOn with linear_combination for the key algebraic step."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "algorithms",
+    "number-theory",
+    "computability",
+    "extension",
+    "formalized"
+  ],
+  "relatedProofs": [
+    "BezoutIdentity.lean",
+    "BezoutIdentityOQ01.lean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.GCD"
+    ]
+  },
+  "started": "2026-02-10T07:40:00Z",
+  "lastUpdate": "2026-02-10T08:00:00Z",
+  "significance": 6,
+  "tractability": 7
+}
