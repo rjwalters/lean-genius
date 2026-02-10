@@ -15,6 +15,14 @@
       "euler totient",
       "analytic number theory"
     ],
+    "references": [
+      "Erdős (1935): original question on increasing totient sets",
+      "Pomerance (1979): first non-trivial upper bounds via sieve methods",
+      "Ford (1998): improved bounds using anatomy of integers",
+      "Tao (2023): resolution, |A| ≤ (1+O((log log x)⁵/log x))π(x)",
+      "Euler (1763): Euler's totient function φ(n)",
+      "https://erdosproblems.com/49"
+    ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 49,
@@ -22,74 +30,83 @@
     "erdosProblemStatus": "proved"
   },
   "overview": {
-    "historicalContext": "Erdős asked whether the primes form the largest subset of {1,…,N} with strictly increasing Euler totient values. Since φ(p) = p-1 for primes, the primes naturally form such a set of size π(N). Tao resolved this in 2023, proving |A| ≤ (1 + O((log log x)⁵/log x))π(x).",
+    "historicalContext": "Erdős posed this problem in the 1930s, observing that the primes $\\{2, 3, 5, 7, 11, \\ldots\\}$ naturally form a set with strictly increasing totient values since $\\varphi(p) = p - 1$ for primes. He conjectured that primes are asymptotically optimal: no subset of $\\{1, \\ldots, N\\}$ with increasing totient values can be much larger than $\\pi(N)$. Pomerance (1979) obtained the first non-trivial bounds using sieve methods, showing $|A| \\leq c \\cdot \\pi(N)$ for some constant $c > 1$. Ford (1998) improved the constant using his work on the anatomy of integers and the distribution of $\\varphi$-values. The problem was fully resolved by Terence Tao in 2023, who proved $|A| \\leq (1 + O((\\log\\log x)^5 / \\log x)) \\pi(x)$, confirming Erdős's conjecture with an explicit error term. Tao's proof combines multiplicative number theory, the Selberg sieve, and a careful analysis of the distribution of totient values among smooth numbers. The result exemplifies the extremal role of primes in number-theoretic optimization problems.",
     "problemStatement": "Let A = {a₁ < ⋯ < aₜ} ⊆ {1,…,N} with φ(a₁) < ⋯ < φ(aₜ). Is |A| ≤ (1 + o(1))π(N)?",
-    "proofStrategy": "The formalization defines increasing totient sets, the maximum size function, and the prime counting function. Tao's theorem is axiomatised: for every ε > 0, the maximum increasing totient set size is at most (1+ε)π(N) for large N.",
+    "proofStrategy": "The formalization defines increasing totient sets, the maximum size function via powerset filtration, and the prime counting function. The primes-are-optimal lower bound $\\text{maxIncTotientSize}(N) \\geq \\pi(N)$ is stated, and Tao's asymptotic upper bound is axiomatized with the $(1+\\varepsilon)$ formulation. A density-zero corollary follows from the Prime Number Theorem.",
     "keyInsights": [
-      "Primes have φ(p) = p-1, so they form a natural increasing totient set",
-      "The question asks if primes are asymptotically optimal for this property",
-      "Tao (2023) proved |A| ≤ (1 + O((log log x)⁵/log x))π(x)",
-      "The weaker form |A| = o(N) follows since π(N) = o(N) by PNT"
+      "**Primes as natural witnesses**: $\\varphi(p) = p - 1$ for primes, so primes ordered by size automatically have increasing totient values, giving $|A| \\geq \\pi(N)$",
+      "**Asymptotic optimality**: Tao's theorem $|A| \\leq (1 + O((\\log\\log x)^5/\\log x))\\pi(x)$ shows primes are not just good — they are essentially the best possible, with only a vanishing multiplicative overhead",
+      "**Density zero corollary**: Since $\\pi(N) = o(N)$ by the PNT, any increasing totient set has density zero in $\\{1, \\ldots, N\\}$ — the totient function is too 'collapsing' to support dense increasing subsequences",
+      "**Non-injectivity of $\\varphi$**: The totient function is far from injective ($\\varphi(n) = \\varphi(2n)$ for odd $n$), which creates competition among elements for distinct totient values and limits set size",
+      "**Sieve-theoretic approach**: Tao's proof uses the Selberg sieve to control the number of integers with prescribed totient value ranges, converting the combinatorial problem into an analytic one about the distribution of $\\varphi$-values"
     ]
   },
   "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Module docstring stating the conjecture, Tao's resolution, and reference. Imports `Nat.Totient` for $\\varphi(n)$, `Nat.Prime.Basic` for primality, `Finset` for finite set operations."
+    },
     {
       "id": "increasing-totient-sets",
       "title": "Increasing Totient Sets",
       "startLine": 20,
       "endLine": 31,
-      "summary": "Definition of sets with strictly increasing Euler totient values and the maximum size function."
+      "summary": "Defines `IsIncreasingTotientSet A` requiring $a < b \\implies \\varphi(a) < \\varphi(b)$ for all $a, b \\in A$, and `maxIncTotientSize N = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; A \\text{ increasing totient}\\}$."
     },
     {
       "id": "prime-counting",
       "title": "Prime Counting Function",
       "startLine": 33,
       "endLine": 37,
-      "summary": "The prime counting function π(N)."
+      "summary": "Defines $\\pi(N) = |\\{p \\leq N : p \\text{ prime}\\}|$ via `Finset.filter Nat.Prime` on `Finset.Icc 1 N`."
     },
     {
       "id": "primes-optimal",
       "title": "Primes as Increasing Totient Set",
       "startLine": 39,
       "endLine": 48,
-      "summary": "Primes form an increasing totient set and maxIncTotientSize(N) ≥ π(N)."
+      "summary": "States that primes form an increasing totient set (since $\\varphi(p) = p-1$ is strictly increasing with $p$) and derives the lower bound $\\text{maxIncTotientSize}(N) \\geq \\pi(N)$."
     },
     {
       "id": "tao-theorem",
       "title": "Tao's Theorem (2023)",
       "startLine": 50,
-      "endLine": 59,
-      "summary": "Tao proved maxIncTotientSize(N) ≤ (1+ε)π(N) for all ε > 0 and large N."
+      "endLine": 60,
+      "summary": "Tao's asymptotic upper bound: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: \\text{maxIncTotientSize}(N) \\leq (1+\\varepsilon) \\pi(N)$. Axiomatized over $\\mathbb{Q}$ for computability."
     },
     {
       "id": "main-statement",
       "title": "Main Statement",
-      "startLine": 61,
-      "endLine": 68,
-      "summary": "Erdős Problem 49 (solved): the maximum increasing totient set has size asymptotically π(N)."
+      "startLine": 62,
+      "endLine": 69,
+      "summary": "Defines `ErdosProblem49` as the proposition that the maximum increasing totient set size is asymptotically $\\pi(N)$, equivalent to Tao's theorem."
     },
     {
       "id": "weaker-form",
-      "title": "Weaker Form",
-      "startLine": 70,
-      "endLine": 76,
-      "summary": "The weaker conjecture |A| = o(N), following from Tao's result and the PNT."
+      "title": "Density Zero Corollary",
+      "startLine": 71,
+      "endLine": 78,
+      "summary": "The weaker result: $\\text{maxIncTotientSize}(N) = o(N)$. Follows from Tao's bound and the PNT ($\\pi(N) \\sim N/\\ln N = o(N)$)."
     },
     {
       "id": "totient-properties",
-      "title": "Totient Properties",
-      "startLine": 78,
-      "endLine": 85,
-      "summary": "Basic properties: φ(p) = p-1 for primes and φ(n) ≤ n."
+      "title": "Basic Totient Properties",
+      "startLine": 80,
+      "endLine": 87,
+      "summary": "States $\\varphi(p) = p - 1$ for primes and $\\varphi(n) \\leq n$ for all $n$. These are fundamental properties used throughout the formalization."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem 49, solved by Tao (2023), confirming that primes are asymptotically the largest subset of {1,…,N} with strictly increasing Euler totient values.",
-    "implications": "Tao's result settles a classical question about the extremal role of primes among sets ordered by the totient function.",
+    "summary": "Erdős Problem #49 asks whether primes are the largest subset of $\\{1, \\ldots, N\\}$ with strictly increasing Euler totient values. Tao (2023) proved the affirmative: $|A| \\leq (1 + o(1))\\pi(N)$. The formalization captures the definitions, the primes-as-witnesses lower bound, Tao's asymptotic upper bound, and the density-zero corollary via the PNT.",
+    "implications": "Tao's resolution confirms primes' extremal role for the totient function, analogous to how primes are extremal for many other number-theoretic optimization problems. The techniques — combining sieve methods with the distribution of $\\varphi$-values — have potential applications to similar questions for other multiplicative functions like $\\sigma(n)$ or $\\omega(n)$.",
     "openQuestions": [
-      "Can the error term O((log log x)⁵/log x) in Tao's bound be improved?",
-      "What is the answer for the divisor sum function σ(n) instead of φ(n)?",
-      "What about weakly increasing totient sequences (φ(aᵢ) ≤ φ(aᵢ₊₁))?"
+      "Can the error term $O((\\log\\log x)^5/\\log x)$ in Tao's bound be improved to $O(1/\\log x)$?",
+      "What is the answer for the divisor sum function $\\sigma(n)$: is the maximum $\\sigma$-increasing set also asymptotically the primes?",
+      "For weakly increasing totient sequences ($\\varphi(a_i) \\leq \\varphi(a_{i+1})$), how much larger can the set be?",
+      "What is the exact value of $\\text{maxIncTotientSize}(N) - \\pi(N)$ for small $N$?"
     ]
   }
 }
