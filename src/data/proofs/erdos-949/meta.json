@@ -55,18 +55,11 @@
   },
   "sections": [
     {
-      "id": "sec-949-header",
-      "title": "Problem Statement and References",
-      "startLine": 1,
-      "endLine": 13,
-      "summary": "Documentation block with the problem statement, status (OPEN general; SOLVED for Sidon), and references to Erdős and Dillies-AlphaProof."
-    },
-    {
       "id": "sec-949-imports",
-      "title": "Imports",
+      "title": "Imports and Setup",
       "startLine": 15,
       "endLine": 22,
-      "summary": "Imports Data.Real.Basic, Data.Set.Basic, Set.Finite.Basic, Cardinal.Basic, Cardinal.Continuum, and Tactic. Opens Set namespace."
+      "summary": "Imports `Data.Real.Basic`, `Data.Set.Basic`, `Set.Finite.Basic`, `Cardinal.Basic`, `Cardinal.Continuum`, and `Tactic`. Opens Set namespace for convenient set notation."
     },
     {
       "id": "sec-949-definitions",
