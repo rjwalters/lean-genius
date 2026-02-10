@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "For a > k*b, the probability that A maintains > k times B's votes throughout counting is (a - k*b)/(a + b)",
-    "plain": "The Generalized Ballot Problem extends Bertrand's classical result to the k-fold case: when candidate A must maintain more than k times the votes of candidate B throughout counting, the probability is (a - k*b)/(a + b).",
+    "plain": "The Generalized Ballot Problem extends Bertrand's classical result to the k-fold case.",
     "whyMatters": [
       "Generalizes the classical ballot theorem (k=1) to arbitrary dominance factors",
       "Uses the Dvoretzky-Motzkin cycle lemma - a fundamental combinatorial tool",
@@ -16,94 +16,70 @@
   },
   "knownResults": {
     "proven": [
-      "kCountedSequence definitions and basic properties (sum, length)",
-      "Permutation characterization: every element is a permutation of replicate a 1 ++ replicate b (-k)",
-      "Finiteness of kCountedSequence (via permutation embedding)",
-      "Nonemptiness of kCountedSequence",
-      "Connection to classical ballot problem: kCountedSequence 1 a b = countedSequence a b",
-      "Cyclic rotation preserves sum, length, composition, and kCountedSequence membership",
-      "Cyclic rotation prefix sum formula (both wrapping and non-wrapping cases)",
-      "Prefix sum of doubled sequence periodicity: P(l++l, i+n) = P(l++l, i) + S",
+      "kCountedSequence definitions and basic properties (sum, length, finiteness, nonemptiness)",
+      "Connection to classical ballot: kCountedSequence 1 a b = countedSequence a b",
+      "Cyclic rotation infrastructure (sum, length, composition, kCountedSequence preservation)",
+      "Prefix sum relation for rotations (wrapping and non-wrapping cases)",
       "Good rotation characterization via doubled prefix sums",
-      "Positive sum and length for ballot sequences with k*b < a",
-      "Path height interpretation via prefix sums",
-      "Probability positivity: (a - k*b)/(a + b) > 0",
-      "Special cases verified: k=2 a=5 b=2 (1/7), k=3 a=10 b=3 (1/13), etc.",
-      "Classical reduction: formula reduces to (a-b)/(a+b) when k=1",
-      "Verification example: [2,-1] has exactly 1 good rotation (native_decide)"
+      "Rightmost minimum infrastructure (definition, bounds, good rotation proof)",
+      "Prefix sum strict monotonicity and injectivity on good rotations",
+      "Corrected cycle lemma statement (restricted to kCountedSequence)",
+      "Verification examples via native_decide"
     ],
     "open": [
-      "Dvoretzky-Motzkin cycle lemma (rightmost minimum injection argument)",
-      "Full generalized ballot counting theorem (depends on cycle lemma)"
+      "Cycle lemma counting (injectivity proved, surjectivity via level crossings needed)",
+      "Generalized ballot counting theorem (depends on cycle lemma)"
     ],
     "goal": "Complete proof of the generalized ballot theorem via the cycle lemma"
   },
   "currentState": {
     "phase": "IN_PROGRESS",
-    "since": "2026-02-10T11:21:00Z",
-    "iteration": 3,
-    "focus": "Proved kCountedSequence_finite and cyclicRotation_compose. Added prefix sum infrastructure for cycle lemma. All infrastructure complete; only cycle_lemma remains.",
+    "since": "2026-02-10T17:30:00Z",
+    "iteration": 4,
+    "focus": "Built rightmost min infrastructure. Found/fixed bug in cycle lemma statement. Proved good rotation existence and injectivity.",
     "blockers": [
-      "Cycle lemma requires rightmost minimum injection argument - deep combinatorial proof"
+      "Cycle lemma surjectivity: need level crossing argument for ballot sequences"
     ],
-    "nextAction": "Submit file to Aristotle for cycle_lemma sorry. If Aristotle fails, manual proof via Finset injection.",
+    "nextAction": "Prove surjectivity or submit to Aristotle",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ~30 theorems/lemmas, 2 sorries. Complete rotation infrastructure, prefix sum relation (wrapping + non-wrapping), doubled sequence periodicity, good rotation characterization. Only cycle_lemma and generalized_ballot_count remain.",
+    "progressSummary": "PROGRESS: ~35 theorems proved, 2 sorries remain. Key: rightmost min infrastructure + good rotation proof + strict monotonicity + injectivity. Critical bug found: cycle lemma wrong for arbitrary integers.",
     "builtItems": [
-      "proofs/Proofs/BallotProblemOQ01.lean - ~30 theorems, 2 sorries (~600 lines)",
-      "kCountedSequence_finite: finiteness via permutation embedding into w.permutations.toFinset",
-      "cyclicRotation_compose: rotation composition for non-wrapping case",
-      "cyclicRotation_prefixSum: prefix sum of rotations (wrapping and non-wrapping)",
-      "prefixSum_doubled_periodic: P(l++l, i+n) = P(l++l, i) + S",
-      "isGoodRotation_iff_prefixSum: good rotation ↔ prefix sum strict minimum",
-      "prefixSum_doubled_le: P(l++l, i) = P(l, i) for i ≤ n",
-      "native_decide verification for [2, -1] list"
+      "proofs/Proofs/BallotProblemOQ01.lean - ~35 theorems, 2 sorries (~430 lines)",
+      "minPrefixSum, rightmostMinPos with full bounds",
+      "goodRotation_at_rightmostMin, goodRotations_nonempty",
+      "goodRotation_prefixSum_strictMono, goodRotation_prefixSum_injective"
     ],
     "insights": [
-      "kCountedSequence elements are exactly permutations of replicate a 1 ++ replicate b (-k) - finiteness via w.permutations.toFinset",
-      "Cyclic rotation preserves element counts (proved via congr_arg on take_append_drop identity)",
-      "Prefix sum of cyclic rotation has clean two-case formula: non-wrapping gives P(i+j)-P(i), wrapping adds full sum S",
-      "The doubled sequence l++l makes cyclic behavior linear - key insight for cycle lemma",
-      "Good rotation i ↔ prefixSum(i) is strict minimum in window [i, i+n] of doubled sequence",
-      "Classical connection is clean: kCountedSequence 1 a b = Ballot.countedSequence a b with just simpa",
-      "Cycle lemma final step needs rightmost minimum injection: map each position in doubled sequence to its window's rightmost minimum"
+      "CRITICAL: Cycle lemma FALSE for arbitrary integers. [5,-2] has sum 3 but only 2 rotations. Must restrict to ballot sequences.",
+      "Rightmost minimum m gives provably good rotation via wrapping/non-wrapping case analysis",
+      "P is strictly monotone on good rotations: i1 < i2 both good implies P(i1) < P(i2)",
+      "Surjectivity needs level crossing: ballot steps are +1 or -k so P passes through all integer levels"
     ],
     "mathlibGaps": [
-      "No direct Mathlib support for generalized (k-fold) ballot problem",
-      "Cycle lemma not in Mathlib - would be a valuable contribution",
-      "List.permutations finiteness API could be cleaner (used toFinset workaround)"
+      "No cycle lemma in Mathlib",
+      "No k-fold ballot problem in Mathlib"
     ],
     "nextSteps": [
-      "Submit to Aristotle for cycle_lemma sorry",
-      "Manual attempt: cycle_lemma via rightmost minimum injection into Finset",
-      "If cycle_lemma proved, derive generalized_ballot_count immediately",
-      "Consider multi-candidate generalization as next research problem"
+      "Prove cycle lemma surjectivity via level crossing for ballot sequences",
+      "Alternative: submit to Aristotle",
+      "If proved, derive generalized_ballot_count via double counting"
     ]
   },
   "approaches": [
     {
       "name": "Cycle lemma via rightmost minimum",
       "status": "in-progress",
-      "description": "Model ballot sequences as lists with +1 and -k steps. Use cyclic rotations and the Dvoretzky-Motzkin cycle lemma (rightmost minimum argument) to count good orderings. All infrastructure complete; cycle lemma proof remains."
+      "description": "Model as lists with +1 and -k steps. Cycle lemma via rightmost minimum. Infrastructure complete; counting argument remains."
     }
   ],
-  "tags": [
-    "seeker-selected",
-    "combinatorics",
-    "probability",
-    "extension",
-    "lattice-paths",
-    "cycle-lemma"
-  ],
-  "relatedProofs": [
-    "ballot-problem"
-  ],
+  "tags": ["seeker-selected", "combinatorics", "probability", "extension", "lattice-paths", "cycle-lemma"],
+  "relatedProofs": ["ballot-problem"],
   "references": {
     "papers": [
       "Bertrand (1887): Original ballot problem",
@@ -111,13 +87,10 @@
       "Renault (2007): Four Proofs of the Ballot Theorem"
     ],
     "urls": [],
-    "mathlib": [
-      "Archive.Wiedijk100Theorems.BallotProblem",
-      "Mathlib.Tactic"
-    ]
+    "mathlib": ["Archive.Wiedijk100Theorems.BallotProblem", "Mathlib.Tactic"]
   },
   "started": "2026-02-08T06:11:43.709Z",
-  "lastUpdate": "2026-02-10T11:30:00Z",
+  "lastUpdate": "2026-02-10T17:30:00Z",
   "significance": 7,
   "tractability": 6
 }
