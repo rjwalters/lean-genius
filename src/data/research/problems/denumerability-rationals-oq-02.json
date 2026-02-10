@@ -1,0 +1,105 @@
+{
+  "slug": "denumerability-rationals-oq-02",
+  "title": "Countability of Algebraic Numbers of Bounded Degree",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "theorem algebraicRealsOfBoundedDegree_countable (d : ℕ) : Set.Countable {x : ℝ | IsAlgebraic ℚ x ∧ (minpoly ℚ x).natDegree ≤ d}",
+    "plain": "The set of real algebraic numbers whose minimal polynomial over ℚ has degree at most d is countable, for any fixed d. More generally, the full set of algebraic numbers has cardinality ℵ₀.",
+    "whyMatters": [
+      "Generalizes Cantor's countability of ℚ to algebraic numbers stratified by degree",
+      "Establishes that 'almost all' reals are transcendental (algebraic numbers are countable, reals are not)",
+      "Connects denumerability of ℚ to deep results in number theory and set theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Algebraic reals are countable (Algebraic.countable ℚ ℝ)",
+      "Algebraic complex numbers are countable (Algebraic.countable ℚ ℂ)",
+      "Cardinality of algebraic numbers = ℵ₀ (Algebraic.cardinalMk_of_countable_of_charZero)",
+      "Algebraic numbers of bounded degree ≤ d are countable",
+      "Algebraic numbers of exact degree d are countable",
+      "Degree stratification: algebraic numbers = ⋃ d, {algebraic numbers of degree d}",
+      "Alternative countability proof via countable union of countable strata",
+      "Cardinality comparison: |algebraic reals| = |ℚ| = |ℕ| = ℵ₀",
+      "Monotone chain: degree ≤ d ⊆ degree ≤ d+1",
+      "Exhaustive filtration: ⋃ d, (degree ≤ d) = all algebraic numbers"
+    ],
+    "open": [],
+    "goal": "Complete axiom-free formalization of algebraic number countability with degree stratification"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-09T05:00:00.000Z",
+    "iteration": 1,
+    "focus": "Complete proof achieved in single iteration.",
+    "blockers": [],
+    "nextAction": "None - proof is complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Full axiom-free formalization of algebraic number countability with degree stratification. 15 theorems/definitions proved, 0 sorries, 0 axioms. Uses Mathlib's AlgebraicCard module as foundation, extends with bounded/exact degree analysis, degree stratification, and cardinality comparisons.",
+    "builtItems": [
+      "proofs/Proofs/AlgebraicNumbersCountable.lean - Complete proof file (240 lines)",
+      "algebraic_reals_countable - Core countability of algebraic reals",
+      "algebraic_complex_countable - Core countability of algebraic complex numbers",
+      "card_algebraic_reals_eq_aleph0 - Cardinality = ℵ₀",
+      "algebraicRealsOfBoundedDegree - Degree ≤ d definition",
+      "algebraicRealsOfBoundedDegree_countable - Bounded degree countability",
+      "algebraicRealsOfDegree - Exact degree d definition",
+      "algebraicRealsOfDegree_countable - Exact degree countability",
+      "algebraic_reals_eq_iUnion_degree - Degree stratification decomposition",
+      "algebraic_reals_countable_via_strata - Alternative proof via countable union",
+      "card_algebraic_eq_card_rat - |algebraic| = |ℚ|",
+      "card_algebraic_eq_card_nat - |algebraic| = |ℕ|"
+    ],
+    "insights": [
+      "Algebraic.countable requires explicit type parameters: Algebraic.countable ℚ ℝ",
+      "Mathlib's AlgebraicCard module provides countability + cardinal arithmetic for algebraic elements",
+      "NoZeroSMulDivisors needed for cardinal results - automatically available for ℚ → ℝ and ℚ → ℂ",
+      "minpoly.natDegree gives the degree of the minimal polynomial over ℚ",
+      "Degree stratification naturally decomposes algebraic numbers into countable layers",
+      "Subset-of-countable argument is the cleanest way to prove bounded degree countability"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Subset of countable + degree stratification",
+      "status": "succeeded",
+      "description": "Used Mathlib's Algebraic.countable as foundation, then proved bounded/exact degree sets are countable as subsets. Showed algebraic numbers decompose as countable union of degree strata."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "set-theory",
+    "generalization",
+    "axiom-free",
+    "complete"
+  ],
+  "relatedProofs": [
+    "denumerability-rationals"
+  ],
+  "references": {
+    "papers": [
+      "Cantor 1874 - Über eine Eigenschaft des Inbegriffs aller reellen algebraischen Zahlen"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Algebra.AlgebraicCard",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.FieldTheory.Minpoly.Basic"
+    ]
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-09T05:00:00.000Z",
+  "significance": 7,
+  "tractability": 7
+}
