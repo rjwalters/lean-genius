@@ -10,8 +10,9 @@ import Mathlib.Data.Fintype.Card
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Set.Card
 import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.NormNum
 
-/-!
+/-
 # The Friendship Theorem
 
 ## What This Proves
@@ -26,16 +27,16 @@ a common central vertex.
 
 ## Mathematical Statement
 
-Let $G = (V, E)$ be a finite simple graph. The **friendship property** states:
-$$\forall u, v \in V, \, u \neq v \implies |\{w : w \sim u \land w \sim v\}| = 1$$
+Let G = (V, E) be a finite simple graph. The **friendship property** states:
+for all u, v in V, u ≠ v implies |{w : w ~ u ∧ w ~ v}| = 1
 
-The theorem concludes: $\exists c \in V$ such that $\forall v \in V, \, v \neq c \implies c \sim v$.
+The theorem concludes: there exists c in V such that for all v in V, v ≠ c implies c ~ v.
 
 ## Proof Approach
 
 The classical proof by Erdős, Rényi, and Sós uses spectral graph theory:
-1. Study the adjacency matrix $A$ of the graph
-2. Show $A^2 = J - I + kA$ for some regularity constant $k$ (or handle irregular case)
+1. Study the adjacency matrix A of the graph
+2. Show A² = J - I + kA for some regularity constant k (or handle irregular case)
 3. Analyze eigenvalues to derive a contradiction unless a universal vertex exists
 4. The key insight: if no universal vertex exists, all vertices have the same degree,
    leading to specific eigenvalue constraints that force the graph to be regular
@@ -64,7 +65,7 @@ open SimpleGraph Finset BigOperators
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
-/-!
+/-
 ## Part 1: The Friendship Property
 
 We define the friendship property: every pair of distinct vertices has
@@ -86,10 +87,10 @@ def IsUniversalVertex (G : SimpleGraph V) (c : V) : Prop :=
 noncomputable def commonNeighborCount (G : SimpleGraph V) (u v : V) : ℕ :=
   (G.commonNeighbors u v).ncard
 
-/-!
+/-
 ## Part 2: Windmill Graphs
 
-The windmill graph $W_n$ consists of $n$ triangles sharing a common vertex.
+The windmill graph W_n consists of n triangles sharing a common vertex.
 These are the only friendship graphs.
 -/
 
@@ -100,7 +101,7 @@ def IsWindmillGraph (G : SimpleGraph V) : Prop :=
     ∀ u v : V, u ≠ c → v ≠ c → u ≠ v →
       ¬G.Adj u v → G.commonNeighbors u v = {c}
 
-/-!
+/-
 ## Part 3: Key Lemmas
 
 These lemmas establish properties of friendship graphs that lead to the
@@ -123,7 +124,8 @@ lemma friendship_positive_degree (hF : IsFriendshipGraph G) (h : Fintype.card V 
   obtain ⟨w, hw⟩ := hcn
   -- So w is adjacent to v, meaning degree v > 0
   have hw_mem : w ∈ G.commonNeighbors v u := by rw [hw]; exact Set.mem_singleton w
-  rw [mem_commonNeighbors] at hw_mem
+  -- mem_commonNeighbors: w ∈ commonNeighbors v u ↔ G.Adj v w ∧ G.Adj u w
+  rw [SimpleGraph.mem_commonNeighbors] at hw_mem
   simp only [degree, Finset.card_pos, Finset.Nonempty]
   exact ⟨w, (G.mem_neighborFinset v w).mpr hw_mem.1⟩
 
@@ -136,9 +138,10 @@ lemma friendship_noncentral_degree (hF : IsFriendshipGraph G)
   rw [Set.ncard_eq_one] at h1
   obtain ⟨w, hw⟩ := h1
   have hw_mem : w ∈ G.commonNeighbors u c := hw ▸ Set.mem_singleton w
-  rw [mem_commonNeighbors] at hw_mem
+  -- mem_commonNeighbors: w ∈ commonNeighbors u c ↔ G.Adj u w ∧ G.Adj c w
+  rw [SimpleGraph.mem_commonNeighbors] at hw_mem
   have hwu : w ≠ u := fun heq => G.loopless u (heq ▸ hw_mem.1)
-  have hwc : w ≠ c := fun heq => G.loopless c (G.symm (heq ▸ hw_mem.2))
+  have hwc : w ≠ c := fun heq => G.loopless c (heq ▸ hw_mem.2)
   have hneighbors : G.neighborFinset u = {c, w} := by
     ext v
     simp only [SimpleGraph.mem_neighborFinset, Finset.mem_insert, Finset.mem_singleton]
@@ -148,7 +151,9 @@ lemma friendship_noncentral_degree (hF : IsFriendshipGraph G)
       · left; exact hvc
       · right
         have hcv : G.Adj c v := hc v hvc
-        have : v ∈ G.commonNeighbors u c := mem_commonNeighbors.mpr ⟨hadj, G.symm hcv⟩
+        -- v ∈ commonNeighbors u c ↔ G.Adj u v ∧ G.Adj c v
+        have : v ∈ G.commonNeighbors u c :=
+          (SimpleGraph.mem_commonNeighbors G).mpr ⟨hadj, hcv⟩
         exact Set.mem_singleton_iff.mp (hw ▸ this)
     · intro hv
       rcases hv with rfl | rfl
@@ -187,7 +192,7 @@ lemma friendship_card_odd (hF : IsFriendshipGraph G) (h : Fintype.card V ≥ 3) 
   have hhand := G.sum_degrees_eq_twice_card_edges
   rw [hsum] at hhand
   have hdvd : 2 ∣ (Fintype.card V - 1) :=
-    Nat.Coprime.dvd_of_dvd_mul_left _ _ _ (by norm_num) ⟨G.edgeFinset.card, by omega⟩
+    Nat.Coprime.dvd_of_dvd_mul_left (by norm_num) ⟨G.edgeFinset.card, by omega⟩
   obtain ⟨k, hk⟩ := hdvd
   exact ⟨k, by omega⟩
 
@@ -228,7 +233,7 @@ lemma friendship_regular_implies_universal (hF : IsFriendshipGraph G)
     ∃ c : V, IsUniversalVertex G c :=
   friendship_regular_implies_universal_axiom G hF hReg h
 
-/-!
+/-
 ## Part 4: The Main Theorem
 
 The Friendship Theorem: every friendship graph on 3+ vertices has a universal
@@ -262,21 +267,19 @@ theorem friendship_graph_is_windmill (hF : IsFriendshipGraph G) (h : Fintype.car
   -- c is a common neighbor of u and v (by universality)
   have hcu : G.Adj c u := hc u huc
   have hcv : G.Adj c v := hc v hvc
-  have hc_mem : c ∈ G.commonNeighbors u v := by
-    rw [mem_commonNeighbors]
-    exact ⟨G.symm hcu, G.symm hcv⟩
+  -- c ∈ commonNeighbors u v ↔ G.Adj u c ∧ G.Adj v c
+  have hc_mem : c ∈ G.commonNeighbors u v :=
+    (SimpleGraph.mem_commonNeighbors G).mpr ⟨G.symm hcu, G.symm hcv⟩
   -- By the friendship property, there's exactly one common neighbor
   have h1 := hF u v huv
   rw [Set.ncard_eq_one] at h1
   obtain ⟨w, hw⟩ := h1
-  -- Since c ∈ commonNeighbors u v = {w}, we have w = c
-  have : c = w := by
-    have := hw ▸ hc_mem
-    exact Set.mem_singleton_iff.mp this
-  rw [this] at hw
+  -- Since c ∈ commonNeighbors u v = {w}, we have c = w
+  have hcw : c = w := Set.mem_singleton_iff.mp (hw ▸ hc_mem)
+  rw [← hcw] at hw
   exact hw
 
-/-!
+/-
 ## Part 5: Examples
 
 ### The Windmill Graph W₂ (Two Triangles)
@@ -339,7 +342,7 @@ lemma windmill2_is_friendship : IsFriendshipGraph windmill2 := by
       false_or] at huv ⊢ <;>
     first | contradiction | decide
 
-/-!
+/-
 ## Historical Notes
 
 ### The 1966 Paper

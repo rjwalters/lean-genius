@@ -214,11 +214,12 @@ theorem triangleCircuit_visits_all (v : TriVerts) : v ∈ triangleCircuit.suppor
 /-- The circuit traverses every edge exactly once. -/
 theorem triangleCircuit_isEulerian : triangleCircuit.IsEulerian := by
   intro e he
-  -- We verify by exhaustive computation on the 3 edges of K₃
-  simp only [triangleCircuit, Walk.edges]
-  simp only [triangle, edgeSet] at he
-  -- Each edge of K₃ appears exactly once in [s(A,B), s(B,C), s(C,A)]
-  sorry
+  -- Decompose e into s(a,b), convert membership to adjacency, then case-split
+  revert he
+  refine Sym2.ind (fun a b => ?_) e
+  intro he
+  rw [mem_edgeSet] at he
+  cases a <;> cases b <;> simp_all [triangleAdj, triangleCircuit, Walk.edges]
 
 end TriangleExample
 
@@ -246,7 +247,7 @@ end Characterization
 /-
 ## Summary
 
-### Proved Theorems (8)
+### Proved Theorems (9)
 1. `eulerian_edges_toFinset_eq` - Eulerian walk edges = graph edges (as finsets)
 2. `eulerian_edges_length` - Eulerian walk edge count = graph edge count
 3. `eulerian_pos_edges` - Eulerian circuits have positive edge count
@@ -254,15 +255,15 @@ end Characterization
 5. `euler_circuit_all_even` - Eulerian circuit → all even degrees
 6. `triangle_degree` / `triangle_all_even` - K₃ has even degrees
 7. `triangleCircuit_length` / `triangleCircuit_visits_all` - K₃ circuit properties
-8. `hierholzer_spec` - Hierholzer algorithm specification (from axiom)
+8. `triangleCircuit_isEulerian` - K₃ circuit is Eulerian (via Sym2.ind + case analysis)
+9. `hierholzer_spec` - Hierholzer algorithm specification (from axiom)
 
 ### Axioms (3)
 1. `euler_circuit_exists` - Connected + all even → Eulerian circuit exists
 2. `euler_trail_exists` - Connected + exactly 2 odd → Eulerian trail exists
 3. `even_degree_after_circuit_removal` - Circuit removal preserves even parity
 
-### Sorries (1)
-1. `triangleCircuit_isEulerian` - K₃ circuit is Eulerian (decidable but needs instance)
+### Sorries (0)
 
 ### Mathlib Gap
 Mathlib's SimpleGraph.Trails has a TODO: "Prove that there exists an Eulerian

@@ -21,6 +21,8 @@
 import Mathlib.Data.Real.Irrational
 import Mathlib.Topology.Algebra.InfiniteSum.Real
 import Mathlib.Data.Rat.Cast.Lemmas
+import Mathlib.Topology.Algebra.InfiniteSum.Order
+import Mathlib.Analysis.SpecificLimits.Basic
 
 namespace Erdos266
 
@@ -101,18 +103,28 @@ Kovač-Tao's unified approach resolved both negatively:
 
 /-- For illustration, harmonic-like sums ∑ 1/n diverge, so don't apply here -/
 theorem harmonic_diverges : ¬Summable (fun n : ℕ => (1 : ℝ) / (n + 1)) := by
-  sorry -- Standard result: harmonic series diverges
+  sorry -- Standard result: harmonic series diverges (requires p-series API)
 
 /-- Sums like ∑ 1/n² converge, so are candidates for Stolarsky's conjecture -/
 theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (n + 1)^2) := by
-  sorry -- Standard result: Basel problem shows this converges to π²/6
+  sorry -- Standard result: Basel problem (requires p-series API)
 
-/-- The geometric series ∑ 1/2ⁿ converges to 1 -/
+/-- The geometric series ∑ 1/2ⁿ converges to 2 -/
 example : ∑' n : ℕ, (1 : ℝ) / 2^n = 2 := by
-  sorry -- Standard geometric series result
+  simp_rw [one_div]
+  rw [show (fun n : ℕ => (2 : ℝ) ^ n)⁻¹ = (fun n : ℕ => ((1 : ℝ)/2)^n) from by
+    ext n; simp [div_eq_mul_inv, inv_pow]]
+  rw [tsum_geometric_of_lt_one (by positivity) (by norm_num : (1:ℝ)/2 < 1)]
+  norm_num
 
 /-- Shifted geometric: ∑ 1/(2ⁿ + 1) also converges -/
 example : Summable (fun n : ℕ => (1 : ℝ) / (2^n + 1)) := by
-  sorry -- Comparison with geometric series
+  apply Summable.of_nonneg_of_le (fun n => by positivity) (fun n => _)
+  · exact (summable_geometric_of_lt_one (by positivity) (by norm_num : (1:ℝ)/2 < 1)).congr
+      (fun n => by simp [one_div, inv_pow])
+  · intro n
+    rw [one_div, one_div]
+    exact inv_le_inv_of_le (by positivity : (0:ℝ) < 2^n)
+      (le_add_of_nonneg_right (by positivity))
 
 end Erdos266
