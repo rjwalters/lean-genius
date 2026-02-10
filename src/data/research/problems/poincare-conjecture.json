@@ -1,14 +1,18 @@
 {
   "slug": "poincare-conjecture",
   "title": "Poincaré Conjecture",
-  "phase": "NEW",
-  "status": "blocked",
+  "phase": "ACTIVE",
+  "status": "in-progress",
   "tier": "S",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "∀ (M : Type) [TopologicalSpace M], Closed3Manifold M → SimplyConnected M → AreHomeomorphic M Sphere3",
     "plain": "MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S³.",
-    "whyMatters": []
+    "whyMatters": [
+      "Only solved Millennium Prize Problem - formalizing it honors Perelman's work",
+      "Ricci flow infrastructure would enable formalization of other geometric analysis results",
+      "Complete classification of 3-manifolds via Thurston geometrization"
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -16,33 +20,58 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACTIVE",
+    "since": "2026-02-10T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Deepened formalization with Thurston geometries, generalized Poincare, Perelman entropy axioms.",
+    "blockers": [
+      "FundamentalGroup not in Mathlib - using custom SimplyConnected definition",
+      "HomotopyGroup not in Mathlib - cannot state pi_1(M) = 0 formally",
+      "Ricci flow PDE framework not in Mathlib",
+      "Surgery theory not in Mathlib"
+    ],
+    "nextAction": "Build FundamentalGroup definition or wait for Mathlib PR; explore 2D Ricci flow formalization.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Extended PoincareConjecture.lean from basic axiom file to rich formalization. Added ThurstonGeometry inductive type (8 geometries, count proved via native_decide), GeometricPiece structure, Thurston geometrization axiom, Perelman W-entropy monotonicity axiom, Hamilton positive Ricci axiom, GeneralizedPoincareStatement for all dimensions ≥ 2 with case-split proof. Fixed 2 Mathlib API compatibility issues (finrank_eq→finrank_eq_card, Module.one_lt_rank_of_two_le_finrank).",
+    "builtItems": [
+      "ThurstonGeometry inductive type with 8 constructors in PoincareConjecture.lean",
+      "thurston_geometry_count : Fintype.card ThurstonGeometry = 8 (proved via native_decide)",
+      "GeometricPiece structure for decomposition pieces",
+      "thurston_geometrization axiom (meaningful decomposition, replaces trivial True)",
+      "PerelmanWEntropy axiom with monotonicity",
+      "hamilton_positive_ricci axiom",
+      "GeneralizedPoincareStatement definition for arbitrary dimension",
+      "SphereN definition using Metric.sphere in EuclideanSpace",
+      "poincare_all_dimensions theorem with by_cases/interval_cases proof",
+      "Fixed EuclideanSpace.finrank_eq → finrank_eq_card compatibility",
+      "Fixed one_lt_rank_of_two_le_finrank → Module.one_lt_rank_of_two_le_finrank"
+    ],
+    "insights": [
+      "Mathlib v4.26.0 has NO FundamentalGroup, HomotopyGroup, or SimplyConnectedSpace - custom definitions required",
+      "ChartedSpace exists but no sphere instances - cannot prove S3 is a manifold via Mathlib alone",
+      "isConnected_sphere and isPathConnected_sphere are available for dimension > 0",
+      "EuclideanSpace.finrank_eq was renamed to EuclideanSpace.finrank_eq_card (requires Fintype.card_fin)",
+      "Module.one_lt_rank_of_two_le_finrank exists but needs Module. prefix",
+      "native_decide works perfectly for enumerating ThurstonGeometry constructors",
+      "Generalized Poincare for all dims ≥ 2 is tractable via case-split (dim 2,3,4 + high dim axioms)"
+    ],
     "mathlibGaps": [
       "3-manifolds",
       "Ricci flow",
       "Surgery"
     ],
     "nextSteps": [
-      "The Statement",
-      "Ricci Flow Basics",
-      "2D Case",
-      "Sphere Roundness",
-      "Alternative Approaches"
+      "Build FundamentalGroup or SimplyConnectedSpace from first principles (homotopy classes of loops)",
+      "Formalize 2D Ricci flow (uniformization) as warmup - simpler than 3D",
+      "Prove SphereN instances are ClosedManifold using ChartedSpace",
+      "Define Ricci flow PDE structure (evolution equation on metrics)",
+      "Explore if S3 can be given a ChartedSpace instance via stereographic projection"
     ],
     "markdown": "# Knowledge Base: Poincaré Conjecture\n\n## The Problem\n\nThe Poincaré Conjecture is **unique among Millennium Problems**: it has been SOLVED! Grigori Perelman proved it in 2002-2003 using Richard Hamilton's Ricci flow program.\n\n### Core Statement\n\n> Every simply connected, closed 3-manifold is homeomorphic to the 3-sphere S³.\n\nIn simpler terms: If a 3-dimensional space is \"nice\" (closed, no boundary) and every loop can be continuously shrunk to a point (simply connected), then it must be topologically equivalent to the 3-sphere.\n\n### Why It Matters\n\n1. **Topology Foundation**: Characterizes 3-dimensional spaces\n2. **Geometric Analysis**: Ricci flow is now a major tool\n3. **Historic Significance**: The only solved Millennium Problem\n4. **Formalizing Perelman**: Would be a landmark achievement\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1904 | Poincaré | Posed the conjecture |\n| 1960s | Smale, Stallings | Solved for dimensions ≥ 5 |\n| 1982 | Freedman | Solved for dimension 4 |\n| 1982 | Hamilton | Introduced Ricci flow |\n| 2002-03 | Perelman | Completed proof via Ricci flow with surgery |\n| 2006 | Verification | Detailed checking by multiple groups |\n\nPerelman famously declined both the Fields Medal and the $1 million Clay prize.\n\n## The Proof Strategy\n\n### Hamilton's Ricci Flow\n\nThe Ricci flow evolves a metric g(t) on a manifold by:\n\n∂g/∂t = -2 Ric(g)\n\nwhere Ric is the Ricci curvature tensor. This \"smooths out\" the geometry over time.\n\n### Perelman's Breakthrough\n\n1. **Entropy functionals** - Introduced W-functional and F-functional\n2. **No local collapsing** - Controlled degeneration\n3. **Surgery** - When singularities form, cut and cap\n4. **Extinction** - Manifold eventually becomes round or disappears\n\n### Why It Works in 3D\n\n- In 3D, Ricci flow tends to make things round\n- Hamilton showed spheres \"round out\" nicely\n- Perelman handled the singularities that form\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Smooth manifolds | ✅ | Well-developed |\n| Riemannian metrics | ✅ | Available |\n| Ricci curvature | ✅ | Defined |\n| 3-manifolds | ⚠️ Limited | Basic definitions |\n| Ricci flow | ❌ | Not available |\n| Surgery | ❌ | Not available |\n\n### The Formalization Challenge\n\nFormalizing Perelman's proof would require:\n\n1. **Ricci flow PDE** (~2000 lines)\n   - Evolution equation\n   - Short-time existence\n   - Maximum principles\n\n2. **Singularity analysis** (~5000 lines)\n   - Blow-up limits\n   - κ-solutions classification\n   - Ancient solutions\n\n3. **Surgery procedure** (~3000 lines)\n   - Neck detection\n   - Standard caps\n   - Finite time surgery\n\n4. **Extinction argument** (~1000 lines)\n   - Finite extinction time\n   - Sphere recognition\n\nTotal estimate: **10,000+ lines** of specialized geometric analysis.\n\n## Tractable Partial Work\n\nEven without full Perelman, we could formalize:\n\n1. **The Statement**\n   - Define simply connected 3-manifolds\n   - State homeomorphism to S³\n\n2. **Ricci Flow Basics**\n   - Define the evolution equation\n   - Prove short-time existence (known techniques)\n\n3. **2D Case**\n   - 2D uniformization via Ricci flow\n   - Much simpler than 3D\n\n4. **Sphere Roundness**\n   - Hamilton's theorem: positively curved 3-manifolds become round\n   - No surgery needed in this case\n\n5. **Alternative Approaches**\n   - Thurston's geometrization (now proven via Perelman)\n   - Classifying 3-manifold geometries\n\n## The Bigger Picture: Geometrization\n\nPerelman actually proved more than Poincaré - he proved Thurston's Geometrization Conjecture:\n\n> Every 3-manifold can be cut along tori into pieces, each having one of 8 standard geometries.\n\nThis completely classifies 3-dimensional topology.\n\n## Key References\n\n- Poincaré, H. (1904). \"Fifth Supplement to Analysis Situs\"\n- Hamilton, R. (1982). \"Three-manifolds with positive Ricci curvature\"\n- Perelman, G. (2002). \"The entropy formula for the Ricci flow and its geometric applications\"\n- Perelman, G. (2003). \"Ricci flow with surgery on three-manifolds\"\n- Morgan, J., Tian, G. (2007). \"Ricci Flow and the Poincaré Conjecture\"\n\n## Why This Is Special\n\nThe Poincaré Conjecture is the **only Millennium Problem that's been solved**. Formalizing it would:\n\n1. **Validate Perelman's proof** mechanically\n2. **Create reusable Ricci flow library** for other geometric problems\n3. **Be a major achievement** in formal mathematics\n4. **Honor the proof** that its author declined to promote\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED but uniquely tractable - the theorem IS proven!\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Manifolds | Yes | 2026-01-01 |\n| 3-manifolds | Limited | 2026-01-01 |\n| Ricci curvature | Yes | 2026-01-01 |\n| Ricci flow | No | 2026-01-01 |\n| Surgery theory | No | 2026-01-01 |\n\n**Key Insight**: Unlike other Millennium Problems, this one has a known proof. The question is pure formalization effort, not mathematical discovery.\n\n**Path Forward**:\n1. Start with Ricci flow basics\n2. Formalize 2D case as warmup\n3. Build surgery framework\n4. Eventually: full Perelman\n\n**Next Scout**: Watch for Ricci flow formalization efforts in any proof assistant\n"
   },
@@ -55,12 +84,22 @@
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
+    "papers": [
+      "Perelman 2002: The entropy formula for the Ricci flow and its geometric applications",
+      "Perelman 2003: Ricci flow with surgery on three-manifolds",
+      "Hamilton 1982: Three-manifolds with positive Ricci curvature",
+      "Morgan-Tian 2007: Ricci Flow and the Poincaré Conjecture"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Topology.MetricSpace.Basic (Metric.sphere)",
+      "Mathlib.Topology.Connected.PathConnected (isPathConnected_sphere)",
+      "Mathlib.Analysis.InnerProductSpace.PiL2 (EuclideanSpace)",
+      "Mathlib.Geometry.Manifold.ContMDiff.Basic (ChartedSpace)"
+    ]
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-01-01T21:55:27.887Z",
+  "lastUpdate": "2026-02-10T00:00:00.000Z",
   "significance": 10,
-  "tractability": 1
+  "tractability": 2
 }
