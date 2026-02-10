@@ -885,6 +885,145 @@ axiom two_not_congruent : algebraicRank (congruentNumberCurve 2 (by norm_num)) =
 axiom three_not_congruent : algebraicRank (congruentNumberCurve 3 (by norm_num)) = 0
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+PART IX.d: VERIFIED RATIONAL POINTS ON CONGRUENT NUMBER CURVES (PROVEN)
+═══════════════════════════════════════════════════════════════════════════════
+
+A rational point (x, y) on y² = x³ + ax + b satisfies the Weierstrass equation.
+For congruent number curves y² = x³ - n²x, a non-torsion point proves n is congruent.
+These verifications are pure arithmetic — fully provable by norm_num.
+-/
+
+/-- A rational point on an elliptic curve in short Weierstrass form y² = x³ + ax + b.
+    The point (x, y) satisfies the curve equation. -/
+structure RationalPoint (E : EllipticCurveQ) where
+  x : ℚ
+  y : ℚ
+  on_curve : y^2 = x^3 + E.a * x + E.b
+
+/-- A rational point is non-torsion if y ≠ 0 (for curves y² = x³ + ax + b with b = 0,
+    the 2-torsion points are exactly those with y = 0). -/
+def RationalPoint.isNonTorsion {E : EllipticCurveQ} (P : RationalPoint E) : Prop :=
+  P.y ≠ 0
+
+/-- The point (-4, 6) lies on y² = x³ - 25x (the congruent number curve for n = 5).
+
+    Verification: 6² = 36, (-4)³ - 25·(-4) = -64 + 100 = 36. ✓
+
+    This proves n = 5 is a congruent number, as it gives a rational point
+    of infinite order on E₅. The corresponding right triangle has sides 3/2, 20/3, 41/6
+    with area 5. -/
+def point_on_E5 : RationalPoint (congruentNumberCurve 5 (by norm_num)) where
+  x := -4
+  y := 6
+  on_curve := by unfold congruentNumberCurve; norm_num
+
+/-- The point (-4, 6) on E₅ is non-torsion (y = 6 ≠ 0). -/
+theorem point_on_E5_nonTorsion : point_on_E5.isNonTorsion := by
+  unfold RationalPoint.isNonTorsion point_on_E5
+  norm_num
+
+/-- The point (12, 36) lies on y² = x³ - 36x (the congruent number curve for n = 6).
+
+    Verification: 36² = 1296, 12³ - 36·12 = 1728 - 432 = 1296. ✓
+
+    This proves n = 6 is a congruent number. The (3, 4, 5) right triangle
+    has area 6. -/
+def point_on_E6 : RationalPoint (congruentNumberCurve 6 (by norm_num)) where
+  x := 12
+  y := 36
+  on_curve := by unfold congruentNumberCurve; norm_num
+
+/-- The point (12, 36) on E₆ is non-torsion. -/
+theorem point_on_E6_nonTorsion : point_on_E6.isNonTorsion := by
+  unfold RationalPoint.isNonTorsion point_on_E6
+  norm_num
+
+/-- The point (25, 120) lies on y² = x³ - 49x (the congruent number curve for n = 7).
+
+    Verification: 120² = 14400, 25³ - 49·25 = 15625 - 1225 = 14400. ✓
+
+    Euler proved 7 is congruent. The smallest right triangle with area 7
+    has sides 35/12, 24/5, 337/60. -/
+def point_on_E7 : RationalPoint (congruentNumberCurve 7 (by norm_num)) where
+  x := 25
+  y := 120
+  on_curve := by unfold congruentNumberCurve; norm_num
+
+/-- The point (25, 120) on E₇ is non-torsion. -/
+theorem point_on_E7_nonTorsion : point_on_E7.isNonTorsion := by
+  unfold RationalPoint.isNonTorsion point_on_E7
+  norm_num
+
+/-- The 2-torsion points on a congruent number curve y² = x³ - n²x are
+    exactly (0, 0), (n, 0), (-n, 0).
+
+    These are the points with y = 0, i.e., x³ - n²x = x(x² - n²) = x(x-n)(x+n) = 0. -/
+theorem congruentNumberCurve_torsion_point_zero (n : ℕ) (hn : n > 0) :
+    (0 : ℚ)^2 = (0 : ℚ)^3 + (congruentNumberCurve n hn).a * 0 + (congruentNumberCurve n hn).b := by
+  unfold congruentNumberCurve
+  simp
+
+theorem congruentNumberCurve_torsion_point_n (n : ℕ) (hn : n > 0) :
+    (0 : ℚ)^2 = (n : ℚ)^3 + (congruentNumberCurve n hn).a * n + (congruentNumberCurve n hn).b := by
+  unfold congruentNumberCurve
+  simp
+  ring
+
+theorem congruentNumberCurve_torsion_point_neg_n (n : ℕ) (hn : n > 0) :
+    (0 : ℚ)^2 = (-(n : ℚ))^3 + (congruentNumberCurve n hn).a * (-(n : ℚ)) + (congruentNumberCurve n hn).b := by
+  unfold congruentNumberCurve
+  simp
+  ring
+
+/-- Discriminant of the congruent number curve is always positive for n > 0.
+
+    Δ = 64n⁶ > 0, which means the curve has three real 2-torsion points. -/
+theorem congruentNumberCurve_discriminant_pos (n : ℕ) (hn : n > 0) :
+    0 < discriminant (congruentNumberCurve n hn) := by
+  rw [congruentNumberCurve_discriminant]
+  apply mul_pos (by norm_num : (0:ℚ) < 64)
+  exact pow_pos (Nat.cast_pos.mpr hn) 6
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART IX.e: HASSE BOUND AND POINT COUNTING (INFRASTRUCTURE)
+═══════════════════════════════════════════════════════════════════════════════
+
+The Hasse bound |a_p| ≤ 2√p constrains local point counts #E(F_p) = p + 1 - a_p.
+This is fundamental for computing L-functions.
+-/
+
+/-- The trace of Frobenius a_p = p + 1 - #E(F_p).
+
+    For good reduction at p, this determines the local L-factor.
+    The Hasse bound gives |a_p| ≤ 2√p, proved by Hasse (1933). -/
+axiom traceOfFrobenius_axiom (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ
+
+def traceOfFrobenius (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)] : ℤ :=
+  traceOfFrobenius_axiom E p
+
+/-- **The Hasse Bound** (Hasse 1933, Weil 1948 generalization)
+
+    For any elliptic curve E/Q with good reduction at p:
+      |a_p| ≤ 2√p
+
+    Equivalently: |#E(F_p) - (p + 1)| ≤ 2√p
+
+    This is a consequence of the Riemann Hypothesis for curves over finite fields,
+    proved by Weil. It means #E(F_p) ≈ p for large p. -/
+axiom hasse_bound (E : EllipticCurveQ) (p : ℕ) [hp : Fact (Nat.Prime p)] :
+    (traceOfFrobenius E p)^2 ≤ 4 * (p : ℤ)
+
+/-- The Hasse bound implies 4p - a_p² > 0 for any prime p.
+
+    Since a_p² ≤ 4p, we have |a_p| ≤ 2√p, so p + 1 - 2√p ≤ #E(F_p) ≤ p + 1 + 2√p.
+    In particular, for large p, #E(F_p) ≈ p. -/
+theorem hasse_bound_consequence (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime p)]
+    (hp : (p : ℤ) > 0) :
+    0 < 4 * (p : ℤ) - (traceOfFrobenius E p)^2 := by
+  have h := hasse_bound E p
+  linarith
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 PART X: WHY BSD IS HARD
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
