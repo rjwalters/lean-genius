@@ -50,7 +50,7 @@
   {
     "id": "erdos-913-conditional",
     "proofId": "erdos-913",
-    "type": "technique",
+    "type": "insight",
     "range": { "startLine": 80, "endLine": 83 },
     "title": "Conditional Proof via 8p²-1 Construction",
     "content": "The key conditional result: if PrimePairs8 is infinite, then DistinctExponentSet is infinite. For each $p \\in \\text{PrimePairs8}$, set $n = 8p^2 - 1$. Then $n(n+1) = (8p^2 - 1) \\cdot 8p^2 = (8p^2 - 1)^1 \\cdot p^2 \\cdot 2^3$. Since $8p^2 - 1$, $p$, and 2 are distinct primes (for $p \\neq 2$), the exponents $\\{1, 2, 3\\}$ are all distinct. The map $p \\mapsto 8p^2 - 1$ is injective on primes, so distinct $p$ values give distinct $n$ values, yielding infinitely many examples.",
@@ -62,12 +62,12 @@
   {
     "id": "erdos-913-examples",
     "proofId": "erdos-913",
-    "type": "context",
+    "type": "concept",
     "range": { "startLine": 96, "endLine": 103 },
     "title": "Small Examples",
     "content": "Concrete examples verifying the distinct exponent property: $n = 3$: $3 \\cdot 4 = 2^2 \\cdot 3^1$, exponents $\\{2, 1\\}$; $n = 7$: $7 \\cdot 8 = 2^3 \\cdot 7^1$, exponents $\\{3, 1\\}$; $n = 8$: $8 \\cdot 9 = 2^3 \\cdot 3^2$, exponents $\\{3, 2\\}$. Additional examples from the comment block: $n = 31$ ($31 \\cdot 32 = 2^5 \\cdot 31$, exponents $\\{5, 1\\}$) and $n = 127$ ($127 \\cdot 128 = 2^7 \\cdot 127$, exponents $\\{7, 1\\}$). The Mersenne-like pattern $n = 2^k - 1$ (when prime) always gives exponents $\\{k, 1\\}$.",
     "mathContext": "$n = 3: 12 = 2^2 \\cdot 3^1;\\; n = 7: 56 = 2^3 \\cdot 7^1;\\; n = 8: 72 = 2^3 \\cdot 3^2$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Mersenne primes", "small case verification", "computational verification"],
     "prerequisites": ["HasDistinctExponents", "Nat.factorization"]
   },
@@ -86,7 +86,7 @@
   {
     "id": "erdos-913-structure",
     "proofId": "erdos-913",
-    "type": "technique",
+    "type": "insight",
     "range": { "startLine": 128, "endLine": 132 },
     "title": "Exponent Structure for n = 8p²-1",
     "content": "The precise factorization: for $p$ prime, $p \\neq 2$, with $8p^2 - 1$ also prime, the product $n(n+1) = (8p^2 - 1)(8p^2) = (8p^2-1) \\cdot p^2 \\cdot 2^3$ has exactly three prime factors $\\{8p^2 - 1, p, 2\\}$ with corresponding exponents $\\{1, 2, 3\\}$. The condition $p \\neq 2$ ensures $p \\neq 2$ and $8p^2 - 1 \\neq p$ (since $8p^2 - 1 > p$ for all $p \\geq 3$). The three primes are distinct because $8p^2 - 1$ is odd (hence $\\neq 2$), $8p^2 - 1 > p$, and $p > 2$.",

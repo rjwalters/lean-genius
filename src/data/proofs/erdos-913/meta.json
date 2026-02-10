@@ -36,10 +36,10 @@
   "sections": [
     {
       "id": "sec-913-header",
-      "title": "Problem Overview",
-      "startLine": 1,
+      "title": "Problem Overview and Imports",
+      "startLine": 17,
       "endLine": 26,
-      "summary": "Documentation block with the problem statement from [Er82c], the conditional approach via 8p²-1 primes, and Lean imports for Nat.factorization, Finsupp, and Set.Finite."
+      "summary": "Imports Mathlib's `Nat.factorization`, `Nat.Prime`, `Finsupp`, `Set.Finite`, and `Tactic` modules needed for formalizing the prime factorization and set infinitude machinery."
     },
     {
       "id": "sec-913-definitions",
