@@ -2,7 +2,7 @@
   "id": "erdos-462",
   "title": "Erdős Problem #462: Least Prime Factor Sums in Short Intervals",
   "slug": "erdos-462",
-  "description": "Let p(n) be the least prime factor of n. The sum ∑ p(n)/n over composites n < x is ~ c·√x/(log x)². Does a short interval of length C·√x·(log x)² capture a bounded fraction of this sum?",
+  "description": "Let $p(n)$ be the least prime factor of $n$. The sum $\\sum_{n < x,\\, n \\text{ composite}} p(n)/n \\sim c \\cdot \\sqrt{x}/(\\log x)^2$. Does a short interval of length $C\\sqrt{x}(\\log x)^2$ capture a bounded fraction of this sum?",
   "meta": {
     "author": "Erdős–Graham",
     "sourceUrl": "https://erdosproblems.com/462",
@@ -10,26 +10,40 @@
     "proofRepoPath": "Proofs/Erdos462Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "primes",
-      "least prime factor",
-      "short intervals"
+      "number-theory",
+      "least-prime-factor",
+      "short-intervals",
+      "analytic-number-theory",
+      "sieve-methods"
     ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 462,
     "erdosUrl": "https://erdosproblems.com/462",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "originalContributions": [
+      "Definition of leastPrimeFactor via Nat.minFac with axiomatized primality, divisibility, and minimality",
+      "Separate definitions of compositeSum (filtering primes) and intervalSum (full interval) for distinct analytical roles",
+      "Two-sided Θ-bound for compositeSum axiomatized with existential constants",
+      "Formal statement of ErdosProblem462 with Nat floor for the interval endpoint",
+      "Basic properties: p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem appears in Erdős and Graham's 1980 monograph (p. 92). It concerns the distribution of the least prime factor function p(n) weighted by 1/n over short intervals. The global asymptotic ∑_{n<x, composite} p(n)/n ~ c·√x/(log x)² is known.",
-    "problemStatement": "Does there exist C > 0 such that ∑_{x ≤ n ≤ x + C·√x·(log x)²} p(n)/n ≫ 1 for all large x? In other words, can a short interval of the natural scale capture a bounded-below contribution from least prime factors?",
-    "proofStrategy": "The formalization defines the least prime factor via Nat.minFac, sums over composites (compositeSum) and over intervals (intervalSum), states the known asymptotic as a two-sided bound, and formulates the open conjecture about short intervals.",
+    "historicalContext": "This problem appears in Erdős and Graham's 1980 monograph (p.92). It concerns the distribution of the least prime factor function $p(n)$ weighted by $1/n$ over short intervals. The global asymptotic $\\sum_{n < x,\\, n \\text{ composite}} p(n)/n \\sim c \\cdot \\sqrt{x}/(\\log x)^2$ is known from work of Alladi and Erdős (1977). The natural interval scale is $\\sqrt{x}(\\log x)^2$, and the conjecture asks whether the sum is equidistributed on this scale.",
+    "problemStatement": "Does there exist $C > 0$ such that $\\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} p(n)/n \\gg 1$ for all large $x$?",
+    "proofStrategy": "The formalization defines `leastPrimeFactor` via `Nat.minFac`, with three axiomatized properties (primality, divisibility, minimality). Two sum functions are defined: `compositeSum` (over composites, filtering primes) and `intervalSum` (over a general interval). The known global asymptotic is axiomatized as a two-sided $\\Theta$-bound. `ErdosProblem462` asks for existence of $C, \\delta > 0$ with $\\text{intervalSum}(x, \\lfloor x + C\\sqrt{x}(\\log x)^2 \\rfloor) \\geq \\delta$. Basic properties bound $p(n)$ between 2 and $\\sqrt{n}$ for composites.",
     "keyInsights": [
-      "The global sum ∑ p(n)/n over composites grows as √x/(log x)², so intervals of length √x·(log x)² are the natural scale",
-      "The conjecture asks whether the sum is equidistributed enough that every such interval captures O(1) contribution",
-      "For composites, the least prime factor is at most √n, bounding individual terms",
-      "The least prime factor of a prime equals itself"
+      "The global sum $\\sum p(n)/n$ over composites grows as $\\sqrt{x}/(\\log x)^2$, so intervals of length $\\sqrt{x}(\\log x)^2$ are the natural scale",
+      "The conjecture asks whether the sum is uniformly equidistributed — every such interval captures $\\Omega(1)$ contribution",
+      "For composites, $2 \\leq p(n) \\leq \\sqrt{n}$, so individual terms satisfy $2/n \\leq p(n)/n \\leq 1/\\sqrt{n}$",
+      "This is analogous to the prime number theorem in short intervals: asking if $\\pi(x+h) - \\pi(x) \\sim h/\\log x$ for $h = x^{1/2+\\varepsilon}$",
+      "The problem connects smooth number distribution to short interval statistics via the least prime factor"
     ]
   },
   "sections": [
@@ -38,44 +52,45 @@
       "title": "Least Prime Factor",
       "startLine": 19,
       "endLine": 36,
-      "summary": "Definition of leastPrimeFactor via Nat.minFac and its key properties: primality, divisibility, and minimality."
+      "summary": "Defines `leastPrimeFactor` via `Nat.minFac` (0 for $n \\leq 1$). Three axiomatized properties: $p(n)$ is prime, $p(n) \\mid n$, and $p(n) \\leq q$ for any prime $q \\mid n$. All are provable from Mathlib's `Nat.minFac` API."
     },
     {
       "id": "sums",
       "title": "Sums Involving Least Prime Factor",
       "startLine": 38,
       "endLine": 49,
-      "summary": "Definitions of compositeSum (over composites below x) and intervalSum (over an arbitrary interval)."
+      "summary": "Two sum definitions: `compositeSum(x) = \\sum_{2 \\leq n < x,\\, n \\text{ composite}} p(n)/n$ and `intervalSum(a,b) = \\sum_{n=a}^{b} p(n)/n`. The former filters primes; the latter includes all integers."
     },
     {
       "id": "asymptotics",
       "title": "Known Asymptotics",
       "startLine": 51,
       "endLine": 59,
-      "summary": "The two-sided asymptotic: compositeSum(x) = Θ(√x/(log x)²)."
+      "summary": "Two-sided asymptotic: $\\text{compositeSum}(x) = \\Theta(\\sqrt{x}/(\\log x)^2)$, axiomatized with existential constants $0 < c_1 \\leq c_2$. Uses `Real.log` and real exponentiation $x^{1/2}$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 61,
       "endLine": 70,
-      "summary": "The open conjecture: a short interval of length C·√x·(log x)² captures at least δ > 0 in the sum."
+      "summary": "States `ErdosProblem462`: $\\exists C, \\delta > 0,\\, \\exists x_0,\\, \\forall x \\geq x_0,\\, \\text{intervalSum}(x, \\lfloor x + C\\sqrt{x}(\\log x)^2 \\rfloor) \\geq \\delta$. Uses `⌊\\cdot⌋_+` for the Nat floor of the interval endpoint."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 72,
       "endLine": 84,
-      "summary": "Properties: least prime factor of a prime is itself, lower bound 2, and upper bound √n for composites."
+      "summary": "Three axiomatized properties: $p(p) = p$ for primes, $p(n) \\geq 2$ for $n \\geq 2$, and $p(n) \\leq \\sqrt{n}$ for composites. The last uses real exponentiation to avoid integer truncation."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures the open Erdős Problem 462 about equidistribution of least prime factor sums over short intervals, with the known global asymptotic and basic properties of the least prime factor.",
-    "implications": "Resolution would reveal how uniformly the least prime factor contribution is spread across the integers, connecting to prime distribution in short intervals.",
+    "summary": "Erdős Problem 462 asks whether the weighted sum $\\sum p(n)/n$ is equidistributed on its natural scale $\\sqrt{x}(\\log x)^2$. The formalization captures the known global asymptotic, defines both composite-restricted and full-interval sums, and states the open conjecture with appropriate use of Nat floor for interval endpoints.",
+    "implications": "Resolution would reveal how uniformly the least prime factor contribution is spread across the integers, with connections to prime distribution in short intervals, smooth number theory, and sieve methods.",
     "openQuestions": [
-      "Does the short interval sum ∑ p(n)/n stay bounded below for all x?",
+      "Does the short interval sum $\\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} p(n)/n$ stay bounded below for all large $x$?",
       "What is the correct scale of fluctuations in the least prime factor sum?",
-      "Can sieve methods establish the conjecture?"
+      "Can Selberg sieve methods or exponential sum techniques establish the conjecture?",
+      "Is there a connection to the Alladi–Erdős distribution of $\\omega(n)$ weighted by $p(n)$?"
     ]
   }
 }
