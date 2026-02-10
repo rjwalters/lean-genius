@@ -38,12 +38,12 @@
       },
       {
         "theorem": "Nat.factorization",
-        "description": "Prime factorization",
+        "description": "Prime factorization as Finsupp",
         "module": "Mathlib.Data.Nat.Factorization.Basic"
       },
       {
         "theorem": "Finset.sum",
-        "description": "Finite sums",
+        "description": "Summation over finite sets",
         "module": "Mathlib.Data.Finset.Basic"
       }
     ],
@@ -59,85 +59,111 @@
       "gcd_binomials_one: coprimality condition"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "The binomial coefficient C(n,k) is the fundamental object used as a generator in this Frobenius problem. Problem #435 asks for the largest non-representable integer using the generators {C(n,i) : 1 ≤ i < n}."
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Problem #1063 studies divisibility of C(n,k) by factors of n, directly connected to the prime power analysis in the Hwang-Song formula via Kummer's theorem and Lucas' theorem."
+    }
+  ],
   "overview": {
-    "historicalContext": "**Erdős Problem #435: Binomial Coefficient Representation**\n\nThis is a Frobenius-type problem about representing integers using binomial coefficients.\n\n**Key History:**\n- Erdős and Graham (1980): Posed the problem\n- Hwang and Song (2024): First complete proof (arXiv:2412.17882)\n- Peake and Cambie: Independent discovery via Erdős Problems comments\n\n**Mathematical Setting:**\nThe classical Frobenius problem asks for the largest integer not expressible as a non-negative linear combination of coprime integers. This generalizes to binomial coefficients C(n,i) for 1 ≤ i < n.\n\n**OEIS:** The sequence A389479 contains these Frobenius numbers.",
+    "historicalContext": "Erdős and Graham posed Problem #435 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory', asking for the largest integer not representable as a non-negative integer linear combination of the binomial coefficients C(n,1), C(n,2), ..., C(n,n-1) when n is not a prime power. The problem belongs to the family of Frobenius problems (coin problems), which date back to Frobenius (1882) and Sylvester (1884) who solved the 2-generator case: g(a,b) = ab - a - b. The multi-generator case is NP-hard in general (Ramírez Alfonsín, 1996). In December 2024, Hwang and Song (arXiv:2412.17882) provided the first complete solution with an explicit closed-form formula depending only on the prime factorization of n. Independently, Peake and Cambie discovered the same result through the Erdős Problems website. The key insight is that the p-adic structure of binomial coefficients, governed by Kummer's theorem and Lucas' theorem, determines the semigroup structure of representable numbers. The sequence of Frobenius numbers is catalogued as OEIS A389479.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $n \\in \\mathbb{N}$ with $n \\neq p^k$ for any prime $p$ and $k \\geq 0$ (n is not a prime power). What is the largest integer not of the form:\n$$\\sum_{1 \\leq i < n} c_i \\binom{n}{i}$$\nwhere the $c_i \\geq 0$ are non-negative integers?\n\n**Answer:** If $n = \\prod p_k^{a_k}$ is the prime factorization, then the largest non-representable integer is:\n$$\\sum_k \\left( \\sum_{1 \\leq d \\leq a_k} \\binom{n}{p_k^d} \\right) (p_k - 1) - n$$\n\n**Solved by:** Hwang and Song (2024)",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Prime Power Detection:** Define IsPrimePower and NotPrimePower predicates.\n\n2. **Representation Definition:** IsRepresentable captures when m = Σ c_i·C(n,i).\n\n3. **Frobenius Number:** frobeniusBinomial is the supremum of non-representables.\n\n4. **Formula Components:** primePowerContribution handles each prime factor.\n\n5. **Hwang-Song Formula:** Combines contributions from all prime factors.\n\n6. **Main Theorem:** hwang_song_theorem equates Frobenius number to formula.\n\n7. **Semigroup Structure:** representableSet forms a numerical semigroup.",
+    "proofStrategy": "The formalization axiomatizes the Hwang-Song theorem and builds the supporting infrastructure. First, IsPrimePower and NotPrimePower predicates classify n. Then IsRepresentable captures the linear combination condition using Fin n → ℕ coefficient functions. The Frobenius number is defined as sSup of non-representable numbers. The formula is decomposed into primePowerContribution (per-prime-factor terms) and hwangSongFormula (their sum minus n). The main theorem, existence of gaps, and representability of large numbers are axiomatized. The semigroup structure (closure under addition, 0 ∈ S) and GCD coprimality condition are also axiomatized. Special cases n = 6 verify the formula concretely.",
     "keyInsights": [
-      "**Numerical Semigroup:** The representable numbers form a semigroup with finite complement",
-      "**Prime Power Exclusion:** Prime powers n = p^k make the problem degenerate",
-      "**Lucas' Theorem:** Divisibility of C(n,k) by primes determines structure",
-      "**Explicit Formula:** Closed form depends only on prime factorization",
-      "**GCD Condition:** gcd of generators equals 1 when n is not a prime power"
+      "**Numerical semigroup structure**: The representable numbers $S_n = \\{\\sum c_i \\binom{n}{i} : c_i \\geq 0\\}$ form a numerical semigroup with finite complement when $\\gcd(\\binom{n}{1}, \\ldots, \\binom{n}{n-1}) = 1$, guaranteeing the Frobenius number exists",
+      "**Prime power exclusion via Kummer's theorem**: When $n = p^k$, every $\\binom{n}{i}$ for $0 < i < n$ is divisible by $p$, so $S_n \\subseteq p\\mathbb{N}$ and the complement is infinite — no Frobenius number exists",
+      "**Per-prime-factor decomposition**: The formula decomposes as $g = \\sum_{p \\mid n} (\\sum_{d=1}^{v_p(n)} \\binom{n}{p^d})(p-1) - n$, with each prime contributing independently via its power-of-$p$ binomial coefficients",
+      "**Closed form from p-adic analysis**: The Hwang-Song proof uses the **Apéry set** of the numerical semigroup and **Granville's generalization** of Lucas' theorem to determine exactly which residues modulo each prime are non-representable",
+      "**Rare multi-generator Frobenius formula**: While the general multi-generator Frobenius problem is NP-hard (Ramírez Alfonsín, 1996), the special algebraic structure of binomial coefficients yields an explicit closed form — one of very few known infinite families with exact solutions"
     ]
   },
   "sections": [
     {
+      "id": "module-doc",
+      "title": "Module Documentation",
+      "summary": "Problem statement, history (Erdős–Graham 1980, Hwang–Song 2024, Peake–Cambie), and OEIS reference A389479.",
+      "startLine": 1,
+      "endLine": 25
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "summary": "Imports `Nat.Choose.Basic` ($\\binom{n}{k}$), `Nat.Prime.Basic`, `Nat.Factorization.Basic` ($v_p(n)$, `primeFactors`), and `Finset.Basic` ($\\sum$). Opens `Erdos435` namespace.",
+      "startLine": 27,
+      "endLine": 32
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "IsPrimePower, NotPrimePower, IsRepresentable, representableSet, frobeniusBinomial",
+      "summary": "Defines `IsPrimePower` ($n = p^k$), `NotPrimePower`, `IsRepresentable` ($m = \\sum c_i \\binom{n}{i}$), `representableSet`, and `frobeniusBinomial` ($\\sup\\{m : m \\notin S_n\\}$).",
       "startLine": 34,
       "endLine": 73
     },
     {
       "id": "the-formula",
-      "title": "The Formula",
-      "summary": "primePowerContribution, hwangSongFormula",
+      "title": "The Hwang-Song Formula",
+      "summary": "Defines `primePowerContribution` $(\\sum_{d=1}^{a} \\binom{n}{p^d})(p-1)$ and `hwangSongFormula` $\\sum_{p \\mid n} \\text{contrib}(n, p, v_p(n)) - n$.",
       "startLine": 75,
       "endLine": 93
     },
     {
       "id": "main-theorem",
-      "title": "The Main Theorem",
-      "summary": "hwang_song_theorem, non_representable_exist, large_numbers_representable",
+      "title": "Main Theorem and Consequences",
+      "summary": "Axiomatizes `hwang_song_theorem`: $g(S_n) = \\text{hwangSongFormula}(n)$, plus `non_representable_exist` (gaps exist) and `large_numbers_representable` ($m > g \\implies m \\in S_n$).",
       "startLine": 96,
       "endLine": 119
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "Examples for n=6, n=10",
+      "title": "Special Cases: $n = 6$ and $n = 10$",
+      "summary": "Proves $\\neg\\text{IsPrimePower}(6)$ by `interval_cases`. Axiomatizes $g(S_6) = 49$, computed as $\\binom{6}{2}(2-1) + \\binom{6}{3}(3-1) - 6 = 15 + 40 - 6$.",
       "startLine": 121,
       "endLine": 144
     },
     {
       "id": "prime-power-special",
       "title": "Why Prime Powers are Special",
-      "summary": "prime_power_degenerate, lucas_connection",
+      "summary": "Documents the degenerate case: for $n = p^k$, Lucas' theorem gives $p \\mid \\binom{n}{i}$ for all $0 < i < n$, making the complement infinite.",
       "startLine": 146,
       "endLine": 163
     },
     {
       "id": "semigroup-structure",
-      "title": "Structure of Representable Set",
-      "summary": "representable_semigroup, gcd_binomials_one",
+      "title": "Numerical Semigroup Structure",
+      "summary": "Axiomatizes `representable_semigroup` ($0 \\in S_n$ and additive closure) and `gcd_binomials_one` ($\\gcd(\\binom{n}{1}, \\binom{n}{2}) = 1$ for non-prime-powers).",
       "startLine": 165,
       "endLine": 186
     },
     {
       "id": "related-results",
-      "title": "Related Results",
-      "summary": "classical_frobenius, sylvester_connection, oeis_sequence",
+      "title": "Related Classical Results",
+      "summary": "Axiomatizes Sylvester–Frobenius theorem $g(a,b) = ab - a - b$ (placeholder). Documents Sylvester–Denumerant connection and OEIS A389479.",
       "startLine": 188,
       "endLine": 210
     },
     {
       "id": "main-results",
-      "title": "Main Results",
-      "summary": "erdos_435 and erdos_435_summary theorems",
+      "title": "Final Theorems",
+      "summary": "Proved `erdos_435` (direct application of axiom) and `erdos_435_summary` (conjunction of formula + completeness). 0 sorries.",
       "startLine": 212,
-      "endLine": 246
+      "endLine": 242
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #435 was solved by Hwang and Song (2024). For n not a prime power, the largest integer not representable as Σ c_i·C(n,i) is given by an explicit formula involving sums of binomial coefficients weighted by (p-1) for each prime factor p.",
-    "implications": "**Connections to Number Theory**\n\n1. **Frobenius Problem:** Generalizes the classical coin problem to binomial coefficients\n\n2. **Lucas' Theorem:** Prime divisibility of binomial coefficients is fundamental\n\n3. **Numerical Semigroups:** The representable set has rich algebraic structure\n\n4. **OEIS A389479:** The sequence of thresholds for different n",
+    "summary": "Erdős Problem #435 was solved by Hwang and Song (2024). For n not a prime power with factorization n = ∏ p_k^{a_k}, the largest integer not representable as Σ c_i·C(n,i) is Σ_k (Σ_{d≤a_k} C(n,p_k^d))·(p_k-1) - n. The formalization axiomatizes this main result and builds complete infrastructure: definitions (prime power, representability, Frobenius number), the formula components, semigroup structure, coprimality conditions, special cases, and connections to the classical Frobenius problem. 0 sorries; 2 proved theorems, 6 axioms.",
+    "implications": "The Hwang-Song formula is one of very few known closed-form solutions to a multi-generator Frobenius problem, exploiting the special p-adic structure of binomial coefficients. The result connects three areas: combinatorial number theory (binomial coefficient divisibility via Kummer's and Lucas' theorems), algebraic combinatorics (numerical semigroup theory and Apéry sets), and computational complexity (the general Frobenius problem is NP-hard, but this family has polynomial-time solutions).",
     "openQuestions": [
-      "What is the density of representable numbers below the Frobenius number?",
-      "How does the Frobenius number grow with n?",
-      "Are there analogous results for multinomial coefficients?",
-      "What is the structure of the gaps in the representable set?",
-      "Extensions to q-binomial coefficients?"
+      "Can the Hwang-Song formula be proved in Lean using Mathlib's Kummer's theorem and numerical semigroup infrastructure, eliminating the axiom?",
+      "What is the genus (number of gaps) of the numerical semigroup S_n, and does it have a closed form in terms of the prime factorization of n?",
+      "How does the Frobenius number g(S_n) grow asymptotically with n? Is it Θ(n^2) for typical n?",
+      "Are there analogous results for q-binomial coefficients (Gaussian binomial coefficients) or multinomial coefficients?",
+      "Can the Apéry set of S_n be computed explicitly, yielding a complete description of which numbers below the Frobenius number are non-representable?"
     ]
   }
 }
