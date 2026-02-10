@@ -14,13 +14,25 @@
       "wilson-theorem",
       "open"
     ],
+    "erdosProblemStatus": "open",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/Erdos1056Problem.lean",
     "references": [
-      "Erdős (1979): k=2 example, 3·4 ≡ 5·6·7 ≡ 1 (mod 11)",
-      "Makowski (1983): k=3 example, p=17",
-      "Guy: Unsolved Problems in Number Theory, A15",
-      "Noll–Simmons: factorial congruence generalization",
-      "OEIS A060427",
-      "https://erdosproblems.com/1056"
+      {
+        "key": "Er79",
+        "citation": "Erdős, P. (1979). Personal communication. k=2 example: 3·4 ≡ 5·6·7 ≡ 1 (mod 11).",
+        "type": "paper"
+      },
+      {
+        "key": "Ma83",
+        "citation": "Makowski, A. (1983). k=3 solution with p=17 for the Erdős interval product problem.",
+        "type": "paper"
+      },
+      {
+        "key": "Gu04",
+        "citation": "Guy, R.K. (2004). Unsolved Problems in Number Theory, 3rd ed. Springer. Section A15.",
+        "type": "book"
+      }
     ],
     "leanFile": "Proofs/Erdos1056Problem.lean",
     "sorries": 0,
@@ -33,57 +45,57 @@
       "title": "Core Definitions",
       "startLine": 25,
       "endLine": 44,
-      "summary": "Define intervalProd, IsValidBoundary, AllProductsCongruentOne, and HasSolution."
+      "summary": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i = b!/a!$, boundary validity, the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and the existence predicate $\\text{HasSolution}(k)$."
     },
     {
       "id": "k2-example",
       "title": "Erdős's k=2 Example",
       "startLine": 46,
       "endLine": 57,
-      "summary": "p=11: 3·4 ≡ 1, 5·6·7 ≡ 1 (mod 11). Verified by native_decide."
+      "summary": "Verifies Erdős's $k = 2$ example: $p = 11$, $3 \\cdot 4 = 12 \\equiv 1$ and $5 \\cdot 6 \\cdot 7 = 210 \\equiv 1 \\pmod{11}$. In factorial form: $2! \\equiv 4! \\equiv 7! \\pmod{11}$. Verified by `native_decide`."
     },
     {
       "id": "k3-example",
       "title": "Makowski's k=3 Example",
       "startLine": 59,
       "endLine": 73,
-      "summary": "p=17: three consecutive intervals with products ≡ 1 (mod 17). Verified."
+      "summary": "Verifies Makowski's $k = 3$ example: $p = 17$, three intervals $[2,6), [6,12), [12,16)$ all have products $\\equiv 1 \\pmod{17}$. Factorial form: $1! \\equiv 5! \\equiv 11! \\equiv 15! \\pmod{17}$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 75,
       "endLine": 80,
-      "summary": "For every k ≥ 2, a solution exists."
+      "summary": "States the main conjecture: $\\forall k \\ge 2$, $\\exists p$ prime with $k$ consecutive intervals having products $\\equiv 1 \\pmod{p}$. Equivalently: $\\exists$ $k+1$ values with equal factorials mod $p$."
     },
     {
       "id": "generalizations",
       "title": "Wilson's Theorem and Noll–Simmons",
       "startLine": 82,
       "endLine": 102,
-      "summary": "Wilson's theorem constrains solutions. Noll–Simmons asks about factorial congruences."
+      "summary": "Uses Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ to show intervals cannot partition $\\{1, \\ldots, p-1\\}$. States the Noll–Simmons factorial reformulation: $\\exists$ $k$ values with $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős observed in a 1979 letter that 3·4 ≡ 5·6·7 ≡ 1 (mod 11), producing two consecutive intervals with products congruent to 1. Makowski (1983) extended this to three intervals modulo 17. The problem asks whether this extends to arbitrarily many intervals. It appears as Problem A15 in Guy's Unsolved Problems in Number Theory.",
+    "historicalContext": "**Factorial Residues and Multiplicatively Trivial Intervals**\n\nIn 1979, Erdős observed a remarkable congruence: $3 \\cdot 4 = 12 \\equiv 1 \\pmod{11}$ and $5 \\cdot 6 \\cdot 7 = 210 \\equiv 1 \\pmod{11}$. Two consecutive intervals $[3,5)$ and $[5,8)$ both have products congruent to 1 modulo the same prime. In the language of factorials: $2! \\equiv 4! \\equiv 7! \\pmod{11}$.\n\nMakowski (1983) extended this to $k = 3$ intervals modulo $p = 17$: $2 \\cdot 3 \\cdot 4 \\cdot 5 \\equiv 6 \\cdot 7 \\cdot 8 \\cdot 9 \\cdot 10 \\cdot 11 \\equiv 12 \\cdot 13 \\cdot 14 \\cdot 15 \\equiv 1 \\pmod{17}$. Erdős then asked: can this be done for arbitrarily many intervals?\n\nThe problem connects to the distribution of the **factorial residue function** $n \\mapsto n! \\pmod{p}$ on $\\{0, 1, \\ldots, p-1\\}$. By Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$, the factorial function cannot be constant on all of $\\{0, \\ldots, p-1\\}$, but collisions among factorial values are expected to become more frequent as $p$ grows. Noll and Simmons formalized this as: for every $k$, do there exist $k$ values $q_1 < \\cdots < q_k < p$ with $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$? The problem appears as A15 in Guy's *Unsolved Problems in Number Theory*.",
     "problemStatement": "For every k ≥ 2, does there exist a prime p and k consecutive intervals I₁, ..., Iₖ (partitioning a range of integers) such that the product of integers in each interval is ≡ 1 (mod p)?",
     "proofStrategy": "We formalize interval products, define solutions as prime-boundary pairs satisfying the congruence, verify the known k=2 and k=3 examples via native_decide, state the main conjecture, and connect to Wilson's theorem and the Noll–Simmons factorial generalization.",
     "keyInsights": [
-      "Erdős (1979): 3·4 ≡ 5·6·7 ≡ 1 (mod 11) gives k=2",
-      "Makowski (1983): found k=3 solution with p=17",
-      "Wilson's theorem constrains: (p-1)! ≡ -1 (mod p) governs the total product",
-      "Consecutive interval products relate to ratios of factorials modulo p",
-      "Noll–Simmons generalize: do factorials q₁!, ..., qₖ! all agree mod p?"
+      "The condition $\\prod_{i=a}^{b-1} i \\equiv 1 \\pmod{p}$ is equivalent to $a! \\equiv b! \\pmod{p}$, transforming the interval product problem into one about collisions of the factorial residue function $n \\mapsto n! \\bmod p$",
+      "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ provides a key obstruction: the intervals cannot partition all of $\\{1, \\ldots, p-1\\}$, since the total product would be $1^k = 1 \\ne -1$. This forces structural gaps in any solution",
+      "The known examples ($p = 11$ for $k = 2$, $p = 17$ for $k = 3$) use small primes, suggesting that solutions may exist for surprisingly small primes relative to $k$—but no $k = 4$ solution is known",
+      "The Noll–Simmons factorial reformulation asks: as $p \\to \\infty$, does the maximum number of collisions among $\\{0!, 1!, \\ldots, (p-1)!\\} \\pmod{p}$ grow without bound? Probabilistic heuristics suggest yes, since the factorial function should behave 'randomly' modulo large primes",
+      "The problem sits at the intersection of multiplicative number theory (products of consecutive integers), analytic number theory (distribution of factorial residues), and combinatorics (partitioning intervals with prescribed products)"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #1056 asks whether for every k ≥ 2, there exist k consecutive intervals of integers whose products are all 1 mod some prime. Known for k=2 (Erdős, p=11) and k=3 (Makowski, p=17). The general case remains open.",
-    "implications": "A positive answer would reveal deep structure in the distribution of products of consecutive integers modulo primes, connecting Wilson's theorem with partitions of {1,...,p-1} into multiplicatively structured intervals.",
+    "summary": "Erdős Problem #1056 asks whether for every $k \\ge 2$, there exist a prime $p$ and $k$ consecutive intervals of integers whose products are all $\\equiv 1 \\pmod{p}$. **Status: OPEN.** Known for $k = 2$ (Erdős 1979, $p = 11$) and $k = 3$ (Makowski 1983, $p = 17$). The factorial reformulation—do $k+1$ factorial residues agree modulo some prime?—connects to the Noll–Simmons conjecture. Wilson's theorem provides structural constraints.",
+    "implications": "**Theoretical Significance**\n\n1. **Factorial Residue Distribution**: The problem asks about the collision structure of $n \\mapsto n! \\bmod p$, a function whose statistical behavior is poorly understood. A positive answer would show that factorial collisions grow without bound as $p$ increases.\n\n2. **Wilson's Theorem Applications**: The constraint $(p-1)! \\equiv -1$ limits which interval structures are possible, creating a non-trivial interaction between additive (interval) and multiplicative (product) structure modulo primes.\n\n3. **Multiplicative Number Theory**: Products of consecutive integers modulo $p$ connect to the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ and the distribution of smooth numbers in short intervals.\n\n4. **Computational Challenges**: Finding $k = 4$ solutions requires searching over primes and boundary configurations, a computationally intensive task that pushes current methods.",
     "openQuestions": [
-      "Does a solution exist for k=4? What is the smallest such prime?",
-      "Does the required prime p grow polynomially or exponentially in k?",
-      "Can the Noll–Simmons factorial variant be resolved independently?",
-      "Is there a constructive method to find solutions for given k?"
+      "Does a solution exist for $k = 4$? What is the smallest prime $p$ admitting 4 consecutive intervals with products $\\equiv 1 \\pmod{p}$?",
+      "Does the smallest prime $p(k)$ admitting a $k$-solution grow polynomially or exponentially in $k$?",
+      "Can the Noll–Simmons factorial collision conjecture be resolved by probabilistic methods (e.g., showing the expected number of collisions $\\to \\infty$)?",
+      "Is there a constructive algorithm to produce solutions for given $k$, or must they be found by exhaustive search?"
     ]
   }
 }
