@@ -1,0 +1,61 @@
+{
+  "slug": "birthday-problem-oq-04",
+  "title": "Birthday Problem: Threshold for 99% Match Probability",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Find minimal n such that P(n) > 99/100, where P(n) = 1 - 365!/((365^n)*(365-n)!)",
+    "plain": "Find the minimum number of people needed so that the probability of at least one shared birthday exceeds 99%.",
+    "whyMatters": ["Natural extension of the classic birthday problem", "Tests Lean's ability to handle large numeric computations via native_decide"]
+  },
+  "knownResults": {
+    "proven": ["P(57) > 99/100 (verified via native_decide)", "P(56) < 99/100 (verified via native_decide)", "Threshold is exactly n=57"],
+    "open": [],
+    "goal": "Prove the 99% threshold for the birthday problem"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-09T00:00:00Z",
+    "iteration": 1,
+    "focus": "Complete proof verified via Docker build.",
+    "blockers": [],
+    "nextAction": "None - problem completed.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved birthday problem 99% threshold is n=57 with tight bounds. P(57) > 99/100 and P(56) < 99/100. Docker build verified (22min, native_decide on 146-digit numbers).",
+    "builtItems": ["proofs/Proofs/BirthdayProblem.lean - 99% threshold proof", "src/data/proofs/birthday-problem/meta.json - gallery metadata updated"],
+    "insights": ["native_decide works for 146-digit number comparisons but requires 22min build time", "Rational arithmetic with exact fractions avoids floating-point issues"],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Direct computation via native_decide",
+      "status": "succeeded",
+      "description": "Compute exact rational probabilities and verify inequalities via native_decide"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "extension",
+    "completed"
+  ],
+  "relatedProofs": ["birthday-problem"],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-09T00:00:00Z",
+  "significance": 5,
+  "tractability": 9
+}
