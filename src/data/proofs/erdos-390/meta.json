@@ -12,76 +12,86 @@
       "erdos",
       "number-theory",
       "factorials",
-      "asymptotics"
+      "asymptotics",
+      "open"
     ],
-    "badge": "axiom",
+    "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 390,
     "erdosUrl": "https://erdosproblems.com/390",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "references": [
+      "Erdős & Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory'",
+      "Erdős, Guy & Selfridge (1982): 'Another property of 239 and some related questions', Congress. Numer. 35, 237–244",
+      "OEIS A193429: values of f(n)",
+      "Guy (2004): 'Unsolved Problems in Number Theory', Problem B22",
+      "https://erdosproblems.com/390"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem about expressing n! as a product of distinct integers all greater than n. Erdős, Guy, and Selfridge (1982) proved f(n) - 2n ≍ n/log n, establishing the correct order of magnitude. Whether a precise constant exists remains open.",
-    "problemStatement": "Let f(n) be the minimal m such that n! = a₁·a₂·⋯·aₖ with n < a₁ < a₂ < ⋯ < aₖ = m. Is there a constant c such that f(n) - 2n ~ c · n / log n?",
-    "proofStrategy": "We axiomatize factorizationMax (f) and state the basic lower bound f(n) ≥ 2n. The Erdős–Guy–Selfridge two-sided bounds are axiomatized. ErdosProblem390 asks whether the normalized ratio converges. Existence of factorizations, small values, monotonicity, and unboundedness of the excess are included.",
+    "historicalContext": "Paul Erdős and Ronald Graham first discussed this problem in their 1980 monograph. The key breakthrough came in the 1982 paper by Erdős, Richard Guy, and John Selfridge ('Another property of 239 and some related questions', Congress. Numer. 35), which established that the excess $f(n) - 2n$ has order of magnitude $n/\\log n$. The title refers to the surprising fact that $239$ is the smallest prime $p$ such that $p \\cdot (p+1)/2$ is not a product of primes $\\leq p$ — a related factorization curiosity. The problem asks whether the normalized excess $(f(n) - 2n) \\cdot \\log n / n$ converges to a specific constant, which would reveal the precise structure of optimal large-factor factorizations of $n!$. The function $f(n)$ is recorded as OEIS sequence A193429. This problem sits at the intersection of factorial arithmetic, prime number theory, and optimization over integer partitions.",
+    "problemStatement": "Let $f(n)$ be the minimal $m$ such that $n! = a_1 \\cdot a_2 \\cdots a_k$ with $n < a_1 < a_2 < \\cdots < a_k = m$. Does $\\lim_{n \\to \\infty} (f(n) - 2n) \\cdot \\log n / n = c$ exist for some positive constant $c$?",
+    "proofStrategy": "We define `ValidFactorization` as a proof-carrying structure (sorted factors $> n$ with product $= n!$), compute $f(n)$ as the infimum of maximum factors, provide explicit witnesses for $n = 3, 5, 6, 7$ with full proofs for $n = 3$, prove structural properties ($f(n) > n$, $f(n) \\leq n!$), axiomatize the Erdős–Guy–Selfridge two-sided bound, and state the open conjecture using `Filter.Tendsto`.",
     "keyInsights": [
-      "Expressing n! as a product of distinct factors all > n is always possible for n ≥ 3",
-      "The trivial bound f(n) ≥ 2n comes from counting arguments",
-      "The secondary term n/log n arises from prime factorization structure",
-      "Whether the ratio (f(n) - 2n)·log n/n has a limit is the open question"
+      "**The interval $(n, 2n]$ is central**: The $n$ integers in $(n, 2n]$ have product $(2n)!/n!$, which is close to $n!$ — the excess $f(n) - 2n$ measures how far beyond $2n$ one must go to redistribute prime factors",
+      "**Prime factorization drives the asymptotics**: The $n/\\log n$ term arises because primes $p \\in (n, 2n]$ contribute exactly once to $(2n)!/n!$ but may need redistribution via composite factors — and there are $\\sim n/\\log n$ such primes by the Prime Number Theorem",
+      "**Constructive witnesses vs. asymptotic bounds**: The file uniquely combines constructive proofs for small $n$ (via `native_decide`) with axiomatized asymptotic results, demonstrating both computation and theory",
+      "**The $n = 3$ case is fully verified**: $3! = 6$, and the only factorization with factors $> 3$ is $[6]$, proved by showing that two factors $\\geq 4$ would give product $\\geq 20 > 6$ — a complete case analysis",
+      "**Convergence vs. boundedness**: The EGS bounds show $\\liminf$ and $\\limsup$ of $(f(n)-2n)\\log n/n$ are both positive and finite, but whether they coincide (i.e., the limit exists) is the open question"
     ]
   },
   "sections": [
     {
-      "id": "function-definition",
-      "title": "The Function f(n)",
-      "startLine": 21,
-      "endLine": 31,
-      "summary": "Axiomatizes factorizationMax: the minimal largest factor in any valid factorization of n!."
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Module docstring referencing Erdős–Graham (1980), Erdős–Guy–Selfridge (1982), and OEIS A193429. Imports Mathlib for factorial, Finset, Filter, and tactics."
     },
     {
-      "id": "lower-bound",
-      "title": "Basic Lower Bound",
-      "startLine": 33,
+      "id": "formal-definition",
+      "title": "Formal Definition of f(n)",
+      "startLine": 20,
       "endLine": 41,
-      "summary": "f(n) ≥ 2n for n ≥ 1."
+      "summary": "Defines `ValidFactorization` (sorted list of factors $> n$ with product $= n!$), `maxFactor` (last element of sorted list), and `factorizationMax` ($f(n) = \\inf\\{\\max(\\text{factors})\\}$ via `sInf`)."
     },
     {
-      "id": "egs-bounds",
-      "title": "Erdős–Guy–Selfridge Bounds",
+      "id": "concrete-values",
+      "title": "Concrete Values via Explicit Witnesses",
       "startLine": 43,
-      "endLine": 54,
-      "summary": "Two-sided bounds: c·n/log n ≤ f(n) - 2n ≤ C·n/log n (1982)."
+      "endLine": 129,
+      "summary": "Constructive witnesses for $n = 3, 5, 6, 7$: $3! = [6]$, $5! = [10, 12]$, $6! = [8, 9, 10]$, $7! = [14, 18, 20]$. Full proof that $f(3) = 6$ by case analysis (two factors $\\geq 4$ give product $\\geq 20 > 6$)."
     },
     {
-      "id": "conjecture",
-      "title": "The Conjecture",
-      "startLine": 56,
-      "endLine": 69,
-      "summary": "States ErdosProblem390: does (f(n) - 2n)·log n/n converge to a positive constant?"
+      "id": "structural-properties",
+      "title": "Basic Structural Properties",
+      "startLine": 131,
+      "endLine": 147,
+      "summary": "Proves $f(n) > n$ (from `all_gt` and `getLast_mem`) and $f(n) \\leq n!$ (from the trivial single-factor factorization $[n!]$ for $n \\geq 3$)."
     },
     {
-      "id": "related-properties",
-      "title": "Related Properties",
-      "startLine": 71,
-      "endLine": 87,
-      "summary": "Existence of factorizations for n ≥ 3 and OEIS small values (f(3) = 6)."
+      "id": "egs-asymptotic",
+      "title": "Erdős–Guy–Selfridge Asymptotic (1982)",
+      "startLine": 149,
+      "endLine": 159,
+      "summary": "Axiomatizes the two-sided bound $c \\cdot n/\\log n \\leq f(n) - 2n \\leq C \\cdot n/\\log n$ for $n \\geq 10$, from the 1982 paper."
     },
     {
-      "id": "monotonicity-growth",
-      "title": "Monotonicity and Growth",
-      "startLine": 89,
-      "endLine": 104,
-      "summary": "Eventually monotone and f(n) - 2n → ∞."
+      "id": "open-conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 161,
+      "endLine": 172,
+      "summary": "Defines `ErdosProblem390`: does $\\lim_{n \\to \\infty} (f(n) - 2n) \\cdot \\log n / n = c$ exist with $c > 0$? Formalized via `Filter.Tendsto` to `nhds c`."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 390 asks whether f(n) - 2n has a precise asymptotic c·n/log n. The order of magnitude is known (EGS 1982) but the existence of a limit constant is open.",
-    "implications": "A precise asymptotic would reveal the fine structure of how factorials can be decomposed into products of large factors, connecting to combinatorial number theory.",
+    "summary": "This formalization captures the full structure of Erdős Problem #390: the optimization function $f(n)$, constructive small-value computations (with a complete proof for $n = 3$), structural bounds, the Erdős–Guy–Selfridge asymptotic (1982), and the open question about limit existence. The combination of constructive witnesses and asymptotic theory makes this one of the more computationally rich Erdős formalizations.",
+    "implications": "Resolving whether the limit exists would reveal the precise structure of optimal factorizations of $n!$ into large factors. The constant $c$ (if it exists) would encode deep information about the distribution of prime factors in factorial ratios and connect to the Prime Number Theorem's role in combinatorial factorization.",
     "openQuestions": [
-      "Does lim (f(n) - 2n)·log n / n exist?",
-      "If so, what is the constant c?",
-      "What is the distribution of f(n) - 2n around its mean?"
+      "Does $\\lim_{n \\to \\infty} (f(n) - 2n) \\cdot \\log n / n$ exist?",
+      "If so, what is the value of the constant $c$?",
+      "What is the distribution of $f(n) - 2n - c \\cdot n/\\log n$ (the secondary term)?",
+      "Can the EGS bounds be tightened to give explicit constants $c$ and $C$?"
     ]
   }
 }
