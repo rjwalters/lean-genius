@@ -1,0 +1,36 @@
+{
+  "id": "bounded-prime-gaps",
+  "name": "Bounded Prime Gaps (Zhang/Polymath)",
+  "status": "completed",
+  "knowledge": {
+    "score": 8,
+    "insights": [
+      "BoundedPrimeGaps.lean already has 67 proved theorems with 0 sorries - very well developed",
+      "4 axioms in BoundedPrimeGaps.lean are genuinely deep (sieve theory) - not provable from Mathlib",
+      "PrimeGapBounds.lean had compilation issues: /-! docstrings and pi notation conflicts",
+      "nth_prime_le_two_pow_succ IS provable from Bertrand's postulate via induction",
+      "Key lemma: nth_prime_succ_le_of_prime_gt uses count_nth/count_succ/count_monotone",
+      "Nat.count p n counts primes STRICTLY LESS than n (not <=)",
+      "Nat.count_succ + if_pos gives count(x+1) = count(x) + 1 when p(x)",
+      "Nat.count_nth_of_infinite gives count(nth n) = n for infinite sets",
+      "API names confirmed in Docker v4.26.0: nth_prime_zero_eq_two, count_nth_of_infinite, count_succ, count_monotone",
+      "API NOT available: zeroth_prime_eq_two, count_lt_count_of_lt, nth_le_iff_lt_count, count_strict_mono (different signature)"
+    ],
+    "builtItems": [
+      "Proved nth_prime_le_two_pow_succ in PrimeGapBounds.lean (was axiom, now theorem)",
+      "Proved nth_prime_succ_le_of_prime_gt: key lemma about order-preserving enumeration",
+      "Fixed PrimeGapBounds.lean compilation: /-! -> /-, pi -> Nat.primeCounting, zeroth_prime_eq_two -> nth_prime_zero_eq_two",
+      "Added nth_prime_is_prime helper lemma"
+    ],
+    "progressSummary": "COMPLETED: Converted axiom nth_prime_le_two_pow_succ to a fully proved theorem from Bertrand's postulate. Fixed PrimeGapBounds.lean compilation issues. File now has 0 axioms, all theorems proved from Mathlib.",
+    "nextSteps": [
+      "BoundedPrimeGaps.lean 4 axioms require sieve theory (Selberg, GPY) not in Mathlib - genuinely intractable",
+      "Could add more prime gap results from Bertrand (e.g., prime gap <= p_n for the nth prime)",
+      "Connection between PrimeGapBounds and BoundedPrimeGaps could be strengthened"
+    ]
+  },
+  "files": {
+    "proof": "proofs/Proofs/PrimeGapBounds.lean",
+    "related": ["proofs/Proofs/BoundedPrimeGaps.lean", "proofs/Proofs/BertrandsPostulate.lean"]
+  }
+}
