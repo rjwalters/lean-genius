@@ -10,71 +10,138 @@
     "proofRepoPath": "Proofs/Erdos90Problem.lean",
     "tags": [
       "erdos",
-      "combinatorial geometry",
-      "unit distance",
-      "incidence geometry"
+      "combinatorial-geometry",
+      "unit-distance",
+      "incidence-geometry",
+      "open"
     ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 90,
     "erdosUrl": "https://erdosproblems.com/90",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "ℝ²-valued inner product space, the ambient space for point configurations",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "dist",
+        "description": "Euclidean distance function on metric spaces, used to define unit distance pairs",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Finset.offDiag",
+        "description": "Ordered pairs of distinct elements from a finite set, used to enumerate point pairs",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for 'eventually for all large n', used in asymptotic statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm, used in the exponent n^{1+c/log log n}",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum of a set of natural numbers, used to define u(n) = max over configurations",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined unitDistancePairsCount via Finset.offDiag filtering and division by 2 for unordered pairs",
+      "Defined unitDistanceCounts as the set of achievable counts for n-point configurations",
+      "Defined maxUnitDistances u(n) via sSup of achievable unit distance counts",
+      "Axiomatized the BddAbove property ensuring u(n) is well-defined",
+      "Stated the Spencer–Szemerédi–Trotter O(n^{4/3}) upper bound with explicit constant",
+      "Stated the lattice lower bound n^{1+c/log log n} using Filter.atTop",
+      "Formalized both the main conjecture and the weak form u(n) = n^{1+o(1)}",
+      "Axiomatized Valtr's obstruction as existence of a non-Euclidean semimetric achieving Θ(n^{4/3}) unit distances"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1946. It is one of the most famous problems in combinatorial geometry. The unit distance problem asks for the maximum number u(n) of pairs of points at distance 1 in a set of n points in the plane. Erdős offered a $500 prize for its resolution.",
-    "problemStatement": "Does every set of n distinct points in ℝ² contain at most n^{1+O(1/log log n)} pairs at unit distance?",
-    "proofStrategy": "Full rewrite from formal-conjectures. Defines unit distance counting via offDiag filtering, states the Spencer–Szemerédi–Trotter O(n^{4/3}) upper bound, the lattice lower bound, the main conjecture, its weak form u(n) = n^{1+o(1)}, and Valtr's metric obstruction.",
+    "historicalContext": "Erdős posed Problem 90 in 1946, making it one of the oldest open problems in combinatorial geometry. The unit distance problem asks: given $n$ points in $\\mathbb{R}^2$, what is the maximum number $u(n)$ of pairs at Euclidean distance exactly 1? Erdős himself showed the trivial bound $u(n) \\leq \\binom{n}{2}$ and constructed lattice examples achieving $u(n) \\geq n^{1+c/\\log\\log n}$ for a constant $c > 0$, exploiting the number-theoretic fact that $\\lfloor\\sqrt{n}\\rfloor \\times \\lfloor\\sqrt{n}\\rfloor$ integer lattice points have many representations as sums of two squares. In 1984, Spencer, Szemerédi, and Trotter proved $u(n) = O(n^{4/3})$ using the celebrated Szemerédi–Trotter incidence theorem, which bounds the number of incidences between $n$ points and $m$ lines (or circles). This $n^{4/3}$ bound has stood for over 40 years. In 2005, Valtr constructed a non-Euclidean metric on $\\mathbb{R}^2$ achieving $\\Theta(n^{4/3})$ unit distances, proving that any improvement must exploit specific properties of the Euclidean metric. Erdős offered $\\$500$ for the full resolution and $\\$250$–$300$ for even the weaker form $u(n) = n^{1+o(1)}$. The problem connects to the Erdős distinct distances problem (solved by Guth–Katz in 2015 using algebraic methods), but the unit distance conjecture remains stubbornly open.",
+    "problemStatement": "Let $u(n)$ denote the maximum number of unordered pairs at Euclidean distance 1 among $n$ points in $\\mathbb{R}^2$. Is $u(n) = n^{1+O(1/\\log\\log n)}$?",
+    "proofStrategy": "The formalization defines $u(n)$ constructively: `unitDistancePairsCount` filters `Finset.offDiag` for pairs at `dist = 1` and divides by 2 for unordered pairs; `maxUnitDistances` takes the `sSup` over all $n$-point configurations. The key results are axiomatized since they require deep analytic and algebraic arguments: the SST upper bound (which rests on the Szemerédi–Trotter incidence theorem), the lattice lower bound (which uses number-theoretic estimates on sums of two squares), and Valtr's obstruction (a non-trivial metric construction). Both the main conjecture $u(n) \\leq n^{1+C/\\log\\log n}$ and the weak form $u(n) \\leq n^{1+\\varepsilon}$ are stated as axioms. The formalization captures the complete logical structure of the problem: definitions, known bounds, conjectures, and the fundamental obstruction to further progress.",
     "keyInsights": [
-      "The trivial upper bound C(n,2) is improved to O(n^{4/3}) via the Szemerédi–Trotter incidence theorem",
-      "Lattice constructions achieve n^{1+c/log log n} unit distances, matching the conjectured bound",
-      "Valtr's obstruction shows the n^{4/3} barrier cannot be broken by purely combinatorial methods",
-      "Any improvement must exploit specific properties of Euclidean distance"
+      "The **Szemerédi–Trotter incidence theorem** gives $u(n) = O(n^{4/3})$ by viewing unit distances as incidences between points and unit circles: each point $p$ contributes a unit circle $\\{q : |p - q| = 1\\}$, and the SST theorem bounds point-curve incidences",
+      "**Lattice constructions** achieve $n^{1+c/\\log\\log n}$: in a $\\sqrt{n} \\times \\sqrt{n}$ integer lattice, the number of representations of an integer as a sum of two squares is controlled by its prime factorization, and integers with many small prime factors yield many unit distance pairs",
+      "**Valtr's obstruction** (2005) is a fundamental barrier: he constructed a non-Euclidean semimetric $d$ on $\\mathbb{R}^2$ where $n$ points achieve $\\Theta(n^{4/3})$ $d$-unit distances, proving that the SST incidence approach — which works for any convex curve, not just circles — cannot break the $n^{4/3}$ barrier alone",
+      "The **weak conjecture** $u(n) = n^{1+o(1)}$ would already be a major breakthrough, requiring the exponent of the upper bound to approach 1. Even this weaker form has resisted all known techniques for 80 years",
+      "The problem is closely related to the **Erdős distinct distances problem** (how few distinct distances can $n$ points determine?), solved by Guth–Katz (2015) using polynomial partitioning — but those algebraic methods have not yet yielded progress on unit distances"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Imports Mathlib modules for inner product spaces (`EuclideanSpace`), metric spaces (`dist`), finite sets (`Finset.offDiag`, `Finset.card`), filters (`Filter.atTop`), and general tactics. These provide the $\\mathbb{R}^2$ ambient space, Euclidean distance, and the asymptotic filter framework."
+    },
+    {
       "id": "counting",
-      "title": "Unit Distance Counting",
-      "startLine": 18,
-      "endLine": 39,
-      "summary": "Defines unit distance pair counting and the maximum function u(n)."
+      "title": "Unit Distance Counting Definitions",
+      "startLine": 24,
+      "endLine": 38,
+      "summary": "Defines three core objects: `unitDistancePairsCount` counts unordered pairs at distance 1 via `offDiag` filtering and division by 2; `unitDistanceCounts(n)` is the set of achievable counts for $n$-point configurations; `maxUnitDistances(n) = \\mathrm{sSup}(\\text{unitDistanceCounts}(n))$ is the extremal function $u(n)$."
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Trivial Upper Bound",
+      "startLine": 39,
+      "endLine": 44,
+      "summary": "Axiomatizes `unitDistanceCounts_bddAbove`: the set of achievable unit distance counts is bounded above (by $\\binom{n}{2}$), ensuring the `sSup` defining $u(n)$ is well-defined."
     },
     {
       "id": "upper-bound",
       "title": "Spencer–Szemerédi–Trotter Upper Bound",
-      "startLine": 47,
-      "endLine": 53,
-      "summary": "States the O(n^{4/3}) upper bound from the Szemerédi–Trotter incidence theorem."
+      "startLine": 46,
+      "endLine": 54,
+      "summary": "States $u(n) \\leq C \\cdot n^{4/3}$ for a constant $C > 0$ and all $n \\geq 1$. This 1984 result applies the Szemerédi–Trotter incidence theorem to unit circles: each point generates a unit circle, and bounding point-circle incidences gives the $n^{4/3}$ bound."
     },
     {
       "id": "lower-bound",
       "title": "Lattice Lower Bound",
-      "startLine": 57,
-      "endLine": 62,
-      "summary": "States the n^{1+c/log log n} lower bound from lattice constructions."
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "States that for some $c > 0$, eventually $u(n) \\geq n^{1+c/\\log\\log n}$. This is achieved by integer lattice configurations exploiting the arithmetic of sums of two squares. The double-logarithmic factor arises from the Ramanujan–Hardy estimate for highly composite numbers."
     },
     {
       "id": "conjecture",
-      "title": "The Erdős Conjecture",
-      "startLine": 66,
-      "endLine": 80,
-      "summary": "States the main conjecture u(n) = n^{1+O(1/log log n)} and the weaker n^{1+o(1)} version."
+      "title": "The Erdős Conjecture and Weak Form",
+      "startLine": 65,
+      "endLine": 81,
+      "summary": "States the main conjecture (`ErdosProblem90`): $u(n) \\leq n^{1+C/\\log\\log n}$ eventually, matching the lattice lower bound up to the constant $C$. Also states the weak form (`erdos_90_weak`): $u(n) \\leq n^{1+\\varepsilon}$ for every $\\varepsilon > 0$ and large $n$."
     },
     {
       "id": "obstruction",
-      "title": "Valtr's Obstruction",
-      "startLine": 84,
-      "endLine": 96,
-      "summary": "Explains why purely combinatorial methods cannot improve beyond n^{4/3}."
+      "title": "Valtr's Metric Obstruction",
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "Axiomatizes Valtr's 2005 result: there exists a semimetric $d$ on $\\mathbb{R}^2$ (symmetric, non-negative, zero on the diagonal) and a constant $c > 0$ such that for all large $n$, some $n$-point configuration has $\\geq c \\cdot n^{4/3}$ $d$-unit distances. This proves the $n^{4/3}$ barrier is intrinsic to incidence-geometric methods."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 90 is one of the central questions in combinatorial geometry. The gap between the n^{4/3} upper bound and the n^{1+c/log log n} lower bound has remained open since 1946. Valtr's obstruction shows that new geometric ideas are needed.",
-    "implications": "Resolution would have profound consequences for incidence geometry, Kakeya-type problems, and the algebraic structure of Euclidean distance.",
+    "summary": "Erdős Problem #90 formalizes the complete logical structure of the unit distance problem: the extremal function u(n) defined via offDiag filtering, the Spencer–Szemerédi–Trotter O(n^{4/3}) upper bound (1984), the lattice lower bound n^{1+c/log log n}, the main conjecture (with $500 prize), the weak form ($250–300 prize), and Valtr's fundamental obstruction showing that breaking n^{4/3} requires Euclidean-specific methods. The file has 0 sorries and 6 axioms (all representing deep results or open conjectures).",
+    "implications": "Resolution would transform combinatorial geometry. The unit distance problem is intimately connected to the Erdős distinct distances problem (solved by Guth–Katz 2015), Kakeya-type problems, and the algebraic structure of Euclidean distance. Valtr's obstruction shows that purely topological or incidence-theoretic methods are insufficient; progress requires exploiting the algebraic nature of circles in the Euclidean plane, perhaps via polynomial methods as in the distinct distances solution.",
     "openQuestions": [
-      "Can the O(n^{4/3}) upper bound be improved at all?",
-      "What special property of Euclidean distance would enable such an improvement?",
-      "Does the problem have different behavior in higher dimensions?"
+      "Can the O(n^{4/3}) upper bound be improved at all, even to O(n^{4/3 - ε}) for some ε > 0?",
+      "What specific property of Euclidean distance (beyond convexity of unit circles) would enable progress?",
+      "Can polynomial partitioning methods (successful for distinct distances) be adapted for unit distances?",
+      "What is the exact constant c in the lattice lower bound n^{1+c/log log n}?",
+      "Does the problem have fundamentally different behavior in dimensions d ≥ 3?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-891",
+      "relationship": "thematic",
+      "description": "Both are Erdős open problems connecting combinatorial structure to number-theoretic phenomena; #891 studies prime factors in intervals, while #90 connects unit distances to sums of two squares"
+    }
+  ]
 }
