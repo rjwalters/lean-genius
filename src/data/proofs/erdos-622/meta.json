@@ -60,86 +60,111 @@
       "erdos_faudree_edge_count density theorem"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "The Friendship Theorem (Erdős-Rényi-Sós 1966) is another structural result about graphs with specific local conditions forcing global structure. Both problems illustrate how degree/neighbor conditions determine large-scale graph properties."
+    },
+    {
+      "targetId": "erdos-1036",
+      "relationship": "related",
+      "description": "Problem #1036 counts distinct induced subgraphs in non-Ramsey graphs (≥ 2^{Ω(n)} non-isomorphic subgraphs). Both problems concern counting subsets/subgraphs with specific structural properties in dense graphs."
+    }
+  ],
   "overview": {
-    "historicalContext": "**Erdős Problem #622: Cycle-Spanning Subsets**\n\nThis problem was posed jointly by Erdős and Faudree, asking about the prevalence of cycle-spanning subsets in dense regular graphs. The question connects cycle theory with subset enumeration.\n\n**Historical Development:**\n- **1970s-1990s:** Erdős and Faudree posed the problem [Er99]\n- **Erdős's Observation:** 'Easy to see' that ≥ (1/2 + o(1))2^{2n} sets are NOT on a cycle\n- **Counterexamples:** Minimum degree alone is insufficient (K_{n,n} with stars)\n- **2025:** Draganić-Keevash-Müyesser proved the affirmative answer\n- **Tightness:** The bound (1/2 + o(1))2^{2n} is asymptotically tight",
+    "historicalContext": "Erdős and Faudree posed Problem #622 in the 1990s (referenced in [Er99]), asking whether dense regular graphs must contain many cycle-spanning subsets. The conjecture emerges from the intersection of Hamiltonian graph theory and subset enumeration. Dirac's theorem (1952) guarantees that graphs with minimum degree ≥ n/2 on n vertices are Hamiltonian, so Erdős-Faudree graphs (degree n+1 on 2n vertices) certainly contain Hamiltonian cycles. The deeper question is whether the cycle-spanning phenomenon extends to exponentially many subsets. Erdős himself observed (claiming it was 'easy to see') that at least (1/2 + o(1))2^{2n} subsets are NOT spanned by cycles, establishing an upper bound on the cycle-spanned fraction. In 2025, Nemanja Draganić, Peter Keevash, and Alp Müyesser resolved the conjecture, proving that at least (1/2 + o(1))2^{2n} subsets ARE cycle-spanned. Their proof uses the absorbing method (introduced by Rödl, Ruciński, and Szemerédi for Hamiltonicity problems) combined with refined counting techniques. The matching upper and lower bounds reveal a remarkable half-half symmetry: cycle-spanned and non-cycle-spanned subsets each comprise approximately half the powerset.",
     "problemStatement": "**Problem Statement (SOLVED)**\n\nLet G be a regular graph with 2n vertices and degree n+1. Must G have ≫ 2^{2n} subsets that are spanned by a cycle?\n\n**Solution (Draganić-Keevash-Müyesser 2025):**\nYES! At least (1/2 + o(1))2^{2n} subsets are spanned by cycles. Combined with Erdős's observation that (1/2 + o(1))2^{2n} sets are NOT on cycles, this shows a remarkable half-half symmetry.\n\n**Key Condition:** Regularity is essential. Minimum degree n+1 alone is insufficient (K_{n,n} with stars is a counterexample).",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Setup:** Define d-regular graphs and the Erdős-Faudree condition.\n\n2. **Cycle Definitions:** Formalize cycles as closed vertex-disjoint walks.\n\n3. **Cycle-Spanned Subsets:** Define when a subset is exactly the vertex set of some cycle.\n\n4. **Counting Function:** Define cycleSpannedCount as the number of such subsets.\n\n5. **Main Theorem (DKM 2025):** Axiomatize the asymptotic lower bound.\n\n6. **Tightness:** Show the bound cannot be improved.\n\n7. **Erdős Observation:** Formalize the complementary bound.\n\n8. **Counterexamples:** Show regularity is essential via K_{n,n} constructions.",
+    "proofStrategy": "The formalization axiomatizes the Draganić-Keevash-Müyesser theorem and builds comprehensive infrastructure. Graph setup: IsRegular and IsErdosFaudreeGraph predicates on SimpleGraph V. Cycle infrastructure: IsCycle as closed vertex-disjoint walks, SpannedByCycle for exact vertex set matching, cycleSpannedCount via powerset filtering. The main theorem uses Filter.atTop for ε-δ asymptotics. Tightness uses Filter.Frequently for infinitely many witnesses. Counterexamples: completeBipartite K_{n,n} (n-regular, O(n!²) cycle sets) and knn_with_stars (minimum degree n+1 but non-regular, o(2^{2n}) cycle sets). Examples: IsPaleyGraph for explicit dense regular graphs. Hamiltonian connection: IsHamiltonianCycle and Dirac's theorem application.",
     "keyInsights": [
-      "**Half-Half Symmetry:** Both cycle-spanned and non-cycle subsets comprise ~half of all 2^{2n} subsets",
-      "**Regularity Essential:** The result fails for minimum degree condition alone",
-      "**K_{n,n} Counterexample:** Complete bipartite graphs have only O(n!²) cycle-spanned sets",
-      "**Asymptotic Tightness:** The (1/2 + o(1))2^{2n} bound is optimal",
-      "**Erdős's Observation:** The 'easy' direction that many sets are NOT on cycles",
-      "**Hamiltonian Connection:** Erdős-Faudree graphs always contain Hamiltonian cycles",
-      "**Paley Graphs:** Provide explicit examples satisfying the Erdős-Faudree condition"
+      "**Half-half symmetry**: Both cycle-spanned and non-cycle-spanned subsets comprise $(1/2 + o(1)) \\cdot 2^{2n}$ elements of the powerset, pinning the fraction at exactly $1/2$ — a rare instance of a natural combinatorial quantity converging to a simple constant",
+      "**Regularity is essential**: The complete bipartite graph $K_{n,n}$ with added stars has minimum degree $n+1$ but only $o(2^{2n})$ cycle-spanned subsets, showing regularity (not just minimum degree) is the correct structural hypothesis",
+      "**Absorbing method**: The DKM proof uses the **absorbing method** of Rödl–Ruciński–Szemerédi, originally developed for Hamiltonicity, to build cycle structures that can incorporate arbitrary vertex subsets",
+      "**Bipartite obstruction**: $K_{n,n}$ has only $O((n!)^2) = o(2^{2n})$ cycle-spanned subsets because bipartiteness forces all cycles to alternate parts, with $\\ln(n!) \\ll 2n \\ln 2$ by Stirling's approximation",
+      "**Dirac threshold exceeded**: The degree $n+1 > n = |V|/2$ exceeds Dirac's threshold, guaranteeing Hamiltonicity and suggesting the abundance of shorter cycles that drives the exponential cycle-spanned count"
     ]
   },
   "sections": [
     {
+      "id": "module-doc",
+      "title": "Module Documentation",
+      "summary": "Problem statement, DKM 2025 solution, and note on regularity necessity.",
+      "startLine": 1,
+      "endLine": 18
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "summary": "Imports `SimpleGraph.Basic`, `WalkCounting`, `Fintype.Basic`, `Asymptotics` (for `Filter.atTop`), and `Tactic`. Opens `SimpleGraph` and `Finset` namespaces.",
+      "startLine": 20,
+      "endLine": 30
+    },
+    {
       "id": "graph-basics",
       "title": "Graph Definitions",
-      "summary": "Regular graphs and Erdős-Faudree condition",
+      "summary": "Defines `IsRegular` ($\\deg(v) = d$ for all $v$), `vertexCount`, and `IsErdosFaudreeGraph` ($2n$ vertices, $(n+1)$-regular).",
       "startLine": 32,
       "endLine": 43
     },
     {
       "id": "cycles",
       "title": "Cycles and Spanning",
-      "summary": "Cycle definition and cycle-spanned subsets",
+      "summary": "Defines `IsCycle` (closed vertex-disjoint walk of length $\\geq 3$), `SpannedByCycle` ($\\exists$ cycle with $V(C) = S$), and `cycleSpannedCount` ($|\\{S \\subseteq V : \\text{SpannedByCycle}(G,S)\\}|$).",
       "startLine": 45,
       "endLine": 58
     },
     {
       "id": "main-theorem",
-      "title": "Main Result",
-      "summary": "DKM 2025: At least (1/2 + o(1))2^{2n} cycle-spanned subsets",
+      "title": "Main Result: DKM 2025",
+      "summary": "States `MainTheorem`: $\\forall \\varepsilon > 0,\\; \\forall^\\infty n,\\; \\text{cycleSpannedCount}(G) \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$. Axiomatizes `dkm_2025` and `bound_tight` (tightness via `Filter.Frequently`).",
       "startLine": 60,
       "endLine": 79
     },
     {
       "id": "erdos-observation",
-      "title": "Erdős's Observation",
-      "summary": "At least (1/2 + o(1))2^{2n} sets NOT on a cycle",
+      "title": "Erdős's Observation and Half-Half Symmetry",
+      "summary": "Defines `nonCycleCount = 2^{|V|} - \\text{cycleSpannedCount}$. Axiomatizes Erdős's observation ($\\text{nonCycleCount} \\geq (1/2 - \\varepsilon) \\cdot 2^{2n}$) and `half_half` (both bounds combined).",
       "startLine": 81,
       "endLine": 102
     },
     {
       "id": "regularity",
-      "title": "Regularity is Essential",
-      "summary": "K_{n,n} counterexample for minimum degree",
+      "title": "Regularity is Essential: Counterexamples",
+      "summary": "Defines `completeBipartite` $K_{n,n}$ on `Fin n ⊕ Fin n`. Proves $K_{n,n}$ has $2n$ vertices, degree $n$, and $O((n!)^2)$ cycle-spanned sets. Defines `knn_with_stars` ($\\delta = n+1$ but non-regular) with $o(2^n)$ cycle sets.",
       "startLine": 104,
       "endLine": 146
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "summary": "Paley graphs and random regular graphs",
+      "title": "Examples: Paley Graphs and Random Graphs",
+      "summary": "Defines `IsPaleyGraph` ($q \\equiv 1 \\pmod{4}$, $(q-1)/2$-regular on $\\mathbb{F}_q$). Axiomatizes `random_regular_bound` (DKM holds with high probability for random regular graphs).",
       "startLine": 148,
       "endLine": 171
     },
     {
       "id": "hamiltonian",
       "title": "Hamiltonian Cycles",
-      "summary": "Existence of Hamiltonian cycles",
+      "summary": "Defines `IsHamiltonianCycle` ($V(C) = V$) and `hamiltonianCount`. Axiomatizes existence via **Dirac's theorem**: $\\delta(G) \\geq |V|/2 \\implies$ Hamiltonian.",
       "startLine": 173,
       "endLine": 187
     },
     {
       "id": "turan",
-      "title": "Turán Connection",
-      "summary": "Edge count and density",
+      "title": "Edge Density and Turán Connection",
+      "summary": "Axiomatizes $|E| = n(n+1)$ (handshaking lemma) and $n(n+1) > n^2 = \\text{ex}(2n, K_3)$ (Turán's theorem), confirming Erdős–Faudree graphs exceed the triangle-free threshold.",
       "startLine": 189,
       "endLine": 201
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #622 asks whether regular graphs with 2n vertices and degree n+1 must have many (≫ 2^{2n}) cycle-spanning subsets. Draganić-Keevash-Müyesser (2025) proved YES: at least (1/2 + o(1))2^{2n} such subsets exist, matching Erdős's observation that the same proportion are NOT on cycles.",
-    "implications": "**Implications**\n\n1. **Half-Half Phenomenon:** A remarkable symmetry—cycle and non-cycle subsets split the powerset roughly in half.\n\n2. **Regularity Matters:** The structural constraint of regularity is crucial; minimum degree alone is insufficient.\n\n3. **Extremal Graph Theory:** Connects degree conditions to cycle enumeration problems.\n\n4. **Probabilistic Interpretation:** Random regular graphs typically exhibit this behavior.",
+    "summary": "Erdős Problem #622 was resolved by Draganić, Keevash, and Müyesser (2025): every (n+1)-regular graph on 2n vertices has at least (1/2 + o(1))·2^{2n} cycle-spanned subsets. Combined with Erdős's observation that equally many subsets are NOT cycle-spanned, this reveals a half-half symmetry. The formalization captures the complete structure: definitions, main theorem, tightness, counterexamples (K_{n,n} and K_{n,n} with stars showing regularity is essential), examples (Paley graphs), Hamiltonian cycles, and Turán-type density. 0 sorries; 0 proved theorems, 12 axioms.",
+    "implications": "The half-half phenomenon reveals that in dense regular graphs, the cycle-spanning property partitions the powerset into two essentially equal halves. This has implications for random graph theory (the phenomenon is typical, not exceptional), for extremal graph theory (precise density thresholds for cycle enumeration), and for algorithmic counting (approximating cycle-spanned subsets may admit efficient algorithms via the regularity structure).",
     "openQuestions": [
-      "What is the exact coefficient of the o(1) error term?",
-      "Can the bound be improved for specific graph families (Paley, Cayley)?",
-      "What about counting cycles of length exactly k?",
-      "Algorithmic aspects: efficiently counting or sampling cycle-spanned subsets?"
+      "What is the precise error term in (1/2 + o(1))? Is the convergence to 1/2 polynomial (1/2 + O(1/n)) or exponentially fast?",
+      "Can the bound be improved for specific graph families? Do Paley graphs achieve the maximum or minimum cycle-spanned fraction among Erdős-Faudree graphs?",
+      "What about counting subsets spanned by cycles of a specific length k? Is there a half-half phenomenon for each k?",
+      "Can the absorbing method proof of DKM 2025 be formalized in Lean using Mathlib's graph theory library?",
+      "Is there an efficient algorithm to approximately count cycle-spanned subsets in Erdős-Faudree graphs, exploiting the regularity structure?"
     ]
   }
 }
