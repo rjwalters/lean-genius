@@ -23,12 +23,30 @@
     "erdosUrl": "https://erdosproblems.com/460",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.GCD.Basic",
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic"
+      {
+        "theorem": "Mathlib.Data.Nat.Basic",
+        "description": "Basic from Mathlib.Data.Nat"
+      },
+      {
+        "theorem": "Mathlib.Data.Nat.GCD.Basic",
+        "description": "Basic from Mathlib.Data.Nat.GCD"
+      },
+      {
+        "theorem": "Mathlib.Data.Nat.Prime.Basic",
+        "description": "Basic from Mathlib.Data.Nat.Prime"
+      },
+      {
+        "theorem": "Mathlib.Data.Finset.Basic",
+        "description": "Basic from Mathlib.Data.Finset"
+      },
+      {
+        "theorem": "Mathlib.Data.Real.Basic",
+        "description": "Basic from Mathlib.Data.Real"
+      },
+      {
+        "theorem": "Mathlib.Tactic",
+        "description": "Tactic from Mathlib"
+      }
     ],
     "originalContributions": [
       "Axiomatic definition of the greedy coprime sieve sequence with initial values and greedy selection property",

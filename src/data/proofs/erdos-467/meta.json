@@ -24,10 +24,22 @@
     "erdosUrl": "https://erdosproblems.com/467",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Nat.GCD.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic"
+      {
+        "theorem": "Mathlib.Data.Nat.Prime.Basic",
+        "description": "Basic from Mathlib.Data.Nat.Prime"
+      },
+      {
+        "theorem": "Mathlib.Data.Nat.GCD.Basic",
+        "description": "Basic from Mathlib.Data.Nat.GCD"
+      },
+      {
+        "theorem": "Mathlib.Data.Real.Basic",
+        "description": "Basic from Mathlib.Data.Real"
+      },
+      {
+        "theorem": "Mathlib.Tactic",
+        "description": "Tactic from Mathlib"
+      }
     ],
     "originalContributions": [
       "Dependent-type definition of ResidueAssignment restricting to primes ≤ x",

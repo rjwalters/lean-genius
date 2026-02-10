@@ -22,11 +22,26 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
-      "Mathlib.Data.Nat.Factorial.Basic"
+      {
+        "theorem": "Mathlib.Combinatorics.SimpleGraph.Basic",
+        "description": "Basic from Mathlib.Combinatorics.SimpleGraph"
+      },
+      {
+        "theorem": "Mathlib.Data.Finset.Basic",
+        "description": "Basic from Mathlib.Data.Finset"
+      },
+      {
+        "theorem": "Mathlib.Order.Filter.Basic",
+        "description": "Basic from Mathlib.Order.Filter"
+      },
+      {
+        "theorem": "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+        "description": "Real from Mathlib.Analysis.SpecialFunctions.Pow"
+      },
+      {
+        "theorem": "Mathlib.Data.Nat.Factorial.Basic",
+        "description": "Basic from Mathlib.Data.Nat.Factorial"
+      }
     ],
     "originalContributions": [
       "Formal definition of multicolor Ramsey numbers R(3;k)",

@@ -23,11 +23,26 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      "Mathlib.SetTheory.Cardinal.Basic",
-      "Mathlib.SetTheory.Ordinal.Basic",
-      "Mathlib.SetTheory.Ordinal.Arithmetic",
-      "Mathlib.Data.Set.Basic",
-      "Mathlib.Order.WellFounded"
+      {
+        "theorem": "Mathlib.SetTheory.Cardinal.Basic",
+        "description": "Basic from Mathlib.SetTheory.Cardinal"
+      },
+      {
+        "theorem": "Mathlib.SetTheory.Ordinal.Basic",
+        "description": "Basic from Mathlib.SetTheory.Ordinal"
+      },
+      {
+        "theorem": "Mathlib.SetTheory.Ordinal.Arithmetic",
+        "description": "Arithmetic from Mathlib.SetTheory.Ordinal"
+      },
+      {
+        "theorem": "Mathlib.Data.Set.Basic",
+        "description": "Basic from Mathlib.Data.Set"
+      },
+      {
+        "theorem": "Mathlib.Order.WellFounded",
+        "description": "WellFounded from Mathlib.Order"
+      }
     ],
     "originalContributions": [
       "Formal definitions for graphs on ordinal products",

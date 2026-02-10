@@ -8,7 +8,14 @@
     "sourceUrl": "https://erdosproblems.com/871",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos871Problem.lean",
-    "tags": ["erdos", "additive-combinatorics", "number-theory", "additive-basis", "partition", "disproved"],
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "additive-basis",
+      "partition",
+      "disproved"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 871,
@@ -16,11 +23,26 @@
     "erdosProblemStatus": "disproved (lean)",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      "Mathlib.Data.Set.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Topology.Basic",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Algebra.BigOperators.Basic"
+      {
+        "theorem": "Mathlib.Data.Set.Basic",
+        "description": "Basic from Mathlib.Data.Set"
+      },
+      {
+        "theorem": "Mathlib.Order.Filter.Basic",
+        "description": "Basic from Mathlib.Order.Filter"
+      },
+      {
+        "theorem": "Mathlib.Topology.Basic",
+        "description": "Basic from Mathlib.Topology"
+      },
+      {
+        "theorem": "Mathlib.Data.Nat.Basic",
+        "description": "Basic from Mathlib.Data.Nat"
+      },
+      {
+        "theorem": "Mathlib.Algebra.BigOperators.Basic",
+        "description": "Basic from Mathlib.Algebra.BigOperators"
+      }
     ],
     "originalContributions": [
       "Formal definition of additive basis of order 2",

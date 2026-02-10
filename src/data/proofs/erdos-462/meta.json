@@ -22,9 +22,18 @@
     "erdosUrl": "https://erdosproblems.com/462",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Tactic"
+      {
+        "theorem": "Mathlib.Data.Nat.Prime.Basic",
+        "description": "Basic from Mathlib.Data.Nat.Prime"
+      },
+      {
+        "theorem": "Mathlib.Data.Real.Basic",
+        "description": "Basic from Mathlib.Data.Real"
+      },
+      {
+        "theorem": "Mathlib.Tactic",
+        "description": "Tactic from Mathlib"
+      }
     ],
     "originalContributions": [
       "Definition of leastPrimeFactor via Nat.minFac with axiomatized primality, divisibility, and minimality",
