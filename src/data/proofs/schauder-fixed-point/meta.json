@@ -1,0 +1,150 @@
+{
+  "id": "schauder-fixed-point",
+  "title": "Schauder Fixed Point Theorem",
+  "slug": "schauder-fixed-point",
+  "description": "Generalizes Brouwer's fixed point theorem to infinite-dimensional spaces: every continuous self-map of a nonempty compact convex subset of a locally convex space has a fixed point. Includes the full hierarchy from Brouwer through Schauder and Tychonoff, with applications to ODEs and contractions.",
+  "meta": {
+    "author": "Juliusz Schauder (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Schauder_fixed-point_theorem",
+    "date": "1930",
+    "status": "verified",
+    "tags": [
+      "topology",
+      "fixed-point-theory",
+      "functional-analysis",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ContractingWith.fixedPoint",
+        "description": "Banach contraction mapping fixed point",
+        "module": "Mathlib.Topology.MetricSpace.Contracting"
+      },
+      {
+        "theorem": "exists_mem_Icc_isFixedPt_of_mapsTo",
+        "description": "Interval fixed point via IVT",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "IsCompact",
+        "description": "Compactness predicate",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convexity for real vector spaces",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "LocallyConvexSpace",
+        "description": "Locally convex topological vector spaces",
+        "module": "Mathlib.Analysis.LocallyConvex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete fixed point theorem hierarchy (Brouwer -> Schauder -> Tychonoff)",
+      "Banach contraction mapping proved via Mathlib's ContractingWith",
+      "Schauder projection lemma and finite-dimensional approximation framework",
+      "Compact operator version for Banach spaces",
+      "Peano existence theorem as application of Schauder",
+      "Infinite-dimensional counterexample showing necessity of compactness"
+    ],
+    "dateAdded": "02/10/26"
+  },
+  "overview": {
+    "historicalContext": "Juliusz Schauder proved the normed space version in 1930, answering: what happens to Brouwer's theorem in infinite dimensions? The key insight is that compactness, not finite-dimensionality, is the essential ingredient.\n\nBrouwer's theorem fails in infinite dimensions because the closed unit ball is not compact (Riesz's lemma). There exist continuous self-maps of the unit ball in l2 with no fixed point. Schauder showed that if we add the compactness hypothesis back, fixed points are guaranteed.\n\nAndrei Tychonoff generalized to locally convex spaces in 1935. Shizuo Kakutani proved the set-valued version in 1941, which John Nash used to prove existence of Nash equilibria in 1950.",
+    "problemStatement": "Schauder Fixed Point Theorem: Let K be a nonempty compact convex subset of a normed space E, and let f: K -> K be continuous. Then f has a fixed point.\n\nMore generally (Tychonoff): the same holds when E is a locally convex topological vector space.\n\nFor non-compact domains: if C is a closed bounded convex subset of a Banach space and T: C -> C is continuous with T(C) relatively compact (compact operator), then T has a fixed point.",
+    "proofStrategy": "The proof uses finite-dimensional approximation:\n\n1. Schauder Projection Lemma: For compact K and epsilon > 0, construct a continuous map from K into a finite-dimensional convex hull of finitely many points of K, approximating the identity within epsilon.\n\n2. For each n, compose f with the 1/n-approximation to get maps on finite-dimensional convex sets.\n\n3. Apply Brouwer's theorem to each finite-dimensional approximation to get approximate fixed points.\n\n4. Extract a convergent subsequence by compactness of K.\n\n5. The limit is a true fixed point of f.",
+    "keyInsights": [
+      "Compactness, not finite-dimensionality, is the key to fixed point existence",
+      "The Schauder projection lemma bridges infinite and finite dimensions via partition of unity",
+      "The hierarchy Brouwer -> Schauder -> Tychonoff reflects increasing generality of the underlying space",
+      "Compact operators restore the fixed point property even on non-compact domains",
+      "The Banach contraction principle adds uniqueness and constructive iteration as a bonus"
+    ]
+  },
+  "sections": [
+    {
+      "id": "framework",
+      "title": "Fixed Point Framework",
+      "startLine": 66,
+      "endLine": 76,
+      "summary": "Basic definitions of fixed points and the HasFixedPtIn predicate."
+    },
+    {
+      "id": "finite-dim-approximation",
+      "title": "Finite-Dimensional Approximation",
+      "startLine": 78,
+      "endLine": 101,
+      "summary": "The Schauder projection lemma: approximating compact set maps by finite-dimensional ones using partition of unity."
+    },
+    {
+      "id": "brouwer-foundation",
+      "title": "Brouwer's Theorem (Foundation)",
+      "startLine": 103,
+      "endLine": 119,
+      "summary": "Brouwer's theorem for compact convex subsets of Euclidean space, the finite-dimensional base case."
+    },
+    {
+      "id": "schauder-normed",
+      "title": "Schauder Fixed Point Theorem",
+      "startLine": 121,
+      "endLine": 157,
+      "summary": "The main theorem: continuous self-maps of compact convex subsets of normed spaces have fixed points."
+    },
+    {
+      "id": "compact-operator",
+      "title": "Compact Operator Version",
+      "startLine": 159,
+      "endLine": 186,
+      "summary": "Extension to non-compact domains with compact operators, crucial for PDEs and integral equations."
+    },
+    {
+      "id": "tychonoff",
+      "title": "Tychonoff Fixed Point Theorem",
+      "startLine": 188,
+      "endLine": 211,
+      "summary": "The most general version: locally convex topological vector spaces."
+    },
+    {
+      "id": "hierarchy",
+      "title": "Theorem Hierarchy",
+      "startLine": 213,
+      "endLine": 244,
+      "summary": "The implication chain: interval FPT, Brouwer from Schauder, Schauder from Tychonoff."
+    },
+    {
+      "id": "peano",
+      "title": "Application: Peano Existence Theorem",
+      "startLine": 246,
+      "endLine": 270,
+      "summary": "How Schauder proves existence of ODE solutions where Brouwer cannot reach."
+    },
+    {
+      "id": "banach",
+      "title": "Banach Contraction Mapping",
+      "startLine": 272,
+      "endLine": 307,
+      "summary": "Contractions as a special case, with uniqueness proved via Mathlib's ContractingWith API."
+    },
+    {
+      "id": "counterexample",
+      "title": "Infinite-Dimensional Counterexample",
+      "startLine": 346,
+      "endLine": 363,
+      "summary": "Brouwer fails without compactness: continuous fixed-point-free self-maps of the unit ball exist in infinite dimensions."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Schauder Fixed Point Theorem demonstrates that compactness is the essential ingredient for fixed point existence, generalizing Brouwer's finite-dimensional result to infinite-dimensional spaces. The proof uses finite-dimensional approximation: approximate compact set maps by finite-dimensional ones, apply Brouwer, then extract a limit by compactness.",
+    "implications": "Schauder's theorem is fundamental in functional analysis and PDEs. It proves the Peano existence theorem for ODEs (where infinite-dimensional function spaces arise naturally), guarantees solutions to many integral equations, and underpins much of nonlinear analysis. The compact operator version is the workhorse: even when the domain isn't compact, if the operator maps bounded sets to relatively compact sets, fixed points exist. Through Kakutani's set-valued extension, this lineage leads to Nash's equilibrium theorem.",
+    "openQuestions": [
+      "Can we formalize the full proof of the Schauder projection lemma from first principles?",
+      "Can we prove Brouwer's theorem for the closed ball using only Mathlib's algebraic topology?",
+      "How can we formalize the Kakutani fixed point theorem for set-valued maps?",
+      "Can we construct the infinite-dimensional counterexample explicitly in Lean?"
+    ]
+  }
+}
