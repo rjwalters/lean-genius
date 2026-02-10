@@ -1876,4 +1876,249 @@ theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
     _ ≤ (Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ)).card := Finset.card_le_card himg_sub
     _ = (pp - 1) / 2 := hcard_target
 
+/-
+## Part XXIII: f(N) ≥ 6
+
+The set {1, 5, 21, 37, 41, 65} witnesses f(N) ≥ 6 for N ≥ 65.
+All 21 distinct sums (from 36 ordered pairs) are squarefree:
+2, 6, 10, 22, 26, 38, 42, 46, 58, 62, 66, 70, 74, 78, 82, 86, 102, 106, 130.
+-/
+
+-- Squarefree witnesses for new sums from adding 65
+private theorem squarefree_66 : Squarefree (66 : ℕ) := by
+  rw [show (66 : ℕ) = 2 * 33 from by norm_num]
+  have h33 : Squarefree (33 : ℕ) := by
+    rw [show (33 : ℕ) = 3 * 11 from by norm_num]
+    have : Nat.Prime 11 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, three_prime.squarefree, this.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h33⟩)
+
+private theorem squarefree_70 : Squarefree (70 : ℕ) := by
+  rw [show (70 : ℕ) = 2 * 35 from by norm_num]
+  have h35 : Squarefree (35 : ℕ) := by
+    rw [show (35 : ℕ) = 5 * 7 from by norm_num]
+    have h5 : Nat.Prime 5 := by native_decide
+    have h7 : Nat.Prime 7 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h5.squarefree, h7.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h35⟩)
+
+private theorem squarefree_86 : Squarefree (86 : ℕ) := by
+  rw [show (86 : ℕ) = 2 * 43 from by norm_num]
+  have : Nat.Prime 43 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_102 : Squarefree (102 : ℕ) := by
+  rw [show (102 : ℕ) = 2 * 51 from by norm_num]
+  have h51 : Squarefree (51 : ℕ) := by
+    rw [show (51 : ℕ) = 3 * 17 from by norm_num]
+    have : Nat.Prime 17 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, three_prime.squarefree, this.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h51⟩)
+
+private theorem squarefree_106 : Squarefree (106 : ℕ) := by
+  rw [show (106 : ℕ) = 2 * 53 from by norm_num]
+  have : Nat.Prime 53 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_130 : Squarefree (130 : ℕ) := by
+  rw [show (130 : ℕ) = 2 * 65 from by norm_num]
+  have h65 : Squarefree (65 : ℕ) := by
+    rw [show (65 : ℕ) = 5 * 13 from by norm_num]
+    have h5 : Nat.Prime 5 := by native_decide
+    have h13 : Nat.Prime 13 := by native_decide
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h5.squarefree, h13.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h65⟩)
+
+/--
+**{1, 5, 21, 37, 41, 65} has a squarefree sumset.**
+All 36 ordered pair sums are squarefree. This extends the 5-element set
+{1, 5, 21, 37, 41} by adding 65, introducing 6 new distinct sums:
+66=2·3·11, 70=2·5·7, 86=2·43, 102=2·3·17, 106=2·53, 130=2·5·13.
+-/
+theorem sext_1_5_21_37_41_65_squarefree_sumset :
+    hasSquarefreeSumset ({1, 5, 21, 37, 41, 65} : Finset ℕ) := by
+  intro s hs
+  simp only [sumset, Finset.mem_image, Finset.mem_product, Finset.mem_insert,
+    Finset.mem_singleton] at hs
+  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, hab⟩ := hs
+  simp only [isSquarefree]
+  rcases ha with rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rcases hb with rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp at hab <;> rw [← hab]
+  -- Row a=1: 2, 6, 22, 38, 42, 66
+  · exact squarefree_2
+  · exact squarefree_6
+  · exact squarefree_22
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_66
+  -- Row a=5: 6, 10, 26, 42, 46, 70
+  · exact squarefree_6
+  · exact squarefree_10
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_70
+  -- Row a=21: 22, 26, 42, 58, 62, 86
+  · exact squarefree_22
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_62
+  · exact squarefree_86
+  -- Row a=37: 38, 42, 58, 74, 78, 102
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_74
+  · exact squarefree_78
+  · exact squarefree_102
+  -- Row a=41: 42, 46, 62, 78, 82, 106
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_62
+  · exact squarefree_78
+  · exact squarefree_82
+  · exact squarefree_106
+  -- Row a=65: 66, 70, 86, 102, 106, 130
+  · exact squarefree_66
+  · exact squarefree_70
+  · exact squarefree_86
+  · exact squarefree_102
+  · exact squarefree_106
+  · exact squarefree_130
+
+/--
+**f(N) ≥ 6 for N ≥ 65:**
+The set {1, 5, 21, 37, 41, 65} ⊆ {1,...,N} has squarefree sumset, giving f(N) ≥ 6.
+-/
+theorem f_ge_six (N : ℕ) (hN : N ≥ 65) : f N ≥ 6 := by
+  unfold f
+  have h6 : (6 : ℕ) ∈ {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    simp only [Set.mem_setOf_eq]
+    refine ⟨{1, 5, 21, 37, 41, 65}, ?_, sext_1_5_21_37_41_65_squarefree_sumset, ?_⟩
+    · intro x hx
+      simp [Finset.mem_insert, Finset.mem_singleton] at hx
+      simp [Finset.mem_range]
+      rcases hx with rfl | rfl | rfl | rfl | rfl | rfl <;> omega
+    · simp [Finset.card_insert_of_not_mem, Finset.mem_insert, Finset.mem_singleton]
+      native_decide
+  have hbdd : BddAbove {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    use N + 1
+    intro m hm
+    simp only [Set.mem_setOf_eq] at hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm
+    rw [← hA_card]
+    exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
+  exact le_csSup hbdd h6
+
+/-
+## Part XXIV: Coprime Moduli and CRT
+
+When combining constraints from different primes p and q, the Chinese Remainder
+Theorem tells us the constraints are independent. This section formalizes the
+key structural result: if p ≠ q are primes, then p² and q² are coprime,
+and the residue constraints modulo p² and q² combine multiplicatively.
+-/
+
+/--
+**Coprimality of distinct prime squares:**
+For distinct primes p and q, p² and q² are coprime.
+-/
+theorem coprime_prime_sq (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) :
+    Nat.Coprime (p * p) (q * q) := by
+  have hcop : Nat.Coprime p q := hp.coprime_iff_not_dvd.mpr (fun h =>
+    hpq (hq.eq_one_or_self_of_dvd p h |>.resolve_left hp.one_lt.ne'))
+  have h1 : Nat.Coprime p (q * q) := hcop.mul_right hcop
+  exact h1.mul_left h1
+
+/--
+**CRT injectivity for residues mod p²q²:**
+For distinct primes p, q: if a, b < p²q² have the same residues mod p² and mod q²,
+then a = b. This is the uniqueness part of the Chinese Remainder Theorem.
+-/
+theorem crt_residue_injective (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (a b : ℕ) (ha : a < p * p * (q * q)) (hb : b < p * p * (q * q))
+    (h1 : a % (p * p) = b % (p * p)) (h2 : a % (q * q) = b % (q * q)) :
+    a = b := by
+  have hcop := coprime_prime_sq p q hp hq hpq
+  by_cases hab : a ≥ b
+  · have hpp_dvd : (p * p) ∣ (a - b) := by omega
+    have hqq_dvd : (q * q) ∣ (a - b) := by omega
+    have hdvd : (p * p) * (q * q) ∣ (a - b) :=
+      Nat.Coprime.mul_dvd_of_dvd_of_dvd hcop hpp_dvd hqq_dvd
+    have hlt : a - b < p * p * (q * q) := by omega
+    have h0 : a - b = 0 := by
+      rcases Nat.eq_zero_or_pos (a - b) with h | h
+      · exact h
+      · exact absurd (Nat.le_of_dvd h hdvd) (by omega)
+    omega
+  · push_neg at hab
+    have hpp_dvd : (p * p) ∣ (b - a) := by omega
+    have hqq_dvd : (q * q) ∣ (b - a) := by omega
+    have hdvd : (p * p) * (q * q) ∣ (b - a) :=
+      Nat.Coprime.mul_dvd_of_dvd_of_dvd hcop hpp_dvd hqq_dvd
+    have hlt : b - a < p * p * (q * q) := by omega
+    have h0 : b - a = 0 := by
+      rcases Nat.eq_zero_or_pos (b - a) with h | h
+      · exact h
+      · exact absurd (Nat.le_of_dvd h hdvd) (by omega)
+    omega
+
+/--
+**Combined density bound for two primes:**
+For distinct primes p and q, the number of residue classes of A modulo p²q²
+is at most ((p²-1)/2) * ((q²-1)/2).
+
+The CRT decomposition r ↦ (r % p², r % q²) injects the residue image mod p²q²
+into the product of residue images mod p² and mod q², each bounded by
+general_residue_image_le.
+-/
+theorem combined_residue_bound (A : Finset ℕ) (h : hasSquarefreeSumset A)
+    (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) :
+    (A.image (· % (p * p * (q * q)))).card ≤ ((p * p - 1) / 2) * ((q * q - 1) / 2) := by
+  set pp := p * p with hpp_def
+  set qq := q * q with hqq_def
+  set Spp := A.image (· % pp)
+  set Sqq := A.image (· % qq)
+  -- Step 1: |image mod ppqq| ≤ |image mod pp| × |image mod qq| via CRT injection
+  have hstep1 : (A.image (· % (pp * qq))).card ≤ Spp.card * Sqq.card := by
+    have hpp_pos : pp > 0 := Nat.mul_pos hp.pos hp.pos
+    have hqq_pos : qq > 0 := Nat.mul_pos hq.pos hq.pos
+    -- r ↦ (r % pp, r % qq) is injective on A.image (mod ppqq) by CRT
+    have hinj : Set.InjOn (fun r => (r % pp, r % qq)) ((A.image (· % (pp * qq))) : Set ℕ) := by
+      intro r hr s hs heq
+      simp only [Finset.mem_coe, Finset.mem_image] at hr hs
+      obtain ⟨a, _, rfl⟩ := hr
+      obtain ⟨b, _, rfl⟩ := hs
+      have hr_lt : a % (pp * qq) < pp * qq := Nat.mod_lt a (Nat.mul_pos hpp_pos hqq_pos)
+      have hs_lt : b % (pp * qq) < pp * qq := Nat.mod_lt b (Nat.mul_pos hpp_pos hqq_pos)
+      have h1 : a % (pp * qq) % pp = b % (pp * qq) % pp := congr_arg Prod.fst heq
+      have h2 : a % (pp * qq) % qq = b % (pp * qq) % qq := congr_arg Prod.snd heq
+      exact crt_residue_injective p q hp hq hpq _ _ hr_lt hs_lt h1 h2
+    -- The image maps into Spp ×ˢ Sqq
+    have himg : (A.image (· % (pp * qq))).image (fun r => (r % pp, r % qq)) ⊆ Spp ×ˢ Sqq := by
+      intro ⟨x, y⟩ hxy
+      simp only [Finset.mem_image, Finset.mem_product] at hxy ⊢
+      obtain ⟨r, hr, heq⟩ := hxy
+      simp only [Finset.mem_image] at hr
+      obtain ⟨a, ha, rfl⟩ := hr
+      constructor
+      · simp only [Finset.mem_image]
+        have : a % (pp * qq) % pp = a % pp := Nat.mod_mod_of_dvd a (dvd_mul_right pp qq)
+        exact ⟨a, ha, by rw [← congr_arg Prod.fst heq, this]⟩
+      · simp only [Finset.mem_image]
+        have : a % (pp * qq) % qq = a % qq := Nat.mod_mod_of_dvd a (dvd_mul_left qq pp)
+        exact ⟨a, ha, by rw [← congr_arg Prod.snd heq, this]⟩
+    calc (A.image (· % (pp * qq))).card
+        = ((A.image (· % (pp * qq))).image (fun r => (r % pp, r % qq))).card :=
+          (Finset.card_image_of_injOn hinj).symm
+      _ ≤ (Spp ×ˢ Sqq).card := Finset.card_le_card himg
+      _ = Spp.card * Sqq.card := Finset.card_product Spp Sqq
+  -- Step 2: Apply per-prime bounds
+  calc (A.image (· % (pp * qq))).card
+      ≤ Spp.card * Sqq.card := hstep1
+    _ ≤ ((pp - 1) / 2) * ((qq - 1) / 2) :=
+        Nat.mul_le_mul (general_residue_image_le A h p hp) (general_residue_image_le A h q hq)
+
 end Erdos1109
