@@ -2,10 +2,12 @@
   "id": "erdos-340",
   "title": "Erdős Problem #340: Growth of the Greedy Sidon Sequence",
   "slug": "erdos-340",
-  "description": "The Mian–Chowla sequence {1,2,4,8,13,21,...} is the greedy Sidon set. Is |A ∩ [1,N]| ≫ N^{1/2-ε}? Known lower bound: Ω(N^{1/3}). Also: does A-A have positive density? Status: OPEN.",
+  "description": "The Mian-Chowla sequence {1,2,4,8,13,21,...} is the greedy Sidon set. Is |A ∩ [1,N]| >> N^{1/2-ε}? Known lower bound: Ω(N^{1/3}). Also: does A-A have positive density? Status: OPEN.",
   "meta": {
-    "erdosNumber": 340,
+    "author": "Erdős–Graham",
+    "sourceUrl": "https://erdosproblems.com/340",
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos340Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -14,16 +16,23 @@
       "greedy-algorithms",
       "open"
     ],
-    "references": [
-      "Erdős–Graham (1980): original problem, p.53",
-      "Mian–Chowla: original sequence construction",
-      "OEIS A005282: the greedy Sidon sequence",
-      "https://erdosproblems.com/340"
-    ],
-    "leanFile": "Proofs/Erdos340Problem.lean",
+    "badge": "axiom",
     "sorries": 0,
-    "sourceUrl": "https://erdosproblems.com/340",
-    "erdosUrl": "https://erdosproblems.com/340"
+    "erdosNumber": 340,
+    "erdosUrl": "https://erdosproblems.com/340",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "The Mian-Chowla sequence was introduced independently by Abdul Majid Mian and S.D. Chowla in 1944 as the natural greedy construction for Sidon sets. Erdős and Graham asked about its growth rate in their 1980 monograph, noting the striking gap between the known $\\Omega(N^{1/3})$ lower bound and the theoretical $O(\\sqrt{N})$ upper bound for any Sidon set. The problem is a fundamental test case for whether greedy algorithms in additive combinatorics can achieve near-optimal density. In many combinatorial settings (graph colouring, independent sets), greedy constructions are provably suboptimal by polynomial factors. But numerical evidence for the Mian-Chowla sequence is remarkably encouraging: computations up to $N \\approx 10^{15}$ show $|A \\cap [1,N]| \\approx N^{0.497...}$, extremely close to $\\sqrt{N}$. The $N^{1/3}$ lower bound comes from a simple forbidden-sum counting argument: each of the $O(k^2)$ existing pairwise sums blocks at most one future candidate per step, so the $k$-th element is at most $O(k^3)$. Improving this to $N^{1/3+\\delta}$ for any $\\delta > 0$ would be significant. The separate question about the density of the difference set $A - A$ connects to the theory of return times and recurrence in additive number theory.",
+    "problemStatement": "Let A be the greedy Sidon sequence starting from 1. Is |A ∩ [1,N]| >> N^{1/2-ε} for all ε > 0?",
+    "proofStrategy": "We formalize `IsSidonSet` via the uniqueness of sum representations, `greedySidon` as a recursive noncomputable function using `sInf`, and `greedySidonCount N` as the counting function. Known initial values (OEIS A005282), strict monotonicity, and the Sidon invariant are axiomatized. The $N^{1/3}$ lower bound and Erdős-Turan $\\sqrt{N} + O(N^{1/4})$ upper bound frame the problem. The main conjecture and the difference set density question are stated as separate axioms.",
+    "keyInsights": [
+      "Any Sidon set in [1,N] has at most ~sqrt(N) elements (Erdos-Turan), so N^{1/2} is the natural target for the greedy sequence",
+      "The known lower bound N^{1/3} comes from counting forbidden sums: O(k^2) blocked values per step gives the k-th element at most O(k^3), so k >= Omega(N^{1/3})",
+      "The conjecture says greedy is nearly optimal (N^{1/2-epsilon}), which would be remarkable — in most combinatorial settings, greedy is polynomially suboptimal",
+      "Numerical evidence strongly supports the conjecture: computations show |A cap [1,N]| ~ N^{0.497}, very close to sqrt(N)",
+      "The difference set question (does A-A have positive density?) is independent and connects to Erdos Problem #332 on recurrent differences"
+    ]
   },
   "sections": [
     {
@@ -31,50 +40,50 @@
       "title": "Core Definitions",
       "startLine": 24,
       "endLine": 42,
-      "summary": "Define IsSidonSet, greedySidon, and greedySidonCount."
+      "summary": "`IsSidonSet` (unique pairwise sums), `greedySidon` (recursive Mian-Chowla construction via `sInf`), `greedySidonCount N`."
     },
     {
       "id": "initial-values",
       "title": "Known Initial Values",
-      "startLine": 44,
-      "endLine": 50,
-      "summary": "First 11 values: 1, 2, 4, 8, 13, 21, 31, 45, 66, 81, 97."
+      "startLine": 43,
+      "endLine": 59,
+      "summary": "First 11 values of OEIS A005282, strict monotonicity, and Sidon invariant at every stage."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "startLine": 56,
-      "endLine": 72,
-      "summary": "Lower bound Ω(N^{1/3}), upper bound √N + O(N^{1/4}) from Erdős–Turán."
+      "startLine": 61,
+      "endLine": 74,
+      "summary": "Lower bound $\\Omega(N^{1/3})$ from forbidden-sum counting. Upper bound $\\sqrt{N} + O(N^{1/4})$ from Erdos-Turan."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture and Difference Set",
-      "startLine": 74,
-      "endLine": 100,
-      "summary": "Conjecture: N^{1/2-ε} growth. Also: does A-A have positive density?"
+      "startLine": 76,
+      "endLine": 104,
+      "summary": "Near-optimal growth conjecture ($N^{1/2-\\varepsilon}$), difference set density question, and random Sidon benchmark."
     }
   ],
-  "overview": {
-    "historicalContext": "The Mian–Chowla sequence was introduced independently by Mian (1944) and Chowla (1944). Erdős and Graham asked about its growth rate in 1980. The sequence is a natural test case for the efficiency of greedy algorithms in additive combinatorics. OEIS A005282.",
-    "problemStatement": "Let A be the greedy Sidon sequence starting from 1. Is |A ∩ [1,N]| ≫ N^{1/2-ε} for all ε > 0?",
-    "proofStrategy": "We formalize the Sidon set definition, the greedy construction, initial values, known bounds (N^{1/3} lower, √N upper), and the main conjecture on near-optimal growth.",
-    "keyInsights": [
-      "Any Sidon set in [1,N] has at most ~√N elements, so N^{1/2} is the natural target",
-      "The greedy construction gives at least Ω(N^{1/3}), leaving a large gap",
-      "The conjecture says greedy is nearly optimal: N^{1/2-ε} for any ε > 0",
-      "The difference set A-A may have positive density — a separate open question",
-      "Related to Problem #156 on the slow growth of maximal Sidon subsets"
+  "conclusion": {
+    "summary": "Erdős Problem #340 asks whether the greedy Sidon (Mian-Chowla) sequence grows at nearly the optimal rate N^{1/2}. The known lower bound N^{1/3} is far from the conjectured N^{1/2-epsilon}, leaving a substantial gap. The difference set density question adds a complementary structural dimension.",
+    "implications": "**Greedy Algorithms**: A proof would demonstrate that greedy achieves near-optimal density for Sidon sets, a rare positive result for greedy methods in combinatorics. **Additive Combinatorics**: The techniques would likely illuminate the fine structure of forbidden-sum constraints and their accumulation over the greedy process. **Computational Number Theory**: The close numerical agreement between greedy and optimal suggests deep structural reasons that current methods cannot capture. **Difference Sets**: Resolving the A-A density question would connect to broader problems on recurrence and syndetic differences.",
+    "openQuestions": [
+      "Is |A ∩ [1,N]| >> N^{1/2-ε} for all ε > 0?",
+      "Can the N^{1/3} lower bound be improved to N^{1/3+δ} for any δ > 0?",
+      "Does A - A have positive density?",
+      "What is the exact growth rate of the Mian-Chowla sequence: is it N^{1/2-o(1)} or N^{α} for some α < 1/2?"
     ]
   },
-  "conclusion": {
-    "summary": "Erdős Problem #340 asks whether the greedy Sidon (Mian–Chowla) sequence grows at nearly the optimal rate N^{1/2}. The known lower bound N^{1/3} is far from the conjectured N^{1/2-ε}. The difference set density question is also open.",
-    "implications": "A proof would demonstrate that greedy algorithms achieve near-optimal density for Sidon sets, a fundamental question in additive combinatorics with connections to coding theory and pseudorandom constructions.",
-    "openQuestions": [
-      "Is |A ∩ [1,N]| ≫ N^{1/2-ε} for all ε > 0?",
-      "What is the exact growth rate: N^{1/2} or something smaller?",
-      "Does A - A have positive density?",
-      "Is 33 in A - A? (smallest uncertain case)"
-    ]
-  }
+  "crossReferences": [
+    {
+      "targetId": "erdos-30",
+      "relationship": "related",
+      "description": "Problem #30 asks whether h(N) = N^{1/2} + O_ε(N^ε) for general Sidon sets. Problem #340 specifically concerns the greedy construction's growth rate."
+    },
+    {
+      "targetId": "erdos-156",
+      "relationship": "related",
+      "description": "Problem #156 concerns the slow growth of maximal Sidon subsets. Both problems study how construction methods affect Sidon set density."
+    }
+  ]
 }

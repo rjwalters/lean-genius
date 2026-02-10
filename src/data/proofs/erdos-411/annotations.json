@@ -1,56 +1,208 @@
 [
   {
-    "id": "erdos-411-iteration",
+    "id": "erdos-411-header",
+    "proofId": "erdos-411",
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 12 },
+    "title": "Problem Background",
+    "content": "Erdős Problem #411 studies the arithmetic dynamics of the map $g(n) = n + \\varphi(n)$, where $\\varphi$ is Euler's totient function. Iterating $g$ produces a sequence $n, g(n), g^2(n), \\ldots$ that grows roughly linearly. The problem asks: for which $n$ and $r$ does $g^{k+r}(n) = 2 \\cdot g^k(n)$ hold for all sufficiently large $k$? This is a question about exact exponential growth rates in arithmetic dynamical systems.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "arithmetic dynamics / number theory",
+      "prerequisites": ["Euler's totient function φ(n)", "iteration of arithmetic functions", "eventual periodicity", "multiplicative functions"],
+      "relatedTheorems": ["Erdős–Graham (1980) Old and New Problems and Results in Combinatorial Number Theory", "Steinerberger (2025) reduction for r = 2", "Carmichael's totient conjecture"],
+      "latex": "g(n) = n + \\varphi(n), \\quad g^{k+r}(n) = 2 \\cdot g^k(n) \\text{ for all large } k"
+    }
+  },
+  {
+    "id": "erdos-411-totientStep",
     "proofId": "erdos-411",
     "type": "definition",
-    "range": { "startLine": 23, "endLine": 29 },
-    "title": "Iteration Function",
-    "content": "totientStep g(n) = n + φ(n) and iteratedTotientStep g_k(n) defined by recursion on k. These capture the iterated application of the totient-shift map.",
-    "significance": "essential"
+    "range": { "startLine": 23, "endLine": 24 },
+    "title": "The Map $g(n) = n + \\varphi(n)$",
+    "content": "The function `totientStep` computes $g(n) = n + \\varphi(n)$. Since $\\varphi(n) \\geq 1$ for $n \\geq 1$, this map is strictly increasing. For even $n > 2$, $\\varphi(n)$ is even, so $g$ preserves parity. The map arises naturally from the identity $n = \\sum_{d \\mid n} \\varphi(d)$, making $g(n) = n + \\varphi(n)$ a 'self-augmenting' version of $n$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "arithmetic dynamics",
+      "latex": "g(n) = n + \\varphi(n)",
+      "leanSignature": "def totientStep (n : ℕ) : ℕ := n + n.totient",
+      "relatedTheorems": ["For prime p, g(p) = p + (p-1) = 2p-1. For p^k, g(p^k) = p^k + p^k(1 - 1/p) = p^k(2 - 1/p)."]
+    }
+  },
+  {
+    "id": "erdos-411-iterated",
+    "proofId": "erdos-411",
+    "type": "definition",
+    "range": { "startLine": 27, "endLine": 29 },
+    "title": "Iterated $g^k(n)$",
+    "content": "The $k$-th iterate $g^k(n)$ is defined recursively: $g^0(n) = n$ and $g^{k+1}(n) = g(g^k(n))$. The sequence $g^0(n), g^1(n), g^2(n), \\ldots$ is strictly increasing since $g(m) > m$ for $m \\geq 1$. The ratio $g^{k+r}(n) / g^k(n)$ may stabilize as $k \\to \\infty$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "arithmetic dynamics",
+      "latex": "g^0(n) = n, \\quad g^{k+1}(n) = g(g^k(n))",
+      "leanSignature": "def iteratedTotientStep : ℕ → ℕ → ℕ | 0, n => n | k + 1, n => totientStep (iteratedTotientStep k n)"
+    }
   },
   {
     "id": "erdos-411-doubling",
     "proofId": "erdos-411",
     "type": "definition",
     "range": { "startLine": 35, "endLine": 38 },
-    "title": "Doubling Relation",
-    "content": "DoublingRelation n r asserts g_{k+r}(n) = 2·g_k(n) for all sufficiently large k. This is the core property Erdős asked about.",
-    "significance": "essential"
+    "title": "The Doubling Relation",
+    "content": "`DoublingRelation n r` asserts that $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all sufficiently large $k$. This means that after an initial transient, applying $g$ exactly $r$ more times doubles the value. The 'eventually' quantifier (there exists $K$ such that the relation holds for all $k \\geq K$) captures the idea that we care about asymptotic behavior, not initial values.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "arithmetic dynamics",
+      "latex": "\\text{DoublingRelation}(n, r) \\iff \\exists K,\\; \\forall k \\geq K,\\; g^{k+r}(n) = 2 \\cdot g^k(n)",
+      "leanSignature": "def DoublingRelation (n r : ℕ) : Prop := ∃ K : ℕ, ∀ k : ℕ, k ≥ K → iteratedTotientStep (k + r) n = 2 * iteratedTotientStep k n",
+      "relatedTheorems": ["This is equivalent to saying the orbit {g^k(n)} eventually satisfies a linear recurrence with ratio 2 and period r"]
+    }
   },
   {
     "id": "erdos-411-conjecture",
     "proofId": "erdos-411",
     "type": "conjecture",
-    "range": { "startLine": 48, "endLine": 50 },
-    "title": "Erdős Problem 411",
-    "content": "Characterize all pairs (n, r) with the doubling property. The problem is open and cannot be resolved by finite computation.",
-    "significance": "essential"
+    "range": { "startLine": 44, "endLine": 50 },
+    "title": "Erdős Problem #411",
+    "content": "The problem asks for a complete characterization of all pairs $(n, r)$ satisfying the doubling relation. The formalization states this as the existence of a set $S \\subseteq \\mathbb{N} \\times \\mathbb{N}$ that captures exactly the solution pairs and is nonempty (we know solutions exist). The problem remains OPEN — it is not even known whether the solution set is finite or infinite.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "open problems in number theory",
+      "latex": "\\text{Characterize } \\{(n, r) : g^{k+r}(n) = 2 \\cdot g^k(n) \\text{ for large } k\\}",
+      "leanSignature": "def ErdosProblem411 : Prop := ∃ S : Set (ℕ × ℕ), (∀ p : ℕ × ℕ, p ∈ S ↔ DoublingRelation p.1 p.2) ∧ S.Nonempty",
+      "formalizationNote": "The nonemptiness clause is included because we know solutions exist (n = 10, 94 for r = 2). The characterization problem asks for a 'nice' description of S."
+    }
   },
   {
-    "id": "erdos-411-solutions",
+    "id": "erdos-411-n10",
     "proofId": "erdos-411",
-    "type": "result",
-    "range": { "startLine": 56, "endLine": 73 },
-    "title": "Known Solutions",
-    "content": "For r = 2: n = 10, 94 are solutions. Cambie found ratio-3 (n = 738) and ratio-4 (n = 148646, 4325798) solutions with period r = 4.",
-    "significance": "essential"
+    "type": "axiom",
+    "range": { "startLine": 56, "endLine": 58 },
+    "title": "Known Solution: $n = 10$, $r = 2$",
+    "content": "For $n = 10$: $g(10) = 10 + \\varphi(10) = 10 + 4 = 14$, $g(14) = 14 + \\varphi(14) = 14 + 6 = 20$, so $g^2(10) = 20 = 2 \\cdot 10$. This doubling pattern persists for all subsequent iterates. Steinerberger's reduction confirms: $\\varphi(10) + \\varphi(14) = 4 + 6 = 10 = n$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "computational verification",
+      "latex": "g^2(10) = 20 = 2 \\cdot 10, \\quad \\varphi(10) + \\varphi(14) = 10",
+      "leanSignature": "axiom doubling_r2_n10 : DoublingRelation 10 2",
+      "proofTechnique": "The orbit is 10 → 14 → 20 → 28 → 40 → 56 → 80 → ..., doubling every two steps."
+    }
+  },
+  {
+    "id": "erdos-411-n94",
+    "proofId": "erdos-411",
+    "type": "axiom",
+    "range": { "startLine": 60, "endLine": 61 },
+    "title": "Known Solution: $n = 94$, $r = 2$",
+    "content": "For $n = 94$: $\\varphi(94) = \\varphi(2 \\cdot 47) = 46$, so $g(94) = 140$. Then $\\varphi(140) = \\varphi(2^2 \\cdot 5 \\cdot 7) = 48$, so $g(140) = 188 = 2 \\cdot 94$. Steinerberger's check: $\\varphi(94) + \\varphi(140) = 46 + 48 = 94 = n$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "computational verification",
+      "latex": "g^2(94) = 188 = 2 \\cdot 94, \\quad \\varphi(94) + \\varphi(140) = 94",
+      "leanSignature": "axiom doubling_r2_n94 : DoublingRelation 94 2",
+      "relatedTheorems": ["94 = 2 · 47, fitting Cambie's conjecture with l = 1, p = 47"]
+    }
+  },
+  {
+    "id": "erdos-411-general-ratio",
+    "proofId": "erdos-411",
+    "type": "definition",
+    "range": { "startLine": 65, "endLine": 67 },
+    "title": "General Ratio Relation",
+    "content": "Generalization of the doubling relation: $g^{k+r}(n) = c \\cdot g^k(n)$ for all large $k$, where $c$ is an arbitrary multiplicative factor. Cambie discovered that ratios besides 2 (specifically 3 and 4) can also occur, extending the landscape of solutions beyond Erdős's original question.",
+    "significance": "key",
+    "mathContext": {
+      "field": "arithmetic dynamics",
+      "latex": "\\text{GeneralRatioRelation}(n, r, c) \\iff \\exists K,\\; \\forall k \\geq K,\\; g^{k+r}(n) = c \\cdot g^k(n)",
+      "leanSignature": "def GeneralRatioRelation (n r c : ℕ) : Prop := ∃ K : ℕ, ∀ k : ℕ, k ≥ K → iteratedTotientStep (k + r) n = c * iteratedTotientStep k n"
+    }
+  },
+  {
+    "id": "erdos-411-cambie-ratio3",
+    "proofId": "erdos-411",
+    "type": "axiom",
+    "range": { "startLine": 69, "endLine": 69 },
+    "title": "Cambie's Ratio-3 Solution",
+    "content": "Cambie found that $n = 738$ with period $r = 4$ gives a ratio-3 solution: $g^{k+4}(738) = 3 \\cdot g^k(738)$ for all large $k$. This shows the phenomenon extends beyond doubling to tripling, opening up a richer classification problem.",
+    "significance": "key",
+    "mathContext": {
+      "field": "arithmetic dynamics",
+      "latex": "g^{k+4}(738) = 3 \\cdot g^k(738) \\text{ for large } k",
+      "leanSignature": "axiom cambie_ratio3 : GeneralRatioRelation 738 4 3"
+    }
+  },
+  {
+    "id": "erdos-411-cambie-ratio4",
+    "proofId": "erdos-411",
+    "type": "axiom",
+    "range": { "startLine": 72, "endLine": 73 },
+    "title": "Cambie's Ratio-4 Solutions",
+    "content": "Cambie found two ratio-4 solutions with period $r = 4$: $n = 148646$ and $n = 4325798$. These satisfy $g^{k+4}(n) = 4 \\cdot g^k(n)$ for all large $k$. The existence of ratio-4 solutions (alongside ratio-2 and ratio-3) suggests a rich structure in the possible growth rates.",
+    "significance": "key",
+    "mathContext": {
+      "field": "arithmetic dynamics",
+      "latex": "g^{k+4}(148646) = 4 \\cdot g^k(148646), \\quad g^{k+4}(4325798) = 4 \\cdot g^k(4325798)",
+      "leanSignature": "axiom cambie_ratio4_148646 : GeneralRatioRelation 148646 4 4"
+    }
   },
   {
     "id": "erdos-411-steinerberger",
     "proofId": "erdos-411",
-    "type": "result",
+    "type": "axiom",
     "range": { "startLine": 79, "endLine": 83 },
-    "title": "Steinerberger's Reduction",
-    "content": "The r = 2 doubling property is equivalent to the single equation φ(n) + φ(n + φ(n)) = n, reducing an asymptotic condition to a finite check per n.",
-    "significance": "essential"
+    "title": "Steinerberger's Reduction (2025)",
+    "content": "Steinerberger (2025) proved that the $r = 2$ doubling property is equivalent to the single algebraic equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. This is a remarkable simplification: the asymptotic condition '$g^{k+2}(n) = 2 \\cdot g^k(n)$ for large $k$' reduces to a finitely checkable identity involving just two evaluations of $\\varphi$.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "analytic number theory / arithmetic dynamics",
+      "latex": "\\text{DoublingRelation}(n, 2) \\iff \\varphi(n) + \\varphi(n + \\varphi(n)) = n",
+      "proofTechnique": "The key insight is that if g²(n) = 2n, then g²(g^k(n)) = g^{k+2}(n). By induction, if the doubling holds once at the 'right' point, it propagates to all subsequent iterates. Conversely, if it holds eventually, backtracking shows it must hold at n itself.",
+      "references": ["S. Steinerberger, 'On a problem of Erdős and Graham on iterated totients', 2025"],
+      "leanSignature": "axiom steinerberger_r2_equiv (n : ℕ) : DoublingRelation n 2 ↔ n.totient + (n + n.totient).totient = n"
+    }
   },
   {
-    "id": "erdos-411-structure",
+    "id": "erdos-411-even-preservation",
     "proofId": "erdos-411",
-    "type": "context",
-    "range": { "startLine": 89, "endLine": 109 },
-    "title": "Structural Properties",
-    "content": "Even inputs stay even under g (proved). Cambie conjectures all r = 2 solutions are n = 2^l · p for p ∈ {2,3,5,7,35,47}. The function g is monotone increasing.",
-    "significance": "supporting"
+    "type": "theorem",
+    "range": { "startLine": 91, "endLine": 95 },
+    "title": "Even Preservation Under $g$",
+    "content": "For even $n > 2$, $g(n) = n + \\varphi(n)$ is even. This follows because $\\varphi(n)$ is even for $n > 2$ (a classical result: $\\varphi(n) = n \\prod_{p \\mid n}(1 - 1/p)$ is even unless $n \\in \\{1, 2\\}$). Since all known solutions are even, this is a relevant structural constraint.",
+    "significance": "key",
+    "mathContext": {
+      "field": "elementary number theory",
+      "latex": "2 \\mid n \\text{ and } n > 2 \\implies 2 \\mid g(n)",
+      "proofTechnique": "Uses Mathlib's Nat.totient_even which states φ(n) is even for n > 2. Then g(n) = n + φ(n) is a sum of two even numbers.",
+      "leanSignature": "theorem totientStep_even_of_even {n : ℕ} (hn : 2 ∣ n) (hn2 : n > 2) : 2 ∣ totientStep n"
+    }
+  },
+  {
+    "id": "erdos-411-cambie-conjecture",
+    "proofId": "erdos-411",
+    "type": "conjecture",
+    "range": { "startLine": 97, "endLine": 102 },
+    "title": "Cambie's Structural Conjecture",
+    "content": "Cambie conjectures that all $r = 2$ doubling solutions have the form $n = 2^l \\cdot p$ where $l \\geq 1$ and $p \\in \\{2, 3, 5, 7, 35, 47\\}$. This would give a complete finite list of solutions: $\\{4, 6, 8, 10, 12, 14, 16, 20, 24, 28, 40, 48, 56, 70, 80, 94, 96, 112, 140, 160, \\ldots\\}$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "arithmetic dynamics",
+      "latex": "\\text{DoublingRelation}(n, 2) \\implies n = 2^l \\cdot p, \\; l \\geq 1, \\; p \\in \\{2, 3, 5, 7, 35, 47\\}",
+      "leanSignature": "def CambieConjecture : Prop := ∀ n : ℕ, DoublingRelation n 2 → ∃ l : ℕ, l ≥ 1 ∧ ∃ p ∈ ({2, 3, 5, 7, 35, 47} : Finset ℕ), n = 2 ^ l * p",
+      "formalizationNote": "Note that 10 = 2¹ · 5 and 94 = 2¹ · 47 fit this pattern. Cambie's conjecture would make the solution set infinite (all powers of 2 times each p would work) but highly structured."
+    }
+  },
+  {
+    "id": "erdos-411-monotonicity",
+    "proofId": "erdos-411",
+    "type": "theorem",
+    "range": { "startLine": 106, "endLine": 108 },
+    "title": "Monotonicity of $g$",
+    "content": "The map $g(n) = n + \\varphi(n) \\geq n$ for all $n$, with strict inequality for $n \\geq 1$ since $\\varphi(n) \\geq 1$. This means the orbit $g^k(n)$ is nondecreasing. The proof is immediate by `omega`.",
+    "significance": "supporting",
+    "mathContext": {
+      "field": "elementary number theory",
+      "latex": "g(n) = n + \\varphi(n) \\geq n",
+      "leanSignature": "theorem totientStep_ge (n : ℕ) : totientStep n ≥ n"
+    }
   }
 ]

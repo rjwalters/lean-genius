@@ -4,7 +4,7 @@
   "slug": "erdos-386",
   "description": "Let 2 ≤ k ≤ n − 2. Can C(n,k) be the product of consecutive primes infinitely often? Known examples include C(21,2) = 2·3·5·7, C(7,3) = 5·7, and C(15,6) = 5·7·11·13. OPEN.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős–Graham",
     "sourceUrl": "https://erdosproblems.com/386",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos386Problem.lean",
@@ -13,7 +13,8 @@
       "number-theory",
       "binomial-coefficients",
       "prime-numbers",
-      "combinatorics"
+      "primorials",
+      "open"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -22,14 +23,15 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem appears in Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 74). It asks about the intersection of binomial coefficient structure and prime number distribution — specifically whether binomial coefficients can equal products of consecutive primes infinitely often.",
+    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 74), asking whether binomial coefficients C(n,k) can equal products of consecutive primes p_i · p_{i+1} · ⋯ · p_j infinitely often. The question sits at the intersection of two deep streams: the prime factorization structure of binomial coefficients (studied since Kummer's 1852 theorem on p-adic valuations via carries in base-p addition) and the distribution of primorial quotients (products of consecutive primes). The known examples — C(21,2) = 210 = 2·3·5·7, C(7,3) = 35 = 5·7, C(10,4) = 210, C(14,4) = 1001 = 7·11·13, and C(15,6) = 5005 = 5·7·11·13 — all have small k ≤ 6 and n ≤ 21. The Sylvester–Schur theorem (1934) guarantees that C(n,k) always has a prime factor > k, providing a lower bound on the 'reach' of its prime factorization. Granville's work on the multiplicative structure of binomial coefficients (2000s) shows they are 'almost always' squarefree, but being a product of *consecutive* primes is a much stronger constraint that remains poorly understood.",
     "problemStatement": "Let 2 ≤ k ≤ n − 2. Can C(n,k) be the product of consecutive primes p_i · p_{i+1} · ⋯ · p_j for infinitely many n? Known examples: C(21,2) = 210 = 2·3·5·7, C(7,3) = 35 = 5·7, C(10,4) = 210 = 2·3·5·7, C(14,4) = 1001 = 7·11·13, C(15,6) = 5005 = 5·7·11·13.",
-    "proofStrategy": "We define prime enumeration and the notion of a product of consecutive primes, state known examples as axioms, formalize the main conjecture, and derive structural consequences (squarefreeness). The problem remains open.",
+    "proofStrategy": "We define prime enumeration via Mathlib's countability of primes, the product of consecutive primes as a Finset.Ico product, and the predicate IsProductOfConsecutivePrimes via existential quantification. Known examples are axiomatized. The main conjecture ErdosProblem386 universally quantifies over k ≥ 2. Squarefreeness of consecutive prime products is axiomatized, and the structural consequence choose_consec_primes_squarefree is proved. The k = 2 reduction and the Erdős–Graham bound on largest prime factors are included as contextual results.",
     "keyInsights": [
-      "A product of consecutive primes is necessarily squarefree, so squarefreeness of C(n,k) is a necessary condition",
-      "For k = 2 the problem reduces to when n(n-1)/2 is a primorial quotient",
-      "All known examples have relatively small k; whether large k can produce such products is unknown",
-      "Related to Erdős problems 384 (prime divisors of C(n,k)) and 387 (divisors near n)"
+      "A product of consecutive primes is necessarily squarefree, so squarefreeness of C(n,k) is a necessary condition — this filters the search space but is far from sufficient",
+      "For k = 2 the problem reduces to when n(n-1)/2 is a primorial quotient, connecting triangular numbers to prime products",
+      "All known examples have k ≤ 6 and n ≤ 21; whether large k can produce such products is unknown and would require C(n,k) to have no prime gaps in its factorization",
+      "The tension between C(n,k) ~ n^k/k! (polynomial growth in n) and the spacing of primorial quotients (roughly exponential in the prime gap) makes large examples increasingly rare",
+      "The Lean formalization uses the 'for every threshold N, there exists n ≥ N' idiom to express infinitude, avoiding direct use of Filter.atTop"
     ]
   },
   "sections": [
@@ -38,7 +40,7 @@
       "title": "Prime Enumeration",
       "startLine": 29,
       "endLine": 48,
-      "summary": "Defines nthPrime as the i-th prime (0-indexed) and states axioms that it yields primes and is strictly monotone."
+      "summary": "Defines nthPrime via Mathlib's countable primes, with axioms for primality and strict monotonicity."
     },
     {
       "id": "consecutive-prime-product",
@@ -52,44 +54,52 @@
       "title": "Known Examples",
       "startLine": 66,
       "endLine": 90,
-      "summary": "States five known examples as axioms: C(21,2), C(7,3), C(10,4), C(14,4), and C(15,6) are each products of consecutive primes."
+      "summary": "Five axiomatized examples: C(21,2)=210, C(7,3)=35, C(10,4)=210, C(14,4)=1001, C(15,6)=5005."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 92,
       "endLine": 104,
-      "summary": "Formalizes Erdős Problem 386: for every k ≥ 2, there exist infinitely many n with k+2 ≤ n such that C(n,k) is a product of consecutive primes."
+      "summary": "ErdosProblem386: for every k ≥ 2, infinitely many n have C(n,k) equal to a product of consecutive primes."
     },
     {
       "id": "structural-observations",
       "title": "Structural Observations",
       "startLine": 106,
       "endLine": 128,
-      "summary": "Defines squarefreeness and proves that any C(n,k) equal to a product of consecutive primes must be squarefree."
+      "summary": "IsSquarefree definition, consecutivePrimeProd_squarefree axiom, and the proved theorem choose_consec_primes_squarefree."
     },
     {
       "id": "k-equals-2",
       "title": "The k = 2 Case",
       "startLine": 130,
       "endLine": 140,
-      "summary": "For k = 2, C(n,2) = n(n-1)/2, reducing the problem to finding triangular numbers that are primorial quotients."
+      "summary": "For k = 2, C(n,2) = n(n-1)/2 must be a primorial quotient. Known example: C(21,2) = 210."
     },
     {
       "id": "erdos-graham-connection",
       "title": "Connection to Erdős–Graham (1980)",
       "startLine": 142,
       "endLine": 158,
-      "summary": "Places the problem in context of the 1980 Erdős–Graham monograph and states the bound that prime factors of C(n,k) are at most n."
+      "summary": "Context from the 1980 monograph, largest prime factor bound, and connections to Problems 384, 385, 387."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 386 formalizes the question of whether binomial coefficients can equal products of consecutive primes infinitely often. Several known examples are axiomatized, the main conjecture is stated, and the structural consequence of squarefreeness is derived. The problem remains open.",
-    "implications": "A positive answer would reveal deep structure in the prime factorization of binomial coefficients, connecting combinatorial identities with the distribution of primes.",
+    "summary": "Erdős Problem 386 asks whether binomial coefficients C(n,k) can equal products of consecutive primes infinitely often. Five known examples are axiomatized, the main conjecture is formalized as ErdosProblem386, and the structural consequence of squarefreeness is proved. The problem remains open, with no known examples beyond n = 21.",
+    "implications": "**Prime Factorization of Binomials**: A positive answer would reveal that the prime factorization of C(n,k) can be 'maximally structured' — consisting of consecutive primes with no gaps — infinitely often, a remarkable constraint. **Primorial Theory**: Resolution would connect the distribution of primorial quotients (products of consecutive primes) to the combinatorial structure of factorials, potentially advancing our understanding of both. **Computational Number Theory**: Even a negative answer (finitely many examples) would be significant, as it would require proving that the 'gap-free factorization' property eventually fails for all large enough n. **Kummer's Theorem Connection**: Since v_p(C(n,k)) counts carries in base-p addition of k and n-k, the problem asks when these carry patterns produce exactly the exponent 1 for each prime in a consecutive range and 0 elsewhere.",
     "openQuestions": [
       "Does C(n,k) equal a product of consecutive primes for infinitely many n (for any fixed k ≥ 2)?",
-      "Are there examples with k > 6?",
-      "Is there a bound on the length of the consecutive prime sequence in terms of n and k?"
+      "Are there examples with k > 6 or n > 21?",
+      "Is there a bound on the length of the consecutive prime sequence in terms of n and k?",
+      "Can the problem be resolved for k = 2 by analyzing when triangular numbers are primorial quotients?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-384",
+      "relationship": "related",
+      "description": "Problem #384 concerns prime divisors of C(n,k) exceeding n/2 (Sylvester–Schur theorem). Both problems study the prime factorization structure of binomial coefficients."
+    }
+  ]
 }
