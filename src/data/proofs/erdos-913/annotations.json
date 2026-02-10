@@ -1,5 +1,17 @@
 [
   {
+    "id": "erdos-913-imports",
+    "proofId": "erdos-913",
+    "type": "context",
+    "range": { "startLine": 17, "endLine": 25 },
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib's factorization infrastructure (`Nat.Factorization.Basic`), the `Finsupp` type (used for factorizations as maps from primes to exponents), `Set.Finite` for infinite set statements, and `Filter.Basic` for eventual quantification. The `PrimeNormNum` import enables computational verification of primality for specific small numbers in the examples.",
+    "mathContext": "The factorization $n = \\prod p_i^{k_i}$ is represented as a `Finsupp \\mathbb{N} \\mathbb{N}$, mapping primes $p$ to their exponents $v_p(n)$. This is the key data structure enabling the injectivity condition.",
+    "significance": "context",
+    "relatedConcepts": ["Finsupp", "Nat.factorization", "norm_num", "computational primality"],
+    "prerequisites": ["Lean 4 imports", "Mathlib type class hierarchy"]
+  },
+  {
     "id": "erdos-913-distinct-exp",
     "proofId": "erdos-913",
     "type": "definition",
