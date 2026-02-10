@@ -1,95 +1,110 @@
 {
   "id": "erdos-545",
-  "title": "Erdős #545: Ramsey Numbers and Maximally Complete Graphs",
+  "title": "Erdős Problem #545: Ramsey Numbers and Maximally Complete Graphs",
   "slug": "erdos-545",
-  "description": "Is the Ramsey number R(G) maximized when G is 'as complete as possible' for a given number of edges?",
+  "description": "Is the Ramsey number R(G) maximized when G is 'as complete as possible' for a given number of edges? Counterexamples exist for m in {2,3,4,5,7,8,9}, but the asymptotic version remains open.",
   "meta": {
-    "author": "Paul Erdős, Ronald Graham",
+    "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/545",
-    "date": "1975",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos545Problem.lean",
     "tags": [
       "erdos",
-      "graph-theory",
-      "ramsey-theory",
+      "graph theory",
+      "Ramsey theory",
       "combinatorics"
     ],
-    "badge": "wip",
+    "badge": "formalized",
     "sorries": 12,
     "erdosNumber": 545,
     "erdosUrl": "https://erdosproblems.com/545",
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Graham [ErGr75, p.526]. The conjecture asks whether the 'most complete' graph with m edges maximizes the Ramsey number. Surprisingly, the conjecture fails for small values of m (specifically m ∈ {2,3,4,5,7,8,9}), but the asymptotic version remains open.",
-    "problemStatement": "Let G be a graph with m edges and no isolated vertices. If m = C(n,2) + t with 0 ≤ t < n, is R(G) ≤ R(H) where H is K_n plus a new vertex connected to t vertices of K_n?",
-    "proofStrategy": "We formalize edge colorings, Ramsey numbers for complete graphs and general graphs, define the 'maximally complete' graph construction, and state both the original conjecture and its asymptotic variant. The known counterexamples are recorded as an axiom.",
+    "historicalContext": "Erdős and Graham posed this problem in 1975 [ErGr75, p.526], asking whether the 'most complete' graph with $m$ edges maximizes the Ramsey number. Given $m = \\binom{n}{2} + t$ with $0 \\leq t < n$, the maximally complete graph $H_m$ is $K_n$ augmented with a new vertex connected to $t$ vertices of $K_n$. The conjecture states $R(G) \\leq R(H_m)$ for any $m$-edge graph $G$ without isolated vertices. Surprisingly, the conjecture fails for small values: $m \\in \\{2, 3, 4, 5, 7, 8, 9\\}$ are all counterexamples. The notable gap at $m = 6 = \\binom{4}{2}$ (where $H_m = K_4$) suggests the conjecture may hold when the maximally complete graph is itself complete. The asymptotic version — that the conjecture holds for all sufficiently large $m$ — remains wide open. In 2011, Benny Sudakov proved the weaker universal bound $R(G) \\leq 2^{C\\sqrt{m}}$ using dependent random choice (related to Problem #546), which gives the right order of magnitude for dense graphs but does not identify the extremal graph. The problem connects to the broader question of which graph structures are hardest for Ramsey theory: complete graphs, dense bipartite graphs, or something else entirely. Classical Ramsey theory provides exact values $R(3) = 6$ (Ramsey 1930) and $R(4) = 18$ (Greenwood-Gleason 1955), while Erdős's 1947 probabilistic lower bound $R(k) \\geq 2^{k/2}$ and the pigeonhole upper bound $R(k) \\leq 4^k$ frame the growth rate.",
+    "problemStatement": "Let $G$ be a graph with $m$ edges and no isolated vertices. Write $m = \\binom{n}{2} + t$ with $0 \\leq t < n$, and let $H_m$ be the graph $K_n$ plus a new vertex connected to $t$ vertices of $K_n$. Is $R(G) \\leq R(H_m)$?",
+    "proofStrategy": "The formalization defines edge colorings, monochromatic cliques, and Ramsey numbers (both for complete graphs and general graphs). The maximally complete graph is axiomatized since its construction requires the non-trivial edge decomposition. The Erdős-Graham conjecture (original and asymptotic) is stated, with the known counterexamples recorded as an axiom. Sudakov's $2^{O(\\sqrt{m})}$ bound is stated as a sorry theorem. Classical Ramsey values ($R(1)$ through $R(4)$) and the probabilistic/pigeonhole bounds are included as sorry theorems. Monotonicity properties (subgraph and edge containment) are stated as sorry theorems.",
     "keyInsights": [
-      "The conjecture fails for m ∈ {2,3,4,5,7,8,9} - small counterexamples exist",
-      "The asymptotic version (for large m) remains open",
-      "Sudakov (2011) proved the weaker R(G) ≤ 2^{O(√m)} for any m-edge graph",
-      "Ramsey numbers are monotonic: more edges means larger Ramsey number"
+      "The conjecture fails for $m \\in \\{2,3,4,5,7,8,9\\}$ but $m = 6 = \\binom{4}{2}$ is NOT a counterexample, suggesting complete graphs may genuinely maximize $R(G)$",
+      "Sudakov's 2011 bound $R(G) \\leq 2^{C\\sqrt{m}}$ via dependent random choice gives a universal upper bound but doesn't identify the extremal graph",
+      "The file has 12 sorries: ramseyNumber existence witness, ramseyNumberGraph full definition, decomposeEdges, sudakov_upper_bound, 4 classical Ramsey values, 2 quantitative bounds, and 2 monotonicity results",
+      "The Ramsey number's monotonicity under subgraph inclusion is the structural backbone of the conjecture: it asks which $m$-edge graph sits 'highest' in the subgraph partial order with respect to Ramsey numbers",
+      "The problem connects to Problem #546 (Sudakov's bound) and the general program of understanding Ramsey numbers for sparse vs dense graphs"
     ]
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module documentation describing Problem 545, known counterexamples, Sudakov's bound, and references. Imports SimpleGraph, Clique, Finset, Nat.Choose, and Tactic."
+    },
+    {
       "id": "graph-basics",
       "title": "Graph Basics",
-      "summary": "Edge count and isolated vertex definitions",
       "startLine": 39,
-      "endLine": 48
+      "endLine": 48,
+      "summary": "Defines edgeCount (cardinality of edge finset) and NoIsolatedVertices (every vertex has a neighbor)."
+    },
+    {
+      "id": "edge-colorings",
+      "title": "Edge Colorings",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "Defines EdgeColoring (Fin n → Fin n → Bool), IsValidColoring (symmetric + irreflexive), and IsMonochromaticClique (all edges same color)."
     },
     {
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
-      "summary": "Edge colorings, monochromatic cliques, and R(k) definition",
-      "startLine": 50,
-      "endLine": 80
+      "startLine": 64,
+      "endLine": 80,
+      "summary": "Defines ramseyNumber k via Nat.find (sorry witness) and ramseyNumberGraph G for general graphs (sorry definition)."
     },
     {
       "id": "max-complete",
-      "title": "Maximally Complete Graphs",
-      "summary": "The decomposition m = C(n,2) + t and the conjecture",
+      "title": "Maximally Complete Graphs and Conjecture",
       "startLine": 82,
-      "endLine": 102
+      "endLine": 104,
+      "summary": "Defines decomposeEdges (sorry), axiomatizes maximallyCompleteGraph, and states ErdosGrahamConjecture."
     },
     {
       "id": "counterexamples",
       "title": "Known Counterexamples",
-      "summary": "Small values where the conjecture fails",
-      "startLine": 104,
-      "endLine": 122
+      "startLine": 106,
+      "endLine": 124,
+      "summary": "Defines SmallCounterexamples = {2,3,4,5,7,8,9}, axiom counterexamples_exist, and the asymptotic variant ErdosGrahamConjectureAsymptotic."
     },
     {
       "id": "sudakov",
       "title": "Sudakov's Upper Bound",
-      "summary": "The weaker result R(G) ≤ 2^{O(√m)} from 2011",
-      "startLine": 124,
-      "endLine": 135
+      "startLine": 126,
+      "endLine": 137,
+      "summary": "Theorem (sorry): R(G) ≤ 2^{C√m} for some C > 0 and any m-edge graph G."
     },
     {
       "id": "classical-ramsey",
       "title": "Classical Ramsey Numbers",
-      "summary": "Known values: R(1)=1, R(2)=2, R(3)=6, R(4)=18",
-      "startLine": 137,
-      "endLine": 163
+      "startLine": 139,
+      "endLine": 165,
+      "summary": "Theorems (sorry): R(1)=1, R(2)=2, R(3)=6, R(4)=18, lower bound R(k) ≥ 2^{k/2}, upper bound R(k) ≤ 4^k."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Properties",
-      "summary": "Adding edges increases Ramsey number",
-      "startLine": 165,
-      "endLine": 183
+      "startLine": 167,
+      "endLine": 185,
+      "summary": "Theorems (sorry): edge monotonicity (G ⊆ H ⟹ R(G) ≤ R(H)) and subgraph monotonicity (G ↪ H ⟹ R(G) ≤ R(H))."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #545 on whether the 'most complete' graph maximizes Ramsey number for a given edge count. The surprising discovery of small counterexamples (m ∈ {2,3,4,5,7,8,9}) shows the conjecture is false in general, but the asymptotic version remains open.",
-    "implications": "Understanding which graphs maximize Ramsey number would shed light on the structure of extremal Ramsey graphs. Sudakov's 2^{O(√m)} bound provides a universal upper bound but doesn't identify the maximum.",
+    "summary": "The formalization captures Erdős Problem #545 on whether the maximally complete graph $H_m$ (where $m = \\binom{n}{2} + t$) maximizes the Ramsey number among all $m$-edge graphs. The surprising counterexamples for $m \\in \\{2,3,4,5,7,8,9\\}$ disprove the general conjecture, while the asymptotic version and Sudakov's universal bound $R(G) \\leq 2^{C\\sqrt{m}}$ frame the current state of knowledge. All 12 sorries involve non-trivial results from Ramsey theory.",
+    "implications": "Understanding which graphs maximize Ramsey numbers for a given edge count would illuminate the structure of extremal Ramsey graphs. The counterexamples show that 'completeness' is not always the hardest structure for 2-colorings to handle. Sudakov's dependent random choice technique provides a powerful but non-extremal approach. The connection to Problem #546 suggests a unified theory of Ramsey numbers in terms of edge density.",
     "openQuestions": [
-      "Does the conjecture hold for all sufficiently large m?",
-      "What is the smallest M such that no counterexamples exist for m ≥ M?",
-      "Can the set of counterexample values {2,3,4,5,7,8,9} be characterized?"
+      "Does the Erdős-Graham conjecture hold for all sufficiently large $m$?",
+      "What is the smallest $M$ such that no counterexamples exist for $m \\geq M$?",
+      "Can the counterexample set $\\{2,3,4,5,7,8,9\\}$ be characterized or extended?",
+      "Is $R(H_m)$ the correct extremal value asymptotically, or is the truth closer to Sudakov's $2^{C\\sqrt{m}}$?"
     ]
   }
 }
