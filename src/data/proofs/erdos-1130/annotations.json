@@ -1,92 +1,134 @@
 [
   {
-    "id": "lagrange-basis",
+    "id": "erdos-1130-ann-imports",
+    "proofId": "erdos-1130",
+    "type": "concept",
+    "range": { "startLine": 19, "endLine": 23 },
+    "title": "Imports",
+    "content": "Imports Mathlib.Analysis.SpecialFunctions.Log.Basic for Real.log (used in the sharp (2/π) log n bound), InnerProductSpace.Basic for real analysis infrastructure, Fin.Basic for indexing nodes and subintervals, and Tactic for proof automation.",
+    "mathContext": "The key imports provide $\\log : \\mathbb{R} \\to \\mathbb{R}$ (natural logarithm), $\\pi \\in \\mathbb{R}$ (from trigonometric basics), and `Fin n` for type-safe indexing of $n$ interpolation nodes.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.log", "Real.pi", "Fin indexing", "Mathlib infrastructure"],
+    "prerequisites": ["Mathlib imports"]
+  },
+  {
+    "id": "erdos-1130-ann-nodes",
     "proofId": "erdos-1130",
     "type": "definition",
+    "range": { "startLine": 29, "endLine": 32 },
+    "title": "Interpolation Nodes Structure",
+    "content": "InterpolationNodes n bundles n nodes in [-1,1] with strict ordering. Fields: nodes : Fin n → ℝ (the node positions), in_interval (each node in [-1,1]), ordered (i < j → nodes i < nodes j). The strict ordering ensures all nodes are distinct and the Lagrange basis is well-defined.",
+    "mathContext": "Defines a node configuration as $P = (x_1, \\ldots, x_n)$ with $-1 \\le x_1 < x_2 < \\cdots < x_n \\le 1$. The strict ordering $x_i < x_j$ for $i < j$ ensures the denominators $x_k - x_j \\ne 0$ in the Lagrange basis formula. The interval $[-1,1]$ is the standard domain for Chebyshev approximation theory.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev nodes", "Fin n indexing", "interval constraints", "strict monotonicity"],
+    "prerequisites": ["Fin type", "real interval [-1,1]", "strict ordering"]
+  },
+  {
+    "id": "erdos-1130-ann-lagrange",
+    "proofId": "erdos-1130",
+    "type": "definition",
+    "range": { "startLine": 36, "endLine": 39 },
     "title": "Lagrange Basis Polynomial",
-    "content": "**Lagrange basis polynomial** for node $k$:\n\n$$l_k(x) = \\prod_{j \\neq k} \\frac{x - x_j}{x_k - x_j}$$\n\nsatisfies $l_k(x_j) = \\delta_{kj}$ (1 if $j = k$, 0 otherwise). The Lagrange interpolant of $f$ is $p(x) = \\sum_k f(x_k) l_k(x)$.\n\n**Lean**: Uses `Finset.univ.prod` with an if-then-else to skip $j = k$. The `InterpolationNodes` structure bundles $n$ nodes in $[-1,1]$ with strict ordering.\n\n**Key property**: The interpolation error satisfies $|f(x) - p(x)| \\leq (1 + \\Lambda(x)) \\cdot E_n(f)$, where $\\Lambda(x) = \\sum |l_k(x)|$ is the Lebesgue function and $E_n(f)$ is the best polynomial approximation error.",
-    "mathContext": "l_k(x) = ∏_{j≠k} (x - x_j)/(x_k - x_j), l_k(x_j) = δ_{kj}",
+    "content": "lagrangeBasis P k x computes l_k(x) = ∏_{j≠k} (x - x_j)/(x_k - x_j). Uses Finset.univ.prod with if j = k then 1 else (x - P.nodes j)/(P.nodes k - P.nodes j). Satisfies l_k(x_j) = δ_{kj} (Kronecker delta), so the Lagrange interpolant of f is p(x) = Σ f(x_k) l_k(x).",
+    "mathContext": "Defines $l_k(x) = \\prod_{j=1, j \\ne k}^{n} \\frac{x - x_j}{x_k - x_j}$, the unique polynomial of degree $\\le n-1$ satisfying $l_k(x_j) = \\delta_{kj}$. The Lagrange interpolant $p(x) = \\sum_{k=1}^n f(x_k) l_k(x)$ is the unique polynomial of degree $\\le n-1$ agreeing with $f$ at all nodes. The interpolation error satisfies $|f(x) - p(x)| \\le (1 + \\Lambda(x)) \\cdot E_n(f)$.",
     "significance": "critical",
-    "relatedConcepts": ["Lagrange interpolation", "polynomial basis", "Kronecker delta", "interpolation error"],
-    "prerequisites": ["polynomial interpolation", "product formula for polynomials"],
-    "range": {
-      "startLine": 36,
-      "endLine": 39
-    }
+    "relatedConcepts": ["Lagrange interpolation", "Kronecker delta", "polynomial basis", "interpolation error bound"],
+    "prerequisites": ["polynomial interpolation", "Finset.prod", "division in ℝ"]
   },
   {
-    "id": "lebesgue-function",
+    "id": "erdos-1130-ann-lebesgue",
     "proofId": "erdos-1130",
     "type": "definition",
+    "range": { "startLine": 42, "endLine": 43 },
     "title": "Lebesgue Function",
-    "content": "**Lebesgue function**: $\\Lambda(x) = \\sum_{k=1}^{n} |l_k(x)|$\n\nmeasures how much interpolation amplifies pointwise errors. Since $|p(x)| = |\\sum f(x_k) l_k(x)| \\leq \\sum |f(x_k)| \\cdot |l_k(x)| \\leq \\max|f(x_k)| \\cdot \\Lambda(x)$, the Lebesgue function is the **operator norm** of the interpolation map at point $x$.\n\n**Lebesgue constant**: $\\Lambda_n = \\max_x \\Lambda(x)$ governs the worst-case error amplification. For equidistant nodes, $\\Lambda_n$ grows exponentially (Runge phenomenon); for Chebyshev nodes, $\\Lambda_n \\sim (2/\\pi) \\log n$ — optimal up to constants.\n\n**Lean**: Defined as `Finset.univ.sum (fun k => |lagrangeBasis P k x|)`.",
-    "mathContext": "Λ(x) = Σ_k |l_k(x)| (Lebesgue function at x)",
+    "content": "lebesgueFunction P x = Σ_k |l_k(x)| is the sum of absolute values of all Lagrange basis polynomials at point x. This is the operator norm of the interpolation projection at x: it measures worst-case error amplification. The Lebesgue constant Λ_n = max_x Λ(x) governs the global interpolation quality.",
+    "mathContext": "Defines $\\Lambda(x) = \\sum_{k=1}^n |l_k(x)|$, the Lebesgue function. Since $l_k(x_j) = \\delta_{kj}$, we have $\\Lambda(x_j) = 1$ at every node. Between nodes, $\\Lambda(x) \\ge 1$ and can grow significantly. The **Lebesgue constant** $\\Lambda_n = \\max_{x \\in [-1,1]} \\Lambda(x)$ satisfies $\\Lambda_n \\ge (2/\\pi) \\log(n+1) + \\gamma_n$ where $\\gamma_n \\to 2/\\pi (\\gamma + \\log(4/\\pi))$ and $\\gamma$ is Euler's constant. For Chebyshev nodes, $\\Lambda_n \\sim (2/\\pi) \\log n$.",
     "significance": "critical",
-    "relatedConcepts": ["Lebesgue constant", "operator norm", "Runge phenomenon", "Chebyshev nodes"],
-    "prerequisites": ["Lagrange basis polynomials", "absolute value", "operator norms in approximation theory"],
-    "range": {
-      "startLine": 42,
-      "endLine": 44
-    }
+    "relatedConcepts": ["Lebesgue constant", "operator norm", "Chebyshev nodes", "Runge phenomenon"],
+    "prerequisites": ["Lagrange basis", "absolute value", "Finset.sum", "approximation theory"]
   },
   {
-    "id": "upsilon-def",
+    "id": "erdos-1130-ann-subinterval",
     "proofId": "erdos-1130",
     "type": "definition",
+    "range": { "startLine": 48, "endLine": 51 },
+    "title": "Subinterval Endpoints",
+    "content": "subintervalEndpoint P i returns the i-th endpoint of the (n+1) subintervals formed by inserting the n nodes into [-1,1]. Endpoint 0 is -1, endpoint n+1 is 1, and endpoints 1 through n are the nodes. This creates the partition [-1,x₁], [x₁,x₂], ..., [xₙ,1].",
+    "mathContext": "Defines $x_0 = -1$, $x_i = P.\\text{nodes}(i-1)$ for $1 \\le i \\le n$, $x_{n+1} = 1$. The $n+1$ subintervals $[x_0, x_1], [x_1, x_2], \\ldots, [x_n, x_{n+1}]$ partition $[-1,1]$. The Lebesgue function typically peaks in the interior of these subintervals, not at the nodes (where $\\Lambda(x_j) = 1$).",
+    "significance": "supporting",
+    "relatedConcepts": ["interval partition", "boundary conditions", "Fin (n+2) indexing"],
+    "prerequisites": ["Fin type", "if-then-else", "InterpolationNodes"]
+  },
+  {
+    "id": "erdos-1130-ann-maxleb",
+    "proofId": "erdos-1130",
+    "type": "definition",
+    "range": { "startLine": 54, "endLine": 57 },
+    "title": "Maximum Lebesgue on Subinterval",
+    "content": "maxLebesgueOnInterval P i = sSup {Λ(x) : x ∈ [xᵢ, xᵢ₊₁]}, the supremum of the Lebesgue function on the i-th subinterval. Uses set-builder notation with constraints on x. This gives the worst-case error amplification within each subinterval.",
+    "mathContext": "Defines $M_i = \\sup_{x \\in [x_i, x_{i+1}]} \\Lambda(x)$ for each subinterval $i \\in \\{0, 1, \\ldots, n\\}$. Since $\\Lambda$ is continuous on $[-1,1]$ and each subinterval is compact, $M_i$ is attained. The Lebesgue constant satisfies $\\Lambda_n = \\max_i M_i$, while $\\Upsilon = \\min_i M_i$.",
+    "significance": "key",
+    "relatedConcepts": ["sSup", "supremum on compact set", "continuous function maximum"],
+    "prerequisites": ["sSup (conditional supremum)", "lebesgueFunction", "subintervalEndpoint"]
+  },
+  {
+    "id": "erdos-1130-ann-upsilon",
+    "proofId": "erdos-1130",
+    "type": "definition",
+    "range": { "startLine": 60, "endLine": 61 },
     "title": "The Υ Functional",
-    "content": "**Υ functional**:\n\n$$\\Upsilon(x_1, \\ldots, x_n) = \\min_{0 \\leq i \\leq n} \\max_{x \\in [x_i, x_{i+1}]} \\sum_k |l_k(x)|$$\n\nwith $x_0 = -1$ and $x_{n+1} = 1$. This is the **best subinterval's worst case**: among all $n+1$ subintervals formed by the nodes and the endpoints $\\pm 1$, find the one where the Lebesgue function is smallest at its maximum.\n\n**Lean**: Uses `sSup` for the max on each subinterval and `sInf` for the min over subintervals. The subinterval endpoints are defined via `subintervalEndpoint` with if-then-else for the boundary cases $i = 0$ (gives $-1$) and $i = n+1$ (gives $1$).\n\n**Interpretation**: Υ measures the 'easiest' subinterval's difficulty. If Υ ≪ log n, then even the best subinterval can't avoid logarithmic error amplification.",
-    "mathContext": "Υ = min_i max_{x∈[xᵢ,xᵢ₊₁]} Σ|l_k(x)|",
+    "content": "upsilon P = sInf {maxLebesgueOnInterval P i : i ∈ Fin (n+1)}, the minimum over all subintervals of their maximum Lebesgue function. This is the 'best subinterval's worst case' — it measures the easiest subinterval's difficulty. The central question is whether Υ = O(log n).",
+    "mathContext": "Defines $\\Upsilon(P) = \\min_{0 \\le i \\le n} M_i = \\min_{0 \\le i \\le n} \\sup_{x \\in [x_i, x_{i+1}]} \\Lambda(x)$. Note $\\Upsilon(P) \\le \\Lambda_n$ always (min ≤ max). The question asks: does $\\Upsilon(P) = O(\\log n)$ for ALL node configurations $P$, or can clever placement of nodes make some subinterval have $M_i \\gg \\log n$?",
     "significance": "critical",
-    "relatedConcepts": ["min-max optimization", "sSup", "sInf", "subinterval decomposition"],
-    "prerequisites": ["supremum and infimum", "Lebesgue function", "interval partitions"],
-    "range": {
-      "startLine": 60,
-      "endLine": 64
-    }
+    "relatedConcepts": ["sInf", "min-max optimization", "minimax approximation", "saddle point"],
+    "prerequisites": ["sInf (infimum)", "maxLebesgueOnInterval", "Fin (n+1)"]
   },
   {
-    "id": "sqrt-bound",
+    "id": "erdos-1130-ann-sqrt",
     "proofId": "erdos-1130",
     "type": "theorem",
-    "title": "Erdős's √n Bound",
-    "content": "**Erdős (1947)**: For any node configuration with $n \\geq 1$ nodes:\n\n$$\\Upsilon(x_1, \\ldots, x_n) < \\sqrt{n}$$\n\nThis was the first bound, establishing that Υ grows at most polynomially. However, Erdős conjectured the true bound was logarithmic — a dramatic improvement from $\\sqrt{n}$ to $\\log n$.\n\n**Axiomatized** because the proof uses properties of orthogonal polynomials and potential theory.\n\n**Lean**: `upsilon P < Real.sqrt (n : ℝ)` for all `P : InterpolationNodes n` with `1 ≤ n`.",
-    "mathContext": "Υ < √n (Erdős 1947)",
-    "significance": "major",
-    "relatedConcepts": ["polynomial bound", "Real.sqrt", "initial estimate"],
-    "prerequisites": ["square root", "InterpolationNodes structure"],
-    "range": {
-      "startLine": 68,
-      "endLine": 70
-    }
+    "range": { "startLine": 66, "endLine": 67 },
+    "title": "Erdős's √n Bound (1947)",
+    "content": "Erdős proved Υ(P) < √n for all node configurations P with n ≥ 1. This was the first bound, establishing polynomial growth. Erdős conjectured the true bound was logarithmic — a dramatic improvement from √n to log n. Axiomatized because the proof uses properties of orthogonal polynomials.",
+    "mathContext": "Axiomatizes $\\forall n \\ge 1,\\, \\forall P : \\text{InterpolationNodes}(n),\\, \\Upsilon(P) < \\sqrt{n}$. Erdős's proof used the fact that the Lagrange basis polynomials satisfy $\\sum_k l_k(x) = 1$, combined with Cauchy–Schwarz: $\\Lambda(x)^2 = (\\sum |l_k|)^2 \\le n \\sum l_k^2$, giving $\\Lambda(x) \\le \\sqrt{n \\sum l_k(x)^2}$. Bounding $\\sum l_k^2$ on subintervals yields $\\Upsilon < \\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "polynomial bound", "Real.sqrt", "initial estimate"],
+    "prerequisites": ["upsilon definition", "InterpolationNodes", "Real.sqrt"]
   },
   {
-    "id": "log-bound",
+    "id": "erdos-1130-ann-log",
     "proofId": "erdos-1130",
     "type": "theorem",
+    "range": { "startLine": 73, "endLine": 75 },
     "title": "Sharp Logarithmic Bound",
-    "content": "**Sharp bound**: For $n \\geq 2$:\n\n$$\\Upsilon \\leq \\frac{2}{\\pi} \\log n + C$$\n\nfor some absolute constant $C$. This confirms Erdős's conjecture that $\\Upsilon \\ll \\log n$.\n\n**The constant $2/\\pi$**: This is the same constant that appears in the Lebesgue constant for Chebyshev nodes: $\\Lambda_n^{\\text{Cheb}} \\sim (2/\\pi) \\log n$. The matching constant suggests that Chebyshev-like nodes are near-optimal for the Υ functional as well.\n\n**Axiomatized** because the proof requires detailed potential-theoretic analysis.",
-    "mathContext": "Υ ≤ (2/π) log n + O(1)",
+    "content": "The optimal bound: Υ ≤ (2/π) log n + C for some absolute constant C, for all n ≥ 2 and all node configurations. This confirms Erdős's (and Bernstein's) conjecture that Υ = O(log n). The constant 2/π matches the Lebesgue constant for Chebyshev nodes.",
+    "mathContext": "Axiomatizes $\\exists C \\in \\mathbb{R},\\, \\forall n \\ge 2,\\, \\forall P : \\text{InterpolationNodes}(n),\\, \\Upsilon(P) \\le \\frac{2}{\\pi} \\log n + C$. The coefficient $2/\\pi \\approx 0.6366$ is sharp — it equals the leading coefficient in the Lebesgue constant $\\Lambda_n^{\\text{Cheb}} = \\frac{2}{\\pi} \\log n + \\frac{2}{\\pi}(\\gamma + \\log \\frac{4}{\\pi}) + o(1)$ for Chebyshev nodes, where $\\gamma \\approx 0.5772$ is the Euler–Mascheroni constant.",
     "significance": "critical",
-    "relatedConcepts": ["logarithmic growth", "Real.log", "Real.pi", "Chebyshev constant"],
-    "prerequisites": ["real logarithm", "Chebyshev nodes", "Lebesgue constant asymptotics"],
-    "range": {
-      "startLine": 74,
-      "endLine": 78
-    }
+    "relatedConcepts": ["logarithmic growth", "Real.log", "Real.pi", "Euler-Mascheroni constant", "Chebyshev constant"],
+    "prerequisites": ["real logarithm", "Lebesgue constant asymptotics", "Chebyshev nodes"]
   },
   {
-    "id": "de-boor-pinkus",
+    "id": "erdos-1130-ann-deboor",
     "proofId": "erdos-1130",
     "type": "theorem",
-    "title": "De Boor–Pinkus Characterization",
-    "content": "**De Boor–Pinkus (1978)**: The points maximizing Υ are exactly those for which the maximum Lebesgue function is EQUAL on all subintervals:\n\n$$\\max_{x \\in [x_i, x_{i+1}]} \\Lambda(x) = \\max_{x \\in [x_j, x_{j+1}]} \\Lambda(x) \\quad \\forall i, j$$\n\nThis is an **equioscillation property**: the optimal configuration 'balances' the error amplification across all subintervals, so no single subinterval is worse than any other.\n\n**Analogy**: This parallels the classical Chebyshev equioscillation theorem — the best polynomial approximation achieves equal maximum deviation at $n+2$ points. Here, the optimal *nodes* equalize the Lebesgue function's maxima across subintervals.\n\n**Lean**: Axiomatized as existence of `P : InterpolationNodes n` satisfying both `∀ Q, upsilon Q ≤ upsilon P` (maximality) and `∀ i j, maxLebesgueOnInterval P i = maxLebesgueOnInterval P j` (equalization).",
-    "mathContext": "Optimal nodes equalize max Λ across all subintervals",
+    "range": { "startLine": 81, "endLine": 85 },
+    "title": "De Boor–Pinkus Equioscillation (1978)",
+    "content": "The nodes maximizing Υ equalize the maximum Lebesgue function across ALL subintervals: maxLebesgueOnInterval P i = maxLebesgueOnInterval P j for all i, j. Axiomatized as existence of P that is both maximal (∀ Q, Υ(Q) ≤ Υ(P)) and equalizing. This is an equioscillation property analogous to the Chebyshev equioscillation theorem.",
+    "mathContext": "Axiomatizes $\\exists P^* : \\text{InterpolationNodes}(n)$ such that: (1) $\\forall Q,\\, \\Upsilon(Q) \\le \\Upsilon(P^*)$ (maximality); (2) $\\forall i, j,\\, M_i(P^*) = M_j(P^*)$ (equalization). At the optimal configuration, $\\min_i M_i = \\max_i M_i$, so all subintervals contribute equally to the Lebesgue function. This parallels Chebyshev's theorem: the best approximation $p^*$ to $f$ satisfies $|f - p^*|$ at $n+2$ alternating points.",
     "significance": "critical",
     "relatedConcepts": ["equioscillation", "Chebyshev equioscillation theorem", "minimax optimization", "optimal node placement"],
-    "prerequisites": ["Chebyshev approximation theory", "equioscillation theorems", "optimization"],
-    "range": {
-      "startLine": 82,
-      "endLine": 87
-    }
+    "prerequisites": ["Chebyshev approximation theory", "maxLebesgueOnInterval", "upsilon"]
+  },
+  {
+    "id": "erdos-1130-ann-main",
+    "proofId": "erdos-1130",
+    "type": "theorem",
+    "range": { "startLine": 92, "endLine": 95 },
+    "title": "Erdős Problem 1130 (Proved)",
+    "content": "ErdosProblem1130: ∃ C > 0, ∀ n ≥ 2, ∀ P, Υ(P) ≤ C · log n. The final O(log n) statement combining all prior results. Uses C > 0 (rather than C = 2/π + O(1)/log n) for a cleaner statement. Axiomatized as the culmination of de Boor–Pinkus's work.",
+    "mathContext": "States $\\exists C > 0,\\, \\forall n \\ge 2,\\, \\forall P : \\text{InterpolationNodes}(n),\\, \\Upsilon(P) \\le C \\cdot \\log n$. This is implied by the sharper bound $\\Upsilon \\le (2/\\pi) \\log n + O(1)$ (take $C = 2/\\pi + \\epsilon$ for large enough $n$ and adjust for small $n$). The qualitative content is that $\\Upsilon = O(\\log n)$, confirming Erdős's conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["O(log n) growth", "Erdős conjecture resolved", "polynomial interpolation quality"],
+    "prerequisites": ["logarithmic_bound", "deBoor_pinkus_optimal", "upsilon"]
   }
 ]
