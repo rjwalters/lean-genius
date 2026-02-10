@@ -21,6 +21,7 @@
       "https://erdosproblems.com/28"
     ],
     "leanFile": "Proofs/Erdos28Problem.lean",
+    "proofRepoPath": "Proofs/Erdos28Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/28",
     "erdosUrl": "https://erdosproblems.com/28"
@@ -29,42 +30,49 @@
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 46,
-      "summary": "Define repFunction, IsAsymptoticBasis2, and countingFn."
+      "startLine": 31,
+      "endLine": 45,
+      "summary": "Defines repFunction (representation count r(n) via Finset.filter), IsAsymptoticBasis2 (complement of A+A is finite), and countingFn (|A ∩ [1,N]|). These are the fundamental objects of the Erdős–Turán conjecture."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "startLine": 48,
+      "startLine": 47,
       "endLine": 56,
-      "summary": "The Erdős–Turán conjecture: basis of order 2 implies unbounded representations."
+      "summary": "States the Erdős–Turán conjecture (1941): for any asymptotic basis A of order 2, and any bound B, there exists n with B ≤ r(n). Axiomatized since this is an open problem."
     },
     {
       "id": "stronger-forms",
       "title": "Stronger Forms",
       "startLine": 58,
-      "endLine": 72,
-      "summary": "Strong form with log n lower bound and density version with √N hypothesis."
+      "endLine": 70,
+      "summary": "Two strengthenings: (1) logarithmic growth lim sup r(n)/log n > 0, predicting r(n) ≥ c log n infinitely often; (2) density version replacing the basis hypothesis with |A∩[1,N]| ≫ √N."
     },
     {
       "id": "known-results",
-      "title": "Known Results and Connections",
-      "startLine": 74,
-      "endLine": 105,
-      "summary": "Sidon sets, Problem #40 connection, Erdős–Fuchs fluctuation theorem, average rep."
+      "title": "Known Results: Counting and Sidon",
+      "startLine": 72,
+      "endLine": 93,
+      "summary": "Basis density lower bound |A∩[1,N]| ≫ √N from counting, Sidon sets cannot be bases (r ≤ 1 is too sparse), and Problem #40 as a corollary of #28 for B₂[g] sets."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results: Erdős–Fuchs and Average Growth",
+      "startLine": 95,
+      "endLine": 111,
+      "summary": "Erdős–Fuchs theorem (1956): cumulative Σr(n) cannot approximate cN with error o(N^{1/4}), proving representation fluctuations. Halberstam–Roth: average representation diverges via basis density bound. Neither implies the conjecture directly."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Turán conjectured this in 1941, making it one of the oldest open problems in additive combinatorics. The $500 bounty reflects its importance. The conjecture says that if A+A covers all integers (basis of order 2), then some integers have many representations. Despite decades of work, even the basic conjecture remains open.",
+    "historicalContext": "Erdős and Turán formulated this conjecture in their landmark 1941 paper 'On a problem of Sidon in additive number theory,' motivated by the study of $B_2$ sequences and representation functions. It carries a \\$500 bounty, one of the largest Erdős prizes still unclaimed. The Erdős–Fuchs theorem (1956) showed the cumulative representation count $\\sum_{n \\le N} r(n)$ must oscillate by at least $\\Omega(N^{1/4}(\\log N)^{-1/2})$ from any linear approximation, but this concerns averages rather than pointwise values. Halberstam and Roth proved the average $r(n)$ diverges for any basis. More recently, work on $B_2[g]$ sets by Cilleruelo, Ruzsa, and Trujillo (2000s) explored the boundary: how large can $g$ be while keeping $A$ a basis? Chaimovich (1999) showed the conjecture holds for certain structured sets. Despite progress on Sidon sets, additive energy bounds, and the Hardy–Littlewood circle method approach, even the weakest form ($\\limsup r(n) = \\infty$) remains completely open after 80+ years.",
     "problemStatement": "If A ⊆ ℕ and A + A contains all but finitely many natural numbers, must lim sup r_A(n) = ∞, where r_A(n) counts representations n = a + b with a, b ∈ A?",
     "proofStrategy": "We formalize the representation function, the asymptotic basis condition, state the main conjecture and its stronger forms, and connect to known results (Erdős–Fuchs, Sidon sets, Problem #40).",
     "keyInsights": [
-      "The conjecture says no basis of order 2 has uniformly bounded representations",
-      "The stronger form predicts r(n) ≥ c log n infinitely often",
-      "Erdős–Fuchs shows cumulative representations must fluctuate — but this doesn't imply the conjecture",
-      "Sidon sets (r ≤ 1) are too sparse to be bases, confirming the conjecture vacuously",
-      "Connected to Problems #40 and #1145 on B₂[g] sets"
+      "The conjecture creates a fundamental dichotomy: any set dense enough to be a basis ($A(N) \\gg \\sqrt{N}$) must have representation counts that grow without bound — uniform coverage forces non-uniform representation",
+      "The stronger logarithmic form $r(n) \\ge c \\log n$ i.o. matches probabilistic predictions: a random set of density $\\sqrt{N}$ has expected $r(n) \\sim \\log n$ by birthday-paradox-type heuristics",
+      "The Erdős–Fuchs theorem (1956) proves oscillation of the cumulative count $\\sum r(n)$, but the gap between cumulative and pointwise behavior is precisely what makes the conjecture hard — large average doesn't force large maximum",
+      "Sidon sets ($r \\le 1$) satisfy $|A \\cap [1,N]| \\le \\sqrt{N} + O(N^{1/4})$ by Lindström's bound, confirming the conjecture vacuously since they cannot be bases — the extremal case is resolved",
+      "The connection to Problems #40 and #1145 on $B_2[g]$ sets reveals a hierarchy: Problem #28 implies #40, and the density version generalizes both by replacing the basis condition with a pure density hypothesis"
     ]
   },
   "conclusion": {

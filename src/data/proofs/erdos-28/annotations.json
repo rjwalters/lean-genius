@@ -2,29 +2,50 @@
   {
     "id": "rep-function",
     "proofId": "erdos-28",
-    "range": { "startLine": 33, "endLine": 35 },
+    "range": { "startLine": 33, "endLine": 36 },
     "type": "definition",
     "title": "Representation Function",
-    "content": "r(n) counts pairs (a,b) with a ≤ b, a,b ∈ A, a+b = n. This is the ordered representation count, central to additive number theory.",
-    "significance": "high"
+    "content": "r(n) counts pairs (a,b) with a ≤ b, a,b ∈ A, a+b = n. This is the ordered representation count, central to additive number theory. Implemented via Finset.filter on Finset.Icc 0 n checking membership and ordering.",
+    "mathContext": "Defines $r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n,\\, a \\le b\\}|$. The ordering constraint $a \\le b$ avoids double counting. For the set of squares, $r(n)$ counts representations as sums of two squares, connecting to classical results of Fermat and Jacobi.",
+    "significance": "key",
+    "relatedConcepts": ["additive representation function", "sumset", "Waring's problem", "partition function"],
+    "prerequisites": ["Finset.Icc", "Finset.filter", "Set membership"]
   },
   {
     "id": "asymptotic-basis",
     "proofId": "erdos-28",
-    "range": { "startLine": 39, "endLine": 41 },
+    "range": { "startLine": 38, "endLine": 41 },
     "type": "definition",
     "title": "Asymptotic Basis of Order 2",
-    "content": "A ⊆ ℕ with (A+A)ᶜ finite: every sufficiently large integer is a sum of two elements of A. The prototypical example is the set of squares (Lagrange needed 4; we ask for 2).",
-    "significance": "high"
+    "content": "A ⊆ ℕ with (A+A)ᶜ finite: every sufficiently large integer is a sum of two elements of A. Uses Minkowski sum notation via `open scoped Pointwise` and complement finiteness.",
+    "mathContext": "Defines $A$ as an asymptotic basis of order 2 when $(A + A)^c$ is finite, i.e., $\\{n \\in \\mathbb{N} : n \\notin A + A\\}$ is finite. Equivalently, $\\exists N_0$ such that $\\forall n \\ge N_0$, $n = a + b$ for some $a, b \\in A$. This is weaker than an exact basis (which requires covering all $n$).",
+    "significance": "key",
+    "relatedConcepts": ["Minkowski sum", "additive basis", "Schnirelmann density", "essential component"],
+    "prerequisites": ["Set.Finite", "Pointwise operations", "complement"]
+  },
+  {
+    "id": "counting-fn",
+    "proofId": "erdos-28",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "Counts |A ∩ [1, N]| using Finset.filter on Finset.Icc 1 N. For a basis of order 2, a counting argument shows |A ∩ [1,N]| must grow at least as fast as √N.",
+    "mathContext": "Defines $A(N) = |A \\cap [1, N]|$. For a basis of order 2, the sumset $A + A$ has $\\binom{A(N)}{2} + A(N) \\ge N - O(1)$ elements up to $2N$, forcing $A(N) \\gg \\sqrt{N}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["counting function", "Schnirelmann density", "lower asymptotic density"],
+    "prerequisites": ["Finset.Icc", "Finset.filter", "Finset.card"]
   },
   {
     "id": "main-conjecture",
     "proofId": "erdos-28",
-    "range": { "startLine": 52, "endLine": 54 },
+    "range": { "startLine": 49, "endLine": 56 },
     "type": "conjecture",
     "title": "Erdős–Turán Conjecture",
-    "content": "If A is an asymptotic basis of order 2, then r(n) is unbounded. No additive basis can have all representation counts bounded by a single constant. $500 bounty.",
-    "significance": "high"
+    "content": "If A is an asymptotic basis of order 2, then r(n) is unbounded. No additive basis can have all representation counts bounded by a single constant. Axiomatized as: for every bound B, there exists n with B ≤ r(n). $500 bounty.",
+    "mathContext": "States $\\forall B \\in \\mathbb{N},\\, \\exists n \\in \\mathbb{N},\\, B \\le r_A(n)$, equivalently $\\limsup_{n \\to \\infty} r_A(n) = \\infty$. This is the negation of \"$A$ is a $B_2[g]$ set for some $g$\" combined with being a basis. The conjecture implies that the sumset structure of a basis is inherently non-uniform.",
+    "significance": "key",
+    "relatedConcepts": ["B₂[g] sets", "Sidon sets", "additive energy", "limsup"],
+    "prerequisites": ["IsAsymptoticBasis2", "repFunction"]
   },
   {
     "id": "strong-form",
@@ -32,25 +53,82 @@
     "range": { "startLine": 60, "endLine": 63 },
     "type": "conjecture",
     "title": "Logarithmic Growth Conjecture",
-    "content": "lim sup r(n)/log n > 0: the representation function grows at least logarithmically along a subsequence. Much stronger than the basic conjecture.",
-    "significance": "high"
+    "content": "lim sup r(n)/log n > 0: the representation function grows at least logarithmically along a subsequence. Much stronger than the basic conjecture. Uses Real.log for the lower bound.",
+    "mathContext": "States $\\exists c > 0$ such that $\\forall N$, $\\exists n \\ge N$ with $r_A(n) \\ge c \\log n$. The logarithmic rate is predicted by probabilistic heuristics: if $A$ has density $\\sim \\sqrt{N}$ elements up to $N$, the expected number of representations of $n$ is $\\sim \\log n$.",
+    "significance": "key",
+    "relatedConcepts": ["logarithmic density", "probabilistic method", "second moment method"],
+    "prerequisites": ["Real.log", "IsAsymptoticBasis2", "repFunction"]
   },
   {
-    "id": "erdos-fuchs",
+    "id": "density-version",
     "proofId": "erdos-28",
-    "range": { "startLine": 94, "endLine": 99 },
-    "type": "theorem",
-    "title": "Erdős–Fuchs Theorem",
-    "content": "The cumulative sum Σ_{n≤N} r(n) cannot be cN + o(N^{1/4}/√(log N)). This shows representations must fluctuate, but does NOT prove individual r(n) is unbounded.",
-    "significance": "medium"
+    "range": { "startLine": 65, "endLine": 70 },
+    "type": "conjecture",
+    "title": "Density Version of the Conjecture",
+    "content": "The conclusion (unbounded r(n)) holds under the weaker hypothesis |A ∩ [1,N]| ≫ √N, without requiring A to be a basis. This generalizes the conjecture since every basis satisfies this density condition.",
+    "mathContext": "States: if $\\exists c > 0$ with $A(N) \\ge c\\sqrt{N}$ for all $N \\ge 1$, then $\\forall B,\\, \\exists n,\\, B \\le r_A(n)$. This is stronger because it drops the basis hypothesis and replaces it with the necessary density condition $A(N) \\gg \\sqrt{N}$ alone.",
+    "significance": "supporting",
+    "relatedConcepts": ["asymptotic density", "counting argument", "sumset growth"],
+    "prerequisites": ["countingFn", "Real.sqrt", "repFunction"]
+  },
+  {
+    "id": "basis-counting",
+    "proofId": "erdos-28",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "technique",
+    "title": "Basis Counting Lower Bound",
+    "content": "A basis of order 2 must have |A ∩ [1,N]| ≫ √N. This is a necessary condition from a simple counting argument: the sumset A+A restricted to [1,2N] has at most O(|A∩[1,N]|²) elements.",
+    "mathContext": "Axiomatizes $\\exists c > 0,\\, \\forall N \\ge 1,\\, A(N) \\ge c\\sqrt{N}$. Proof sketch: $|A + A \\cap [0, 2N]| \\le \\binom{A(N)+1}{2} \\approx A(N)^2/2$, but the basis condition gives $|A + A \\cap [0, 2N]| \\ge N - O(1)$, so $A(N) \\gg \\sqrt{N}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Plünnecke-Ruzsa inequality", "doubling constant", "counting argument"],
+    "prerequisites": ["countingFn", "IsAsymptoticBasis2", "Real.sqrt"]
   },
   {
     "id": "sidon-connection",
     "proofId": "erdos-28",
-    "range": { "startLine": 82, "endLine": 85 },
-    "type": "theorem",
-    "title": "Sidon Sets Are Not Bases",
-    "content": "If r(n) ≤ 1 for all n (Sidon/B₂ condition), then A is too sparse to be a basis. This confirms the conjecture for the extremal case r ≤ 1.",
-    "significance": "medium"
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "insight",
+    "title": "Sidon Sets Cannot Be Bases",
+    "content": "If r(n) ≤ 1 for all n (Sidon/B₂ condition), then A is too sparse to be a basis. A Sidon set satisfies |A∩[1,N]| ≤ √N + O(N^{1/4}), below the threshold needed for a basis. This confirms the conjecture vacuously for the extremal case.",
+    "mathContext": "If $r_A(n) \\le 1$ for all $n$ (Sidon property), then $|A \\cap [1,N]| \\le \\sqrt{N} + O(N^{1/4})$ (Lindström's bound). But a basis of order 2 requires $A(N) \\gg \\sqrt{N}$, and more precisely, the sumset must cover $[N_0, \\infty)$, which a Sidon set's sparse sumset cannot achieve.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sidon sets", "B₂ sequences", "Lindström's bound", "perfect difference sets"],
+    "prerequisites": ["repFunction", "IsAsymptoticBasis2"]
+  },
+  {
+    "id": "problem-40",
+    "proofId": "erdos-28",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "insight",
+    "title": "Connection to Problem #40 (B₂[g] Sets)",
+    "content": "Problem #40 asks whether bounded r(n) ≤ g implies A is not a basis. This is an immediate corollary of Problem #28: if r(n) is bounded by g for all n, it cannot be unbounded, contradicting the conjecture.",
+    "mathContext": "Axiom `erdos_40_from_28`: $(\\forall n,\\, r_A(n) \\le g) \\Rightarrow \\neg \\text{IsAsymptoticBasis2}(A)$. This is logically equivalent to the contrapositive of the Erdős–Turán conjecture restricted to $B = g$. Problem #40 is thus a weaker statement that follows from Problem #28.",
+    "significance": "context",
+    "relatedConcepts": ["B₂[g] sets", "Erdős Problem 40", "Erdős Problem 1145"],
+    "prerequisites": ["erdos_turan_conjecture", "repFunction"]
+  },
+  {
+    "id": "erdos-fuchs",
+    "proofId": "erdos-28",
+    "range": { "startLine": 97, "endLine": 103 },
+    "type": "technique",
+    "title": "Erdős–Fuchs Theorem",
+    "content": "The cumulative sum Σ_{n≤N} r(n) cannot be cN + o(N^{1/4}/√(log N)). This shows representations must fluctuate from their mean, but does NOT directly imply individual r(n) is unbounded — the fluctuations could be distributed among many terms.",
+    "mathContext": "Axiomatizes the Erdős–Fuchs theorem (1956): $\\nexists\\, c > 0$ such that $\\left|\\sum_{n \\le N} r_A(n) - cN\\right| = o(N^{1/4})$. The oscillation lower bound $\\Omega(N^{1/4}(\\log N)^{-1/2})$ improves earlier work of Erdős–Turán. Note: this rules out \"smooth\" growth but not \"spiky\" growth with bounded peaks.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős–Fuchs theorem", "fluctuation theorems", "circle method", "Fourier analysis"],
+    "prerequisites": ["Finset.range", "Finset.sum", "IsAsymptoticBasis2"]
+  },
+  {
+    "id": "average-rep",
+    "proofId": "erdos-28",
+    "range": { "startLine": 105, "endLine": 111 },
+    "type": "technique",
+    "title": "Average Representation Diverges",
+    "content": "For a basis of order 2, the average representation (1/N)Σ_{n≤N} r(n) → ∞. This follows from counting: the total number of representations up to N is at least the number of sums a+b ≤ N, which grows like A(N)² ≫ N. However, divergent average does not imply unbounded maximum.",
+    "mathContext": "Axiomatizes $\\frac{1}{N+1}\\sum_{n \\le N} r_A(n) \\to \\infty$ as $N \\to \\infty$ (Halberstam–Roth). Since $\\sum_{n \\le N} r_A(n) \\ge A(N/2)^2/2 \\gg N$ by the basis density lower bound, the average diverges. The gap between average and supremum is precisely what makes the Erdős–Turán conjecture hard.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cesàro mean", "divergent averages", "Halberstam-Roth", "additive energy"],
+    "prerequisites": ["Filter.Tendsto", "atTop", "Finset.sum"]
   }
 ]
