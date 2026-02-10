@@ -140,7 +140,7 @@ theorem collinear_any_triple {p q r s t : ℝ × ℝ} (hpq : p ≠ q)
   by_cases hrp : r = p
   · subst hrp
     exact collinear_trans hpq hs ht
-  · exact collinear_trans hrp h1 h2
+  · exact collinear_trans hrp (collinear_swap12 h1) (collinear_swap12 h2)
 
 /- ## Structural Properties -/
 
