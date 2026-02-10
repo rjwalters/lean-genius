@@ -51,7 +51,7 @@
     "id": "erdos-289-ann-conjecture",
     "proofId": "erdos-289",
     "range": { "startLine": 63, "endLine": 67 },
-    "type": "conjecture",
+    "type": "definition",
     "title": "Erdős Problem #289",
     "content": "For all sufficiently large k, a valid decomposition of 1 into k blocks exists. Axiomatized as: ∃ K, ∀ k ≥ K, ∃ blocks with ValidDecomposition. The existential threshold K is unknown.",
     "mathContext": "States $\\exists K \\in \\mathbb{N}$ such that $\\forall k \\ge K$, there exist $k$ pairwise non-adjacent interval blocks $I_1, \\ldots, I_k \\subset \\mathbb{N}$ with $\\sum_{i=1}^{k} \\sum_{n \\in I_i} \\frac{1}{n} = 1$. The problem is open: neither the existence of such $K$ nor a counterexample is known.",
@@ -135,11 +135,11 @@
     "id": "erdos-289-ann-trivial",
     "proofId": "erdos-289",
     "range": { "startLine": 125, "endLine": 131 },
-    "type": "context",
+    "type": "concept",
     "title": "Easier Without Non-Adjacency",
     "content": "Without the non-adjacency constraint, decompositions of 1 into k disjoint intervals exist for large k (Erdős–Graham remark). This isolates non-adjacency as the essential difficulty: adjacency allows merging tricks that non-adjacency forbids.",
     "mathContext": "Axiomatizes $\\exists K,\\, \\forall k \\ge K$, there exist $k$ pairwise disjoint (but possibly adjacent) blocks summing to $1$. The observation is that one can start with a known representation $1 = \\sum 1/n_i$ and split intervals, since adjacent intervals can be rearranged. The non-adjacency constraint prevents this splitting strategy.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Egyptian fraction decomposition", "Erdős–Graham conjecture", "Sylvester–Fibonacci representation"],
     "prerequisites": ["IntervalBlock.Disjoint", "ValidDecomposition"]
   }
