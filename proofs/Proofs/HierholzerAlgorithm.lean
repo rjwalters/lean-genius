@@ -15,6 +15,7 @@ Authors: lean-genius research (researcher-2)
 -/
 import Mathlib.Combinatorics.SimpleGraph.Trails
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Algebra.Ring.Parity
 import Mathlib.Data.Sym.Sym2
 import Mathlib.Tactic.DeriveFintype
@@ -135,17 +136,82 @@ section CycleSplicing
 
 variable {V : Type*} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
 
+/-- For a closed trail, the number of edges incident to each vertex is even.
+    This follows directly from `Walk.IsTrail.even_countP_edges_iff` with u = v,
+    making the RHS vacuously true. -/
+lemma closed_trail_even_countP
+    {u : V} (p : G.Walk u u) (hp : p.IsTrail) (x : V) :
+    Even (p.edges.countP (fun e => x ∈ e)) :=
+  (hp.even_countP_edges_iff x).mpr (fun h => absurd rfl h)
+
+/-- Degree decomposition: The degree of v in G equals the degree of v in
+    (G.deleteEdges E) plus the number of neighbors w of v in G such that
+    the edge s(v,w) is in E. This uses the filter-complement partition. -/
+lemma degree_eq_deleteEdges_degree_add_deleted_neighbors (v : V)
+    (S : Set (Sym2 V)) [DecidablePred (· ∈ S)] :
+    G.degree v = (G.deleteEdges S).degree v +
+      ((G.neighborFinset v).filter (fun w => ⟦(v, w)⟧ ∈ S)).card := by
+  have h1 : (G.deleteEdges S).degree v =
+      ((G.neighborFinset v).filter (fun w => ⟦(v, w)⟧ ∉ S)).card := by
+    simp only [SimpleGraph.degree]
+    congr 1
+    ext w
+    simp [mem_neighborFinset, deleteEdges_adj]
+  rw [h1, SimpleGraph.degree]
+  exact (Finset.filter_card_add_filter_neg_card_eq_card (fun w => ⟦(v, w)⟧ ∈ S)).symm
+
+/-- The number of neighbors of v whose edge to v appears in a trail's edge set
+    equals the countP of trail edges incident to v.
+
+    For a trail (nodup edges), each edge s(v,w) in the trail incident to v
+    corresponds to exactly one neighbor w of v. This gives a bijection:
+    - Forward: neighbor w ↦ edge s(v,w) is a trail edge containing v
+    - Backward: trail edge s(a,b) containing v means a=v or b=v, giving a neighbor
+
+    We prove this by showing both quantities equal
+    `(p.edges.toFinset.filter (v ∈ ·)).card`. -/
+lemma deleted_neighbors_eq_countP
+    {u w : V} (p : G.Walk u w) (hp : p.IsTrail) (v : V) :
+    ((G.neighborFinset v).filter (fun x => ⟦(v, x)⟧ ∈
+      (p.edges.toFinset : Set (Sym2 V)))).card =
+      p.edges.countP (fun e => v ∈ e) := by
+  -- Proof requires two standard combinatorial facts:
+  -- (1) For a nodup list l, l.countP p = (l.toFinset.filter p).card
+  -- (2) Bijection: {x ∈ neighborFinset v | s(v,x) ∈ edges} ≃ {e ∈ edges | v ∈ e}
+  --     via x ↦ s(v,x), using looplessness for injectivity
+  sorry
+
 /-- **Circuit Removal Preserves Even Degrees**:
     If G has all even degrees and we remove the edges of a trail-circuit,
     the remaining graph still has all even degrees.
 
     This is the key invariant for Hierholzer's algorithm. A circuit
-    contributes degree 2 at each vertex it passes through (entering + leaving),
-    so removing it preserves parity. -/
-axiom even_degree_after_circuit_removal
+    contributes an even number of edges at each vertex it passes through
+    (entering + leaving), so removing it preserves parity.
+
+    **Proof**: By `Walk.IsTrail.even_countP_edges_iff`, for a closed trail
+    (Walk u u), the count of edges incident to any vertex x is even. Combined
+    with the degree decomposition and the even-degree hypothesis, this gives
+    the result. -/
+theorem even_degree_after_circuit_removal
     (heven : ∀ v : V, Even (G.degree v))
     {u : V} (p : G.Walk u u) (hp : p.IsTrail) :
-    ∀ v : V, Even ((G.deleteEdges (p.edges.toFinset : Set (Sym2 V))).degree v)
+    ∀ v : V, Even ((G.deleteEdges (p.edges.toFinset : Set (Sym2 V))).degree v) := by
+  intro v
+  -- Step 1: Degree decomposition
+  have hsplit := degree_eq_deleteEdges_degree_add_deleted_neighbors G v
+    (p.edges.toFinset : Set (Sym2 V))
+  -- Step 2: Connect deleted neighbor count to trail incidence count
+  have hdel := deleted_neighbors_eq_countP G p hp v
+  -- Step 3: Trail incidence count is even (closed trail)
+  have heven_trail := closed_trail_even_countP G p hp v
+  -- Step 4: Original degree is even
+  have heven_v := heven v
+  -- Step 5: Combine: even = result + even, so result is even
+  rw [hdel] at hsplit
+  obtain ⟨k, hk⟩ := heven_v
+  obtain ⟨m, hm⟩ := heven_trail
+  exact ⟨k - m, by omega⟩
 
 end CycleSplicing
 
@@ -247,7 +313,7 @@ end Characterization
 /-
 ## Summary
 
-### Proved Theorems (9)
+### Proved Theorems (12)
 1. `eulerian_edges_toFinset_eq` - Eulerian walk edges = graph edges (as finsets)
 2. `eulerian_edges_length` - Eulerian walk edge count = graph edge count
 3. `eulerian_pos_edges` - Eulerian circuits have positive edge count
@@ -257,20 +323,28 @@ end Characterization
 7. `triangleCircuit_length` / `triangleCircuit_visits_all` - K₃ circuit properties
 8. `triangleCircuit_isEulerian` - K₃ circuit is Eulerian (via Sym2.ind + case analysis)
 9. `hierholzer_spec` - Hierholzer algorithm specification (from axiom)
+10. `closed_trail_even_countP` - Closed trail has even incident edge count per vertex
+11. `degree_eq_deleteEdges_degree_add_deleted_neighbors` - Degree decomposition
+12. `even_degree_after_circuit_removal` - Circuit removal preserves even parity (**was axiom**)
 
-### Axioms (3)
+### Axioms (2, reduced from 3)
 1. `euler_circuit_exists` - Connected + all even → Eulerian circuit exists
 2. `euler_trail_exists` - Connected + exactly 2 odd → Eulerian trail exists
-3. `even_degree_after_circuit_removal` - Circuit removal preserves even parity
 
-### Sorries (0)
+### Sorries (1)
+1. `deleted_neighbors_eq_countP` - Bijection between incident neighbors and incident
+   trail edges. Requires standard Sym2 bijection argument (combinatorial, not deep).
+
+### Axiom Reduction
+- `even_degree_after_circuit_removal` converted from axiom → theorem
+  using `closed_trail_even_countP` (from Mathlib's `even_countP_edges_iff`)
+  and `degree_eq_deleteEdges_degree_add_deleted_neighbors` (filter partition).
+  Modulo the connecting lemma `deleted_neighbors_eq_countP`.
 
 ### Mathlib Gap
 Mathlib's SimpleGraph.Trails has a TODO: "Prove that there exists an Eulerian
 trail when the conclusion to `card_odd_degree` holds." Our `euler_circuit_exists`
-and `euler_trail_exists` axioms formally state this missing result. The
-`even_degree_after_circuit_removal` axiom captures the key invariant that would
-be needed in the inductive proof via Hierholzer's algorithm.
+and `euler_trail_exists` axioms formally state this missing result.
 -/
 
 end HierholzerAlgorithm

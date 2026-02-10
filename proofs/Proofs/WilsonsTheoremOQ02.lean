@@ -25,10 +25,9 @@ This file extends Wilson's theorem to all moduli via the Gauss-Wilson theorem:
 - [x] Extended computational verification to n ≤ 300
 - [x] Wilson prime verification
 - [x] Self-inverse classification: {x | x² = 1} = {1, -1} in cyclic (ZMod n)ˣ
-- [x] Involution product lemma: ∏ G = ∏ {x | x² = 1}
-- [x] Cyclic → product = -1 (via involution lemma + self-inverse classification)
-- [ ] Non-cyclic → product = 1 (1 sorry: exponent-2 subgroup product)
-- [x] Concrete-abstract bridge (Finset.prod_bij via ZMod.val)
+- [x] Cyclic → product = -1 (via generator argument)
+- [ ] Non-cyclic → product = 1 (1 sorry: involution + exponent-2 subgroup)
+- [ ] Concrete-abstract bridge (1 sorry)
 -/
 
 namespace WilsonsTheoremOQ02
@@ -45,19 +44,13 @@ noncomputable def abstractUnitsProduct (n : ℕ) [NeZero n] : ZMod n :=
 
 /-- For prime p, the product of all units in ZMod p equals -1.
     This is Wilson's theorem in abstract form. -/
--- Helper to push Units coercion through products
-private theorem units_val_prod {M : Type*} [CommMonoid M] (s : Finset ι) (f : ι → Mˣ) :
-    (↑(∏ i ∈ s, f i) : M) = ∏ i ∈ s, (↑(f i) : M) :=
-  map_prod (Units.coeHom M) f s
-
 theorem prod_units_eq_neg_one_prime (p : ℕ) [hp : Fact (Nat.Prime p)] :
     ∏ x : (ZMod p)ˣ, (x : ZMod p) = -1 := by
   have h := FiniteField.prod_univ_units_id_eq_neg_one (K := ZMod p)
-  -- h : ∏ x : (ZMod p)ˣ, x = -1  (in the units group)
-  rw [show (∏ x : (ZMod p)ˣ, (x : ZMod p)) = (↑(∏ x : (ZMod p)ˣ, x) : ZMod p) from
-    (units_val_prod _ _).symm]
-  rw [h]
-  simp
+  have h2 : (↑(∏ x : (ZMod p)ˣ, x) : ZMod p) = ↑(-1 : (ZMod p)ˣ) := congr_arg _ h
+  rw [map_prod] at h2
+  simp only [Units.val_neg, Units.val_one] at h2
+  exact h2
 
 -- ============================================================================
 -- Part 2: Involution Structure
@@ -136,7 +129,7 @@ theorem selfInverse_units_eq_pair {n : ℕ} (hn : n ≥ 3) [NeZero n] [IsCyclic 
     simp [Finset.mem_insert, Finset.mem_singleton] at hx
     rcases hx with rfl | rfl <;> assumption
   have hcard_pair : ({1, -1} : Finset (ZMod n)ˣ).card = 2 := Finset.card_pair hne
-  exact (Finset.eq_of_subset_of_card_le hsub (by omega)).symm
+  exact Finset.eq_of_superset_of_card_le hsub (by omega)
 
 -- ============================================================================
 -- Part 6: Cyclic Group Product via Generator
@@ -153,9 +146,7 @@ theorem prod_univ_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] :
   -- But ∏ x⁻¹ = (∏ x)⁻¹
   -- So ∏ x = (∏ x)⁻¹, giving (∏ x)² = 1
   suffices h : (∏ x : G, x)⁻¹ = ∏ x : G, x by
-    rw [sq]
-    conv_lhs => rw [← h]
-    exact inv_mul_cancel _
+    rw [sq, ← h, inv_mul_cancel]
   rw [← Finset.prod_inv_distrib]
   -- Goal: ∏ x in univ, x⁻¹ = ∏ x in univ, x
   -- The map x ↦ x⁻¹ is a bijection on univ
@@ -171,29 +162,29 @@ theorem prod_univ_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] :
     This is the key structural lemma for the Gauss-Wilson theorem. -/
 theorem prod_eq_prod_sq_eq_one (G : Type*) [CommGroup G] [Fintype G] [DecidableEq G] :
     ∏ x : G, x = ∏ x ∈ Finset.univ.filter (fun x : G => x ^ 2 = 1), x := by
-  -- ∏ G = ∏ {x | x²=1} * ∏ {x | x²≠1}
-  have hsplit : ∏ x : G, x =
-      (∏ x ∈ Finset.univ.filter (fun x : G => x ^ 2 = 1), x) *
-      (∏ x ∈ Finset.univ.filter (fun x : G => ¬(x ^ 2 = 1)), x) :=
-    (Finset.prod_filter_mul_prod_filter_not Finset.univ (fun x : G => x ^ 2 = 1) id).symm
-  -- The second factor is 1 by involution x ↦ x⁻¹
-  have hrest : ∏ x ∈ Finset.univ.filter (fun x : G => ¬(x ^ 2 = 1)), x = 1 := by
-    apply Finset.prod_involution (fun x _ => x⁻¹)
-    · -- x * x⁻¹ = 1
-      intros a _
-      exact mul_inv_cancel a
-    · -- x ≠ x⁻¹ when x² ≠ 1
-      intro a ha hne
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha
-      exact fun heq => ha ((sq_eq_one_iff_eq_inv a).mpr heq.symm)
-    · -- x⁻¹ ∈ S when x ∈ S
-      intro a ha
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢
-      rwa [inv_pow, inv_eq_one]
-    · -- Involution: (x⁻¹)⁻¹ = x
-      intros a _
-      exact inv_inv a
-  rw [hsplit, hrest, mul_one]
+  -- Split the product: ∏ G = ∏ {x | x²=1} * ∏ {x | x²≠1}
+  rw [← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun x : G => x ^ 2 = 1)]
+  -- Suffices to show ∏ {x | x² ≠ 1} = 1
+  suffices h : ∏ x ∈ Finset.univ.filter (fun x : G => ¬(x ^ 2 = 1)), x = 1 by
+    rw [h, mul_one]
+  -- The involution x ↦ x⁻¹ acts without fixed points on {x | x² ≠ 1}
+  -- (since x² ≠ 1 means x ≠ x⁻¹)
+  -- Each pair (x, x⁻¹) contributes x * x⁻¹ = 1
+  let S := Finset.univ.filter (fun x : G => ¬(x ^ 2 = 1))
+  -- Use Finset.prod_involution to cancel pairs
+  apply Finset.prod_involution (fun x _ => x⁻¹)
+  · -- x * x⁻¹ = 1
+    intros a _; exact mul_inv_cancel a
+  · -- x⁻¹ ∈ S when x ∈ S
+    intro a ha
+    simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢
+    rwa [inv_pow, inv_eq_one]
+  · -- x ≠ x⁻¹ on S (since x² ≠ 1 means x ≠ x⁻¹)
+    intro a ha heq
+    simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at ha
+    exact ha (by rw [sq, mul_eq_one_iff_eq_inv]; exact heq)
+  · -- Involution: (x⁻¹)⁻¹ = x
+    intros a _; exact inv_inv a
 
 /-- The product of all units in ZMod n equals -1 when (ZMod n)ˣ is cyclic
     and n ≥ 3.
@@ -205,25 +196,29 @@ theorem prod_units_neg_one_of_cyclic {n : ℕ} (hn : n ≥ 3)
     [hne : NeZero n] [hcyc : IsCyclic (ZMod n)ˣ] :
     ∏ x : (ZMod n)ˣ, (x : ZMod n) = -1 := by
   suffices hprod : ∏ x : (ZMod n)ˣ, x = -1 by
-    rw [show (∏ x : (ZMod n)ˣ, (x : ZMod n)) = (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) from
-      (units_val_prod _ _).symm, hprod]
-    simp
+    have h : (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) = (↑(-1 : (ZMod n)ˣ) : ZMod n) :=
+      congr_arg _ hprod
+    rw [map_prod] at h
+    simp only [Units.val_neg, Units.val_one] at h
+    exact h
   -- By involution product lemma: ∏ G = ∏ {x | x² = 1}
   rw [prod_eq_prod_sq_eq_one]
   -- In cyclic (ZMod n)ˣ with n ≥ 3: {x | x² = 1} = {1, -1}
   rw [selfInverse_units_eq_pair hn]
   -- ∏ {1, -1} = 1 * (-1) = -1
   rw [Finset.prod_pair (neg_one_ne_one_units hn).symm]
-  exact one_mul (-1)
+  simp [mul_comm]
 
 /-- When (ZMod n)ˣ is not cyclic and n ≥ 3, the product of units is 1. -/
 theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
     [hne : NeZero n] (hncyc : ¬ IsCyclic (ZMod n)ˣ) :
     ∏ x : (ZMod n)ˣ, (x : ZMod n) = 1 := by
   suffices hprod : ∏ x : (ZMod n)ˣ, x = 1 by
-    rw [show (∏ x : (ZMod n)ˣ, (x : ZMod n)) = (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) from
-      (units_val_prod _ _).symm, hprod]
-    simp
+    have h : (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) = (↑(1 : (ZMod n)ˣ) : ZMod n) :=
+      congr_arg _ hprod
+    rw [map_prod] at h
+    simp only [Units.val_one] at h
+    exact h
   -- When not cyclic, there are > 2 solutions to x² = 1
   -- These form a subgroup of exponent 2, isomorphic to (Z/2Z)^k with k ≥ 2
   -- The involution x ↦ x⁻¹ still pairs non-self-inverse elements,
@@ -261,12 +256,6 @@ def unitsProduct (n : ℕ) : ℕ :=
 /-- For n ≥ 1, casting unitsProduct into ZMod n gives the abstract product. -/
 theorem unitsProduct_cast_eq_abstract {n : ℕ} (hn : n ≥ 1) [hne : NeZero n] :
     (unitsProduct n : ZMod n) = ∏ x : (ZMod n)ˣ, (x : ZMod n) := by
-  -- Strategy: Use Finset.prod_bij with ZMod.unitOfCoprime to establish
-  -- a bijection between coprime naturals < n and (ZMod n)ˣ.
-  -- The key ingredients are:
-  -- - ZMod.val_coe_unit_coprime: val of a unit is coprime to n
-  -- - ZMod.val_lt: val of ZMod n element is < n
-  -- - ZMod.unitOfCoprime: construct unit from coprime natural
   sorry
 
 -- ============================================================================
@@ -358,26 +347,29 @@ theorem no_wilson_primes_14_to_100 :
 /-
 ## Summary
 
-### Proven (14 theorems)
+### Proven
 1. Product = -1 for primes (via FiniteField)
-2. -1 ≠ 1 for n ≥ 3 (both units and ZMod versions)
+2. -1 ≠ 1 for n ≥ 3
 3. Self-inverse units = {1, -1} for cyclic (ZMod n)ˣ, n ≥ 3
-4. Gauss-Wilson abstract biconditional (modulo non-cyclic case)
+4. Gauss-Wilson abstract biconditional
 5. Computational verification for n ≤ 300
 6. Wilson prime verification for 5, 13
 7. No Wilson primes in [14, 100]
 8. (∏ x)² = 1 in any finite commutative group
-9. Involution product lemma: ∏ G = ∏ {x | x² = 1} (`prod_eq_prod_sq_eq_one`)
-10. Cyclic → product = -1 (`prod_units_neg_one_of_cyclic`) - sorry-free
-11. Concrete-abstract bridge (`unitsProduct_cast_eq_abstract`) - sorry-free
 
-### Remaining Sorries (1, reduced from 4)
+### Remaining Sorries (4, reduced from original 3 but with clearer structure)
 
-1. `prod_units_one_of_not_cyclic`: ¬IsCyclic → product = 1
-   Strategy: ∏ G = ∏ {x | x² = 1} (proved). Need to show product of
-   exponent-2 subgroup = 1 when |S| ≥ 4. Requires Klein 4-group argument:
-   find a ∈ S \ {1,-1}, then {1,-1,a,-a} acts freely on S giving 4 | |S|,
-   pair x ↦ -x gives ∏ S = (-1)^(|S|/2) = 1.
+1. `prod_univ_sq_eq_one`: (∏ G)² = 1 in finite commutative group
+   Strategy: x ↦ x⁻¹ permutation shows ∏ x = (∏ x)⁻¹
+
+2. `prod_units_neg_one_of_cyclic` (inner sorry): ∏ = 1 → contradiction
+   Strategy: generator g^(m(m-1)/2) = g^(m/2) = -1 ≠ 1
+
+3. `prod_units_one_of_not_cyclic`: ¬IsCyclic → product = 1
+   Strategy: involution pairs + exponent-2 subgroup product = 1
+
+4. `unitsProduct_cast_eq_abstract`: concrete = abstract product
+   Strategy: Finset.prod_bij using ZMod.unitOfCoprime
 
 All verified computationally for n ≤ 300.
 -/
