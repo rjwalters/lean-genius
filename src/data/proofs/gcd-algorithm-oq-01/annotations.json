@@ -1,0 +1,86 @@
+[
+  {
+    "lineStart": 37,
+    "lineEnd": 41,
+    "type": "definition",
+    "content": "The step counting function for the Euclidean algorithm. Returns the number of division steps before reaching remainder 0. The termination proof uses the fact that a % b < b.",
+    "importance": "high"
+  },
+  {
+    "lineStart": 60,
+    "lineEnd": 65,
+    "type": "technique",
+    "content": "Unfolding lemmas for euclideanSteps: the zero case and the positive case. These are essential for reasoning about the step count in proofs.",
+    "importance": "medium"
+  },
+  {
+    "lineStart": 79,
+    "lineEnd": 81,
+    "type": "theorem",
+    "content": "The core Lame bound, proved by strong induction on the step count n. The key invariant: if euclideanSteps(a,b) = n then fib(n+1) <= b, and for n >= 2, fib(n) <= a % b. This captures how the Fibonacci sequence provides the tightest lower bound on inputs requiring n steps.",
+    "importance": "high"
+  },
+  {
+    "lineStart": 145,
+    "lineEnd": 147,
+    "type": "theorem",
+    "content": "Lame's Theorem in its classical form: fib(steps+1) <= b when b > 0. This is the fundamental result connecting Euclidean algorithm complexity to Fibonacci numbers.",
+    "importance": "high"
+  },
+  {
+    "lineStart": 150,
+    "lineEnd": 155,
+    "type": "theorem",
+    "content": "Contrapositive of Lame's theorem: if b < fib(k+2), then the algorithm takes at most k steps. This form is more convenient for deriving upper bounds on step count.",
+    "importance": "high"
+  },
+  {
+    "lineStart": 162,
+    "lineEnd": 165,
+    "type": "lemma",
+    "content": "F(n+2) mod F(n+1) = F(n) for n >= 2. This follows from the Fibonacci recurrence: fib(n+2) = fib(n) + fib(n+1), and since fib(n) < fib(n+1), the mod operation just returns fib(n).",
+    "importance": "medium"
+  },
+  {
+    "lineStart": 175,
+    "lineEnd": 192,
+    "type": "theorem",
+    "content": "Worst-case optimality: consecutive Fibonacci numbers (fib(n+2), fib(n+1)) require exactly n steps in the Euclidean algorithm. Combined with Lame's theorem, this shows Fibonacci pairs are the unique worst case (up to the bound).",
+    "importance": "high"
+  },
+  {
+    "lineStart": 209,
+    "lineEnd": 225,
+    "type": "theorem",
+    "content": "Exponential lower bound for odd-indexed Fibonacci numbers: fib(2n+1) >= 2^n. This bridges the gap between Fibonacci growth and powers of 2, enabling the logarithmic step bound.",
+    "importance": "medium"
+  },
+  {
+    "lineStart": 227,
+    "lineEnd": 235,
+    "type": "theorem",
+    "content": "Logarithmic step bound: euclideanSteps(a,b) <= 2*log2(b) + 2. Derived by combining Lame's theorem with the exponential Fibonacci lower bound. This confirms the O(log b) worst-case complexity.",
+    "importance": "high"
+  },
+  {
+    "lineStart": 255,
+    "lineEnd": 267,
+    "type": "theorem",
+    "content": "Lame's classical 5-digit bound: the number of steps is at most 5 times the number of decimal digits of b (for b < 10^20). Uses fib(5k+2) >= 10^k, verified by interval_cases and native_decide for k <= 20.",
+    "importance": "high"
+  },
+  {
+    "lineStart": 281,
+    "lineEnd": 295,
+    "type": "definition",
+    "content": "Infrastructure for computing finite averages: totalSteps(N) sums euclideanSteps over all pairs (a,b) with 1 <= b <= a <= N. This enables numerical verification of Dixon's asymptotic formula for small N.",
+    "importance": "medium"
+  },
+  {
+    "lineStart": 297,
+    "lineEnd": 314,
+    "type": "context",
+    "content": "Dixon's theorem (1970): the average number of steps in the Euclidean algorithm for inputs up to N is (12 ln 2 / pi^2) ln N, approximately 0.8427 ln N. This requires continued fractions, the Gauss map T(x) = {1/x}, and ergodic theory, none of which are currently available in Mathlib v4.26.0.",
+    "importance": "high"
+  }
+]
