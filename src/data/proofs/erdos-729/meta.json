@@ -46,14 +46,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős (1968) proved that if a!b! | n! then a + b ≤ n + O(log n), using Legendre's formula with powers of 2. Problem #729 asks whether this bound persists when 'ignoring small primes' in the denominator. Barreto and Leeham proved it does, adapting the technique from Problem #728.",
-    "problemStatement": "Let C > 0 be a constant. Are there infinitely many integers a, b, n with a + b > n + C·log n such that the denominator of n!/(a!b!) contains only primes ≪_C 1?",
-    "proofStrategy": "The proof extends Erdős's powers-of-2 argument. Legendre's formula gives v_p(n!) = (n - s_p(n))/(p-1) where s_p(n) is the digit sum in base p. The key insight is that large primes contribute substantially to divisibility constraints, making the bound robust to ignoring finitely many small primes.",
+    "historicalContext": "Erdős proved in 1968 that if $a!b! \\mid n!$ then $a + b \\leq n + O(\\log n)$, using an elegant argument based on Legendre's formula for $v_2(n!) = n - s_2(n)$, where $s_2(n)$ is the binary digit sum. Problem 729, posed later, asks whether this logarithmic bound can be defeated by \"ignoring\" small primes: specifically, whether there are infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ such that $n!/(a!b!)$ has denominator divisible only by primes $\\leq C$. Barreto and Leeham resolved the problem negatively, showing that large primes alone carry sufficient information to enforce the bound. Their proof adapts the technique from Problem #728, extending it to show that for any prime $p > C$, the constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ already implies $a + b \\leq n + O(\\log n)$. This reveals a fundamental rigidity in factorial arithmetic: the divisibility structure is controlled by all primes collectively, and no finite set of exceptions can weaken it.",
+    "problemStatement": "Let $C > 0$ be a constant. Are there infinitely many integers $a, b, n$ with $a + b > n + C\\log n$ such that the denominator of $n!/(a!b!)$ contains only primes $\\leq C$?",
+    "proofStrategy": "The formalization defines `DividesFactorial` and `DividesFactorialModSmall` (allowing small prime factors in the denominator), states `InfinitelyManyExceptions` as the open question, and axiomatizes both Erdős's 1968 result and the Barreto-Leeham resolution. Legendre's formula is stated via `factorialPadicVal` and the digit sum identity. The main theorem `erdos_729_statement` combines both results, and `erdos_729_summary` provides the complete answer. Two `sorry`s remain: `legendre_for_two` and `binomial_rigidity`.",
     "keyInsights": [
-      "Legendre's formula: v_2(n!) = n - s_2(n) where s_2(n) is the binary digit sum",
-      "If a!b! | n! then v_p(a!) + v_p(b!) ≤ v_p(n!) for all primes p",
-      "The constraint from powers of 2 alone gives a + b ≤ n + O(log n)",
-      "Ignoring small primes doesn't weaken this bound—large primes carry the constraint"
+      "Legendre's formula $v_p(n!) = (n - s_p(n))/(p-1)$ connects factorial divisibility to base-$p$ digit sums, with the special case $v_2(n!) = n - s_2(n)$ being particularly clean",
+      "If $a!b! \\mid n!$, then $v_p(a!) + v_p(b!) \\leq v_p(n!)$ for all primes $p$. Using just $p = 2$ and the digit sum identity gives $a + b \\leq n + s_2(a) + s_2(b) - s_2(n) \\leq n + O(\\log n)$",
+      "The relaxed condition allows multiplying by a factor $k$ with only small prime factors, but this cannot help: for primes $p > C$, the constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ is unaffected by $k$",
+      "Large primes carry the full strength of the divisibility constraint, making the bound robust to ignoring any finite set of primes",
+      "The problem connects to Problem #728 (a similar question about multinomial coefficients) and reveals the rigidity of factorial arithmetic under prime localization"
     ]
   },
   "sections": [
@@ -62,79 +63,97 @@
       "title": "Basic Definitions",
       "startLine": 35,
       "endLine": 55,
-      "summary": "Factorial p-adic valuations, Legendre's formula, and divisibility predicates."
+      "summary": "Defines `factorialPadicVal` via Legendre's formula $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, axiomatizes `legendre_formula`, and defines `DividesFactorial n a b` as $a! \\cdot b! \\mid n!$."
     },
     {
       "id": "erdos-classical",
       "title": "Erdős's Classical Result (1968)",
       "startLine": 57,
       "endLine": 73,
-      "summary": "The classical bound: a!b! | n! implies a + b ≤ n + O(log n)."
+      "summary": "Axiomatizes `erdos_1968_classical`: $a!b! \\mid n! \\implies a + b \\leq n + O(\\log n)$. Proves `erdos_proof_via_powers_of_two` by forwarding to the axiom, documenting that the original proof uses only the $p = 2$ constraint."
     },
     {
       "id": "relaxed-condition",
       "title": "The Relaxed Condition",
       "startLine": 75,
       "endLine": 93,
-      "summary": "Definitions for divisibility modulo small primes."
+      "summary": "Defines `SmallPrimes C` as primes $\\leq C$, and `DividesFactorialModSmall` allowing a correction factor $k$ with only small prime factors. This formalizes 'ignoring small primes in the denominator'."
     },
     {
       "id": "question",
       "title": "The Question",
       "startLine": 95,
       "endLine": 106,
-      "summary": "Formalization of 'infinitely many exceptions' with only small primes in denominator."
+      "summary": "Defines `InfinitelyManyExceptions C`: are there infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ and `DividesFactorialModSmall`? This is the formal statement of Erdős Problem 729."
     },
     {
       "id": "barreto-leeham",
       "title": "Barreto-Leeham Resolution",
       "startLine": 108,
       "endLine": 122,
-      "summary": "The answer is NO: the bound persists even modulo small primes."
+      "summary": "Axiomatizes `barreto_leeham_theorem`: $\\neg\\text{InfinitelyManyExceptions}(C)$ for all $C > 0$. Also states `barreto_leeham_bound`: the bound $a + b \\leq n + D\\log n$ persists with an explicit constant $D$."
     },
     {
       "id": "proof-strategy",
       "title": "Proof Strategy",
       "startLine": 124,
       "endLine": 139,
-      "summary": "Connection to Problem #728 and extension of Erdős's argument."
+      "summary": "Axiomatizes `proof_extends_erdos_argument`: for primes $p > C$, the $p$-adic constraint $v_p(a!) + v_p(b!) \\leq v_p(n!)$ holds even under the relaxed condition, since the correction factor $k$ has no $p$-component."
     },
     {
       "id": "legendre-details",
       "title": "Legendre's Formula Details",
       "startLine": 141,
       "endLine": 159,
-      "summary": "Detailed p-adic valuation formulas including digit sums."
+      "summary": "Defines `digitSum p n` recursively and axiomatizes `legendre_identity`: $v_p(n!) = (n - s_p(n))/(p-1)$. The theorem `legendre_for_two` ($v_2(n!) = n - s_2(n)$) has a `sorry`."
     },
     {
       "id": "implications",
-      "title": "Implications",
+      "title": "Implications and Rigidity",
       "startLine": 161,
       "endLine": 177,
-      "summary": "Factorial structure rigidity and binomial coefficient connections."
+      "summary": "Axiomatizes `factorial_rigidity` and states `binomial_rigidity` (with `sorry`): when $a + b = n$, $n!/(a!b!) = \\binom{n}{a}$ is always an integer."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
       "startLine": 179,
       "endLine": 192,
-      "summary": "Complete formalization combining classical and extended results."
+      "summary": "Proves `erdos_729_statement`: combines `erdos_1968_classical` and `barreto_leeham_theorem` into a single conjunction, establishing both the classical bound and its robustness."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 194,
-      "endLine": 212,
-      "summary": "Summary theorem: the answer is NO, bound persists modulo small primes."
+      "endLine": 207,
+      "summary": "Proves `erdos_729_summary`: the answer is NO, and the explicit bound $a + b \\leq n + D\\log n$ holds, combining `barreto_leeham_theorem` and `barreto_leeham_bound`."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #729 is solved negatively: there are NOT infinitely many (a, b, n) with a + b > n + C·log n where the denominator of n!/(a!b!) has only small prime factors. The bound a + b ≤ n + O(log n) is intrinsic to factorial structure.",
-    "implications": "The result shows that factorial divisibility constraints come from all primes collectively, not just a few small ones. Large primes carry sufficient information to enforce the logarithmic bound.",
+    "summary": "Erdős Problem 729 is solved negatively: there are NOT infinitely many $(a, b, n)$ with $a + b > n + C\\log n$ where the denominator of $n!/(a!b!)$ has only small prime factors. The formalization captures the classical Erdős bound, the relaxed condition, the Barreto-Leeham resolution, and the proof strategy via large primes, with two remaining `sorry`s on supporting lemmas.",
+    "implications": "The result demonstrates a fundamental rigidity in factorial arithmetic: the constraint $a + b \\leq n + O(\\log n)$ arises from all primes collectively and cannot be circumvented by ignoring finitely many. This connects to the robustness of Legendre's formula under prime localization and suggests that factorial divisibility is determined by the global prime structure, not any local subset.",
     "openQuestions": [
-      "What is the optimal constant in the O(log n) term?",
-      "Can the proof be made constructive?",
-      "How does the bound behave for specific families of (a, b, n)?"
+      "What is the optimal constant in the $O(\\log n)$ bound? Can it be made explicit as a function of $C$?",
+      "Can the proof of `legendre_for_two` ($v_2(n!) = n - s_2(n)$) be completed in Lean using Mathlib's `padicValNat` machinery?",
+      "How does the bound behave for specific parametric families, e.g., $(a, b, n) = (n/2, n/2, n)$?",
+      "Is there an analogue for multinomial coefficients $n!/(a_1! \\cdots a_k!)$ with $k > 2$?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "related",
+      "description": "Kummer's theorem and Legendre's formula both connect factorial divisibility to digit structure in various bases"
+    },
+    {
+      "targetId": "erdos-731",
+      "relationship": "related",
+      "description": "Problem 731 also studies divisibility of binomial-type expressions, focusing on central binomial coefficients"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The distribution of primes underlies the O(log n) bound via digit sum estimates"
+    }
+  ]
 }
