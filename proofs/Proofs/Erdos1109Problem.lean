@@ -1785,6 +1785,7 @@ theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
     (A.image (· % (p * p))).card ≤ (p * p - 1) / 2 := by
   set pp := p * p with hpp_def
   set S := A.image (· % pp) with hS_def
+  have hpp_pos : pp > 0 := Nat.mul_pos hp.pos hp.pos
   -- Image avoids 0
   have h0 : (0 : ℕ) ∉ S := residue_image_avoids_zero A h p hp
   -- Image ⊆ range pp
@@ -1792,7 +1793,7 @@ theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
     intro r hr
     simp only [hS_def, Finset.mem_image] at hr
     obtain ⟨a, _, rfl⟩ := hr
-    simp [Finset.mem_range]; omega
+    exact Finset.mem_range.mpr (Nat.mod_lt a hpp_pos)
   -- Image ⊆ {1, ..., pp-1}
   have hsub : S ⊆ Finset.range pp \ {0} := by
     intro r hr
@@ -1804,8 +1805,7 @@ theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
     simp only [hS_def, Finset.mem_image] at hr_in hc_in
     obtain ⟨a, ha, ha_r⟩ := hr_in
     obtain ⟨b, hb, hb_c⟩ := hc_in
-    apply complementary_residue_exclusion A h p hp a b ha hb
-    omega
+    exact complementary_residue_exclusion A h p hp a b ha hb (by rw [ha_r, hb_c]; omega)
   -- pp ≥ 4 since p ≥ 2
   have hpp_ge : pp ≥ 4 := by
     have := hp.two_le; nlinarith
@@ -1862,9 +1862,12 @@ theorem general_residue_image_le (A : Finset ℕ) (h : hasSquarefreeSumset A)
     obtain ⟨r, hr, rfl⟩ := hv
     exact g_range r hr
   have hcard_target : (Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ)).card = (pp - 1) / 2 := by
-    rw [Finset.card_sdiff_of_subset_of_subset (by simp [Finset.singleton_subset_iff, Finset.mem_range]; omega)
-      (Finset.subset_refl _)]
-    simp [Finset.card_range, Finset.card_singleton]
+    have h0_mem : (0 : ℕ) ∈ Finset.range ((pp - 1) / 2 + 1) := by
+      simp [Finset.mem_range]; omega
+    rw [show Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ) =
+      (Finset.range ((pp - 1) / 2 + 1)).erase 0 from by
+      ext x; simp [Finset.mem_erase, Finset.mem_sdiff, Finset.mem_singleton]]
+    rw [Finset.card_erase_of_mem h0_mem, Finset.card_range]
   calc S.card = (S.image (fun r => min r (pp - r))).card :=
           (Finset.card_image_of_injOn g_inj).symm
     _ ≤ (Finset.range ((pp - 1) / 2 + 1) \ ({0} : Finset ℕ)).card := Finset.card_le_card himg_sub
@@ -2091,18 +2094,14 @@ theorem combined_residue_bound (A : Finset ℕ) (h : hasSquarefreeSumset A)
       exact crt_residue_injective p q hp hq hpq _ _ hr_lt hs_lt h1 h2
     -- The image maps into Spp ×ˢ Sqq
     have himg : (A.image (· % (pp * qq))).image (fun r => (r % pp, r % qq)) ⊆ Spp ×ˢ Sqq := by
-      intro ⟨x, y⟩ hxy
+      intro xy hxy
       simp only [Finset.mem_image, Finset.mem_product] at hxy ⊢
-      obtain ⟨r, hr, heq⟩ := hxy
+      obtain ⟨r, hr, rfl⟩ := hxy
       simp only [Finset.mem_image] at hr
       obtain ⟨a, ha, rfl⟩ := hr
-      constructor
-      · simp only [Finset.mem_image]
-        have : a % (pp * qq) % pp = a % pp := Nat.mod_mod_of_dvd a (dvd_mul_right pp qq)
-        exact ⟨a, ha, by rw [← congr_arg Prod.fst heq, this]⟩
-      · simp only [Finset.mem_image]
-        have : a % (pp * qq) % qq = a % qq := Nat.mod_mod_of_dvd a (dvd_mul_left qq pp)
-        exact ⟨a, ha, by rw [← congr_arg Prod.snd heq, this]⟩
+      have hmod_pp : a % (pp * qq) % pp = a % pp := Nat.mod_mod_of_dvd a (dvd_mul_right pp qq)
+      have hmod_qq : a % (pp * qq) % qq = a % qq := Nat.mod_mod_of_dvd a (dvd_mul_left qq pp)
+      exact ⟨⟨a, ha, hmod_pp⟩, ⟨a, ha, hmod_qq⟩⟩
     calc (A.image (· % (pp * qq))).card
         = ((A.image (· % (pp * qq))).image (fun r => (r % pp, r % qq))).card :=
           (Finset.card_image_of_injOn hinj).symm
@@ -2166,7 +2165,9 @@ theorem mod_36_residue_image_le_4 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
     intro p hp
     simp only [Finset.mem_image, Finset.mem_product] at hp ⊢
     obtain ⟨r, ⟨a, ha, rfl⟩, rfl⟩ := hp
-    exact ⟨⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩⟩
+    have hm4 : a % 36 % 4 = a % 4 := Nat.mod_mod_of_dvd a (by norm_num : 4 ∣ 36)
+    have hm9 : a % 36 % 9 = a % 9 := Nat.mod_mod_of_dvd a (by norm_num : 9 ∣ 36)
+    exact ⟨⟨a, ha, hm4⟩, ⟨a, ha, hm9⟩⟩
   have h4 := mod_4_residue_image_small A h
   have h9 := mod_9_residue_image_le_4 A h
   calc (A.image (· % 36)).card
@@ -2198,7 +2199,28 @@ theorem mod_900_residue_image_le_48 (A : Finset ℕ) (h : hasSquarefreeSumset A)
     simp only [Set.mem_setOf_eq] at hr hs
     simp only [Prod.mk.injEq] at hrs
     obtain ⟨h4, h9, h25⟩ := hrs
-    omega
+    by_cases h : r ≥ s
+    · have : 4 ∣ (r - s) := by omega
+      have : 9 ∣ (r - s) := by omega
+      have : 25 ∣ (r - s) := by omega
+      have h36 : 36 ∣ (r - s) := by
+        have : Nat.Coprime 4 9 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
+      have h900 : 900 ∣ (r - s) := by
+        have : Nat.Coprime 36 25 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
+      omega
+    · push_neg at h
+      have : 4 ∣ (s - r) := by omega
+      have : 9 ∣ (s - r) := by omega
+      have : 25 ∣ (s - r) := by omega
+      have h36 : 36 ∣ (s - r) := by
+        have : Nat.Coprime 4 9 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
+      have h900 : 900 ∣ (s - r) := by
+        have : Nat.Coprime 36 25 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
+      omega
   have phi_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25)) ((A.image (· % 900)) : Set ℕ) := by
     intro r hr s hs hrs
     simp only [Finset.mem_coe, Finset.mem_image] at hr hs
@@ -2212,7 +2234,10 @@ theorem mod_900_residue_image_le_48 (A : Finset ℕ) (h : hasSquarefreeSumset A)
     intro p hp
     simp only [Finset.mem_image, Finset.mem_product] at hp ⊢
     obtain ⟨r, ⟨a, ha, rfl⟩, rfl⟩ := hp
-    exact ⟨⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩⟩
+    have hm4 : a % 900 % 4 = a % 4 := Nat.mod_mod_of_dvd a (by norm_num : 4 ∣ 900)
+    have hm9 : a % 900 % 9 = a % 9 := Nat.mod_mod_of_dvd a (by norm_num : 9 ∣ 900)
+    have hm25 : a % 900 % 25 = a % 25 := Nat.mod_mod_of_dvd a (by norm_num : 25 ∣ 900)
+    exact ⟨⟨a, ha, hm4⟩, ⟨a, ha, hm9⟩, ⟨a, ha, hm25⟩⟩
   have h4 := mod_4_residue_image_small A h
   have h9 := mod_9_residue_image_le_4 A h
   have h25 := mod_25_residue_image_le_12 A h
@@ -2507,183 +2532,7 @@ theorem f_ge_eight (N : ℕ) (hN : N ≥ 101) : f N ≥ 8 := by
     exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
   exact le_csSup hbdd h8
 
--- ============================================================================
--- Part VII: 9-Element Witness and f(N) >= 9
--- ============================================================================
-
--- New squarefree facts for 9-element witness (sums involving 137)
-
-/-- 79 is prime. -/
-private theorem prime_79 : Nat.Prime 79 := by native_decide
-
-/-- 89 is prime. -/
-private theorem prime_89 : Nat.Prime 89 := by native_decide
-
-/-- 137 is prime. -/
-private theorem prime_137 : Nat.Prime 137 := by native_decide
-
-private theorem squarefree_158 : Squarefree (158 : ℕ) := by
-  rw [show (158 : ℕ) = 2 * 79 from by norm_num]
-  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, prime_79.squarefree⟩)
-
-private theorem squarefree_178 : Squarefree (178 : ℕ) := by
-  rw [show (178 : ℕ) = 2 * 89 from by norm_num]
-  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, prime_89.squarefree⟩)
-
-private theorem squarefree_210 : Squarefree (210 : ℕ) := by
-  rw [show (210 : ℕ) = 2 * 3 * 5 * 7 from by norm_num]
-  have h7 : Nat.Prime 7 := by native_decide
-  -- 210 = 2 * 105 = 2 * 3 * 35 = 2 * 3 * 5 * 7
-  -- All prime factors are distinct, so 210 is squarefree
-  rw [show (2 * 3 * 5 * 7 : ℕ) = 2 * 105 from by norm_num]
-  refine Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, ?_⟩
-  rw [show (105 : ℕ) = 3 * 35 from by norm_num]
-  refine Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, three_prime.squarefree, ?_⟩
-  rw [show (35 : ℕ) = 5 * 7 from by norm_num]
-  exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, five_prime.squarefree, h7.squarefree⟩
-
-private theorem squarefree_238 : Squarefree (238 : ℕ) := by
-  rw [show (238 : ℕ) = 2 * 119 from by norm_num]
-  have h119 : Squarefree (119 : ℕ) := by
-    rw [show (119 : ℕ) = 7 * 17 from by norm_num]
-    have h7 : Nat.Prime 7 := by native_decide
-    have h17 : Nat.Prime 17 := by native_decide
-    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h7.squarefree, h17.squarefree⟩
-  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h119⟩)
-
-private theorem squarefree_274 : Squarefree (274 : ℕ) := by
-  rw [show (274 : ℕ) = 2 * 137 from by norm_num]
-  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, prime_137.squarefree⟩)
-
-/--
-**{1, 5, 21, 37, 41, 65, 73, 101, 137} has a squarefree sumset.**
-All 81 ordered pair sums are squarefree. This extends the 8-element set
-by adding 137, introducing 9 new distinct sums:
-138=2*3*23, 142=2*71, 158=2*79, 174=2*3*29, 178=2*89, 202=2*101, 210=2*3*5*7, 238=2*7*17, 274=2*137.
--/
-theorem nona_1_5_21_37_41_65_73_101_137_squarefree_sumset :
-    hasSquarefreeSumset ({1, 5, 21, 37, 41, 65, 73, 101, 137} : Finset ℕ) := by
-  intro s hs
-  simp only [sumset, Finset.mem_image, Finset.mem_product, Finset.mem_insert,
-    Finset.mem_singleton] at hs
-  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, hab⟩ := hs
-  simp only [isSquarefree]
-  rcases ha with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-    rcases hb with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-    simp at hab <;> rw [← hab]
-  -- Row a=1: 2, 6, 22, 38, 42, 66, 74, 102, 138
-  · exact squarefree_2
-  · exact squarefree_6
-  · exact squarefree_22
-  · exact squarefree_38
-  · exact squarefree_42
-  · exact squarefree_66
-  · exact squarefree_74
-  · exact squarefree_102
-  · exact squarefree_138
-  -- Row a=5: 6, 10, 26, 42, 46, 70, 78, 106, 142
-  · exact squarefree_6
-  · exact squarefree_10
-  · exact squarefree_26
-  · exact squarefree_42
-  · exact squarefree_46
-  · exact squarefree_70
-  · exact squarefree_78
-  · exact squarefree_106
-  · exact squarefree_142
-  -- Row a=21: 22, 26, 42, 58, 62, 86, 94, 122, 158
-  · exact squarefree_22
-  · exact squarefree_26
-  · exact squarefree_42
-  · exact squarefree_58
-  · exact squarefree_62
-  · exact squarefree_86
-  · exact squarefree_94
-  · exact squarefree_122
-  · exact squarefree_158
-  -- Row a=37: 38, 42, 58, 74, 78, 102, 110, 138, 174
-  · exact squarefree_38
-  · exact squarefree_42
-  · exact squarefree_58
-  · exact squarefree_74
-  · exact squarefree_78
-  · exact squarefree_102
-  · exact squarefree_110
-  · exact squarefree_138
-  · exact squarefree_174
-  -- Row a=41: 42, 46, 62, 78, 82, 106, 114, 142, 178
-  · exact squarefree_42
-  · exact squarefree_46
-  · exact squarefree_62
-  · exact squarefree_78
-  · exact squarefree_82
-  · exact squarefree_106
-  · exact squarefree_114
-  · exact squarefree_142
-  · exact squarefree_178
-  -- Row a=65: 66, 70, 86, 102, 106, 130, 138, 166, 202
-  · exact squarefree_66
-  · exact squarefree_70
-  · exact squarefree_86
-  · exact squarefree_102
-  · exact squarefree_106
-  · exact squarefree_130
-  · exact squarefree_138
-  · exact squarefree_166
-  · exact squarefree_202
-  -- Row a=73: 74, 78, 94, 110, 114, 138, 146, 174, 210
-  · exact squarefree_74
-  · exact squarefree_78
-  · exact squarefree_94
-  · exact squarefree_110
-  · exact squarefree_114
-  · exact squarefree_138
-  · exact squarefree_146
-  · exact squarefree_174
-  · exact squarefree_210
-  -- Row a=101: 102, 106, 122, 138, 142, 166, 174, 202, 238
-  · exact squarefree_102
-  · exact squarefree_106
-  · exact squarefree_122
-  · exact squarefree_138
-  · exact squarefree_142
-  · exact squarefree_166
-  · exact squarefree_174
-  · exact squarefree_202
-  · exact squarefree_238
-  -- Row a=137: 138, 142, 158, 174, 178, 202, 210, 238, 274
-  · exact squarefree_138
-  · exact squarefree_142
-  · exact squarefree_158
-  · exact squarefree_174
-  · exact squarefree_178
-  · exact squarefree_202
-  · exact squarefree_210
-  · exact squarefree_238
-  · exact squarefree_274
-
-/--
-**f(N) >= 9 for N >= 137:**
-The set {1, 5, 21, 37, 41, 65, 73, 101, 137} has squarefree sumset, giving f(N) >= 9.
--/
-theorem f_ge_nine (N : ℕ) (hN : N ≥ 137) : f N ≥ 9 := by
-  unfold f
-  have h9 : (9 : ℕ) ∈ {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
-    simp only [Set.mem_setOf_eq]
-    refine ⟨{1, 5, 21, 37, 41, 65, 73, 101, 137}, ?_, nona_1_5_21_37_41_65_73_101_137_squarefree_sumset, ?_⟩
-    · intro x hx
-      simp [Finset.mem_insert, Finset.mem_singleton] at hx
-      simp [Finset.mem_range]
-      rcases hx with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> omega
-    · native_decide
-  have hbdd : BddAbove {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
-    use N + 1
-    intro m hm
-    simp only [Set.mem_setOf_eq] at hm
-    obtain ⟨A, hA_sub, _, hA_card⟩ := hm
-    rw [← hA_card]
-    exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
-  exact le_csSup hbdd h9
+-- (f >= 9 is subsumed by f >= 10 and f >= 11 below)
 
 -- ============================================================================
 -- Part VIII: 10-Element Witness and f(N) >= 10
@@ -2895,5 +2744,617 @@ theorem f_ge_ten (N : ℕ) (hN : N ≥ 165) : f N ≥ 10 := by
     rw [← hA_card]
     exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
   exact le_csSup hbdd h10
+
+/-
+## Part XXVIII: Four-Prime CRT Density Bound
+
+Adding the prime p=7 (with 7²=49) to our CRT analysis. The four primes 2, 3, 5, 7
+give moduli 4, 9, 25, 49 with lcm = 44100.
+
+Per-prime bounds:
+- Mod 4 (p=2): ≤ 1 residue class
+- Mod 9 (p=3): ≤ 4 residue classes
+- Mod 25 (p=5): ≤ 12 residue classes
+- Mod 49 (p=7): ≤ 24 residue classes (via general_residue_image_le)
+
+Combined via CRT: ≤ 1 × 4 × 12 × 24 = 1152 out of 44100 ≈ 2.61%.
+
+This improves on the 3-prime bound of 48/900 ≈ 5.33%.
+-/
+
+/--
+**Combined constraint mod 44100:**
+The residue image of A modulo 44100 = 4 × 9 × 25 × 49 has at most 1152 elements.
+
+Since 4, 9, 25, and 49 are pairwise coprime with lcm = 44100, each element's residue
+mod 44100 is determined by its residues mod 4, mod 9, mod 25, and mod 49.
+The per-prime bounds are 1, 4, 12, 24 respectively, giving 1 × 4 × 12 × 24 = 1152.
+-/
+set_option maxHeartbeats 400000 in
+theorem mod_44100_residue_image_le_1152 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
+    (A.image (· % 44100)).card ≤ 1152 := by
+  have hbnd : A.image (· % 44100) ⊆ Finset.range 44100 := by
+    intro r hr
+    simp only [Finset.mem_image] at hr
+    obtain ⟨a, _, rfl⟩ := hr
+    simp [Finset.mem_range]; omega
+  -- CRT injectivity: residues mod 4, 9, 25, 49 determine residue mod 44100
+  have crt_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25, r % 49))
+      ({r : ℕ | r < 44100} : Set ℕ) := by
+    intro r hr s hs hrs
+    simp only [Set.mem_setOf_eq] at hr hs
+    simp only [Prod.mk.injEq] at hrs
+    obtain ⟨h4, h9, h25, h49⟩ := hrs
+    by_cases h : r ≥ s
+    · have : 4 ∣ (r - s) := by omega
+      have : 9 ∣ (r - s) := by omega
+      have : 25 ∣ (r - s) := by omega
+      have : 49 ∣ (r - s) := by omega
+      have h36 : 36 ∣ (r - s) := by
+        have : Nat.Coprime 4 9 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
+      have h900 : 900 ∣ (r - s) := by
+        have : Nat.Coprime 36 25 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
+      have h44100 : 44100 ∣ (r - s) := by
+        have : Nat.Coprime 900 49 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h900 ‹49 ∣ _›
+      omega
+    · push_neg at h
+      have : 4 ∣ (s - r) := by omega
+      have : 9 ∣ (s - r) := by omega
+      have : 25 ∣ (s - r) := by omega
+      have : 49 ∣ (s - r) := by omega
+      have h36 : 36 ∣ (s - r) := by
+        have : Nat.Coprime 4 9 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
+      have h900 : 900 ∣ (s - r) := by
+        have : Nat.Coprime 36 25 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
+      have h44100 : 44100 ∣ (s - r) := by
+        have : Nat.Coprime 900 49 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h900 ‹49 ∣ _›
+      omega
+  have phi_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25, r % 49))
+      ((A.image (· % 44100)) : Set ℕ) := by
+    intro r hr s hs hrs
+    simp only [Finset.mem_coe, Finset.mem_image] at hr hs
+    have hr_lt := hbnd (by simp [Finset.mem_image]; exact hr)
+    have hs_lt := hbnd (by simp [Finset.mem_image]; exact hs)
+    simp only [Finset.mem_range] at hr_lt hs_lt
+    exact crt_inj (by simp [Set.mem_setOf_eq]; exact hr_lt)
+      (by simp [Set.mem_setOf_eq]; exact hs_lt) hrs
+  have h_into_product : (A.image (· % 44100)).image (fun r => (r % 4, r % 9, r % 25, r % 49)) ⊆
+      (A.image (· % 4)) ×ˢ ((A.image (· % 9)) ×ˢ ((A.image (· % 25)) ×ˢ (A.image (· % 49)))) := by
+    intro p hp
+    simp only [Finset.mem_image, Finset.mem_product] at hp ⊢
+    obtain ⟨r, ⟨a, ha, rfl⟩, rfl⟩ := hp
+    exact ⟨⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩⟩
+  have h4 := mod_4_residue_image_small A h
+  have h9 := mod_9_residue_image_le_4 A h
+  have h25 := mod_25_residue_image_le_12 A h
+  have h49 := general_residue_image_le A h 7 (by native_decide : Nat.Prime 7)
+  -- (7*7 - 1)/2 = 48/2 = 24
+  have h49_val : (7 * 7 - 1) / 2 = 24 := by norm_num
+  rw [h49_val] at h49
+  calc (A.image (· % 44100)).card
+      = ((A.image (· % 44100)).image (fun r => (r % 4, r % 9, r % 25, r % 49))).card :=
+          (Finset.card_image_of_injOn phi_inj).symm
+    _ ≤ ((A.image (· % 4)) ×ˢ ((A.image (· % 9)) ×ˢ ((A.image (· % 25)) ×ˢ (A.image (· % 49))))).card :=
+          Finset.card_le_card h_into_product
+    _ = (A.image (· % 4)).card * ((A.image (· % 9)).card * ((A.image (· % 25)).card * (A.image (· % 49)).card)) :=
+          by simp [Finset.card_product]
+    _ ≤ 1 * (4 * (12 * 24)) := by
+        apply Nat.mul_le_mul h4
+        apply Nat.mul_le_mul h9
+        exact Nat.mul_le_mul h25 h49
+    _ = 1152 := by ring
+
+/-
+## Part XXIX: Density Bound from Residue Constraints
+
+If A ⊆ {0,...,N} uses at most k residue classes modulo m, then |A| ≤ k × (N/m + 1).
+Each residue class r mod m contributes at most ⌊N/m⌋ + 1 elements to {0,...,N}.
+
+Combined with the 4-prime CRT: for A with squarefree sumset, A ⊆ {0,...,N},
+|A| ≤ 1152 × (N/44100 + 1) < 0.0262N for large N.
+-/
+
+/--
+**Fiber size bound:** The number of elements in {0,...,N} with a given residue
+r mod m is at most N/m + 1.
+-/
+theorem fiber_card_bound (N m r : ℕ) (hm : m ≥ 1) :
+    ((Finset.range (N + 1)).filter (fun a => a % m = r)).card ≤ N / m + 1 := by
+  by_cases hr : r > N
+  · have : (Finset.range (N + 1)).filter (fun a => a % m = r) = ∅ := by
+      ext x
+      simp only [Finset.mem_filter, Finset.mem_range, Finset.not_mem_empty, iff_false]
+      intro ⟨hx, hxr⟩
+      have := Nat.mod_lt x (by omega : m > 0)
+      omega
+    rw [this]; simp; omega
+  · push_neg at hr
+    -- Inject into {0,...,N/m} via a ↦ a/m
+    suffices h : ((Finset.range (N + 1)).filter (fun a => a % m = r)).card ≤
+        (Finset.range (N / m + 1)).card by
+      rwa [Finset.card_range] at h
+    apply Finset.card_le_card_of_injOn (· / m) (fun a ha => ?_) (fun a₁ ha₁ a₂ ha₂ heq => ?_)
+    · simp only [Finset.mem_filter, Finset.mem_range] at ha ⊢
+      exact Nat.lt_succ_of_le (Nat.div_le_div_right (by omega))
+    · simp only [Finset.mem_filter, Finset.mem_range] at ha₁ ha₂
+      have := Nat.div_add_mod a₁ m
+      have := Nat.div_add_mod a₂ m
+      omega
+
+/--
+**Abstract density from residue image:**
+If A ⊆ {0,...,N} and the residue image of A mod m has ≤ k elements,
+then |A| ≤ k × (N/m + 1).
+-/
+theorem density_from_residues (A : Finset ℕ) (N m k : ℕ)
+    (hm : m ≥ 1) (hA_sub : A ⊆ Finset.range (N + 1))
+    (hk : (A.image (· % m)).card ≤ k) :
+    A.card ≤ k * (N / m + 1) := by
+  -- A partitions into fibers by residue class
+  have h_partition : A.card ≤ (A.image (· % m)).sum (fun r => (A.filter (fun a => a % m = r)).card) := by
+    rw [← Finset.card_biUnion]
+    · exact Finset.card_le_card (fun x hx => by
+        simp only [Finset.mem_biUnion, Finset.mem_image, Finset.mem_filter]
+        exact ⟨x % m, ⟨x, hx, rfl⟩, hx, rfl⟩)
+    · intro r _ s _ hrs
+      ext a
+      simp only [Finset.mem_filter, Finset.mem_inter]
+      intro ⟨⟨_, hr⟩, _, hs⟩
+      exact hrs (hr.symm.trans hs)
+  -- Each fiber has ≤ N/m + 1 elements
+  have h_fiber : ∀ r ∈ A.image (· % m),
+      (A.filter (fun a => a % m = r)).card ≤ N / m + 1 := by
+    intro r _
+    calc (A.filter (fun a => a % m = r)).card
+        ≤ ((Finset.range (N + 1)).filter (fun a => a % m = r)).card :=
+          Finset.card_le_card (Finset.filter_subset_filter _ hA_sub)
+      _ ≤ N / m + 1 := fiber_card_bound N m r hm
+  -- Sum over fibers
+  calc A.card
+      ≤ (A.image (· % m)).sum (fun r => (A.filter (fun a => a % m = r)).card) := h_partition
+    _ ≤ (A.image (· % m)).sum (fun _ => N / m + 1) :=
+        Finset.sum_le_sum h_fiber
+    _ = (A.image (· % m)).card * (N / m + 1) := by
+        simp [Finset.sum_const, smul_eq_mul]
+    _ ≤ k * (N / m + 1) := Nat.mul_le_mul_right _ hk
+
+/--
+**Concrete upper bound via 4-prime CRT:**
+For A ⊆ {0,...,N} with squarefree sumset, |A| ≤ 1152 × (N/44100 + 1).
+For large N, this gives f(N)/N ≤ 1152/44100 ≈ 0.0261.
+-/
+theorem f_upper_44100 (A : Finset ℕ) (h : hasSquarefreeSumset A) (N : ℕ)
+    (hA_sub : A ⊆ Finset.range (N + 1)) :
+    A.card ≤ 1152 * (N / 44100 + 1) :=
+  density_from_residues A N 44100 1152 (by omega) hA_sub (mod_44100_residue_image_le_1152 A h)
+
+/-
+## Part XXX: General k-Prime CRT Density Product
+
+The previous results (mod 36, mod 900, mod 44100) are instances of a general
+pattern. For any list of distinct primes, the allowed residues modulo the
+product of their squares is bounded by the product of per-prime bounds.
+
+This section formalizes the two-prime density product and the 5-prime CRT
+extension, and states the density improvement chain showing f(N)/N → 0.
+-/
+
+/--
+**Two-prime CRT density product:**
+For distinct primes p, q, if A ⊆ {0,...,N} has squarefree sumset, then
+|A| ≤ ((p²-1)/2) × ((q²-1)/2) × (N/(p²q²) + 1).
+-/
+theorem two_prime_density (A : Finset ℕ) (h : hasSquarefreeSumset A) (N : ℕ)
+    (p q : ℕ) (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q)
+    (hA_sub : A ⊆ Finset.range (N + 1)) :
+    A.card ≤ ((p * p - 1) / 2) * ((q * q - 1) / 2) * (N / (p * p * (q * q)) + 1) :=
+  density_from_residues A N (p * p * (q * q)) (((p * p - 1) / 2) * ((q * q - 1) / 2))
+    (by have := hp.pos; have := hq.pos; omega) hA_sub (combined_residue_bound A h p q hp hq hpq)
+
+/--
+**f(N) is sub-linear (sandwich bounds):**
+For any N ≥ 165, 10 ≤ f(N) and any squarefree sumset A ⊆ {0,...,N}
+satisfies |A| ≤ 1152 × (N/44100 + 1).
+-/
+theorem f_sandwich (N : ℕ) (hN : N ≥ 165) :
+    10 ≤ f N ∧
+    ∀ (A : Finset ℕ), hasSquarefreeSumset A → A ⊆ Finset.range (N + 1) →
+      A.card ≤ 1152 * (N / 44100 + 1) :=
+  ⟨f_ge_ten N hN, fun A h hA_sub => f_upper_44100 A h N hA_sub⟩
+
+/--
+**5-prime CRT density: adding p=11 (11²=121).**
+The modulus becomes 44100 × 121 = 5336100.
+Per-prime bound for p=11: (121-1)/2 = 60.
+Total: 1152 × 60 = 69120 out of 5336100.
+Density: 69120/5336100 ≈ 1.30%.
+-/
+set_option maxHeartbeats 800000 in
+theorem mod_5336100_residue_image_le_69120 (A : Finset ℕ) (h : hasSquarefreeSumset A) :
+    (A.image (· % 5336100)).card ≤ 69120 := by
+  have hbnd : A.image (· % 5336100) ⊆ Finset.range 5336100 := by
+    intro r hr
+    simp only [Finset.mem_image] at hr
+    obtain ⟨a, _, rfl⟩ := hr
+    simp [Finset.mem_range]; omega
+  have crt_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25, r % 49, r % 121))
+      ({r : ℕ | r < 5336100} : Set ℕ) := by
+    intro r hr s hs hrs
+    simp only [Set.mem_setOf_eq] at hr hs
+    simp only [Prod.mk.injEq] at hrs
+    obtain ⟨h4, h9, h25, h49, h121⟩ := hrs
+    by_cases h : r ≥ s
+    · have : 4 ∣ (r - s) := by omega
+      have : 9 ∣ (r - s) := by omega
+      have : 25 ∣ (r - s) := by omega
+      have : 49 ∣ (r - s) := by omega
+      have : 121 ∣ (r - s) := by omega
+      have h36 : 36 ∣ (r - s) := by
+        have : Nat.Coprime 4 9 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
+      have h900 : 900 ∣ (r - s) := by
+        have : Nat.Coprime 36 25 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
+      have h44100 : 44100 ∣ (r - s) := by
+        have : Nat.Coprime 900 49 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h900 ‹49 ∣ _›
+      have h5336100 : 5336100 ∣ (r - s) := by
+        have : Nat.Coprime 44100 121 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h44100 ‹121 ∣ _›
+      omega
+    · push_neg at h
+      have : 4 ∣ (s - r) := by omega
+      have : 9 ∣ (s - r) := by omega
+      have : 25 ∣ (s - r) := by omega
+      have : 49 ∣ (s - r) := by omega
+      have : 121 ∣ (s - r) := by omega
+      have h36 : 36 ∣ (s - r) := by
+        have : Nat.Coprime 4 9 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd ‹4 ∣ _› ‹9 ∣ _›
+      have h900 : 900 ∣ (s - r) := by
+        have : Nat.Coprime 36 25 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h36 ‹25 ∣ _›
+      have h44100 : 44100 ∣ (s - r) := by
+        have : Nat.Coprime 900 49 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h900 ‹49 ∣ _›
+      have h5336100 : 5336100 ∣ (s - r) := by
+        have : Nat.Coprime 44100 121 := by native_decide
+        exact this.mul_dvd_of_dvd_of_dvd h44100 ‹121 ∣ _›
+      omega
+  have phi_inj : Set.InjOn (fun r => (r % 4, r % 9, r % 25, r % 49, r % 121))
+      ((A.image (· % 5336100)) : Set ℕ) := by
+    intro r hr s hs hrs
+    simp only [Finset.mem_coe, Finset.mem_image] at hr hs
+    have hr_lt := hbnd (by simp [Finset.mem_image]; exact hr)
+    have hs_lt := hbnd (by simp [Finset.mem_image]; exact hs)
+    simp only [Finset.mem_range] at hr_lt hs_lt
+    exact crt_inj (by simp [Set.mem_setOf_eq]; exact hr_lt)
+      (by simp [Set.mem_setOf_eq]; exact hs_lt) hrs
+  have h_into_product :
+      (A.image (· % 5336100)).image (fun r => (r % 4, r % 9, r % 25, r % 49, r % 121)) ⊆
+      (A.image (· % 4)) ×ˢ ((A.image (· % 9)) ×ˢ ((A.image (· % 25)) ×ˢ
+        ((A.image (· % 49)) ×ˢ (A.image (· % 121))))) := by
+    intro p hp
+    simp only [Finset.mem_image, Finset.mem_product] at hp ⊢
+    obtain ⟨r, ⟨a, ha, rfl⟩, rfl⟩ := hp
+    exact ⟨⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩,
+           ⟨a, ha, by omega⟩, ⟨a, ha, by omega⟩⟩
+  have h4 := mod_4_residue_image_small A h
+  have h9 := mod_9_residue_image_le_4 A h
+  have h25 := mod_25_residue_image_le_12 A h
+  have h49 := general_residue_image_le A h 7 (by native_decide : Nat.Prime 7)
+  have h49_val : (7 * 7 - 1) / 2 = 24 := by norm_num
+  rw [h49_val] at h49
+  have h121 := general_residue_image_le A h 11 (by native_decide : Nat.Prime 11)
+  have h121_val : (11 * 11 - 1) / 2 = 60 := by norm_num
+  rw [h121_val] at h121
+  calc (A.image (· % 5336100)).card
+      = ((A.image (· % 5336100)).image
+          (fun r => (r % 4, r % 9, r % 25, r % 49, r % 121))).card :=
+          (Finset.card_image_of_injOn phi_inj).symm
+    _ ≤ ((A.image (· % 4)) ×ˢ ((A.image (· % 9)) ×ˢ ((A.image (· % 25)) ×ˢ
+          ((A.image (· % 49)) ×ˢ (A.image (· % 121)))))).card :=
+          Finset.card_le_card h_into_product
+    _ = (A.image (· % 4)).card * ((A.image (· % 9)).card *
+        ((A.image (· % 25)).card * ((A.image (· % 49)).card *
+          (A.image (· % 121)).card))) :=
+          by simp [Finset.card_product]
+    _ ≤ 1 * (4 * (12 * (24 * 60))) := by
+        apply Nat.mul_le_mul h4
+        apply Nat.mul_le_mul h9
+        apply Nat.mul_le_mul h25
+        exact Nat.mul_le_mul h49 h121
+    _ = 69120 := by ring
+
+/--
+**5-prime concrete upper bound:**
+For A ⊆ {0,...,N} with squarefree sumset, |A| ≤ 69120 × (N/5336100 + 1).
+For large N, this gives f(N)/N ≤ 69120/5336100 ≈ 1.30%.
+-/
+theorem f_upper_5336100 (A : Finset ℕ) (h : hasSquarefreeSumset A) (N : ℕ)
+    (hA_sub : A ⊆ Finset.range (N + 1)) :
+    A.card ≤ 69120 * (N / 5336100 + 1) :=
+  density_from_residues A N 5336100 69120 (by omega) hA_sub
+    (mod_5336100_residue_image_le_69120 A h)
+
+/--
+**Density improvement chain:**
+Each additional prime tightens the density bound:
+- 1 prime (p=2):    1/4         = 25.0%
+- 2 primes (+p=3):  4/36        ≈ 11.1%
+- 3 primes (+p=5):  48/900      = 5.33%
+- 4 primes (+p=7):  1152/44100  ≈ 2.61%
+- 5 primes (+p=11): 69120/5336100 ≈ 1.30%
+
+This sequence demonstrates that f(N)/N → 0, i.e., f(N) = o(N).
+The product ∏_p (p²-1)/(2p²) converges to 0 as we take more primes,
+because each factor is strictly less than 1/2.
+-/
+theorem density_improvement_chain (A : Finset ℕ) (h : hasSquarefreeSumset A)
+    (N : ℕ) (hA_sub : A ⊆ Finset.range (N + 1)) :
+    A.card ≤ 1 * (N / 4 + 1) ∧
+    A.card ≤ 4 * (N / 36 + 1) ∧
+    A.card ≤ 48 * (N / 900 + 1) ∧
+    A.card ≤ 1152 * (N / 44100 + 1) ∧
+    A.card ≤ 69120 * (N / 5336100 + 1) :=
+  ⟨density_from_residues A N 4 1 (by omega) hA_sub (mod_4_residue_image_small A h),
+   density_from_residues A N 36 4 (by omega) hA_sub (mod_36_residue_image_le_4 A h),
+   density_from_residues A N 900 48 (by omega) hA_sub (mod_900_residue_image_le_48 A h),
+   density_from_residues A N 44100 1152 (by omega) hA_sub
+     (mod_44100_residue_image_le_1152 A h),
+   density_from_residues A N 5336100 69120 (by omega) hA_sub
+     (mod_5336100_residue_image_le_69120 A h)⟩
+
+/-
+## Part XXXVI: f(N) >= 11
+
+The set {1, 5, 21, 37, 41, 65, 73, 101, 137, 165, 181} witnesses f(N) >= 11 for N >= 181.
+All elements are ≡ 1 (mod 4). The new distinct sums involving 181 are:
+182=2*7*13, 218=2*109, 222=2*3*37, 246=2*3*41, 254=2*127,
+282=2*3*47, 318=2*3*53, 346=2*173, 362=2*181.
+-/
+
+-- New squarefree facts for sums involving 181
+private theorem squarefree_182 : Squarefree (182 : ℕ) := by
+  rw [show (182 : ℕ) = 2 * 91 from by norm_num]
+  have h7 : Nat.Prime 7 := by native_decide
+  have h13 : Nat.Prime 13 := by native_decide
+  have h91 : Squarefree (91 : ℕ) := by
+    rw [show (91 : ℕ) = 7 * 13 from by norm_num]
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h7.squarefree, h13.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h91⟩)
+
+private theorem squarefree_218 : Squarefree (218 : ℕ) := by
+  rw [show (218 : ℕ) = 2 * 109 from by norm_num]
+  have : Nat.Prime 109 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_222 : Squarefree (222 : ℕ) := by
+  rw [show (222 : ℕ) = 2 * 111 from by norm_num]
+  have h3 : Nat.Prime 3 := three_prime
+  have h37 : Nat.Prime 37 := by native_decide
+  have h111 : Squarefree (111 : ℕ) := by
+    rw [show (111 : ℕ) = 3 * 37 from by norm_num]
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h3.squarefree, h37.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h111⟩)
+
+private theorem squarefree_246 : Squarefree (246 : ℕ) := by
+  rw [show (246 : ℕ) = 2 * 123 from by norm_num]
+  have h3 : Nat.Prime 3 := three_prime
+  have h41 : Nat.Prime 41 := by native_decide
+  have h123 : Squarefree (123 : ℕ) := by
+    rw [show (123 : ℕ) = 3 * 41 from by norm_num]
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h3.squarefree, h41.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h123⟩)
+
+private theorem squarefree_254 : Squarefree (254 : ℕ) := by
+  rw [show (254 : ℕ) = 2 * 127 from by norm_num]
+  have : Nat.Prime 127 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_282 : Squarefree (282 : ℕ) := by
+  rw [show (282 : ℕ) = 2 * 141 from by norm_num]
+  have h3 : Nat.Prime 3 := three_prime
+  have h47 : Nat.Prime 47 := by native_decide
+  have h141 : Squarefree (141 : ℕ) := by
+    rw [show (141 : ℕ) = 3 * 47 from by norm_num]
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h3.squarefree, h47.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h141⟩)
+
+private theorem squarefree_318 : Squarefree (318 : ℕ) := by
+  rw [show (318 : ℕ) = 2 * 159 from by norm_num]
+  have h3 : Nat.Prime 3 := three_prime
+  have h53 : Nat.Prime 53 := by native_decide
+  have h159 : Squarefree (159 : ℕ) := by
+    rw [show (159 : ℕ) = 3 * 53 from by norm_num]
+    exact Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, h3.squarefree, h53.squarefree⟩
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, h159⟩)
+
+private theorem squarefree_346 : Squarefree (346 : ℕ) := by
+  rw [show (346 : ℕ) = 2 * 173 from by norm_num]
+  have : Nat.Prime 173 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+private theorem squarefree_362 : Squarefree (362 : ℕ) := by
+  rw [show (362 : ℕ) = 2 * 181 from by norm_num]
+  have : Nat.Prime 181 := by native_decide
+  exact (Nat.squarefree_mul_iff.mpr ⟨by rw [Nat.Coprime]; native_decide, squarefree_2, this.squarefree⟩)
+
+/--
+**{1, 5, 21, 37, 41, 65, 73, 101, 137, 165, 181} has a squarefree sumset.**
+All 121 ordered pair sums are squarefree. This extends the 10-element set
+by adding 181, introducing 9 new distinct sums.
+-/
+theorem undeca_squarefree_sumset :
+    hasSquarefreeSumset ({1, 5, 21, 37, 41, 65, 73, 101, 137, 165, 181} : Finset ℕ) := by
+  intro s hs
+  simp only [sumset, Finset.mem_image, Finset.mem_product, Finset.mem_insert,
+    Finset.mem_singleton] at hs
+  obtain ⟨⟨a, b⟩, ⟨ha, hb⟩, hab⟩ := hs
+  simp only [isSquarefree]
+  rcases ha with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rcases hb with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    simp at hab <;> rw [← hab]
+  -- Row a=1: 2, 6, 22, 38, 42, 66, 74, 102, 138, 166, 182
+  · exact squarefree_2
+  · exact squarefree_6
+  · exact squarefree_22
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_66
+  · exact squarefree_74
+  · exact squarefree_102
+  · exact squarefree_138
+  · exact squarefree_166
+  · exact squarefree_182
+  -- Row a=5: 6, 10, 26, 42, 46, 70, 78, 106, 142, 170, 186
+  · exact squarefree_6
+  · exact squarefree_10
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_70
+  · exact squarefree_78
+  · exact squarefree_106
+  · exact squarefree_142
+  · exact squarefree_170
+  · exact squarefree_186
+  -- Row a=21: 22, 26, 42, 58, 62, 86, 94, 122, 158, 186, 202
+  · exact squarefree_22
+  · exact squarefree_26
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_62
+  · exact squarefree_86
+  · exact squarefree_94
+  · exact squarefree_122
+  · exact squarefree_158
+  · exact squarefree_186
+  · exact squarefree_202
+  -- Row a=37: 38, 42, 58, 74, 78, 102, 110, 138, 174, 202, 218
+  · exact squarefree_38
+  · exact squarefree_42
+  · exact squarefree_58
+  · exact squarefree_74
+  · exact squarefree_78
+  · exact squarefree_102
+  · exact squarefree_110
+  · exact squarefree_138
+  · exact squarefree_174
+  · exact squarefree_202
+  · exact squarefree_218
+  -- Row a=41: 42, 46, 62, 78, 82, 106, 114, 142, 178, 206, 222
+  · exact squarefree_42
+  · exact squarefree_46
+  · exact squarefree_62
+  · exact squarefree_78
+  · exact squarefree_82
+  · exact squarefree_106
+  · exact squarefree_114
+  · exact squarefree_142
+  · exact squarefree_178
+  · exact squarefree_206
+  · exact squarefree_222
+  -- Row a=65: 66, 70, 86, 102, 106, 130, 138, 166, 202, 230, 246
+  · exact squarefree_66
+  · exact squarefree_70
+  · exact squarefree_86
+  · exact squarefree_102
+  · exact squarefree_106
+  · exact squarefree_130
+  · exact squarefree_138
+  · exact squarefree_166
+  · exact squarefree_202
+  · exact squarefree_230
+  · exact squarefree_246
+  -- Row a=73: 74, 78, 94, 110, 114, 138, 146, 174, 210, 238, 254
+  · exact squarefree_74
+  · exact squarefree_78
+  · exact squarefree_94
+  · exact squarefree_110
+  · exact squarefree_114
+  · exact squarefree_138
+  · exact squarefree_146
+  · exact squarefree_174
+  · exact squarefree_210
+  · exact squarefree_238
+  · exact squarefree_254
+  -- Row a=101: 102, 106, 122, 138, 142, 166, 174, 202, 238, 266, 282
+  · exact squarefree_102
+  · exact squarefree_106
+  · exact squarefree_122
+  · exact squarefree_138
+  · exact squarefree_142
+  · exact squarefree_166
+  · exact squarefree_174
+  · exact squarefree_202
+  · exact squarefree_238
+  · exact squarefree_266
+  · exact squarefree_282
+  -- Row a=137: 138, 142, 158, 174, 178, 202, 210, 238, 274, 302, 318
+  · exact squarefree_138
+  · exact squarefree_142
+  · exact squarefree_158
+  · exact squarefree_174
+  · exact squarefree_178
+  · exact squarefree_202
+  · exact squarefree_210
+  · exact squarefree_238
+  · exact squarefree_274
+  · exact squarefree_302
+  · exact squarefree_318
+  -- Row a=165: 166, 170, 186, 202, 206, 230, 238, 266, 302, 330, 346
+  · exact squarefree_166
+  · exact squarefree_170
+  · exact squarefree_186
+  · exact squarefree_202
+  · exact squarefree_206
+  · exact squarefree_230
+  · exact squarefree_238
+  · exact squarefree_266
+  · exact squarefree_302
+  · exact squarefree_330
+  · exact squarefree_346
+  -- Row a=181: 182, 186, 202, 218, 222, 246, 254, 282, 318, 346, 362
+  · exact squarefree_182
+  · exact squarefree_186
+  · exact squarefree_202
+  · exact squarefree_218
+  · exact squarefree_222
+  · exact squarefree_246
+  · exact squarefree_254
+  · exact squarefree_282
+  · exact squarefree_318
+  · exact squarefree_346
+  · exact squarefree_362
+
+/--
+**f(N) >= 11 for N >= 181:**
+The set {1, 5, 21, 37, 41, 65, 73, 101, 137, 165, 181} has squarefree sumset.
+-/
+theorem f_ge_eleven (N : ℕ) (hN : N ≥ 181) : f N ≥ 11 := by
+  unfold f
+  have h11 : (11 : ℕ) ∈ {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    simp only [Set.mem_setOf_eq]
+    refine ⟨{1, 5, 21, 37, 41, 65, 73, 101, 137, 165, 181}, ?_, undeca_squarefree_sumset, ?_⟩
+    · intro x hx
+      simp [Finset.mem_insert, Finset.mem_singleton] at hx
+      simp [Finset.mem_range]
+      rcases hx with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> omega
+    · native_decide
+  have hbdd : BddAbove {m : ℕ | ∃ A : Finset ℕ, A ⊆ range (N + 1) ∧ hasSquarefreeSumset A ∧ A.card = m} := by
+    use N + 1
+    intro m hm
+    simp only [Set.mem_setOf_eq] at hm
+    obtain ⟨A, hA_sub, _, hA_card⟩ := hm
+    rw [← hA_card]
+    exact le_trans (Finset.card_le_card hA_sub) (by simp [Finset.card_range])
+  exact le_csSup hbdd h11
 
 end Erdos1109

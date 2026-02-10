@@ -75,8 +75,15 @@ noncomputable def hallThreshold : ℝ := 1 / Real.log 2
 
 /-- Verify β ≈ 1.443 is in (1, ∞) -/
 theorem hallThreshold_in_range : hallThreshold > 1 := by
-  -- 1/log 2 > 1 ⟺ 1 > log 2, which is true since log 2 < 1
-  sorry
+  -- 1/log 2 > 1 ⟺ log 2 < 1, since 2 < e
+  unfold hallThreshold
+  rw [one_div, gt_iff_lt, one_lt_inv_iff₀]
+  constructor
+  · -- 0 < log 2
+    exact Real.log_pos (by norm_num : (1 : ℝ) < 2)
+  · -- log 2 < 1 = log(exp 1) since 2 < exp 1
+    rw [show (1 : ℝ) = Real.log (Real.exp 1) from (Real.log_exp 1).symm]
+    exact Real.log_lt_log (by norm_num) (by linarith [Real.exp_one_gt_d9])
 
 /-
 ## Part 3: Trivial Bounds

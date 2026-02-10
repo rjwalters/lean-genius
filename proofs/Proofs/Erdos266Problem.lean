@@ -130,20 +130,21 @@ theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (
 
 /-- The geometric series ∑ 1/2ⁿ converges to 2 -/
 example : ∑' n : ℕ, (1 : ℝ) / 2^n = 2 := by
-  simp_rw [one_div]
-  rw [show (fun n : ℕ => (2 : ℝ) ^ n)⁻¹ = (fun n : ℕ => ((1 : ℝ)/2)^n) from by
-    ext n; simp [div_eq_mul_inv, inv_pow]]
-  rw [tsum_geometric_of_lt_one (by positivity) (by norm_num : (1:ℝ)/2 < 1)]
+  have : (fun n : ℕ => (1 : ℝ) / 2 ^ n) = (fun n : ℕ => ((1 : ℝ) / 2) ^ n) := by
+    ext n; rw [one_div, one_div, inv_pow]
+  rw [this, tsum_geometric_of_lt_one (by positivity) (by norm_num : (1:ℝ)/2 < 1)]
   norm_num
 
 /-- Shifted geometric: ∑ 1/(2ⁿ + 1) also converges -/
 example : Summable (fun n : ℕ => (1 : ℝ) / (2^n + 1)) := by
-  apply Summable.of_nonneg_of_le (fun n => by positivity) (fun n => _)
-  · exact (summable_geometric_of_lt_one (by positivity) (by norm_num : (1:ℝ)/2 < 1)).congr
-      (fun n => by simp [one_div, inv_pow])
+  apply Summable.of_nonneg_of_le (fun n => by positivity)
   · intro n
-    rw [one_div, one_div]
+    rw [one_div]
     exact inv_le_inv_of_le (by positivity : (0:ℝ) < 2^n)
       (le_add_of_nonneg_right (by positivity))
+  · have : (fun n : ℕ => (1 : ℝ) / 2 ^ n) = (fun n : ℕ => ((1 : ℝ) / 2) ^ n) := by
+      ext n; rw [one_div, one_div, inv_pow]
+    rw [this]
+    exact summable_geometric_of_lt_one (by positivity) (by norm_num : (1:ℝ)/2 < 1)
 
 end Erdos266

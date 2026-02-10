@@ -296,11 +296,11 @@ instance (l : List ℤ) (i : ℕ) : Decidable (isGoodRotation l i) := by
   apply decidable_of_iff (∀ j ∈ Finset.Icc 1 l.length,
     0 < ((cyclicRotation l i).take j).sum)
   constructor
+  · intro h j hj hjn
+    exact h j (Finset.mem_Icc.mpr ⟨hj, hjn⟩)
   · intro h j hj
     rw [Finset.mem_Icc] at hj
-    exact h j (by omega) (by omega)
-  · intro h j hj_pos hj_le
-    exact h j (Finset.mem_Icc.mpr ⟨hj_pos, hj_le⟩)
+    exact h j hj.1 hj.2
 
 def goodRotations (l : List ℤ) : Finset ℕ :=
   (Finset.range l.length).filter (fun i => isGoodRotation l i)
@@ -382,16 +382,17 @@ theorem prefixSum_gt_after_rightmostMin (l : List ℤ) (j : ℕ)
   have hj_in : j ∈ (Finset.range (l.length + 1)).filter
       (fun i => prefixSum l i = minPrefixSum l) :=
     Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), heq⟩
-  set F := (Finset.range (l.length + 1)).filter (fun i => prefixSum l i = minPrefixSum l)
-  have hle : j ≤ F.max' (rightmostMinPos_filter_nonempty l) := Finset.le_max' F j hj_in
-  unfold rightmostMinPos at hj; omega
+  have hle : j ≤ rightmostMinPos l := by
+    unfold rightmostMinPos
+    exact Finset.le_max' _ j hj_in
+  omega
 
 theorem rightmostMinPos_lt (l : List ℤ) (hS : 0 < l.sum) :
     rightmostMinPos l < l.length := by
   by_contra h; push_neg at h
   have heq : rightmostMinPos l = l.length := le_antisymm (rightmostMinPos_le l) h
   have : minPrefixSum l = l.sum := by
-    rw [← prefixSum_length l, ← heq]; exact prefixSum_rightmostMinPos l
+    rw [← prefixSum_length l, ← heq]; exact (prefixSum_rightmostMinPos l).symm
   linarith [minPrefixSum_le_zero l]
 
 theorem goodRotation_at_rightmostMin (l : List ℤ) (hn : 0 < l.length) (hS : 0 < l.sum) :

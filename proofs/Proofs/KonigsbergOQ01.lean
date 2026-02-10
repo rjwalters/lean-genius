@@ -290,11 +290,10 @@ theorem euler_circuit_implies_all_even {u : V}
 /-- For an Eulerian trail from u to v (u ≠ v), non-endpoint vertices have even degree.
     This follows from Mathlib's `even_degree_iff` for Eulerian trails. -/
 theorem euler_trail_non_endpoint_even {u v : V}
-    (p : G.Walk u v) (hp : p.IsEulerian) (huv : u ≠ v)
+    (p : G.Walk u v) (hp : p.IsEulerian) (_ : u ≠ v)
     (w : V) (hwu : w ≠ u) (hwv : w ≠ v) :
-    Even (G.degree w) := by
-  have hiff := hp.even_degree_iff (x := w)
-  exact hiff.mpr (by tauto)
+    Even (G.degree w) :=
+  (hp.even_degree_iff (x := w)).mpr (by tauto)
 
 end TrailFromCircuit
 
@@ -327,8 +326,9 @@ theorem regular_odd_no_euler {V : Type*} [Fintype V] [DecidableEq V]
     intro w; rw [hreg w]; exact hk
   -- The cardinality of {w | Odd (G.degree w)} = Fintype.card V
   have : Fintype.card {w : V | Odd (G.degree w)} = Fintype.card V := by
-    apply Fintype.card_of_surjective (fun v => ⟨v, hall_odd v⟩)
-    intro ⟨w, _⟩; exact ⟨w, rfl⟩
+    have h : (Finset.univ.filter fun w : V => Odd (G.degree w)) = Finset.univ := by
+      ext w; simp [hall_odd w]
+    simp only [Fintype.card_subtype, h, Finset.card_univ]
   omega
 
 end PetersenNonEulerian

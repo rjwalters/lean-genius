@@ -27,8 +27,8 @@ This file extends Wilson's theorem to all moduli via the Gauss-Wilson theorem:
 - [x] Self-inverse classification: {x | x² = 1} = {1, -1} in cyclic (ZMod n)ˣ
 - [x] Involution product lemma: ∏ G = ∏ {x | x² = 1}
 - [x] Cyclic → product = -1 (via involution lemma + self-inverse classification)
-- [ ] Non-cyclic → product = 1 (1 sorry: exponent-2 subgroup product)
-- [x] Concrete-abstract bridge (Finset.prod_bij via ZMod.val)
+- [ ] Non-cyclic → product = 1 (1 sorry: Klein four orbit argument)
+- [x] Concrete-abstract bridge (Finset.prod_nbij via ZMod.val)
 -/
 
 namespace WilsonsTheoremOQ02
@@ -43,13 +43,14 @@ open Nat Finset ZMod
 noncomputable def abstractUnitsProduct (n : ℕ) [NeZero n] : ZMod n :=
   ∏ x : (ZMod n)ˣ, (x : ZMod n)
 
-/-- For prime p, the product of all units in ZMod p equals -1.
-    This is Wilson's theorem in abstract form. -/
 -- Helper to push Units coercion through products
-private theorem units_val_prod {M : Type*} [CommMonoid M] (s : Finset ι) (f : ι → Mˣ) :
+private theorem units_val_prod {ι : Type*} {M : Type*} [CommMonoid M]
+    (s : Finset ι) (f : ι → Mˣ) :
     (↑(∏ i ∈ s, f i) : M) = ∏ i ∈ s, (↑(f i) : M) :=
   map_prod (Units.coeHom M) f s
 
+/-- For prime p, the product of all units in ZMod p equals -1.
+    This is Wilson's theorem in abstract form. -/
 theorem prod_units_eq_neg_one_prime (p : ℕ) [hp : Fact (Nat.Prime p)] :
     ∏ x : (ZMod p)ˣ, (x : ZMod p) = -1 := by
   have h := FiniteField.prod_univ_units_id_eq_neg_one (K := ZMod p)
@@ -216,7 +217,19 @@ theorem prod_units_neg_one_of_cyclic {n : ℕ} (hn : n ≥ 3)
   rw [Finset.prod_pair (neg_one_ne_one_units hn).symm]
   exact one_mul (-1)
 
-/-- When (ZMod n)ˣ is not cyclic and n ≥ 3, the product of units is 1. -/
+/-- When (ZMod n)ˣ is not cyclic and n ≥ 3, the product of units is 1.
+
+    Proof strategy (documented for Aristotle/future sessions):
+    1. By involution product lemma: ∏ G = ∏ {x | x² = 1}
+    2. When not cyclic, |{x | x² = 1}| ≥ 3 (more than {1, -1})
+    3. The self-inverse set S forms an elementary abelian 2-group of order ≥ 4
+    4. Pick two distinct non-identity c, d ∈ S. The Klein four subgroup {1,c,d,cd}
+       acts on S by left multiplication. Each orbit {e, ce, de, cde} has product
+       e·ce·de·cde = c²d²e⁴ = 1.
+    5. So ∏ S = ∏ (orbit products) = 1.
+
+    The key Lean formalization challenge is partitioning the finset into orbits of
+    a Klein four group action and showing each orbit product is 1. -/
 theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
     [hne : NeZero n] (hncyc : ¬ IsCyclic (ZMod n)ˣ) :
     ∏ x : (ZMod n)ˣ, (x : ZMod n) = 1 := by
@@ -224,13 +237,8 @@ theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
     rw [show (∏ x : (ZMod n)ˣ, (x : ZMod n)) = (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) from
       (units_val_prod _ _).symm, hprod]
     simp
-  -- When not cyclic, there are > 2 solutions to x² = 1
-  -- These form a subgroup of exponent 2, isomorphic to (Z/2Z)^k with k ≥ 2
-  -- The involution x ↦ x⁻¹ still pairs non-self-inverse elements,
-  -- so ∏ G = ∏ {x | x² = 1}
-  -- In (Z/2Z)^k with k ≥ 2, the product of all elements is 1
-  -- (each coordinate sums to 0 mod 2 because there are 2^(k-1) elements with that
-  -- coordinate = 1, and 2^(k-1) is even for k ≥ 2)
+  -- ∏ G = ∏ {x | x² = 1} by involution product lemma
+  -- When not cyclic, the Klein four action argument gives product = 1
   sorry
 
 -- ============================================================================
@@ -261,13 +269,30 @@ def unitsProduct (n : ℕ) : ℕ :=
 /-- For n ≥ 1, casting unitsProduct into ZMod n gives the abstract product. -/
 theorem unitsProduct_cast_eq_abstract {n : ℕ} (hn : n ≥ 1) [hne : NeZero n] :
     (unitsProduct n : ZMod n) = ∏ x : (ZMod n)ˣ, (x : ZMod n) := by
-  -- Strategy: Use Finset.prod_bij with ZMod.unitOfCoprime to establish
-  -- a bijection between coprime naturals < n and (ZMod n)ˣ.
-  -- The key ingredients are:
-  -- - ZMod.val_coe_unit_coprime: val of a unit is coprime to n
-  -- - ZMod.val_lt: val of ZMod n element is < n
-  -- - ZMod.unitOfCoprime: construct unit from coprime natural
-  sorry
+  -- Cast the natural product into ZMod n
+  unfold unitsProduct
+  rw [Nat.cast_prod]
+  -- The source set is coprime naturals < n; the target is (ZMod n)ˣ
+  -- We use prod_bij with the map a ↦ ZMod.unitOfCoprime a (coprime proof)
+  -- but first rewrite the RHS to use ↑u for units
+  symm
+  apply Finset.prod_nbij (fun u => ZMod.val (u : ZMod n))
+  · -- Map sends units into the filtered set
+    intro u _
+    simp only [Finset.mem_filter, Finset.mem_range]
+    exact ⟨ZMod.val_lt _, ZMod.val_coe_unit_coprime⟩
+  · -- Injective: val is injective on ZMod n, and units coerce injectively
+    intro u₁ u₂ _ _ h
+    have hval : (u₁ : ZMod n) = (u₂ : ZMod n) := ZMod.val_injective h
+    exact Units.val_injective hval
+  · -- Surjective: every coprime natural < n comes from a unit
+    intro a ha
+    simp only [Finset.mem_filter, Finset.mem_range] at ha
+    exact ⟨ZMod.unitOfCoprime a ha.2, Finset.mem_univ _,
+      by rw [Units.val_unitOfCoprime]; exact (ZMod.val_natCast_of_lt ha.1).symm⟩
+  · -- Values agree: casting a through id and casting unit value agree
+    intro u _
+    simp [Nat.cast_id]
 
 -- ============================================================================
 -- Part 9: Computational Verification
@@ -371,13 +396,15 @@ theorem no_wilson_primes_14_to_100 :
 10. Cyclic → product = -1 (`prod_units_neg_one_of_cyclic`) - sorry-free
 11. Concrete-abstract bridge (`unitsProduct_cast_eq_abstract`) - sorry-free
 
-### Remaining Sorries (1, reduced from 4)
+### Remaining Sorries (1, reduced from 5)
 
 1. `prod_units_one_of_not_cyclic`: ¬IsCyclic → product = 1
-   Strategy: ∏ G = ∏ {x | x² = 1} (proved). Need to show product of
-   exponent-2 subgroup = 1 when |S| ≥ 4. Requires Klein 4-group argument:
-   find a ∈ S \ {1,-1}, then {1,-1,a,-a} acts freely on S giving 4 | |S|,
-   pair x ↦ -x gives ∏ S = (-1)^(|S|/2) = 1.
+   Strategy: ∏ G = ∏ {x | x² = 1} (proved). The self-inverse set S forms an
+   elementary abelian 2-group. When not cyclic, |S| ≥ 3, so S has at least two
+   distinct non-identity elements c, d. The Klein four subgroup {1,c,d,cd} acts
+   on S by left multiplication with orbits {e, ce, de, cde}, each having product
+   e·ce·de·cde = c²d²e⁴ = 1. So ∏ S = 1.
+   Formalizing this requires Finset orbit partitioning machinery.
 
 All verified computationally for n ≤ 300.
 -/

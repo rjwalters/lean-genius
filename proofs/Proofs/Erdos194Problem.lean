@@ -182,7 +182,10 @@ theorem erdos_194 :
   use {x : ℝ | ∃ q : ℚ, x = q}
   constructor
   · -- Rationals are infinite
-    sorry -- Proof that rationals are infinite
+    have : {x : ℝ | ∃ q : ℚ, x = q} = Set.range ((↑) : ℚ → ℝ) := by
+      ext x; simp [Set.mem_range, eq_comm]
+    rw [this]
+    exact Set.infinite_range_of_injective Rat.cast_injective
   · exact chaotic_ordering_rationals
 
 /--
