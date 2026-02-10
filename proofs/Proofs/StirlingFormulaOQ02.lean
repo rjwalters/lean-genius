@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
 import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup
 import Mathlib.Analysis.SpecialFunctions.Stirling
 import Mathlib.Analysis.Asymptotics.Defs
@@ -355,7 +356,23 @@ theorem gamma_one_half : Real.Gamma (1/2) = Real.sqrt π := by
 theorem duplication_at_nat (n : ℕ) (hn : 1 ≤ n) :
     Real.Gamma ↑n * Real.Gamma (↑n + 1/2) =
     Real.sqrt π / 2 ^ (2 * n - 1) * ↑(Nat.factorial (2 * n - 1)) := by
-  sorry
+  -- Use Mathlib's duplication formula: Γ(s)·Γ(s+1/2) = Γ(2s)·2^(1-2s)·√π
+  have hdup := Real.Gamma_mul_Gamma_add_half (s := (n : ℝ))
+  -- Γ(2n) = (2n-1)! for n ≥ 1
+  have h2n : Real.Gamma (2 * (n : ℝ)) = ↑(Nat.factorial (2 * n - 1)) := by
+    rw [show 2 * (n : ℝ) = ↑(2 * n) from by push_cast; ring]
+    rw [Real.Gamma_natCast]
+    congr 1; omega
+  rw [hdup, h2n]
+  -- Goal: ↑(2n-1)! * (2:ℝ)^(1-2*↑n) * √π = √π / 2^(2n-1) * ↑(2n-1)!
+  -- Convert rpow to standard pow: 2^(1-2n) = 2^(-(2n-1)) = 1/2^(2n-1)
+  have hexp : (2 : ℝ) ^ ((1 : ℝ) - 2 * ↑n) = 1 / (2 : ℝ) ^ (2 * n - 1) := by
+    rw [show (1 : ℝ) - 2 * ↑n = -(↑(2 * n - 1) : ℝ) from by push_cast; omega]
+    rw [Real.rpow_neg (by positivity : (0 : ℝ) ≤ 2)]
+    rw [show (↑(2 * n - 1) : ℝ) = ((2 * n - 1 : ℕ) : ℝ) from by push_cast; omega]
+    rw [Real.rpow_natCast]
+  rw [hexp]
+  ring
 
 -- ============================================================
 -- PART 9: Continuous Stirling for Gamma (Statement)
