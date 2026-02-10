@@ -2,7 +2,7 @@
   "id": "erdos-555",
   "title": "Erdős Problem #555: Ramsey Numbers of Even Cycles",
   "slug": "erdos-555",
-  "description": "Determine R(C₂ₙ; k), the multicolor Ramsey number of even cycles. Erdős showed k^{1+1/(2n)} ≪ R(C₂ₙ; k) ≪ k^{1+1/(n-1)}. For C₄, Chung–Graham gave k²−k+1 < R(C₄;k) ≤ k²+k+1. The exact growth rate is open.",
+  "description": "Determine R(C₂ₙ; k), the multicolor Ramsey number of even cycles. Erdős showed k^{1+1/(2n)} ≪ R(C₂ₙ; k) ≪ k^{1+1/(n-1)}. For C₄, Chung-Graham gave k²-k+1 < R(C₄;k) ≤ k²+k+1. The exact growth rate is open.",
   "meta": {
     "author": "Erdős, Graham",
     "sourceUrl": "https://erdosproblems.com/555",
@@ -21,60 +21,69 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem of Erdős and Graham asks for the precise growth rate of the multicolor Ramsey number for even cycles. The problem connects extremal graph theory with projective geometry (the C₄ case relates to finite projective planes).",
-    "problemStatement": "Determine R(C₂ₙ; k): the minimum m such that every k-coloring of the edges of Kₘ yields a monochromatic C₂ₙ.",
-    "proofStrategy": "Defines cycle containment, edge colorings, and the Ramsey number for even cycles. States Erdős's general upper and lower bounds, the sharp Chung–Graham bounds for C₄, and the main open problem of determining the exact exponent.",
+    "historicalContext": "Erdős and Graham posed this problem asking for the precise growth rate of $R(C_{2n}; k)$, the multicolor Ramsey number of even cycles. For a fixed even cycle $C_{2n}$ and $k$ colors, $R(C_{2n}; k)$ is the minimum $m$ such that every $k$-coloring of $K_m$ contains a monochromatic $C_{2n}$. Erdős established the general bounds $k^{1+1/(2n)} \\ll R(C_{2n}; k) \\ll k^{1+1/(n-1)}$. The lower bound uses probabilistic or algebraic constructions (for $C_4$, the polarity graph of a finite projective plane provides the sharp construction). The upper bound relies on the Szemeredi regularity lemma or the dependent random choice technique to find long paths in dense monochromatic subgraphs. For the special case $C_4$ ($n = 2$), Chung and Graham (1975) proved the nearly tight bounds $k^2 - k + 1 < R(C_4; k) \\leq k^2 + k + 1$ when $k - 1$ is a prime power, connecting the problem to the existence of finite projective planes and the Zarankiewicz problem $z(m; 2, 2)$. The gap between the exponents $1/(2n)$ (lower) and $1/(n-1)$ (upper) represents one of the central open questions in Ramsey theory for sparse graphs. For $n = 2$, both exponents equal 1, so the $C_4$ case is resolved up to lower-order terms. For $n \\geq 3$, the gap is genuine and no improvements to either bound are known in general.",
+    "problemStatement": "Determine $R(C_{2n}; k)$: the minimum $m$ such that every $k$-coloring of the edges of $K_m$ yields a monochromatic copy of $C_{2n}$. In particular, determine the exact exponent $\\alpha_n$ such that $R(C_{2n}; k) = \\Theta(k^{1+\\alpha_n})$.",
+    "proofStrategy": "The formalization defines cycle containment (via injective vertex sequences), multicolor edge colorings ($k$-colorings of $K_m$), and the monochromatic subgraph extraction. The Ramsey number $R(C_{2n}; k)$ is defined via Nat.find. Erdős's general bounds are stated as axioms. The Chung-Graham bounds for $C_4$ are axiomatized with the prime power condition on $k - 1$. The main open problem (existence of the exact exponent $\\alpha_n$) is stated as an axiom. The file has 1 sorry (symmetry of the coloring in the monochromatic subgraph construction).",
     "keyInsights": [
-      "The lower bound k^{1+1/(2n)} comes from probabilistic constructions",
-      "The upper bound k^{1+1/(n-1)} uses the Szemerédi regularity method",
-      "For C₄, the bounds k²±k+1 are nearly tight, relating to projective planes",
-      "The gap between exponents 1/(2n) and 1/(n-1) is the central open question"
+      "The lower bound $k^{1+1/(2n)}$ comes from algebraic/probabilistic constructions; for $C_4$, the polarity graph of $PG(2, k-1)$ is $C_4$-free with $k^2 - k + 1$ vertices",
+      "The upper bound $k^{1+1/(n-1)}$ uses Szemeredi regularity or dependent random choice to find $C_{2n}$ in dense monochromatic subgraphs",
+      "For $C_4$ ($n = 2$), both exponent bounds give 1, so $R(C_4; k) \\sim k^2$ — the only resolved case",
+      "For $n \\geq 3$, the gap $1/(2n) < 1/(n-1)$ is genuine and closing it is a major open problem in extremal graph theory",
+      "The connection to projective planes makes the $C_4$ case algebraic-geometric, while the general case remains purely combinatorial"
     ]
   },
   "sections": [
     {
-      "id": "cycles-colorings",
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module documentation describing Problem 555, known bounds, and Chung-Graham results. Imports SimpleGraph.Basic, Nat.Basic, Finset.Basic, Order.Filter.Basic, and Tactic."
+    },
+    {
+      "id": "cycle-coloring",
       "title": "Even Cycles and Colorings",
-      "startLine": 20,
-      "endLine": 43,
-      "summary": "Defines cycle containment, edge colorings, and monochromatic subgraphs."
+      "startLine": 24,
+      "endLine": 46,
+      "summary": "Defines HasCycleOfLength (injective vertex sequence forming a cycle), EdgeColoring (k-coloring of K_m), and monochromaticGraph (subgraph of edges with color c, 1 sorry for symmetry)."
     },
     {
       "id": "ramsey-def",
       "title": "Ramsey Number Definition",
-      "startLine": 47,
-      "endLine": 52,
-      "summary": "Defines R(C₂ₙ; k) as a Nat.find."
+      "startLine": 48,
+      "endLine": 56,
+      "summary": "Defines ramseyEvenCycle n k = R(C_{2n}; k) via Nat.find with a trivial existence witness."
     },
     {
       "id": "erdos-bounds",
-      "title": "Erdős Bounds",
-      "startLine": 56,
-      "endLine": 65,
-      "summary": "States the general lower bound k^{1+1/(2n)} and upper bound k^{1+1/(n-1)}."
+      "title": "Erdos General Bounds",
+      "startLine": 58,
+      "endLine": 70,
+      "summary": "Axioms: lower bound R(C_{2n}; k) ≥ c·k^{1+1/(2n)} and upper bound R(C_{2n}; k) ≤ C·k^{1+1/(n-1)} for n ≥ 2."
     },
     {
       "id": "c4-case",
-      "title": "C₄ Case: Chung–Graham",
-      "startLine": 69,
-      "endLine": 79,
-      "summary": "States the nearly tight bounds for R(C₄; k) from Chung–Graham (1975)."
+      "title": "C₄ Case: Chung-Graham Bounds",
+      "startLine": 72,
+      "endLine": 82,
+      "summary": "Axioms: k²-k+1 < R(C₄; k) (when k-1 is prime power) and R(C₄; k) ≤ k²+k+1 for all k."
     },
     {
       "id": "main-problem",
-      "title": "The Erdős–Graham Problem",
-      "startLine": 83,
-      "endLine": 92,
-      "summary": "States the main open problem: determining the exact exponent α in R(C₂ₙ; k) ≈ k^{1+α}."
+      "title": "The Erdos-Graham Problem",
+      "startLine": 84,
+      "endLine": 95,
+      "summary": "Axiom ErdosProblem555: existence of exact exponent α_n in [1/(2n), 1/(n-1)] with R(C_{2n}; k) = Θ(k^{1+α_n})."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 555 asks for the exact growth rate of multicolor Ramsey numbers for even cycles. The gap between the lower bound exponent 1/(2n) and upper bound exponent 1/(n-1) remains open for all n ≥ 2.",
-    "implications": "Resolution would advance understanding of Ramsey numbers for sparse graphs, with connections to finite geometry and the regularity method.",
+    "summary": "The formalization captures Erdős Problem #555 on the exact growth rate of multicolor Ramsey numbers for even cycles. The Erdős bounds $k^{1+1/(2n)} \\ll R(C_{2n}; k) \\ll k^{1+1/(n-1)}$ and the sharp Chung-Graham bounds for $C_4$ are axiomatized. The central open question — determining $\\alpha_n$ for $n \\geq 3$ — is stated as an axiom. The single sorry is in the monochromatic subgraph symmetry proof.",
+    "implications": "Resolving the exponent gap would advance the theory of Ramsey numbers for sparse graphs, with deep connections to finite geometry (projective planes for $C_4$), the regularity method, and the Zarankiewicz problem. The $C_4$ case illustrates how algebraic constructions can give sharp bounds, while the general case may require fundamentally new techniques.",
     "openQuestions": [
-      "What is the exact exponent α_n in R(C₂ₙ; k) = Θ(k^{1+α_n})?",
-      "Is R(C₄; k) = k² + o(k²)?",
-      "Do the bounds improve for odd cycles C₂ₙ₊₁?"
+      "What is the exact exponent $\\alpha_n$ in $R(C_{2n}; k) = \\Theta(k^{1+\\alpha_n})$ for $n \\geq 3$?",
+      "Is $R(C_4; k) = k^2 + o(k^2)$, or is the lower-order term significant?",
+      "Can the lower bound be improved beyond $k^{1+1/(2n)}$ using algebraic constructions for general $n$?",
+      "How do the bounds change for odd cycles $C_{2n+1}$?"
     ]
   }
 }
