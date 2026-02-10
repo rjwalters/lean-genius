@@ -14,9 +14,12 @@
       "Walk.IsEulerian.card_odd_degree provides necessity direction only",
       "deleteEdges infrastructure exists in Mathlib for edge removal",
       "Walk.append enables circuit splicing (Hierholzer's key technique)",
-      "Proved 8 theorems including edge count, positive length, and generalized impossibility",
       "K3 triangle graph serves as concrete Eulerian circuit example",
-      "Circuit removal preserving even degree parity is the key Hierholzer invariant"
+      "Circuit removal preserving even degree parity is the key Hierholzer invariant",
+      "even_countP_edges_iff is the key Mathlib lemma: for closed trail, incident edge count per vertex is always even",
+      "Degree decomposition: G.degree v = (G.deleteEdges E).degree v + |deleted incident neighbors|",
+      "The connecting lemma (neighbors ↔ incident edges bijection) requires Sym2 manipulation and looplessness",
+      "even_degree_after_circuit_removal successfully converted from axiom to theorem (modulo 1 combinatorial sorry)"
     ],
     "builtItems": [
       "proofs/Proofs/HierholzerAlgorithm.lean: eulerian_edges_toFinset_eq",
@@ -25,19 +28,22 @@
       "proofs/Proofs/HierholzerAlgorithm.lean: no_eulerian_of_four_odd",
       "proofs/Proofs/HierholzerAlgorithm.lean: euler_circuit_all_even",
       "proofs/Proofs/HierholzerAlgorithm.lean: hierholzer_spec",
-      "proofs/Proofs/HierholzerAlgorithm.lean: triangle K3 example"
+      "proofs/Proofs/HierholzerAlgorithm.lean: triangleCircuit_isEulerian",
+      "proofs/Proofs/HierholzerAlgorithm.lean: closed_trail_even_countP",
+      "proofs/Proofs/HierholzerAlgorithm.lean: degree_eq_deleteEdges_degree_add_deleted_neighbors",
+      "proofs/Proofs/HierholzerAlgorithm.lean: even_degree_after_circuit_removal (theorem, was axiom)"
     ],
     "mathlibGaps": [
       "SimpleGraph.Trails TODO: existence direction of Euler's theorem",
       "No constructive Hierholzer algorithm in Mathlib",
-      "Need decidable instance for Walk.IsEulerian on concrete graphs"
+      "No direct lemma connecting deleteEdges + degree to edge incidence counting"
     ],
     "nextSteps": [
-      "Prove triangleCircuit_isEulerian (needs decidable instance or manual case analysis)",
-      "Convert euler_circuit_exists axiom to theorem via induction on edge count",
-      "Prove even_degree_after_circuit_removal using walk induction",
+      "Prove deleted_neighbors_eq_countP via Finset.card_nbij bijection with Sym2",
+      "Convert euler_circuit_exists axiom to theorem via induction on edge count (hard)",
+      "Convert euler_trail_exists axiom to theorem (follows from circuit existence + edge addition)",
       "Build full constructive Hierholzer algorithm with termination proof"
     ],
-    "progressSummary": "PROGRESS: Created HierholzerAlgorithm.lean with 8 proved theorems, 3 axioms, 1 sorry. Addresses Mathlib's explicit TODO for Euler's theorem existence direction. Includes K3 concrete example and generalized impossibility theorem."
+    "progressSummary": "PROGRESS: 12 proved theorems, 2 axioms (down from 3), 1 sorry. Converted even_degree_after_circuit_removal from axiom to theorem using Mathlib's even_countP_edges_iff and a degree decomposition lemma. Remaining sorry is a combinatorial bijection (neighbors ↔ incident edges)."
   }
 }

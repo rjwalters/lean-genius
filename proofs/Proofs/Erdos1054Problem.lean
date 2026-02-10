@@ -265,7 +265,7 @@ theorem sortedDivisors_length_ge_2 (m : ℕ) (hm : m ≥ 2) :
     _ = 2 := Finset.card_pair hne
 
 /--
-For m ≥ 2, the second divisor in sortedDivisors is ≥ 2.
+For m ≥ 2, the second element of sortedDivisors (given as first element of rest) is ≥ 2.
 -/
 theorem sortedDivisors_second_ge_2 (m : ℕ) (hm : m ≥ 2)
     (rest : List ℕ) (hsd : sortedDivisors m = 1 :: rest)
@@ -313,32 +313,29 @@ theorem partial_sums_skip_2 (m : ℕ) (hm : m ≥ 1) :
   simp only [partialDivisorSums]
   obtain ⟨rest, hsd⟩ := sortedDivisors_cons m hm
   rw [hsd, List.scanl, List.tail_cons]
-  -- Goal: 2 ∉ rest.scanl (· + ·) (0 + 1)
   show 2 ∉ rest.scanl (· + ·) (0 + 1)
   match hrest : rest with
   | [] =>
-    -- m = 1 case: scanl (+) 1 [] = [1]
     simp [List.scanl]
   | d₂ :: rest' =>
-    -- m ≥ 2: scanl (+) 1 (d₂ :: rest') = 1 :: scanl (+) (1+d₂) rest'
     simp only [List.scanl, List.mem_cons]
     push_neg
     constructor
     · omega  -- 2 ≠ 0 + 1
-    · -- 2 ∉ scanl (+) (0 + 1 + d₂) rest'
-      intro h2mem
+    · intro h2mem
       have hge := scanl_add_ge_init (0 + 1 + d₂) rest' 2 h2mem
       have hd2_ge_2 : d₂ ≥ 2 := by
-        have hrest_ne : rest ≠ [] := by rw [hrest]; exact List.cons_ne_nil _ _
-        have := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) rest hsd hrest_ne
-        rw [hrest] at this; simpa using this
+        have hrest_ne : (d₂ :: rest' : List ℕ) ≠ [] := List.cons_ne_nil _ _
+        have hsd' : sortedDivisors m = 1 :: (d₂ :: rest') := by rw [hsd, hrest]
+        have h := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) (d₂ :: rest') hsd' hrest_ne
+        simpa using h
       omega
 
 /--
 Helper: if 4 ∣ m then 2 ∣ m.
 -/
 private theorem dvd_4_imp_dvd_2 {m : ℕ} (h : 4 ∣ m) : 2 ∣ m :=
-  dvd_trans (⟨2, by ring⟩ : (2 : ℕ) ∣ 4) h
+  dvd_trans (Dvd.intro 2 rfl) h
 
 /--
 Helper: if d₂ = 4 is the second element in sortedDivisors m,
@@ -346,17 +343,18 @@ then 2 ∈ sortedDivisors m (since 4|m → 2|m).
 But 2 comes after 4 in the sorted list, contradicting 2 < 4.
 This eliminates the d₂ = 4 case.
 -/
-private theorem not_second_divisor_4 (m : ℕ) (hm : m ≥ 2)
+private theorem not_second_divisor_4 (m : ℕ) (_hm : m ≥ 2)
     (rest : List ℕ) (hsd : sortedDivisors m = 1 :: 4 :: rest) : False := by
   -- 4 is in sortedDivisors, hence 4 ∣ m
   have h4_in : 4 ∈ sortedDivisors m := by rw [hsd]; simp
-  simp [sortedDivisors, Finset.mem_sort] at h4_in
-  have h4_dvd_m : 4 ∣ m := (Nat.mem_divisors.mp h4_in).1
+  have h4_dvd_m : 4 ∣ m := by
+    simp [sortedDivisors, Finset.mem_sort] at h4_in
+    exact h4_in.1
   have h2_dvd_m : 2 ∣ m := dvd_4_imp_dvd_2 h4_dvd_m
   -- So 2 ∈ sortedDivisors m
   have h2_in_sd : 2 ∈ sortedDivisors m := by
     simp [sortedDivisors, Finset.mem_sort]
-    exact Nat.mem_divisors.mpr ⟨h2_dvd_m, by omega⟩
+    exact ⟨h2_dvd_m, by omega⟩
   -- But sortedDivisors m = [1, 4, ...rest], and 2 ∈ this list
   rw [hsd] at h2_in_sd
   simp at h2_in_sd
@@ -364,11 +362,8 @@ private theorem not_second_divisor_4 (m : ℕ) (hm : m ≥ 2)
   -- But the list [1, 4, rest...] is sorted, so all elements in rest ≥ 4
   have hsorted := sortedDivisors_sorted m
   rw [hsd] at hsorted
-  -- hsorted : [1, 4, rest...].Sorted (· ≤ ·)
-  -- From [1, 4, rest...] sorted: 4 ≤ every element of rest
   have h4_sorted : (4 :: rest).Sorted (· ≤ ·) := (List.pairwise_cons.mp hsorted).2
   have hall_ge_4 := (List.pairwise_cons.mp h4_sorted).1
-  -- But 2 ∈ rest and 2 < 4, contradiction
   exact absurd (hall_ge_4 2 h2_in_sd) (by omega)
 
 /--
@@ -393,41 +388,43 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
   | d₂ :: rest' =>
     simp only [List.scanl, List.mem_cons]
     push_neg
-    have hrest_ne : rest ≠ [] := by rw [hrest]; exact List.cons_ne_nil _ _
     have hd2_ge_2 : d₂ ≥ 2 := by
-      have := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) rest hsd hrest_ne
-      rw [hrest] at this; simpa using this
+      have hrest_ne : (d₂ :: rest' : List ℕ) ≠ [] := List.cons_ne_nil _ _
+      have hsd' : sortedDivisors m = 1 :: (d₂ :: rest') := by rw [hsd, hrest]
+      have h := sortedDivisors_second_ge_2 m (by omega : m ≥ 2) (d₂ :: rest') hsd' hrest_ne
+      simpa using h
     constructor
     · omega  -- 5 ≠ 0 + 1
-    · -- 5 ∉ scanl (+) (0 + 1 + d₂) rest'
-      match hrest' : rest' with
+    · match hrest' : rest' with
       | [] =>
         -- Two divisors: scanl (+) (1+d₂) [] = [1+d₂]
         simp [List.scanl]
         -- Need 5 ≠ 0 + 1 + d₂. If d₂ = 4, contradiction via not_second_divisor_4
         intro h5eq
         have hd2_eq_4 : d₂ = 4 := by omega
-        exact not_second_divisor_4 m (by omega) [] (by rw [hsd, hrest, hrest', hd2_eq_4])
+        have hsd' : sortedDivisors m = 1 :: 4 :: [] := by
+          rw [hsd, hrest]; congr 1; rw [hd2_eq_4, hrest']
+        exact not_second_divisor_4 m (by omega) [] hsd'
       | d₃ :: rest'' =>
-        -- Three+ divisors: scanl (+) (1+d₂) (d₃::rest'') = (1+d₂) :: scanl (+) (1+d₂+d₃) rest''
+        -- Three+ divisors
         simp only [List.scanl, List.mem_cons]
         push_neg
         constructor
         · -- 5 ≠ 0 + 1 + d₂. If d₂ = 4, contradiction.
           intro h5eq
           have hd2_eq_4 : d₂ = 4 := by omega
-          exact not_second_divisor_4 m (by omega) (d₃ :: rest'')
-            (by rw [hsd, hrest, hd2_eq_4])
+          have hsd' : sortedDivisors m = 1 :: 4 :: (d₃ :: rest'') := by
+            rw [hsd, hrest]; congr 1; rw [hd2_eq_4]
+          exact not_second_divisor_4 m (by omega) (d₃ :: rest'') hsd'
         · -- 5 ∉ scanl (+) (0 + 1 + d₂ + d₃) rest''
-          -- Need: 0 + 1 + d₂ + d₃ ≥ 6 > 5
-          -- d₂ ≥ 2, d₃ > d₂ (sorted + nodup), so d₃ ≥ d₂ + 1 ≥ 3
           intro h5mem
           have hge := scanl_add_ge_init (0 + 1 + d₂ + d₃) rest'' 5 h5mem
           have hsorted := sortedDivisors_sorted m
-          rw [hsd, hrest] at hsorted
+          have hsd' : sortedDivisors m = 1 :: d₂ :: d₃ :: rest'' := by
+            rw [hsd, hrest]; congr 1; rw [hrest']
+          rw [hsd'] at hsorted
           have hnodup := sortedDivisors_nodup m
-          rw [hsd, hrest] at hnodup
-          -- d₂ < d₃ from sorted + nodup
+          rw [hsd'] at hnodup
           have hd2_lt_d3 : d₂ < d₃ := by
             have hsort_rest := (List.pairwise_cons.mp hsorted).2
             have hd2_le_d3 := (List.pairwise_cons.mp hsort_rest).1 d₃ (List.mem_cons_self _ _)
@@ -436,7 +433,6 @@ theorem partial_sums_skip_5 (m : ℕ) (hm : m ≥ 1) :
               rw [heq] at hnd
               exact (List.nodup_cons.mp hnd).1 (List.mem_cons_self _ _)
             omega
-          -- So d₃ ≥ 3, and 1 + d₂ + d₃ ≥ 1 + 2 + 3 = 6 > 5
           omega
 
 /-
@@ -566,12 +562,12 @@ theorem not_representable_2_large : isRepresentableBound 2 1000 = false := by
 theorem not_representable_5_large : isRepresentableBound 5 1000 = false := by
   native_decide
 
-/-- 11 is representable -/
+/-- 11 is representable: divisors of 30 are {1,2,3,5,6,10,15,30}, 1+2+3+5=11. -/
 theorem representable_11 : IsRepresentable 11 :=
-  ⟨10, by omega, by native_decide⟩
+  ⟨30, by omega, by native_decide⟩
 
-/-- f(11) = 10 -/
-theorem f_11_eq : computeF 11 20 = 10 := by native_decide
+/-- f(11) = 30 (searched with bound 50) -/
+theorem f_11_eq : computeF 11 50 = 30 := by native_decide
 
 /-- 13 is representable -/
 theorem representable_13 : IsRepresentable 13 :=
@@ -601,11 +597,14 @@ Extended table of f(n) values (computed with bound 100):
 - f(8) = 7      f(8)/8 = 0.88
 - f(9) = 15     f(9)/9 = 1.67 ← exceeds 1!
 - f(10) = 12    f(10)/10 = 1.2
+- f(11) = 30    f(11)/11 = 2.73 ← large ratio!
 - f(12) = 6     f(12)/12 = 0.5
+- f(13) = 9     f(13)/13 = 0.69
+- f(14) = 13    f(14)/14 = 0.93
+- f(15) = 8     f(15)/15 = 0.53
 
 Key observation: f(9) = 15 > 9, showing f(n)/n can exceed 1.
-This is because 9 = 1+3+5 (from m=15 with divisors {1,3,5,15}).
-There's no smaller m whose divisor partial sums include 9.
+f(11) = 30, showing f(n)/n ≈ 2.73 — the ratio can be quite large.
 
 Tao proved that f(n)/n is unbounded, confirming Part III.
 -/
