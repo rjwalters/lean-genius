@@ -2,7 +2,7 @@
   "id": "erdos-864",
   "title": "Almost-Sidon Sets with One Collision",
   "slug": "erdos-864",
-  "description": "Max size of A ⊆ {1,...,N} with at most one sum collision? Conjecture: (1+o(1))·(2/√3)·√N. Erdős–Freud (1991) matched this with a reflected Sidon construction.",
+  "description": "Max size of A ⊆ {1,...,N} with at most one sum collision? Conjecture: (1+o(1))·(2/√3)·√N. Erdős-Freud (1991) matched this with a reflected Sidon construction.",
   "meta": {
     "author": "Erdős, Freud",
     "sourceUrl": "https://erdosproblems.com/864",
@@ -10,66 +10,123 @@
     "proofRepoPath": "Proofs/Erdos864Problem.lean",
     "tags": [
       "erdos",
-      "additive combinatorics",
-      "Sidon sets",
-      "sum representations",
-      "extremal problems"
+      "additive-combinatorics",
+      "sidon-sets",
+      "sum-representations",
+      "extremal-problems"
     ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 864,
     "erdosUrl": "https://erdosproblems.com/864",
-    "erdosProblemStatus": "open"
-  },
-  "overview": {
-    "historicalContext": "Erdős and Freud (1991) studied sets where at most one integer has multiple sum representations. They constructed sets of size (2/√3)·√N using reflected Sidon sets and conjectured this is optimal. This extends the classical Sidon set theory by allowing one collision. The problem is a weaker version of Problem #840.",
-    "problemStatement": "What is the maximum size of A ⊆ {1,...,N} such that at most one integer n has multiple representations as a + b with a ≤ b ∈ A?",
-    "proofStrategy": "We formalize sum representations, multi-representation sets, almost-Sidon and Sidon properties, the maximum function, the Erdős–Freud lower bound, Sidon upper bounds, and the reflected construction.",
-    "keyInsights": [
-      "Almost-Sidon allows one collision; Sidon allows none",
-      "2/√3 ≈ 1.155 times the Sidon bound: one collision gives ~15.5% more room",
-      "Reflected construction: B ∪ (N−B) with Sidon B ⊆ {1,...,N/3}",
-      "The only collision in the reflected construction is at sum N",
-      "Difference analogue: |A| ~ √N (proved by Erdős–Freud)"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets, used for set sizes and representation counts",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by predicates, used for sum representation counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets, used to define maxAlmostSidon",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root, used in asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Defined sumRepCount via filtered product pairs with a ≤ b constraint",
+      "Defined multiRepSet as sums with representation count ≥ 2",
+      "Formalized IsAlmostSidon (≤1 collision) and IsSidon (0 collisions) as card constraints on multiRepSet",
+      "Defined maxAlmostSidon as supremum over powerset of Icc 1 N",
+      "Proved sidon_is_almost_sidon by unfolding and omega",
+      "Axiomatized Erdős-Freud lower bound with explicit (2/√3 − ε)·√N form",
+      "Axiomatized the reflected construction B ∪ (N − B) with B Sidon in {1,...,N/3}"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 22,
-      "endLine": 49,
-      "summary": "Defines sum representation counts, multi-representation sets, almost-Sidon and Sidon properties, maximum function."
+      "startLine": 27,
+      "endLine": 48,
+      "summary": "Defines `sumRepCount A n` as $|\\{(a,b) \\in A \\times A : a \\leq b,\\, a+b = n\\}|$, `multiRepSet A` as $\\{n : \\text{sumRepCount}(A, n) \\geq 2\\}$, `IsAlmostSidon A` as $|\\text{multiRepSet}(A)| \\leq 1$, `IsSidon A` as $|\\text{multiRepSet}(A)| = 0$, and `maxAlmostSidon N` as $\\sup$ over almost-Sidon subsets of $[1, N]$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "startLine": 51,
-      "endLine": 55,
-      "summary": "States the conjecture: max almost-Sidon set has size (1+o(1))·(2/√3)·√N."
+      "startLine": 50,
+      "endLine": 57,
+      "summary": "Axiomatizes `erdos_864_conjecture`: the maximum almost-Sidon set in $\\{1, \\ldots, N\\}$ has size $(1 + o(1)) \\cdot \\frac{2}{\\sqrt{3}} \\cdot \\sqrt{N}$. Currently a placeholder `True` axiom."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "startLine": 57,
-      "endLine": 82,
-      "summary": "Erdős–Freud lower bound, Sidon upper bound, almost-Sidon exceeds Sidon, and Sidon implies almost-Sidon."
+      "startLine": 59,
+      "endLine": 84,
+      "summary": "Axiomatizes three bounds: Erdős-Freud lower bound $\\geq (2/\\sqrt{3} - \\varepsilon)\\sqrt{N}$, the classical Sidon upper bound $\\leq \\sqrt{N} + O(N^{1/4})$, and `almost_sidon_exceeds_sidon`: almost-Sidon can exceed $\\sqrt{N} + 1$. Proves `sidon_is_almost_sidon` via `omega`."
+    },
+    {
+      "id": "difference",
+      "title": "Difference Version",
+      "startLine": 86,
+      "endLine": 93,
+      "summary": "Axiomatizes `erdos_freud_difference_version`: for the difference analogue (at most one difference collision), the maximum is asymptotically $\\sqrt{N}$. Currently a placeholder `True` axiom."
     },
     {
       "id": "structural",
-      "title": "Structure and Construction",
-      "startLine": 84,
-      "endLine": 112,
-      "summary": "Difference version, pairwise sum count, sum range constraint, reflected construction validity."
+      "title": "Structural Properties and Construction",
+      "startLine": 95,
+      "endLine": 114,
+      "summary": "Axiomatizes the pairwise sum count $\\binom{|A|}{2} + |A|$, the sum range constraint for almost-Sidon sets, and the reflected construction: $B \\cup (N - B)$ is almost-Sidon when $B$ is Sidon in $\\{1, \\ldots, N/3\\}$."
     }
   ],
-  "conclusion": {
-    "summary": "Formalizes Erdős Problem #864: maximum almost-Sidon sets in {1,...,N}. The conjectured optimum (2/√3)·√N is achieved by reflected Sidon constructions but the upper bound remains open.",
-    "implications": "A resolution would precisely quantify the value of allowing one sum collision in additive combinatorics, connecting to B₂ set theory.",
-    "openQuestions": [
-      "Is |A| ≤ (1+o(1))·(2/√3)·√N for almost-Sidon sets?",
-      "What happens with k allowed collisions for general k?",
-      "Is the reflected construction the unique extremal family?"
+  "overview": {
+    "historicalContext": "Sidon sets (also called $B_2$ sets) are sets where all pairwise sums are distinct, studied since Sidon's 1932 question to Turán. The classical result is $|A| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon $A \\subseteq \\{1, \\ldots, N\\}$, with matching constructions from finite geometry (Singer 1938, Erdős-Turán 1941). Problem 864, posed by Erdős and Freud in 1991, asks: what happens if we relax the Sidon condition to allow exactly one collision? They showed the reflected construction $B \\cup \\{N - b : b \\in B\\}$ with Sidon $B \\subseteq \\{1, \\ldots, N/3\\}$ achieves size $(2/\\sqrt{3})\\sqrt{N} \\approx 1.155\\sqrt{N}$, a 15.5% improvement over pure Sidon. The only collision occurs at sum $N$: both $b + (N-b)$ and $b' + (N-b')$ equal $N$. The conjecture that this is optimal remains open. This is a weaker version of Problem #840, which studies the general $k$-collision case.",
+    "problemStatement": "What is the maximum size of $A \\subseteq \\{1, \\ldots, N\\}$ such that at most one integer $n$ has multiple representations as $a + b$ with $a \\leq b \\in A$?",
+    "proofStrategy": "The formalization defines sum representations via filtered Cartesian products, the almost-Sidon and Sidon properties via cardinality of the multi-representation set, and `maxAlmostSidon` as a supremum over the powerset. The key theorem `sidon_is_almost_sidon` is proved by unfolding definitions and `omega`. Asymptotic bounds are axiomatized with explicit real-valued inequalities using `Real.sqrt`.",
+    "keyInsights": [
+      "Almost-Sidon allows one collision; the reflected construction achieves $2/\\sqrt{3} \\approx 1.155$ times the Sidon bound by concentrating all collisions at a single sum value $N$",
+      "The reflected construction $B \\cup (N - B)$: when $B$ is Sidon in $\\{1, \\ldots, N/3\\}$, the set has size $\\approx 2\\sqrt{N/3} = (2/\\sqrt{3})\\sqrt{N}$, and the only collision is at sum $N$ since $b + (N-b) = N$ for all $b \\in B$",
+      "The sum range constraint: an almost-Sidon set of size $k$ produces $\\geq \\binom{k}{2} + k - 1$ distinct sums in $[2, 2N]$, giving $k(k+1)/2 - 1 \\leq 2N - 1$, hence $k \\leq O(\\sqrt{N})$",
+      "The gap between Sidon ($\\sqrt{N}$) and almost-Sidon ($(2/\\sqrt{3})\\sqrt{N}$) is precisely the factor $2/\\sqrt{3}$: one collision is worth a multiplicative factor of $\\approx 1.155$",
+      "For differences instead of sums, Erdős-Freud proved the maximum is asymptotically $\\sqrt{N}$ — the difference version does not benefit from allowing one collision"
     ]
-  }
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #864 is formalized with concrete definitions of sum representation counting, almost-Sidon and Sidon properties, the maximum function, and the Erdős-Freud reflected construction. The key theorem sidon_is_almost_sidon is proved; bounds and construction validity are axiomatized. The file has 0 sorries and 7 axioms (including 2 placeholder True).",
+    "implications": "A resolution would precisely quantify the value of allowing one sum collision in additive combinatorics. The factor 2/√3 would establish a sharp phase transition: zero collisions gives √N, one collision gives (2/√3)√N, and understanding k collisions would complete the picture of B_2^+ set theory.",
+    "openQuestions": [
+      "Is |A| ≤ (1+o(1))·(2/√3)·√N the correct upper bound for almost-Sidon sets?",
+      "What is the maximum for k allowed collisions? Is there a formula f(k)·√N?",
+      "Is the reflected construction the unique extremal configuration, or are there essentially different constructions?",
+      "Can the placeholder axioms (erdos_864_conjecture, erdos_freud_difference_version) be given non-trivial content?",
+      "What is the connection to Problem #840 (general collision bounds)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sidon-sets",
+      "relationship": "specialization",
+      "description": "Sidon (B_2) sets are the zero-collision case; almost-Sidon relaxes to one collision, gaining a factor of 2/√3"
+    },
+    {
+      "targetId": "erdos-840",
+      "relationship": "related",
+      "description": "Problem #840 studies the general k-collision case; #864 is the special case k = 1"
+    },
+    {
+      "targetId": "erdos-turan-conjecture",
+      "relationship": "related",
+      "description": "The Erdős-Turán conjecture on Sidon sets provides the baseline √N bound that almost-Sidon exceeds"
+    }
+  ]
 }
