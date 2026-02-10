@@ -19,6 +19,11 @@
       {"theorem": "Complex.exp_two_pi_mul_I", "description": "exp(2πi) = 1", "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"}
     ],
     "originalContributions": ["Extension to integer exponents", "Double and triple angle formula derivations", "Roots of unity connection via exp(2πik/n)"],
+    "references": [
+      {"authors": "A. de Moivre", "title": "Aequationum quarundam Potestatis tertiae, quintae, septimae...", "year": "1707", "venue": "Philosophical Transactions", "note": "Earliest implicit form of de Moivre's formula"},
+      {"authors": "L. Euler", "title": "Introductio in analysin infinitorum", "year": "1748", "venue": "Lausanne", "note": "Modern formulation connecting e^{iθ} = cos θ + i sin θ to de Moivre's theorem"},
+      {"authors": "T. Needham", "title": "Visual Complex Analysis", "year": "1997", "venue": "Oxford University Press", "note": "Geometric interpretation of de Moivre as iterated rotation"}
+    ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 17
   },
