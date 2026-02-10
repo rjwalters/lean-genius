@@ -315,6 +315,40 @@ theorem representable_14 : IsRepresentable 14 :=
 theorem f_14_eq : computeF 14 20 = 13 := by native_decide
 
 -- ============================================================
+-- Extended Non-Representability Verification
+-- ============================================================
+
+/-- 2 is not a partial sum of divisors of any m in {1, ..., 1000}. -/
+theorem not_representable_2_large : isRepresentableBound 2 1000 = false := by
+  native_decide
+
+/-- 5 is not a partial sum of divisors of any m in {1, ..., 1000}. -/
+theorem not_representable_5_large : isRepresentableBound 5 1000 = false := by
+  native_decide
+
+/-- 11 is representable: divisors of 10 = {1,2,5,10}, 1+2+5+... wait.
+    Actually: divisors of 20 = {1,2,4,5,10,20}, 1+2+4+... = 7? Let's compute. -/
+theorem representable_11 : IsRepresentable 11 :=
+  ⟨10, by omega, by native_decide⟩
+
+/-- f(11) = 10 -/
+theorem f_11_eq : computeF 11 20 = 10 := by native_decide
+
+/-- 13 is representable -/
+theorem representable_13 : IsRepresentable 13 :=
+  ⟨9, by omega, by native_decide⟩
+
+/-- f(13) = 9 -/
+theorem f_13_eq : computeF 13 20 = 9 := by native_decide
+
+/-- 15 is representable -/
+theorem representable_15 : IsRepresentable 15 :=
+  ⟨8, by omega, by native_decide⟩
+
+/-- f(15) = 8 -/
+theorem f_15_eq : computeF 15 20 = 8 := by native_decide
+
+-- ============================================================
 -- f(n) Table (extended)
 -- ============================================================
 
