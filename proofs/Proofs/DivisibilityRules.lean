@@ -6,7 +6,7 @@ of divisibility rules with Lean proofs.
 
 Rules covered:
 - Digit sum rules: 3 | n, 9 | n, 7 | n (octal), etc. (from Mathlib)
-- Alternating digit sum: 11 | n via axiom
+- Alternating digit sum: 11 | n (fully proved)
 - Last digit rules: 2 | n, 5 | n, 10 | n
 - Last two digits: 4 | n, 25 | n
 - Last three digits: 8 | n, 125 | n
@@ -27,6 +27,12 @@ namespace DivisibilityRules
 
 /-
 ## Part I: Alternating Digit Sum (for b ≡ -1 mod d)
+
+When the base b satisfies b ≡ -1 (mod d), powers of b alternate signs:
+  b^0 ≡ 1, b^1 ≡ -1, b^2 ≡ 1, b^3 ≡ -1, ...
+
+So n = d₀ + d₁·b + d₂·b² + ... ≡ d₀ - d₁ + d₂ - d₃ + ... (mod d).
+This gives the divisibility-by-11 rule in base 10 (since 10 ≡ -1 mod 11).
 -/
 
 /-- Alternating sum of a list of natural numbers (as integers).
@@ -46,11 +52,68 @@ theorem alternatingDigitSum_pair (d₀ d₁ : ℕ) :
     alternatingDigitSum [d₀, d₁] = ↑d₀ - ↑d₁ := by
   simp [alternatingDigitSum]
 
+/-- Key recursion: alternatingDigitSum (a :: rest) = a - alternatingDigitSum rest.
+    This mirrors the 1-step recursion of ofDigits with sign flip. -/
+theorem alternatingDigitSum_cons (a : ℕ) (rest : List ℕ) :
+    alternatingDigitSum (a :: rest) = ↑a - alternatingDigitSum rest := by
+  induction rest with
+  | nil => simp [alternatingDigitSum]
+  | cons b rest' ih =>
+    simp only [alternatingDigitSum]
+    rw [ih]
+    ring
+
+/-- The alternating digit sum of ofDigits: when b ≡ -1 (mod d),
+    ofDigits b l ≡ alternatingDigitSum l (mod d). Proved by induction on l. -/
+theorem ofDigits_modEq_alternatingDigitSum (d : ℕ) (hd : 0 < d)
+    (b : ℕ) (hb : b % d = d - 1) (l : List ℕ) :
+    (Nat.ofDigits b l : ℤ) ≡ alternatingDigitSum l [ZMOD ↑d] := by
+  induction l with
+  | nil => simp [Nat.ofDigits, alternatingDigitSum, Int.ModEq]
+  | cons a rest ih =>
+    rw [alternatingDigitSum_cons]
+    simp only [Nat.ofDigits]
+    have hb_neg : (b : ℤ) ≡ -1 [ZMOD ↑d] := by
+      rw [Int.ModEq]
+      simp only [Int.emod_emod_of_dvd]
+      omega
+    have h_mul : (↑b * ↑(Nat.ofDigits b rest) : ℤ) ≡
+        -1 * alternatingDigitSum rest [ZMOD ↑d] :=
+      Int.ModEq.mul hb_neg ih
+    have h_add : (↑a + ↑b * ↑(Nat.ofDigits b rest) : ℤ) ≡
+        ↑a + -1 * alternatingDigitSum rest [ZMOD ↑d] :=
+      Int.ModEq.add rfl h_mul
+    simp only [neg_one_mul] at h_add
+    push_cast at h_add ⊢
+    exact h_add
+
 /-- When b ≡ -1 (mod d), n ≡ alternatingDigitSum(digits b n) (mod d).
-    Since 10 ≡ -1 (mod 11), this gives the div-by-11 rule. -/
-axiom modEq_alternating_digits_sum (d b n : ℕ) (hd : 0 < d)
+    Since 10 ≡ -1 (mod 11), this gives the div-by-11 rule.
+    Proved via ofDigits induction + Nat.ofDigits_digits identity. -/
+theorem modEq_alternating_digits_sum (d b n : ℕ) (hd : 0 < d)
     (hb : b % d = d - 1) :
-    (n : ℤ) ≡ altDigitSum b n [ZMOD ↑d]
+    (n : ℤ) ≡ altDigitSum b n [ZMOD ↑d] := by
+  unfold altDigitSum
+  by_cases hb2 : b < 2
+  · simp [Nat.digits, hb2]
+    by_cases hn : n = 0
+    · subst hn; simp [alternatingDigitSum, Int.ModEq]
+    · interval_cases d
+      · omega
+      · simp [Int.ModEq]; omega
+      · have hb1 : b = 1 := by omega
+        subst hb1
+        simp [Nat.digits_one]
+        induction n with
+        | zero => contradiction
+        | succ n' _ =>
+          simp [List.replicate_succ, alternatingDigitSum_cons]
+          rw [Int.ModEq]; simp; omega
+      · omega
+  · push_neg at hb2
+    have key : n = Nat.ofDigits b (Nat.digits b n) := (Nat.ofDigits_digits b n).symm
+    rw [key]
+    exact ofDigits_modEq_alternatingDigitSum d hd b hb (Nat.digits b n)
 
 /-
 ## Part II: Last-Digit Rules

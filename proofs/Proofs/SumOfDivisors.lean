@@ -28,6 +28,10 @@ functions in number theory. This file formalizes key properties of σ including:
 - [x] Abundancy index characterization
 - [x] General bounds: σ(n) ≥ n for n ≥ 1, σ(n) > n for n > 1
 - [x] σ(p) = p + 1 for all primes (general theorem)
+- [x] σ is multiplicative (structural theorem)
+- [x] σ(p^k) = Σ p^i for prime p (general prime power formula)
+- [x] Factorization-based computation of σ
+- [x] 12 is the smallest abundant number (minimality proof)
 
 ## Mathlib Dependencies
 - `ArithmeticFunction.sigma` : Sum of divisors function
@@ -378,6 +382,150 @@ These connections motivate further study of σ properties.
 -/
 
 /-
+## Part 11: Multiplicativity of σ
+
+The sum of divisors function is *multiplicative*: σ(mn) = σ(m)σ(n) whenever
+gcd(m,n) = 1. This is the key algebraic property that makes σ computable from
+the prime factorization.
+-/
+
+/-- σ_k is a multiplicative arithmetic function. -/
+theorem sigma_multiplicative (k : ℕ) : ArithmeticFunction.IsMultiplicative (sigma k) :=
+  sigma_isMultiplicative
+
+/-- σ(1) = 1, from multiplicativity. -/
+theorem sigma_one_from_mult : sigma 1 1 = 1 :=
+  sigma_isMultiplicative.map_one
+
+/-- Multiplicativity: σ(mn) = σ(m) · σ(n) when gcd(m,n) = 1. -/
+theorem sigma_mul_coprime (m n : ℕ) (h : Nat.Coprime m n) :
+    sigma 1 (m * n) = sigma 1 m * sigma 1 n :=
+  sigma_isMultiplicative.map_mul_of_coprime h
+
+/-- Example: σ(6) = σ(2) · σ(3) since gcd(2,3) = 1. -/
+theorem sigma_six_mult : sigma 1 (2 * 3) = sigma 1 2 * sigma 1 3 :=
+  sigma_mul_coprime 2 3 (by native_decide)
+
+/-- Example: σ(12) = σ(4) · σ(3) since gcd(4,3) = 1.
+    This gives 28 = 7 × 4, verified. -/
+theorem sigma_twelve_mult : sigma 1 (4 * 3) = sigma 1 4 * sigma 1 3 :=
+  sigma_mul_coprime 4 3 (by native_decide)
+
+/-- Example: σ(30) = σ(2) · σ(15) = σ(2) · σ(3) · σ(5). -/
+theorem sigma_thirty_mult : sigma 1 (2 * 15) = sigma 1 2 * sigma 1 15 :=
+  sigma_mul_coprime 2 15 (by native_decide)
+
+/-
+## Part 12: σ on Prime Powers
+
+For prime p, the divisors of p^k are exactly {1, p, p², ..., p^k}.
+Therefore σ(p^k) = 1 + p + p² + ... + p^k = Σ_{i=0}^k p^i.
+
+This is the formula that, combined with multiplicativity, lets us compute
+σ(n) from the prime factorization of n.
+-/
+
+/-- The divisors of p^k (for prime p) are {p^0, p^1, ..., p^k}. -/
+theorem divisors_prime_pow_eq (p k : ℕ) (hp : p.Prime) :
+    (p ^ k).divisors = (Finset.range (k + 1)).map
+      ⟨fun i => p ^ i, Nat.pow_left_injective hp.two_le⟩ :=
+  Nat.divisors_prime_pow hp
+
+/-- σ(p^k) = Σ_{i=0}^k p^i for prime p.
+    This is the fundamental formula for σ on prime powers. -/
+theorem sigma_prime_pow (p k : ℕ) (hp : p.Prime) :
+    sigma 1 (p ^ k) = ∑ i ∈ Finset.range (k + 1), p ^ i := by
+  simp only [sigma_apply]
+  rw [Nat.divisors_prime_pow hp]
+  simp [Finset.sum_map, Function.Embedding.coeFn_mk]
+
+/-- σ(p) = 1 + p for prime p (special case k=1). -/
+theorem sigma_prime_pow_one (p : ℕ) (hp : p.Prime) :
+    sigma 1 (p ^ 1) = 1 + p := by
+  rw [sigma_prime_pow p 1 hp]
+  simp [Finset.sum_range_succ]
+
+/-- σ(p²) = 1 + p + p² for prime p. -/
+theorem sigma_prime_pow_two (p : ℕ) (hp : p.Prime) :
+    sigma 1 (p ^ 2) = 1 + p + p ^ 2 := by
+  rw [sigma_prime_pow p 2 hp]
+  simp [Finset.sum_range_succ]
+
+/-- σ(p³) = 1 + p + p² + p³ for prime p. -/
+theorem sigma_prime_pow_three (p : ℕ) (hp : p.Prime) :
+    sigma 1 (p ^ 3) = 1 + p + p ^ 2 + p ^ 3 := by
+  rw [sigma_prime_pow p 3 hp]
+  simp [Finset.sum_range_succ]
+
+/-- Concrete verification: σ(4) = σ(2²) = 1 + 2 + 4 = 7. -/
+theorem sigma_four_via_formula : sigma 1 (2 ^ 2) = 1 + 2 + 2 ^ 2 :=
+  sigma_prime_pow_two 2 (by norm_num)
+
+/-- Concrete verification: σ(8) = σ(2³) = 1 + 2 + 4 + 8 = 15. -/
+theorem sigma_eight_via_formula : sigma 1 (2 ^ 3) = 1 + 2 + 2 ^ 2 + 2 ^ 3 :=
+  sigma_prime_pow_three 2 (by norm_num)
+
+/-- Concrete verification: σ(9) = σ(3²) = 1 + 3 + 9 = 13. -/
+theorem sigma_nine_via_formula : sigma 1 (3 ^ 2) = 1 + 3 + 3 ^ 2 :=
+  sigma_prime_pow_two 3 (by norm_num)
+
+/-- Concrete verification: σ(27) = σ(3³) = 1 + 3 + 9 + 27 = 40. -/
+theorem sigma_twentyseven_via_formula : sigma 1 (3 ^ 3) = 1 + 3 + 3 ^ 2 + 3 ^ 3 :=
+  sigma_prime_pow_three 3 (by norm_num)
+
+/-
+## Part 13: Computing σ via Factorization
+
+Combining multiplicativity with the prime power formula:
+  σ(p₁^a₁ · p₂^a₂ · ... · pₖ^aₖ) = σ(p₁^a₁) · σ(p₂^a₂) · ... · σ(pₖ^aₖ)
+  = (Σ p₁^i) · (Σ p₂^j) · ...
+
+Example: σ(12) = σ(2² · 3) = σ(4) · σ(3) = 7 · 4 = 28.
+-/
+
+/-- σ(12) computed via factorization: 12 = 2² · 3, so
+    σ(12) = σ(4) · σ(3) = (1+2+4)(1+3) = 7·4 = 28. -/
+theorem sigma_twelve_via_factorization :
+    sigma 1 12 = (1 + 2 + 2^2) * (1 + 3) := by
+  have h12 : (12 : ℕ) = 2^2 * 3 := by norm_num
+  have hcop : Nat.Coprime (2^2) 3 := by native_decide
+  have h4 := sigma_prime_pow_two 2 (by norm_num)
+  have h3 := sigma_prime 3 (by norm_num)
+  rw [h12, sigma_mul_coprime _ _ hcop, h4]
+  simp [h3]
+
+/-- σ(30) computed via factorization: 30 = 2 · 3 · 5, so
+    σ(30) = σ(2) · σ(3) · σ(5) = 3 · 4 · 6 = 72. -/
+theorem sigma_thirty_via_factorization :
+    sigma 1 30 = (1 + 2) * (1 + 3) * (1 + 5) := by
+  have h30 : (30 : ℕ) = 2 * (3 * 5) := by norm_num
+  have hcop1 : Nat.Coprime 2 (3 * 5) := by native_decide
+  have hcop2 : Nat.Coprime 3 5 := by native_decide
+  rw [h30, sigma_mul_coprime _ _ hcop1, sigma_mul_coprime _ _ hcop2]
+  have h2 := sigma_prime 2 (by norm_num)
+  have h3 := sigma_prime 3 (by norm_num)
+  have h5 := sigma_prime 5 (by norm_num)
+  rw [h2, h3, h5]; ring
+
+/-
+## Part 14: Smallest Abundant Number
+
+12 is the first abundant number. We prove this by showing every n < 12 is
+not abundant (i.e., σ(n) ≤ 2n).
+-/
+
+/-- No number from 1 to 11 is abundant. -/
+theorem not_abundant_lt_12 (n : ℕ) (hn1 : 0 < n) (hn2 : n < 12) :
+    ¬IsAbundant n := by
+  unfold IsAbundant
+  interval_cases n <;> simp_all <;> native_decide
+
+/-- 12 is the smallest abundant number. -/
+theorem twelve_smallest_abundant :
+    IsAbundant 12 ∧ ∀ n, 0 < n → n < 12 → ¬IsAbundant n :=
+  ⟨twelve_is_abundant, not_abundant_lt_12⟩
+
+/-
 ## Summary
 
 This file formalizes key properties of the sum of divisors function:
@@ -385,7 +533,7 @@ This file formalizes key properties of the sum of divisors function:
 **Proven (no sorry)**:
 - σ concrete values: σ(1) through σ(10), σ(12), σ(28), σ(100),
   σ(220), σ(284), σ(1184), σ(1210) — 17 verified values
-- σ(p) = p + 1 verified for p = 2, 3, 5, 7, 11, 13
+- σ(p) = p + 1 verified for p = 2, 3, 5, 7, 11, 13 and general theorem
 - Number classification: 1,2,4,8 deficient; 6,28,496 perfect; 12,18,20,24 abundant
 - All primes are deficient (σ(p) = p + 1 < 2p)
 - Classification exhaustive and exclusive (4 theorems)
@@ -394,8 +542,13 @@ This file formalizes key properties of the sum of divisors function:
 - σ₂ concrete values: σ₂(1)=1, σ₂(2)=5, σ₂(6)=50
 - σ(n) ≥ n for n ≥ 1 (general) and σ(n) > n for n > 1 (general)
 - Perfect iff abundancy = 2
+- σ is multiplicative: σ(mn) = σ(m)·σ(n) for coprime m,n
+- σ(p^k) = Σ_{i=0}^k p^i for prime p (general formula)
+- σ on prime powers: specialized for k=1,2,3
+- Factorization examples: σ(12) and σ(30) via factorization
+- 12 is the smallest abundant number (proved minimality)
 
-**Total: ~65 declarations, 0 sorries, 0 axioms**
+**Total: ~85 declarations, 0 sorries, 0 axioms**
 -/
 
 end SumOfDivisors
