@@ -10,10 +10,10 @@
     "proofRepoPath": "Proofs/Erdos731Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "binomial coefficients",
+      "number-theory",
+      "binomial-coefficients",
       "divisibility",
-      "asymptotic analysis"
+      "asymptotic-analysis"
     ],
     "badge": "formalized",
     "sorries": 0,
@@ -22,54 +22,72 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős, Graham, Ruzsa, and Straus (1975) noted that the least integer not dividing C(2n,n) is typically exp((log n)^{1/2+o(1)}). The problem asks for a precise function f(n) describing this behavior. Kummer's theorem connects divisibility to base-p digit structure.",
-    "problemStatement": "Find a reasonable function f(n) such that for almost all n, the least m with m ∤ C(2n,n) satisfies m ~ f(n).",
-    "proofStrategy": "We formalize central binomial coefficients, the least non-divisor function, Kummer's theorem on carries, the EGRS asymptotic, and bounds from Bertrand's postulate and the prime number theorem.",
+    "historicalContext": "Erdős, Graham, Ruzsa, and Straus (1975) studied the divisibility properties of central binomial coefficients $\\binom{2n}{n}$ and observed that the least integer not dividing $\\binom{2n}{n}$ is typically $\\exp((\\log n)^{1/2+o(1)})$. This observation connects deeply to Kummer's theorem (1852), which states that $v_p(\\binom{m+n}{m})$ equals the number of carries in base-$p$ addition of $m$ and $n$. For $\\binom{2n}{n}$, the carries arise when doubling $n$ in base $p$, which happens precisely when some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$. The heuristic is that a random $n$ has each base-$p$ digit independently uniform, so the probability of no carry (and hence $p \\nmid \\binom{2n}{n}$) is approximately $(1/2)^{\\log n/\\log p}$, which transitions from negligible to significant when $\\log p \\approx (\\log n)^{1/2}$. The sequence of least non-divisors appears as OEIS A006197.",
+    "problemStatement": "Find a reasonable function $f(n)$ such that for almost all $n$, the least integer $m$ with $m \\nmid \\binom{2n}{n}$ satisfies $m \\sim f(n)$.",
+    "proofStrategy": "The formalization defines `centralBinom n` via `Nat.choose (2*n) n`, constructs `leastNonDivisor` using `Nat.find`, and specializes to `leastNonDivCentral`. Kummer's theorem and the prime divisibility criterion are axiomatized, connecting divisibility to base-$p$ digit structure. The EGRS asymptotic, Bertrand's postulate application, and exponential lower bounds for $\\binom{2n}{n}$ are stated as supporting results.",
     "keyInsights": [
-      "p | C(2n,n) iff base-p addition of n with itself has a carry (Kummer)",
-      "Small primes almost always divide C(2n,n); the threshold is exp((log n)^{1/2})",
-      "Heuristic: probability of no carry in base p is ~(1/2)^{log n/log p}",
-      "Bertrand's postulate gives a prime n < p ≤ 2n dividing C(2n,n)",
-      "OEIS A006197 lists the least non-divisor sequence"
+      "$p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$, by Kummer's theorem applied to the carries in $n + n$ in base $p$",
+      "The threshold $\\exp((\\log n)^{1/2})$ arises from the heuristic: $\\Pr[p \\nmid \\binom{2n}{n}] \\approx (1/2)^{\\log n / \\log p}$, and this probability transitions at $\\log p \\approx (\\log n)^{1/2}$",
+      "Bertrand's postulate guarantees a prime $n < p \\leq 2n$ dividing $\\binom{2n}{n}$ exactly once (since $p$ appears once in $(2n)!$ but not in $(n!)^2$)",
+      "The exponential lower bound $\\binom{2n}{n} \\geq 4^n/(2n+1)$ implies $\\binom{2n}{n}$ has many prime divisors, so the least non-divisor must be relatively large",
+      "Small primes almost always divide $\\binom{2n}{n}$: for fixed $p$, the density of $n$ with $p \\nmid \\binom{2n}{n}$ decreases as $(1/2)^{\\log n / \\log p} \\to 0$"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 22,
-      "endLine": 38,
-      "summary": "Defines central binomial coefficients, the least non-divisor function, and the specialization to C(2n,n)."
+      "startLine": 25,
+      "endLine": 37,
+      "summary": "Defines `centralBinom n` = $\\binom{2n}{n}$ via `Nat.choose`, `leastNonDivisor m` as the smallest positive $k$ with $k \\nmid m$ using `Nat.find`, and `leastNonDivCentral n` composing both."
     },
     {
       "id": "conjecture",
-      "title": "Main Conjecture",
-      "startLine": 40,
-      "endLine": 45,
-      "summary": "States the EGRS conjecture: the least non-divisor of C(2n,n) is exp((log n)^{1/2+o(1)}) for almost all n."
+      "title": "Main Conjecture (EGRS)",
+      "startLine": 39,
+      "endLine": 46,
+      "summary": "Axiomatizes `erdos_731_conjecture`: for almost all $n$, $\\text{leastNonDivCentral}(n) = \\exp((\\log n)^{1/2+o(1)})$. Uses a placeholder `True` since the precise formulation requires asymptotic density."
     },
     {
       "id": "divisibility",
       "title": "Divisibility Properties",
-      "startLine": 47,
-      "endLine": 72,
-      "summary": "Kummer's theorem on carries, prime divisibility criterion, small primes, evenness, primorial asymptotics."
+      "startLine": 48,
+      "endLine": 73,
+      "summary": "Axiomatizes Kummer's theorem on carries, the prime divisibility criterion ($p \\mid \\binom{2n}{n}$ iff some digit $\\geq \\lceil p/2 \\rceil$), small primes dividing $\\binom{2n}{n}$ for large $n$, evenness, and the primorial asymptotic."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Analysis and Bounds",
-      "startLine": 74,
-      "endLine": 111,
-      "summary": "EGRS typical behavior, lower/upper bounds, Bertrand's postulate application, central binomial lower bound."
+      "startLine": 75,
+      "endLine": 116,
+      "summary": "Axiomatizes the EGRS typical behavior, that the least non-divisor is prime, lower/upper bounds, Bertrand's postulate applied to $\\binom{2n}{n}$, and the exponential lower bound $\\binom{2n}{n} \\cdot (2n+1) \\geq 4^n$."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #731 on the least non-divisor of central binomial coefficients. The EGRS heuristic gives exp((log n)^{1/2+o(1)}) as the typical value, driven by Kummer's theorem and base-p digit structure.",
-    "implications": "A precise asymptotic would connect the arithmetic structure of central binomials to probabilistic number theory and the distribution of smooth numbers.",
+    "summary": "Formalizes Erdős Problem 731 on the least non-divisor of central binomial coefficients. The EGRS heuristic $\\exp((\\log n)^{1/2+o(1)})$ is driven by Kummer's theorem and the digit structure of $n$ in various bases. The formalization includes the core definitions, the divisibility criterion, supporting bounds, and the Bertrand connection, with all structural properties axiomatized.",
+    "implications": "A precise asymptotic for $f(n)$ would unify the digit-theoretic and probabilistic perspectives on central binomial divisibility. It would connect to the distribution of smooth numbers (via the $\\exp((\\log n)^{1/2})$ threshold), to Dickman's function in the theory of friable integers, and to the more general study of arithmetic functions along special sequences.",
     "openQuestions": [
-      "What is the precise function f(n) with m ~ f(n) for almost all n?",
-      "What is the distribution of leastNonDivCentral(n) / exp((log n)^{1/2})?",
-      "How does the least non-divisor behave along special subsequences (primes, squares, etc.)?"
+      "What is the precise function $f(n)$ with $\\text{leastNonDivCentral}(n) \\sim f(n)$ for almost all $n$? Is it $\\exp(c(\\log n)^{1/2})$ for a specific constant $c$?",
+      "What is the distribution of $\\log(\\text{leastNonDivCentral}(n)) / (\\log n)^{1/2}$ over $n \\leq N$ as $N \\to \\infty$?",
+      "How does $\\text{leastNonDivCentral}(n)$ behave along special subsequences: $n = p$ prime, $n = 2^k$, or $n = p^2$?",
+      "Can the carry-counting approach be extended to give precise asymptotics for the least non-divisor of $\\binom{an}{bn}$ for general $a > b > 0$?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "depends-on",
+      "description": "Kummer's theorem on p-adic valuations of binomial coefficients is the foundational tool connecting divisibility to base-p carries"
+    },
+    {
+      "targetId": "erdos-700",
+      "relationship": "related",
+      "description": "Problem 700 also studies gcd structure of binomial coefficients, from the complementary perspective of gcd(n, C(n,k))"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The primorial asymptotic and density arguments rely on the prime number theorem"
+    }
+  ]
 }
