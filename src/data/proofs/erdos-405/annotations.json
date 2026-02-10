@@ -5,178 +5,386 @@
     "type": "context",
     "range": { "startLine": 1, "endLine": 23 },
     "title": "Problem Introduction",
-    "content": "Erdős Problem #405 asks whether the Diophantine equation (p-1)! + a^{p-1} = p^k has only finitely many solutions for odd primes p. The answer is YES, with exactly three solutions found by Yu-Liu (1996).",
-    "significance": "critical"
+    "content": "Erdős Problem #405 asks whether the Diophantine equation $(p-1)! + a^{p-1} = p^k$ has only finitely many solutions for odd primes $p$. The answer is YES: Yu and Liu (1996) proved there are exactly three solutions. The problem sits at the intersection of factorial arithmetic, modular constraints from Wilson's and Fermat's theorems, and Baker's theory of linear forms in logarithms.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "analytic number theory / Diophantine equations",
+      "prerequisites": ["Wilson's theorem", "Fermat's little theorem", "p-adic valuations", "Baker's theory of linear forms in logarithms", "Legendre's formula"],
+      "relatedTheorems": ["Brocard's problem (n! + 1 = m²)", "Catalan's conjecture (Mihailescu's theorem)", "ABC conjecture implications for factorial Diophantine equations"],
+      "latex": "(p-1)! + a^{p-1} = p^k"
+    }
   },
   {
     "id": "erdos-405-solution-structure",
     "proofId": "erdos-405",
     "type": "definition",
     "range": { "startLine": 41, "endLine": 56 },
-    "title": "Solution Structure",
-    "content": "A Solution consists of (p, a, k) where p is an odd prime and (p-1)! + a^{p-1} = p^k. The IsSolution predicate expresses this as a logical proposition.",
-    "significance": "key"
+    "title": "Solution Structure and Predicate",
+    "content": "The `Solution` structure packages a triple $(p, a, k)$ together with proof that $p$ is an odd prime and the equation $(p-1)! + a^{p-1} = p^k$ holds. The `IsSolution` predicate provides an equivalent unbundled version: $\\text{IsSolution}(p, a, k) \\iff p \\text{ prime} \\wedge p \\geq 3 \\wedge (p-1)! + a^{p-1} = p^k$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "Diophantine equations",
+      "latex": "\\text{IsSolution}(p, a, k) \\iff \\text{Prime}(p) \\wedge p \\geq 3 \\wedge (p-1)! + a^{p-1} = p^k",
+      "leanSignature": "def IsSolution (p a k : ℕ) : Prop := Nat.Prime p ∧ p ≥ 3 ∧ (p - 1).factorial + a ^ (p - 1) = p ^ k",
+      "designChoices": "The bundled `Solution` structure is convenient for set-theoretic reasoning (e.g., finiteness of AllSolutions), while the unbundled `IsSolution` predicate is more ergonomic for case analysis on specific triples."
+    }
   },
   {
     "id": "erdos-405-solution-1",
     "proofId": "erdos-405",
     "type": "theorem",
     "range": { "startLine": 64, "endLine": 71 },
-    "title": "First Solution: (3, 1, 1)",
-    "content": "Verified computationally: 2! + 1² = 2 + 1 = 3 = 3¹. This is the simplest solution where the factorial and power are both small.",
-    "significance": "key"
+    "title": "First Solution: $(3, 1, 1)$",
+    "content": "Verified computationally: $2! + 1^2 = 2 + 1 = 3 = 3^1$. This is the smallest solution — the simplest instance where a factorial-plus-power equals a prime power. The proof is fully automatic via `norm_num` after establishing that 3 is prime.",
+    "significance": "key",
+    "mathContext": {
+      "field": "computational verification",
+      "latex": "2! + 1^{2} = 3 = 3^1",
+      "proofTechnique": "The proof splits the conjunction (primality, bound, equation) and dispatches each goal with norm_num. Lean's kernel performs the arithmetic reduction 2! + 1² = 3 = 3¹.",
+      "leanSignature": "theorem solution_1 : IsSolution 3 1 1"
+    }
   },
   {
     "id": "erdos-405-solution-2",
     "proofId": "erdos-405",
     "type": "theorem",
     "range": { "startLine": 73, "endLine": 80 },
-    "title": "Second Solution: (3, 5, 3)",
-    "content": "Verified computationally: 2! + 5² = 2 + 25 = 27 = 3³. This shows p = 3 admits two different values of a.",
-    "significance": "key"
+    "title": "Second Solution: $(3, 5, 3)$",
+    "content": "Verified computationally: $2! + 5^2 = 2 + 25 = 27 = 3^3$. This shows $p = 3$ admits two different values of $a$, and that the exponent $k$ can exceed 1. The coincidence $2 + 25 = 27$ arises because $5^2 = 25$ is one less than $26$, and $27 = 3^3$ is a perfect cube.",
+    "significance": "key",
+    "mathContext": {
+      "field": "computational verification",
+      "latex": "2! + 5^{2} = 27 = 3^3",
+      "relatedTheorems": ["This is related to the near-miss $5^2 + 2 = 3^3$, a small example of the Catalan-type phenomenon where consecutive perfect powers are rare."],
+      "leanSignature": "theorem solution_2 : IsSolution 3 5 3"
+    }
   },
   {
     "id": "erdos-405-solution-3",
     "proofId": "erdos-405",
     "type": "theorem",
     "range": { "startLine": 82, "endLine": 89 },
-    "title": "Third Solution: (5, 1, 2)",
-    "content": "Verified computationally: 4! + 1⁴ = 24 + 1 = 25 = 5². This is the only solution with p = 5.",
-    "significance": "key"
+    "title": "Third Solution: $(5, 1, 2)$",
+    "content": "Verified computationally: $4! + 1^4 = 24 + 1 = 25 = 5^2$. This is the only solution with $p = 5$ and the largest prime contributing a solution. The identity $24 + 1 = 25$ reflects the well-known near-coincidence of $4!$ and $5^2$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "computational verification",
+      "latex": "4! + 1^{4} = 25 = 5^2",
+      "relatedTheorems": ["Brocard's problem asks when n! + 1 is a perfect square; here we have the analogous 4! + 1 = 5² which is a Brocard-type coincidence."],
+      "leanSignature": "theorem solution_3 : IsSolution 5 1 2"
+    }
   },
   {
     "id": "erdos-405-brindza-erdos",
     "proofId": "erdos-405",
     "type": "axiom",
     "range": { "startLine": 99, "endLine": 101 },
-    "title": "Brindza-Erdős Finiteness",
-    "content": "Brindza and Erdős (1991) proved that the set of solutions is finite using Baker's theory on linear forms in logarithms.",
-    "significance": "critical"
+    "title": "Brindza–Erdős Finiteness (1991)",
+    "content": "Brindza and Erdős (1991) proved that the set of solutions $\\{(p, a, k) : (p-1)! + a^{p-1} = p^k\\}$ is finite. Their proof uses Baker's theory of linear forms in logarithms, which gives effective (though large) upper bounds on solutions to exponential Diophantine equations. This was the first unconditional finiteness result for Problem #405.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "transcendental number theory",
+      "latex": "\\#\\{(p, a, k) \\in \\mathbb{N}^3 : \\text{IsSolution}(p, a, k)\\} < \\infty",
+      "proofTechnique": "Baker's method provides bounds of the form max(p, a, k) < C for an effectively computable constant C. The key is to rewrite the equation as a linear form in logarithms and apply Baker's theorem to bound the exponents.",
+      "references": ["B. Brindza and P. Erdős, 'On some Diophantine problems involving powers and factorials', 1991"],
+      "leanSignature": "axiom brindza_erdos_1991 : { (p, a, k) : ℕ × ℕ × ℕ | IsSolution p a k }.Finite",
+      "formalizationNote": "Axiomatized because Baker's method involves deep transcendence theory not yet available in Mathlib. A full formalization would require formalized Baker's theorem."
+    }
   },
   {
     "id": "erdos-405-yu-liu",
     "proofId": "erdos-405",
     "type": "axiom",
     "range": { "startLine": 103, "endLine": 108 },
-    "title": "Yu-Liu Complete Characterization",
-    "content": "Yu and Liu (1996) achieved a complete resolution: the only solutions are exactly (3,1,1), (3,5,3), and (5,1,2). This is the key external result axiomatized here.",
-    "significance": "critical"
+    "title": "Yu–Liu Complete Characterization (1996)",
+    "content": "Yu and Liu (1996) achieved a complete resolution: the only solutions to $(p-1)! + a^{p-1} = p^k$ with $p$ an odd prime are exactly $(3,1,1)$, $(3,5,3)$, and $(5,1,2)$. Their proof refines the Brindza–Erdős bound and performs exhaustive case analysis for small primes.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "analytic number theory / Diophantine equations",
+      "latex": "\\text{IsSolution}(p, a, k) \\iff (p,a,k) \\in \\{(3,1,1), (3,5,3), (5,1,2)\\}",
+      "proofTechnique": "Yu–Liu's strategy: (1) use refined Baker bounds to show p ≤ B for some explicit B, (2) for each prime p ≤ B, analyze the equation modulo increasing powers of p, (3) use Legendre's formula and factorial growth to eliminate all but p = 3, 5, (4) solve the remaining cases 2 + a² = 3^k and 24 + a⁴ = 5^k by elementary methods.",
+      "references": ["K. Yu and M. Liu, 'On the equation (p-1)! + a^{p-1} = p^k', 1996"],
+      "leanSignature": "axiom yu_liu_1996 : ∀ p a k : ℕ, IsSolution p a k ↔ (p = 3 ∧ a = 1 ∧ k = 1) ∨ (p = 3 ∧ a = 5 ∧ k = 3) ∨ (p = 5 ∧ a = 1 ∧ k = 2)",
+      "formalizationNote": "Axiomatized as the key external result. The forward direction (solutions ⟹ membership in the list) is the deep content; the reverse direction follows from computational verification (solution_1, solution_2, solution_3)."
+    }
+  },
+  {
+    "id": "erdos-405-exactly-three",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 111, "endLine": 112 },
+    "title": "Exactly Three Solutions",
+    "content": "The solution set has cardinality exactly 3. This follows from the Yu–Liu characterization (which identifies the three solutions) combined with the computational verification that all three triples are distinct.",
+    "significance": "key",
+    "mathContext": {
+      "field": "combinatorics / set theory",
+      "latex": "\\#\\{(p, a, k) \\in \\mathbb{N}^3 : \\text{IsSolution}(p, a, k)\\} = 3",
+      "leanSignature": "axiom exactly_three_solutions : { (p, a, k) : ℕ × ℕ × ℕ | IsSolution p a k }.ncard = 3",
+      "formalizationNote": "Could in principle be derived from yu_liu_1996 and the distinctness of the three triples, but axiomatized for convenience."
+    }
   },
   {
     "id": "erdos-405-wilson",
     "proofId": "erdos-405",
     "type": "axiom",
-    "range": { "startLine": 121, "endLine": 123 },
+    "range": { "startLine": 121, "endLine": 122 },
     "title": "Wilson's Theorem",
-    "content": "Wilson's theorem states (p-1)! ≡ -1 (mod p) for any prime p. This fundamental result connects factorials to prime modular arithmetic.",
-    "significance": "key"
+    "content": "Wilson's theorem: for any prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$. Equivalently, $(p-1)! \\bmod p = p - 1$. This is one of the oldest results in number theory (first proved by Lagrange, 1771) and provides the key modular constraint on the factorial term in Problem #405.",
+    "significance": "key",
+    "mathContext": {
+      "field": "elementary number theory",
+      "latex": "(p-1)! \\equiv -1 \\pmod{p}",
+      "relatedTheorems": ["Mathlib's ZMod.wilsons_lemma provides Wilson's theorem in the ZMod formulation"],
+      "proofTechnique": "The classic proof pairs each element of (ℤ/pℤ)× with its inverse; the only self-inverse elements are ±1, so the product of all elements is (−1).",
+      "leanSignature": "axiom wilson_theorem (p : ℕ) (hp : Nat.Prime p) : (p - 1).factorial % p = p - 1",
+      "formalizationNote": "Axiomatized in the natural number formulation. Mathlib has Wilson's theorem for ZMod but the natural number version used here is a straightforward corollary."
+    }
   },
   {
     "id": "erdos-405-fermat",
     "proofId": "erdos-405",
     "type": "axiom",
-    "range": { "startLine": 125, "endLine": 127 },
+    "range": { "startLine": 125, "endLine": 126 },
     "title": "Fermat's Little Theorem",
-    "content": "Fermat's little theorem states a^{p-1} ≡ 1 (mod p) when p does not divide a. Combined with Wilson, this shows the sum is divisible by p.",
-    "significance": "key"
+    "content": "Fermat's little theorem: if $p$ is prime and $p \\nmid a$, then $a^{p-1} \\equiv 1 \\pmod{p}$. Combined with Wilson's theorem, this yields the crucial divisibility $(p-1)! + a^{p-1} \\equiv 0 \\pmod{p}$, which is necessary for the sum to equal $p^k$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "elementary number theory",
+      "latex": "a^{p-1} \\equiv 1 \\pmod{p} \\quad \\text{when } p \\nmid a",
+      "relatedTheorems": ["Euler's theorem (generalization to φ(n))", "Mathlib's ZMod.pow_card_sub_one_eq_one"],
+      "leanSignature": "axiom fermat_little (p a : ℕ) (hp : Nat.Prime p) (ha : ¬p ∣ a) : a ^ (p - 1) % p = 1",
+      "formalizationNote": "Axiomatized in the natural number remainder formulation. Could be derived from Mathlib's ZMod version."
+    }
   },
   {
     "id": "erdos-405-sum-divisible",
     "proofId": "erdos-405",
-    "type": "theorem",
-    "range": { "startLine": 129, "endLine": 132 },
-    "title": "Sum Divisibility",
-    "content": "When p does not divide a, Wilson gives -1 (mod p) and Fermat gives 1 (mod p), so (p-1)! + a^{p-1} ≡ 0 (mod p). This is necessary for solutions.",
-    "significance": "key"
+    "type": "axiom",
+    "range": { "startLine": 129, "endLine": 131 },
+    "title": "Sum Divisibility by $p$",
+    "content": "When $p \\nmid a$, Wilson gives $(p-1)! \\equiv -1 \\pmod{p}$ and Fermat gives $a^{p-1} \\equiv 1 \\pmod{p}$, so their sum satisfies $p \\mid (p-1)! + a^{p-1}$. This is a necessary condition for the sum to equal $p^k$ and explains why the equation can have solutions at all — the modular arithmetic is 'aligned.'",
+    "significance": "key",
+    "mathContext": {
+      "field": "modular arithmetic",
+      "latex": "p \\mid \\bigl((p-1)! + a^{p-1}\\bigr) \\quad \\text{when } p \\nmid a",
+      "proofTechnique": "Direct combination: (−1) + 1 = 0 mod p. This is the starting point of the p-adic analysis — knowing the sum is divisible by p, one then asks about higher powers of p.",
+      "leanSignature": "axiom sum_divisible_by_p (p a : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) (ha : ¬p ∣ a) : p ∣ (p - 1).factorial + a ^ (p - 1)"
+    }
   },
   {
-    "id": "erdos-405-padic-val",
+    "id": "erdos-405-divisible-power",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 139, "endLine": 140 },
+    "title": "Exceptional Case: $p \\mid a$ Implies Large Power",
+    "content": "If $p \\mid a$, write $a = pm$. Then $a^{p-1} = p^{p-1} m^{p-1}$, so $p^{p-1} \\mid a^{p-1}$. This means the power term $a^{p-1}$ contributes a very large $p$-adic valuation, severely constraining the equation since $v_p((p-1)!) = 0$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "p-adic analysis",
+      "latex": "p \\mid a \\implies p^{p-1} \\mid a^{p-1}",
+      "proofTechnique": "If a = pm then a^{p-1} = (pm)^{p-1} = p^{p-1} · m^{p-1}.",
+      "leanSignature": "axiom divisible_implies_large_power (p a : ℕ) (hp : Nat.Prime p) (ha : p ∣ a) : p ^ (p - 1) ∣ a ^ (p - 1)"
+    }
+  },
+  {
+    "id": "erdos-405-divisible-analysis",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 144, "endLine": 146 },
+    "title": "Divisible Case Bounds $k$",
+    "content": "When $p \\mid a$, the equation $(p-1)! + a^{p-1} = p^k$ forces $k \\leq p-1$. Since $v_p((p-1)!) = 0$, the $p$-adic valuation of the left side equals $\\min(0, v_p(a^{p-1})) = 0$, so $k$ must be 0 — but $k = 0$ gives $(p-1)! + a^{p-1} = 1$ which is impossible for $p \\geq 3$. The stated bound $k \\leq p-1$ is a weaker but useful intermediate constraint.",
+    "significance": "key",
+    "mathContext": {
+      "field": "p-adic analysis",
+      "latex": "p \\mid a \\implies k \\leq p - 1",
+      "proofTechnique": "Comparing p-adic valuations on both sides: v_p(LHS) = min(v_p((p-1)!), v_p(a^{p-1})) = min(0, (p-1)·v_p(a)) while v_p(RHS) = k.",
+      "leanSignature": "axiom divisible_case_analysis (p a k : ℕ) ... (ha : p ∣ a) (heq : ...) : k ≤ p - 1"
+    }
+  },
+  {
+    "id": "erdos-405-padic-val-def",
     "proofId": "erdos-405",
     "type": "definition",
-    "range": { "startLine": 155, "endLine": 157 },
-    "title": "p-adic Valuation of Factorial",
-    "content": "The p-adic valuation v_p(n!) counts the total power of p dividing n!, computed by Legendre's formula as the sum of floor(n/p^i).",
-    "significance": "key"
+    "range": { "startLine": 155, "endLine": 156 },
+    "title": "Factorial $p$-adic Valuation",
+    "content": "The $p$-adic valuation of $n!$ is defined via Legendre's formula: $v_p(n!) = \\sum_{i=1}^{\\infty} \\lfloor n/p^i \\rfloor$. In the formalization, this is computed as a finite sum over `Finset.range n` (which is more than enough terms since $\\lfloor n/p^i \\rfloor = 0$ for $p^i > n$).",
+    "significance": "key",
+    "mathContext": {
+      "field": "p-adic analysis",
+      "latex": "v_p(n!) = \\sum_{i=1}^{\\infty} \\left\\lfloor \\frac{n}{p^i} \\right\\rfloor",
+      "relatedTheorems": ["Legendre's formula", "Mathlib's padicValNat"],
+      "leanSignature": "noncomputable def factorialPadicVal (p n : ℕ) : ℕ := (Finset.range n).sum fun i => n / p ^ (i + 1)"
+    }
   },
   {
     "id": "erdos-405-legendre",
     "proofId": "erdos-405",
     "type": "axiom",
-    "range": { "startLine": 159, "endLine": 161 },
+    "range": { "startLine": 159, "endLine": 160 },
     "title": "Legendre's Formula",
-    "content": "Legendre's formula expresses v_p(n!) = Σ floor(n/p^i). This is essential for understanding the p-adic structure of factorials.",
-    "significance": "key"
+    "content": "Legendre's formula states that the exact power of a prime $p$ dividing $n!$ is $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$. This identity connects the combinatorial definition of factorial to $p$-adic analysis and is essential for understanding the $p$-adic structure of the left side of the equation.",
+    "significance": "key",
+    "mathContext": {
+      "field": "p-adic analysis / combinatorics",
+      "latex": "v_p(n!) = \\sum_{i=1}^{\\infty} \\left\\lfloor \\frac{n}{p^i} \\right\\rfloor",
+      "references": ["A.M. Legendre, 'Essai sur la théorie des nombres', 1808"],
+      "leanSignature": "axiom legendre_formula (p n : ℕ) (hp : Nat.Prime p) : padicValNat p n.factorial = factorialPadicVal p n"
+    }
   },
   {
     "id": "erdos-405-factorial-padic-zero",
     "proofId": "erdos-405",
-    "type": "theorem",
-    "range": { "startLine": 163, "endLine": 166 },
-    "title": "Factorial p-adic Zero",
-    "content": "For (p-1)!, the p-adic valuation is 0 since no multiple of p appears in 1, 2, ..., p-1. This severely constrains solutions.",
-    "significance": "key"
+    "type": "axiom",
+    "range": { "startLine": 163, "endLine": 165 },
+    "title": "$v_p((p-1)!) = 0$",
+    "content": "For an odd prime $p$, the $p$-adic valuation of $(p-1)!$ is zero. This is because $(p-1)! = 1 \\cdot 2 \\cdots (p-1)$ and none of $1, 2, \\ldots, p-1$ is divisible by $p$. By Legendre's formula, $v_p((p-1)!) = \\lfloor (p-1)/p \\rfloor + \\lfloor (p-1)/p^2 \\rfloor + \\cdots = 0$. This is the pivotal constraint: the factorial contributes no factors of $p$.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "p-adic analysis",
+      "latex": "v_p\\bigl((p-1)!\\bigr) = 0",
+      "proofTechnique": "By Legendre, each term ⌊(p−1)/p^i⌋ = 0 since p−1 < p. So the entire sum is 0.",
+      "leanSignature": "axiom factorial_padic_zero (p : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) : padicValNat p (p - 1).factorial = 0",
+      "formalizationNote": "Direct corollary of Legendre's formula. Could be proved from legendre_formula but axiomatized for directness."
+    }
   },
   {
     "id": "erdos-405-large-prime",
     "proofId": "erdos-405",
     "type": "axiom",
-    "range": { "startLine": 174, "endLine": 177 },
-    "title": "No Solutions for p ≥ 7",
-    "content": "For primes p ≥ 7, the factorial (p-1)! grows much faster than any feasible p^k - a^{p-1}, ruling out solutions. Only small primes can work.",
-    "significance": "critical"
+    "range": { "startLine": 174, "endLine": 176 },
+    "title": "No Solutions for $p \\geq 7$",
+    "content": "For primes $p \\geq 7$, the equation $(p-1)! + a^{p-1} = p^k$ has no solutions. The factorial $(p-1)!$ grows super-exponentially while $p^k$ grows at most exponentially in $k$, making the equation impossible for large $p$. The critical observation is that $(p-1)! \\geq 720$ for $p \\geq 7$ but $p^k - a^{p-1}$ cannot match this growth rate.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "analytic number theory",
+      "latex": "p \\geq 7,\\; p \\text{ prime} \\implies \\neg\\exists\\, a\\, k,\\; (p-1)! + a^{p-1} = p^k",
+      "proofTechnique": "Size comparison: for p ≥ 7, (p−1)! ≥ 6! = 720. If a^{p−1} < p^k then (p−1)! < p^k, giving k > log_p((p−1)!). But then a^{p−1} = p^k − (p−1)! must be positive and large, leading to contradictions with the p-adic constraints.",
+      "leanSignature": "axiom large_prime_no_solution (p a k : ℕ) (hp : Nat.Prime p) (hp7 : p ≥ 7) (heq : ...) : False"
+    }
   },
   {
     "id": "erdos-405-p3-analysis",
     "proofId": "erdos-405",
     "type": "theorem",
     "range": { "startLine": 179, "endLine": 190 },
-    "title": "Analysis for p = 3",
-    "content": "When p = 3, we need 2 + a² = 3^k. The only solutions are a = 1 (giving 3 = 3¹) and a = 5 (giving 27 = 3³).",
-    "significance": "key"
+    "title": "Analysis for $p = 3$: Two Solutions",
+    "content": "When $p = 3$, the equation becomes $2 + a^2 = 3^k$. This is solved by extracting the Yu–Liu characterization and performing case analysis. The two solutions are $(a, k) = (1, 1)$ and $(a, k) = (5, 3)$. The proof uses `yu_liu_1996` and `simp`/`norm_num` to dispatch the cases.",
+    "significance": "key",
+    "mathContext": {
+      "field": "Diophantine equations",
+      "latex": "2 + a^2 = 3^k \\implies (a, k) \\in \\{(1, 1), (5, 3)\\}",
+      "proofTechnique": "The proof appeals to the axiomatized Yu–Liu result, rewrites with the hypothesis, and uses rcases to split into three disjunctive branches — two yield the desired conclusions, and the third (p = 5) is eliminated by norm_num since p = 3 ≠ 5.",
+      "relatedTheorems": ["Ramanujan–Nagell equation x² + 7 = 2^n has a similar flavor of exponential Diophantine equations with finitely many solutions"],
+      "leanSignature": "theorem p_equals_3_analysis : ∀ a k : ℕ, IsSolution 3 a k → (a = 1 ∧ k = 1) ∨ (a = 5 ∧ k = 3)"
+    }
   },
   {
     "id": "erdos-405-p5-analysis",
     "proofId": "erdos-405",
     "type": "theorem",
     "range": { "startLine": 192, "endLine": 202 },
-    "title": "Analysis for p = 5",
-    "content": "When p = 5, we need 24 + a⁴ = 5^k. The only solution is a = 1 giving 25 = 5². No other fourth power plus 24 yields a power of 5.",
-    "significance": "key"
+    "title": "Analysis for $p = 5$: One Solution",
+    "content": "When $p = 5$, the equation becomes $24 + a^4 = 5^k$. The unique solution is $(a, k) = (1, 2)$. No other fourth power plus 24 yields a power of 5. The proof mirrors the $p = 3$ case, using the Yu–Liu characterization and eliminating the $p = 3$ branches.",
+    "significance": "key",
+    "mathContext": {
+      "field": "Diophantine equations",
+      "latex": "24 + a^4 = 5^k \\implies (a, k) = (1, 2)",
+      "proofTechnique": "Same rcases strategy as p = 3 analysis. The two p = 3 branches are eliminated by norm_num (since 5 ≠ 3), leaving only the p = 5 branch.",
+      "relatedTheorems": ["The equation a⁴ + 24 = 5^k is related to the problem of representing powers of 5 as sums involving fourth powers"],
+      "leanSignature": "theorem p_equals_5_analysis : ∀ a k : ℕ, IsSolution 5 a k → a = 1 ∧ k = 2"
+    }
   },
   {
-    "id": "erdos-405-perfect-power",
+    "id": "erdos-405-perfect-power-def",
     "proofId": "erdos-405",
     "type": "definition",
-    "range": { "startLine": 210, "endLine": 212 },
-    "title": "Perfect Power Definition",
-    "content": "A natural number n is a perfect power if n = b^k for some b, k with k ≥ 2. The Erdős-Graham remark concerns when (p-1)! + a^{p-1} is such a power.",
-    "significance": "key"
+    "range": { "startLine": 210, "endLine": 211 },
+    "title": "Perfect Power Predicate",
+    "content": "A natural number $n$ is a perfect power if $n = b^k$ for some $b, k$ with $k \\geq 2$. The Erdős–Graham remark concerns the broader question of when $(p-1)! + a^{p-1}$ is a perfect power, not necessarily a power of $p$ specifically.",
+    "significance": "key",
+    "mathContext": {
+      "field": "number theory",
+      "latex": "\\text{IsPerfectPower}(n) \\iff \\exists\\, b, k \\geq 2,\\; n = b^k",
+      "relatedTheorems": ["Catalan's conjecture (proved by Mihailescu): the only perfect powers differing by 1 are 8 and 9"],
+      "leanSignature": "def IsPerfectPower (n : ℕ) : Prop := ∃ b k : ℕ, k ≥ 2 ∧ n = b ^ k"
+    }
   },
   {
     "id": "erdos-405-example",
     "proofId": "erdos-405",
     "type": "theorem",
-    "range": { "startLine": 214, "endLine": 217 },
-    "title": "Example Perfect Power",
-    "content": "Erdős-Graham noted 6! + 2⁶ = 720 + 64 = 784 = 28² is a perfect power, showing the phenomenon does occur outside the p-adic constraint.",
-    "significance": "key"
+    "range": { "startLine": 214, "endLine": 216 },
+    "title": "Example: $6! + 2^6 = 28^2$",
+    "content": "Erdős and Graham noted that $6! + 2^6 = 720 + 64 = 784 = 28^2$ is a perfect square. This example shows that $(p-1)! + a^{p-1}$ can be a perfect power even outside the $p$-prime-power constraint of Problem #405 (here the base is 28, not a prime). The proof is by `norm_num`.",
+    "significance": "key",
+    "mathContext": {
+      "field": "computational verification",
+      "latex": "6! + 2^6 = 720 + 64 = 784 = 28^2",
+      "relatedTheorems": ["This is not of the form p^k for a prime p, showing the perfect-power question is distinct from Problem #405"],
+      "leanSignature": "theorem example_perfect_power : 6.factorial + 2 ^ 6 = 28 ^ 2"
+    }
+  },
+  {
+    "id": "erdos-405-erdos-graham-conjecture",
+    "proofId": "erdos-405",
+    "type": "axiom",
+    "range": { "startLine": 221, "endLine": 223 },
+    "title": "Erdős–Graham Conjecture (Generalized)",
+    "content": "Erdős and Graham conjectured more broadly that for $p \\geq 7$, $(p-1)! + a^{p-1}$ is never a power of $p$ with exponent $k \\geq 2$. This is a strengthening of Problem #405 that addresses the perfect-power aspect more directly. The formalization captures this as: for all $p \\geq 7$ prime and $k \\geq 2$, $(p-1)! + a^{p-1} \\neq p^k$.",
+    "significance": "key",
+    "mathContext": {
+      "field": "open problems in number theory",
+      "latex": "p \\geq 7,\\; p \\text{ prime},\\; k \\geq 2 \\implies (p-1)! + a^{p-1} \\neq p^k",
+      "relatedTheorems": ["This is related to the broader 'factorial Diophantine equation' literature"],
+      "leanSignature": "axiom erdos_graham_conjecture : ∀ p : ℕ, Nat.Prime p → p ≥ 7 → ∀ a k : ℕ, k ≥ 2 → (p - 1).factorial + a ^ (p - 1) ≠ (p ^ k)",
+      "formalizationNote": "This strengthened conjecture is axiomatized as it represents an open or very difficult problem beyond the scope of Problem #405."
+    }
   },
   {
     "id": "erdos-405-main-statement",
     "proofId": "erdos-405",
     "type": "theorem",
     "range": { "startLine": 229, "endLine": 238 },
-    "title": "Main Problem Statement",
-    "content": "The complete formalization: the solution set is finite (Brindza-Erdős) and consists of exactly the three known triples (Yu-Liu).",
-    "significance": "critical"
+    "title": "Main Theorem: Erdős Problem #405",
+    "content": "The complete formalization of Erdős Problem #405: (1) the solution set $\\{(p,a,k) : (p-1)! + a^{p-1} = p^k\\}$ is finite (Brindza–Erdős 1991), and (2) a solution exists if and only if $(p,a,k) \\in \\{(3,1,1), (3,5,3), (5,1,2)\\}$ (Yu–Liu 1996). The proof directly combines the two axiomatized external results.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "Diophantine equations",
+      "latex": "\\{(p,a,k) : (p-1)!+a^{p-1}=p^k\\} \\text{ is finite, and equals } \\{(3,1,1),(3,5,3),(5,1,2)\\}",
+      "proofTechnique": "Direct conjunction of brindza_erdos_1991 and yu_liu_1996.",
+      "crossReferences": ["erdos-405-brindza-erdos", "erdos-405-yu-liu"],
+      "leanSignature": "theorem erdos_405_statement : ... .Finite ∧ (∀ p a k, IsSolution p a k ↔ ...)"
+    }
   },
   {
     "id": "erdos-405-summary",
     "proofId": "erdos-405",
     "type": "theorem",
     "range": { "startLine": 244, "endLine": 258 },
-    "title": "Summary Theorem",
-    "content": "The summary combines existence (three solutions verified) with uniqueness (Yu-Liu characterization), fully resolving Erdős Problem #405.",
-    "significance": "critical"
+    "title": "Summary: Existence and Uniqueness",
+    "content": "The summary theorem combines both directions: (existence) all three triples satisfy the equation, verified computationally via `solution_1`, `solution_2`, `solution_3`; and (uniqueness) every solution is one of these three, via the Yu–Liu characterization. This provides a complete 'if and only if' in a user-friendly form.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "Diophantine equations",
+      "latex": "\\text{IsSolution}(3,1,1) \\wedge \\text{IsSolution}(3,5,3) \\wedge \\text{IsSolution}(5,1,2) \\wedge \\forall\\, p\\, a\\, k,\\; \\text{IsSolution}(p,a,k) \\implies (p,a,k) \\in \\{\\ldots\\}",
+      "proofTechnique": "The existence half uses the three computational verifications. The uniqueness half extracts the forward implication from yu_liu_1996.",
+      "crossReferences": ["erdos-405-solution-1", "erdos-405-solution-2", "erdos-405-solution-3", "erdos-405-yu-liu"],
+      "leanSignature": "theorem erdos_405_summary : IsSolution 3 1 1 ∧ IsSolution 3 5 3 ∧ IsSolution 5 1 2 ∧ (∀ p a k, IsSolution p a k → ...)"
+    }
+  },
+  {
+    "id": "erdos-405-final",
+    "proofId": "erdos-405",
+    "type": "theorem",
+    "range": { "startLine": 263, "endLine": 267 },
+    "title": "Final Statement: `erdos_405`",
+    "content": "The canonical theorem `erdos_405` states that the solution set is finite and completely characterized. This is a term-mode proof: `⟨brindza_erdos_1991, yu_liu_1996⟩`, directly pairing the two axioms. This concise formulation serves as the definitive Lean statement of the result.",
+    "significance": "critical",
+    "mathContext": {
+      "field": "Diophantine equations",
+      "latex": "\\text{erdos\\_405} : \\text{Finite}(S) \\wedge \\text{CharacterizedBy}(S, \\{(3,1,1),(3,5,3),(5,1,2)\\})",
+      "proofTechnique": "Term-mode anonymous constructor pairing the finiteness axiom with the characterization axiom.",
+      "leanSignature": "theorem erdos_405 : ... := ⟨brindza_erdos_1991, yu_liu_1996⟩"
+    }
   }
 ]
