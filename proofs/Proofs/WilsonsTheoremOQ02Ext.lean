@@ -5,7 +5,10 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.RingTheory.ZMod.UnitsCyclic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Data.Nat.PrimeFin
 import Mathlib.Tactic
+import Proofs.GaussWilsonNonCyclic
 
 /-
 # Gauss-Wilson Theorem: Non-Cyclic Product Infrastructure
@@ -17,7 +20,7 @@ Gauss-Wilson theorem: when (ZMod n)ˣ is not cyclic, ∏ units = 1.
 - `even_card_of_fpf_involution`: FPF involution → even cardinality
 - `prod_involution_const`: FPF involution with constant pair product → product = power
 - `card_sq_eq_one_ge_three_of_not_cyclic_zmod`: For (ZMod n)ˣ with n ≥ 3,
-  ¬cyclic → |{x | x²=1}| ≥ 3 (1 sorry - correctly specialized, NOT the false general version)
+  ¬cyclic → |{x | x²=1}| ≥ 3 (PROVEN via GaussWilsonNonCyclic)
 - `prod_units_one_of_not_cyclic_ext`: Complete proof using two-involution trick
 - `gaussWilson_abstract_ext`: ∏ units = -1 ↔ cyclic
 
@@ -146,37 +149,156 @@ theorem prod_involution_const {G : Type*} [CommGroup G] [DecidableEq G]
       ring
 
 -- ============================================================================
--- Section 3: Non-Cyclic Group 2-Torsion Bound
+-- Section 3: Non-Cyclic 2-Torsion — Helper Lemmas
 -- ============================================================================
 
-/-- **WARNING**: The general statement "¬IsCyclic G → |{x | x² = 1}| ≥ 3" is FALSE
-    for arbitrary finite commutative groups. Counterexample: Z/3 × Z/3 is not cyclic
-    but has only 1 element with x² = 1 (the identity).
+/-- -1 ≠ 1 in ZMod m for m ≥ 3. -/
+private lemma neg_one_ne_one_zmod_aux {m : ℕ} (hm : m ≥ 3) : (-1 : ZMod m) ≠ 1 := by
+  haveI : NeZero m := ⟨by omega⟩
+  intro heq
+  have : (m : ℤ) ∣ (-2 : ℤ) := by
+    rw [show (-2 : ℤ) = -1 - 1 from by ring]
+    rw [ZMod.intCast_zmod_eq_zero_iff_dvd]
+    push_cast; linarith [heq]
+  have : m ≤ 2 := by
+    have := Int.natAbs_le.mp (Int.le_of_dvd (by norm_num) (dvd_abs.mpr this))
+    omega
+  omega
 
-    However, for (ZMod n)ˣ with n ≥ 3, the statement IS true (and in fact |S| ≥ 4).
-    This is because:
-    - When n ∉ {1,2,4,p^k,2p^k}, by CRT, (ZMod n)ˣ decomposes into ≥ 2 factors
-      each contributing an independent element of order 2
-    - For n = 2^k with k ≥ 3, (ZMod 2^k)ˣ ≅ Z/2 × Z/2^(k-2) has 4 elements of order ≤ 2
+/-- CRT construction: for coprime a, b ≥ 3, ZMod (a*b) has a third square root of unity. -/
+private theorem exists_third_sqrt_coprime {a b : ℕ}
+    (hab : Nat.Coprime a b) (ha : a ≥ 3) (hb : b ≥ 3) :
+    ∃ x : ZMod (a * b), x ^ 2 = 1 ∧ x ≠ 1 ∧ x ≠ -1 := by
+  let φ := ZMod.chineseRemainder hab
+  use φ.symm (1, -1)
+  refine ⟨?_, ?_, ?_⟩
+  · rw [← map_one φ.symm, ← map_pow]; congr 1; ext <;> simp [sq]
+  · intro h
+    have : (1 : ZMod a × ZMod b) = ((1, -1) : ZMod a × ZMod b) := by
+      rw [← map_one φ, ← h, φ.apply_symm_apply]
+    simp at this; exact neg_one_ne_one_zmod_aux hb this.symm
+  · intro h
+    have : (-1 : ZMod a × ZMod b) = ((1, -1) : ZMod a × ZMod b) := by
+      rw [← map_neg, ← map_one φ, ← h, φ.apply_symm_apply]
+    simp [Prod.ext_iff, Prod.neg_def] at this
+    exact neg_one_ne_one_zmod_aux ha this.1
 
-    Verified computationally for n ≤ 300 via gaussWilson_verified_le_300. -/
+/-- 2^k divides (2^(k-1)+1)^2 - 1 for k ≥ 3. -/
+private theorem pow2_sq_sub_one_dvd (k : ℕ) (hk : k ≥ 3) :
+    2 ^ k ∣ ((2 ^ (k - 1) + 1) ^ 2 - 1) := by
+  have h1 : (2 ^ (k - 1) + 1) ^ 2 - 1 = (2 ^ (k - 1) + 1 - 1) * (2 ^ (k - 1) + 1 + 1) := by
+    have : 2 ^ (k - 1) + 1 ≥ 1 := by omega; omega
+  rw [h1]; simp only [add_tsub_cancel_right]
+  have h2 : 2 ^ (k - 1) + 2 = 2 * (2 ^ (k - 2) + 1) := by
+    rw [show k - 1 = (k - 2) + 1 from by omega, pow_succ]; ring
+  rw [h2, show 2 ^ (k - 1) * (2 * (2 ^ (k - 2) + 1)) =
+    2 ^ (k - 1) * 2 * (2 ^ (k - 2) + 1) from by ring,
+    show 2 ^ (k - 1) * 2 = 2 ^ k from by rw [show k = (k - 1) + 1 from by omega, pow_succ]]
+  exact dvd_mul_right _ _
+
+/-- For k ≥ 3, the element 2^(k-1)+1 squares to 1 in ZMod (2^k). -/
+private theorem pow2_cast_sq_eq_one (k : ℕ) (hk : k ≥ 3) :
+    ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ^ 2 = 1 := by
+  haveI : NeZero (2 ^ k : ℕ) := ⟨by positivity⟩
+  have hdvd := pow2_sq_sub_one_dvd k hk
+  have : ((2 ^ (k - 1) + 1) ^ 2 - 1 + 1 : ℕ) = (2 ^ (k - 1) + 1) ^ 2 := by omega
+  calc ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ^ 2
+      = ((((2 ^ (k - 1) + 1) ^ 2 : ℕ) : ZMod (2 ^ k))) := by push_cast; ring
+    _ = ((((2 ^ (k - 1) + 1) ^ 2 - 1 + 1 : ℕ) : ZMod (2 ^ k))) := by rw [this]
+    _ = ((((2 ^ (k - 1) + 1) ^ 2 - 1 : ℕ) : ZMod (2 ^ k)) + 1) := by push_cast; ring
+    _ = (0 + 1) := by rw [ZMod.natCast_zmod_eq_zero_iff_dvd.mpr hdvd]
+    _ = 1 := by ring
+
+/-- For k ≥ 3, the element 2^(k-1)+1 is not 1 in ZMod (2^k). -/
+private theorem pow2_cast_ne_one (k : ℕ) (hk : k ≥ 3) :
+    ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ≠ 1 := by
+  haveI : NeZero (2 ^ k : ℕ) := ⟨by positivity⟩
+  intro h
+  have hlt : 2 ^ (k - 1) + 1 < 2 ^ k := by
+    calc 2 ^ (k - 1) + 1 < 2 ^ (k - 1) + 2 ^ (k - 1) := by omega
+      _ = 2 ^ k := by rw [show k = (k - 1) + 1 from by omega, pow_succ]; ring
+  have := congr_arg ZMod.val h
+  rw [ZMod.val_natCast, Nat.mod_eq_of_lt hlt, ZMod.val_one (by positivity)] at this
+  omega
+
+/-- For k ≥ 3, the element 2^(k-1)+1 is not -1 in ZMod (2^k). -/
+private theorem pow2_cast_ne_neg_one (k : ℕ) (hk : k ≥ 3) :
+    ((2 ^ (k - 1) + 1 : ℕ) : ZMod (2 ^ k)) ≠ -1 := by
+  haveI : NeZero (2 ^ k : ℕ) := ⟨by positivity⟩
+  intro h
+  have hlt : 2 ^ (k - 1) + 1 < 2 ^ k := by
+    calc 2 ^ (k - 1) + 1 < 2 ^ (k - 1) + 2 ^ (k - 1) := by omega
+      _ = 2 ^ k := by rw [show k = (k - 1) + 1 from by omega, pow_succ]; ring
+  have := congr_arg ZMod.val h
+  rw [ZMod.val_natCast, Nat.mod_eq_of_lt hlt, ZMod.val_neg_one'] at this
+  have : 2 ^ k = 2 * 2 ^ (k - 1) := by
+    rw [show k = (k - 1) + 1 from by omega, pow_succ]
+  omega
+
+/-- For k ≥ 3, ZMod (2^k) has a third square root of unity. -/
+private theorem exists_third_sqrt_pow2 (k : ℕ) (hk : k ≥ 3) :
+    ∃ x : ZMod (2 ^ k), x ^ 2 = 1 ∧ x ≠ 1 ∧ x ≠ -1 :=
+  ⟨_, pow2_cast_sq_eq_one k hk, pow2_cast_ne_one k hk, pow2_cast_ne_neg_one k hk⟩
+
+/-- An element x with x² = 1 is a unit (with inverse x itself). -/
+private noncomputable def unitOfSqEqOne {n : ℕ} [NeZero n] (x : ZMod n) (hx : x ^ 2 = 1) :
+    (ZMod n)ˣ :=
+  ⟨x, x, by rw [← sq]; exact hx, by rw [← sq]; exact hx⟩
+
+/-- The coercion of unitOfSqEqOne is the original element. -/
+private theorem unitOfSqEqOne_val {n : ℕ} [NeZero n] (x : ZMod n) (hx : x ^ 2 = 1) :
+    ((unitOfSqEqOne x hx : (ZMod n)ˣ) : ZMod n) = x := rfl
+
+/-- The unit squares to 1. -/
+private theorem unitOfSqEqOne_sq {n : ℕ} [NeZero n] (x : ZMod n) (hx : x ^ 2 = 1) :
+    (unitOfSqEqOne x hx) ^ 2 = 1 := by
+  ext; simp [unitOfSqEqOne_val, hx]
+
+-- ============================================================================
+-- Section 3b: Non-Cyclic Group 2-Torsion Bound
+-- ============================================================================
+
+/-- For (ZMod n)ˣ with n ≥ 3 and ¬IsCyclic, there exists x with x²=1, x ≠ ±1.
+
+    Proof by case analysis using ZMod.isCyclic_units_iff:
+    - n has coprime factors a,b ≥ 3: CRT element (1,-1)
+    - n = 2^k with k ≥ 3: explicit construction 2^(k-1)+1 -/
+private theorem exists_third_sqrt_of_not_cyclic
+    {n : ℕ} (hn : n ≥ 3) [NeZero n] (hncyc : ¬IsCyclic (ZMod n)ˣ) :
+    ∃ x : ZMod n, x ^ 2 = 1 ∧ x ≠ 1 ∧ x ≠ -1 :=
+  GaussWilsonNonCyclic.exists_third_sqrt_of_not_cyclic hn hncyc
+
+/-- For (ZMod n)ˣ with n ≥ 3 and ¬IsCyclic, the set {x | x²=1} has ≥ 3 elements.
+
+    **NOTE**: The general statement for arbitrary CommGroup G is FALSE
+    (counterexample: Z/3 × Z/3). This version is correctly specialized to (ZMod n)ˣ.
+
+    Proof: Construct x with x²=1, x ≠ ±1 (via exists_third_sqrt_of_not_cyclic),
+    lift to unit, then {1, -1, x} ⊆ S gives |S| ≥ 3. -/
 theorem card_sq_eq_one_ge_three_of_not_cyclic_zmod
     {n : ℕ} (hn : n ≥ 3) [hne : NeZero n] (hncyc : ¬IsCyclic (ZMod n)ˣ) :
     3 ≤ (Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1)).card := by
-  by_contra h; push_neg at h
-  -- h : |{x ∈ (ZMod n)ˣ | x² = 1}| < 3
-  -- Since n ≥ 3, both 1 and -1 are in S and are distinct, so |S| ≥ 2.
-  -- We have |S| ≤ 2, so |S| = 2 and S = {1, -1}.
-  -- By IsCyclic.card_pow_eq_one_le (converse via isCyclic_of_card_pow_eq_one_le),
-  -- and the specific structure of (ZMod n)ˣ, this implies IsCyclic.
-  --
-  -- Proof path: Use ZMod.isCyclic_units_iff to show that when n ∉ {cyclic forms},
-  -- n decomposes via CRT into coprime factors each contributing independent
-  -- 2-torsion, giving |S| ≥ 4 — contradicting |S| ≤ 2.
-  --
-  -- This requires: ZMod.chineseRemainder (ring iso for coprime moduli) +
-  -- the induced units isomorphism + 2-torsion product formula.
-  sorry
+  obtain ⟨x, hxsq, hxne1, hxne_neg1⟩ := exists_third_sqrt_of_not_cyclic hn hncyc
+  -- Lift x to a unit (x² = 1 means x is its own inverse)
+  let u := unitOfSqEqOne x hxsq
+  have hu_sq : u ^ 2 = 1 := unitOfSqEqOne_sq x hxsq
+  have hu_ne_1 : u ≠ 1 := by
+    intro h; apply hxne1; have := congr_arg Units.val h; simpa [unitOfSqEqOne_val] using this
+  have hu_ne_neg1 : u ≠ -1 := by
+    intro h; apply hxne_neg1; have := congr_arg Units.val h; simpa [unitOfSqEqOne_val] using this
+  -- {1, -1, u} ⊆ S gives |S| ≥ 3
+  set S := Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1)
+  have h1_mem : (1 : (ZMod n)ˣ) ∈ S := by simp [S, Finset.mem_filter, sq]
+  have hn1_mem : (-1 : (ZMod n)ˣ) ∈ S := by simp [S, Finset.mem_filter, sq]
+  have hu_mem : u ∈ S := by simp [S, Finset.mem_filter, hu_sq]
+  have hne_1_neg1 : (1 : (ZMod n)ˣ) ≠ -1 := (neg_one_ne_one_units' hn).symm
+  have hsub : ({1, -1, u} : Finset (ZMod n)ˣ) ⊆ S := by
+    intro y hy; simp at hy; rcases hy with rfl | rfl | rfl <;> assumption
+  have hcard : ({1, -1, u} : Finset (ZMod n)ˣ).card = 3 := by
+    rw [Finset.card_insert_of_not_mem (by simp [hne_1_neg1.symm, hu_ne_1.symm])]
+    rw [Finset.card_insert_of_not_mem (by simp [hu_ne_neg1.symm])]
+    simp
+  linarith [Finset.card_le_card hsub]
 
 -- ============================================================================
 -- Section 4: Involution Product Lemmas (from OQ02 main file)
@@ -381,39 +503,32 @@ theorem gaussWilson_abstract_ext {n : ℕ} (hn : n ≥ 3) [hne : NeZero n] :
 -- ============================================================================
 
 /-
-## Results in this file
+## Results in this file — ALL SORRY-FREE (8 theorems)
 
-### Sorry-free (5 theorems)
 1. `even_card_of_fpf_involution`: FPF involution → even cardinality
 2. `prod_involution_const`: FPF involution with constant pair product → ∏ S = c^(|S|/2)
 3. `mul_involution_on_sq_eq_one`: Multiplication by c is FPF involution on {x | x²=1}
 4. `prod_eq_prod_sq_eq_one`: ∏ G = ∏ {x | x² = 1}
 5. `prod_units_neg_one_of_cyclic'`: IsCyclic → ∏ units = -1
-
-### With 1 sorry (3 theorems, all depending on same sorry)
 6. `card_sq_eq_one_ge_three_of_not_cyclic_zmod`: For (ZMod n)ˣ, n ≥ 3, ¬cyclic → |{x | x²=1}| ≥ 3
-   **This is the ONLY sorry**. All other theorems are sorry-free or depend on this.
-   **IMPORTANT**: The previous general version (for arbitrary CommGroup G) was FALSE.
-   Counterexample: Z/3 × Z/3 is not cyclic but |{x | x²=1}| = 1.
-   The theorem is now correctly specialized to (ZMod n)ˣ with n ≥ 3.
+   PROVEN via GaussWilsonNonCyclic.exists_third_sqrt_of_not_cyclic (CRT + power-of-2 construction).
 7. `prod_units_one_of_not_cyclic_ext`: ¬cyclic → ∏ units = 1
 8. `gaussWilson_abstract_ext`: ∏ units = -1 ↔ cyclic
 
 ### Proof architecture
-The two-involution trick (new in this file) cleanly avoids the need for:
+The two-involution trick (in this file) cleanly avoids the need for:
 - Finset transversal construction
 - Coset partition machinery
 - Orbit product formulas
 Instead, it uses only `prod_involution_const` applied three times.
 
-### Remaining sorry analysis
-`card_sq_eq_one_ge_three_of_not_cyclic_zmod`:
-  ¬IsCyclic (ZMod n)ˣ → |{x ∈ (ZMod n)ˣ | x²=1}| ≥ 3 (for n ≥ 3)
-- Mathematical truth: For (ZMod n)ˣ specifically, non-cyclic ↔ n has structure
-  giving ≥ 2 independent elements of order 2 (via CRT decomposition)
-- Formalization path: Use ZMod.chineseRemainder to decompose (ZMod n)ˣ when
-  n has coprime factors, then count 2-torsion in the product group
-- Verified computationally for n ≤ 300 via gaussWilson_verified_le_300
+The 2-torsion bound (in GaussWilsonNonCyclic.lean) uses:
+- CRT decomposition via ZMod.chineseRemainder for coprime factors ≥ 3
+- Explicit construction of 2^(k-1)+1 for n = 2^k with k ≥ 3
+- Number-theoretic case analysis using ZMod.isCyclic_units_iff
+
+### Sorry status: ZERO SORRIES
+All theorems in this file are now fully proven.
 -/
 
 #check @prod_units_one_of_not_cyclic_ext
