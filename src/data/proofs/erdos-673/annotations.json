@@ -2,7 +2,7 @@
   {
     "id": "ann-673-imports",
     "proofId": "erdos-673",
-    "range": { "startLine": 1, "endLine": 31 },
+    "range": { "startLine": 23, "endLine": 31 },
     "type": "concept",
     "title": "Problem Overview and Imports",
     "content": "**Problem Overview.** Erdős Problem #673 studies the function G(n) = Σ dᵢ/dᵢ₊₁, summing ratios of consecutive divisors of n. The problem asks two questions: (1) Does G(n) → ∞ for almost all n? (trivially yes) (2) What is the asymptotic formula for Σ_{n≤X} G(n)? Imports Mathlib divisor infrastructure, arithmetic functions, and real analysis.",
