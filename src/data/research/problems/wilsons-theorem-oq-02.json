@@ -89,12 +89,12 @@
       "isCyclic_of_card_pow_eq_one_le (converse) requires condition for all divisors, not just one"
     ],
     "nextSteps": [
-      "Submit to Aristotle for prod_units_one_of_not_cyclic sorry",
-      "Construct explicit Finset transversal of involution x ↦ cx (well-founded recursion on S.card)",
-      "Alternatively: prove orbit product formula as standalone lemma, then apply",
-      "Alternatively: use Mathlib's finite abelian group structure theorem if available"
+      "Prove orbit product formula P=c^(|S|/2) via Finset transversal construction",
+      "Three-involution trick: P=c^(|S|/2) for three involutions gives P=P², combined with P²=1 yields P=1",
+      "Alternative: use isCyclic_of_card_pow_eq_one_le + structure theorem",
+      "Submit to Aristotle for prod_units_one_of_not_cyclic sorry"
     ],
-    "markdown": "# Wilson's Theorem OQ-02: Gauss-Wilson Generalization\n\n## Status: 14 proved theorems, 0 axioms, 1 sorry\n\n## Proven Theorems\n- **Involution product lemma**: ∏ G = ∏ {x | x² = 1} (key structural result)\n- **Cyclic → product = -1**: Via involution lemma + self-inverse classification\n- **Concrete-abstract bridge**: ZMod.val gives bijection between coprime naturals and units\n- **Gauss-Wilson biconditional**: ∏ units = -1 ↔ cyclic (modulo 1 sorry)\n- **Computational verification**: All cases verified for n ≤ 300\n\n## Remaining Sorry\n`prod_units_one_of_not_cyclic`: ¬IsCyclic → ∏ units = 1\n\n**Mathematical proof**: S = {x | x² = 1} is an elementary abelian 2-group of rank ≥ 2. Klein four {1,c,d,cd} partitions S into 4-element cosets, each with product 1.\n\n**Formalization barrier**: Requires Finset coset partition machinery or orbit transversal construction not directly in Mathlib."
+    "markdown": "# Wilson's Theorem OQ-02: Gauss-Wilson Generalization\n\n## Status: 15 proved theorems, 0 axioms, 1 sorry\n\n## Proven Theorems\n- **Involution product lemma**: ∏ G = ∏ {x | x² = 1} (key structural result)\n- **Cyclic → product = -1**: Via involution lemma + self-inverse classification\n- **Concrete-abstract bridge**: ZMod.val gives bijection between coprime naturals and units\n- **Gauss-Wilson biconditional**: ∏ units = -1 ↔ cyclic (modulo 1 sorry)\n- **Computational verification**: All cases verified for n ≤ 300\n- **Non-cyclic (∏ S)² = 1**: via Finset.prod_pow\n\n## Remaining Sorry\n`prod_units_one_of_not_cyclic`: ¬IsCyclic → ∏ units = 1\n\n**Mathematical proof**: Three-involution trick: P² = 1 and orbit product gives P = P², hence P = 1.\n\n**Formalization barrier**: Requires Finset transversal construction for orbit product formula."
   },
   "approaches": [
     {

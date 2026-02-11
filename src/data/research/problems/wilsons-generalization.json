@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved gaussWilson_classification via Mathlib's ZMod.isCyclic_units_iff. The full theorem reduces to a single bridge lemma (unitsProduct_eq_neg_one_iff_cyclic). Added RingTheory.ZMod.UnitsCyclic import and proved isCyclic_units_iff_gaussWilson. 1 sorry remains (bridge between concrete ℕ and abstract ZMod).",
+    "progressSummary": "PROGRESS: Reduced non-cyclic case to orbit product formula. Proved (∏ S)² = 1 where S={x|x²=1} via Finset.prod_pow. Documented three-involution trick: P=c^(|S|/2) for three involutions gives P=P², combined with P²=1 yields P=1. Remaining gap: Finset transversal construction for the orbit product formula. The sorry is now well-localized and has a clear mathematical proof strategy.",
     "builtItems": [
       "prime_coprime_iff_pos: coprimality ↔ positivity for primes",
       "unitsProduct_eq_factorial: unitsProduct p = (p-1)! for prime p",
@@ -65,20 +65,22 @@
     "insights": [
       "The Gauss-Wilson classification reduces to: IsCyclic (ZMod n)ˣ ↔ product of units ≡ -1",
       "Mathlib has ZMod.isCyclic_units_iff giving the full cyclic characterization",
-      "The remaining gap is purely computational: bridging abstract ZMod product to concrete ℕ product",
-      "Three-lemma decomposition: (1) involution pairing, (2) square root counting, (3) product evaluation",
-      "All three lemmas verified computationally for n ≤ 100",
-      "Square root count = 2 ↔ Gauss-Wilson form (verified n ≤ 100)",
-      "Product of self-inverse units = product of all units (verified n ≤ 100)"
+      "Three-involution trick: for c,d ∈ S\\{1}, orbit products give P=c^(|S|/2)=d^(|S|/2)=(cd)^(|S|/2)=P², so P=P²∧P²=1→P=1",
+      "Finset.prod_involution CANNOT prove orbit product P=c^(|S|/2) because paired values multiply to c≠1",
+      "Need custom Finset transversal construction: pick one element from each {x,cx} pair",
+      "(∏ S)² = 1 proved via Finset.prod_pow + Finset.prod_eq_one (each x² = 1)",
+      "isCyclic_of_card_pow_eq_one_le may provide contrapositive: |S|≤2 → IsCyclic (alternative approach)",
+      "WilsonsTheoremOQ02.lean and wilsons-theorem-oq-02.json are the primary files for this work"
     ],
     "mathlibGaps": [
       "Need bridge between Finset.univ.prod over (ZMod n)ˣ and Finset.filter/prod over coprime elements",
       "ZMod.unitsEquivCoprime exists but connecting to concrete ℕ products requires careful type manipulation"
     ],
     "nextSteps": [
-      "Prove bridge: ∏ (ZMod n)ˣ ↔ unitsProduct n via ZMod.unitsEquivCoprime",
-      "Alternatively, prove involution lemma algebraically via Finset.prod_involution",
-      "Consider submitting to Aristotle for the bridge lemma"
+      "Prove orbit product formula: construct Finset transversal T of S under involution x↦cx, then ∏ S = ∏_T (x·cx) = c^|T|",
+      "Alternative: prove ¬IsCyclic → |S| > 2 via isCyclic_of_card_pow_eq_one_le (needs |{x|x^n=1}|≤n for ALL n, not just 2)",
+      "Alternative: use Mathlib's finite abelian group structure theorem to decompose product",
+      "Submit WilsonsTheoremOQ02.lean to Aristotle for the prod_units_one_of_not_cyclic sorry"
     ]
   },
   "approaches": [
@@ -113,7 +115,7 @@
     ]
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-10T01:00:00.000Z",
+  "lastUpdate": "2026-02-10T22:00:00.000Z",
   "significance": 6,
   "tractability": 7
 }

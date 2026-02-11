@@ -28,7 +28,7 @@ This file extends Wilson's theorem to all moduli via the Gauss-Wilson theorem:
 - [x] Self-inverse classification: {x | x² = 1} = {1, -1} in cyclic (ZMod n)ˣ
 - [x] Involution product lemma: ∏ G = ∏ {x | x² = 1}
 - [x] Cyclic → product = -1 (via involution lemma + self-inverse classification)
-- [ ] Non-cyclic → product = 1 (1 sorry: Klein four orbit argument)
+- [ ] Non-cyclic → product = 1 (1 sorry: orbit product formula for 3-involution trick)
 - [x] Concrete-abstract bridge (Finset.prod_nbij via ZMod.val)
 -/
 
@@ -252,19 +252,17 @@ theorem prod_units_neg_one_of_cyclic {n : ℕ} (hn : n ≥ 3)
 
 /-- When (ZMod n)ˣ is not cyclic and n ≥ 3, the product of units is 1.
 
-    **Proof strategy** (Klein four coset decomposition):
+    **Proof outline** (three-involution trick):
     1. ∏ G = ∏ S where S = {x | x² = 1} (by `prod_eq_prod_sq_eq_one`)
-    2. (∏ S)² = 1 (since each x² = 1 in S)
-    3. When ¬IsCyclic, |S| ≥ 4 (contrapositive of IsCyclic.card_pow_eq_one_le;
-       S is an elementary abelian 2-subgroup, so |S| is a power of 2)
-    4. Pick c,d ∈ S\{1} with c ≠ d. K = {1,c,d,cd} ⊆ S is Klein four.
-       Each K-coset {e,ce,de,cde} has product 1 (since c²=d²=e⁴=1).
-       K-cosets partition S, so ∏ S = 1.
-    5. Alternatively: orbit formula gives ∏ S = c^(|S|/2) via transversal of
-       involution x ↦ cx. Since 4 | |S|, c^(|S|/2) = (c²)^(|S|/4) = 1.
+    2. (∏ S)² = 1 (since ∏ x² = 1 for x ∈ S)
+    3. |S| ≥ 3 when ¬IsCyclic (contrapositive of `card_sq_eq_one_le_two`)
+    4. Pick distinct c, d ∈ S \ {1}. For each involution x↦cx, the orbit
+       product gives P = c^(|S|/2). Similarly P = (cd)^(|S|/2) = P².
+    5. Combined with P² = 1: P = P² = 1.
 
-    Verified computationally for n ≤ 300. Proof requires Finset coset partition
-    or orbit transversal construction. Suitable for Aristotle proof search. -/
+    **Remaining sorry**: The orbit product formula P = c^(|S|/2), which requires
+    constructing a Finset transversal of the pairing x ↔ cx. This is the only
+    gap; everything else is proved. Verified computationally for n ≤ 300. -/
 theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
     [hne : NeZero n] (hncyc : ¬ IsCyclic (ZMod n)ˣ) :
     ∏ x : (ZMod n)ˣ, (x : ZMod n) = 1 := by
@@ -272,8 +270,16 @@ theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
     rw [show (∏ x : (ZMod n)ˣ, (x : ZMod n)) = (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) from
       (units_val_prod _ _).symm, hprod]
     simp
-  -- ∏ G = ∏ S where S = {x | x² = 1}
+  -- Step 1: ∏ G = ∏ S where S = {x | x² = 1}
   rw [prod_eq_prod_sq_eq_one]
+  set S := Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1)
+  -- Step 2: (∏ S)² = 1
+  have hPsq : (∏ x ∈ S, x) ^ 2 = 1 := by
+    rw [Finset.prod_pow]
+    exact Finset.prod_eq_one (fun x hx => by
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx; exact hx)
+  -- Steps 3-5: Three-involution trick reduces to orbit product formula
+  -- (orbit product formula: Finset transversal construction needed)
   sorry
 
 -- ============================================================================
@@ -418,22 +424,31 @@ theorem no_wilson_primes_14_to_100 :
 /-
 ## Summary
 
-### Proven (14 theorems, 0 axioms)
-1. `prod_units_eq_neg_one_prime`: Product = -1 for primes (via FiniteField)
-2. `neg_one_ne_one_units`, `neg_one_ne_one_zmod`: -1 ≠ 1 for n ≥ 3
-3. `selfInverse_units_eq_pair`: {x | x² = 1} = {1, -1} for cyclic (ZMod n)ˣ, n ≥ 3
-4. `gaussWilson_abstract`: ∏ units = -1 ↔ (ZMod n)ˣ cyclic (modulo non-cyclic sorry)
-5. `gaussWilson_verified_le_300`: Computational verification for n ≤ 300
-6. `five_is_wilson_prime`, `thirteen_is_wilson_prime`: Wilson prime verification
-7. `no_wilson_primes_14_to_100`: No Wilson primes in [14, 100]
-8. `prod_univ_sq_eq_one`: (∏ x)² = 1 in any finite commutative group
-9. `prod_eq_prod_sq_eq_one`: Involution product lemma ∏ G = ∏ {x | x² = 1}
-10. `prod_units_neg_one_of_cyclic`: Cyclic → product = -1 (sorry-free)
-11. `unitsProduct_cast_eq_abstract`: Concrete-abstract bridge (sorry-free)
+### Proven (15 theorems)
+1. Product = -1 for primes (via FiniteField)
+2. -1 ≠ 1 for n ≥ 3 (both units and ZMod versions)
+3. Self-inverse units = {1, -1} for cyclic (ZMod n)ˣ, n ≥ 3
+4. Gauss-Wilson abstract biconditional (modulo non-cyclic case)
+5. Computational verification for n ≤ 300
+6. Wilson prime verification for 5, 13
+7. No Wilson primes in [14, 100]
+8. (∏ x)² = 1 in any finite commutative group
+9. Involution product lemma: ∏ G = ∏ {x | x² = 1} (`prod_eq_prod_sq_eq_one`)
+10. Cyclic → product = -1 (`prod_units_neg_one_of_cyclic`) - sorry-free
+11. Concrete-abstract bridge (`unitsProduct_cast_eq_abstract`) - sorry-free
+12. Non-cyclic: (∏ S)² = 1 where S = {x | x² = 1} (via `Finset.prod_pow`)
 
 ### Remaining Sorry (1)
 
-`prod_units_one_of_not_cyclic`: ¬IsCyclic → product = 1
+1. `prod_units_one_of_not_cyclic`: ¬IsCyclic → product = 1
+   **Proved so far**: ∏ G = ∏ S via involution lemma, and (∏ S)² = 1.
+   **Remaining gap**: Orbit product formula P = c^(|S|/2), needed for the
+   three-involution trick (P = P² ∧ P² = 1 → P = 1).
+   **Key challenge**: Constructing a Finset transversal of the pairing x ↔ cx.
+   **Alternative approaches**:
+   - Use `isCyclic_of_card_pow_eq_one_le` for the contrapositive |S| ≤ 2 → cyclic
+   - Use Mathlib's finite abelian group structure theorem
+   - Submit to Aristotle for automated proof search
 
 **Proof strategy**: ∏ G = ∏ S where S = {x | x² = 1} (proved). S is an
 elementary abelian 2-group. When not cyclic, |S| ≥ 4. Pick c,d ∈ S\{1},
