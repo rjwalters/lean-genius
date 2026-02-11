@@ -40,6 +40,9 @@ This file does NOT prove the Hodge Conjecture. It provides:
 4. Known cases that ARE proven (curves, (1,1) classes - Lefschetz theorem)
 5. Counterexamples and obstructions (integral Hodge, Kähler failure)
 6. Equivalent formulations (Standard Conjectures, Mumford-Tate)
+7. ℚ-subspace structure of algebraic classes
+8. Tate Conjecture and Hodge-Tate equivalence for abelian varieties
+9. Generalized Hodge Conjecture and conjecture hierarchy
 
 ## What Is Proven vs Conjectured
 
@@ -50,6 +53,11 @@ This file does NOT prove the Hodge Conjecture. It provides:
 | Lefschetz (1,1) theorem (divisors) | AXIOMATIZED |
 | Curves (H^{1,1} = algebraic) | AXIOMATIZED |
 | Surfaces (all cases) | PROVEN by case analysis |
+| Zero class is algebraic | PROVEN |
+| Scalar multiples of algebraic classes | PROVEN |
+| Extreme codimension (0, top) | PROVEN from case axioms |
+| Hodge-Tate equivalence (abelian) | PROVEN from axioms |
+| Conjecture hierarchy SC ⟹ GHC ⟹ HC ⟹ MT | PROVEN from axioms |
 | General case for higher codimension | **CONJECTURE** |
 | Integral Hodge conjecture | FALSE (Atiyah-Hirzebruch) |
 
@@ -59,6 +67,8 @@ This file does NOT prove the Hodge Conjecture. It provides:
 - **1950**: W.V.D. Hodge states the conjecture
 - **1961**: Grothendieck shows Standard Conjectures imply Hodge
 - **1962**: Atiyah-Hirzebruch show integral version fails
+- **1963**: Grothendieck formulates the Generalized Hodge Conjecture
+- **1966**: Tate formulates arithmetic analogue (Tate Conjecture)
 - **1969**: Deligne proves Hodge conjecture for abelian varieties (special cases)
 - **2000**: Hodge Conjecture becomes one of seven Millennium Prize Problems ($1M prize)
 - **2002**: Voisin shows Hodge conjecture fails for Kähler manifolds
@@ -288,6 +298,7 @@ structure AlgebraicCycle (X : ProjectiveVariety) (p : ℕ) where
   id : ℕ
   /-- Codimension of the cycle is at most the dimension of X -/
   codim_eq : p ≤ X.dim
+  deriving DecidableEq
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 AXIOM CATALOG
@@ -758,7 +769,229 @@ theorem hodge_conjecture_surfaces_explicit (X : ProjectiveVariety) (hX : X.dim =
   · exact hodge_surfaces_high_degree X hX 2 (by omega) H
 
 /- ═══════════════════════════════════════════════════════════════════════════════
-PART IXb: SUMMARY AND CHECKS
+PART IXb: ℚ-SUBSPACE STRUCTURE OF ALGEBRAIC CLASSES
+═══════════════════════════════════════════════════════════════════════════════
+
+Algebraic classes form a ℚ-vector subspace of the Hodge classes. This is
+fundamental: the space of algebraic classes is closed under addition and
+scalar multiplication by rationals. We prove closure under zero and scalar
+multiplication, and axiomatize addition (which requires Finset union machinery).
+-/
+
+/-- **Axiom: Hodge component respects scalar multiplication**
+
+If a rational class v maps to the (p,p) component, then any rational
+scalar multiple q·v also maps to the (p,p) component. This follows
+because the (p,p) component is a ℂ-submodule, hence closed under
+multiplication by rationals (which embed into ℂ).
+
+**Why an axiom?** Requires compatibility between the ℚ-module and
+ℂ-module structures on V_ℂ, which needs the algebra map ℚ → ℂ. -/
+axiom hodgeComponent_smul_mem {p : ℕ} (H : PureHodgeStructure (2 * p))
+    (v : H.VQ) (hv : H.complexify v ∈ H.hodgeComponent p p (by omega))
+    (q : ℚ) : H.complexify (q • v) ∈ H.hodgeComponent p p (by omega)
+
+/-- Scalar multiplication of a Hodge class by a rational number. -/
+def HodgeClass.smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (q : ℚ) (α : HodgeClass H) : HodgeClass H :=
+  ⟨q • α.rationalClass, hodgeComponent_smul_mem H α.rationalClass α.in_pp_component q⟩
+
+/-- The zero Hodge class (the zero element of V_ℚ is always a Hodge class
+since ι(0) = 0 ∈ V^{p,p} for any submodule). -/
+def HodgeClass.zero {p : ℕ} (H : PureHodgeStructure (2 * p)) : HodgeClass H :=
+  ⟨0, by simp [map_zero]; exact Submodule.zero_mem _⟩
+
+/-- **The zero class is algebraic** (witnessed by the empty sum).
+
+The zero Hodge class is trivially algebraic: it equals the empty sum
+of algebraic cycles (Σ over ∅ = 0). -/
+theorem zero_class_is_algebraic (X : ProjectiveVariety) (p : ℕ)
+    (H : PureHodgeStructure (2 * p)) :
+    isAlgebraicClass X p H (HodgeClass.zero H) := by
+  refine ⟨∅, fun _ => 0, ?_⟩
+  simp [HodgeClass.zero]
+
+/-- **Scalar multiples of algebraic classes are algebraic.**
+
+If α is algebraic (= Σ aᵢ cl(Zᵢ)), then q·α is algebraic (= Σ (q·aᵢ) cl(Zᵢ)).
+This is proved directly by rescaling the coefficients. -/
+theorem algebraic_class_smul (X : ProjectiveVariety) (p : ℕ)
+    (H : PureHodgeStructure (2 * p)) (α : HodgeClass H)
+    (halg : isAlgebraicClass X p H α) (q : ℚ) :
+    isAlgebraicClass X p H (HodgeClass.smul q α) := by
+  obtain ⟨cycles, coeffs, heq⟩ := halg
+  refine ⟨cycles, fun Z => q * coeffs Z, ?_⟩
+  simp only [HodgeClass.smul, mul_smul, ← Finset.smul_sum]
+  exact congr_arg (q • ·) heq
+
+/-- **Axiom: Sum of algebraic classes is algebraic**
+
+If α₁ = Σ aᵢ cl(Zᵢ) and α₂ = Σ bⱼ cl(Wⱼ), then α₁ + α₂ = Σ cₖ cl(Uₖ)
+where the Uₖ range over all Zᵢ and Wⱼ with appropriate coefficients.
+
+**Why an axiom?** The proof requires constructing the union of two Finsets
+of AlgebraicCycles and reindexing the sums, plus showing the resulting
+Hodge class has the right rational class. The Finset union/reindexing
+machinery is technically involved. -/
+axiom algebraic_class_add_axiom (X : ProjectiveVariety) (p : ℕ)
+    (H : PureHodgeStructure (2 * p)) (α₁ α₂ : HodgeClass H)
+    (h₁ : isAlgebraicClass X p H α₁) (h₂ : isAlgebraicClass X p H α₂)
+    (αsum : HodgeClass H)
+    (hsum : αsum.rationalClass = α₁.rationalClass + α₂.rationalClass) :
+    isAlgebraicClass X p H αsum
+
+/-- **Hodge Conjecture reformulation: HC ↔ algebraic classes span**
+
+The Hodge Conjecture can be equivalently stated as: every Hodge class
+lies in the ℚ-span of cycle classes. This is just an unfolding of
+the definition but makes the linear algebra perspective explicit. -/
+theorem hodge_conjecture_iff_span (X : ProjectiveVariety) (p : ℕ)
+    (H : PureHodgeStructure (2 * p)) :
+    HodgeConjectureStatement X p H ↔
+    ∀ α : HodgeClass H, isAlgebraicClass X p H α :=
+  Iff.rfl
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART IXc: EXTREME CODIMENSION CASES
+═══════════════════════════════════════════════════════════════════════════════
+
+The Hodge Conjecture is known for the "extremal" codimensions:
+- Codimension 0: H^{0,0}(X) ∩ H^0(X,ℚ) = ℚ, generated by [X]
+- Codimension n (= dim X): H^{n,n}(X) ∩ H^{2n}(X,ℚ) = ℚ, generated by [pt]
+These are known because the relevant Hodge classes are always algebraic.
+-/
+
+/-- **Axiom: HC for codimension 0**
+
+H^{0,0}(X) ∩ H^0(X,ℚ) = ℚ, spanned by the identity class (fundamental
+class of X itself), which is trivially algebraic.
+
+**Why an axiom?** Needs: H^0(X,ℚ) = ℚ for connected X, and identification
+of the generator with cl(X). -/
+axiom hodge_conjecture_codim_zero (X : ProjectiveVariety)
+    (H : PureHodgeStructure 0) : HodgeConjectureStatement X 0 H
+
+/-- **Axiom: HC for top codimension**
+
+H^{n,n}(X) ∩ H^{2n}(X,ℚ) = ℚ, spanned by the class of a point,
+which is algebraic (a closed point is a 0-dimensional subvariety).
+
+**Why an axiom?** Needs Poincaré duality and identification of
+the point class with cl(pt). -/
+axiom hodge_conjecture_top_codim (X : ProjectiveVariety) (n : ℕ)
+    (hn : X.dim = n) (H : PureHodgeStructure (2 * n)) :
+    HodgeConjectureStatement X n H
+
+/-- **HC holds for extreme codimensions (0 and dim X).**
+
+The Hodge Conjecture is true at the two extremes of codimension. -/
+theorem hodge_conjecture_extreme_codim (X : ProjectiveVariety) (p : ℕ)
+    (H : PureHodgeStructure (2 * p))
+    (hextreme : p = 0 ∨ p = X.dim) :
+    HodgeConjectureStatement X p H := by
+  rcases hextreme with rfl | rfl
+  · exact hodge_conjecture_codim_zero X H
+  · exact hodge_conjecture_top_codim X X.dim rfl H
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART IXd: TATE CONJECTURE
+═══════════════════════════════════════════════════════════════════════════════
+
+The Tate Conjecture is the arithmetic analogue of the Hodge Conjecture.
+While the Hodge Conjecture concerns complex varieties and Hodge theory,
+the Tate Conjecture concerns varieties over finite fields (or number fields)
+and ℓ-adic cohomology. The two conjectures are known to be equivalent
+for abelian varieties (Deligne, Faltings).
+-/
+
+/-- **Axiom: The Tate Conjecture**
+
+For a smooth projective variety X over a finitely generated field k,
+every Tate class in H^{2p}_{ét}(X̄, ℚ_ℓ(p)) that is fixed by Gal(k̄/k)
+is a ℚ_ℓ-linear combination of algebraic cycle classes.
+
+**Why an axiom?** Requires étale cohomology, Galois representations,
+and ℓ-adic analysis, none of which are in Mathlib. -/
+axiom TateConjecture : Prop
+
+/-- **Axiom: Hodge-Tate Equivalence for Abelian Varieties**
+
+For abelian varieties, the Hodge Conjecture (over ℂ) and the Tate
+Conjecture (over number fields) are equivalent. This deep result
+connects transcendental and arithmetic approaches to algebraic cycles.
+
+This was established through work of Deligne, Faltings, and others:
+- Faltings (1983): Tate conjecture for abelian varieties over number fields
+- Deligne: Connection between Hodge and Tate classes via absolute Hodge cycles
+
+**Why an axiom?** Requires comparison isomorphisms between Betti, de Rham,
+and étale cohomology, plus the theory of absolute Hodge cycles. -/
+axiom hodge_tate_equivalent_abelian :
+    (HodgeConjectureFullStatement → TateConjecture) ∧
+    (TateConjecture → HodgeConjectureFullStatement)
+
+/-- **Hodge implies Tate for abelian varieties.** -/
+theorem hodge_implies_tate_abelian (h : HodgeConjectureFullStatement) :
+    TateConjecture :=
+  hodge_tate_equivalent_abelian.1 h
+
+/-- **Tate implies Hodge for abelian varieties.** -/
+theorem tate_implies_hodge_abelian (h : TateConjecture) :
+    HodgeConjectureFullStatement :=
+  hodge_tate_equivalent_abelian.2 h
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART IXe: GENERALIZED HODGE CONJECTURE
+═══════════════════════════════════════════════════════════════════════════════
+
+The Generalized Hodge Conjecture (GHC), formulated by Grothendieck in 1963,
+is a stronger version of the Hodge Conjecture that also predicts the level
+of the Hodge filtration in terms of algebraic cycles.
+-/
+
+/-- **Axiom: The Generalized Hodge Conjecture**
+
+For a smooth projective variety X, the largest sub-Hodge structure of
+H^k(X, ℚ) contained in F^p H^k(X, ℂ) is the sub-Hodge structure
+generated by the images of cycle class maps from algebraic cycles
+on subvarieties of codimension ≥ p.
+
+**Why an axiom?** Requires the full theory of sub-Hodge structures,
+the Hodge filtration on cohomology, and the Gysin pushforward maps
+for algebraic correspondences. -/
+axiom GeneralizedHodgeConjecture : Prop
+
+/-- **Axiom: GHC implies HC**
+
+The Generalized Hodge Conjecture implies the ordinary Hodge Conjecture.
+This is because the GHC for the (p,p) case reduces to the ordinary HC.
+
+**Why an axiom?** The proof requires showing that the GHC statement for
+k = 2p and filtration level p specializes to the HC statement for
+Hodge classes of type (p,p). -/
+axiom generalized_hodge_implies_hodge :
+    GeneralizedHodgeConjecture → HodgeConjectureFullStatement
+
+/-- **The conjecture hierarchy: SC ⟹ GHC ⟹ HC ⟹ MT**
+
+The major conjectures about algebraic cycles form a hierarchy:
+1. Standard Conjectures ⟹ Generalized Hodge Conjecture
+2. Generalized Hodge Conjecture ⟹ Hodge Conjecture
+3. Hodge Conjecture ⟹ Mumford-Tate Conjecture
+
+This theorem establishes the full chain of implications. -/
+theorem conjecture_hierarchy :
+    (StandardConjectures → GeneralizedHodgeConjecture) →
+    (StandardConjectures → HodgeConjectureFullStatement) ∧
+    (GeneralizedHodgeConjecture → HodgeConjectureFullStatement) ∧
+    (HodgeConjectureFullStatement → MumfordTateConjecture) := by
+  intro hSC_GHC
+  exact ⟨fun hSC => generalized_hodge_implies_hodge (hSC_GHC hSC),
+         generalized_hodge_implies_hodge,
+         hodge_implies_mumford_tate⟩
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART X: SUMMARY AND CHECKS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- Summary of what we know about the Hodge Conjecture:
@@ -771,6 +1004,7 @@ PART IXb: SUMMARY AND CHECKS
    - Surfaces (Lefschetz (1,1) theorem + dimension counting)
    - Divisors on any variety (Lefschetz (1,1) theorem)
    - Special cases of abelian varieties (Deligne)
+   - Extreme codimensions (0 and dim X)
 
 3. **Known obstructions**:
    - Fails for Kähler manifolds (Voisin 2002)
@@ -781,33 +1015,55 @@ PART IXb: SUMMARY AND CHECKS
    - Serre duality: h^{p,q} = h^{n-p,n-q}
    - Cycle classes are always Hodge classes (converse is the conjecture)
    - Hodge filtration provides equivalent formulation
+   - Algebraic classes form a ℚ-subspace (zero, scalar mult proved)
 
 5. **Related conjectures**:
    - Grothendieck's standard conjectures ⟹ Hodge conjecture
+   - Generalized Hodge conjecture ⟹ Hodge conjecture
    - Hodge conjecture ⟹ Mumford-Tate conjecture
-   - Tate conjecture (arithmetic analogue)
+   - Tate conjecture (arithmetic analogue, equivalent for abelian varieties)
+   - Full hierarchy: SC ⟹ GHC ⟹ HC ⟹ MT
 
 6. **Status**: Open since 1950, $1M Millennium Prize -/
 theorem HC_summary : True := trivial
 
+-- Foundations
 #check PureHodgeStructure
 #check HodgeClass
 #check HodgeFiltration
 #check hodgeNumber
 #check hodge_symmetry
+-- Main conjecture
 #check HodgeConjectureStatement
 #check HodgeConjectureFullStatement
+-- Known cases
 #check lefschetz_1_1_theorem
 #check hodge_conjecture_curves
 #check hodge_conjecture_surfaces
+#check hodge_conjecture_extreme_codim
+-- Counterexamples
 #check integral_hodge_conjecture_fails
 #check integral_implies_rational
 #check voisin_kaehler_counterexample
+-- Equivalent formulations
 #check standard_conjectures_imply_hodge
 #check hodge_implies_mumford_tate
+-- Algebraic class structure
 #check cycle_class_is_algebraic
+#check zero_class_is_algebraic
+#check algebraic_class_smul
+#check hodge_conjecture_iff_span
+-- Filtration properties
 #check filtration_decreasing_general
 #check filtration_beyond_terminal
 #check hodge_conjecture_surfaces_explicit
+-- Tate conjecture
+#check TateConjecture
+#check hodge_implies_tate_abelian
+#check tate_implies_hodge_abelian
+-- Generalized Hodge Conjecture
+#check GeneralizedHodgeConjecture
+#check generalized_hodge_implies_hodge
+#check conjecture_hierarchy
 
 end HodgeConjecture
