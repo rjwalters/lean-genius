@@ -6,84 +6,115 @@
   "meta": {
     "erdosNumber": 155,
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos155Problem.lean",
+    "badge": "axiom",
+    "erdosProblemStatus": "open",
     "tags": [
       "erdos",
       "additive-combinatorics",
       "sidon-sets",
       "extremal-combinatorics",
       "growth-rate",
-      "open"
+      "open",
+      "B2-sets",
+      "difference-sets"
     ],
     "references": [
-      "Erdős–Turán (1941): F(N) = O(√N)",
-      "Lindström (1969): F(N) ≤ √N + N^{1/4} + 1",
-      "Singer (1938): perfect difference sets",
-      "Erdős (1992, 1994): problem statements",
-      "OEIS A003022, A143824",
+      "Erdős–Turán (1941): On a problem of Sidon in additive number theory",
+      "Singer (1938): A theorem in finite projective geometry and some applications to number theory",
+      "Lindström (1969): An inequality for B_2 sequences",
+      "Erdős (1992, 1994): Problem statements on slow growth of F(N)",
+      "Cilleruelo (2010): Sidon sets in N^d",
+      "Ruzsa (1993): Solving a linear equation in a set of integers",
+      "O'Bryant (2004): A complete annotated bibliography of work related to Sidon sets",
+      "OEIS A003022: maximal Sidon sets, A143824: increase points",
       "https://erdosproblems.com/155"
     ],
     "leanFile": "Proofs/Erdos155Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/155",
-    "erdosUrl": "https://erdosproblems.com/155"
+    "erdosUrl": "https://erdosproblems.com/155",
+    "relatedProblems": ["erdos-142", "erdos-234"]
+  },
+  "overview": {
+    "historicalContext": "The study of Sidon sets ($B_2$ sets) began when the Hungarian mathematician Simon Sidon asked Erdős in 1932 about sets of integers with all pairwise sums distinct. Erdős and Turán (1941) proved the fundamental upper bound $F(N) = O(\\sqrt{N})$ by counting pairwise sums, and Singer (1938) achieved the matching lower bound $F(N) \\ge (1-o(1))\\sqrt{N}$ using perfect difference sets from finite projective geometry. Lindström (1969) refined the upper bound to $F(N) \\le \\sqrt{N} + N^{1/4} + 1$, and the gap between upper and lower bounds in the second-order term remains open (the '$\\sqrt{N} + 1/2$ vs $\\sqrt{N} + N^{1/4}$' question). Erdős posed Problem #155 around 1992, asking about the fine growth structure: since $F(N)$ increases by 1 only $\\sim \\sqrt{N}$ times in $[1,N]$, the increase points should be very sparse — heuristically spaced $\\sim \\sqrt{N}$ apart. The conjecture that $F(N+k) \\le F(N) + 1$ for fixed $k$ formalizes this, and the stronger form $k \\approx \\varepsilon\\sqrt{N}$ would nearly pin down the increase point distribution.",
+    "problemStatement": "Is it true that for every $k \\ge 1$, $F(N+k) \\le F(N) + 1$ for all sufficiently large $N$, where $F(N)$ is the maximum Sidon subset size of $\\{1,\\ldots,N\\}$?",
+    "proofStrategy": "We formalize Sidon sets, define $F(N)$ axiomatically with achievability and optimality axioms, state the Erdős–Turán/Lindström upper bound and Singer lower bound, and present the main conjecture ($F(N+k) \\le F(N)+1$ for fixed $k$) and its stronger form ($k \\approx \\varepsilon\\sqrt{N}$). Consequences about the sparsity of increase points and known small values from OEIS A003022 are also axiomatized.",
+    "keyInsights": [
+      "**$F(N) \\sim \\sqrt{N}$ with tight bounds**: Erdős–Turán gives $F(N) \\le \\sqrt{N} + N^{1/4} + 1$; Singer's finite-field construction gives $F(N) \\ge \\sqrt{N} - O(N^{1/4})$. The second-order term remains unknown.",
+      "**Increase points have density $\\sim 1/\\sqrt{N}$**: Since $F$ increases $\\sim \\sqrt{N}$ times in $[1,N]$ (one step at a time), the average gap between increase points is $\\sim \\sqrt{N}$, making any fixed $k$ negligible for large $N$",
+      "**The strong form implies near-uniform spacing**: If $F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N)+1$, then increase points are separated by at least $\\varepsilon\\sqrt{N}$, meaning they distribute almost uniformly at scale $\\sqrt{N}$",
+      "**Singer's finite geometry construction**: For $q$ prime power, the set of elements with specified trace in $\\mathbb{F}_{q^2}^*$ gives a perfect difference set of size $q+1$ in $\\mathbb{Z}/(q^2+q+1)$, yielding optimal Sidon sets",
+      "**Computational evidence from OEIS A003022**: Known values $F(1)=1, F(3)=3, F(6)=4, F(11)=5, F(18)=6, F(26)=7$ show gaps $1,1,3,5,7,8$ between increase points, growing consistently with the conjectured $\\sqrt{N}$ spacing"
+    ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 26,
+      "endLine": 29,
+      "summary": "Imports `Finset`, `Nat`, `Filter`, and Mathlib tactics for finite set operations and real-valued bounds."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 26,
-      "endLine": 47,
-      "summary": "Define IsSidonSet, maxSidonSize F(N), achievability and optimality."
+      "startLine": 31,
+      "endLine": 50,
+      "summary": "Defines `IsSidonSet` ($\\forall a \\le b, c \\le d \\in S : a+b = c+d \\Rightarrow (a,b) = (c,d)$) and axiomatizes $F(N)$ with achievability and optimality. The axiom `maxSidonSize : \\mathbb{N} \\to \\mathbb{N}$ is opaque, characterized by its properties."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity",
-      "startLine": 49,
-      "endLine": 55,
-      "summary": "F is monotone nondecreasing and increases by at most 1 per step."
+      "startLine": 52,
+      "endLine": 58,
+      "summary": "Axiomatizes $F(N) \\le F(N+1) \\le F(N) + 1$: the sequence $F(1), F(2), \\ldots$ is nondecreasing with steps of 0 or 1."
     },
     {
       "id": "asymptotic-bounds",
       "title": "Asymptotic Bounds",
-      "startLine": 57,
-      "endLine": 67,
-      "summary": "Erdős–Turán upper bound F(N) ≤ √N + N^{1/4} + 1 and lower bound F(N) ≥ (1-o(1))√N."
+      "startLine": 60,
+      "endLine": 71,
+      "summary": "Axiomatizes the Erdős–Turán/Lindström upper bound $F(N) \\le \\sqrt{N} + N^{1/4} + 1$ and the Singer lower bound $F(N) \\ge (1-\\varepsilon)\\sqrt{N}$ for large $N$. Together: $F(N) = (1+o(1))\\sqrt{N}$."
     },
     {
       "id": "main-conjecture",
-      "title": "Main and Stronger Conjectures",
-      "startLine": 69,
-      "endLine": 84,
-      "summary": "F(N+k) ≤ F(N)+1 for fixed k and large N. Stronger form: k ≈ ε√N."
+      "title": "Main Conjecture: $F(N+k) \\le F(N) + 1$",
+      "startLine": 73,
+      "endLine": 81,
+      "summary": "The central open problem: for every fixed $k \\ge 1$, $F(N+k) \\le F(N) + 1$ for all sufficiently large $N$. The quantifier structure $\\forall k, \\exists N_0, \\forall N \\ge N_0$ allows $N_0$ to depend on $k$."
+    },
+    {
+      "id": "strong-form",
+      "title": "Stronger Form: $k \\approx \\varepsilon\\sqrt{N}$",
+      "startLine": 83,
+      "endLine": 90,
+      "summary": "Erdős's stronger conjecture: $F(N + \\lfloor\\varepsilon\\sqrt{N}\\rfloor) \\le F(N) + 1$, implying consecutive increase points are separated by $\\ge \\varepsilon\\sqrt{N}$."
     },
     {
       "id": "consequences",
-      "title": "Consequences and Small Values",
-      "startLine": 86,
-      "endLine": 102,
-      "summary": "Increase points are sparse (density ~√N). Known values: F(1)=1, ..., F(18)=6."
+      "title": "Consequences: Sparse Increase Points",
+      "startLine": 92,
+      "endLine": 100,
+      "summary": "The number of increase points in $[1,M]$ is $\\le (1+\\varepsilon)\\sqrt{M}$. Since $F(M) \\sim \\sqrt{M}$ and each increase adds 1, this count equals $F(M) - 1 \\sim \\sqrt{M}$."
+    },
+    {
+      "id": "small-values",
+      "title": "Known Small Values (OEIS A003022)",
+      "startLine": 102,
+      "endLine": 110,
+      "summary": "Axiomatizes $F(1)=1, F(2)=2, F(3)=3, F(6)=4, F(11)=5, F(18)=6$. Gaps between increase points: $1, 1, 3, 5, 7$, growing as $\\sim \\sqrt{N}$."
     }
   ],
-  "overview": {
-    "historicalContext": "Erdős posed this problem around 1992, building on the classical Erdős–Turán (1941) study of Sidon sets. The function F(N) measures the largest B₂ subset of {1,...,N}. While F(N) ~ √N is well-established, the fine structure of its growth — whether F can jump by more than 1 over intervals of fixed length — remains unknown.",
-    "problemStatement": "Is it true that for every k ≥ 1, F(N+k) ≤ F(N) + 1 for all sufficiently large N, where F(N) is the maximum Sidon subset size of {1,...,N}?",
-    "proofStrategy": "We formalize Sidon sets, define F(N) axiomatically, state the Erdős–Turán asymptotic bounds, and present both the basic conjecture (fixed k) and the stronger form (k ≈ ε√N). We also state consequences about the sparsity of increase points.",
-    "keyInsights": [
-      "A Sidon (B₂) set has all pairwise sums distinct: |S| ≤ √N + O(N^{1/4})",
-      "F(N) ~ √N, so F increases by 1 about √N times in {1,...,N}",
-      "The conjecture says F plateaus on every fixed-length interval for large N",
-      "The stronger form suggests plateaus of length ~ε√N between increases",
-      "Known values: F(1)=1, F(2)=2, F(3)=3, F(6)=4, F(11)=5, F(18)=6"
-    ]
-  },
   "conclusion": {
-    "summary": "Erdős Problem #155 asks whether the maximum Sidon subset function F(N) grows so slowly that F(N+k) ≤ F(N)+1 for any fixed k and large N. This captures the intuition that F increases by 1 very rarely. The problem remains open, with a stronger variant suggesting plateaus of length ~ε√N.",
-    "implications": "A positive answer would provide fine structural information about the distribution of Sidon sets, complementing the classical Erdős–Turán asymptotics. It would show that the 'next' larger Sidon set requires a substantial expansion of the interval.",
+    "summary": "Erdős Problem #155 asks whether the maximum Sidon subset function F(N) grows so slowly that F(N+k) ≤ F(N)+1 for any fixed k and large N. Since F(N) ~ √N and increases by exactly 1 at each jump, the ~√N increase points should be far apart. The problem remains open, with a stronger variant suggesting plateaus of length ~ε√N between consecutive increases.",
+    "implications": "A positive answer would provide precise structural information about the distribution of maximum Sidon sets, showing that optimal Sidon subsets of [N] and [N+k] differ by at most one element for large N. This connects to the broader question of understanding the second-order term in F(N) = √N + O(N^{1/4}), with implications for combinatorial number theory and the structure of B_2 sequences.",
     "openQuestions": [
-      "Does F(N+k) ≤ F(N)+1 hold for all fixed k and large N?",
-      "Does the stronger form with k ≈ ε√N hold?",
-      "What is the exact threshold: the largest k(N) such that F(N+k(N)) ≤ F(N)+1?",
-      "Can the gap F(N) - √N be determined more precisely?"
+      "Does F(N+k) ≤ F(N)+1 hold for all fixed k and sufficiently large N?",
+      "Does the stronger form with k ≈ ε√N hold? What is the largest growth rate k(N) for which F(N+k(N)) ≤ F(N)+1?",
+      "What is the second-order term in F(N) = √N + ??? Specifically, is F(N) = √N + O(1) or F(N) = √N + Θ(N^{1/4})?",
+      "Are the increase points of F(N) approximately uniformly distributed at scale √N, or do they cluster?",
+      "Can probabilistic methods (random Sidon sets) shed light on the gap structure of F?"
     ]
   }
 }
