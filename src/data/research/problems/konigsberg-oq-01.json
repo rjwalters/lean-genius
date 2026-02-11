@@ -18,8 +18,10 @@
       "Circuit removal preserving even degree parity is the key Hierholzer invariant",
       "even_countP_edges_iff is the key Mathlib lemma: for closed trail, incident edge count per vertex is always even",
       "Degree decomposition: G.degree v = (G.deleteEdges E).degree v + |deleted incident neighbors|",
-      "The connecting lemma (neighbors ↔ incident edges bijection) requires Sym2 manipulation and looplessness",
-      "even_degree_after_circuit_removal successfully converted from axiom to theorem (modulo 1 combinatorial sorry)"
+      "The connecting lemma (neighbors to incident edges bijection) requires Sym2 manipulation and looplessness",
+      "even_degree_after_circuit_removal successfully converted from axiom to theorem",
+      "Fintype.card_of_bijective not available in Docker Mathlib v4.26.0 - use Fintype.card_subtype + Finset.filter instead",
+      "KonigsbergOQ01.lean: 24 proved theorems, 0 axioms, 0 sorries - Docker verified"
     ],
     "builtItems": [
       "proofs/Proofs/HierholzerAlgorithm.lean: eulerian_edges_toFinset_eq",
@@ -30,8 +32,12 @@
       "proofs/Proofs/HierholzerAlgorithm.lean: hierholzer_spec",
       "proofs/Proofs/HierholzerAlgorithm.lean: triangleCircuit_isEulerian",
       "proofs/Proofs/HierholzerAlgorithm.lean: closed_trail_even_countP",
-      "proofs/Proofs/HierholzerAlgorithm.lean: degree_eq_deleteEdges_degree_add_deleted_neighbors",
-      "proofs/Proofs/HierholzerAlgorithm.lean: even_degree_after_circuit_removal (theorem, was axiom)"
+      "proofs/Proofs/HierholzerAlgorithm.lean: degree_eq_deleteEdges_add",
+      "proofs/Proofs/HierholzerAlgorithm.lean: deleted_neighbors_eq_countP",
+      "proofs/Proofs/HierholzerAlgorithm.lean: even_degree_after_circuit_removal (theorem, was axiom)",
+      "proofs/Proofs/KonigsbergOQ01.lean: sq/pent/k4 Eulerian circuit/non-Eulerian proofs",
+      "proofs/Proofs/KonigsbergOQ01.lean: regular_odd_no_euler (fixed for Docker Mathlib)",
+      "proofs/Proofs/KonigsbergOQ01.lean: euler_criterion_necessary, euler_circuit_implies_all_even"
     ],
     "mathlibGaps": [
       "SimpleGraph.Trails TODO: existence direction of Euler's theorem",
@@ -39,11 +45,10 @@
       "No direct lemma connecting deleteEdges + degree to edge incidence counting"
     ],
     "nextSteps": [
-      "Prove deleted_neighbors_eq_countP via Finset.card_nbij bijection with Sym2",
       "Convert euler_circuit_exists axiom to theorem via induction on edge count (hard)",
       "Convert euler_trail_exists axiom to theorem (follows from circuit existence + edge addition)",
       "Build full constructive Hierholzer algorithm with termination proof"
     ],
-    "progressSummary": "COMPLETE: KonigsbergOQ01.lean has 24 proved theorems, 0 axioms, 0 sorries. Covers C4/C5 Eulerian circuits, K4 non-Eulerian proof, general Euler criterion necessity, odd-regular graph impossibility, handshaking lemma examples. HierholzerAlgorithm.lean has 12+ theorems with 2 axioms (existence direction of Euler's theorem, a Mathlib TODO)."
+    "progressSummary": "COMPLETE: KonigsbergOQ01.lean has 24 proved theorems, 0 axioms, 0 sorries (Docker verified). Fixed regular_odd_no_euler build failure (Fintype.card_of_bijective API unavailable in Docker Mathlib v4.26.0). HierholzerAlgorithm.lean has 12+ theorems with 2 axioms (Euler existence theorems - Mathlib TODOs) and 0 sorries."
   }
 }
