@@ -4,8 +4,9 @@
   "slug": "erdos-503",
   "description": "What is the maximum size of A ⊆ ℝⁿ with every triple isosceles? f(2)=6 (Kelly), f(3)=8 (Croft). General: C(n+1,2)+1 ≤ f(n) ≤ C(n+2,2) (Blokhuis/Alweiss). OPEN for n ≥ 4.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős–Kelly (1947, n=2); Croft (1962, n=3); Blokhuis (1984, upper bound); Alweiss (lower bound); Weisenberg (improvement)",
     "sourceUrl": "https://erdosproblems.com/503",
+    "date": "1947",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos503Problem.lean",
     "tags": [
@@ -13,70 +14,105 @@
       "combinatorial-geometry",
       "distances",
       "isosceles",
-      "extremal"
+      "extremal",
+      "open"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 503,
     "erdosUrl": "https://erdosproblems.com/503",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Nat.choose", "description": "Binomial coefficients C(n,k)", "module": "Mathlib.Data.Nat.Choose.Basic" },
+      { "theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Dist", "description": "Distance function typeclass", "module": "Mathlib.Topology.MetricSpace.Basic" }
+    ],
+    "originalContributions": [
+      "IsIsoscelesSet: every triple has at least two equal distances (abstract metric space)",
+      "maxIsoscelesSize: extremal function f(n) for dimension n (axiomatized)",
+      "kelly_R2: f(2) = 6 (axiomatized)",
+      "croft_R3: f(3) = 8 (axiomatized)",
+      "blokhuis_upper_bound: f(n) ≤ C(n+2,2) (axiomatized)",
+      "alweiss_lower_bound: f(n) ≥ C(n+1,2) for n ≥ 2 (axiomatized)",
+      "weisenberg_improvement: f(n) ≥ C(n+1,2)+1 for n ≥ 2 (axiomatized)",
+      "erdos_503_bounds: combined sandwich theorem (proved)",
+      "erdos_503_summary: exact values f(2)=6, f(3)=8 (proved)"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #503 asks for the maximum isosceles set size in ℝⁿ. Kelly [ErKe47] solved n=2 (answer 6); Croft [Cr62] solved n=3 (answer 8). Blokhuis [Bl84] proved the upper bound C(n+2,2). Alweiss and Weisenberg gave lower bounds.",
-    "problemStatement": "What is the largest A ⊆ ℝⁿ such that every three points form an isosceles triangle? Known for n=2,3; open for n ≥ 4. General bounds: C(n+1,2)+1 ≤ f(n) ≤ C(n+2,2).",
-    "proofStrategy": "We define IsIsoscelesSet via the abstract metric, introduce maxIsoscelesSize as the extremal function, and axiomatize the exact values (n=2,3) and general bounds (Blokhuis upper, Alweiss/Weisenberg lower). Consistency examples use norm_num.",
+    "historicalContext": "Erdős and Kelly posed Problem #503 in their 1947 paper on distances in point sets, asking for the maximum size of a subset of $\\mathbb{R}^n$ in which every triple of points forms an isosceles triangle. Kelly proved $f(2) = 6$, with the regular hexagon providing the extremal configuration in the plane—its high symmetry group ($D_6$) ensures every triple of vertices has at least two equal distances. H. T. Croft solved the three-dimensional case in 1962, showing $f(3) = 8$ using careful geometric constructions. In 1984, Aart Blokhuis established the general upper bound $f(n) \\leq \\binom{n+2}{2}$ using a linear algebra argument involving the dimension of the space of squared-distance polynomials. On the lower bound side, Ryan Alweiss constructed isosceles sets of size $\\binom{n+1}{2}$ using sums of standard basis vectors $e_i + e_j$ in $\\mathbb{R}^{n+1}$ (projected to $\\mathbb{R}^n$), and Weisenberg improved this by 1 to $\\binom{n+1}{2} + 1$. The gap between the bounds is $n$, growing linearly, and the exact value of $f(n)$ for any $n \\geq 4$ remains open. The problem connects to the broader Erdős distance theory, including questions about repeated distances and equidistant sets.",
+    "problemStatement": "**Problem Statement (OPEN for $n \\geq 4$)**\n\nWhat is the maximum size $f(n)$ of a subset $A \\subseteq \\mathbb{R}^n$ such that every three points from $A$ form an isosceles triangle?\n\n**Known values:** $f(2) = 6$ (Kelly), $f(3) = 8$ (Croft).\n\n**General bounds:** $\\binom{n+1}{2} + 1 \\leq f(n) \\leq \\binom{n+2}{2}$.",
+    "proofStrategy": "The formalization defines isosceles sets via an abstract $\\texttt{Dist}$ typeclass, introduces the extremal function $f(n)$ as an axiom, and axiomatizes the exact values ($n = 2, 3$) and general bounds (Blokhuis upper, Alweiss/Weisenberg lower). The combined bounds theorem and consistency checks for $n = 2, 3$ are proved using $\\texttt{norm\\_num}$.",
     "keyInsights": [
-      "f(2) = 6 (Kelly) and f(3) = 8 (Croft) are the only known exact values",
-      "Blokhuis upper bound: f(n) ≤ C(n+2, 2) = (n+2)(n+1)/2",
-      "Alweiss lower bound via e_i + e_j vectors: f(n) ≥ C(n+1, 2)",
-      "Weisenberg improved to f(n) ≥ C(n+1, 2) + 1",
-      "The gap between C(n+1,2)+1 and C(n+2,2) grows linearly in n"
+      "**Regular hexagon optimality:** The 6-point regular hexagon is the unique extremal isosceles set in $\\mathbb{R}^2$—its $D_6$ symmetry group ensures every triple is isosceles",
+      "**Linear algebra upper bound:** Blokhuis's $\\binom{n+2}{2}$ bound comes from embedding distance constraints in a polynomial space of dimension $\\binom{n+2}{2}$, where isosceles conditions force linear dependencies",
+      "**Coordinate vector construction:** Alweiss's $\\{e_i + e_j\\}$ construction achieves $\\binom{n+1}{2}$ points, with the isosceles property following from the symmetric distance structure: $\\|e_i + e_j - e_k - e_l\\|^2 \\in \\{2, 4\\}$ for distinct indices",
+      "**Linear gap:** The gap $\\binom{n+2}{2} - \\binom{n+1}{2} - 1 = n$ between bounds grows linearly—for large $n$, the relative gap shrinks as $O(1/n)$, suggesting the bounds are close to tight",
+      "**Neither bound tight for $n = 3$:** Since $f(3) = 8$ while the bounds give $[7, 10]$, neither Blokhuis nor Weisenberg is tight, suggesting the true answer may require dimension-specific constructions"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 26,
+      "endLine": 31,
+      "summary": "Imports $\\texttt{Nat.Choose.Basic}$ for binomial coefficients $\\binom{n}{k}$, $\\texttt{Finset.Basic}$ for finite point sets, and $\\texttt{Tactic}$ for $\\texttt{norm\\_num}$. Opens the $\\texttt{Erdos503}$ namespace."
+    },
+    {
       "id": "isosceles-sets",
-      "title": "Part I: Isosceles Sets",
+      "title": "Isosceles Set Definitions",
       "startLine": 33,
       "endLine": 48,
-      "summary": "Defines IsIsoscelesSet (every triple has two equal distances) and maxIsoscelesSize."
+      "summary": "Defines $\\texttt{IsIsoscelesSet}(A)$: every triple $\\{x,y,z\\} \\subset A$ satisfies $d(x,y) = d(y,z) \\lor d(y,z) = d(x,z) \\lor d(x,y) = d(x,z)$. Axiomatizes $\\texttt{maxIsoscelesSize}(n) = f(n)$."
     },
     {
       "id": "small-dimensions",
-      "title": "Part II: Exact Results for Small Dimensions",
+      "title": "Exact Results: $f(2) = 6$, $f(3) = 8$",
       "startLine": 50,
       "endLine": 63,
-      "summary": "Axioms: kelly_R2 (f(2)=6) and croft_R3 (f(3)=8)."
+      "summary": "Axiomatizes Kelly's $f(2) = 6$ [1947] and Croft's $f(3) = 8$ [1962]—the only known exact values of the isosceles extremal function."
     },
     {
-      "id": "general-bounds",
-      "title": "Part III: General Bounds",
+      "id": "upper-bound",
+      "title": "Blokhuis Upper Bound $\\binom{n+2}{2}$",
       "startLine": 65,
-      "endLine": 88,
-      "summary": "Axioms: Blokhuis upper bound C(n+2,2), Alweiss lower C(n+1,2), Weisenberg improvement +1."
+      "endLine": 72,
+      "summary": "Axiomatizes Blokhuis's 1984 result: $f(n) \\leq \\binom{n+2}{2} = \\frac{(n+2)(n+1)}{2}$ via a linear algebra dimension argument on distance polynomials."
     },
     {
-      "id": "gap",
-      "title": "Part IV: The Gap",
+      "id": "lower-bounds",
+      "title": "Lower Bounds: Alweiss and Weisenberg",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "Axiomatizes $f(n) \\geq \\binom{n+1}{2}$ (Alweiss, via $\\{e_i + e_j\\}$ vectors) and $f(n) \\geq \\binom{n+1}{2} + 1$ (Weisenberg, adding one more point)."
+    },
+    {
+      "id": "combined-bounds",
+      "title": "Combined Bounds and Consistency",
       "startLine": 90,
       "endLine": 113,
-      "summary": "Theorem erdos_503_bounds combines bounds. Consistency checks for n=2,3 via norm_num."
+      "summary": "Proves $\\binom{n+1}{2}+1 \\leq f(n) \\leq \\binom{n+2}{2}$ from the axioms. Verifies consistency for $n = 2$ ($4 \\leq 6 \\leq 6$) and $n = 3$ ($7 \\leq 8 \\leq 10$) via $\\texttt{norm\\_num}$."
     },
     {
       "id": "summary",
-      "title": "Part V: Summary",
+      "title": "Summary Theorem",
       "startLine": 115,
       "endLine": 127,
-      "summary": "Theorem erdos_503_summary: exact values f(2)=6, f(3)=8."
+      "summary": "Proves $\\texttt{erdos\\_503\\_summary} : f(2) = 6 \\wedge f(3) = 8$ from Kelly and Croft axioms. The problem remains open for $n \\geq 4$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #503 asks for the maximum isosceles set in ℝⁿ. Exact values are known for n=2 (6) and n=3 (8). The general answer lies between C(n+1,2)+1 and C(n+2,2), but the exact value for n ≥ 4 is open.",
-    "implications": "The gap between the bounds grows linearly in n, suggesting the exact answer may require new geometric ideas beyond coordinate-vector constructions.",
+    "summary": "Erdős Problem #503 asks for the maximum isosceles set size in ℝⁿ. The formalization axiomatizes exact values f(2) = 6 (Kelly) and f(3) = 8 (Croft), the Blokhuis upper bound C(n+2,2), and the Alweiss/Weisenberg lower bound C(n+1,2)+1. The combined bounds theorem and norm_num consistency checks are proved. The exact value for n ≥ 4 remains open.",
+    "implications": "Closing the gap between C(n+1,2)+1 and C(n+2,2) would advance the Erdős distance theory and may require new algebraic or geometric techniques beyond linear algebra dimension counting.",
     "openQuestions": [
-      "What is f(4)? The bounds give 11 ≤ f(4) ≤ 15.",
-      "Is the Blokhuis upper bound tight for any n ≥ 4?",
-      "Can the Alweiss/Weisenberg lower bound be improved significantly?"
+      "What is f(4)? The bounds give 11 ≤ f(4) ≤ 15—can the exact value be determined?",
+      "Is the Blokhuis upper bound C(n+2,2) asymptotically tight, or is f(n) closer to C(n+1,2)?",
+      "Can the Weisenberg lower bound be improved by more than 1 over Alweiss's construction?",
+      "What do extremal isosceles configurations look like in dimension n ≥ 4?",
+      "What is the maximum isosceles set size in other metric spaces (e.g., ℓ¹, Hamming)?"
     ]
   }
 }
