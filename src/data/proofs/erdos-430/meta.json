@@ -1,86 +1,98 @@
 {
   "id": "erdos-430",
-  "title": "Erdős Problem #430: Composite Numbers in Greedy Large-Factor Sequences",
+  "title": "Erdos Problem #430: Composite Numbers in Greedy Large-Factor Sequences",
   "slug": "erdos-430",
   "description": "Define a greedy decreasing sequence in [1,n) where each term has all prime factors exceeding n minus the term. Must this sequence contain a composite for large n? Selfridge's computations suggest yes. Open.",
   "meta": {
-    "erdosNumber": 430,
+    "author": "Erdos, Graham, Selfridge",
+    "sourceUrl": "https://erdosproblems.com/430",
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos430Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
       "prime-factorization",
       "greedy-algorithms",
+      "rough-numbers",
       "open"
     ],
-    "references": [
-      "Erdős–Graham: original problem statement",
-      "Selfridge: computational evidence (unpublished)",
-      "Adenwalla: equivalence with Problem #385",
-      "https://erdosproblems.com/430"
-    ],
-    "leanFile": "Proofs/Erdos430Problem.lean",
+    "badge": "formalized",
     "sorries": 0,
-    "sourceUrl": "https://erdosproblems.com/430",
-    "erdosUrl": "https://erdosproblems.com/430"
+    "erdosNumber": 430,
+    "erdosUrl": "https://erdosproblems.com/430",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdos and Graham in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' The construction defines a greedy sequence $a_0 = n-1, a_{k+1} = \\max\\{m < a_k : \\text{all prime factors of } m > n - m\\}$ and asks whether composites must eventually appear. John Selfridge performed extensive computational searches supporting the conjecture but reported that 'no proof is in sight.' Sarosh Adenwalla later made the crucial observation that Problem #430 is equivalent to the first part of Erdos Problem #385: for large $n$, there exists a composite $m < n$ with all prime factors exceeding $n - m$. The admissibility condition $p > n - m$ for all $p \\mid m$ makes $m$ an $(n-m)$-rough number in the sense of sieve theory. The connection to smooth and rough number distribution places this problem at the intersection of combinatorial number theory, sieve methods, and the distribution of primes in short intervals. By Bertrand's postulate, there is always a prime in $(n/2, n)$, so primes are always available as admissible terms --- the question is whether they suffice to fill the entire greedy sequence.",
+    "problemStatement": "Let $a_0 = n - 1$ and $a_{k+1} = \\max\\{m \\in [1, a_k) : \\forall p \\mid m,\\; p \\text{ prime} \\Rightarrow p > n - m\\}$, with the sequence terminating when no such $m$ exists. For sufficiently large $n$, must this sequence contain at least one composite number?",
+    "proofStrategy": "We formalize the admissibility predicate (all prime factors exceed $n - m$), the greedy sequence construction via $\\texttt{Finset.sup}$, the composite detection predicate, the $n = 8$ example showing all-prime sequences exist for small $n$, Adenwalla's equivalence with Problem #385, and the main conjecture. All deep results are axiomatized since the problem remains open.",
+    "keyInsights": [
+      "**Admissibility couples factorization to distance**: $m$ is admissible at level $n$ iff all prime factors of $m$ exceed $n - m$, making $m$ an $(n-m)$-rough number whose roughness depends on its proximity to $n$",
+      "**Primes near $n$ are always admissible**: By Bertrand's postulate, primes $p \\in (n/2, n)$ satisfy $p > n - p$, so the greedy sequence always starts --- the question is whether composites must also enter",
+      "**Equivalence with Problem #385**: Adenwalla showed the greedy sequence contains a composite iff there exists any composite $m < n$ that is $(n-m)$-rough, reducing a constructive question to a pure existence problem",
+      "**Smooth number duality**: The admissibility condition is dual to smoothness --- asking for large (not small) prime factors --- connecting to sieve-theoretic estimates on the distribution of rough numbers",
+      "**Small $n$ counterexamples**: For $n = 8$, the sequence $7, 5$ is entirely prime, showing the conjecture is false for small $n$ and a threshold $N_0$ is necessary"
+    ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Dependencies",
+      "startLine": 18,
+      "endLine": 21,
+      "summary": "Imports Mathlib's $\\texttt{Nat.minFac}$, $\\texttt{Nat.Prime}$, $\\texttt{Nat.Factorization}$, and $\\texttt{Finset}$ for constructing and analyzing the greedy sequence."
+    },
+    {
       "id": "definitions",
-      "title": "Definitions",
-      "startLine": 20,
-      "endLine": 44,
-      "summary": "Admissibility, greedy next element, and the greedy sequence construction."
+      "title": "Core Definitions",
+      "startLine": 23,
+      "endLine": 41,
+      "summary": "Defines $\\texttt{minPrimeFactor}$, the roughness predicate $\\texttt{allPrimeFactorsExceed}(m, k) \\iff \\forall p \\mid m,\\; p > k$, the admissibility condition $\\texttt{IsAdmissible}(n, m)$, and the greedy next-element selector $\\texttt{greedyNext}$ via $\\texttt{Finset.sup}$."
     },
     {
       "id": "greedy-sequence",
       "title": "The Greedy Sequence",
-      "startLine": 46,
-      "endLine": 56,
-      "summary": "Sequence definition, termination, and composite detection."
+      "startLine": 43,
+      "endLine": 57,
+      "summary": "Constructs the sequence $a_0 = n - 1$, $a_{k+1} = \\texttt{greedyNext}(n, a_k)$ with termination at $a_k = 0$, and defines $\\texttt{hasComposite}(n) \\iff \\exists k,\\; a_k > 1 \\wedge \\neg a_k.\\text{Prime}$."
     },
     {
       "id": "example",
-      "title": "Example: n = 8",
-      "startLine": 58,
-      "endLine": 63,
-      "summary": "For n=8: sequence is 7, 5, then terminates. No composite."
+      "title": "Example: $n = 8$",
+      "startLine": 59,
+      "endLine": 64,
+      "summary": "For $n = 8$: $a_0 = 7$, $a_1 = 5$, then termination. Both terms are prime. The integer $4$ fails admissibility since $2 \\mid 4$ but $2 \\leq 8 - 4 = 4$."
     },
     {
       "id": "equivalence",
-      "title": "Connection to Problem #385",
-      "startLine": 65,
-      "endLine": 72,
-      "summary": "Equivalence with existence of composite m < n with large prime factors."
+      "title": "Equivalence with Problem #385",
+      "startLine": 66,
+      "endLine": 74,
+      "summary": "Adenwalla's equivalence: the greedy sequence contains a composite for large $n$ iff for large $n$ there exists a composite $m < n$ with all prime factors $> n - m$. Reduces the constructive greedy question to an existence question about rough composites."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 74,
-      "endLine": 84,
-      "summary": "For large n the sequence must contain a composite. Supported by computation."
+      "startLine": 76,
+      "endLine": 82,
+      "summary": "The open conjecture: $\\exists N_0,\\; \\forall n \\geq N_0$, the greedy sequence contains a composite. Supported by Selfridge's computations but unproven."
+    },
+    {
+      "id": "small-n",
+      "title": "Small $n$ Behavior",
+      "startLine": 84,
+      "endLine": 91,
+      "summary": "For small $n$, the sequence may be entirely prime. The prime number theorem ($\\pi(n) \\sim n/\\ln n$) suggests primes thin out, but proving composites must enter the greedy process requires sieve-theoretic arguments."
     }
   ],
-  "overview": {
-    "historicalContext": "This problem was posed by Erdős and Graham. Selfridge performed preliminary calculations suggesting the conjecture is true, but reported that 'no proof is in sight.' Sarosh Adenwalla later observed that this is equivalent to the first part of Erdős Problem #385.",
-    "problemStatement": "Define a₁ = n−1, and aₖ = max{m ∈ [1,aₖ₋₁) : all prime factors of m exceed n−m}. For sufficiently large n, must this sequence contain a composite number?",
-    "proofStrategy": "We formalize the greedy sequence construction, define admissibility (all prime factors exceed n−m), state the equivalence with Problem #385, and record the main conjecture with the small-n observation that sequences can be all-prime.",
-    "keyInsights": [
-      "Each term m of the sequence satisfies: all prime factors of m exceed n−m",
-      "For small n (e.g., n=8), the sequence can consist entirely of primes",
-      "The conjecture is equivalent to Problem #385: existence of composite m < n with all prime factors > n−m",
-      "Selfridge's computations support the conjecture but no proof exists",
-      "The difficulty is showing that primes alone cannot sustain the greedy process for large n"
-    ]
-  },
   "conclusion": {
-    "summary": "Erdős Problem #430 asks whether a natural greedy sequence defined by large prime factor constraints must eventually include composite numbers for sufficiently large n. Despite Selfridge's computational evidence, the problem remains open.",
-    "implications": "Resolution would connect greedy number-theoretic constructions to the distribution of primes and smooth numbers, advancing understanding of how prime factorization structure constrains combinatorial processes.",
+    "summary": "This formalization captures Erdos Problem #430 on greedy large-factor sequences. The admissibility condition --- all prime factors of $m$ exceed $n - m$ --- defines an $(n-m)$-roughness constraint that couples factorization to proximity to $n$. Adenwalla's equivalence with Problem #385 reduces the conjecture to the existence of rough composites near $n$. Despite Selfridge's computational evidence, the problem remains open.",
+    "implications": "Resolution would advance understanding of how prime factorization structure constrains combinatorial processes, connecting greedy algorithms to sieve theory and the distribution of smooth and rough numbers. The equivalence with Problem #385 means progress on either problem implies progress on both.",
     "openQuestions": [
-      "What is the smallest n₀ such that the sequence contains a composite for all n ≥ n₀?",
-      "How long can the greedy sequence be for a given n?",
-      "What is the typical density of composites in the sequence for large n?",
-      "Can sieve methods bound the number of primes that are admissible?"
+      "What is the smallest threshold $N_0$ such that the greedy sequence contains a composite for all $n \\geq N_0$?",
+      "Can sieve methods (e.g., Selberg sieve) bound the number of admissible primes and force a composite?",
+      "How does the length of the greedy sequence grow with $n$?",
+      "Is the fraction of composite terms in the sequence monotonically increasing for large $n$?"
     ]
   }
 }
