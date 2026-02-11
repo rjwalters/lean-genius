@@ -43,60 +43,82 @@
     "wiedijkNumber": 3
   },
   "overview": {
-    "historicalContext": "Georg Cantor proved the denumerability of the rationals in the 1870s, establishing that the 'infinity' of rational numbers is the same size as the natural numbers. This was part of his revolutionary work on infinite sets that would eventually lead to modern set theory.\n\nThe result is surprising: the rationals are dense in the reals (between any two rationals lies another), yet they form a 'small' infinity. Cantor's diagonal enumeration method shows how to systematically list all positive rationals by traversing a grid of numerator/denominator pairs.\n\nThis theorem pairs with Cantor's later proof (1891) that the reals are uncountable. Together they establish a hierarchy of infinities: ℵ₀ (countable) < 2^ℵ₀ (continuum).",
-    "problemStatement": "Theorem (Cantor): The set of rational numbers ℚ is denumerable.\n\nMore precisely: there exists a bijection between ℕ and ℚ. Both sets have cardinality ℵ₀ (aleph-null), the smallest infinite cardinal:\n\n$$|\\mathbb{N}| = |\\mathbb{Q}| = \\aleph_0$$\n\nThis means we can assign a unique natural number to each rational, with no rationals left out.",
-    "proofStrategy": "The proof proceeds by constructing an explicit enumeration:\n\n1. Represent each rational q as a reduced pair (numerator, denominator) where gcd = 1\n2. Use Cantor's pairing function to encode pairs of integers as natural numbers\n3. Handle signs appropriately (interleave positives and negatives)\n\nThe diagonal enumeration visualizes this:\n- Arrange positive rationals in a grid (row = denominator, column = numerator)\n- Traverse diagonals: 1/1, 2/1, 1/2, 3/1, 2/2, 1/3, ...\n- Skip non-reduced fractions (like 2/2 = 1/1)\n- Extend to all rationals by interleaving with negatives and zero\n\nMathlib provides this construction via the Denumerable typeclass, giving us the bijection directly.",
+    "historicalContext": "Georg Cantor proved the denumerability of the rationals in his landmark 1874 paper \"Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen,\" published in Crelle's Journal. This was the very paper that inaugurated the theory of infinite cardinalities. Cantor showed that the rationals, the algebraic numbers, and the natural numbers all have the same 'size' ($\\aleph_0$), while the reals form a strictly larger infinity ($2^{\\aleph_0}$).\n\nThe result is counterintuitive: $\\mathbb{Q}$ is dense in $\\mathbb{R}$ (between any two rationals lies another), yet it is 'thin' — it has Lebesgue measure zero and the same cardinality as $\\mathbb{N}$. Cantor's diagonal enumeration method systematically lists all positive rationals by traversing a grid of numerator/denominator pairs along anti-diagonals, skipping non-reduced fractions.\n\nCantor's work was initially met with fierce opposition from Leopold Kronecker, who rejected completed infinities. David Hilbert later championed Cantor's ideas, declaring: \"No one shall expel us from the Paradise that Cantor has created.\" This theorem — Wiedijk's #3 — remains one of the most frequently formalized results in proof assistants worldwide.",
+    "problemStatement": "Theorem (Cantor, 1874): The set of rational numbers $\\mathbb{Q}$ is denumerable.\n\nMore precisely: there exists a bijection between $\\mathbb{N}$ and $\\mathbb{Q}$. Both sets have cardinality $\\aleph_0$ (aleph-null), the smallest infinite cardinal:\n\n$$|\\mathbb{N}| = |\\mathbb{Q}| = \\aleph_0$$\n\nThis means we can assign a unique natural number to each rational, with no rationals left out.",
+    "proofStrategy": "The formalization leverages Mathlib's `Denumerable` typeclass, which provides a constructive bijection $\\mathbb{Q} \\simeq \\mathbb{N}$. The proof proceeds as follows:\n\n1. Invoke `Denumerable ℚ` from `Mathlib.Data.Rat.Denumerable`, which internally represents each rational $p/q$ (in lowest terms with $\\gcd(|p|, q) = 1$) and encodes the pair $(p, q)$ via the Cantor pairing function $\\pi(a,b) = (a+b)(a+b+1)/2 + b$.\n2. Extract the explicit equivalence `natEquivRat : ℕ ≃ ℚ` and prove bijectivity.\n3. Provide alternative formulations: existence of a surjection $\\mathbb{N} \\twoheadrightarrow \\mathbb{Q}$ and an injection $\\mathbb{Q} \\hookrightarrow \\mathbb{N}$.\n4. Define explicit `encode` and `decode` functions and prove both round-trip identities.\n5. Connect to cardinal arithmetic: $|\\mathbb{Q}| = \\aleph_0 = |\\mathbb{N}|$.",
     "keyInsights": [
-      "Density does not imply uncountability: ℚ is dense in ℝ but countable",
-      "The diagonal traversal ensures every positive rational is reached in finite steps",
-      "Countable unions of countable sets remain countable",
-      "This contrasts with ℝ, which Cantor later proved uncountable via diagonalization"
+      "Density does not imply uncountability: $\\mathbb{Q}$ is dense in $\\mathbb{R}$ but has cardinality $\\aleph_0$, while $\\mathbb{R}$ has cardinality $2^{\\aleph_0} > \\aleph_0$.",
+      "The Cantor pairing function $\\pi(a,b) = (a+b)(a+b+1)/2 + b$ gives a computable bijection $\\mathbb{N}^2 \\simeq \\mathbb{N}$, which is the engine behind all countability-of-pairs arguments.",
+      "Lean's typeclass hierarchy Denumerable → Countable → Encodable precisely captures the distinction: denumerable = countably infinite, countable = finite or countably infinite, encodable = embeds into $\\mathbb{N}$ (possibly partial).",
+      "The round-trip proofs (decode ∘ encode = id, encode ∘ decode = id) are the constructive content: they certify that the bijection is computable, not merely existential.",
+      "This result pairs with Cantor's 1891 diagonal argument showing $\\mathbb{R}$ is uncountable, together establishing the hierarchy $\\aleph_0 < 2^{\\aleph_0}$ and opening the question of the Continuum Hypothesis."
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header and Documentation",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring explaining the theorem, approach, Mathlib dependencies, and historical context. Imports from Mathlib for rationals, denumerability, equivalences, cardinals, and tactics."
+    },
+    {
       "id": "main-result",
-      "title": "The Main Result",
+      "title": "The Main Result: ℚ is Denumerable",
       "startLine": 46,
-      "endLine": 78,
-      "summary": "Establishes that ℚ is denumerable using Mathlib's typeclass, and provides the explicit bijection between ℕ and ℚ."
+      "endLine": 63,
+      "summary": "Establishes that $\\mathbb{Q}$ is denumerable using Mathlib's `Denumerable` typeclass and provides the explicit bijection `natEquivRat : ℕ ≃ ℚ`."
     },
     {
       "id": "alternative-formulations",
       "title": "Alternative Formulations",
-      "startLine": 80,
-      "endLine": 93,
-      "summary": "Presents the theorem as existence of surjection and injection, showing equivalent ways to state countability."
+      "startLine": 65,
+      "endLine": 92,
+      "summary": "Restates the theorem in four equivalent forms: existence of a bijection, countability, existence of a surjection $\\mathbb{N} \\to \\mathbb{Q}$, and existence of an injection $\\mathbb{Q} \\to \\mathbb{N}$."
     },
     {
       "id": "encoding",
       "title": "The Encoding Explained",
       "startLine": 94,
-      "endLine": 120,
-      "summary": "Documents how Mathlib encodes rationals as natural numbers and proves round-trip properties."
+      "endLine": 119,
+      "summary": "Documents Mathlib's internal encoding via the Cantor pairing function, defines explicit `encodeRatToNat` and `decodeNatToRat` functions, and proves both round-trip identities."
     },
     {
-      "id": "cardinality",
-      "title": "Connection to Cardinality",
-      "startLine": 160,
-      "endLine": 174,
-      "summary": "Shows that |ℚ| = |ℕ| = ℵ₀ using cardinal arithmetic."
+      "id": "comparison",
+      "title": "Comparison with the Reals",
+      "startLine": 121,
+      "endLine": 132,
+      "summary": "Contrasts with $\\mathbb{R}$: both have $|\\mathbb{N}| = |\\mathbb{Z}| = |\\mathbb{Q}| = \\aleph_0 < |\\mathbb{R}| = 2^{\\aleph_0}$. Notes that $\\mathbb{Q}$ has Lebesgue measure zero despite density. Proves $\\mathbb{Q}$ is infinite."
     },
     {
       "id": "visualization",
       "title": "Cantor's Diagonal Enumeration",
       "startLine": 134,
       "endLine": 158,
-      "summary": "ASCII visualization of the classical diagonal traversal that enumerates all positive rationals."
+      "summary": "ASCII visualization of the classical anti-diagonal traversal enumerating all positive rationals, showing how non-reduced fractions are skipped and negatives are interleaved."
+    },
+    {
+      "id": "cardinality",
+      "title": "Connection to Cardinal Arithmetic",
+      "startLine": 160,
+      "endLine": 173,
+      "summary": "Proves $|\\mathbb{Q}| = \\aleph_0$ and $|\\mathbb{Q}| = |\\mathbb{N}|$ using `Cardinal.mk_denumerable`, bridging the type-theoretic and set-theoretic perspectives."
+    },
+    {
+      "id": "philosophical",
+      "title": "Philosophical Significance",
+      "startLine": 175,
+      "endLine": 191,
+      "summary": "Discusses the philosophical implications: infinity comes in sizes, density $\\ne$ cardinality, countability is robust under countable unions, and the reals are special because taking limits creates uncountably many new numbers."
     }
   ],
   "conclusion": {
-    "summary": "The denumerability of the rationals is a foundational result in set theory, showing that 'dense' does not mean 'large' in the cardinality sense. Despite the rationals filling the real line with no gaps, they can still be put in one-to-one correspondence with the counting numbers.\n\nThe formalization uses Mathlib's Denumerable typeclass, which provides an explicit bijection. This gives us computable encoding and decoding functions with verified round-trip properties.",
-    "implications": "This theorem has important consequences:\n\n1. Measure Theory - The rationals have Lebesgue measure zero in ℝ, despite being dense\n\n2. Computability - Every rational is computable, which follows from countability\n\n3. Algebraic Numbers - The countability of ℚ extends to algebraic numbers (roots of polynomials with rational coefficients)\n\n4. Transcendental Numbers - Since ℝ is uncountable and algebraic numbers are countable, 'almost all' real numbers are transcendental",
+    "summary": "This formalization of Cantor's denumerability theorem (Wiedijk #3) demonstrates that $\\mathbb{Q}$ and $\\mathbb{N}$ have the same cardinality $\\aleph_0$, despite $\\mathbb{Q}$ being dense in $\\mathbb{R}$. The proof is fully verified with zero sorries, leveraging Mathlib's `Denumerable` typeclass for the core bijection while providing original contributions: alternative formulations via surjections and injections, explicit encode/decode functions with verified round-trip properties, and the connection to cardinal arithmetic.",
+    "implications": "This theorem has far-reaching consequences across mathematics:\n\n1. **Measure Theory**: $\\mathbb{Q}$ has Lebesgue measure zero in $\\mathbb{R}$, making 'almost all' real numbers irrational — a striking consequence of countability.\n\n2. **Computability**: Every rational is computable (representable as a finite string), which follows directly from the explicit bijection with $\\mathbb{N}$.\n\n3. **Algebraic Number Theory**: The countability of $\\mathbb{Q}$ extends to all algebraic numbers via $|\\overline{\\mathbb{Q}}| = \\aleph_0$, since algebraic numbers are a countable union of finite sets.\n\n4. **Transcendence Theory**: Since $|\\mathbb{R}| = 2^{\\aleph_0} > \\aleph_0 = |\\overline{\\mathbb{Q}}|$, 'almost all' real numbers are transcendental — a non-constructive existence proof that predated explicit transcendence results.",
     "openQuestions": [
-      "What is the most efficient pairing function for encoding rationals?",
-      "How does the enumeration extend to algebraic numbers of bounded degree?",
-      "What are the computational properties of specific rational enumerations?"
+      "Is $2^{\\aleph_0} = \\aleph_1$ (the Continuum Hypothesis)? This question, closely linked to the countability results that motivated it, was shown independent of ZFC by Godel (1940) and Cohen (1963).",
+      "What is the Borel complexity of 'natural' enumerations of $\\mathbb{Q}$? The standard diagonal enumeration is computable, but what about enumerations with special order-theoretic properties?",
+      "Can the Cantor pairing function be replaced by a more efficient encoding (e.g., the Stern-Brocot tree) while maintaining the same formal properties?"
     ]
   }
 }

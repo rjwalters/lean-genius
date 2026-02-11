@@ -2,73 +2,157 @@
   {
     "id": "denumerable-instance",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 59,
-      "endLine": 63
-    },
+    "range": { "startLine": 56, "endLine": 57 },
     "type": "concept",
     "title": "Mathlib's Denumerable Instance",
-    "content": "The `Denumerable ℚ` instance is provided by Mathlib. This typeclass asserts that ℚ is in bijection with ℕ, with explicit encoding/decoding functions.",
-    "significance": "key"
+    "content": "The `Denumerable ℚ` instance is provided by `Mathlib.Data.Rat.Denumerable`. This typeclass asserts that $\\mathbb{Q}$ is in constructive bijection with $\\mathbb{N}$, meaning there exist computable encoding and decoding functions that are mutual inverses. The `inferInstance` tactic resolves the typeclass automatically.",
+    "mathContext": "$\\texttt{Denumerable}\\;\\mathbb{Q}$ asserts $\\mathbb{Q} \\simeq \\mathbb{N}$ constructively",
+    "significance": "key",
+    "relatedConcepts": ["typeclass inference", "constructive bijection", "Denumerable"],
+    "prerequisites": ["Mathlib.Data.Rat.Denumerable"]
   },
   {
     "id": "equiv-definition",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 59,
-      "endLine": 63
-    },
+    "range": { "startLine": 59, "endLine": 63 },
     "type": "definition",
-    "title": "The Explicit Bijection",
-    "content": "`Denumerable.eqv` gives an equivalence `ℚ ≃ ℕ`. We use `.symm` to get `ℕ ≃ ℚ`, which lets us enumerate rationals by natural numbers.",
-    "significance": "key"
+    "title": "The Explicit Bijection ℕ ≃ ℚ",
+    "content": "`Denumerable.eqv` produces an equivalence $\\mathbb{Q} \\simeq \\mathbb{N}$; applying `.symm` yields $\\mathbb{N} \\simeq \\mathbb{Q}$, an explicit enumeration of the rationals. Internally, Mathlib encodes a rational $p/q$ (in lowest terms) by pairing the integer numerator with the positive denominator using Cantor's pairing function.",
+    "mathContext": "$\\texttt{natEquivRat} : \\mathbb{N} \\simeq \\mathbb{Q}$ via $(\\texttt{Denumerable.eqv}\\;\\mathbb{Q})^{-1}$",
+    "significance": "key",
+    "relatedConcepts": ["Cantor pairing function", "Equiv", "constructive enumeration"],
+    "prerequisites": ["Denumerable.eqv", "Equiv.symm"]
   },
   {
     "id": "main-theorem",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 67,
-      "endLine": 72
-    },
+    "range": { "startLine": 67, "endLine": 72 },
     "type": "theorem",
-    "title": "Cantor's Classical Statement",
-    "content": "This is the classical formulation: there exists a bijection f : ℕ ≃ ℚ. The proof extracts the bijection from Mathlib's Denumerable instance.",
-    "significance": "critical"
+    "title": "Cantor's Theorem: ℕ ≃ ℚ Exists",
+    "content": "The classical formulation: there exists a bijection $f : \\mathbb{N} \\simeq \\mathbb{Q}$. The proof extracts the bijection from the `Denumerable` instance and verifies bijectivity via `Equiv.bijective`. This is Wiedijk's Theorem #3.",
+    "mathContext": "$\\exists f : \\mathbb{N} \\xrightarrow{\\sim} \\mathbb{Q}$, i.e., $|\\mathbb{N}| = |\\mathbb{Q}|$",
+    "significance": "critical",
+    "relatedConcepts": ["bijection", "Wiedijk 100 theorems", "Cantor's theorem"],
+    "prerequisites": ["Denumerable.eqv", "Equiv.bijective"]
   },
   {
     "id": "countable-corollary",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 74,
-      "endLine": 78
-    },
+    "range": { "startLine": 74, "endLine": 78 },
     "type": "lemma",
-    "title": "Countability Follows",
-    "content": "Every denumerable type is countable. The converse is false: finite types are countable but not denumerable.",
-    "significance": "supporting"
+    "title": "Countability Follows from Denumerability",
+    "content": "Every denumerable type is countable, but the converse fails: finite types are countable but not denumerable. In Lean's hierarchy, `Denumerable` implies `Countable` implies `Encodable`. The distinction matters: denumerable types are exactly the countably infinite ones.",
+    "mathContext": "$\\texttt{Denumerable}\\;\\alpha \\implies \\texttt{Countable}\\;\\alpha$, but $\\texttt{Countable}\\;\\texttt{Fin}\\;n$ while $\\neg\\,\\texttt{Denumerable}\\;\\texttt{Fin}\\;n$",
+    "significance": "supporting",
+    "relatedConcepts": ["Countable", "Encodable", "finite types"],
+    "prerequisites": ["Denumerable", "Countable"]
   },
   {
-    "id": "round-trip",
+    "id": "surjection",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 113,
-      "endLine": 115
-    },
-    "type": "insight",
-    "title": "Round-Trip Properties",
-    "content": "The encode and decode functions are mutual inverses. These proofs verify that no information is lost in the encoding.",
-    "significance": "key"
-  },
-  {
-    "id": "cardinality",
-    "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 165,
-      "endLine": 169
-    },
+    "range": { "startLine": 80, "endLine": 85 },
     "type": "theorem",
-    "title": "Cardinal Equality",
-    "content": "In cardinal arithmetic, |ℚ| = ℵ₀. This connects the type-theoretic notion (Denumerable) to the set-theoretic notion (cardinality).",
-    "significance": "key"
+    "title": "Surjection ℕ → ℚ Exists",
+    "content": "Reformulates countability as the existence of a surjection $\\mathbb{N} \\twoheadrightarrow \\mathbb{Q}$: every rational is the image of some natural number. This is the 'listing' perspective — we can enumerate all rationals without missing any.",
+    "mathContext": "$\\exists f : \\mathbb{N} \\to \\mathbb{Q},\\; f \\text{ surjective}$",
+    "significance": "supporting",
+    "relatedConcepts": ["surjection", "enumeration", "Schroeder-Bernstein"],
+    "prerequisites": ["Equiv.surjective"]
+  },
+  {
+    "id": "injection",
+    "proofId": "denumerability-rationals",
+    "range": { "startLine": 87, "endLine": 92 },
+    "type": "theorem",
+    "title": "Injection ℚ → ℕ Exists",
+    "content": "Reformulates countability as the existence of an injection $\\mathbb{Q} \\hookrightarrow \\mathbb{N}$: each rational receives a unique natural number label. Combined with the surjection, this gives the full bijection via the Cantor--Bernstein--Schroeder theorem.",
+    "mathContext": "$\\exists f : \\mathbb{Q} \\to \\mathbb{N},\\; f \\text{ injective}$",
+    "significance": "supporting",
+    "relatedConcepts": ["injection", "Cantor-Bernstein-Schroeder theorem", "encoding"],
+    "prerequisites": ["Equiv.injective"]
+  },
+  {
+    "id": "decode-fn",
+    "proofId": "denumerability-rationals",
+    "range": { "startLine": 107, "endLine": 108 },
+    "type": "definition",
+    "title": "Decode: ℕ → ℚ",
+    "content": "The decoding function maps each natural number to a unique rational. Internally, Mathlib unpacks $n$ into a pair $(\\text{num}, \\text{denom})$ using the inverse Cantor pairing function, then constructs the rational $\\text{num}/\\text{denom}$.",
+    "mathContext": "$\\texttt{decodeNatToRat}(n) = (\\texttt{Denumerable.eqv}\\;\\mathbb{Q})^{-1}(n) \\in \\mathbb{Q}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Cantor pairing function", "decoding", "computability"],
+    "prerequisites": ["Denumerable.eqv"]
+  },
+  {
+    "id": "encode-fn",
+    "proofId": "denumerability-rationals",
+    "range": { "startLine": 110, "endLine": 111 },
+    "type": "definition",
+    "title": "Encode: ℚ → ℕ",
+    "content": "The encoding function assigns each rational a unique natural number. It takes the reduced representation $p/q$ with $\\gcd(|p|, q) = 1$, encodes the pair $(p, q)$ via the Cantor pairing function, and handles the sign of $p$.",
+    "mathContext": "$\\texttt{encodeRatToNat}(p/q) = \\pi(\\text{sign-encode}(p), q) \\in \\mathbb{N}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Cantor pairing function", "encoding", "reduced fractions"],
+    "prerequisites": ["Denumerable.eqv"]
+  },
+  {
+    "id": "round-trip-decode",
+    "proofId": "denumerability-rationals",
+    "range": { "startLine": 113, "endLine": 115 },
+    "type": "theorem",
+    "title": "Decode ∘ Encode = id on ℚ",
+    "content": "The round-trip property: encoding a rational to a natural number and decoding back yields the original rational. This proves the encoding is faithful — no information about the rational is lost. Formally, $\\forall q \\in \\mathbb{Q},\\; \\text{decode}(\\text{encode}(q)) = q$.",
+    "mathContext": "$\\forall q \\in \\mathbb{Q},\\; \\text{decode}(\\text{encode}(q)) = q$",
+    "significance": "key",
+    "relatedConcepts": ["left inverse", "retraction", "Equiv"],
+    "prerequisites": ["decodeNatToRat", "encodeRatToNat"]
+  },
+  {
+    "id": "round-trip-encode",
+    "proofId": "denumerability-rationals",
+    "range": { "startLine": 117, "endLine": 119 },
+    "type": "theorem",
+    "title": "Encode ∘ Decode = id on ℕ",
+    "content": "The complementary round-trip: decoding a natural number to a rational and encoding back yields the original number. Combined with the previous lemma, this establishes that encode and decode form a genuine bijection (equivalence).",
+    "mathContext": "$\\forall n \\in \\mathbb{N},\\; \\text{encode}(\\text{decode}(n)) = n$",
+    "significance": "key",
+    "relatedConcepts": ["right inverse", "section", "Equiv"],
+    "prerequisites": ["decodeNatToRat", "encodeRatToNat"]
+  },
+  {
+    "id": "rationals-infinite",
+    "proofId": "denumerability-rationals",
+    "range": { "startLine": 131, "endLine": 132 },
+    "type": "theorem",
+    "title": "ℚ is Infinite",
+    "content": "Confirms $\\mathbb{Q}$ is an infinite type, which is required for denumerability. Finite types are countable but not denumerable. Lean derives this from the injection $\\mathbb{N} \\hookrightarrow \\mathbb{Q}$ (e.g., the natural inclusion $n \\mapsto n/1$).",
+    "mathContext": "$|\\mathbb{Q}| \\ge \\aleph_0$, i.e., $\\mathbb{Q}$ is infinite",
+    "significance": "supporting",
+    "relatedConcepts": ["Infinite typeclass", "Dedekind-infinite", "cardinality"],
+    "prerequisites": ["Infinite"]
+  },
+  {
+    "id": "cardinality-aleph0",
+    "proofId": "denumerability-rationals",
+    "range": { "startLine": 165, "endLine": 169 },
+    "type": "theorem",
+    "title": "Cardinal Equality: |ℚ| = ℵ₀",
+    "content": "In Mathlib's cardinal arithmetic, denumerability corresponds to having cardinality $\\aleph_0$, the smallest infinite cardinal. This theorem bridges the type-theoretic notion (`Denumerable`) with the set-theoretic notion (`Cardinal.aleph0`). The proof is a direct application of `Cardinal.mk_denumerable`.",
+    "mathContext": "$|\\mathbb{Q}| = \\aleph_0 = |\\mathbb{N}|$",
+    "significance": "key",
+    "relatedConcepts": ["cardinal arithmetic", "aleph numbers", "Cardinal.mk"],
+    "prerequisites": ["Cardinal.mk_denumerable", "Cardinal.aleph0"]
+  },
+  {
+    "id": "cardinality-nat",
+    "proofId": "denumerability-rationals",
+    "range": { "startLine": 171, "endLine": 173 },
+    "type": "theorem",
+    "title": "|ℚ| = |ℕ| via Cardinals",
+    "content": "Directly states the cardinal equality $|\\mathbb{Q}| = |\\mathbb{N}|$ by rewriting both sides as $\\aleph_0$. This is the set-theoretic formulation of Cantor's result, complementing the type-theoretic formulation via `Denumerable`.",
+    "mathContext": "$\\text{Cardinal.mk}\\;\\mathbb{Q} = \\text{Cardinal.mk}\\;\\mathbb{N}$",
+    "significance": "key",
+    "relatedConcepts": ["cardinal arithmetic", "equinumerosity"],
+    "prerequisites": ["card_rat_eq_aleph0", "Cardinal.mk_denumerable"]
   }
 ]
