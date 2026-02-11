@@ -16,81 +16,103 @@
   },
   "knownResults": {
     "proven": [
-      "Product = -1 for primes (via FiniteField.prod_univ_units_id_eq_neg_one)",
-      "-1 ≠ 1 in (ZMod n)ˣ for n ≥ 3",
-      "IsCyclic (ZMod p)ˣ for primes p",
-      "Gauss-Wilson biconditional (modulo 3 sorry lemmas)",
-      "Computational verification for n ≤ 300",
+      "prod_units_eq_neg_one_prime: Product = -1 for primes (via FiniteField)",
+      "neg_one_ne_one_units/zmod: -1 ≠ 1 in (ZMod n)ˣ for n ≥ 3",
+      "card_sq_eq_one_le_two: |{x | x²=1}| ≤ 2 in cyclic group",
+      "selfInverse_units_eq_pair: {x | x²=1} = {1,-1} in cyclic (ZMod n)ˣ, n ≥ 3",
+      "prod_univ_sq_eq_one: (∏ x)² = 1 in any finite commutative group",
+      "prod_eq_prod_sq_eq_one: Involution product lemma ∏ G = ∏ {x | x² = 1}",
+      "prod_units_neg_one_of_cyclic: IsCyclic → product = -1 (sorry-free)",
+      "gaussWilson_abstract: ∏ units = -1 ↔ cyclic (modulo 1 sorry)",
+      "unitsProduct_cast_eq_abstract: Concrete-abstract bridge (sorry-free)",
+      "gaussWilson_verified_le_300: Computational verification for n ≤ 300",
       "Wilson prime verification for 5 and 13",
-      "No Wilson primes in [14, 100]",
-      "Self-inverse units = {1, -1} in cyclic (ZMod n)ˣ (selfInverse_units_eq_pair)",
-      "(∏ x)² = 1 in any finite commutative group (prod_univ_sq_eq_one)"
+      "No Wilson primes in [14, 100]"
     ],
     "open": [
-      "Involution product lemma: ∏ G = ∏ {x | x² = 1}",
-      "Cyclic group even order ⟹ product ≠ 1 (generator argument)",
-      "Non-cyclic ⟹ product = 1 (exponent-2 subgroup product)",
-      "Concrete-abstract bridge via ZMod.unitOfCoprime"
+      "prod_units_one_of_not_cyclic: ¬IsCyclic → product = 1 (1 sorry)"
     ],
-    "goal": "Eliminate all sorries: prove the involution lemma, cyclic/non-cyclic product theorems, and concrete-abstract bridge"
+    "goal": "Eliminate the last sorry in prod_units_one_of_not_cyclic"
   },
   "currentState": {
     "phase": "IN_PROGRESS",
-    "since": "2026-02-10T11:00:00.000Z",
-    "iteration": 2,
-    "focus": "Proved key helper lemmas: selfInverse_units_eq_pair and prod_univ_sq_eq_one. Restructured proof architecture to decompose sorries into clearer, more tractable pieces.",
+    "since": "2026-02-10T14:00:00.000Z",
+    "iteration": 3,
+    "focus": "Cleaned up file to 1 sorry (down from 4). Documented proof strategy. Ready for Aristotle submission.",
     "blockers": [
-      "Need Finset.prod_involution or equivalent for involution product lemma",
-      "Generator argument for cyclic group product requires careful arithmetic"
+      "Finset.prod_involution requires paired products = 1, but natural pairing x ↦ cx gives product c ≠ 1",
+      "Need Finset coset partition machinery or orbit product formula with transversal",
+      "isCyclic_of_card_pow_eq_one_le needs condition for ALL n, not just n=2"
     ],
-    "nextAction": "Prove involution product lemma using Finset.prod_bij. Then use generator to show product ≠ 1 in cyclic groups of even order.",
+    "nextAction": "Submit to Aristotle for automated proof search. Alternatively, construct Finset transversal for orbit product formula.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved selfInverse_units_eq_pair (in cyclic (ZMod n)ˣ with n ≥ 3, the set {x | x² = 1} = {1, -1}) and prod_univ_sq_eq_one ((∏ x)² = 1 in any finite commutative group, via bijection x ↦ x⁻¹ and Finset.prod_bij). Restructured the proof to reduce main theorems to clear sub-lemmas. 4 sorries remain with documented strategies.",
+    "progressSummary": "14 proved theorems, 0 axioms, 1 sorry. Reduced from 4 sorries to 1 by cleaning up incomplete helper lemmas. The remaining sorry is prod_units_one_of_not_cyclic: when (ZMod n)ˣ is not cyclic, ∏ units = 1. Proof strategy is clear (Klein four coset decomposition) but Lean formalization requires Finset machinery not directly available in Mathlib.",
     "builtItems": [
-      "selfInverse_units_eq_pair: {x | x²=1} = {1,-1} in cyclic (ZMod n)ˣ (n ≥ 3)",
-      "prod_univ_sq_eq_one: (∏ x)² = 1 in finite commutative group",
-      "card_sq_eq_one_le_two: |{x | x²=1}| ≤ 2 in cyclic group (via IsCyclic.card_pow_eq_one_le)",
-      "Proof architecture: main theorems reduce to involution lemma + generator argument"
+      "prod_units_eq_neg_one_prime: Product = -1 for primes",
+      "sq_eq_one_iff_eq_inv: x² = 1 ↔ x = x⁻¹ in CommGroup",
+      "neg_one_ne_one_units: -1 ≠ 1 in (ZMod n)ˣ for n ≥ 3",
+      "neg_one_ne_one_zmod: -1 ≠ 1 in ZMod n for n ≥ 3",
+      "card_sq_eq_one_le_two: |{x | x²=1}| ≤ 2 in cyclic group",
+      "selfInverse_units_eq_pair: {x | x²=1} = {1,-1} when cyclic, n ≥ 3",
+      "prod_univ_sq_eq_one: (∏ x)² = 1 in finite CommGroup",
+      "prod_eq_prod_sq_eq_one: Involution product lemma (sorry-free)",
+      "prod_units_neg_one_of_cyclic: IsCyclic → product = -1 (sorry-free)",
+      "gaussWilson_abstract: biconditional (modulo 1 sorry)",
+      "unitsProduct_cast_eq_abstract: Concrete-abstract bridge (sorry-free)",
+      "gaussWilson_verified_le_300: Computational verification n ≤ 300",
+      "five_is_wilson_prime, thirteen_is_wilson_prime",
+      "no_wilson_primes_14_to_100"
     ],
     "insights": [
-      "IsCyclic.card_pow_eq_one_le gives |{x | x^n=1}| ≤ n in cyclic groups - key for self-inverse classification",
-      "Finset.eq_of_superset_of_card_le can show set equality from subset + cardinality bounds",
-      "The (∏ x)² = 1 proof uses Finset.prod_bij with the involution x ↦ x⁻¹ and Finset.prod_inv_distrib",
-      "For prod_units_neg_one_of_cyclic: (∏ x)² = 1 and {x | x²=1} = {1,-1} give ∏ x ∈ {1,-1}. Need generator arg to exclude 1.",
-      "Generator approach: in cyclic group of even order m, ∏ = g^(m(m-1)/2) = g^(m/2) = -1",
-      "The concrete-abstract bridge needs Finset.prod_bij connecting coprime naturals < n to (ZMod n)ˣ",
-      "Related problem wilsons-generalization has overlapping work with 1 sorry (unitsProduct_eq_neg_one_iff_cyclic)"
+      "IsCyclic.card_pow_eq_one_le gives |{x | x^n=1}| ≤ n in cyclic groups",
+      "Finset.eq_of_subset_of_card_le proves set equality from subset + cardinality bounds",
+      "(∏ x)² = 1 proof uses Finset.prod_bij with x ↦ x⁻¹ and Finset.prod_inv_distrib",
+      "Finset.prod_involution pairs elements with product 1; used for involution lemma on non-self-inverse elements",
+      "Cyclic → product = -1: involution lemma reduces to ∏ {1,-1} = -1",
+      "Concrete-abstract bridge: Finset.prod_nbij with ZMod.val gives bijection between coprime naturals and units",
+      "BARRIER: Finset.prod_involution CANNOT prove orbit product P=c^(|S|/2) because paired values multiply to c ≠ 1",
+      "BARRIER: isCyclic_of_card_pow_eq_one_le needs |{x|x^n=1}| ≤ n for ALL n, not just n=2",
+      "Klein four coset decomposition: {e,ce,de,cde} has product c²d²e⁴ = 1 when c²=d²=1",
+      "10+ proof strategies attempted; all require either transversal construction or coset partition Finset machinery",
+      "The sorry is computationally verified for n ≤ 300 via native_decide"
     ],
     "mathlibGaps": [
-      "Finset.prod_involution may not exist in Mathlib4 (exists in Mathlib3)",
-      "No ready-made lemma for 'product of all elements in finite abelian group'",
-      "Need careful use of ZMod.unitOfCoprime for the bridge lemma"
+      "No Finset.prod_involution variant for non-identity paired products (product = c instead of 1)",
+      "No direct orbit product formula: ∏ S = c^(|S|/2) for fixed-point-free involution with pair product c",
+      "No Finset coset partition/decomposition lemma for subgroup action",
+      "isCyclic_of_card_pow_eq_one_le (converse) requires condition for all divisors, not just one"
     ],
     "nextSteps": [
-      "Prove involution product lemma: ∏ G = ∏ {x | x² = 1} using paired cancellation",
-      "Prove generator argument: in cyclic group of even order, product = unique element of order 2",
-      "Prove non-cyclic case: exponent-2 subgroup of order ≥ 4 has product 1",
-      "Prove concrete-abstract bridge using Finset.prod_bij + ZMod.unitOfCoprime",
-      "Consider submitting to Aristotle for bridge lemma (known result, should be provable)"
-    ]
+      "Submit to Aristotle for prod_units_one_of_not_cyclic sorry",
+      "Construct explicit Finset transversal of involution x ↦ cx (well-founded recursion on S.card)",
+      "Alternatively: prove orbit product formula as standalone lemma, then apply",
+      "Alternatively: use Mathlib's finite abelian group structure theorem if available"
+    ],
+    "markdown": "# Wilson's Theorem OQ-02: Gauss-Wilson Generalization\n\n## Status: 14 proved theorems, 0 axioms, 1 sorry\n\n## Proven Theorems\n- **Involution product lemma**: ∏ G = ∏ {x | x² = 1} (key structural result)\n- **Cyclic → product = -1**: Via involution lemma + self-inverse classification\n- **Concrete-abstract bridge**: ZMod.val gives bijection between coprime naturals and units\n- **Gauss-Wilson biconditional**: ∏ units = -1 ↔ cyclic (modulo 1 sorry)\n- **Computational verification**: All cases verified for n ≤ 300\n\n## Remaining Sorry\n`prod_units_one_of_not_cyclic`: ¬IsCyclic → ∏ units = 1\n\n**Mathematical proof**: S = {x | x² = 1} is an elementary abelian 2-group of rank ≥ 2. Klein four {1,c,d,cd} partitions S into 4-element cosets, each with product 1.\n\n**Formalization barrier**: Requires Finset coset partition machinery or orbit transversal construction not directly in Mathlib."
   },
   "approaches": [
     {
       "name": "Involution + self-inverse decomposition",
-      "description": "Decompose ∏ G into ∏ {self-inverse} via involution pairing. In cyclic group, self-inverse = {1, -1}. Product = -1.",
+      "description": "∏ G = ∏ {self-inverse} via involution pairing. Cyclic: {1,-1}, product = -1. Non-cyclic: S has rank ≥ 2, product = 1.",
       "status": "in-progress",
       "difficulty": "medium"
     },
     {
-      "name": "Generator sum approach (alternative for cyclic case)",
-      "description": "In cyclic group of order m with generator g: ∏ G = g^(m(m-1)/2). For even m, this equals g^(m/2) = -1.",
-      "status": "candidate",
+      "name": "Klein four coset decomposition (for non-cyclic case)",
+      "description": "Pick c,d ∈ S\\{1} distinct. K={1,c,d,cd} partitions S into cosets. Each coset product = 1. Requires Finset partition.",
+      "status": "blocked",
+      "difficulty": "hard"
+    },
+    {
+      "name": "Orbit product formula via transversal",
+      "description": "Fixed-point-free involution x ↦ cx pairs S. Transversal T gives ∏ S = c^|T|. Since 4||S|, c^(|S|/2) = (c²)^(|S|/4) = 1.",
+      "status": "blocked",
       "difficulty": "hard"
     }
   ],
@@ -99,7 +121,8 @@
     "number-theory",
     "extension",
     "group-theory",
-    "cyclic-groups"
+    "cyclic-groups",
+    "1-sorry"
   ],
   "relatedProofs": [
     "WilsonsTheorem.lean",
@@ -117,11 +140,14 @@
       "Mathlib.RingTheory.ZMod.UnitsCyclic",
       "FiniteField.prod_univ_units_id_eq_neg_one",
       "IsCyclic.card_pow_eq_one_le",
-      "ZMod.isCyclic_units_iff"
+      "ZMod.isCyclic_units_iff",
+      "Finset.prod_involution",
+      "Finset.prod_bij",
+      "Finset.prod_nbij"
     ]
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-10T11:00:00.000Z",
+  "lastUpdate": "2026-02-10T18:00:00.000Z",
   "significance": 7,
   "tractability": 7
 }
