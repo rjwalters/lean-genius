@@ -19,74 +19,82 @@
       "Erdős–Turán conjecture (Problem #28)",
       "https://erdosproblems.com/40"
     ],
-    "leanFile": "Proofs/Erdos40Problem.lean",
+    "proofRepoPath": "Proofs/Erdos40Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/40",
     "erdosUrl": "https://erdosproblems.com/40"
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports $\\texttt{Nat.Basic}$, $\\texttt{Real.Basic}$, $\\texttt{Real.Sqrt}$, $\\texttt{Set.Basic}$, and Mathlib tactics for formalizing the density conditions and representation counting.",
+      "startLine": 22,
+      "endLine": 26
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 24,
-      "endLine": 42,
-      "summary": "Define representation count r_A(n), counting function, additive basis of order 2, and RepUnbounded (limsup r_A = ∞)."
+      "summary": "Defines $r_A(n) = |\\{(a,b) : a \\leq b,\\; a+b=n\\}|$, the counting function $A(N) = |A \\cap [1,N]|$, additive basis of order 2 ($r_A(n) \\geq 1$ eventually), and $\\texttt{RepUnbounded}$ ($\\limsup r_A(n) = \\infty$).",
+      "startLine": 28,
+      "endLine": 46
     },
     {
       "id": "erdos-turan",
-      "title": "Erdős–Turán Conjecture",
-      "startLine": 44,
-      "endLine": 48,
-      "summary": "Problem #28: every additive basis of order 2 has unbounded representation function."
+      "title": "Erdős-Turan Conjecture (Problem #28)",
+      "summary": "States the 1941 conjecture: every additive basis of order 2 has $\\limsup r_A(n) = \\infty$. Declared as an axiom (OPEN).",
+      "startLine": 48,
+      "endLine": 53
     },
     {
       "id": "problem-40",
       "title": "Problem #40: Strengthened Form",
-      "startLine": 50,
-      "endLine": 62,
-      "summary": "For which g → ∞ does density N^{1/2}/g(N) imply unbounded representations? The strongest form: all g → ∞."
+      "summary": "Defines $\\texttt{HasDensity}(A, g)$: $A(N) \\geq c\\sqrt{N}/g(N)$. States Problem #40: for ALL $g \\to \\infty$, this density implies $\\limsup r_A(n) = \\infty$. $500 bounty.",
+      "startLine": 55,
+      "endLine": 67
     },
     {
       "id": "connection-28",
       "title": "Connection to Problem #28",
-      "startLine": 64,
-      "endLine": 72,
-      "summary": "Problem #40 for any g → ∞ implies Problem #28, since additive bases have density ≥ N^{1/2}."
+      "summary": "Proves the logical implication: Problem #40 $\\Rightarrow$ Problem #28. Key insight: additive bases have $A(N) \\geq c\\sqrt{N} \\geq c\\sqrt{N}/g(N)$ for any divergent $g$.",
+      "startLine": 69,
+      "endLine": 77
     },
     {
       "id": "partial-results",
       "title": "Known Partial Results",
-      "startLine": 74,
-      "endLine": 88,
-      "summary": "Sidon set density bound |A| ≤ (1+o(1))N^{1/2}. B₂[g] set density bounds."
+      "summary": "Sidon set bound: $r_A(n) \\leq 1 \\Rightarrow A(N) \\leq (1+o(1))\\sqrt{N}$ (Erdős-Turán 1941, Lindström 1969). $B_2[g]$ bound: $r_A(n) \\leq g \\Rightarrow A(N) \\leq c_g\\sqrt{N}$. Shows $\\sqrt{N}$ is the natural threshold.",
+      "startLine": 79,
+      "endLine": 94
     },
     {
       "id": "heuristic",
       "title": "Probabilistic Heuristic",
-      "startLine": 90,
-      "endLine": 100,
-      "summary": "Random model analysis: expected r_A(n) ~ 1/g(N)² suggests the answer depends on g's growth rate."
+      "summary": "Random model: $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2$ vanishes for $g \\to \\infty$, but $\\max_n r_A(n)$ may still diverge. Conjectured threshold near $g(N) \\sim (\\log N)^{1/2+\\epsilon}$.",
+      "startLine": 96,
+      "endLine": 109
     }
   ],
   "overview": {
-    "historicalContext": "Erdős posed this as a quantitative strengthening of the Erdős–Turán conjecture (1941). The $500 bounty reflects its difficulty and central importance in additive combinatorics. It asks for the sharpest density condition ensuring unbounded representations.",
-    "problemStatement": "For which g(N) → ∞ does |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞?",
-    "proofStrategy": "We formalize the representation count, counting function, and additive basis notion. We state Problem #40 in its strongest form (all g → ∞) and prove it implies Problem #28. Sidon set density bounds show the N^{1/2} threshold is natural.",
+    "historicalContext": "Erdős posed Problem #40 as a quantitative strengthening of the celebrated Erdős-Turán conjecture (Problem #28, 1941), which asks whether every additive basis of order 2 has unbounded representation function. The Erdős-Turán conjecture itself grew from Erdős and Pál Turán's foundational 1941 paper 'On a problem of Sidon in additive number theory,' which also established the $\\sqrt{N}$ density bound for Sidon sets. Problem #40 appeared in Erdős's later papers [Er95] and [Er97c] in the 1990s, carrying a $500 bounty — one of Erdős's highest prizes — reflecting both the problem's difficulty and its central position in additive combinatorics. The problem asks: what is the weakest density condition on a set $A$ that still forces $\\limsup r_A(n) = \\infty$? The $\\sqrt{N}$ threshold is natural because Sidon sets (where $r_A(n) \\leq 1$) achieve exactly this density. Lindström (1969) gave the sharp constant in the Sidon density bound. More recently, the study of $B_2[g]$ sets (bounded representation up to $g$) by Cilleruelo, Ruzsa, and Trujillo has refined our understanding of the density-representation tradeoff.",
+    "problemStatement": "For which functions $g(N) \\to \\infty$ is it true that $|A \\cap \\{1,\\ldots,N\\}| \\gg N^{1/2}/g(N)$ implies $\\limsup r_A(n) = \\infty$? The strongest form: does this hold for ALL $g \\to \\infty$?",
+    "proofStrategy": "The formalization builds the additive combinatorics infrastructure: representation count $r_A(n)$, counting function $A(N)$, and additive basis. It states Problem #40 in its strongest form (all $g \\to \\infty$) and proves the key logical implication to Problem #28. Sidon and $B_2[g]$ density bounds demonstrate the naturalness of the $\\sqrt{N}$ threshold. Probabilistic heuristics indicate the threshold function $g^*$ separating bounded from unbounded behavior lies near $g(N) \\sim (\\log N)^{1/2+\\epsilon}$.",
     "keyInsights": [
-      "Solving for ANY g → ∞ implies the Erdős–Turán conjecture ($500 bounty on Problem #28)",
-      "Sidon sets have density exactly N^{1/2}, making this the critical threshold",
-      "The N^{1/2}/g(N) density is strictly below additive-basis density",
-      "Random models suggest the answer depends on g's growth rate relative to log N",
-      "B₂[g] sets (bounded representation) still have density O(N^{1/2})"
+      "**Hierarchy of conjectures**: Problem #40 is strictly stronger than the Erdős-Turán conjecture (Problem #28) — it asks for unbounded representations under a weaker density hypothesis, with the implication $\\text{P40} \\Rightarrow \\text{P28}$ proved via the basis density lower bound $A(N) \\geq c\\sqrt{N}$",
+      "**$\\sqrt{N}$ as critical density**: Sidon sets have density exactly $(1+o(1))\\sqrt{N}$ and bounded $r_A(n) \\leq 1$, while additive bases have density $\\geq c\\sqrt{N}$ and are conjectured to have unbounded $r_A$. The problem asks whether slightly below $\\sqrt{N}$ still forces unboundedness",
+      "**$B_2[g]$ sets and the density-representation tradeoff**: Sets with $r_A(n) \\leq g$ satisfy $A(N) \\leq c_g\\sqrt{N}$, showing that bounded representation always implies the $\\sqrt{N}$ density barrier — the contrapositive suggests density above $\\sqrt{N}$ should break the barrier",
+      "**Probabilistic barrier**: Random sets of density $\\sqrt{N}/g(N)$ have $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2 \\to 0$, so the conjecture cannot hold via first-moment methods — it requires structural or second-moment arguments about large deviations",
+      "**$500 bounty reflects centrality**: This is among Erdős's highest-value bounties, signaling its importance as a bridge between density estimates and structural results in additive number theory"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #40 remains open with a $500 bounty. It asks for the weakest density condition ensuring unbounded sum representations, generalizing the Erdős–Turán conjecture. The exact threshold function g is unknown.",
-    "implications": "A resolution would either prove the Erdős–Turán conjecture (if all g → ∞ work) or identify a sharp phase transition between bounded and unbounded representation behavior in additive number theory.",
+    "summary": "This formalization captures Erdős Problem #40 on the weakest density condition forcing unbounded sum representations. The file formalizes the representation count, additive basis, density condition, the strongest form of the conjecture (all $g \\to \\infty$), the implication to the Erdős-Turán conjecture, Sidon and $B_2[g]$ density bounds, and probabilistic heuristics. The $\\sqrt{N}$ density threshold emerges as the natural boundary, with Sidon sets on one side and additive bases on the other.",
+    "implications": "Resolving Problem #40 would either prove the Erdős-Turán conjecture (if all $g \\to \\infty$ work) or identify a sharp phase transition in the density-representation relationship. The problem connects to Fourier-analytic methods in additive combinatorics (via generating functions and exponential sums), the theory of Sidon and $B_h$ sets, and probabilistic combinatorics. Understanding the threshold function $g^*$ would illuminate the fundamental question of how density interacts with additive structure.",
     "openQuestions": [
-      "Does the conjecture hold for g(N) = (log N)^ε for any ε > 0?",
-      "Is there a counterexample with g(N) growing polynomially?",
-      "What is the exact threshold function separating bounded from unbounded representations?"
+      "Does the conjecture hold for $g(N) = (\\log N)^\\epsilon$ for any $\\epsilon > 0$? This would be a major advance toward the full conjecture.",
+      "Is there a counterexample set $A$ with $A(N) \\sim \\sqrt{N}/g(N)$ for some slowly growing $g$ where $r_A(n)$ stays bounded?",
+      "What Fourier-analytic or combinatorial methods can handle the regime $A(N) \\sim \\sqrt{N}/g(N)$ with $g \\to \\infty$? Standard circle method arguments require $A(N) \\geq c\\sqrt{N}$.",
+      "Can the threshold function $g^*$ be related to a natural arithmetic quantity, such as the density of primes in short intervals?"
     ]
   }
 }
