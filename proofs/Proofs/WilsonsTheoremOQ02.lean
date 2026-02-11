@@ -5,6 +5,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.RingTheory.ZMod.UnitsCyclic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.GroupTheory.Subgroup.Basic
 import Mathlib.Tactic
 
 /-
@@ -140,6 +141,38 @@ theorem selfInverse_units_eq_pair {n : ℕ} (hn : n ≥ 3) [NeZero n] [IsCyclic 
   exact (Finset.eq_of_subset_of_card_le hsub (by omega)).symm
 
 -- ============================================================================
+-- Part 5b: Non-Cyclic Product Infrastructure
+-- ============================================================================
+
+/-- In a finite commutative group, c² = 1 and x² = 1 imply (c*x)² = 1. -/
+lemma mul_sq_eq_one_of_sq_eq_one {G : Type*} [CommGroup G]
+    {c x : G} (hc : c ^ 2 = 1) (hx : x ^ 2 = 1) : (c * x) ^ 2 = 1 := by
+  rw [mul_pow, hc, hx, one_mul]
+
+/-- Product of all elements of a Klein four group {1, a, b, ab} where a² = b² = 1
+    equals 1. This is a key building block. -/
+theorem prod_klein_four {G : Type*} [CommGroup G] [DecidableEq G]
+    {a b : G} (ha : a ^ 2 = 1) (hb : b ^ 2 = 1)
+    (hab : a ≠ b) (ha1 : a ≠ 1) (hb1 : b ≠ 1) (hab1 : a * b ≠ 1) :
+    ({1, a, b, a * b} : Finset G).prod id = 1 := by
+  -- All four elements are distinct
+  have hab_ne_a : a * b ≠ a := fun h => hb1 (mul_left_cancel h)
+  have hab_ne_b : a * b ≠ b := fun h => ha1 (mul_right_cancel h)
+  have ha_ne_1 : a ≠ 1 := ha1
+  have hb_ne_1 : b ≠ 1 := hb1
+  rw [Finset.prod_insert (by simp [Finset.mem_insert, Finset.mem_singleton]; push_neg
+                              exact ⟨ha1, hb1, hab1⟩)]
+  rw [Finset.prod_insert (by simp [Finset.mem_insert, Finset.mem_singleton]; push_neg
+                              exact ⟨hab, hab_ne_b⟩)]
+  rw [Finset.prod_insert (by simp; exact (fun h => hab_ne_a (mul_comm b a ▸ h)))]
+  simp only [Finset.prod_singleton, id]
+  -- Goal: 1 * (a * (b * (a * b))) = 1
+  rw [one_mul]
+  -- a * (b * (a * b)) = a * b * (a * b) = (ab)²
+  have key : a * (b * (a * b)) = (a * b) ^ 2 := by group
+  rw [key, mul_sq_eq_one_of_sq_eq_one ha hb]
+
+-- ============================================================================
 -- Part 6: Cyclic Group Product via Generator
 -- ============================================================================
 
@@ -219,17 +252,19 @@ theorem prod_units_neg_one_of_cyclic {n : ℕ} (hn : n ≥ 3)
 
 /-- When (ZMod n)ˣ is not cyclic and n ≥ 3, the product of units is 1.
 
-    Proof strategy (documented for Aristotle/future sessions):
-    1. By involution product lemma: ∏ G = ∏ {x | x² = 1}
-    2. When not cyclic, |{x | x² = 1}| ≥ 3 (more than {1, -1})
-    3. The self-inverse set S forms an elementary abelian 2-group of order ≥ 4
-    4. Pick two distinct non-identity c, d ∈ S. The Klein four subgroup {1,c,d,cd}
-       acts on S by left multiplication. Each orbit {e, ce, de, cde} has product
-       e·ce·de·cde = c²d²e⁴ = 1.
-    5. So ∏ S = ∏ (orbit products) = 1.
+    **Proof strategy** (Klein four coset decomposition):
+    1. ∏ G = ∏ S where S = {x | x² = 1} (by `prod_eq_prod_sq_eq_one`)
+    2. (∏ S)² = 1 (since each x² = 1 in S)
+    3. When ¬IsCyclic, |S| ≥ 4 (contrapositive of IsCyclic.card_pow_eq_one_le;
+       S is an elementary abelian 2-subgroup, so |S| is a power of 2)
+    4. Pick c,d ∈ S\{1} with c ≠ d. K = {1,c,d,cd} ⊆ S is Klein four.
+       Each K-coset {e,ce,de,cde} has product 1 (since c²=d²=e⁴=1).
+       K-cosets partition S, so ∏ S = 1.
+    5. Alternatively: orbit formula gives ∏ S = c^(|S|/2) via transversal of
+       involution x ↦ cx. Since 4 | |S|, c^(|S|/2) = (c²)^(|S|/4) = 1.
 
-    The key Lean formalization challenge is partitioning the finset into orbits of
-    a Klein four group action and showing each orbit product is 1. -/
+    Verified computationally for n ≤ 300. Proof requires Finset coset partition
+    or orbit transversal construction. Suitable for Aristotle proof search. -/
 theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
     [hne : NeZero n] (hncyc : ¬ IsCyclic (ZMod n)ˣ) :
     ∏ x : (ZMod n)ˣ, (x : ZMod n) = 1 := by
@@ -237,8 +272,8 @@ theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
     rw [show (∏ x : (ZMod n)ˣ, (x : ZMod n)) = (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) from
       (units_val_prod _ _).symm, hprod]
     simp
-  -- ∏ G = ∏ {x | x² = 1} by involution product lemma
-  -- When not cyclic, the Klein four action argument gives product = 1
+  -- ∏ G = ∏ S where S = {x | x² = 1}
+  rw [prod_eq_prod_sq_eq_one]
   sorry
 
 -- ============================================================================
@@ -383,30 +418,34 @@ theorem no_wilson_primes_14_to_100 :
 /-
 ## Summary
 
-### Proven (14 theorems)
-1. Product = -1 for primes (via FiniteField)
-2. -1 ≠ 1 for n ≥ 3 (both units and ZMod versions)
-3. Self-inverse units = {1, -1} for cyclic (ZMod n)ˣ, n ≥ 3
-4. Gauss-Wilson abstract biconditional (modulo non-cyclic case)
-5. Computational verification for n ≤ 300
-6. Wilson prime verification for 5, 13
-7. No Wilson primes in [14, 100]
-8. (∏ x)² = 1 in any finite commutative group
-9. Involution product lemma: ∏ G = ∏ {x | x² = 1} (`prod_eq_prod_sq_eq_one`)
-10. Cyclic → product = -1 (`prod_units_neg_one_of_cyclic`) - sorry-free
-11. Concrete-abstract bridge (`unitsProduct_cast_eq_abstract`) - sorry-free
+### Proven (14 theorems, 0 axioms)
+1. `prod_units_eq_neg_one_prime`: Product = -1 for primes (via FiniteField)
+2. `neg_one_ne_one_units`, `neg_one_ne_one_zmod`: -1 ≠ 1 for n ≥ 3
+3. `selfInverse_units_eq_pair`: {x | x² = 1} = {1, -1} for cyclic (ZMod n)ˣ, n ≥ 3
+4. `gaussWilson_abstract`: ∏ units = -1 ↔ (ZMod n)ˣ cyclic (modulo non-cyclic sorry)
+5. `gaussWilson_verified_le_300`: Computational verification for n ≤ 300
+6. `five_is_wilson_prime`, `thirteen_is_wilson_prime`: Wilson prime verification
+7. `no_wilson_primes_14_to_100`: No Wilson primes in [14, 100]
+8. `prod_univ_sq_eq_one`: (∏ x)² = 1 in any finite commutative group
+9. `prod_eq_prod_sq_eq_one`: Involution product lemma ∏ G = ∏ {x | x² = 1}
+10. `prod_units_neg_one_of_cyclic`: Cyclic → product = -1 (sorry-free)
+11. `unitsProduct_cast_eq_abstract`: Concrete-abstract bridge (sorry-free)
 
-### Remaining Sorries (1, reduced from 5)
+### Remaining Sorry (1)
 
-1. `prod_units_one_of_not_cyclic`: ¬IsCyclic → product = 1
-   Strategy: ∏ G = ∏ {x | x² = 1} (proved). The self-inverse set S forms an
-   elementary abelian 2-group. When not cyclic, |S| ≥ 3, so S has at least two
-   distinct non-identity elements c, d. The Klein four subgroup {1,c,d,cd} acts
-   on S by left multiplication with orbits {e, ce, de, cde}, each having product
-   e·ce·de·cde = c²d²e⁴ = 1. So ∏ S = 1.
-   Formalizing this requires Finset orbit partitioning machinery.
+`prod_units_one_of_not_cyclic`: ¬IsCyclic → product = 1
 
-All verified computationally for n ≤ 300.
+**Proof strategy**: ∏ G = ∏ S where S = {x | x² = 1} (proved). S is an
+elementary abelian 2-group. When not cyclic, |S| ≥ 4. Pick c,d ∈ S\{1},
+c ≠ d. Klein four {1,c,d,cd} acts on S with 4-element orbits {e,ce,de,cde},
+each having product 1. So ∏ S = 1.
+
+**Formalization barrier**: Requires Finset coset partition machinery or an
+orbit product formula with transversal construction. Neither is directly
+available in Mathlib. `Finset.prod_involution` requires paired products = 1,
+but the natural pairing x ↦ cx gives paired product c ≠ 1.
+
+Verified computationally for n ≤ 300 via `gaussWilson_verified_le_300`.
 -/
 
 #check @prod_units_eq_neg_one_prime
