@@ -3,94 +3,40 @@
   "title": "Computing Matrix Exponentials via Cayley-Hamilton",
   "phase": "COMPLETED",
   "status": "completed",
-  "tier": "A",
+  "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "For any polynomial p and n×n matrix A over a commutative ring R: aeval A p = aeval A (p %ₘ A.charpoly), where the remainder has degree < n.",
-    "plain": "Any polynomial function of a matrix A can be reduced modulo its characteristic polynomial. This means p(A) depends only on the remainder of p divided by charpoly(A), reducing matrix computations to polynomials of degree < n.",
-    "whyMatters": [
-      "Enables efficient computation of matrix powers A^k via polynomial arithmetic",
-      "Provides algebraic foundation for computing matrix exponentials exp(tA)",
-      "Shows evaluation map factors through finite-dimensional quotient ring R[X]/(charpoly)"
-    ]
+    "formal": "aeval A p = aeval A (p modulo A.charpoly); A^k = aeval A (X^k modulo charpoly)",
+    "plain": "Every polynomial function of an n×n matrix A reduces to a polynomial of degree < n via Cayley-Hamilton.",
+    "whyMatters": ["Foundation for computing matrix exponentials", "Reduces A^100 to degree < n polynomial", "Algebraic basis for ODE solvers"]
   },
   "knownResults": {
-    "proven": [
-      "aeval_eq_aeval_modByMonic: aeval A p = aeval A (p mod charpoly(A))",
-      "degree_reduced_lt_dim: Reduced polynomial has degree < n",
-      "power_eq_aeval_mod: A^k = aeval A (X^k mod charpoly(A))",
-      "congruence: Same remainder mod charpoly implies same matrix evaluation",
-      "charpoly_multiple_annihilates: Multiples of charpoly annihilate A",
-      "annihilator_add: Annihilator is closed under addition",
-      "annihilator_mul_left: Annihilator is closed under left multiplication",
-      "partial_sum_reduces: Finite power series reduce via charpoly",
-      "nilpotent_from_charpoly: charpoly = X^n implies A^n = 0",
-      "idempotent_power: A^2 = A implies A^k = A for all k > 0"
-    ],
+    "proven": ["Polynomial reduction theorem", "Degree bound: reduced poly has degree < n", "Power reduction", "Congruence theorem", "Annihilator ideal properties", "Partial sum reduction", "Nilpotent/idempotent special cases"],
     "open": [],
-    "goal": "Prove the polynomial reduction theorem and its consequences for matrix functions"
+    "goal": "Prove polynomial reduction via Cayley-Hamilton"
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-02-10T11:00:00.000Z",
+    "since": "2026-02-11T00:00:00Z",
     "iteration": 1,
-    "focus": "Complete proof with gallery entry.",
+    "focus": "Complete in CayleyHamiltonOQ02.lean (0 sorries)",
     "blockers": [],
-    "nextAction": "None - problem completed.",
-    "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
-    }
+    "nextAction": "None",
+    "attemptCounts": {"total": 1, "currentApproach": 1, "approachesTried": 1}
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full proof (0 sorries) of polynomial reduction via Cayley-Hamilton. 17 theorems covering: core reduction theorem, degree bounds, power reduction, congruence, annihilator ideal structure, partial sum reduction for matrix exponentials, and special cases (nilpotent, idempotent). Gallery entry created as cayley-hamilton-reduction.",
-    "builtItems": [
-      "proofs/Proofs/CayleyHamiltonOQ02.lean - Complete Lean 4 proof (358 lines, 0 sorries)",
-      "src/data/proofs/cayley-hamilton-reduction/ - Gallery entry with meta, annotations, index"
-    ],
-    "insights": [
-      "The polynomial division algorithm for monic polynomials is the key tool - charpoly is always monic",
-      "Cayley-Hamilton (aeval A charpoly(A) = 0) makes the quotient term vanish",
-      "The evaluation map R[X] -> M_n(R) factors through R[X]/(charpoly), dimension n as R-module",
-      "For nilpotent matrices, the exponential series truncates exactly after n terms",
-      "For idempotent matrices, exp(tA) = I + (e^t - 1)*A - a one-coefficient formula"
-    ],
+    "progressSummary": "COMPLETED: CayleyHamiltonOQ02.lean (359 lines, 0 sorries). Polynomial reduction, degree bounds, power reduction, algebraic structure, partial sums, special cases.",
+    "builtItems": ["proofs/Proofs/CayleyHamiltonOQ02.lean - Complete proof file"],
+    "insights": ["Polynomial.modByMonic_add_div + CH annihilation gives reduction"],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Polynomial division modulo monic charpoly",
-      "status": "succeeded",
-      "details": "Used Mathlib's modByMonic_add_div for polynomial division and aeval_self_charpoly for annihilation"
-    }
-  ],
-  "tags": [
-    "seeker-selected",
-    "linear-algebra",
-    "extension",
-    "completed"
-  ],
-  "relatedProofs": [
-    "cayley-hamilton",
-    "cayley-hamilton-reduction"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem#Applications"
-    ],
-    "mathlib": [
-      "Matrix.aeval_self_charpoly",
-      "Matrix.charpoly_monic",
-      "Matrix.charpoly_natDegree_eq_dim",
-      "Polynomial.modByMonic_add_div",
-      "Polynomial.degree_modByMonic_lt"
-    ]
-  },
-  "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-10T11:00:00.000Z",
+  "approaches": [{"name": "Polynomial division modulo charpoly", "status": "succeeded", "description": "Use division algorithm combined with Cayley-Hamilton"}],
+  "tags": ["seeker-selected", "linear-algebra", "extension", "completed"],
+  "relatedProofs": ["cayley-hamilton"],
+  "references": {"papers": [], "urls": [], "mathlib": ["Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"]},
+  "started": "2026-02-11T09:48:00Z",
+  "lastUpdate": "2026-02-11T09:55:00Z",
   "significance": 7,
   "tractability": 7
 }
