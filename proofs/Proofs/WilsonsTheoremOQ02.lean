@@ -460,6 +460,13 @@ orbit product formula with transversal construction. Neither is directly
 available in Mathlib. `Finset.prod_involution` requires paired products = 1,
 but the natural pairing x ↦ cx gives paired product c ≠ 1.
 
+**IMPORTANT NOTE (2026-02-11)**: The orbit product formula IS proved in
+WilsonsTheoremOQ02Ext.lean via `prod_involution_const` (FPF involution with
+constant pair product). That file reduces the problem to a single sorry:
+`card_sq_eq_one_ge_three_of_not_cyclic_zmod` — which is correctly specialized
+to (ZMod n)ˣ. The original general statement ¬IsCyclic G → |S| ≥ 3 was
+FALSE (counterexample: Z/3 × Z/3 is not cyclic but |{x|x²=1}| = 1).
+
 Verified computationally for n ≤ 300 via `gaussWilson_verified_le_300`.
 -/
 
