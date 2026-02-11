@@ -1,55 +1,32 @@
 {
   "id": "erdos-436",
-  "title": "Erdős Problem #436: Consecutive kth Power Residues",
+  "title": "Erdos Problem #436: Consecutive kth Power Residues",
   "slug": "erdos-436",
-  "description": "For prime p and k,m ≥ 2, let r(k,m,p) be the minimal r such that r,...,r+m-1 are kth power residues mod p. Let Λ(k,m) = lim sup r(k,m,p). Hildebrand (1991) proved Λ(k,2) finite for all k. Λ(k,3) for odd k ≥ 5 remains OPEN.",
+  "description": "For prime p and k,m >= 2, let r(k,m,p) be the minimal r such that r,...,r+m-1 are kth power residues mod p. Let Lambda(k,m) = lim sup r(k,m,p). Hildebrand (1991) proved Lambda(k,2) finite for all k. Lambda(k,3) for odd k >= 5 remains OPEN.",
   "meta": {
     "author": "Lehmer-Lehmer (1962), Hildebrand (1991), Graham (1964)",
     "sourceUrl": "https://erdosproblems.com/436",
     "date": "1962",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos436Problem.lean",
-    "tags": ["erdos", "number-theory", "power-residues", "analytic-number-theory", "partially-open"],
-    "badge": "axiom",
+    "tags": ["erdos", "number-theory", "power-residues", "analytic-number-theory", "partially-solved"],
+    "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 436,
     "erdosUrl": "https://erdosproblems.com/436",
-    "erdosProblemStatus": "partially-solved",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      { "theorem": "Nat.Prime", "description": "Prime numbers", "module": "Mathlib.Data.Nat.Prime.Basic" },
-      { "theorem": "ZMod", "description": "Integers mod n", "module": "Mathlib.Data.ZMod.Basic" },
-      { "theorem": "Filter.atTop", "description": "For lim sup", "module": "Mathlib.Order.Filter.Basic" },
-      { "theorem": "ZMod.pow_card_sub_one_eq_one", "description": "Fermat's Little Theorem in ZMod", "module": "Mathlib.FieldTheory.Finite.Basic" },
-      { "theorem": "ZMod.val_natCast_of_lt", "description": "ZMod value extraction", "module": "Mathlib.Data.ZMod.Basic" }
-    ],
-    "originalContributions": [
-      "IsKthPowerResidue: x^k ≡ r (mod p)",
-      "AreConsecutiveKthResidues: m consecutive residues",
-      "minConsecKthResidues: r(k,m,p) function",
-      "LambdaFinite: Finiteness of Λ(k,m)",
-      "Lambda: The Λ(k,m) value (axiomatized)",
-      "hildebrand_theorem: Λ(k,2) finite for all k",
-      "graham_theorem: Λ(k,m) = ∞ for m ≥ 4",
-      "lambda_even_3_infinite: Λ(k,3) = ∞ for even k",
-      "erdos436Question2: Open question for odd k",
-      "Known values: Λ(2,2)=9 through Λ(7,2)=1649375",
-      "fermat_little_theorem: proved from Mathlib ZMod.pow_card_sub_one_eq_one",
-      "euler_criterion_forward: proved via calc chain using FLT (was axiom)"
-    ],
-    "dateAdded": "2026-01-19"
+    "erdosProblemStatus": "partially-solved"
   },
   "overview": {
-    "historicalContext": "D.H. Lehmer and Emma Lehmer initiated this problem in 1962 with their paper 'On runs of residues'. They showed Λ(2,2)=9 with an elegant argument. Extensive computations in the 1960s by Dunton, Bierstedt, Mills, Brillhart, and Selfridge found exact values through k=7. Hildebrand's 1991 theorem using character sums and the large sieve resolved Question 1. Graham (1964) proved the m≥4 case is always infinite.",
-    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nFor prime p and k, m ≥ 2, let r(k,m,p) = min{r : r,...,r+m-1 are kth power residues mod p}.\nDefine Λ(k,m) = lim sup_{p→∞} r(k,m,p).\n\n**Questions:**\n1. Is Λ(k,2) finite for all k? [SOLVED: YES - Hildebrand 1991]\n2. Is Λ(k,3) finite for all odd k? [OPEN]\n3. What is the growth rate of Λ(k,m)? [PARTIAL]",
-    "proofStrategy": "The formalization defines kth power residues and consecutive runs. The Λ(k,m) function captures lim sup behavior via axiomatized Lambda with bound and minimality properties. Hildebrand's theorem, Graham's theorem, and the Lehmer-Lehmer parity result for m=3 are axiomatized. Exact computed values are recorded.",
+    "historicalContext": "D.H. Lehmer and Emma Lehmer initiated this problem in their 1962 paper 'On runs of residues,' proving $\\Lambda(2,2) = 9$ with an elegant argument exploiting Legendre symbol multiplicativity. In the 1960s, extensive machine computations by Dunton, Bierstedt, Mills, Brillhart, Selfridge, and the Lehmers found exact values $\\Lambda(k, 2)$ for $k \\leq 7$ and $\\Lambda(3, 3) = 23532$ --- among the earliest applications of electronic computers to number theory. The Lehmers also proved the remarkable parity dichotomy: $\\Lambda(k, 3) = \\infty$ for all even $k$, since $(-1)^k = 1$ creates a structural obstruction. Graham (1964) proved the definitive result that $\\Lambda(k, m) = \\infty$ for $m \\geq 4$, making $m \\leq 3$ the only interesting cases. The major breakthrough came from Hildebrand (1991), who used character sum estimates and the large sieve inequality to prove $\\Lambda(k, 2) < \\infty$ for all $k$, completely resolving Question 1. The remaining open question --- whether $\\Lambda(k, 3)$ is finite for odd $k \\geq 5$ --- lies at the boundary of current analytic number theory, as Hildebrand's methods do not extend from $m = 2$ to $m = 3$.",
+    "problemStatement": "For prime $p$ and $k, m \\geq 2$, let $r(k,m,p) = \\min\\{r \\geq 1 : r, r+1, \\ldots, r+m-1 \\text{ are all } k\\text{th power residues mod } p\\}$. Define $\\Lambda(k,m) = \\limsup_{p \\to \\infty} r(k,m,p)$. Questions: (1) Is $\\Lambda(k,2)$ finite for all $k$? [SOLVED: YES, Hildebrand 1991] (2) Is $\\Lambda(k,3)$ finite for all odd $k$? [OPEN for $k \\geq 5$] (3) What is the growth rate of $\\Lambda(k,m)$? [PARTIAL]",
+    "proofStrategy": "The formalization defines $k$th power residues via $\\exists x,\\; x^k \\equiv r \\pmod{p}$, consecutive runs, the functions $r(k,m,p)$ and $\\Lambda(k,m)$ (via $\\texttt{Nat.find}$), and axiomatizes the major theorems (Hildebrand, Graham, Lehmer-Lehmer parity). It proves Fermat's little theorem and Euler's criterion (forward direction) from Mathlib, and includes structural lemmas on run operations.",
     "keyInsights": [
-      "**Λ(2,2)=9:** Elegant proof using 9=3² always QR and 10=2·5 structure",
-      "**Hildebrand 1991:** Λ(k,2) finite for all k using analytic methods",
-      "**Graham 1964:** Λ(k,m) = ∞ for m ≥ 4",
-      "**Parity Dichotomy:** Λ(k,3) = ∞ for even k, unknown for odd k ≥ 5",
-      "**Rapid Growth:** 9, 77, 1224, 7888, 202124, 1649375...",
-      "**Machine Proofs:** 1960s computations found exact values"
+      "**$\\Lambda(2,2) = 9$ elegant proof**: Since $9 = 3^2$ is always QR and $10 = 2 \\cdot 5$, Legendre symbol multiplicativity $(10/p) = (2/p)(5/p)$ forces one of $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$ to be a consecutive QR pair",
+      "**Hildebrand's character sum method**: Resolves $\\Lambda(k,2) < \\infty$ for all $k$ by expressing consecutive residue counts via $\\sum_{\\chi^k = 1} \\chi(r)\\chi(r+1)$ and applying the large sieve",
+      "**Parity dichotomy for $m = 3$**: $\\Lambda(k,3) = \\infty$ for even $k$ (since $(-1)^k = 1$) but $\\Lambda(3,3) = 23532$ is finite, with odd $k \\geq 5$ unknown",
+      "**Graham's threshold at $m = 4$**: $\\Lambda(k,m) = \\infty$ for all $k \\geq 2, m \\geq 4$, making $m \\leq 3$ the complete frontier",
+      "**Rapid growth of $\\Lambda(k,2)$**: The sequence $9, 77, 1224, 7888, 202124, 1649375$ grows apparently super-polynomially with irregular ratios",
+      "**Genuine Lean proofs**: Fermat's little theorem proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$; Euler's criterion forward direction proved via calc chain"
     ]
   },
   "sections": [
@@ -57,81 +34,88 @@
       "id": "definitions",
       "title": "Power Residue Definitions",
       "startLine": 45,
-      "endLine": 67,
-      "summary": "kth power residues, consecutive runs"
+      "endLine": 69,
+      "summary": "Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 71,
+      "endLine": 155,
+      "summary": "Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions."
     },
     {
       "id": "r-function",
-      "title": "The r(k,m,p) Function",
-      "startLine": 69,
-      "endLine": 87,
-      "summary": "Minimal consecutive run function"
+      "title": "The $r(k,m,p)$ Function",
+      "startLine": 157,
+      "endLine": 175,
+      "summary": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Axiomatizes existence for large primes."
     },
     {
       "id": "lambda-function",
-      "title": "The Λ(k,m) Function",
-      "startLine": 89,
-      "endLine": 119,
-      "summary": "LambdaFinite, Lambda axiom with bound and minimality"
+      "title": "The $\\Lambda(k,m)$ Function",
+      "startLine": 177,
+      "endLine": 195,
+      "summary": "Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$."
     },
     {
       "id": "known-values",
       "title": "Known Exact Values",
-      "startLine": 121,
-      "endLine": 161,
-      "summary": "Λ(2,2)=9 through Λ(7,2)=1649375"
+      "startLine": 197,
+      "endLine": 237,
+      "summary": "Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations."
     },
     {
       "id": "hildebrand",
-      "title": "Hildebrand's Theorem",
-      "startLine": 163,
-      "endLine": 181,
-      "summary": "Λ(k,2) finite for all k (1991)"
+      "title": "Hildebrand's Theorem (1991)",
+      "startLine": 239,
+      "endLine": 257,
+      "summary": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
     },
     {
       "id": "m3-case",
-      "title": "The m = 3 Case",
-      "startLine": 183,
-      "endLine": 215,
-      "summary": "Λ(3,3)=23532, parity dichotomy, open question"
+      "title": "The $m = 3$ Case and Parity Dichotomy",
+      "startLine": 259,
+      "endLine": 285,
+      "summary": "$\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?"
     },
     {
       "id": "graham",
-      "title": "Graham's Theorem",
-      "startLine": 217,
-      "endLine": 240,
-      "summary": "Λ(k,m) = ∞ for m ≥ 4"
+      "title": "Graham's Theorem (1964)",
+      "startLine": 287,
+      "endLine": 311,
+      "summary": "$\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction."
     },
     {
       "id": "quadratic",
-      "title": "Quadratic Residue Case",
-      "startLine": 242,
-      "endLine": 264,
-      "summary": "Elegant proof of Λ(2,2) ≤ 9"
+      "title": "Quadratic Residue Case: $\\Lambda(2,2) \\leq 9$",
+      "startLine": 312,
+      "endLine": 334,
+      "summary": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely often."
     },
     {
       "id": "growth",
-      "title": "Growth Rate Questions",
-      "startLine": 266,
-      "endLine": 295,
-      "summary": "Super-polynomial growth, increasing ratios"
+      "title": "Growth Rate Analysis",
+      "startLine": 336,
+      "endLine": 539,
+      "summary": "Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive."
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 297,
-      "endLine": 341,
-      "summary": "Main theorems and partially solved status"
+      "id": "flt-euler",
+      "title": "Fermat's Little Theorem and Euler's Criterion",
+      "startLine": 541,
+      "endLine": 620,
+      "summary": "FLT $r^{p-1} \\equiv 1 \\pmod{p}$ proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. Euler's criterion forward ($r = x^2 \\Rightarrow r^{(p-1)/2} = 1$) proved via calc chain; backward axiomatized. Legendre symbol multiplicativity from Mathlib."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #436 is PARTIALLY SOLVED. Question 1 (Λ(k,2) finite) was resolved by Hildebrand (1991). Question 2 (Λ(k,3) for odd k) remains OPEN for k ≥ 5, with only Λ(3,3)=23532 known. The Lehmers showed Λ(k,3)=∞ for even k. Graham proved Λ(k,m)=∞ for m≥4. Exact values are known for k ≤ 7 (m=2).",
-    "implications": "This problem reveals deep structure in the distribution of power residues among consecutive integers. The parity dichotomy for m=3 and the threshold at m=4 show how run length fundamentally affects residue behavior.",
+    "summary": "Erdos Problem #436 is PARTIALLY SOLVED. Question 1 ($\\Lambda(k,2)$ finite) was resolved by Hildebrand (1991) using character sum estimates. Question 2 ($\\Lambda(k,3)$ for odd $k$) remains OPEN for $k \\geq 5$, with only $\\Lambda(3,3) = 23532$ known. The Lehmers showed $\\Lambda(k,3) = \\infty$ for even $k$ (parity dichotomy). Graham proved $\\Lambda(k,m) = \\infty$ for $m \\geq 4$. The formalization includes 620 lines with genuine proofs of Fermat's little theorem and Euler's criterion from Mathlib.",
+    "implications": "This problem reveals deep structure in the distribution of power residues among consecutive integers. The parity dichotomy for $m = 3$ shows that algebraic structure ($(-1)^k$) creates qualitative differences. The threshold at $m = 4$ (Graham) makes $m \\leq 3$ a sharp boundary. Hildebrand's resolution of the $m = 2$ case demonstrates the power of the large sieve in additive number theory.",
     "openQuestions": [
-      "Is Λ(k,3) finite for odd k ≥ 5?",
-      "What is the growth rate of Λ(k,2)?",
-      "Compute Λ(8,2), Λ(9,2), etc.",
-      "Determine Λ(5,3), Λ(7,3)"
+      "Is $\\Lambda(k,3)$ finite for odd $k \\geq 5$? Can Hildebrand's methods be extended?",
+      "What is the growth rate of $\\Lambda(k,2)$ as a function of $k$? Is it super-polynomial?",
+      "Compute $\\Lambda(8,2)$, $\\Lambda(9,2)$ (exact values unknown beyond $k = 7$)",
+      "Determine $\\Lambda(5,3)$, $\\Lambda(7,3)$ (finiteness unknown)"
     ]
   }
 }
