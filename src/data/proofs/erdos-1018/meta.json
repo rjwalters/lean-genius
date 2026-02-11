@@ -21,90 +21,90 @@
     "erdosNumber": 1018,
     "erdosUrl": "https://erdosproblems.com/1018",
     "erdosProblemStatus": "solved",
-    "relatedProblems": []
+    "relatedProblems": ["erdos-52", "erdos-945"]
   },
   "overview": {
-    "historicalContext": "**Planarity and Density**\n\nPlanar graphs - those embeddable in the plane without edge crossings - have at most 3n - 6 edges by Euler's formula. This is linear in n. What happens when we have more edges?\n\n**The Question**: For super-linear edge counts n^(1+ε), Erdős asked whether non-planarity must appear in a 'small' subgraph. The constant C_ε should depend only on ε, not on n.\n\n**Kuratowski's Theorem**: A graph is non-planar iff it contains a subdivision of K₅ or K₃,₃. So finding non-planarity means finding these obstructions.\n\n**Resolution**: Kostochka and Pyber (1988) proved that dense graphs contain K₅ subdivisions on O_ε(1) vertices, completely answering Erdős's question.",
+    "historicalContext": "**Planarity, Density, and Topological Obstructions**\n\nThe study of planar graphs has deep roots: Euler's formula (1752) implies that planar graphs on $n \\ge 3$ vertices have at most $3n - 6$ edges—a linear bound. Kuratowski (1930) characterized non-planarity: a graph is non-planar if and only if it contains a subdivision of $K_5$ or $K_{3,3}$. Wagner (1937) proved the equivalent minor characterization.\n\nErdős asked a quantitative refinement: if a graph has $n^{1+\\varepsilon}$ edges (super-linear density), must non-planarity be concentrated in a *small* subgraph? Specifically, does there exist a constant $C_\\varepsilon$, depending only on $\\varepsilon$ and not on $n$, such that every such graph contains a non-planar subgraph on at most $C_\\varepsilon$ vertices?\n\n**Kostochka and Pyber (1988)** resolved this affirmatively, proving that graphs with $n^{1+\\varepsilon}$ edges contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Their proof uses the probabilistic method combined with extremal graph theory. Mader (1967) had earlier shown that the Turán number for $K_t$ subdivisions is $O(t\\sqrt{\\log t} \\cdot n)$, establishing a linear threshold for topological containment. The Kostochka-Pyber result goes further by bounding the *size* of the subdivision found.\n\nErdős also observed that $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0$: as the density approaches linear, non-planarity becomes more diffuse and cannot be localized to a small subgraph. This tradeoff between density and obstruction size is a recurring theme in extremal graph theory.",
     "problemStatement": "**Problem Statement**\n\nLet ε > 0. Is there a constant C_ε such that, for all large n, every graph on n vertices with at least n^(1+ε) edges must contain a non-planar subgraph on at most C_ε vertices?\n\n**Status**: SOLVED (Kostochka-Pyber 1988)\n\n**Answer**: YES. Dense graphs contain K₅ subdivisions with O_ε(1) vertices.\n\n**Note**: Erdős observed C_ε → ∞ as ε → 0 (sparser graphs hide non-planarity in larger structures).",
     "proofStrategy": "**Proof Approach (Kostochka-Pyber)**\n\n1. **Density Threshold**: Graphs with n^(1+ε) edges are 'super-linearly dense'.\n\n2. **Finding Structure**: Use probabilistic or extremal methods to find vertices of high degree.\n\n3. **K₅ Subdivision**: High-degree vertices connect through short paths, forming a K₅ subdivision.\n\n4. **Bounding Size**: The total vertices used (5 branch vertices + path vertices) is O_ε(1).\n\n**Key Insight**: Super-linear edge density forces enough local structure that K₅ subdivisions must appear in bounded-size subgraphs.",
     "keyInsights": [
-      "Planar graphs have ≤ 3n - 6 edges (linear bound)",
-      "n^(1+ε) edges forces non-planarity in a small subgraph",
-      "Kostochka-Pyber: K₅ subdivisions on O_ε(1) vertices",
-      "C_ε → ∞ as ε → 0 (tradeoff between density and subgraph size)",
-      "Uses Kuratowski's characterization of non-planarity"
+      "**Linear planarity threshold**: Euler's formula gives $|E| \\le 3n - 6$ for planar graphs, so the density exponent $1 + \\varepsilon$ with $\\varepsilon > 0$ is the precise threshold where planarity breaks down",
+      "**Kostochka-Pyber theorem**: Dense graphs ($n^{1+\\varepsilon}$ edges) contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices—this is stronger than just finding any non-planar subgraph, it finds a specific obstruction",
+      "**Density-size tradeoff**: $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0^+$, meaning sparser graphs hide their non-planarity in progressively larger substructures—a quantitative form of the intuition that 'barely super-linear' graphs are almost planar locally",
+      "**Probabilistic method**: The proof samples random vertex subsets to reduce the graph while preserving density, then applies extremal arguments (Mader-type) to find $K_5$ subdivisions in the reduced graph",
+      "**Kuratowski reduction**: By Kuratowski's theorem, finding any non-planar subgraph reduces to finding $K_5$ or $K_{3,3}$ subdivisions, and the explicit $C_\\varepsilon \\sim 1/\\varepsilon^2$ bound quantifies the size of these obstructions"
     ]
   },
   "sections": [
     {
       "id": "graph-basics",
       "title": "Graph Basics",
-      "summary": "edgeCount and vertexCount definitions",
-      "startLine": 23,
+      "summary": "Defines $\\text{edgeCount}(G) = |E(G)|$ and $\\text{vertexCount} = |V|$ for simple graphs on finite vertex types with decidable adjacency.",
+      "startLine": 14,
       "endLine": 36
     },
     {
       "id": "dense-graphs",
       "title": "Dense Graphs",
-      "summary": "isDense definition for n^(1+ε) edges",
+      "summary": "Defines $\\text{isDense}(G, \\varepsilon) \\iff |E(G)| \\ge n^{1+\\varepsilon}$, the super-linear density threshold separating planar-possible from forced-non-planar regimes.",
       "startLine": 38,
       "endLine": 46
     },
     {
       "id": "planar-graphs",
       "title": "Planar Graphs",
-      "summary": "isPlanar and isNonPlanar definitions",
+      "summary": "Abstract $\\text{isPlanar}$ definition (sorry) and $\\text{isNonPlanar} = \\neg\\text{isPlanar}$. Full definition requires topological embedding theory.",
       "startLine": 48,
       "endLine": 61
     },
     {
       "id": "kuratowski",
-      "title": "Complete Graphs K₅ and K₃,₃",
-      "summary": "Kuratowski obstructions to planarity",
+      "title": "Complete Graphs and Kuratowski's Theorem",
+      "summary": "Defines $K_n$, $K_{m,n}$, graph subdivisions, and axiomatizes Kuratowski (1930): non-planar $\\iff$ contains $\\text{TK}_5$ or $\\text{TK}_{3,3}$.",
       "startLine": 63,
       "endLine": 103
     },
     {
       "id": "subgraphs",
       "title": "Induced Subgraphs",
-      "summary": "inducedSubgraph and hasSmallNonPlanarSubgraph",
+      "summary": "Defines $G[S]$ (induced subgraph on $S \\subseteq V$) and $\\text{hasSmallNonPlanarSubgraph}(G, k) \\iff \\exists |S| \\le k$ with $G[S]$ non-planar.",
       "startLine": 105,
       "endLine": 119
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "summary": "existsBoundingConstant and erdos_1018_question",
+      "summary": "Formalizes Erdős's question: $\\forall \\varepsilon > 0,\\; \\exists C_\\varepsilon$ such that $|E| \\ge n^{1+\\varepsilon} \\implies$ non-planar subgraph on $\\le C_\\varepsilon$ vertices.",
       "startLine": 121,
       "endLine": 135
     },
     {
       "id": "kostochka-pyber",
       "title": "Kostochka-Pyber Theorem (1988)",
-      "summary": "Dense graphs have small K₅ subdivisions",
+      "summary": "Axiomatizes the solution: dense graphs contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Derives $\\text{erdos\\_1018\\_solved}$ from this.",
       "startLine": 137,
       "endLine": 166
     },
     {
       "id": "constant-grows",
-      "title": "The Constant C_ε Grows as ε → 0",
-      "summary": "Sparser graphs need larger subgraphs",
+      "title": "The Constant $C_\\varepsilon$ Grows",
+      "summary": "States $\\lim_{\\varepsilon \\to 0^+} C_\\varepsilon = \\infty$: sparser graphs hide non-planarity in larger substructures.",
       "startLine": 168,
       "endLine": 184
     },
     {
       "id": "extremal",
-      "title": "Connection to Extremal Graph Theory",
-      "summary": "Super-linear edges force non-planarity",
+      "title": "Extremal Graph Theory Connection",
+      "summary": "Euler bound $|E| \\le 3n-6$ for planar graphs and the consequence that $n^{1+\\varepsilon} > 3n-6$ forces the whole graph to be non-planar.",
       "startLine": 186,
       "endLine": 203
     },
     {
       "id": "quantitative",
-      "title": "Quantitative Bounds",
-      "summary": "Explicit bounds on C_ε",
+      "title": "Quantitative Bounds and Turán Numbers",
+      "summary": "Explicit bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$, Turán number $\\text{ex}(n, \\text{TK}_5) = O(n)$ by Mader, and dense graphs exceeding the Turán threshold.",
       "startLine": 205,
-      "endLine": 235
+      "endLine": 260
     }
   ],
   "conclusion": {
