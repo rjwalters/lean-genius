@@ -7,7 +7,7 @@
     "author": "Ackerman, Buchin, Knauer, Pinchasi, Rote",
     "sourceUrl": "https://erdosproblems.com/735",
     "date": "2008",
-    "status": "complete",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos735Problem.lean",
     "tags": [
       "erdos",
@@ -20,99 +20,86 @@
     "sorries": 0,
     "erdosNumber": 735,
     "erdosUrl": "https://erdosproblems.com/735",
-    "erdosProblemStatus": "solved",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      { "theorem": "EuclideanSpace", "description": "Euclidean plane ℝ²", "module": "Mathlib.Analysis.InnerProductSpace.PiL2" },
-      { "theorem": "AffineSubspace", "description": "Lines in affine space", "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace" },
-      { "theorem": "Finset", "description": "Finite sets of points", "module": "Mathlib.Data.Finset.Basic" }
-    ],
-    "originalContributions": [
-      "PointConfig: Finset of points in ℝ²",
-      "Weighting: Positive real weights on points",
-      "IsMagic: Configuration admits equal-sum weighting",
-      "IsCollinear, IsGeneralPosition, IsNearPencil, IsIncenterConfig",
-      "magic_classification: Murty's conjecture is TRUE"
-    ],
-    "dateAdded": "2026-01-19"
+    "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Murty conjectured that only four types of point configurations in the plane can admit positive weights making all line sums equal. Such configurations are called 'magic'. The conjecture was proved in 2008, completing the classification of magic configurations.",
-    "problemStatement": "Given any n points in ℝ², when can one give positive weights to the points such that the sum of the weights along every line containing at least two points is the same?",
-    "proofStrategy": "The proof analyzes the linear system of equations arising from the equal-sum constraint. By studying the incidence structure and using combinatorial arguments, the authors show that only four families can satisfy all constraints with positive weights.",
+    "historicalContext": "Murty conjectured in the 1970s that only four types of point configurations in the plane can be 'magic' — admitting positive weights with equal sums on all lines through at least two points. The conjecture remained open for decades until Ackerman, Buchin, Knauer, Pinchasi, and Rote proved it in their 2008 paper 'There are not too many magic configurations.' Their proof analyzes the linear system of equations $Aw = c\\mathbf{1}$ (where $A$ is the point-line incidence matrix) and shows that for configurations outside the four classes, the positive orthant intersected with this affine subspace is empty. The problem connects to classical topics in incidence geometry: the Sylvester-Gallai theorem (every non-collinear set has an ordinary line), the Melchior-Hirzebruch inequality on line arrangements, and the theory of weighted incidence structures in projective geometry. The four magic classes are: (1) collinear, (2) general position (no 3 collinear), (3) near-pencil ($n-1$ points on a line), and (4) projective images of the triangle-incenter configuration.",
+    "problemStatement": "Given any $n$ points in $\\mathbb{R}^2$, when can one assign positive weights to the points such that the sum of weights along every line containing at least two points is the same constant $c > 0$?",
+    "proofStrategy": "The formalization defines point configurations in $\\mathbb{R}^2$ via `EuclideanSpace`, positive weightings, configuration lines (lines through $\\ge 2$ points), and the magic property. Each of the four classes is defined and axiomatized as magic. The classification theorem (`magic_classification`) states Murty's conjecture is true. Concrete examples (collinear triple, triangle) are verified. The incidence matrix viewpoint and dimension counting argument are formalized.",
     "keyInsights": [
-      "The magic property is preserved under projective transformations",
-      "Equal weights work for general position (no 3 collinear)",
-      "Collinear configurations are trivially magic (one line)",
-      "Near-pencil and incenter configurations require careful weight tuning",
-      "Any configuration outside these classes has an obstruction"
+      "**Murty's conjecture (proved ABKPR08)**: A configuration is magic iff it is collinear, in general position, a near-pencil, or projectively equivalent to a triangle-incenter configuration",
+      "**Projective invariance**: Magic is preserved under projective transformations, so the classification is really about four projective classes",
+      "**Equal weights suffice for general position**: When no 3 points are collinear, every line has exactly 2 points, so uniform weights give equal sums",
+      "**Incidence matrix viewpoint**: Magic $\\Leftrightarrow$ the system $Aw = c\\mathbf{1}$ has a solution with $w > 0$, connecting to positive linear programming",
+      "**Dimension counting**: For non-magic configurations, the positive orthant doesn't intersect the solution affine subspace — the constraints are over-determined"
     ]
   },
   "sections": [
     {
-      "id": "sec-735-header",
-      "title": "Problem Overview",
-      "startLine": 1,
-      "endLine": 30,
-      "summary": "Introduction to magic configurations and Murty's conjecture about the four magic classes."
+      "id": "imports",
+      "title": "Part 0: Imports and Setup",
+      "startLine": 32,
+      "endLine": 37,
+      "summary": "Imports `InnerProductSpace.PiL2` for `EuclideanSpace ℝ (Fin 2)`, `AffineSubspace` for lines, `Finset` for finite point sets, and `Tactic` for proof automation."
     },
     {
-      "id": "sec-735-basic",
-      "title": "Basic Setup",
+      "id": "basic",
+      "title": "Part I: Basic Setup",
       "startLine": 39,
       "endLine": 56,
-      "summary": "Definitions for point configurations, weightings, configuration lines, and line sums."
+      "summary": "Defines `PointConfig` (finite set of points in $\\mathbb{R}^2$), `Weighting` (positive real weights), `ConfigLine` (lines through $\\ge 2$ points via `AffineSubspace` with rank-1 direction), and `lineSum` (sum of weights on a line)."
     },
     {
-      "id": "sec-735-magic",
-      "title": "Magic Configurations",
+      "id": "magic",
+      "title": "Part II: Magic Configurations",
       "startLine": 58,
       "endLine": 66,
-      "summary": "Definition of magic configurations: admit weightings with equal line sums."
+      "summary": "Defines `IsMagic P`: there exist positive weights $w$ and constant $c > 0$ such that every configuration line has weight sum $c$. Defines the `magicConstant` via `Classical.choose`."
     },
     {
-      "id": "sec-735-classes",
-      "title": "The Four Magic Classes",
+      "id": "classes",
+      "title": "Part III: The Four Magic Classes",
       "startLine": 68,
       "endLine": 113,
-      "summary": "Definitions and magic proofs for collinear, general position, near-pencil, and incenter configurations."
+      "summary": "Defines the four classes: `IsCollinear` (all points on one line), `IsGeneralPosition` (no 3 collinear), `IsNearPencil` ($n-1$ on a line), `IsIncenterConfig` (triangle + incenter + bisector points). Axiomatizes each class as magic."
     },
     {
-      "id": "sec-735-projective",
-      "title": "Projective Equivalence",
+      "id": "projective",
+      "title": "Part IV: Projective Equivalence",
       "startLine": 115,
       "endLine": 126,
-      "summary": "Projective transformations preserve the magic property."
+      "summary": "Defines `ProjectivelyEquivalent` (bijective image) and axiomatizes that the magic property is preserved: $P$ magic $\\Leftrightarrow$ $f(P)$ magic for bijective $f$."
     },
     {
-      "id": "sec-735-classification",
-      "title": "The Main Classification",
+      "id": "classification",
+      "title": "Part V: The Main Classification",
       "startLine": 128,
       "endLine": 164,
-      "summary": "Murty's conjecture is true: magic iff in one of the four classes."
+      "summary": "Defines `IsMagicClass` (disjunction of the four classes), `murty_conjecture` (magic $\\Leftrightarrow$ magic class for $|P| \\ge 3$), axiomatizes `magic_classification`, and proves the contrapositive `not_magic_outside_classes`."
     },
     {
-      "id": "sec-735-examples",
-      "title": "Examples",
+      "id": "examples",
+      "title": "Part VI: Examples",
       "startLine": 166,
       "endLine": 186,
-      "summary": "Concrete examples: three collinear points and a triangle are magic."
+      "summary": "Constructs `threeCollinear` $= \\{(0,0), (1,0), (2,0)\\}$ and `triangle` $= \\{(0,0), (1,0), (0,1)\\}$. Proves both are magic via the class axioms."
     },
     {
-      "id": "sec-735-linear",
-      "title": "Linear Algebra Perspective",
+      "id": "linear",
+      "title": "Part VII: Linear Algebra Perspective",
       "startLine": 188,
       "endLine": 213,
-      "summary": "The incidence matrix viewpoint and dimension counting arguments."
+      "summary": "Defines the `incidenceMatrix` ($A_{L,p} = 1$ if $p \\in L$, else $0$). Axiomatizes `magic_iff_positive_solution` and the `weighting_dimension_bound`: outside the four classes, the positive orthant misses the solution space."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #735 is SOLVED. The 2008 proof confirms Murty's conjecture: a point configuration is magic if and only if it is collinear, in general position, a near-pencil, or projectively equivalent to the incenter configuration.",
-    "implications": "This provides a complete classification of weighted incidence structures with uniform line sums. The techniques connect discrete geometry with linear algebra over the positive reals.",
+    "summary": "This 240-line formalization captures Erdős Problem #735 (Murty's conjecture), solved by ABKPR08 in 2008. The classification theorem states that a point configuration is magic if and only if it is collinear, in general position, a near-pencil, or projectively equivalent to a triangle-incenter configuration. The formalization includes definitions, class axioms, the main classification, concrete examples, and the incidence matrix perspective.",
+    "implications": "The result provides a complete classification of weighted incidence structures with uniform line sums. The techniques connect discrete geometry with linear algebra over the positive reals and projective geometry.",
     "openQuestions": [
-      "What are analogous characterizations in higher dimensions?",
-      "Can the classification extend to non-positive or complex weights?",
-      "What is the computational complexity of recognizing magic configurations?"
+      "What are analogous characterizations of magic configurations in ℝ³ or higher dimensions?",
+      "Can the classification extend to non-positive, complex, or integer weights?",
+      "What is the computational complexity of recognizing magic configurations (polynomial time via linear programming)?",
+      "Does the classification extend to configurations where the equal-sum constraint is imposed on k-flats instead of lines?"
     ]
   }
 }
