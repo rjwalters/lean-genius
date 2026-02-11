@@ -26,10 +26,26 @@
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$44",
     "mathlibDependencies": [
-      "Mathlib.Analysis.InnerProductSpace.PiL2",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Topology.MetricSpace.Basic",
-      "Mathlib.Analysis.Convex.Basic"
+      {
+        "theorem": "PiL2",
+        "description": "From Mathlib.Analysis.InnerProductSpace.PiL2",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Finset.Basic",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Topology.MetricSpace.Basic",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Analysis.Convex.Basic",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      }
     ],
     "originalContributions": [
       "Point/PointConfig: type aliases for EuclideanSpace ℝ (Fin 2) and Finset Point",

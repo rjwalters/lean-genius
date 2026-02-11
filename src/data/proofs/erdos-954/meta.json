@@ -25,9 +25,21 @@
     "erdosUrl": "https://erdosproblems.com/954",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Order.Filter.Basic"
+      {
+        "theorem": "Card",
+        "description": "From Mathlib.Data.Finset.Card",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Basic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Order.Filter.Basic",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
     ],
     "originalContributions": [
       "repCount: cumulative representation count R_k(n) via Finset.Icc sums",

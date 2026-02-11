@@ -2,176 +2,221 @@
   {
     "id": "point-config-and-distances",
     "proofId": "erdos-94",
-    "range": { "startLine": 54, "endLine": 69 },
+    "range": {
+      "startLine": 54,
+      "endLine": 69
+    },
     "type": "definition",
     "title": "Point Configurations and Distance Sets",
     "content": "Defines a point configuration as a `Finset Point` where `Point = EuclideanSpace ℝ (Fin 2)`. The distance set `distanceSet P` collects all positive pairwise distances, while `distanceMultiset P` records distances with repetition. The distance function `dist'` wraps Mathlib's `dist` for the Euclidean metric.",
     "significance": "supporting",
-    "mathContext": {
-      "formalStatement": "abbrev Point := EuclideanSpace ℝ (Fin 2)\ndef PointConfig := Finset Point\nnoncomputable def distanceSet (P : PointConfig) : Finset ℝ :=\n  (P.product P).image (fun pq => dist' pq.1 pq.2) |>.filter (· > 0)",
-      "keyFormulas": [
-        "$d(P) = \\{\\|p - q\\| : p, q \\in P,\\, p \\neq q\\}$"
-      ]
-    },
-    "relatedConcepts": ["Euclidean distance", "point set", "distance set"],
-    "prerequisites": ["EuclideanSpace", "Finset.product", "metric space"]
+    "mathContext": "abbrev Point := EuclideanSpace ℝ (Fin 2)\ndef PointConfig := Finset Point\nnoncomputable def distanceSet (P : PointConfig) : Finset ℝ :=\n  (P.product P).image (fun pq => dist' pq.1 pq.2) |>.filter (· > 0). Key formulas: $d(P) = \\{\\|p - q\\| : p, q \\in P,\\, p \\neq q\\}$",
+    "relatedConcepts": [
+      "Euclidean distance",
+      "point set",
+      "distance set"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "Finset.product",
+      "metric space"
+    ]
   },
   {
     "id": "distance-multiplicity",
     "proofId": "erdos-94",
-    "range": { "startLine": 73, "endLine": 79 },
+    "range": {
+      "startLine": 73,
+      "endLine": 79
+    },
     "type": "definition",
     "title": "Distance Multiplicity $f(u)$",
     "content": "The multiplicity $f(u)$ counts ordered pairs at distance $u$ (`distanceMultiplicity`), while `unorderedMultiplicity` divides by 2 for unordered pairs. These functions are the key combinatorial quantities: $f(u) = |\\{(p,q) \\in P^2 : \\|p - q\\| = u,\\, p \\neq q\\}|$.",
     "significance": "key",
-    "mathContext": {
-      "formalStatement": "noncomputable def distanceMultiplicity (P : PointConfig) (u : ℝ) : ℕ :=\n  ((P.product P).filter fun pq => dist' pq.1 pq.2 = u ∧ pq.1 ≠ pq.2).card\nnoncomputable def unorderedMultiplicity (P : PointConfig) (u : ℝ) : ℕ :=\n  distanceMultiplicity P u / 2",
-      "keyFormulas": [
-        "$f(u) = |\\{\\{p, q\\} \\subset P : \\|p - q\\| = u\\}|$"
-      ]
-    },
-    "relatedConcepts": ["distance frequency", "pair counting"],
-    "prerequisites": ["Finset.filter", "ordered vs unordered pairs"]
+    "mathContext": "noncomputable def distanceMultiplicity (P : PointConfig) (u : ℝ) : ℕ :=\n  ((P.product P).filter fun pq => dist' pq.1 pq.2 = u ∧ pq.1 ≠ pq.2).card\nnoncomputable def unorderedMultiplicity (P : PointConfig) (u : ℝ) : ℕ :=\n  distanceMultiplicity P u / 2. Key formulas: $f(u) = |\\{\\{p, q\\} \\subset P : \\|p - q\\| = u\\}|$",
+    "relatedConcepts": [
+      "distance frequency",
+      "pair counting"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "ordered vs unordered pairs"
+    ]
   },
   {
     "id": "sum-multiplicities-proved",
     "proofId": "erdos-94",
-    "range": { "startLine": 82, "endLine": 134 },
+    "range": {
+      "startLine": 82,
+      "endLine": 134
+    },
     "type": "theorem",
     "title": "Sum of Multiplicities Equals $\\binom{n}{2}$ (Proved by Aristotle)",
     "content": "The theorem $\\sum_u f(u) = \\binom{n}{2}$ is fully proved in Lean (no sorry). Each unordered pair contributes to exactly one distance value, so the total count equals the number of pairs. The proof establishes evenness of ordered multiplicities via a symmetry argument (pairing $(p,q)$ with $(q,p)$), then converts to unordered counts. This is one of Aristotle's successful proof-search results.",
     "significance": "key",
-    "mathContext": {
-      "formalStatement": "theorem sum_multiplicities (P : PointConfig) :\n    (distanceSet P).sum (unorderedMultiplicity P) = P.card.choose 2",
-      "keyFormulas": [
-        "$\\sum_{u \\in d(P)} f(u) = \\binom{n}{2}$"
-      ],
-      "leanTactics": ["Finset.sum_image'", "Finset.sum_le_sum_of_subset", "aesop", "grind"]
-    },
-    "relatedConcepts": ["double counting", "binomial coefficient", "partition of pairs"],
-    "prerequisites": ["Finset.sum", "Nat.choose", "evenness via involution"]
+    "mathContext": "theorem sum_multiplicities (P : PointConfig) :\n    (distanceSet P).sum (unorderedMultiplicity P) = P.card.choose 2. Key formulas: $\\sum_{u \\in d(P)} f(u) = \\binom{n}{2}$. Lean tactics: Finset.sum_image', Finset.sum_le_sum_of_subset, aesop, grind",
+    "relatedConcepts": [
+      "double counting",
+      "binomial coefficient",
+      "partition of pairs"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Nat.choose",
+      "evenness via involution"
+    ]
   },
   {
     "id": "sum-squared-multiplicities",
     "proofId": "erdos-94",
-    "range": { "startLine": 138, "endLine": 171 },
+    "range": {
+      "startLine": 138,
+      "endLine": 171
+    },
     "type": "definition",
     "title": "Sum of Squared Multiplicities $\\sum f(u)^2$",
     "content": "The central quantity $\\sum_u f(u)^2$ measures distance clustering. Equivalently, it counts quadruples $(p,q,r,s)$ with $\\|p - q\\| = \\|r - s\\|$ (via `countEqualDistancePairs`), with the relation $4 \\sum f(u)^2 = |\\{(p,q,r,s) : d(p,q) = d(r,s)\\}|$. The factor 4 accounts for ordering within each pair.",
     "significance": "key",
-    "mathContext": {
-      "formalStatement": "noncomputable def sumSquaredMultiplicities (P : PointConfig) : ℕ :=\n  (distanceSet P).sum fun u => (unorderedMultiplicity P u) ^ 2\ntheorem squared_sum_eq_count (P : PointConfig) :\n    4 * sumSquaredMultiplicities P = countEqualDistancePairs P",
-      "keyFormulas": [
-        "$\\sum_{u} f(u)^2 = \\frac{1}{4}|\\{(p,q,r,s) : d(p,q) = d(r,s)\\}|$"
-      ]
-    },
-    "relatedConcepts": ["equal distance quadruples", "incidence geometry", "Cauchy-Schwarz bound"],
-    "prerequisites": ["sum of squares", "quadruple counting"]
+    "mathContext": "noncomputable def sumSquaredMultiplicities (P : PointConfig) : ℕ :=\n  (distanceSet P).sum fun u => (unorderedMultiplicity P u) ^ 2\ntheorem squared_sum_eq_count (P : PointConfig) :\n    4 * sumSquaredMultiplicities P = countEqualDistancePairs P. Key formulas: $\\sum_{u} f(u)^2 = \\frac{1}{4}|\\{(p,q,r,s) : d(p,q) = d(r,s)\\}|$",
+    "relatedConcepts": [
+      "equal distance quadruples",
+      "incidence geometry",
+      "Cauchy-Schwarz bound"
+    ],
+    "prerequisites": [
+      "sum of squares",
+      "quadruple counting"
+    ]
   },
   {
     "id": "convex-position",
     "proofId": "erdos-94",
-    "range": { "startLine": 182, "endLine": 225 },
+    "range": {
+      "startLine": 182,
+      "endLine": 225
+    },
     "type": "definition",
     "title": "Convex Position and No Three Collinear",
     "content": "Points are in convex position (`InConvexPosition`) if no point lies in the convex hull of the rest: $\\forall p \\in P,\\, p \\notin \\text{conv}(P \\setminus \\{p\\})$. The weaker condition `NoThreeCollinear` requires no three points are collinear. Convex implies no-three-collinear (axiomatized). Lefmann-Theile showed the $O(n^3)$ bound holds under the weaker condition.",
     "significance": "key",
-    "mathContext": {
-      "formalStatement": "def InConvexPosition (P : PointConfig) : Prop :=\n  ∀ p ∈ P, p ∈ convexHull ℝ (P.erase p : Set Point) → False\ndef NoThreeCollinear (P : PointConfig) : Prop :=\n  ∀ p q r : Point, p ∈ P → q ∈ P → r ∈ P →\n    p ≠ q → q ≠ r → p ≠ r → ¬Collinear ℝ ({p, q, r} : Set Point)",
-      "keyFormulas": [
-        "$p \\notin \\text{conv}(P \\setminus \\{p\\})$ for all $p \\in P$"
-      ]
-    },
-    "relatedConcepts": ["convex hull", "general position", "collinearity"],
-    "prerequisites": ["convexHull", "Collinear", "Finset.erase"]
+    "mathContext": "def InConvexPosition (P : PointConfig) : Prop :=\n  ∀ p ∈ P, p ∈ convexHull ℝ (P.erase p : Set Point) → False\ndef NoThreeCollinear (P : PointConfig) : Prop :=\n  ∀ p q r : Point, p ∈ P → q ∈ P → r ∈ P →\n    p ≠ q → q ≠ r → p ≠ r → ¬Collinear ℝ ({p, q, r} : Set Point). Key formulas: $p \\notin \\text{conv}(P \\setminus \\{p\\})$ for all $p \\in P$",
+    "relatedConcepts": [
+      "convex hull",
+      "general position",
+      "collinearity"
+    ],
+    "prerequisites": [
+      "convexHull",
+      "Collinear",
+      "Finset.erase"
+    ]
   },
   {
     "id": "fishburn-theorem",
     "proofId": "erdos-94",
-    "range": { "startLine": 239, "endLine": 257 },
+    "range": {
+      "startLine": 239,
+      "endLine": 257
+    },
     "type": "theorem",
     "title": "Fishburn's Theorem: $\\sum f(u)^2 = O(n^3)$",
     "content": "The main result solving Erdős Problem #94: there exists $C > 0$ such that $\\sum f(u)^2 \\leq C n^3$ for any $n$ points in convex position. Fishburn also showed asymptotically $C$ can be taken as $1 + \\varepsilon$ for any $\\varepsilon > 0$ when $n$ is large enough. Both are axiomatized (sorry). This was a $\\$44$ Erdős prize problem.",
     "significance": "key",
-    "mathContext": {
-      "formalStatement": "theorem fishburn_theorem :\n    ∃ C : ℝ, C > 0 ∧ ∀ P : PointConfig, InConvexPosition P →\n      (sumSquaredMultiplicities P : ℝ) ≤ C * (P.card : ℝ) ^ 3\ntheorem fishburn_asymptotic :\n    ∀ ε > 0, ∃ N : ℕ, ∀ P : PointConfig, InConvexPosition P → P.card ≥ N →\n      (sumSquaredMultiplicities P : ℝ) ≤ (1 + ε) * (P.card : ℝ) ^ 3",
-      "keyFormulas": [
-        "$\\sum_{u} f(u)^2 \\leq C \\cdot n^3$",
-        "$\\sum_{u} f(u)^2 \\leq (1 + \\varepsilon) n^3$ for $n \\geq N(\\varepsilon)$"
-      ]
-    },
-    "relatedConcepts": ["distance clustering bound", "Erdős prize problem"],
-    "prerequisites": ["convex position", "sum of squared multiplicities"]
+    "mathContext": "theorem fishburn_theorem :\n    ∃ C : ℝ, C > 0 ∧ ∀ P : PointConfig, InConvexPosition P →\n      (sumSquaredMultiplicities P : ℝ) ≤ C * (P.card : ℝ) ^ 3\ntheorem fishburn_asymptotic :\n    ∀ ε > 0, ∃ N : ℕ, ∀ P : PointConfig, InConvexPosition P → P.card ≥ N →\n      (sumSquaredMultiplicities P : ℝ) ≤ (1 + ε) * (P.card : ℝ) ^ 3. Key formulas: $\\sum_{u} f(u)^2 \\leq C \\cdot n^3$; $\\sum_{u} f(u)^2 \\leq (1 + \\varepsilon) n^3$ for $n \\geq N(\\varepsilon)$",
+    "relatedConcepts": [
+      "distance clustering bound",
+      "Erdős prize problem"
+    ],
+    "prerequisites": [
+      "convex position",
+      "sum of squared multiplicities"
+    ]
   },
   {
     "id": "lefmann-theile",
     "proofId": "erdos-94",
-    "range": { "startLine": 271, "endLine": 274 },
+    "range": {
+      "startLine": 271,
+      "endLine": 274
+    },
     "type": "theorem",
     "title": "Lefmann-Theile Strengthening (1995)",
     "content": "Lefmann and Theile (1995) proved $\\sum f(u)^2 = O(n^3)$ under the weaker assumption that no three points are collinear, rather than requiring convexity. This is a strict generalization: every convex polygon has no three collinear points, but not conversely.",
     "significance": "key",
-    "mathContext": {
-      "formalStatement": "theorem lefmann_theile_theorem :\n    ∃ C : ℝ, C > 0 ∧ ∀ P : PointConfig, NoThreeCollinear P →\n      (sumSquaredMultiplicities P : ℝ) ≤ C * (P.card : ℝ) ^ 3",
-      "keyFormulas": [
-        "$\\sum_{u} f(u)^2 \\leq C n^3$ when no three points are collinear"
-      ]
-    },
-    "relatedConcepts": ["general position", "collinearity-free configurations"],
-    "prerequisites": ["NoThreeCollinear", "Fishburn's theorem"]
+    "mathContext": "theorem lefmann_theile_theorem :\n    ∃ C : ℝ, C > 0 ∧ ∀ P : PointConfig, NoThreeCollinear P →\n      (sumSquaredMultiplicities P : ℝ) ≤ C * (P.card : ℝ) ^ 3. Key formulas: $\\sum_{u} f(u)^2 \\leq C n^3$ when no three points are collinear",
+    "relatedConcepts": [
+      "general position",
+      "collinearity-free configurations"
+    ],
+    "prerequisites": [
+      "NoThreeCollinear",
+      "Fishburn's theorem"
+    ]
   },
   {
     "id": "regular-ngon-construction",
     "proofId": "erdos-94",
-    "range": { "startLine": 293, "endLine": 339 },
+    "range": {
+      "startLine": 293,
+      "endLine": 339
+    },
     "type": "definition",
     "title": "Regular $n$-gon and $\\Theta(n^3)$ Lower Bound",
     "content": "The regular $n$-gon is constructed as $\\{(\\cos(2\\pi k/n), \\sin(2\\pi k/n)) : k = 0, \\ldots, n-1\\}$. It is in convex position (axiomatized) and achieves $\\sum f(u)^2 = \\Theta(n^3)$, showing Fishburn's bound is tight. The distances in a regular $n$-gon are $2\\sin(\\pi j/n)$ for $j = 1, \\ldots, \\lfloor n/2 \\rfloor$, each with multiplicity $n$, giving $\\sum f(u)^2 \\approx n^2 \\cdot \\lfloor n/2 \\rfloor = \\Theta(n^3)$.",
     "significance": "supporting",
-    "mathContext": {
-      "formalStatement": "noncomputable def regularNGon (n : ℕ) : PointConfig :=\n  if n < 3 then ∅ else\n    (Finset.range n).image fun k =>\n      ![Real.cos (2 * Real.pi * k / n), Real.sin (2 * Real.pi * k / n)]\ntheorem regular_ngon_cubic :\n    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 3 →\n      c₁ * n ^ 3 ≤ (regularNGonSum n : ℝ) ∧ (regularNGonSum n : ℝ) ≤ c₂ * n ^ 3",
-      "keyFormulas": [
-        "$\\text{regularNGon}(n) = \\{e^{2\\pi i k/n} : k = 0, \\ldots, n-1\\}$",
-        "$\\sum f(u)^2 = \\Theta(n^3)$ for the regular $n$-gon"
-      ]
-    },
-    "relatedConcepts": ["regular polygon", "extremal configuration", "distance distribution"],
-    "prerequisites": ["trigonometric parametrization", "convex position"]
+    "mathContext": "noncomputable def regularNGon (n : ℕ) : PointConfig :=\n  if n < 3 then ∅ else\n    (Finset.range n).image fun k =>\n      ![Real.cos (2 * Real.pi * k / n), Real.sin (2 * Real.pi * k / n)]\ntheorem regular_ngon_cubic :\n    ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ n : ℕ, n ≥ 3 →\n      c₁ * n ^ 3 ≤ (regularNGonSum n : ℝ) ∧ (regularNGonSum n : ℝ) ≤ c₂ * n ^ 3. Key formulas: $\\text{regularNGon}(n) = \\{e^{2\\pi i k/n} : k = 0, \\ldots, n-1\\}$; $\\sum f(u)^2 = \\Theta(n^3)$ for the regular $n$-gon",
+    "relatedConcepts": [
+      "regular polygon",
+      "extremal configuration",
+      "distance distribution"
+    ],
+    "prerequisites": [
+      "trigonometric parametrization",
+      "convex position"
+    ]
   },
   {
     "id": "erdos-fishburn-conjecture",
     "proofId": "erdos-94",
-    "range": { "startLine": 348, "endLine": 372 },
+    "range": {
+      "startLine": 348,
+      "endLine": 372
+    },
     "type": "conjecture",
     "title": "Erdős-Fishburn Extremal Conjecture",
     "content": "Conjectures that for sufficiently large $n$, the regular $n$-gon maximizes $\\sum f(u)^2$ among all convex $n$-gons. Formalized as `ErdosFishburnConjecture : Prop`. Computationally verified for $n \\leq 10$ (axiomatized). Related to OEIS A387858.",
     "significance": "supporting",
-    "mathContext": {
-      "formalStatement": "def ErdosFishburnConjecture : Prop :=\n  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → ∀ P : PointConfig, InConvexPosition P → P.card = n →\n    sumSquaredMultiplicities P ≤ regularNGonSum n",
-      "keyFormulas": [
-        "$\\sum f(u)^2 \\leq \\sum_{\\text{reg}} f(u)^2$ for convex $P$ with $|P| = n \\geq N$"
-      ]
-    },
-    "relatedConcepts": ["extremal configuration", "regular polygon optimality", "OEIS A387858"],
-    "prerequisites": ["regularNGon", "sumSquaredMultiplicities"]
+    "mathContext": "def ErdosFishburnConjecture : Prop :=\n  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → ∀ P : PointConfig, InConvexPosition P → P.card = n →\n    sumSquaredMultiplicities P ≤ regularNGonSum n. Key formulas: $\\sum f(u)^2 \\leq \\sum_{\\text{reg}} f(u)^2$ for convex $P$ with $|P| = n \\geq N$",
+    "relatedConcepts": [
+      "extremal configuration",
+      "regular polygon optimality",
+      "OEIS A387858"
+    ],
+    "prerequisites": [
+      "regularNGon",
+      "sumSquaredMultiplicities"
+    ]
   },
   {
     "id": "related-quantities",
     "proofId": "erdos-94",
-    "range": { "startLine": 376, "endLine": 431 },
+    "range": {
+      "startLine": 376,
+      "endLine": 431
+    },
     "type": "concept",
     "title": "Related Quantities: Distinct Distances, Max Multiplicity, Unit Distances",
     "content": "Three related combinatorial quantities for convex configurations: (1) The number of distinct distances $|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$ (Altman 1963). (2) The maximum single-distance multiplicity $\\max_u f(u) \\leq 2n$ for convex position. (3) The unit distance count $f(1)$, connecting to the Erdős unit distance problem with the convex bound $f(1) \\leq 2n - 2$.",
     "significance": "supporting",
-    "mathContext": {
-      "formalStatement": "theorem convex_distinct_distances (P : PointConfig) (hP : InConvexPosition P) :\n    numDistinctDistances P ≤ P.card / 2 + 1\ntheorem convex_max_multiplicity (P : PointConfig) (hP : InConvexPosition P) :\n    (maxMultiplicity P : ℝ) ≤ 2 * P.card\ntheorem convex_unit_distance (P : PointConfig) (hP : InConvexPosition P) :\n    (unitDistanceCount P : ℝ) ≤ 2 * P.card - 2",
-      "keyFormulas": [
-        "$|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$",
-        "$\\max_u f(u) \\leq 2n$",
-        "$f(1) \\leq 2n - 2$"
-      ]
-    },
-    "relatedConcepts": ["distinct distances problem", "unit distance problem", "Altman's theorem"],
-    "prerequisites": ["convex position", "distance multiplicity"]
+    "mathContext": "theorem convex_distinct_distances (P : PointConfig) (hP : InConvexPosition P) :\n    numDistinctDistances P ≤ P.card / 2 + 1\ntheorem convex_max_multiplicity (P : PointConfig) (hP : InConvexPosition P) :\n    (maxMultiplicity P : ℝ) ≤ 2 * P.card\ntheorem convex_unit_distance (P : PointConfig) (hP : InConvexPosition P) :\n    (unitDistanceCount P : ℝ) ≤ 2 * P.card - 2. Key formulas: $|d(P)| \\leq \\lfloor n/2 \\rfloor + 1$; $\\max_u f(u) \\leq 2n$; $f(1) \\leq 2n - 2$",
+    "relatedConcepts": [
+      "distinct distances problem",
+      "unit distance problem",
+      "Altman's theorem"
+    ],
+    "prerequisites": [
+      "convex position",
+      "distance multiplicity"
+    ]
   }
 ]
