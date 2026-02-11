@@ -206,8 +206,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T05:32:39.472Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-11T05:41:00.787Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-11T07:03:36.100Z",
       "completed": "2026-02-07T00:59:53.359Z"
     },
     {
@@ -215,8 +215,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T05:32:39.476Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-11T05:41:00.787Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-11T07:03:36.100Z",
       "completed": "2026-02-07T00:59:53.358Z"
     },
     {
@@ -251,8 +251,8 @@
       "phase": "BREAKTHROUGH",
       "path": "fast",
       "started": "2026-01-01T05:32:39.478Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-11T05:41:00.789Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-11T07:03:36.102Z",
       "completed": "2026-02-11T05:41:00.789Z"
     },
     {
@@ -349,8 +349,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T21:55:27.886Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-11T05:41:00.787Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-11T07:03:36.099Z",
       "completed": "2026-02-11T05:41:00.786Z"
     },
     {
@@ -382,8 +382,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-11T05:41:00.787Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-11T07:03:36.100Z",
       "completed": "2026-02-11T05:41:00.787Z"
     },
     {
@@ -3124,6 +3124,30 @@
       "started": "2026-02-08T06:11:43.710Z",
       "status": "active",
       "lastUpdate": "2026-02-08T06:11:43.710Z"
+    },
+    {
+      "slug": "cauchy-schwarz-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-11T07:03:36.101Z",
+      "status": "active",
+      "lastUpdate": "2026-02-11T07:03:36.101Z"
+    },
+    {
+      "slug": "derangements-oq-01",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-02-11T07:03:36.101Z",
+      "status": "active",
+      "lastUpdate": "2026-02-11T07:03:36.101Z"
+    },
+    {
+      "slug": "euler-polyhedral-formula-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-11T07:03:36.101Z",
+      "status": "active",
+      "lastUpdate": "2026-02-11T07:03:36.101Z"
     }
   ],
   "config": {
