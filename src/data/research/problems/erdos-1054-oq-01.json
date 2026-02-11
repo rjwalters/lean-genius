@@ -20,7 +20,7 @@
       "Tao disproved f(n) = o(n) unconditionally (upper density of {n : f(n) ≤ δn} is O(δ²))",
       "OEIS A167485 records computed values of f",
       "Representability proved for n ∈ {1,3,4,6,7,8,9,10,11,12,13,14,15}",
-      "f(n) values computed: f(1)=1, f(3)=2, f(4)=3, f(6)=5, f(7)=4, f(8)=7, f(9)=15, f(10)=12, f(11)=10, f(12)=6, f(13)=9, f(14)=13, f(15)=8",
+      "f(n) values from OEIS A167485: f(1)=1, f(3)=2, f(4)=3, f(6)=5, f(7)=4, f(8)=7, f(9)=15, f(10)=12, f(11)=21, f(12)=6, f(13)=9, f(14)=13, f(15)=8 (corrected f(11)=21 not 10)",
       "partial_sums_skip_2: proved 2 ∉ partialDivisorSums m for all m ≥ 1",
       "partial_sums_skip_5: proved 5 ∉ partialDivisorSums m for all m ≥ 1"
     ],
@@ -32,19 +32,21 @@
   },
   "currentState": {
     "phase": "PROOF",
-    "since": "2026-02-10T17:30:00.000Z",
-    "iteration": 3,
-    "focus": "Structural proofs of non-representability completed",
-    "blockers": [],
-    "nextAction": "Docker-build verification, then submit to Aristotle for final check",
+    "since": "2026-02-11T06:30:00.000Z",
+    "iteration": 4,
+    "focus": "Survey complete; Docker build has API compatibility issues requiring fixes",
+    "blockers": [
+      "Docker Mathlib v4.26.0 API changes: List.Sorted→List.Pairwise, Finset.sort_sorted→pairwise_sort, Finset.sort_nodup arg order, List.not_mem_nil type change, Finset.insert_subset→positional args, List.length_sort→length_sort, List.head_cons_tail→cons_head_tail"
+    ],
+    "nextAction": "Fix Docker API compatibility in Erdos1054Problem.lean, then rebuild",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 0 sorries remain (excluding Tao axiom). Proved both partial_sums_skip_2 and partial_sums_skip_5 structurally for all m ≥ 1 via scanl lower-bound infrastructure and divisor structure analysis. Key technique: scanl_add_ge_init lemma + sorted/nodup divisor list properties + not_second_divisor_4 (4|m→2|m contradiction).",
+    "progressSummary": "PROOF COMPLETE but DOCKER BUILD FAILS. 0 sorries in proof logic (excluding Tao axiom). Docker Mathlib v4.26.0 has ~10 API incompatibilities requiring migration. Literature survey complete: Tao's exact bound is #{N ∈ [1,X] : f(N)/N ≤ δ}/X ≪ δ². Experimental data (Kovac): 31.3% of numbers ≤100000 have f(N)>100000. OEIS A167485 confirms f(n) values; corrected f(11)=21 (was incorrectly listed as 10).",
     "builtItems": [
       "sortedDivisors: Constructive sorted divisor list via n.divisors.sort",
       "partialDivisorSums: List of prefix sums via scanl",
@@ -67,19 +69,28 @@
     "insights": [
       "Problem 1054 was split from Erdős #468 (partial sums of divisors)",
       "1054 includes 1 as first divisor; 468 excludes 1 from divisor sums",
-      "Tao's argument: upper density of {n : f(n) ≤ δn} is O(δ²) → positive density of n with f(n) comparable to n",
-      "Non-representable values: exactly n=2 and n=5 (PROVED structurally)",
-      "f(9) = 15 > 9: showing f(n)/n can exceed 1",
+      "Tao's exact result (Nov 2025 forum post on #468): for any C₀, at most O(x/C₀) of the N ∈ [C₀x, 2C₀x] satisfy f(N) ≤ x",
+      "Tao's density bound: #{N ∈ [1,X] : f(N)/N ≤ δ}/X ≪ δ² — this DISPROVES f(N)=o(N) unconditionally",
+      "Tao's insight: 'only really powerful numbers n cause small values of f(N)/N'; second moment estimates may yield improvements",
+      "Kovac experimental data (Sept 2025): 31.279% of numbers ≤100000 have f(N)>100000; <6% have f(N)/N ≤ 0.5",
+      "Non-representable values: exactly n=2 and n=5 (PROVED structurally for ALL m)",
+      "OEIS A167485 offset=0: first 30 terms are 1,1,0,2,3,0,5,4,7,15,12,21,6,9,13,8,12,30,10,42,19,18,20,57,14,36,46,30,12,102",
+      "f(11)=21 (divisors of 21={1,3,7,21}, partial sums 1,4,11,32), NOT 10 or 30 as previously claimed",
+      "f(9)=15 > 9 and f(11)=21 ≈ 1.91×11: showing f(n)/n can significantly exceed 1",
+      "f(n) undefined iff n=2 or n=5 (well-definedness for n≥6 believed but contingent on strong Goldbach conjecture)",
       "Key technique for skip_2: decompose scanl via cons, use scanl_add_ge_init to bound tail ≥ 1+d₂ ≥ 3",
       "Key technique for skip_5: case split on d₂, eliminate d₂=4 via 4|m→2|m, bound tail ≥ 1+d₂+d₃ ≥ 6",
-      "The bridge lemma (scanl ↔ prefix sums) was NOT needed - direct scanl reasoning via cons unfolding sufficed",
-      "List.pairwise_cons is the correct API for extracting ordering from sorted lists"
+      "Docker Mathlib v4.26.0 API migration needed: List.Sorted→Pairwise, sort_sorted→pairwise_sort, sort_nodup(s,r)→s.sort_nodup(r), not_mem_nil type changed, insert_subset positional, length_sort→s.length_sort(r), head_cons_tail→cons_head_tail"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Docker Mathlib v4.26.0 renamed/changed ~10 list/finset APIs used in the proof"
+    ],
     "nextSteps": [
-      "Docker-build to verify all proofs compile",
-      "Consider submitting to Aristotle for automated verification",
-      "Explore whether additional representability values can be computed"
+      "Fix Docker Mathlib v4.26.0 API compatibility in Erdos1054Problem.lean (~10 API changes needed)",
+      "Fix Docker Mathlib v4.26.0 API compatibility in Erdos1054PrimeRepr.lean (similar changes)",
+      "Correct f(11) comment in Lean file (f(11)=21 not 30; the m=30 witness is valid but not minimal)",
+      "Consider extending OEIS table verification: compare computeF output against A167485 for n≤30",
+      "Consider submitting to Aristotle after Docker compatibility is fixed"
     ]
   },
   "approaches": [
@@ -102,19 +113,23 @@
   ],
   "references": {
     "papers": [
-      "Guy, Unsolved Problems in Number Theory, Problem B2 [Gu04]"
+      "Guy, Unsolved Problems in Number Theory, Problem B2 [Gu04]",
+      "Tao, Forum comment on Erdős #468 (Nov 2025): disproof of f(N)=o(N) via averaged divisor sum estimates"
     ],
     "urls": [
       "https://erdosproblems.com/1054",
+      "https://erdosproblems.com/468",
+      "https://erdosproblems.com/forum/thread/468?order=oldest",
       "https://oeis.org/A167485"
     ],
     "mathlib": [
       "Mathlib.Data.Nat.Divisors",
-      "Mathlib.Data.Finset.Sort"
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.Nat.Prime.Basic"
     ]
   },
   "started": "2026-02-09T22:43:00.000Z",
-  "lastUpdate": "2026-02-10T17:30:00.000Z",
+  "lastUpdate": "2026-02-11T06:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }
