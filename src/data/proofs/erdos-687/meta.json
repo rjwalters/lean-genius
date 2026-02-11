@@ -23,61 +23,90 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős offered $1,000 for determining the growth rate of Y(x), the maximum interval covered by residue classes of primes ≤ x. This is equivalent to the Jacobsthal function of the primorial. Iwaniec (1978) proved Y(x) ≪ x². Ford, Green, Konyagin, Maynard, and Tao (2018) gave the best lower bound using their breakthrough on large prime gaps.",
+    "historicalContext": "Erdős Problem #687 concerns the Jacobsthal function of the primorial, a central object in the theory of covering systems and prime gaps. Jacobsthal (1960) introduced g(n) as the largest gap between consecutive integers coprime to n. For the primorial P(x) = ∏_{p ≤ x} p, we have Y(x) = g(P(x)), connecting covering congruences to prime distribution. Iwaniec (1978) proved Y(x) ≪ x² using the Selberg sieve, a bound that has resisted improvement for nearly 50 years. Rankin (1938) gave the first non-trivial lower bound Y(x) ≫ x · log x · log log x · log log log log x / (log log log x)², which stood for decades. Ford, Green, Konyagin, Maynard, and Tao (2018), as part of their landmark work on large prime gaps, improved Rankin's bound by replacing the double-log denominator. Maier and Pomerance conjectured Y(x) ≪ x · (log x)^{2+o(1)}, which would nearly close the gap. Erdős offered $1,000 for proving Y(x) = o(x²), one of his largest prizes, reflecting the problem's depth and connection to the distribution of primes in arithmetic progressions, sieve methods, and the structure of smooth numbers.",
     "problemStatement": "Is Y(x) = o(x²)? Is Y(x) ≪ x^{1+o(1)}? What is the true growth rate?",
-    "proofStrategy": "We formalize covering systems, the Jacobsthal function, Y(x) as the Jacobsthal function of the primorial, the $1,000 conjecture, and known upper/lower bounds.",
+    "proofStrategy": "We formalize covering systems as functions assigning residue classes to primes ≤ x, define Y(x) via sSup of the achievable covering lengths, introduce the Jacobsthal function g(n) as sSup of maximal gaps, and state the equivalence Y(x) = g(primorial(x)). The $1,000 conjecture, Iwaniec's upper bound, the FGKMT lower bound, and the Maier–Pomerance conjecture are axiomatized. Structural properties (monotonicity, trivial lower bound) are proved from definitions.",
     "keyInsights": [
-      "Y(x) equals the Jacobsthal function g(primorial(x))",
-      "Iwaniec: Y(x) ≪ x² — best known upper bound since 1978",
-      "FGKMT: Y(x) ≫ x·(log x)(log³ x)/(log² x) — improved Rankin",
-      "Maier–Pomerance conjecture: Y(x) ≪ x·(log x)^{2+o(1)}",
-      "$1,000 prize for proving Y(x) = o(x²)"
+      "**Primorial connection**: $Y(x) = g(P(x))$ where $P(x) = \\prod_{p \\le x} p$ is the primorial, reducing the covering problem to the Jacobsthal function of a highly composite number",
+      "**Iwaniec's sieve bound (1978)**: $Y(x) \\ll x^2$ via the Selberg sieve — this uses the fact that the number of integers in $[1, y]$ not covered by any prime $p \\le x$ is $\\ge y \\prod_{p \\le x}(1 - 1/p) - O(x^2)$ by inclusion-exclusion",
+      "**FGKMT breakthrough (2018)**: $Y(x) \\gg x \\cdot (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, improving Rankin's 1938 bound. Their method uses Maynard–Tao weights from the proof of bounded gaps between primes",
+      "**Maier–Pomerance conjecture**: $Y(x) \\ll x \\cdot (\\log x)^{2+o(1)}$ — if true, the gap between upper and lower bounds would be only a polylogarithmic factor",
+      "**CRT periodicity**: By the Chinese Remainder Theorem, the covering pattern repeats modulo $P(x)$, so $Y(x) \\le P(x)$. The challenge is to show the actual maximum is much smaller"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Part 0: Imports",
+      "startLine": 29,
+      "endLine": 31,
+      "summary": "Imports `Mathlib.Tactic`, `Data.Nat.Prime.Basic`, and `Order.ConditionallyCompleteLattice.Basic` for prime number predicates, `sSup`, and `BddAbove`."
+    },
+    {
       "id": "definitions",
-      "title": "Core Definitions",
-      "startLine": 27,
-      "endLine": 53,
-      "summary": "Defines primorial, covering systems, IsCovered, and jacobsthalY as the maximum covered interval length."
+      "title": "Part I: Core Definitions",
+      "startLine": 33,
+      "endLine": 54,
+      "summary": "Defines `primorial(x) = \\prod_{p \\le x} p$, `IsCovered` for integers satisfying a congruence $n \\equiv a_p \\pmod{p}$, `jacobsthalSet(x)` of achievable covering lengths, and $Y(x) = \\text{sSup}(\\text{jacobsthalSet}(x))$."
     },
     {
       "id": "jacobsthal",
-      "title": "The Jacobsthal Function",
-      "startLine": 55,
-      "endLine": 66,
-      "summary": "Defines the Jacobsthal function g(n) and states Y(x) = g(primorial(x))."
+      "title": "Part II: The Jacobsthal Function",
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "Defines $g(n) = \\sup\\{d \\mid \\exists m, \\forall k \\in (m, m+d), \\exists p \\mid n \\text{ with } p \\mid k\\}$, the largest gap between consecutive integers coprime to $n$."
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture ($1,000)",
-      "startLine": 68,
-      "endLine": 73,
-      "summary": "States the $1,000 prize conjecture: Y(x) ≤ x^{1+ε} for any ε > 0 and large x."
-    },
-    {
-      "id": "bounds",
-      "title": "Known Bounds",
-      "startLine": 75,
-      "endLine": 96,
-      "summary": "Iwaniec upper bound Y(x) ≪ x², FGKMT lower bound with iterated logarithms, and Maier–Pomerance conjecture."
+      "id": "basic-properties",
+      "title": "Part III: Basic Properties",
+      "startLine": 65,
+      "endLine": 79,
+      "summary": "Proves `jacobsthalSet` is nonempty (via $y = 0$ vacuously) and axiomatizes it is bounded above (by CRT periodicity of the primorial), enabling the use of `sSup`."
     },
     {
       "id": "structural",
-      "title": "Structural Properties",
-      "startLine": 98,
-      "endLine": 106,
-      "summary": "Monotonicity of Y(x) and the trivial lower bound Y(x) ≥ x + 1."
+      "title": "Part IV: Structural Properties",
+      "startLine": 81,
+      "endLine": 103,
+      "summary": "Proves `jacobsthalSet` is monotone ($x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$) by extending coverings to new primes. Derives $Y(x)$ monotonicity via `csSup_le_csSup`."
+    },
+    {
+      "id": "connection",
+      "title": "Part V: Connection to Jacobsthal Function",
+      "startLine": 105,
+      "endLine": 109,
+      "summary": "Axiomatizes $Y(x) = g(\\text{primorial}(x))$, the fundamental equivalence between covering length and the Jacobsthal function of the primorial."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part VI: Main Conjecture ($1,000)",
+      "startLine": 111,
+      "endLine": 117,
+      "summary": "States the \\$1,000 prize conjecture: $\\forall \\varepsilon > 0$, eventually $Y(x) \\le x^{1+\\varepsilon}$, formalized using `Filter.atTop` and `Filter.Eventually`."
+    },
+    {
+      "id": "bounds",
+      "title": "Part VII: Known Bounds",
+      "startLine": 119,
+      "endLine": 140,
+      "summary": "Axiomatizes Iwaniec's upper bound $Y(x) \\le C x^2$, the FGKMT lower bound $Y(x) \\ge c x (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, and the Maier–Pomerance conjecture $Y(x) \\le C x (\\log x)^{2+\\varepsilon}$."
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Part VIII: Trivial Lower Bound",
+      "startLine": 142,
+      "endLine": 149,
+      "summary": "Axiomatizes $Y(x) \\ge x + 1$ for $x \\ge 2$: every integer in $[1, x]$ has a prime factor $\\le x$, so taking $a_p = 0$ covers at least $[1, x]$."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #687 on covering congruences and the Jacobsthal function, including the $1,000 prize conjecture Y(x) = o(x²), Iwaniec's upper bound, and the FGKMT lower bound.",
-    "implications": "Determining Y(x) would resolve fundamental questions about the distribution of primes in arithmetic progressions and the structure of covering systems.",
+    "summary": "Formalizes Erdős Problem #687 on covering congruences and the Jacobsthal function in 149 lines of Lean 4. The formalization captures Y(x) = g(primorial(x)), the $1,000 prize conjecture Y(x) = o(x²), Iwaniec's x² upper bound, the FGKMT lower bound, the Maier–Pomerance conjecture, and structural properties (monotonicity, trivial bounds). Two key properties are proved from definitions; five deep results are axiomatized.",
+    "implications": "Determining Y(x) would resolve fundamental questions about the distribution of primes in arithmetic progressions, the efficiency of sieve methods, and the structure of smooth numbers. The gap between x² and x · polylog(x) represents one of the largest open gaps in analytic number theory.",
     "openQuestions": [
-      "Is Y(x) = o(x²)? ($1,000 prize)",
+      "Is Y(x) = o(x²)? ($1,000 prize) — even improving Iwaniec's x² to x^{2-δ} for any δ > 0 would be a breakthrough",
       "Is the Maier–Pomerance conjecture Y(x) ≪ x(log x)^{2+o(1)} correct?",
-      "Can Iwaniec's x² upper bound be improved at all?"
+      "Can the FGKMT lower bound be improved further, perhaps to x · (log x)^{2-o(1)}?",
+      "What is g(n) for n with many small prime factors beyond primorials?"
     ]
   }
 }
