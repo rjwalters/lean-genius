@@ -24,98 +24,112 @@
     "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "**Planar Graphs and Density**\n\nSaturated planar graphs are maximal planar graphs with exactly 3n - 6 edges. The smallest is K₃ (a triangle) on 3 vertices.\n\n**Turán Connection**: By Turán's theorem, any graph with more than n²/4 edges contains a triangle. Erdős asked what happens with more edges.\n\n**The Construction**: Erdős showed graphs with ⌊n²/4⌋ + ⌊(n-1)/2⌋ edges can avoid saturated planar subgraphs larger than triangles. But adding one more edge forces structure.\n\n**Resolution**: Simonovits proved in his PhD thesis that the threshold ⌊n²/4⌋ + ⌊(n+1)/2⌋ forces K₄ or C_l + 2K₁.",
-    "problemStatement": "**Problem Statement**\n\nA saturated planar graph on n vertices has exactly 3n - 6 edges (the maximum for planarity). Does every graph on n vertices with ⌊n²/4⌋ + ⌊(n+1)/2⌋ edges contain a saturated planar subgraph with more than 3 vertices?\n\n**Status**: SOLVED (Simonovits)\n\n**Answer**: YES. Such graphs must contain either K₄ or C_l + 2K₁ (cycle with 2 apex vertices).\n\n**Note**: The threshold is tight - Erdős constructed graphs with one fewer edge avoiding such subgraphs.",
-    "proofStrategy": "**Proof Approach (Simonovits)**\n\n1. **Threshold Analysis**: The edge count ⌊n²/4⌋ + ⌊(n+1)/2⌋ exceeds Turán's bound by ⌊(n+1)/2⌋.\n\n2. **Structure Forcing**: Extra edges must create dense local structure beyond triangles.\n\n3. **Case Analysis**: Either K₄ appears (4-clique), or cycle structures C_l with apex vertices form.\n\n4. **Both are Saturated Planar**: K₄ has 6 = 3(4) - 6 edges. C_l + 2K₁ has 3l = 3(l+2) - 6 edges.\n\n**Key Insight**: The gap between the construction threshold and the forcing threshold is exactly 1 edge.",
+    "historicalContext": "This problem sits at a striking intersection of extremal graph theory and topological graph theory. Extremal graph theory, pioneered by Turán (1941), asks: how many edges can a graph have while avoiding a specified substructure? Turán's theorem gives the precise answer for complete graphs: $\\text{ex}(n, K_r) = (1 - 1/(r-1))n^2/2$, with the unique extremal graph being the complete $(r-1)$-partite graph $T(n, r-1)$. For triangles ($r = 3$), this gives $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$, achieved by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.\n\nErdős asked a more refined question: beyond the Turán threshold, when do we get not just *any* dense substructure, but specifically a *saturated planar* subgraph—one that achieves the maximum $3|V| - 6$ edges allowed by Euler's formula? A saturated planar graph (also called a *maximal planar graph* or *triangulation*) is a planar graph where every face is a triangle; adding any edge would violate planarity. The simplest examples are $K_3$ (3 vertices, 3 edges) and $K_4$ (4 vertices, 6 edges).\n\nThe threshold $\\lfloor n^2/4 \\rfloor + \\lfloor(n+1)/2\\rfloor$ is precisely calibrated. Erdős showed that graphs with $\\lfloor n^2/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ edges can avoid saturated planar subgraphs on more than 3 vertices: take the Turán graph $T(n,2) = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ and add a matching of $\\lfloor(n-1)/2\\rfloor$ edges within one part. This creates triangles but never $K_4$ or $C_\\ell + 2K_1$. Adding just *one more edge* crosses the threshold.\n\nSimonovits resolved the problem in his PhD thesis (supervised by Turán), proving that graphs exceeding the threshold must contain either $K_4$ or $C_\\ell + 2K_1$ for some $\\ell \\ge 3$. The graph $C_\\ell + 2K_1$ consists of a cycle of length $\\ell$ with two 'apex' vertices each adjacent to every cycle vertex—it has $\\ell + 2$ vertices and $3\\ell = 3(\\ell + 2) - 6$ edges, hence is saturated planar. Simonovits's proof uses a structure-theoretic argument: analyze the neighborhoods of the extra edges beyond the bipartite part and show they force one of these two configurations.\n\nThis result is part of Simonovits's broader program of *stability* in extremal graph theory: not just determining extremal numbers, but characterizing the structure of near-extremal graphs. The Erdős-Simonovits stability theorem (1966) shows that graphs with close to $\\text{ex}(n, H)$ edges must be structurally close to the Turán graph. Problem #1019 pushes beyond stability into *supersaturation*: what new structures must appear when the edge count exceeds the extremal threshold?",
+    "problemStatement": "A saturated planar graph on $n$ vertices has exactly $3n - 6$ edges (the maximum for planarity). Does every graph on $n$ vertices with $\\lfloor n^2/4 \\rfloor + \\lfloor(n+1)/2\\rfloor$ edges contain a saturated planar subgraph with more than 3 vertices?\n\n**Status**: SOLVED (Simonovits, PhD thesis)\n\n**Answer**: YES. Such graphs must contain either $K_4$ or $C_\\ell + 2K_1$ (cycle with 2 apex vertices) for some $\\ell \\ge 3$.\n\n**Tightness**: Erdős constructed graphs with $\\lfloor n^2/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ edges—one fewer—that avoid all such subgraphs. The threshold is optimal.",
+    "proofStrategy": "The formalization builds the theory in five layers across ~290 lines.\n\n**Layer 1 — Planarity framework (lines 22–71)**: Defines `isPlanar` (as `sorry`—topological planarity is beyond Mathlib), axiomatizes Euler's bound $|E| \\le 3|V| - 6$, and defines `isSaturatedPlanar` as planarity with equality.\n\n**Layer 2 — Thresholds (lines 73–113)**: Defines `turanEdges n = n²/4`, `additionalThreshold n = (n+1)/2`, and their sum `saturatedPlanarThreshold`. Axiomatizes Turán's theorem for triangles. Defines `K_3` and proves it saturated planar.\n\n**Layer 3 — Subgraph containment (lines 115–178)**: Defines `inducedSubgraph`, `hasSaturatedPlanarSubgraph`, `hasLargeSaturatedPlanarSubgraph` (more than 3 vertices). Defines `containsK4` and `containsCyclePlus2K1`. Proves each implies a large saturated planar subgraph.\n\n**Layer 4 — Main result (lines 180–228)**: Axiomatizes Erdős's construction, states `erdos_1019_question`, axiomatizes `simonovits_theorem` (the $K_4$ or $C_\\ell + 2K_1$ dichotomy), and derives `erdos_1019_solved`.\n\n**Layer 5 — Extensions (lines 230–291)**: Erdős's quantitative size bound, connection to complete bipartite graphs, and the tight threshold gap proved by `omega`.",
     "keyInsights": [
-      "Saturated planar graphs have exactly 3n - 6 edges",
-      "K₃ (triangle) is the smallest saturated planar graph",
-      "Threshold ⌊n²/4⌋ + ⌊(n+1)/2⌋ forces larger structure",
-      "K₄ or C_l + 2K₁ must appear in dense enough graphs",
-      "The threshold is optimal (tight within 1 edge)"
+      "**Threshold is exactly Turán + $\\lfloor(n+1)/2\\rfloor$**: The Turán number $\\lfloor n^2/4 \\rfloor$ gives triangles; the additional $\\lfloor(n+1)/2\\rfloor$ edges force *saturated planar* subgraphs beyond triangles. This quantifies precisely how many edges beyond extremal are needed for topological richness.",
+      "**Two structural outcomes: $K_4$ or $C_\\ell + 2K_1$**: These are the only saturated planar graphs that can be forced at this threshold. $K_4$ is rigid (unique on 4 vertices); the family $C_\\ell + 2K_1$ is flexible (parameterized by cycle length $\\ell \\ge 3$). Both achieve $|E| = 3|V| - 6$ exactly.",
+      "**1-edge gap proves optimality**: The forcing threshold $\\lfloor n^2/4 \\rfloor + \\lfloor(n+1)/2\\rfloor$ exceeds the achievable lower bound $\\lfloor n^2/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ by exactly 1 edge. This is the sharpest possible extremal result—a single additional edge changes the answer.",
+      "**Stability meets supersaturation**: This result extends the Erdős-Simonovits stability theorem into the supersaturation regime. Near the extremal threshold, the graph resembles the Turán graph; beyond it, specific topological structures (saturated planar subgraphs) must appear.",
+      "**Planarity as a formal challenge**: The definition of `isPlanar` is `sorry` because topological planarity requires embedding theory not yet in Mathlib. This is a concrete target for formalization efforts: Kuratowski's theorem or the Hopcroft-Tarjan planarity algorithm would provide a constructive definition."
     ]
   },
   "sections": [
     {
       "id": "graph-basics",
       "title": "Graph Basics",
-      "summary": "edgeCount and vertexCount definitions",
+      "summary": "Defines `edgeCount G` via `G.edgeFinset.card` and `vertexCount` via `Fintype.card V`. These parametrize the function $f(n,k)$ measuring the edge threshold.",
       "startLine": 22,
       "endLine": 35
     },
     {
       "id": "planar-graphs",
       "title": "Planar Graphs",
-      "summary": "isPlanar definition and Euler bound",
+      "summary": "Defines `isPlanar G` (as `sorry`) and axiomatizes Euler's bound $|E| \\le 3|V| - 6$ for planar graphs with $|V| \\ge 3$.",
       "startLine": 37,
       "endLine": 49
     },
     {
       "id": "saturated-planar",
       "title": "Saturated Planar Graphs",
-      "summary": "isSaturatedPlanar definition (3n - 6 edges)",
+      "summary": "Defines `isSaturatedPlanar G` requiring planarity, $|V| \\ge 3$, and $|E| = 3|V| - 6$. Proves basic implications: saturated implies planar, saturated achieves the Euler bound.",
       "startLine": 51,
       "endLine": 71
     },
     {
       "id": "threshold",
       "title": "Edge Density Threshold",
-      "summary": "turanEdges, additionalThreshold, saturatedPlanarThreshold",
+      "summary": "Defines `turanEdges n` $= \\lfloor n^2/4 \\rfloor$, `additionalThreshold n` $= \\lfloor(n+1)/2\\rfloor$, `saturatedPlanarThreshold`, and `exceedsThreshold`.",
       "startLine": 73,
       "endLine": 90
     },
     {
       "id": "triangles",
       "title": "Triangles and Turán's Theorem",
-      "summary": "K₃ and Turán's triangle theorem",
+      "summary": "Defines $K_3$, axiomatizes it as saturated planar, and axiomatizes Turán's theorem: $|E| > \\lfloor n^2/4 \\rfloor \\Rightarrow K_3 \\subseteq G$.",
       "startLine": 92,
       "endLine": 113
     },
     {
       "id": "subgraphs",
-      "title": "Induced Subgraphs",
-      "summary": "hasSaturatedPlanarSubgraph and hasLargeSaturatedPlanarSubgraph",
+      "title": "Subgraph Containment",
+      "summary": "Defines `inducedSubgraph G S`, `hasSaturatedPlanarSubgraph G k`, and `hasLargeSaturatedPlanarSubgraph G` ($k > 3$).",
       "startLine": 115,
       "endLine": 134
     },
     {
       "id": "k4",
-      "title": "Complete Graph K₄",
-      "summary": "K₄ as smallest large saturated planar",
+      "title": "Complete Graph $K_4$",
+      "summary": "Axiomatizes $K_4$ as saturated planar (6 $= 3 \\cdot 4 - 6$ edges). Defines `containsK4` and proves it implies a large saturated planar subgraph.",
       "startLine": 136,
       "endLine": 152
     },
     {
       "id": "cycle-plus",
-      "title": "Cycle Plus Independent Vertices",
-      "summary": "C_l + 2K₁ structure",
+      "title": "Cycle Plus Independent Vertices: $C_\\ell + 2K_1$",
+      "summary": "Defines `containsCyclePlus2K1 G l` ($\\ell \\ge 3$ with 2 apex vertices). Axiomatizes it as saturated planar ($3\\ell = 3(\\ell+2) - 6$ edges). Proves it implies a large saturated planar subgraph.",
       "startLine": 154,
       "endLine": 178
     },
     {
+      "id": "construction",
+      "title": "Erdős's Construction",
+      "summary": "Axiomatizes existence of graphs with $\\lfloor n^2/4 \\rfloor + \\lfloor(n-1)/2\\rfloor$ edges avoiding large saturated planar subgraphs.",
+      "startLine": 180,
+      "endLine": 198
+    },
+    {
       "id": "simonovits",
       "title": "Simonovits's Theorem",
-      "summary": "Main theorem: K₄ or C_l + 2K₁ guaranteed",
+      "summary": "Axiomatizes the dichotomy: exceeding the threshold forces $K_4$ or $C_\\ell + 2K_1$. Derives `erdos_1019_solved` resolving the problem.",
       "startLine": 209,
       "endLine": 228
     },
     {
+      "id": "size-bound",
+      "title": "Erdős Size Bound and Turán Connection",
+      "summary": "Quantitative bound: $\\lfloor n^2/4 \\rfloor + k$ edges force saturated planar on $\\gg k/n$ vertices. Connection to complete bipartite graphs via Kuratowski.",
+      "startLine": 230,
+      "endLine": 266
+    },
+    {
       "id": "threshold-gap",
       "title": "Threshold Optimality",
-      "summary": "Gap is exactly 1 edge",
+      "summary": "Proves the threshold gap is exactly 1 edge via `omega`. States the combined optimality theorem: above the threshold, structure exists; below, it can be avoided.",
       "startLine": 268,
       "endLine": 291
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1019 asked whether dense graphs (⌊n²/4⌋ + ⌊(n+1)/2⌋ edges) must contain saturated planar subgraphs larger than triangles. Simonovits proved yes: such graphs contain K₄ or C_l + 2K₁. The threshold is optimal - Erdős constructed counterexamples with one fewer edge.",
-    "implications": "**Theoretical Significance**\n\n1. **Extremal Graph Theory**: Precise threshold for forcing planar structure\n\n2. **Turán Theory**: Extends classical triangle-forcing to larger structures\n\n3. **Planar Graph Theory**: Connects density to maximal planar subgraphs\n\n4. **Optimal Bounds**: The 1-edge gap shows the threshold is tight",
+    "summary": "This formalization captures Erdős Problem #1019 on saturated planar subgraphs in dense graphs in a ~290-line Lean file spanning 12 sections. The framework defines saturated planarity ($|E| = 3|V| - 6$), the edge density threshold $\\lfloor n^2/4 \\rfloor + \\lfloor(n+1)/2\\rfloor$, and the two forced structures ($K_4$ and $C_\\ell + 2K_1$). Simonovits's theorem is axiomatized and used to derive the affirmative answer. The threshold is proved tight within 1 edge, with 5 sorries and several axioms encoding deep results.",
+    "implications": "This result connects several major themes in graph theory:\n\n1. **Supersaturation in extremal graph theory**: Beyond the Turán threshold, not only do forbidden subgraphs appear, but *topologically rich* (saturated planar) subgraphs are forced. This is a bridge between extremal combinatorics and topological graph theory.\n\n2. **Simonovits stability program**: The result is an early example of the structure-theoretic approach to extremal problems: rather than just counting edges, it characterizes *which* structures must appear. This anticipates the Szemerédi regularity lemma (1975) and the graph removal lemma.\n\n3. **Threshold phenomena**: The 1-edge gap between construction and forcing is a sharp threshold phenomenon, analogous to phase transitions in random graph theory (Erdős-Rényi model). Such precise thresholds are rare and mathematically significant.\n\n4. **Formalization challenges**: The `isPlanar` definition as `sorry` highlights a concrete gap in Mathlib: topological planarity (via Kuratowski's theorem or planar embeddings) is not yet formalized. This is an active target for the formalization community.",
     "openQuestions": [
-      "Can the proof be made more constructive?",
-      "What happens for other surfaces (torus, projective plane)?",
-      "Is there an efficient algorithm to find K₄ or C_l + 2K₁?",
-      "What about weighted versions of the problem?",
-      "Can similar thresholds be found for other graph properties?"
+      "Can Simonovits's proof be made fully constructive, yielding a polynomial-time algorithm to find $K_4$ or $C_\\ell + 2K_1$ in dense graphs?",
+      "What is the analogous threshold for forcing saturated graphs on other surfaces (torus: $|E| \\le 3|V| + 3$; projective plane: $|E| \\le 3|V| - 3$)?",
+      "What is the extremal number for $C_\\ell + 2K_1$ as a function of $\\ell$ and $n$? This connects to Turán-type problems for specific planar graphs.",
+      "Can the planarity definition `isPlanar` be formalized in Mathlib using Kuratowski's theorem ($G$ is planar iff it has no $K_5$ or $K_{3,3}$ minor)?",
+      "What is the minimum number of saturated planar subgraphs (on $> 3$ vertices) in a graph with $\\lfloor n^2/4 \\rfloor + k$ edges? This is the supersaturation version of Problem #1019."
     ]
   }
 }
