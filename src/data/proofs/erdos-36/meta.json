@@ -11,77 +11,100 @@
       "combinatorics",
       "additive-combinatorics",
       "number-theory",
+      "Fourier-analysis",
+      "convex-optimization",
+      "partition-problem",
       "open"
     ],
-    "references": [
-      "Erdős (1955): original problem and 1/4 lower bound",
-      "Scherk (1955): 1 − 1/√2 lower bound",
-      "White (2022): 0.379005 lower bound via Fourier analysis",
-      "Haugland (2016): 0.380926 upper bound",
-      "https://erdosproblems.com/36"
-    ],
-    "leanFile": "Proofs/Erdos36Problem.lean",
+    "badge": "axiom",
     "sorries": 0,
+    "erdosUrl": "https://erdosproblems.com/36",
     "sourceUrl": "https://erdosproblems.com/36",
-    "erdosUrl": "https://erdosproblems.com/36"
+    "erdosProblemStatus": "open",
+    "leanFile": "Proofs/Erdos36Problem.lean",
+    "dateAdded": "2026-01-23",
+    "references": [
+      "Erdős, P. (1955): Original problem formulation and 1/4 lower bound",
+      "Scherk, P. (1955): Lower bound 1 − 1/√2 ≈ 0.293 via Fourier analysis",
+      "Haugland, J.K. (2016): Upper bound 0.380926 via step-function constructions",
+      "White, E. (2022): Lower bound 0.379005 via elementary Fourier analysis and convex optimization",
+      "TTT-Discover (2026): Upper bound improved to 0.380876 via AI-assisted optimization",
+      "Guy, R.K.: 'Unsolved Problems in Number Theory', Problem C17",
+      "https://erdosproblems.com/36",
+      "https://en.wikipedia.org/wiki/Minimum_overlap_problem"
+    ],
+    "relatedProblems": [
+      { "id": "erdos-335", "relation": "Erdős #335 studies density additivity in sumsets, a closely related partition-structure question in additive combinatorics" },
+      { "id": "erdos-66", "relation": "Erdős #66 studies the representation function r_A(n) asymptotics, the same counting machinery underlying the overlap function" },
+      { "id": "erdos-861", "relation": "Erdős #861 counts Sidon sets (B₂ sequences with unique pairwise sums), the opposite extreme of minimal overlap" },
+      { "id": "erdos-343", "relation": "Erdős #343 asks about subcompleteness of dense multisets, using similar Fourier and density techniques" }
+    ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 19,
+      "endLine": 23,
+      "summary": "Imports Mathlib's **Nat.Basic**, **Int.Basic**, **Finset.Basic**, **Real.Basic**, and **Tactic** for integer differences, finite set cardinality, and real-valued asymptotic bounds."
+    },
+    {
       "id": "definition",
-      "title": "Definition",
-      "startLine": 22,
-      "endLine": 39,
-      "summary": "Overlap function, maximum overlap, and M(N) definition."
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 38,
+      "summary": "Defines **overlap**(A,B,k) as the representation function $r_{A-B}(k)$, **maxOverlap** as $\\max_k r_{A-B}(k)$, and **minMaxOverlap** $M(N) = \\min_{(A,B)} \\max_k \\text{overlap}(A,B,k)$."
     },
     {
       "id": "main-question",
-      "title": "Main Question",
-      "startLine": 41,
-      "endLine": 46,
-      "summary": "Existence and value of the asymptotic constant c = lim M(N)/N."
+      "title": "Main Question: The Asymptotic Constant",
+      "startLine": 40,
+      "endLine": 47,
+      "summary": "States the existence of $c = \\lim M(N)/N > 0$ via $\\varepsilon$-$N_0$ definition. The exact value of $c$ is the central open question."
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 48,
-      "endLine": 72,
-      "summary": "Lower bounds (Erdős, Scherk, White) and upper bound (Haugland)."
+      "startLine": 49,
+      "endLine": 70,
+      "summary": "Axiomatizes four bounds: **Erdős** ($> 1/4$, 1955), **Scherk** ($> 1 - 1/\\sqrt{2}$, 1955), **White** ($> 0.379005$, 2022 via Fourier/SDP), **Haugland-TTT** ($< 0.380876$, 2016/2026 via step functions)."
     },
     {
       "id": "small-values",
       "title": "Small Values",
-      "startLine": 74,
-      "endLine": 79,
-      "summary": "M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3."
+      "startLine": 72,
+      "endLine": 78,
+      "summary": "Records $M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3$. Computed by exhaustive enumeration; the ratios $M(N)/N$ oscillate toward $c \\approx 0.38$."
     },
     {
       "id": "observations",
-      "title": "Observations",
-      "startLine": 81,
-      "endLine": 95,
-      "summary": "Erdős' disproved conjecture c=1/2, Fourier approach, additive combinatorics connection."
+      "title": "Observations and Techniques",
+      "startLine": 80,
+      "endLine": 92,
+      "summary": "Discusses Erdős's disproved $c = 1/2$ conjecture, White's Fourier analytic method (autocorrelation → convex optimization), and connections to additive combinatorics and discrepancy theory."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős posed this problem in 1955. He initially conjectured c = 1/2, which was later disproved. The problem has attracted sustained interest from combinatorialists, with bounds steadily improving over decades. White (2022) made a major advance using Fourier analysis.",
-    "problemStatement": "Partition {1, ..., 2N} into two sets A, B of size N. For each k, count pairs (a,b) with a ∈ A, b ∈ B, a−b = k. Let M(N) = min over partitions of max overlap. Determine c = lim M(N)/N.",
-    "proofStrategy": "We axiomatize the overlap function, M(N), and the asymptotic constant. We state the known bounds 0.379005 < c < 0.380876 and record small values of M(N).",
+    "historicalContext": "Erdős posed this problem in 1955, asking for the asymptotic constant $c = \\lim M(N)/N$ where $M(N)$ is the minimum maximum overlap in equal partitions of $\\{1,\\ldots,2N\\}$. He initially conjectured $c = 1/2$, which was spectacularly disproved — the true value is near $0.38$. Scherk (1955) obtained the first non-trivial lower bound $1 - 1/\\sqrt{2} \\approx 0.293$ using Fourier analysis, pioneering the harmonic-analytic approach. After decades of incremental progress, White (2022) made a major breakthrough by formulating the lower bound as a convex optimization program in Fourier space, achieving $c > 0.379005$. On the upper bound side, Haugland (2016) used step-function partition constructions to prove $c < 0.380926$, later improved to $0.380876$ by TTT-Discover LLM (2026). The gap is now less than $0.002$, but the exact value remains unknown. The problem appears as C17 in Guy's *Unsolved Problems in Number Theory*.",
+    "problemStatement": "Partition $\\{1, \\ldots, 2N\\}$ into two sets $A$, $B$ of size $N$. For each integer $k$, let $\\text{overlap}(A,B,k) = |\\{(a,b) : a \\in A, b \\in B, a - b = k\\}|$. Define $M(N) = \\min_{(A,B)} \\max_k \\text{overlap}(A,B,k)$. Determine the asymptotic constant $c = \\lim_{N \\to \\infty} M(N)/N$.",
+    "proofStrategy": "The formalization defines the overlap function as a filter on the Cartesian product $A \\times B$, axiomatizes the min-max function $M(N)$, and states the existence of the asymptotic constant $c$. Four progressively tighter bounds are axiomatized: Erdős ($>1/4$), Scherk ($>1-1/\\sqrt{2}$), White ($>0.379005$), and Haugland-TTT ($<0.380876$). Small exact values of $M(N)$ are recorded. The formalization captures the problem's status as OPEN by axiomatizing the limit existence without determining its value.",
     "keyInsights": [
-      "Erdős originally conjectured c = 1/2, which was disproved",
-      "Best known bounds: 0.379005 < c < 0.380876",
-      "White (2022) used Fourier analysis and convex optimization for the lower bound",
-      "Haugland (2016) used step functions for the upper bound",
-      "Small values: M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3"
+      "**Minimax game**: $M(N)$ has a two-player game interpretation — the partitioner spreads differences evenly, the adversary picks the most concentrated shift $k$",
+      "**Fourier duality**: White (2022) reduced the lower bound to a semidefinite program by expressing the overlap as autocorrelation of the centered indicator function $f = 1_A - 1/2$, then applying Parseval's identity",
+      "**Step-function upper bounds**: Haugland (2016) modeled the partition as a density function $f : [0,1] \\to [0,1]$ and optimized piecewise-constant approximations to minimize the maximum overlap",
+      "**Erdős's failed conjecture**: The original $c = 1/2$ conjecture was far off — the true value $c \\approx 0.380$ shows that partition optimization over consecutive integers is subtler than expected",
+      "**AI-assisted progress**: TTT-Discover LLM (2026) improved the upper bound to $0.380876$, demonstrating that AI-guided search can push explicit construction bounds in combinatorial optimization"
     ]
   },
   "conclusion": {
-    "summary": "The minimum overlap problem asks for the exact asymptotic constant c = lim M(N)/N where M(N) is the minimum maximum overlap in equal partitions of {1,...,2N}. The constant is pinned between 0.379005 and 0.380876 but its exact value remains unknown.",
-    "implications": "Determining c would resolve a fundamental question in additive combinatorics about the unavoidable structure in equal partitions of consecutive integers. The Fourier-analytic methods developed for this problem have broader applications.",
+    "summary": "The minimum overlap problem asks for the exact asymptotic constant $c = \\lim M(N)/N$ where $M(N)$ is the minimum maximum overlap in equal partitions of $\\{1,\\ldots,2N\\}$. The constant is pinned between $0.379005$ (White 2022, via Fourier/convex optimization) and $0.380876$ (TTT-Discover 2026, via step-function constructions). The gap of less than $0.002$ is remarkably tight, yet the exact value of $c$ remains unknown.",
+    "implications": "Determining $c$ would resolve a fundamental question in additive combinatorics about the unavoidable structure in equal partitions of consecutive integers. The Fourier-analytic framework developed for this problem — reducing combinatorial optimization to semidefinite programming — has broader applications to discrepancy theory, sumset problems, and representation function asymptotics. The successful application of AI optimization to the upper bound suggests computational approaches may eventually close the gap entirely.",
     "openQuestions": [
-      "What is the exact value of c = lim M(N)/N?",
-      "Can the gap between 0.379005 and 0.380876 be further narrowed?",
-      "Is c algebraic or transcendental?",
-      "What is the optimal partition structure achieving M(N)?"
+      "What is the exact value of c = lim M(N)/N? Is it algebraic, transcendental, or even rational?",
+      "Can the gap between 0.379005 and 0.380876 be further narrowed by refined Fourier methods or better constructions?",
+      "What is the optimal partition structure achieving M(N) — does it converge to a limiting density function?",
+      "Does the minimum overlap problem have a phase transition: is there a threshold density above which partitions are 'generic' vs 'structured'?",
+      "Can Szemerédi-type regularity methods provide an alternative approach to the lower bound?"
     ]
   }
 }

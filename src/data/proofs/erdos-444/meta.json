@@ -2,71 +2,45 @@
   "id": "erdos-444",
   "title": "Erdős Problem #444: Generalized Divisor Functions",
   "slug": "erdos-444",
-  "description": "Let A ⊆ ℕ be infinite and d_A(n) count divisors of n in A. Is limsup max d_A(n) / (Σ 1/a)^k = ∞ for all k? SOLVED: YES by Erdős-Sárközy (1980) - the maximum grows faster than any power of the harmonic sum.",
+  "description": "Let A ⊆ ℕ be infinite and d_A(n) count divisors of n in A. Is limsup max d_A(n) / (Σ 1/a)^k = ∞ for all k? SOLVED: YES by Erdős-Sárközy (1980) — the maximum grows faster than any power of the harmonic sum.",
   "meta": {
-    "author": "Erdős, Graham, Sárközy",
-    "sourceUrl": "https://erdosproblems.com/444",
-    "date": "1980",
+    "author": "Erdős and Sárközy",
+    "erdosNumber": 444,
     "status": "complete",
-    "proofRepoPath": "Proofs/Erdos444Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
       "divisor-functions",
       "harmonic-sums",
-      "extremal"
+      "extremal",
+      "multiplicative-number-theory",
+      "highly-composite-numbers",
+      "solved"
+    ],
+    "references": [
+      "Erdős, P. and Graham, R.L. (1980): 'Old and new problems and results in combinatorial number theory', Monographies de L'Enseignement Mathématique 28, p. 88",
+      "Erdős, P. and Sárközy, A. (1980): 'Some asymptotic formulas on generalized divisor functions IV'",
+      "Ramanujan, S. (1915): 'Highly composite numbers', Proc. London Math. Soc. 14, 347–409",
+      "Wigert, S. (1907): 'Sur l'ordre de grandeur du nombre des diviseurs d'un entier', Arkiv för Matematik 3(18), 1–9",
+      "Hardy, G.H. and Ramanujan, S. (1917): 'The normal number of prime factors of a number n', Quart. J. Math. 48, 76–92",
+      "Mertens, F. (1874): 'Ein Beitrag zur analytischen Zahlentheorie', J. Reine Angew. Math. 78, 46–62",
+      "Erdős, P. and Kac, M. (1940): 'The Gaussian law of errors in the theory of additive number theoretic functions', Amer. J. Math. 62, 738–742",
+      "https://erdosproblems.com/444"
     ],
     "badge": "axiom",
     "sorries": 0,
-    "erdosNumber": 444,
+    "sourceUrl": "https://erdosproblems.com/444",
     "erdosUrl": "https://erdosproblems.com/444",
     "erdosProblemStatus": "solved",
+    "leanFile": "Proofs/Erdos444Problem.lean",
+    "proofRepoPath": "Proofs/Erdos444Problem.lean",
+    "date": "1980",
     "dateAdded": "2026-01-18",
-    "mathlib_version": "4.15.0",
-    "mathlibDependencies": [
-      {
-        "theorem": "Set.Infinite",
-        "description": "Infinite sets predicate",
-        "module": "Mathlib.Data.Set.Basic"
-      },
-      {
-        "theorem": "Finset.filter",
-        "description": "Filtering finite sets",
-        "module": "Mathlib.Data.Finset.Basic"
-      },
-      {
-        "theorem": "Finset.sup",
-        "description": "Supremum over finite sets",
-        "module": "Mathlib.Data.Finset.Lattice"
-      },
-      {
-        "theorem": "Filter.atTop",
-        "description": "Filter at infinity for limits",
-        "module": "Mathlib.Order.Filter.AtTopBot"
-      }
-    ],
-    "originalContributions": [
-      "InfiniteSubset definition: infinite subsets of ℕ",
-      "d_A definition: generalized divisor function counting A-divisors",
-      "H_A definition: partial harmonic sum over A",
-      "M_A definition: maximum A-divisor count",
-      "erdos_graham_conjecture definition: the main statement",
-      "erdos_graham_conjecture_true axiom: the result holds",
-      "Special cases: A = ℕ gives d(n), A = primes gives ω(n)",
-      "erdos_444_status theorem: main result via axiom",
-      "limsup_infinite theorem: statement for all k"
-    ]
-  },
-  "overview": {
-    "historicalContext": "From Erdős and Graham's 'Old and New Problems and Results in Combinatorial Number Theory' (1980), page 88. The problem studies the relationship between restricted divisor functions and partial harmonic sums. Erdős and Sárközy resolved it in their paper 'Some asymptotic formulas on generalized divisor functions IV'.",
-    "problemStatement": "Let A ⊆ ℕ be infinite and d_A(n) count the number of elements of A that divide n. Is it true that for every k, limsup_{x→∞} max_{n<x} d_A(n) / (∑_{a∈A, a<x} 1/a)^k = ∞?",
-    "proofStrategy": "The formalization defines the generalized divisor function d_A, the partial harmonic sum H_A, and the maximum M_A. The main theorem states that for any infinite A and any k ≥ 1, M_A(x) eventually exceeds any multiple of H_A(x)^k. Special cases include A = ℕ (standard divisors) and A = primes (prime omega function).",
-    "keyInsights": [
-      "The maximum divisor count grows faster than any power of the harmonic sum",
-      "Result holds for ALL infinite subsets A of ℕ",
-      "Highly composite numbers relative to A provide extremal examples",
-      "Specializes to known results when A = ℕ or A = primes",
-      "Uses extremal constructions tailored to each A"
+    "relatedProblems": [
+      { "id": "erdos-414", "relation": "Studies h(n) = n + τ(n); the divisor function τ is the case A = ℕ of the generalized divisor function d_A" },
+      { "id": "erdos-381", "relation": "Counting highly composite numbers; directly related to the extremal numbers achieving large d_A values" },
+      { "id": "erdos-945", "relation": "Consecutive integers with distinct divisor counts; complementary question about divisor function behavior" },
+      { "id": "erdos-419", "relation": "Limit points of τ((n+1)!)/τ(n!); divisor function ratios and growth on special sequences" }
     ]
   },
   "sections": [
@@ -75,44 +49,58 @@
       "title": "Basic Definitions",
       "startLine": 31,
       "endLine": 61,
-      "summary": "Defines infinite subsets, the generalized divisor function d_A(n), partial harmonic sum H_A(x), and maximum M_A(x)."
+      "summary": "Defines **InfiniteSubset**, **d_A(n)** = |{a ∈ A : a | n}| (generalized divisor function), **H_A(x)** = Σ_{a∈A, a<x} 1/a (partial harmonic sum), and **M_A(x)** = max_{n<x} d_A(n) (maximum A-divisor count). These are the three quantities whose relationship the problem studies."
     },
     {
       "id": "section-2",
-      "title": "Main Conjecture (Proved)",
+      "title": "The Main Conjecture (PROVED)",
       "startLine": 63,
       "endLine": 85,
-      "summary": "Formalizes the Erdős-Graham conjecture about the limsup being infinite for all k."
+      "summary": "**erdos_graham_conjecture**: ∀ infinite A, ∀ k ≥ 1, lim sup M_A(x)/H_A(x)^k = ∞. Formalized using `Filter.atTop` and `∃ᶠ`. **erdos_graham_conjecture_true**: axiomatized as proved by Erdős-Sárközy (1980) via extremal product constructions."
     },
     {
       "id": "section-3",
       "title": "Special Cases",
       "startLine": 87,
       "endLine": 107,
-      "summary": "Special cases: A = ℕ gives standard divisor function, A = primes gives prime omega function."
+      "summary": "**A = ℕ**: d_A = τ, H_A ∼ log x, M_A ∼ exp(log 2 · log x / log log x) (highly composite numbers). **A = primes**: d_A = ω, H_A ∼ log log x (Mertens), M_A ∼ log x / log log x (primorials). Both cases confirm the general theorem."
     },
     {
       "id": "section-4",
       "title": "Structural Properties",
       "startLine": 109,
       "endLine": 130,
-      "summary": "Highly composite numbers, exponential lower bound, no uniform upper bound."
+      "summary": "**highly_composite_relative**: A-highly composite numbers exist for any A. **exponential_lower_bound**: M_A(x) ≥ exp(c · H_A(x)) frequently. **no_uniform_bound**: no function f bounds M_A(x) in terms of H_A(x) universally — the strongest form of the result."
     },
     {
       "id": "section-5",
-      "title": "Summary",
+      "title": "Summary and Formal Proofs",
       "startLine": 132,
       "endLine": 160,
-      "summary": "Summary theorem and limsup_infinite proved from main axiom."
+      "summary": "**erdos_444_summary**: direct restatement from axiom. **limsup_infinite**: instantiation for specific A and k, proved by `exact erdos_graham_conjecture_true A hA k hk C hC`. Demonstrates how the axiomatized result unfolds in Lean 4."
     }
   ],
+  "overview": {
+    "historicalContext": "Problem #444 appears in Erdős and Graham's 1980 monograph (p. 88) and was resolved in the same year by Erdős and Sárközy in the fourth installment of their series 'Some asymptotic formulas on generalized divisor functions'. The problem generalizes classical questions about the maximal order of the divisor function τ(n) — studied by Ramanujan (1915) via highly composite numbers and by Wigert (1907) — to arbitrary infinite subsets A of ℕ. The result shows that the extremal phenomenon (divisor counts growing super-polynomially relative to the natural density measure) is **universal**: it holds for every infinite A, regardless of how thin or irregular. This universality was surprising because sparse sets A might seem to limit how divisible numbers can be, yet the multiplicative structure of ℕ always allows concentrating many A-divisors.",
+    "problemStatement": "Let A ⊆ ℕ be infinite and d_A(n) = |{a ∈ A : a | n}|. Is it true that for every k ≥ 1, lim sup_{x→∞} max_{n<x} d_A(n) / (Σ_{a∈A, a<x} 1/a)^k = ∞?",
+    "proofStrategy": "The formalization defines d_A (via `Finset.filter` on divisors in A), H_A (via `Finset.sum` of reciprocals), and M_A (via `Finset.sup`). The main theorem is stated using Lean's `Filter.atTop` and the `∃ᶠ` (frequently) quantifier. The result is axiomatized, with special cases for A = ℕ (standard divisor function, highly composite numbers) and A = primes (omega function, primorials). Structural properties — A-highly composite numbers, exponential lower bounds, and the non-existence of a universal bound — are axiomatized to provide context.",
+    "keyInsights": [
+      "**Universality**: the result holds for ALL infinite A ⊆ ℕ — even extremely sparse sets allow extremal divisor concentrations",
+      "**Extremal product construction**: build n = a₁^{e₁} · ... · aₘ^{eₘ} to maximize d_A(n) = Π(eᵢ+1) subject to n ≤ x, analogous to Ramanujan's highly composite number construction",
+      "**Exponential growth**: M_A(x) ≥ exp(c · H_A(x)) frequently — super-polynomial in the density measure, not merely 'faster than polynomial'",
+      "**Two classical specializations**: A = ℕ recovers Wigert/Ramanujan (maximal order of d(n)); A = primes recovers Hardy-Ramanujan (maximal ω(n))",
+      "**No universal bound**: for any function f, some A satisfies M_A(x) > f(H_A(x)) — the extremal behavior cannot be captured by any single function of the density"
+    ]
+  },
   "conclusion": {
-    "summary": "Erdős Problem #444 was SOLVED by Erdős and Sárközy in 1980. The answer is YES: for any infinite A ⊆ ℕ and any k ≥ 1, the maximum of the restricted divisor function d_A grows faster than any fixed power of the partial harmonic sum H_A. This reveals a fundamental extremal property of divisor functions.",
-    "implications": "The result shows that the maximum divisor count cannot be uniformly bounded by any power of the 'density' measure given by the harmonic sum. This has implications for understanding highly divisible numbers and multiplicative function extrema.",
+    "summary": "Erdős Problem #444 is SOLVED: for any infinite A ⊆ ℕ and any k ≥ 1, the maximum restricted divisor count M_A(x) grows faster than H_A(x)^k. Proved by Erdős and Sárközy in 1980, this reveals a universal extremal property of divisor functions: the harmonic sum measures 'average' divisibility potential, but 'extremal' divisibility always vastly exceeds it.",
+    "implications": "The result belongs to the broader program of understanding extremal behavior in multiplicative number theory. It shows that the harmonic sum Σ 1/a — while a natural measure of a set's 'density' — fundamentally underestimates the extremal divisor counts achievable by products of elements from A. The techniques connect to optimization theory (Lagrange multipliers for exponent selection), analytic number theory (harmonic sum asymptotics), and combinatorics (product maximization under constraints).",
     "openQuestions": [
-      "What is the precise growth rate of M_A(x) in terms of H_A(x) for specific classes of A?",
-      "How does the rate of divergence depend on the structure of A?",
-      "Are there effective versions with explicit constants?"
+      "What is the precise growth rate of M_A(x) in terms of H_A(x) for specific structured sets A (e.g., A = {n²}, A = k-smooth numbers)?",
+      "How does the extremal constant c in M_A(x) ≥ exp(c · H_A(x)) depend on the structure of A?",
+      "Are there effective versions with explicit, computable constants for specific A?",
+      "What is the second-order behavior: after removing the exponential term, what is the next correction?",
+      "Can the construction be made algorithmic — given A, efficiently find n with near-maximal d_A(n)?"
     ]
   }
 }
