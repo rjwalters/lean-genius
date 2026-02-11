@@ -7,32 +7,65 @@
     "author": "Stefan Burr, Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/880",
     "date": "2007",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos880Problem.lean",
     "tags": [
       "erdos",
       "additive-combinatorics",
       "number-theory",
       "additive-bases",
-      "restricted-sums"
+      "restricted-sums",
+      "parity-argument",
+      "dichotomy"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 880,
     "erdosUrl": "https://erdosproblems.com/880",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Basic",
+        "description": "Basic set operations for defining A ⊂ ℕ and subset relations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite set operations for sumsets and distinct-element sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.AtTopBot",
+        "description": "Filter.atTop for 'sufficiently large' and 'frequently' quantifiers",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "isAdditiveBasis: basis of order k definition via Finset sums",
+      "kFoldSumset / restrictedKFoldSumset: unrestricted vs restricted sumsets",
+      "gapSupremum / hasBoundedGaps: gap function Δ(B) and boundedness",
+      "burrErdosQuestion: the formal question parametrized by k",
+      "k2_bounded_gaps: axiom for k=2 positive case",
+      "k2_parity_argument: parity-based near-representation axiom",
+      "k2_gap_bound_tight: tightness of gap bound 2",
+      "k_ge_3_unbounded_gaps: axiom for k≥3 negative case",
+      "k_ge_3_counterexample_construction: quantitative counterexample axiom",
+      "burr_erdos_complete_answer: combined theorem (proved from axioms)",
+      "erdos_880_status / erdos_880_resolved: final dichotomy theorems (proved)",
+      "parity_argument_detail / parity_fails_k3: detailed parity analysis axioms",
+      "representationFunction: counting distinct-element representations"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem was posed by Burr and Erdős and concerns the gap structure of restricted additive bases. An additive basis of order k is a set A ⊂ ℕ where every sufficiently large integer can be written as a sum of at most k elements from A. The 'restricted' version k×A only allows sums of distinct elements. The question asks whether gaps in k×A are uniformly bounded. Hegyvári, Hennecart, and Plagne completely resolved this in 2007, finding a surprising dichotomy based on the value of k.",
-    "problemStatement": "Let A ⊂ ℕ be an additive basis of order k. Let B = {b₁ < b₂ < ···} be the set of integers which are the sum of k or fewer distinct elements of A. Is it true that b_{n+1} - b_n = O(1)? (Where the implied constant may depend on both A and k.)",
-    "proofStrategy": "The formalization defines additive bases, restricted sumsets k×A, and the gap boundedness property. The key results are: (1) For k=2, the parity argument shows gaps are at most 2 - since sums a+a are even but 2A ~ ℕ requires odd numbers, which must come from distinct pairs a+b. (2) For k≥3, an explicit counterexample is constructed where kA ~ ℕ but k×A has arbitrarily large gaps.",
+    "historicalContext": "This problem was posed by Burr and Erdős and addresses a fundamental question in additive combinatorics: how does the restriction to distinct summands affect the gap structure of additive bases? An additive basis $A$ of order $k$ satisfies $kA \\supseteq [N_0, \\infty)$ — every large integer is a sum of at most $k$ elements of $A$ (with repetition). The restricted sumset $k \\times A$ allows only sums of distinct elements. Burr and Erdős asked: if $kA \\sim \\mathbb{N}$, must $\\Delta(k \\times A) < \\infty$? Hegyvári, Hennecart, and Plagne completely resolved this in their 2007 paper, discovering a surprising dichotomy. For $k = 2$, the answer is YES with the tight bound $\\Delta(2 \\times A) \\leq 2$, proved by an elegant parity argument: sums $a + a$ are always even, so every odd number in $2A$ must be $a + b$ with $a \\neq b$, hence in $2 \\times A$. Since $2A$ contains all large integers of both parities, odd numbers appear densely in $2 \\times A$, bounding gaps to $2$. For $k \\geq 3$, the answer is NO: there exist bases $A$ with $kA \\sim \\mathbb{N}$ but $\\Delta(k \\times A) = \\infty$. The parity trick fails because sums of $3$ or more distinct elements have no forced parity structure, allowing carefully constructed counterexamples. This result beautifully illustrates how the 'distinct elements' constraint can fundamentally alter combinatorial behavior.",
+    "problemStatement": "Let $A \\subset \\mathbb{N}$ be an additive basis of order $k$. Let $B = \\{b_1 < b_2 < \\cdots\\}$ be the elements of $k \\times A$ (sums of at most $k$ distinct elements of $A$). Is it true that $b_{n+1} - b_n = O(1)$?\n\nAnswer (HHP 2007):\n- $k = 2$: YES, $\\Delta(2 \\times A) \\leq 2$ (tight)\n- $k \\geq 3$: NO, $\\exists\\, A$ with $\\Delta(k \\times A) = \\infty$",
+    "proofStrategy": "The formalization (297 lines) captures: (1) `isAdditiveBasis` via `Finset` sums with `card ≤ k`. (2) `kFoldSumset` (unrestricted) and `restrictedKFoldSumset` (distinct elements via `Finset`). (3) `gapSupremum` using `ℕ∞` and `hasBoundedGaps` for uniform gap bounds. (4) `burrErdosQuestion k` as a universally quantified property. (5) The $k=2$ case: `k2_bounded_gaps` (axiom), `k2_parity_argument` (near-representation axiom), and `k2_gap_bound_tight` (tightness). (6) The $k \\geq 3$ case: `k_ge_3_unbounded_gaps` (axiom) and quantitative counterexample construction. (7) Three fully proved theorems: `burr_erdos_complete_answer`, `erdos_880_status`, and `erdos_880_resolved` combining the axiomatized cases. (8) Detailed parity analysis (`parity_argument_detail`, `parity_fails_k3`) and the representation function.",
     "keyInsights": [
-      "The answer depends on k: YES for k=2, NO for k≥3",
-      "For k=2, parity forces bounded gaps: a+a is always even, so odd numbers need distinct pairs",
-      "The gap bound for k=2 is exactly 2 (tight)",
-      "For k≥3, counterexamples exist with Δ(k×A) = ∞",
-      "The 'distinct elements' constraint fundamentally changes the problem",
-      "k×A ⊆ kA, but the restricted set can be much sparser"
+      "**Parity dichotomy**: The answer splits at $k = 2$ vs $k \\geq 3$ due to parity. For $k = 2$, sums $a + a = 2a$ are always even, forcing all odd elements of $2A$ into $2 \\times A$. For $k \\geq 3$, sums of distinct elements can have any parity, removing this structural constraint.",
+      "**Tight bound for $k = 2$**: The gap bound $\\Delta(2 \\times A) \\leq 2$ is best possible. There exist bases $A$ with $2A \\sim \\mathbb{N}$ where gaps of exactly $2$ occur infinitely often in $2 \\times A$ — consecutive odd numbers in $2 \\times A$ can be separated by an even number not in $2 \\times A$.",
+      "**Counterexample for $k \\geq 3$**: The HHP construction for $k \\geq 3$ builds $A$ so that $kA$ covers everything (using repeated elements heavily), but $k \\times A$ has arbitrarily large holes — the distinctness constraint 'wastes' elements and prevents covering.",
+      "**Restricted vs unrestricted**: The containment $k \\times A \\subseteq kA$ is always strict when elements of $A$ need to be reused. The problem reveals that this strictness can be severe enough to destroy the bounded-gaps property for $k \\geq 3$.",
+      "**Connection to Erdős-Turán**: The classical Erdős-Turán conjecture asks about the unrestricted representation function. This problem shows that the restricted version (counting representations with distinct summands) behaves fundamentally differently, with qualitative changes at $k = 3$."
     ]
   },
   "sections": [
@@ -41,72 +74,79 @@
       "title": "Additive Bases",
       "startLine": 27,
       "endLine": 51,
-      "summary": "Definition of additive bases of order k and k-fold sumsets"
+      "summary": "Defines `isAdditiveBasis A k` ($kA \\supseteq [N_0, \\infty)$) and `kFoldSumset A k` (unrestricted $k$-fold sums via `Finset` with `card ≤ k`)."
     },
     {
       "id": "restricted-sumsets",
-      "title": "Restricted Sumsets",
+      "title": "Restricted Sumsets and Gap Boundedness",
       "startLine": 52,
-      "endLine": 87,
-      "summary": "Definition of restricted sumsets k×A and gap boundedness"
+      "endLine": 89,
+      "summary": "Defines `restrictedKFoldSumset A k` ($k \\times A$, distinct-element sums), notation `k ×ₛ A`, `gapSupremum` via `ℕ∞`, and `hasBoundedGaps` ($\\Delta(B) < \\infty$)."
     },
     {
       "id": "burr-erdos-question",
       "title": "The Burr-Erdős Question",
       "startLine": 88,
-      "endLine": 101,
-      "summary": "Formal statement of the problem: does kA ~ ℕ imply Δ(k×A) < ∞?"
+      "endLine": 103,
+      "summary": "Defines `burrErdosQuestion k`: does every basis $A$ of order $k$ satisfy $\\Delta(k \\times A) < \\infty$?"
     },
     {
       "id": "k2-case",
-      "title": "The k = 2 Case",
-      "startLine": 102,
-      "endLine": 132,
-      "summary": "Positive answer for k=2: gaps are at most 2 via parity argument"
+      "title": "The $k = 2$ Case: Positive Answer via Parity",
+      "startLine": 105,
+      "endLine": 137,
+      "summary": "Axiomatizes `k2_bounded_gaps` ($\\Delta(2 \\times A) \\leq 2$), the parity argument (odd $n \\in 2A \\implies n \\in 2 \\times A$), and tightness (gap-2 examples exist)."
     },
     {
       "id": "k3-case",
-      "title": "The k ≥ 3 Case",
-      "startLine": 133,
-      "endLine": 161,
-      "summary": "Negative answer for k≥3: counterexamples with unbounded gaps"
+      "title": "The $k \\geq 3$ Case: Negative Answer via Counterexample",
+      "startLine": 139,
+      "endLine": 171,
+      "summary": "Axiomatizes `k_ge_3_unbounded_gaps` and the quantitative counterexample construction. Explains why parity fails: sums of $\\geq 3$ distinct elements have no forced parity."
     },
     {
       "id": "complete-resolution",
-      "title": "Complete Resolution",
-      "startLine": 162,
-      "endLine": 189,
-      "summary": "The complete answer combining both cases"
+      "title": "Complete Resolution (Proved)",
+      "startLine": 173,
+      "endLine": 196,
+      "summary": "Fully proved `burr_erdos_complete_answer`: $k=2$ gives $\\Delta \\leq 2$, $k \\geq 3$ allows $\\Delta = \\infty$. Proved from axioms."
     },
     {
       "id": "related-results",
-      "title": "Related Results",
-      "startLine": 190,
-      "endLine": 215,
-      "summary": "Connection to classical additive bases and representation functions"
+      "title": "Related Results and Representation Function",
+      "startLine": 198,
+      "endLine": 226,
+      "summary": "Axiom `relation_to_classical` ($k \\times A \\subseteq kA$). Defines `representationFunction` counting distinct-$k$-subset sums. Density considerations for $k \\geq 3$."
     },
     {
       "id": "parity-argument",
-      "title": "The Parity Argument",
-      "startLine": 216,
-      "endLine": 238,
-      "summary": "Detailed explanation of why parity works for k=2 but not k≥3"
+      "title": "Parity Argument in Detail",
+      "startLine": 228,
+      "endLine": 254,
+      "summary": "Detailed axioms: `parity_argument_detail` (odd $n \\in 2A \\implies$ distinct-pair representation) and `parity_fails_k3` (odd $n \\in 3A$ with no all-distinct representation)."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 239,
-      "endLine": 280,
-      "summary": "Final status and key results for Problem #880"
+      "title": "Summary: Final Status Theorems",
+      "startLine": 256,
+      "endLine": 297,
+      "summary": "Fully proved `erdos_880_status` and `erdos_880_resolved`: $\\text{burrErdosQuestion}(2) \\wedge \\forall\\, k \\geq 3,\\; \\neg\\text{burrErdosQuestion}(k)$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #880 is SOLVED with a dichotomous answer. For k=2, the Burr-Erdős question has a positive answer: if 2A ~ ℕ then Δ(2×A) ≤ 2. For k≥3, the answer is negative: there exist bases A with kA ~ ℕ but Δ(k×A) = ∞. This was completely resolved by Hegyvári, Hennecart, and Plagne in 2007.",
-    "implications": "This result beautifully illustrates how the 'distinct elements' constraint fundamentally changes the structure of additive problems. The parity argument for k=2 is elegant and elementary, while the k≥3 counterexamples require careful construction. The problem connects to the broader study of restricted addition in additive combinatorics.",
+    "summary": "Erdős Problem #880 is SOLVED with a dichotomous answer discovered by Hegyvári, Hennecart, and Plagne (2007). For $k = 2$, the Burr-Erdős question has a positive answer: $\\Delta(2 \\times A) \\leq 2$ (tight). For $k \\geq 3$, the answer is negative: there exist bases $A$ with $\\Delta(k \\times A) = \\infty$. The formalization captures all key results as axioms and proves three synthesis theorems combining both cases.",
+    "implications": "This result beautifully illustrates how the 'distinct elements' constraint fundamentally changes the structure of additive problems. The parity argument for $k = 2$ is elegant and elementary, while the $k \\geq 3$ counterexamples require careful construction. The problem connects to the broader study of restricted addition in additive combinatorics, the Erdős-Turán conjecture on representation functions, and the general theme of how structural constraints on sumsets affect their density and gap properties.",
     "openQuestions": [
-      "What is the growth rate of the maximum gap in k×A for k≥3?",
-      "Are there natural conditions on A that ensure bounded gaps for k≥3?",
-      "What about gaps in h×A for h < k when A is a basis of order k?"
+      "For $k \\geq 3$, what is the growth rate of the maximum gap in $k \\times A$ for 'generic' bases $A$?",
+      "Are there natural conditions on $A$ (e.g., density bounds, regularity) that ensure bounded gaps in $k \\times A$ for $k \\geq 3$?",
+      "What about gaps in $h \\times A$ for $h < k$ when $A$ is a basis of order $k$? Is there a threshold $h_0(k)$ below which gaps are always bounded?",
+      "Can the counterexample construction for $k \\geq 3$ be made effective: given $k$ and a target gap $C$, how sparse can $A$ be while having $kA \\sim \\mathbb{N}$ and $\\Delta(k \\times A) > C$?",
+      "What is the analogous result for signed sums ($k$-fold sumset where we allow $\\pm a_i$)?"
     ]
-  }
+  },
+  "relatedProofs": [
+    "erdos-839",
+    "erdos-840",
+    "erdos-533"
+  ]
 }
