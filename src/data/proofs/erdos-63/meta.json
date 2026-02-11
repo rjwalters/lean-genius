@@ -22,89 +22,90 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Conjectured by Mihók and Erdős (1993-1997). Penman observed the result holds for uncountable chromatic number via Erdős-Hajnal. Liu-Montgomery (2020) proved it in full generality using the de Bruijn-Erdős theorem and their result connecting high chromatic number to high minimum degree subgraphs.",
-    "problemStatement": "Does every graph with infinite chromatic number contain a cycle of length 2^n for infinitely many n?",
-    "proofStrategy": "The formalization defines cycle containment, infinite chromatic number, and axiomatizes key theorems: de Bruijn-Erdős (infinite χ implies finite high-χ subgraphs), Liu-Montgomery (high χ implies high minimum degree), Bondy-Simonovits (high degree implies even cycles). The main theorem is axiomatized, with a proved corollary.",
+    "historicalContext": "This problem was conjectured by Peter Mihók and Paul Erdős during the period 1993-1997, building on earlier work connecting chromatic number to cycle structure. Penman first observed that the result holds when the chromatic number is uncountable, using the Erdős-Hajnal theorem (which gives arbitrarily large $K_{m,m}$ subgraphs, each containing all even cycles up to $2m$). The countable case was much harder and remained open for over two decades. The breakthrough came from Hong Liu and Richard Montgomery in 2020, who proved a key result connecting high chromatic number to high minimum degree subgraphs: every graph with $\\chi > k$ contains a subgraph with $\\delta > k/2$. Combined with the de Bruijn-Erdős compactness theorem (1951) and the Bondy-Simonovits theorem on even cycles in dense graphs, this resolved the full problem. Liu and Montgomery's result was part of their broader work on Mader's conjecture about clique subdivisions in $C_4$-free graphs.",
+    "problemStatement": "Does every graph with infinite chromatic number contain a cycle of length $2^n$ for infinitely many $n$? Equivalently, for every $N$, does there exist $n \\geq N$ with $C_{2^n} \\subseteq G$?",
+    "proofStrategy": "The formalization axiomatizes three key theorems and chains them together. First, the de Bruijn-Erdős compactness theorem reduces the infinite problem to finite subgraphs with arbitrarily high chromatic number. Second, the Liu-Montgomery theorem converts high chromatic number to high minimum degree: $\\chi > k$ implies a subgraph with $\\delta > k/2$. Third, the Bondy-Simonovits theorem guarantees all even cycle lengths $4, 6, \\ldots, 2d$ in graphs with $\\delta \\geq d$. The chain works as follows: given any $N$, de Bruijn-Erdős gives a finite subgraph with $\\chi > 2^{N+1}$, Liu-Montgomery gives a subgraph with $\\delta > 2^N$, and Bondy-Simonovits gives $C_{2^n}$ for all $n \\leq N$ since $2^n$ is even and at most $2 \\cdot 2^N = 2^{N+1}$. The main theorem is axiomatized, with a proved corollary and verified arithmetic lemmas (powers of 2 are even and $\\geq 4$).",
     "keyInsights": [
-      "de Bruijn-Erdős: Infinite chromatic number implies finite subgraphs with arbitrarily high χ",
-      "Liu-Montgomery (2020): High χ implies high minimum degree subgraphs",
-      "Bondy-Simonovits: High minimum degree implies cycles of all even lengths up to 2d",
-      "For uncountable χ, follows from Erdős-Hajnal (K_{m,m} subgraphs)",
-      "Conjectured generalization: 2^n can be replaced by n² or other fast-growing sequences"
+      "The proof chains three classical results: de Bruijn-Erdős (compactness: infinite χ → finite high-χ subgraphs), Liu-Montgomery (χ > k → δ > k/2 subgraph), and Bondy-Simonovits (δ ≥ d → all even cycles up to 2d).",
+      "Liu-Montgomery's 2020 breakthrough was the missing link: converting chromatic number to minimum degree. Earlier attempts could not bridge this gap for countable chromatic number.",
+      "The uncountable case (Penman's observation) is much easier: Erdős-Hajnal gives K_{m,m} subgraphs for all m, which trivially contain all even cycles. The hard case is exactly ℵ₀ chromatic number.",
+      "Powers of 2 satisfy the right arithmetic: 2^n is even (fitting Bondy-Simonovits's range) and grows exponentially (so arbitrarily high minimum degree captures all desired lengths).",
+      "The generalization to other sequences f(n) remains open—the key question is what growth rate is needed for infinite chromatic number to force C_{f(n)} for infinitely many n."
     ]
   },
   "sections": [
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "summary": "Cyclic successor, cycle containment, infinite chromatic number",
+      "summary": "Defines cyclic successor (Fin.succMod), cycle containment via injective vertex maps, the set of cycle lengths in G, and the infinite chromatic number property.",
       "startLine": 34,
       "endLine": 51
     },
     {
       "id": "minimum-degree",
-      "title": "Minimum Degree",
-      "summary": "minDegree definition and ContainsMinDegreeSubgraph",
+      "title": "Minimum Degree and Subgraphs",
+      "summary": "Defines minimum degree δ(G) as the infimum of vertex degrees, and ContainsMinDegreeSubgraph asserting existence of a subgraph with minimum degree ≥ d.",
       "startLine": 53,
       "endLine": 64
     },
     {
       "id": "key-lemmas",
-      "title": "Key Lemmas",
-      "summary": "High degree implies even cycles, Bondy-Simonovits",
+      "title": "Key Lemmas on Degree and Cycles",
+      "summary": "Axiomatizes two results: high minimum degree implies an even cycle (weaker form), and the full Bondy-Simonovits theorem guaranteeing ALL even cycle lengths from 4 to 2d.",
       "startLine": 66,
       "endLine": 83
     },
     {
       "id": "de-bruijn-erdos",
-      "title": "de Bruijn-Erdős Theorem",
-      "summary": "Infinite graphs and finite high-χ subgraphs",
+      "title": "de Bruijn-Erdős Compactness Theorem",
+      "summary": "Defines InfGraph for possibly infinite graphs, along with colorability and infinite chromatic number. Axiomatizes the de Bruijn-Erdős theorem: infinite χ → finite high-χ subgraphs.",
       "startLine": 85,
       "endLine": 116
     },
     {
       "id": "liu-montgomery",
-      "title": "Liu-Montgomery Theorem",
-      "summary": "High χ implies high minimum degree subgraphs",
+      "title": "Liu-Montgomery Theorem (2020)",
+      "summary": "Axiomatizes the key breakthrough: every graph with χ > k contains a subgraph with minimum degree > k/2, bridging chromatic number to minimum degree.",
       "startLine": 118,
       "endLine": 127
     },
     {
       "id": "erdos-hajnal",
       "title": "Erdős-Hajnal for Uncountable χ",
-      "summary": "Complete bipartite subgraphs and even cycles",
+      "summary": "Axiomatizes Erdős-Hajnal (uncountable χ → K_{m,m} subgraphs) and the fact that K_{m,m} contains all even cycles up to 2m.",
       "startLine": 129,
       "endLine": 144
     },
     {
       "id": "main-result",
-      "title": "Main Result",
-      "summary": "Erdős Problem 63 statement and theorem",
+      "title": "Main Result: Erdős Problem 63",
+      "summary": "Defines PowersOfTwo, proves that 2^n is even (n≥1) and ≥4 (n≥2), states the erdos_63_statement, and axiomatizes the main theorem.",
       "startLine": 146,
       "endLine": 187
     },
     {
       "id": "corollaries",
-      "title": "Corollaries",
-      "summary": "Infinitely many power cycles, Penman's observation",
+      "title": "Corollaries and Penman's Observation",
+      "summary": "Proves the infinitely_many_power_cycles corollary by unfolding the main theorem. Axiomatizes Penman's observation for the uncountable case.",
       "startLine": 189,
       "endLine": 209
     },
     {
       "id": "generalization",
-      "title": "Generalization",
-      "summary": "Conjectured extensions to other sequences",
+      "title": "Generalized Conjecture",
+      "summary": "Defines the generalized conjecture for arbitrary sequences f(n), proves squares_strictly_increasing, and states the specific squares conjecture as an open problem.",
       "startLine": 211,
       "endLine": 228
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #63, which asks whether every graph with infinite chromatic number contains cycles of length 2^n for infinitely many n. Liu-Montgomery (2020) proved this affirmatively using the de Bruijn-Erdős theorem and their result on high-χ graphs having high minimum degree subgraphs.",
-    "implications": "This result connects chromatic number theory to cycle structure. It shows that infinite chromatic number graphs have rich cycle structure, specifically containing cycles whose lengths grow exponentially.",
+    "summary": "This formalization captures the full structure of Erdős Problem #63, solved by Liu and Montgomery in 2020. The three-step proof strategy—de Bruijn-Erdős compactness, Liu-Montgomery's chromatic-to-degree conversion, and Bondy-Simonovits's cycle theorem—is axiomatized with the arithmetic glue (2^n is even and sufficiently large) proved directly in Lean. The distinction between the easy uncountable case (Penman via Erdős-Hajnal) and the hard countable case (requiring Liu-Montgomery) is clearly delineated.",
+    "implications": "This result demonstrates that infinite chromatic number imposes strong structural constraints on cycle spectra. The technique of reducing chromatic number to minimum degree via Liu-Montgomery has broader applications, including to Mader's conjecture on clique subdivisions. The connection to the Bondy-Simonovits theorem illustrates how extremal graph theory interacts with chromatic theory. The formalization also highlights the role of compactness principles (de Bruijn-Erdős) in bridging infinite and finite combinatorics.",
     "openQuestions": [
-      "Can 2^n be replaced by n² or other fast-growing sequences?",
-      "What is the optimal growth rate for guaranteed cycle lengths?",
-      "Can the Liu-Montgomery bound be improved?"
+      "Can 2^n be replaced by n² or other polynomial sequences? What growth rate is truly necessary?",
+      "What is the optimal function f(n) such that infinite χ guarantees C_{f(n)} for infinitely many n?",
+      "Can the Liu-Montgomery bound χ > k → δ > k/2 be improved to δ > (1-ε)k?",
+      "Does the result extend to directed graphs: do digraphs with infinite dichromatic number contain directed cycles of length 2^n?"
     ]
   }
 }
