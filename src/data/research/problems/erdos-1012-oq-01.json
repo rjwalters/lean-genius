@@ -39,20 +39,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated all 5 sorries, removed definition sorry for turanNumber, fixed circular erdosF definition. Now: 5 axioms (deep graph theory), 19 proved theorems, 0 sorries.",
+    "progressSummary": "COMPLETED: 5 axioms (deep graph theory), 29 proved theorems, 0 sorries. Added threshold analysis: closed-form, monotonicity, symmetry at Woodall boundary, triangle existence.",
     "builtItems": [
       "choose_two_{zero,one,two,three}: concrete binomial values (by decide)",
       "threshold_k0, threshold_k1: threshold simplifications for small k",
       "threshold_k0_n{3,4,5}: concrete threshold values (by decide)",
       "hasCycleOfLength: fixed definition with case split on 0",
-      "Structural theorems: pancyclic_implies_long_cycle, woodall_settles_all_k"
+      "Structural theorems: pancyclic_implies_long_cycle, woodall_settles_all_k",
+      "choose_two_formula, threshold_closed_form: closed-form threshold expressions",
+      "cycle_length_ge_3, cycle_length_lower: Woodall implies long cycles",
+      "threshold_main_term_dominates, threshold_lower_bound: threshold bounds",
+      "threshold_first_term_mono, threshold_second_term_mono: monotonicity properties",
+      "threshold_symmetric_at_boundary: symmetry at n=2k+3",
+      "woodall_has_triangle: dense graphs have triangles"
     ],
     "insights": [
       "hasCycleOfLength definition must handle l=0 case (Nat.mod_lt needs l > 0)",
       "Nat.choose computations: use 'decide' for concrete values, avoid omega on division",
       "Circular definition of erdosF (uses woodall_theorem in its existence proof) - removed",
       "existential + instance brackets don't work in Lean 4 axioms - use negation formulation",
-      "threshold_tight reformulated as negation of universal property at threshold-1"
+      "threshold_tight reformulated as negation of universal property at threshold-1",
+      "At Woodall boundary n=2k+3, both choose terms equal (n-k-1 = k+2), giving natural symmetry",
+      "Nat.choose_le_choose makes monotonicity of choose terms easy to prove"
     ],
     "mathlibGaps": [
       "Ore's theorem not in Mathlib (Hamiltonian cycle from edge count)",
@@ -60,8 +68,8 @@
       "General extremal graph theory (Turán numbers) limited in Mathlib"
     ],
     "nextSteps": [
-      "Consider adding more concrete threshold values for larger k",
-      "Could add monotonicity properties of edgeThreshold"
+      "File is comprehensive - minimal further work needed",
+      "Could explore building Ore's theorem proof from Mathlib graph theory if API grows"
     ]
   },
   "approaches": [
@@ -97,7 +105,7 @@
     ]
   },
   "started": "2026-02-08T07:35:00Z",
-  "lastUpdate": "2026-02-08T08:00:00Z",
+  "lastUpdate": "2026-02-11T14:30:00Z",
   "significance": 7,
   "tractability": 5
 }

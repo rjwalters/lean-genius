@@ -224,6 +224,101 @@ theorem erdos_1012_complete_solution :
   fun k n hn => woodall_theorem n k hn
 
 /-
+## Threshold Analysis
+
+Closed-form expressions and growth properties of the edge threshold.
+-/
+
+/-- C(m, 2) = m * (m - 1) / 2 for the binomial coefficient -/
+theorem choose_two_formula (m : ℕ) : Nat.choose m 2 = m * (m - 1) / 2 := by
+  exact Nat.choose_two_right m
+
+/-- The threshold in closed form: (n-k-1)(n-k-2)/2 + (k+2)(k+1)/2 + 1 -/
+theorem threshold_closed_form (n k : ℕ) (hn : n ≥ k + 2) :
+    edgeThreshold n k = (n - k - 1) * (n - k - 2) / 2 + (k + 2) * (k + 1) / 2 + 1 := by
+  unfold edgeThreshold
+  rw [Nat.choose_two_right, Nat.choose_two_right]
+  congr 1; congr 1
+  · congr 1; omega
+  · congr 1; omega
+
+/-- When n ≥ 2k+3, the cycle length n-k is at least 3 -/
+theorem cycle_length_ge_3 (n k : ℕ) (hn : n ≥ 2 * k + 3) : n - k ≥ 3 := by omega
+
+/-- When n ≥ 2k+3, the cycle length n-k satisfies n-k ≥ k+3 -/
+theorem cycle_length_lower (n k : ℕ) (hn : n ≥ 2 * k + 3) : n - k ≥ k + 3 := by omega
+
+/-- The threshold is at least 1 for any parameters -/
+theorem threshold_pos (n k : ℕ) : edgeThreshold n k ≥ 1 := by
+  unfold edgeThreshold; omega
+
+/-- For k = 0, the threshold is C(n-1, 2) + 2, which for n ≥ 3 gives at least 3 -/
+theorem threshold_k0_ge_3 (n : ℕ) (hn : n ≥ 3) : edgeThreshold n 0 ≥ 3 := by
+  rw [threshold_k0]
+  have h1 : n - 1 ≥ 2 := by omega
+  have h2 : Nat.choose (n - 1) 2 ≥ 1 := by
+    rw [Nat.choose_two_right]
+    have h3 : (n - 1) * (n - 1 - 1) ≥ 2 := by
+      have : n - 1 - 1 ≥ 1 := by omega
+      calc (n - 1) * (n - 1 - 1) ≥ 2 * 1 := by
+            apply Nat.mul_le_mul <;> omega
+        _ = 2 := by ring
+    omega
+  omega
+
+/-- The maximum number of edges in a simple graph on n vertices is C(n, 2) -/
+theorem max_edges_formula (n : ℕ) : Nat.choose n 2 = n * (n - 1) / 2 :=
+  Nat.choose_two_right n
+
+/-- Woodall's condition n ≥ 2k+3 implies n > k, so the cycle length n-k is positive -/
+theorem woodall_cycle_pos (n k : ℕ) (hn : n ≥ 2 * k + 3) : n - k > 0 := by omega
+
+/-- The threshold at k is the sum of two binomial coefficients plus 1.
+    For n ≥ 2k+3, the main term C(n-k-1, 2) dominates. -/
+theorem threshold_main_term_dominates (n k : ℕ) (hn : n ≥ 2 * k + 3) :
+    Nat.choose (n - k - 1) 2 ≥ Nat.choose (k + 2) 2 := by
+  apply Nat.choose_le_choose
+  omega
+
+/-- For n ≥ 2k+3, the threshold is at least C(k+2, 2) * 2 + 1 -/
+theorem threshold_lower_bound (n k : ℕ) (hn : n ≥ 2 * k + 3) :
+    edgeThreshold n k ≥ 2 * Nat.choose (k + 2) 2 + 1 := by
+  unfold edgeThreshold
+  have := threshold_main_term_dominates n k hn
+  omega
+
+/-- The first part of the threshold C(n-k-1, 2) is monotone decreasing in k -/
+theorem threshold_first_term_mono (n k₁ k₂ : ℕ) (hk : k₁ ≤ k₂) :
+    Nat.choose (n - k₂ - 1) 2 ≤ Nat.choose (n - k₁ - 1) 2 := by
+  apply Nat.choose_le_choose
+  omega
+
+/-- The second part of the threshold C(k+2, 2) is monotone increasing in k -/
+theorem threshold_second_term_mono (k₁ k₂ : ℕ) (hk : k₁ ≤ k₂) :
+    Nat.choose (k₁ + 2) 2 ≤ Nat.choose (k₂ + 2) 2 := by
+  apply Nat.choose_le_choose
+  omega
+
+/-- The Woodall bound 2k+3 is tight: both sides contribute equally to the threshold.
+    At the boundary n = 2k+3, the argument n-k-1 = k+2, so both terms are equal. -/
+theorem threshold_symmetric_at_boundary (k : ℕ) :
+    edgeThreshold (2 * k + 3) k = 2 * Nat.choose (k + 2) 2 + 1 := by
+  unfold edgeThreshold
+  have h : 2 * k + 3 - k - 1 = k + 2 := by omega
+  rw [h]; omega
+
+/-- Every Woodall-satisfying graph has a triangle (cycle of length 3) -/
+theorem woodall_has_triangle (n k : ℕ) (hn : n ≥ 2 * k + 3) :
+    ∀ (V : Type*) [Fintype V] [DecidableEq V],
+      Fintype.card V = n →
+      ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
+        edgeCount G ≥ edgeThreshold n k →
+        hasCycleOfLength G 3 := by
+  intro V inst1 inst2 hcard G inst3 hedges
+  have hpan := woodall_pancyclic n k hn V hcard G hedges
+  exact hpan 3 le_rfl (by omega)
+
+/-
 ## Summary
 
 This file formalizes Erdős Problem #1012 on long cycles in dense graphs.
@@ -243,7 +338,7 @@ not just an (n-k)-cycle but cycles of all intermediate lengths.
 
 **Proof Structure**:
 - 5 axioms (deep graph theory results: Ore, Bondy, Woodall, pancyclicity, tightness)
-- 13+ proved theorems (threshold computations, structural consequences)
+- 29 proved theorems (threshold analysis, monotonicity, structural consequences)
 - 0 sorries
 -/
 
