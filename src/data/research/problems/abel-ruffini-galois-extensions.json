@@ -1,0 +1,98 @@
+{
+  "slug": "abel-ruffini-galois-extensions",
+  "title": "Abel-Ruffini Galois Theory Extensions",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "S_n is solvable ↔ n ≤ 4; A_n is solvable ↔ n ≤ 4; A₅ is simple; not solvable Galois group implies not solvable by radicals",
+    "plain": "Extend the Abel-Ruffini formalization with complete group-theoretic structure: solvability classification of symmetric and alternating groups, Klein four-group construction, cardinality computations, and solvability preservation theorems.",
+    "whyMatters": [
+      "Complete the sharp threshold characterization for polynomial solvability by radicals",
+      "Demonstrates rich Galois theory infrastructure in Lean 4 + Mathlib",
+      "Connects abstract group theory to concrete polynomial solvability"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "S₀, S₁, S₂, S₃, S₄ are solvable (with explicit proofs)",
+      "A₀, A₁, A₂, A₃, A₄ are solvable",
+      "S_n solvable ↔ n ≤ 4 (complete classification)",
+      "A_n solvable ↔ n ≤ 4 (complete classification)",
+      "A₅ is simple (from Mathlib)",
+      "Not solvable Galois group ⟹ not solvable by radicals (contrapositive)",
+      "Galois group order = extension degree",
+      "Klein four-group V₄ construction and normality in A₄",
+      "Subgroup, quotient, isomorphism solvability preservation",
+      "Cardinalities: |S_n| = n! for n=0..8, |A_n| = n!/2 for n=0..8",
+      "Non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅",
+      "Sign kernel = alternating group"
+    ],
+    "open": [],
+    "goal": "Complete group-theoretic extensions of Abel-Ruffini theorem"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-11T00:00:00Z",
+    "iteration": 1,
+    "focus": "All 55+ theorems proved with 0 sorries in AbelRuffiniGaloisExtensions.lean",
+    "blockers": [],
+    "nextAction": "None - problem fully completed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 55+ theorems, 0 sorries, 0 axioms. Complete solvability classification for S_n and A_n, Klein four-group V₄ construction, cardinality computations up to n=8, non-commutativity witnesses, and solvability preservation theorems.",
+    "builtItems": [
+      "proofs/Proofs/AbelRuffiniGaloisExtensions.lean - 534 lines, 55+ theorems",
+      "Part I: Small symmetric groups solvable (S₀-S₄, A₀-A₄)",
+      "Part II: Sharp threshold S_n solvable ↔ n ≤ 4",
+      "Part III: A₅ simple, |A₅|=60",
+      "Part IV: Contrapositive of Galois theorem",
+      "Part V: Galois group order = extension degree",
+      "Part VI-XV: Subgroup solvability, alternating classification, cardinalities, non-commutativity, factorial identities"
+    ],
+    "insights": [
+      "S₃ solvability via short exact sequence 1 → A₃ → S₃ → ℤˣ → 1 using solvable_of_ker_le_range",
+      "S₄ solvability via Klein four-group V₄ (double transpositions) as normal subgroup of A₄",
+      "Klein V₄ defined as {x | x² = 1} with normality proved by native_decide",
+      "native_decide needed for S₅+ cardinalities but decide suffices for S₀-S₄",
+      "interval_cases cleanly handles the n ≤ 4 case dispatch"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Short exact sequences + Mathlib infrastructure",
+      "status": "succeeded",
+      "description": "Use solvable_of_ker_le_range with sign homomorphism for S_n, Klein four-group for A₄, and Mathlib's not_solvable for n ≥ 5"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "algebra",
+    "galois-theory",
+    "group-theory",
+    "extension",
+    "completed"
+  ],
+  "relatedProofs": ["abel-ruffini"],
+  "references": {
+    "papers": [],
+    "urls": ["https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem"],
+    "mathlib": [
+      "Mathlib.FieldTheory.AbelRuffini",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating"
+    ]
+  },
+  "started": "2026-02-11T09:42:00Z",
+  "lastUpdate": "2026-02-11T09:50:00Z",
+  "significance": 7,
+  "tractability": 6
+}
