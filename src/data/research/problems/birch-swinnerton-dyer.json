@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "BUILD",
     "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 2,
-    "focus": "Rational point verification and Hasse bound infrastructure",
+    "iteration": 3,
+    "focus": "Extended congruent number point verification and right triangle formalization",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added RationalPoint structure and verified rational points on congruent number curves E5, E6, E7. Proved 2-torsion structure and discriminant positivity. Added Hasse bound infrastructure. All provable content builds successfully.",
+    "progressSummary": "PROGRESS: Extended congruent number verification to 9 curves (n=5,6,7,15,20,21,24,30,34). Added 2-torsion RationalPoint structures, RightTriangle structure with 6 verified area theorems. Fixed hasse_bound_consequence. 1312 lines, builds successfully.",
     "builtItems": [
       "RationalPoint structure (EllipticCurveQ → ℚ × ℚ with curve equation proof)",
       "point_on_E5: verified (-4, 6) on y²=x³-25x",
@@ -38,13 +38,25 @@
       "Three non-torsion theorems (y ≠ 0 for each point)",
       "Torsion point characterization for congruent number curves",
       "congruentNumberCurve_discriminant_pos (Δ > 0 for n > 0)",
-      "Hasse bound infrastructure (traceOfFrobenius, hasse_bound axiom, consequence theorem)"
+      "Hasse bound infrastructure (traceOfFrobenius, hasse_bound axiom, consequence theorem)",
+      "point_on_E15: verified (-9, 36) on y²=x³-225x",
+      "point_on_E20: verified (-16, 48) on y²=x³-400x",
+      "point_on_E21: verified (-3, 36) on y²=x³-441x",
+      "point_on_E24: verified (48, 288) on y²=x³-576x",
+      "point_on_E30: verified (-20, 100) on y²=x³-900x",
+      "point_on_E34: verified (-16, 120) on y²=x³-1156x",
+      "2-torsion RationalPoint structures (torsion_zero, torsion_pos_n, torsion_neg_n)",
+      "RightTriangle structure with area verification",
+      "6 verified right triangle area theorems (n=6,15,20,21,24,30)"
     ],
     "insights": [
       "Rational points on congruent number curves can be verified by pure arithmetic (norm_num)",
       "The 2-torsion points on y²=x³-n²x are exactly (0,0), (n,0), (-n,0) — provable by ring",
       "Discriminant positivity (Δ = 64n⁶ > 0) implies three real 2-torsion points",
-      "Hasse bound consequence needs linarith not omega (quadratic inequality)"
+      "Hasse bound consequence needs linarith not omega (quadratic inequality)",
+      "Finding rational points on y²=x³-n²x: search small integer x values where x³-n²x is a perfect square",
+      "2-torsion on y²=x³-n²x are exactly (0,0), (n,0), (-n,0) — can be given as RationalPoint with on_curve by ring",
+      "hasse_bound_consequence was broken (strict inequality), fixed to ≤ which follows from axiom"
     ],
     "mathlibGaps": [
       "Torsion subgroup",
