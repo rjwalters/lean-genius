@@ -13,77 +13,97 @@
       "number-theory",
       "arithmetic-functions",
       "distribution",
-      "short-intervals"
+      "short-intervals",
+      "concentration-phenomena",
+      "divisor-function",
+      "prime-counting"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 122,
     "erdosUrl": "https://erdosproblems.com/122",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "relatedProblems": ["erdos-28", "erdos-234", "erdos-289"],
+    "references": [
+      "Erdős–Pomerance–Sárközy (1997): On the distribution of the values of f(n) + g(n)",
+      "Hardy–Ramanujan (1917): The normal number of prime factors of a number n",
+      "Erdős–Kac (1940): The Gaussian law of errors in the theory of additive number-theoretic functions",
+      "Pomerance (1984): On the distribution of round numbers",
+      "https://erdosproblems.com/122"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #122 (Erdős–Pomerance–Sárközy, [ErPoSa97]) asks which number-theoretic functions f have the property that n + f(n) concentrates in short intervals. Known for divisor count d and distinct prime count ω; conjectured false for Euler's totient φ and sum of divisors σ.",
-    "problemStatement": "For which f does #{n : n + f(n) ∈ (x, x + F(x))} / F(x) → ∞ for infinitely many x, whenever f(n)/F(n) → 0 a.e.? OPEN (general characterization).",
-    "proofStrategy": "We define the Short Interval Concentration Property (SICP) using Finset counting and natural density. The Erdős–Pomerance–Sárközy theorem (for d and ω) is axiomatized. Conjectured failures for φ and σ are stated as definitions.",
+    "historicalContext": "Erdős, Pomerance, and Sárközy introduced the Short Interval Concentration Property (SICP) in their 1997 paper [ErPoSa97], asking which arithmetic functions $f$ cause $n + f(n)$ to cluster in short intervals $(x, x + F(x)]$ far more than expected. The question is deeply connected to the Hardy–Ramanujan theorem (1917), which showed that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erdős–Kac theorem (1940), which proved $\\omega(n)$ follows a Gaussian distribution. The key dichotomy is between **erratic** functions like $d(n)$ and $\\omega(n)$ — which take exceptionally large values on highly composite and smooth numbers, creating clusters — and **smooth** functions like $\\varphi(n) \\sim (6/\\pi^2)n$ and $\\sigma(n) \\sim (\\pi^2/6)n$, whose average-order behavior prevents concentration. Erdős conjectured that smoothness of the average order is the obstruction to SICP. The general characterization of which multiplicative functions have SICP remains a major open problem in analytic number theory.",
+    "problemStatement": "For which number-theoretic functions $f$ does $\\#\\{n : n + f(n) \\in (x, x + F(x)]\\} / F(x) \\to \\infty$ for infinitely many $x$, whenever $f(n)/F(n) \\to 0$ for almost all $n$? OPEN (general characterization).",
+    "proofStrategy": "We define four classical arithmetic functions — $d(n)$, $\\omega(n)$, $\\varphi(n)$, $\\sigma(n)$ — using Finset filtering and counting. The Short Interval Concentration Property is formalized via a density-based $\\varepsilon$-$\\delta$ definition of '$f(n)/F(n) \\to 0$ a.e.' and an $\\forall C,\\, \\exists^\\infty x$ quantifier structure for concentration. The Erdős–Pomerance–Sárközy theorem ($d$ and $\\omega$ have SICP) is axiomatized, the conjectured failures for $\\varphi$ and $\\sigma$ are stated as definitions, and a proved summary theorem packages the known results.",
     "keyInsights": [
-      "The divisor function d(n) and distinct prime count ω(n) have SICP (proved)",
-      "Euler's totient φ(n) and sum of divisors σ(n) are conjectured to lack SICP",
-      "SICP captures how n + f(n) concentrates relative to short intervals (x, x+F(x))",
-      "The general characterization of which functions have SICP remains open",
-      "The problem connects arithmetic function distribution to interval analysis"
+      "**Erratic vs. smooth dichotomy**: $d(n)$ and $\\omega(n)$ are highly variable — $d(n)$ can be as large as $2^{(1+o(1))\\log n/\\log\\log n}$ on highly composite numbers — while $\\varphi(n)/n$ and $\\sigma(n)/n$ stay close to their means $(6/\\pi^2$ and $\\pi^2/6)$ for almost all $n$",
+      "**SICP as a concentration phenomenon**: The property captures how exceptional values of $f$ on a sparse set of integers can force $n + f(n)$ into short intervals, overwhelming the expected uniform distribution",
+      "**Hardy–Ramanujan connection**: $\\omega(n) \\sim \\log\\log n$ normally, but on smooth numbers $\\omega(n)$ is much larger; these outliers drive the concentration of $n + \\omega(n)$ in short intervals",
+      "**Quantifier structure captures 'infinitely often'**: The formalization uses $\\forall x_0,\\, \\exists x \\ge x_0$ instead of filters, providing a constructive characterization of 'infinitely many $x$' via the Archimedean property",
+      "**Density-based growth domination**: The condition $f/F \\to 0$ a.e. is formalized as natural density tending to 0, using rational $\\varepsilon$-$\\delta$ parameters to avoid real-valued Lean complications"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 27,
+      "endLine": 35,
+      "summary": "Imports Mathlib modules for natural number arithmetic, prime predicates, `Finset` operations, and `Filter` theory. Opens the `Filter` namespace for conceptual access to `atTop`."
+    },
+    {
       "id": "arithmetic-functions",
-      "title": "Part I: Number-Theoretic Functions",
+      "title": "Part I: Four Arithmetic Functions",
       "startLine": 37,
       "endLine": 61,
-      "summary": "Defines divisorCount d(n), distinctPrimeCount ω(n), eulerTotient φ(n), and sumOfDivisors σ(n)."
+      "summary": "Defines four classical functions via `Finset.filter`: $d(n) = \\#\\{d : d | n\\}$, $\\omega(n) = \\#\\{p \\text{ prime} : p | n\\}$, $\\varphi(n) = \\#\\{k \\le n : \\gcd(k,n)=1\\}$, and $\\sigma(n) = \\sum_{d|n} d$. The first two are 'erratic' (large on highly composite numbers), while the latter two are 'smooth' (close to $n$ on average)."
     },
     {
       "id": "counting",
       "title": "Part II: Counting in Intervals",
       "startLine": 63,
       "endLine": 81,
-      "summary": "Defines countInInterval (counting n + f(n) in (x, x+F(x)]) and GrowthDominates (f/F → 0 a.e.)."
+      "summary": "Defines `countInInterval` $= \\#\\{n : n + f(n) \\in (x, x+F(x)]\\}$ and `GrowthDominates` formalizing $f(n)/F(n) \\to 0$ for almost all $n$ via a density-based $\\varepsilon$-$\\delta$ formulation: for every $\\varepsilon > 0$, the density of $\\{n \\le N : f(n)/F(n) \\ge \\varepsilon\\}$ tends to 0."
     },
     {
       "id": "sicp",
       "title": "Part III: The Short Interval Concentration Property",
       "startLine": 83,
       "endLine": 98,
-      "summary": "Defines HasSICP: for every dominating F and constant C, infinitely many x have count > C·F(x)."
+      "summary": "The central definition: $\\text{HasSICP}(f)$ iff for every $F$ with $f/F \\to 0$ a.e. and every $C \\ge 1$, there exist infinitely many $x$ with $\\#\\{n : n+f(n) \\in (x, x+F(x)]\\} > C \\cdot F(x)$. The quantifier $\\forall x_0, \\exists x \\ge x_0$ captures 'infinitely many'."
     },
     {
       "id": "known-results",
-      "title": "Part IV: Known Results",
+      "title": "Part IV: Erdős–Pomerance–Sárközy Theorem",
       "startLine": 100,
       "endLine": 112,
-      "summary": "Axioms: divisor_count_has_SICP and prime_count_has_SICP (Erdős–Pomerance–Sárközy theorem)."
+      "summary": "Axiomatizes the two proved results: $\\text{HasSICP}(d)$ and $\\text{HasSICP}(\\omega)$. These follow from the high variability of $d$ and $\\omega$ on highly composite and smooth numbers, which creates the clustering needed for SICP."
     },
     {
       "id": "conjectures",
-      "title": "Part V: Conjectured Failures",
+      "title": "Part V: Conjectured Failures for $\\varphi$ and $\\sigma$",
       "startLine": 114,
       "endLine": 142,
-      "summary": "States ErdosConjecture122_phi (¬HasSICP φ), ErdosConjecture122_sigma (¬HasSICP σ), and combined ErdosProblem122."
+      "summary": "States three definitions: $\\neg\\text{HasSICP}(\\varphi)$, $\\neg\\text{HasSICP}(\\sigma)$, and the combined `ErdosProblem122` packaging all four claims. The smoothness of $\\varphi$ and $\\sigma$ (average orders $(6/\\pi^2)n$ and $(\\pi^2/6)n$) is the conjectured obstruction."
     },
     {
       "id": "summary",
-      "title": "Part VI: Summary",
+      "title": "Part VI: Proved Summary",
       "startLine": 144,
       "endLine": 157,
-      "summary": "Theorem erdos_122_known_results: d and ω have SICP (from axioms)."
+      "summary": "The theorem `erdos_122_known_results : HasSICP(d) \\wedge HasSICP(\\omega)` is proved by pairing the two axioms. This is one of the few non-sorry'd results in the file, establishing the known portion of the problem."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #122 asks which arithmetic functions have the short interval concentration property. d(n) and ω(n) do (Erdős–Pomerance–Sárközy); φ(n) and σ(n) conjecturally do not. The general characterization is open.",
-    "implications": "The SICP distinguishes arithmetic functions by their distributional behavior. Functions with irregular growth (like d and ω) tend to concentrate, while smooth functions (like φ and σ) may not.",
+    "summary": "Erdős Problem #122 asks which arithmetic functions have the Short Interval Concentration Property — i.e., which f cause n + f(n) to cluster in short intervals far beyond uniform expectation. The Erdős–Pomerance–Sárközy theorem (1997) proves SICP for d(n) and ω(n); Erdős conjectured failure for φ(n) and σ(n). The formalization captures the erratic-vs-smooth dichotomy that drives concentration phenomena in additive number theory.",
+    "implications": "The SICP distinguishes arithmetic functions by their distributional tails: functions with large exceptional values on sparse sets (highly composite numbers, smooth numbers) concentrate, while functions with stable average behavior spread uniformly. A general criterion would connect multiplicative structure to additive distribution, with implications for the Erdős–Kac circle of ideas and probabilistic number theory.",
     "openQuestions": [
-      "Does φ(n) truly fail SICP?",
-      "Does σ(n) truly fail SICP?",
-      "Can a general criterion be given for which functions have SICP?"
+      "Does Euler's totient φ(n) truly fail SICP, and can the smooth average order (6/π²)n be used to prove non-concentration?",
+      "Does the sum of divisors σ(n) fail SICP despite occasional large values on multiply-perfect numbers?",
+      "Can a general criterion for SICP be given in terms of the multiplicative structure of f (e.g., bounds on f at prime powers)?",
+      "Does Ω(n) (prime factor count with multiplicity) have SICP, and if so, does the proof differ from the ω(n) case?",
+      "How does SICP relate to the Erdős–Kac theorem and the distribution of additive functions modulo 1?"
     ]
   }
 }
