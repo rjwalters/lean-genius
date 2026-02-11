@@ -35,6 +35,7 @@ with the Cauchy bound (via Mathlib's `cauchyBound` and `IsRoot.norm_lt_cauchyBou
 - [x] Uses Mathlib cauchyBound API
 - [x] Proves root localization theorems
 - [x] Pedagogical examples
+- [x] All theorems proved (0 sorries)
 
 ## Mathlib Dependencies
 - `Polynomial.signVariations` : Sign change counting
@@ -114,23 +115,68 @@ theorem no_positive_roots_of_zero_sign_variations (p : ℝ[X]) (hp : p ≠ 0)
   intro hr_root
   have hcount := p.roots_countP_pos_le_signVariations
   rw [hsv] at hcount
-  -- countP (0 < ·) p.roots = 0
   have hzero : p.roots.countP (0 < ·) = 0 := Nat.eq_zero_of_le_zero hcount
-  -- But r is a positive root, so it's in p.roots with 0 < r
   have hr_mem : r ∈ p.roots := (mem_roots hp).mpr hr_root
   have : 0 < p.roots.countP (0 < ·) := by
     rw [Multiset.countP_pos]
     exact ⟨r, hr_mem, hr_pos⟩
   omega
 
+-- Helper lemmas for signVariations_zero_of_nonneg_coeffs
+
+private lemma sign_nonneg_real (a : ℝ) (ha : 0 ≤ a) :
+    SignType.sign a = 0 ∨ SignType.sign a = 1 := by
+  rcases eq_or_lt_of_le ha with rfl | hpos
+  · left; simp [SignType.sign]
+  · right; simp [SignType.sign, hpos]
+
+private lemma sign_nonneg_ne_zero (a : ℝ) (ha : 0 ≤ a) (hne : SignType.sign a ≠ 0) :
+    SignType.sign a = 1 := by
+  rcases sign_nonneg_real a ha with h | h
+  · exact absurd h hne
+  · exact h
+
+private lemma coeffList_mem_coeff (p : ℝ[X]) (a : ℝ) (ha : a ∈ p.coeffList) :
+    ∃ i, a = p.coeff i := by
+  simp only [coeffList, List.mem_map] at ha
+  obtain ⟨i, _, rfl⟩ := ha
+  exact ⟨i, rfl⟩
+
+private lemma filtered_signs_all_pos (p : ℝ[X]) (hcoeffs : ∀ i, 0 ≤ p.coeff i) :
+    ∀ x ∈ (List.filter (fun x => decide (x ≠ 0))
+      (List.map (⇑SignType.sign) p.coeffList)), x = (1 : SignType) := by
+  intro x hx
+  simp only [List.mem_filter, List.mem_map, decide_eq_true_eq] at hx
+  obtain ⟨⟨a, ha_mem, ha_sign⟩, ha_ne⟩ := hx
+  obtain ⟨i, rfl⟩ := coeffList_mem_coeff p a ha_mem
+  rw [← ha_sign]
+  exact sign_nonneg_ne_zero _ (hcoeffs i) (by rwa [ha_sign])
+
+private lemma list_all_same_destutter_le_one (l : List SignType)
+    (h : ∀ x ∈ l, x = (1 : SignType)) :
+    (l.destutter (· ≠ ·)).length ≤ 1 := by
+  induction l with
+  | nil => simp
+  | cons hd tl ih =>
+    have htl : ∀ x ∈ tl, x = 1 := fun x hx => h x (List.mem_cons.mpr (Or.inr hx))
+    have hhd : hd = 1 := h hd (List.mem_cons.mpr (Or.inl rfl))
+    cases tl with
+    | nil => simp
+    | cons hd' tl' =>
+      have hhd' : hd' = 1 := htl hd' (List.mem_cons.mpr (Or.inl rfl))
+      have heq : hd = hd' := by rw [hhd, hhd']
+      simp [List.destutter, heq]
+      exact ih htl
+
 /-- A polynomial with all non-negative coefficients and positive leading coefficient
     has 0 sign variations. -/
 theorem signVariations_zero_of_nonneg_coeffs (p : ℝ[X]) (_hp : p ≠ 0)
     (_hcoeffs : ∀ i, 0 ≤ p.coeff i) :
     p.signVariations = 0 := by
-  -- If all coefficients are non-negative, there are no sign changes
-  -- Each nonzero coefficient has sign +1, so no destuttered changes
-  sorry
+  simp only [Polynomial.signVariations]
+  have hL := filtered_signs_all_pos p _hcoeffs
+  have hlen := list_all_same_destutter_le_one _ hL
+  omega
 
 /-
 ## Part IV: Root-Free Certificate
@@ -227,7 +273,33 @@ theorem all_roots_in_cauchy_interval (p : ℝ[X]) (hp : p ≠ 0) (r : ℝ)
 theorem root_count_decomposition (p : ℝ[X]) (_hp : p ≠ 0) :
     (p.roots.countP (0 < ·)) + (p.roots.countP (· < 0)) + p.roots.count 0 =
     p.roots.card := by
-  sorry
+  suffices h : ∀ (s : Multiset ℝ),
+      s.countP (0 < ·) + s.countP (· < 0) + s.count 0 = s.card from
+    h p.roots
+  intro s
+  induction s using Multiset.induction with
+  | empty => simp
+  | cons a s ih =>
+    simp only [Multiset.countP_cons, Multiset.count_cons, Multiset.card_cons]
+    rcases lt_trichotomy 0 a with ha_pos | ha_zero | ha_neg
+    · -- a > 0
+      have h1 : (0 < a) = True := propext ⟨fun _ => trivial, fun _ => ha_pos⟩
+      have h2 : (a < 0) = False := propext ⟨fun h => absurd h (not_lt.mpr (le_of_lt ha_pos)), False.elim⟩
+      have h3 : (0 = a) = False := propext ⟨fun h => absurd (h ▸ ha_pos) (lt_irrefl _), False.elim⟩
+      simp only [h1, h2, h3, ite_true, ite_false]
+      omega
+    · -- a = 0
+      subst ha_zero
+      have h1 : (0 < (0 : ℝ)) = False := propext ⟨fun h => absurd h (lt_irrefl _), False.elim⟩
+      have h2 : ((0 : ℝ) < 0) = False := propext ⟨fun h => absurd h (lt_irrefl _), False.elim⟩
+      simp only [h1, ite_false, ite_true]
+      omega
+    · -- a < 0
+      have h1 : (0 < a) = False := propext ⟨fun h => absurd h (not_lt.mpr (le_of_lt ha_neg)), False.elim⟩
+      have h2 : (a < 0) = True := propext ⟨fun _ => trivial, fun _ => ha_neg⟩
+      have h3 : (0 = a) = False := propext ⟨fun h => absurd (h ▸ ha_neg) (lt_irrefl _), False.elim⟩
+      simp only [h1, h2, h3, ite_true, ite_false]
+      omega
 
 /-- Descartes bound on positive root count. -/
 theorem positive_root_count_bound (p : ℝ[X]) :
@@ -345,26 +417,24 @@ theorem negative_root_summary (p : ℝ[X]) (hp : p ≠ 0) (r : ℝ)
 This OQ-03 extension establishes the bridge between Descartes' Rule of Signs and
 constructive root bound computation:
 
-### Proved (no sorry)
+### All 17 theorems proved — 0 sorries.
 1. `descartes_upper_bound_via_mathlib` — Mathlib's Descartes bound for ℝ
 2. `real_root_abs_lt_cauchy_bound` — Cauchy bound for root magnitude
 3. `positive_roots_in_cauchy_interval` — Positive roots in (0, B)
 4. `no_positive_roots_of_zero_sign_variations` — Root-free certificate
-5. `root_free_certificate_positive` — Combined certificate
-6. `all_roots_in_cauchy_interval` — All roots in (-B, B)
-7. `negative_root_iff` — Negative root characterization via p(-x)
-8. `negSubst_negSubst` — Double negation identity
-9. `mkRootCertificate` — Constructive root certificate structure
-10. `linear_one_positive_root` — Example: x - c has 1 positive root
-11. `linear_no_positive_root` — Example: x + c has no positive roots
-12. `cauchy_bound_X_sub_C_val` — Cauchy bound example
-13. `root_between_opposite_signs` — IVT-based root existence
-14. `positive_root_summary` — Combined localization and counting
-15. `negative_root_summary` — Negative root localization via p(-x)
-
-### Needs Further Work (sorry)
-1. `signVariations_zero_of_nonneg_coeffs` — Needs sign analysis of coefficient list
-2. `root_count_decomposition` — Needs multiset counting decomposition
+5. `signVariations_zero_of_nonneg_coeffs` — Non-negative coefficients → 0 sign variations
+6. `root_free_certificate_positive` — Combined certificate
+7. `all_roots_in_cauchy_interval` — All roots in (-B, B)
+8. `root_count_decomposition` — Root counting by sign (trichotomy)
+9. `negative_root_iff` — Negative root characterization via p(-x)
+10. `negSubst_negSubst` — Double negation identity
+11. `mkRootCertificate` — Constructive root certificate structure
+12. `linear_one_positive_root` — Example: x - c has 1 positive root
+13. `linear_no_positive_root` — Example: x + c has no positive roots
+14. `cauchy_bound_X_sub_C_val` — Cauchy bound example
+15. `root_between_opposite_signs` — IVT-based root existence
+16. `positive_root_summary` — Combined localization and counting
+17. `negative_root_summary` — Negative root localization via p(-x)
 -/
 
 end DescartesConstructiveBounds
