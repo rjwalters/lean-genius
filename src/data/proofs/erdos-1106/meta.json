@@ -23,74 +23,90 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem at the Oberwolfach mathematics research institute in 1986. The partition function p(n)—counting the number of ways to write n as a sum of positive integers—has deep connections to analytic number theory through the Hardy-Ramanujan asymptotic formula.\n\nThe first question (F(n) → ∞) was resolved quickly: Schinzel noted in the Oberwolfach problem book that this follows from combining the Hardy-Ramanujan asymptotic for p(n) with Tijdeman's 1973 result on integers with many small prime factors. Full details appear on page 69 of the 1990 paper by Erdős and Ivić.\n\nThe second question (F(n) > n eventually) remains open. Schinzel and Wirsing (1987) proved the lower bound F(n) ≫ log n, but the gap between log n and n is vast. A related breakthrough by Ken Ono in 2000 showed that every prime divides p(n) for some n, occurring for a positive density of n for each fixed prime.",
-    "problemStatement": "Let $p(n)$ denote the partition function and define\n$$F(n) = \\#\\{\\text{distinct primes dividing } \\prod_{k=1}^{n} p(k)\\}$$\n\n**Question 1**: Does $F(n) \\to \\infty$ as $n \\to \\infty$?\n**Answer**: YES (Schinzel via Tijdeman 1973, details in Erdős-Ivić 1990)\n\n**Question 2**: Is $F(n) > n$ for all sufficiently large $n$?\n**Answer**: OPEN (best known: $F(n) \\gg \\log n$ by Schinzel-Wirsing 1987)",
-    "proofStrategy": "We formalize the partition function using Mathlib's Nat.Partition type, which represents a partition of n as a multiset of positive integers summing to n. The product of partition numbers and the prime factor counting function F(n) are defined directly.\n\nThe main result (F(n) → ∞) requires deep analytic number theory—specifically the Hardy-Ramanujan asymptotic formula combined with Tijdeman's analysis of prime factorizations of exponentially growing sequences. We state this as an axiom since the proof machinery is far beyond current Mathlib.\n\nWe verify small examples computationally: F(5) = 4 since p(1)·p(2)·p(3)·p(4)·p(5) = 1·2·3·5·7 = 210 = 2·3·5·7.",
+    "historicalContext": "Erdos posed this problem at the Oberwolfach mathematics research institute in 1986, inspired by the interplay between the partition function's analytic properties and multiplicative number theory. The partition function $p(n)$ — counting unordered sums of positive integers equaling $n$ — had been studied since Euler's pioneering work on generating functions in the 1740s. Hardy and Ramanujan's 1918 asymptotic formula $p(n) \\sim \\frac{1}{4n\\sqrt{3}}e^{\\pi\\sqrt{2n/3}}$, obtained via the circle method, revealed that $p(n)$ grows sub-exponentially but faster than any polynomial.\n\nThe first question ($F(n) \\to \\infty$) was resolved quickly: Schinzel noted in the Oberwolfach problem book that this follows from combining the Hardy-Ramanujan asymptotic with Tijdeman's 1973 result showing that sequences growing at least exponentially must accumulate infinitely many distinct prime factors. Full details appear on page 69 of the 1990 paper by Erdos and Ivic.\n\nSchinzel and Wirsing (1987) proved the quantitative lower bound $F(n) \\gg \\log n$, but the gap between $\\log n$ and the conjectured $n$ remains enormous. A breakthrough came with Ken Ono's 2000 result (using modular forms and Galois representations) that every prime divides $p(n)$ for a positive density of $n$, extending Ramanujan's classical congruences for $p = 5, 7, 11$.",
+    "problemStatement": "Let $p(n)$ denote the partition function and define\n$$F(n) = \\omega\\!\\left(\\prod_{k=1}^{n} p(k)\\right) = \\#\\{\\text{distinct primes dividing } \\prod_{k=1}^{n} p(k)\\}$$\n\n**Question 1**: Does $F(n) \\to \\infty$ as $n \\to \\infty$?\n**Answer**: YES (Schinzel via Tijdeman 1973, details in Erdos-Ivic 1990)\n\n**Question 2**: Is $F(n) > n$ for all sufficiently large $n$?\n**Answer**: OPEN (best known: $F(n) \\gg \\log n$ by Schinzel-Wirsing 1987)",
+    "proofStrategy": "The formalization defines $p(n)$ using Mathlib's `Nat.Partition` type (multisets of positive integers summing to $n$), then builds the cumulative product $\\prod_{k=1}^n p(k)$ via `Finset.prod` over `Icc 1 n`. The function $F(n)$ is defined as the cardinality of `Nat.primeFactors` of this product. Small cases ($F(1)$ through $F(5)$) are verified computationally via `native_decide`. The main result $F(n) \\to \\infty$ and the auxiliary results (Hardy-Ramanujan, Schinzel-Wirsing, Ono) are stated as axioms, since their proofs require deep analytic number theory far beyond current Mathlib (circle method, modular forms, Galois representations). The open conjecture $F(n) > n$ is stated as a `Prop`.",
     "keyInsights": [
-      "**Partition function**: p(n) counts the ways to write n as an unordered sum of positive integers. The first values are 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, ...",
-      "**Hardy-Ramanujan formula**: p(n) ~ (1/4n√3)·exp(π√(2n/3)), giving exponential growth that drives prime factor accumulation",
-      "**Ono's theorem**: Every prime p divides p(n) for some n ≥ 1, and this occurs for a positive density of n",
-      "**OEIS connection**: The partition products form sequence A194259; the prime counts form A194260"
+      "The partition function's sub-exponential growth $p(n) \\sim ce^{\\pi\\sqrt{2n/3}}$ drives everything: the product $\\prod_{k=1}^n p(k)$ has $\\log$-size $\\sim Cn^{3/2}$, and a 'typical' number of that magnitude has $\\sim n^{3/2}/\\log n$ prime factors — far more than $n$.",
+      "Hardy-Ramanujan's 1918 circle method formula was the first major success of analytic methods in combinatorics, inaugurating a technique that would later be refined by Rademacher into an exact convergent series for $p(n)$.",
+      "Ono's 2000 theorem ($\\forall p \\in \\mathbb{P},\\; \\exists n : p \\mid p(n)$) uses Hecke operators on spaces of modular forms and shows the partition function has universal divisibility — every prime eventually appears as a factor.",
+      "The gap between $F(n) \\gg \\log n$ and the conjecture $F(n) > n$ is a factor of $n/\\log n$, reflecting how difficult it is to control the prime factorization of products of arithmetic functions defined combinatorially rather than multiplicatively.",
+      "Ramanujan's congruences $p(5n+4) \\equiv 0 \\pmod{5}$, $p(7n+5) \\equiv 0 \\pmod{7}$, $p(11n+6) \\equiv 0 \\pmod{11}$ were the first hints that $p(n)$ has rich arithmetic structure — Ono's work shows this extends to all primes."
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header and References",
+      "summary": "Module docstring stating the problem, its status, all four key references (Tijdeman, Schinzel-Wirsing, Erdos-Ivic, Ono), and Lean 4 imports from Mathlib for partitions, primes, factorization, and filters.",
+      "startLine": 1,
+      "endLine": 52
+    },
+    {
       "id": "partition-function",
       "title": "The Partition Function",
-      "summary": "Definition of p(n) via Mathlib's Nat.Partition and small value verification",
+      "summary": "Defines $p(n)$ via `Fintype.card (Nat.Partition n)` and verifies small values $p(0) = 1$ through $p(4) = 5$ using `native_decide`.",
       "startLine": 54,
       "endLine": 76
     },
     {
       "id": "partition-product",
       "title": "Product of Partition Numbers",
-      "summary": "Definition of the product ∏_{k=1}^{n} p(k) and its positivity",
+      "summary": "Defines $\\prod_{k=1}^n p(k)$ via `Finset.prod` over `Icc 1 n` and proves positivity since each $p(k) \\ge 1$.",
       "startLine": 78,
       "endLine": 90
     },
     {
       "id": "prime-factors",
-      "title": "Counting Prime Factors",
-      "summary": "Definition of F(n) as the number of distinct prime factors",
+      "title": "Counting Prime Factors: F(n)",
+      "summary": "Defines $F(n) = |\\text{primeFactors}(\\prod_{k=1}^n p(k))|$, provides an alternative via the `primeFactorsOfProduct` finset, and states (with sorry) that $F$ is monotone.",
       "startLine": 92,
       "endLine": 106
     },
     {
       "id": "known-results",
-      "title": "Known Results",
-      "summary": "Schinzel-Wirsing lower bound, Hardy-Ramanujan asymptotic, Ono's theorem",
+      "title": "Known Results as Axioms",
+      "summary": "States the Schinzel-Wirsing lower bound ($F(n) \\gg \\log n$), the Hardy-Ramanujan asymptotic formula, and Ono's prime divisibility theorem as axioms, since their proofs require the circle method, modular forms, and Galois representations.",
       "startLine": 108,
       "endLine": 137
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
-      "summary": "F(n) → ∞ (proved) and F(n) > n eventually (open conjecture)",
+      "summary": "States $F(n) \\to \\infty$ (proved, as axiom) and the open conjecture $F(n) > n$ eventually (as a `Prop` definition).",
       "startLine": 139,
       "endLine": 169
     },
     {
       "id": "examples",
-      "title": "Small Examples",
-      "summary": "Verified computations of F(1) through F(5)",
+      "title": "Small Verified Examples",
+      "summary": "Computationally verifies $F(1) = 0$, $F(2) = 1$, $F(3) = 2$, $F(4) = 3$, $F(5) = 4$ via `native_decide`, showing how each partition number contributes new prime factors.",
       "startLine": 171,
       "endLine": 192
     },
     {
       "id": "oeis",
       "title": "OEIS Sequences",
-      "summary": "Connection to A194259 (partition products) and A194260 (prime counts)",
+      "summary": "Connects to OEIS A194259 (partition products) and A194260 (prime factor counts), noting the stalling pattern where $p(7) = 15 = 3 \\cdot 5$ introduces no new primes.",
       "startLine": 194,
       "endLine": 208
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Recaps the formalization: Part 1 proved via Hardy-Ramanujan + Tijdeman, Part 2 open, small values verified, key axioms for deep analytic results.",
+      "startLine": 210,
+      "endLine": 242
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1106 on prime factors of partition products. The first part (F(n) → ∞) is a proved theorem from the 1970s-1990s, combining deep results from analytic number theory. The second part (F(n) > n eventually) remains one of the open problems in the theory of partitions, with the current best bound of F(n) ≫ log n falling far short of the conjectured linear growth.",
-    "implications": "Understanding the prime factorization of partition numbers connects to fundamental questions about the arithmetic nature of p(n). Ono's 2000 result that every prime divides some p(n) was a major breakthrough, showing rich divisibility structure. The gap between log n and n for F(n) suggests there may be subtle cancellation phenomena not yet understood.",
+    "summary": "This formalization captures Erdos Problem #1106 on prime factors of partition products. The first part ($F(n) \\to \\infty$) is a proved theorem from the 1970s-1990s, combining the Hardy-Ramanujan asymptotic formula with Tijdeman's results on prime factors of fast-growing sequences. The second part ($F(n) > n$ eventually) remains one of the open problems in the arithmetic theory of partitions, with the current best bound $F(n) \\gg \\log n$ falling far short of the conjectured linear growth. Small values are verified computationally, providing concrete evidence for the conjecture.",
+    "implications": "Understanding the prime factorization of partition numbers connects to deep questions in analytic number theory and the theory of modular forms. Ono's 2000 result that every prime divides some $p(n)$ — proved via Hecke operators and Galois representations — was a major breakthrough showing that the partition function has universal arithmetic structure. The gap between $\\log n$ and $n$ for $F(n)$ suggests that new ideas are needed, possibly involving the distribution of prime factors across the individual $p(k)$ values rather than just the product.",
     "openQuestions": [
-      "Is F(n) > n for all sufficiently large n?",
-      "What is the true growth rate of F(n)? Is F(n) ~ cn for some constant c?",
-      "Can Ono's density results be strengthened to help with the F(n) > n question?"
+      "Is $F(n) > n$ for all sufficiently large $n$? This is the main open part of Erdos's question.",
+      "What is the true growth rate of $F(n)$? The heuristic $F(n) \\approx cn^{3/2}/\\log n$ from the Erdos-Kac theorem suggests $F(n)/n \\to \\infty$, but can this be proved?",
+      "Can Ono's density results on $p \\mid p(n)$ be combined with sieve methods to improve the Schinzel-Wirsing bound beyond $\\log n$?",
+      "What is the distribution of 'new prime' events — i.e., values of $k$ where $p(k)$ introduces a prime not dividing any earlier $p(j)$?"
     ]
   }
 }
