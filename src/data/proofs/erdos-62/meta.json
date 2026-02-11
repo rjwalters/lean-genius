@@ -4,108 +4,152 @@
   "slug": "erdos-62",
   "description": "If G₁, G₂ both have chromatic number ℵ₁, must they share a common subgraph with χ = 4 (or ℵ₀)? OPEN problem.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős, Hajnal, Shelah",
     "sourceUrl": "https://erdosproblems.com/62",
-    "date": "",
+    "date": "1974",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos62Problem.lean",
     "tags": [
       "erdos",
       "infinite-combinatorics",
       "chromatic-number",
-      "graph-theory"
+      "graph-theory",
+      "uncountable",
+      "open-problem"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 62,
     "erdosUrl": "https://erdosproblems.com/62",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.Injective",
+        "description": "Injective functions for subgraph embeddings",
+        "module": "Mathlib.Logic.Function.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for k-colorings and odd cycles",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Fin.val_injective",
+        "description": "Injectivity of Fin.val for chromatic monotonicity proof",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
+    "references": [
+      "Erdős (1974, 1987, 1990): Original problem statements and generalization to finite collections",
+      "Erdős, Hajnal, Shelah (1974): graphs with χ = ℵ₁ contain all sufficiently large odd cycles",
+      "De Bruijn, Erdős (1951): compactness theorem — G is k-colorable iff every finite subgraph is",
+      "Komjáth, Shelah (2003): related results on uncountable chromatic number",
+      "https://erdosproblems.com/62"
+    ],
+    "originalContributions": [
+      "Custom InfGraph structure for infinite simple graphs (not SimpleGraph)",
+      "Chromatic hierarchy: HasChromaticNumber k, HasChromaticAleph0, HasChromaticAleph1",
+      "Strong and weak conjectures formalized as Prop-valued definitions",
+      "Generalization to finite collections via Fin n-indexed families",
+      "Full proof of odd_cycles_are_common from axiomatized EHS",
+      "Proofs of finite_implies_countable and embed_colorable",
+      "chi_gap_problem capturing the exact frontier χ = 3 → χ = 4"
+    ],
+    "leanFile": "Proofs/Erdos62Problem.lean"
   },
   "overview": {
-    "historicalContext": "This problem sits at the intersection of infinite combinatorics and graph theory. Graphs with uncountable chromatic number (χ = ℵ₁) have rich subgraph structure. Erdős asked whether any two such graphs must share a 'significant' common subgraph—one with chromatic number at least 4 or even ℵ₀. The Erdős-Hajnal-Shelah theorem establishes that all large odd cycles (χ = 3) are common subgraphs, but the gap to χ = 4 remains open.",
-    "problemStatement": "If G₁ and G₂ are two graphs with chromatic number ℵ₁, must there exist a graph H with chromatic number 4 (or even ℵ₀) which is a subgraph of both G₁ and G₂?",
-    "proofStrategy": "The formalization defines infinite graphs, colorings (finite, countable, uncountable), and subgraph embeddings. The main conjecture is stated in two versions: strong (χ = 4) and weak (χ = ℵ₀). The Erdős-Hajnal-Shelah theorem is axiomatized, and we prove that any two graphs with χ = ℵ₁ share odd cycles as common subgraphs (χ = 3).",
+    "historicalContext": "Erdős posed this problem at the intersection of infinite combinatorics and chromatic graph theory. The question asks whether graphs with uncountable chromatic number (χ = ℵ₁) must share 'rich' common subgraphs. The Erdős-Hajnal-Shelah theorem (1974) provides the key partial answer: every graph with χ = ℵ₁ contains all sufficiently large odd cycles, so any two such graphs share common subgraphs with χ = 3. The gap between χ = 3 (achieved) and χ = 4 (conjectured) represents a fundamental barrier in infinite combinatorics. Erdős generalized the problem to finite collections (1987) and raised it repeatedly through the 1990s. The problem connects to partition calculus, the De Bruijn-Erdős compactness theorem, and the structure theory of graphs with large chromatic number. Under ZFC, graphs with χ = ℵ₁ exist (e.g., shift graphs on ω₁), but controlling their common subgraph structure remains elusive.",
+    "problemStatement": "If $G_1$ and $G_2$ are two graphs with chromatic number $\\aleph_1$, must there exist a graph $H$ with $\\chi(H) = 4$ (or even $\\chi(H) = \\aleph_0$) which is a subgraph of both $G_1$ and $G_2$?",
+    "proofStrategy": "The formalization uses a custom InfGraph structure (not Mathlib's SimpleGraph) to handle uncountable vertex sets. Chromatic number is stratified into three classes: finite (HasChromaticNumber k), countably infinite (HasChromaticAleph0), and uncountable (HasChromaticAleph1 = ¬IsCountablyColorable). The two conjectures and their generalization are formalized as Prop definitions. The EHS theorem is axiomatized, and odd_cycles_are_common is fully proved by taking k = max(N₁, N₂) + 1. The chi_gap_problem captures the exact open frontier. Auxiliary monotonicity results (finite_implies_countable, embed_colorable) are also fully proved.",
     "keyInsights": [
-      "Graphs with χ = ℵ₁ cannot be properly colored with countably many colors",
-      "Erdős-Hajnal-Shelah: All sufficiently large odd cycles embed in graphs with χ = ℵ₁",
-      "We prove odd cycles (χ = 3) are common subgraphs of any two graphs with χ = ℵ₁",
-      "The gap between χ = 3 and χ = 4 for common subgraphs is the key open question",
-      "Generalizes to finite collections of graphs with uncountable chromatic number"
+      "The file has 0 sorries — all definitions are complete, axioms are intentional (EHS, oddCycle), and three theorems are fully proved (odd_cycles_are_common, finite_implies_countable, embed_colorable)",
+      "The EHS theorem (1974) gives the best partial result: common χ = 3 subgraphs via large odd cycles. The proof of odd_cycles_are_common is elegant: take k = max(N₁, N₂) + 1 to satisfy both EHS instances simultaneously",
+      "The χ = 3 → χ = 4 gap is the core difficulty: odd cycles (χ = 3) come 'for free' from EHS, but forcing χ = 4 common subgraphs would require fundamentally new techniques — no Ramsey-type argument is known to suffice",
+      "HasChromaticAleph1 is defined as ¬IsCountablyColorable, which in ZFC means χ ≥ ℵ₁ (could be larger). This is a deliberate simplification appropriate for the problem statement",
+      "The generalization to finite collections uses Fin n-indexed families of types and graphs, a clean Lean 4 pattern for universal quantification over finite sets"
     ]
   },
   "sections": [
     {
-      "id": "infinite-graphs",
-      "title": "Infinite Graph Setup",
-      "summary": "InfGraph structure for infinite simple graphs",
-      "startLine": 30,
-      "endLine": 37
+      "id": "header",
+      "title": "Header and Problem Statement",
+      "summary": "OPEN. Two graphs with χ = ℵ₁ — must they share a common subgraph with χ = 4 or ℵ₀? EHS gives χ = 3. Custom InfGraph, imports Mathlib bulk. 0 sorries",
+      "startLine": 1,
+      "endLine": 28
     },
     {
-      "id": "colorings",
-      "title": "Graph Colorings",
-      "summary": "Finite, countable, and colorability definitions",
-      "startLine": 39,
+      "id": "infgraph",
+      "title": "InfGraph Structure and Colorings",
+      "summary": "InfGraph V: Adj symmetric, loopless. IsColoring G C f: proper coloring. IsColorable G k via Fin k. IsCountablyColorable via ℕ. Custom structure (not SimpleGraph) for uncountable vertex sets",
+      "startLine": 30,
       "endLine": 51
     },
     {
       "id": "chromatic-classes",
       "title": "Chromatic Number Classes",
-      "summary": "HasChromaticNumber, HasChromaticAleph0, HasChromaticAleph1",
+      "summary": "HasChromaticNumber G k: exact finite χ. HasChromaticAleph0: countable but not finite. HasChromaticAleph1: ¬countably colorable. Three-level chromatic hierarchy",
       "startLine": 52,
       "endLine": 64
     },
     {
       "id": "embeddings",
       "title": "Subgraph Embeddings",
-      "summary": "EmbedsInto relation via injective homomorphisms",
+      "summary": "EmbedsInto H G: injective homomorphism (∃ f injective, edge-preserving). Weak notion — not necessarily induced. Appropriate for common subgraph problem",
       "startLine": 66,
       "endLine": 70
     },
     {
-      "id": "main-conjecture",
-      "title": "Main Conjecture (OPEN)",
-      "summary": "Strong and weak versions of Erdős Problem 62",
+      "id": "conjectures",
+      "title": "Main Conjectures (OPEN): Strong χ=4 and Weak χ=ℵ₀",
+      "summary": "erdos_62_conjecture_strong: common χ=4 subgraph. erdos_62_conjecture_weak: common χ=ℵ₀ subgraph. Both as Prop definitions (open problems). Strong implies weak",
       "startLine": 72,
       "endLine": 93
     },
     {
       "id": "generalization",
-      "title": "Finite Collections",
-      "summary": "Generalized conjecture for n graphs",
+      "title": "Generalization to Finite Collections",
+      "summary": "erdos_62_generalized n: Fin n-indexed family of χ=ℵ₁ graphs share common H with χ=4 or χ=ℵ₀. Erdős 1987 extension from pairs to finite collections",
       "startLine": 95,
       "endLine": 108
     },
     {
-      "id": "related-results",
-      "title": "Related Results",
-      "summary": "Erdős-Hajnal-Shelah theorem on odd cycles",
+      "id": "ehs",
+      "title": "Erdős-Hajnal-Shelah and odd_cycles_are_common (Proved)",
+      "summary": "oddCycle, oddCycle_chromatic (axioms). erdos_hajnal_shelah (axiom): χ=ℵ₁ → contains all large odd cycles. odd_cycles_are_common (PROVED): k = max(N₁,N₂)+1 gives common χ=3 subgraph",
       "startLine": 109,
       "endLine": 141
     },
     {
       "id": "chi-gap",
       "title": "The χ = 3 to χ = 4 Gap",
-      "summary": "The key open question: improving from χ = 3",
+      "summary": "chi_gap_problem: common subgraph with χ > 3. Captures exact frontier — we have χ=3 (EHS), want χ≥4. The core open question",
       "startLine": 143,
       "endLine": 157
     },
     {
       "id": "properties",
-      "title": "Auxiliary Properties",
-      "summary": "Finite chromatic number and monotonicity results",
+      "title": "Auxiliary Properties: Monotonicity Results (Proved)",
+      "summary": "HasFiniteChromaticNumber. finite_implies_countable (PROVED via Fin.val). embed_colorable (PROVED via composition). Chromatic monotonicity under subgraph inclusion",
       "startLine": 158,
       "endLine": 184
+    },
+    {
+      "id": "summary",
+      "title": "Problem Summary",
+      "summary": "OPEN. Known: χ=3 common subgraphs (odd cycles via EHS). Open: χ=4 and χ=ℵ₀. Generalizes to finite collections. References: Erdős 1974-1995, EHS 1974",
+      "startLine": 185,
+      "endLine": 207
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #62, an OPEN problem asking whether any two graphs with chromatic number ℵ₁ must share a common subgraph with chromatic number 4 (or ℵ₀). The Erdős-Hajnal-Shelah theorem shows they share odd cycles (χ = 3), but the gap to χ = 4 remains open.",
-    "implications": "This problem probes the structure of graphs with uncountable chromatic number. A positive answer would reveal deep constraints on such graphs; a negative answer would exhibit surprisingly different infinite graphs with the same uncountable chromatic number.",
+    "summary": "This 208-line formalization captures Erdős Problem #62 with 0 sorries. The custom InfGraph structure supports uncountable vertex sets. The chromatic hierarchy (finite/ℵ₀/ℵ₁) is cleanly stratified. The EHS theorem is axiomatized and odd_cycles_are_common is fully proved, establishing χ = 3 common subgraphs. The gap to χ = 4 (chi_gap_problem) captures the exact open frontier.",
+    "implications": "This problem probes the deep structure of graphs with uncountable chromatic number. A positive answer would reveal that χ = ℵ₁ graphs are 'universally rich' — forced to contain complex common structures. A negative answer would exhibit graphs with the same uncountable chromatic number but fundamentally different subgraph profiles. The problem connects to partition calculus, Ramsey theory on uncountable sets, and the compactness/incompactness phenomena in infinite combinatorics.",
     "openQuestions": [
-      "Does there exist a common subgraph with χ = 4?",
-      "Does there exist a common subgraph with χ = ℵ₀?",
-      "What is the structure of graphs with χ = ℵ₁?",
-      "Can the Erdős-Hajnal-Shelah bound N be made explicit?"
+      "Does there exist a common subgraph with χ = 4? (The strong conjecture)",
+      "Does there exist a common subgraph with χ = ℵ₀? (The weak conjecture)",
+      "Is there a consistent (ZFC-independent) answer to Problem #62?",
+      "Can the EHS bound N be made effective or asymptotically estimated?",
+      "What common subgraph structure is forced for graphs with χ = ℵ₂ or larger?"
     ]
   }
 }
