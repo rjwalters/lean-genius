@@ -40,6 +40,18 @@
     "proofId": "erdos-335",
     "range": { "startLine": 34, "endLine": 35 },
     "type": "definition",
+    "title": "Counting Function",
+    "content": "The counting function $|A \\cap \\{1,\\ldots,N\\}|$ measures how many elements of $A$ lie in the initial interval. Implemented via `Set.ncard` (the cardinality of a set, possibly infinite but here applied to the finite intersection $A \\cap [1, N]$). This is the building block for asymptotic density.",
+    "mathContext": "$\\text{countingFn}(A, N) = |A \\cap \\{1, \\ldots, N\\}| = \\text{Set.ncard}(A \\cap \\text{Set.Icc}\\, 1\\, N)$. The use of `Set.Icc 1 N` (closed interval in $\\mathbb{N}$) ensures we count elements in $\\{1, 2, \\ldots, N\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.ncard", "Set.Icc", "counting measure", "partial sums"],
+    "prerequisites": ["set intersection", "natural number intervals", "cardinality"]
+  },
+  {
+    "id": "erdos-335-ann-density",
+    "proofId": "erdos-335",
+    "range": { "startLine": 34, "endLine": 35 },
+    "type": "definition",
     "title": "Asymptotic Density",
     "content": "**asympDensity A** $= \\lim_{N \\to \\infty} |A \\cap [1,N]|/N$. The natural measure of 'how thick' a set of integers is, defined via `Filter.limUnder atTop`.",
     "significance": "key",
