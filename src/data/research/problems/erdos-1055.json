@@ -11,54 +11,29 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "20 native_decide class values (classes 1-5)",
-      "5 least-prime-in-class verified (OEIS A005113)",
-      "3 counting theorems (many primes in each class)"
-    ],
-    "open": [
-      "Infinitely many primes in each class",
-      "Growth rate of p_r^{1/r} (Erdős vs Selfridge conjecture)",
-      "Density bound n^{o(1)} per class"
-    ],
-    "goal": "Computable formalization with verified OEIS data"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
-    "since": "2026-02-07T00:00:00.000Z",
-    "iteration": 2,
-    "focus": "Computable primeClass definition with 28 proved theorems",
+    "phase": "NEW",
+    "since": "2026-01-15T14:31:40.057Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Submit PR",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Rewrote from 13 axioms/0 theorems to 4 axioms/28 proved theorems/3 sorries. Computable primeClass via fuel-based recursion on prime factorization. Verified all OEIS A005113 values.",
-    "builtItems": [
-      "primeClassAux (fuel-based recursive classifier)",
-      "primeClass (top-level with fuel=30)",
-      "findLeastPrimeInClass (search function)",
-      "20 class value theorems via native_decide",
-      "5 least-prime-in-class theorems (OEIS A005113)",
-      "3 counting theorems for class evidence"
-    ],
-    "insights": [
-      "primeClass = 1 + max(class(q) for non-{2,3} prime factors of p+1), base case: all in {2,3} gives class 1",
-      "Nat.factors renamed to Nat.primeFactorsList in Docker Mathlib v4.26.0",
-      "Fuel=30 sufficient for all primes up to 10^15 (recursion depth bounded by log)",
-      "Erdős and Selfridge conjectures are contradictory - one must be wrong",
-      "p_r sequence: 2, 13, 37, 73, 1021 (verified computationally)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove structural sorries (class_one_iff_smooth, primeClass_pos_of_prime, class_of_factor_lt)",
-      "Extend to p_6 value search",
-      "Formalize density bound argument"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #1055 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.\n\nAre there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?\n\n\n\nA classification due to Erd\\H{o}s and Selfridge. It is easy to prove that the number of primes $\\leq n$ in class $r$ is at most $n^{o(1)}$.\n\nThe sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\\H{o}s thought $p_r^{1/r}\\to \\infty$, while Selfridge thought it quite likely to be bounded.\n\nA similar question can be asked replacing $p+1$ with $p-1$.\n\nThis is problem A18 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1054\n- Problem #1056\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

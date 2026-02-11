@@ -17,7 +17,7 @@ import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Topology.Order.Basic
 import Mathlib.Tactic
 
-/-!
+/-
 # The Birch and Swinnerton-Dyer Conjecture
 
 ## What This File Contains
@@ -101,7 +101,7 @@ open scoped Topology BigOperators ComplexConjugate
 
 namespace BirchSwinnertonDyer
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART I: ELLIPTIC CURVES OVER ℚ
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -129,7 +129,7 @@ def discriminant (E : EllipticCurveQ) : ℚ :=
 def jInvariant (E : EllipticCurveQ) : ℚ :=
   -1728 * (4 * E.a^3) / discriminant E
 
-/-! ### Connection to Mathlib's WeierstrassCurve
+/- ### Connection to Mathlib's WeierstrassCurve
 
 Our simplified `EllipticCurveQ` structure corresponds to short Weierstrass form.
 Mathlib's `WeierstrassCurve` uses the general form: Y² + a₁XY + a₃Y = X³ + a₂X² + a₄X + a₆.
@@ -199,7 +199,7 @@ theorem toWeierstrassCurve_c4_cubed (E : EllipticCurveQ) :
   rw [toWeierstrassCurve_c4]
   ring
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART II: THE MORDELL-WEIL GROUP
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -264,7 +264,7 @@ def torsionSubgroup (E : EllipticCurveQ) : Type* := torsionSubgroup_axiom E
 axiom mazur_torsion_theorem (E : EllipticCurveQ) :
   True  -- Placeholder: torsionSubgroup E is one of the 15 groups
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART III: L-FUNCTIONS OF ELLIPTIC CURVES
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -344,7 +344,7 @@ axiom rootNumber_axiom (E : EllipticCurveQ) : ℤ
     This is because L(E, s) has sign w under s ↔ 2-s. -/
 def rootNumber (E : EllipticCurveQ) : ℤ := rootNumber_axiom E
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IV: THE MODULARITY THEOREM
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -387,7 +387,7 @@ theorem LFunction_functional_equation (_E : EllipticCurveQ) :
     True := -- Placeholder: Λ(E, s) = w · Λ(E, 2-s)
   trivial
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART V: THE ANALYTIC RANK
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -422,7 +422,7 @@ theorem analytic_rank_parity (E : EllipticCurveQ) :
     analyticRank E % 2 = if rootNumber E = 1 then 0 else 1 :=
   analytic_rank_parity_axiom E
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART VI: THE BIRCH AND SWINNERTON-DYER CONJECTURE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -443,7 +443,7 @@ def BSD_Weak (E : EllipticCurveQ) : Prop :=
 def BSDConjecture_Weak : Prop :=
   ∀ E : EllipticCurveQ, BSD_Weak E
 
-/-! ### The Full BSD Conjecture
+/- ### The Full BSD Conjecture
 
 The strong form of BSD also predicts the leading coefficient of L(E, s) at s = 1.
 -/
@@ -556,7 +556,7 @@ def BSD_Strong (E : EllipticCurveQ) : Prop :=
 def BSDConjecture_Strong : Prop :=
   ∀ E : EllipticCurveQ, BSD_Strong E
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART VII: KNOWN CASES (PROVEN)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -627,7 +627,7 @@ theorem BSD_CM_rank_zero (E : EllipticCurveQ)
     algebraicRank E = 0 :=
   BSD_CM_rank_zero_axiom E hCM hL
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART VIII: THE GROSS-ZAGIER FORMULA
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -667,7 +667,7 @@ theorem gross_zagier_formula (_E : EllipticCurveQ) (_P : HeegnerPoint _E) :
     True := -- Placeholder: L'(E, 1) = explicit formula involving ĥ(P)
   trivial
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IX: COMPUTATIONAL EVIDENCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -729,7 +729,7 @@ theorem congruentNumberCurve_jInvariant (n : ℕ) (hn : n > 0) :
   field_simp
   ring
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.b: FAMOUS ELLIPTIC CURVES WITH KNOWN PROPERTIES
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -842,7 +842,7 @@ theorem BSD_cremona11a1 : BSD_Weak cremona11a1 := by
   have h := BSD_rank_zero cremona11a1 cremona11a1_L_nonzero
   omega
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.c: CONGRUENT NUMBER PROBLEM CLASSICAL CASES
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -884,7 +884,7 @@ axiom two_not_congruent : algebraicRank (congruentNumberCurve 2 (by norm_num)) =
 /-- 3 is NOT a congruent number (proved by Fermat). -/
 axiom three_not_congruent : algebraicRank (congruentNumberCurve 3 (by norm_num)) = 0
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.d: VERIFIED RATIONAL POINTS ON CONGRUENT NUMBER CURVES (PROVEN)
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1002,7 +1002,7 @@ def torsion_neg_n (n : ℕ) (hn : n > 0) : RationalPoint (congruentNumberCurve n
   y := 0
   on_curve := by unfold congruentNumberCurve; simp; ring
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.d.2: ADDITIONAL VERIFIED RATIONAL POINTS
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1082,7 +1082,7 @@ def point_on_E34 : RationalPoint (congruentNumberCurve 34 (by norm_num)) where
 theorem point_on_E34_nonTorsion : point_on_E34.isNonTorsion := by
   unfold RationalPoint.isNonTorsion point_on_E34; norm_num
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.d.3: RIGHT TRIANGLE ↔ CURVE POINT CONNECTION
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1149,7 +1149,111 @@ theorem triangle_area_30 :
   simp [RightTriangle.area]
   norm_num
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART IX.d.4: GENERAL TRIANGLE ↔ CURVE POINT CORRESPONDENCE (PROVEN)
+═══════════════════════════════════════════════════════════════════════════════
+
+The classical Koblitz correspondence: given a rational right triangle (a, b, c) with
+a² + b² = c² and area n = ab/2, the map
+
+  (a, b, c) ↦ (X, Y) = ((c/2)², (c/2)·(a² - b²)/4)
+
+produces a rational point on y² = x³ - n²x with Y ≠ 0.
+
+Proof sketch:
+  Y² = c²(a² - b²)²/64
+  X³ - n²X = c⁶/64 - (ab)²c²/16·4 = c²(c⁴ - 4a²b²)/64
+  Since c² = a² + b²: c⁴ - 4a²b² = (a² + b²)² - 4a²b² = (a² - b²)²
+  So X³ - n²X = c²(a² - b²)²/64 = Y²  ✓
+-/
+
+/-- The X-coordinate of the Koblitz map: X = (c/2)². -/
+def triangleToPointX (T : RightTriangle) : ℚ := (T.c / 2)^2
+
+/-- The Y-coordinate of the Koblitz map: Y = (c/2)·(a² - b²)/4. -/
+def triangleToPointY (T : RightTriangle) : ℚ := T.c / 2 * (T.a^2 - T.b^2) / 4
+
+/-- **The General Triangle-to-Point Theorem** (Koblitz Correspondence)
+
+    Given a rational right triangle (a, b, c) with a² + b² = c² and area n = ab/2,
+    the point (X, Y) = ((c/2)², (c/2)(a²-b²)/4) satisfies the congruent number
+    curve equation Y² = X³ - n²X where n = ab/2.
+
+    This is the forward direction of the classical bijection between rational right
+    triangles with area n and non-torsion rational points on y² = x³ - n²x.
+
+    The proof is a pure algebraic identity using a² + b² = c². -/
+theorem triangle_to_point_on_curve (T : RightTriangle) :
+    (triangleToPointY T)^2 =
+    (triangleToPointX T)^3 - (T.area)^2 * (triangleToPointX T) := by
+  unfold triangleToPointX triangleToPointY RightTriangle.area
+  have hpyth := T.pythagorean  -- a² + b² = c²
+  -- Both sides equal c²(a²-b²)²/64 after expanding with c² = a² + b²
+  have key : T.c ^ 4 = T.a ^ 4 + 2 * T.a ^ 2 * T.b ^ 2 + T.b ^ 4 := by nlinarith
+  field_simp
+  nlinarith [sq_nonneg T.a, sq_nonneg T.b, sq_nonneg T.c, sq_nonneg (T.a * T.b),
+             sq_nonneg (T.a ^ 2 - T.b ^ 2), sq_nonneg (T.c ^ 2),
+             mul_self_nonneg (T.a ^ 2 * T.b ^ 2)]
+
+/-- No rational number squares to 2 (the rational formulation of √2 irrational).
+
+    Proof: if q² = 2 then (q : ℝ)² = 2, so q = ±√2, contradicting
+    Mathlib's `irrational_sqrt_two`. -/
+theorem rat_sq_ne_two (q : ℚ) : q ^ 2 ≠ 2 := by
+  intro h
+  have hR : (q : ℝ) ^ 2 = (2 : ℝ) := by exact_mod_cast h
+  have hirr := irrational_sqrt_two
+  apply hirr
+  refine ⟨|q|, ?_⟩
+  rw [Rat.cast_abs, ← Real.sqrt_sq_eq_abs]
+  exact congrArg Real.sqrt hR
+
+/-- The Y-coordinate of the Koblitz map is nonzero for any rational right triangle.
+
+    Y = 0 iff a² = b² (since c > 0). But a² = b² with a² + b² = c²
+    gives 2a² = c², so (c/a)² = 2, contradicting the irrationality of √2. -/
+theorem triangle_to_point_y_ne_zero (T : RightTriangle) :
+    triangleToPointY T ≠ 0 := by
+  unfold triangleToPointY
+  have hc_pos := T.c_pos
+  have ha_pos := T.a_pos
+  have hpyth := T.pythagorean
+  -- Suffices to show c/2 ≠ 0 and a² - b² ≠ 0
+  -- c/2 ≠ 0 since c > 0
+  have hc_half_ne : T.c / 2 ≠ 0 := by positivity
+  -- a² ≠ b² because a² = b² would give c² = 2a², hence (c/a)² = 2
+  have hab_ne : T.a ^ 2 ≠ T.b ^ 2 := by
+    intro heq
+    have h2a : 2 * T.a ^ 2 = T.c ^ 2 := by linarith
+    have ha_ne : T.a ≠ 0 := ne_of_gt ha_pos
+    exact rat_sq_ne_two (T.c / T.a) (by field_simp; linarith)
+  -- Now c/2 * (a² - b²) / 4 ≠ 0
+  have hab_sub_ne : T.a ^ 2 - T.b ^ 2 ≠ 0 := sub_ne_zero.mpr hab_ne
+  positivity
+
+/-- **Structural theorem**: Any rational right triangle with area n gives a
+    non-torsion rational point on the congruent number curve y² = x³ - n²x.
+
+    This single structural result subsumes all individual point verifications
+    (for n = 5, 6, 7, 15, 20, 21, 24, 30, 34, ...).
+
+    The proof constructs the point via the Koblitz map and shows it satisfies
+    the curve equation with nonzero Y-coordinate. -/
+theorem triangle_gives_congruent_number_point (T : RightTriangle)
+    (n : ℕ) (hn : n > 0) (harea : T.area = n) :
+    ∃ (P : RationalPoint (congruentNumberCurve n hn)), P.isNonTorsion := by
+  -- The point ((c/2)², (c/2)(a²-b²)/4) lies on y² = x³ - n²x
+  refine ⟨⟨triangleToPointX T, triangleToPointY T, ?_⟩, ?_⟩
+  · -- On curve: Y² = X³ + a·X + b where a = -n², b = 0
+    unfold congruentNumberCurve
+    simp only
+    have h := triangle_to_point_on_curve T
+    rw [harea] at h
+    linarith
+  · -- Non-torsion: Y ≠ 0
+    exact triangle_to_point_y_ne_zero T
+
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.e: HASSE BOUND AND POINT COUNTING (INFRASTRUCTURE)
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1188,7 +1292,7 @@ theorem hasse_bound_consequence (E : EllipticCurveQ) (p : ℕ) [Fact (Nat.Prime 
   have h := hasse_bound E p
   omega
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART X: WHY BSD IS HARD
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -1218,7 +1322,7 @@ theorem average_rank_bounded :
     True := -- Placeholder: average rank ≤ 7/6, and →∞ gives average rank ≤ 1/2
   trivial
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: RELATED CONJECTURES
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -1268,7 +1372,7 @@ axiom BSD_AbelianVariety_axiom : Prop
     For dimension g > 1, almost nothing is proven! -/
 def BSD_AbelianVariety : Prop := BSD_AbelianVariety_axiom
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART XII: SUMMARY AND SIGNIFICANCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 

@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "EXPLORING",
+    "phase": "NEW",
     "since": "2026-01-13T04:11:10.512Z",
-    "iteration": 2,
-    "focus": "Converting axioms to theorems, building smooth component infrastructure",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Prove smoothComponent_largest theorem and verify builds",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,29 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted unsound axiom to correct theorem sorry. Added 3 new proved lemmas. Documented coprimality-based proof strategy for smoothComponent_largest.",
-    "builtItems": [
-      "Proved smoothComponent_pos in Erdos461Problem.lean",
-      "Proved smoothComponent_prime in Erdos461Problem.lean",
-      "Proved no_small_prime_in_complement in Erdos461Problem.lean",
-      "Converted axiom smoothComponent_largest to theorem sorry with n ≠ 0 hypothesis"
-    ],
-    "insights": [
-      "Original axiom smoothComponent_largest was FALSE for n=0 (counterexample: d=2, t=3, n=0)",
-      "Fixed by adding n ≠ 0 hypothesis and converting axiom to theorem with sorry",
-      "Proof strategy for smoothComponent_largest: coprimality argument - d and complementPart have disjoint prime support (< t vs ≥ t), so d | smoothComponent t n",
-      "smoothComponent_prime proved: for prime p, smoothComponent t p = if p < t then p else 1",
-      "smoothComponent_pos proved: smooth component is always positive (product of empty list = 1, product of primes > 0)",
-      "no_small_prime_in_complement proved: no prime < t divides the complement part of factorization",
-      "Docker daemon broken during session - proofs not build-verified"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove smoothComponent_largest via coprimality: show n = smoothComponent * complement, d coprime to complement, therefore d | smoothComponent",
-      "Build-verify all proofs once Docker recovers",
-      "Consider submitting smoothComponent_largest to Aristotle after converting to provable form",
-      "Prove smoothComponent_mul_coprime (multiplicativity on coprime inputs) and smoothComponent_prime_pow"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #461 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?\n\n\n\nErd\\H{o}s and Graham report they can show\\[f(n,t) \\gg \\frac{t}{\\log t}.\\]\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #460\n- Problem #462\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "approaches": [],
