@@ -1,56 +1,86 @@
 [
   {
-    "id": "n-commuting",
+    "id": "ann-e117-imports",
     "proofId": "erdos-117",
-    "range": { "startLine": 27, "endLine": 30 },
-    "type": "definition",
-    "title": "n-Commuting Property",
-    "content": "A group G has the n-commuting property if every subset of size > n contains two distinct elements x ≠ y with xy = yx. A Ramsey-type condition on the group.",
-    "significance": "high"
+    "range": { "startLine": 18, "endLine": 23 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "The formalization imports `Subgroup.Basic` for the subgroup type and membership, `Finset.Card` for cardinality of finite sets (used in the $n$-commuting property), `Data.Nat.Basic` for natural number arithmetic, and `Tactic` for proof automation. The minimalist import set reflects that this is a pure group-theoretic formalization not requiring analysis or number theory.",
+    "mathContext": "Uses `Subgroup G`, `Finset G`, and `Finset.card` from Mathlib's group theory and combinatorics libraries.",
+    "significance": "supporting",
+    "relatedConcepts": ["Subgroup type", "Finset cardinality", "Lean tactic framework"],
+    "prerequisites": ["Lean 4 imports", "Mathlib group theory"]
   },
   {
-    "id": "abelian-cover",
+    "id": "ann-e117-n-commuting",
     "proofId": "erdos-117",
-    "range": { "startLine": 36, "endLine": 41 },
+    "range": { "startLine": 25, "endLine": 33 },
+    "type": "definition",
+    "title": "n-Commuting Property and Abelian Subgroups",
+    "content": "Two foundational definitions. **`HasNCommutingProperty G n`**: the group $G$ satisfies the $n$-commuting property if every subset $S \\subseteq G$ with $|S| > n$ contains distinct elements $x \\neq y$ with $xy = yx$. This is a Ramsey-type pigeonhole condition — in any large enough subset, commutativity must occur. **`IsAbelianSubgroup G H`**: a subgroup $H \\leq G$ is abelian if all pairs of elements in $H$ commute ($\\forall x, y \\in H,\\; xy = yx$). Both definitions use Lean's `Group` typeclass and `Subgroup` type.",
+    "mathContext": "**$n$-commuting:** $\\forall S \\subseteq G,\\; |S| > n \\Rightarrow \\exists x \\neq y \\in S,\\; xy = yx$. **Abelian subgroup:** $\\forall x, y \\in H,\\; xy = yx$.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey property", "commutativity", "abelian subgroup", "pigeonhole principle"],
+    "prerequisites": ["group theory basics", "Finset", "Subgroup type"]
+  },
+  {
+    "id": "ann-e117-cover-number",
+    "proofId": "erdos-117",
+    "range": { "startLine": 35, "endLine": 42 },
     "type": "definition",
     "title": "Abelian Cover Number h(n)",
-    "content": "The minimum number of Abelian subgroups needed to cover any group with the n-commuting property. This is the quantity Erdős asks to estimate.",
-    "significance": "high"
+    "content": "The central quantity: $h(n)$ is the minimum $k$ such that **every** finite group $G$ with the $n$-commuting property can be covered by $k$ abelian subgroups. Formally, $h(n) = \\inf\\{k : \\forall G \\text{ finite with } n\\text{-commuting}, \\exists H_1, \\ldots, H_k \\leq G \\text{ abelian with } G = \\bigcup_i H_i\\}$. The definition uses `sInf` over natural numbers and quantifies universally over all finite groups (via `[Group G] [Fintype G]`), making this a genuine extremal quantity. The existential uses `Fin k → Subgroup G` to index the $k$ subgroups.",
+    "mathContext": "$h(n) = \\inf\\{k \\in \\mathbb{N} : \\forall G \\text{ finite}, \\text{HasNCommuting}(G, n) \\Rightarrow \\exists H_1, \\ldots, H_k \\leq G \\text{ abelian}, G = \\bigcup_{i=1}^k H_i\\}$.",
+    "significance": "critical",
+    "relatedConcepts": ["covering number", "extremal group theory", "sInf in ℕ", "universal quantification over groups"],
+    "prerequisites": ["Subgroup", "Fintype", "sInf", "Fin k → Subgroup G"]
   },
   {
-    "id": "main-problem",
+    "id": "ann-e117-main-problem",
     "proofId": "erdos-117",
-    "range": { "startLine": 45, "endLine": 48 },
-    "type": "conjecture",
-    "title": "Erdős Problem #117",
-    "content": "Estimate h(n). Known to be exponential: c₁^n < h(n) < c₂^n. The exact base is unknown.",
-    "significance": "high"
-  },
-  {
-    "id": "pyber",
-    "proofId": "erdos-117",
-    "range": { "startLine": 53, "endLine": 58 },
+    "range": { "startLine": 44, "endLine": 51 },
     "type": "theorem",
-    "title": "Pyber (1987)",
-    "content": "h(n) is exponential in n. There exist constants c₂ > c₁ > 1 with c₁^n < h(n) < c₂^n. The gap between the constants remains open.",
-    "significance": "high"
+    "title": "Erdős Problem #117: Exponential Bounds",
+    "content": "The main problem statement, axiomatized: there exist constants $c_2 > c_1 > 1$ such that $c_1^n < h(n) < c_2^n$ for all $n > 0$. This asserts that $h(n)$ grows exponentially in $n$ — neither polynomial nor super-exponential. The gap between $c_1$ and $c_2$ is the key open question. The axiom uses strict inequalities, matching the original formulation. Determining whether $c_1$ and $c_2$ can be brought together to a single constant $c$ with $h(n) = \\Theta(c^n)$ is the central challenge.",
+    "mathContext": "$\\exists c_1, c_2 \\in \\mathbb{R},\\; 1 < c_1 < c_2,\\; \\forall n > 0: c_1^n < h(n) < c_2^n$.",
+    "significance": "critical",
+    "relatedConcepts": ["exponential growth", "extremal combinatorics", "growth rate classification"],
+    "prerequisites": ["abelianCoverNumber", "real exponentials"]
   },
   {
-    "id": "isaacs",
+    "id": "ann-e117-pyber",
     "proofId": "erdos-117",
-    "range": { "startLine": 61, "endLine": 63 },
+    "range": { "startLine": 53, "endLine": 61 },
     "type": "theorem",
-    "title": "Isaacs Lower Bound",
-    "content": "The exponential lower bound c^n ≤ h(n) was known to Isaacs before Pyber's complete result.",
-    "significance": "medium"
+    "title": "Pyber's Theorem (1987)",
+    "content": "Pyber's foundational result establishing both directions of the exponential bound: $c_1^n \\leq h(n) \\leq c_2^n$ for constants $1 < c_1 < c_2$. The **upper bound** is constructive — Pyber showed how to build an abelian covering of size at most $c_2^n$ for any $n$-commuting group, using structural decomposition and induction on the group order. The **lower bound** exhibits specific groups (typically certain wreath products or $p$-groups) where any abelian covering requires at least $c_1^n$ subgroups. This axiom uses non-strict inequalities ($\\leq$), slightly stronger than the main problem statement's strict version.",
+    "mathContext": "**Pyber (1987):** $\\exists c_1, c_2,\\; 1 < c_1 < c_2,\\; \\forall n > 0: c_1^n \\leq h(n) \\leq c_2^n$.",
+    "significance": "critical",
+    "relatedConcepts": ["group covering problems", "wreath products", "p-groups", "structural group theory"],
+    "prerequisites": ["abelianCoverNumber", "finite group structure theory"]
   },
   {
-    "id": "trivial-case",
+    "id": "ann-e117-isaacs",
     "proofId": "erdos-117",
-    "range": { "startLine": 67, "endLine": 69 },
-    "type": "note",
-    "title": "Trivial Case h(1) = 1",
-    "content": "If every pair of elements commutes (n = 1), the group is Abelian. One subgroup (the whole group) suffices.",
-    "significance": "medium"
+    "range": { "startLine": 63, "endLine": 66 },
+    "type": "theorem",
+    "title": "Isaacs' Lower Bound",
+    "content": "The exponential lower bound $c^n \\leq h(n)$ for some $c > 1$ was known to Isaacs independently of Pyber's more complete result. Isaacs' approach likely used character-theoretic methods — bounding the number of abelian subgroups needed to cover a group from below using the representation theory of finite groups. The axiom isolates this as a standalone result to acknowledge the independent contribution.",
+    "mathContext": "$\\exists c > 1,\\; \\forall n > 0: c^n \\leq h(n)$.",
+    "significance": "key",
+    "relatedConcepts": ["character theory", "representation theory lower bounds", "independent discovery"],
+    "prerequisites": ["abelianCoverNumber", "exponential lower bounds"]
+  },
+  {
+    "id": "ann-e117-trivial",
+    "proofId": "erdos-117",
+    "range": { "startLine": 68, "endLine": 80 },
+    "type": "insight",
+    "title": "Trivial Case and Ramsey Connection",
+    "content": "The base case $h(1) = 1$: if every 2-element subset of $G$ contains a commuting pair, then every pair commutes, so $G$ is abelian. An abelian group is covered by one abelian subgroup (itself). This is axiomatized as `trivial_case`. The comments note the **Ramsey-theoretic** interpretation: the $n$-commuting property generalizes graph Ramsey conditions by coloring pairs of group elements as 'commuting' or 'non-commuting' and requiring that every large enough set contains a 'commuting' edge. The open question — determining the exact exponential base — is stated in the final comment.",
+    "mathContext": "$h(1) = 1$: $\\text{HasNCommuting}(G, 1)$ iff $G$ is abelian. The $n$-commuting condition is a Ramsey property on the non-commuting graph of $G$.",
+    "significance": "key",
+    "relatedConcepts": ["non-commuting graph", "Ramsey theory", "graph coloring", "abelian groups"],
+    "prerequisites": ["abelianCoverNumber", "abelian group characterization"]
   }
 ]
