@@ -37,43 +37,65 @@
     "leanFile": "Proofs/Erdos1056Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1056",
-    "erdosUrl": "https://erdosproblems.com/1056"
+    "erdosUrl": "https://erdosproblems.com/1056",
+    "relatedProblems": ["wilsons-theorem", "erdos-945", "erdos-1004"]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 22,
+      "endLine": 30,
+      "summary": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 44,
-      "summary": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i = b!/a!$, boundary validity, the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and the existence predicate $\\text{HasSolution}(k)$."
+      "startLine": 31,
+      "endLine": 52,
+      "summary": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and $\\text{HasSolution}(k)$."
     },
     {
-      "id": "k2-example",
-      "title": "Erdős's k=2 Example",
-      "startLine": 46,
-      "endLine": 57,
-      "summary": "Verifies Erdős's $k = 2$ example: $p = 11$, $3 \\cdot 4 = 12 \\equiv 1$ and $5 \\cdot 6 \\cdot 7 = 210 \\equiv 1 \\pmod{11}$. In factorial form: $2! \\equiv 4! \\equiv 7! \\pmod{11}$. Verified by `native_decide`."
+      "id": "infrastructure",
+      "title": "Infrastructure Lemmas",
+      "startLine": 54,
+      "endLine": 93,
+      "summary": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under multiplication ($a \\equiv 1, b \\equiv 1 \\implies ab \\equiv 1$)."
     },
     {
-      "id": "k3-example",
-      "title": "Makowski's k=3 Example",
-      "startLine": 59,
-      "endLine": 73,
-      "summary": "Verifies Makowski's $k = 3$ example: $p = 17$, three intervals $[2,6), [6,12), [12,16)$ all have products $\\equiv 1 \\pmod{17}$. Factorial form: $1! \\equiv 5! \\equiv 11! \\equiv 15! \\pmod{17}$."
+      "id": "verified-solutions",
+      "title": "Verified Solutions",
+      "startLine": 95,
+      "endLine": 150,
+      "summary": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-triviality proof, and observation that both solutions use odd primes $p > 2$."
+    },
+    {
+      "id": "wilson-connection",
+      "title": "Wilson's Theorem Connection",
+      "startLine": 152,
+      "endLine": 171,
+      "summary": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\ldots, p-1\\}$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 75,
-      "endLine": 80,
-      "summary": "States the main conjecture: $\\forall k \\ge 2$, $\\exists p$ prime with $k$ consecutive intervals having products $\\equiv 1 \\pmod{p}$. Equivalently: $\\exists$ $k+1$ values with equal factorials mod $p$."
+      "startLine": 173,
+      "endLine": 178,
+      "summary": "Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known."
     },
     {
-      "id": "generalizations",
-      "title": "Wilson's Theorem and Noll–Simmons",
-      "startLine": 82,
-      "endLine": 102,
-      "summary": "Uses Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ to show intervals cannot partition $\\{1, \\ldots, p-1\\}$. States the Noll–Simmons factorial reformulation: $\\exists$ $k$ values with $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$."
+      "id": "noll-simmons",
+      "title": "Noll–Simmons Generalization",
+      "startLine": 180,
+      "endLine": 192,
+      "summary": "Axiomatizes the Noll–Simmons conjecture: $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. Weaker than the interval product conjecture since it drops consecutiveness."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 194,
+      "endLine": 204,
+      "summary": "Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$."
     }
   ],
   "overview": {
